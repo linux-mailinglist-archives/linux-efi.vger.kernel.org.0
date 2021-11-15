@@ -2,66 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 236AF4509C6
-	for <lists+linux-efi@lfdr.de>; Mon, 15 Nov 2021 17:37:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 387934509F3
+	for <lists+linux-efi@lfdr.de>; Mon, 15 Nov 2021 17:46:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230368AbhKOQkv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 15 Nov 2021 11:40:51 -0500
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32]:32266 "EHLO
-        mx0a-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229926AbhKOQkv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 15 Nov 2021 11:40:51 -0500
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AFGZM2C001656;
-        Mon, 15 Nov 2021 16:37:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : content-type : in-reply-to :
- mime-version; s=corp-2021-07-09;
- bh=zA4aR8g7in86r/Sk8l0qhEQ1lTCLULS9df2l9zYo+q8=;
- b=SN8tJnicn5Cf2RbEigztqTQxbfYNxgUixkfvpPc64gZpDL1YGcU7FkB4EmSE5s3KHK7V
- jOXP9wd+HoMCdQwVDWJPYvLS8dkNp7qbyoh+BM/O/D5AOoAGmH8UUZlg9uu8gFQszb+v
- JYgvWn5K2krDPJqA3EzMhaWGAMHKYraKD9pjlH8P99X+DpqJVmFp4tedUwmh+VaA9YaS
- cz06m4LPLGtmvwkEmHp0VRHcBrVtSv1GKRfZVaOyv/hzvVANlZIaUvFf942DzM5KVFMV
- HKEDW/idfOFDj9wiPQrRNzENfzmsjKwB1oL9fm1B18v70MGMc4eYPU1ibqJrwhK0hwqq XA== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by mx0b-00069f02.pphosted.com with ESMTP id 3cbhv7un95-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 15 Nov 2021 16:37:29 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 1AFGQMUj145953;
-        Mon, 15 Nov 2021 16:37:27 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2044.outbound.protection.outlook.com [104.47.66.44])
-        by aserp3030.oracle.com with ESMTP id 3ca3denqqv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 15 Nov 2021 16:37:27 +0000
+        id S231792AbhKOQt3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 15 Nov 2021 11:49:29 -0500
+Received: from mail-dm6nam12on2046.outbound.protection.outlook.com ([40.107.243.46]:13525
+        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S231330AbhKOQsw (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 15 Nov 2021 11:48:52 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CJD/o5ueop/Jxg3CIS/FbKD7WOQ2ja1/hKxNT4M3Vhs5egFfCZljHGp7pbStFd4EQ5Tj4iKvsO1THPqt3nfxqL7iiPGL7iJFruW4ZFOiEYqIJ6R6NNqVggSnb0pK36STgmgySZXPGYMDjK4MpV2vms862x7sUK6AVrB6FDzjWF7hs7XStfdjWMGv4bh06AkjzH9XclpXy8mj5SIo4T7NjZvOc37WLSXrtOfht3sciR0KX3XHiaSjzh2Aq+cAFlRfOn4FPDIJuFoPxVIVi45JPdJVRXqzNtHZ86lqSHV0rPXeuV3lMpKz6jBynOPUydT77fNkAgA5vDVKskg3tTeU3Q==
+ b=jJneCCHOG5X42JgQnWX9XClsjqSDINZWkXh0jPU4rJNqscoNb5ZRgo8CB+AApyfqA6zZVtuXdxz/E1/kSma2zXOVREQ78h+ILcxscWvlg3QeKDiiwY2zLTWrHRoIXIAB+8oxcSG8Upu0fgsfxDn0xIn9kk2nbGTU2j6QovFPk/BZbflcX0q3+P7l5Au2y4FbVZfzC8gxzakMmFy/RZ06SPl8c2vJ2bnYp0fbSxj6PjfwxvkcA4d2DfIbhxcIYNq+tWUYW4phLnpmc5IryzZIiF03P/gb2b0HDCXKE4fnhk7CTQTdpZJ8T/Ztk2hVvTvos5uM87dkV5QyWvfS0q5cTw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zA4aR8g7in86r/Sk8l0qhEQ1lTCLULS9df2l9zYo+q8=;
- b=etnqoZH2Kyf954kUpolwsbu30yWF7chfkz/valWU6cQGZNOdceutlO2wOCvpMN0pS2hrg2HRcVkBYedEO8CJ/hNaaBKbTfipkWXyAzSyAUzMPwmisgzXNP3ipOt4OxDi1xBARol29uoJJxwdqizi6CDILInx5zKZ6euDre/JwXPtI7iTf87ny9VFUa06imN+8Jl8OA0gqRVhYbj6C9I2RpmKueO42+f1bZVnpnyDNuvbdF5d4hjyWltD6EZ0BXSmgt35pFB3J6mgbm9U8OjXL1YU/MILa7IFVCbKFs5oIwLuzasEH0GTHKmZPZ+OhuIoGLszNYnkdFExOFk31Aa1Fg==
+ bh=rDnLllwP8R9GLSffCin0SnZJ/NpEo5qmP7BY6RxcIA4=;
+ b=OUEOM3RWt9N8DLNiXlzBB6ulh6hiJdz51iubt99x8/S67m2yBh57qnsMF0YqGIE6TstOEHg3JlfJ8WzTWZ4K7c/0hTy+o4YTXnBD38+9XSzCiiZBrz4wlkXsHbOQ1fZeIEfSPGAiVzISI105QV0HOP5dbMTlzIjyptw5rgyuXlrhOwbzMB8kkOGtkZK641fesG2Z2L14gqg5tXWTQ6ppofr4CQrLBA8zcciFqVmb5MfwECeFb+cFBIaI8X4DmedMS2VOuWIxHh9AVF/LwnY84soJykJ4PiKGZbkIRnHmQ53PlHKY9UBH48lr0yB6HaMAD+FGS3eKY9SqTzfhKHqNtw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zA4aR8g7in86r/Sk8l0qhEQ1lTCLULS9df2l9zYo+q8=;
- b=pf//wlH3x5fiT5akC1hceGOGUaVm8iFreOJa9FJq8eYjXVOG4PL+XSiexRUHX5bGTAz0/gjsM+Z3EKUVWNpOGDxBX0zXvHU/8JevqDBgQfepVbRDqJWjxDG6MKA9T5uI9wyi/1iPgPXL/a/sWsa3IYQzyn1nLL+Xmuo9hysM+UY=
-Received: from SN6PR10MB2576.namprd10.prod.outlook.com (2603:10b6:805:44::15)
- by SA2PR10MB4601.namprd10.prod.outlook.com (2603:10b6:806:f9::20) with
+ bh=rDnLllwP8R9GLSffCin0SnZJ/NpEo5qmP7BY6RxcIA4=;
+ b=cqZYZhCvhD3ZmZUDPKC1RxSmPOqClvXrWZCfnmj8DWWdyPaM5poRdYSMx4O5F+L9pMVz4RDCdSFIvrmdVq9ZT5Ut0qgbXlnH17CNMQlNQnr0O/m7Q+H4IC75uIBpFuHKen0+lagsvSQA8Op3S1JcSiwIdBdU9XXbsLZX3DennBE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by SN1PR12MB2446.namprd12.prod.outlook.com (2603:10b6:802:26::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4690.26; Mon, 15 Nov
- 2021 16:37:25 +0000
-Received: from SN6PR10MB2576.namprd10.prod.outlook.com
- ([fe80::898:d80:7483:f023]) by SN6PR10MB2576.namprd10.prod.outlook.com
- ([fe80::898:d80:7483:f023%5]) with mapi id 15.20.4690.027; Mon, 15 Nov 2021
- 16:37:25 +0000
-Date:   Mon, 15 Nov 2021 10:37:18 -0600
-From:   Venu Busireddy <venu.busireddy@oracle.com>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ 2021 16:45:54 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::e4da:b3ea:a3ec:761c]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::e4da:b3ea:a3ec:761c%7]) with mapi id 15.20.4690.027; Mon, 15 Nov 2021
+ 16:45:54 +0000
+Cc:     brijesh.singh@amd.com, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -90,112 +67,126 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         sathyanarayanan.kuppuswamy@linux.intel.com
 Subject: Re: [PATCH v7 00/45] Add AMD Secure Nested Paging (SEV-SNP) Guest
  Support
-Message-ID: <YZKMvjEIGarn8RrR@dt>
+To:     Venu Busireddy <venu.busireddy@oracle.com>
 References: <20211110220731.2396491-1-brijesh.singh@amd.com>
- <YZKDGKOgHKNWq8s2@dt>
- <a631d02a-c99e-a0d6-444a-3574609c7a25@amd.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a631d02a-c99e-a0d6-444a-3574609c7a25@amd.com>
-X-ClientProxiedBy: SJ0PR05CA0199.namprd05.prod.outlook.com
- (2603:10b6:a03:330::24) To SN6PR10MB2576.namprd10.prod.outlook.com
- (2603:10b6:805:44::15)
+ <YZKDGKOgHKNWq8s2@dt> <a631d02a-c99e-a0d6-444a-3574609c7a25@amd.com>
+ <YZKMvjEIGarn8RrR@dt>
+From:   Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <88aa149c-5fbe-b5c4-5979-6b01d4e79bee@amd.com>
+Date:   Mon, 15 Nov 2021 10:45:48 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
+In-Reply-To: <YZKMvjEIGarn8RrR@dt>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BL1PR13CA0134.namprd13.prod.outlook.com
+ (2603:10b6:208:2bb::19) To SN6PR12MB2718.namprd12.prod.outlook.com
+ (2603:10b6:805:6f::22)
 MIME-Version: 1.0
-Received: from dt (138.3.200.60) by SJ0PR05CA0199.namprd05.prod.outlook.com (2603:10b6:a03:330::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4713.14 via Frontend Transport; Mon, 15 Nov 2021 16:37:21 +0000
+Received: from [10.236.30.107] (165.204.77.1) by BL1PR13CA0134.namprd13.prod.outlook.com (2603:10b6:208:2bb::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4713.15 via Frontend Transport; Mon, 15 Nov 2021 16:45:50 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e71a3f5f-3919-46f9-8f18-08d9a8563443
-X-MS-TrafficTypeDiagnostic: SA2PR10MB4601:
-X-Microsoft-Antispam-PRVS: <SA2PR10MB4601A1FCBC09AA4D0FC41214E6989@SA2PR10MB4601.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:207;
+X-MS-Office365-Filtering-Correlation-Id: 14001cfc-76b8-4698-ec57-08d9a85763fa
+X-MS-TrafficTypeDiagnostic: SN1PR12MB2446:
+X-Microsoft-Antispam-PRVS: <SN1PR12MB2446109720316B16796389A0E5989@SN1PR12MB2446.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:245;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 1RR2kXC1L1qutJgqpg5NtW9tXOReo3zkdLhPL/3RQAHPWSpaAoqyBRocdHKqZTXYm6eU48Lo4wUFnb1g6kKEhRilP9pQZwg1nDOi16bMw3s9D0cEgfBtN1uYecramJZF34Jadh2KZiDqGh/Qaqy+fdzCsfFp947W/NCbK739EQE0RtkYdHpuh0a2Bg/JToA0EEO5u0cf8gkxS6INBD0+dKOjU8RaaJBXFFBdHr7po2luhCIb7IHg64ztN6PeLOGGy6f244RgiVgQP6W7XOtonT4s40jFUHdoy4/WJB/iBibfIlA3ULhSDrhHIfWrDm1HK4k6HzdBr837N79++15Xjbyxs2nQ30l4x0FX7HfPAndDiBB8GSSTfSt1+YXMWoMush74VfpxBxgW3i3Ggh7Qao3Ke9OyrjKOSUVGjigAhTQFdgk7DxORINH+un8nuVWgZQpOmgHZ5SdlRXiJk19QC3RDcl1E2piy0Prt9BjUuGkf0uIAMmfbNZmRjlZG+/DWY29HVGdmfOIgeywT2Cco4R5PQjoGoZWyJvSgSub4EFhj9/LsIXbUenzyD2U/0K2Lcw0j2cXsW79p5js/oOw4R53LjOOoP4KuRA6/D0IhsBgNEqwLLHj2txRTDLkJ+Tqf1RbYZTpcyrs9908NWC7JiP8cgYzt+bedxCcDHc36Osc4wZUF8AwHe27qq2q0Ujv5FVvum2YqPNHt8p1Qi/foGXe80whJHlzvm6t/RdA2wxn0RhCGUqt1yDiwqpZvOpvX57pM5ZJNq33v35UvcDcE4Q==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB2576.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(9576002)(44832011)(4001150100001)(45080400002)(86362001)(2906002)(4326008)(956004)(966005)(5660300002)(8676002)(186003)(38100700002)(33716001)(316002)(55016002)(26005)(6916009)(7406005)(6666004)(7416002)(53546011)(54906003)(66556008)(8936002)(66946007)(66476007)(508600001)(83380400001)(9686003)(6496006);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: LIRKbsnAwdr0wjFw6EfSlSbwVeKVHk6wCE9y0u4pGiLrDdC6aqLX6MRMPjWOigfXxLFhMPBc/YYMqAohFeZdJq04QfxvbvCNiCTF+izQGxD0KsI2RpKVK1//Cbr5Iv8CCp997B67aj34T5JsTWrak54KKCn0vmPqUzXRpdNBFiboefWdCkgELD0tzvjXOslPvSC8xqYK+D4HogmNjGKSt3pRyAQhwNrJ93KdXx1ipdbmEsmfAWzVaztO5paUmCuNqEagWrNPiu/m6zCU8F4VXUMpngQlM+MJrb6U2crSjEiGbFRQHeKe+TQrtO2UMW3QQoRVJhl5c/APmGoMEzGu5eRDIQZWXNoJbnWawjL1RJyX8AyjdyrD2Z1KRdEZMFMn6e5eu+FzXciyDwI9kJv1BaIX/ZxOZoDkg9KkZPlN7bg8SICs4g6Ju7jc+CA6j95GBcKeiaECQGui/E9BHp4gdvBC6hG6saB16blnPYLCz8gT0LYfKq7VMZjBcsemgeJeeRHwfUEJx+7ckF7kd7+IvivGhv1S9J6ANnnKHj6PWnsDcHY/GM3XUricuXUDd22DeJIKYcNOfET37hVih7aPQPJaZtfM2y4Y+L9JuJW/enRo+bBQWaXkbGUMJmJG0tJkM3jDA4IAIuV6E3vDnDCo30kY+0bKTF+L0/cDONhJ+xdoEuyBo9JxzbvlVUy86NCLfKgF12pR4kSuBpN63jYX5FfgY3ZdxLDANutkbuRdVELVxzS3FtAdCHJzZ01hnLlrwjcptrTFt32wkoBYIELuXzxcgRWWCLExPw/BMQ4IBYxXZK1ndqJV8mlxnMy385fo5IgyGy7lM6mdYKd8AWDUTbvlQHSIVu1SxR74IC847/JVkSfpscgfrILP/GSjmQBY
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(8936002)(38100700002)(6916009)(83380400001)(66946007)(66556008)(26005)(31696002)(86362001)(8676002)(186003)(31686004)(966005)(4001150100001)(4326008)(5660300002)(2616005)(66476007)(956004)(53546011)(7406005)(7416002)(2906002)(44832011)(45080400002)(16576012)(36756003)(316002)(54906003)(6486002)(508600001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?UqO4i3rTW349RvAYjy21zzaf7BGLq8iiClX0Z4kNeXHpDb64XjDjp+SzajuE?=
- =?us-ascii?Q?FfDFfp03g3yHVMu7kEutr+cQYZATym4zxo/nfXI8dRXf7yQ+NI2wkHgULAyL?=
- =?us-ascii?Q?pWqBZL3GmrBmpyyn3ByYyJIpq/wKNiS/W4R4LH3sPjqDuroZdg0fszOPbFRb?=
- =?us-ascii?Q?VrMJaR2H/7+a5kMKT2YsgMmAaZK0YqPh9XY9ykyOIO0I9EZEBc7etCN3iLkB?=
- =?us-ascii?Q?zDaA+Wa/DHnhNioicSwcrXQMs4bBoZC04Qy9diqPJVbujcfCUcG2FI742IwK?=
- =?us-ascii?Q?SI4Jag5FUOcdvM5xscd/a+ycIxBviCo+2q0wapLJQbnwKXa3q7/PBvXzEqmL?=
- =?us-ascii?Q?5ZtzucrRFy49BrX9qrxX4iPN0Pk4Lk7RCgGZpab6CLRtvZV1PpaPy4q6bszA?=
- =?us-ascii?Q?j2VI6JPlbMSU5BVyYR07kgcFgnd3NDN5v104J2CQpTnp9LbmxD9cB+Mk0dNm?=
- =?us-ascii?Q?1v/qaVgsoRQyGvl3959IkctkOd8ykbysdA0ZcN1PJDyxING8MCp9k2KCJAvQ?=
- =?us-ascii?Q?dcg/kJQdIa++SMKxgZ0iq1loQppfjNtis2S5ygKDc9JLSM4olVLAYHx5c9xw?=
- =?us-ascii?Q?BGxGXZV3VAy1c3vZrOi9MdsDD2SIkVhJ3XIElKHEJ0wekzQz2B8cjk7L2950?=
- =?us-ascii?Q?KJXt+1NlRMfh+uHMW1A2oZEAhqq4CaO7oXP+/jWVaYd8bv8Ly2W4lrKAxkPM?=
- =?us-ascii?Q?3vxI/XkV6GojFaqSj+7V6aADqIHSjMz/efn44/3xoP7cuUsmq2wsUSKEm1nH?=
- =?us-ascii?Q?aEJDMs64kqrJhJOaGL5gtRicO4SnY8dv8yVRRL+/7A1xJTFgkpiGQ3nNYUKA?=
- =?us-ascii?Q?alVjpIUdhonUQhMplul0WzuGwgDC/FY8ddzT1qqCFHREQZXnF2PTgyHZDN7N?=
- =?us-ascii?Q?6hp+sbhvClEvcH502O5tqFdxu2l+n71eTwUnmEnzCtjdfbLOPyA6rgKu+omu?=
- =?us-ascii?Q?PWkCgbAl/4aJujSEHusLM+aHVa4dwm7+jBbu50Y+svacIKHqOdWtiggBWfat?=
- =?us-ascii?Q?u/1aKmNBKtOg9ahaUEzCsiY/cEmDpoWfXZDJYhvJtHc23tKSKhtWqzjjN42M?=
- =?us-ascii?Q?9dopAcxRcW7Adq9mkEEEx8+6/HmcZVtk2IXBVaAfCFMC4yBCAFpwNqQysGc2?=
- =?us-ascii?Q?1jZ9gYtanl5kM1rtU0GCy78pW+JG8EpgrvpjBbFQoel+aqKq2YQJPWYWd+bq?=
- =?us-ascii?Q?fX+dWE47Ej6XhcPqHwJEsz0ZvnA68EYmz6wvrGvmp52gSjVytXRu1EJ8E2E3?=
- =?us-ascii?Q?25hvhYJ8+1SQ5fYMdBACcP7xjMme0AhDFRCCgB8DfpvJ3wZMgN8R8Wze1dMb?=
- =?us-ascii?Q?fyH+6wtqRfiH57Q4KZYDInFkIK3sMkJboBZsoMROYpF+Dtp5Xn9sE2feFA8B?=
- =?us-ascii?Q?H+JRpf8n8oCHASJstiIsUkmL56ads/DVNz9lvOPEJLUX9T2qWHXzQ/C5+HkT?=
- =?us-ascii?Q?gvYGzvFa7tHupaSfP6W9pjU6WSfOyW679UqiLblwu8cC1VvST0Doei/jpxl5?=
- =?us-ascii?Q?vbvMq9QYMuNm/j3bODNQ8GriXMrF5kU8UAT8CpN1FiQTYPQQgFQC57ZE5P5X?=
- =?us-ascii?Q?e0B0yb2rkL+AlYswczX8tUR49CwU1QMgiZCzj444GL22nn1oahoYBCxyxcv0?=
- =?us-ascii?Q?aRoFvWV5aqa6VQHkQlw7KkkFvQ1Rf0Q1ZzakCynB5a5eADVZIBLrjlP8WMUU?=
- =?us-ascii?Q?bcvbiQ=3D=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e71a3f5f-3919-46f9-8f18-08d9a8563443
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB2576.namprd10.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RVErUkxCRXV0RURGMHRxYW9mbGJFVnNIZ3J5YU5RTXc0dHltckU1K1I1YTN5?=
+ =?utf-8?B?UVVKclZJT01nUGdMVE5ITVl2QXV5a0ZPelVsZFBlMC9DWitXZ0JHYXpUSGdJ?=
+ =?utf-8?B?d3ptcXlmWWRvMzdCL0w0NDUvYlVjZEl0MlBNa3BTK3ZFVVI1dXZuMVA3bmlU?=
+ =?utf-8?B?OHlQTENUdmxzRVlDRmZjY1BzdCs5dmdEbXNTWFRudW5WUHNHZUV3QjNnN2xu?=
+ =?utf-8?B?NFAxcit5TE9MSURnT25iYmMwWGI1QmpMWFpORTBtQUZodXdnN2pBQUFYVmhv?=
+ =?utf-8?B?ci84T0VjTmVCM1VPTElRU0VtU1BRc3FIM3dITmJ3SU42MEV6M2NDanZPTGNv?=
+ =?utf-8?B?ZWtXWXNPczM1THI2ZW1KRHdxcXBHL2Z2eE9OTllKZ3dqei9WRGxYREtPNnYw?=
+ =?utf-8?B?dTdiRDNzclUreEpwbEpBNDhONk55dzNMUjBOdjFxdU5WdjNHZTF3Q1c2clFR?=
+ =?utf-8?B?azJpelVMcG1RYXRGWW9GQzBabUlEL2lCM2R1WEZEQ2dXbUN4NzRtOGkvVmVh?=
+ =?utf-8?B?cmt5eEttTXlLS2IyNEpKS25Tclp5Tml5SFNiUGdFSXJvZkMveWlLTEJzOHdR?=
+ =?utf-8?B?WmUzZ1FXMTUwUFp6VzFvUDdXMDhHYlBMdERFQVh2M2locGR4eEp1RTZ3N1Qz?=
+ =?utf-8?B?R1JxVUJNU29GYUpRZGdBRnBiMUlDWFo2OVVXbHlrL2JZNjFLZ0gxQnZWMjFM?=
+ =?utf-8?B?OVo2TU1EelZiTmdES1YwemM5VnAwbTJCaVE3RTAyM3c5Z3YwWThFT1NUdDZP?=
+ =?utf-8?B?Y0RBdzBpeHFpY3FqbUczbVA3Ump3aldOLzZSMksyMVJ0eGhRclNib0w5ZDFI?=
+ =?utf-8?B?TnpkUVREU0NQYWRXMDBXNmNwZWlQYzJ5by9vKzl0UDdMenY1ZDFjTDVLUHlw?=
+ =?utf-8?B?ZGEzL25XK1JieVY1S2ZFNVVQRkUvWGZJcWphM2RKT292OXVTVkNtczFKRFNH?=
+ =?utf-8?B?ZVl1d2lscjJCUWh6V3hHdjV5TStwMjIyU21ieFRxV2U1MXB6SE9zVkhGUVNq?=
+ =?utf-8?B?V3NwM1pkUWEwNjFDMnBkL2Z1V09YWFl2eVc5WHd5blhXMzZmNG52YVRuK0tP?=
+ =?utf-8?B?SG1yV2o4b0dVeWs5UDd2ZmNINXM4UnlvT0ZCNTVadllUc3Z0RTBoY3pXWHBx?=
+ =?utf-8?B?aG5KYzFUaml3R1NQZzZkQXlLRndyLzl4R3pndlNEWm9ib0lIMnNlb1crYlgw?=
+ =?utf-8?B?b0NGQnU1Q0R0ZE8xZ0tNb2VwalVFRWZFT3VKZy9UeXZlZVJUY1lWYUp2ck5U?=
+ =?utf-8?B?WWdFM2wrUzJydmlVeWVFcmNGQUNJNlBJbFdTQ2haaENTNXB4enkyanpiM0N0?=
+ =?utf-8?B?MjZGYTJka1Z4NkZKQ1h2aXIwMDR5L2RiWm80Z2ltVitwQWZDRkVaMThwc2xx?=
+ =?utf-8?B?dFVMNVk0bDJkb0NqSE5yVjg4UnVTWHlhRlA4dXlBNmtYU0hoMjgzbEFzY0NL?=
+ =?utf-8?B?U04rZGZYS1ZEbVBtNWZLKzFFNnU2SXdZQ0hEeEVhK0lReDNINXJQN0IrR3Bn?=
+ =?utf-8?B?dWRybjlHdXUvYTZKL1FnSlQ3QzkvSzFwQ01STjAzb0thTWxUMGx0RjBJekRm?=
+ =?utf-8?B?T2NLRllQTGFVTEJVTjhlOVlUZFdhVTVpWlJTc0RnWmc2OC9xS0JmSFBhSmVP?=
+ =?utf-8?B?SVlhY2hWS1U1TWUzTzFCM2RPTXdQRFlQTlpES3NWa2dCSWsxbCtpVkxvcno5?=
+ =?utf-8?B?eU1YZFdsajFoRTBxVWZtR2E1R3hrL3daSXBzb2c3bE9mbDVOa2RPMFlsMk8r?=
+ =?utf-8?B?UHVjYkVNRUxFY1czNTRKWTRaazkxeFdzUDk2SE0rdlNsOTM0cEROTkVZQ2ly?=
+ =?utf-8?B?NzdVUnU1cFFHalFTUTB2SEtuUE1oN3ZvWWZHZ0ZuNjVzSDF6YjJLVVlKYlhK?=
+ =?utf-8?B?SnBLUkxhQWpTV2w5K0tUclk5TlpxZE00RHBLcGFsb1M3ZEp1OTFBU2t1MEl5?=
+ =?utf-8?B?SjdwTC8zZFNPS2RPMUVobS9lSEJKM0JJK0JFWEZlOFZ2eGdRemdqQW9WZ2Fu?=
+ =?utf-8?B?RzltMHdXU1djdjJMdXVyc2M1dXRkWGpldTgzak5ZSVlobG1TY1RnZWc5bVA1?=
+ =?utf-8?B?TDlEc2hwTlNhUnNDMDdsbzhOWFFZTkcvb3RmaURWK1Q1Sy9xMTRmdU1xUjJi?=
+ =?utf-8?B?RTdhb0ljR1MwREtXeU5BZTlOTG5lWUR4SkRYcHIvaGlDZTdMY1lodVJ1MzVk?=
+ =?utf-8?Q?1PckDvI+GH7mD6IaW7leWk8=3D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 14001cfc-76b8-4698-ec57-08d9a85763fa
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2021 16:37:24.8911
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2021 16:45:54.4684
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VeLgenzqyPf1iGlDdSmh0uNB3eH+awmhVVFhQ+HmN0Jg1zyD0q0oOUjNZ8sdK1oXjrr/CYCxPukdgjkq5IrEbkohVpbIzxV82WfcVkIqByw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4601
-X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10169 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 spamscore=0
- adultscore=0 malwarescore=0 mlxlogscore=999 suspectscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
- definitions=main-2111150086
-X-Proofpoint-GUID: 4Y4Ca8cniD6Nn4x5e_uqwSvePXnIA0nG
-X-Proofpoint-ORIG-GUID: 4Y4Ca8cniD6Nn4x5e_uqwSvePXnIA0nG
+X-MS-Exchange-CrossTenant-UserPrincipalName: iQ1izpKQ6dMSppgNsVK+DbSop6fSHOWeu2CmhLHi0oDJLbO0EgJ7Y3sHQ8My/cXkYzFIfGq2H4lPSXiTs3AEjg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR12MB2446
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2021-11-15 10:02:24 -0600, Brijesh Singh wrote:
-> 
-> 
-> On 11/15/21 9:56 AM, Venu Busireddy wrote:
-> ...
-> 
-> > > The series is based on tip/master
-> > >    ea79c24a30aa (origin/master, origin/HEAD, master) Merge branch 'timers/urgent'
-> > 
-> > I am looking at
-> > https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftorvalds%2Flinux.git&amp;data=04%7C01%7Cbrijesh.singh%40amd.com%7Cb83627413bf24921b15e08d9a8508a4a%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637725887206373140%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C2000&amp;sdata=pZvyYsg1crWmsLTpGO4amfYxgUnI9TUy414burkbcdY%3D&amp;reserved=0,
-> > and I cannot find the commit ea79c24a30aa there. Am I looking at the
-> > wrong tree?
-> > 
-> 
-> Yes.
-> 
-> You should use the tip [1] tree .
-> 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/
 
-Same problem with tip.git too.
 
-bash-4.2$ git remote -v
-origin  https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git (fetch)
-origin  https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git (push)
-bash-4.2$ git branch
-* master
-bash-4.2$ git log --oneline | grep ea79c24a30aa
-bash-4.2$
+On 11/15/21 10:37 AM, Venu Busireddy wrote:
+> On 2021-11-15 10:02:24 -0600, Brijesh Singh wrote:
+>>
+>>
+>> On 11/15/21 9:56 AM, Venu Busireddy wrote:
+>> ...
+>>
+>>>> The series is based on tip/master
+>>>>     ea79c24a30aa (origin/master, origin/HEAD, master) Merge branch 'timers/urgent'
+>>>
+>>> I am looking at
+>>> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftorvalds%2Flinux.git&amp;data=04%7C01%7Cbrijesh.singh%40amd.com%7C566cca1a4ceb44dac52f08d9a85639fd%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637725911063489322%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=CT%2BZ6Nm6pnvVGY%2B%2FmzK4gG1zxlMNQ1fn7ie6K%2FYueTQ%3D&amp;reserved=0,
+>>> and I cannot find the commit ea79c24a30aa there. Am I looking at the
+>>> wrong tree?
+>>>
+>>
+>> Yes.
+>>
+>> You should use the tip [1] tree .
+>>
+>> [1] https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftip%2Ftip.git%2F&amp;data=04%7C01%7Cbrijesh.singh%40amd.com%7C566cca1a4ceb44dac52f08d9a85639fd%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637725911063499319%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=XnWIcW62nTrAcDLCkHFpOPv5%2BClg11wfyh0pJ9Dug2c%3D&amp;reserved=0
+> 
+> Same problem with tip.git too.
+> 
+> bash-4.2$ git remote -v
+> origin  https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftip%2Ftip.git&amp;data=04%7C01%7Cbrijesh.singh%40amd.com%7C566cca1a4ceb44dac52f08d9a85639fd%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637725911063499319%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=W%2BA8qZwPicXo7OSslFPqL8s8QRxzW9n68TX1B7MXFYQ%3D&amp;reserved=0 (fetch)
+> origin  https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftip%2Ftip.git&amp;data=04%7C01%7Cbrijesh.singh%40amd.com%7C566cca1a4ceb44dac52f08d9a85639fd%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637725911063499319%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=W%2BA8qZwPicXo7OSslFPqL8s8QRxzW9n68TX1B7MXFYQ%3D&amp;reserved=0 (push)
+> bash-4.2$ git branch
+> * master
+> bash-4.2$ git log --oneline | grep ea79c24a30aa
+> bash-4.2$
+> 
+> Still missing something?
+> 
 
-Still missing something?
+I can see the base commit on my local clone and also on web interface
 
-Venu
+https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/commit/?id=ea79c24a30aa27ccc4aac26be33f8b73f3f1f59c
 
+thanks
