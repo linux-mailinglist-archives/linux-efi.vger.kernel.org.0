@@ -2,53 +2,54 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 690254530B6
-	for <lists+linux-efi@lfdr.de>; Tue, 16 Nov 2021 12:32:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 864424530DF
+	for <lists+linux-efi@lfdr.de>; Tue, 16 Nov 2021 12:36:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235330AbhKPLc4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 16 Nov 2021 06:32:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54966 "EHLO
+        id S235403AbhKPLhp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 16 Nov 2021 06:37:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233065AbhKPLcb (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 16 Nov 2021 06:32:31 -0500
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2396C061570;
-        Tue, 16 Nov 2021 03:29:33 -0800 (PST)
-Received: by mail-ed1-x530.google.com with SMTP id g14so22612013edb.8;
-        Tue, 16 Nov 2021 03:29:33 -0800 (PST)
+        with ESMTP id S235578AbhKPLfs (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 16 Nov 2021 06:35:48 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CC96C06121D;
+        Tue, 16 Nov 2021 03:31:48 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id w1so20213977edc.6;
+        Tue, 16 Nov 2021 03:31:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=tmE5I+KwN9wX/3DI+6oAR1as1MTfdlvqvq7gy6oaBLw=;
-        b=SMlhMM1pNbxAB1nu2cCyGH/LuM8ogF4FG0KvbeYoYZtw9HP3tp4vTmdss7+cN3o8zf
-         WMHzFTd8k4E0aXJf6qaXoZa4qNQn2LCHzLkx2VkEyn5O6mGc8xwK9HNjvdcgGBZIkvIY
-         i9ll/nEFIKMzg/MZQWv/hs6d6zplgo6eAIpr1H/PhIUmmuSPYRslGW7GWVQu7y43H9UO
-         DhLuPQWIGgWLilpdysSUIQ9qu88mOdsU/qE+D935KScIy0yHJk5mGOnp0dj4s+D+Mgy7
-         Wxpx0y0zINoZ0Vhgl3Q/0U+fbzgs9lk7ilIucLXEJ9+EqVye+m6JWWuEjldIWXIWrYol
-         ElPw==
+        bh=Gm0iaiusdciMrx8928GSRwf0HXjOL1IswPuzIDzix+o=;
+        b=THxRtB5bhZqhV9920ZnZeRAQUoWjdx1qnBW8txpKshjpwevq4Ax/wKdI2YmGkd26Qw
+         dkk6/4XQvUMoWLW3wgFO+yfVmbBBxT2o9p76/W+uF0T90tSRmkeEGf1WXrbdt8F64Gju
+         flITnryzQ+6SFgHfICuXaD43d6Q+rTmYGSTKuqnvyc/VJULeaUifCE408d0P7BWdsKqH
+         quow204qEQQ/QGK1e5grkUyW9DP5p3ygCl2TdlosZj/nv34s1TF6J7bXuiEoMx3CZKNk
+         /JUb8LPy6R43HMWV5mQma5/6MixmSuhk1yAKrq+jZqGKD0p433THtj5z/nDXjMH9Og3c
+         UIjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=tmE5I+KwN9wX/3DI+6oAR1as1MTfdlvqvq7gy6oaBLw=;
-        b=NP+a1gAqn+DaxI1E+G5EyTL4g0gV6PKEFNFRed3b1T0C1psRFjXz2vBW8Hc5gySZpk
-         KbVoxVBqzLrM6kInH1tN/SYKqeQwURD7nCVknaCKAhWbGb0DLcEia8Jvsxo2MqSfxo0t
-         gq9iubKmVTpQwzAZ5VN0kdVqlqwU8/PGI+eilUjdpWGGarNEYu01pqOxPl4Ju1BXUFjB
-         ltqBSF0ZqZPLfW+tYR53A4R6y+fZl4r+TzywkgQv1aAiJLR1rrSGQFLvYAlhBhsuBocL
-         4eh3/3aza8Pt526HGkrzsCW0apfJB9ay9N5SgCegGXUZa20AvNfeGJV5qZ1AhbcJK/Cz
-         anLg==
-X-Gm-Message-State: AOAM531g5UDGOJztu2r3q30+9xmy0K81qxia5Sf1ltM1XFlmb5bjcWlz
-        AadADppbzD+gAY3gXlVi1gCT5DGk0YTR7xiT9/vWyyzE7IH6yA==
-X-Google-Smtp-Source: ABdhPJxAn5qrLYWqOD8UPTRedV2AQCbwEPm4K81wyq0r1N3LJLLy2Xx52b3zNNu3oO4Xmo0O2+MJa3+vAOZJ2uKpYZM=
-X-Received: by 2002:a50:fd16:: with SMTP id i22mr9250032eds.224.1637062172295;
- Tue, 16 Nov 2021 03:29:32 -0800 (PST)
+        bh=Gm0iaiusdciMrx8928GSRwf0HXjOL1IswPuzIDzix+o=;
+        b=HRGAvpUKjxgW6P6zXrBRnePO1EJ2WirQovAt/GHCdYdsiqKoLt/LelWthGELAaP/fn
+         5TISOxHVEiN68ZYUDhczE7ihQfiQXANmNd7do38Y0YNeQo9CdV+d6Q1Fq42IpDGrYnkl
+         HF88cy7HQ2WF9CbmGtnpiwwDGcJokyhWo1rRuH+TiyTEsT/zHAyZVh0vDzE5c4JRT2yh
+         L0S8yccDEaH4eIO5hZbjHggEHiBoxsnUEb1egqq6lsY0+DKMnDgh+35PnUgnQ17sDKxx
+         kkDmG2N5uCwhU0p/sICUyQWbDzhQgGNOqvUqOZMCsUGgZGSG1opsxcbsjwYT3uOrZWit
+         iq2w==
+X-Gm-Message-State: AOAM533LrfOxZyL7xVhTSSrD+PHzGUGbsbEkCutiDxAhPuOiXkXntjfB
+        btkdUh5R0gqbvv9J2BGlV9BzbDMxhqkSo8WSv+g=
+X-Google-Smtp-Source: ABdhPJzQfh6CnE+Adt6rJoKUiS8IbAoxCjDjjVO60IzlqtV3MQ7qPZyGGziK9o6lTdlwriGZeqCUvxgSVdNIo4hymlI=
+X-Received: by 2002:a17:907:9196:: with SMTP id bp22mr8705569ejb.69.1637062306909;
+ Tue, 16 Nov 2021 03:31:46 -0800 (PST)
 MIME-Version: 1.0
 References: <20211114170335.66994-1-hdegoede@redhat.com> <20211114170335.66994-18-hdegoede@redhat.com>
-In-Reply-To: <20211114170335.66994-18-hdegoede@redhat.com>
+ <CAHp75VdXSdhNtPwNdpssnmt+sZb+ZoAUm-cKJu-PqymmHMOpRw@mail.gmail.com>
+In-Reply-To: <CAHp75VdXSdhNtPwNdpssnmt+sZb+ZoAUm-cKJu-PqymmHMOpRw@mail.gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 16 Nov 2021 13:28:51 +0200
-Message-ID: <CAHp75VdXSdhNtPwNdpssnmt+sZb+ZoAUm-cKJu-PqymmHMOpRw@mail.gmail.com>
+Date:   Tue, 16 Nov 2021 13:31:05 +0200
+Message-ID: <CAHp75VfSwf0SKDHDOG7WO9xY5Q52o1Zw2GPkxi7UnrLhMtiobA@mail.gmail.com>
 Subject: Re: [PATCH v2 17/20] extcon: intel-cht-wc: Support devs with Micro-B
  / USB-2 only Type-C connectors
 To:     Hans de Goede <hdegoede@redhat.com>
@@ -74,79 +75,42 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sun, Nov 14, 2021 at 7:04 PM Hans de Goede <hdegoede@redhat.com> wrote:
+On Tue, Nov 16, 2021 at 1:28 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+> On Sun, Nov 14, 2021 at 7:04 PM Hans de Goede <hdegoede@redhat.com> wrote:
+
+...
+
+> > +       ext->vbus_boost = devm_regulator_get_optional(ext->dev, "vbus");
+> > +       if (IS_ERR(ext->vbus_boost)) {
+> > +               ret = PTR_ERR(ext->vbus_boost);
+> > +               if (ret == -ENODEV)
+> > +                       ret = -EPROBE_DEFER;
+> > +
+> > +               return dev_err_probe(ext->dev, ret, "getting vbus regulator");
 >
-> So far the extcon-intel-cht-wc code has only been tested on devices with
-> a Type-C connector with USB-PD, USB3 (superspeed) and DP-altmode support
-> through a FUSB302 Type-C controller.
+> Can be also written as
 >
-> Some devices with the intel-cht-wc PMIC however come with an USB-micro-B
-> connector, or an USB-2 only Type-C connector without USB-PD.
+>     if (PTR_ERR(ext->vbus_boost) == -ENODEV ||
+> PTR_ERR(ext->vbus_boost) == -EPROBE_DEFER)
+>         return dev_err_probe(ext->dev, -EPROBE_DEFER, "getting vbus regulator");
 >
-> Which device-model we are running on can be identified with the new
-> intel_cht_wc_get_model() helper and on models without a Type-C controller
-> the extcon code must control the Vbus 5V boost converter and the USB role
-> switch depending on the detected cable-type.
+>     return PTR_ERR(ext->vbus_boost);
 
-...
+Oops, other way around, of course.
 
->  config EXTCON_INTEL_CHT_WC
->         tristate "Intel Cherrytrail Whiskey Cove PMIC extcon driver"
-> -       depends on INTEL_SOC_PMIC_CHTWC
+  if (PTR_ERR(ext->vbus_boost) == -ENODEV ||
+      PTR_ERR(ext->vbus_boost) == -EPROBE_DEFER)
+        return -EPROBE_DEFER;
 
-> +       depends on INTEL_SOC_PMIC_CHTWC && USB_SUPPORT
+  return dev_err_probe(ext->dev, PTR_ERR(ext->vbus_boost), "getting
+vbus regulator");
 
-Having these two in one expression sounds a bit alogical to me, can
-you just add a separate "depends on"?
+> but up to you.
+>
+> > +       }
 
-> +       select USB_ROLE_SWITCH
 
-...
-
-> +       if (ext->vbus_boost && ext->vbus_boost_enabled != enable) {
-> +               if (enable)
-> +                       ret = regulator_enable(ext->vbus_boost);
-> +               else
-> +                       ret = regulator_disable(ext->vbus_boost);
-
-Redundant blank line here (but it's up to you)
-
-> +               if (ret == 0)
-> +                       ext->vbus_boost_enabled = enable;
-> +               else
-> +                       dev_err(ext->dev, "Error updating Vbus boost regulator: %d\n", ret);
-
-Why not a traditional pattern, i.e. error handling first?
-
-> +       }
-
-...
-
-> +/* Some boards require controlling the role-sw and vbus based on the id-pin */
-
-Vbus ? VBUS? Here and there the inconsistency of some terms...
-
-...
-
-> +       ext->vbus_boost = devm_regulator_get_optional(ext->dev, "vbus");
-> +       if (IS_ERR(ext->vbus_boost)) {
-> +               ret = PTR_ERR(ext->vbus_boost);
-> +               if (ret == -ENODEV)
-> +                       ret = -EPROBE_DEFER;
-> +
-> +               return dev_err_probe(ext->dev, ret, "getting vbus regulator");
-
-Can be also written as
-
-    if (PTR_ERR(ext->vbus_boost) == -ENODEV ||
-PTR_ERR(ext->vbus_boost) == -EPROBE_DEFER)
-        return dev_err_probe(ext->dev, -EPROBE_DEFER, "getting vbus regulator");
-
-    return PTR_ERR(ext->vbus_boost);
-
-but up to you.
-
-> +       }
 
 -- 
 With Best Regards,
