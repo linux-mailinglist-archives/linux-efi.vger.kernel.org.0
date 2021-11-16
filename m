@@ -2,56 +2,64 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C0DB452FC2
-	for <lists+linux-efi@lfdr.de>; Tue, 16 Nov 2021 12:04:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E1233452FD0
+	for <lists+linux-efi@lfdr.de>; Tue, 16 Nov 2021 12:05:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234630AbhKPLG5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 16 Nov 2021 06:06:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48916 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234717AbhKPLGF (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 16 Nov 2021 06:06:05 -0500
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C1E7C061206;
-        Tue, 16 Nov 2021 03:03:08 -0800 (PST)
-Received: by mail-ed1-x536.google.com with SMTP id w1so19857375edc.6;
-        Tue, 16 Nov 2021 03:03:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=9VCk/+4OtpvNSsUc9AvuSmwBzqHKr0DmtUweG20smPg=;
-        b=cRYdNzxSi+MOy01qo+dZP5foqGG0t0hYZMA5lEar9x2lWw2ijEWgp4H42Ybv6WXCke
-         4/bXU1QqxZCtIVTEo3to+OGgeJlvAhm5EuzEk0R0tFJjnd6QZM8KlV+dUke3mLRtCiXZ
-         uCtvKOY7Yut8tqudEPVj1vvNVQMeBUkhBjtLtaJl9akY6lzRGC/L+N8HO55vpe3n/JFp
-         fj5a66lPevFnIGDihiAzzJuRn8DmeZ9zJDgRrnqu6ErAsn+ybnT8q0Ah0qD+8Lan80yS
-         ku3/UmLoguWcoNTFE0JhejqbFnb+akeCuN/u74NBXCjX6g2zmxr0S/unzUxNfXxQ03kD
-         6g1Q==
+        id S234594AbhKPLIx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 16 Nov 2021 06:08:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:39250 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234662AbhKPLIE (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 16 Nov 2021 06:08:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1637060706;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=wbmIBzriyMiidR902JIsFIskMTSm37Jsy4HrcpI1HxQ=;
+        b=MTtNDb0Y5Vr++FyvqS3QlHWbaCi64VovjxfIdvo6JaVbkqJZxHOpaWhu1OTgI3pxbyVC8R
+        nnWKS36b7CotW+eOxVAEZgGAz6Axg7r19NQkNWCWgeYyxOEcLfZZVgWbqSqtJE3LAjW2c7
+        BINPCcgCGk21rp9KhA10vjy1Rcu3tiM=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-452-D3bxLnzjNAaXtRO5vke5rg-1; Tue, 16 Nov 2021 06:05:05 -0500
+X-MC-Unique: D3bxLnzjNAaXtRO5vke5rg-1
+Received: by mail-ed1-f70.google.com with SMTP id w4-20020aa7cb44000000b003e7c0f7cfffso5093379edt.2
+        for <linux-efi@vger.kernel.org>; Tue, 16 Nov 2021 03:05:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9VCk/+4OtpvNSsUc9AvuSmwBzqHKr0DmtUweG20smPg=;
-        b=UxaALSaT1LTTnBb7jPNMGD8y/SzPsqshtebX1WIuA8S7tHKA3HR0RPdOorvvgSqebA
-         jb2up7C4qzF9nUslo+2eIFHN/q99W4+gDkzNuJEK3cOYHV0Ifol35CfPxqnTOwlgvvX5
-         Xp2KkBdsIG09FMh96uK4D0a+VxxicsAynsfrLVzm6sLJ4z/n1fSvmGT8riJInI/WCH5n
-         GfCoRgSnrecnGu8lNR3GzOf/jOp+Gljn7YFkq28LtjesuzV0CTZIHxFPoGwCFdbFp9X6
-         3U+Fv0nyVEVZzwvHq1jSMQXpmQ3VQH6w+00ypcznp8trbPvaiZOPwEak6MACsHjaQFmZ
-         X1kg==
-X-Gm-Message-State: AOAM533NM4vPYBnIQtadUdS2Sisf3/5zckli2uaCiAlqYo/yyf8zOwyz
-        WDcrb0D7SZlXd7pSYrULE+kAB6qUzxCeqDB9UfY=
-X-Google-Smtp-Source: ABdhPJwwrplxw2jkBo4qJkPJ5+an40e8hFrzE3p7FIj0dM3gdIpgJvOHdFWjsUPGoR7utqRD3kEiy6MPt+zwu74DiV4=
-X-Received: by 2002:a17:906:ecac:: with SMTP id qh12mr8534661ejb.377.1637060586730;
- Tue, 16 Nov 2021 03:03:06 -0800 (PST)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=wbmIBzriyMiidR902JIsFIskMTSm37Jsy4HrcpI1HxQ=;
+        b=vMphgSYGO7WFG1QDxfkmVfX+SyBhnTUnomRf/tOGPh438f5nABbFj/pjTYI0bxcZ85
+         BNsxL3h010+DJ9xE85HNoRgroZQ8PqI9tOsSIJdUmxKOVKMX/dsYdkPXef/sKsPC+FaT
+         BKHKW7Bz7j/YukXhX+wSTLsXavK/STl0Ik6CFg/Fu4WAPVyc+7dyzmItyQu9yOOkohhi
+         2T/8UUO7DuR7btH4mhsY8AD4UrS+VGeUljMsSZROEf/b1WI8fCUupjO1Tla/x4GY40Nn
+         2jZ9gC9Ka+A+yRHjgQaGOHdkUgMTDTis/XFVbQB/iBsDIZCmfXAPkveTwZuQRADw4RFo
+         h0vA==
+X-Gm-Message-State: AOAM533vSJn7kMgJVJmtlaSq2q3l6UyqWFJ71HCU6DtnTuFYqBs6zmKa
+        idzV/vjT7fsBFeLC6L7Q7BUzMcly7gCNDDmXZPpqFzSxgReZHgqgyxLOgJP29cKmIr+VPzmi1Ds
+        MPk3hEZQTw/Nl/gqUUP6V
+X-Received: by 2002:a17:907:160b:: with SMTP id hb11mr9113618ejc.336.1637060704466;
+        Tue, 16 Nov 2021 03:05:04 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzzV6WFQipfuLRwIm3t2+exoHw4xftYYeP1WniIIsmjPL9BrCl5c8f4Sd8heJ8XXEUWJ6Yizg==
+X-Received: by 2002:a17:907:160b:: with SMTP id hb11mr9113572ejc.336.1637060704229;
+        Tue, 16 Nov 2021 03:05:04 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1054:9d19:e0f0:8214? (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id m22sm6649409eda.97.2021.11.16.03.05.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 16 Nov 2021 03:05:03 -0800 (PST)
+Message-ID: <684c11bc-3703-1de9-3073-96701405cd2c@redhat.com>
+Date:   Tue, 16 Nov 2021 12:05:02 +0100
 MIME-Version: 1.0
-References: <20211114170335.66994-1-hdegoede@redhat.com> <20211114170335.66994-10-hdegoede@redhat.com>
-In-Reply-To: <20211114170335.66994-10-hdegoede@redhat.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 16 Nov 2021 13:02:25 +0200
-Message-ID: <CAHp75VdoJ3ZT1EhNGM0wDmWrYJu5ndEwRt4mLZVKeP47xwgXWg@mail.gmail.com>
-Subject: Re: [PATCH v2 09/20] power: supply: bq25890: Drop dev->platform_data
- == NULL check
-To:     Hans de Goede <hdegoede@redhat.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2 00/20] power-suppy/i2c/extcon: Fix charger setup on
+ Xiaomi Mi Pad 2 and Lenovo Yogabook
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         Mark Gross <markgross@kernel.org>,
@@ -69,65 +77,72 @@ Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Linux PM <linux-pm@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <20211114170335.66994-1-hdegoede@redhat.com>
+ <CAHp75Vf+0yw8Nb4Lxbf9ukYWw9xPnpy2C0OyaXJ+o5xsamP4qA@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CAHp75Vf+0yw8Nb4Lxbf9ukYWw9xPnpy2C0OyaXJ+o5xsamP4qA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sun, Nov 14, 2021 at 7:04 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Drop the "if (!dev->platform_data)" check, this seems to be an attempt
-> for allowing loading the driver on devices without devicetree stemming
-> from the initial commit of the driver (with the presumed intention being
-> the "return -ENODEV" else branch getting replaced with something else).
->
-> With the new "linux,skip-init" and "linux,read-back-settings" properties
-> the driver can actually supports devices without devicetree and this
-> check no longer makes sense.
->
-> While at it also switch to dev_err_probe(), which is already used in
+Hi,
 
-"While at it, also ..."
+On 11/16/21 12:00, Andy Shevchenko wrote:
+> On Sun, Nov 14, 2021 at 7:03 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>>
+>> Hi All,
+>>
+>> This is version 2 of my series previously titled:
+>> "[PATCH 00/13] power-suppy/i2c/extcon: Add support for cht-wc PMIC
+>> without USB-PD support".
+>>
+>> So far almost all the kernel code surrounding the Cherry Trail Whiskey Cove
+>> PMIC has been developed on the GPD win / pocket devices and it has various
+>> assumption based on that. In the mean time I've learned (and gotten access
+>> to) about 2 more designs and none of the 3 now known designs use a single
+>> standard setup for the charger, fuel-gauge and other chips surrounding the
+>> PMIC / charging+data USB port:
+>>
+>> 1. The GPD Win and GPD Pocket mini-laptops, these are really 2 models
+>> but the Pocket re-uses the GPD Win's design in a different housing:
+>>
+>> The WC PMIC is connected to a TI BQ24292i charger, paired with
+>> a Maxim MAX17047 fuelgauge + a FUSB302 USB Type-C Controller +
+>> a PI3USB30532 USB switch, for a fully functional Type-C port.
+>>
+>> 2. The Xiaomi Mi Pad 2:
+>>
+>> The WC PMIC is connected to a TI BQ25890 charger, paired with
+>> a TI BQ27520 fuelgauge, using the TI BQ25890 for BC1.2 charger type
+>> detection, for a USB-2 only Type-C port without PD.
+>>
+>> 3. The Lenovo Yoga Book YB1-X90 / Lenovo Yoga Book YB1-X91 series:
+>>
+>> The WC PMIC is connected to a TI BQ25892 charger, paired with
+>> a TI BQ27542 fuelgauge, using the WC PMIC for BC1.2 charger type
+>> detection and using the BQ25892's Mediatek Pump Express+ (1.0)
+>>
+>> ###
+>>
+>> Unlike what is normal on X86 this diversity in designs is not handled /
+>> abstracted away by the ACPI tables.
+> 
+> I will briefly look into it, right now two observations (or nit-picks):
 
-> various other places in the driver.
+Thank you.
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> - you may utilize Co-developed-by tag when it makes sense
 
->
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  drivers/power/supply/bq25890_charger.c | 13 +++----------
->  1 file changed, 3 insertions(+), 10 deletions(-)
->
-> diff --git a/drivers/power/supply/bq25890_charger.c b/drivers/power/supply/bq25890_charger.c
-> index a69a2173e31a..2bdfb58cda75 100644
-> --- a/drivers/power/supply/bq25890_charger.c
-> +++ b/drivers/power/supply/bq25890_charger.c
-> @@ -1017,16 +1017,9 @@ static int bq25890_probe(struct i2c_client *client,
->                 return ret;
->         }
->
-> -       if (!dev->platform_data) {
-> -               ret = bq25890_fw_probe(bq);
-> -               if (ret < 0) {
-> -                       dev_err(dev, "Cannot read device properties: %d\n",
-> -                               ret);
-> -                       return ret;
-> -               }
-> -       } else {
-> -               return -ENODEV;
-> -       }
-> +       ret = bq25890_fw_probe(bq);
-> +       if (ret < 0)
-> +               return dev_err_probe(dev, ret, "reading device properties\n");
->
->         ret = bq25890_hw_init(bq);
->         if (ret < 0) {
-> --
-> 2.31.1
->
+Right, I intended to do so in patch 13/20, but I now see that I
+somehow forgot that :)
 
+> - I would rather see "x86/ACPI" in all texts (note small "x")
 
--- 
-With Best Regards,
-Andy Shevchenko
+Ack.
+
+Regards,
+
+Hans
+
