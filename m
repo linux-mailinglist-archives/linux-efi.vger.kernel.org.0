@@ -2,96 +2,103 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71A604546F4
-	for <lists+linux-efi@lfdr.de>; Wed, 17 Nov 2021 14:11:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D5C545470B
+	for <lists+linux-efi@lfdr.de>; Wed, 17 Nov 2021 14:19:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231922AbhKQNO3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 17 Nov 2021 08:14:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38562 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230174AbhKQNO2 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 17 Nov 2021 08:14:28 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E627C061570;
-        Wed, 17 Nov 2021 05:11:30 -0800 (PST)
-Received: from zn.tnic (p200300ec2f13a300a559e3e7ac095ca4.dip0.t-ipconnect.de [IPv6:2003:ec:2f13:a300:a559:e3e7:ac09:5ca4])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8086E1EC051E;
-        Wed, 17 Nov 2021 14:11:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1637154688;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=ALEk0hpWexx1uJP+VlOkANLAH949xQs8c0lPv5drCRk=;
-        b=eE5HYa8PJYy2qraGlEjSQ3OwljdXLGSLLo/wYzi+AKx+gDrhTQil/J35E0iAq2850IYc/p
-        z7Ihif2mEgnblXMZbsWL5Q5Ql9Ab1Ep9l7ZHeWAVVQyVdMdZ9qdO4jqhu5RvNGtF5evPaS
-        8h9ClG6c2q0yv1sMhabGOXo+3zZN0AU=
-Date:   Wed, 17 Nov 2021 14:11:20 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Michael Roth <michael.roth@amd.com>
-Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v7 02/45] x86/sev: detect/setup SEV/SME features earlier
- in boot
-Message-ID: <YZT/eBLQnQOVejzp@zn.tnic>
-References: <20211110220731.2396491-1-brijesh.singh@amd.com>
- <20211110220731.2396491-3-brijesh.singh@amd.com>
- <YZKxCdhaFTTlSHAJ@zn.tnic>
- <20211115201715.gv24iugujwhxmrdp@amd.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20211115201715.gv24iugujwhxmrdp@amd.com>
+        id S237407AbhKQNVz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 17 Nov 2021 08:21:55 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:37470 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S231760AbhKQNVu (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 17 Nov 2021 08:21:50 -0500
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AHClXnl017359;
+        Wed, 17 Nov 2021 13:18:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=kXeEaaSCbEFw0a9s/vACkhncL4RjstWCjc98cnX9yB8=;
+ b=k+5NTJH2+VvxhE3nR6+9Bu2Cki2f2puvHVtLWq036qFeAN3ewurS5fXsMWGUQct37oBg
+ JugBE3M0H+Vg7pbFRXyvGopzbmgj6RFf/kdc/lt2w2GgRQEog5KM/yloqXLwnSzKXk88
+ CShjFplxPCiwDwGze1F16bDVYAt7QNju6S5HgLaMTJVL+/x1A3F+olFC/BzVJvHI7b1K
+ uu6bCZiL6Xm7i0HG3Szv+Fc5tucXilqIFniu6Bjzvgp9VzpiKdVzSRr/7sYfMS9wo3BC
+ r72UmDQOoFd+IoeWZr19ml9XWwmfXnqO+PndDcwrhS4n9oMvnrIAUi/qzz1xdUQf5Yjb 8w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3cd2278kry-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 17 Nov 2021 13:18:34 +0000
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1AHCmsYf023587;
+        Wed, 17 Nov 2021 13:18:34 GMT
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3cd2278kr9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 17 Nov 2021 13:18:34 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+        by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AHD9ERU000321;
+        Wed, 17 Nov 2021 13:18:32 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+        by ppma02fra.de.ibm.com with ESMTP id 3ca50a0ryn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 17 Nov 2021 13:18:32 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1AHDBYIK49152306
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 17 Nov 2021 13:11:34 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 899F042041;
+        Wed, 17 Nov 2021 13:18:29 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C748642042;
+        Wed, 17 Nov 2021 13:18:26 +0000 (GMT)
+Received: from sig-9-65-64-222.ibm.com (unknown [9.65.64.222])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed, 17 Nov 2021 13:18:26 +0000 (GMT)
+Message-ID: <e35541f49db829a1ba25a2527adda6dbc7b7530a.camel@linux.ibm.com>
+Subject: Re: [PATCH v7 02/17] integrity: Do not allow machine keyring
+ updates following init
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Eric Snowberg <eric.snowberg@oracle.com>, keyrings@vger.kernel.org,
+        linux-integrity@vger.kernel.org, dhowells@redhat.com,
+        dwmw2@infradead.org, herbert@gondor.apana.org.au,
+        davem@davemloft.net, jarkko@kernel.org, jmorris@namei.org,
+        serge@hallyn.com
+Cc:     keescook@chromium.org, torvalds@linux-foundation.org,
+        weiyongjun1@huawei.com, nayna@linux.ibm.com, ebiggers@google.com,
+        ardb@kernel.org, nramas@linux.microsoft.com, lszubowi@redhat.com,
+        jason@zx2c4.com, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        James.Bottomley@HansenPartnership.com, pjones@redhat.com,
+        konrad.wilk@oracle.com
+Date:   Wed, 17 Nov 2021 08:18:26 -0500
+In-Reply-To: <20211116001545.2639333-3-eric.snowberg@oracle.com>
+References: <20211116001545.2639333-1-eric.snowberg@oracle.com>
+         <20211116001545.2639333-3-eric.snowberg@oracle.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: rSJD8sJq-VFxyT-rEPAZXrrhDpaA1cnB
+X-Proofpoint-ORIG-GUID: TCmJMeuSYqfaXKaTlj1Xxq1PuE48hnJT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-17_04,2021-11-17_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
+ impostorscore=0 adultscore=0 mlxlogscore=999 phishscore=0 clxscore=1015
+ mlxscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2111170067
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Nov 15, 2021 at 02:17:15PM -0600, Michael Roth wrote:
-> but in order for that to happen soon enough to make use of the CPUID
-> table for all CPUID intructions, it needs to be moved to just after the first
-> #VC handler is setup (where snp_cpuid_init() used to be in v6).
+On Mon, 2021-11-15 at 19:15 -0500, Eric Snowberg wrote:
+> The machine keyring is setup during init.  No additional keys should be
+> allowed to be added afterwards.  Leave the permission as read only.
+> 
+> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
 
-So, it needs to happen after the initial IDT is loaded on the BSP in
-startup_64_setup_env().
+Reviewed-by:  Mimi Zohar <zohar@linux.ibm.com>
 
-So why don't you call sme_enable() right after the
-startup_64_setup_env() call and add a comment above it to explain why
-this call needs to happen there?
-
-Instead of sticking that call in startup_64_setup_env() where it doesn't
-belong conceptually - enabling SME doesn't really have anything to do
-with setting up early environment...
-
-Hmm.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
