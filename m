@@ -2,141 +2,195 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA94E455B8D
-	for <lists+linux-efi@lfdr.de>; Thu, 18 Nov 2021 13:33:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D2FA455BA5
+	for <lists+linux-efi@lfdr.de>; Thu, 18 Nov 2021 13:43:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344698AbhKRMgB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 18 Nov 2021 07:36:01 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:59038 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S242412AbhKRMf6 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 18 Nov 2021 07:35:58 -0500
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AICBYkC002211;
-        Thu, 18 Nov 2021 12:32:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=/kvOeSOOTZygMRJ8VpjcjEDUTMlQ9VeW4mzGdb3efG8=;
- b=jKengn854irDoJWdI194ngsJ/6TTQ4LGsxu9mwtBH3vw6Vr/5G8pIZxgXc6u0CrtnJzS
- S34KqUYqUFMvxMOfY6cb+rBht5clhgcbBF7ezCSn/4qTpwyRipfusYWbxCyDnybN6YLY
- /79JN/ZZOP+teatRxkNPNlgx+cohpOwifu5SsUrGoSemhs6xWk9PY+m47Irxn/j5VTXu
- sBxASAHzJniKRXzWq+nXRVcqvLRHQp7Yv6QTrelyXbiw47j39BVwAS1LVaZpRkIaKUhi
- kHXtRqAxQtRe+eyrPFsuHqXjRfTga5FTnECz6HeSgCE0i6ESfl4EVr4RHuL9dwR2EwUw VA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3cdpm9rgs8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 18 Nov 2021 12:32:41 +0000
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1AICBr8x003102;
-        Thu, 18 Nov 2021 12:32:40 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3cdpm9rgqc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 18 Nov 2021 12:32:40 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-        by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AICHUXG011356;
-        Thu, 18 Nov 2021 12:32:37 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-        by ppma03ams.nl.ibm.com with ESMTP id 3ca50anhbp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 18 Nov 2021 12:32:37 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1AICWZm94129378
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 18 Nov 2021 12:32:35 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 2FE6F11C06C;
-        Thu, 18 Nov 2021 12:32:35 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 0AD8811C058;
-        Thu, 18 Nov 2021 12:32:32 +0000 (GMT)
-Received: from sig-9-65-86-194.ibm.com (unknown [9.65.86.194])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Thu, 18 Nov 2021 12:32:31 +0000 (GMT)
-Message-ID: <e0e704761d5929f73e5e53ac99cd4935ea268cc5.camel@linux.ibm.com>
-Subject: Re: [PATCH v7 13/17] KEYS: link secondary_trusted_keys to machine
- trusted keys
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Eric Snowberg <eric.snowberg@oracle.com>, keyrings@vger.kernel.org,
-        linux-integrity@vger.kernel.org, dhowells@redhat.com,
-        dwmw2@infradead.org, herbert@gondor.apana.org.au,
-        davem@davemloft.net, jarkko@kernel.org, jmorris@namei.org,
-        serge@hallyn.com
-Cc:     keescook@chromium.org, torvalds@linux-foundation.org,
-        weiyongjun1@huawei.com, nayna@linux.ibm.com, ebiggers@google.com,
-        ardb@kernel.org, nramas@linux.microsoft.com, lszubowi@redhat.com,
-        jason@zx2c4.com, linux-kernel@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        James.Bottomley@HansenPartnership.com, pjones@redhat.com,
-        konrad.wilk@oracle.com
-Date:   Thu, 18 Nov 2021 07:32:31 -0500
-In-Reply-To: <20211116001545.2639333-14-eric.snowberg@oracle.com>
-References: <20211116001545.2639333-1-eric.snowberg@oracle.com>
-         <20211116001545.2639333-14-eric.snowberg@oracle.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: zH7RcI7km63Zba6YA6wZKy5T8JBqoELH
-X-Proofpoint-ORIG-GUID: -SNCk1tKuH50dAgR1QIAbaIj4ZZ9mBeb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-18_05,2021-11-17_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 adultscore=0
- priorityscore=1501 impostorscore=0 mlxscore=0 malwarescore=0 spamscore=0
- clxscore=1015 phishscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
- definitions=main-2111180073
+        id S243903AbhKRMqR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 18 Nov 2021 07:46:17 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47442 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1344732AbhKRMqO (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 18 Nov 2021 07:46:14 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1057161A88;
+        Thu, 18 Nov 2021 12:43:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1637239392;
+        bh=ISqhDxz5Iegi2xrEg2J4FJ7nmqrYT+ERaPMbSV7C1oU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RG/rQQai3M6LtztxSdQ+xNuV2jEPfnIQq9a20MVYXG05QFtHIdIo4mtThhVouat7J
+         z3dTxZo/R5nHcCHF/WOIm8boZgF11ewho92DLceSoUsZPyMQHl4IHDQbm5Pij3mmiF
+         lI4wyi+oQYp+8n71AtxeH+lpPWr+UEITiJU16vIU=
+Date:   Thu, 18 Nov 2021 13:43:10 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Dov Murik <dovmurik@linux.ibm.com>
+Cc:     linux-efi@vger.kernel.org, Borislav Petkov <bp@suse.de>,
+        Ashish Kalra <ashish.kalra@amd.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Andrew Scull <ascull@google.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+        Jim Cadden <jcadden@ibm.com>,
+        Daniele Buono <dbuono@linux.vnet.ibm.com>,
+        linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 3/4] virt: Add efi_secret module to expose
+ confidential computing secrets
+Message-ID: <YZZKXowcApyC/CEF@kroah.com>
+References: <20211118113359.642571-1-dovmurik@linux.ibm.com>
+ <20211118113359.642571-4-dovmurik@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211118113359.642571-4-dovmurik@linux.ibm.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Eric,
-
-Is the subject line left over from the original patch?   Shouldn't it
-be "link machine trusted keys to secondary_trusted_keys".
-
-On Mon, 2021-11-15 at 19:15 -0500, Eric Snowberg wrote:
-> Allow the .machine keyring to be linked to the secondary_trusted_keys.
-> After the link is created, keys contained in the .machine keyring will
-> automatically be searched when searching secondary_trusted_keys.
+On Thu, Nov 18, 2021 at 11:33:58AM +0000, Dov Murik wrote:
+> The new efi_secret module exposes the confidential computing (coco)
+> EFI secret area via securityfs interface.
 > 
-> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
-> ---
-> v3: Initial version
-> v4: Unmodified from v3
-> v5: Rename to machine keyring
-> v7: Unmodified from v5
-> ---
->  certs/system_keyring.c | 3 +++
->  1 file changed, 3 insertions(+)
+> When the module is loaded (and securityfs is mounted, typically under
+> /sys/kernel/security), a "coco/efi_secret" directory is created in
+> securityfs.  In it, a file is created for each secret entry.  The name
+> of each such file is the GUID of the secret entry, and its content is
+> the secret data.
 > 
-> diff --git a/certs/system_keyring.c b/certs/system_keyring.c
-> index ba732856ebd0..2a2dc70b126c 100644
-> --- a/certs/system_keyring.c
-> +++ b/certs/system_keyring.c
-> @@ -101,6 +101,9 @@ static __init struct key_restriction *get_secondary_restriction(void)
->  void __init set_machine_trusted_keys(struct key *keyring)
->  {
->  	machine_trusted_keys = keyring;
+> This allows applications running in a confidential computing setting to
+> read secrets provided by the guest owner via a secure secret injection
+> mechanism (such as AMD SEV's LAUNCH_SECRET command).
+> 
+> Removing (unlinking) files in the "coco/efi_secret" directory will zero
+> out the secret in memory, and remove the filesystem entry.  If the
+> module is removed and loaded again, that secret will not appear in the
+> filesystem.
+> 
+> Signed-off-by: Dov Murik <dovmurik@linux.ibm.com>
+> ---
+>  .../ABI/testing/securityfs-coco-efi_secret    |  50 +++
+>  drivers/virt/Kconfig                          |   3 +
+>  drivers/virt/Makefile                         |   1 +
+>  drivers/virt/coco/efi_secret/Kconfig          |  11 +
+>  drivers/virt/coco/efi_secret/Makefile         |   2 +
+>  drivers/virt/coco/efi_secret/efi_secret.c     | 341 ++++++++++++++++++
+>  6 files changed, 408 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/securityfs-coco-efi_secret
+>  create mode 100644 drivers/virt/coco/efi_secret/Kconfig
+>  create mode 100644 drivers/virt/coco/efi_secret/Makefile
+>  create mode 100644 drivers/virt/coco/efi_secret/efi_secret.c
+> 
+> diff --git a/Documentation/ABI/testing/securityfs-coco-efi_secret b/Documentation/ABI/testing/securityfs-coco-efi_secret
+> new file mode 100644
+> index 000000000000..ae56976db1bc
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/securityfs-coco-efi_secret
+> @@ -0,0 +1,50 @@
+> +What:		security/coco/efi_secret
+> +Date:		October 2021
+> +Contact:	Dov Murik <dovmurik@linux.ibm.com>
+> +Description:
+> +		Exposes confidential computing (coco) EFI secrets to
+> +		userspace via securityfs.
 > +
-> +	if (key_link(secondary_trusted_keys, machine_trusted_keys) < 0)
-> +		panic("Can't link (machine) trusted keyrings\n");
->  }
+> +		EFI can declare memory area used by confidential computing
+> +		platforms (such as AMD SEV and SEV-ES) for secret injection by
+> +		the Guest Owner during VM's launch.  The secrets are encrypted
+> +		by the Guest Owner and decrypted inside the trusted enclave,
+> +		and therefore are not readable by the untrusted host.
+> +
+> +		The efi_secret module exposes the secrets to userspace.  Each
+> +		secret appears as a file under <securityfs>/coco/efi_secret,
+> +		where the filename is the GUID of the entry in the secrets
+> +		table.
+> +
+> +		Two operations are supported for the files: read and unlink.
+> +		Reading the file returns the content of secret entry.
+> +		Unlinking the file overwrites the secret data with zeroes and
+> +		removes the entry from the filesystem.  A secret cannot be read
+> +		after it has been unlinked.
+> +
+> +		For example, listing the available secrets::
+> +
+> +		  # modprobe efi_secret
+> +		  # ls -l /sys/kernel/security/coco/efi_secret
+> +		  -r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
+> +		  -r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
+> +		  -r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
+> +		  -r--r----- 1 root root 0 Jun 28 11:54 e6f5a162-d67f-4750-a67c-5d065f2a9910
+> +
+> +		Reading the secret data by reading a file::
+> +
+> +		  # cat /sys/kernel/security/coco/efi_secret/e6f5a162-d67f-4750-a67c-5d065f2a9910
+> +		  the-content-of-the-secret-data
+> +
+> +		Wiping a secret by unlinking a file::
+> +
+> +		  # rm /sys/kernel/security/coco/efi_secret/e6f5a162-d67f-4750-a67c-5d065f2a9910
+> +		  # ls -l /sys/kernel/security/coco/efi_secret
+> +		  -r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
+> +		  -r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
+> +		  -r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
+> +
+> +		Note: The binary format of the secrets table injected by the
+> +		Guest Owner is described in
+> +		drivers/virt/coco/efi_secret/efi_secret.c under "Structure of
+> +		the EFI secret area".
+> diff --git a/drivers/virt/Kconfig b/drivers/virt/Kconfig
+> index 8061e8ef449f..fe7a6579b974 100644
+> --- a/drivers/virt/Kconfig
+> +++ b/drivers/virt/Kconfig
+> @@ -36,4 +36,7 @@ source "drivers/virt/vboxguest/Kconfig"
+>  source "drivers/virt/nitro_enclaves/Kconfig"
 >  
->  /**
+>  source "drivers/virt/acrn/Kconfig"
+> +
+> +source "drivers/virt/coco/efi_secret/Kconfig"
+> +
+>  endif
+> diff --git a/drivers/virt/Makefile b/drivers/virt/Makefile
+> index 3e272ea60cd9..efdb015783f9 100644
+> --- a/drivers/virt/Makefile
+> +++ b/drivers/virt/Makefile
+> @@ -8,3 +8,4 @@ obj-y				+= vboxguest/
+>  
+>  obj-$(CONFIG_NITRO_ENCLAVES)	+= nitro_enclaves/
+>  obj-$(CONFIG_ACRN_HSM)		+= acrn/
+> +obj-$(CONFIG_EFI_SECRET)	+= coco/efi_secret/
+> diff --git a/drivers/virt/coco/efi_secret/Kconfig b/drivers/virt/coco/efi_secret/Kconfig
+> new file mode 100644
+> index 000000000000..a39a5a90a1e5
+> --- /dev/null
+> +++ b/drivers/virt/coco/efi_secret/Kconfig
+> @@ -0,0 +1,11 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +config EFI_SECRET
+> +	tristate "EFI secret area securityfs support"
+> +	depends on EFI
+> +	select EFI_COCO_SECRET
+> +	select SECURITYFS
+> +	help
+> +	  This is a driver for accessing the EFI secret area via securityfs.
+> +
+> +	  To compile this driver as a module, choose M here.
+> +	  The module will be called efi_secret.
 
-In general is the ordering of the patches "bisect safe"[1]?  Only in
-the next patch is machine_trusted_keys set.   In this case, either
-merge the two patches or reverse their order.
+
+Shouldn't this module auto-load only if the efi secret area is present?
+
+What is going to cause the module to be loaded by a distro if it does
+not have some sort of way to tell userspace what resources it belongs
+to?  Can you trigger off of a DMI or EFI attribute somehow for this?
+
+Otherwise you are going to force distros to modify their init scripts
+for this functionality, how is that going to happen?
 
 thanks,
 
-Mimi
-
-[1] Refer to the section "Separate your changes" in
-Documentation/process/submitting-patches.rst.
-
+greg k-h
