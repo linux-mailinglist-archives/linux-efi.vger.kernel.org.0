@@ -2,137 +2,149 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29D6C456E70
-	for <lists+linux-efi@lfdr.de>; Fri, 19 Nov 2021 12:48:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0038B456E71
+	for <lists+linux-efi@lfdr.de>; Fri, 19 Nov 2021 12:48:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231455AbhKSLvG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 19 Nov 2021 06:51:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50848 "EHLO
+        id S231466AbhKSLvH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 19 Nov 2021 06:51:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229687AbhKSLvG (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 19 Nov 2021 06:51:06 -0500
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79238C061574
-        for <linux-efi@vger.kernel.org>; Fri, 19 Nov 2021 03:48:04 -0800 (PST)
-Received: by mail-wr1-x42c.google.com with SMTP id n29so17639095wra.11
-        for <linux-efi@vger.kernel.org>; Fri, 19 Nov 2021 03:48:04 -0800 (PST)
+        with ESMTP id S229687AbhKSLvH (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 19 Nov 2021 06:51:07 -0500
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E91EFC061574
+        for <linux-efi@vger.kernel.org>; Fri, 19 Nov 2021 03:48:05 -0800 (PST)
+Received: by mail-wr1-x42f.google.com with SMTP id r8so17653970wra.7
+        for <linux-efi@vger.kernel.org>; Fri, 19 Nov 2021 03:48:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=sY5v4T/gDIggLv1A8yXTdIuNMs6lSlPYKPKW7ORnlqw=;
-        b=A4vOjZufXgPYw/7VqKRnzhqFt3oprng/7P1/tYF+A6XvdFOV7zo/aN/h+/mZ+w6vDz
-         PPqCg7/4VnzZvN1u+d2ZF2k/62Tzedqe6sfXptTULdGXNo9lJM6QquvwE5PRkwvnCv60
-         I/MUnL23y+nVRFOUTG18rL1lxcboc3ZdARXvw4S7V0Hk5W8QaWTrhrJ3QfpqSXa+YeIR
-         +V724SxlRBHUNVEnFSRppUHv6rzLtLDbVN9ZWQt2G9qwDbWA9k0S73MhRkxJni91vgly
-         sPqA+v/+f479MQ66OU68lDHsjTRLJFnK5RiqjmqwjqdLH40hhC0AycQqph95uOTAyb/1
-         7R/Q==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=cBpcZaFhz4p6OdqDxzcgAE37Gskr5/xHfO3KYMeY7Y4=;
+        b=ctApfwYeYAPY4vALr8d/IVqUOt0XguArk6Of2QK9RXZ9FYSG5bZYN9unmjb1kJ4a/r
+         BSLR0hd8rXaDTKE9qjApU5a2W66xQeu4lcgpFNNoppfhyeGUbTzmdfw5VdhYXNRoUpt/
+         I66DVG7eulE5wsoQSYD+XsU6sulUFGn1qYCrss80wcH3rW9zs/0zhhIBvKTYgeSsCGVT
+         jyPGSap1x0HDPi7o4rPvSPx4vx1nrDlcFjJVnJ9bj0G5/0sIApla0KKFdSrJLcOeEaEd
+         H1ZWm8LvojcZW7K3WkHqUrmO3FYF6e/OSEWWZ04EQlPhldoZ9KV0QfgZFL4Qdn2eV+Dd
+         EIlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=sY5v4T/gDIggLv1A8yXTdIuNMs6lSlPYKPKW7ORnlqw=;
-        b=5gBeNylo28c7q4W8VWZNxwo8Kye0sLSunIAgja7eFYnLObdHdDgVhEM1+9LoEcWuF4
-         gU4GbdbHxo5A01FXNPd20m7AAIFAxqoMZXLMsU0560UpHWVDnJ1/K4PLc0ZNIFimUg4H
-         tTb/97bylAMDhtwDvm9LwVGbApR2NsOzuqXOFvuHeujhiveDuKuXzuiRzAIQinEAPplw
-         EoGhwvl5vOPanyszbhSSt/9A86RT7VZKufXv2PPiK0SaHdNz4P8GWw3UBOEwhD3wgQ6x
-         oMbPX5tzKwec/pJp6LrN8WOecMz7MC3OT07ijERpWK4RT9yIxMO6AHDUwzYEUeVq6hh3
-         al9g==
-X-Gm-Message-State: AOAM532DIphjtweWuhyM30yGFKzbn+XmAAGvWvnkPJ9t9bghLRKdjh3C
-        bxLqC0PPfS/AF3fSizk/sFlg/wyeuqqe2g==
-X-Google-Smtp-Source: ABdhPJwhup/wg1NEiHjIHM1Al6X12LJR6vhqdMdRug/OHQdi02HknXa4Nnxlw9xsmckZeDD6UuSgJA==
-X-Received: by 2002:adf:fed0:: with SMTP id q16mr6754859wrs.276.1637322482968;
-        Fri, 19 Nov 2021 03:48:02 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=cBpcZaFhz4p6OdqDxzcgAE37Gskr5/xHfO3KYMeY7Y4=;
+        b=zgGhOZaCt/fNP/kZjb9rcNxpt1stSzdu7CRVNqwPr1n8CXAQqwKfLymshkyy4fyZ37
+         g4NZWgNECmaxuLnaEJ+EA8Nyz9zGlgk1/Fa7CCrvL4jOHjGVHDqpGLiSIRoY4AmJ77z/
+         XlZokT29me8q4irw5nEMXcYvGmRUskvA2C0vLlbJ6gh+kL5gVod/bAHzvvPSqmfoQ1H2
+         MLq77rP3uiN2RPuQtbf+s8gGMbiOIyCOmwl4y+iWDmt/z+Vc5fLfRjipPAZO9Aqgb8Tj
+         X681aMGz0A447QlLC1LneWNLdAswl/xjjOV4+sdzRQn/XbOLZnl5fzRHgfBVf/gQrfs+
+         IwiA==
+X-Gm-Message-State: AOAM53111Guuhmdx3gM7JB9kCCPcrIQk/dY2pkOG7Hw4glrlzb0WHC7f
+        D7BDFqk9McRT8V8S4SphDsNFLapuOoqr1A==
+X-Google-Smtp-Source: ABdhPJzumenuqpyMcUAxEGwXwiGMbXePmzzTRrVpLlsDf8XAXcB/GiqQ/R4V+PKEcd+mqJSNnxd6Pw==
+X-Received: by 2002:adf:e2c5:: with SMTP id d5mr6652879wrj.338.1637322484409;
+        Fri, 19 Nov 2021 03:48:04 -0800 (PST)
 Received: from apalos.home ([2a02:587:4627:18c0:2e56:dcff:fe9a:8f06])
-        by smtp.gmail.com with ESMTPSA id c4sm2688039wrr.37.2021.11.19.03.48.01
+        by smtp.gmail.com with ESMTPSA id c4sm2688039wrr.37.2021.11.19.03.48.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Nov 2021 03:48:02 -0800 (PST)
+        Fri, 19 Nov 2021 03:48:03 -0800 (PST)
 From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
 To:     linux-efi@vger.kernel.org
 Cc:     ardb@kernel.org, pjones@redhat.com, nivedita@alum.mit.edu,
         mjg59@google.com, daniel.kiper@oracle.com,
         James.Bottomley@hansenpartnership.com, leif@nuviainc.com,
         jroedel@suse.de, Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: [PATCH 0/4 v3] measure initrd data loaded by the EFI stub
-Date:   Fri, 19 Nov 2021 13:47:41 +0200
-Message-Id: <20211119114745.1560453-1-ilias.apalodimas@linaro.org>
+Subject: [PATCH 1/4 v3] efi/libstub: add prototype of efi_tcg2_protocol::hash_log_extend_event()
+Date:   Fri, 19 Nov 2021 13:47:42 +0200
+Message-Id: <20211119114745.1560453-2-ilias.apalodimas@linaro.org>
 X-Mailer: git-send-email 2.33.1
+In-Reply-To: <20211119114745.1560453-1-ilias.apalodimas@linaro.org>
+References: <20211119114745.1560453-1-ilias.apalodimas@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi!
+From: Ard Biesheuvel <ardb@kernel.org>
 
-This is a respin of [1].
-This enables initrd measuring when loaded directly by the kernel EFI stub.
-It ensures that the initrd observed and used by the OS is the same one that
-got measured into the TPM, which is difficult to guarantee in the current
-otherwise.
+Define the right prototype for efi_tcg2_protocol::hash_log_extend_event()
+and add the required structs so we can start using it to measure the initrd
+into the TPM if it was loaded by the EFI stub itself.
 
-There's a couple of changes compared to the original RFC:
-- Ard fixed the x86 assembly for providing the extra arguments needed and I
-  rebased it on top of 
-  commit 22aa45cb465b ("x86/efi: Restore Firmware IDT before calling ExitBootServices()")
-- Instead of EV_IPL we are now using EV_EVENT_TAG. EV_IPL was marked
-  as deprecated up until the latest PC client spec [2] (and deprecated  in
-  older revisions [3]).  It's current description is: 
-  "It may be used by Boot Manager Code to measure events."
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+---
+Changes since v1,2:
+- None
+Changes since Ard's RFC:
+- Added event_tag related definitions
+- added a missing __packed on efi_tcg2_event
+ arch/x86/include/asm/efi.h             |  4 ++++
+ drivers/firmware/efi/libstub/efistub.h | 29 +++++++++++++++++++++++++-
+ 2 files changed, 32 insertions(+), 1 deletion(-)
 
-  EV_EVENT_TAG on the other hand seems more appropriate as it's defined as:
-  "Used for PCRs defined for OS and application usage.  Defined for use by
-  Host Platform Operating System or Software."
-- We are only measuring the initrd if it was loaded using the LOAD_FILE2
-  protocol.  This is not what we probably want in the long run, but let's
-  only enforce the measurement on the new way of loading an initrd for now.
-
-Questions:
-- Since GRUB seems to be using PCRs 8/9 for it's EV_IPL events, maybe we should
-  use something completely different?
-
-I did test this on arm64 and x86_64 (incl mixed mode). Here's a snip of the
-EventLog
-<snip>
-  - EventNum: 23
-    PCRIndex: 9
-    EventType: EV_EVENT_TAG
-    DigestCount: 4
-    Digests:
-      - AlgorithmId: sha1
-        Digest: "53fe403e0d763f6a4e3384e8112d6463e7ddf12b"
-      - AlgorithmId: sha256
-        Digest: "28f24eab8cb433e4b8cbce0f96b7ad0aa541a4b905f748491139e42f0adc8026"
-      - AlgorithmId: sha384
-        Digest: "848389ab172267dcf9a0b873c7534b3d969e915b525c9fe2b57db47f4ecd8283b18d6e0cff84099893d589447c2bea55"
-      - AlgorithmId: sha512
-        Digest: "438b254c92e6716a5a1ba0338f5e751f3dd27782481e5698911b4cd33a98efdd776459d56781c5ae4a8d0b9945246d04ab243d4dbe03f49542e2455ac66db584"
-    EventSize: 21
-    Event: "ec223b8f0d0000004c696e757820696e6974726400"
-<snip>
-
-[1] https://lore.kernel.org/linux-efi/20201102170634.20575-1-ardb@kernel.org/
-[2] https://trustedcomputinggroup.org/wp-content/uploads/TCG_PCClient_PFP_r1p05_v23_pub.pdf
-[3] https://trustedcomputinggroup.org/wp-content/uploads/TCG_PCClientSpecPlat_TPM_2p0_1p04_pub.pdf
-
-Ard Biesheuvel (3):
-  efi/libstub: add prototype of
-    efi_tcg2_protocol::hash_log_extend_event()
-  efi/libstub: x86/mixed: increase supported argument count
-  efi/libstub: consolidate initrd handling across architectures
-
-Ilias Apalodimas (1):
-  efi/libstub: measure loaded initrd info into the TPM
-
- arch/x86/boot/compressed/efi_thunk_64.S       | 14 +++-
- arch/x86/include/asm/efi.h                    | 14 +++-
- arch/x86/platform/efi/efi_thunk_64.S          | 14 +++-
- .../firmware/efi/libstub/efi-stub-helper.c    | 73 ++++++++++++++++---
- drivers/firmware/efi/libstub/efi-stub.c       | 10 +--
- drivers/firmware/efi/libstub/efistub.h        | 30 +++++++-
- drivers/firmware/efi/libstub/x86-stub.c       | 26 +++----
- 7 files changed, 134 insertions(+), 47 deletions(-)
-
+diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+index 4d0b126835b8..85f156f8ef81 100644
+--- a/arch/x86/include/asm/efi.h
++++ b/arch/x86/include/asm/efi.h
+@@ -308,6 +308,10 @@ static inline u32 efi64_convert_status(efi_status_t status)
+ #define __efi64_argmap_query_mode(gop, mode, size, info)		\
+ 	((gop), (mode), efi64_zero_upper(size), efi64_zero_upper(info))
+ 
++/* TCG2 protocol */
++#define __efi64_argmap_hash_log_extend_event(prot, fl, addr, size, ev)	\
++	((prot), (fl), 0ULL, (u64)(addr), 0ULL, (u64)(size), 0ULL, ev)
++
+ /*
+  * The macros below handle the plumbing for the argument mapping. To add a
+  * mapping for a specific EFI method, simply define a macro
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index cde0a2ef507d..a2825c435158 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -667,6 +667,29 @@ union apple_properties_protocol {
+ 
+ typedef u32 efi_tcg2_event_log_format;
+ 
++#define INITRD_EVENT_TAG_ID 0x8F3B22ECU
++#define EV_EVENT_TAG 0x00000006U
++#define EFI_TCG2_EVENT_HEADER_VERSION	0x1
++
++struct efi_tcg2_event {
++	u32		event_size;
++	struct {
++		u32	header_size;
++		u16	header_version;
++		u32	pcr_index;
++		u32	event_type;
++	} __packed event_header;
++	/* u8[] event follows here */
++} __packed;
++
++struct efi_tcg2_tagged_event {
++	u32 tagged_event_id;
++	u32 tagged_event_data_size;
++	/* u8  tagged event data follows here */
++} __packed;
++
++typedef struct efi_tcg2_event efi_tcg2_event_t;
++typedef struct efi_tcg2_tagged_event efi_tcg2_tagged_event_t;
+ typedef union efi_tcg2_protocol efi_tcg2_protocol_t;
+ 
+ union efi_tcg2_protocol {
+@@ -677,7 +700,11 @@ union efi_tcg2_protocol {
+ 						       efi_physical_addr_t *,
+ 						       efi_physical_addr_t *,
+ 						       efi_bool_t *);
+-		void *hash_log_extend_event;
++		efi_status_t (__efiapi *hash_log_extend_event)(efi_tcg2_protocol_t *,
++							       u64,
++							       efi_physical_addr_t,
++							       u64,
++							       const efi_tcg2_event_t *);
+ 		void *submit_command;
+ 		void *get_active_pcr_banks;
+ 		void *set_active_pcr_banks;
 -- 
 2.33.1
 
