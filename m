@@ -2,144 +2,126 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 262F845D59E
-	for <lists+linux-efi@lfdr.de>; Thu, 25 Nov 2021 08:38:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A228A45D862
+	for <lists+linux-efi@lfdr.de>; Thu, 25 Nov 2021 11:44:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237249AbhKYHlm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 25 Nov 2021 02:41:42 -0500
-Received: from mail.ispras.ru ([83.149.199.84]:38090 "EHLO mail.ispras.ru"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237334AbhKYHji (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 25 Nov 2021 02:39:38 -0500
-Received: from mail.ispras.ru (unknown [83.149.199.84])
-        by mail.ispras.ru (Postfix) with ESMTPSA id C499440D403E;
-        Thu, 25 Nov 2021 07:36:22 +0000 (UTC)
+        id S1354713AbhKYKrl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 25 Nov 2021 05:47:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37058 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1351541AbhKYKpk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 25 Nov 2021 05:45:40 -0500
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CEEAC061757
+        for <linux-efi@vger.kernel.org>; Thu, 25 Nov 2021 02:41:42 -0800 (PST)
+Received: by mail-io1-xd41.google.com with SMTP id f9so6840836ioo.11
+        for <linux-efi@vger.kernel.org>; Thu, 25 Nov 2021 02:41:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=eibhgHyEnDty6prD7kw2qZTGk1uH223Sz/QXKL+fHLw=;
+        b=BCO7JwdyPeuapvFjwEvsioM/iCW1wXLgG9grAHZ/dgJIBV0hB9cljgPJdgCtET3aqf
+         DF816W5JUr0B0BOEg2eCpKTKNl23rjql08M+syfLilFKFSd7z6wc/jMREMfV6BmGUeqH
+         hQQITE691Q1v/4n2SLyELoPuiwU2EAj0YVEBdLrA+eEOX31Mdv5dXdw7ZnSOESBkAOKX
+         Quwu1HNPGXcnFBFmoQmhe6zlOpBUy0C4lLdSF/xFJM8QhPfwyFl0+tWaAEpf8dh+OF34
+         +L1tC/+HAeWwU7KLoWLawyFS2DESDeRuzdrUpG0uZWkW+ZXR36/o2BwUf4t82oyN1bAR
+         0ukw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=eibhgHyEnDty6prD7kw2qZTGk1uH223Sz/QXKL+fHLw=;
+        b=XYd/MJbxkF5bZ6d0mdcNTNp7yFeuYCDiUxEuAGuZl0+SbWJPCOytGM2R0rY6ywpG/Y
+         tTx/NnYk2LBIRLPTwQKOL8+qkXdzgK3xSTTK9jEc+l5JS+Wav8Ya/+RAncbjw3Y6IQau
+         63s5wGFKFtNoviZge6imIrL3rOsANuIuxP9GusOslBEJGatV5trElkUAvichdEm2+Ls1
+         s1NuwvIalCbF0GWnG5McnybiP8B3G/PoohpXmXYPVTHfypv57BqV7xWpTBLPlvazk+zr
+         B0wAnD//OechvLD0rUUrWD8H4mV4kvfZlNuhdWVYjxGLhYaaCojTPQ5x6GWgQiIcm/yN
+         aiTA==
+X-Gm-Message-State: AOAM532BhguxvOu+mc7Bc0roLJJYoLLG1Qec1whi+cUGl4aWHpTx3hZR
+        1YsJztyae7dXsZWVSsgHkz8KE2ZL9WqJ4RibDUM=
+X-Google-Smtp-Source: ABdhPJzjqy1cQJmNeCYSi6eXdXvE1mY/buGxhyG/xKVWMYgo4EdViM1FpAXIHP7XaQfQqIt3xdiAuXTklvN2Vp3IU2A=
+X-Received: by 2002:a02:cb8f:: with SMTP id u15mr29644625jap.131.1637836901777;
+ Thu, 25 Nov 2021 02:41:41 -0800 (PST)
 MIME-Version: 1.0
-Date:   Thu, 25 Nov 2021 10:36:22 +0300
-From:   baskov@ispras.ru
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Thomas Gleixner <tglx@linutronix.de>, X86 ML <x86@kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH RFC 0/5] Handle UEFI NX-restricted page tables
-In-Reply-To: <CAMj1kXGzdMfj0bdNFODFZ8jfo0iMaZ5SOfueciwtY7Y4V5G2JQ@mail.gmail.com>
-References: <20211110104613.23881-1-baskov@ispras.ru>
- <CAMj1kXGzdMfj0bdNFODFZ8jfo0iMaZ5SOfueciwtY7Y4V5G2JQ@mail.gmail.com>
-User-Agent: Roundcube Webmail/1.4.4
-Message-ID: <1b013e77ec3d4c6288408b3caff093ef@ispras.ru>
-X-Sender: baskov@ispras.ru
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:6602:2f03:0:0:0:0 with HTTP; Thu, 25 Nov 2021 02:41:41
+ -0800 (PST)
+Reply-To: msbelinaya892@gmail.com
+From:   msbelinaya <raymondmicheal919@gmail.com>
+Date:   Thu, 25 Nov 2021 10:41:41 +0000
+Message-ID: <CAM6ZuAN+vwLUApUD0+2BViqO=u27Ohdt13q22JE+NdKzkUjvQw@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+Ich biete meine Freundschaft an und glaube, dass Sie mich mit gutem
+Herzen akzeptieren werden. Ich wurde gedr=C3=A4ngt, Sie zu kontaktieren und
+zu sehen, wie wir einander am besten unterst=C3=BCtzen k=C3=B6nnen. Ich bin=
+ Frau
+Kodjovi Hegbor aus der T=C3=BCrkei und arbeite als Divisionsleiterin f=C3=
+=BCr
+Operationen bei der StandardBNP bank limited Turkey . Ich glaube, es
+ist der Wille Gottes, dass ich Ihnen jetzt begegnen werde. Ich habe
+ein wichtiges gesch=C3=A4ftliches Gespr=C3=A4ch, das ich mit Ihnen teilen
+m=C3=B6chte, von dem ich glaube, dass es Sie interessiert, da es mit Ihrem
+Nachnamen in Verbindung steht und Sie davon profitieren werden.
 
-Hello,
+ Im Jahr 2006 hat ein B=C3=BCrger Ihres Landes ein Nicht-Residentenkonto
+f=C3=BCr 36 Monate des Kalenders im Wert von =C2=A38.400.000,00 bei meiner =
+Bank
+eingerichtet. Das Ablaufdatum f=C3=BCr diesen Einlagenvertrag war der 16.
+Januar 2009. Leider starb er w=C3=A4hrend einer Gesch=C3=A4ftsreise bei ein=
+em
+t=C3=B6dlichen Erdbeben am 12. Mai 2008 in Sichuan, China, bei dem
+mindestens 68.000 Menschen ums Leben kamen.
 
-I apologize for delayed reply.
+Das Management meiner Bank hat noch nichts von seinem Tod erfahren,
+ich wusste davon, weil er mein Freund war und ich sein Kontof=C3=BChrer
+war, als das Konto vor meiner Bef=C3=B6rderung er=C3=B6ffnet wurde. Jedoch =
+Herr
+ erw=C3=A4hnte bei der Kontoer=C3=B6ffnung keine n=C3=A4chsten Verwandten/E=
+rben, und
+er war nicht verheiratet und hatte keine Kinder. Letzte Woche hat
+meine Bankdirektion mich gebeten, Anweisungen zu geben, was mit seinen
+Geldern zu tun ist, wenn der Vertrag verl=C3=A4ngert werden soll.
 
-The system in question runs in a firmware that tries to achieve
-complete W^X protection. Both loader code and loader data
-are not executable, so the suggested approach does not work.
-If you would like to test this, you can set
-the PcdDxeNxMemoryProtectionPolicy in any firmware available to you.
+Ich wei=C3=9F, dass dies passieren wird, und deshalb habe ich nach einem
+Mittel gesucht, um mit der Situation umzugehen, denn wenn meine
+Bankdirektoren wissen, dass sie tot sind und keinen Erben haben,
+werden sie das Geld f=C3=BCr ihren pers=C3=B6nlichen Gebrauch nehmen, also =
+Ich
+m=C3=B6chte nicht, dass so etwas passiert. Das war, als ich Ihren Nachnamen
+sah, ich war gl=C3=BCcklich und suche jetzt Ihre Mitarbeit, um Sie als Next
+of Kin/Erbe des Kontos zu pr=C3=A4sentieren, da Sie den gleichen Nachnamen
+wie er haben und meine Bankzentrale das Konto freigeben wird f=C3=BCr dich.
+Es besteht kein Risiko; die Transaktion wird im Rahmen einer legitimen
+Vereinbarung ausgef=C3=BChrt, die Sie vor Rechtsverletzungen sch=C3=BCtzt.
 
-As a justification for the approach itself, I can use the fact that
-UEFI specification says nothing about the ability to execute
-self-allocated EfiLoaderCode or any other types besides the areas
-allocated by the firmware for UEFI Images. In fact, Table 7-5
-explicitly states that EfiLoaderCode is used for:
+Es ist besser, dass wir das Geld beanspruchen, als es den
+Bankdirektoren zu erlauben, es zu nehmen, sie sind bereits reich. Ich
+bin kein gieriger Mensch, daher schlage ich vor, dass wir das Geld zu
+gleichen Teilen teilen, 50/50% auf beide Parteien. Mein Anteil wird
+mir helfen, mein eigenes Unternehmen zu gr=C3=BCnden und den Erl=C3=B6s f=
+=C3=BCr
+wohlt=C3=A4tige Zwecke zu verwenden, was mein Traum war.
 
-> The code portions of a loaded UEFI application.
-
-While we do not think it should be interpreted as one cannot allocate
-such areas at all, it is clear that there are no guarantees about the
-other use cases and permissions of the allocations of this type besides
-those stated by 2.3.4:
-
-> Paging mode is enabled and any memory space defined by the UEFI memory
-> map is identity mapped (virtual address equals physical address),
-> although the attributes of certain regions may not have all read,
-> write, and execute attributes or be unmarked for purposes of platform
-> protection.
-
-Long story short, the kernel is not allowed to allocate such areas and
-assume they are executable, it should do paging itself, and the changes
-here address that. For the reference, Windows adheres to this convention
-and works fine on the target system.
-
-Thanks,
-Baskov Evgeniy
-
-On 2021-11-10 14:11, Ard Biesheuvel wrote:
-> On Wed, 10 Nov 2021 at 11:56, Baskov Evgeniy <baskov@ispras.ru> wrote:
->> 
->> Note, that this patch series is RFC, since it is yet untested
->> and possibly incompatible with AMD SEV and related extensions.
->> 
->> The UEFI specification states that certain memory regions may
->> not have every permission, i.e. may not be writable or executable.
->> 
->> Furthermore there exist some implementations (at least on i386/x86_64)
->> that restrict execution of memory regions expected by the kernel to
->> be executable. E.g. first megabyte of address space, where trampoline
->> for switching between 4/5 level paging is placed and memory regions,
->> allocated as loader data.
->> 
->> This patch series allows Linux kernel to boot on such UEFI
->> implementations on i386 and x86_64.
->> 
->> The simplest way to achieve that on i386 is to disable paging
->> before jumping to potentially relocated code.
->> 
->> x86_64, on the other hand, does not allow disabling paging so it
->> is required to build temporary page tables containing memory regions
->> required for Linux kernel to boot with appropriate access permissions.
->> 
-> 
-> Hello Baskov,
-> 
-> To be honest, I am truly not a fan of this approach.
-> 
-> Which systems is this issue occurring on? Did you try something like
-> the below to allocate executable memory explicitly?
-> 
-> 
-> diff --git a/drivers/firmware/efi/libstub/relocate.c
-> b/drivers/firmware/efi/libstub/relocate.c
-> index 8ee9eb2b9039..b73012a7bcdc 100644
-> --- a/drivers/firmware/efi/libstub/relocate.c
-> +++ b/drivers/firmware/efi/libstub/relocate.c
-> @@ -80,7 +80,7 @@ efi_status_t efi_low_alloc_above(unsigned long size,
-> unsigned long align,
->                         continue;
-> 
->                 status = efi_bs_call(allocate_pages, 
-> EFI_ALLOCATE_ADDRESS,
-> -                                    EFI_LOADER_DATA, nr_pages, 
-> &start);
-> +                                    EFI_LOADER_CODE, nr_pages, 
-> &start);
->                 if (status == EFI_SUCCESS) {
->                         *addr = start;
->                         break;
-> @@ -146,7 +146,7 @@ efi_status_t efi_relocate_kernel(unsigned long 
-> *image_addr,
->          */
->         nr_pages = round_up(alloc_size, EFI_ALLOC_ALIGN) / 
-> EFI_PAGE_SIZE;
->         status = efi_bs_call(allocate_pages, EFI_ALLOCATE_ADDRESS,
-> -                            EFI_LOADER_DATA, nr_pages, &efi_addr);
-> +                            EFI_LOADER_CODE, nr_pages, &efi_addr);
->         new_addr = efi_addr;
->         /*
->          * If preferred address allocation failed allocate as low as
-
-
+Teilen Sie mir Ihre Meinung zu meinem Vorschlag mit, bitte ich brauche
+wirklich Ihre Hilfe bei dieser Transaktion. Ich habe Sie ausgew=C3=A4hlt,
+um mir zu helfen, nicht durch mein eigenes Tun, meine Liebe, sondern
+durch Gott wollte ich, dass Sie wissen, dass ich mir Zeit zum Beten
+genommen habe =C3=BCber diese Mitteilung, bevor ich Sie jemals kontaktiert
+habe, teilen Sie mir Ihre Meinung dazu mit und behandeln Sie diese
+Informationen bitte als STRENG GEHEIM. Nach Erhalt Ihrer Antwort,
+ausschlie=C3=9Flich =C3=BCber meine pers=C3=B6nliche E-Mail-Adresse,
+msbelinaya892@gmail.com
+gibt Ihnen Details zur Transaktion. Und eine Kopie der
+Einlagenbescheinigung des Fonds sowie die Gr=C3=BCndungsurkunde der
+Gesellschaft, die den Fonds erstellt hat.
+Gott segne, in Erwartung Ihrer dringenden Antwort
+Mit freundlichen Gr=C3=BC=C3=9Fen
+Frau Kodjovi Hegbor
+msbelinaya892@gmail.com
