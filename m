@@ -2,38 +2,38 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D887460884
-	for <lists+linux-efi@lfdr.de>; Sun, 28 Nov 2021 19:20:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A85F346088A
+	for <lists+linux-efi@lfdr.de>; Sun, 28 Nov 2021 19:20:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359215AbhK1SXn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 28 Nov 2021 13:23:43 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:54291 "EHLO
+        id S1358744AbhK1SXt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 28 Nov 2021 13:23:49 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:29074 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1358823AbhK1SVm (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 28 Nov 2021 13:21:42 -0500
+        by vger.kernel.org with ESMTP id S1358830AbhK1SVn (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 28 Nov 2021 13:21:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1638123505;
+        s=mimecast20190719; t=1638123507;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Y3WcgKJc+zc8rlpyfwZumMsVu/Grjc1H2KQ2Qlorauc=;
-        b=PS9/UtAOQmnk5770QnA5idRZaxsH9f1kXWN69iMs7OXsZNHY3UAvs6u2eOVa6YOJ2CSX5w
-        PxqVvnLZmmaQIQRfuT3hfWe2qe8mQwrWK7qBqN8SeTmD1auAsCOHJl9KY0OpWgKDTyCeEs
-        STxyr1RyKilh/Sdz4yxg/dvfWrUg5UE=
+        bh=d/3jjx/A1YxuTVY8w1Vw2M5AVhTQuXehR9WDy25GTbM=;
+        b=VP1Gf1SBi3clrWKVLrVvgtZymCBfVE1nRxT69jzmWX35SAHCxGBTafL2N6sKHVdBNdoYbL
+        o4IduKKDS0cqofvpvihpsB0wwJ6CeNL8kq9U/B63dcgTJ7bNpQnLy+k8VEiW0Qv2r+uD7Y
+        NNwQRxOs51aUc1L1ug+YQQXqCI1ayWo=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-203-J6YI4_dzNheo05ueSQpTrQ-1; Sun, 28 Nov 2021 13:18:20 -0500
-X-MC-Unique: J6YI4_dzNheo05ueSQpTrQ-1
+ us-mta-598-QaTb3SjBMEW3Dl5CyqpN8Q-1; Sun, 28 Nov 2021 13:18:23 -0500
+X-MC-Unique: QaTb3SjBMEW3Dl5CyqpN8Q-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C60973E743;
-        Sun, 28 Nov 2021 18:18:17 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 74B4919253C0;
+        Sun, 28 Nov 2021 18:18:21 +0000 (UTC)
 Received: from x1.localdomain (unknown [10.39.192.65])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 88E1610016F7;
-        Sun, 28 Nov 2021 18:18:14 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 2B7F910016F4;
+        Sun, 28 Nov 2021 18:18:17 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
@@ -49,9 +49,9 @@ Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
         Tsuchiya Yuto <kitakar@gmail.com>,
         platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-Subject: [PATCH v3 01/20] power: supply: core: Refactor power_supply_set_input_current_limit_from_supplier()
-Date:   Sun, 28 Nov 2021 19:17:50 +0100
-Message-Id: <20211128181809.326736-2-hdegoede@redhat.com>
+Subject: [PATCH v3 02/20] power: supply: bq25890: Rename IILIM field to IINLIM
+Date:   Sun, 28 Nov 2021 19:17:51 +0100
+Message-Id: <20211128181809.326736-3-hdegoede@redhat.com>
 In-Reply-To: <20211128181809.326736-1-hdegoede@redhat.com>
 References: <20211128181809.326736-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -61,158 +61,73 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Some (USB) charger ICs have variants with USB D+ and D- pins to do their
-own builtin charger-type detection, like e.g. the bq24190 and bq25890 and
-also variants which lack this functionality, e.g. the bq24192 and bq25892.
+From: Yauhen Kharuzhy <jekhor@gmail.com>
 
-In case the charger-type; and thus the input-current-limit detection is
-done outside the charger IC then we need some way to communicate this to
-the charger IC. In the past extcon was used for this, but if the external
-detection does e.g. full USB PD negotiation then the extcon cable-types do
-not convey enough information.
+Rename the Input Current Limit field in the REG00 from IILIM to IINLIM
+accordingly with the bq2589x datasheet. This is just cosmetical change
+to reduce confusion.
 
-For these setups it was decided to model the external charging "brick"
-and the parameters negotiated with it as a power_supply class-device
-itself; and power_supply_set_input_current_limit_from_supplier() was
-introduced to allow drivers to get the input-current-limit this way.
-
-But in some cases psy drivers may want to know other properties, e.g. the
-bq25892 can do "quick-charge" negotiation by pulsing its current draw,
-but this should only be done if the usb_type psy-property of its supplier
-is set to DCP (and device-properties indicate the board allows higher
-voltages).
-
-Instead of adding extra helper functions for each property which
-a psy-driver wants to query from its supplier, refactor
-power_supply_set_input_current_limit_from_supplier() into a
-more generic power_supply_get_property_from_supplier() function.
-
+Signed-off-by: Yauhen Kharuzhy <jekhor@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/power/supply/bq24190_charger.c   | 10 ++++-
- drivers/power/supply/power_supply_core.c | 57 +++++++++++++-----------
- include/linux/power_supply.h             |  5 ++-
- 3 files changed, 42 insertions(+), 30 deletions(-)
+ drivers/power/supply/bq25890_charger.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/power/supply/bq24190_charger.c b/drivers/power/supply/bq24190_charger.c
-index 35ff0c8fe96f..0c3d5caaef0c 100644
---- a/drivers/power/supply/bq24190_charger.c
-+++ b/drivers/power/supply/bq24190_charger.c
-@@ -1206,8 +1206,16 @@ static void bq24190_input_current_limit_work(struct work_struct *work)
- 	struct bq24190_dev_info *bdi =
- 		container_of(work, struct bq24190_dev_info,
- 			     input_current_limit_work.work);
-+	union power_supply_propval val;
-+	int ret;
+diff --git a/drivers/power/supply/bq25890_charger.c b/drivers/power/supply/bq25890_charger.c
+index b7eac5428083..b208cc2193b8 100644
+--- a/drivers/power/supply/bq25890_charger.c
++++ b/drivers/power/supply/bq25890_charger.c
+@@ -40,7 +40,7 @@ static const char *const bq25890_chip_name[] = {
+ };
  
--	power_supply_set_input_current_limit_from_supplier(bdi->charger);
-+	ret = power_supply_get_property_from_supplier(bdi->charger,
-+						      POWER_SUPPLY_PROP_CURRENT_MAX,
-+						      &val);
-+	if (ret == 0)
-+		bq24190_charger_set_property(bdi->charger,
-+					     POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
-+					     &val);
- }
+ enum bq25890_fields {
+-	F_EN_HIZ, F_EN_ILIM, F_IILIM,				     /* Reg00 */
++	F_EN_HIZ, F_EN_ILIM, F_IINLIM,				     /* Reg00 */
+ 	F_BHOT, F_BCOLD, F_VINDPM_OFS,				     /* Reg01 */
+ 	F_CONV_START, F_CONV_RATE, F_BOOSTF, F_ICO_EN,
+ 	F_HVDCP_EN, F_MAXC_EN, F_FORCE_DPM, F_AUTO_DPDM_EN,	     /* Reg02 */
+@@ -153,7 +153,7 @@ static const struct reg_field bq25890_reg_fields[] = {
+ 	/* REG00 */
+ 	[F_EN_HIZ]		= REG_FIELD(0x00, 7, 7),
+ 	[F_EN_ILIM]		= REG_FIELD(0x00, 6, 6),
+-	[F_IILIM]		= REG_FIELD(0x00, 0, 5),
++	[F_IINLIM]		= REG_FIELD(0x00, 0, 5),
+ 	/* REG01 */
+ 	[F_BHOT]		= REG_FIELD(0x01, 6, 7),
+ 	[F_BCOLD]		= REG_FIELD(0x01, 5, 5),
+@@ -256,7 +256,7 @@ enum bq25890_table_ids {
+ 	/* range tables */
+ 	TBL_ICHG,
+ 	TBL_ITERM,
+-	TBL_IILIM,
++	TBL_IINLIM,
+ 	TBL_VREG,
+ 	TBL_BOOSTV,
+ 	TBL_SYSVMIN,
+@@ -299,7 +299,7 @@ static const union {
+ 	/* TODO: BQ25896 has max ICHG 3008 mA */
+ 	[TBL_ICHG] =	{ .rt = {0,	  5056000, 64000} },	 /* uA */
+ 	[TBL_ITERM] =	{ .rt = {64000,   1024000, 64000} },	 /* uA */
+-	[TBL_IILIM] =   { .rt = {100000,  3250000, 50000} },	 /* uA */
++	[TBL_IINLIM] =  { .rt = {100000,  3250000, 50000} },	 /* uA */
+ 	[TBL_VREG] =	{ .rt = {3840000, 4608000, 16000} },	 /* uV */
+ 	[TBL_BOOSTV] =	{ .rt = {4550000, 5510000, 64000} },	 /* uV */
+ 	[TBL_SYSVMIN] = { .rt = {3000000, 3700000, 100000} },	 /* uV */
+@@ -503,11 +503,11 @@ static int bq25890_power_supply_get_property(struct power_supply *psy,
+ 		break;
  
- /* Sync the input-current-limit with our parent supply (if we have one) */
-diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
-index fc12a4f407f4..fb956a9a1827 100644
---- a/drivers/power/supply/power_supply_core.c
-+++ b/drivers/power/supply/power_supply_core.c
-@@ -375,46 +375,49 @@ int power_supply_is_system_supplied(void)
- }
- EXPORT_SYMBOL_GPL(power_supply_is_system_supplied);
+ 	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+-		ret = bq25890_field_read(bq, F_IILIM);
++		ret = bq25890_field_read(bq, F_IINLIM);
+ 		if (ret < 0)
+ 			return ret;
  
--static int __power_supply_get_supplier_max_current(struct device *dev,
--						   void *data)
-+struct psy_get_supplier_prop_data {
-+	struct power_supply *psy;
-+	enum power_supply_property psp;
-+	union power_supply_propval *val;
-+};
-+
-+static int __power_supply_get_supplier_property(struct device *dev, void *_data)
- {
--	union power_supply_propval ret = {0,};
- 	struct power_supply *epsy = dev_get_drvdata(dev);
--	struct power_supply *psy = data;
-+	struct psy_get_supplier_prop_data *data = _data;
+-		val->intval = bq25890_find_val(ret, TBL_IILIM);
++		val->intval = bq25890_find_val(ret, TBL_IINLIM);
+ 		break;
  
--	if (__power_supply_is_supplied_by(epsy, psy))
--		if (!epsy->desc->get_property(epsy,
--					      POWER_SUPPLY_PROP_CURRENT_MAX,
--					      &ret))
--			return ret.intval;
-+	if (__power_supply_is_supplied_by(epsy, data->psy))
-+		if (!epsy->desc->get_property(epsy, data->psp, data->val))
-+			return 1; /* Success */
- 
--	return 0;
-+	return 0; /* Continue iterating */
- }
- 
--int power_supply_set_input_current_limit_from_supplier(struct power_supply *psy)
-+int power_supply_get_property_from_supplier(struct power_supply *psy,
-+					    enum power_supply_property psp,
-+					    union power_supply_propval *val)
- {
--	union power_supply_propval val = {0,};
--	int curr;
--
--	if (!psy->desc->set_property)
--		return -EINVAL;
-+	struct psy_get_supplier_prop_data data = {
-+		.psy = psy,
-+		.psp = psp,
-+		.val = val,
-+	};
-+	int ret;
- 
- 	/*
- 	 * This function is not intended for use with a supply with multiple
--	 * suppliers, we simply pick the first supply to report a non 0
--	 * max-current.
-+	 * suppliers, we simply pick the first supply to report the psp.
- 	 */
--	curr = class_for_each_device(power_supply_class, NULL, psy,
--				      __power_supply_get_supplier_max_current);
--	if (curr <= 0)
--		return (curr == 0) ? -ENODEV : curr;
--
--	val.intval = curr;
-+	ret = class_for_each_device(power_supply_class, NULL, &data,
-+				    __power_supply_get_supplier_property);
-+	if (ret < 0)
-+		return ret;
-+	if (ret == 0)
-+		return -ENODEV;
- 
--	return psy->desc->set_property(psy,
--				POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT, &val);
-+	return 0;
- }
--EXPORT_SYMBOL_GPL(power_supply_set_input_current_limit_from_supplier);
-+EXPORT_SYMBOL_GPL(power_supply_get_property_from_supplier);
- 
- int power_supply_set_battery_charged(struct power_supply *psy)
- {
-diff --git a/include/linux/power_supply.h b/include/linux/power_supply.h
-index 9ca1f120a211..0735b8963e0a 100644
---- a/include/linux/power_supply.h
-+++ b/include/linux/power_supply.h
-@@ -420,8 +420,9 @@ power_supply_temp2resist_simple(struct power_supply_resistance_temp_table *table
- 				int table_len, int temp);
- extern void power_supply_changed(struct power_supply *psy);
- extern int power_supply_am_i_supplied(struct power_supply *psy);
--extern int power_supply_set_input_current_limit_from_supplier(
--					 struct power_supply *psy);
-+int power_supply_get_property_from_supplier(struct power_supply *psy,
-+					    enum power_supply_property psp,
-+					    union power_supply_propval *val);
- extern int power_supply_set_battery_charged(struct power_supply *psy);
- 
- #ifdef CONFIG_POWER_SUPPLY
+ 	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
 -- 
 2.33.1
 
