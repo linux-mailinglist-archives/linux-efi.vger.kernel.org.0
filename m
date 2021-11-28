@@ -2,63 +2,59 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D87B7461025
-	for <lists+linux-efi@lfdr.de>; Mon, 29 Nov 2021 09:28:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1284461279
+	for <lists+linux-efi@lfdr.de>; Mon, 29 Nov 2021 11:34:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242894AbhK2Ibs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 29 Nov 2021 03:31:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43646 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242896AbhK2I3r (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 29 Nov 2021 03:29:47 -0500
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C096BC06139C
-        for <linux-efi@vger.kernel.org>; Mon, 29 Nov 2021 00:23:05 -0800 (PST)
-Received: by mail-lj1-x22e.google.com with SMTP id k2so32922038lji.4
-        for <linux-efi@vger.kernel.org>; Mon, 29 Nov 2021 00:23:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=h5SGxromuDQtUoJTnxkhza7HXaouvO2qwEGMHxx3weM=;
-        b=TXPNJdC2r1iwoSZ/Y8M1XP+KzZCam0+qziJjQijxTu5aqUDFE6JJ5XRer9/5Z/weKl
-         rORkmJ++sjeg2i1Hs/e4qXTBGXFuyqZx8Eto8SzExPVFZPit/3uugPFSTfC/iRStp2dK
-         zTqkbs3TjOi/Mt/fUFQj0qyYvXesuYhHwPMnKaOCoi1bhK05rgj2Y7cIVdTMJ3lrAuVa
-         b/TnI3IHqUGTLOmN2hylhI2F6JGPG5YiMC6Ha0EJyd7y27iYMJmJAqJE0WPGc5hj05tR
-         7UHjb4JyMX+pzzs4clVFpy9qfb0LhrQnc8xAoy3dGMm+Z4lMEPyRiNH0ltaXklCgXiXR
-         E/qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=h5SGxromuDQtUoJTnxkhza7HXaouvO2qwEGMHxx3weM=;
-        b=pPXye/R21JRNcYv10SG9s64J63fG+JntB7kUXGUveltkd/DEOKMwbvCFVD5jx/5UQF
-         spx9KzJOpxd/Lo4R2BZiWY24a6uvSx5x78dJR3rCtAjhVf+6Ne+/ztw98T2ZDALev2xT
-         afWIqvpSWdnujE0hBWd9HTxBPayAw/yLkjX3Jd6WdaXpr5ElHApExuJgsrjo1mlgtVYC
-         5X/EF+CEO3z07vH69WInenNKxruCBdLffmAhugZIiFGeeNZpqLzg7CYIo9CkoaVxY9AT
-         4crsU1qEXYmsQoUThR/5wXnjYmVU6OeYT9skBfCSemPS7/Sjpc4w8KGaSBgYFkY1GH//
-         rcpg==
-X-Gm-Message-State: AOAM530/khrskGpD/XuOO1XTqVMSJRIoXsElBPmY+4qlOgOhiOOKxTWl
-        XZOQx8Uwjhi9UfFa8dlCuX+w2XKSaW0IYviFjA==
-X-Google-Smtp-Source: ABdhPJz4zItSG/eUm7nkCJe5HruRiFSBp317oc5/jeAcc+fKYmc5q3XsdUdGc1yGDz5u04vm+2YL+vhHeLjaa7ACIcI=
-X-Received: by 2002:a2e:2a43:: with SMTP id q64mr47923476ljq.102.1638174183800;
- Mon, 29 Nov 2021 00:23:03 -0800 (PST)
+        id S229623AbhK2KiD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 29 Nov 2021 05:38:03 -0500
+Received: from mail.vallenar.cl ([200.54.241.89]:35548 "EHLO mail.vallenar.cl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235743AbhK2KgC (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 29 Nov 2021 05:36:02 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by mail.vallenar.cl (Postfix) with ESMTP id 70A371CEF776;
+        Sun, 28 Nov 2021 14:07:12 -0300 (-03)
+Received: from mail.vallenar.cl ([127.0.0.1])
+        by localhost (mail.vallenar.cl [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id BaEeZa31vyGI; Sun, 28 Nov 2021 14:07:12 -0300 (-03)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.vallenar.cl (Postfix) with ESMTP id 4F34E1D0777A;
+        Sun, 28 Nov 2021 12:25:19 -0300 (-03)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.vallenar.cl 4F34E1D0777A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vallenar.cl;
+        s=EC098874-C7DE-11E7-B3B1-1A9A6030413E; t=1638113119;
+        bh=IQxUcKgLaEia+DMrVj9OEHbWOH8TffrzQMeZgAxYubI=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=jf1I9xxTxaZ6C1OPQA/zc1UFnqDmEwitooMxMRjabthONAuC6U3R0IP//IvSQA3V3
+         sfxJI4SikGFyh3v7uBTruIne42iLkWnWkZNU3zB0BjyXTvsF0LPExIxWa4y6YNo/bh
+         DtNsSa0kkZwc/WRDUBSg0kVbHW06Kzf4dZkjqoDKZ0pgz2jgI6qw6K207FW1a19leR
+         l4FjJvip+pfZsC3/06O14Txg0Kl/Y6GLesCDFtUzF9XRRP0Ncs/mJThhrkAY9YE6W4
+         XrL3QMNmR8R/nhSHbokwg8YetJ7RMD8qoG/i//791FMtFN6LcYW6TYf2PmEOL3H3NU
+         ubd9HD/OXMlGw==
+X-Virus-Scanned: amavisd-new at vallenar.cl
+Received: from mail.vallenar.cl ([127.0.0.1])
+        by localhost (mail.vallenar.cl [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id pryR-6tLuzzF; Sun, 28 Nov 2021 12:25:19 -0300 (-03)
+Received: from [192.168.8.101] (unknown [105.0.3.102])
+        by mail.vallenar.cl (Postfix) with ESMTPSA id 183F31D08C99;
+        Sun, 28 Nov 2021 11:21:38 -0300 (-03)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Received: by 2002:ab3:7796:0:0:0:0:0 with HTTP; Mon, 29 Nov 2021 00:23:03
- -0800 (PST)
-Reply-To: evelyngaby76@gmail.com
-From:   Evelyn Gaby <evelyngaby313@gmail.com>
-Date:   Mon, 29 Nov 2021 08:23:03 +0000
-Message-ID: <CAA63f6y83iyLQjiOT2wVUYfXgSveYedA0FqnM8oZbkQt9TJucw@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: 2.000.000,00. Euro
+To:     Recipients <yperez@vallenar.cl>
+From:   "manuel franco" <yperez@vallenar.cl>
+Date:   Sun, 28 Nov 2021 16:29:08 +0200
+Reply-To: manuelfrancospende00@gmail.com
+Message-Id: <20211128142139.183F31D08C99@mail.vallenar.cl>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-.
-Please get back to me for more details,
-I like to disclose something very important to you,
+Sie haben eine Spende von 2.000.000,00. Euro
 
-Regards.
-Mrs Evelyn Gaby.
+Mein Name ist Manuel Franco aus den Vereinigten Staaten.
+Ich habe die Amerika-Lotterie im Wert von 768 Millionen US-Dollar gewonnen =
+und spende einen Teil davon an nur 5 gl=FCckliche Menschen und ein paar Wai=
+senh=E4user als Wohlwollen f=FCr die Menschheit.
