@@ -2,77 +2,190 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A00FF464CD8
-	for <lists+linux-efi@lfdr.de>; Wed,  1 Dec 2021 12:34:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36567464F03
+	for <lists+linux-efi@lfdr.de>; Wed,  1 Dec 2021 14:48:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348955AbhLALhk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 1 Dec 2021 06:37:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33520 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348972AbhLALhg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 1 Dec 2021 06:37:36 -0500
-Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0543C0613F2
-        for <linux-efi@vger.kernel.org>; Wed,  1 Dec 2021 03:34:10 -0800 (PST)
-Received: by mail-qv1-xf35.google.com with SMTP id gu12so21235814qvb.6
-        for <linux-efi@vger.kernel.org>; Wed, 01 Dec 2021 03:34:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
-        b=nKE9e+4jEQRb21OhoYPSbxPLfJ2IuSmNXU0U6wmcP4ykCacrWpdbtE0jjuz/hSLLGi
-         3CHjeG+lFmWzoULwCsmlhVFgDEk5dLFaYb51pw7bXGjZ9H8t0j91dP9aL17MRQYkMPZK
-         Snvty/Yp8/ZrWZr2EuFXHqBxUdbU8X39ik45viERJ1Dn7qW8BPCFp2vlafV2okU0kn5j
-         QPTIDY8QJSy8zAVbK10d6+AY0lky+mrQRAAg0uS1DacQStzD/dQtt/uBz/RlGIdZCai/
-         BHep24kmiLdl1nvBvHYMFonu8NoJvJlErv7lbZlg2+2c277BpkzmDA4WwPZoxzlIf0Mh
-         Af5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
-        b=Wh33hAZ6Pe5wQkIkEKNYUU28Vh4PsGfzvy+fNQEwyX4GVf/o+yk9KtB4R9LujCntVB
-         85pascpIocEaJ02yj+R+PDlVkxqXFhouccBt48dzYM/ittjo6eC6Lw2vcnd4OPbzAQOH
-         G28I3xuQkyaCLNLRwxQ0suPY99k47Xpa2riaoGFXJEjgsDS3+FdnfZHpf6HmG1HUXMvf
-         F4TfwyQv7JQrqW/C9f6gUz1F0LzWboO9mE5JxJSG4v2ywgQ71zdXO1WbSt7bT4o5/SSB
-         KH6onD5/II9yEnNQCM9waJ5Bt+Ni9pBr9nF5N5aMsTxaLcimhP9+WL22IgAixPgdp1tf
-         p8SA==
-X-Gm-Message-State: AOAM530utAh2KG79LUfWBIh+T2wuJb3PVdZuNdo4Mjs8S+fwh5eduz+b
-        kGbcRT8ihEgikR9sJXEUHRKDKgQgSQ7rXlkun004/a6lXIQ=
-X-Google-Smtp-Source: ABdhPJwK+H50pzFgfv5CJPfAwBzUdMqIKHh+Ckkuju2lG2knVlJrzqINPiiwPjc/Uz6xuSJez7Fkn5YZPcfa5CPpvro=
-X-Received: by 2002:a67:ef4d:: with SMTP id k13mr6266305vsr.4.1638358439020;
- Wed, 01 Dec 2021 03:33:59 -0800 (PST)
-MIME-Version: 1.0
-Sender: unitednationawardwinner@gmail.com
-Received: by 2002:ab0:6c55:0:0:0:0:0 with HTTP; Wed, 1 Dec 2021 03:33:58 -0800 (PST)
-From:   "Mrs. Orgil Baatar" <mrs.orgilbaatar21@gmail.com>
-Date:   Wed, 1 Dec 2021 03:33:58 -0800
-X-Google-Sender-Auth: uTQ_nfkzXaWGWaTWp1BSFqK3Ucs
-Message-ID: <CAJ4dHaSrD-X=xpfKNZV-hXSiMV6mNYrgy5vWCNkKm6iu5RQStg@mail.gmail.com>
-Subject: Your long awaited part payment of $2.5.000.00Usd
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        id S1349628AbhLANvZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 1 Dec 2021 08:51:25 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:9180 "EHLO
+        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1349647AbhLANvK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 1 Dec 2021 08:51:10 -0500
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1B1DcDDM019892;
+        Wed, 1 Dec 2021 13:47:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=kLrwl+sjdutKijzkkRE3ijtdTFL3tqrSpl9/QVu7zds=;
+ b=dg4EXzmMpz7zee6v+kPfKEj4zvO4Ui3JsGX2AaIlIuxZ6bw2HUlpOktbMEZYq5rX+7ly
+ d8Pg9yE9zet+zMbknV+j4qNfp7DKruwgMmJWRQMUIn8m2Js32Yfiq1gbzVJOc4D8He8Q
+ x5LAJWwjNbvkunnyjhmu00GA2R2SZu29EgSHMGqGoaEipAeX8XqEweeGtcWR9ADiFGam
+ VRVm0VQ80ldo/mtOK8MVDtOv5/WZjt/dZO4VdOR3WpFfmpZktMCRddmCqrMXbnsvrcJj
+ To7Akl58jpyeNCU1Xupkcqg5ZNM2kbImDziP1SvTFqfj+TOyPF+9GT9l1sYy+pc8wkNK 0g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3cp9bshbhe-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 01 Dec 2021 13:47:03 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1B1DcDj9020017;
+        Wed, 1 Dec 2021 13:47:02 GMT
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3cp9bshbgj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 01 Dec 2021 13:47:02 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+        by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1B1DTFWN020620;
+        Wed, 1 Dec 2021 13:47:00 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+        by ppma05fra.de.ibm.com with ESMTP id 3ckca9rdrr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 01 Dec 2021 13:47:00 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1B1DkvHR21954996
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 1 Dec 2021 13:46:57 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BFB27AE04D;
+        Wed,  1 Dec 2021 13:46:57 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 76185AE055;
+        Wed,  1 Dec 2021 13:46:54 +0000 (GMT)
+Received: from sig-9-65-78-183.ibm.com (unknown [9.65.78.183])
+        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed,  1 Dec 2021 13:46:54 +0000 (GMT)
+Message-ID: <61f5d74f861ce1015831649d3bca9272a2e3b7bf.camel@linux.ibm.com>
+Subject: Re: [PATCH v8 09/17] KEYS: Rename
+ get_builtin_and_secondary_restriction
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "dhowells@redhat.com" <dhowells@redhat.com>,
+        "dwmw2@infradead.org" <dwmw2@infradead.org>,
+        "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "jmorris@namei.org" <jmorris@namei.org>,
+        "serge@hallyn.com" <serge@hallyn.com>,
+        "keescook@chromium.org" <keescook@chromium.org>,
+        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
+        "weiyongjun1@huawei.com" <weiyongjun1@huawei.com>,
+        "nayna@linux.ibm.com" <nayna@linux.ibm.com>,
+        "ebiggers@google.com" <ebiggers@google.com>,
+        "ardb@kernel.org" <ardb@kernel.org>,
+        "nramas@linux.microsoft.com" <nramas@linux.microsoft.com>,
+        "lszubowi@redhat.com" <lszubowi@redhat.com>,
+        "jason@zx2c4.com" <jason@zx2c4.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        "James.Bottomley@hansenpartnership.com" 
+        <James.Bottomley@hansenpartnership.com>,
+        "pjones@redhat.com" <pjones@redhat.com>,
+        Konrad Wilk <konrad.wilk@oracle.com>
+Date:   Wed, 01 Dec 2021 08:46:53 -0500
+In-Reply-To: <YadOLrHb14MEfphi@iki.fi>
+References: <20211124044124.998170-1-eric.snowberg@oracle.com>
+         <20211124044124.998170-10-eric.snowberg@oracle.com>
+         <fb1d583f588e3f46fdadbe3cf6288bb098ff45f8.camel@kernel.org>
+         <8906F8A4-313F-45E5-8ABD-A1A2D07BFD93@oracle.com> <YadOLrHb14MEfphi@iki.fi>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: m7A-PkvjVAc_VwmPRrA3SGHBXpos4Gvu
+X-Proofpoint-GUID: CoTpQMEuZT4FveB5sK-lbS6R6yGDSE-Z
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-30_10,2021-12-01_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ bulkscore=0 adultscore=0 impostorscore=0 phishscore=0 priorityscore=1501
+ clxscore=1015 malwarescore=0 lowpriorityscore=0 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2112010078
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Attention: Beneficiary, Your long awaited part payment of
-$2.5.000.00Usd (TWO MILLION FIVE Hundred Thousand United State
-Dollars) is ready for immediate release to you, and it was
-electronically credited into an ATM Visa Card for easy delivery.
+On Wed, 2021-12-01 at 12:27 +0200, Jarkko Sakkinen wrote:
+> On Tue, Nov 30, 2021 at 05:21:45PM +0000, Eric Snowberg wrote:
+> > 
+> > 
+> > > On Nov 26, 2021, at 5:49 PM, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > > 
+> > > On Tue, 2021-11-23 at 23:41 -0500, Eric Snowberg wrote:
+> > >> In preparation for returning either the existing
+> > >> restrict_link_by_builtin_and_secondary_trusted or the upcoming
+> > >> restriction that includes the trusted builtin, secondary and
+> > >> machine keys, to improve clarity, rename
+> > >> get_builtin_and_secondary_restriction to get_secondary_restriction.
+> > >> 
+> > >> Suggested-by: Mimi Zohar <zohar@linux.ibm.com>
+> > >> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
+> > >> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+> > >> ---
+> > >> v6: Initial version
+> > >> v7: Unmodified from v7
+> > >> v8: Code unmodified from v7, added Mimi's Reviewed-by
+> > >> ---
+> > >>  certs/system_keyring.c | 4 ++--
+> > >>  1 file changed, 2 insertions(+), 2 deletions(-)
+> > >> 
+> > >> diff --git a/certs/system_keyring.c b/certs/system_keyring.c
+> > >> index 692365dee2bd..8f1f87579819 100644
+> > >> --- a/certs/system_keyring.c
+> > >> +++ b/certs/system_keyring.c
+> > >> @@ -77,7 +77,7 @@ int restrict_link_by_builtin_and_secondary_trusted(
+> > >>   * Allocate a struct key_restriction for the "builtin and secondary trust"
+> > >>   * keyring. Only for use in system_trusted_keyring_init().
+> > >>   */
+> > >> -static __init struct key_restriction *get_builtin_and_secondary_restriction(void)
+> > >> +static __init struct key_restriction *get_secondary_restriction(void)
+> > >>  {
+> > >>         struct key_restriction *restriction;
+> > >>  
+> > >> @@ -117,7 +117,7 @@ static __init int system_trusted_keyring_init(void)
+> > >>                                KEY_USR_VIEW | KEY_USR_READ | KEY_USR_SEARCH |
+> > >>                                KEY_USR_WRITE),
+> > >>                               KEY_ALLOC_NOT_IN_QUOTA,
+> > >> -                             get_builtin_and_secondary_restriction(),
+> > >> +                             get_secondary_restriction(),
+> > >>                               NULL);
+> > >>         if (IS_ERR(secondary_trusted_keys))
+> > >>                 panic("Can't allocate secondary trusted keyring\n");
+> > > 
+> > > This is wrong order.
+> > > 
+> > > You should first do the changes that make the old name
+> > > obsolete and only after that have a patch that does the
+> > > rename. Unfortunately, this patch cannot possibly acked
+> > > with the current order.
+> >
+> > I can change the order, but I'm confused how this would work for a git bisect. 
+> > If the rename happens afterwards, now two patches will always need to be 
+> > reverted instead of the possibility of one.  Is this your expectation?
 
-Your new Payment Reference No.- 6363836,
-Pin Code No: 1787
-Your Certificate of Merit Payment No: 05872,
+If the keyring name change is independent of any other changes, as
+Jarkko suggested, nothing would break.
 
-Your Names: |
-Address: |
+> I'd drop this patch altogether. Old name is a bit ugly but does it matter
+> all that much?
 
-Person to Contact:MR KELLY HALL the Director of the International
-Audit unit ATM Payment Center,
+The name "get_builtin_and_secondary_restriction" implies trust based on
+keys in the ".builtin_trusted_keys" and ".secondary_trusted_keys"
+keyrings.  This patch set is extending that to include keys on the new
+".machine" keyring, by linking it to the secondary keyring.  Is leaving
+the name unchanged really an option?
 
-Email: uba-bf@e-ubabf.com
-TELEPHONE: +226 64865611 You can whatsApp the bank
+> 
+> You already 16 patches without this.
 
-Regards.
-Mrs ORGIL BAATAR
+Agreed, it's a lot.  In the past, I've asked Eric to see if some of
+them could be squashed.
+
+Mimi
+
