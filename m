@@ -2,102 +2,95 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E48A4466263
-	for <lists+linux-efi@lfdr.de>; Thu,  2 Dec 2021 12:35:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67C734668B6
+	for <lists+linux-efi@lfdr.de>; Thu,  2 Dec 2021 17:55:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357349AbhLBLjB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 2 Dec 2021 06:39:01 -0500
-Received: from isilmar-4.linta.de ([136.243.71.142]:39184 "EHLO
-        isilmar-4.linta.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357348AbhLBLjB (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 2 Dec 2021 06:39:01 -0500
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-Received: from light.dominikbrodowski.net (brodo.linta [10.2.0.102])
-        by isilmar-4.linta.de (Postfix) with ESMTPSA id 71F072013FC;
-        Thu,  2 Dec 2021 11:35:37 +0000 (UTC)
-Received: by light.dominikbrodowski.net (Postfix, from userid 1000)
-        id E42FF2006D; Thu,  2 Dec 2021 12:35:32 +0100 (CET)
-Date:   Thu, 2 Dec 2021 12:35:32 +0100
-From:   Dominik Brodowski <linux@dominikbrodowski.net>
-To:     tytso@mit.edu, Jason@zx2c4.com
-Cc:     "Ivan T. Ivanov" <iivanov@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3, resend] random: fix crash on multiple early calls to
- add_bootloader_randomness()
-Message-ID: <YaivhAV8LouB0zGV@light.dominikbrodowski.net>
-References: <20211012082708.121931-1-iivanov@suse.de>
- <YWVKAk4h5bsUA3b6@light.dominikbrodowski.net>
+        id S1359780AbhLBQ6u (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 2 Dec 2021 11:58:50 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:59378 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1359757AbhLBQ6u (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 2 Dec 2021 11:58:50 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E530FB82426;
+        Thu,  2 Dec 2021 16:55:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481F9C00446;
+        Thu,  2 Dec 2021 16:55:25 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="DIB1VVOy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1638464123;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=zCSJuZT9xG/m6fOsrS14dS2EhlTLMTqBnP7Ru/8SiFs=;
+        b=DIB1VVOyNJUriekkQKhBZwxqv1aSh920XRFeLQaiPIKFLOYSnWYto+PJnpRiSWG3Zn+XIU
+        A8VgPHfzEkLjfnCWRDNFxvHVSbEGJvOMd6gYLpGV3PVSoELnrOkx4xTUEdbIA4CIgu/ysh
+        Jc0MyhsXWnREm0yWP3nreRnmdQpz04k=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 662d737d (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+        Thu, 2 Dec 2021 16:55:23 +0000 (UTC)
+Received: by mail-yb1-f174.google.com with SMTP id v203so1312659ybe.6;
+        Thu, 02 Dec 2021 08:55:22 -0800 (PST)
+X-Gm-Message-State: AOAM533OOrZB0teM6fgwaM3lsEAbd0NN4O42CEPFwQeKQuPes8s5t2ad
+        yFAHomxWk7N3t+SPLxj/A904fCidjduf+KmPvss=
+X-Google-Smtp-Source: ABdhPJygWM6mGI+l8bNmakpGTLBI8trpMfaXH6dTgyFui3+jUjA565iJNl6gPqKRmDmW4YSUaWmuzYe8KPE2nXE9+Uw=
+X-Received: by 2002:a25:ab86:: with SMTP id v6mr15989913ybi.457.1638464121596;
+ Thu, 02 Dec 2021 08:55:21 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YWVKAk4h5bsUA3b6@light.dominikbrodowski.net>
+References: <20211012082708.121931-1-iivanov@suse.de> <YWVKAk4h5bsUA3b6@light.dominikbrodowski.net>
+ <YaivhAV8LouB0zGV@light.dominikbrodowski.net>
+In-Reply-To: <YaivhAV8LouB0zGV@light.dominikbrodowski.net>
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Thu, 2 Dec 2021 11:55:10 -0500
+X-Gmail-Original-Message-ID: <CAHmME9qxBeBzfKCjzfAFX9ZWAGKv1TKCQw3x22d_DmJtaAewLw@mail.gmail.com>
+Message-ID: <CAHmME9qxBeBzfKCjzfAFX9ZWAGKv1TKCQw3x22d_DmJtaAewLw@mail.gmail.com>
+Subject: Re: [PATCH v3, resend] random: fix crash on multiple early calls to add_bootloader_randomness()
+To:     linux@dominikbrodowski.net
+Cc:     "Theodore Ts'o" <tytso@mit.edu>,
+        "Ivan T. Ivanov" <iivanov@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-If add_bootloader_randomness() or add_hwgenerator_randomness() is
-called for the first time during early boot, crng_init equals 0. Then,
-crng_fast_load() gets called -- which is safe to do even if the input
-pool is not yet properly set up.
+Hi Dominik,
 
-If the added entropy suffices to increase crng_init to 1, future calls
-to add_bootloader_randomness() or add_hwgenerator_randomness() used to
-progress to credit_entropy_bits(). However, if the input pool is not yet
-properly set up, the cmpxchg call within that function can lead to an
-infinite recursion. This is not only a hypothetical problem, as qemu
-on arm64 may provide bootloader entropy via EFI and via devicetree.
+Thanks for the patch. One trivial nit and one question:
 
-As crng_global_init_time is set to != 0 once the input pool is properly
-set up, check (also) for this condition to determine which branch to take.
+On Thu, Dec 2, 2021 at 6:35 AM Dominik Brodowski
+<linux@dominikbrodowski.net> wrote:
+> +       /* We cannot do much with the input pool until it is set up in
+> +        * rand_initalize(); therefore just mix into the crng state.
 
-Calls to crng_fast_load() do not modify the input pool; therefore, the
-entropy_count for the input pool must not be modified at that early
-stage.
+I think you meant "rand_initialize()" here (missing 'i').
 
-Reported-by: Ivan T. Ivanov <iivanov@suse.de>
-Fixes: 18b915ac6b0a ("efi/random: Treat EFI_RNG_PROTOCOL output as bootloader randomness")
-Tested-by: Ivan T. Ivanov <iivanov@suse.de>
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
----
-re-send to new co-maintainer of random.c
-v2->v3: onle one unlikely (Ard Biesheuvel)
-v1->v2: fix commit message; unmerge Reported-and-tested-by-tag (Ard Biesheuvel)
+> If the added entropy suffices to increase crng_init to 1, future calls
+> to add_bootloader_randomness() or add_hwgenerator_randomness() used to
+> progress to credit_entropy_bits(). However, if the input pool is not yet
+> properly set up, the cmpxchg call within that function can lead to an
+> infinite recursion.
 
- drivers/char/random.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+I see what this patch does with crng_global_init_time, and that seems
+probably sensible, but I didn't understand this part of the reasoning
+in the commit message; I might just be a bit slow here. Where's the
+recursion exactly? Or even an infinite loop?
 
-diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 605969ed0f96..18fe804c1bf8 100644
---- a/drivers/char/random.c
-+++ b/drivers/char/random.c
-@@ -1763,8 +1763,8 @@ static void __init init_std_data(struct entropy_store *r)
- }
- 
- /*
-- * Note that setup_arch() may call add_device_randomness()
-- * long before we get here. This allows seeding of the pools
-+ * add_device_randomness() or add_bootloader_randomness() may be
-+ * called long before we get here. This allows seeding of the pools
-  * with some platform dependent data very early in the boot
-  * process. But it limits our options here. We must use
-  * statically allocated structures that already have all
-@@ -2274,7 +2274,12 @@ void add_hwgenerator_randomness(const char *buffer, size_t count,
- {
- 	struct entropy_store *poolp = &input_pool;
- 
--	if (unlikely(crng_init == 0)) {
-+	/* We cannot do much with the input pool until it is set up in
-+	 * rand_initalize(); therefore just mix into the crng state.
-+	 * As this does not affect the input pool, we cannot credit
-+	 * entropy for this.
-+	 */
-+	if (unlikely(crng_init == 0 || crng_global_init_time == 0)) {
- 		crng_fast_load(buffer, count);
- 		return;
- 	}
+As far as I can tell, that portion of credit_entropy_bits() breaks down as:
+
+retry:
+        entropy_count = orig = READ_ONCE(r->entropy_count);
+   [ ... do some arithmetic on entropy_count ... ]
+        if (cmpxchg(&r->entropy_count, orig, entropy_count) != orig)
+                goto retry;
+
+Why would this be infinite? Why wouldn't the cmpxchg eventually
+converge to a stable value? I don't see any call that modifies
+r->entropy_count or orig from inside that block. Is there some other
+super-spinny concurrent operation?
+
+Thanks,
+Jason
