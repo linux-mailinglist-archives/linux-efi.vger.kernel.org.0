@@ -2,307 +2,130 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CEF2B467D32
-	for <lists+linux-efi@lfdr.de>; Fri,  3 Dec 2021 19:22:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6625467E1A
+	for <lists+linux-efi@lfdr.de>; Fri,  3 Dec 2021 20:22:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353103AbhLCS0W (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 3 Dec 2021 13:26:22 -0500
-Received: from sin.source.kernel.org ([145.40.73.55]:53766 "EHLO
-        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239904AbhLCS0W (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 3 Dec 2021 13:26:22 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 7F937CE27F4;
-        Fri,  3 Dec 2021 18:22:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845FEC53FD0;
-        Fri,  3 Dec 2021 18:22:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638555774;
-        bh=kohpqRtNYo8/rd6qeWhkjokIFcE0aHJ3J4KsZZKFieA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Cne1wGkJCwbuDWRFCqib+QaeaOOkWspnsEnnqBPIkujiStuLGrr4c2eigLZjL5IiK
-         2imvJuco6tJGvTPBK1rRU0JDjpSlhuUcR7DUqQMrvGrVH3AEOg0KBxnkdEIGqrQh98
-         NEousbMF1fWs7WOiD/SmwXm+VdgNbPgZ8dU8qthdo9D2yvrJH1Dko+SYZ7dsr9b3aU
-         oMIuF7D1NIi34K4QXpQBBi2I4tbaoGGAC9E7pbFfScSxTZzmm3LvwDI389RyQ38dHB
-         I3g7bLRxycghHnXjm/L422z9Cbst4zXKkUsz1E1uXMe4hcSXZSLNDLLcMECD5ac8g1
-         7gDtMFkwlJ4yw==
-Received: by mail-oo1-f49.google.com with SMTP id d1-20020a4a3c01000000b002c2612c8e1eso2292795ooa.6;
-        Fri, 03 Dec 2021 10:22:54 -0800 (PST)
-X-Gm-Message-State: AOAM532KMApWau6TUxREnRwTVwmEJ4CQMoUcaKlsdOmFGJfOSJycpP2s
-        oLYjTzzA8klfJEurhAP9rug3LJFKpBp+InM0Q4o=
-X-Google-Smtp-Source: ABdhPJxWJjaYBmVI68ScPgxPOobUFFe3HBTEhHpiqjhGf2OAJWWwOuF58TjM4VWK0R01Xlf35fOwM1Qw6pvR7Mf9fu8=
-X-Received: by 2002:a4a:a641:: with SMTP id j1mr13784790oom.63.1638555773592;
- Fri, 03 Dec 2021 10:22:53 -0800 (PST)
+        id S1382815AbhLCT0N (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 3 Dec 2021 14:26:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36486 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1382819AbhLCT0M (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 3 Dec 2021 14:26:12 -0500
+Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com [IPv6:2607:f8b0:4864:20::f2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5702BC061751
+        for <linux-efi@vger.kernel.org>; Fri,  3 Dec 2021 11:22:48 -0800 (PST)
+Received: by mail-qv1-xf2f.google.com with SMTP id s9so3703427qvk.12
+        for <linux-efi@vger.kernel.org>; Fri, 03 Dec 2021 11:22:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=eclypsium.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ANF2YozXkZ/Ma7nQsyNWs6tgBsm2cwF++KgkH2V+msY=;
+        b=ZYhsxXpD0mGY2oqFx+RaRUfwzl0VpP6ZV9szBbuxhq1LBtrWuKE0vhimTJzvcg+zDa
+         sfzG2+TknlaqMmI6RpOlKFaRHcD9CvWDX9CHl5NgswAH0qDHxesQn6xcod7R0OA/Y4pk
+         AmpAvRPS0BCX5SvzoaEiTU9R1y1gnho/Fg7yYMjBDd1N2GsccPJ9X8rYTP2tusqlGITB
+         JL6+v8rdFH6Kv82rm5flzu91kB0j1PTgrya8QBdxnT1d/1drMWYwqcC/crBMLUkaT4gN
+         Rzd0ev2GRbhveZdYW9DO2LwQHHIPHDTv8ftSVykwSy9AEN14h7vkbAx++KJm83Oi2dUv
+         Qvvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ANF2YozXkZ/Ma7nQsyNWs6tgBsm2cwF++KgkH2V+msY=;
+        b=yEJjtzw933h284ZDQ1RVcm7W54GVWU/SJrPLC8f4QtpASzgHtvf3pAfMRDo0+OpVnt
+         J1YuwX2lUdKX4JZHx4SFm4U9XgH4PtmMOo1+gVlPLEhMvNi2lgIbL+LxhNiTFGC85hHC
+         ekzVVfsr21puz3zf6YQN4Q027J6ZgcWdEZekDi2oVNVH3U5e4o/F4h8VFUOvdPy2aYLc
+         xLtHK9jmW0qFvlLIrh2RXGoLMDCWzRoafJ6K8Jc/Vou5sz9uO4BcbFrxKKmU1XAqBbtv
+         urJw+fnu8WyRlMwiFwZTyxl474t/sDxxY1WeBWoGmNkyjDBjvrHMbSARsMOBQBNbJMqS
+         ON9Q==
+X-Gm-Message-State: AOAM533WIPD4OdjgHu+7LV2/w+5YwEo41TU5bICYpSTCCycfjIY8F5nx
+        Gm/PH9Mvz17ljeu5EudKiufs6A==
+X-Google-Smtp-Source: ABdhPJyXWkPwQVmZmqs083B9CeHPzZGK70TGRqlHMkD4evC17cikecKIZkE7Ay8fTkI7veAOIfGPoA==
+X-Received: by 2002:a0c:f750:: with SMTP id e16mr21182404qvo.110.1638559367537;
+        Fri, 03 Dec 2021 11:22:47 -0800 (PST)
+Received: from localhost (7-153-16-190.fibertel.com.ar. [190.16.153.7])
+        by smtp.gmail.com with ESMTPSA id y10sm2701035qkp.128.2021.12.03.11.22.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Dec 2021 11:22:47 -0800 (PST)
+From:   Martin Fernandez <martin.fernandez@eclypsium.com>
+To:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org
+Cc:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
+        gregkh@linuxfoundation.org, rafael@kernel.org, rppt@kernel.org,
+        akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
+        hughsient@gmail.com, alex.bazhaniuk@eclypsium.com,
+        alison.schofield@intel.com,
+        Martin Fernandez <martin.fernandez@eclypsium.com>
+Subject: [PATCH v3 0/5] x86: Show in sysfs if a memory node is able to do encryption
+Date:   Fri,  3 Dec 2021 16:21:43 -0300
+Message-Id: <20211203192148.585399-1-martin.fernandez@eclypsium.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <cover.1637505679.git.yu.c.chen@intel.com> <6774dd4cce68a68b1ac54df3dfd295bb4b04bf2b.1637505679.git.yu.c.chen@intel.com>
- <CAJZ5v0j2m8EOVM2EDWtff3tZ9V0eaw3PhA8-bXR-kdMyCfHyHg@mail.gmail.com>
-In-Reply-To: <CAJZ5v0j2m8EOVM2EDWtff3tZ9V0eaw3PhA8-bXR-kdMyCfHyHg@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 3 Dec 2021 19:22:42 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXE47XQzHRZ8VMhsFDdzWeQyUSRdHknEUD6-urRimTsPLw@mail.gmail.com>
-Message-ID: <CAMj1kXE47XQzHRZ8VMhsFDdzWeQyUSRdHknEUD6-urRimTsPLw@mail.gmail.com>
-Subject: Re: [PATCH v11 1/4] efi: Introduce EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
- and corresponding structures
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Chen Yu <yu.c.chen@intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Len Brown <lenb@kernel.org>, Ashok Raj <ashok.raj@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 3 Dec 2021 at 19:21, Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Sun, Nov 21, 2021 at 4:17 PM Chen Yu <yu.c.chen@intel.com> wrote:
-> >
-> > Platform Firmware Runtime Update image starts with UEFI headers, and the
-> > headers are defined in UEFI specification, but some of them have not been
-> > defined in the kernel yet.
-> >
-> > For example, the header layout of a capsule file looks like this:
-> >
-> > EFI_CAPSULE_HEADER
-> > EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
-> > EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER
-> > EFI_FIRMWARE_IMAGE_AUTHENTICATION
-> >
-> > These structures would be used by the Platform Firmware Runtime Update
-> > driver to parse the format of capsule file to verify if the corresponding
-> > version number is valid. In this way, if the user provides an invalid
-> > capsule image, the kernel could be used as a guard to reject it, without
-> > switching to the Management Mode (which might be costly).
-> >
-> > EFI_CAPSULE_HEADER has been defined in the kernel, but the other
-> > structures have not been defined yet, so do that. Besides,
-> > EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER and
-> > EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER are required to be packed
-> > in the uefi specification. For this reason, use the __packed attribute
-> > to indicate to the compiler that the entire structure can appear
-> > misaligned in memory (as suggested by Ard) in case one of them follows
-> > the other directly in a capsule header.
-> >
-> > Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-> > ---
-> > v11:Add explanation on why version check is introduced
-> >     in kernel rather than letting Management Mode to do it.
-> >     (Rafael J. Wysocki)
-> >     Revise the commit log to better describe the pack attribute.
-> >     (Rafael J. Wysocki)
-> >     Refine the comment for hw_ins and capsule_support.
-> >     (Rafael J. Wysocki)
-> > v10:Remove the explicit assignment of the last item of enum.
-> >     (Andy Shevchenko)
-> > v9: Use GUID_INIT() instead of guid_parse() during boot up.
-> >     (Andy Shevchenko)
-> >     Drop uuid, code_uuid, drv_uuid in struct pfru_device as they
-> >     are not needed. (Andy Shevchenko)
-> >     Drop type casting from void * in valid_version().
-> >     (Andy Shevchenko)
-> >     Use kfree() instead of ACPI_FREE() in non-ACPICA usage.
-> >     (Andy Shevchenko)
-> >     Use sizeof(rev) instead of sizeof(u32) in copy_from_user().
-> >     (Andy Shevchenko)
-> >     Generate physical address from MSB part to LSB.
-> >     (Andy Shevchenko)
-> >     Use devm_add_action_or_reset() to add ida release into dev resource
-> >     management. (Andy Shevchenko)
-> >     Use devm_kasprintf() instead of kasprintf() to format the
-> >     pfru_dev name.(Andy Shevchenko)
-> >     Remove redundant 0 in acpi_pfru_ids. (Andy Shevchenko)
-> >     Adjust the order of included headers in pfru.h.
-> >     (Andy Shevchenko)
-> >     Replace PFRU_MAGIC with PFRU_MAGIC_FOR_IOCTL in uapi file.
-> >     (Andy Shevchenko)
-> > v8: Remove the variable-length array in struct pfru_update_cap_info, and
-> >     copy the non-variable-length struct pfru_update_cap_info to userspace
-> >     directly. (Greg Kroah-Hartman)
-> >     Change the type of rev_id from int to u32, because this data will
-> >     be copied between kernel and userspace. (Greg Kroah-Hartman)
-> >     Add a prefix for dev in struct pfru_device to parent_dev, so as
-> >     to indicate that this filed is the parent of the created miscdev.
-> >     (Greg Kroah-Hartman)
-> >     Use blank lines between different macro sections. (Greg Kroah-Hartman)
-> >     Illusatrate the possible errno for each ioctl interface.
-> >     (Greg Kroah-Hartman)
-> >     Remove pfru_valid_revid() from uapi header to avoid poluting the global
-> >     namespace.(Greg Kroah-Hartman)
-> >     Assign the value to the enum type explicitly.(Greg Kroah-Hartman)
-> >     Change the guid_t to efi_guid_t when parsing image header in get_image_type()
-> >     (Greg Kroah-Hartman)
-> >     Remove the void * to other type casting in valid_version(). (Andy Shevchenko)
-> >     Combined the assignment of variables with definitions. (Andy Shevchenko)
-> >     Define this magic for revision ID. (Andy Shevchenko)
-> >     Make the labeling consistent for error handling. (Andy Shevchenko)
-> >     Replace the UUID_SIZE in uapi with 16 directly. (Andy Shevchenko)
-> >     Add blank line between generic include header and uapi header.
-> >     (Andy Shevchenko)
-> >     Arrange the order between devm_kzalloc() and normal allocation in
-> >     acpi_pfru_probe() that, the former should always be ahead of the
-> >     latter. (Andy Shevchenko)
-> >     Move the UUID from uapi header to the c file. (Andy Shevchenko)
-> > v7: Use ida_alloc() to allocate a ID, and release the ID when
-> >     device is removed. (Greg Kroah-Hartman)
-> >     Check the _DSM method at early stage, before allocate or parse
-> >     anything in acpi_pfru_probe(). (Greg Kroah-Hartman)
-> >     Set the parent of the misc device. (Greg Kroah-Hartman)
-> >     Use module_platform_driver() instead of platform_driver_register()
-> >     in module_init(). Separate pfru driver and pfru_telemetry driver
-> >     to two files. (Greg Kroah-Hartman)
-> > v6: Use Link: tag to add the specification download address.
-> >     (Andy Shevchenko)
-> >     Remove linux/uuid.h and use raw buffers to contain uuid.
-> >     (Andy Shevchenko)
-> >     Drop comma for each terminator entry in the enum structure.
-> >     (Andy Shevchenko)
-> >     Remove redundant 'else' in get_image_type().
-> >     (Andy Shevchenko)
-> >     Directly return results from the switch cases in adjust_efi_size()
-> >     and pfru_ioctl().(Andy Shevchenko)
-> >     Keep comment style consistent by removing the period for
-> >     one line comment.
-> >     (Andy Shevchenko)
-> >     Remove devm_kfree() if .probe() failed.
-> >     (Andy Shevchenko)
-> > v5: Remove Documentation/ABI/pfru, and move the content to kernel doc
-> >     in include/uapi/linux/pfru.h (Greg Kroah-Hartman)
-> >     Shrink the range of ioctl numbers declared in
-> >     Documentation/userspace-api/ioctl/ioctl-number.rst
-> >     from 16 to 8. (Greg Kroah-Hartman)
-> >     Change global variable struct pfru_device *pfru_dev to
-> >     per ACPI device. (Greg Kroah-Hartman)
-> >     Unregister the misc device in acpi_pfru_remove().
-> >     (Greg Kroah-Hartman)
-> >     Convert the kzalloc() to devm_kzalloc() in the driver so
-> >     as to avoid freeing the memory. (Greg Kroah-Hartman)
-> >     Fix the compile error by declaring the pfru_log_ioctl() as
-> >     static. (kernel test robot LKP)
-> >     Change to global variable misc_device to per ACPI device.
-> >     (Greg Kroah-Hartman)
-> > v4: Replace all pr_err() with dev_dbg() (Greg Kroah-Hartman,
-> >     Rafael J. Wysocki)
-> >     Returns ENOTTY rather than ENOIOCTLCMD if invalid ioctl command
-> >     is provided. (Greg Kroah-Hartman)
-> >     Remove compat ioctl. (Greg Kroah-Hartman)
-> >     Rename /dev/pfru/pfru_update to /dev/acpi_pfru (Greg Kroah-Hartman)
-> >     Simplify the check for element of the package in query_capability()
-> >     (Rafael J. Wysocki)
-> >     Remove the loop in query_capability(), query_buffer() and query
-> >     the package elemenet directly. (Rafael J. Wysocki)
-> >     Check the the number of elements in case the number of package
-> >     elements is too small. (Rafael J. Wysocki)
-> >     Doing the assignment as initialization in get_image_type().
-> >     Meanwhile, returns the type or a negative error code in
-> >     get_image_type(). (Rafael J. Wysocki)
-> >     Put the comments inside the function. (Rafael J. Wysocki)
-> >     Returns the size or a negative error code in adjust_efi_size()
-> >     (Rafael J. Wysocki)
-> >     Fix the return value from EFAULT to EINVAL if pfru_valid_revid()
-> >     does not pass. (Rafael J. Wysocki)
-> >     Change the write() to be the code injection/update, the read() to
-> >     be telemetry retrieval and all of the rest to be ioctl()s under
-> >     one special device file.(Rafael J. Wysocki)
-> >     Putting empty code lines after an if () statement that is not
-> >     followed by a block. (Rafael J. Wysocki)
-> >     Remove "goto" tags to make the code more readable. (Rafael J. Wysocki)
-> > v3: Use __u32 instead of int and __64 instead of unsigned long
-> >     in include/uapi/linux/pfru.h (Greg Kroah-Hartman)
-> >     Rename the structure in uapi to start with a prefix pfru so as
-> >     to avoid confusing in the global namespace. (Greg Kroah-Hartman)
-> > v2: Add sanity check for duplicated instance of ACPI device.
-> >     Update the driver to work with allocated pfru_device objects.
-> >     (Mike Rapoport)
-> >     For each switch case pair, get rid of the magic case numbers
-> >     and add a default clause with the error handling.
-> >     (Mike Rapoport)
-> >     Move the obj->type checks outside the switch to reduce redundancy.
-> >     (Mike Rapoport)
-> >     Parse the code_inj_id and drv_update_id at driver initialization time
-> >     to reduce the re-parsing at runtime.(Mike Rapoport)
-> >     Explain in detail how the size needs to be adjusted when doing
-> >     version check.(Mike Rapoport)
-> >     Rename parse_update_result() to dump_update_result()(Mike Rapoport)
-> >     Remove redundant return.(Mike Rapoport)
-> >     Do not expose struct capsulate_buf_info to uapi, since it is
-> >     not needed in userspace.(Mike Rapoport)
-> > ---
->
-> OK, this is simple enough.
->
-> Ard, any concerns?
->
+Show for each node if every memory descriptor in that node has the
+EFI_MEMORY_CPU_CRYPTO attribute.
 
-Looks fine to me
+fwupd project plans to use it as part of a check to see if the users
+have properly configured memory hardware encryption capabilities. It's
+planned to make it part of a specification that can be passed to
+people purchasing hardware. It's called Host Security ID:
+https://fwupd.github.io/libfwupdplugin/hsi.html
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+This also can be useful in the future if NUMA decides to prioritize
+nodes that are able to do encryption.
 
-> >  include/linux/efi.h | 46 +++++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 46 insertions(+)
-> >
-> > diff --git a/include/linux/efi.h b/include/linux/efi.h
-> > index dbd39b20e034..80e970f7e6f8 100644
-> > --- a/include/linux/efi.h
-> > +++ b/include/linux/efi.h
-> > @@ -148,6 +148,52 @@ typedef struct {
-> >         u32 imagesize;
-> >  } efi_capsule_header_t;
-> >
-> > +/* EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER */
-> > +struct efi_manage_capsule_header {
-> > +       u32 ver;
-> > +       u16 emb_drv_cnt;
-> > +       u16 payload_cnt;
-> > +       /*
-> > +        * Variable-size array of the size given by the sum of
-> > +        * emb_drv_cnt and payload_cnt.
-> > +        */
-> > +       u64 offset_list[];
-> > +} __packed;
-> > +
-> > +/* EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER */
-> > +struct efi_manage_capsule_image_header {
-> > +       u32 ver;
-> > +       efi_guid_t image_type_id;
-> > +       u8 image_index;
-> > +       u8 reserved_bytes[3];
-> > +       u32 image_size;
-> > +       u32 vendor_code_size;
-> > +       /* hw_ins was introduced in version 2 */
-> > +       u64 hw_ins;
-> > +       /* capsule_support was introduced in version 3 */
-> > +       u64 capsule_support;
-> > +} __packed;
-> > +
-> > +/* WIN_CERTIFICATE */
-> > +struct win_cert {
-> > +       u32 len;
-> > +       u16 rev;
-> > +       u16 cert_type;
-> > +};
-> > +
-> > +/* WIN_CERTIFICATE_UEFI_GUID */
-> > +struct win_cert_uefi_guid {
-> > +       struct win_cert hdr;
-> > +       efi_guid_t cert_type;
-> > +       u8 cert_data[];
-> > +};
-> > +
-> > +/* EFI_FIRMWARE_IMAGE_AUTHENTICATION */
-> > +struct efi_image_auth {
-> > +       u64 mon_count;
-> > +       struct win_cert_uefi_guid auth_info;
-> > +};
-> > +
-> >  /*
-> >   * EFI capsule flags
-> >   */
-> > --
-> > 2.25.1
-> >
+
+Changes since v2:
+
+e820__range_mark_crypto -> e820__range_mark_crypto_capable.
+
+In e820__range_remove: Create a region with crypto capabilities
+instead of creating one without it and then mark it.
+
+
+Changes since v1:
+
+Modify __e820__range_update to update the crypto capabilities of a
+range; now this function will change the crypto capability of a range
+if it's called with the same old_type and new_type. Rework
+efi_mark_e820_regions_as_crypto_capable based on this.
+
+Update do_add_efi_memmap to mark the regions as it creates them.
+
+Change the type of crypto_capable in e820_entry from bool to u8.
+
+Fix e820__update_table changes.
+
+Remove memblock_add_crypto_capable. Now you have to add the region and
+mark it then.
+
+Better place for crypto_capable in pglist_data.
+
+
+Martin Fernandez (5):
+  mm/memblock: Tag memblocks with crypto capabilities
+  mm/mmzone: Tag pg_data_t with crypto capabilities
+  Tag e820_entry with crypto capabilities
+  x86/efi: Tag e820_entries as crypto capable from EFI memmap
+  drivers/node: Show in sysfs node's crypto capabilities
+
+ arch/x86/include/asm/e820/api.h   |  1 +
+ arch/x86/include/asm/e820/types.h |  1 +
+ arch/x86/kernel/e820.c            | 59 ++++++++++++++++++++++++-------
+ arch/x86/platform/efi/efi.c       | 25 +++++++++++++
+ drivers/base/node.c               | 10 ++++++
+ include/linux/memblock.h          |  5 +++
+ include/linux/mmzone.h            |  3 ++
+ mm/memblock.c                     | 49 +++++++++++++++++++++++++
+ mm/page_alloc.c                   |  1 +
+ 9 files changed, 142 insertions(+), 12 deletions(-)
+
+-- 
+2.30.2
+
