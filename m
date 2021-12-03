@@ -2,107 +2,97 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D796E467508
-	for <lists+linux-efi@lfdr.de>; Fri,  3 Dec 2021 11:31:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 333DA467A73
+	for <lists+linux-efi@lfdr.de>; Fri,  3 Dec 2021 16:40:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238499AbhLCKeQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 3 Dec 2021 05:34:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54498 "EHLO
+        id S1352655AbhLCPng (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 3 Dec 2021 10:43:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379987AbhLCKeO (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 3 Dec 2021 05:34:14 -0500
+        with ESMTP id S245188AbhLCPng (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 3 Dec 2021 10:43:36 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01604C06174A;
-        Fri,  3 Dec 2021 02:30:50 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17408C061751;
+        Fri,  3 Dec 2021 07:40:12 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 684F26294D;
-        Fri,  3 Dec 2021 10:30:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D71C58319;
-        Fri,  3 Dec 2021 10:30:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638527449;
-        bh=RcP5xgutHpVuMEDTVWRPy+67aJdjE6dJ1nDSLasNx/c=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=W+iH1k3C1COL2C6s3ufbZmCN/rV3mlz920873ga9RQ+nDaYynAq7fboLEKoE0F/SR
-         ncxc+cRqnH29+S57+x37i1XfgjPWsBICHcXG1fpOAMft104hfDn9JHTSJkAu3aDooB
-         bEbUkphQq2+FT60lgSkDVzcJrbbAhMCGjmEz4QbeiAOvMHYR61USrTNvoU/DqFrlxI
-         2cpBaQCLMGPLv0g9afv5A/oCfhu28fC0OujMyjK2GTborVwz5kshRopRj2G+qWImlX
-         q010pMTrK5XPFe8uhTc2w85w0lbWf/oUKIdp3omioGH4WpTnGtWyhmGqTLYdx7zkzz
-         Sd5VasHqO2ARA==
-Received: by mail-oi1-f178.google.com with SMTP id bk14so4944674oib.7;
-        Fri, 03 Dec 2021 02:30:49 -0800 (PST)
-X-Gm-Message-State: AOAM531PC8gxLJWE6rbilgoQ+qZDxXsbwkfVv68TkCJAih3Yw+RdlHnS
-        nswvvVZx5KaZoujDUrbdA4O6dWhKPjtSp/ZlbOA=
-X-Google-Smtp-Source: ABdhPJytzC+ann1KB6ekO12wj9Cbt3QWXfD0JkS+I2NnDbz/4AI+D2NUXfy/tm83h/6XocNBZUBH3AXB9BXLZqFrb18=
-X-Received: by 2002:a05:6808:12:: with SMTP id u18mr9337072oic.174.1638527449029;
- Fri, 03 Dec 2021 02:30:49 -0800 (PST)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A527062B37;
+        Fri,  3 Dec 2021 15:40:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F4FC53FD1;
+        Fri,  3 Dec 2021 15:40:10 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="FcqUlTKc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1638546008;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=UGhio4QnX3x/UO4oG1imIpr3olIL5ddNsHdKAlUjEdI=;
+        b=FcqUlTKcKR3GdrdsHcPObFnWm0C59/XQPhNtKeWgMKsqiY8Gec1ATxH4GPCY/w0ShV8633
+        YoUatj5g/c/5E1fZuVdkF6oNeHq1w5m3umNq/albbRuBUIcp8h/MTd6OtISRXarmyydp9w
+        jSTUJ0X9vS9Qq8Xyws/xED1Xp3IEPZM=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 4b508f95 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+        Fri, 3 Dec 2021 15:40:08 +0000 (UTC)
+Received: by mail-yb1-f175.google.com with SMTP id d10so10504412ybe.3;
+        Fri, 03 Dec 2021 07:40:08 -0800 (PST)
+X-Gm-Message-State: AOAM532yCs2ouQNpikDJiG9dmqjwU1i23CKujnF6CADgKEEk7GYlLP39
+        kU8MbRsPtS7A0CpjSIA/Ac6vozcaWN9MkYYep2c=
+X-Google-Smtp-Source: ABdhPJxkkvNakIKUJQ4NIwzyEHKWVXP18fwqUxSRgy8I4AgCRdE6he6+4LBuFNKazRXexjS1+6UB57yM97b1r5oW7cI=
+X-Received: by 2002:a25:2412:: with SMTP id k18mr23758724ybk.121.1638546006365;
+ Fri, 03 Dec 2021 07:40:06 -0800 (PST)
 MIME-Version: 1.0
-References: <8afff0c64feb6b96db36112cb865243f4ae280ca.1634922135.git.thomas.lendacky@amd.com>
- <c997e8a2-b364-2a8e-d247-438e9d937a1e@amd.com> <CAMj1kXGH7aGR==o1L2dnA9U9L==gM0__10UGznnyZwkHrT84sw@mail.gmail.com>
- <YXmEo8iMNIn1esYC@zn.tnic> <CAMj1kXEZkw99MPssHWFRL_k0okeGF47VYL+o8p72hBWkqW927g@mail.gmail.com>
- <f939e968-149f-1caf-c1fb-5939eafae31c@amd.com> <15ceb556-0b56-2833-206e-0cf9b9d2cb45@amd.com>
-In-Reply-To: <15ceb556-0b56-2833-206e-0cf9b9d2cb45@amd.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 3 Dec 2021 11:30:38 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHKxObuebZJMWQQwg014rYzvoBgWPZxfCYakuf+GSoqhg@mail.gmail.com>
-Message-ID: <CAMj1kXHKxObuebZJMWQQwg014rYzvoBgWPZxfCYakuf+GSoqhg@mail.gmail.com>
-Subject: Re: [PATCH v2] x86/sme: Explicitly map new EFI memmap table as encrypted
-To:     Tom Lendacky <thomas.lendacky@amd.com>
-Cc:     Borislav Petkov <bp@alien8.de>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        platform-driver-x86@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Matt Fleming <matt@codeblueprint.co.uk>,
-        "# 3.4.x" <stable@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        X86 ML <x86@kernel.org>
+References: <20211012082708.121931-1-iivanov@suse.de> <YWVKAk4h5bsUA3b6@light.dominikbrodowski.net>
+ <YaivhAV8LouB0zGV@light.dominikbrodowski.net> <CAHmME9qxBeBzfKCjzfAFX9ZWAGKv1TKCQw3x22d_DmJtaAewLw@mail.gmail.com>
+ <YanOIvAV1iPBEXR3@light.dominikbrodowski.net>
+In-Reply-To: <YanOIvAV1iPBEXR3@light.dominikbrodowski.net>
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Fri, 3 Dec 2021 16:39:55 +0100
+X-Gmail-Original-Message-ID: <CAHmME9qGHo4n6QGxnE+O46pagOR0bA+9E8bi8ZLPAzMuMZpPwg@mail.gmail.com>
+Message-ID: <CAHmME9qGHo4n6QGxnE+O46pagOR0bA+9E8bi8ZLPAzMuMZpPwg@mail.gmail.com>
+Subject: Re: [PATCH v4] random: fix crash on multiple early calls to add_bootloader_randomness()
+To:     Dominik Brodowski <linux@dominikbrodowski.net>
+Cc:     "Theodore Ts'o" <tytso@mit.edu>,
+        "Ivan T. Ivanov" <iivanov@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>, hsinyi@chromium.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 1 Dec 2021 at 15:06, Tom Lendacky <thomas.lendacky@amd.com> wrote:
->
-> On 10/27/21 12:04 PM, Tom Lendacky wrote:
-> >
-> >
-> > On 10/27/21 11:59 AM, Ard Biesheuvel wrote:
-> >> On Wed, 27 Oct 2021 at 18:56, Borislav Petkov <bp@alien8.de> wrote:
-> >>>
-> >>> On Wed, Oct 27, 2021 at 05:14:35PM +0200, Ard Biesheuvel wrote:
-> >>>> I could take it, but since it will ultimately go through -tip anyway,
-> >>>> perhaps better if they just take it directly? (This will change after
-> >>>> the next -rc1 though)
-> >>>>
-> >>>> Boris?
-> >>>
-> >>> Yeah, I'm being told this is not urgent enough to rush in now so you
-> >>> could queue it into your fixes branch for 5.16 once -rc1 is out and send
-> >>> it to Linus then. The stable tag is just so it gets backported to the
-> >>> respective trees.
-> >>>
-> >>> But if you prefer I should take it, then I can queue it after -rc1.
-> >>> It'll boil down to the same thing though.
-> >>>
-> >>
-> >> No, in that case, I can take it myself.
-> >>
-> >> Tom, does that work for you?
-> >
-> > Yup, that works for me. Thanks guys!
->
-> I don't see this in any tree yet, so just a gentle reminder in case it
-> dropped off the radar.
->
+Hi Dominik,
 
-Apologies for the delay, I've pushed this out to -next now.
+Thanks for your analysis. Some more questions:
 
-Before I send it to Linus, can you please confirm (for my peace of
-mind) how this only affects systems that have memory encryption
-available and enabled in the first place?
+On Fri, Dec 3, 2021 at 8:59 AM Dominik Brodowski
+<linux@dominikbrodowski.net> wrote:
+> On subsequent calls to add_bootloader_randomness() and then to
+> add_hwgenerator_randomness(), crng_fast_load() will be skipped. Instead,
+> wait_event_interruptible() (which makes no sense for the init process)
+> and then credit_entropy_bits() will be called. If the entropy count for
+> that second seed is large enough, that proceeds to crng_reseed().
+> However, crng_reseed() may depend on workqueues being available, which
+> is not the case early during boot.
+
+It sounds like *the* issue you've identified is that crng_reseed()
+calls into workqueue functions too early in init, right? The bug is
+about paths into crng_reseed() that might cause that?
+
+If so, then specifically, are you referring to crng_reseed()'s call to
+numa_crng_init()? In other words, the cause of the bug would be
+6c1e851c4edc ("random: fix possible sleeping allocation from irq
+context")? If that's the case, then I wonder if the problem you're
+seeing goes away if you revert both 6c1e851c4edc ("random: fix
+possible sleeping allocation from irq context") and its primary
+predecessor, 8ef35c866f88 ("random: set up the NUMA crng instances
+after the CRNG is fully initialized"). These fix an actual bug, so I'm
+not suggesting we actually revert these in the tree, but for the
+purpose of testing, I'm wondering if this is actually the root cause
+of the bug you're seeing.
+
+Also, if you have a nice way of reproducing this, please do tell - I'd
+like to give it a spin if possible.
+
+Regards,
+Jason
