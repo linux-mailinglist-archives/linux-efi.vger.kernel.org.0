@@ -2,33 +2,30 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD457468357
-	for <lists+linux-efi@lfdr.de>; Sat,  4 Dec 2021 09:21:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DB9246835A
+	for <lists+linux-efi@lfdr.de>; Sat,  4 Dec 2021 09:22:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1384235AbhLDIZX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 4 Dec 2021 03:25:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37914 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354766AbhLDIZX (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 4 Dec 2021 03:25:23 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D227C061751;
-        Sat,  4 Dec 2021 00:21:58 -0800 (PST)
+        id S1384257AbhLDIZ6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 4 Dec 2021 03:25:58 -0500
+Received: from sin.source.kernel.org ([145.40.73.55]:54824 "EHLO
+        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232883AbhLDIZ5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 4 Dec 2021 03:25:57 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 86FA5B807E4;
-        Sat,  4 Dec 2021 08:21:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3985DC341C0;
-        Sat,  4 Dec 2021 08:21:54 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id E53FECE1DF9;
+        Sat,  4 Dec 2021 08:22:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94264C341C0;
+        Sat,  4 Dec 2021 08:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1638606115;
-        bh=SximJh3Vd1cQiTCTSxpplR616mpXHOCLhQDR1aplEM4=;
+        s=korg; t=1638606149;
+        bh=b4KdFEuyeTDkLRxTBS/8EoeINyZKLJit3rrz0W8btQg=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YYmfSjOoo1NpRvVK3j1rmFiYbqVs2CEUHktL53fJ/VB40mPNd8e3Yr2y9X6dlnaG3
-         bA3ZX5W74sdb6yw/9PzqWvLufv3L8k1ng1ezSJ1sqfV1CtaBkMBCv4J0+FrjjHysKw
-         oaKdvNGrlr8qAAOI6pjPSGfprwPyxgbpHdA9bYf4=
-Date:   Sat, 4 Dec 2021 09:21:51 +0100
+        b=dlLLOCnGeCwxKahR1hZVwxkC9YXA1U6VO7mAvQGe0DgPkTcQNOO6O5S7IVMmI/WSc
+         G7ejFjsP9j/KsuDMASZreQ2mTY/+NO/Bu1i++Osc6KDBSjBT1aT86COTxUD/cKiZ6A
+         T27mVcDDC6a5TCfr3iduF2FkJyLjr/KCJZRb2bGs=
+Date:   Sat, 4 Dec 2021 09:22:24 +0100
 From:   Greg KH <gregkh@linuxfoundation.org>
 To:     Martin Fernandez <martin.fernandez@eclypsium.com>
 Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
@@ -39,27 +36,54 @@ Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
         rafael@kernel.org, rppt@kernel.org, akpm@linux-foundation.org,
         daniel.gutson@eclypsium.com, hughsient@gmail.com,
         alex.bazhaniuk@eclypsium.com, alison.schofield@intel.com
-Subject: Re: [PATCH v3 3/5] Tag e820_entry with crypto capabilities
-Message-ID: <YaslH6kSDljPpC5/@kroah.com>
+Subject: Re: [PATCH v3 5/5] drivers/node: Show in sysfs node's crypto
+ capabilities
+Message-ID: <YaslQCg2G1pWUPVV@kroah.com>
 References: <20211203192148.585399-1-martin.fernandez@eclypsium.com>
- <20211203192148.585399-4-martin.fernandez@eclypsium.com>
+ <20211203192148.585399-6-martin.fernandez@eclypsium.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211203192148.585399-4-martin.fernandez@eclypsium.com>
+In-Reply-To: <20211203192148.585399-6-martin.fernandez@eclypsium.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Dec 03, 2021 at 04:21:46PM -0300, Martin Fernandez wrote:
-> Add a new member in e820_entry to hold whether an entry is able to do
-> hardware memory encryption or not.
+On Fri, Dec 03, 2021 at 04:21:48PM -0300, Martin Fernandez wrote:
+> Show in each node in sysfs if its memory is able to do be encrypted by
+> the CPU, ie. if all its memory is marked with EFI_MEMORY_CPU_CRYPTO in
+> the EFI memory map.
 > 
-> Add a new argument to __e820__range_add to accept this new
-> crypto_capable.
+> Signed-off-by: Martin Fernandez <martin.fernandez@eclypsium.com>
+> ---
+>  drivers/base/node.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/drivers/base/node.c b/drivers/base/node.c
+> index b5a4ba18f9f9..67b0e2fa93b1 100644
+> --- a/drivers/base/node.c
+> +++ b/drivers/base/node.c
+> @@ -560,11 +560,21 @@ static ssize_t node_read_distance(struct device *dev,
+>  }
+>  static DEVICE_ATTR(distance, 0444, node_read_distance, NULL);
+>  
+> +static ssize_t crypto_capable_show(struct device *dev,
+> +				   struct device_attribute *attr, char *buf)
+> +{
+> +	struct pglist_data *pgdat = NODE_DATA(dev->id);
+> +
+> +	return sysfs_emit(buf, "%d\n", pgdat->crypto_capable);
+> +}
+> +static DEVICE_ATTR_RO(crypto_capable);
+> +
+>  static struct attribute *node_dev_attrs[] = {
+>  	&dev_attr_meminfo.attr,
+>  	&dev_attr_numastat.attr,
+>  	&dev_attr_distance.attr,
+>  	&dev_attr_vmstat.attr,
+> +	&dev_attr_crypto_capable.attr,
+>  	NULL
+>  };
 
-Shouldn't this Subject have the same prefix as patch 4/5?
-
-thanks,
-
-greg k-h
+You forgot a Documentation/ABI/ update for this new sysfs file you
+added :(
