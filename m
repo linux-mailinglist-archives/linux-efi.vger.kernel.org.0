@@ -2,151 +2,86 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3F174686A9
-	for <lists+linux-efi@lfdr.de>; Sat,  4 Dec 2021 18:40:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FF454686DD
+	for <lists+linux-efi@lfdr.de>; Sat,  4 Dec 2021 19:03:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344674AbhLDRn0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 4 Dec 2021 12:43:26 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:43406 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1385247AbhLDRnO (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 4 Dec 2021 12:43:14 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3151A60E8C;
-        Sat,  4 Dec 2021 17:39:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825A8C341C2;
-        Sat,  4 Dec 2021 17:39:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638639587;
-        bh=kQ9J/Pb/miLDIi9F8XefyifBJMWLFvXftgnYx6Gg0xw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=G8yIUXKuaYDgnt1TiQrKQdX1K+9aYLwi2nGlUl3bXLXJesqTZlcoteyoAF+QnB8zE
-         WF29gb6ByQvxjxz3PGmvwdnLwI2kVCOSDsjVbRo7o/CC1P9/70f2539HIqdK1aSFSG
-         Qtw6dDTlLUhtQF0i9cdGiw2b9kbVrVj3v+bZfZG3IOPFF0fEWiPzVu29G3NJCDxXx7
-         XG4rLiUtJOd8JtRXWYB/1ZUKud7j2xeB/+cwO5kOTpESb61Lg/qwMmpxM2OG0RQFTH
-         fzOH27WtjkgIUNWaZe08Qovo1x1h4ZW1x/6IaIJSFImBtCPlACcrr6FBi02CJYKoP9
-         eR1GV79KfiYiA==
-Date:   Sat, 4 Dec 2021 19:39:43 +0200
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Mimi Zohar <zohar@linux.ibm.com>
-Cc:     Eric Snowberg <eric.snowberg@oracle.com>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        "dhowells@redhat.com" <dhowells@redhat.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "jmorris@namei.org" <jmorris@namei.org>,
-        "serge@hallyn.com" <serge@hallyn.com>,
-        "keescook@chromium.org" <keescook@chromium.org>,
-        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
-        "weiyongjun1@huawei.com" <weiyongjun1@huawei.com>,
-        "nayna@linux.ibm.com" <nayna@linux.ibm.com>,
-        "ebiggers@google.com" <ebiggers@google.com>,
-        "ardb@kernel.org" <ardb@kernel.org>,
-        "nramas@linux.microsoft.com" <nramas@linux.microsoft.com>,
-        "lszubowi@redhat.com" <lszubowi@redhat.com>,
-        "jason@zx2c4.com" <jason@zx2c4.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "James.Bottomley@hansenpartnership.com" 
-        <James.Bottomley@hansenpartnership.com>,
-        "pjones@redhat.com" <pjones@redhat.com>,
-        Konrad Wilk <konrad.wilk@oracle.com>
-Subject: Re: [PATCH v8 09/17] KEYS: Rename
- get_builtin_and_secondary_restriction
-Message-ID: <Yaun39iwWoln5/4H@iki.fi>
-References: <20211124044124.998170-1-eric.snowberg@oracle.com>
- <20211124044124.998170-10-eric.snowberg@oracle.com>
- <fb1d583f588e3f46fdadbe3cf6288bb098ff45f8.camel@kernel.org>
- <8906F8A4-313F-45E5-8ABD-A1A2D07BFD93@oracle.com>
- <YadOLrHb14MEfphi@iki.fi>
- <61f5d74f861ce1015831649d3bca9272a2e3b7bf.camel@linux.ibm.com>
+        id S1355400AbhLDSHV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 4 Dec 2021 13:07:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52840 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231254AbhLDSHU (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 4 Dec 2021 13:07:20 -0500
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C351C061751
+        for <linux-efi@vger.kernel.org>; Sat,  4 Dec 2021 10:03:55 -0800 (PST)
+Received: by mail-yb1-xb33.google.com with SMTP id j2so19074579ybg.9
+        for <linux-efi@vger.kernel.org>; Sat, 04 Dec 2021 10:03:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=eclypsium.com; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=rLzAPQRH2eocZ5yarciM+SfnfNNbvB1ODjCX9P75N9Y=;
+        b=Kt6hkUqTxt23xqHH9bnTRwcCOrC+SDGPI/6GzzWOeRiF3k/Q+6XZApEYhSd3n8WG0N
+         XVvSHLfY4Xocq76jzrxsZ9HZMSJo6NczgxLPc6OtrOAdAZs7P2GNzdtttSxq27ReIiI0
+         4AhAhdNOqvONqIIcS6reHtmUU+Vc/+2RMi1o88KFYoh5wejN+FI1yXy9Qq36sgXk99ag
+         wIq90UKkUzCTil4chwSLbM6mig7nN0EI6O5UXXE8+C+kADZF/I+s81tSJ5yQr/JfBDZB
+         jJ1Xvzr/KjVUQ05gmfdw9zwWN8izf7XhpnNAAytqUQN53Rfh/1s4dB2Ou7E0nEAip0uP
+         1Rww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=rLzAPQRH2eocZ5yarciM+SfnfNNbvB1ODjCX9P75N9Y=;
+        b=ad8TMlKefAabVxTBa1d4wKuyecpd8z85z5mRLY4Mv6vXtklnuOHdZ86ItUFn+dAPFL
+         9tKNVIJ/AeagBMkpvbkIGtRrmX5+R2DP7mkvqLQm9l2PDocJQmcBz/yIMU+Ygl2pXGFY
+         kozLso3adJbbAN20+3dsaSYK2kpQl4LlN+pLvMwI/H1g9UdRaPIOASmfim8Pmp1pSakb
+         w4lHOhjMNWEFDXLp1pC+YNE76BoXLeknn5uqu0Tef0ww6Dx36Zm3cFhvr1j6aHrhSWmK
+         qDf2DZCC01LWpIM7YfRZWpD0jileAotzcJxc8KACt61SoqQCBgbIhZl6trFhrEE4wth/
+         7g9w==
+X-Gm-Message-State: AOAM531LOjDmXlWTCKRIbj8PqFYiusIKDVX7kBIMfMYKk2s5lnXkzlu6
+        7I/MG5d4eIuyNU02IHVz7/CC6JrLaoIhaVKn1S0zbg==
+X-Google-Smtp-Source: ABdhPJzcdxMJ8it5euAFf+JTsiFWuncVVlYniOa4dNyprZwr+7Q1vupJyr8MUC+M9izx3+ugyiCh6ocbFCO/aWseaV0=
+X-Received: by 2002:a25:d04d:: with SMTP id h74mr31641623ybg.266.1638641034305;
+ Sat, 04 Dec 2021 10:03:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <61f5d74f861ce1015831649d3bca9272a2e3b7bf.camel@linux.ibm.com>
+Received: by 2002:a0d:c906:0:0:0:0:0 with HTTP; Sat, 4 Dec 2021 10:03:53 -0800 (PST)
+In-Reply-To: <YaujvjBFsb3ricUx@kroah.com>
+References: <20211203192148.585399-1-martin.fernandez@eclypsium.com>
+ <20211203192148.585399-6-martin.fernandez@eclypsium.com> <YaslQCg2G1pWUPVV@kroah.com>
+ <CAKgze5Yw6=PjY9+cn=FKX5UsiSon5rVOK_Gc-3Hs8dQspSFaYA@mail.gmail.com> <YaujvjBFsb3ricUx@kroah.com>
+From:   Martin Fernandez <martin.fernandez@eclypsium.com>
+Date:   Sat, 4 Dec 2021 15:03:53 -0300
+Message-ID: <CAKgze5bJ5WOG+_ZXQpVKq=tF4yunsTmCtKOHLVR19aNWkL1U0Q@mail.gmail.com>
+Subject: Re: [PATCH v3 5/5] drivers/node: Show in sysfs node's crypto capabilities
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
+        rafael@kernel.org, rppt@kernel.org, akpm@linux-foundation.org,
+        daniel.gutson@eclypsium.com, hughsient@gmail.com,
+        alex.bazhaniuk@eclypsium.com, alison.schofield@intel.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Dec 01, 2021 at 08:46:53AM -0500, Mimi Zohar wrote:
-> On Wed, 2021-12-01 at 12:27 +0200, Jarkko Sakkinen wrote:
-> > On Tue, Nov 30, 2021 at 05:21:45PM +0000, Eric Snowberg wrote:
-> > > 
-> > > 
-> > > > On Nov 26, 2021, at 5:49 PM, Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> > > > 
-> > > > On Tue, 2021-11-23 at 23:41 -0500, Eric Snowberg wrote:
-> > > >> In preparation for returning either the existing
-> > > >> restrict_link_by_builtin_and_secondary_trusted or the upcoming
-> > > >> restriction that includes the trusted builtin, secondary and
-> > > >> machine keys, to improve clarity, rename
-> > > >> get_builtin_and_secondary_restriction to get_secondary_restriction.
-> > > >> 
-> > > >> Suggested-by: Mimi Zohar <zohar@linux.ibm.com>
-> > > >> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
-> > > >> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-> > > >> ---
-> > > >> v6: Initial version
-> > > >> v7: Unmodified from v7
-> > > >> v8: Code unmodified from v7, added Mimi's Reviewed-by
-> > > >> ---
-> > > >>  certs/system_keyring.c | 4 ++--
-> > > >>  1 file changed, 2 insertions(+), 2 deletions(-)
-> > > >> 
-> > > >> diff --git a/certs/system_keyring.c b/certs/system_keyring.c
-> > > >> index 692365dee2bd..8f1f87579819 100644
-> > > >> --- a/certs/system_keyring.c
-> > > >> +++ b/certs/system_keyring.c
-> > > >> @@ -77,7 +77,7 @@ int restrict_link_by_builtin_and_secondary_trusted(
-> > > >>   * Allocate a struct key_restriction for the "builtin and secondary trust"
-> > > >>   * keyring. Only for use in system_trusted_keyring_init().
-> > > >>   */
-> > > >> -static __init struct key_restriction *get_builtin_and_secondary_restriction(void)
-> > > >> +static __init struct key_restriction *get_secondary_restriction(void)
-> > > >>  {
-> > > >>         struct key_restriction *restriction;
-> > > >>  
-> > > >> @@ -117,7 +117,7 @@ static __init int system_trusted_keyring_init(void)
-> > > >>                                KEY_USR_VIEW | KEY_USR_READ | KEY_USR_SEARCH |
-> > > >>                                KEY_USR_WRITE),
-> > > >>                               KEY_ALLOC_NOT_IN_QUOTA,
-> > > >> -                             get_builtin_and_secondary_restriction(),
-> > > >> +                             get_secondary_restriction(),
-> > > >>                               NULL);
-> > > >>         if (IS_ERR(secondary_trusted_keys))
-> > > >>                 panic("Can't allocate secondary trusted keyring\n");
-> > > > 
-> > > > This is wrong order.
-> > > > 
-> > > > You should first do the changes that make the old name
-> > > > obsolete and only after that have a patch that does the
-> > > > rename. Unfortunately, this patch cannot possibly acked
-> > > > with the current order.
-> > >
-> > > I can change the order, but I'm confused how this would work for a git bisect. 
-> > > If the rename happens afterwards, now two patches will always need to be 
-> > > reverted instead of the possibility of one.  Is this your expectation?
-> 
-> If the keyring name change is independent of any other changes, as
-> Jarkko suggested, nothing would break.
-> 
-> > I'd drop this patch altogether. Old name is a bit ugly but does it matter
-> > all that much?
-> 
-> The name "get_builtin_and_secondary_restriction" implies trust based on
-> keys in the ".builtin_trusted_keys" and ".secondary_trusted_keys"
-> keyrings.  This patch set is extending that to include keys on the new
-> ".machine" keyring, by linking it to the secondary keyring.  Is leaving
-> the name unchanged really an option?
+On 12/4/21, Greg KH <gregkh@linuxfoundation.org> wrote:
+> On Sat, Dec 04, 2021 at 01:35:15PM -0300, Martin Fernandez wrote:
+>> +Date:		October 2021
+>
+> October is long gone :(
+>
 
-Yes, it is an option, as long as it is documented correctly in the
-prepending kdoc the symbol name does not matter all that much..
+:(
 
-/Jarkko
+>> +Contact:	Martin Fernandez <martin.fernandez@eclypsium.com>
+>> +Users:		fwupd
+>
+> Maybe a link to what 'fwupd' is?
+>
+
+Will add.
+
+Thanks.
