@@ -2,109 +2,214 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71C22467E2B
-	for <lists+linux-efi@lfdr.de>; Fri,  3 Dec 2021 20:23:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9269468318
+	for <lists+linux-efi@lfdr.de>; Sat,  4 Dec 2021 08:17:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382862AbhLCT0t (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 3 Dec 2021 14:26:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36700 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1382872AbhLCT0t (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 3 Dec 2021 14:26:49 -0500
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04846C061354
-        for <linux-efi@vger.kernel.org>; Fri,  3 Dec 2021 11:23:24 -0800 (PST)
-Received: by mail-qt1-x835.google.com with SMTP id t11so4399429qtw.3
-        for <linux-efi@vger.kernel.org>; Fri, 03 Dec 2021 11:23:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=eclypsium.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=1/NfeKYIAhkUIAZJtgd6awxwNqUewAop8qMlhPdQIiw=;
-        b=F+bvJUItKNdS/eTxqRFsYTDexgXI/WlDljElOv5rZ1FqdzNd6az6Wp/czLZQdFLjOD
-         lHvZsZgt6E9hU7LI+B65d2ZU+suiM3hcuriSpE6E0LWvX8I0KAqfUtq/36ZvRlMgeIdK
-         3HfXFp5U+I6bslWX14LrDiOGVY7iEOjiF9LGHcOZib7XLql84nyPoykoceLbod734csg
-         qd8vcajozXjJ+y83I7VW8TYvAzqBnrbf/+9VM93/n0R5Ds7xq1TTKlnKYm0bmwtUS7aj
-         LOGUV6d0skEhoIPsXCilztMkKXECKdNDMqcLyrI/RJxormDDNBCcpxBVZXQqzCK3vEGH
-         qUow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=1/NfeKYIAhkUIAZJtgd6awxwNqUewAop8qMlhPdQIiw=;
-        b=IhTEbP5pGeM5M6ZO+zuG1JzLoGXLOpPMDqryIkveB/zKebzYif0+BJTRCcF3ChyX7x
-         Vr/B5bvIopkB7HfQAdL0ACeF/96i4CCH9GF4YA7ozgPmQgELjc5PkNY5aHj17Hv1TXZD
-         rxFx5hKLlfHYRQ7ct10npif+3pBecwo1/T2uiyI3eG+cUM8iN56ujylV4Ym1r4EU4rEe
-         O5HmtMb/8vuQtCE6fqOxX3FjA6ISQPU9wikHv7SRYNhftJk3foauKb9v+ljiYQ5yJyot
-         uaD+vbPCS5fogRYPh5w/UGTSAjHVL6m1rQ2ZING/o0c2L4eQwsn9RyL07M0quCAurLXc
-         rEKw==
-X-Gm-Message-State: AOAM532bzH5IRDpwBqYTh+tGts15U8IT425TA8DtwZvu8Pw1WBbOTl7L
-        vl2DieApXidLMecavZU9wY325w==
-X-Google-Smtp-Source: ABdhPJwnDlYpqgkf/Sf5zgNg//Uz5Zqh1xUeIEbLhDHGR1sxM6ZGnX3ghbkytQe24N4WA113II3Buw==
-X-Received: by 2002:a05:622a:1a04:: with SMTP id f4mr23050973qtb.476.1638559404100;
-        Fri, 03 Dec 2021 11:23:24 -0800 (PST)
-Received: from localhost (7-153-16-190.fibertel.com.ar. [190.16.153.7])
-        by smtp.gmail.com with ESMTPSA id w10sm3099663qtk.90.2021.12.03.11.23.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Dec 2021 11:23:23 -0800 (PST)
-From:   Martin Fernandez <martin.fernandez@eclypsium.com>
-To:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org
-Cc:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
-        gregkh@linuxfoundation.org, rafael@kernel.org, rppt@kernel.org,
-        akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
-        hughsient@gmail.com, alex.bazhaniuk@eclypsium.com,
-        alison.schofield@intel.com,
-        Martin Fernandez <martin.fernandez@eclypsium.com>
-Subject: [PATCH v3 5/5] drivers/node: Show in sysfs node's crypto capabilities
-Date:   Fri,  3 Dec 2021 16:21:48 -0300
-Message-Id: <20211203192148.585399-6-martin.fernandez@eclypsium.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20211203192148.585399-1-martin.fernandez@eclypsium.com>
-References: <20211203192148.585399-1-martin.fernandez@eclypsium.com>
+        id S1344320AbhLDHVI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 4 Dec 2021 02:21:08 -0500
+Received: from mga04.intel.com ([192.55.52.120]:11234 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232185AbhLDHVH (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 4 Dec 2021 02:21:07 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10187"; a="235836775"
+X-IronPort-AV: E=Sophos;i="5.87,286,1631602800"; 
+   d="scan'208";a="235836775"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2021 23:17:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,286,1631602800"; 
+   d="scan'208";a="610671131"
+Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
+  by orsmga004.jf.intel.com with ESMTP; 03 Dec 2021 23:17:41 -0800
+Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mtPIi-000Idx-J3; Sat, 04 Dec 2021 07:17:40 +0000
+Date:   Sat, 04 Dec 2021 15:16:58 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ 5538a0e5e4da583f494fcf9f0db830bee942a979
+Message-ID: <61ab15ea.u0LGpLJVjxvzd9+B%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Show in each node in sysfs if its memory is able to do be encrypted by
-the CPU, ie. if all its memory is marked with EFI_MEMORY_CPU_CRYPTO in
-the EFI memory map.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: 5538a0e5e4da583f494fcf9f0db830bee942a979  x86/sme: Explicitly map new EFI memmap table as encrypted
 
-Signed-off-by: Martin Fernandez <martin.fernandez@eclypsium.com>
+elapsed time: 722m
+
+configs tested: 153
+configs skipped: 69
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm                              allyesconfig
+arm                              allmodconfig
+mips                 randconfig-c004-20211203
+i386                 randconfig-c001-20211203
+xtensa                generic_kc705_defconfig
+nds32                               defconfig
+mips                      pic32mzda_defconfig
+arm64                            alldefconfig
+powerpc                          g5_defconfig
+arm                        clps711x_defconfig
+alpha                            alldefconfig
+ia64                         bigsur_defconfig
+sh                             shx3_defconfig
+arm                         shannon_defconfig
+powerpc                 mpc8540_ads_defconfig
+mips                      fuloong2e_defconfig
+sh                        edosk7760_defconfig
+powerpc                     tqm8555_defconfig
+openrisc                    or1ksim_defconfig
+arc                          axs101_defconfig
+m68k                        m5407c3_defconfig
+um                             i386_defconfig
+mips                        maltaup_defconfig
+sparc                       sparc64_defconfig
+mips                        vocore2_defconfig
+nios2                               defconfig
+powerpc                  mpc866_ads_defconfig
+sh                          kfr2r09_defconfig
+mips                           mtx1_defconfig
+powerpc                 mpc834x_itx_defconfig
+sh                          rsk7269_defconfig
+arc                        nsim_700_defconfig
+arm                         s5pv210_defconfig
+um                           x86_64_defconfig
+mips                           xway_defconfig
+arm                            xcep_defconfig
+powerpc                       holly_defconfig
+arm64                               defconfig
+powerpc                      ppc40x_defconfig
+sh                         microdev_defconfig
+powerpc                 canyonlands_defconfig
+arm                      jornada720_defconfig
+mips                         tb0226_defconfig
+arm                       multi_v4t_defconfig
+sh                            migor_defconfig
+arm                          simpad_defconfig
+sh                         ap325rxa_defconfig
+arm                         socfpga_defconfig
+mips                          rm200_defconfig
+mips                            gpr_defconfig
+h8300                               defconfig
+mips                         rt305x_defconfig
+sh                           se7712_defconfig
+arm                        mvebu_v5_defconfig
+mips                       bmips_be_defconfig
+sparc                       sparc32_defconfig
+arm                       aspeed_g4_defconfig
+sparc                            alldefconfig
+mips                          malta_defconfig
+powerpc                        warp_defconfig
+microblaze                          defconfig
+arm                  randconfig-c002-20211203
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a006-20211203
+x86_64               randconfig-a005-20211203
+x86_64               randconfig-a001-20211203
+x86_64               randconfig-a002-20211203
+x86_64               randconfig-a004-20211203
+x86_64               randconfig-a003-20211203
+i386                 randconfig-a001-20211203
+i386                 randconfig-a005-20211203
+i386                 randconfig-a002-20211203
+i386                 randconfig-a003-20211203
+i386                 randconfig-a006-20211203
+i386                 randconfig-a004-20211203
+i386                 randconfig-a013-20211204
+i386                 randconfig-a016-20211204
+i386                 randconfig-a011-20211204
+i386                 randconfig-a014-20211204
+i386                 randconfig-a012-20211204
+i386                 randconfig-a015-20211204
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
+
+clang tested configs:
+arm                  randconfig-c002-20211203
+x86_64               randconfig-c007-20211203
+riscv                randconfig-c006-20211203
+mips                 randconfig-c004-20211203
+i386                 randconfig-c001-20211203
+powerpc              randconfig-c003-20211203
+s390                 randconfig-c005-20211203
+x86_64               randconfig-a016-20211203
+x86_64               randconfig-a011-20211203
+x86_64               randconfig-a013-20211203
+x86_64               randconfig-a014-20211203
+x86_64               randconfig-a015-20211203
+x86_64               randconfig-a012-20211203
+i386                 randconfig-a016-20211203
+i386                 randconfig-a013-20211203
+i386                 randconfig-a011-20211203
+i386                 randconfig-a014-20211203
+i386                 randconfig-a012-20211203
+i386                 randconfig-a015-20211203
+x86_64               randconfig-a006-20211204
+x86_64               randconfig-a005-20211204
+x86_64               randconfig-a001-20211204
+x86_64               randconfig-a002-20211204
+x86_64               randconfig-a004-20211204
+x86_64               randconfig-a003-20211204
+hexagon              randconfig-r045-20211203
+s390                 randconfig-r044-20211203
+hexagon              randconfig-r041-20211203
+riscv                randconfig-r042-20211203
+
 ---
- drivers/base/node.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index b5a4ba18f9f9..67b0e2fa93b1 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -560,11 +560,21 @@ static ssize_t node_read_distance(struct device *dev,
- }
- static DEVICE_ATTR(distance, 0444, node_read_distance, NULL);
- 
-+static ssize_t crypto_capable_show(struct device *dev,
-+				   struct device_attribute *attr, char *buf)
-+{
-+	struct pglist_data *pgdat = NODE_DATA(dev->id);
-+
-+	return sysfs_emit(buf, "%d\n", pgdat->crypto_capable);
-+}
-+static DEVICE_ATTR_RO(crypto_capable);
-+
- static struct attribute *node_dev_attrs[] = {
- 	&dev_attr_meminfo.attr,
- 	&dev_attr_numastat.attr,
- 	&dev_attr_distance.attr,
- 	&dev_attr_vmstat.attr,
-+	&dev_attr_crypto_capable.attr,
- 	NULL
- };
- 
--- 
-2.30.2
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
