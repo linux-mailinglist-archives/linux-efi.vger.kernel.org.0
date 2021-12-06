@@ -2,239 +2,177 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EE2E46A8F2
-	for <lists+linux-efi@lfdr.de>; Mon,  6 Dec 2021 21:58:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61CD946AADB
+	for <lists+linux-efi@lfdr.de>; Mon,  6 Dec 2021 22:46:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350047AbhLFVBu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 6 Dec 2021 16:01:50 -0500
-Received: from isilmar-4.linta.de ([136.243.71.142]:38146 "EHLO
-        isilmar-4.linta.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349996AbhLFVBo (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 6 Dec 2021 16:01:44 -0500
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-Received: from light.dominikbrodowski.net (brodo.linta [10.2.0.102])
-        by isilmar-4.linta.de (Postfix) with ESMTPSA id 4622F20136C;
-        Mon,  6 Dec 2021 20:58:10 +0000 (UTC)
-Received: by light.dominikbrodowski.net (Postfix, from userid 1000)
-        id 6B32520964; Mon,  6 Dec 2021 21:57:46 +0100 (CET)
-Date:   Mon, 6 Dec 2021 21:57:46 +0100
-From:   Dominik Brodowski <linux@dominikbrodowski.net>
-To:     Hsin-Yi Wang <hsinyi@chromium.org>
-Cc:     "Jason A. Donenfeld" <jason@zx2c4.com>,
-        Theodore Ts'o <tytso@mit.edu>,
-        "Ivan T. Ivanov" <iivanov@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: [PATCH v5] random: fix crash on multiple early calls to
- add_bootloader_randomness()
-Message-ID: <Ya55SjgSkO+INcbb@light.dominikbrodowski.net>
-References: <20211012082708.121931-1-iivanov@suse.de>
- <YWVKAk4h5bsUA3b6@light.dominikbrodowski.net>
- <YaivhAV8LouB0zGV@light.dominikbrodowski.net>
- <CAHmME9qxBeBzfKCjzfAFX9ZWAGKv1TKCQw3x22d_DmJtaAewLw@mail.gmail.com>
- <YanOIvAV1iPBEXR3@light.dominikbrodowski.net>
- <CAJMQK-i0vZ8k8cNrUaDBdCBv4ucd-DzUWix3ui7QZ_2awZHe6g@mail.gmail.com>
+        id S1353452AbhLFVuR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 6 Dec 2021 16:50:17 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:30282 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1353403AbhLFVuP (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 6 Dec 2021 16:50:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1638827205;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=XD7Nb7Clb95GARwOtJlUClbhUySnCjxtvaRAf+MfT8g=;
+        b=eeHNXCS5U012FeAbEIT6fKQLYgBI76AZkKF0GIEwXwvtD4huTC6w2ZruAhSMKt4KhOgUX+
+        iA6K2Vt3+i85RIqtDBj8uIC+L6WeWHXUWYdk6XT7i8lK+jU/5qezqRazXLCN0ve5Cbni6b
+        RAgN2iRsEm20b71JX/tq/rCJwv5A6L4=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-300-jNNXnZa-MqO7EqgIDOrYpg-1; Mon, 06 Dec 2021 16:46:44 -0500
+X-MC-Unique: jNNXnZa-MqO7EqgIDOrYpg-1
+Received: by mail-ed1-f72.google.com with SMTP id v10-20020aa7d9ca000000b003e7bed57968so9431893eds.23
+        for <linux-efi@vger.kernel.org>; Mon, 06 Dec 2021 13:46:44 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=XD7Nb7Clb95GARwOtJlUClbhUySnCjxtvaRAf+MfT8g=;
+        b=yVIZqc9JuHicozRsXeq/h0gnallozEQgdU6aL3zW4BI1tpZnb25bSR6BXJJUoXkhG8
+         i+m1QcYtJcW64EuoT9fSioIzT+ABVapv1Zy7mAIDJMz+U5N9dZvJGO2x5lwpYHJw7h7Y
+         hBHiXewNpzgpgak5lLm0n+295n0TSZ2a5tZ/ttlVLCiXaBNLPkvHMBpF1v7bu3ClgWJ9
+         yW3FnnO69oayOtgv0SxyU8mFz3excXQxgfZD/X522JRke96qsaAkUEXb0mqOQ8tURWzI
+         CB0e9vVDC8iUdcYTtGUBeCoAu34TAPcPDzwUOpl2LNzw9o74g8R/NKUrQjKfH/z2hYwy
+         yBQA==
+X-Gm-Message-State: AOAM5332ib1TmwYnx0pl/QfZ7RVnkwSCYlpzj9s54cd3EoX2BmekQEte
+        RFbx4T9fp7Q3Dbfag9EOSbFJQ2KdzOV7lxyt/2eglQY0gVvfboQgypWsSwQI/WT5MUHSNkQYPUx
+        YktsIB35UmBanzaFIjefC
+X-Received: by 2002:a17:906:4787:: with SMTP id cw7mr51624544ejc.311.1638827203290;
+        Mon, 06 Dec 2021 13:46:43 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJw4f2WW8YPhyWFg5/uoyC3KUk6k0aakXD8ww8CSE0oZjb95JLyqnZj9joGInxQhM8NA1Ex+gQ==
+X-Received: by 2002:a17:906:4787:: with SMTP id cw7mr51624512ejc.311.1638827202988;
+        Mon, 06 Dec 2021 13:46:42 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1054:9d19:e0f0:8214? (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id j14sm9301207edw.96.2021.12.06.13.46.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Dec 2021 13:46:42 -0800 (PST)
+Message-ID: <94738e2d-8b8d-08a0-be39-343ac275fa5f@redhat.com>
+Date:   Mon, 6 Dec 2021 22:46:41 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJMQK-i0vZ8k8cNrUaDBdCBv4ucd-DzUWix3ui7QZ_2awZHe6g@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH v4 14/20] mfd: intel_soc_pmic_chtwc: Add cht_wc_model data
+ to struct intel_soc_pmic
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Lee Jones <lee.jones@linaro.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Yauhen Kharuzhy <jekhor@gmail.com>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>
+References: <20211206093318.45214-1-hdegoede@redhat.com>
+ <20211206093318.45214-15-hdegoede@redhat.com>
+ <CAHp75Vc+z0nqUXbqrX9YXi2+rzz4BKT7maFipyB8QgOEKQ9SPw@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CAHp75Vc+z0nqUXbqrX9YXi2+rzz4BKT7maFipyB8QgOEKQ9SPw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Am Mon, Dec 06, 2021 at 01:42:01PM +0800 schrieb Hsin-Yi Wang:
-> On Fri, Dec 3, 2021 at 3:59 PM Dominik Brodowski
-> <linux@dominikbrodowski.net> wrote:
-> >
-> > Hi Jason,
-> >
-> > Am Thu, Dec 02, 2021 at 11:55:10AM -0500 schrieb Jason A. Donenfeld:
-> > > Thanks for the patch. One trivial nit and one question:
-> >
-> > Thanks for your review!
-> >
-> > > On Thu, Dec 2, 2021 at 6:35 AM Dominik Brodowski
-> > > <linux@dominikbrodowski.net> wrote:
-> > > > +       /* We cannot do much with the input pool until it is set up in
-> > > > +        * rand_initalize(); therefore just mix into the crng state.
-> > >
-> > > I think you meant "rand_initialize()" here (missing 'i').
-> >
-> > Indeed, sorry about that.
-> >
-> > > > If the added entropy suffices to increase crng_init to 1, future calls
-> > > > to add_bootloader_randomness() or add_hwgenerator_randomness() used to
-> > > > progress to credit_entropy_bits(). However, if the input pool is not yet
-> > > > properly set up, the cmpxchg call within that function can lead to an
-> > > > infinite recursion.
-> > >
-> > > I see what this patch does with crng_global_init_time, and that seems
-> > > probably sensible, but I didn't understand this part of the reasoning
-> > > in the commit message; I might just be a bit slow here. Where's the
-> > > recursion exactly? Or even an infinite loop?
-> >
-> > On arm64, it was actually a NULL pointer dereference reported by Ivan T.
-> > Ivanov; see
-> >
-> >         https://lore.kernel.org/lkml/20211012082708.121931-1-iivanov@suse.de/
-> >
-> > Trying to reproduce this rather bluntly on x86/qemu by multiple manual calls
-> > to add_bootloader_randomness(), I mis-interpreted the symptoms to point to an
-> > infinite recursion. The real problem seems to be that crng_reseed() isn't
-> > ready to be called too early in the boot process, in particular before
-> > workqueues are ready (see the call to numa_crng_init()).
-> >
-> > However, there seem be additional issues with add_bootloader_randomness()
-> > not yet addressed (or worsened) by my patch:
-> >
-> >         - If CONFIG_RANDOM_TRUST_BOOTLOADER is enabled and crng_init==0,
-> >           add_hwgenerator_randomness() calls crng_fast_load() and returns
-> >           immediately. If it is disabled and crng_init==0,
-> >           add_device_randnomness() calls crng_slow_load() but still
-> >           continues to call _mix_pool_bytes(). That means the seed is
-> >           used more extensively if CONFIG_RANDOM_TRUST_BOOTLOADER is not
-> >           set!
-> If called by the crng_slow_load(), it's mixed into the pool but we're
-> not trusting it. But in crng_fast_load() we're using it to init crng.
+Hi,
+
+On 12/6/21 20:55, Andy Shevchenko wrote:
+> On Mon, Dec 6, 2021 at 11:35 AM Hans de Goede <hdegoede@redhat.com> wrote:
+>>
+>> Tablet / laptop designs using an Intel Cherry Trail x86 main SoC with
+>> an Intel Whiskey Cove PMIC do not use a single standard setup for
+>> the charger, fuel-gauge and other chips surrounding the PMIC /
+>> charging+data USB port.
+>>
+>> Unlike what is normal on x86 this diversity in designs is not handled
+>> by the ACPI tables. On 2 of the 3 known designs there are no standard
+>> (PNP0C0A) ACPI battery devices and on the 3th design the ACPI battery
+>> device does not work under Linux due to it requiring non-standard
+>> and undocumented ACPI behavior.
+>>
+>> So to make things work under Linux we use native charger and fuel-gauge
+>> drivers on these devices, re-using the native drivers used on ARM boards
+>> with the same charger / fuel-gauge ICs.
+>>
+>> This requires various MFD-cell drivers for the CHT-WC PMIC cells to
+>> know which model they are exactly running on so that they can e.g.
+>> instantiate an I2C-client for the right model charger-IC (the charger
+>> is connected to an I2C-controller which is part of the PMIC).
+>>
+>> Rather then duplicating DMI-id matching to check which model we are
+>> running on in each MFD-cell driver, add a check for this to the
+>> shared drivers/mfd/intel_soc_pmic_chtwc.c code by using a
+>> DMI table for all 3 known models:
+>>
+>> 1. The GPD Win and GPD Pocket mini-laptops, these are really 2 models
+>> but the Pocket re-uses the GPD Win's design in a different housing:
+>>
+>> The WC PMIC is connected to a TI BQ24292i charger, paired with
+>> a Maxim MAX17047 fuelgauge + a FUSB302 USB Type-C Controller +
+>> a PI3USB30532 USB switch, for a fully functional Type-C port.
+>>
+>> 2. The Xiaomi Mi Pad 2:
+>>
+>> The WC PMIC is connected to a TI BQ25890 charger, paired with
+>> a TI BQ27520 fuelgauge, using the TI BQ25890 for BC1.2 charger type
+>> detection, for a USB-2 only Type-C port without PD.
+>>
+>> 3. The Lenovo Yoga Book YB1-X90 / Lenovo Yoga Book YB1-X91 series:
+>>
+>> The WC PMIC is connected to a TI BQ25892 charger, paired with
+>> a TI BQ27542 fuelgauge, using the WC PMIC for BC1.2 charger type
+>> detection and using the BQ25892's Mediatek Pump Express+ (1.0)
+>> support to enable charging with up to 12V through a micro-USB port.
 > 
-> >
-> >         - If CONFIG_RANDOM_TRUST_BOOTLOADER is enabled and crng_init==0,
-> >           the entropy is not credited -- same as if
-> >           CONFIG_RANDOM_TRUST_BOOTLOADER is not set. Only subsequent calls
+> ...
 > 
-> In crng_fast_load(), the seed would be mixed to primary_crng.state[4],
-
-Actually, that is also the case for crng_slow_load() (see dest_buf there).
-
-> and then crng_init will be 1 if the added seed is enough.
-> rng-seed in dt (called in early_init_dt_scan_chosen()) also needs to
-> use this function to init crng.
-
-Indeed, crng_init should be set to 1 in that case.
-
-> With the patch, we're seeing
-> [    0.000000] random: get_random_u64 called from
-> __kmem_cache_create+0x34/0x270 with crng_init=0
+>> +enum intel_cht_wc_models {
+>> +       INTEL_CHT_WC_UNKNOWN,
+>> +       INTEL_CHT_WC_GPD_WIN_POCKET,
+>> +       INTEL_CHT_WC_XIAOMI_MIPAD2,
+>> +       INTEL_CHT_WC_LENOVO_YOGABOOK1,
+>> +};
 > 
-> While before it should be
-> [    0.000000] random: get_random_u64 called from
-> __kmem_cache_create+0x34/0x280 with crng_init=1
+> ...
 > 
-> >           to add_bootloader_randomness() would credit entropy, but that
-> >           causes the issue NULL pointer dereference or the hang...
-> >
-> >         - As crng_fast_load() returns early, that actually means that my
-> >           patch causes the additional entropy submitted to
-> >           add_hwgenerator_randomness() by subsequent calls to be completely
-> >           lost.
-> Only when crng_init==0, if crng is initialized, it would continue with
-> credit_entropy_bits().
+>> +       enum intel_cht_wc_models cht_wc_model;
+> 
+> I'm wondering what will you do when something similar will be needed
+> for another PMIC?
+> 
+> I see possible solutions to eliminate additional churn:
+> - make just one enum for all models (can be done now, can be renamed later)
+> - make a union if we have such situation
+> 
+> because I wouldn't like to have another field for each possible
+> variant of PMIC in the generic structure.
+> 
+> Hence the question, does it make sense to just name it (enum and
+> member) less cht_wc oriented?
 
-However, if workqueues are not up and running (yet), it will fail.
+I agree that renaming these to make them generic makes sense if we get a
+second user (which I doubt, but you never know). For now I would like to
+keep this as is though, this is a big series and I would like to avoid
+to respin it just for this and we can always rename this later.
 
-New draft below!
+If I need to do a v5 anyways though, then I'll do the rename for v5.
 
-Thanks,
-	Dominik
+Regards,
 
----
+Hans
 
-Currently, if CONFIG_RANDOM_TRUST_BOOTLOADER is enabled, mutliple calls
-to add_bootloader_randomness() are broken and can cause a NULL pointer
-dereference, as noted by Ivan T. Ivanov. This is not only a hypothetical
-problem, as qemu on arm64 may provide bootloader entropy via EFI and via
-devicetree.
-
-On the first call to add_hwgenerator_randomness(), crng_fast_load() is
-executed, and if the seed is long enough, crng_init will be set to 1.
-However, no entropy is currently credited for that, even though the
-name and description of CONFIG_RANDOM_TRUST_BOOTLOADER states otherwise.
-
-On subsequent calls to add_bootloader_randomness() and then to
-add_hwgenerator_randomness(), crng_fast_load() will be skipped. Instead,
-wait_event_interruptible() (which makes no sense for the init process)
-and then credit_entropy_bits() will be called. If the entropy count for
-that second seed is large enough, that proceeds to crng_reseed().
-However, crng_reseed() may depend on workqueues being available, which
-is not the case early during boot.
-
-To fix these issues, explicitly call crng_fast_load() or crng_slow_load()
-depending on whether the bootloader is trusted -- only in the first
-instance, crng_init may progress to 1. Also, mix the seed into the
-input pool unconditionally, and credit the entropy for that iff
-CONFIG_RANDOM_TRUST_BOOTLOADER is set. However, avoid a call to
-crng_reseed() too early during boot. It is safe to be called after
-rand_initialize(), so use crng_global_init_time (which is set to != 0
-in that function) to determine which branch to take.
-
-Reported-by: Ivan T. Ivanov <iivanov@suse.de>
-Fixes: 18b915ac6b0a ("efi/random: Treat EFI_RNG_PROTOCOL output as bootloader randomness")
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
-
-diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 605969ed0f96..abe4571fd2c0 100644
---- a/drivers/char/random.c
-+++ b/drivers/char/random.c
-@@ -722,7 +722,8 @@ static void credit_entropy_bits(struct entropy_store *r, int nbits)
- 	if (r == &input_pool) {
- 		int entropy_bits = entropy_count >> ENTROPY_SHIFT;
- 
--		if (crng_init < 2 && entropy_bits >= 128)
-+		if (crng_init < 2 && entropy_bits >= 128 &&
-+		    crng_global_init_time > 0)
- 			crng_reseed(&primary_crng, r);
- 	}
- }
-@@ -1763,8 +1764,8 @@ static void __init init_std_data(struct entropy_store *r)
- }
- 
- /*
-- * Note that setup_arch() may call add_device_randomness()
-- * long before we get here. This allows seeding of the pools
-+ * add_device_randomness() or add_bootloader_randomness() may be
-+ * called long before we get here. This allows seeding of the pools
-  * with some platform dependent data very early in the boot
-  * process. But it limits our options here. We must use
-  * statically allocated structures that already have all
-@@ -2291,15 +2292,29 @@ void add_hwgenerator_randomness(const char *buffer, size_t count,
- EXPORT_SYMBOL_GPL(add_hwgenerator_randomness);
- 
- /* Handle random seed passed by bootloader.
-- * If the seed is trustworthy, it would be regarded as hardware RNGs. Otherwise
-- * it would be regarded as device data.
-+ * If the seed is trustworthy, its entropy will be credited.
-  * The decision is controlled by CONFIG_RANDOM_TRUST_BOOTLOADER.
-  */
- void add_bootloader_randomness(const void *buf, unsigned int size)
- {
--	if (IS_ENABLED(CONFIG_RANDOM_TRUST_BOOTLOADER))
--		add_hwgenerator_randomness(buf, size, size * 8);
--	else
--		add_device_randomness(buf, size);
-+	unsigned long time = random_get_entropy() ^ jiffies;
-+	unsigned long flags;
-+
-+	if (!crng_ready() && size) {
-+#ifdef CONFIG_RANDOM_TRUST_BOOTLOADER
-+		crng_fast_load(buf, size);
-+#else
-+		crng_slow_load(buf, size);
-+#endif	/* CONFIG_RANDOM_TRUST_BOOTLOADER */
-+	}
-+
-+	spin_lock_irqsave(&input_pool.lock, flags);
-+	_mix_pool_bytes(&input_pool, buf, size);
-+	_mix_pool_bytes(&input_pool, &time, sizeof(time));
-+	spin_unlock_irqrestore(&input_pool.lock, flags);
-+
-+#ifdef CONFIG_RANDOM_TRUST_BOOTLOADER
-+	credit_entropy_bits(&input_pool, size * 8);
-+#endif
- }
- EXPORT_SYMBOL_GPL(add_bootloader_randomness);
