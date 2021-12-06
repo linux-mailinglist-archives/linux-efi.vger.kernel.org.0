@@ -2,124 +2,253 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C5FE4689A8
-	for <lists+linux-efi@lfdr.de>; Sun,  5 Dec 2021 07:04:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AE52468FD6
+	for <lists+linux-efi@lfdr.de>; Mon,  6 Dec 2021 05:26:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231737AbhLEGHy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 5 Dec 2021 01:07:54 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:50474 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231733AbhLEGHy (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 5 Dec 2021 01:07:54 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 21875B80AD2;
-        Sun,  5 Dec 2021 06:04:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E941DC341C4;
-        Sun,  5 Dec 2021 06:04:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638684264;
-        bh=W+BhYvwRnMSxubxXem1oJbW5QQzLfaT+3Ll8Oy5A6SE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SjVUrnzS8KR5VE+LYjtbeQ/QzrcE/Rb8hpK9yGjp8ZosOfKj1TB058IdVdKhtqggE
-         fSi2A/rUtt7sDlG2xO1d+trZF+em3OmMqcpVnLV5ni3yMboqvWH9SJCroa46hsnq8U
-         +NSc9pCOwAGBAX6+6lUf1gUdsV1gvWmdCWpow44LXtA0cMjS754Lifh5fAjgI8LOhP
-         pSxQjwgoAEqgENEUtBYAKX01iv7Dw94krrsmALJ3iVlV7qWL6wXCJGGudkLL72UHdp
-         SAr1r6wehi/C5pQljbFUU6Z76q9Bl9kCLcrq1OXrXJotSIJC8iI6s+1XcEWLfK/orq
-         iVNkq0aA51WBg==
-Date:   Sun, 5 Dec 2021 08:04:12 +0200
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Martin Fernandez <martin.fernandez@eclypsium.com>
-Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
-        gregkh@linuxfoundation.org, rafael@kernel.org,
-        akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
-        hughsient@gmail.com, alex.bazhaniuk@eclypsium.com,
-        alison.schofield@intel.com
-Subject: Re: [PATCH v3 0/5] x86: Show in sysfs if a memory node is able to do
- encryption
-Message-ID: <YaxWXACBguZxWmKS@kernel.org>
-References: <20211203192148.585399-1-martin.fernandez@eclypsium.com>
+        id S237191AbhLFEaW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 5 Dec 2021 23:30:22 -0500
+Received: from mga09.intel.com ([134.134.136.24]:7302 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237190AbhLFEaW (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sun, 5 Dec 2021 23:30:22 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10189"; a="237056428"
+X-IronPort-AV: E=Sophos;i="5.87,290,1631602800"; 
+   d="scan'208";a="237056428"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2021 20:26:53 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,290,1631602800"; 
+   d="scan'208";a="501977450"
+Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
+  by orsmga007.jf.intel.com with ESMTP; 05 Dec 2021 20:26:52 -0800
+Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mu5aV-000KoP-Mp; Mon, 06 Dec 2021 04:26:51 +0000
+Date:   Mon, 06 Dec 2021 12:25:57 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ 1ff2fc02862d52e18fd3daabcfe840ec27e920a8
+Message-ID: <61ad90d5.y1M0niHJWOHNATc8%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211203192148.585399-1-martin.fernandez@eclypsium.com>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Martin,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: 1ff2fc02862d52e18fd3daabcfe840ec27e920a8  x86/sme: Explicitly map new EFI memmap table as encrypted
 
-On Fri, Dec 03, 2021 at 04:21:43PM -0300, Martin Fernandez wrote:
-> Show for each node if every memory descriptor in that node has the
-> EFI_MEMORY_CPU_CRYPTO attribute.
-> 
-> fwupd project plans to use it as part of a check to see if the users
-> have properly configured memory hardware encryption capabilities. It's
-> planned to make it part of a specification that can be passed to
-> people purchasing hardware. It's called Host Security ID:
-> https://fwupd.github.io/libfwupdplugin/hsi.html
-> 
-> This also can be useful in the future if NUMA decides to prioritize
-> nodes that are able to do encryption.
- 
-I'm missing a description about *how* the new APIs/ABIs are going to be
-used. This comment also applies to the changelogs of the patches that
-mostly describe what the patch does and do not describe why is it needed.
- 
-> Changes since v2:
-> 
-> e820__range_mark_crypto -> e820__range_mark_crypto_capable.
-> 
-> In e820__range_remove: Create a region with crypto capabilities
-> instead of creating one without it and then mark it.
-> 
-> 
-> Changes since v1:
-> 
-> Modify __e820__range_update to update the crypto capabilities of a
-> range; now this function will change the crypto capability of a range
-> if it's called with the same old_type and new_type. Rework
-> efi_mark_e820_regions_as_crypto_capable based on this.
-> 
-> Update do_add_efi_memmap to mark the regions as it creates them.
-> 
-> Change the type of crypto_capable in e820_entry from bool to u8.
-> 
-> Fix e820__update_table changes.
-> 
-> Remove memblock_add_crypto_capable. Now you have to add the region and
-> mark it then.
-> 
-> Better place for crypto_capable in pglist_data.
-> 
-> 
-> Martin Fernandez (5):
->   mm/memblock: Tag memblocks with crypto capabilities
->   mm/mmzone: Tag pg_data_t with crypto capabilities
->   Tag e820_entry with crypto capabilities
->   x86/efi: Tag e820_entries as crypto capable from EFI memmap
->   drivers/node: Show in sysfs node's crypto capabilities
-> 
->  arch/x86/include/asm/e820/api.h   |  1 +
->  arch/x86/include/asm/e820/types.h |  1 +
->  arch/x86/kernel/e820.c            | 59 ++++++++++++++++++++++++-------
->  arch/x86/platform/efi/efi.c       | 25 +++++++++++++
->  drivers/base/node.c               | 10 ++++++
->  include/linux/memblock.h          |  5 +++
->  include/linux/mmzone.h            |  3 ++
->  mm/memblock.c                     | 49 +++++++++++++++++++++++++
->  mm/page_alloc.c                   |  1 +
->  9 files changed, 142 insertions(+), 12 deletions(-)
-> 
-> -- 
-> 2.30.2
-> 
+elapsed time: 724m
 
--- 
-Sincerely yours,
-Mike.
+configs tested: 194
+configs skipped: 44
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                          pxa3xx_defconfig
+sh                          rsk7269_defconfig
+powerpc               mpc834x_itxgp_defconfig
+powerpc                      ppc64e_defconfig
+arm                         lubbock_defconfig
+arm                            hisi_defconfig
+x86_64                           allyesconfig
+arm                        trizeps4_defconfig
+arm                  colibri_pxa300_defconfig
+arm                           spitz_defconfig
+x86_64                              defconfig
+arc                          axs103_defconfig
+nds32                            alldefconfig
+powerpc                     tqm8541_defconfig
+arm                        shmobile_defconfig
+h8300                    h8300h-sim_defconfig
+powerpc                    amigaone_defconfig
+arm                           h3600_defconfig
+arm                   milbeaut_m10v_defconfig
+arm                        mvebu_v7_defconfig
+ia64                            zx1_defconfig
+powerpc                      tqm8xx_defconfig
+m68k                         amcore_defconfig
+arm                        cerfcube_defconfig
+xtensa                          iss_defconfig
+powerpc                     kilauea_defconfig
+powerpc64                           defconfig
+arm                           stm32_defconfig
+arm                         palmz72_defconfig
+powerpc                mpc7448_hpc2_defconfig
+sh                  sh7785lcr_32bit_defconfig
+powerpc                     akebono_defconfig
+arm                            xcep_defconfig
+i386                                defconfig
+arm                           viper_defconfig
+powerpc                  iss476-smp_defconfig
+powerpc                 xes_mpc85xx_defconfig
+sh                           se7343_defconfig
+arm                  colibri_pxa270_defconfig
+powerpc                 mpc8272_ads_defconfig
+powerpc                     rainier_defconfig
+m68k                             allmodconfig
+powerpc                   bluestone_defconfig
+powerpc                     asp8347_defconfig
+arc                        nsim_700_defconfig
+riscv             nommu_k210_sdcard_defconfig
+sh                          lboxre2_defconfig
+sh                 kfr2r09-romimage_defconfig
+openrisc                  or1klitex_defconfig
+powerpc                 linkstation_defconfig
+sparc                            alldefconfig
+arm                        oxnas_v6_defconfig
+sh                          r7780mp_defconfig
+arm                             rpc_defconfig
+arm                           tegra_defconfig
+h8300                            alldefconfig
+arm                         shannon_defconfig
+nios2                            alldefconfig
+arm                           sama5_defconfig
+arm                            mmp2_defconfig
+arm                          simpad_defconfig
+powerpc                     sequoia_defconfig
+sparc64                          alldefconfig
+powerpc                      ppc40x_defconfig
+sh                           se7206_defconfig
+m68k                        mvme16x_defconfig
+s390                             allyesconfig
+arm                           sunxi_defconfig
+arm                        multi_v5_defconfig
+arm                           corgi_defconfig
+powerpc                    mvme5100_defconfig
+powerpc                        warp_defconfig
+arc                         haps_hs_defconfig
+powerpc                         wii_defconfig
+mips                      loongson3_defconfig
+powerpc                     pq2fads_defconfig
+nios2                         10m50_defconfig
+powerpc                 mpc832x_mds_defconfig
+powerpc                   currituck_defconfig
+sh                          rsk7201_defconfig
+riscv                    nommu_virt_defconfig
+powerpc                      acadia_defconfig
+arm                            mps2_defconfig
+sh                        edosk7705_defconfig
+arm                  randconfig-c002-20211205
+arm                  randconfig-c002-20211206
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20211205
+i386                 randconfig-a005-20211205
+i386                 randconfig-a003-20211205
+i386                 randconfig-a002-20211205
+i386                 randconfig-a006-20211205
+i386                 randconfig-a004-20211205
+x86_64               randconfig-a016-20211206
+x86_64               randconfig-a011-20211206
+x86_64               randconfig-a013-20211206
+x86_64               randconfig-a014-20211206
+x86_64               randconfig-a012-20211206
+x86_64               randconfig-a015-20211206
+i386                 randconfig-a016-20211206
+i386                 randconfig-a013-20211206
+i386                 randconfig-a011-20211206
+i386                 randconfig-a014-20211206
+i386                 randconfig-a012-20211206
+i386                 randconfig-a015-20211206
+x86_64               randconfig-a006-20211205
+x86_64               randconfig-a005-20211205
+x86_64               randconfig-a001-20211205
+x86_64               randconfig-a002-20211205
+x86_64               randconfig-a004-20211205
+x86_64               randconfig-a003-20211205
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-c007-20211205
+arm                  randconfig-c002-20211205
+riscv                randconfig-c006-20211205
+mips                 randconfig-c004-20211205
+i386                 randconfig-c001-20211205
+powerpc              randconfig-c003-20211205
+s390                 randconfig-c005-20211205
+x86_64               randconfig-a006-20211206
+x86_64               randconfig-a005-20211206
+x86_64               randconfig-a001-20211206
+x86_64               randconfig-a002-20211206
+x86_64               randconfig-a004-20211206
+x86_64               randconfig-a003-20211206
+i386                 randconfig-a001-20211206
+i386                 randconfig-a005-20211206
+i386                 randconfig-a002-20211206
+i386                 randconfig-a003-20211206
+i386                 randconfig-a006-20211206
+i386                 randconfig-a004-20211206
+x86_64               randconfig-a016-20211205
+x86_64               randconfig-a011-20211205
+x86_64               randconfig-a013-20211205
+x86_64               randconfig-a015-20211205
+x86_64               randconfig-a012-20211205
+x86_64               randconfig-a014-20211205
+i386                 randconfig-a013-20211205
+i386                 randconfig-a016-20211205
+i386                 randconfig-a011-20211205
+i386                 randconfig-a014-20211205
+i386                 randconfig-a012-20211205
+i386                 randconfig-a015-20211205
+hexagon              randconfig-r045-20211206
+hexagon              randconfig-r041-20211206
+hexagon              randconfig-r045-20211205
+s390                 randconfig-r044-20211205
+riscv                randconfig-r042-20211205
+hexagon              randconfig-r041-20211205
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
