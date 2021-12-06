@@ -2,57 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1889469446
-	for <lists+linux-efi@lfdr.de>; Mon,  6 Dec 2021 11:50:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDB0E469464
+	for <lists+linux-efi@lfdr.de>; Mon,  6 Dec 2021 11:53:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241258AbhLFKxu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 6 Dec 2021 05:53:50 -0500
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:47620
+        id S241897AbhLFK5E (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 6 Dec 2021 05:57:04 -0500
+Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:47762
         "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S241217AbhLFKxt (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 6 Dec 2021 05:53:49 -0500
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
+        by vger.kernel.org with ESMTP id S241814AbhLFKzB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 6 Dec 2021 05:55:01 -0500
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id A706C3F1B8
-        for <linux-efi@vger.kernel.org>; Mon,  6 Dec 2021 10:50:20 +0000 (UTC)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 9EE0A3F1C0
+        for <linux-efi@vger.kernel.org>; Mon,  6 Dec 2021 10:51:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1638787820;
-        bh=AamuRCUDtOeG1u1NXrTV8g0J3yQ8ijBKUVLSOIso31U=;
+        s=20210705; t=1638787892;
+        bh=RhDgG2MxbU+/Y0zOamju9twdysjbp89/nSRpYLjOzDo=;
         h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
          MIME-Version;
-        b=SbqC6I/wHRc9zF/caGYex6nPjNy3q/4x7atXFMl8/m82LnWd4f3xikkhlqiuokx32
-         dUDyIyzoxhZKTegy9ll/ydfyV2A6s+v4s0nUPLmJwPlSXwefcjro+ehuoeMeIBSU0F
-         zgLMlXW7iAXhjrmjojLCJ7j+/Dqp92ha1CsierjwCiVPdFFk0sXAVmWN8BLUAYRW0y
-         6Hb/WSisv90MOYv+UMaxdAgkHf3tAdu8MCl6/5Sp3XvNlXNqpm/DTs2nCbpZ38FLs5
-         C9hC70QCjzG/BieSTLl2EAI76R0pa9/M6CrIHl17Qjr9ICOjD2tRmY7YwprNZ9BSuX
-         D1BASt6bsxNsA==
-Received: by mail-wr1-f70.google.com with SMTP id v18-20020a5d5912000000b001815910d2c0so1905947wrd.1
-        for <linux-efi@vger.kernel.org>; Mon, 06 Dec 2021 02:50:20 -0800 (PST)
+        b=W+aKF5wBfVG6UDp5m+IZ2iV3Eg+Affe1EnlvRI8Sv2+0q277Th3i9PwIqx9pLNVxM
+         KUufipVfXA01kWaFgiSkagNolTzaeAgoLV89+N6af0LBBt9nGxUJxymwrQSW/HqYWN
+         V+2w33Gj63IHhSc+rp0DJQR5M5MSQSpxBD6rFM9t/XkuljjRWnOJ9T5ch6fo7NLL+X
+         j1D1ZLa7S5XfXnJaw1VG50kzFrrYyJ85fCGPqXnsO1KXnoqG5USznn1n/toVft8qpo
+         bHLplyjKzr/RHM2ytN+3n+vWhFWyHxzesrRQTaVM9TJRCHI8IYJxSy5hBfyfijIZlg
+         n0oaR/5FQEDJA==
+Received: by mail-wm1-f72.google.com with SMTP id g11-20020a1c200b000000b003320d092d08so5908551wmg.9
+        for <linux-efi@vger.kernel.org>; Mon, 06 Dec 2021 02:51:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=AamuRCUDtOeG1u1NXrTV8g0J3yQ8ijBKUVLSOIso31U=;
-        b=Xf3yhFzvHeuzlRm+Cuy+SG5YyYKVQvWrJItiAZk97820p2G4Ob8Pa/FOAw/Qsojiza
-         4JNuDp13LdfQMsgNZtXyzVNQhPlmV9/1WNlgOQOowen0m7eRuWquLsMa7ipeoUlTJ2yF
-         FEr9iUfqmbKapM8CAtr0DWkhceJee9SoSz4DGctFVrUZLiGHq8hWCmOlRwVnzad6MDJK
-         c3vyP9BQQAA8+H9S1EKBk4OM3KRsAwdocPfAmOwsjhxxcpG4vGJjXwyhNjL4fCi/hNVs
-         faLGpBODP18iG1qxRz6L5MJpCizSJ+A6Rg4r5LVABXahzLIr0f05x77AmNYCxqRJ0+/S
-         59Jw==
-X-Gm-Message-State: AOAM533s441jBW+TZFu3senGEOR1+fPwR7j+R4VIfUOsshhzPUCyMIFb
-        AA1O6hhJJscopVvO0POjFLYmhxmUc3ROvNeYkpkwPp3MPCpyzdwCUR32ZOCRYoqbjWKy1hCJkda
-        DUY5F/nVOTF6r6zGxsPDzBcn2rCaodP6g1cjmcQ==
-X-Received: by 2002:a05:600c:1d0e:: with SMTP id l14mr36985895wms.64.1638787820340;
-        Mon, 06 Dec 2021 02:50:20 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxALIP8HpicmnY++XN1dNgeUaGcBdRgBM6p5oDSIMlTtJifsil7mmXshzdKlsFj3cPBOgFI3g==
-X-Received: by 2002:a05:600c:1d0e:: with SMTP id l14mr36985880wms.64.1638787820171;
-        Mon, 06 Dec 2021 02:50:20 -0800 (PST)
+        bh=RhDgG2MxbU+/Y0zOamju9twdysjbp89/nSRpYLjOzDo=;
+        b=e2utkHnQpQmu3r00QgHapj2kC6KCDKDuZ9i2n+EIcFviFSQFr2bNRobUFijv0EanK6
+         V7ID8QKh1rlAowxu1/6npYQMQssESbNVjBtXz3nlOd7L19WJP7S+wblHWJbLTC2G11AO
+         8GyC5cyTJyurjDnsMdTJobmRJmc+ZbvElkNE/eUeTm1RX6g2O04Xj3vF9ykXj5ePZTmH
+         tZakXTYHUEed+noCtltxcxyegp+p/PU9HSiMrmQDkd/VJTP1Jps3UVhu3L5N7YbyupuM
+         UM+pHsSWMsBhWFyYJDFSeZ3ZfJmYdwotCMtJ6L0euBekCP5hQ0OEqxEu3Hojv3QTQUc+
+         AECQ==
+X-Gm-Message-State: AOAM531ozmhRVkvYF07rkH60VHSQFX9N3CxXs+0EGpZ7piFMTCup18aJ
+        RBeZ38zov03VBS79gDAE9/l/3T0Tng1xjCNc0/bGEbdJGcIxk8OJP3SQk6IkBS48jRdv9K6T9dh
+        IrZQii3s2q6V7MH0+8/WeRlop3CYyq4Vk4ItfgA==
+X-Received: by 2002:a1c:a503:: with SMTP id o3mr38875034wme.98.1638787881597;
+        Mon, 06 Dec 2021 02:51:21 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwPNUdS2gHzFpdP33u94EGT3zHNk81HnKWbQmnp6Sv+KE5A/wBLYQgSvy6gAW+sq9ArPIrD7Q==
+X-Received: by 2002:a1c:a503:: with SMTP id o3mr38874988wme.98.1638787881428;
+        Mon, 06 Dec 2021 02:51:21 -0800 (PST)
 Received: from localhost.localdomain (lfbn-lyo-1-470-249.w2-7.abo.wanadoo.fr. [2.7.60.249])
-        by smtp.gmail.com with ESMTPSA id y7sm10770064wrw.55.2021.12.06.02.50.19
+        by smtp.gmail.com with ESMTPSA id d2sm13816061wmb.24.2021.12.06.02.51.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Dec 2021 02:50:19 -0800 (PST)
+        Mon, 06 Dec 2021 02:51:21 -0800 (PST)
 From:   Alexandre Ghiti <alexandre.ghiti@canonical.com>
 To:     Jonathan Corbet <corbet@lwn.net>,
         Paul Walmsley <paul.walmsley@sifive.com>,
@@ -76,9 +76,9 @@ To:     Jonathan Corbet <corbet@lwn.net>,
         kasan-dev@googlegroups.com, linux-efi@vger.kernel.org,
         linux-arch@vger.kernel.org
 Cc:     Alexandre Ghiti <alexandre.ghiti@canonical.com>
-Subject: [PATCH v3 03/13] riscv: Introduce functions to switch pt_ops
-Date:   Mon,  6 Dec 2021 11:46:47 +0100
-Message-Id: <20211206104657.433304-4-alexandre.ghiti@canonical.com>
+Subject: [PATCH v3 04/13] riscv: Allow to dynamically define VA_BITS
+Date:   Mon,  6 Dec 2021 11:46:48 +0100
+Message-Id: <20211206104657.433304-5-alexandre.ghiti@canonical.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20211206104657.433304-1-alexandre.ghiti@canonical.com>
 References: <20211206104657.433304-1-alexandre.ghiti@canonical.com>
@@ -88,128 +88,98 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This simply gathers the different pt_ops initialization in functions
-where a comment was added to explain why the page table operations must
-be changed along the boot process.
+With 4-level page table folding at runtime, we don't know at compile time
+the size of the virtual address space so we must set VA_BITS dynamically
+so that sparsemem reserves the right amount of memory for struct pages.
 
 Signed-off-by: Alexandre Ghiti <alexandre.ghiti@canonical.com>
 ---
- arch/riscv/mm/init.c | 74 ++++++++++++++++++++++++++++++--------------
- 1 file changed, 51 insertions(+), 23 deletions(-)
+ arch/riscv/Kconfig                 | 10 ----------
+ arch/riscv/include/asm/kasan.h     |  2 +-
+ arch/riscv/include/asm/pgtable.h   | 10 ++++++++--
+ arch/riscv/include/asm/sparsemem.h |  6 +++++-
+ 4 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 5010eba52738..1552226fb6bd 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -582,6 +582,52 @@ static void __init create_fdt_early_page_table(pgd_t *pgdir, uintptr_t dtb_pa)
- 	dtb_early_pa = dtb_pa;
- }
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 6cd98ade5ebc..c3a167eea011 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -146,16 +146,6 @@ config MMU
+ 	  Select if you want MMU-based virtualised addressing space
+ 	  support by paged memory management. If unsure, say 'Y'.
  
-+/*
-+ * MMU is not enabled, the page tables are allocated directly using
-+ * early_pmd/pud/p4d and the address returned is the physical one.
-+ */
-+void pt_ops_set_early(void)
-+{
-+	pt_ops.alloc_pte = alloc_pte_early;
-+	pt_ops.get_pte_virt = get_pte_virt_early;
-+#ifndef __PAGETABLE_PMD_FOLDED
-+	pt_ops.alloc_pmd = alloc_pmd_early;
-+	pt_ops.get_pmd_virt = get_pmd_virt_early;
+-config VA_BITS
+-	int
+-	default 32 if 32BIT
+-	default 39 if 64BIT
+-
+-config PA_BITS
+-	int
+-	default 34 if 32BIT
+-	default 56 if 64BIT
+-
+ config PAGE_OFFSET
+ 	hex
+ 	default 0xC0000000 if 32BIT && MAXPHYSMEM_1GB
+diff --git a/arch/riscv/include/asm/kasan.h b/arch/riscv/include/asm/kasan.h
+index 2788e2c46609..743e6ff57996 100644
+--- a/arch/riscv/include/asm/kasan.h
++++ b/arch/riscv/include/asm/kasan.h
+@@ -27,7 +27,7 @@
+  */
+ #define KASAN_SHADOW_SCALE_SHIFT	3
+ 
+-#define KASAN_SHADOW_SIZE	(UL(1) << ((CONFIG_VA_BITS - 1) - KASAN_SHADOW_SCALE_SHIFT))
++#define KASAN_SHADOW_SIZE	(UL(1) << ((VA_BITS - 1) - KASAN_SHADOW_SCALE_SHIFT))
+ #define KASAN_SHADOW_START	(KASAN_SHADOW_END - KASAN_SHADOW_SIZE)
+ #define KASAN_SHADOW_END	MODULES_LOWEST_VADDR
+ #define KASAN_SHADOW_OFFSET	_AC(CONFIG_KASAN_SHADOW_OFFSET, UL)
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index d34f3a7a9701..e1a52e22ad7e 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -50,8 +50,14 @@
+  * struct pages to map half the virtual address space. Then
+  * position vmemmap directly below the VMALLOC region.
+  */
++#ifdef CONFIG_64BIT
++#define VA_BITS		39
++#else
++#define VA_BITS		32
 +#endif
-+}
 +
-+/*
-+ * MMU is enabled but page table setup is not complete yet.
-+ * fixmap page table alloc functions must be used as a means to temporarily
-+ * map the allocated physical pages since the linear mapping does not exist yet.
-+ *
-+ * Note that this is called with MMU disabled, hence kernel_mapping_pa_to_va,
-+ * but it will be used as described above.
-+ */
-+void pt_ops_set_fixmap(void)
-+{
-+	pt_ops.alloc_pte = kernel_mapping_pa_to_va((uintptr_t)alloc_pte_fixmap);
-+	pt_ops.get_pte_virt = kernel_mapping_pa_to_va((uintptr_t)get_pte_virt_fixmap);
-+#ifndef __PAGETABLE_PMD_FOLDED
-+	pt_ops.alloc_pmd = kernel_mapping_pa_to_va((uintptr_t)alloc_pmd_fixmap);
-+	pt_ops.get_pmd_virt = kernel_mapping_pa_to_va((uintptr_t)get_pmd_virt_fixmap);
-+#endif
-+}
-+
-+/*
-+ * MMU is enabled and page table setup is complete, so from now, we can use
-+ * generic page allocation functions to setup page table.
-+ */
-+void pt_ops_set_late(void)
-+{
-+	pt_ops.alloc_pte = alloc_pte_late;
-+	pt_ops.get_pte_virt = get_pte_virt_late;
-+#ifndef __PAGETABLE_PMD_FOLDED
-+	pt_ops.alloc_pmd = alloc_pmd_late;
-+	pt_ops.get_pmd_virt = get_pmd_virt_late;
-+#endif
-+}
-+
- asmlinkage void __init setup_vm(uintptr_t dtb_pa)
- {
- 	pmd_t __maybe_unused fix_bmap_spmd, fix_bmap_epmd;
-@@ -626,12 +672,8 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
- 	BUG_ON((kernel_map.virt_addr + kernel_map.size) > ADDRESS_SPACE_END - SZ_4K);
- #endif
- 
--	pt_ops.alloc_pte = alloc_pte_early;
--	pt_ops.get_pte_virt = get_pte_virt_early;
--#ifndef __PAGETABLE_PMD_FOLDED
--	pt_ops.alloc_pmd = alloc_pmd_early;
--	pt_ops.get_pmd_virt = get_pmd_virt_early;
--#endif
-+	pt_ops_set_early();
-+
- 	/* Setup early PGD for fixmap */
- 	create_pgd_mapping(early_pg_dir, FIXADDR_START,
- 			   (uintptr_t)fixmap_pgd_next, PGDIR_SIZE, PAGE_TABLE);
-@@ -695,6 +737,8 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
- 		pr_warn("FIX_BTMAP_BEGIN:     %d\n", FIX_BTMAP_BEGIN);
- 	}
- #endif
-+
-+	pt_ops_set_fixmap();
- }
- 
- static void __init setup_vm_final(void)
-@@ -703,16 +747,6 @@ static void __init setup_vm_final(void)
- 	phys_addr_t pa, start, end;
- 	u64 i;
- 
--	/**
--	 * MMU is enabled at this point. But page table setup is not complete yet.
--	 * fixmap page table alloc functions should be used at this point
--	 */
--	pt_ops.alloc_pte = alloc_pte_fixmap;
--	pt_ops.get_pte_virt = get_pte_virt_fixmap;
--#ifndef __PAGETABLE_PMD_FOLDED
--	pt_ops.alloc_pmd = alloc_pmd_fixmap;
--	pt_ops.get_pmd_virt = get_pmd_virt_fixmap;
--#endif
- 	/* Setup swapper PGD for fixmap */
- 	create_pgd_mapping(swapper_pg_dir, FIXADDR_START,
- 			   __pa_symbol(fixmap_pgd_next),
-@@ -754,13 +788,7 @@ static void __init setup_vm_final(void)
- 	csr_write(CSR_SATP, PFN_DOWN(__pa_symbol(swapper_pg_dir)) | SATP_MODE);
- 	local_flush_tlb_all();
- 
--	/* generic page allocation functions must be used to setup page table */
--	pt_ops.alloc_pte = alloc_pte_late;
--	pt_ops.get_pte_virt = get_pte_virt_late;
--#ifndef __PAGETABLE_PMD_FOLDED
--	pt_ops.alloc_pmd = alloc_pmd_late;
--	pt_ops.get_pmd_virt = get_pmd_virt_late;
--#endif
-+	pt_ops_set_late();
- }
+ #define VMEMMAP_SHIFT \
+-	(CONFIG_VA_BITS - PAGE_SHIFT - 1 + STRUCT_PAGE_MAX_SHIFT)
++	(VA_BITS - PAGE_SHIFT - 1 + STRUCT_PAGE_MAX_SHIFT)
+ #define VMEMMAP_SIZE	BIT(VMEMMAP_SHIFT)
+ #define VMEMMAP_END	(VMALLOC_START - 1)
+ #define VMEMMAP_START	(VMALLOC_START - VMEMMAP_SIZE)
+@@ -653,7 +659,7 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
+  * and give the kernel the other (upper) half.
+  */
+ #ifdef CONFIG_64BIT
+-#define KERN_VIRT_START	(-(BIT(CONFIG_VA_BITS)) + TASK_SIZE)
++#define KERN_VIRT_START	(-(BIT(VA_BITS)) + TASK_SIZE)
  #else
- asmlinkage void __init setup_vm(uintptr_t dtb_pa)
+ #define KERN_VIRT_START	FIXADDR_START
+ #endif
+diff --git a/arch/riscv/include/asm/sparsemem.h b/arch/riscv/include/asm/sparsemem.h
+index 45a7018a8118..63acaecc3374 100644
+--- a/arch/riscv/include/asm/sparsemem.h
++++ b/arch/riscv/include/asm/sparsemem.h
+@@ -4,7 +4,11 @@
+ #define _ASM_RISCV_SPARSEMEM_H
+ 
+ #ifdef CONFIG_SPARSEMEM
+-#define MAX_PHYSMEM_BITS	CONFIG_PA_BITS
++#ifdef CONFIG_64BIT
++#define MAX_PHYSMEM_BITS	56
++#else
++#define MAX_PHYSMEM_BITS	34
++#endif /* CONFIG_64BIT */
+ #define SECTION_SIZE_BITS	27
+ #endif /* CONFIG_SPARSEMEM */
+ 
 -- 
 2.32.0
 
