@@ -2,57 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8DC246943A
-	for <lists+linux-efi@lfdr.de>; Mon,  6 Dec 2021 11:49:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1889469446
+	for <lists+linux-efi@lfdr.de>; Mon,  6 Dec 2021 11:50:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240686AbhLFKxA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 6 Dec 2021 05:53:00 -0500
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:47572
+        id S241258AbhLFKxu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 6 Dec 2021 05:53:50 -0500
+Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:47620
         "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S239446AbhLFKw7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 6 Dec 2021 05:52:59 -0500
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
+        by vger.kernel.org with ESMTP id S241217AbhLFKxt (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 6 Dec 2021 05:53:49 -0500
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 708093F1B2
-        for <linux-efi@vger.kernel.org>; Mon,  6 Dec 2021 10:49:30 +0000 (UTC)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id A706C3F1B8
+        for <linux-efi@vger.kernel.org>; Mon,  6 Dec 2021 10:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1638787770;
-        bh=SRQqaE+eBxp32u4NFRGojAHgHUNJ3nLFCtcyJRkcDak=;
+        s=20210705; t=1638787820;
+        bh=AamuRCUDtOeG1u1NXrTV8g0J3yQ8ijBKUVLSOIso31U=;
         h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
          MIME-Version;
-        b=tYSwsfroAi3VOBA3PyKq1iIELSnY+qozJpnrMmsyVQ0S7bkcN2BmAtCMF4rh/LDJ8
-         YywWHTNPqtU6s2KxizHOwmvhzZZUDnQ40dpUAEmIn9VBlspD3FNXjHlw9Wx9LkDpDu
-         BxrnQb+bAmdkuWSDsToT1TL6iyXdRGiLSjSgEu1/I3Ps5dNbnZmmFY0QI8vIxVncyH
-         AoiLFFsl6FUmHBDzQABBRE6P94aa9+edmoCv6weAo79w7lHVBrAcocMo2K1xK9W7dT
-         tHD7KVgvZMYF5MSBbsKHWkeaJvR7VesMbuS0sXTKLsKE4sGW6KAX7CjkStVc3cctu2
-         d4x3oFden1uRQ==
-Received: by mail-ed1-f71.google.com with SMTP id k7-20020aa7c387000000b003e7ed87fb31so8072229edq.3
-        for <linux-efi@vger.kernel.org>; Mon, 06 Dec 2021 02:49:30 -0800 (PST)
+        b=SbqC6I/wHRc9zF/caGYex6nPjNy3q/4x7atXFMl8/m82LnWd4f3xikkhlqiuokx32
+         dUDyIyzoxhZKTegy9ll/ydfyV2A6s+v4s0nUPLmJwPlSXwefcjro+ehuoeMeIBSU0F
+         zgLMlXW7iAXhjrmjojLCJ7j+/Dqp92ha1CsierjwCiVPdFFk0sXAVmWN8BLUAYRW0y
+         6Hb/WSisv90MOYv+UMaxdAgkHf3tAdu8MCl6/5Sp3XvNlXNqpm/DTs2nCbpZ38FLs5
+         C9hC70QCjzG/BieSTLl2EAI76R0pa9/M6CrIHl17Qjr9ICOjD2tRmY7YwprNZ9BSuX
+         D1BASt6bsxNsA==
+Received: by mail-wr1-f70.google.com with SMTP id v18-20020a5d5912000000b001815910d2c0so1905947wrd.1
+        for <linux-efi@vger.kernel.org>; Mon, 06 Dec 2021 02:50:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=SRQqaE+eBxp32u4NFRGojAHgHUNJ3nLFCtcyJRkcDak=;
-        b=72lNhklUo/dG/kY/k6Du8gqQT0zYKZ6Zvb0kPEzXUoXyuCFTF4FCabQaD4sdjyNp34
-         KyNIwk36VKWA/cVhIh7kb5Xp2yzbdevq32Vh57q25UTb9mYC859olmiglgVTTD5c7WBR
-         wrxSxkiks6Ki4FYSTvkFj2Th4ZEooB1tNJaR3oc+BBjHI2EO1BsvWSKIdhgVVtiIQEKE
-         bixKBz1dzOQseLZGmJyguw5dXsKwajRbtmJaA4HEO1YTunBh7l+wZRAaE19YY5+jRHCe
-         mOd/VzjaFf9Yumt/XLH79WDNE2yXw19OXZzJmMORtNVhkS5OO2scANp/ZNRZwP17tzLJ
-         jexA==
-X-Gm-Message-State: AOAM533BqAKPRWwxxDIAQlyz0lG4Tv2aqGsfspAFsDRR+pB+P8owwG63
-        uMa+pgTYMJUjiYmRtGG+hEaoWcUNgFHhwh21CmMAu85ZMKMHlZ2eHaxli+2TAhuK3Xxj4r80Rqd
-        NryZwgsCk3q/e8xPiwwPY7qc5GClkfvIQSXSeVw==
-X-Received: by 2002:adf:efc6:: with SMTP id i6mr40937001wrp.428.1638787759192;
-        Mon, 06 Dec 2021 02:49:19 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJznPINTNi+CBmI6j3DvMVzbUi0EZHd70V319Ww/yUFGyrZPp9xplgSNEH+A7OmkTV1qLyNB6A==
-X-Received: by 2002:adf:efc6:: with SMTP id i6mr40936958wrp.428.1638787758943;
-        Mon, 06 Dec 2021 02:49:18 -0800 (PST)
+        bh=AamuRCUDtOeG1u1NXrTV8g0J3yQ8ijBKUVLSOIso31U=;
+        b=Xf3yhFzvHeuzlRm+Cuy+SG5YyYKVQvWrJItiAZk97820p2G4Ob8Pa/FOAw/Qsojiza
+         4JNuDp13LdfQMsgNZtXyzVNQhPlmV9/1WNlgOQOowen0m7eRuWquLsMa7ipeoUlTJ2yF
+         FEr9iUfqmbKapM8CAtr0DWkhceJee9SoSz4DGctFVrUZLiGHq8hWCmOlRwVnzad6MDJK
+         c3vyP9BQQAA8+H9S1EKBk4OM3KRsAwdocPfAmOwsjhxxcpG4vGJjXwyhNjL4fCi/hNVs
+         faLGpBODP18iG1qxRz6L5MJpCizSJ+A6Rg4r5LVABXahzLIr0f05x77AmNYCxqRJ0+/S
+         59Jw==
+X-Gm-Message-State: AOAM533s441jBW+TZFu3senGEOR1+fPwR7j+R4VIfUOsshhzPUCyMIFb
+        AA1O6hhJJscopVvO0POjFLYmhxmUc3ROvNeYkpkwPp3MPCpyzdwCUR32ZOCRYoqbjWKy1hCJkda
+        DUY5F/nVOTF6r6zGxsPDzBcn2rCaodP6g1cjmcQ==
+X-Received: by 2002:a05:600c:1d0e:: with SMTP id l14mr36985895wms.64.1638787820340;
+        Mon, 06 Dec 2021 02:50:20 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxALIP8HpicmnY++XN1dNgeUaGcBdRgBM6p5oDSIMlTtJifsil7mmXshzdKlsFj3cPBOgFI3g==
+X-Received: by 2002:a05:600c:1d0e:: with SMTP id l14mr36985880wms.64.1638787820171;
+        Mon, 06 Dec 2021 02:50:20 -0800 (PST)
 Received: from localhost.localdomain (lfbn-lyo-1-470-249.w2-7.abo.wanadoo.fr. [2.7.60.249])
-        by smtp.gmail.com with ESMTPSA id m21sm11197860wrb.2.2021.12.06.02.49.18
+        by smtp.gmail.com with ESMTPSA id y7sm10770064wrw.55.2021.12.06.02.50.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Dec 2021 02:49:18 -0800 (PST)
+        Mon, 06 Dec 2021 02:50:19 -0800 (PST)
 From:   Alexandre Ghiti <alexandre.ghiti@canonical.com>
 To:     Jonathan Corbet <corbet@lwn.net>,
         Paul Walmsley <paul.walmsley@sifive.com>,
@@ -76,9 +76,9 @@ To:     Jonathan Corbet <corbet@lwn.net>,
         kasan-dev@googlegroups.com, linux-efi@vger.kernel.org,
         linux-arch@vger.kernel.org
 Cc:     Alexandre Ghiti <alexandre.ghiti@canonical.com>
-Subject: [PATCH v3 02/13] riscv: Split early kasan mapping to prepare sv48 introduction
-Date:   Mon,  6 Dec 2021 11:46:46 +0100
-Message-Id: <20211206104657.433304-3-alexandre.ghiti@canonical.com>
+Subject: [PATCH v3 03/13] riscv: Introduce functions to switch pt_ops
+Date:   Mon,  6 Dec 2021 11:46:47 +0100
+Message-Id: <20211206104657.433304-4-alexandre.ghiti@canonical.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20211206104657.433304-1-alexandre.ghiti@canonical.com>
 References: <20211206104657.433304-1-alexandre.ghiti@canonical.com>
@@ -88,202 +88,128 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Now that kasan shadow region is next to the kernel, for sv48, this
-region won't be aligned on PGDIR_SIZE and then when populating this
-region, we'll need to get down to lower levels of the page table. So
-instead of reimplementing the page table walk for the early population,
-take advantage of the existing functions used for the final population.
-
-Note that kasan swapper initialization must also be split since memblock
-is not initialized at this point and as the last PGD is shared with the
-kernel, we'd need to allocate a PUD so postpone the kasan final
-population after the kernel population is done.
+This simply gathers the different pt_ops initialization in functions
+where a comment was added to explain why the page table operations must
+be changed along the boot process.
 
 Signed-off-by: Alexandre Ghiti <alexandre.ghiti@canonical.com>
 ---
- arch/riscv/include/asm/kasan.h |   1 +
- arch/riscv/mm/init.c           |   4 ++
- arch/riscv/mm/kasan_init.c     | 113 ++++++++++++++++++---------------
- 3 files changed, 67 insertions(+), 51 deletions(-)
+ arch/riscv/mm/init.c | 74 ++++++++++++++++++++++++++++++--------------
+ 1 file changed, 51 insertions(+), 23 deletions(-)
 
-diff --git a/arch/riscv/include/asm/kasan.h b/arch/riscv/include/asm/kasan.h
-index 257a2495145a..2788e2c46609 100644
---- a/arch/riscv/include/asm/kasan.h
-+++ b/arch/riscv/include/asm/kasan.h
-@@ -34,6 +34,7 @@
- 
- void kasan_init(void);
- asmlinkage void kasan_early_init(void);
-+void kasan_swapper_init(void);
- 
- #endif
- #endif
 diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 4224e9d0ecf5..5010eba52738 100644
+index 5010eba52738..1552226fb6bd 100644
 --- a/arch/riscv/mm/init.c
 +++ b/arch/riscv/mm/init.c
-@@ -742,6 +742,10 @@ static void __init setup_vm_final(void)
- 	create_kernel_page_table(swapper_pg_dir, false);
+@@ -582,6 +582,52 @@ static void __init create_fdt_early_page_table(pgd_t *pgdir, uintptr_t dtb_pa)
+ 	dtb_early_pa = dtb_pa;
+ }
+ 
++/*
++ * MMU is not enabled, the page tables are allocated directly using
++ * early_pmd/pud/p4d and the address returned is the physical one.
++ */
++void pt_ops_set_early(void)
++{
++	pt_ops.alloc_pte = alloc_pte_early;
++	pt_ops.get_pte_virt = get_pte_virt_early;
++#ifndef __PAGETABLE_PMD_FOLDED
++	pt_ops.alloc_pmd = alloc_pmd_early;
++	pt_ops.get_pmd_virt = get_pmd_virt_early;
++#endif
++}
++
++/*
++ * MMU is enabled but page table setup is not complete yet.
++ * fixmap page table alloc functions must be used as a means to temporarily
++ * map the allocated physical pages since the linear mapping does not exist yet.
++ *
++ * Note that this is called with MMU disabled, hence kernel_mapping_pa_to_va,
++ * but it will be used as described above.
++ */
++void pt_ops_set_fixmap(void)
++{
++	pt_ops.alloc_pte = kernel_mapping_pa_to_va((uintptr_t)alloc_pte_fixmap);
++	pt_ops.get_pte_virt = kernel_mapping_pa_to_va((uintptr_t)get_pte_virt_fixmap);
++#ifndef __PAGETABLE_PMD_FOLDED
++	pt_ops.alloc_pmd = kernel_mapping_pa_to_va((uintptr_t)alloc_pmd_fixmap);
++	pt_ops.get_pmd_virt = kernel_mapping_pa_to_va((uintptr_t)get_pmd_virt_fixmap);
++#endif
++}
++
++/*
++ * MMU is enabled and page table setup is complete, so from now, we can use
++ * generic page allocation functions to setup page table.
++ */
++void pt_ops_set_late(void)
++{
++	pt_ops.alloc_pte = alloc_pte_late;
++	pt_ops.get_pte_virt = get_pte_virt_late;
++#ifndef __PAGETABLE_PMD_FOLDED
++	pt_ops.alloc_pmd = alloc_pmd_late;
++	pt_ops.get_pmd_virt = get_pmd_virt_late;
++#endif
++}
++
+ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
+ {
+ 	pmd_t __maybe_unused fix_bmap_spmd, fix_bmap_epmd;
+@@ -626,12 +672,8 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
+ 	BUG_ON((kernel_map.virt_addr + kernel_map.size) > ADDRESS_SPACE_END - SZ_4K);
  #endif
  
-+#ifdef CONFIG_KASAN
-+	kasan_swapper_init();
-+#endif
+-	pt_ops.alloc_pte = alloc_pte_early;
+-	pt_ops.get_pte_virt = get_pte_virt_early;
+-#ifndef __PAGETABLE_PMD_FOLDED
+-	pt_ops.alloc_pmd = alloc_pmd_early;
+-	pt_ops.get_pmd_virt = get_pmd_virt_early;
+-#endif
++	pt_ops_set_early();
 +
- 	/* Clear fixmap PTE and PMD mappings */
- 	clear_fixmap(FIX_PTE);
- 	clear_fixmap(FIX_PMD);
-diff --git a/arch/riscv/mm/kasan_init.c b/arch/riscv/mm/kasan_init.c
-index 54294f83513d..1434a0225140 100644
---- a/arch/riscv/mm/kasan_init.c
-+++ b/arch/riscv/mm/kasan_init.c
-@@ -12,44 +12,6 @@
- #include <asm/pgalloc.h>
- 
- extern pgd_t early_pg_dir[PTRS_PER_PGD];
--asmlinkage void __init kasan_early_init(void)
--{
--	uintptr_t i;
--	pgd_t *pgd = early_pg_dir + pgd_index(KASAN_SHADOW_START);
--
--	BUILD_BUG_ON(KASAN_SHADOW_OFFSET !=
--		KASAN_SHADOW_END - (1UL << (64 - KASAN_SHADOW_SCALE_SHIFT)));
--
--	for (i = 0; i < PTRS_PER_PTE; ++i)
--		set_pte(kasan_early_shadow_pte + i,
--			mk_pte(virt_to_page(kasan_early_shadow_page),
--			       PAGE_KERNEL));
--
--	for (i = 0; i < PTRS_PER_PMD; ++i)
--		set_pmd(kasan_early_shadow_pmd + i,
--			pfn_pmd(PFN_DOWN
--				(__pa((uintptr_t) kasan_early_shadow_pte)),
--				__pgprot(_PAGE_TABLE)));
--
--	for (i = KASAN_SHADOW_START; i < KASAN_SHADOW_END;
--	     i += PGDIR_SIZE, ++pgd)
--		set_pgd(pgd,
--			pfn_pgd(PFN_DOWN
--				(__pa(((uintptr_t) kasan_early_shadow_pmd))),
--				__pgprot(_PAGE_TABLE)));
--
--	/* init for swapper_pg_dir */
--	pgd = pgd_offset_k(KASAN_SHADOW_START);
--
--	for (i = KASAN_SHADOW_START; i < KASAN_SHADOW_END;
--	     i += PGDIR_SIZE, ++pgd)
--		set_pgd(pgd,
--			pfn_pgd(PFN_DOWN
--				(__pa(((uintptr_t) kasan_early_shadow_pmd))),
--				__pgprot(_PAGE_TABLE)));
--
--	local_flush_tlb_all();
--}
- 
- static void __init kasan_populate_pte(pmd_t *pmd, unsigned long vaddr, unsigned long end)
- {
-@@ -108,26 +70,35 @@ static void __init kasan_populate_pmd(pgd_t *pgd, unsigned long vaddr, unsigned
- 	set_pgd(pgd, pfn_pgd(PFN_DOWN(__pa(base_pmd)), PAGE_TABLE));
+ 	/* Setup early PGD for fixmap */
+ 	create_pgd_mapping(early_pg_dir, FIXADDR_START,
+ 			   (uintptr_t)fixmap_pgd_next, PGDIR_SIZE, PAGE_TABLE);
+@@ -695,6 +737,8 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
+ 		pr_warn("FIX_BTMAP_BEGIN:     %d\n", FIX_BTMAP_BEGIN);
+ 	}
+ #endif
++
++	pt_ops_set_fixmap();
  }
  
--static void __init kasan_populate_pgd(unsigned long vaddr, unsigned long end)
-+static void __init kasan_populate_pgd(pgd_t *pgdp,
-+				      unsigned long vaddr, unsigned long end,
-+				      bool early)
- {
- 	phys_addr_t phys_addr;
--	pgd_t *pgdp = pgd_offset_k(vaddr);
- 	unsigned long next;
+ static void __init setup_vm_final(void)
+@@ -703,16 +747,6 @@ static void __init setup_vm_final(void)
+ 	phys_addr_t pa, start, end;
+ 	u64 i;
  
- 	do {
- 		next = pgd_addr_end(vaddr, end);
- 
--		/*
--		 * pgdp can't be none since kasan_early_init initialized all KASAN
--		 * shadow region with kasan_early_shadow_pmd: if this is stillthe case,
--		 * that means we can try to allocate a hugepage as a replacement.
--		 */
--		if (pgd_page_vaddr(*pgdp) == (unsigned long)lm_alias(kasan_early_shadow_pmd) &&
--		    IS_ALIGNED(vaddr, PGDIR_SIZE) && (next - vaddr) >= PGDIR_SIZE) {
--			phys_addr = memblock_phys_alloc(PGDIR_SIZE, PGDIR_SIZE);
--			if (phys_addr) {
--				set_pgd(pgdp, pfn_pgd(PFN_DOWN(phys_addr), PAGE_KERNEL));
-+		if (IS_ALIGNED(vaddr, PGDIR_SIZE) && (next - vaddr) >= PGDIR_SIZE) {
-+			if (early) {
-+				phys_addr = __pa((uintptr_t)kasan_early_shadow_pgd_next);
-+				set_pgd(pgdp, pfn_pgd(PFN_DOWN(phys_addr), PAGE_TABLE));
- 				continue;
-+			} else if (pgd_page_vaddr(*pgdp) ==
-+				   (unsigned long)lm_alias(kasan_early_shadow_pgd_next)) {
-+				/*
-+				 * pgdp can't be none since kasan_early_init
-+				 * initialized all KASAN shadow region with
-+				 * kasan_early_shadow_pud: if this is still the
-+				 * case, that means we can try to allocate a
-+				 * hugepage as a replacement.
-+				 */
-+				phys_addr = memblock_phys_alloc(PGDIR_SIZE, PGDIR_SIZE);
-+				if (phys_addr) {
-+					set_pgd(pgdp, pfn_pgd(PFN_DOWN(phys_addr), PAGE_KERNEL));
-+					continue;
-+				}
- 			}
- 		}
- 
-@@ -135,12 +106,52 @@ static void __init kasan_populate_pgd(unsigned long vaddr, unsigned long end)
- 	} while (pgdp++, vaddr = next, vaddr != end);
- }
- 
-+asmlinkage void __init kasan_early_init(void)
-+{
-+	uintptr_t i;
-+
-+	BUILD_BUG_ON(KASAN_SHADOW_OFFSET !=
-+		KASAN_SHADOW_END - (1UL << (64 - KASAN_SHADOW_SCALE_SHIFT)));
-+
-+	for (i = 0; i < PTRS_PER_PTE; ++i)
-+		set_pte(kasan_early_shadow_pte + i,
-+			mk_pte(virt_to_page(kasan_early_shadow_page),
-+			       PAGE_KERNEL));
-+
-+	for (i = 0; i < PTRS_PER_PMD; ++i)
-+		set_pmd(kasan_early_shadow_pmd + i,
-+			pfn_pmd(PFN_DOWN
-+				(__pa((uintptr_t)kasan_early_shadow_pte)),
-+				PAGE_TABLE));
-+
-+	if (pgtable_l4_enabled) {
-+		for (i = 0; i < PTRS_PER_PUD; ++i)
-+			set_pud(kasan_early_shadow_pud + i,
-+				pfn_pud(PFN_DOWN
-+					(__pa(((uintptr_t)kasan_early_shadow_pmd))),
-+					PAGE_TABLE));
-+	}
-+
-+	kasan_populate_pgd(early_pg_dir + pgd_index(KASAN_SHADOW_START),
-+			   KASAN_SHADOW_START, KASAN_SHADOW_END, true);
-+
-+	local_flush_tlb_all();
-+}
-+
-+void __init kasan_swapper_init(void)
-+{
-+	kasan_populate_pgd(pgd_offset_k(KASAN_SHADOW_START),
-+			   KASAN_SHADOW_START, KASAN_SHADOW_END, true);
-+
-+	local_flush_tlb_all();
-+}
-+
- static void __init kasan_populate(void *start, void *end)
- {
- 	unsigned long vaddr = (unsigned long)start & PAGE_MASK;
- 	unsigned long vend = PAGE_ALIGN((unsigned long)end);
- 
--	kasan_populate_pgd(vaddr, vend);
-+	kasan_populate_pgd(pgd_offset_k(vaddr), vaddr, vend, false);
- 
+-	/**
+-	 * MMU is enabled at this point. But page table setup is not complete yet.
+-	 * fixmap page table alloc functions should be used at this point
+-	 */
+-	pt_ops.alloc_pte = alloc_pte_fixmap;
+-	pt_ops.get_pte_virt = get_pte_virt_fixmap;
+-#ifndef __PAGETABLE_PMD_FOLDED
+-	pt_ops.alloc_pmd = alloc_pmd_fixmap;
+-	pt_ops.get_pmd_virt = get_pmd_virt_fixmap;
+-#endif
+ 	/* Setup swapper PGD for fixmap */
+ 	create_pgd_mapping(swapper_pg_dir, FIXADDR_START,
+ 			   __pa_symbol(fixmap_pgd_next),
+@@ -754,13 +788,7 @@ static void __init setup_vm_final(void)
+ 	csr_write(CSR_SATP, PFN_DOWN(__pa_symbol(swapper_pg_dir)) | SATP_MODE);
  	local_flush_tlb_all();
- 	memset(start, KASAN_SHADOW_INIT, end - start);
+ 
+-	/* generic page allocation functions must be used to setup page table */
+-	pt_ops.alloc_pte = alloc_pte_late;
+-	pt_ops.get_pte_virt = get_pte_virt_late;
+-#ifndef __PAGETABLE_PMD_FOLDED
+-	pt_ops.alloc_pmd = alloc_pmd_late;
+-	pt_ops.get_pmd_virt = get_pmd_virt_late;
+-#endif
++	pt_ops_set_late();
+ }
+ #else
+ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
 -- 
 2.32.0
 
