@@ -2,197 +2,176 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02CB446A153
-	for <lists+linux-efi@lfdr.de>; Mon,  6 Dec 2021 17:26:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E9B546A3FB
+	for <lists+linux-efi@lfdr.de>; Mon,  6 Dec 2021 19:26:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351969AbhLFQa0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 6 Dec 2021 11:30:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45108 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1385471AbhLFQaD (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 6 Dec 2021 11:30:03 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD289C0613F8;
-        Mon,  6 Dec 2021 08:26:34 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        id S1346903AbhLFS31 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 6 Dec 2021 13:29:27 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:57400 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1346873AbhLFS31 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 6 Dec 2021 13:29:27 -0500
+Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 24060CE16C7;
-        Mon,  6 Dec 2021 16:26:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1EF4C341C2;
-        Mon,  6 Dec 2021 16:26:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638807991;
-        bh=Wz98IlyL9Yn420RHC9S01jFGy4sD8P9IQ4KMEc4hBnE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=sckZAMuU60EwH/eL09QBh97evFipQvaEK2vdD+cy3Lc6rdQAIVOVWWzQDEDKZgP8v
-         4X7Ns9yeBid7mgmKpBT5K4Q3DSkTcD5knRd7qzUN0nRmhJ6EkrkGipxhj7htcOZnEF
-         Ga4Kavqt3K8yQqgpA2o8x6NwS2P8ZHZ9WWNgLe23sIPvF6dt3jvy1RcfG8uIwq90K1
-         cE7aPNgS6bkn28zD9csV6o1ASEmKwfuTNetYxcQ68VAjOKvb4Rpyf3Ia1Q2vLLD2P+
-         f/f7mz/19NF333JJ2TnSSRXOawk9AjaDQz+Yq14eSA607a48o/A2WaAnbp4RVDX+jo
-         VF51jKfuPHJjQ==
-Date:   Tue, 7 Dec 2021 00:18:54 +0800
-From:   Jisheng Zhang <jszhang@kernel.org>
-To:     Alexandre Ghiti <alexandre.ghiti@canonical.com>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Zong Li <zong.li@sifive.com>, Anup Patel <anup@brainfault.org>,
-        Atish Patra <Atish.Patra@rivosinc.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Kees Cook <keescook@chromium.org>,
-        Guo Ren <guoren@linux.alibaba.com>,
-        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-        Mayuresh Chitale <mchitale@ventanamicro.com>,
-        panqinglin2020@iscas.ac.cn, linux-doc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kasan-dev@googlegroups.com, linux-efi@vger.kernel.org,
-        linux-arch@vger.kernel.org
-Subject: Re: [PATCH v3 01/13] riscv: Move KASAN mapping next to the kernel
- mapping
-In-Reply-To: <20211206104657.433304-2-alexandre.ghiti@canonical.com>
-References: <20211206104657.433304-1-alexandre.ghiti@canonical.com>
-        <20211206104657.433304-2-alexandre.ghiti@canonical.com>
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 93E411EC04EC;
+        Mon,  6 Dec 2021 19:25:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1638815152;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=IQf1Aykvr0b9qh7v/aw8uwWh6TGGRbXZxaugyfZJEIU=;
+        b=jQJDfprBX9STJpmWLtePKc1tSSDwspxyBah1ghZ3nAe8tJ5k0wXElkUD+W6a30r7AWnl27
+        FGffroW/b0INl0Z1xMkePlp5g2X1IjvYEFFUVDpjwqiR8fVJZVyky8QAhUNlgw8/ddhPU2
+        6ByUvko7IcMgRj9+XIxxvhr6IaIm47k=
+Date:   Mon, 6 Dec 2021 19:25:54 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v7 13/45] x86/sev: Check the vmpl level
+Message-ID: <Ya5VsraetesqEkRi@zn.tnic>
+References: <20211110220731.2396491-1-brijesh.singh@amd.com>
+ <20211110220731.2396491-14-brijesh.singh@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Message-Id: <20211206162624.F1EF4C341C2@smtp.kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20211110220731.2396491-14-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon,  6 Dec 2021 11:46:45 +0100
-Alexandre Ghiti <alexandre.ghiti@canonical.com> wrote:
+On Wed, Nov 10, 2021 at 04:06:59PM -0600, Brijesh Singh wrote:
+> Virtual Machine Privilege Level (VMPL) is an optional feature in the
+> SEV-SNP architecture, which allows a guest VM to divide its address space
+> into four levels. The level can be used to provide the hardware isolated
+> abstraction layers with a VM.
 
-> Now that KASAN_SHADOW_OFFSET is defined at compile time as a config,
-> this value must remain constant whatever the size of the virtual address
-> space, which is only possible by pushing this region at the end of the
-> address space next to the kernel mapping.
+That sentence needs improving.
+
+> The VMPL0 is the highest privilege, and
+> VMPL3 is the least privilege. Certain operations must be done by the VMPL0
+> software, such as:
 > 
-> Signed-off-by: Alexandre Ghiti <alexandre.ghiti@canonical.com>
+> * Validate or invalidate memory range (PVALIDATE instruction)
+> * Allocate VMSA page (RMPADJUST instruction when VMSA=1)
+> 
+> The initial SEV-SNP support assumes that the guest kernel is running on
+
+assumes? I think it is "requires".
+
+> VMPL0. Let's add a check to make sure that kernel is running at VMPL0
+
+s/Let's //
+
+> before continuing the boot. There is no easy method to query the current
+> VMPL level, so use the RMPADJUST instruction to determine whether its
+
+"... whether the guest is running at VMPL0."
+
+> booted at the VMPL0.
+> 
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 > ---
->  Documentation/riscv/vm-layout.rst | 12 ++++++------
->  arch/riscv/Kconfig                |  4 ++--
->  arch/riscv/include/asm/kasan.h    |  4 ++--
->  arch/riscv/include/asm/page.h     |  6 +++++-
->  arch/riscv/include/asm/pgtable.h  |  6 ++++--
->  arch/riscv/mm/init.c              | 25 +++++++++++++------------
->  6 files changed, 32 insertions(+), 25 deletions(-)
+>  arch/x86/boot/compressed/sev.c    | 34 ++++++++++++++++++++++++++++---
+>  arch/x86/include/asm/sev-common.h |  1 +
+>  arch/x86/include/asm/sev.h        | 16 +++++++++++++++
+>  3 files changed, 48 insertions(+), 3 deletions(-)
 > 
-> diff --git a/Documentation/riscv/vm-layout.rst b/Documentation/riscv/vm-layout.rst
-> index b7f98930d38d..1bd687b97104 100644
-> --- a/Documentation/riscv/vm-layout.rst
-> +++ b/Documentation/riscv/vm-layout.rst
-> @@ -47,12 +47,12 @@ RISC-V Linux Kernel SV39
->                                                                | Kernel-space virtual memory, shared between all processes:
->    ____________________________________________________________|___________________________________________________________
->                      |            |                  |         |
-> -   ffffffc000000000 | -256    GB | ffffffc7ffffffff |   32 GB | kasan
-> -   ffffffcefee00000 | -196    GB | ffffffcefeffffff |    2 MB | fixmap
-> -   ffffffceff000000 | -196    GB | ffffffceffffffff |   16 MB | PCI io
-> -   ffffffcf00000000 | -196    GB | ffffffcfffffffff |    4 GB | vmemmap
-> -   ffffffd000000000 | -192    GB | ffffffdfffffffff |   64 GB | vmalloc/ioremap space
-> -   ffffffe000000000 | -128    GB | ffffffff7fffffff |  124 GB | direct mapping of all physical memory
-> +   ffffffc6fee00000 | -228    GB | ffffffc6feffffff |    2 MB | fixmap
-> +   ffffffc6ff000000 | -228    GB | ffffffc6ffffffff |   16 MB | PCI io
-> +   ffffffc700000000 | -228    GB | ffffffc7ffffffff |    4 GB | vmemmap
-> +   ffffffc800000000 | -224    GB | ffffffd7ffffffff |   64 GB | vmalloc/ioremap space
-> +   ffffffd800000000 | -160    GB | fffffff6ffffffff |  124 GB | direct mapping of all physical memory
-> +   fffffff700000000 |  -36    GB | fffffffeffffffff |   32 GB | kasan
->    __________________|____________|__________________|_________|____________________________________________________________
->                                                                |
->                                                                |
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index 6d5b63bd4bd9..6cd98ade5ebc 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -161,12 +161,12 @@ config PAGE_OFFSET
->  	default 0xC0000000 if 32BIT && MAXPHYSMEM_1GB
->  	default 0x80000000 if 64BIT && !MMU
->  	default 0xffffffff80000000 if 64BIT && MAXPHYSMEM_2GB
-> -	default 0xffffffe000000000 if 64BIT && MAXPHYSMEM_128GB
-> +	default 0xffffffd800000000 if 64BIT && MAXPHYSMEM_128GB
+> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+> index e525fa74a551..21feb7f4f76f 100644
+> --- a/arch/x86/boot/compressed/sev.c
+> +++ b/arch/x86/boot/compressed/sev.c
+> @@ -124,6 +124,29 @@ static inline bool sev_snp_enabled(void)
+>  	return sev_status & MSR_AMD64_SEV_SNP_ENABLED;
+>  }
 >  
->  config KASAN_SHADOW_OFFSET
->  	hex
->  	depends on KASAN_GENERIC
-> -	default 0xdfffffc800000000 if 64BIT
-> +	default 0xdfffffff00000000 if 64BIT
->  	default 0xffffffff if 32BIT
->  
->  config ARCH_FLATMEM_ENABLE
-> diff --git a/arch/riscv/include/asm/kasan.h b/arch/riscv/include/asm/kasan.h
-> index b00f503ec124..257a2495145a 100644
-> --- a/arch/riscv/include/asm/kasan.h
-> +++ b/arch/riscv/include/asm/kasan.h
-> @@ -28,8 +28,8 @@
->  #define KASAN_SHADOW_SCALE_SHIFT	3
->  
->  #define KASAN_SHADOW_SIZE	(UL(1) << ((CONFIG_VA_BITS - 1) - KASAN_SHADOW_SCALE_SHIFT))
-> -#define KASAN_SHADOW_START	KERN_VIRT_START
-> -#define KASAN_SHADOW_END	(KASAN_SHADOW_START + KASAN_SHADOW_SIZE)
-> +#define KASAN_SHADOW_START	(KASAN_SHADOW_END - KASAN_SHADOW_SIZE)
-> +#define KASAN_SHADOW_END	MODULES_LOWEST_VADDR
->  #define KASAN_SHADOW_OFFSET	_AC(CONFIG_KASAN_SHADOW_OFFSET, UL)
->  
->  void kasan_init(void);
-> diff --git a/arch/riscv/include/asm/page.h b/arch/riscv/include/asm/page.h
-> index 109c97e991a6..e03559f9b35e 100644
-> --- a/arch/riscv/include/asm/page.h
-> +++ b/arch/riscv/include/asm/page.h
-> @@ -33,7 +33,11 @@
->   */
->  #define PAGE_OFFSET		_AC(CONFIG_PAGE_OFFSET, UL)
->  
-> -#define KERN_VIRT_SIZE (-PAGE_OFFSET)
-> +/*
-> + * Half of the kernel address space (half of the entries of the page global
-> + * directory) is for the direct mapping.
-> + */
-> +#define KERN_VIRT_SIZE		((PTRS_PER_PGD / 2 * PGDIR_SIZE) / 2)
->  
->  #ifndef __ASSEMBLY__
->  
-> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-> index 39b550310ec6..d34f3a7a9701 100644
-> --- a/arch/riscv/include/asm/pgtable.h
-> +++ b/arch/riscv/include/asm/pgtable.h
-> @@ -39,8 +39,10 @@
->  
->  /* Modules always live before the kernel */
->  #ifdef CONFIG_64BIT
-> -#define MODULES_VADDR	(PFN_ALIGN((unsigned long)&_end) - SZ_2G)
-> -#define MODULES_END	(PFN_ALIGN((unsigned long)&_start))
-> +/* This is used to define the end of the KASAN shadow region */
-> +#define MODULES_LOWEST_VADDR	(KERNEL_LINK_ADDR - SZ_2G)
-> +#define MODULES_VADDR		(PFN_ALIGN((unsigned long)&_end) - SZ_2G)
-> +#define MODULES_END		(PFN_ALIGN((unsigned long)&_start))
->  #endif
->  
->  /*
-> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-> index c0cddf0fc22d..4224e9d0ecf5 100644
-> --- a/arch/riscv/mm/init.c
-> +++ b/arch/riscv/mm/init.c
-> @@ -103,6 +103,9 @@ static void __init print_vm_layout(void)
->  	print_mlm("lowmem", (unsigned long)PAGE_OFFSET,
->  		  (unsigned long)high_memory);
->  #ifdef CONFIG_64BIT
-> +#ifdef CONFIG_KASAN
-> +	print_mlm("kasan", KASAN_SHADOW_START, KASAN_SHADOW_END);
-> +#endif
+> +static bool is_vmpl0(void)
+> +{
+> +	u64 attrs;
+> +	int err;
+> +
+> +	/*
+> +	 * There is no straightforward way to query the current VMPL level. The
+> +	 * simplest method is to use the RMPADJUST instruction to change a page
+> +	 * permission to a VMPL level-1, and if the guest kernel is launched at
+> +	 * a level <= 1, then RMPADJUST instruction will return an error.
+> +	 */
 
-I think we'd better avoid #ifdef usage as much as possible.
-For this KASAN case, we can make both KASAN_SHADOW_START and KASAN_SHADOW_END
-always visible as x86 does, then above code can be
-if (IS_ENABLED(CONFIG_KASAN))
-	print_mlm("kasan", KASAN_SHADOW_START, KASAN_SHADOW_END);
+So I was wondering what this is changing because if the change you do is
+relevant, you'd have to undo it.
 
-Thanks
+But looking at RMPADJUST, TARGET_PERM_MASK is 0 for target VMPL1 so
+you're basically clearing all permissions for boot_ghcb_page on VMPL1.
+Which is fine currently as we do only VMPL0 but pls write that out
+explicitly what you're doing here and why it is ok to use RMPADJUST
+without having to restore any changes it has done to the RMP table.
+
+> +	attrs = 1;
+> +
+> +	/*
+> +	 * Any page-aligned virtual address is sufficient to test the VMPL level.
+> +	 * The boot_ghcb_page is page aligned memory, so lets use for the test.
+> +	 */
+> +	if (rmpadjust((unsigned long)&boot_ghcb_page, RMP_PG_SIZE_4K, attrs))
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+>  static bool do_early_sev_setup(void)
+>  {
+>  	if (!sev_es_negotiate_protocol())
+> @@ -132,10 +155,15 @@ static bool do_early_sev_setup(void)
+>  	/*
+>  	 * SNP is supported in v2 of the GHCB spec which mandates support for HV
+>  	 * features. If SEV-SNP is enabled, then check if the hypervisor supports
+> -	 * the SEV-SNP features.
+> +	 * the SEV-SNP features and is launched at VMPL-0 level.
+
+"VMPL0" - no hyphen - like in the APM. Below too.
+
+>  	 */
+> -	if (sev_snp_enabled() && !(sev_hv_features & GHCB_HV_FT_SNP))
+> -		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
+> +	if (sev_snp_enabled()) {
+> +		if (!(sev_hv_features & GHCB_HV_FT_SNP))
+> +			sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
+> +
+> +		if (!is_vmpl0())
+> +			sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_NOT_VMPL0);
+> +	}
+>  
+>  	if (set_page_decrypted((unsigned long)&boot_ghcb_page))
+>  		return false;
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
