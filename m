@@ -2,109 +2,193 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 152B5469149
-	for <lists+linux-efi@lfdr.de>; Mon,  6 Dec 2021 09:14:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D69E46926D
+	for <lists+linux-efi@lfdr.de>; Mon,  6 Dec 2021 10:33:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239018AbhLFISC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 6 Dec 2021 03:18:02 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:42442 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239006AbhLFISB (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 6 Dec 2021 03:18:01 -0500
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        id S240805AbhLFJhD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 6 Dec 2021 04:37:03 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:41238 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S240803AbhLFJhC (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 6 Dec 2021 04:37:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1638783213;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=csNrM9LDewJv8RaF0ODXZ0/ivj87fhSIg5R6xLZbBoA=;
+        b=S8Yxwl6cqHUIIQavxlPY0C2vxd5+ziGYqbv6vEbgYB8yQWnxMoLMhXEfkGCg0OUYEe7Jcp
+        s+Jtn4N59ZfmYDnlUCiXyuIgIVGHGZyKsjWuiii3pOhS+Nsf/zVQm7BQW6GM+LQRxDR442
+        y9cDCSR3T3HacFlD7RKEFCQz4A52gII=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-189-ltYEhJpKPzaMNxJGYdX-SA-1; Mon, 06 Dec 2021 04:33:28 -0500
+X-MC-Unique: ltYEhJpKPzaMNxJGYdX-SA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 44FCA2191E;
-        Mon,  6 Dec 2021 08:14:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1638778472; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=lASzPZyf0vP581LqVx8OHHRYH2fisiSUp6Nw5EbwMyY=;
-        b=IYHmx3JfONk4ERn6UKXOpEdX7Kqx72BZN90v1LdRWDas1WVzXyKNwoaQlFKE0YDLR5YUEM
-        QkAjrmS16afTJp2Lvg1/H1b53zJxKevq6+ief+IGg4K/JTQeABAYxJrk+3mG93zHiGaHrD
-        20r0KmCnYxHMMrFsdYwO+02hZRygJzk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1638778472;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=lASzPZyf0vP581LqVx8OHHRYH2fisiSUp6Nw5EbwMyY=;
-        b=GJSMYMwfOO5/9Arp3tcqmqEZfTRZKINDOzDJM+wCrJL2bdQdFL2cswO4exR4tZgu6DVHDN
-        fdC9GwzMkqsAW4Cg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 28C8513AC7;
-        Mon,  6 Dec 2021 08:14:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 4OuKCWjGrWFXCAAAMHmgww
-        (envelope-from <iivanov@suse.de>); Mon, 06 Dec 2021 08:14:32 +0000
-Date:   Mon, 6 Dec 2021 10:14:31 +0200
-From:   "Ivan T. Ivanov" <iivanov@suse.de>
-To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc:     Dominik Brodowski <linux@dominikbrodowski.net>,
-        Theodore Ts'o <tytso@mit.edu>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>, hsinyi@chromium.org
-Subject: Re: [PATCH v4] random: fix crash on multiple early calls to
- add_bootloader_randomness()
-Message-ID: <20211206081431.e3cl2rbvgpvbouff@suse>
-References: <20211012082708.121931-1-iivanov@suse.de>
- <YWVKAk4h5bsUA3b6@light.dominikbrodowski.net>
- <YaivhAV8LouB0zGV@light.dominikbrodowski.net>
- <CAHmME9qxBeBzfKCjzfAFX9ZWAGKv1TKCQw3x22d_DmJtaAewLw@mail.gmail.com>
- <YanOIvAV1iPBEXR3@light.dominikbrodowski.net>
- <CAHmME9qGHo4n6QGxnE+O46pagOR0bA+9E8bi8ZLPAzMuMZpPwg@mail.gmail.com>
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9A1712F23;
+        Mon,  6 Dec 2021 09:33:24 +0000 (UTC)
+Received: from x1.localdomain.com (unknown [10.39.194.76])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 0A8F05DAA5;
+        Mon,  6 Dec 2021 09:33:19 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Lee Jones <lee.jones@linaro.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, Yauhen Kharuzhy <jekhor@gmail.com>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
+Subject: [PATCH v4 00/20] power-suppy/i2c/extcon: Fix charger setup on Xiaomi Mi Pad 2 and Lenovo Yogabook
+Date:   Mon,  6 Dec 2021 10:32:58 +0100
+Message-Id: <20211206093318.45214-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHmME9qGHo4n6QGxnE+O46pagOR0bA+9E8bi8ZLPAzMuMZpPwg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 12-03 16:39, Jason A. Donenfeld wrote:
-> Date: Fri, 3 Dec 2021 16:39:55 +0100
-> From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-> To: Dominik Brodowski <linux@dominikbrodowski.net>
-> Cc: Theodore Ts'o <tytso@mit.edu>, "Ivan T. Ivanov" <iivanov@suse.de>, Ard
->  Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, LKML
->  <linux-kernel@vger.kernel.org>, hsinyi@chromium.org
-> Subject: Re: [PATCH v4] random: fix crash on multiple early calls to
->  add_bootloader_randomness()
-> Message-ID: <CAHmME9qGHo4n6QGxnE+O46pagOR0bA+9E8bi8ZLPAzMuMZpPwg@mail.gmail.com>
-Tags: all linux me ring watch
+Hi All,
 
-Hi,
+Here is v4 of my patch series to fix the charger setup on Xiaomi Mi Pad 2
+and Lenovo Yogabook devices, as well as fix host/device mode switching.
 
-> 
-> Hi Dominik,
-> 
-> Thanks for your analysis. Some more questions:
-> 
+Changes in v4:
+ - Rebased on top of "power: bq25890: add POWER_SUPPLY_PROP_TEMP"
+ - Add Lee to the "To" address-list for this series
+ - Addressed a few small comments from Lee on the
+   "mfd: intel_soc_pmic_chtwc: Add cht_wc_model data to struct intel_soc_pmic" patch
 
-<snip>
+I believe that this is ready for merging now.
 
-> Also, if you have a nice way of reproducing this, please do tell - I'd
-> like to give it a spin if possible.
->
+Since some of the later patches depend on some of the power_supply changes;
+and since the Whiskey Cove MFD and cell drivers generally do not see much
+changes I believe that it would be best to merge the entire series through
+Sebastian's linux-power-supply tree. Wolfram has already given his ack
+for merging the i2c-cht-wc patch through another tree.
 
-Initial bug report could be found here [1]. Comments 14 and onward are
-probably helpful. To reproduce the issue I have downloaded "assets"
-from [2] and recreated test environment as found in autoinst-log.txt [3].
-Search for qemu-img and qemu-system-aarch64 in the log above. Login
-credentials for the images could be found by searching for "password"
-in the same file.
+Lee and Chanwoo, may we please have your Ack for merging this
+entire series through Sebastian's linux-power-supply tree?
+
+###
+
+For more details on this series, here is some info from the v2
+cover-letter:
+
+So far almost all the kernel code surrounding the Cherry Trail Whiskey Cove
+PMIC has been developed on the GPD win / pocket devices and it has various
+assumption based on that. In the mean time I've learned (and gotten access
+to) about 2 more designs and none of the 3 now known designs use a single
+standard setup for the charger, fuel-gauge and other chips surrounding the
+PMIC / charging+data USB port:
+
+1. The GPD Win and GPD Pocket mini-laptops, these are really 2 models
+but the Pocket re-uses the GPD Win's design in a different housing:
+
+The WC PMIC is connected to a TI BQ24292i charger, paired with
+a Maxim MAX17047 fuelgauge + a FUSB302 USB Type-C Controller +
+a PI3USB30532 USB switch, for a fully functional Type-C port.
+
+2. The Xiaomi Mi Pad 2:
+
+The WC PMIC is connected to a TI BQ25890 charger, paired with
+a TI BQ27520 fuelgauge, using the TI BQ25890 for BC1.2 charger type
+detection, for a USB-2 only Type-C port without PD.
+
+3. The Lenovo Yoga Book YB1-X90 / Lenovo Yoga Book YB1-X91 series:
+
+The WC PMIC is connected to a TI BQ25892 charger, paired with
+a TI BQ27542 fuelgauge, using the WC PMIC for BC1.2 charger type
+detection and using the BQ25892's Mediatek Pump Express+ (1.0)
+
+
+Unlike what is normal on X86 this diversity in designs is not handled /
+abstracted away by the ACPI tables.
+
+This series takes care of making sure that charging and device/host mode
+switching also works on the Xiaomi Mi Pad 2 and the Lenovo Yogabook.
+
+Patches  1-13: Prepare the bq25890 power_supply driver to fully support
+               the Mi Pad 2 and the Yogabook. Note this includes a new
+               version of 2 bq25890 patches send earlier by Yauhen Kharuzhy
+Patch 14:      Adds the intel_cht_wc_get_model() helper
+Patch 15:      Uses this intel_cht_wc_get_model() value to instantiate an
+               i2c-client with the right type and properties for the charger
+               IC used on the board (instead of harcoding the GPD values)
+Patches 16-20: Modify the extcon code to provide charger-detection results
+               to the charger driver and to take care of the Vbus boost
+               regulator control (for host-mode) and device/host mode
+               switching
+
+I've tried to keep the power_supply patches as generic as possible while
+focussing some of the special handling these boards need in the
+WC PMIC MFD and cell drivers, which will only get loaded on these boards.
 
 Regards,
-Ivan
+
+Hans
 
 
-[1] https://bugzilla.suse.com/show_bug.cgi?id=1184924
-[2] https://openqa.opensuse.org/tests/latest?arch=aarch64&distri=opensuse&flavor=DVD&machine=aarch64&test=extra_tests_in_textmode&version=15.3
-[3] https://openqa.opensuse.org/tests/2052459/logfile?filename=autoinst-log.txt
+Hans de Goede (17):
+  power: supply: core: Refactor
+    power_supply_set_input_current_limit_from_supplier()
+  power: supply: bq25890: Add a bq25890_rw_init_data() helper
+  power: supply: bq25890: Add support to skip reset at probe() /
+    remove()
+  power: supply: bq25890: Add support to read back the settings from the
+    chip
+  power: supply: bq25890: Enable charging on boards where we skip reset
+  power: supply: bq25890: Drop dev->platform_data == NULL check
+  power: supply: bq25890: Add bq25890_set_otg_cfg() helper
+  power: supply: bq25890: Add support for registering the Vbus boost
+    converter as a regulator
+  power: supply: bq25890: On the bq25892 set the IINLIM based on
+    external charger detection
+  power: supply: bq25890: Use the devm_regmap_field_bulk_alloc() helper
+  mfd: intel_soc_pmic_chtwc: Add cht_wc_model data to struct
+    intel_soc_pmic
+  i2c: cht-wc: Make charger i2c-client instantiation board/device-model
+    specific
+  extcon: intel-cht-wc: Use new cht_wc_model intel_soc_pmic field
+  extcon: intel-cht-wc: Support devs with Micro-B / USB-2 only Type-C
+    connectors
+  extcon: intel-cht-wc: Refactor cht_wc_extcon_get_charger()
+  extcon: intel-cht-wc: Add support for registering a power_supply
+    class-device
+  extcon: intel-cht-wc: Report RID_A for ACA adapters
+
+Yauhen Kharuzhy (3):
+  power: supply: bq25890: Rename IILIM field to IINLIM
+  power: supply: bq25890: Reduce reported CONSTANT_CHARGE_CURRENT_MAX
+    for low temperatures
+  power: supply: bq25890: Support higher charging voltages through Pump
+    Express+ protocol
+
+ drivers/extcon/Kconfig                   |   2 +
+ drivers/extcon/extcon-intel-cht-wc.c     | 240 ++++++++++++--
+ drivers/i2c/busses/i2c-cht-wc.c          | 120 +++++--
+ drivers/mfd/intel_soc_pmic_chtwc.c       |  40 +++
+ drivers/power/supply/bq24190_charger.c   |  10 +-
+ drivers/power/supply/bq25890_charger.c   | 396 ++++++++++++++++++-----
+ drivers/power/supply/power_supply_core.c |  57 ++--
+ include/linux/mfd/intel_soc_pmic.h       |   8 +
+ include/linux/power/bq25890_charger.h    |  15 +
+ include/linux/power_supply.h             |   5 +-
+ 10 files changed, 742 insertions(+), 151 deletions(-)
+ create mode 100644 include/linux/power/bq25890_charger.h
+
+-- 
+2.33.1
 
