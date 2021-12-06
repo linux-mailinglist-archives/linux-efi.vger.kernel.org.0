@@ -2,57 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 313DA46947C
-	for <lists+linux-efi@lfdr.de>; Mon,  6 Dec 2021 11:55:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A32E46947E
+	for <lists+linux-efi@lfdr.de>; Mon,  6 Dec 2021 11:56:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241971AbhLFK7H (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 6 Dec 2021 05:59:07 -0500
-Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:46092
-        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S241958AbhLFK7G (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 6 Dec 2021 05:59:06 -0500
+        id S241958AbhLFK75 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 6 Dec 2021 05:59:57 -0500
+Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:48306
+        "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S238862AbhLFK75 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 6 Dec 2021 05:59:57 -0500
 Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id ABAB93F1EE
-        for <linux-efi@vger.kernel.org>; Mon,  6 Dec 2021 10:55:37 +0000 (UTC)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 12A7A3F1B8
+        for <linux-efi@vger.kernel.org>; Mon,  6 Dec 2021 10:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1638788137;
-        bh=fBYZyvFhkAhfEVEwW97Oqj/gTwgmisupm0BTu4ieBtI=;
+        s=20210705; t=1638788188;
+        bh=CS+lflLGdqIBScWk3+o9lUxh8jVqR8Nq2WKSyjwTWok=;
         h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-         MIME-Version;
-        b=nGYXZIp9stVbbfZhrljXdyBtTBVhbaYsmG2XYCAGCzfI2f+aadgEt4r2BtfODBAM7
-         jTNGkZIy3VI1JzubxFuc6qIoq7U0Hf7iSz31uYri2HSKQq/U5PONl3CTDBa2GkTBXv
-         BjzD4xaKQOckkft3O2Tlx6WFuD1fAcXryrMHJZcpBaa9SqO8cUXTJV2yblIKP9eQKU
-         c5K3wN6z5ids2/kC4c3iicKdTtnqzkvxsDxOp9enw+mzdrYgQmMYwIrg9W4tO3VRqo
-         QIb5zqARRqlE0wEkKiQuQvc8pSBL6SNfYmvYcReB4O8iofCyBCRHTC3OCNkMjO0t9O
-         Y+Q+TmFYmA0hQ==
-Received: by mail-wr1-f71.google.com with SMTP id b1-20020a5d6341000000b001901ddd352eso1910715wrw.7
-        for <linux-efi@vger.kernel.org>; Mon, 06 Dec 2021 02:55:37 -0800 (PST)
+         MIME-Version:Content-Type;
+        b=kRQvGMmQbwuxrGCad0acS+UGXUGGVmvUr4mRKUgt8rHEOMcve4eyFknePpdsT746v
+         SS6OxmxtIpZbVX1X21I7NjyK1DTWV1nS8pjNcJ1mr6CZ2fSal4r8cU5TviNX0+jv/7
+         oPMP5l8JvSIDIJ0DYdCDZ596F/QyxwbF45GuIY+yC+xfYZH3bEHeZbK5c9VKnOEAwM
+         g32jxTT33g+qtNGvlyF0DUQuVEROczp0r6vlU5bckHFnFDtnWjuJfWeJ9EzGNhHoF2
+         uhyyAUwmN9H/9Mnv2geFNQCCSbAgQgSmx9CP2GRW1ONHIYvIEoVTBLWfNUGQEjf1X7
+         pK8R7KgDaDOBg==
+Received: by mail-wr1-f71.google.com with SMTP id u4-20020a5d4684000000b0017c8c1de97dso1889987wrq.16
+        for <linux-efi@vger.kernel.org>; Mon, 06 Dec 2021 02:56:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=fBYZyvFhkAhfEVEwW97Oqj/gTwgmisupm0BTu4ieBtI=;
-        b=AGKwVe0wuG/hsPWu3hsSidpeBm7Pf+qimnuEz5LGpoEzwC7sRxHdiNmmN0VOrwMPdB
-         m5auuCeeMUYiArglT5x7WNxyMxnFJUSI7YJAExUP1tBvkgVE1N77p5fGTV10bghuFw/O
-         aG6N11thhzzC4/IAviqh6n1R2yzJLPrWmW6rql9DNKlarCkyKORhC94l+VOs1XuiSJjg
-         6JmBeJiG18q81KOwb3CJq2tgT4FCcvZmhvW8DMvIUvXOwv9NGxL1vuEACO7ySCOsF6o8
-         1EuIciWcu2TKz/r17GKYT1fYmYrsocIbH3YRr0yvThZ7p/agg2xi6VFkXPyMTimNZQZG
-         4N/g==
-X-Gm-Message-State: AOAM533mxUtiDZ2L3BLtT9PFcKB0oDYqHprCgX1vgPW7VJw/teHevQA7
-        oTUM2y6EjEF4nM6SVbh4/jrhS3g4VADKF1U48Jb2T1YYcmwWBX/2f3szufTqYqMLj9qGWGJKH69
-        28hQQ8XTtCde34WbqkuvHHGW28wDBSKulediphQ==
-X-Received: by 2002:a05:600c:4104:: with SMTP id j4mr37911681wmi.178.1638788126597;
-        Mon, 06 Dec 2021 02:55:26 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxvEyew/HP7ohYaIhZylrYW6SxTUjeNuu3G9AULmOWcX//NDYQ3KYHU+hoCCRnPDfXU/eCCXg==
-X-Received: by 2002:a05:600c:4104:: with SMTP id j4mr37911644wmi.178.1638788126387;
-        Mon, 06 Dec 2021 02:55:26 -0800 (PST)
+        bh=CS+lflLGdqIBScWk3+o9lUxh8jVqR8Nq2WKSyjwTWok=;
+        b=MTokc6bs3QsdpvLzKXu2c1BiZHBry2AdVhqDYuIvkFNrxow/L7TAS9U7tm1HytbwdV
+         fqZuZR1U2Z4qY2hiO7zY69YWDH7PmqoLbHRMQKcl1GcipGTd4GiNRxaADqVPgWE9/9dr
+         zqYw4QCsSCEs50vRO08wAjJmfP7h6fbMyRCEmMYXoQRvqeYM6sTgyJpgccs6hkLUiYOc
+         SNXf6TaJTEGfUgo1jf7fFJlQt8h11nxwJsvqUcFkxKaQPR55EQT8wWy42RVxxQwh3l4d
+         GV2cOZQ36Y2oJHtIs7ZePKvuJHahihoz51+dXaQP6zCb0OiBWQTuZ1tIF1o7qzZ795GF
+         siCQ==
+X-Gm-Message-State: AOAM533JN2OcrpNtcp0QXSRMF/VWPRo/6TYyHeGHI3aTEdCpdY471nFV
+        UNSFVcDR6FrJ15A34HEPbzHaFSQJPSxyN8wcx+FeKxjiJz8146gE1OXJmF9lIQlDxqI5+6t5xPI
+        dDHvC5dqsqEezgNTjaYBIZen8FesKskxtOXEWYQ==
+X-Received: by 2002:a5d:6447:: with SMTP id d7mr41714884wrw.118.1638788187805;
+        Mon, 06 Dec 2021 02:56:27 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzVLYW0mXNza0Vbe+pg2BAchzw+eMDx5NF0VjULPJd5GzhsW1C+AKsPuIExWWzzUawkBQmTeg==
+X-Received: by 2002:a5d:6447:: with SMTP id d7mr41714859wrw.118.1638788187621;
+        Mon, 06 Dec 2021 02:56:27 -0800 (PST)
 Received: from localhost.localdomain (lfbn-lyo-1-470-249.w2-7.abo.wanadoo.fr. [2.7.60.249])
-        by smtp.gmail.com with ESMTPSA id o4sm12657395wry.80.2021.12.06.02.55.25
+        by smtp.gmail.com with ESMTPSA id v6sm13522985wmh.8.2021.12.06.02.56.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Dec 2021 02:55:26 -0800 (PST)
+        Mon, 06 Dec 2021 02:56:27 -0800 (PST)
 From:   Alexandre Ghiti <alexandre.ghiti@canonical.com>
 To:     Jonathan Corbet <corbet@lwn.net>,
         Paul Walmsley <paul.walmsley@sifive.com>,
@@ -77,87 +77,50 @@ To:     Jonathan Corbet <corbet@lwn.net>,
         linux-arch@vger.kernel.org
 Cc:     Alexandre Ghiti <alexandre.ghiti@canonical.com>,
         Palmer Dabbelt <palmerdabbelt@google.com>
-Subject: [PATCH v3 08/13] riscv: Use pgtable_l4_enabled to output mmu_type in cpuinfo
-Date:   Mon,  6 Dec 2021 11:46:52 +0100
-Message-Id: <20211206104657.433304-9-alexandre.ghiti@canonical.com>
+Subject: [PATCH v3 09/13] riscv: Explicit comment about user virtual address space size
+Date:   Mon,  6 Dec 2021 11:46:53 +0100
+Message-Id: <20211206104657.433304-10-alexandre.ghiti@canonical.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20211206104657.433304-1-alexandre.ghiti@canonical.com>
 References: <20211206104657.433304-1-alexandre.ghiti@canonical.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Now that the mmu type is determined at runtime using SATP
-characteristic, use the global variable pgtable_l4_enabled to output
-mmu type of the processor through /proc/cpuinfo instead of relying on
-device tree infos.
+Define precisely the size of the user accessible virtual space size
+for sv32/39/48 mmu types and explain why the whole virtual address
+space is split into 2 equal chunks between kernel and user space.
 
 Signed-off-by: Alexandre Ghiti <alexandre.ghiti@canonical.com>
 Reviewed-by: Anup Patel <anup@brainfault.org>
 Reviewed-by: Palmer Dabbelt <palmerdabbelt@google.com>
 ---
- arch/riscv/kernel/cpu.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ arch/riscv/include/asm/pgtable.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
-index 6d59e6906fdd..dea9b1c31889 100644
---- a/arch/riscv/kernel/cpu.c
-+++ b/arch/riscv/kernel/cpu.c
-@@ -7,6 +7,7 @@
- #include <linux/seq_file.h>
- #include <linux/of.h>
- #include <asm/smp.h>
-+#include <asm/pgtable.h>
- 
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index e1c74ef4ead2..fe1701329237 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -677,6 +677,15 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
  /*
-  * Returns the hart ID of the given device tree node, or -ENODEV if the node
-@@ -70,18 +71,19 @@ static void print_isa(struct seq_file *f, const char *isa)
- 	seq_puts(f, "\n");
- }
- 
--static void print_mmu(struct seq_file *f, const char *mmu_type)
-+static void print_mmu(struct seq_file *f)
- {
-+	char sv_type[16];
-+
- #if defined(CONFIG_32BIT)
--	if (strcmp(mmu_type, "riscv,sv32") != 0)
--		return;
-+	strncpy(sv_type, "sv32", 5);
- #elif defined(CONFIG_64BIT)
--	if (strcmp(mmu_type, "riscv,sv39") != 0 &&
--	    strcmp(mmu_type, "riscv,sv48") != 0)
--		return;
-+	if (pgtable_l4_enabled)
-+		strncpy(sv_type, "sv48", 5);
-+	else
-+		strncpy(sv_type, "sv39", 5);
- #endif
--
--	seq_printf(f, "mmu\t\t: %s\n", mmu_type+6);
-+	seq_printf(f, "mmu\t\t: %s\n", sv_type);
- }
- 
- static void *c_start(struct seq_file *m, loff_t *pos)
-@@ -106,14 +108,13 @@ static int c_show(struct seq_file *m, void *v)
- {
- 	unsigned long cpu_id = (unsigned long)v - 1;
- 	struct device_node *node = of_get_cpu_node(cpu_id, NULL);
--	const char *compat, *isa, *mmu;
-+	const char *compat, *isa;
- 
- 	seq_printf(m, "processor\t: %lu\n", cpu_id);
- 	seq_printf(m, "hart\t\t: %lu\n", cpuid_to_hartid_map(cpu_id));
- 	if (!of_property_read_string(node, "riscv,isa", &isa))
- 		print_isa(m, isa);
--	if (!of_property_read_string(node, "mmu-type", &mmu))
--		print_mmu(m, mmu);
-+	print_mmu(m);
- 	if (!of_property_read_string(node, "compatible", &compat)
- 	    && strcmp(compat, "riscv"))
- 		seq_printf(m, "uarch\t\t: %s\n", compat);
+  * Task size is 0x4000000000 for RV64 or 0x9fc00000 for RV32.
+  * Note that PGDIR_SIZE must evenly divide TASK_SIZE.
++ * Task size is:
++ * -     0x9fc00000 (~2.5GB) for RV32.
++ * -   0x4000000000 ( 256GB) for RV64 using SV39 mmu
++ * - 0x800000000000 ( 128TB) for RV64 using SV48 mmu
++ *
++ * Note that PGDIR_SIZE must evenly divide TASK_SIZE since "RISC-V
++ * Instruction Set Manual Volume II: Privileged Architecture" states that
++ * "load and store effective addresses, which are 64bits, must have bits
++ * 63–48 all equal to bit 47, or else a page-fault exception will occur."
+  */
+ #ifdef CONFIG_64BIT
+ #define TASK_SIZE      (PGDIR_SIZE * PTRS_PER_PGD / 2)
 -- 
 2.32.0
 
