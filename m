@@ -2,98 +2,87 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21D0446BC48
-	for <lists+linux-efi@lfdr.de>; Tue,  7 Dec 2021 14:17:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 533AE46BC56
+	for <lists+linux-efi@lfdr.de>; Tue,  7 Dec 2021 14:20:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230153AbhLGNVI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 7 Dec 2021 08:21:08 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:42086 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236913AbhLGNVH (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 7 Dec 2021 08:21:07 -0500
-Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A07471EC047E;
-        Tue,  7 Dec 2021 14:17:31 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1638883051;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=95VQLKSNF4QWMQ09hda7pdps2WmbfOKf1gNMtpDPlS4=;
-        b=np3NMTz+/Qi3FJluqNhrqUTFzwJNqFZhFGubvx83OlmR0HPXR0Flz8vwvOWEGECZi1RCbI
-        rqQfcKSJgEqGW2+1cjJIji8I55z+pO+EH9eKLBk/wGjX20DmBewYR1JLPBCFZaPLCABxTv
-        W9r7V93QzzXgzXyRpJhnM5q6quWyczY=
-Date:   Tue, 7 Dec 2021 14:17:33 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Tianyu Lan <ltykernel@gmail.com>
-Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Michael Kelley <mikelley@microsoft.com>,
-        "Andrea Parri (Microsoft)" <parri.andrea@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v7 09/45] x86/sev: Save the negotiated GHCB version
-Message-ID: <Ya9e7fDxj6WiomqI@zn.tnic>
-References: <20211110220731.2396491-1-brijesh.singh@amd.com>
- <20211110220731.2396491-10-brijesh.singh@amd.com>
- <5b1c348a-fc26-e257-7bc2-82d1326de321@gmail.com>
+        id S236929AbhLGNYA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 7 Dec 2021 08:24:00 -0500
+Received: from out30-57.freemail.mail.aliyun.com ([115.124.30.57]:33199 "EHLO
+        out30-57.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230480AbhLGNYA (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 7 Dec 2021 08:24:00 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0UzmqjPj_1638883226;
+Received: from 30.240.125.66(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0UzmqjPj_1638883226)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Tue, 07 Dec 2021 21:20:27 +0800
+Message-ID: <662eff5c-8c53-8035-cae0-99448734406c@linux.alibaba.com>
+Date:   Tue, 7 Dec 2021 21:20:25 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <5b1c348a-fc26-e257-7bc2-82d1326de321@gmail.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.3.2
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+Subject: Re: [PATCH 2/2] ghes_edac: refactor error status fields decoding
+To:     Robert Richter <rric@kernel.org>
+Cc:     mchehab@kernel.org, bp@alien8.de, tony.luck@intel.com,
+        james.morse@arm.com, ardb@kernel.org, linux-edac@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        zhangliguang@linux.alibaba.com, zhuo.song@linux.alibaba.com
+References: <20211207031905.61906-2-xueshuai@linux.alibaba.com>
+ <20211207031905.61906-3-xueshuai@linux.alibaba.com>
+ <Ya9JxfyXYYNtLoSf@rric.localdomain>
+Content-Language: en-US
+In-Reply-To: <Ya9JxfyXYYNtLoSf@rric.localdomain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Dec 07, 2021 at 08:51:53PM +0800, Tianyu Lan wrote:
-> Hi Brijesh:
+Hi, Robert,
 
-Do me a favor please and learn not to top-post on a public mailing list.
-Also, take the time to read Documentation/process/ before you send
-upstream patches and how to work with the community in general.
+Thank you for your quick comments!
 
-> We find this patch breaks AMD SEV support in the Hyper-V Isolation
-> VM. Hyper-V code also uses sev_es_ghcb_hv_call() to read or write msr
-> value. The sev_es_check_cpu_features() isn't called in the Hyper-V
-> code and so the ghcb_version is always 0.
+On 2021/12/7 PM7:47, Robert Richter wrote:
+> On 07.12.21 11:19:05, Shuai Xue wrote:
+> 
+>> @@ -285,6 +285,48 @@ int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg)
+>>  	return n;
+>>  }
+>>  
+>> +const char *cper_mem_err_status_str(u64 status)
+> 
+> [...]
+> 
+> Same here, add an EXPORT_SYMBOL_GPL for the function.
+Will add it in next version.
 
-If hyperv is going to expose hypervisor features, then it better report
-GHCB v2. If not, then I guess < 2 or 1 or so, depending on how this is
-defined.
 
-> Could you add a new parameter ghcb_version for sev_es_ghcb_hv_call()
-> and then caller may input ghcb_version?
+>> --- a/include/linux/cper.h
+>> +++ b/include/linux/cper.h
+>> @@ -568,7 +568,8 @@ void cper_print_proc_arm(const char *pfx,
+>>  			 const struct cper_sec_proc_arm *proc);
+>>  void cper_print_proc_ia(const char *pfx,
+>>  			const struct cper_sec_proc_ia *proc);
+>> -int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg);
+>> -int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg);
+>> +int cper_mem_err_location(const struct cper_mem_err_compact *mem, char *msg);
+>> +int cper_dimm_err_location(const struct cper_mem_err_compact *mem, char *msg);
+> 
+> Do we really need that 'const' here?
+I think we do. It is read only and should not be modified in these functions,
+just as cper_print_proc_arm' style.
 
-No, your hypervisor needs to adhere to the spec and report proper ghcb
-version. We won't be doing any accomodate-hyperv hacks.
 
--- 
-Regards/Gruss,
-    Boris.
+>> +const char *cper_mem_err_status_str(u64 status);
+> 
+> The function i/f is different compared to the others, though the
+> purpose is the same. Let's use same style:
+> 
+>  int cper_mem_err_status(const struct cper_mem_err_compact *mem, char *msg);
+Sorry, I don't catch it. cper_mem_err_status_str() decodes the error status and return
+a string, the same style as cper_severity_str and cper_mem_err_type_str do. May
+we need to move the declaration ahead with cper_severity_str?
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Best Regards,
+Shuai
+
