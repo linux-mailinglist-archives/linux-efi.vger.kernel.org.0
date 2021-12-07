@@ -2,84 +2,130 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D67246BA52
-	for <lists+linux-efi@lfdr.de>; Tue,  7 Dec 2021 12:47:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4402A46BA57
+	for <lists+linux-efi@lfdr.de>; Tue,  7 Dec 2021 12:48:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235724AbhLGLu5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 7 Dec 2021 06:50:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34590 "EHLO
+        id S235847AbhLGLvf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 7 Dec 2021 06:51:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231338AbhLGLu5 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 7 Dec 2021 06:50:57 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3B21C061574;
-        Tue,  7 Dec 2021 03:47:26 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S235832AbhLGLve (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 7 Dec 2021 06:51:34 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 757E6C061574;
+        Tue,  7 Dec 2021 03:48:04 -0800 (PST)
+Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 84163B81753;
-        Tue,  7 Dec 2021 11:47:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA1DC341C3;
-        Tue,  7 Dec 2021 11:47:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638877644;
-        bh=JLfpOmM5lL2mGmNONDtp0vTJm2VAobN91iwOZ/SgMww=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NWUYSewb0grImpUIs7xJQ2YUTB0T5XOPOImKyaGT+BzagxZOu1QG3BbjNfSIyCqGl
-         D4MvwgwjemC9PxP9s5IF+hItoZAnbbiat6ELL9xwOGOYi7Q6h0hDV7hH1FZ1lYuk87
-         h/LWvDduhwkT2PbDvwMz9QtijgVNbQVl2M8tCGgdYS8KHv2Na8W7Ylqbychur8vBgA
-         hMixmpwsTmpI+T/Bx5X7TxvivsS9QkxpifDoJmUk+8CyC3vzMzUX25J4nsLS0xPKzU
-         VIbnLv01IYeSTQen4Geb/a6BN3wO1HAk/qRoVU3TuxgwLN6i4NkBvvUOlG+PoXlx+K
-         mC6uhBZ9EliBw==
-Date:   Tue, 7 Dec 2021 12:47:17 +0100
-From:   Robert Richter <rric@kernel.org>
-To:     Shuai Xue <xueshuai@linux.alibaba.com>
-Cc:     mchehab@kernel.org, bp@alien8.de, tony.luck@intel.com,
-        james.morse@arm.com, ardb@kernel.org, linux-edac@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        zhangliguang@linux.alibaba.com, zhuo.song@linux.alibaba.com
-Subject: Re: [PATCH 2/2] ghes_edac: refactor error status fields decoding
-Message-ID: <Ya9JxfyXYYNtLoSf@rric.localdomain>
-References: <20211207031905.61906-2-xueshuai@linux.alibaba.com>
- <20211207031905.61906-3-xueshuai@linux.alibaba.com>
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D51561EC0118;
+        Tue,  7 Dec 2021 12:47:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1638877679;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=ImwCuPkAr7fvJr1l21+QubTsvfhG9Iyh1wi4z5y64u4=;
+        b=d1hoIFDkZQ6OXWiqKYR55Vzt3fbkeUbjXfXUmSWPQivG6BsLV+kZtYulzv1av2StEnzWOI
+        vdognkgMsyn2je/qVJst/1nM+vstj6jXL5XSPj05tLNy2rm+u9QeQZP91ypLfBImrew6ci
+        P3DopPWmo0wi6r82pD7/YBQTCO6dKcw=
+Date:   Tue, 7 Dec 2021 12:48:00 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v7 14/45] x86/compressed: Add helper for validating pages
+ in the decompression stage
+Message-ID: <Ya9J8FSeyv/cEhnb@zn.tnic>
+References: <20211110220731.2396491-1-brijesh.singh@amd.com>
+ <20211110220731.2396491-15-brijesh.singh@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20211207031905.61906-3-xueshuai@linux.alibaba.com>
+In-Reply-To: <20211110220731.2396491-15-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 07.12.21 11:19:05, Shuai Xue wrote:
-
-> @@ -285,6 +285,48 @@ int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg)
->  	return n;
->  }
+On Wed, Nov 10, 2021 at 04:07:00PM -0600, Brijesh Singh wrote:
+> diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
+> index f7213d0943b8..3cf7a7575f5c 100644
+> --- a/arch/x86/boot/compressed/ident_map_64.c
+> +++ b/arch/x86/boot/compressed/ident_map_64.c
+> @@ -275,15 +275,31 @@ static int set_clr_page_flags(struct x86_mapping_info *info,
+>  	 * Changing encryption attributes of a page requires to flush it from
+>  	 * the caches.
+>  	 */
+> -	if ((set | clr) & _PAGE_ENC)
+> +	if ((set | clr) & _PAGE_ENC) {
+>  		clflush_page(address);
 >  
-> +const char *cper_mem_err_status_str(u64 status)
+> +		/*
+> +		 * If the encryption attribute is being cleared, then change
+> +		 * the page state to shared in the RMP table.
+> +		 */
+> +		if (clr)
+> +			snp_set_page_shared(pte_pfn(*ptep) << PAGE_SHIFT);
 
-[...]
+So I'm wondering: __page_state_change() wants a physical address and
+you're reading it out from the PTE here.
 
-Same here, add an EXPORT_SYMBOL_GPL for the function.
+Why not do
 
-> --- a/include/linux/cper.h
-> +++ b/include/linux/cper.h
-> @@ -568,7 +568,8 @@ void cper_print_proc_arm(const char *pfx,
->  			 const struct cper_sec_proc_arm *proc);
->  void cper_print_proc_ia(const char *pfx,
->  			const struct cper_sec_proc_ia *proc);
-> -int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg);
-> -int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg);
-> +int cper_mem_err_location(const struct cper_mem_err_compact *mem, char *msg);
-> +int cper_dimm_err_location(const struct cper_mem_err_compact *mem, char *msg);
+	__pa(address & PAGE_MASK);
 
-Do we really need that 'const' here?
+like it is usually done?
 
-> +const char *cper_mem_err_status_str(u64 status);
+And those macros are right there at the top of ident_map_64.c with an
+explanation that we're ident-mapped here so pa == va...
 
-The function i/f is different compared to the others, though the
-purpose is the same. Let's use same style:
+> +	}
+> +
+>  	/* Update PTE */
+>  	pte = *ptep;
+>  	pte = pte_set_flags(pte, set);
+>  	pte = pte_clear_flags(pte, clr);
+>  	set_pte(ptep, pte);
+>  
+> +	/*
+> +	 * If the encryption attribute is being set, then change the page state to
+> +	 * private in the RMP entry. The page state must be done after the PTE
+						   ^
+						 change
 
- int cper_mem_err_status(const struct cper_mem_err_compact *mem, char *msg);
+> +	 * is updated.
+> +	 */
+> +	if (set & _PAGE_ENC)
+> +		snp_set_page_private(pte_pfn(*ptep) << PAGE_SHIFT);
+> +
+>  	/* Flush TLB after changing encryption attribute */
+>  	write_cr3(top_level_pgt);
+>  
+-- 
+Regards/Gruss,
+    Boris.
 
--Robert
+https://people.kernel.org/tglx/notes-about-netiquette
