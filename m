@@ -2,85 +2,90 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CB2946D22A
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Dec 2021 12:27:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C40D846D50B
+	for <lists+linux-efi@lfdr.de>; Wed,  8 Dec 2021 15:05:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229716AbhLHLbV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 8 Dec 2021 06:31:21 -0500
-Received: from out30-131.freemail.mail.aliyun.com ([115.124.30.131]:41746 "EHLO
-        out30-131.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229573AbhLHLbV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Dec 2021 06:31:21 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R251e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04395;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0UztZwXh_1638962865;
-Received: from 30.240.125.66(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0UztZwXh_1638962865)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Wed, 08 Dec 2021 19:27:46 +0800
-Message-ID: <0cbb21bf-ff3b-2301-da0d-c7767589dbcd@linux.alibaba.com>
-Date:   Wed, 8 Dec 2021 19:27:40 +0800
+        id S234716AbhLHOJW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 8 Dec 2021 09:09:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35750 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234713AbhLHOJW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Dec 2021 09:09:22 -0500
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01ADFC0617A1;
+        Wed,  8 Dec 2021 06:05:50 -0800 (PST)
+Received: by mail-lj1-x232.google.com with SMTP id bn20so4030676ljb.8;
+        Wed, 08 Dec 2021 06:05:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=rCf0zyvgJUgHg9QQB25FrOzOLqjtx+dGIHtF5AhWskA=;
+        b=Gay56VR7oXKZ61yYW2z5K9QvoVrW8L89rA0ixltHr5LjGbLNoA7io0bF8zKsp4DmjP
+         jQs7eK//M3hBdOAKMU5QrWIjUIsILYd3JOHIqsakVpSG02LOm3AoE7wG9SuqPFHl2lMW
+         XA/SbblXvb53io8vSasL5T1gXSlD7jefkWrMRwM0vTwc+0SjvFUNg4xmGBUpq1p2xwql
+         153GBe2uYprCMRfnaX5osln0KFPbNiqxvfE5cXxvIRrRAgO3wQ/yIB53bmDyFmz6Cqhu
+         EhXnwiithZcIGYmOupnyy2O57ghT5wCGXPYxGpZmZt5ZFh1VXjBjDI6pCEouXVbUFC2E
+         ocOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=rCf0zyvgJUgHg9QQB25FrOzOLqjtx+dGIHtF5AhWskA=;
+        b=6Lzq/x/np6nwwPh1pvgLFD5oVPwKkwI8ctoC0CtbQdj9BzZE4NNZR6nlJWVIq4pr3D
+         I2oxtrAwW4QvXaDjfwoAccSIIQDGFVXjLrqGr0lKuAhZ3mjee19CmIUb/vNBnNPnAh4K
+         JZXGvealfQx+Jc7yH1SO9EzoxtcyPTCmdQSZN+sJvBXRjVRSF8zhq1SA5E6ycYCsqFpG
+         TY6PmY54oe8/eThNuotTZVXUjWt4jMKhojyyU0SpvtEBzxqxBWQ+wzI4OTBGnVuBVk3j
+         IUv8Q/LBuASOAzMpLP6BeQqRpH7i5KscGAMcaMeBqAHRSsoYa9cCO1m/XEkF0HH0+BjO
+         sXGw==
+X-Gm-Message-State: AOAM5331u6PmNK8mEwRirbmVyEWVdEMiB2JYLO/Qk8SsLpnyYTMEj1DK
+        t9aDZCBVTlCWgEsYGZfvO2nQbN4rOBxhJy1ML+w=
+X-Google-Smtp-Source: ABdhPJys22p+Nc7f14LfW5nZDfZN5sz0n/uzhuiDoDWANW0u5aCKvBxr4DDNPOGZvcC51LciLgu2KkgeaVdwfkOPZ0M=
+X-Received: by 2002:a2e:bb98:: with SMTP id y24mr47069192lje.315.1638972348282;
+ Wed, 08 Dec 2021 06:05:48 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.3.2
-Subject: Re: [PATCH 2/2] ghes_edac: refactor error status fields decoding
-Content-Language: en-US
-To:     Robert Richter <rric@kernel.org>
-Cc:     mchehab@kernel.org, bp@alien8.de, tony.luck@intel.com,
-        james.morse@arm.com, ardb@kernel.org, linux-edac@vger.kernel.org,
+References: <20211203192148.585399-1-martin.fernandez@eclypsium.com>
+ <YaxWXACBguZxWmKS@kernel.org> <CAD2FfiG9wfeW_2xxZqBi9vsjzEJBRjJUZw+AQy1Taos4fh2TLA@mail.gmail.com>
+ <Ya8MUOKPOKVfBfjJ@kernel.org>
+In-Reply-To: <Ya8MUOKPOKVfBfjJ@kernel.org>
+From:   Richard Hughes <hughsient@gmail.com>
+Date:   Wed, 8 Dec 2021 14:05:36 +0000
+Message-ID: <CAD2FfiEkn7dXPpCAaMdh5w8p3gXWzNABzd-nhwdTEd_AOZ7vnw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/5] x86: Show in sysfs if a memory node is able to do encryption
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     Martin Fernandez <martin.fernandez@eclypsium.com>,
         linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        zhangliguang@linux.alibaba.com, zhuo.song@linux.alibaba.com
-References: <20211207031905.61906-2-xueshuai@linux.alibaba.com>
- <20211207031905.61906-3-xueshuai@linux.alibaba.com>
- <Ya9JxfyXYYNtLoSf@rric.localdomain>
- <662eff5c-8c53-8035-cae0-99448734406c@linux.alibaba.com>
- <YbCN3yXUVsCgP+x7@rric.localdomain>
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <YbCN3yXUVsCgP+x7@rric.localdomain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
+        gregkh@linuxfoundation.org, rafael@kernel.org,
+        akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
+        alex.bazhaniuk@eclypsium.com, alison.schofield@intel.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Dear, Robert,
+On Tue, 7 Dec 2021 at 07:25, Mike Rapoport <rppt@kernel.org> wrote:
+> Can you please describe the actual check for the memory encryption and how
+> it would impact the HSI rating?
 
-Thank you for your reply.
+The problem HSI is trying to solve is that customers are buying
+systems where the CPU supports memory encryption, where the
+motherboard and dram controller support memory encryption and where
+the vendor says it's supported. But in some cases it's not working,
+either because the system firmware is not working properly, or some
+component requires updating to enable the feature. We're found quite a
+few cases where people assumed this was all working fine, but on
+looking closer, finding out that it's not working at all. The higher
+HSI rating would only be available where most of the system RAM is
+encrypted, although we've not worked out a heuristic number for "good
+enough" yet.
 
-On 2021/12/8 PM6:50, Robert Richter wrote:
-> On 07.12.21 21:20:25, Shuai Xue wrote:
-> 
->>>> --- a/include/linux/cper.h
->>>> +++ b/include/linux/cper.h
->>>> @@ -568,7 +568,8 @@ void cper_print_proc_arm(const char *pfx,
->>>>  			 const struct cper_sec_proc_arm *proc);
->>>>  void cper_print_proc_ia(const char *pfx,
->>>>  			const struct cper_sec_proc_ia *proc);
->>>> -int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg);
->>>> -int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg);
->>>> +int cper_mem_err_location(const struct cper_mem_err_compact *mem, char *msg);
->>>> +int cper_dimm_err_location(const struct cper_mem_err_compact *mem, char *msg);
->>>
->>> Do we really need that 'const' here?
->> I think we do. It is read only and should not be modified in these functions,
->> just as cper_print_proc_arm' style.
-> 
-> Even if it is used read-only I don't see a real need for const here.
-> So let's change this only if there is a reason such as avoiding
-> unnecessary casts.
-I will change it back to the original.
+> I wonder, for example, why did you choose per-node reporting rather than
+> per-region as described in UEFI spec.
 
+I think Dave is better to answer this question.
 
->>>> +const char *cper_mem_err_status_str(u64 status);
->>>
->>> The function i/f is different compared to the others, though the
->>> purpose is the same. Let's use same style:
->>>
->>>  int cper_mem_err_status(const struct cper_mem_err_compact *mem, char *msg);
->> Sorry, I don't catch it. cper_mem_err_status_str() decodes the error status and return
->> a string, the same style as cper_severity_str and cper_mem_err_type_str do. May
->> we need to move the declaration ahead with cper_severity_str?
-> 
-> Right, move it after cper_mem_err_type_str(). Looks good then.
-OK, will change it in next send.
-
-Thanks.
-
-Shuai
+Richard.
