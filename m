@@ -2,118 +2,89 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC69746C444
-	for <lists+linux-efi@lfdr.de>; Tue,  7 Dec 2021 21:13:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C1B246D15D
+	for <lists+linux-efi@lfdr.de>; Wed,  8 Dec 2021 11:50:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231334AbhLGURY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 7 Dec 2021 15:17:24 -0500
-Received: from mga18.intel.com ([134.134.136.126]:65347 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230259AbhLGURY (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 7 Dec 2021 15:17:24 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10191"; a="224545550"
-X-IronPort-AV: E=Sophos;i="5.87,295,1631602800"; 
-   d="scan'208";a="224545550"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2021 12:13:53 -0800
-X-IronPort-AV: E=Sophos;i="5.87,295,1631602800"; 
-   d="scan'208";a="515445030"
-Received: from yperng-mobl1.amr.corp.intel.com (HELO [10.209.19.84]) ([10.209.19.84])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2021 12:13:53 -0800
-Subject: Re: [PATCH v3 0/5] x86: Show in sysfs if a memory node is able to do
- encryption
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     Martin Fernandez <martin.fernandez@eclypsium.com>,
-        Richard Hughes <hughsient@gmail.com>,
+        id S229490AbhLHKxt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 8 Dec 2021 05:53:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46210 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229475AbhLHKxs (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Dec 2021 05:53:48 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD9EEC061746;
+        Wed,  8 Dec 2021 02:50:16 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 77A1EB82089;
+        Wed,  8 Dec 2021 10:50:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5880EC00446;
+        Wed,  8 Dec 2021 10:50:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1638960614;
+        bh=+nI62eh7Zk9rq1LC16W1ZYAytYZC0sTX786aEudokNY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=IlY3afEKTOja6hjuwYrUDZEWksuICk31i3To7Kc6iGw1Wcl67/LXD4qZJKGTroUwx
+         SfQRi33BBe1dX2FXI1p52/hZCYs0mQYiODJdmUqkgF+KXgFTDlTKsSr3wBuEczmhlb
+         qT0MVngN7jdWAFk3JPDzQe8UE0C5jZ4mjeGXC4jWnQvhdwdSoBcIQLXemukdhNlAtB
+         WQUED+wvSC/9Pp8VtgPkGbQGJXvlDLADyc35l92qEI3LCEuky0Z7B/VTs15GkaiAg9
+         kuzxRoQDO57m2cfV2PqRljXcb0so38CSNc4XaboEb3TkREMa7S8TgUllmv/HSUH9Mm
+         OaJTyUWYuWW9Q==
+Date:   Wed, 8 Dec 2021 11:50:07 +0100
+From:   Robert Richter <rric@kernel.org>
+To:     Shuai Xue <xueshuai@linux.alibaba.com>
+Cc:     mchehab@kernel.org, bp@alien8.de, tony.luck@intel.com,
+        james.morse@arm.com, ardb@kernel.org, linux-edac@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
-        gregkh@linuxfoundation.org, rafael@kernel.org,
-        akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
-        alex.bazhaniuk@eclypsium.com, alison.schofield@intel.com
-References: <20211203192148.585399-1-martin.fernandez@eclypsium.com>
- <YaxWXACBguZxWmKS@kernel.org>
- <CAD2FfiG9wfeW_2xxZqBi9vsjzEJBRjJUZw+AQy1Taos4fh2TLA@mail.gmail.com>
- <Ya8MUOKPOKVfBfjJ@kernel.org>
- <CAKgze5Y6F40bk=PgoS3LshcDEAreefOmF4xpCuSxgpiSr+99Kw@mail.gmail.com>
- <1ed6020b-f84b-a29b-690a-9eee683c93a6@intel.com>
- <Ya++1FwWzKr2wYQH@kernel.org>
-From:   Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
- z5cecg==
-Message-ID: <9ab81982-d2f1-01ac-959a-50683f4c2a05@intel.com>
-Date:   Tue, 7 Dec 2021 12:13:49 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        zhangliguang@linux.alibaba.com, zhuo.song@linux.alibaba.com
+Subject: Re: [PATCH 2/2] ghes_edac: refactor error status fields decoding
+Message-ID: <YbCN3yXUVsCgP+x7@rric.localdomain>
+References: <20211207031905.61906-2-xueshuai@linux.alibaba.com>
+ <20211207031905.61906-3-xueshuai@linux.alibaba.com>
+ <Ya9JxfyXYYNtLoSf@rric.localdomain>
+ <662eff5c-8c53-8035-cae0-99448734406c@linux.alibaba.com>
 MIME-Version: 1.0
-In-Reply-To: <Ya++1FwWzKr2wYQH@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <662eff5c-8c53-8035-cae0-99448734406c@linux.alibaba.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 12/7/21 12:06 PM, Mike Rapoport wrote:
->> An ABI that says "everything is encrypted" is pretty meaningless and
->> only useful for this one, special case.
->>
->> A per-node ABI is useful for this case and is also useful going forward
->> if folks want to target allocations from applications to NUMA nodes
->> which have encryption capabilities.  The ABI in this set is useful for
->> the immediate case and is useful to other folks.
-> I don't mind per-node ABI, I'm just concerned that having a small region
-> without the encryption flag set will render the entire node "not
-> encryptable". This may happen because a bug in firmware, a user that shoot
-> themself in a leg with weird memmap= or some hidden gem in interaction
-> between e820, EFI and memblock that we still didn't discover.
+On 07.12.21 21:20:25, Shuai Xue wrote:
 
-That's a good point.  But, that seems more in the realm of a
-pr_{info,warn}_once() than something deserving of its own specific ABI.
+> >> --- a/include/linux/cper.h
+> >> +++ b/include/linux/cper.h
+> >> @@ -568,7 +568,8 @@ void cper_print_proc_arm(const char *pfx,
+> >>  			 const struct cper_sec_proc_arm *proc);
+> >>  void cper_print_proc_ia(const char *pfx,
+> >>  			const struct cper_sec_proc_ia *proc);
+> >> -int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg);
+> >> -int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg);
+> >> +int cper_mem_err_location(const struct cper_mem_err_compact *mem, char *msg);
+> >> +int cper_dimm_err_location(const struct cper_mem_err_compact *mem, char *msg);
+> > 
+> > Do we really need that 'const' here?
+> I think we do. It is read only and should not be modified in these functions,
+> just as cper_print_proc_arm' style.
 
-If we have a 100GB of a node that supports encryption, and 4k that
-causes the whole thing to be considered un-encryptable, a warning is be
-appropriate and feasible.
+Even if it is used read-only I don't see a real need for const here.
+So let's change this only if there is a reason such as avoiding
+unnecessary casts.
+
+> >> +const char *cper_mem_err_status_str(u64 status);
+> > 
+> > The function i/f is different compared to the others, though the
+> > purpose is the same. Let's use same style:
+> > 
+> >  int cper_mem_err_status(const struct cper_mem_err_compact *mem, char *msg);
+> Sorry, I don't catch it. cper_mem_err_status_str() decodes the error status and return
+> a string, the same style as cper_severity_str and cper_mem_err_type_str do. May
+> we need to move the declaration ahead with cper_severity_str?
+
+Right, move it after cper_mem_err_type_str(). Looks good then.
+
+Thanks,
+
+-Robert
