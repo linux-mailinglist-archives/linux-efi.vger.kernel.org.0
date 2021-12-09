@@ -2,104 +2,143 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0484C46E2E3
-	for <lists+linux-efi@lfdr.de>; Thu,  9 Dec 2021 08:05:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3673946E311
+	for <lists+linux-efi@lfdr.de>; Thu,  9 Dec 2021 08:19:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231951AbhLIHJO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 9 Dec 2021 02:09:14 -0500
-Received: from mail-bo1ind01olkn0148.outbound.protection.outlook.com ([104.47.101.148]:17184
-        "EHLO IND01-BO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229919AbhLIHJO (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 9 Dec 2021 02:09:14 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hqTlQloEouznbC4tk9B5hL561OF/R/4R926SERqlfelsIx44eAe8kfqwSrkzqhD5dPvgKWoEn19oro5mwlsPuVifFr7T2pBnjBuHwnyPPhOBXNVEBuepphOXj5QC8PNYvhza1bxbejF7lY1b1UWeBkY6jJo99VmHFv5A0qXkUN4EBC356wynwYeFeI0QiuoEVtnrs/OYsDjcg9VLRTB1ZWGM59NqniWi51cSgA+KvJeMI83euw+uttV27efOvfOEU43TwvKFSQC+kihCfiVrZFwSmxY0wugHbDANs2vjiuLHeFqkofw/k3a1q1mYoSPTa2NRKvDoRQrF1vf2WqBbWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=k2TDJIl9CP3/J6oJzk5/m3ddink8nTqKkfpBqBubpWk=;
- b=m/fWARppc5uxugWSgJs2lyVU72sDOYuMzmPliFiiO8ufvjciSUloAvkcfrUY2QGduhGp5uxfSNHltU8iPI2TvCLDbSEcehQYBLD9HRwt4ctqRz33vemKBABWVV9sGUzjG/4lxHdYfWFnr2w0VRFdikjm7fqKDLaSyTawbOC1x/NptgYtKxCqoxbfmgvh/FqJgfjhurZWbWYg02h7gYT0cvcA2/OcGwgla1Fwvh9G165xG3ImP1VdCuWruIAu+Uju99WUSMBIZjWTerejPVuK5j2u1hc/UhQfsdlpoNjkusAZ5hQy0p7B3P/CzUVhfJcXpHNdbUXFUIfZxmga2LPUOQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=k2TDJIl9CP3/J6oJzk5/m3ddink8nTqKkfpBqBubpWk=;
- b=hdLzc8nx6y8rEBot6C2F7KcpIC4tQ7w+H4rTzOkXH/TadpPPfB4i7zk1/scYVnSP6u+XBEvEWvkE6DjfjKwB7nKSuB2XXqXBBYstC128ZpdPXHo+3Qmy66oVsK9qHvAdw0vsFR6FIFBggG5qkN+VPv5BvCdHG1fAX1gYBQxLvY0n/YQf2ODSxiGHc7onKWBOOZTABj97qiqRG7bRQOqbjgLmW/VycU/7dmJIOM9332F9/9W21EYRG1sjX/ft80LGUk5vOmsmX+Pzm+NKD1i6jXk7c3nfeVLHjdGtrEMGUx5CRRDYDZrrQ7Kp/XHBjLVzj/1g+gGbJyzbVhSOsALSyg==
-Received: from PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:1b::13)
- by PNXPR01MB7042.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:c2::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.21; Thu, 9 Dec
- 2021 07:05:35 +0000
-Received: from PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
- ([fe80::7ca6:9165:19ec:4cd7]) by PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
- ([fe80::7ca6:9165:19ec:4cd7%8]) with mapi id 15.20.4755.024; Thu, 9 Dec 2021
- 07:05:35 +0000
-From:   Aditya Garg <gargaditya08@live.com>
-To:     "matthew.garrett@nebula.com" <matthew.garrett@nebula.com>,
+        id S233645AbhLIHXW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 9 Dec 2021 02:23:22 -0500
+Received: from mail-4325.protonmail.ch ([185.70.43.25]:46373 "EHLO
+        mail-4325.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233467AbhLIHXW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 9 Dec 2021 02:23:22 -0500
+Date:   Thu, 09 Dec 2021 07:19:37 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail2; t=1639034387;
+        bh=ylG/kDOZ8xUJwFkV+j+MTR5/1hNMGnn5X+gVJt2Eg7o=;
+        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
+         References:From:To:Cc;
+        b=W9VPUvTslasBIQlfqO9EpuseZOpL4g/fHWByft8WWXJY012wDomaw3F/V7xIkqK6C
+         H+qsQkkzxwj6Rz576uXp6zzbwpgAkkCgPyozuFLlLqgxniq2+9Vi2wxVDnCjViW97D
+         eCjB7WDG09BfEx1C0IGQuZ4h4Ve0S5n9nySmqcLDvgISb9aohY6AN5dltr7W3jc9r4
+         g1XN9rB8POWxxHST8YsNjDMSHqjc/uxxDkKeVkXvTHrNKAahSkp4iFpK09Yz7RPpUi
+         kqYUKjYbXPEKPUGXKvEuPMHqCrouXMmS1VZ/uPmpRvjfRrzL32qv+29j5UwmAHbbw5
+         kB2rsrL6jvOSQ==
+To:     Aditya Garg <gargaditya08@live.com>
+From:   Orlando Chamberlain <redecorating@protonmail.com>
+Cc:     "matthew.garrett@nebula.com" <matthew.garrett@nebula.com>,
         "jk@ozlabs.org" <jk@ozlabs.org>,
-        "ardb@kernel.org" <ardb@kernel.org>
-CC:     "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Orlando Chamberlain <redecorating@protonmail.com>
-Subject: [BUG] Enabling EFI runtime services causes panics in the T2 security
- chip on Macs equipped with it.
-Thread-Topic: [BUG] Enabling EFI runtime services causes panics in the T2
- security chip on Macs equipped with it.
-Thread-Index: AQHX7MspcYEsfKMkhUG2N0HFZhE8EQ==
-Date:   Thu, 9 Dec 2021 07:05:35 +0000
-Message-ID: <74ACDCF3-6996-4CB4-8899-A625D154FB0C@live.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-tmn:  [4HnK895JPLOmKrZOJ5GQCVytjx7Cu5Fq7Z+pbe+rna84T+W1VfKybu8ToXK/+vmQ]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 4de51cd9-891c-4100-ea69-08d9bae24c1d
-x-ms-traffictypediagnostic: PNXPR01MB7042:EE_
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: lC19JclL2N2MAwIpfTnDEkAfjzFNmwoto56SnVGlrEZdeleK//NcfuTDKMwRKQDJ+6n/o1ZT1iFrqOKdidQH1+loN/XtiGOel0sdYbnThIHseBaSQ51LjCe6msrdfw8lniw23z/WRqCZa1dJhOkIDaW+p7Jea/nehL2hjvjWkvmdypRkvm5o8VHmdatnd0J2AS66X5/0LUlLXcl4cI/xtGKd2ojxRhmXYvou9AerpnsNILz4FIXErdmphppVbV4LgAqyFyzm8FKmuQ5mm0uYHu7q0I65oEM/V9YuiVuR83ZllGklaAi8lT8GPqW28M0X9ovYs1A8f9UJGPwCN6QFkK+By6nPHd/v1KCP7cqVG8KW4MXHY6aakN8PctesLt3Rv6sY535fQJfrKRlGTbwge2ueYoU9TGy08jI4g1pfDEqMC7FoFMIAcGFGwRPw13hdEljeIeB+N/jfrfWiBwMwQc3Dgpd3IvBAyhbPEm60C2IoOhIhKseSQXHwRH4nB0TOpGbeDfEXBDAUGmaQB9QPZoLmz6vIKtTVIj37uDkSaLI/knqCyJzc3aLMh2jTCMAAr2af/df+z1lJfZevcFMvxEQBB0eS4AYyf2ggCNQ4+4OzWzcMM7oigifKEhNQlmTC
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?UWwjIX/R1wSbduvdcmm3o/Dxgip0rTVAPLd0h0x803DKKPiS07dN4GVIU6AA?=
- =?us-ascii?Q?cAvVazPlJiH4HVN4a6gVmhdtIEMyNRPVUJv+tTCuPYXHo22V5mhaEmTe6t1W?=
- =?us-ascii?Q?6z3CtXmJmHavPSK/kBmlB0IDeTjpRoK7PEgbzOeTUdIbvX/GSusKGtgekmKu?=
- =?us-ascii?Q?qBico0fwfYmKpnhjeGmiLK1Hor+8d15V8XOW7ksMs9mueRIIu6OBOmaGQRoX?=
- =?us-ascii?Q?VteBuKhAoLronKf2L02JlnF8o07iYvUb5HMgiEw5HjCHvXeXNcncYOA9vPWM?=
- =?us-ascii?Q?Z7pCKSS2uX1skzekklhp+WFZp9DfS8E5kbwrGfenrxcLOpb3RXkOakvEb9q8?=
- =?us-ascii?Q?KWuSDd5//a5dlDk+Mr5dZv9Fnhj7DubRTQCh66wleRTZbV+YDMy3QIRECtPg?=
- =?us-ascii?Q?zRKk1qhODz7TT+xHJmlKv3jZOAYrRleVT2qXW5Ad4euKlomc71AjdKRz4N45?=
- =?us-ascii?Q?qtzAO7t1N4XwKHBe9PpehRp71qgknptzmb6ehEy8n3a/phH4O5iBLG83Bjug?=
- =?us-ascii?Q?Mz5LAbxaH4lhEwC3GJJEqa24mGNPAauxiviZ7O81LXuuseN1xLVYjtQL8bpd?=
- =?us-ascii?Q?BdBdQgDKQZmz2qc4vggjqZ1zUkObaEu51PtGBrG80ZgMk/LonVC2Nf4c0UVq?=
- =?us-ascii?Q?IZUsuzc4NHnOdKzkkR9ZjO1AKnhV8yZCsCN8IIUQsULuQyzSeYkfnmxVzj9l?=
- =?us-ascii?Q?ztq75MeZddpAyHqMiqWwA3YI/SvMd90+U6nMPIycZnD0lqszwFXu97G4rzGv?=
- =?us-ascii?Q?DE9K2TpjAp1wqgET78AdHF1VhWaICmOUU/BA9GUv07hLG0SHsUvW8uowqqDj?=
- =?us-ascii?Q?kV1j4mgKbWP20HNRz/pq2/vN/jKn6vFPZHL2C41us9gLZoCO7g4jTgF6MY9X?=
- =?us-ascii?Q?ELuYcVTRoKVsMUCyBeJsTf9IvwspcY1zkVgDP59Xf/+CGecIlnYDt043/AxF?=
- =?us-ascii?Q?BZLqESGxntYcy/oULUejU2ykgRTtsuNVV6KLwmbRBOOJ7jxrN2MXZmqaRwjQ?=
- =?us-ascii?Q?FJZCTqn47ZUrXm/HZAJInfrlwg=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2F72F7B8167252498ED7C7A1865CCBF4@INDPRD01.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: quoted-printable
+        "ardb@kernel.org" <ardb@kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Reply-To: Orlando Chamberlain <redecorating@protonmail.com>
+Subject: Re: [BUG] Enabling EFI runtime services causes panics in the T2 security chip on Macs equipped with it.
+Message-ID: <20211209071935.13996bb1@localhost>
+In-Reply-To: <74ACDCF3-6996-4CB4-8899-A625D154FB0C@live.com>
+References: <74ACDCF3-6996-4CB4-8899-A625D154FB0C@live.com>
 MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-42ed3.templateTenant
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4de51cd9-891c-4100-ea69-08d9bae24c1d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Dec 2021 07:05:35.1492
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PNXPR01MB7042
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
+        mailout.protonmail.ch
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On enabling EFI runtime services on Macs with the T2 security chip, kernel =
-fails to boot due panics in the T2 security chip. Using efi=3Dnoruntine (or=
- noefi) as a kernel parameter seems to fix the issue. Also, making NVRAM re=
-ad-only makes kernels boot. A fix for that would be appreciated.
+On Thu, 09 Dec 2021 18:05:35 +1100
+"Aditya Garg" <gargaditya08@live.com> wrote:
 
-Link :- https://bugzilla.kernel.org/show_bug.cgi?id=3D215277=
+> On enabling EFI runtime services on Macs with the T2 security chip,
+> kernel fails to boot due panics in the T2 security chip. Using
+
+I think it only fails to boot if something is set up to write to nvram
+at boot, I can boot fine on a MacBookPro16,1 as long as I don't have
+anything writing to nvram (deleting and reading variables is fine).
+
+> efi=3Dnoruntine (or noefi) as a kernel parameter seems to fix the
+> issue. Also, making NVRAM read-only makes kernels boot. A fix for
+> that would be appreciated.
+>=20
+> Link :- https://bugzilla.kernel.org/show_bug.cgi?id=3D215277
+
+The t2 security chip handles nvram and loading bootloaders on these
+macs. Its bridgeOS had an update that was bundled with macOS Catalina
+(this can't be downgraded, and some computers shipped with macOS
+Catalina), that made writing to nvram from Linux cause an invalid
+opcode error and a frozen system:
+
+invalid opcode: 0000 [#1] PREEMPT SMP PTI
+CPU: 9 PID: 135 Comm: kworker/u24:2 Tainted: G S   U   C        5.16.0-rc4-=
+00054-g6c3ecb47bb75-dirty #72
+Hardware name: Apple Inc. MacBookPro16,1/Mac-E1008331FDC96864, BIOS 1715.40=
+.15.0.0 (iBridge: 19.16.10548.0.0,0) 10/03/2021
+Workqueue: efi_rts_wq efi_call_rts
+RIP: 0010:0xfffffffeefc46877
+Code: 8b 58 18 0f b6 0d e1 09 00 00 48 c1 e1 04 e8 30 03 00 00 48 89 05 d9 =
+09 00 00 80 3d a2 09 00 00 01 75 09 48 c7 07 00 10 00 00 <0f> 0b 48 8b 05 a=
+8 07 00 00 8b 40 08 48 83 c0 f0 48 89 07 48 c7 06
+RSP: 0018:ffff998d40513dd0 EFLAGS: 00010246
+RAX: ffff998d40513eb0 RBX: ffff998d43f17dd8 RCX: 0000000000000007
+RDX: ffff998d43f17dc8 RSI: ffff998d43f17dd8 RDI: ffff998d43f17dc8
+RBP: ffff998d40513e00 R08: ffff998d43f17dd0 R09: ffff998d43f17dd8
+R10: ffff998d40513c80 R11: ffffffff9b4cabe8 R12: ffff998d43f17dc8
+R13: ffff998d43f17dd0 R14: 0000000000000246 R15: 0000000000000048
+FS:  0000000000000000(0000) GS:ffff8cf8bec40000(0000) knlGS:000000000000000=
+0
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f9133594374 CR3: 0000000100200005 CR4: 00000000003706e0
+Call Trace:
+ <TASK>
+ ? _printk+0x58/0x6f
+ __efi_call+0x28/0x30
+ efi_call_rts.cold+0x83/0x104
+ process_one_work+0x219/0x3f0
+ worker_thread+0x4d/0x3d0
+ ? rescuer_thread+0x390/0x390
+ kthread+0x15c/0x180
+ ? set_kthread_struct+0x40/0x40
+ ret_from_fork+0x22/0x30
+ </TASK>
+Modules linked in: xt_CHECKSUM xt_MASQUERADE xt_conntrack ipt_REJECT nf_rej=
+ect_ipv4 xt_tcpudp nft_compat amdgpu nft_chain_nat nf_nat nf_conntrack nf_d=
+efrag_ipv6 nf_defrag_ipv4 nft_counter nf_tables n
+ sysimgblt fb_sys_fops cec crc16 intel_pch_thermal sbs ecdh_generic ecc rfk=
+ill apple_bl video acpi_tad mac_hid sbshc pkcs8_key_parser drm fuse crypto_=
+user bpf_preload ip_tables x_tables crct10dif_pcl
+---[ end trace 22f8aad91761cc4a ]---
+RIP: 0010:0xfffffffeefc46877
+Code: 8b 58 18 0f b6 0d e1 09 00 00 48 c1 e1 04 e8 30 03 00 00 48 89 05 d9 =
+09 00 00 80 3d a2 09 00 00 01 75 09 48 c7 07 00 10 00 00 <0f> 0b 48 8b 05 a=
+8 07 00 00 8b 40 08 48 83 c0 f0 48 89 07 48 c7 06
+RSP: 0018:ffff998d40513dd0 EFLAGS: 00010246
+RAX: ffff998d40513eb0 RBX: ffff998d43f17dd8 RCX: 0000000000000007
+RDX: ffff998d43f17dc8 RSI: ffff998d43f17dd8 RDI: ffff998d43f17dc8
+RBP: ffff998d40513e00 R08: ffff998d43f17dd0 R09: ffff998d43f17dd8
+R10: ffff998d40513c80 R11: ffffffff9b4cabe8 R12: ffff998d43f17dc8
+R13: ffff998d43f17dd0 R14: 0000000000000246 R15: 0000000000000048
+FS:  0000000000000000(0000) GS:ffff8cf8bec40000(0000) knlGS:000000000000000=
+0
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f9133594374 CR3: 0000000100200005 CR4: 00000000003706e0
+BUG: kernel NULL pointer dereference, address: 0000000000000008
+#PF: supervisor write access in kernel mode
+#PF: error_code(0x0002) - not-present page
+
+This seems to be triggered by EFI_QUERY_VARIABLE_INFO here
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dri=
+vers/firmware/efi/runtime-wrappers.c#n220
+and within that section, the invalid opcode seems to be occurring in
+this bit of assembly:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arc=
+h/x86/platform/efi/efi_stub_64.S
+
+printing efi_call_virt's arguments with
+pr_err("1: %d, 2: %d, 3: %d, 4: %d", *(u32 *)arg1, (u64 *)arg2, (u64 *)arg3=
+, (u64 *)arg4);
+gets me "1: 7, 2: -2079343160, 3: -2079343152, 4: -2079343144"
+
+
+--=20
+
