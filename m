@@ -2,41 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9CC3470453
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Dec 2021 16:44:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0D22470477
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Dec 2021 16:45:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243437AbhLJPsE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Dec 2021 10:48:04 -0500
-Received: from mail-mw2nam10on2062.outbound.protection.outlook.com ([40.107.94.62]:17170
-        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
+        id S243351AbhLJPsr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 10 Dec 2021 10:48:47 -0500
+Received: from mail-bn8nam11on2082.outbound.protection.outlook.com ([40.107.236.82]:7281
+        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S236428AbhLJPry (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 10 Dec 2021 10:47:54 -0500
+        id S243326AbhLJPr5 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 10 Dec 2021 10:47:57 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=A4dCycoy51H9s6/n/KoYWEUD4c8eQDMD2fqmPsyLDhgPvsXypiXp/fLt+WaMtsxCtcSVBp1nYyvwE0w1QlsBe8wIp77J7tF+0g91I1zym5Rz0UnXhiPb2/tpqRNR27rrS33KR9ti+SVn/mKFIaLkJTI2q4w//m+FiOhEgwoJ95zrS9k3x5sKLFj/0T0Nng8yk83CV4dEAbWUwo22393JV0lWZ/y1xKyl95LhyKG4nkRJ8J/I0qPUUptSK2ZeyuCuVc/F7ecVz3KwO5Uu/wQvK3ZHqN4A4tjv0zfb8x1RYBC/7tb6Ku5+OKyRNtj9bmeJsYryFD1uq6KCxgywzY9mSQ==
+ b=Od6I1YxnOB6jt+wl9wIqukMxqZ5xiZtsvsvOt1fX6TlRKST5Goad2lDQTH6R1IBvzAleriB64brtMlTULa/kYw5gK4cJddF97lmoKWMvgmkLQGjykg/TjkBhkFANEUn1Qk4tY19nl1szNBd6ci9ZXPPWSbe35/gA7SdIvUWMh03048LKA6O/TzoM114wuqd8B6FRpAFVIMeRVB2/tReEj4M9J+epvEvnIfB4tDoNG3oWOeLMi1PkzIx4GgtzuE9Mbxm1Hv+BPjSN8wyw0i30rh3dkt+iaOP6zLx16/UfQcfKrGoMdm33mVey9O8kjeqXlyDfOefksfFQvooeMgVd0A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GCaNz2OB4eemonVJ6txrT5EVsvo/ufQ4CZeYTczufds=;
- b=A9I6mEhKNhwTIo230/A8EOj/IDt1YN5/sGk8SXjx/Cz4h2yGmQcCtYtHk53mBePg+zofyHgdSnjJ8q5PP5cK65nPoIaaNcli2vL+ta9CasRLpFCSG6Q039oKHs97todIR7J9odefBVF9ThdiGJgUuV8HWjFukJxoCokH6EzmPvlG5tH5CS33BS8nFuTfAhEcY2eX8Ki067lslEbqn1HkdTGpJhca4GBxMRDZGHO7Vk32c6QzJogatx6w1BEJ6Vc0Ouq9IxZEd1GXRUV2T/tdITUI39yxnIKOHznYrXzNYOhdTppa4NSHgErYtJRpsOH2uxAL/7WwxYx1Z9P7UeF+0w==
+ bh=WWdTGxes1QVQwa15EBnHEnXYqoT2r+wHLhrsR9xj5z4=;
+ b=I98+/3quJ2rRhxTJimtrdOw7TPBAVT2evmQOoMWuZywiSHpnfoO/iRTZvTbyL/GM0nDd83Wq+qzvnIf2DeD4esCUvAQC330k9KsasysWyWVSMRYSUWFoH73uEhqPhIHXgMA30VQrOGRsm1QhQjfvX5J884kbFwt/GxlLSRDNT0bDWCLqGZpnpqxbJQDx6uvdVxEHOlzGtMoHWbVnHEh886mz5gQ6qg6HM1B2sYbiQ6gGt3qJBjFpz4Kqnz6F3uWLSnXkcdmOcM4PxtiXU3Z5kn0ESNVid2UUEqcHj03DbtH1J3eR+LuIvJv65EjBshgcGi+G23mdubg/fKpn4f0WVg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GCaNz2OB4eemonVJ6txrT5EVsvo/ufQ4CZeYTczufds=;
- b=BlkAQtFRrS3xsUxN0wb5YoE/yhoN0U4aXCSTrvzGjzVHvYpazfvo4L6U8NWjWSjXp4O+jsZZTiIx0OSQgo3yerj6tR65TUGQSIC3VarTSVtCis2qn8LP9IO3jPjnPtakdFlp34I/NY3FADejndL9w8tmYQX+iIlMlILtZ3339+M=
-Received: from BN6PR1201CA0018.namprd12.prod.outlook.com
- (2603:10b6:405:4c::28) by BYAPR12MB3560.namprd12.prod.outlook.com
- (2603:10b6:a03:ae::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.21; Fri, 10 Dec
- 2021 15:44:17 +0000
+ bh=WWdTGxes1QVQwa15EBnHEnXYqoT2r+wHLhrsR9xj5z4=;
+ b=YkyZHe9+DI+zKtW3TvaBfIxtyOMhSQcxkfldBLox2tI5uc/ExvHGjlUmVMqbvfXBkFI6Skjw9TkzG2Bhp9Fvmkkyzw9UHheRcg71Zq5dTlq2UrRhd4G/4jT9+jPhAu1RKZmor7Z/oNhSCN4wThdupeddkX2YTo29fy2VyMSxtP4=
+Received: from BN6PR1201CA0010.namprd12.prod.outlook.com
+ (2603:10b6:405:4c::20) by DM6PR12MB4057.namprd12.prod.outlook.com
+ (2603:10b6:5:213::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.11; Fri, 10 Dec
+ 2021 15:44:20 +0000
 Received: from BN8NAM11FT067.eop-nam11.prod.protection.outlook.com
- (2603:10b6:405:4c:cafe::35) by BN6PR1201CA0018.outlook.office365.com
- (2603:10b6:405:4c::28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.11 via Frontend
- Transport; Fri, 10 Dec 2021 15:44:16 +0000
+ (2603:10b6:405:4c:cafe::b6) by BN6PR1201CA0010.outlook.office365.com
+ (2603:10b6:405:4c::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.12 via Frontend
+ Transport; Fri, 10 Dec 2021 15:44:20 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -46,11 +46,11 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from SATLEXMB03.amd.com (165.204.84.17) by
  BN8NAM11FT067.mail.protection.outlook.com (10.13.177.159) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4778.13 via Frontend Transport; Fri, 10 Dec 2021 15:44:16 +0000
+ 15.20.4778.13 via Frontend Transport; Fri, 10 Dec 2021 15:44:19 +0000
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17; Fri, 10 Dec
- 2021 09:44:14 -0600
+ 2021 09:44:16 -0600
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
         <kvm@vger.kernel.org>, <linux-efi@vger.kernel.org>,
@@ -81,9 +81,9 @@ CC:     Thomas Gleixner <tglx@linutronix.de>,
         <tony.luck@intel.com>, <marcorr@google.com>,
         <sathyanarayanan.kuppuswamy@linux.intel.com>,
         Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH v8 17/40] KVM: SVM: Create a separate mapping for the SEV-ES save area
-Date:   Fri, 10 Dec 2021 09:43:09 -0600
-Message-ID: <20211210154332.11526-18-brijesh.singh@amd.com>
+Subject: [PATCH v8 18/40] KVM: SVM: Create a separate mapping for the GHCB save area
+Date:   Fri, 10 Dec 2021 09:43:10 -0600
+Message-ID: <20211210154332.11526-19-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211210154332.11526-1-brijesh.singh@amd.com>
 References: <20211210154332.11526-1-brijesh.singh@amd.com>
@@ -95,270 +95,130 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB03.amd.com
  (10.181.40.144)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: fbe724f7-c2aa-4585-6c03-08d9bbf3ec81
-X-MS-TrafficTypeDiagnostic: BYAPR12MB3560:EE_
-X-Microsoft-Antispam-PRVS: <BYAPR12MB3560037F7D568C743482E863E5719@BYAPR12MB3560.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Office365-Filtering-Correlation-Id: 13489d80-4a66-4e9c-af8d-08d9bbf3ee54
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4057:EE_
+X-Microsoft-Antispam-PRVS: <DM6PR12MB40574B221F71E9AD2A48BE1AE5719@DM6PR12MB4057.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Ke5EpTn9DPVhpz4VBUV5seMGCGwvTHDxr7ghEdSIK7qJ/W+VzP6khyAt3UObwa9Yx+NdocljHz774+8sZtNx8C5hiKEJo1X3A1FTJn5PCD1PQUnxPDzhFy4njYPuikDfffjzNHOFv/dFHck1Q8ljYS2xOrfPsMYLcTBmKOjlJBEznWUks2PHAJw8vm/U8UFCrGpJTtvKtDaaPbttBmPzju91QIg9244E+k8Hu5bm77l9EOBviwt095ulzVHnemZFCun7xHJQXn2WzXHQhK0bQY0+wQg14ecnplezryCpbrEZqgjfMySeVhGIh0TC/FDcQAm1tliQwH/QyO12wPjnO5DLaHYx3EfVNxSGK2SaQjTlhEtC3OdBd6B/3cT4d1rIXqgPGzUwRix/t0/DYt8q7Ca3tLdGejyZ/UrH65FDwpQjGCS2+daYh/vZsWIIta+Q1ipRfSGftC5XZCJVi0D3j9b/merSLzr0F+PWAccjg04WSIFnFXPCf4xGxhHUvWIkKgz1w2gBxTDslXCk8JoGvy+FFIJ4nMCLGIWZ2SvoFBh418Np8kzJg4uqSx3PlYu046EG5ctyuBxhY0JyDsa7i6Y2ddwVyuZAPCaAk24ghx1dn2KNAwiiajg+/2UR4W9m5HgZ3BUIa21iDHi5xKlFaQAiYvSnTQrDFW+opQwDzBk4yc/eDa911+ZA8dKeRZsKy6tRhyWnFKeacmNy9Pheno1J9+8xSQ5xBCS/nvuWdAvFPEbRKyD2SFaYMypKWoW1TuZU7Jxf96TNeLVW6KztoGwB2H7b6a10UkWzqzaRDjwsl4yRNoF0Gp96o9B4OTNP
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(46966006)(36840700001)(40470700001)(44832011)(2616005)(36860700001)(356005)(82310400004)(4326008)(26005)(6666004)(508600001)(40460700001)(70206006)(47076005)(426003)(70586007)(8676002)(316002)(83380400001)(7696005)(2906002)(86362001)(186003)(5660300002)(110136005)(81166007)(7406005)(16526019)(1076003)(36756003)(8936002)(54906003)(7416002)(336012)(2101003)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: w09wtNkCl2PGJeqXkHP4JXaEzb8qkVOshnFyVwRq/1tqqeBbfmJzlHAH6JWqxUGys01sEXs89KE5Gqdp93ZcOU2WXZ+CvgO46fT8ZmtUwUlQdiUk8UQoOZ4C6S1ik6CMMrnOyCmqGLWBG25AW/gmdYAZBKbzFf5s//FHEkd5Zrqo2+K2IHj2MNSJug3K6VbsbYyUfLn49PDeRKKc1OGdGGiLMZtsjUo1gogbKCKPmuiLmKXmbshWqHXuANGzJ8ok77rJ3Bp0PU4zha5vLFvSLOtkU6aFlDIj6gHHz0Rt5dhS1z3VbW59Jl7GjqMNql9KLnh3LKw2LCOXdxIrLmXj6SZbJ/FHcsRHLy6mGNATGVcJQakdE0gbpDOWzAOP3HUuyupJJPH53+GDME3qnGJERd5x5PKYDuiQINBREbFwYujNJ8HaZdAoZV+f4mKDQrgy6ui+jeVubHMExXU6xNMnOeMvqYt3nFx4gO/jWFYNDSP20aTj3ciJzuzKh62pn3X3JrSu+hPCjvVsAPQdkJFjYv2vwnGyDM0QY82ZvAEXaApn0UKuf17W8hvg/x45/jG7pSyBkKCUhuykfRFQ5h5u100f9v8EmJRGDW7qHYW6Oo9p9q9cRwlj7nGQXdJmdHAeqy44BJKLrUWuPtNXecep+3D1AMhfcgdDqrqamxBXwfXtEVKDFUvgHphZTMCL331Ri6qRu1UVvpf8RIpoIY4oqHRzcWO0P7Y0btrQGYIbOVs8obM4PsPFPIQPxRP9m5Bqa2w0rfMUIEPTBqhbx1+4ksJ+ecPO4aI5QarGIcqqghuuc0nqVBQj5HaJ6Bc8BVPK
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(46966006)(36840700001)(40470700001)(16526019)(5660300002)(186003)(26005)(6666004)(7696005)(1076003)(47076005)(36860700001)(2616005)(336012)(508600001)(44832011)(8676002)(426003)(83380400001)(8936002)(82310400004)(36756003)(86362001)(40460700001)(356005)(81166007)(2906002)(316002)(4326008)(110136005)(54906003)(7416002)(70586007)(7406005)(70206006)(2101003)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2021 15:44:16.8050
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2021 15:44:19.8672
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fbe724f7-c2aa-4585-6c03-08d9bbf3ec81
+X-MS-Exchange-CrossTenant-Network-Message-Id: 13489d80-4a66-4e9c-af8d-08d9bbf3ee54
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT067.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB3560
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4057
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The save area for SEV-ES/SEV-SNP guests, as used by the hardware, is
-different from the save area of a non SEV-ES/SEV-SNP guest.
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-This is the first step in defining the multiple save areas to keep them
+The initial implementation of the GHCB spec was based on trying to keep
+the register state offsets the same relative to the VM save area. However,
+the save area for SEV-ES has changed within the hardware causing the
+relation between the SEV-ES save area to change relative to the GHCB save
+area.
+
+This is the second step in defining the multiple save areas to keep them
 separate and ensuring proper operation amongst the different types of
-guests. Create an SEV-ES/SEV-SNP save area and adjust usage to the new
-save area definition where needed.
+guests. Create a GHCB save area that matches the GHCB specification.
 
 Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/include/asm/svm.h | 83 +++++++++++++++++++++++++++++---------
- arch/x86/kvm/svm/sev.c     | 24 +++++------
- arch/x86/kvm/svm/svm.h     |  2 +-
- 3 files changed, 77 insertions(+), 32 deletions(-)
+ arch/x86/include/asm/svm.h | 48 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 45 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index c3fad5172584..3ce2e575a2de 100644
+index 3ce2e575a2de..5ff1fa364a31 100644
 --- a/arch/x86/include/asm/svm.h
 +++ b/arch/x86/include/asm/svm.h
-@@ -227,6 +227,7 @@ struct vmcb_seg {
- 	u64 base;
+@@ -354,11 +354,51 @@ struct sev_es_save_area {
+ 	u64 x87_state_gpa;
  } __packed;
  
-+/* Save area definition for legacy and SEV-MEM guests */
- struct vmcb_save_area {
- 	struct vmcb_seg es;
- 	struct vmcb_seg cs;
-@@ -243,8 +244,58 @@ struct vmcb_save_area {
- 	u8 cpl;
- 	u8 reserved_2[4];
- 	u64 efer;
-+	u8 reserved_3[112];
-+	u64 cr4;
-+	u64 cr3;
-+	u64 cr0;
++struct ghcb_save_area {
++	u8 reserved_1[203];
++	u8 cpl;
++	u8 reserved_2[116];
++	u64 xss;
++	u8 reserved_3[24];
 +	u64 dr7;
-+	u64 dr6;
-+	u64 rflags;
++	u8 reserved_4[16];
 +	u64 rip;
-+	u8 reserved_4[88];
++	u8 reserved_5[88];
 +	u64 rsp;
-+	u64 s_cet;
-+	u64 ssp;
-+	u64 isst_addr;
++	u8 reserved_6[24];
 +	u64 rax;
-+	u64 star;
-+	u64 lstar;
-+	u64 cstar;
-+	u64 sfmask;
-+	u64 kernel_gs_base;
-+	u64 sysenter_cs;
-+	u64 sysenter_esp;
-+	u64 sysenter_eip;
-+	u64 cr2;
-+	u8 reserved_5[32];
-+	u64 g_pat;
-+	u64 dbgctl;
-+	u64 br_from;
-+	u64 br_to;
-+	u64 last_excp_from;
-+	u64 last_excp_to;
-+	u8 reserved_6[72];
-+	u32 spec_ctrl;		/* Guest version of SPEC_CTRL at 0x2E0 */
++	u8 reserved_7[264];
++	u64 rcx;
++	u64 rdx;
++	u64 rbx;
++	u8 reserved_8[8];
++	u64 rbp;
++	u64 rsi;
++	u64 rdi;
++	u64 r8;
++	u64 r9;
++	u64 r10;
++	u64 r11;
++	u64 r12;
++	u64 r13;
++	u64 r14;
++	u64 r15;
++	u8 reserved_9[16];
++	u64 sw_exit_code;
++	u64 sw_exit_info_1;
++	u64 sw_exit_info_2;
++	u64 sw_scratch;
++	u8 reserved_10[56];
++	u64 xcr0;
++	u8 valid_bitmap[16];
++	u64 x87_state_gpa;
 +} __packed;
 +
-+/* Save area definition for SEV-ES and SEV-SNP guests */
-+struct sev_es_save_area {
-+	struct vmcb_seg es;
-+	struct vmcb_seg cs;
-+	struct vmcb_seg ss;
-+	struct vmcb_seg ds;
-+	struct vmcb_seg fs;
-+	struct vmcb_seg gs;
-+	struct vmcb_seg gdtr;
-+	struct vmcb_seg ldtr;
-+	struct vmcb_seg idtr;
-+	struct vmcb_seg tr;
-+	u8 reserved_1[43];
-+	u8 cpl;
-+	u8 reserved_2[4];
-+	u64 efer;
- 	u8 reserved_3[104];
--	u64 xss;		/* Valid for SEV-ES only */
-+	u64 xss;
- 	u64 cr4;
- 	u64 cr3;
- 	u64 cr0;
-@@ -272,22 +323,14 @@ struct vmcb_save_area {
- 	u64 br_to;
- 	u64 last_excp_from;
- 	u64 last_excp_to;
--
--	/*
--	 * The following part of the save area is valid only for
--	 * SEV-ES guests when referenced through the GHCB or for
--	 * saving to the host save area.
--	 */
--	u8 reserved_7[72];
--	u32 spec_ctrl;		/* Guest version of SPEC_CTRL at 0x2E0 */
--	u8 reserved_7b[4];
-+	u8 reserved_7[80];
- 	u32 pkru;
--	u8 reserved_7a[20];
--	u64 reserved_8;		/* rax already available at 0x01f8 */
-+	u8 reserved_9[20];
-+	u64 reserved_10;	/* rax already available at 0x01f8 */
- 	u64 rcx;
- 	u64 rdx;
- 	u64 rbx;
--	u64 reserved_9;		/* rsp already available at 0x01d8 */
-+	u64 reserved_11;	/* rsp already available at 0x01d8 */
- 	u64 rbp;
- 	u64 rsi;
- 	u64 rdi;
-@@ -299,13 +342,13 @@ struct vmcb_save_area {
- 	u64 r13;
- 	u64 r14;
- 	u64 r15;
--	u8 reserved_10[16];
-+	u8 reserved_12[16];
- 	u64 sw_exit_code;
- 	u64 sw_exit_info_1;
- 	u64 sw_exit_info_2;
- 	u64 sw_scratch;
- 	u64 sev_features;
--	u8 reserved_11[48];
-+	u8 reserved_13[48];
- 	u64 xcr0;
- 	u8 valid_bitmap[16];
- 	u64 x87_state_gpa;
-@@ -314,8 +357,8 @@ struct vmcb_save_area {
  #define GHCB_SHARED_BUF_SIZE	2032
  
  struct ghcb {
--	struct vmcb_save_area save;
--	u8 reserved_save[2048 - sizeof(struct vmcb_save_area)];
-+	struct sev_es_save_area save;
-+	u8 reserved_save[2048 - sizeof(struct sev_es_save_area)];
+-	struct sev_es_save_area save;
+-	u8 reserved_save[2048 - sizeof(struct sev_es_save_area)];
++	struct ghcb_save_area save;
++	u8 reserved_save[2048 - sizeof(struct ghcb_save_area)];
  
  	u8 shared_buffer[GHCB_SHARED_BUF_SIZE];
  
-@@ -325,13 +368,15 @@ struct ghcb {
- } __packed;
+@@ -369,6 +409,7 @@ struct ghcb {
  
  
--#define EXPECTED_VMCB_SAVE_AREA_SIZE		1032
-+#define EXPECTED_VMCB_SAVE_AREA_SIZE		740
-+#define EXPECTED_SEV_ES_SAVE_AREA_SIZE		1032
+ #define EXPECTED_VMCB_SAVE_AREA_SIZE		740
++#define EXPECTED_GHCB_SAVE_AREA_SIZE		1032
+ #define EXPECTED_SEV_ES_SAVE_AREA_SIZE		1032
  #define EXPECTED_VMCB_CONTROL_AREA_SIZE		1024
  #define EXPECTED_GHCB_SIZE			PAGE_SIZE
- 
+@@ -376,6 +417,7 @@ struct ghcb {
  static inline void __unused_size_checks(void)
  {
  	BUILD_BUG_ON(sizeof(struct vmcb_save_area)	!= EXPECTED_VMCB_SAVE_AREA_SIZE);
-+	BUILD_BUG_ON(sizeof(struct sev_es_save_area)	!= EXPECTED_SEV_ES_SAVE_AREA_SIZE);
++	BUILD_BUG_ON(sizeof(struct ghcb_save_area)	!= EXPECTED_GHCB_SAVE_AREA_SIZE);
+ 	BUILD_BUG_ON(sizeof(struct sev_es_save_area)	!= EXPECTED_SEV_ES_SAVE_AREA_SIZE);
  	BUILD_BUG_ON(sizeof(struct vmcb_control_area)	!= EXPECTED_VMCB_CONTROL_AREA_SIZE);
  	BUILD_BUG_ON(sizeof(struct ghcb)		!= EXPECTED_GHCB_SIZE);
- }
-@@ -401,7 +446,7 @@ struct vmcb {
+@@ -446,7 +488,7 @@ struct vmcb {
  /* GHCB Accessor functions */
  
  #define GHCB_BITMAP_IDX(field)							\
--	(offsetof(struct vmcb_save_area, field) / sizeof(u64))
-+	(offsetof(struct sev_es_save_area, field) / sizeof(u64))
+-	(offsetof(struct sev_es_save_area, field) / sizeof(u64))
++	(offsetof(struct ghcb_save_area, field) / sizeof(u64))
  
  #define DEFINE_GHCB_ACCESSORS(field)						\
  	static inline bool ghcb_##field##_is_valid(const struct ghcb *ghcb)	\
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 7656a2c5662a..63334af988af 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -558,12 +558,20 @@ static int sev_launch_update_data(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 
- static int sev_es_sync_vmsa(struct vcpu_svm *svm)
- {
--	struct vmcb_save_area *save = &svm->vmcb->save;
-+	struct sev_es_save_area *save = svm->sev_es.vmsa;
- 
- 	/* Check some debug related fields before encrypting the VMSA */
--	if (svm->vcpu.guest_debug || (save->dr7 & ~DR7_FIXED_1))
-+	if (svm->vcpu.guest_debug || (svm->vmcb->save.dr7 & ~DR7_FIXED_1))
- 		return -EINVAL;
- 
-+	/*
-+	 * SEV-ES will use a VMSA that is pointed to by the VMCB, not
-+	 * the traditional VMSA that is part of the VMCB. Copy the
-+	 * traditional VMSA as it has been built so far (in prep
-+	 * for LAUNCH_UPDATE_VMSA) to be the initial SEV-ES state.
-+	 */
-+	memcpy(save, &svm->vmcb->save, sizeof(svm->vmcb->save));
-+
- 	/* Sync registgers */
- 	save->rax = svm->vcpu.arch.regs[VCPU_REGS_RAX];
- 	save->rbx = svm->vcpu.arch.regs[VCPU_REGS_RBX];
-@@ -591,14 +599,6 @@ static int sev_es_sync_vmsa(struct vcpu_svm *svm)
- 	save->xss  = svm->vcpu.arch.ia32_xss;
- 	save->dr6  = svm->vcpu.arch.dr6;
- 
--	/*
--	 * SEV-ES will use a VMSA that is pointed to by the VMCB, not
--	 * the traditional VMSA that is part of the VMCB. Copy the
--	 * traditional VMSA as it has been built so far (in prep
--	 * for LAUNCH_UPDATE_VMSA) to be the initial SEV-ES state.
--	 */
--	memcpy(svm->sev_es.vmsa, save, sizeof(*save));
--
- 	return 0;
- }
- 
-@@ -2904,7 +2904,7 @@ void sev_es_vcpu_reset(struct vcpu_svm *svm)
- void sev_es_prepare_guest_switch(struct vcpu_svm *svm, unsigned int cpu)
- {
- 	struct svm_cpu_data *sd = per_cpu(svm_data, cpu);
--	struct vmcb_save_area *hostsa;
-+	struct sev_es_save_area *hostsa;
- 
- 	/*
- 	 * As an SEV-ES guest, hardware will restore the host state on VMEXIT,
-@@ -2914,7 +2914,7 @@ void sev_es_prepare_guest_switch(struct vcpu_svm *svm, unsigned int cpu)
- 	vmsave(__sme_page_pa(sd->save_area));
- 
- 	/* XCR0 is restored on VMEXIT, save the current host value */
--	hostsa = (struct vmcb_save_area *)(page_address(sd->save_area) + 0x400);
-+	hostsa = (struct sev_es_save_area *)(page_address(sd->save_area) + 0x400);
- 	hostsa->xcr0 = xgetbv(XCR_XFEATURE_ENABLED_MASK);
- 
- 	/* PKRU is restored on VMEXIT, save the current host value */
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index 1c7306c370fa..cecfcdb1a1b3 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -127,7 +127,7 @@ struct svm_nested_state {
- 
- struct vcpu_sev_es_state {
- 	/* SEV-ES support */
--	struct vmcb_save_area *vmsa;
-+	struct sev_es_save_area *vmsa;
- 	struct ghcb *ghcb;
- 	struct kvm_host_map ghcb_map;
- 	bool received_first_sipi;
 -- 
 2.25.1
 
