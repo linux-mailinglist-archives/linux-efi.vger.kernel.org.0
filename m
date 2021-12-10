@@ -2,41 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 505BC470499
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Dec 2021 16:45:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19C59470487
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Dec 2021 16:45:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243536AbhLJPtT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Dec 2021 10:49:19 -0500
-Received: from mail-bn1nam07on2072.outbound.protection.outlook.com ([40.107.212.72]:50008
-        "EHLO NAM02-BN1-obe.outbound.protection.outlook.com"
+        id S243898AbhLJPtG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 10 Dec 2021 10:49:06 -0500
+Received: from mail-mw2nam10on2057.outbound.protection.outlook.com ([40.107.94.57]:36833
+        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S243125AbhLJPrq (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 10 Dec 2021 10:47:46 -0500
+        id S243243AbhLJPrr (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 10 Dec 2021 10:47:47 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eB6yFzZMdJPrS5bS73Jwp/SlqkuR5rFgcfNR0SL1TeEfwWRJMrbx9CQYeeS1TKnGv4Knp6uczUXesYEQHse02h+N2zTVn+jGfIoyLvmmta4edrqTypUFeu5K0uKVXOWIIVKYQWNcXUztgRDM6gIXngyMGxaGPHP+Eju6OpT0Orf8yIo9If3FmUM7pw0NgSTHH2obyv4hnTQ2uAD9EMAbkeKzmFjdPYXpyvcMOnmx5F0Cp28YSwskU0jA01qNRFNTg4W0ilNKYaj+kVtZzHVsJFsWi4e+2+iHkgG2w+GeiGDszIf6OmxYiGj1h5o0+lsnQv1z34pNHTQ15/1Tq+nQxA==
+ b=UctnEz4vlcxUR4jEEURVOJyBwU8tqxp7SC/srVdnJ1J/p0jzYhPNmch25cKr2H9y1U2/XI3vn03YzsAD5eNwWVOfUMer0redPYgCNd3MHydLSdyieWUyYY4m/70vfYtWPGLJCsWfSk3bJTxb2FvgQGPb7Ze/Ty5do1jf2VxElsXK8xCt+blts84YRnGVzCuwWieTOoTLMaq5/vs0w/aEdhBG1iKOlJlkzk1IBXMdjNXTDo+4IRbiADHOJsFvX7uFqcvRIG8tHzWxqdvdYl8axk1vEElxZ4EeLlmk4x9Q2AXgaieGF/a9FhltgagYWQvdVenflWYZRfZu4QqS/AfMBQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PV793WvNMuYhenWRRw9PvCXKZrb1C0N0OuFr8gaV2p0=;
- b=VmYtPec7iZ92gmGYW99V1+tt6rsx5f7/0pt3jowzLrW3rIGEv8SKnnSPkLmRnnGqG9KQ+ixbsq8K9ali2Me14gsEoLqsERUg64/y2Lc6riIMjlCMBfHgEYI3qbMDRrOw5e7jD6RS9zdeJMO+ZNRDIkKeOhveDJD4r0J00m8cmgx0NiaDPU03Gldy+nC978UjQPfHjZkCDUUFJvluGxPbyjP/O0WvR9f3g12HEYlTDiB4GFFUoWKmYep3dAbc4DkVST14/9yQeeX7QppXzGyqfMO4EpUSGbKJjb4Vjip5hyK8zDVIoOYgAFj+9q619HuHdhUtB/kQZ4U81JHEBvHbfA==
+ bh=8oFgE2nudDLxS7MIQOgAcuGopQy5fL8uDJVDPyTpwaA=;
+ b=mLb8a/KhcIReyNtnnfknVroA1LlFmOdNi/Hzt+mZhZvWGniH0MCZGKmoDlYFOd4dX+xOeuaMnHgK/+Av6iqLLOjS0yVcblVXF4AfeUGp0faMVxppYZukGhRLc6JcM6GHrQ3riu+KMO1zP1yn2aRJBmBgsDEHg64Q/2zp44UMaQyZ3yFaZgG9ftH9ZfYfCWWYz5jXNRFQ3yuW1TrMDX3wx+FIHaT/bcBKivpki2i9SIbp14nXpNN0bk0L2KJNVgaT8vVUB7ChVaHJaAvExdXHq+Pn/6UMrx4rp6nhOEDrDXH97l22FZoXzBnSiH5kqD1x29qbuJIPZYjPkAO8lRWsaA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PV793WvNMuYhenWRRw9PvCXKZrb1C0N0OuFr8gaV2p0=;
- b=NO92a8mDB4ITJR5dBkuV43tdhJYQaAVv31OPU2uhZp2PNyQ9vWcW9RIy6Dri0pACPhNfti8jYnG4jdWicsEHdSEsHEsSWFTo89zKsCp7U8EaLiChNas7EP1b5NcC7F0B1Bwf8Nw6ABBDRJWLsPI9vHQaUnP6ue1aGYUwycIvniM=
-Received: from BN0PR07CA0011.namprd07.prod.outlook.com (2603:10b6:408:141::32)
- by BL1PR12MB5048.namprd12.prod.outlook.com (2603:10b6:208:30a::17) with
+ bh=8oFgE2nudDLxS7MIQOgAcuGopQy5fL8uDJVDPyTpwaA=;
+ b=wc2d3vvznJZRhU0QRZNtrxw3KbVZRn1zUIdGjQlfSQYF5XMgEX0FVrJSWLyqHmShmJ6AI5rV0DrlzjmkawWAd43HkGoT1ir0EV0USWAqa50hjtuSkVjSoAyAhIKmjKzLZaxi5f5rLxhfC/JJ6TFsK4mrtd3gjN3Ub/H/WgUr/RM=
+Received: from BN9P223CA0028.NAMP223.PROD.OUTLOOK.COM (2603:10b6:408:10b::33)
+ by BN6PR1201MB2546.namprd12.prod.outlook.com (2603:10b6:404:b0::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4734.22; Fri, 10 Dec
- 2021 15:44:06 +0000
-Received: from BN8NAM11FT036.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:141:cafe::cc) by BN0PR07CA0011.outlook.office365.com
- (2603:10b6:408:141::32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.21 via Frontend
- Transport; Fri, 10 Dec 2021 15:44:06 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.20; Fri, 10 Dec
+ 2021 15:44:09 +0000
+Received: from BN8NAM11FT052.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:10b:cafe::4) by BN9P223CA0028.outlook.office365.com
+ (2603:10b6:408:10b::33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.15 via Frontend
+ Transport; Fri, 10 Dec 2021 15:44:09 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -44,13 +44,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB03.amd.com;
 Received: from SATLEXMB03.amd.com (165.204.84.17) by
- BN8NAM11FT036.mail.protection.outlook.com (10.13.177.168) with Microsoft SMTP
+ BN8NAM11FT052.mail.protection.outlook.com (10.13.177.210) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4778.13 via Frontend Transport; Fri, 10 Dec 2021 15:44:06 +0000
+ 15.20.4778.13 via Frontend Transport; Fri, 10 Dec 2021 15:44:08 +0000
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17; Fri, 10 Dec
- 2021 09:44:04 -0600
+ 2021 09:44:06 -0600
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
         <kvm@vger.kernel.org>, <linux-efi@vger.kernel.org>,
@@ -81,9 +81,9 @@ CC:     Thomas Gleixner <tglx@linutronix.de>,
         <tony.luck@intel.com>, <marcorr@google.com>,
         <sathyanarayanan.kuppuswamy@linux.intel.com>,
         Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH v8 11/40] x86/sev: Register GHCB memory when SEV-SNP is active
-Date:   Fri, 10 Dec 2021 09:43:03 -0600
-Message-ID: <20211210154332.11526-12-brijesh.singh@amd.com>
+Subject: [PATCH v8 12/40] x86/sev: Add helper for validating pages in early enc attribute changes
+Date:   Fri, 10 Dec 2021 09:43:04 -0600
+Message-ID: <20211210154332.11526-13-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211210154332.11526-1-brijesh.singh@amd.com>
 References: <20211210154332.11526-1-brijesh.singh@amd.com>
@@ -95,277 +95,294 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB03.amd.com
  (10.181.40.144)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ba1aab8d-944c-47f8-0192-08d9bbf3e685
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5048:EE_
-X-Microsoft-Antispam-PRVS: <BL1PR12MB5048B1DC48184180B5CA5861E5719@BL1PR12MB5048.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4502;
+X-MS-Office365-Filtering-Correlation-Id: 30b23a90-5e0b-4c0b-1a6c-08d9bbf3e76d
+X-MS-TrafficTypeDiagnostic: BN6PR1201MB2546:EE_
+X-Microsoft-Antispam-PRVS: <BN6PR1201MB2546798E81185E06F35A7DAFE5719@BN6PR1201MB2546.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3044;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: nZcH0avrSx2lUjnbP3YupEIp3Uayuu9dTh+JDOdoY+SsPXVcjwQbdKl4TmHoiPv5yzn/NW7OPEip/ldOw2wtjpe10S4JrnaWulUmU8pivTaEw2HLUg99jm2Oo1zN3OWKIfUxab3ROVP4ObUyy6QoAcWK26HUyRUe1WqgRXKzxYx+q+U6YHZydptHbOKJ1zXpLgOOd4+drzV5kbVnOSlSc/PzhDkQGJJcq/QLsAQvlb/B3HtNtvLFoZeOjVJMsPc1kuOvQu9obhGgr5KmpfkV1v0tCECNtFU/K37t3zEC57Qs6zaNhls8AoNdcMfesgeHbd7lT0CTblJhTA1oRxnsnBqhr+IutKSkTsfbH2UXldWYAwzcT6ezgHG3N6ZHaPld7uT1YyP6rv3V23/69q453qrFyRjsD9eDmWmsT5dxc8mbjoB7yXuRLHq0sDPW1Ka9F9g1g98d31AHZF4AV5+2M59BBh7BDMweZaSFS/8osTyXC5mRMXLK/etOQ4eg2JYbqR39R95Z9o0FUx/vYSIBmqOM5r5JDDFfTODa73YSYRlgdWCO3NH8euaR0uS416sYQ/Gby5nsOcjcaWhNw//+KwY/I2JgGPIi+kA9gGzan47hQsVTPyHgIOhksDE4KNAVf0j73W5Vb2I+tDoDhqiZN6+yV26hkEiC8w9XZhe1ohv8yYSK5xy+N/K8/+RfCuX+UB9TS3hfmY1C+N4MBjPl7G8lUKuo4p8RsNpy8S6ipB1zZGAPxODuMItPtXQCOdQEaulE29kBWXAOMy0KiVh4leBCsHmGyV6ZUpNuATWz5NA16+cb5LVTUwPxVtyqZKrq
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(36840700001)(46966006)(40470700001)(83380400001)(356005)(82310400004)(7696005)(8676002)(86362001)(36860700001)(186003)(16526019)(336012)(81166007)(4326008)(2616005)(44832011)(70586007)(70206006)(26005)(316002)(426003)(1076003)(54906003)(7416002)(7406005)(36756003)(47076005)(40460700001)(110136005)(5660300002)(508600001)(2906002)(8936002)(2101003)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: WKqxFOOW5u/emdYvWG8XQAQcgBbKn0/0GAupMbw0o/lPy3ZNRB7Osk+h0TUBOE2p4SiZRo55MPSlTG1uFcllU1JzgZYTqdWmjXgA6IlhPfvZO2iQHKs+ofwhKOhd3SuQ048p7u1KkTqnONGz18Qx9dvp/K6fP+D3icK9CNW5gGlTPysuphy9QLsVmVzx9DmwJw6Oy4wx3ipJomkwfX6irSspfI7EgjQdcIlMfaCtjkJVh/iaar2iUq9grmQG9Cpx1q7W+S5Oyjr6UYzE5VhOLehB0F8a8S1D1+vNZV+4//sO8Gq/QHesoUeQOXXFWJDpHPO0w0js/dc0nfi0JC1fbPWpIyGODRTg6zYhdb14DBdC9NDwpOEA05HhejmwyREX9ITKReIPF/8nxPnBstIV6aCcpq+MS5M5IrkXolcl2M+iGxKay6pUrAaCRbHiz7OSRTVPSledNeTlhDY7oVKOXXbL+dwIMcsSguXuIb9WmdpL6YThpWwpLnnSVukQE0JlN362lXgxj0Bgc8B4J6sc3jUPu9JxO2HVIS8H2KMJERmGZn3w3t4t1ZcGGK0ztqNR9pMWYB4nSRIX7zcSa1S+coCaqz65Xwbq5HKn+Qv/W2mUNEA23qSannhgy1hsitddJ4AwKFGrrKwz58vjKiQCGXkVfi2HJgkqGVq1B/4lY0sPorgHzM/0zMLHNWp8jv0OKOJ1IhFlNInQDteKdt4sCnQ2vx3Jv9TB7gaXOkBpj+UteBC6Gir2TUqfBL8lSOHX++b2cbyiAfMLYNJnUbU1ve3cmuJy3kbRXYMsF/4nbc7eI/ukKGAeLh9cKdy65oI1
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(46966006)(36840700001)(40470700001)(508600001)(40460700001)(316002)(70586007)(54906003)(2906002)(110136005)(82310400004)(16526019)(186003)(26005)(2616005)(426003)(336012)(44832011)(1076003)(86362001)(7696005)(4326008)(47076005)(5660300002)(36860700001)(36756003)(70206006)(7406005)(356005)(83380400001)(8676002)(7416002)(8936002)(81166007)(2101003)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2021 15:44:06.8090
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2021 15:44:08.3301
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ba1aab8d-944c-47f8-0192-08d9bbf3e685
+X-MS-Exchange-CrossTenant-Network-Message-Id: 30b23a90-5e0b-4c0b-1a6c-08d9bbf3e76d
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT036.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT052.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5048
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR1201MB2546
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The SEV-SNP guest is required by the GHCB spec to register the GHCB's
-Guest Physical Address (GPA). This is because the hypervisor may prefer
-that a guest use a consistent and/or specific GPA for the GHCB associated
-with a vCPU. For more information, see the GHCB specification section
-"GHCB GPA Registration".
+The early_set_memory_{encrypt,decrypt}() are used for changing the
+page from decrypted (shared) to encrypted (private) and vice versa.
+When SEV-SNP is active, the page state transition needs to go through
+additional steps.
+
+If the page is transitioned from shared to private, then perform the
+following after the encryption attribute is set in the page table:
+
+1. Issue the page state change VMGEXIT to add the page as a private
+   in the RMP table.
+2. Validate the page after its successfully added in the RMP table.
+
+To maintain the security guarantees, if the page is transitioned from
+private to shared, then perform the following before clearing the
+encryption attribute from the page table.
+
+1. Invalidate the page.
+2. Issue the page state change VMGEXIT to make the page shared in the
+   RMP table.
+
+The early_set_memory_{encrypt,decrypt} can be called before the GHCB
+is setup, use the SNP page state MSR protocol VMGEXIT defined in the GHCB
+specification to request the page state change in the RMP table.
+
+While at it, add a helper snp_prep_memory() that can be used outside
+the sev specific files to change the page state for a specified memory
+range.
 
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/include/asm/sev.h   |   2 +
- arch/x86/kernel/cpu/common.c |   4 ++
- arch/x86/kernel/head64.c     |   1 +
- arch/x86/kernel/sev-shared.c |   2 +-
- arch/x86/kernel/sev.c        | 120 ++++++++++++++++++++---------------
- 5 files changed, 77 insertions(+), 52 deletions(-)
+ arch/x86/include/asm/sev.h |  10 ++++
+ arch/x86/kernel/sev.c      | 102 +++++++++++++++++++++++++++++++++++++
+ arch/x86/mm/mem_encrypt.c  |  51 +++++++++++++++++--
+ 3 files changed, 159 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index e37451849165..0df508374a35 100644
+index 0df508374a35..eec2e1b9d557 100644
 --- a/arch/x86/include/asm/sev.h
 +++ b/arch/x86/include/asm/sev.h
-@@ -122,6 +122,7 @@ static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate)
- 
+@@ -123,6 +123,11 @@ static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate)
  	return rc;
  }
-+void sev_snp_register_ghcb(void);
+ void sev_snp_register_ghcb(void);
++void __init early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr,
++					 unsigned int npages);
++void __init early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr,
++					unsigned int npages);
++void __init snp_prep_memory(unsigned long paddr, unsigned int sz, enum psc_op op);
  #else
  static inline void sev_es_ist_enter(struct pt_regs *regs) { }
  static inline void sev_es_ist_exit(void) { }
-@@ -130,6 +131,7 @@ static inline void sev_es_nmi_complete(void) { }
- static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
+@@ -132,6 +137,11 @@ static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
  static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate) { return 0; }
  static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigned long attrs) { return 0; }
-+static inline void sev_snp_register_ghcb(void) { }
+ static inline void sev_snp_register_ghcb(void) { }
++static inline void __init
++early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr, unsigned int npages) { }
++static inline void __init
++early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr, unsigned int npages) { }
++static inline void __init snp_prep_memory(unsigned long paddr, unsigned int sz, enum psc_op op) { }
  #endif
  
  #endif
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 0663642d6199..1146e8920b03 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -59,6 +59,7 @@
- #include <asm/cpu_device_id.h>
- #include <asm/uv/uv.h>
- #include <asm/sigframe.h>
-+#include <asm/sev.h>
- 
- #include "cpu.h"
- 
-@@ -1988,6 +1989,9 @@ void cpu_init_exception_handling(void)
- 
- 	load_TR_desc();
- 
-+	/* Register the GHCB before taking any VC exception */
-+	sev_snp_register_ghcb();
-+
- 	/* Finally load the IDT */
- 	load_current_idt();
- }
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index b01f64e8389b..fa02402dcb9b 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -588,6 +588,7 @@ void early_setup_idt(void)
- 
- 	bringup_idt_descr.address = (unsigned long)bringup_idt_table;
- 	native_load_idt(&bringup_idt_descr);
-+	sev_snp_register_ghcb();
- }
- 
- /*
-diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index e9ff13cd90b0..3aaef1a18ffe 100644
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -68,7 +68,7 @@ static u64 get_hv_features(void)
- 	return GHCB_MSR_HV_FT_RESP_VAL(val);
- }
- 
--static void __maybe_unused snp_register_ghcb_early(unsigned long paddr)
-+static void snp_register_ghcb_early(unsigned long paddr)
- {
- 	unsigned long pfn = paddr >> PAGE_SHIFT;
- 	u64 val;
 diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index a0cada8398a4..17ad603f62da 100644
+index 17ad603f62da..2971aa280ce6 100644
 --- a/arch/x86/kernel/sev.c
 +++ b/arch/x86/kernel/sev.c
-@@ -162,55 +162,6 @@ void noinstr __sev_es_ist_exit(void)
- 	this_cpu_write(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC], *(unsigned long *)ist);
+@@ -557,6 +557,108 @@ static u64 get_jump_table_addr(void)
+ 	return ret;
  }
  
--/*
-- * Nothing shall interrupt this code path while holding the per-CPU
-- * GHCB. The backup GHCB is only for NMIs interrupting this path.
-- *
-- * Callers must disable local interrupts around it.
-- */
--static noinstr struct ghcb *__sev_get_ghcb(struct ghcb_state *state)
--{
--	struct sev_es_runtime_data *data;
--	struct ghcb *ghcb;
--
--	WARN_ON(!irqs_disabled());
--
--	data = this_cpu_read(runtime_data);
--	ghcb = &data->ghcb_page;
--
--	if (unlikely(data->ghcb_active)) {
--		/* GHCB is already in use - save its contents */
--
--		if (unlikely(data->backup_ghcb_active)) {
--			/*
--			 * Backup-GHCB is also already in use. There is no way
--			 * to continue here so just kill the machine. To make
--			 * panic() work, mark GHCBs inactive so that messages
--			 * can be printed out.
--			 */
--			data->ghcb_active        = false;
--			data->backup_ghcb_active = false;
--
--			instrumentation_begin();
--			panic("Unable to handle #VC exception! GHCB and Backup GHCB are already in use");
--			instrumentation_end();
--		}
--
--		/* Mark backup_ghcb active before writing to it */
--		data->backup_ghcb_active = true;
--
--		state->ghcb = &data->backup_ghcb;
--
--		/* Backup GHCB content */
--		*state->ghcb = *ghcb;
--	} else {
--		state->ghcb = NULL;
--		data->ghcb_active = true;
--	}
--
--	return ghcb;
--}
--
- static inline u64 sev_es_rd_ghcb_msr(void)
- {
- 	return __rdmsr(MSR_AMD64_SEV_ES_GHCB);
-@@ -484,6 +435,55 @@ static enum es_result vc_slow_virt_to_phys(struct ghcb *ghcb, struct es_em_ctxt
- /* Include code shared with pre-decompression boot stage */
- #include "sev-shared.c"
- 
-+/*
-+ * Nothing shall interrupt this code path while holding the per-CPU
-+ * GHCB. The backup GHCB is only for NMIs interrupting this path.
-+ *
-+ * Callers must disable local interrupts around it.
-+ */
-+static noinstr struct ghcb *__sev_get_ghcb(struct ghcb_state *state)
++static void pvalidate_pages(unsigned long vaddr, unsigned int npages, bool validate)
 +{
-+	struct sev_es_runtime_data *data;
-+	struct ghcb *ghcb;
++	unsigned long vaddr_end;
++	int rc;
 +
-+	WARN_ON(!irqs_disabled());
++	vaddr = vaddr & PAGE_MASK;
++	vaddr_end = vaddr + (npages << PAGE_SHIFT);
 +
-+	data = this_cpu_read(runtime_data);
-+	ghcb = &data->ghcb_page;
++	while (vaddr < vaddr_end) {
++		rc = pvalidate(vaddr, RMP_PG_SIZE_4K, validate);
++		if (WARN(rc, "Failed to validate address 0x%lx ret %d", vaddr, rc))
++			sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PVALIDATE);
 +
-+	if (unlikely(data->ghcb_active)) {
-+		/* GHCB is already in use - save its contents */
-+
-+		if (unlikely(data->backup_ghcb_active)) {
-+			/*
-+			 * Backup-GHCB is also already in use. There is no way
-+			 * to continue here so just kill the machine. To make
-+			 * panic() work, mark GHCBs inactive so that messages
-+			 * can be printed out.
-+			 */
-+			data->ghcb_active        = false;
-+			data->backup_ghcb_active = false;
-+
-+			instrumentation_begin();
-+			panic("Unable to handle #VC exception! GHCB and Backup GHCB are already in use");
-+			instrumentation_end();
-+		}
-+
-+		/* Mark backup_ghcb active before writing to it */
-+		data->backup_ghcb_active = true;
-+
-+		state->ghcb = &data->backup_ghcb;
-+
-+		/* Backup GHCB content */
-+		*state->ghcb = *ghcb;
-+	} else {
-+		state->ghcb = NULL;
-+		data->ghcb_active = true;
++		vaddr = vaddr + PAGE_SIZE;
 +	}
-+
-+	return ghcb;
 +}
 +
- static noinstr void __sev_put_ghcb(struct ghcb_state *state)
- {
- 	struct sev_es_runtime_data *data;
-@@ -652,7 +652,7 @@ static enum es_result vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
-  * This function runs on the first #VC exception after the kernel
-  * switched to virtual addresses.
-  */
--static bool __init sev_es_setup_ghcb(void)
-+static bool __init setup_ghcb(void)
- {
- 	/* First make sure the hypervisor talks a supported protocol. */
- 	if (!sev_es_negotiate_protocol())
-@@ -667,6 +667,10 @@ static bool __init sev_es_setup_ghcb(void)
- 	/* Alright - Make the boot-ghcb public */
- 	boot_ghcb = &boot_ghcb_page;
- 
-+	/* SEV-SNP guest requires that GHCB GPA must be registered. */
-+	if (cc_platform_has(CC_ATTR_SEV_SNP))
-+		snp_register_ghcb_early(__pa(&boot_ghcb_page));
-+
- 	return true;
- }
- 
-@@ -758,6 +762,20 @@ static void __init init_ghcb(int cpu)
- 	data->backup_ghcb_active = false;
- }
- 
-+void sev_snp_register_ghcb(void)
++static void __init early_set_page_state(unsigned long paddr, unsigned int npages, enum psc_op op)
 +{
-+	struct sev_es_runtime_data *data;
-+	struct ghcb *ghcb;
++	unsigned long paddr_end;
++	u64 val;
 +
++	paddr = paddr & PAGE_MASK;
++	paddr_end = paddr + (npages << PAGE_SHIFT);
++
++	while (paddr < paddr_end) {
++		/*
++		 * Use the MSR protocol because this function can be called before the GHCB
++		 * is established.
++		 */
++		sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
++		VMGEXIT();
++
++		val = sev_es_rd_ghcb_msr();
++
++		if (WARN(GHCB_RESP_CODE(val) != GHCB_MSR_PSC_RESP,
++			 "Wrong PSC response code: 0x%x\n",
++			 (unsigned int)GHCB_RESP_CODE(val)))
++			goto e_term;
++
++		if (WARN(GHCB_MSR_PSC_RESP_VAL(val),
++			 "Failed to change page state to '%s' paddr 0x%lx error 0x%llx\n",
++			 op == SNP_PAGE_STATE_PRIVATE ? "private" : "shared",
++			 paddr, GHCB_MSR_PSC_RESP_VAL(val)))
++			goto e_term;
++
++		paddr = paddr + PAGE_SIZE;
++	}
++
++	return;
++
++e_term:
++	sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
++}
++
++void __init early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr,
++					 unsigned int npages)
++{
 +	if (!cc_platform_has(CC_ATTR_SEV_SNP))
 +		return;
 +
-+	data = this_cpu_read(runtime_data);
-+	ghcb = &data->ghcb_page;
++	 /*
++	  * Ask the hypervisor to mark the memory pages as private in the RMP
++	  * table.
++	  */
++	early_set_page_state(paddr, npages, SNP_PAGE_STATE_PRIVATE);
 +
-+	snp_register_ghcb_early(__pa(ghcb));
++	/* Validate the memory pages after they've been added in the RMP table. */
++	pvalidate_pages(vaddr, npages, 1);
 +}
 +
- void __init sev_es_init_vc_handling(void)
++void __init early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr,
++					unsigned int npages)
++{
++	if (!cc_platform_has(CC_ATTR_SEV_SNP))
++		return;
++
++	/*
++	 * Invalidate the memory pages before they are marked shared in the
++	 * RMP table.
++	 */
++	pvalidate_pages(vaddr, npages, 0);
++
++	 /* Ask hypervisor to mark the memory pages shared in the RMP table. */
++	early_set_page_state(paddr, npages, SNP_PAGE_STATE_SHARED);
++}
++
++void __init snp_prep_memory(unsigned long paddr, unsigned int sz, enum psc_op op)
++{
++	unsigned long vaddr, npages;
++
++	vaddr = (unsigned long)__va(paddr);
++	npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
++
++	if (op == SNP_PAGE_STATE_PRIVATE)
++		early_snp_set_memory_private(vaddr, paddr, npages);
++	else if (op == SNP_PAGE_STATE_SHARED)
++		early_snp_set_memory_shared(vaddr, paddr, npages);
++	else
++		WARN(1, "invalid memory op %d\n", op);
++}
++
+ int sev_es_setup_ap_jump_table(struct real_mode_header *rmh)
  {
- 	int cpu;
-@@ -1400,7 +1418,7 @@ bool __init handle_vc_boot_ghcb(struct pt_regs *regs)
- 	enum es_result result;
+ 	u16 startup_cs, startup_ip;
+diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
+index 3ba801ff6afc..5d19aad06670 100644
+--- a/arch/x86/mm/mem_encrypt.c
++++ b/arch/x86/mm/mem_encrypt.c
+@@ -31,6 +31,7 @@
+ #include <asm/processor-flags.h>
+ #include <asm/msr.h>
+ #include <asm/cmdline.h>
++#include <asm/sev.h>
  
- 	/* Do initial setup or terminate the guest */
--	if (unlikely(boot_ghcb == NULL && !sev_es_setup_ghcb()))
-+	if (unlikely(boot_ghcb == NULL && !setup_ghcb()))
- 		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
+ #include "mm_internal.h"
  
- 	vc_ghcb_invalidate(boot_ghcb);
+@@ -49,6 +50,34 @@ EXPORT_SYMBOL_GPL(sev_enable_key);
+ /* Buffer used for early in-place encryption by BSP, no locking needed */
+ static char sme_early_buffer[PAGE_SIZE] __initdata __aligned(PAGE_SIZE);
+ 
++/*
++ * When SNP is active, change the page state from private to shared before
++ * copying the data from the source to destination and restore after the copy.
++ * This is required because the source address is mapped as decrypted by the
++ * caller of the routine.
++ */
++static inline void __init snp_memcpy(void *dst, void *src, size_t sz,
++				     unsigned long paddr, bool decrypt)
++{
++	unsigned long npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
++
++	if (!cc_platform_has(CC_ATTR_SEV_SNP) || !decrypt) {
++		memcpy(dst, src, sz);
++		return;
++	}
++
++	/*
++	 * With SNP, the paddr needs to be accessed decrypted, mark the page
++	 * shared in the RMP table before copying it.
++	 */
++	early_snp_set_memory_shared((unsigned long)__va(paddr), paddr, npages);
++
++	memcpy(dst, src, sz);
++
++	/* Restore the page state after the memcpy. */
++	early_snp_set_memory_private((unsigned long)__va(paddr), paddr, npages);
++}
++
+ /*
+  * This routine does not change the underlying encryption setting of the
+  * page(s) that map this memory. It assumes that eventually the memory is
+@@ -97,8 +126,8 @@ static void __init __sme_early_enc_dec(resource_size_t paddr,
+ 		 * Use a temporary buffer, of cache-line multiple size, to
+ 		 * avoid data corruption as documented in the APM.
+ 		 */
+-		memcpy(sme_early_buffer, src, len);
+-		memcpy(dst, sme_early_buffer, len);
++		snp_memcpy(sme_early_buffer, src, len, paddr, enc);
++		snp_memcpy(dst, sme_early_buffer, len, paddr, !enc);
+ 
+ 		early_memunmap(dst, len);
+ 		early_memunmap(src, len);
+@@ -320,14 +349,28 @@ static void __init __set_clr_pte_enc(pte_t *kpte, int level, bool enc)
+ 	clflush_cache_range(__va(pa), size);
+ 
+ 	/* Encrypt/decrypt the contents in-place */
+-	if (enc)
++	if (enc) {
+ 		sme_early_encrypt(pa, size);
+-	else
++	} else {
+ 		sme_early_decrypt(pa, size);
+ 
++		/*
++		 * ON SNP, the page state in the RMP table must happen
++		 * before the page table updates.
++		 */
++		early_snp_set_memory_shared((unsigned long)__va(pa), pa, 1);
++	}
++
+ 	/* Change the page encryption mask. */
+ 	new_pte = pfn_pte(pfn, new_prot);
+ 	set_pte_atomic(kpte, new_pte);
++
++	/*
++	 * If page is set encrypted in the page table, then update the RMP table to
++	 * add this page as private.
++	 */
++	if (enc)
++		early_snp_set_memory_private((unsigned long)__va(pa), pa, 1);
+ }
+ 
+ static int __init early_set_memory_enc_dec(unsigned long vaddr,
 -- 
 2.25.1
 
