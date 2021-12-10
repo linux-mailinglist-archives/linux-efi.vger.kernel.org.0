@@ -2,19 +2,19 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 844354701F6
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Dec 2021 14:40:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4979B4701F9
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Dec 2021 14:40:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236109AbhLJNoD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Dec 2021 08:44:03 -0500
-Received: from out30-130.freemail.mail.aliyun.com ([115.124.30.130]:58802 "EHLO
-        out30-130.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229993AbhLJNoC (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 10 Dec 2021 08:44:02 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04357;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0V-ADOcC_1639143620;
+        id S236200AbhLJNoL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 10 Dec 2021 08:44:11 -0500
+Received: from out30-133.freemail.mail.aliyun.com ([115.124.30.133]:38551 "EHLO
+        out30-133.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235951AbhLJNoD (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 10 Dec 2021 08:44:03 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0V-ADOcC_1639143620;
 Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V-ADOcC_1639143620)
           by smtp.aliyun-inc.com(127.0.0.1);
-          Fri, 10 Dec 2021 21:40:24 +0800
+          Fri, 10 Dec 2021 21:40:25 +0800
 From:   Shuai Xue <xueshuai@linux.alibaba.com>
 To:     mchehab@kernel.org, bp@alien8.de, tony.luck@intel.com,
         james.morse@arm.com, rric@kernel.org, ardb@kernel.org,
@@ -22,9 +22,9 @@ To:     mchehab@kernel.org, bp@alien8.de, tony.luck@intel.com,
         linux-efi@vger.kernel.org
 Cc:     xueshuai@linux.alibaba.com, zhangliguang@linux.alibaba.com,
         zhuo.song@linux.alibaba.com
-Subject: [PATCH v2 2/3] ghes_edac: refactor memory error location processing
-Date:   Fri, 10 Dec 2021 21:40:18 +0800
-Message-Id: <20211210134019.28536-3-xueshuai@linux.alibaba.com>
+Subject: [PATCH v2 3/3] ghes_edac: refactor error status fields decoding
+Date:   Fri, 10 Dec 2021 21:40:19 +0800
+Message-Id: <20211210134019.28536-4-xueshuai@linux.alibaba.com>
 X-Mailer: git-send-email 2.30.1 (Apple Git-130)
 In-Reply-To: <20211210134019.28536-1-xueshuai@linux.alibaba.com>
 References: <20211210134019.28536-1-xueshuai@linux.alibaba.com>
@@ -34,216 +34,221 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The memory error location processing in ghes_edac_report_mem_error() have
-Duplicated Code with cper_mem_err_location(), cper_dimm_err_location(), and
-cper_mem_err_type_str() in drivers/firmware/efi/cper.c.
+ghes_edac_report_mem_error() in ghes_edac.c is a Long Method in which the
+error status fields decoding could be refactored for reuse. On the other
+hand, the cper_print_mem() only reports the error status and misses its
+description.
 
-To avoid the duplicated code, this patch introduces the above cper_*() into
-ghes_edac_report_mem_error(). Although the UEFI_CPER/EDAC_GHES dependency
-is always solved through ACPI_APEI_GHES/ACPI_APEI, add the UEFI_CPER
-dependency explicitly for EDAC_GHES in Kconfig.
+This patch introduces a new helper function cper_mem_err_status_str() which
+is used to wrap up the decoding logics, and the cper_print_mem() will call
+it and report the details of error status description.
+
+The cper error log is now properly reporting the error as follows (all
+Validation Bits are enabled):
+
+[37863.026267] EDAC MC0: 1 CE single-symbol chipkill ECC on unknown memory (node: 0 card: 0 module: 0 rank: 0 bank: 1282 bank_group: 5 bank_address: 2 device: 0 row: 11387 column: 1544 bit_position: 0 requestor_id: 0x0000000000000000 responder_id: 0x0000000000000000 DIMM location: not present. DMI handle: 0x0000 page:0x963d9b offset:0x20 grain:1 syndrome:0x0 - APEI location: node: 0 card: 0 module: 0 rank: 0 bank: 1282 bank_group: 5 bank_address: 2 device: 0 row: 11387 column: 1544 bit_position: 0 requestor_id: 0x0000000000000000 responder_id: 0x0000000000000000 DIMM location: not present. DMI handle: 0x0000 status(0x0000000000000000): reserved)
+[37863.026272] {2}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 2
+[37863.026273] {2}[Hardware Error]: It has been corrected by h/w and requires no further action
+[37863.026275] {2}[Hardware Error]: event severity: corrected
+[37863.026276] {2}[Hardware Error]:  Error 0, type: corrected
+[37863.026278] {2}[Hardware Error]:   section_type: memory error
+[37863.026279] {2}[Hardware Error]:   error_status: 0x0000000000000000, reserved
+[37863.026279] {2}[Hardware Error]:   physical_address: 0x0000000963d9b020
+[37863.026280] {2}[Hardware Error]:   physical_address_mask: 0x0000000000000000
+[37863.026282] {2}[Hardware Error]:   node: 0 card: 0 module: 0 rank: 0 bank: 1282 bank_group: 5 bank_address: 2 device: 0 row: 11387 column: 1544 bit_position: 0 requestor_id: 0x0000000000000000 responder_id: 0x0000000000000000
+[37863.026283] {2}[Hardware Error]:   error_type: 4, single-symbol chipkill ECC
+[37863.026284] {2}[Hardware Error]:   DIMM location: not present. DMI handle: 0x0000
 
 Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
 ---
- drivers/edac/Kconfig        |   1 +
- drivers/edac/ghes_edac.c    | 108 +++---------------------------------
- drivers/firmware/efi/cper.c |   6 +-
- include/linux/cper.h        |   2 +
- 4 files changed, 15 insertions(+), 102 deletions(-)
+ drivers/edac/ghes_edac.c    | 89 +++++++++++--------------------------
+ drivers/firmware/efi/cper.c | 46 ++++++++++++++++++-
+ include/linux/cper.h        |  1 +
+ 3 files changed, 72 insertions(+), 64 deletions(-)
 
-diff --git a/drivers/edac/Kconfig b/drivers/edac/Kconfig
-index 2fc4c3f91fd5..7f1a2e019ede 100644
---- a/drivers/edac/Kconfig
-+++ b/drivers/edac/Kconfig
-@@ -55,6 +55,7 @@ config EDAC_DECODE_MCE
- config EDAC_GHES
- 	bool "Output ACPI APEI/GHES BIOS detected errors via EDAC"
- 	depends on ACPI_APEI_GHES && (EDAC=y)
-+	select UEFI_CPER
- 	help
- 	  Not all machines support hardware-driven error report. Some of those
- 	  provide a BIOS-driven error report mechanism via ACPI, using the
 diff --git a/drivers/edac/ghes_edac.c b/drivers/edac/ghes_edac.c
-index 526a28cbb19b..103ad5b3a018 100644
+index 103ad5b3a018..986276557c93 100644
 --- a/drivers/edac/ghes_edac.c
 +++ b/drivers/edac/ghes_edac.c
-@@ -239,6 +239,7 @@ void ghes_edac_report_mem_error(int sev, struct cper_sec_mem_err *mem_err)
+@@ -235,6 +235,31 @@ static void ghes_scan_system(void)
+ 	system_scanned = true;
+ }
+ 
++static int ghes_edac_mem_err_other_detail(const struct cper_sec_mem_err *mem,
++				char *msg, const char *location)
++{
++	u32 len, n;
++
++	if (!msg)
++		return 0;
++
++	n = 0;
++	len = 2 * CPER_REC_LEN - 1;
++
++	n += snprintf(msg + n, len - n, "APEI location: %s ", location);
++
++	if (mem->validation_bits & CPER_MEM_VALID_ERROR_STATUS) {
++		u64 status = mem->error_status;
++
++		n += snprintf(msg + n, len - n,  "status(0x%016llx): ",
++				(long long)status);
++		n += snprintf(msg + n, len - n, "%s ", cper_mem_err_status_str(status));
++	}
++
++	msg[n] = '\0';
++	return n;
++}
++
+ void ghes_edac_report_mem_error(int sev, struct cper_sec_mem_err *mem_err)
  {
  	struct edac_raw_error_desc *e;
- 	struct mem_ctl_info *mci;
-+	struct cper_mem_err_compact cmem;
- 	struct ghes_pvt *pvt;
- 	unsigned long flags;
- 	char *p;
-@@ -292,60 +293,10 @@ void ghes_edac_report_mem_error(int sev, struct cper_sec_mem_err *mem_err)
+@@ -335,69 +360,7 @@ void ghes_edac_report_mem_error(int sev, struct cper_sec_mem_err *mem_err)
  
- 	/* Error type, mapped on e->msg */
- 	if (mem_err->validation_bits & CPER_MEM_VALID_ERROR_TYPE) {
-+		u8 etype = mem_err->error_type;
-+
- 		p = pvt->msg;
--		switch (mem_err->error_type) {
--		case 0:
--			p += sprintf(p, "Unknown");
--			break;
+ 	/* All other fields are mapped on e->other_detail */
+ 	p = pvt->other_detail;
+-	p += snprintf(p, sizeof(pvt->other_detail),
+-		"APEI location: %s ", e->location);
+-	if (mem_err->validation_bits & CPER_MEM_VALID_ERROR_STATUS) {
+-		u64 status = mem_err->error_status;
+-
+-		p += sprintf(p, "status(0x%016llx):", (long long)status);
+-		switch ((status >> 8) & 0xff) {
 -		case 1:
--			p += sprintf(p, "No error");
+-			p += sprintf(p, "Error detected internal to the component ");
 -			break;
--		case 2:
--			p += sprintf(p, "Single-bit ECC");
--			break;
--		case 3:
--			p += sprintf(p, "Multi-bit ECC");
+-		case 16:
+-			p += sprintf(p, "Error detected in the bus ");
 -			break;
 -		case 4:
--			p += sprintf(p, "Single-symbol ChipKill ECC");
+-			p += sprintf(p, "Storage error in DRAM memory ");
 -			break;
 -		case 5:
--			p += sprintf(p, "Multi-symbol ChipKill ECC");
+-			p += sprintf(p, "Storage error in TLB ");
 -			break;
 -		case 6:
--			p += sprintf(p, "Master abort");
+-			p += sprintf(p, "Storage error in cache ");
 -			break;
 -		case 7:
--			p += sprintf(p, "Target abort");
+-			p += sprintf(p, "Error in one or more functional units ");
 -			break;
 -		case 8:
--			p += sprintf(p, "Parity Error");
+-			p += sprintf(p, "component failed self test ");
 -			break;
 -		case 9:
--			p += sprintf(p, "Watchdog timeout");
+-			p += sprintf(p, "Overflow or undervalue of internal queue ");
 -			break;
--		case 10:
--			p += sprintf(p, "Invalid address");
+-		case 17:
+-			p += sprintf(p, "Virtual address not found on IO-TLB or IO-PDIR ");
 -			break;
--		case 11:
--			p += sprintf(p, "Mirror Broken");
+-		case 18:
+-			p += sprintf(p, "Improper access error ");
 -			break;
--		case 12:
--			p += sprintf(p, "Memory Sparing");
+-		case 19:
+-			p += sprintf(p, "Access to a memory address which is not mapped to any component ");
 -			break;
--		case 13:
--			p += sprintf(p, "Scrub corrected error");
+-		case 20:
+-			p += sprintf(p, "Loss of Lockstep ");
 -			break;
--		case 14:
--			p += sprintf(p, "Scrub uncorrected error");
+-		case 21:
+-			p += sprintf(p, "Response not associated with a request ");
 -			break;
--		case 15:
--			p += sprintf(p, "Physical Memory Map-out event");
+-		case 22:
+-			p += sprintf(p, "Bus parity error - must also set the A, C, or D Bits ");
+-			break;
+-		case 23:
+-			p += sprintf(p, "Detection of a PATH_ERROR ");
+-			break;
+-		case 25:
+-			p += sprintf(p, "Bus operation timeout ");
+-			break;
+-		case 26:
+-			p += sprintf(p, "A read was issued to data that has been poisoned ");
 -			break;
 -		default:
--			p += sprintf(p, "reserved error (%d)",
--				     mem_err->error_type);
+-			p += sprintf(p, "reserved ");
+-			break;
 -		}
-+		p += snprintf(p, sizeof(pvt->msg), "%s", cper_mem_err_type_str(etype));
- 	} else {
- 		strcpy(pvt->msg, "unknown error");
- 	}
-@@ -362,56 +313,13 @@ void ghes_edac_report_mem_error(int sev, struct cper_sec_mem_err *mem_err)
- 
- 	/* Memory error location, mapped on e->location */
- 	p = e->location;
--	if (mem_err->validation_bits & CPER_MEM_VALID_NODE)
--		p += sprintf(p, "node:%d ", mem_err->node);
--	if (mem_err->validation_bits & CPER_MEM_VALID_CARD)
--		p += sprintf(p, "card:%d ", mem_err->card);
--	if (mem_err->validation_bits & CPER_MEM_VALID_MODULE)
--		p += sprintf(p, "module:%d ", mem_err->module);
--	if (mem_err->validation_bits & CPER_MEM_VALID_RANK_NUMBER)
--		p += sprintf(p, "rank:%d ", mem_err->rank);
--	if (mem_err->validation_bits & CPER_MEM_VALID_BANK)
--		p += sprintf(p, "bank:%d ", mem_err->bank);
--	if (mem_err->validation_bits & CPER_MEM_VALID_BANK_GROUP)
--		p += sprintf(p, "bank_group:%d ",
--			     mem_err->bank >> CPER_MEM_BANK_GROUP_SHIFT);
--	if (mem_err->validation_bits & CPER_MEM_VALID_BANK_ADDRESS)
--		p += sprintf(p, "bank_address:%d ",
--			     mem_err->bank & CPER_MEM_BANK_ADDRESS_MASK);
--	if (mem_err->validation_bits & CPER_MEM_VALID_DEVICE)
--		p += sprintf(p, "device:%d ", mem_err->device);
--	if (mem_err->validation_bits & (CPER_MEM_VALID_ROW | CPER_MEM_VALID_ROW_EXT)) {
--		u32 row = mem_err->row;
--
--		row |= cper_get_mem_extension(mem_err->validation_bits, mem_err->extended);
--		p += sprintf(p, "row:%d ", row);
 -	}
--	if (mem_err->validation_bits & CPER_MEM_VALID_COLUMN)
--		p += sprintf(p, "column:%d ", mem_err->column);
--	if (mem_err->validation_bits & CPER_MEM_VALID_BIT_POSITION)
--		p += sprintf(p, "bit_position:%d ", mem_err->bit_pos);
--	if (mem_err->validation_bits & CPER_MEM_VALID_REQUESTOR_ID)
--		p += sprintf(p, "requestor_id:0x%016llx ",
--			     (long long)mem_err->requestor_id);
--	if (mem_err->validation_bits & CPER_MEM_VALID_RESPONDER_ID)
--		p += sprintf(p, "responder_id:0x%016llx ",
--			     (long long)mem_err->responder_id);
--	if (mem_err->validation_bits & CPER_MEM_VALID_TARGET_ID)
--		p += sprintf(p, "target_id:0x%016llx ",
--			     (long long)mem_err->responder_id);
--	if (mem_err->validation_bits & CPER_MEM_VALID_CHIP_ID)
--		p += sprintf(p, "chip_id:%d ",
--			     mem_err->extended >> CPER_MEM_CHIP_ID_SHIFT);
-+	cper_mem_err_pack(mem_err, &cmem);
-+	p += cper_mem_err_location(&cmem, p);
-+
- 	if (mem_err->validation_bits & CPER_MEM_VALID_MODULE_HANDLE) {
--		const char *bank = NULL, *device = NULL;
- 		struct dimm_info *dimm;
++	p += ghes_edac_mem_err_other_detail(mem_err, p, e->location);
  
--		dmi_memdev_name(mem_err->mem_dev_handle, &bank, &device);
--		if (bank != NULL && device != NULL)
--			p += sprintf(p, "DIMM location:%s %s ", bank, device);
--		else
--			p += sprintf(p, "DIMM location:not present. DIMM DMI handle:0x%.4x ",
--				     mem_err->mem_dev_handle);
-+		p += cper_dimm_err_location(&cmem, p);
- 
- 		dimm = find_dimm_by_handle(mci, mem_err->mem_dev_handle);
- 		if (dimm) {
+ 	if (p > pvt->other_detail)
+ 		*(p - 1) = '\0';
 diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index 77b39b058924..7553fecf2819 100644
+index 7553fecf2819..f604cb38da7e 100644
 --- a/drivers/firmware/efi/cper.c
 +++ b/drivers/firmware/efi/cper.c
-@@ -211,7 +211,7 @@ const char *cper_mem_err_type_str(unsigned int etype)
+@@ -211,6 +211,49 @@ const char *cper_mem_err_type_str(unsigned int etype)
  }
  EXPORT_SYMBOL_GPL(cper_mem_err_type_str);
  
--static int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg)
-+int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg)
++const char *cper_mem_err_status_str(u64 status)
++{
++	switch ((status >> 8) & 0xff) {
++	case 1:
++		return "Error detected internal to the component";
++	case 16:
++		return "Error detected in the bus";
++	case 4:
++		return "Storage error in DRAM memory";
++	case 5:
++		return "Storage error in TLB";
++	case 6:
++		return "Storage error in cache";
++	case 7:
++		return "Error in one or more functional units";
++	case 8:
++		return "component failed self test";
++	case 9:
++		return "Overflow or undervalue of internal queue";
++	case 17:
++		return "Virtual address not found on IO-TLB or IO-PDIR";
++	case 18:
++		return "Improper access error";
++	case 19:
++		return "Access to a memory address which is not mapped to any component";
++	case 20:
++		return "Loss of Lockstep";
++	case 21:
++		return "Response not associated with a request";
++	case 22:
++		return "Bus parity error - must also set the A, C, or D Bits";
++	case 23:
++		return "Detection of a PATH_ERROR ";
++	case 25:
++		return "Bus operation timeout";
++	case 26:
++		return "A read was issued to data that has been poisoned";
++	default:
++		return "reserved";
++	}
++}
++EXPORT_SYMBOL_GPL(cper_mem_err_status_str);
++
+ int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg)
  {
  	u32 len, n;
- 
-@@ -264,8 +264,9 @@ static int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg)
- 
- 	return n;
- }
-+EXPORT_SYMBOL_GPL(cper_mem_err_location);
- 
--static int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg)
-+int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg)
- {
- 	u32 len, n;
- 	const char *bank = NULL, *device = NULL;
-@@ -284,6 +285,7 @@ static int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg)
- 
- 	return n;
- }
-+EXPORT_SYMBOL_GPL(cper_dimm_err_location);
- 
- void cper_mem_err_pack(const struct cper_sec_mem_err *mem,
- 		       struct cper_mem_err_compact *cmem)
+@@ -336,7 +379,8 @@ static void cper_print_mem(const char *pfx, const struct cper_sec_mem_err *mem,
+ 		return;
+ 	}
+ 	if (mem->validation_bits & CPER_MEM_VALID_ERROR_STATUS)
+-		printk("%s""error_status: 0x%016llx\n", pfx, mem->error_status);
++		printk("%s""error_status: 0x%016llx, %s\n", pfx, mem->error_status,
++				cper_mem_err_status_str(mem->error_status));
+ 	if (mem->validation_bits & CPER_MEM_VALID_PA)
+ 		printk("%s""physical_address: 0x%016llx\n",
+ 		       pfx, mem->physical_addr);
 diff --git a/include/linux/cper.h b/include/linux/cper.h
-index 6a511a1078ca..918e7efffb60 100644
+index 918e7efffb60..eacb7dd7b3af 100644
 --- a/include/linux/cper.h
 +++ b/include/linux/cper.h
-@@ -568,5 +568,7 @@ void cper_print_proc_arm(const char *pfx,
- 			 const struct cper_sec_proc_arm *proc);
- void cper_print_proc_ia(const char *pfx,
- 			const struct cper_sec_proc_ia *proc);
-+int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg);
-+int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg);
- 
- #endif
+@@ -558,6 +558,7 @@ extern const char *const cper_proc_error_type_strs[4];
+ u64 cper_next_record_id(void);
+ const char *cper_severity_str(unsigned int);
+ const char *cper_mem_err_type_str(unsigned int);
++const char *cper_mem_err_status_str(u64 status);
+ void cper_print_bits(const char *prefix, unsigned int bits,
+ 		     const char * const strs[], unsigned int strs_size);
+ void cper_mem_err_pack(const struct cper_sec_mem_err *,
 -- 
 2.20.1.12.g72788fdb
 
