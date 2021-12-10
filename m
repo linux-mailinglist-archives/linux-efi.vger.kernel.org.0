@@ -2,41 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 42FDA470435
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Dec 2021 16:44:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 53B6A470439
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Dec 2021 16:44:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239658AbhLJPrc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Dec 2021 10:47:32 -0500
-Received: from mail-sn1anam02on2051.outbound.protection.outlook.com ([40.107.96.51]:48029
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        id S239855AbhLJPrk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 10 Dec 2021 10:47:40 -0500
+Received: from mail-bn8nam08on2057.outbound.protection.outlook.com ([40.107.100.57]:3265
+        "EHLO NAM04-BN8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S234244AbhLJPrb (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 10 Dec 2021 10:47:31 -0500
+        id S239715AbhLJPre (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 10 Dec 2021 10:47:34 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=R+XJjBWli9UcdI8VbAnQ1aQKvLRuNloDfrKVGCT9M6IXizrBIpEj4VnXewMkAlamDIdBhuiUjR04MEEf9mq00R5IRiPI/+Lq4JaHc7n5z9Mhd9TgVSefGxceUaSjUs+QBbRtL9nLItvVTK1lBd/S9t1Lzz9azwh/8z2pXVqKYgG+Ax9deefMiHCLqMyFcC7QVpt4XeakqBAiW8/ywLX1JVnkw1U03FOcTqM+BHeuuTrXUm9bBmSQ3vQAUS2N/bk9WzC0JxLvHWYPAvrU4tLD7PAjJ/YRI81m3ObbNbBCRcCFl6yXhBZYNa8TsY6jjY6ok3gZINtRws4gU4VVs+BDgw==
+ b=BOACnoudNPW3Vdh0foK2Ytcn3Ku9d6Ufok9MpxWlaN88qQBGbEY2xNrZvFOOVa2JpX8cgTwtRnsQV7MCbL9sDQbU3CWRk8KejtSSRB/I9JCCVbbyvWbIs5QrDDfrva6a3BjviVUcBDL4sr7Dxo0Yd4X7t0Qz88wT9ZJUyIMpb/JFy1QL9cO6CpWn9U5k94XgLEgzdnPJG/YJfUq4gqffNdXo7gBMESb0QhRlgPG1pBA/5croxEkeQzakxmRVM6cLiETRp9YPKq+oyOBdY2XBAvfsrFjf2detDXCex+e45MC7FLzi2/NR6aS5Kdx7qaqKb9UPjNfa+k6yWnrcZWMT3Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fICH46yyunjCi6WuB7jbd0yWtj+6u+zz7txMrYyzXUI=;
- b=lJROKj+gw5jnfCMEro8k4VEiy9852ocguzWU1jTTBK8NeRakj+NnDm8K4hBDqTKNB1zZ/4M9qN53J6TVCBE1xlJr15xYnfu/OhS5d/uCQ11hsHuzUk64CBNwmPkavm/5gJVmM97NYkFk2jBTqPFY7gVKaHUK+qInlbBxZx3BE+J3ojNLagdM7WPNyFzVi1+2lW5AnLTg7UOZ3wcZFRfSnQApyTP0u7sC8tXYFBNuBgpSRbUQkFUex9We8yKnDghQT5W2vNH8XP4Zn4F03sV0N+XHHrCOlDNUHry41C+FErZEokiH6zNFdKsgKXSAPOxyZ69OXtbXDZ05M6H1+Y5rmg==
+ bh=UiwxEHZQaymCaPdZPIbv8O+NxpKeKi5A0nmjfokqrXA=;
+ b=TCSGzpVX5vxEBqzP3BF6RqO9jW86gmANy6IXGj08ANtcZajpiY6lifZ3EnVhpO8fp44T7VbQGXw0hHcpgXgG0XerrlzDAs+G+J5qILS8TrsNPjD3gL5dY7hKah4cdxop2BRwC+jKt1PmdKDrv5nCIL0OxQPB4vQYOlV1AFc+p7Huh1pEj4G9atulJSw+siJ8oGXEton9wPsXEEY38Va67psDz+HD31teJTucBWz1Tc9nh7S5idk8hXcrv1uCJfZ0V3YZiYzMo9bdapaVgHttf7/9MqWXE9j0HKoGefrz/Bv9bGSMCgwLgZnKJYCK7CiQw+FRmEqxDiIzoV2N/HKSAw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fICH46yyunjCi6WuB7jbd0yWtj+6u+zz7txMrYyzXUI=;
- b=pzzwcY+5sJb5n8tq2E54KQwLuki5yOhyyWBoVfNb9o1Nl6Vk3MDvw1Q+dMxCoiSxUC/0XDEamTDguDRg2oyJKX9dczyDzWKvaxU+G1FGF62F9pAYK4aFxkMOS7//nrB3NReVEckjizJyiin4skiFdbSCtZg27VUfkgw66b/v8Ec=
-Received: from BN9PR03CA0089.namprd03.prod.outlook.com (2603:10b6:408:fc::34)
- by BL0PR12MB4756.namprd12.prod.outlook.com (2603:10b6:208:8d::29) with
+ bh=UiwxEHZQaymCaPdZPIbv8O+NxpKeKi5A0nmjfokqrXA=;
+ b=PEH5nAMr8ihOnLsrXRqQXvpswj5GSdABTILIRZbb8IvtNH9gHRhRi6ItgMbAv1+CvlR4NfhBkkcuW8DzEl8t/PzP2RGreWrojF+e2fn6x/5nJonYHhHLQvhsjfxHt61/0jb8UbTfE5AJneYqxVQjLprVAPCoVkJdSNFdAjyZhxk=
+Received: from BN9PR03CA0076.namprd03.prod.outlook.com (2603:10b6:408:fc::21)
+ by BN8PR12MB3076.namprd12.prod.outlook.com (2603:10b6:408:61::27) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.20; Fri, 10 Dec
- 2021 15:43:53 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.21; Fri, 10 Dec
+ 2021 15:43:54 +0000
 Received: from BN8NAM11FT065.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:fc:cafe::13) by BN9PR03CA0089.outlook.office365.com
- (2603:10b6:408:fc::34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.12 via Frontend
- Transport; Fri, 10 Dec 2021 15:43:53 +0000
+ (2603:10b6:408:fc:cafe::af) by BN9PR03CA0076.outlook.office365.com
+ (2603:10b6:408:fc::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.21 via Frontend
+ Transport; Fri, 10 Dec 2021 15:43:54 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -50,7 +50,7 @@ Received: from SATLEXMB03.amd.com (165.204.84.17) by
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17; Fri, 10 Dec
- 2021 09:43:50 -0600
+ 2021 09:43:51 -0600
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
         <kvm@vger.kernel.org>, <linux-efi@vger.kernel.org>,
@@ -81,9 +81,9 @@ CC:     Thomas Gleixner <tglx@linutronix.de>,
         <tony.luck@intel.com>, <marcorr@google.com>,
         <sathyanarayanan.kuppuswamy@linux.intel.com>,
         Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH v8 02/40] x86/sev: detect/setup SEV/SME features earlier in boot
-Date:   Fri, 10 Dec 2021 09:42:54 -0600
-Message-ID: <20211210154332.11526-3-brijesh.singh@amd.com>
+Subject: [PATCH v8 03/40] x86/mm: Extend cc_attr to include AMD SEV-SNP
+Date:   Fri, 10 Dec 2021 09:42:55 -0600
+Message-ID: <20211210154332.11526-4-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211210154332.11526-1-brijesh.singh@amd.com>
 References: <20211210154332.11526-1-brijesh.singh@amd.com>
@@ -95,81 +95,102 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB03.amd.com
  (10.181.40.144)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e3d43492-4cfc-4071-a949-08d9bbf3dea8
-X-MS-TrafficTypeDiagnostic: BL0PR12MB4756:EE_
-X-Microsoft-Antispam-PRVS: <BL0PR12MB4756EE111232958F0C967E00E5719@BL0PR12MB4756.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5236;
+X-MS-Office365-Filtering-Correlation-Id: 7fa4fe63-c563-4dbb-68bf-08d9bbf3ded8
+X-MS-TrafficTypeDiagnostic: BN8PR12MB3076:EE_
+X-Microsoft-Antispam-PRVS: <BN8PR12MB30763EFC7904EBEA2DE7AD22E5719@BN8PR12MB3076.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3276;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: RxgfgUvhdLJGnoS/kmO0falfCKIBYH6JfGQEozPykliZ3fmRVMjjJv631BggWnxE0w09l3I6nJgAng/AyPF41kB+XsVFie++isvpuDLli322g7GSgsY+tA1zjd10TfKTezEFSHVpEAK+kZZ6mQ3xQ08CvuAaIYof05Sab6URDW2gQB/ZRXZofV0yX7ijSEnDDi8GA1aBEQAg0oZYww578oAQTMAbJeGVbUsh71Bg4n0yIGWgqrLOPKisxVwTZMjAh/wqfkicdhvgW6G5YiSC9rwhsRQvHwjxkczWZho1V5mK8sLYnFh6lppwZABDBqoIL4a32L6KCGFXziQ+EaLwo3Ej9m7QM0ZAO9nsh22lCKbD7ReP3bzIR2afYsjNODxlScChkULmshLa3LtPcH4npCZj5LOnPkJP66Ty09zMHKMQUKDhpF6thlw7laypkmswlHqPHwML00lagV8/Qa7CofuU7S2BDMqgPE+yG1Y202RL3BI0CiGh/qk+s3mlsTPgXFim3+2MC+PWbiQvM6j+UdhETwZBYcSLyMf1WPfiKhNhBNvPQ8mHGktf/xCehR8MzEUD8UrvPPx+VpJTPeAbEoa5MhQpEF28DIvJkKzuxgoHChuvMoGsX9WymGer+HUKA3Ltg5TWgtYuqpZDrj7ho9nUVk22U+wKyEn6Vb+EYsJfr3IIDqWzGepHCkUlEKwyx8ukySKS9nXf2YUJ8IfwXL1PCajbCqIstNxiwPYbrOnCvO0JvSLzsr2fIRxQJsLKaV6ChSU+7cTfrfwpqiynjaE737MVdOCp0+By88rVPD9aRMR0yjZ/kRdZolSIo1B+
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(36840700001)(46966006)(40470700001)(7696005)(4326008)(47076005)(86362001)(44832011)(1076003)(8676002)(7416002)(8936002)(81166007)(83380400001)(36756003)(5660300002)(36860700001)(7406005)(356005)(70206006)(316002)(70586007)(110136005)(82310400004)(54906003)(2906002)(508600001)(40460700001)(2616005)(426003)(336012)(16526019)(186003)(26005)(36900700001)(2101003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: h6se1WYbegJEAxpklannMc+Ic1RBu36oGa9gnf7bISiBQXrYTzBi/2KGcemmaH9pre9MAB8EhoP8s+0RIKJAs8qDFB0p38dZZsAHij6AF51xU81WS3doJ6MBOGbHOeDn+2jwxDZh68X6vWkcffcJQ30bu9kbLuFP6mSAx1Xa1zwucwHOPT9Ncx4aPNGdaGxI1ozSv4K8wYsJX+RKmAaSY7CHJIjRjMs1X01hoigez611ozhihlEoFJTZk8cR3N9iXWiijldiE7N2/5aVVddO1pCznLHhDseUVyUEuA7WPjD4e4dKwD0OVa3U4Kz3BVqx1+6Ljqq5tIqXFD4oGRDoWn+gIwAz96S0Fkmn3jLxf7ajhmAWdHi9UA2lVL0hUZU9CddwDtAjgTfK85o79SCChDqoDQl37RbT0L41wyGQzhnvVHdDkk1U0FyMdT0HJwGtTiG0c8pQjDx+Y1NuH96eGtMen1uom8UfHTQxY+WOP3px4fAB9KMUXetawdm7PJHTeNwJjGNlWZNNVpWIiJ/hS6LrjsMB3AJ62zHjfbKJK7ysVBRZwrAeqkWKuLXxOZrOPyzcOn/uTHE7Ak6U3dUOj+FHjnjR0i0aR+m4CIPHYzVCQXL8/nEmlUdlhTk5XSsek5Cri5NGlHZQQeKZGmG7ovdxzpECVatW0R5Wxdux8LyTZRErYFPS1iKd7ulR6d0rnSueQM89YZAiVTQgPvMNC5SvmpO4Vx2NueULVVCCWqqG69R17i2hPD/VM9OO6jpXyJmfxo04kNIy5QLCK+PI3tewdnsEc7Mq2Vv7zdrxaEpeiR/YEOmFUGI85gS6bJlY
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(46966006)(36840700001)(40470700001)(7416002)(44832011)(86362001)(2616005)(7406005)(70586007)(82310400004)(81166007)(356005)(426003)(40460700001)(36756003)(316002)(47076005)(5660300002)(110136005)(8676002)(8936002)(26005)(70206006)(7696005)(508600001)(36860700001)(16526019)(336012)(54906003)(1076003)(186003)(2906002)(4326008)(2101003)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2021 15:43:53.6194
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2021 15:43:53.9358
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e3d43492-4cfc-4071-a949-08d9bbf3dea8
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7fa4fe63-c563-4dbb-68bf-08d9bbf3ded8
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT065.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR12MB4756
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN8PR12MB3076
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Michael Roth <michael.roth@amd.com>
+The CC_ATTR_SEV_SNP can be used by the guest to query whether the SNP -
+Secure Nested Paging feature is active.
 
-sme_enable() handles feature detection for both SEV and SME. Future
-patches will also use it for SEV-SNP feature detection/setup, which
-will need to be done immediately after the first #VC handler is set up.
-Move it now in preparation.
-
-Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/kernel/head64.c  |  3 ---
- arch/x86/kernel/head_64.S | 13 +++++++++++++
- 2 files changed, 13 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/msr-index.h | 2 ++
+ arch/x86/kernel/cc_platform.c    | 2 ++
+ arch/x86/mm/mem_encrypt.c        | 4 ++++
+ include/linux/cc_platform.h      | 8 ++++++++
+ 4 files changed, 16 insertions(+)
 
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index 3be9dd213dad..b01f64e8389b 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -192,9 +192,6 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 	if (load_delta & ~PMD_PAGE_MASK)
- 		for (;;);
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index 01e2650b9585..98a64b230447 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -481,8 +481,10 @@
+ #define MSR_AMD64_SEV			0xc0010131
+ #define MSR_AMD64_SEV_ENABLED_BIT	0
+ #define MSR_AMD64_SEV_ES_ENABLED_BIT	1
++#define MSR_AMD64_SEV_SNP_ENABLED_BIT	2
+ #define MSR_AMD64_SEV_ENABLED		BIT_ULL(MSR_AMD64_SEV_ENABLED_BIT)
+ #define MSR_AMD64_SEV_ES_ENABLED	BIT_ULL(MSR_AMD64_SEV_ES_ENABLED_BIT)
++#define MSR_AMD64_SEV_SNP_ENABLED	BIT_ULL(MSR_AMD64_SEV_SNP_ENABLED_BIT)
  
--	/* Activate Secure Memory Encryption (SME) if supported and enabled */
--	sme_enable(bp);
--
- 	/* Include the SME encryption mask in the fixup value */
- 	load_delta += sme_get_me_mask();
+ #define MSR_AMD64_VIRT_SPEC_CTRL	0xc001011f
  
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index d8b3ebd2bb85..99de8fd461e8 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -69,6 +69,19 @@ SYM_CODE_START_NOALIGN(startup_64)
- 	call	startup_64_setup_env
- 	popq	%rsi
+diff --git a/arch/x86/kernel/cc_platform.c b/arch/x86/kernel/cc_platform.c
+index 03bb2f343ddb..e05310f5ec2f 100644
+--- a/arch/x86/kernel/cc_platform.c
++++ b/arch/x86/kernel/cc_platform.c
+@@ -50,6 +50,8 @@ static bool amd_cc_platform_has(enum cc_attr attr)
+ 	case CC_ATTR_GUEST_STATE_ENCRYPT:
+ 		return sev_status & MSR_AMD64_SEV_ES_ENABLED;
  
-+#ifdef CONFIG_AMD_MEM_ENCRYPT
-+	/*
-+	 * Activate SEV/SME memory encryption if supported/enabled. This needs to
-+	 * be done now, since this also includes setup of the SEV-SNP CPUID table,
-+	 * which needs to be done before any CPUID instructions are executed in
-+	 * subsequent code.
-+	 */
-+	movq	%rsi, %rdi
-+	pushq	%rsi
-+	call	sme_enable
-+	popq	%rsi
-+#endif
++	case CC_ATTR_SEV_SNP:
++		return sev_status & MSR_AMD64_SEV_SNP_ENABLED;
+ 	default:
+ 		return false;
+ 	}
+diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
+index 35487305d8af..3ba801ff6afc 100644
+--- a/arch/x86/mm/mem_encrypt.c
++++ b/arch/x86/mm/mem_encrypt.c
+@@ -487,6 +487,10 @@ static void print_mem_encrypt_feature_info(void)
+ 	if (cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
+ 		pr_cont(" SEV-ES");
+ 
++	/* Secure Nested Paging */
++	if (cc_platform_has(CC_ATTR_SEV_SNP))
++		pr_cont(" SEV-SNP");
 +
- 	/* Now switch to __KERNEL_CS so IRET works reliably */
- 	pushq	$__KERNEL_CS
- 	leaq	.Lon_kernel_cs(%rip), %rax
+ 	pr_cont("\n");
+ }
+ 
+diff --git a/include/linux/cc_platform.h b/include/linux/cc_platform.h
+index a075b70b9a70..ef5e2209c9b8 100644
+--- a/include/linux/cc_platform.h
++++ b/include/linux/cc_platform.h
+@@ -61,6 +61,14 @@ enum cc_attr {
+ 	 * Examples include SEV-ES.
+ 	 */
+ 	CC_ATTR_GUEST_STATE_ENCRYPT,
++
++	/**
++	 * @CC_ATTR_SEV_SNP: Guest SNP is active.
++	 *
++	 * The platform/OS is running as a guest/virtual machine and actively
++	 * using AMD SEV-SNP features.
++	 */
++	CC_ATTR_SEV_SNP = 0x100,
+ };
+ 
+ #ifdef CONFIG_ARCH_HAS_CC_PLATFORM
 -- 
 2.25.1
 
