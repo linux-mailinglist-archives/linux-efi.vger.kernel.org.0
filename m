@@ -2,39 +2,39 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F735470953
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Dec 2021 19:50:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB26647097C
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Dec 2021 19:54:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245583AbhLJSx6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Dec 2021 13:53:58 -0500
-Received: from mga04.intel.com ([192.55.52.120]:37315 "EHLO mga04.intel.com"
+        id S239546AbhLJS6P (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 10 Dec 2021 13:58:15 -0500
+Received: from mga17.intel.com ([192.55.52.151]:24519 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238591AbhLJSx5 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 10 Dec 2021 13:53:57 -0500
+        id S239445AbhLJS6O (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 10 Dec 2021 13:58:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1639162222; x=1670698222;
+  t=1639162479; x=1670698479;
   h=subject:to:cc:references:from:message-id:date:
    mime-version:in-reply-to:content-transfer-encoding;
-  bh=fEteOKT5oTGnMtVdCIpjnAcU5kpA6AXOOJKg2F53BCI=;
-  b=UJo6zgDyLrIAFSUBOdCS7t5l7ODIuU/yjPRDDnp+JHvfz9hfRj2qODs5
-   4Fpt2sDKRbvBE6chAYHBfIIhB2VHs8njD3mSPMcIjiZP+qODOEcW4qISW
-   yat10jcT6zydZjtALe1zNjt7jnY3bWJhQNEGtS5vmr8A0N5fmRgheD31y
-   JfvfB+vUjaFK9Jg11uDTXxn1T+6wu9lPsCzj+Y3Q0/glj5KaHcNRviYbY
-   NGMzupuRawVbZcqsfFuXlQg4yI+r0fAoaIB61fHdh6dBTBdPJzD4TVZJ8
-   l8dESDAwoRmwjKFxtmZab33K9wXRYCusPm4rQ5op/fFDwRZ/CWPG3aoZZ
+  bh=dmwUGp11FSd6orBPYFu3e89EfKmPlA48PodjOOQ9Ol8=;
+  b=gXsK3jUsrMtCKD3TvcXgRZdTglM491xvNqRHkcmR0cT387P6zuvEIRXr
+   XnCnQxvSaLOXjPA3X8286sqBzu5QyxnxeC6Qn7+x9PFwRNzdJAZU1XBWk
+   YEHQarzhQXCDuJ5l/ZYe8aqlqxFHSBQlUOIICU3i+rbjDyNGPYNgLUD2c
+   nLuFOJRpNxMqFbPPyno36FfFpwkqqJJAVpIN/6evTTz68vYo4c1Unp6uI
+   YZRT96dlXA4noz83vlOjN9Em6Lm1ZWRECLSniU+Fl7EVtmgcA3AzB32kE
+   JsnQVTwJoeBUErnwf6tJv8Jw0w7N56LybmoRfvPckn06rIWoXyZWMHCYF
    Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10194"; a="237150497"
+X-IronPort-AV: E=McAfee;i="6200,9189,10194"; a="219105556"
 X-IronPort-AV: E=Sophos;i="5.88,196,1635231600"; 
-   d="scan'208";a="237150497"
+   d="scan'208";a="219105556"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2021 10:50:21 -0800
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2021 10:54:39 -0800
 X-IronPort-AV: E=Sophos;i="5.88,196,1635231600"; 
-   d="scan'208";a="607574406"
+   d="scan'208";a="607590808"
 Received: from klarson-mobl.amr.corp.intel.com (HELO [10.251.16.229]) ([10.251.16.229])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2021 10:50:19 -0800
-Subject: Re: [PATCH v8 20/40] x86/sev: Use SEV-SNP AP creation to start
- secondary CPUs
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2021 10:54:37 -0800
+Subject: Re: [PATCH v8 24/40] x86/compressed/acpi: move EFI system table
+ lookup to helper
 To:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
@@ -64,7 +64,7 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         tony.luck@intel.com, marcorr@google.com,
         sathyanarayanan.kuppuswamy@linux.intel.com
 References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-21-brijesh.singh@amd.com>
+ <20211210154332.11526-25-brijesh.singh@amd.com>
 From:   Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -109,12 +109,12 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  OPsw5tV/LmQ5GXH0JQ/TZXWygyRFyyI2FqNTx4WHqUn3yFj8rwTAU1tluRUYyeLy0ayUlKBH
  ybj0N71vWO936MqP6haFERzuPAIpxj2ezwu0xb1GjTk4ynna6h5GjnKgdfOWoRtoWndMZxbA
  z5cecg==
-Message-ID: <176b6163-fb2a-0339-e23f-2090ea78b4ed@intel.com>
-Date:   Fri, 10 Dec 2021 10:50:19 -0800
+Message-ID: <cd8f3190-75b3-1fd5-000a-370e6c53f766@intel.com>
+Date:   Fri, 10 Dec 2021 10:54:35 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20211210154332.11526-21-brijesh.singh@amd.com>
+In-Reply-To: <20211210154332.11526-25-brijesh.singh@amd.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -123,22 +123,19 @@ List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 On 12/10/21 7:43 AM, Brijesh Singh wrote:
-> +	vmsa->efer		= 0x1000;	/* Must set SVME bit */
-> +	vmsa->cr4		= cr4;
-> +	vmsa->cr0		= 0x60000010;
-> +	vmsa->dr7		= 0x400;
-> +	vmsa->dr6		= 0xffff0ff0;
-> +	vmsa->rflags		= 0x2;
-> +	vmsa->g_pat		= 0x0007040600070406ULL;
-> +	vmsa->xcr0		= 0x1;
-> +	vmsa->mxcsr		= 0x1f80;
-> +	vmsa->x87_ftw		= 0x5555;
-> +	vmsa->x87_fcw		= 0x0040;
+> +/*
+> + * Helpers for early access to EFI configuration table
+> + *
+> + * Copyright (C) 2021 Advanced Micro Devices, Inc.
+> + *
+> + * Author: Michael Roth <michael.roth@amd.com>
+> + */
 
-This is a big fat pile of magic numbers.  We also have nice macros for a
-non-zero number of these, like:
+It doesn't seem quite right to slap this copyright on a file that's full
+of content that came from other files.  It would be one thing if
+arch/x86/boot/compressed/acpi.c had this banner in it already.  Also, a
+bunch of the lines in this file seem to come from:
 
-	#define MXCSR_DEFAULT 0x1f80
-
-I understand that this probably _works_ as-is, but it doesn't look very
-friendly if someone else needs to go hack on it.
+	commit 33f0df8d843deb9ec24116dcd79a40ca0ea8e8a9
+	Author: Chao Fan <fanc.fnst@cn.fujitsu.com>
+	Date:   Wed Jan 23 19:08:46 2019 +0800
