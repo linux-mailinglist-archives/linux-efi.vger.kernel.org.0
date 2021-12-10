@@ -2,41 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB8F2470455
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Dec 2021 16:44:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B671470457
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Dec 2021 16:44:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243455AbhLJPsH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Dec 2021 10:48:07 -0500
-Received: from mail-mw2nam10on2085.outbound.protection.outlook.com ([40.107.94.85]:16865
+        id S243490AbhLJPsM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 10 Dec 2021 10:48:12 -0500
+Received: from mail-mw2nam10on2067.outbound.protection.outlook.com ([40.107.94.67]:19169
         "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S243259AbhLJPrs (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        id S243269AbhLJPrs (ORCPT <rfc822;linux-efi@vger.kernel.org>);
         Fri, 10 Dec 2021 10:47:48 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LiUADrIFkt4slGsQRB0csXG5MzD83egwDNf52zxEyExVKELTUb+5/kkMsZp4QG33Zh483qVJae3NMVG/gnDkfS2Lc8zGrs11/xu4ZVqG2CExHNWzn6x/oftXJOZwOvYVHrIFjbSfhQObgFo+JypCD/xpdfTUzTgpxxpBWM0lQdEmppcoUEqHenh/gWUXq2pEcsM+s0S5gv0WO2QTGkDYi7H5Fjq3jwJ069DWcQzFTtYYIgM5iasRHqO42QqbsrJ/7DeCB7zFrcpgS/WJsLmPIjJjlYNTKF+kA2lC2gDvABXDAzjNJGT/8yCS9poHnZ827DnpJkIwEAxlsyHLC37UZg==
+ b=clfQsC+j21YC071vWRSry0xvoD2JdsP+KFU5mWXkOMKiEqjfYNCxo0DRYL+4ZDwuCDQvxEqnFwWQBnAmaoAm6aM4QYLM360oG4G4nykZrWMDUtcAfx0APkjb+ywu2Ggfw2vi5t/FIpOspe5vO+uCXtE9uWNjXdAHn8wIDcVsL74uILVGokLRxulWSsXiKgVtKZdlD6UffBU6uyIXh4oOsmhc0VkEyWxkJSuodYt7IpoHj96XGGP+xWBJPvFoE093E7ViEcEmHc2C9MQ40OguGjw3zNzFeGosDCL0T8f/WQ0d7WroILKPVF0t4pXpYWGk4qW00dLlA7p+qryeejv4xQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OtjfL4s8vZ5FqoYg8EBbLRUmpM+gIH47DtwABtAqTBU=;
- b=ckt2WoJ911x26wOSKXNnUd4atthhzLxt8ZpGAQoFgB/DnG/iYQitX1iV8GV8f6afp0eRz39RR+YjJv8/Yts/yYCVPak5+KIv51+H9FbizRSzoso67gUSZqppPwPo2uVv0mV3YnCrTBfE3lyrLi4Y2+4VXuwKifcpo80NnlKo7bNI6LY2hzXI4y2jxxDSOTm2Zjyw/jtxS848BnRkXHZO9KB2p0JjPLupqcfAgRbf/zI89aUJ0YpTEOVIhOl7dH2I9PDteu6LSwKTozIZ1RyA8RLD02rFxslrw7ShfDWTTn8taWN95jC1PL8CaGK/4pbtm+vKX7w9PlgUv0vZ5o1kBw==
+ bh=/9qkDL0jQbWkyJtlUNI5YnTU3a8nQtpo5XmoFULdacc=;
+ b=MMYjjYvpZ5vqMosY0jF8VxWjf1C6cSF6bN9sWRJwq3f7PRQXK7TeeiyqRR48ZAZmHEVEhh061F47tNVLfGqnl3jf2sSaLpiAMEAl5jmcfeBF8v0SN8KUPceOxnaiJAHB0YeaLHX/j+YVEZCY3/BE4dy/XuRosHRgkpZXUyE07Zap0Yuecwl07MaFwgBbz8+HJzYyy6ZdY6uUuogarLGtWYCuonzz/2DrseONaXOnxCAIt1H20/Gt+U8JwQXFQEY2JA4MjG172g2xZugMY7qx7JmuOTN2Il4TmucqAyF239kWZdtvRKpEVSwLvI0ISJTP2wvVWRyXCnvOCyWCVGZ7HQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OtjfL4s8vZ5FqoYg8EBbLRUmpM+gIH47DtwABtAqTBU=;
- b=yz+DI0ZTHNaHeuDzfrvxvXlV4rXM1M4zwJQpJSWRidgdSq4HS1PfZZkFAgNSuR+bA2c51Ak9KVKvv71yyi55LtnUi0niXajH/gnM03Uuxur5v2XipgjUZsdDibfi4rMmJWFydKJjxIWnz8ibFYGTlvSAyRHqQIEfZ0qbRFdxtLw=
-Received: from BN9P223CA0020.NAMP223.PROD.OUTLOOK.COM (2603:10b6:408:10b::25)
- by BL1PR12MB5224.namprd12.prod.outlook.com (2603:10b6:208:319::23) with
+ bh=/9qkDL0jQbWkyJtlUNI5YnTU3a8nQtpo5XmoFULdacc=;
+ b=PchwCzsz1dc++TDwMWXouCrjqofZ3Nbp7LTIqBJN2kTdBI48mQ1XVnaBbsbk88/C6887XGxr6onxccyV5JdMrkZ5ZDPkCU/hqUMtcxRMk2m5G+M5/WrGrKn/wgYgZiS/zoLKaLlVlPopvx50bfkGgrKkfFdi/F8lQggKFV6e7C4=
+Received: from BN9PR03CA0988.namprd03.prod.outlook.com (2603:10b6:408:109::33)
+ by BY5PR12MB5016.namprd12.prod.outlook.com (2603:10b6:a03:1c5::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.12; Fri, 10 Dec
- 2021 15:44:09 +0000
-Received: from BN8NAM11FT052.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:10b:cafe::91) by BN9P223CA0020.outlook.office365.com
- (2603:10b6:408:10b::25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.15 via Frontend
- Transport; Fri, 10 Dec 2021 15:44:09 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.11; Fri, 10 Dec
+ 2021 15:44:11 +0000
+Received: from BN8NAM11FT018.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:109:cafe::df) by BN9PR03CA0988.outlook.office365.com
+ (2603:10b6:408:109::33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.21 via Frontend
+ Transport; Fri, 10 Dec 2021 15:44:11 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -44,13 +44,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB03.amd.com;
 Received: from SATLEXMB03.amd.com (165.204.84.17) by
- BN8NAM11FT052.mail.protection.outlook.com (10.13.177.210) with Microsoft SMTP
+ BN8NAM11FT018.mail.protection.outlook.com (10.13.176.89) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4778.13 via Frontend Transport; Fri, 10 Dec 2021 15:44:09 +0000
+ 15.20.4778.13 via Frontend Transport; Fri, 10 Dec 2021 15:44:11 +0000
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17; Fri, 10 Dec
- 2021 09:44:07 -0600
+ 2021 09:44:09 -0600
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
         <kvm@vger.kernel.org>, <linux-efi@vger.kernel.org>,
@@ -81,9 +81,9 @@ CC:     Thomas Gleixner <tglx@linutronix.de>,
         <tony.luck@intel.com>, <marcorr@google.com>,
         <sathyanarayanan.kuppuswamy@linux.intel.com>,
         Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH v8 13/40] x86/kernel: Make the bss.decrypted section shared in RMP table
-Date:   Fri, 10 Dec 2021 09:43:05 -0600
-Message-ID: <20211210154332.11526-14-brijesh.singh@amd.com>
+Subject: [PATCH v8 14/40] x86/kernel: Validate rom memory before accessing when SEV-SNP is active
+Date:   Fri, 10 Dec 2021 09:43:06 -0600
+Message-ID: <20211210154332.11526-15-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211210154332.11526-1-brijesh.singh@amd.com>
 References: <20211210154332.11526-1-brijesh.singh@amd.com>
@@ -95,61 +95,80 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB03.amd.com
  (10.181.40.144)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a36c80fd-f940-423d-494a-08d9bbf3e841
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5224:EE_
-X-Microsoft-Antispam-PRVS: <BL1PR12MB52241485DB2E9B37ADD96F55E5719@BL1PR12MB5224.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5236;
+X-MS-Office365-Filtering-Correlation-Id: 17618043-88ee-43ae-588e-08d9bbf3e952
+X-MS-TrafficTypeDiagnostic: BY5PR12MB5016:EE_
+X-Microsoft-Antispam-PRVS: <BY5PR12MB501623E80F62CE484CA8815CE5719@BY5PR12MB5016.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Iehdvsel287q/EvLtmlBHuVU3sFmbzdMlP7A0Rjr1qk/YOyf5n++me2kryIDgcL908sCblC3o+C78a9hTa+0z9xvc6SoZ9lwdUAWwr7smSukPzb1zlDT7PlRRrqWwy80r9Vmxg2R+b5JlMkPGOsomfTBBX+xNrl6qbz0kH+FU+sorUHZxOVrRYXN/JecPKHGMpk3fojnotuqmd2HdAXcSQzRg7YG09To3uHm3Cmfjylgz9jd7RdePsq+9PteN/K7bwHeKkPTuosMYy8G4d2dKnhu6f/d6C67hudm53VcXI/czrcwUkfP/y7H9qMsvwscjiLarjr1AFIQw8mtGhw3BAorm+sGGgu0Sf+3n85I+CfZfPHdwpIb96n6eW+58+GNUoDt6VHPTDEQYLqy1DGruOdhO+YRoVcG62qfTshHpUEOw+4PoQasNLxgTqwz4OvG02mTo9s9Wg7hUuXp1KxXGzeYfegNygSOOB6+unXLFX16/5amKh2FIkcdb2fUqFjZCCtA6qcJtzQaqnBvMdlBI8OMtxG+VUAZLCIWN8nFe1TRkq7XDC5biGJVjcvNV7b51iL0E+ddQo9sJHHC6Mx9qaTdu72UNWBAOPmLt1kqqIXPr56M6ZcByPNOLgjLEeeFA7UThdm+m4sG9MxafGIBKYd18ppXYT/Se5JOBCc0yExvb6dHymApWZzEFbPo0/PcklOVPvFmTxtrsXUPAWGrHOvaBoNS+hgw+VYHzpT+LLdVCPzBugZaJ/szr8SdrSTRrtS+a7NZNKz0waB+KbudAVdlrLM2ovjygdkEBLhRR4QC3fWnCEtFzg/FeK5zXEKZ
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(46966006)(36840700001)(40470700001)(83380400001)(8676002)(8936002)(4326008)(16526019)(508600001)(5660300002)(44832011)(7696005)(36756003)(426003)(36860700001)(54906003)(110136005)(356005)(336012)(2906002)(81166007)(7416002)(7406005)(316002)(1076003)(2616005)(70586007)(47076005)(82310400004)(86362001)(70206006)(186003)(40460700001)(26005)(2101003)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: xaRY82HeU5QeEJ6LQ8dkgSSgcb0LWz/uMzQsZWSKf8xd8Y8HrDww4AVXI418R/tqhv/V9qGhvq0ypr3Rs/tzU1j/9X2NqJ20EuOt8MiKMe29Rf0yewSgEiItOynksfOcMAuvHAIEymGsdIQBNnYSd/Y8WuLfn1vanphgC/50XIJa87El5mNcjA8x3GlhoQFXu7Zj5hfeKFMEom+IrRA+mcOvK+SNDnHaB74BZv44jroQFGiGOFwH8lwyT6GiuhDRrFzHE3WsaRsIahpZYd0Nd2Z0MEN0eiSZg3nm7OF6AgajHj1doLQ52bSL5OBP12y5tkVdqFcJIKacFiDJ+a43nxoCi1wJiLkBgCr43ehO2/8Tg4k0RrJ2WwMvX4l6CjgUl/9MDxMtxmE/DqTBqweM+bpUGMUTe0J5P/CWqrqrhzoOcgdy26HvIVduEKrz7/6uZBANE6MPx/bpwaqd/gXGhuNo44l8tda75xShedcvyMEtmvEjzw8KjFmsWaGyJThvhf8zGK2RO4oqxJKrmnnuBNLmtYSYRtKkUc+aODsvYPRMIdvvNcQgi+ADKqpYBh7TOiDTdXvgElaKA9yfoXzkKM3i46EoXJcmMV8UQBLppTzbTjryTW9YwdP1Lrnb0yyZjyq6d4uGct9foSkI0D+N1YLUwhGrM1r+kVAiaO4wTAKb5joCv6riNe6II1rdgYulw+Z64j7qtmcg746ycWNGp6QFltoJpUU9rI31vngmKcghNQRiJZ7qiDW9NBKmyRFi1p8MRR+flJNLSMoKlMe75hLvIoCYywQUk1/j9Ch/IdTsQtKlGMn1xpmH6QT8GxeG
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(46966006)(36840700001)(40470700001)(70206006)(86362001)(15650500001)(6666004)(5660300002)(47076005)(4326008)(36756003)(7696005)(110136005)(54906003)(316002)(2616005)(36860700001)(16526019)(8676002)(356005)(83380400001)(82310400004)(44832011)(26005)(186003)(426003)(336012)(1076003)(40460700001)(70586007)(81166007)(2906002)(7406005)(7416002)(8936002)(508600001)(2101003)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2021 15:44:09.7206
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2021 15:44:11.5102
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a36c80fd-f940-423d-494a-08d9bbf3e841
+X-MS-Exchange-CrossTenant-Network-Message-Id: 17618043-88ee-43ae-588e-08d9bbf3e952
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT052.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT018.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5224
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB5016
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The encryption attribute for the bss.decrypted region is cleared in the
-initial page table build. This is because the section contains the data
-that need to be shared between the guest and the hypervisor.
-
-When SEV-SNP is active, just clearing the encryption attribute in the
-page table is not enough. The page state need to be updated in the RMP
+The probe_roms() access the memory range (0xc0000 - 0x10000) to probe
+various ROMs. The memory range is not part of the E820 system RAM
+range. The memory range is mapped as private (i.e encrypted) in page
 table.
+
+When SEV-SNP is active, all the private memory must be validated before
+the access. The ROM range was not part of E820 map, so the guest BIOS
+did not validate it. An access to invalidated memory will cause a VC
+exception. The guest does not support handling not-validated VC exception
+yet, so validate the ROM memory regions before it is accessed.
 
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/kernel/head64.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/kernel/probe_roms.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index fa02402dcb9b..72c5082a3ba4 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -143,7 +143,14 @@ static unsigned long sme_postprocess_startup(struct boot_params *bp, pmdval_t *p
- 	if (sme_get_me_mask()) {
- 		vaddr = (unsigned long)__start_bss_decrypted;
- 		vaddr_end = (unsigned long)__end_bss_decrypted;
+diff --git a/arch/x86/kernel/probe_roms.c b/arch/x86/kernel/probe_roms.c
+index 36e84d904260..d19a80565252 100644
+--- a/arch/x86/kernel/probe_roms.c
++++ b/arch/x86/kernel/probe_roms.c
+@@ -21,6 +21,7 @@
+ #include <asm/sections.h>
+ #include <asm/io.h>
+ #include <asm/setup_arch.h>
++#include <asm/sev.h>
+ 
+ static struct resource system_rom_resource = {
+ 	.name	= "System ROM",
+@@ -197,11 +198,21 @@ static int __init romchecksum(const unsigned char *rom, unsigned long length)
+ 
+ void __init probe_roms(void)
+ {
+-	const unsigned char *rom;
+ 	unsigned long start, length, upper;
++	const unsigned char *rom;
+ 	unsigned char c;
+ 	int i;
+ 
++	/*
++	 * The ROM memory is not part of the E820 system RAM and is not pre-validated
++	 * by the BIOS. The kernel page table maps the ROM region as encrypted memory,
++	 * the SEV-SNP requires the encrypted memory must be validated before the
++	 * access. Validate the ROM before accessing it.
++	 */
++	snp_prep_memory(video_rom_resource.start,
++			((system_rom_resource.end + 1) - video_rom_resource.start),
++			SNP_PAGE_STATE_PRIVATE);
 +
- 		for (; vaddr < vaddr_end; vaddr += PMD_SIZE) {
-+			/*
-+			 * When SEV-SNP is active then transition the page to shared in the RMP
-+			 * table so that it is consistent with the page table attribute change.
-+			 */
-+			early_snp_set_memory_shared(__pa(vaddr), __pa(vaddr), PTRS_PER_PMD);
-+
- 			i = pmd_index(vaddr);
- 			pmd[i] -= sme_get_me_mask();
- 		}
+ 	/* video rom */
+ 	upper = adapter_rom_resources[0].start;
+ 	for (start = video_rom_resource.start; start < upper; start += 2048) {
 -- 
 2.25.1
 
