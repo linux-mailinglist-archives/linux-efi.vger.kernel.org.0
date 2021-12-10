@@ -2,39 +2,39 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69036470AF5
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Dec 2021 20:53:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45888470BB8
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Dec 2021 21:17:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232457AbhLJT4h (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Dec 2021 14:56:37 -0500
-Received: from mga01.intel.com ([192.55.52.88]:13541 "EHLO mga01.intel.com"
+        id S1344149AbhLJUU6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 10 Dec 2021 15:20:58 -0500
+Received: from mga09.intel.com ([134.134.136.24]:52640 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239316AbhLJT4h (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 10 Dec 2021 14:56:37 -0500
+        id S234979AbhLJUUp (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 10 Dec 2021 15:20:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1639165982; x=1670701982;
+  t=1639167430; x=1670703430;
   h=subject:to:cc:references:from:message-id:date:
    mime-version:in-reply-to:content-transfer-encoding;
-  bh=ZyJEneqN0WLXOkTrJaTlQQALlJ6ix8fsNbk8D7ChUXE=;
-  b=izIVVxnK6JdyNkoT/1KNUOaor7hZIM+ZM9qUYX8TlakDEY03fOiG0iUU
-   uBhrje1EYc62CqBO4NRSMI/5VfQARh8K/A90fDm66G/W4P3L2DA+1DgxK
-   Y1tJyblu5Gfy8tRzOdFhHHL9WRTalQIguKkflS2Lw6MVj+7QtPPKLlHm7
-   AD5mJCL+qe4/yycGvUGKZHKsK538ZoS4HYHhpU/GVJ2ioDMIwVHmX0mg1
-   Ew5tHunIWhTTkOw7/7EhG1gxcEjybTu7dLnIXqnR1ocSlQm4Qq9nCx2Kp
-   zqq6rQEPHJKRlkO/QxvyGMu+UnwA8kj0/Q/iSQ4W1K2T0KSYJ2tHZhB35
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10194"; a="262542917"
+  bh=qlcufQUW7gdsZMSiBDDxV0IWviZXAFDgSbAjc00inmM=;
+  b=I/8k7a1D0F9ZRv2LMQ7i/VJpR2HMhEa1e/Q/T/BrSwdvhPX+3BEzP9Ws
+   i4Rv2cHH4OPQREDWVqwey3PVm8DSX4HVJjKIa3k/q9Kun6FqoxZ4HM6Tg
+   BPmuMKQ3VnXuSKWmDsCW/leEcXhTDgHD79hbtc1sAm0KAcsd0BZQZU7fR
+   IKKymEv+M8rC/3EL9y/YusAxwqbg+uMD6R7VRirWqDXhGAMkka4vViYfJ
+   ZdT2kIsOSMj4lampPexWV9hURm1j9yAwFTeSQRo0SgtKTg06MnX/wpjTW
+   xKYeEe9qv65p/X91eMn6vUSLuzCWind94GoJI/CgAv1C9vHZJNS88N457
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10194"; a="238240116"
 X-IronPort-AV: E=Sophos;i="5.88,196,1635231600"; 
-   d="scan'208";a="262542917"
+   d="scan'208";a="238240116"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2021 11:52:35 -0800
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2021 12:17:08 -0800
 X-IronPort-AV: E=Sophos;i="5.88,196,1635231600"; 
-   d="scan'208";a="607617412"
+   d="scan'208";a="607625856"
 Received: from klarson-mobl.amr.corp.intel.com (HELO [10.251.16.229]) ([10.251.16.229])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2021 11:52:31 -0800
-Subject: Re: [PATCH v8 33/40] x86/compressed/64: add identity mapping for
- Confidential Computing blob
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2021 12:17:07 -0800
+Subject: Re: [PATCH v8 00/40] Add AMD Secure Nested Paging (SEV-SNP) Guest
+ Support
 To:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
@@ -64,7 +64,6 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         tony.luck@intel.com, marcorr@google.com,
         sathyanarayanan.kuppuswamy@linux.intel.com
 References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-34-brijesh.singh@amd.com>
 From:   Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -109,12 +108,12 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  OPsw5tV/LmQ5GXH0JQ/TZXWygyRFyyI2FqNTx4WHqUn3yFj8rwTAU1tluRUYyeLy0ayUlKBH
  ybj0N71vWO936MqP6haFERzuPAIpxj2ezwu0xb1GjTk4ynna6h5GjnKgdfOWoRtoWndMZxbA
  z5cecg==
-Message-ID: <14a7c745-b6c3-8d9c-144f-2d06b80159e6@intel.com>
-Date:   Fri, 10 Dec 2021 11:52:28 -0800
+Message-ID: <b22e13f3-aaaa-812f-da8f-838da9cd2e92@intel.com>
+Date:   Fri, 10 Dec 2021 12:17:03 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20211210154332.11526-34-brijesh.singh@amd.com>
+In-Reply-To: <20211210154332.11526-1-brijesh.singh@amd.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -122,36 +121,18 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 12/10/21 7:43 AM, Brijesh Singh wrote:
-> +static void sev_prep_identity_maps(void)
-> +{
-> +	/*
-> +	 * The ConfidentialComputing blob is used very early in uncompressed
-> +	 * kernel to find the in-memory cpuid table to handle cpuid
-> +	 * instructions. Make sure an identity-mapping exists so it can be
-> +	 * accessed after switchover.
-> +	 */
-> +	if (sev_snp_enabled()) {
-> +		struct cc_blob_sev_info *cc_info =
-> +			(void *)(unsigned long)boot_params->cc_blob_address;
-> +
-> +		add_identity_map((unsigned long)cc_info,
-> +				 (unsigned long)cc_info + sizeof(*cc_info));
-> +		add_identity_map((unsigned long)cc_info->cpuid_phys,
-> +				 (unsigned long)cc_info->cpuid_phys + cc_info->cpuid_len);
-> +	}
+On 12/10/21 7:42 AM, Brijesh Singh wrote:
+> The series is based on tip/master
+>   7f32a31b0a34 (origin/master, origin/HEAD) Merge branch into tip/master: 'core/entry'
 
-The casting here is pretty ugly.  Also, isn't ->cpuid_phys already a
-u64?  Whats the idea behind casting it?
+FWIW, this is rather useless since tip/master gets rebased all the time.
+ Also, being a merge commit, it's rather impossible to even infer which
+commit this might have been near.
 
-I also have a sneaking suspicion that a single "unsigned long cc_blob"
-could remove virtually all the casting.  Does this work?
-
-	unsigned long cc_blob = boot_params->cc_blob_addres;
-	struct cc_blob_sev_info *cc_info;
-
-	add_identity_map(cc_blob, cc_blob + sizeof(*cc_info));
-
-	cc_info = (struct cc_blob_sev_info *)cc_blob;
-	add_identity_map(cc_info->cpuid_phys,
-			 cc_info->cpuid_phys + cc_info->cpuid_len);
+Personally, I like to take my series', tag them, then throw them out in
+a public git tree somewhere.  That has two advantages.  First, it makes
+it easy for a reviewer to look at the series as a whole in its applied
+state.  Second, it makes it utterly trivial to figure out where the
+series was based because the entire history is there.  The entire
+history will be there even if you based it off some tip branch that got
+rebased away since.
