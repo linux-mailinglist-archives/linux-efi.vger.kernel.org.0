@@ -2,39 +2,39 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7F6A470944
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Dec 2021 19:47:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F735470953
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Dec 2021 19:50:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245526AbhLJSvR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Dec 2021 13:51:17 -0500
-Received: from mga09.intel.com ([134.134.136.24]:44586 "EHLO mga09.intel.com"
+        id S245583AbhLJSx6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 10 Dec 2021 13:53:58 -0500
+Received: from mga04.intel.com ([192.55.52.120]:37315 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234780AbhLJSvQ (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 10 Dec 2021 13:51:16 -0500
+        id S238591AbhLJSx5 (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Fri, 10 Dec 2021 13:53:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1639162061; x=1670698061;
+  t=1639162222; x=1670698222;
   h=subject:to:cc:references:from:message-id:date:
    mime-version:in-reply-to:content-transfer-encoding;
-  bh=MvIm5dhnOrJG4xnyo8yJ97M0A5lSqv0u1ydfL7oLCgU=;
-  b=I/YuIJb4ieB059Sov1K/izgiGLmZGgpBz+pK0FPVWNf7Gcd3eQ6TRoTg
-   mLL6PRJwzQj4/bx7V6D4LjWraWBoj1yXry3DtigpY44lF/jyPhJdobVna
-   c3ElPsUIyCDHIVeYfImFSugl2y1Z7PveAdct931yTAkoYHnQu6T3C9iYI
-   2s6YVyuvfLCd7c3tIR2Jw41VZoD1QXgRgmFA02Zh0565wsxEc+1jCLWxA
-   NOvKpRKdBSbHQYl4uQ37iGC6k0Z0F0NjF4GrkeeHX1gUvRO6AYLwYG+C4
-   d4lWnqBcRYjPrRmQ/pxGAkGadiFwXjfWFvVT4VXyG0fPA9einhwr8TTii
+  bh=fEteOKT5oTGnMtVdCIpjnAcU5kpA6AXOOJKg2F53BCI=;
+  b=UJo6zgDyLrIAFSUBOdCS7t5l7ODIuU/yjPRDDnp+JHvfz9hfRj2qODs5
+   4Fpt2sDKRbvBE6chAYHBfIIhB2VHs8njD3mSPMcIjiZP+qODOEcW4qISW
+   yat10jcT6zydZjtALe1zNjt7jnY3bWJhQNEGtS5vmr8A0N5fmRgheD31y
+   JfvfB+vUjaFK9Jg11uDTXxn1T+6wu9lPsCzj+Y3Q0/glj5KaHcNRviYbY
+   NGMzupuRawVbZcqsfFuXlQg4yI+r0fAoaIB61fHdh6dBTBdPJzD4TVZJ8
+   l8dESDAwoRmwjKFxtmZab33K9wXRYCusPm4rQ5op/fFDwRZ/CWPG3aoZZ
    Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10194"; a="238217689"
+X-IronPort-AV: E=McAfee;i="6200,9189,10194"; a="237150497"
 X-IronPort-AV: E=Sophos;i="5.88,196,1635231600"; 
-   d="scan'208";a="238217689"
+   d="scan'208";a="237150497"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2021 10:47:40 -0800
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2021 10:50:21 -0800
 X-IronPort-AV: E=Sophos;i="5.88,196,1635231600"; 
-   d="scan'208";a="607568677"
+   d="scan'208";a="607574406"
 Received: from klarson-mobl.amr.corp.intel.com (HELO [10.251.16.229]) ([10.251.16.229])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2021 10:47:37 -0800
-Subject: Re: [PATCH v8 01/40] x86/compressed/64: detect/setup SEV/SME features
- earlier in boot
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2021 10:50:19 -0800
+Subject: Re: [PATCH v8 20/40] x86/sev: Use SEV-SNP AP creation to start
+ secondary CPUs
 To:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
         linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
@@ -64,7 +64,7 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         tony.luck@intel.com, marcorr@google.com,
         sathyanarayanan.kuppuswamy@linux.intel.com
 References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-2-brijesh.singh@amd.com>
+ <20211210154332.11526-21-brijesh.singh@amd.com>
 From:   Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -109,12 +109,12 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  OPsw5tV/LmQ5GXH0JQ/TZXWygyRFyyI2FqNTx4WHqUn3yFj8rwTAU1tluRUYyeLy0ayUlKBH
  ybj0N71vWO936MqP6haFERzuPAIpxj2ezwu0xb1GjTk4ynna6h5GjnKgdfOWoRtoWndMZxbA
  z5cecg==
-Message-ID: <0069a800-7275-a3c3-2c7e-2a028def3715@intel.com>
-Date:   Fri, 10 Dec 2021 10:47:34 -0800
+Message-ID: <176b6163-fb2a-0339-e23f-2090ea78b4ed@intel.com>
+Date:   Fri, 10 Dec 2021 10:50:19 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20211210154332.11526-2-brijesh.singh@amd.com>
+In-Reply-To: <20211210154332.11526-21-brijesh.singh@amd.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -122,9 +122,23 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 12/10/21 7:42 AM, Brijesh Singh wrote:
-> +	/* Set the SME mask if this is an SEV guest. */
-> +	sev_status   = rd_sev_status_msr();
+On 12/10/21 7:43 AM, Brijesh Singh wrote:
+> +	vmsa->efer		= 0x1000;	/* Must set SVME bit */
+> +	vmsa->cr4		= cr4;
+> +	vmsa->cr0		= 0x60000010;
+> +	vmsa->dr7		= 0x400;
+> +	vmsa->dr6		= 0xffff0ff0;
+> +	vmsa->rflags		= 0x2;
+> +	vmsa->g_pat		= 0x0007040600070406ULL;
+> +	vmsa->xcr0		= 0x1;
+> +	vmsa->mxcsr		= 0x1f80;
+> +	vmsa->x87_ftw		= 0x5555;
+> +	vmsa->x87_fcw		= 0x0040;
 
-Nit: there's some weird extra whitespace there.  Might be some some old
-attempts at vertical alignment.
+This is a big fat pile of magic numbers.  We also have nice macros for a
+non-zero number of these, like:
+
+	#define MXCSR_DEFAULT 0x1f80
+
+I understand that this probably _works_ as-is, but it doesn't look very
+friendly if someone else needs to go hack on it.
