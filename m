@@ -2,42 +2,44 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF1A4472FBB
-	for <lists+linux-efi@lfdr.de>; Mon, 13 Dec 2021 15:49:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA4F547301F
+	for <lists+linux-efi@lfdr.de>; Mon, 13 Dec 2021 16:08:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232882AbhLMOtu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 13 Dec 2021 09:49:50 -0500
-Received: from mail-dm6nam11on2060.outbound.protection.outlook.com ([40.107.223.60]:13664
-        "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230122AbhLMOtt (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 13 Dec 2021 09:49:49 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=R8xDitrvnzTwogIKREBEC1d4Ad5OQcsvjLcWMsMsf2doIuURJY7N4Ki6o65Soug/8JRkuhv2671sN730jLk+XgMkYvMLH8tM+RXCXe+5qIXwUhhRih1Ms9B/lLYv8aYM0Anfmxx0n5leO6+UxhCrhw150M6cYjyM7fnSW2CYf3YdM5CXJWFxN0YTaklnWNx5m94tpHjjiBsOV3g7zxUUcLLNbkHXqLBMrWFQd6WQgZSKFWoCbqPPPLDgY2sQGhEh4N5Tz+DCQ1IxvsUrcXk9hKtpLWc1QGoEdO93pL3duKaG9eWmoX2SqWxwF44gu/P9725O2LEwDH+9iCIWTCaRkA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Xl8wF20jOLbRpeY8mSXLE+CgszMsGURQOSlkW1YQbMs=;
- b=fprtHLNFhRVxZEq16Q2F8h55eY1QdDHa8B5bdKjvFCCyZM5sZvGoLl8uaqw1YNWarrLnsZSAfeUb8CpZLMSbc6zVq6iwdc7nlEGpgpqV4D5S1m3JdY+krchc5Ar7NYxaOXFOGNqwxapGVX9lJLqGAL/P2a0rXb9nZEhFd2ECt4shYbxF67TW1HUh8+U1/E6BAm2qT5ErXyDJTLc/gD97NyErREk0BBjF80fNz8T1WQwE4YhWcj66ir/NZhNZdNai2XapCxYiK9TgnUIrJoXW9dIwQCwfAzmgKmzKuYfEGHLn1nLHnJdxdYxcAhiB0yaNmrO0dQdoUvRaE3bfKj5q4A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Xl8wF20jOLbRpeY8mSXLE+CgszMsGURQOSlkW1YQbMs=;
- b=5bvYK19eqJTPok37O/ZhUbwHgQ+HAAF8WGEmbOhzru52uhkmNrQOhCZQjLKHS/SG2tPFeC5RaV6gmSa00vYenOzh65ji4DhcAAJHbAVzkl5YbBzJRV0aToIq0+HCxppEbunCdXiBvAqEymAEsBSapeoXc6wAHG0qX+r/ZRScfu8=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
- by SN6PR12MB4671.namprd12.prod.outlook.com (2603:10b6:805:e::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.17; Mon, 13 Dec
- 2021 14:49:46 +0000
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::35:281:b7f8:ed4c]) by SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::35:281:b7f8:ed4c%6]) with mapi id 15.20.4778.018; Mon, 13 Dec 2021
- 14:49:46 +0000
-Cc:     brijesh.singh@amd.com, Thomas Gleixner <tglx@linutronix.de>,
+        id S234880AbhLMPIM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 13 Dec 2021 10:08:12 -0500
+Received: from mga03.intel.com ([134.134.136.65]:41906 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233162AbhLMPIM (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 13 Dec 2021 10:08:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1639408092; x=1670944092;
+  h=subject:to:cc:references:from:message-id:date:
+   mime-version:in-reply-to:content-transfer-encoding;
+  bh=Ln0+vE8wrxPHB5+sl1PGPaxOXedMn7wnxkhrIv1Bgmc=;
+  b=UA9XDtpdRKDAPliumW57D8jafRpgKLcBqJ9kVphtReC9iz/c7gj13hAX
+   kAkUiMvKDYqE55SVUe5usYZC15f1tt+v93D8F6NjUlmxpb7Jf45oKtzZB
+   vk8Lc5o+HckKhaVR9zEwBNr+eKd9wgKwBZT81JiGHGhQDjlsSX6vPIFra
+   dkQ49YpSz2zBWCpflagkxu2E8xCl6BpgxYAA0caBQCPdsibl5Gio5x/Gx
+   nnhKg6Ehpnbsl70G7dOWDa+T5xwgKJM50eezauNO9zPhI0VUxosKe6AY2
+   d9U2x2eQgMKDvP5JBZmW+b43/FDY3S5JgCwYvbV6l6sWq+R/ibZFwfDzU
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10196"; a="238696143"
+X-IronPort-AV: E=Sophos;i="5.88,202,1635231600"; 
+   d="scan'208";a="238696143"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2021 07:08:11 -0800
+X-IronPort-AV: E=Sophos;i="5.88,202,1635231600"; 
+   d="scan'208";a="752294967"
+Received: from chenb-mobl1.amr.corp.intel.com (HELO [10.212.210.237]) ([10.212.210.237])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2021 07:08:09 -0800
+Subject: Re: [PATCH v8 27/40] x86/boot: Add Confidential Computing type to
+ setup_data
+To:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
         Tom Lendacky <thomas.lendacky@amd.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
@@ -61,148 +63,82 @@ Cc:     brijesh.singh@amd.com, Thomas Gleixner <tglx@linutronix.de>,
         "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
         tony.luck@intel.com, marcorr@google.com,
         sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v8 27/40] x86/boot: Add Confidential Computing type to
- setup_data
-To:     Dave Hansen <dave.hansen@intel.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org
 References: <20211210154332.11526-1-brijesh.singh@amd.com>
  <20211210154332.11526-28-brijesh.singh@amd.com>
  <1fdaca61-884a-ac13-fb33-a47db198f050@intel.com>
  <ba485a09-9c35-4115-decc-1b9c25519358@amd.com>
  <2a5cfbd0-865c-2a8b-b70b-f8f64aba5575@intel.com>
-From:   Brijesh Singh <brijesh.singh@amd.com>
-Message-ID: <f442ca7f-4530-1443-27eb-206d6ca0e7a4@amd.com>
-Date:   Mon, 13 Dec 2021 08:49:41 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-In-Reply-To: <2a5cfbd0-865c-2a8b-b70b-f8f64aba5575@intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN2PR12CA0015.namprd12.prod.outlook.com
- (2603:10b6:208:a8::28) To SN6PR12MB2718.namprd12.prod.outlook.com
- (2603:10b6:805:6f::22)
+ <f442ca7f-4530-1443-27eb-206d6ca0e7a4@amd.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+ z5cecg==
+Message-ID: <48625a39-9e31-d7f2-dccf-74e9c27126f5@intel.com>
+Date:   Mon, 13 Dec 2021 07:08:07 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 192afab3-ddd4-457f-4a41-08d9be47ce50
-X-MS-TrafficTypeDiagnostic: SN6PR12MB4671:EE_
-X-Microsoft-Antispam-PRVS: <SN6PR12MB46712FBD37216E642726CE81E5749@SN6PR12MB4671.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: QFwjMqDJ2sK2VAryjfFqJCTiw5szCpXPZnBaaoPPK8kOeBlk9wUISyYFNEjmpA4+2fv6Kj9bptgnCgFVbDlCPVH9qNxDNx4BCQeE1QNZj2xQelsu1Map5TaIPIS8YEdL/QCgiZ/zehgaaJxEM9f4ARaQ7zTzj2WRqD4/aBXD1ZmPYfjFBEFID8thZWUkR/xL66ER4HXOmVZn+nE7P0/wF31i69jFJgzz3F3c0NDBWj1CqFTHkx36P7EJobZP0g5O+IUylXyZkl30VXWIjOwdpakb3DBxfl+RHlVd1ZPttuy+D21P78Ugn+WRAF79fLkInQJjsxnUftROld3RUi3+WoAjr404YDHZvA5DKXN5i7P4Zhn99MEcXK6XaizNCuJpryXx5MVzIp+dUE1KgFr4wLtpjPH1iLo5OpPf38C92S/eUSaxsxJHQRgNnMwb1JMPNVrtOiydHqQT4IGwbjcHu4q/LOs0U8uUm28ayxC3psvaKsCTMODcosex+C9oPV5J/ZsLSKaB2loWopRvZzdnTSsecvs+G2FTHYU5G/6p2po9iXpzdvShbjTb4rCv8wC3v/8TX9pSTQrv0CINIE+YlUzF5BiD/GsZW9kowg++3McB0ZL4W5RdtTP4AUD3l8zo0ETFV71G8uKr6LKeTCvVyezJmQDVRC23rZnIQ86n+SMLzYByGOINo0GRcuXdx8l1yCbXPFCamCY4vqDJNq6r4V0vC+PcgPELN7Krx6ldFE7x5Ujh/xKN02n3v4HxT461jcbNNORuXP6koOqstpi0YsKZhlw/CIpqx8fka/HwnQgdd0UoCcdLZwOYx/FkmRfLbqp4QhCmnYIjc+LYSZZUhS6UyLUeHASP3pBWpC4+TYc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(6512007)(36756003)(8936002)(8676002)(2616005)(7416002)(86362001)(45080400002)(7406005)(6666004)(38100700002)(2906002)(186003)(66476007)(6506007)(53546011)(54906003)(84970400001)(4326008)(66946007)(31686004)(31696002)(26005)(316002)(6486002)(44832011)(966005)(508600001)(5660300002)(66556008)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dzZRQ0I0L3dDeVkxdWFxY21kNUNlckpseWxWMzhaZG45bUsrZUZ0bzhlREFp?=
- =?utf-8?B?NloxbTdTeEpVdXN4N1I4U3BmR2JieTlHcjRVYVFrWWdHRmpYQ0tmcjhKRUFT?=
- =?utf-8?B?V210Y0xPU3NrMGZ2MjBGbGh3dUZjS3R4TGRheXB5RnM4RURnZ2hYazRNR3hR?=
- =?utf-8?B?b0V1ZGFEREFnOHJqcVpnamo4dGl5SjV4eWg0MHZuaEdYNWdnTFBGWm54RmpL?=
- =?utf-8?B?SHlPZnVmb2R4cFNsYU5TTzZjQzB2ZGs1RXRDaG5RaDlkOGsrSHFodngvTDdl?=
- =?utf-8?B?dkNtYUFKL3gxOEx0V3BHYUhXQ1FwK0MwZTNoa1kxQXczbnN2Y1ZhT1gyN3Zw?=
- =?utf-8?B?dTVaaTFPZ1N4YWlPSkV6OU9HMWRHbHBnRkRxOFA3eVc5cWxIVk1DZFkzTFND?=
- =?utf-8?B?MExaVUI3aVhqbnBoRXNHNnFYSWhsQncwWHBFZEw5eDZRWUtKSE5rdFNobFlp?=
- =?utf-8?B?WU9tcHdPUllQbmpObWs0cVY2R0tZMUg2M3RLSEp2UFRjVktSR3hSVFIrWlVi?=
- =?utf-8?B?elNSSmd3WnNhUTBCS0NSRTYvVmNFWWRqYXN4UDBQNUoxM0dZS3ZQR041TGVr?=
- =?utf-8?B?NWxzR2duZkhNdnB4Um9tYTRBejE1RWlXeFFGR3Y2aEd2bkt0eG9uVXF1cnY1?=
- =?utf-8?B?c0hKbDdNaUt5dmFldlgrQjFFcWpOUCt5b2dYUjB2WURma25Yc1lqdjlWR0Jn?=
- =?utf-8?B?NGgvSzB1TDY1S2t5bUNGbWdDU3pQeHJNRzlrL01nbTI3VWhaUWNwR1dvbjBK?=
- =?utf-8?B?UGtVZ0FNbG1VMEhBbEVhV3o4V1hPeWJxS3kveENkSElsbzNIa1N1UTU2bHJ4?=
- =?utf-8?B?bWFEV3pYODNtcndLaFJQT29meUYwVWZvbk9uN005WFI0c1JRMkN2c3k0emFr?=
- =?utf-8?B?RlU2bTlUalpJQ0t3SWlDdEtLRjlaenhwbVdMOVB1Smw0SDNqdG9XTTZvT0RP?=
- =?utf-8?B?VWwwOWJiQkF1c1NyR3p3UFQ4M2Q5R1YzRk85Q09BZkZCak5rYzVXZHJuUnU0?=
- =?utf-8?B?U2xKU2NhOVg2TUVzcGcxNWhrMmdxQ3hjdW9vdm55OVFrRmozYU1HZHlTRUxR?=
- =?utf-8?B?OHU2T0JNR0pZVXpOaFc1MkJQRCtab1BtdFhwZ2dscElhdk9Dcis4WWtzMkRO?=
- =?utf-8?B?V3pJYTBKU3VPMHJDTUZJdUVQNXJMT3NaTU9hVS9aMjd1LzU3eis2WnVZVnV5?=
- =?utf-8?B?bHh4L1ZUWHNZWG9NVHdCaWxXa1l6RzBCZGE4eVJIaW02YUMzelRoOG1CL2M3?=
- =?utf-8?B?OHJSSEUvV0Q3bkE2ODgvUmZJZ0JYT0hzU2xEb1FzNktNVDFSUEpFQ3ZnbHVo?=
- =?utf-8?B?amZKZ1FwaTBSOUtxZTF1ZUVPQlEvNmQ5ZW81ZWZOYTI3ZlNiOXRxTVZmQnRL?=
- =?utf-8?B?ZHRsZzVWa0JWYWc3aTJwU3AzTnhwa2Vua3hlRTJPZUtoV1Q5T05LUW9ZRk9u?=
- =?utf-8?B?WHB4U3VGeHpzMm9yQ1dONDZ6RGUweXdwK3J3Ymp1NTFVYUIvby9YTGZSTFNW?=
- =?utf-8?B?RDMyUTZhWmlJc1ZYWVBzUGhOZE5XV3pSSnVCUkR1anZLWUVtZkRianRybzIx?=
- =?utf-8?B?ZnI4aWhPZTA5MWNRaVBqRXdHNEdPS0FCNnBGQVdxMWJMMk51aU4rd0RYeXJx?=
- =?utf-8?B?Ky8xZXh0cmxiaEY0amhSeWtDaktIMUlTL0tpbkgrdVdBbXFFVEJXM2xYV20y?=
- =?utf-8?B?THdIZ0VsMGNaRlU1cUdwTGl1UU0yaGtTRUNtYzhmNDJMRk9ZSHk3OWtOeDIw?=
- =?utf-8?B?YlhvM3grN2E4Mzh1WVIza3hONTg4d0RuWFZmM09FTGp6ZGZzM2t6bHhtcHd1?=
- =?utf-8?B?SXlYYit2S1BVbWc3eXdlSXE3Z0tvQmVCTVZhQjFmK2xwM3owZGJBN0JhUkxG?=
- =?utf-8?B?RDB0RVhRcTVSMFJCTDBiSjBJUjlKdXh5VVp1S1cwc3ZSalZ5WWRDNEw2Y0hv?=
- =?utf-8?B?VGNaWWRSMEpUY0hQL3ZxVEtjS00xZTRaZGdBSlRpaExaclcxczVWWWFvY2d6?=
- =?utf-8?B?eGpsbmJrRElrSldMdnR3QUc4VXVoYUZ3UkFoNm9vclZzalZpT3lDVkJ4aVh5?=
- =?utf-8?B?aFpOZFhLSXpEdi9yZi94TjltUTk2V1RWZGJFTjhxbE5uU0tPbHR6cFpDaEtV?=
- =?utf-8?B?K2dISElSYkdESHVxbzlraXBDT0RsUDJSOVlQR0NVOWJRVkx3UEMwNDN4WElN?=
- =?utf-8?Q?NxUxgDQuVrOcwh1TG0iFzvE=3D?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 192afab3-ddd4-457f-4a41-08d9be47ce50
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2021 14:49:46.5378
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 60abzf4ZEdNS6cpWDQSVOQqcBCq3kwau2SUTVHm5mCAsHezYLAuT60Y+It33mZ1tafNHlrye+Ro85qSuJz5wHQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB4671
+In-Reply-To: <f442ca7f-4530-1443-27eb-206d6ca0e7a4@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-
-
-On 12/10/21 2:30 PM, Dave Hansen wrote:
-> On 12/10/21 12:18 PM, Brijesh Singh wrote:
->> On 12/10/21 1:12 PM, Dave Hansen wrote:
->>> On 12/10/21 7:43 AM, Brijesh Singh wrote:
->>>> +/* AMD SEV Confidential computing blob structure */
->>>> +#define CC_BLOB_SEV_HDR_MAGIC	0x45444d41
->>>> +struct cc_blob_sev_info {
->>>> +	u32 magic;
->>>> +	u16 version;
->>>> +	u16 reserved;
->>>> +	u64 secrets_phys;
->>>> +	u32 secrets_len;
->>>> +	u64 cpuid_phys;
->>>> +	u32 cpuid_len;
->>>> +};
->>> This is an ABI structure rather than some purely kernel construct, right?
+On 12/13/21 6:49 AM, Brijesh Singh wrote:
+>> I was more concerned that this structure could change sizes if it were
+>> compiled on 32-bit versus 64-bit code.  For kernel ABIs, we try not to
+>> do that.
 >>
->> This is ABI between the guest BIOS and Guest OS. It is defined in the OVMF.
->>
->> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgithub.com%2Ftianocore%2Fedk2%2Fblob%2Fmaster%2FOvmfPkg%2FInclude%2FGuid%2FConfidentialComputingSevSnpBlob.h&amp;data=04%7C01%7Cbrijesh.singh%40amd.com%7C460f6abff7f04e065c9108d9bc1bfcf7%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637747650681544593%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=GI1fAngRJ%2Bj4hcM91UutVXlS1F7kfk2xxtG6I%2BL%2FRYc%3D&amp;reserved=0
->>
->> SEV-SNP FW spec does not have it documented; it's up to the guest BIOS
->> on how it wants to communicate the Secrets and CPUID page location to
->> guest OS.
+>> Is this somehow OK when talking to firmware?  Or can a 32-bit OS and
+>> 64-bit firmware never interact?
 > 
-> Well, no matter where it is defined, could we please make it a bit
-> easier for folks to find it in the future?
-> 
+> For SNP, both the firmware and OS need to be 64-bit. IIRC, both the
+> Linux and OVMF do not enable the memory encryption for the 32-bit.
 
-Noted, I will add a comment so that readers can find it easily. 
-Additionally, I will create a doc and get it published on 
-developer.amd.com/sev so that information is documented outside the 
-source code files.
-
->>> I searched through all of the specs to which you linked in the cover
->>> letter.  I looked for "blob", "guid", the magic and part of the GUID
->>> itself trying to find where this is defined to see if the struct is correct.
->>>
->>> I couldn't find anything.
->>>
->>> Where is the spec for this blob?  How large is it?  Did you mean to
->>> leave a 4-byte hole after secrets_len and before cpuid_phys?
->> Yes, the length is never going to be > 4GB.
-> 
-> I was more concerned that this structure could change sizes if it were
-> compiled on 32-bit versus 64-bit code.  For kernel ABIs, we try not to
-> do that.
-> 
-> Is this somehow OK when talking to firmware?  Or can a 32-bit OS and
-> 64-bit firmware never interact?
-> 
-
-For SNP, both the firmware and OS need to be 64-bit. IIRC, both the 
-Linux and OVMF do not enable the memory encryption for the 32-bit.
-
-thanks
+Could you please make the structure's size invariant?  That's great if
+there's no problem in today's implementation, but it's best no to leave
+little land mines like this around.  Let's say someone copies your code
+as an example of something that interacts with a firmware table a few
+years or months down the road.
