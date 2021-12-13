@@ -2,189 +2,166 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F7C147306C
-	for <lists+linux-efi@lfdr.de>; Mon, 13 Dec 2021 16:27:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 356DD4730DB
+	for <lists+linux-efi@lfdr.de>; Mon, 13 Dec 2021 16:48:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240087AbhLMP1I (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 13 Dec 2021 10:27:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54312 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240079AbhLMP1I (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Dec 2021 10:27:08 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 230E7C061574
-        for <linux-efi@vger.kernel.org>; Mon, 13 Dec 2021 07:27:08 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 75F6E6111D
-        for <linux-efi@vger.kernel.org>; Mon, 13 Dec 2021 15:27:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCF2BC3460B
-        for <linux-efi@vger.kernel.org>; Mon, 13 Dec 2021 15:27:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639409226;
-        bh=+RMQMtIrJEtDRfwDnp/4sV9izzx025NcZofl+9mMGQc=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=H5tMArAk5aheAh1akdjJE9iFSwGDxBCTTiB6TBc8h+ct2oaoX3Stmlw6eVJdVd4kg
-         L3fFowoL9UTswxWFvIjCiIvSyL4WoBq1G7Txmp3OrfbdDhrVBzUugSZBgF+xVYR+PT
-         Uy3wqetcrjFXQkaefpz8WJmunGk2HdnGdLGxqQcjtaCSBU23CEIZXudwHZvdx12Dw1
-         IjCC22oeylGievQKWhdflVad3id0CP5TttVJGNzmCcvQ1d24eASQHkCgkyGyTxQD5T
-         PIx2AbpLRPjZRTNUH30qih+1vm4lqNwucA7S8sf8J5Jj7tnFS/1g6Itsz/aD1KoLj+
-         snAyjg1PNdzsg==
-Received: by mail-ot1-f51.google.com with SMTP id a23-20020a9d4717000000b0056c15d6d0caso17729173otf.12
-        for <linux-efi@vger.kernel.org>; Mon, 13 Dec 2021 07:27:06 -0800 (PST)
-X-Gm-Message-State: AOAM531VGJFNJdkDpPgldl+SRRTOeKrpiOT3w7GcGljTTCv5UNAO1jE+
-        0RWoTFE34xNpwbv4+EbLaL8g4JHmAHk7htJ1rUA=
-X-Google-Smtp-Source: ABdhPJwD+NCNJ/0ZOcUwOOSGmA4b2fCS7qWaWMtblMVUpED6GkEKJCcN6dBFI1mN0mJ4nsawhYVyHs7puMugPTTLEpE=
-X-Received: by 2002:a9d:6c54:: with SMTP id g20mr25840381otq.30.1639409225977;
- Mon, 13 Dec 2021 07:27:05 -0800 (PST)
+        id S235039AbhLMPsR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 13 Dec 2021 10:48:17 -0500
+Received: from mail-bn1nam07on2068.outbound.protection.outlook.com ([40.107.212.68]:27299
+        "EHLO NAM02-BN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S232841AbhLMPsR (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 13 Dec 2021 10:48:17 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NTObWRuBr/ORk+oPx0oykFczKFragho17x4KMUbX6F13bqvOMxRbPekW8AHuFks6fe5zPK8AXiLu4vCN1GghKFfduMCIGI0R2x9iTQ4ie65DnD8HMc0ZjQrFWnM65gD9q14fJCtQuAtflVnqoGSFEy4V9Mcqdkw4TcTkcqXviezcGxwzQ+BcSPiDf+zz4ZGVGN9A6Qd4hlADhyppHxc6g7jVDKCHjLA3ad6Gg3aCRk+A2SyxiDh6OTdve06VeOai3+Mv8BhR5HuhtB/PQNvA7mNjPaFVpGjrtCoWX03YwFvSXxvjaZQV9B0jllhe/hMt/ABsBAUPVZW3R7WB9cYGCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=87U+8v7gHyuWJ4hSa689RZ+ZVsCXjLnhoeYuroxDy4c=;
+ b=KFmIKx0f6DVA5Fnga304muuwQyNmP83JzhFAszFNbyPkjVtWbqr5tiSB7scXQZPEFf4g1Wm+ifk/x86Bu8LG0ZJaNNh6hh/hwhgbt7swFqtYWGBWnqW2bRkCe7HtXfrrXimpQJvSg3wKbVMZrxoLVtoeKU++Jzuz8lemAhKhRRGcE5/Jg3Hd3y1mj0OiIhgPEO2y86VM5c5Nnn7vemcer8KwaY1WQBJ8W3YC9HnsaKWrWmdnbxnnfIsq4MZtdoCiGISMjexwVJbOP6qFoMnd4frc107SDtcKZgoELfLFB21dGfj9H/VTdBXA0UOcGueahEJ6XhgtKtfR5Jr2V043YA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=87U+8v7gHyuWJ4hSa689RZ+ZVsCXjLnhoeYuroxDy4c=;
+ b=349pgGPmsG0o52j+3R/PXF3ENw+62oBDM/NsvkeiOChHcRDWb8zma2mqHe6SGGIBG1qv3YoXMuhh/UOGiWhACuNOGzn7K8NjFkDyi1ZuUll777IrIDmK+i2mlw0FTQDI9DbhgbSYPUHxF3MoJz4eMwjcoRvktl77QKR55Sbjr4Y=
+Received: from DM6PR01CA0003.prod.exchangelabs.com (2603:10b6:5:296::8) by
+ CH0PR12MB5058.namprd12.prod.outlook.com (2603:10b6:610:e1::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4778.17; Mon, 13 Dec 2021 15:48:13 +0000
+Received: from DM6NAM11FT049.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:5:296:cafe::6f) by DM6PR01CA0003.outlook.office365.com
+ (2603:10b6:5:296::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.12 via Frontend
+ Transport; Mon, 13 Dec 2021 15:48:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com;
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ DM6NAM11FT049.mail.protection.outlook.com (10.13.172.188) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.4778.13 via Frontend Transport; Mon, 13 Dec 2021 15:48:13 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17; Mon, 13 Dec
+ 2021 09:48:12 -0600
+Date:   Mon, 13 Dec 2021 09:47:53 -0600
+From:   Michael Roth <michael.roth@amd.com>
+To:     Dave Hansen <dave.hansen@intel.com>, <fanc.fnst@cn.fujitsu.com>,
+        <j-nomura@ce.jp.nec.com>, <bp@suse.de>
+CC:     Brijesh Singh <brijesh.singh@amd.com>, <x86@kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
+        <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        "Vitaly Kuznetsov" <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        "Andy Lutomirski" <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        "Peter Zijlstra" <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        <tony.luck@intel.com>, <marcorr@google.com>,
+        <sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: Re: [PATCH v8 24/40] x86/compressed/acpi: move EFI system table
+ lookup to helper
+Message-ID: <20211213154753.nkkxk6w25tdnagwt@amd.com>
+References: <20211210154332.11526-1-brijesh.singh@amd.com>
+ <20211210154332.11526-25-brijesh.singh@amd.com>
+ <cd8f3190-75b3-1fd5-000a-370e6c53f766@intel.com>
 MIME-Version: 1.0
-References: <20211119114745.1560453-1-ilias.apalodimas@linaro.org>
- <CAMj1kXHfFyUePGHbuQx_hVeL7YhRF4jZW0RD2k-zqtfNeDZF3w@mail.gmail.com> <CAC_iWjLdjkRzH6jxTrurtyVs4aD4qTGwH4+-sW-8K_pdB1wccQ@mail.gmail.com>
-In-Reply-To: <CAC_iWjLdjkRzH6jxTrurtyVs4aD4qTGwH4+-sW-8K_pdB1wccQ@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 13 Dec 2021 16:26:54 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHdoHeYKsQdSmwHQa47qP6fDmAUMLdovjJbvTGpiziQxg@mail.gmail.com>
-Message-ID: <CAMj1kXHdoHeYKsQdSmwHQa47qP6fDmAUMLdovjJbvTGpiziQxg@mail.gmail.com>
-Subject: Re: [PATCH 0/4 v3] measure initrd data loaded by the EFI stub
-To:     Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Peter Jones <pjones@redhat.com>,
-        Arvind Sankar <nivedita@alum.mit.edu>,
-        Matthew Garrett <mjg59@google.com>,
-        Daniel Kiper <daniel.kiper@oracle.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Leif Lindholm <leif@nuviainc.com>,
-        Joerg Roedel <jroedel@suse.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <cd8f3190-75b3-1fd5-000a-370e6c53f766@intel.com>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB03.amd.com
+ (10.181.40.144)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 28614e60-2170-4edf-8435-08d9be4ff8d8
+X-MS-TrafficTypeDiagnostic: CH0PR12MB5058:EE_
+X-Microsoft-Antispam-PRVS: <CH0PR12MB5058B125EBE644067E283EF795749@CH0PR12MB5058.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5236;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: YEtF+JRI2/tkQQK5Am9hIhBx6wd9xsY9FnHn44ZhoiVh5jMqt/45ijBN3HZoweYlIjaWzpmYMNS+pxauUAtec9nilPYS5oRsHswdWE6kjmRTi3kUdG7hrRfgw//GgJOaHfWlBjQXDtSi4JyeVQr0M9Litg3fUDkJHucawXF/uDSlB9BNF609FXfhXyEKcLYaIhT6woPcVzPRJB625k4Hs844oDzB5vbKX7xtFQqUud+uk9EenlIf0QGqcj2ChC6VsB4oQ+Rqq4blQQtUXvcbhVznInr2iHPPMsCOtnP+oFqizTV3Qd172YjX7S0WxpJaI+CgMByLdpQQ6SvpXF9xaKSFUwN6Yb1iQzVuBpHlugrGPolTstfGKk+sGKzTqUXZ1CjjnfW3EXu5eMEun+GCi8RxXaRA2g5QQg7MyJdAH3vVwphyPNV1kx/AFUZZIuuBac9LlsdqmeYYEO8zPhlKtwhafjvJg0IR+0vF8Qe/4WdAFdigpLm4cmz8+CCm+rZmZKIANCnt8F64SWPpNEQGSXDKkwK/kcRhomXpbO4Fe2kxAaaYZqlzVJ5EFePSsZ3KeV9Ut1zdYjkTct9ttiHp5sh+CUJg2/z7wC7S1o67EwrieLX++6SBwImtbqHJrsJ2qQIA3p/8FYk5y3pV5hcfABCSXD/Vb1wscqDtYS2LhhpccTgSV20PzfPQwp5ls44EAReXb5brVP3YAf04aVOy47LLluXTgDwCntjJE2Do2hBFfMEpWtntaAu9uTMFOAwlBPpLf/XbY2CMm2/uXYb1d8VpfZDnKPhJZ3VstNgPE5Y=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(36840700001)(46966006)(40470700001)(1076003)(7406005)(7416002)(2616005)(82310400004)(4326008)(8936002)(26005)(110136005)(16526019)(186003)(336012)(6666004)(86362001)(47076005)(8676002)(40460700001)(81166007)(54906003)(36756003)(2906002)(356005)(316002)(44832011)(5660300002)(426003)(53546011)(70206006)(70586007)(508600001)(36860700001)(83380400001)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2021 15:48:13.5331
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 28614e60-2170-4edf-8435-08d9be4ff8d8
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT049.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB5058
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sun, 21 Nov 2021 at 19:37, Ilias Apalodimas
-<ilias.apalodimas@linaro.org> wrote:
->
-> Hi Ard,
->
-> On Sun, Nov 21, 2021 at 05:12:00PM +0100, Ard Biesheuvel wrote:
-> > On Fri, 19 Nov 2021 at 12:48, Ilias Apalodimas
-> > <ilias.apalodimas@linaro.org> wrote:
-> > >
-> > > Hi!
-> > >
-> > > This is a respin of [1].
-> > > This enables initrd measuring when loaded directly by the kernel EFI stub.
-> > > It ensures that the initrd observed and used by the OS is the same one that
-> > > got measured into the TPM, which is difficult to guarantee in the current
-> > > otherwise.
-> > >
-> > > There's a couple of changes compared to the original RFC:
-> > > - Ard fixed the x86 assembly for providing the extra arguments needed and I
-> > >   rebased it on top of
-> > >   commit 22aa45cb465b ("x86/efi: Restore Firmware IDT before calling ExitBootServices()")
-> > > - Instead of EV_IPL we are now using EV_EVENT_TAG. EV_IPL was marked
-> > >   as deprecated up until the latest PC client spec [2] (and deprecated  in
-> > >   older revisions [3]).  It's current description is:
-> > >   "It may be used by Boot Manager Code to measure events."
-> > >
-> > >   EV_EVENT_TAG on the other hand seems more appropriate as it's defined as:
-> > >   "Used for PCRs defined for OS and application usage.  Defined for use by
-> > >   Host Platform Operating System or Software."
-> > > - We are only measuring the initrd if it was loaded using the LOAD_FILE2
-> > >   protocol.  This is not what we probably want in the long run, but let's
-> > >   only enforce the measurement on the new way of loading an initrd for now.
-> > >
-> > > Questions:
-> > > - Since GRUB seems to be using PCRs 8/9 for it's EV_IPL events, maybe we should
-> > >   use something completely different?
-> > >
-> >
-> > Thanks for continuing to work on this.
->
-> You're welcome!
->
-> >
-> > I think using PCRs 8/9 is fine - if one upgrades to a new version of
-> > the kernel that implements this change, the PCRs will change in any
-> > case.
->
-> The reasoning here is leave distros unaffected.  Yes the PCRs will
-> change regardless in a kernel update.  However distros might already
-> have infrastructure to seal keys factoring in PCRs 8 and 9.  Keeping
-> in mind the initrd is likely to change without changing GRUB,  we
-> could allow them to opt-in on the initrd measurement using PCR10 (up
-> to 15).
->
-> >
-> > The only thing that is unclear to me is whether we should measure some
-> > kind of separator event if no initrd is loaded at all - IIRC, this
-> > came up before but I don't remember what the conclusion was in the
-> > end.
-> >
->
-> I think we ended up saying along the lines of "We need more
-> discussion.  Let's check what Windows is doing".  I did have a look on
-> that Eventlog James included,  but my windows understanding is
-> mediocre at best.  OTOH separators are used for PCRs 0-7 and they
-> either indicate errors or delimit actions during the boot process.  We
-> already have separators before EBS so I skipped it for the initrd.
-> Moreover I found nothing relevant to the spec wrt to tagged events and
-> separators  (apart from a mention to a Specification for Conventional
-> BIOS).
-> Delimiting actions during the boot process is useful for example when
-> you want a key sealed against specific PCRs extended by the firmware,
-> while not allowing later boot stages access it.   I can't think of
-> such a usage for the initrd.  Obviously if anyone can and it makes
-> sense I'll go add it.
->
+On Fri, Dec 10, 2021 at 10:54:35AM -0800, Dave Hansen wrote:
+> On 12/10/21 7:43 AM, Brijesh Singh wrote:
+> > +/*
+> > + * Helpers for early access to EFI configuration table
+> > + *
+> > + * Copyright (C) 2021 Advanced Micro Devices, Inc.
+> > + *
+> > + * Author: Michael Roth <michael.roth@amd.com>
+> > + */
+> 
+> It doesn't seem quite right to slap this copyright on a file that's full
+> of content that came from other files.  It would be one thing if
+> arch/x86/boot/compressed/acpi.c had this banner in it already.  Also, a
 
-Thanks. I've queued these up so they should appear in -next shortly.
+Yah, acpi.c didn't have any copyright banner so I used my 'default'
+template for new files here to cover any additions, but that does give
+a misleading impression.
 
+I'm not sure how this is normally addressed, but I'm planning on just
+continuing the acpi.c tradition of *not* adding copyright notices for new
+code, and simply document that the contents of the file are mostly movement
+from acpi.c
 
+> arch/x86/boot/compressed/acpi.c had this banner in it already.  Also, a
+> bunch of the lines in this file seem to come from:
+> 
+> 	commit 33f0df8d843deb9ec24116dcd79a40ca0ea8e8a9
+> 	Author: Chao Fan <fanc.fnst@cn.fujitsu.com>
+> 	Date:   Wed Jan 23 19:08:46 2019 +0800
 
-> >
-> > > I did test this on arm64 and x86_64 (incl mixed mode). Here's a snip of the
-> > > EventLog
-> > > <snip>
-> > >   - EventNum: 23
-> > >     PCRIndex: 9
-> > >     EventType: EV_EVENT_TAG
-> > >     DigestCount: 4
-> > >     Digests:
-> > >       - AlgorithmId: sha1
-> > >         Digest: "53fe403e0d763f6a4e3384e8112d6463e7ddf12b"
-> > >       - AlgorithmId: sha256
-> > >         Digest: "28f24eab8cb433e4b8cbce0f96b7ad0aa541a4b905f748491139e42f0adc8026"
-> > >       - AlgorithmId: sha384
-> > >         Digest: "848389ab172267dcf9a0b873c7534b3d969e915b525c9fe2b57db47f4ecd8283b18d6e0cff84099893d589447c2bea55"
-> > >       - AlgorithmId: sha512
-> > >         Digest: "438b254c92e6716a5a1ba0338f5e751f3dd27782481e5698911b4cd33a98efdd776459d56781c5ae4a8d0b9945246d04ab243d4dbe03f49542e2455ac66db584"
-> > >     EventSize: 21
-> > >     Event: "ec223b8f0d0000004c696e757820696e6974726400"
-> > > <snip>
-> > >
-> > > [1] https://lore.kernel.org/linux-efi/20201102170634.20575-1-ardb@kernel.org/
-> > > [2] https://trustedcomputinggroup.org/wp-content/uploads/TCG_PCClient_PFP_r1p05_v23_pub.pdf
-> > > [3] https://trustedcomputinggroup.org/wp-content/uploads/TCG_PCClientSpecPlat_TPM_2p0_1p04_pub.pdf
-> > >
-> > > Ard Biesheuvel (3):
-> > >   efi/libstub: add prototype of
-> > >     efi_tcg2_protocol::hash_log_extend_event()
-> > >   efi/libstub: x86/mixed: increase supported argument count
-> > >   efi/libstub: consolidate initrd handling across architectures
-> > >
-> > > Ilias Apalodimas (1):
-> > >   efi/libstub: measure loaded initrd info into the TPM
-> > >
-> > >  arch/x86/boot/compressed/efi_thunk_64.S       | 14 +++-
-> > >  arch/x86/include/asm/efi.h                    | 14 +++-
-> > >  arch/x86/platform/efi/efi_thunk_64.S          | 14 +++-
-> > >  .../firmware/efi/libstub/efi-stub-helper.c    | 73 ++++++++++++++++---
-> > >  drivers/firmware/efi/libstub/efi-stub.c       | 10 +--
-> > >  drivers/firmware/efi/libstub/efistub.h        | 30 +++++++-
-> > >  drivers/firmware/efi/libstub/x86-stub.c       | 26 +++----
-> > >  7 files changed, 134 insertions(+), 47 deletions(-)
-> > >
-> > > --
-> > > 2.33.1
-> > >
+AFAICT the full author list for the changes in question are, in
+alphabetical order:
+
+  Chao Fan <fanc.fnst@cn.fujitsu.com>
+  Junichi Nomura <j-nomura@ce.jp.nec.com>
+  Borislav Petkov <bp@suse.de>
+
+Chao, Junichi, Borislav,
+
+If you would like to be listed as an author in efi.c (which is mainly just a
+movement of EFI config table parsing code from acpi.c into re-usable helper
+functions in efi.c), please let me know and I'll add you.
+
+Otherwise, I'll plan on adopting the acpi.c precedent for this as well, which
+is to not list individual authors, since it doesn't seem right to add Author
+fields retroactively without their permission.
