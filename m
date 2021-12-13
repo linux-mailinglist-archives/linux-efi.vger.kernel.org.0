@@ -2,166 +2,175 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 356DD4730DB
-	for <lists+linux-efi@lfdr.de>; Mon, 13 Dec 2021 16:48:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 453FA4730F1
+	for <lists+linux-efi@lfdr.de>; Mon, 13 Dec 2021 16:55:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235039AbhLMPsR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 13 Dec 2021 10:48:17 -0500
-Received: from mail-bn1nam07on2068.outbound.protection.outlook.com ([40.107.212.68]:27299
-        "EHLO NAM02-BN1-obe.outbound.protection.outlook.com"
+        id S237289AbhLMPzf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 13 Dec 2021 10:55:35 -0500
+Received: from mail-dm3nam07on2067.outbound.protection.outlook.com ([40.107.95.67]:12288
+        "EHLO NAM02-DM3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232841AbhLMPsR (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 13 Dec 2021 10:48:17 -0500
+        id S232606AbhLMPze (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 13 Dec 2021 10:55:34 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NTObWRuBr/ORk+oPx0oykFczKFragho17x4KMUbX6F13bqvOMxRbPekW8AHuFks6fe5zPK8AXiLu4vCN1GghKFfduMCIGI0R2x9iTQ4ie65DnD8HMc0ZjQrFWnM65gD9q14fJCtQuAtflVnqoGSFEy4V9Mcqdkw4TcTkcqXviezcGxwzQ+BcSPiDf+zz4ZGVGN9A6Qd4hlADhyppHxc6g7jVDKCHjLA3ad6Gg3aCRk+A2SyxiDh6OTdve06VeOai3+Mv8BhR5HuhtB/PQNvA7mNjPaFVpGjrtCoWX03YwFvSXxvjaZQV9B0jllhe/hMt/ABsBAUPVZW3R7WB9cYGCQ==
+ b=luiEGDTH9NGLVOcMV6YEQ0zcD1LPCrXN+MzBjchV0bDVTJyJSG1cptS3/ZR/r1Xk9p+QbldaWOwYe5lLnIbZpchF2rB4Gq/xHtyLvdk33jSvKmfBPH3yNbbykzmdQQRTLXReKrvqvJTRyqhIWm3tpD9SXV5hXFC3BOEOWFSrQtTqtyWc+Xe1E8yUzY4aZ2caBkL7vTFVgnIZLaFeJjUl9LE5oOlmJtmR7UO5vWBgz1xlJjB4hjAHx4vUIdnTxA8Q6alTjqAa7wnFbiPVIkjL2vaWvJGVV0KQ09u1mKPxAoGN56MYqSlZO768rthO/HYlBCg1oi36JjJ3vc6rO1ZnzA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=87U+8v7gHyuWJ4hSa689RZ+ZVsCXjLnhoeYuroxDy4c=;
- b=KFmIKx0f6DVA5Fnga304muuwQyNmP83JzhFAszFNbyPkjVtWbqr5tiSB7scXQZPEFf4g1Wm+ifk/x86Bu8LG0ZJaNNh6hh/hwhgbt7swFqtYWGBWnqW2bRkCe7HtXfrrXimpQJvSg3wKbVMZrxoLVtoeKU++Jzuz8lemAhKhRRGcE5/Jg3Hd3y1mj0OiIhgPEO2y86VM5c5Nnn7vemcer8KwaY1WQBJ8W3YC9HnsaKWrWmdnbxnnfIsq4MZtdoCiGISMjexwVJbOP6qFoMnd4frc107SDtcKZgoELfLFB21dGfj9H/VTdBXA0UOcGueahEJ6XhgtKtfR5Jr2V043YA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
+ bh=YxIVFxYZPdmVHJMWZMgMNB6CgcvCiHCJuuDMXfRVIlA=;
+ b=IAj+XoXGfE0jb7RRcxQS1neRZNcdvdMczTmYg1VWpDPv5yUo1HsGG2LMXF/iCY8LmtzJ7Mlaj4ht5RVyGdgCAJG7tBdDu/E8kSVRr/bcE+cpu99MCsfSGMK4ycOXhFEC27eysqLBQJj7fE/12yBpRDo5Xv0M9CXx7zVB1iZP0VJ8SZuyDqwi3skqpkgLbHNDDboOVAj/2VFWN/cRZWJAhT6LjXVe0Q8U6nIm9hdWoEL6ozho1iqAaFkWTIlZ1wq2AcfU0m2AVBouiQM71VNJcC7idgImI1OfD7KgdNhBd1Dh+fsmwwvXEcsxZoQx00EFwWM2iVrEjhc4yLg/Im5U8A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=87U+8v7gHyuWJ4hSa689RZ+ZVsCXjLnhoeYuroxDy4c=;
- b=349pgGPmsG0o52j+3R/PXF3ENw+62oBDM/NsvkeiOChHcRDWb8zma2mqHe6SGGIBG1qv3YoXMuhh/UOGiWhACuNOGzn7K8NjFkDyi1ZuUll777IrIDmK+i2mlw0FTQDI9DbhgbSYPUHxF3MoJz4eMwjcoRvktl77QKR55Sbjr4Y=
-Received: from DM6PR01CA0003.prod.exchangelabs.com (2603:10b6:5:296::8) by
- CH0PR12MB5058.namprd12.prod.outlook.com (2603:10b6:610:e1::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4778.17; Mon, 13 Dec 2021 15:48:13 +0000
-Received: from DM6NAM11FT049.eop-nam11.prod.protection.outlook.com
- (2603:10b6:5:296:cafe::6f) by DM6PR01CA0003.outlook.office365.com
- (2603:10b6:5:296::8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.12 via Frontend
- Transport; Mon, 13 Dec 2021 15:48:13 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com;
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- DM6NAM11FT049.mail.protection.outlook.com (10.13.172.188) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4778.13 via Frontend Transport; Mon, 13 Dec 2021 15:48:13 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17; Mon, 13 Dec
- 2021 09:48:12 -0600
-Date:   Mon, 13 Dec 2021 09:47:53 -0600
-From:   Michael Roth <michael.roth@amd.com>
-To:     Dave Hansen <dave.hansen@intel.com>, <fanc.fnst@cn.fujitsu.com>,
-        <j-nomura@ce.jp.nec.com>, <bp@suse.de>
-CC:     Brijesh Singh <brijesh.singh@amd.com>, <x86@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-        <linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
-        <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+ bh=YxIVFxYZPdmVHJMWZMgMNB6CgcvCiHCJuuDMXfRVIlA=;
+ b=oVEAJQ8m5Lf6t8ZpyLhKMHA+KWqZ86AUA3xXzjjsW70IPvHS5tfkn167g8Bl/WQmORXaKwpNSyExz2Gud2iwZEoXhpMFtM3uwAROY68maIpk5HMYQhZyQ670okb62WgktbilehDzqInry7RFSF3vRXntaMoxETDLxoMzPnsC888=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by SA0PR12MB4495.namprd12.prod.outlook.com (2603:10b6:806:70::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.17; Mon, 13 Dec
+ 2021 15:55:32 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::35:281:b7f8:ed4c]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::35:281:b7f8:ed4c%6]) with mapi id 15.20.4778.018; Mon, 13 Dec 2021
+ 15:55:32 +0000
+Cc:     brijesh.singh@amd.com, Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
         Tom Lendacky <thomas.lendacky@amd.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
         Paolo Bonzini <pbonzini@redhat.com>,
         Sean Christopherson <seanjc@google.com>,
-        "Vitaly Kuznetsov" <vkuznets@redhat.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
         Jim Mattson <jmattson@google.com>,
-        "Andy Lutomirski" <luto@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        "Peter Zijlstra" <peterz@infradead.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         David Rientjes <rientjes@google.com>,
         Dov Murik <dovmurik@linux.ibm.com>,
         Tobin Feldman-Fitzthum <tobin@ibm.com>,
         Borislav Petkov <bp@alien8.de>,
+        Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>,
         "Kirill A . Shutemov" <kirill@shutemov.name>,
         Andi Kleen <ak@linux.intel.com>,
         "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        <tony.luck@intel.com>, <marcorr@google.com>,
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: Re: [PATCH v8 24/40] x86/compressed/acpi: move EFI system table
- lookup to helper
-Message-ID: <20211213154753.nkkxk6w25tdnagwt@amd.com>
+        tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v8 27/40] x86/boot: Add Confidential Computing type to
+ setup_data
+To:     Dave Hansen <dave.hansen@intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org
 References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-25-brijesh.singh@amd.com>
- <cd8f3190-75b3-1fd5-000a-370e6c53f766@intel.com>
+ <20211210154332.11526-28-brijesh.singh@amd.com>
+ <1fdaca61-884a-ac13-fb33-a47db198f050@intel.com>
+ <ba485a09-9c35-4115-decc-1b9c25519358@amd.com>
+ <2a5cfbd0-865c-2a8b-b70b-f8f64aba5575@intel.com>
+ <f442ca7f-4530-1443-27eb-206d6ca0e7a4@amd.com>
+ <48625a39-9e31-d7f2-dccf-74e9c27126f5@intel.com>
+From:   Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <3eef1d45-eafc-582e-8896-6aaf741d6726@amd.com>
+Date:   Mon, 13 Dec 2021 09:55:27 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+In-Reply-To: <48625a39-9e31-d7f2-dccf-74e9c27126f5@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MN2PR11CA0021.namprd11.prod.outlook.com
+ (2603:10b6:208:23b::26) To SN6PR12MB2718.namprd12.prod.outlook.com
+ (2603:10b6:805:6f::22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <cd8f3190-75b3-1fd5-000a-370e6c53f766@intel.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB03.amd.com
- (10.181.40.144)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 28614e60-2170-4edf-8435-08d9be4ff8d8
-X-MS-TrafficTypeDiagnostic: CH0PR12MB5058:EE_
-X-Microsoft-Antispam-PRVS: <CH0PR12MB5058B125EBE644067E283EF795749@CH0PR12MB5058.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5236;
+X-MS-Office365-Filtering-Correlation-Id: 2c2d969c-ccce-4399-ec0f-08d9be50fe5a
+X-MS-TrafficTypeDiagnostic: SA0PR12MB4495:EE_
+X-Microsoft-Antispam-PRVS: <SA0PR12MB44954EA3A97B771E0C094B07E5749@SA0PR12MB4495.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: YEtF+JRI2/tkQQK5Am9hIhBx6wd9xsY9FnHn44ZhoiVh5jMqt/45ijBN3HZoweYlIjaWzpmYMNS+pxauUAtec9nilPYS5oRsHswdWE6kjmRTi3kUdG7hrRfgw//GgJOaHfWlBjQXDtSi4JyeVQr0M9Litg3fUDkJHucawXF/uDSlB9BNF609FXfhXyEKcLYaIhT6woPcVzPRJB625k4Hs844oDzB5vbKX7xtFQqUud+uk9EenlIf0QGqcj2ChC6VsB4oQ+Rqq4blQQtUXvcbhVznInr2iHPPMsCOtnP+oFqizTV3Qd172YjX7S0WxpJaI+CgMByLdpQQ6SvpXF9xaKSFUwN6Yb1iQzVuBpHlugrGPolTstfGKk+sGKzTqUXZ1CjjnfW3EXu5eMEun+GCi8RxXaRA2g5QQg7MyJdAH3vVwphyPNV1kx/AFUZZIuuBac9LlsdqmeYYEO8zPhlKtwhafjvJg0IR+0vF8Qe/4WdAFdigpLm4cmz8+CCm+rZmZKIANCnt8F64SWPpNEQGSXDKkwK/kcRhomXpbO4Fe2kxAaaYZqlzVJ5EFePSsZ3KeV9Ut1zdYjkTct9ttiHp5sh+CUJg2/z7wC7S1o67EwrieLX++6SBwImtbqHJrsJ2qQIA3p/8FYk5y3pV5hcfABCSXD/Vb1wscqDtYS2LhhpccTgSV20PzfPQwp5ls44EAReXb5brVP3YAf04aVOy47LLluXTgDwCntjJE2Do2hBFfMEpWtntaAu9uTMFOAwlBPpLf/XbY2CMm2/uXYb1d8VpfZDnKPhJZ3VstNgPE5Y=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(36840700001)(46966006)(40470700001)(1076003)(7406005)(7416002)(2616005)(82310400004)(4326008)(8936002)(26005)(110136005)(16526019)(186003)(336012)(6666004)(86362001)(47076005)(8676002)(40460700001)(81166007)(54906003)(36756003)(2906002)(356005)(316002)(44832011)(5660300002)(426003)(53546011)(70206006)(70586007)(508600001)(36860700001)(83380400001)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: u0UP3ps1BFLV8zEWIkRARA/alH8qIxDBpAxZPscVUqg+b4u0xKayUKA/eQURUFAOOYc3D8PhkCFrVfAulWeCoDsEcnpu9p9mGkZjJPSCqy8sHGuHrBGOcBsRD+oIchzvMbazfCfzAB+RNJku4F6weu9zHoNLg9B9n/0xYbXIUXvmDZhB6auoP2SOm3Ah5Yn7lDcaVynNfmGS4EDKcC12vl+TPrvUTDcQBY6VuuxI+7SzizESeqOZFVc5Wgj9ZaJbJmb06vzAZXDSE1mCzj/6AgVw9i7GRuscHZYRqo0l0BcvaSVV6uI01c6CmfPeYGmIJ6Wn6ir2rTdAngG+/GkpFr8u2L0Y61mmkKXEHzDFln40x7Is0FFgkcR1VPTl6g32RUUbdiNB9VmV1+d1ZbEUAeSlQcZtdIzI0IMgmgJ1IX3dhz0DSfATDgqbK6eVqIgUIDHl2EDDxhQv4x68V/9IsaT++ehharjoW28e5Ou9KlPWPsuaCHh1O9ukVd8bqc8v4a1y8pmrnnwtAMOUwccZRcfBUnWv+ba3TwuwbULjkybE08cLk3mUukOLoA5/cOU3M0Z/csD2BWLV/k8HwvkuF4wmlemEF0MJMRDc6DAvm4Kk/JP86IpY46yseJCeudm2tsgjegcmqnahEU6VzDgtD/I/rJCCFpdtAc0WhE91+OazG/m7YaBD4r9cZwrjKX4vVGBQhk5y0N6VkG+JnikZOwcNw7VCokyrQ9sFCdQXQsA=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(53546011)(7416002)(508600001)(7406005)(6512007)(6506007)(186003)(26005)(2906002)(31686004)(6486002)(6666004)(8676002)(66946007)(38100700002)(54906003)(66476007)(66556008)(31696002)(86362001)(8936002)(5660300002)(36756003)(2616005)(4326008)(4744005)(44832011)(316002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OTJvdEUyNVlCcTZZeDRYb1E4Z3BQOUFNUWJGeWVJLzgvYWlNZzhoenAwUGlZ?=
+ =?utf-8?B?d0hDZ3k4eE1RbGtIQmJHWmNyTGJFNGFHcHdyODdQd2RQbGg0bFNOVUhNcS9m?=
+ =?utf-8?B?aS9KOTRMZ3RjZi8zQi9BL2FnSnRuL1dDcHI0UmtVVE5Dci9wRnJwRVBSTkdl?=
+ =?utf-8?B?dUpPR09VZ3luQWJzdjZ1TzdnOFVBQzhrTWZqeXIzN3pEWXBpU0hQbkZ5RlZE?=
+ =?utf-8?B?djRuNmI1akd4TlNxU1ZoSVZRMEJXWWdHNjhkdTI3Vk9rVmt1OWNiZW1UOU15?=
+ =?utf-8?B?VWFtVU5uOTdUMVdGT05BQ3ZqaGVWZ2pVRlppeS9BdWlkaVh4eS9OMzRUdmhn?=
+ =?utf-8?B?MTNZck43eVliOXB3aFZuMkloRHdodERKbmtjUWlXVlozZHE4Q0ZsdW1aaXB5?=
+ =?utf-8?B?OVM3d0xMZkhwMndpaWVDRFhxK2VKR0JLMXV4WmVSVHkxTmY2Z1g2MVl4ZVpJ?=
+ =?utf-8?B?U0IyQS9ZMW9XSFhOSFoxV0pIQlRDanFCZnkrQWN1Tmk3bUxjNHJsdnB3b3dw?=
+ =?utf-8?B?SVZtM2poOXo0NUhSQ3ZubFJJd0xpQTZYcUZyQW1xVWdpcXhIMW50SFg1bGlq?=
+ =?utf-8?B?OUR0REF0N0tTSlA2K2ora1VPRnZpYUpvYlRUVkhQYjlpR1pjN3M2bXlMRldm?=
+ =?utf-8?B?M3dXL2lReWY1S1hWd212T0NJYUN0Mzg4Vy8rYWNaVUY5MUhsdW96dnFVZ2cw?=
+ =?utf-8?B?UStUTngrVktxYWdIeUZhR0kwMUNhQUt0bU9kQ2d6cTdmTU1wSm9pazU2aE9B?=
+ =?utf-8?B?YkErcTE1TjNUc1JQVVhxc0EwYTViQnovZEJjNWdiT3hPYlozYllXc0NvSFdG?=
+ =?utf-8?B?VmRhZGdlalIvL2dObitCT2w0Vzd3NDR1S1JheDJLaVBjVzJsYUt2L2hsNXVM?=
+ =?utf-8?B?UlpQb3U4TWg4K3FLUDB6akpQK1FuU0F5L3RLVmllajgrODJuMVhzdFQrcmhw?=
+ =?utf-8?B?QmR6bWtTMGtVM0hqQ1J6T2ZJbWdUV1V2dkZUcVJzQmZCS3VWd21XOTVvQUNk?=
+ =?utf-8?B?ayswcDg1SzJyZ29vZGhDQlp6cEwyM1Ryb2UreFE0WkphWTJCNk1jMThNcUhr?=
+ =?utf-8?B?YnpUUjhkeVBTUVA0aHNxeTNtYWxVRnoxZzk3QitZUUlNQnRFcmZQWm9UeU13?=
+ =?utf-8?B?N3ZReDJvRnZtY2JucXlkUlB1RFpCdW5kOXY3RlFqdWpiMFhGVStDblRHNGJt?=
+ =?utf-8?B?c3RKdkphTTJqOE92TWQ1ait6RVU4TjRic1ZUNEduSG9jYXI5ODhhNlpMbzlk?=
+ =?utf-8?B?bUdRVTRVcys1OXdrclM5M2V1ekFyeG5MNjhNdW9aU0VNbGQ3U08yTHp6bnhw?=
+ =?utf-8?B?dDROWlJCanVMbEc0YzUvWnBEUXFRY3pPN2pCeHlybTJ1ZTFCdW9Fems0V1kz?=
+ =?utf-8?B?eWZSYko5QzJQa2xvK3IyUkFUekF6aDRXTnlTNXA0d093d1cvbVhPU3hIVklB?=
+ =?utf-8?B?M0JVaCtHdU5ZUnJkN2ZlcUFlRHc0V01HaEp0Q2o0aHZ1YWNmTkZSNDhtaHNY?=
+ =?utf-8?B?ekVIR01UcFVCdDdDbmpKRThxdzNxM25ENkNoYmQ3dzRadXlTZnZNbWtvMzJY?=
+ =?utf-8?B?bnVUU3AxSzE4NW5ORmQ2aWZleXpUd1ozR1JMbWJrVXNBNVV2U2ZkaUxkK2NH?=
+ =?utf-8?B?NTlUSWI3cEdEMjRuTDhSeS9zVDFKNE5OOS9RMlljdG0xVyt4MmFtUjk5MUJo?=
+ =?utf-8?B?NGJneGdTRnE3T01ZV3RwdW1SWXlUUy9MbXdlWFRCU0o5OEJmT0ZIYkhOREhI?=
+ =?utf-8?B?ekRNT1d5QzRvRU5lcUlTbjJ5MG5FWGVzZ3ZlaFYrWlhTS3NHdGNIc2RqaWpp?=
+ =?utf-8?B?clBwMDZOU3c0YVNBbkVLc01LaTJkME14Z1pmMUExS1V6YVk4bkdva2h3UFhp?=
+ =?utf-8?B?cThBSGZIMm12TTJtcDlBQWNXS2xsTFRmUTA3blkwcXluVmkxMHlHNGNqdWt3?=
+ =?utf-8?B?Q2JSWm1zcjJsZVVteUZFdkZ5RXJYOTBCUzcxMG1pYjZzREtWbitPQnlHQzdq?=
+ =?utf-8?B?c2xrSjRlVlc5Z2FoKytJOXlnNFo1NXhnOXFacThpa3BmcHVONXlhZjBUNFV5?=
+ =?utf-8?B?OXAzRlhzOFJXWTA3Q1VzbXRKbit6a2NoVGR0YWN2WFZWMWJHc2Z2VmdEM201?=
+ =?utf-8?B?UHUxS0ZZd1cyMUJmTDJ2bkFrZXNyYS9jUmdDK3VnaUdjVk9yRXZCbkFEOW8z?=
+ =?utf-8?Q?5oZl+t9TdlehQ31BHGnxmKA=3D?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2021 15:48:13.5331
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c2d969c-ccce-4399-ec0f-08d9be50fe5a
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2021 15:55:32.5047
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 28614e60-2170-4edf-8435-08d9be4ff8d8
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT049.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB5058
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VrvSrBwfudm6492DkWhzemykR99h1ECMYR44ubBNUUCde/QTiRPD/VgOnpVwN+ETEHskVMzvQgueiPW8CVgBPQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4495
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Dec 10, 2021 at 10:54:35AM -0800, Dave Hansen wrote:
-> On 12/10/21 7:43 AM, Brijesh Singh wrote:
-> > +/*
-> > + * Helpers for early access to EFI configuration table
-> > + *
-> > + * Copyright (C) 2021 Advanced Micro Devices, Inc.
-> > + *
-> > + * Author: Michael Roth <michael.roth@amd.com>
-> > + */
+
+
+On 12/13/21 9:08 AM, Dave Hansen wrote:
+> On 12/13/21 6:49 AM, Brijesh Singh wrote:
+>>> I was more concerned that this structure could change sizes if it were
+>>> compiled on 32-bit versus 64-bit code.  For kernel ABIs, we try not to
+>>> do that.
+>>>
+>>> Is this somehow OK when talking to firmware?  Or can a 32-bit OS and
+>>> 64-bit firmware never interact?
+>>
+>> For SNP, both the firmware and OS need to be 64-bit. IIRC, both the
+>> Linux and OVMF do not enable the memory encryption for the 32-bit.
 > 
-> It doesn't seem quite right to slap this copyright on a file that's full
-> of content that came from other files.  It would be one thing if
-> arch/x86/boot/compressed/acpi.c had this banner in it already.  Also, a
+> Could you please make the structure's size invariant?  
 
-Yah, acpi.c didn't have any copyright banner so I used my 'default'
-template for new files here to cover any additions, but that does give
-a misleading impression.
+Ack. I will make the required changes.
 
-I'm not sure how this is normally addressed, but I'm planning on just
-continuing the acpi.c tradition of *not* adding copyright notices for new
-code, and simply document that the contents of the file are mostly movement
-from acpi.c
-
-> arch/x86/boot/compressed/acpi.c had this banner in it already.  Also, a
-> bunch of the lines in this file seem to come from:
+That's great if
+> there's no problem in today's implementation, but it's best no to leave
+> little land mines like this around.  Let's say someone copies your code
+> as an example of something that interacts with a firmware table a few
+> years or months down the road.
 > 
-> 	commit 33f0df8d843deb9ec24116dcd79a40ca0ea8e8a9
-> 	Author: Chao Fan <fanc.fnst@cn.fujitsu.com>
-> 	Date:   Wed Jan 23 19:08:46 2019 +0800
-
-AFAICT the full author list for the changes in question are, in
-alphabetical order:
-
-  Chao Fan <fanc.fnst@cn.fujitsu.com>
-  Junichi Nomura <j-nomura@ce.jp.nec.com>
-  Borislav Petkov <bp@suse.de>
-
-Chao, Junichi, Borislav,
-
-If you would like to be listed as an author in efi.c (which is mainly just a
-movement of EFI config table parsing code from acpi.c into re-usable helper
-functions in efi.c), please let me know and I'll add you.
-
-Otherwise, I'll plan on adopting the acpi.c precedent for this as well, which
-is to not list individual authors, since it doesn't seem right to add Author
-fields retroactively without their permission.
