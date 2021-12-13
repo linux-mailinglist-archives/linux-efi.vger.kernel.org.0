@@ -2,143 +2,189 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA4F547301F
-	for <lists+linux-efi@lfdr.de>; Mon, 13 Dec 2021 16:08:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F7C147306C
+	for <lists+linux-efi@lfdr.de>; Mon, 13 Dec 2021 16:27:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234880AbhLMPIM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 13 Dec 2021 10:08:12 -0500
-Received: from mga03.intel.com ([134.134.136.65]:41906 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233162AbhLMPIM (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 13 Dec 2021 10:08:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1639408092; x=1670944092;
-  h=subject:to:cc:references:from:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=Ln0+vE8wrxPHB5+sl1PGPaxOXedMn7wnxkhrIv1Bgmc=;
-  b=UA9XDtpdRKDAPliumW57D8jafRpgKLcBqJ9kVphtReC9iz/c7gj13hAX
-   kAkUiMvKDYqE55SVUe5usYZC15f1tt+v93D8F6NjUlmxpb7Jf45oKtzZB
-   vk8Lc5o+HckKhaVR9zEwBNr+eKd9wgKwBZT81JiGHGhQDjlsSX6vPIFra
-   dkQ49YpSz2zBWCpflagkxu2E8xCl6BpgxYAA0caBQCPdsibl5Gio5x/Gx
-   nnhKg6Ehpnbsl70G7dOWDa+T5xwgKJM50eezauNO9zPhI0VUxosKe6AY2
-   d9U2x2eQgMKDvP5JBZmW+b43/FDY3S5JgCwYvbV6l6sWq+R/ibZFwfDzU
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10196"; a="238696143"
-X-IronPort-AV: E=Sophos;i="5.88,202,1635231600"; 
-   d="scan'208";a="238696143"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2021 07:08:11 -0800
-X-IronPort-AV: E=Sophos;i="5.88,202,1635231600"; 
-   d="scan'208";a="752294967"
-Received: from chenb-mobl1.amr.corp.intel.com (HELO [10.212.210.237]) ([10.212.210.237])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2021 07:08:09 -0800
-Subject: Re: [PATCH v8 27/40] x86/boot: Add Confidential Computing type to
- setup_data
-To:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-28-brijesh.singh@amd.com>
- <1fdaca61-884a-ac13-fb33-a47db198f050@intel.com>
- <ba485a09-9c35-4115-decc-1b9c25519358@amd.com>
- <2a5cfbd0-865c-2a8b-b70b-f8f64aba5575@intel.com>
- <f442ca7f-4530-1443-27eb-206d6ca0e7a4@amd.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
- oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
- 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
- ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
- VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
- iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
- c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
- pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
- ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
- QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzShEYXZpZCBDaHJp
- c3RvcGhlciBIYW5zZW4gPGRhdmVAc3I3MS5uZXQ+wsF7BBMBAgAlAhsDBgsJCAcDAgYVCAIJ
- CgsEFgIDAQIeAQIXgAUCTo3k0QIZAQAKCRBoNZUwcMmSsMO2D/421Xg8pimb9mPzM5N7khT0
- 2MCnaGssU1T59YPE25kYdx2HntwdO0JA27Wn9xx5zYijOe6B21ufrvsyv42auCO85+oFJWfE
- K2R/IpLle09GDx5tcEmMAHX6KSxpHmGuJmUPibHVbfep2aCh9lKaDqQR07gXXWK5/yU1Dx0r
- VVFRaHTasp9fZ9AmY4K9/BSA3VkQ8v3OrxNty3OdsrmTTzO91YszpdbjjEFZK53zXy6tUD2d
- e1i0kBBS6NLAAsqEtneplz88T/v7MpLmpY30N9gQU3QyRC50jJ7LU9RazMjUQY1WohVsR56d
- ORqFxS8ChhyJs7BI34vQusYHDTp6PnZHUppb9WIzjeWlC7Jc8lSBDlEWodmqQQgp5+6AfhTD
- kDv1a+W5+ncq+Uo63WHRiCPuyt4di4/0zo28RVcjtzlGBZtmz2EIC3vUfmoZbO/Gn6EKbYAn
- rzz3iU/JWV8DwQ+sZSGu0HmvYMt6t5SmqWQo/hyHtA7uF5Wxtu1lCgolSQw4t49ZuOyOnQi5
- f8R3nE7lpVCSF1TT+h8kMvFPv3VG7KunyjHr3sEptYxQs4VRxqeirSuyBv1TyxT+LdTm6j4a
- mulOWf+YtFRAgIYyyN5YOepDEBv4LUM8Tz98lZiNMlFyRMNrsLV6Pv6SxhrMxbT6TNVS5D+6
- UorTLotDZKp5+M7BTQRUY85qARAAsgMW71BIXRgxjYNCYQ3Xs8k3TfAvQRbHccky50h99TUY
- sqdULbsb3KhmY29raw1bgmyM0a4DGS1YKN7qazCDsdQlxIJp9t2YYdBKXVRzPCCsfWe1dK/q
- 66UVhRPP8EGZ4CmFYuPTxqGY+dGRInxCeap/xzbKdvmPm01Iw3YFjAE4PQ4hTMr/H76KoDbD
- cq62U50oKC83ca/PRRh2QqEqACvIH4BR7jueAZSPEDnzwxvVgzyeuhwqHY05QRK/wsKuhq7s
- UuYtmN92Fasbxbw2tbVLZfoidklikvZAmotg0dwcFTjSRGEg0Gr3p/xBzJWNavFZZ95Rj7Et
- db0lCt0HDSY5q4GMR+SrFbH+jzUY/ZqfGdZCBqo0cdPPp58krVgtIGR+ja2Mkva6ah94/oQN
- lnCOw3udS+Eb/aRcM6detZr7XOngvxsWolBrhwTQFT9D2NH6ryAuvKd6yyAFt3/e7r+HHtkU
- kOy27D7IpjngqP+b4EumELI/NxPgIqT69PQmo9IZaI/oRaKorYnDaZrMXViqDrFdD37XELwQ
- gmLoSm2VfbOYY7fap/AhPOgOYOSqg3/Nxcapv71yoBzRRxOc4FxmZ65mn+q3rEM27yRztBW9
- AnCKIc66T2i92HqXCw6AgoBJRjBkI3QnEkPgohQkZdAb8o9WGVKpfmZKbYBo4pEAEQEAAcLB
- XwQYAQIACQUCVGPOagIbDAAKCRBoNZUwcMmSsJeCEACCh7P/aaOLKWQxcnw47p4phIVR6pVL
- e4IEdR7Jf7ZL00s3vKSNT+nRqdl1ugJx9Ymsp8kXKMk9GSfmZpuMQB9c6io1qZc6nW/3TtvK
- pNGz7KPPtaDzvKA4S5tfrWPnDr7n15AU5vsIZvgMjU42gkbemkjJwP0B1RkifIK60yQqAAlT
- YZ14P0dIPdIPIlfEPiAWcg5BtLQU4Wg3cNQdpWrCJ1E3m/RIlXy/2Y3YOVVohfSy+4kvvYU3
- lXUdPb04UPw4VWwjcVZPg7cgR7Izion61bGHqVqURgSALt2yvHl7cr68NYoFkzbNsGsye9ft
- M9ozM23JSgMkRylPSXTeh5JIK9pz2+etco3AfLCKtaRVysjvpysukmWMTrx8QnI5Nn5MOlJj
- 1Ov4/50JY9pXzgIDVSrgy6LYSMc4vKZ3QfCY7ipLRORyalFDF3j5AGCMRENJjHPD6O7bl3Xo
- 4DzMID+8eucbXxKiNEbs21IqBZbbKdY1GkcEGTE7AnkA3Y6YB7I/j9mQ3hCgm5muJuhM/2Fr
- OPsw5tV/LmQ5GXH0JQ/TZXWygyRFyyI2FqNTx4WHqUn3yFj8rwTAU1tluRUYyeLy0ayUlKBH
- ybj0N71vWO936MqP6haFERzuPAIpxj2ezwu0xb1GjTk4ynna6h5GjnKgdfOWoRtoWndMZxbA
- z5cecg==
-Message-ID: <48625a39-9e31-d7f2-dccf-74e9c27126f5@intel.com>
-Date:   Mon, 13 Dec 2021 07:08:07 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S240087AbhLMP1I (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 13 Dec 2021 10:27:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54312 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240079AbhLMP1I (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Dec 2021 10:27:08 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 230E7C061574
+        for <linux-efi@vger.kernel.org>; Mon, 13 Dec 2021 07:27:08 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 75F6E6111D
+        for <linux-efi@vger.kernel.org>; Mon, 13 Dec 2021 15:27:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCF2BC3460B
+        for <linux-efi@vger.kernel.org>; Mon, 13 Dec 2021 15:27:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639409226;
+        bh=+RMQMtIrJEtDRfwDnp/4sV9izzx025NcZofl+9mMGQc=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=H5tMArAk5aheAh1akdjJE9iFSwGDxBCTTiB6TBc8h+ct2oaoX3Stmlw6eVJdVd4kg
+         L3fFowoL9UTswxWFvIjCiIvSyL4WoBq1G7Txmp3OrfbdDhrVBzUugSZBgF+xVYR+PT
+         Uy3wqetcrjFXQkaefpz8WJmunGk2HdnGdLGxqQcjtaCSBU23CEIZXudwHZvdx12Dw1
+         IjCC22oeylGievQKWhdflVad3id0CP5TttVJGNzmCcvQ1d24eASQHkCgkyGyTxQD5T
+         PIx2AbpLRPjZRTNUH30qih+1vm4lqNwucA7S8sf8J5Jj7tnFS/1g6Itsz/aD1KoLj+
+         snAyjg1PNdzsg==
+Received: by mail-ot1-f51.google.com with SMTP id a23-20020a9d4717000000b0056c15d6d0caso17729173otf.12
+        for <linux-efi@vger.kernel.org>; Mon, 13 Dec 2021 07:27:06 -0800 (PST)
+X-Gm-Message-State: AOAM531VGJFNJdkDpPgldl+SRRTOeKrpiOT3w7GcGljTTCv5UNAO1jE+
+        0RWoTFE34xNpwbv4+EbLaL8g4JHmAHk7htJ1rUA=
+X-Google-Smtp-Source: ABdhPJwD+NCNJ/0ZOcUwOOSGmA4b2fCS7qWaWMtblMVUpED6GkEKJCcN6dBFI1mN0mJ4nsawhYVyHs7puMugPTTLEpE=
+X-Received: by 2002:a9d:6c54:: with SMTP id g20mr25840381otq.30.1639409225977;
+ Mon, 13 Dec 2021 07:27:05 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <f442ca7f-4530-1443-27eb-206d6ca0e7a4@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20211119114745.1560453-1-ilias.apalodimas@linaro.org>
+ <CAMj1kXHfFyUePGHbuQx_hVeL7YhRF4jZW0RD2k-zqtfNeDZF3w@mail.gmail.com> <CAC_iWjLdjkRzH6jxTrurtyVs4aD4qTGwH4+-sW-8K_pdB1wccQ@mail.gmail.com>
+In-Reply-To: <CAC_iWjLdjkRzH6jxTrurtyVs4aD4qTGwH4+-sW-8K_pdB1wccQ@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Mon, 13 Dec 2021 16:26:54 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHdoHeYKsQdSmwHQa47qP6fDmAUMLdovjJbvTGpiziQxg@mail.gmail.com>
+Message-ID: <CAMj1kXHdoHeYKsQdSmwHQa47qP6fDmAUMLdovjJbvTGpiziQxg@mail.gmail.com>
+Subject: Re: [PATCH 0/4 v3] measure initrd data loaded by the EFI stub
+To:     Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Peter Jones <pjones@redhat.com>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Matthew Garrett <mjg59@google.com>,
+        Daniel Kiper <daniel.kiper@oracle.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Leif Lindholm <leif@nuviainc.com>,
+        Joerg Roedel <jroedel@suse.de>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 12/13/21 6:49 AM, Brijesh Singh wrote:
->> I was more concerned that this structure could change sizes if it were
->> compiled on 32-bit versus 64-bit code.  For kernel ABIs, we try not to
->> do that.
->>
->> Is this somehow OK when talking to firmware?  Or can a 32-bit OS and
->> 64-bit firmware never interact?
-> 
-> For SNP, both the firmware and OS need to be 64-bit. IIRC, both the
-> Linux and OVMF do not enable the memory encryption for the 32-bit.
+On Sun, 21 Nov 2021 at 19:37, Ilias Apalodimas
+<ilias.apalodimas@linaro.org> wrote:
+>
+> Hi Ard,
+>
+> On Sun, Nov 21, 2021 at 05:12:00PM +0100, Ard Biesheuvel wrote:
+> > On Fri, 19 Nov 2021 at 12:48, Ilias Apalodimas
+> > <ilias.apalodimas@linaro.org> wrote:
+> > >
+> > > Hi!
+> > >
+> > > This is a respin of [1].
+> > > This enables initrd measuring when loaded directly by the kernel EFI stub.
+> > > It ensures that the initrd observed and used by the OS is the same one that
+> > > got measured into the TPM, which is difficult to guarantee in the current
+> > > otherwise.
+> > >
+> > > There's a couple of changes compared to the original RFC:
+> > > - Ard fixed the x86 assembly for providing the extra arguments needed and I
+> > >   rebased it on top of
+> > >   commit 22aa45cb465b ("x86/efi: Restore Firmware IDT before calling ExitBootServices()")
+> > > - Instead of EV_IPL we are now using EV_EVENT_TAG. EV_IPL was marked
+> > >   as deprecated up until the latest PC client spec [2] (and deprecated  in
+> > >   older revisions [3]).  It's current description is:
+> > >   "It may be used by Boot Manager Code to measure events."
+> > >
+> > >   EV_EVENT_TAG on the other hand seems more appropriate as it's defined as:
+> > >   "Used for PCRs defined for OS and application usage.  Defined for use by
+> > >   Host Platform Operating System or Software."
+> > > - We are only measuring the initrd if it was loaded using the LOAD_FILE2
+> > >   protocol.  This is not what we probably want in the long run, but let's
+> > >   only enforce the measurement on the new way of loading an initrd for now.
+> > >
+> > > Questions:
+> > > - Since GRUB seems to be using PCRs 8/9 for it's EV_IPL events, maybe we should
+> > >   use something completely different?
+> > >
+> >
+> > Thanks for continuing to work on this.
+>
+> You're welcome!
+>
+> >
+> > I think using PCRs 8/9 is fine - if one upgrades to a new version of
+> > the kernel that implements this change, the PCRs will change in any
+> > case.
+>
+> The reasoning here is leave distros unaffected.  Yes the PCRs will
+> change regardless in a kernel update.  However distros might already
+> have infrastructure to seal keys factoring in PCRs 8 and 9.  Keeping
+> in mind the initrd is likely to change without changing GRUB,  we
+> could allow them to opt-in on the initrd measurement using PCR10 (up
+> to 15).
+>
+> >
+> > The only thing that is unclear to me is whether we should measure some
+> > kind of separator event if no initrd is loaded at all - IIRC, this
+> > came up before but I don't remember what the conclusion was in the
+> > end.
+> >
+>
+> I think we ended up saying along the lines of "We need more
+> discussion.  Let's check what Windows is doing".  I did have a look on
+> that Eventlog James included,  but my windows understanding is
+> mediocre at best.  OTOH separators are used for PCRs 0-7 and they
+> either indicate errors or delimit actions during the boot process.  We
+> already have separators before EBS so I skipped it for the initrd.
+> Moreover I found nothing relevant to the spec wrt to tagged events and
+> separators  (apart from a mention to a Specification for Conventional
+> BIOS).
+> Delimiting actions during the boot process is useful for example when
+> you want a key sealed against specific PCRs extended by the firmware,
+> while not allowing later boot stages access it.   I can't think of
+> such a usage for the initrd.  Obviously if anyone can and it makes
+> sense I'll go add it.
+>
 
-Could you please make the structure's size invariant?  That's great if
-there's no problem in today's implementation, but it's best no to leave
-little land mines like this around.  Let's say someone copies your code
-as an example of something that interacts with a firmware table a few
-years or months down the road.
+Thanks. I've queued these up so they should appear in -next shortly.
+
+
+
+> >
+> > > I did test this on arm64 and x86_64 (incl mixed mode). Here's a snip of the
+> > > EventLog
+> > > <snip>
+> > >   - EventNum: 23
+> > >     PCRIndex: 9
+> > >     EventType: EV_EVENT_TAG
+> > >     DigestCount: 4
+> > >     Digests:
+> > >       - AlgorithmId: sha1
+> > >         Digest: "53fe403e0d763f6a4e3384e8112d6463e7ddf12b"
+> > >       - AlgorithmId: sha256
+> > >         Digest: "28f24eab8cb433e4b8cbce0f96b7ad0aa541a4b905f748491139e42f0adc8026"
+> > >       - AlgorithmId: sha384
+> > >         Digest: "848389ab172267dcf9a0b873c7534b3d969e915b525c9fe2b57db47f4ecd8283b18d6e0cff84099893d589447c2bea55"
+> > >       - AlgorithmId: sha512
+> > >         Digest: "438b254c92e6716a5a1ba0338f5e751f3dd27782481e5698911b4cd33a98efdd776459d56781c5ae4a8d0b9945246d04ab243d4dbe03f49542e2455ac66db584"
+> > >     EventSize: 21
+> > >     Event: "ec223b8f0d0000004c696e757820696e6974726400"
+> > > <snip>
+> > >
+> > > [1] https://lore.kernel.org/linux-efi/20201102170634.20575-1-ardb@kernel.org/
+> > > [2] https://trustedcomputinggroup.org/wp-content/uploads/TCG_PCClient_PFP_r1p05_v23_pub.pdf
+> > > [3] https://trustedcomputinggroup.org/wp-content/uploads/TCG_PCClientSpecPlat_TPM_2p0_1p04_pub.pdf
+> > >
+> > > Ard Biesheuvel (3):
+> > >   efi/libstub: add prototype of
+> > >     efi_tcg2_protocol::hash_log_extend_event()
+> > >   efi/libstub: x86/mixed: increase supported argument count
+> > >   efi/libstub: consolidate initrd handling across architectures
+> > >
+> > > Ilias Apalodimas (1):
+> > >   efi/libstub: measure loaded initrd info into the TPM
+> > >
+> > >  arch/x86/boot/compressed/efi_thunk_64.S       | 14 +++-
+> > >  arch/x86/include/asm/efi.h                    | 14 +++-
+> > >  arch/x86/platform/efi/efi_thunk_64.S          | 14 +++-
+> > >  .../firmware/efi/libstub/efi-stub-helper.c    | 73 ++++++++++++++++---
+> > >  drivers/firmware/efi/libstub/efi-stub.c       | 10 +--
+> > >  drivers/firmware/efi/libstub/efistub.h        | 30 +++++++-
+> > >  drivers/firmware/efi/libstub/x86-stub.c       | 26 +++----
+> > >  7 files changed, 134 insertions(+), 47 deletions(-)
+> > >
+> > > --
+> > > 2.33.1
+> > >
