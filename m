@@ -2,241 +2,120 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38157473B7D
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Dec 2021 04:25:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F08F473BDC
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Dec 2021 05:02:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231945AbhLNDZG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 13 Dec 2021 22:25:06 -0500
-Received: from mga06.intel.com ([134.134.136.31]:55685 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233041AbhLNDZF (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 13 Dec 2021 22:25:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1639452305; x=1670988305;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=N2S4LH4HfPZZ3gOn4/tRXzcIRDecyRye4gz2pOpCXQo=;
-  b=gVanW/zSTM7BppenEiTRZOOFm5ayrkR32mbuR5A8miaM70wzTC8vgjym
-   qDdtVys8UZ5C/uVjxi2HFocwgb6dqLsVVct3FvDlDdxvvpm7hRsTwEeKJ
-   pa99OiLKDHwQ0JVl3ukV1zCYsgYtLLzC08Wd1PK9wRP1AeaxUZfrdIjxI
-   AqXCMjLzoKnZ+YEof/z5ttfaEO3H5kXeeBFn8pKeWJqnn8Bmd9UxjRMMD
-   h5y96K+q4y1MJb5PBpwNPYQGLATPEmn0jYLDJPBlv/pKm4IaXHeFvHs67
-   R3VbGLe0qQ54vW67Y4BAetspd18I5BFZbipwLVi/CRlKSUNzRB+1TD+DI
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10197"; a="299667227"
-X-IronPort-AV: E=Sophos;i="5.88,204,1635231600"; 
-   d="scan'208";a="299667227"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2021 19:25:04 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,204,1635231600"; 
-   d="scan'208";a="464903479"
-Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
-  by orsmga006.jf.intel.com with ESMTP; 13 Dec 2021 19:25:03 -0800
-Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mwyR4-0007N5-QF; Tue, 14 Dec 2021 03:25:02 +0000
-Date:   Tue, 14 Dec 2021 11:24:32 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- 4bc5e64e6cf37007e436970024e5998ee0935651
-Message-ID: <61b80e70.wpuF/2oBhhyzFldy%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S231468AbhLNECS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 13 Dec 2021 23:02:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59404 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230216AbhLNECS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Dec 2021 23:02:18 -0500
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B528C061574;
+        Mon, 13 Dec 2021 20:02:18 -0800 (PST)
+Received: by mail-pg1-x529.google.com with SMTP id l18so11601195pgj.9;
+        Mon, 13 Dec 2021 20:02:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=zISpoeMYICSaiB4z3xpc+ADTtV+w5l/Wcvj8K92an1Q=;
+        b=fOqWBwX4Ya5XyCZzaaBzTzljxNwku+K+9af64cJDBtK0Ia414R1J4yxCvKUBvwT5Iz
+         PMxg4Y1527qeFaFdhl2g8jaJXrSmwSqQ2w/RQLyEWEHxvpTtAIlsEcitIFywIXLPZH2G
+         mXg20SK7hXXmIoNX41g/o2Pyppp0vdVTnxTXbdBRE2JxWGG2tNTOh64aZugLbKM7NPKM
+         KUUi60cIrX6RKy1H0mansL6x1kVQ6ymtkm7zeT0IaB1eXuEtsJuKoEHHNqC26+Y1t5y/
+         /mWh2OS1cIX4CRBSFSLefpK96fJjQp4bD5MUIUGonOcjnq8bvQcjMQdpUac45mrNYLRq
+         3Wsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=zISpoeMYICSaiB4z3xpc+ADTtV+w5l/Wcvj8K92an1Q=;
+        b=EqGAU8PA4xgLc2eTGNwCIP936aKPIX+zN9Y/8iMJ6WiVtplUElOIaf8PCFGse8qd7j
+         pxW6A5HAjxhZjZ8YCQTovshgOGQ+dCn1BHRHR2KMe499Pog03IQgWI/wI8ApsnFI7y9j
+         95qzBwg7PBU3/Q/Hyuxsb8R2sRwETVOQLWu2sIGMJtkq2577WrrBvj51QwLT3tRBfIkp
+         TDvZKOkWx/I2iWPV9fZauzHQWcyevFglNRNgxx+xLwoyNVqDMls1v8aZnA6cXvRvmSNG
+         pbAXxc8RF/8I5dEK4V/seDE799f/4AElVos7qxUV55zRtyF8zlzyTKOb9Qf+BJCzxvQP
+         goZg==
+X-Gm-Message-State: AOAM533zPUN/3XItNIFWlrPo1ZuVSKM1vRRWClnplEN5ycwe4ynWKK19
+        2GZHsvqYlvBpbOazntpcp5bUMVzykA==
+X-Google-Smtp-Source: ABdhPJwLheIuYYNyneG8TfzZgX+skEctf9nWg/fJIOTO1QqJZwxV7AATQAqAvTBRL8LGIOZX7Qrj0Q==
+X-Received: by 2002:a63:fa17:: with SMTP id y23mr2098027pgh.400.1639454536648;
+        Mon, 13 Dec 2021 20:02:16 -0800 (PST)
+Received: from piliu.users.ipa.redhat.com ([209.132.188.80])
+        by smtp.gmail.com with ESMTPSA id v63sm11538777pgv.71.2021.12.13.20.02.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Dec 2021 20:02:16 -0800 (PST)
+From:   Pingfan Liu <kernelfans@gmail.com>
+To:     devicetree@vger.kernel.org, linux-efi@vger.kernel.org
+Cc:     Pingfan Liu <kernelfans@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Zhen Lei <thunder.leizhen@huawei.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Nick Terrell <terrelln@fb.com>,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCHv2 0/2] arm64: fdt: fix membock add/cap ordering
+Date:   Tue, 14 Dec 2021 12:01:55 +0800
+Message-Id: <20211214040157.27443-1-kernelfans@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
-branch HEAD: 4bc5e64e6cf37007e436970024e5998ee0935651  efi: Move efifb_setup_from_dmi() prototype from arch headers
+In fact, V2 tackles this issue at efi_init() for both arm64 and risc-v.
 
-elapsed time: 735m
+Since in Zhen Lei's series "[PATCH v17 00/10] support reserving
+crashkernel above 4G on arm64 kdump", [8/10] is self-standing and
+meaningful. I abstract and utilize it.
 
-configs tested: 168
-configs skipped: 3
+I make a small change in it in order to use
+early_init_dt_check_for_usable_mem_range() outside of/fdt.
+(Cc: Zhen, please let me know if it is not fine for you.)
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+So finally these two patches can be applied as candidates for
+Fixes: b261dba2fdb2 ("arm64: kdump: Remove custom linux,usable-memory-range handling")
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                 randconfig-c001-20211213
-sh                          landisk_defconfig
-powerpc                         wii_defconfig
-powerpc                      acadia_defconfig
-arm                        magician_defconfig
-arm                        oxnas_v6_defconfig
-arc                        vdk_hs38_defconfig
-powerpc                     pq2fads_defconfig
-arm                           h5000_defconfig
-powerpc                 mpc837x_mds_defconfig
-openrisc                 simple_smp_defconfig
-powerpc                     tqm5200_defconfig
-powerpc                      walnut_defconfig
-sh                ecovec24-romimage_defconfig
-mips                           xway_defconfig
-arm                        keystone_defconfig
-powerpc                   motionpro_defconfig
-arm                       imx_v6_v7_defconfig
-arm                         s5pv210_defconfig
-powerpc                     taishan_defconfig
-powerpc                          allyesconfig
-arm                          pxa3xx_defconfig
-sh                           se7722_defconfig
-arc                     haps_hs_smp_defconfig
-mips                     decstation_defconfig
-mips                          rm200_defconfig
-xtensa                  audio_kc705_defconfig
-mips                           rs90_defconfig
-powerpc                      ppc6xx_defconfig
-powerpc                   currituck_defconfig
-sparc                       sparc32_defconfig
-arm                      integrator_defconfig
-sh                     magicpanelr2_defconfig
-powerpc                   bluestone_defconfig
-mips                           mtx1_defconfig
-m68k                       m5249evb_defconfig
-s390                             allyesconfig
-mips                           gcw0_defconfig
-mips                         tb0219_defconfig
-powerpc                       ebony_defconfig
-arm                        trizeps4_defconfig
-arm                         at91_dt_defconfig
-arm                       spear13xx_defconfig
-powerpc64                        alldefconfig
-sh                        sh7785lcr_defconfig
-m68k                        stmark2_defconfig
-i386                             alldefconfig
-sh                         ap325rxa_defconfig
-powerpc                 mpc8560_ads_defconfig
-powerpc                    sam440ep_defconfig
-m68k                       m5208evb_defconfig
-m68k                         apollo_defconfig
-powerpc                       holly_defconfig
-sh                              ul2_defconfig
-m68k                       bvme6000_defconfig
-powerpc                 canyonlands_defconfig
-arm                           sunxi_defconfig
-mips                           ip22_defconfig
-openrisc                         alldefconfig
-mips                         bigsur_defconfig
-arc                 nsimosci_hs_smp_defconfig
-openrisc                            defconfig
-powerpc                  iss476-smp_defconfig
-m68k                          hp300_defconfig
-mips                          malta_defconfig
-powerpc                     ksi8560_defconfig
-arc                          axs101_defconfig
-powerpc                      obs600_defconfig
-m68k                          atari_defconfig
-mips                     loongson1c_defconfig
-h8300                       h8s-sim_defconfig
-arm                       multi_v4t_defconfig
-mips                      loongson3_defconfig
-arm                            qcom_defconfig
-sh                           se7724_defconfig
-mips                      bmips_stb_defconfig
-mips                         mpc30x_defconfig
-alpha                               defconfig
-mips                        vocore2_defconfig
-mips                      pic32mzda_defconfig
-powerpc                     mpc512x_defconfig
-m68k                          multi_defconfig
-arm                  randconfig-c002-20211213
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a011-20211213
-x86_64               randconfig-a012-20211213
-x86_64               randconfig-a014-20211213
-x86_64               randconfig-a013-20211213
-x86_64               randconfig-a016-20211213
-x86_64               randconfig-a015-20211213
-i386                 randconfig-a013-20211213
-i386                 randconfig-a011-20211213
-i386                 randconfig-a016-20211213
-i386                 randconfig-a014-20211213
-i386                 randconfig-a015-20211213
-i386                 randconfig-a012-20211213
-arc                  randconfig-r043-20211213
-riscv                randconfig-r042-20211213
-s390                 randconfig-r044-20211213
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
+[1]: https://lore.kernel.org/all/20211210065533.2023-9-thunder.leizhen@huawei.com/
 
-clang tested configs:
-x86_64               randconfig-c007-20211213
-arm                  randconfig-c002-20211213
-riscv                randconfig-c006-20211213
-mips                 randconfig-c004-20211213
-i386                 randconfig-c001-20211213
-s390                 randconfig-c005-20211213
-powerpc              randconfig-c003-20211213
-x86_64               randconfig-a006-20211213
-x86_64               randconfig-a005-20211213
-x86_64               randconfig-a001-20211213
-x86_64               randconfig-a002-20211213
-x86_64               randconfig-a003-20211213
-x86_64               randconfig-a004-20211213
-i386                 randconfig-a001-20211213
-i386                 randconfig-a002-20211213
-i386                 randconfig-a005-20211213
-i386                 randconfig-a003-20211213
-i386                 randconfig-a006-20211213
-i386                 randconfig-a004-20211213
-hexagon              randconfig-r045-20211213
-hexagon              randconfig-r041-20211213
+v1 -> v2:
+  Adopt Rob's suggestion to call
+early_init_dt_check_for_usable_mem_range() from efi_init()
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Zhen Lei <thunder.leizhen@huawei.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Nick Terrell <terrelln@fb.com>
+Cc: linux-arm-kernel@lists.infradead.org
+To: devicetree@vger.kernel.org
+To: linux-efi@vger.kernel.org
+
+
+Pingfan Liu (1):
+  efi: apply memblock cap after memblock_add()
+
+Zhen Lei (1):
+  of: fdt: Aggregate the processing of "linux,usable-memory-range"
+
+ drivers/firmware/efi/efi-init.c |  7 +++++++
+ drivers/of/fdt.c                | 18 +++++++++++++-----
+ include/linux/of_fdt.h          |  1 +
+ 3 files changed, 21 insertions(+), 5 deletions(-)
+
+-- 
+2.31.1
+
