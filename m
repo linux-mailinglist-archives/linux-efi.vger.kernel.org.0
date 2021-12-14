@@ -2,175 +2,241 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D2E9473994
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Dec 2021 01:33:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 38157473B7D
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Dec 2021 04:25:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242447AbhLNAdS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 13 Dec 2021 19:33:18 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:11378 "EHLO
-        mx0b-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236812AbhLNAdS (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Dec 2021 19:33:18 -0500
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1BDL6oa6021570;
-        Tue, 14 Dec 2021 00:32:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : content-type : in-reply-to :
- mime-version; s=corp-2021-07-09;
- bh=1SuRUYD8aFrsF0rfemX+wEqVy71lhYSHEYiboZyEHf8=;
- b=iYd8n+wvHT3lTTirOCQHgFSXmm7d179prf4TVu0n6HB1XAEswNovZQSYMXQww5A6dFHJ
- Tuot886pwws5EVZwjop94OSnDNxkwyqxG9vThP6664HrxwNEJgRy2Llt/GiwSWzaLLge
- xAG/2IAVOk70hHvrJug+6IIYRnyKAnK3f7TWpQvOEsmpJJk7AcH7xXf6VWmEwEFysO/1
- 8PCkZAAycQz2jwSIcXdBefzXUBEZDVUDWUeTyuQWRhs47zUxtOO79qtxdJKPe9gUZS0I
- WD3jV2t9MrUPDguKIRULsFYmMxM6DGcBUX+4UbbOYVTQnGf/uAavfoQH1daKngfNTAzC jA== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by mx0b-00069f02.pphosted.com with ESMTP id 3cx3ukaagc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 14 Dec 2021 00:32:50 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 1BE0VX1e163000;
-        Tue, 14 Dec 2021 00:32:49 GMT
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2168.outbound.protection.outlook.com [104.47.57.168])
-        by userp3030.oracle.com with ESMTP id 3cvh3wdw71-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 14 Dec 2021 00:32:48 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=c+HRswn66H7QVxiTiyv+sZJROWUyXvv+9I847/7Nus9FjYRDjCz7qrFnzm0qKU/GzQNRLFhhRemJiqj4+RhQo5B5q9SxJUFxrRXbatZC3QcwtwoBAQmaiLnnX9YjEqZfu+gnNHBtO4VuwR7ZYHZo1Iw7XIDDjCSCn2mqZO45dUKUpKTprbmYMpm1LtYo1FLtlaXXdw+aA9zqauUqQWNESCpfSjPqHFP7SS7ZqdudBZ9df1l4IK8G8M2wyFN2Uj1zBehQ5z0K9nC9dq9FCPJZUwvBCZbFnR0vHkaLGbz0a3oNn+dE8g04gb3sTiNVhmJSlravwOwmePsGk5bqeQ7Ieg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1SuRUYD8aFrsF0rfemX+wEqVy71lhYSHEYiboZyEHf8=;
- b=dEI3zO6Wd5v+mXPu89tbil26Q4nFe3Lf1Kwf6v71nePBzlRw4tahCqTI1eB6Jc+lfWNZ3xH4yagL0nYTDSCvJ3rLyTL1oU2rpX6w0pzd/ZCB8mw7DifURIX/u/Wo/uV3a19A++dq+JqsMKNYA/9PVgxILhO9YRVL9BIbRSAJfaZK8lgdELW51Ol1wbNN+rQqk49UoB3qVNpCJOWwcAhuv6BPCmHufbxBABoxhfmRj6Js5ziYLBgTHYi8v2Dgbu3Y6JtOHlEjT513wnBinv7vC3fR/NLUuXuFciO9G6DRyx3g53tc4mu8XNDX6KGvsSiqeBHp+Ft64BJNw2QQjaa3wA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1SuRUYD8aFrsF0rfemX+wEqVy71lhYSHEYiboZyEHf8=;
- b=pzlsP9pqBkvQgBH19O47OLVNSatmunGCXYfiHaIfypOCUhfKVQ3aZ8+rLhWURagK0bSDufgtvwJfgXs86+LecinM97TGwzoGus6j9OLy00k7MC7z7FS59cDWdZTaQiQ2aGajt/mqJtX6kEupDDebKaoWRr2qXhf+hHebHqT0dVA=
-Received: from SN6PR10MB2576.namprd10.prod.outlook.com (2603:10b6:805:44::15)
- by SA2PR10MB4793.namprd10.prod.outlook.com (2603:10b6:806:110::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.12; Tue, 14 Dec
- 2021 00:32:46 +0000
-Received: from SN6PR10MB2576.namprd10.prod.outlook.com
- ([fe80::4c8c:47df:f81e:f412]) by SN6PR10MB2576.namprd10.prod.outlook.com
- ([fe80::4c8c:47df:f81e:f412%5]) with mapi id 15.20.4778.018; Tue, 14 Dec 2021
- 00:32:46 +0000
-Date:   Mon, 13 Dec 2021 18:32:40 -0600
-From:   Venu Busireddy <venu.busireddy@oracle.com>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v8 05/40] x86/sev: Save the negotiated GHCB version
-Message-ID: <YbfmKJe6dDH+M/fQ@dt>
-References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-6-brijesh.singh@amd.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211210154332.11526-6-brijesh.singh@amd.com>
-X-ClientProxiedBy: SA9P223CA0030.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:806:26::35) To SN6PR10MB2576.namprd10.prod.outlook.com
- (2603:10b6:805:44::15)
+        id S231945AbhLNDZG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 13 Dec 2021 22:25:06 -0500
+Received: from mga06.intel.com ([134.134.136.31]:55685 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233041AbhLNDZF (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 13 Dec 2021 22:25:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1639452305; x=1670988305;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=N2S4LH4HfPZZ3gOn4/tRXzcIRDecyRye4gz2pOpCXQo=;
+  b=gVanW/zSTM7BppenEiTRZOOFm5ayrkR32mbuR5A8miaM70wzTC8vgjym
+   qDdtVys8UZ5C/uVjxi2HFocwgb6dqLsVVct3FvDlDdxvvpm7hRsTwEeKJ
+   pa99OiLKDHwQ0JVl3ukV1zCYsgYtLLzC08Wd1PK9wRP1AeaxUZfrdIjxI
+   AqXCMjLzoKnZ+YEof/z5ttfaEO3H5kXeeBFn8pKeWJqnn8Bmd9UxjRMMD
+   h5y96K+q4y1MJb5PBpwNPYQGLATPEmn0jYLDJPBlv/pKm4IaXHeFvHs67
+   R3VbGLe0qQ54vW67Y4BAetspd18I5BFZbipwLVi/CRlKSUNzRB+1TD+DI
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10197"; a="299667227"
+X-IronPort-AV: E=Sophos;i="5.88,204,1635231600"; 
+   d="scan'208";a="299667227"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2021 19:25:04 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,204,1635231600"; 
+   d="scan'208";a="464903479"
+Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
+  by orsmga006.jf.intel.com with ESMTP; 13 Dec 2021 19:25:03 -0800
+Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mwyR4-0007N5-QF; Tue, 14 Dec 2021 03:25:02 +0000
+Date:   Tue, 14 Dec 2021 11:24:32 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ 4bc5e64e6cf37007e436970024e5998ee0935651
+Message-ID: <61b80e70.wpuF/2oBhhyzFldy%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e9707022-3289-4223-caea-08d9be99400c
-X-MS-TrafficTypeDiagnostic: SA2PR10MB4793:EE_
-X-Microsoft-Antispam-PRVS: <SA2PR10MB47932ABD505AD80CEA052063E6759@SA2PR10MB4793.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2276;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: X2A0OpPVJ8oriVTDWRlpUevM+FIHphyFXR1Ng+TkHHzaqLT2s63IH6G79ZgI5dGAzw1I/VJFNHkT6egZryeLXjamdLB/3px2be2dWMsLgQW1Rh3lGjY5p6X/6s9QTCvkVEMTyEFpAczpHyErhMiHgjPd+GD1hKmwl/fDxTdvn6WUKQtWN1aZBAnPVHOnk8VFrd/AcVyMrIBMDpGsrxuRv928fAKE7sYYfZT2geYBWy4U8EGUyXWao3nN+AUVIGwz5oC2s462n2QrRCHpRiNsbqvcY0U8u/pIBFB+nuAjATwgU22DliETyjP9P60rUyH0IH6ZvmnXsYDY8smjgQEwj3SKy6xQ01v9vYgT4hpvUCJLXxFv8UGi40AhvZZITRBTMkJH5pnloOaWzQeG1GSUEk4XRYxlNrguLXwyRZ6OthEMln9D4LIM6nIndqEhnnOwjL1OJwofIxS7sKs7zxSVJuT7HbOgvy7CztlixwpKiBUmwUrPn5JxH5GgnU/QFkPCEYuR42wTaL/Ybbtd9TRJPMmlnKd4eiiWF1G8v07n8S50FnkSofPlqTKOk8VzwDHmy+k+zMxt3NflgZVu7buL13y+wv8OBcI/VquYKZmezIRnpvQxx+AslkpIFeEGk3iPrrpWWjf1mK1WtMY4ESdlLg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB2576.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(7916004)(366004)(5660300002)(53546011)(66476007)(66556008)(38100700002)(26005)(66946007)(6666004)(33716001)(7406005)(6506007)(316002)(4326008)(4001150100001)(7416002)(83380400001)(44832011)(6916009)(6486002)(6512007)(2906002)(86362001)(186003)(54906003)(9686003)(508600001)(4744005)(8676002)(8936002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?cprcGbuZXzE8eSoZbyQU9fVdAPR/R404QICCh1bd8NGJ+8PJrt+xzJE/0lb0?=
- =?us-ascii?Q?u9Lb+vdSdfZgfg83kcdcfr0RKAHnq87JkZNdIJiqp4HElxjOatjqXTcf/SQz?=
- =?us-ascii?Q?nzl/J94NxN27N/VbV1CMJ5cBfeZAQ5qhEA09EJFzW7ydlOdc2sEcv5O7dTsJ?=
- =?us-ascii?Q?bQt3r9aT/pEGW7mSUi/Wn4rEJvXmfnrqOTCun4XzpdTfYZtzzwhiqa0u865Y?=
- =?us-ascii?Q?h5fyE8ZAkJiEtRddV7pPyk09ZUgD/P/l1yScKnBzX6m5Eqm5nUCqixrqBlfr?=
- =?us-ascii?Q?bn9YhMQjfYpGmVyVKEf6Rv6rT2tDQwgVvxn/LNK9D+qQ1V6mwFeKO+pj8yGV?=
- =?us-ascii?Q?RkBdBSn2b+d4PUfd/uhk+a0ZiIwa28gHXbgWgrz59jCCub9bjjZTXbC7UVSA?=
- =?us-ascii?Q?xyG68xT3MOLYYtEtBsd82YlB5w5z6bltydolgm1Ft6nT7zFTfUGQJ4rFPPH/?=
- =?us-ascii?Q?kCbC9xmrSz7/lbC4byYFMVL5ErAPOvLFobfORvOveztqp0IuO2mWZbjbKogZ?=
- =?us-ascii?Q?kwdZAhO1SWGAGSDYk/wTYKPPrrN0ljnOmnpwxqdKJe25t2TIuUf0lFAaR4eU?=
- =?us-ascii?Q?13nkHYaDL4+cCJ28w976qpL4yUxlKcFLFQ63R6itI4lwWCNjM5O1thfn+jMb?=
- =?us-ascii?Q?Hq4xEki9DutBUveTy1QUZwGFTatyRyEz/H4Q5070Li6KbnZ1qMdhacu8lK3Q?=
- =?us-ascii?Q?R1DQLK8QtiI/xlkKTg4TNUJ+JJVnCdEydP3Y6JMnn7vI0tIzrfdmiInmRXxX?=
- =?us-ascii?Q?pIevbBHbgzUEqAwPExWYwZ8ghF/0V9Ha9lwaJsT7mTa48TD72dgUF0x8klK1?=
- =?us-ascii?Q?412FSyqOIifLlZw2aPPOy0z3NVgxi9ct5RAnynOGOWWTyjLk+C2tQCGYGfdn?=
- =?us-ascii?Q?oSWUAHNYw6jiy/N8LKU8Od0+KpgkE0ivnOWTlwJ2rRFVcRXapZdwML0e7eNX?=
- =?us-ascii?Q?NqruFhWvUg3S6oNmP3F4wwSEcu3uAIytpbWyKwkGI1giK0obUsgkr7hOsk2I?=
- =?us-ascii?Q?/tEpvirOdAMyfMuOQQbmkvXunPdnmRKxNhpT0Mpx9fsWxeiifS58dI5XPbsz?=
- =?us-ascii?Q?JIvTcsMVB3vld8CymqL4DzM2I89ngNCen+HP0EhArf0q9YGwVyVTccouKhb8?=
- =?us-ascii?Q?bTiY4CJxjSsuGqq6vdXfu/5w5eOEKeDCnVX1KWcF/WjbfucwGdsEJIbMVBCV?=
- =?us-ascii?Q?62VSGicok79IB0CdkRT9odljs+n+aRJT7/UixB7YtPAdoErIldaplZL7UFSa?=
- =?us-ascii?Q?6pMzUAfPK/j6F3FhknvViV5ojUx3mvjap4FvMLRh14j7Afk6aP3R0k1Z55hp?=
- =?us-ascii?Q?xkI3UL5Fqv1tIn+NBbEYU5B26a8x0sY161uO6enTvgiVhp1XaE7+vJJzvzq+?=
- =?us-ascii?Q?hDsn5ZabR/0jiazruf5mvjcIKDrApe2YVFmK5hK5qaDeliF2BxDdYRghfYVo?=
- =?us-ascii?Q?Fsm16xinDv/LLHj4v0zYoGSNIIL84i1sjbBKHDcQqqN85kBIdldz54e+EnrJ?=
- =?us-ascii?Q?bnZREENNOoxDpe2Qcmx2a+giVkEDPLc9n3rdEOXfNZQ9q5gtygrwaWTWcUVU?=
- =?us-ascii?Q?QWqsJmrKHrgKEEjVA4+TUE7TKT+K8WWEaO6xlbvzXGwH6DflBajc0EVyrA+L?=
- =?us-ascii?Q?+UBAuevo6v26gpDzhLfUB9t6b7xTPFhxYza/0UtcWiMueqHM4JIoKRiW/gDN?=
- =?us-ascii?Q?Mqk2Og=3D=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e9707022-3289-4223-caea-08d9be99400c
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB2576.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Dec 2021 00:32:46.5008
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Iko1PWT3K9oViV1YJr1tlsB1vLpCyrihdrSGIPliUuMCejaMVt2ROhNOfLOD42RrfJevAzWUH4VtaNH0BwEH3V+1PRDiFzidA1WpHAUzwEs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4793
-X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10197 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 suspectscore=0
- malwarescore=0 mlxlogscore=999 bulkscore=0 mlxscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
- definitions=main-2112140000
-X-Proofpoint-GUID: NqATZFb-5utRWwTNxn4uv2Yl5fWOPUsA
-X-Proofpoint-ORIG-GUID: NqATZFb-5utRWwTNxn4uv2Yl5fWOPUsA
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2021-12-10 09:42:57 -0600, Brijesh Singh wrote:
-> The SEV-ES guest calls the sev_es_negotiate_protocol() to negotiate the
-> GHCB protocol version before establishing the GHCB. Cache the negotiated
-> GHCB version so that it can be used later.
-> 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: 4bc5e64e6cf37007e436970024e5998ee0935651  efi: Move efifb_setup_from_dmi() prototype from arch headers
 
-Reviewed-by: Venu Busireddy <venu.busireddy@oracle.com>
+elapsed time: 735m
 
-> ---
->  arch/x86/include/asm/sev.h   |  2 +-
->  arch/x86/kernel/sev-shared.c | 17 ++++++++++++++---
->  2 files changed, 15 insertions(+), 4 deletions(-)
+configs tested: 168
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20211213
+sh                          landisk_defconfig
+powerpc                         wii_defconfig
+powerpc                      acadia_defconfig
+arm                        magician_defconfig
+arm                        oxnas_v6_defconfig
+arc                        vdk_hs38_defconfig
+powerpc                     pq2fads_defconfig
+arm                           h5000_defconfig
+powerpc                 mpc837x_mds_defconfig
+openrisc                 simple_smp_defconfig
+powerpc                     tqm5200_defconfig
+powerpc                      walnut_defconfig
+sh                ecovec24-romimage_defconfig
+mips                           xway_defconfig
+arm                        keystone_defconfig
+powerpc                   motionpro_defconfig
+arm                       imx_v6_v7_defconfig
+arm                         s5pv210_defconfig
+powerpc                     taishan_defconfig
+powerpc                          allyesconfig
+arm                          pxa3xx_defconfig
+sh                           se7722_defconfig
+arc                     haps_hs_smp_defconfig
+mips                     decstation_defconfig
+mips                          rm200_defconfig
+xtensa                  audio_kc705_defconfig
+mips                           rs90_defconfig
+powerpc                      ppc6xx_defconfig
+powerpc                   currituck_defconfig
+sparc                       sparc32_defconfig
+arm                      integrator_defconfig
+sh                     magicpanelr2_defconfig
+powerpc                   bluestone_defconfig
+mips                           mtx1_defconfig
+m68k                       m5249evb_defconfig
+s390                             allyesconfig
+mips                           gcw0_defconfig
+mips                         tb0219_defconfig
+powerpc                       ebony_defconfig
+arm                        trizeps4_defconfig
+arm                         at91_dt_defconfig
+arm                       spear13xx_defconfig
+powerpc64                        alldefconfig
+sh                        sh7785lcr_defconfig
+m68k                        stmark2_defconfig
+i386                             alldefconfig
+sh                         ap325rxa_defconfig
+powerpc                 mpc8560_ads_defconfig
+powerpc                    sam440ep_defconfig
+m68k                       m5208evb_defconfig
+m68k                         apollo_defconfig
+powerpc                       holly_defconfig
+sh                              ul2_defconfig
+m68k                       bvme6000_defconfig
+powerpc                 canyonlands_defconfig
+arm                           sunxi_defconfig
+mips                           ip22_defconfig
+openrisc                         alldefconfig
+mips                         bigsur_defconfig
+arc                 nsimosci_hs_smp_defconfig
+openrisc                            defconfig
+powerpc                  iss476-smp_defconfig
+m68k                          hp300_defconfig
+mips                          malta_defconfig
+powerpc                     ksi8560_defconfig
+arc                          axs101_defconfig
+powerpc                      obs600_defconfig
+m68k                          atari_defconfig
+mips                     loongson1c_defconfig
+h8300                       h8s-sim_defconfig
+arm                       multi_v4t_defconfig
+mips                      loongson3_defconfig
+arm                            qcom_defconfig
+sh                           se7724_defconfig
+mips                      bmips_stb_defconfig
+mips                         mpc30x_defconfig
+alpha                               defconfig
+mips                        vocore2_defconfig
+mips                      pic32mzda_defconfig
+powerpc                     mpc512x_defconfig
+m68k                          multi_defconfig
+arm                  randconfig-c002-20211213
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a011-20211213
+x86_64               randconfig-a012-20211213
+x86_64               randconfig-a014-20211213
+x86_64               randconfig-a013-20211213
+x86_64               randconfig-a016-20211213
+x86_64               randconfig-a015-20211213
+i386                 randconfig-a013-20211213
+i386                 randconfig-a011-20211213
+i386                 randconfig-a016-20211213
+i386                 randconfig-a014-20211213
+i386                 randconfig-a015-20211213
+i386                 randconfig-a012-20211213
+arc                  randconfig-r043-20211213
+riscv                randconfig-r042-20211213
+s390                 randconfig-r044-20211213
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-c007-20211213
+arm                  randconfig-c002-20211213
+riscv                randconfig-c006-20211213
+mips                 randconfig-c004-20211213
+i386                 randconfig-c001-20211213
+s390                 randconfig-c005-20211213
+powerpc              randconfig-c003-20211213
+x86_64               randconfig-a006-20211213
+x86_64               randconfig-a005-20211213
+x86_64               randconfig-a001-20211213
+x86_64               randconfig-a002-20211213
+x86_64               randconfig-a003-20211213
+x86_64               randconfig-a004-20211213
+i386                 randconfig-a001-20211213
+i386                 randconfig-a002-20211213
+i386                 randconfig-a005-20211213
+i386                 randconfig-a003-20211213
+i386                 randconfig-a006-20211213
+i386                 randconfig-a004-20211213
+hexagon              randconfig-r045-20211213
+hexagon              randconfig-r041-20211213
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
