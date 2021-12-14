@@ -2,37 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 841C8474B8E
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Dec 2021 20:10:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C078474DD9
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Dec 2021 23:22:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234578AbhLNTKR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 14 Dec 2021 14:10:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42826 "EHLO
+        id S233568AbhLNWWO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Dec 2021 17:22:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231995AbhLNTKQ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Dec 2021 14:10:16 -0500
+        with ESMTP id S231132AbhLNWWN (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Dec 2021 17:22:13 -0500
 Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FCFFC061574;
-        Tue, 14 Dec 2021 11:10:16 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20AAAC061574;
+        Tue, 14 Dec 2021 14:22:13 -0800 (PST)
 Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C80461EC02AD;
-        Tue, 14 Dec 2021 20:10:10 +0100 (CET)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 91C911EC01DF;
+        Tue, 14 Dec 2021 23:22:06 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1639509010;
+        t=1639520526;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=DI2vukmIvxeB24qycMTvikeEQ9/5m2LSUmK7BFY/UXc=;
-        b=iYY1nA/6HMelMQmtlpVuYveRU5HkIKZWb/btW1eVmU8/1GVzhoLzagRE2znZsMCw1LsF4x
-        Sy+YxuDjLUl1PYTFSjvZRBrffZF00IUbhZUYVe8ceJtpeQ2+GFh1DPllxpKzX7R8OySXr6
-        bLYmZvn3Lo8z7CwK9yueRQyYm37ePi0=
-Date:   Tue, 14 Dec 2021 20:10:16 +0100
+        bh=4lAn1SgoaQ1GQMFyEB3G1ncclFpElzPMf3D4eKuDSGY=;
+        b=pCtYT2MDftEdrpgfR/bI7xUtD+qQqvVvfVLlmTmyVaSvlV9cfrWdIwuhHRTlWGS6D1nZw5
+        K6vPAo1KUakfb8YJc8xUNim5rLZM7SjqEBv0YqBFEquAwAC/L4fe/dxGUKjlcm5qcpuPHC
+        d+yBE0ofNvjd+CCmkMCrVza1mZ31R2U=
+Date:   Tue, 14 Dec 2021 23:22:08 +0100
 From:   Borislav Petkov <bp@alien8.de>
-To:     Venu Busireddy <venu.busireddy@oracle.com>
-Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -58,34 +57,39 @@ Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
         "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
         tony.luck@intel.com, marcorr@google.com,
         sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v8 01/40] x86/compressed/64: detect/setup SEV/SME
- features earlier in boot
-Message-ID: <YbjsGHSUUwomjbpc@zn.tnic>
+Subject: Re: [PATCH v8 04/40] x86/sev: Define the Linux specific guest
+ termination reasons
+Message-ID: <YbkZEJ/R3rLcLkJ2@zn.tnic>
 References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-2-brijesh.singh@amd.com>
- <YbeaX+FViak2mgHO@dt>
- <YbecS4Py2hAPBrTD@zn.tnic>
- <YbjYZtXlbRdUznUO@dt>
+ <20211210154332.11526-5-brijesh.singh@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YbjYZtXlbRdUznUO@dt>
+In-Reply-To: <20211210154332.11526-5-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Dec 14, 2021 at 11:46:14AM -0600, Venu Busireddy wrote:
-> What I am suggesting should not have anything to do with the boot stage
-> of the kernel.
+On Fri, Dec 10, 2021 at 09:42:56AM -0600, Brijesh Singh wrote:
+> GHCB specification defines the reason code for reason set 0. The reason
+> codes defined in the set 0 do not cover all possible causes for a guest
+> to request termination.
+> 
+> The reason set 1 to 255 is reserved for the vendor-specific codes.
+> Reseve the reason set 1 for the Linux guest. Define an error codes for
 
-I know exactly what you're suggesting.
+Yah, your spellchecker is still broken:
 
-> For example, both these functions call native_cpuid(), which is declared
-> as an inline function. I am merely suggesting to do something similar
-> to avoid the code duplication.
+Reseve the reason set 1 for the Linux guest. Define an error codes for
+Unknown word [Reseve] in commit message, suggestions:
+        ['Reeves', 'Reeve', 'Reserve', 'Res eve', 'Res-eve', 'Severe', 'Reverse', 'Sevres', 'Revers']
 
-Try it yourself. If you can come up with something halfway readable and
-it builds, I'm willing to take a look.
+> reason set 1.
+
+"... and use them in the Linux guest so that one can have meaningful
+termination reasons and thus better guest failure diagnosis."
+
+The *why* is very important.
 
 -- 
 Regards/Gruss,
