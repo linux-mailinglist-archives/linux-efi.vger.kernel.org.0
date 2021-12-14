@@ -2,52 +2,217 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73A28473E54
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Dec 2021 09:40:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06A5D4745B1
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Dec 2021 15:55:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231876AbhLNIkj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 14 Dec 2021 03:40:39 -0500
-Received: from mail.thebizzie.pl ([192.236.147.111]:40810 "EHLO
-        mail.thebizzie.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229622AbhLNIkj (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Dec 2021 03:40:39 -0500
-X-Greylist: delayed 486 seconds by postgrey-1.27 at vger.kernel.org; Tue, 14 Dec 2021 03:40:39 EST
-Received: by mail.thebizzie.pl (Postfix, from userid 1002)
-        id 0016F1813C7; Tue, 14 Dec 2021 08:31:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=thebizzie.pl; s=mail;
-        t=1639470752; bh=kU+//Lu71IqgcFfjayWXuIc0mZtoyrYJc2YuqyU8eS8=;
-        h=Date:From:To:Subject:From;
-        b=Ym/65/Z6e/CLbS2k6IyTq3T8A4CxQxf4fTKiGKX3c7GERi3EcwwyxZ32hW7Nv5kxM
-         zfKEtuHSE0epJRrwvAQ7r4bwFqw6lbqKke/q2gUJno3w3sC/I02pe173QbYZV/MbhH
-         JUczt3VHQzt1kFafXLCzCQzwMXnQ30gbhq90QTW4f65bKTcVUa7WL4yfkM5E0XNnQb
-         5a2YIqO2I+rdtwkmSnBOP3UqVqtnTXoFyJdEjbb8826jK5UvAzKL3siJ7NdjG0UK4p
-         vJKwa2UtUwlvW7H8RPMfSNLl4vzkzMpIHaEAd9RFbleLL7k2GPf2umzsifB46NW5jC
-         B8Z+K8yQQ7agg==
-Received: by mail.thebizzie.pl for <linux-efi@vger.kernel.org>; Tue, 14 Dec 2021 08:31:44 GMT
-Message-ID: <20211214074500-0.1.7.1xr.0.i1hqjpx18v@thebizzie.pl>
-Date:   Tue, 14 Dec 2021 08:31:44 GMT
-From:   "Mateusz Adamczyk" <mateusz.adamczyk@thebizzie.pl>
-To:     <linux-efi@vger.kernel.org>
-Subject: Wycena paneli fotowoltaicznych
-X-Mailer: mail.thebizzie.pl
+        id S232896AbhLNOzg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Dec 2021 09:55:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38974 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235094AbhLNOzf (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Dec 2021 09:55:35 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44E1AC061574;
+        Tue, 14 Dec 2021 06:55:35 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0BA36B81A27;
+        Tue, 14 Dec 2021 14:55:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4878C34608;
+        Tue, 14 Dec 2021 14:55:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639493732;
+        bh=C2LcvhA1apLsd/J3FjPL4byMqJQOhBWtjSWge+wo0os=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=WZdob95b6Y8QdyEvI4JYHGBLLsENxY4e/ZAXWqdL6lLQURj0Pt+4jj8LRdCfrUKXN
+         GuL+PksyAyQ0g5AWJye3bFXIc+af05uSx5oW5LQtTuGEzqAKGy5mcBkVC05XQwh+4i
+         MvHzCRsKp5s8t8csmoD36SIZiTzhErAylsArbK/Qw4UBi+aM/QJkm1HzXvvxSgoE5O
+         Ejk3NSYhlPE+qlT9Fm8/1dTliH8QF3ogx+8tHC35LN6pJttaeLXF2vogcHncmlcdGn
+         P/PTwNK1HmUaiSeXI1LRzQ4LUZaTvXplODgnnzeGvqmzOsQ2czEoaq33KO1yyk9EpQ
+         dOi0tK2rk42tw==
+Received: by mail-ed1-f44.google.com with SMTP id e3so64808145edu.4;
+        Tue, 14 Dec 2021 06:55:32 -0800 (PST)
+X-Gm-Message-State: AOAM531JoinU+A+rBW3FwWAz1vX8LLRqumSTqguLewdZEibkROwlR7jQ
+        R5+brgXAfWsxYarazwi2h6bAQ+q46HN/4L79AA==
+X-Google-Smtp-Source: ABdhPJxvID0st4brf7Pqm/fwq+GHY79flSCV18kMw4vXOMU73jEh+BwF4OfwrpHFrz1ypoRgiBnA6VMQSTNocFK6Hw4=
+X-Received: by 2002:a17:906:7945:: with SMTP id l5mr6347314ejo.82.1639493730755;
+ Tue, 14 Dec 2021 06:55:30 -0800 (PST)
 MIME-Version: 1.0
+References: <20211214040157.27443-1-kernelfans@gmail.com> <20211214040157.27443-3-kernelfans@gmail.com>
+In-Reply-To: <20211214040157.27443-3-kernelfans@gmail.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Tue, 14 Dec 2021 08:55:18 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKDgwiVR_jGyUwBVvex2sPGDBocb2+5a2mEWDKMg9aSJg@mail.gmail.com>
+Message-ID: <CAL_JsqKDgwiVR_jGyUwBVvex2sPGDBocb2+5a2mEWDKMg9aSJg@mail.gmail.com>
+Subject: Re: [PATCHv2 2/2] efi: apply memblock cap after memblock_add()
+To:     Pingfan Liu <kernelfans@gmail.com>
+Cc:     devicetree@vger.kernel.org, linux-efi <linux-efi@vger.kernel.org>,
+        Zhen Lei <thunder.leizhen@huawei.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Nick Terrell <terrelln@fb.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Mon, Dec 13, 2021 at 10:02 PM Pingfan Liu <kernelfans@gmail.com> wrote:
+>
+> On arm64, during kdump kernel saves vmcore, it runs into the following bu=
+g:
+> ...
+> [   15.148919] usercopy: Kernel memory exposure attempt detected from SLU=
+B object 'kmem_cache_node' (offset 0, size 4096)!
+> [   15.159707] ------------[ cut here ]------------
+> [   15.164311] kernel BUG at mm/usercopy.c:99!
+> [   15.168482] Internal error: Oops - BUG: 0 [#1] SMP
+> [   15.173261] Modules linked in: xfs libcrc32c crct10dif_ce ghash_ce sha=
+2_ce sha256_arm64 sha1_ce sbsa_gwdt ast i2c_algo_bit drm_vram_helper drm_km=
+s_helper syscopyarea sysfillrect sysimgblt fb_sys_fops cec drm_ttm_helper t=
+tm drm nvme nvme_core xgene_hwmon i2c_designware_platform i2c_designware_co=
+re dm_mirror dm_region_hash dm_log dm_mod overlay squashfs zstd_decompress =
+loop
+> [   15.206186] CPU: 0 PID: 542 Comm: cp Not tainted 5.16.0-rc4 #1
+> [   15.212006] Hardware name: GIGABYTE R272-P30-JG/MP32-AR0-JG, BIOS F12 =
+(SCP: 1.5.20210426) 05/13/2021
+> [   15.221125] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYP=
+E=3D--)
+> [   15.228073] pc : usercopy_abort+0x9c/0xa0
+> [   15.232074] lr : usercopy_abort+0x9c/0xa0
+> [   15.236070] sp : ffff8000121abba0
+> [   15.239371] x29: ffff8000121abbb0 x28: 0000000000003000 x27: 000000000=
+0000000
+> [   15.246494] x26: 0000000080000400 x25: 0000ffff885c7000 x24: 000000000=
+0000000
+> [   15.253617] x23: 000007ff80400000 x22: ffff07ff80401000 x21: 000000000=
+0000001
+> [   15.260739] x20: 0000000000001000 x19: ffff07ff80400000 x18: fffffffff=
+fffffff
+> [   15.267861] x17: 656a626f2042554c x16: 53206d6f72662064 x15: 657463657=
+4656420
+> [   15.274983] x14: 74706d6574746120 x13: 2129363930342065 x12: 7a6973202=
+c302074
+> [   15.282105] x11: ffffc8b041d1b148 x10: 00000000ffff8000 x9 : ffffc8b04=
+012812c
+> [   15.289228] x8 : 00000000ffff7fff x7 : ffffc8b041d1b148 x6 : 000000000=
+0000000
+> [   15.296349] x5 : 0000000000000000 x4 : 0000000000007fff x3 : 000000000=
+0000000
+> [   15.303471] x2 : 0000000000000000 x1 : ffff07ff8c064800 x0 : 000000000=
+000006b
+> [   15.310593] Call trace:
+> [   15.313027]  usercopy_abort+0x9c/0xa0
+> [   15.316677]  __check_heap_object+0xd4/0xf0
+> [   15.320762]  __check_object_size.part.0+0x160/0x1e0
+> [   15.325628]  __check_object_size+0x2c/0x40
+> [   15.329711]  copy_oldmem_page+0x7c/0x140
+> [   15.333623]  read_from_oldmem.part.0+0xfc/0x1c0
+> [   15.338142]  __read_vmcore.constprop.0+0x23c/0x350
+> [   15.342920]  read_vmcore+0x28/0x34
+> [   15.346309]  proc_reg_read+0xb4/0xf0
+> [   15.349871]  vfs_read+0xb8/0x1f0
+> [   15.353088]  ksys_read+0x74/0x100
+> [   15.356390]  __arm64_sys_read+0x28/0x34
+> ...
+>
+> This bug introduced by commit b261dba2fdb2 ("arm64: kdump: Remove custom
+> linux,usable-memory-range handling"), which moves
+> memblock_cap_memory_range() to fdt, but it breaches the rules that
+> memblock_cap_memory_range() should come after memblock_add() etc as said
+> in commit e888fa7bb882 ("memblock: Check memory add/cap ordering").
+>
+> As a consequence, the virtual address set up by copy_oldmem_page() does
+> not bail out from the test of virt_addr_valid() in check_heap_object(),
+> and finally hits the BUG_ON().
+>
+> Since memblock allocator has no idea about when the memblock is fully
+> populated, while efi_init() is aware, so tackling this issue by calling t=
+he
+> interface early_init_dt_check_for_usable_mem_range() exposed by of/fdt.
+>
+> Fixes: b261dba2fdb2 ("arm64: kdump: Remove custom linux,usable-memory-ran=
+ge handling")
+> Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Zhen Lei <thunder.leizhen@huawei.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+> Cc: Frank Rowand <frowand.list@gmail.com>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Nick Terrell <terrelln@fb.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> To: devicetree@vger.kernel.org
+> To: linux-efi@vger.kernel.org
+> ---
+>  drivers/firmware/efi/efi-init.c | 7 +++++++
+>  drivers/of/fdt.c                | 2 +-
+>  include/linux/of_fdt.h          | 1 +
+>  3 files changed, 9 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/firmware/efi/efi-init.c b/drivers/firmware/efi/efi-i=
+nit.c
+> index b19ce1a83f91..82d986016fa9 100644
+> --- a/drivers/firmware/efi/efi-init.c
+> +++ b/drivers/firmware/efi/efi-init.c
+> @@ -235,6 +235,13 @@ void __init efi_init(void)
+>         }
+>
+>         reserve_regions();
+> +#ifdef CONFIG_OF_FLATTREE
 
-dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
-irm=C4=85.
+Add a static inline stub to avoid this ifdef.
 
-=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
-ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
-
-Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
-ropozycji?
-
-
-Pozdrawiam,
-Mateusz Adamczyk
+> +       /*
+> +        * For memblock manipulation, the cap should come after the membl=
+ock_add().
+> +        * And now, memblock is fully populated, it is time to do capping=
+.
+> +        */
+> +       early_init_dt_check_for_usable_mem_range();
+> +#endif
+>         efi_esrt_init();
+>         efi_mokvar_table_init();
+>
+> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+> index 18a2df431bfd..aa07ef5cab5f 100644
+> --- a/drivers/of/fdt.c
+> +++ b/drivers/of/fdt.c
+> @@ -972,7 +972,7 @@ static unsigned long chosen_node_offset =3D -FDT_ERR_=
+NOTFOUND;
+>   * location from flat tree
+>   * @node: reference to node containing usable memory range location ('ch=
+osen')
+>   */
+> -static void __init early_init_dt_check_for_usable_mem_range(void)
+> +void __init early_init_dt_check_for_usable_mem_range(void)
+>  {
+>         const __be32 *prop;
+>         int len;
+> diff --git a/include/linux/of_fdt.h b/include/linux/of_fdt.h
+> index cf48983d3c86..1d5ee19fadf7 100644
+> --- a/include/linux/of_fdt.h
+> +++ b/include/linux/of_fdt.h
+> @@ -62,6 +62,7 @@ extern int early_init_dt_scan_chosen(unsigned long node=
+, const char *uname,
+>                                      int depth, void *data);
+>  extern int early_init_dt_scan_memory(unsigned long node, const char *una=
+me,
+>                                      int depth, void *data);
+> +extern void early_init_dt_check_for_usable_mem_range(void);
+>  extern int early_init_dt_scan_chosen_stdout(void);
+>  extern void early_init_fdt_scan_reserved_mem(void);
+>  extern void early_init_fdt_reserve_self(void);
+> --
+> 2.31.1
+>
