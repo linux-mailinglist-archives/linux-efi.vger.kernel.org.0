@@ -2,172 +2,277 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 59C3A475FDB
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Dec 2021 18:52:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06DDF476080
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Dec 2021 19:17:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238469AbhLORwf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 15 Dec 2021 12:52:35 -0500
-Received: from mail-dm6nam11on2061.outbound.protection.outlook.com ([40.107.223.61]:26848
-        "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S238305AbhLORwb (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 15 Dec 2021 12:52:31 -0500
+        id S1343627AbhLOSP2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 15 Dec 2021 13:15:28 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32]:15606 "EHLO
+        mx0a-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1343605AbhLOSP0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Dec 2021 13:15:26 -0500
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1BFHw5dP030510;
+        Wed, 15 Dec 2021 18:14:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-id : content-transfer-encoding : mime-version; s=corp-2021-07-09;
+ bh=xT8Fh9kMzvIu+YvAIU7axDKgidNDef/THtLXIOP8jYE=;
+ b=y8bFCtm6DgAvjwQ0zLoXg2H42hNbWcROkSoQW8kAn7hcgekbx2hkpYyLWf76LpyW4sQa
+ Zg8h0DAuiVDoAvc+M4X4w5QL/rNlFPFWQyW7R6QXe34UDLd08Nv+uec0rNoYzhxCSBKz
+ Y0FSoc3Dn19vTN1vwNpSs+w2eX89VdYbpbZMsvI+uSOoNOjUB/UuneQIWfibnYonbUm5
+ o5j/wtyOPadL2KEgCEXlkhxpJoV/is+PdS1D+g+uR4j0KiBwk9uP0zj6vYwJYtFPbAl7
+ yecreQPOWeXGyRSAC2S1GqenEocbMVHEgWjh5PM2ovxg1TKnZZ/8pq0nvhyeFWhUEAKy 9g== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by mx0b-00069f02.pphosted.com with ESMTP id 3cykm58eek-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 15 Dec 2021 18:14:47 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 1BFHuXRa163199;
+        Wed, 15 Dec 2021 18:14:46 GMT
+Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2176.outbound.protection.outlook.com [104.47.55.176])
+        by aserp3020.oracle.com with ESMTP id 3cxmrc7ab8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 15 Dec 2021 18:14:46 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ibKRcUOBj/V4qE9wiUX2nVEqn/80DqKeBOU2t1zywZoTefmfzQkHhXnFnNll741iPEMOPEY1p+CDmxpH2+41pyMLVXvPeBVVm0+/gMTkazvShZVY+CTA0FKxuBt0aA4suV1B8Hfd4hyvHia0fVLIKgMy73s63dZSBgGzwgoP8MeTnqc3tYhFiLmE8dHhEIt6bsBTKzr79LVElAVD8BKFUoYPjKxGKGAfO6JhU8PkBaanq+JRLcfHMdO3+nhybtUmJP72dDtsTVMYH3NS7hXNcRrT3qFRD+/jEgM72EwtekfvNLZd25xk8Ns2TosWHoYpGD2BX67zC56lJ3tg+YsPlQ==
+ b=IQ656U5zRBwAZ8TlagaVuALx8e3Ow0di+ud+CPFoJyGDis5dTmZvs7E0rekCLMcaam7jX6vs3t1D7Vb0jvaVMs2fyg/hJYlPY0ia+QOFyDmd9+TqWrWai6ObckHPUbf2y09UbW3/JchPIZtBdwjqQHM1vrRTosnwuuTRm67VHZgxh8BGA4IZikZHdNS2pYnhMzu6SwcH6HM+p0iOCp59j1S11okeUZP6jF84BaZgDiJNH2rbnLh5J5MkWoqNhY6La+c1pXr+lhSDs6/BmsDH29MlCGCYj1r7Ocag1Xgd4M+LHGBqiVIq5S7gVrmY3DJPfMgs5xOq19qMjPK5lJI+HA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DzJdflHFmHa4TuGszXR9N7gtkHVUjMNdtQ/NS0c4BjA=;
- b=iY/qgUQ/YLDVHFFC6PCJg2YOMdcyXG7akRlBJGqqvgSFVh4Dy+dt84OIRAV1XCuEBU1QBK8VRUQ4TNlVYSipfttSFyYJTUi1VxE2Cf3zwWURvbeXjDE4D8h7UJjojGmqCRsGSKHoQ9K1Imcl+oanY2jnl+bWKy2atZwnyZFr6q53sZlwfoTCYoV5bvyP/UlK/FE01boLOgBhEuAqGjn2FvOICNTWUWS9VWiFD2RxXH0ozOjsa4Kz5FU4Mzf9OEyZYqj4/SRG5T0Him1mkVBTDPiKP49kLfwX9L515uWRibYMxAXj0I0XE93KvCjfIwE9Ju312XpWL0hxsdCCI59/Lw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=oracle.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ bh=xT8Fh9kMzvIu+YvAIU7axDKgidNDef/THtLXIOP8jYE=;
+ b=WSU3vKfalPfgzq7GuJ79Ek255qEPr1s2gE8InNzY3UI/riom5oj+1D1WioS00Bx9WhAF1y4Pi/wjK+N7hDEpXTb4P5uWbYIHwE8kVp9oKYnTNl5uhcfVlzOFgSM+8QviRMBEG0I7rtDgRPasRBDnwL8xgamTABg6u4iRCtT5pPnT68Vs+MsJHMgTeWv3F1ZW6MpO8Se5bHiG+yKuywNxbIGa5KIY0nsTGoD3aGn8Tt9PCAJvFJ34ve94xoklUOqEAyAdEgvRBlfLYvblW/fbuUKFUnEmMmFDyyZceAdcL4FiX9m1/5Vhc5zGs6rHRioN8q8Tjc4JRi4Ze4G11wFADA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DzJdflHFmHa4TuGszXR9N7gtkHVUjMNdtQ/NS0c4BjA=;
- b=UACLFa4vQO7aQVigPKYmf5+cVvSjZT4aJEny/q62pcOF4myYazwD1zRBG7+xos/jdx32QQlpUCmpcEwe0JyZszgLURZVs5kweRu+9WCLhdaPQ7C9xKisI59CBjICYqq/qoF42IE8QDm5NQNU5JSwcKnMoHgMCxdRBQ/G1cFRIR4=
-Received: from DM6PR07CA0118.namprd07.prod.outlook.com (2603:10b6:5:330::31)
- by BL1PR12MB5096.namprd12.prod.outlook.com (2603:10b6:208:316::7) with
+ bh=xT8Fh9kMzvIu+YvAIU7axDKgidNDef/THtLXIOP8jYE=;
+ b=ugU41m1D88n///onx3gKlo3KJtWhymex7NqEFNgt7iQTwI6O2FGltPrTmd8+/Tw/0pNnREVpQdJsyGS96wMO7tnTivDfCFyDBn5+OpIRCsS5DTzemGQOJzexNHQzUMRs2bBRrTQwbCMZeUQDfoSVvNomPJvA8kz/AqwqOihGGc4=
+Received: from CH2PR10MB4150.namprd10.prod.outlook.com (2603:10b6:610:ac::13)
+ by CH0PR10MB4827.namprd10.prod.outlook.com (2603:10b6:610:df::24) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4801.14; Wed, 15 Dec
- 2021 17:52:28 +0000
-Received: from DM6NAM11FT056.eop-nam11.prod.protection.outlook.com
- (2603:10b6:5:330:cafe::41) by DM6PR07CA0118.outlook.office365.com
- (2603:10b6:5:330::31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.15 via Frontend
- Transport; Wed, 15 Dec 2021 17:52:28 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DM6NAM11FT056.mail.protection.outlook.com (10.13.173.99) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4778.13 via Frontend Transport; Wed, 15 Dec 2021 17:52:27 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17; Wed, 15 Dec
- 2021 11:52:25 -0600
-Date:   Wed, 15 Dec 2021 11:51:48 -0600
-From:   Michael Roth <michael.roth@amd.com>
-To:     Venu Busireddy <venu.busireddy@oracle.com>
-CC:     Borislav Petkov <bp@alien8.de>,
-        Brijesh Singh <brijesh.singh@amd.com>, <x86@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-        <linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
-        <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        "Vitaly Kuznetsov" <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        "Andy Lutomirski" <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        "Peter Zijlstra" <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        <tony.luck@intel.com>, <marcorr@google.com>,
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: Re: [PATCH v8 01/40] x86/compressed/64: detect/setup SEV/SME
- features earlier in boot
-Message-ID: <20211215175148.rtgyyqgymouvs7ft@amd.com>
-References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-2-brijesh.singh@amd.com>
- <YbeaX+FViak2mgHO@dt>
- <YbecS4Py2hAPBrTD@zn.tnic>
- <YbjYZtXlbRdUznUO@dt>
- <YbjsGHSUUwomjbpc@zn.tnic>
- <YbkzaiC31/DzO5Da@dt>
-MIME-Version: 1.0
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.12; Wed, 15 Dec
+ 2021 18:14:44 +0000
+Received: from CH2PR10MB4150.namprd10.prod.outlook.com
+ ([fe80::65b8:d8e7:e373:4896]) by CH2PR10MB4150.namprd10.prod.outlook.com
+ ([fe80::65b8:d8e7:e373:4896%9]) with mapi id 15.20.4778.018; Wed, 15 Dec 2021
+ 18:14:44 +0000
+From:   Eric Snowberg <eric.snowberg@oracle.com>
+To:     Mimi Zohar <zohar@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>
+CC:     "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "dhowells@redhat.com" <dhowells@redhat.com>,
+        "dwmw2@infradead.org" <dwmw2@infradead.org>,
+        "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "jmorris@namei.org" <jmorris@namei.org>,
+        "serge@hallyn.com" <serge@hallyn.com>,
+        "keescook@chromium.org" <keescook@chromium.org>,
+        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
+        "weiyongjun1@huawei.com" <weiyongjun1@huawei.com>,
+        "nayna@linux.ibm.com" <nayna@linux.ibm.com>,
+        "ebiggers@google.com" <ebiggers@google.com>,
+        "ardb@kernel.org" <ardb@kernel.org>,
+        "nramas@linux.microsoft.com" <nramas@linux.microsoft.com>,
+        "lszubowi@redhat.com" <lszubowi@redhat.com>,
+        "jason@zx2c4.com" <jason@zx2c4.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        "James.Bottomley@hansenpartnership.com" 
+        <James.Bottomley@hansenpartnership.com>,
+        "pjones@redhat.com" <pjones@redhat.com>,
+        Konrad Wilk <konrad.wilk@oracle.com>
+Subject: Re: [PATCH v8 09/17] KEYS: Rename
+ get_builtin_and_secondary_restriction
+Thread-Topic: [PATCH v8 09/17] KEYS: Rename
+ get_builtin_and_secondary_restriction
+Thread-Index: AQHX4O2pDdgPDu39Wk2pZOJ3EdBmzqwWj2cAgAXMOQCAAR68AIAAN5SAgBZLdwA=
+Date:   Wed, 15 Dec 2021 18:14:44 +0000
+Message-ID: <31FE813A-91D5-46B8-9658-21F3F1418643@oracle.com>
+References: <20211124044124.998170-1-eric.snowberg@oracle.com>
+ <20211124044124.998170-10-eric.snowberg@oracle.com>
+ <fb1d583f588e3f46fdadbe3cf6288bb098ff45f8.camel@kernel.org>
+ <8906F8A4-313F-45E5-8ABD-A1A2D07BFD93@oracle.com> <YadOLrHb14MEfphi@iki.fi>
+ <61f5d74f861ce1015831649d3bca9272a2e3b7bf.camel@linux.ibm.com>
+In-Reply-To: <61f5d74f861ce1015831649d3bca9272a2e3b7bf.camel@linux.ibm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-mailer: Apple Mail (2.3608.120.23.2.7)
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 99e81cd5-7d6b-413e-c459-08d9bff6c54e
+x-ms-traffictypediagnostic: CH0PR10MB4827:EE_
+x-microsoft-antispam-prvs: <CH0PR10MB48276B70DB6C787DA8EE98D987769@CH0PR10MB4827.namprd10.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6790;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Ofbt8VLsz+252ZNoPqSLmCkQzElx3Ha9s5sNXO7/HYwShDKfgknlcSrX6VGXzw7XoAGQqCR8RqoRmi1zMGfs9dgixYKVT/iu1OkoJs3HYyyp5ZGv9DdtjJ0jOVEsgQ2QNoKZsprGj1HPctInFp4YEEMUrsumFOjpSTzoCqGa1b2T8k0OrLxo+uhR8ftk+5StW8SY1EmZ2QhSBudDuPNSY5NudQm3J6BAKT1zrchK8X012CAxrXg+eJqkk18jnyP+vSALAHyWL9KJv+2n0eVenQjVljwnIblDKGdbRAi4zRBSu14R1yS6MPIeUjYIRp5954WsRTB0GwBJ8rdOd1pUapx4iVWGXvj27VgLx55auugo8wOUQUdZ9NljjzpQ9WYleG3TCfGK1uuVxWhZ5t7XKj+xUDQd4SI1QERRvwaLOiIS1C0F/A4rRnKGHXeLeyzsjV7yAWsig236urliABVTSP+swB+b3RnK2h0rTJp4QHOvfNhp9JHHX/NfCv1Hy5fgmMDm/ZMGg5pmHQXxt98Ogy8+g83Wp7luqcLM2d6fpfCq+D68GvYCTkPXqA8SDxlxsn/h8YyYKoOLJFd9Q9IwqhBWIS0m7vgbTT9ASIQyTEu8/mx04jJ8i+mI6BXJDX/765jwT4zI4gmzHV3Q/O14XncmksL3sQ51shqMS4jMqisgzYp2E9EaUzaYkG1GEJj+cd/tRt73xU9Uxy0Mu7UMs8RGKNONuzRFT9tOrxn60SM=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR10MB4150.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(7416002)(316002)(66476007)(66556008)(76116006)(508600001)(4326008)(2616005)(44832011)(86362001)(6512007)(66446008)(5660300002)(6486002)(83380400001)(66946007)(91956017)(71200400001)(64756008)(122000001)(36756003)(54906003)(8676002)(107886003)(38100700002)(8936002)(33656002)(2906002)(186003)(6506007)(38070700005)(110136005)(53546011)(4001150100001)(45980500001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?cgWnJK64xH0TWy9AkJFCcXOLCP8sek7F/1JddlYP82gQUF0jfQi2IGkScuBQ?=
+ =?us-ascii?Q?xabto89yvy88D9ZfGmEkYf1E/tuw/nvD43XLNuNx/YQaVez73XD4KCJV/yPz?=
+ =?us-ascii?Q?9IgUuhyOowhDKczZgPCOPoqsnGTG2/LBdVH4qff0CQpUCn6zOrWqOrrecbOh?=
+ =?us-ascii?Q?OpWJDgnC6TPKtTfqKyuckvPoaXFUi4qTuKVQ+VXJUoJninI8lT3EyasR5YKU?=
+ =?us-ascii?Q?5szAONSDv3RyJc5Mzj/xwZNQPcwIkEMfgVyr8/ziiqRbGOEGiueBpSBwBgrr?=
+ =?us-ascii?Q?ZMhdWXK/5y7aPWILO419a6C66RXqf3Mx2IpZl98w3chNrDfKdjaKa8tAvaO3?=
+ =?us-ascii?Q?WeOWZmdgvUUfbd1864Wmi5CnVoDE1xgVxPrcYCVhNOF/v30qVBVA7DIMsG0b?=
+ =?us-ascii?Q?xCecfTLUSvbgHyAhM3ZnNNlxGgE2fPfTFFRSCEA6fH4+DgPJ8f7otnoZNxXE?=
+ =?us-ascii?Q?HsBGGu5iiv8yRPE24h1Lvw8rXiiiCHZCEXBExl++TDn/5WLIyjdlBd5sZAA+?=
+ =?us-ascii?Q?iqOG2ShqCMMJS8kuhBoArD5U7Rm0/8u6Kz4QX6GajTexl34Bo0YzZOZ0jtG1?=
+ =?us-ascii?Q?jupOte/gMfNM53+s8acU6agR0asgndKhf7de0A//JwunVknbg2wY2xIla9sq?=
+ =?us-ascii?Q?UVHAMcppz38Kv0ZhlrLCGY7vXP5C42agJnTBcnbPTxj1iUUA4eVMHgPST0kR?=
+ =?us-ascii?Q?AQ9qVWw3gAB5Hw3SS7eJGzASo8RI6nSDMlSoXW0UunJgHP9hAYUp7Y/HHzfa?=
+ =?us-ascii?Q?r7mJdsM+gToPr8XT7mSboTTvgIvDmb4jpREIuIcHWF25vnWs4UCJ8IgTJT/u?=
+ =?us-ascii?Q?uhtqhuGgw7xX2YKYGtfLCaCYoTiqti/TjBJ3GXtE3Qx0d397uIb06c8y7PWl?=
+ =?us-ascii?Q?arcSidUqrKVizjRbhdZ0h7bzBirUgBPYuY4seUkHQkJew4lUPOK94MCz7PKa?=
+ =?us-ascii?Q?dnu43sggDUku6dj59Ha6UYh5JKtq2d6ACR101NfUpUbqmMH0EaMrI2CDwhpI?=
+ =?us-ascii?Q?tco04lKH69NyDQfZIUiPRzsIgHHxic0RAgmFQxMgAALZJVV3DDB5YaB14Kj+?=
+ =?us-ascii?Q?1S04va/1kHZGsmfk9pYc0iPSHiacKm4wZYrCbxa+4XpDu+rK5omNZ+2X9kGz?=
+ =?us-ascii?Q?Pv8utcj6Vyko5j2ggQnwEidcwqJs1JTJQG0MoO6gUmsoEcNs8IZMMS5Pec0D?=
+ =?us-ascii?Q?xlo62nS35+Yh9vNJOikyTwwvk3rjuCkfAKvrtSEDqmYLpihUXYSfYuflDik6?=
+ =?us-ascii?Q?WN6KyPE178UBoowz8QD9RAeuhaTNhaapJ0rLGJlu2px+hMwAegkOJ8jlJH3l?=
+ =?us-ascii?Q?vxnO3UULinM2Dsb+AOnFq+5+abgk9lSI3CH6sSsbVD04QrJevSK090WHAvYG?=
+ =?us-ascii?Q?miytPESeFvUnU44ZyZyKaDNY1+JKniBEPlWGu/btv3GPcppHfq4ClFeHtmBM?=
+ =?us-ascii?Q?G+7gQPNISgtYrixM89A9jctWzEawW3C95P0eRO1jySJe61KllxQu5dQ3Xltu?=
+ =?us-ascii?Q?6W69GsjNHr37y47ZdicyowqaYD1wvU6Ewj12rSVeH8VRTvwWr0mDgdPEj0O5?=
+ =?us-ascii?Q?Va/TkWbMpOPnCn7CxPBZob/1Bl607LpDf1nxkKz1uMN72rxFL6ddqsCjjKdQ?=
+ =?us-ascii?Q?i8mwWHX00OQ/dVGdIOphrmpNhXsGl2OvCR33Zr7j75KGQgZU75ofSnsRQDgz?=
+ =?us-ascii?Q?fjzEZhrZBdEnoowyHF/B8rraX1rBU3zpRbtfVZVi/e5fSH3C?=
 Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <YbkzaiC31/DzO5Da@dt>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a5af497e-5be6-485b-dfeb-08d9bff3a8dc
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5096:EE_
-X-Microsoft-Antispam-PRVS: <BL1PR12MB5096A95C2DBBF31A5B91149F95769@BL1PR12MB5096.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5516;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 6vj+CmqGPoS+IdnKq808awTf2W+Hrxu1M2OkzJ89l8nvHbekLGX2gwjb8lS09T0EpPwDT0MrENCuXBhr1bAuaZx8KVje0OU5uG5qhcw4Dzuw3PuywuyQmp5T/p8xwLoQg5MRWblWv9E4ZR2Wp33xUa6DFE0PWG1pcYrNdfiJItf/+OShuYbneAVDneNmeGi3VUemhLxp2puaNPJYTDXRgAhn7hAzvowzz1+CKWWn3aHiVLaXz8OhO9fht2er3mF1ANIMHLSlucMLI8GI3S2eb41JLBk+6W9wQx/wHeA5n+jbRCxHuTZj6o4i/lkjPE+EPSdqiYni2zlxDpGUd75zUJkRQb/gUfSsyRBgmLVJYLFK5wR+QTm4NbDjyQsJvTDKv6xCiU53zer4qsgnfUYn5i07AyKU+zwfsO3Yfz6ZVGM5vKzvCB5IuqJ2ujULBX7jli7bIlgMessuDtweXFihmFv4IBOODrSulfZppMHDMkMsXjniHDC6Bj5Sn7rs1Huaz2qJ7oETQ4k1rh+MPZX/TATlVAhN5eI/mfW9iOczeHcYZOSqNXVIaR3Vxw3SGJmFSJeIKxUJ+eVFoP39NUl/rtXvBprfZ/b/lmPZqXrtMAa8WRhadQv2NeX1FpnzuGAeqhsBeVM2G66A/Bs0BVISbXpsr5WFCZH1e3eNbz5u5Rkxi6jIXvDVCZSZ4BkqauW1I+RwazX296MvHNgVRzvQeo20HOoHV6ErVtxlE4vWWkTVuwsmtinL7kZUOn0yTUgLhnZzylgT60HfgshZ22yJyb3Ap/szCsdyvw2rKNY49fIgiFbVMOZyANq+utZZJjlK8W+bYHSjo2vxMfZq6JOtBBfpllDNu425/JYoYqKGvofQYjxQv3D3hZQgJhwXMV5d
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(36840700001)(46966006)(40470700001)(47076005)(82310400004)(8676002)(4326008)(7416002)(5660300002)(7406005)(356005)(8936002)(40460700001)(36860700001)(81166007)(70206006)(2616005)(26005)(6666004)(1076003)(6916009)(36756003)(16526019)(70586007)(45080400002)(508600001)(336012)(186003)(44832011)(53546011)(316002)(2906002)(4001150100001)(86362001)(54906003)(426003)(966005)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Dec 2021 17:52:27.9704
+Content-ID: <BBD756BBB259AD418485FD83577B4CB6@namprd10.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR10MB4150.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99e81cd5-7d6b-413e-c459-08d9bff6c54e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Dec 2021 18:14:44.1276
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a5af497e-5be6-485b-dfeb-08d9bff3a8dc
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT056.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5096
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: bXla887beIeLxpwcqj0LhDhTz6YIzXfKcqOFgrvR/xT+9PG1G+chlE9fbCJ1ECcfboWjHxr8StU35tcxQcD7vCNoy/70mmWtOFn+UOvOEJ8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB4827
+X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10199 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 spamscore=0
+ mlxlogscore=999 suspectscore=0 adultscore=0 malwarescore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
+ definitions=main-2112150101
+X-Proofpoint-GUID: Ui4k1O4r0BhR4ly9aPHpzXQDYU4cPFJg
+X-Proofpoint-ORIG-GUID: Ui4k1O4r0BhR4ly9aPHpzXQDYU4cPFJg
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Dec 14, 2021 at 06:14:34PM -0600, Venu Busireddy wrote:
-> On 2021-12-14 20:10:16 +0100, Borislav Petkov wrote:
-> > On Tue, Dec 14, 2021 at 11:46:14AM -0600, Venu Busireddy wrote:
-> > > What I am suggesting should not have anything to do with the boot stage
-> > > of the kernel.
-> > 
-> > I know exactly what you're suggesting.
-> > 
-> > > For example, both these functions call native_cpuid(), which is declared
-> > > as an inline function. I am merely suggesting to do something similar
-> > > to avoid the code duplication.
-> > 
-> > Try it yourself. If you can come up with something halfway readable and
-> > it builds, I'm willing to take a look.
-> 
-> Patch (to be applied on top of sev-snp-v8 branch of
-> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgithub.com%2FAMDESE%2Flinux.git&amp;data=04%7C01%7Cmichael.roth%40amd.com%7Cbff83ee03b1147c39ea808d9bf5fe9d8%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637751240979543818%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=DZpgEtthswLhhfWqZlLkHHd5nJW2jb%2FVFuTssAFJ6Uo%3D&amp;reserved=0) is attached at the end.
-> 
-> Here are a few things I did.
-> 
-> 1. Moved all the common code that existed at the begining of
->    sme_enable() and sev_enable() to an inline function named
->    get_pagetable_bit_pos().
-> 2. sme_enable() was using AMD_SME_BIT and AMD_SEV_BIT, whereas
->    sev_enable() was dealing with raw bits. Moved those definitions to
->    sev.h, and changed sev_enable() to use those definitions.
-> 3. Make consistent use of BIT_ULL.
 
-Hi Venu,
 
-I know there's still comments floating around, but once there's consensus feel
-free to respond with a separate precursor patch against tip which moves
-sme_enable() cpuid code into your helper function, along with your S-o-B, and I
-can include it directly in the next version. Otherwise, I can incorporate your
-suggestions into the next spin, just let me know if it's okay to add:
+> On Dec 1, 2021, at 6:46 AM, Mimi Zohar <zohar@linux.ibm.com> wrote:
+>=20
+> On Wed, 2021-12-01 at 12:27 +0200, Jarkko Sakkinen wrote:
+>> On Tue, Nov 30, 2021 at 05:21:45PM +0000, Eric Snowberg wrote:
+>>>=20
+>>>=20
+>>>> On Nov 26, 2021, at 5:49 PM, Jarkko Sakkinen <jarkko@kernel.org> wrote=
+:
+>>>>=20
+>>>> On Tue, 2021-11-23 at 23:41 -0500, Eric Snowberg wrote:
+>>>>> In preparation for returning either the existing
+>>>>> restrict_link_by_builtin_and_secondary_trusted or the upcoming
+>>>>> restriction that includes the trusted builtin, secondary and
+>>>>> machine keys, to improve clarity, rename
+>>>>> get_builtin_and_secondary_restriction to get_secondary_restriction.
+>>>>>=20
+>>>>> Suggested-by: Mimi Zohar <zohar@linux.ibm.com>
+>>>>> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
+>>>>> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+>>>>> ---
+>>>>> v6: Initial version
+>>>>> v7: Unmodified from v7
+>>>>> v8: Code unmodified from v7, added Mimi's Reviewed-by
+>>>>> ---
+>>>>> certs/system_keyring.c | 4 ++--
+>>>>> 1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>>=20
+>>>>> diff --git a/certs/system_keyring.c b/certs/system_keyring.c
+>>>>> index 692365dee2bd..8f1f87579819 100644
+>>>>> --- a/certs/system_keyring.c
+>>>>> +++ b/certs/system_keyring.c
+>>>>> @@ -77,7 +77,7 @@ int restrict_link_by_builtin_and_secondary_trusted(
+>>>>>  * Allocate a struct key_restriction for the "builtin and secondary t=
+rust"
+>>>>>  * keyring. Only for use in system_trusted_keyring_init().
+>>>>>  */
+>>>>> -static __init struct key_restriction *get_builtin_and_secondary_rest=
+riction(void)
+>>>>> +static __init struct key_restriction *get_secondary_restriction(void=
+)
+>>>>> {
+>>>>>        struct key_restriction *restriction;
+>>>>>=20
+>>>>> @@ -117,7 +117,7 @@ static __init int system_trusted_keyring_init(voi=
+d)
+>>>>>                               KEY_USR_VIEW | KEY_USR_READ | KEY_USR_S=
+EARCH |
+>>>>>                               KEY_USR_WRITE),
+>>>>>                              KEY_ALLOC_NOT_IN_QUOTA,
+>>>>> -                             get_builtin_and_secondary_restriction()=
+,
+>>>>> +                             get_secondary_restriction(),
+>>>>>                              NULL);
+>>>>>        if (IS_ERR(secondary_trusted_keys))
+>>>>>                panic("Can't allocate secondary trusted keyring\n");
+>>>>=20
+>>>> This is wrong order.
+>>>>=20
+>>>> You should first do the changes that make the old name
+>>>> obsolete and only after that have a patch that does the
+>>>> rename. Unfortunately, this patch cannot possibly acked
+>>>> with the current order.
+>>>=20
+>>> I can change the order, but I'm confused how this would work for a git =
+bisect.=20
+>>> If the rename happens afterwards, now two patches will always need to b=
+e=20
+>>> reverted instead of the possibility of one.  Is this your expectation?
+>=20
+> If the keyring name change is independent of any other changes, as
+> Jarkko suggested, nothing would break.
+>=20
+>> I'd drop this patch altogether. Old name is a bit ugly but does it matte=
+r
+>> all that much?
+>=20
+> The name "get_builtin_and_secondary_restriction" implies trust based on
+> keys in the ".builtin_trusted_keys" and ".secondary_trusted_keys"
+> keyrings.  This patch set is extending that to include keys on the new
+> ".machine" keyring, by linking it to the secondary keyring.  Is leaving
+> the name unchanged really an option?
+>=20
+>>=20
+>> You already 16 patches without this.
+>=20
+> Agreed, it's a lot.  In the past, I've asked Eric to see if some of
+> them could be squashed.
 
-  Co-authored-by: Venu Busireddy <venu.busireddy@oracle.com>
-  Signed-off-by:  Venu Busireddy <venu.busireddy@oracle.com>
+The series grew based on requests added in each round.  How about
+I drop IMA support from the next round?  This would eliminate nine patches
+from the series (5, 6, 7, 9-14), leaving six patches to introduce and enabl=
+e=20
+the new machine keyring (3, 4, 8, 15-17).  The first two patches could=20
+be taken today.  The only reason the first two are included is to get this =
+series=20
+through the kernel test robot.
 
-to the relevant commits.
+This would allow the machine keyring to be used for module signing.  Afterw=
+ards=20
+I could introduce the CA restriction behind another Kconfig in a different =
+series to=20
+add back IMA support. Let me know if this would be a better approach.
 
-Thank you (and Boris/Tom) for the suggestions!
-
--Mike
-
-> 
-> Venu
-> 
