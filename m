@@ -2,298 +2,186 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D27A547768F
-	for <lists+linux-efi@lfdr.de>; Thu, 16 Dec 2021 17:03:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 660ED477905
+	for <lists+linux-efi@lfdr.de>; Thu, 16 Dec 2021 17:28:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238767AbhLPQDk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 16 Dec 2021 11:03:40 -0500
-Received: from mga17.intel.com ([192.55.52.151]:37099 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238752AbhLPQDk (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 16 Dec 2021 11:03:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1639670620; x=1671206620;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=pD01qFZ5mbyeO7R5ATzoBT3Dqn5HAmgI4JIXxSUsx8k=;
-  b=O3QRv9yDoBxd7MAFfhviyUNinAgGTv+M9hixmaBbap2H3fsYj9jadrw6
-   FoeybrEMyeqhJNwpVefUE4/uwej3EahYx+orrGTDkiUaTVmu0PzQGPlB7
-   BrLhzI3JQJtwY8CerBzTMZ86N7rCiCffY4tQJmx15e5MXxKrwKGmKewkb
-   Udjf2VT/cF91KdukTTNC3DOlyeJ35/bGWy5Qmz6jqtWkvBfqo5CCPYPdP
-   HnRQHKJS1IfO4AnjIZ74qkz+CSQZd4s234D5D157w7kPNUbmQr7IISmTw
-   WJyDpPEoOO15sCoTUCG7zJgOaiMO625LMb4JAz9OyOExZzciStitquXlk
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10199"; a="220209129"
-X-IronPort-AV: E=Sophos;i="5.88,211,1635231600"; 
-   d="scan'208";a="220209129"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2021 08:03:01 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,211,1635231600"; 
-   d="scan'208";a="662492722"
-Received: from chenyu-desktop.sh.intel.com ([10.239.158.186])
-  by fmsmga001.fm.intel.com with ESMTP; 16 Dec 2021 08:02:56 -0800
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        Ashok Raj <ashok.raj@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Mike Rapoport <rppt@kernel.org>, Chen Yu <yu.c.chen@intel.com>,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-Subject: [PATCH v12 1/4] efi: Introduce EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER and corresponding structures
-Date:   Fri, 17 Dec 2021 00:02:31 +0800
-Message-Id: <81fc0ea7a82c890770d584136bce990945b4b9fb.1639669829.git.yu.c.chen@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1639669829.git.yu.c.chen@intel.com>
-References: <cover.1639669829.git.yu.c.chen@intel.com>
+        id S236555AbhLPQ2y (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 16 Dec 2021 11:28:54 -0500
+Received: from mail-bn8nam11on2071.outbound.protection.outlook.com ([40.107.236.71]:32225
+        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S233854AbhLPQ2x (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 16 Dec 2021 11:28:53 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WXPkmwQbV9UgszPDMsW01F8QIBt2PdLSMI0xQ3q96HMmYXuE2JxnX1aEVrOOrkOOxzMDnHuvRd5wPOyyQEYLk7cyk1ZJBHsDlgeH7eEhseB/BSLjsXg7KGPTVWwvAp/JBSM0LVY2lj2c6tWVRV8tWNfkk2XE5QOUDoUUAEJ/h+nQErfR39MebzXsfCjPkY/KqIiTF7KnH8MujbLzzevV5vXlB42FklX8MkwMb6HUt0XmqPe/EI/VaiJ2aaprJ/wopeBM8DSSsLYuEKrKDU7D3iWXSaPBXOhzX130LJ0lD9lhknKT3Hs3jfWDXhQrNFj/MKuC9GTtM/5WWQyIV+Jmrw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=j7OhKhPHsQ5ychtqhgnYj+OJWkZfAGF52K7lrOqPGJo=;
+ b=IwIGyR36c3YsdxodQ6Z3n1QhORLRG59vMchjo7Vjb9XGwK9MkfsjF5iP6RZ2t2wwsJrYqYcR0lRwxtrViDJFrwL1KqbA/zNM+/hbia4Sxq7UyZcA+Ltr47c0Vi2HF35owiPQoCP9VU7npKfIRzA3H6tUi9QeWwslmJsh7jLVLwVRpEYdcog1fz6kbx6ji9UvXJm2m8rFu9cqJBWW6mgE6tJYqkDp1pJkNFqpuvKGJtmkzMG8jFibbInxEtWqCrNMNOsu3pGMt7H8MLeZvjlX0k5IRRFouqSUS8bJ7QJ98BzsLuGdRUJd6KFDnMf2iTcK69Aip776QJf9FoS42CmSYg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=j7OhKhPHsQ5ychtqhgnYj+OJWkZfAGF52K7lrOqPGJo=;
+ b=mic58NHjPDFKV5K8dO325+f6CeDQQZMjgHNMLMm+USESo6+ufYLyupVrJWqVsrLHTcHFRG4bJfmExSjENBb3GMcjgRgYLXV3R6GWLn/dHdF3pxb3HvEsC7T1Jm4O+h4oLEDaWNMc4ZKXQIOjsQ6myHdygFP6CFyyXwByM/4+lOc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by SA0PR12MB4384.namprd12.prod.outlook.com (2603:10b6:806:9f::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4801.14; Thu, 16 Dec
+ 2021 16:28:51 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::35:281:b7f8:ed4c]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::35:281:b7f8:ed4c%6]) with mapi id 15.20.4778.018; Thu, 16 Dec 2021
+ 16:28:51 +0000
+Cc:     brijesh.singh@amd.com, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v8 06/40] x86/sev: Check SEV-SNP features support
+To:     Borislav Petkov <bp@alien8.de>
+References: <20211210154332.11526-1-brijesh.singh@amd.com>
+ <20211210154332.11526-7-brijesh.singh@amd.com> <Ybtfon70/+lG63BP@zn.tnic>
+From:   Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <225fe4e5-02de-5e3e-06c8-d7af0f9dd161@amd.com>
+Date:   Thu, 16 Dec 2021 10:28:45 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+In-Reply-To: <Ybtfon70/+lG63BP@zn.tnic>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH2PR07CA0028.namprd07.prod.outlook.com
+ (2603:10b6:610:20::41) To SN6PR12MB2718.namprd12.prod.outlook.com
+ (2603:10b6:805:6f::22)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 2febced1-6ea7-4c4a-184d-08d9c0b1249e
+X-MS-TrafficTypeDiagnostic: SA0PR12MB4384:EE_
+X-Microsoft-Antispam-PRVS: <SA0PR12MB43848A8EEB5130A85DD2639FE5779@SA0PR12MB4384.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: A76Tjz2mI9VXobBu8vGONoY08sZA2AFJA3ul8nhyVBniPsNtzb+N7ryR8Uw4oCesFO7YZd7e0IxbXHS8jxdkGmh1j5mtcTZYfYcftBxmbjqBVz/wyvCDVHrZxFCXUOxrTcZQYzbh9xck+HmqByo65DF3aBUtm0ZVYwckKB2ULIjHbbljtO6xboqlaR0z9c304sKp1fl5mw3bUVqwjC2BEaN1L5w2z4560jrt9LBZS9D9bEef1cSQLZgLa4qH0nTiY7t4YnAja09r09HFgPR7Y69i84klRHFxVruyGx1i9V+0zxq8Wm0m5dlqzu/R8vLaQkQTpMAOM+/e2JW6oC4pKvP0gCCS+0Gt1uvI3TEEi/OwzZ50vbc8H2bQnNIi8OCZQnNI6kUHeWUQKKKsHz9FjG6QxLwdQSsFcpEBdqVT2K5TAKlrkogU2iCS8epn6cot5eV5Ky3qOj5ICo75yDPM3jEx4SPgiTzEkSBGJ82bvcIlA5Ey5vuy+zsr+xsDeubVmONdmq0MwPD7Gy0m8ZiIGiUumKSGX65Yiy/Mre2uFLfjjpaskgGCiwTBAyD1jGcvesfnm9nrGGbP4vSwZiICfLbplzVaWNNLUXKvBo+oNtJ32yvwxOU9t22b4MzWn3vqKXV3/J597DCXvqLkZACeKuV4NzrRg7EEDwZ1lq0WZBT/Ao93bkFl02pHlA/wJmUV/ktbLLWoklIk47cMej4fQnybRw1bEIqXrlhDgKFXXME=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(2906002)(7416002)(66946007)(6506007)(7406005)(5660300002)(53546011)(44832011)(66476007)(4326008)(2616005)(6512007)(38100700002)(316002)(66556008)(186003)(86362001)(8936002)(31696002)(31686004)(508600001)(6916009)(8676002)(54906003)(26005)(6666004)(36756003)(6486002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bHd3M0UwMGVFUFlWY0hWL2t1Y1JmaEdrZ25YWFhZWmx4RktjMFBFVTI1dzlN?=
+ =?utf-8?B?VFA3TkdZOGNVQmsyS2FHRVFLdllGZnkxK3lhYURRRTAyeER0ZEtFRUxpTldG?=
+ =?utf-8?B?Z05PZlJzamNiRVJBdHU1TFdBSXhIMHZYVXBEbGFkaHVxZzNndEhHUnZqclg0?=
+ =?utf-8?B?VWgwNmNYNktodG01YS9UTHdQQlBkNnNVU21WMEprbDFydmdldU1NRmNjK29X?=
+ =?utf-8?B?cnhpakM3M3Q0TGhYajgxMDMySklueG03YU56bWF2WE14TXhOVlBkSnB2aHZ1?=
+ =?utf-8?B?M01GUFRBY2R4cXNjWGVpYngvQ1BjM0dsZVpmUEZadUlvN3QvVWRYYW9VbEpy?=
+ =?utf-8?B?YnA5c0thY3BTNFZYTEg5YU5CTXgyL3pOTzlTTWpGY1U2M00vTGxzTmtnWE10?=
+ =?utf-8?B?emF3eFNxRy9ob1U4UEdDdFJCOXp4MDlrNzFCeGtmQmtCRHVaUHNMa0t0NXBQ?=
+ =?utf-8?B?eG9yVnNNK0hkZnVHQTlTMFpBbWd1SG5WdWphOUNyNUZCUXBYSEhJbEVRVHo3?=
+ =?utf-8?B?WFRJOFFwSDlBeTAvRTgvWnJ6bXBVNkVoSmlvbkM4QUJqTm55UjF0bE5OK1da?=
+ =?utf-8?B?YkkwRmhhRXRoSFdxWnkrK21ZMGZGdnVpM0h6dGgyTW4zQit6cGRPcVJKeTNI?=
+ =?utf-8?B?RCsvUjZDWmtMd01iU1RYOTgwVkRvaUlLM2lQZ3Eya3NBMEM3b01pUERlbFQr?=
+ =?utf-8?B?S1Z5RGpvNmNLRVM0cEswY0dROENOajVQNGpycjRlYlZmanVLQXVZZDVvY1lq?=
+ =?utf-8?B?UlNZWUg2TkNqQ3BjcE9UTTdnZ1R5N2VFb3pYNi9PWm1CWlBnWVkwT05jZzZm?=
+ =?utf-8?B?N3FwaGpVZFoyRjZEK3FLeG1GWCt2bmROVU9vZmkxMjNTNHFTTWM5WTNONzFT?=
+ =?utf-8?B?by9rRnBwczRraVRQbFUzaSthWmdTTDBuWDF0VWJxSFRzd2lUQ0lNZk1zek1v?=
+ =?utf-8?B?K0tHTVFzZjF2SDVEZ2tpempHc2ZqOFpCTnRrQytoOFJUcWp5djhtSEZENXMz?=
+ =?utf-8?B?ejJKVnMvVXJXaXRSYXhmOUFLcnBJck1zYjRIYlMvU1FsajVsdHpocXNHMGE5?=
+ =?utf-8?B?RVRGckgrdDJ2SHRCRmlBeHgxSlUwYXhjN20xNmY2WFQyL2hXRDhTL1hSQzFC?=
+ =?utf-8?B?KzZ1NWlOK2FVTFhZYUpHWE9BcW1Iekovb2ZDTlR2ZGhpSktKZFJ3N2pFOVkr?=
+ =?utf-8?B?OUNkWUZjU2h4eGErUUFiTkxJdkxMRzBrQUlpeUJiRFpFSGkvMkNncFkzbU5H?=
+ =?utf-8?B?aHR3LzV0V1Q1ZjVkTyt1d3BUNEZOaHZ6b2ZxM25mQ040NkI2dEdsMm01NTFV?=
+ =?utf-8?B?bFFJR2IyaDFMQlBMeUd0ZWs2VDRheUNzcm5UR2FydjFQQlBmSHpDcTlyZlFR?=
+ =?utf-8?B?QlhMWmtQNEIyYlVVY3lreWp2NDMxWFJ1SWVlbmU0NGd1THdvYmorejZKd0dq?=
+ =?utf-8?B?enhvZE11RVQzci84RVhITTBaVWRtbE50WkJGc25pWUxVVDhHYkRJbmJyalFG?=
+ =?utf-8?B?aFJtNVd3QnZ2bjVqU1JGbGdMRDZuVUFPZW1oUTc1TG1YSHJ0VXJKNTA2ZERx?=
+ =?utf-8?B?VzgwM2hTT2RXU0xXanJrQUFZMStnYW9SZ2Y3M29pcEZ3elU5THM5ZjJTQW55?=
+ =?utf-8?B?dENaMDA4MllNU1F6RjhMZ0RqbVpCYnErQWcwM2luVDNzTll5WHViNkpiYmh6?=
+ =?utf-8?B?OUY5aHcxN2d5VkhWN0xSeVloc1dNYVdUeEQxQXlGV3h1YjN6ZXRwc1hnVC93?=
+ =?utf-8?B?czNZZStoL3IzTXBLNWRoZ2o3bnF2Z2lUdFhOa2V1L21EYi9reFFrVjhac0tL?=
+ =?utf-8?B?RVBNQlV3QURxR1Y0ckRKWStVUjBxVDZ3WFc4c2NWWFJUNm05WEVPNkFDT21L?=
+ =?utf-8?B?RkhSaXBydVpBUkFFRWtFU1pFTFpTbS93NGxwK2tjOUNxb3UzUnlXY2cyTHd0?=
+ =?utf-8?B?WDVicTJiYjE3aHhuVTdTK1VjWExxNm4rdlZBT3g0UmRTWTFTYmNGOTZnOGVq?=
+ =?utf-8?B?dGh0dGY4dll0UkJKWG93OWppQ3YwN2Z1QUJDQ3NxR1hkZjM2TjRnTDhpVTJa?=
+ =?utf-8?B?eXBDV1V3VW9TVDhGc0VwU3dhMWlrMmVrZHBERURRWE5iRnNtZmhnQUFxaXIz?=
+ =?utf-8?B?a0hycUtCeEZLbnZWbjNoYldkY3lPcXhIK1pnMmRjd0FNcUxFcS9QbWoxRXdT?=
+ =?utf-8?Q?PIiZPgX6+s9uzKZOLcPmvOQ=3D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2febced1-6ea7-4c4a-184d-08d9c0b1249e
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2021 16:28:50.9978
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6X0JeOm/yt296F8R6PE/GyJptm3ZKIstT6Tl0oqgRxTSLtv2ZaRjOuAraaMgwi+nxmIdazcPdJcS0pnDAdg6zw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4384
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Platform Firmware Runtime Update image starts with UEFI headers, and the
-headers are defined in UEFI specification, but some of them have not been
-defined in the kernel yet.
 
-For example, the header layout of a capsule file looks like this:
 
-EFI_CAPSULE_HEADER
-EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
-EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER
-EFI_FIRMWARE_IMAGE_AUTHENTICATION
+On 12/16/21 9:47 AM, Borislav Petkov wrote:
 
-These structures would be used by the Platform Firmware Runtime Update
-driver to parse the format of capsule file to verify if the corresponding
-version number is valid. In this way, if the user provides an invalid
-capsule image, the kernel could be used as a guard to reject it, without
-switching to the Management Mode (which might be costly).
+>>   
+>> -	if (!boot_ghcb && !early_setup_sev_es())
+>> +	if (!boot_ghcb && !early_setup_ghcb())
+>>   		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
+> 
+> Can you setup the GHCB in sev_enable() too, after the protocol version
+> negotiation succeeds?
 
-EFI_CAPSULE_HEADER has been defined in the kernel, but the other
-structures have not been defined yet, so do that. Besides,
-EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER and
-EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER are required to be packed
-in the uefi specification. For this reason, use the __packed attribute
-to indicate to the compiler that the entire structure can appear
-misaligned in memory (as suggested by Ard) in case one of them follows
-the other directly in a capsule header.
+A good question; the GHCB page is needed only at the time of #VC.  If 
+the second stage VC handler is not called after the sev_enable() during 
+the decompression stage, setting up the GHC page in sev_enable() is a 
+waste. But in practice, the second stage VC handler will be called 
+during decompression. It also brings a similar question for the kernel 
+proper, should we do the same over there?
 
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Ashok Raj <ashok.raj@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Len Brown <lenb@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
----
-v12:No change since v11.
-v11:Add explanation on why version check is introduced
-    in kernel rather than letting Management Mode to do it.
-    (Rafael J. Wysocki)
-    Revise the commit log to better describe the pack attribute.
-    (Rafael J. Wysocki)
-    Refine the comment for hw_ins and capsule_support.
-    (Rafael J. Wysocki)
-v10:Remove the explicit assignment of the last item of enum.
-    (Andy Shevchenko)
-v9: Use GUID_INIT() instead of guid_parse() during boot up.
-    (Andy Shevchenko)
-    Drop uuid, code_uuid, drv_uuid in struct pfru_device as they
-    are not needed. (Andy Shevchenko)
-    Drop type casting from void * in valid_version().
-    (Andy Shevchenko)
-    Use kfree() instead of ACPI_FREE() in non-ACPICA usage.
-    (Andy Shevchenko)
-    Use sizeof(rev) instead of sizeof(u32) in copy_from_user().
-    (Andy Shevchenko)
-    Generate physical address from MSB part to LSB.
-    (Andy Shevchenko)
-    Use devm_add_action_or_reset() to add ida release into dev resource
-    management. (Andy Shevchenko)
-    Use devm_kasprintf() instead of kasprintf() to format the
-    pfru_dev name.(Andy Shevchenko)
-    Remove redundant 0 in acpi_pfru_ids. (Andy Shevchenko)
-    Adjust the order of included headers in pfru.h.
-    (Andy Shevchenko)
-    Replace PFRU_MAGIC with PFRU_MAGIC_FOR_IOCTL in uapi file.
-    (Andy Shevchenko)
-v8: Remove the variable-length array in struct pfru_update_cap_info, and
-    copy the non-variable-length struct pfru_update_cap_info to userspace
-    directly. (Greg Kroah-Hartman)
-    Change the type of rev_id from int to u32, because this data will
-    be copied between kernel and userspace. (Greg Kroah-Hartman)
-    Add a prefix for dev in struct pfru_device to parent_dev, so as
-    to indicate that this filed is the parent of the created miscdev.
-    (Greg Kroah-Hartman)
-    Use blank lines between different macro sections. (Greg Kroah-Hartman)
-    Illusatrate the possible errno for each ioctl interface.
-    (Greg Kroah-Hartman)
-    Remove pfru_valid_revid() from uapi header to avoid poluting the global
-    namespace.(Greg Kroah-Hartman)
-    Assign the value to the enum type explicitly.(Greg Kroah-Hartman)
-    Change the guid_t to efi_guid_t when parsing image header in get_image_type()
-    (Greg Kroah-Hartman)
-    Remove the void * to other type casting in valid_version(). (Andy Shevchenko)
-    Combined the assignment of variables with definitions. (Andy Shevchenko)
-    Define this magic for revision ID. (Andy Shevchenko)
-    Make the labeling consistent for error handling. (Andy Shevchenko)
-    Replace the UUID_SIZE in uapi with 16 directly. (Andy Shevchenko)
-    Add blank line between generic include header and uapi header.
-    (Andy Shevchenko)
-    Arrange the order between devm_kzalloc() and normal allocation in
-    acpi_pfru_probe() that, the former should always be ahead of the
-    latter. (Andy Shevchenko)
-    Move the UUID from uapi header to the c file. (Andy Shevchenko)
-v7: Use ida_alloc() to allocate a ID, and release the ID when
-    device is removed. (Greg Kroah-Hartman)
-    Check the _DSM method at early stage, before allocate or parse
-    anything in acpi_pfru_probe(). (Greg Kroah-Hartman)
-    Set the parent of the misc device. (Greg Kroah-Hartman)
-    Use module_platform_driver() instead of platform_driver_register()
-    in module_init(). Separate pfru driver and pfru_telemetry driver
-    to two files. (Greg Kroah-Hartman) 
-v6: Use Link: tag to add the specification download address.
-    (Andy Shevchenko)
-    Remove linux/uuid.h and use raw buffers to contain uuid.
-    (Andy Shevchenko)
-    Drop comma for each terminator entry in the enum structure.
-    (Andy Shevchenko)
-    Remove redundant 'else' in get_image_type().
-    (Andy Shevchenko)
-    Directly return results from the switch cases in adjust_efi_size()
-    and pfru_ioctl().(Andy Shevchenko)
-    Keep comment style consistent by removing the period for
-    one line comment.
-    (Andy Shevchenko)
-    Remove devm_kfree() if .probe() failed. 
-    (Andy Shevchenko)
-v5: Remove Documentation/ABI/pfru, and move the content to kernel doc
-    in include/uapi/linux/pfru.h (Greg Kroah-Hartman)
-    Shrink the range of ioctl numbers declared in
-    Documentation/userspace-api/ioctl/ioctl-number.rst
-    from 16 to 8. (Greg Kroah-Hartman)
-    Change global variable struct pfru_device *pfru_dev to
-    per ACPI device. (Greg Kroah-Hartman)
-    Unregister the misc device in acpi_pfru_remove().
-    (Greg Kroah-Hartman)
-    Convert the kzalloc() to devm_kzalloc() in the driver so
-    as to avoid freeing the memory. (Greg Kroah-Hartman)
-    Fix the compile error by declaring the pfru_log_ioctl() as
-    static. (kernel test robot LKP)
-    Change to global variable misc_device to per ACPI device.
-    (Greg Kroah-Hartman)
-v4: Replace all pr_err() with dev_dbg() (Greg Kroah-Hartman,
-    Rafael J. Wysocki)
-    Returns ENOTTY rather than ENOIOCTLCMD if invalid ioctl command
-    is provided. (Greg Kroah-Hartman)
-    Remove compat ioctl. (Greg Kroah-Hartman)
-    Rename /dev/pfru/pfru_update to /dev/acpi_pfru (Greg Kroah-Hartman)
-    Simplify the check for element of the package in query_capability()
-    (Rafael J. Wysocki)
-    Remove the loop in query_capability(), query_buffer() and query
-    the package elemenet directly. (Rafael J. Wysocki)
-    Check the the number of elements in case the number of package
-    elements is too small. (Rafael J. Wysocki)
-    Doing the assignment as initialization in get_image_type().
-    Meanwhile, returns the type or a negative error code in
-    get_image_type(). (Rafael J. Wysocki)
-    Put the comments inside the function. (Rafael J. Wysocki)
-    Returns the size or a negative error code in adjust_efi_size()
-    (Rafael J. Wysocki)
-    Fix the return value from EFAULT to EINVAL if pfru_valid_revid()
-    does not pass. (Rafael J. Wysocki)
-    Change the write() to be the code injection/update, the read() to
-    be telemetry retrieval and all of the rest to be ioctl()s under
-    one special device file.(Rafael J. Wysocki)
-    Putting empty code lines after an if () statement that is not
-    followed by a block. (Rafael J. Wysocki)
-    Remove "goto" tags to make the code more readable. (Rafael J. Wysocki)
-v3: Use __u32 instead of int and __64 instead of unsigned long
-    in include/uapi/linux/pfru.h (Greg Kroah-Hartman)
-    Rename the structure in uapi to start with a prefix pfru so as
-    to avoid confusing in the global namespace. (Greg Kroah-Hartman)
-v2: Add sanity check for duplicated instance of ACPI device.
-    Update the driver to work with allocated pfru_device objects.
-    (Mike Rapoport)
-    For each switch case pair, get rid of the magic case numbers
-    and add a default clause with the error handling.
-    (Mike Rapoport)
-    Move the obj->type checks outside the switch to reduce redundancy.
-    (Mike Rapoport)
-    Parse the code_inj_id and drv_update_id at driver initialization time
-    to reduce the re-parsing at runtime.(Mike Rapoport)
-    Explain in detail how the size needs to be adjusted when doing
-    version check.(Mike Rapoport)
-    Rename parse_update_result() to dump_update_result()(Mike Rapoport)
-    Remove redundant return.(Mike Rapoport)
-    Do not expose struct capsulate_buf_info to uapi, since it is
-    not needed in userspace.(Mike Rapoport)
----
- include/linux/efi.h | 46 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+Jorge did the initial ES support and may have other reasons he chose to 
+set up GHCB page in the handler. I was trying to avoid the flow change. 
+We can do this as a pre or post-SNP patch; let me know your thoughts?
 
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index dbd39b20e034..80e970f7e6f8 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -148,6 +148,52 @@ typedef struct {
- 	u32 imagesize;
- } efi_capsule_header_t;
- 
-+/* EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER */
-+struct efi_manage_capsule_header {
-+	u32 ver;
-+	u16 emb_drv_cnt;
-+	u16 payload_cnt;
-+	/*
-+	 * Variable-size array of the size given by the sum of
-+	 * emb_drv_cnt and payload_cnt.
-+	 */
-+	u64 offset_list[];
-+} __packed;
-+
-+/* EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER */
-+struct efi_manage_capsule_image_header {
-+	u32 ver;
-+	efi_guid_t image_type_id;
-+	u8 image_index;
-+	u8 reserved_bytes[3];
-+	u32 image_size;
-+	u32 vendor_code_size;
-+	/* hw_ins was introduced in version 2 */
-+	u64 hw_ins;
-+	/* capsule_support was introduced in version 3 */
-+	u64 capsule_support;
-+} __packed;
-+
-+/* WIN_CERTIFICATE */
-+struct win_cert {
-+	u32 len;
-+	u16 rev;
-+	u16 cert_type;
-+};
-+
-+/* WIN_CERTIFICATE_UEFI_GUID */
-+struct win_cert_uefi_guid {
-+	struct win_cert	hdr;
-+	efi_guid_t cert_type;
-+	u8 cert_data[];
-+};
-+
-+/* EFI_FIRMWARE_IMAGE_AUTHENTICATION */
-+struct efi_image_auth {
-+	u64 mon_count;
-+	struct win_cert_uefi_guid auth_info;
-+};
-+
- /*
-  * EFI capsule flags
-  */
--- 
-2.25.1
 
+
+
+
+>> +	 * SNP is supported in v2 of the GHCB spec which mandates support for HV
+>> +	 * features. If SEV-SNP is enabled, then check if the hypervisor supports
+> 
+> s/SEV-SNP/SNP/g
+> 
+> And please do that everywhere in sev-specific files.
+> 
+> This file is called sev.c and there's way too many acronyms flying
+> around so the simpler the better.
+> 
+
+Noted.
+
+thanks
