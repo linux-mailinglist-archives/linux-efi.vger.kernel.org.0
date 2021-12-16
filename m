@@ -2,144 +2,139 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5832A477FC5
-	for <lists+linux-efi@lfdr.de>; Thu, 16 Dec 2021 23:04:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B5144780C4
+	for <lists+linux-efi@lfdr.de>; Fri, 17 Dec 2021 00:39:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237408AbhLPWEK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 16 Dec 2021 17:04:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38576 "EHLO
+        id S229831AbhLPXjl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 16 Dec 2021 18:39:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237406AbhLPWEI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 16 Dec 2021 17:04:08 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E96EC061574;
-        Thu, 16 Dec 2021 14:04:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=WAO9hZDcRjB3YCaMlbfdToabQWYt+lhc7ogLYgYfO5A=; b=BWGZ6AuNjpRoC8kgaS6A7mi51K
-        YFPoVwlchEV30CCdSpYhu0huiVuYRRrZu0SADS2YdW3szrKx1THYtThkjR/aEZ3h78wQP+KeDkTiS
-        IAMLKNAjPtvKgsFYD2nggsPLjR0pF9NF6UThOYDcwJXp9Nwtr19GplvwXs8TOWcMpGOYkWA1cU+DO
-        v/CiyT1lUk4WN98ka624Fur6Sh8EWIjiEkXTPUVEffDNXJmaMpfGItLmg21h5Y6JvX3Y4sJYy0EQi
-        HaE4FYPYXGaM9Xd0/85bCmNV0kzRKE9WL4LmNpCCQkDYeBGxevc6fdGDEeu4KZMiYmkjzBTBz0mCM
-        BWmglKEQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mxyr2-00G00R-Sb; Thu, 16 Dec 2021 22:04:00 +0000
-Date:   Thu, 16 Dec 2021 22:04:00 +0000
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        efi@lists.einval.com,
-        debian-kernel <debian-kernel@lists.debian.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Ben Hutchings <ben@decadent.org.uk>
-Subject: Re: [PATCH] builddeb: Support signing kernels with a Machine Owner
- Key
-Message-ID: <Ybu30C6Nc7Mbo8MQ@casper.infradead.org>
-References: <20211013200536.1851070-1-willy@infradead.org>
- <CAMj1kXEJ+RThJ83H2VNAmOKkVdhTAUCUF61u9JTv6ccc9uVTDw@mail.gmail.com>
- <CAK7LNASfr4pxmXWO8WLPM4j1NiJ6+dAO_QyUmRREzJUXJNozFw@mail.gmail.com>
+        with ESMTP id S229823AbhLPXjk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 16 Dec 2021 18:39:40 -0500
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EAA3C061574
+        for <linux-efi@vger.kernel.org>; Thu, 16 Dec 2021 15:39:40 -0800 (PST)
+Received: by mail-lf1-x12c.google.com with SMTP id cf39so1049763lfb.8
+        for <linux-efi@vger.kernel.org>; Thu, 16 Dec 2021 15:39:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=m/LjgsVegt/HRyKkkM2n6c0UK9wyNwAZfK1yqCRibBE=;
+        b=ZjNYT24fop4NBsOLESN28pcPFI76P21GY15lEKVa1tKR8Y6MixFR71XXHM7GhfF9Om
+         Mic+/EDIsAL+Oy0aBQJNKwWOjgm51UPxF4cZ/YnojHbYK5t7OKs/w0RJ0fMV/Jty5UP3
+         GD7cR728r/nXnJAOmo8UvAJPlaoac5Lt5ox6J43oGgiSlI+tzAmdbkGHwKtBLR6b03CD
+         7oHTeGaKYJVODZhzKZPRa/GHySInjAASy4QEqvKVn6IABK89mCJ8zObuLFxxpFd4M9oY
+         nNbcSS9gTr2YJoL93pnZ4nD3gzT76+OThD67D+uVZQJZKT64KbSwJ1kM4lJaQvROfOCD
+         Mpsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=m/LjgsVegt/HRyKkkM2n6c0UK9wyNwAZfK1yqCRibBE=;
+        b=EMhfSdey0ezYTMtXHOCJzVe9Ag/TO54yS2G3jZS8o2rJEQr9jnu8Z71MTlZNGmAMFY
+         Y6ASBPYnZNlvqlB1QhfbVOAPEv4zv2NLhp3svkPJo8uz8JDAuziD8yxUX3zO6McH8gnf
+         tc5Ga6rk3WNt3YLf7OVdI9gQ/o4d40PjupBn+BqOkEghy0IMPp1ZX9FY1UkN0qWsZPYT
+         f3wkZPrTRNNk/HvNrdt8EETxltxStfgAV22Reer9PDxC/pDHzHieQgc1pQcFDvyNE8SH
+         w6yAekJ1WkttHcfcm5LlSVsqm55KvICXAwXPbLUeiSTn/SFQig/RBAKql1eg+oDVmj7G
+         K/6w==
+X-Gm-Message-State: AOAM53065wW16gaVxWYixeB1wnwBFSOmy9m3Hh+9N8ocG+E2AsBwJ74P
+        7NgzbxaNwb+WtEAriXW4IV+2yPlSmPs+SvGXJf8BfA==
+X-Google-Smtp-Source: ABdhPJzJ3Ag+Yv1KTmSJebYEdW20IHyaYIzqo6gVs4G5mbbZ7dHZUudFFNmxFE9zK8L0+gvaxQYp82IZFk5AQAuq/rc=
+X-Received: by 2002:a05:6512:1324:: with SMTP id x36mr432363lfu.495.1639697978059;
+ Thu, 16 Dec 2021 15:39:38 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK7LNASfr4pxmXWO8WLPM4j1NiJ6+dAO_QyUmRREzJUXJNozFw@mail.gmail.com>
+References: <20211210154332.11526-1-brijesh.singh@amd.com> <20211210154332.11526-9-brijesh.singh@amd.com>
+ <YbugbgXhApv9ECM2@dt>
+In-Reply-To: <YbugbgXhApv9ECM2@dt>
+From:   Mikolaj Lisik <lisik@google.com>
+Date:   Thu, 16 Dec 2021 15:39:26 -0800
+Message-ID: <CADtC8PX_bEk3rQR1sonbp-rX7rAG4fdbM41r3YLhfj3qWvqJrw@mail.gmail.com>
+Subject: Re: [PATCH v8 08/40] x86/sev: Check the vmpl level
+To:     Venu Busireddy <venu.busireddy@oracle.com>
+Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <Thomas.Lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Nov 04, 2021 at 06:28:40PM +0900, Masahiro Yamada wrote:
-> On Thu, Oct 14, 2021 at 6:47 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+On Thu, Dec 16, 2021 at 12:24 PM Venu Busireddy
+<venu.busireddy@oracle.com> wrote:
+>
+> On 2021-12-10 09:43:00 -0600, Brijesh Singh wrote:
+> > Virtual Machine Privilege Level (VMPL) feature in the SEV-SNP architecture
+> > allows a guest VM to divide its address space into four levels. The level
+> > can be used to provide the hardware isolated abstraction layers with a VM.
+> > The VMPL0 is the highest privilege, and VMPL3 is the least privilege.
+> > Certain operations must be done by the VMPL0 software, such as:
 > >
-> > On Wed, 13 Oct 2021 at 22:07, Matthew Wilcox (Oracle)
-> > <willy@infradead.org> wrote:
-> > >
-> > > If the config file specifies a signing key, use it to sign
-> > > the kernel so that machines with SecureBoot enabled can boot.
-> > > See https://wiki.debian.org/SecureBoot
-> > >
-> > > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> > * Validate or invalidate memory range (PVALIDATE instruction)
+> > * Allocate VMSA page (RMPADJUST instruction when VMSA=1)
 > >
-> > For the change itself
+> > The initial SEV-SNP support requires that the guest kernel is running on
+> > VMPL0. Add a check to make sure that kernel is running at VMPL0 before
+> > continuing the boot. There is no easy method to query the current VMPL
+> > level, so use the RMPADJUST instruction to determine whether the guest is
+> > running at the VMPL0.
 > >
-> > Acked-by: Ard Biesheuvel <ardb@kernel.org>
+> > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> > ---
+> >  arch/x86/boot/compressed/sev.c    | 34 ++++++++++++++++++++++++++++---
+> >  arch/x86/include/asm/sev-common.h |  1 +
+> >  arch/x86/include/asm/sev.h        | 16 +++++++++++++++
+> >  3 files changed, 48 insertions(+), 3 deletions(-)
 > >
-> > although I'd suggest to fix the subject not to refer to Machine Owner
-> > Keys, as I don't see anything shim related here (i.e., if you sign
-> > using a key that is listed in db, it should also work)
+> > diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+> > index a0708f359a46..9be369f72299 100644
+> > --- a/arch/x86/boot/compressed/sev.c
+> > +++ b/arch/x86/boot/compressed/sev.c
+> > @@ -212,6 +212,31 @@ static inline u64 rd_sev_status_msr(void)
+> >       return ((high << 32) | low);
+> >  }
 > >
-> >
-> > > ---
-> > >  scripts/package/builddeb | 10 +++++++++-
-> > >  1 file changed, 9 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/scripts/package/builddeb b/scripts/package/builddeb
-> > > index 91a502bb97e8..4fa6ff2b5cac 100755
-> > > --- a/scripts/package/builddeb
-> > > +++ b/scripts/package/builddeb
-> > > @@ -147,7 +147,15 @@ else
-> > >         cp System.map "$tmpdir/boot/System.map-$version"
-> > >         cp $KCONFIG_CONFIG "$tmpdir/boot/config-$version"
-> > >  fi
-> > > -cp "$($MAKE -s -f $srctree/Makefile image_name)" "$tmpdir/$installed_image_path"
-> > > +
-> > > +vmlinux=$($MAKE -s -f $srctree/Makefile image_name)
-> > > +if is_enabled CONFIG_MODULE_SIG; then
-> > > +       cert=$srctree/$(grep ^CONFIG_MODULE_SIG_KEY= include/config/auto.conf | cut -d\" -f2)
-> > > +       key=${cert%pem}priv
-> > > +       sbsign --key $key --cert $cert "$vmlinux" --output "$tmpdir/$installed_image_path"
-> > > +else
-> > > +       cp "$vmlinux" "$tmpdir/$installed_image_path"
-> > > +fi
-> > >
-> > >  if is_enabled CONFIG_OF_EARLY_FLATTREE; then
-> > >         # Only some architectures with OF support have this target
-> > > --
-> > > 2.32.0
-> > >
-> 
-> How to compile this patch?
-> 
-> "make  bindeb-pkg" fails with
-> Can't load key from file './certs/signing_key.priv'
+> > +static void enforce_vmpl0(void)
+> > +{
+> > +     u64 attrs;
+> > +     int err;
+> > +
+> > +     /*
+> > +      * There is no straightforward way to query the current VMPL level. The
+> > +      * simplest method is to use the RMPADJUST instruction to change a page
+> > +      * permission to a VMPL level-1, and if the guest kernel is launched at
+> > +      * a level <= 1, then RMPADJUST instruction will return an error.
+>
+> Perhaps a nit. When you say "level <= 1", do you mean a level lower than or
+> equal to 1 semantically, or numerically?
+>
 
-I'm sorry; I missed this email.
++1 to this. Additionally I found the "level-1" confusing which I
+interpreted as "level minus one".
 
-I don't know why you're seeing this error, exactly.  I'm just trying to
-automate the step here:
-
-https://wiki.debian.org/SecureBoot#Using_your_key_to_sign_your_kernel
-
-Have you followed the other steps on that page; ie do you have:
-signing_key.priv, signing_key.der and signing_key.pem files?
-
-> 
-> Also, sbsign emits "Invalid DOS header magic" error
-> if CONFIG_EFI_STUB is not set.
-> 
-> The CONFIG name might depend on arch.
-> CONFIG_EFI for ARCH=arm64, but CONFIG_EFI_STUB for ARCH=x86.
-> 
-> 
-> If you require sbsign, you need to update Build-Depends ?
-
-It looks like we should add a few extra checks before running sbsign ...
-
-> sh ./scripts/package/builddeb
-> Can't load key from file './certs/signing_key.priv'
-> 139999825022720:error:02001002:system library:fopen:No such file or
-> directory:../crypto/bio/bss_file.c:69:fopen('./certs/signing_key.priv','r')
-> 139999825022720:error:2006D080:BIO routines:BIO_new_file:no such
-> file:../crypto/bio/bss_file.c:76:
-> make[4]: *** [scripts/Makefile.package:87: intdeb-pkg] Error 1
-> make[3]: *** [Makefile:1539: intdeb-pkg] Error 2
-> make[2]: *** [debian/rules:13: binary-arch] Error 2
-> dpkg-buildpackage: error: debian/rules binary subprocess returned exit status 2
-> make[1]: *** [scripts/Makefile.package:83: bindeb-pkg] Error 2
-> make: *** [Makefile:1539: bindeb-pkg] Error 2
-
-
+Perhaps phrasing it as "level one", or "level=1" would be more explicit?
