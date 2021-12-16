@@ -2,161 +2,194 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C47147733A
-	for <lists+linux-efi@lfdr.de>; Thu, 16 Dec 2021 14:34:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5913847764A
+	for <lists+linux-efi@lfdr.de>; Thu, 16 Dec 2021 16:47:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232284AbhLPNeQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 16 Dec 2021 08:34:16 -0500
-Received: from szxga03-in.huawei.com ([45.249.212.189]:30135 "EHLO
-        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232211AbhLPNeQ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 16 Dec 2021 08:34:16 -0500
-Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.56])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4JFChH1rN2z8vsp;
-        Thu, 16 Dec 2021 21:31:59 +0800 (CST)
-Received: from dggpemm500006.china.huawei.com (7.185.36.236) by
- dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Thu, 16 Dec 2021 21:34:13 +0800
-Received: from [10.174.178.55] (10.174.178.55) by
- dggpemm500006.china.huawei.com (7.185.36.236) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Thu, 16 Dec 2021 21:34:12 +0800
-Subject: Re: [PATCHv3] efi: apply memblock cap after memblock_add()
-To:     Rob Herring <robh+dt@kernel.org>
-CC:     Pingfan Liu <kernelfans@gmail.com>, <devicetree@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Geert Uytterhoeven" <geert+renesas@glider.be>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Nick Terrell <terrelln@fb.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-References: <20211214040157.27443-3-kernelfans@gmail.com>
- <20211215021348.8766-1-kernelfans@gmail.com>
- <7fa6bfd1-357d-10ad-0375-a6efdc7b89e4@huawei.com>
- <Ybl9RYCIo14qyxqL@piliu.users.ipa.redhat.com>
- <ef184207-57db-f80e-7ee3-264110c1ba10@huawei.com>
- <CAL_JsqLS_=_Zeau-10aRkHWvvW-DNxB=CHr0mMo2SqbK35fLPA@mail.gmail.com>
-From:   "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>
-Message-ID: <0b38a1bd-f862-402a-c146-7732289b21b7@huawei.com>
-Date:   Thu, 16 Dec 2021 21:34:01 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S238665AbhLPPrw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 16 Dec 2021 10:47:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33900 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232741AbhLPPrw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 16 Dec 2021 10:47:52 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9299C061574;
+        Thu, 16 Dec 2021 07:47:51 -0800 (PST)
+Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0A6E51EC01A2;
+        Thu, 16 Dec 2021 16:47:46 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1639669666;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=w2zw5w9zdbclGVjd2mcfzFrzgn7sBAWZNCdTsQYykhk=;
+        b=HOSNWrPkxPtVrP+QzbncJoQNAqagO6/nOkVG3sXbVKWfE/24GyfWge5/8230enJQIghU91
+        CeCqrdvkWGJYi0yOX1vOhtgg49xfGrdlGoiWDGDG64jPbOh+vwbdb5cViWyGbFySlIelWH
+        iebgN19BrUYcG6qBiaDh42Sp3lSWbhI=
+Date:   Thu, 16 Dec 2021 16:47:46 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v8 06/40] x86/sev: Check SEV-SNP features support
+Message-ID: <Ybtfon70/+lG63BP@zn.tnic>
+References: <20211210154332.11526-1-brijesh.singh@amd.com>
+ <20211210154332.11526-7-brijesh.singh@amd.com>
 MIME-Version: 1.0
-In-Reply-To: <CAL_JsqLS_=_Zeau-10aRkHWvvW-DNxB=CHr0mMo2SqbK35fLPA@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.55]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm500006.china.huawei.com (7.185.36.236)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20211210154332.11526-7-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-
-
-On 2021/12/15 23:05, Rob Herring wrote:
-> On Wed, Dec 15, 2021 at 12:53 AM Leizhen (ThunderTown)
-> <thunder.leizhen@huawei.com> wrote:
->>
->>
->>
->> On 2021/12/15 13:29, Pingfan Liu wrote:
->>> On Wed, Dec 15, 2021 at 11:58:03AM +0800, Leizhen (ThunderTown) wrote:
->>>>
->>>>
->>>> On 2021/12/15 10:13, Pingfan Liu wrote:
->>>>> On arm64, during kdump kernel saves vmcore, it runs into the following bug:
->>>>> ...
->>>>> [   15.148919] usercopy: Kernel memory exposure attempt detected from SLUB object 'kmem_cache_node' (offset 0, size 4096)!
->>>>> [   15.159707] ------------[ cut here ]------------
->>>>> [   15.164311] kernel BUG at mm/usercopy.c:99!
->>>>> [   15.168482] Internal error: Oops - BUG: 0 [#1] SMP
->>>>> [   15.173261] Modules linked in: xfs libcrc32c crct10dif_ce ghash_ce sha2_ce sha256_arm64 sha1_ce sbsa_gwdt ast i2c_algo_bit drm_vram_helper drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops cec drm_ttm_helper ttm drm nvme nvme_core xgene_hwmon i2c_designware_platform i2c_designware_core dm_mirror dm_region_hash dm_log dm_mod overlay squashfs zstd_decompress loop
->>>>> [   15.206186] CPU: 0 PID: 542 Comm: cp Not tainted 5.16.0-rc4 #1
->>>>> [   15.212006] Hardware name: GIGABYTE R272-P30-JG/MP32-AR0-JG, BIOS F12 (SCP: 1.5.20210426) 05/13/2021
->>>>> [   15.221125] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
->>>>> [   15.228073] pc : usercopy_abort+0x9c/0xa0
->>>>> [   15.232074] lr : usercopy_abort+0x9c/0xa0
->>>>> [   15.236070] sp : ffff8000121abba0
->>>>> [   15.239371] x29: ffff8000121abbb0 x28: 0000000000003000 x27: 0000000000000000
->>>>> [   15.246494] x26: 0000000080000400 x25: 0000ffff885c7000 x24: 0000000000000000
->>>>> [   15.253617] x23: 000007ff80400000 x22: ffff07ff80401000 x21: 0000000000000001
->>>>> [   15.260739] x20: 0000000000001000 x19: ffff07ff80400000 x18: ffffffffffffffff
->>>>> [   15.267861] x17: 656a626f2042554c x16: 53206d6f72662064 x15: 6574636574656420
->>>>> [   15.274983] x14: 74706d6574746120 x13: 2129363930342065 x12: 7a6973202c302074
->>>>> [   15.282105] x11: ffffc8b041d1b148 x10: 00000000ffff8000 x9 : ffffc8b04012812c
->>>>> [   15.289228] x8 : 00000000ffff7fff x7 : ffffc8b041d1b148 x6 : 0000000000000000
->>>>> [   15.296349] x5 : 0000000000000000 x4 : 0000000000007fff x3 : 0000000000000000
->>>>> [   15.303471] x2 : 0000000000000000 x1 : ffff07ff8c064800 x0 : 000000000000006b
->>>>> [   15.310593] Call trace:
->>>>> [   15.313027]  usercopy_abort+0x9c/0xa0
->>>>> [   15.316677]  __check_heap_object+0xd4/0xf0
->>>>> [   15.320762]  __check_object_size.part.0+0x160/0x1e0
->>>>> [   15.325628]  __check_object_size+0x2c/0x40
->>>>> [   15.329711]  copy_oldmem_page+0x7c/0x140
->>>>> [   15.333623]  read_from_oldmem.part.0+0xfc/0x1c0
->>>>> [   15.338142]  __read_vmcore.constprop.0+0x23c/0x350
->>>>> [   15.342920]  read_vmcore+0x28/0x34
->>>>> [   15.346309]  proc_reg_read+0xb4/0xf0
->>>>> [   15.349871]  vfs_read+0xb8/0x1f0
->>>>> [   15.353088]  ksys_read+0x74/0x100
->>>>> [   15.356390]  __arm64_sys_read+0x28/0x34
->>>>> ...
->>>>>
->>>>> This bug introduced by commit b261dba2fdb2 ("arm64: kdump: Remove custom
->>>>> linux,usable-memory-range handling"), which moves
->>>>> memblock_cap_memory_range() to fdt, but it breaches the rules that
->>>>> memblock_cap_memory_range() should come after memblock_add() etc as said
->>>>> in commit e888fa7bb882 ("memblock: Check memory add/cap ordering").
->>>>
->>>> void __init early_init_dt_scan_nodes(void)
->>>> {
->>>>      //(1) -->early_init_dt_check_for_usable_mem_range, fill cap_mem_addr
->>>>         rc = of_scan_flat_dt(early_init_dt_scan_chosen, boot_command_line);
->>>>
->>>>      //(2) --> early_init_dt_add_memory_arch --> memblock_add()
->>>>         of_scan_flat_dt(early_init_dt_scan_memory, NULL);
->>>>
->>>>      //(3)
->>>>         memblock_cap_memory_range(cap_mem_addr, cap_mem_size);
->>>> }
->>>>
->>>> I didn't get it. The above step (1),(2),(3) comply with
->>>> commit e888fa7bb882 ("memblock: Check memory add/cap ordering")
->>>>
->>> Well, at this scope, it does. But from a larger scope, let's say on
->>> arm64,
->>> setup_arch
->>>   ...
->>>   setup_machine_fdt(); //which holds your case
->>>   ...
->>>   efi_init(); //which call memblock_add, and breach the ordering.
->>>
->>>> Did you see the warning?
->>>> pr_warn("%s: No memory registered yet\n", __func__);
->>>>
->>> Yes, I did see this message, which brings me to commit e888fa7bb882
->>> ("memblock: Check memory add/cap ordering")
->>>
->>> I am also curious why this bug does not be discovered. Is CONFIG_EFI
->>> on at your case?
->>
->> Yes, Both X86 and ARM64, CONFIG_EFI=y. I used the defconfig.
+On Fri, Dec 10, 2021 at 09:42:58AM -0600, Brijesh Singh wrote:
+> Version 2 of the GHCB specification added the advertisement of features
+> that are supported by the hypervisor. If hypervisor supports the SEV-SNP
+> then it must set the SEV-SNP features bit to indicate that the base
+> SEV-SNP is supported.
 > 
-> Are you booting using EFI though? efi_init() removes all memblocks
-> that may have been setup from the DT and adds memblocks using the EFI
-> memory map information.
-
-Sorry, I tested it with QEMU. I checked that efi_system_table is not exist.
-
+> Check the SEV-SNP feature while establishing the GHCB, if failed,
+> terminate the guest.
 > 
-> Rob
-> .
+> Version 2 of GHCB specification adds several new NAEs, most of them are
+> optional except the hypervisor feature. Now that hypervisor feature NAE
+> is implemented, so bump the GHCB maximum support protocol version.
 > 
+> While at it, move the GHCB protocol negotitation check from VC exception
+
+Unknown word [negotitation] in commit message, suggestions:
+        ['negotiation', 'negotiator', 'negotiate', 'abnegation', 'vegetation']
+
+> handler to sev_enable() so that all feature detection happens before
+> the first VC exception.
+> 
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  arch/x86/boot/compressed/sev.c    | 21 ++++++++++++++++-----
+>  arch/x86/include/asm/sev-common.h |  6 ++++++
+>  arch/x86/include/asm/sev.h        |  2 +-
+>  arch/x86/include/uapi/asm/svm.h   |  2 ++
+>  arch/x86/kernel/sev-shared.c      | 20 ++++++++++++++++++++
+>  arch/x86/kernel/sev.c             | 16 ++++++++++++++++
+>  6 files changed, 61 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+> index 0b6cc6402ac1..a0708f359a46 100644
+> --- a/arch/x86/boot/compressed/sev.c
+> +++ b/arch/x86/boot/compressed/sev.c
+> @@ -119,11 +119,8 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
+>  /* Include code for early handlers */
+>  #include "../../kernel/sev-shared.c"
+>  
+> -static bool early_setup_sev_es(void)
+> +static bool early_setup_ghcb(void)
+>  {
+> -	if (!sev_es_negotiate_protocol())
+> -		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_PROT_UNSUPPORTED);
+> -
+>  	if (set_page_decrypted((unsigned long)&boot_ghcb_page))
+>  		return false;
+>  
+> @@ -174,7 +171,7 @@ void do_boot_stage2_vc(struct pt_regs *regs, unsigned long exit_code)
+>  	struct es_em_ctxt ctxt;
+>  	enum es_result result;
+>  
+> -	if (!boot_ghcb && !early_setup_sev_es())
+> +	if (!boot_ghcb && !early_setup_ghcb())
+>  		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
+
+Can you setup the GHCB in sev_enable() too, after the protocol version
+negotiation succeeds?
+
+>  	vc_ghcb_invalidate(boot_ghcb);
+> @@ -247,5 +244,19 @@ void sev_enable(struct boot_params *bp)
+>  	if (!(sev_status & MSR_AMD64_SEV_ENABLED))
+>  		return;
+>  
+> +	/* Negotiate the GHCB protocol version */
+> +	if (sev_status & MSR_AMD64_SEV_ES_ENABLED)
+> +		if (!sev_es_negotiate_protocol())
+> +			sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_PROT_UNSUPPORTED);
+> +
+> +	/*
+> +	 * SNP is supported in v2 of the GHCB spec which mandates support for HV
+> +	 * features. If SEV-SNP is enabled, then check if the hypervisor supports
+> +	 * the SEV-SNP features.
+> +	 */
+> +	if (sev_status & MSR_AMD64_SEV_SNP_ENABLED && !(get_hv_features() & GHCB_HV_FT_SNP))
+> +		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
+> +
+> +
+^ Superfluous newline.
+
+>  	sme_me_mask = BIT_ULL(ebx & 0x3f);
+
+...
+
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index 19ad09712902..a0cada8398a4 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -43,6 +43,10 @@ static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
+>   */
+>  static struct ghcb __initdata *boot_ghcb;
+>  
+> +/* Bitmap of SEV features supported by the hypervisor */
+> +static u64 sev_hv_features;
+
+__ro_after_init
+
+> +
+> +
+>  /* #VC handler runtime per-CPU data */
+>  struct sev_es_runtime_data {
+>  	struct ghcb ghcb_page;
+> @@ -766,6 +770,18 @@ void __init sev_es_init_vc_handling(void)
+>  	if (!sev_es_check_cpu_features())
+>  		panic("SEV-ES CPU Features missing");
+>  
+> +	/*
+> +	 * SNP is supported in v2 of the GHCB spec which mandates support for HV
+> +	 * features. If SEV-SNP is enabled, then check if the hypervisor supports
+
+s/SEV-SNP/SNP/g
+
+And please do that everywhere in sev-specific files.
+
+This file is called sev.c and there's way too many acronyms flying
+around so the simpler the better.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
