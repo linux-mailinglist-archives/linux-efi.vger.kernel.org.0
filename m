@@ -2,54 +2,54 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E99CE4767EE
-	for <lists+linux-efi@lfdr.de>; Thu, 16 Dec 2021 03:31:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF2834767F5
+	for <lists+linux-efi@lfdr.de>; Thu, 16 Dec 2021 03:31:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232925AbhLPCbW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 15 Dec 2021 21:31:22 -0500
-Received: from mailout2.samsung.com ([203.254.224.25]:26408 "EHLO
-        mailout2.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232918AbhLPCbV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Dec 2021 21:31:21 -0500
-Received: from epcas1p4.samsung.com (unknown [182.195.41.48])
-        by mailout2.samsung.com (KnoxPortal) with ESMTP id 20211216023119epoutp023150d4e1a819f711b2adfb1d0b3fc91c~BG2mTkG-z1279612796epoutp02E
-        for <linux-efi@vger.kernel.org>; Thu, 16 Dec 2021 02:31:19 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20211216023119epoutp023150d4e1a819f711b2adfb1d0b3fc91c~BG2mTkG-z1279612796epoutp02E
+        id S232941AbhLPCbh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 15 Dec 2021 21:31:37 -0500
+Received: from mailout3.samsung.com ([203.254.224.33]:30816 "EHLO
+        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232943AbhLPCbg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Dec 2021 21:31:36 -0500
+Received: from epcas1p2.samsung.com (unknown [182.195.41.46])
+        by mailout3.samsung.com (KnoxPortal) with ESMTP id 20211216023135epoutp039d4e27764a4644083bd10188d54409cf~BG20-ZR-q0173501735epoutp03j
+        for <linux-efi@vger.kernel.org>; Thu, 16 Dec 2021 02:31:35 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20211216023135epoutp039d4e27764a4644083bd10188d54409cf~BG20-ZR-q0173501735epoutp03j
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1639621879;
-        bh=TUzRwrZF1/3XnFMJyJuZxMcG8td0JNwTFL6lUwbVwFQ=;
+        s=mail20170921; t=1639621895;
+        bh=YCk8PBK4gxiSCDGnADGiFelQE+j9CDtYg4RWWhaBXH8=;
         h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=YleAxWLN51KoYX4SXre8xNfZ4jO0L0ulk4dYzMbHcPcC1oG7TOG0+7iWxaTefAUCa
-         o7DlWM16sA26P8MWtalis3dd4pcu6w2nqXraXYonpOFXuSLswZ6FPqNjBcOLnTxscL
-         iYipubdVgT3UFeSlKT8VUDIIHNrOZPhTb7PrgLRQ=
-Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
-        epcas1p3.samsung.com (KnoxPortal) with ESMTP id
-        20211216023118epcas1p3a098e745a5392a5baf2282c71fe8c519~BG2ltOvMi1324113241epcas1p3V;
-        Thu, 16 Dec 2021 02:31:18 +0000 (GMT)
-Received: from epsmges1p3.samsung.com (unknown [182.195.38.236]) by
-        epsnrtp2.localdomain (Postfix) with ESMTP id 4JDx1q6hlrz4x9QM; Thu, 16 Dec
-        2021 02:31:11 +0000 (GMT)
-Received: from epcas1p2.samsung.com ( [182.195.41.46]) by
-        epsmges1p3.samsung.com (Symantec Messaging Gateway) with SMTP id
-        B2.D5.09592.DB4AAB16; Thu, 16 Dec 2021 11:30:21 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-        epcas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20211216023111epcas1p187706cd1cb120df262dacdf1749cbc19~BG2es5aKb1352413524epcas1p1d;
-        Thu, 16 Dec 2021 02:31:11 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20211216023111epsmtrp19a27b037340f2cbd82c9af5474fc8707~BG2erCN020227102271epsmtrp1J;
-        Thu, 16 Dec 2021 02:31:11 +0000 (GMT)
-X-AuditID: b6c32a37-28fff70000002578-aa-61baa4bd1682
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        6A.61.29871.EE4AAB16; Thu, 16 Dec 2021 11:31:10 +0900 (KST)
+        b=CjUotYpLg1m6N130m9meMnVZDK6D3kru6RMhVI0nBnTO3Sg8PvkoCuRbJ1em14w1o
+         RGwhRN0WshfDj22r3bwV/Uu0surDfuK5uHniziJrP84x93RTqiY/wA7nE6BDGgLqY4
+         KH0oklAXbCDf+y1fGr2kArqzVoUoMDdbRuB2kb+I=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+        epcas1p4.samsung.com (KnoxPortal) with ESMTP id
+        20211216023134epcas1p403f4ac1502fd731fceaf47020b173851~BG20WcnnB3251332513epcas1p4Z;
+        Thu, 16 Dec 2021 02:31:34 +0000 (GMT)
+Received: from epsmges1p2.samsung.com (unknown [182.195.38.235]) by
+        epsnrtp4.localdomain (Postfix) with ESMTP id 4JDx282N1pz4x9QD; Thu, 16 Dec
+        2021 02:31:28 +0000 (GMT)
+Received: from epcas1p3.samsung.com ( [182.195.41.47]) by
+        epsmges1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
+        26.4F.08277.DF4AAB16; Thu, 16 Dec 2021 11:31:25 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+        epcas1p3.samsung.com (KnoxPortal) with ESMTPA id
+        20211216023125epcas1p3878d322911155792f5724447a83470cb~BG2sB0tuc2540225402epcas1p3p;
+        Thu, 16 Dec 2021 02:31:25 +0000 (GMT)
+Received: from epsmgms1p2.samsung.com (unknown [182.195.42.42]) by
+        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20211216023125epsmtrp2157c9e1d2c0fe16c75f8229ddba4a865~BG2r_0oEe3003730037epsmtrp2P;
+        Thu, 16 Dec 2021 02:31:25 +0000 (GMT)
+X-AuditID: b6c32a36-203ff70000002055-94-61baa4fd15ca
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+        epsmgms1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
+        44.12.08738.DF4AAB16; Thu, 16 Dec 2021 11:31:25 +0900 (KST)
 Received: from [10.113.221.102] (unknown [10.113.221.102]) by
-        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20211216023111epsmtip14a8c38dd0303813d5fa041eb230cc106~BG2eVnqDA0239902399epsmtip1W;
-        Thu, 16 Dec 2021 02:31:11 +0000 (GMT)
-Subject: Re: [PATCH v4 16/20] extcon: intel-cht-wc: Use new cht_wc_model
- intel_soc_pmic field
+        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20211216023125epsmtip25575af7cbca89a2603192fbb6d16df81~BG2roxOcm1119311193epsmtip20;
+        Thu, 16 Dec 2021 02:31:25 +0000 (GMT)
+Subject: Re: [PATCH v4 17/20] extcon: intel-cht-wc: Support devs with
+ Micro-B / USB-2 only Type-C connectors
 To:     Hans de Goede <hdegoede@redhat.com>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
@@ -67,92 +67,90 @@ Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
 From:   Chanwoo Choi <cw00.choi@samsung.com>
 Organization: Samsung Electronics
-Message-ID: <9921247a-675b-c225-c933-8cb1e98ab6c2@samsung.com>
-Date:   Thu, 16 Dec 2021 11:54:11 +0900
+Message-ID: <49f6f8b2-3fdc-7d4e-93b6-73e58bcf9599@samsung.com>
+Date:   Thu, 16 Dec 2021 11:54:25 +0900
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:59.0) Gecko/20100101
         Thunderbird/59.0
 MIME-Version: 1.0
-In-Reply-To: <20211206093318.45214-17-hdegoede@redhat.com>
+In-Reply-To: <20211206093318.45214-18-hdegoede@redhat.com>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Te0xTVxj39La3tywd1yLjgBHh6jDWgZSX10YYCeiuuvEYmZskW72BKy19
-        pg/jcGwMF14TmKMT1iCSMB5iBEXkJSKDYkUYCXMI4sxUkPAQUZji0Iy1vWzjv9/vO9/3/b7f
-        d87BENEE6oUpNEZGr6FVBOrCbereGuB/9ac2OnC62438vmQZIf/6cw6Qj23FHPLnukoeeWfJ
-        yiP/eN4DyNYHsyhZ3VEIyKwHo4C81VaKkgv5VkB2/nAKIc3NVj559+salDzXPomQ/X2/8si+
-        K0by7A0LEimiWi33+NSlGjHVUJuLUr/fbkepst54aq5jCKUah7K5VEFjLaB6b45zqYUG7ziX
-        ROUuOUMnM3ofRpOkTVZoUsKJ/QmyKFloWKDEX7KT3EH4aGg1E05Evx/nv0ehsnsifI7QKpM9
-        FEcbDMT2iF16rcnI+Mi1BmM4weiSVbpQXYCBVhtMmpQADWOUSgIDg0LtiYeU8qLzmYiuQHC0
-        99kEPwNc5OcBAQbxEPiwyQbygAsmwlsAbFka47JkHsD2qssIS14AOFxTYD/BnCWTlyk2fhXA
-        5WflPEcrET4H4NnZNAd2w2Ww5Jc8Z6d1eB4C7xT/zXcQBM/gwNPm405xFBfDa5MjqAO74r5w
-        6OUYcCgI8QhYe3ebI8zF34Y9fbPOFHf8AOxt+gY4sBBfC3t/HOc6sACXQvMls3MIBPeAo+Nn
-        OCzeCJtnS50OIF4sgF1PziGs6Wg4N/NqBbvBaVvjyjK84FRhFp8tqAJwqSiXw5J6AKcsuSsV
-        wfBaZRHHMSmCb4X1bdvZsC9sfXUasMpvwifPT/DYdQlhTpaITdkEb92/x2GxJ6zIzkW/A4Rl
-        lR/LKg+WVR4s/4uVA24teIvRGdQpjEGiC/7vupO06gbgfPDiHS3g1OzTgC7AwUAXgBhCrBOO
-        f9JGi4TJ9OdpjF4r05tUjKELhNo3fBLxck/S2n+MxiiThOwMDAkLCg4hJWESwkM4GVtMi/AU
-        2sgoGUbH6P+t42ACrwxO/KHh/siqROnBd/q2nQG2OvF9976uR96x1bXHhw8uvrs4uCnlyHvy
-        DZWdfp3WSFvQ+Ynh9vUfw46Yw/Ebo9zULd0m6aIlKzVqNG26fqR5MG6/YkP/b65u+Wtev5G/
-        kI5Jd8fqW82p/R7LwmOyAXGmT+KFdJUnf/38FzfmvhowlZZWxCk/+HZKTQ2+9g1OkAVN+xOp
-        jXndFe22YzMz0a0l6VzkyhZN03XFbm457Vc2PK/Ym3Py8PTjmLUfesKXWMSF29iArgN+9Fnm
-        Zr+ncpFnQs6aukJrdmz0Tbn2otJ1wiyQeR/Y/OL6vqpP66vdJ7dM9Jj2LI6VfTly9FGp9KE6
-        uT+G4BrktESM6A30Pz3lXaJ5BAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrHIsWRmVeSWpSXmKPExsWy7bCSnO67JbsSDd5M1LeYNOM/s8XPL+8Z
-        Ld4cn85kcXDdUlaLm7+OsFrc/3qU0WLnw7dsFsv39TNatD28xWhxedccNovPvUcYLQ5MncZs
-        MWX7EXaL240r2CxW73nBbHHm9CVWi9O7SyxWnpjF7CDksXPWXXaPzSu0PDat6mTzuHNtD5vH
-        vJOBHu/3XWXz2HK1ncWjb8sqRo+Tp56weHzeJBfAFcVlk5Kak1mWWqRvl8CVMXltE3NBH2fF
-        yY/P2BsYN7J3MXJwSAiYSLzY6tHFyMkhJLCbUaJpXgSILSEgKTHt4lFmiBJhicOHi7sYuYBK
-        3jJKNN97xwhSIywQLzHjbBcLiC0i0MMs8W8iP0gRs0ADk8SFCZOYITr2MEp82/qRHaSKTUBL
-        Yv+LG2wgNr+AosTVH48ZQTbwCthJrLqtDRJmEVCVOHr6LViJqECYxM4lj5lAbF4BQYmTM5+A
-        LeMUsJKYsnkKK4jNLKAu8WfeJWYIW1zi1pP5TBC2vMT2t3OYJzAKz0LSPgtJyywkLbOQtCxg
-        ZFnFKJlaUJybnltsWGCYl1quV5yYW1yal66XnJ+7iREc5VqaOxi3r/qgd4iRiYPxEKMEB7OS
-        CO+TiF2JQrwpiZVVqUX58UWlOanFhxilOViUxHkvdJ2MFxJITyxJzU5NLUgtgskycXBKNTCJ
-        zrP7+izr9fpI0cszjwV0fOSrjj1w4uN6ZtcX6yW8jdxO7td+5dHlaDnl+g3jlH7mfbcDmJxt
-        yiZz7z795J5Gx60r7D568+9VS/0OrMis+GaQvzxALfw+0701ih9nrG+5NvXz+oz2lyufn18z
-        69iERf8apyTa+z5ttp7nb6ot2xq8ejbr/Lpp08O2TgtqmXdAIzz/1Nk9ujM7M21rSiu2XpX4
-        JpibrCGg/NbzFkemQF/kBxsr+xu5L47c4GfKulm0/aXa8UUaS7M+yv5dMPNRWFKp6JHZQSb7
-        TmstUlUoaImTq5nF0Pjm7QIP+9W/HjQmJAf/i7W3MOksOdRlWc0Qbru9T36Ol3zG9xflTy8p
-        sRRnJBpqMRcVJwIA5D/8iWEDAAA=
-X-CMS-MailID: 20211216023111epcas1p187706cd1cb120df262dacdf1749cbc19
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Tf1AUVRzv7d7tHdTlciA80RCWzMDgbo8frQQOMzJ1VhNnDY1WM8fGbcBw
+        3F23d0kMQzgSAikRINQJZoNw/CgpuORHKIGgHZJGgvJDRhwvQwhRTkaQAbpjsfjv8/28z2c/
+        7/PeWyEq/hvzFiZrDIxeQ6sJzJV35nyAJGjpVBstXTbLqKKvV1Bq4eEMoP65WIZQnaer+NTw
+        424+dXOuB1Ctt6YxynzuS0Dl3BoB1NW2coyyH+0G1K/HSlGqpLlbQI0erMGo+vYJlOq79Cef
+        uvSLgar9zYRGi+WtpjGBvKkmUN5Yl4fJb1xrx+QnrHvlM+cGMbll8DBPXmCpA3Jrr40ntzf6
+        KFzfS4lMYmgVo/dlNAlaVbImMYp44x3lbmVYuJQMIndSLxO+GjqViSJi3lQEvZqsdnQifD+h
+        1UYHpaBZlpDsitRrjQbGN0nLGqIIRqdS68J0wSydyho1icEaxhBBSqWyMIcwPiWp5U4L0J0V
+        ps20PxRkARuWD1yEEA+FOdNDIB+4CsV4C4BzvXd43DAL4MCFEowb7ABaBhZ4Tyyf1/cKuIU2
+        ABv/sqxZZgDMLrrrsAiF7rgGdtZrnbwHno/C4bLlVQeKZyGwouSQwPkpDA+EHRNDqzvZgPvB
+        wfnbwIlF+C54uaeA78Q8fBusHe1HnHgj/i60nsle07hB6zc2njPMBY+A9f1xThrFveCI7VuE
+        w1th83Q56syFeLELLKr9QsBViIETM018DrvDyYuWNd4b2u+dxThDNYCPi/MQbmgA8K4pD+VU
+        IbCjqhhxJqN4AGxok3C0H2xdrABc8rPw3twRvlMCcRHMzRFzEn94dXwM4fAmWHk4DysEhGld
+        HdO6DqZ1HUz/h50EvDrgyejY1ESGJXWy/+47QZvaCFZffGB4Cyiavh/cBRAh6AJQiBIeItu+
+        NlosUtGfpjN6rVJvVDNsFwhzHPBXqPfGBK3jl9EYlGToTmlouCwklCLDScJLNBFbRovxRNrA
+        pDCMjtE/8SFCF+8s5Bnlhx99l399Mv7twq600T0bBFOKoPKncufBWIgqI0Cc2T+b+VqvbeH1
+        WFl+pP7jutofVfxTklca+2xV37+447LtUOdo/BXP60vRndYT2/f9XOqlthm2PT0g289OuPfG
+        9fQfn2I3h9kkizdfSFX0ufkZJpsaxioLh3/wD5gyeC97tl4Yet9teXxgZa+00q5RRVqMHrFJ
+        s6Rud2IUT/ycMqb0JV1cg6pwZP/RG9UZAeYPmhX2Her7iw1b2v3N2gfEsd83FdSYNj/qTjtd
+        +hNNYz6fRW+5EpE+n/HWgWsjD+LMf+i9TmanP8q8PXsEKXGVHEh4nt5Kk+TBjuqV3KXx8z7b
+        K9wIHptEk4GonqX/BbyrJ5B6BAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Re0hTURyAOTt3d9eVdZumZwY9lhmN0loFp6gsrLj9E1b2sJfd6jZX27zs
+        up5EhpS0ar3McklpFJmLRhpO59TyUa3ndFpq7xxmD1llpYZlzRH438f5fR+/HxwKytxEBKXR
+        p3IGPatVkFKiuFoxatLvSw52cvodAp882wdxz3cfwJ/vnhHh29cvi3Hzrxoxfv2jFuDStx0k
+        vlJxDOCDb1sA9jhySNx5tAbgW6ezIM6010jw8/35JLY62yF++KBejB+UpeKr9yxwrowptbyU
+        MEX5Sqaw4BDJvHjqJJnzriWMr6KRZG42ZhCM+WYBYFz3vQTTWTgyXrpaOmszp9Vs5wwxczZI
+        k0vaSgBfTu30Ob9L0oCXNIEgCtHT0AHrfYkJSCkZXQLQp/R2SWAgR1l1tdAEqH8cgqqrhYDT
+        AVDv6Urod0JoPbKa3f0cSh+B6M+JoX4J0mki5D5+EgYKJ0BfL34V+y2SVqLK9qb+1UPpMaix
+        uxX4OZiegx7Xmvsdgh6Hrj6vE/l5OL0ClV5qFQWcYciV7SX8FwXRM5G1brn/GdLjUe/5ehjg
+        cNTivSAK8Chk78iBx0GIZUBtGZBYBiSWAUkuIAqAnOMFnVonTOFVem5HtMDqBKNeHb0pRVcI
+        +j9dqSwBzoIv0VVARIEqgCioCA32rnKwsuDN7K7dnCElyWDUckIVGEERivBgt8mVJKPVbCq3
+        jeN4zvB/KqKCItJEKafOjU0e1HPlQtg3ladYo6nMi+pTadcxUUXKaMfCybkVDWul5j2JfdPt
+        d9185Be9KnF0alPZtdYPTesUkbOlQ9bMMzZ0bdxv159o86jiFOr0uKVZnm2nZnwLcWjlD+fH
+        ut9T87aKX+zZuiiHr/EV7ZIfHXbx0ZbKvNwGNGhnQlFikqtvQfWTRL5LFxffpbhVW25L6/ZM
+        sEmpjFVWWJ+9mDcvDttXEdUWM63jKczoGa6dGhEffkPta9lbFhobSz5bf6busO1NvGbwu/zM
+        H0nbvWHNO2aZBE7em/Dx11Kjvjv7lbFQOSa9mbSXddti2ifyCZpOWzlbvNoStSz75c+VCkJI
+        ZqcooUFg/wIwmfZjYwMAAA==
+X-CMS-MailID: 20211216023125epcas1p3878d322911155792f5724447a83470cb
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
 X-Sendblock-Type: SVC_REQ_APPROVE
 CMS-TYPE: 101P
 DLP-Filter: Pass
 X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20211206093525epcas1p16aaa71953c9a230ed859cb617589d301
+X-CMS-RootMailID: 20211206093607epcas1p342d85b95bd4d0819017a0c756993faec
 References: <20211206093318.45214-1-hdegoede@redhat.com>
-        <CGME20211206093525epcas1p16aaa71953c9a230ed859cb617589d301@epcas1p1.samsung.com>
-        <20211206093318.45214-17-hdegoede@redhat.com>
+        <CGME20211206093607epcas1p342d85b95bd4d0819017a0c756993faec@epcas1p3.samsung.com>
+        <20211206093318.45214-18-hdegoede@redhat.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 On 12/6/21 6:33 PM, Hans de Goede wrote:
-> The CHT_WC_VBUS_GPIO_CTLO GPIO actually driving an external 5V Vboost
-> converter for Vbus depends on the board on which the Cherry Trail -
-> Whiskey Cove PMIC is actually used.
+> So far the extcon-intel-cht-wc code has only been tested on devices with
+> a Type-C connector with USB-PD, USB3 (superspeed) and DP-altmode support
+> through a FUSB302 Type-C controller.
 > 
-> Since the information about the exact PMIC setup is necessary in other
-> places too, struct intel_soc_pmic now has a new cht_wc_model field
-> indicating the board model.
+> Some devices with the intel-cht-wc PMIC however come with an USB-micro-B
+> connector, or an USB-2 only Type-C connector without USB-PD.
 > 
-> Only poke the CHT_WC_VBUS_GPIO_CTLO GPIO if this new field is set to
-> INTEL_CHT_WC_GPD_WIN_POCKET, which indicates the Type-C (with PD and
-> DP-altmode) setup used on the GPD pocket and GPD win; and on which
-> this GPIO actually controls an external 5V Vboost converter.
+> Which device-model we are running on can be identified with the new
+> cht_wc_model intel_soc_pmic field. On models without a Type-C controller
+> the extcon code must control the Vbus 5V boost converter and the USB role
+> switch depending on the detected cable-type.
 > 
 > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 > ---
 > Changes in v3:
-> - Use the new cht_wc_model intel_soc_pmic field which replaces the
->   intel_cht_wc_get_model() helper and adjust the commit msg to match
+> - Some minor tweaks / spelling fixes based on Andy's review
 > ---
->  drivers/extcon/extcon-intel-cht-wc.c | 35 +++++++++++++++++-----------
->  1 file changed, 21 insertions(+), 14 deletions(-)
+>  drivers/extcon/Kconfig               |  2 +
+>  drivers/extcon/extcon-intel-cht-wc.c | 91 ++++++++++++++++++++++++++++
+>  2 files changed, 93 insertions(+)
 
 [snip]
 
 Acked-by: Chanwoo Choi <cw00.choi@samsung.com>
-
 
 -- 
 Best Regards,
