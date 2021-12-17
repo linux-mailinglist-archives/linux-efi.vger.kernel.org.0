@@ -2,139 +2,150 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B5144780C4
-	for <lists+linux-efi@lfdr.de>; Fri, 17 Dec 2021 00:39:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5746478864
+	for <lists+linux-efi@lfdr.de>; Fri, 17 Dec 2021 11:09:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229831AbhLPXjl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 16 Dec 2021 18:39:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59666 "EHLO
+        id S234689AbhLQKJI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 17 Dec 2021 05:09:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229823AbhLPXjk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 16 Dec 2021 18:39:40 -0500
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EAA3C061574
-        for <linux-efi@vger.kernel.org>; Thu, 16 Dec 2021 15:39:40 -0800 (PST)
-Received: by mail-lf1-x12c.google.com with SMTP id cf39so1049763lfb.8
-        for <linux-efi@vger.kernel.org>; Thu, 16 Dec 2021 15:39:39 -0800 (PST)
+        with ESMTP id S232800AbhLQKJH (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 17 Dec 2021 05:09:07 -0500
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D915EC061574
+        for <linux-efi@vger.kernel.org>; Fri, 17 Dec 2021 02:09:06 -0800 (PST)
+Received: by mail-wr1-x433.google.com with SMTP id t18so2973532wrg.11
+        for <linux-efi@vger.kernel.org>; Fri, 17 Dec 2021 02:09:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=m/LjgsVegt/HRyKkkM2n6c0UK9wyNwAZfK1yqCRibBE=;
-        b=ZjNYT24fop4NBsOLESN28pcPFI76P21GY15lEKVa1tKR8Y6MixFR71XXHM7GhfF9Om
-         Mic+/EDIsAL+Oy0aBQJNKwWOjgm51UPxF4cZ/YnojHbYK5t7OKs/w0RJ0fMV/Jty5UP3
-         GD7cR728r/nXnJAOmo8UvAJPlaoac5Lt5ox6J43oGgiSlI+tzAmdbkGHwKtBLR6b03CD
-         7oHTeGaKYJVODZhzKZPRa/GHySInjAASy4QEqvKVn6IABK89mCJ8zObuLFxxpFd4M9oY
-         nNbcSS9gTr2YJoL93pnZ4nD3gzT76+OThD67D+uVZQJZKT64KbSwJ1kM4lJaQvROfOCD
-         Mpsg==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=n+YbVGAkqXP7PNsKwcT3CjJ8IfCXro/+lbWQf9Na6IY=;
+        b=YQPToKZO2L1+/Jp9JTCHBiTeUenosTzut1YioFA8go6CfazZ1hb01A+c+NnddYSLka
+         6kXt/3yBtLzSNddXvU9qGnfFwQfkjfX3kc9iAP6kVuJxDE4+8v9vbnsoc4AdyOfq8VcU
+         mKSxeV8lN7S4Ynswm4g9hAgObhvAMEfF961NfHxvQrMAUXhtVx7x5N6BiwQlIkHDEF6M
+         naPoLVi8HpUQ/3U8z89bbmg8LF1liWCFGkQHj2sMcPWl5aKrVViXgY7onGzAavfAr9z6
+         KQOjTF1ykpsaF86ksZEMfmZo9zjgaHs7GeL5a5nXbbrzYGKmV8X6GR0BKmjsp4/OTttW
+         uNeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=m/LjgsVegt/HRyKkkM2n6c0UK9wyNwAZfK1yqCRibBE=;
-        b=EMhfSdey0ezYTMtXHOCJzVe9Ag/TO54yS2G3jZS8o2rJEQr9jnu8Z71MTlZNGmAMFY
-         Y6ASBPYnZNlvqlB1QhfbVOAPEv4zv2NLhp3svkPJo8uz8JDAuziD8yxUX3zO6McH8gnf
-         tc5Ga6rk3WNt3YLf7OVdI9gQ/o4d40PjupBn+BqOkEghy0IMPp1ZX9FY1UkN0qWsZPYT
-         f3wkZPrTRNNk/HvNrdt8EETxltxStfgAV22Reer9PDxC/pDHzHieQgc1pQcFDvyNE8SH
-         w6yAekJ1WkttHcfcm5LlSVsqm55KvICXAwXPbLUeiSTn/SFQig/RBAKql1eg+oDVmj7G
-         K/6w==
-X-Gm-Message-State: AOAM53065wW16gaVxWYixeB1wnwBFSOmy9m3Hh+9N8ocG+E2AsBwJ74P
-        7NgzbxaNwb+WtEAriXW4IV+2yPlSmPs+SvGXJf8BfA==
-X-Google-Smtp-Source: ABdhPJzJ3Ag+Yv1KTmSJebYEdW20IHyaYIzqo6gVs4G5mbbZ7dHZUudFFNmxFE9zK8L0+gvaxQYp82IZFk5AQAuq/rc=
-X-Received: by 2002:a05:6512:1324:: with SMTP id x36mr432363lfu.495.1639697978059;
- Thu, 16 Dec 2021 15:39:38 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=n+YbVGAkqXP7PNsKwcT3CjJ8IfCXro/+lbWQf9Na6IY=;
+        b=cdv8t95lAPjlUr7g5ey2yVsHc2PP72yHHUKHxiRje33cm9FdoYjMGyUVqyg2OSlNEZ
+         LEQgClNjfIlVQ/DpxVdHcbcflJ1SYSgxn89hDj6cY6obrp+GU0Jvd0HKFyMrPYZkEDPB
+         ToDeuxtkgqDaBiSxedxK1pxDiUbn7powUwMlaBribDBD3O3chCi90g6rVoBQfIZBJWr8
+         5qxbJ/dudarNS9VL2zspauQVAh0BtAqdwfJNPtI8RL3YQWDE7tJWyT7sJzgRCwXooI9H
+         EuUtnbskGTG+Kd38gSOspceZagqRRkdHruflzNxqvIsDgxRC2WjoT03OG9PuNJ3gOEqL
+         5LyA==
+X-Gm-Message-State: AOAM532zPByRax7lNfE8DBhrsXgGLCPiwUgAf//jAPNUofD1bvqdmZQ7
+        VLUn8BccttqpmXo95uoIJLaErQ==
+X-Google-Smtp-Source: ABdhPJyeYq83KgmGcHrxXJdvJn8Xm3CjiDEwUAwqxGagBcrQ+NX6Ld1B/KV07XAB9B48wvadGO120g==
+X-Received: by 2002:adf:906d:: with SMTP id h100mr1833018wrh.259.1639735745366;
+        Fri, 17 Dec 2021 02:09:05 -0800 (PST)
+Received: from google.com ([2.31.167.18])
+        by smtp.gmail.com with ESMTPSA id o4sm5301113wry.80.2021.12.17.02.09.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Dec 2021 02:09:04 -0800 (PST)
+Date:   Fri, 17 Dec 2021 10:09:02 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, Yauhen Kharuzhy <jekhor@gmail.com>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
+Subject: Re: [PATCH v4 14/20] mfd: intel_soc_pmic_chtwc: Add cht_wc_model
+ data to struct intel_soc_pmic
+Message-ID: <Ybxhvk5rB+82WaU5@google.com>
+References: <20211206093318.45214-1-hdegoede@redhat.com>
+ <20211206093318.45214-15-hdegoede@redhat.com>
 MIME-Version: 1.0
-References: <20211210154332.11526-1-brijesh.singh@amd.com> <20211210154332.11526-9-brijesh.singh@amd.com>
- <YbugbgXhApv9ECM2@dt>
-In-Reply-To: <YbugbgXhApv9ECM2@dt>
-From:   Mikolaj Lisik <lisik@google.com>
-Date:   Thu, 16 Dec 2021 15:39:26 -0800
-Message-ID: <CADtC8PX_bEk3rQR1sonbp-rX7rAG4fdbM41r3YLhfj3qWvqJrw@mail.gmail.com>
-Subject: Re: [PATCH v8 08/40] x86/sev: Check the vmpl level
-To:     Venu Busireddy <venu.busireddy@oracle.com>
-Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <Thomas.Lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211206093318.45214-15-hdegoede@redhat.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Dec 16, 2021 at 12:24 PM Venu Busireddy
-<venu.busireddy@oracle.com> wrote:
->
-> On 2021-12-10 09:43:00 -0600, Brijesh Singh wrote:
-> > Virtual Machine Privilege Level (VMPL) feature in the SEV-SNP architecture
-> > allows a guest VM to divide its address space into four levels. The level
-> > can be used to provide the hardware isolated abstraction layers with a VM.
-> > The VMPL0 is the highest privilege, and VMPL3 is the least privilege.
-> > Certain operations must be done by the VMPL0 software, such as:
-> >
-> > * Validate or invalidate memory range (PVALIDATE instruction)
-> > * Allocate VMSA page (RMPADJUST instruction when VMSA=1)
-> >
-> > The initial SEV-SNP support requires that the guest kernel is running on
-> > VMPL0. Add a check to make sure that kernel is running at VMPL0 before
-> > continuing the boot. There is no easy method to query the current VMPL
-> > level, so use the RMPADJUST instruction to determine whether the guest is
-> > running at the VMPL0.
-> >
-> > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> > ---
-> >  arch/x86/boot/compressed/sev.c    | 34 ++++++++++++++++++++++++++++---
-> >  arch/x86/include/asm/sev-common.h |  1 +
-> >  arch/x86/include/asm/sev.h        | 16 +++++++++++++++
-> >  3 files changed, 48 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-> > index a0708f359a46..9be369f72299 100644
-> > --- a/arch/x86/boot/compressed/sev.c
-> > +++ b/arch/x86/boot/compressed/sev.c
-> > @@ -212,6 +212,31 @@ static inline u64 rd_sev_status_msr(void)
-> >       return ((high << 32) | low);
-> >  }
-> >
-> > +static void enforce_vmpl0(void)
-> > +{
-> > +     u64 attrs;
-> > +     int err;
-> > +
-> > +     /*
-> > +      * There is no straightforward way to query the current VMPL level. The
-> > +      * simplest method is to use the RMPADJUST instruction to change a page
-> > +      * permission to a VMPL level-1, and if the guest kernel is launched at
-> > +      * a level <= 1, then RMPADJUST instruction will return an error.
->
-> Perhaps a nit. When you say "level <= 1", do you mean a level lower than or
-> equal to 1 semantically, or numerically?
->
+On Mon, 06 Dec 2021, Hans de Goede wrote:
 
-+1 to this. Additionally I found the "level-1" confusing which I
-interpreted as "level minus one".
+> Tablet / laptop designs using an Intel Cherry Trail x86 main SoC with
+> an Intel Whiskey Cove PMIC do not use a single standard setup for
+> the charger, fuel-gauge and other chips surrounding the PMIC /
+> charging+data USB port.
+> 
+> Unlike what is normal on x86 this diversity in designs is not handled
+> by the ACPI tables. On 2 of the 3 known designs there are no standard
+> (PNP0C0A) ACPI battery devices and on the 3th design the ACPI battery
+> device does not work under Linux due to it requiring non-standard
+> and undocumented ACPI behavior.
+> 
+> So to make things work under Linux we use native charger and fuel-gauge
+> drivers on these devices, re-using the native drivers used on ARM boards
+> with the same charger / fuel-gauge ICs.
+> 
+> This requires various MFD-cell drivers for the CHT-WC PMIC cells to
+> know which model they are exactly running on so that they can e.g.
+> instantiate an I2C-client for the right model charger-IC (the charger
+> is connected to an I2C-controller which is part of the PMIC).
+> 
+> Rather then duplicating DMI-id matching to check which model we are
+> running on in each MFD-cell driver, add a check for this to the
+> shared drivers/mfd/intel_soc_pmic_chtwc.c code by using a
+> DMI table for all 3 known models:
+> 
+> 1. The GPD Win and GPD Pocket mini-laptops, these are really 2 models
+> but the Pocket re-uses the GPD Win's design in a different housing:
+> 
+> The WC PMIC is connected to a TI BQ24292i charger, paired with
+> a Maxim MAX17047 fuelgauge + a FUSB302 USB Type-C Controller +
+> a PI3USB30532 USB switch, for a fully functional Type-C port.
+> 
+> 2. The Xiaomi Mi Pad 2:
+> 
+> The WC PMIC is connected to a TI BQ25890 charger, paired with
+> a TI BQ27520 fuelgauge, using the TI BQ25890 for BC1.2 charger type
+> detection, for a USB-2 only Type-C port without PD.
+> 
+> 3. The Lenovo Yoga Book YB1-X90 / Lenovo Yoga Book YB1-X91 series:
+> 
+> The WC PMIC is connected to a TI BQ25892 charger, paired with
+> a TI BQ27542 fuelgauge, using the WC PMIC for BC1.2 charger type
+> detection and using the BQ25892's Mediatek Pump Express+ (1.0)
+> support to enable charging with up to 12V through a micro-USB port.
+> 
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+> Changes in v4:
+> - Put '{' and comment of DMI entries on separate lines (requested by Lee)
+> - Drop comment on terminating empty entry in DMI table
+> 
+> Changes in v3:
+> - Store the model in struct intel_soc_pmic instead of adding a helper
+>   function to retreive it
+> 
+> Changes in v2:
+> - New patch in v2 of this patch-set
+> ---
+>  drivers/mfd/intel_soc_pmic_chtwc.c | 40 ++++++++++++++++++++++++++++++
+>  include/linux/mfd/intel_soc_pmic.h |  8 ++++++
+>  2 files changed, 48 insertions(+)
 
-Perhaps phrasing it as "level one", or "level=1" would be more explicit?
+Acked-by: Lee Jones <lee.jones@linaro.org>
+
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
