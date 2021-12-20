@@ -2,144 +2,173 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1D4247AA7A
-	for <lists+linux-efi@lfdr.de>; Mon, 20 Dec 2021 14:41:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6709C47AC4A
+	for <lists+linux-efi@lfdr.de>; Mon, 20 Dec 2021 15:43:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232212AbhLTNlH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 20 Dec 2021 08:41:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46162 "EHLO
+        id S235037AbhLTOmo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 20 Dec 2021 09:42:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230300AbhLTNlG (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 20 Dec 2021 08:41:06 -0500
+        with ESMTP id S234510AbhLTOld (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 20 Dec 2021 09:41:33 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78B80C061574;
-        Mon, 20 Dec 2021 05:41:06 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D986C0698E5;
+        Mon, 20 Dec 2021 06:41:02 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4E6C9B80EA2;
-        Mon, 20 Dec 2021 13:41:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B994C36AE9;
-        Mon, 20 Dec 2021 13:41:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640007663;
-        bh=sEhqYPxM4z19kGZYE2peDh+u0pT/5DH5Q0sa/WgLz2s=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=oT13uPmkAxGD5Bshuprq6DF7tVZgmsbYCW7m81SlEheTzmKYwN9cteS2Qm0f+yzG6
-         FxEZ90zHRkBUkkldie3P2GUorJw1P9OF2hEnTx8f/v+ToJqdVDYWB/RZ1XHjnjfRxL
-         fLVSWyLXsF5rXhpcI2KLW7oGXDoL1S/kUska8UuCqrAnXLgCH77Juo+nSxz7bV+YX3
-         3WfuXF6l3rrDlcVq5dlYauRBATyJZitLDYYQCif2MaHz6a5dvEw228kOuvYnysWwa9
-         APhZ9+umMMMIfdZxyvdYYy+6SLkJwLHrNpa2baLRP4StlCKGzXgQu+j2Qe1Fq0Q/Z8
-         2W1x/QxmwJyOQ==
-Received: by mail-ua1-f54.google.com with SMTP id o1so17725858uap.4;
-        Mon, 20 Dec 2021 05:41:02 -0800 (PST)
-X-Gm-Message-State: AOAM533SMp5A/u+oBrZeD2y/zBD71doYSiFNpX9Sa1mxW40hpKMaRaJr
-        PpTwsONAqV+SNvyXUEDHCIMmWPpjSyzD5j+ow4k=
-X-Google-Smtp-Source: ABdhPJwGr/+MFfoW7ipUpJBlTl+ZN+AB5Gr6EIJrZEEcp5Ttg/AYr9iCWiGr8Ukebm4uIUfe9nTB/0FRTqyMvS0jIYU=
-X-Received: by 2002:a05:6102:316e:: with SMTP id l14mr233250vsm.8.1640007662059;
- Mon, 20 Dec 2021 05:41:02 -0800 (PST)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3A805B80EE5;
+        Mon, 20 Dec 2021 14:41:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BAFDC36AE9;
+        Mon, 20 Dec 2021 14:40:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1640011260;
+        bh=JFnVD9YxXpELtS2BtP3IjBv5Rf/GTq+a9Mm0HRXzVyA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=mHvKCKH1kDC+gf9GaNj1y25OP3b3aZkO4h4462EKaVqUxgN8TIvgijSHot4mv/JOu
+         pmv1u/eIb/27Pjf7+XdPy6C+BW7PrNlU5b6VXokqoGhasyUFHjXerfbHFXvLMmuPCP
+         tHiwn3ksOxMq6gC2d5e9kQda6UV7ZWUVuTzxpqAk=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        AKASHI Takahiro <takahiro.akashi@linaro.org>,
+        Alexander Graf <agraf@suse.de>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        Jeffrey Hugo <jhugo@codeaurora.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Leif Lindholm <leif.lindholm@linaro.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Matt Fleming <matt@codeblueprint.co.uk>,
+        Peter Jones <pjones@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Sai Praneeth Prakhya <sai.praneeth.prakhya@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>
+Subject: [PATCH 4.19 15/56] x86: Make ARCH_USE_MEMREMAP_PROT a generic Kconfig symbol
+Date:   Mon, 20 Dec 2021 15:34:08 +0100
+Message-Id: <20211220143023.954017343@linuxfoundation.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20211220143023.451982183@linuxfoundation.org>
+References: <20211220143023.451982183@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-References: <20211206104657.433304-1-alexandre.ghiti@canonical.com>
- <20211206104657.433304-13-alexandre.ghiti@canonical.com> <CAJF2gTQEHv1dVzv=JNCYSzD8oh6UxYOFRTdBOp-FFeeeOhSJrQ@mail.gmail.com>
- <CAMj1kXHmdDKFozkoAfM-mxsxxfanhVq5HcA1qKTrkp=vAt=Umg@mail.gmail.com>
-In-Reply-To: <CAMj1kXHmdDKFozkoAfM-mxsxxfanhVq5HcA1qKTrkp=vAt=Umg@mail.gmail.com>
-From:   Guo Ren <guoren@kernel.org>
-Date:   Mon, 20 Dec 2021 21:40:51 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTR2pDN8vvknmE2s1nj2WSuCfTkXYkU074rCck+CCwQv7Q@mail.gmail.com>
-Message-ID: <CAJF2gTR2pDN8vvknmE2s1nj2WSuCfTkXYkU074rCck+CCwQv7Q@mail.gmail.com>
-Subject: Re: [PATCH v3 12/13] riscv: Initialize thread pointer before calling
- C functions
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Alexandre Ghiti <alexandre.ghiti@canonical.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Zong Li <zong.li@sifive.com>, Anup Patel <anup@brainfault.org>,
-        Atish Patra <Atish.Patra@rivosinc.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Kees Cook <keescook@chromium.org>,
-        Guo Ren <guoren@linux.alibaba.com>,
-        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-        Mayuresh Chitale <mchitale@ventanamicro.com>,
-        panqinglin2020@iscas.ac.cn,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kasan-dev <kasan-dev@googlegroups.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Dec 20, 2021 at 5:17 PM Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Mon, 20 Dec 2021 at 10:11, Guo Ren <guoren@kernel.org> wrote:
-> >
-> > On Tue, Dec 7, 2021 at 11:55 AM Alexandre Ghiti
-> > <alexandre.ghiti@canonical.com> wrote:
-> > >
-> > > Because of the stack canary feature that reads from the current task
-> > > structure the stack canary value, the thread pointer register "tp" must
-> > > be set before calling any C function from head.S: by chance, setup_vm
-> > Shall we disable -fstack-protector for setup_vm() with __attribute__?
->
-> Don't use __attribute__((optimize())) for that: it is known to be
-> broken, and documented as debug purposes only in the GCC info pages:
->
-> https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html
-Oh, thx for the link.
+From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 
->
->
->
->
-> > Actually, we've already init tp later.
-> >
-> > > and all the functions that it calls does not seem to be part of the
-> > > functions where the canary check is done, but in the following commits,
-> > > some functions will.
-> > >
-> > > Fixes: f2c9699f65557a31 ("riscv: Add STACKPROTECTOR supported")
-> > > Signed-off-by: Alexandre Ghiti <alexandre.ghiti@canonical.com>
-> > > ---
-> > >  arch/riscv/kernel/head.S | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > >
-> > > diff --git a/arch/riscv/kernel/head.S b/arch/riscv/kernel/head.S
-> > > index c3c0ed559770..86f7ee3d210d 100644
-> > > --- a/arch/riscv/kernel/head.S
-> > > +++ b/arch/riscv/kernel/head.S
-> > > @@ -302,6 +302,7 @@ clear_bss_done:
-> > >         REG_S a0, (a2)
-> > >
-> > >         /* Initialize page tables and relocate to virtual addresses */
-> > > +       la tp, init_task
-> > >         la sp, init_thread_union + THREAD_SIZE
-> > >         XIP_FIXUP_OFFSET sp
-> > >  #ifdef CONFIG_BUILTIN_DTB
-> > > --
-> > > 2.32.0
-> > >
-> >
-> >
-> > --
-> > Best Regards
-> >  Guo Ren
-> >
-> > ML: https://lore.kernel.org/linux-csky/
+commit ce9084ba0d1d8030adee7038ace32f8d9d423d0f upstream.
+
+Turn ARCH_USE_MEMREMAP_PROT into a generic Kconfig symbol, and fix the
+dependency expression to reflect that AMD_MEM_ENCRYPT depends on it,
+instead of the other way around. This will permit ARCH_USE_MEMREMAP_PROT
+to be selected by other architectures.
+
+Note that the encryption related early memremap routines in
+arch/x86/mm/ioremap.c cannot be built for 32-bit x86 without triggering
+the following warning:
+
+     arch/x86//mm/ioremap.c: In function 'early_memremap_encrypted':
+  >> arch/x86/include/asm/pgtable_types.h:193:27: warning: conversion from
+                     'long long unsigned int' to 'long unsigned int' changes
+                     value from '9223372036854776163' to '355' [-Woverflow]
+      #define __PAGE_KERNEL_ENC (__PAGE_KERNEL | _PAGE_ENC)
+                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+     arch/x86//mm/ioremap.c:713:46: note: in expansion of macro '__PAGE_KERNEL_ENC'
+       return early_memremap_prot(phys_addr, size, __PAGE_KERNEL_ENC);
+
+which essentially means they are 64-bit only anyway. However, we cannot
+make them dependent on CONFIG_ARCH_HAS_MEM_ENCRYPT, since that is always
+defined, even for i386 (and changing that results in a slew of build errors)
+
+So instead, build those routines only if CONFIG_AMD_MEM_ENCRYPT is
+defined.
+
+Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc: AKASHI Takahiro <takahiro.akashi@linaro.org>
+Cc: Alexander Graf <agraf@suse.de>
+Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>
+Cc: Jeffrey Hugo <jhugo@codeaurora.org>
+Cc: Lee Jones <lee.jones@linaro.org>
+Cc: Leif Lindholm <leif.lindholm@linaro.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matt Fleming <matt@codeblueprint.co.uk>
+Cc: Peter Jones <pjones@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Sai Praneeth Prakhya <sai.praneeth.prakhya@intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-efi@vger.kernel.org
+Link: http://lkml.kernel.org/r/20190202094119.13230-9-ard.biesheuvel@linaro.org
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/Kconfig          |    3 +++
+ arch/x86/Kconfig      |    5 +----
+ arch/x86/mm/ioremap.c |    4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -870,6 +870,9 @@ config HAVE_ARCH_PREL32_RELOCATIONS
+ 	  architectures, and don't require runtime relocation on relocatable
+ 	  kernels.
+ 
++config ARCH_USE_MEMREMAP_PROT
++	bool
++
+ source "kernel/gcov/Kconfig"
+ 
+ source "scripts/gcc-plugins/Kconfig"
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1489,6 +1489,7 @@ config AMD_MEM_ENCRYPT
+ 	bool "AMD Secure Memory Encryption (SME) support"
+ 	depends on X86_64 && CPU_SUP_AMD
+ 	select DYNAMIC_PHYSICAL_MASK
++	select ARCH_USE_MEMREMAP_PROT
+ 	---help---
+ 	  Say yes to enable support for the encryption of system memory.
+ 	  This requires an AMD processor that supports Secure Memory
+@@ -1507,10 +1508,6 @@ config AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT
+ 	  If set to N, then the encryption of system memory can be
+ 	  activated with the mem_encrypt=on command line option.
+ 
+-config ARCH_USE_MEMREMAP_PROT
+-	def_bool y
+-	depends on AMD_MEM_ENCRYPT
+-
+ # Common NUMA Features
+ config NUMA
+ 	bool "Numa Memory Allocation and Scheduler Support"
+--- a/arch/x86/mm/ioremap.c
++++ b/arch/x86/mm/ioremap.c
+@@ -697,7 +697,7 @@ bool phys_mem_access_encrypted(unsigned
+ 	return arch_memremap_can_ram_remap(phys_addr, size, 0);
+ }
+ 
+-#ifdef CONFIG_ARCH_USE_MEMREMAP_PROT
++#ifdef CONFIG_AMD_MEM_ENCRYPT
+ /* Remap memory with encryption */
+ void __init *early_memremap_encrypted(resource_size_t phys_addr,
+ 				      unsigned long size)
+@@ -739,7 +739,7 @@ void __init *early_memremap_decrypted_wp
+ 
+ 	return early_memremap_prot(phys_addr, size, __PAGE_KERNEL_NOENC_WP);
+ }
+-#endif	/* CONFIG_ARCH_USE_MEMREMAP_PROT */
++#endif	/* CONFIG_AMD_MEM_ENCRYPT */
+ 
+ static pte_t bm_pte[PAGE_SIZE/sizeof(pte_t)] __page_aligned_bss;
+ 
 
 
-
--- 
-Best Regards
- Guo Ren
-
-ML: https://lore.kernel.org/linux-csky/
