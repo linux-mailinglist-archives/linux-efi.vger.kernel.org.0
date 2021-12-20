@@ -2,166 +2,70 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 063DC47ABDB
-	for <lists+linux-efi@lfdr.de>; Mon, 20 Dec 2021 15:39:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6028747AD36
+	for <lists+linux-efi@lfdr.de>; Mon, 20 Dec 2021 15:51:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234880AbhLTOjn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 20 Dec 2021 09:39:43 -0500
-Received: from sin.source.kernel.org ([145.40.73.55]:53170 "EHLO
-        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234407AbhLTOiz (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 20 Dec 2021 09:38:55 -0500
+        id S235663AbhLTOu5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 20 Dec 2021 09:50:57 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:41314 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236384AbhLTOtK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 20 Dec 2021 09:49:10 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 52FB3CE1109;
-        Mon, 20 Dec 2021 14:38:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96EEC36AE7;
-        Mon, 20 Dec 2021 14:38:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1640011131;
-        bh=1TxqclfbZOGmqpcsw9YsdZ/Nb9BH+PH1rHsOpBJkIFw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nNLkL0as9ao5agGD2w1hmA2ikF3sXBhahpEjYrUbqkmNPiHF1qddJ66ij1ghQfhIB
-         EcFeRzD8p7IGwN0a5zA6qjmvMDHAZzX4wtrSZAWxXtzwVGWEyZedWhvfl9+ATWvzKB
-         nC+Gw98RUgpfVzo1xtPfhYTzfaJsYXFvBOoDXotk=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        AKASHI Takahiro <takahiro.akashi@linaro.org>,
-        Alexander Graf <agraf@suse.de>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        Jeffrey Hugo <jhugo@codeaurora.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Leif Lindholm <leif.lindholm@linaro.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Matt Fleming <matt@codeblueprint.co.uk>,
-        Peter Jones <pjones@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Sai Praneeth Prakhya <sai.praneeth.prakhya@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 4.14 15/45] x86: Make ARCH_USE_MEMREMAP_PROT a generic Kconfig symbol
-Date:   Mon, 20 Dec 2021 15:34:10 +0100
-Message-Id: <20211220143022.772557715@linuxfoundation.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20211220143022.266532675@linuxfoundation.org>
-References: <20211220143022.266532675@linuxfoundation.org>
-User-Agent: quilt/0.66
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 87554611A7;
+        Mon, 20 Dec 2021 14:49:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF5D0C36AE8;
+        Mon, 20 Dec 2021 14:49:09 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="k6AL52Jn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1640011748;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=ZB+YlnrmyeFEXztbZ4HD56lvMI75wzDWPgfGxZYzu90=;
+        b=k6AL52Jn8WlJNjFIhOohPsH1zGF26B01uLOEqYe6OtPQfKM5dd2SspYqZfukIxn3FsJDrF
+        Ch2pJ9tSJQoMCJqeUdSXU4A2fElYTtCoFHe/5s9pelCw7z0V2vHSqqK47lPWEWqr1o1qrM
+        kvN9ppEUBWTFRDD1sQWbqp8cwbsS6yw=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id b1cf1e0f (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+        Mon, 20 Dec 2021 14:49:08 +0000 (UTC)
+Received: by mail-yb1-f170.google.com with SMTP id y68so29612532ybe.1;
+        Mon, 20 Dec 2021 06:49:08 -0800 (PST)
+X-Gm-Message-State: AOAM5317vKQ92CRAp6QuIgf9Rt1qw2KN4tF+rlsOpIVf1RPAA2MW5/JO
+        kRtdG1DLbo3DMjvFyuSp70+nQqfBZGBJr3+EFco=
+X-Google-Smtp-Source: ABdhPJyEVxPM+FkwuqnhftSYPgXpViHoiltyHD6WFrPWaqROFVl1pBGJ+E+Tr401ZCOmsSFqEGUfixqnPM7A5NoHIg8=
+X-Received: by 2002:a25:2450:: with SMTP id k77mr23286190ybk.121.1640011746707;
+ Mon, 20 Dec 2021 06:49:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20211012082708.121931-1-iivanov@suse.de> <YWVKAk4h5bsUA3b6@light.dominikbrodowski.net>
+ <YaivhAV8LouB0zGV@light.dominikbrodowski.net> <CAHmME9qxBeBzfKCjzfAFX9ZWAGKv1TKCQw3x22d_DmJtaAewLw@mail.gmail.com>
+ <YanOIvAV1iPBEXR3@light.dominikbrodowski.net> <CAJMQK-i0vZ8k8cNrUaDBdCBv4ucd-DzUWix3ui7QZ_2awZHe6g@mail.gmail.com>
+ <Ya55SjgSkO+INcbb@light.dominikbrodowski.net> <CAHmME9oonMxxfEq7sjSSYc7XPwzjW4e45JTbBCJ2hFEbL-tnyw@mail.gmail.com>
+In-Reply-To: <CAHmME9oonMxxfEq7sjSSYc7XPwzjW4e45JTbBCJ2hFEbL-tnyw@mail.gmail.com>
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Mon, 20 Dec 2021 15:48:55 +0100
+X-Gmail-Original-Message-ID: <CAHmME9oZZdxW3H+7UyGTqebZoBHgEARcw0ea-83ghZR8pwfRsw@mail.gmail.com>
+Message-ID: <CAHmME9oZZdxW3H+7UyGTqebZoBHgEARcw0ea-83ghZR8pwfRsw@mail.gmail.com>
+Subject: Re: [PATCH v5] random: fix crash on multiple early calls to add_bootloader_randomness()
+To:     Dominik Brodowski <linux@dominikbrodowski.net>
+Cc:     Hsin-Yi Wang <hsinyi@chromium.org>,
+        "Theodore Ts'o" <tytso@mit.edu>,
+        "Ivan T. Ivanov" <iivanov@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Hey Dominik,
 
-commit ce9084ba0d1d8030adee7038ace32f8d9d423d0f upstream.
+Just following up here, as I never heard back from you. These seem
+like real bug I'd like to fix at some point. I was waiting to hear
+back about your latest patch, and perhaps you wanted to spin a new
+revision? Or not, in which case, please let me know?
 
-Turn ARCH_USE_MEMREMAP_PROT into a generic Kconfig symbol, and fix the
-dependency expression to reflect that AMD_MEM_ENCRYPT depends on it,
-instead of the other way around. This will permit ARCH_USE_MEMREMAP_PROT
-to be selected by other architectures.
-
-Note that the encryption related early memremap routines in
-arch/x86/mm/ioremap.c cannot be built for 32-bit x86 without triggering
-the following warning:
-
-     arch/x86//mm/ioremap.c: In function 'early_memremap_encrypted':
-  >> arch/x86/include/asm/pgtable_types.h:193:27: warning: conversion from
-                     'long long unsigned int' to 'long unsigned int' changes
-                     value from '9223372036854776163' to '355' [-Woverflow]
-      #define __PAGE_KERNEL_ENC (__PAGE_KERNEL | _PAGE_ENC)
-                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-     arch/x86//mm/ioremap.c:713:46: note: in expansion of macro '__PAGE_KERNEL_ENC'
-       return early_memremap_prot(phys_addr, size, __PAGE_KERNEL_ENC);
-
-which essentially means they are 64-bit only anyway. However, we cannot
-make them dependent on CONFIG_ARCH_HAS_MEM_ENCRYPT, since that is always
-defined, even for i386 (and changing that results in a slew of build errors)
-
-So instead, build those routines only if CONFIG_AMD_MEM_ENCRYPT is
-defined.
-
-Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc: AKASHI Takahiro <takahiro.akashi@linaro.org>
-Cc: Alexander Graf <agraf@suse.de>
-Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Heinrich Schuchardt <xypron.glpk@gmx.de>
-Cc: Jeffrey Hugo <jhugo@codeaurora.org>
-Cc: Lee Jones <lee.jones@linaro.org>
-Cc: Leif Lindholm <leif.lindholm@linaro.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matt Fleming <matt@codeblueprint.co.uk>
-Cc: Peter Jones <pjones@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Sai Praneeth Prakhya <sai.praneeth.prakhya@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-efi@vger.kernel.org
-Link: http://lkml.kernel.org/r/20190202094119.13230-9-ard.biesheuvel@linaro.org
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/Kconfig          |    3 +++
- arch/x86/Kconfig      |    5 +----
- arch/x86/mm/ioremap.c |    4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
-
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -980,4 +980,7 @@ config HAVE_ARCH_COMPILER_H
- 	  linux/compiler-*.h in order to override macro definitions that those
- 	  headers generally provide.
- 
-+config ARCH_USE_MEMREMAP_PROT
-+	bool
-+
- source "kernel/gcov/Kconfig"
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1449,6 +1449,7 @@ config ARCH_HAS_MEM_ENCRYPT
- config AMD_MEM_ENCRYPT
- 	bool "AMD Secure Memory Encryption (SME) support"
- 	depends on X86_64 && CPU_SUP_AMD
-+	select ARCH_USE_MEMREMAP_PROT
- 	---help---
- 	  Say yes to enable support for the encryption of system memory.
- 	  This requires an AMD processor that supports Secure Memory
-@@ -1467,10 +1468,6 @@ config AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT
- 	  If set to N, then the encryption of system memory can be
- 	  activated with the mem_encrypt=on command line option.
- 
--config ARCH_USE_MEMREMAP_PROT
--	def_bool y
--	depends on AMD_MEM_ENCRYPT
--
- # Common NUMA Features
- config NUMA
- 	bool "Numa Memory Allocation and Scheduler Support"
---- a/arch/x86/mm/ioremap.c
-+++ b/arch/x86/mm/ioremap.c
-@@ -626,7 +626,7 @@ bool phys_mem_access_encrypted(unsigned
- 	return arch_memremap_can_ram_remap(phys_addr, size, 0);
- }
- 
--#ifdef CONFIG_ARCH_USE_MEMREMAP_PROT
-+#ifdef CONFIG_AMD_MEM_ENCRYPT
- /* Remap memory with encryption */
- void __init *early_memremap_encrypted(resource_size_t phys_addr,
- 				      unsigned long size)
-@@ -668,7 +668,7 @@ void __init *early_memremap_decrypted_wp
- 
- 	return early_memremap_prot(phys_addr, size, __PAGE_KERNEL_NOENC_WP);
- }
--#endif	/* CONFIG_ARCH_USE_MEMREMAP_PROT */
-+#endif	/* CONFIG_AMD_MEM_ENCRYPT */
- 
- static pte_t bm_pte[PAGE_SIZE/sizeof(pte_t)] __page_aligned_bss;
- 
-
-
+Thanks,
+Jason
