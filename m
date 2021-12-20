@@ -2,32 +2,29 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6709C47AC4A
-	for <lists+linux-efi@lfdr.de>; Mon, 20 Dec 2021 15:43:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 063DC47ABDB
+	for <lists+linux-efi@lfdr.de>; Mon, 20 Dec 2021 15:39:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235037AbhLTOmo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 20 Dec 2021 09:42:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59654 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234510AbhLTOld (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 20 Dec 2021 09:41:33 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D986C0698E5;
-        Mon, 20 Dec 2021 06:41:02 -0800 (PST)
+        id S234880AbhLTOjn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 20 Dec 2021 09:39:43 -0500
+Received: from sin.source.kernel.org ([145.40.73.55]:53170 "EHLO
+        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234407AbhLTOiz (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 20 Dec 2021 09:38:55 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3A805B80EE5;
-        Mon, 20 Dec 2021 14:41:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BAFDC36AE9;
-        Mon, 20 Dec 2021 14:40:59 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 52FB3CE1109;
+        Mon, 20 Dec 2021 14:38:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96EEC36AE7;
+        Mon, 20 Dec 2021 14:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1640011260;
-        bh=JFnVD9YxXpELtS2BtP3IjBv5Rf/GTq+a9Mm0HRXzVyA=;
+        s=korg; t=1640011131;
+        bh=1TxqclfbZOGmqpcsw9YsdZ/Nb9BH+PH1rHsOpBJkIFw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mHvKCKH1kDC+gf9GaNj1y25OP3b3aZkO4h4462EKaVqUxgN8TIvgijSHot4mv/JOu
-         pmv1u/eIb/27Pjf7+XdPy6C+BW7PrNlU5b6VXokqoGhasyUFHjXerfbHFXvLMmuPCP
-         tHiwn3ksOxMq6gC2d5e9kQda6UV7ZWUVuTzxpqAk=
+        b=nNLkL0as9ao5agGD2w1hmA2ikF3sXBhahpEjYrUbqkmNPiHF1qddJ66ij1ghQfhIB
+         EcFeRzD8p7IGwN0a5zA6qjmvMDHAZzX4wtrSZAWxXtzwVGWEyZedWhvfl9+ATWvzKB
+         nC+Gw98RUgpfVzo1xtPfhYTzfaJsYXFvBOoDXotk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,14 +43,13 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Sai Praneeth Prakhya <sai.praneeth.prakhya@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>
-Subject: [PATCH 4.19 15/56] x86: Make ARCH_USE_MEMREMAP_PROT a generic Kconfig symbol
-Date:   Mon, 20 Dec 2021 15:34:08 +0100
-Message-Id: <20211220143023.954017343@linuxfoundation.org>
+        linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 4.14 15/45] x86: Make ARCH_USE_MEMREMAP_PROT a generic Kconfig symbol
+Date:   Mon, 20 Dec 2021 15:34:10 +0100
+Message-Id: <20211220143022.772557715@linuxfoundation.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20211220143023.451982183@linuxfoundation.org>
-References: <20211220143023.451982183@linuxfoundation.org>
+In-Reply-To: <20211220143022.266532675@linuxfoundation.org>
+References: <20211220143022.266532675@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -109,7 +105,6 @@ Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: linux-efi@vger.kernel.org
 Link: http://lkml.kernel.org/r/20190202094119.13230-9-ard.biesheuvel@linaro.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
  arch/Kconfig          |    3 +++
@@ -119,27 +114,25 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/Kconfig
 +++ b/arch/Kconfig
-@@ -870,6 +870,9 @@ config HAVE_ARCH_PREL32_RELOCATIONS
- 	  architectures, and don't require runtime relocation on relocatable
- 	  kernels.
+@@ -980,4 +980,7 @@ config HAVE_ARCH_COMPILER_H
+ 	  linux/compiler-*.h in order to override macro definitions that those
+ 	  headers generally provide.
  
 +config ARCH_USE_MEMREMAP_PROT
 +	bool
 +
  source "kernel/gcov/Kconfig"
- 
- source "scripts/gcc-plugins/Kconfig"
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
-@@ -1489,6 +1489,7 @@ config AMD_MEM_ENCRYPT
+@@ -1449,6 +1449,7 @@ config ARCH_HAS_MEM_ENCRYPT
+ config AMD_MEM_ENCRYPT
  	bool "AMD Secure Memory Encryption (SME) support"
  	depends on X86_64 && CPU_SUP_AMD
- 	select DYNAMIC_PHYSICAL_MASK
 +	select ARCH_USE_MEMREMAP_PROT
  	---help---
  	  Say yes to enable support for the encryption of system memory.
  	  This requires an AMD processor that supports Secure Memory
-@@ -1507,10 +1508,6 @@ config AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT
+@@ -1467,10 +1468,6 @@ config AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT
  	  If set to N, then the encryption of system memory can be
  	  activated with the mem_encrypt=on command line option.
  
@@ -152,7 +145,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	bool "Numa Memory Allocation and Scheduler Support"
 --- a/arch/x86/mm/ioremap.c
 +++ b/arch/x86/mm/ioremap.c
-@@ -697,7 +697,7 @@ bool phys_mem_access_encrypted(unsigned
+@@ -626,7 +626,7 @@ bool phys_mem_access_encrypted(unsigned
  	return arch_memremap_can_ram_remap(phys_addr, size, 0);
  }
  
@@ -161,7 +154,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  /* Remap memory with encryption */
  void __init *early_memremap_encrypted(resource_size_t phys_addr,
  				      unsigned long size)
-@@ -739,7 +739,7 @@ void __init *early_memremap_decrypted_wp
+@@ -668,7 +668,7 @@ void __init *early_memremap_decrypted_wp
  
  	return early_memremap_prot(phys_addr, size, __PAGE_KERNEL_NOENC_WP);
  }
