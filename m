@@ -2,100 +2,115 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BB15479853
-	for <lists+linux-efi@lfdr.de>; Sat, 18 Dec 2021 04:11:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF7DF47A6A2
+	for <lists+linux-efi@lfdr.de>; Mon, 20 Dec 2021 10:11:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231731AbhLRDL0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 17 Dec 2021 22:11:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47028 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229984AbhLRDL0 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 17 Dec 2021 22:11:26 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22455C061574;
-        Fri, 17 Dec 2021 19:11:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:In-Reply-To:References;
-        bh=62FmL4o33C3xs2kZTlQ+wejDM0H9nh66m1ctzivTtUE=; b=eSd7P83jhUrAuGbLQ+RoODXHa/
-        tkFjCFGCbqE/QQFwGyGlvF17x5YSM5C0KeN8bGVREpPNi3ygOpelT1xV0dRsVqmhaQLdeTgUOzizL
-        ARfxFWsBWexrtfCYYDqtFV2wvRHtGUY+aG8XGchB6OVhkH37yOUVOGgnZiATfq2yGPyiFXYspiK3w
-        R/fv148vOxnpav2l2deLRI73kDVSTJ5IGyFBspdXLB2kIRGGgOdqzDpUBKZI4tBGCwz+4RnRQnnP5
-        EIPtXYisfxkseY4ZUXbqcfWN5anaKje7sK+Xc6aYC+Q2hlDHWSS7AR51oGH2iNuDD/8MCo+87FykI
-        +ULYqqiw==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1myQ83-00HHCH-MC; Sat, 18 Dec 2021 03:11:23 +0000
-From:   "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To:     linux-kbuild@vger.kernel.org
-Cc:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        linux-kernel@vger.kernel.org, efi@lists.einval.com,
-        debian-kernel@lists.debian.org, linux-efi@vger.kernel.org,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH v2] builddeb: Support signing kernels with the module signing key
-Date:   Sat, 18 Dec 2021 03:11:22 +0000
-Message-Id: <20211218031122.4117631-1-willy@infradead.org>
-X-Mailer: git-send-email 2.31.1
+        id S230182AbhLTJLU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 20 Dec 2021 04:11:20 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:43832 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229474AbhLTJLU (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 20 Dec 2021 04:11:20 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A3C7BB80E2F;
+        Mon, 20 Dec 2021 09:11:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C06C36AF1;
+        Mon, 20 Dec 2021 09:11:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639991477;
+        bh=nEOzzl3wgkRPT0ygPKzT3y34sfnV1NTZVShiBXQle80=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=S+pQs5PylnYAzTQdboNEcFEcb/0jEv235YQ31EGzXeMNcNWFYDzI2wRBRs75VPCZo
+         A6o71kUHuefFXz25TPekWC/tqGShH7/xuyF2uQNXW7aoNHBBi4OjIfgWj5nrvpv9wE
+         fTk9wXuIR2O5A1JgAo1v4ectbqb9S3o8AkF8SjZfqjIJmcCFPexSnyuvnFZ+aaXfsQ
+         VYHbHoSqvDIVC2KRrygV2Gxe0WKtX3SJn7BEv+uULTy6pa33iGoYu5CW0f11JRgCDI
+         sNZ2pODyIgIxISqGX9atx2cRHiRqV8gVCiyVP0CM+nIdkCFsnU37aWYtREBkmMGthR
+         7QlP2UUR7W5+w==
+Received: by mail-ua1-f53.google.com with SMTP id p37so16464475uae.8;
+        Mon, 20 Dec 2021 01:11:17 -0800 (PST)
+X-Gm-Message-State: AOAM533KCzZ969lQtWNl0dOydZQUsidLKZMI11ebZ5TQ/eb5wiiK+j4u
+        wRcIpb66uBoFaoPB75BKt/Y90vdBhH9aAukrYpw=
+X-Google-Smtp-Source: ABdhPJwE5vVG3rt8d+HcTmKlAQnW1OXabBV+eLKlgaa5VIIm58YsDnEYQVdu+coTipMz0kob8hRz5mDIgjhyqqjdiuc=
+X-Received: by 2002:ab0:3055:: with SMTP id x21mr4783242ual.97.1639991476313;
+ Mon, 20 Dec 2021 01:11:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20211206104657.433304-1-alexandre.ghiti@canonical.com> <20211206104657.433304-13-alexandre.ghiti@canonical.com>
+In-Reply-To: <20211206104657.433304-13-alexandre.ghiti@canonical.com>
+From:   Guo Ren <guoren@kernel.org>
+Date:   Mon, 20 Dec 2021 17:11:05 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTQEHv1dVzv=JNCYSzD8oh6UxYOFRTdBOp-FFeeeOhSJrQ@mail.gmail.com>
+Message-ID: <CAJF2gTQEHv1dVzv=JNCYSzD8oh6UxYOFRTdBOp-FFeeeOhSJrQ@mail.gmail.com>
+Subject: Re: [PATCH v3 12/13] riscv: Initialize thread pointer before calling
+ C functions
+To:     Alexandre Ghiti <alexandre.ghiti@canonical.com>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Zong Li <zong.li@sifive.com>, Anup Patel <anup@brainfault.org>,
+        Atish Patra <Atish.Patra@rivosinc.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Alexander Potapenko <glider@google.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Kees Cook <keescook@chromium.org>,
+        Guo Ren <guoren@linux.alibaba.com>,
+        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+        Mayuresh Chitale <mchitale@ventanamicro.com>,
+        panqinglin2020@iscas.ac.cn,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kasan-dev@googlegroups.com, linux-efi@vger.kernel.org,
+        linux-arch <linux-arch@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-If the config file specifies a signing key, use it to sign
-the kernel so that machines with SecureBoot enabled can boot.
-See https://wiki.debian.org/SecureBoot
+On Tue, Dec 7, 2021 at 11:55 AM Alexandre Ghiti
+<alexandre.ghiti@canonical.com> wrote:
+>
+> Because of the stack canary feature that reads from the current task
+> structure the stack canary value, the thread pointer register "tp" must
+> be set before calling any C function from head.S: by chance, setup_vm
+Shall we disable -fstack-protector for setup_vm() with __attribute__?
+Actually, we've already init tp later.
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
----
-v2:
- - Handle private keys stored in the pem file as well as adjacent to the
-   certificate
- - Handle certificate paths specified relative to both dsttree and srctree
-   (as well as absolute)
- - Only try to sign the executable if EFI_STUB is enabled
- - Only try to execute sbsign if it's in $PATH
+> and all the functions that it calls does not seem to be part of the
+> functions where the canary check is done, but in the following commits,
+> some functions will.
+>
+> Fixes: f2c9699f65557a31 ("riscv: Add STACKPROTECTOR supported")
+> Signed-off-by: Alexandre Ghiti <alexandre.ghiti@canonical.com>
+> ---
+>  arch/riscv/kernel/head.S | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/riscv/kernel/head.S b/arch/riscv/kernel/head.S
+> index c3c0ed559770..86f7ee3d210d 100644
+> --- a/arch/riscv/kernel/head.S
+> +++ b/arch/riscv/kernel/head.S
+> @@ -302,6 +302,7 @@ clear_bss_done:
+>         REG_S a0, (a2)
+>
+>         /* Initialize page tables and relocate to virtual addresses */
+> +       la tp, init_task
+>         la sp, init_thread_union + THREAD_SIZE
+>         XIP_FIXUP_OFFSET sp
+>  #ifdef CONFIG_BUILTIN_DTB
+> --
+> 2.32.0
+>
 
- scripts/package/builddeb | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/package/builddeb b/scripts/package/builddeb
-index 91a502bb97e8..9dd92fd02b12 100755
---- a/scripts/package/builddeb
-+++ b/scripts/package/builddeb
-@@ -147,7 +147,30 @@ else
- 	cp System.map "$tmpdir/boot/System.map-$version"
- 	cp $KCONFIG_CONFIG "$tmpdir/boot/config-$version"
- fi
--cp "$($MAKE -s -f $srctree/Makefile image_name)" "$tmpdir/$installed_image_path"
-+
-+vmlinux=$($MAKE -s -f $srctree/Makefile image_name)
-+key=
-+if is_enabled CONFIG_EFI_STUB && is_enabled CONFIG_MODULE_SIG; then
-+	cert=$(grep ^CONFIG_MODULE_SIG_KEY= include/config/auto.conf | cut -d\" -f2)
-+	if [ ! -f $cert ]; then
-+		cert=$srctree/$cert
-+	fi
-+
-+	key=${cert%pem}priv
-+	if [ ! -f $key ]; then
-+		key=$cert
-+	fi
-+
-+	if ! command -v sbsign >/dev/null; then
-+		key=
-+	fi
-+fi
-+
-+if [ -n "$key" ]; then
-+	sbsign --key $key --cert $cert "$vmlinux" --output "$tmpdir/$installed_image_path"
-+else
-+	cp "$vmlinux" "$tmpdir/$installed_image_path"
-+fi
- 
- if is_enabled CONFIG_OF_EARLY_FLATTREE; then
- 	# Only some architectures with OF support have this target
 -- 
-2.33.0
+Best Regards
+ Guo Ren
 
+ML: https://lore.kernel.org/linux-csky/
