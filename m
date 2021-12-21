@@ -2,153 +2,140 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D766F47BA18
-	for <lists+linux-efi@lfdr.de>; Tue, 21 Dec 2021 07:41:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4696D47C04A
+	for <lists+linux-efi@lfdr.de>; Tue, 21 Dec 2021 14:01:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233400AbhLUGlU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 21 Dec 2021 01:41:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50988 "EHLO
+        id S238019AbhLUNBc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 21 Dec 2021 08:01:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233369AbhLUGlU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 21 Dec 2021 01:41:20 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A36DC061574;
-        Mon, 20 Dec 2021 22:41:20 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S238014AbhLUNBa (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 21 Dec 2021 08:01:30 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDDCEC061746;
+        Tue, 21 Dec 2021 05:01:29 -0800 (PST)
+Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C7748B811BC;
-        Tue, 21 Dec 2021 06:41:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF834C36AE7;
-        Tue, 21 Dec 2021 06:41:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1640068877;
-        bh=ylv71IjLQIClbad2LwfXZJJ7QyLDq1p0XqsAvIfjF0E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qHJOk3sLAlFO7TaKjGyzKiY0cn6b7FUC2krnWAIRaPlVdE30eujy5kqtZvXwZM4j9
-         x1m6PDM73EQaCKeFPtatH5b5fcnpEmc1cm7U+fLUW48b9eNEqZAaUUkSYMc2Qeqkk5
-         uD7KEfIsnrosa6gkKzFyUOG/oUDmqEUxiS+ljIU0=
-Date:   Tue, 21 Dec 2021 07:41:15 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Martin Fernandez <martin.fernandez@eclypsium.com>
-Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
-        rafael@kernel.org, rppt@kernel.org, akpm@linux-foundation.org,
-        daniel.gutson@eclypsium.com, hughsient@gmail.com,
-        alex.bazhaniuk@eclypsium.com, alison.schofield@intel.com
-Subject: Re: [PATCH v4 3/5] x86/e820: Tag e820_entry with crypto capabilities
-Message-ID: <YcF3C9kfVoRqKamp@kroah.com>
-References: <20211216192222.127908-1-martin.fernandez@eclypsium.com>
- <20211216192222.127908-4-martin.fernandez@eclypsium.com>
- <YcCxUHSMnUJgXIJF@kroah.com>
- <CAKgze5boi5h08ffpodqsKp5xNS=+u_zJWEVnExdbsXRgJ+eCTQ@mail.gmail.com>
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D8E5D1EC036C;
+        Tue, 21 Dec 2021 14:01:22 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1640091683;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=1bprDfdvCUTDmFgPeZ/DgEcYMZB8JnU81wIATQ3hdpI=;
+        b=lFD/OZLGP6rpHXQds9Z1P6kCLWylMFdckyx96tcwS7nkgVDi6n6Xe1gwIT6LuyMr3KQ2w9
+        2aqFuN3mm90ztX/32tCYPjfU3fNYZGMDnOrAEZPwHAcxxP8QDlcYmI/rADQSfKzHv+N+XE
+        Lr4sw56igof13tj/+zrymJI8E4fzrvA=
+Date:   Tue, 21 Dec 2021 14:01:26 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v8 09/40] x86/compressed: Add helper for validating pages
+ in the decompression stage
+Message-ID: <YcHQJqm4iP9/9TjE@zn.tnic>
+References: <20211210154332.11526-1-brijesh.singh@amd.com>
+ <20211210154332.11526-10-brijesh.singh@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAKgze5boi5h08ffpodqsKp5xNS=+u_zJWEVnExdbsXRgJ+eCTQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211210154332.11526-10-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Dec 20, 2021 at 05:27:00PM -0300, Martin Fernandez wrote:
-> On 12/20/21, Greg KH <gregkh@linuxfoundation.org> wrote:
-> > On Thu, Dec 16, 2021 at 04:22:20PM -0300, Martin Fernandez wrote:
-> >> diff --git a/arch/x86/include/asm/e820/types.h
-> >> b/arch/x86/include/asm/e820/types.h
-> >> index 314f75d886d0..7b510dffd3b9 100644
-> >> --- a/arch/x86/include/asm/e820/types.h
-> >> +++ b/arch/x86/include/asm/e820/types.h
-> >> @@ -56,6 +56,7 @@ struct e820_entry {
-> >>  	u64			addr;
-> >>  	u64			size;
-> >>  	enum e820_type		type;
-> >> +	u8			crypto_capable;
-> >
-> > Why isn't this a bool?
-> 
-> It was a bool initially, but Andy Shevchenko told me that it couldn't
-> be that way because boolean may not be part of firmware ABIs.
+On Fri, Dec 10, 2021 at 09:43:01AM -0600, Brijesh Singh wrote:
+> diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
+> index f7213d0943b8..ef77453cc629 100644
+> --- a/arch/x86/boot/compressed/ident_map_64.c
+> +++ b/arch/x86/boot/compressed/ident_map_64.c
+> @@ -275,15 +275,31 @@ static int set_clr_page_flags(struct x86_mapping_info *info,
+>  	 * Changing encryption attributes of a page requires to flush it from
+>  	 * the caches.
+>  	 */
+> -	if ((set | clr) & _PAGE_ENC)
+> +	if ((set | clr) & _PAGE_ENC) {
+>  		clflush_page(address);
+>  
+> +		/*
+> +		 * If the encryption attribute is being cleared, then change
+> +		 * the page state to shared in the RMP table.
+> +		 */
+> +		if (clr)
+> +			snp_set_page_shared(pte_pfn(*ptep) << PAGE_SHIFT);
 
-Where does this structure hit an "ABI"?  Looks internal to me.  If not,
-then something just broke anyway.
+You forgot to change that one.
 
-> >> diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
-> >> index bc0657f0deed..001d64686938 100644
-> >> --- a/arch/x86/kernel/e820.c
-> >> +++ b/arch/x86/kernel/e820.c
-> >> @@ -163,7 +163,7 @@ int e820__get_entry_type(u64 start, u64 end)
-> >>  /*
-> >>   * Add a memory region to the kernel E820 map.
-> >>   */
-> >> -static void __init __e820__range_add(struct e820_table *table, u64 start,
-> >> u64 size, enum e820_type type)
-> >> +static void __init __e820__range_add(struct e820_table *table, u64 start,
-> >> u64 size, enum e820_type type, u8 crypto_capable)
-> >
-> > Horrid api change, but it's internal to this file so oh well :(
-> >
-> > Hint, don't add flags to functions like this, it forces you to have to
-> > always remember what those flags are when you read the code.  Right now
-> > you stuck "0" and "1" in the function call, which is not instructional
-> > at all.
-> >
-> > Heck, why not make it an enum to have it be self-describing?  Like the
-> > type is here.  that would make it much better and easier to understand
-> > and maintain over time.
-> >
-> 
-> Yes, an enum will absolutely improve things. I'll do that.
-> 
-> >> @@ -327,6 +330,7 @@ int __init e820__update_table(struct e820_table
-> >> *table)
-> >>  	unsigned long long last_addr;
-> >>  	u32 new_nr_entries, overlap_entries;
-> >>  	u32 i, chg_idx, chg_nr;
-> >> +	u8 current_crypto, last_crypto;
-> >>
-> >>  	/* If there's only one memory region, don't bother: */
-> >>  	if (table->nr_entries < 2)
-> >> @@ -367,6 +371,7 @@ int __init e820__update_table(struct e820_table
-> >> *table)
-> >>  	new_nr_entries = 0;	 /* Index for creating new map entries */
-> >>  	last_type = 0;		 /* Start with undefined memory type */
-> >>  	last_addr = 0;		 /* Start with 0 as last starting address */
-> >> +	last_crypto = 0;
-> >>
-> >>  	/* Loop through change-points, determining effect on the new map: */
-> >>  	for (chg_idx = 0; chg_idx < chg_nr; chg_idx++) {
-> >> @@ -388,13 +393,17 @@ int __init e820__update_table(struct e820_table
-> >> *table)
-> >>  		 * 1=usable, 2,3,4,4+=unusable)
-> >>  		 */
-> >>  		current_type = 0;
-> >> +		current_crypto = 1;
-> >>  		for (i = 0; i < overlap_entries; i++) {
-> >> +			current_crypto = current_crypto && overlap_list[i]->crypto_capable;
-> >
-> > Is it a u8 or not?  You treat it as a boolean a lot :(
-> >
-> >>  			if (overlap_list[i]->type > current_type)
-> >>  				current_type = overlap_list[i]->type;
-> >>  		}
-> >>
-> >>  		/* Continue building up new map based on this information: */
-> >> -		if (current_type != last_type || e820_nomerge(current_type)) {
-> >> +		if (current_type != last_type ||
-> >> +		    current_crypto != last_crypto ||
-> >> +		    e820_nomerge(current_type)) {
-> >
-> > Why check it before calling e820_nomerge()?  Is that required?
-> >
-> 
-> I don't see how the order of the checks matter, am I missing something?
+> +	}
+> +
+>  	/* Update PTE */
+>  	pte = *ptep;
+>  	pte = pte_set_flags(pte, set);
+>  	pte = pte_clear_flags(pte, clr);
+>  	set_pte(ptep, pte);
+>  
+> +	/*
+> +	 * If the encryption attribute is being set, then change the page state to
+> +	 * private in the RMP entry. The page state must be done after the PTE
+                                                   ^
+                                                 change
 
-It might prevent this function from being called now when it previously
-was.  Is that ok?
+Geez, tell me, why should I be even bothering to review stuff if I have
+to go look at the previous review I did and find that you haven't really
+addressed it?!
 
-thanks,
+> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+> index 7ac5842e32b6..a2f956cfafba 100644
+> --- a/arch/x86/include/asm/sev-common.h
+> +++ b/arch/x86/include/asm/sev-common.h
+> @@ -57,6 +57,32 @@
+>  #define GHCB_MSR_AP_RESET_HOLD_REQ	0x006
+>  #define GHCB_MSR_AP_RESET_HOLD_RESP	0x007
+>  
+> +/*
+> + * SNP Page State Change Operation
+> + *
+> + * GHCBData[55:52] - Page operation:
+> + *   0x0001 – Page assignment, Private
+> + *   0x0002 – Page assignment, Shared
 
-greg k-h
+I wonder how you've achieved that:
+
+massage_diff: Warning: Unicode char [–] (0x2013) in line: + *   0x0001 – Page assignment, Private
+massage_diff: Warning: Unicode char [–] (0x2013) in line: + *   0x0002 – Page assignment, Shared
+
+See https://trojansource.codes/ for some background.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
