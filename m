@@ -2,185 +2,179 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E49347D42B
-	for <lists+linux-efi@lfdr.de>; Wed, 22 Dec 2021 16:17:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E8B447D44E
+	for <lists+linux-efi@lfdr.de>; Wed, 22 Dec 2021 16:35:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343682AbhLVPRG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 22 Dec 2021 10:17:06 -0500
-Received: from mail-co1nam11on2051.outbound.protection.outlook.com ([40.107.220.51]:62336
-        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S234907AbhLVPRG (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 22 Dec 2021 10:17:06 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=msxZrcTn8KyjlKZQFzVVF+XiAq0RIfykAtaCZyAyVrL/LeQF5sFyztPFoqPE0UBJiP8AmvdwTfxkdv6X9uyQfd0wie67sg32cqfrAVaeqqxcRQpk1Mj7NHJ+4nKwPog4gH5dC++7yVae91WZqaQtJjREd7a+NqUo6QQEbspYPNgjj1HfOO+pcguIumIY4vmGIVKp3WU4Bf7gjuz1vDm7q5Ca9rxeK00hhcRy+FuKd+DDAxDCwPysHCZO1FN2sG9+2rZ82Ct9DnKQJZ731KTOqj/LOKox0q9NCbkgSC/aiNH3bU8Jz9v+F0hdbkB4XOY6s6DZ7WyC/UY14mopEbNULA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cIspO+Xru37NtcSTf2uQVpSGeEn8lH8hQ/vi/jEQ+XI=;
- b=Jjz8H3zqBUEqrgkjl2AHpvgqsJ/IDf/zqL5rmNOu2newe7snYkXGDPNEO4WbvYmu9lz5+xQgyEwChUW229uUv8d32S/dO2/AaHZY44B8sUFUjyGEBo7NnIHrhb5Fgoyp7Yqeav60bSSukecrVF0Abu2Dz4Jiw+Slov6ypVSM2dRtvnwSJZOxxUMNqdBZjlA5P1T3+6clf0j6FW1jNtMmeqcKnKhYXzaL7bZ8jSusSDQS3T1bXpNkOoTvlf2to5ng/3/aKn+UMhU3jLsLBHzXQ5i1vIs+OjQ15zkCPtm9f8sNhGbis5WHjS6+vSZ7qIV85R1Ho57AOYoLLdOkVsSPWw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cIspO+Xru37NtcSTf2uQVpSGeEn8lH8hQ/vi/jEQ+XI=;
- b=whDFyuweNFxBusGUeDx5l0HMPzBK7GX6Z9SGNWyLO7PQvIsx2YM28J9fS89jG7m857q9Y+DkT8G/oeF9VkEvKN8YQ5Wpmbq3G806NFMmOySbU4xFvDuNGTRFdXghZIxAMS7Dtbh3qIZK2mjR5YUdJkuAk0XdNOKBm+vnUzbQC9I=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
- by SN6PR12MB2784.namprd12.prod.outlook.com (2603:10b6:805:68::33) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4801.14; Wed, 22 Dec
- 2021 15:17:00 +0000
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::35:281:b7f8:ed4c]) by SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::35:281:b7f8:ed4c%6]) with mapi id 15.20.4801.023; Wed, 22 Dec 2021
- 15:17:00 +0000
-Cc:     brijesh.singh@amd.com, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v8 11/40] x86/sev: Register GHCB memory when SEV-SNP is
- active
-To:     Borislav Petkov <bp@alien8.de>
-References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-12-brijesh.singh@amd.com> <YcMlOOPp2rTFKkeW@zn.tnic>
-From:   Brijesh Singh <brijesh.singh@amd.com>
-Message-ID: <7cedae5f-96e1-cb37-1ed1-6f8e7a23868b@amd.com>
-Date:   Wed, 22 Dec 2021 09:16:54 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-In-Reply-To: <YcMlOOPp2rTFKkeW@zn.tnic>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH2PR18CA0021.namprd18.prod.outlook.com
- (2603:10b6:610:4f::31) To SN6PR12MB2718.namprd12.prod.outlook.com
- (2603:10b6:805:6f::22)
+        id S1343731AbhLVPf1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 22 Dec 2021 10:35:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48958 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1343728AbhLVPf0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 22 Dec 2021 10:35:26 -0500
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F133C061401
+        for <linux-efi@vger.kernel.org>; Wed, 22 Dec 2021 07:35:26 -0800 (PST)
+Received: by mail-yb1-xb2f.google.com with SMTP id y68so7851663ybe.1
+        for <linux-efi@vger.kernel.org>; Wed, 22 Dec 2021 07:35:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=eclypsium.com; s=google;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=cwnIm+Pjf1RTUBBb5BRinhHvVqdyboPG2JJubsE04f4=;
+        b=AG9Ug8PUwm0BhJU9O/vGcCjhoBDHg4gQq1bWPDSXIgj2KDi7CkFNOOv/u74Em02wkD
+         os3Dou1fSrFsMcV35l/mRKBXXmx4l863Jip4zBJa8a1TLFmnPbO9Jd0vgmU4/ml+SJp0
+         AbJnXpaUOdNLQG66dPGZNaDsXdpZLZUvB9A0B+yi6pz2BuCXZlzfZ8wO435oxxb1nos/
+         Dx2yzjDENAgI2RyCbAgtcM/VZf8vakzzP+L9t5KekKiQzZ51av9j06vf6w1T/JHM5hvF
+         Zp2YTI+rfHAO5KSW55ReosawsBPaxV2ZuuMmlvYvVHoHFiD3BN6TNjHpq7MrA88jUiOJ
+         sX0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=cwnIm+Pjf1RTUBBb5BRinhHvVqdyboPG2JJubsE04f4=;
+        b=mKQz74Cnu8mnyPbQwT/XU5ls7yYFPpAqkgjARE62livCw2iFYVmMovLxTl+fUgee2i
+         T7eKBcRNq4j9NY6a1dEfnDiMkOYKu8Wu0G3d9UKz+YqCIJUYrLVCM5KKshepplJmGPF6
+         t1lZHvWKI4H+qTV6j5HOTTE+zGX6Mk5jaxo9xOgea8ij/ahTile5o7yNnKQ3/HHHkehW
+         nneJQddrgjEi0X1ol2Uu99l7QADARQ/n4Q3urMRYrlW+259+VrfK74h89Bnc1co57j2E
+         21MPqd11R0NkYSX3K6RSWEn7UEL5JUIlmxVMqFl6WdRhp0BpHzBxzSJclUfmYElR15KV
+         H0Lg==
+X-Gm-Message-State: AOAM531lVOfkpcUpnS1U788CDxtPF2+g+D0H5HazP82dzTjBZjywrlb/
+        rpqXK8O5RoF26Q9vQPIn6sjfid0KIbL4sfaHrZDAFA==
+X-Google-Smtp-Source: ABdhPJw7mITeuoygQFK1MhJbMGiGJKKDtAs86FI3UP7IrYs5kVS/hvOy/t4bTtqxhCrOxSYegmcjo3RH5D7EXfQqA5A=
+X-Received: by 2002:a25:3c07:: with SMTP id j7mr5487832yba.612.1640187325665;
+ Wed, 22 Dec 2021 07:35:25 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 45d970e0-2a05-45d5-769b-08d9c55e19c5
-X-MS-TrafficTypeDiagnostic: SN6PR12MB2784:EE_
-X-Microsoft-Antispam-PRVS: <SN6PR12MB2784353C69FB2C77AC6C2041E57D9@SN6PR12MB2784.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: TWFUamf/OCfGJI0WB1RJVmvE8tBz4gQBqvTEmHMZmy/dvSxP0vnu4Btkq8OhcSIUOfUjSKFVqYwiRF7JUGSYX7nJP2pSAztJ4HNp1M90JPBmNv5/mVMFyXzHvGMyRqQuBQkMmPg0KP+7g7xDQhZ4s43Sfj7xWCRbEZ9bo54p82zZ6fYirrUkmWa9X8MmB5thfuSq+YLPRnTRSgtbNv1aXlpxsFQbyj48bsWsSIXWmpQAgnNx27AADb/jOWXvZzbaVF1UigLfz3Jk3G8ppNftVD3dnbuitDF2fiGkaZFxppemktuEL7F/yD0TFTscI25N9OmI4snEw64QxPezRhqh2vBj3WXBm7jayqVAqzqVRFkVK6sfhBH7q9sAg0gpekH1jmiwooE1DtbI0/dK4DOj6jxPJ6u/wkP0H3934Tnd7Dzgm7ytXlyX/f377mGzzf825RbOvJIqgQZWf3FbkGnFG19ShQXbByn0nYKPLnu9zcJKSX8GR6Dus+YyKrkUAIHTJFjE+pIiH2FeQ1t1QB4G5IcsovNHELeeDnCummoNjrSJ+ZEzfIXdIV4zEe3aj4dC7Tvqqx3O5SppBtNvtCzsnlQeZeP8ooWDV8DOOgGZ1+Dasx3Q9ZeaX7ZebbHv9+hyWBTXIxPTSnS/wFvlhXgXd58ZXc5h0YDFKPsyOIoS1bFMAPtgd9mHIAZjdUoaMkzN/0WzeN0oub2G9GX/1YhqnbzlckZBZl3YWv5LFOOIwyU=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(6916009)(66946007)(31686004)(8936002)(6512007)(508600001)(66476007)(66556008)(54906003)(6486002)(26005)(316002)(7416002)(44832011)(6506007)(31696002)(2616005)(38100700002)(7406005)(83380400001)(5660300002)(86362001)(2906002)(6666004)(8676002)(4326008)(53546011)(36756003)(186003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?a21Wa2R6MEtacGx3czc3bndJYmRJSzFmNG1RZ1YxQzRLdWJFN09IbHJZcGND?=
- =?utf-8?B?MmZ3N05kMEpaNlQxbFZ6Q3JYZlhHck83ODJaYWV4TXNtWExsOTlKYW5OSCtL?=
- =?utf-8?B?SWFpK1NDKzQ2dUpxSkhJNkpoSFhnY1k5ZFdEaFV1cVViUjdIL1pCVW5SZUtF?=
- =?utf-8?B?Skl0TjVlc0pUNkZPOVhBN29CdkE3NktKanp0b3E3cnp4SUV5L2pWN2ExVll1?=
- =?utf-8?B?M0F3cnF5TG00dDhmdU16NGRWME5YWWRWVFQ2RkFLMDlJRlpoYnRxNXZFV1Zm?=
- =?utf-8?B?eTBPZUthUEN4WGNVY0hNVnRlS2hmYllaRmh1Mk5jZXdOL05vd25FdDFheTVr?=
- =?utf-8?B?U2M1M2o0OUdNR0lRQS9KS1ZhTjN0a2g5c3g4K3JXQzVHQ1VKUUg1WXdVbXBs?=
- =?utf-8?B?bGhPZUYrYWpFMWlKcGNSTFFqK2p2d3NPL1h1WVJrZlBpTThyMXpaZmxrQ0Rt?=
- =?utf-8?B?a3VkajhOa0psQ0hRK2l3cUFvRUtPQ0ZkZkw2N2VIZk93Ni9hN0pNNzNzTmxV?=
- =?utf-8?B?RVNqSGFJK1h5RzRqaU5TdisydllPa0I1Rm40Z3RINnRQL2Nsay8ydHRYTFFT?=
- =?utf-8?B?Mnc2OW9QNVVCT3Bvak10alVYendDYnRzZFJKdHFRYU5jNi8ybnh5ODZSQXg0?=
- =?utf-8?B?emExSjJ4Y1ZPaXozanJqaWVrb3JDNExtWUk0QnBubkluS2tHYVk5QXQ5SkFV?=
- =?utf-8?B?R09ESHpFdDFUWStpcDZuRjByRUprWnVGN1EzMUZJQUkySVhLd2I4RzFmZmlh?=
- =?utf-8?B?bHhpUmRiTncxTFR4Z1U0cGF5VGVIUnhvTEZpb0ZacHVlNG9iWnZyM2VjRWdz?=
- =?utf-8?B?K0JOVllzWUVIWXZwT3NINUFUY2ljWE01VFFPVkNGbU1lWG93cWJBTkYrT29G?=
- =?utf-8?B?elcvYnYwc2hVd3hsWE4rbHpyS1U1Y0x5TjdQUlB2NGF0TVN1b21GazdHMDlG?=
- =?utf-8?B?UE53NnR1RmxvZUhnT2hsMFJuaVp5WEVRcHlCaXl2NENFRzNmVlIzZTlZVkRG?=
- =?utf-8?B?VkR4NnJNa2N0cGFrZGZKdGFVVUdDeWVFdGx6bWpMVDRZREpPb3YwYkdlS0Fv?=
- =?utf-8?B?enVmZklKeVZIK2tWQjQ5ZG1abGczdUhxZ2QvZG1LU0l2RDQyUnVKZ291cnZn?=
- =?utf-8?B?RGhpSk14SFg0am05SjdmNXlQb081dTdROEJCMUFlaUhJRVpySXRjdjRWN0Jx?=
- =?utf-8?B?M2JNOGhtUWpURi9wdHdqVjJPcllkLyszMFdvMGtFeEJtRXVoam5hcm5ia0JE?=
- =?utf-8?B?SHQ4d2tGdGVrb29FMlRrUW5YdFUralZtQjdyQVdIcGg1Q21tOWhLRzJyclVv?=
- =?utf-8?B?QU1YeTV2U2QzcGFMVVNVVDlMcjMwODBLZVBuUW5BS2M3ajdYK08rdStCNS9S?=
- =?utf-8?B?aEI1b0RySDRwWG5vc1U2SGtLNDBiZEtlYko5UGdSb2FIUW03R1NUUHZPRkc0?=
- =?utf-8?B?R3R5RStWZzQ0Z2xGTll6b2lpdXVNdTdpbEEycm1TWS9ESWgvSjg1NytvTElT?=
- =?utf-8?B?MnRocFpmS09CY2F0M0dJbXE4R3hVVEFDZVJpRnZDNDF6ZXZhWDFvS2NqRWdq?=
- =?utf-8?B?UE5YWHFnVTJ2NlZPYUt2Qmd4aUtaTlp0SDVqRHhwdENRNzBORWxCUExTclow?=
- =?utf-8?B?SFM3Zm4waXMza1JHUWkrYmE4bFhjNFRYcnlsUzF6QjF3Z0EwbHRkNlBGOXhR?=
- =?utf-8?B?N09qNHpONWdJalFneDdNNTIvcmc3Z1A1dENmSGZhY1ZGK1BJREdTZXZiME0y?=
- =?utf-8?B?VkdxT2p2ZFUwckZxQktGcGJTUzMwWVQzNGhOdVRCYk53cVhOSGFEWjdwMFo4?=
- =?utf-8?B?eTlyRFpZY0ExdTVoc1JoTXlneE4weG9aNTRoMEgwY3NEbnBhazhrUHNxU3dW?=
- =?utf-8?B?dzJ6ZC84cklsQWV2eEhwaTRGTEJtcENxT3NQMWkrZnRVTGV6aXlNRHBqTThv?=
- =?utf-8?B?NGhYYWpOVE1zMHl5VVNzci9WTUdkZU04emloaFhjQ2x0WTU1V2w5N1JpRlJn?=
- =?utf-8?B?SUhtSm4rM1JHK3lxOUd6VHNNczN1dmtLTS9STXJ1YlZEN2l3dHBxeXJnZWp4?=
- =?utf-8?B?WkhKRFhhTGdzM2VTYXEyTWJMZVllU2RkSy9pbDl2R3lIUXdlRHhxYnowRXgx?=
- =?utf-8?B?RWg3VUcydXdYd1VmMjRyd0NxQnRmZkJ2NXZZdk1hNEJoaVJTZ2wyN3dyS0dR?=
- =?utf-8?Q?+XhNefrjgjdcavrTcJ6JaSs=3D?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 45d970e0-2a05-45d5-769b-08d9c55e19c5
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Dec 2021 15:17:00.2583
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +2QVGOzfyn1RbeVj+md0/bZwKik3QGWABT241WiWvBPgff0qpRcNKokLTDrZ0oX1ZB1I+V1M/lLq3tLROHu51g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB2784
+Received: by 2002:a81:58c2:0:0:0:0:0 with HTTP; Wed, 22 Dec 2021 07:35:25
+ -0800 (PST)
+In-Reply-To: <YcF3C9kfVoRqKamp@kroah.com>
+References: <20211216192222.127908-1-martin.fernandez@eclypsium.com>
+ <20211216192222.127908-4-martin.fernandez@eclypsium.com> <YcCxUHSMnUJgXIJF@kroah.com>
+ <CAKgze5boi5h08ffpodqsKp5xNS=+u_zJWEVnExdbsXRgJ+eCTQ@mail.gmail.com> <YcF3C9kfVoRqKamp@kroah.com>
+From:   Martin Fernandez <martin.fernandez@eclypsium.com>
+Date:   Wed, 22 Dec 2021 12:35:25 -0300
+Message-ID: <CAKgze5a2Nv56e=wJwmBjPgAf2x7waZWXGJ1YDk6_DK-ahShXTg@mail.gmail.com>
+Subject: Re: [PATCH v4 3/5] x86/e820: Tag e820_entry with crypto capabilities
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
+        rafael@kernel.org, rppt@kernel.org, akpm@linux-foundation.org,
+        daniel.gutson@eclypsium.com, hughsient@gmail.com,
+        alex.bazhaniuk@eclypsium.com, alison.schofield@intel.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On 12/21/21, Greg KH <gregkh@linuxfoundation.org> wrote:
+> On Mon, Dec 20, 2021 at 05:27:00PM -0300, Martin Fernandez wrote:
+>> On 12/20/21, Greg KH <gregkh@linuxfoundation.org> wrote:
+>> > On Thu, Dec 16, 2021 at 04:22:20PM -0300, Martin Fernandez wrote:
+>> >> diff --git a/arch/x86/include/asm/e820/types.h
+>> >> b/arch/x86/include/asm/e820/types.h
+>> >> index 314f75d886d0..7b510dffd3b9 100644
+>> >> --- a/arch/x86/include/asm/e820/types.h
+>> >> +++ b/arch/x86/include/asm/e820/types.h
+>> >> @@ -56,6 +56,7 @@ struct e820_entry {
+>> >>  	u64			addr;
+>> >>  	u64			size;
+>> >>  	enum e820_type		type;
+>> >> +	u8			crypto_capable;
+>> >
+>> > Why isn't this a bool?
+>>
+>> It was a bool initially, but Andy Shevchenko told me that it couldn't
+>> be that way because boolean may not be part of firmware ABIs.
+>
+> Where does this structure hit an "ABI"?  Looks internal to me.  If not,
+> then something just broke anyway.
+>
 
+I prefer that Andy answers.
 
-On 12/22/21 7:16 AM, Borislav Petkov wrote:
-> On Fri, Dec 10, 2021 at 09:43:03AM -0600, Brijesh Singh wrote:
->> @@ -652,7 +652,7 @@ static enum es_result vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
->>    * This function runs on the first #VC exception after the kernel
->>    * switched to virtual addresses.
->>    */
->> -static bool __init sev_es_setup_ghcb(void)
->> +static bool __init setup_ghcb(void)
->>   {
->>   	/* First make sure the hypervisor talks a supported protocol. */
->>   	if (!sev_es_negotiate_protocol())
-> 
-> Ok, let me stare at this for a while:
-> 
-> This gets called by handle_vc_boot_ghcb() which gets set at build time:
-> 
-> arch/x86/kernel/head_64.S:372:SYM_DATA(initial_vc_handler,      .quad handle_vc_boot_ghcb)
-> 
-> initial_vc_handler() gets called by vc_boot_ghcb() which gets set in
-> 
-> early_setup_idt()
-> 
-> and that function already does sev_snp_register_ghcb().
-> 
-> So why don't you concentrate the work setup_ghcb() does before the first
-> #VC and call it in early_setup_idt(), before the IDT is set?
-> 
-> And then you get rid of yet another setup-at-first-use case?
-> 
+Either way, I think that the enum will be the best option.
 
-I was following the existing SEV-ES implementation in which GHCB is 
-setup on first #VC. But recently you recommended to move the setup 
-outside of the VC handler for the decompression path and I was going to 
-do the same for the kernel proper. I have tried moving the GHCB setup 
-outside and it seems to be working okay with me (a limited testing so 
-far). I will check Jorge to see if there was any reason for doing the 
-GHCB setup inside the VC for the SEV-ES case.
+>> >> diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+>> >> index bc0657f0deed..001d64686938 100644
+>> >> --- a/arch/x86/kernel/e820.c
+>> >> +++ b/arch/x86/kernel/e820.c
+>> >> @@ -163,7 +163,7 @@ int e820__get_entry_type(u64 start, u64 end)
+>> >>  /*
+>> >>   * Add a memory region to the kernel E820 map.
+>> >>   */
+>> >> -static void __init __e820__range_add(struct e820_table *table, u64
+>> >> start,
+>> >> u64 size, enum e820_type type)
+>> >> +static void __init __e820__range_add(struct e820_table *table, u64
+>> >> start,
+>> >> u64 size, enum e820_type type, u8 crypto_capable)
+>> >
+>> > Horrid api change, but it's internal to this file so oh well :(
+>> >
+>> > Hint, don't add flags to functions like this, it forces you to have to
+>> > always remember what those flags are when you read the code.  Right now
+>> > you stuck "0" and "1" in the function call, which is not instructional
+>> > at all.
+>> >
+>> > Heck, why not make it an enum to have it be self-describing?  Like the
+>> > type is here.  that would make it much better and easier to understand
+>> > and maintain over time.
+>> >
+>>
+>> Yes, an enum will absolutely improve things. I'll do that.
+>>
+>> >> @@ -327,6 +330,7 @@ int __init e820__update_table(struct e820_table
+>> >> *table)
+>> >>  	unsigned long long last_addr;
+>> >>  	u32 new_nr_entries, overlap_entries;
+>> >>  	u32 i, chg_idx, chg_nr;
+>> >> +	u8 current_crypto, last_crypto;
+>> >>
+>> >>  	/* If there's only one memory region, don't bother: */
+>> >>  	if (table->nr_entries < 2)
+>> >> @@ -367,6 +371,7 @@ int __init e820__update_table(struct e820_table
+>> >> *table)
+>> >>  	new_nr_entries = 0;	 /* Index for creating new map entries */
+>> >>  	last_type = 0;		 /* Start with undefined memory type */
+>> >>  	last_addr = 0;		 /* Start with 0 as last starting address */
+>> >> +	last_crypto = 0;
+>> >>
+>> >>  	/* Loop through change-points, determining effect on the new map: */
+>> >>  	for (chg_idx = 0; chg_idx < chg_nr; chg_idx++) {
+>> >> @@ -388,13 +393,17 @@ int __init e820__update_table(struct e820_table
+>> >> *table)
+>> >>  		 * 1=usable, 2,3,4,4+=unusable)
+>> >>  		 */
+>> >>  		current_type = 0;
+>> >> +		current_crypto = 1;
+>> >>  		for (i = 0; i < overlap_entries; i++) {
+>> >> +			current_crypto = current_crypto &&
+>> >> overlap_list[i]->crypto_capable;
+>> >
+>> > Is it a u8 or not?  You treat it as a boolean a lot :(
+>> >
+>> >>  			if (overlap_list[i]->type > current_type)
+>> >>  				current_type = overlap_list[i]->type;
+>> >>  		}
+>> >>
+>> >>  		/* Continue building up new map based on this information: */
+>> >> -		if (current_type != last_type || e820_nomerge(current_type)) {
+>> >> +		if (current_type != last_type ||
+>> >> +		    current_crypto != last_crypto ||
+>> >> +		    e820_nomerge(current_type)) {
+>> >
+>> > Why check it before calling e820_nomerge()?  Is that required?
+>> >
+>>
+>> I don't see how the order of the checks matter, am I missing something?
+>
+> It might prevent this function from being called now when it previously
+> was.  Is that ok?
+>
+
+Oh I see. No, that's not a problem. That if guard is to decide if you
+need to start/close a region. e820_nomerge is to prevent merging
+certain region types. In any case, the new check will cause less
+merging, complying with what e820_nomerge says.
