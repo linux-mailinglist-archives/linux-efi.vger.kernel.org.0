@@ -2,103 +2,103 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B779D47CDC5
-	for <lists+linux-efi@lfdr.de>; Wed, 22 Dec 2021 09:00:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ACEF47D2F2
+	for <lists+linux-efi@lfdr.de>; Wed, 22 Dec 2021 14:16:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243149AbhLVIAQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 22 Dec 2021 03:00:16 -0500
-Received: from szxga01-in.huawei.com ([45.249.212.187]:33892 "EHLO
-        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231532AbhLVIAP (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 22 Dec 2021 03:00:15 -0500
-Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.57])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4JJm2G6LK7zcZxd;
-        Wed, 22 Dec 2021 15:59:50 +0800 (CST)
-Received: from dggpemm500006.china.huawei.com (7.185.36.236) by
- dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Wed, 22 Dec 2021 16:00:13 +0800
-Received: from [10.174.178.55] (10.174.178.55) by
- dggpemm500006.china.huawei.com (7.185.36.236) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Wed, 22 Dec 2021 16:00:13 +0800
-Subject: Re: [PATCHv3] efi: apply memblock cap after memblock_add()
-To:     Pingfan Liu <kernelfans@gmail.com>, <devicetree@vger.kernel.org>,
-        <linux-efi@vger.kernel.org>
-CC:     Rob Herring <robh+dt@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Geert Uytterhoeven" <geert+renesas@glider.be>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Nick Terrell <terrelln@fb.com>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20211214040157.27443-3-kernelfans@gmail.com>
- <20211215021348.8766-1-kernelfans@gmail.com>
-From:   "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>
-Message-ID: <7060b244-03d3-e81f-f545-cf2d4fe5c2dd@huawei.com>
-Date:   Wed, 22 Dec 2021 16:00:01 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S231786AbhLVNQo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 22 Dec 2021 08:16:44 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:37512 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236982AbhLVNQo (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 22 Dec 2021 08:16:44 -0500
+Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 16E271EC053B;
+        Wed, 22 Dec 2021 14:16:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1640178998;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=ldBbr5F47BRkNwI3KCFQS/UodY8GZ2FSKRo/NdAeHoA=;
+        b=e69K3Rot7r+DAZgXj9o0t3pGLM4ORQDocgHgt/iL0f+XvQ11GV/SzjuIH9Zjvnw9lvaLp4
+        fmyEq6Rixyg4hGNaZ1bl0Tcga3404uXxPkVRnzjAke6Q6llvGHEkMlJBlaYa+JCKI+w0dv
+        9a0WJ1k2HOZsvuXUs5ZjYmGdvr7X/zs=
+Date:   Wed, 22 Dec 2021 14:16:40 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v8 11/40] x86/sev: Register GHCB memory when SEV-SNP is
+ active
+Message-ID: <YcMlOOPp2rTFKkeW@zn.tnic>
+References: <20211210154332.11526-1-brijesh.singh@amd.com>
+ <20211210154332.11526-12-brijesh.singh@amd.com>
 MIME-Version: 1.0
-In-Reply-To: <20211215021348.8766-1-kernelfans@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.55]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemm500006.china.huawei.com (7.185.36.236)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20211210154332.11526-12-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-
-
-On 2021/12/15 10:13, Pingfan Liu wrote:
->  
-> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-> index 18a2df431bfd..aa07ef5cab5f 100644
-> --- a/drivers/of/fdt.c
-> +++ b/drivers/of/fdt.c
-> @@ -972,7 +972,7 @@ static unsigned long chosen_node_offset = -FDT_ERR_NOTFOUND;
->   * location from flat tree
->   * @node: reference to node containing usable memory range location ('chosen')
+On Fri, Dec 10, 2021 at 09:43:03AM -0600, Brijesh Singh wrote:
+> @@ -652,7 +652,7 @@ static enum es_result vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
+>   * This function runs on the first #VC exception after the kernel
+>   * switched to virtual addresses.
 >   */
-> -static void __init early_init_dt_check_for_usable_mem_range(void)
-> +void __init early_init_dt_check_for_usable_mem_range(void)
-
-Why do I see a parameter 'node'?
-
-master:
-drivers/of/fdt.c:976:static void __init early_init_dt_check_for_usable_mem_range(unsigned long node)
-
-next:
-drivers/of/fdt.c:980:static void __init early_init_dt_check_for_usable_mem_range(unsigned long node)
-
+> -static bool __init sev_es_setup_ghcb(void)
+> +static bool __init setup_ghcb(void)
 >  {
->  	const __be32 *prop;
->  	int len;
-> diff --git a/include/linux/of_fdt.h b/include/linux/of_fdt.h
-> index cf48983d3c86..ad09beb6d13c 100644
-> --- a/include/linux/of_fdt.h
-> +++ b/include/linux/of_fdt.h
-> @@ -62,6 +62,7 @@ extern int early_init_dt_scan_chosen(unsigned long node, const char *uname,
->  				     int depth, void *data);
->  extern int early_init_dt_scan_memory(unsigned long node, const char *uname,
->  				     int depth, void *data);
-> +extern void early_init_dt_check_for_usable_mem_range(void);
->  extern int early_init_dt_scan_chosen_stdout(void);
->  extern void early_init_fdt_scan_reserved_mem(void);
->  extern void early_init_fdt_reserve_self(void);
-> @@ -86,6 +87,7 @@ extern void unflatten_and_copy_device_tree(void);
->  extern void early_init_devtree(void *);
->  extern void early_get_first_memblock_info(void *, phys_addr_t *);
->  #else /* CONFIG_OF_EARLY_FLATTREE */
-> +static inline void early_init_dt_check_for_usable_mem_range(void) {}
->  static inline int early_init_dt_scan_chosen_stdout(void) { return -ENODEV; }
->  static inline void early_init_fdt_scan_reserved_mem(void) {}
->  static inline void early_init_fdt_reserve_self(void) {}
-> 
+>  	/* First make sure the hypervisor talks a supported protocol. */
+>  	if (!sev_es_negotiate_protocol())
+
+Ok, let me stare at this for a while:
+
+This gets called by handle_vc_boot_ghcb() which gets set at build time:
+
+arch/x86/kernel/head_64.S:372:SYM_DATA(initial_vc_handler,      .quad handle_vc_boot_ghcb)
+
+initial_vc_handler() gets called by vc_boot_ghcb() which gets set in
+
+early_setup_idt()
+
+and that function already does sev_snp_register_ghcb().
+
+So why don't you concentrate the work setup_ghcb() does before the first
+#VC and call it in early_setup_idt(), before the IDT is set?
+
+And then you get rid of yet another setup-at-first-use case?
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
