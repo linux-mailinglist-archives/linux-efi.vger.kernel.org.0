@@ -2,108 +2,60 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84DA647E7EA
-	for <lists+linux-efi@lfdr.de>; Thu, 23 Dec 2021 20:05:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6B5847E846
+	for <lists+linux-efi@lfdr.de>; Thu, 23 Dec 2021 20:27:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349929AbhLWTFM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 23 Dec 2021 14:05:12 -0500
-Received: from isilmar-4.linta.de ([136.243.71.142]:53876 "EHLO
-        isilmar-4.linta.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244871AbhLWTFM (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 23 Dec 2021 14:05:12 -0500
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-Received: from light.dominikbrodowski.net (brodo.linta [10.2.0.102])
-        by isilmar-4.linta.de (Postfix) with ESMTPSA id C31492013F8;
-        Thu, 23 Dec 2021 19:05:09 +0000 (UTC)
-Received: by light.dominikbrodowski.net (Postfix, from userid 1000)
-        id 6BBC820D73; Thu, 23 Dec 2021 20:04:19 +0100 (CET)
-Date:   Thu, 23 Dec 2021 20:04:19 +0100
-From:   Dominik Brodowski <linux@dominikbrodowski.net>
-To:     "Jason A. Donenfeld" <jason@zx2c4.com>,
-        Theodore Ts'o <tytso@mit.edu>
-Cc:     Hsin-Yi Wang <hsinyi@chromium.org>,
-        "Ivan T. Ivanov" <iivanov@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: [PATCH v6] random: fix crash on multiple early calls to
- add_bootloader_randomness()
-Message-ID: <YcTIM+MWEbMGLpRa@light.dominikbrodowski.net>
+        id S240624AbhLWT1W (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 23 Dec 2021 14:27:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56604 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232502AbhLWT1U (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 23 Dec 2021 14:27:20 -0500
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3EA9C061401
+        for <linux-efi@vger.kernel.org>; Thu, 23 Dec 2021 11:27:19 -0800 (PST)
+Received: by mail-lj1-x236.google.com with SMTP id r22so10534351ljk.11
+        for <linux-efi@vger.kernel.org>; Thu, 23 Dec 2021 11:27:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=PA5Eb3SKatYFaqsO/40bx9AAytaL07oA6ydkj8EAbzQ=;
+        b=L5IUfI7uCQrYnKF8Hq2D11D3Bho3smAkuzkB99lG+rOJu/vgK7KodlK1JeFiZBVym0
+         MzWGyZ6Uevd0Tf1zGjnNtOZpw9zVJthb/SoiYwwNUf63BRSA8fYQSzKVn46Q9ejFoi/+
+         YUYRPav6VykH0puOjlVAECMXb7k3VW80jNciYDsqGdc+LprznMXRj66vhAtEDccd4cQ3
+         3XB2ffmITzUmhMe7icbZxLXvy7ewROGFYlDrzwfJKRBPJqWuvieyZJBCBIdvc7PajMq/
+         qWpxq8SIQUVdCFR4c1IXGVHIQ4krNkVz+aLd/ffDYJYyuaHh4fx0g8ZeBe7DApXCGkeK
+         QpHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=PA5Eb3SKatYFaqsO/40bx9AAytaL07oA6ydkj8EAbzQ=;
+        b=6SpNzuAHTtqhgRj4hGWjrnP9zVZbyvJN5Yqzq8TBRGNmfXcVj1BDEaEgKNt7XDJiK9
+         h8fbBOmumvW1aBR6zfINVB/VeR4+/F4nDWaRfQ4EY2apbSqhbC0sxpB0hm3Fxngp9cZk
+         +TED6dvpd/1CVD+qHLoee4fa5lOje/FSC3MSL7A3MBgshb3An653j0hpeO1UXBwuABSX
+         w/PAlkw7qnSNKqOgBC+VoS2qXnpIaurxixgdReSAu9zGRaJV7yac2C0y6FrHMG0VV5bY
+         L2j0IhUyuQfUhgFzoVYZfkXlq0OXHcuxX60PGa1aKwh08bN0qd6bdgoNZO1/g28Ewvx6
+         lf0A==
+X-Gm-Message-State: AOAM533yzT9+qgm41l6TpD03s/g2aSTiBK2NgdsUKnnEO9N+EtVLSW2T
+        q1YVBU+YWqLpoodDSeQ4ZcAb+CFFz3TzBhy2sXM=
+X-Google-Smtp-Source: ABdhPJzNVheQwBRihHy8QletrZY26oFr0CQEEYaFXrDaMIht3lEywzgQJzqA6bM5QJ4CjB/dWCVTN10t3I1oi6ZCVHc=
+X-Received: by 2002:a05:651c:168a:: with SMTP id bd10mr2440139ljb.115.1640287637904;
+ Thu, 23 Dec 2021 11:27:17 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Received: by 2002:ab3:73d5:0:0:0:0:0 with HTTP; Thu, 23 Dec 2021 11:27:16
+ -0800 (PST)
+Reply-To: revfrpaulwilliams2@gmail.com
+From:   "Rev. Fr. Paul Williams" <melindagatesfoundation84@gmail.com>
+Date:   Fri, 24 Dec 2021 00:57:16 +0530
+Message-ID: <CANLnpRuct=kBuYQZn+tPUFxmoNOTBSUYdc7-nc28_bjE2Sr14g@mail.gmail.com>
+Subject: Donation From Williams Foundation.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Currently, if CONFIG_RANDOM_TRUST_BOOTLOADER is enabled, multiple calls
-to add_bootloader_randomness() are broken and can cause a NULL pointer
-dereference, as noted by Ivan T. Ivanov. This is not only a hypothetical
-problem, as qemu on arm64 may provide bootloader entropy via EFI and via
-devicetree.
-
-On the first call to add_hwgenerator_randomness(), crng_fast_load() is
-executed, and if the seed is long enough, crng_init will be set to 1.
-On subsequent calls to add_bootloader_randomness() and then to
-add_hwgenerator_randomness(), crng_fast_load() will be skipped. Instead,
-wait_event_interruptible() and then credit_entropy_bits() will be called.
-If the entropy count for that second seed is large enough, that proceeds
-to crng_reseed().
-
-However, both wait_event_interruptible() and crng_reseed() depends
-(at least in numa_crng_init()) on workqueues. Therefore, test whether
-system_wq is already initialized, which is a sufficient indicator that
-workqueue_init_early() has progressed far enough.
-
-Reported-by: Ivan T. Ivanov <iivanov@suse.de>
-Fixes: 18b915ac6b0a ("efi/random: Treat EFI_RNG_PROTOCOL output as bootloader randomness")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
-
----
-
- drivers/char/random.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
----
-
-This is now a truly minimalist approach which tests for system_wq != NULL,
-as suggested by Jason.
-
-Another issue remains, though, but should be addressed separately: If one
-trusts the randnomness provided by the bootloader, and if the primary_crng
-is then seeded with 512 bits of entropy, warnings will still be emited that
-unseeded randomness is used with crng_init=1.
-
-
-diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 13c968b950c5..3c44f5ff6cc4 100644
---- a/drivers/char/random.c
-+++ b/drivers/char/random.c
-@@ -993,7 +993,10 @@ static void crng_reseed(struct crng_state *crng, struct entropy_store *r)
- 	memzero_explicit(&buf, sizeof(buf));
- 	WRITE_ONCE(crng->init_time, jiffies);
- 	spin_unlock_irqrestore(&crng->lock, flags);
--	if (crng == &primary_crng && crng_init < 2) {
-+	/* Only finalize initialization if workqueues are ready; otherwise
-+	 * numa_crng_init() and other things may go wrong.
-+	 */
-+	if (crng == &primary_crng && crng_init < 2 && system_wq) {
- 		invalidate_batched_entropy();
- 		numa_crng_init();
- 		crng_init = 2;
-@@ -2299,7 +2302,8 @@ void add_hwgenerator_randomness(const char *buffer, size_t count,
- 	 * We'll be woken up again once below random_write_wakeup_thresh,
- 	 * or when the calling thread is about to terminate.
- 	 */
--	wait_event_interruptible(random_write_wait, kthread_should_stop() ||
-+	wait_event_interruptible(random_write_wait,
-+			!system_wq || kthread_should_stop() ||
- 			ENTROPY_BITS(&input_pool) <= random_write_wakeup_bits);
- 	mix_pool_bytes(poolp, buffer, count);
- 	credit_entropy_bits(poolp, entropy);
+Contact Rev. Fr. Paul Williams Immediately For A Charity Donation Of
+$6,200,000.00 United States Dollars At E-Mail:
+revfrpaulwilliams2@gmail.com
