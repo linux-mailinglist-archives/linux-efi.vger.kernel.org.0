@@ -2,50 +2,75 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E1B8547F635
-	for <lists+linux-efi@lfdr.de>; Sun, 26 Dec 2021 10:42:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3263847FC94
+	for <lists+linux-efi@lfdr.de>; Mon, 27 Dec 2021 13:23:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229827AbhLZJmS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 26 Dec 2021 04:42:18 -0500
-Received: from slot0.jllresort.com ([62.197.136.5]:58619 "EHLO
-        slot0.jllresort.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233182AbhLZJmR (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 26 Dec 2021 04:42:17 -0500
-X-Greylist: delayed 725 seconds by postgrey-1.27 at vger.kernel.org; Sun, 26 Dec 2021 04:42:17 EST
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=jllresort.com;
- h=Reply-To:From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; i=ele.mon@jllresort.com;
- bh=denncKzxN5BJIwLj3nRRxnQtLBc=;
- b=rUBEqgpY5cqr+glqMFBorTkf8ZrjxagQtexgQOVHm0Z8We2bXvMVZFeIjTiHwUm4zyUmHOu8kI7K
-   1ah0FzpXj9rbNNSwlWfJm4HkmLniMfWP+B1at+alVN404jbqspENjxtaIVNSJPnlfHb/SQjfcVaT
-   rBfIbRpUOosclVreCk4VWd6GMce7gbf7C323QvfY96vRm4K7VmhFYKh/NZNqS2lbBCkGAyY2pJHf
-   hbBtV++3e49GPi8dTyxFz6Bvl0LD0pL1LcbErCmklBBPgEwOEX+T8PoaP55ESnGMBClW0XKQQ7Qt
-   +qquQezn6YfdnXRERxwJXeV4epIqvZwCriNJAQ==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=jllresort.com;
- b=fcls/mwG8kLYD73Y4rAn+q30Crz1yj79Qjx6q2IGhu1f8Ab13ZgJS/SEzvsN169Ph7+FSJia0d0I
-   297Sif4nquaba5CEVTw/Pua4XOLcxmgGLWYRxA8KMdYGSjiS7sQVeWm8fCjXf72utnTWmwLqMOER
-   gSoJkGeFnN+gsgW698XEikajWT2bAk6ndJa68GFpdMsUZxeNSvKq7+qGPZdk63ooZh9uYDmQySL5
-   ewrJODiZQI5jF0EWTDp9GU2A5zL0uHviy0LjjzvhB6OgNpSPciDNdTrFfpT0V/DidUC0rPkxW4QQ
-   HUa/19w9aMqFeO2MRru9y/9dMFsNfjc0J9xEYQ==;
-Reply-To: mustafa.ayvaz@ayvazburosu.com
-From:   ele.mon@jllresort.com
-To:     linux-efi@vger.kernel.org
-Subject: Happy Weekend:
-Date:   26 Dec 2021 10:29:30 +0100
-Message-ID: <20211226102855.5EEBCF2C4584EA95@jllresort.com>
+        id S233758AbhL0MXv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 27 Dec 2021 07:23:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50040 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233723AbhL0MXv (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 27 Dec 2021 07:23:51 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D318AC06173E
+        for <linux-efi@vger.kernel.org>; Mon, 27 Dec 2021 04:23:50 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 991EFCE0FAF
+        for <linux-efi@vger.kernel.org>; Mon, 27 Dec 2021 12:23:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EF8C36AE7;
+        Mon, 27 Dec 2021 12:23:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1640607827;
+        bh=3w0+5c6U+uPoGlH1LOGjqePC6JxuW9B79lkhNLC9dpw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=jWBxM4LyCUv9JoJNzAAx2klChyQSzZeAHFm+czu8QCwCV5qiak6cw1cSCBkjVfX8a
+         ItloszKsN2dQvZODqEJv+0Esz9AaPFEGVA0iCUo5Wf0ngrkSXO5jhBx+ZboiZJ5z8f
+         1jiQmFniJEyN/HMHTnzr2MMijfk46/Bi/yuv4k1xeutVQRqybHAJg5Q8IqEC4Yx5ze
+         aFRxl2/Na82Y37vPUhKjdLpSmzq7cMbIn/4rhN5bK4MHVCJl71xzlk4Y8KdBK6fMJo
+         qbqtCnJAn/9Fg+HGmNA857KpD6Q5dzdQivPIh25Fbm4YLy10Fl9MlJES9roHqdg7TX
+         lP08++RYZFhZA==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     torvalds@linux-foundation.org
+Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Subject: [GIT PULL] EFI fix for 5.16 (#2)
+Date:   Mon, 27 Dec 2021 13:23:33 +0100
+Message-Id: <20211227122333.2425727-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1067; h=from:subject; bh=3w0+5c6U+uPoGlH1LOGjqePC6JxuW9B79lkhNLC9dpw=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBhybBEAItdhiWiPCvQ3Uu2IY8wvvHmOkn9yezrIsf1 BGSlVTKJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYcmwRAAKCRDDTyI5ktmPJO2qDA Ctr1D7u/EboRQEnfwbbaHM2CRWh8gVgg3JRGlafNFn7fT9YICBb/BKT4ZLLlBdTbyIUJKvYXvMecpu cHkH7mbeOy6vX8q/nTYfcEmJNs2t/TbahmEyqxdkYlldxscEqXQbjUkz3NnhX6iiK75M1Hm/IFyZZe MKM5IJ9OjR70SLtrtONP5bNrrHLivZtBo9Tmoemr8FFpwgocpeRxP5iW60hztpcxKQWcZSn4pKRow3 J79aUPYToVAkQp/VzfKIRRJDsvYJYYMzSQ9STZN+z9/4EP0T/+BsrgnaitKLcGERVaroafB3AJjB5v J/Zf1K01Y4+htKnMpe67qY49UzCRcJtyecuaH5Hv3E+2tLvzPWJkasOF2CX6Q2jdsuihKDgSSCSV8B 8/dLRUMcR6neye+AsaYVp5qd4G6g9XnxXUewTnj5efpMuMgceCgFN73ByobI+zMbcktxQ5gPlyt0sf fYweFJAPihLB8sk2otFObPvKsgz3kMlo9aYl1YBnz66p0=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Greetings to you linux-efi,
+The following changes since commit 1ff2fc02862d52e18fd3daabcfe840ec27e920a8:
 
-I was wondering if you got my previous email? I have been trying=20
-to reach you by email linux-efi@vger.kernel.org, kindly get back=20
-to me swiftly, it is very important and urgent.
+  x86/sme: Explicitly map new EFI memmap table as encrypted (2021-12-05 16:44:52 +0100)
 
-Thanks
-Mustafa Ayvaz
-Email: mustafa.ayvaz@ayvazburosu.com
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent-for-v5.16-2
+
+for you to fetch changes up to 4bc5e64e6cf37007e436970024e5998ee0935651:
+
+  efi: Move efifb_setup_from_dmi() prototype from arch headers (2021-12-13 15:07:16 +0100)
+
+----------------------------------------------------------------
+Another EFI fix for v5.16
+
+- Prevent missing prototype warning from breaking the build under
+  CONFIG_WERROR=y
+
+----------------------------------------------------------------
+Javier Martinez Canillas (1):
+      efi: Move efifb_setup_from_dmi() prototype from arch headers
+
+ arch/arm/include/asm/efi.h   | 1 -
+ arch/arm64/include/asm/efi.h | 1 -
+ arch/riscv/include/asm/efi.h | 1 -
+ arch/x86/include/asm/efi.h   | 2 --
+ include/linux/efi.h          | 6 ++++++
+ 5 files changed, 6 insertions(+), 5 deletions(-)
