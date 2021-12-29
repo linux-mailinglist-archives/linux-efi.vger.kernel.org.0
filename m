@@ -2,16 +2,15 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 611704816FB
-	for <lists+linux-efi@lfdr.de>; Wed, 29 Dec 2021 22:14:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D85A4816F8
+	for <lists+linux-efi@lfdr.de>; Wed, 29 Dec 2021 22:13:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232183AbhL2VNy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 29 Dec 2021 16:13:54 -0500
-Received: from isilmar-4.linta.de ([136.243.71.142]:33322 "EHLO
+        id S230488AbhL2VNv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 29 Dec 2021 16:13:51 -0500
+Received: from isilmar-4.linta.de ([136.243.71.142]:33318 "EHLO
         isilmar-4.linta.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231322AbhL2VNv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 29 Dec 2021 16:13:51 -0500
-X-isilmar-external: YES
+        with ESMTP id S231130AbhL2VNu (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 29 Dec 2021 16:13:50 -0500
 X-isilmar-external: YES
 X-isilmar-external: YES
 X-isilmar-external: YES
@@ -20,156 +19,62 @@ X-isilmar-external: YES
 X-isilmar-external: YES
 X-isilmar-external: YES
 Received: from owl.dominikbrodowski.net (owl.brodo.linta [10.2.0.111])
-        by isilmar-4.linta.de (Postfix) with ESMTPSA id 419CC20135F;
+        by isilmar-4.linta.de (Postfix) with ESMTPSA id 2471E201340;
         Wed, 29 Dec 2021 21:13:48 +0000 (UTC)
 Received: by owl.dominikbrodowski.net (Postfix, from userid 1000)
-        id 793BE808EC; Wed, 29 Dec 2021 22:10:15 +0100 (CET)
+        id 1B25F808F2; Wed, 29 Dec 2021 22:10:17 +0100 (CET)
 From:   Dominik Brodowski <linux@dominikbrodowski.net>
 To:     "Jason A . Donenfeld" <Jason@zx2c4.com>
 Cc:     linux-kernel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
         "Ivan T . Ivanov" <iivanov@suse.de>,
         Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-        linux@dominikbrodowski.net, stable@vger.kernel.org
-Subject: [PATCH v8 1/7] random: fix crash on multiple early calls to add_bootloader_randomness()
-Date:   Wed, 29 Dec 2021 22:10:03 +0100
-Message-Id: <20211229211009.108091-1-linux@dominikbrodowski.net>
+        linux@dominikbrodowski.net
+Subject: [PATCH v8 2/7] random: do not re-init if crng_reseed completes before primary init
+Date:   Wed, 29 Dec 2021 22:10:04 +0100
+Message-Id: <20211229211009.108091-2-linux@dominikbrodowski.net>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20211228153826.448805-1-Jason@zx2c4.com>
+In-Reply-To: <20211229211009.108091-1-linux@dominikbrodowski.net>
 References: <20211228153826.448805-1-Jason@zx2c4.com>
+ <20211229211009.108091-1-linux@dominikbrodowski.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Currently, if CONFIG_RANDOM_TRUST_BOOTLOADER is enabled, multiple calls
-to add_bootloader_randomness() are broken and can cause a NULL pointer
-dereference, as noted by Ivan T. Ivanov. This is not only a hypothetical
-problem, as qemu on arm64 may provide bootloader entropy via EFI and via
-devicetree.
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 
-On the first call to add_hwgenerator_randomness(), crng_fast_load() is
-executed, and if the seed is long enough, crng_init will be set to 1.
-On subsequent calls to add_bootloader_randomness() and then to
-add_hwgenerator_randomness(), crng_fast_load() will be skipped. Instead,
-wait_event_interruptible() and then credit_entropy_bits() will be called.
-If the entropy count for that second seed is large enough, that proceeds
-to crng_reseed().
+If the bootloader supplies sufficient material and crng_reseed() is called
+very early on, but not too early that wqs aren't available yet, then we
+might transition to crng_init==2 before rand_initialize()'s call to
+crng_initialize_primary() made. Then, when crng_initialize_primary() is
+called, if we're trusting the CPU's RDRAND instructions, we'll
+needlessly reinitialize the RNG and emit a message about it. This is
+mostly harmless, as numa_crng_init() will allocate and then free what it
+just allocated, and excessive calls to invalidate_batched_entropy()
+aren't so harmful. But it is funky and the extra message is confusing,
+so avoid the re-initialization all together by checking for crng_init <
+2 in crng_initialize_primary(), just as we already do in crng_reseed().
 
-However, both wait_event_interruptible() and crng_reseed() depends
-(at least in numa_crng_init()) on workqueues. Therefore, test whether
-system_wq is already initialized, which is a sufficient indicator that
-workqueue_init_early() has progressed far enough.
-
-If we wind up hitting the !system_wq case, we later want to do what
-would have been done there when wqs are up, so set a flag, and do that
-work later from the rand_initialize() call.
-
-Reported-by: Ivan T. Ivanov <iivanov@suse.de>
-Fixes: 18b915ac6b0a ("efi/random: Treat EFI_RNG_PROTOCOL output as bootloader randomness")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
-[Jason: added crng_need_done state and related logic.]
+Reviewed-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 ---
- drivers/char/random.c | 56 +++++++++++++++++++++++++++----------------
- 1 file changed, 36 insertions(+), 20 deletions(-)
+ drivers/char/random.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 82db125aaed7..144e8841bff4 100644
+index 144e8841bff4..916cf791ed0e 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
-@@ -468,6 +468,7 @@ static struct crng_state primary_crng = {
-  * its value (from 0->1->2).
-  */
- static int crng_init = 0;
-+static bool crng_need_final_init = false;
- #define crng_ready() (likely(crng_init > 1))
- static int crng_init_cnt = 0;
- static unsigned long crng_global_init_time = 0;
-@@ -835,6 +836,36 @@ static void __init crng_initialize_primary(struct crng_state *crng)
- 	crng->init_time = jiffies - CRNG_RESEED_INTERVAL - 1;
- }
- 
-+static void crng_finalize_init(struct crng_state *crng)
-+{
-+	if (crng != &primary_crng || crng_init >= 2)
-+		return;
-+	if (!system_wq) {
-+		/* We can't call numa_crng_init until we have workqueues,
-+		 * so mark this for processing later. */
-+		crng_need_final_init = true;
-+		return;
-+	}
-+
-+	invalidate_batched_entropy();
-+	numa_crng_init();
-+	crng_init = 2;
-+	process_random_ready_list();
-+	wake_up_interruptible(&crng_init_wait);
-+	kill_fasync(&fasync, SIGIO, POLL_IN);
-+	pr_notice("crng init done\n");
-+	if (unseeded_warning.missed) {
-+		pr_notice("%d get_random_xx warning(s) missed due to ratelimiting\n",
-+			  unseeded_warning.missed);
-+		unseeded_warning.missed = 0;
-+	}
-+	if (urandom_warning.missed) {
-+		pr_notice("%d urandom warning(s) missed due to ratelimiting\n",
-+			  urandom_warning.missed);
-+		urandom_warning.missed = 0;
-+	}
-+}
-+
- #ifdef CONFIG_NUMA
- static void do_numa_crng_init(struct work_struct *work)
+@@ -827,7 +827,7 @@ static void __init crng_initialize_primary(struct crng_state *crng)
  {
-@@ -989,25 +1020,7 @@ static void crng_reseed(struct crng_state *crng, struct entropy_store *r)
- 	memzero_explicit(&buf, sizeof(buf));
- 	WRITE_ONCE(crng->init_time, jiffies);
- 	spin_unlock_irqrestore(&crng->lock, flags);
--	if (crng == &primary_crng && crng_init < 2) {
--		invalidate_batched_entropy();
--		numa_crng_init();
--		crng_init = 2;
--		process_random_ready_list();
--		wake_up_interruptible(&crng_init_wait);
--		kill_fasync(&fasync, SIGIO, POLL_IN);
--		pr_notice("crng init done\n");
--		if (unseeded_warning.missed) {
--			pr_notice("%d get_random_xx warning(s) missed due to ratelimiting\n",
--				  unseeded_warning.missed);
--			unseeded_warning.missed = 0;
--		}
--		if (urandom_warning.missed) {
--			pr_notice("%d urandom warning(s) missed due to ratelimiting\n",
--				  urandom_warning.missed);
--			urandom_warning.missed = 0;
--		}
--	}
-+	crng_finalize_init(crng);
- }
- 
- static void _extract_crng(struct crng_state *crng,
-@@ -1780,6 +1793,8 @@ static void __init init_std_data(struct entropy_store *r)
- int __init rand_initialize(void)
- {
- 	init_std_data(&input_pool);
-+	if (crng_need_final_init)
-+		crng_finalize_init(&primary_crng);
- 	crng_initialize_primary(&primary_crng);
- 	crng_global_init_time = jiffies;
- 	if (ratelimit_disable) {
-@@ -2288,7 +2303,8 @@ void add_hwgenerator_randomness(const char *buffer, size_t count,
- 	 * We'll be woken up again once below random_write_wakeup_thresh,
- 	 * or when the calling thread is about to terminate.
- 	 */
--	wait_event_interruptible(random_write_wait, kthread_should_stop() ||
-+	wait_event_interruptible(random_write_wait,
-+			!system_wq || kthread_should_stop() ||
- 			ENTROPY_BITS(&input_pool) <= random_write_wakeup_bits);
- 	mix_pool_bytes(poolp, buffer, count);
- 	credit_entropy_bits(poolp, entropy);
+ 	chacha_init_consts(crng->state);
+ 	_extract_entropy(&input_pool, &crng->state[4], sizeof(__u32) * 12, 0);
+-	if (crng_init_try_arch_early(crng) && trust_cpu) {
++	if (crng_init_try_arch_early(crng) && trust_cpu && crng_init < 2) {
+ 		invalidate_batched_entropy();
+ 		numa_crng_init();
+ 		crng_init = 2;
 -- 
 2.34.1
 
