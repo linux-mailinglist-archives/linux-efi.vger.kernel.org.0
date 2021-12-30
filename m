@@ -2,135 +2,83 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1776C481AF1
-	for <lists+linux-efi@lfdr.de>; Thu, 30 Dec 2021 09:59:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CFF8481BF9
+	for <lists+linux-efi@lfdr.de>; Thu, 30 Dec 2021 13:19:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237962AbhL3I7L (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 30 Dec 2021 03:59:11 -0500
-Received: from isilmar-4.linta.de ([136.243.71.142]:60846 "EHLO
-        isilmar-4.linta.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229567AbhL3I7L (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 30 Dec 2021 03:59:11 -0500
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-X-isilmar-external: YES
-Received: from owl.dominikbrodowski.net (owl.brodo.linta [10.2.0.111])
-        by isilmar-4.linta.de (Postfix) with ESMTPSA id 2574320140C;
-        Thu, 30 Dec 2021 08:59:10 +0000 (UTC)
-Received: by owl.dominikbrodowski.net (Postfix, from userid 1000)
-        id 6720C8067E; Thu, 30 Dec 2021 09:59:05 +0100 (CET)
-Date:   Thu, 30 Dec 2021 09:59:05 +0100
-From:   Dominik Brodowski <linux@dominikbrodowski.net>
-To:     "Jason A . Donenfeld" <Jason@zx2c4.com>
-Cc:     linux-kernel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
-        "Ivan T . Ivanov" <iivanov@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
-Subject: [PATCH v8.1 7/7] random: move NUMA-related code to CONFIG_NUMA
- section
-Message-ID: <Yc102b3gCiIjC88e@owl.dominikbrodowski.net>
-References: <20211228153826.448805-1-Jason@zx2c4.com>
- <20211229211009.108091-1-linux@dominikbrodowski.net>
- <20211229211009.108091-7-linux@dominikbrodowski.net>
+        id S239175AbhL3MTd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 30 Dec 2021 07:19:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38890 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229463AbhL3MTc (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 30 Dec 2021 07:19:32 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F38D7C061574;
+        Thu, 30 Dec 2021 04:19:31 -0800 (PST)
+Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C26D81EC052C;
+        Thu, 30 Dec 2021 13:19:25 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1640866765;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=APH2/iSNCeAsFpqhV/dxY2RAhEU+c1m9FWSAYTvjChY=;
+        b=f7yWN15jxBzcx63Nm8aosfVRatqvTarqGLJIf/jooaBZfJnFsZHlCCHAgUBoNO0y/Safju
+        hhpgIms02bEXS/dMZjW2k4O8vui+SjAvGGlgSgHHFpq4akczJjcdZ3jGmmfTJM5M9KqIZT
+        EthJW3Ptis4tIl9mTFVv4d7q+xHtSkY=
+Date:   Thu, 30 Dec 2021 13:19:24 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v8 17/40] KVM: SVM: Create a separate mapping for the
+ SEV-ES save area
+Message-ID: <Yc2jzOunYej4vwSc@zn.tnic>
+References: <20211210154332.11526-1-brijesh.singh@amd.com>
+ <20211210154332.11526-18-brijesh.singh@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20211229211009.108091-7-linux@dominikbrodowski.net>
+In-Reply-To: <20211210154332.11526-18-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-By moving crng_initialize_secondary() and crng_init_try_arch() a few
-lines lower to the CONFIG_NUMA ifdef section, we can remove the
-__maybe_unused attribute from the first function, and reduce the
-footprint for !CONFIG_NUMA.
+On Fri, Dec 10, 2021 at 09:43:09AM -0600, Brijesh Singh wrote:
+> +/* Save area definition for SEV-ES and SEV-SNP guests */
+> +struct sev_es_save_area {
 
-Suggested-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
----
- drivers/char/random.c |   52 +++++++++++++++++++++++++-------------------------
- 1 file changed, 26 insertions(+), 26 deletions(-)
+I'd still call it sev_save_area for simplicity. And
+EXPECTED_SEV_SAVE_AREA_SIZE and so on.
 
-v8->v8.1:
-crng_init_try_arch() isn't used elsewhere, therefore it needed to be
-moved to CONFIG_NUMA as well.
+-- 
+Regards/Gruss,
+    Boris.
 
-diff --git a/drivers/char/random.c b/drivers/char/random.c
-index a5bf662578cb..181b61104948 100644
---- a/drivers/char/random.c
-+++ b/drivers/char/random.c
-@@ -783,24 +783,6 @@ static int __init parse_trust_cpu(char *arg)
- }
- early_param("random.trust_cpu", parse_trust_cpu);
- 
--static bool crng_init_try_arch(struct crng_state *crng)
--{
--	int		i;
--	bool		arch_init = true;
--	unsigned long	rv;
--
--	for (i = 4; i < 16; i++) {
--		if (!arch_get_random_seed_long(&rv) &&
--		    !arch_get_random_long(&rv)) {
--			rv = random_get_entropy();
--			arch_init = false;
--		}
--		crng->state[i] ^= rv;
--	}
--
--	return arch_init;
--}
--
- static bool __init crng_init_try_arch_early(struct crng_state *crng)
- {
- 	int		i;
-@@ -819,14 +801,6 @@ static bool __init crng_init_try_arch_early(struct crng_state *crng)
- 	return arch_init;
- }
- 
--static void __maybe_unused crng_initialize_secondary(struct crng_state *crng)
--{
--	chacha_init_consts(crng->state);
--	_get_random_bytes(&crng->state[4], sizeof(__u32) * 12);
--	crng_init_try_arch(crng);
--	crng->init_time = jiffies - CRNG_RESEED_INTERVAL - 1;
--}
--
- static void __init crng_initialize_primary(void)
- {
- 	struct crng_state *crng = &primary_crng;
-@@ -871,6 +845,32 @@ static void crng_finalize_init(struct crng_state *crng)
- }
- 
- #ifdef CONFIG_NUMA
-+static bool crng_init_try_arch(struct crng_state *crng)
-+{
-+	int		i;
-+	bool		arch_init = true;
-+	unsigned long	rv;
-+
-+	for (i = 4; i < 16; i++) {
-+		if (!arch_get_random_seed_long(&rv) &&
-+		    !arch_get_random_long(&rv)) {
-+			rv = random_get_entropy();
-+			arch_init = false;
-+		}
-+		crng->state[i] ^= rv;
-+	}
-+
-+	return arch_init;
-+}
-+
-+static void crng_initialize_secondary(struct crng_state *crng)
-+{
-+	chacha_init_consts(crng->state);
-+	_get_random_bytes(&crng->state[4], sizeof(__u32) * 12);
-+	crng_init_try_arch(crng);
-+	crng->init_time = jiffies - CRNG_RESEED_INTERVAL - 1;
-+}
-+
- static void do_numa_crng_init(struct work_struct *work)
- {
- 	int i;
+https://people.kernel.org/tglx/notes-about-netiquette
