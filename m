@@ -2,83 +2,59 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CFF8481BF9
-	for <lists+linux-efi@lfdr.de>; Thu, 30 Dec 2021 13:19:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1516F481D11
+	for <lists+linux-efi@lfdr.de>; Thu, 30 Dec 2021 15:31:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239175AbhL3MTd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 30 Dec 2021 07:19:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38890 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbhL3MTc (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 30 Dec 2021 07:19:32 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F38D7C061574;
-        Thu, 30 Dec 2021 04:19:31 -0800 (PST)
-Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
+        id S240112AbhL3Ob3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 30 Dec 2021 09:31:29 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:39518 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240081AbhL3Ob3 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 30 Dec 2021 09:31:29 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C26D81EC052C;
-        Thu, 30 Dec 2021 13:19:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1640866765;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A059C61693;
+        Thu, 30 Dec 2021 14:31:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D43C36AEB;
+        Thu, 30 Dec 2021 14:31:27 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="FKLZMqhu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1640874685;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=APH2/iSNCeAsFpqhV/dxY2RAhEU+c1m9FWSAYTvjChY=;
-        b=f7yWN15jxBzcx63Nm8aosfVRatqvTarqGLJIf/jooaBZfJnFsZHlCCHAgUBoNO0y/Safju
-        hhpgIms02bEXS/dMZjW2k4O8vui+SjAvGGlgSgHHFpq4akczJjcdZ3jGmmfTJM5M9KqIZT
-        EthJW3Ptis4tIl9mTFVv4d7q+xHtSkY=
-Date:   Thu, 30 Dec 2021 13:19:24 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v8 17/40] KVM: SVM: Create a separate mapping for the
- SEV-ES save area
-Message-ID: <Yc2jzOunYej4vwSc@zn.tnic>
-References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-18-brijesh.singh@amd.com>
+         in-reply-to:in-reply-to:references:references;
+        bh=lHuXjtnGIwA8Zzr3bT7RPQh03xIe4TvMRJ0gk9Qtcas=;
+        b=FKLZMqhuokoESY8wJ/omRu/I40BEBHLrMytOZNT//9lPzWrwiGIWsV17qNmSnkYIdFFvF9
+        g3ly3f428jJtnra1CUuEQ7qs//Gle01vXxtaAO/9vzOmCM47VkvuC8xnmaGVM3VAYJbXin
+        ehSayO9zdecrFpPKMnbSFB1WA3TMRj0=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 6dc71350 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+        Thu, 30 Dec 2021 14:31:25 +0000 (UTC)
+Received: by mail-yb1-f181.google.com with SMTP id d1so52248012ybh.6;
+        Thu, 30 Dec 2021 06:31:24 -0800 (PST)
+X-Gm-Message-State: AOAM533NzUFg0qzO4n37ei8FC7ywT2F33zcc513lxbs2ElhdiPDnc6rN
+        DtXMbuulDiIxAsv5CklP7QesCUb7MZlEeioe/Pw=
+X-Google-Smtp-Source: ABdhPJw9KXMQERmH/AgSSTou5UkCs5Uy/S9nTRKuLwfn7THmpg0Sfs4j17G+75dELBDtmoarZXCcEx1k3gpmtt9ZCg4=
+X-Received: by 2002:a25:1e83:: with SMTP id e125mr38695115ybe.32.1640874683924;
+ Thu, 30 Dec 2021 06:31:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20211210154332.11526-18-brijesh.singh@amd.com>
+References: <20211228153826.448805-1-Jason@zx2c4.com> <20211229211009.108091-1-linux@dominikbrodowski.net>
+In-Reply-To: <20211229211009.108091-1-linux@dominikbrodowski.net>
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Thu, 30 Dec 2021 15:31:13 +0100
+X-Gmail-Original-Message-ID: <CAHmME9oYy3NYaPuni+Q0BgrRVN+VH8vFpKeOTqBXg8q0pBrFfw@mail.gmail.com>
+Message-ID: <CAHmME9oYy3NYaPuni+Q0BgrRVN+VH8vFpKeOTqBXg8q0pBrFfw@mail.gmail.com>
+Subject: Re: [PATCH v8 1/7] random: fix crash on multiple early calls to add_bootloader_randomness()
+To:     Dominik Brodowski <linux@dominikbrodowski.net>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        "Theodore Ts'o" <tytso@mit.edu>,
+        "Ivan T . Ivanov" <iivanov@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Dec 10, 2021 at 09:43:09AM -0600, Brijesh Singh wrote:
-> +/* Save area definition for SEV-ES and SEV-SNP guests */
-> +struct sev_es_save_area {
-
-I'd still call it sev_save_area for simplicity. And
-EXPECTED_SEV_SAVE_AREA_SIZE and so on.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Applied, thanks.
