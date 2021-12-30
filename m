@@ -2,87 +2,202 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 05874481EFF
-	for <lists+linux-efi@lfdr.de>; Thu, 30 Dec 2021 19:05:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D763481F50
+	for <lists+linux-efi@lfdr.de>; Thu, 30 Dec 2021 19:52:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241599AbhL3SFl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 30 Dec 2021 13:05:41 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:43136 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241595AbhL3SFk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 30 Dec 2021 13:05:40 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A0CB6B81CD9;
-        Thu, 30 Dec 2021 18:05:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC132C36AED;
-        Thu, 30 Dec 2021 18:05:37 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="MuZQZeY3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1640887535;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=G5mF3LI5nypD4r/oSkoaGAuHjwCFw9cBOVQMtb6LgxE=;
-        b=MuZQZeY3LtmUFrFNQCLvYLoQ5fR29kpIH7lO/9LQsvyDmKdHuZcwM6mVn4HGsatJGa77vO
-        IL+bspsG36ddi/OxQi0phW8b65cB+tO71sXTV6V/lOzatomXLiOcpnPFResVLzXQaCETZe
-        q20uGbjcHKZMRMXMm7MuQwbFwTfYbnA=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 95a9b6c7 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-        Thu, 30 Dec 2021 18:05:35 +0000 (UTC)
-Received: by mail-yb1-f180.google.com with SMTP id m19so56851530ybf.9;
-        Thu, 30 Dec 2021 10:05:35 -0800 (PST)
-X-Gm-Message-State: AOAM531RBsmC8Hgw27Hgexh1VajUTrGdxkcnq6VjGLZE0CX2EDEwFezJ
-        kFbHJuX+41I75GvBrqjC8EwVcDuhCtJ0TAUvoog=
-X-Google-Smtp-Source: ABdhPJy+emTaHOsS12qbBqKNh+HWMpUMULgRvE95E0YyVv7icXN/TVk54maJffeMODdrGE4OqubM1aHcSu1sarQQeAs=
-X-Received: by 2002:a25:854f:: with SMTP id f15mr30169067ybn.121.1640887534304;
- Thu, 30 Dec 2021 10:05:34 -0800 (PST)
+        id S241746AbhL3Sw5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 30 Dec 2021 13:52:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41244 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240276AbhL3Sw5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 30 Dec 2021 13:52:57 -0500
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BD7BC061574
+        for <linux-efi@vger.kernel.org>; Thu, 30 Dec 2021 10:52:57 -0800 (PST)
+Received: by mail-pf1-x42b.google.com with SMTP id v13so22031439pfi.3
+        for <linux-efi@vger.kernel.org>; Thu, 30 Dec 2021 10:52:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=7LN0LYaPJq+96WHHrtqpjEIWMUaO4vFF4rfqypL1bR0=;
+        b=rpWu9btVqmQ0QTbmhhUK9Dz89dFgfjXlqrAlod7GAGD11uxF9ibLliA+w90bMIj+yu
+         TIOjH72MZO8MQ7A8vUTAUp8oWRFg8/BipD06png87ugKRx0MKigkwcE4v6Ox7L1hPCRF
+         LbBZaDMOePI/nMwaCJr14Wu2PvJLwtFiw+54GL+KkzIMdHM3FccaqN4+6O48BHw6xq/Q
+         3+12yH+FzOyHGDuAJBoBoI7EUk7q5/X/DE5Ns7fdkWsox8rQ/8JYcof7evWLlW7OBNDI
+         +3dLx/XSBDQ6s6BWy9kD/uLxfdiPVleJt9v5d8jg2rY0ZTdLC080XnqpHl95VAbCakt7
+         +40w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=7LN0LYaPJq+96WHHrtqpjEIWMUaO4vFF4rfqypL1bR0=;
+        b=TCotR1sugPuGEKbTOgq74QMaRLY0YPyI5MtK7Blx9K/46qAnuS7dKbeO02j2AbZEIw
+         K1+QXeqFdBhCqp6TzMDhqu4/wPEZxuHA3MFQIMtt7rt5BioQ/5xT7ojDITb/XOaSE8kM
+         RIUJCEYnlqoBwSNo36iZr3BOEuWa6h0n3ZqzQfGAtXSRE2+KXSxy0pU50PisY3w+iSSj
+         gEAdq9LtYxx65raWqeiWe/JCb9CIRxaHVb5RHMXwXm9aZwUF/cnsMEYeBcjS3fvMHmye
+         c72fSKa0nUB0J4OUIKCEjs0oieMpckAgiehgKDR+/ihjFLSyTl8LZtpBZFyKnf6yH0b+
+         yTWA==
+X-Gm-Message-State: AOAM531yPPqX7ieAMBPyTxrzR9ypHdlm25kSthIM9Gl7mfBsVh/3ctLa
+        FcAdbqETZe15HmarSvboWP6kKA==
+X-Google-Smtp-Source: ABdhPJzjf15Pudr7gJPrk1rYboV0PPDYswWEE3HKGVacbEvnTAzwn3YOFqw0PNuZsiPShsWRZbt0GA==
+X-Received: by 2002:a05:6a00:21cd:b0:4bc:35e8:eaea with SMTP id t13-20020a056a0021cd00b004bc35e8eaeamr10048326pfj.23.1640890376505;
+        Thu, 30 Dec 2021 10:52:56 -0800 (PST)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id r7sm20049373pgm.15.2021.12.30.10.52.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Dec 2021 10:52:55 -0800 (PST)
+Date:   Thu, 30 Dec 2021 18:52:52 +0000
+From:   Sean Christopherson <seanjc@google.com>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v8 22/40] x86/sev: move MSR-based VMGEXITs for CPUID to
+ helper
+Message-ID: <Yc4ABL2EbBlwjma5@google.com>
+References: <20211210154332.11526-1-brijesh.singh@amd.com>
+ <20211210154332.11526-23-brijesh.singh@amd.com>
 MIME-Version: 1.0
-References: <20211012082708.121931-1-iivanov@suse.de> <YWVKAk4h5bsUA3b6@light.dominikbrodowski.net>
- <YaivhAV8LouB0zGV@light.dominikbrodowski.net> <CAHmME9qxBeBzfKCjzfAFX9ZWAGKv1TKCQw3x22d_DmJtaAewLw@mail.gmail.com>
- <YanOIvAV1iPBEXR3@light.dominikbrodowski.net> <CAHmME9qGHo4n6QGxnE+O46pagOR0bA+9E8bi8ZLPAzMuMZpPwg@mail.gmail.com>
- <20211206081431.e3cl2rbvgpvbouff@suse>
-In-Reply-To: <20211206081431.e3cl2rbvgpvbouff@suse>
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Thu, 30 Dec 2021 19:05:23 +0100
-X-Gmail-Original-Message-ID: <CAHmME9q6DnMk=p5kL0c1e4TxJOLpdxJpm3RbbgsNE8x1PWwi9g@mail.gmail.com>
-Message-ID: <CAHmME9q6DnMk=p5kL0c1e4TxJOLpdxJpm3RbbgsNE8x1PWwi9g@mail.gmail.com>
-Subject: Re: [PATCH v4] random: fix crash on multiple early calls to add_bootloader_randomness()
-To:     "Ivan T. Ivanov" <iivanov@suse.de>
-Cc:     Dominik Brodowski <linux@dominikbrodowski.net>,
-        "Theodore Ts'o" <tytso@mit.edu>, Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        Hsin-Yi Wang <hsinyi@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211210154332.11526-23-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hey Ivan,
+On Fri, Dec 10, 2021, Brijesh Singh wrote:
+> From: Michael Roth <michael.roth@amd.com>
+> 
+> This code will also be used later for SEV-SNP-validated CPUID code in
+> some cases, so move it to a common helper.
+> 
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  arch/x86/kernel/sev-shared.c | 84 +++++++++++++++++++++++++-----------
+>  1 file changed, 58 insertions(+), 26 deletions(-)
+> 
+> diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
+> index 3aaef1a18ffe..d89481b31022 100644
+> --- a/arch/x86/kernel/sev-shared.c
+> +++ b/arch/x86/kernel/sev-shared.c
+> @@ -194,6 +194,58 @@ enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb, bool set_ghcb_msr,
+>  	return verify_exception_info(ghcb, ctxt);
+>  }
+>  
+> +static int sev_cpuid_hv(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
 
-On Mon, Dec 6, 2021 at 9:14 AM Ivan T. Ivanov <iivanov@suse.de> wrote:
-> Initial bug report could be found here [1]. Comments 14 and onward are
-> probably helpful. To reproduce the issue I have downloaded "assets"
-> from [2] and recreated test environment as found in autoinst-log.txt [3].
-> Search for qemu-img and qemu-system-aarch64 in the log above. Login
-> credentials for the images could be found by searching for "password"
-> in the same file.
->
-> Regards,
-> Ivan
->
->
-> [1] https://bugzilla.suse.com/show_bug.cgi?id=1184924
-> [2] https://openqa.opensuse.org/tests/latest?arch=aarch64&distri=opensuse&flavor=DVD&machine=aarch64&test=extra_tests_in_textmode&version=15.3
-> [3] https://openqa.opensuse.org/tests/2052459/logfile?filename=autoinst-log.txt
+Having @subfunc, a.k.a. index, in is weird/confusing/fragile because it's not consumed,
+nor is it checked.  Peeking ahead, it looks like all future users pass '0'.  Taking the
+index but dropping it on the floor is asking for future breakage.  Either drop it or
+assert that it's zero.
 
-After a few rounds, Dominik and I converged on a set of patches that
-are now in the crng/random.git tree. Do you think you could try this
-tree out against your various test environments to confirm it fixes
-the issue SUSE was seeing?
+> +			u32 *ecx, u32 *edx)
+> +{
+> +	u64 val;
+> +
+> +	if (eax) {
+> +		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_EAX));
+> +		VMGEXIT();
+> +		val = sev_es_rd_ghcb_msr();
+> +
+> +		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+> +			return -EIO;
+> +
+> +		*eax = (val >> 32);
+> +	}
+> +
+> +	if (ebx) {
+> +		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_EBX));
+> +		VMGEXIT();
+> +		val = sev_es_rd_ghcb_msr();
+> +
+> +		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+> +			return -EIO;
+> +
+> +		*ebx = (val >> 32);
+> +	}
+> +
+> +	if (ecx) {
+> +		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_ECX));
+> +		VMGEXIT();
+> +		val = sev_es_rd_ghcb_msr();
+> +
+> +		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+> +			return -EIO;
+> +
+> +		*ecx = (val >> 32);
+> +	}
+> +
+> +	if (edx) {
+> +		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_EDX));
+> +		VMGEXIT();
+> +		val = sev_es_rd_ghcb_msr();
+> +
+> +		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+> +			return -EIO;
+> +
+> +		*edx = (val >> 32);
+> +	}
 
-Tree is here: https://git.kernel.org/pub/scm/linux/kernel/git/crng/random.git
+That's a lot of pasta!  If you add
 
-Thanks,
-Jason
+  static int __sev_cpuid_hv(u32 func, int reg_idx, u32 *reg)
+  {
+	u64 val;
+
+	if (!reg)
+		return 0;
+
+	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, reg_idx));
+	VMGEXIT();
+	val = sev_es_rd_ghcb_msr();
+	if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+		return -EIO;
+
+	*reg = (val >> 32);
+	return 0;
+  }
+
+then this helper can become something like:
+
+  static int sev_cpuid_hv(u32 func, u32 *eax, u32 *ebx, u32 *ecx, u32 *edx)
+  {
+	int ret;
+
+	ret = __sev_cpuid_hv(func, GHCB_CPUID_REQ_EAX, eax);
+	ret = ret ? : __sev_cpuid_hv(func, GHCB_CPUID_REQ_EBX, ebx);
+	ret = ret ? : __sev_cpuid_hv(func, GHCB_CPUID_REQ_ECX, ecx);
+	ret = ret ? : __sev_cpuid_hv(func, GHCB_CPUID_REQ_EDX, edx);
+
+	return ret;
+  }
+
+> +
+> +	return 0;
+> +}
+> +
