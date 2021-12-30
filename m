@@ -2,67 +2,83 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43204481D9E
-	for <lists+linux-efi@lfdr.de>; Thu, 30 Dec 2021 16:12:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA2F6481EEB
+	for <lists+linux-efi@lfdr.de>; Thu, 30 Dec 2021 18:57:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235945AbhL3PM4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 30 Dec 2021 10:12:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49188 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235850AbhL3PM4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 30 Dec 2021 10:12:56 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2A74C061574;
-        Thu, 30 Dec 2021 07:12:55 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        id S239992AbhL3R5T (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 30 Dec 2021 12:57:19 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:49126 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237227AbhL3R5S (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 30 Dec 2021 12:57:18 -0500
+Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 1C605CE1C2D;
-        Thu, 30 Dec 2021 15:12:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CACDC36AEF;
-        Thu, 30 Dec 2021 15:12:51 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="icXtwm01"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1640877169;
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C4F041EC0354;
+        Thu, 30 Dec 2021 18:57:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1640887032;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=jyHdQprcy3Zdmaq6WsLYeA8Eb5yrd1cw20rhtg5CzBQ=;
-        b=icXtwm017t9hoY1wGhL9ldIUw593kx4mOt1vJxgY5pAJ9F4vtuAFUlbldgJRgtsU2rsCjB
-        HDujD+rXrXCtMXLb2irlMEcHhQVTjkOwzMOBhaUOpeDmDJGXmv2XlZCXH2InxySGAr/ZUU
-        L1CHZr78cacqm0c5OZvuVxW42Odpbzk=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 6021b039 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-        Thu, 30 Dec 2021 15:12:49 +0000 (UTC)
-Received: by mail-yb1-f178.google.com with SMTP id d201so49222614ybc.7;
-        Thu, 30 Dec 2021 07:12:49 -0800 (PST)
-X-Gm-Message-State: AOAM533VFjcBXrq2k/e2u38JshCa1kKVM8RbwhdiJugWqvNlaIlBhQE3
-        TPFdmqvJ/p/SsjIBsSC/iPAtGUh1X1ezCqGg6vc=
-X-Google-Smtp-Source: ABdhPJydstAGA4i+VYCy9w9tTLupmoKB1GF1VWlAGgk7NMwylb8ER/+Je5g1g2AlJd2mAGrLtUPWUD8GZOyhSa4vY/A=
-X-Received: by 2002:a25:854f:: with SMTP id f15mr29273529ybn.121.1640877168229;
- Thu, 30 Dec 2021 07:12:48 -0800 (PST)
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=qUxY9/LwjcFd+zfBmJBks3//3cYkreropnaUn0+Qhnc=;
+        b=KW6+Feri0RKwhcgndr2gEqRAK2u36dnEXJU0NIwg5WUDNtr0R2qeO+dVfVtleSdnstFVPV
+        9G1EtkTXR7MEWjegoaDZp7Auzui+44NZKMJhmL3RkRsMtar87mCK5dGQpBpjKAv0728WVy
+        khoPKeyXnn4jdOS4x7SFwkQ4aOBu7dM=
+Date:   Thu, 30 Dec 2021 18:57:14 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Shuai Xue <xueshuai@linux.alibaba.com>
+Cc:     mchehab@kernel.org, tony.luck@intel.com, james.morse@arm.com,
+        rric@kernel.org, ardb@kernel.org, linux-edac@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        zhangliguang@linux.alibaba.com, zhuo.song@linux.alibaba.com
+Subject: Re: [PATCH v2 1/3] ghes_edac: unify memory error report format with
+ cper
+Message-ID: <Yc3y+uVEcAFgTE5x@zn.tnic>
+References: <20211210134019.28536-1-xueshuai@linux.alibaba.com>
+ <20211210134019.28536-2-xueshuai@linux.alibaba.com>
+ <YctFli9oMBYTlf7h@zn.tnic>
+ <9e0bf7c0-ed50-5b0b-0576-3651249ba5cd@linux.alibaba.com>
 MIME-Version: 1.0
-References: <20211228153826.448805-1-Jason@zx2c4.com> <20211229211009.108091-1-linux@dominikbrodowski.net>
- <20211229211009.108091-7-linux@dominikbrodowski.net> <Yc102b3gCiIjC88e@owl.dominikbrodowski.net>
-In-Reply-To: <Yc102b3gCiIjC88e@owl.dominikbrodowski.net>
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Thu, 30 Dec 2021 16:12:37 +0100
-X-Gmail-Original-Message-ID: <CAHmME9ppDKOSMeMFjMr1XAt8_8kSSUpUWS1vL2yeZjb27=ePhw@mail.gmail.com>
-Message-ID: <CAHmME9ppDKOSMeMFjMr1XAt8_8kSSUpUWS1vL2yeZjb27=ePhw@mail.gmail.com>
-Subject: Re: [PATCH v8.1 7/7] random: move NUMA-related code to CONFIG_NUMA section
-To:     Dominik Brodowski <linux@dominikbrodowski.net>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        "Theodore Ts'o" <tytso@mit.edu>,
-        "Ivan T . Ivanov" <iivanov@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <9e0bf7c0-ed50-5b0b-0576-3651249ba5cd@linux.alibaba.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Rather than the fallout of this v8->v8.1 resulting in functions
-needing to move around, I think it might actually be cleaner to do an
-IS_ENABLED thing. I'll send a patch to this thread and you can tell me
-what you think of that instead.
+On Wed, Dec 29, 2021 at 11:22:11AM +0800, Shuai Xue wrote:
+> Yep, these fields are unpopulated by BIOS, I manually enable all Validation
+> Bits for debug so that we see the difference more clearly. I will declare it
+> in next version.
 
-Jason
+Declare what? I can't parse your statement.
+
+> Well, the purpose is not to improve but unify.
+
+The most importang goal with kernel code is improvement and less bugs.
+Unification is second. We should not jump through hoops and unify at
+every price just because there's a duplicated function somewhere.
+Remember that when doing your changes.
+
+> Well, Robert suggested me add a unification patch[1] so that we could review
+> the changes more clearly. I think it makes sense.
+
+Not really. I can imagine why Robert suggested that but this strategy is
+causing unnecessary churn. What one usually does in such cases is:
+
+1. Add changes to the target functionality - the one in cper.c - by
+explaining *why* those changes are needed.
+
+2. Switch ghes_edac.c to that functionality and remove the redundant one
+there.
+
+Simple and clean diffstat and easy review.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
