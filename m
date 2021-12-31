@@ -2,202 +2,96 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D763481F50
-	for <lists+linux-efi@lfdr.de>; Thu, 30 Dec 2021 19:52:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAD224821AA
+	for <lists+linux-efi@lfdr.de>; Fri, 31 Dec 2021 04:04:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241746AbhL3Sw5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 30 Dec 2021 13:52:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41244 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240276AbhL3Sw5 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 30 Dec 2021 13:52:57 -0500
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BD7BC061574
-        for <linux-efi@vger.kernel.org>; Thu, 30 Dec 2021 10:52:57 -0800 (PST)
-Received: by mail-pf1-x42b.google.com with SMTP id v13so22031439pfi.3
-        for <linux-efi@vger.kernel.org>; Thu, 30 Dec 2021 10:52:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=7LN0LYaPJq+96WHHrtqpjEIWMUaO4vFF4rfqypL1bR0=;
-        b=rpWu9btVqmQ0QTbmhhUK9Dz89dFgfjXlqrAlod7GAGD11uxF9ibLliA+w90bMIj+yu
-         TIOjH72MZO8MQ7A8vUTAUp8oWRFg8/BipD06png87ugKRx0MKigkwcE4v6Ox7L1hPCRF
-         LbBZaDMOePI/nMwaCJr14Wu2PvJLwtFiw+54GL+KkzIMdHM3FccaqN4+6O48BHw6xq/Q
-         3+12yH+FzOyHGDuAJBoBoI7EUk7q5/X/DE5Ns7fdkWsox8rQ/8JYcof7evWLlW7OBNDI
-         +3dLx/XSBDQ6s6BWy9kD/uLxfdiPVleJt9v5d8jg2rY0ZTdLC080XnqpHl95VAbCakt7
-         +40w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=7LN0LYaPJq+96WHHrtqpjEIWMUaO4vFF4rfqypL1bR0=;
-        b=TCotR1sugPuGEKbTOgq74QMaRLY0YPyI5MtK7Blx9K/46qAnuS7dKbeO02j2AbZEIw
-         K1+QXeqFdBhCqp6TzMDhqu4/wPEZxuHA3MFQIMtt7rt5BioQ/5xT7ojDITb/XOaSE8kM
-         RIUJCEYnlqoBwSNo36iZr3BOEuWa6h0n3ZqzQfGAtXSRE2+KXSxy0pU50PisY3w+iSSj
-         gEAdq9LtYxx65raWqeiWe/JCb9CIRxaHVb5RHMXwXm9aZwUF/cnsMEYeBcjS3fvMHmye
-         c72fSKa0nUB0J4OUIKCEjs0oieMpckAgiehgKDR+/ihjFLSyTl8LZtpBZFyKnf6yH0b+
-         yTWA==
-X-Gm-Message-State: AOAM531yPPqX7ieAMBPyTxrzR9ypHdlm25kSthIM9Gl7mfBsVh/3ctLa
-        FcAdbqETZe15HmarSvboWP6kKA==
-X-Google-Smtp-Source: ABdhPJzjf15Pudr7gJPrk1rYboV0PPDYswWEE3HKGVacbEvnTAzwn3YOFqw0PNuZsiPShsWRZbt0GA==
-X-Received: by 2002:a05:6a00:21cd:b0:4bc:35e8:eaea with SMTP id t13-20020a056a0021cd00b004bc35e8eaeamr10048326pfj.23.1640890376505;
-        Thu, 30 Dec 2021 10:52:56 -0800 (PST)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id r7sm20049373pgm.15.2021.12.30.10.52.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Dec 2021 10:52:55 -0800 (PST)
-Date:   Thu, 30 Dec 2021 18:52:52 +0000
-From:   Sean Christopherson <seanjc@google.com>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v8 22/40] x86/sev: move MSR-based VMGEXITs for CPUID to
- helper
-Message-ID: <Yc4ABL2EbBlwjma5@google.com>
-References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-23-brijesh.singh@amd.com>
+        id S242218AbhLaDEO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 30 Dec 2021 22:04:14 -0500
+Received: from out30-56.freemail.mail.aliyun.com ([115.124.30.56]:56869 "EHLO
+        out30-56.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S241168AbhLaDEN (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 30 Dec 2021 22:04:13 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R351e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0V0OKTNs_1640919848;
+Received: from 30.240.117.58(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V0OKTNs_1640919848)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Fri, 31 Dec 2021 11:04:10 +0800
+Message-ID: <ae865b5e-f385-6aac-2838-cb76b82df68c@linux.alibaba.com>
+Date:   Fri, 31 Dec 2021 11:04:08 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211210154332.11526-23-brijesh.singh@amd.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.4.1
+Subject: Re: [PATCH v2 1/3] ghes_edac: unify memory error report format with
+ cper
+Content-Language: en-US
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     mchehab@kernel.org, tony.luck@intel.com, james.morse@arm.com,
+        rric@kernel.org, ardb@kernel.org, linux-edac@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        zhangliguang@linux.alibaba.com, zhuo.song@linux.alibaba.com
+References: <20211210134019.28536-1-xueshuai@linux.alibaba.com>
+ <20211210134019.28536-2-xueshuai@linux.alibaba.com>
+ <YctFli9oMBYTlf7h@zn.tnic>
+ <9e0bf7c0-ed50-5b0b-0576-3651249ba5cd@linux.alibaba.com>
+ <Yc3y+uVEcAFgTE5x@zn.tnic>
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <Yc3y+uVEcAFgTE5x@zn.tnic>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Dec 10, 2021, Brijesh Singh wrote:
-> From: Michael Roth <michael.roth@amd.com>
+Hi, Borislav,
+
+Thank you for your comments.
+
+在 2021/12/31 AM1:57, Borislav Petkov 写道:
+> On Wed, Dec 29, 2021 at 11:22:11AM +0800, Shuai Xue wrote:
+>> Yep, these fields are unpopulated by BIOS, I manually enable all Validation
+>> Bits for debug so that we see the difference more clearly. I will declare it
+>> in next version.
 > 
-> This code will also be used later for SEV-SNP-validated CPUID code in
-> some cases, so move it to a common helper.
+> Declare what? I can't parse your statement.
+
+The ghes_edac log message is printed only when a validation bit is set, e.g.:
+
+	if (mem_err->validation_bits & CPER_MEM_VALID_NODE)
+		p += sprintf(p, "node:%d ", mem_err->node);
+
+Not all bits are populated by BIOS in my platform, I manually enable all
+validation bits during test so that we can see log message and differences of all
+fields more clearly.
+
+	+ 	mem_err->validation_bits = 0xfffffffffffffff;
+
+>> Well, the purpose is not to improve but unify.
 > 
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/kernel/sev-shared.c | 84 +++++++++++++++++++++++++-----------
->  1 file changed, 58 insertions(+), 26 deletions(-)
+> The most importang goal with kernel code is improvement and less bugs.
+> Unification is second. We should not jump through hoops and unify at
+> every price just because there's a duplicated function somewhere.
+> Remember that when doing your changes.
+
+I see. Thank you.
+
+>> Well, Robert suggested me add a unification patch[1] so that we could review
+>> the changes more clearly. I think it makes sense.
 > 
-> diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-> index 3aaef1a18ffe..d89481b31022 100644
-> --- a/arch/x86/kernel/sev-shared.c
-> +++ b/arch/x86/kernel/sev-shared.c
-> @@ -194,6 +194,58 @@ enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb, bool set_ghcb_msr,
->  	return verify_exception_info(ghcb, ctxt);
->  }
->  
-> +static int sev_cpuid_hv(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
+> Not really. I can imagine why Robert suggested that but this strategy is
+> causing unnecessary churn. What one usually does in such cases is:
+> 
+> 1. Add changes to the target functionality - the one in cper.c - by
+> explaining *why* those changes are needed.
+> 
+> 2. Switch ghes_edac.c to that functionality and remove the redundant one
+> there.
+> 
+> Simple and clean diffstat and easy review.
+> 
+> Thx.
 
-Having @subfunc, a.k.a. index, in is weird/confusing/fragile because it's not consumed,
-nor is it checked.  Peeking ahead, it looks like all future users pass '0'.  Taking the
-index but dropping it on the floor is asking for future breakage.  Either drop it or
-assert that it's zero.
+Got it. I will send next version latter.
 
-> +			u32 *ecx, u32 *edx)
-> +{
-> +	u64 val;
-> +
-> +	if (eax) {
-> +		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_EAX));
-> +		VMGEXIT();
-> +		val = sev_es_rd_ghcb_msr();
-> +
-> +		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
-> +			return -EIO;
-> +
-> +		*eax = (val >> 32);
-> +	}
-> +
-> +	if (ebx) {
-> +		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_EBX));
-> +		VMGEXIT();
-> +		val = sev_es_rd_ghcb_msr();
-> +
-> +		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
-> +			return -EIO;
-> +
-> +		*ebx = (val >> 32);
-> +	}
-> +
-> +	if (ecx) {
-> +		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_ECX));
-> +		VMGEXIT();
-> +		val = sev_es_rd_ghcb_msr();
-> +
-> +		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
-> +			return -EIO;
-> +
-> +		*ecx = (val >> 32);
-> +	}
-> +
-> +	if (edx) {
-> +		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_EDX));
-> +		VMGEXIT();
-> +		val = sev_es_rd_ghcb_msr();
-> +
-> +		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
-> +			return -EIO;
-> +
-> +		*edx = (val >> 32);
-> +	}
+Merry Christmas and happy New Year.
 
-That's a lot of pasta!  If you add
-
-  static int __sev_cpuid_hv(u32 func, int reg_idx, u32 *reg)
-  {
-	u64 val;
-
-	if (!reg)
-		return 0;
-
-	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, reg_idx));
-	VMGEXIT();
-	val = sev_es_rd_ghcb_msr();
-	if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
-		return -EIO;
-
-	*reg = (val >> 32);
-	return 0;
-  }
-
-then this helper can become something like:
-
-  static int sev_cpuid_hv(u32 func, u32 *eax, u32 *ebx, u32 *ecx, u32 *edx)
-  {
-	int ret;
-
-	ret = __sev_cpuid_hv(func, GHCB_CPUID_REQ_EAX, eax);
-	ret = ret ? : __sev_cpuid_hv(func, GHCB_CPUID_REQ_EBX, ebx);
-	ret = ret ? : __sev_cpuid_hv(func, GHCB_CPUID_REQ_ECX, ecx);
-	ret = ret ? : __sev_cpuid_hv(func, GHCB_CPUID_REQ_EDX, edx);
-
-	return ret;
-  }
-
-> +
-> +	return 0;
-> +}
-> +
+Best Regards,
+Shuai
