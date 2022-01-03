@@ -2,35 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F0CC483513
-	for <lists+linux-efi@lfdr.de>; Mon,  3 Jan 2022 17:49:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC1C14836A0
+	for <lists+linux-efi@lfdr.de>; Mon,  3 Jan 2022 19:11:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234788AbiACQtr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 3 Jan 2022 11:49:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44094 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234996AbiACQtr (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 3 Jan 2022 11:49:47 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A83BC061761;
-        Mon,  3 Jan 2022 08:49:46 -0800 (PST)
-Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S235327AbiACSLB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 3 Jan 2022 13:11:01 -0500
+Received: from smtp-out1.suse.de ([195.135.220.28]:57436 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235234AbiACSLA (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 3 Jan 2022 13:11:00 -0500
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DBB481EC0380;
-        Mon,  3 Jan 2022 17:49:39 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1641228580;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=P798RWaZTr+okBNMCVL+1sl56MgtJUmphTduCouvUIE=;
-        b=ip+HPwItP/DquYMql6pC3Po65Wa5C8XWBZLq6hy+3IQt1D9EWyxbEfUBkQZGd+h8+zSPWi
-        X5/4SIi5AAR2dbjqWQjWlH/qDK5OuQxoQakMhvKtmHNJnB/4mtQS1N5aMHi698V0TubJ9X
-        yB2kwu78JKqbDVvlBS/bSARKlFBV54g=
-Date:   Mon, 3 Jan 2022 17:49:42 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
+        by smtp-out1.suse.de (Postfix) with ESMTPS id E884A210E8;
+        Mon,  3 Jan 2022 18:10:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1641233458; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Op3ImOqOwCCgnIZralyZf3tGTao+t3Y622jP3bRdc3M=;
+        b=C2zVimxxGBkbjHiUPECVcDKFMB2sv4FqZcW8GgohA812H99T/sYphGZEA629myHI1xwfUB
+        EAkGvy3QcUL7w4mnTnl7szW5Fx/6/jwA9fnzECUU2Sma7xvOTmQrTquQlS23TiIHyoVOdi
+        hXjehu5D/56NRpJ+CiRwuwIH541HAPU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1641233458;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Op3ImOqOwCCgnIZralyZf3tGTao+t3Y622jP3bRdc3M=;
+        b=oSr9zFj9HMCbLGX5MoS/SaS6qozzC73ylXqxLdax9DGQnykLDDk2KqDo7iHeTOHc038jY8
+        783kriuIq+Bu45Bg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7535E13B09;
+        Mon,  3 Jan 2022 18:10:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id UEjgGzI802FfKwAAMHmgww
+        (envelope-from <vbabka@suse.cz>); Mon, 03 Jan 2022 18:10:58 +0000
+Message-ID: <91eb34b0-ff19-40a3-9744-ad80432d8317@suse.cz>
+Date:   Mon, 3 Jan 2022 19:10:58 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Content-Language: en-US
+To:     Borislav Petkov <bp@alien8.de>,
+        Brijesh Singh <brijesh.singh@amd.com>
 Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
@@ -51,198 +73,75 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         Dov Murik <dovmurik@linux.ibm.com>,
         Tobin Feldman-Fitzthum <tobin@ibm.com>,
         Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
         "Kirill A . Shutemov" <kirill@shutemov.name>,
         Andi Kleen <ak@linux.intel.com>,
         "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
         tony.luck@intel.com, marcorr@google.com,
         sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v8 21/40] x86/head: re-enable stack protection for
- 32/64-bit builds
-Message-ID: <YdMpJg3YSdoYMKaZ@zn.tnic>
 References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-22-brijesh.singh@amd.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20211210154332.11526-22-brijesh.singh@amd.com>
+ <20211210154332.11526-21-brijesh.singh@amd.com> <Yc8jerEP5CrxfFi4@zn.tnic>
+From:   Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH v8 20/40] x86/sev: Use SEV-SNP AP creation to start
+ secondary CPUs
+In-Reply-To: <Yc8jerEP5CrxfFi4@zn.tnic>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Dec 10, 2021 at 09:43:13AM -0600, Brijesh Singh wrote:
-
-> Subject: Re: [PATCH v8 21/40] x86/head: re-enable stack protection for 32/64-bit builds
-
-The tip tree preferred format for patch subject prefixes is
-'subsys/component:', e.g. 'x86/apic:', 'x86/mm/fault:', 'sched/fair:',
-'genirq/core:'. Please do not use file names or complete file paths as
-prefix. 'git log path/to/file' should give you a reasonable hint in most
-cases.
-
-The condensed patch description in the subject line should start with a
-uppercase letter and should be written in imperative tone.
-
-In this case:
-
-x86/head/64: Re-enable stack protection
-
-There's no need for 32/64-bit builds - we don't have anything else :-)
-
-Please check all your subjects.
-
-> From: Michael Roth <michael.roth@amd.com>
+On 12/31/21 16:36, Borislav Petkov wrote:
+> On Fri, Dec 10, 2021 at 09:43:12AM -0600, Brijesh Singh wrote:
+>> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+>> index 123a96f7dff2..38c14601ae4a 100644
 > 
-> As of commit 103a4908ad4d ("x86/head/64: Disable stack protection for
-> head$(BITS).o")
-
-verify_commit_quotation: Warning: The proper commit quotation format is:
-<newline>
-[  ]<sha1, 12 chars> ("commit name")
-<newline>
-
-> kernel/head64.c is compiled with -fno-stack-protector
-> to allow a call to set_bringup_idt_handler(), which would otherwise
-> have stack protection enabled with CONFIG_STACKPROTECTOR_STRONG. While
-> sufficient for that case, there may still be issues with calls to any
-> external functions that were compiled with stack protection enabled that
-> in-turn make stack-protected calls, or if the exception handlers set up
-> by set_bringup_idt_handler() make calls to stack-protected functions.
-> As part of 103a4908ad4d, stack protection was also disabled for
-> kernel/head32.c as a precaution.
+>> +{
+>> +	unsigned long pfn;
+>> +	struct page *p;
+>> +
+>> +	/*
+>> +	 * Allocate an SNP safe page to workaround the SNP erratum where
+>> +	 * the CPU will incorrectly signal an RMP violation  #PF if a
+>> +	 * hugepage (2mb or 1gb) collides with the RMP entry of VMSA page.
 > 
-> Subsequent patches for SEV-SNP CPUID validation support will introduce
-> both such cases. Attempting to disable stack protection for everything
-> in scope to address that is prohibitive since much of the code, like
-> SEV-ES #VC handler, is shared code that remains in use after boot and
-> could benefit from having stack protection enabled. Attempting to inline
-> calls is brittle and can quickly balloon out to library/helper code
-> where that's not really an option.
+> 		2MB or 1GB
 > 
-> Instead, re-enable stack protection for head32.c/head64.c and make the
-> appropriate changes to ensure the segment used for the stack canary is
-> initialized in advance of any stack-protected C calls.
+> Collides how? The 4K frame is inside the hugepage?
 > 
-> for head64.c:
+>> +	 * The recommeded workaround is to not use the large page.
 > 
-> - The BSP will enter from startup_64 and call into C code
-
-Function names need to end with "()" so that it is clear they're
-functions.
-
->   (startup_64_setup_env) shortly after setting up the stack, which may
->   result in calls to stack-protected code. Set up %gs early to allow
->   for this safely.
-> - APs will enter from secondary_startup_64*, and %gs will be set up
->   soon after. There is one call to C code prior to this
->   (__startup_secondary_64), but it is only to fetch sme_me_mask, and
->   unlikely to be stack-protected, so leave things as they are, but add
->   a note about this in case things change in the future.
+> Unknown word [recommeded] in comment, suggestions:
+>         ['recommended', 'recommend', 'recommitted', 'commended', 'commandeered']
 > 
-> for head32.c:
+>> +	 *
+>> +	 * Allocate one extra page, use a page which is not 2mb aligned
 > 
-> - BSPs/APs will set %fs to __BOOT_DS prior to any C calls. In recent
->   kernels, the compiler is configured to access the stack canary at
->   %fs:__stack_chk_guard,
-
-Add here somewhere:
-
-"See
-
-  3fb0fdb3bbe7 ("x86/stackprotector/32: Make the canary into a regular percpu variable")
-
-for details."
-
-> which overlaps with the initial per-cpu
->   __stack_chk_guard variable in the initial/'master' .data..percpu
->   area. This is sufficient to allow access to the canary for use
->   during initial startup, so no changes are needed there.
+> 2MB-aligned
 > 
-> Suggested-by: Joerg Roedel <jroedel@suse.de> #for 64-bit %gs set up
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/kernel/Makefile  |  1 -
->  arch/x86/kernel/head_64.S | 24 ++++++++++++++++++++++++
->  2 files changed, 24 insertions(+), 1 deletion(-)
+>> +	 * and free the other.
+>> +	 */
+>> +	p = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO, 1);
+>> +	if (!p)
+>> +		return NULL;
+>> +
+>> +	split_page(p, 1);
+>> +
+>> +	pfn = page_to_pfn(p);
+>> +	if (IS_ALIGNED(__pfn_to_phys(pfn), PMD_SIZE)) {
+>> +		pfn++;
+>> +		__free_page(p);
+>> +	} else {
+>> +		__free_page(pfn_to_page(pfn + 1));
+>> +	}
 > 
-> diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-> index 2ff3e600f426..4df8c8f7d2ac 100644
-> --- a/arch/x86/kernel/Makefile
-> +++ b/arch/x86/kernel/Makefile
-> @@ -48,7 +48,6 @@ endif
->  # non-deterministic coverage.
->  KCOV_INSTRUMENT		:= n
->  
-> -CFLAGS_head$(BITS).o	+= -fno-stack-protector
->  CFLAGS_cc_platform.o	+= -fno-stack-protector
->  
->  CFLAGS_irq.o := -I $(srctree)/$(src)/../include/asm/trace
-> diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-> index 99de8fd461e8..9f8a7e48aca7 100644
-> --- a/arch/x86/kernel/head_64.S
-> +++ b/arch/x86/kernel/head_64.S
-> @@ -65,6 +65,22 @@ SYM_CODE_START_NOALIGN(startup_64)
->  	leaq	(__end_init_task - FRAME_SIZE)(%rip), %rsp
->  
->  	leaq	_text(%rip), %rdi
-> +
-> +	/*
-> +	 * initial_gs points to initial fixed_per_cpu struct with storage for
+> AFAICT, this is doing all this stuff so that you can make sure you get a
+> non-2M-aligned page. I wonder if there's a way to simply ask mm to give
+> you such page directly.
+> 
+> vbabka?
 
-$ git grep fixed_per_cpu
-$
-
-??
-
-Do you mean this:
-
-SYM_DATA(initial_gs,    .quad INIT_PER_CPU_VAR(fixed_percpu_data))
-
-?
-
-> +	 * the stack protector canary. Global pointer fixups are needed at this
-> +	 * stage, so apply them as is done in fixup_pointer(), and initialize %gs
-> +	 * such that the canary can be accessed at %gs:40 for subsequent C calls.
-> +	 */
-> +	movl	$MSR_GS_BASE, %ecx
-> +	movq	initial_gs(%rip), %rax
-> +	movq	$_text, %rdx
-> +	subq	%rdx, %rax
-> +	addq	%rdi, %rax
-> +	movq	%rax, %rdx
-> +	shrq	$32,  %rdx
-> +	wrmsr
-> +
->  	pushq	%rsi
->  	call	startup_64_setup_env
->  	popq	%rsi
-> @@ -146,6 +162,14 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
->  	 * added to the initial pgdir entry that will be programmed into CR3.
->  	 */
->  	pushq	%rsi
-
-<---- newline here.
-
-> +	/*
-> +	 * NOTE: %gs at this point is a stale data segment left over from the
-> +	 * real-mode trampoline, so the default stack protector canary location
-> +	 * at %gs:40 does not yet coincide with the expected fixed_per_cpu struct
-> +	 * that contains storage for the stack canary. So take care not to add
-> +	 * anything to the C functions in this path that would result in stack
-> +	 * protected C code being generated.
-> +	 */
->  	call	__startup_secondary_64
->  	popq	%rsi
-
-Can't you simply do
-
-	movq    sme_me_mask, %rax
-
-here instead and avoid the issue altogether?
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+AFAIK, not, as this is a very unusual constraint. Unless there are more
+places that need it, should be fine to solve it like above. Maybe just also
+be optimistic and try a plain order-0 first and only if it has the undesired
+alignment (which should happen only once per 512 allocations), fallback to
+the above?
