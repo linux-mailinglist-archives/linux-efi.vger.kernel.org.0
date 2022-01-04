@@ -2,96 +2,141 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77AB4484797
-	for <lists+linux-efi@lfdr.de>; Tue,  4 Jan 2022 19:13:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC4174847CF
+	for <lists+linux-efi@lfdr.de>; Tue,  4 Jan 2022 19:26:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236110AbiADSNq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 4 Jan 2022 13:13:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50300 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236107AbiADSNq (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 4 Jan 2022 13:13:46 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B926FC061761;
-        Tue,  4 Jan 2022 10:13:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=qCo/EEOuXkGQd3ORVen9TvUPi33M9r4hwOqzu/uF62I=; b=mcznDQresetsRf92LUuK6tJp/5
-        TJzXRLBa39LwWGSHJEC8hQutFTEidjOdAoE9EcGp+wT/OUH47f2CdRSXbIIJNwcpf2SemholjxoIx
-        Hp4pA9qI1VNzeq3OHtDW0jSdsF/hPWjooUOIv/1H3cHthrO+lllWXaKKJaEwtzFeo3ClWQ41HvvET
-        t0An4YbGGIpg5ZOc0yBTb3udJ+nA67Bbvjk5LIP593BHG87JYBPIJ3/WR4bTWz9Rg9KBv5hkwP71r
-        54gQawIjXFddkK2tjFiabLr4ws7CvM2u0uokGvEjg4bP9+u3u08SzpvreA2GuDo2gSelcT/h7PafG
-        HiCDEmkQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1n4oJb-00Dt2B-9M; Tue, 04 Jan 2022 18:13:43 +0000
-Date:   Tue, 4 Jan 2022 18:13:43 +0000
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        efi@lists.einval.com,
-        debian-kernel <debian-kernel@lists.debian.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
+        id S234693AbiADS03 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 4 Jan 2022 13:26:29 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:33236 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236206AbiADS02 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 4 Jan 2022 13:26:28 -0500
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id F00FF1F37F;
+        Tue,  4 Jan 2022 18:26:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1641320787; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=gCQy3yoyFL7ECUYAU0Ae6aUvtK+Hq4hiYnMytj5+eik=;
+        b=YK05IgeZLaqlRHJRD81Jr3Oh5vHQqFGLshx9xtpB7BFXFMrT+Np6Dx3fuaFwIQyqmirm8u
+        4j8AYIMWQvhHAL5Hnx8BioTAHsf/JdQalSROq9A7dfHWGkzG4MdRQYnCKHfGZGGbkdFgKS
+        REUsm064g7UiIFYclhkCU+RCJz0klAY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1641320787;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=gCQy3yoyFL7ECUYAU0Ae6aUvtK+Hq4hiYnMytj5+eik=;
+        b=9EWMIxklog7t5O4tilO9nSmkB3H6W8Zd5Y5nwPXvGAlAVC8audRwReWlcJFgMJPldYH/RA
+        cakI+rxBva851tCw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id CDE4B13B35;
+        Tue,  4 Jan 2022 18:26:26 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id hmG+MVKR1GEhfQAAMHmgww
+        (envelope-from <bp@suse.de>); Tue, 04 Jan 2022 18:26:26 +0000
+Date:   Tue, 4 Jan 2022 19:26:34 +0100
+From:   Borislav Petkov <bp@suse.de>
+To:     Dov Murik <dovmurik@linux.ibm.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>
+Cc:     linux-efi@vger.kernel.org, Ashish Kalra <ashish.kalra@amd.com>,
         Ard Biesheuvel <ardb@kernel.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
-Subject: Re: [PATCH v2] builddeb: Support signing kernels with the module
- signing key
-Message-ID: <YdSOV7LL0vWCMcWl@casper.infradead.org>
-References: <20211218031122.4117631-1-willy@infradead.org>
- <CAK7LNAQUChvX3NoukBnjBfJJGu+a96pfbM--xHEHOygWPgE9eA@mail.gmail.com>
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Andrew Scull <ascull@google.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+        Jim Cadden <jcadden@ibm.com>,
+        Daniele Buono <dbuono@linux.vnet.ibm.com>,
+        linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 0/5] Allow guest access to EFI confidential computing
+ secret area
+Message-ID: <YdSRWmqdNY7jRcer@zn.tnic>
+References: <20211129114251.3741721-1-dovmurik@linux.ibm.com>
+ <YdNHgtuVoLofL4cW@zn.tnic>
+ <0280e20e-8459-dd35-0b7d-8dbc1e4a274a@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAK7LNAQUChvX3NoukBnjBfJJGu+a96pfbM--xHEHOygWPgE9eA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0280e20e-8459-dd35-0b7d-8dbc1e4a274a@linux.ibm.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jan 05, 2022 at 12:39:57AM +0900, Masahiro Yamada wrote:
-> > +vmlinux=$($MAKE -s -f $srctree/Makefile image_name)
-> > +key=
-> > +if is_enabled CONFIG_EFI_STUB && is_enabled CONFIG_MODULE_SIG; then
-> > +       cert=$(grep ^CONFIG_MODULE_SIG_KEY= include/config/auto.conf | cut -d\" -f2)
-> > +       if [ ! -f $cert ]; then
-> > +               cert=$srctree/$cert
-> > +       fi
-> > +
-> > +       key=${cert%pem}priv
-> > +       if [ ! -f $key ]; then
-> > +               key=$cert
-> > +       fi
-> 
-> 
-> I still do not understand this part.
-> 
-> It is true that the Debian document you referred to creates separate files
-> for the key and the certificate:
->   # openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform
-> DER -out MOK.der -days 36500 -subj "/CN=My Name/" -nodes
-> 
-> but, is such a use-case possible in Kbuild?
+On Tue, Jan 04, 2022 at 09:02:03AM +0200, Dov Murik wrote:
+> If the Guest Owner chooses to inject secrets via scp, it needs
+> to be sure it is scp-ing to the correct VM - the one that has SEV
+> enabled and was measured at launch.
 
-If someone has followed the Debian instructions for creating a MOK,
-then they will have two separate files.  We should support both the case
-where someone has created a Debian MOK and the case where someone has
-used Kbuild to create this foolish blob with both private and public
-key in one file.
+Hmm, I'd expect that to be part of the attestation dance. I admit,
+though, I have only listened about the whole attestation bla from the
+sidelines so I'm unclear whether that's part of that protocol. I guess
+Tom and Brijesh should have a better idea here.
 
-> In the old days, yes, the key and the certificate were stored in separate files.
-> (the key in *.priv and the certificate in *.x509)
+> One way to achieve that would be to inject the guest's SSH private key
+
+Well, is that "one way" or *the way*?
+
+> using the proposed efi_secret mechanism.  This way the Guest Owner is
+> sure it is talking to the correct guest and not to some other VM that
+> was started by the untrusted cloud provider (say, with SEV disabled so
+> the cloud provider can steal its memory content).
+
+Because we would need *some* way of verifying the owner is talking
+to the correct guest. And if so, this should be made part of the big
+picture of SEV guest attestation. Or is this part of that attestation
+dance?
+
+I guess I'm wondering where in the big picture this fits into?
+
+> Indeed this proposed efi_secret module is in use for enabling SEV
+> confidential containers using Kata containers [1], but there's nothing
+> specific in the current patch series about containers.  The patch series
+> just exposes the launch-injected SEV secrets to userspace as virtual files
+> (under securityfs).
 > 
+> [1] https://github.com/confidential-containers/attestation-agent/tree/main/src/kbc_modules/offline_sev_kbc
+
+So one of the aspects for this is to use it in automated deployments.
+
+> It boils down to: the confidential guest needs to have access to a
+> secret which the untrusted host can't read, and which is essential for
+> the normal operation of the guest.  This secret can be a decryption key,
+> an SSH private key, an API key to a Key Management system, etc.  If a
+> malicious cloud provider tries to start that VM without a secret (or
+> with the wrong one), the actual workload that the guest is supposed to
+> run will not execute meaningfully.
 > 
-> Please read this commit:
+> The proposed patch series exposes the SEV injected secrets as virtual
+> files, which can later be used as decryption keys (as done in the kata
+> confidential containers use-case), or SSH private keys, or any other
+> possible implementation.
 
-Yes, I did.
+Right, and is this going to be the proper way to authenticate SEV guests
+to their owners or is this just another technique for safely supplying
+secrets into the guest?
 
-> The motivation for this change is still questionable to me;
-> the commit description sounds like they merged *.priv and *.x509
-> into *.pem just because they could not write a correct Makefile.
-> (If requested, I can write a correct Makefile that works in parallel build)
+I hope I'm making some sense here...
 
-I think that would be preferable.  Putting the private and public keys
-in the same file cannot be good security practice!
+-- 
+Regards/Gruss,
+    Boris.
+
+SUSE Software Solutions Germany GmbH, GF: Ivo Totev, HRB 36809, AG Nürnberg
