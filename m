@@ -2,168 +2,122 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF9E34851F6
-	for <lists+linux-efi@lfdr.de>; Wed,  5 Jan 2022 12:43:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13B4B48588D
+	for <lists+linux-efi@lfdr.de>; Wed,  5 Jan 2022 19:37:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235807AbiAELnd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 5 Jan 2022 06:43:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:47691 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235184AbiAELnd (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 5 Jan 2022 06:43:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1641383012;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=vZRqLCV1AQpi4/pbS4HKIi2vod3d/KjNFKlZbvvJOJw=;
-        b=IY3MTieLduVVmc9WITDOn4pO6gsThvz1A3DFOaAlLPtJueU6XH7+KYiRlIGiEb1kj7GoCC
-        7ANkq6cb8WjtyhV/4sXe8e2utP0W/zfFUJ1T9ZMIDyEB814Y7C2Bs8WItCv3YoXixjuT+o
-        61nYOZOFH7RUWjdeTGk3i97N8LujNyk=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-464-mChnGkQkPzGKCLXsyd57ZQ-1; Wed, 05 Jan 2022 06:43:31 -0500
-X-MC-Unique: mChnGkQkPzGKCLXsyd57ZQ-1
-Received: by mail-wr1-f70.google.com with SMTP id x20-20020adfbb54000000b001a0d044e20fso12570072wrg.11
-        for <linux-efi@vger.kernel.org>; Wed, 05 Jan 2022 03:43:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=vZRqLCV1AQpi4/pbS4HKIi2vod3d/KjNFKlZbvvJOJw=;
-        b=k9VViHBhxGd5JSCwL0+fZF2IwMJk6GqpUdpeeV0V9HFf4Z8zVqMYPu7IRlKg8Mzgyt
-         isT76/BREWsIwBKrR4NbfTOkKOByBh3TRws7wRqpUXjKH9drZfq7wHlWcWq0/dgTAWSk
-         yqBNQ1Y1TCwRGaw8JFkhX8h3OiityQ6n+regkeQagYEPqi1K7B26Q2IaXHwtMbiJCF1G
-         rkcR3xO4vXHxXX/XVv0+0+quUQ8grn5eO7qnhZopbgOcmpnBV4Awa/bwdHH2UjLebJIK
-         ZSge+Eug9GM1fzzO1lgATDFETrTab0Z/tdXQ1ghdKYiwKkZl5x8Kot/3m5Pxyc3U7qdy
-         l8Ew==
-X-Gm-Message-State: AOAM530QAfQHp1OpVEg1uLzL3nh+98WJnb2X5Eyqab1Rr8MG/q9qT/2n
-        4SyUx+VcyrbIjy29F3X8PwdOAqlEszinP8vgoL/UPhtTLZSliAudwByuZi1mz1epGHLCr+gRG+6
-        UhxvAdOQ+xXb62E+RzYOT
-X-Received: by 2002:a05:6000:10c4:: with SMTP id b4mr45048001wrx.514.1641383010396;
-        Wed, 05 Jan 2022 03:43:30 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJx0ND3sp1KAm9XvjE31Azjsac5utQcfs8uXXLrux4uumEKa2/x8xhMt+qfPbb1B2mJgzhIwuA==
-X-Received: by 2002:a05:6000:10c4:: with SMTP id b4mr45047983wrx.514.1641383010177;
-        Wed, 05 Jan 2022 03:43:30 -0800 (PST)
-Received: from work-vm (cpc109025-salf6-2-0-cust480.10-2.cable.virginm.net. [82.30.61.225])
-        by smtp.gmail.com with ESMTPSA id f8sm43265636wry.16.2022.01.05.03.43.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Jan 2022 03:43:29 -0800 (PST)
-Date:   Wed, 5 Jan 2022 11:43:25 +0000
-From:   "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-To:     Borislav Petkov <bp@suse.de>
-Cc:     Dov Murik <dovmurik@linux.ibm.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        linux-efi@vger.kernel.org, Ashish Kalra <ashish.kalra@amd.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Andrew Scull <ascull@google.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>,
-        Daniele Buono <dbuono@linux.vnet.ibm.com>,
-        linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 0/5] Allow guest access to EFI confidential computing
- secret area
-Message-ID: <YdWEXRt7Ixm6/+Dq@work-vm>
-References: <20211129114251.3741721-1-dovmurik@linux.ibm.com>
- <YdNHgtuVoLofL4cW@zn.tnic>
- <0280e20e-8459-dd35-0b7d-8dbc1e4a274a@linux.ibm.com>
- <YdSRWmqdNY7jRcer@zn.tnic>
+        id S243055AbiAESh2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 5 Jan 2022 13:37:28 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:60676 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243042AbiAESh1 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 5 Jan 2022 13:37:27 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3EA79B81D38;
+        Wed,  5 Jan 2022 18:37:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71CB0C36AE9;
+        Wed,  5 Jan 2022 18:37:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1641407845;
+        bh=yn8IcHE7h9fqD/cjERArRVpjBpyJFcdTE2ffAfx17dA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Th+j2JFrcOlvWm4iIRi+v+gnshmUD7R7VhZ4aYuTxyXU23rvQUJmmVMW4j7dKCLKQ
+         9TObFB23wnhbK+FCSaiQAeJvMEUWZ56Vp3KBGVJPtCqzN8m+4VcInmkcIF71MzsusB
+         sQAE2rf7dBGl2d1yM0DFyaqRCdbF8SabazOIygys=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
+Subject: [PATCH] efi: use default_groups in kobj_type
+Date:   Wed,  5 Jan 2022 19:37:16 +0100
+Message-Id: <20220105183716.2841210-1-gregkh@linuxfoundation.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2651; h=from:subject; bh=yn8IcHE7h9fqD/cjERArRVpjBpyJFcdTE2ffAfx17dA=; b=owGbwMvMwCRo6H6F97bub03G02pJDIlXn8ZoG7Upn/qncsTuvXb94TeGu9Q7eh8vv2ud1VKmP3V/ ssPSjlgWBkEmBlkxRZYv23iO7q84pOhlaHsaZg4rE8gQBi5OAZjItD8McwV5FtWKfs3Sbal65vlay/ n0jwm7KhgWLFz2X3j5Rw8Fvevhe35fcLF2vnOAHwA=
+X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <YdSRWmqdNY7jRcer@zn.tnic>
-User-Agent: Mutt/2.1.3 (2021-09-10)
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-* Borislav Petkov (bp@suse.de) wrote:
-> On Tue, Jan 04, 2022 at 09:02:03AM +0200, Dov Murik wrote:
-> > If the Guest Owner chooses to inject secrets via scp, it needs
-> > to be sure it is scp-ing to the correct VM - the one that has SEV
-> > enabled and was measured at launch.
-> 
-> Hmm, I'd expect that to be part of the attestation dance. I admit,
-> though, I have only listened about the whole attestation bla from the
-> sidelines so I'm unclear whether that's part of that protocol. I guess
-> Tom and Brijesh should have a better idea here.
+There are currently 2 ways to create a set of sysfs files for a
+kobj_type, through the default_attrs field, and the default_groups
+field.  Move the firmware efi sysfs code to use default_groups
+field which has been the preferred way since aa30f47cf666 ("kobject: Add
+support for default attribute groups to kobj_type") so that we can soon
+get rid of the obsolete default_attrs field.
 
-There's more than one type of dance; this partially varies
-depending on the system (SEV/TDX etc) and also depends on how you depend
-to boot your VM (separate kernel or VM disk).   Also it's important to
-note that when the dance happens varies - in SEV and SEV-ES this happens
-before the guest executes any code.
-So at the end of the dance, the guest owner hands over that secret - but
-only then does the geust start booting; that secret has to go somewhere
-to be used by something later.
-For example, something might pull out that key and use it to decrypt a
-disk that then has other secrets on it (e.g. your ssh key).
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/firmware/efi/efivars.c     | 3 ++-
+ drivers/firmware/efi/esrt.c        | 4 +++-
+ drivers/firmware/efi/runtime-map.c | 3 ++-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-Dave
-
-> > One way to achieve that would be to inject the guest's SSH private key
-> 
-> Well, is that "one way" or *the way*?
-> 
-> > using the proposed efi_secret mechanism.  This way the Guest Owner is
-> > sure it is talking to the correct guest and not to some other VM that
-> > was started by the untrusted cloud provider (say, with SEV disabled so
-> > the cloud provider can steal its memory content).
-> 
-> Because we would need *some* way of verifying the owner is talking
-> to the correct guest. And if so, this should be made part of the big
-> picture of SEV guest attestation. Or is this part of that attestation
-> dance?
-> 
-> I guess I'm wondering where in the big picture this fits into?
-> 
-> > Indeed this proposed efi_secret module is in use for enabling SEV
-> > confidential containers using Kata containers [1], but there's nothing
-> > specific in the current patch series about containers.  The patch series
-> > just exposes the launch-injected SEV secrets to userspace as virtual files
-> > (under securityfs).
-> > 
-> > [1] https://github.com/confidential-containers/attestation-agent/tree/main/src/kbc_modules/offline_sev_kbc
-> 
-> So one of the aspects for this is to use it in automated deployments.
-> 
-> > It boils down to: the confidential guest needs to have access to a
-> > secret which the untrusted host can't read, and which is essential for
-> > the normal operation of the guest.  This secret can be a decryption key,
-> > an SSH private key, an API key to a Key Management system, etc.  If a
-> > malicious cloud provider tries to start that VM without a secret (or
-> > with the wrong one), the actual workload that the guest is supposed to
-> > run will not execute meaningfully.
-> > 
-> > The proposed patch series exposes the SEV injected secrets as virtual
-> > files, which can later be used as decryption keys (as done in the kata
-> > confidential containers use-case), or SSH private keys, or any other
-> > possible implementation.
-> 
-> Right, and is this going to be the proper way to authenticate SEV guests
-> to their owners or is this just another technique for safely supplying
-> secrets into the guest?
-> 
-> I hope I'm making some sense here...
-> 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> SUSE Software Solutions Germany GmbH, GF: Ivo Totev, HRB 36809, AG Nürnberg
-> 
+diff --git a/drivers/firmware/efi/efivars.c b/drivers/firmware/efi/efivars.c
+index e6b16b3a17a8..ea0bc39dc965 100644
+--- a/drivers/firmware/efi/efivars.c
++++ b/drivers/firmware/efi/efivars.c
+@@ -352,11 +352,12 @@ static struct attribute *def_attrs[] = {
+ 	&efivar_attr_raw_var.attr,
+ 	NULL,
+ };
++ATTRIBUTE_GROUPS(def);
+ 
+ static struct kobj_type efivar_ktype = {
+ 	.release = efivar_release,
+ 	.sysfs_ops = &efivar_attr_ops,
+-	.default_attrs = def_attrs,
++	.default_groups = def_groups,
+ };
+ 
+ static ssize_t efivar_create(struct file *filp, struct kobject *kobj,
+diff --git a/drivers/firmware/efi/esrt.c b/drivers/firmware/efi/esrt.c
+index d5915272141f..2a2f52b017e7 100644
+--- a/drivers/firmware/efi/esrt.c
++++ b/drivers/firmware/efi/esrt.c
+@@ -146,6 +146,8 @@ static struct attribute *esre1_attrs[] = {
+ 	&esre_last_attempt_status.attr,
+ 	NULL
+ };
++ATTRIBUTE_GROUPS(esre1);
++
+ static void esre_release(struct kobject *kobj)
+ {
+ 	struct esre_entry *entry = to_entry(kobj);
+@@ -157,7 +159,7 @@ static void esre_release(struct kobject *kobj)
+ static struct kobj_type esre1_ktype = {
+ 	.release = esre_release,
+ 	.sysfs_ops = &esre_attr_ops,
+-	.default_attrs = esre1_attrs,
++	.default_groups = esre1_groups,
+ };
+ 
+ 
+diff --git a/drivers/firmware/efi/runtime-map.c b/drivers/firmware/efi/runtime-map.c
+index ad9ddefc9dcb..92a3d45a795c 100644
+--- a/drivers/firmware/efi/runtime-map.c
++++ b/drivers/firmware/efi/runtime-map.c
+@@ -79,6 +79,7 @@ static struct attribute *def_attrs[] = {
+ 	&map_attribute_attr.attr,
+ 	NULL
+ };
++ATTRIBUTE_GROUPS(def);
+ 
+ static const struct sysfs_ops map_attr_ops = {
+ 	.show = map_attr_show,
+@@ -94,7 +95,7 @@ static void map_release(struct kobject *kobj)
+ 
+ static struct kobj_type __refdata map_ktype = {
+ 	.sysfs_ops	= &map_attr_ops,
+-	.default_attrs	= def_attrs,
++	.default_groups	= def_groups,
+ 	.release	= map_release,
+ };
+ 
 -- 
-Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
+2.34.1
 
