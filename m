@@ -2,66 +2,67 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4F58486B3D
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Jan 2022 21:34:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F09D7486B48
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Jan 2022 21:37:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243891AbiAFUep (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 6 Jan 2022 15:34:45 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:39448 "EHLO
+        id S243882AbiAFUhW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 6 Jan 2022 15:37:22 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:11324 "EHLO
         mx0b-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S243881AbiAFUep (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 6 Jan 2022 15:34:45 -0500
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 206HTKSX011025;
-        Thu, 6 Jan 2022 20:34:13 GMT
+        by vger.kernel.org with ESMTP id S235328AbiAFUhV (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 6 Jan 2022 15:37:21 -0500
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 206HTABb031900;
+        Thu, 6 Jan 2022 20:36:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : references : content-type : in-reply-to :
  mime-version; s=corp-2021-07-09;
- bh=vl8Otsn8BZVXB0CLDfvx+yjMbQA3IWvMR71V3Fmzgvc=;
- b=dA+YoglXWyAfZNS1oaZs7L2tXVJ5VXKcF9SBUHZGq7lNPr6+dig9uidUEC3cEMAGiHY+
- BshJ78pWY9TKo+2+8wxqM4/A96zwOiGUKIHx3ZHzlUG+vM4mztuT5KpbGt77Ms8sTeS9
- ZKH9TpCvgH5y3MRANrBfB/Li0YjbyIRs2lqRkqK+GPTjh6228Wdb7u1VXXDDn8g1z6bj
- sPnzd1wmer3cluQsFz1df+SRsVBpLRdaPEjXA8O35ysNtV0gSfblmEG/+KCDZpncQixl
- gcW8TWuZezLgfd3Izqki9Hn0rGJY6iXZdrZiWhGvtt7ey8vyxWXtfUM9wB4V8UxDGARI Ew== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by mx0b-00069f02.pphosted.com with ESMTP id 3de4vb8e5v-1
+ bh=XIoy5bBGM+SOZf31DzuuI1/aw6PYxSC34Jm94z4l5gg=;
+ b=TAwtEvVwe044HVIj2mJmiob3IJC4FmqTlLGavRettm5pOPR0EgASPiPeMtIge7q1ekxy
+ vo/EDJID/Zdv+OuwGTelv6yM6BWMFUEGIYWQvcvNVx7EXV7yBLXwzIHHRhwC9eI3XTix
+ bEZ8W/fRXMpYt/BfPGBEJiZdYYSsjCpRZhvXOf5DI87WIzOM7qIBoQf1VEPB1IQVWhlv
+ VXoqWZz3SOkZ1RjQgtJ58tvGT3rL/5tbGu7zgUmmCYamcQvxQVaWApu45RjkCyFR1eOM
+ ZoW/291PDxhvRO0MIhK048cSn4vDjBeuzYkKVqrTP3OrGFN8xMcU5If6VXmr3iVovljd ug== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by mx0b-00069f02.pphosted.com with ESMTP id 3de4v90dwv-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 06 Jan 2022 20:34:13 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 206KGBo8067060;
-        Thu, 6 Jan 2022 20:34:12 GMT
-Received: from nam04-mw2-obe.outbound.protection.outlook.com (mail-mw2nam08lp2170.outbound.protection.outlook.com [104.47.73.170])
-        by aserp3030.oracle.com with ESMTP id 3de4w20kq9-1
+        Thu, 06 Jan 2022 20:36:52 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 206KZj8O086354;
+        Thu, 6 Jan 2022 20:36:52 GMT
+Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2168.outbound.protection.outlook.com [104.47.59.168])
+        by aserp3020.oracle.com with ESMTP id 3de4vv8mke-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 06 Jan 2022 20:34:12 +0000
+        Thu, 06 Jan 2022 20:36:51 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eh0w+g4MLfkO0FQ0j+XYJNud+OO4W6KSndJhxhfiZM8pNn7KeH7N5z20Q5OfAtcaDsILq+YvNFutw+2r5WqPd8YeuKwNdNybmMnP+INP0hqDNNE3ACs30s5xZK6ZrRPcmBo0OcTKDgCm+wsJwSg4fSZlse1g48D5nPM5qtLazKSjsj8n8J8n4cGtHrOSiKG1ecGrCOG1ZbESd9yMZ870ztaRTxvefCbscBdPWvMmNClRbJ6gx0HNXxMAXY/8VoVrWFKMPOcWiMqycctQgjkV/WZwmHST47OJqo/m5Dh6J5Umf80wq8dRFGzkBrfM6QcXrZXxfkYspwbOVQxyFND+rA==
+ b=H39qqxfsfnLlXjDpKT4QfhUSGr/FntEdJUWmZQhaxQrVSxTgHM+EZsrPAH4imbU8QMrJCbkTPwXcpep6zmqr5ss5L4vO32PjcAcmcTT/HpNbesCGWTP4kaz8NNPP4Ga9yvpqYM4JgKsGiH4cuS++QkLodX6CiTVxH0N44D3Ex7FdNBSJsynXCCU0JYrtCrUZzrcyAvFg9JxuTZn8XRupXdwDqi8SZdE9s4WR1CXnfY5wq6lT/aSWWLvikjd9L9tCvHxwk+ZjVIAsszW8XTLh6WUDM7FUDKaubuuQbaYKVEwXfAzixp6T0A7C4mvqBu6o6a9QMtEHwWKZXjV3nzQANQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vl8Otsn8BZVXB0CLDfvx+yjMbQA3IWvMR71V3Fmzgvc=;
- b=luvgmhqYwskm5Uz3gkkgq2Ei16nrwm/R6avYqgAKSGOEiC2ayn9yblpgGeQQJbiDYAfrkwF7wNSYJyp+iLdZaucZw06hS6rYQewnbRP/FBwnxHw8ZK8021wArmcvJeGnOkyTh6lD7E3WXijymrCDn81JrPl2IjsqyZK+inW421I7I2gaQeTcXM8rkHHY2lK8AgPZybjEy8Kd1rDmfPs4Jun6k5o8extJzqTp0WHwj35e/8ijUQfPQN+BLYVf0G0TlD4V31LkMibxyivBoFzwIql/LnsqHSs++PfQ7nwclQV9tqa6NazDuIlOhsn+iKi5MHEER4xDoXomfRV17rOJnQ==
+ bh=XIoy5bBGM+SOZf31DzuuI1/aw6PYxSC34Jm94z4l5gg=;
+ b=kSkJQszyPr6ABuzUCE/MWmYEvZrUITapO47DWdCqs/wkA8f+HXEn55rS7GCNqW9DJKcBV1Olqg/HdNbK01hud9XzKuNQHiCCdMKNkJjXrWJjyXimS/uPdwAvyjrxBaNr3jLFObRJRgMauIUF2tOwVGgHi5Lo4hpjh1V0xE4D5fCDhdlQqhJEgUwsNOBUUagfEJssniDN/JhvcO6gu95/0eeeprKOWHmBxlbz1A/56bLWSzTezaOjoqYBD77RiRdUOMEha5AOde+xTS/80ylWU023wGKgMX29stYre0ARI6Ase0g3Mx1IR2NYT3QdY/1Lf3AOKY/o0sMHlrBz82ZfHg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vl8Otsn8BZVXB0CLDfvx+yjMbQA3IWvMR71V3Fmzgvc=;
- b=Uk6c/2OUgZzIn0pHIzkEILkk9dRy6+3ScqU74JW2o6fnoy4dDuXOe5hIxTWzvd3rEEsMIvFKmqqv0M4itHePX27ps63mLnox0TBgPO6nhra6dpxRRN2GOtKK6SuL1cEbW9oiUqFt20tWQzQHDuxg9qcmqgi7qDr0IKrlM+ypqCA=
+ bh=XIoy5bBGM+SOZf31DzuuI1/aw6PYxSC34Jm94z4l5gg=;
+ b=dt+IAKCX0+rMWFbrOuHd+a7Qal6K2kwJmOGc5tKuPchs/9IiNSGe1OBsn5cea2gt8v71Pfj+QqFt4duTyNBpiV0sPGWSSc/GeszzuRnmqXs5aqF+mjzQV1UYlQKn8fyG9cVA+vXBgrCkEWxpC9HMgOpPi6qTzPLZe7VgmEF81Xk=
 Received: from SN6PR10MB2576.namprd10.prod.outlook.com (2603:10b6:805:44::15)
- by SN6PR10MB3024.namprd10.prod.outlook.com (2603:10b6:805:d1::32) with
+ by SA2PR10MB4665.namprd10.prod.outlook.com (2603:10b6:806:fb::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4844.15; Thu, 6 Jan
- 2022 20:34:09 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4867.9; Thu, 6 Jan
+ 2022 20:36:49 +0000
 Received: from SN6PR10MB2576.namprd10.prod.outlook.com
  ([fe80::4c8c:47df:f81e:f412]) by SN6PR10MB2576.namprd10.prod.outlook.com
  ([fe80::4c8c:47df:f81e:f412%5]) with mapi id 15.20.4867.010; Thu, 6 Jan 2022
- 20:34:09 +0000
-Date:   Thu, 6 Jan 2022 14:33:58 -0600
+ 20:36:49 +0000
+Date:   Thu, 6 Jan 2022 14:36:37 -0600
 From:   Venu Busireddy <venu.busireddy@oracle.com>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+To:     Michael Roth <michael.roth@amd.com>
+Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -81,226 +82,233 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         Dov Murik <dovmurik@linux.ibm.com>,
         Tobin Feldman-Fitzthum <tobin@ibm.com>,
         Borislav Petkov <bp@alien8.de>,
-        Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>,
         "Kirill A . Shutemov" <kirill@shutemov.name>,
         Andi Kleen <ak@linux.intel.com>,
         "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
         tony.luck@intel.com, marcorr@google.com,
         sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v8 25/40] x86/compressed/acpi: move EFI config table
- lookup to helper
-Message-ID: <YddSNrV8CHoxWhbn@dt>
+Subject: Re: [PATCH v8 22/40] x86/sev: move MSR-based VMGEXITs for CPUID to
+ helper
+Message-ID: <YddS1dGYawOCqfVg@dt>
 References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-26-brijesh.singh@amd.com>
+ <20211210154332.11526-23-brijesh.singh@amd.com>
+ <Ydc3Lbx2O00an/xj@dt>
+ <20220106202135.in72kejithub33s6@amd.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211210154332.11526-26-brijesh.singh@amd.com>
-X-ClientProxiedBy: BYAPR05CA0030.namprd05.prod.outlook.com
- (2603:10b6:a03:c0::43) To SN6PR10MB2576.namprd10.prod.outlook.com
+In-Reply-To: <20220106202135.in72kejithub33s6@amd.com>
+X-ClientProxiedBy: SJ0PR03CA0299.namprd03.prod.outlook.com
+ (2603:10b6:a03:39e::34) To SN6PR10MB2576.namprd10.prod.outlook.com
  (2603:10b6:805:44::15)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e0adef45-4aa2-4ad1-cfd7-08d9d153e44a
-X-MS-TrafficTypeDiagnostic: SN6PR10MB3024:EE_
-X-Microsoft-Antispam-PRVS: <SN6PR10MB3024FF9EED3A3468ED1A573EE64C9@SN6PR10MB3024.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Office365-Filtering-Correlation-Id: afc37bdd-2d7e-4f75-f6dc-08d9d1544385
+X-MS-TrafficTypeDiagnostic: SA2PR10MB4665:EE_
+X-Microsoft-Antispam-PRVS: <SA2PR10MB4665BE0940E08AF2E89152BDE64C9@SA2PR10MB4665.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: +MpafFJO4yaWx8wvIs9Ey8jKLyKQJ6C5pkAezrH6vhEtVnEMdANwK/P82Sn7axdSQNyiX4V7IlkYYyY/WanTUAaGJP7MebfhCxW/9kPj+/5k2SzR9Bpzj/RCmftz/liYSCQ/HbeGg/IcTrOIB+iWLo6uVjhTVhUva5RFejMj9xcPG5KJXFckH2aS5e24NwSRSpngZHnBUmVaOPY8ta0QTbAyiv9Sbkry9C88Qf/fHrC6bv4DF+XYD0SA+HZ6WUdyOnSD8VG65hr+4JBw7pSSgq7NwnDg73mp0r9hujcrNMvZ+InZfwfl5YX+R+t6aY4qYutI94UwA0X+K0MdCVicuy4d3p1Cod/sHA5k+GWR5f4fTB5B6eS/h+LsZuGguu7jGh0C5TYG4lOP22/M7hoPt1GMGHZclnrIvTA24Mwkoex7uxQV/sV8l1OBOJQ8sCvM0iPPgrqP+GM0yRq/ZJs9uu4LJZZdt81LjafAVI2RKD3Iq/PN33V87gwa+5925AP1nipBWiPRoxz3/vLDFcBLRY9I5FV+IWeZINQZvkXcvgW+RczMO5x8qMkmwvmvEBWOArygMy+YBxu5OSB3EGE59wqx4b0SRCgS5z7O1Br8PPydfeEzMi8JiGs72NpzRO1ycCqQ0y6g9oR0f9SavFav+A==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB2576.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(7916004)(366004)(4326008)(8936002)(26005)(316002)(2906002)(53546011)(54906003)(38100700002)(7416002)(6666004)(6506007)(8676002)(6916009)(66476007)(33716001)(4001150100001)(83380400001)(86362001)(6486002)(6512007)(508600001)(5660300002)(66556008)(7406005)(9686003)(186003)(44832011)(66946007);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: VyJVbcfg8A/Dxlz8piBjtV3n5ZvDfXDpaZu5LqYOv8hYz6HJkDLNcWVt7kbKJC3lHrBxdKOG4SInxj6mRU0RFsPf/7CBYpsr8Dmvrg5WpRlDUOeL42RzLTOTDzPO+wJueTPx4Z0uoodiPuLf92xjyFwRrvdM+qe9sov1PlHwoJqfTeweTNkSNTr8RZ17/FPk3qGfNQJgkz+s/hKpriGWBUjE1YO/JSrd68/O74BTYDRzhV3k7GDSNnKSY1NSZQLW7NihFn5k4a/cD8Yof5kTAH6+qlp+ZXS6NRMb0zpGgyUEI4Jz+qER4Zv6HyV2UXxdQHuEB0nXWVI+HQxJRL2oGqrIGtIyTtnWA3/eM2c2uOjVgKU+byJp6gSgbm3+E9D3WcPfoXNH8InpEELF3aPPwI4aP+Kg/XZF1G0MNmCI6v8/eGgP3/6Z0w6u4Q7bjpJetsEvvilBX8625SZvtkwrDe1upg5l1mbdoOPjQJwaQqxqfIMvpuXqsLFm7H5Zix9B/5dSuz+6FkNBRRrGdarpBK6xGv7jUTKDpRfwyz7Z0lYgu6yqCjs+APYeX+GoXyFAkVwAERH4iG4GcU9ZBvRK4i7y5XK0w3nwFcovQlSDXztVdgAAnO+KObh3dkogeXso66PCUWj6fz/K9PwjcDshzg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB2576.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(7916004)(366004)(6486002)(2906002)(7406005)(7416002)(53546011)(83380400001)(26005)(6666004)(6916009)(38100700002)(508600001)(44832011)(8936002)(6506007)(316002)(9686003)(6512007)(33716001)(4001150100001)(8676002)(4326008)(66556008)(186003)(5660300002)(54906003)(66476007)(86362001)(66946007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?UfV45eTu2sX72eEwnNXj3cT2n488wg84zn5mX0LV2j6rt39ooqZCZAI9owIy?=
- =?us-ascii?Q?zTkqAesAVNNrxa+GpItmPhBGMv21RkIWrd67diN9PFMqcUBCAfkfqf9x/KBe?=
- =?us-ascii?Q?v5iXlczAlHaWEbs7clFPkeqCw5qpDsUIARLUM4D4MpaMgV4QWXXQvbxXgZmP?=
- =?us-ascii?Q?KCoGRfkdwznPe/KT/TvrPYptDUjUwvq2okMc7GebB4MU9yBMQ0z4RNCxFbNx?=
- =?us-ascii?Q?5p2eUJFfruptNEDuuNC8CSsEHfFILwCRkQsHyWnNkbHlQ8GsqMU6Hw77Fgyw?=
- =?us-ascii?Q?VSok8UiObwyvtFr7nT+ASFLrbC42DKVzbstzoUkyPAi25jBw7IBXY9JEjPbp?=
- =?us-ascii?Q?g1d+Hp8n+myDQMtVAj0xOX5OlFBp5td4GOEfST5PLVZstSuw8J5QVPfzhQWx?=
- =?us-ascii?Q?5TsAk1dmVq0k6b4QJjYvUhhElSTxeH7qBJTvH9zoE66gZPuBmIOR4urK2nq1?=
- =?us-ascii?Q?VgElSZNNlR5Sq5lZ94z817F0xlfzSAPMPRm4SYglr7bKrXBZMUE3V0AppJSA?=
- =?us-ascii?Q?ALQqpaUtX96bAfjESq1EvjHO+EbkWlSf8t1SQRlSVX2KM49kN3/RQLlSwicT?=
- =?us-ascii?Q?4M5MPX6kOmHhBCqifadIzjXYXKkzRU3iHKem0SBaRgUuebrx+thpJjX/Khmz?=
- =?us-ascii?Q?GWP8L8JO16S+/+si/2D6at8bqONMZWz9kR7KF3Z7liuKKHhGLaeHNPmG+pGq?=
- =?us-ascii?Q?9pN1BJ8HqqGhKmUD/kl/EZFL0xZ8BOt2QehGDfHHkAMK/FnSi5ZP0Utgkbs5?=
- =?us-ascii?Q?KVz5/8abEwyN1eyJWyZJhlwxO1tEydWtnrDOoXuhhaZkHtwC0H1RImf+xN3z?=
- =?us-ascii?Q?imhzg3sTeUq9fIiN24wY4vHn2aHvmZIMBhkMeuXBF5BJxeFWVNO5ByETlKrh?=
- =?us-ascii?Q?XemfS1iDRaDFHxY/pf2eA+PQ0JwUP8p793mV/r1i/E0WmI2im6v8cbTSzZEC?=
- =?us-ascii?Q?1U8vUUG+kTfcuHd6yIFnytmp7rynl4s5zM6Yfq1k72/UYw2nUIpa/ETM9C14?=
- =?us-ascii?Q?TiRRycGUYC0rDkgVbn9+jwlzboJO7jDZopGPGU1NgBIoE4PFIgyspzDPO1xt?=
- =?us-ascii?Q?VIO0OrKmTQXaLVMAw7RQqdVyk/rF2KykXSP3Px54RaoyD/ON9qKwxRsEmu9K?=
- =?us-ascii?Q?TyrsPSmDPHJhB/eJvpM05O0NlpSJOU5zYsXdBHz0+OXs11XETYgBPBtxiOOA?=
- =?us-ascii?Q?1WyeFfibcukSVqT8sDubFZc1Su0B05X5ZFKZH1/AAX2v89vUrr50UXS6kuLI?=
- =?us-ascii?Q?cX8Qq/bsEmfsMGBLH7GBbQ46j9dcMyAe2SOqwUBBjg9mlh6MPJAxC1nFTooJ?=
- =?us-ascii?Q?hhl4bnZVXlQKdiKT1XRENHGE5uCnk977TPe22un5/RkRutTyHIBXlsrP4wLP?=
- =?us-ascii?Q?vkL94fdqrJITADn8K0bJiltgml9J2GhPBb2w8QGHNjvE+7TdPIsBmwxzS7k5?=
- =?us-ascii?Q?k42Mtvw+DlSiiaBAL6AMv+EdsFfndMoPqsON1wRXoJFrcB4rrIELmnPvbxU8?=
- =?us-ascii?Q?o9fIW9IGSrUQXT/z3SnnqB9pat+5udz9szPl8Kw4HYxsq6jl59eg1cZi7ckd?=
- =?us-ascii?Q?LmhpKz0ifidG6P7K5juJRx7SdvW0hEqvfiMjA6BPvio1RmEJASaBIjK/W2tj?=
- =?us-ascii?Q?nJiv4NkBxeHsif5mJloL9Ue54tDfPN2qeSrnBrTA7yzXzBpt/OGA25WYWdHo?=
- =?us-ascii?Q?5V+0Tw=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Rx3fGJOQ/Zv347NG7HDHnb3rAFp3uS9U41ue+6HmGf41Rqrm66FDytLMttjY?=
+ =?us-ascii?Q?7TWW7FCVC+7OWR5+0++MBePboBpoVv2j/xNJDrudwKUfHJ3YIDwyIXVbVsWM?=
+ =?us-ascii?Q?6VwXqfnrZ2PMC/GLD5liekNccZKJ8OMAjfE8hdTVHZIV6NsJgyGyxmoWIdyn?=
+ =?us-ascii?Q?DK21SlvQdoteTBWPm6ysk+j+SJMQTcTAnJVYv8X20TWLNezmbstIO2eYOfIH?=
+ =?us-ascii?Q?TAvNL9Va6P8B92VDqBdw+PZ3pibYfNpGs7oKMrL4WO26S+EE8+cs0pAZSgZL?=
+ =?us-ascii?Q?kPbRioNJnW5jHpYxczlK9vHMAcBV7QxZ9Vb3llmWXmgHZ53lBXaUcZtPzXJE?=
+ =?us-ascii?Q?KwQY+/XJP6a6M+zBJPhSKI05gPV+y/VGJ4ygx809bdXI5TOdYi5Rh4OgT95P?=
+ =?us-ascii?Q?ZW1YukmMgimFVQC9RiQNfO8DyI0af61WO6CG4hdih2OHrmispf9N0p0M1u0z?=
+ =?us-ascii?Q?mr9dktZf44u6zJPgEheeW22i7Zlseqti41fiC3csRbShJ5Dwavon2pYPTHEI?=
+ =?us-ascii?Q?NLbD7FMUoNw/B+bS1yoVjhx9c3I3vBOVuI8GS0Ik/xBEWL/f/KPIZDkcVQ9B?=
+ =?us-ascii?Q?+MCygrh0m54UhYxw/V2Uyx/vP/DHS/lx7kbcYJnz8B+TehcO7LkbDM5kIRp5?=
+ =?us-ascii?Q?zddUqeW0YU8VPFsZoC8gFjJVD3fpXCnjBBbwoGxIDVlOvuRhXuIA9pujK4Q0?=
+ =?us-ascii?Q?SGSRltQRNfMqbrmdmtwKDn7qOluv0XRNiHMEpZe+j+J9ow+oAf4kuJ/3xnt1?=
+ =?us-ascii?Q?4MEZJDDKNFZyuTwi7XyOh9x7XmYbWcDOmdGQfduiX4n6aAQi1+4SKSeR2L6/?=
+ =?us-ascii?Q?T0Q17icxBGCwI5Od2aTtXTJlN1ApQ+CgMsJgkhfdwK2MhAw8lTxqzonkUgI2?=
+ =?us-ascii?Q?eEEcRdsXref4ISdczsSNVDzO28RXhgVH7qmdFDvwGnWIcSqA6KI4Ea59tHy8?=
+ =?us-ascii?Q?Uuon/cSq5BRppNSeoR98E7SfEgsF6MirMwNJ71y+BnHY/+xeQE+t7qvjwAxJ?=
+ =?us-ascii?Q?KFBiaq4knpPybmGDaVD/8MXA7MCMJRQ055eM8S/T8+ywwLU34lVHnt1Z8jp2?=
+ =?us-ascii?Q?0giUMODBEK/mHhc4L9hJGdOZREj3ycc4gyZqiHz9TJPqJN5PDkMITpqYVPGg?=
+ =?us-ascii?Q?B2V4Kpifw0veIR5Ay01Ro4Sia1pKZ7Hvs/znU5RJCjOZ6UeBfG1ROQGSvCPm?=
+ =?us-ascii?Q?gvQOFBvq9UeTH9zem5UUDARSA8BDbudHSIG35/rBDlk0ERLk8EVyPMh10KR+?=
+ =?us-ascii?Q?VILYsys+XtgXPShvKr7VVsC379fC8b5e/NT2Qnq4qzNEqSvGUigv8fuOXChK?=
+ =?us-ascii?Q?z8T7N+7HMBwNJr78YmLSm+vwfRyBe2NtynG2RA49Z/po3WgNLCeF7IWf7M2E?=
+ =?us-ascii?Q?ZPJA4v5x9d0YHQsAxAloEVbSyOAALlEhBQSY5iCGKOjUKjKaT3mdfdM7UCpE?=
+ =?us-ascii?Q?DOmiUnSD+88C4bcXSwJ8oAOqYeRIHgCRid6bqLZPjfmviw5yppxfHD5LiNcB?=
+ =?us-ascii?Q?ZBX0E+APoGL4mdfA+lBTjhcPC+28WsYlCrSSbjy9oF4jdrmtjuXjiH0h78wx?=
+ =?us-ascii?Q?5SG1jwVFYOH1uQ3fM+0izTz+vOHr37nE3Nop6ol+67LSYffG2MYLH88ChD7O?=
+ =?us-ascii?Q?dRv3uXKTKr/Iu3U5GMUY04mstYTZioT+P/DSsiFODswDC5B+7fit2BzUMgQf?=
+ =?us-ascii?Q?NEoExQ=3D=3D?=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e0adef45-4aa2-4ad1-cfd7-08d9d153e44a
+X-MS-Exchange-CrossTenant-Network-Message-Id: afc37bdd-2d7e-4f75-f6dc-08d9d1544385
 X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB2576.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2022 20:34:09.4023
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2022 20:36:49.3394
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cX4ce2DCzSP/puYznwT4T8MYhfESROoobFBK+FqEuVejyiJlG4j/el2LKTdW3MCWsvnpA7k6aV5xX7EJsFxDipcKuvXqwX01Y+8xu8y9okc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR10MB3024
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2GGueb/ahz+Jp+Mo3/zbfTTyNrk71DggkX/Ea9kb58GJb1vROjli36esPG0X+YdNIfKysf6VRIKK/3882/+wp8xK3VQ1qcanToDY9GI4Hqo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4665
 X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10219 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
- suspectscore=0 phishscore=0 spamscore=0 bulkscore=0 adultscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2201060128
-X-Proofpoint-ORIG-GUID: k7KGEJO9qWezJzN6VMxKJNp5EJa5IhN7
-X-Proofpoint-GUID: k7KGEJO9qWezJzN6VMxKJNp5EJa5IhN7
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ mlxlogscore=999 adultscore=0 phishscore=0 mlxscore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2201060129
+X-Proofpoint-GUID: PfizRPrGV2Vq2B1ojrujYH40thig_eLa
+X-Proofpoint-ORIG-GUID: PfizRPrGV2Vq2B1ojrujYH40thig_eLa
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2021-12-10 09:43:17 -0600, Brijesh Singh wrote:
-> From: Michael Roth <michael.roth@amd.com>
-> 
-> Future patches for SEV-SNP-validated CPUID will also require early
-> parsing of the EFI configuration. Incrementally move the related code
-> into a set of helpers that can be re-used for that purpose.
-> 
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+On 2022-01-06 14:21:35 -0600, Michael Roth wrote:
+> On Thu, Jan 06, 2022 at 12:38:37PM -0600, Venu Busireddy wrote:
+> > On 2021-12-10 09:43:14 -0600, Brijesh Singh wrote:
+> > > From: Michael Roth <michael.roth@amd.com>
+> > > 
+> > > This code will also be used later for SEV-SNP-validated CPUID code in
+> > > some cases, so move it to a common helper.
+> > > 
+> > > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> > > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 
 Reviewed-by: Venu Busireddy <venu.busireddy@oracle.com>
 
-> ---
->  arch/x86/boot/compressed/acpi.c | 25 ++++++--------------
->  arch/x86/boot/compressed/efi.c  | 42 +++++++++++++++++++++++++++++++++
->  arch/x86/boot/compressed/misc.h |  9 +++++++
->  3 files changed, 58 insertions(+), 18 deletions(-)
+> > > ---
+> > >  arch/x86/kernel/sev-shared.c | 84 +++++++++++++++++++++++++-----------
+> > >  1 file changed, 58 insertions(+), 26 deletions(-)
+> > > 
+> > > diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
+> > > index 3aaef1a18ffe..d89481b31022 100644
+> > > --- a/arch/x86/kernel/sev-shared.c
+> > > +++ b/arch/x86/kernel/sev-shared.c
+> > > @@ -194,6 +194,58 @@ enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb, bool set_ghcb_msr,
+> > >  	return verify_exception_info(ghcb, ctxt);
+> > >  }
+> > >  
+> > > +static int sev_cpuid_hv(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
+> > > +			u32 *ecx, u32 *edx)
+> > > +{
+> > > +	u64 val;
+> > > +
+> > > +	if (eax) {
+> > > +		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_EAX));
+> > > +		VMGEXIT();
+> > > +		val = sev_es_rd_ghcb_msr();
+> > > +
+> > > +		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+> > > +			return -EIO;
+> > > +
+> > > +		*eax = (val >> 32);
+> > > +	}
+> > > +
+> > > +	if (ebx) {
+> > > +		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_EBX));
+> > > +		VMGEXIT();
+> > > +		val = sev_es_rd_ghcb_msr();
+> > > +
+> > > +		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+> > > +			return -EIO;
+> > > +
+> > > +		*ebx = (val >> 32);
+> > > +	}
+> > > +
+> > > +	if (ecx) {
+> > > +		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_ECX));
+> > > +		VMGEXIT();
+> > > +		val = sev_es_rd_ghcb_msr();
+> > > +
+> > > +		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+> > > +			return -EIO;
+> > > +
+> > > +		*ecx = (val >> 32);
+> > > +	}
+> > > +
+> > > +	if (edx) {
+> > > +		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_EDX));
+> > > +		VMGEXIT();
+> > > +		val = sev_es_rd_ghcb_msr();
+> > > +
+> > > +		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+> > > +			return -EIO;
+> > > +
+> > > +		*edx = (val >> 32);
+> > > +	}
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > >  /*
+> > >   * Boot VC Handler - This is the first VC handler during boot, there is no GHCB
+> > >   * page yet, so it only supports the MSR based communication with the
+> > > @@ -202,39 +254,19 @@ enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb, bool set_ghcb_msr,
+> > >  void __init do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code)
+> > >  {
+> > >  	unsigned int fn = lower_bits(regs->ax, 32);
+> > > -	unsigned long val;
+> > > +	u32 eax, ebx, ecx, edx;
+> > >  
+> > >  	/* Only CPUID is supported via MSR protocol */
+> > >  	if (exit_code != SVM_EXIT_CPUID)
+> > >  		goto fail;
+> > >  
+> > > -	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(fn, GHCB_CPUID_REQ_EAX));
+> > > -	VMGEXIT();
+> > > -	val = sev_es_rd_ghcb_msr();
+> > > -	if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+> > > +	if (sev_cpuid_hv(fn, 0, &eax, &ebx, &ecx, &edx))
+> > >  		goto fail;
+> > > -	regs->ax = val >> 32;
+> > >  
+> > > -	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(fn, GHCB_CPUID_REQ_EBX));
+> > > -	VMGEXIT();
+> > > -	val = sev_es_rd_ghcb_msr();
+> > > -	if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+> > > -		goto fail;
+> > > -	regs->bx = val >> 32;
+> > > -
+> > > -	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(fn, GHCB_CPUID_REQ_ECX));
+> > > -	VMGEXIT();
+> > > -	val = sev_es_rd_ghcb_msr();
+> > > -	if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+> > > -		goto fail;
+> > > -	regs->cx = val >> 32;
+> > > -
+> > > -	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(fn, GHCB_CPUID_REQ_EDX));
+> > > -	VMGEXIT();
+> > > -	val = sev_es_rd_ghcb_msr();
+> > > -	if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+> > > -		goto fail;
+> > > -	regs->dx = val >> 32;
+> > > +	regs->ax = eax;
+> > > +	regs->bx = ebx;
+> > > +	regs->cx = ecx;
+> > > +	regs->dx = edx;
+> > 
+> > What is the intent behind declaring e?x as local variables, instead
+> > of passing the addresses of regs->?x to sev_cpuid_hv()? Is it to
+> > prevent touching any of the regs->?x unless there is no error from
+> > sev_cpuid_hv()? If so, wouldn't it be better to hide this logic from
+> > the callers by declaring the local variables in sev_cpuid_hv() itself,
+> > and moving the four "*e?x = (val >> 32);" statements there to the end
+> > of the function (just before last the return)? With that change, the
+> > callers can safely pass the addresses of regs->?x to do_vc_no_ghcb(),
+> > knowing that the values will only be touched if there is no error?
 > 
-> diff --git a/arch/x86/boot/compressed/acpi.c b/arch/x86/boot/compressed/acpi.c
-> index 9e784bd7b2e6..fea72a1504ff 100644
-> --- a/arch/x86/boot/compressed/acpi.c
-> +++ b/arch/x86/boot/compressed/acpi.c
-> @@ -117,8 +117,9 @@ static acpi_physical_address kexec_get_rsdp_addr(void) { return 0; }
->  static acpi_physical_address efi_get_rsdp_addr(void)
->  {
->  #ifdef CONFIG_EFI
-> -	unsigned long systab_tbl_pa, config_tables;
-> -	unsigned int nr_tables;
-> +	unsigned long cfg_tbl_pa = 0;
-> +	unsigned long systab_tbl_pa;
-> +	unsigned int cfg_tbl_len;
->  	bool efi_64;
->  	int ret;
->  
-> @@ -134,23 +135,11 @@ static acpi_physical_address efi_get_rsdp_addr(void)
->  	if (ret)
->  		error("EFI support advertised, but unable to locate system table.");
->  
-> -	/* Handle EFI bitness properly */
-> -	if (efi_64) {
-> -		efi_system_table_64_t *stbl = (efi_system_table_64_t *)systab_tbl_pa;
-> +	ret = efi_get_conf_table(boot_params, &cfg_tbl_pa, &cfg_tbl_len, &efi_64);
-> +	if (ret || !cfg_tbl_pa)
-> +		error("EFI config table not found.");
->  
-> -		config_tables	= stbl->tables;
-> -		nr_tables	= stbl->nr_tables;
-> -	} else {
-> -		efi_system_table_32_t *stbl = (efi_system_table_32_t *)systab_tbl_pa;
-> -
-> -		config_tables	= stbl->tables;
-> -		nr_tables	= stbl->nr_tables;
-> -	}
-> -
-> -	if (!config_tables)
-> -		error("EFI config tables not found.");
-> -
-> -	return __efi_get_rsdp_addr(config_tables, nr_tables, efi_64);
-> +	return __efi_get_rsdp_addr(cfg_tbl_pa, cfg_tbl_len, efi_64);
->  #else
->  	return 0;
->  #endif
-> diff --git a/arch/x86/boot/compressed/efi.c b/arch/x86/boot/compressed/efi.c
-> index 1c626d28f07e..08ad517b0731 100644
-> --- a/arch/x86/boot/compressed/efi.c
-> +++ b/arch/x86/boot/compressed/efi.c
-> @@ -70,3 +70,45 @@ int efi_get_system_table(struct boot_params *boot_params, unsigned long *sys_tbl
->  	*is_efi_64 = efi_64;
->  	return 0;
->  }
-> +
-> +/**
-> + * efi_get_conf_table - Given boot_params, locate EFI system table from it
-> + *                        and return the physical address EFI configuration table.
-> + *
-> + * @boot_params:        pointer to boot_params
-> + * @cfg_tbl_pa:         location to store physical address of config table
-> + * @cfg_tbl_len:        location to store number of config table entries
-> + * @is_efi_64:          location to store whether using 64-bit EFI or not
-> + *
-> + * Return: 0 on success. On error, return params are left unchanged.
-> + */
-> +int efi_get_conf_table(struct boot_params *boot_params, unsigned long *cfg_tbl_pa,
-> +		       unsigned int *cfg_tbl_len, bool *is_efi_64)
-> +{
-> +	unsigned long sys_tbl_pa = 0;
-> +	int ret;
-> +
-> +	if (!cfg_tbl_pa || !cfg_tbl_len || !is_efi_64)
-> +		return -EINVAL;
-> +
-> +	ret = efi_get_system_table(boot_params, &sys_tbl_pa, is_efi_64);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Handle EFI bitness properly */
-> +	if (*is_efi_64) {
-> +		efi_system_table_64_t *stbl =
-> +			(efi_system_table_64_t *)sys_tbl_pa;
-> +
-> +		*cfg_tbl_pa	= stbl->tables;
-> +		*cfg_tbl_len	= stbl->nr_tables;
-> +	} else {
-> +		efi_system_table_32_t *stbl =
-> +			(efi_system_table_32_t *)sys_tbl_pa;
-> +
-> +		*cfg_tbl_pa	= stbl->tables;
-> +		*cfg_tbl_len	= stbl->nr_tables;
-> +	}
-> +
-> +	return 0;
-> +}
-> diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-> index 165640f64b71..1c69592e83da 100644
-> --- a/arch/x86/boot/compressed/misc.h
-> +++ b/arch/x86/boot/compressed/misc.h
-> @@ -181,6 +181,8 @@ unsigned long sev_verify_cbit(unsigned long cr3);
->  /* helpers for early EFI config table access */
->  int efi_get_system_table(struct boot_params *boot_params,
->  			 unsigned long *sys_tbl_pa, bool *is_efi_64);
-> +int efi_get_conf_table(struct boot_params *boot_params, unsigned long *cfg_tbl_pa,
-> +		       unsigned int *cfg_tbl_len, bool *is_efi_64);
->  #else
->  static inline int
->  efi_get_system_table(struct boot_params *boot_params,
-> @@ -188,6 +190,13 @@ efi_get_system_table(struct boot_params *boot_params,
->  {
->  	return -ENOENT;
->  }
-> +
-> +static inline int
-> +efi_get_conf_table(struct boot_params *boot_params, unsigned long *cfg_tbl_pa,
-> +		   unsigned int *cfg_tbl_len, bool *is_efi_64)
-> +{
-> +	return -ENOENT;
-> +}
->  #endif /* CONFIG_EFI */
->  
->  #endif /* BOOT_COMPRESSED_MISC_H */
-> -- 
-> 2.25.1
+> For me it was more about readability. E?X are well-defined as 32-bit
+> values, whereas regs->?x are longs. It seemed more readable to me to
+> have sev_cpuid_hv()/snp_cpuid() expect/return the actual native types,
+> and leave it up to the caller to cast/shift if necessary.
 > 
+> It also seems more robust for future re-use, since, for instance, if we
+> ever introduced another callsite that happened to already use u32 locally,
+> it seems like it would be a mess trying to setup up temp long* args or do
+> casts to pass them into these functions and then shift/cast them back just
+> so we could save a few lines at this particular callsite.
+
+Got it.
+
+Venu
