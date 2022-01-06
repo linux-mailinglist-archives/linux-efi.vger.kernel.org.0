@@ -2,71 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 70298486B6C
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Jan 2022 21:48:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 34D0E486B71
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Jan 2022 21:51:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243919AbiAFUsw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 6 Jan 2022 15:48:52 -0500
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32]:40816 "EHLO
-        mx0a-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S243985AbiAFUsv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 6 Jan 2022 15:48:51 -0500
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 206KbJR4016714;
-        Thu, 6 Jan 2022 20:48:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : content-type : in-reply-to :
- mime-version; s=corp-2021-07-09;
- bh=hUyrx87jTgbmTaYW/HxxrfosGHLKpFfDngJzxOdiPHw=;
- b=e1qRLzMy5WgUh4ieSKoE7gH0mZAnGI2nVpAD20+YPIbfgWUqnPZPVXwOYcJErR4K02nS
- aQHSKfhXh6kxAkRX9b4y36a3iK3tv0MrybCgCtsRghKe0XyXW8T0Z9AL7rD8Vn34qf/4
- PPOzdPU+wh9FIWpsuj177PlwsvRtyw01H6co4UsZPOy0/hNUXCJySR88Q/NsiXUsENPt
- XCUzysDLSbws/Np/VOcxoKdH93EdFCUYndfFkFyj1qmbJa2o0sKg3QVTFJTvmICJcn5t
- im1HxELwpUrR0CxJGADOxkHMwfbDKBR4D73Juybg8fGrAoCvKV5F0oi8fj42vXVXwaDU CQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by mx0b-00069f02.pphosted.com with ESMTP id 3de4v88gbm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 06 Jan 2022 20:48:04 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 206KfkWW102039;
-        Thu, 6 Jan 2022 20:48:03 GMT
-Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2170.outbound.protection.outlook.com [104.47.55.170])
-        by aserp3020.oracle.com with ESMTP id 3de4vv94fj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 06 Jan 2022 20:48:03 +0000
+        id S243985AbiAFUvE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 6 Jan 2022 15:51:04 -0500
+Received: from mail-mw2nam10on2059.outbound.protection.outlook.com ([40.107.94.59]:52192
+        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S243992AbiAFUvD (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 6 Jan 2022 15:51:03 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=b/xsk6gFAID+wAzRoFE/z+Io56uWn2WtwhPdlnSPdt84NGarSG03caabYArIMy7SRidYKoEhvwAY0noZ7kzo1mYtcdswGyrQDB3flKydH4+uKh2M7YMiNnkWmApo651iPJWQio1AmbMWDvi44uF5OUMqftyhWmGfXW6Ee7TY/YANW2x3exw65BIIZ70yEKwHd5MqDM5aXdHb+pyiAhKbIqczqZd3Po5XWr6/6HsUK9gUTXQNxon1J6TVjyNedJENVNZCyBJUYPA1NcZ155FG5ntJSSpVDYgymYEa/wIQUorzwKgNzs+SvZEYEc23o/W5UFJjdwHUNREJECZxT3vIMg==
+ b=TZ+pLzc8dPkE1Pry2NzOm7EHU9d2u5soMidy7cJO2ZQ7bcN/xEdhQ914LdwejbEnz22xZ7lenxPiuU9Y8KQU3xN7DMjejOTTN/xI76srbZbp7elW1pXdcUp6S4qMWFVHFbBG0wzwFc5nKdwMA63UQXxxCGkv779cc5uLdEABjnXeQyCWPzklPUZyV4LFM/z91kZ3AHHrr6dl77EhixIz0LKlto/H4wmeMBF7MBE31gWzrx5GGMVk8nUyBP/mEa8wMsnsrlqlj4zKLeazmAXzbyMHuSXDqY1BCHwbPsyZL4DKo80GV1IvTXImONJOgfUSbYn1wUpT6bSFpjePqZgw/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hUyrx87jTgbmTaYW/HxxrfosGHLKpFfDngJzxOdiPHw=;
- b=iDxaSwvf07dRTvVkmYTYSFPBIlWnF+YoUU6JgxT5pGXkN32SpQihh/wsWQq0G5QUJGL4EzAdLNXrymxkYZOMtvCiRWcxeqT/YIKYtznnicUMrNfo7BzMtov0Sk6bR1u+5fF/qL7OWt2lmqeFbAquHWHw7FOlGpvVa+TeZ21y+ZccbaDK8djSiBCmSNCdIZN5G0+jcGvC4rVwWAUHMzG+bOe/wn2XtrxrRtjVnV9eV2LRh3lBz8cTYIzfeXrvkOHuPRh/NRLJhL0oEpk/4DoGyGahRtKUGAxQoRfB6HLzII5y/XG33LPSO241RfCpBgYYDmdzTbchr2kZ3U5C8Wm76A==
+ bh=coqJMrBLSVlyYomoj08zUQx+rIVlaKWAofBhboH4tgc=;
+ b=A2nPcTGrcQPzRiEEWFI6ZEpOkj1ITiFF/69MsGUw6ftSE1o0IJtLxz3CCjjV2I1MwIdy2BwkOJlk9SfxHIitqT0cllZJ01Jhr7np2ppg/FUt4iMRteho0bV6RHk/8m8vit6hKVirpzxi7bNW8v6GzpMKMJO6Qe40hLukA3SaAhZyc+iU+BtaxXi/+Yc3z+HOiycmR0oColK88ygy7R4AgP9dwbjD+Gu7t/uWRcMMz/XQ/O9hfLSmKG93AGAGBCQcHNBYCb9cTzjLMtpwawa6pp1DuiYgCWKFSpHn2eg1YTso6Qnadb0ur8RXsIJE/R6s7MQnWdUlue5X+hdXQA5w4g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hUyrx87jTgbmTaYW/HxxrfosGHLKpFfDngJzxOdiPHw=;
- b=Q4fbVAaNbnLjseenq7bVBT+wSaoVcRVgAnCN4e6Jgsn6eDrOWT/l4ndXKnUK/tqco8LYsqoV6KB523EJH49qlp2PrG32bLDTpkQ12GLWq9hfRcjRZd3YQ+XQ/5kiUm8s207pafZNdrclmOsAm0Xm+xJKB6IOC8e/ottZLqNCao4=
-Received: from SN6PR10MB2576.namprd10.prod.outlook.com (2603:10b6:805:44::15)
- by SN6PR10MB2830.namprd10.prod.outlook.com (2603:10b6:805:cc::33) with
+ bh=coqJMrBLSVlyYomoj08zUQx+rIVlaKWAofBhboH4tgc=;
+ b=rmA1fkE7S467QUwn9YZivkFBmkkefUAI+0JqP+uJ7PeMkUlSp+sm22bv/ztgTpeY7iq7iilchcsgeNtJsIK5p7jje8Ayj8/OH9XDuUcPZdghec+EijtiDrwlUpIP89qiu9RHZtdveM/PFWZLrlwCFXaf58C8VZPVF5/+Ax4z3TI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
+ by DM4PR12MB5247.namprd12.prod.outlook.com (2603:10b6:5:39b::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4867.9; Thu, 6 Jan
- 2022 20:48:00 +0000
-Received: from SN6PR10MB2576.namprd10.prod.outlook.com
- ([fe80::4c8c:47df:f81e:f412]) by SN6PR10MB2576.namprd10.prod.outlook.com
- ([fe80::4c8c:47df:f81e:f412%5]) with mapi id 15.20.4867.010; Thu, 6 Jan 2022
- 20:48:00 +0000
-Date:   Thu, 6 Jan 2022 14:47:52 -0600
-From:   Venu Busireddy <venu.busireddy@oracle.com>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4844.13; Thu, 6 Jan
+ 2022 20:51:00 +0000
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::ccd7:e520:c726:d0b]) by DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::ccd7:e520:c726:d0b%5]) with mapi id 15.20.4867.010; Thu, 6 Jan 2022
+ 20:51:00 +0000
+Subject: Re: [PATCH v8 13/40] x86/kernel: Make the bss.decrypted section
+ shared in RMP table
+To:     Venu Busireddy <venu.busireddy@oracle.com>
+Cc:     Brijesh Singh <brijesh.singh@amd.com>,
+        Dave Hansen <dave.hansen@intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
         Paolo Bonzini <pbonzini@redhat.com>,
         Sean Christopherson <seanjc@google.com>,
@@ -88,265 +68,154 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
         tony.luck@intel.com, marcorr@google.com,
         sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v8 26/40] x86/compressed/acpi: move EFI vendor table
- lookup to helper
-Message-ID: <YddVeKgHAaB4A1Cd@dt>
 References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-27-brijesh.singh@amd.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211210154332.11526-27-brijesh.singh@amd.com>
-X-ClientProxiedBy: SN7PR04CA0103.namprd04.prod.outlook.com
- (2603:10b6:806:122::18) To SN6PR10MB2576.namprd10.prod.outlook.com
- (2603:10b6:805:44::15)
+ <20211210154332.11526-14-brijesh.singh@amd.com> <YdSKQKSTS83cRzGZ@dt>
+ <18eadf9d-8e31-0945-ccf4-2cb72b8e0dd4@amd.com>
+ <acba0832-9b11-c93d-7903-fff33f740605@intel.com>
+ <444b6c78-c4d3-f49c-6579-bd28ae32ca3c@amd.com> <YdcpnHrRoJJFWWel@dt>
+ <bf226dc6-4aef-b7c2-342d-0167362272ea@amd.com> <YddODkUvhbWbhS3/@dt>
+From:   Tom Lendacky <thomas.lendacky@amd.com>
+Message-ID: <4c1067c7-a85f-79fe-38a8-2f68a94a358a@amd.com>
+Date:   Thu, 6 Jan 2022 14:50:56 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+In-Reply-To: <YddODkUvhbWbhS3/@dt>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: CH0PR03CA0006.namprd03.prod.outlook.com
+ (2603:10b6:610:b0::11) To DM4PR12MB5229.namprd12.prod.outlook.com
+ (2603:10b6:5:398::12)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 1d818881-ec0f-4afb-40fc-08d9d155d39f
-X-MS-TrafficTypeDiagnostic: SN6PR10MB2830:EE_
-X-Microsoft-Antispam-PRVS: <SN6PR10MB283082079CC50783F4A22955E64C9@SN6PR10MB2830.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1417;
+X-MS-Office365-Filtering-Correlation-Id: 2232576a-d440-4832-8c11-08d9d1563f0f
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5247:EE_
+X-Microsoft-Antispam-PRVS: <DM4PR12MB5247DC4B111E321E9C38117FEC4C9@DM4PR12MB5247.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: hcSGmEVt5zy2XiL+7SkqJURfdKcv5Nvi+rW7nJr4Ob42FAh2H3lpGgOol4WfBNgufSs3AOirj7lyheMtLmA27Soiz05VyLJeBR766yOSgrDlq4R1Oo/cBAzvnr+ZysudgrKK3x0ioNi7VW33rBimt55wIrdOEqu0S0fSBjqJssa42ynMOrNlAoaWL3D9M0kHPyEBzUq8LBWVb7enAXGh5z5vlRZki/UBqljgHf7wXobqwrNLfeOk8RzTN02Bnb+o6ciO0XQ6jc8NbARpOO6iiZjOpGhmB2pLD/gRen9bgjI+Iiw/GwbSMHAVYQfLT8vkfbJoDV7slR08pDBhAt3i4K/d1HsOUhCX9zS0C0+YllYCTbkSSzKdrQ6FQNYDKU2WvZXxfmTTucELaTJGFW+lVMf8tk29Ir1bRMQlulb82YUf5/6MAvGSqR8xImXJ8qj4W+xqKK+gT7yen/jtC9s7Yk+G+DhwYKT6jZYEvUPFEwwZJD8l7yOOqqSnkHYwh4ZvyCUu43M+39RQJOUKCwH0kA0sBBfv7wqES83sgQBs4AMRMxwXH6a9bCvp2TnlzNjLoG9D3m861ufb5KUu1mydV/pQTKteIIqtszMkQy/KcbX2Tk2th+Pqyny25qp4IlYNMo5IS9JVAjLWRv29MdUnYg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB2576.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(7916004)(366004)(6506007)(8676002)(4001150100001)(8936002)(54906003)(6916009)(53546011)(7416002)(26005)(6512007)(9686003)(2906002)(508600001)(33716001)(7406005)(6486002)(6666004)(4326008)(186003)(66946007)(86362001)(44832011)(66476007)(66556008)(5660300002)(316002)(38100700002)(83380400001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: mO9bNiWihNDXTZqksmJyqityQPTcW9e4xHIta8DetpEUC9zyg0RtfPgeYH6OE1v0wO2no2aXoP9lc2Q6m4Wup3l22QOWNWXVxmdOBYvggwlENpClh9CkWvqQJLl/TT3qtG9Net/NbbuaDdMXOdetmkagPpRr0GOLqNEE0qQ8d85clPblLHqyRGc+1cbgTYTkRFIjP0bJcC3omg+aGQ4DfQf3yPWeElhdTfIHGaN1LlAKJuf2vXoYBCh3T4TlcQbgQOWobtAtCjHhAylJpFgelvCAB/d74RCC6AE9h/kiY3DnoZBQQVRTqqqgWdfm+LEAyZJWZ5no1CYqd955g6OUAEI+2ogNu4xr9VnjpmNUYHwHovQcpwe/5otDU5pkbB8bF4NucFNzgLM+g6fIohs3E6saL+DJ30RUkvwYEmcOAwycOmaUyXSKubQ0a+uabotgtkbiN+dG6/MFi222w9sWrjE/z24eVojKawSTTpZkLMiNjVodq+LREeoPhXt57KJAp8vvQV3WZhMTtafDwRbcrFont+MAXge0NJz+hKCAmneDkAFa8nM3tBJp10zBwMu5YSi96/0nInJaRbPvSSRg7HTICxY4qvnXiG+nJzp0xri03Z713vdIEAHlHygJRPrezcphBkX8X1c7LVNzas+5+xXpwTZBFHtPrXZa43ToDk7HY6eN8YwET6Ak/ycEGKpAvDJe18Si83Tq725wEQCo39TOIeIfD9HMWNp0F0dwjDh6AyY87pPttITJho4Md1se
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(2906002)(38100700002)(8676002)(186003)(4326008)(5660300002)(86362001)(6512007)(2616005)(8936002)(54906003)(66946007)(36756003)(31696002)(83380400001)(6916009)(26005)(53546011)(316002)(31686004)(66556008)(7406005)(7416002)(508600001)(6666004)(66476007)(6486002)(6506007)(45980500001)(43740500002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?mskmqqwqaeTzLF0qd1uU3H39JxbkSqKgEH8OwZlkEB3HA0ZwwWTtCTT2qgED?=
- =?us-ascii?Q?KZCL198ZDH00aTv6LDTU7YTz9kH7eYYA0wRsxruAuqlneevlDZ295RjV5ARM?=
- =?us-ascii?Q?cDy1TeltFrYxltFjegk76+ET5zlA5jXXc6VEJCkHH/Yb4nOXbcMHHMDKGPfa?=
- =?us-ascii?Q?EKBGdJ0D0ziTP4MOGOFqOKZ+BNTMmgl9jYeXix6fhag055pxT1p9DtpbZ+gG?=
- =?us-ascii?Q?/BOq984Yan02Pu76vjpEOfNeYFgbXXv8dWnfuZTHczc7PcrlGxFRCwg+/x1Q?=
- =?us-ascii?Q?P5rPh1k7E7/XX9Ku6k/fCNhG27XDd3juyBzUJVPMV1EMa1tDvStTDY1NTaer?=
- =?us-ascii?Q?7qKjauQP962O2qS33IaIzmDQ/ihaIApO/mVzCUS8z1khPlhckyUkCSZvZ7aY?=
- =?us-ascii?Q?yxPhzRvV9xDqJXdSsPPCpXCLdGNtX9O+YEDoF8bgCNuR1NFBvOGnlZAR8pF/?=
- =?us-ascii?Q?AvYHvegI7Qv2HTSRJepYrxQgdWJEZ96J7itdHSBQRLA3lLIANsWt87Ga1Auv?=
- =?us-ascii?Q?ebn21z8B/5P9jDvXxIQpCKaThjpnbttjFLUZkzJqSS6TVe6ca+F3wj03o4oQ?=
- =?us-ascii?Q?FJIO4VEfI1NA3YZaEvzaviod5zrZIIZisBdwdkFGoK4EPbaXn2hHM5nhAB8V?=
- =?us-ascii?Q?X3BznCIaGxGMivHM6KOF6sykOaSp9AT9mAi9+NW/A7atmQ54PJCEgbTcl3I2?=
- =?us-ascii?Q?vJmfT/j5lqa2CLufiz06vCIXq2cGSpGoFxrggrIr0hrcGFeBwE9t0pPnBmC2?=
- =?us-ascii?Q?SJRtPtgphUTMdI0xC3zOoh+w1d7CqMbEIpdV2Mropneln16O2c15BwuVkmgf?=
- =?us-ascii?Q?eJzUe3sgW/zfcP+fJu+1kASWe5CYEefB/cDT80E+SFLqnhw0Dh4pEEISp7cB?=
- =?us-ascii?Q?STCXXwKdFovFLglbBG1vXyzqcJLrast/DLTlDh31rhq01gHaHnaSddiu4Wxp?=
- =?us-ascii?Q?FVjyjLf4KRx2P+73Yd3mibosiotRKzyP4BUrz2ZhABs4u20/TkDALTZzWyAl?=
- =?us-ascii?Q?PzB/xANbjyzKoALnFq1IfWDFLwR3iJjBXk5SpIbE+YXwskXzIeZJ2q1idhvl?=
- =?us-ascii?Q?GUdTGHy4+65h6cdTN8ss+K8mYIEhBbsQvNhLHSnqOO5Aw+A2zRocFbkBCslh?=
- =?us-ascii?Q?xlKm+UWD0+ZifadSbtr+KFng13XSRkekF48pcOaLjHlQiilqd72HIpwP78L/?=
- =?us-ascii?Q?DqYPC0kg7SJ2zZKIXiWbrwiHIr5wiRNUoymZjwx+JxoLbqJepJO9oZvXbkVd?=
- =?us-ascii?Q?6ECFL7aL0RFfWPhm95v6SuwmdHnRv0uOajkk5P4tegUacickL5V9CRZJdCfA?=
- =?us-ascii?Q?k4aH8OR5P7LCPtS2q4nI6eD/vWpkChVJAFrRFlLgunqQ+dj5r8mLpUkWrqxl?=
- =?us-ascii?Q?PP1Oi2TXV331DHotdWKafWBPWnPGnQPSbrBa2YBOq2LPRIovymItDCdQkbw1?=
- =?us-ascii?Q?nk8DtRo044dh9ImQ0LwlbznoRAYwx19KLpSqjuhY6XIPB3IG/TG6ZEeD5PWV?=
- =?us-ascii?Q?+99buDFi6/W2SGWytsaT3XAWAJ/Y2q7Bow2Mr0DHqf6+kFXTUlbCfsdndqMI?=
- =?us-ascii?Q?gcqtSrFvrKyqrU082nmtlFPHWdTUKpTXspnU2PNEcrpiV3QQhWso/ytA55Bj?=
- =?us-ascii?Q?0xix5qVAmggPzDq4JGN1kIt3CaRv6I3BVq4+1/+azvkKHhb9be8lt4zpNWVc?=
- =?us-ascii?Q?7m/ZNg=3D=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1d818881-ec0f-4afb-40fc-08d9d155d39f
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB2576.namprd10.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eVVybjRlVENtRHMzL1ZzdWIrRVFMRjlBOGpyOVVJNXVQVEZHTFlDbXl0NW9i?=
+ =?utf-8?B?ZnhlL1FlL0lrNUdqWGlqdnVid1VCRFc5aFdFVTJvZmpKenBlTEN0QzdGUUZZ?=
+ =?utf-8?B?YTk2bjAxelBXbS9hK2k2YnE3ZmJiRVZFR2pYVjA3WXF1WksxaDh6SW1BeHlK?=
+ =?utf-8?B?VllDSkZBaUw3YVpBRVJzOW0zdi9jaXBhcE5zNUZRcTd4TXdPd0Q2WnVPclBS?=
+ =?utf-8?B?RXZSU2hiZ2NQMkRldGpkVitZWkVNVk1oWVh5djcvYzBIQ3A3c1RrZkIwUWpy?=
+ =?utf-8?B?MGZSeGdOU0dGbWdpbTdyTEhRdWpzbTRUV25PZ0dCdkczZTBoN2ZRS0YrdGJj?=
+ =?utf-8?B?WmRVV05HeVdOc2FkNi9HbzR6ZkRzdWJndWUrUWJRc1hzd01NUHVMeTBjU2p6?=
+ =?utf-8?B?YmJIUjVhNWV2SW8wSVBqY2VrMEJNaEtpVHYxMTN6RENkRC9mQXUvL2J5UzdK?=
+ =?utf-8?B?N25GaUlqZ21FYi9BOTQyN1B0alNJcXZoK1Fpd05Ma2FZK1ZlSU9lSCs3YkFW?=
+ =?utf-8?B?SFdTYlExYTlhSDhZK3M1NGlENDB6Q0tmcDFtUjVEWDJLbFdqaUk0SjNKMllJ?=
+ =?utf-8?B?cmViM1FpMTdRL0QvM3craFM0d1lLcW4wcXJrQWtOMDVYT2RER3hpOHJxcXhF?=
+ =?utf-8?B?SExIRExkVGZvTExsRCtac2h1YkdSbkZLcHNnY2dhdWlqNGJRTlNwRStaV3F3?=
+ =?utf-8?B?alJJNFZyOUpQdlBzaSt3Slc1aXNOY3JFRzVodlJNdDVJdVJSdTBNNjJhdVNo?=
+ =?utf-8?B?N3grYmNJa2xNblNuYlQvRkI3OHNIMGQ5VzYycXcxcmlNc0IwUVFvNEJSKzRh?=
+ =?utf-8?B?YTcxdXVKR01RS1dwcDdnQVZ2NlM2YzZTM2xRSzZMYnNvcTN3SkhoTHNGbnFs?=
+ =?utf-8?B?Y0tIclBIbzRtZms3SHZldkVVSXM2NEp1Sm9SSzVQL3kvRnRRVExKZ2tidEdw?=
+ =?utf-8?B?UzhsbDhIbUtseDc5NWEvRTRlKy9lRjd0TDV5bzVmRDlvQ3d6NUFNcWpBZjRV?=
+ =?utf-8?B?bm9jMWlXaEZxVVRGR0p1bE5DOEZlWldFaGFBSnRJUnhPSFZzbTYvN0QrdVo4?=
+ =?utf-8?B?b3VyQktpNW1hTmZHU0dNaDRPa3RqM0w0VWU0dVI5THNxd3BHanBJcXNHRGtn?=
+ =?utf-8?B?RTUxVGp4WXJNeUV4UllnbnFTUGhRdkxvUVhBMVJVV1ZKTDUrOXNuRnd4SmdL?=
+ =?utf-8?B?bVRhbWJsbVgwVlV4TWRSL0JSRW4vZTcwKzZUaWV5WTdjR0ZPQnBXL2dTOW5s?=
+ =?utf-8?B?cVAwelFNcFFFVkhCczNPT3NRbUVwaFJXQ0xFY09jVThvR1VRcWhWbzZNamlP?=
+ =?utf-8?B?Mi9OY1AzbWpUSHFMek9US2JHNzNIS3dUeCtiSlMzazVCZDF2WitucEt4d3FR?=
+ =?utf-8?B?bE5KRmI1NFRoYlhDYU9aOURwVk5jcGJWQTJkQXFlWUxhcys5enpPVVYrS1p0?=
+ =?utf-8?B?cUpCRGpnOW1VOGxDczJtVjdUejNETGVPSS9DMjNuQkpkTVpIMisyUTRXSTFm?=
+ =?utf-8?B?ZFIxdGZRR2JYeWlKd0JqNTVZRU9uMHF4R0NZT0YyOVVzSlJOaDVrMnRDekx2?=
+ =?utf-8?B?T2hKSEJIdGxQWGF5SEIyakY5bElLNGdKTmlaczN2akRiYkRZYU8rbi9qKzIr?=
+ =?utf-8?B?bXVBVVVqWWJRd2t6Mm8ySjFYL2dVSG9zbGZHOG5oRDQvL3F1emEyNU1ESkxL?=
+ =?utf-8?B?S0FUWFZ1eVdUenpNVk9ua2VEQ2pvVnl6WW1mejRZUnpwekhxZ1FKTVVJK1pz?=
+ =?utf-8?B?YnRkV2g1RnFBcGI1VTVhK2FySlRTUnFxZDBVbzgvSXlaRk91bVdudkQxTURF?=
+ =?utf-8?B?ZEJGeStBSVRldE11U0FtY3hhU3JNWkpzVUNocnNHQlpSM3F6c05Sd0pNTjZT?=
+ =?utf-8?B?NndxLzlzbE1UR0tRVThac1JJUDg2bWRKYmlCak16M29rYlYyTTllN2E0ODY2?=
+ =?utf-8?B?NlJ6SjcvR1lSalArZWx5N1ZSb3dWaGkxekZySWVwb2JWNWxxcWIwaFlYalVT?=
+ =?utf-8?B?L0JsWTVpcmplSy84QjVLcllKbFpjb1Q5TG9aZjRZQWNaTEdaUXF4YmJGditT?=
+ =?utf-8?B?MzZwampLdFdaQ016cVlZdUV4eU9aUFlvazNhaXBDUjczK2U0bThiTEN3L0Fm?=
+ =?utf-8?B?WDdNbFAveitXRUQxMGcyNGZsRGtGeHdjOU51TVBURzgrbWpEcTRTQlFnTXVY?=
+ =?utf-8?Q?SihKnaCAJULa09ALyTGvpy4=3D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2232576a-d440-4832-8c11-08d9d1563f0f
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2022 20:48:00.4099
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2022 20:51:00.6730
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: D5l0roe9C6/1CjZRnF0kXm8XSlWVIMYgS6IFgfq0ww7yjqAOCx0Xy+aIw/AIQjqjRykGf6tiWj5PbpQXVeXzXy13dTv1B8TjHmue8dv+Ytk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR10MB2830
-X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10219 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- mlxlogscore=999 adultscore=0 phishscore=0 mlxscore=0 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2201060130
-X-Proofpoint-ORIG-GUID: 0MMmaKFVtNouZBknYbqXfSWXIjTXh2Zm
-X-Proofpoint-GUID: 0MMmaKFVtNouZBknYbqXfSWXIjTXh2Zm
+X-MS-Exchange-CrossTenant-UserPrincipalName: 26eYZljRejg1wzq2R1hYQDqrfTLxj89YZ4DWrUINsD7c0lE4KCi8XpCFyB/aI3NyX51yiUXKcWCjYgVAKorbIQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5247
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2021-12-10 09:43:18 -0600, Brijesh Singh wrote:
-> From: Michael Roth <michael.roth@amd.com>
+On 1/6/22 2:16 PM, Venu Busireddy wrote:
+> On 2022-01-06 13:06:13 -0600, Tom Lendacky wrote:
+>> On 1/6/22 11:40 AM, Venu Busireddy wrote:
+>>> On 2022-01-05 15:39:22 -0600, Brijesh Singh wrote:
+>>>>
+>>>>
+>>>> On 1/5/22 2:27 PM, Dave Hansen wrote:
+>>>>> On 1/5/22 11:52, Brijesh Singh wrote:
+>>>>>>>>             for (; vaddr < vaddr_end; vaddr += PMD_SIZE) {
+>>>>>>>> +            /*
+>>>>>>>> +             * When SEV-SNP is active then transition the
+>>>>>>>> page to shared in the RMP
+>>>>>>>> +             * table so that it is consistent with the page
+>>>>>>>> table attribute change.
+>>>>>>>> +             */
+>>>>>>>> +            early_snp_set_memory_shared(__pa(vaddr),
+>>>>>>>> __pa(vaddr), PTRS_PER_PMD);
+>>>>>>>
+>>>>>>> Shouldn't the first argument be vaddr as below?
+>>>>>>
+>>>>>> Nope, sme_postprocess_startup() is called while we are fixing the
+>>>>>> initial page table and running with identity mapping (so va == pa).
+>>>>>
+>>>>> I'm not sure I've ever seen a line of code that wanted a comment so badly.
+>>>>
+>>>> The early_snp_set_memory_shared() call the PVALIDATE instruction to clear
+>>>> the validated bit from the BSS region. The PVALIDATE instruction needs a
+>>>> virtual address, so we need to use the identity mapped virtual address so
+>>>> that PVALIDATE can clear the validated bit. I will add more comments to
+>>>> clarify it.
+>>>
+>>> Looking forward to see your final comments explaining this. I can't
+>>> still follow why, when PVALIDATE needs the virtual address, we are doing
+>>> a __pa() on the vaddr.
+>>
+>> It's because of the phase of booting that the kernel is in. At this point,
+>> the kernel is running in identity mapped mode (VA == PA). The
+>> __start_bss_decrypted address is a regular kernel address, e.g. for the
+>> kernel I'm on it is 0xffffffffa7600000. Since the PVALIDATE instruction
+>> requires a valid virtual address, the code needs to perform a __pa() against
+>> __start_bss_decrypted to get the identity mapped virtual address that is
+>> currently in place.
 > 
-> Future patches for SEV-SNP-validated CPUID will also require early
-> parsing of the EFI configuration. Incrementally move the related code
-> into a set of helpers that can be re-used for that purpose.
-> 
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> Perhaps  my confusion stems from the fact that __pa(x) is defined either
+> as "((unsigned long ) (x))" (for the cases where paddr and vaddr are
+> same), or as "__phys_addr((unsigned long )(x))", where a vaddr needs to
+> be converted to a paddr. If the paddr and vaddr are same in our case,
+> what exactly is the _pa(vaddr) doing to the vaddr?
 
-Reviewed-by: Venu Busireddy <venu.busireddy@oracle.com>
+But they are not the same and the head64.c file is compiled without 
+defining a value for __pa(), so __pa() is __phys_addr((unsigned long)(x)). 
+The virtual address value of __start_bss_decrypted, for me, is 
+0xffffffffa7600000, and that does not equal the physical address (take a 
+look at your /proc/kallsyms). However, since the code is running identity 
+mapped and with a page table without kernel virtual addresses, it cannot 
+use that value. It needs to convert that value to the identity mapped 
+virtual address and that is done using __pa(). Only after using __pa() on 
+__start_bss_decrypted, do you get a virtual address that maps to and is 
+equal to the physical address.
 
-> ---
->  arch/x86/boot/compressed/acpi.c | 50 ++++++++-----------------
->  arch/x86/boot/compressed/efi.c  | 65 +++++++++++++++++++++++++++++++++
->  arch/x86/boot/compressed/misc.h |  9 +++++
->  3 files changed, 90 insertions(+), 34 deletions(-)
+You may want to step through the boot code using KVM to see what the 
+environment is and why things are done the way they are.
+
+Thanks,
+Tom
+
 > 
-> diff --git a/arch/x86/boot/compressed/acpi.c b/arch/x86/boot/compressed/acpi.c
-> index fea72a1504ff..0670c8f8888a 100644
-> --- a/arch/x86/boot/compressed/acpi.c
-> +++ b/arch/x86/boot/compressed/acpi.c
-> @@ -20,46 +20,28 @@
->   */
->  struct mem_vector immovable_mem[MAX_NUMNODES*2];
->  
-> -/*
-> - * Search EFI system tables for RSDP.  If both ACPI_20_TABLE_GUID and
-> - * ACPI_TABLE_GUID are found, take the former, which has more features.
-> - */
->  static acpi_physical_address
-> -__efi_get_rsdp_addr(unsigned long config_tables, unsigned int nr_tables,
-> -		    bool efi_64)
-> +__efi_get_rsdp_addr(unsigned long cfg_tbl_pa, unsigned int cfg_tbl_len, bool efi_64)
->  {
->  	acpi_physical_address rsdp_addr = 0;
->  
->  #ifdef CONFIG_EFI
-> -	int i;
-> -
-> -	/* Get EFI tables from systab. */
-> -	for (i = 0; i < nr_tables; i++) {
-> -		acpi_physical_address table;
-> -		efi_guid_t guid;
-> -
-> -		if (efi_64) {
-> -			efi_config_table_64_t *tbl = (efi_config_table_64_t *)config_tables + i;
-> -
-> -			guid  = tbl->guid;
-> -			table = tbl->table;
-> -
-> -			if (!IS_ENABLED(CONFIG_X86_64) && table >> 32) {
-> -				debug_putstr("Error getting RSDP address: EFI config table located above 4GB.\n");
-> -				return 0;
-> -			}
-> -		} else {
-> -			efi_config_table_32_t *tbl = (efi_config_table_32_t *)config_tables + i;
-> -
-> -			guid  = tbl->guid;
-> -			table = tbl->table;
-> -		}
-> +	int ret;
->  
-> -		if (!(efi_guidcmp(guid, ACPI_TABLE_GUID)))
-> -			rsdp_addr = table;
-> -		else if (!(efi_guidcmp(guid, ACPI_20_TABLE_GUID)))
-> -			return table;
-> -	}
-> +	/*
-> +	 * Search EFI system tables for RSDP. Preferred is ACPI_20_TABLE_GUID to
-> +	 * ACPI_TABLE_GUID because it has more features.
-> +	 */
-> +	ret = efi_find_vendor_table(cfg_tbl_pa, cfg_tbl_len, ACPI_20_TABLE_GUID,
-> +				    efi_64, (unsigned long *)&rsdp_addr);
-> +	if (!ret)
-> +		return rsdp_addr;
-> +
-> +	/* No ACPI_20_TABLE_GUID found, fallback to ACPI_TABLE_GUID. */
-> +	ret = efi_find_vendor_table(cfg_tbl_pa, cfg_tbl_len, ACPI_TABLE_GUID,
-> +				    efi_64, (unsigned long *)&rsdp_addr);
-> +	if (ret)
-> +		debug_putstr("Error getting RSDP address.\n");
->  #endif
->  	return rsdp_addr;
->  }
-> diff --git a/arch/x86/boot/compressed/efi.c b/arch/x86/boot/compressed/efi.c
-> index 08ad517b0731..c1ddc72ef4d9 100644
-> --- a/arch/x86/boot/compressed/efi.c
-> +++ b/arch/x86/boot/compressed/efi.c
-> @@ -112,3 +112,68 @@ int efi_get_conf_table(struct boot_params *boot_params, unsigned long *cfg_tbl_p
->  
->  	return 0;
->  }
-> +
-> +/* Get vendor table address/guid from EFI config table at the given index */
-> +static int get_vendor_table(void *cfg_tbl, unsigned int idx,
-> +			    unsigned long *vendor_tbl_pa,
-> +			    efi_guid_t *vendor_tbl_guid,
-> +			    bool efi_64)
-> +{
-> +	if (efi_64) {
-> +		efi_config_table_64_t *tbl_entry =
-> +			(efi_config_table_64_t *)cfg_tbl + idx;
-> +
-> +		if (!IS_ENABLED(CONFIG_X86_64) && tbl_entry->table >> 32) {
-> +			debug_putstr("Error: EFI config table entry located above 4GB.\n");
-> +			return -EINVAL;
-> +		}
-> +
-> +		*vendor_tbl_pa		= tbl_entry->table;
-> +		*vendor_tbl_guid	= tbl_entry->guid;
-> +
-> +	} else {
-> +		efi_config_table_32_t *tbl_entry =
-> +			(efi_config_table_32_t *)cfg_tbl + idx;
-> +
-> +		*vendor_tbl_pa		= tbl_entry->table;
-> +		*vendor_tbl_guid	= tbl_entry->guid;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * efi_find_vendor_table - Given EFI config table, search it for the physical
-> + *                         address of the vendor table associated with GUID.
-> + *
-> + * @cfg_tbl_pa:        pointer to EFI configuration table
-> + * @cfg_tbl_len:       number of entries in EFI configuration table
-> + * @guid:              GUID of vendor table
-> + * @efi_64:            true if using 64-bit EFI
-> + * @vendor_tbl_pa:     location to store physical address of vendor table
-> + *
-> + * Return: 0 on success. On error, return params are left unchanged.
-> + */
-> +int efi_find_vendor_table(unsigned long cfg_tbl_pa, unsigned int cfg_tbl_len,
-> +			  efi_guid_t guid, bool efi_64, unsigned long *vendor_tbl_pa)
-> +{
-> +	unsigned int i;
-> +
-> +	for (i = 0; i < cfg_tbl_len; i++) {
-> +		unsigned long vendor_tbl_pa_tmp;
-> +		efi_guid_t vendor_tbl_guid;
-> +		int ret;
-> +
-> +		if (get_vendor_table((void *)cfg_tbl_pa, i,
-> +				     &vendor_tbl_pa_tmp,
-> +				     &vendor_tbl_guid, efi_64))
-> +			return -EINVAL;
-> +
-> +		if (!efi_guidcmp(guid, vendor_tbl_guid)) {
-> +			*vendor_tbl_pa = vendor_tbl_pa_tmp;
-> +			return 0;
-> +		}
-> +	}
-> +
-> +	return -ENOENT;
-> +}
-> diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-> index 1c69592e83da..e9fde1482fbe 100644
-> --- a/arch/x86/boot/compressed/misc.h
-> +++ b/arch/x86/boot/compressed/misc.h
-> @@ -183,6 +183,8 @@ int efi_get_system_table(struct boot_params *boot_params,
->  			 unsigned long *sys_tbl_pa, bool *is_efi_64);
->  int efi_get_conf_table(struct boot_params *boot_params, unsigned long *cfg_tbl_pa,
->  		       unsigned int *cfg_tbl_len, bool *is_efi_64);
-> +int efi_find_vendor_table(unsigned long cfg_tbl_pa, unsigned int cfg_tbl_len,
-> +			  efi_guid_t guid, bool efi_64, unsigned long *vendor_tbl_pa);
->  #else
->  static inline int
->  efi_get_system_table(struct boot_params *boot_params,
-> @@ -197,6 +199,13 @@ efi_get_conf_table(struct boot_params *boot_params, unsigned long *cfg_tbl_pa,
->  {
->  	return -ENOENT;
->  }
-> +
-> +static inline int
-> +efi_find_vendor_table(unsigned long cfg_tbl_pa, unsigned int cfg_tbl_len,
-> +		      efi_guid_t guid, bool efi_64, unsigned long *vendor_tbl_pa)
-> +{
-> +	return -ENOENT;
-> +}
->  #endif /* CONFIG_EFI */
->  
->  #endif /* BOOT_COMPRESSED_MISC_H */
-> -- 
-> 2.25.1
+> Venu
 > 
