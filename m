@@ -2,128 +2,150 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E596C48773C
-	for <lists+linux-efi@lfdr.de>; Fri,  7 Jan 2022 12:59:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 589A9487829
+	for <lists+linux-efi@lfdr.de>; Fri,  7 Jan 2022 14:22:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238451AbiAGL7F (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 7 Jan 2022 06:59:05 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:42522 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238118AbiAGL7E (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Jan 2022 06:59:04 -0500
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        id S1347525AbiAGNWc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 7 Jan 2022 08:22:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57608 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238705AbiAGNWc (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Jan 2022 08:22:32 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E12D9C061574;
+        Fri,  7 Jan 2022 05:22:31 -0800 (PST)
+Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 5280E2113B;
-        Fri,  7 Jan 2022 11:59:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1641556743; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ZViy4ha+GjCcmI2PF81BweyGx62I6IF+pFFopJC3jJs=;
-        b=oi9wEuzAhRVZkEW8F/3BAYMe10ZGDWGvvlGZex5LcOM3C/0LXwqg9lLMc0FDR4E2YVIY9U
-        3hEaYh4j44STfUXp2Vr6O6tk7F0eAGv1gmrBUMWZ/4BQmkjV9DESlQotQyjs13thwZ7L78
-        wpF1m2PfIOj2j45xWcbmWGOjLXz2zS0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1641556743;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ZViy4ha+GjCcmI2PF81BweyGx62I6IF+pFFopJC3jJs=;
-        b=aVXmdDPISblXMUjDHSNZygTWSUqec5goc3MEtwkn4Sy6Fx8BgMCQN3Uym4SdP6p+1yLDAI
-        mGDYrj5O05/qEhDw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 3115A13350;
-        Fri,  7 Jan 2022 11:59:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id gZuQCwcr2GEtMQAAMHmgww
-        (envelope-from <bp@suse.de>); Fri, 07 Jan 2022 11:59:03 +0000
-Date:   Fri, 7 Jan 2022 12:59:09 +0100
-From:   Borislav Petkov <bp@suse.de>
-To:     "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-Cc:     Dov Murik <dovmurik@linux.ibm.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4E80B1EC0464;
+        Fri,  7 Jan 2022 14:22:26 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1641561746;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=pVViJ0G3u3Co8g3zSy4x+2tL0dqkqg5ZqrsUYLtYtws=;
+        b=jLRYGvIELCCZX/2eywvMkZOSxEIdncB5wcDn89Se8+nS28iKnUj+EDY4G+Tyv2u3e7lxj2
+        Ssvn3MrfwK7SpHYxlUw0adV/ssMdXZHY0RZgdQhZivjEuEb9b/QRPaDgDVEtLpdaZ4m0HT
+        Ee5tG/1mOdosHGb58gaBNWmtJ4R1YRY=
+Date:   Fri, 7 Jan 2022 14:22:28 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
         Tom Lendacky <thomas.lendacky@amd.com>,
-        linux-efi@vger.kernel.org, Ashish Kalra <ashish.kalra@amd.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
         Andi Kleen <ak@linux.intel.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Andrew Scull <ascull@google.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>,
-        Daniele Buono <dbuono@linux.vnet.ibm.com>,
-        linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 0/5] Allow guest access to EFI confidential computing
- secret area
-Message-ID: <YdgrDRCJOOg4k1Za@zn.tnic>
-References: <20211129114251.3741721-1-dovmurik@linux.ibm.com>
- <YdNHgtuVoLofL4cW@zn.tnic>
- <0280e20e-8459-dd35-0b7d-8dbc1e4a274a@linux.ibm.com>
- <YdSRWmqdNY7jRcer@zn.tnic>
- <YdWEXRt7Ixm6/+Dq@work-vm>
- <YdXq9t75aYLJfb69@zn.tnic>
- <YdX6aAwy0txT9Dk7@work-vm>
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v8 28/40] KVM: SEV: Add documentation for SEV-SNP CPUID
+ Enforcement
+Message-ID: <Ydg+lNhVmQbJ+Lxb@zn.tnic>
+References: <20211210154332.11526-1-brijesh.singh@amd.com>
+ <20211210154332.11526-29-brijesh.singh@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <YdX6aAwy0txT9Dk7@work-vm>
+In-Reply-To: <20211210154332.11526-29-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jan 05, 2022 at 08:07:04PM +0000, Dr. David Alan Gilbert wrote:
-> I thought I saw something in their patch series where they also had a
-> secret that got passed down from EFI?
-
-Probably. I've seen so many TDX patchsets so that I'm completely
-confused what is what.
-
-> As I remember they had it with an ioctl and something; but it felt to
-> me if it would be great if it was shared.
-
-I guess we could try to share
-
-https://lore.kernel.org/r/20211210154332.11526-28-brijesh.singh@amd.com
-
-for SNP and TDX.
-
-> I'd love to hear from those other cloud vendors; I've not been able to
-> find any detail on how their SEV(-ES) systems actually work.
-
-Same here.
-
-> However, this aims to be just a comms mechanism to pass that secret;
-> so it's pretty low down in the stack and is there for them to use -
-> hopefully it's general enough.
-
-Exactly!
-
-> (An interesting question is what exactly gets passed in this key and
-> what it means).
+On Fri, Dec 10, 2021 at 09:43:20AM -0600, Brijesh Singh wrote:
+> From: Michael Roth <michael.roth@amd.com>
 > 
-> All the contentious stuff I've seen seems to be further up the stack - like
-> who does the attestation and where they get the secrets and how they
-> know what a valid measurement looks like.
+> Update the documentation with SEV-SNP CPUID enforcement.
+> 
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  .../virt/kvm/amd-memory-encryption.rst        | 28 +++++++++++++++++++
+>  1 file changed, 28 insertions(+)
+> 
+> diff --git a/Documentation/virt/kvm/amd-memory-encryption.rst b/Documentation/virt/kvm/amd-memory-encryption.rst
+> index 5c081c8c7164..aa8292fa579a 100644
+> --- a/Documentation/virt/kvm/amd-memory-encryption.rst
+> +++ b/Documentation/virt/kvm/amd-memory-encryption.rst
+> @@ -427,6 +427,34 @@ issued by the hypervisor to make the guest ready for execution.
+>  
+>  Returns: 0 on success, -negative on error
+>  
+> +SEV-SNP CPUID Enforcement
+> +=========================
+> +
+> +SEV-SNP guests can access a special page that contains a table of CPUID values
+> +that have been validated by the PSP as part of SNP_LAUNCH_UPDATE firmware
+						 ^
+						 the
 
-It would be much much better if all the parties involved would sit down
-and decide on a common scheme so that implementation can be shared but
-getting everybody to agree is likely hard...
+> +command. It provides the following assurances regarding the validity of CPUID
+> +values:
+> +
+> + - Its address is obtained via bootloader/firmware (via CC blob), whose
+> +   binares will be measured as part of the SEV-SNP attestation report.
+
+Unknown word [binares] in Documentation.
+Suggestions: ['binaries', 'Linares', 'bi nares', 'bi-nares', 'bin ares', 'bin-ares', 'nares']
+
+Also:
+
+s/whose binaries/and those binaries/
+
+> + - Its initial state will be encrypted/pvalidated, so attempts to modify
+> +   it during run-time will be result in garbage being written, or #VC
+
+s/be //
+
+> +   exceptions being generated due to changes in validation state if the
+> +   hypervisor tries to swap the backing page.
+> + - Attempts to bypass PSP checks by hypervisor by using a normal page, or a
+				      ^
+				      the
+
+> +   non-CPUID encrypted page will change the measurement provided by the
+> +   SEV-SNP attestation report.
+> + - The CPUID page contents are *not* measured, but attempts to modify the
+> +   expected contents of a CPUID page as part of guest initialization will be
+> +   gated by the PSP CPUID enforcement policy checks performed on the page
+> +   during SNP_LAUNCH_UPDATE, and noticeable later if the guest owner
+> +   implements their own checks of the CPUID values.
+> +
+> +It is important to note that this last assurance is only useful if the kernel
+> +has taken care to make use of the SEV-SNP CPUID throughout all stages of boot.
+> +Otherwise guest owner attestation provides no assurance that the kernel wasn't
+	    ^
+	    ,
+
+> +fed incorrect values at some point during boot.
+> +
+>  References
+>  ==========
+>  
+> -- 
+> 2.25.1
+> 
 
 -- 
 Regards/Gruss,
     Boris.
 
-SUSE Software Solutions Germany GmbH, GF: Ivo Totev, HRB 36809, AG Nürnberg
+https://people.kernel.org/tglx/notes-about-netiquette
