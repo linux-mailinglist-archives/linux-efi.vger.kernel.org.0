@@ -2,197 +2,96 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD9014882AE
-	for <lists+linux-efi@lfdr.de>; Sat,  8 Jan 2022 10:05:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5C17488483
+	for <lists+linux-efi@lfdr.de>; Sat,  8 Jan 2022 17:25:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233961AbiAHJFs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 8 Jan 2022 04:05:48 -0500
-Received: from mga12.intel.com ([192.55.52.136]:2783 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231402AbiAHJFr (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sat, 8 Jan 2022 04:05:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1641632747; x=1673168747;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Nt+5fxqWUBhG+R7NH/cQ+EJ3cdsdDszTyyGTOJqYGZE=;
-  b=Z+1Z8yjPE+WsDKmLnlxG8kTUdcJ0vhQjmhaEBKsDpU6WUuW/gLn1UyVf
-   PwssZ2B36gIeVIu9WWNbWIBoNLwKy0pG1RHcJB3HHaGYb7whVP9wZ3Rya
-   W2yY0iVJk4frlwQoAYa62SaajC9/rekSQsHI4a+jiEH20RtfZyvpEuYih
-   0yZPOAesFXkEQfSz223k7LegrbPMPnj+gQdjwGnDpb+TVsoCClO9+m/US
-   4jBCIUC2mR2XAwsBFtwhEkVOvxp8Rf7qutOh2r0FLUy02hLCxmwrrNBoj
-   VrYbXYoXyfHC3LFDKwLB2xPll1RrFI+IAAeHFH3nyGAsKCheEjSikYNnr
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10220"; a="222987933"
-X-IronPort-AV: E=Sophos;i="5.88,272,1635231600"; 
-   d="scan'208";a="222987933"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2022 01:05:47 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,272,1635231600"; 
-   d="scan'208";a="514102984"
-Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 08 Jan 2022 01:05:45 -0800
-Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1n67fV-0000SC-AT; Sat, 08 Jan 2022 09:05:45 +0000
-Date:   Sat, 08 Jan 2022 17:05:00 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS 42f4046bc4ba56c6e4d2af7a9d7f70eaa563daec
-Message-ID: <61d953bc.7psJ1B6K83HsiOQL%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S232156AbiAHQZV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 8 Jan 2022 11:25:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48882 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229553AbiAHQZU (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 8 Jan 2022 11:25:20 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E235C06173F;
+        Sat,  8 Jan 2022 08:25:20 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 58FCBB80259;
+        Sat,  8 Jan 2022 16:25:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93351C36AE3;
+        Sat,  8 Jan 2022 16:25:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1641659118;
+        bh=C2VKpp7NNq9PTCZgyOANayncg/RnDrFND2NQX7+3jXQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nFpWeLErycJzwsyQrAW/LcCbybR22/KTbydhLNsLr0RdAjX1siuEuk1WkCVEr6lcn
+         e3UOderd5PbbUcgGdnxnM5MKYi5EfcRJ8e3QBP6HUMflToHj00aTkJSYWE8Y1Fu8PG
+         Md3e86tuHTK4AK1kRLmEfTudNXy04gzonMJhVAR+k5OqCcaqWlFNM/fTdRwkpQQPCB
+         9gbV54PQ9ht2fpc0woPTgqMTBWRxlgZ+bIiEZcfwSKc9BmZ8QA+ZJD48Mfg/RZZ2GI
+         3m43dbnwB+EHim5dn5qsGZlc0Zws5lrj8a4ron7/YLez9KZCTUO5Sjfq7H6lOfQAVZ
+         6+Hvu+MzUwvDw==
+Date:   Sat, 8 Jan 2022 18:25:09 +0200
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     dhowells@redhat.com, dwmw2@infradead.org, ardb@kernel.org,
+        jmorris@namei.org, serge@hallyn.com, nayna@linux.ibm.com,
+        zohar@linux.ibm.com, keescook@chromium.org,
+        torvalds@linux-foundation.org, weiyongjun1@huawei.com,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-security-module@vger.kernel.org,
+        James.Bottomley@hansenpartnership.com, pjones@redhat.com,
+        konrad.wilk@oracle.com
+Subject: Re: [PATCH v9 1/8] integrity: Fix warning about missing prototypes
+Message-ID: <Ydm65Uruy4u9SWeO@iki.fi>
+References: <20220105235012.2497118-1-eric.snowberg@oracle.com>
+ <20220105235012.2497118-2-eric.snowberg@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20220105235012.2497118-2-eric.snowberg@oracle.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: 42f4046bc4ba56c6e4d2af7a9d7f70eaa563daec  efi: use default_groups in kobj_type
+On Wed, Jan 05, 2022 at 06:50:05PM -0500, Eric Snowberg wrote:
+> make W=1 generates the following warning in keyring_handler.c
+> 
+> security/integrity/platform_certs/keyring_handler.c:71:30: warning: no previous prototype for get_handler_for_db [-Wmissing-prototypes]
+>  __init efi_element_handler_t get_handler_for_db(const efi_guid_t *sig_type)
+>                               ^~~~~~~~~~~~~~~~~~
+> security/integrity/platform_certs/keyring_handler.c:82:30: warning: no previous prototype for get_handler_for_dbx [-Wmissing-prototypes]
+>  __init efi_element_handler_t get_handler_for_dbx(const efi_guid_t *sig_type)
+>                               ^~~~~~~~~~~~~~~~~~~
+> Add the missing prototypes by including keyring_handler.h.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
+> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+> ---
+> v7: Initial version
+> v8: Code unmodified from v7 added Mimi's Reviewed-by
+> v9: Unmodified from v8
+> ---
+>  security/integrity/platform_certs/keyring_handler.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/security/integrity/platform_certs/keyring_handler.c b/security/integrity/platform_certs/keyring_handler.c
+> index 5604bd57c990..e9791be98fd9 100644
+> --- a/security/integrity/platform_certs/keyring_handler.c
+> +++ b/security/integrity/platform_certs/keyring_handler.c
+> @@ -9,6 +9,7 @@
+>  #include <keys/asymmetric-type.h>
+>  #include <keys/system_keyring.h>
+>  #include "../integrity.h"
+> +#include "keyring_handler.h"
+>  
+>  static efi_guid_t efi_cert_x509_guid __initdata = EFI_CERT_X509_GUID;
+>  static efi_guid_t efi_cert_x509_sha256_guid __initdata =
+> -- 
+> 2.18.4
+> 
 
-elapsed time: 2068m
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-configs tested: 127
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-sh                           se7750_defconfig
-arm                          iop32x_defconfig
-powerpc                 canyonlands_defconfig
-powerpc                     mpc83xx_defconfig
-ia64                         bigsur_defconfig
-sh                        edosk7760_defconfig
-powerpc                    sam440ep_defconfig
-arm64                            alldefconfig
-riscv             nommu_k210_sdcard_defconfig
-um                             i386_defconfig
-mips                  maltasmvp_eva_defconfig
-mips                           jazz_defconfig
-arm                       aspeed_g5_defconfig
-parisc                generic-64bit_defconfig
-powerpc                 mpc837x_mds_defconfig
-powerpc                     pq2fads_defconfig
-mips                          rb532_defconfig
-sh                             shx3_defconfig
-ia64                      gensparse_defconfig
-arm                         cm_x300_defconfig
-arm                           h3600_defconfig
-sh                           se7721_defconfig
-sh                          sdk7780_defconfig
-xtensa                           alldefconfig
-arm                  randconfig-c002-20220107
-arm                  randconfig-c002-20220108
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                           allyesconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a005-20220107
-x86_64               randconfig-a001-20220107
-x86_64               randconfig-a006-20220107
-x86_64               randconfig-a002-20220107
-x86_64               randconfig-a004-20220107
-x86_64               randconfig-a003-20220107
-i386                 randconfig-a005-20220107
-i386                 randconfig-a004-20220107
-i386                 randconfig-a006-20220107
-i386                 randconfig-a002-20220107
-i386                 randconfig-a001-20220107
-i386                 randconfig-a003-20220107
-x86_64               randconfig-a015-20220108
-x86_64               randconfig-a012-20220108
-x86_64               randconfig-a014-20220108
-x86_64               randconfig-a013-20220108
-x86_64               randconfig-a011-20220108
-x86_64               randconfig-a016-20220108
-i386                 randconfig-a012-20220108
-i386                 randconfig-a016-20220108
-i386                 randconfig-a015-20220108
-i386                 randconfig-a014-20220108
-i386                 randconfig-a011-20220108
-i386                 randconfig-a013-20220108
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-um                           x86_64_defconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
-x86_64                           allyesconfig
-
-clang tested configs:
-mips                           mtx1_defconfig
-powerpc                     skiroot_defconfig
-x86_64               randconfig-a012-20220107
-x86_64               randconfig-a015-20220107
-x86_64               randconfig-a014-20220107
-x86_64               randconfig-a013-20220107
-x86_64               randconfig-a011-20220107
-x86_64               randconfig-a016-20220107
-i386                 randconfig-a012-20220107
-i386                 randconfig-a016-20220107
-i386                 randconfig-a014-20220107
-i386                 randconfig-a015-20220107
-i386                 randconfig-a011-20220107
-i386                 randconfig-a013-20220107
-x86_64               randconfig-a005-20220108
-x86_64               randconfig-a001-20220108
-x86_64               randconfig-a004-20220108
-x86_64               randconfig-a006-20220108
-x86_64               randconfig-a003-20220108
-x86_64               randconfig-a002-20220108
-hexagon              randconfig-r041-20220107
-hexagon              randconfig-r045-20220107
-riscv                randconfig-r042-20220107
-s390                 randconfig-r044-20220107
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+BR, Jarkko
