@@ -2,221 +2,187 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B4D848971F
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Jan 2022 12:14:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0879489C57
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Jan 2022 16:37:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244465AbiAJLOz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 10 Jan 2022 06:14:55 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:39200 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S244448AbiAJLOx (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 10 Jan 2022 06:14:53 -0500
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20A8pdMl027013;
-        Mon, 10 Jan 2022 11:14:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=5m+2mfDDyh0TlLkCF2Fr+/g8FUjpntfEtGsUAUREgiU=;
- b=A31BwOezhZp9Xz2t2BZNKPI+dpH4hQpioYfoRMJ6G5OlW3FuqZfZEXO9kngyKq0wSODr
- weEEQu/Y1CpJ4f3+/HPrHi1Y0MAzjMwDDkfN3yzMENK8vhkPijM6WsZjSIQ6AkRwgndA
- 1hKSGMYRN0HzS/m5GsPz9npArXcS6B+3NLul54ortSbfUhVNJ3E2r01dZYJ9n375oX8G
- vwpCDz9jmM8iE6aOdJXgNEF542oFaKWZJXSENPnvT6djGnB+uBGKcgsx9r8ROLTM/MKK
- YHpaXAIBpfbUgqFBmyuwQI95T8f5+87WyAMdfY/cqNS1MQ9m9Px2vVqgClUm738FJZV9 fA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3dfm3vg3ya-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 10 Jan 2022 11:14:26 +0000
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20AB9vIZ025950;
-        Mon, 10 Jan 2022 11:14:25 GMT
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3dfm3vg3y2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 10 Jan 2022 11:14:25 +0000
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-        by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20AB7gpK026886;
-        Mon, 10 Jan 2022 11:14:24 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
-        by ppma02dal.us.ibm.com with ESMTP id 3df289grw8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 10 Jan 2022 11:14:24 +0000
-Received: from b03ledav006.gho.boulder.ibm.com (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
-        by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 20ABENwx33554938
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 10 Jan 2022 11:14:23 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 07AA3C606C;
-        Mon, 10 Jan 2022 11:14:23 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id CB54FC6061;
-        Mon, 10 Jan 2022 11:14:17 +0000 (GMT)
-Received: from [9.65.224.158] (unknown [9.65.224.158])
-        by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Mon, 10 Jan 2022 11:14:17 +0000 (GMT)
-Message-ID: <fec22c21-795a-82b8-0001-30648a22e792@linux.ibm.com>
-Date:   Mon, 10 Jan 2022 13:14:16 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.1
-Subject: Re: [PATCH v6 0/5] Allow guest access to EFI confidential computing
- secret area
+        id S236265AbiAJPhN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 10 Jan 2022 10:37:13 -0500
+Received: from mail-ma1ind01olkn0141.outbound.protection.outlook.com ([104.47.100.141]:27005
+        "EHLO IND01-MA1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S235120AbiAJPhN (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 10 Jan 2022 10:37:13 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=No7faRecaoQsmSax4Es5xJvay98Aj8SESmd55vYPNzpukQP0VMviqQnMxLC3CYvw9G1v1jMZd2RVESIZgKPGNBsi53BrWyI6/GxCD7OLlEFgduPRWKazcbPMAE+90foUNsHtLzPi4P2SMdrpzR4wBije/tsvQq11gj21wgeH29ngdv/892ToYTnT+ypNh5uogMD9In7LW3DjOVmE7j0UfElTHDS8lgX3SXweEwuCBBZEKi+CMjoL0XQcJx+Hzm9N6C6qUd/Rf5EhSQrguMgWoLdMeM+yRBgfBYAM2LPuoU819+edTOnlfCWGAeNp++muE1ygTjwR7gB3a6/aI74vmw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tAipsBlXmwytPzS88UzW1yIdcSzikOkFVsHIsh3CDSQ=;
+ b=SZzZyYI+FAOA3Xj1E2AVDyHKbd8z9wOqzq5SnAd6/yhPh0GxWUm5FrksoU0ghqh3h6k49UF6XdcsffIdBzXkPQLdTDdDdQ+pGmV+kAHqJYOEImhnxjMr5HFslQ0xlKiol8/uApSYLoeidbXC9o+shusrQ2s0uVLrnL9sGBmpIPl6wbU6kiA+9ILY+auo7cd0WSfi+p76gbjBi5RsUuwe5bvAq/wcEPPTJZJqNAYDHvfZk0Zr0vihwHbEKsWN5jfp2is2lOBZWZ4DUfWrWNBz6AVi9kbVIvdzCxU3sE/KZL1E6OC5fhSyZUrc4vXN8idz0WaNrxGnNXwbwKUELuDjpw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tAipsBlXmwytPzS88UzW1yIdcSzikOkFVsHIsh3CDSQ=;
+ b=ROqnwu8UO3J08SwU9JQIsK66Emi7+dLIrSZw4CANOQq+SwAdrXRBZTwRuhWhV8MylagnXccO/sZDDIlEvhQKspnEoU8sm01jWp+VYaDyQyFShGrudMFINLaE1zDWwOL1udhUjTX8Bk8l6HrWUIGZ+4OUNVgt+nkLHy1JsXK1tTYMfZTnWoen+bOFArB/v81giey5eY6RosxWyEoRZ03OTytmqg2NOg8ln9fBPcduKsiP5NHJS39waKD2euljz0nPJTIXax7FA97yU3dCBVU3XQz/WCKna+3IPzVCiWD8lhmmjTShjKztexcRU2FjWIrgiaVhXy0SZLlujKuUdTY/RQ==
+Received: from PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:1b::13)
+ by PN3PR01MB7222.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:92::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4867.11; Mon, 10 Jan
+ 2022 15:37:08 +0000
+Received: from PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::7ca6:9165:19ec:4cd7]) by PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::7ca6:9165:19ec:4cd7%8]) with mapi id 15.20.4867.011; Mon, 10 Jan 2022
+ 15:37:08 +0000
+From:   Aditya Garg <gargaditya08@live.com>
+To:     "matthew.garrett@nebula.com" <matthew.garrett@nebula.com>,
+        "jk@ozlabs.org" <jk@ozlabs.org>,
+        "ardb@kernel.org" <ardb@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+CC:     "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Orlando Chamberlain <redecorating@protonmail.com>,
+        Aun-Ali Zaidi <admin@kodeit.net>
+Subject: [BUG][SEVERE] Enabling EFI runtime services causes panics in the T2
+ security chip on Macs equipped with it.
+Thread-Topic: [BUG][SEVERE] Enabling EFI runtime services causes panics in the
+ T2 security chip on Macs equipped with it.
+Thread-Index: AQHYBjftWs2CmKpSjkyA6YBmWmj2Jw==
+Date:   Mon, 10 Jan 2022 15:37:08 +0000
+Message-ID: <6D757C75-65B1-468B-842D-10410081A8E4@live.com>
+Accept-Language: en-US
 Content-Language: en-US
-To:     Peter Gonda <pgonda@google.com>, Borislav Petkov <bp@suse.de>
-Cc:     "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        linux-efi@vger.kernel.org, Ashish Kalra <ashish.kalra@amd.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Andrew Scull <ascull@google.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>,
-        Daniele Buono <dbuono@linux.vnet.ibm.com>,
-        linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Dov Murik <dovmurik@linux.ibm.com>
-References: <20211129114251.3741721-1-dovmurik@linux.ibm.com>
- <YdNHgtuVoLofL4cW@zn.tnic>
- <0280e20e-8459-dd35-0b7d-8dbc1e4a274a@linux.ibm.com>
- <YdSRWmqdNY7jRcer@zn.tnic> <YdWEXRt7Ixm6/+Dq@work-vm>
- <YdXq9t75aYLJfb69@zn.tnic> <YdX6aAwy0txT9Dk7@work-vm>
- <YdgrDRCJOOg4k1Za@zn.tnic>
- <CAMkAt6qCHPzUT=COb_HQ51rRKwtaCC3Zxgc6k6ivB_dZUKx5Hw@mail.gmail.com>
-From:   Dov Murik <dovmurik@linux.ibm.com>
-In-Reply-To: <CAMkAt6qCHPzUT=COb_HQ51rRKwtaCC3Zxgc6k6ivB_dZUKx5Hw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: XmEgR8upfN5kPEh08dJJxLHCi4XWNX4l
-X-Proofpoint-GUID: 7Ym9zYsGBX9O7Y1FyyCgl5ENs8NT4U4z
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-tmn:  [4aFYy7dQP4xmzApW9NU9jxMI8TuRsr4F+oxt2DugztaRxdizQ34Q7UMJ6pwddCh2]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 6cef432b-8b95-499e-7992-08d9d44f0fd0
+x-ms-traffictypediagnostic: PN3PR01MB7222:EE_
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: i5duJq4xbd0UnNRcakg/7CCKWfIaFkGb2a1gnMgt6BepVZyriBmivnTv7c9nAdnZybSyYo7+jPfXmd4DnxjVnwh83azUghGGO48oO2sAcQx+wU/2CChoCjEwwxkVU11PZO5r6kj3WUNL4GREbcunY438NF/wvLu3uGwwwzSlbaCTw4ZvflkkAvNUCzK+G9p/M8eDfpHNB7mN//FrLgmjhAgOnmiZCTlB4IFCfY+6Yyy2QSDnU/kz6a/wMHpTUMUXAtTlluorHIt8yuqgDDGFWktAyJ5YyIOvdT8Tey+Ptc7ge6ZcAjcqXYB7ZBfbbQs8z3EtLEeEcMYxUZlcLl/mOx1oqXMd/s/hHFlCb8lyJPPYh3dDC36qUP4jX0qjZnl592dymCAsWgoOIYLnXVub5nFqj3mfFICV30CQTyx+uO952L4T6LGjjbFBnfarlN6XlmlPJwYjxTqbTq8JkJ7i+tWbhXEz3WOJ/BvXtS5xXihvIanf8q4vgQtaM69y1ZJgLMariqmOPQ4OkVF0hbWGskeFCvy2XOJfbIxO1BgFVxo8EzTdzKquzfNA9PupXD5zwwQzrDlOOKJ8x4jp3LfwvdtNIIzzewuzGLppEdg2MRoxPQi5khHP7LSdG6rGp6kC
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NlRoa0VNbUVqL1pONUE4OTY3QUlJT1V4NG1jMUp3OS9xTVN5QjlraVBrb1Ey?=
+ =?utf-8?B?NzRKdDAyZFhzbkd6SUYxTEF5SFpUS3BtVnRiVVJUMVJMd1c1ZnJ6RjM2dHRp?=
+ =?utf-8?B?ZVlCNGFRTy9GeWFYUFdYaXhNQmxNN000NDlweWh2Sk44SHp0NmE5UUtUazVS?=
+ =?utf-8?B?VExDSGN2MktzNll5N0ZGbEFHdWI1RXFLM05yT0RqT0IzcDJXWitVT1JUTFht?=
+ =?utf-8?B?RW1nbXJJdDgxVUtXdlpFYlo0V1RJamRLTzJoOFZGM3huN1QvUVY5Z2tuTVBO?=
+ =?utf-8?B?akIrQmprcmRFZm9KMFd5cWs3VG5jbnZKL1ZRT0N4R0pBcHRuczF3WjEwT29F?=
+ =?utf-8?B?cG5wT3hqcmk1VUxibjZzSFlFeDkvdmQ4ZXZ2aVo4M08rS3J5a2JGNzlPQ2Z4?=
+ =?utf-8?B?dE1qOHk4OUppVno3UUEya2VQdVVFMm95NVpDVm92dWdCb1RRMzB5RmhTTUVU?=
+ =?utf-8?B?cktkVFc1WUIxQU9nbGFaaHcwQWwwTEUzMzBrenJGVDJDSTB3cHZlaEY1S0Q2?=
+ =?utf-8?B?U2xDMk9LaGFLSE16Rmwxem5CREtUOXNVUGthL2ljYkFiS2t4M3hESUhxeDM0?=
+ =?utf-8?B?Mm5rTlFPbzh5dis1OVlJQ2o4d0FiT1ZFMkpxMjhhTzEwTzh1K0J0MTUrWGtt?=
+ =?utf-8?B?T041bkduT0tLeXdJd2hMUmxXS0E5Y0lIZ3JMN1MvSGNPWlFXQUJRS21ReDdE?=
+ =?utf-8?B?anRJbjN0cHR0RmNNRHFvSVNNcFNsb3lpZXVpMGZaMFlrMHAvaGVWc21WZUx5?=
+ =?utf-8?B?S2ZwUlZ6bWJPQ29NRHhMcDBGS0tWL0J4ZzF5OVZNSlEvVXRVUUdaNzhOYXQ1?=
+ =?utf-8?B?Q044NE5DaXhUT1F0Y0FaL092UHVueW9lTFA1SFlWVmFvUWRyZXlSdzloUXFL?=
+ =?utf-8?B?ZzdmQjdCWThyYVBwVVRObHdMdGZydS9JaDBWN2ZyRUpiTUlkZEh6Nmx0NWNy?=
+ =?utf-8?B?K1pRTDAxSUxwYmp1Y3dsVFI5a1JMbzhDQy9oVE9LM2ptUm9tN0ZaTmtkaGpM?=
+ =?utf-8?B?L04zWGJ0aGdNNlpYSGV0WDlaL3ZTUi9FS09EQ1B2d1pIZFU1WTdJQkVtYlA0?=
+ =?utf-8?B?TjRScHBPdFcycDFlbE9LRHh5N1NqSWxuZEJJcTgybnNjZWRNd3dkSHJKaGdE?=
+ =?utf-8?B?NkpRR1llR2IvcDFVdnQ0TDBaOW5LRFh0Q3pBNGNKd25xbWlva25mMm1WRGsx?=
+ =?utf-8?B?bGE4dmVocFUrQTBOMW5FZjQ3dmFxMmFvL25Dd3dVM05keUd4WnZDY0VySDBU?=
+ =?utf-8?B?a3hrVkJoUUt6akZyNkxYMWJaalhEUVJFaSs5Tkt5TEtvbnF5R0ZOMjBXYlVM?=
+ =?utf-8?B?ZCtSTUlOWjJLMWgra0Nvb2pNZCs5aXkyTEltMDVkR05rQ0FRTTNrTjhzdEZ2?=
+ =?utf-8?B?RldsSitwRWh1SWc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <4457B7184FEF31468802D41C6CD6DAE9@INDPRD01.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-10_04,2022-01-10_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- mlxlogscore=999 bulkscore=0 lowpriorityscore=0 mlxscore=0 suspectscore=0
- clxscore=1015 impostorscore=0 priorityscore=1501 phishscore=0 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2201100074
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-42ed3.templateTenant
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6cef432b-8b95-499e-7992-08d9d44f0fd0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jan 2022 15:37:08.1754
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN3PR01MB7222
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-
-
-On 07/01/2022 21:16, Peter Gonda wrote:
-> On Fri, Jan 7, 2022 at 4:59 AM Borislav Petkov <bp@suse.de> wrote:
->>
->> On Wed, Jan 05, 2022 at 08:07:04PM +0000, Dr. David Alan Gilbert wrote:
->>> I thought I saw something in their patch series where they also had a
->>> secret that got passed down from EFI?
->>
->> Probably. I've seen so many TDX patchsets so that I'm completely
->> confused what is what.
->>
->>> As I remember they had it with an ioctl and something; but it felt to
->>> me if it would be great if it was shared.
->>
->> I guess we could try to share
->>
->> https://lore.kernel.org/r/20211210154332.11526-28-brijesh.singh@amd.com
->>
->> for SNP and TDX.
->>
->>> I'd love to hear from those other cloud vendors; I've not been able to
->>> find any detail on how their SEV(-ES) systems actually work.
->>
->> Same here.
->>
->>> However, this aims to be just a comms mechanism to pass that secret;
->>> so it's pretty low down in the stack and is there for them to use -
->>> hopefully it's general enough.
->>
->> Exactly!
->>
->>> (An interesting question is what exactly gets passed in this key and
->>> what it means).
->>>
->>> All the contentious stuff I've seen seems to be further up the stack - like
->>> who does the attestation and where they get the secrets and how they
->>> know what a valid measurement looks like.
->>
->> It would be much much better if all the parties involved would sit down
->> and decide on a common scheme so that implementation can be shared but
->> getting everybody to agree is likely hard...
-> 
-> I saw a request for other cloud provider input here. A little
-> background for our SEV VMs in GCE we rely on our vTPM for attestation,
-> we do this because of SEV security properties quoting from AMD being
-> to protect guests from a benign but vulnerable hypervisor. So a
-> benign/compliant hypervisor's vTPM wouldn't lie to the guest. So we
-> added a few bits in the PCRs to allow users to see their SEV status in
-> vTPM quotes.
-
-Thanks Peter for explaining the GCE approach.  If I understand correctly,
-if the hypervisor is malicious, it could lie to the vTPM and set those
-"few bits" so it'll look like the VM is running with SEV enabled (whereas
-in fact it is running without memory encryption).  But that's outside the
-scope, right?
-
-
-> 
-> It would be very interesting to offer an attestation solution that
-> doesn't rely on our virtual TPM. But after reading through this cover
-> letter and the linked OVMF patches I am confused what's the high level
-> flow you are working towards? Are you loading in some OVMF using
-> LAUNCH_UPDATE_DATA, getting the measurement with LAUNCH_MEASURE, then
-> sending that to the customer who can then craft a "secret" (maybe say
-> SSH key) for injection with LAUNCH_SECRET? Thats sounds good but there
-> are a lot details left unattested there, how do you know you will boot
-> from the image loaded with the PSP into a known state? Do you have
-> some documentation I could read through to try and understand a little
-> more and apologies if I missed it.
-> 
-
-We rely on the OvmfPkg/AmdSev build of OVMF, which is a stripped down
-firmware that can boot only in one of two ways:
-
-a. direct boot to kernel/initrd/cmdline whose hashes are included in
-   the LAUNCH_MEASURE data (see [1], [2], [3]).
-b. boot to embedded grub (in OVMF) which decrypts an encrypted boot drive
-   using a secret from LAUNCH_SECRET (see [4] and [5]).
-
-For the current series (efi_secret kernel module), method (a) is the relevant
-one.  The Cloud Provider boots a guest VM with OVMF, and -kernel/-initrd/-append. The
-content of OVMF and the hashes of kernel/initrd/cmdline are measured in LAUNCH_MEASURE
-and sent to the Guest Owner (=Customer).  If they match, the Guest Owner should perform 
-a LAUNCH_SECRET and inject the secret to a designated SEV launch secrets page.  
-
-Then the guest starts running; when the kernel starts the EFI driver saves the address
-of this page (patch 1), and later exposes the secrets in this page as files in
-securityfs (patch 3). The secrets can be used by the guest workload in whatever way
-it needs (examples discussed above: ssh private key; API key to obtain secrets;
-decryption key for some encrypted files; ...). 
-
-Any attempt of a malicious cloud provider to modify OVMF, kernel, initrd, or cmdline
-will cause the SEV measurement to be wrong. 
-
-Note again that the proposed kernel patch series has nothing to do with the measurement
-sequence -- it assumes the secrets page is already populated, and exposes it
-to userspace as files.
-
-Hope this explains our approach.
-
-
-[1] https://www.youtube.com/watch?v=jzP8RlTRErk
-[2] https://lore.kernel.org/qemu-devel/20210930054915.13252-1-dovmurik@linux.ibm.com/
-[3] https://lore.kernel.org/qemu-devel/20211111100048.3299424-1-dovmurik@linux.ibm.com/
-
-[4] https://www.youtube.com/watch?v=rCsIxzM6C_I
-[5] https://blog.hansenpartnership.com/deploying-encrypted-images-for-confidential-computing/
-
-
-
--Dov
+T24gMTB0aCBvZiBEZWNlbWJlciwgSSBoYWQgcmVwb3J0ZWQgdGhpcyBidWcgYnV0IHN0aWxsIGhh
+dmVuJ3QgZ290IGFueSByZXNwb25zZSBmcm9tIHRoZSBtYWludGFpbmVycy4gQXMgYSByZXN1bHQg
+SSBhbSBzZW5kaW5nIGl0IGFnYWluLiBDb25zaWRlciB0aGUgZmFjdCB0aGF0IGlzIGlzIGEgc2V2
+ZXJlIGJ1ZyBhcyBpdCBjYXVzZXMga2VybmVscyB0byBub3QgYm9vdCBhdCBhbGwgYW5kIHJlc3Vs
+dHMgaW4gcGFuaWNzIG9uIFQyIE1hY3MuDQoNCk9uIGVuYWJsaW5nIEVGSSBydW50aW1lIHNlcnZp
+Y2VzIG9uIE1hY3Mgd2l0aCB0aGUgVDIgc2VjdXJpdHkgY2hpcCwga2VybmVsIGZhaWxzIHRvIGJv
+b3QgZHVlIHBhbmljcyBpbiB0aGUgVDIgc2VjdXJpdHkgY2hpcC4gVXNpbmcgZWZpPW5vcnVudGlu
+ZSAob3Igbm9lZmkpIGFzIGEga2VybmVsIHBhcmFtZXRlciBzZWVtcyB0byBmaXggdGhlIGlzc3Vl
+LiBBbHNvLCBtYWtpbmcgTlZSQU0gcmVhZC1vbmx5IG1ha2VzIGtlcm5lbHMgYm9vdC4gQSBmaXgg
+Zm9yIHRoYXQgd291bGQgYmUgYXBwcmVjaWF0ZWQuDQoNCkxpbmsgOi0gaHR0cHM6Ly9idWd6aWxs
+YS5rZXJuZWwub3JnL3Nob3dfYnVnLmNnaT9pZD0yMTUyNzcNCg0KV2UgYmVsaWV2ZSBrZXJuZWwg
+b25seSBmYWlscyB0byBib290IGlmIHNvbWV0aGluZyBpcyBzZXQgdXAgdG8gd3JpdGUgdG8gbnZy
+YW0gYXQgYm9vdCwgaXQgY2FuIGJvb3QgZmluZSBvbiBhIE1hY0Jvb2tQcm8xNiwxIGFzIGxvbmcg
+YXMgSSBkb24ndCBoYXZlIGFueXRoaW5nIHdyaXRpbmcgdG8gbnZyYW0gKGRlbGV0aW5nIGFuZCBy
+ZWFkaW5nIHZhcmlhYmxlcyBpcyBmaW5lKS4NCg0KVGhlIHQyIHNlY3VyaXR5IGNoaXAgaGFuZGxl
+cyBudnJhbSBhbmQgbG9hZGluZyBib290bG9hZGVycyBvbiB0aGVzZQ0KbWFjcy4gSXRzIGJyaWRn
+ZU9TIGhhZCBhbiB1cGRhdGUgdGhhdCB3YXMgYnVuZGxlZCB3aXRoIG1hY09TIENhdGFsaW5hDQoo
+dGhpcyBjYW4ndCBiZSBkb3duZ3JhZGVkLCBhbmQgc29tZSBjb21wdXRlcnMgc2hpcHBlZCB3aXRo
+IG1hY09TDQpDYXRhbGluYSksIHRoYXQgbWFkZSB3cml0aW5nIHRvIG52cmFtIGZyb20gTGludXgg
+Y2F1c2UgYW4gaW52YWxpZA0Kb3Bjb2RlIGVycm9yIGFuZCBhIGZyb3plbiBzeXN0ZW06DQoNCmlu
+dmFsaWQgb3Bjb2RlOiAwMDAwIFsjMV0gUFJFRU1QVCBTTVAgUFRJDQpDUFU6IDkgUElEOiAxMzUg
+Q29tbToga3dvcmtlci91MjQ6MiBUYWludGVkOiBHIFMgICBVICAgQyAgICAgICAgNS4xNi4wLXJj
+NC0wMDA1NC1nNmMzZWNiNDdiYjc1LWRpcnR5ICM3Mg0KSGFyZHdhcmUgbmFtZTogQXBwbGUgSW5j
+LiBNYWNCb29rUHJvMTYsMS9NYWMtRTEwMDgzMzFGREM5Njg2NCwgQklPUyAxNzE1LjQwLjE1LjAu
+MCAoaUJyaWRnZTogMTkuMTYuMTA1NDguMC4wLDApIDEwLzAzLzIwMjENCldvcmtxdWV1ZTogZWZp
+X3J0c193cSBlZmlfY2FsbF9ydHMNClJJUDogMDAxMDoweGZmZmZmZmZlZWZjNDY4NzcNCkNvZGU6
+IDhiIDU4IDE4IDBmIGI2IDBkIGUxIDA5IDAwIDAwIDQ4IGMxIGUxIDA0IGU4IDMwIDAzIDAwIDAw
+IDQ4IDg5IDA1IGQ5IDA5IDAwIDAwIDgwIDNkIGEyIDA5IDAwIDAwIDAxIDc1IDA5IDQ4IGM3IDA3
+IDAwIDEwIDAwIDAwIDwwZj4gMGIgNDggOGIgMDUgYTggMDcgMDAgMDAgOGIgNDAgMDggNDggODMg
+YzAgZjAgNDggODkgMDcgNDggYzcgMDYNClJTUDogMDAxODpmZmZmOTk4ZDQwNTEzZGQwIEVGTEFH
+UzogMDAwMTAyNDYNClJBWDogZmZmZjk5OGQ0MDUxM2ViMCBSQlg6IGZmZmY5OThkNDNmMTdkZDgg
+UkNYOiAwMDAwMDAwMDAwMDAwMDA3DQpSRFg6IGZmZmY5OThkNDNmMTdkYzggUlNJOiBmZmZmOTk4
+ZDQzZjE3ZGQ4IFJESTogZmZmZjk5OGQ0M2YxN2RjOA0KUkJQOiBmZmZmOTk4ZDQwNTEzZTAwIFIw
+ODogZmZmZjk5OGQ0M2YxN2RkMCBSMDk6IGZmZmY5OThkNDNmMTdkZDgNClIxMDogZmZmZjk5OGQ0
+MDUxM2M4MCBSMTE6IGZmZmZmZmZmOWI0Y2FiZTggUjEyOiBmZmZmOTk4ZDQzZjE3ZGM4DQpSMTM6
+IGZmZmY5OThkNDNmMTdkZDAgUjE0OiAwMDAwMDAwMDAwMDAwMjQ2IFIxNTogMDAwMDAwMDAwMDAw
+MDA0OA0KRlM6ICAwMDAwMDAwMDAwMDAwMDAwKDAwMDApIEdTOmZmZmY4Y2Y4YmVjNDAwMDAoMDAw
+MCkga25sR1M6MDAwMDAwMDAwMDAwMDAwMA0KQ1M6ICAwMDEwIERTOiAwMDAwIEVTOiAwMDAwIENS
+MDogMDAwMDAwMDA4MDA1MDAzMw0KQ1IyOiAwMDAwN2Y5MTMzNTk0Mzc0IENSMzogMDAwMDAwMDEw
+MDIwMDAwNSBDUjQ6IDAwMDAwMDAwMDAzNzA2ZTANCkNhbGwgVHJhY2U6DQo8VEFTSz4NCj8gX3By
+aW50aysweDU4LzB4NmYNCl9fZWZpX2NhbGwrMHgyOC8weDMwDQplZmlfY2FsbF9ydHMuY29sZCsw
+eDgzLzB4MTA0DQpwcm9jZXNzX29uZV93b3JrKzB4MjE5LzB4M2YwDQp3b3JrZXJfdGhyZWFkKzB4
+NGQvMHgzZDANCj8gcmVzY3Vlcl90aHJlYWQrMHgzOTAvMHgzOTANCmt0aHJlYWQrMHgxNWMvMHgx
+ODANCj8gc2V0X2t0aHJlYWRfc3RydWN0KzB4NDAvMHg0MA0KcmV0X2Zyb21fZm9yaysweDIyLzB4
+MzANCjwvVEFTSz4NCk1vZHVsZXMgbGlua2VkIGluOiB4dF9DSEVDS1NVTSB4dF9NQVNRVUVSQURF
+IHh0X2Nvbm50cmFjayBpcHRfUkVKRUNUIG5mX3JlamVjdF9pcHY0IHh0X3RjcHVkcCBuZnRfY29t
+cGF0IGFtZGdwdSBuZnRfY2hhaW5fbmF0IG5mX25hdCBuZl9jb25udHJhY2sgbmZfZGVmcmFnX2lw
+djYgbmZfZGVmcmFnX2lwdjQgbmZ0X2NvdW50ZXIgbmZfdGFibGVzIG4NCnN5c2ltZ2JsdCBmYl9z
+eXNfZm9wcyBjZWMgY3JjMTYgaW50ZWxfcGNoX3RoZXJtYWwgc2JzIGVjZGhfZ2VuZXJpYyBlY2Mg
+cmZraWxsIGFwcGxlX2JsIHZpZGVvIGFjcGlfdGFkIG1hY19oaWQgc2JzaGMgcGtjczhfa2V5X3Bh
+cnNlciBkcm0gZnVzZSBjcnlwdG9fdXNlciBicGZfcHJlbG9hZCBpcF90YWJsZXMgeF90YWJsZXMg
+Y3JjdDEwZGlmX3BjbA0KLS0tWyBlbmQgdHJhY2UgMjJmOGFhZDkxNzYxY2M0YSBdLS0tDQpSSVA6
+IDAwMTA6MHhmZmZmZmZmZWVmYzQ2ODc3DQpDb2RlOiA4YiA1OCAxOCAwZiBiNiAwZCBlMSAwOSAw
+MCAwMCA0OCBjMSBlMSAwNCBlOCAzMCAwMyAwMCAwMCA0OCA4OSAwNSBkOSAwOSAwMCAwMCA4MCAz
+ZCBhMiAwOSAwMCAwMCAwMSA3NSAwOSA0OCBjNyAwNyAwMCAxMCAwMCAwMCA8MGY+IDBiIDQ4IDhi
+IDA1IGE4IDA3IDAwIDAwIDhiIDQwIDA4IDQ4IDgzIGMwIGYwIDQ4IDg5IDA3IDQ4IGM3IDA2DQpS
+U1A6IDAwMTg6ZmZmZjk5OGQ0MDUxM2RkMCBFRkxBR1M6IDAwMDEwMjQ2DQpSQVg6IGZmZmY5OThk
+NDA1MTNlYjAgUkJYOiBmZmZmOTk4ZDQzZjE3ZGQ4IFJDWDogMDAwMDAwMDAwMDAwMDAwNw0KUkRY
+OiBmZmZmOTk4ZDQzZjE3ZGM4IFJTSTogZmZmZjk5OGQ0M2YxN2RkOCBSREk6IGZmZmY5OThkNDNm
+MTdkYzgNClJCUDogZmZmZjk5OGQ0MDUxM2UwMCBSMDg6IGZmZmY5OThkNDNmMTdkZDAgUjA5OiBm
+ZmZmOTk4ZDQzZjE3ZGQ4DQpSMTA6IGZmZmY5OThkNDA1MTNjODAgUjExOiBmZmZmZmZmZjliNGNh
+YmU4IFIxMjogZmZmZjk5OGQ0M2YxN2RjOA0KUjEzOiBmZmZmOTk4ZDQzZjE3ZGQwIFIxNDogMDAw
+MDAwMDAwMDAwMDI0NiBSMTU6IDAwMDAwMDAwMDAwMDAwNDgNCkZTOiAgMDAwMDAwMDAwMDAwMDAw
+MCgwMDAwKSBHUzpmZmZmOGNmOGJlYzQwMDAwKDAwMDApIGtubEdTOjAwMDAwMDAwMDAwMDAwMDAN
+CkNTOiAgMDAxMCBEUzogMDAwMCBFUzogMDAwMCBDUjA6IDAwMDAwMDAwODAwNTAwMzMNCkNSMjog
+MDAwMDdmOTEzMzU5NDM3NCBDUjM6IDAwMDAwMDAxMDAyMDAwMDUgQ1I0OiAwMDAwMDAwMDAwMzcw
+NmUwDQpCVUc6IGtlcm5lbCBOVUxMIHBvaW50ZXIgZGVyZWZlcmVuY2UsIGFkZHJlc3M6IDAwMDAw
+MDAwMDAwMDAwMDgNCiNQRjogc3VwZXJ2aXNvciB3cml0ZSBhY2Nlc3MgaW4ga2VybmVsIG1vZGUN
+CiNQRjogZXJyb3JfY29kZSgweDAwMDIpIC0gbm90LXByZXNlbnQgcGFnZQ0KDQpUaGlzIHNlZW1z
+IHRvIGJlIHRyaWdnZXJlZCBieSBFRklfUVVFUllfVkFSSUFCTEVfSU5GTyBoZXJlDQpodHRwczov
+L2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGludXgva2VybmVsL2dpdC90b3J2YWxkcy9saW51eC5n
+aXQvdHJlZS9kcml2ZXJzL2Zpcm13YXJlL2VmaS9ydW50aW1lLXdyYXBwZXJzLmMjbjIyMA0KYW5k
+IHdpdGhpbiB0aGF0IHNlY3Rpb24sIHRoZSBpbnZhbGlkIG9wY29kZSBzZWVtcyB0byBiZSBvY2N1
+cnJpbmcgaW4NCnRoaXMgYml0IG9mIGFzc2VtYmx5Og0KaHR0cHM6Ly9naXQua2VybmVsLm9yZy9w
+dWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvdG9ydmFsZHMvbGludXguZ2l0L3RyZWUvYXJjaC94ODYv
+cGxhdGZvcm0vZWZpL2VmaV9zdHViXzY0LlMNCg0KcHJpbnRpbmcgZWZpX2NhbGxfdmlydCdzIGFy
+Z3VtZW50cyB3aXRoDQpwcl9lcnIoIjE6ICVkLCAyOiAlZCwgMzogJWQsIDQ6ICVkIiwgKih1MzIg
+KilhcmcxLCAodTY0ICopYXJnMiwgKHU2NCAqKWFyZzMsICh1NjQgKilhcmc0KTsNCmdldHMgbWUg
+IjE6IDcsIDI6IC0yMDc5MzQzMTYwLCAzOiAtMjA3OTM0MzE1MiwgNDogLTIwNzkzNDMxNDQiDQoN
+Cg0K4oCUDQoNCkkgaG9wZSBJIHNoYWxsIGdldCBhIHJlcGx5IHRoaXMgdGltZS4NCg0KUmVnYXJk
+cw0KQWRpdHlh
