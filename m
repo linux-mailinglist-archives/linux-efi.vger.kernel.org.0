@@ -2,94 +2,102 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD3DD48A15B
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Jan 2022 22:03:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E845548A16A
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Jan 2022 22:08:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343729AbiAJVDX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 10 Jan 2022 16:03:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41538 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239741AbiAJVDW (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 10 Jan 2022 16:03:22 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 559C7C06173F
-        for <linux-efi@vger.kernel.org>; Mon, 10 Jan 2022 13:03:22 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EB55D6144D
-        for <linux-efi@vger.kernel.org>; Mon, 10 Jan 2022 21:03:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FECBC36AE3;
-        Mon, 10 Jan 2022 21:03:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641848601;
-        bh=gmbgTpUCma8vqRryUGeA1dcUqoF5o1aJ6+HHNyFUaKE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=QJEP4BTs6iqBGl/ZgpYHaIOlHDuG76AiugyjnhmJTmBRcTHe50/M6FPef6CtQ0js7
-         N7Sn9ue8z37teXs33MI2JC4HZJvAq0XJcY3Yos4ZxHms6lUH4OIH+citu5ufwCXeFD
-         2X7GXX8BGiFSPESxQwBvRrM6b5l+Fk8AGVhiDaLvCCfuj7owxEl4/k3uzSQQDMaAW9
-         MIJsBvwqQO/mFJkQrGkSbSUJa+nwiGLoR4K6QeFEhkNYYaqKqvhSuCTLaASSG9jU0f
-         /401j3CtAHqI573LUfbCILerZHK0Vxwdkn6O5KYHSQvo0E2uKb5RCrVVfyOZG+t0dz
-         operXKHzxq4Fg==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     torvalds@linux-foundation.org
-Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
-Subject: [GIT PULL] EFI updates for v5.17
-Date:   Mon, 10 Jan 2022 22:03:07 +0100
-Message-Id: <20220110210307.918857-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        id S1343753AbiAJVIb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 10 Jan 2022 16:08:31 -0500
+Received: from smtp-fw-2101.amazon.com ([72.21.196.25]:4773 "EHLO
+        smtp-fw-2101.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1343748AbiAJVIb (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 10 Jan 2022 16:08:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1641848911; x=1673384911;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=yjO6U4uKoARUGKtvAbqdxTxSWwveKOu34rLs2Z2ZGuM=;
+  b=qLL9EhyfLOK1ylePavhAzjwfK0+DZAgpm3REyXKgB1vE36X34AI/ubRP
+   bMT4RDkd/VwBno/dpcars0qQVv9jKD0eC0WEF9AlmgfgkfIBZYCtMna4C
+   BK2L7zV3RyrKl3IV5BQ5uS9cRQfpB7UHIM7Ih0fbbkRt2oNPywgWVUSD8
+   8=;
+X-IronPort-AV: E=Sophos;i="5.88,278,1635206400"; 
+   d="scan'208";a="164755166"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-iad-1a-2d7489a4.us-east-1.amazon.com) ([10.43.8.2])
+  by smtp-border-fw-2101.iad2.amazon.com with ESMTP; 10 Jan 2022 21:08:30 +0000
+Received: from EX13MTAUWB001.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
+        by email-inbound-relay-iad-1a-2d7489a4.us-east-1.amazon.com (Postfix) with ESMTPS id 62C99C387B;
+        Mon, 10 Jan 2022 21:08:27 +0000 (UTC)
+Received: from EX13D13UWA001.ant.amazon.com (10.43.160.136) by
+ EX13MTAUWB001.ant.amazon.com (10.43.161.249) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.26; Mon, 10 Jan 2022 21:08:26 +0000
+Received: from EX13MTAUEA002.ant.amazon.com (10.43.61.77) by
+ EX13D13UWA001.ant.amazon.com (10.43.160.136) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.26; Mon, 10 Jan 2022 21:08:26 +0000
+Received: from dev-dsk-fllinden-2c-d7720709.us-west-2.amazon.com
+ (172.19.206.175) by mail-relay.amazon.com (10.43.61.169) with Microsoft SMTP
+ Server id 15.0.1497.26 via Frontend Transport; Mon, 10 Jan 2022 21:08:25
+ +0000
+Received: by dev-dsk-fllinden-2c-d7720709.us-west-2.amazon.com (Postfix, from userid 6262777)
+        id 82869A1; Mon, 10 Jan 2022 21:08:25 +0000 (UTC)
+From:   Frank van der Linden <fllinden@amazon.com>
+To:     <linux-arm-kernel@lists.infradead.org>, <rppt@kernel.org>,
+        <robh+dt@kernel.org>, <frowand.list@gmail.com>, <ardb@kernel.org>,
+        <linux-mm@kvack.org>, <devicetree@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kexec@lists.infradead.org>, <catalin.marinas@arm.com>,
+        <will@kernel.org>
+CC:     <geert+renesas@glider.be>,
+        Frank van der Linden <fllinden@amazon.com>
+Subject: [PATCH 0/3] usable memory range fixes (arm64/fdt/efi)
+Date:   Mon, 10 Jan 2022 21:08:06 +0000
+Message-ID: <20220110210809.3528-1-fllinden@amazon.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1939; h=from:subject; bh=gmbgTpUCma8vqRryUGeA1dcUqoF5o1aJ6+HHNyFUaKE=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBh3J8Kl+b/qoQNpgv/GQ1D1RNPQTEAdc+rARGOfnwm 6CX7B3SJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYdyfCgAKCRDDTyI5ktmPJAlxDA CSMV2ARIx88dcsfhsnBOSBrY5Yf/kaUQ7DUBxTm1NbZNhtpjfuP7FtCGmVfo60rk9FUCY3OOeciGMX O2uN18vhhQ+CykrZDjY2o/xu6AqLALmhI25ijYc/hxa+TDOUjlaYoNZu8ynLZS5NnB5xMEjuc0BjNx Tw9Eu+G7cQo80IJarNeaqq3WICDpjRr77VRpEpe08x5mlmy/Hx+O/4io2DhneEZdPvqRhhCqXo54s9 kfjmcRUpu+fTTYUdOneL8kQl3LLbuY/wAaxy9oz9AOp4C5LSwOPYsT+bpFyRSiK5wBY16GPL5O9vxT RYgouhItrUx4ttd44KpEmvnb591US9fxbOWC7ljX960Iw5sr7dUPQUacqmPJAKdUAo0aoZ+OVJP4C9 dZ0/Dc3DLq95hFpB/wr1JN/ncpXqyaKAjcPePEukkJDbtgnssaAiqHHfPjCrdbkK08yEi3Cu951v1K mtFhB8ysyHJB+5UjM+xRMde8M+gLlxpbSjZfwYcUHaIcU=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The following changes since commit fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf:
+b261dba2fdb2 ("arm64: kdump: Remove custom linux,usable-memory-range handling")
+moved capping memory ranges using the FDT-specified linux,usable-memory-range
+to the FDT code. This property is used to specify the memory range that
+a crash kernel runs in.
 
-  Linux 5.16-rc1 (2021-11-14 13:56:52 -0800)
+While this correctly filters any memory ranges that come from the DT,
+this breaks crash kernels on arm64 EFI systems. In these cases, DT is used
+for the usable-memory-range property, but the actual memory ranges
+come from EFI. Since the call to filter them was moved to the FDT
+code, which runs before the EFI init code, the EFI ranges are not
+filtered anymore, leading to the crash kernel using memory that
+it shouldn't.
 
-are available in the Git repository at:
+This set fixes the the issue by having the EFI code cap its
+memory ranges too, and defining a common interface for both the
+DT and EFI code to use.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next-for-v5.17
+These changes stick to the "firmware code should cap its own memory ranges"
+idea, using a common memblock interface. An alternative would be to
+use an FDT-specific interface as before, called from arm64_memblock_init,
+but having things a little more generalized seemed like a good idea.
 
-for you to fetch changes up to 42f4046bc4ba56c6e4d2af7a9d7f70eaa563daec:
+This is only a functional change on architectures that have both
+DT and EFI, and a usable-memory-range property (which is just arm64).
+On any other architecture, usable_size will not be set, leading to a
+memblock_cap_memory_range call with 0 size, which is a no-op.
 
-  efi: use default_groups in kobj_type (2022-01-06 21:19:05 +0100)
+Frank van der Linden (3):
+  memblock: define functions to set the usable memory range
+  of: fdt: use memblock usable range interface
+  efi: enforce usable memory range after reserving regions
 
-----------------------------------------------------------------
-EFI updates for v5.17
+ drivers/firmware/efi/efi-init.c |  7 +++++++
+ drivers/of/fdt.c                |  3 ++-
+ include/linux/memblock.h        |  2 ++
+ mm/memblock.c                   | 37 +++++++++++++++++++++++++++++++++
+ 4 files changed, 48 insertions(+), 1 deletion(-)
 
-- support taking the measurement of the initrd when loaded via the
-  LoadFile2 protocol
-- kobject API cleanup from Greg
-- some header file whitespace fixes
+-- 
+2.32.0
 
-----------------------------------------------------------------
-Ard Biesheuvel (3):
-      efi/libstub: add prototype of efi_tcg2_protocol::hash_log_extend_event()
-      efi/libstub: x86/mixed: increase supported argument count
-      efi/libstub: consolidate initrd handling across architectures
-
-Elyes HAOUAS (1):
-      include/linux/efi.h: Remove unneeded whitespaces before tabs
-
-Greg Kroah-Hartman (1):
-      efi: use default_groups in kobj_type
-
-Ilias Apalodimas (1):
-      efi/libstub: measure loaded initrd info into the TPM
-
- arch/x86/boot/compressed/efi_thunk_64.S        | 14 +++--
- arch/x86/include/asm/efi.h                     | 14 +++--
- arch/x86/platform/efi/efi_thunk_64.S           | 14 ++++-
- drivers/firmware/efi/efivars.c                 |  3 +-
- drivers/firmware/efi/esrt.c                    |  4 +-
- drivers/firmware/efi/libstub/efi-stub-helper.c | 73 +++++++++++++++++++++-----
- drivers/firmware/efi/libstub/efi-stub.c        | 10 +---
- drivers/firmware/efi/libstub/efistub.h         | 30 ++++++++++-
- drivers/firmware/efi/libstub/x86-stub.c        | 26 ++++-----
- drivers/firmware/efi/runtime-map.c             |  3 +-
- include/linux/efi.h                            |  6 +--
- 11 files changed, 144 insertions(+), 53 deletions(-)
