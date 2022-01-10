@@ -2,196 +2,190 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 303B5489D85
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Jan 2022 17:28:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 639C7489DB7
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Jan 2022 17:38:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237392AbiAJQ2D (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 10 Jan 2022 11:28:03 -0500
-Received: from mail-ma1ind01olkn0152.outbound.protection.outlook.com ([104.47.100.152]:32032
-        "EHLO IND01-MA1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S237384AbiAJQ2C (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 10 Jan 2022 11:28:02 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dq1SuuGylT2EVOshNr9SJpYYe54bSbjl2tFGIlyPhupXTNSKgGsRJL3xfCLjqiAMLwAQigHc8AsR34U9iDKjtJEcRWX3qCKzmi5qVmnbOAPDh0xDfR1z5AHN2mTDUFazUHH03Nq2MkrqC3JijnP17CUTfAYeSL1OgWq6w9z0WEb0Krgkno5pEmAEQ8N+iJ3Y4Yo51KNqtUhvo52SlRb1NvRjlwQVI1eGRZu9z2g4alhowZYOGS4GteRMc5lQWzBbJSuzJAAuz299ziMRhEp1Bjs5IIbzsfAnB8salbU7UrXxqPy4wQABZxjHiiPeqVlVP9qETqk9WfFedX0z6kl0DQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/k91U37erlL0QyaIfQ7eR5OyczpLRzVr5rUssbNDHC8=;
- b=WouXqn40ctoDpjatqyz4VafiwWKtLrG5fvnW4hLc5IPn1VgEDtBpSGt9uhqrcd99fX2KEbmk3ijwHMxXCJUpcBkEYlbZBO+CzdA5Lu1k90MNAQXJ3GkMtIG783QoCvcv9+F6qN3vx8hVdSXEtA/H5VMk19+PBsshdVDIUr61I4zVlIMWa/07xzqIHocpVCu3eR4E8muusdGYxHE3IJD8r0y+ADRXQMmU6ahuqBplT2goZCClV+q26tFQUUhEZJwHnCE6toE7cyHKbvFOf9vJ++eNtUbDsDXmCIJYRGYxqm6d/tidua2FlfQ0NhHYGAfL9MfXHupRUJg3ioObdc3kDQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/k91U37erlL0QyaIfQ7eR5OyczpLRzVr5rUssbNDHC8=;
- b=CqEA/R82Emvahp3GH6rV7xd3hZ6+ZGe+9D2o9DG6cJN6ImrokowK4jKRFWruAdese3SwOIAp3YCmM27jMEhHmNPpD1Y7mECxnYDE3l2KDTd03Ecb3gAO5/QQkbHjAlGfrLoF720Zy2r4osypBUhe8MZzFKQ9pfYaeBuTy7jNauwY8C27jN7T5xQvS0xclVVN+MxyABPO8npW7fTfZ2zgcKoNzgyDPNH+dHMnMPBqPKr6QX4PpiLfbBceJ69Ddm+6WBmA6w+iKqaXyG90MOepmgEXGdJEWM5+0aHmdLD2YQbc+k+wDDRr/a90gUnN6I7zNJLIlSZm6AcJ5uo9nm6v3w==
-Received: from PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:1b::13)
- by PN3PR01MB7679.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:cf::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4867.9; Mon, 10 Jan
- 2022 16:27:57 +0000
-Received: from PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
- ([fe80::7ca6:9165:19ec:4cd7]) by PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
- ([fe80::7ca6:9165:19ec:4cd7%8]) with mapi id 15.20.4867.011; Mon, 10 Jan 2022
- 16:27:57 +0000
-From:   Aditya Garg <gargaditya08@live.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-CC:     "matthew.garrett@nebula.com" <matthew.garrett@nebula.com>,
+        id S237564AbiAJQiO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 10 Jan 2022 11:38:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35930 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237552AbiAJQiN (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 10 Jan 2022 11:38:13 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A4E1C06173F;
+        Mon, 10 Jan 2022 08:38:13 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id EEB79B816ED;
+        Mon, 10 Jan 2022 16:38:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5584C36AE3;
+        Mon, 10 Jan 2022 16:38:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1641832690;
+        bh=cJK7EpVCPGt1/Ax6wVPF/b0WeLje0bMc0HnxDb/Z9eo=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=toWvs/SAlHa1M+zENhsFKRwqRzlTtqxldE15qo7skLG7+B5D2uUWLbBTGFYwXO8jX
+         GfQpfrQXIQG8p3yd+Ig9lAqvmWPB/02VwVXdJ5bJBbH9tHMrE2nTR0ypm7FkmHYy48
+         wlqlbrDS5tbA/YfvJXn+wehO9Z29ChfJiv21DJ1FSwd+61EYZDFDkUsCyWuKDH0tT5
+         aV2DRamlyXhH3JnovFFa8xx8bsr/VgdGen1P1mp4vHDG6XuCN5E8IqaREPUb4Uzf2j
+         sH2iEcvDuMJWbzxz3ocAh2DBVufAGcAPv8rZ9cCulCbYLuzEJsANKT0KSwuZeeL2dW
+         /ea6+ZASPbtKA==
+Received: by mail-wm1-f48.google.com with SMTP id p1-20020a1c7401000000b00345c2d068bdso10098173wmc.3;
+        Mon, 10 Jan 2022 08:38:10 -0800 (PST)
+X-Gm-Message-State: AOAM530IRCYT5or93BVYMghDZLpWWt3sKASDMxQ6pJmJDaD3RrIw1XVS
+        8HVykvXm77fjy9bx51zRU/T345DnbfrzUFh42YI=
+X-Google-Smtp-Source: ABdhPJyEPMgbjybWI2XBKABrfgMkth3MB9/f52zAgU2nVWQiFANd8qZvID153NkO1Hxh7uUimznWzPjpshF+YB8oe8s=
+X-Received: by 2002:a05:600c:1991:: with SMTP id t17mr242340wmq.25.1641832688965;
+ Mon, 10 Jan 2022 08:38:08 -0800 (PST)
+MIME-Version: 1.0
+References: <6D757C75-65B1-468B-842D-10410081A8E4@live.com>
+ <CAMj1kXETPO9iJoFm26v5gof2xpakHkvz3YV4ahet7BLjX5m5FQ@mail.gmail.com> <D3B9962F-F6F0-4622-9E0F-A3EABACAD471@live.com>
+In-Reply-To: <D3B9962F-F6F0-4622-9E0F-A3EABACAD471@live.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Mon, 10 Jan 2022 17:37:57 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGem3QB0rj-b57xrcDYkCv6Moi=RX1OUspj3s4vMtsdug@mail.gmail.com>
+Message-ID: <CAMj1kXGem3QB0rj-b57xrcDYkCv6Moi=RX1OUspj3s4vMtsdug@mail.gmail.com>
+Subject: Re: [BUG][SEVERE] Enabling EFI runtime services causes panics in the
+ T2 security chip on Macs equipped with it.
+To:     Aditya Garg <gargaditya08@live.com>
+Cc:     "matthew.garrett@nebula.com" <matthew.garrett@nebula.com>,
         "jk@ozlabs.org" <jk@ozlabs.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Orlando Chamberlain <redecorating@protonmail.com>,
         Aun-Ali Zaidi <admin@kodeit.net>
-Subject: Re: [BUG][SEVERE] Enabling EFI runtime services causes panics in the
- T2 security chip on Macs equipped with it.
-Thread-Topic: [BUG][SEVERE] Enabling EFI runtime services causes panics in the
- T2 security chip on Macs equipped with it.
-Thread-Index: AQHYBjftpMq4zkRpy0ySdpCXbzTJeKxcamkAgAAHMYA=
-Date:   Mon, 10 Jan 2022 16:27:57 +0000
-Message-ID: <D3B9962F-F6F0-4622-9E0F-A3EABACAD471@live.com>
-References: <6D757C75-65B1-468B-842D-10410081A8E4@live.com>
- <CAMj1kXETPO9iJoFm26v5gof2xpakHkvz3YV4ahet7BLjX5m5FQ@mail.gmail.com>
-In-Reply-To: <CAMj1kXETPO9iJoFm26v5gof2xpakHkvz3YV4ahet7BLjX5m5FQ@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-tmn:  [Z/fFEumZVh29wo3bZF5LFALvz+ebbHUGFE0GnkGVufJWQXF3WR5fQk8en1a7tfW5]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 97bcb793-3ed6-4b13-1ecf-08d9d456298b
-x-ms-traffictypediagnostic: PN3PR01MB7679:EE_
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: QpHQuICMi9w7D4nWYuEVgsht8IfN4VEQk+Fpl81/4f11ZXBVrnvvCOKROv2EnhIegf9n3ZzUYYmoZs6Bda2oXOIuUqZEA6PtdwafUhv9j2T4RhurKFPm9cZ/dy5oJwUNeMI5ONuHHRXteJAhmNh2aASsAWK06NSvuxXcNmC/q/cIhdsz1elxE8IZ/MZAF8BT8tPfRyngdQ2Wv7aYfXO3DdxP+Ngi9cjVrmK7HdxzErFMUkVsJxhpJSqLv0GTFYoJFn8YyNxHAiKTArKa2awo8jMFQW1zELYpwaBBs8Z6miEeUacClPW67neUM+lc60vYW2Z981Os4WCctzeWvQZXBt7TTr3wcNqjAVcrRtphRRv5mlp75lsxzmN4jdjx6AmiKj84vqWUwe16ZOJDUT5zCRppreB5XuCZN5maVuN3h/M3ev/jgaf7C1kT7qXYo5LJqpfu3ChvkiOq9F805mdsQYad4qvnMmjKAoAHM0mNPZGtvZppLT5MBqFu0Nxs3TA5zE/H+q/YDLD3aESS3OWrs259NaLh6WAWCHOT43Z2Hy+ozd5xl6O1JduEe6a6VHSrNDYN/q7NDt0lgwUUQd4Xaqw2hr/kc3ktXp0gnkJjdSe4fVFJnfJdnLBW3nwpkr+6
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?OTZoV1pod0N4TjlGQ25SamVNV3lKdjdtMm95MzJvNkxMNnBYdlg2TkxuMG1Y?=
- =?utf-8?B?L2FINUVTM3hPM2x0eXhiL3Yza1hVK2RnbkExdW5wNzgwOHpUWkVWeDkxQWF2?=
- =?utf-8?B?M3U2eFQra1NvQVlyaVc0aXg4cjk5ZTIyNWk0NXpZd2d1M2g2bE9rRUtxaS9R?=
- =?utf-8?B?TkVKWHRCQTdleGxPK2I5K0FwKzhIL1VwbFJxZktVZjR3YXE3SjRMTjJQVllr?=
- =?utf-8?B?Y0JNdTdaUXZPWlZDYjk3M2ZsRHJqaUR2K0wrSEMzWWQ5Yi9MMUdPZ0ZyeUU0?=
- =?utf-8?B?dFlzMmx5MVUxZ2FuUEtxS0xVRWpteVN5NU1iTUZYWkZEQzZWSWttNW5GYTg0?=
- =?utf-8?B?YzNSRVlzWVBYZXlCVDMwVi94S1dmL3J4RWtKNGdadUF0RWIyNlJTVTVHdUl3?=
- =?utf-8?B?RHRETmVnREt2dVRaZHF2T3JuZng0cjJoTVZMSWFmQlBhdlBZa0N5NmhpSTlH?=
- =?utf-8?B?d1lkNDR5cFo1TXhmck1keCtyREdYSS9tdlkyNzZxVDBWV3JubGp6d1BKZXBP?=
- =?utf-8?B?WmdiUTNIY3NVMEVtVXRkeEpmc2R5eHRDMkU3bWxtV0hmSFNvWURhYWxkMk5z?=
- =?utf-8?B?M0wrL214T084TG10K0JRN0x6eklBNnVMWHRhd1kxMHl2SjdjNmxzUTJyRnlu?=
- =?utf-8?B?cjdzYXdoM0k1dERtc1NGU0IxUm11OU5OZ2J6LzhFVFVCYUZ0d2NvMllvb3dP?=
- =?utf-8?B?czRvRGFUZDB0eTdTRjFEa3JiN1NxcVJRaHZCYXVJdnpIbXR1amozaXFSRTcx?=
- =?utf-8?B?a2hGUlgzQ2pNVTJmUmk5SFFqRVdmSEhSWkllV3cvNUhRejJQOXJTSUFuMVNy?=
- =?utf-8?B?TXJWdTJoTk92WjZKN3VITGpWOU5ZZTE4bWFBdHdhTW9nZ0hxUkNlUlpuRXhh?=
- =?utf-8?B?ajB0NG5TSkRCcGxRZWR6dDNYVi83L3RmdEhRb1JFK1JHWThJazdzZ1Axa0VC?=
- =?utf-8?B?a1ZaUUFXaVNJeTgzb2JUYWduSktpMDk2dDlXVG1MUE56dVN1MU9iQ2lxTnRi?=
- =?utf-8?B?c25jdmVDeEJWdEwxSXJ5T2VtZGNMN3FPc1BHSHF3c3JKbGNYMENUMWpYQUVm?=
- =?utf-8?B?eWpWbTZjbGM5Q0tiQ2kzQnlVUjF4MGRaYUhlTW9yL0F0b1dLa3BxQ0pSSUFi?=
- =?utf-8?B?YlpOb0RIcEpjdUZXTnJ0L1A5VEgzRUl1Um52cG80TnZkVVNvdmY0dlNJNW8v?=
- =?utf-8?B?aVFYb3ZQVzhNR2VzRWptOVpZUVlRZkhEOE9OSmd5S1l4WCtaa2VWcTNXcDV0?=
- =?utf-8?B?YWgyQmVIT3NRSGZKZ2grcGU3dDE0SWFPOUExVkYxYjV2Rk82SEdBamNNTjVM?=
- =?utf-8?B?NmxFMUJ2Y2hFWWVGa2RmcjZ5NEdZSnR4NEdvYWlTY3Y2d1Q5WU1VbHVlQ2lQ?=
- =?utf-8?B?WFlMaTBaWS8zVUE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B9E38576979BC84D99359BBF52161622@INDPRD01.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-42ed3.templateTenant
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 97bcb793-3ed6-4b13-1ecf-08d9d456298b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jan 2022 16:27:57.8227
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN3PR01MB7679
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-DQo+IEFzIGZhciBhcyBJIGNhbiB0ZWxsLCB3aGF0IHdlIG5lZWQgaGVyZSBpcyBhIERNSSBxdWly
-ayB0aGF0IGp1c3QNCj4gZGlzYWJsZXMgRUZJIHJ1bnRpbWUgc3VwcG9ydCBvbiB0aGVzZSBwbGF0
-Zm9ybXMuDQoNCklmIHRoYXTigJlzIHRoZSBsYXN0IG9wdGlvbiwgcGxlYXNlIHByb3Bvc2UgYSBw
-YXRjaCBmb3IgdGhlIHNhbWUuDQoNCj4gDQo+PiBVc2luZyBlZmk9bm9ydW50aW5lIChvciBub2Vm
-aSkgYXMgYSBrZXJuZWwgcGFyYW1ldGVyIHNlZW1zIHRvIGZpeCB0aGUgaXNzdWUuIEFsc28sIG1h
-a2luZyBOVlJBTSByZWFkLW9ubHkgbWFrZXMga2VybmVscyBib290LiBBIGZpeCBmb3IgdGhhdCB3
-b3VsZCBiZSBhcHByZWNpYXRlZC4NCj4+IA0KPj4gTGluayA6LSBodHRwczovL2J1Z3ppbGxhLmtl
-cm5lbC5vcmcvc2hvd19idWcuY2dpP2lkPTIxNTI3Nw0KPj4gDQo+PiBXZSBiZWxpZXZlIGtlcm5l
-bCBvbmx5IGZhaWxzIHRvIGJvb3QgaWYgc29tZXRoaW5nIGlzIHNldCB1cCB0byB3cml0ZSB0byBu
-dnJhbSBhdCBib290LCBpdCBjYW4gYm9vdCBmaW5lIG9uIGEgTWFjQm9va1BybzE2LDEgYXMgbG9u
-ZyBhcyBJIGRvbid0IGhhdmUgYW55dGhpbmcgd3JpdGluZyB0byBudnJhbSAoZGVsZXRpbmcgYW5k
-IHJlYWRpbmcgdmFyaWFibGVzIGlzIGZpbmUpLg0KPj4gDQo+PiBUaGUgdDIgc2VjdXJpdHkgY2hp
-cCBoYW5kbGVzIG52cmFtIGFuZCBsb2FkaW5nIGJvb3Rsb2FkZXJzIG9uIHRoZXNlDQo+PiBtYWNz
-LiBJdHMgYnJpZGdlT1MgaGFkIGFuIHVwZGF0ZSB0aGF0IHdhcyBidW5kbGVkIHdpdGggbWFjT1Mg
-Q2F0YWxpbmENCj4+ICh0aGlzIGNhbid0IGJlIGRvd25ncmFkZWQsIGFuZCBzb21lIGNvbXB1dGVy
-cyBzaGlwcGVkIHdpdGggbWFjT1MNCj4+IENhdGFsaW5hKSwgdGhhdCBtYWRlIHdyaXRpbmcgdG8g
-bnZyYW0gZnJvbSBMaW51eCBjYXVzZSBhbiBpbnZhbGlkDQo+PiBvcGNvZGUgZXJyb3IgYW5kIGEg
-ZnJvemVuIHN5c3RlbToNCj4+IA0KPj4gaW52YWxpZCBvcGNvZGU6IDAwMDAgWyMxXSBQUkVFTVBU
-IFNNUCBQVEkNCj4+IENQVTogOSBQSUQ6IDEzNSBDb21tOiBrd29ya2VyL3UyNDoyIFRhaW50ZWQ6
-IEcgUyAgIFUgICBDICAgICAgICA1LjE2LjAtcmM0LTAwMDU0LWc2YzNlY2I0N2JiNzUtZGlydHkg
-IzcyDQo+PiBIYXJkd2FyZSBuYW1lOiBBcHBsZSBJbmMuIE1hY0Jvb2tQcm8xNiwxL01hYy1FMTAw
-ODMzMUZEQzk2ODY0LCBCSU9TIDE3MTUuNDAuMTUuMC4wIChpQnJpZGdlOiAxOS4xNi4xMDU0OC4w
-LjAsMCkgMTAvMDMvMjAyMQ0KPj4gV29ya3F1ZXVlOiBlZmlfcnRzX3dxIGVmaV9jYWxsX3J0cw0K
-Pj4gUklQOiAwMDEwOjB4ZmZmZmZmZmVlZmM0Njg3Nw0KPj4gQ29kZTogOGIgNTggMTggMGYgYjYg
-MGQgZTEgMDkgMDAgMDAgNDggYzEgZTEgMDQgZTggMzAgMDMgMDAgMDAgNDggODkgMDUgZDkgMDkg
-MDAgMDAgODAgM2QgYTIgMDkgMDAgMDAgMDEgNzUgMDkgNDggYzcgMDcgMDAgMTAgMDAgMDAgPDBm
-PiAwYiA0OCA4YiAwNSBhOCAwNyAwMCAwMCA4YiA0MCAwOCA0OCA4MyBjMCBmMCA0OCA4OSAwNyA0
-OCBjNyAwNg0KPj4gUlNQOiAwMDE4OmZmZmY5OThkNDA1MTNkZDAgRUZMQUdTOiAwMDAxMDI0Ng0K
-Pj4gUkFYOiBmZmZmOTk4ZDQwNTEzZWIwIFJCWDogZmZmZjk5OGQ0M2YxN2RkOCBSQ1g6IDAwMDAw
-MDAwMDAwMDAwMDcNCj4+IFJEWDogZmZmZjk5OGQ0M2YxN2RjOCBSU0k6IGZmZmY5OThkNDNmMTdk
-ZDggUkRJOiBmZmZmOTk4ZDQzZjE3ZGM4DQo+PiBSQlA6IGZmZmY5OThkNDA1MTNlMDAgUjA4OiBm
-ZmZmOTk4ZDQzZjE3ZGQwIFIwOTogZmZmZjk5OGQ0M2YxN2RkOA0KPj4gUjEwOiBmZmZmOTk4ZDQw
-NTEzYzgwIFIxMTogZmZmZmZmZmY5YjRjYWJlOCBSMTI6IGZmZmY5OThkNDNmMTdkYzgNCj4+IFIx
-MzogZmZmZjk5OGQ0M2YxN2RkMCBSMTQ6IDAwMDAwMDAwMDAwMDAyNDYgUjE1OiAwMDAwMDAwMDAw
-MDAwMDQ4DQo+PiBGUzogIDAwMDAwMDAwMDAwMDAwMDAoMDAwMCkgR1M6ZmZmZjhjZjhiZWM0MDAw
-MCgwMDAwKSBrbmxHUzowMDAwMDAwMDAwMDAwMDAwDQo+PiBDUzogIDAwMTAgRFM6IDAwMDAgRVM6
-IDAwMDAgQ1IwOiAwMDAwMDAwMDgwMDUwMDMzDQo+PiBDUjI6IDAwMDA3ZjkxMzM1OTQzNzQgQ1Iz
-OiAwMDAwMDAwMTAwMjAwMDA1IENSNDogMDAwMDAwMDAwMDM3MDZlMA0KPj4gQ2FsbCBUcmFjZToN
-Cj4+IDxUQVNLPg0KPj4gPyBfcHJpbnRrKzB4NTgvMHg2Zg0KPj4gX19lZmlfY2FsbCsweDI4LzB4
-MzANCj4+IGVmaV9jYWxsX3J0cy5jb2xkKzB4ODMvMHgxMDQNCj4+IHByb2Nlc3Nfb25lX3dvcmsr
-MHgyMTkvMHgzZjANCj4+IHdvcmtlcl90aHJlYWQrMHg0ZC8weDNkMA0KPj4gPyByZXNjdWVyX3Ro
-cmVhZCsweDM5MC8weDM5MA0KPj4ga3RocmVhZCsweDE1Yy8weDE4MA0KPj4gPyBzZXRfa3RocmVh
-ZF9zdHJ1Y3QrMHg0MC8weDQwDQo+PiByZXRfZnJvbV9mb3JrKzB4MjIvMHgzMA0KPj4gPC9UQVNL
-Pg0KPj4gTW9kdWxlcyBsaW5rZWQgaW46IHh0X0NIRUNLU1VNIHh0X01BU1FVRVJBREUgeHRfY29u
-bnRyYWNrIGlwdF9SRUpFQ1QgbmZfcmVqZWN0X2lwdjQgeHRfdGNwdWRwIG5mdF9jb21wYXQgYW1k
-Z3B1IG5mdF9jaGFpbl9uYXQgbmZfbmF0IG5mX2Nvbm50cmFjayBuZl9kZWZyYWdfaXB2NiBuZl9k
-ZWZyYWdfaXB2NCBuZnRfY291bnRlciBuZl90YWJsZXMgbg0KPj4gc3lzaW1nYmx0IGZiX3N5c19m
-b3BzIGNlYyBjcmMxNiBpbnRlbF9wY2hfdGhlcm1hbCBzYnMgZWNkaF9nZW5lcmljIGVjYyByZmtp
-bGwgYXBwbGVfYmwgdmlkZW8gYWNwaV90YWQgbWFjX2hpZCBzYnNoYyBwa2NzOF9rZXlfcGFyc2Vy
-IGRybSBmdXNlIGNyeXB0b191c2VyIGJwZl9wcmVsb2FkIGlwX3RhYmxlcyB4X3RhYmxlcyBjcmN0
-MTBkaWZfcGNsDQo+PiAtLS1bIGVuZCB0cmFjZSAyMmY4YWFkOTE3NjFjYzRhIF0tLS0NCj4+IFJJ
-UDogMDAxMDoweGZmZmZmZmZlZWZjNDY4NzcNCj4+IENvZGU6IDhiIDU4IDE4IDBmIGI2IDBkIGUx
-IDA5IDAwIDAwIDQ4IGMxIGUxIDA0IGU4IDMwIDAzIDAwIDAwIDQ4IDg5IDA1IGQ5IDA5IDAwIDAw
-IDgwIDNkIGEyIDA5IDAwIDAwIDAxIDc1IDA5IDQ4IGM3IDA3IDAwIDEwIDAwIDAwIDwwZj4gMGIg
-NDggOGIgMDUgYTggMDcgMDAgMDAgOGIgNDAgMDggNDggODMgYzAgZjAgNDggODkgMDcgNDggYzcg
-MDYNCj4+IFJTUDogMDAxODpmZmZmOTk4ZDQwNTEzZGQwIEVGTEFHUzogMDAwMTAyNDYNCj4+IFJB
-WDogZmZmZjk5OGQ0MDUxM2ViMCBSQlg6IGZmZmY5OThkNDNmMTdkZDggUkNYOiAwMDAwMDAwMDAw
-MDAwMDA3DQo+PiBSRFg6IGZmZmY5OThkNDNmMTdkYzggUlNJOiBmZmZmOTk4ZDQzZjE3ZGQ4IFJE
-STogZmZmZjk5OGQ0M2YxN2RjOA0KPj4gUkJQOiBmZmZmOTk4ZDQwNTEzZTAwIFIwODogZmZmZjk5
-OGQ0M2YxN2RkMCBSMDk6IGZmZmY5OThkNDNmMTdkZDgNCj4+IFIxMDogZmZmZjk5OGQ0MDUxM2M4
-MCBSMTE6IGZmZmZmZmZmOWI0Y2FiZTggUjEyOiBmZmZmOTk4ZDQzZjE3ZGM4DQo+PiBSMTM6IGZm
-ZmY5OThkNDNmMTdkZDAgUjE0OiAwMDAwMDAwMDAwMDAwMjQ2IFIxNTogMDAwMDAwMDAwMDAwMDA0
-OA0KPj4gRlM6ICAwMDAwMDAwMDAwMDAwMDAwKDAwMDApIEdTOmZmZmY4Y2Y4YmVjNDAwMDAoMDAw
-MCkga25sR1M6MDAwMDAwMDAwMDAwMDAwMA0KPj4gQ1M6ICAwMDEwIERTOiAwMDAwIEVTOiAwMDAw
-IENSMDogMDAwMDAwMDA4MDA1MDAzMw0KPj4gQ1IyOiAwMDAwN2Y5MTMzNTk0Mzc0IENSMzogMDAw
-MDAwMDEwMDIwMDAwNSBDUjQ6IDAwMDAwMDAwMDAzNzA2ZTANCj4+IEJVRzoga2VybmVsIE5VTEwg
-cG9pbnRlciBkZXJlZmVyZW5jZSwgYWRkcmVzczogMDAwMDAwMDAwMDAwMDAwOA0KPj4gI1BGOiBz
-dXBlcnZpc29yIHdyaXRlIGFjY2VzcyBpbiBrZXJuZWwgbW9kZQ0KPj4gI1BGOiBlcnJvcl9jb2Rl
-KDB4MDAwMikgLSBub3QtcHJlc2VudCBwYWdlDQo+PiANCj4+IFRoaXMgc2VlbXMgdG8gYmUgdHJp
-Z2dlcmVkIGJ5IEVGSV9RVUVSWV9WQVJJQUJMRV9JTkZPIGhlcmUNCj4+IA0KPiANCj4gVGhpcyBp
-cyBpbnRlcmVzdGluZy4gUXVlcnlWYXJpYWJsZUluZm8oKSB3YXMgaW50cm9kdWNlZCBpbiBFRkkg
-Mi4wMCwNCj4gYW5kIGZvciBhIHZlcnkgbG9uZyB0aW1lLCBJbnRlbCBNQUNzIHdvdWxkIGNsYWlt
-IHRvIGltcGxlbWVudCBFRkkgMS4xMA0KPiBvbmx5LiBUaGlzIG1lYW5zIExpbnV4IHdvdWxkIG5l
-dmVyIGF0dGVtcHQgdG8gdXNlIFF1ZXJ5VmFyaWFibGVJbmZvKCkNCj4gb24gc3VjaCBwbGF0Zm9y
-bXMuDQo+IA0KPiBDYW4geW91IHBsZWFzZSBjaGVjayB5b3VyIGJvb3QgbG9nIHdoaWNoIHJldmlz
-aW9uIGl0IGNsYWltcyB0byBpbXBsZW1lbnQgbm93Pw0KPiANCj4gTWluZSBzYXlzDQo+IA0KPiBl
-Zmk6IEVGSSB2MS4xMCBieSBBcHBsZQ0KDQpNaW5lIHNheXMNCg0KZWZpOiBFRkkgdjIuNDAgYnkg
-QXBwbGUNCg0KPiANCj4gbmVhciB0aGUgc3RhcnQgb2YgdGhlIGtlcm5lbCBsb2cuDQo+IA0KPiAN
-Cj4gaHR0cHM6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvdG9ydmFs
-ZHMvbGludXguZ2l0L3RyZWUvZHJpdmVycy9maXJtd2FyZS9lZmkvcnVudGltZS13cmFwcGVycy5j
-I24yMjANCj4+IGFuZCB3aXRoaW4gdGhhdCBzZWN0aW9uLCB0aGUgaW52YWxpZCBvcGNvZGUgc2Vl
-bXMgdG8gYmUgb2NjdXJyaW5nIGluDQo+PiB0aGlzIGJpdCBvZiBhc3NlbWJseToNCj4+IGh0dHBz
-Oi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3RvcnZhbGRzL2xpbnV4
-LmdpdC90cmVlL2FyY2gveDg2L3BsYXRmb3JtL2VmaS9lZmlfc3R1Yl82NC5TDQo+PiANCj4gDQo+
-IEVobSBuby4gX19lZmlfY2FsbCgpIGlzIGp1c3QgYSB0cmFtcG9saW5lIHRvIGNhbGwgaW50byB0
-aGUgZmlybXdhcmUsDQo+IGFuZCB0aGUgb3Bjb2RlcyBpbiBxdWVzdGlvbiBhcmUgZmlybXdhcmUg
-Y29kZSBub3QgTGludXggY29kZS4NCg0K
+On Mon, 10 Jan 2022 at 17:28, Aditya Garg <gargaditya08@live.com> wrote:
+>
+>
+> > As far as I can tell, what we need here is a DMI quirk that just
+> > disables EFI runtime support on these platforms.
+>
+> If that=E2=80=99s the last option, please propose a patch for the same.
+>
+
+As the EFI maintainer for Linux, I'd be happy to merge a patch that
+implements this. But I don't have time to write it, nor do I have
+access to a recent Intel Mac, so I wouldn't be able to test it either.
+
+So I suggest that you escalate this issue to whoever is providing
+support for running Linux on your hardware, and I'm sure they will be
+happy to employ someone to fix this problem for you.
+
+
+
+> >
+> >> Using efi=3Dnoruntine (or noefi) as a kernel parameter seems to fix th=
+e issue. Also, making NVRAM read-only makes kernels boot. A fix for that wo=
+uld be appreciated.
+> >>
+> >> Link :- https://bugzilla.kernel.org/show_bug.cgi?id=3D215277
+> >>
+> >> We believe kernel only fails to boot if something is set up to write t=
+o nvram at boot, it can boot fine on a MacBookPro16,1 as long as I don't ha=
+ve anything writing to nvram (deleting and reading variables is fine).
+> >>
+> >> The t2 security chip handles nvram and loading bootloaders on these
+> >> macs. Its bridgeOS had an update that was bundled with macOS Catalina
+> >> (this can't be downgraded, and some computers shipped with macOS
+> >> Catalina), that made writing to nvram from Linux cause an invalid
+> >> opcode error and a frozen system:
+> >>
+> >> invalid opcode: 0000 [#1] PREEMPT SMP PTI
+> >> CPU: 9 PID: 135 Comm: kworker/u24:2 Tainted: G S   U   C        5.16.0=
+-rc4-00054-g6c3ecb47bb75-dirty #72
+> >> Hardware name: Apple Inc. MacBookPro16,1/Mac-E1008331FDC96864, BIOS 17=
+15.40.15.0.0 (iBridge: 19.16.10548.0.0,0) 10/03/2021
+> >> Workqueue: efi_rts_wq efi_call_rts
+> >> RIP: 0010:0xfffffffeefc46877
+> >> Code: 8b 58 18 0f b6 0d e1 09 00 00 48 c1 e1 04 e8 30 03 00 00 48 89 0=
+5 d9 09 00 00 80 3d a2 09 00 00 01 75 09 48 c7 07 00 10 00 00 <0f> 0b 48 8b=
+ 05 a8 07 00 00 8b 40 08 48 83 c0 f0 48 89 07 48 c7 06
+> >> RSP: 0018:ffff998d40513dd0 EFLAGS: 00010246
+> >> RAX: ffff998d40513eb0 RBX: ffff998d43f17dd8 RCX: 0000000000000007
+> >> RDX: ffff998d43f17dc8 RSI: ffff998d43f17dd8 RDI: ffff998d43f17dc8
+> >> RBP: ffff998d40513e00 R08: ffff998d43f17dd0 R09: ffff998d43f17dd8
+> >> R10: ffff998d40513c80 R11: ffffffff9b4cabe8 R12: ffff998d43f17dc8
+> >> R13: ffff998d43f17dd0 R14: 0000000000000246 R15: 0000000000000048
+> >> FS:  0000000000000000(0000) GS:ffff8cf8bec40000(0000) knlGS:0000000000=
+000000
+> >> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> >> CR2: 00007f9133594374 CR3: 0000000100200005 CR4: 00000000003706e0
+> >> Call Trace:
+> >> <TASK>
+> >> ? _printk+0x58/0x6f
+> >> __efi_call+0x28/0x30
+> >> efi_call_rts.cold+0x83/0x104
+> >> process_one_work+0x219/0x3f0
+> >> worker_thread+0x4d/0x3d0
+> >> ? rescuer_thread+0x390/0x390
+> >> kthread+0x15c/0x180
+> >> ? set_kthread_struct+0x40/0x40
+> >> ret_from_fork+0x22/0x30
+> >> </TASK>
+> >> Modules linked in: xt_CHECKSUM xt_MASQUERADE xt_conntrack ipt_REJECT n=
+f_reject_ipv4 xt_tcpudp nft_compat amdgpu nft_chain_nat nf_nat nf_conntrack=
+ nf_defrag_ipv6 nf_defrag_ipv4 nft_counter nf_tables n
+> >> sysimgblt fb_sys_fops cec crc16 intel_pch_thermal sbs ecdh_generic ecc=
+ rfkill apple_bl video acpi_tad mac_hid sbshc pkcs8_key_parser drm fuse cry=
+pto_user bpf_preload ip_tables x_tables crct10dif_pcl
+> >> ---[ end trace 22f8aad91761cc4a ]---
+> >> RIP: 0010:0xfffffffeefc46877
+> >> Code: 8b 58 18 0f b6 0d e1 09 00 00 48 c1 e1 04 e8 30 03 00 00 48 89 0=
+5 d9 09 00 00 80 3d a2 09 00 00 01 75 09 48 c7 07 00 10 00 00 <0f> 0b 48 8b=
+ 05 a8 07 00 00 8b 40 08 48 83 c0 f0 48 89 07 48 c7 06
+> >> RSP: 0018:ffff998d40513dd0 EFLAGS: 00010246
+> >> RAX: ffff998d40513eb0 RBX: ffff998d43f17dd8 RCX: 0000000000000007
+> >> RDX: ffff998d43f17dc8 RSI: ffff998d43f17dd8 RDI: ffff998d43f17dc8
+> >> RBP: ffff998d40513e00 R08: ffff998d43f17dd0 R09: ffff998d43f17dd8
+> >> R10: ffff998d40513c80 R11: ffffffff9b4cabe8 R12: ffff998d43f17dc8
+> >> R13: ffff998d43f17dd0 R14: 0000000000000246 R15: 0000000000000048
+> >> FS:  0000000000000000(0000) GS:ffff8cf8bec40000(0000) knlGS:0000000000=
+000000
+> >> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> >> CR2: 00007f9133594374 CR3: 0000000100200005 CR4: 00000000003706e0
+> >> BUG: kernel NULL pointer dereference, address: 0000000000000008
+> >> #PF: supervisor write access in kernel mode
+> >> #PF: error_code(0x0002) - not-present page
+> >>
+> >> This seems to be triggered by EFI_QUERY_VARIABLE_INFO here
+> >>
+> >
+> > This is interesting. QueryVariableInfo() was introduced in EFI 2.00,
+> > and for a very long time, Intel MACs would claim to implement EFI 1.10
+> > only. This means Linux would never attempt to use QueryVariableInfo()
+> > on such platforms.
+> >
+> > Can you please check your boot log which revision it claims to implemen=
+t now?
+> >
+> > Mine says
+> >
+> > efi: EFI v1.10 by Apple
+>
+> Mine says
+>
+> efi: EFI v2.40 by Apple
+>
+> >
+> > near the start of the kernel log.
+> >
+> >
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/drivers/firmware/efi/runtime-wrappers.c#n220
+> >> and within that section, the invalid opcode seems to be occurring in
+> >> this bit of assembly:
+> >> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
+e/arch/x86/platform/efi/efi_stub_64.S
+> >>
+> >
+> > Ehm no. __efi_call() is just a trampoline to call into the firmware,
+> > and the opcodes in question are firmware code not Linux code.
+>
