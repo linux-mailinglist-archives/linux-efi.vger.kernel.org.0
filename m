@@ -2,151 +2,148 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4496448AA00
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Jan 2022 10:00:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB5D548AB6B
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Jan 2022 11:32:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349088AbiAKJAB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 11 Jan 2022 04:00:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37404 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236626AbiAKJAA (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 11 Jan 2022 04:00:00 -0500
-Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DEA6C06173F;
-        Tue, 11 Jan 2022 01:00:00 -0800 (PST)
-Received: by mail-ot1-x332.google.com with SMTP id o3-20020a9d4043000000b0058f31f4312fso17907786oti.1;
-        Tue, 11 Jan 2022 01:00:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=bpi5yDslZk96fGP0AiL8cVK6M5zVjolT/YXQK+TShT4=;
-        b=eFUOEGUfVwr+KA/dAq1Chz/htbufTyGyC7BwTd95/DvX090ijtoqnldGYGbSLkuQXR
-         oKJNgV4K47rMHkjMou5rvfrMuJuzjDE5uQezF+MDd7CDjmcIaU2JdeJ73owOQgvs86R3
-         ftz0GuTOdgUMqpVHms2F0Pnaiwy3byXKNnCACETNPdd+k2I9idlRXH91q3y67mRS6jeW
-         9JQEOTxitLAtNw2x2X1JUjZdv0GhshpHr47QX3jyb00sv/kvKQT/Z3RAGtjJ44lJ4dyv
-         BUIm1uUaV3u102hBloRdhg0b1QztiPlefiyGVOGhoMztdTG3JyhCCMd68lHZrDsBTG16
-         eNmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=bpi5yDslZk96fGP0AiL8cVK6M5zVjolT/YXQK+TShT4=;
-        b=r7m9ueL9pK91lCrDK/B6KViuEmkGILXFpj1GwBeyvz+IEsPcLZDc7bC5w6RKlVD2/J
-         SqxGRq0qkKLCRTD1CBA62GwkjoNV3SkeU0oUL1kFmBunY+RSwz8uyHWLLgljvHzLKcHR
-         hIo3murZg71Vd0lq8hWZsciduYKm/AI/H/DowKuBaBsEzdB44hiUnrMkLZt0gYiLxHba
-         rA+h0uOmYEcri3gZDdlfnKyKzgsR/LKyh+toaIMfPDMXOLYaIn854TU+6tIM6c7ThhEu
-         erq4q4YhbimXD9Heqei3Gn5QfxH/8d7m62XZSE4Jmh90x+4nccCwKu0hD5MH9uM+799f
-         sW8g==
-X-Gm-Message-State: AOAM533xfb9j1u2gd0ej/DRhaMd3UyOkiQ3eWh7ZEQDQ256zOzQ2ldH/
-        zNiNTiP+clN4YjAzqRgqENcOqYKkDue82Up+5D0=
-X-Google-Smtp-Source: ABdhPJxBtMctMZ2FSy/SM0hSNvXMghYRzhYObXWQyWPEWXbR2jnbEHYpfydwBbZo6+51vTDmuc3Po1sBuk5I6P4MSkc=
-X-Received: by 2002:a9d:5190:: with SMTP id y16mr2674164otg.189.1641891599946;
- Tue, 11 Jan 2022 00:59:59 -0800 (PST)
+        id S1348934AbiAKKcJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 11 Jan 2022 05:32:09 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:48742 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1348912AbiAKKcJ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 11 Jan 2022 05:32:09 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 18B0761577;
+        Tue, 11 Jan 2022 10:32:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A36BC36AE9;
+        Tue, 11 Jan 2022 10:32:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1641897128;
+        bh=0rqIA4/jVYclQqB4xsgy2sHCQiJcK7V1GCT/RCzcwNA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GiO8Clp3cKZA4rIZp4mXsEZtFZFQIjGujQZVsgjW3KUTthAM6Og1vdB3sEDH7qcmN
+         MIGhdJ+XFMo+Xg0jLuDpHnErkwvpSy67p/5UXrlZyHO+b74FlJL2hiPML5ZYg+vf8/
+         lGVi59S8akIRZPOpWFM7t9O1oUgnVqbuGgqRVPpxImW6qEFwAzqxvlTNAXseGOKGPa
+         izbV7cKz0VTB4NWpjIx+mayXjchu19ZHo5ODX54W1eWwi2mKJwW94XmnJ21tmy4sQF
+         BpyMsLHetjLj2AEGd9fmnUy1DjGjWtNTvqWy4yCMJKaOad/v4Rvlws90muDMMF0lE3
+         n4uyyryvSmreQ==
+Date:   Tue, 11 Jan 2022 12:31:58 +0200
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Frank van der Linden <fllinden@amazon.com>
+Cc:     linux-arm-kernel@lists.infradead.org, robh+dt@kernel.org,
+        frowand.list@gmail.com, ardb@kernel.org, linux-mm@kvack.org,
+        devicetree@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+        catalin.marinas@arm.com, will@kernel.org, geert+renesas@glider.be
+Subject: Re: [PATCH 1/3] memblock: define functions to set the usable memory
+ range
+Message-ID: <Yd1cnquQFZoNE7FP@kernel.org>
+References: <20220110210809.3528-1-fllinden@amazon.com>
+ <20220110210809.3528-2-fllinden@amazon.com>
 MIME-Version: 1.0
-References: <20211210154332.11526-1-brijesh.singh@amd.com> <20211210154332.11526-25-brijesh.singh@amd.com>
- <cd8f3190-75b3-1fd5-000a-370e6c53f766@intel.com> <20211213154753.nkkxk6w25tdnagwt@amd.com>
-In-Reply-To: <20211213154753.nkkxk6w25tdnagwt@amd.com>
-From:   Chao Fan <fanchao.njupt@gmail.com>
-Date:   Tue, 11 Jan 2022 16:59:49 +0800
-Message-ID: <CAEdG=2VOcMkyRdDRy=L6NJ1728n_jUYWv_W6Y0-GaHStgGfsLw@mail.gmail.com>
-Subject: Re: [PATCH v8 24/40] x86/compressed/acpi: move EFI system table
- lookup to helper
-To:     Michael Roth <michael.roth@amd.com>
-Cc:     Dave Hansen <dave.hansen@intel.com>, fanc.fnst@cn.fujitsu.com,
-        j-nomura@ce.jp.nec.com, bp@suse.de,
-        Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220110210809.3528-2-fllinden@amazon.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi, I am this Chao Fan, and <fanc.fnst@cn.fujitsu.com> won't be used again.
-Please add me with fanchao.njupt@gmail.com
-Many thanks.
+On Mon, Jan 10, 2022 at 09:08:07PM +0000, Frank van der Linden wrote:
+> Some architectures might limit the usable memory range based
+> on a firmware property, like "linux,usable-memory-range"
+> for ARM crash kernels. This limit needs to be enforced after
+> firmware memory map processing has been done, which might be
+> e.g. FDT or EFI, or both.
+> 
+> Define an interface for it that is firmware type agnostic.
+> 
+> Signed-off-by: Frank van der Linden <fllinden@amazon.com>
+> ---
+>  include/linux/memblock.h |  2 ++
+>  mm/memblock.c            | 37 +++++++++++++++++++++++++++++++++++++
+>  2 files changed, 39 insertions(+)
+> 
+> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+> index 34de69b3b8ba..6128efa50d33 100644
+> --- a/include/linux/memblock.h
+> +++ b/include/linux/memblock.h
+> @@ -481,6 +481,8 @@ phys_addr_t memblock_reserved_size(void);
+>  phys_addr_t memblock_start_of_DRAM(void);
+>  phys_addr_t memblock_end_of_DRAM(void);
+>  void memblock_enforce_memory_limit(phys_addr_t memory_limit);
+> +void memblock_set_usable_range(phys_addr_t base, phys_addr_t size);
+> +void memblock_enforce_usable_range(void);
+>  void memblock_cap_memory_range(phys_addr_t base, phys_addr_t size);
+>  void memblock_mem_limit_remove_map(phys_addr_t limit);
 
-Thanks,
-Chao Fan
+We already have 3 very similar interfaces that deal with memory capping.
+Now you suggest to add fourth that will "generically" solve a single use
+case of DT, EFI and kdump interaction on arm64.
 
-Michael Roth <michael.roth@amd.com> =E4=BA=8E2021=E5=B9=B412=E6=9C=8814=E6=
-=97=A5=E5=91=A8=E4=BA=8C 11:46=E5=86=99=E9=81=93=EF=BC=9A
+Looks like a workaround for a fundamental issue of incompatibility between
+DT and EFI wrt memory registration.
+
+>  bool memblock_is_memory(phys_addr_t addr);
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index 5096500b2647..cb961965f3ad 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -101,6 +101,7 @@ unsigned long max_low_pfn;
+>  unsigned long min_low_pfn;
+>  unsigned long max_pfn;
+>  unsigned long long max_possible_pfn;
+> +phys_addr_t usable_start, usable_size;
 >
-> On Fri, Dec 10, 2021 at 10:54:35AM -0800, Dave Hansen wrote:
-> > On 12/10/21 7:43 AM, Brijesh Singh wrote:
-> > > +/*
-> > > + * Helpers for early access to EFI configuration table
-> > > + *
-> > > + * Copyright (C) 2021 Advanced Micro Devices, Inc.
-> > > + *
-> > > + * Author: Michael Roth <michael.roth@amd.com>
-> > > + */
-> >
-> > It doesn't seem quite right to slap this copyright on a file that's ful=
-l
-> > of content that came from other files.  It would be one thing if
-> > arch/x86/boot/compressed/acpi.c had this banner in it already.  Also, a
->
-> Yah, acpi.c didn't have any copyright banner so I used my 'default'
-> template for new files here to cover any additions, but that does give
-> a misleading impression.
->
-> I'm not sure how this is normally addressed, but I'm planning on just
-> continuing the acpi.c tradition of *not* adding copyright notices for new
-> code, and simply document that the contents of the file are mostly moveme=
-nt
-> from acpi.c
->
-> > arch/x86/boot/compressed/acpi.c had this banner in it already.  Also, a
-> > bunch of the lines in this file seem to come from:
-> >
-> >       commit 33f0df8d843deb9ec24116dcd79a40ca0ea8e8a9
-> >       Author: Chao Fan <fanc.fnst@cn.fujitsu.com>
-> >       Date:   Wed Jan 23 19:08:46 2019 +0800
->
-> AFAICT the full author list for the changes in question are, in
-> alphabetical order:
->
->   Chao Fan <fanc.fnst@cn.fujitsu.com>
->   Junichi Nomura <j-nomura@ce.jp.nec.com>
->   Borislav Petkov <bp@suse.de>
->
-> Chao, Junichi, Borislav,
->
-> If you would like to be listed as an author in efi.c (which is mainly jus=
-t a
-> movement of EFI config table parsing code from acpi.c into re-usable help=
-er
-> functions in efi.c), please let me know and I'll add you.
->
-> Otherwise, I'll plan on adopting the acpi.c precedent for this as well, w=
-hich
-> is to not list individual authors, since it doesn't seem right to add Aut=
-hor
-> fields retroactively without their permission.
+>  static struct memblock_region memblock_memory_init_regions[INIT_MEMBLOCK_REGIONS] __initdata_memblock;
+>  static struct memblock_region memblock_reserved_init_regions[INIT_MEMBLOCK_RESERVED_REGIONS] __initdata_memblock;
+> @@ -1715,6 +1716,42 @@ void __init memblock_cap_memory_range(phys_addr_t base, phys_addr_t size)
+>  			base + size, PHYS_ADDR_MAX);
+>  }
+>  
+> +/**
+> + * memblock_set_usable_range - set usable memory range
+> + * @base: physical address that is the start of the range
+> + * @size: size of the range.
+> + *
+> + * Used when a firmware property limits the range of usable
+> + * memory, like for the linux,usable-memory-range property
+> + * used by ARM crash kernels.
+> + */
+> +void __init memblock_set_usable_range(phys_addr_t base, phys_addr_t size)
+> +{
+> +	usable_start = base;
+> +	usable_size = size;
+> +}
+> +
+> +/**
+> + * memblock_enforce_usable_range - cap memory ranges to usable range
+> + *
+> + * Some architectures call this during boot after firmware memory ranges
+> + * have been scanned, to make sure they fall within the usable range
+> + * set by memblock_set_usable_range.
+> + *
+> + * This may be called more than once if there are multiple firmware sources
+> + * for memory ranges.
+> + *
+> + * Avoid "no memory registered" warning - the warning itself is
+> + * useful, but we know this can be called with no registered
+> + * memory (e.g. when the synthetic DT for the crash kernel has
+> + * been parsed on EFI arm64 systems).
+> + */
+> +void __init memblock_enforce_usable_range(void)
+> +{
+> +	if (memblock_memory->total_size)
+> +		memblock_cap_memory_range(usable_start, usable_size);
+> +}
+> +
+>  void __init memblock_mem_limit_remove_map(phys_addr_t limit)
+>  {
+>  	phys_addr_t max_addr;
+> -- 
+> 2.32.0
+> 
+
+-- 
+Sincerely yours,
+Mike.
