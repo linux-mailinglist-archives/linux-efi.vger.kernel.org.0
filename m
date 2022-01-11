@@ -2,40 +2,40 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CAB748AC7F
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Jan 2022 12:33:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81AB448AC81
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Jan 2022 12:33:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349528AbiAKLdO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 11 Jan 2022 06:33:14 -0500
-Received: from mga03.intel.com ([134.134.136.65]:45407 "EHLO mga03.intel.com"
+        id S1349477AbiAKLdP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 11 Jan 2022 06:33:15 -0500
+Received: from mga09.intel.com ([134.134.136.24]:37638 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1349517AbiAKLdN (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        id S1349514AbiAKLdN (ORCPT <rfc822;linux-efi@vger.kernel.org>);
         Tue, 11 Jan 2022 06:33:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1641900793; x=1673436793;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=eAlNpFgI2dj8DL18robIsH5Fta03JBWQ7Hr8f4oKmC0=;
-  b=GgvM2vC8JOcXzhsSPBh4hKwPoPykEoWj9VD05I+7KvTc3PYRoPgkvn+I
-   e+8CbiQTUdfClAmXH5wktn9jqxuRhbwOJ1EIhSicGiSf4tXadF4snPo3b
-   A1m28YbYNkTmZvNXzwx5IwQqtFNuQi3IkWUh/itFgXQoGgKTj4csNvIAv
-   sxaLK/c+gHzZgFqP2TI1hfu8Yt+RBK4/iAbLD0dibaouc/jrt/VvoQKa1
-   X/Qgno9ocZcmgEGDHKpmKNlUdEk0W/s5FGR37TQBFeWXlLJuO8IwjqwCd
-   fANotLjufnHEncI15+5Fr8Z6VbiZUQeA9Uz08/A7V352h6hzEXv8m3YVh
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10223"; a="243419234"
+  bh=HaLasq89QiEz30QdU5oVDEDYHaeFFEnWUHw6RN/QsG4=;
+  b=AQcgThPwdGjGO25u1z+I7GA4b1Ah6Ux/1ZcDVbL6un2TeWf7nI1C8T7z
+   qxfAAQmKEldc5GoHkPrlbzBTCTGxocFEwzgli5NOSO43ORr1ULZanMGbB
+   Duti1bqJTDog4p7jg5J80nzgCXI2XQlOjfJPGljGa8GNPEy10+cZBkkgL
+   8yN3L5kp75BAHknN6UC11SCnfBxnEs6suOLbpNn41znaq5H8l+k1sEUtf
+   9Mtggpo4tLrT0HO8otlTkPpXbTKWrDeNJ8ZxK88RCLyN/u5+UdjiZkldt
+   i4eE8SAoqYrWs4csHRsM81WZPP4J4Oz+2lXjQ0wGNxm79Wa8rRNdGncOm
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10223"; a="243261607"
 X-IronPort-AV: E=Sophos;i="5.88,279,1635231600"; 
-   d="scan'208";a="243419234"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2022 03:33:13 -0800
+   d="scan'208";a="243261607"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2022 03:33:13 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.88,279,1635231600"; 
-   d="scan'208";a="515063272"
+   d="scan'208";a="490351596"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga007.jf.intel.com with ESMTP; 11 Jan 2022 03:33:08 -0800
+  by orsmga002.jf.intel.com with ESMTP; 11 Jan 2022 03:33:07 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-        id 20859125; Tue, 11 Jan 2022 13:33:19 +0200 (EET)
+        id 35429232; Tue, 11 Jan 2022 13:33:19 +0200 (EET)
 From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
         Sean Christopherson <seanjc@google.com>,
@@ -57,9 +57,9 @@ Cc:     Andi Kleen <ak@linux.intel.com>,
         linux-mm@kvack.org, linux-coco@lists.linux.dev,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 1/7] mm: Add support for unaccepted memory
-Date:   Tue, 11 Jan 2022 14:33:08 +0300
-Message-Id: <20220111113314.27173-2-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 2/7] efi/x86: Get full memory map in allocate_e820()
+Date:   Tue, 11 Jan 2022 14:33:09 +0300
+Message-Id: <20220111113314.27173-3-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220111113314.27173-1-kirill.shutemov@linux.intel.com>
 References: <20220111113314.27173-1-kirill.shutemov@linux.intel.com>
@@ -69,186 +69,81 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-UEFI Specification version 2.9 introduces the concept of memory
-acceptance. Some Virtual Machine platforms, such as Intel TDX or AMD
-SEV-SNP, requiring memory to be accepted before it can be used by the
-guest. Accepting happens via a protocol specific for the Virtual Machine
-platform.
+Currently allocate_e820() only interested in the size of map and size of
+memory descriptor to determine how many e820 entries the kernel needs.
 
-Accepting memory is costly and it makes VMM allocate memory for the
-accepted guest physical address range. It's better to postpone memory
-acceptance until memory is needed. It lowers boot time and reduces
-memory overhead.
+UEFI Specification version 2.9 introduces a new memory type --
+unaccepted memory. To track unaccepted memory kernel needs to allocate
+a bitmap. The size of the bitmap is dependent on the maximum physical
+address present in the system. A full memory map is required to find
+the maximum address.
 
-Support of such memory requires a few changes in core-mm code:
+Modify allocate_e820() to get a full memory map.
 
-  - memblock has to accept memory on allocation;
-
-  - page allocator has to accept memory on the first allocation of the
-    page;
-
-Memblock change is trivial.
-
-The page allocator is modified to accept pages on the first allocation.
-PageOffline() is used to indicate that the page requires acceptance.
-The flag is currently used by hotplug and ballooning. Such pages are not
-available to the page allocator.
-
-Architecture has to provide three helpers if it wants to support
-unaccepted memory:
-
- - accept_memory() makes a range of physical addresses accepted.
-
- - maybe_set_page_offline() marks a page PageOffline() if it requires
-   acceptance. Used during boot to put pages on free lists.
-
- - accept_and_clear_page_offline() makes a page accepted and clears
-   PageOffline().
+This is preparation for the next patch that implements handling of
+unaccepted memory in EFI stub.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- include/linux/page-flags.h |  4 ++++
- mm/internal.h              | 15 +++++++++++++++
- mm/memblock.c              |  1 +
- mm/page_alloc.c            | 21 ++++++++++++++++++++-
- 4 files changed, 40 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/libstub/x86-stub.c | 28 ++++++++++++-------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 52ec4b5e5615..281f70da329c 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -887,6 +887,10 @@ PAGE_TYPE_OPS(Buddy, buddy)
-  * any further access to page content. PFN walkers that read content of random
-  * pages should check PageOffline() and synchronize with such drivers using
-  * page_offline_freeze()/page_offline_thaw().
-+ *
-+ * If a PageOffline() page encountered on a buddy allocator's free list it has
-+ * to be "accepted" before it can be used.
-+ * See accept_and_clear_page_offline() and CONFIG_UNACCEPTED_MEMORY.
-  */
- PAGE_TYPE_OPS(Offline, offline)
- 
-diff --git a/mm/internal.h b/mm/internal.h
-index 3b79a5c9427a..1738a4e2a27e 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -713,4 +713,19 @@ void vunmap_range_noflush(unsigned long start, unsigned long end);
- int numa_migrate_prep(struct page *page, struct vm_area_struct *vma,
- 		      unsigned long addr, int page_nid, int *flags);
- 
-+#ifndef CONFIG_UNACCEPTED_MEMORY
-+static inline void maybe_set_page_offline(struct page *page, unsigned int order)
-+{
-+}
-+
-+static inline void accept_and_clear_page_offline(struct page *page,
-+						 unsigned int order)
-+{
-+}
-+
-+static inline void accept_memory(phys_addr_t start, phys_addr_t end)
-+{
-+}
-+#endif
-+
- #endif	/* __MM_INTERNAL_H */
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 1018e50566f3..6dfa594192de 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1400,6 +1400,7 @@ phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size,
- 		 */
- 		kmemleak_alloc_phys(found, size, 0, 0);
- 
-+	accept_memory(found, found + size);
- 	return found;
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index f14c4ff5839f..a0b946182b5e 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -569,30 +569,28 @@ static efi_status_t alloc_e820ext(u32 nr_desc, struct setup_data **e820ext,
  }
  
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index c5952749ad40..5707b4b5f774 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1064,6 +1064,7 @@ static inline void __free_one_page(struct page *page,
- 	unsigned int max_order;
- 	struct page *buddy;
- 	bool to_tail;
-+	bool offline = PageOffline(page);
- 
- 	max_order = min_t(unsigned int, MAX_ORDER - 1, pageblock_order);
- 
-@@ -1097,6 +1098,10 @@ static inline void __free_one_page(struct page *page,
- 			clear_page_guard(zone, buddy, order, migratetype);
- 		else
- 			del_page_from_free_list(buddy, zone, order);
-+
-+		if (PageOffline(buddy))
-+			offline = true;
-+
- 		combined_pfn = buddy_pfn & pfn;
- 		page = page + (combined_pfn - pfn);
- 		pfn = combined_pfn;
-@@ -1130,6 +1135,9 @@ static inline void __free_one_page(struct page *page,
- done_merging:
- 	set_buddy_order(page, order);
- 
-+	if (offline)
-+		__SetPageOffline(page);
-+
- 	if (fpi_flags & FPI_TO_TAIL)
- 		to_tail = true;
- 	else if (is_shuffle_order(order))
-@@ -1155,7 +1163,8 @@ static inline void __free_one_page(struct page *page,
- static inline bool page_expected_state(struct page *page,
- 					unsigned long check_flags)
+ static efi_status_t allocate_e820(struct boot_params *params,
++				  struct efi_boot_memmap *map,
+ 				  struct setup_data **e820ext,
+ 				  u32 *e820ext_size)
  {
--	if (unlikely(atomic_read(&page->_mapcount) != -1))
-+	if (unlikely(atomic_read(&page->_mapcount) != -1) &&
-+	    !PageOffline(page))
- 		return false;
+-	unsigned long map_size, desc_size, map_key;
+ 	efi_status_t status;
+-	__u32 nr_desc, desc_version;
++	__u32 nr_desc;
  
- 	if (unlikely((unsigned long)page->mapping |
-@@ -1734,6 +1743,8 @@ void __init memblock_free_pages(struct page *page, unsigned long pfn,
- {
- 	if (early_page_uninitialised(pfn))
- 		return;
-+
-+	maybe_set_page_offline(page, order);
- 	__free_pages_core(page, order);
+-	/* Only need the size of the mem map and size of each mem descriptor */
+-	map_size = 0;
+-	status = efi_bs_call(get_memory_map, &map_size, NULL, &map_key,
+-			     &desc_size, &desc_version);
+-	if (status != EFI_BUFFER_TOO_SMALL)
+-		return (status != EFI_SUCCESS) ? status : EFI_UNSUPPORTED;
+-
+-	nr_desc = map_size / desc_size + EFI_MMAP_NR_SLACK_SLOTS;
++	status = efi_get_memory_map(map);
++	if (status != EFI_SUCCESS)
++		return status;
+ 
+-	if (nr_desc > ARRAY_SIZE(params->e820_table)) {
+-		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table);
++	nr_desc = *map->map_size / *map->desc_size;
++	if (nr_desc > ARRAY_SIZE(params->e820_table) - EFI_MMAP_NR_SLACK_SLOTS) {
++		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table) +
++			EFI_MMAP_NR_SLACK_SLOTS;
+ 
+ 		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
+ 		if (status != EFI_SUCCESS)
+-			return status;
++			goto out;
+ 	}
+-
++out:
++	efi_bs_call(free_pool, *map->map);
+ 	return EFI_SUCCESS;
  }
  
-@@ -1823,10 +1834,12 @@ static void __init deferred_free_range(unsigned long pfn,
- 	if (nr_pages == pageblock_nr_pages &&
- 	    (pfn & (pageblock_nr_pages - 1)) == 0) {
- 		set_pageblock_migratetype(page, MIGRATE_MOVABLE);
-+		maybe_set_page_offline(page, pageblock_order);
- 		__free_pages_core(page, pageblock_order);
- 		return;
- 	}
+@@ -642,7 +640,7 @@ static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
+ 	priv.boot_params	= boot_params;
+ 	priv.efi		= &boot_params->efi_info;
  
-+	accept_memory(pfn << PAGE_SHIFT, (pfn + nr_pages) << PAGE_SHIFT);
- 	for (i = 0; i < nr_pages; i++, page++, pfn++) {
- 		if ((pfn & (pageblock_nr_pages - 1)) == 0)
- 			set_pageblock_migratetype(page, MIGRATE_MOVABLE);
-@@ -2297,6 +2310,9 @@ static inline void expand(struct zone *zone, struct page *page,
- 		if (set_page_guard(zone, &page[size], high, migratetype))
- 			continue;
+-	status = allocate_e820(boot_params, &e820ext, &e820ext_size);
++	status = allocate_e820(boot_params, &map, &e820ext, &e820ext_size);
+ 	if (status != EFI_SUCCESS)
+ 		return status;
  
-+		if (PageOffline(page))
-+			__SetPageOffline(&page[size]);
-+
- 		add_to_free_list(&page[size], zone, high, migratetype);
- 		set_buddy_order(&page[size], high);
- 	}
-@@ -2393,6 +2409,9 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
- 	 */
- 	kernel_unpoison_pages(page, 1 << order);
- 
-+	if (PageOffline(page))
-+		accept_and_clear_page_offline(page, order);
-+
- 	/*
- 	 * As memory initialization might be integrated into KASAN,
- 	 * kasan_alloc_pages and kernel_init_free_pages must be
 -- 
 2.34.1
 
