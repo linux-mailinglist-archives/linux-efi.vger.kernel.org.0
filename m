@@ -2,40 +2,40 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9283B48AC87
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Jan 2022 12:33:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1836648AC8A
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Jan 2022 12:33:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349630AbiAKLdh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 11 Jan 2022 06:33:37 -0500
-Received: from mga09.intel.com ([134.134.136.24]:37650 "EHLO mga09.intel.com"
+        id S1349638AbiAKLdk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 11 Jan 2022 06:33:40 -0500
+Received: from mga06.intel.com ([134.134.136.31]:29988 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1349553AbiAKLdT (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 11 Jan 2022 06:33:19 -0500
+        id S1349569AbiAKLdY (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 11 Jan 2022 06:33:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1641900799; x=1673436799;
+  t=1641900803; x=1673436803;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=hyOD0iOzQ3OdcyuSvPELW4e2F6ocBQ3s5Blwr9IqDVU=;
-  b=UQ9mjWbR+pCIH+8JdoyKKi7x42HyQAKrR+0etELonfdVlW/4rFPKfU4N
-   03O2y3zRnHVbNDtLNNAD1kghcxpOdmaSQf9WeimTgM/RVWa7RWSzy2CFQ
-   DxLwylAjGgccAMZQRgWm5/N705cwTeKXjufzseDVgHQ2psTzUpiWvQnCX
-   geQ8byxKOeROVl33pRrZIXXL3o9fg4vqZ14l7ZIc1lk9ZajUw/EltX2SA
-   Vy8XHf7MtPUJZFfqnxJqhIkj/S95cFKOjbH0Wx4qDBOsePsVhMoiX1us2
-   52eOJ6nZBTlAJlxIQF/z6UaKewStCuA1hXDnAvEDfmS91f+rXaWZu4FL3
+  bh=XXiNVM5MD77OC0PKAJ7Qh/8iyqoz0w1CDeuRwsZQWGI=;
+  b=LiKE8RG22ZL9qXwub7zmaAvo44gGeblGhsYrdrL2F0qRBhpyUJasboT0
+   iIN0yKzPaFGULMSokTqnqMFx0t5YGXtmKMr2Q+UVXBIoV42zx8euMcfjH
+   f1riuPx4TB8hleF1fY62c6NgDxL8hARsYYk++QeGaJ829Rv93F0/q+4e2
+   Y21dL8QsKKpYgqgarS0QD/VCOR7u6Qag+WY6aEX+NkrRmmlz4UPqVFpD/
+   /GrznyrNFZp8RQM6NIfbcymVb/+Ap5CI0A5rKA0VNgeZqujC0oPidkDUS
+   AQo5Q5J5OivZf4xCr+vLvtd0ej/NLdbEAcO71HTFDfpDDzXlWjpSPTMjj
    w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10223"; a="243261638"
+X-IronPort-AV: E=McAfee;i="6200,9189,10223"; a="304202781"
 X-IronPort-AV: E=Sophos;i="5.88,279,1635231600"; 
-   d="scan'208";a="243261638"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2022 03:33:19 -0800
+   d="scan'208";a="304202781"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2022 03:33:19 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.88,279,1635231600"; 
-   d="scan'208";a="623042894"
+   d="scan'208";a="490351608"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga004.jf.intel.com with ESMTP; 11 Jan 2022 03:33:14 -0800
+  by orsmga002.jf.intel.com with ESMTP; 11 Jan 2022 03:33:14 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-        id 5F7974AC; Tue, 11 Jan 2022 13:33:19 +0200 (EET)
+        id 6C8D9651; Tue, 11 Jan 2022 13:33:19 +0200 (EET)
 From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
         Sean Christopherson <seanjc@google.com>,
@@ -57,9 +57,9 @@ Cc:     Andi Kleen <ak@linux.intel.com>,
         linux-mm@kvack.org, linux-coco@lists.linux.dev,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 5/7] x86/mm: Reserve unaccepted memory bitmap
-Date:   Tue, 11 Jan 2022 14:33:12 +0300
-Message-Id: <20220111113314.27173-6-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 6/7] x86/mm: Provide helpers for unaccepted memory
+Date:   Tue, 11 Jan 2022 14:33:13 +0300
+Message-Id: <20220111113314.27173-7-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220111113314.27173-1-kirill.shutemov@linux.intel.com>
 References: <20220111113314.27173-1-kirill.shutemov@linux.intel.com>
@@ -69,39 +69,181 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Unaccepted memory bitmap is allocated during decompression stage and
-handed over to main kernel image via boot_params. The bitmap is used to
-track if memory has been accepted.
+Core-mm requires few helpers to support unaccepted memory:
 
-Reserve unaccepted memory bitmap has to prevent reallocating memory for
-other means.
+ - accept_memory() checks the range of addresses against the bitmap and
+   accept memory if needed;
+
+ - maybe_set_page_offline() checks the bitmap and marks a page with
+   PageOffline() if memory acceptance required on the first
+   allocation of the page.
+
+ - accept_and_clear_page_offline() accepts memory for the page and clears
+   PageOffline().
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/kernel/e820.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/x86/boot/compressed/unaccepted_memory.c |  3 +-
+ arch/x86/include/asm/page.h                  |  5 ++
+ arch/x86/include/asm/unaccepted_memory.h     |  3 +
+ arch/x86/mm/Makefile                         |  2 +
+ arch/x86/mm/unaccepted_memory.c              | 90 ++++++++++++++++++++
+ 5 files changed, 101 insertions(+), 2 deletions(-)
+ create mode 100644 arch/x86/mm/unaccepted_memory.c
 
-diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
-index bc0657f0deed..dc9048e2d421 100644
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -1290,6 +1290,16 @@ void __init e820__memory_setup(void)
+diff --git a/arch/x86/boot/compressed/unaccepted_memory.c b/arch/x86/boot/compressed/unaccepted_memory.c
+index 91db800d5f5e..b6caca4d3d22 100644
+--- a/arch/x86/boot/compressed/unaccepted_memory.c
++++ b/arch/x86/boot/compressed/unaccepted_memory.c
+@@ -20,8 +20,7 @@ void mark_unaccepted(struct boot_params *params, u64 start, u64 end)
  
- 	pr_info("BIOS-provided physical RAM map:\n");
- 	e820__print_table(who);
+ 	/* Immediately accept whole range if it is within a PMD_SIZE block: */
+ 	if ((start & PMD_MASK) == (end & PMD_MASK)) {
+-		npages = (end - start) / PAGE_SIZE;
+-		__accept_memory(start, start + npages * PAGE_SIZE);
++		__accept_memory(start, end);
+ 		return;
+ 	}
+ 
+diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
+index 4d5810c8fab7..1e56d76ca474 100644
+--- a/arch/x86/include/asm/page.h
++++ b/arch/x86/include/asm/page.h
+@@ -19,6 +19,11 @@
+ struct page;
+ 
+ #include <linux/range.h>
 +
-+	/* Mark unaccepted memory bitmap reserved */
-+	if (boot_params.unaccepted_memory) {
-+		unsigned long size;
++#ifdef CONFIG_UNACCEPTED_MEMORY
++#include <asm/unaccepted_memory.h>
++#endif
 +
-+		/* One bit per 2MB */
-+		size = DIV_ROUND_UP(e820__end_of_ram_pfn() * PAGE_SIZE,
-+				    PMD_SIZE * BITS_PER_BYTE);
-+		memblock_reserve(boot_params.unaccepted_memory, size);
+ extern struct range pfn_mapped[];
+ extern int nr_pfn_mapped;
+ 
+diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
+index f1f835d3cd78..8a06ac8fc9e9 100644
+--- a/arch/x86/include/asm/unaccepted_memory.h
++++ b/arch/x86/include/asm/unaccepted_memory.h
+@@ -6,9 +6,12 @@
+ #include <linux/types.h>
+ 
+ struct boot_params;
++struct page;
+ 
+ void mark_unaccepted(struct boot_params *params, u64 start, u64 num);
+ 
+ void accept_memory(phys_addr_t start, phys_addr_t end);
+ 
++void maybe_set_page_offline(struct page *page, unsigned int order);
++void accept_and_clear_page_offline(struct page *page, unsigned int order);
+ #endif
+diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
+index fe3d3061fc11..e327f83e6bbf 100644
+--- a/arch/x86/mm/Makefile
++++ b/arch/x86/mm/Makefile
+@@ -60,3 +60,5 @@ obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_amd.o
+ 
+ obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_identity.o
+ obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_boot.o
++
++obj-$(CONFIG_UNACCEPTED_MEMORY)	+= unaccepted_memory.o
+diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
+new file mode 100644
+index 000000000000..984eaead0b11
+--- /dev/null
++++ b/arch/x86/mm/unaccepted_memory.c
+@@ -0,0 +1,90 @@
++#include <linux/memblock.h>
++#include <linux/mm.h>
++#include <linux/pfn.h>
++#include <linux/spinlock.h>
++
++#include <asm/io.h>
++#include <asm/setup.h>
++#include <asm/unaccepted_memory.h>
++
++static DEFINE_SPINLOCK(unaccepted_memory_lock);
++
++#define PMD_ORDER (PMD_SHIFT - PAGE_SHIFT)
++
++static void __accept_memory(phys_addr_t start, phys_addr_t end)
++{
++	unsigned long *unaccepted_memory;
++	unsigned int rs, re;
++
++	unaccepted_memory = __va(boot_params.unaccepted_memory);
++	bitmap_for_each_set_region(unaccepted_memory, rs, re,
++				   start / PMD_SIZE,
++				   DIV_ROUND_UP(end, PMD_SIZE)) {
++		/* Platform-specific memory-acceptance call goes here */
++		panic("Cannot accept memory");
++		bitmap_clear(unaccepted_memory, rs, re - rs);
 +	}
- }
- 
- void __init e820__memblock_setup(void)
++}
++
++void accept_memory(phys_addr_t start, phys_addr_t end)
++{
++	unsigned long flags;
++	if (!boot_params.unaccepted_memory)
++		return;
++
++	spin_lock_irqsave(&unaccepted_memory_lock, flags);
++	__accept_memory(start, end);
++	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
++}
++
++void __init maybe_set_page_offline(struct page *page, unsigned int order)
++{
++	unsigned long *unaccepted_memory;
++	phys_addr_t addr = page_to_phys(page);
++	unsigned long flags;
++	bool unaccepted = false;
++	unsigned int i;
++
++	if (!boot_params.unaccepted_memory)
++		return;
++
++	unaccepted_memory = __va(boot_params.unaccepted_memory);
++	spin_lock_irqsave(&unaccepted_memory_lock, flags);
++	if (order < PMD_ORDER) {
++		BUG_ON(test_bit(addr / PMD_SIZE, unaccepted_memory));
++		goto out;
++	}
++
++	for (i = 0; i < (1 << (order - PMD_ORDER)); i++) {
++		if (test_bit(addr / PMD_SIZE + i, unaccepted_memory)) {
++			unaccepted = true;
++			break;
++		}
++	}
++
++	/* At least part of page is uneccepted */
++	if (unaccepted)
++		__SetPageOffline(page);
++out:
++	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
++}
++
++void accept_and_clear_page_offline(struct page *page, unsigned int order)
++{
++	phys_addr_t addr = round_down(page_to_phys(page), PMD_SIZE);
++	int i;
++
++	/* PageOffline() page on a free list, but no unaccepted memory? Hm. */
++	WARN_ON_ONCE(!boot_params.unaccepted_memory);
++
++	page = pfn_to_page(addr >> PAGE_SHIFT);
++	if (order < PMD_ORDER)
++		order = PMD_ORDER;
++
++	accept_memory(addr, addr + (PAGE_SIZE << order));
++
++	for (i = 0; i < (1 << order); i++) {
++		if (PageOffline(page + i))
++			__ClearPageOffline(page + i);
++	}
++}
 -- 
 2.34.1
 
