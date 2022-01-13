@@ -2,129 +2,82 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3C5B48DFB1
-	for <lists+linux-efi@lfdr.de>; Thu, 13 Jan 2022 22:31:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2096248E06A
+	for <lists+linux-efi@lfdr.de>; Thu, 13 Jan 2022 23:38:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235906AbiAMVbb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 13 Jan 2022 16:31:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47292 "EHLO
+        id S233439AbiAMWic (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 13 Jan 2022 17:38:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236060AbiAMVbR (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 13 Jan 2022 16:31:17 -0500
-Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55EB2C06161C
-        for <linux-efi@vger.kernel.org>; Thu, 13 Jan 2022 13:31:17 -0800 (PST)
-Received: by mail-oi1-x236.google.com with SMTP id i9so9675588oih.4
-        for <linux-efi@vger.kernel.org>; Thu, 13 Jan 2022 13:31:17 -0800 (PST)
+        with ESMTP id S237996AbiAMWic (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 13 Jan 2022 17:38:32 -0500
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 343F0C06161C
+        for <linux-efi@vger.kernel.org>; Thu, 13 Jan 2022 14:38:32 -0800 (PST)
+Received: by mail-pg1-x542.google.com with SMTP id s1so1159228pga.5
+        for <linux-efi@vger.kernel.org>; Thu, 13 Jan 2022 14:38:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=eclypsium.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=yVN27if4TLsRCEMhCF/aqw8r/7THOayqDLYA7IAtavc=;
-        b=cl/0zLZFJiGx8sFR5y9ZQu0me7yAE4sNXzqAJwzAbdsxRpWRMgUShOFWYq8N1hPJY2
-         48lcCYaUXpUWBAmmXMep3197PfpmGKcgBMTygUt3HNfyP7uOOgBxNz99RILKcZoRYfqs
-         Zt/3R6UjOLJefC5vcjn7sL1MXjc3KjmC+NQjSymVxGXKyYrGFTRPKZcRuLkkEg6NPefk
-         U12lx/o3FRe8+qmMzea5DJ5DLvKXyzTANaRZcV9oVsgPU8w8f/XvJ3Tac1oXIB+RUkGf
-         hwj4x2EZC7kxNZHRPe0QXebw4HB5BaulW7Esu1JdDEw+fpJCtRbhSQoxMNwuGdoSTe3I
-         L08Q==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=YbEI3Q/NEjCtDTVCV1jkA7nYNYBH/Wfa2wk3IkVyJko=;
+        b=jZ1lMmL5aifhLDi/hwElp+ONi3CaKC5sTq6NgRljTbxG06NGakYuRn5o+tby7Mw1q+
+         AWOKPLt4r1jt6iD1MmHWM5mkRsJOLGCld0aChbU+5aLNBXLwRW8wnnDe8NIH+YoDlfFN
+         yPpJmixif6HCy+vwUwRMJaQhjcat7a7LKx8k+dyZ5aDV/i9/SmwqFPVxluNqTKczQcHA
+         jrbB/nRUgROf6VPFrdRaINmHY58hVZ4ZQOgBdktzcGuILeW67zTMyJTf28zBWnWAMWir
+         rwdYCNsqLbJfn2GeCpMCwc+szL19PunVzVDQRm3zKeW51SpSf02NMcP5gXp1jea+3PUv
+         ek6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=yVN27if4TLsRCEMhCF/aqw8r/7THOayqDLYA7IAtavc=;
-        b=h/6RNEMe5WTbnnThWnvSo4sy7ofQ/1PrnPPJ8nF5FTce0FonhDHErLT6q14W0NA5dm
-         0sNbMsN09Fws8SX1mMw4orjF85uhNd4sutshWe5UrBqni0SWL8oFsXzLFMTdXV+v+4eb
-         Fi4RSC+Ndd/vn9YMegtvLDNyfN3w52bqiUVpUbHpWXxmQTCoER77inpp6+lUsDhAnZ+N
-         jkxQzKBCTZOf/7x/r0N4qKpI/QjOqcYouu9VImyKFc05yOatI7nC02p/p9qD98YApsS+
-         DCUGKup2mwphmfCbNM78CfYs9yWxxVq6blZ5A5/rWheypla2RAdZk/1dcUDbH+EJTt8+
-         dX8w==
-X-Gm-Message-State: AOAM531WGMvAmh20Ji5/EizfCjLleNVuLoU34vDb77fdhjhIi/Am9oK9
-        d6jYxoHT5XZN9sPcW9CCTJaFRg==
-X-Google-Smtp-Source: ABdhPJxJcXPnlOWnI9M6Jnqh9i6KsB4TBvlTnQrIc/FadDEsjuKYa97ar6lwUiV86vnw2DEkK9FwHA==
-X-Received: by 2002:a05:6808:1a83:: with SMTP id bm3mr3785579oib.53.1642109476722;
-        Thu, 13 Jan 2022 13:31:16 -0800 (PST)
-Received: from localhost (115-127-16-190.fibertel.com.ar. [190.16.127.115])
-        by smtp.gmail.com with ESMTPSA id o130sm1040829oig.26.2022.01.13.13.31.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Jan 2022 13:31:16 -0800 (PST)
-From:   Martin Fernandez <martin.fernandez@eclypsium.com>
-To:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org
-Cc:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
-        gregkh@linuxfoundation.org, rafael@kernel.org, rppt@kernel.org,
-        akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
-        hughsient@gmail.com, alex.bazhaniuk@eclypsium.com,
-        alison.schofield@intel.com,
-        Martin Fernandez <martin.fernandez@eclypsium.com>
-Subject: [PATCH v5 5/5] drivers/node: Show in sysfs node's crypto capabilities
-Date:   Thu, 13 Jan 2022 18:30:27 -0300
-Message-Id: <20220113213027.457282-6-martin.fernandez@eclypsium.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220113213027.457282-1-martin.fernandez@eclypsium.com>
-References: <20220113213027.457282-1-martin.fernandez@eclypsium.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=YbEI3Q/NEjCtDTVCV1jkA7nYNYBH/Wfa2wk3IkVyJko=;
+        b=8LnTDQKX/cUaBXt3QsixpI5fJXDiYmRKikB30iVe203MwvggNFT+Na1vEsO80Sq92t
+         pfhja+D5zRWwavGqwk4a7RaJ1EbFB5WZWSsiGujUrV/SFSS7sp6+nrFh9fPkatxPiac7
+         RMe/iLrHZv0HYGfCjbwm2X5bTUlFW+fXO+B+O3VsPF9vCshVavg9ExKRZwMS7vidiBkc
+         9H/4MYffk9a2QjKtlC6igKxPmjd0wqm1KNsAKcE741hqEmeyK2r3xb9T04yY4+i+GmXx
+         59rGq0nsj/0ym9xHIu6xpidUvJFNUl/zO4tOQ7SJAmYYtLZ8zAZZcWCd/q0s39up7nvI
+         Hjxw==
+X-Gm-Message-State: AOAM530Z5fl+XcLwAbV817GQcrF47mnKDHlYgXDEnGPwgr0LC/GKOGto
+        epV28tCgm2g12xyn9x8/eOBfGP1QLNbxjTOsyac=
+X-Google-Smtp-Source: ABdhPJzsWBue8hny8iu8UStnSsLKrDsofzF82edmf0tWu46f1ZTYqOLnDx8ZCVNnTh7yaWS23AqSaLeKamPukh6KrX0=
+X-Received: by 2002:a63:4507:: with SMTP id s7mr5548565pga.252.1642113511660;
+ Thu, 13 Jan 2022 14:38:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:6a10:f38c:0:0:0:0 with HTTP; Thu, 13 Jan 2022 14:38:31
+ -0800 (PST)
+Reply-To: mchristophdaniel@gmail.com
+From:   Marcus Galois <marcus.galois@gmail.com>
+Date:   Thu, 13 Jan 2022 23:38:31 +0100
+Message-ID: <CANqBaXXxV+6aYFoBvgURt7nV5dyg_4-TokgFXOrqt71EBftK6w@mail.gmail.com>
+Subject: Good News Finally.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Show in each node in sysfs if its memory is able to do be encrypted by
-the CPU, ie. if all its memory is marked with EFI_MEMORY_CPU_CRYPTO in
-the EFI memory map.
+Hello friend.
 
-Signed-off-by: Martin Fernandez <martin.fernandez@eclypsium.com>
----
- Documentation/ABI/testing/sysfs-devices-node | 10 ++++++++++
- drivers/base/node.c                          | 10 ++++++++++
- 2 files changed, 20 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-devices-node
+You might find it so difficult to remember me, though it is indeed a
+very long time, I am much delighted to contact you again after a long
+period of time, I remember you despite circumstances that made things
+not worked out as we projected then. I want to inform you that the
+transaction we're doing together then finally worked out and I decided
+to contact you and to let you know because of your tremendous effort
+to make things work out then.
 
-diff --git a/Documentation/ABI/testing/sysfs-devices-node b/Documentation/ABI/testing/sysfs-devices-node
-new file mode 100644
-index 000000000000..7c0480580670
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-devices-node
-@@ -0,0 +1,10 @@
-+What:		/sys/devices/system/node/nodeX/crypto_capable
-+Date:		January 2022
-+Contact:	Martin Fernandez <martin.fernandez@eclypsium.com>
-+Users:		fwupd (https://fwupd.org)
-+Description:
-+		This value is 1 if all system memory in this node is
-+		marked with EFI_MEMORY_CPU_CRYPTO, indicating that the
-+		system memory is capable of being protected with the
-+		CPU’s memory cryptographic capabilities. It is 0
-+		otherwise.
-\ No newline at end of file
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index 87acc47e8951..dabaed997ecd 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -560,11 +560,21 @@ static ssize_t node_read_distance(struct device *dev,
- }
- static DEVICE_ATTR(distance, 0444, node_read_distance, NULL);
- 
-+static ssize_t crypto_capable_show(struct device *dev,
-+				   struct device_attribute *attr, char *buf)
-+{
-+	struct pglist_data *pgdat = NODE_DATA(dev->id);
-+
-+	return sysfs_emit(buf, "%d\n", pgdat->crypto_capable);
-+}
-+static DEVICE_ATTR_RO(crypto_capable);
-+
- static struct attribute *node_dev_attrs[] = {
- 	&dev_attr_meminfo.attr,
- 	&dev_attr_numastat.attr,
- 	&dev_attr_distance.attr,
- 	&dev_attr_vmstat.attr,
-+	&dev_attr_crypto_capable.attr,
- 	NULL
- };
- 
--- 
-2.30.2
+Meanwhile I must inform you that I'm presently in Caribbean Island for
+numerous business negotiation with some partners. with my sincere
+heart i have decided to compensate you with USD$900,000 for your
+dedication then on our transaction, you tried so much that period and
+I appreciated your effort. I wrote a cheque/check on your name, as
+soon as you receive it, you let me know.
 
+Contact my secretary now on his email: mchristophdaniel@gmail.com
+Name: Mr. Christoph Daniel
+
+You are to forward to him your Name........ Address.......,Phone
+number......for shipment/dispatch of the cheque/Check to you
+
+Regards,
+Mr. Marcus Galois
