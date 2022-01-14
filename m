@@ -2,82 +2,130 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2096248E06A
-	for <lists+linux-efi@lfdr.de>; Thu, 13 Jan 2022 23:38:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51F7048E163
+	for <lists+linux-efi@lfdr.de>; Fri, 14 Jan 2022 01:10:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233439AbiAMWic (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 13 Jan 2022 17:38:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34258 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237996AbiAMWic (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 13 Jan 2022 17:38:32 -0500
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 343F0C06161C
-        for <linux-efi@vger.kernel.org>; Thu, 13 Jan 2022 14:38:32 -0800 (PST)
-Received: by mail-pg1-x542.google.com with SMTP id s1so1159228pga.5
-        for <linux-efi@vger.kernel.org>; Thu, 13 Jan 2022 14:38:32 -0800 (PST)
+        id S238373AbiANAKy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 13 Jan 2022 19:10:54 -0500
+Received: from smtp-fw-6002.amazon.com ([52.95.49.90]:36845 "EHLO
+        smtp-fw-6002.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238356AbiANAKx (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 13 Jan 2022 19:10:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=YbEI3Q/NEjCtDTVCV1jkA7nYNYBH/Wfa2wk3IkVyJko=;
-        b=jZ1lMmL5aifhLDi/hwElp+ONi3CaKC5sTq6NgRljTbxG06NGakYuRn5o+tby7Mw1q+
-         AWOKPLt4r1jt6iD1MmHWM5mkRsJOLGCld0aChbU+5aLNBXLwRW8wnnDe8NIH+YoDlfFN
-         yPpJmixif6HCy+vwUwRMJaQhjcat7a7LKx8k+dyZ5aDV/i9/SmwqFPVxluNqTKczQcHA
-         jrbB/nRUgROf6VPFrdRaINmHY58hVZ4ZQOgBdktzcGuILeW67zTMyJTf28zBWnWAMWir
-         rwdYCNsqLbJfn2GeCpMCwc+szL19PunVzVDQRm3zKeW51SpSf02NMcP5gXp1jea+3PUv
-         ek6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=YbEI3Q/NEjCtDTVCV1jkA7nYNYBH/Wfa2wk3IkVyJko=;
-        b=8LnTDQKX/cUaBXt3QsixpI5fJXDiYmRKikB30iVe203MwvggNFT+Na1vEsO80Sq92t
-         pfhja+D5zRWwavGqwk4a7RaJ1EbFB5WZWSsiGujUrV/SFSS7sp6+nrFh9fPkatxPiac7
-         RMe/iLrHZv0HYGfCjbwm2X5bTUlFW+fXO+B+O3VsPF9vCshVavg9ExKRZwMS7vidiBkc
-         9H/4MYffk9a2QjKtlC6igKxPmjd0wqm1KNsAKcE741hqEmeyK2r3xb9T04yY4+i+GmXx
-         59rGq0nsj/0ym9xHIu6xpidUvJFNUl/zO4tOQ7SJAmYYtLZ8zAZZcWCd/q0s39up7nvI
-         Hjxw==
-X-Gm-Message-State: AOAM530Z5fl+XcLwAbV817GQcrF47mnKDHlYgXDEnGPwgr0LC/GKOGto
-        epV28tCgm2g12xyn9x8/eOBfGP1QLNbxjTOsyac=
-X-Google-Smtp-Source: ABdhPJzsWBue8hny8iu8UStnSsLKrDsofzF82edmf0tWu46f1ZTYqOLnDx8ZCVNnTh7yaWS23AqSaLeKamPukh6KrX0=
-X-Received: by 2002:a63:4507:: with SMTP id s7mr5548565pga.252.1642113511660;
- Thu, 13 Jan 2022 14:38:31 -0800 (PST)
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1642119055; x=1673655055;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=sZ0Q13DS9ckI0r0N0o++8V1Ury3/fcldI1Z3JXkEwlc=;
+  b=EQzd5bG4CrzTcBZOrRQUnobH60cCj2aPHEfNulrRU+QWCi2f5eH9yQ2S
+   Y0EJW4PjLFfJeeqhNr6AMO5GEwBpIh4ozKFATOxvcwy4CrT22ZqSF/lWi
+   GmiSAdLiJqIrZ8iaFPjdMcAcqUhWy10fKI2NuWpg+KWkOuio9ipMz8rSI
+   s=;
+X-IronPort-AV: E=Sophos;i="5.88,286,1635206400"; 
+   d="scan'208";a="168914631"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-pdx-2b-22c2b493.us-west-2.amazon.com) ([10.43.8.2])
+  by smtp-border-fw-6002.iad6.amazon.com with ESMTP; 14 Jan 2022 00:10:53 +0000
+Received: from EX13MTAUEE002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
+        by email-inbound-relay-pdx-2b-22c2b493.us-west-2.amazon.com (Postfix) with ESMTPS id 640AA41501;
+        Fri, 14 Jan 2022 00:10:48 +0000 (UTC)
+Received: from EX13D08UEE002.ant.amazon.com (10.43.62.92) by
+ EX13MTAUEE002.ant.amazon.com (10.43.62.24) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.28; Fri, 14 Jan 2022 00:10:47 +0000
+Received: from EX13MTAUEE002.ant.amazon.com (10.43.62.24) by
+ EX13D08UEE002.ant.amazon.com (10.43.62.92) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.28; Fri, 14 Jan 2022 00:10:47 +0000
+Received: from dev-dsk-fllinden-2c-d7720709.us-west-2.amazon.com
+ (172.19.206.175) by mail-relay.amazon.com (10.43.62.224) with Microsoft SMTP
+ Server id 15.0.1497.28 via Frontend Transport; Fri, 14 Jan 2022 00:10:47
+ +0000
+Received: by dev-dsk-fllinden-2c-d7720709.us-west-2.amazon.com (Postfix, from userid 6262777)
+        id 6BE7EC6; Fri, 14 Jan 2022 00:10:46 +0000 (UTC)
+Date:   Fri, 14 Jan 2022 00:10:46 +0000
+From:   Frank van der Linden <fllinden@amazon.com>
+To:     Mike Rapoport <rppt@kernel.org>
+CC:     <linux-arm-kernel@lists.infradead.org>, <robh+dt@kernel.org>,
+        <frowand.list@gmail.com>, <ardb@kernel.org>, <linux-mm@kvack.org>,
+        <devicetree@vger.kernel.org>, <linux-efi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kexec@lists.infradead.org>,
+        <catalin.marinas@arm.com>, <will@kernel.org>,
+        <geert+renesas@glider.be>
+Subject: Re: [PATCH 1/3] memblock: define functions to set the usable memory
+ range
+Message-ID: <20220114001046.GA10609@dev-dsk-fllinden-2c-d7720709.us-west-2.amazon.com>
+References: <20220110210809.3528-1-fllinden@amazon.com>
+ <20220110210809.3528-2-fllinden@amazon.com> <Yd1cnquQFZoNE7FP@kernel.org>
+ <20220111204441.GA36458@dev-dsk-fllinden-2c-d7720709.us-west-2.amazon.com>
+ <YeBiV8fuCCLWyHYb@kernel.org>
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:f38c:0:0:0:0 with HTTP; Thu, 13 Jan 2022 14:38:31
- -0800 (PST)
-Reply-To: mchristophdaniel@gmail.com
-From:   Marcus Galois <marcus.galois@gmail.com>
-Date:   Thu, 13 Jan 2022 23:38:31 +0100
-Message-ID: <CANqBaXXxV+6aYFoBvgURt7nV5dyg_4-TokgFXOrqt71EBftK6w@mail.gmail.com>
-Subject: Good News Finally.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <YeBiV8fuCCLWyHYb@kernel.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello friend.
+On Thu, Jan 13, 2022 at 07:33:11PM +0200, Mike Rapoport wrote:
+> On Tue, Jan 11, 2022 at 08:44:41PM +0000, Frank van der Linden wrote:
+> > On Tue, Jan 11, 2022 at 12:31:58PM +0200, Mike Rapoport wrote:
+> > > > --- a/include/linux/memblock.h
+> > > > +++ b/include/linux/memblock.h
+> > > > @@ -481,6 +481,8 @@ phys_addr_t memblock_reserved_size(void);
+> > > >  phys_addr_t memblock_start_of_DRAM(void);
+> > > >  phys_addr_t memblock_end_of_DRAM(void);
+> > > >  void memblock_enforce_memory_limit(phys_addr_t memory_limit);
+> > > > +void memblock_set_usable_range(phys_addr_t base, phys_addr_t size);
+> > > > +void memblock_enforce_usable_range(void);
+> > > >  void memblock_cap_memory_range(phys_addr_t base, phys_addr_t size);
+> > > >  void memblock_mem_limit_remove_map(phys_addr_t limit);
+> > >
+> > > We already have 3 very similar interfaces that deal with memory capping.
+> > > Now you suggest to add fourth that will "generically" solve a single use
+> > > case of DT, EFI and kdump interaction on arm64.
+> > >
+> > > Looks like a workaround for a fundamental issue of incompatibility between
+> > > DT and EFI wrt memory registration.
+> >
+> > Yep, I figured this would be the main argument against this - arm64
+> > already added several other more-or-less special cased interfaces over
+> > time.
+> >
+> > I'm more than happy to solve this in a different way.
+> >
+> > What would you suggest:
+> >
+> > 1) Try to merge the similar interfaces in to one.
+> > 2) Just deal with it at a lower (arm64) level?
+> > 3) Some other way?
+> 
+> We've discussed this with Ard on IRC, and our conclusion was that on arm64
+> kdump kernel should have memblock.memory exactly the same as the normal
+> kernel. Then, the memory outside usable-memory-range should be reserved so
+> that kdump kernel won't step over it.
+> 
+> With that, simple (untested) patch below could be what we need:
+> 
+> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+> index bdca35284ceb..371418dffaf1 100644
+> --- a/drivers/of/fdt.c
+> +++ b/drivers/of/fdt.c
+> @@ -1275,7 +1275,8 @@ void __init early_init_dt_scan_nodes(void)
+>         of_scan_flat_dt(early_init_dt_scan_memory, NULL);
+> 
+>         /* Handle linux,usable-memory-range property */
+> -       memblock_cap_memory_range(cap_mem_addr, cap_mem_size);
+> +       memblock_reserve(0, cap_mem_addr);
+> +       memblock_reserve(cap_mem_addr + cap_mem_size, PHYS_ADDR_MAX);
+>  }
+> 
+>  bool __init early_init_dt_scan(void *params)
 
-You might find it so difficult to remember me, though it is indeed a
-very long time, I am much delighted to contact you again after a long
-period of time, I remember you despite circumstances that made things
-not worked out as we projected then. I want to inform you that the
-transaction we're doing together then finally worked out and I decided
-to contact you and to let you know because of your tremendous effort
-to make things work out then.
+Thanks for discussing this further! I tried the above change, although
+I wrapped it in an if (cap_mem_size != 0), so that a normal kernel
+doesn't get its entire memory marked as reserved.
 
-Meanwhile I must inform you that I'm presently in Caribbean Island for
-numerous business negotiation with some partners. with my sincere
-heart i have decided to compensate you with USD$900,000 for your
-dedication then on our transaction, you tried so much that period and
-I appreciated your effort. I wrote a cheque/check on your name, as
-soon as you receive it, you let me know.
+The crash kernel hung without producing output - I haven't chased that
+down. This particular kernel was a bit older (5.15), so I'll try again
+with 5.17-rc to make sure.
 
-Contact my secretary now on his email: mchristophdaniel@gmail.com
-Name: Mr. Christoph Daniel
-
-You are to forward to him your Name........ Address.......,Phone
-number......for shipment/dispatch of the cheque/Check to you
-
-Regards,
-Mr. Marcus Galois
+- Frank
