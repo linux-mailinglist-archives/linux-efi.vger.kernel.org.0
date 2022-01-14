@@ -2,209 +2,186 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDEE548E9C3
-	for <lists+linux-efi@lfdr.de>; Fri, 14 Jan 2022 13:20:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B56B48EA86
+	for <lists+linux-efi@lfdr.de>; Fri, 14 Jan 2022 14:22:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240980AbiANMUt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 14 Jan 2022 07:20:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48966 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240969AbiANMUt (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 14 Jan 2022 07:20:49 -0500
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 540B1C06173F
-        for <linux-efi@vger.kernel.org>; Fri, 14 Jan 2022 04:20:49 -0800 (PST)
-Received: by mail-yb1-xb2e.google.com with SMTP id 66so8473228ybf.4
-        for <linux-efi@vger.kernel.org>; Fri, 14 Jan 2022 04:20:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=eclypsium.com; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=MAkMmnOMe9NMKorob6g8seLd4C0DSklHH7T74q+omyk=;
-        b=QnLGmtyYeMmpag3WiMXk4IEqMWj0pP8AGxVajaC8Rs1s6nCvuZn+D+NHQWrxXMrhuV
-         tHK2k3IFJVbeGp6+p0wBIgT5xPis9YcJ/KJSuyO6asErbqxfQiu4Wog0JqY4KEhg51Yx
-         7QE+lTrRwzIMMOZC3mAmng3GLEKqsyajxYqWcL8ZVAT0ScpMPEcHAJoBTN4+KJlBsl1t
-         ui7r7a2X/LA3jg7th5ENpJkfVNYdooSpujlBYEOvXVvtQyeBhGmGXLQtx0rEaGtyXTBA
-         ggrWV6+UTqqggnQ/V2tOqPrVT6Npot7tIbvCWiuiqGRBJqwoVhLNLY9MSaPO4Qcheuc+
-         PylQ==
+        id S241213AbiANNWj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 14 Jan 2022 08:22:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:20082 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S241212AbiANNWj (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 14 Jan 2022 08:22:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1642166558;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=oeaq06iGyvE0QAALNnhiWPGnYSnujvBuiZVqBWtdPcQ=;
+        b=GLM4PNOLO76exaLiapDScAvMqMI8v4Osy92YUsa2i7LSptqZfpylpWur4kO8t1IsSxRE2e
+        Qe7PxETOfO7m2AxqnSgGtTS10kqhPFEIR6TZ4puVvTuNx+lxJtIrNdPrfV4kguF53CvQNn
+        mtD5gZW52syBY0nJ+ZTU0naa4//gOeE=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-369-c_tCvh-6OMmqgt7TbCItoQ-1; Fri, 14 Jan 2022 08:22:37 -0500
+X-MC-Unique: c_tCvh-6OMmqgt7TbCItoQ-1
+Received: by mail-ed1-f69.google.com with SMTP id g11-20020a056402090b00b003f8fd1ac475so8369983edz.1
+        for <linux-efi@vger.kernel.org>; Fri, 14 Jan 2022 05:22:37 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=MAkMmnOMe9NMKorob6g8seLd4C0DSklHH7T74q+omyk=;
-        b=df21UraBjifFy+5MgSJHvmUVKdqPxbYpjLXwBS+pAjE23k8pZ70+6urVUAdYkKYkFi
-         zMhjOqDRGDXc1dv5J/4Q2aVnRqbZZZz/C5GEqXJJnQBK/JHmX+tDiKHtLP9UuZiW7aGI
-         LcY3M/XyQ77VJEQxngmitkyTAmqICB1+wZJEVqLo9ttUiuqUT29tqf/DKnYL3C5bj2dh
-         bPqVTK/tTQK7xgM/7jmIED6zPkFZkQxB/T0aYcIVZhxdY6CmzdUbvVZ78PRPoIeQkDwB
-         HggK/f9JhDckQitHoIL9QgyfjM9bg44sufAolzeTzKI/BBP2L04Sp67wPShyxXqnNY+Q
-         9urQ==
-X-Gm-Message-State: AOAM531HvuXVMh2kTxUOb5hy31ZfySIoTx0V2pjXaXfYlAbm496wMSg8
-        JC0Ild4a2X9AvEW3uVdu/N+fU+lQ8Yddm59WL2YBpg==
-X-Google-Smtp-Source: ABdhPJy8h7Jl2pKbPuRhQfBLmCm+OgtCbyEMVkYBfTbYhpZi2wWRXIm2SkgtcDECJxeJHq7y/SS5Op8/g1ZZhK9FBOI=
-X-Received: by 2002:a25:ea4a:: with SMTP id o10mr12517153ybe.442.1642162848353;
- Fri, 14 Jan 2022 04:20:48 -0800 (PST)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent
+         :content-language:to:cc:references:from:organization:subject
+         :in-reply-to:content-transfer-encoding;
+        bh=oeaq06iGyvE0QAALNnhiWPGnYSnujvBuiZVqBWtdPcQ=;
+        b=hCUk0K+UOuwecv1Qj+uyT9i4rFGxp1WiZ6ZDEb8a/k3iv7rwZ+EeJtJnNLDRSdX+MX
+         I6wKFPJTBMPBUZw9V/gafuAhly5msUga9Re/7/4YJLKl0BVcRAa/ANMDZAtZlDa1UzZO
+         9y85IMQwBYmJ1a/6YGBsU41vXSt4ghqNYLo6oXmbm0QGeAbycX44SHW1iEoGBGcbzjZK
+         vu8f/45PcMYdG6IGAt/I3kknCLDCH3lB5hRG16eshJADEtSfIGAtwLTn7nKkQERXL4yX
+         ypoBIoLpVmDCXW0Y+7ieGOE9n5AXT3Fel2cWIpG0QVSaRnZ6MVJb+wAI+AXYybkvWWj0
+         vfmQ==
+X-Gm-Message-State: AOAM531F21Pi5Rn78wIqD5jmwzqyQUwq4yj4uskRF72AXp9CmMN5VVk7
+        iI5DkIaDC0cefODHphxscyzg0Y0q8MS46saeauuVRb5sKxCDk5O1AdErUSCvL1RQbvM89NZyBlY
+        OOrYcLuAMwq+jq2gCaYcP
+X-Received: by 2002:a17:907:da0:: with SMTP id go32mr7626093ejc.206.1642166556199;
+        Fri, 14 Jan 2022 05:22:36 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxS9vZNX3oQ6i39jM2FKgLuz6f8PXERubRE87h6Ubd8Gv/YN4aNXBeXwCcra2gmHtmx8Cv73A==
+X-Received: by 2002:a17:907:da0:: with SMTP id go32mr7626059ejc.206.1642166555864;
+        Fri, 14 Jan 2022 05:22:35 -0800 (PST)
+Received: from ?IPV6:2003:cb:c701:9d00:ff87:1c9b:108a:9702? (p200300cbc7019d00ff871c9b108a9702.dip0.t-ipconnect.de. [2003:cb:c701:9d00:ff87:1c9b:108a:9702])
+        by smtp.gmail.com with ESMTPSA id o1sm2377554edv.2.2022.01.14.05.22.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Jan 2022 05:22:35 -0800 (PST)
+Message-ID: <1549f9f8-92a5-21f6-23ef-f3e6217df1c3@redhat.com>
+Date:   Fri, 14 Jan 2022 14:22:34 +0100
 MIME-Version: 1.0
-Received: by 2002:a81:3cd:0:0:0:0:0 with HTTP; Fri, 14 Jan 2022 04:20:47 -0800 (PST)
-In-Reply-To: <YeFHcrUUopm5xrtZ@kernel.org>
-References: <20220113213027.457282-1-martin.fernandez@eclypsium.com>
- <20220113213027.457282-2-martin.fernandez@eclypsium.com> <YeFHcrUUopm5xrtZ@kernel.org>
-From:   Martin Fernandez <martin.fernandez@eclypsium.com>
-Date:   Fri, 14 Jan 2022 09:20:47 -0300
-Message-ID: <CAKgze5YLqSmjPsPJE8w_Z=1J=qQkj+QsOeweusXV+V-=q+qZiA@mail.gmail.com>
-Subject: Re: [PATCH v5 1/5] mm/memblock: Tag memblocks with crypto capabilities
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
-        gregkh@linuxfoundation.org, rafael@kernel.org,
-        akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
-        hughsient@gmail.com, alex.bazhaniuk@eclypsium.com,
-        alison.schofield@intel.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Content-Language: en-US
+To:     "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc:     Dave Hansen <dave.hansen@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Varad Gautam <varad.gautam@suse.com>,
+        Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
+        linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220111113314.27173-1-kirill.shutemov@linux.intel.com>
+ <20220111113314.27173-2-kirill.shutemov@linux.intel.com>
+ <3a68fabd-eaff-2164-5609-3a71fd4a7257@intel.com>
+ <d84e242f-f7f6-4fb0-8f22-bcc790a296a0@redhat.com>
+ <20220112191510.6uqdflbreuet7bnx@box.shutemov.name>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCHv2 1/7] mm: Add support for unaccepted memory
+In-Reply-To: <20220112191510.6uqdflbreuet7bnx@box.shutemov.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 1/14/22, Mike Rapoport <rppt@kernel.org> wrote:
-> On Thu, Jan 13, 2022 at 06:30:23PM -0300, Martin Fernandez wrote:
->> Add the capability to mark regions of the memory memory_type able of
->> hardware memory encryption.
+On 12.01.22 20:15, Kirill A. Shutemov wrote:
+> On Wed, Jan 12, 2022 at 12:31:10PM +0100, David Hildenbrand wrote:
 >>
->> Also add the capability to query if all regions of a memory node are
->> able to do hardware memory encryption to call it when initializing the
->> nodes.
+>>>
+>>> Looking at stuff like this, I can't help but think that a:
+>>>
+>>> 	#define PageOffline PageUnaccepted
+>>>
+>>> and some other renaming would be a fine idea.  I get that the Offline 
+>>> bit can be reused, but I'm not sure that the "Offline" *naming* should 
+>>> be reused.  What you're doing here is logically distinct from existing 
+>>> offlining.
 >>
->> Signed-off-by: Martin Fernandez <martin.fernandez@eclypsium.com>
->> ---
->>  include/linux/memblock.h |  5 ++++
->>  mm/memblock.c            | 49 ++++++++++++++++++++++++++++++++++++++++
->>  2 files changed, 54 insertions(+)
->>
->> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
->> index 9dc7cb239d21..374c03e10b2e 100644
->> --- a/include/linux/memblock.h
->> +++ b/include/linux/memblock.h
->> @@ -41,6 +41,7 @@ extern unsigned long long max_possible_pfn;
->>   * via a driver, and never indicated in the firmware-provided memory map
->> as
->>   * system RAM. This corresponds to IORESOURCE_SYSRAM_DRIVER_MANAGED in
->> the
->>   * kernel resource tree.
->> + * @MEMBLOCK_CRYPTO_CAPABLE: capable of hardware encryption
->>   */
->>  enum memblock_flags {
->>  	MEMBLOCK_NONE		= 0x0,	/* No special request */
->> @@ -48,6 +49,7 @@ enum memblock_flags {
->>  	MEMBLOCK_MIRROR		= 0x2,	/* mirrored region */
->>  	MEMBLOCK_NOMAP		= 0x4,	/* don't add to kernel direct mapping */
->>  	MEMBLOCK_DRIVER_MANAGED = 0x8,	/* always detected via a driver */
->> +	MEMBLOCK_CRYPTO_CAPABLE = 0x10,  /* capable of hardware encryption */
->
-> Nit: please keep the comments aligned with TAB.
->
->>  };
->>
->>  /**
->> @@ -121,6 +123,9 @@ int memblock_physmem_add(phys_addr_t base, phys_addr_t
->> size);
->>  void memblock_trim_memory(phys_addr_t align);
->>  bool memblock_overlaps_region(struct memblock_type *type,
->>  			      phys_addr_t base, phys_addr_t size);
->> +bool memblock_node_is_crypto_capable(int nid);
->> +int memblock_mark_crypto_capable(phys_addr_t base, phys_addr_t size);
->> +int memblock_clear_crypto_capable(phys_addr_t base, phys_addr_t size);
->>  int memblock_mark_hotplug(phys_addr_t base, phys_addr_t size);
->>  int memblock_clear_hotplug(phys_addr_t base, phys_addr_t size);
->>  int memblock_mark_mirror(phys_addr_t base, phys_addr_t size);
->> diff --git a/mm/memblock.c b/mm/memblock.c
->> index 1018e50566f3..61ec50647469 100644
->> --- a/mm/memblock.c
->> +++ b/mm/memblock.c
->> @@ -191,6 +191,27 @@ bool __init_memblock memblock_overlaps_region(struct
->> memblock_type *type,
->>  	return i < type->cnt;
->>  }
->>
->> +/**
->> + * memblock_node_is_crypto_capable - get if whole node is capable
->> + * of encryption
->> + * @nid: number of node
->> + *
->> + * Iterate over all memory memblock_type and find if all regions under
->> + * node @nid are capable of hardware encryption.
->
-> Please add Return: description, otherwise kernel-doc is unhappy
->
->> + */
->> +bool __init_memblock memblock_node_is_crypto_capable(int nid)
->> +{
->> +	struct memblock_region *region;
->> +
->> +	for_each_mem_region(region) {
->> +		if ((memblock_get_region_node(region) == nid) &&
->> +		    !(region->flags & MEMBLOCK_CRYPTO_CAPABLE))
->> +			return false;
->> +	}
->
-> As we discussed on v3, please add a printk if the same node has both
-> crypto-capable and not crypto-capable regions.
->
-> https://lore.kernel.org/all/Ya++1FwWzKr2wYQH@kernel.org/
->
->> +
->> +	return true;
->> +}
->> +
->>  /**
->>   * __memblock_find_range_bottom_up - find free area utility in bottom-up
->>   * @start: start of candidate range
->> @@ -885,6 +906,34 @@ static int __init_memblock
->> memblock_setclr_flag(phys_addr_t base,
->>  	return 0;
->>  }
->>
->> +/**
->> + * memblock_mark_crypto_capable - Mark memory regions capable of
->> hardware
->> + * encryption with flag MEMBLOCK_CRYPTO_CAPABLE.
->> + * @base: the base phys addr of the region
->> + * @size: the size of the region
->> + *
->> + * Return: 0 on success, -errno on failure.
->> + */
->> +int __init_memblock memblock_mark_crypto_capable(phys_addr_t base,
->> +						 phys_addr_t size)
->> +{
->> +	return memblock_setclr_flag(base, size, 1, MEMBLOCK_CRYPTO_CAPABLE);
->> +}
->> +
->> +/**
->> + * memblock_clear_crypto_capable - Clear flag MEMBLOCK_CRYPTO for a
->> + * specified region.
->> + * @base: the base phys addr of the region
->> + * @size: the size of the region
->> + *
->> + * Return: 0 on success, -errno on failure.
->> + */
->> +int __init_memblock memblock_clear_crypto_capable(phys_addr_t base,
->> +						  phys_addr_t size)
->> +{
->> +	return memblock_setclr_flag(base, size, 0, MEMBLOCK_CRYPTO_CAPABLE);
->> +}
->> +
->>  /**
->>   * memblock_mark_hotplug - Mark hotpluggable memory with flag
->> MEMBLOCK_HOTPLUG.
->>   * @base: the base phys addr of the region
->> --
->> 2.30.2
->>
->
-> --
-> Sincerely yours,
-> Mike.
->
+>> Yes, or using a new pagetype bit to make the distinction clearer.
+>> Especially the function names like maybe_set_page_offline() et. Al are
+>> confusing IMHO. They are all about accepting unaccepted memory ... and
+>> should express that.
+> 
+> "Unaccepted" is UEFI treminology and I'm not sure we want to expose
+> core-mm to it. Power/S390/ARM may have a different name for the same
+> concept. Offline/online is neutral terminology, familiar to MM developers.
 
-Ok, will do. Thanks for the feedback.
+Personally, I'd much rather prefer clear UEFI terminology for now than
+making the code more confusing to get. We can always generalize later
+iff there are similar needs by other archs (and if they are able to come
+up witha  better name). But maybe we can find a different name immediately.
+
+The issue with online vs. offline I have is that we already have enough
+confusion:
+
+offline page: memory section is offline. These pages are not managed by
+the buddy. The memmap is stale unless we're dealing with special
+ZONE_DEVICE memory.
+
+logically offline pages: memory section is online and pages are
+PageOffline(). These pages were removed from the buddy e.g., to free
+them up in the hypervisor.
+
+soft offline pages:  memory section is online and pages are
+PageHWPoison(). These pages are removed from the buddy such that we
+cannot allocate them to not trigger MCEs.
+
+
+offline pages are exposed to the buddy by onlining them
+(generic_online_page()), which is init+freeing. PageOffline() and
+PageHWPoison() are onlined by removing the flag and freeing them to the
+buddy.
+
+
+Your case is different such that the pages are managed by the buddy and
+they don't really have online/offline semantics compared to what we
+already have. All the buddy has to do is prepare them for initial use.
+
+
+I'm fine with reusing PageOffline(), but for the purpose of reading the
+code, I think we really want some different terminology in page_alloc.c
+
+So using any such terminology would make it clearer to me:
+* PageBuddyUnprepared()
+* PageBuddyUninitialized()
+* PageBuddyUnprocessed()
+* PageBuddyUnready()
+
+
+> 
+> What if I change accept->online in function names and document the meaning
+> properly?
+> 
+>> I assume PageOffline() will be set only on the first sub-page of a
+>> high-order PageBuddy() page, correct?
+>>
+>> Then we'll have to monitor all PageOffline() users such that they can
+>> actually deal with PageBuddy() pages spanning *multiple* base pages for
+>> a PageBuddy() page. For now it's clear that if a page is PageOffline(),
+>> it cannot be PageBuddy() and cannot span more than one base page.
+> 
+>> E.g., fs/proc/kcore.c:read_kcore() assumes that PageOffline() is set on
+>> individual base pages.
+> 
+> Right, pages that offline from hotplug POV are never on page allocator's
+> free lists, so it cannot ever step on them.
+> 
+
+
+-- 
+Thanks,
+
+David / dhildenb
+
