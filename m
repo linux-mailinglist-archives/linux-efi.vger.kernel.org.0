@@ -2,186 +2,167 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B56B48EA86
-	for <lists+linux-efi@lfdr.de>; Fri, 14 Jan 2022 14:22:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AC5C48EDBE
+	for <lists+linux-efi@lfdr.de>; Fri, 14 Jan 2022 17:13:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241213AbiANNWj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 14 Jan 2022 08:22:39 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:20082 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S241212AbiANNWj (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 14 Jan 2022 08:22:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1642166558;
+        id S243163AbiANQNc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 14 Jan 2022 11:13:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47158 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243161AbiANQNc (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 14 Jan 2022 11:13:32 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15420C061574;
+        Fri, 14 Jan 2022 08:13:32 -0800 (PST)
+Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3CBAA1EC04DB;
+        Fri, 14 Jan 2022 17:13:26 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1642176806;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=oeaq06iGyvE0QAALNnhiWPGnYSnujvBuiZVqBWtdPcQ=;
-        b=GLM4PNOLO76exaLiapDScAvMqMI8v4Osy92YUsa2i7LSptqZfpylpWur4kO8t1IsSxRE2e
-        Qe7PxETOfO7m2AxqnSgGtTS10kqhPFEIR6TZ4puVvTuNx+lxJtIrNdPrfV4kguF53CvQNn
-        mtD5gZW52syBY0nJ+ZTU0naa4//gOeE=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-369-c_tCvh-6OMmqgt7TbCItoQ-1; Fri, 14 Jan 2022 08:22:37 -0500
-X-MC-Unique: c_tCvh-6OMmqgt7TbCItoQ-1
-Received: by mail-ed1-f69.google.com with SMTP id g11-20020a056402090b00b003f8fd1ac475so8369983edz.1
-        for <linux-efi@vger.kernel.org>; Fri, 14 Jan 2022 05:22:37 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent
-         :content-language:to:cc:references:from:organization:subject
-         :in-reply-to:content-transfer-encoding;
-        bh=oeaq06iGyvE0QAALNnhiWPGnYSnujvBuiZVqBWtdPcQ=;
-        b=hCUk0K+UOuwecv1Qj+uyT9i4rFGxp1WiZ6ZDEb8a/k3iv7rwZ+EeJtJnNLDRSdX+MX
-         I6wKFPJTBMPBUZw9V/gafuAhly5msUga9Re/7/4YJLKl0BVcRAa/ANMDZAtZlDa1UzZO
-         9y85IMQwBYmJ1a/6YGBsU41vXSt4ghqNYLo6oXmbm0QGeAbycX44SHW1iEoGBGcbzjZK
-         vu8f/45PcMYdG6IGAt/I3kknCLDCH3lB5hRG16eshJADEtSfIGAtwLTn7nKkQERXL4yX
-         ypoBIoLpVmDCXW0Y+7ieGOE9n5AXT3Fel2cWIpG0QVSaRnZ6MVJb+wAI+AXYybkvWWj0
-         vfmQ==
-X-Gm-Message-State: AOAM531F21Pi5Rn78wIqD5jmwzqyQUwq4yj4uskRF72AXp9CmMN5VVk7
-        iI5DkIaDC0cefODHphxscyzg0Y0q8MS46saeauuVRb5sKxCDk5O1AdErUSCvL1RQbvM89NZyBlY
-        OOrYcLuAMwq+jq2gCaYcP
-X-Received: by 2002:a17:907:da0:: with SMTP id go32mr7626093ejc.206.1642166556199;
-        Fri, 14 Jan 2022 05:22:36 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxS9vZNX3oQ6i39jM2FKgLuz6f8PXERubRE87h6Ubd8Gv/YN4aNXBeXwCcra2gmHtmx8Cv73A==
-X-Received: by 2002:a17:907:da0:: with SMTP id go32mr7626059ejc.206.1642166555864;
-        Fri, 14 Jan 2022 05:22:35 -0800 (PST)
-Received: from ?IPV6:2003:cb:c701:9d00:ff87:1c9b:108a:9702? (p200300cbc7019d00ff871c9b108a9702.dip0.t-ipconnect.de. [2003:cb:c701:9d00:ff87:1c9b:108a:9702])
-        by smtp.gmail.com with ESMTPSA id o1sm2377554edv.2.2022.01.14.05.22.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Jan 2022 05:22:35 -0800 (PST)
-Message-ID: <1549f9f8-92a5-21f6-23ef-f3e6217df1c3@redhat.com>
-Date:   Fri, 14 Jan 2022 14:22:34 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Content-Language: en-US
-To:     "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc:     Dave Hansen <dave.hansen@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=T9lVGRMfB0dZ/1pOk6rO2IeX36vPDtdKY83YL0cY2Mo=;
+        b=TK52Th4/+7XvKMFOCryiQRmIwHP79uZD+OIuFZABrKQ7YzkwrV5uKKnsBKj4sUsc/3PKPr
+        +x/fbpLKwQuDO7hIFbx3LuulU5N+oT7pz2XvJ8Adab9yhp1SGJnu0VK+FgU3FEn2KBrS8B
+        qPgoEPJtqSyahyEqWUwxWhGgxHAS2d4=
+Date:   Fri, 14 Jan 2022 17:13:30 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Michael Roth <michael.roth@amd.com>
+Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
         Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
         Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Varad Gautam <varad.gautam@suse.com>,
-        Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
-        linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220111113314.27173-1-kirill.shutemov@linux.intel.com>
- <20220111113314.27173-2-kirill.shutemov@linux.intel.com>
- <3a68fabd-eaff-2164-5609-3a71fd4a7257@intel.com>
- <d84e242f-f7f6-4fb0-8f22-bcc790a296a0@redhat.com>
- <20220112191510.6uqdflbreuet7bnx@box.shutemov.name>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCHv2 1/7] mm: Add support for unaccepted memory
-In-Reply-To: <20220112191510.6uqdflbreuet7bnx@box.shutemov.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v8 29/40] x86/compressed/64: add support for SEV-SNP
+ CPUID table in #VC handlers
+Message-ID: <YeGhKll2fTcTr2wS@zn.tnic>
+References: <20211210154332.11526-1-brijesh.singh@amd.com>
+ <20211210154332.11526-30-brijesh.singh@amd.com>
+ <YeAmFePcPjvMoWCP@zn.tnic>
+ <20220113163913.phpu4klrmrnedgic@amd.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220113163913.phpu4klrmrnedgic@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 12.01.22 20:15, Kirill A. Shutemov wrote:
-> On Wed, Jan 12, 2022 at 12:31:10PM +0100, David Hildenbrand wrote:
->>
->>>
->>> Looking at stuff like this, I can't help but think that a:
->>>
->>> 	#define PageOffline PageUnaccepted
->>>
->>> and some other renaming would be a fine idea.  I get that the Offline 
->>> bit can be reused, but I'm not sure that the "Offline" *naming* should 
->>> be reused.  What you're doing here is logically distinct from existing 
->>> offlining.
->>
->> Yes, or using a new pagetype bit to make the distinction clearer.
->> Especially the function names like maybe_set_page_offline() et. Al are
->> confusing IMHO. They are all about accepting unaccepted memory ... and
->> should express that.
-> 
-> "Unaccepted" is UEFI treminology and I'm not sure we want to expose
-> core-mm to it. Power/S390/ARM may have a different name for the same
-> concept. Offline/online is neutral terminology, familiar to MM developers.
+On Thu, Jan 13, 2022 at 10:39:13AM -0600, Michael Roth wrote:
+> I was thinking a future hypervisor/spec might make use of this field for
+> new functionality, while still wanting to be backward-compatible with
+> existing guests, so it would be better to not enforce 0. The firmware
+> ABI does indeed document it as must-be-zero,
 
-Personally, I'd much rather prefer clear UEFI terminology for now than
-making the code more confusing to get. We can always generalize later
-iff there are similar needs by other archs (and if they are able to come
-up witha  better name). But maybe we can find a different name immediately.
+Maybe there's a good reason for that.
 
-The issue with online vs. offline I have is that we already have enough
-confusion:
+> by that seems to be more of a constraint on what a hypervisor is
+> currently allowed to place in the CPUID table, rather than something
+> the guest is meant to enforce/rely on.
 
-offline page: memory section is offline. These pages are not managed by
-the buddy. The memmap is stale unless we're dealing with special
-ZONE_DEVICE memory.
+So imagine whoever creates those, starts putting stuff in those fields.
+Then, in the future, the spec decides to rename those reserved/unused
+fields into something else and starts putting concrete values in them.
+I.e., it starts using them for something.
 
-logically offline pages: memory section is online and pages are
-PageOffline(). These pages were removed from the buddy e.g., to free
-them up in the hypervisor.
+But, now the spec breaks existing usage because those fields are already
+in use. And by then it doesn't matter what the spec says - existing
+usage makes it an ABI.
 
-soft offline pages:  memory section is online and pages are
-PageHWPoison(). These pages are removed from the buddy such that we
-cannot allocate them to not trigger MCEs.
+So we start doing expensive and ugly workarounds just so that we don't
+break the old, undocumented use which the spec simply silently allowed,
+and accomodate that new feature the spec adds.
+
+So no, what you're thinking is a bad bad idea.
+
+> snp_cpuid_info_create() (which sets snp_cpuid_initialized) only gets
+> called if firmware indicates this is an SNP guests (via the cc_blob), but
+> the #VC handler still needs to know whether or not it should use the SNP
+> CPUID table still SEV-ES will still make use of it, so it uses
+> snp_cpuid_active() to make that determination.
+
+So I went and applied the rest of the series. And I think you mean
+do_vc_no_ghcb() and it doing snp_cpuid().
+
+Then, looking at sev_enable() and it calling snp_init(), you fail
+further init if there's any discrepancy in the supplied data - CPUID,
+SEV status MSR, etc.
+
+So, practically, what you wanna test in all those places is whether
+you're a SNP guest or not. Which we already have:
+
+	sev_status & MSR_AMD64_SEV_SNP_ENABLED
+
+so, unless I'm missing something, you don't need yet another
+<bla>_active() helper.
+
+> This code is calculating the total XSAVE buffer size for whatever
+> features are enabled by the guest's XCR0/XSS registers. Those feature
+> bits correspond to the 0xD subleaves 2-63, which advertise the buffer
+> size for each particular feature. So that check needs to ignore anything
+> outside that range (including 0xD subleafs 0 and 1, which would normally
+> provide this total size dynamically based on current values of XCR0/XSS,
+> but here are instead calculated "manually" since we are not relying on
+> the XCR0_IN/XSS_IN fields in the table (due to the reasons mentioned
+> earlier in this thread).
+
+Yah, the gist of that needs to be as a comment of that line as it is not
+obvious (at least to me).
+
+> Not duplicate entries (though there's technically nothing in the spec
+> that says you can't), but I was more concerned here with multiple
+> entries corresponding to different combination of XCR0_IN/XSS_IN.
+> There's no good reason for a hypervisor to use those fields for anything
+> other than 0xD subleaves 0 and 1, but a hypervisor could in theory encode
+> 1 "duplicate" sub-leaf for each possible combination of XCR0_IN/XSS_IN,
+> similar to what it might do for subleaves 0 and 1, and not violate the
+> spec.
 
 
-offline pages are exposed to the buddy by onlining them
-(generic_online_page()), which is init+freeing. PageOffline() and
-PageHWPoison() are onlined by removing the flag and freeing them to the
-buddy.
+Ditto. Also a comment ontop please.
 
+> The current spec is a bit open-ended in some of these areas so the guest
+> code is trying to be as agnostic as possible to the underlying implementation
+> so there's less chance of breakage running on one hypervisor verses
+> another. We're working on updating the spec to encourage better
+> interoperability, but that would likely only be enforceable for future
+> firmware versions/guests.
 
-Your case is different such that the pages are managed by the buddy and
-they don't really have online/offline semantics compared to what we
-already have. All the buddy has to do is prepare them for initial use.
+This has the same theoretical problem as the reserved/unused fields. If
+you don't enforce it, people will do whatever and once it is implemented
+in hypervisors and it has become an ABI, you can't change it anymore.
 
+So I'd very strongly suggest you tighten in up upfront and only allow
+stuff later, when it makes sense. Not the other way around.
 
-I'm fine with reusing PageOffline(), but for the purpose of reading the
-code, I think we really want some different terminology in page_alloc.c
-
-So using any such terminology would make it clearer to me:
-* PageBuddyUnprepared()
-* PageBuddyUninitialized()
-* PageBuddyUnprocessed()
-* PageBuddyUnready()
-
-
-> 
-> What if I change accept->online in function names and document the meaning
-> properly?
-> 
->> I assume PageOffline() will be set only on the first sub-page of a
->> high-order PageBuddy() page, correct?
->>
->> Then we'll have to monitor all PageOffline() users such that they can
->> actually deal with PageBuddy() pages spanning *multiple* base pages for
->> a PageBuddy() page. For now it's clear that if a page is PageOffline(),
->> it cannot be PageBuddy() and cannot span more than one base page.
-> 
->> E.g., fs/proc/kcore.c:read_kcore() assumes that PageOffline() is set on
->> individual base pages.
-> 
-> Right, pages that offline from hotplug POV are never on page allocator's
-> free lists, so it cannot ever step on them.
-> 
-
+Thx.
 
 -- 
-Thanks,
+Regards/Gruss,
+    Boris.
 
-David / dhildenb
-
+https://people.kernel.org/tglx/notes-about-netiquette
