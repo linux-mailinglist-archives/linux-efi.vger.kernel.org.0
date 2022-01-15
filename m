@@ -2,166 +2,144 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D17B448F302
-	for <lists+linux-efi@lfdr.de>; Sat, 15 Jan 2022 00:28:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 020F548F82B
+	for <lists+linux-efi@lfdr.de>; Sat, 15 Jan 2022 18:12:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229604AbiANX1d (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 14 Jan 2022 18:27:33 -0500
-Received: from smtp-fw-6001.amazon.com ([52.95.48.154]:60308 "EHLO
-        smtp-fw-6001.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbiANX1d (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 14 Jan 2022 18:27:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1642202853; x=1673738853;
-  h=date:from:to:cc:message-id:references:mime-version:
-   in-reply-to:subject;
-  bh=Mm62JXSl5zeICS/ifss0xt6fgpw3EJrv2ma2nrDfxt8=;
-  b=iXErR/n0Uho4F6+bJctxxHzEAhrObbIKInQNag4TxE1E6Du4/YYA5L31
-   eu5Or8MKqksTD/APrC+Ft3IzD+X2E9h8jpUKI1iw5momFXfi0jkmTuwG1
-   zhvZncV9ESg2cSpGJv8lGFY1soRwGuj+ke72ED6qWWczMP8mpaGFWB9us
-   Q=;
-X-IronPort-AV: E=Sophos;i="5.88,290,1635206400"; 
-   d="scan'208";a="170572735"
-Subject: Re: [PATCH 1/3] memblock: define functions to set the usable memory range
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-pdx-2a-e6c05252.us-west-2.amazon.com) ([10.43.8.6])
-  by smtp-border-fw-6001.iad6.amazon.com with ESMTP; 14 Jan 2022 23:27:31 +0000
-Received: from EX13MTAUWB001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
-        by email-inbound-relay-pdx-2a-e6c05252.us-west-2.amazon.com (Postfix) with ESMTPS id 8AB4841615;
-        Fri, 14 Jan 2022 23:27:30 +0000 (UTC)
-Received: from EX13D35UWB004.ant.amazon.com (10.43.161.230) by
- EX13MTAUWB001.ant.amazon.com (10.43.161.249) with Microsoft SMTP Server (TLS)
- id 15.0.1497.28; Fri, 14 Jan 2022 23:27:30 +0000
-Received: from EX13MTAUWB001.ant.amazon.com (10.43.161.207) by
- EX13D35UWB004.ant.amazon.com (10.43.161.230) with Microsoft SMTP Server (TLS)
- id 15.0.1497.26; Fri, 14 Jan 2022 23:27:30 +0000
-Received: from dev-dsk-fllinden-2c-d7720709.us-west-2.amazon.com
- (172.19.206.175) by mail-relay.amazon.com (10.43.161.249) with Microsoft SMTP
- Server id 15.0.1497.28 via Frontend Transport; Fri, 14 Jan 2022 23:27:30
- +0000
-Received: by dev-dsk-fllinden-2c-d7720709.us-west-2.amazon.com (Postfix, from userid 6262777)
-        id 20DD5FC; Fri, 14 Jan 2022 23:27:29 +0000 (UTC)
-Date:   Fri, 14 Jan 2022 23:27:29 +0000
-From:   Frank van der Linden <fllinden@amazon.com>
-To:     Mike Rapoport <rppt@kernel.org>
-CC:     <linux-arm-kernel@lists.infradead.org>, <robh+dt@kernel.org>,
-        <frowand.list@gmail.com>, <ardb@kernel.org>, <linux-mm@kvack.org>,
-        <devicetree@vger.kernel.org>, <linux-efi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kexec@lists.infradead.org>,
-        <catalin.marinas@arm.com>, <will@kernel.org>,
-        <geert+renesas@glider.be>
-Message-ID: <20220114232729.GA35066@dev-dsk-fllinden-2c-d7720709.us-west-2.amazon.com>
-References: <20220110210809.3528-1-fllinden@amazon.com>
- <20220110210809.3528-2-fllinden@amazon.com> <Yd1cnquQFZoNE7FP@kernel.org>
- <20220111204441.GA36458@dev-dsk-fllinden-2c-d7720709.us-west-2.amazon.com>
- <YeBiV8fuCCLWyHYb@kernel.org>
+        id S232350AbiAORMC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 15 Jan 2022 12:12:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37696 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229570AbiAORMB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 15 Jan 2022 12:12:01 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84B90C061574;
+        Sat, 15 Jan 2022 09:12:01 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B9E07B80967;
+        Sat, 15 Jan 2022 17:11:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD832C36AE7;
+        Sat, 15 Jan 2022 17:11:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1642266718;
+        bh=+x1DbKa0d1NTgP8AulnZ1HHW73xrwlfQWVgKa1MsQrA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=KUxmXO3WdFK/4ksG4uOE9ayZhS2f4mBq8i5ikcYJ8i9mmWnVtiFag0kq4UveAG9gc
+         yk6U+OH9WKT82707LHv9vcX76LgRzHijxrXm0A6u6Y2Pl3CiSSO9LvZmA/m9vhnluE
+         OXmMJvRtKROpc35/IZXnez8t/eUrteOCCxTxmqhAtG7fy4IHsVxq3yOilIYba3cA4n
+         QLttt2oZ2iey6DbWQ2hiQWYs7oSdRpBTfOn3zdtLpoWcpk+Ruq673CSfhSRCIeRzeu
+         +zQlVdzag9K+inCpiwUKLDqmNGdSw1HZ3YTJz28QscCW8rClQsk2CUVOITIioRhvVk
+         h9twzQeEuOIOg==
+Date:   Sat, 15 Jan 2022 19:11:45 +0200
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Mimi Zohar <zohar@linux.ibm.com>
+Cc:     Eric Snowberg <eric.snowberg@oracle.com>,
+        David Howells <dhowells@redhat.com>,
+        "dwmw2@infradead.org" <dwmw2@infradead.org>,
+        "ardb@kernel.org" <ardb@kernel.org>,
+        "jmorris@namei.org" <jmorris@namei.org>,
+        "serge@hallyn.com" <serge@hallyn.com>,
+        "nayna@linux.ibm.com" <nayna@linux.ibm.com>,
+        "keescook@chromium.org" <keescook@chromium.org>,
+        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
+        "weiyongjun1@huawei.com" <weiyongjun1@huawei.com>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        "James.Bottomley@hansenpartnership.com" 
+        <James.Bottomley@hansenpartnership.com>,
+        "pjones@redhat.com" <pjones@redhat.com>,
+        Konrad Wilk <konrad.wilk@oracle.com>
+Subject: Re: [PATCH v9 2/8] integrity: Introduce a Linux keyring called
+ machine
+Message-ID: <YeMAURSR8/fRjBHD@iki.fi>
+References: <20220105235012.2497118-1-eric.snowberg@oracle.com>
+ <20220105235012.2497118-3-eric.snowberg@oracle.com>
+ <883da244c04fcb07add9984859a09d7b1827880a.camel@linux.ibm.com>
+ <100B070F-7EB4-4BF7-B2B9-E5AE78D3066A@oracle.com>
+ <a384fcf8bdd9ff79456e9669fc61ab50ec4e1c55.camel@linux.ibm.com>
+ <F1F41DB2-171A-4A6F-9AE7-E03C4D3B7DD0@oracle.com>
+ <eece68eba2beceeb410748c1f9f32162793d2057.camel@linux.ibm.com>
+ <2d681148b6ea57241f6a7c518dd331068a5f47b0.camel@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YeBiV8fuCCLWyHYb@kernel.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2d681148b6ea57241f6a7c518dd331068a5f47b0.camel@linux.ibm.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Jan 13, 2022 at 07:33:11PM +0200, Mike Rapoport wrote:
-> On Tue, Jan 11, 2022 at 08:44:41PM +0000, Frank van der Linden wrote:
-> > On Tue, Jan 11, 2022 at 12:31:58PM +0200, Mike Rapoport wrote:
-> > > > --- a/include/linux/memblock.h
-> > > > +++ b/include/linux/memblock.h
-> > > > @@ -481,6 +481,8 @@ phys_addr_t memblock_reserved_size(void);
-> > > >  phys_addr_t memblock_start_of_DRAM(void);
-> > > >  phys_addr_t memblock_end_of_DRAM(void);
-> > > >  void memblock_enforce_memory_limit(phys_addr_t memory_limit);
-> > > > +void memblock_set_usable_range(phys_addr_t base, phys_addr_t size);
-> > > > +void memblock_enforce_usable_range(void);
-> > > >  void memblock_cap_memory_range(phys_addr_t base, phys_addr_t size);
-> > > >  void memblock_mem_limit_remove_map(phys_addr_t limit);
-> > >
-> > > We already have 3 very similar interfaces that deal with memory capping.
-> > > Now you suggest to add fourth that will "generically" solve a single use
-> > > case of DT, EFI and kdump interaction on arm64.
-> > >
-> > > Looks like a workaround for a fundamental issue of incompatibility between
-> > > DT and EFI wrt memory registration.
-> >
-> > Yep, I figured this would be the main argument against this - arm64
-> > already added several other more-or-less special cased interfaces over
-> > time.
-> >
-> > I'm more than happy to solve this in a different way.
-> >
-> > What would you suggest:
-> >
-> > 1) Try to merge the similar interfaces in to one.
-> > 2) Just deal with it at a lower (arm64) level?
-> > 3) Some other way?
+On Wed, Jan 12, 2022 at 02:41:47PM -0500, Mimi Zohar wrote:
+> On Tue, 2022-01-11 at 20:14 -0500, Mimi Zohar wrote:
+> > On Tue, 2022-01-11 at 21:26 +0000, Eric Snowberg wrote:
+> > > 
+> > > > On Jan 11, 2022, at 11:16 AM, Mimi Zohar <zohar@linux.ibm.com> wrote:
+> > > > 
+> > > > On Mon, 2022-01-10 at 23:25 +0000, Eric Snowberg wrote:
+> > > >>> Jarkko, my concern is that once this version of the patch set is
+> > > >>> upstreamed, would limiting which keys may be loaded onto the .machine
+> > > >>> keyring be considered a regression?
+> > > >> 
+> > > >> 
+> > > >> Currently certificates built into the kernel do not have a CA restriction on them.  
+> > > >> IMA will trust anything in this keyring even if the CA bit is not set.  While it would 
+> > > >> be advisable for a kernel to be built with a CA, nothing currently enforces it. 
+> > > >> 
+> > > >> My thinking for the dropped CA restriction patches was to introduce a new Kconfig.  
+> > > >> This Kconfig would do the CA enforcement on the machine keyring.  However if the 
+> > > >> Kconfig option was not set for enforcement, it would work as it does in this series, 
+> > > >> plus it would allow IMA to work with non-CA keys.  This would be done by removing 
+> > > >> the restriction placed in this patch. Let me know your thoughts on whether this would 
+> > > >> be an appropriate solution.  I believe this would get around what you are identifying as 
+> > > >> a possible regression.
+> > > > 
+> > > > True the problem currently exists with the builtin keys, but there's a
+> > > > major difference between trusting the builtin keys and those being
+> > > > loading via MOK.  This is an integrity gap that needs to be closed and
+> > > > shouldn't be expanded to keys on the .machine keyring.
+> > > > 
+> > > > "plus it would allow IMA to work with non-CA keys" is unacceptable.
+> > > 
+> > > Ok, I’ll leave that part out.  Could you clarify the wording I should include in the future 
+> > > cover letter, which adds IMA support, on why it is unacceptable for the end-user to
+> > > make this decision?
+> > 
+> > The Kconfig IMA_KEYRINGS_PERMIT_SIGNED_BY_BUILTIN_OR_SECONDARY
+> > "help" is very clear:
 > 
-> We've discussed this with Ard on IRC, and our conclusion was that on arm64
-> kdump kernel should have memblock.memory exactly the same as the normal
-> kernel. Then, the memory outside usable-memory-range should be reserved so
-> that kdump kernel won't step over it.
+> [Reposting the text due to email formatting issues.]
 > 
-> With that, simple (untested) patch below could be what we need:
+> help
+>   Keys may be added to the IMA or IMA blacklist keyrings, if the
+>   key is validly signed by a CA cert in the system built-in or
+>   secondary trusted keyrings.
 > 
-> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-> index bdca35284ceb..371418dffaf1 100644
-> --- a/drivers/of/fdt.c
-> +++ b/drivers/of/fdt.c
-> @@ -1275,7 +1275,8 @@ void __init early_init_dt_scan_nodes(void)
->         of_scan_flat_dt(early_init_dt_scan_memory, NULL);
+>   Intermediate keys between those the kernel has compiled in and the 
+>   IMA keys to be added may be added to the system secondary keyring,
+>   provided they are validly signed by a key already resident in the
+>   built-in or secondary trusted keyrings.
 > 
->         /* Handle linux,usable-memory-range property */
-> -       memblock_cap_memory_range(cap_mem_addr, cap_mem_size);
-> +       memblock_reserve(0, cap_mem_addr);
-> +       memblock_reserve(cap_mem_addr + cap_mem_size, PHYS_ADDR_MAX);
->  }
 > 
->  bool __init early_init_dt_scan(void *params)
+> The first paragraph requires "validly signed by a CA cert in the system
+> built-in or secondary trusted keyrings" for keys to be loaded onto the
+> IMA keyring.  This Kconfig is limited to just the builtin and secondary
+> keyrings.  Changing this silently to include the ".machine" keyring
+> introduces integrity risks that previously did not exist.  A new IMA
+> Kconfig needs to be defined to allow all three keyrings - builtin,
+> machine, and secondary.
+> 
+> The second paragraph implies that only CA and intermediate CA keys are
+> on secondary keyring, or as in our case the ".machine" keyring linked
+> to the secondary keyring.
+> 
+> Mimi
+> 
+I have also now test environment for this patch set but if there are
+any possible changes, I'm waiting for a new version, as it is anyway
+for 5.18 cycle earliest.
 
-Ok, tested this on 5.17-rc, and it's working OK there. Main kernel has
-32G, crash kernel gets 512M:
-
-Main kernel:
-
-[    0.000000] Zone ranges:
-[    0.000000]   DMA      [mem 0x0000000040000000-0x00000000ffffffff]
-[    0.000000]   DMA32    empty
-[    0.000000]   Normal   [mem 0x0000000100000000-0x0000000b96ffffff]
-[    0.000000] Movable zone start for each node
-[    0.000000] Early memory node ranges
-[    0.000000]   node   0: [mem 0x0000000040000000-0x00000000786effff]
-[    0.000000]   node   0: [mem 0x00000000786f0000-0x000000007872ffff]
-[    0.000000]   node   0: [mem 0x0000000078730000-0x000000007bbfffff]
-[    0.000000]   node   0: [mem 0x000000007bc00000-0x000000007bfdffff]
-[    0.000000]   node   0: [mem 0x000000007bfe0000-0x000000007fffffff]
-[    0.000000]   node   0: [mem 0x0000000400000000-0x0000000b96ffffff]
-[    0.000000] Initmem setup node 0 [mem 0x0000000040000000-0x0000000b96ffffff]
-[    0.000000] On node 0, zone Normal: 4096 pages in unavailable ranges
-[    0.000000] cma: Reserved 64 MiB at 0x000000007c000000
-[    0.000000] crashkernel reserved: 0x0000000054400000 - 0x0000000074400000 (512 MB)
-
-
-Crash kernel:
-
-[    0.000000] Zone ranges:
-[    0.000000]   DMA      [mem 0x0000000054400000-0x000000007bfdffff]
-[    0.000000]   DMA32    empty
-[    0.000000]   Normal   empty
-[    0.000000] Movable zone start for each node
-[    0.000000] Early memory node ranges
-[    0.000000]   node   0: [mem 0x0000000054400000-0x00000000743fffff]
-[    0.000000]   node   0: [mem 0x00000000786f0000-0x000000007872ffff]
-[    0.000000]   node   0: [mem 0x000000007bc00000-0x000000007bfdffff]
-[    0.000000] Initmem setup node 0 [mem 0x0000000054400000-0x000000007bfdffff]
-[    0.000000] On node 0, zone DMA: 17408 pages in unavailable ranges
-[    0.000000] On node 0, zone DMA: 17136 pages in unavailable ranges
-[    0.000000] On node 0, zone DMA: 13520 pages in unavailable ranges
-[    0.000000] On node 0, zone DMA: 16416 pages in unavailable ranges
-
-Not sure why I had trouble with the same on 5.15, I'll have to look
-at that again. But this seems fine for 5.16+
-
-Thanks,
-
-- Frank
+/Jarkko
