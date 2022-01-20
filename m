@@ -2,203 +2,81 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ED4F494B55
-	for <lists+linux-efi@lfdr.de>; Thu, 20 Jan 2022 11:06:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 76217494BBA
+	for <lists+linux-efi@lfdr.de>; Thu, 20 Jan 2022 11:31:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359716AbiATKGE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 20 Jan 2022 05:06:04 -0500
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:49184
-        "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1359699AbiATKGD (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 20 Jan 2022 05:06:03 -0500
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id DCDA140024
-        for <linux-efi@vger.kernel.org>; Thu, 20 Jan 2022 10:05:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1642673157;
-        bh=w26SyRlRb1I1H6K/gmJqzdX3K4fWh5zNRWtuBCu0Vhg=;
-        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-         To:Cc:Content-Type;
-        b=e6hXJ0IeM+a3TZvnftPzACQUC/BTo148mKyEaRzmMMatFoA204htx69CQOI3YB5OO
-         sriUGwnpfgmuijm7iGKzVu9gsZXNszndfh7JcmME+dZHAkCqlJjY+s2SY/j8b0RfAM
-         y5tigLyYcUgxXDLPupnKq/7rUCSt/dWuGzLB/VgcvHVAkGEV50ulXl+qUPlZvTqVW7
-         Yih4CcfKH1m9RXvM5LhOQkubPZDw5xfyLw3jI+jFlwKAhqXqrlZZoPWTIIrs+REZVe
-         y1OsmlSegpYeq51n6Z86bERKNT0XGQUqnsLme9MAbJtafug0lyRkA6CjzJjACCXmtq
-         W6twBPcAijYVA==
-Received: by mail-ed1-f72.google.com with SMTP id a18-20020aa7d752000000b00403d18712beso5424200eds.17
-        for <linux-efi@vger.kernel.org>; Thu, 20 Jan 2022 02:05:57 -0800 (PST)
+        id S1359808AbiATKbU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 20 Jan 2022 05:31:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33386 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243184AbiATKbT (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 20 Jan 2022 05:31:19 -0500
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47843C061574
+        for <linux-efi@vger.kernel.org>; Thu, 20 Jan 2022 02:31:19 -0800 (PST)
+Received: by mail-pf1-x444.google.com with SMTP id i65so5023581pfc.9
+        for <linux-efi@vger.kernel.org>; Thu, 20 Jan 2022 02:31:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=33//Ifqafj5vah3eayUSf6uENYY18HgBL4WzLbzW/gM=;
+        b=UIRoYs6yFPWded3aTQ/t6p8+0BDAFpJdjqR2oEdXX1E6Gq2a8Rnvj8AE4emGaPmJ+T
+         meunv5BfqRMBi/5OMKTprHyFOgLtq7s1C5t8vIb5t6iqVpQdDdKiJJv+XLGmihrvMNyz
+         JtMKgMhwp/TkUq2VMCFiOmuP5aXRjb42EqhpJZw+EKrIEK1dPNG2KdDktKqTc7KkgYH2
+         Ew2RjdphED4BH3Mu95WrpmDDjciXUgV+TWLFqNQfVlm3/RRbjjo3dcGtkO3PeRV4Ovcz
+         uw7SXYaY8VSJuoeYKYlloR1rIq/RSwzAKey3jYwz0tiHyP3X20KpMCWm20epjUjhE3cy
+         T7DA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=w26SyRlRb1I1H6K/gmJqzdX3K4fWh5zNRWtuBCu0Vhg=;
-        b=rsxauTrNO6+kSGbVr+5GvTQsR62GjW+DYSM+/KTrmXj0PorBBxvMVx6Lri/MJPBsY5
-         /8LDr5KkniUFyQDQLm+c2W0jcozPnPAbTHVqxem6BIWCUJgUibDmDlx02ml7gQzCsfQw
-         Qoso/YbyD14ib8lfKIagwrxWcuzVbpe6/sPb52qHfxSfuBu2y7IrxBd40+Yl27MTe+fQ
-         WIqJ8tbjFq5l4Zv1M6FTMaAoPcdj3faxdFZq24uQizix6ZHEh2ibTz5Edgsw+YvsbtpH
-         FfB2GZkUnDa7SVFBP7u8Y1cscG3EPXm1YiSHzqv1BWchpSeQ1eQ96G9Mjr2T31u4ABJ8
-         33Uw==
-X-Gm-Message-State: AOAM531DRcC7tM15yVXgLbEso3fOcpTnGCkcvKFt0RpR6cy83c5lsHcn
-        Jjx+TnTfJQaBkD57L8e5Zc+Qb2/NgXM3+YR8LspGzo3Vq2XBJ4mBVRR71ad8Td4LHnyYnUq9hfT
-        8G4SaDyWFzMIus7cS1gWV7xWWKY9ed4K5JwqigM3BtsCp4msyx5y9+Q==
-X-Received: by 2002:a05:6402:b33:: with SMTP id bo19mr7643853edb.70.1642673157481;
-        Thu, 20 Jan 2022 02:05:57 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJynv0ocn7NF6vgUdF1oJY52IvmBizAszTcAGapgjCakCzI58Vihpn2W5C5OjIWMX2LmXdeXWqskyns8624yTaM=
-X-Received: by 2002:a05:6402:b33:: with SMTP id bo19mr7643811edb.70.1642673157166;
- Thu, 20 Jan 2022 02:05:57 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=33//Ifqafj5vah3eayUSf6uENYY18HgBL4WzLbzW/gM=;
+        b=A3wzwjFwrOP0WdawT1hsiv0CiR4avHaF2O0vyt6sAoM9dHArDoZCeo/qD6UKsC1ktI
+         dMVYCfuMKXcZ/DN4p96WdXjyI9mqRrWKBRpTf0USO3oWEIG21fCbOO1M7hRrgh460VjX
+         0H4ThcPHEKFWaNE/f1JrRNOuVfKYQmhpVyO1PV1G2c76KzdmhoS6u30H7jVHDFmWdBo6
+         TAna2GSHi6MUzohNvnRtYAsSMlo72ifnS2P2xkYW6HAWGZdjyySi6FTWWatUitrEiByd
+         DqKfuJ0L6JIPpQ9U484u2PcjoO0845KHJZ9lmfqQQNLDZhR9vvXbsgRsqWFasPWoaJXm
+         63gQ==
+X-Gm-Message-State: AOAM530bqdcp6+b5Ck1ef2Ox4UizbudQQrylioBsKRn4Ib39A6NGXSMm
+        uxCc6ZzxQWbdkLUsUZZPPyBIumEhEJw2g0fIyvE=
+X-Google-Smtp-Source: ABdhPJxfx7TwEN87yKpqxJuo+g1dMh7RIvjXNlHc8QlKfAGFq/33UeGHXcJgwaG9uN364IDf17jIpdYF7UE3bCqbdzU=
+X-Received: by 2002:a63:7f4d:: with SMTP id p13mr30508684pgn.29.1642674678286;
+ Thu, 20 Jan 2022 02:31:18 -0800 (PST)
 MIME-Version: 1.0
-References: <20211206104657.433304-1-alexandre.ghiti@canonical.com>
- <mhng-cdec292e-aea2-4b76-8853-b8465521e94f@palmer-ri-x1c9> <CA+zEjCuTSjOCmNExSN1jO50tsuXNzL9x6K6jWjG4+vVky5eWsw@mail.gmail.com>
-In-Reply-To: <CA+zEjCuTSjOCmNExSN1jO50tsuXNzL9x6K6jWjG4+vVky5eWsw@mail.gmail.com>
-From:   Alexandre Ghiti <alexandre.ghiti@canonical.com>
-Date:   Thu, 20 Jan 2022 11:05:46 +0100
-Message-ID: <CA+zEjCuTYmk-dLPhJ=9CkNrqf7VbCNyRDSZUGYkJSUWqZDWHpA@mail.gmail.com>
-Subject: Re: [PATCH v3 00/13] Introduce sv48 support without relocatable kernel
-To:     Palmer Dabbelt <palmer@dabbelt.com>
-Cc:     corbet@lwn.net, Paul Walmsley <paul.walmsley@sifive.com>,
-        aou@eecs.berkeley.edu, zong.li@sifive.com, anup@brainfault.org,
-        Atish.Patra@rivosinc.com, Christoph Hellwig <hch@lst.de>,
-        ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
-        dvyukov@google.com, ardb@kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        keescook@chromium.org, guoren@linux.alibaba.com,
-        heinrich.schuchardt@canonical.com, mchitale@ventanamicro.com,
-        panqinglin2020@iscas.ac.cn, linux-doc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kasan-dev@googlegroups.com, linux-efi@vger.kernel.org,
-        linux-arch@vger.kernel.org
+Received: by 2002:a05:6a10:cac9:0:0:0:0 with HTTP; Thu, 20 Jan 2022 02:31:17
+ -0800 (PST)
+Reply-To: fulhammartins8@gmail.com
+From:   Fulham Martins <whoknowsladyjay@gmail.com>
+Date:   Thu, 20 Jan 2022 11:31:17 +0100
+Message-ID: <CAMhEkO6JB8QPy8CLrCTwJDXuD3Ys0x901oQdT3+MxdMVPDA3pg@mail.gmail.com>
+Subject: INVESTMENT PARTNERSHIP
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Jan 20, 2022 at 8:30 AM Alexandre Ghiti
-<alexandre.ghiti@canonical.com> wrote:
->
-> On Thu, Jan 20, 2022 at 5:18 AM Palmer Dabbelt <palmer@dabbelt.com> wrote:
-> >
-> > On Mon, 06 Dec 2021 02:46:44 PST (-0800), alexandre.ghiti@canonical.com wrote:
-> > > * Please note notable changes in memory layouts and kasan population *
-> > >
-> > > This patchset allows to have a single kernel for sv39 and sv48 without
-> > > being relocatable.
-> > >
-> > > The idea comes from Arnd Bergmann who suggested to do the same as x86,
-> > > that is mapping the kernel to the end of the address space, which allows
-> > > the kernel to be linked at the same address for both sv39 and sv48 and
-> > > then does not require to be relocated at runtime.
-> > >
-> > > This implements sv48 support at runtime. The kernel will try to
-> > > boot with 4-level page table and will fallback to 3-level if the HW does not
-> > > support it. Folding the 4th level into a 3-level page table has almost no
-> > > cost at runtime.
-> > >
-> > > Note that kasan region had to be moved to the end of the address space
-> > > since its location must be known at compile-time and then be valid for
-> > > both sv39 and sv48 (and sv57 that is coming).
-> > >
-> > > Tested on:
-> > >   - qemu rv64 sv39: OK
-> > >   - qemu rv64 sv48: OK
-> > >   - qemu rv64 sv39 + kasan: OK
-> > >   - qemu rv64 sv48 + kasan: OK
-> > >   - qemu rv32: OK
-> > >
-> > > Changes in v3:
-> > >   - Fix SZ_1T, thanks to Atish
-> > >   - Fix warning create_pud_mapping, thanks to Atish
-> > >   - Fix k210 nommu build, thanks to Atish
-> > >   - Fix wrong rebase as noted by Samuel
-> > >   - * Downgrade to sv39 is only possible if !KASAN (see commit changelog) *
-> > >   - * Move KASAN next to the kernel: virtual layouts changed and kasan population *
-> > >
-> > > Changes in v2:
-> > >   - Rebase onto for-next
-> > >   - Fix KASAN
-> > >   - Fix stack canary
-> > >   - Get completely rid of MAXPHYSMEM configs
-> > >   - Add documentation
-> > >
-> > > Alexandre Ghiti (13):
-> > >   riscv: Move KASAN mapping next to the kernel mapping
-> > >   riscv: Split early kasan mapping to prepare sv48 introduction
-> > >   riscv: Introduce functions to switch pt_ops
-> > >   riscv: Allow to dynamically define VA_BITS
-> > >   riscv: Get rid of MAXPHYSMEM configs
-> > >   asm-generic: Prepare for riscv use of pud_alloc_one and pud_free
-> > >   riscv: Implement sv48 support
-> > >   riscv: Use pgtable_l4_enabled to output mmu_type in cpuinfo
-> > >   riscv: Explicit comment about user virtual address space size
-> > >   riscv: Improve virtual kernel memory layout dump
-> > >   Documentation: riscv: Add sv48 description to VM layout
-> > >   riscv: Initialize thread pointer before calling C functions
-> > >   riscv: Allow user to downgrade to sv39 when hw supports sv48 if !KASAN
-> > >
-> > >  Documentation/riscv/vm-layout.rst             |  48 ++-
-> > >  arch/riscv/Kconfig                            |  37 +-
-> > >  arch/riscv/configs/nommu_k210_defconfig       |   1 -
-> > >  .../riscv/configs/nommu_k210_sdcard_defconfig |   1 -
-> > >  arch/riscv/configs/nommu_virt_defconfig       |   1 -
-> > >  arch/riscv/include/asm/csr.h                  |   3 +-
-> > >  arch/riscv/include/asm/fixmap.h               |   1
-> > >  arch/riscv/include/asm/kasan.h                |  11 +-
-> > >  arch/riscv/include/asm/page.h                 |  20 +-
-> > >  arch/riscv/include/asm/pgalloc.h              |  40 ++
-> > >  arch/riscv/include/asm/pgtable-64.h           | 108 ++++-
-> > >  arch/riscv/include/asm/pgtable.h              |  47 +-
-> > >  arch/riscv/include/asm/sparsemem.h            |   6 +-
-> > >  arch/riscv/kernel/cpu.c                       |  23 +-
-> > >  arch/riscv/kernel/head.S                      |   4 +-
-> > >  arch/riscv/mm/context.c                       |   4 +-
-> > >  arch/riscv/mm/init.c                          | 408 ++++++++++++++----
-> > >  arch/riscv/mm/kasan_init.c                    | 250 ++++++++---
-> > >  drivers/firmware/efi/libstub/efi-stub.c       |   2
-> > >  drivers/pci/controller/pci-xgene.c            |   2 +-
-> > >  include/asm-generic/pgalloc.h                 |  24 +-
-> > >  include/linux/sizes.h                         |   1
-> > >  22 files changed, 833 insertions(+), 209 deletions(-)
-> >
-> > Sorry this took a while.  This is on for-next, with a bit of juggling: a
-> > handful of trivial fixes for configs that were failing to build/boot and
-> > some merge issues.  I also pulled out that MAXPHYSMEM fix to the top, so
-> > it'd be easier to backport.  This is bigger than something I'd normally like to
-> > take late in the cycle, but given there's a lot of cleanups, likely some fixes,
-> > and it looks like folks have been testing this I'm just going to go with it.
-> >
->
-> Yes yes yes! That's fantastic news :)
->
-> > Let me know if there's any issues with the merge, it was a bit hairy.
-> > Probably best to just send along a fixup patch at this point.
->
-> I'm going to take a look at that now, and I'll fix anything that comes
-> up quickly :)
+Dear friend,
 
-I see in for-next that you did not take the following patches:
+My Name is Mr. Fulham Martins. I am from the United Kingdom.
+It is my resolve to contact you for an investment plan in your country. It is
+no more a secret that investments are thriving fast in your country.
+Therefore, I want to invest in your country and want you to be my
+business partner.
+I am ready to invest in any sector such as Manufacturing, Agriculture,
+Real Estate, Hoteling, etc. or any other business that has good return
+on investment/profitable.
 
-  riscv: Improve virtual kernel memory layout dump
-  Documentation: riscv: Add sv48 description to VM layout
-  riscv: Initialize thread pointer before calling C functions
-  riscv: Allow user to downgrade to sv39 when hw supports sv48 if !KASAN
+If you choose to be of assistance,I am ready to send the consignment
+box to your country regarding the investment
+partnership or do a direct bank transfer to your account based on
+whatever modalities the investment will entail.
+Like I mentioned earlier, I am presently based in the United Kingdom
+and would like to know whether you are ready to partner with me on
+this. Kindly indicate your interest to enable us to proceed.
+Thank you in anticipation as I look forward to reading your reply.
 
-I'm not sure this was your intention. If it was, I believe that at
-least the first 2 patches are needed in this series, the 3rd one is a
-useful fix and we can discuss the 4th if that's an issue for you.
 
-I tested for-next on both sv39 and sv48 successfully, I took a glance
-at the code and noticed you fixed the PTRS_PER_PGD error, thanks for
-that. Otherwise nothing obvious has popped.
+Best regards.
 
-Thanks again,
-
-Alex
-
->
-> Thanks!
->
-> Alex
->
-> >
-> > Thanks!
+Mr.Fulham Martins.
