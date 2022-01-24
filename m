@@ -2,77 +2,152 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62EDA49980B
-	for <lists+linux-efi@lfdr.de>; Mon, 24 Jan 2022 22:34:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77AFB49A488
+	for <lists+linux-efi@lfdr.de>; Tue, 25 Jan 2022 03:09:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353111AbiAXVTY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 24 Jan 2022 16:19:24 -0500
-Received: from smtp-fw-6002.amazon.com ([52.95.49.90]:55055 "EHLO
-        smtp-fw-6002.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1448337AbiAXVM2 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 24 Jan 2022 16:12:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1643058748; x=1674594748;
-  h=date:from:to:cc:message-id:references:mime-version:
-   in-reply-to:subject;
-  bh=s08kGL1P6vWKXvsndk5HwY8vMXv8Hz2WGGuKsGt7M+M=;
-  b=Lt24+Kwh4B2vxFMObDYugoNvzC+0bVYqPVLp4pet6BWgIT7rqAUzfT0e
-   ZZgVZhu0LqdjiHOV0RwGKa5xn6p6D6SDHea6XhMdMz6Bkkplo/KuTD8Yc
-   DRiP8b+zP0CvKjJmo0dG8EzEygfor9G9x/oBVJMOBl2s5YYvjpiuX+n8C
-   E=;
-X-IronPort-AV: E=Sophos;i="5.88,313,1635206400"; 
-   d="scan'208";a="171375781"
-Subject: Re: [PATCH 1/3] memblock: define functions to set the usable memory range
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-iad-1a-b27d4a00.us-east-1.amazon.com) ([10.43.8.2])
-  by smtp-border-fw-6002.iad6.amazon.com with ESMTP; 24 Jan 2022 21:05:45 +0000
-Received: from EX13MTAUEB001.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
-        by email-inbound-relay-iad-1a-b27d4a00.us-east-1.amazon.com (Postfix) with ESMTPS id 3023081139;
-        Mon, 24 Jan 2022 21:05:39 +0000 (UTC)
-Received: from EX13D19UEB001.ant.amazon.com (10.43.60.16) by
- EX13MTAUEB001.ant.amazon.com (10.43.60.129) with Microsoft SMTP Server (TLS)
- id 15.0.1497.28; Mon, 24 Jan 2022 21:05:39 +0000
-Received: from EX13MTAUEB002.ant.amazon.com (10.43.60.12) by
- EX13D19UEB001.ant.amazon.com (10.43.60.16) with Microsoft SMTP Server (TLS)
- id 15.0.1497.28; Mon, 24 Jan 2022 21:05:39 +0000
-Received: from dev-dsk-fllinden-2c-d7720709.us-west-2.amazon.com
- (172.19.206.175) by mail-relay.amazon.com (10.43.60.234) with Microsoft SMTP
- Server id 15.0.1497.28 via Frontend Transport; Mon, 24 Jan 2022 21:05:38
- +0000
-Received: by dev-dsk-fllinden-2c-d7720709.us-west-2.amazon.com (Postfix, from userid 6262777)
-        id 1DC072A; Mon, 24 Jan 2022 21:05:38 +0000 (UTC)
-Date:   Mon, 24 Jan 2022 21:05:38 +0000
-From:   Frank van der Linden <fllinden@amazon.com>
-To:     Mike Rapoport <rppt@kernel.org>
-CC:     <linux-arm-kernel@lists.infradead.org>, <robh+dt@kernel.org>,
-        <frowand.list@gmail.com>, <ardb@kernel.org>, <linux-mm@kvack.org>,
-        <devicetree@vger.kernel.org>, <linux-efi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kexec@lists.infradead.org>,
-        <catalin.marinas@arm.com>, <will@kernel.org>,
-        <geert+renesas@glider.be>
-Message-ID: <20220124210538.GA15943@dev-dsk-fllinden-2c-d7720709.us-west-2.amazon.com>
-References: <20220110210809.3528-1-fllinden@amazon.com>
- <20220110210809.3528-2-fllinden@amazon.com> <Yd1cnquQFZoNE7FP@kernel.org>
+        id S1351706AbiAYATC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 24 Jan 2022 19:19:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48168 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1844736AbiAXXKO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 24 Jan 2022 18:10:14 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0F14C09F83E;
+        Mon, 24 Jan 2022 13:18:15 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 96207B811FB;
+        Mon, 24 Jan 2022 21:18:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF5A4C340E4;
+        Mon, 24 Jan 2022 21:18:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1643059094;
+        bh=Wl7/FqyVESgtyk8MNTltFU21fmpFUMloKKngtNOgNRw=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=UZm/OClDDlGbuII0KT03mwHfmAUXFeytLEl3R59RXx+o1RX0qnLtd5Aszn/DQFPbx
+         oupujNGN1DERcIaM6nRvczs2+ITprqBgoT9mUe7/YlfhtTf5QhgW/n8KFVHzXQ0j2z
+         AwhaToa3EB9tRl2dKvuLza8qQLtEJXrvJEZ8sN5A=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-efi@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Rob Herring <robh@kernel.org>,
+        Zhen Lei <thunder.leizhen@huawei.com>,
+        Pingfan Liu <kernelfans@gmail.com>,
+        Dave Kleikamp <dave.kleikamp@oracle.com>,
+        John Donnelly <john.p.donnelly@oracle.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.16 0502/1039] of: fdt: Aggregate the processing of "linux,usable-memory-range"
+Date:   Mon, 24 Jan 2022 19:38:11 +0100
+Message-Id: <20220124184142.136258100@linuxfoundation.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220124184125.121143506@linuxfoundation.org>
+References: <20220124184125.121143506@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <Yd1cnquQFZoNE7FP@kernel.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Meanwhile, it seems that this issue was already addressed in:
+From: Zhen Lei <thunder.leizhen@huawei.com>
 
-https://lore.kernel.org/all/20211215021348.8766-1-kernelfans@gmail.com/
+[ Upstream commit 8347b41748c3019157312fbe7f8a6792ae396eb7 ]
 
-..which has now been pulled in, and sent to stable@ for 5.15. I
-somehow missed that message, and sent my change in a few weeks
-later.
+Currently, we parse the "linux,usable-memory-range" property in
+early_init_dt_scan_chosen(), to obtain the specified memory range of the
+crash kernel. We then reserve the required memory after
+early_init_dt_scan_memory() has identified all available physical memory.
+Because the two pieces of code are separated far, the readability and
+maintainability are reduced. So bring them together.
 
-The fix to just reserve the ranges does seem a bit cleaner overall,
-but this will do fine.
+Suggested-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+(change the prototype of early_init_dt_check_for_usable_mem_range(), in
+order to use it outside)
+Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+Tested-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Acked-by: John Donnelly <john.p.donnelly@oracle.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
+To: devicetree@vger.kernel.org
+To: linux-efi@vger.kernel.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/of/fdt.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-Thanks!
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index bdca35284cebd..5a238a933eb29 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -965,18 +965,22 @@ static void __init early_init_dt_check_for_elfcorehdr(unsigned long node)
+ 		 elfcorehdr_addr, elfcorehdr_size);
+ }
+ 
+-static phys_addr_t cap_mem_addr;
+-static phys_addr_t cap_mem_size;
++static unsigned long chosen_node_offset = -FDT_ERR_NOTFOUND;
+ 
+ /**
+  * early_init_dt_check_for_usable_mem_range - Decode usable memory range
+  * location from flat tree
+- * @node: reference to node containing usable memory range location ('chosen')
+  */
+-static void __init early_init_dt_check_for_usable_mem_range(unsigned long node)
++static void __init early_init_dt_check_for_usable_mem_range(void)
+ {
+ 	const __be32 *prop;
+ 	int len;
++	phys_addr_t cap_mem_addr;
++	phys_addr_t cap_mem_size;
++	unsigned long node = chosen_node_offset;
++
++	if ((long)node < 0)
++		return;
+ 
+ 	pr_debug("Looking for usable-memory-range property... ");
+ 
+@@ -989,6 +993,8 @@ static void __init early_init_dt_check_for_usable_mem_range(unsigned long node)
+ 
+ 	pr_debug("cap_mem_start=%pa cap_mem_size=%pa\n", &cap_mem_addr,
+ 		 &cap_mem_size);
++
++	memblock_cap_memory_range(cap_mem_addr, cap_mem_size);
+ }
+ 
+ #ifdef CONFIG_SERIAL_EARLYCON
+@@ -1137,9 +1143,10 @@ int __init early_init_dt_scan_chosen(unsigned long node, const char *uname,
+ 	    (strcmp(uname, "chosen") != 0 && strcmp(uname, "chosen@0") != 0))
+ 		return 0;
+ 
++	chosen_node_offset = node;
++
+ 	early_init_dt_check_for_initrd(node);
+ 	early_init_dt_check_for_elfcorehdr(node);
+-	early_init_dt_check_for_usable_mem_range(node);
+ 
+ 	/* Retrieve command line */
+ 	p = of_get_flat_dt_prop(node, "bootargs", &l);
+@@ -1275,7 +1282,7 @@ void __init early_init_dt_scan_nodes(void)
+ 	of_scan_flat_dt(early_init_dt_scan_memory, NULL);
+ 
+ 	/* Handle linux,usable-memory-range property */
+-	memblock_cap_memory_range(cap_mem_addr, cap_mem_size);
++	early_init_dt_check_for_usable_mem_range();
+ }
+ 
+ bool __init early_init_dt_scan(void *params)
+-- 
+2.34.1
 
-- Frank
+
+
