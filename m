@@ -2,29 +2,29 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 227994993DE
-	for <lists+linux-efi@lfdr.de>; Mon, 24 Jan 2022 21:40:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61D39499AD3
+	for <lists+linux-efi@lfdr.de>; Mon, 24 Jan 2022 22:57:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351906AbiAXUhv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 24 Jan 2022 15:37:51 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:35530 "EHLO
+        id S1376338AbiAXVrM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 24 Jan 2022 16:47:12 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:37676 "EHLO
         ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1385003AbiAXUb0 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 24 Jan 2022 15:31:26 -0500
+        with ESMTP id S1446773AbiAXVSY (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 24 Jan 2022 16:18:24 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 51AA1B8123F;
-        Mon, 24 Jan 2022 20:31:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB3FC340E5;
-        Mon, 24 Jan 2022 20:31:13 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 77A4CB81057;
+        Mon, 24 Jan 2022 21:18:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5E8C340E4;
+        Mon, 24 Jan 2022 21:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1643056274;
-        bh=nVi2CTUQeOlTZN5lGXMJ/7/7klLVVusHmKxSq2MKub4=;
+        s=korg; t=1643059097;
+        bh=2ZPHVcGpaSXfIN28Z1vt7OZB9VjTVdIcGorkPScaoY4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jWJ8DDUU0CjAKsgDmZMDuwKPhw0taf9YhZMvkoBU8OGmSqwm/4/17a5t34EzHbEk5
-         DAGt23Vpkg34tLXXnjrNLcWVMAqPU0zLD+1K1BNy4ljJSdFN3BCkQrygVagSVDcaUa
-         r1n4g2WAqrUCxjWHPgmzpur/T43GSu9o2yqMySUI=
+        b=adFrGPa9k64AgO/X+haxmEFNtdp1K4O6E29Rks20fz4jEALe9Hsxd6CkESGZs/SLT
+         b+qm7iRaqtc0fwXjJVMUoHdmoMfA7gTWAiZ2FIZjre+2HP3aIWe1+s+uAOiBkqjiCF
+         K7EetBfTX+hOet1BiUqGodaHE5xtVL5DRCHgTa/o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         linux-efi@vger.kernel.org
@@ -42,12 +42,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Nick Terrell <terrelln@fb.com>,
         linux-arm-kernel@lists.infradead.org,
         Rob Herring <robh@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 428/846] efi: apply memblock cap after memblock_add()
-Date:   Mon, 24 Jan 2022 19:39:05 +0100
-Message-Id: <20220124184115.739459776@linuxfoundation.org>
+Subject: [PATCH 5.16 0503/1039] efi: apply memblock cap after memblock_add()
+Date:   Mon, 24 Jan 2022 19:38:12 +0100
+Message-Id: <20220124184142.176957209@linuxfoundation.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220124184100.867127425@linuxfoundation.org>
-References: <20220124184100.867127425@linuxfoundation.org>
+In-Reply-To: <20220124184125.121143506@linuxfoundation.org>
+References: <20220124184125.121143506@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -154,10 +154,10 @@ index b19ce1a83f91a..b2c829e95bd14 100644
  	efi_mokvar_table_init();
  
 diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index 105b1a47905ab..32e5e782d43da 100644
+index 5a238a933eb29..65af475dfa950 100644
 --- a/drivers/of/fdt.c
 +++ b/drivers/of/fdt.c
-@@ -975,7 +975,7 @@ static unsigned long chosen_node_offset = -FDT_ERR_NOTFOUND;
+@@ -971,7 +971,7 @@ static unsigned long chosen_node_offset = -FDT_ERR_NOTFOUND;
   * early_init_dt_check_for_usable_mem_range - Decode usable memory range
   * location from flat tree
   */
@@ -167,7 +167,7 @@ index 105b1a47905ab..32e5e782d43da 100644
  	const __be32 *prop;
  	int len;
 diff --git a/include/linux/of_fdt.h b/include/linux/of_fdt.h
-index cf6a65b94d40e..6508b97dbf1d2 100644
+index cf48983d3c867..ad09beb6d13c4 100644
 --- a/include/linux/of_fdt.h
 +++ b/include/linux/of_fdt.h
 @@ -62,6 +62,7 @@ extern int early_init_dt_scan_chosen(unsigned long node, const char *uname,
@@ -178,7 +178,7 @@ index cf6a65b94d40e..6508b97dbf1d2 100644
  extern int early_init_dt_scan_chosen_stdout(void);
  extern void early_init_fdt_scan_reserved_mem(void);
  extern void early_init_fdt_reserve_self(void);
-@@ -87,6 +88,7 @@ extern void unflatten_and_copy_device_tree(void);
+@@ -86,6 +87,7 @@ extern void unflatten_and_copy_device_tree(void);
  extern void early_init_devtree(void *);
  extern void early_get_first_memblock_info(void *, phys_addr_t *);
  #else /* CONFIG_OF_EARLY_FLATTREE */
