@@ -2,297 +2,192 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD96249797A
-	for <lists+linux-efi@lfdr.de>; Mon, 24 Jan 2022 08:32:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 227994993DE
+	for <lists+linux-efi@lfdr.de>; Mon, 24 Jan 2022 21:40:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230499AbiAXHcV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 24 Jan 2022 02:32:21 -0500
-Received: from mga17.intel.com ([192.55.52.151]:30617 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235991AbiAXHcV (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 24 Jan 2022 02:32:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643009541; x=1674545541;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=8zm3SW2rNX3GaDZEy+jIF17tUJ0Dtex3atv0aNW+LSA=;
-  b=jd0iOXVi7oGTlJcWObUf8UkONidEVxJkA9wUs7ZVZo6tOj3536iFHQR/
-   As/zf+yJHW1gbhOENdhczmLD8Ochf+S2tNncqg/dLhQIOOwX+kPrYBWYn
-   qLGykPSbAEOTWCWVO8BJuM3hls8Bd51YWAThoOTZEKHLII+O1fuZlb4+V
-   Oc4YCiO2fZVeRjUWBy+59mWRIV3U4acoRFETdP8iBgNwgQHLYnU33GfPO
-   DPlfudmNfkcZpXiUpyy+mGOIVbKJgZaqeggjRRrdKlREMZRrMNsUIAaum
-   yP7Yua5X8N3pef7Hvl5flg9fL9+qKbMoFFG8TdpXgowAKaaZrdHOziQLW
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10236"; a="226658841"
-X-IronPort-AV: E=Sophos;i="5.88,311,1635231600"; 
-   d="scan'208";a="226658841"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2022 23:32:21 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,311,1635231600"; 
-   d="scan'208";a="627393960"
-Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 23 Jan 2022 23:32:19 -0800
-Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nBtpq-000Hro-Jj; Mon, 24 Jan 2022 07:32:18 +0000
-Date:   Mon, 24 Jan 2022 15:31:25 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- f5390cd0b43c2e54c7cf5506c7da4a37c5cef746
-Message-ID: <61ee55cd.qOOCdsVTEJEBL5EQ%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1351906AbiAXUhv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 24 Jan 2022 15:37:51 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:35530 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1385003AbiAXUb0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 24 Jan 2022 15:31:26 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 51AA1B8123F;
+        Mon, 24 Jan 2022 20:31:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB3FC340E5;
+        Mon, 24 Jan 2022 20:31:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1643056274;
+        bh=nVi2CTUQeOlTZN5lGXMJ/7/7klLVVusHmKxSq2MKub4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=jWJ8DDUU0CjAKsgDmZMDuwKPhw0taf9YhZMvkoBU8OGmSqwm/4/17a5t34EzHbEk5
+         DAGt23Vpkg34tLXXnjrNLcWVMAqPU0zLD+1K1BNy4ljJSdFN3BCkQrygVagSVDcaUa
+         r1n4g2WAqrUCxjWHPgmzpur/T43GSu9o2yqMySUI=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-efi@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Pingfan Liu <kernelfans@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Zhen Lei <thunder.leizhen@huawei.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Nick Terrell <terrelln@fb.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Rob Herring <robh@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 428/846] efi: apply memblock cap after memblock_add()
+Date:   Mon, 24 Jan 2022 19:39:05 +0100
+Message-Id: <20220124184115.739459776@linuxfoundation.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220124184100.867127425@linuxfoundation.org>
+References: <20220124184100.867127425@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
-branch HEAD: f5390cd0b43c2e54c7cf5506c7da4a37c5cef746  efi: runtime: avoid EFIv2 runtime services on Apple x86 machines
+From: Pingfan Liu <kernelfans@gmail.com>
 
-elapsed time: 1279m
+[ Upstream commit b398123bff3bcbc1facb0f29bf6e7b9f1bc55931 ]
 
-configs tested: 221
-configs skipped: 3
+On arm64, during kdump kernel saves vmcore, it runs into the following bug:
+...
+[   15.148919] usercopy: Kernel memory exposure attempt detected from SLUB object 'kmem_cache_node' (offset 0, size 4096)!
+[   15.159707] ------------[ cut here ]------------
+[   15.164311] kernel BUG at mm/usercopy.c:99!
+[   15.168482] Internal error: Oops - BUG: 0 [#1] SMP
+[   15.173261] Modules linked in: xfs libcrc32c crct10dif_ce ghash_ce sha2_ce sha256_arm64 sha1_ce sbsa_gwdt ast i2c_algo_bit drm_vram_helper drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops cec drm_ttm_helper ttm drm nvme nvme_core xgene_hwmon i2c_designware_platform i2c_designware_core dm_mirror dm_region_hash dm_log dm_mod overlay squashfs zstd_decompress loop
+[   15.206186] CPU: 0 PID: 542 Comm: cp Not tainted 5.16.0-rc4 #1
+[   15.212006] Hardware name: GIGABYTE R272-P30-JG/MP32-AR0-JG, BIOS F12 (SCP: 1.5.20210426) 05/13/2021
+[   15.221125] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   15.228073] pc : usercopy_abort+0x9c/0xa0
+[   15.232074] lr : usercopy_abort+0x9c/0xa0
+[   15.236070] sp : ffff8000121abba0
+[   15.239371] x29: ffff8000121abbb0 x28: 0000000000003000 x27: 0000000000000000
+[   15.246494] x26: 0000000080000400 x25: 0000ffff885c7000 x24: 0000000000000000
+[   15.253617] x23: 000007ff80400000 x22: ffff07ff80401000 x21: 0000000000000001
+[   15.260739] x20: 0000000000001000 x19: ffff07ff80400000 x18: ffffffffffffffff
+[   15.267861] x17: 656a626f2042554c x16: 53206d6f72662064 x15: 6574636574656420
+[   15.274983] x14: 74706d6574746120 x13: 2129363930342065 x12: 7a6973202c302074
+[   15.282105] x11: ffffc8b041d1b148 x10: 00000000ffff8000 x9 : ffffc8b04012812c
+[   15.289228] x8 : 00000000ffff7fff x7 : ffffc8b041d1b148 x6 : 0000000000000000
+[   15.296349] x5 : 0000000000000000 x4 : 0000000000007fff x3 : 0000000000000000
+[   15.303471] x2 : 0000000000000000 x1 : ffff07ff8c064800 x0 : 000000000000006b
+[   15.310593] Call trace:
+[   15.313027]  usercopy_abort+0x9c/0xa0
+[   15.316677]  __check_heap_object+0xd4/0xf0
+[   15.320762]  __check_object_size.part.0+0x160/0x1e0
+[   15.325628]  __check_object_size+0x2c/0x40
+[   15.329711]  copy_oldmem_page+0x7c/0x140
+[   15.333623]  read_from_oldmem.part.0+0xfc/0x1c0
+[   15.338142]  __read_vmcore.constprop.0+0x23c/0x350
+[   15.342920]  read_vmcore+0x28/0x34
+[   15.346309]  proc_reg_read+0xb4/0xf0
+[   15.349871]  vfs_read+0xb8/0x1f0
+[   15.353088]  ksys_read+0x74/0x100
+[   15.356390]  __arm64_sys_read+0x28/0x34
+...
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+This bug introduced by commit b261dba2fdb2 ("arm64: kdump: Remove custom
+linux,usable-memory-range handling"), which moves
+memblock_cap_memory_range() to fdt, but it breaches the rules that
+memblock_cap_memory_range() should come after memblock_add() etc as said
+in commit e888fa7bb882 ("memblock: Check memory add/cap ordering").
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                 randconfig-c001-20220124
-arc                 nsimosci_hs_smp_defconfig
-arm                       imx_v6_v7_defconfig
-xtensa                       common_defconfig
-m68k                          multi_defconfig
-mips                     decstation_defconfig
-powerpc                     taishan_defconfig
-powerpc                     mpc83xx_defconfig
-sh                          r7780mp_defconfig
-m68k                        m5407c3_defconfig
-sh                         apsh4a3a_defconfig
-arm                        cerfcube_defconfig
-sh                           se7343_defconfig
-sh                          urquell_defconfig
-arm                       aspeed_g5_defconfig
-powerpc64                        alldefconfig
-openrisc                 simple_smp_defconfig
-h8300                       h8s-sim_defconfig
-arc                        vdk_hs38_defconfig
-powerpc                      bamboo_defconfig
-mips                        bcm47xx_defconfig
-sh                          landisk_defconfig
-powerpc                       eiger_defconfig
-parisc                              defconfig
-sh                           se7750_defconfig
-powerpc                      cm5200_defconfig
-sparc64                          alldefconfig
-mips                         rt305x_defconfig
-sh                            titan_defconfig
-powerpc                      ppc6xx_defconfig
-mips                        vocore2_defconfig
-arm                         cm_x300_defconfig
-powerpc                      pasemi_defconfig
-arm                          badge4_defconfig
-sh                          rsk7269_defconfig
-arm                         vf610m4_defconfig
-sh                            shmin_defconfig
-parisc                           alldefconfig
-powerpc                 mpc85xx_cds_defconfig
-s390                          debug_defconfig
-nios2                            alldefconfig
-xtensa                           allyesconfig
-mips                     loongson1b_defconfig
-xtensa                generic_kc705_defconfig
-mips                         tb0226_defconfig
-sh                  sh7785lcr_32bit_defconfig
-nds32                            alldefconfig
-xtensa                  audio_kc705_defconfig
-powerpc                      ppc40x_defconfig
-sh                           se7619_defconfig
-sh                           se7705_defconfig
-um                             i386_defconfig
-powerpc                     tqm8548_defconfig
-mips                           ci20_defconfig
-i386                             alldefconfig
-sh                           se7780_defconfig
-sh                           se7724_defconfig
-arm                            lart_defconfig
-arm                       multi_v4t_defconfig
-sh                             shx3_defconfig
-sh                         ap325rxa_defconfig
-arc                         haps_hs_defconfig
-h8300                            alldefconfig
-sparc64                             defconfig
-powerpc                   currituck_defconfig
-h8300                    h8300h-sim_defconfig
-sh                        edosk7705_defconfig
-arm                       omap2plus_defconfig
-powerpc                     rainier_defconfig
-h8300                               defconfig
-ia64                             alldefconfig
-arm                      integrator_defconfig
-arm                        clps711x_defconfig
-powerpc                      ep88xc_defconfig
-ia64                      gensparse_defconfig
-arc                          axs103_defconfig
-sh                          sdk7780_defconfig
-arm                         lubbock_defconfig
-powerpc                 mpc837x_rdb_defconfig
-arm                           u8500_defconfig
-arm                           h5000_defconfig
-arm                        oxnas_v6_defconfig
-xtensa                  cadence_csp_defconfig
-arm                        shmobile_defconfig
-powerpc                     sequoia_defconfig
-sh                            migor_defconfig
-arm                  randconfig-c002-20220123
-arm                  randconfig-c002-20220124
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a002-20220124
-x86_64               randconfig-a003-20220124
-x86_64               randconfig-a001-20220124
-x86_64               randconfig-a004-20220124
-x86_64               randconfig-a005-20220124
-x86_64               randconfig-a006-20220124
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-i386                 randconfig-a002-20220124
-i386                 randconfig-a005-20220124
-i386                 randconfig-a003-20220124
-i386                 randconfig-a004-20220124
-i386                 randconfig-a001-20220124
-i386                 randconfig-a006-20220124
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-riscv                randconfig-r042-20220123
-arc                  randconfig-r043-20220123
-s390                 randconfig-r044-20220123
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
+As a consequence, the virtual address set up by copy_oldmem_page() does
+not bail out from the test of virt_addr_valid() in check_heap_object(),
+and finally hits the BUG_ON().
 
-clang tested configs:
-arm                  randconfig-c002-20220123
-arm                  randconfig-c002-20220124
-riscv                randconfig-c006-20220124
-riscv                randconfig-c006-20220123
-i386                 randconfig-c001-20220124
-powerpc              randconfig-c003-20220123
-powerpc              randconfig-c003-20220124
-mips                 randconfig-c004-20220123
-mips                 randconfig-c004-20220124
-x86_64               randconfig-c007-20220124
-x86_64                        randconfig-c007
-i386                          randconfig-c001
-powerpc                     tqm5200_defconfig
-arm                          imote2_defconfig
-powerpc                       ebony_defconfig
-mips                       rbtx49xx_defconfig
-arm                        spear3xx_defconfig
-mips                        qi_lb60_defconfig
-mips                        bcm63xx_defconfig
-powerpc                      obs600_defconfig
-arm                          collie_defconfig
-mips                   sb1250_swarm_defconfig
-powerpc                   lite5200b_defconfig
-arm                           sama7_defconfig
-powerpc                    gamecube_defconfig
-powerpc                      acadia_defconfig
-powerpc                          allmodconfig
-mips                            e55_defconfig
-powerpc                     mpc512x_defconfig
-mips                           ip22_defconfig
-arm                         bcm2835_defconfig
-riscv                          rv32_defconfig
-powerpc                          g5_defconfig
-arm                       versatile_defconfig
-arm                        magician_defconfig
-powerpc                  mpc885_ads_defconfig
-mips                     cu1000-neo_defconfig
-arm                         lpc32xx_defconfig
-arm                        multi_v5_defconfig
-arm                          ixp4xx_defconfig
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-x86_64               randconfig-a011-20220124
-x86_64               randconfig-a013-20220124
-x86_64               randconfig-a015-20220124
-x86_64               randconfig-a016-20220124
-x86_64               randconfig-a014-20220124
-x86_64               randconfig-a012-20220124
-i386                          randconfig-a011
-i386                          randconfig-a013
-i386                          randconfig-a015
-i386                 randconfig-a011-20220124
-i386                 randconfig-a016-20220124
-i386                 randconfig-a013-20220124
-i386                 randconfig-a014-20220124
-i386                 randconfig-a015-20220124
-i386                 randconfig-a012-20220124
-riscv                randconfig-r042-20220124
-hexagon              randconfig-r045-20220124
-hexagon              randconfig-r041-20220124
-hexagon              randconfig-r045-20220123
-hexagon              randconfig-r041-20220123
+Since memblock allocator has no idea about when the memblock is fully
+populated, while efi_init() is aware, so tackling this issue by calling the
+interface early_init_dt_check_for_usable_mem_range() exposed by of/fdt.
 
+Fixes: b261dba2fdb2 ("arm64: kdump: Remove custom linux,usable-memory-range handling")
+Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Zhen Lei <thunder.leizhen@huawei.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Nick Terrell <terrelln@fb.com>
+Cc: linux-arm-kernel@lists.infradead.org
+To: devicetree@vger.kernel.org
+To: linux-efi@vger.kernel.org
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20211215021348.8766-1-kernelfans@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/firmware/efi/efi-init.c | 5 +++++
+ drivers/of/fdt.c                | 2 +-
+ include/linux/of_fdt.h          | 2 ++
+ 3 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/firmware/efi/efi-init.c b/drivers/firmware/efi/efi-init.c
+index b19ce1a83f91a..b2c829e95bd14 100644
+--- a/drivers/firmware/efi/efi-init.c
++++ b/drivers/firmware/efi/efi-init.c
+@@ -235,6 +235,11 @@ void __init efi_init(void)
+ 	}
+ 
+ 	reserve_regions();
++	/*
++	 * For memblock manipulation, the cap should come after the memblock_add().
++	 * And now, memblock is fully populated, it is time to do capping.
++	 */
++	early_init_dt_check_for_usable_mem_range();
+ 	efi_esrt_init();
+ 	efi_mokvar_table_init();
+ 
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 105b1a47905ab..32e5e782d43da 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -975,7 +975,7 @@ static unsigned long chosen_node_offset = -FDT_ERR_NOTFOUND;
+  * early_init_dt_check_for_usable_mem_range - Decode usable memory range
+  * location from flat tree
+  */
+-static void __init early_init_dt_check_for_usable_mem_range(void)
++void __init early_init_dt_check_for_usable_mem_range(void)
+ {
+ 	const __be32 *prop;
+ 	int len;
+diff --git a/include/linux/of_fdt.h b/include/linux/of_fdt.h
+index cf6a65b94d40e..6508b97dbf1d2 100644
+--- a/include/linux/of_fdt.h
++++ b/include/linux/of_fdt.h
+@@ -62,6 +62,7 @@ extern int early_init_dt_scan_chosen(unsigned long node, const char *uname,
+ 				     int depth, void *data);
+ extern int early_init_dt_scan_memory(unsigned long node, const char *uname,
+ 				     int depth, void *data);
++extern void early_init_dt_check_for_usable_mem_range(void);
+ extern int early_init_dt_scan_chosen_stdout(void);
+ extern void early_init_fdt_scan_reserved_mem(void);
+ extern void early_init_fdt_reserve_self(void);
+@@ -87,6 +88,7 @@ extern void unflatten_and_copy_device_tree(void);
+ extern void early_init_devtree(void *);
+ extern void early_get_first_memblock_info(void *, phys_addr_t *);
+ #else /* CONFIG_OF_EARLY_FLATTREE */
++static inline void early_init_dt_check_for_usable_mem_range(void) {}
+ static inline int early_init_dt_scan_chosen_stdout(void) { return -ENODEV; }
+ static inline void early_init_fdt_scan_reserved_mem(void) {}
+ static inline void early_init_fdt_reserve_self(void) {}
+-- 
+2.34.1
+
+
+
