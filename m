@@ -2,53 +2,87 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DE5649B015
-	for <lists+linux-efi@lfdr.de>; Tue, 25 Jan 2022 10:41:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5907449B1A3
+	for <lists+linux-efi@lfdr.de>; Tue, 25 Jan 2022 11:28:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380263AbiAYJ0F (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 25 Jan 2022 04:26:05 -0500
-Received: from mail.belongsenergy.pl ([185.45.112.191]:37818 "EHLO
-        mail.belongsenergy.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1444809AbiAYJSy (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 25 Jan 2022 04:18:54 -0500
-X-Greylist: delayed 447 seconds by postgrey-1.27 at vger.kernel.org; Tue, 25 Jan 2022 04:18:53 EST
-Received: by mail.belongsenergy.pl (Postfix, from userid 1001)
-        id E296226707; Tue, 25 Jan 2022 09:10:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=belongsenergy.pl;
-        s=mail; t=1643101827;
-        bh=JAEkA4FCBmQ7T7M+WVau75EdqeDf4MEEr9hE2/l61BA=;
-        h=Date:From:To:Subject:From;
-        b=FWr5BHc8cKtSHN4/yI/hBS7wrh/Yta3cmmPaN5qoHOcX2+j2t38HK99sv4kahmDWB
-         boVK94uzQKqPvkaDZI36voF9DsufX1ggIDPDcieqJVd92hcdc0xISPM0bFv/TRGjLH
-         j4r7rj8nRFsZfhrh3QHbdin9qY/CC9PPtbuDMuKLUR/33MWAuo6Os4UdKrulQcS6fF
-         vxd4Ia7gHpXaTh9Ezq42RLoyrcoR4ChJSXStc3paYYoqfuiKKoXCVkZNm6+kBLFj5S
-         ijAIQah3zS86wDt5YiF+bPRdm9hh8WxkXGj7diNc4qmb70n3GowN5QLvZ/dnLrdOeg
-         o1WefMEKc7JAw==
-Received: by mail.belongsenergy.pl for <linux-efi@vger.kernel.org>; Tue, 25 Jan 2022 09:10:08 GMT
-Message-ID: <20220125074500-0.1.7.2l1.0.2cf4806moo@belongsenergy.pl>
-Date:   Tue, 25 Jan 2022 09:10:08 GMT
-From:   "Maciej Nitycz" <maciej.nitycz@belongsenergy.pl>
-To:     <linux-efi@vger.kernel.org>
-Subject: Wycena paneli fotowoltaicznych
-X-Mailer: mail.belongsenergy.pl
+        id S1348382AbiAYKY7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 25 Jan 2022 05:24:59 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:32882 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1346696AbiAYKVl (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Tue, 25 Jan 2022 05:21:41 -0500
+Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5A6061EC0441;
+        Tue, 25 Jan 2022 11:21:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1643106093;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=nZTEKo7MPhQxeMuwLWwjdWmjG5ba3B1ygZdLV8+Ny7w=;
+        b=m3lZp6WMvvCykmsgvEEKXaXRi9yDGC7m1mBvR81VplAVnBMr0CS7EdiRQjI2BoEHGfVfnI
+        dFQqFGc0YbLxV4eZWNSpNDDFnH/5gB9+8OrVWOtKz53edd866kCrF1JaLxmFVmspUWVEUm
+        XJ/pvuVomw5Az4vEQSobaYppR2ZL784=
+Date:   Tue, 25 Jan 2022 11:21:32 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Shuai Xue <xueshuai@linux.alibaba.com>
+Cc:     rric@kernel.org, mchehab@kernel.org, tony.luck@intel.com,
+        james.morse@arm.com, ardb@kernel.org, linux-edac@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        zhangliguang@linux.alibaba.com, zhuo.song@linux.alibaba.com
+Subject: Re: [RESEND PATCH v3 1/2] efi/cper: add cper_mem_err_status_str to
+ decode error description
+Message-ID: <Ye/PLDlOBhYmGb5D@zn.tnic>
+References: <20211210134019.28536-1-xueshuai@linux.alibaba.com>
+ <20220124024759.19176-2-xueshuai@linux.alibaba.com>
+ <Ye8XMvfXCetzJLTH@zn.tnic>
+ <98aae382-ac38-8811-f147-d00b953f608d@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <98aae382-ac38-8811-f147-d00b953f608d@linux.alibaba.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Tue, Jan 25, 2022 at 10:45:31AM +0800, Shuai Xue wrote:
+> I will fix it in next version.
 
-dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
-irm=C4=85.
+Yes, thanks.
 
-=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
-ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
+However, you don't have to resend immediately but wait instead until
+people have had time to review the whole thing. And while you're
+waiting, you can read through Documentation/process/...
 
-Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
-ropozycji?
+There are passages like the following one, for example:
 
+"Don't get discouraged - or impatient
+------------------------------------
 
-Pozdrawiam,
-Maciej Nitycz
+After you have submitted your change, be patient and wait.  Reviewers are
+busy people and may not get to your patch right away.
+
+Once upon a time, patches used to disappear into the void without comment,
+but the development process works more smoothly than that now.  You should
+receive comments within a week or so; if that does not happen, make sure
+that you have sent your patches to the right place.  Wait for a minimum of
+one week before resubmitting or pinging reviewers - possibly longer during
+busy times like merge windows.
+
+It's also ok to resend the patch or the patch series after a couple of
+weeks with the word "RESEND" added to the subject line::
+
+   [PATCH Vx RESEND] sub/sys: Condensed patch summary
+
+Don't add "RESEND" when you are submitting a modified version of your
+patch or patch series - "RESEND" only applies to resubmission of a
+patch or patch series which have not been modified in any way from the
+previous submission."
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
