@@ -2,69 +2,105 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85E1A49B732
-	for <lists+linux-efi@lfdr.de>; Tue, 25 Jan 2022 16:05:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC9BB49BB74
+	for <lists+linux-efi@lfdr.de>; Tue, 25 Jan 2022 19:45:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380312AbiAYPFK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 25 Jan 2022 10:05:10 -0500
-Received: from out30-56.freemail.mail.aliyun.com ([115.124.30.56]:52742 "EHLO
-        out30-56.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1581208AbiAYPDA (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 25 Jan 2022 10:03:00 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04426;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0V2qsuta_1643122967;
-Received: from 30.27.234.82(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V2qsuta_1643122967)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Tue, 25 Jan 2022 23:02:49 +0800
-Message-ID: <94dababf-76dd-dd9f-61e4-fe05b02f6241@linux.alibaba.com>
-Date:   Tue, 25 Jan 2022 23:02:47 +0800
+        id S233098AbiAYSoo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 25 Jan 2022 13:44:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40198 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233409AbiAYSoD (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 25 Jan 2022 13:44:03 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 258E5C061770;
+        Tue, 25 Jan 2022 10:43:34 -0800 (PST)
+Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 760941EC052A;
+        Tue, 25 Jan 2022 19:43:28 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1643136208;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=wvIvlS2dO1ThS+LV2yQ6h0qiGd4NN+hsLFVW5buEbs0=;
+        b=ejvEMtrV/x1ErR80f7OgCzdqcxU5KzdO9+Ac3btdyfg/CxP+qm/1swhS/pWjt0C92J8iC5
+        uHKxx/bZxLwSU3b8spXf5TW0DlCut6rOPx7VoczJgu0PwancC+Xu1O4NzkoZ9SPpd/thwA
+        1SN8jQOFx0HVOzq0CPayGnJz5UBxBoc=
+Date:   Tue, 25 Jan 2022 19:43:23 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v8 34/40] x86/sev: add SEV-SNP feature detection/setup
+Message-ID: <YfBEy6QD38u9DSrP@zn.tnic>
+References: <20211210154332.11526-1-brijesh.singh@amd.com>
+ <20211210154332.11526-35-brijesh.singh@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.5.0
-Subject: Re: [RESEND PATCH v3 1/2] efi/cper: add cper_mem_err_status_str to
- decode error description
-Content-Language: en-US
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     rric@kernel.org, mchehab@kernel.org, tony.luck@intel.com,
-        james.morse@arm.com, ardb@kernel.org, linux-edac@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        zhangliguang@linux.alibaba.com, zhuo.song@linux.alibaba.com
-References: <20211210134019.28536-1-xueshuai@linux.alibaba.com>
- <20220124024759.19176-2-xueshuai@linux.alibaba.com>
- <Ye8XMvfXCetzJLTH@zn.tnic>
- <98aae382-ac38-8811-f147-d00b953f608d@linux.alibaba.com>
- <Ye/PLDlOBhYmGb5D@zn.tnic>
- <0e156b79-6343-72b2-47fb-baa29ffe60fd@linux.alibaba.com>
- <Ye/u/UNqXr1/WUXH@zn.tnic>
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <Ye/u/UNqXr1/WUXH@zn.tnic>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20211210154332.11526-35-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Borislav,
+On Fri, Dec 10, 2021 at 09:43:26AM -0600, Brijesh Singh wrote:
+> +static struct cc_blob_sev_info *snp_find_cc_blob(struct boot_params *bp)
+> +{
+> +	struct cc_blob_sev_info *cc_info;
+> +
+> +	/* Boot kernel would have passed the CC blob via boot_params. */
+> +	if (bp->cc_blob_address) {
+> +		cc_info = (struct cc_blob_sev_info *)
+> +			  (unsigned long)bp->cc_blob_address;
 
-在 2022/1/25 PM8:37, Borislav Petkov 写道:
-> On Tue, Jan 25, 2022 at 07:49:41PM +0800, Shuai Xue wrote:
->> I am sorry if you feel the RESEND tag is pushing you.
-> 
-> It is not pushing me - there are rules, simply. Rules you should read
-> first before sending patches.
+No need to break that line.
 
-Got it. I will learn rules first.
+> +		goto found_cc_info;
+> +	}
+> +
+> +	/*
+> +	 * If kernel was booted directly, without the use of the
+> +	 * boot/decompression kernel, the CC blob may have been passed via
+> +	 * setup_data instead.
+> +	 */
+> +	cc_info = snp_find_cc_blob_setup_data(bp);
+> +	if (!cc_info)
+> +		return NULL;
+> +
+> +found_cc_info:
+> +	if (cc_info->magic != CC_BLOB_SEV_HDR_MAGIC)
+> +		sev_es_terminate(1, GHCB_SNP_UNSUPPORTED);
 
-> How about I start flooding you a patchset every day?
+snp_abort() if you're gonna call it that.
 
-Haha, I see. I am sorry to bother you and thank you very much for your patient
-and valuable comments, just take your time. By the way, after sending patchset
-v3 8 days, I resend it yesterday, and the patchset v4 sent today is to address
-your comments, not a resend patchset. Anyway, I will be more patient.
+-- 
+Regards/Gruss,
+    Boris.
 
-> Also, please do not top-post. That's also explained in that
-> documentation directory I mentioned. Read about it too pls.
-
-I will, thank you.
-
-Best Regards,
-Shuai
+https://people.kernel.org/tglx/notes-about-netiquette
