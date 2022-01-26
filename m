@@ -2,19 +2,19 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C12CB49C510
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Jan 2022 09:17:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BF9149C513
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Jan 2022 09:17:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238277AbiAZIRM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 26 Jan 2022 03:17:12 -0500
-Received: from out199-4.us.a.mail.aliyun.com ([47.90.199.4]:21795 "EHLO
-        out199-4.us.a.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S238271AbiAZIRL (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Jan 2022 03:17:11 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04395;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0V2uWA3k_1643185024;
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V2uWA3k_1643185024)
+        id S230117AbiAZIRN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 26 Jan 2022 03:17:13 -0500
+Received: from out30-56.freemail.mail.aliyun.com ([115.124.30.56]:52590 "EHLO
+        out30-56.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S238285AbiAZIRK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Jan 2022 03:17:10 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04407;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0V2uWA4Y_1643185026;
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V2uWA4Y_1643185026)
           by smtp.aliyun-inc.com(127.0.0.1);
-          Wed, 26 Jan 2022 16:17:06 +0800
+          Wed, 26 Jan 2022 16:17:07 +0800
 From:   Shuai Xue <xueshuai@linux.alibaba.com>
 To:     bp@alien8.de, rric@kernel.org
 Cc:     mchehab@kernel.org, tony.luck@intel.com, james.morse@arm.com,
@@ -22,9 +22,9 @@ Cc:     mchehab@kernel.org, tony.luck@intel.com, james.morse@arm.com,
         linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
         xueshuai@linux.alibaba.com, zhangliguang@linux.alibaba.com,
         zhuo.song@linux.alibaba.com
-Subject: [PATCH v5 0/2] EDAC/ghes: refactor memory error reporting to avoid code duplication
-Date:   Wed, 26 Jan 2022 16:17:00 +0800
-Message-Id: <20220126081702.55167-1-xueshuai@linux.alibaba.com>
+Subject: [PATCH v5 1/2] efi/cper: add cper_mem_err_status_str to decode error description
+Date:   Wed, 26 Jan 2022 16:17:01 +0800
+Message-Id: <20220126081702.55167-2-xueshuai@linux.alibaba.com>
 X-Mailer: git-send-email 2.30.1 (Apple Git-130)
 In-Reply-To: <20211210134019.28536-1-xueshuai@linux.alibaba.com>
 References: <20211210134019.28536-1-xueshuai@linux.alibaba.com>
@@ -34,57 +34,76 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-ghes_edac_report_mem_error() in ghes_edac.c is a Long Method and have
-Duplicated Code with cper_mem_err_location(), cper_dimm_err_location(), and
-cper_mem_err_type_str() in drivers/firmware/efi/cper.c. In addition, the
-cper_print_mem() in drivers/firmware/efi/cper.c only reports the error
-status and misses its description.
+Introduce a new helper function cper_mem_err_status_str() which is used to
+decode the description of error status, and the cper_print_mem() will call
+it and report the details of error status.
 
-This patch set is to refactor ghes_edac_report_mem_error with:
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+---
+ drivers/firmware/efi/cper.c | 30 +++++++++++++++++++++++++++++-
+ include/linux/cper.h        |  1 +
+ 2 files changed, 30 insertions(+), 1 deletion(-)
 
-- Patch 01 is to wrap up error status decoding logics and reuse it in
-    cper_print_mem().
-- Patch 02 is to introduces cper_*(), into ghes_edac_report_mem_error(),
-  this can avoid bunch of duplicate code lines;
-
-Changes since v4:
-- Fix alignment and format problem
-- Link: https://lore.kernel.org/all/20220125024939.30635-1-xueshuai@linux.alibaba.com/
-- Thanks Borislav Petkov for review comments.
-
-Changes since v3:
-
-- make cper_mem_err_status_str table a lot more compact
-- Fix alignment and format problem
-- Link: https://lore.kernel.org/all/20220124024759.19176-1-xueshuai@linux.alibaba.com/
-- Thanks Borislav Petkov for review comments.
-
-Changes since v2:
-
-- delete the unified patch
-- adjusted the order of patches
-- Link: https://lore.kernel.org/all/20211210134019.28536-1-xueshuai@linux.alibaba.com/
-- Thanks Borislav Petkov for review comments.
-
-Changes since v1:
-
-- add a new patch to unify ghes and cper before removing duplication.
-- document the changes in patch description
-- add EXPORT_SYMBOL_GPL()s for cper_*()
-- document and the dependency and add UEFI_CPER dependency explicitly
-- Link: https://lore.kernel.org/all/20211207031905.61906-2-xueshuai@linux.alibaba.com/
-- Thanks Robert Richter for review comments.
-
-Shuai Xue (2):
-  efi/cper: add cper_mem_err_status_str to decode error description
-  EDAC/ghes: use cper functions to avoid code duplication
-
- drivers/edac/Kconfig        |   1 +
- drivers/edac/ghes_edac.c    | 196 +++++++-----------------------------
- drivers/firmware/efi/cper.c |  66 ++++++++----
- include/linux/cper.h        |   3 +
- 4 files changed, 86 insertions(+), 180 deletions(-)
-
+diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+index 6ec8edec6329..34eeaa59f04a 100644
+--- a/drivers/firmware/efi/cper.c
++++ b/drivers/firmware/efi/cper.c
+@@ -211,6 +211,32 @@ const char *cper_mem_err_type_str(unsigned int etype)
+ }
+ EXPORT_SYMBOL_GPL(cper_mem_err_type_str);
+ 
++const char *cper_mem_err_status_str(u64 status)
++{
++	switch ((status >> 8) & 0xff) {
++	case  1:	return "Error detected internal to the component";
++	case  4:	return "Storage error in DRAM memory";
++	case  5:	return "Storage error in TLB";
++	case  6:	return "Storage error in cache";
++	case  7:	return "Error in one or more functional units";
++	case  8:	return "Component failed self test";
++	case  9:	return "Overflow or undervalue of internal queue";
++	case 16:	return "Error detected in the bus";
++	case 17:	return "Virtual address not found on IO-TLB or IO-PDIR";
++	case 18:	return "Improper access error";
++	case 19:	return "Access to a memory address which is not mapped to any component";
++	case 20:	return "Loss of Lockstep";
++	case 21:	return "Response not associated with a request";
++	case 22:	return "Bus parity error - must also set the A, C, or D Bits";
++	case 23:	return "Detection of a protocol error";
++	case 24:	return "Detection of a PATH_ERROR";
++	case 25:	return "Bus operation timeout";
++	case 26:	return "A read was issued to data that has been poisoned";
++	default:	return "Reserved";
++	}
++}
++EXPORT_SYMBOL_GPL(cper_mem_err_status_str);
++
+ static int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg)
+ {
+ 	u32 len, n;
+@@ -334,7 +360,9 @@ static void cper_print_mem(const char *pfx, const struct cper_sec_mem_err *mem,
+ 		return;
+ 	}
+ 	if (mem->validation_bits & CPER_MEM_VALID_ERROR_STATUS)
+-		printk("%s""error_status: 0x%016llx\n", pfx, mem->error_status);
++		printk("%s error_status: %s (0x%016llx)\n",
++		       pfx, cper_mem_err_status_str(mem->error_status),
++		       mem->error_status);
+ 	if (mem->validation_bits & CPER_MEM_VALID_PA)
+ 		printk("%s""physical_address: 0x%016llx\n",
+ 		       pfx, mem->physical_addr);
+diff --git a/include/linux/cper.h b/include/linux/cper.h
+index 6a511a1078ca..5b1dd27b317d 100644
+--- a/include/linux/cper.h
++++ b/include/linux/cper.h
+@@ -558,6 +558,7 @@ extern const char *const cper_proc_error_type_strs[4];
+ u64 cper_next_record_id(void);
+ const char *cper_severity_str(unsigned int);
+ const char *cper_mem_err_type_str(unsigned int);
++const char *cper_mem_err_status_str(u64 status);
+ void cper_print_bits(const char *prefix, unsigned int bits,
+ 		     const char * const strs[], unsigned int strs_size);
+ void cper_mem_err_pack(const struct cper_sec_mem_err *,
 -- 
 2.20.1.12.g72788fdb
 
