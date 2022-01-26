@@ -2,87 +2,112 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CEB3F49CBC0
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Jan 2022 15:03:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4D1049D1C5
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Jan 2022 19:35:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241887AbiAZODw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 26 Jan 2022 09:03:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52794 "EHLO
+        id S244134AbiAZSfQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 26 Jan 2022 13:35:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240300AbiAZODw (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Jan 2022 09:03:52 -0500
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBDB8C06161C
-        for <linux-efi@vger.kernel.org>; Wed, 26 Jan 2022 06:03:51 -0800 (PST)
-Received: by mail-yb1-xb32.google.com with SMTP id p5so71522376ybd.13
-        for <linux-efi@vger.kernel.org>; Wed, 26 Jan 2022 06:03:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=eclypsium.com; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=KgAy15DDMAR2vjy8MiwG/RlJLyeMSxdmZmAbGV8zyZo=;
-        b=DuizcgPMiu9eosVBoNVF9GXmy/vOHlsyPY4EPNeMMFbDaxS4YbjLG2k3mZuPyZp6nf
-         mwFunqVxw0K+rEwzgUyTXfdvmL5BeLj26bqEJQ5veR0aakcJ78+I2l5VZqLFNLs9nCec
-         6ffY5vozp4KqeyHfj1dSwlC5t72zaZMoMUoLB7iKNaTa4LNVwHB8AfYmBB86NdbN2nsP
-         dv0UPQJzy5A02W0TAONv6Rn5Q9uyz/UWeKWfKPAu4n7G5yQPfYEZfMoE7+HRY/N/zpjU
-         qksxBQX2M7uHcfVpSH28kwZvNv2srrULTX2ONPPpjSyMqODUgLOOOEzpAeD8870RvkWs
-         W6rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=KgAy15DDMAR2vjy8MiwG/RlJLyeMSxdmZmAbGV8zyZo=;
-        b=Worzy/ueGpUZF4GUYBl9HhGJXx3r874xnhxLrhdV1gBK84qeclWznDYES5vgZq7w8e
-         vdbYDjd+FeqTB7fSi2kXAfOywp9WWikbMeEunbWVLVtXfu7BHoJpkHmajGelHzlvgAn9
-         nzzlUbtLQm8Siu66BUDMqU7+1ssfIMUnBiplJRDA2DYSkWshv5vQXcugD8ZT4uduOQsL
-         lc/77+NGDDDb9jXgPw7H6HaqSqAKwctHL4HMMrDsJsiDA2fx1kyMcbLLpzJqVy6PX4Td
-         kISRY/D48d2z9/4338uMHCrT+lMqdZVoXPU3WRZOgtIg4BgsDbW6DAjz1oBeiqz8tG9G
-         bGQg==
-X-Gm-Message-State: AOAM533+ToANPz9OqE+ZQwvpr3IXixy3MeviMbhiKIy/gVivE9g4jC/+
-        CCqfzgvdj6Xgd4zwUJYBgj/7LTZ6eCSJ+dogKyaK0g==
-X-Google-Smtp-Source: ABdhPJxG2AiuBT6jF9/C4OMbB5sFSeC1iGSmdOO8xUnGvYsnanamPg5zDFyS9LKTGkMtjjtvdQEY1gfURY0fRsUqNGc=
-X-Received: by 2002:a25:b305:: with SMTP id l5mr30998617ybj.393.1643205831097;
- Wed, 26 Jan 2022 06:03:51 -0800 (PST)
+        with ESMTP id S244223AbiAZSfO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Jan 2022 13:35:14 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1738C06173B;
+        Wed, 26 Jan 2022 10:35:13 -0800 (PST)
+Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E87731EC0523;
+        Wed, 26 Jan 2022 19:35:07 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1643222108;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=96A3476Qu+7SjsWY2hSBFw1C0Xznd/Zn6tLR1Pkup4Q=;
+        b=jmiefYcsIsHCM6x1nXxo3vEUg7F1AGEwOS9cHwytrWbNL/9AD1ypRH2QAD6Tl6zikwBu0d
+        aQKA2K0jhIfsl4e3eBUV8VyXS1d6ygLtnULQpASCWSDAmLARaktXvbZlmc1Sv9Cr64YOiX
+        J1apVcrQoag5o9EvKUnS6zi8V7qwRGo=
+Date:   Wed, 26 Jan 2022 19:35:04 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v8 35/40] x86/sev: use firmware-validated CPUID for
+ SEV-SNP guests
+Message-ID: <YfGUWLmg82G+l4jU@zn.tnic>
+References: <20211210154332.11526-1-brijesh.singh@amd.com>
+ <20211210154332.11526-36-brijesh.singh@amd.com>
 MIME-Version: 1.0
-Received: by 2002:a81:1756:0:0:0:0:0 with HTTP; Wed, 26 Jan 2022 06:03:50
- -0800 (PST)
-In-Reply-To: <CAKgze5Z7U0R+HJ8_GajUsspYw+52+i2MW75KBGVOmE8zmT_BDQ@mail.gmail.com>
-References: <20220113213027.457282-1-martin.fernandez@eclypsium.com>
- <20220113213027.457282-4-martin.fernandez@eclypsium.com> <eea2c529-b874-58e6-f0b2-1483cc7e30a6@intel.com>
- <CAKgze5Z7U0R+HJ8_GajUsspYw+52+i2MW75KBGVOmE8zmT_BDQ@mail.gmail.com>
-From:   Martin Fernandez <martin.fernandez@eclypsium.com>
-Date:   Wed, 26 Jan 2022 11:03:50 -0300
-Message-ID: <CAKgze5ba429M=Aad9qBNL+CZLCVF09LQ6ZwXCT2jc86vDggp6g@mail.gmail.com>
-Subject: Re: [PATCH v5 3/5] x86/e820: Tag e820_entry with crypto capabilities
-To:     Dave Hansen <dave.hansen@intel.com>
-Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
-        gregkh@linuxfoundation.org, rafael@kernel.org, rppt@kernel.org,
-        akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
-        hughsient@gmail.com, alex.bazhaniuk@eclypsium.com,
-        alison.schofield@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20211210154332.11526-36-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-> On 1/14/22, Dave Hansen <dave.hansen@intel.com> wrote:
->> On 1/13/22 1:30 PM, Martin Fernandez wrote:
->>> +/*
->>> + * Update crypto capabilities in a range
->>> + */
->>> +static u64 __init __e820__range_update_crypto(struct e820_table *table,
->>> +					      u64 start, u64 size,
->>> +					      enum e820_crypto_capabilities crypto_capable)
->>
->> This looks like an almost pure copy-and-paste of a 70-line function.
->> That's not the end of the world, but it does seem like a place where
->> refactoring is in order.
+On Fri, Dec 10, 2021 at 09:43:27AM -0600, Brijesh Singh wrote:
+> From: Michael Roth <michael.roth@amd.com>
+> 
+> SEV-SNP guests will be provided the location of special 'secrets' and
+> 'CPUID' pages via the Confidential Computing blob. This blob is
+> provided to the run-time kernel either through bootparams field that
+						^
+						a
 
-Introducing a for_each to iterate over the table is one of the
-improvements I'm thinking of. Do you think it's a good idea to
-introduce it in this patch (changing all the relevant for loops for
-this new for_each) or should I do it in a separate patch?
+
+> was initialized by the boot/compressed kernel, or via a setup_data
+> structure as defined by the Linux Boot Protocol.
+> 
+> Locate the Confidential Computing from these sources and, if found,
+				   ^
+				   blob
+
+> use the provided CPUID page/table address to create a copy that the
+> run-time kernel will use when servicing cpuid instructions via a #VC
+					  ^^^^^
+
+Please capitalize all instruction mnemonics in text.
+
+> +/*
+> + * It is useful from an auditing/testing perspective to provide an easy way
+> + * for the guest owner to know that the CPUID table has been initialized as
+> + * expected, but that initialization happens too early in boot to print any
+> + * sort of indicator, and there's not really any other good place to do it. So
+> + * do it here, and while at it, go ahead and re-verify that nothing strange has
+> + * happened between early boot and now.
+> + */
+> +static int __init snp_cpuid_check_status(void)
+
+That function's redundant now, I believe, since we terminate the guest
+if there's something wrong with the CPUID page.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
