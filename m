@@ -2,69 +2,74 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A9C2249C643
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Jan 2022 10:26:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B697549C747
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Jan 2022 11:16:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239093AbiAZJ0H (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 26 Jan 2022 04:26:07 -0500
-Received: from out30-133.freemail.mail.aliyun.com ([115.124.30.133]:51475 "EHLO
-        out30-133.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S239089AbiAZJ0G (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Jan 2022 04:26:06 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04395;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0V2ucTth_1643189162;
-Received: from 30.240.122.215(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V2ucTth_1643189162)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Wed, 26 Jan 2022 17:26:03 +0800
-Message-ID: <8d89ffe0-6e34-a82d-09f0-9dd803fc256f@linux.alibaba.com>
-Date:   Wed, 26 Jan 2022 17:26:01 +0800
+        id S239773AbiAZKQi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 26 Jan 2022 05:16:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55272 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239767AbiAZKQh (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Jan 2022 05:16:37 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BADAEC06161C;
+        Wed, 26 Jan 2022 02:16:37 -0800 (PST)
+Received: from [127.0.0.1] (dynamic-002-247-255-194.2.247.pool.telefonica.de [2.247.255.194])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1C5B21EC032C;
+        Wed, 26 Jan 2022 11:16:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1643192192;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=UVNkPXJP5m0LMBfgOcZbjMUKVGxtfPneUogvPQS5O+w=;
+        b=GpqWSu7QeOyI8EWRRGsXT0XakZxdYvV4fz6wZh4HieAsvAf1sIYG3m7wkMGEX5HIbRP3Nu
+        r9tRU1vSVAaTwyB7OFbWkypoP1QcFheajPazM4YrS4MDwtHySt25M+ftKVcDXHyIl1ThRF
+        07uz4Xj91dtz6hKIGWt7VWte4FEDYnY=
+Date:   Wed, 26 Jan 2022 10:16:28 +0000
+From:   Boris Petkov <bp@alien8.de>
+To:     Shuai Xue <xueshuai@linux.alibaba.com>
+CC:     rric@kernel.org, mchehab@kernel.org,
+        zhangliguang@linux.alibaba.com, tony.luck@intel.com,
+        james.morse@arm.com, linux-edac@vger.kernel.org,
+        linux-efi@vger.kernel.org, ardb@kernel.org,
+        linux-kernel@vger.kernel.org, zhuo.song@linux.alibaba.com
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v5_0/2=5D_EDAC/ghes=3A_refactor_memo?= =?US-ASCII?Q?ry_error_reporting_to_avoid_code_duplication?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <8d89ffe0-6e34-a82d-09f0-9dd803fc256f@linux.alibaba.com>
+References: <20211210134019.28536-1-xueshuai@linux.alibaba.com> <20220126081702.55167-1-xueshuai@linux.alibaba.com> <YfEEN0ATgS+TakLV@zn.tnic> <8d89ffe0-6e34-a82d-09f0-9dd803fc256f@linux.alibaba.com>
+Message-ID: <5D5735C8-3922-49D9-9DD0-605746B5CCE4@alien8.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.5.0
-Subject: Re: [PATCH v5 0/2] EDAC/ghes: refactor memory error reporting to
- avoid code duplication
-Content-Language: en-US
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     rric@kernel.org, mchehab@kernel.org, tony.luck@intel.com,
-        james.morse@arm.com, ardb@kernel.org, linux-edac@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        zhangliguang@linux.alibaba.com, zhuo.song@linux.alibaba.com
-References: <20211210134019.28536-1-xueshuai@linux.alibaba.com>
- <20220126081702.55167-1-xueshuai@linux.alibaba.com>
- <YfEEN0ATgS+TakLV@zn.tnic>
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <YfEEN0ATgS+TakLV@zn.tnic>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi, Borislav,
+On January 26, 2022 9:26:01 AM UTC, Shuai Xue <xueshuai@linux=2Ealibaba=2Ec=
+om> wrote:
+>By the way, I have a question about review process: after waiting for a p=
+eriod
+>of time, how can I tell whether you have no comments or are still in revi=
+ew process?
+>
 
-在 2022/1/26 PM4:20, Borislav Petkov 写道:
-> On Wed, Jan 26, 2022 at 04:17:00PM +0800, Shuai Xue wrote:
->> ghes_edac_report_mem_error() in ghes_edac.c is a Long Method and have
->> Duplicated Code with cper_mem_err_location(), cper_dimm_err_location(), and
->> cper_mem_err_type_str() in drivers/firmware/efi/cper.c. In addition, the
->> cper_print_mem() in drivers/firmware/efi/cper.c only reports the error
->> status and misses its description.
-> 
-> Dude, what about
-> 
-> 	wait for a week or until the patchset has been fully reviewed
-> 
-> don't you understand?!
-> 
-> Please let me know what about the review process is not clear to you so
-> that we can document it better.
+A good sign for when review is done is to wait to see replies to every pat=
+ch=2E
 
-Emmm, when I received your replied email, I thought you had fully reviewed them. So
-I work to address your comments and reply as soon as possible. Sorry, I misunderstood.
+BUT, there are other people on CC too so they would need to get a chance t=
+o have a look too=2E
 
-Of course, I can wait. As I said before, take your time.
+Regardless, you wait for a week and then you incorporate all review commen=
+ts and resend - not before=2E
 
-By the way, I have a question about review process: after waiting for a period
-of time, how can I tell whether you have no comments or are still in review process?
+This constant spamming with the patchset is not productive=2E You're not t=
+he only one who sends patches and wants review - you should consider that t=
+here are others who would need to get reviewed too=2E
 
-Best Regards,
-Shuai
+--=20
+Sent from a small device: formatting sux and brevity is inevitable=2E 
