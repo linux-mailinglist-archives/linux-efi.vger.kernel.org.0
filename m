@@ -2,183 +2,169 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0581D49C904
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Jan 2022 12:46:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82AF649CB11
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Jan 2022 14:43:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240975AbiAZLqF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 26 Jan 2022 06:46:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48274 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234069AbiAZLqD (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Jan 2022 06:46:03 -0500
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CF8FC061759
-        for <linux-efi@vger.kernel.org>; Wed, 26 Jan 2022 03:45:59 -0800 (PST)
-Received: by mail-pg1-x52b.google.com with SMTP id g20so2788784pgn.10
-        for <linux-efi@vger.kernel.org>; Wed, 26 Jan 2022 03:45:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=b2YyWOge0M5kIT2ntqlrnr8NQs2OgZVVCHIbAnzaaKE=;
-        b=WWfym4P+R3+IwpIxkHRmeB3tynZEscCZnnZFQ1YzNukA01mkuDYl6d6i0ahPydblHO
-         AtQpFKqiEmopvLkUdF8SPT3UCWN2zo2PkJlketuHAyWOJs1Egydvx1C7wfNtGJK3pGsx
-         DIv2rwUpj/l6XDgrxw6d+aHzeeIJY8aBeKMyjw4HWN5NOIWWRTfyS4FCNE9ccyWlkGdb
-         Zf1j5vo2fJosqpjNgc7nwLvJaGWi9wGl1DB3ZFhfTbcFI9HvS1pX3SnT2qLvg3fnH0Ey
-         NWyuC6ckMkdcCBYNd2PTyVoqfPtqgAPpS6Lg/cUpo1nJY6xGWBu6z+Fnegr/1N7X2+1M
-         Hzhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=b2YyWOge0M5kIT2ntqlrnr8NQs2OgZVVCHIbAnzaaKE=;
-        b=2w0FMucrvTrv4jqKU1baSivB18VuHpqbeHTWwRSaU+cC1KOK3R3dDbx0OK3KmHBKi4
-         nVX7+84FT/g8WAl4yt4tzHuOlsF660kXYQ0Z6mv/tBAkNGPpVHU59uFDUlvQyIiPrmV1
-         FWSFP8iL26AyNZ9WFSgLS5QFjez9vTaoF6wcw+pjJhZZQiduqSVsxezbiRRQXu0kkEeK
-         Q1mSurh371ox4Y4rk5/1aysTy2aRMGeloo4eWZaPpb416d4jibHUSX8cQdDJAPWT6esq
-         W2+J88hFLBdAI/mdNJNXdLMMOM6iLcrhN+sXU/ePKQdKPh8PoWvH0dMmMRygq6zFSc+7
-         zMWA==
-X-Gm-Message-State: AOAM530d/Z1Q07DcJQlsZG4si7dxvZZJmvw1DN24T3V7D+TyFSRHHbV0
-        yULLGtRNUJcggcwhxeTzFL8LRA==
-X-Google-Smtp-Source: ABdhPJyzaxql9iVXuLykTnyDGM1rb4BxxzxCMBfHaQkTumc+35DPn7h/HgwDnFeQSyGT+oLQfq6hHQ==
-X-Received: by 2002:a63:6f07:: with SMTP id k7mr18454510pgc.574.1643197558636;
-        Wed, 26 Jan 2022 03:45:58 -0800 (PST)
-Received: from sunil-ThinkPad-T490 ([49.206.3.187])
-        by smtp.gmail.com with ESMTPSA id na7sm3055210pjb.23.2022.01.26.03.45.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Jan 2022 03:45:58 -0800 (PST)
-Date:   Wed, 26 Jan 2022 17:15:49 +0530
-From:   Sunil V L <sunilvl@ventanamicro.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Heinrich Schuchardt <xypron.glpk@gmx.de>,
-        Anup Patel <apatel@ventanamicro.com>,
-        Atish Patra <atishp@rivosinc.com>,
-        Abner Chang <abner.chang@hpe.com>,
-        Jessica Clarke <jrtc27@jrtc27.com>
-Subject: Re: [RFC PATCH 1/1] riscv/efi_stub: Add support for
- RISCV_EFI_BOOT_PROTOCOL
-Message-ID: <20220126114549.GA35654@sunil-ThinkPad-T490>
-References: <20220126110615.33371-1-sunilvl@ventanamicro.com>
- <20220126110615.33371-2-sunilvl@ventanamicro.com>
- <CAMj1kXGaBJX9qVXQXiFHPySfDz7SWYQ6+cbHvV5v3sw3tEv0Ow@mail.gmail.com>
+        id S234949AbiAZNn0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 26 Jan 2022 08:43:26 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:52504 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231417AbiAZNn0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Jan 2022 08:43:26 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC0F061465;
+        Wed, 26 Jan 2022 13:43:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953BDC340E3;
+        Wed, 26 Jan 2022 13:43:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1643204605;
+        bh=PBfAzkpIlUU0rYrXUEo7U7EFNHgflAbKhVaga/3FjTE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=r6f0Piox5yX7PML1iIEgzm6Le2Eoe3Mf10GbPgWYerepMfKr4/gl/xYOhSqOIrwF7
+         TsVFOKxWicaMaXxtLAd33VQVpz87mOXYhq+akrCcrcf+c/i2DrKlPGDT6fAS6qJP30
+         fHXZvCV8LOPaPH0hO9hj58qEAflzGMXt65uTxA8J6Xm8yUT/XcR75qkGQMyWV+adqD
+         fqUHUTB5xilg7O8O7rptVFv6aUWRUbrdaQdMOBs3PXjtnMkc1TWc8Y6GKPuqaxT5tI
+         QH4qiQ9UweTqVcybUtaLoD2PsjQ4314sq1yYsZx8PVvENKM6TuDBYGXZR5xvB+/X3t
+         jDouHZkdYMK5A==
+Date:   Wed, 26 Jan 2022 15:43:04 +0200
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     dhowells@redhat.com, dwmw2@infradead.org, ardb@kernel.org,
+        jmorris@namei.org, serge@hallyn.com, nayna@linux.ibm.com,
+        zohar@linux.ibm.com, keescook@chromium.org,
+        torvalds@linux-foundation.org, weiyongjun1@huawei.com,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-security-module@vger.kernel.org,
+        James.Bottomley@hansenpartnership.com, pjones@redhat.com,
+        konrad.wilk@oracle.com
+Subject: Re: [PATCH v10 0/8] Enroll kernel keys thru MOK
+Message-ID: <YfFP6OHqBVNWKL2C@iki.fi>
+References: <20220126025834.255493-1-eric.snowberg@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXGaBJX9qVXQXiFHPySfDz7SWYQ6+cbHvV5v3sw3tEv0Ow@mail.gmail.com>
+In-Reply-To: <20220126025834.255493-1-eric.snowberg@oracle.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jan 26, 2022 at 12:13:42PM +0100, Ard Biesheuvel wrote:
-> Hello Sunil,
+On Tue, Jan 25, 2022 at 09:58:26PM -0500, Eric Snowberg wrote:
+> Back in 2013 Linus requested a feature to allow end-users to have the 
+> ability "to add their own keys and sign modules they trust". This was
+> his *second* order outlined here [1]. There have been many attempts 
+> over the years to solve this problem, all have been rejected.  Many 
+> of the failed attempts loaded all preboot firmware keys into the kernel,
+> including the Secure Boot keys. Many distributions carry one of these 
+> rejected attempts [2], [3], [4]. This series tries to solve this problem 
+> with a solution that takes into account all the problems brought up in 
+> the previous attempts.
 > 
-> On Wed, 26 Jan 2022 at 12:06, Sunil V L <sunilvl@ventanamicro.com> wrote:
-> >
-> > This patch adds the support for getting the boot hart ID in
-> > Linux EFI stub using RISCV_EFI_BOOT_PROTOCOL.
-> >
-> > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> > ---
-> >  drivers/firmware/efi/libstub/efistub.h    | 15 ++++++++++++
-> >  drivers/firmware/efi/libstub/riscv-stub.c | 28 ++++++++++++++++++++---
-> >  include/linux/efi.h                       |  1 +
-> >  3 files changed, 41 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-> > index edb77b0621ea..0428f8816942 100644
-> > --- a/drivers/firmware/efi/libstub/efistub.h
-> > +++ b/drivers/firmware/efi/libstub/efistub.h
-> > @@ -720,6 +720,21 @@ union efi_tcg2_protocol {
-> >         } mixed_mode;
-> >  };
-> >
-> > +typedef union riscv_efi_boot_protocol riscv_efi_boot_protocol_t;
-> > +
-> > +union riscv_efi_boot_protocol {
-> > +       struct {
-> > +               u64 revision;
-> > +               efi_status_t (__efiapi *get_boot_hartid)(
-> > +                                                        riscv_efi_boot_protocol_t *,
-> > +                                                        size_t *);
-> > +       };
-> > +       struct {
-> > +               u32 revision;
-> > +               u32 get_boot_hartid;
-> > +       } mixed_mode;
-> > +};
-> > +
+> On UEFI based systems, this series introduces a new Linux kernel keyring 
+> containing the Machine Owner Keys (MOK) called machine. It also defines
+> a new MOK variable in shim. This variable allows the end-user to decide 
+> if they want to load MOK keys into the machine keyring. 
 > 
-> You don't the mixed mode member here - this is for X64 kernels on IA32
-> firmware only.
+> By default, nothing changes; MOK keys are not loaded into the machine
+> keyring.  They are only loaded after the end-user makes the decision 
+> themselves.  The end-user would set this through mokutil using a new 
+> --trust-mok option [5]. This would work similar to how the kernel uses 
+> MOK variables to enable/disable signature validation as well as use/ignore 
+> the db. Any kernel operation that uses either the builtin or secondary 
+> trusted keys as a trust source shall also reference the new machine 
+> keyring as a trust source.
+> 
+> Secure Boot keys will never be loaded into the machine keyring.  They
+> will always be loaded into the platform keyring.  If an end-user wanted 
+> to load one, they would need to enroll it into the MOK.
+> 
+> Unlike previous versions of this patch set, IMA support has been removed
+> to simplify the series. After acceptance, a follow-on series will add IMA 
+> support.
+> 
+> Steps required by the end user:
+> 
+> Sign kernel module with user created key:
+> $ /usr/src/kernels/$(uname -r)/scripts/sign-file sha512 \
+>    machine_signing_key.priv machine_signing_key.x509 my_module.ko
+> 
+> Import the key into the MOK
+> $ mokutil --import machine_signing_key.x509
+> 
+> Setup the kernel to load MOK keys into the .machine keyring
+> $ mokutil --trust-mok
+> 
+> Then reboot, the MokManager will load and ask if you want to trust the
+> MOK key and enroll the MOK into the MOKList.  Afterwards the signed kernel
+> module will load.
+> 
+> I have included  a link to the mokutil [5] changes I have made to support 
+> this new functionality.  The shim changes have now been accepted
+> upstream [6].
+> 
+> Upstream shim is located here [7], the build instructions are here [8].
+> TLDR:
+> 
+> $ git clone --recurse-submodules https://github.com/rhboot/shim
+> $ cd shim
+> $ make
+> 
+> After building shim, move shimx64.efi and mmx64.efi to the vendor or 
+> distribution specific directory on your EFI System Partition (assuming
+> you are building on x86). The instructions above are the minimal
+> steps needed to build shim to test this feature. It is assumed
+> Secure Boot shall not be enabled for this testing. To do testing
+> with Secure Boot enabled, all steps in the build instructions [8]
+> must be followed.
+> 
+> Instructions for building mokutil (including the new changes):
+> 
+> $ git clone -b mokvars-v3 https://github.com/esnowberg/mokutil.git
+> $ cd mokutil/
+> $ ./autogen.sh
+> $ make
+> 
+> [1] https://marc.info/?l=linux-kernel&m=136185386310140&w=2
+> [2] https://lore.kernel.org/lkml/1479737095.2487.34.camel@linux.vnet.ibm.com/
+> [3] https://lore.kernel.org/lkml/1556221605.24945.3.camel@HansenPartnership.com/
+> [4] https://lore.kernel.org/linux-integrity/1e41f22b1f11784f1e943f32bf62034d4e054cdb.camel@HansenPartnership.com/
+> [5] https://github.com/esnowberg/mokutil/tree/mokvars-v3
+> [6] https://github.com/rhboot/shim/commit/4e513405b4f1641710115780d19dcec130c5208f
+> [7] https://github.com/rhboot/shim
+> [8] https://github.com/rhboot/shim/blob/main/BUILDING
+> 
+> Eric Snowberg (8):
+>   integrity: Fix warning about missing prototypes
+>   integrity: Introduce a Linux keyring called machine
+>   integrity: add new keyring handler for mok keys
+>   KEYS: store reference to machine keyring
+>   KEYS: Introduce link restriction for machine keys
+>   efi/mokvar: move up init order
+>   integrity: Trust MOK keys if MokListTrustedRT found
+>   integrity: Only use machine keyring when uefi_check_trust_mok_keys is
+>     true
+> 
+>  certs/system_keyring.c                        | 44 ++++++++++-
+>  drivers/firmware/efi/mokvar-table.c           |  2 +-
+>  include/keys/system_keyring.h                 | 14 ++++
+>  security/integrity/Kconfig                    | 13 ++++
+>  security/integrity/Makefile                   |  1 +
+>  security/integrity/digsig.c                   | 15 +++-
+>  security/integrity/integrity.h                | 17 +++-
+>  .../platform_certs/keyring_handler.c          | 18 ++++-
+>  .../platform_certs/keyring_handler.h          |  5 ++
+>  security/integrity/platform_certs/load_uefi.c |  4 +-
+>  .../platform_certs/machine_keyring.c          | 77 +++++++++++++++++++
+>  11 files changed, 202 insertions(+), 8 deletions(-)
+>  create mode 100644 security/integrity/platform_certs/machine_keyring.c
+> 
+> 
+> base-commit: e783362eb54cd99b2cac8b3a9aeac942e6f6ac07
+> -- 
+> 2.18.4
+> 
 
-Ah OK. Thanks for the feedback, Ard. Will remove it in next version.
+Thank you. I'll pick these soon. Is there any objections?
 
-Thanks
-Sunil
-> 
-> >  typedef union efi_load_file_protocol efi_load_file_protocol_t;
-> >  typedef union efi_load_file_protocol efi_load_file2_protocol_t;
-> >
-> > diff --git a/drivers/firmware/efi/libstub/riscv-stub.c b/drivers/firmware/efi/libstub/riscv-stub.c
-> > index 380e4e251399..c7add4eb5453 100644
-> > --- a/drivers/firmware/efi/libstub/riscv-stub.c
-> > +++ b/drivers/firmware/efi/libstub/riscv-stub.c
-> > @@ -46,12 +46,34 @@ static u32 get_boot_hartid_from_fdt(void)
-> >         return fdt32_to_cpu(*prop);
-> >  }
-> >
-> > +static u32 get_boot_hartid_from_efi(void)
-> > +{
-> > +       efi_guid_t boot_protocol_guid = RISCV_EFI_BOOT_PROTOCOL_GUID;
-> > +       efi_status_t status;
-> > +       riscv_efi_boot_protocol_t *boot_protocol;
-> > +       size_t boot_hart_id;
-> > +
-> > +       status = efi_bs_call(locate_protocol, &boot_protocol_guid, NULL,
-> > +                            (void **)&boot_protocol);
-> > +       if (status == EFI_SUCCESS) {
-> > +               status = efi_call_proto(boot_protocol,
-> > +                                       get_boot_hartid, &boot_hart_id);
-> > +               if (status == EFI_SUCCESS) {
-> > +                       return (u32)boot_hart_id;
-> > +               }
-> > +       }
-> > +       return U32_MAX;
-> > +}
-> > +
-> >  efi_status_t check_platform_features(void)
-> >  {
-> > -       hartid = get_boot_hartid_from_fdt();
-> > +       hartid = get_boot_hartid_from_efi();
-> >         if (hartid == U32_MAX) {
-> > -               efi_err("/chosen/boot-hartid missing or invalid!\n");
-> > -               return EFI_UNSUPPORTED;
-> > +               hartid = get_boot_hartid_from_fdt();
-> > +               if (hartid == U32_MAX) {
-> > +                       efi_err("/chosen/boot-hartid missing or invalid!\n");
-> > +                       return EFI_UNSUPPORTED;
-> > +               }
-> >         }
-> >         return EFI_SUCCESS;
-> >  }
-> > diff --git a/include/linux/efi.h b/include/linux/efi.h
-> > index ccd4d3f91c98..9822c730207c 100644
-> > --- a/include/linux/efi.h
-> > +++ b/include/linux/efi.h
-> > @@ -380,6 +380,7 @@ void efi_native_runtime_setup(void);
-> >  #define EFI_CONSOLE_OUT_DEVICE_GUID            EFI_GUID(0xd3b36f2c, 0xd551, 0x11d4,  0x9a, 0x46, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
-> >  #define APPLE_PROPERTIES_PROTOCOL_GUID         EFI_GUID(0x91bd12fe, 0xf6c3, 0x44fb,  0xa5, 0xb7, 0x51, 0x22, 0xab, 0x30, 0x3a, 0xe0)
-> >  #define EFI_TCG2_PROTOCOL_GUID                 EFI_GUID(0x607f766c, 0x7455, 0x42be,  0x93, 0x0b, 0xe4, 0xd7, 0x6d, 0xb2, 0x72, 0x0f)
-> > +#define RISCV_EFI_BOOT_PROTOCOL_GUID           EFI_GUID(0xccd15fec, 0x6f73, 0x4eec,  0x83, 0x95, 0x3e, 0x69, 0xe4, 0xb9, 0x40, 0xbf)
-> >  #define EFI_LOAD_FILE_PROTOCOL_GUID            EFI_GUID(0x56ec3091, 0x954c, 0x11d2,  0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
-> >  #define EFI_LOAD_FILE2_PROTOCOL_GUID           EFI_GUID(0x4006c0c1, 0xfcb3, 0x403e,  0x99, 0x6d, 0x4a, 0x6c, 0x87, 0x24, 0xe0, 0x6d)
-> >  #define EFI_RT_PROPERTIES_TABLE_GUID           EFI_GUID(0xeb66918a, 0x7eef, 0x402a,  0x84, 0x2e, 0x93, 0x1d, 0x21, 0xc3, 0x8a, 0xe9)
-> > --
-> > 2.25.1
-> >
+/Jarkko
