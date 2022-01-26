@@ -2,112 +2,141 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4D1049D1C5
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Jan 2022 19:35:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14CCB49D4DC
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Jan 2022 23:06:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244134AbiAZSfQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 26 Jan 2022 13:35:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60344 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244223AbiAZSfO (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Jan 2022 13:35:14 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1738C06173B;
-        Wed, 26 Jan 2022 10:35:13 -0800 (PST)
-Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E87731EC0523;
-        Wed, 26 Jan 2022 19:35:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1643222108;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=96A3476Qu+7SjsWY2hSBFw1C0Xznd/Zn6tLR1Pkup4Q=;
-        b=jmiefYcsIsHCM6x1nXxo3vEUg7F1AGEwOS9cHwytrWbNL/9AD1ypRH2QAD6Tl6zikwBu0d
-        aQKA2K0jhIfsl4e3eBUV8VyXS1d6ygLtnULQpASCWSDAmLARaktXvbZlmc1Sv9Cr64YOiX
-        J1apVcrQoag5o9EvKUnS6zi8V7qwRGo=
-Date:   Wed, 26 Jan 2022 19:35:04 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v8 35/40] x86/sev: use firmware-validated CPUID for
- SEV-SNP guests
-Message-ID: <YfGUWLmg82G+l4jU@zn.tnic>
-References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-36-brijesh.singh@amd.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20211210154332.11526-36-brijesh.singh@amd.com>
+        id S232881AbiAZWGw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 26 Jan 2022 17:06:52 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:45262 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S232435AbiAZWGv (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Jan 2022 17:06:51 -0500
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20QM5wDL009872;
+        Wed, 26 Jan 2022 22:06:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=gCtkiHzTbqSrH2u9etoNqX7uZpL/Whb949Lu+ka6atU=;
+ b=QeOgzOtJTEYSH10K7VyCVT1r7qJ0X0moELU4y5QcYjIzTZxaxa4yFD+pfxbHBRqhMvn7
+ VSBNFpjq3bmLIyIIXV0YsBtdHb7Q1pj6xHxefF4aDAyINbDweduB57jZwh91SHWpbf/U
+ FKviAGkgbdCGQ35e301xd02met3CTx4pFw08zB8DK10tpOH4CQl9IPTcGozuBQsL7nY6
+ JD/uOtc/JSeRxCPR57lOvjy+rouWlmbGAdE5bjh4K+8CxARBaq7iAHgVzpslCiVETfw7
+ f+Wkrbq1ZWIs2Ljc0xIyhAX0MckEaS97BnaDscYURQfds9pBybvbKK/rI7CwobMLMXhn hg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3duc883t2x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jan 2022 22:06:18 +0000
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20QM6GHp011192;
+        Wed, 26 Jan 2022 22:06:18 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3duc883t1w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jan 2022 22:06:17 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+        by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20QM3qb4010794;
+        Wed, 26 Jan 2022 22:06:15 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+        by ppma03fra.de.ibm.com with ESMTP id 3dr9j9g9h4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 26 Jan 2022 22:06:15 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 20QM6Cx520709734
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 26 Jan 2022 22:06:13 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id CC6A1A404D;
+        Wed, 26 Jan 2022 22:06:12 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 7509FA4051;
+        Wed, 26 Jan 2022 22:06:10 +0000 (GMT)
+Received: from sig-9-65-92-33.ibm.com (unknown [9.65.92.33])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed, 26 Jan 2022 22:06:10 +0000 (GMT)
+Message-ID: <78d2c13ad60b5f845cb841d257d1b41290f575c6.camel@linux.ibm.com>
+Subject: Re: [PATCH v10 0/8] Enroll kernel keys thru MOK
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     dhowells@redhat.com, dwmw2@infradead.org, ardb@kernel.org,
+        jmorris@namei.org, serge@hallyn.com, nayna@linux.ibm.com,
+        keescook@chromium.org, torvalds@linux-foundation.org,
+        weiyongjun1@huawei.com, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        James.Bottomley@hansenpartnership.com, pjones@redhat.com,
+        konrad.wilk@oracle.com
+Date:   Wed, 26 Jan 2022 17:06:09 -0500
+In-Reply-To: <YfFTf6vIpNMIrwH0@iki.fi>
+References: <20220126025834.255493-1-eric.snowberg@oracle.com>
+         <YfFP6OHqBVNWKL2C@iki.fi> <YfFTf6vIpNMIrwH0@iki.fi>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: etmyN5YAXvGtQh0yQw-jIA-9NN3fVEju
+X-Proofpoint-ORIG-GUID: lthRogrj7NlEDFdckfcoVisT7sVxmNnF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-26_08,2022-01-26_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ priorityscore=1501 mlxscore=0 lowpriorityscore=0 bulkscore=0
+ suspectscore=0 impostorscore=0 mlxlogscore=999 clxscore=1015
+ malwarescore=0 phishscore=0 spamscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2201110000
+ definitions=main-2201260128
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Dec 10, 2021 at 09:43:27AM -0600, Brijesh Singh wrote:
-> From: Michael Roth <michael.roth@amd.com>
+Hi Jarkko,
+
+> > Thank you. I'll pick these soon. Is there any objections?
+
+No objections.
 > 
-> SEV-SNP guests will be provided the location of special 'secrets' and
-> 'CPUID' pages via the Confidential Computing blob. This blob is
-> provided to the run-time kernel either through bootparams field that
-						^
-						a
-
-
-> was initialized by the boot/compressed kernel, or via a setup_data
-> structure as defined by the Linux Boot Protocol.
+> Mimi brought up that we need a MAINTAINERS update for this and also
+> .platform.
 > 
-> Locate the Confidential Computing from these sources and, if found,
-				   ^
-				   blob
+> We have these:
+> 
+> - KEYS/KEYRINGS
+> - CERTIFICATE HANDLING
+> 
+> I would put them under KEYRINGS for now and would not consider further
+> subdivision for the moment.
 
-> use the provided CPUID page/table address to create a copy that the
-> run-time kernel will use when servicing cpuid instructions via a #VC
-					  ^^^^^
+IMA has dependencies on the platform_certs/ and now on the new .machine
+keyring.  Just adding "F: security/integrity/platform_certs/" to the
+KEYS/KEYRINGS record, ignores that dependency.  The discussion wouldn't
+even be on the linux-integrity mailing list.
 
-Please capitalize all instruction mnemonics in text.
+Existing requirement:
+- The keys on the .platform keyring are limited to verifying the kexec
+image.
 
-> +/*
-> + * It is useful from an auditing/testing perspective to provide an easy way
-> + * for the guest owner to know that the CPUID table has been initialized as
-> + * expected, but that initialization happens too early in boot to print any
-> + * sort of indicator, and there's not really any other good place to do it. So
-> + * do it here, and while at it, go ahead and re-verify that nothing strange has
-> + * happened between early boot and now.
-> + */
-> +static int __init snp_cpuid_check_status(void)
+New requirements based on Eric Snowbergs' patch set:
+- When IMA_KEYRINGS_PERMIT_SIGNED_BY_BUILTIN_OR_SECONDARY is enabled,
+the MOK keys will not be loaded directly onto the .machine keyring or
+indirectly onto the .secondary_trusted_keys keyring.
 
-That function's redundant now, I believe, since we terminate the guest
-if there's something wrong with the CPUID page.
+- Only when a new IMA Kconfig explicitly allows the keys on the
+.machine keyrings, will the CA keys stored in MOK be loaded onto the
+.machine keyring.
 
--- 
-Regards/Gruss,
-    Boris.
+Unfortunately I don't think there is any choice, but to define a new
+MAINTAINERS entry.  Perhaps something along the lines of:
 
-https://people.kernel.org/tglx/notes-about-netiquette
+KEYS/KEYRINGS_INTEGRITY
+M:     Jarkko Sakkinen <jarkko@kernel.org>
+M:     Mimi Zohar <zohar@linux.ibm.com>
+L:      keyrings@vger.kernel.org
+L:      linux-integrity@vger.kernel.org
+F:      security/integrity/platform_certs
+
+thanks,
+
+Mimi
+
