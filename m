@@ -2,70 +2,67 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90E9149DDF2
-	for <lists+linux-efi@lfdr.de>; Thu, 27 Jan 2022 10:29:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7811549E41C
+	for <lists+linux-efi@lfdr.de>; Thu, 27 Jan 2022 15:03:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238553AbiA0J3M (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 27 Jan 2022 04:29:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34508 "EHLO
+        id S237326AbiA0ODk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 27 Jan 2022 09:03:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238549AbiA0J3K (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 27 Jan 2022 04:29:10 -0500
-Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EDC1C06173B
-        for <linux-efi@vger.kernel.org>; Thu, 27 Jan 2022 01:29:10 -0800 (PST)
-Received: by mail-yb1-xb43.google.com with SMTP id 23so6746058ybf.7
-        for <linux-efi@vger.kernel.org>; Thu, 27 Jan 2022 01:29:10 -0800 (PST)
+        with ESMTP id S242172AbiA0OCk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 27 Jan 2022 09:02:40 -0500
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0739DC061758
+        for <linux-efi@vger.kernel.org>; Thu, 27 Jan 2022 06:02:40 -0800 (PST)
+Received: by mail-yb1-xb29.google.com with SMTP id k31so9029454ybj.4
+        for <linux-efi@vger.kernel.org>; Thu, 27 Jan 2022 06:02:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=g0jVR8Mj0udwIGjx1TQh8k0ZGOTqHlu3e7Vl4aiPwxQ=;
-        b=MXKKdeq5OuNiB8C+GJ3loyycJRrNxpBHhZTwlVUeunHnSpW6lZV+FZDX//Wp8YKo0K
-         /KofR+yNx7I3OGmXAcMsUyMWNpNcYlBA289zTSaDa/cO9B23fpgKy07qI2fP2jZQ1FfU
-         1GuAv7TmB8qr0oPhKI2dt98Zjm8McMgPvMJzlZf2kublXq5qYW+98b+9DHKHcIqZnTNN
-         K685aBpg+mWjY4vn7sWwKlKK+mvNl6m4hiUkYMht0rIDvsftZhyQZkmiKvjf8gQiSgTd
-         esAUQtj7uXxDlgMUrO2TmtCsNIZhpgDFcWfpazTXjUTr60n58pw6btEUnbtzMU1oxf83
-         7wPw==
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=4hMay+JAuCcxTH5jMZax3EOAyZhyTNJ51MAkVpSdHBs=;
+        b=kpVZma9R6J9c0+P0r7AcgR532LdaKxwRWCZjAThl+o7n34MBKHCkGk4IX4Eoiwj+WS
+         tBkE4lvUkTngDMhr9oRWSLIrwD0Mhf2aVlre0sLTyklPICSvOSgTuP4rRt7f8v22f7zh
+         v73un4SZKiNHQYpvcwloXy4eu2pLaOl6kWWC2a1syrRr9WVzph8stSZFjVY+dz+f1n0c
+         xkNf71DLgexrsyfTUGPzrASf/vujZLE7mAt7Ty9Hb3NAJuZG43nFCy8vdQGUtNE3ggF3
+         M58CLC0cu75S393E2XhW7HJKXlJCWmfrchKaJW8y+x8ntSGU0R7PyFKmvzAC8R7HrbkI
+         bb+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=g0jVR8Mj0udwIGjx1TQh8k0ZGOTqHlu3e7Vl4aiPwxQ=;
-        b=l++Q6pM912a05vU2m+bOArt4Qoqs+ZEp4n2f1BFXy8Z96QCrjQQg0HvB1zmlgJRV5k
-         ZhecGhpxjCQ16iAPYm3NKzs1F08Chzr8CnASA9Zw/6Lx7tLLlUcUh67/G5yT3moQMgEB
-         +RTQ8U9dgBsdR0p0QFy6X11+gvJySKGmhe6AvNAkxNubS5KZfk7AMAXjNvNeRYz0i97L
-         aVtoAhdJtMI4G2OewSsJLARwL/RfRZPSKBiGF/HSejk1hOEWne073n3pC2NbJmQMls/d
-         UgBE/jsziCYuUcROj3oz2RtKw2l4LMYXQdTSTSNBT7/9h3sS9eUYpp4hAEtnCHkem0YA
-         0ZJw==
-X-Gm-Message-State: AOAM530JY4/CvE/fGJnSgXDLYAs3TK480rvW2Qnl6+JCgS0nLqKJcIWz
-        JaY2hwsZqKiM4KsEektDVZ8VYu2oBDBPuXB6y8U=
-X-Google-Smtp-Source: ABdhPJxzkEqcC0dI1JJByY0lgLGLTGDfDNJkJLuPTz2iiVdx/U+0g9BGuiKzsuS8nedolQwq6kU0zYUJVmfI2aaVDpQ=
-X-Received: by 2002:a25:3054:: with SMTP id w81mr4343163ybw.126.1643275749479;
- Thu, 27 Jan 2022 01:29:09 -0800 (PST)
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=4hMay+JAuCcxTH5jMZax3EOAyZhyTNJ51MAkVpSdHBs=;
+        b=tltytHbpIwhEew2bEcNTxeiCz+8wq6bQFqUGAIuDGWO4SVC4Wn33dl8LjPxj1FhZhm
+         yOymlvgxJ6jzkHelsC7evf+JeFunEKEqeD99PIFimvV1CjogOqAMI6z0jex+F0XfbTsB
+         wH8/5l+BlYTTahu99Mw35qqMlbrH2Ce1jrD1hNlPhxggv+xP8DDrFbN1E27Gq1pRDNum
+         4OgKJ7t1mdMWJI2wBKZ/sQEN//Pi4HPUmHv0PAMbs0pVs3L3yMowvBr5ybKN1An8fO11
+         13EnYqZO2W57/KsntBZbIzn8OA5NMxzhB71yMVuDM0UhN7XiK7ysSm65vYFZaYPFkZMV
+         dOYQ==
+X-Gm-Message-State: AOAM530AF2/zBz6CJfO8vLo06++rbvNyAE8ZG7w7fOfEbj+WFpQ9Wtkl
+        zpSoxSJS5uoFL4WqE8dHWq5twdIeJRAIWMnkub8=
+X-Google-Smtp-Source: ABdhPJylDyO06wHPSrcoEjey+zasSeRYW4/MOBlgK1B91kfjH6wcT9IkHbWnOL0qO6gZFm/zFK7qx9wY81u0tIiAYpM=
+X-Received: by 2002:a05:6902:120e:: with SMTP id s14mr5736215ybu.359.1643292158229;
+ Thu, 27 Jan 2022 06:02:38 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a05:7011:209:b0:202:59ee:c4de with HTTP; Thu, 27 Jan 2022
- 01:29:09 -0800 (PST)
-Reply-To: cathydampry@gmail.com
-From:   Cathy Dampry <valeriegrey67@gmail.com>
-Date:   Thu, 27 Jan 2022 10:29:09 +0100
-Message-ID: <CAM0sDc_9XZHWy-OpvcUdJjMR4g1SOkrpbAaDHb+KeCEB9Jvb7g@mail.gmail.com>
-Subject: CHARITY
+Sender: modumaajiyusufari@gmail.com
+Received: by 2002:a81:5689:0:0:0:0:0 with HTTP; Thu, 27 Jan 2022 06:02:37
+ -0800 (PST)
+From:   Lisa Williams <lw2367585@gmail.com>
+Date:   Thu, 27 Jan 2022 14:02:37 +0000
+X-Google-Sender-Auth: 9dYoCKn40RyIGKeIJsx-235-O08
+Message-ID: <CAD5cse2JNgTOC4CJtZ9pA_NuxqX2e4c-yduA81+ENw+sh4i2bA@mail.gmail.com>
+Subject: My name is Lisa Williams
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello.
+Hi Dear,
 
-I am Cathy Dampry. I am a dying widow diagnosed with cancer. It's
-certain I don't have much time on my side and I have decided to donate
-all I have to charity;
-Total amount of USD $3,100,000. I need an honest and trust worthy
-individual or company to partner with my accountant and utilize this
-money in accordance with my wish and agreement.
-Your email came out victorious and trusted. I shall render all
-necessary help where needed.
-Contact me urgently if interested. Thank you.
+My name is Lisa  Williams, I am from the United States of America, Its
+my pleasure to contact you for new and special friendship, I will be
+glad to see your reply for us to know each other better and exchange
+pictures.
 
-Mrs. Cathy Dampry.
+Yours
+Lisa
