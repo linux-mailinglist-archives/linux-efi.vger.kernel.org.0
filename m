@@ -2,34 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F128F4A0400
-	for <lists+linux-efi@lfdr.de>; Fri, 28 Jan 2022 23:58:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 892C14A2DA0
+	for <lists+linux-efi@lfdr.de>; Sat, 29 Jan 2022 11:27:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239306AbiA1W6n (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 28 Jan 2022 17:58:43 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:53298 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229658AbiA1W6n (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Fri, 28 Jan 2022 17:58:43 -0500
+        id S235744AbiA2K11 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 29 Jan 2022 05:27:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56172 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229987AbiA2K1Z (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 29 Jan 2022 05:27:25 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F1AAC061714;
+        Sat, 29 Jan 2022 02:27:25 -0800 (PST)
 Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 782941EC0541;
-        Fri, 28 Jan 2022 23:58:37 +0100 (CET)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 270DF1EC0501;
+        Sat, 29 Jan 2022 11:27:17 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1643410717;
+        t=1643452037;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=YiDtT4AmBwaBafxN19hikHkQnXHuV/Zji75Dg4d6z9o=;
-        b=JeMERGTf8a8RMw2DrlfHpHUsES5/Meq6ySSpY6TOuLfyFrvzNtDn7lveOsMTQ4SU6arz+m
-        vxDfM4FJAPWYkgfWaV36naGgiPVOxezlLHTHlm1xJzgUAY1EVilAiIfwlzUYOoK9QYfL72
-        YM+sGX1caWZrfkO6VxwW0DyxEL2P9J8=
-Date:   Fri, 28 Jan 2022 23:58:32 +0100
+        bh=AeMz8utJPjiFofsQ6mF6x/vbEjaSoinR7o1iyyLw8Cw=;
+        b=SN18OmDj+GbYBib29R2reyRvEyZD0+slBoHelzKf/froKnaX6ZCcfGVkGBJrjqgLwz7PKK
+        BTkU9h2E5QWrnzUda8K2NSIGtBO1fxJ/zPknHWvAlj68G7ElCHoMv858/Hd86Toroe9NJD
+        gLJAJH1HoQSqgywzuN4l/5QQnvvk8VY=
+Date:   Sat, 29 Jan 2022 11:27:13 +0100
 From:   Borislav Petkov <bp@alien8.de>
-To:     Michael Roth <michael.roth@amd.com>
-Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -48,46 +50,44 @@ Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
         David Rientjes <rientjes@google.com>,
         Dov Murik <dovmurik@linux.ibm.com>,
         Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>,
         "Kirill A . Shutemov" <kirill@shutemov.name>,
         Andi Kleen <ak@linux.intel.com>,
         "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
         tony.luck@intel.com, marcorr@google.com,
         sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v8 29/40] x86/compressed/64: add support for SEV-SNP
- CPUID table in #VC handlers
-Message-ID: <YfR1GNb/yzKu4n5+@zn.tnic>
-References: <20220118142345.65wuub2p3alavhpb@amd.com>
- <20220118143238.lu22npcktxuvadwk@amd.com>
- <20220118143730.wenhm2bbityq7wwy@amd.com>
- <YebsKcpnYzvjaEjs@zn.tnic>
- <20220118172043.djhy3dwg4fhhfqfs@amd.com>
- <Yeb7vOaqDtH6Fpsb@zn.tnic>
- <20220118184930.nnwbgrfr723qabnq@amd.com>
- <20220119011806.av5rtxfv4et2sfkl@amd.com>
- <YefzQuqrV8kdLr9z@zn.tnic>
- <20220119162747.ewgxirwcnrcajazm@amd.com>
+Subject: Re: [PATCH v8 36/40] x86/sev: Provide support for SNP guest request
+ NAEs
+Message-ID: <YfUWgeonL4tfGf8P@zn.tnic>
+References: <20211210154332.11526-1-brijesh.singh@amd.com>
+ <20211210154332.11526-37-brijesh.singh@amd.com>
+ <YfLGcp8q5f+OW72p@zn.tnic>
+ <87d4999a-14cc-5070-4f03-001dd5f1d2b1@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220119162747.ewgxirwcnrcajazm@amd.com>
+In-Reply-To: <87d4999a-14cc-5070-4f03-001dd5f1d2b1@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jan 19, 2022 at 10:27:47AM -0600, Michael Roth wrote:
-> At that point it's much easier for the guest owner to just check the
-> CPUID values directly against known good values for a particular
-> configuration as part of their attestation process and leave the
-> untrusted cloud vendor out of it completely. So not measuring the
-> CPUID page as part of SNP attestation allows for that flexibility.
+On Thu, Jan 27, 2022 at 11:02:13AM -0600, Brijesh Singh wrote:
+> I am okay with using SZ_4G but per the spec they don't spell that its 4G
+> size. It says bit 32 will should be set on error.
 
-Well, in that case, I guess you don't need the sanity-checking in the
-guest either - you simply add it to the attestation TODO-list for the
-guest owner to go through:
+What does the speck call it exactly? Is it "length"? Because that's what
+confused me: SNP_GUEST_REQ_INVALID_LEN - that's a length and length you
+don't usually specify with a bit position...
 
-Upon booting, the guest owner should compare the CPUID leafs the guest
-sees with the ones supplied during boot.
+> Typically the sev_es_ghcb_hv_handler() is called from #VC handler, which
+> provides the context structure. But in this and PSC case, the caller is not
+> a #VC handler, so we don't have a context structure. But as you pointed, we
+> could allocate context structure on the stack and pass it down so that
+> verify_exception_info() does not cause a panic with NULL deference (when HV
+> violates the spec and inject exception while handling this NAE).
+
+Yap, exactly.
 
 -- 
 Regards/Gruss,
