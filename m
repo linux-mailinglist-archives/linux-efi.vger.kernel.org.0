@@ -2,62 +2,82 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95D5A4A2FAB
-	for <lists+linux-efi@lfdr.de>; Sat, 29 Jan 2022 14:09:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 698A34A3080
+	for <lists+linux-efi@lfdr.de>; Sat, 29 Jan 2022 17:20:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345587AbiA2NJ2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 29 Jan 2022 08:09:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35556 "EHLO
+        id S1352111AbiA2QT6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 29 Jan 2022 11:19:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239746AbiA2NJ1 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 29 Jan 2022 08:09:27 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB6EFC061714;
-        Sat, 29 Jan 2022 05:09:26 -0800 (PST)
-Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
+        with ESMTP id S242424AbiA2QT6 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 29 Jan 2022 11:19:58 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C769C061714;
+        Sat, 29 Jan 2022 08:19:58 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 097261EC0501;
-        Sat, 29 Jan 2022 14:09:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1643461761;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=RtwN81BYD757eL/Fs+TApIeZ1+2gDWNhYOIi2M1pVt4=;
-        b=T5P1cMaFBotwOk9J1/1pDoKHPj1wz+TpJCvkJtQpeKP5DOIkj4QnPlx8unYIlF8hrpvQ1U
-        AcTJj1I7hjZj5X6DDFNJLZc8YBAnd6Zqj/7Yy6XfOw858gCDbQAyD0J3XmVDaxRRbcR3zR
-        sTkwnkv4UtoVX6oEjN1pIN66V0SrwCs=
-Date:   Sat, 29 Jan 2022 14:09:17 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Shuai Xue <xueshuai@linux.alibaba.com>
-Cc:     rric@kernel.org, mchehab@kernel.org, tony.luck@intel.com,
-        james.morse@arm.com, ardb@kernel.org, linux-edac@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        zhangliguang@linux.alibaba.com, zhuo.song@linux.alibaba.com
-Subject: Re: [PATCH v5 2/2] EDAC/ghes: use cper functions to avoid code
- duplication
-Message-ID: <YfU8fW+lLiAgJ9D4@zn.tnic>
-References: <20211210134019.28536-1-xueshuai@linux.alibaba.com>
- <20220126081702.55167-3-xueshuai@linux.alibaba.com>
+        by ams.source.kernel.org (Postfix) with ESMTPS id 17EAEB8120C;
+        Sat, 29 Jan 2022 16:19:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08C2C340E5;
+        Sat, 29 Jan 2022 16:19:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1643473195;
+        bh=ozMiiYFbCOSr6At7dNUhU0RKoDLf1poblUCMXrvrUTc=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=jNezTp5EJyW5hRYPxZP22DprMQ+MrUgs6k5X7wVUcnRrvkbBcapZl4jD9it8Es7L0
+         f+14aV7kNknvtHqL7kJfFSAyiOGNcvGeCKry5iXFLyM4pvwnKbsapLiaaIyJm5k6G9
+         2brdDg9Hxney+o74sQhxEU4yumnIfDJZ/73MOlYklxKGktGH5MrGsjDBAar7EpQNwi
+         gUFvxHh9iJhLH1JqIwmUFzaOa7J/jdgnsSSKu6VspbeQURN7s0gam2EbgF9r37KD5D
+         kztO+8/gB+D8xOQ29G5s1muQ93wxfF4VJyeLdEP3Ho0VofibiZ3LcE7qspR0E338DG
+         9MFWwOsCHb0IA==
+Received: by mail-wm1-f43.google.com with SMTP id d138-20020a1c1d90000000b0034e043aaac7so7864562wmd.5;
+        Sat, 29 Jan 2022 08:19:55 -0800 (PST)
+X-Gm-Message-State: AOAM531D9SMn/eknOR7ugPhOZPk1JFG1UC2k81WzJuNRgc3k0h+DY9Sg
+        4lbxL20gEzkkVhIBsPFyu+vNqd8WAGHW/gVTcSk=
+X-Google-Smtp-Source: ABdhPJzEFC2YpKEZ1hgsY28YircroF5snPOgYrizVAYq4zDTywcro2JwThKl6Oxj03ZEup5kdtiQrwZtqqLM9U47B6c=
+X-Received: by 2002:a05:600c:4f84:: with SMTP id n4mr11799956wmq.106.1643473194017;
+ Sat, 29 Jan 2022 08:19:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220126081702.55167-3-xueshuai@linux.alibaba.com>
+References: <20220110210809.3528-1-fllinden@amazon.com> <20220110210809.3528-2-fllinden@amazon.com>
+ <Yd1cnquQFZoNE7FP@kernel.org> <20220124210538.GA15943@dev-dsk-fllinden-2c-d7720709.us-west-2.amazon.com>
+In-Reply-To: <20220124210538.GA15943@dev-dsk-fllinden-2c-d7720709.us-west-2.amazon.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Sat, 29 Jan 2022 17:19:42 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHSGGUhmAdOFzpHJrMjfts-AgdpVJ6LJRkmm9_xLL0guw@mail.gmail.com>
+Message-ID: <CAMj1kXHSGGUhmAdOFzpHJrMjfts-AgdpVJ6LJRkmm9_xLL0guw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] memblock: define functions to set the usable memory range
+To:     Frank van der Linden <fllinden@amazon.com>
+Cc:     Mike Rapoport <rppt@kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kexec@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jan 26, 2022 at 04:17:02PM +0800, Shuai Xue wrote:
-> The memory error location processing in ghes_edac_report_mem_error() have
+On Mon, 24 Jan 2022 at 22:05, Frank van der Linden <fllinden@amazon.com> wrote:
+>
+> Meanwhile, it seems that this issue was already addressed in:
+>
+> https://lore.kernel.org/all/20211215021348.8766-1-kernelfans@gmail.com/
+>
+> ..which has now been pulled in, and sent to stable@ for 5.15. I
+> somehow missed that message, and sent my change in a few weeks
+> later.
+>
+> The fix to just reserve the ranges does seem a bit cleaner overall,
+> but this will do fine.
+>
 
-I will look at this patch again after you have incorporated in all
-review comments from last time:
-
-https://lore.kernel.org/r/YctFli9oMBYTlf7h@zn.tnic
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Works for me.
