@@ -2,38 +2,38 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 006364A394D
-	for <lists+linux-efi@lfdr.de>; Sun, 30 Jan 2022 21:47:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BA384A3972
+	for <lists+linux-efi@lfdr.de>; Sun, 30 Jan 2022 21:49:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356146AbiA3Urn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 30 Jan 2022 15:47:43 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:20287 "EHLO
+        id S243466AbiA3Uth (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 30 Jan 2022 15:49:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:57950 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1356337AbiA3Urg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 30 Jan 2022 15:47:36 -0500
+        by vger.kernel.org with ESMTP id S1356372AbiA3Urk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 30 Jan 2022 15:47:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1643575655;
+        s=mimecast20190719; t=1643575660;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JmrPouzyJORqeW8YegyrXzTKKZke8QnXRejNnVcuGaU=;
-        b=hhUvXkipZehQyGM+r9CcqdgQqtsq13PTrNESoL5M2QVnxJrJFEXcaMA5V/jKid10Wb0nj+
-        2S3kkj6qoihVWtZqxrMFIKARaqjkXELerktKMbVtsEM9mLlD90QxFksRQVNZNe+HGqNY8c
-        ofSOwJeLKo7qiKnxEw+/XVqAc921v9M=
+        bh=A90HaalXBx1gVGuJBR3n6goMO3ddmchQxDA4Piw5CdM=;
+        b=Iq6RMHuieaGYnHksUoB4pL2EyyOVegohSufLfD4TRm2fx3ehUz9LHXkwsWnHbhtEO62u/9
+        FMjqRXGiZv2E7bHBtbtFnP1gd6LUzgJOlIoLDaRQdQ2NOfOcuR/kh7cweVdxMnRqnnXasE
+        +hHEPalwawVFQMTT7BYAoDkUuTDf3Zs=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-456-VxhSskVmOBWCJDjWgcUC6A-1; Sun, 30 Jan 2022 15:47:32 -0500
-X-MC-Unique: VxhSskVmOBWCJDjWgcUC6A-1
+ us-mta-524-9YUagjr8NeuwZS4pdvgEIQ-1; Sun, 30 Jan 2022 15:47:36 -0500
+X-MC-Unique: 9YUagjr8NeuwZS4pdvgEIQ-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DAD5F18397A7;
-        Sun, 30 Jan 2022 20:47:29 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 431681083F60;
+        Sun, 30 Jan 2022 20:47:34 +0000 (UTC)
 Received: from shalem.redhat.com (unknown [10.39.192.60])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 7121C61093;
-        Sun, 30 Jan 2022 20:47:26 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 2DB7461093;
+        Sun, 30 Jan 2022 20:47:30 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
@@ -51,9 +51,9 @@ Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
         Fabio Aiuto <fabioaiuto83@gmail.com>,
         platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-Subject: [PATCH v4 15/20] i2c: cht-wc: Make charger i2c-client instantiation board/device-model specific
-Date:   Sun, 30 Jan 2022 21:45:52 +0100
-Message-Id: <20220130204557.15662-16-hdegoede@redhat.com>
+Subject: [PATCH v4 16/20] extcon: intel-cht-wc: Use new cht_wc_model intel_soc_pmic field
+Date:   Sun, 30 Jan 2022 21:45:53 +0100
+Message-Id: <20220130204557.15662-17-hdegoede@redhat.com>
 In-Reply-To: <20220130204557.15662-1-hdegoede@redhat.com>
 References: <20220130204557.15662-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -63,196 +63,82 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The i2c-controller on the Cherry Trail - Whiskey Cove PMIC is special
-in that it is always connected to the I2C charger IC of the board on
-which the PMIC is used; and the charger IC is not described in ACPI,
-so the i2c-cht-wc code needs to instantiate an i2c-client for it itself.
+The CHT_WC_VBUS_GPIO_CTLO GPIO actually driving an external 5V Vboost
+converter for Vbus depends on the board on which the Cherry Trail -
+Whiskey Cove PMIC is actually used.
 
-So far this was hardcoded to instantiate an i2c-client for the
-bq24292i, with all properties, etc. set to match how this charger
-is used on the GPD win and GPD pocket devices.
+Since the information about the exact PMIC setup is necessary in other
+places too, struct intel_soc_pmic now has a new cht_wc_model field
+indicating the board model.
 
-There is a rudimentary check to make sure the ACPI tables are at least
-somewhat as expected, but this is far from accurate, leading to
-a wrong i2c-client being instantiated for the charger on some boards.
+Only poke the CHT_WC_VBUS_GPIO_CTLO GPIO if this new field is set to
+INTEL_CHT_WC_GPD_WIN_POCKET, which indicates the Type-C (with PD and
+DP-altmode) setup used on the GPD pocket and GPD win; and on which
+this GPIO actually controls an external 5V Vboost converter.
 
-Switch to the new DMI based intel_cht_wc_get_model() helper which is
-exported by the MFD driver for the CHT Whiskey Cove PMIC to help PMIC
-cell drivers like the i2c-cht-wc code reliably detect which board
-they are running on.
-
-And add board_info for the charger ICs as found on the other 2 known
-boards with a Whisky Cove PMIC.
-
-This has been tested on all 3 known boards.
-
-Acked-by: Wolfram Sang <wsa@kernel.org>
+Acked-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
 Changes in v3:
-- Add Wolfram's Ack for taking this upstream through another tree
-  then the i2c tree
-- Some minor tweaks / spelling fixes based on Andy's review
+- Use the new cht_wc_model intel_soc_pmic field which replaces the
+  intel_cht_wc_get_model() helper and adjust the commit msg to match
 ---
- drivers/i2c/busses/i2c-cht-wc.c | 120 +++++++++++++++++++++++++++-----
- 1 file changed, 102 insertions(+), 18 deletions(-)
+ drivers/extcon/extcon-intel-cht-wc.c | 35 +++++++++++++++++-----------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-cht-wc.c b/drivers/i2c/busses/i2c-cht-wc.c
-index 1cf68f85b2e1..54e909f9eab6 100644
---- a/drivers/i2c/busses/i2c-cht-wc.c
-+++ b/drivers/i2c/busses/i2c-cht-wc.c
-@@ -18,6 +18,7 @@
+diff --git a/drivers/extcon/extcon-intel-cht-wc.c b/drivers/extcon/extcon-intel-cht-wc.c
+index 771f6f4cf92e..81cae8c75850 100644
+--- a/drivers/extcon/extcon-intel-cht-wc.c
++++ b/drivers/extcon/extcon-intel-cht-wc.c
+@@ -14,6 +14,7 @@
  #include <linux/module.h>
+ #include <linux/mod_devicetable.h>
  #include <linux/platform_device.h>
- #include <linux/power/bq24190_charger.h>
-+#include <linux/power/bq25890_charger.h>
++#include <linux/property.h>
+ #include <linux/regmap.h>
  #include <linux/slab.h>
  
- #define CHT_WC_I2C_CTRL			0x5e24
-@@ -270,6 +271,7 @@ static const struct irq_chip cht_wc_i2c_irq_chip = {
- 	.name			= "cht_wc_ext_chrg_irq_chip",
- };
- 
-+/********** GPD Win / Pocket charger IC settings **********/
- static const char * const bq24190_suppliers[] = {
- 	"tcpm-source-psy-i2c-fusb302" };
- 
-@@ -304,17 +306,92 @@ static struct bq24190_platform_data bq24190_pdata = {
- 	.regulator_init_data = &bq24190_vbus_init_data,
- };
- 
-+static struct i2c_board_info gpd_win_board_info = {
-+	.type = "bq24190",
-+	.addr = 0x6b,
-+	.dev_name = "bq24190",
-+	.swnode = &bq24190_node,
-+	.platform_data = &bq24190_pdata,
-+};
-+
-+/********** Xiaomi Mi Pad 2 charger IC settings  **********/
-+static struct regulator_consumer_supply bq2589x_vbus_consumer = {
-+	.supply = "vbus",
-+	.dev_name = "cht_wcove_pwrsrc",
-+};
-+
-+static const struct regulator_init_data bq2589x_vbus_init_data = {
-+	.constraints = {
-+		.valid_ops_mask = REGULATOR_CHANGE_STATUS,
-+	},
-+	.consumer_supplies = &bq2589x_vbus_consumer,
-+	.num_consumer_supplies = 1,
-+};
-+
-+static struct bq25890_platform_data bq2589x_pdata = {
-+	.regulator_init_data = &bq2589x_vbus_init_data,
-+};
-+
-+static const struct property_entry xiaomi_mipad2_props[] = {
-+	PROPERTY_ENTRY_BOOL("linux,skip-reset"),
-+	PROPERTY_ENTRY_BOOL("linux,read-back-settings"),
-+	{ }
-+};
-+
-+static const struct software_node xiaomi_mipad2_node = {
-+	.properties = xiaomi_mipad2_props,
-+};
-+
-+static struct i2c_board_info xiaomi_mipad2_board_info = {
-+	.type = "bq25890",
-+	.addr = 0x6a,
-+	.dev_name = "bq25890",
-+	.swnode = &xiaomi_mipad2_node,
-+	.platform_data = &bq2589x_pdata,
-+};
-+
-+/********** Lenovo Yogabook YB1-X90F/-X91F/-X91L charger settings **********/
-+static const char * const lenovo_yb1_bq25892_suppliers[] = { "cht_wcove_pwrsrc" };
-+
-+static const struct property_entry lenovo_yb1_bq25892_props[] = {
-+	PROPERTY_ENTRY_STRING_ARRAY("supplied-from",
-+				    lenovo_yb1_bq25892_suppliers),
-+	PROPERTY_ENTRY_U32("linux,pump-express-vbus-max", 12000000),
-+	PROPERTY_ENTRY_BOOL("linux,skip-reset"),
-+	/*
-+	 * The firmware sets everything to the defaults, which leads to a
-+	 * somewhat low charge-current of 2048mA and worse to a battery-voltage
-+	 * of 4.2V instead of 4.35V (when booted without a charger connected).
-+	 * Use our own values instead of "linux,read-back-settings" to fix this.
-+	 */
-+	PROPERTY_ENTRY_U32("ti,charge-current", 4224000),
-+	PROPERTY_ENTRY_U32("ti,battery-regulation-voltage", 4352000),
-+	PROPERTY_ENTRY_U32("ti,termination-current", 256000),
-+	PROPERTY_ENTRY_U32("ti,precharge-current", 128000),
-+	PROPERTY_ENTRY_U32("ti,minimum-sys-voltage", 3500000),
-+	PROPERTY_ENTRY_U32("ti,boost-voltage", 4998000),
-+	PROPERTY_ENTRY_U32("ti,boost-max-current", 1400000),
-+	PROPERTY_ENTRY_BOOL("ti,use-ilim-pin"),
-+	{ }
-+};
-+
-+static const struct software_node lenovo_yb1_bq25892_node = {
-+	.properties = lenovo_yb1_bq25892_props,
-+};
-+
-+static struct i2c_board_info lenovo_yogabook1_board_info = {
-+	.type = "bq25892",
-+	.addr = 0x6b,
-+	.dev_name = "bq25892",
-+	.swnode = &lenovo_yb1_bq25892_node,
-+	.platform_data = &bq2589x_pdata,
-+};
-+
- static int cht_wc_i2c_adap_i2c_probe(struct platform_device *pdev)
- {
- 	struct intel_soc_pmic *pmic = dev_get_drvdata(pdev->dev.parent);
-+	struct i2c_board_info *board_info = NULL;
- 	struct cht_wc_i2c_adap *adap;
--	struct i2c_board_info board_info = {
--		.type = "bq24190",
--		.addr = 0x6b,
--		.dev_name = "bq24190",
--		.swnode = &bq24190_node,
--		.platform_data = &bq24190_pdata,
--	};
- 	int ret, reg, irq;
- 
- 	irq = platform_get_irq(pdev, 0);
-@@ -379,17 +456,24 @@ static int cht_wc_i2c_adap_i2c_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto remove_irq_domain;
+@@ -358,20 +359,26 @@ static int cht_wc_extcon_probe(struct platform_device *pdev)
+ 	if (IS_ERR(ext->edev))
+ 		return PTR_ERR(ext->edev);
  
 -	/*
--	 * Normally the Whiskey Cove PMIC is paired with a TI bq24292i charger,
--	 * connected to this i2c bus, and a max17047 fuel-gauge and a fusb302
--	 * USB Type-C controller connected to another i2c bus. In this setup
--	 * the max17047 and fusb302 devices are enumerated through an INT33FE
--	 * ACPI device. If this device is present register an i2c-client for
--	 * the TI bq24292i charger.
+-	 * When a host-cable is detected the BIOS enables an external 5v boost
+-	 * converter to power connected devices there are 2 problems with this:
+-	 * 1) This gets seen by the external battery charger as a valid Vbus
+-	 *    supply and it then tries to feed Vsys from this creating a
+-	 *    feedback loop which causes aprox. 300 mA extra battery drain
+-	 *    (and unless we drive the external-charger-disable pin high it
+-	 *    also tries to charge the battery causing even more feedback).
+-	 * 2) This gets seen by the pwrsrc block as a SDP USB Vbus supply
+-	 * Since the external battery charger has its own 5v boost converter
+-	 * which does not have these issues, we simply turn the separate
+-	 * external 5v boost converter off and leave it off entirely.
 -	 */
--	if (acpi_dev_present("INT33FE", NULL, -1)) {
--		board_info.irq = adap->client_irq;
--		adap->client = i2c_new_client_device(&adap->adapter, &board_info);
+-	cht_wc_extcon_set_5v_boost(ext, false);
 +	switch (pmic->cht_wc_model) {
 +	case INTEL_CHT_WC_GPD_WIN_POCKET:
-+		board_info = &gpd_win_board_info;
-+		break;
-+	case INTEL_CHT_WC_XIAOMI_MIPAD2:
-+		board_info = &xiaomi_mipad2_board_info;
-+		break;
-+	case INTEL_CHT_WC_LENOVO_YOGABOOK1:
-+		board_info = &lenovo_yogabook1_board_info;
++		/*
++		 * When a host-cable is detected the BIOS enables an external 5v boost
++		 * converter to power connected devices there are 2 problems with this:
++		 * 1) This gets seen by the external battery charger as a valid Vbus
++		 *    supply and it then tries to feed Vsys from this creating a
++		 *    feedback loop which causes aprox. 300 mA extra battery drain
++		 *    (and unless we drive the external-charger-disable pin high it
++		 *    also tries to charge the battery causing even more feedback).
++		 * 2) This gets seen by the pwrsrc block as a SDP USB Vbus supply
++		 * Since the external battery charger has its own 5v boost converter
++		 * which does not have these issues, we simply turn the separate
++		 * external 5v boost converter off and leave it off entirely.
++		 */
++		cht_wc_extcon_set_5v_boost(ext, false);
 +		break;
 +	default:
-+		dev_warn(&pdev->dev, "Unknown model, not instantiating charger device\n");
 +		break;
 +	}
-+
-+	if (board_info) {
-+		board_info->irq = adap->client_irq;
-+		adap->client = i2c_new_client_device(&adap->adapter, board_info);
- 		if (IS_ERR(adap->client)) {
- 			ret = PTR_ERR(adap->client);
- 			goto del_adapter;
+ 
+ 	/* Enable sw control */
+ 	ret = cht_wc_extcon_sw_control(ext, true);
 -- 
 2.33.1
 
