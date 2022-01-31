@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F9F84A4883
-	for <lists+linux-efi@lfdr.de>; Mon, 31 Jan 2022 14:45:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02DDC4A48A3
+	for <lists+linux-efi@lfdr.de>; Mon, 31 Jan 2022 14:49:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376270AbiAaNpH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 31 Jan 2022 08:45:07 -0500
-Received: from mga03.intel.com ([134.134.136.65]:7571 "EHLO mga03.intel.com"
+        id S1379148AbiAaNtx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 31 Jan 2022 08:49:53 -0500
+Received: from mga14.intel.com ([192.55.52.115]:62889 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229671AbiAaNpH (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 31 Jan 2022 08:45:07 -0500
+        id S1379143AbiAaNtv (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 31 Jan 2022 08:49:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643636707; x=1675172707;
+  t=1643636991; x=1675172991;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=CasoBmym73K2cb88XgHZZ0eFeBOjjcRUmQE9cD7PlDA=;
-  b=NlR5rJPHQNSFcSR8sAr3+/bmxDJwMPm+glPB4qlWuij3FxJIstDkGQST
-   BRkIxdl6HTkYsixCKmvSHy/PeqE/EjdcAxzAFntZwZdF22Wlk42ce+7RH
-   Q0As2ao6hEbXe0o1e0OclraFohX8WB5YSE227f85IfeCaf4JKs+jXr2jC
-   JMJdCCGKl3PSUol2a3pL6dqfhB4sDwaWLxcvECpQtC1KxsSzgSTaObYEr
-   Y6deSIbiJ38biZpPWRXfFAM1MQLn1WIg2GSOoe1qujoJsdlx3/euJOXzY
-   Vp1J4/Egb32JTzRQbh+wHO4zvhRQ9DoaABHStytfClZRVBIk+HGRbJ+41
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10243"; a="247415336"
+  bh=CCvnVIfnnsg4Om7JyESlCrRRmCTTcyTfYzN4cwo7ytw=;
+  b=DeFdaTz/knNxNi+CbMLscPuDPIF/G1uOhVFBngH1Z8QYIAC7vel14gl7
+   e3EJOsU0cElivTIfHeTWQ00BS2yqh3uI34HmabpH5q4x7ca/OW3CDFmx9
+   zlAEFaspslHC1lfmhFbt4c8pOjt/PjM8izGkNLe1TTz7TB479pQcceak5
+   o8DCbhh2fwsT/UADRfgFB+cATjsY5MjEfFlOgwdvtKMF8SAlvI4kdoSTb
+   Nc8+IChA9KXVfSNFx5Ql+nYdxDVGAJtyWarHVraFZZ9NpPm8muNI1mZOg
+   E3xjJ6XCwLjqtXW1IfTccqM3WlMLAtWxfli5YW5nh72884h3w8Irnfx4F
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10243"; a="247677792"
 X-IronPort-AV: E=Sophos;i="5.88,331,1635231600"; 
-   d="scan'208";a="247415336"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2022 05:45:06 -0800
+   d="scan'208";a="247677792"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2022 05:49:49 -0800
 X-IronPort-AV: E=Sophos;i="5.88,331,1635231600"; 
-   d="scan'208";a="496924804"
+   d="scan'208";a="481753169"
 Received: from smile.fi.intel.com ([10.237.72.61])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2022 05:45:01 -0800
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2022 05:49:44 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nEWyM-00Gsyj-IS;
-        Mon, 31 Jan 2022 15:43:58 +0200
-Date:   Mon, 31 Jan 2022 15:43:58 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1nEX2v-00Gt4F-Iy;
+        Mon, 31 Jan 2022 15:48:41 +0200
+Date:   Mon, 31 Jan 2022 15:48:41 +0200
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
 To:     Hans de Goede <hdegoede@redhat.com>
 Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
@@ -55,74 +55,108 @@ Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Fabio Aiuto <fabioaiuto83@gmail.com>,
         platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-Subject: Re: [PATCH v4 01/20] power: supply: core: Refactor
- power_supply_set_input_current_limit_from_supplier()
-Message-ID: <Yffnnom1qTRFbo/o@smile.fi.intel.com>
+Subject: Re: [PATCH v4 12/20] power: supply: bq25890: Support higher charging
+ voltages through Pump Express+ protocol
+Message-ID: <YffouVvL9M4fch0I@smile.fi.intel.com>
 References: <20220130204557.15662-1-hdegoede@redhat.com>
- <20220130204557.15662-2-hdegoede@redhat.com>
- <YffmDCHY6csr0uyD@smile.fi.intel.com>
+ <20220130204557.15662-13-hdegoede@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YffmDCHY6csr0uyD@smile.fi.intel.com>
+In-Reply-To: <20220130204557.15662-13-hdegoede@redhat.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Jan 31, 2022 at 03:37:16PM +0200, Andy Shevchenko wrote:
-> On Sun, Jan 30, 2022 at 09:45:38PM +0100, Hans de Goede wrote:
-> > Some (USB) charger ICs have variants with USB D+ and D- pins to do their
-> > own builtin charger-type detection, like e.g. the bq24190 and bq25890 and
-> > also variants which lack this functionality, e.g. the bq24192 and bq25892.
-> > 
-> > In case the charger-type; and thus the input-current-limit detection is
-> > done outside the charger IC then we need some way to communicate this to
-> > the charger IC. In the past extcon was used for this, but if the external
-> > detection does e.g. full USB PD negotiation then the extcon cable-types do
-> > not convey enough information.
-> > 
-> > For these setups it was decided to model the external charging "brick"
-> > and the parameters negotiated with it as a power_supply class-device
-> > itself; and power_supply_set_input_current_limit_from_supplier() was
-> > introduced to allow drivers to get the input-current-limit this way.
-> > 
-> > But in some cases psy drivers may want to know other properties, e.g. the
-> > bq25892 can do "quick-charge" negotiation by pulsing its current draw,
-> > but this should only be done if the usb_type psy-property of its supplier
-> > is set to DCP (and device-properties indicate the board allows higher
-> > voltages).
-> > 
-> > Instead of adding extra helper functions for each property which
-> > a psy-driver wants to query from its supplier, refactor
-> > power_supply_set_input_current_limit_from_supplier() into a
-> > more generic power_supply_get_property_from_supplier() function.
+On Sun, Jan 30, 2022 at 09:45:49PM +0100, Hans de Goede wrote:
+> From: Yauhen Kharuzhy <jekhor@gmail.com>
 > 
-> ...
+> Add a "linux,pump-express-vbus-max" property which indicates if the Pump
+> Express+ protocol should be used to increase the charging protocol.
 > 
-> > +	ret = power_supply_get_property_from_supplier(bdi->charger,
-> > +						      POWER_SUPPLY_PROP_CURRENT_MAX,
-> > +						      &val);
-> > +	if (ret == 0)
+> If this new property is set and a DCP charger is detected then request
+> a higher charging voltage through the Pump Express+ protocol.
 > 
-> Can it be as simple as
+> So far this new property is only used on x86/ACPI (non devicetree) devs,
+> IOW it is not used in actual devicetree files. The devicetree-bindings
+> maintainers have requested properties like these to not be added to the
+> devicetree-bindings, so the new property is deliberately not added
+> to the existing devicetree-bindings.
 > 
-> 	if (ret)
-> 		return;
-> 
-> 	...
-> 
-> 
-> ?
-> 
-> Or did I misunderstand the meaning of 0?
+> Changes by Hans de Goede:
+> - Port to my bq25890 patch-series + various cleanups
+> - Make behavior configurable through a new "linux,pump-express-vbus-max"
+>   device-property
+> - Sleep 1 second before re-checking the Vbus voltage after requesting
+>   it to be raised, to ensure that the ADC has time to sampled the new Vbus
+> - Add VBUSV bq25890_tables[] entry and use it in bq25890_get_vbus_voltage()
+> - Tweak commit message
 
-Despite on this comment being addressed or not, FWIW,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+...
 
-I don't see any blocking issues with the bq25890 part neither, so
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-for the BQ25890 part.
+> +static void bq25890_pump_express_work(struct work_struct *data)
+> +{
+> +	struct bq25890_device *bq =
+> +		container_of(data, struct bq25890_device, pump_express_work.work);
+> +	int voltage, i, ret;
+> +
+> +	dev_dbg(bq->dev, "Start to request input voltage increasing\n");
+> +
+> +	/* Enable current pulse voltage control protocol */
+> +	ret = bq25890_field_write(bq, F_PUMPX_EN, 1);
+> +	if (ret < 0)
+> +		goto error_print;
+> +
+> +	for (i = 0; i < PUMP_EXPRESS_MAX_TRIES; i++) {
+
+> +		voltage = bq25890_get_vbus_voltage(bq);
+> +		if (voltage < 0)
+> +			goto error_print;
+
+It also can be (at least in align with the rest error paths)
+
+		ret = bq25890_get_vbus_voltage(bq);
+		if (ret < 0)
+			goto error_print;
+		voltage = ret;
+
+followed up (but not necessarily)...
+
+> +		dev_dbg(bq->dev, "input voltage = %d uV\n", voltage);
+> +
+> +		if ((voltage + PUMP_EXPRESS_VBUS_MARGIN_uV) >
+> +					bq->pump_express_vbus_max)
+> +			break;
+> +
+> +		ret = bq25890_field_write(bq, F_PUMPX_UP, 1);
+> +		if (ret < 0)
+> +			goto error_print;
+> +
+> +		/* Note a single PUMPX up pulse-sequence takes 2.1s */
+> +		ret = regmap_field_read_poll_timeout(bq->rmap_fields[F_PUMPX_UP],
+> +						     ret, !ret, 100000, 3000000);
+> +		if (ret < 0)
+> +			goto error_print;
+> +
+> +		/* Make sure ADC has sampled Vbus before checking again */
+> +		msleep(1000);
+> +	}
+> +
+> +	bq25890_field_write(bq, F_PUMPX_EN, 0);
+> +
+> +	dev_info(bq->dev, "Hi-voltage charging requested, input voltage is %d mV\n",
+> +		 voltage);
+
+> +	return;
+> +error_print:
+
+	if (ret < 0)
+
+But it's up to you.
+
+> +	dev_err(bq->dev, "Failed to request hi-voltage charging\n");
+> +}
 
 -- 
 With Best Regards,
