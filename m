@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02DDC4A48A3
-	for <lists+linux-efi@lfdr.de>; Mon, 31 Jan 2022 14:49:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 348324A48B4
+	for <lists+linux-efi@lfdr.de>; Mon, 31 Jan 2022 14:52:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379148AbiAaNtx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 31 Jan 2022 08:49:53 -0500
-Received: from mga14.intel.com ([192.55.52.115]:62889 "EHLO mga14.intel.com"
+        id S233372AbiAaNwE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 31 Jan 2022 08:52:04 -0500
+Received: from mga09.intel.com ([134.134.136.24]:54984 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1379143AbiAaNtv (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Mon, 31 Jan 2022 08:49:51 -0500
+        id S232774AbiAaNwD (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Mon, 31 Jan 2022 08:52:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643636991; x=1675172991;
+  t=1643637123; x=1675173123;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=CCvnVIfnnsg4Om7JyESlCrRRmCTTcyTfYzN4cwo7ytw=;
-  b=DeFdaTz/knNxNi+CbMLscPuDPIF/G1uOhVFBngH1Z8QYIAC7vel14gl7
-   e3EJOsU0cElivTIfHeTWQ00BS2yqh3uI34HmabpH5q4x7ca/OW3CDFmx9
-   zlAEFaspslHC1lfmhFbt4c8pOjt/PjM8izGkNLe1TTz7TB479pQcceak5
-   o8DCbhh2fwsT/UADRfgFB+cATjsY5MjEfFlOgwdvtKMF8SAlvI4kdoSTb
-   Nc8+IChA9KXVfSNFx5Ql+nYdxDVGAJtyWarHVraFZZ9NpPm8muNI1mZOg
-   E3xjJ6XCwLjqtXW1IfTccqM3WlMLAtWxfli5YW5nh72884h3w8Irnfx4F
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10243"; a="247677792"
+  bh=LzyCJqb+jFU4TxzrgAz6FANTqaGe8JD5vzXZiFsubP0=;
+  b=As+M4f8kTHWOrCdGf5BVQuPGH+Al7TJMboJFF7W0Po6CJBExeNwyspUW
+   fjbozwHm3YBLeHS4UXlQMoQLnzWBaUZyXYBwKHchz4zxwryBcu3Cbaxor
+   f3+9fFkrTlR3T6vasfXspWEYlztDCUrx83RdoZbXLWVS2eX8rVRX96Q9u
+   Cou/+tCSUZacIg0lJFz8QYLWgnrOlNwxNbpkGbQPJk7NkHa+PoqQClF7u
+   CEWAaEzkH2b5rvs+HvrGyOjgO19urBRyB+VKnFoOvjOe7Z2ef9SSC2/6v
+   PuM3BQromqUrUAMNmrP95hk2JdJFbaFzhzJO0PoTUnYkOUpH0xVtVm4Bd
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10243"; a="247232881"
 X-IronPort-AV: E=Sophos;i="5.88,331,1635231600"; 
-   d="scan'208";a="247677792"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2022 05:49:49 -0800
+   d="scan'208";a="247232881"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2022 05:52:03 -0800
 X-IronPort-AV: E=Sophos;i="5.88,331,1635231600"; 
-   d="scan'208";a="481753169"
+   d="scan'208";a="630024290"
 Received: from smile.fi.intel.com ([10.237.72.61])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2022 05:49:44 -0800
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2022 05:51:58 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1nEX2v-00Gt4F-Iy;
-        Mon, 31 Jan 2022 15:48:41 +0200
-Date:   Mon, 31 Jan 2022 15:48:41 +0200
-From:   Andy Shevchenko <andriy.shevchenko@intel.com>
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nEX55-00Gt6K-5X;
+        Mon, 31 Jan 2022 15:50:55 +0200
+Date:   Mon, 31 Jan 2022 15:50:54 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Hans de Goede <hdegoede@redhat.com>
 Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
@@ -55,108 +55,216 @@ Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Fabio Aiuto <fabioaiuto83@gmail.com>,
         platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-Subject: Re: [PATCH v4 12/20] power: supply: bq25890: Support higher charging
- voltages through Pump Express+ protocol
-Message-ID: <YffouVvL9M4fch0I@smile.fi.intel.com>
+Subject: Re: [PATCH v4 15/20] i2c: cht-wc: Make charger i2c-client
+ instantiation board/device-model specific
+Message-ID: <YffpPufu5xut7vI3@smile.fi.intel.com>
 References: <20220130204557.15662-1-hdegoede@redhat.com>
- <20220130204557.15662-13-hdegoede@redhat.com>
+ <20220130204557.15662-16-hdegoede@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220130204557.15662-13-hdegoede@redhat.com>
+In-Reply-To: <20220130204557.15662-16-hdegoede@redhat.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sun, Jan 30, 2022 at 09:45:49PM +0100, Hans de Goede wrote:
-> From: Yauhen Kharuzhy <jekhor@gmail.com>
+On Sun, Jan 30, 2022 at 09:45:52PM +0100, Hans de Goede wrote:
+> The i2c-controller on the Cherry Trail - Whiskey Cove PMIC is special
+> in that it is always connected to the I2C charger IC of the board on
+> which the PMIC is used; and the charger IC is not described in ACPI,
+> so the i2c-cht-wc code needs to instantiate an i2c-client for it itself.
 > 
-> Add a "linux,pump-express-vbus-max" property which indicates if the Pump
-> Express+ protocol should be used to increase the charging protocol.
+> So far this was hardcoded to instantiate an i2c-client for the
+> bq24292i, with all properties, etc. set to match how this charger
+> is used on the GPD win and GPD pocket devices.
 > 
-> If this new property is set and a DCP charger is detected then request
-> a higher charging voltage through the Pump Express+ protocol.
+> There is a rudimentary check to make sure the ACPI tables are at least
+> somewhat as expected, but this is far from accurate, leading to
+> a wrong i2c-client being instantiated for the charger on some boards.
 > 
-> So far this new property is only used on x86/ACPI (non devicetree) devs,
-> IOW it is not used in actual devicetree files. The devicetree-bindings
-> maintainers have requested properties like these to not be added to the
-> devicetree-bindings, so the new property is deliberately not added
-> to the existing devicetree-bindings.
+> Switch to the new DMI based intel_cht_wc_get_model() helper which is
+> exported by the MFD driver for the CHT Whiskey Cove PMIC to help PMIC
+> cell drivers like the i2c-cht-wc code reliably detect which board
+> they are running on.
 > 
-> Changes by Hans de Goede:
-> - Port to my bq25890 patch-series + various cleanups
-> - Make behavior configurable through a new "linux,pump-express-vbus-max"
->   device-property
-> - Sleep 1 second before re-checking the Vbus voltage after requesting
->   it to be raised, to ensure that the ADC has time to sampled the new Vbus
-> - Add VBUSV bq25890_tables[] entry and use it in bq25890_get_vbus_voltage()
-> - Tweak commit message
+> And add board_info for the charger ICs as found on the other 2 known
+> boards with a Whisky Cove PMIC.
+> 
+> This has been tested on all 3 known boards.
 
-...
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-> +static void bq25890_pump_express_work(struct work_struct *data)
-> +{
-> +	struct bq25890_device *bq =
-> +		container_of(data, struct bq25890_device, pump_express_work.work);
-> +	int voltage, i, ret;
+> Acked-by: Wolfram Sang <wsa@kernel.org>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+> Changes in v3:
+> - Add Wolfram's Ack for taking this upstream through another tree
+>   then the i2c tree
+> - Some minor tweaks / spelling fixes based on Andy's review
+> ---
+>  drivers/i2c/busses/i2c-cht-wc.c | 120 +++++++++++++++++++++++++++-----
+>  1 file changed, 102 insertions(+), 18 deletions(-)
+> 
+> diff --git a/drivers/i2c/busses/i2c-cht-wc.c b/drivers/i2c/busses/i2c-cht-wc.c
+> index 1cf68f85b2e1..54e909f9eab6 100644
+> --- a/drivers/i2c/busses/i2c-cht-wc.c
+> +++ b/drivers/i2c/busses/i2c-cht-wc.c
+> @@ -18,6 +18,7 @@
+>  #include <linux/module.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/power/bq24190_charger.h>
+> +#include <linux/power/bq25890_charger.h>
+>  #include <linux/slab.h>
+>  
+>  #define CHT_WC_I2C_CTRL			0x5e24
+> @@ -270,6 +271,7 @@ static const struct irq_chip cht_wc_i2c_irq_chip = {
+>  	.name			= "cht_wc_ext_chrg_irq_chip",
+>  };
+>  
+> +/********** GPD Win / Pocket charger IC settings **********/
+>  static const char * const bq24190_suppliers[] = {
+>  	"tcpm-source-psy-i2c-fusb302" };
+>  
+> @@ -304,17 +306,92 @@ static struct bq24190_platform_data bq24190_pdata = {
+>  	.regulator_init_data = &bq24190_vbus_init_data,
+>  };
+>  
+> +static struct i2c_board_info gpd_win_board_info = {
+> +	.type = "bq24190",
+> +	.addr = 0x6b,
+> +	.dev_name = "bq24190",
+> +	.swnode = &bq24190_node,
+> +	.platform_data = &bq24190_pdata,
+> +};
 > +
-> +	dev_dbg(bq->dev, "Start to request input voltage increasing\n");
+> +/********** Xiaomi Mi Pad 2 charger IC settings  **********/
+> +static struct regulator_consumer_supply bq2589x_vbus_consumer = {
+> +	.supply = "vbus",
+> +	.dev_name = "cht_wcove_pwrsrc",
+> +};
 > +
-> +	/* Enable current pulse voltage control protocol */
-> +	ret = bq25890_field_write(bq, F_PUMPX_EN, 1);
-> +	if (ret < 0)
-> +		goto error_print;
+> +static const struct regulator_init_data bq2589x_vbus_init_data = {
+> +	.constraints = {
+> +		.valid_ops_mask = REGULATOR_CHANGE_STATUS,
+> +	},
+> +	.consumer_supplies = &bq2589x_vbus_consumer,
+> +	.num_consumer_supplies = 1,
+> +};
 > +
-> +	for (i = 0; i < PUMP_EXPRESS_MAX_TRIES; i++) {
-
-> +		voltage = bq25890_get_vbus_voltage(bq);
-> +		if (voltage < 0)
-> +			goto error_print;
-
-It also can be (at least in align with the rest error paths)
-
-		ret = bq25890_get_vbus_voltage(bq);
-		if (ret < 0)
-			goto error_print;
-		voltage = ret;
-
-followed up (but not necessarily)...
-
-> +		dev_dbg(bq->dev, "input voltage = %d uV\n", voltage);
+> +static struct bq25890_platform_data bq2589x_pdata = {
+> +	.regulator_init_data = &bq2589x_vbus_init_data,
+> +};
 > +
-> +		if ((voltage + PUMP_EXPRESS_VBUS_MARGIN_uV) >
-> +					bq->pump_express_vbus_max)
-> +			break;
+> +static const struct property_entry xiaomi_mipad2_props[] = {
+> +	PROPERTY_ENTRY_BOOL("linux,skip-reset"),
+> +	PROPERTY_ENTRY_BOOL("linux,read-back-settings"),
+> +	{ }
+> +};
 > +
-> +		ret = bq25890_field_write(bq, F_PUMPX_UP, 1);
-> +		if (ret < 0)
-> +			goto error_print;
+> +static const struct software_node xiaomi_mipad2_node = {
+> +	.properties = xiaomi_mipad2_props,
+> +};
 > +
-> +		/* Note a single PUMPX up pulse-sequence takes 2.1s */
-> +		ret = regmap_field_read_poll_timeout(bq->rmap_fields[F_PUMPX_UP],
-> +						     ret, !ret, 100000, 3000000);
-> +		if (ret < 0)
-> +			goto error_print;
+> +static struct i2c_board_info xiaomi_mipad2_board_info = {
+> +	.type = "bq25890",
+> +	.addr = 0x6a,
+> +	.dev_name = "bq25890",
+> +	.swnode = &xiaomi_mipad2_node,
+> +	.platform_data = &bq2589x_pdata,
+> +};
 > +
-> +		/* Make sure ADC has sampled Vbus before checking again */
-> +		msleep(1000);
+> +/********** Lenovo Yogabook YB1-X90F/-X91F/-X91L charger settings **********/
+> +static const char * const lenovo_yb1_bq25892_suppliers[] = { "cht_wcove_pwrsrc" };
+> +
+> +static const struct property_entry lenovo_yb1_bq25892_props[] = {
+> +	PROPERTY_ENTRY_STRING_ARRAY("supplied-from",
+> +				    lenovo_yb1_bq25892_suppliers),
+> +	PROPERTY_ENTRY_U32("linux,pump-express-vbus-max", 12000000),
+> +	PROPERTY_ENTRY_BOOL("linux,skip-reset"),
+> +	/*
+> +	 * The firmware sets everything to the defaults, which leads to a
+> +	 * somewhat low charge-current of 2048mA and worse to a battery-voltage
+> +	 * of 4.2V instead of 4.35V (when booted without a charger connected).
+> +	 * Use our own values instead of "linux,read-back-settings" to fix this.
+> +	 */
+> +	PROPERTY_ENTRY_U32("ti,charge-current", 4224000),
+> +	PROPERTY_ENTRY_U32("ti,battery-regulation-voltage", 4352000),
+> +	PROPERTY_ENTRY_U32("ti,termination-current", 256000),
+> +	PROPERTY_ENTRY_U32("ti,precharge-current", 128000),
+> +	PROPERTY_ENTRY_U32("ti,minimum-sys-voltage", 3500000),
+> +	PROPERTY_ENTRY_U32("ti,boost-voltage", 4998000),
+> +	PROPERTY_ENTRY_U32("ti,boost-max-current", 1400000),
+> +	PROPERTY_ENTRY_BOOL("ti,use-ilim-pin"),
+> +	{ }
+> +};
+> +
+> +static const struct software_node lenovo_yb1_bq25892_node = {
+> +	.properties = lenovo_yb1_bq25892_props,
+> +};
+> +
+> +static struct i2c_board_info lenovo_yogabook1_board_info = {
+> +	.type = "bq25892",
+> +	.addr = 0x6b,
+> +	.dev_name = "bq25892",
+> +	.swnode = &lenovo_yb1_bq25892_node,
+> +	.platform_data = &bq2589x_pdata,
+> +};
+> +
+>  static int cht_wc_i2c_adap_i2c_probe(struct platform_device *pdev)
+>  {
+>  	struct intel_soc_pmic *pmic = dev_get_drvdata(pdev->dev.parent);
+> +	struct i2c_board_info *board_info = NULL;
+>  	struct cht_wc_i2c_adap *adap;
+> -	struct i2c_board_info board_info = {
+> -		.type = "bq24190",
+> -		.addr = 0x6b,
+> -		.dev_name = "bq24190",
+> -		.swnode = &bq24190_node,
+> -		.platform_data = &bq24190_pdata,
+> -	};
+>  	int ret, reg, irq;
+>  
+>  	irq = platform_get_irq(pdev, 0);
+> @@ -379,17 +456,24 @@ static int cht_wc_i2c_adap_i2c_probe(struct platform_device *pdev)
+>  	if (ret)
+>  		goto remove_irq_domain;
+>  
+> -	/*
+> -	 * Normally the Whiskey Cove PMIC is paired with a TI bq24292i charger,
+> -	 * connected to this i2c bus, and a max17047 fuel-gauge and a fusb302
+> -	 * USB Type-C controller connected to another i2c bus. In this setup
+> -	 * the max17047 and fusb302 devices are enumerated through an INT33FE
+> -	 * ACPI device. If this device is present register an i2c-client for
+> -	 * the TI bq24292i charger.
+> -	 */
+> -	if (acpi_dev_present("INT33FE", NULL, -1)) {
+> -		board_info.irq = adap->client_irq;
+> -		adap->client = i2c_new_client_device(&adap->adapter, &board_info);
+> +	switch (pmic->cht_wc_model) {
+> +	case INTEL_CHT_WC_GPD_WIN_POCKET:
+> +		board_info = &gpd_win_board_info;
+> +		break;
+> +	case INTEL_CHT_WC_XIAOMI_MIPAD2:
+> +		board_info = &xiaomi_mipad2_board_info;
+> +		break;
+> +	case INTEL_CHT_WC_LENOVO_YOGABOOK1:
+> +		board_info = &lenovo_yogabook1_board_info;
+> +		break;
+> +	default:
+> +		dev_warn(&pdev->dev, "Unknown model, not instantiating charger device\n");
+> +		break;
 > +	}
 > +
-> +	bq25890_field_write(bq, F_PUMPX_EN, 0);
-> +
-> +	dev_info(bq->dev, "Hi-voltage charging requested, input voltage is %d mV\n",
-> +		 voltage);
-
-> +	return;
-> +error_print:
-
-	if (ret < 0)
-
-But it's up to you.
-
-> +	dev_err(bq->dev, "Failed to request hi-voltage charging\n");
-> +}
+> +	if (board_info) {
+> +		board_info->irq = adap->client_irq;
+> +		adap->client = i2c_new_client_device(&adap->adapter, board_info);
+>  		if (IS_ERR(adap->client)) {
+>  			ret = PTR_ERR(adap->client);
+>  			goto del_adapter;
+> -- 
+> 2.33.1
+> 
 
 -- 
 With Best Regards,
