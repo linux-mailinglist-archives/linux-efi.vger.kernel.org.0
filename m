@@ -2,98 +2,79 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EEDD4A3D7E
-	for <lists+linux-efi@lfdr.de>; Mon, 31 Jan 2022 06:49:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 412954A4123
+	for <lists+linux-efi@lfdr.de>; Mon, 31 Jan 2022 12:02:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232554AbiAaFtO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 31 Jan 2022 00:49:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57916 "EHLO
+        id S1358556AbiAaLCV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 31 Jan 2022 06:02:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229711AbiAaFtO (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 31 Jan 2022 00:49:14 -0500
-Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7E05C061714
-        for <linux-efi@vger.kernel.org>; Sun, 30 Jan 2022 21:49:13 -0800 (PST)
-Received: by mail-io1-xd29.google.com with SMTP id r144so15308750iod.9
-        for <linux-efi@vger.kernel.org>; Sun, 30 Jan 2022 21:49:13 -0800 (PST)
+        with ESMTP id S1358449AbiAaLBL (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 31 Jan 2022 06:01:11 -0500
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C874DC0617BC
+        for <linux-efi@vger.kernel.org>; Mon, 31 Jan 2022 02:59:57 -0800 (PST)
+Received: by mail-pf1-x444.google.com with SMTP id 192so12559203pfz.3
+        for <linux-efi@vger.kernel.org>; Mon, 31 Jan 2022 02:59:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=UjH4klO7py2Z+V/vcb3V81RRbzsMHfDg3b+RxTgkE64=;
-        b=qmBUTklOW69CaueK9hznp45EZM1PWA51NMfi1P7lSV8rV1uZyi5CxLMiYTZVAqh9yH
-         m9F+dhggyCBykMVzVLr3+QIdOWe7qoIZUPv9fIa2mlyN0BbmjwHNMRJ2Lfpkuhttv5C3
-         v12J6P+c3YsIXsdi5woCXN8b88N4aUtELFE86iU3NeOU3m2GmYLaafLy83g3ovD3fxwF
-         hnp1eXbjrcOpTIZfQ/wIP4sJqr0jZz6oKWon9ojhQxgMEboEemmD5YyOfQKIR1exF4OX
-         MAqjlRbevCNdgBVHzwSrK72UdWLFgwH95tpl7aPgvWR6Sv9m8o//SsegTWTQPfL422lz
-         wFiA==
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=FANIUiWvB3mdY3zLX2DODg2pUIL5eGT5wlydl6jYk40=;
+        b=OjUeAkMVzEddLMMo5PnTCjKyhCs1ageGmC5+cFdXpsSEtg6JbUDTvXCRmwfTUCSofJ
+         slj36zZmhn3J4uwPw0DJBjnv3hUS5m+nEauuYDUNcCWjc1f+d0I+yOjKIUc0Pgz+j5Ue
+         rRdRGfWkjcSXGfwT+M+UDneKFOQe0c6aLr+5TauC2FupNgb1qyGc5yiIkJ8k0NAmHZhf
+         anrjd59/OgrastnWs4ZkrvFaIDjw5pd3eh107tNZ/TuMjnW3micCxNZKM2MDkg13GKwm
+         O5Q6tfm8j18o2CLpoCl1kG865M+uxrSOQqgPJI+OJu79ECke4sTf94bEwDsB5fZLVwuG
+         tdrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UjH4klO7py2Z+V/vcb3V81RRbzsMHfDg3b+RxTgkE64=;
-        b=YR6SduKC2e0DOuMjFgdD3xL9Ner5jzFJB588UzVzFuxezmU63ppQ4xTfkknPJwoQeB
-         lcrwFiF7htD3yHFkxmABOh+5hO5aeXJuWFuZyrMmLP1wqpJerVyQdVAHY4p+Iek7YQ6p
-         Km3vJNmWeAHOW8s9YlFqCwLJnkGBpNmw9eZyCL0xBY4y9bKsoESp3GTSYEc0/TnR7yeP
-         pzSkxeMIy9NKgyc3GMn7AHUlCnAro4jZcQQZBAssZiC96U++xtsIZI90WuhwcSKeHerb
-         j/osgko7DSFYWG8FZar87EnruLn/MIR4f/RK1D9+4Cr2jUY2GPOKolk5yinpVJGMcgE4
-         2aSQ==
-X-Gm-Message-State: AOAM530i9LCPH2hjCaZyamoWml56+FDZVfkz+ZjotPftDrryEraXbTBe
-        PWrtMZHAvQTzxLgSKgJnJ+9/Z3LYHclVkr+DGidGlF3zlLg=
-X-Google-Smtp-Source: ABdhPJwphz/Le7Fq6KM1u9uvyBm52sxWEZ+UkOptqn5nWm4MZfNyl3tGibIVUYBC0OArI2AzcaIxYo3afJWl7G+3ZuA=
-X-Received: by 2002:a05:6638:2656:: with SMTP id n22mr3711056jat.107.1643608153293;
- Sun, 30 Jan 2022 21:49:13 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=FANIUiWvB3mdY3zLX2DODg2pUIL5eGT5wlydl6jYk40=;
+        b=tSE/s4w7u4fbTKNdmrhR5Lq6n8A7tP2niiISxVJDFOBOXsENqufmWebzDqEOzMJvQv
+         fBuQmz8aOu+dIfHakMYAJlXEFHb07HkvCcs+ZUMd4L5Ttmi46EHUEUYKh43VzhdA068+
+         zCusuwHOVTsAWIT+oapOZIQ+kBYKgsUS1HfT8pDKh6RBRxB55NWhzMv+c5ILnCPjZAR/
+         ujkpf0P5/qGBCwLSkZ5g6qx9kPXlZb0N+PJ596oGqbXvS+C2ESMBbTeFvHl+7iPYF5gg
+         XYu3zyQWHSt6eOCWirb+vELQXzujP+4e6FAaJexlGDoNCxQvECJzOfPHUNDeuQMpTpJX
+         B5yw==
+X-Gm-Message-State: AOAM532GDMdT33Hlv2p7RDR/8i7DqSSG2KfiWJjtdy5mC8X6BgcOOhjA
+        unvteTNZaYqJMuYb0dkGPaf+W0aspp0AE3IewIN680KsEtk=
+X-Google-Smtp-Source: ABdhPJx07OLMUPeEc0ImjaiJBKF2Mcc3ZmsWTIoSvX2FNfz03c1HE0RFqesREnjvPqYHKyL/ALkhu5ugV57XI3T5t/k=
+X-Received: by 2002:a6b:441a:: with SMTP id r26mr10856124ioa.211.1643626786286;
+ Mon, 31 Jan 2022 02:59:46 -0800 (PST)
 MIME-Version: 1.0
-References: <CAKsu7qySyxVLMTjf9FG5=g1f0oP_CV61Ae-NunFK5MH-7iE8hg@mail.gmail.com>
-In-Reply-To: <CAKsu7qySyxVLMTjf9FG5=g1f0oP_CV61Ae-NunFK5MH-7iE8hg@mail.gmail.com>
-From:   arshad hussain <arshad.super@gmail.com>
-Date:   Mon, 31 Jan 2022 11:19:02 +0530
-Message-ID: <CAKsu7qyvAahUOc_1uzzaW=jMi6DesGMyFhoq=VOxD=3yfAhxNg@mail.gmail.com>
-Subject: Re: [PATCH] efi: Move error message to warning
-To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
-Cc:     Husein Bahrainwala <huseinzb@gmail.com>
+Reply-To: daniellakyle60@gmail.com
+Sender: drdanielmorris11111@gmail.com
+Received: by 2002:a05:6638:1248:0:0:0:0 with HTTP; Mon, 31 Jan 2022 02:59:45
+ -0800 (PST)
+From:   Mrs daniell akyle <daniellakyle60@gmail.com>
+Date:   Mon, 31 Jan 2022 11:59:45 +0100
+X-Google-Sender-Auth: xE_x512-NJSetLeK1z_d90RC9Q0
+Message-ID: <CAKFcj-P8h0HeDMtZZnog7Sh8cFMKV7095BN2fQnUMpCGPgmhFg@mail.gmail.com>
+Subject: Ahoj
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-There was a typo in the previous patch email. Please review this version
-
-Thanks
-----------
-
-Error message "...kernel image not aligned on 64k boundary"
-does not seem to be a real error as it does not
-cause any functional issue or stops the system from
-booting or working. Move this "error" to "warning"
-as this error is not handled at the moment. Also,
-watching "warn" message instead of "ERROR" calms
-the end-user.
-
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org
-Signed-off-by: Arshad Hussain <arshad.super@gmail.com>
-Signed-off-by: Husein Bahrainwala <huseinzb@gmail.com>
----
- drivers/firmware/efi/libstub/arm64-stub.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/firmware/efi/libstub/arm64-stub.c
-b/drivers/firmware/efi/libstub/arm64-stub.c
-index 2363fee92..5ed09be49 100644
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -120,8 +120,8 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
-         efi_err("FIRMWARE BUG: efi_loaded_image_t::image_base has
-bogus value\n");
-
-     if (!IS_ALIGNED((u64)_text, EFI_KIMG_ALIGN))
--        efi_err("FIRMWARE BUG: kernel image not aligned on %ldk boundary\n",
--            EFI_KIMG_ALIGN >> 10);
-+        efi_warn("FIRMWARE BUG: kernel image not aligned on %ldk boundary\n",
-+             EFI_KIMG_ALIGN >> 10);
-
-     kernel_size = _edata - _text;
-     kernel_memsize = kernel_size + (_end - _edata);
--- 
-2.25.1
+Pozdravy
+Jmenuji se pan=C3=AD Daniella Kyleov=C3=A1, je mi 58 let
+Filip=C3=ADny. V sou=C4=8Dasn=C3=A9 dob=C4=9B jsem hospitalizov=C3=A1n na F=
+ilip=C3=ADn=C3=A1ch, kde jsem
+podstupuje l=C3=A9=C4=8Dbu akutn=C3=ADho karcinomu j=C3=ADcnu. jsem um=C3=
+=ADraj=C3=ADc=C3=AD,
+vdova, kter=C3=A1 se rozhodla darovat =C4=8D=C3=A1st sv=C3=A9ho majetku spo=
+lehliv=C3=A9 osob=C4=9B
+kter=C3=A1 tyto pen=C3=ADze pou=C5=BEije na pomoc chud=C3=BDm a m=C3=A9n=C4=
+=9B privilegovan=C3=BDm. Chci
+poskytnout dar ve v=C3=BD=C5=A1i 3 700 000 =C2=A3 na sirotky nebo charitati=
+vn=C3=AD organizace
+ve va=C5=A1=C3=AD oblasti. Zvl=C3=A1dne=C5=A1 to? Pokud jste ochotni tuto n=
+ab=C3=ADdku p=C5=99ijmout
+a ud=C4=9Blejte p=C5=99esn=C4=9B tak, jak v=C3=A1m =C5=99=C3=ADk=C3=A1m, pa=
+k se mi vra=C5=A5te pro dal=C5=A1=C3=AD vysv=C4=9Btlen=C3=AD.
+pozdravy
+Pan=C3=AD Daniella Kyleov=C3=A1
