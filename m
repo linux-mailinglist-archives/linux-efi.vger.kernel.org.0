@@ -2,54 +2,54 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08D034A658A
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Feb 2022 21:17:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CE5F4A6596
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Feb 2022 21:22:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239519AbiBAURQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 1 Feb 2022 15:17:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50198 "EHLO
+        id S233041AbiBAUWJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 1 Feb 2022 15:22:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239467AbiBAURQ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Feb 2022 15:17:16 -0500
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF694C06173B
-        for <linux-efi@vger.kernel.org>; Tue,  1 Feb 2022 12:17:15 -0800 (PST)
-Received: by mail-lj1-x22f.google.com with SMTP id q22so25760170ljh.7
-        for <linux-efi@vger.kernel.org>; Tue, 01 Feb 2022 12:17:15 -0800 (PST)
+        with ESMTP id S231773AbiBAUWB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Feb 2022 15:22:01 -0500
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06509C06173D
+        for <linux-efi@vger.kernel.org>; Tue,  1 Feb 2022 12:22:00 -0800 (PST)
+Received: by mail-lj1-x22b.google.com with SMTP id q22so25777576ljh.7
+        for <linux-efi@vger.kernel.org>; Tue, 01 Feb 2022 12:22:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=c1G+U9mCR+9y3z9D1TzfeiUfdMNDGnmglMpEe2+/2LE=;
-        b=VpWU+oS1r5knoJXzOyILe4moOYE+R2uHT5zRZ2Jk6DhbUyjF27qJ3+INmDQ6fgW21h
-         Tbks8twIhWx83GEmJz8SvyDl28seEQXqJqh3NV9g5rTHkqsOws4rhC3I/N/p7qcc254t
-         dO5dfpzfe+UZ1qwnCXB5UZJSurEkkiBYs4s3D9Zas6b0x9z+x5I85DrD9l2VaSp+bKq7
-         SMWCvA1VLe6N2jnWSR72sRQz1JDnI/ile1y5D0ika7OBCB6qjHvaKnf83FjnjAl6pUlX
-         yedLGvX4pfjFeVB5yjbxiMrAQ/0ETQPPiMCTCVHV0Dt1fljCfrW3KHBEl8XoGKzF8eOV
-         yQiw==
+         :cc:content-transfer-encoding;
+        bh=G0oCZMu217/ki1S16h4/FaCOqstgzPK5PitKLqVB4GI=;
+        b=qCbRjXCBmrWXNO40eBUCVKSHZY+HsAYvBvpVOHOelK6aqTwpbJWQLNElJ/jF533g3o
+         jmH8456QEdbZboMX0AaDls/S0xM44tK4l9H1JEhL/B+r4PMul0ow7OIszwCgXbyykpUc
+         3dYXDeWFJ1JIyxJij/ftOIqTdSUTlH2unh10wi3tauPNTwsMmYh/A7to3iLZWP73/epC
+         xFSEqG5gFzZuYOF32fyHlgRNfNiSOyXwKEj0793+vWzTl9QNUBk4g6NW2/gOohd9JJUI
+         g8CxDVAjiHZzAdVvM7wVOLcxin58bnJ82BrBuldQIs0zrJ6g+/yr+HMBiMo9fc0MrkYx
+         WKIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=c1G+U9mCR+9y3z9D1TzfeiUfdMNDGnmglMpEe2+/2LE=;
-        b=yhLpwnklHjanmTL3CKZAkSD0iVIWoebVaiWXZ+g8PfZuIlQ6nAg6ppuEQNckkKACQZ
-         ccHBVHxQUy+k2CKtrPiz3NBW72ARjNjK8XoOeiwGbSQlrKgzMJoUWzxjNzE7D5AX3Ku3
-         wiZi4yyxoDbpAiCixkCc5XjvWdHgKtrM7V8Y+huIOmIVLm+un218cxw6w+KFy0RG9NHF
-         Cjhnx6md6LSmUQ8wab3PhMLBeo0YHFOOQmdRwbiweOi/82/KgVAhOB1CXZxZxKxf3Iy1
-         bgw4Ci/bNEHfSDMFOHoSR18FxEhQwbjC71WfSxsDwV+BMsQaruAY1aFHDPXr+rw0RiXw
-         S9YA==
-X-Gm-Message-State: AOAM533pF+tTiVn9zVpOTeOlrqFRg+mmYqscKXtEOnd4fMIL/wZcKcIx
-        2mFIuPEz6Z5xJXbIFW9FOzpL2pJDHwzYjnTd05sZ1Q==
-X-Google-Smtp-Source: ABdhPJw/gG064uPw6B2Edvi7SJHms7j1vwY6jMCGatl6ahEztehk1/Zegz8WhJ1BfcdyuJ3eUs0emystXh2QL2v0bB8=
-X-Received: by 2002:a2e:a781:: with SMTP id c1mr16364597ljf.527.1643746633936;
- Tue, 01 Feb 2022 12:17:13 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=G0oCZMu217/ki1S16h4/FaCOqstgzPK5PitKLqVB4GI=;
+        b=u6ob5JJVYUHU/jayXAZxVVURbkzxhgnfyFn0ILKBsnDs2+RUS7mx7Se5DGlb9E1VHn
+         cAlrOdAJma5mbBCVewR2YnDna39AqG/edAtCuApoxluD43wtlJxQO9cD+VdvsaOBTPe1
+         h+UUkOq7wcw4GioIAIJOVOUw4zDlSkyXjy9ZdjQdp5KL1SeFecj2+eXzndqL12BPX1no
+         YTo0eA8/1/rCfsDWpWY1STiYyltBR6buJoOYHypRljvUlx3TU8+0MNvUA8NySDtgctDU
+         J5pWodIer25cJRFQYXalFLBe/aOieLDe4MFpjdczlQplWTh1ZSHTgiGWdxXiRHt85BrE
+         D1xg==
+X-Gm-Message-State: AOAM532OGFOKn7NbpzKgfrdebdQlNkNnMYd8lPvGgEb9pUIy5f/ANfKR
+        TSHLWNQhkrNAcLdIrPgIckt//+i4azZAQikQm8v84g==
+X-Google-Smtp-Source: ABdhPJxViziF/mIbCEXRWkWFi0lsbcqCh9RniknQHSnF1iFdRY2ZEW83U4dSdJf2AwwGRFeeH0sukrADhPIhUKwO21U=
+X-Received: by 2002:a2e:a781:: with SMTP id c1mr16377411ljf.527.1643746919071;
+ Tue, 01 Feb 2022 12:21:59 -0800 (PST)
 MIME-Version: 1.0
-References: <20220128171804.569796-1-brijesh.singh@amd.com> <20220128171804.569796-40-brijesh.singh@amd.com>
-In-Reply-To: <20220128171804.569796-40-brijesh.singh@amd.com>
+References: <20220128171804.569796-1-brijesh.singh@amd.com> <20220128171804.569796-41-brijesh.singh@amd.com>
+In-Reply-To: <20220128171804.569796-41-brijesh.singh@amd.com>
 From:   Peter Gonda <pgonda@google.com>
-Date:   Tue, 1 Feb 2022 13:17:02 -0700
-Message-ID: <CAMkAt6oycVLNwMbe=QD_x_jGVFmkNK+OSKqd9GhcMjD3Qo3ZJg@mail.gmail.com>
-Subject: Re: [PATCH v9 39/43] x86/sev: Provide support for SNP guest request NAEs
+Date:   Tue, 1 Feb 2022 13:21:47 -0700
+Message-ID: <CAMkAt6rfTbQB8kZp1Nkh7GpEsWXETAPNoEOhqiMx7o68ZHgjww@mail.gmail.com>
+Subject: Re: [PATCH v9 40/43] x86/sev: Register SEV-SNP guest request platform device
 To:     Brijesh Singh <brijesh.singh@amd.com>
 Cc:     "the arch/x86 maintainers" <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
@@ -82,175 +82,153 @@ Cc:     "the arch/x86 maintainers" <x86@kernel.org>,
         Sathyanarayanan Kuppuswamy 
         <sathyanarayanan.kuppuswamy@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jan 28, 2022 at 10:19 AM Brijesh Singh <brijesh.singh@amd.com> wrote:
+On Fri, Jan 28, 2022 at 10:19 AM Brijesh Singh <brijesh.singh@amd.com> wrot=
+e:
 >
-> Version 2 of GHCB specification provides SNP_GUEST_REQUEST and
-> SNP_EXT_GUEST_REQUEST NAE that can be used by the SNP guest to communicate
-> with the PSP.
+> Version 2 of GHCB specification provides Non Automatic Exit (NAE) that ca=
+n
+> be used by the SEV-SNP guest to communicate with the PSP without risk fro=
+m
+> a malicious hypervisor who wishes to read, alter, drop or replay the
+> messages sent.
 >
-> While at it, add a snp_issue_guest_request() helper that will be used by
-> driver or other subsystem to issue the request to PSP.
+> SNP_LAUNCH_UPDATE can insert two special pages into the guest=E2=80=99s m=
+emory:
+> the secrets page and the CPUID page. The PSP firmware populate the conten=
+ts
+> of the secrets page. The secrets page contains encryption keys used by th=
+e
+> guest to interact with the firmware. Because the secrets page is encrypte=
+d
+> with the guest=E2=80=99s memory encryption key, the hypervisor cannot rea=
+d the
+> keys. See SEV-SNP firmware spec for further details on the secrets page
+> format.
 >
-> See SEV-SNP firmware and GHCB spec for more details.
+> Create a platform device that the SEV-SNP guest driver can bind to get th=
+e
+> platform resources such as encryption key and message id to use to
+> communicate with the PSP. The SEV-SNP guest driver provides a userspace
+> interface to get the attestation report, key derivation, extended
+> attestation report etc.
 >
 > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 > ---
->  arch/x86/include/asm/sev-common.h |  3 ++
->  arch/x86/include/asm/sev.h        | 14 ++++++++
->  arch/x86/include/uapi/asm/svm.h   |  4 +++
->  arch/x86/kernel/sev.c             | 55 +++++++++++++++++++++++++++++++
->  4 files changed, 76 insertions(+)
+>  arch/x86/include/asm/sev.h |  4 +++
+>  arch/x86/kernel/sev.c      | 61 ++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 65 insertions(+)
 >
-> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
-> index cd769984e929..442614879dad 100644
-> --- a/arch/x86/include/asm/sev-common.h
-> +++ b/arch/x86/include/asm/sev-common.h
-> @@ -128,6 +128,9 @@ struct snp_psc_desc {
->         struct psc_entry entries[VMGEXIT_PSC_MAX_ENTRY];
->  } __packed;
->
-> +/* Guest message request error code */
-> +#define SNP_GUEST_REQ_INVALID_LEN      BIT_ULL(32)
-> +
->  #define GHCB_MSR_TERM_REQ              0x100
->  #define GHCB_MSR_TERM_REASON_SET_POS   12
->  #define GHCB_MSR_TERM_REASON_SET_MASK  0xf
 > diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-> index 219abb4590f2..9830ee1d6ef0 100644
+> index 9830ee1d6ef0..ca977493eb72 100644
 > --- a/arch/x86/include/asm/sev.h
 > +++ b/arch/x86/include/asm/sev.h
-> @@ -87,6 +87,14 @@ extern bool handle_vc_boot_ghcb(struct pt_regs *regs);
+> @@ -95,6 +95,10 @@ struct snp_req_data {
+>         unsigned int data_npages;
+>  };
 >
->  #define RMPADJUST_VMSA_PAGE_BIT                BIT(16)
->
-> +/* SNP Guest message request */
-> +struct snp_req_data {
-> +       unsigned long req_gpa;
-> +       unsigned long resp_gpa;
-> +       unsigned long data_gpa;
-> +       unsigned int data_npages;
+> +struct snp_guest_platform_data {
+> +       u64 secrets_gpa;
 > +};
 > +
 >  #ifdef CONFIG_AMD_MEM_ENCRYPT
 >  extern struct static_key_false sev_es_enable_key;
 >  extern void __sev_es_ist_enter(struct pt_regs *regs);
-> @@ -154,6 +162,7 @@ void snp_set_memory_private(unsigned long vaddr, unsigned int npages);
->  void snp_set_wakeup_secondary_cpu(void);
->  bool snp_init(struct boot_params *bp);
->  void snp_abort(void);
-> +int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, unsigned long *fw_err);
->  #else
->  static inline void sev_es_ist_enter(struct pt_regs *regs) { }
->  static inline void sev_es_ist_exit(void) { }
-> @@ -173,6 +182,11 @@ static inline void snp_set_memory_private(unsigned long vaddr, unsigned int npag
->  static inline void snp_set_wakeup_secondary_cpu(void) { }
->  static inline bool snp_init(struct boot_params *bp) { return false; }
->  static inline void snp_abort(void) { }
-> +static inline int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input,
-> +                                         unsigned long *fw_err)
-> +{
-> +       return -ENOTTY;
-> +}
->  #endif
->
->  #endif
-> diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
-> index 8b4c57baec52..5b8bc2b65a5e 100644
-> --- a/arch/x86/include/uapi/asm/svm.h
-> +++ b/arch/x86/include/uapi/asm/svm.h
-> @@ -109,6 +109,8 @@
->  #define SVM_VMGEXIT_SET_AP_JUMP_TABLE          0
->  #define SVM_VMGEXIT_GET_AP_JUMP_TABLE          1
->  #define SVM_VMGEXIT_PSC                                0x80000010
-> +#define SVM_VMGEXIT_GUEST_REQUEST              0x80000011
-> +#define SVM_VMGEXIT_EXT_GUEST_REQUEST          0x80000012
->  #define SVM_VMGEXIT_AP_CREATION                        0x80000013
->  #define SVM_VMGEXIT_AP_CREATE_ON_INIT          0
->  #define SVM_VMGEXIT_AP_CREATE                  1
-> @@ -225,6 +227,8 @@
->         { SVM_VMGEXIT_AP_HLT_LOOP,      "vmgexit_ap_hlt_loop" }, \
->         { SVM_VMGEXIT_AP_JUMP_TABLE,    "vmgexit_ap_jump_table" }, \
->         { SVM_VMGEXIT_PSC,      "vmgexit_page_state_change" }, \
-> +       { SVM_VMGEXIT_GUEST_REQUEST,            "vmgexit_guest_request" }, \
-> +       { SVM_VMGEXIT_EXT_GUEST_REQUEST,        "vmgexit_ext_guest_request" }, \
->         { SVM_VMGEXIT_AP_CREATION,      "vmgexit_ap_creation" }, \
->         { SVM_VMGEXIT_HV_FEATURES,      "vmgexit_hypervisor_feature" }, \
->         { SVM_EXIT_ERR,         "invalid_guest_state" }
 > diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-> index cb97200bfda7..1d3ac83226fc 100644
+> index 1d3ac83226fc..1e56ab00d1f4 100644
 > --- a/arch/x86/kernel/sev.c
 > +++ b/arch/x86/kernel/sev.c
-> @@ -2122,3 +2122,58 @@ static int __init snp_check_cpuid_table(void)
->  }
+> @@ -19,6 +19,9 @@
+>  #include <linux/kernel.h>
+>  #include <linux/mm.h>
+>  #include <linux/cpumask.h>
+> +#include <linux/efi.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/io.h>
 >
->  arch_initcall(snp_check_cpuid_table);
+>  #include <asm/cpu_entry_area.h>
+>  #include <asm/stacktrace.h>
+> @@ -34,6 +37,7 @@
+>  #include <asm/cpu.h>
+>  #include <asm/apic.h>
+>  #include <asm/cpuid.h>
+> +#include <asm/setup.h>
+>
+>  #define DR7_RESET_VALUE        0x400
+>
+> @@ -2177,3 +2181,60 @@ int snp_issue_guest_request(u64 exit_code, struct =
+snp_req_data *input, unsigned
+>         return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(snp_issue_guest_request);
 > +
-> +int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, unsigned long *fw_err)
+> +static struct platform_device guest_req_device =3D {
+> +       .name           =3D "snp-guest",
+> +       .id             =3D -1,
+> +};
+> +
+> +static u64 get_secrets_page(void)
 > +{
-> +       struct ghcb_state state;
-> +       struct es_em_ctxt ctxt;
-> +       unsigned long flags;
-> +       struct ghcb *ghcb;
-> +       int ret;
+> +       u64 pa_data =3D boot_params.cc_blob_address;
+> +       struct cc_blob_sev_info info;
+> +       void *map;
+> +
+> +       /*
+> +        * The CC blob contains the address of the secrets page, check if=
+ the
+> +        * blob is present.
+> +        */
+> +       if (!pa_data)
+> +               return 0;
+> +
+> +       map =3D early_memremap(pa_data, sizeof(info));
+> +       memcpy(&info, map, sizeof(info));
+> +       early_memunmap(map, sizeof(info));
+> +
+> +       /* smoke-test the secrets page passed */
+> +       if (!info.secrets_phys || info.secrets_len !=3D PAGE_SIZE)
+> +               return 0;
+
+This seems like an error condition worth noting. If no cc_blob_address
+is passed it makes sense not to log but what if the address passed
+fails this smoke test, why not log?
+
+> +
+> +       return info.secrets_phys;
+> +}
+> +
+> +static int __init init_snp_platform_device(void)
+> +{
+> +       struct snp_guest_platform_data data;
+> +       u64 gpa;
 > +
 > +       if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
 > +               return -ENODEV;
 > +
-> +       /*
-> +        * __sev_get_ghcb() needs to run with IRQs disabled because it is using
-> +        * a per-CPU GHCB.
-> +        */
-> +       local_irq_save(flags);
+> +       gpa =3D get_secrets_page();
+> +       if (!gpa)
+> +               return -ENODEV;
 > +
-> +       ghcb = __sev_get_ghcb(&state);
-> +       if (!ghcb) {
-> +               ret = -EIO;
-> +               goto e_restore_irq;
-> +       }
+> +       data.secrets_gpa =3D gpa;
+> +       if (platform_device_add_data(&guest_req_device, &data, sizeof(dat=
+a)))
+> +               goto e_fail;
 > +
-> +       vc_ghcb_invalidate(ghcb);
+> +       if (platform_device_register(&guest_req_device))
+> +               goto e_fail;
 > +
-> +       if (exit_code == SVM_VMGEXIT_EXT_GUEST_REQUEST) {
-> +               ghcb_set_rax(ghcb, input->data_gpa);
-> +               ghcb_set_rbx(ghcb, input->data_npages);
-> +       }
+> +       pr_info("SNP guest platform device initialized.\n");
+> +       return 0;
 > +
-> +       ret = sev_es_ghcb_hv_call(ghcb, true, &ctxt, exit_code, input->req_gpa, input->resp_gpa);
-> +       if (ret)
-> +               goto e_put;
-> +
-> +       if (ghcb->save.sw_exit_info_2) {
-> +               /* Number of expected pages are returned in RBX */
-> +               if (exit_code == SVM_VMGEXIT_EXT_GUEST_REQUEST &&
-> +                   ghcb->save.sw_exit_info_2 == SNP_GUEST_REQ_INVALID_LEN)
-> +                       input->data_npages = ghcb_get_rbx(ghcb);
-> +
-> +               if (fw_err)
-> +                       *fw_err = ghcb->save.sw_exit_info_2;
-
-In the PSP driver we've had a bit of discussion around the fw_err and
-the return code and that it would be preferable to have fw_err be a
-required parameter. And then we can easily make sure fw_err is always
-non-zero when the return code is non-zero. Thoughts about doing the
-same inside the guest?
-
-
-> +
-> +               ret = -EIO;
-> +       }
-> +
-> +e_put:
-> +       __sev_put_ghcb(&state);
-> +e_restore_irq:
-> +       local_irq_restore(flags);
-> +
-> +       return ret;
+> +e_fail:
+> +       pr_err("Failed to initialize SNP guest device\n");
+> +       return -ENODEV;
 > +}
-> +EXPORT_SYMBOL_GPL(snp_issue_guest_request);
+> +device_initcall(init_snp_platform_device);
 > --
 > 2.25.1
 >
