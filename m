@@ -2,32 +2,65 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C20E34A5DAD
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Feb 2022 14:50:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56EF44A5E2D
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Feb 2022 15:25:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236948AbiBANuz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 1 Feb 2022 08:50:55 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:43292 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230073AbiBANuz (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Feb 2022 08:50:55 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 41A3B6159D;
-        Tue,  1 Feb 2022 13:50:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01212C340EB;
-        Tue,  1 Feb 2022 13:50:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1643723454;
-        bh=ldq7bhd25XbE5kFzQtjZQM2k7oQhrQBRZZi85C+Hwts=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tyE+zUDJSrEZ9Q9Ye/QchpMFVu3J7iYkahV+mZ0c7QZkEIvj2dBruxSK+UOLi5C/k
-         ag0aaGZJOEII5ShkiuXppByTUhWhl6dz2R1JtCzomHDB+99o2Z3tUlJ7I/OJXNOTQ/
-         YvTkN25TEpK6wGiq/MTQsMCRWlaNzHUKKXixfLD8=
-Date:   Tue, 1 Feb 2022 14:50:52 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Dov Murik <dovmurik@linux.ibm.com>
+        id S239228AbiBAOZ3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 1 Feb 2022 09:25:29 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:44298 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S239240AbiBAOZ2 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Feb 2022 09:25:28 -0500
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 211E3fIh002076;
+        Tue, 1 Feb 2022 14:25:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : content-transfer-encoding : mime-version; s=pp1;
+ bh=mreXuaP/jhEfQGa2pduCiURq5d9Q94KDVgGiwjc7zzo=;
+ b=hAx6jmKcHJLBSUJ/gkK2q1brIyFMRnzYEFT8qfF+qLkoeJJAvn6Avt6HV+iNYuWvaxcu
+ t4tZAzm1jb8/bqL3atjoWlvEsHyRJURGAM8w+/G8Tnij7giOKrARO0gkwnwz9i2qPxcn
+ aZ/LeRxQUhmh784fC5jIHiDyjodEaRkPaGgwiR+kf+fQLoeieQuPl/K4HBhxkdcq1prP
+ Lv5Dw/IWGsxRLp/I7FIBGWflGepYIbovnsYyHBvEGfep0pFd3YOLW7D3HTSdFy1AT+cS
+ w25u0bEI9cBZ5sE/V15iNA1VcW/TtBCjmIoKH6nqufJYBkFfTfXuzTDbfOYVCdGVglIC kQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3dxn4hvgky-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 01 Feb 2022 14:25:02 +0000
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 211Dx1ur021079;
+        Tue, 1 Feb 2022 14:25:02 GMT
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3dxn4hvgk7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 01 Feb 2022 14:25:02 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+        by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 211EIajb010966;
+        Tue, 1 Feb 2022 14:25:00 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+        by ppma01dal.us.ibm.com with ESMTP id 3dvw7bdw8x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 01 Feb 2022 14:25:00 +0000
+Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+        by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 211EOuNg34734354
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 1 Feb 2022 14:24:56 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id AE6457808E;
+        Tue,  1 Feb 2022 14:24:56 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C3391780A0;
+        Tue,  1 Feb 2022 14:24:51 +0000 (GMT)
+Received: from jarvis.int.hansenpartnership.com (unknown [9.211.75.243])
+        by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Tue,  1 Feb 2022 14:24:51 +0000 (GMT)
+Message-ID: <37779659ca96ac9c1f11bcc0ac0665895c795b54.camel@linux.ibm.com>
+Subject: Re: [PATCH v7 0/5] Allow guest access to EFI confidential computing
+ secret area
+From:   James Bottomley <jejb@linux.ibm.com>
+Reply-To: jejb@linux.ibm.com
+To:     Greg KH <gregkh@linuxfoundation.org>,
+        Dov Murik <dovmurik@linux.ibm.com>
 Cc:     linux-efi@vger.kernel.org, Borislav Petkov <bp@suse.de>,
         Ashish Kalra <ashish.kalra@amd.com>,
         Brijesh Singh <brijesh.singh@amd.com>,
@@ -42,108 +75,93 @@ Cc:     linux-efi@vger.kernel.org, Borislav Petkov <bp@suse.de>,
         Gerd Hoffmann <kraxel@redhat.com>,
         Lenny Szubowicz <lszubowi@redhat.com>,
         Peter Gonda <pgonda@google.com>,
-        James Bottomley <jejb@linux.ibm.com>,
         Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
         Jim Cadden <jcadden@ibm.com>,
         Daniele Buono <dbuono@linux.vnet.ibm.com>,
         linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 0/5] Allow guest access to EFI confidential computing
- secret area
-Message-ID: <Yfk6vEuZFtgtA+G+@kroah.com>
+        linux-kernel@vger.kernel.org, Nayna Jain <nayna@linux.ibm.com>,
+        dougmill@linux.vnet.ibm.com, gcwilson@linux.ibm.com,
+        gjoyce@ibm.com, gregkh@linuxfoundation.org,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        mjg59@srcf.ucam.org, mpe@ellerman.id.au, dja@axtens.net
+Date:   Tue, 01 Feb 2022 09:24:50 -0500
+In-Reply-To: <Yfk6vEuZFtgtA+G+@kroah.com>
 References: <20220201124413.1093099-1-dovmurik@linux.ibm.com>
+         <Yfk6vEuZFtgtA+G+@kroah.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: KKTyI9pQI8Y36SJdNW1gn8e_DMUDwLR-
+X-Proofpoint-ORIG-GUID: S9dqeW5zLuNZ9BvqjN1WezAHnW6K66xY
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220201124413.1093099-1-dovmurik@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-01_06,2022-02-01_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ bulkscore=0 mlxscore=0 mlxlogscore=850 lowpriorityscore=0 suspectscore=0
+ impostorscore=0 adultscore=0 phishscore=0 malwarescore=0 spamscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202010078
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Feb 01, 2022 at 12:44:08PM +0000, Dov Murik wrote:
-> Confidential computing (coco) hardware such as AMD SEV (Secure Encrypted
-> Virtualization) allows guest owners to inject secrets into the VMs
-> memory without the host/hypervisor being able to read them.  In SEV,
-> secret injection is performed early in the VM launch process, before the
-> guest starts running.
+[cc's added]
+On Tue, 2022-02-01 at 14:50 +0100, Greg KH wrote:
+> On Tue, Feb 01, 2022 at 12:44:08PM +0000, Dov Murik wrote:
+[...]
+> > # ls -la /sys/kernel/security/coco/efi_secret
+> > total 0
+> > drwxr-xr-x 2 root root 0 Jun 28 11:55 .
+> > drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
+> > -r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-
+> > 06879ce3da0b
+> > -r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-
+> > d3a0b54312c6
+> > -r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-
+> > ff17f78864d2
 > 
-> OVMF already reserves designated area for secret injection (in its
-> AmdSev package; see edk2 commit 01726b6d23d4 "OvmfPkg/AmdSev: Expose the
-> Sev Secret area using a configuration table" [1]), but the secrets were
-> not available in the guest kernel.
-> 
-> The patch series keeps the address of the EFI-provided memory for
-> injected secrets, and exposes the secrets to userspace via securityfs
-> using a new efi_secret kernel module.  The module is autoloaded (by the
-> EFI driver) if the secret area is populated.
-> 
-> The first patch in EFI keeps the address of the secret area as passed in
-> the EFI configuration table.  The second patch is a quirk fix for older
-> firmwares didn't mark the secrets page as EFI_RESERVED_TYPE.  The third
-> patch introduces the new efi_secret module that exposes the content of
-> the secret entries as securityfs files, and allows clearing out secrets
-> with a file unlink interface.  The fourth patch auto-loads the
-> efi_secret module during startup if the injected secrets area is
-> populated.  The last patch documents the data flow of confidential
-> computing secret injection.
-> 
-> As a usage example, consider a guest performing computations on
-> encrypted files.  The Guest Owner provides the decryption key (= secret)
-> using the secret injection mechanism.  The guest application reads the
-> secret from the efi_secret filesystem and proceeds to decrypt the files
-> into memory and then performs the needed computations on the content.
-> 
-> In this example, the host can't read the files from the disk image
-> because they are encrypted.  Host can't read the decryption key because
-> it is passed using the secret injection mechanism (= secure channel).
-> Host can't read the decrypted content from memory because it's a
-> confidential (memory-encrypted) guest.
-> 
-> This has been tested with AMD SEV and SEV-ES guests, but the kernel side
-> of handling the secret area has no SEV-specific dependencies, and
-> therefore might be usable (perhaps with minor changes) for any
-> confidential computing hardware that can publish the secret area via the
-> standard EFI config table entry.
-> 
-> To enable this functionality, set CONFIG_EFI_SECRET=m when building the
-> guest kernel.
-> 
-> Here is a simple example for usage of the efi_secret module in a guest
-> to which an EFI secret area with 4 secrets was injected during launch:
-> 
-> # ls -la /sys/kernel/security/coco/efi_secret
-> total 0
-> drwxr-xr-x 2 root root 0 Jun 28 11:54 .
-> drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
-> -r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
-> -r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
-> -r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
-> -r--r----- 1 root root 0 Jun 28 11:54 e6f5a162-d67f-4750-a67c-5d065f2a9910
-> 
-> # xxd /sys/kernel/security/coco/efi_secret/e6f5a162-d67f-4750-a67c-5d065f2a9910
-> 00000000: 7468 6573 652d 6172 652d 7468 652d 6b61  these-are-the-ka
-> 00000010: 7461 2d73 6563 7265 7473 0001 0203 0405  ta-secrets......
-> 00000020: 0607                                     ..
-> 
-> # rm /sys/kernel/security/coco/efi_secret/e6f5a162-d67f-4750-a67c-5d065f2a9910
-> 
-> # ls -la /sys/kernel/security/coco/efi_secret
-> total 0
-> drwxr-xr-x 2 root root 0 Jun 28 11:55 .
-> drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
-> -r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
-> -r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
-> -r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
+> Please see my comments on the powerpc version of this type of thing:
+> 	
+> https://lore.kernel.org/r/20220122005637.28199-1-nayna@linux.ibm.com
 
-Please see my comments on the powerpc version of this type of thing:
-	https://lore.kernel.org/r/20220122005637.28199-1-nayna@linux.ibm.com
+If you want a debate, actually cc'ing the people on the other thread
+would have been a good start ...
+
+For those added, this patch series is at:
+
+https://lore.kernel.org/all/20220201124413.1093099-1-dovmurik@linux.ibm.com/
+
+> You all need to work together to come up with a unified place for
+> this and stop making it platform-specific.
+
+I'm not entirely sure of that.  If you look at the differences between
+EFI variables and the COCO proposal: the former has an update API
+which, in the case of signed variables, is rather complex and a UC16
+content requirement.  The latter is binary data with read only/delete. 
+Plus each variable in EFI is described by a GUID, so having a directory
+of random guids, some of which behave like COCO secrets and some of
+which are EFI variables is going to be incredibly confusing (and also
+break all our current listing tools which seems somewhat undesirable).
+
+So we could end up with 
+
+<common path prefix>/efivar
+<common path prefix>/coco
+
+To achieve the separation, but I really don't see what this buys us. 
+Both filesystems would likely end up with different backends because of
+the semantic differences and we can easily start now in different
+places (effectively we've already done this for efi variables) and
+unify later if that is the chosen direction, so it doesn't look like a
+blocker.
+
+> Until then, we can't take this.
+
+I don't believe anyone was asking you to take it.
+
+James
 
 
-You all need to work together to come up with a unified place for this
-and stop making it platform-specific.
-
-Until then, we can't take this.
-
-sorry,
-
-greg k-h
