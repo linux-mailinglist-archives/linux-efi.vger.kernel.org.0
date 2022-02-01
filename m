@@ -2,228 +2,244 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03CD14A65C3
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Feb 2022 21:35:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F02EC4A6634
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Feb 2022 21:41:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236703AbiBAUfb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 1 Feb 2022 15:35:31 -0500
-Received: from mail-mw2nam10on2056.outbound.protection.outlook.com ([40.107.94.56]:6048
-        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229702AbiBAUfa (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Tue, 1 Feb 2022 15:35:30 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gWT4pzn9r7IKr0xW0KpVtMcU/ypjB+LlyTSSaC2X/ZxLzXYSCnBWl4VIiSncZ+qZlwnmQzll5HeYegoFtezXOX2JcmIV9iE9BdG41HAMTWRMa2kjcLC4jcFDRRvDpYmO+iySqqLTH3z4cYalvSaOd2dLDWQMhAL8P+pjRbNwVeknxY9uGK043o/Up1S5nzmJrDMtpH63kaXwMiUH2z/fySF5ZGAJpSanPnOSx9CDHQEOQhsupw2n00hyMOtUQzHKHhCQtrRNVlSc8gy0sB4LvqRUEYcMXKXI7j2UmmtKQpi9fzm2H/++UOeUMjHct4g+uQmrjN1jZrfvXLmV173a6g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=v1cWBqOIXa7ardxwCFEaPnr5lv2sy+HvYwvTKBY+L3U=;
- b=HzaiSwcDDOjai2WK7SAR62r4QFlThjvCX9fUt5HRHWrccBHSwX5d1cRx2iIME/zX4k0Y4WATFEukv3C7uV7yOpztPmlCnAZsKRS+eUdit4aB72+uOUxbHdJxAhrGbDNexMiSu2TKr7tGzNFdN89Gg1fWFVnunjnqZolZQja1t4WXetSl7O7XGPAyWfQn4iFvG1FuCylko8OeeLUbIsZkyQ4gJCQ3OWQo0kGBjwvKZxSjeC/2e8LlerdQk7SsTpINuYWkMaGqL+hgVAb/aa0kNyMy3Fq+WMuDcYj22Pd8UzPaMdgu+ojpITZEaO5ZALE1ycaVE/1UJoCw1SCHoOdh2A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=v1cWBqOIXa7ardxwCFEaPnr5lv2sy+HvYwvTKBY+L3U=;
- b=ROo/lJbjEBL+j0pSK9ekysY4tG+2hPZ0xxX+7/Od4QAIxO+CSEmTDKR/ISOZRIsKE8HrrxshyCX80dJij4FAFZI8wVo8258mrde6yfHlZvwD3ofCCK5OqOzbcjF3ocd5g8mDnA6YSQXHGKGFeE1YTIrYqwytQEvpwgDXvjbOuog=
-Received: from MW4PR04CA0175.namprd04.prod.outlook.com (2603:10b6:303:85::30)
- by DM5PR12MB1836.namprd12.prod.outlook.com (2603:10b6:3:114::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4930.20; Tue, 1 Feb
- 2022 20:35:28 +0000
-Received: from CO1NAM11FT041.eop-nam11.prod.protection.outlook.com
- (2603:10b6:303:85:cafe::9a) by MW4PR04CA0175.outlook.office365.com
- (2603:10b6:303:85::30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4930.15 via Frontend
- Transport; Tue, 1 Feb 2022 20:35:28 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT041.mail.protection.outlook.com (10.13.174.217) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4951.12 via Frontend Transport; Tue, 1 Feb 2022 20:35:26 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Tue, 1 Feb
- 2022 14:35:25 -0600
-Date:   Tue, 1 Feb 2022 14:35:07 -0600
-From:   Michael Roth <michael.roth@amd.com>
-To:     Borislav Petkov <bp@alien8.de>
-CC:     Brijesh Singh <brijesh.singh@amd.com>, <x86@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-        <linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
-        <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        id S240439AbiBAUlu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 1 Feb 2022 15:41:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55882 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242290AbiBAUll (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Feb 2022 15:41:41 -0500
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1347AC06139D
+        for <linux-efi@vger.kernel.org>; Tue,  1 Feb 2022 12:39:41 -0800 (PST)
+Received: by mail-lj1-x22e.google.com with SMTP id t9so25798319lji.12
+        for <linux-efi@vger.kernel.org>; Tue, 01 Feb 2022 12:39:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=CCHRlnNYeF95Z0E47QMIOcWFuVuKdPbhrfyvVDY/gqE=;
+        b=MXDhzlA/b4G0ig7K6rclUU3oFoycV4wfrA/3QQrZCzuP+ttoHw4Bxm4G81iw1INDFN
+         r7R2Kcga3uKko9XYj8F7TDykqLDIgMiSLy25AeE7UFgHfozMn8YLGuIaxYD0pCjDiQNb
+         hWYMvvj15zyQnU5NcJZipSrluZeUR82fdDnZ7f6TV3eRq1XG1vGwIec59TGu+zDsQ/0C
+         CgtsZC5Derge+uNFYv0nHex+jsnb3KLMo6BNaf16VRHehk68wbW1JL8pZ3DzVJWSf4xI
+         k5whar2GAfdItMDRQZfNjsClnweO6EXT7aAe2oZrHe2Suspg6kt+SogsQ825Ps6iSRWx
+         zEkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CCHRlnNYeF95Z0E47QMIOcWFuVuKdPbhrfyvVDY/gqE=;
+        b=dlNH/K9qDFOkf4Q6wlE6I9CqRqpnu9rDHkBgYd9r93oS0Bfhgp/3p6U0VgqpDCPWAS
+         CMyjde3hvvQbPtZqNEA2GDyvnUZBz4YZqBUSJQB+1/mxe2bQc0J088gd+bwnanq7uQLm
+         jsF8TT8XzklZS2XpBT/SW7AlPirvfRF1jWttHddTn36EeyAzepz4YxIaqJTOAyOXX8Mh
+         impouuQTobb0U80ZsCepIMm1KDOeAHjYr3p5noTDGC+BIZDj4d6mV77oFdJY/rqQY3vv
+         Cdmugj0xY7Pm+SEsNvstcfDIe2GENfcmMjtXBdglcIIZI9RWrjAFqEL+8AaUXJQpUUjG
+         TQlw==
+X-Gm-Message-State: AOAM531TQaJbVz7NWNv7mXkrEyWqPaRnNeWRlBsPq1wrsMybFO0Y4vSD
+        X2nexfk/PUuXzYBSu/TXmEulrz79UsUay50Yj0NzJw==
+X-Google-Smtp-Source: ABdhPJz3tdzw9oSrD2hKDXB+1mXZIyEnyffVNF8qPwJHccVAns3fQrSH2hPsPAIgwyf+fex4mAbmF0sJBtpDyR1gxY8=
+X-Received: by 2002:a2e:a4a9:: with SMTP id g9mr17830908ljm.369.1643747979115;
+ Tue, 01 Feb 2022 12:39:39 -0800 (PST)
+MIME-Version: 1.0
+References: <20220128171804.569796-1-brijesh.singh@amd.com> <20220128171804.569796-43-brijesh.singh@amd.com>
+In-Reply-To: <20220128171804.569796-43-brijesh.singh@amd.com>
+From:   Peter Gonda <pgonda@google.com>
+Date:   Tue, 1 Feb 2022 13:39:27 -0700
+Message-ID: <CAMkAt6p-kEJXJxHcqay+eoMnTDCGj7tZXVDYwrovB3VkXCbYRg@mail.gmail.com>
+Subject: Re: [PATCH v9 42/43] virt: sevguest: Add support to derive key
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     "the arch/x86 maintainers" <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kvm list <kvm@vger.kernel.org>, linux-efi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev,
+        linux-mm@kvack.org, Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
         Tom Lendacky <thomas.lendacky@amd.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
         Paolo Bonzini <pbonzini@redhat.com>,
         Sean Christopherson <seanjc@google.com>,
-        "Vitaly Kuznetsov" <vkuznets@redhat.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
         Jim Mattson <jmattson@google.com>,
-        "Andy Lutomirski" <luto@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        "Peter Zijlstra" <peterz@infradead.org>,
+        Sergio Lopez <slp@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         David Rientjes <rientjes@google.com>,
         Dov Murik <dovmurik@linux.ibm.com>,
         Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>,
         "Kirill A . Shutemov" <kirill@shutemov.name>,
         Andi Kleen <ak@linux.intel.com>,
         "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        <brijesh.ksingh@gmail.com>, <tony.luck@intel.com>,
-        <marcorr@google.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: Re: [PATCH v9 05/43] x86/compressed/64: Detect/setup SEV/SME
- features earlier in boot
-Message-ID: <20220201203507.goibbaln6dxyoogv@amd.com>
-References: <20220128171804.569796-1-brijesh.singh@amd.com>
- <20220128171804.569796-6-brijesh.singh@amd.com>
- <Yfl3FaTGPxE7qMCq@zn.tnic>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <Yfl3FaTGPxE7qMCq@zn.tnic>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 1ce8c51c-11f0-492d-5319-08d9e5c26168
-X-MS-TrafficTypeDiagnostic: DM5PR12MB1836:EE_
-X-Microsoft-Antispam-PRVS: <DM5PR12MB183658D8FAC3A10AA6E93A5695269@DM5PR12MB1836.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: xMY8/u+KwN9O6JsVkbpMbU++NQqVAHPuUDLFJ9QFEQ7Z8UIxWF8+/FaZ343gYNrlLhNCal1+KV5UaI7es1sIFW9D0mEFZwUghuC6jUnTJFkIn0keXl723MfRavYAAB6n3bN1MfNik+vr3CRNqUExgo5pObjRiYHS70a4DiTPd4RPHTCpUjD7j68mxN2b6TbUAPyqUAKFOF1ZU6VXOlG95MNTfyFhUpbE3jT42Jyj9JYWXIczDG4KKdMoJtoSBw+LupWefuxoQkl9Z4tjFQbQvCg3b27kkWmfX6V3xHDa2OIkdlOXz9tmssPKda4XjRy6gDZlKUn0VAWLSUO9wph1DgMSOee1GUhMlbDZWKdM2/RjNS4Ya7hS3PDMSDvoY5LkMe/tUKX9QQl6QLE1UVmXDIl6OuZ/UmOwclkUPjAd+LvCzGOMIK1R1SE+dxX9/IGJord2N8Zkk+xtlTbCxqEPvT1jLZuLMk0kSVXGdUjBVqhZru2E63UMOCUCY/Uc2zgVaeZo/hIQisCEmr7GOCq5Fy7KBn6scpCUD0tKnA43ZR4AwSDvNIpx8BjO1MibGAzKIODAlQUwTz/stLv8Op4Phr2f2m+Qoob76G3U16IA6QDrLdznTELNRDUuVDWsfY36tfkxwidJYuoN9ZBrowhrLx4s98S6oW61GKucu+7VeyMm69lhn+FYdXKSJSO9AvE+4/p3Np9JtDL+GK0zQcsDO4xgao2S0UWIWs+PGfl2Yfg/nuU2ZeWlck8oRg6pPWuPuYzHQvEKzYvyHppKaWhhkXP4MIoEoGqIbwYS3blEw3M=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(40470700004)(46966006)(36840700001)(70206006)(70586007)(508600001)(81166007)(8676002)(8936002)(6666004)(4326008)(316002)(36756003)(6916009)(40460700003)(54906003)(47076005)(966005)(356005)(82310400004)(336012)(186003)(2906002)(7416002)(7406005)(16526019)(26005)(2616005)(44832011)(36860700001)(5660300002)(86362001)(1076003)(45080400002)(426003)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2022 20:35:26.8404
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ce8c51c-11f0-492d-5319-08d9e5c26168
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT041.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB1836
+        brijesh.ksingh@gmail.com, Tony Luck <tony.luck@intel.com>,
+        Marc Orr <marcorr@google.com>,
+        Sathyanarayanan Kuppuswamy 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Liam Merwick <liam.merwick@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Feb 01, 2022 at 07:08:21PM +0100, Borislav Petkov wrote:
-> On Fri, Jan 28, 2022 at 11:17:26AM -0600, Brijesh Singh wrote:
-> > diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-> > index fd9441f40457..49064a9f96e2 100644
-> > --- a/arch/x86/boot/compressed/head_64.S
-> > +++ b/arch/x86/boot/compressed/head_64.S
-> > @@ -191,9 +191,8 @@ SYM_FUNC_START(startup_32)
-> >  	/*
-> >  	 * Mark SEV as active in sev_status so that startup32_check_sev_cbit()
-> >  	 * will do a check. The sev_status memory will be fully initialized
-> 
-> That "sev_status memory" formulation is just weird. Pls fix it while
-> you're touching that comment.
+On Fri, Jan 28, 2022 at 10:19 AM Brijesh Singh <brijesh.singh@amd.com> wrote:
+>
+> The SNP_GET_DERIVED_KEY ioctl interface can be used by the SNP guest to
+> ask the firmware to provide a key derived from a root key. The derived
+> key may be used by the guest for any purposes it chooses, such as a
+> sealing key or communicating with the external entities.
+>
+> See SEV-SNP firmware spec for more information.
+>
+> Reviewed-by: Liam Merwick <liam.merwick@oracle.com>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 
-Will do.
+Reviewed-by: Peter Gonda <pgonda@google.com>
 
-> 
-> > +static inline u64 rd_sev_status_msr(void)
-> > +{
-> > +	unsigned long low, high;
-> > +
-> > +	asm volatile("rdmsr" : "=a" (low), "=d" (high) :
-> > +			"c" (MSR_AMD64_SEV));
-> > +
-> > +	return ((high << 32) | low);
-> > +}
-> 
-> Don't you see sev_es_rd_ghcb_msr() in that same file above? Do a common
-> rdmsr() helper and call it where needed, pls, instead of duplicating
-> code.
+> ---
+>  Documentation/virt/coco/sevguest.rst  | 17 ++++++++++
+>  drivers/virt/coco/sevguest/sevguest.c | 45 +++++++++++++++++++++++++++
+>  include/uapi/linux/sev-guest.h        | 17 ++++++++++
+>  3 files changed, 79 insertions(+)
+>
+> diff --git a/Documentation/virt/coco/sevguest.rst b/Documentation/virt/coco/sevguest.rst
+> index 47ef3b0821d5..aafc9bce9aef 100644
+> --- a/Documentation/virt/coco/sevguest.rst
+> +++ b/Documentation/virt/coco/sevguest.rst
+> @@ -72,6 +72,23 @@ On success, the snp_report_resp.data will contains the report. The report
+>  contain the format described in the SEV-SNP specification. See the SEV-SNP
+>  specification for further details.
+>
+> +2.2 SNP_GET_DERIVED_KEY
+> +-----------------------
+> +:Technology: sev-snp
+> +:Type: guest ioctl
+> +:Parameters (in): struct snp_derived_key_req
+> +:Returns (out): struct snp_derived_key_resp on success, -negative on error
+> +
+> +The SNP_GET_DERIVED_KEY ioctl can be used to get a key derive from a root key.
 
-Unfortunately rdmsr()/wrmsr()/__rdmsr()/__wrmsr() etc. definitions are all
-already getting pulled in via:
+derived from ...
 
-  misc.h:
-    #include linux/elf.h
-      #include linux/thread_info.h
-        #include linux/cpufeature.h
-          #include linux/processor.h
-            #include linux/msr.h
+> +The derived key can be used by the guest for any purpose, such as sealing keys
+> +or communicating with external entities.
 
-Those definitions aren't usable in boot/compressed because of __ex_table
-and possibly some other dependency hellishness.
+Question: How would this be used to communicate with external
+entities? Reading Section 7.2 it seems like we could pick the VCEK and
+have no guest specific inputs and we'd get the same derived key as we
+would on another guest on the same platform with, is that correct?
 
-Would read_msr()/write_msr() be reasonable alternative names for these new
-helpers, or something else that better distinguishes them from the
-kernel proper definitions?
-
-> 
-> misc.h looks like a good place.
-
-It doesn't look like anything in boot/ pulls in boot/compressed/
-headers. It seems to be the other way around, with boot/compressed
-pulling in headers and whole C files from boot/.
-
-So perhaps these new definitions should be added to a small boot/msr.h
-header and pulled in from there?
-
-> 
-> Extra bonus points will be given if you unify callers in
-> arch/x86/boot/cpucheck.c too but you don't have to - I can do that
-> ontop.
-
-I have these new helpers defined with similar signatures to
-__rdmsr/__wrmsr:
-
-  /* rdmsr/wrmsr helpers */
-  static inline u64 read_msr(unsigned int msr)
-  {
-         u64 low, high;
-  
-         asm volatile("rdmsr" : "=a" (low), "=d" (high) : "c" (msr));
-  
-         return ((high << 32) | low);
-  }
-  
-  static inline void write_msr(unsigned int msr, u32 low, u32 high)
-  {
-         asm volatile("wrmsr" : : "c" (msr), "a"(low), "d" (high) : "memory");
-  }
-
-but cpucheck.c code flow really lends itself to having a read_msr()
-variant that loads into 2 separate high/low u32 values, like what
-native_rdmsr does:
-
-  #define native_rdmsr(msr, val1, val2)                   \
-  do {                                                    \
-          u64 __val = __rdmsr((msr));                     \
-          (void)((val1) = (u32)__val);                    \
-          (void)((val2) = (u32)(__val >> 32));            \
-  } while (0)
-
-Should we introduce something like this as well for cpucheck.c? Or
-re-write cpucheck.c to make use of the u64 versions? Or just set the
-cpucheck.c rework aside for now? (but still introduce the above helpers
-as boot/msr.h in preparation)?
-
-Thanks,
-
-Mike
-
-> 
-> Thx.
-> 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fpeople.kernel.org%2Ftglx%2Fnotes-about-netiquette&amp;data=04%7C01%7Cmichael.roth%40amd.com%7Cec7f8621a6934039cfff08d9e5addaca%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637793357136301050%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=FMoP5ZskuxwanWTe5DxMnIYNPBSi%2FhRrOExp9hIHaCo%3D&amp;reserved=0
+> +
+> +The ioctl uses the SNP_GUEST_REQUEST (MSG_KEY_REQ) command provided by the
+> +SEV-SNP firmware to derive the key. See SEV-SNP specification for further details
+> +on the various fields passed in the key derivation request.
+> +
+> +On success, the snp_derived_key_resp.data contains the derived key value. See
+> +the SEV-SNP specification for further details.
+>
+>  Reference
+>  ---------
+> diff --git a/drivers/virt/coco/sevguest/sevguest.c b/drivers/virt/coco/sevguest/sevguest.c
+> index 6dc0785ddd4b..4369e55df9a6 100644
+> --- a/drivers/virt/coco/sevguest/sevguest.c
+> +++ b/drivers/virt/coco/sevguest/sevguest.c
+> @@ -392,6 +392,48 @@ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_io
+>         return rc;
+>  }
+>
+> +static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
+> +{
+> +       struct snp_guest_crypto *crypto = snp_dev->crypto;
+> +       struct snp_derived_key_resp resp = {0};
+> +       struct snp_derived_key_req req = {0};
+> +       int rc, resp_len;
+> +       u8 buf[64+16]; /* Response data is 64 bytes and max authsize for GCM is 16 bytes */
+> +
+> +       if (!arg->req_data || !arg->resp_data)
+> +               return -EINVAL;
+> +
+> +       /* Copy the request payload from userspace */
+> +       if (copy_from_user(&req, (void __user *)arg->req_data, sizeof(req)))
+> +               return -EFAULT;
+> +
+> +       /*
+> +        * The intermediate response buffer is used while decrypting the
+> +        * response payload. Make sure that it has enough space to cover the
+> +        * authtag.
+> +        */
+> +       resp_len = sizeof(resp.data) + crypto->a_len;
+> +       if (sizeof(buf) < resp_len)
+> +               return -ENOMEM;
+> +
+> +       /* Issue the command to get the attestation report */
+> +       rc = handle_guest_request(snp_dev, SVM_VMGEXIT_GUEST_REQUEST, arg->msg_version,
+> +                                 SNP_MSG_KEY_REQ, &req, sizeof(req), buf, resp_len,
+> +                                 &arg->fw_err);
+> +       if (rc)
+> +               goto e_free;
+> +
+> +       /* Copy the response payload to userspace */
+> +       memcpy(resp.data, buf, sizeof(resp.data));
+> +       if (copy_to_user((void __user *)arg->resp_data, &resp, sizeof(resp)))
+> +               rc = -EFAULT;
+> +
+> +e_free:
+> +       memzero_explicit(buf, sizeof(buf));
+> +       memzero_explicit(&resp, sizeof(resp));
+> +       return rc;
+> +}
+> +
+>  static long snp_guest_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
+>  {
+>         struct snp_guest_dev *snp_dev = to_snp_dev(file);
+> @@ -421,6 +463,9 @@ static long snp_guest_ioctl(struct file *file, unsigned int ioctl, unsigned long
+>         case SNP_GET_REPORT:
+>                 ret = get_report(snp_dev, &input);
+>                 break;
+> +       case SNP_GET_DERIVED_KEY:
+> +               ret = get_derived_key(snp_dev, &input);
+> +               break;
+>         default:
+>                 break;
+>         }
+> diff --git a/include/uapi/linux/sev-guest.h b/include/uapi/linux/sev-guest.h
+> index 081d314a6279..bcd00a6d4501 100644
+> --- a/include/uapi/linux/sev-guest.h
+> +++ b/include/uapi/linux/sev-guest.h
+> @@ -30,6 +30,20 @@ struct snp_report_resp {
+>         __u8 data[4000];
+>  };
+>
+> +struct snp_derived_key_req {
+> +       __u32 root_key_select;
+> +       __u32 rsvd;
+> +       __u64 guest_field_select;
+> +       __u32 vmpl;
+> +       __u32 guest_svn;
+> +       __u64 tcb_version;
+> +};
+> +
+> +struct snp_derived_key_resp {
+> +       /* response data, see SEV-SNP spec for the format */
+> +       __u8 data[64];
+> +};
+> +
+>  struct snp_guest_request_ioctl {
+>         /* message version number (must be non-zero) */
+>         __u8 msg_version;
+> @@ -47,4 +61,7 @@ struct snp_guest_request_ioctl {
+>  /* Get SNP attestation report */
+>  #define SNP_GET_REPORT _IOWR(SNP_GUEST_REQ_IOC_TYPE, 0x0, struct snp_guest_request_ioctl)
+>
+> +/* Get a derived key from the root */
+> +#define SNP_GET_DERIVED_KEY _IOWR(SNP_GUEST_REQ_IOC_TYPE, 0x1, struct snp_guest_request_ioctl)
+> +
+>  #endif /* __UAPI_LINUX_SEV_GUEST_H_ */
+> --
+> 2.25.1
+>
