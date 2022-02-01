@@ -2,367 +2,274 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38A4F4A5AF6
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Feb 2022 12:14:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 368374A5C70
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Feb 2022 13:44:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235491AbiBALOE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 1 Feb 2022 06:14:04 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:46118 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S237102AbiBALOD (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Feb 2022 06:14:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1643714043;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=I3cdlb+bt2t5R2qh8Ebhk0DyyXayuLjBrWUaEShw/SY=;
-        b=iAq8UR6PEyOGI/XX2zP9sjR1rApc/f2JBo6XUyVw+uZVnR1J59wjXoPtJfC2cingAjwfyG
-        KIte/r9p9rnPULMmGgbENXiHEP+0GPgUB7cjluH3qcX0ia5Pq0fa2Witl2wIjl6fxYB7jB
-        hhKJZXVLK5R7TDKNapG1CUzZshZOVYQ=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-325-onO06lR5NwCPGFNT3sCjaw-1; Tue, 01 Feb 2022 06:14:02 -0500
-X-MC-Unique: onO06lR5NwCPGFNT3sCjaw-1
-Received: by mail-wr1-f70.google.com with SMTP id s25-20020adfa299000000b001d8d032255fso5842585wra.14
-        for <linux-efi@vger.kernel.org>; Tue, 01 Feb 2022 03:14:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent
-         :content-language:to:cc:references:from:organization:subject
-         :in-reply-to:content-transfer-encoding;
-        bh=I3cdlb+bt2t5R2qh8Ebhk0DyyXayuLjBrWUaEShw/SY=;
-        b=RMfeQlmN4u0uUcDmCjS4VZoTcGejPJq7UGxg/GEC1BC1Qw2kYFkM5D9nfXFkB5ZE8M
-         9ZhO+AyoqKH1OR6/n4s1RSj7oqsDhR1UeH+2qeuNmRSaLapJDgaYwiD0a1O2XnJw7NLA
-         mbACTfuUW1oCQCUDDRsRB6CEyxswl1wnddsXWy+LrgeNEmHnx8i8VMqxsYOOSn9qMZIK
-         WuIvmgG+Y5bWKFeXCxY/bfUhWmmCUFnPLBqAszHrEQaqfEljzn7qhhHtxe4T1l4WTY3M
-         3PDlnUW7u3SwhC3m15ZY7JuCmvEWjM+Y2YhkspYwKOXXpe72wvk/gRd7UXGqwTn1Hp8Q
-         njfA==
-X-Gm-Message-State: AOAM532MyzAKrMAw4RKBY+Fgl19GbaDKLy/bZZb8Xjdf0vgyYHW8Vp7H
-        lwHIUIP7yREJFVv/y4msX9e7EdOrsi6vF2/Of1UxY5+rTdoGyhGRc+jGT00Ozwtn2nqv3UKdAI3
-        mxH3kUuSFzOEuiplA/K9D
-X-Received: by 2002:a5d:47c5:: with SMTP id o5mr20849084wrc.666.1643714040902;
-        Tue, 01 Feb 2022 03:14:00 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxCRt5YJsAUeIs7/ABVx6HcN37Qr2l4La9lv604NiEZBa9lLCs4/REmP1xiM/vpjnTFklGPaA==
-X-Received: by 2002:a5d:47c5:: with SMTP id o5mr20849063wrc.666.1643714040567;
-        Tue, 01 Feb 2022 03:14:00 -0800 (PST)
-Received: from ?IPV6:2003:cb:c711:ba00:67b6:a3ab:b0a8:9517? (p200300cbc711ba0067b6a3abb0a89517.dip0.t-ipconnect.de. [2003:cb:c711:ba00:67b6:a3ab:b0a8:9517])
-        by smtp.gmail.com with ESMTPSA id p190sm1796266wmp.16.2022.02.01.03.13.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Feb 2022 03:13:59 -0800 (PST)
-Message-ID: <c09f8adc-7d2b-c204-8886-3f1cdd624ac5@redhat.com>
-Date:   Tue, 1 Feb 2022 12:13:58 +0100
+        id S236339AbiBAMo5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 1 Feb 2022 07:44:57 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:38480 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229966AbiBAMo4 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Feb 2022 07:44:56 -0500
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 211CdUvY017127;
+        Tue, 1 Feb 2022 12:44:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=UGY2abURcnpFtpm/upKHv5PzAHKnxDA3gsUO9xBlR1A=;
+ b=Ufx4S52u55nN1+/SFfMx5vv6W2+31Zai0pO60QYQqIcGmEA7ppnEyfkYVF4OpSBwV6QN
+ JcAKtSS0jXdWu1+tvfOmSwKkGPLcv51OgSyTld0MLBcPU4W0ZzDLFiqX7a9BjbT1baDV
+ EMEul3IEFMwBH72IQYX41YN/z6cZzF+CYvNqt7lVpwIz5irntDLXPESktqkzbwHN2NQo
+ VEaQ+eYbptSajEMHqA9tQBqEr1Viez9pj8Xng+lJCtwPuBSP9f3jrpzeAxE4AUEa8hLd
+ XO17RDsHN8W8e09t6ibH6gfqchYv04EL92NCbQEbIBXGyGbOqMm/bPLr+Gxql7mfy+ft Ew== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3dxj34e0c6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 01 Feb 2022 12:44:43 +0000
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 211ChVMp008186;
+        Tue, 1 Feb 2022 12:44:42 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3dxj34e0bn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 01 Feb 2022 12:44:42 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+        by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 211CchWj011833;
+        Tue, 1 Feb 2022 12:44:41 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+        by ppma04dal.us.ibm.com with ESMTP id 3dvw7auc92-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 01 Feb 2022 12:44:41 +0000
+Received: from b03ledav005.gho.boulder.ibm.com (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+        by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 211CidPi28377498
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 1 Feb 2022 12:44:39 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 97457BE05B;
+        Tue,  1 Feb 2022 12:44:39 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C6962BE056;
+        Tue,  1 Feb 2022 12:44:37 +0000 (GMT)
+Received: from amdrome3.watson.ibm.com (unknown [9.2.130.16])
+        by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Tue,  1 Feb 2022 12:44:37 +0000 (GMT)
+From:   Dov Murik <dovmurik@linux.ibm.com>
+To:     linux-efi@vger.kernel.org
+Cc:     Dov Murik <dovmurik@linux.ibm.com>, Borislav Petkov <bp@suse.de>,
+        Ashish Kalra <ashish.kalra@amd.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Andrew Scull <ascull@google.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Lenny Szubowicz <lszubowi@redhat.com>,
+        Peter Gonda <pgonda@google.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+        Jim Cadden <jcadden@ibm.com>,
+        Daniele Buono <dbuono@linux.vnet.ibm.com>,
+        linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v7 0/5] Allow guest access to EFI confidential computing secret area
+Date:   Tue,  1 Feb 2022 12:44:08 +0000
+Message-Id: <20220201124413.1093099-1-dovmurik@linux.ibm.com>
+X-Mailer: git-send-email 2.25.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: eoXuoar1ulbAVKbBO-AH3UV6PdfF9mnQ
+X-Proofpoint-GUID: LgRHRopGbNsWBzHaokhDVnAP2rtfVJy1
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Content-Language: en-US
-To:     "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        rppt@kernel.org, ak@linux.intel.com, akpm@linux-foundation.org,
-        ardb@kernel.org, bp@alien8.de, brijesh.singh@amd.com,
-        dave.hansen@intel.com, dfaggioli@suse.com, jroedel@suse.de,
-        linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org, luto@kernel.org,
-        mingo@redhat.com, pbonzini@redhat.com, peterz@infradead.org,
-        rientjes@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-        seanjc@google.com, tglx@linutronix.de, thomas.lendacky@amd.com,
-        varad.gautam@suse.com, vbabka@suse.cz, x86@kernel.org,
-        Mike Rapoport <rppt@linux.ibm.com>
-References: <YfZJQedck2YxZcWA@kernel.org>
- <20220130164548.40417-1-kirill.shutemov@linux.intel.com>
- <acc12d73-a7d1-014c-9c07-33251d7d07ee@redhat.com>
- <20220131193041.xuagyispia77ak2g@box.shutemov.name>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCHv3.1 1/7] mm: Add support for unaccepted memory
-In-Reply-To: <20220131193041.xuagyispia77ak2g@box.shutemov.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-01_03,2022-02-01_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=0 clxscore=1011 lowpriorityscore=0 phishscore=0
+ malwarescore=0 adultscore=0 mlxlogscore=999 bulkscore=0 impostorscore=0
+ spamscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202010068
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 31.01.22 20:30, Kirill A. Shutemov wrote:
-> On Mon, Jan 31, 2022 at 01:13:49PM +0100, David Hildenbrand wrote:
->> On 30.01.22 17:45, Kirill A. Shutemov wrote:
->>> UEFI Specification version 2.9 introduces the concept of memory
->>> acceptance. Some Virtual Machine platforms, such as Intel TDX or AMD
->>> SEV-SNP, requiring memory to be accepted before it can be used by the
->>> guest. Accepting happens via a protocol specific for the Virtual Machine
->>> platform.
->>>
->>> Accepting memory is costly and it makes VMM allocate memory for the
->>> accepted guest physical address range. It's better to postpone memory
->>> acceptance until memory is needed. It lowers boot time and reduces
->>> memory overhead.
->>>
->>> Support of such memory requires a few changes in core-mm code:
->>>
->>>   - memblock has to accept memory on allocation;
->>>
->>>   - page allocator has to accept memory on the first allocation of the
->>>     page;
->>>
->>> Memblock change is trivial.
->>>
->>> The page allocator is modified to accept pages on the first allocation.
->>> PageBuddyUnaccepted() is used to indicate that the page requires acceptance.
->>>
->>> Kernel only need to accept memory once after boot, so during the boot
->>> and warm up phase there will be a lot of memory acceptance. After things
->>> are settled down the only price of the feature if couple of checks for
->>> PageBuddyUnaccepted() in alloc and free paths. The check refers a hot
->>> variable (that also encodes PageBuddy()), so it is cheap and not visible
->>> on profiles.
->>>
->>> Architecture has to provide three helpers if it wants to support
->>> unaccepted memory:
->>>
->>>  - accept_memory() makes a range of physical addresses accepted.
->>>
->>>  - maybe_mark_page_unaccepted() marks a page PageBuddyUnaccepted() if it
->>>    requires acceptance. Used during boot to put pages on free lists.
->>>
->>>  - accept_page() makes a page accepted and clears PageBuddyUnaccepted().
->>>
->>> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
->>> Acked-by: Mike Rapoport <rppt@linux.ibm.com>	# memblock
->>
->>
->> You should somehow document+check+enforce that page poisoning cannot be
->> enabled concurrently, because it cannot possibly work IIUC.
-> 
-> Looking at code again, I now think that sharing the bit with PageOffline()
-> is wrong. Previously I convinced myself that there's no conflict on the
-> bit. In the initial version of the patchset, the page acceptance happened
-> inside del_page_from_free_list() so any removal from the free list lead to
-> clearing the bit. It is not the case now when acceptance moved to
-> post_alloc_hook(). __isolate_free_page() and __offline_isolated_pages()
-> look problematic now.
-> 
-> I will use brand new bit for the flag and rename BuddyUnaccepted to just
-> Unaccepted, since it can be set with Buddy cleared.
-> 
-> Sounds okay?
-> 
->> [...]
->>
->>> + /*
->>> +  * PageBuddyUnaccepted() indicates that the page has to be "accepted" before
->>> +  * it can be used. Page allocator has to call accept_page() before returning
->>> +  * the page to the caller.
->>> +  *
->>> +  * PageBuddyUnaccepted() encoded with the same bit as PageOffline().
->>> +  * PageOffline() pages are never on free list of buddy allocator, so there's
->>> +  * not conflict.
->>> +  */
->>> +#ifdef CONFIG_UNACCEPTED_MEMORY
->>> +PAGE_TYPE_OPS(BuddyUnaccepted, offline)
->>> +#else
->>> +PAGE_TYPE_OPS_FALSE(BuddyUnaccepted)
->>> +#endif
->>
->> Much better.
->>
->>> +
->>>  extern void page_offline_freeze(void);
->>>  extern void page_offline_thaw(void);
->>>  extern void page_offline_begin(void);
->>> diff --git a/mm/internal.h b/mm/internal.h
->>> index d80300392a19..26e5d7cb6aff 100644
->>> --- a/mm/internal.h
->>> +++ b/mm/internal.h
->>> @@ -718,4 +718,19 @@ void vunmap_range_noflush(unsigned long start, unsigned long end);
->>>  int numa_migrate_prep(struct page *page, struct vm_area_struct *vma,
->>>  		      unsigned long addr, int page_nid, int *flags);
->>>  
->>> +#ifndef CONFIG_UNACCEPTED_MEMORY
->>> +static inline void maybe_mark_page_unaccepted(struct page *page,
->>> +					      unsigned int order)
->>> +{
->>> +}
->>> +
->>> +static inline void accept_page(struct page *page, unsigned int order)
->>> +{
->>> +}
->>> +
->>> +static inline void accept_memory(phys_addr_t start, phys_addr_t end)
->>> +{
->>> +}
->>> +#endif
->>> +
->>>  #endif	/* __MM_INTERNAL_H */
->>> diff --git a/mm/memblock.c b/mm/memblock.c
->>> index 1018e50566f3..6c109b3b2a02 100644
->>> --- a/mm/memblock.c
->>> +++ b/mm/memblock.c
->>> @@ -1400,6 +1400,15 @@ phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size,
->>>  		 */
->>>  		kmemleak_alloc_phys(found, size, 0, 0);
->>>  
->>> +	/*
->>> +	 * Some Virtual Machine platforms, such as Intel TDX or AMD SEV-SNP,
->>> +	 * require memory to be accepted before it can be used by the
->>> +	 * guest.
->>> +	 *
->>> +	 * Accept the memory of the allocated buffer.
->>> +	 */
->>> +	accept_memory(found, found + size);
->>> +
->>>  	return found;
->>>  }
->>>  
->>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->>> index 3589febc6d31..27b9bd20e675 100644
->>> --- a/mm/page_alloc.c
->>> +++ b/mm/page_alloc.c
->>> @@ -1077,6 +1077,7 @@ static inline void __free_one_page(struct page *page,
->>>  	unsigned int max_order;
->>>  	struct page *buddy;
->>>  	bool to_tail;
->>> +	bool unaccepted = PageBuddyUnaccepted(page);
->>>  
->>>  	max_order = min_t(unsigned int, MAX_ORDER - 1, pageblock_order);
->>>  
->>> @@ -1110,6 +1111,10 @@ static inline void __free_one_page(struct page *page,
->>>  			clear_page_guard(zone, buddy, order, migratetype);
->>>  		else
->>>  			del_page_from_free_list(buddy, zone, order);
->>> +
->>> +		if (PageBuddyUnaccepted(buddy))
->>> +			unaccepted = true;
->>> +
->>>  		combined_pfn = buddy_pfn & pfn;
->>>  		page = page + (combined_pfn - pfn);
->>>  		pfn = combined_pfn;
->>> @@ -1143,6 +1148,10 @@ static inline void __free_one_page(struct page *page,
->>>  done_merging:
->>>  	set_buddy_order(page, order);
->>>  
->>> +	/* Mark page unaccepted if any of merged pages were unaccepted */
->>> +	if (unaccepted)
->>> +		__SetPageBuddyUnaccepted(page);
->>> +
->>>  	if (fpi_flags & FPI_TO_TAIL)
->>>  		to_tail = true;
->>>  	else if (is_shuffle_order(order))
->>> @@ -1168,7 +1177,8 @@ static inline void __free_one_page(struct page *page,
->>>  static inline bool page_expected_state(struct page *page,
->>>  					unsigned long check_flags)
->>>  {
->>> -	if (unlikely(atomic_read(&page->_mapcount) != -1))
->>> +	if (unlikely(atomic_read(&page->_mapcount) != -1) &&
->>> +	    !PageBuddyUnaccepted(page))
->>>  		return false;
->>>  
->>>  	if (unlikely((unsigned long)page->mapping |
->>> @@ -1749,6 +1759,8 @@ void __init memblock_free_pages(struct page *page, unsigned long pfn,
->>>  {
->>>  	if (early_page_uninitialised(pfn))
->>>  		return;
->>> +
->>> +	maybe_mark_page_unaccepted(page, order);
->>>  	__free_pages_core(page, order);
->>
->> You'll be setting the page as unaccepted even before it's actually
->> PageBuddy(). While that works, I wonder why we call
->> maybe_mark_page_unaccepted() at these points.
->>
->> Why are we not moving that deeper into the buddy? __free_pages_core() is
->> used for any fresh pages that enter the buddy, used outside of
->> page_alloc.c only for memory hot(un)plug, so I'd suggest moving it at
->> least into there.
->>
->> But maybe we'd even move it further down, to the place where we actually
->> establish PageBuddy().
->>
->> One idea would be adding a new FPI_UNACCEPTED flag, passing it from
->> __free_pages_core() only, and calling maybe_mark_page_unaccepted() from
->> __free_one_page() after set_buddy_order().
->>
->> If in-lining would do its job properly, we'd be left with the
->> FPI_UNACCEPTED checks only when called via __free_pages_core(), and we'd
->> have that call at a single place right where we mess with PageBuddy().
-> 
-> Okay, this approach looks neat. See fixup below.
-> 
-> But there's down side: maybe_mark_page_unaccepted() cannot be __init
-> anymore, since it is called from __free_one_page().
-> 
-> Any comments?
-> 
-> diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
-> index 2c4ef49a0c9b..a9ce5b918d44 100644
-> --- a/arch/x86/mm/unaccepted_memory.c
-> +++ b/arch/x86/mm/unaccepted_memory.c
-> @@ -42,7 +42,7 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
->  	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
->  }
->  
-> -void __init maybe_mark_page_unaccepted(struct page *page, unsigned int order)
-> +void maybe_mark_page_unaccepted(struct page *page, unsigned int order)
->  {
->  	unsigned long *unaccepted_memory;
->  	phys_addr_t addr = page_to_phys(page);
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 27b9bd20e675..389a9b5e6d63 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -121,6 +121,12 @@ typedef int __bitwise fpi_t;
->   */
->  #define FPI_SKIP_KASAN_POISON	((__force fpi_t)BIT(2))
->  
-> +/*
-> + * Check if the page needs to be marked as PageBuddyUnaccepted().
-> + * Used for the new pages added to the buddy allocator for the first time.
-> + */
-> +#define FPI_UNACCEPTED		((__force fpi_t)BIT(3))
-> +
->  /* prevent >1 _updater_ of zone percpu pageset ->high and ->batch fields */
->  static DEFINE_MUTEX(pcp_batch_high_lock);
->  #define MIN_PERCPU_PAGELIST_HIGH_FRACTION (8)
-> @@ -1148,9 +1154,17 @@ static inline void __free_one_page(struct page *page,
->  done_merging:
->  	set_buddy_order(page, order);
->  
-> -	/* Mark page unaccepted if any of merged pages were unaccepted */
-> -	if (unaccepted)
-> +	if (unaccepted) {
-> +		/* Mark page unaccepted if any of merged pages were unaccepted */
->  		__SetPageBuddyUnaccepted(page);
-> +	} else if (fpi_flags & FPI_UNACCEPTED) {
-> +		/*
-> +		 * Check if the page needs to be marked as PageBuddyUnaccepted().
-> +		 * Used for the new pages added to the buddy allocator for the
-> +		 * first time.
-> +		 */
-> +		maybe_mark_page_unaccepted(page, order);
-> +	}
+Confidential computing (coco) hardware such as AMD SEV (Secure Encrypted
+Virtualization) allows guest owners to inject secrets into the VMs
+memory without the host/hypervisor being able to read them.  In SEV,
+secret injection is performed early in the VM launch process, before the
+guest starts running.
 
-Just one comment, not sure if I mentioned it earlier: I'd suggest a
-slightly different api for maybe_mark_page_unaccepted(), then this would
-become:
+OVMF already reserves designated area for secret injection (in its
+AmdSev package; see edk2 commit 01726b6d23d4 "OvmfPkg/AmdSev: Expose the
+Sev Secret area using a configuration table" [1]), but the secrets were
+not available in the guest kernel.
 
-if (unaccepted ||
-    ((fpi_flags & FPI_UNACCEPTED) && page_is_unaccepted(page, order)))
-	__SetPageBuddyUnaccepted(page);
+The patch series keeps the address of the EFI-provided memory for
+injected secrets, and exposes the secrets to userspace via securityfs
+using a new efi_secret kernel module.  The module is autoloaded (by the
+EFI driver) if the secret area is populated.
 
-Whereby page_is_unaccepted() would simply return "true" if any part of
-the page is unaccepted.
+The first patch in EFI keeps the address of the secret area as passed in
+the EFI configuration table.  The second patch is a quirk fix for older
+firmwares didn't mark the secrets page as EFI_RESERVED_TYPE.  The third
+patch introduces the new efi_secret module that exposes the content of
+the secret entries as securityfs files, and allows clearing out secrets
+with a file unlink interface.  The fourth patch auto-loads the
+efi_secret module during startup if the injected secrets area is
+populated.  The last patch documents the data flow of confidential
+computing secret injection.
 
-Just a thought -- it would be nice to have any setting/clearing of the
-flag in page_alloc.c. This would imply that we'd have an simple API like
+As a usage example, consider a guest performing computations on
+encrypted files.  The Guest Owner provides the decryption key (= secret)
+using the secret injection mechanism.  The guest application reads the
+secret from the efi_secret filesystem and proceeds to decrypt the files
+into memory and then performs the needed computations on the content.
 
-* accept_memory(unsigned long start_pfn, unsigned long nr_pages)
-* memory_is_unaccepted(unsigned long start_pfn, unsigned long nr_pages)
+In this example, the host can't read the files from the disk image
+because they are encrypted.  Host can't read the decryption key because
+it is passed using the secret injection mechanism (= secure channel).
+Host can't read the decrypted content from memory because it's a
+confidential (memory-encrypted) guest.
 
-And would perform flag updates in the caller. Do we care about sub-page
-ranges? I don't think so.
+This has been tested with AMD SEV and SEV-ES guests, but the kernel side
+of handling the secret area has no SEV-specific dependencies, and
+therefore might be usable (perhaps with minor changes) for any
+confidential computing hardware that can publish the secret area via the
+standard EFI config table entry.
 
+To enable this functionality, set CONFIG_EFI_SECRET=m when building the
+guest kernel.
+
+Here is a simple example for usage of the efi_secret module in a guest
+to which an EFI secret area with 4 secrets was injected during launch:
+
+# ls -la /sys/kernel/security/coco/efi_secret
+total 0
+drwxr-xr-x 2 root root 0 Jun 28 11:54 .
+drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
+-r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
+-r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
+-r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
+-r--r----- 1 root root 0 Jun 28 11:54 e6f5a162-d67f-4750-a67c-5d065f2a9910
+
+# xxd /sys/kernel/security/coco/efi_secret/e6f5a162-d67f-4750-a67c-5d065f2a9910
+00000000: 7468 6573 652d 6172 652d 7468 652d 6b61  these-are-the-ka
+00000010: 7461 2d73 6563 7265 7473 0001 0203 0405  ta-secrets......
+00000020: 0607                                     ..
+
+# rm /sys/kernel/security/coco/efi_secret/e6f5a162-d67f-4750-a67c-5d065f2a9910
+
+# ls -la /sys/kernel/security/coco/efi_secret
+total 0
+drwxr-xr-x 2 root root 0 Jun 28 11:55 .
+drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
+-r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
+-r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
+-r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
+
+
+[1] https://github.com/tianocore/edk2/commit/01726b6d23d4
+
+
+---
+
+v7 changes:
+ - Improve description of efi_secret module in Kconfig.
+ - Fix sparse warnings on pointer address space mismatch
+   (Reported-by: kernel test robot <lkp@intel.com>)
+
+v6: https://lore.kernel.org/linux-coco/20211129114251.3741721-1-dovmurik@linux.ibm.com/
+v6 changes:
+ - Autoload the efi_secret module if the secret area is populated
+   (thanks Greg KH).
+ - efi_secret: Depend on X86_64 because we use ioremap_encrypted() which
+   is only defined for this arch.
+ - efi_secret.c: Remove unneeded tableheader_guid local variable.
+ - Documentation fixes.
+
+v5: https://lore.kernel.org/linux-coco/20211118113359.642571-1-dovmurik@linux.ibm.com/
+v5 changes:
+ - Simplify EFI code: instead of copying the secret area, the firmware
+   marks the secret area as EFI_RESERVED_TYPE, and then the uefi_init()
+   code just keeps the pointer as it appears in the EFI configuration
+   table.  The use of reserved pages is similar to the AMD SEV-SNP
+   patches for handling SNP-Secrets and SNP-CPUID pages.
+ - In order to handle OVMF releases out there which mark the
+   confidential computing secrets page as EFI_BOOT_SERVICES_DATA, add
+   efi/libstub code that detects this and fixes the E820 map to reserve
+   this page.
+ - In the efi_secret module code, map the secrets page using
+   ioremap_encrypted (again, similar to the AMD SEV-SNP guest patches
+   for accessing SNP-Secrets and SNP-CPUID pages).
+ - Add documentation in Documentation/security/coco/efi_secret.
+
+v4: https://lore.kernel.org/linux-coco/20211020061408.3447533-1-dovmurik@linux.ibm.com/
+v4 changes:
+ - Guard all the new EFI and efi-stub code (patches 1+2) with #ifdef
+   CONFIG_EFI_COCO_SECRET (thanks Greg KH).  Selecting
+   CONFIG_EFI_SECRET=m (patch 3) will enable the EFI parts as well.
+ - Guard call to clflush_cache_range() with #ifdef CONFIG_X86
+   (Reported-by: kernel test robot <lkp@intel.com>)
+
+v3: https://lore.kernel.org/linux-coco/20211014130848.592611-1-dovmurik@linux.ibm.com/
+v3 changes:
+ - Rename the module to efi_secret
+ - Remove the exporting of clean_cache_range
+ - Use clflush_cache_range in wipe_memory
+ - Document function wipe_memory
+ - Initialize efi.coco_secret to EFI_INVALID_TABLE_ADDR to correctly detect
+   when there's no secret area published in the EFI configuration tables
+
+v2: https://lore.kernel.org/linux-coco/20211007061838.1381129-1-dovmurik@linux.ibm.com
+v2 changes:
+ - Export clean_cache_range()
+ - When deleteing a secret, call clean_cache_range() after explicit_memzero
+ - Add Documentation/ABI/testing/securityfs-coco-sev_secret
+
+v1: https://lore.kernel.org/linux-coco/20210809190157.279332-1-dovmurik@linux.ibm.com/
+
+RFC: https://lore.kernel.org/linux-coco/20210628183431.953934-1-dovmurik@linux.ibm.com/
+
+
+Dov Murik (5):
+  efi: Save location of EFI confidential computing area
+  efi/libstub: Reserve confidential computing secret area
+  virt: Add efi_secret module to expose confidential computing secrets
+  efi: Load efi_secret module if EFI secret area is populated
+  docs: security: Add coco/efi_secret documentation
+
+ .../ABI/testing/securityfs-coco-efi_secret    |  51 +++
+ Documentation/security/coco/efi_secret.rst    | 102 ++++++
+ Documentation/security/coco/index.rst         |   9 +
+ Documentation/security/index.rst              |   1 +
+ arch/x86/platform/efi/efi.c                   |   3 +
+ drivers/firmware/efi/Kconfig                  |  16 +
+ drivers/firmware/efi/Makefile                 |   1 +
+ drivers/firmware/efi/coco.c                   |  58 +++
+ drivers/firmware/efi/efi.c                    |   6 +
+ drivers/firmware/efi/libstub/x86-stub.c       |  28 ++
+ drivers/virt/Kconfig                          |   3 +
+ drivers/virt/Makefile                         |   1 +
+ drivers/virt/coco/efi_secret/Kconfig          |  19 +
+ drivers/virt/coco/efi_secret/Makefile         |   2 +
+ drivers/virt/coco/efi_secret/efi_secret.c     | 337 ++++++++++++++++++
+ include/linux/efi.h                           |  10 +
+ 16 files changed, 647 insertions(+)
+ create mode 100644 Documentation/ABI/testing/securityfs-coco-efi_secret
+ create mode 100644 Documentation/security/coco/efi_secret.rst
+ create mode 100644 Documentation/security/coco/index.rst
+ create mode 100644 drivers/firmware/efi/coco.c
+ create mode 100644 drivers/virt/coco/efi_secret/Kconfig
+ create mode 100644 drivers/virt/coco/efi_secret/Makefile
+ create mode 100644 drivers/virt/coco/efi_secret/efi_secret.c
+
+
+base-commit: 26291c54e111ff6ba87a164d85d4a4e134b7315c
 -- 
-Thanks,
-
-David / dhildenb
+2.25.1
 
