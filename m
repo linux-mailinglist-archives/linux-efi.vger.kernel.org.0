@@ -2,54 +2,54 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F02EC4A6634
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Feb 2022 21:41:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF5ED4A6641
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Feb 2022 21:44:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240439AbiBAUlu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 1 Feb 2022 15:41:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55882 "EHLO
+        id S234504AbiBAUoN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 1 Feb 2022 15:44:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242290AbiBAUll (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Feb 2022 15:41:41 -0500
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1347AC06139D
-        for <linux-efi@vger.kernel.org>; Tue,  1 Feb 2022 12:39:41 -0800 (PST)
-Received: by mail-lj1-x22e.google.com with SMTP id t9so25798319lji.12
-        for <linux-efi@vger.kernel.org>; Tue, 01 Feb 2022 12:39:40 -0800 (PST)
+        with ESMTP id S240341AbiBAUoM (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Feb 2022 15:44:12 -0500
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CDE4C06173E
+        for <linux-efi@vger.kernel.org>; Tue,  1 Feb 2022 12:44:11 -0800 (PST)
+Received: by mail-lf1-x135.google.com with SMTP id p27so36403284lfa.1
+        for <linux-efi@vger.kernel.org>; Tue, 01 Feb 2022 12:44:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=CCHRlnNYeF95Z0E47QMIOcWFuVuKdPbhrfyvVDY/gqE=;
-        b=MXDhzlA/b4G0ig7K6rclUU3oFoycV4wfrA/3QQrZCzuP+ttoHw4Bxm4G81iw1INDFN
-         r7R2Kcga3uKko9XYj8F7TDykqLDIgMiSLy25AeE7UFgHfozMn8YLGuIaxYD0pCjDiQNb
-         hWYMvvj15zyQnU5NcJZipSrluZeUR82fdDnZ7f6TV3eRq1XG1vGwIec59TGu+zDsQ/0C
-         CgtsZC5Derge+uNFYv0nHex+jsnb3KLMo6BNaf16VRHehk68wbW1JL8pZ3DzVJWSf4xI
-         k5whar2GAfdItMDRQZfNjsClnweO6EXT7aAe2oZrHe2Suspg6kt+SogsQ825Ps6iSRWx
-         zEkA==
+        bh=5ziGDzhe4hiIJbW+habtGmGnhoT35aHsGESQviCaQ+w=;
+        b=ULRhHEwfC7PGE+4k1GDiGsO/d2FjnY+Oi4trs0eFA5DaXt/oV+RNNnSbpgrhC6aKbZ
+         XJ6govUz89erjGyfE7+7SVOskPe5PMFEu/tDTSBXkiTwqX3Zic6jNWZWMbOeawCw2SYc
+         3NKbkGph8POLHTfNE0Y0Zmdw1M0ofWjVr3GPyNPUu1T7FgK+hyJmjRNzjDWi0kuY3VCi
+         zobUuDbb3xQKyd9QYUUaM62NkosplK0FoeqV5eeE1wW0dN+fOJVn2J2VozPi6apyaCqZ
+         uZBBb+B+pvdCOU/34ZCAt49cKTUpwt4YM3jOVBzXb6mr3YgQnqRUeQyhAPyv849wVQ/i
+         NJ7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=CCHRlnNYeF95Z0E47QMIOcWFuVuKdPbhrfyvVDY/gqE=;
-        b=dlNH/K9qDFOkf4Q6wlE6I9CqRqpnu9rDHkBgYd9r93oS0Bfhgp/3p6U0VgqpDCPWAS
-         CMyjde3hvvQbPtZqNEA2GDyvnUZBz4YZqBUSJQB+1/mxe2bQc0J088gd+bwnanq7uQLm
-         jsF8TT8XzklZS2XpBT/SW7AlPirvfRF1jWttHddTn36EeyAzepz4YxIaqJTOAyOXX8Mh
-         impouuQTobb0U80ZsCepIMm1KDOeAHjYr3p5noTDGC+BIZDj4d6mV77oFdJY/rqQY3vv
-         Cdmugj0xY7Pm+SEsNvstcfDIe2GENfcmMjtXBdglcIIZI9RWrjAFqEL+8AaUXJQpUUjG
-         TQlw==
-X-Gm-Message-State: AOAM531TQaJbVz7NWNv7mXkrEyWqPaRnNeWRlBsPq1wrsMybFO0Y4vSD
-        X2nexfk/PUuXzYBSu/TXmEulrz79UsUay50Yj0NzJw==
-X-Google-Smtp-Source: ABdhPJz3tdzw9oSrD2hKDXB+1mXZIyEnyffVNF8qPwJHccVAns3fQrSH2hPsPAIgwyf+fex4mAbmF0sJBtpDyR1gxY8=
-X-Received: by 2002:a2e:a4a9:: with SMTP id g9mr17830908ljm.369.1643747979115;
- Tue, 01 Feb 2022 12:39:39 -0800 (PST)
+        bh=5ziGDzhe4hiIJbW+habtGmGnhoT35aHsGESQviCaQ+w=;
+        b=MkCzJ3WKCXGkpzJWz8E/V/Bq9MDd++om0yogN3eJmAiLi+yKSUc68Kd+1V/dl4DNxM
+         g+cDNhWUl3muaCyLYF1tVzW538hQSoii0eFw9/oilkswWGTDuIXumpaCxR9Lgz3JTn97
+         jmVvDNp2xOPcuge81yZhA+Rj/ve4hFVoGhjLRN2ecQJcKFA9wgW4zk5OCbLtHEZ7CloC
+         q25DtkSaaxhhBOh6pEo7iy/gZhCTNSD0pc4XI+ggNsQiZjemLEqe0dEy5MAsCN/iCWC9
+         YAKdfYS5U90C4TChkyJdavN27AqSBafMco9QP+0lmsoITQDgnCteKJZTIAki6QdWbkHQ
+         OkNg==
+X-Gm-Message-State: AOAM531zSiCP6TuxCaf0XPwNqXj6kGe0o3jY6Ip0MIV+h0S8Z+Sr7uMh
+        e5WXlW0vOxbr/rYnpMdY2QB0nv/LQoQMXJLHhG+aYw==
+X-Google-Smtp-Source: ABdhPJwu5e/9vy9h+TUoxFYmOE/ShH6BFV+jT8/RYV64qcflT/MzViz3MDcjtuZdgZhQPiMmVonl0lLHMhxVwRqnNjU=
+X-Received: by 2002:a05:6512:1520:: with SMTP id bq32mr19454952lfb.644.1643748249618;
+ Tue, 01 Feb 2022 12:44:09 -0800 (PST)
 MIME-Version: 1.0
-References: <20220128171804.569796-1-brijesh.singh@amd.com> <20220128171804.569796-43-brijesh.singh@amd.com>
-In-Reply-To: <20220128171804.569796-43-brijesh.singh@amd.com>
+References: <20220128171804.569796-1-brijesh.singh@amd.com> <20220128171804.569796-44-brijesh.singh@amd.com>
+In-Reply-To: <20220128171804.569796-44-brijesh.singh@amd.com>
 From:   Peter Gonda <pgonda@google.com>
-Date:   Tue, 1 Feb 2022 13:39:27 -0700
-Message-ID: <CAMkAt6p-kEJXJxHcqay+eoMnTDCGj7tZXVDYwrovB3VkXCbYRg@mail.gmail.com>
-Subject: Re: [PATCH v9 42/43] virt: sevguest: Add support to derive key
+Date:   Tue, 1 Feb 2022 13:43:57 -0700
+Message-ID: <CAMkAt6r_AupKbpmO7twMBtADrMPtWrRJ6kjAT4c1xGrZmUQ7sw@mail.gmail.com>
+Subject: Re: [PATCH v9 43/43] virt: sevguest: Add support to get extended report
 To:     Brijesh Singh <brijesh.singh@amd.com>
 Cc:     "the arch/x86 maintainers" <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
@@ -80,8 +80,7 @@ Cc:     "the arch/x86 maintainers" <x86@kernel.org>,
         brijesh.ksingh@gmail.com, Tony Luck <tony.luck@intel.com>,
         Marc Orr <marcorr@google.com>,
         Sathyanarayanan Kuppuswamy 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Liam Merwick <liam.merwick@oracle.com>
+        <sathyanarayanan.kuppuswamy@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
@@ -89,76 +88,77 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 On Fri, Jan 28, 2022 at 10:19 AM Brijesh Singh <brijesh.singh@amd.com> wrote:
 >
-> The SNP_GET_DERIVED_KEY ioctl interface can be used by the SNP guest to
-> ask the firmware to provide a key derived from a root key. The derived
-> key may be used by the guest for any purposes it chooses, such as a
-> sealing key or communicating with the external entities.
+> Version 2 of GHCB specification defines Non-Automatic-Exit(NAE) to get
+> the extended guest report. It is similar to the SNP_GET_REPORT ioctl.
+> The main difference is related to the additional data that will be
+> returned. The additional data returned is a certificate blob that can
+> be used by the SNP guest user. The certificate blob layout is defined
+> in the GHCB specification. The driver simply treats the blob as a opaque
+> data and copies it to userspace.
 >
-> See SEV-SNP firmware spec for more information.
->
-> Reviewed-by: Liam Merwick <liam.merwick@oracle.com>
 > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-
-Reviewed-by: Peter Gonda <pgonda@google.com>
-
 > ---
->  Documentation/virt/coco/sevguest.rst  | 17 ++++++++++
->  drivers/virt/coco/sevguest/sevguest.c | 45 +++++++++++++++++++++++++++
->  include/uapi/linux/sev-guest.h        | 17 ++++++++++
->  3 files changed, 79 insertions(+)
+>  Documentation/virt/coco/sevguest.rst  | 23 +++++++
+>  drivers/virt/coco/sevguest/sevguest.c | 89 +++++++++++++++++++++++++++
+>  include/uapi/linux/sev-guest.h        | 13 ++++
+>  3 files changed, 125 insertions(+)
 >
 > diff --git a/Documentation/virt/coco/sevguest.rst b/Documentation/virt/coco/sevguest.rst
-> index 47ef3b0821d5..aafc9bce9aef 100644
+> index aafc9bce9aef..b9fe20e92d06 100644
 > --- a/Documentation/virt/coco/sevguest.rst
 > +++ b/Documentation/virt/coco/sevguest.rst
-> @@ -72,6 +72,23 @@ On success, the snp_report_resp.data will contains the report. The report
->  contain the format described in the SEV-SNP specification. See the SEV-SNP
->  specification for further details.
+> @@ -90,6 +90,29 @@ on the various fields passed in the key derivation request.
+>  On success, the snp_derived_key_resp.data contains the derived key value. See
+>  the SEV-SNP specification for further details.
 >
-> +2.2 SNP_GET_DERIVED_KEY
-> +-----------------------
+> +
+> +2.3 SNP_GET_EXT_REPORT
+> +----------------------
 > +:Technology: sev-snp
 > +:Type: guest ioctl
-> +:Parameters (in): struct snp_derived_key_req
-> +:Returns (out): struct snp_derived_key_resp on success, -negative on error
+> +:Parameters (in/out): struct snp_ext_report_req
+> +:Returns (out): struct snp_report_resp on success, -negative on error
 > +
-> +The SNP_GET_DERIVED_KEY ioctl can be used to get a key derive from a root key.
-
-derived from ...
-
-> +The derived key can be used by the guest for any purpose, such as sealing keys
-> +or communicating with external entities.
-
-Question: How would this be used to communicate with external
-entities? Reading Section 7.2 it seems like we could pick the VCEK and
-have no guest specific inputs and we'd get the same derived key as we
-would on another guest on the same platform with, is that correct?
-
+> +The SNP_GET_EXT_REPORT ioctl is similar to the SNP_GET_REPORT. The difference is
+> +related to the additional certificate data that is returned with the report.
+> +The certificate data returned is being provided by the hypervisor through the
+> +SNP_SET_EXT_CONFIG.
 > +
-> +The ioctl uses the SNP_GUEST_REQUEST (MSG_KEY_REQ) command provided by the
-> +SEV-SNP firmware to derive the key. See SEV-SNP specification for further details
-> +on the various fields passed in the key derivation request.
+> +The ioctl uses the SNP_GUEST_REQUEST (MSG_REPORT_REQ) command provided by the SEV-SNP
+> +firmware to get the attestation report.
 > +
-> +On success, the snp_derived_key_resp.data contains the derived key value. See
-> +the SEV-SNP specification for further details.
->
+> +On success, the snp_ext_report_resp.data will contain the attestation report
+> +and snp_ext_report_req.certs_address will contain the certificate blob. If the
+> +length of the blob is smaller than expected then snp_ext_report_req.certs_len will
+> +be updated with the expected value.
+> +
+> +See GHCB specification for further detail on how to parse the certificate blob.
+> +
 >  Reference
 >  ---------
+>
 > diff --git a/drivers/virt/coco/sevguest/sevguest.c b/drivers/virt/coco/sevguest/sevguest.c
-> index 6dc0785ddd4b..4369e55df9a6 100644
+> index 4369e55df9a6..a53854353944 100644
 > --- a/drivers/virt/coco/sevguest/sevguest.c
 > +++ b/drivers/virt/coco/sevguest/sevguest.c
-> @@ -392,6 +392,48 @@ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_io
+> @@ -41,6 +41,7 @@ struct snp_guest_dev {
+>         struct device *dev;
+>         struct miscdevice misc;
+>
+> +       void *certs_data;
+>         struct snp_guest_crypto *crypto;
+>         struct snp_guest_msg *request, *response;
+>         struct snp_secrets_page_layout *layout;
+> @@ -434,6 +435,84 @@ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_reque
 >         return rc;
 >  }
 >
-> +static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
+> +static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
 > +{
 > +       struct snp_guest_crypto *crypto = snp_dev->crypto;
-> +       struct snp_derived_key_resp resp = {0};
-> +       struct snp_derived_key_req req = {0};
-> +       int rc, resp_len;
-> +       u8 buf[64+16]; /* Response data is 64 bytes and max authsize for GCM is 16 bytes */
+> +       struct snp_ext_report_req req = {0};
+> +       struct snp_report_resp *resp;
+> +       int ret, npages = 0, resp_len;
 > +
 > +       if (!arg->req_data || !arg->resp_data)
 > +               return -EINVAL;
@@ -167,77 +167,151 @@ would on another guest on the same platform with, is that correct?
 > +       if (copy_from_user(&req, (void __user *)arg->req_data, sizeof(req)))
 > +               return -EFAULT;
 > +
+> +       if (req.certs_len) {
+> +               if (req.certs_len > SEV_FW_BLOB_MAX_SIZE ||
+> +                   !IS_ALIGNED(req.certs_len, PAGE_SIZE))
+> +                       return -EINVAL;
+> +       }
+> +
+> +       if (req.certs_address && req.certs_len) {
+> +               if (!access_ok(req.certs_address, req.certs_len))
+> +                       return -EFAULT;
+> +
+> +               /*
+> +                * Initialize the intermediate buffer with all zero's. This buffer
+
+zeros
+
+> +                * is used in the guest request message to get the certs blob from
+> +                * the host. If host does not supply any certs in it, then copy
+> +                * zeros to indicate that certificate data was not provided.
+> +                */
+> +               memset(snp_dev->certs_data, 0, req.certs_len);
+> +
+> +               npages = req.certs_len >> PAGE_SHIFT;
+> +       }
+> +
 > +       /*
 > +        * The intermediate response buffer is used while decrypting the
 > +        * response payload. Make sure that it has enough space to cover the
 > +        * authtag.
 > +        */
-> +       resp_len = sizeof(resp.data) + crypto->a_len;
-> +       if (sizeof(buf) < resp_len)
+> +       resp_len = sizeof(resp->data) + crypto->a_len;
+> +       resp = kzalloc(resp_len, GFP_KERNEL_ACCOUNT);
+> +       if (!resp)
 > +               return -ENOMEM;
+
+Can we pull this duplicated code from get_report() into a helper?
+
 > +
-> +       /* Issue the command to get the attestation report */
-> +       rc = handle_guest_request(snp_dev, SVM_VMGEXIT_GUEST_REQUEST, arg->msg_version,
-> +                                 SNP_MSG_KEY_REQ, &req, sizeof(req), buf, resp_len,
-> +                                 &arg->fw_err);
-> +       if (rc)
+> +       snp_dev->input.data_npages = npages;
+> +       ret = handle_guest_request(snp_dev, SVM_VMGEXIT_EXT_GUEST_REQUEST, arg->msg_version,
+> +                                  SNP_MSG_REPORT_REQ, &req.data,
+> +                                  sizeof(req.data), resp->data, resp_len, &arg->fw_err);
+> +
+> +       /* If certs length is invalid then copy the returned length */
+> +       if (arg->fw_err == SNP_GUEST_REQ_INVALID_LEN) {
+> +               req.certs_len = snp_dev->input.data_npages << PAGE_SHIFT;
+> +
+> +               if (copy_to_user((void __user *)arg->req_data, &req, sizeof(req)))
+> +                       ret = -EFAULT;
+> +       }
+> +
+> +       if (ret)
 > +               goto e_free;
 > +
+> +       /* Copy the certificate data blob to userspace */
+> +       if (req.certs_address && req.certs_len &&
+> +           copy_to_user((void __user *)req.certs_address, snp_dev->certs_data,
+> +                        req.certs_len)) {
+> +               ret = -EFAULT;
+> +               goto e_free;
+> +       }
+> +
 > +       /* Copy the response payload to userspace */
-> +       memcpy(resp.data, buf, sizeof(resp.data));
-> +       if (copy_to_user((void __user *)arg->resp_data, &resp, sizeof(resp)))
-> +               rc = -EFAULT;
+> +       if (copy_to_user((void __user *)arg->resp_data, resp, sizeof(*resp)))
+> +               ret = -EFAULT;
 > +
 > +e_free:
-> +       memzero_explicit(buf, sizeof(buf));
-> +       memzero_explicit(&resp, sizeof(resp));
-> +       return rc;
+> +       kfree(resp);
+> +       return ret;
 > +}
 > +
 >  static long snp_guest_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
 >  {
 >         struct snp_guest_dev *snp_dev = to_snp_dev(file);
-> @@ -421,6 +463,9 @@ static long snp_guest_ioctl(struct file *file, unsigned int ioctl, unsigned long
->         case SNP_GET_REPORT:
->                 ret = get_report(snp_dev, &input);
+> @@ -466,6 +545,9 @@ static long snp_guest_ioctl(struct file *file, unsigned int ioctl, unsigned long
+>         case SNP_GET_DERIVED_KEY:
+>                 ret = get_derived_key(snp_dev, &input);
 >                 break;
-> +       case SNP_GET_DERIVED_KEY:
-> +               ret = get_derived_key(snp_dev, &input);
+> +       case SNP_GET_EXT_REPORT:
+> +               ret = get_ext_report(snp_dev, &input);
 > +               break;
 >         default:
 >                 break;
 >         }
+> @@ -594,6 +676,10 @@ static int __init snp_guest_probe(struct platform_device *pdev)
+>         if (!snp_dev->response)
+>                 goto e_fail;
+>
+> +       snp_dev->certs_data = alloc_shared_pages(SEV_FW_BLOB_MAX_SIZE);
+> +       if (!snp_dev->certs_data)
+> +               goto e_fail;
+> +
+>         ret = -EIO;
+>         snp_dev->crypto = init_crypto(snp_dev, snp_dev->vmpck, VMPCK_KEY_LEN);
+>         if (!snp_dev->crypto)
+> @@ -607,6 +693,7 @@ static int __init snp_guest_probe(struct platform_device *pdev)
+>         /* initial the input address for guest request */
+>         snp_dev->input.req_gpa = __pa(snp_dev->request);
+>         snp_dev->input.resp_gpa = __pa(snp_dev->response);
+> +       snp_dev->input.data_gpa = __pa(snp_dev->certs_data);
+>
+>         ret =  misc_register(misc);
+>         if (ret)
+> @@ -617,6 +704,7 @@ static int __init snp_guest_probe(struct platform_device *pdev)
+>
+>  e_fail:
+>         iounmap(layout);
+> +       free_shared_pages(snp_dev->certs_data, SEV_FW_BLOB_MAX_SIZE);
+>         free_shared_pages(snp_dev->request, sizeof(struct snp_guest_msg));
+>         free_shared_pages(snp_dev->response, sizeof(struct snp_guest_msg));
+>
+> @@ -629,6 +717,7 @@ static int __exit snp_guest_remove(struct platform_device *pdev)
+>
+>         free_shared_pages(snp_dev->request, sizeof(struct snp_guest_msg));
+>         free_shared_pages(snp_dev->response, sizeof(struct snp_guest_msg));
+> +       free_shared_pages(snp_dev->certs_data, SEV_FW_BLOB_MAX_SIZE);
+>         deinit_crypto(snp_dev->crypto);
+>         misc_deregister(&snp_dev->misc);
+>
 > diff --git a/include/uapi/linux/sev-guest.h b/include/uapi/linux/sev-guest.h
-> index 081d314a6279..bcd00a6d4501 100644
+> index bcd00a6d4501..0a47b6627c78 100644
 > --- a/include/uapi/linux/sev-guest.h
 > +++ b/include/uapi/linux/sev-guest.h
-> @@ -30,6 +30,20 @@ struct snp_report_resp {
->         __u8 data[4000];
+> @@ -56,6 +56,16 @@ struct snp_guest_request_ioctl {
+>         __u64 fw_err;
 >  };
 >
-> +struct snp_derived_key_req {
-> +       __u32 root_key_select;
-> +       __u32 rsvd;
-> +       __u64 guest_field_select;
-> +       __u32 vmpl;
-> +       __u32 guest_svn;
-> +       __u64 tcb_version;
+> +struct snp_ext_report_req {
+> +       struct snp_report_req data;
+> +
+> +       /* where to copy the certificate blob */
+> +       __u64 certs_address;
+> +
+> +       /* length of the certificate blob */
+> +       __u32 certs_len;
 > +};
 > +
-> +struct snp_derived_key_resp {
-> +       /* response data, see SEV-SNP spec for the format */
-> +       __u8 data[64];
-> +};
-> +
->  struct snp_guest_request_ioctl {
->         /* message version number (must be non-zero) */
->         __u8 msg_version;
-> @@ -47,4 +61,7 @@ struct snp_guest_request_ioctl {
->  /* Get SNP attestation report */
->  #define SNP_GET_REPORT _IOWR(SNP_GUEST_REQ_IOC_TYPE, 0x0, struct snp_guest_request_ioctl)
+>  #define SNP_GUEST_REQ_IOC_TYPE 'S'
 >
-> +/* Get a derived key from the root */
-> +#define SNP_GET_DERIVED_KEY _IOWR(SNP_GUEST_REQ_IOC_TYPE, 0x1, struct snp_guest_request_ioctl)
+>  /* Get SNP attestation report */
+> @@ -64,4 +74,7 @@ struct snp_guest_request_ioctl {
+>  /* Get a derived key from the root */
+>  #define SNP_GET_DERIVED_KEY _IOWR(SNP_GUEST_REQ_IOC_TYPE, 0x1, struct snp_guest_request_ioctl)
+>
+> +/* Get SNP extended report as defined in the GHCB specification version 2. */
+> +#define SNP_GET_EXT_REPORT _IOWR(SNP_GUEST_REQ_IOC_TYPE, 0x2, struct snp_guest_request_ioctl)
 > +
 >  #endif /* __UAPI_LINUX_SEV_GUEST_H_ */
 > --
