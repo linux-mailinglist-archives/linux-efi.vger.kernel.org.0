@@ -2,38 +2,38 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B12964A5CDA
+	by mail.lfdr.de (Postfix) with ESMTP id BF1564A5CDB
 	for <lists+linux-efi@lfdr.de>; Tue,  1 Feb 2022 14:07:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238361AbiBANHy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 1 Feb 2022 08:07:54 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:40287 "EHLO
+        id S238417AbiBANHz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 1 Feb 2022 08:07:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:60183 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S238375AbiBANHu (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Feb 2022 08:07:50 -0500
+        by vger.kernel.org with ESMTP id S236980AbiBANHx (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Feb 2022 08:07:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1643720870;
+        s=mimecast20190719; t=1643720872;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=eFs1qOqnra3PnOvJUklMgSOqsAwANLOtdBQX05Ct7TM=;
-        b=hVmeHg5kSLy0No0aqEVsGE+LJLR/OhuFPfpswc5E7wPsjBh2WLTDgqwWXXG8tc0DDPpPgd
-        1i1JFY1jXbwiRFsomkvxVOgK8gjFuoJuHwwnnh2K0Ftcs+Lf5sfb/I7qUoY2w4SVsMaDco
-        ZxJZe318HpF0DFsD+Gj1Y+3Mj+xuBtE=
+        bh=EWVs1TGofpaNbzG9BCPLlnosXNcvwHG0XxLoimb3CxY=;
+        b=NYShn9QvL3lcuQUjC+FuY0BBnpRa6B+L1lFg237b6w9cupJbfuKHOHa3gTIGPBxu51fi+s
+        yxUb57lRhrE6B5L6ueHgqLFqmYehwuIr5YGFmkcgUOIj7CEK76xJxPt7NAwhj9VniV7vti
+        Moaowskdex3pF7FI8aDm25eDrvDeacU=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-327-V1Nn4ofGOaGQF50nrWsGoQ-1; Tue, 01 Feb 2022 08:07:46 -0500
-X-MC-Unique: V1Nn4ofGOaGQF50nrWsGoQ-1
+ us-mta-508-44CpxaT0POiZOR803ugmEA-1; Tue, 01 Feb 2022 08:07:49 -0500
+X-MC-Unique: 44CpxaT0POiZOR803ugmEA-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 204831B2C980;
-        Tue,  1 Feb 2022 13:07:43 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 058188519E2;
+        Tue,  1 Feb 2022 13:07:47 +0000 (UTC)
 Received: from shalem.redhat.com (unknown [10.39.194.196])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 898E6795B1;
-        Tue,  1 Feb 2022 13:07:39 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 67A3B795B1;
+        Tue,  1 Feb 2022 13:07:43 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
@@ -52,12 +52,13 @@ Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
         platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v5 02/20] power: supply: bq25890: Rename IILIM field to IINLIM
-Date:   Tue,  1 Feb 2022 14:06:48 +0100
-Message-Id: <20220201130706.46685-3-hdegoede@redhat.com>
+Subject: [PATCH v5 03/20] power: supply: bq25890: Reduce reported CONSTANT_CHARGE_CURRENT_MAX for low temperatures
+Date:   Tue,  1 Feb 2022 14:06:49 +0100
+Message-Id: <20220201130706.46685-4-hdegoede@redhat.com>
 In-Reply-To: <20220201130706.46685-1-hdegoede@redhat.com>
 References: <20220201130706.46685-1-hdegoede@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Precedence: bulk
@@ -66,72 +67,100 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Yauhen Kharuzhy <jekhor@gmail.com>
 
-Rename the Input Current Limit field in the REG00 from IILIM to IINLIM
-accordingly with the bq2589x datasheet. This is just cosmetical change
-to reduce confusion.
+Take into account possible current reduction due to low-temperature when
+reading POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX. As described in
+the datasheet in cool (0-20° Celcius) conditions the current limit is
+decreased to 20% or 50% of ICHG field value depended on JEITA_ISET field.
+
+Also add NTC_FAULT field value to the debug message in
+bq25890_get_chip_state().
+
+Changed by Hans de Goede:
+- Fix reading F_CHG_FAULT instead of F_NTC_FIELD for state->ntc_fault
+- Only read JEITA_ISET field if necessary
+- Tweak commit message a bit
 
 Signed-off-by: Yauhen Kharuzhy <jekhor@gmail.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Co-developed-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/power/supply/bq25890_charger.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Changes in v3:
+- Drop chunk adding a F_JEITA_VSET read to bq25890_power_supply_get_property()
+  which accidentally got added to this patch
+---
+ drivers/power/supply/bq25890_charger.c | 29 +++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/power/supply/bq25890_charger.c b/drivers/power/supply/bq25890_charger.c
-index e62da9dc4f35..fb987579d05a 100644
+index fb987579d05a..7a3269c06b38 100644
 --- a/drivers/power/supply/bq25890_charger.c
 +++ b/drivers/power/supply/bq25890_charger.c
-@@ -40,7 +40,7 @@ static const char *const bq25890_chip_name[] = {
+@@ -94,6 +94,7 @@ struct bq25890_state {
+ 	u8 vsys_status;
+ 	u8 boost_fault;
+ 	u8 bat_fault;
++	u8 ntc_fault;
  };
  
- enum bq25890_fields {
--	F_EN_HIZ, F_EN_ILIM, F_IILIM,				     /* Reg00 */
-+	F_EN_HIZ, F_EN_ILIM, F_IINLIM,				     /* Reg00 */
- 	F_BHOT, F_BCOLD, F_VINDPM_OFS,				     /* Reg01 */
- 	F_CONV_START, F_CONV_RATE, F_BOOSTF, F_ICO_EN,
- 	F_HVDCP_EN, F_MAXC_EN, F_FORCE_DPM, F_AUTO_DPDM_EN,	     /* Reg02 */
-@@ -153,7 +153,7 @@ static const struct reg_field bq25890_reg_fields[] = {
- 	/* REG00 */
- 	[F_EN_HIZ]		= REG_FIELD(0x00, 7, 7),
- 	[F_EN_ILIM]		= REG_FIELD(0x00, 6, 6),
--	[F_IILIM]		= REG_FIELD(0x00, 0, 5),
-+	[F_IINLIM]		= REG_FIELD(0x00, 0, 5),
- 	/* REG01 */
- 	[F_BHOT]		= REG_FIELD(0x01, 6, 7),
- 	[F_BCOLD]		= REG_FIELD(0x01, 5, 5),
-@@ -256,7 +256,7 @@ enum bq25890_table_ids {
- 	/* range tables */
- 	TBL_ICHG,
- 	TBL_ITERM,
--	TBL_IILIM,
-+	TBL_IINLIM,
- 	TBL_VREG,
- 	TBL_BOOSTV,
- 	TBL_SYSVMIN,
-@@ -322,7 +322,7 @@ static const union {
- 	/* TODO: BQ25896 has max ICHG 3008 mA */
- 	[TBL_ICHG] =	{ .rt = {0,	  5056000, 64000} },	 /* uA */
- 	[TBL_ITERM] =	{ .rt = {64000,   1024000, 64000} },	 /* uA */
--	[TBL_IILIM] =   { .rt = {100000,  3250000, 50000} },	 /* uA */
-+	[TBL_IINLIM] =  { .rt = {100000,  3250000, 50000} },	 /* uA */
- 	[TBL_VREG] =	{ .rt = {3840000, 4608000, 16000} },	 /* uV */
- 	[TBL_BOOSTV] =	{ .rt = {4550000, 5510000, 64000} },	 /* uV */
- 	[TBL_SYSVMIN] = { .rt = {3000000, 3700000, 100000} },	 /* uV */
-@@ -528,11 +528,11 @@ static int bq25890_power_supply_get_property(struct power_supply *psy,
+ struct bq25890_device {
+@@ -407,6 +408,14 @@ enum bq25890_chrg_fault {
+ 	CHRG_FAULT_TIMER_EXPIRED,
+ };
+ 
++enum bq25890_ntc_fault {
++	NTC_FAULT_NORMAL = 0,
++	NTC_FAULT_WARM = 2,
++	NTC_FAULT_COOL = 3,
++	NTC_FAULT_COLD = 5,
++	NTC_FAULT_HOT = 6,
++};
++
+ static bool bq25890_is_adc_property(enum power_supply_property psp)
+ {
+ 	switch (psp) {
+@@ -499,6 +508,18 @@ static int bq25890_power_supply_get_property(struct power_supply *psy,
+ 
+ 	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+ 		val->intval = bq25890_find_val(bq->init_data.ichg, TBL_ICHG);
++
++		/* When temperature is too low, charge current is decreased */
++		if (bq->state.ntc_fault == NTC_FAULT_COOL) {
++			ret = bq25890_field_read(bq, F_JEITA_ISET);
++			if (ret < 0)
++				return ret;
++
++			if (ret)
++				val->intval /= 5;
++			else
++				val->intval /= 2;
++		}
  		break;
  
- 	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
--		ret = bq25890_field_read(bq, F_IILIM);
-+		ret = bq25890_field_read(bq, F_IINLIM);
- 		if (ret < 0)
- 			return ret;
+ 	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+@@ -583,7 +604,8 @@ static int bq25890_get_chip_state(struct bq25890_device *bq,
+ 		{F_VSYS_STAT,	&state->vsys_status},
+ 		{F_BOOST_FAULT, &state->boost_fault},
+ 		{F_BAT_FAULT,	&state->bat_fault},
+-		{F_CHG_FAULT,	&state->chrg_fault}
++		{F_CHG_FAULT,	&state->chrg_fault},
++		{F_NTC_FAULT,	&state->ntc_fault}
+ 	};
  
--		val->intval = bq25890_find_val(ret, TBL_IILIM);
-+		val->intval = bq25890_find_val(ret, TBL_IINLIM);
- 		break;
+ 	for (i = 0; i < ARRAY_SIZE(state_fields); i++) {
+@@ -594,9 +616,10 @@ static int bq25890_get_chip_state(struct bq25890_device *bq,
+ 		*state_fields[i].data = ret;
+ 	}
  
- 	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+-	dev_dbg(bq->dev, "S:CHG/PG/VSYS=%d/%d/%d, F:CHG/BOOST/BAT=%d/%d/%d\n",
++	dev_dbg(bq->dev, "S:CHG/PG/VSYS=%d/%d/%d, F:CHG/BOOST/BAT/NTC=%d/%d/%d/%d\n",
+ 		state->chrg_status, state->online, state->vsys_status,
+-		state->chrg_fault, state->boost_fault, state->bat_fault);
++		state->chrg_fault, state->boost_fault, state->bat_fault,
++		state->ntc_fault);
+ 
+ 	return 0;
+ }
 -- 
 2.33.1
 
