@@ -2,83 +2,59 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D75C4A6D3B
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Feb 2022 09:49:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2E194A6E4F
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Feb 2022 11:02:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245190AbiBBItW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 2 Feb 2022 03:49:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:60131 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S245015AbiBBItV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Feb 2022 03:49:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1643791761;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=VTjMgxqFw7q3lN61xuKdMsCU7dwv3H2LQch/NOGulyE=;
-        b=EpljswTe8npkRzhFe6lmcBsGIEG++b4BDm4Bp3kVnTKiDMImZGrPgD2+zzky1wiL3Us1la
-        6rm6jinDw9DkoH7xoge2qXZ/ReizZAlfdmLC8pEOLQvwrastNn3Us2h/HY6jNMC5Ox2Ixm
-        UkE6gLgVCGeTNI0fe8Jm+c3l9GWqAMg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-418-e53eU149PTiv7iptKT2yDQ-1; Wed, 02 Feb 2022 03:49:18 -0500
-X-MC-Unique: e53eU149PTiv7iptKT2yDQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8F21D81F002;
-        Wed,  2 Feb 2022 08:49:15 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.193.47])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id DC5E31F2F9;
-        Wed,  2 Feb 2022 08:49:10 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
-        id 396041800397; Wed,  2 Feb 2022 09:49:09 +0100 (CET)
-Date:   Wed, 2 Feb 2022 09:49:09 +0100
-From:   Gerd Hoffmann <kraxel@redhat.com>
-To:     Dov Murik <dovmurik@linux.ibm.com>
-Cc:     linux-efi@vger.kernel.org, Borislav Petkov <bp@suse.de>,
-        Ashish Kalra <ashish.kalra@amd.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Andrew Scull <ascull@google.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        Lenny Szubowicz <lszubowi@redhat.com>,
-        Peter Gonda <pgonda@google.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>,
-        Daniele Buono <dbuono@linux.vnet.ibm.com>,
-        linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 5/5] docs: security: Add coco/efi_secret documentation
-Message-ID: <20220202084909.ancetiuel6xysh2q@sirius.home.kraxel.org>
-References: <20220201124413.1093099-1-dovmurik@linux.ibm.com>
- <20220201124413.1093099-6-dovmurik@linux.ibm.com>
+        id S231779AbiBBKCI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 2 Feb 2022 05:02:08 -0500
+Received: from mail.trueanalyze24.com ([149.154.157.156]:56024 "EHLO
+        mail.trueanalyze24.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229633AbiBBKCH (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Feb 2022 05:02:07 -0500
+Received: by mail.trueanalyze24.com (Postfix, from userid 1001)
+        id 7400943383; Wed,  2 Feb 2022 10:34:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=trueanalyze24.com;
+        s=mail; t=1643796040;
+        bh=EGenFkmmv/iHCwB4AbTzX8IXCMu1xRW+9eep7HJGZMM=;
+        h=Date:From:To:Subject:From;
+        b=XHY/LhkdU4r9iMVNZ95EaV0D3XZ/CyN5bZTzgAXpSJKXkIz1jl4sq0T1qN8IL/ZTL
+         A0Gp9L2fv0Gnp24rVfbwX+ewKfV5iJCj/JKidz9gVfob2I+5SOCWesCfk3syI5ytJt
+         o591dNpiOm7/3b/+5q9Ys+VlvJrKfw4AQilMNwkwmToamDqy3s263kw0br2Wbutgmx
+         78aNR0Doki43fLz22UVb0GviITpBp9tXWtEbahlPvWfE7rFZAUQqv97/+403mFh7yA
+         0+uAQghirUEfLNmDoN2iXz1jhjRWRhYlRF1LC/l5lgYGMZYbHxR4emo5Q/YI7qvocH
+         ndwBJ+YXqod0g==
+Received: by mail.trueanalyze24.com for <linux-efi@vger.kernel.org>; Wed,  2 Feb 2022 09:32:10 GMT
+Message-ID: <20220202084511-0.1.1h.h5ic.0.a61ukppkd5@trueanalyze24.com>
+Date:   Wed,  2 Feb 2022 09:32:10 GMT
+From:   "Mateusz Talaga" <mateusz.talaga@trueanalyze24.com>
+To:     <linux-efi@vger.kernel.org>
+Subject: Prezentacja
+X-Mailer: mail.trueanalyze24.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220201124413.1093099-6-dovmurik@linux.ibm.com>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Feb 01, 2022 at 12:44:13PM +0000, Dov Murik wrote:
-> Add documentation for the efi_secret module which allows access
-> to Confidential Computing injected secrets.
+Dzie=C5=84 dobry!
 
-Looks good, but might need updates when the paths change.
+Czy m=C3=B3g=C5=82bym przedstawi=C4=87 rozwi=C4=85zanie, kt=C3=B3re umo=C5=
+=BCliwia monitoring ka=C5=BCdego auta w czasie rzeczywistym w tym jego po=
+zycj=C4=99, zu=C5=BCycie paliwa i przebieg?
 
-Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
+Dodatkowo nasze narz=C4=99dzie minimalizuje koszty utrzymania samochod=C3=
+=B3w, skraca czas przejazd=C3=B3w, a tak=C5=BCe tworzenie planu tras czy =
+dostaw.
 
-take care,
-  Gerd
+Z naszej wiedzy i do=C5=9Bwiadczenia korzysta ju=C5=BC ponad 49 tys. Klie=
+nt=C3=B3w. Monitorujemy 809 000 pojazd=C3=B3w na ca=C5=82ym =C5=9Bwiecie,=
+ co jest nasz=C4=85 najlepsz=C4=85 wizyt=C3=B3wk=C4=85.
 
+Bardzo prosz=C4=99 o e-maila zwrotnego, je=C5=9Bli mogliby=C5=9Bmy wsp=C3=
+=B3lnie om=C3=B3wi=C4=87 potencja=C5=82 wykorzystania takiego rozwi=C4=85=
+zania w Pa=C5=84stwa firmie.
+
+
+Z powa=C5=BCaniem,
+Mateusz Talaga
