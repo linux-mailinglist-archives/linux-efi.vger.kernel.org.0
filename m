@@ -2,30 +2,33 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F31F4A74BB
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Feb 2022 16:37:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BAD5D4A74CF
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Feb 2022 16:42:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230352AbiBBPhS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 2 Feb 2022 10:37:18 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:43644 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230205AbiBBPhR (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Wed, 2 Feb 2022 10:37:17 -0500
+        id S1345551AbiBBPl6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 2 Feb 2022 10:41:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58762 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231710AbiBBPlw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Feb 2022 10:41:52 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98B5BC061714;
+        Wed,  2 Feb 2022 07:41:52 -0800 (PST)
 Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 10A411EC059D;
-        Wed,  2 Feb 2022 16:37:12 +0100 (CET)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7AA111EC059D;
+        Wed,  2 Feb 2022 16:41:46 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1643816232;
+        t=1643816506;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=lR+5h1xpSxxBgCHRuGXXMTqEsGCqmfgSEVBH7xBsRo8=;
-        b=G1I2u0TJApKDboo30VddlADnScMtG9Dasl6SClNcRc3fiGRb2fK/j/sKg+xwr9mX0TT+ZC
-        AJ9QWyrGIKjz+/gy+c6U1k+Cklc9Dn99Qr83fclck8Fa/7bM0+WVKGpo+wAtukkS1ZSCzy
-        IodLXDx0DeRa8zBUw2LNDiIdCUCh2KY=
-Date:   Wed, 2 Feb 2022 16:37:07 +0100
+        bh=Cwn6fgc2bkMiYdHSqTZKAKhqw+1pduKMoFZH27YbT8Y=;
+        b=o29kCM74d+MyTiTqpcCxRpbljquvzyplNJBA+CMkf8knQDxYiY21qy8QBJGKGgAy1eum37
+        TpbIkuA177QV71dnBX46PXwEGcU86EURDpaXwBrW6u7QPwYWPhR8yBGcwwX4EnlOnVcpRZ
+        GdB+9E+CacxFSZxCsUivyJA0/dxmY80=
+Date:   Wed, 2 Feb 2022 16:41:46 +0100
 From:   Borislav Petkov <bp@alien8.de>
 To:     Brijesh Singh <brijesh.singh@amd.com>
 Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -54,38 +57,45 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
         brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
         sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v9 10/43] x86/sev: Check SEV-SNP features support
-Message-ID: <YfqlI5UZ73K2z1I8@zn.tnic>
+Subject: Re: [PATCH v9 18/43] x86/kernel: Validate ROM memory before
+ accessing when SEV-SNP is active
+Message-ID: <YfqmOritPOTDZTEx@zn.tnic>
 References: <20220128171804.569796-1-brijesh.singh@amd.com>
- <20220128171804.569796-11-brijesh.singh@amd.com>
- <YfmRBUtoWNb9BkuL@zn.tnic>
- <02102fda-63b9-5da0-2e2b-037761cc0019@amd.com>
+ <20220128171804.569796-19-brijesh.singh@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <02102fda-63b9-5da0-2e2b-037761cc0019@amd.com>
+In-Reply-To: <20220128171804.569796-19-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Feb 02, 2022 at 08:28:17AM -0600, Brijesh Singh wrote:
-> Yeah, most of the documentation explicitly calls SEV-SNP, I was unsure about
-> the trademark, so I used it in the comments/logs. I am okay with the SEV
-> prefix removed; I am not in the marketing team, and hopefully, they will
-> *never* see kernel code ;)
+On Fri, Jan 28, 2022 at 11:17:39AM -0600, Brijesh Singh wrote:
+> @@ -197,11 +198,21 @@ static int __init romchecksum(const unsigned char *rom, unsigned long length)
+>  
+>  void __init probe_roms(void)
+>  {
+> -	const unsigned char *rom;
+>  	unsigned long start, length, upper;
+> +	const unsigned char *rom;
+>  	unsigned char c;
+>  	int i;
+>  
+> +	/*
+> +	 * The ROM memory is not part of the E820 system RAM and is not pre-validated
+> +	 * by the BIOS. The kernel page table maps the ROM region as encrypted memory,
+> +	 * the SEV-SNP requires the encrypted memory must be validated before the
+> +	 * access. Validate the ROM before accessing it.
+> +	 */
 
-They better! :-)
+Lemme massage it:
 
-Also, in our kernel team here, the importance lies on having stuff
-clearly and succinctly explained, without any bla or fluff. When you
-look at that code later, you should go "ah, ok, that's why we're doing
-this here" - not, "uuh, I need to sit down and parse that comment
-first."
-
-That's why I'd like for comments to have only good and important words -
-no deadweight marketing bla.
-
-:-)
+        /*
+         * The ROM memory range is not part of the e820 table and is therefore not
+         * pre-validated by BIOS. The kernel page table maps the ROM region as encrypted
+         * memory, and SEV-SNP requires encrypted memory to be validated before access.
+         * Do that here.
+         */
 
 -- 
 Regards/Gruss,
