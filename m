@@ -2,59 +2,103 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2E194A6E4F
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Feb 2022 11:02:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18C614A6ECF
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Feb 2022 11:35:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231779AbiBBKCI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 2 Feb 2022 05:02:08 -0500
-Received: from mail.trueanalyze24.com ([149.154.157.156]:56024 "EHLO
-        mail.trueanalyze24.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229633AbiBBKCH (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Feb 2022 05:02:07 -0500
-Received: by mail.trueanalyze24.com (Postfix, from userid 1001)
-        id 7400943383; Wed,  2 Feb 2022 10:34:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=trueanalyze24.com;
-        s=mail; t=1643796040;
-        bh=EGenFkmmv/iHCwB4AbTzX8IXCMu1xRW+9eep7HJGZMM=;
-        h=Date:From:To:Subject:From;
-        b=XHY/LhkdU4r9iMVNZ95EaV0D3XZ/CyN5bZTzgAXpSJKXkIz1jl4sq0T1qN8IL/ZTL
-         A0Gp9L2fv0Gnp24rVfbwX+ewKfV5iJCj/JKidz9gVfob2I+5SOCWesCfk3syI5ytJt
-         o591dNpiOm7/3b/+5q9Ys+VlvJrKfw4AQilMNwkwmToamDqy3s263kw0br2Wbutgmx
-         78aNR0Doki43fLz22UVb0GviITpBp9tXWtEbahlPvWfE7rFZAUQqv97/+403mFh7yA
-         0+uAQghirUEfLNmDoN2iXz1jhjRWRhYlRF1LC/l5lgYGMZYbHxR4emo5Q/YI7qvocH
-         ndwBJ+YXqod0g==
-Received: by mail.trueanalyze24.com for <linux-efi@vger.kernel.org>; Wed,  2 Feb 2022 09:32:10 GMT
-Message-ID: <20220202084511-0.1.1h.h5ic.0.a61ukppkd5@trueanalyze24.com>
-Date:   Wed,  2 Feb 2022 09:32:10 GMT
-From:   "Mateusz Talaga" <mateusz.talaga@trueanalyze24.com>
-To:     <linux-efi@vger.kernel.org>
-Subject: Prezentacja
-X-Mailer: mail.trueanalyze24.com
+        id S1343546AbiBBKfD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 2 Feb 2022 05:35:03 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:51348 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S245260AbiBBKfD (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Wed, 2 Feb 2022 05:35:03 -0500
+Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5C3801EC057F;
+        Wed,  2 Feb 2022 11:34:57 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1643798097;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=vkWy2p/ndu/o+uwPBWE2Sx+Zio2CCup5AcxLwBsCKIo=;
+        b=E1DiM/jmMmw1faOLJ+9vk08hJobgmK5QJeCOlv8fr+flGhrwsbAcAscgJzGskCs2KvjGAc
+        U2AY2ZAy16oscISuR2Hisdaix+fzOE/3vUIwykutoG/w3sY+XqGz+3asWHM3HUbZr4xwTd
+        pycMsV51BhescBJgCvgq/nIwy0PSTNw=
+Date:   Wed, 2 Feb 2022 11:34:48 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v9 15/43] x86/sev: Register GHCB memory when SEV-SNP is
+ active
+Message-ID: <YfpeSErxB9KHOd7m@zn.tnic>
+References: <20220128171804.569796-1-brijesh.singh@amd.com>
+ <20220128171804.569796-16-brijesh.singh@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220128171804.569796-16-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Dzie=C5=84 dobry!
+On Fri, Jan 28, 2022 at 11:17:36AM -0600, Brijesh Singh wrote:
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index 24df739c9c05..b86b48b66a44 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -41,7 +41,7 @@ static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
+>   * Needs to be in the .data section because we need it NULL before bss is
+>   * cleared
+>   */
+> -static struct ghcb __initdata *boot_ghcb;
+> +static struct ghcb *boot_ghcb __section(".data");
+>  
+>  /* Bitmap of SEV features supported by the hypervisor */
+>  static u64 sev_hv_features __ro_after_init;
+> @@ -161,55 +161,6 @@ void noinstr __sev_es_ist_exit(void)
+>  	this_cpu_write(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC], *(unsigned long *)ist);
+>  }
+>  
+> -/*
+> - * Nothing shall interrupt this code path while holding the per-CPU
+> - * GHCB. The backup GHCB is only for NMIs interrupting this path.
+> - *
+> - * Callers must disable local interrupts around it.
+> - */
+> -static noinstr struct ghcb *__sev_get_ghcb(struct ghcb_state *state)
 
-Czy m=C3=B3g=C5=82bym przedstawi=C4=87 rozwi=C4=85zanie, kt=C3=B3re umo=C5=
-=BCliwia monitoring ka=C5=BCdego auta w czasie rzeczywistym w tym jego po=
-zycj=C4=99, zu=C5=BCycie paliwa i przebieg?
+That move doesn't look like it's needed anymore, does it?
 
-Dodatkowo nasze narz=C4=99dzie minimalizuje koszty utrzymania samochod=C3=
-=B3w, skraca czas przejazd=C3=B3w, a tak=C5=BCe tworzenie planu tras czy =
-dostaw.
+I mean, it builds even without it.
 
-Z naszej wiedzy i do=C5=9Bwiadczenia korzysta ju=C5=BC ponad 49 tys. Klie=
-nt=C3=B3w. Monitorujemy 809 000 pojazd=C3=B3w na ca=C5=82ym =C5=9Bwiecie,=
- co jest nasz=C4=85 najlepsz=C4=85 wizyt=C3=B3wk=C4=85.
+-- 
+Regards/Gruss,
+    Boris.
 
-Bardzo prosz=C4=99 o e-maila zwrotnego, je=C5=9Bli mogliby=C5=9Bmy wsp=C3=
-=B3lnie om=C3=B3wi=C4=87 potencja=C5=82 wykorzystania takiego rozwi=C4=85=
-zania w Pa=C5=84stwa firmie.
-
-
-Z powa=C5=BCaniem,
-Mateusz Talaga
+https://people.kernel.org/tglx/notes-about-netiquette
