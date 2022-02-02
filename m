@@ -2,153 +2,125 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDB7D4A6F41
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Feb 2022 11:56:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC2334A6F8B
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Feb 2022 12:07:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231933AbiBBKze (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 2 Feb 2022 05:55:34 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:47266 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S230095AbiBBKzd (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Feb 2022 05:55:33 -0500
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2129a1RE002637;
-        Wed, 2 Feb 2022 10:55:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=td31pKg7i3QQX7MS90cjPPRo4gypw4dOyz3DsANLTa4=;
- b=hSe2N0wR1Cy1aZQ3VGdbGo+tx/RW8Kmq5HUCHrvFDaFY2p9z8yBYFWcJEcVpIaDMtn7D
- 4GRBwuqSqMhBDDs7dFTgTNukVX7trl4hXbkL5gFwe0oW6U4fwej1cZMuUQysjozBEq4z
- xxO4joUZkFHYcc2d8cOeKFLQPBG5P7sSAVukUEe3qrC4vrUTrnO3F6LzOPmSCTO3bVXc
- eCWzXuUljG10YKJGDOwBI8Hb2SnLeMY+JhHpvbpN/iXfEHeT1G+oRCqBlym4wGRAOHAr
- 64OtMuiQTlGiQ6tRV2Ozg0YLFrtxnMnDM/BgNNk0X7kV4QNfVlr+K2SVG4sqXYhK9Xr7 bA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3dyfft8e5e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 02 Feb 2022 10:55:18 +0000
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 212ARhJ3006010;
-        Wed, 2 Feb 2022 10:55:18 GMT
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 3dyfft8e56-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 02 Feb 2022 10:55:17 +0000
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
-        by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 212AtDit008509;
-        Wed, 2 Feb 2022 10:55:17 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com [9.57.198.28])
-        by ppma03wdc.us.ibm.com with ESMTP id 3dvw7b34e7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 02 Feb 2022 10:55:17 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com [9.57.199.106])
-        by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 212AtGwi46399962
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 2 Feb 2022 10:55:16 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 6A19E28068;
-        Wed,  2 Feb 2022 10:55:16 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id EDABB28060;
-        Wed,  2 Feb 2022 10:55:11 +0000 (GMT)
-Received: from [9.65.240.79] (unknown [9.65.240.79])
-        by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
-        Wed,  2 Feb 2022 10:55:11 +0000 (GMT)
-Message-ID: <1035fbeb-3f03-e6e6-881d-fdf71eedd177@linux.ibm.com>
-Date:   Wed, 2 Feb 2022 12:55:10 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.1
-Subject: Re: [PATCH v7 3/5] virt: Add efi_secret module to expose confidential
- computing secrets
-Content-Language: en-US
-To:     Gerd Hoffmann <kraxel@redhat.com>
-Cc:     linux-efi@vger.kernel.org, Borislav Petkov <bp@suse.de>,
-        Ashish Kalra <ashish.kalra@amd.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
+        id S232832AbiBBLGm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 2 Feb 2022 06:06:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51858 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236708AbiBBLGj (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Feb 2022 06:06:39 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CF2CC06173E;
+        Wed,  2 Feb 2022 03:06:39 -0800 (PST)
+Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C5E0E1EC0513;
+        Wed,  2 Feb 2022 12:06:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1643799993;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=T5KarsviFxcdPdr91Ju50bIXrFx/Ww52H/WmFLJHWWk=;
+        b=oXHB2bMIYcC69Z2LEdY0Kp3e4q+aUB7LWsYhNn3wevkRodEY2WCg1LuVEpeNDtxTrfzab8
+        ct1X+4H0PojDxi5drGWWg6PRjOminwTVFtJA8ySyvP9PR9gy2fZC7eyO03NzYf5MlVpIpz
+        ttux2IT7OMBSjaXoLcwcmTzaun8uLjI=
+Date:   Wed, 2 Feb 2022 12:06:29 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
         Tom Lendacky <thomas.lendacky@amd.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
         Andi Kleen <ak@linux.intel.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Andrew Scull <ascull@google.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        Lenny Szubowicz <lszubowi@redhat.com>,
-        Peter Gonda <pgonda@google.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>,
-        Daniele Buono <dbuono@linux.vnet.ibm.com>,
-        linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>
-References: <20220201124413.1093099-1-dovmurik@linux.ibm.com>
- <20220201124413.1093099-4-dovmurik@linux.ibm.com>
- <20220202084512.2errjezf7ugrhntr@sirius.home.kraxel.org>
-From:   Dov Murik <dovmurik@linux.ibm.com>
-In-Reply-To: <20220202084512.2errjezf7ugrhntr@sirius.home.kraxel.org>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: rko2_X9JcSm12lek0j2qvyBiQqK0xEts
-X-Proofpoint-GUID: YbzNqheMUJavp9aSVWi4k0ZAv4YujC92
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v9 17/43] x86/kernel: Make the .bss..decrypted section
+ shared in RMP table
+Message-ID: <YfpltcR7IqhP5KTq@zn.tnic>
+References: <20220128171804.569796-1-brijesh.singh@amd.com>
+ <20220128171804.569796-18-brijesh.singh@amd.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-02_04,2022-02-01_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- priorityscore=1501 adultscore=0 phishscore=0 mlxlogscore=999
- malwarescore=0 suspectscore=0 impostorscore=0 clxscore=1015 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2202020055
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220128171804.569796-18-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-
-
-On 02/02/2022 10:45, Gerd Hoffmann wrote:
->   Hi,
+On Fri, Jan 28, 2022 at 11:17:38AM -0600, Brijesh Singh wrote:
+> The encryption attribute for the .bss..decrypted section is cleared in the
+> initial page table build. This is because the section contains the data
+> that need to be shared between the guest and the hypervisor.
 > 
->> +	s->coco_dir = NULL;
->> +	s->fs_dir = NULL;
->> +	memset(s->fs_files, 0, sizeof(s->fs_files));
->> +
->> +	dent = securityfs_create_dir("coco", NULL);
->> +	if (IS_ERR(dent)) {
->> +		pr_err("Error creating coco securityfs directory entry err=%ld\n", PTR_ERR(dent));
->> +		return PTR_ERR(dent);
->> +	}
->> +	s->coco_dir = dent;
->> +
->> +	dent = securityfs_create_dir("efi_secret", s->coco_dir);
->> +	if (IS_ERR(dent)) {
->> +		pr_err("Error creating efi_secret securityfs directory entry err=%ld\n",
->> +		       PTR_ERR(dent));
->> +		return PTR_ERR(dent);
->> +	}
->> +	d_inode(dent)->i_op = &efi_secret_dir_inode_operations;
->> +	s->fs_dir = dent;
+> When SEV-SNP is active, just clearing the encryption attribute in the
+> page table is not enough. The page state need to be updated in the RMP
+> table.
 > 
-> Why have two levels of subdirectories here?  Do we expect more users for
-> the coco/ directory?
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  arch/x86/kernel/head64.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 > 
+> diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
+> index 8075e91cff2b..1239bc104cda 100644
+> --- a/arch/x86/kernel/head64.c
+> +++ b/arch/x86/kernel/head64.c
+> @@ -143,7 +143,21 @@ static unsigned long sme_postprocess_startup(struct boot_params *bp, pmdval_t *p
+>  	if (sme_get_me_mask()) {
+>  		vaddr = (unsigned long)__start_bss_decrypted;
+>  		vaddr_end = (unsigned long)__end_bss_decrypted;
+> +
+>  		for (; vaddr < vaddr_end; vaddr += PMD_SIZE) {
+> +			/*
+> +			 * When SEV-SNP is active then transition the page to
+> +			 * shared in the RMP table so that it is consistent with
+> +			 * the page table attribute change.
+> +			 *
+> +			 * At this point, kernel is running in identity mapped mode.
+> +			 * The __start_bss_decrypted is a regular kernel address. The
+> +			 * early_snp_set_memory_shared() requires a valid virtual
+> +			 * address, so use __pa() against __start_bss_decrypted to
+> +			 * get valid virtual address.
+> +			 */
 
-In the RFCv2 of this series Borislav Petkov suggested [1] adding a
-"coco/" directory (originally it was "<securityfs>/sev_secret"); he
-envisioned that other coco platforms (SNP, TDX) might want to expose
-something to userspace via filesystem.
+How's that?
 
-[1] https://lore.kernel.org/linux-coco/YNoiydeow+ftvfYX@zn.tnic/
+                        /*
+                         * On SNP, transition the page to shared in the RMP table so that
+                         * it is consistent with the page table attribute change.
+                         *
+                         * __start_bss_decrypted has a virtual address in the high range
+                         * mapping (kernel .text). PVALIDATE, by way of
+                         * early_snp_set_memory_shared(), requires a valid virtual
+                         * address but the kernel is currently running off of the identity
+                         * mapping so use __pa() to get a *currently* valid virtual address.
+                         */
 
+-- 
+Regards/Gruss,
+    Boris.
 
-
-> See also the naming discussion in the cover letter sub-thread.
-
-Yep, following.
-
-
-
-Thanks,
-Dov
+https://people.kernel.org/tglx/notes-about-netiquette
