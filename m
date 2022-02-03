@@ -2,30 +2,30 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F79C4A86BB
-	for <lists+linux-efi@lfdr.de>; Thu,  3 Feb 2022 15:40:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC1844A86EE
+	for <lists+linux-efi@lfdr.de>; Thu,  3 Feb 2022 15:49:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233897AbiBCOkJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 3 Feb 2022 09:40:09 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:39508 "EHLO mail.skyhub.de"
+        id S242771AbiBCOtE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 3 Feb 2022 09:49:04 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:41000 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229558AbiBCOkI (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Thu, 3 Feb 2022 09:40:08 -0500
+        id S1350956AbiBCOtD (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Thu, 3 Feb 2022 09:49:03 -0500
 Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0CCAC1EC04C1;
-        Thu,  3 Feb 2022 15:40:03 +0100 (CET)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9E2581EC04C1;
+        Thu,  3 Feb 2022 15:48:57 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1643899203;
+        t=1643899737;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=uRkidV9rm70r65t8zRK5LUK617v6jjX8xXx77Av6a7w=;
-        b=jxAChagwEN26K+oMim082LNKxapBTumZtbjTBfRVFD5daY/HoWixlnEmKTAc2XEdLJT/gU
-        aySeLabM9BOVCerKWItMK/Zad5zUInAVLath7/aGR/VFOb88ZQ2S8iw6kifwf17//YIwtq
-        cXY5uMx2JCARDEOueHU8GEBBhBSbMUA=
-Date:   Thu, 3 Feb 2022 15:39:58 +0100
+        bh=8Uqs/kDYfVg3f/Ym3U30Di60DX4+d07g0nCPI6xr98c=;
+        b=I6PKS7BacJGlT/KI4poYSn2BpUX1slO9EeirJdDS14JDZbpjYTIpqWLyq2hec4YYO2NvZe
+        7nsdiDc2CmdIXExbPmAyXRksSI7R5Lig6hT0K3n72EZD3T7Uial6gNkDrsV5bCOs7KVMVS
+        ozn/Ezuh1BH2/3CW1eB1Dh43WeDOXVE=
+Date:   Thu, 3 Feb 2022 15:48:57 +0100
 From:   Borislav Petkov <bp@alien8.de>
 To:     Brijesh Singh <brijesh.singh@amd.com>
 Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -54,98 +54,47 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
         brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
         sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v9 24/43] x86/compressed/acpi: Move EFI detection to
- helper
-Message-ID: <YfvpPowvlz0reOZ/@zn.tnic>
+Subject: Re: [PATCH v9 25/43] x86/compressed/acpi: Move EFI system table
+ lookup to helper
+Message-ID: <YfvrWdZUwyonZJS8@zn.tnic>
 References: <20220128171804.569796-1-brijesh.singh@amd.com>
- <20220128171804.569796-25-brijesh.singh@amd.com>
+ <20220128171804.569796-26-brijesh.singh@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220128171804.569796-25-brijesh.singh@amd.com>
+In-Reply-To: <20220128171804.569796-26-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jan 28, 2022 at 11:17:45AM -0600, Brijesh Singh wrote:
+On Fri, Jan 28, 2022 at 11:17:46AM -0600, Brijesh Singh wrote:
 > diff --git a/arch/x86/boot/compressed/efi.c b/arch/x86/boot/compressed/efi.c
-> new file mode 100644
-> index 000000000000..daa73efdc7a5
-> --- /dev/null
+> index daa73efdc7a5..bf99768cd229 100644
+> --- a/arch/x86/boot/compressed/efi.c
 > +++ b/arch/x86/boot/compressed/efi.c
-> @@ -0,0 +1,50 @@
-> +// SPDX-License-Identifier: GPL-2.0
+> @@ -48,3 +48,32 @@ enum efi_type efi_get_type(struct boot_params *boot_params)
+>  
+>  	return et;
+>  }
+> +
 > +/*
-> + * Helpers for early access to EFI configuration table.
-> + *
-> + * Originally derived from arch/x86/boot/compressed/acpi.c
-> + */
-> +
-> +#include "misc.h"
-> +#include <linux/efi.h>
-> +#include <asm/efi.h>
 
-Yap, it is includes like that which cause this whole decompressor
-include hell. One day...
+/**
 
-> +
-> +/**
-> + * efi_get_type - Given boot_params, determine the type of EFI environment.
+kernel-doc comment pls.
+
+> + * efi_get_system_table - Given boot_params, retrieve the physical address of
+> + *                        EFI system table.
 > + *
 > + * @boot_params:        pointer to boot_params
 > + *
-> + * Return: EFI_TYPE_{32,64} for valid EFI environments, EFI_TYPE_NONE otherwise.
+> + * Return: EFI system table address on success. On error, return 0.
 > + */
-> +enum efi_type efi_get_type(struct boot_params *boot_params)
+> +unsigned long efi_get_system_table(struct boot_params *boot_params)
 
-				struct boot_params *bp
+... *bp) - as before.
 
-> +{
-> +	struct efi_info *ei;
-> +	enum efi_type et;
-> +	const char *sig;
-> +
-> +	ei = &boot_params->efi_info;
-> +	sig = (char *)&ei->efi_loader_signature;
-> +
-> +	if (!strncmp(sig, EFI64_LOADER_SIGNATURE, 4)) {
-> +		et = EFI_TYPE_64;
-> +	} else if (!strncmp(sig, EFI32_LOADER_SIGNATURE, 4)) {
-> +		et = EFI_TYPE_32;
-> +	} else {
-> +		debug_putstr("No EFI environment detected.\n");
-> +		et = EFI_TYPE_NONE;
-> +	}
-> +
-> +#ifndef CONFIG_X86_64
-> +	/*
-> +	 * Existing callers like acpi.c treat this case as an indicator to
-> +	 * fall-through to non-EFI, rather than an error, so maintain that
-> +	 * functionality here as well.
-> +	 */
-> +	if (ei->efi_systab_hi || ei->efi_memmap_hi) {
-> +		debug_putstr("EFI system table is located above 4GB and cannot be accessed.\n");
-> +		et = EFI_TYPE_NONE;
-> +	}
-> +#endif
-> +
-> +	return et;
-> +}
-> diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-> index 01cc13c12059..a26244c0fe01 100644
-> --- a/arch/x86/boot/compressed/misc.h
-> +++ b/arch/x86/boot/compressed/misc.h
-> @@ -176,4 +176,20 @@ void boot_stage2_vc(void);
->  
->  unsigned long sev_verify_cbit(unsigned long cr3);
->  
-> +enum efi_type {
-> +	EFI_TYPE_64,
-> +	EFI_TYPE_32,
-> +	EFI_TYPE_NONE,
-> +};
-
-Haha, EFI folks will be wondering where in the spec that thing is... :-)))
+Please go through all those functions taking in struct boot_params ptr.
 
 -- 
 Regards/Gruss,
