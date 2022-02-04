@@ -2,90 +2,103 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E76184A9941
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Feb 2022 13:27:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E1064A99D8
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Feb 2022 14:21:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358688AbiBDM1o (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 4 Feb 2022 07:27:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47286 "EHLO
+        id S233423AbiBDNVw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 4 Feb 2022 08:21:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358545AbiBDM1o (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Feb 2022 07:27:44 -0500
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAB81C06173E
-        for <linux-efi@vger.kernel.org>; Fri,  4 Feb 2022 04:27:43 -0800 (PST)
-Received: by mail-yb1-xb2e.google.com with SMTP id p5so18041286ybd.13
-        for <linux-efi@vger.kernel.org>; Fri, 04 Feb 2022 04:27:43 -0800 (PST)
+        with ESMTP id S1354234AbiBDNVw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Feb 2022 08:21:52 -0500
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2B8DC06173D
+        for <linux-efi@vger.kernel.org>; Fri,  4 Feb 2022 05:21:51 -0800 (PST)
+Received: by mail-yb1-xb2b.google.com with SMTP id v186so18725068ybg.1
+        for <linux-efi@vger.kernel.org>; Fri, 04 Feb 2022 05:21:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=eclypsium.com; s=google;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=E3CkuQfRDLa6yHQhfPXnQaFzdcsQFUeKCKzEBzUj/zQ=;
-        b=TLYrEShYRf1FgVk7hHjObf4x7nd8odacHjXXRpq7yKoaHl2d4cJ8VON/yE+OgjlACN
-         Deh2m4l0lPgbHURrAba9Ro14SwwCHOG+0Nv/hlUJcn2mcThUbfxE1IEO+W36tUg3MKW8
-         n9FacUSOrGV/A/mXTq2Us80gIm1AwkidrArvgQCcxcpwcOfU251m8g9w7lWjvl5mpD4u
-         SfanAQlOPlFgouyo1XEy0iTabqHr8/mV6qhVD2e86dRrwMGK8LqcKRLW9ShW+qjxuzZP
-         Qoqi5BjNrLiMA0YsO4/3q0qFyxsOyT2LoygR0q9mALUNNnZ+Tl4jGIva6c7WrbMUHXYo
-         vjIw==
+        bh=+kHxAPwxyZEcImebt/hCxo31GYUl4Y9JyOP0KTd0RjQ=;
+        b=Xk+XdovZ9A6qq+rxZKTZ2zFvnkt4TLtrm+p3BP7FGwRMLKm2/kzYFkkKSBaPHgehn0
+         ZX/lCNP2k5uePIG4/RAMYbe2LE6DkvtaUo9MH7gbmNmx0WKi/+Ec3KT9z07csS2ASm4U
+         rXyvUirAiPY/KhaQRx5/aIPjPZILen3VccmkM3sT5nKGu2W7e7ugtzkOS1AnkSWHxFg1
+         Ma6qPtGcbSS/5HrMaVgXH8WctYtelboEsr6w9+88bFbmwXKLwoGcglwehyK+X5DnK+Ml
+         4IbdbjalA4JIuAtfZ7INJ/RzlrLNM06YUg/LEgSKcTYh7sUd4H4EQsHgZOa8p7zcM6j4
+         ij8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=E3CkuQfRDLa6yHQhfPXnQaFzdcsQFUeKCKzEBzUj/zQ=;
-        b=KRhTsVsUFEWL0S1rol7wy9iO6NFq8S8nSlJCYcn1V2F5aw94p+DXVuZlrLmFaLp+Gm
-         /EYYrGVERd41JEEgeELp6YmN3Tt9oFL4MBW2qGwaEB23PYvRF/c0BQ+ntIjimbXeVQK8
-         gbshk+rD32GSn6+1NNPvPFsEyJjgYzT/TQWN6b9HnxNOjwLJf0r3WF9yHAVF13jvRWRB
-         iPbz51BQExXO6BZpbzwtq1m2C5KRaErnCJQG9TE0HVBlhJDApT5nMGv82mtPiHANjB53
-         nUHL5XYAeFMEsHUOEfBbjJQWVxiIrh4THcAyHBfhF+VCnO8F30+tQwJnD4eHGUJBe1yC
-         V4QQ==
-X-Gm-Message-State: AOAM531vRTekDs1owZAg5I8g7IsDnOfBj/Vcy5uq6twnWSa6985KG32J
-        sO2AVFqc9hTCnANX80gkJUa8RZ5XSoBtcU2h6P6Vww==
-X-Google-Smtp-Source: ABdhPJy0uUYEV/PGiz45GMg1qGGeLJ0gKE2zXBEUciykyjrQIx6iwM/SZFE1OhdU1ZXjgjR2rQwIB4Km1IhUiy5ChGA=
-X-Received: by 2002:a81:6605:: with SMTP id a5mr2526438ywc.510.1643977662982;
- Fri, 04 Feb 2022 04:27:42 -0800 (PST)
+        bh=+kHxAPwxyZEcImebt/hCxo31GYUl4Y9JyOP0KTd0RjQ=;
+        b=tk8sDze2DD2LCW+oD7/UFamE90l1h0DEmWYU21Zsbxgyv+QTdbPT5381QyE9MdOw2M
+         XUgtAEumkMSYkwgkWsnptJYyoML0zJ5N1En/j2zMiefc/+at5rhD7Rr+V74iqE4/R2Zl
+         73lHa8hSXodT3XeF/8zVYIwMoRDy/mZ29VFV2n/Ih/2HqDKSuUO5IIFqVAPGtYzKZBOu
+         rgMqTGYXp+J8v7ktIdktO2ON+/GeNnZnEUOPwcf/TCKTx8rktwzpyFa7kCLnGyTtAMYg
+         pP2X8V0ezL7N21t5bE5XD0QSqG27htK6IG4sGKLgoapLUOyP3ufJZD9GjycYUcOGrySu
+         iiGQ==
+X-Gm-Message-State: AOAM532QjZIzaov3sxANyAScpAIjuUmhVJaRSFT9UnotEc6eSURfNV42
+        rvzyh1cxu+KtQNdCsdFpL1UcsWEMX8/lWM4w0s3cLA==
+X-Google-Smtp-Source: ABdhPJxtI9yIZAtwdVT04ufmqMOyAiqHsH0A4Hy4uwN6eFDfMocj5rHcvKETbFuiByKZy35TW0cJK+HFULlj9RIdImk=
+X-Received: by 2002:a25:b805:: with SMTP id v5mr2552677ybj.266.1643980910826;
+ Fri, 04 Feb 2022 05:21:50 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a81:1756:0:0:0:0:0 with HTTP; Fri, 4 Feb 2022 04:27:42 -0800 (PST)
-In-Reply-To: <Yfyx8s9n+CZ6TPgg@kernel.org>
+Received: by 2002:a81:1756:0:0:0:0:0 with HTTP; Fri, 4 Feb 2022 05:21:50 -0800 (PST)
+In-Reply-To: <67d2711b-200c-0894-4ff7-beb3eb304399@amd.com>
 References: <20220203164328.203629-1-martin.fernandez@eclypsium.com>
- <20220203164328.203629-7-martin.fernandez@eclypsium.com> <Yfyx8s9n+CZ6TPgg@kernel.org>
+ <20220203164328.203629-7-martin.fernandez@eclypsium.com> <67d2711b-200c-0894-4ff7-beb3eb304399@amd.com>
 From:   Martin Fernandez <martin.fernandez@eclypsium.com>
-Date:   Fri, 4 Feb 2022 09:27:42 -0300
-Message-ID: <CAKgze5YZF09F3FTwD6kODd2RrWATutcmM5J7-wcLTK32C6aptg@mail.gmail.com>
+Date:   Fri, 4 Feb 2022 10:21:50 -0300
+Message-ID: <CAKgze5YM2+BRjj2nvb+_dnuCg5WtWvQ6FQyNYJ1c8G6Orn=aQw@mail.gmail.com>
 Subject: Re: [PATCH v6 6/6] drivers/node: Show in sysfs node's crypto capabilities
-To:     Mike Rapoport <rppt@kernel.org>
+To:     "Limonciello, Mario" <mario.limonciello@amd.com>
 Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
         platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
         tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
         dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
         ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
-        gregkh@linuxfoundation.org, rafael@kernel.org,
+        gregkh@linuxfoundation.org, rafael@kernel.org, rppt@kernel.org,
         akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
         hughsient@gmail.com, alex.bazhaniuk@eclypsium.com,
-        alison.schofield@intel.com, keescook@chromium.org
+        alison.schofield@intel.com, keescook@chromium.org,
+        "Lendacky, Thomas" <Thomas.Lendacky@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2/4/22, Mike Rapoport <rppt@kernel.org> wrote:
-> On Thu, Feb 03, 2022 at 01:43:28PM -0300, Martin Fernandez wrote:
->> +Description:
->> +		This value is 1 if all system memory in this node is
->> +		marked with EFI_MEMORY_CPU_CRYPTO, indicating that the
+On 2/4/22, Limonciello, Mario <mario.limonciello@amd.com> wrote:
+> On 2/3/2022 10:43, Martin Fernandez wrote:
+>> +static ssize_t crypto_capable_show(struct device *dev,
+>> +				   struct device_attribute *attr, char *buf)
+>> +{
+>> +	struct pglist_data *pgdat = NODE_DATA(dev->id);
+>> +
+>> +	return sysfs_emit(buf, "%d\n", pgdat->crypto_capable);
 >
-> It didn't jump at me at previous postings, but other architectures won't
-> necessary have EFI_MEMORY_CPU_CRYPTO marking crypto-capable memory.
->
-> How about
->
->   This value is 1 if all system memory in this node is capable of being
->   protected with the CPU's memory cryptographic capabilities. It is 0
->   otherwise.
->   On EFI architectures with value corresponds to EFI_MEMORY_CPU_CRYPTO.
->
->
+> As there is interest in seeing these capabilities from userspace, it
+> seems like a logical time to also expose a `crypto_active` attribute.
 
-Yes, sounds good to me.
+I planned to do something similar to this, but to show (or actually
+hide if inactive) tme in cpuinfo, just as Borislav Petkov suggested a
+few versions back.
 
-Is there other architecture with something similar to this? Or are you
-thinking on the possibility of such architecture?
+https://lore.kernel.org/linux-efi/YXrnkxgdjWbcPlJA@zn.tnic/
+
+> Then userspace can make a judgement call if the system supports crypto
+> memory (`crypto_capable`) and then also whether or not it's been turned
+> on (`crypto_active`).
+>
+> `crypto_active` could be detected with some existing support in the
+> kernel of `mem_encrypt_active()`.  This will then work for a variety of
+> architectures too that offer `mem_encrypt_active()`.
+
+I need a hand with this, I grepped for mem_encrypt_active and nothing
+showed up...
+
+> As it stands today the only reliable way to tell from userspace (at
+> least for AMD's x86 implementation) is by grepping the system log for
+> the line "AMD Memory Encryption Features active".
+
+Isn't enough to grep for sme/sev in cpuinfo?
