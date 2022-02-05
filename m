@@ -2,33 +2,37 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 308E44AA835
-	for <lists+linux-efi@lfdr.de>; Sat,  5 Feb 2022 11:54:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C3644AA8E6
+	for <lists+linux-efi@lfdr.de>; Sat,  5 Feb 2022 13:58:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237023AbiBEKyN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 5 Feb 2022 05:54:13 -0500
-Received: from mail.skyhub.de ([5.9.137.197]:53540 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230020AbiBEKyL (ORCPT <rfc822;linux-efi@vger.kernel.org>);
-        Sat, 5 Feb 2022 05:54:11 -0500
+        id S1379881AbiBEM6e (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 5 Feb 2022 07:58:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47188 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1379880AbiBEM6d (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 5 Feb 2022 07:58:33 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08F9AC061346;
+        Sat,  5 Feb 2022 04:58:31 -0800 (PST)
 Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E27091EC02DD;
-        Sat,  5 Feb 2022 11:54:05 +0100 (CET)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8A47E1EC051E;
+        Sat,  5 Feb 2022 13:58:24 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1644058446;
+        t=1644065904;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=uZ7YbZrJGPMPUOZHBNRpUaCuf4fbjJb2e0v1A635574=;
-        b=Wi4j4RdBU/nduEspCZ+AEnQggLzEGh95jTHEMmr+DClFcPOZ5VKO1AVl1fq1d6uEZnyIR9
-        94WXRdpFGpUC7ZltmJ5nyNtLaG7ckLTwcARlP7XhLQJFPS3GpUVCjl56uVAd6DMN/r7f/0
-        HzQGDF4BaAeJsfhozkPmEQqp4+mkgvI=
-Date:   Sat, 5 Feb 2022 11:54:01 +0100
+        bh=tMdpZOVjcxNYTf1hneKSsplSHhxQLlxm5Sz2vRQUZE8=;
+        b=Fx49uIDLxhimJLwU97wT35RjrcjccqR1vInu6AJlT06+WZVhTQ7YdNkKPUH84qMuFj29aq
+        3WWq+V5dgh/vgSj8kGzMNVocP/rgIbYYcnEXdC9mgJqBYpgxcQrWyhgZPDlYDdkO9/uWlS
+        wPDMv0SZ3wMmJsmaMGyeRbQkO1tHEzY=
+Date:   Sat, 5 Feb 2022 13:58:20 +0100
 From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+To:     Michael Roth <michael.roth@amd.com>
+Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -47,112 +51,54 @@ Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         David Rientjes <rientjes@google.com>,
         Dov Murik <dovmurik@linux.ibm.com>,
         Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>,
         "Kirill A . Shutemov" <kirill@shutemov.name>,
         Andi Kleen <ak@linux.intel.com>,
         "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
         brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v9 31/43] x86/compressed/64: Add support for SEV-SNP
- CPUID table in #VC handlers
-Message-ID: <Yf5XScto3mDXnl9u@zn.tnic>
+        sathyanarayanan.kuppuswamy@linux.intel.com,
+        Venu Busireddy <venu.busireddy@oracle.com>,
+        Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v9 23/43] KVM: x86: Move lookup of indexed CPUID leafs to
+ helper
+Message-ID: <Yf50bG0N+PYK07lq@zn.tnic>
 References: <20220128171804.569796-1-brijesh.singh@amd.com>
- <20220128171804.569796-32-brijesh.singh@amd.com>
+ <20220128171804.569796-24-brijesh.singh@amd.com>
+ <Yfvx0Rq8Tydyr/RO@zn.tnic>
+ <20220203164443.byaxr4fu2vlvh4d2@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220128171804.569796-32-brijesh.singh@amd.com>
+In-Reply-To: <20220203164443.byaxr4fu2vlvh4d2@amd.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jan 28, 2022 at 11:17:52AM -0600, Brijesh Singh wrote:
-> +/*
-> + * Individual entries of the SEV-SNP CPUID table, as defined by the SEV-SNP
-> + * Firmware ABI, Revision 0.9, Section 7.1, Table 14.
-> + */
-> +struct snp_cpuid_fn {
-> +	u32 eax_in;
-> +	u32 ecx_in;
-> +	u64 xcr0_in;
-> +	u64 xss_in;
+On Thu, Feb 03, 2022 at 10:44:43AM -0600, Michael Roth wrote:
+> I think Dave's main concern was that I'd added an AMD copyright banner
+> to a new file that was mostly derived from acpi.c. I thought we had some
+> agreement on simply adopting the file-wide copyright banner of whatever
+> source file the new one was derived from, since dropping an existing
+> copyright seemed similarly in bad taste,...
 
-So what's the end result here:
+Well, I think simply saying where this function was carved out from:
 
--+	u64 __unused;
--+	u64 __unused2;
-++	u64 xcr0_in;
-++	u64 xss_in;
+	arch/x86/kvm/cpuid.c
 
-those are not unused fields anymore but xcr0 and xss input values?
+is good enough. If someone is so much interested in a copyright, someone
+can read that file's copyright. Especially since that copyright line
+in the original file is not telling you a whole lot about who are all
+copyright owners.
 
-Looking at the FW abi doc, they're only mentioned in "Table 14.
-CPUID_FUNCTION Structure" that they're XCR0 and XSS at the time of the
-CPUID execution.
+And before we delve into lawyer-land, let's simply point to where we got
+this from and be done with it.
 
-But those values are input values to what exactly, guest or firmware?
-
-There's a typo in the FW doc, btw:
-
-"The guest constructs an MSG_CPUID_REQ message as defined in Table 13.
-This message contains an array of CPUID function structures as defined
-in Table 13."
-
-That second "Table" is 14 not 13.
-
-So, if an array CPUID_FUNCTION[] is passed as part of an MSG_CPUID_REQ
-command, then, the two _IN variables contain what the guest received
-from the HV for XCR0 and XSS values. Which means, this is the guest
-asking the FW whether those values the HV gave the guest are kosher.
-
-Am I close?
-
-> +static const struct snp_cpuid_info *snp_cpuid_info_get_ptr(void)
-> +{
-> +	void *ptr;
-> +
-> +	asm ("lea cpuid_info_copy(%%rip), %0"
-> +	     : "=r" (ptr)
-
-Same question as the last time:
-
-Why not "=g" and let the compiler decide?
-
-> +	     : "p" (&cpuid_info_copy));
-> +
-> +	return ptr;
-> +}
-
-...
-
-> +static bool snp_cpuid_check_range(u32 func)
-> +{
-> +	if (func <= cpuid_std_range_max ||
-> +	    (func >= 0x40000000 && func <= cpuid_hyp_range_max) ||
-> +	    (func >= 0x80000000 && func <= cpuid_ext_range_max))
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
-> +static int snp_cpuid_postprocess(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
-> +				 u32 *ecx, u32 *edx)
-
-And again, same question as the last time:
-
-I'm wondering if you could make everything a lot easier by doing
-
-static int snp_cpuid_postprocess(struct cpuid_leaf *leaf)
-
-and marshall around that struct cpuid_leaf which contains func, subfunc,
-e[abcd]x instead of dealing with 6 parameters.
-
-Callers of snp_cpuid() can simply allocate it on their stack and hand it
-in and it is all in sev-shared.c so nicely self-contained...
-
-Ok I'm ignoring this patch for now and I'll review it only after you've
-worked in all comments from the previous review.
+Thx.
 
 -- 
 Regards/Gruss,
