@@ -2,220 +2,160 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7830A4AA321
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Feb 2022 23:30:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 308E44AA835
+	for <lists+linux-efi@lfdr.de>; Sat,  5 Feb 2022 11:54:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347604AbiBDWas (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 4 Feb 2022 17:30:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54242 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241600AbiBDWas (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Feb 2022 17:30:48 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDE04D210536;
-        Fri,  4 Feb 2022 14:30:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=xTp3Q2jI2XaBeoi1nbsAVKpQRvbNFVMVH1ilN5edRx4=; b=GH9JnzK99Po0eYdjai64S8QnF0
-        Lj0VRYWj/+hscHz6Qkx997MjtRw0WFm/6BkGTHzav4FU4eBbj753B7c06LNRbu5duKmkoVV0mNfQa
-        88nEWj1d4eM6hVg8r/q7aoMx64xXMcd51yE1C01pn6vLPX+ba6xVgEzdY7jGaMgAMwDNU6GrboSwA
-        2Fgj7vuaiF4RAAdFWTvLzao9Vw7jhP9/IU6BcztMzbUUKVMJjOg8EL5HKsi2JKQqR96GzA5ywvCmr
-        f+EEx8sC5ozcE+3g0RyC/FBloDMhsn0kFKBopi1BjUQcahk4LGpKLmVAfETjS3yxYr34/U9MAqaQq
-        MamaUIEg==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1nG76J-007fDo-8l; Fri, 04 Feb 2022 22:30:43 +0000
-Date:   Fri, 4 Feb 2022 22:30:43 +0000
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        efi@lists.einval.com,
-        debian-kernel <debian-kernel@lists.debian.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
-Subject: Re: [PATCH v2] builddeb: Support signing kernels with the module
- signing key
-Message-ID: <Yf2pE4BxpaBQhaJ9@casper.infradead.org>
-References: <20211218031122.4117631-1-willy@infradead.org>
- <CAK7LNAQUChvX3NoukBnjBfJJGu+a96pfbM--xHEHOygWPgE9eA@mail.gmail.com>
+        id S237023AbiBEKyN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 5 Feb 2022 05:54:13 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:53540 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230020AbiBEKyL (ORCPT <rfc822;linux-efi@vger.kernel.org>);
+        Sat, 5 Feb 2022 05:54:11 -0500
+Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E27091EC02DD;
+        Sat,  5 Feb 2022 11:54:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1644058446;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=uZ7YbZrJGPMPUOZHBNRpUaCuf4fbjJb2e0v1A635574=;
+        b=Wi4j4RdBU/nduEspCZ+AEnQggLzEGh95jTHEMmr+DClFcPOZ5VKO1AVl1fq1d6uEZnyIR9
+        94WXRdpFGpUC7ZltmJ5nyNtLaG7ckLTwcARlP7XhLQJFPS3GpUVCjl56uVAd6DMN/r7f/0
+        HzQGDF4BaAeJsfhozkPmEQqp4+mkgvI=
+Date:   Sat, 5 Feb 2022 11:54:01 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v9 31/43] x86/compressed/64: Add support for SEV-SNP
+ CPUID table in #VC handlers
+Message-ID: <Yf5XScto3mDXnl9u@zn.tnic>
+References: <20220128171804.569796-1-brijesh.singh@amd.com>
+ <20220128171804.569796-32-brijesh.singh@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAK7LNAQUChvX3NoukBnjBfJJGu+a96pfbM--xHEHOygWPgE9eA@mail.gmail.com>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
+In-Reply-To: <20220128171804.569796-32-brijesh.singh@amd.com>
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jan 05, 2022 at 12:39:57AM +0900, Masahiro Yamada wrote:
-> +CC the maintainers of CERTIFICATE HANDLING
-> M:      David Howells <dhowells@redhat.com>
-> M:      David Woodhouse <dwmw2@infradead.org>
-> L:      keyrings@vger.kernel.org
+On Fri, Jan 28, 2022 at 11:17:52AM -0600, Brijesh Singh wrote:
+> +/*
+> + * Individual entries of the SEV-SNP CPUID table, as defined by the SEV-SNP
+> + * Firmware ABI, Revision 0.9, Section 7.1, Table 14.
+> + */
+> +struct snp_cpuid_fn {
+> +	u32 eax_in;
+> +	u32 ecx_in;
+> +	u64 xcr0_in;
+> +	u64 xss_in;
 
-Davids, can one of you respond to this?
+So what's the end result here:
 
-> On Sat, Dec 18, 2021 at 12:11 PM Matthew Wilcox (Oracle)
-> <willy@infradead.org> wrote:
-> >
-> > If the config file specifies a signing key, use it to sign
-> > the kernel so that machines with SecureBoot enabled can boot.
-> > See https://wiki.debian.org/SecureBoot
-> >
-> > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> > ---
-> > v2:
-> >  - Handle private keys stored in the pem file as well as adjacent to the
-> >    certificate
-> >  - Handle certificate paths specified relative to both dsttree and srctree
-> >    (as well as absolute)
-> >  - Only try to sign the executable if EFI_STUB is enabled
-> >  - Only try to execute sbsign if it's in $PATH
-> >
-> >  scripts/package/builddeb | 25 ++++++++++++++++++++++++-
-> >  1 file changed, 24 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/scripts/package/builddeb b/scripts/package/builddeb
-> > index 91a502bb97e8..9dd92fd02b12 100755
-> > --- a/scripts/package/builddeb
-> > +++ b/scripts/package/builddeb
-> > @@ -147,7 +147,30 @@ else
-> >         cp System.map "$tmpdir/boot/System.map-$version"
-> >         cp $KCONFIG_CONFIG "$tmpdir/boot/config-$version"
-> >  fi
-> > -cp "$($MAKE -s -f $srctree/Makefile image_name)" "$tmpdir/$installed_image_path"
-> > +
-> > +vmlinux=$($MAKE -s -f $srctree/Makefile image_name)
-> > +key=
-> > +if is_enabled CONFIG_EFI_STUB && is_enabled CONFIG_MODULE_SIG; then
-> > +       cert=$(grep ^CONFIG_MODULE_SIG_KEY= include/config/auto.conf | cut -d\" -f2)
-> > +       if [ ! -f $cert ]; then
-> > +               cert=$srctree/$cert
-> > +       fi
-> > +
-> > +       key=${cert%pem}priv
-> > +       if [ ! -f $key ]; then
-> > +               key=$cert
-> > +       fi
-> 
-> 
-> I still do not understand this part.
-> 
-> It is true that the Debian document you referred to creates separate files
-> for the key and the certificate:
->   # openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform
-> DER -out MOK.der -days 36500 -subj "/CN=My Name/" -nodes
-> 
-> but, is such a use-case possible in Kbuild?
+-+	u64 __unused;
+-+	u64 __unused2;
+++	u64 xcr0_in;
+++	u64 xss_in;
 
-I don't think it matters whether *Kbuild* can generate one file or
-two.  If somebody follows the *Debian* document, they will have
-two files.  It would surely be desirable that if somebody has followed
-the Debian instructions that we would then sign the kernel using the
-keys they previously generated.
+those are not unused fields anymore but xcr0 and xss input values?
 
-> In the old days, yes, the key and the certificate were stored in separate files.
-> (the key in *.priv and the certificate in *.x509)
-> 
-> 
-> Please read this commit:
-> 
-> 
-> commit fb1179499134bc718dc7557c7a6a95dc72f224cb
-> Author: David Woodhouse <David.Woodhouse@intel.com>
-> Date:   Mon Jul 20 21:16:30 2015 +0100
-> 
->     modsign: Use single PEM file for autogenerated key
-> 
->     The current rule for generating signing_key.priv and signing_key.x509 is
->     a classic example of a bad rule which has a tendency to break parallel
->     make. When invoked to create *either* target, it generates the other
->     target as a side-effect that make didn't predict.
-> 
->     So let's switch to using a single file signing_key.pem which contains
->     both key and certificate. That matches what we do in the case of an
->     external key specified by CONFIG_MODULE_SIG_KEY anyway, so it's also
->     slightly cleaner.
-> 
->     Signed-off-by: David Woodhouse <David.Woodhouse@intel.com>
->     Signed-off-by: David Howells <dhowells@redhat.com>
-> 
-> 
-> 
-> 
-> Since then, both key and certificate are stored in a single *.pem file.
+Looking at the FW abi doc, they're only mentioned in "Table 14.
+CPUID_FUNCTION Structure" that they're XCR0 and XSS at the time of the
+CPUID execution.
 
-I did read that commit.  I think it's a terrible idea.  If the
-secret key & the certificate are stored in the same file, it's
-no better than a symmetric cipher.  Not even SSH does this!
+But those values are input values to what exactly, guest or firmware?
 
-> The motivation for this change is still questionable to me;
-> the commit description sounds like they merged *.priv and *.x509
-> into *.pem just because they could not write a correct Makefile.
-> (If requested, I can write a correct Makefile that works in parallel build)
-> 
-> But, anyway, as long as I read the current code, we never
-> have a separate *.priv file.
-> 
-> 
-> The help message of the config option supports my view.
-> 
-> 
-> config MODULE_SIG_KEY
->         string "File name or PKCS#11 URI of module signing key"
->         default "certs/signing_key.pem"
->         depends on MODULE_SIG || (IMA_APPRAISE_MODSIG && MODULES)
->         help
->          Provide the file name of a private key/certificate in PEM format,
->          or a PKCS#11 URI according to RFC7512. The file should contain, or
->          the URI should identify, both the certificate and its corresponding
->                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->          private key.
->          ^^^^^^^^^^^
-> 
-> 
-> 
-> I CC'ed  David Howells, David Woodhouse, keyrings@vger.kernel.org
-> in case I understood wrong.
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> > +       if ! command -v sbsign >/dev/null; then
-> > +               key=
-> > +       fi
-> > +fi
-> > +
-> > +if [ -n "$key" ]; then
-> > +       sbsign --key $key --cert $cert "$vmlinux" --output "$tmpdir/$installed_image_path"
-> > +else
-> > +       cp "$vmlinux" "$tmpdir/$installed_image_path"
-> > +fi
-> >
-> >  if is_enabled CONFIG_OF_EARLY_FLATTREE; then
-> >         # Only some architectures with OF support have this target
-> > --
-> > 2.33.0
-> >
-> 
-> 
-> --
-> Best Regards
-> Masahiro Yamada
+There's a typo in the FW doc, btw:
+
+"The guest constructs an MSG_CPUID_REQ message as defined in Table 13.
+This message contains an array of CPUID function structures as defined
+in Table 13."
+
+That second "Table" is 14 not 13.
+
+So, if an array CPUID_FUNCTION[] is passed as part of an MSG_CPUID_REQ
+command, then, the two _IN variables contain what the guest received
+from the HV for XCR0 and XSS values. Which means, this is the guest
+asking the FW whether those values the HV gave the guest are kosher.
+
+Am I close?
+
+> +static const struct snp_cpuid_info *snp_cpuid_info_get_ptr(void)
+> +{
+> +	void *ptr;
+> +
+> +	asm ("lea cpuid_info_copy(%%rip), %0"
+> +	     : "=r" (ptr)
+
+Same question as the last time:
+
+Why not "=g" and let the compiler decide?
+
+> +	     : "p" (&cpuid_info_copy));
+> +
+> +	return ptr;
+> +}
+
+...
+
+> +static bool snp_cpuid_check_range(u32 func)
+> +{
+> +	if (func <= cpuid_std_range_max ||
+> +	    (func >= 0x40000000 && func <= cpuid_hyp_range_max) ||
+> +	    (func >= 0x80000000 && func <= cpuid_ext_range_max))
+> +		return true;
+> +
+> +	return false;
+> +}
+> +
+> +static int snp_cpuid_postprocess(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
+> +				 u32 *ecx, u32 *edx)
+
+And again, same question as the last time:
+
+I'm wondering if you could make everything a lot easier by doing
+
+static int snp_cpuid_postprocess(struct cpuid_leaf *leaf)
+
+and marshall around that struct cpuid_leaf which contains func, subfunc,
+e[abcd]x instead of dealing with 6 parameters.
+
+Callers of snp_cpuid() can simply allocate it on their stack and hand it
+in and it is all in sev-shared.c so nicely self-contained...
+
+Ok I'm ignoring this patch for now and I'll review it only after you've
+worked in all comments from the previous review.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
