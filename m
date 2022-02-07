@@ -2,148 +2,124 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 791524AC60C
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Feb 2022 17:39:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F1C14AC713
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Feb 2022 18:18:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234666AbiBGQhG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Feb 2022 11:37:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59878 "EHLO
+        id S241406AbiBGRO5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Feb 2022 12:14:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1389593AbiBGQXn (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Feb 2022 11:23:43 -0500
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam07on2076.outbound.protection.outlook.com [40.107.95.76])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71CBCC0401CE;
-        Mon,  7 Feb 2022 08:23:42 -0800 (PST)
+        with ESMTP id S1383080AbiBGRAm (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Feb 2022 12:00:42 -0500
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2086.outbound.protection.outlook.com [40.107.237.86])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEE95C0401D8;
+        Mon,  7 Feb 2022 09:00:41 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Y8jMgFVifa0kLnOawb32rIA7mlg40HVuhdK4eIsBDfoheWGAwpiSIWxzFw3433Cok0AgLPabvLZvUXss5VeYUyBRmFQRPZyMC+ZdruCcOtase6q8sDIcJnmz8YKXYSDtdWQ6ECcqoXvOjwUn4Pq0iq0LiRpFBplb1We3SfjU6+SWsuFKYpUJUX1rSZyawgTSh5lo2r2a+mmYjlVIwEoC9RqLsogxFiFZJnlhJWDBoMEZnnuKstergW0pRWft10w7PSLFd6nfKM3eTRYNvfyCRcUrkdI+bBDXf+4YppzGzaUKiVDXaPxpFkcP0OvrKL0HcYypu6p1crw3pD0uFQpVSg==
+ b=WKQrQ0z47rtNQsvCSu9chea6Gso4JBkZVkeQBYauhLGCbnFpF05NnMesT7mNxHjhaKs4z+3fIbKUnMzphpVlmo2ctA/gbymxGNEqKI07WlfZwQdqpIKNhXilU+psy3V8BaqIS1iGBRIlSiK9bBv+srX3dSTClRPMOFXMVg+Ls56CVhbJoNk7ej8EfgDaRGB4K+dEAm2l0jNbrhsIT6IKqW1Wyx5VzCUGA+vC61TQHnL84D0nwk4Chj3Srrv9EBlJYkz+C2PYW39GM/VUr522hB7EcwrALcV36fcUwy3eWpmIopot1EV5wkKH0SgEt20oQd5N0v2oVGzQqulI3OkS2A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=18Bk4b4SeaNbBpY5MVEtVCTcNBaCeCf1RZEApjr7YkY=;
- b=HUwKtG5l4SYLCgIc3W7DD3BQLpmVpN9dm1n3r435j+M7fPJjv3TiqnAMYm8AeXbbgBArddQNh8amuhoJJC8BLY6WwlmNyQcBvBBCX2zbDST4MbHRzduB1lyNSnow/NGCeNcfqNpXi7yQqyBEUhSPe/l85pwy0/0ejAXAsKpDXH/Sijd45AN7qaOdHNiX0W10rXzOhHdoIYx67cK55rh7JO3XdNoHmEvDaBA9NWucqs294uFuhnsVgIlxsjD3Pe+9lHzz/lSk8a2ZU3nH9Q2YHYbeJeFY3kyagMSTqqEiZrNPznvQSwltvf6/4wN63yiJB3W8nNYPRCrY6oimGfcNPQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
+ bh=jK4FYXqQ+HmpinXCqHtdOCj+E53IZ6dmyQ9eOL25edI=;
+ b=n12iR0B6ZxdVa8/BXfptQl7K4vfSnu3mv2HtOPFTG85dzttfuLXqmZzrD2DjgcZtba6NkQD7Lqc+M14jr/NfBg33aOXakL99tfP7xpOMfyuXUk/C8lqfSRf3x+1Sa+1tFGCbcV3VOsk+/plRbqPdNjW6gKX4E8hzhz+ez1F0GHMZyZmgHOHwzje4Tg+Cu/WziGqngBqd//2N6et3C5Pg50dOUYDCbTSY2eGeOlvEkfTasBjDVegEeKJ4jJ8Y9SNkozc47+x/uU7Zwejg7SmfSw7K8KMlBfGcdodsnbMgqMUzT2w1r9Xcz1VaqnbyoyhHzjEONhiFEQtLQHkQF9qDWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=18Bk4b4SeaNbBpY5MVEtVCTcNBaCeCf1RZEApjr7YkY=;
- b=2eYr1ArAqB0DbzigafK8JafoV8q2DlEKGWVdtGmMYEMSc7ZBmyWwFJjS+AyHe2ZVftyAJ9N2l688sCDtObMutdiU5aqFMcZtxtSvV4lK3M2bkFlcIf1ULBgyQx5dbSV9RezVhO+FGcQn6u+wTIKVRsXEFwU/1bbYPvZbAWRJsNE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
- by BN7PR12MB2787.namprd12.prod.outlook.com (2603:10b6:408:2b::23) with
+ bh=jK4FYXqQ+HmpinXCqHtdOCj+E53IZ6dmyQ9eOL25edI=;
+ b=GgD6ffXYlE+HPdHdSy7Zmmjc+P7pUS0MswFoEK/ZSZfEiJEZbBICbCz36G13OaSCd1d2erpwlWAMH/hcduwjDO3cZY5PPmicaIOJpp5e+hpvm/S2jXZBkWC6gB/cBosmqoMLby+lkbOYXnGQ2ilQ8hd84vo+DNI9yqU/FabrxaM=
+Received: from MW4PR03CA0106.namprd03.prod.outlook.com (2603:10b6:303:b7::21)
+ by BN9PR12MB5115.namprd12.prod.outlook.com (2603:10b6:408:118::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.12; Mon, 7 Feb
- 2022 16:23:40 +0000
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::500e:b264:8e8c:1817]) by SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::500e:b264:8e8c:1817%5]) with mapi id 15.20.4951.018; Mon, 7 Feb 2022
- 16:23:40 +0000
-Cc:     brijesh.singh@amd.com, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ 2022 17:00:38 +0000
+Received: from CO1NAM11FT038.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:303:b7:cafe::2d) by MW4PR03CA0106.outlook.office365.com
+ (2603:10b6:303:b7::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.12 via Frontend
+ Transport; Mon, 7 Feb 2022 17:00:38 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1NAM11FT038.mail.protection.outlook.com (10.13.174.231) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.4951.12 via Frontend Transport; Mon, 7 Feb 2022 17:00:36 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Mon, 7 Feb
+ 2022 11:00:34 -0600
+Date:   Mon, 7 Feb 2022 09:37:39 -0600
+From:   Michael Roth <michael.roth@amd.com>
+To:     Borislav Petkov <bp@alien8.de>
+CC:     Brijesh Singh <brijesh.singh@amd.com>, <x86@kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
+        <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
         Tom Lendacky <thomas.lendacky@amd.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
         Paolo Bonzini <pbonzini@redhat.com>,
         Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        "Vitaly Kuznetsov" <vkuznets@redhat.com>,
         Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
+        "Andy Lutomirski" <luto@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
+        "Peter Zijlstra" <peterz@infradead.org>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         David Rientjes <rientjes@google.com>,
         Dov Murik <dovmurik@linux.ibm.com>,
         Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>,
         "Kirill A . Shutemov" <kirill@shutemov.name>,
         Andi Kleen <ak@linux.intel.com>,
         "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com,
-        Liam Merwick <liam.merwick@oracle.com>
-Subject: Re: [PATCH v9 42/43] virt: sevguest: Add support to derive key
-To:     Borislav Petkov <bp@alien8.de>
+        <brijesh.ksingh@gmail.com>, <tony.luck@intel.com>,
+        <marcorr@google.com>
+Subject: Re: [PATCH v9 31/43] x86/compressed/64: Add support for SEV-SNP
+ CPUID table in #VC handlers
+Message-ID: <20220207153739.p63sa5tcaxtdx2wn@amd.com>
 References: <20220128171804.569796-1-brijesh.singh@amd.com>
- <20220128171804.569796-43-brijesh.singh@amd.com> <YgDduR0mrptX5arB@zn.tnic>
-From:   Brijesh Singh <brijesh.singh@amd.com>
-Message-ID: <1cb4fdf5-7c1e-6c8f-1db6-8c976d6437c2@amd.com>
-Date:   Mon, 7 Feb 2022 10:23:35 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-In-Reply-To: <YgDduR0mrptX5arB@zn.tnic>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN2PR14CA0026.namprd14.prod.outlook.com
- (2603:10b6:208:23e::31) To SN6PR12MB2718.namprd12.prod.outlook.com
- (2603:10b6:805:6f::22)
+ <20220128171804.569796-32-brijesh.singh@amd.com>
+ <Yf5XScto3mDXnl9u@zn.tnic>
+ <20220205162249.4dkttihw6my7iha3@amd.com>
+ <Yf/PN8rBy3m5seU9@zn.tnic>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <Yf/PN8rBy3m5seU9@zn.tnic>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e09c0cd2-67a9-408a-d273-08d9ea56336c
-X-MS-TrafficTypeDiagnostic: BN7PR12MB2787:EE_
-X-Microsoft-Antispam-PRVS: <BN7PR12MB27870AA734401087FC1C3E0CE52C9@BN7PR12MB2787.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:595;
+X-MS-Office365-Filtering-Correlation-Id: 5b702571-85f9-4a46-36c7-08d9ea5b5ca0
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5115:EE_
+X-Microsoft-Antispam-PRVS: <BN9PR12MB51154F4A82340DBED03BB178952C9@BN9PR12MB5115.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: n0wOM+RLkUbmPQAq6nn80hH8YbRvE6VJ2KLkCw8o3eyF0eWClHeJC94BbqH5emgNLnE/1vFShfdlP23JZtf9kHILNAXuoCP1Sqdd55uzDD0OY7Zcet9jv00AKRTr/Qr+8XO7Q1CaxGRjQh3mAXnNXB4FAsbS6Pc5DAFF48fYCuEmOxxsU55jGh+W0Iah4k2KI0zCR8SQcMTA/wEI5u0GNCVMKMXfxUSE2dK65oKBQsVbohhihzFTuf34aY3SChUlJUzuMMx3Y12ILkiHboAZHOnLdulVU7RFpJjvEEl39ZAn6n6b0555HPWYCzE5UgnUTDUHiWmghxE5VbKkX2HsCubgu/RDakfWtaYfHmWevqfE0pnVF60EDODGa+285T7Dn3U8ZoYyt+JPpZi/B4eJm+wtMJZ+J/CMpmpgxTA2wsyQDaIZ33puUw2bEuihus3bIhUe1rfN0uBErXlbyU0f9hGMIXJfmjBF2jfq0Jwgr7O4yoxoWH5my+wjdPKMUYPEIVIM1a6TTxQbrIRcp/wmvEp7xyQbnJx/73VdCBRobCYHIufAl361Krx6D4eURBsZ8GJftDEIPrWb9lRjAEQ8XnF1YvmmGP9bEkQX5p9z+sIs51afcB5RG/uJGVvakiJdYqxX0mdVZOVVXvy9hL8B2XZXCMbQLCIi4PWIiDPi2Rmhsk3TIyO0RKZdisM+NkLuDwDXyuBVoxnTOiCiE6uh0gvjdgCYhMRwWXswQG+gHxE=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(186003)(36756003)(26005)(316002)(6506007)(66556008)(6486002)(53546011)(6666004)(54906003)(31696002)(6916009)(86362001)(558084003)(2906002)(508600001)(66476007)(66946007)(4326008)(8936002)(2616005)(6512007)(8676002)(31686004)(38100700002)(44832011)(5660300002)(7406005)(7416002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MUhVMmNUcFpWV0YyVTJsdjVoSCtSaE42ZWFIVzd1bHNYejF4Z2xqQUgydmdh?=
- =?utf-8?B?bU9mN3NKU01vN3d1SFBDalFnaU5HL2E4dnZhNmc0NWNsaHlhdjFHQklrZStv?=
- =?utf-8?B?dE5IR3lBanFwMVFKL1o0ZDFBbldPQ2c0cUFOUGZIQVZjdGZjRCtJbWdSK0Nn?=
- =?utf-8?B?R00zZGdjU3d4RnB4enFZSFYrd2xRcGl0TkpqSE4yOVZxM0V4MElnOGRUcldF?=
- =?utf-8?B?S1FrVDdCN252QmJQTElld3JXUVFrUlpjK2swRktTdi9wRUoyc2wrRWtXTkpD?=
- =?utf-8?B?UzlDNTU3U0ZhRzBxZlR2YjhvYVFHUjhHQjVKeWdYb1dybTdLYWNUL2JJUEtx?=
- =?utf-8?B?ZGgwMnRRTlg2L1d2ZXZUQ1hmS3V0Rm9aR2V2STNkTGpyWFpLbEppclg1bG1E?=
- =?utf-8?B?R2xXNEtzS2xGYVkwMGJZdWJ2bm1qVGZBRk9EOG5DY2FDTU4yckZJT0RQWVNJ?=
- =?utf-8?B?ajh5WWtFSXJVZnZmMlhPQW9qMUVmd2VnRmE2YnNHY2I4SjNMbmFERFQzTERz?=
- =?utf-8?B?NzZqc1ZFSTE0QlNNOVFHSWNRbVhIV2h1YWhwL011YzhkTURMalJtR1FLbnJM?=
- =?utf-8?B?b0NTRmFWNjNtVDFqN2MwNnNZK2dPWnlERTVidmxiU2dpRWNiMFlWeXVXUGFF?=
- =?utf-8?B?aHR4VklmMklkL0Z3SzBxTjVDWitieWdrMmNjV3RnWlo0dlFzc1RuaUt5M3hZ?=
- =?utf-8?B?dzVEQTIzUGJ6THNlSWRKdHlHeUtOL25nNzQ2K0loQ1Q0b2tjZ1djaWlXSUdD?=
- =?utf-8?B?SmlCN2YySGhaejR3VjM5cUZ2YnpHVVYxcXNwOEI5eFhneEZOOENNb3kwa0dM?=
- =?utf-8?B?NThXV3drT09XZzZvTGFiVGduck5DSk9MV2JQdnNjZktrOHBtaHc3Y2Nodity?=
- =?utf-8?B?azlYRys0eitTalY1SmlFMWtBT3dMaktFZGlLWkVEYmlaUnNxWGkzVnZ0TUJN?=
- =?utf-8?B?WXZkRWw0a2FLWW54ZDNMQ0VNaGJhMC9tbXBEWklVUHFxbHZCVEUySHhFMjZH?=
- =?utf-8?B?eVpOYnBGamhHU2ZWZGhDRHYzME90ZE00alhxcWRVMlJsMmhhUkgwUWljc2hp?=
- =?utf-8?B?Z3Y1NlgxYnVjQ0RrQWg3ZW1QdnpzT09qZ3cxaWZTSTdoY0Z6Zjc3NFhzODlm?=
- =?utf-8?B?ejhMaWtrbXN5Q3dyNTJVSXJOYUNKa0cxS0tlZGFGY2VubVlrekFtRGpZc1NX?=
- =?utf-8?B?TDR3YitUZ3hMamQweEIzQlFoWExpa2RnNnh4bUcrYlUvL3g1ZXNhRlBtYVZ6?=
- =?utf-8?B?WjR2Ym92c0s4T2dOS1pLMEhiRGo1NytDQVA5SUhEMVUrVFRKdFlWT0RnRDE1?=
- =?utf-8?B?ZVkzQ3Y0MHN0TWdvUnpVZUN0cm1SSXI2SUNGbjR6Ym5QUnVKcTFzSWRmZUlz?=
- =?utf-8?B?SEZ6enI3WGZuT3h2YVY0SHNaMi92c0hjeVEwS2MzMlptaUsyNWVEU3NPdC81?=
- =?utf-8?B?ZW9iZjRDclRJY2xPWEFncTlmdklPT0RDT1hBMmN3eGlNTHEveU1MRFdLVzN2?=
- =?utf-8?B?N29jWDAvQk5SYys4WWh1VWZ0K0pMS2ZTV0wrMVJoTTJFejlHS0kvNGU3UDNP?=
- =?utf-8?B?YnhnODVoTko2SU9UeTFxNmhtdVJYdmxUeHNLRm5CSXVxcFMxdkJQRksxeEx6?=
- =?utf-8?B?cXNMNWtBVXpwa0x4V3FYZHhGK2JrZWE5dGJtMk9LM0xVd0RBWXg2R08zcXND?=
- =?utf-8?B?TmNEV3FZSjdsNGpOU0dVSDdFa2J2RXlQZmpqN1NLNVJpcHJjeldHQXYwTE1E?=
- =?utf-8?B?UlR1eW9NQkh4NGVrTGtreW9LZ2RVcC9OU3RRaFMySXZvYmE2bGp6SENUanRB?=
- =?utf-8?B?K0l1dVAwSFArUUU0cFhCbHZ0czdLdXZPaEZuZGUvdkVUK2g2dVQ0TndYQVpz?=
- =?utf-8?B?dU1HTFkwRmZ6c2k0bmNrM25zYWtrdkluRVZBWUtMbksvbFM2U0xhVDNjV1Ez?=
- =?utf-8?B?VDhBZFpxTUVZanJab05JbWYxK0dyWUFHNUROUnp3anhrcWxjMTB5Rm9HcXdz?=
- =?utf-8?B?bEF1K0NhSHBwVzFtNDdBRzdhcXlndlNjcVB4eFgwWmJZdTMwdWFCaDlRRDlm?=
- =?utf-8?B?aSs1bHdDK1NuSEo2RkY2STVjQTh3VVJxVnVhd2hsSi9tZzVCcUZKdjdzRHQv?=
- =?utf-8?B?RmptMUJZN2E3UmJPN2EwRWhIa0thRXU5bks0dU5CWk52UVVFd0QwN1M3WjYz?=
- =?utf-8?Q?RLI1QwT9kozEQLlog0r5kH4=3D?=
+X-Microsoft-Antispam-Message-Info: 0REhxsKHEMYnL3wlDjepmJ5I8vBgzNTGVpM/jPg/i+SmditHx1pvomd8hmddLpwQqd4QMjrPQPycPwQCXjs9nKz+/KJihpBgExyE1MwJxePGRkCH8rmU9yA26xLaLfBx1LMRqgefEiUMquIHAmgJPIrUEO1AO3q61ZAzaAKLE56vf2AWMOUErffqWr+PavabVKr5NPXQOu/IglcJAw2cngByUxHRLZL9qZbi4meb6xWIuvEPoTBzuGAvt+8i7S8xQZFq3DEaSoV9dsG3w2NSw5RfZw6bKGnwQa0APJSPrgCEc7RJkmIGkNnOF4QIZzDYDZxsJYPMqmv366lt0Q7spDn78tXDYrPRRGOYlA5Rp8uzJxCHH8HTLWfV70pYA/eWgZZE9hZDHRK+qUcq3lkyvorhFrPk3H2IXj2srFLoj9anrovLMIhxTkTa+S+ZLk5YR6EquSUlrW28PYGANg1wuIYbo67rR4AflqEM1B6vmjr3gSDTwJyGG+NvtqPxG8JuAxQbrRRgHiEQTV/0hzXaebJOd8ZHlELpwPQawDAs7H8fnpUSCvspqOmkiWJgkmDkPcCS5Z/DDYYLwullYZcSdl8nAEAiUyi6VtAxnszw8Mvwnjs+snSAR9Wo+3LqXuvesLxJxUM3+pB7IotE3VLHET/Lzv0+tAQrhypiG4nOQwNfmikFmpJA3y1qwuxaTd6BlBZF4zReHXfG69TwvoUgyq+SFCZx2q6esu7vcDGINVJV/PhEbnqNO4ncixsNdFFJ4ByNLY+mVsFQnIObuAHQOSzgAmH+TkZ1IKZrIfknnhc=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(40470700004)(46966006)(36840700001)(16526019)(81166007)(26005)(1076003)(186003)(2616005)(47076005)(36860700001)(356005)(82310400004)(83380400001)(336012)(426003)(7406005)(7416002)(44832011)(5660300002)(2906002)(40460700003)(36756003)(45080400002)(966005)(508600001)(8936002)(86362001)(4326008)(70206006)(70586007)(8676002)(54906003)(6916009)(316002)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e09c0cd2-67a9-408a-d273-08d9ea56336c
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2022 16:23:40.2055
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2022 17:00:36.4844
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5b702571-85f9-4a46-36c7-08d9ea5b5ca0
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Re2iV6TOled7fKAwlrp2b0qdb1MKkAHe0/XoE2yvg2NaahLKOUQKlXP7szs+yttksSjRwUGZtoPDoPU2LahMdw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR12MB2787
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT038.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5115
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -152,11 +128,159 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Sun, Feb 06, 2022 at 02:37:59PM +0100, Borislav Petkov wrote:
+> First of all,
+> 
+> let me give you a very important piece of advice for the future:
+> ignoring review feedback is a very unfriendly thing to do:
+> 
+> - if you agree with the feedback, you work it in in the next revision
+> 
+> - if you don't agree, you *say* *why* you don't
+> 
+> What you should avoid is what you've done - ignore it silently. Because
+> reviewing submitters code is the most ungrateful work around the kernel,
+> and, at the same time, it is the most important one.
+> 
+> So please make sure you don't do that in the future when submitting
+> patches for upstream inclusion. I'm sure you can imagine, the ignoring
+> can go both ways.
 
+Absolutely, I know a thorough review is grueling work, and would never
+want to give the impression that I don't appreciate it. Was just hoping
+to revisit these in the context of v9 since there were some concerning
+things in flight WRT the spec handling and I was sort of focused on
+getting ahead of those in case they involved firmware/spec changes. But
+I realize that's resulted in a waste of your time and I should have at
+least provided some indication of where I was with these before your
+review. Won't happen again.
 
-On 2/7/22 2:52 AM, Borislav Petkov wrote:
-> Those are allocated on stack, why are you clearing them?
+> 
+> On Sat, Feb 05, 2022 at 10:22:49AM -0600, Michael Roth wrote:
+> > The documentation for lea (APM Volume 3 Chapter 3) seemed to require
+> > that the destination register be a general purpose register, so it
+> > seemed like there was potential for breakage in allowing GCC to use
+> > anything otherwise.
+> 
+> There's no such potential: binutils encodes the unstruction operands
+> and what types are allowed. IOW, the assembler knows that there goes a
+> register.
+> 
+> > Maybe GCC is smart enough to figure that out, but since we know the
+> > constraint in advance it seemed safer to stick with the current
+> > approach of enforcing that constraint.
+> 
+> I guess in this particular case it won't matter whether it is "=r" or
+> "=g" but still...
+> 
+> > I did look into it and honestly it just seemed to add more abstractions that
+> > made it harder to parse the specific operations taken place here. For
+> > instance, post-processing of 0x8000001E entry, we have e{a,b,c,d}x from
+> > the CPUID table, then to post process:
+> > 
+> >   switch (func):
+> >   case 0x8000001E:
+> >     /* extended APIC ID */
+> >     snp_cpuid_hv(func, subfunc, eax, &ebx2, &ecx2, NULL);
+> 
+> Well, my suggestion was to put it *all* in the subleaf struct - not just
+> the regs:
+> 
+> struct cpuid_leaf {
+> 	u32 func;
+> 	u32 subfunc;
+> 	u32 eax;
+> 	u32 ebx;
+> 	u32 ecx;
+> 	u32 edx;
+> };
+> 
+> so that the call signature is:
+> 
+> 	snp_cpuid_postprocess(struct cpuid_leaf *leaf)
+> 
+> 
+> > and it all reads in a clear/familiar way to all the other
+> > cpuid()/native_cpuid() users throughout the kernel,
+> 
+> maybe it should read differently *on* *purpose*. Exactly because this is
+> *not* the usual CPUID handling code but CPUID verification code for SNP
+> guests.
 
-Yep, no need to explicitly clear it. I'll take it out in next rev.
+Well, there's also sev_cpuid_hv(), which really is sort of a variant of
+cpuid()/native_cpuid() helpers that happens to use the GHCB protocol, and
+snp_cpuid() gets called at roughly the same callsite in the #VC handler,
+so it made sense to me to just stick to a similar signature across all of
+them. But no problem implementing it as you suggested, that was just my
+reasoning there.
 
-thanks
+> 
+> And please explain to me what's so unclear about leaf->eax vs *eax?!
+
+It's not that one is unclear, it's just that, in the context of reading
+through a function which has a lot of similar/repetitive cases for
+various leaves:
+
+  snp_cpuid_hv(fn, subfn, &eax, &ebx2, NULL, NULL) 
+
+  ebx = fixup(ebx2)
+
+seems slightly easier to process to me than:
+
+  snp_cpuid_hv(&leaf_hv)
+
+  leaf->eax = leaf_hv->eax
+  leaf->ebx = fixup(leaf_hv->ebx)
+
+because I already have advance indication from the function call that eax
+will be overwritten by hv, ebx2 will getting fixed up in subsequent lines,
+and ecx/edx will be used as is, and don't need to parse multiple lines to
+discern that.
+
+But I know I may very well be biased from staring at the existing
+implementation so much, and that maybe your approach would be clearer to
+someone looking at the code who isn't as familiar with that pattern.
+
+> 
+> > I saved the diff from when I looked into it previously (was just a
+> > rough-sketch, not build-tested), and included it below for reference,
+> > but it just didn't seem to help with readability to me,
+> 
+> Well, looking at it, the only difference is that the IO is done
+> over a struct instead of separate pointers. And the diff is pretty
+> straight-forward.
+> 
+> So no, having a struct cpuid_leaf containing it all is actually better
+> in this case because you know which is which if you name it properly and
+> you have a single pointer argument which you pass around - something
+> which is done all around the kernel.
+
+Ok, will work this in for v10. My plan is to introduce this struct:
+
+  struct cpuid_leaf {
+      u32 fn;
+      u32 subfn;
+      u32 eax;
+      u32 ebx;
+      u32 ecx;
+      u32 edx;
+  }
+
+as part of the patch which introduces sev_cpuid_hv():
+
+  x86/sev: Move MSR-based VMGEXITs for CPUID to helper
+
+and then utilize that for the function parameters there, here, and any
+other patches in the SNP code involved with fetching/manipulating cpuid
+values before returning them to the #VC handler.
+
+Thanks!
+
+-Mike
+
+> 
+> -- 
+> Regards/Gruss,
+>     Boris.
+> 
+> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fpeople.kernel.org%2Ftglx%2Fnotes-about-netiquette&amp;data=04%7C01%7Cmichael.roth%40amd.com%7Cd409d10fc3cc41c4cbfb08d9e975ebfc%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637797515011518153%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=%2FDjnNrQ7a8%2F6eI%2FRVJJ2vmLEpeDaAeDVOJcW9CBnggU%3D&amp;reserved=0
