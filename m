@@ -2,93 +2,167 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 903BE4AB890
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Feb 2022 11:17:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B8BA4ABFC2
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Feb 2022 14:49:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235958AbiBGKQh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Feb 2022 05:16:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44100 "EHLO
+        id S229778AbiBGNiT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Feb 2022 08:38:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245646AbiBGKCV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Feb 2022 05:02:21 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D80ABC043181;
-        Mon,  7 Feb 2022 02:02:19 -0800 (PST)
-Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4B90E1EC0354;
-        Mon,  7 Feb 2022 11:02:14 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1644228134;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=6NmcNnj4Xwf+e2Un6wF4u6C4XPINvN7+qgEn8DmbNjU=;
-        b=WVpaEJgzqF5fq7YPdG4XbSK6DMWR9AJm/JHYAgntaWj2aL7CaiHvp04Hh8HQhCF4tJh2Fn
-        kA9JlCzFyKRnnZPRSyJ72oUaGsNFgh4WF9RjPlhlRNUeuuO0GaShR6GVoGRkIFCRXBKOGO
-        lxTh4qa2rvorw3ow9d33JQZwyjDvjtU=
-Date:   Mon, 7 Feb 2022 11:02:09 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     "Limonciello, Mario" <mario.limonciello@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Martin Fernandez <martin.fernandez@eclypsium.com>,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
-        tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
-        x86@kernel.org, hpa@zytor.com, ardb@kernel.org,
-        dvhart@infradead.org, andy@infradead.org,
-        gregkh@linuxfoundation.org, rafael@kernel.org, rppt@kernel.org,
-        akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
-        hughsient@gmail.com, alex.bazhaniuk@eclypsium.com,
-        alison.schofield@intel.com
-Subject: Re: [PATCH v6 6/6] drivers/node: Show in sysfs node's crypto
- capabilities
-Message-ID: <YgDuIeYvken1IArn@zn.tnic>
-References: <20220203164328.203629-1-martin.fernandez@eclypsium.com>
- <20220203164328.203629-7-martin.fernandez@eclypsium.com>
- <67d2711b-200c-0894-4ff7-beb3eb304399@amd.com>
- <CAKgze5YM2+BRjj2nvb+_dnuCg5WtWvQ6FQyNYJ1c8G6Orn=aQw@mail.gmail.com>
- <5c5ffe29-d3d3-2955-cf78-ad275110f012@amd.com>
- <ec9e29a4-0d2b-1423-d92e-6f025b56f8cc@amd.com>
- <Yf1UO6jF91o9k4jB@zn.tnic>
- <202202061924.6A2D278@keescook>
+        with ESMTP id S1447089AbiBGMxW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Feb 2022 07:53:22 -0500
+X-Greylist: delayed 181 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 07 Feb 2022 04:53:21 PST
+Received: from condef-08.nifty.com (condef-08.nifty.com [202.248.20.73])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02B8EC0401C1;
+        Mon,  7 Feb 2022 04:53:20 -0800 (PST)
+Received: from conssluserg-04.nifty.com ([10.126.8.83])by condef-08.nifty.com with ESMTP id 217CYfOO006569;
+        Mon, 7 Feb 2022 21:34:41 +0900
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174]) (authenticated)
+        by conssluserg-04.nifty.com with ESMTP id 217CYN2K029695;
+        Mon, 7 Feb 2022 21:34:23 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 217CYN2K029695
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1644237263;
+        bh=9zKrPVPrkksURJV3q1ADM90/dTQqSdo5AISbXfRbAK8=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=ncgNidLu5reIUSqWMWHKjwcp1pH8YB2Nl81GvQ0hpGnx78rZFCVFxFRPAqaszZw/2
+         dtUs614cqV/1Xz451imobbGRu/hvXbtxlF3ZfTD3WRWDZpfMQkIlu5PqWgblXK56Ei
+         HH7kYXenqhXRVZNEd6CPHTBzOTY0+UwNTbP8TdJdskvIRA2xhID06vWqZzduuXywao
+         CW61Xtx3JOtQBi8WkQnv+ieoidDZsTOnqLESj4LdpNqzofVS/2qxNYdm3qW8HSLkbQ
+         dLd4b0T2tLs3UY9acXOCyeXvHKMxC5b2KI4/CTBQhVBPZhdOH6jdb0gj7+ZjDGRetb
+         YTgr+HMQZfHtg==
+X-Nifty-SrcIP: [209.85.214.174]
+Received: by mail-pl1-f174.google.com with SMTP id z17so1009414plb.9;
+        Mon, 07 Feb 2022 04:34:23 -0800 (PST)
+X-Gm-Message-State: AOAM531P+CO1a3ScQZp+4a4qpUGL/PwsPN0ubKSR2KMZpO903RW/kuMk
+        Fglse2NSftWLHUwLVHo0dKwn74gj7L9VHIR1dPs=
+X-Google-Smtp-Source: ABdhPJw3cX3TxmQPv1QYgm1VN+3TehX/6SKbg9GVGNoFJP8Soe+of9JeFW0Lh7zcdp1x15eRDqMYFJrt4S2w8Y3RoUM=
+X-Received: by 2002:a17:90b:4a4b:: with SMTP id lb11mr13886889pjb.144.1644237262520;
+ Mon, 07 Feb 2022 04:34:22 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <202202061924.6A2D278@keescook>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20211218031122.4117631-1-willy@infradead.org> <CAK7LNAQUChvX3NoukBnjBfJJGu+a96pfbM--xHEHOygWPgE9eA@mail.gmail.com>
+ <YdSOV7LL0vWCMcWl@casper.infradead.org>
+In-Reply-To: <YdSOV7LL0vWCMcWl@casper.infradead.org>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Mon, 7 Feb 2022 21:33:46 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQgixJSnDUMfjc+tg90oMdVoh+i5faEn-rqgmHR3Bk6dQ@mail.gmail.com>
+Message-ID: <CAK7LNAQgixJSnDUMfjc+tg90oMdVoh+i5faEn-rqgmHR3Bk6dQ@mail.gmail.com>
+Subject: Re: [PATCH v2] builddeb: Support signing kernels with the module
+ signing key
+To:     Matthew Wilcox <willy@infradead.org>,
+        Ben Hutchings <ben@decadent.org.uk>
+Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        efi@lists.einval.com,
+        debian-kernel <debian-kernel@lists.debian.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_SOFTFAIL,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sun, Feb 06, 2022 at 07:39:46PM -0800, Kees Cook wrote:
-> Oh, this seems weird to me, as I'd expect it to show up since the CPU is
-> _capable_ of it, even if it's not in use. (Am I really using avx512vl,
-> e.g.?)
+Added "Ben Hutchings <ben@decadent.org.uk>"
 
-We're trying to put feature flags in /proc/cpuinfo which mean that the
-kernel supports the feature - not every CPUID bit out there. For that
-there's tools/arch/x86/kcpuid/kcpuid.c
+On Wed, Jan 5, 2022 at 3:13 AM Matthew Wilcox <willy@infradead.org> wrote:
+>
+> On Wed, Jan 05, 2022 at 12:39:57AM +0900, Masahiro Yamada wrote:
+> > > +vmlinux=$($MAKE -s -f $srctree/Makefile image_name)
+> > > +key=
+> > > +if is_enabled CONFIG_EFI_STUB && is_enabled CONFIG_MODULE_SIG; then
+> > > +       cert=$(grep ^CONFIG_MODULE_SIG_KEY= include/config/auto.conf | cut -d\" -f2)
+> > > +       if [ ! -f $cert ]; then
+> > > +               cert=$srctree/$cert
+> > > +       fi
+> > > +
+> > > +       key=${cert%pem}priv
+> > > +       if [ ! -f $key ]; then
+> > > +               key=$cert
+> > > +       fi
+> >
+> >
+> > I still do not understand this part.
+> >
+> > It is true that the Debian document you referred to creates separate files
+> > for the key and the certificate:
+> >   # openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform
+> > DER -out MOK.der -days 36500 -subj "/CN=My Name/" -nodes
+> >
+> > but, is such a use-case possible in Kbuild?
+>
+> If someone has followed the Debian instructions for creating a MOK,
+> then they will have two separate files.  We should support both the case
+> where someone has created a Debian MOK and the case where someone has
+> used Kbuild to create this foolish blob with both private and public
+> key in one file.
 
-Otherwise /proc/cpuinfo becomes a dumping ground for feature flags and
-there's no shortage of those.
+But, this patch is doing different things than the Debian document.
 
-> But as you point out later, it does work that way for a lot of things
-> and boot params. If this is the way things are supposed to be done,
-> it looks like we should wire up "nx" vs "noexec=off" boot param to do
 
-See here:
+The Debian document you referred to says:
+  "Ubuntu puts its MOK key under /var/lib/shim-signed/mok/ and some
+   software such as Oracle's virtualbox package expect the key there
+   so we follow suit (see 989463 for reference) and put it at the same place"
 
-https://lore.kernel.org/r/20220127115626.14179-1-bp@alien8.de
+
+
+In Debian, MOK is generated under /var/lib/shim-signed/mok/,
+and its primary use is for signing the kernel.
+Then, you can reuse it for signing modules as well.
+
+
+This patch adopts the opposite direction:
+  Kbuild generates the module signing key, then
+  this patch reuses it for singing the kernel.
+
+The key is located in the kernel build tree
+(that is, the key is lost when you run "make mrproper").
+
+You need to "mokutil --import path/to/module/sining/key"
+every time Kbuild generates a new key.
+
+
+
+So, another possible approach is:
+
+builddeb signs the kernel with the key
+in /var/lib/shim-signed/mok/.
+
+I think this is more aligned with the debian documenation.
+
+I added Ben Hutchings, who might give us insights.
+
+
+
+
+
+
+
+> > In the old days, yes, the key and the certificate were stored in separate files.
+> > (the key in *.priv and the certificate in *.x509)
+> >
+> >
+> > Please read this commit:
+>
+> Yes, I did.
+>
+> > The motivation for this change is still questionable to me;
+> > the commit description sounds like they merged *.priv and *.x509
+> > into *.pem just because they could not write a correct Makefile.
+> > (If requested, I can write a correct Makefile that works in parallel build)
+>
+> I think that would be preferable.  Putting the private and public keys
+> in the same file cannot be good security practice!
+
+
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Best Regards
+Masahiro Yamada
