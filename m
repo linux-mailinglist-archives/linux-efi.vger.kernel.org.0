@@ -2,278 +2,236 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DC4E4AC26B
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Feb 2022 16:07:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AC844AC35C
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Feb 2022 16:30:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234504AbiBGPFd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Feb 2022 10:05:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48200 "EHLO
+        id S232504AbiBGP3n (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Feb 2022 10:29:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377491AbiBGOl7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Feb 2022 09:41:59 -0500
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2087.outbound.protection.outlook.com [40.107.236.87])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE978C0401C1;
-        Mon,  7 Feb 2022 06:41:58 -0800 (PST)
+        with ESMTP id S1444032AbiBGPQd (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Feb 2022 10:16:33 -0500
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-eopbgr80119.outbound.protection.outlook.com [40.107.8.119])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F44DC0401C1;
+        Mon,  7 Feb 2022 07:16:32 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k9EdlwJYQ3TmaDMwRVmGXO+no5qp62tq2fwhN1k6lv0ZcwR0hUPZDwrlZOS77ds5mb8cab+VSaz1+EhgBqmKDsJg48oDq+KTieKwTMw8///2KKh7Y1ZHJvYL3FWbvCjJa9hmvt7fodxHGTuWCwBZ4eLWqEVjkIagTx3P3SZ2r7NOjjpCBodSprF3R+4gSrEzhwwgjGjdTQ45tmFJ0BQh3zqwqSSGM1GfgkHCahNBsiUHauEIjZHijRILPwiGs3l1JZRKNvqqugSNhNZR4H7yOgLH8bU3BnX/91yBZ3E8m9OogFe1mo+nalRnxYy5ED80IyzOqiGMm1+4gsIPbQR9yw==
+ b=bayUOjcoHtK85S8v59ZX66HCrXsLU49XAH6AY9qYuBeVXFXmiLXRWpe921XxuTpHBPNGP0p2DqL6jHBQVYovhvO0P99OwpN4Yy4kTkC88097NlyS5Xuj+ba8bvH8gPacX5bjwEZ2h+8i59cD8fxe5cmwZww6cqNpUmzNAspn1zsMZOfS5WSN9JeaBYpNh7PbmMBV1WD9zHeq8DFbbOM8TiImr+DtmFVjSnXeLvUBpe2wt6MX3+BsHUZ3kBv5xs4ZrtbphTeBW4nouhAU4ETZViXeC1fOkuLJ6RpVQ9ixxNd04Mf1WuDjVa7dfoKNWUTbK3ec3AJONzFbSB/ZEguLuw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9HnbdG3ozvi8jDOAd5srVqOwmEnciYis1tlw1MSkpa0=;
- b=aL3xVqi8btXiHtS6tkQYINLX98rAiLgTAmvKyFJp7wMxyjWoXt3rzjm2tdbXsYkHuH9zkaMSJ3DV561yBxHmW7gvZ4w5ZLDQg3p4T+NcwH0fgu8t9G3CJAHOacilq+jff9wrPDffO+nyeYVHr07Xrig79brqch1OGTAeKLOyWZY0WnvgL48t+jtM4TS0R+1sKCibzHwBkNalM2aGicGv5E9PDFSH1CwhWPzqRBRsSFSYGug4ugg6QGxDsORBlGugzsyfokrEgxdeFHQ4O51Eb0mjpGvFuNh8xJXxIn+RlrZOZh0XxEn5I0IQ1hNlWk8SLw7cTnlbRpQpoks6pgQE8g==
+ bh=FxxUza5IJqoiR3BTA15it9jQlxEd3ohaGe2dqt4Zn/A=;
+ b=FN1kCkge4a5dlHdGRuWbEfuCa2GZQahBmy/fp+nNUOeq/YsGshAx6K3/fe2NaLKEsDEJ91IumfAnEbk086y7JTNrGFcTJUgCRxSP8tN36LmJYwrSIvB3h7x6O/DPMKbON9a7HE9/1VnVCFizSQnt4XlIBg/lfyjcKAUIwO+GVgi4qWMfRFy/gFveIh3s+X413z1Y6ovhJvjKzhxTfsbcKTD4R/4HlKGu4TdHGmucK9oriTgul/Daqi49igErpZIOwan39ho35k+ha7vvDMP7bclELx7mYRFxcV/YthkqewvYlFoM7lM28OxGaQBSjwpIuAfs1ao6ZRvdEg4fOLbz4A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia.onmicrosoft.com;
+ s=selector1-nokia-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9HnbdG3ozvi8jDOAd5srVqOwmEnciYis1tlw1MSkpa0=;
- b=lhcvASTO+B3paUaBNlSZiVzaG6rZmKQjnSfAw+3r3Vs6V2d1NxfN2WxODHxhbxKEaMqz2jHIW2ehCqpBFDWmnbFU11nwMuVpuPTxO11s+X6gfuuSQpC8OHNB+TgRI3k/v4s1Ad6tZlU7uFdYlCLhoi5vaM1ahMXcNTeva8rXPoE=
+ bh=FxxUza5IJqoiR3BTA15it9jQlxEd3ohaGe2dqt4Zn/A=;
+ b=C+txKzoKLGAaS1XHXhp89tpDOt8OE8XAUmiIawweiBtbDu3sDn9egRQjcjWassdNjILoMJ9wPN1fwYrvZrVUr3nP8qr0GH7pICMcp9XtUFFKDCWmX8kqw3Hiu92RN/Gj4WNHdsE8duxCwXEJWF5LtGKuEdKxcQCOWfjUrS2LDbw=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
- by BN6PR12MB1524.namprd12.prod.outlook.com (2603:10b6:405:4::9) with
+ header.d=none;dmarc=none action=none header.from=nokia.com;
+Received: from AS8PR07MB8104.eurprd07.prod.outlook.com (2603:10a6:20b:373::6)
+ by DB7PR07MB5227.eurprd07.prod.outlook.com (2603:10a6:10:6e::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.14; Mon, 7 Feb
- 2022 14:41:52 +0000
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::500e:b264:8e8c:1817]) by SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::500e:b264:8e8c:1817%5]) with mapi id 15.20.4951.018; Mon, 7 Feb 2022
- 14:41:52 +0000
-Cc:     brijesh.singh@amd.com, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v9 41/43] virt: Add SEV-SNP guest driver
-To:     Borislav Petkov <bp@alien8.de>
-References: <20220128171804.569796-1-brijesh.singh@amd.com>
- <20220128171804.569796-42-brijesh.singh@amd.com> <YgBOKQKXEH5VqTO7@zn.tnic>
-From:   Brijesh Singh <brijesh.singh@amd.com>
-Message-ID: <cb4aa4c4-11e9-163c-5101-8b0dea336fc1@amd.com>
-Date:   Mon, 7 Feb 2022 08:41:47 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-In-Reply-To: <YgBOKQKXEH5VqTO7@zn.tnic>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BL0PR05CA0019.namprd05.prod.outlook.com
- (2603:10b6:208:91::29) To SN6PR12MB2718.namprd12.prod.outlook.com
- (2603:10b6:805:6f::22)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4975.10; Mon, 7 Feb
+ 2022 15:16:29 +0000
+Received: from AS8PR07MB8104.eurprd07.prod.outlook.com
+ ([fe80::add0:5657:466d:4803]) by AS8PR07MB8104.eurprd07.prod.outlook.com
+ ([fe80::add0:5657:466d:4803%8]) with mapi id 15.20.4951.018; Mon, 7 Feb 2022
+ 15:16:23 +0000
+Date:   Mon, 7 Feb 2022 16:16:18 +0100
+From:   Krzysztof Adamski <krzysztof.adamski@nokia.com>
+To:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Peter Collingbourne <pcc@google.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Alexander Sverdlin <alexander.sverdlin@nokia.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-efi@vger.kernel.org
+Subject: [PATCH v3] arm64: move efi_reboot to restart handler
+Message-ID: <YgE3wo3W8y1qcd3t@localhost.localdomain>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-ClientProxiedBy: HE1PR09CA0080.eurprd09.prod.outlook.com
+ (2603:10a6:7:3d::24) To AS8PR07MB8104.eurprd07.prod.outlook.com
+ (2603:10a6:20b:373::6)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: c5c33f8f-7dea-4873-d7ef-08d9ea47fae6
-X-MS-TrafficTypeDiagnostic: BN6PR12MB1524:EE_
-X-Microsoft-Antispam-PRVS: <BN6PR12MB1524A2CB79B5DB75C32F5787E52C9@BN6PR12MB1524.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Office365-Filtering-Correlation-Id: 97f76af9-a26a-4a42-ca24-08d9ea4ccd43
+X-MS-TrafficTypeDiagnostic: DB7PR07MB5227:EE_
+X-Microsoft-Antispam-PRVS: <DB7PR07MB522777057DD320E2A9070868EF2C9@DB7PR07MB5227.eurprd07.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4502;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: sJGnK91zAcQlnUIq3m0vrkOh21NocCtP/AIMpe4MN3tfZWgx/tzxaYDdC5KpyqKyjs3loYuwtFwjPWT7PpZOb7GrayAtkfAXtE2Oko76T0BlO+dmoYZOnoYd8sYlCJeoaGuIHo40HALFc/GODcLbnxzHHFV6s0FX5AIdQS9pa3+4RF0G+Ttmd6X4W4h0exMXV1zKp40yHx0XwNa3UhwNI2FioFKRF0NJFivdGiAIBnE1btl+5QzdXiog/1IpnIzPwz2kKJQrSdrBgy89yv782wrjwJ6IS1Yp7pQPo7jtIQu1427qqAKQ7d9ypwY0Lez4fse4AY8EtG1IodUiU5n2jFBV63TV+wD9VUZmyLGIAsu8NXB73KI4TOlSSj5EXNYD1pRgSIprQKsFQhuj6oNAXVuQ8fbs3wT81avh1deHXhv/CfXStqsae65MrzpFTKqQi2oJwzz7CB29/TtMOJny+faEcTXBCgtqXaue8+2Z4QoaGc5R4lRdkU2Wxsw7PsxWXvWq62ArCNIN7hYG/jAn7iSqom/eV/wEY6ORBHsqsS24jnjozM8q9avAOBVFxYRvgB+GI26XRThta9wWAUCeaO4FbSBLTpZYEz3iWh6kY9+fK0urbAa4TZkMuX7CryyQ9DbpCtgRVSfgltOUvZjXHoGDcu1NN7nvkO1uyV51UYK/9eXdogJFjb7lJoMnuyIg0E9bRMM+/uj6oBoS60s0ctnwF6tysU64zP+5AP8bOwsaMOLlPh0gJsxHFgSVxu44jaibEM/k1F9QO8ZE+v3YWRklgarEARyDnrNJedmqhkP5oY0LDTF37yaDNwL07MOV
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(31696002)(6506007)(508600001)(53546011)(38100700002)(83380400001)(6486002)(86362001)(966005)(6512007)(7416002)(7406005)(5660300002)(6666004)(66946007)(6916009)(316002)(31686004)(66556008)(66476007)(8676002)(4326008)(8936002)(54906003)(36756003)(44832011)(2906002)(26005)(186003)(2616005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: hIvGRlwTU4cj39cA5endG8tI2MZ7s95FcoV/QJcvXhBvmnvRIBMNxgQAHGBRKtotqx1uRSgC3DH2VArl0VaN0C01Q9U0LKiMzkiVx6YJd0pLurb9t4Kz34YGHBAd+iQ/4ZbHXVe9J/+uFqzRGWhMiR+Wr7L1W+nmmfPHB5az694EXNvbdsg6XimioEA935k/FuTManF58MuG1zSrgqtSCZzAzQjzzp0woRyv3vGpuRiZsZ0zion8Bd99wlrNB/EKxrVjNtH5sgwCUCMTS7FpnpdDHwJwE1Zj6iFomIRba4GlIjFeXUgYdFQtnlUf1c/Pdw6jLWIIDRQ2S48KSZRpjl2e78ZVYZhavqSklUoR+ynl7/YbAhdZz0yrHsLzU+1NkUTjC8AHULqli5rbN7VFwq+5X+OMz5+6SY94GQW42PlbtvURBk2u0Gf069A4R3/1Je7DPlwBTeN/NYifkQ5R0kVFkH8cr2vHnPX5Y0HwWv0licb3BjkWcwWzZEx8YTsQ90JtEoHxDX1r5HZOm0xj30c89f63xSiyg5QstASPlv+grLty45F97hxQ5FSTECf7vXI+OMHby274cYvHGPfjUeHG3LF5daSATwZNzS78IKZq8mZWBHvgCT1aU7Uve9E0mAeJXF83ioeuKguiGN3rqd78it5o5QTWYS7KE4IYp4L4h2YY30JyaYl7w3VS5BKRDrdh74UxpLKaPoGcAXTjAwbgzjd919BxdrhpmDuV9HY=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR07MB8104.eurprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(6512007)(83380400001)(7416002)(9686003)(186003)(26005)(38100700002)(38350700002)(5660300002)(44832011)(6486002)(8936002)(6666004)(4326008)(82960400001)(8676002)(66556008)(6506007)(66476007)(86362001)(66946007)(52116002)(2906002)(110136005)(508600001)(316002)(69594002);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NnBQb2RRMk9nMnZ4cjFkMVlTNUFIRXdvckhLbWpsYmZpN0dXcWhiRkE5Q25M?=
- =?utf-8?B?TDRoVjdIWmM3dlkwdStXWXVyWFVKSXN2LzdIV0c0K2VwUzZkMURFTHcySmRm?=
- =?utf-8?B?NjJ5QUFxWktjQ3pwUkVKa08rVnF1SUpYUWE1SFp6RGtCQjUwQzhHNGRUblFn?=
- =?utf-8?B?RXlhNlhhL1FlUDl0VWt4eVR0eFgwSUFVdzFkWndDSmtaS1h2SFF2V1lleENv?=
- =?utf-8?B?WnFjN2R0TC9TYy8wM0NqdEZPRkhmN0J6MVFqY2N5NmUwYUlEVGxseEJuWTli?=
- =?utf-8?B?R3A0bmdZOWRPUi9MbUZBeDFrTE1aaXp2VEtVOFZVYW53SlJabXo5MEpyQUVE?=
- =?utf-8?B?MVdHa1NjTlhWVzh0MmVPclM0UHBFN3g5SGd1SUxPbDRzY0lxR1NuUENqcFk1?=
- =?utf-8?B?WVFZdit4NjdaREFXbUxTWDF4QnZja0pwZmdKa2IrTEZnNVhxSU1ORkl2bG9l?=
- =?utf-8?B?M09rOGs4OU5wWFZBK0FFY0tROWF5R21WZjVUNmVCQkExdDVjOWJMWVFyamNK?=
- =?utf-8?B?R0x4cUQwKzJiMExYNHN0bDR0NW5MMnFOSkN0WU5qY0dPbnpPY2hXSnlZYUE2?=
- =?utf-8?B?cTRUbXdsQU1LQXRFdW5qUW81VGdxak4yM2RXbFFXbllBbUxHUURDVnJaK0NV?=
- =?utf-8?B?ejNQUkVMSDI4RTFSOXZiekU4dUF6VVB1dlhGVmJDS2FQa05hSm5RSlR6RFpH?=
- =?utf-8?B?MzUrSU1DakJGNWtaRWt5ajcxN291ejVjWlcyU2J3Y2t1eEFCY2hWZnZYMktq?=
- =?utf-8?B?UlA0YTFkQitBSkFlVG5BaVphdldRZzNoSUtyUU9SVVozK1F3K0h1ZHVjVVFW?=
- =?utf-8?B?SWk0K1liVFQ3dWpMU25KUEVVUWJDVnFQV1IvcTcwb2xyQlp2UWhNdXRCc2lX?=
- =?utf-8?B?MmJIbVhENlJzRGhBTkVpbTM4Wm1CU2wvVEJ3S21ScE84QjF2S2ZSYmxEaWda?=
- =?utf-8?B?QWkzbFhWMFFlYkhnYnRkNlFZSy9jRWc4enJqWWJnY2xCcElQR0xGM2t1TEFq?=
- =?utf-8?B?VXRkRks1NUdOZGdxWjdpR1VMWEtEODcydC9UTTlvRms0ampMTWVBemtmb1BQ?=
- =?utf-8?B?OExia3ZYK21OZGorUTV4SWZ3NUhsUDNhc2I1M0hVM2RiSDBmL3JTeUtXQUY1?=
- =?utf-8?B?ZTZBU09nN0JpcWl4MVpXVWh2QTl3bkNVdGEzNTF6V1lZZ2xUOUJIOEZUd1ly?=
- =?utf-8?B?WVdJQ2ZrTTZmRFN4SjlUdHU4TjVrbUxUNHJjS1E2elo1ZCtxNktjdk1kNk1R?=
- =?utf-8?B?NFpUMk44MjA0QzExcWNUMXJoVDg3RzE2QWJnQzlIQjNiYmJTR2w3ZDhnenVq?=
- =?utf-8?B?RlB1R2dqcEd2Y0QwOFI1WHBrK2JZWVI2TUlvMlNoSDExbjhETjlBeXdrZkhJ?=
- =?utf-8?B?aFdFaS83aGRlOFlrNW5TcE1UcU5BTWdlM0FvQ0RrS2I5NlBrVE1nVEdIRzdL?=
- =?utf-8?B?dXdqZHBRdW9CbTF3RWk5ZzRaMk1BNVlQSjdGcmdzbkROQ2xmc1U4SU1uR2VN?=
- =?utf-8?B?a0ZHYktpT3NaN2JPUk0wdnNGa0MrS1B6RXowL0dxR0xNclhMakVUNVNjVEtS?=
- =?utf-8?B?VGd2elU1L1FYaWxLK2FPa29paWRLdGJvekRhczVnN3VwMzJOZjU4ZHdNV3lV?=
- =?utf-8?B?K0xWTThFbUFwVUd0RnIyaW5HNE9rc3gwNWRUNlk1eE05d25paTliRzVMR1RT?=
- =?utf-8?B?eFd1RGo4TTJoK0NnbGhqNlVYTFR4VXpTK3FtUjJqSitxUXo1ajFDQWFkc2hJ?=
- =?utf-8?B?SU12QkQ5TXpGdVgrRWNENmsxNEZjaWo1ZDk0cEFqb0JzQVJmcFpFTlZJa2ll?=
- =?utf-8?B?azMyQUtVWjVOSGxORlEzdmtZYU4yZVZXaDR5dUtsL3pQZzJwRGI3RVZvbmZB?=
- =?utf-8?B?eDJFYnIrNG1tYXBCR3gxTXJTT2NjQlV4bExPNkdhQkJWS3NSbm5xWkoyOXA3?=
- =?utf-8?B?NVFnMGc5L3Uxc1JYSmFrWFVGc2crTTRyQlIzRTkwU3gvRG5RMG9Yc1lXd2Vs?=
- =?utf-8?B?c0kzUHFKanJTSTJCK0xrWEdJZEd3U0NvTU55VTI1WTROME9qdW5KcHhFNVBO?=
- =?utf-8?B?bDhtS292U1d3NGdoT0pKSFErLzEyR3IweUZvYWFWNGVTMzFIb3Z4QVByWlJO?=
- =?utf-8?B?S2JIMXNZdlBiUkprUWM2d0dkL3hHakxVSHp3eEJ0cFBhQ0NZOG1EOWtxRitL?=
- =?utf-8?Q?jR5B/uACxTF+B08i/m2v0sk=3D?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c5c33f8f-7dea-4873-d7ef-08d9ea47fae6
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?izEmHuRBb32Sgf9pcvGVztFFkcgY8y9NOgZ+Iq9B3/6N9Wt/3OZlLoO6QL4y?=
+ =?us-ascii?Q?JZtnJuYt8V21RdltEI0wMdbpiKM8e3Gx1ok5VvatNhi/YbDuduz8+A33c1NX?=
+ =?us-ascii?Q?l8QtG+F42JayCDFK3y2WCF2FXCeCm113kB8KJnqJEvnIo+jkVupBM4rwTuYy?=
+ =?us-ascii?Q?+/a7UH54SuQt8N3fHOlQLRX3oBUClU3H3SQSiLXXyVyTWB2U5bLI1rxgUrqr?=
+ =?us-ascii?Q?sqjKlVutVAhe8oNhtQtV0os+/Fux355ZYmSgOCS46rmcv5puJPg5fTz3ppN/?=
+ =?us-ascii?Q?gsY02A1458vD0tlLR7BLCO/FNj5OkVl4yvdb6mD2sxZTVKlzC/fYFEodyk49?=
+ =?us-ascii?Q?MfLEckISCpBFS2BN1b2AAiJjQPPOqOB8nKWYh823c+nvur5OzH+f7ik554UO?=
+ =?us-ascii?Q?xH/AfupzK7VqWCiG0hVnfQLewGQSnvKNf8R4ies8nwMlEyi3DHLlyK/HYKgM?=
+ =?us-ascii?Q?T7R4iHMGdRPyrhktRGb8NnZcy/CwewtBLykMHBjmuQAWb0KMfF21C29yZSON?=
+ =?us-ascii?Q?0Hq254NKVGXKsGT22no2gXw6SingLZv5RT2tHstNq0yiRK6i2J529lBalPpu?=
+ =?us-ascii?Q?BjZoYzCV83zi/QtrfRnFhs8K0WoFYDO9ipsG3vcHFuMcx165JrG3Ui4oV9sW?=
+ =?us-ascii?Q?3UqXAmZa7fn/92/WjMnjbhpvupz4elUmSQy9GR3XW1MkahhatNZ8kRH8htiS?=
+ =?us-ascii?Q?ew+ZCtZKIggnT3cl/2e2hwFMHCFcJ2zP2cCMmc1xSN5u3jpjBni5TKX428/x?=
+ =?us-ascii?Q?SO32KUhUnsab3gjI0OkeIX66W+g0muPb0oNwNVSY56qr7tHe7+06bXBEHGaE?=
+ =?us-ascii?Q?0zXAyBWQlS+WAXja9jOdpP8G6Vonjo14+p6y/6R1l237+6+VMn4StDIGqF3X?=
+ =?us-ascii?Q?dyZanvtzpS5ulxeC2CuCWBz4LQdCONj/ap0mbvJsveWEfLCeFygaBTDtK45h?=
+ =?us-ascii?Q?N1HVuqe8z6l9T6c0Z8KcgmX2pL5noYATtDdv+q7s5CA9ycAr+GIxAy+WGqRT?=
+ =?us-ascii?Q?8BkLivJFGHn0oPlYQFRXvd8pFstxa02rTs763V1QeOh8vm93ImWQgTqW6pTT?=
+ =?us-ascii?Q?tudyRoJ5KNtKAaKPSR/dU7zd/GX6jcZM3ppN+tyWuVQm+ENHRqyeIe8MxWi5?=
+ =?us-ascii?Q?MAfmrMtk9oTy/uMgqWne5RTCkzoCa7/1yh/kvwx0EsW2NqJm8BUiXaToVCG+?=
+ =?us-ascii?Q?tCSUzSDiOydmBKBzuHVcJp6eFvFNUrJcNm3JVHnzSP22Zq64YhHVc9pIF9FW?=
+ =?us-ascii?Q?u8/2XtIiEUkJIERPd6mM8RBBxsJ+wFblPc7lxfcbwggz82KK3KKR0X0Rp8Kd?=
+ =?us-ascii?Q?LaIu6xzNtM4SRUiFTXf6JTAMIh1ZpfB1IKivgXWfkUqqTiK0G64h1oBVmYCq?=
+ =?us-ascii?Q?lycOwA3cqpvBvQVO8okOE00rRtJHvLRi7ltNUkFTRNOgl3E8ZWaJMHuemJn3?=
+ =?us-ascii?Q?R8ToTxpKrrP5xMYqjFwMlk1PIPz5tx4rOCfWcL539sk4Hmqjnj48PnmrW0TP?=
+ =?us-ascii?Q?d/JtKiZhkozVPz67BIa0wwm40zwDX7HCo+Vl6Ms4qM5Avg3NnIEvY3juFgMj?=
+ =?us-ascii?Q?6nMWBKJWRzFmFvyk8MTZE37uftFYHOcHL0UzdABr6RBw4E6LK8sN3VBjXz4L?=
+ =?us-ascii?Q?iWwbMoeHWzr7WUBualqxikG65cLffCHcPDScZBuCEsR32c2Nif8Q/1y9z9/O?=
+ =?us-ascii?Q?YCAKLA=3D=3D?=
+X-OriginatorOrg: nokia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97f76af9-a26a-4a42-ca24-08d9ea4ccd43
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR07MB8104.eurprd07.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2022 14:41:52.4989
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2022 15:16:23.4447
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FXo59zmIflJMpjhRihJQcykh7wYYbjJIrwKfmAdzDKJG3bkZmFFpo5ne8pInGvGnMoJykQB4k9pz1B70Wm5Cug==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR12MB1524
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6rQmAi3eRy5EuVx4tDrmHYYKvMFQOwcpJ81OxXMpjMbeMnAI+KZKEKQZMlUHqC8ki8OHv/OU/+vajxiVVVhL5v570hs5mQBoncupyICnWoM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR07MB5227
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,FORGED_SPF_HELO,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On EFI enabled arm64 systems, efi_reboot was called before
+do_kernel_restart, completely omitting the reset_handlers functionality.
+By registering efi_reboot as part of the chain with elevated priority,
+we make it run before the default handler but still allow plugging in
+other handlers.
 
+This is useful in two scenarios:
+ - Abusing the restart handler as a notification mechanism similar to
+   reboot notifiers, but working in wider spectrum of cases, (notably
+   also at emergency_restart) and just before reset. This is useful for
+   things like in-kernel pwrseq_emmc, or any other place where it is
+   beneficial for an *external* component to know about the restart, but
+   not performing the reset itself.
+ - Providing higher priority reset handler, where resetting the SoC is
+   not enough, and reset of the whole board should be orchestrated by
+   some external component, that the firmware is not aware of (like an
+   FPGA or some PMIC).
 
-On 2/6/22 4:39 PM, Borislav Petkov wrote:
+This change moves the conditional efi_reboot() call from arm64 specific
+machine_restart() function to an arm efi initialization code where it is
+registered as a restart handler with a very high (but not the highest)
+priority, leaving a small window of opportunity for some code to be run
+prior to the actual reset, like on other architectures.
 
-> And once you do, do "make htmldocs" to see whether it complains about
-> some formatting issues or other errors etc.
-> 
-> /me goes and does it...
-> 
-> Ah, here we go:
-> 
-> Documentation/virt/coco/sevguest.rst:48: WARNING: Inline emphasis start-string without end-string.
-> Documentation/virt/coco/sevguest.rst:51: WARNING: Inline emphasis start-string without end-string.
-> Documentation/virt/coco/sevguest.rst:55: WARNING: Inline emphasis start-string without end-string.
-> Documentation/virt/coco/sevguest.rst:57: WARNING: Definition list ends without a blank line; unexpected unindent.
-> 
-> There's something it doesn't like about the struct. Yeah, when I look at
-> the html output, it is all weird and not monospaced...
+The restart handlers mechanism is proven to work reliably as we depend
+on it heavily on other platforms so there is almost no cost for this
+change but it adds flexibility and unifies our infrastructure with other
+ports (where one can depend on restart handlers working).
 
-I will fix those in next rev.
+Signed-off-by: Krzysztof Adamski <krzysztof.adamski@nokia.com>
+---
 
+While previous attempts got mixed feedback, my explanations did not seen
+counterarguments so I am trying another round:
 
->> +
->> +The guest ioctl should be issued on a file descriptor of the /dev/sev-guest device.
->> +The ioctl accepts struct snp_user_guest_request. The input and output structure is
->> +specified through the req_data and resp_data field respectively. If the ioctl fails
->> +to execute due to a firmware error, then fw_err code will be set otherwise the
->> +fw_err will be set to 0xff.
-> 
-> fw_err is u64. What does 0xff mean? Everything above the least
-> significant byte is reserved 0?
-> 
+Changes in v3:
+  - Bump the priority much higher, to almost maximal value
+  - Add a comment discouraging from registering higher prio handlers
+  - Update the commit message to contain some more justifications
 
-Yep, I will explicitly say that it should be set to 0x00000000000000FF.
+Changes in v2:
+  - Register the handler in EFI code, instead of arm64 setup.c
+  - Remove the contdition from the handler - it should be run in all
+    cases when it is registered
+  - Bump the priority to 130 to make it completly obious this should be
+    run before PSCI (which has priority of 129)
 
+ arch/arm64/kernel/process.c        |  7 -------
+ drivers/firmware/efi/arm-runtime.c | 25 +++++++++++++++++++++++++
+ 2 files changed, 25 insertions(+), 7 deletions(-)
 
->> diff --git a/drivers/virt/coco/sevguest/Kconfig b/drivers/virt/coco/sevguest/Kconfig
->> new file mode 100644
->> index 000000000000..07ab9ec6471c
->> --- /dev/null
->> +++ b/drivers/virt/coco/sevguest/Kconfig
->> @@ -0,0 +1,12 @@
->> +config SEV_GUEST
->> +	tristate "AMD SEV Guest driver"
->> +	default y
-> 
-> Definitely not. We don't enable drivers by default unless they're
-> ubiquitous.
-> 
+diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
+index 5369e649fa79..b86ef77bb0c8 100644
+--- a/arch/arm64/kernel/process.c
++++ b/arch/arm64/kernel/process.c
+@@ -130,13 +130,6 @@ void machine_restart(char *cmd)
+ 	local_irq_disable();
+ 	smp_send_stop();
+ 
+-	/*
+-	 * UpdateCapsule() depends on the system being reset via
+-	 * ResetSystem().
+-	 */
+-	if (efi_enabled(EFI_RUNTIME_SERVICES))
+-		efi_reboot(reboot_mode, NULL);
+-
+ 	/* Now call the architecture specific reboot code. */
+ 	do_kernel_restart(cmd);
+ 
+diff --git a/drivers/firmware/efi/arm-runtime.c b/drivers/firmware/efi/arm-runtime.c
+index 3359ae2adf24..b29f47783bbc 100644
+--- a/drivers/firmware/efi/arm-runtime.c
++++ b/drivers/firmware/efi/arm-runtime.c
+@@ -80,6 +80,28 @@ static bool __init efi_virtmap_init(void)
+ 	return true;
+ }
+ 
++static int efi_restart(struct notifier_block *nb, unsigned long action,
++		       void *data)
++{
++	/*
++	 * UpdateCapsule() depends on the system being reset via
++	 * ResetSystem().
++	 */
++	efi_reboot(reboot_mode, NULL);
++
++	return NOTIFY_DONE;
++}
++
++static struct notifier_block efi_restart_nb = {
++	.notifier_call = efi_restart,
++	/**
++	 * If you are running UEFI based system, you most certainly should let
++	 * efi_reboot() do a reset for you. If you think you know better, we
++	 * leave you a window of opportunity here by not using maximal priority.
++	 */
++	.priority = 251,
++};
++
+ /*
+  * Enable the UEFI Runtime Services if all prerequisites are in place, i.e.,
+  * non-early mapping of the UEFI system table and virtual mappings for all
+@@ -148,6 +170,9 @@ static int __init arm_enable_runtime_services(void)
+ 	efi_native_runtime_setup();
+ 	set_bit(EFI_RUNTIME_SERVICES, &efi.flags);
+ 
++	if (IS_ENABLED(CONFIG_ARM64))
++		register_restart_handler(&efi_restart_nb);
++
+ 	return 0;
+ }
+ early_initcall(arm_enable_runtime_services);
+-- 
+2.34.1
 
-Randy asked me similar question on v7, and here is my response to it.
-
-https://lore.kernel.org/linux-mm/e6b412e4-f38e-d212-f52a-e7bdc9a26eff@infradead.org/
-
-Let me know if you still think that we should make it 'n'. I am not dead 
-against it but I have feeling that once distro's starts building SNP 
-aware guest kernel, then we may get asked to enable it by default so 
-that attestation report can be obtained by the initial ramdisk.
-
-
-
->> +	 */
->> +	if (count >= UINT_MAX) {
->> +		pr_err_ratelimited("SNP guest request message sequence counter overflow\n");
-> 
-> How does error message help the user? Is she supposed to reboot the
-> machine or so?
-> 
-> Because it sounds to me like if this goes over 32-bit, this driver stops
-> working. So what resets those sequence numbers?
-
-After this condition is met, a guest will no longer get the attestation 
-report. It's up to the userspace to reboot the guest or continue without 
-attestation.
-
-The only thing that will reset the counter is re-launching the guest to 
-go through the entire PSP initialization sequence once again.
-
-
->> +
->> +	crypto->iv_len = crypto_aead_ivsize(crypto->tfm);
->> +	if (crypto->iv_len < 12) {
->> +		dev_err(snp_dev->dev, "IV length is less than 12.\n");
-> 
-> And? < 12 is bad? Make that error message more user-friendly pls.
-> 
-Okay.
-
-
-> 
-> The order of those free calls needs to be the opposite of the kmallocs
-> above.
-> 
-Okay
-
-
->> +
->> +	/* Message version must be non-zero */
->> +	if (!input.msg_version)
->> +		return -EINVAL;
->> +
->> +	mutex_lock(&snp_cmd_mutex);
-> 
-> That mutex probably is to be held while issuing SNP commands but then
-> you hold it here already for...
-> 
->> +
->> +	/* Check if the VMPCK is not empty */
->> +	if (is_vmpck_empty(snp_dev)) {
-> 
-> ... this here which is not really a SNP command issuing.
-> 
-> Should that mutex be grabbed only around handle_guest_request() above or
-> is it supposed to protect more stuff?
-
-
-Yep, it need to protect more stuff.
-
-We allocate a shared buffers (request, response, cert-chain) that gets 
-populated before issuing the command, and then we copy the result from 
-reponse shared to callers buffer after the command completes. So, we 
-also want to ensure that the shared buffer is not touched before the 
-previous ioctl is finished.
-
-
--Brijesh
