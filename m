@@ -2,145 +2,152 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 468534ACBAE
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Feb 2022 22:56:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DFFC4ACD5D
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Feb 2022 02:08:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243125AbiBGV4R (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Feb 2022 16:56:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36656 "EHLO
+        id S241805AbiBHBGP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Feb 2022 20:06:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235933AbiBGV4Q (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Feb 2022 16:56:16 -0500
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A194EC061355
-        for <linux-efi@vger.kernel.org>; Mon,  7 Feb 2022 13:56:15 -0800 (PST)
-Received: by mail-pf1-x42d.google.com with SMTP id u130so15374376pfc.2
-        for <linux-efi@vger.kernel.org>; Mon, 07 Feb 2022 13:56:15 -0800 (PST)
+        with ESMTP id S1343687AbiBGXsU (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Feb 2022 18:48:20 -0500
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE147C061A73
+        for <linux-efi@vger.kernel.org>; Mon,  7 Feb 2022 15:48:16 -0800 (PST)
+Received: by mail-pj1-x1032.google.com with SMTP id on2so6143317pjb.4
+        for <linux-efi@vger.kernel.org>; Mon, 07 Feb 2022 15:48:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
+        d=google.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=tHxa2zKVaHBcu/brPJMMDCzteRvMa8lCYhxJZN7g04o=;
-        b=I3T0MgX3KD3D8din9AD4VmFgX5xNMlWkCITEwL0yWT4rotEFC5G/eY54wJX+04On6C
-         CHr+Fk8wpO7RGMsRViMvJA3/won/IUNX8Ak9LBq8aIS1CJfPR5C6w46zR1Z8O+YPMarK
-         I3WWGlNHdYu4PYfMgfgnwpeTxftKTY5LuLmhc=
+        bh=DmAjZsfccwaVaNtes6EmfPZ2rG4blpFc0pyFaBFNy/c=;
+        b=O48QwLhH9/EyfzfbZFDBuyW7NgAxpUfsKFo77vRIIp/J97PxXdR/Nfj2Q5oBXNcuPo
+         Jf+QknfQrGr7pgD1rVD/n/xLnaeB/v8ecoI8tICXQpFrYlc8ZMljeCsh4aBWr+MUr3+G
+         Z+isaq63CF1Tym+PBdMK6+axq9i8a6odmcOzGYnYQtwotEiike8g+3qsd0ovrJL+iHr9
+         IRWBaGik6wVgAJ2agrzQUCGB/xt89X7wnTl3AQVzdoaewv8FDh3sJaMY7Az0F+paU4cv
+         ZGtrP1Ka76pG+mtfqeJGLgKYnsm2YYJsLXjwUbqakndlRzflCo3MlbsGS63DJb4uRxOi
+         pbXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=tHxa2zKVaHBcu/brPJMMDCzteRvMa8lCYhxJZN7g04o=;
-        b=BdGoFbQSGDBsmR4tCBvTZsYOUe/kXPgiOXvYpZD4zgVx+8OQKtqqBJSKDXh/4M1fvg
-         eIb4MTtAkAnyB/y5R1cMn+sebHCrVNAa6WBMEjO9lLg7TVFfvuBlMcCx7v3c8Frvqwh0
-         yx7uAZYeTbRa4wUL+OcjWfWVIGoc/LlfTWslo0SNt5rC4Ga388/IziOnVv6wFeBw4Yq5
-         08YKspMTK7pAKh0DxLwBH1vGo4g1F8vtYOs1c24Y9/nqmomtYsh6nJhhKtmshbYeWemX
-         fJQzP3Hxnn2gajXFxuX9ZzdPitXZFhwYI7doCQx42lQjzq2bs46ubHmEo0Ph33qESsjX
-         xt8w==
-X-Gm-Message-State: AOAM531vEpPvHtWUPxuOCP2GvfCfKJgliMIWUGZTUN5JFlXv+kaJcl1N
-        ZwAtWNfyAOPqw++Ou7gb8MEfFQ==
-X-Google-Smtp-Source: ABdhPJyCMZS8k4XqgP2140WPRUddkLLGFWtx/egtokuBNm31gkdMHe+p42tk+Kmo6pOth6YVBsHvXw==
-X-Received: by 2002:a63:4f4f:: with SMTP id p15mr1109735pgl.452.1644270975192;
-        Mon, 07 Feb 2022 13:56:15 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id 6sm9348292pgx.36.2022.02.07.13.56.14
+        bh=DmAjZsfccwaVaNtes6EmfPZ2rG4blpFc0pyFaBFNy/c=;
+        b=RK7i96gDhgx8de6NPN3wIMrvwXLLFOza9AFUuPxrtxvpieXdbvGs0jduHTzPK4Q3kS
+         polDL48OoIfxHZR5CMCttH3pC8w5WveRz2Lb6mPfBU+Z5Ar8mwgItizuLhzOK4p5MxEn
+         t5c/MXZoKPMVm7wPKMd7yuB2L8mRL66KgmnNtbsX3r4nvg+czrcEuJAptWVdjPfwOU0m
+         95r6CB5FTWH4bjzu006xOSoBtr6HTrz/bLs8A4R4RytE2ePD95C33SPF6EVIQzVJD1Hf
+         1eXirmnsRSWAaMe/fAC+hB2f18J90juyFoQC1v4uI2F3NVPbIXQpW6/t8aCpSINZUiCo
+         UaIQ==
+X-Gm-Message-State: AOAM533yNCbKs8g/hGe6oSPI7ncmU3cRwyJ6iDxe6iiDxh89cD3K8JLp
+        KzGyajW3cWJX3QpPIsXY0bMgJA==
+X-Google-Smtp-Source: ABdhPJxqxfPIQtuam5GkZBepPAbS7V0Q8IGPcsrc+Vbtsq0AWBZ7iKtmXQsqTlN6H1uGOVjInIYmRw==
+X-Received: by 2002:a17:902:d487:: with SMTP id c7mr2089230plg.0.1644277695967;
+        Mon, 07 Feb 2022 15:48:15 -0800 (PST)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id u18sm13306160pfk.14.2022.02.07.15.48.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Feb 2022 13:56:14 -0800 (PST)
-Date:   Mon, 7 Feb 2022 13:56:14 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     Martin Fernandez <martin.fernandez@eclypsium.com>
-Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
-        gregkh@linuxfoundation.org, rafael@kernel.org, rppt@kernel.org,
-        akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
-        hughsient@gmail.com, alex.bazhaniuk@eclypsium.com,
-        alison.schofield@intel.com
-Subject: Re: [PATCH v6 4/6] x86/e820: Tag e820_entry with crypto capabilities
-Message-ID: <202202071351.AEEEA92@keescook>
-References: <20220203164328.203629-1-martin.fernandez@eclypsium.com>
- <20220203164328.203629-5-martin.fernandez@eclypsium.com>
+        Mon, 07 Feb 2022 15:48:15 -0800 (PST)
+Date:   Mon, 7 Feb 2022 23:48:11 +0000
+From:   Sean Christopherson <seanjc@google.com>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v9 30/43] KVM: SEV: Add documentation for SEV-SNP CPUID
+ Enforcement
+Message-ID: <YgGvu1BsYP9cihwh@google.com>
+References: <20220128171804.569796-1-brijesh.singh@amd.com>
+ <20220128171804.569796-31-brijesh.singh@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220203164328.203629-5-martin.fernandez@eclypsium.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20220128171804.569796-31-brijesh.singh@amd.com>
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Feb 03, 2022 at 01:43:26PM -0300, Martin Fernandez wrote:
-> Add a new enum for crypto capabilities.
+On Fri, Jan 28, 2022, Brijesh Singh wrote:
+> From: Michael Roth <michael.roth@amd.com>
 > 
-> Add a new member in e820_entry to hold whether an entry is able to do
-> hardware memory encryption or not.
+> Update the documentation with SEV-SNP CPUID enforcement.
 > 
-> Add a new function e820__range_set_crypto_capable to mark all the
-> entries in a range of addresses as encryptable. This will be called
-> when initializing EFI.
-> 
-> Change e820__update_table to handle merging and overlap problems
-> taking into account crypto_capable.
-> 
-> Signed-off-by: Martin Fernandez <martin.fernandez@eclypsium.com>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 > ---
->  arch/x86/include/asm/e820/api.h   |   1 +
->  arch/x86/include/asm/e820/types.h |  12 +++-
->  arch/x86/kernel/e820.c            | 114 ++++++++++++++++++++++++++++--
->  3 files changed, 119 insertions(+), 8 deletions(-)
+>  .../virt/kvm/amd-memory-encryption.rst        | 28 +++++++++++++++++++
+>  1 file changed, 28 insertions(+)
 > 
-> diff --git a/arch/x86/include/asm/e820/api.h b/arch/x86/include/asm/e820/api.h
-> index e8f58ddd06d9..4b3b01fafdd1 100644
-> --- a/arch/x86/include/asm/e820/api.h
-> +++ b/arch/x86/include/asm/e820/api.h
-> @@ -17,6 +17,7 @@ extern bool e820__mapped_all(u64 start, u64 end, enum e820_type type);
->  extern void e820__range_add   (u64 start, u64 size, enum e820_type type);
->  extern u64  e820__range_update(u64 start, u64 size, enum e820_type old_type, enum e820_type new_type);
->  extern u64  e820__range_remove(u64 start, u64 size, enum e820_type old_type, bool check_type);
-> +extern u64  e820__range_set_crypto_capable(u64 start, u64 size);
->  
->  extern void e820__print_table(char *who);
->  extern int  e820__update_table(struct e820_table *table);
-> diff --git a/arch/x86/include/asm/e820/types.h b/arch/x86/include/asm/e820/types.h
-> index 314f75d886d0..aef03c665f5e 100644
-> --- a/arch/x86/include/asm/e820/types.h
-> +++ b/arch/x86/include/asm/e820/types.h
-> @@ -46,6 +46,11 @@ enum e820_type {
->  	E820_TYPE_RESERVED_KERN	= 128,
->  };
->  
-> +enum e820_crypto_capabilities {
-> +	E820_NOT_CRYPTO_CAPABLE	= 0,
-> +	E820_CRYPTO_CAPABLE	= 1,
-> +};
+> diff --git a/Documentation/virt/kvm/amd-memory-encryption.rst b/Documentation/virt/kvm/amd-memory-encryption.rst
+> index 1c6847fff304..0c72f44cc11a 100644
+> --- a/Documentation/virt/kvm/amd-memory-encryption.rst
+> +++ b/Documentation/virt/kvm/amd-memory-encryption.rst
 
-Is this expected to grow beyond a bool?
+This doc is specifically for KVM's host-side implemenation, whereas the below is
+(a) mostly targeted at the guest and (b) has nothing to do with KVM.
 
-> +
->  /*
->   * A single E820 map entry, describing a memory range of [addr...addr+size-1],
->   * of 'type' memory type:
-> @@ -53,9 +58,10 @@ enum e820_type {
->   * (We pack it because there can be thousands of them on large systems.)
->   */
->  struct e820_entry {
-> -	u64			addr;
-> -	u64			size;
-> -	enum e820_type		type;
-> +	u64				addr;
-> +	u64				size;
-> +	enum e820_type			type;
-> +	enum e820_crypto_capabilities	crypto_capable;
->  } __attribute__((packed));
+Documentation/x86/amd-memory-encryption.rst isn't a great fit either.
 
-Is there any concern about growing this structure? The "thousands" note
-in the comment is likely rare. FWIW, this seems fine to me, but I
-thought I'd mention it.
+Since TDX will need a fair bit of documentation, and SEV-ES could retroactively
+use docs as well, what about adding a sub-directory:
 
--- 
-Kees Cook
+	Documentation/virt/confidential_compute
+
+to match the "cc_platform_has" stuffr, and then we can add sev.rst and tdx.rst
+there?  Or sev-es.rst, sev-snp.rst, etc... if we want to split things up more.
+
+It might be worth extracting the SEV details from x86/amd-memory-encryption.rst
+into virt/ as well.  A big chunk of that file appears to be SEV specific, and it
+appears to have gotten a little out-of-whack.  E.g. this section no longer makes
+sense as the last paragraph below appears to be talking about SME (bit 23 in MSR
+0xc0010010), but walking back "this bit" would reference SEV.  I suspect a
+mostly-standalone sev.rst would be easier to follow than an intertwined SME+SEV.
+
+  If support for SME is present, MSR 0xc00100010 (MSR_AMD64_SYSCFG) can be used to
+  determine if SME is enabled and/or to enable memory encryption::
+
+          0xc0010010:
+                  Bit[23]   0 = memory encryption features are disabled
+                            1 = memory encryption features are enabled
+
+  If SEV is supported, MSR 0xc0010131 (MSR_AMD64_SEV) can be used to determine if
+  SEV is active::
+
+          0xc0010131:
+                  Bit[0]    0 = memory encryption is not active
+                            1 = memory encryption is active
+
+  Linux relies on BIOS to set this bit if BIOS has determined that the reduction
+  in the physical address space as a result of enabling memory encryption (see
+  CPUID information above) will not conflict with the address space resource
+  requirements for the system.  If this bit is not set upon Linux startup then
+  Linux itself will not set it and memory encryption will not be possible.
