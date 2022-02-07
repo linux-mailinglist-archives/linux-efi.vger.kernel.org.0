@@ -2,37 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8414D4AC808
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Feb 2022 18:59:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E51A44AC8D0
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Feb 2022 19:47:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229944AbiBGR6N (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Feb 2022 12:58:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35448 "EHLO
+        id S229883AbiBGSqg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Feb 2022 13:46:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344640AbiBGRwj (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Feb 2022 12:52:39 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE8CDC0401D9;
-        Mon,  7 Feb 2022 09:52:38 -0800 (PST)
+        with ESMTP id S232506AbiBGSnO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Feb 2022 13:43:14 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1835AC0401DC;
+        Mon,  7 Feb 2022 10:43:13 -0800 (PST)
 Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4E7441EC01B7;
-        Mon,  7 Feb 2022 18:52:33 +0100 (CET)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 24AE01EC02B9;
+        Mon,  7 Feb 2022 19:43:07 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1644256353;
+        t=1644259387;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=lj3M3QiQvXsBo94U4HlpV/D8C0ht7/jERvq5KAmCCTE=;
-        b=RBq8vE9Qzf2e+zlbZGA9DQP1MUr9EquOtpBPB/LIb0VrV3MWGw859eIXsOAguuxr3oh7RX
-        U+x/86JIZYerfBFoHjXGrzDqFJkJjKFYyQNGp9K5+LbWwdAqD0zvAhQGdLHiWxNfs5V7of
-        2pBZkpWHSDm+IkFL22w6dVHUxpVgwnk=
-Date:   Mon, 7 Feb 2022 18:52:28 +0100
+        bh=SZEc3K4WUssJFPuRZM4cYUdq0EX2pDa+Q3YePuI1VGc=;
+        b=qmClInz1dKwfOZbiO2QrY2gZK/xZolImE900/WaPmxRFwwOa2cp3K4OMeOEJsTi80Hu4Qp
+        G43sMx+xX8AUxdLvcgTvewjlRnNRSbTkdwsgOZ6e9vtHFY+GtTdk9DIq09oCjIgK1EE+5Z
+        CRyqtdz0t/QXSU+RToQpc+wZ3krqc2c=
+Date:   Mon, 7 Feb 2022 19:43:01 +0100
 From:   Borislav Petkov <bp@alien8.de>
 To:     Michael Roth <michael.roth@amd.com>
-Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-coco@lists.linux.dev, linux-mm@kvack.org,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -50,25 +49,25 @@ Cc:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         David Rientjes <rientjes@google.com>,
         Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>, brijesh.singh@amd.com,
         Vlastimil Babka <vbabka@suse.cz>,
         "Kirill A . Shutemov" <kirill@shutemov.name>,
         Andi Kleen <ak@linux.intel.com>,
         "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com
-Subject: Re: [PATCH v9 31/43] x86/compressed/64: Add support for SEV-SNP
- CPUID table in #VC handlers
-Message-ID: <YgFcXMEvWs9xGTPF@zn.tnic>
+        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v9 38/43] x86/sev: Use firmware-validated CPUID for
+ SEV-SNP guests
+Message-ID: <YgFoNeASrXizWMIa@zn.tnic>
 References: <20220128171804.569796-1-brijesh.singh@amd.com>
- <20220128171804.569796-32-brijesh.singh@amd.com>
- <Yf5XScto3mDXnl9u@zn.tnic>
- <20220205162249.4dkttihw6my7iha3@amd.com>
- <Yf/PN8rBy3m5seU9@zn.tnic>
- <20220207153739.p63sa5tcaxtdx2wn@amd.com>
+ <20220128171804.569796-39-brijesh.singh@amd.com>
+ <20220205171901.kt47bahdmh64b45x@amd.com>
+ <Yf/tQPqbP97lrVpg@zn.tnic>
+ <20220207170018.sg37idc6nzlzgj6p@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220207153739.p63sa5tcaxtdx2wn@amd.com>
+In-Reply-To: <20220207170018.sg37idc6nzlzgj6p@amd.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
@@ -78,45 +77,42 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Feb 07, 2022 at 09:37:39AM -0600, Michael Roth wrote:
-> Absolutely, I know a thorough review is grueling work, and would never
-> want to give the impression that I don't appreciate it. Was just hoping
-> to revisit these in the context of v9 since there were some concerning
-> things in flight WRT the spec handling and I was sort of focused on
-> getting ahead of those in case they involved firmware/spec changes. But
-> I realize that's resulted in a waste of your time and I should have at
-> least provided some indication of where I was with these before your
-> review. Won't happen again.
+On Mon, Feb 07, 2022 at 11:00:18AM -0600, Michael Roth wrote:
+> this is more a statement that an out-of-spec hypervisor should not
+> expect that their guests will continue working in future firmware
+> versions, and what's being determined here is whether to break
+> those out-of-spec hypervisor now, or later when/if we actually
+> make use of the fields in the guest code,
 
-Thanks, that's appreciated.
+I think you're missing a very important aspect here called reality.
 
-And in case you're wondering, the kernel is the most flexible thing from
-all parties involved so even if you have to change the spec/fw, fixing
-the kernel is a lot easier than any of the other things. So make sure
-you do a good job with the spec/fw - the kernel will be fine. :-)
+Let's say that HV is a huge cloud vendor who means a lot of $ and a
+huge use case for SEV tech. And let's say that same HV is doing those
+incompatible things.
 
-> Ok, will work this in for v10. My plan is to introduce this struct:
-> 
->   struct cpuid_leaf {
->       u32 fn;
->       u32 subfn;
->       u32 eax;
->       u32 ebx;
->       u32 ecx;
->       u32 edx;
->   }
+Now imagine you break it with the spec change. But they already have
+a gazillion of deployments on real hw which they can't simply update
+just like that. Hell, cloud vendors are even trying to dictate how CPU
+vendors should do microcode updates on a live system, without rebooting,
+and we're talking about some wimpy fields in some table.
 
-Ok.
+Now imagine your business unit calls your engineering and says, you need
+to fix this because a very persuasive chunk of money.
 
-> as part of the patch which introduces sev_cpuid_hv():
-> 
->   x86/sev: Move MSR-based VMGEXITs for CPUID to helper
-> 
-> and then utilize that for the function parameters there, here, and any
-> other patches in the SNP code involved with fetching/manipulating cpuid
-> values before returning them to the #VC handler.
+What you most likely will end up with is an ugly ugly workaround after a
+lot of managers screaming at each other and you won't even think about
+breaking that HV.
 
-Sounds good.
+Now imagine you've designed it the right and unambiguous way from the
+getgo. You wake up and realize, it was all just a bad dream...
+
+> Ok, I'll follow up with the firmware team on this. But just to be clear,
+> what they're suggesting is that the firmware could enforce the MBZ checks
+> on the CPUID page, so out-of-spec hypervisors will fail immediately,
+> rather than in some future version of the spec/cpuid page, and guests
+> can continue ignoring them in the meantime.
+
+Yes, exactly. Fail immediately.
 
 Thx.
 
