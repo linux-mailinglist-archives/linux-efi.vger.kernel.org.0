@@ -2,104 +2,142 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E0C84AB3CC
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Feb 2022 07:12:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ADD974AB720
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Feb 2022 10:08:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231753AbiBGGJL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Feb 2022 01:09:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35112 "EHLO
+        id S235711AbiBGI4c (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Feb 2022 03:56:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243170AbiBGDjt (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 6 Feb 2022 22:39:49 -0500
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9616C061A73
-        for <linux-efi@vger.kernel.org>; Sun,  6 Feb 2022 19:39:47 -0800 (PST)
-Received: by mail-pj1-x102a.google.com with SMTP id a11-20020a17090a740b00b001b8b506c42fso1793215pjg.0
-        for <linux-efi@vger.kernel.org>; Sun, 06 Feb 2022 19:39:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=TE4Fcz5LUDXq9tJfptglh1I9oeIlQep8aAPqHvx1w3w=;
-        b=IncxP+N43XXu2TlRPOutUe1pYH5qBDSw6Z+0xd5vBPbCSAHb5Od2YWGc748wQBkNWb
-         jVH/6e3mz7CsRauNlnmvDvDDcT+YrJQv3x4bdgfjrgVBk55s5D1Eqfw+xeOe4MHdwiMq
-         1bggp6Q6bDkfbuEVHA5rVaDDonQcVLHho6ujY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=TE4Fcz5LUDXq9tJfptglh1I9oeIlQep8aAPqHvx1w3w=;
-        b=2ofrWvxAA4zUoURKs77+Maa949gFa4Sp5k4ms1qEkhdDiUiVGdbfG731cDgxpTvVAA
-         O20HavUyATBrE7vBuMrY4iOWTnvvult+F4Mr8+MiwPD/7tVcT11El8kqMmzfEIH6cbiq
-         A5ALXppZbgxCapDs8ykvEvQlfJIBgS7qExGtcO+iU9Ki2AKPe1kGtfF9+mtVL/YFEEe8
-         Gq6RwTS8A/T0fPZRngaQ7wUICZcRwIx2UGSw3h7+Gh100eWHqleEJsrzlvvKQ5tHpYoG
-         5X0ngWNltpiHkgnxXMbKqoslsdB0aJWtD5v5aIWDp8Z8CNs0QRHGfT3mKFxTGnEiRXtR
-         D4Pw==
-X-Gm-Message-State: AOAM531OFBsIxaWvnL+8OQ3aLWdli1MQbF219XQD2WP6nx/g4OMvd7dL
-        jFsJ6SWfIMT6BcnmIR46xs/pkw==
-X-Google-Smtp-Source: ABdhPJw3IFxdke4ePmbOOI4seyzSXmrKv4qKoP0CweR3VbpMgmkaTmSB9utEO6FmUwhC7baQPPZ2gQ==
-X-Received: by 2002:a17:903:11c9:: with SMTP id q9mr14587074plh.144.1644205187326;
-        Sun, 06 Feb 2022 19:39:47 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id y41sm9964701pfa.213.2022.02.06.19.39.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Feb 2022 19:39:46 -0800 (PST)
-Date:   Sun, 6 Feb 2022 19:39:46 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     "Limonciello, Mario" <mario.limonciello@amd.com>,
+        with ESMTP id S1349444AbiBGIwV (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Feb 2022 03:52:21 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74E2EC043181;
+        Mon,  7 Feb 2022 00:52:20 -0800 (PST)
+Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E128A1EC0354;
+        Mon,  7 Feb 2022 09:52:14 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1644223935;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=W5/DZokBYRxpM+GgYWtpQjoT7RaWk9dlrfIFiuzFIa4=;
+        b=jUn+1eurN4z9tcFEvPAiW+VNtadYuGyS3JMfBuoiNodnP/0JZHNwGb/xOJWSbIn/2ze9Ph
+        /6U9mkyDEsx+5w3M15F3iu8WvX4l8FtMSzvOUrOM7fRhuhMAgkQ6Yyzow3mEeTeiaLIvd7
+        gq5mBSHT15V9rBoNG7QcM3bWD0g3WFw=
+Date:   Mon, 7 Feb 2022 09:52:09 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
         Tom Lendacky <thomas.lendacky@amd.com>,
-        Martin Fernandez <martin.fernandez@eclypsium.com>,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
-        tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
-        x86@kernel.org, hpa@zytor.com, ardb@kernel.org,
-        dvhart@infradead.org, andy@infradead.org,
-        gregkh@linuxfoundation.org, rafael@kernel.org, rppt@kernel.org,
-        akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
-        hughsient@gmail.com, alex.bazhaniuk@eclypsium.com,
-        alison.schofield@intel.com
-Subject: Re: [PATCH v6 6/6] drivers/node: Show in sysfs node's crypto
- capabilities
-Message-ID: <202202061924.6A2D278@keescook>
-References: <20220203164328.203629-1-martin.fernandez@eclypsium.com>
- <20220203164328.203629-7-martin.fernandez@eclypsium.com>
- <67d2711b-200c-0894-4ff7-beb3eb304399@amd.com>
- <CAKgze5YM2+BRjj2nvb+_dnuCg5WtWvQ6FQyNYJ1c8G6Orn=aQw@mail.gmail.com>
- <5c5ffe29-d3d3-2955-cf78-ad275110f012@amd.com>
- <ec9e29a4-0d2b-1423-d92e-6f025b56f8cc@amd.com>
- <Yf1UO6jF91o9k4jB@zn.tnic>
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com,
+        Liam Merwick <liam.merwick@oracle.com>
+Subject: Re: [PATCH v9 42/43] virt: sevguest: Add support to derive key
+Message-ID: <YgDduR0mrptX5arB@zn.tnic>
+References: <20220128171804.569796-1-brijesh.singh@amd.com>
+ <20220128171804.569796-43-brijesh.singh@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Yf1UO6jF91o9k4jB@zn.tnic>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20220128171804.569796-43-brijesh.singh@amd.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Feb 04, 2022 at 05:28:43PM +0100, Borislav Petkov wrote:
-> Then we should clear that "sme" flag if memory encryption is not
-> enabled. Like we do for all other flags.
+On Fri, Jan 28, 2022 at 11:18:03AM -0600, Brijesh Singh wrote:
+> +static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
+> +{
+> +	struct snp_guest_crypto *crypto = snp_dev->crypto;
+> +	struct snp_derived_key_resp resp = {0};
+> +	struct snp_derived_key_req req = {0};
+> +	int rc, resp_len;
+> +	u8 buf[64+16]; /* Response data is 64 bytes and max authsize for GCM is 16 bytes */
 
-Oh, this seems weird to me, as I'd expect it to show up since the CPU is
-_capable_ of it, even if it's not in use. (Am I really using avx512vl,
-e.g.?)
+verify_comment_style: Warning: No tail comments please:
+ drivers/virt/coco/sevguest/sevguest.c:401 [+	u8 buf[64+16]; /* Response data is 64 bytes and max authsize for GCM is 16 bytes */]
 
-But as you point out later, it does work that way for a lot of things
-and boot params. If this is the way things are supposed to be done,
-it looks like we should wire up "nx" vs "noexec=off" boot param to do
-the same (separate from this series), though it would need special
-care since that bit needs very very early handling both and boot
-and resume. Maybe kernel/cpu/common.c should check for _PAGE_NX in
-__supported_pte_mask? (And would that break KVM's NX, etc?)
+> +	if (!arg->req_data || !arg->resp_data)
+> +		return -EINVAL;
+> +
+> +	/* Copy the request payload from userspace */
 
-Hmmm.
+That comment looks useless.
+
+> +	if (copy_from_user(&req, (void __user *)arg->req_data, sizeof(req)))
+> +		return -EFAULT;
+> +
+> +	/*
+> +	 * The intermediate response buffer is used while decrypting the
+> +	 * response payload. Make sure that it has enough space to cover the
+> +	 * authtag.
+> +	 */
+> +	resp_len = sizeof(resp.data) + crypto->a_len;
+> +	if (sizeof(buf) < resp_len)
+> +		return -ENOMEM;
+
+That test can happen before the copy_from_user() above.
+
+> +
+> +	/* Issue the command to get the attestation report */
+
+Also useless.
+
+> +	rc = handle_guest_request(snp_dev, SVM_VMGEXIT_GUEST_REQUEST, arg->msg_version,
+> +				  SNP_MSG_KEY_REQ, &req, sizeof(req), buf, resp_len,
+> +				  &arg->fw_err);
+> +	if (rc)
+> +		goto e_free;
+> +
+> +	/* Copy the response payload to userspace */
+
+Ditto.
+
+> +	memcpy(resp.data, buf, sizeof(resp.data));
+> +	if (copy_to_user((void __user *)arg->resp_data, &resp, sizeof(resp)))
+> +		rc = -EFAULT;
+> +
+> +e_free:
+> +	memzero_explicit(buf, sizeof(buf));
+> +	memzero_explicit(&resp, sizeof(resp));
+
+Those are allocated on stack, why are you clearing them?
+
+> +	return rc;
+> +}
 
 -- 
-Kees Cook
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
