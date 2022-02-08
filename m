@@ -2,57 +2,56 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A7924AD3A6
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Feb 2022 09:41:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E24A44AD4D9
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Feb 2022 10:28:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350551AbiBHIlD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 8 Feb 2022 03:41:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37416 "EHLO
+        id S1353240AbiBHJ2f (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 8 Feb 2022 04:28:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350716AbiBHIkl (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Feb 2022 03:40:41 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3207C03FECF;
-        Tue,  8 Feb 2022 00:40:36 -0800 (PST)
+        with ESMTP id S237653AbiBHJ2e (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Feb 2022 04:28:34 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E643CC03FEC0;
+        Tue,  8 Feb 2022 01:28:32 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 85A1EB81768;
-        Tue,  8 Feb 2022 08:40:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3918C340ED;
-        Tue,  8 Feb 2022 08:40:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 81C35614C4;
+        Tue,  8 Feb 2022 09:28:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AAC7C004E1;
+        Tue,  8 Feb 2022 09:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644309634;
-        bh=Qiy8w7jKXrvvylMq4I38caclQvB6xxH3iqeR0R/bAX0=;
+        s=k20201202; t=1644312511;
+        bh=xg6lF3WqgMKyMC4n+ayD5APVx6cp2PqDNjyejBcqeJY=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RUDaeUvMZt3A1enVwQB7jukcGLYXbBN7fpsIXaAJoaaTwm4vvtBbGFbBTV2uyduuO
-         Vg4bsCVF0JvSBOfiYBx06D/MJk12aowlTO7UeZWZVJtpRBHBnqzMfv/VX3DgDG4BGn
-         HXN5imdeHKqLGeLd4DucRK8RzLhpCpMgWXT3Mmo5tBDs8Y2fQWh8J1DI5HxEqnVl9I
-         gpxI3Tj5NnJmMTJZnmM9y18QKvSCPvlFi575AeIdpIJXzv0HItdCRf6nUqQLSLg+yV
-         PmV8eXKsOesdN/PS3TinZRCuchRF7RsNtlu6hSCiIZ2RKg0k6vSHZoNBP2sfBDNU7g
-         yF3XklW7bPQdg==
-Date:   Tue, 8 Feb 2022 10:40:24 +0200
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Martin Fernandez <martin.fernandez@eclypsium.com>,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
-        gregkh@linuxfoundation.org, rafael@kernel.org,
-        akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
-        hughsient@gmail.com, alex.bazhaniuk@eclypsium.com,
-        alison.schofield@intel.com
-Subject: Re: [PATCH v6 3/6] x86/e820: Refactor range_update and range_remove
-Message-ID: <YgIseIEMotD2jg83@kernel.org>
-References: <20220203164328.203629-1-martin.fernandez@eclypsium.com>
- <20220203164328.203629-4-martin.fernandez@eclypsium.com>
- <202202071325.F8450B3B2D@keescook>
+        b=uqOPs70ARuits274PJBtl8AYteGVMbp1Q+Rcn46o0mE+MQ1hmG2FguFczvPl5d7/i
+         /TESayuhRAd1GIqhCiJIn2nkiZ70wMp3Vk/JkRr6hERDIyhpjuljH1MyzZft6uUzxO
+         7lNnEwWQ+3W+ZRKUaVcLlArJSQl9DxA/W4hL0eNF/lQcXLL1JxrI0nHDVTXgR6kiVK
+         et5vFWP7sG3fEO1CRvAc4tHHnFmC0FpppfFWZTTVfPOxoLOef/cw+AyUlZPItgecUL
+         GlTPzZXiL1HwAYzRQGbON1NkCwL7sVvjBXbbwVop09qk0OdM/7RV+hRA+bkYki8ZQ9
+         JMbC9rhwzp1zQ==
+Date:   Tue, 8 Feb 2022 10:28:56 +0100
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Mimi Zohar <zohar@linux.ibm.com>
+Cc:     Eric Snowberg <eric.snowberg@oracle.com>, dhowells@redhat.com,
+        dwmw2@infradead.org, ardb@kernel.org, jmorris@namei.org,
+        serge@hallyn.com, nayna@linux.ibm.com, keescook@chromium.org,
+        torvalds@linux-foundation.org, weiyongjun1@huawei.com,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-security-module@vger.kernel.org,
+        James.Bottomley@hansenpartnership.com, pjones@redhat.com,
+        konrad.wilk@oracle.com
+Subject: Re: [PATCH v10 0/8] Enroll kernel keys thru MOK
+Message-ID: <YgI32LAFgGSW6ugh@iki.fi>
+References: <20220126025834.255493-1-eric.snowberg@oracle.com>
+ <YfFP6OHqBVNWKL2C@iki.fi>
+ <YfFTf6vIpNMIrwH0@iki.fi>
+ <78d2c13ad60b5f845cb841d257d1b41290f575c6.camel@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <202202071325.F8450B3B2D@keescook>
+In-Reply-To: <78d2c13ad60b5f845cb841d257d1b41290f575c6.camel@linux.ibm.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -63,43 +62,56 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Feb 07, 2022 at 01:45:40PM -0800, Kees Cook wrote:
-> On Thu, Feb 03, 2022 at 01:43:25PM -0300, Martin Fernandez wrote:
-> > __e820__range_update and e820__range_remove had a very similar
-> > implementation with a few lines different from each other, the lines
-> > that actually perform the modification over the e820_table. The
-> > similiraties were found in the checks for the different cases on how
-> > each entry intersects with the given range (if it does at all). These
-> > checks were very presice and error prone so it was not a good idea to
-> > have them in both places.
+On Wed, Jan 26, 2022 at 05:06:09PM -0500, Mimi Zohar wrote:
+> Hi Jarkko,
 > 
-> Yay removing copy/paste code! :)
-
-Removing copy/paste is nice but diffstat of
-
- arch/x86/kernel/e820.c | 383 ++++++++++++++++++++++++++++++-----------
- 1 file changed, 283 insertions(+), 100 deletions(-)
-
-does not look nice even accounting for lots of comments :(
-
-I didn't look closely, but diffstat clues that the refactoring making
-things much more complex.
- 
+> > > Thank you. I'll pick these soon. Is there any objections?
+> 
+> No objections.
 > > 
-> > I propose a refactor of those functions, given that I need to create a
-> > similar one for this patchset.
+> > Mimi brought up that we need a MAINTAINERS update for this and also
+> > .platform.
+> > 
+> > We have these:
+> > 
+> > - KEYS/KEYRINGS
+> > - CERTIFICATE HANDLING
+> > 
+> > I would put them under KEYRINGS for now and would not consider further
+> > subdivision for the moment.
 > 
-> The diff here is pretty hard (for me) to review; I'll need more time
-> to check it. What might make review easier (at least for me), is to
-> incrementally change these routines. i.e. separate patches to:
+> IMA has dependencies on the platform_certs/ and now on the new .machine
+> keyring.  Just adding "F: security/integrity/platform_certs/" to the
+> KEYS/KEYRINGS record, ignores that dependency.  The discussion wouldn't
+> even be on the linux-integrity mailing list.
 > 
-> - add the new infrastructure
-> - replace e820__range_remove
-> - replace __e820__range_update
+> Existing requirement:
+> - The keys on the .platform keyring are limited to verifying the kexec
+> image.
 > 
-> If that's not actually useful, no worries. I'll just stare at it a bit
-> more. :)
+> New requirements based on Eric Snowbergs' patch set:
+> - When IMA_KEYRINGS_PERMIT_SIGNED_BY_BUILTIN_OR_SECONDARY is enabled,
+> the MOK keys will not be loaded directly onto the .machine keyring or
+> indirectly onto the .secondary_trusted_keys keyring.
+> 
+> - Only when a new IMA Kconfig explicitly allows the keys on the
+> .machine keyrings, will the CA keys stored in MOK be loaded onto the
+> .machine keyring.
+> 
+> Unfortunately I don't think there is any choice, but to define a new
+> MAINTAINERS entry.  Perhaps something along the lines of:
+> 
+> KEYS/KEYRINGS_INTEGRITY
+> M:     Jarkko Sakkinen <jarkko@kernel.org>
+> M:     Mimi Zohar <zohar@linux.ibm.com>
+> L:      keyrings@vger.kernel.org
+> L:      linux-integrity@vger.kernel.org
+> F:      security/integrity/platform_certs
 
--- 
-Sincerely yours,
-Mike.
+WFM. BTW, the patches are now in my tree:
+
+git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git
+
+I can add any tags requested. I'll mirror this at some point to linux-next.
+
+/Jarkko
