@@ -2,208 +2,165 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E9294ADBBF
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Feb 2022 15:56:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C58984ADBB3
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Feb 2022 15:56:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240348AbiBHO4h (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 8 Feb 2022 09:56:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49516 "EHLO
+        id S1378622AbiBHOzT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 8 Feb 2022 09:55:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234194AbiBHO4g (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Feb 2022 09:56:36 -0500
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2081.outbound.protection.outlook.com [40.107.92.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2A76C061576;
-        Tue,  8 Feb 2022 06:56:34 -0800 (PST)
+        with ESMTP id S1378789AbiBHOzS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Feb 2022 09:55:18 -0500
+Received: from IND01-BMX-obe.outbound.protection.outlook.com (mail-bmxind01olkn2040.outbound.protection.outlook.com [40.92.103.40])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C49FC061579;
+        Tue,  8 Feb 2022 06:55:17 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OXGQ7KH4gBlpNFWAlrAZU7JY1prlLJfojNAEWs9/Jajf9astyvWs9d1MtObyCuuHvu/dwwJNWtzi/bhbAK315fdPCVzWFQi4eZioQSK6NT19W031UL50V3nAvYgR0pSF4UWwrIjHE+ZpPjIIAZO1mJwT/gm7Pxh/78XVNGlbcSdNzbvgtTAPDfoCSyntXnS16dAC9Ro0SRTfL0D8323rsrH2O1Ucy+mBAfNntZN+CA89UAUxGRkYQoqUZjToqMsgbM0xbMFxPfnLIrO74IJXvkHAgeStHiJ9FAESXMEZezwlvHSR5b2lRh5EpRqTjWU3ECk7bhSEX8GLE5Ih3mQbmQ==
+ b=c/RaUpfE+i6cLfq1zRwScRhO5byBr+oRsoyUL/n5aiKx9G/kjRwWSIsSF0HxrdYfaQXOvvLjWcqJo8KuCFQh1Lt7y2ih0REgk+9iyNqMcYWA3J8ej2EBqBN/tjNzl0X6Ja9S5B/+ZVUViBd+cczAQe2VcrucQ8jfMVZZdHF82zqc3gLEwJznuwxXOxkCrOZu0XCkZRwgjKqk+kkL9nb4x+g+0bzwnQi5FGyEUjWTUF2W/96QeAGJotCoK+8DYbcmWCc762x41BfwP4kpRwRRND63E+NfdNH4mnXYKpp9N10xwSsIGB4Rz1oQpCAer9QWt9+ShZeocKyEeKou5Twtrg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kXRe9jIcp7dAgK3TSGQPQmq7ps2tmtQEkFwWgWt2vR4=;
- b=ZDkYQ9XRlRYVWJvDPeVHF2BabeO35wjp3/+BM+H5+Cf8dtL6QIVuLtTdneukOY5IfRy/m0LKH799m9+KgwnKsLszc4a2vmdwHYULLBNotlarC5IubfT4MgaByBwDhHBkcmDSOiWmz4/esUivZB092qeaPlhsdb9EMO5PdaFY7YAa7EkxCSGNmrl5JMkMy5QLP98ygTZqVQU3MNmq7HX31wC1H8c/BQ8TvNO7+RdOIgNO+0pTuQXBOII0goD+OiCP7cb113FCuySkHd2O7L5MtJI34nfW8GZbz9qRVb8yNIol1/QZTApaa2sqiIQrVUzy/jI7oxiAnzO7DmAV5UhETg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ bh=bUtTusyOT4md75lry1P1HozY6Mx/2UJg5nQjOAuY/3Y=;
+ b=B0YIz8RZ9ljc2UVjyeexCtHECPF08Yxh7jfSTmI7fLPXKicOKGuJT/77yJLRUDKlsoPyesXfVn04tEKV0/HUW1WrZcvZT1NFxo90UfuJqTzWw2qnTtV2Fo6PkSyIc15LopMPaTtr/TlQgOym0ATcFJAxZp+VH8evvi7X4HNgSfr/IM04mm3+NBbS/jTiVrjK6IEOgUb11F2q2JTi7ddV3rGJKQ03MqkPgKE7mjx6iE2huoqlbJrOqvvoZlZnMOCTzNdjeDW0FgZA7R4p6u4tknaMtaCRuvP/fpvIjofAEzHsM3q9vMntU8lGK25XqX6sgrwfyzOHNdXYwb9j4mXtJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kXRe9jIcp7dAgK3TSGQPQmq7ps2tmtQEkFwWgWt2vR4=;
- b=EgIOyq2hXt2rQPomh5gHfa83z/wwHcpge/mP+YG4Wx+4lD9YdDhMwtohAobOZqinHXYr9odTq6njIFJPuWaUwulKPmcuT2b/HNRIslSpEVsVfF+pUP/10ynO/DFiM+ks9GNkE7Xv9i3+f5GwUCmbklDQR7TSTaV6DAd7chq0id8=
-Received: from BN7PR02CA0032.namprd02.prod.outlook.com (2603:10b6:408:20::45)
- by DM5PR12MB2440.namprd12.prod.outlook.com (2603:10b6:4:b6::39) with
+ bh=bUtTusyOT4md75lry1P1HozY6Mx/2UJg5nQjOAuY/3Y=;
+ b=unejyP3mhe05eN4d3HTv6HR3GzR+WHbwGckOGiYzJRzml6jjVvX7pOog/ThRs7rk8hoh0O0bK9d6Tn3zWT30SDlNc+j2pVJzkUXanU6Im4mqN1tmA5hZe4mgv179rr2KjTh9OTcsGXix8Hj0kFcYKs1FmiJgHWXWopN137EX+do5SH0BTcN1qbI4L82edHGT3U3IN/mOiaxUkbt7RNYb5bPUDKxTcA2wxZA5If8x9T2NTlHU6slnje1lWw8ZlIYmYTnwYiVsi7nurQT5MFXwapzCK+DX0dKTrmXfOb7XiaCyMyDrXsmzNqffWy0mN5XY78J1Hh9isGPlHbzsXFBIOA==
+Received: from PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:1b::13)
+ by BMXPR01MB4759.INDPRD01.PROD.OUTLOOK.COM (2603:1096:b01:3::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.12; Tue, 8 Feb
- 2022 14:56:31 +0000
-Received: from BN8NAM11FT017.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:20:cafe::c4) by BN7PR02CA0032.outlook.office365.com
- (2603:10b6:408:20::45) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.12 via Frontend
- Transport; Tue, 8 Feb 2022 14:56:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT017.mail.protection.outlook.com (10.13.177.93) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4951.12 via Frontend Transport; Tue, 8 Feb 2022 14:56:31 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Tue, 8 Feb
- 2022 08:56:30 -0600
-Date:   Tue, 8 Feb 2022 08:54:39 -0600
-From:   Michael Roth <michael.roth@amd.com>
-To:     Sean Christopherson <seanjc@google.com>
-CC:     Brijesh Singh <brijesh.singh@amd.com>, <x86@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-        <linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
-        <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Srinivas Pandruvada" <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        "Tobin Feldman-Fitzthum" <tobin@ibm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        "Vlastimil Babka" <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        "Andi Kleen" <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        <brijesh.ksingh@gmail.com>, <tony.luck@intel.com>,
-        <marcorr@google.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: Re: [PATCH v9 30/43] KVM: SEV: Add documentation for SEV-SNP CPUID
- Enforcement
-Message-ID: <20220208145439.ozw4cjhqfvozewl4@amd.com>
-References: <20220128171804.569796-1-brijesh.singh@amd.com>
- <20220128171804.569796-31-brijesh.singh@amd.com>
- <YgGvu1BsYP9cihwh@google.com>
-MIME-Version: 1.0
+ 2022 14:55:12 +0000
+Received: from PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::d19b:7cd1:3760:b055]) by PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::d19b:7cd1:3760:b055%9]) with mapi id 15.20.4951.019; Tue, 8 Feb 2022
+ 14:55:12 +0000
+From:   Aditya Garg <gargaditya08@live.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+CC:     Jeremy Kerr <jk@ozlabs.org>, Matthew Garrett <mjg59@srcf.ucam.org>,
+        Orlando Chamberlain <redecorating@protonmail.com>,
+        Aun-Ali Zaidi <admin@kodeit.net>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [BUG SEVERE] Failure to enable EFI Runtime services on T2 Macs
+Thread-Topic: [BUG SEVERE] Failure to enable EFI Runtime services on T2 Macs
+Thread-Index: AQHYHPN9yWRx6QwxHkme7awzoxWFeKyJr1oAgAAOewA=
+Date:   Tue, 8 Feb 2022 14:55:12 +0000
+Message-ID: <2A5B5047-23DE-4660-9ABD-446EE264CC54@live.com>
+References: <E5DB4C43-F2AB-412A-9891-C13255374AD9@live.com>
+ <CAMj1kXEUudnnX8FaAhtUmcKB+jt237BUTsMrNC8ZoOepf4P3pQ@mail.gmail.com>
+In-Reply-To: <CAMj1kXEUudnnX8FaAhtUmcKB+jt237BUTsMrNC8ZoOepf4P3pQ@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-tmn:  [2Mj+BrPDiwCh14Icn7nf1NO6WYuyCFAe/LSDpc49abQHuVX2DeKhnIeAJioc0lRP]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 08714fdb-5138-45ec-4fdc-08d9eb130250
+x-ms-traffictypediagnostic: BMXPR01MB4759:EE_
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: w1qfulWiPOoeYNxOIXS3awvfT+1HlWNqb5DVZuTdVuVfHGbUQoBlEF8d23QcuLPmuoTjxZZC2d+0fPu/QFHm4SzQTqdYhbe0aatrmS2URRASVMQyJ8RYK6UOB9rc4K/veScS9hR26fMf1iZYzFmkd9D3ZCd8fXH8PewDwzvyLT4c2h9Tc5yaVkBL6fx+HXhpEOJ6aJCbRn6M7UWTqJZQpssbBNQQpMpJubmnZABuTqB5USsX+MsCQ4KBoqcnPJYSO7vGH/mF1cQODCHEt1UWsUBc5BQJ9U2z1ZE3krIyjh2Bw1ooGF5mp5T5B3IbjmLaCAA4Oa8I16VOQzMd0ngKpGEtTUisxbouJPhL9LDiisuNRShlqXvzHtBLtpwZpkmurGdRN7EaPhkRwA1rMoKynpGGpcR2//LXgyOp8gpcINQ+iVk+6lsr0Jc0otgaZ6LuS1UOocB0MmOA0Hj+lacS8tqUaBww3up/gY6RtMiOUKGaafLNyK3O9goI/JHspDSv+NujBC5TXKGxDslhDnGb8WxdVuQh7optcpzIE/k2bacyxt+WTyJwQ7TM9hdEz/L1SEuqhv8E0FdYtW9DTKWX3r+VC2JwybHNP9c56Q4o3/r3kyW9e7eqdMATQqkfhfKIm9u+FoSderMa2UGi4jzrz7TE95dd52+s+YqX5jovsLU=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Xz+tAYMh6cVFspX/EZyRwi96O5a9RTNFlWfc5uXnSmy+g59IM2Gk+mikYKW0?=
+ =?us-ascii?Q?LnYDoSWu+STTU2+qayTRdwTgRMfkyviR8rsq8bdyUflpiMyS1zfAZNyBw53Z?=
+ =?us-ascii?Q?TThvdzwHXHewvOXovE71iaEXYnaWAG4gdW8ApZ1TT1nbwg9Blbb4XyhYgglF?=
+ =?us-ascii?Q?Z868G7h6duY+SVXaBur4mTkpZX6A6C/Mh8RILnNpD61ZO+unG8/XrDwQ5lfx?=
+ =?us-ascii?Q?c0C+VgwAZ5+kqZpMnLIg1QfwQUDYCa+ICjW7Vq2gc5Iz8dileR4zTY79kgcQ?=
+ =?us-ascii?Q?yY0zc5RXA1lYTVYew16I+XUg7hQ6ttkuA/+KQ5gndlnS1D6YTi9hWju0VmdC?=
+ =?us-ascii?Q?8u5kHCigSY77brCJhJPF8wE9+64xDqrcllGXClHAs8J/80/0EBUR8esPRNbb?=
+ =?us-ascii?Q?sKS7JdqoagUNgQPecTs276Ff4zlx5Q7D6mU0o06xlM66AEGZCe6CIjz3GKDK?=
+ =?us-ascii?Q?3Dsh/PrwH9RHhvG7ANgCa6rP8h1mDjjibCMGVVeTpjdRn8ucoccPj9AvYZCM?=
+ =?us-ascii?Q?bERxCVDUvRj3A8j8h35//t2DFrJTDwzFu5AYCPvRYZpNDsY2D4PorfHnWhlO?=
+ =?us-ascii?Q?BKiw09y1qU0Wuxj8/BAdV3HkJ9amjiRcdN+cYZYQcgKmGYmKlViALQBO1OGg?=
+ =?us-ascii?Q?M5bB7pUCL6L57EaYU1bgB14z1VEEifyPvDxkk5jzM18qu+1t3kxKkLjQdlAc?=
+ =?us-ascii?Q?EET5u/5seVKRo82z02r2MZzPCRgBc/nbisBgcPD0CvoTzRYporaDqoLjifqy?=
+ =?us-ascii?Q?o/wLqpUoRT/3EoEmSEmjmScgT/QkPnorH197XUMUSm4ilp9BlQDkxC5u4imS?=
+ =?us-ascii?Q?22bosdfSj1L0pOpGNYtW0I/oRL+1OHrBhgHqrTnPDpzVTyRqahKHYvAgWJp5?=
+ =?us-ascii?Q?CRxD+02CBRV7+6VHE5nMKNgQqGBz9/hlDX5MsE2IR0KIrAhn3xV3cGEJzuyW?=
+ =?us-ascii?Q?xEe48bLEVsBwscCW/aGcIqjOIidlZH9HrjimWEmQ7VMJO2JUI/8WTVN21h9g?=
+ =?us-ascii?Q?2b4CUrAcJnwgwPzX9Nq/Ul+M2g=3D=3D?=
 Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <YgGvu1BsYP9cihwh@google.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 205c953d-9c7d-4b8b-cba8-08d9eb133175
-X-MS-TrafficTypeDiagnostic: DM5PR12MB2440:EE_
-X-Microsoft-Antispam-PRVS: <DM5PR12MB24401F74968EAB8C7F9C6A31952D9@DM5PR12MB2440.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Zm5m1i8vGRKkfviARu86uzc2jhCDq2LZebGaw0+dx58hOfI6rKHnusDIdnDyLMivdMrJ14FCb7uK9U6ZONlxRUQ2Ww8OkkPHu31nZjJVlsMm1XBAzMwMuYuCrDy+RY6jyYX37zVUTFeu4BFWwKitPg/ILqmd4j26CdhjwFrC6bjaWhim4AuALZSeHf8tOTqPZ9/73eYvSYrmdvbkVJfRfavJyC3310BB+g6+rbjqTimzVEaHNNEJPAPy2YaGnXpdJ4hy5j+z0KS13BYQ5ULzYWY9PvTklCuhoZL/16FEgtPLIiCEPN3EuKH7VBP/wEcnFg8ZxH3851ZWCvqzm9PgT8s8puQyyGMi/lbD87h7zNYH4SmImQqNY1/Jxq0zV4b3j0yyUGatSYJ3cypbAI5I1U3YjUcjLBM41qxqLms86UYeMbEdSeDAlFuFpYIq1IVmcKKiFDcVtZJoqgBq9cZMbCwJVuyxVA3IH+/lVz9tluyptAmjlfydJJQ5vR1Ohwx5q+oZDc9/50Jw7MIq+PMgGNp4Ti1irEHeCW/nzD86Z+10Whjzcww1xC72QEIkudfNyoyaVjokvl/Sk5oXAYcHX33ea2o5vOgzV72/8FASCeN/Mvd3VRbWN0u+nEZu2SrB6SicxFaJJxZUUMH9jtGaEr6bouIO5ttZJrPdX0dwZeD8QX8ts2cXJlVqMbu+61BKb3UKsPldrfU4ZEkm4LgceA==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(40470700004)(36840700001)(46966006)(426003)(186003)(1076003)(508600001)(26005)(16526019)(336012)(36756003)(86362001)(6916009)(36860700001)(47076005)(40460700003)(54906003)(83380400001)(2616005)(7406005)(70586007)(70206006)(8936002)(81166007)(7416002)(5660300002)(4326008)(356005)(8676002)(2906002)(44832011)(316002)(82310400004)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Feb 2022 14:56:31.5564
+Content-ID: <D236C2EBE10B1346A17B09B513A1DBEA@INDPRD01.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-42ed3.templateTenant
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 08714fdb-5138-45ec-4fdc-08d9eb130250
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Feb 2022 14:55:12.5047
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 205c953d-9c7d-4b8b-cba8-08d9eb133175
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT017.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB2440
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BMXPR01MB4759
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Feb 07, 2022 at 11:48:11PM +0000, Sean Christopherson wrote:
-> On Fri, Jan 28, 2022, Brijesh Singh wrote:
-> > From: Michael Roth <michael.roth@amd.com>
-> > 
-> > Update the documentation with SEV-SNP CPUID enforcement.
-> > 
-> > Signed-off-by: Michael Roth <michael.roth@amd.com>
-> > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> > ---
-> >  .../virt/kvm/amd-memory-encryption.rst        | 28 +++++++++++++++++++
-> >  1 file changed, 28 insertions(+)
-> > 
-> > diff --git a/Documentation/virt/kvm/amd-memory-encryption.rst b/Documentation/virt/kvm/amd-memory-encryption.rst
-> > index 1c6847fff304..0c72f44cc11a 100644
-> > --- a/Documentation/virt/kvm/amd-memory-encryption.rst
-> > +++ b/Documentation/virt/kvm/amd-memory-encryption.rst
-> 
-> This doc is specifically for KVM's host-side implemenation, whereas the below is
-> (a) mostly targeted at the guest and (b) has nothing to do with KVM.
-> 
-> Documentation/x86/amd-memory-encryption.rst isn't a great fit either.
-> 
-> Since TDX will need a fair bit of documentation, and SEV-ES could retroactively
-> use docs as well, what about adding a sub-directory:
-> 
-> 	Documentation/virt/confidential_compute
-
-There's actually a Documentation/virt/coco/sevguest.rst that was added
-in this series as part of:
-
-  "virt: Add SEV-SNP guest driver"
-
-Maybe that's good choice?
-
-I've been wondering about potentially adding the:
-
-  "Guest/Hypervisor Implementation Notes for SEV-SNP CPUID Enforcement"
-
-document that was sent to SNP mailing list under Documentation/
-somewhere. If we were to do that, it would be a good place to move the
-documentation from this patch into as well. Any thoughts on that?
-
-> 
-> to match the "cc_platform_has" stuffr, and then we can add sev.rst and tdx.rst
-> there?  Or sev-es.rst, sev-snp.rst, etc... if we want to split things up more.
-> 
-> It might be worth extracting the SEV details from x86/amd-memory-encryption.rst
-> into virt/ as well.  A big chunk of that file appears to be SEV specific, and it
-> appears to have gotten a little out-of-whack.  E.g. this section no longer makes
-> sense as the last paragraph below appears to be talking about SME (bit 23 in MSR
-> 0xc0010010), but walking back "this bit" would reference SEV.  I suspect a
-> mostly-standalone sev.rst would be easier to follow than an intertwined SME+SEV.
-> 
->   If support for SME is present, MSR 0xc00100010 (MSR_AMD64_SYSCFG) can be used to
->   determine if SME is enabled and/or to enable memory encryption::
-> 
->           0xc0010010:
->                   Bit[23]   0 = memory encryption features are disabled
->                             1 = memory encryption features are enabled
-> 
->   If SEV is supported, MSR 0xc0010131 (MSR_AMD64_SEV) can be used to determine if
->   SEV is active::
-> 
->           0xc0010131:
->                   Bit[0]    0 = memory encryption is not active
->                             1 = memory encryption is active
-> 
->   Linux relies on BIOS to set this bit if BIOS has determined that the reduction
->   in the physical address space as a result of enabling memory encryption (see
->   CPUID information above) will not conflict with the address space resource
->   requirements for the system.  If this bit is not set upon Linux startup then
->   Linux itself will not set it and memory encryption will not be possible.
-
-I'll check with Brijesh on these.
-
-Thanks!
-
--Mike
 
 
+> On 08-Feb-2022, at 7:33 PM, Ard Biesheuvel <ardb@kernel.org> wrote:
+>=20
+> On Tue, 8 Feb 2022 at 14:55, Aditya Garg <gargaditya08@live.com> wrote:
+>>=20
+>> On using some specific kernel configuration, on Macs with the T2 Securit=
+y chip, EFI Runtime services fail to start. Some logs which may be useful a=
+re as follows :-
+>>=20
+>> Feb 08 17:11:11 MacBook kernel: [Firmware Bug]: Page fault caused by fir=
+mware at PA: 0xffffa79840068000
+>> Feb 08 17:11:11 MacBook kernel: WARNING: CPU: 11 PID: 150 at arch/x86/pl=
+atform/efi/quirks.c:735 efi_crash_gracefully_on_page_fault+0x50/0xd0
+>=20
+> This means the firmware is broken. There is very little we can do
+> about this beyond disabling EFI runtime services entirely on such
+> systems.
+>=20
+> ...
+>=20
+>> The kernel configuration where this bug is seen is on https://github.com=
+/t2linux/T2-Ubuntu-Kernel/blob/Mainline/templates/default-config
+>>=20
+>> I had an old kernel configuration, where I did not face this issue and w=
+as easily able to write to the NVRAM. That kernel configuration is on https=
+://github.com/t2linux/T2-Ubuntu-Kernel/blob/b5c20b8c7689251dd943e22dbe02cef=
+9020db8d1/templates/default-config
+>>=20
+>> I believe these lines in the kernel config, which are present in the for=
+mer but absent in the latter are causing the issue :-
+>>=20
+> ...
+>=20
+>> Especially CONFIG_LOAD_UEFI_KEYS=3Dy is which I guess may be the culprit=
+.
+>>=20
+>=20
+> Yes, that seems likely.
+>=20
+>> I request you to reply to my issue as soon as possible
+>>=20
+>=20
+> Please stop demanding attention like this, even though it is thinly
+> veiled as courteous.
+>=20
+> If you want to run bleeding edge kernels on non-standard EFI hardware,
+> you have to be able to sort yourself out to some extent. I am the
+> EFI-on-Linux maintainer, but that doesn't mean I work for you and have
+> to be on call to fix your problems.
+
+Looks like I offended you. Heartiest apologies for that. I guess being from=
+ a non English background my works had a negative effect on you. My intenti=
+on was just to get help, not complain.
+
+Regards
+Aditya
 
