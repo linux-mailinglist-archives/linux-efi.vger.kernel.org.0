@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7180E4AF957
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Feb 2022 19:13:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEDA34AF95C
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Feb 2022 19:13:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239049AbiBISNL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 9 Feb 2022 13:13:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60614 "EHLO
+        id S238977AbiBISNQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 9 Feb 2022 13:13:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238942AbiBISMs (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Feb 2022 13:12:48 -0500
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2055.outbound.protection.outlook.com [40.107.94.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48D43C050CFA;
-        Wed,  9 Feb 2022 10:12:02 -0800 (PST)
+        with ESMTP id S238902AbiBISMt (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Feb 2022 13:12:49 -0500
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2063.outbound.protection.outlook.com [40.107.220.63])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6BE4C03FECA;
+        Wed,  9 Feb 2022 10:12:04 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PJUoYYfq3WXvmPScd7bPWs1Zcwqaozv0apfxJSlm9RUSrc8rLFZKaTSMY5ef+A2uXEpfSO/GnraMTyHqUrZv0iDdnFCgAAp7iGzSfguOxz97uWdx/NSgNMaGq8HZ38oFCWhiVV5VETufYP36GpyM1sFRjbh8xS2m6st1RXU4WfTxD155THCrT1oer+EfhlURsD3NKZmdp0mBHVAqo+G8NmiI2y2OzEjGkxCLV8IkwOWPblIp3xmjWomhd1J7PbLopkNm0IZ7C1EQ46G0VmZDmzBNY5d9UtG6K+4cQ0WhFSPCNXX00YnDF7T7k1Bgl4cTubIRF5d0nnllHCQEcKKqPw==
+ b=M9L4f93W1Lr6t41eAHB6eeltgkIyN6jARUluK0rZvW2ymXX3ZdM/+5g/REkIrRVxma4U4UXkxwyEOPNAWadVvAw6ku0x1Wb5e/P81gJJwdW6kyIE5tXLtuUQD4bnLDMwbAQET8Y3WWzKgPeOMcTMf8tpfqXuXOaXhfe6X05yGbxilQT5p66mUIZnwxZasFx9pjtJo5/h3G2rNHZr5c7AO1tRZdxIS2XIudVkS49slLLjaIJ2DKJ5v7TaxR4RUghJumCnST67WvcGRy0deS1frZGLlPphoyyE6uHjCJCDtJ5GQKDIbh7U5ISx9FSVsyIZc8zccHNGgXX5x1v29iC4bw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VJDbgmyl7Mk+Z1FP3B8zp1SRBSbLMd0Ea1CcshJFIgY=;
- b=emXsKIJNGmi5PRjyQJMBp/JANxLWE3h2BddzD4+reCXAtBBAX1tWyhpf0bYFQmIE3nMCQQIbBGYcF505TGzAOfax3Oq+UpE3782IU7CNMPTni46YrxvsK4I9BWsHOOTj02QCehrNpXHUekbHD9jsZl5zZMaws0RPT8AhLqaGfiPcQavKeeHN4qTsF5Sg7Nc7fo2vFqlCBQe+k+9qhwiSrmFPDUX9n9bz/dcd80775IsyGw8qAEjMhvFrJOjtq0Te1oOVlRhrXpG9J8kEgeNc0quP7dDlDACSWiWuqS2qW60cUxq9hbGVYaJ2nMnVd6Bn1580zdYVBPlT8eUjSpYQZA==
+ bh=VIl7FGcVVCCTXlpIwuSotWlAhVTgllnaxmtLpaZNBXA=;
+ b=Y8CsYF+Eax0u2wek3OhgenyePE61X073kl7OegsJfqu8EDsp7M5e/65nrAQ5bHVy6s2HpyxbQF8/zv3id51DYPKZx7JB3KIqCEv/8LXINodrnwAgvH4EDmXMDOFj+sNWX515J18ND65Oi60s7dqgtsOvqS/EsSungbylSxmx7bfuj7TcCB2OQKtotdDchzyldjfP0DCmrhBnBlD+JSuajhEfzs7nhOJz65rBUmFyi2KKR2Sj2bMR6phP7xc9ouyvqGcUzxYL/SBD57kxALV8dU8hTH67LTOhKkvd75xsazIU5fjoC9+wsgmNmb8lLX+no8xxMRVayN1mChMvwDo+1g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VJDbgmyl7Mk+Z1FP3B8zp1SRBSbLMd0Ea1CcshJFIgY=;
- b=r7dXM5aFCMoTFrJCrc2aCQNYoitJ3LUdux4EHNckB9f3D6pTxs0nrVWXYISXNEBmmGs/ELoJQNkN+QxqHlgfXsCopiEuQy+nE8Pfvw2AWci8GhZ7XjgvX8arswWlPxz9oQTtoAxN//erV6glGXufcyuHdstsWssnoY2pXkCCplM=
-Received: from BN9P223CA0021.NAMP223.PROD.OUTLOOK.COM (2603:10b6:408:10b::26)
- by DM6PR12MB3372.namprd12.prod.outlook.com (2603:10b6:5:11b::11) with
+ bh=VIl7FGcVVCCTXlpIwuSotWlAhVTgllnaxmtLpaZNBXA=;
+ b=R+jVo3ALIn/L7dd5ZYvb+Uy3wRB1lkkJyvnwFzI9ZotMklSQ5zAj87cnG8gJhStJ8gCBUF0uu+3RJEltw+p/L87/mLAJR49G1cpq8cn3jheyupaF7OL0V3LNNaMrYnRAaat9M1B5pzti66vZAFlTyG791gIzASfp2I1spGzi5NI=
+Received: from BN9PR03CA0879.namprd03.prod.outlook.com (2603:10b6:408:13c::14)
+ by BN6PR12MB1714.namprd12.prod.outlook.com (2603:10b6:404:107::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.18; Wed, 9 Feb
- 2022 18:11:59 +0000
-Received: from BN8NAM11FT018.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:10b:cafe::60) by BN9P223CA0021.outlook.office365.com
- (2603:10b6:408:10b::26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.12; Wed, 9 Feb
+ 2022 18:12:01 +0000
+Received: from BN8NAM11FT063.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:13c:cafe::f3) by BN9PR03CA0879.outlook.office365.com
+ (2603:10b6:408:13c::14) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.12 via Frontend
- Transport; Wed, 9 Feb 2022 18:11:59 +0000
+ Transport; Wed, 9 Feb 2022 18:12:01 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -46,13 +46,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT018.mail.protection.outlook.com (10.13.176.89) with Microsoft SMTP
+ BN8NAM11FT063.mail.protection.outlook.com (10.13.177.110) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4975.11 via Frontend Transport; Wed, 9 Feb 2022 18:11:59 +0000
+ 15.20.4975.11 via Frontend Transport; Wed, 9 Feb 2022 18:12:01 +0000
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Wed, 9 Feb
- 2022 12:11:57 -0600
+ 2022 12:11:59 -0600
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
         <kvm@vger.kernel.org>, <linux-efi@vger.kernel.org>,
@@ -83,9 +83,9 @@ CC:     Thomas Gleixner <tglx@linutronix.de>,
         <brijesh.ksingh@gmail.com>, <tony.luck@intel.com>,
         <marcorr@google.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>,
         Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH v10 19/45] x86/kernel: Make the .bss..decrypted section shared in RMP table
-Date:   Wed, 9 Feb 2022 12:10:13 -0600
-Message-ID: <20220209181039.1262882-20-brijesh.singh@amd.com>
+Subject: [PATCH v10 20/45] x86/kernel: Validate ROM memory before accessing when SEV-SNP is active
+Date:   Wed, 9 Feb 2022 12:10:14 -0600
+Message-ID: <20220209181039.1262882-21-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220209181039.1262882-1-brijesh.singh@amd.com>
 References: <20220209181039.1262882-1-brijesh.singh@amd.com>
@@ -97,73 +97,86 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 55768403-7b78-4e7d-be13-08d9ebf7aa62
-X-MS-TrafficTypeDiagnostic: DM6PR12MB3372:EE_
-X-Microsoft-Antispam-PRVS: <DM6PR12MB337270656C73B41D590FF5B2E52E9@DM6PR12MB3372.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+X-MS-Office365-Filtering-Correlation-Id: aa8666a5-2d40-4025-f6ef-08d9ebf7ab9b
+X-MS-TrafficTypeDiagnostic: BN6PR12MB1714:EE_
+X-Microsoft-Antispam-PRVS: <BN6PR12MB17141D82D66A85AA68697BA6E52E9@BN6PR12MB1714.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6108;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: A7QOBrkJwk0TiKcngRHd5dhzwBjwN/l4j3C8F4XPux4ITIlW4rAv2kbwix3Hm7uhx8SRJXJi4UvKO114mRSOZsN3fVxNMUnpEl5mkt1QAmKWRKRTLpiIgrDiLJrJd10Syxy8uUfN+wf61BADr/e/S+y99MwGqIAMBxhQSihzAnb6MWtcdg7IbDCqRRQjKLMzQMQeGddJcE5fDjCGKD7r3O8OZNK6d2dA5YnecfvTIXUTSXH7MAh2qaTDFtWLLbG/aqwXwG2QPQI2nScZ6+rsoq7AAAKcAQ6VpE93QEzY3AiotmJQWvR6cBok4C+Ovp8TJVSeQXQGpKq7BG0FzuEImS+Cb/9aM/4YBSn+Pv/F5bpAPPt/Q+XkTfELa86MIH1Gb8qr+DDt2j7pgOPzgAKSwWO71ABAs4E4nEr8fBmntlXWPNCP487f6QrZIGoPML2wN80XGs2NDvy35v/SirCYaLdGeQ7tZUQNXhS5yPDw3JrG7IHlaL+P9W91HhNgeW2moKUO0p+z0e+UcvmlXcU0TrfvbrVPmyIpo1GhDnG40RD+Yqy+qU02bbCvISaGBTXaCh76dqPL0UMEeX3GZ4F2U0o+Qp9bVeSLepwQb2hhDLj+abUAfzuJKFGvmRX8fTlcNXPXca09gG2NtD0eVRwuDgMKQrCFLSL+jLNVy9ORdxGwTEIB9TJwf60lRDskj0NXc7pksBcJpdPtMA9Gtv+IUZ1Gr6gZq27sZLdsxyxuILkJEYvrgftN/aEYSQ1qseZMJGruTRSPw7bnqVDGXa2wUamzslmxyXH5C33h525bbBk=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(36840700001)(46966006)(40470700004)(44832011)(356005)(40460700003)(7416002)(336012)(110136005)(426003)(5660300002)(81166007)(7406005)(508600001)(26005)(316002)(47076005)(2616005)(16526019)(186003)(1076003)(7696005)(36756003)(36860700001)(70206006)(54906003)(4326008)(8676002)(8936002)(70586007)(83380400001)(86362001)(2906002)(82310400004)(6666004)(142923001)(101420200003)(36900700001)(2101003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: qFmNfXI+RYNFSi6ieWqt+YW+CVt5BPGoH45CoW09l8Ppm8WZN7SDvBZJHN4PJUL0+YZoSwtN3imMaxlaG7xsYCgGYRo0KlHPYDAfuz00TLVAmbiVljtyWfMAU5CrpZYOGIfudScN8jxw08fTOVDW+YdLpuq4nYPzJ+VJuzdqf9RatJ8Xapu+KhMgEjjszHTzcEBISCbTGzMoDWUZS7wjVHwmpfNUY6whlsN70023c8o/o72VE0XqlS4JeJRpqjoHZ1QZLNww/Jt1nhBIu4XTGBOA7LqFWSMS1fCDAJnOLBoivifqiUeZNIuCtzY7kOb2l3+jN7Us8pxseYqDA1fBzZwlwoFVhBJ7lcrPRRtl22zfFT1sKvUSVanztSfaI4zf+jQE+z1yU9FwkfwI7qjjjTBc4E7/nU/1DhGC1DKTjqiIAmYovJ5MytocOPpqwXswv48yn5T742iFuIdo73PJcUBMZcjh7qaO9hyYnLP9I7hugYqyew/PNdpa0K394ktR5YwJ0OwQtjU9oX1p15vevawl7mxdk7d4pMORs1QrN07qFR9SAaLhNvU2/wxtqL2o3UqG1QMKzWVosF+iIFsZarSuwEteJSxw9hYuG70jZryp213DNja8cAdcTXWIyiYqBLPP6pX7eZXCGlhLrzGU18gzhH4tLAKC4DQ7KluL9IV5Jt0OIPaPQ4Bagv2g3OLxobllzdLyBfo7wvZSecwgr3fUiQxlcm/9Tqt3e//K5Ok=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(36840700001)(40470700004)(46966006)(81166007)(36860700001)(426003)(1076003)(356005)(2616005)(16526019)(186003)(26005)(83380400001)(47076005)(40460700003)(336012)(82310400004)(110136005)(508600001)(70586007)(54906003)(8936002)(7696005)(6666004)(15650500001)(2906002)(7406005)(5660300002)(44832011)(36756003)(7416002)(8676002)(86362001)(70206006)(4326008)(316002)(2101003)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2022 18:11:59.6902
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2022 18:12:01.7116
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 55768403-7b78-4e7d-be13-08d9ebf7aa62
+X-MS-Exchange-CrossTenant-Network-Message-Id: aa8666a5-2d40-4025-f6ef-08d9ebf7ab9b
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT018.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT063.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB3372
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR12MB1714
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_FILL_THIS_FORM_SHORT,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The encryption attribute for the .bss..decrypted section is cleared in the
-initial page table build. This is because the section contains the data
-that need to be shared between the guest and the hypervisor.
-
-When SEV-SNP is active, just clearing the encryption attribute in the
-page table is not enough. The page state need to be updated in the RMP
+probe_roms() accesses the memory range (0xc0000 - 0x10000) to probe
+various ROMs. The memory range is not part of the E820 system RAM
+range. The memory range is mapped as private (i.e encrypted) in page
 table.
+
+When SEV-SNP is active, all the private memory must be validated before
+the access. The ROM range was not part of E820 map, so the guest BIOS
+did not validate it. An access to invalidated memory will cause a VC
+exception. The guest does not support handling not-validated VC exception
+yet, so validate the ROM memory regions before it is accessed.
 
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/kernel/head64.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/x86/kernel/probe_roms.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index 8075e91cff2b..4a24b121a2ba 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -143,7 +143,20 @@ static unsigned long sme_postprocess_startup(struct boot_params *bp, pmdval_t *p
- 	if (sme_get_me_mask()) {
- 		vaddr = (unsigned long)__start_bss_decrypted;
- 		vaddr_end = (unsigned long)__end_bss_decrypted;
+diff --git a/arch/x86/kernel/probe_roms.c b/arch/x86/kernel/probe_roms.c
+index 36e84d904260..319fef37d9dc 100644
+--- a/arch/x86/kernel/probe_roms.c
++++ b/arch/x86/kernel/probe_roms.c
+@@ -21,6 +21,7 @@
+ #include <asm/sections.h>
+ #include <asm/io.h>
+ #include <asm/setup_arch.h>
++#include <asm/sev.h>
+ 
+ static struct resource system_rom_resource = {
+ 	.name	= "System ROM",
+@@ -197,11 +198,21 @@ static int __init romchecksum(const unsigned char *rom, unsigned long length)
+ 
+ void __init probe_roms(void)
+ {
+-	const unsigned char *rom;
+ 	unsigned long start, length, upper;
++	const unsigned char *rom;
+ 	unsigned char c;
+ 	int i;
+ 
++	/*
++	 * The ROM memory range is not part of the e820 table and is therefore not
++	 * pre-validated by BIOS. The kernel page table maps the ROM region as encrypted
++	 * memory, and SNP requires encrypted memory to be validated before access.
++	 * Do that here.
++	 */
++	snp_prep_memory(video_rom_resource.start,
++			((system_rom_resource.end + 1) - video_rom_resource.start),
++			SNP_PAGE_STATE_PRIVATE);
 +
- 		for (; vaddr < vaddr_end; vaddr += PMD_SIZE) {
-+			/*
-+			 * On SNP, transition the page to shared in the RMP table so that
-+			 * it is consistent with the page table attribute change.
-+			 *
-+			 * __start_bss_decrypted has a virtual address in the high range
-+			 * mapping (kernel .text). PVALIDATE, by way of
-+			 * early_snp_set_memory_shared(), requires a valid virtual
-+			 * address but the kernel is currently running off of the identity
-+			 * mapping so use __pa() to get a *currently* valid virtual address.
-+			 */
-+			early_snp_set_memory_shared(__pa(vaddr), __pa(vaddr), PTRS_PER_PMD);
-+
- 			i = pmd_index(vaddr);
- 			pmd[i] -= sme_get_me_mask();
- 		}
+ 	/* video rom */
+ 	upper = adapter_rom_resources[0].start;
+ 	for (start = video_rom_resource.start; start < upper; start += 2048) {
 -- 
 2.25.1
 
