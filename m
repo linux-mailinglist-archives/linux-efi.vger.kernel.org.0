@@ -2,152 +2,245 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0FE84AE422
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Feb 2022 23:27:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AAC54AE600
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Feb 2022 01:26:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1386460AbiBHW0k (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 8 Feb 2022 17:26:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35644 "EHLO
+        id S237975AbiBIA0T (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 8 Feb 2022 19:26:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1386766AbiBHVJd (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Feb 2022 16:09:33 -0500
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0260FC0612B8
-        for <linux-efi@vger.kernel.org>; Tue,  8 Feb 2022 13:09:33 -0800 (PST)
-Received: by mail-yb1-xb29.google.com with SMTP id p5so191917ybd.13
-        for <linux-efi@vger.kernel.org>; Tue, 08 Feb 2022 13:09:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=eclypsium.com; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=Voz9w9zuaut5zzPtd6DrE9JLrle0cFN3rE5oW1AaY2M=;
-        b=H86Fkha4NgU8OTWhaHjE4JlGaizgjjoCxAoxzH6KuMHph8fpqwf03RaVnEuLk2P/bp
-         yY61kdvApYE6qxRpAaZcrq1arCGYhyP64OfxKZGk/ZOoOi/ltDcqSmSvBtCoQmeyEyLR
-         FYKxeVXO0j/kENA0AQ+2vCrGOl0VUKu3hWvpH/6m/A6hDV0bT0QlgbAqfNsNBafihzt3
-         2DJiAdstGP57WhN+4kYnrr97E23PJoqPkDXeN4LhN/1bMFwtonqt5k3vmcslxFSVGhxw
-         1hFhSiwDhUci9XkHK8tdvuB1zULSZaI7zSssvL59P/voaJjScrGEK282mnejgUsEtNCb
-         E5kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=Voz9w9zuaut5zzPtd6DrE9JLrle0cFN3rE5oW1AaY2M=;
-        b=vhNI1JhlOdqhKkelPyz5JDcJfnlWitCmOlCW0n4XXOBndOUw1IdtLx3rY/GYD1tc3W
-         Un9t0/mkJvmpX9asLNyPIba0TCNq1beC+qUV1lxH3H0//Ul9kmU1NuB1Bg81Uusf33Fx
-         IEBlouVq7P0r+fsed3COJIQ7Ei1qnVZ/d5r3uW8G+QE3uBYyzREklEe2x/3o6fgFTVIR
-         Q3TuFrR1MZxz961GHkb5xB0VKzm0YazTrmGWZPBzQoSvpvRjprAZwsGWXxazDg+GJQ+H
-         R+jrXb4fe3bp126WbcPE/kKAEc3fmxP2XFFz2PY+8amPy+9CIf2JT9IMcTGF9/EyeZvq
-         esMw==
-X-Gm-Message-State: AOAM531oYQGe31KpRfHmJq88BJkwxvpZroa93ZCHAOsBkvgD8wZZ4FcK
-        d+J93Gfvfqwnn5y1lL1W9+FRAVAH5tLnCcxUGt7c2w==
-X-Google-Smtp-Source: ABdhPJwq0oxAvAIPreUivsgDVcSG53+v8LdcVF+reGL+9mzDGy2lOfjCUp4XCtrNh7PS7fr/4/oEr1Bunn9utBnAgNA=
-X-Received: by 2002:a25:9988:: with SMTP id p8mr6404360ybo.128.1644354572175;
- Tue, 08 Feb 2022 13:09:32 -0800 (PST)
+        with ESMTP id S237906AbiBIA0T (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Feb 2022 19:26:19 -0500
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26669C061576;
+        Tue,  8 Feb 2022 16:26:18 -0800 (PST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 218MLA19005311;
+        Wed, 9 Feb 2022 00:25:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=ZPFpO/s5Ar3lz1CQqNzWAhq5HebnCKhs9fdwrCFRj6s=;
+ b=hERzfYX3x/vYEkbd/ZyZEqXst6fgk+SVLVesTOCIVEqpmZWEoSEcdqfXomlJh4B+xPS8
+ Vzb0bOHE0SBboQVZKTqTASzVors0Vt8v5CfUlosnaSJvoWvTJSl4t+uZojOxKjGWoxRT
+ of8RINXA2/rPj2lSar2yrGVEdry4/zssMABuduj8INl1Yxxoy7095qYfonNriO6lKfz7
+ vRXYtG1cpVmnkfl72gA0/5mbjKMVCLo5Ps7KoEBMsW0bXAl410yxqhms9HWaQplEO69m
+ QnbOogPtww0qN6SerGrt4sti7B8Gdv1fNeTXrGOtoG4GuYj+fD7RI2K8BL9FZcP1oKsA Xg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3e4182j4x9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 09 Feb 2022 00:25:38 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 2190PbTV002111;
+        Wed, 9 Feb 2022 00:25:37 GMT
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3e4182j4ww-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 09 Feb 2022 00:25:36 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+        by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2190Nh8E026794;
+        Wed, 9 Feb 2022 00:25:35 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+        by ppma03wdc.us.ibm.com with ESMTP id 3e1gvb7dfy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 09 Feb 2022 00:25:35 +0000
+Received: from b03ledav006.gho.boulder.ibm.com (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+        by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2190PXUA35258666
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 9 Feb 2022 00:25:33 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6CB0BC605B;
+        Wed,  9 Feb 2022 00:25:33 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id AB8CAC6059;
+        Wed,  9 Feb 2022 00:25:31 +0000 (GMT)
+Received: from [9.211.92.120] (unknown [9.211.92.120])
+        by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Wed,  9 Feb 2022 00:25:31 +0000 (GMT)
+Message-ID: <e0309177-123a-18b5-a5c1-3a9266a22de0@linux.vnet.ibm.com>
+Date:   Tue, 8 Feb 2022 19:25:31 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v7 0/5] Allow guest access to EFI confidential computing
+ secret area
+Content-Language: en-US
+To:     Greg KH <gregkh@linuxfoundation.org>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        linux-efi <linux-efi@vger.kernel.org>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Borislav Petkov <bp@suse.de>,
+        Ashish Kalra <ashish.kalra@amd.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Andrew Scull <ascull@google.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Lenny Szubowicz <lszubowi@redhat.com>,
+        Peter Gonda <pgonda@google.com>,
+        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+        Jim Cadden <jcadden@ibm.com>,
+        Daniele Buono <dbuono@linux.vnet.ibm.com>,
+        linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Nayna Jain <nayna@linux.ibm.com>, dougmill@linux.vnet.ibm.com,
+        gcwilson@linux.ibm.com, gjoyce@ibm.com,
+        "open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" 
+        <linuxppc-dev@lists.ozlabs.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Daniel Axtens <dja@axtens.net>
+References: <20220201124413.1093099-1-dovmurik@linux.ibm.com>
+ <Yfk6vEuZFtgtA+G+@kroah.com>
+ <37779659ca96ac9c1f11bcc0ac0665895c795b54.camel@linux.ibm.com>
+ <20220202040157.GA8019@srcf.ucam.org> <YfogOurPZb7+Yelo@kroah.com>
+ <20220202065443.GA9249@srcf.ucam.org> <YfotMyQiQ66xfCOQ@kroah.com>
+ <20220202071023.GA9489@srcf.ucam.org>
+ <CAMj1kXFTyc9KnMsnvs+mt80DbJL8VGKKcQ0J=4NrGYGSAG8sRw@mail.gmail.com>
+ <20220202080401.GA9861@srcf.ucam.org> <Yfo/5gYgb9Sv24YB@kroah.com>
+From:   Nayna <nayna@linux.vnet.ibm.com>
+In-Reply-To: <Yfo/5gYgb9Sv24YB@kroah.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: b4UEhf1SnClyxzzgBwDvJSRo4uONgLbd
+X-Proofpoint-GUID: QuzRJnKjQvfnEB4nqGFOkDHaX8mQ0no9
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Received: by 2002:a81:174d:0:0:0:0:0 with HTTP; Tue, 8 Feb 2022 13:09:31 -0800 (PST)
-In-Reply-To: <202202071325.F8450B3B2D@keescook>
-References: <20220203164328.203629-1-martin.fernandez@eclypsium.com>
- <20220203164328.203629-4-martin.fernandez@eclypsium.com> <202202071325.F8450B3B2D@keescook>
-From:   Martin Fernandez <martin.fernandez@eclypsium.com>
-Date:   Tue, 8 Feb 2022 18:09:31 -0300
-Message-ID: <CAKgze5YtTMmmqmrNjkCey84nSRxGpa_yajH8+9kwQLckb2dFoA@mail.gmail.com>
-Subject: Re: [PATCH v6 3/6] x86/e820: Refactor range_update and range_remove
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
-        gregkh@linuxfoundation.org, rafael@kernel.org, rppt@kernel.org,
-        akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
-        hughsient@gmail.com, alex.bazhaniuk@eclypsium.com,
-        alison.schofield@intel.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-08_07,2022-02-07_02,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ malwarescore=0 lowpriorityscore=0 mlxlogscore=999 priorityscore=1501
+ clxscore=1015 impostorscore=0 bulkscore=0 spamscore=0 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202080136
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H5,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2/7/22, Kees Cook <keescook@chromium.org> wrote:
-> On Thu, Feb 03, 2022 at 01:43:25PM -0300, Martin Fernandez wrote:
->> __e820__range_update and e820__range_remove had a very similar
->> I propose a refactor of those functions, given that I need to create a
->> similar one for this patchset.
+
+On 2/2/22 03:25, Greg KH wrote:
+> On Wed, Feb 02, 2022 at 08:04:01AM +0000, Matthew Garrett wrote:
+>> On Wed, Feb 02, 2022 at 08:22:03AM +0100, Ard Biesheuvel wrote:
+>>> On Wed, 2 Feb 2022 at 08:10, Matthew Garrett <mjg59@srcf.ucam.org> wrote:
+>>>> Which other examples are you thinking of? I think this conversation may
+>>>> have accidentally become conflated with a different prior one and now
+>>>> we're talking at cross purposes.
+>>> This came up a while ago during review of one of the earlier revisions
+>>> of this patch set.
+>>>
+>>> https://lore.kernel.org/linux-efi/YRZuIIVIzMfgjtEl@google.com/
+>>>
+>>> which describes another two variations on the theme, for pKVM guests
+>>> as well as Android bare metal.
+>> Oh, I see! That makes much more sense - sorry, I wasn't Cc:ed on that,
+>> so thought this was related to the efivars/Power secure boot. My
+>> apologies, sorry for the noise. In that case, given the apparent
+>> agreement between the patch owners that a consistent interface would
+>> work for them, I think I agree with Greg that we should strive for that.
+>> Given the described behaviour of the Google implementation, it feels
+>> like the semantics in this implementation would be sufficient for them
+>> as well, but having confirmation of that would be helpful.
+>>
+>> On the other hand, I also agree that a new filesystem for this is
+>> overkill. I did that for efivarfs and I think the primary lesson from
+>> that is that people who aren't familiar with the vfs shouldn't be
+>> writing filesystems. Securityfs seems entirely reasonable, and it's
+>> consistent with other cases where we expose firmware-provided data
+>> that's security relevant.
+>>
+>> The only thing I personally struggle with here is whether "coco" is the
+>> best name for it, and whether there are reasonable use cases that
+>> wouldn't be directly related to confidential computing (eg, if the
+>> firmware on a bare-metal platform had a mechanism for exposing secrets
+>> to the OS based on some specific platform security state, it would seem
+>> reasonable to expose it via this mechanism but it may not be what we'd
+>> normally think of as Confidential Computing).
+>>
+>> But I'd also say that while we only have one implementation currently
+>> sending patches, it's fine for the code to live in that implementation
+>> and then be abstracted out once we have another.
+> Well right now the Android code looks the cleanest and should be about
+> ready to be merged into my tree.
 >
-> The diff here is pretty hard (for me) to review; I'll need more time
-> to check it. What might make review easier (at least for me), is to
-> incrementally change these routines. i.e. separate patches to:
+> But I can almost guarantee that that interface is not what anyone else
+> wants to use, so if you think somehow that everyone else is going to
+> want to deal with a char device node and a simple mmap, with a DT
+> description of the thing, hey, I'm all for it :)
 >
-> - add the new infrastructure
-> - replace e820__range_remove
-> - replace __e820__range_update
->
-> If that's not actually useful, no worries. I'll just stare at it a bit
-> more. :)
+> Seriously, people need to come up with something sane or this is going
+> to be a total mess.
 >
 
-Yep, that's a good idea. I'll keep that in mind for the next patch.
+Thanks for adding us to this discussion. I think somehow my last post 
+got html content and didn't make to mailing list, so am posting it 
+again. Sorry to those who are receiving it twice.
 
->>
->> Add a function to modify a E820 table in a given range. This
->> modification is done backed up by two helper structs:
->> e820_entry_updater and e820_*_data.
->>
->> The first one, e820_entry_updater, carries 3 callbacks which function
->> as the actions to take on the table.
->>
->> The other one, e820_*_data carries information needed by the
->> callbacks, for example in the case of range_update it will carry the
->> type that we are targeting.
->
-> Something I think would be really amazing here is if you could add KUnit
-> tests here to exercise the corner cases and validate the changes. It
-> should be pretty easy to add. Here's a quick example for the boilerplate
-> and testing a bit of __e820__range_add():
->
-> #ifdef CONFIG_E820_KUNIT_TEST
-> #include <kunit/test.h>
->
-> static void __init test_e820_range_add(struct kunit *context)
-> {
-> 	struct e820_table table;
-> 	u32 full;
->
-> 	full = ARRAY_SIZE(table.entries);
-> 	/* Add last entry. */
-> 	table->nr_entries = full - 1;
-> 	__e820__range_add(&table, 0, 15, 0);
-> 	KUNIT_EXPECT_EQ(table->nr_entries, full)
-> 	/* Skip new entry when full. */
-> 	__e820__range_add(&table, 0, 15, 0);
-> 	KUNIT_EXPECT_EQ(table->nr_entries, full)
-> }
->
-> static void __init test_e820_update(struct kunit *context)
-> {
-> ...
-> }
->
-> static struct kunit_case __refdata e820_test_cases[] = {
->         KUNIT_CASE(test_e820_range_add),
->         KUNIT_CASE(test_e820_update),
-> 	...
->         {}
-> };
->
-> static struct kunit_suite e820_test_suite = {
->         .name = "e820",
->         .test_cases = e820_test_cases,
-> };
->
-> kunit_test_suites(&e820_test_suite);
-> #endif
->
+If I have understood the discussion right, the key idea discussed here 
+is to unify multiple different interfaces(this one, and [1]) exposing 
+secrets for confidential computing usecase via securityfs.
 
-Oh that's awesome! I'll definitely take a look into KUnit and integrate
-it to this patch. Thanks for the code snippet!
+And the suggestion is to see if the proposed pseries interface [2] can 
+unify with the coco interface.
+
+At high level, pseries interface is reading/writing/adding/deleting 
+variables using the sysfs interface, but the underlying semantics and 
+actual usecases are quite different.
+
+The variables exposed via pseries proposed interface are:
+
+* Variables owned by firmware as read-only.
+* Variables owned by bootloader as read-only.
+* Variables owned by OS and get updated as signed updates. These support 
+both read/write.
+* Variables owned by OS and get directly updated(unsigned) eg config 
+information or some boot variables. These support both read/write.
+
+It can be extended to support variables which contain secrets like 
+symmetric keys, are owned by OS and stored in platform keystore.
+
+Naming convention wise also, there are differences like pseries 
+variables do not use GUIDs.
+
+The initial patchset discusses secure boot usecase, but it would be 
+extended for other usecases as well.
+
+First, I feel the purpose itself is different here. If we still 
+continue, I fear if we will get into similar situation as Matthew 
+mentioned in context of efivars -
+
+"the patches to add support for
+manipulating the Power secure boot keys originally attempted to make it
+look like efivars, but the underlying firmware semantics are
+sufficiently different that even exposing the same kernel interface
+wouldn't be a sufficient abstraction and userland would still need to
+behave differently. Exposing an interface that looks consistent but
+isn't is arguably worse for userland than exposing explicitly distinct
+interfaces."
+
+With that, I believe the scope of pseries interface is different and 
+much broader than being discussed here. So, I wonder if it would be 
+better to still keep pseries interface separate from this and have its 
+own platform specific interface.
+
+I would be happy to hear the ideas.
+
+[1] https://lore.kernel.org/linux-efi/YRZuIIVIzMfgjtEl@google.com/
+
+[2] https://lore.kernel.org/all/20220122005637.28199-1-nayna@linux.ibm.com/
+
+Thanks & Regards,
+
+      - Nayna
+
