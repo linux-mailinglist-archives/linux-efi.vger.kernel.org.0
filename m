@@ -1,23 +1,22 @@
 Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B1B54AFA6F
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Feb 2022 19:37:41 +0100 (CET)
+Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
+	by mail.lfdr.de (Postfix) with ESMTP id B46124AFD95
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Feb 2022 20:38:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239611AbiBISha (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 9 Feb 2022 13:37:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53316 "EHLO
+        id S229894AbiBITh1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 9 Feb 2022 14:37:27 -0500
+Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:40574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239608AbiBISfx (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Feb 2022 13:35:53 -0500
-X-Greylist: delayed 6349 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 09 Feb 2022 10:35:48 PST
+        with ESMTP id S230353AbiBIThL (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Feb 2022 14:37:11 -0500
 Received: from cavan.codon.org.uk (irc.codon.org.uk [IPv6:2a00:1098:84:22e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D50FEC05CB82;
-        Wed,  9 Feb 2022 10:35:48 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C989BC050CF9;
+        Wed,  9 Feb 2022 11:37:08 -0800 (PST)
 Received: by cavan.codon.org.uk (Postfix, from userid 1000)
-        id F07A540A63; Wed,  9 Feb 2022 18:35:45 +0000 (GMT)
-Date:   Wed, 9 Feb 2022 18:35:45 +0000
+        id B196F40A63; Wed,  9 Feb 2022 19:37:05 +0000 (GMT)
+Date:   Wed, 9 Feb 2022 19:37:05 +0000
 From:   Matthew Garrett <mjg59@srcf.ucam.org>
 To:     Aditya Garg <gargaditya08@live.com>
 Cc:     Ard Biesheuvel <ardb@kernel.org>, Jeremy Kerr <jk@ozlabs.org>,
@@ -43,15 +42,15 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>, Jeremy Kerr <jk@ozlabs.org>,
         Aun-Ali Zaidi <admin@kodeit.net>
 Subject: Re: [PATCH] efi: Do not import certificates from UEFI Secure Boot
  for T2 Macs
-Message-ID: <20220209183545.GA14552@srcf.ucam.org>
+Message-ID: <20220209193705.GA15463@srcf.ucam.org>
 References: <9D0C961D-9999-4C41-A44B-22FEAF0DAB7F@live.com>
  <20220209164957.GB12763@srcf.ucam.org>
  <5A3C2EBF-13FF-4C37-B2A0-1533A818109F@live.com>
+ <20220209183545.GA14552@srcf.ucam.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5A3C2EBF-13FF-4C37-B2A0-1533A818109F@live.com>
+In-Reply-To: <20220209183545.GA14552@srcf.ucam.org>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,
         HEADER_FROM_DIFFERENT_DOMAINS,KHOP_HELO_FCRDNS,SPF_HELO_NEUTRAL,
@@ -63,31 +62,52 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Feb 09, 2022 at 06:02:34PM +0000, Aditya Garg wrote:
-> 
-> 
-> > On 09-Feb-2022, at 10:19 PM, Matthew Garrett <mjg59@srcf.ucam.org> wrote:
-> > 
-> > On Wed, Feb 09, 2022 at 02:27:51PM +0000, Aditya Garg wrote:
-> >> From: Aditya Garg <gargaditya08@live.com>
-> >> 
-> >> On T2 Macs, the secure boot is handled by the T2 Chip. If enabled, only
-> >> macOS and Windows are allowed to boot on these machines. Thus we need to
-> >> disable secure boot for Linux. If we boot into Linux after disabling
-> >> secure boot, if CONFIG_LOAD_UEFI_KEYS is enabled, EFI Runtime services
-> >> fail to start, with the following logs in dmesg
-> > 
-> > Which specific variable request is triggering the failure? Do any 
-> > runtime variable accesses work on these machines?
-> Commit f5390cd0b43c2e54c7cf5506c7da4a37c5cef746 in Linus’ tree was also added to force EFI v1.1 on these machines, since v2.4, reported by them was causing kernel panics.
-> 
-> So, EFI 1.1 without import certificates seems to work and have been able to modify the variables, thus the remaining EFI variable accesses seem to work.
+On Wed, Feb 09, 2022 at 06:35:45PM +0000, Matthew Garrett wrote:
 
-The LOAD_UEFI_KEYS code isn't doing anything special here - it's just 
-trying to read some variables. If we simply disable that then the 
-expectation would be that reading the same variables from userland would 
-trigger the same failure. So the question is which of the variables that 
-LOAD_UEFI_KEYS accesses is triggering the failure, and what's special 
-about that? If it's a specific variable GUID or name that's failing, we 
-should block that on Apple hardware in order to avoid issues caused by 
-userland performing equivalent accesses.
+> The LOAD_UEFI_KEYS code isn't doing anything special here - it's just 
+> trying to read some variables. If we simply disable that then the 
+> expectation would be that reading the same variables from userland would 
+> trigger the same failure. So the question is which of the variables that 
+> LOAD_UEFI_KEYS accesses is triggering the failure, and what's special 
+> about that? If it's a specific variable GUID or name that's failing, we 
+> should block that on Apple hardware in order to avoid issues caused by 
+> userland performing equivalent accesses.
+
+ie, can you try something like this?
+
+diff --git a/drivers/firmware/efi/runtime-wrappers.c b/drivers/firmware/efi/runtime-wrappers.c
+index f3e54f6616f0..01cbd4811d1e 100644
+--- a/drivers/firmware/efi/runtime-wrappers.c
++++ b/drivers/firmware/efi/runtime-wrappers.c
+@@ -32,6 +32,8 @@
+ #include <linux/stringify.h>
+ #include <linux/workqueue.h>
+ #include <linux/completion.h>
++#include <linux/ucs2_string.h>
++#include <linux/slab.h>
+ 
+ #include <asm/efi.h>
+ 
+@@ -203,6 +205,21 @@ static void efi_call_rts(struct work_struct *work)
+ 				       (efi_time_t *)arg2);
+ 		break;
+ 	case EFI_GET_VARIABLE:
++		unsigned long utf8_name_size;
++		char *utf8_name;
++		char guid_str[sizeof(efi_guid_t)+1];
++
++		utf8_name_size = ucs2_utf8size((efi_char16_t *)arg1);
++		utf8_name = kmalloc(utf8_name_size+1, GFP_KERNEL);
++		if (!utf8_name) {
++			printk(KERN_INFO "failed to allocate UTF8 buffer\n");
++			break;
++		}
++
++		ucs2_as_utf8(utf8_name, (efi_char16_t *)arg1, utf8_name_size + 1);
++		efi_guid_to_str((efi_guid_t *)arg2, guid_str);
++
++		printk(KERN_INFO "Reading EFI variable %s-%s\n", utf8_name, guid_str);
+ 		status = efi_call_virt(get_variable, (efi_char16_t *)arg1,
+ 				       (efi_guid_t *)arg2, (u32 *)arg3,
+ 				       (unsigned long *)arg4, (void *)arg5);
+
