@@ -2,100 +2,191 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56FD34B00EB
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Feb 2022 00:05:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42BD24B0486
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Feb 2022 05:38:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236961AbiBIXFC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 9 Feb 2022 18:05:02 -0500
-Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:58766 "EHLO
+        id S233456AbiBJEh5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 9 Feb 2022 23:37:57 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:59424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236886AbiBIXFB (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Feb 2022 18:05:01 -0500
-Received: from conssluserg-05.nifty.com (conssluserg-05.nifty.com [210.131.2.90])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26DFCE01976B;
-        Wed,  9 Feb 2022 15:05:03 -0800 (PST)
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174]) (authenticated)
-        by conssluserg-05.nifty.com with ESMTP id 219N4i1Z004353;
-        Thu, 10 Feb 2022 08:04:44 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com 219N4i1Z004353
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1644447884;
-        bh=a4CPTySbfz6tATOd3oisyCSdvLEgbXZVMlYkkDX676Q=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=J+HdsNYfFFKEgIiacdUdp4ULvPnM/LbolxFvFZHp/DGpD5/6wl2As7pPXuzjGPpA9
-         6SEM5s9qN8Iv9fdmusZA4JPcYVT6rqqI/FLXM+3j5Jeme32pQ8NKs7C3kkv73mlfbX
-         lk2G149zFVXv24WacOyzDKiceLjR9QIRj/98h1f6uZ+k0tiUlHrIGblZ67kzS5nOzm
-         rCaCIwpKOjzge2xE6IsoVf76HEHc8YpqyNDBhlK96AnWovLTY+thfNoOlruzJZzmb0
-         N98XM3lWwTogUP060YeBUdsPH7aMpKU1h33a11Tn/prmS90FNfZHBiUa4h5ZceJ/Fg
-         jKZgvJp6urIYw==
-X-Nifty-SrcIP: [209.85.214.174]
-Received: by mail-pl1-f174.google.com with SMTP id y17so252776plg.7;
-        Wed, 09 Feb 2022 15:04:44 -0800 (PST)
-X-Gm-Message-State: AOAM531KSWnQDkOfQZwBq3iyptZAtN85Dlx//5AhIUEDlIWYKxAvTIpB
-        I4iIw74lA9KRhXXQOetlCCjGRXsZVqBeJ5xjOg0=
-X-Google-Smtp-Source: ABdhPJwWB8ZNnsMSrugJLAaUoxmVXtYfCekIy7V3ZzXWPCjfVCdzOirMrkT+yVSMb4QpnAJTnSLfCYIdBvKSRlsafrw=
-X-Received: by 2002:a17:903:22c5:: with SMTP id y5mr2455424plg.99.1644447883812;
- Wed, 09 Feb 2022 15:04:43 -0800 (PST)
-MIME-Version: 1.0
-References: <20211218031122.4117631-1-willy@infradead.org> <CAK7LNAQUChvX3NoukBnjBfJJGu+a96pfbM--xHEHOygWPgE9eA@mail.gmail.com>
- <YdSOV7LL0vWCMcWl@casper.infradead.org> <CAK7LNAQgixJSnDUMfjc+tg90oMdVoh+i5faEn-rqgmHR3Bk6dQ@mail.gmail.com>
- <20220208110122.2z4cmbqexmnxuxld@jak-t480s> <YgJrypdQium7AcWV@casper.infradead.org>
- <3d76ff7aab8cdc134aebf16af66582849bd53156.camel@HansenPartnership.com>
-In-Reply-To: <3d76ff7aab8cdc134aebf16af66582849bd53156.camel@HansenPartnership.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Thu, 10 Feb 2022 08:04:06 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASNFnARmhJ0ik3uCiasuTDGgi9PtEgi7m+EPgHtK0-t5Q@mail.gmail.com>
-Message-ID: <CAK7LNASNFnARmhJ0ik3uCiasuTDGgi9PtEgi7m+EPgHtK0-t5Q@mail.gmail.com>
+        with ESMTP id S233352AbiBJEh4 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Feb 2022 23:37:56 -0500
+X-Greylist: delayed 7199 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 09 Feb 2022 20:37:56 PST
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [95.217.213.242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D10691A6;
+        Wed,  9 Feb 2022 20:37:56 -0800 (PST)
+Received: from 168.7-181-91.adsl-dyn.isp.belgacom.be ([91.181.7.168] helo=deadeye)
+        by maynard with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1nHw1T-0005JC-Hv; Thu, 10 Feb 2022 00:05:15 +0100
+Received: from ben by deadeye with local (Exim 4.95)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1nHw1S-001XDV-Ug;
+        Thu, 10 Feb 2022 00:05:14 +0100
+Message-ID: <b5a402d4931a089140ae8dc99ee149e6dd698270.camel@decadent.org.uk>
 Subject: Re: [PATCH v2] builddeb: Support signing kernels with the module
  signing key
-To:     James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc:     Matthew Wilcox <willy@infradead.org>,
-        Julian Andres Klode <julian.klode@canonical.com>,
-        Ben Hutchings <ben@decadent.org.uk>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        efi@lists.einval.com,
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     Masahiro Yamada <masahiroy@kernel.org>,
+        Matthew Wilcox <willy@infradead.org>
+Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
+        efi@lists.einval.com,
+        debian-kernel <debian-kernel@lists.debian.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
         David Woodhouse <dwmw2@infradead.org>,
-        debian-kernel <debian-kernel@lists.debian.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_SOFTFAIL,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
+Date:   Thu, 10 Feb 2022 00:05:09 +0100
+In-Reply-To: <CAK7LNATT_LMLu1hXy4kANGXN4PRiDq-Pf_kbwJztPDJnLDEF0Q@mail.gmail.com>
+References: <20211218031122.4117631-1-willy@infradead.org>
+         <CAK7LNAQUChvX3NoukBnjBfJJGu+a96pfbM--xHEHOygWPgE9eA@mail.gmail.com>
+         <Yf2pE4BxpaBQhaJ9@casper.infradead.org>
+         <CAK7LNATT_LMLu1hXy4kANGXN4PRiDq-Pf_kbwJztPDJnLDEF0Q@mail.gmail.com>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-aBq2oCejIqdjMCDPMBMu"
+User-Agent: Evolution 3.42.3-1 
+MIME-Version: 1.0
+X-SA-Exim-Connect-IP: 91.181.7.168
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Feb 9, 2022 at 10:21 PM James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
->
-> On Tue, 2022-02-08 at 13:10 +0000, Matthew Wilcox wrote:
-> > On Tue, Feb 08, 2022 at 12:01:22PM +0100, Julian Andres Klode wrote:
-> > > It's worth pointing out that in Ubuntu, the generated MOK key
-> > > is for module signing only (extended key usage
-> > > 1.3.6.1.4.1.2312.16.1.2), kernels signed with it will NOT be
-> > > bootable.
-> >
-> > Why should these be separate keys?  There's no meaningful security
-> > boundary between a kernel module and the ernel itself; a kernel
-> > modulecan, for example, write to CR3, and that's game over for
-> > any pretence at separation.
->
-> It's standard practice for any automated build private key to be
-> destroyed immediately to preserve security.  Thus the modules get
-> signed with a per kernel ephemeral build key but the MoK key is a long
-> term key with a special signing infrastructure, usually burned into the
-> distro version of shim.  The kernel signing key usually has to be long
-> term because you want shim to boot multiple kernels otherwise upgrading
-> becomes a nightmare.
 
-Fully agreed.
+--=-aBq2oCejIqdjMCDPMBMu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, 2022-02-07 at 22:22 +0900, Masahiro Yamada wrote:
+> On Sat, Feb 5, 2022 at 7:30 AM Matthew Wilcox <willy@infradead.org> wrote=
+:
+> >=20
+> > On Wed, Jan 05, 2022 at 12:39:57AM +0900, Masahiro Yamada wrote:
+> > > +CC the maintainers of CERTIFICATE HANDLING
+> > > M:      David Howells <dhowells@redhat.com>
+> > > M:      David Woodhouse <dwmw2@infradead.org>
+> > > L:      keyrings@vger.kernel.org
+> >=20
+> > Davids, can one of you respond to this?
+> >=20
+> > > On Sat, Dec 18, 2021 at 12:11 PM Matthew Wilcox (Oracle)
+> > > <willy@infradead.org> wrote:
+> > > >=20
+> > > > If the config file specifies a signing key, use it to sign
+> > > > the kernel so that machines with SecureBoot enabled can boot.
+> > > > See https://wiki.debian.org/SecureBoot
+> > > >=20
+> > > > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> > > > ---
+> > > > v2:
+> > > >  - Handle private keys stored in the pem file as well as adjacent t=
+o the
+> > > >    certificate
+> > > >  - Handle certificate paths specified relative to both dsttree and =
+srctree
+> > > >    (as well as absolute)
+> > > >  - Only try to sign the executable if EFI_STUB is enabled
+> > > >  - Only try to execute sbsign if it's in $PATH
+> > > >=20
+> > > >  scripts/package/builddeb | 25 ++++++++++++++++++++++++-
+> > > >  1 file changed, 24 insertions(+), 1 deletion(-)
+> > > >=20
+> > > > diff --git a/scripts/package/builddeb b/scripts/package/builddeb
+> > > > index 91a502bb97e8..9dd92fd02b12 100755
+> > > > --- a/scripts/package/builddeb
+> > > > +++ b/scripts/package/builddeb
+> > > > @@ -147,7 +147,30 @@ else
+> > > >         cp System.map "$tmpdir/boot/System.map-$version"
+> > > >         cp $KCONFIG_CONFIG "$tmpdir/boot/config-$version"
+> > > >  fi
+> > > > -cp "$($MAKE -s -f $srctree/Makefile image_name)" "$tmpdir/$install=
+ed_image_path"
+> > > > +
+> > > > +vmlinux=3D$($MAKE -s -f $srctree/Makefile image_name)
+> > > > +key=3D
+> > > > +if is_enabled CONFIG_EFI_STUB && is_enabled CONFIG_MODULE_SIG; the=
+n
+> > > > +       cert=3D$(grep ^CONFIG_MODULE_SIG_KEY=3D include/config/auto=
+.conf | cut -d\" -f2)
+> > > > +       if [ ! -f $cert ]; then
+> > > > +               cert=3D$srctree/$cert
+> > > > +       fi
+> > > > +
+> > > > +       key=3D${cert%pem}priv
+> > > > +       if [ ! -f $key ]; then
+> > > > +               key=3D$cert
+> > > > +       fi
+> > >=20
+> > >=20
+> > > I still do not understand this part.
+> > >=20
+> > > It is true that the Debian document you referred to creates separate =
+files
+> > > for the key and the certificate:
+> > >   # openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform
+> > > DER -out MOK.der -days 36500 -subj "/CN=3DMy Name/" -nodes
+> > >=20
+> > > but, is such a use-case possible in Kbuild?
+> >=20
+> > I don't think it matters whether *Kbuild* can generate one file or
+> > two.  If somebody follows the *Debian* document, they will have
+> > two files.  It would surely be desirable that if somebody has followed
+> > the Debian instructions that we would then sign the kernel using the
+> > keys they previously generated.
+>=20
+>=20
+> If I am not wrong, extracting the key path from
+> CONFIG_MODULE_SIG_KEY is not Debian's way.
+>=20
+>=20
+> I checked the kernel configuration on bullseye,
+> CONFIG_MODULE_SIG_KEY is empty,
+> while the module signing itself is enabled.
+[...]
 
+For Debian's own packages,=C2=A0we didn't want to use ephemeral module
+signing keys (which break reproducibility) or to expose signing keys to
+the regular build machines.  Instead, Debian has a separate signing
+service that handles the few packages that need it.
 
--- 
-Best Regards
-Masahiro Yamada
+The closest thing to "the Debian way" for signing custom kernels would
+be that wiki page.  But personally, I think making each computer build
+and sign its own kernel and modules undermines any value that Secure
+Boot could provide.
+
+Ben.
+
+--=20
+Ben Hutchings
+Who are all these weirdos? - David Bowie, on joining IRC
+
+--=-aBq2oCejIqdjMCDPMBMu
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmIESKYACgkQ57/I7JWG
+EQmb6xAAkNQWAGFtqSPFwnPlFI0yN9VItk1/F+f3uTCM/OSPBbcDaYHeG49CDATX
+ivBhSfSosSSNOez4xWelKCnlsNgw8G6nQ+dbalYveO4maeKnq9R3q2loABaQVu6X
+zj0l5CErlRIYHiSjLBm4GM40CnD9BWtK1v2afYNCEzJr+Pv7OQHsX9sL+HVUJPkO
+RiNr3KiCotqYDWs6kPmFDwl7BX5QlYCBKzKCUcQLxwzWsri4oI+9fWOTn9pDxFBg
+J3PqzOcqbS0RuSo+8IqTRSrb4jE1iiEtoTOF8c6536O1Sw+uplhRpbx1x+j+5hmN
+dywjZ6Vv8q5VtIK3gQaPqmF2VzQw2vB/YYmqJW9VGfvyFdFOWHh8WJ96eXor3db+
+VYXRuJD0AjgSgWhApo4NuOYq9Iw9eGD/1BKvgGmgKYSidtMY15PSl440QyHvR7Hj
+CL3y3p9EePAdvRi2SpK59x9yCEA+/z9vVpsM0Q+3/wreJK5Z72Y60rozxpPnMmK7
+9sVcxX90AUZCzeM5oBnZSMvMKqrMatgXlR7N9RQQQQFilcd5AhqrR5RHPNRFVBgM
+YEtI3FkFbN8AvD/O+3AD+IwbDEIeRDBOA2xumFYE+4OmXAEbzQxFg0cLuofiC6hg
+WO/TCcl2oYO22JXQyqAUBQPtx9wwY7hUWUIIH2+mfTykM68GTK0=
+=PubA
+-----END PGP SIGNATURE-----
+
+--=-aBq2oCejIqdjMCDPMBMu--
