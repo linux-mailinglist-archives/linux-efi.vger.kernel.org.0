@@ -2,191 +2,175 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42BD24B0486
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Feb 2022 05:38:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 858BA4B0493
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Feb 2022 05:43:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233456AbiBJEh5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 9 Feb 2022 23:37:57 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:59424 "EHLO
+        id S233513AbiBJEnO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 9 Feb 2022 23:43:14 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:33288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233352AbiBJEh4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Feb 2022 23:37:56 -0500
-X-Greylist: delayed 7199 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 09 Feb 2022 20:37:56 PST
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [95.217.213.242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D10691A6;
-        Wed,  9 Feb 2022 20:37:56 -0800 (PST)
-Received: from 168.7-181-91.adsl-dyn.isp.belgacom.be ([91.181.7.168] helo=deadeye)
-        by maynard with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1nHw1T-0005JC-Hv; Thu, 10 Feb 2022 00:05:15 +0100
-Received: from ben by deadeye with local (Exim 4.95)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1nHw1S-001XDV-Ug;
-        Thu, 10 Feb 2022 00:05:14 +0100
-Message-ID: <b5a402d4931a089140ae8dc99ee149e6dd698270.camel@decadent.org.uk>
-Subject: Re: [PATCH v2] builddeb: Support signing kernels with the module
- signing key
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     Masahiro Yamada <masahiroy@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>
-Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        with ESMTP id S232833AbiBJEnN (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Feb 2022 23:43:13 -0500
+Received: from IND01-BMX-obe.outbound.protection.outlook.com (mail-bmxind01olkn2043.outbound.protection.outlook.com [40.92.103.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01BB21A6;
+        Wed,  9 Feb 2022 20:43:14 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AnsamIKwMP9o+gIrJCnYM7oJBdCOM8VQMuXHyulnEtg7bu6E7HjKG3fi/a3AsGaKNvtsQecSzecrDdJ+4Nj1xgWkKcEf37J1OZe0SpIPgzWlaah2yNaqlQabmVB/qEskqm277EtHCTMJ7Iriap2+Dm+3YBBeveGNngxRWy3/w0etYERJBPQbzVvJkHmJMdJUWQtMHSbdkEvNNPgvcKwcjLDZQLnqoYUyxpi4JsTsX/IBp9cH2/gDofWt9wVCwjFnSBsDDJds0vz7RV6+6JnGYUqhZ51dnwPaT0niurz2UshhnIpjq9aMHHmtSdyEhnUV3GGysMh/H8RzSSrShbLAJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8Zy9p+vZsJZ784hnvktsmABbGQKZyO/IAxJvmJyoMrk=;
+ b=W8Yw89p7J27Ui5/C5Lr7sfQ0ltnanP5I1sD6pA21v/L5BGrR4Ftgqj6yztUKNFmen+ZL7WgHzFCGAwAROGKk2spiTFzbCrxgmzLpaKq133B7xIFeL8Dytl5q1U9v0ejg+ecthHqXOCNXTDqxcwwpmp3LUrJZSpT3zSlEDNAi/OhK9wXBaL5gKY0otw7pPV1m9TWvbYAjS1WJ4EhWvDym0wWFn3a96uaOVUqOY3zqQXCEO3OHucqz1OxLeDCAGbNAYtpV6w6QjMgM6GgV2S7icMegBAYHWwxG0YMOuPotVI7iOHYvv/MqHQJH+91aFtyQ3y0CX0eCwz9uvv91DiWrrg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8Zy9p+vZsJZ784hnvktsmABbGQKZyO/IAxJvmJyoMrk=;
+ b=PTfYrYk4k0TX4WU5qitcj6JdPqhSYCqR0vL+z6vGWjW6xKoFdAlodn+uqcizZ/LFPG6OG5i0q2MmGgfCsHUO6eylox+BS3aFv/GR6VOr8DOB5gI7FsHL1KTGFVscEBqvSKHRqJZ5wPHaBBheLuRmyM7YHkKGsIZT2BikYkSD8biV/7gilXTAUfuGzdFIwmMkPZduVC+dGJP9XCrdzTJA0tKrGA2xTdtCsKnd5SDA1FHM+LQ1u1oTxSHR+tobLFMxFwuWQ3bH+BYPPFFWZEqWKwMc8CJDTl4qTBqVmWSuSq4Z9tj0/nDCs9CO+AYEKgBpL+ay/14Np02At6koWzBzaQ==
+Received: from PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:1b::13)
+ by PNZPR01MB4253.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:1b::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4975.11; Thu, 10 Feb
+ 2022 04:43:04 +0000
+Received: from PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::d19b:7cd1:3760:b055]) by PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::d19b:7cd1:3760:b055%9]) with mapi id 15.20.4975.011; Thu, 10 Feb 2022
+ 04:43:04 +0000
+From:   Aditya Garg <gargaditya08@live.com>
+To:     Matthew Garrett <mjg59@srcf.ucam.org>
+CC:     Ard Biesheuvel <ardb@kernel.org>, Jeremy Kerr <jk@ozlabs.org>,
+        "joeyli.kernel@gmail.com" <joeyli.kernel@gmail.com>,
+        "zohar@linux.ibm.com" <zohar@linux.ibm.com>,
+        "jmorris@namei.org" <jmorris@namei.org>,
+        "eric.snowberg@oracle.com" <eric.snowberg@oracle.com>,
+        "dhowells@redhat.com" <dhowells@redhat.com>,
+        "jlee@suse.com" <jlee@suse.com>,
+        "James.Bottomley@hansenpartnership.com" 
+        <James.Bottomley@HansenPartnership.com>,
+        "jarkko@kernel.org" <jarkko@kernel.org>,
+        "mic@digikod.net" <mic@digikod.net>,
+        "dmitry.kasatkin@gmail.com" <dmitry.kasatkin@gmail.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        efi@lists.einval.com,
-        debian-kernel <debian-kernel@lists.debian.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
-Date:   Thu, 10 Feb 2022 00:05:09 +0100
-In-Reply-To: <CAK7LNATT_LMLu1hXy4kANGXN4PRiDq-Pf_kbwJztPDJnLDEF0Q@mail.gmail.com>
-References: <20211218031122.4117631-1-willy@infradead.org>
-         <CAK7LNAQUChvX3NoukBnjBfJJGu+a96pfbM--xHEHOygWPgE9eA@mail.gmail.com>
-         <Yf2pE4BxpaBQhaJ9@casper.infradead.org>
-         <CAK7LNATT_LMLu1hXy4kANGXN4PRiDq-Pf_kbwJztPDJnLDEF0Q@mail.gmail.com>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-aBq2oCejIqdjMCDPMBMu"
-User-Agent: Evolution 3.42.3-1 
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        Orlando Chamberlain <redecorating@protonmail.com>,
+        Aun-Ali Zaidi <admin@kodeit.net>
+Subject: Re: [PATCH] efi: Do not import certificates from UEFI Secure Boot for
+ T2 Macs
+Thread-Topic: [PATCH] efi: Do not import certificates from UEFI Secure Boot
+ for T2 Macs
+Thread-Index: AQHYHcE4ht34Z1CESEaNjR8+yzmieayLbqGAgAAURwCAAAlIgIAAESOAgACYiIA=
+Date:   Thu, 10 Feb 2022 04:43:04 +0000
+Message-ID: <4D024AA6-CA95-4C7B-93CE-9A1E7F86BE43@live.com>
+References: <9D0C961D-9999-4C41-A44B-22FEAF0DAB7F@live.com>
+ <20220209164957.GB12763@srcf.ucam.org>
+ <5A3C2EBF-13FF-4C37-B2A0-1533A818109F@live.com>
+ <20220209183545.GA14552@srcf.ucam.org> <20220209193705.GA15463@srcf.ucam.org>
+In-Reply-To: <20220209193705.GA15463@srcf.ucam.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-tmn:  [fsO56RVNV9NvXh9wbcFFIuNVFc8QFEw+krqRqaMl1XxK4SSYYciaYjsnPo2Sy980]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 3a0cca38-d3cc-4bf2-ecac-08d9ec4fd377
+x-ms-traffictypediagnostic: PNZPR01MB4253:EE_
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: LAkz2fp4SJBLl2Fnb474m49RGI8ekE35wS8mGKRdBZ8JDOSW7sEulALZ6lICTU5EV2AwCydb7th3Jw3YohUOxoWufGWRSvsWIUu+mxk2ps7GwTJyYxzNe4lU9m845ai1nki20WKBbcsbqalJGKdG0I1oo0YsM5iPHls2D2jJNM+764T9BZkk3XT8ok1b1XP0N2ABMBDmqZgR9+udMicW8hBsA/vNebvt6RJwp+pjGiLSh3J1OXAmovTRSPYQKvf+XNDpVy0B9lykaP0u+wNc1jrnxYSCLHFycwm+P5vyJOiji0rn8ukPJGWvFzy6YtC2GSD9iPuzJq7Y+95s5jVxeXeKnJTPc6nGw/skJf1QrR7rugPG4NrfleBgjFBMwost0N4ULjc7QOHXkfvGmcUz2QITXN17oQVm0QhO4uDu/slFavvGPCqs/2IFaf8Vp/EN2mW7Iwvm+T9CEyCCLQoRpZnL6P3J7Nwvqu7Tl3xhkJYgbll8iL+IwOSWZxNfjdEJN+KcGZmBuobUmUslcsETiZnxK1sqxIbfeZuUeth7Q25mjOi7mx4E6ndGC8ExGLwpQdAJM4Jg4Wv8Yo3dTw0v/Q==
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZHNGdGNPU0wvU2srRmp6WFJZSE5iRjNZcFl0M2JWNEsyU2dxVFU2SXJJYzF3?=
+ =?utf-8?B?VkR1eVZkdWtEakRNMWkxWEliTGh6TENPNmhuZVJyOWREYVVidmUvZTVuYkdk?=
+ =?utf-8?B?VGlvcmMvbGwydlo4aFhLQno4dkNGNk02ZXJpKzZvbzNKTUtGejh2Z2FlbkJh?=
+ =?utf-8?B?Zkh1WjdqQU5nS0VNSzA5R1RWbzlodzh4ZG9SLzNjZTlxVnpqUU5jQ1N3WFFF?=
+ =?utf-8?B?MURiUzRBUFNWMU5VSE5Ed1BFcS8va2cwbjBFUGNDb016clVPMHoyTTN6Qkoz?=
+ =?utf-8?B?VHRmWmVrSjNSUnh6T290ZGFHZ0JuSVRXc0NGTGJmcmpaUnlYSWdHWW1idlZI?=
+ =?utf-8?B?WXpBVlYrdUsvVVRHL1kwaW1BRUNPeWhpTUVrNW42YmtpRzc1RmRBRjVOT3Zv?=
+ =?utf-8?B?ekJOeGpvZkdPUVlQZU5QMkVNa2xDTWhPazhwei8rckZubWdGVzdUa3NKdXQr?=
+ =?utf-8?B?eUl2TEszNVE1eHR5OGhqUkllT0xsK1MvK0k1Y0drVXN6RU9yTXlCa1c3VExv?=
+ =?utf-8?B?d01sS3ZPQXVCbHVUM3dQS3VBNm1ZR3BMam42SFI3WDk4RVpFeExFWTk1K3dR?=
+ =?utf-8?B?czNRU0ppTHA1Mlk5TDFLQWVqQjN3MGF4Uk5zOUtKeExERXhDVCt3d3h0UFJO?=
+ =?utf-8?B?aDdHYUVsZHppYVd6eUdsZnU2YzNzMDg2Ly9LejNueFptbC9Wc2kxTHVwbkJZ?=
+ =?utf-8?B?RXlKY0V5Sk4vRmZsWTVhZDBCUGxqTit6SkRDeXR0L2h1VDQ0YjhQUlZKNFU4?=
+ =?utf-8?B?VVJkS3IzVDVMS25TSDRtb2VtaERlaVRUQld6OXFNOFgxay83cmFzYmREd0Zk?=
+ =?utf-8?B?ZmhWcHo1bkNaaHQ0dGFTUmVLa3V5TkZkZzk2aGEwSG40cFdlb2lJNWdzV0Ni?=
+ =?utf-8?B?ZGYxWDdFdkRGOFBBS2g3YXp5M21VNER1UVZQNU9XWERaVWk1VU9XdkNBMVhG?=
+ =?utf-8?B?MEdJTVBycVVkejlXQnd4cU9KTXZ3SmxhbmtHQ2xhVXdjUms3bEx5YkpYa3Vn?=
+ =?utf-8?B?ZTVsWVVnV29LZjRTWk1xcnV6Z2QwdjQraUd3ODF4MktvQ1FTWnU2Qm5CYUs3?=
+ =?utf-8?B?b05MQ3hhbFRSeXZTTTF6OGtDcXN4L05oemdWeTZpRitscWNYNWFlb3FMdFg4?=
+ =?utf-8?B?WnZyL0NWZnJURHhOQ1hOOHdDaEp2RUUxeUVTZmJHUlpSTFhTYURXR1lLNTNh?=
+ =?utf-8?B?Q1hEQW9vYmZmdXFGTzR1SmdGdkhnblZxVStSaFRjZ29kRFlsTXVqV1YzaGpM?=
+ =?utf-8?B?cUZkd2FDS3ovc0NWOGkrZ1JzbnN2YjZjcmtsVlBWNDYxbHd6UW90emhGMWtR?=
+ =?utf-8?B?T0hNN2hJSmdWa3AxcXZucGRDeDNZUEZyTm8zWUp5RE84dTJsTWFhaEltQnNt?=
+ =?utf-8?B?Rno0NXBseDVscFE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <B696FE8EA9B4464C8A13E4A53A038675@INDPRD01.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 91.181.7.168
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-42ed3.templateTenant
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3a0cca38-d3cc-4bf2-ecac-08d9ec4fd377
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Feb 2022 04:43:04.3434
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PNZPR01MB4253
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-
---=-aBq2oCejIqdjMCDPMBMu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, 2022-02-07 at 22:22 +0900, Masahiro Yamada wrote:
-> On Sat, Feb 5, 2022 at 7:30 AM Matthew Wilcox <willy@infradead.org> wrote=
-:
-> >=20
-> > On Wed, Jan 05, 2022 at 12:39:57AM +0900, Masahiro Yamada wrote:
-> > > +CC the maintainers of CERTIFICATE HANDLING
-> > > M:      David Howells <dhowells@redhat.com>
-> > > M:      David Woodhouse <dwmw2@infradead.org>
-> > > L:      keyrings@vger.kernel.org
-> >=20
-> > Davids, can one of you respond to this?
-> >=20
-> > > On Sat, Dec 18, 2021 at 12:11 PM Matthew Wilcox (Oracle)
-> > > <willy@infradead.org> wrote:
-> > > >=20
-> > > > If the config file specifies a signing key, use it to sign
-> > > > the kernel so that machines with SecureBoot enabled can boot.
-> > > > See https://wiki.debian.org/SecureBoot
-> > > >=20
-> > > > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> > > > ---
-> > > > v2:
-> > > >  - Handle private keys stored in the pem file as well as adjacent t=
-o the
-> > > >    certificate
-> > > >  - Handle certificate paths specified relative to both dsttree and =
-srctree
-> > > >    (as well as absolute)
-> > > >  - Only try to sign the executable if EFI_STUB is enabled
-> > > >  - Only try to execute sbsign if it's in $PATH
-> > > >=20
-> > > >  scripts/package/builddeb | 25 ++++++++++++++++++++++++-
-> > > >  1 file changed, 24 insertions(+), 1 deletion(-)
-> > > >=20
-> > > > diff --git a/scripts/package/builddeb b/scripts/package/builddeb
-> > > > index 91a502bb97e8..9dd92fd02b12 100755
-> > > > --- a/scripts/package/builddeb
-> > > > +++ b/scripts/package/builddeb
-> > > > @@ -147,7 +147,30 @@ else
-> > > >         cp System.map "$tmpdir/boot/System.map-$version"
-> > > >         cp $KCONFIG_CONFIG "$tmpdir/boot/config-$version"
-> > > >  fi
-> > > > -cp "$($MAKE -s -f $srctree/Makefile image_name)" "$tmpdir/$install=
-ed_image_path"
-> > > > +
-> > > > +vmlinux=3D$($MAKE -s -f $srctree/Makefile image_name)
-> > > > +key=3D
-> > > > +if is_enabled CONFIG_EFI_STUB && is_enabled CONFIG_MODULE_SIG; the=
-n
-> > > > +       cert=3D$(grep ^CONFIG_MODULE_SIG_KEY=3D include/config/auto=
-.conf | cut -d\" -f2)
-> > > > +       if [ ! -f $cert ]; then
-> > > > +               cert=3D$srctree/$cert
-> > > > +       fi
-> > > > +
-> > > > +       key=3D${cert%pem}priv
-> > > > +       if [ ! -f $key ]; then
-> > > > +               key=3D$cert
-> > > > +       fi
-> > >=20
-> > >=20
-> > > I still do not understand this part.
-> > >=20
-> > > It is true that the Debian document you referred to creates separate =
-files
-> > > for the key and the certificate:
-> > >   # openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform
-> > > DER -out MOK.der -days 36500 -subj "/CN=3DMy Name/" -nodes
-> > >=20
-> > > but, is such a use-case possible in Kbuild?
-> >=20
-> > I don't think it matters whether *Kbuild* can generate one file or
-> > two.  If somebody follows the *Debian* document, they will have
-> > two files.  It would surely be desirable that if somebody has followed
-> > the Debian instructions that we would then sign the kernel using the
-> > keys they previously generated.
->=20
->=20
-> If I am not wrong, extracting the key path from
-> CONFIG_MODULE_SIG_KEY is not Debian's way.
->=20
->=20
-> I checked the kernel configuration on bullseye,
-> CONFIG_MODULE_SIG_KEY is empty,
-> while the module signing itself is enabled.
-[...]
-
-For Debian's own packages,=C2=A0we didn't want to use ephemeral module
-signing keys (which break reproducibility) or to expose signing keys to
-the regular build machines.  Instead, Debian has a separate signing
-service that handles the few packages that need it.
-
-The closest thing to "the Debian way" for signing custom kernels would
-be that wiki page.  But personally, I think making each computer build
-and sign its own kernel and modules undermines any value that Secure
-Boot could provide.
-
-Ben.
-
---=20
-Ben Hutchings
-Who are all these weirdos? - David Bowie, on joining IRC
-
---=-aBq2oCejIqdjMCDPMBMu
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmIESKYACgkQ57/I7JWG
-EQmb6xAAkNQWAGFtqSPFwnPlFI0yN9VItk1/F+f3uTCM/OSPBbcDaYHeG49CDATX
-ivBhSfSosSSNOez4xWelKCnlsNgw8G6nQ+dbalYveO4maeKnq9R3q2loABaQVu6X
-zj0l5CErlRIYHiSjLBm4GM40CnD9BWtK1v2afYNCEzJr+Pv7OQHsX9sL+HVUJPkO
-RiNr3KiCotqYDWs6kPmFDwl7BX5QlYCBKzKCUcQLxwzWsri4oI+9fWOTn9pDxFBg
-J3PqzOcqbS0RuSo+8IqTRSrb4jE1iiEtoTOF8c6536O1Sw+uplhRpbx1x+j+5hmN
-dywjZ6Vv8q5VtIK3gQaPqmF2VzQw2vB/YYmqJW9VGfvyFdFOWHh8WJ96eXor3db+
-VYXRuJD0AjgSgWhApo4NuOYq9Iw9eGD/1BKvgGmgKYSidtMY15PSl440QyHvR7Hj
-CL3y3p9EePAdvRi2SpK59x9yCEA+/z9vVpsM0Q+3/wreJK5Z72Y60rozxpPnMmK7
-9sVcxX90AUZCzeM5oBnZSMvMKqrMatgXlR7N9RQQQQFilcd5AhqrR5RHPNRFVBgM
-YEtI3FkFbN8AvD/O+3AD+IwbDEIeRDBOA2xumFYE+4OmXAEbzQxFg0cLuofiC6hg
-WO/TCcl2oYO22JXQyqAUBQPtx9wwY7hUWUIIH2+mfTykM68GTK0=
-=PubA
------END PGP SIGNATURE-----
-
---=-aBq2oCejIqdjMCDPMBMu--
+DQo+IGllLCBjYW4geW91IHRyeSBzb21ldGhpbmcgbGlrZSB0aGlzPw0KPiANCj4gZGlmZiAtLWdp
+dCBhL2RyaXZlcnMvZmlybXdhcmUvZWZpL3J1bnRpbWUtd3JhcHBlcnMuYyBiL2RyaXZlcnMvZmly
+bXdhcmUvZWZpL3J1bnRpbWUtd3JhcHBlcnMuYw0KPiBpbmRleCBmM2U1NGY2NjE2ZjAuLjAxY2Jk
+NDgxMWQxZSAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9maXJtd2FyZS9lZmkvcnVudGltZS13cmFw
+cGVycy5jDQo+ICsrKyBiL2RyaXZlcnMvZmlybXdhcmUvZWZpL3J1bnRpbWUtd3JhcHBlcnMuYw0K
+PiBAQCAtMzIsNiArMzIsOCBAQA0KPiAjaW5jbHVkZSA8bGludXgvc3RyaW5naWZ5Lmg+DQo+ICNp
+bmNsdWRlIDxsaW51eC93b3JrcXVldWUuaD4NCj4gI2luY2x1ZGUgPGxpbnV4L2NvbXBsZXRpb24u
+aD4NCj4gKyNpbmNsdWRlIDxsaW51eC91Y3MyX3N0cmluZy5oPg0KPiArI2luY2x1ZGUgPGxpbnV4
+L3NsYWIuaD4NCj4gDQo+ICNpbmNsdWRlIDxhc20vZWZpLmg+DQo+IA0KPiBAQCAtMjAzLDYgKzIw
+NSwyMSBAQCBzdGF0aWMgdm9pZCBlZmlfY2FsbF9ydHMoc3RydWN0IHdvcmtfc3RydWN0ICp3b3Jr
+KQ0KPiAJCQkJICAgICAgIChlZmlfdGltZV90ICopYXJnMik7DQo+IAkJYnJlYWs7DQo+IAljYXNl
+IEVGSV9HRVRfVkFSSUFCTEU6DQo+ICsJCXVuc2lnbmVkIGxvbmcgdXRmOF9uYW1lX3NpemU7DQo+
+ICsJCWNoYXIgKnV0ZjhfbmFtZTsNCj4gKwkJY2hhciBndWlkX3N0cltzaXplb2YoZWZpX2d1aWRf
+dCkrMV07DQo+ICsNCj4gKwkJdXRmOF9uYW1lX3NpemUgPSB1Y3MyX3V0ZjhzaXplKChlZmlfY2hh
+cjE2X3QgKilhcmcxKTsNCj4gKwkJdXRmOF9uYW1lID0ga21hbGxvYyh1dGY4X25hbWVfc2l6ZSsx
+LCBHRlBfS0VSTkVMKTsNCj4gKwkJaWYgKCF1dGY4X25hbWUpIHsNCj4gKwkJCXByaW50ayhLRVJO
+X0lORk8gImZhaWxlZCB0byBhbGxvY2F0ZSBVVEY4IGJ1ZmZlclxuIik7DQo+ICsJCQlicmVhazsN
+Cj4gKwkJfQ0KPiArDQo+ICsJCXVjczJfYXNfdXRmOCh1dGY4X25hbWUsIChlZmlfY2hhcjE2X3Qg
+KilhcmcxLCB1dGY4X25hbWVfc2l6ZSArIDEpOw0KPiArCQllZmlfZ3VpZF90b19zdHIoKGVmaV9n
+dWlkX3QgKilhcmcyLCBndWlkX3N0cik7DQo+ICsNCj4gKwkJcHJpbnRrKEtFUk5fSU5GTyAiUmVh
+ZGluZyBFRkkgdmFyaWFibGUgJXMtJXNcbiIsIHV0ZjhfbmFtZSwgZ3VpZF9zdHIpOw0KPiAJCXN0
+YXR1cyA9IGVmaV9jYWxsX3ZpcnQoZ2V0X3ZhcmlhYmxlLCAoZWZpX2NoYXIxNl90ICopYXJnMSwN
+Cj4gCQkJCSAgICAgICAoZWZpX2d1aWRfdCAqKWFyZzIsICh1MzIgKilhcmczLA0KPiAJCQkJICAg
+ICAgICh1bnNpZ25lZCBsb25nICopYXJnNCwgKHZvaWQgKilhcmc1KTsNCj4gDQpIaSBNYXR0aGV3
+DQoNCkkgaGF2ZW4ndCB0ZXN0ZWQgdGhpcyB5ZXQgKEtlcm5lbCBpcyBjb21waWxpbmcpIGJ1dCBJ
+IGhhdmUgZm91bmQgb3V0IHRoYXQgdGhpcyBwYXJ0IG9mIHRoZSBjb2RlIGlzIGNhdXNpbmcgYSBj
+cmFzaA0KDQoNCnN0YXRpYyBfX2luaXQgdm9pZCAqZ2V0X2NlcnRfbGlzdChlZmlfY2hhcjE2X3Qg
+Km5hbWUsIGVmaV9ndWlkX3QgKmd1aWQsDQoJCQkJICB1bnNpZ25lZCBsb25nICpzaXplLCBlZmlf
+c3RhdHVzX3QgKnN0YXR1cykNCnsNCgl1bnNpZ25lZCBsb25nIGxzaXplID0gNDsNCgl1bnNpZ25l
+ZCBsb25nIHRtcGRiWzRdOw0KCXZvaWQgKmRiOw0KDQoJKnN0YXR1cyA9IGVmaS5nZXRfdmFyaWFi
+bGUobmFtZSwgZ3VpZCwgTlVMTCwgJmxzaXplLCAmdG1wZGIpOw0KCWlmICgqc3RhdHVzID09IEVG
+SV9OT1RfRk9VTkQpDQoJCXJldHVybiBOVUxMOw0KDQoJaWYgKCpzdGF0dXMgIT0gRUZJX0JVRkZF
+Ul9UT09fU01BTEwpIHsNCgkJcHJfZXJyKCJDb3VsZG4ndCBnZXQgc2l6ZTogMHglbHhcbiIsICpz
+dGF0dXMpOw0KCQlyZXR1cm4gTlVMTDsNCgl9DQoNCglkYiA9IGttYWxsb2MobHNpemUsIEdGUF9L
+RVJORUwpOw0KCWlmICghZGIpDQoJCXJldHVybiBOVUxMOw0KDQoJKnN0YXR1cyA9IGVmaS5nZXRf
+dmFyaWFibGUobmFtZSwgZ3VpZCwgTlVMTCwgJmxzaXplLCBkYik7DQoJaWYgKCpzdGF0dXMgIT0g
+RUZJX1NVQ0NFU1MpIHsNCgkJa2ZyZWUoZGIpOw0KCQlwcl9lcnIoIkVycm9yIHJlYWRpbmcgZGIg
+dmFyOiAweCVseFxuIiwgKnN0YXR1cyk7DQoJCXJldHVybiBOVUxMOw0KCX0NCg0KCSpzaXplID0g
+bHNpemU7DQoJcmV0dXJuIGRiOw0KfQ0KDQpJZiBJIHJlbW92ZSB0aGUgcmV0dXJuIDAgSSBoYWQg
+YWRkZWQgZnJvbSBvdGhlciAzIGxlZnQgZnVuY3Rpb25zLCBjcmFzaCBkb2Vzbid0IG9jY3VyLg0K
+DQpXaGVuIHRoZSBrZXJuZWwgY29tcGlsZXMgd2l0aCB5b3VyIHBhdGNoLCBJ4oCZbGwgc2VuZCB3
+aGF0ZXZlciBJIGdldC4NCg0KUmVnYXJkcw0KQWRpdHlh
