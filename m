@@ -2,43 +2,45 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C6CB4B05EA
-	for <lists+linux-efi@lfdr.de>; Thu, 10 Feb 2022 06:55:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32A774B0B2A
+	for <lists+linux-efi@lfdr.de>; Thu, 10 Feb 2022 11:44:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232140AbiBJFyl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 10 Feb 2022 00:54:41 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:47224 "EHLO
+        id S238926AbiBJKnx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 10 Feb 2022 05:43:53 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:54512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231797AbiBJFyk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 10 Feb 2022 00:54:40 -0500
-Received: from IND01-MA1-obe.outbound.protection.outlook.com (mail-ma1ind01olkn0168.outbound.protection.outlook.com [104.47.100.168])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A3E71D6;
-        Wed,  9 Feb 2022 21:54:42 -0800 (PST)
+        with ESMTP id S231878AbiBJKnw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 10 Feb 2022 05:43:52 -0500
+Received: from IND01-MA1-obe.outbound.protection.outlook.com (mail-ma1ind01olkn0186.outbound.protection.outlook.com [104.47.100.186])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 338B8FEB;
+        Thu, 10 Feb 2022 02:43:53 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LLMqN5W8Wd1Y9NbGyFlDiN/dCsm6QbsnFCTVBv/ZGyUv/fIe8r+Fn7nLTPsSeWbMAZ0iCSYKLWH1tq6xN5MbbyJibAsY7ytj2cNkegINsRUYlBHFp0TWj3IoBhVayPRxYThhFDIVfXwaqHo7sxk0IseI+uOvpBKdZNNEQtEETj5TWRRCDYRFyI+iRnQWwVfn0KuwVd9Urn0Mk/mM+dPsEg9FC7wlrdU7QvXFPcmS5IQZ5QAfvOXLfWVMjMbutTE8KQSZo10nZ3W1J8K57zqNq53X/bpHYAMaTYszyEuQyCVXmaWQ7RpgkJRqH+o0deYuMWnrd2VOZH4SscVwr7YNdw==
+ b=ZCf3k0EczFPQGQOIk2tSXA2wRAjGW4UM3mwPQ7PyZcMWoEn8mtsTm0KhUgd79la2vu61yyJx3L0Bg9MJ+0bqo9EQ7ff5AaAK1AmzUGcIo3ABW/WsQ5jQIqpHZZ7K295bBY+OEZ5XPpdqUhP08ifo2pjSRA5PaRsFoz8o2h5K0qaz0sRqkGFNNLPuOwEAAy+JI5+Xuus6rUV3/RMqnGjzjJPq8hAh7WQiLdepAF4yq1Lkm+fjJ1z4CAWn3jAJ4m9FiAP37jcYafdKpCLpJ6JnbTQx5jyf4RUckSQNNfSVR/NDnKZ2tal2VqtB//T61bQh3lfWTZIPnVwAT9t2GZOhYg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JqtCOiZqURTFMZ+gtzsSxcOqfT6krkYRHwNRIJ3LFWA=;
- b=JKp+DthAemMTE/N7YrVap0xjV5iXhNOL7M9z2h3KC+eS1Z6YLv4XZueWkyXtXu3qdZGwC49yN9SNGyqI5NkWC4nUgtf6ZnmpzhhHsarkDTDpkFbMJisH86H3nqCp7I+iAlOCAHxQCdHMzvBHJyKZXX8opVCIvZS+RxcD4kQzt9IWczu3p9Fc+XmZw243tmocxwQ1/b2V3+pJBDYrd+1fWuS4BIjucG0RtMujGC5i8ZIWUklKXism/Icl5eb1UyVUPE2iK6mNrv3jmL/o91X4Y4ZE7jQvbhjiTY/2to1hyIcgrqZfWJN4g0xHB9cYP1zB9K7xktewkFQhGG6xmAj1fA==
+ bh=HR8hxoWG6eBDQ9MJIiQ3cZ1oOZNudIGuurwTPAjeH0I=;
+ b=HJ2YJEv8ntwhuDwk06toGLZMkKpCRrppnDsBxfNy1/O1/xOdwTJKtPXwS/QMXfnMPdijgML4Tj+HymKTBtTQmqJDqromuWsY4MDLoju0qFQk8hNDkg94sPOG1WW/Ct0SouWB1hZjATjnzKniefFBPOS/k7R1Yosale7vJlfnrt4LdferqdbmJ27HP84cVyt/q6iSTkViXI4AAOyXyIhSD0O/aty2IMl/FKPGIDu5JKhJaM8LUfSOMKxa62/dP2ZX7YwppV6rqrKEPMZqJ0kXsV7gYIxd9szBxNMl9gabWv9Az9l9QEfP44dIAoKNpTPj6WAhuS0PiB4/IY0jnwGBRQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JqtCOiZqURTFMZ+gtzsSxcOqfT6krkYRHwNRIJ3LFWA=;
- b=klBsvJp6yfRmpjbyntlu1x72/jtPR7OwsALGAc1rp0PBYIqr8NFkfwtwOswIBG0eDRAc9l+/1b5Yb6P3FhAT7hm3IDCdzEWaySLK0zfI7chNvJs78hhfz9KwVr2+5NWOkLPJh+wULKDKDdyiWJYUIo1tRrFoz+POVYNcgo4fxUPiRZxUBrLTbDHvP8sxspbu61FTl4nUAh8d51t4hHFYElOMfdbkBh2k33BDnwqjcLvuH2hWvPuO0k02F33IOUQNupGnxa81lKz8wYu1fb+Nua19eOgxlS+TVY6hD+jkl87VJohXsxYj/bOYFC63YQITAltoaehU691Ii+9GrQFGVA==
+ bh=HR8hxoWG6eBDQ9MJIiQ3cZ1oOZNudIGuurwTPAjeH0I=;
+ b=C6KN3/6BijjIbfHS4Q5C8Zm6b2hIgSwQgY3ncslvg4nPHriFAg3U015QNp3UoVjTLu9f+3zn/2mfsnNpkNeRdUNY5lf+dDgyYGK9GEbmfsfK8UHflyhzf0EO3kePzCcb9lyPOW1AbwJjGIN5icvlMnQ2sPD0sBdqBHtXmAzHS4a2Lu/j1ffUCa+Zd+6ZQbfwxnu94hicHmQhgLciK3RrwGT6w8KFzj/QUemjN7Q8sQxUmhjxLzhsFT80QfD8N+HQgwrI1W7CuiBa6t6vQLkWf4F3cBS5AXGd7WJa8XocKk1+Y1wzUvLhcYO4bXK7CobDG6FHXUs657j8DVhO+TIHbQ==
 Received: from PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:1b::13)
- by BM1PR0101MB1220.INDPRD01.PROD.OUTLOOK.COM (2603:1096:b00:25::12) with
+ by BM1PR01MB3298.INDPRD01.PROD.OUTLOOK.COM (2603:1096:b00:70::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4975.11; Thu, 10 Feb
- 2022 05:54:34 +0000
+ 2022 10:43:44 +0000
 Received: from PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
  ([fe80::d19b:7cd1:3760:b055]) by PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
  ([fe80::d19b:7cd1:3760:b055%9]) with mapi id 15.20.4975.011; Thu, 10 Feb 2022
- 05:54:34 +0000
+ 10:43:44 +0000
 From:   Aditya Garg <gargaditya08@live.com>
-To:     Matthew Garrett <mjg59@srcf.ucam.org>
-CC:     Ard Biesheuvel <ardb@kernel.org>, Jeremy Kerr <jk@ozlabs.org>,
+To:     David Laight <David.Laight@ACULAB.COM>
+CC:     Ard Biesheuvel <ardb@kernel.org>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Jeremy Kerr <jk@ozlabs.org>,
         "joeyli.kernel@gmail.com" <joeyli.kernel@gmail.com>,
         "zohar@linux.ibm.com" <zohar@linux.ibm.com>,
         "jmorris@namei.org" <jmorris@namei.org>,
@@ -63,59 +65,63 @@ Subject: Re: [PATCH] efi: Do not import certificates from UEFI Secure Boot for
  T2 Macs
 Thread-Topic: [PATCH] efi: Do not import certificates from UEFI Secure Boot
  for T2 Macs
-Thread-Index: AQHYHcE4ht34Z1CESEaNjR8+yzmieayLbqGAgAAURwCAAAlIgIAAvaYA
-Date:   Thu, 10 Feb 2022 05:54:34 +0000
-Message-ID: <A069AC2B-7F37-414E-A411-291DCF407AF8@live.com>
+Thread-Index: AQHYHcE4ht34Z1CESEaNjR8+yzmieayLWtAAgAE/0QA=
+Date:   Thu, 10 Feb 2022 10:43:44 +0000
+Message-ID: <B6D697AB-2AC5-4925-8300-26BBB4AC3D99@live.com>
 References: <9D0C961D-9999-4C41-A44B-22FEAF0DAB7F@live.com>
- <20220209164957.GB12763@srcf.ucam.org>
- <5A3C2EBF-13FF-4C37-B2A0-1533A818109F@live.com>
- <20220209183545.GA14552@srcf.ucam.org>
-In-Reply-To: <20220209183545.GA14552@srcf.ucam.org>
+ <755cffe1dfaf43ea87cfeea124160fe0@AcuMS.aculab.com>
+In-Reply-To: <755cffe1dfaf43ea87cfeea124160fe0@AcuMS.aculab.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-ms-exchange-messagesentrepresentingtype: 1
-x-tmn:  [UaDD2WGAm/O1gcf9fqoyIgMNS3CC01GJcZwpzTSxae16H4Xxil6PobQbOWV5LFVG]
+x-tmn:  [EHYs5ayktjdiWoZONP0WJE9JKe1ig2ZFrhy41ShdUdUpH35cTMITbC/u66e8IGyz]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 7dc7c251-fdc3-48f4-c01e-08d9ec59d09e
-x-ms-traffictypediagnostic: BM1PR0101MB1220:EE_
+x-ms-office365-filtering-correlation-id: a307a348-c60a-41d1-e26a-08d9ec823627
+x-ms-traffictypediagnostic: BM1PR01MB3298:EE_
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: sf75rDWroWd5tIq/jIhi7GxRnTB5dwWpsVEsgJBC7f5xecHYjduUmiMUsVx9tySHLcDHa1Y8WXkSnt+cLQ8oBZFGUE6bgAj3Uv4ZzcVRrNs+XI6A31CdUaJhfiydihsXfixjav35/jHv7NJKtW1q7vPa/9fh7IHKfr9B0doGWI3QyeYrwxLAV+EFnc4PYoAO/TMJeNz4kkvT8JnNR8Ie9qGtZNNKzJCHuGaj1lz/b759t55SO2hBGMc2NLQMuEs+FdDbjjBCH2MFn70FQ00O+S9ZKvACg9TEFRFtqx6oTD2/BVjyPXZIiuC3KqUwojOBnaoj30n5WdI6bqamMcTRHCMZy2rE8G1UU0hzQZ15XrQuLKyD5lIK++VhmyQ1LJh+5u6zxv6V439mxqv7LghaEJa6VJ/mi2DzGvWxpbvBsDwxGD6vnT4Oc5u7MnKu3ekY4wpoNEkRjTiI2HdAsHpDWkWgn+o8rPzjAMDkioso+G9eixornw/p++UIfBPYEd5lXpPxjDU7fxibT/h/UB2iKUz7/RmM791W8mZVbeop9MyGz/VxK7m2a6TlP5/3UxlOsVNauq8Bbf254gjrHG3taw==
+x-microsoft-antispam-message-info: HN2sar2Y7qWgAe5oFnM/yIKqxl38zoZGhSu7Ey+MVPdDDzovMbMx1kcK2Ewdb7789MmHeSyAMoeSWrtcBwiz2yEn6wv4FvZ8wnVRHXbFGXAGiFWjpGCSmloJnTWcInnCTm165Wud3380br+nhXbvV/UYSc+Zi77rThfF+TBTO4NTpsMLzdLUxMkv9wxeumQohx53Hymp31D87Y3169uZZldRmaUtzIFpBVky6ULRr35/MKfTNCENBlqTmR97pnSbXWyCUbQEX8y10girle+Z+1kJBmm91ki3icdLN6Dk+4KqxTYpBh5BPFpfGqb+aHP4nrrSz7//T7snhypIjaPZ1JlLoj6bfM1vrff4Wbu2ByrBzIUzP4hGkJMvNZrO+XgnB6+yPi2NyJrVhLtqm2yF6e5S1v/IlkmrRzby7OQu/pX7mVdbHu5rl6E5FlbEMsvCy8QoZ/taxLDN9KPf2IpYcyh+VqNpHnq66lydRIFLMYHLHXpMS1/pgqfED6dKv7y0onA2QzsqyeWdU1enRIg+SAdxlGWfhKTTZ1PwuaJaM6om8EjqP6PAZdY449RhRt1CvcarvcDlEkI1X7ixZtpeBQ==
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?n0oaiaq2kP/y+aj6D+eH68bYGrtG+cge2mmPSJzothDyucqjJ+1aoWL95kxj?=
- =?us-ascii?Q?k6x6zsdwdQvgPGr/tki5qOwyLgz2dXS4tj3u3W6DHtpeiuPkbtMwOjMd9PEe?=
- =?us-ascii?Q?x8X0HgPozp9RDLyoat9JIGmSrYztHEj6wJSi8exgSHXtZZYyZK1CgImJZSkY?=
- =?us-ascii?Q?bdmki7QaHBWVuEPVinIUpJ7n6LdFRylWYibY7Z2cagN0ERr1x+ReruAzI6zO?=
- =?us-ascii?Q?eIufQntCUNS7Tek64UX1wy6sZ8wXu2nFMZE2TgieRwhC3mQZQa1hEVBozq2x?=
- =?us-ascii?Q?FlyP9lvtM8jIHUgHs4yFPTdGMPNv1YPjbWYXqpD/Fd+1raE4scniM1HYbeWn?=
- =?us-ascii?Q?bRpoQ/2aaU7YPGkEJ4KoRlkbRWseIATzureyrel0r/sdRE4irm9FFS2NzDLG?=
- =?us-ascii?Q?iEP7+MMiXlNFcXHffRTu3Lug22aJNqZKOSyv9fNaqdZdxU3exWKLbAkrs2gE?=
- =?us-ascii?Q?dBbNOxW8vMrHcMZSFQTwR0lD6KlBtpMm0cjbXrjFn4vA8B0TPx8f3K5HPAow?=
- =?us-ascii?Q?MiwUcjPVPQ3SPm5qsl2ztPQ5TccwoxP4xoCqYKlM+8Q7Vq8B8JkD1aWt00lS?=
- =?us-ascii?Q?eijM6K6V1m7BBdUKMNJcH/0EH5CpOAUdWv1hzOwSYbL3S5gDBI+/nJIYRcNY?=
- =?us-ascii?Q?evcyCTqJ+AAjKPPBXCHFOcz8iO9MYXXSKQ6kNiICelzdztOpdLxEnoWCXNk+?=
- =?us-ascii?Q?R3vSufEAiaTcvOjNmdgxcpbO2tWskr+g69MAqlHlnsPJP7sbFN74VhAoEJr7?=
- =?us-ascii?Q?bHp5nuxYzlaF8mEFoJ8vg7drugM8YAvAWtMWGpCuIlbPypbySKfmg32KW89D?=
- =?us-ascii?Q?o+00eSOJtYh/KTW2FDWuGHAgpBKWnDBL77+/bxEEQstNzlYB/nPYwTL8GEIx?=
- =?us-ascii?Q?2CrHCyJ1on4echB+tqEEEk0rt38E1hzUoPJgw2yBILwH2LPP0YFRRaZ7QTOu?=
- =?us-ascii?Q?greinLiwq/NtHfXbRGTn/YRsJki4fKLuwXcHrY6im0Swc+NuoieGOakM4b5a?=
- =?us-ascii?Q?N6vT1cN2KcVFim7Aq96y6DApmw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <A0A64CBA3BE0714DB71E34B4491AE05B@INDPRD01.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: quoted-printable
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?OVN6cVVhN3d1MWRsUllMWER6cTg4UnhIZE44RVZIakRHQThvSVhqdllReHpS?=
+ =?utf-8?B?WVhnYldTeHBLWFpwUXIwRTQ0bVppbDNUazdWRWpXVE91QnlsRklQTWtRd2tu?=
+ =?utf-8?B?WTNLblRYaENlNzVEL2FIV0lBZW9YTDNNRk5kWXZuRmR2MFlwVTZyM1FZWEds?=
+ =?utf-8?B?NVA4dTJHVmNGZHpDK3RFemx2Qk9kbmt2MEhDWVZXR0xSV0dxUWo0ZngvRUxP?=
+ =?utf-8?B?azVOZzJqa2tWeXZ1aEpNZzZOc205bWhEdW1MS0pxUXRkYnRFMWh2WnN0QkE2?=
+ =?utf-8?B?elE5R1RtUzdkWW9DZ1diMnZRNUk5V21EVGxtWHJ4c2dSNUs1TEF6MXdsdkZ5?=
+ =?utf-8?B?Zlp3VGgyWkdvYVl0cm5aLzF5dlNLUHFWNTJDZSsrR0lGSkVBUFpSTDNqVnZE?=
+ =?utf-8?B?eGZEWDVRcEx3bTRER1VQUGlhVWMzTG11Nk9pTys0Yk16MjQwMG5pVkJtWDhp?=
+ =?utf-8?B?d0NId3VQMWNlQnFRRUtIS01KT1lrMjdzRXJGWnd0T0grNTRPTk91RXIrRDdr?=
+ =?utf-8?B?aTZldFRDVCtJUDJRaDh2K29vVWJNdTJTYjdEdkVnTy9wWTUwaVp0R1Y0cWJZ?=
+ =?utf-8?B?dStXd3pXS0hXNVBZdGF1KzFjWTlyREtPOEp5ZEV4ZzlrVjMyZVlhdEdoUkJJ?=
+ =?utf-8?B?UTBtbnYraDM3aUxNa3NDNVF6aHQrOHRLdXdpeTBEY3RyR2NxdkpCZGpBTHE3?=
+ =?utf-8?B?YlF0SzB0RVNhdWNMN0VQaEQ3Q2RaYmtuUTh6VmFFWW9aYU1DNlZzazhoMTFQ?=
+ =?utf-8?B?VlpXTmNOM0drcWkyQnAxZWdVMU01UU9QYUpjbllScmNmdm5oQkVRaFhUMjdS?=
+ =?utf-8?B?TTVqYXRlaEV6NHdTZ3ExejF4RDdobW5BcCtJSXVva204N3pwMkx3Z3pJZEJF?=
+ =?utf-8?B?eld6N3hiSHdweENxSEJQU2dMTFZNZEdVUElZbjIyZEc0dzFCT0tMWHRQajVs?=
+ =?utf-8?B?WGkxK1VRdWdUdTlyUC9RK1IvWWlnTUVGeldGbHpXTUhReURmaUJsRmNZTm93?=
+ =?utf-8?B?cC9ndkpNdUk2SG1JVjgvOWdWeThHQTdBQ1Z5ZUlOUy81WW85SjNVVlBXWGdz?=
+ =?utf-8?B?Q1dUd25tRml4ZWh3OW5wSVB3eExGMktTZjhOSjRYa1BrSWEwS0NSelhzR29U?=
+ =?utf-8?B?U2VJbnNGa016SVFMODIzRGJsc3daQlBGdE8xM3ZWWHpKdkt4UTBtRlFNdGpa?=
+ =?utf-8?B?QS93dXVlVTRBMEQ1UHdCY0hZWU9LMkpHZVdjRmlTMkZDaEMxQWRyNUdVTGQ4?=
+ =?utf-8?B?Mi9mY1AxVW5oOEJTL3QvbmtpU3pLbkphOXNXT0VEb3ZNSW5nQitzYk9kaldw?=
+ =?utf-8?B?cTZQWVh3Q3oyM0ltMzJ1M1lXRkhvSkJpajBQNlk4NEVCang3UmQ2RGVORXA1?=
+ =?utf-8?B?U1VQa1V4SmxQcUE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <7463FDAD6DA416498676CCE48BE39EDE@INDPRD01.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-42ed3.templateTenant
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7dc7c251-fdc3-48f4-c01e-08d9ec59d09e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Feb 2022 05:54:34.2820
+X-MS-Exchange-CrossTenant-Network-Message-Id: a307a348-c60a-41d1-e26a-08d9ec823627
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Feb 2022 10:43:44.7341
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
 X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BM1PR0101MB1220
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BM1PR01MB3298
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FROM,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
@@ -126,27 +132,24 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-
->=20
-> The LOAD_UEFI_KEYS code isn't doing anything special here - it's just=20
-> trying to read some variables. If we simply disable that then the=20
-> expectation would be that reading the same variables from userland would=
-=20
-> trigger the same failure. So the question is which of the variables that=
-=20
-> LOAD_UEFI_KEYS accesses is triggering the failure, and what's special=20
-> about that? If it's a specific variable GUID or name that's failing, we=20
-> should block that on Apple hardware in order to avoid issues caused by=20
-> userland performing equivalent accesses.
-
-The size log seems to be extra when crash occurs
-
-integrity: Couldn't get size: 0x8000000000000015
-integrity: MODSIGN: Couldn't get UEFI db list
-efi: EFI Runtime Services are disabled!
-integrity: Couldn't get size: 0x8000000000000015
-integrity: Couldn't get UEFI dbx list
-integrity: Couldn't get size: 0x8000000000000015
-integrity: Couldn't get mokx list
-integrity: Couldn't get size: 0x80000000
-
+DQoNCj4gT24gMDktRmViLTIwMjIsIGF0IDk6MDkgUE0sIERhdmlkIExhaWdodCA8RGF2aWQuTGFp
+Z2h0QEFDVUxBQi5DT00+IHdyb3RlOg0KPiANCj4gRnJvbTogQWRpdHlhIEdhcmcNCj4+IFNlbnQ6
+IDA5IEZlYnJ1YXJ5IDIwMjIgMTQ6MjgNCj4+IA0KPj4gT24gVDIgTWFjcywgdGhlIHNlY3VyZSBi
+b290IGlzIGhhbmRsZWQgYnkgdGhlIFQyIENoaXAuIElmIGVuYWJsZWQsIG9ubHkNCj4+IG1hY09T
+IGFuZCBXaW5kb3dzIGFyZSBhbGxvd2VkIHRvIGJvb3Qgb24gdGhlc2UgbWFjaGluZXMuIFRodXMg
+d2UgbmVlZCB0bw0KPj4gZGlzYWJsZSBzZWN1cmUgYm9vdCBmb3IgTGludXguIElmIHdlIGJvb3Qg
+aW50byBMaW51eCBhZnRlciBkaXNhYmxpbmcNCj4+IHNlY3VyZSBib290LCBpZiBDT05GSUdfTE9B
+RF9VRUZJX0tFWVMgaXMgZW5hYmxlZCwgRUZJIFJ1bnRpbWUgc2VydmljZXMNCj4+IGZhaWwgdG8g
+c3RhcnQsIHdpdGggdGhlIGZvbGxvd2luZyBsb2dzIGluIGRtZXNnDQo+PiANCj4gLi4NCj4+ICtz
+dGF0aWMgY29uc3Qgc3RydWN0IGRtaV9zeXN0ZW1faWQgdWVmaV9hcHBsZV9pZ25vcmVbXSA9IHsN
+Cj4+ICsJew0KPj4gKwkJIC5tYXRjaGVzID0gew0KPj4gKwkJCURNSV9NQVRDSChETUlfQk9BUkRf
+VkVORE9SLCAiQXBwbGUgSW5jLiIpLA0KPj4gKwkJCURNSV9NQVRDSChETUlfUFJPRFVDVF9OQU1F
+LCAiTWFjQm9va1BybzE1LDEiKSwNCj4+ICsJCX0sDQo+IA0KPiBJIHRoaW5rIEknZCB1c2U6DQo+
+ICNkZWZpbmUgeHh4KHZlbmRvciwgcHJvZHVjdCkgXA0KPiAJCSAubWF0Y2hlcyA9IHsNCj4gCQkJ
+RE1JX01BVENIKERNSV9CT0FSRF9WRU5ET1IsIHZlbmRvciksIFwNCj4gCQkJRE1JX01BVENIKERN
+SV9QUk9EVUNUX05BTUUsIHByb2R1Y3QpLCBcDQo+IAkJfQ0KPiBzb21ld2hlcmUgd2l0aCBhIHN1
+aXRhYmxlIG5hbWUgKGJpa2VzaGVkIGJsdWUpIHRvIHJlZHVjZQ0KPiB0aGUgY29kZSBzaXplIG9m
+IHRoaXMgdGFibGUuDQo+IA0KQWxyaWdodCwgSeKAmWxsIHNlbmQgYSB2MiB3aXRoIHRoaXMgYWRk
+cmVzc2VkLg0KPiAJRGF2aWQNCj4gDQo+IC0NCj4gUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRl
+LCBCcmFtbGV5IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQo+
+IFJlZ2lzdHJhdGlvbiBObzogMTM5NzM4NiAoV2FsZXMpDQo+IA0KDQo=
