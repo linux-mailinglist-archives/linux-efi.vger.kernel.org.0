@@ -2,24 +2,33 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F7D84B37A8
-	for <lists+linux-efi@lfdr.de>; Sat, 12 Feb 2022 20:42:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DAA64B3A03
+	for <lists+linux-efi@lfdr.de>; Sun, 13 Feb 2022 08:47:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231175AbiBLTmv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 12 Feb 2022 14:42:51 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:55556 "EHLO
+        id S234142AbiBMHrW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 13 Feb 2022 02:47:22 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:58156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230072AbiBLTmt (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 12 Feb 2022 14:42:49 -0500
-Received: from cavan.codon.org.uk (irc.codon.org.uk [IPv6:2a00:1098:84:22e::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B53FA606CC;
-        Sat, 12 Feb 2022 11:42:42 -0800 (PST)
-Received: by cavan.codon.org.uk (Postfix, from userid 1000)
-        id 4E74840A64; Sat, 12 Feb 2022 19:42:40 +0000 (GMT)
-Date:   Sat, 12 Feb 2022 19:42:40 +0000
-From:   Matthew Garrett <mjg59@srcf.ucam.org>
+        with ESMTP id S229555AbiBMHrV (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 13 Feb 2022 02:47:21 -0500
+X-Greylist: delayed 468 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 12 Feb 2022 23:47:15 PST
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [IPv6:2a01:37:3000::53df:4ef0:0])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 361756267;
+        Sat, 12 Feb 2022 23:47:14 -0800 (PST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client CN "*.hostsharing.net", Issuer "RapidSSL TLS DV RSA Mixed SHA256 2020 CA-1" (verified OK))
+        by bmailout2.hostsharing.net (Postfix) with ESMTPS id 5CA532800B3D2;
+        Sun, 13 Feb 2022 08:39:24 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+        id 3FDC22DEC2D; Sun, 13 Feb 2022 08:39:24 +0100 (CET)
+Date:   Sun, 13 Feb 2022 08:39:24 +0100
+From:   Lukas Wunner <lukas@wunner.de>
 To:     Aditya Garg <gargaditya08@live.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, Jeremy Kerr <jk@ozlabs.org>,
+Cc:     David Laight <David.Laight@ACULAB.COM>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Jeremy Kerr <jk@ozlabs.org>,
         "joeyli.kernel@gmail.com" <joeyli.kernel@gmail.com>,
         "zohar@linux.ibm.com" <zohar@linux.ibm.com>,
         "jmorris@namei.org" <jmorris@namei.org>,
@@ -40,45 +49,71 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>, Jeremy Kerr <jk@ozlabs.org>,
         "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
         Orlando Chamberlain <redecorating@protonmail.com>,
         Aun-Ali Zaidi <admin@kodeit.net>
-Subject: Re: [PATCH] efi: Do not import certificates from UEFI Secure Boot
+Subject: Re: [PATCH v3] efi: Do not import certificates from UEFI Secure Boot
  for T2 Macs
-Message-ID: <20220212194240.GA4131@srcf.ucam.org>
+Message-ID: <20220213073924.GA7648@wunner.de>
 References: <9D0C961D-9999-4C41-A44B-22FEAF0DAB7F@live.com>
- <20220209164957.GB12763@srcf.ucam.org>
- <5A3C2EBF-13FF-4C37-B2A0-1533A818109F@live.com>
- <20220209183545.GA14552@srcf.ucam.org>
- <20220209193705.GA15463@srcf.ucam.org>
- <2F1CC5DE-5A03-46D2-95E7-DD07A4EF2766@live.com>
- <20220210180905.GB18445@srcf.ucam.org>
- <99BB011C-71DE-49FA-81CB-BE2AC9613030@live.com>
- <20220211162857.GB10606@srcf.ucam.org>
- <F078BEBE-3DED-4EE3-A2B8-2C5744B5454C@live.com>
+ <755cffe1dfaf43ea87cfeea124160fe0@AcuMS.aculab.com>
+ <B6D697AB-2AC5-4925-8300-26BBB4AC3D99@live.com>
+ <20103919-A276-4CA6-B1AD-6E45DB58500B@live.com>
+ <7038A8ED-AC52-4966-836B-7B346713AEE9@live.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <F078BEBE-3DED-4EE3-A2B8-2C5744B5454C@live.com>
+In-Reply-To: <7038A8ED-AC52-4966-836B-7B346713AEE9@live.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,KHOP_HELO_FCRDNS,SPF_HELO_NEUTRAL,
-        SPF_NEUTRAL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, Feb 12, 2022 at 05:53:47AM +0000, Aditya Garg wrote:
+On Thu, Feb 10, 2022 at 10:47:25AM +0000, Aditya Garg wrote:
+> +/* Apple Macs with T2 Security chip don't support these UEFI variables.
+> + * The T2 chip manages the Secure Boot and does not allow Linux to boot
+> + * if it is turned on. If turned off, an attempt to get certificates
+> + * causes a crash, so we simply return 0 for them in each function.
+> + */
+> +
+> +static const struct dmi_system_id uefi_skip_cert[] = {
+> +
+> +	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookPro15,1") },
+> +	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookPro15,2") },
+> +	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookPro15,3") },
+> +	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookPro15,4") },
+> +	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookPro16,1") },
+> +	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookPro16,2") },
+> +	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookPro16,3") },
+> +	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookPro16,4") },
+> +	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookAir8,1") },
+> +	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookAir8,2") },
+> +	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookAir9,1") },
+> +	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacMini8,1") },
+> +	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacPro7,1") },
+> +	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "iMac20,1") },
+> +	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "iMac20,2") },
+> +	{ }
+> +};
 
-> Feb 12 11:01:52 MacBook kernel: Reading EFI variable db-d719b2cb-3d3a-4596-a3bc-dad00e67656f
+The T2 is represented by a PCI device with ID 106B:1802.  I think it
+would be more elegant to sense presence of that device instead of
+hardcoding a long dmi list, i.e.:
 
-Ok. With CONFIG_LOAD_UEFI_KEYS=n, can you run:
+static bool apple_t2_present(void)
+{
+	struct pci_dev *pdev;
 
-cat /sys/firmware/efi/efivars/db-d719b2cb-3d3a-4596-a3bc-dad00e67656f
+	if (!x86_apple_machine)
+		return false;
 
-and see whether it generates the same failure? If so then my (handwavy) 
-guess is that something's going wrong with a firmware codepath for the 
-d719b2cb-3d3a-4596-a3bc-dad00e67656f GUID. Someone could potentially 
-then figure out whether the same happens under Windows, but the easiest 
-thing is probably to just return a failure on Apple hardware when 
-someone tries to access anything with that GUID.
+	pdev = pci_get_device(PCI_VENDOR_ID_APPLE, 0x1802, NULL);
+	if (pdev) {
+		pci_put_dev(pdev);
+		return true;
+	}
+
+	return false;
+}
