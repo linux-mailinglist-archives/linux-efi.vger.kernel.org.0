@@ -2,37 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EB8C4B46A9
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Feb 2022 10:52:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 03B724B4D7C
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Feb 2022 12:12:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243462AbiBNJgz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 14 Feb 2022 04:36:55 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:52462 "EHLO
+        id S1349400AbiBNKwC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 14 Feb 2022 05:52:02 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:43656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244265AbiBNJft (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Feb 2022 04:35:49 -0500
-X-Greylist: delayed 1234 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 14 Feb 2022 01:33:27 PST
-Received: from mail-out.m-online.net (mail-out.m-online.net [IPv6:2001:a60:0:28:0:1:25:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64A17654AD;
-        Mon, 14 Feb 2022 01:33:27 -0800 (PST)
+        with ESMTP id S1350378AbiBNKvQ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Feb 2022 05:51:16 -0500
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02CED77A8A;
+        Mon, 14 Feb 2022 02:15:47 -0800 (PST)
 Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
-        by mail-out.m-online.net (Postfix) with ESMTP id 4JxzYC2nmmz1sb42;
-        Mon, 14 Feb 2022 10:33:19 +0100 (CET)
+        by mail-out.m-online.net (Postfix) with ESMTP id 4Jy0V924ftz1r86y;
+        Mon, 14 Feb 2022 11:15:45 +0100 (CET)
 Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
-        by mail.m-online.net (Postfix) with ESMTP id 4JxzYC1Pw7z1qqkB;
-        Mon, 14 Feb 2022 10:33:19 +0100 (CET)
+        by mail.m-online.net (Postfix) with ESMTP id 4Jy0V90YlFz1qqkG;
+        Mon, 14 Feb 2022 11:15:45 +0100 (CET)
 X-Virus-Scanned: amavisd-new at mnet-online.de
 Received: from mail.mnet-online.de ([192.168.8.182])
         by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
-        with ESMTP id 4A6rFkojWdYt; Mon, 14 Feb 2022 10:33:13 +0100 (CET)
-X-Auth-Info: 3pXtXEblWigUp5dC0ALx0wnK0waqMMj3wTwQrNh+E7nq00Dn+vM/9Ec1zbIoMOOV
+        with ESMTP id ciTL-mIIXXIv; Mon, 14 Feb 2022 11:15:44 +0100 (CET)
+X-Auth-Info: k0w8anaaY5GOMTg9kubk4prPg/gPXdju+Qta5i8aIzT4i0LbN2ihZ0bcWJdLYcD/
 Received: from igel.home (ppp-46-244-178-131.dynamic.mnet-online.de [46.244.178.131])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         by mail.mnet-online.de (Postfix) with ESMTPSA;
-        Mon, 14 Feb 2022 10:33:13 +0100 (CET)
+        Mon, 14 Feb 2022 11:15:44 +0100 (CET)
 Received: by igel.home (Postfix, from userid 1000)
-        id 07A512C39FF; Mon, 14 Feb 2022 10:33:13 +0100 (CET)
+        id BF2382C394F; Mon, 14 Feb 2022 11:15:43 +0100 (CET)
 From:   Andreas Schwab <schwab@linux-m68k.org>
 To:     Heinrich Schuchardt <xypron.glpk@gmx.de>
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
@@ -48,17 +47,18 @@ Subject: Re: [PATCH] riscv/efi_stub: Fix get_boot_hartid_from_fdt() return
 References: <20220128045004.4843-1-sunilvl@ventanamicro.com>
         <877d9xx14f.fsf@igel.home>
         <9cd9f149-d2ea-eb55-b774-8d817b9b6cc9@gmx.de>
-X-Yow:  LOU GRANT froze my ASSETS!!
-Date:   Mon, 14 Feb 2022 10:33:12 +0100
+X-Yow:  The LOGARITHM of an ISOSCELES TRIANGLE is TUESDAY WELD!!
+Date:   Mon, 14 Feb 2022 11:15:43 +0100
 In-Reply-To: <9cd9f149-d2ea-eb55-b774-8d817b9b6cc9@gmx.de> (Heinrich
         Schuchardt's message of "Mon, 14 Feb 2022 10:24:22 +0100")
-Message-ID: <87y22dvllz.fsf@igel.home>
+Message-ID: <87tud1vjn4.fsf@igel.home>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.0.91 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -67,29 +67,10 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 On Feb 14 2022, Heinrich Schuchardt wrote:
 
-> On 2/14/22 10:12, Andreas Schwab wrote:
->> On Jan 28 2022, Sunil V L wrote:
->>
->>> diff --git a/drivers/firmware/efi/libstub/riscv-stub.c b/drivers/firmware/efi/libstub/riscv-stub.c
->>> index 380e4e251399..9c460843442f 100644
->>> --- a/drivers/firmware/efi/libstub/riscv-stub.c
->>> +++ b/drivers/firmware/efi/libstub/riscv-stub.c
->>> @@ -25,7 +25,7 @@ typedef void __noreturn (*jump_kernel_func)(unsigned int, unsigned long);
->>>
->>>   static u32 hartid;
->>>
->>> -static u32 get_boot_hartid_from_fdt(void)
->>> +static int get_boot_hartid_from_fdt(void)
->>
->> I think the function should be renamed, now that it no longer returns
->> the hart ID, but initializes a static variable as a side effect.  Thus
->> it no longer "gets", but "sets".
->>
->
 > set_boot_hartid() implies that the caller can change the boot hart ID.
 > As this is not a case this name obviously would be a misnomer.
 
-Then I guess a different, more fitting name needs to be found.
+initialize_boot_hartid would fit better.
 
 -- 
 Andreas Schwab, schwab@linux-m68k.org
