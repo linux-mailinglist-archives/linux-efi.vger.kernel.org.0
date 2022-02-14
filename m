@@ -2,38 +2,38 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51E264B4D2D
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Feb 2022 12:11:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59CB74B4EA6
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Feb 2022 12:34:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349916AbiBNLFe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 14 Feb 2022 06:05:34 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:34342 "EHLO
+        id S1351507AbiBNL3t (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 14 Feb 2022 06:29:49 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:59206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349672AbiBNLFY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Feb 2022 06:05:24 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AACDC2DEF;
-        Mon, 14 Feb 2022 02:33:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1644834803;
-        bh=C52L81Zv6DgbMZ32Hm9sPxd7zXF+yQ2jiwL8dR4ieg4=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=KnJwe0LutHn9sbuIrMoUZoJGhki7eiG5xu5f3Vz1L83YUvdFWghUTrdbvMfphWHUh
-         pBx1t0QFUOqTqZyeSuOJshjA1LcH7/IqpYrvBBnsq+5wxRBUwCPgvvPDy3lBSHmTv9
-         +FpSytip4vWTQpH0tEW2q/fGAPBSuG6FEuiLShEM=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.123.94] ([88.152.144.107]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MFsYx-1nVLkT3WO7-00HNq3; Mon, 14
- Feb 2022 11:28:02 +0100
-Message-ID: <49d3aeab-1fe6-8d17-bc83-78f3555109c7@gmx.de>
-Date:   Mon, 14 Feb 2022 11:27:53 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: [PATCH] riscv/efi_stub: Fix get_boot_hartid_from_fdt() return
- value
-Content-Language: en-US
-To:     Andreas Schwab <schwab@linux-m68k.org>
+        with ESMTP id S236996AbiBNL3Q (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Feb 2022 06:29:16 -0500
+Received: from mail-out.m-online.net (mail-out.m-online.net [IPv6:2001:a60:0:28:0:1:25:1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D40B413E3B;
+        Mon, 14 Feb 2022 03:09:10 -0800 (PST)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+        by mail-out.m-online.net (Postfix) with ESMTP id 4Jy1gl1ML5z1sb4v;
+        Mon, 14 Feb 2022 12:09:07 +0100 (CET)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+        by mail.m-online.net (Postfix) with ESMTP id 4Jy1gk6xvWz1qqkC;
+        Mon, 14 Feb 2022 12:09:06 +0100 (CET)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
+        with ESMTP id PviuDD7DJMpb; Mon, 14 Feb 2022 12:09:05 +0100 (CET)
+X-Auth-Info: IIqgtslsiXqoU0044bdHXKurfQElNZ2hCA9ncLdtO9RAMGtWhVn9okSWqvV9m/4e
+Received: from igel.home (ppp-46-244-178-131.dynamic.mnet-online.de [46.244.178.131])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.mnet-online.de (Postfix) with ESMTPSA;
+        Mon, 14 Feb 2022 12:09:05 +0100 (CET)
+Received: by igel.home (Postfix, from userid 1000)
+        id 827722C3A76; Mon, 14 Feb 2022 12:09:05 +0100 (CET)
+From:   Andreas Schwab <schwab@linux-m68k.org>
+To:     Heinrich Schuchardt <xypron.glpk@gmx.de>
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Paul Walmsley <paul.walmsley@sifive.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
@@ -42,52 +42,47 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
         Anup Patel <apatel@ventanamicro.com>, stable@vger.kernel.org,
         Sunil V L <sunilvl@ventanamicro.com>
+Subject: Re: [PATCH] riscv/efi_stub: Fix get_boot_hartid_from_fdt() return
+ value
 References: <20220128045004.4843-1-sunilvl@ventanamicro.com>
- <877d9xx14f.fsf@igel.home> <9cd9f149-d2ea-eb55-b774-8d817b9b6cc9@gmx.de>
- <87tud1vjn4.fsf@igel.home>
-From:   Heinrich Schuchardt <xypron.glpk@gmx.de>
-In-Reply-To: <87tud1vjn4.fsf@igel.home>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:kWX1RyymCzZi3HShz7TOEYlEEIuEzCNmVUcoaTDwlboEDX5KwFu
- T11R6pzWrra/U18O4BDT+sVEhjcz8mGruHI8KlMlxezPRwjHQjP7BDC7kB7HE7wSbWk5dG9
- A2yqlqau3mBKveqkKrrIjPWTC6WpDX8zIYF0Ip/e/9ud3RGLLFFsmhrML5JLwj88Mx458FZ
- mehheaVewk32SY9MHOJ3Q==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:gW86zBi/V3o=:IslAMeGKcQDNVWpsEcUkOU
- 757RAkn0+7tCs9VFCWiekFHWUmgamtMaUmqZwNPl49h7pLOqMHyU8fWz4HPHVVtLwew94i6TG
- 7J0A5G5GqDOABx5xmDWoaf2iGtPeFVJnrjKVKLi2eBnb0kxeiTsQqQzUQm9nL5vesxdhxppi9
- TLQhUQrWTmKYOPY64VupXAVyyxx01glCx69Wkqr01auVEq41YDuZgBbArXhTVCi/k+f2fag2o
- /8Q3LVl5WHhJ8dULXOLizrXgl8qL5tWyiB/uADVaj37BZp6yTdjjVsLoA4Pz9NmuMi6vWcJFb
- chAjjguQ7QWkStS42cIruUWoJO5j0svY28NY4c89MLh2NHNgtTJgYbuPPiyqHEtxo5wU8fl7o
- U8MHhrRs7NK345HKhNJQ4WzQdARRdNA7PwnmK2+3Mb4VPtEha5Zj3BGN4W7A+8HfwX4bTZIzX
- 1MWYWM8YAeVeSduNKLn+01tnZOwsvGhrAAA9+w+S0TeBYSDQoXQJQA0D6Eyiv79DELk111oHG
- g8+aMcdzYI0fnzspJTJKAiNUmit0BzY75Vav7AEoRdTD60CjTLQhK1KXZbpbN+9KJ2ygfzdrJ
- 6QwD1KrZTHFTvcPRtG+BebwYCmwlPNhesWjwiMxt5Uu1Eh6j097PrLUbU2sVjCSn1myDaVIOA
- gUJXgJk4/FGRvL5i1WcSM8WLxD+FDXPqwL21uJc8RZxJEdxbw5+4+MC0HHHz9Vs7q3inenF9g
- p5edhbvHqd+54Pz26fJSaP7bz0mGP1AdB8DdPGVtRx9kI9h05KPGELYQsHEZUmUGKRMQjjPn8
- rFEbVBUZbGmiX+N+ypdjYlIPaQGeeAkEQWKfD/yUe38VuGTUMyb2y/qOdGTmDb9miJ4IcWV5x
- MQ3vFXWw6F4Ug7sTjRaML3OL56ODYiJiqRdrpRRyNsRq7KzD40MvvbCkQE1xtmG/B9+jOXHvI
- dEr8rnyOmrYsNFaubgQJ4vHDxnUEEjUPlornLA0INKVHomW1qvzAmRbzvdAUv7ansGAnecRZ8
- tWUPfQlIar5MYQeLE6QF/PE3EsjVFDSNH5D3BrfN+rEdwUIqupiC4OxA3JMuOj4zZ2ozSVCF+
- tlB/l0M+/zjzok=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        <877d9xx14f.fsf@igel.home>
+        <9cd9f149-d2ea-eb55-b774-8d817b9b6cc9@gmx.de>
+        <87tud1vjn4.fsf@igel.home>
+        <49d3aeab-1fe6-8d17-bc83-78f3555109c7@gmx.de>
+X-Yow:  Now my EMOTIONAL RESOURCES are heavily committed to 23% of the
+ SMELTING and REFINING industry of the state of NEVADA!!
+Date:   Mon, 14 Feb 2022 12:09:05 +0100
+In-Reply-To: <49d3aeab-1fe6-8d17-bc83-78f3555109c7@gmx.de> (Heinrich
+        Schuchardt's message of "Mon, 14 Feb 2022 11:27:53 +0100")
+Message-ID: <87pmnpvh66.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.0.91 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2/14/22 11:15, Andreas Schwab wrote:
-> On Feb 14 2022, Heinrich Schuchardt wrote:
->
->> set_boot_hartid() implies that the caller can change the boot hart ID.
->> As this is not a case this name obviously would be a misnomer.
->
-> initialize_boot_hartid would fit better.
->
+On Feb 14 2022, Heinrich Schuchardt wrote:
 
-Another misnomer.
+> On 2/14/22 11:15, Andreas Schwab wrote:
+>> On Feb 14 2022, Heinrich Schuchardt wrote:
+>>
+>>> set_boot_hartid() implies that the caller can change the boot hart ID.
+>>> As this is not a case this name obviously would be a misnomer.
+>>
+>> initialize_boot_hartid would fit better.
+>>
+>
+> Another misnomer.
 
+But the best fit so far.
+
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
