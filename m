@@ -2,146 +2,145 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C21174B3E9F
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Feb 2022 01:33:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37DEE4B4470
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Feb 2022 09:41:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238856AbiBNAdh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 13 Feb 2022 19:33:37 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51878 "EHLO
+        id S242118AbiBNIlm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 14 Feb 2022 03:41:42 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:42548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231916AbiBNAdh (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 13 Feb 2022 19:33:37 -0500
-Received: from IND01-MA1-obe.outbound.protection.outlook.com (mail-ma1ind01olkn0156.outbound.protection.outlook.com [104.47.100.156])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FF3851E72;
-        Sun, 13 Feb 2022 16:33:29 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aTuJlX+H4dsjfKf6AUr+X07xjf1PnuaD+hGL2JzhSkHDas2+f7G5RoXoABikklPjpMDnxzGjMgcjdcg8zKV8yb7A90aJwpwepSkVtFPLF22008+01rQgzpGFZsHSs7k7t7Z8y1qzczgECICVc8Kz4q6OQvyUFGhe9PTvY+H1MZ/lKv0PTOfOJad0AF+S9sYRtLWcksgDvqrBEHfmeSUOvv7NCw7mBmxGJVcTrMOVletH2s+T/+iMrCiQd9X1ngw14ho3YopID7cdgHbwddM90ZorlOj9tPkrtqosUFK79Xlg9N0NS4XzBCfTtyeyM03F1wT0FzuMByJ4G8Jwm0qsug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uy9W82p7OTLyHEyOZZdb+e40a7gufEU1KmEYAT8FBVg=;
- b=mP+uFuKjXDjs1fURXZ8nzbNynxGSHSMN0rXWrAOlvERTBD4ChlmrKSgz9pDYobTomjU3fHgyWAg9l/jiHOviQB3KJOEFYvGhUv54RienbRUhE4sC6q2tZCAeWCkCnr2dUBmTiuGnKF0PS6LXCqkH3H1+OGJSmTIyLpSqQ3ody3uK/6zAAUpd7ysddHepVRXIcUvTvxS1poHJV/1ASZCkNVr6h0RVSTQOqSrbjdPUYDU7yFP4Ky0QVwbYpoXudAv3NUULLz4HPxmQhFB+YFC+RfxXF0pUAw0dAmJXu3maqoo/Qv+55MbPzNoMZ/xNZMVnKp7arhMZkVOShiBy2tekzg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uy9W82p7OTLyHEyOZZdb+e40a7gufEU1KmEYAT8FBVg=;
- b=WOq7m/KdCjkGB772cKWngw22XJdU3PI5zXGjKOvlXgEEZMf0/1aEtx3hTjBCsD5Hek0Ohy4skv9Epinx8jBYaORIc8/EHWfwc7HZtdkwxWWuJhYmdh+QFAGpH79IjHncc681aDlUz8DT9qGVRtDwRRVY9F9AbaxuHtnaU4XAzSgbFaq+d/QIq0/f9Cx8LHkGLsfXALY5QrqGUGE8RU7pWOxyzoIuqa6QpMm+C8gd0ZCK2zKETXFrahcjEEoncmopHprEJWpgw/EQd//qLyWg7H+tKiZO8fpKZp6/djlaq4vR01s53EKxN5AuvUzfsdp7YuLGqek++6cUePV6HVy6Kw==
-Received: from PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:1b::13)
- by BM1PR01MB3458.INDPRD01.PROD.OUTLOOK.COM (2603:1096:b00:69::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4975.11; Mon, 14 Feb
- 2022 00:33:17 +0000
-Received: from PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
- ([fe80::d19b:7cd1:3760:b055]) by PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
- ([fe80::d19b:7cd1:3760:b055%9]) with mapi id 15.20.4975.018; Mon, 14 Feb 2022
- 00:33:17 +0000
-From:   Aditya Garg <gargaditya08@live.com>
-To:     Matthew Garrett <mjg59@srcf.ucam.org>
-CC:     Ard Biesheuvel <ardb@kernel.org>, Jeremy Kerr <jk@ozlabs.org>,
-        "joeyli.kernel@gmail.com" <joeyli.kernel@gmail.com>,
-        "zohar@linux.ibm.com" <zohar@linux.ibm.com>,
-        "jmorris@namei.org" <jmorris@namei.org>,
-        "eric.snowberg@oracle.com" <eric.snowberg@oracle.com>,
-        "dhowells@redhat.com" <dhowells@redhat.com>,
-        "jlee@suse.com" <jlee@suse.com>,
-        "James.Bottomley@hansenpartnership.com" 
-        <James.Bottomley@HansenPartnership.com>,
-        "jarkko@kernel.org" <jarkko@kernel.org>,
-        "mic@digikod.net" <mic@digikod.net>,
-        "dmitry.kasatkin@gmail.com" <dmitry.kasatkin@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        Orlando Chamberlain <redecorating@protonmail.com>,
-        Aun-Ali Zaidi <admin@kodeit.net>
-Subject: Re: [PATCH] efi: Do not import certificates from UEFI Secure Boot for
- T2 Macs
-Thread-Topic: [PATCH] efi: Do not import certificates from UEFI Secure Boot
- for T2 Macs
-Thread-Index: AQHYHcE4ht34Z1CESEaNjR8+yzmieayLbqGAgAAURwCAAAlIgIAAESOAgACrMQCAAM6NgIAAs3IAgADC6YCAAODbAIAA55oAgADUSoCAAN0EAIAAMjSA
-Date:   Mon, 14 Feb 2022 00:33:17 +0000
-Message-ID: <272196DB-04A8-49E2-8BFA-545F989C0A5C@live.com>
-References: <5A3C2EBF-13FF-4C37-B2A0-1533A818109F@live.com>
- <20220209183545.GA14552@srcf.ucam.org> <20220209193705.GA15463@srcf.ucam.org>
- <2F1CC5DE-5A03-46D2-95E7-DD07A4EF2766@live.com>
- <20220210180905.GB18445@srcf.ucam.org>
- <99BB011C-71DE-49FA-81CB-BE2AC9613030@live.com>
- <20220211162857.GB10606@srcf.ucam.org>
- <F078BEBE-3DED-4EE3-A2B8-2C5744B5454C@live.com>
- <20220212194240.GA4131@srcf.ucam.org>
- <C737F740-9039-4730-9F08-9E9E9674B6C8@live.com>
- <20220213213332.GA30613@srcf.ucam.org>
-In-Reply-To: <20220213213332.GA30613@srcf.ucam.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-tmn:  [34BNRea3seamNuZhnMi5/nbZaP5GvQBLBOmY5TDKuBRPu8dfDAB3lwSkfepxnK2E9+m6adSn1gU=]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 5d93fe6f-7807-49c5-99ec-08d9ef519867
-x-ms-traffictypediagnostic: BM1PR01MB3458:EE_
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: icmID9FJgPz/gtb8PHnb5/Yrp+SQR+EDYtK4KshTV7clXrnvVXVhvTC78FYHv56+0iscePRXzf2jd1l4OM62P+KcB0Wv8oAiB9HOmJ4Ro6dfrLUR5jgqAazywMqUgjZtr9jM7ejS5lU+3qTZCWhN1UzvH8fpJgO8+yq5hlzBFdbTYKwsoBamQly8vcFXnC00D4jTAOV+tyXuKSXHGlnqSHu3puml5CL+49PNvfrlCOzNDBWi8CZXPwSWb0q4BCeACfUuNNqZHONtssesLLXUqMCYTARF6VYPtYVhgdyq1cCtRKTL0Mc0h4WoiaLI/QYl8AIWKMAyljvBMBTmf9nfd5ya9QCSORRTSajiHkZyk5laE1II2PrHoBPG+zmTQA1zJ+CXVz+7nuTIZIwmey+AkygEvuty74OPY2reAGeGWP+sYBbgVrHniioHBe+Bu5xlQQy8mGHn8l3wNkVNUCJ5gc6ACIpxM9Bqpoq/6SKBhu1vYXqrm1w0pKELUP8sdrA8CrwExACmQZ1cYPjkEl9jcP0HiqwgwM/h3jGxxcaRM9wrJqhPEzjdcQ4tFJbI7AfP8P8mHpKqHygX5TJ1MQiJGyQIctlnhbjCC+CEX9On/783SFZhPNNxiKw+GYY52+Ia
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Nodu13WKxulrXKuuhOpdiNhHh/erYsstyrgvolR3unUMHfJBSELtymVHEnmu?=
- =?us-ascii?Q?7niIox2I0Ieh83tvYeTfnXxWPKjM5HH5GHumtZ1Lt8ghH+oKbQhchpOfWASY?=
- =?us-ascii?Q?33y2yfiiK7BiHY6LE2djDg1cJpLTiMZbnIaUvXTuCY50iJjsUKLD61r91DNY?=
- =?us-ascii?Q?hbtkilcRM3FxQ0djupuIBT00TPyqK120r4e9gsmT6NqDQwnGt6NR28fu81dJ?=
- =?us-ascii?Q?uSmTczHOtcHymSDjrWWw6imgJa8wGQpWZsJLw8+nVXh6WDwekWILPcDX10zt?=
- =?us-ascii?Q?62PJUumPWo9GOUnFnxgpUxUPoH2CBv87V1/ukl+hDhibR6nccTrRAKP+eguT?=
- =?us-ascii?Q?LEzAgp/BqwFK/N03ZcEybQ32MINw0BGrqlcVPkaEE7abeBErU98K/dD3/Ca2?=
- =?us-ascii?Q?vAmMK98D8dQMmwnxvBMvtxLOAmrgVB4BFDWppzZMJATF3R6c/NmlxWAPCt9M?=
- =?us-ascii?Q?Mi5JK/+SVqUD6jkXQ6+ScUqAX22K2kwm3KKhBlFPoB5awxz1xHevJZHD8Kdz?=
- =?us-ascii?Q?aY45riP+/+BpZQBzNtxDCZLS4iY6v8+eLWCa7gFmINywAj4ehKDb34qvCqDB?=
- =?us-ascii?Q?i6eehR9G65g2pFlkrXV/TBNqhl60Wtovp7EbHLMvhwyHM+kv7brDaITbIguh?=
- =?us-ascii?Q?tdiDtmDKgMozPuk0LSBIFwx+kjMCA55JJ27odvvXOLCzu7kLsN/ulNS61dEV?=
- =?us-ascii?Q?PsWyPhB16ltZ1xtPZ87wxdK6MtZoAgr609dKKWagL4gF9NuZrQ3GTSTdvFsn?=
- =?us-ascii?Q?2/4Ixu5Ar6bD5PFr0qjr5XxE/ar8gtG5RegF7JtKP0brCsvtoV0rYb8LCkpS?=
- =?us-ascii?Q?qsLaVzLlj6fScPSJ9r04hhHr03/6Q8zXzZJhg5hb6VZ+sv2MSUdpvhmU1ZXA?=
- =?us-ascii?Q?0JeraCPH19k/NPBO662xiLzPWUuLyimLNIX3qHESU4i1vCd0cKh4wrU6ZeLS?=
- =?us-ascii?Q?IOMRq3VI0ObFRsb5x8Gcd5vPZ0kCz3UY6EAG1DtyFFyJ1W4M3ssKhSDHd1j+?=
- =?us-ascii?Q?1mivIFnrIKRzvgyJ+kqAXKvZcVRrGU4Dr1wAtJ89YpXkXjM=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <801CC6D1B0D40347ACED9598DFC84A83@INDPRD01.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S232622AbiBNIll (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Feb 2022 03:41:41 -0500
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 597704D9DB
+        for <linux-efi@vger.kernel.org>; Mon, 14 Feb 2022 00:41:34 -0800 (PST)
+Received: by mail-pf1-x435.google.com with SMTP id t36so17220792pfg.0
+        for <linux-efi@vger.kernel.org>; Mon, 14 Feb 2022 00:41:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=3PDuWpWatMEsaSvbNwsNqzkAPf6BcghIhJSFC8jSD30=;
+        b=gzY3pqJhek5FzBlOdPIHTO6Zi2K/2OsE1k4GoPy0cxDgZ5eiMZT0IOILUlSj/aEB4B
+         RjD+XDpKRlfGfkd/XwIm9iSe4Y+3nP7SOyYnzFkzxTVfZMbOltHxTQIQwcsjUxgvliuV
+         RbJXxs85zzqTaHQWz1//TsTD6s0IGS66ul3McsyVMsXz87heLAK41x4z7Fg3uQQnq8gs
+         jVm4hmClESlQUful+1F5d92AmYMkmuI1xGetK5qucl6SvgNaSvpmZ39gw9Fb73LQQZT/
+         RccWidsx/F+CL0uIRPkA+2xst5I/kC1auwLVRK+xr2e8w3MCZvct39/rBc4n3iiEZo/U
+         mw4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=3PDuWpWatMEsaSvbNwsNqzkAPf6BcghIhJSFC8jSD30=;
+        b=AyLY7Vr5QAM8TONYZ44zJtMZ54AotikFvFaikotywxFjzjXTHJyu1fzley4WcL+Din
+         nWqE5iDKEfwZM0jtq/FTFO6W6O/hBEn6T34sAOrlD2JO6h/SiTTth2EmuBk0vvwETjtt
+         f0OfyzeDKGW2F9Hqsw3tVxduYw9L1rgTEWIGerMN6RZGwZj71vcmciTXZ+9jOj3c+dRb
+         rlyPveIfKQJqEhcqT6fXmyIhFoE90Enx8UM68LkThHMTuPXsl4jdLKrjpdb+JtdK4zoO
+         K1tZdYiWxVE6KObo8DEth+feY1IBacb4bT5+f9zAsb1sHvJ6PjAa6A4Wm1dm9eNTV8XP
+         Mjzg==
+X-Gm-Message-State: AOAM532mFKqvqzDNiVUH0ktZmiBfbZLYVAMOTThooMJItAejxpelGpEf
+        FJjYvrrzr9TrdkV005++CUA8VK90i9feAw==
+X-Google-Smtp-Source: ABdhPJzmEmYGRRFkNZU0hWCXQ2YmoXneh7/sz9+wMy0j+UOb40vkZ+zxFyd9qfzrI5KxLYmYagM5Pg==
+X-Received: by 2002:aa7:900d:: with SMTP id m13mr13355552pfo.14.1644828093877;
+        Mon, 14 Feb 2022 00:41:33 -0800 (PST)
+Received: from sunil-ThinkPad-T490 ([49.206.7.17])
+        by smtp.gmail.com with ESMTPSA id 13sm22335469pfx.122.2022.02.14.00.41.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Feb 2022 00:41:33 -0800 (PST)
+Date:   Mon, 14 Feb 2022 14:11:24 +0530
+From:   Sunil V L <sunilvl@ventanamicro.com>
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Atish Patra <atishp@atishpatra.org>
+Cc:     linux-efi@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Heinrich Schuchardt <xypron.glpk@gmx.de>,
+        Anup Patel <apatel@ventanamicro.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] riscv/efi_stub: Fix get_boot_hartid_from_fdt() return
+ value
+Message-ID: <20220214084124.GA11866@sunil-ThinkPad-T490>
+References: <20220128045004.4843-1-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-42ed3.templateTenant
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PNZPR01MB4415.INDPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5d93fe6f-7807-49c5-99ec-08d9ef519867
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Feb 2022 00:33:17.7327
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BM1PR01MB3458
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220128045004.4843-1-sunilvl@ventanamicro.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+Hi Ard,
+   Could you please take this patch? Heinrich and Atish have added RB
+   tag. Let me know if I need to do anything.
+Thanks
+Sunil
 
->=20
-> Interesting. Ok, so there's something else going on here. I'll have=20
-> access to a T2 system next week, so I'll take a look then. Is this=20
-> something that started happening recently, or has it always happened if=20
-> this config option is set on these platforms?
-
-Before https://github.com/torvalds/linux/commit/f5390cd0b43c2e54c7cf5506c7d=
-a4a37c5cef746, we had to add efi=3Dnoruntime to get Linux working on these =
-machines. Now, its this config option only which is the issue.
-
-You may want to follow https://wiki.t2linux.org/ to test on a T2 Mac, since=
- many T2 patches haven't been upstreamed yet.=
+On Fri, Jan 28, 2022 at 10:20:04AM +0530, Sunil V L wrote:
+> The get_boot_hartid_from_fdt() function currently returns U32_MAX
+> for failure case which is not correct because U32_MAX is a valid
+> hartid value. This patch fixes the issue by returning error code.
+> 
+> Fixes: d7071743db31 ("RISC-V: Add EFI stub support.")
+> Cc: stable@vger.kernel.org
+> 
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> ---
+>  drivers/firmware/efi/libstub/riscv-stub.c | 17 ++++++++++-------
+>  1 file changed, 10 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/firmware/efi/libstub/riscv-stub.c b/drivers/firmware/efi/libstub/riscv-stub.c
+> index 380e4e251399..9c460843442f 100644
+> --- a/drivers/firmware/efi/libstub/riscv-stub.c
+> +++ b/drivers/firmware/efi/libstub/riscv-stub.c
+> @@ -25,7 +25,7 @@ typedef void __noreturn (*jump_kernel_func)(unsigned int, unsigned long);
+>  
+>  static u32 hartid;
+>  
+> -static u32 get_boot_hartid_from_fdt(void)
+> +static int get_boot_hartid_from_fdt(void)
+>  {
+>  	const void *fdt;
+>  	int chosen_node, len;
+> @@ -33,23 +33,26 @@ static u32 get_boot_hartid_from_fdt(void)
+>  
+>  	fdt = get_efi_config_table(DEVICE_TREE_GUID);
+>  	if (!fdt)
+> -		return U32_MAX;
+> +		return -EINVAL;
+>  
+>  	chosen_node = fdt_path_offset(fdt, "/chosen");
+>  	if (chosen_node < 0)
+> -		return U32_MAX;
+> +		return -EINVAL;
+>  
+>  	prop = fdt_getprop((void *)fdt, chosen_node, "boot-hartid", &len);
+>  	if (!prop || len != sizeof(u32))
+> -		return U32_MAX;
+> +		return -EINVAL;
+>  
+> -	return fdt32_to_cpu(*prop);
+> +	hartid = fdt32_to_cpu(*prop);
+> +	return 0;
+>  }
+>  
+>  efi_status_t check_platform_features(void)
+>  {
+> -	hartid = get_boot_hartid_from_fdt();
+> -	if (hartid == U32_MAX) {
+> +	int ret;
+> +
+> +	ret = get_boot_hartid_from_fdt();
+> +	if (ret) {
+>  		efi_err("/chosen/boot-hartid missing or invalid!\n");
+>  		return EFI_UNSUPPORTED;
+>  	}
+> -- 
+> 2.25.1
+> 
