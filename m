@@ -2,136 +2,136 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ADFA4B6E78
-	for <lists+linux-efi@lfdr.de>; Tue, 15 Feb 2022 15:14:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB67D4B6EE8
+	for <lists+linux-efi@lfdr.de>; Tue, 15 Feb 2022 15:33:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237090AbiBOOOw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 15 Feb 2022 09:14:52 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60556 "EHLO
+        id S238630AbiBOOao (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 15 Feb 2022 09:30:44 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235960AbiBOOOv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 15 Feb 2022 09:14:51 -0500
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC2989AE6C
-        for <linux-efi@vger.kernel.org>; Tue, 15 Feb 2022 06:14:40 -0800 (PST)
-Received: by mail-yb1-xb33.google.com with SMTP id p5so56203654ybd.13
-        for <linux-efi@vger.kernel.org>; Tue, 15 Feb 2022 06:14:40 -0800 (PST)
+        with ESMTP id S238656AbiBOOam (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 15 Feb 2022 09:30:42 -0500
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7835EEA73;
+        Tue, 15 Feb 2022 06:30:30 -0800 (PST)
+Received: by mail-oi1-x229.google.com with SMTP id o23so1450384oie.10;
+        Tue, 15 Feb 2022 06:30:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=eclypsium.com; s=google;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=5TB6dGxazC1uji3PM0bPijKJuSzmBt7/lbdUM4chpqU=;
-        b=YDCb3hCHhZLLEPG5t2STM5k0BBUZ1OEQR1TmPowgoYCROFj1eheYFEv8Zi7sstHXNL
-         VCBTAIw2bDn79YlEFIL/v80w7H7F5VUUrP4QmZylVQptNG183UARrdVBR1riwFhuPWLG
-         RnrdND1gvstyq87OFph0FtblJkH4LvT8UxjIaie/w22X2pX3Ju6XRdRu17qLHgEij1kk
-         xKLKK1zYpenx+E76kTXm1UPrgNnOneMahJtbCupPCBENe/oLh3Wlvj/ngbz/FBn/zGiv
-         b0mllHKRloGS5T5sYehEFiPGnwRjKHq7NGaMGcodGBBncoOYkFY+BppdgSRblGKXKrAB
-         +j6A==
+        d=gmail.com; s=20210112;
+        h=sender:message-id:date:mime-version:user-agent:content-language:to
+         :cc:references:from:subject:in-reply-to:content-transfer-encoding;
+        bh=o8JsroBWHtIyrUhOn7dBaIXgVTUEl2NPmoZI9J5M7E4=;
+        b=ifEIW3QyLIEZKOFGn1FWXIry5z0Qay9I8omD8m3/vwpHfFyn/gHzJv/UwFDjNCbHOy
+         VO3/TxAvNOcLKNwOW0g44qaSAg/Y0X5hIzOy7p7RUsGHVxqxXpvGFhUpuCLGL7Ikt5kO
+         hEfNdVggmT/piyRxBhNbeFU5rcnpi/lJyv2rpYOPfmCLvd1ECK58o9Xb1bQnNW4aAg7P
+         494In7Sosgo8F9jjLzFOZ712RSjGjA1/FgazyRROU/nZMfqB+/0rNDUcFqwjFZWZEG4W
+         jCfhjvBgm6/lCZrdin3d84fC/Py4V3LOgv8HO0S/0r4087uvBxOidGkL7nTntuywYh9Q
+         N+QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=5TB6dGxazC1uji3PM0bPijKJuSzmBt7/lbdUM4chpqU=;
-        b=4VnZWJg8ikXIJ1PdSQaxiLDyx2lLNwA3QHfHTIv+Vayx6PFgnamIGFNtfJxBQiqXZw
-         SfiroZcZeEAN8PQmjUAFTwXCmwRH0Qa1WrKI0rc9j8qDTDj6/sFTn9oqKY+NqQaWlwR/
-         6l6IVM+2f/mlpIlX61ldixXF+1Z20uszBN9ySaPEv7vfgSx1G3qKwk23wAc2O/EHkUIL
-         zx9EG8q0SY+jkva/lMlfHfbXMhFJXp6ZsxGCDva/X/+mMI9cQx+v8EO/hWI1jKcmL+5K
-         CMN9/G14lNc9ticIj7al0Jd9MVv4htqqDXh9m7laBUKwzGAJgQNWRpD1tLZIPJ9BL2hd
-         WAog==
-X-Gm-Message-State: AOAM5302v/hrRY1ZEro2v9lukSzjBs9dZfUI+orVpCisbdAm8NvsHtL4
-        0+RHHXo8fFcMT/sMFcJYJ6g4c3JBE/jvCZtNT7iuFA==
-X-Google-Smtp-Source: ABdhPJxiNz0d2nqELO9RSvILyKX1eArLqLnZoM38DGg0w/FBN2U8DfR5PNrq+qbmCdAr+SwUpTSLA3xgu53apagAxwM=
-X-Received: by 2002:a25:ad51:: with SMTP id l17mr3946323ybe.20.1644934480016;
- Tue, 15 Feb 2022 06:14:40 -0800 (PST)
+        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+         :content-language:to:cc:references:from:subject:in-reply-to
+         :content-transfer-encoding;
+        bh=o8JsroBWHtIyrUhOn7dBaIXgVTUEl2NPmoZI9J5M7E4=;
+        b=2Nj5K7/8asei1ur660gNBe2kKEc21hMwTk9k7wQhGLqhLjacXU7hQ9/C4FjlRay2hp
+         OqEDB5Jr5xh62nYhKOR53FKn74aaBTWK2/Biid8vpzLFgC/bYUnBSLsp8hotVYk2kbUZ
+         ZTglIojYxXn0n55cl5BQxtPCsZ0ed85V+nognISragvX9z1cVrHDGct1xzxD69DrfirC
+         4iKI8ptRWxQbpb0A5c2U+kpBaWZ4f7s2UhfuT5Ksa1FwzZfJL1SFJ3ehS134ryW2O1Ci
+         8NR2cjqqFpsOGT6ulB2vQTSSyzybHJHxg9DhbiqfqG0jvFc5CkzwgYdksyBFhQf2ZJg7
+         1tDw==
+X-Gm-Message-State: AOAM531oxvgv97kjVNkgrM+saIvxXOD+4Bl930RBc5tacmv+ezvhUGDM
+        V3F6U6hXwxlX0sgWGgYb6ns=
+X-Google-Smtp-Source: ABdhPJwgF72oQR19E3uWYYaiJfKoD2vkjQwg+o0A+S/ZSkYjnRF039u9W2p4p8TBAT9ywgIuTXH7OQ==
+X-Received: by 2002:a05:6808:1644:b0:2cd:6d80:9af1 with SMTP id az4-20020a056808164400b002cd6d809af1mr1709630oib.138.1644935429995;
+        Tue, 15 Feb 2022 06:30:29 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id l1sm13761263otd.18.2022.02.15.06.30.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Feb 2022 06:30:29 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <489b76f9-fbaf-dae0-c90d-c52ee0de92a4@roeck-us.net>
+Date:   Tue, 15 Feb 2022 06:30:26 -0800
 MIME-Version: 1.0
-Received: by 2002:a81:174d:0:0:0:0:0 with HTTP; Tue, 15 Feb 2022 06:14:39
- -0800 (PST)
-In-Reply-To: <YgtR++NUG3w6DH11@kernel.org>
-References: <20220203164328.203629-1-martin.fernandez@eclypsium.com>
- <20220203164328.203629-4-martin.fernandez@eclypsium.com> <202202071325.F8450B3B2D@keescook>
- <YgIseIEMotD2jg83@kernel.org> <CAKgze5a_o=+f6fE55p4D50qZSRNUEHUWBe+Fn8Fc=1RjFLfgeQ@mail.gmail.com>
- <YgtR++NUG3w6DH11@kernel.org>
-From:   Martin Fernandez <martin.fernandez@eclypsium.com>
-Date:   Tue, 15 Feb 2022 11:14:39 -0300
-Message-ID: <CAKgze5YFMugCsum8SX+qE26BwxQRW0Uu2qKjEYusFerqk3cEMA@mail.gmail.com>
-Subject: Re: [PATCH v6 3/6] x86/e820: Refactor range_update and range_remove
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     Kees Cook <keescook@chromium.org>, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-mm@kvack.org, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, ardb@kernel.org, dvhart@infradead.org,
-        andy@infradead.org, gregkh@linuxfoundation.org, rafael@kernel.org,
-        akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
-        hughsient@gmail.com, alex.bazhaniuk@eclypsium.com,
-        alison.schofield@intel.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Content-Language: en-US
+To:     Alexander Sverdlin <alexander.sverdlin@nokia.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Peter Collingbourne <pcc@google.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Matija Glavinic-Pecotic <matija.glavinic-pecotic.ext@nokia.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Krzysztof Adamski <krzysztof.adamski@nokia.com>,
+        linux-efi@vger.kernel.org
+References: <YfP0osb45uJldtM9@localhost.localdomain>
+ <YfQTZTUNaeGi+8tG@FVFF77S0Q05N> <YfRorCpk0seVGI+5@localhost.localdomain>
+ <Yfk8hQB1eon7oeYU@FVFF77S0Q05N>
+ <79bcce92-abb2-4c3e-7193-d18e144da8a0@nokia.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH v2] arm64: move efi_reboot to restart handler
+In-Reply-To: <79bcce92-abb2-4c3e-7193-d18e144da8a0@nokia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2/15/22, Mike Rapoport <rppt@kernel.org> wrote:
-> Hi Martin,
->
-> On Tue, Feb 08, 2022 at 06:01:21PM -0300, Martin Fernandez wrote:
->> On 2/8/22, Mike Rapoport <rppt@kernel.org> wrote:
->> > On Mon, Feb 07, 2022 at 01:45:40PM -0800, Kees Cook wrote:
->> >> On Thu, Feb 03, 2022 at 01:43:25PM -0300, Martin Fernandez wrote:
->> >> > __e820__range_update and e820__range_remove had a very similar
->> >> > implementation with a few lines different from each other, the lines
->> >> > that actually perform the modification over the e820_table. The
->> >> > similiraties were found in the checks for the different cases on how
->> >> > each entry intersects with the given range (if it does at all).
->> >> > These
->> >> > checks were very presice and error prone so it was not a good idea
->> >> > to
->> >> > have them in both places.
->> >>
->> >> Yay removing copy/paste code! :)
->> >
->> > Removing copy/paste is nice but diffstat of
->> >
->> >  arch/x86/kernel/e820.c | 383 ++++++++++++++++++++++++++++++-----------
->> >  1 file changed, 283 insertions(+), 100 deletions(-)
->> >
->> > does not look nice even accounting for lots of comments :(
->> >
->> > I didn't look closely, but diffstat clues that the refactoring making
->> > things much more complex.
->> >
+On 2/15/22 00:44, Alexander Sverdlin wrote:
+> Hello Mark, Ard,
+> 
+> On 01/02/2022 14:58, Mark Rutland wrote:
+>>> You could argue that restart handlers were not created for that but they
+>>> suit this purpose ideally and it wouldn't make much sense (in my
+>>> opinion) to add yet another notifier chain that would run before reset
+>>> notifiers, for code that is not supposed to reset the whole system and
+>>> this is exacly what I would have to do if efi_reboot() is forced to be
+>>> called before all handlers.
 >>
->> Yes, that diffstat surprised me as well.
+>> As above, I think that's just using the wrong interface, and the reboot
+>> notifier mechanism *already* exists, so I'm really confused here.
 >>
->> I have to mention that 110 of those lines are kerneldocs and blank
->> lines, which is quite a lot. Also you have to take into account that I
->> expanded most of the function definitions for better formatting, which
->> also took some space.
->
-> At last I had time to look more closely and I think that using a set of
-> callbacks is over-complicated.
->
-> I think this can be done way simpler, e.g like this (untested) draft:
->
-> https://git.kernel.org/rppt/h/x86/e820-update-range
->
+>> Have I misunderstood what you're trying to achieve?
+>>
+>> Is there some problem with the reboot notifier mechanism that I am unaware of?
+>> e.g. do we bypass them in some case where you think they're needed?
+>>
+>> Are you simply unaware of reboot notifiers?
+> 
+> Could you please check the simple case of pwrseq_emmc.c?
+> 
+> While that's currently the only example of this kind upstream I can imagine
+> further use-cases, especially in storage area like above.
+> 
+> Would you suggest it's illegal usage of register_restart_handler()?
+> Do we need to fix pwrseq_emmc.c by introducing new atomic notifier chain
+> which will be called before restart handlers, so that it works on
+> emergency_restart()?
+> 
 
-Thanks for taking the time to reviewing it.
+Abuse isn't just about using an API for something it isn't originally intended
+for, abuse is also to intentionally _not_ use an API, as it is currently done
+by the EFI restart code for arm64. Also, keep in mind that the same argument
+(our restart handler _must_ be executed under all circumstances and does therefore
+not use the restart API) is likely going to be used again in the future. All
+it takes is for some other standard (or chip vendor, for that matter) to declare
+their restart handler mandatory if present. That means there will be other
+non-users of the restart API in the future, and you simply can not rely on it
+being used. That was clearly not the intention of the restart API - quite the
+opposite - but it is what it is.
 
-Yeah, I did something like that in a previous version. Altough I
-wasn't really happy with that.
+Given that, I'd suggest to cut your losses and try to find another solution
+for your problem. That may be to introduce yet another API, one that is called
+before the EFI restart handling but that is always called, unlike reboot
+notifiers, or simply stick with out-of-tree code.
 
-https://lore.kernel.org/linux-efi/20220113213027.457282-4-martin.fernandez@eclypsium.com/
-
-I think that with the struct with the function arguments looks more
-clear than what I did, but you have to take into account that I need
-to create yet
-another function similar to those and another parameter to the struct,
-and with that I think that __e820__range_update will look scary.
-
-I'll give it a try anyway!
+Guenter
