@@ -2,59 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FA944BC022
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Feb 2022 20:12:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 471014BCD18
+	for <lists+linux-efi@lfdr.de>; Sun, 20 Feb 2022 08:18:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235742AbiBRTMd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 18 Feb 2022 14:12:33 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:53978 "EHLO
+        id S236918AbiBTHS5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 20 Feb 2022 02:18:57 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:34098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232499AbiBRTMd (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Feb 2022 14:12:33 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20E204BFE4;
-        Fri, 18 Feb 2022 11:12:16 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AAD8C61A5C;
-        Fri, 18 Feb 2022 19:12:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A450C340EF;
-        Fri, 18 Feb 2022 19:12:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645211535;
-        bh=0e4veZFcnn6yrRxE8i8DKuPwxKv+TS/DeK6cNKOXQ54=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=qeWNMdspHVNInULfaQuInCBT8d3TksMptTgCh7LpndB8SfHule0W3eou5k7pnWItm
-         kyi/sch6LZgNEx5NoxbGNDhpg7HVOFJBQvvbfC+JaI1CYroZIo3yBiDAjef1t+gSN8
-         C2F2uR1Qm7ZivunyMbjdbl94yrer5ywR9dxC65CkMuqnluV5I4TlKUtewqNEBwXKHj
-         7n/HxeSsfPOvlnDysqaQElvrA8WvGCO+ng867YbTGQG7XoSmY7eoKABOkwbqd/Wi/C
-         /yfPTfqhjSLZs1NpZyEVP4CTrpFD7GjZLbTYBkT3AWEeB7xQLMUt48R4SKZ1VkMlUf
-         Ju916tD+LhMSg==
-Received: by mail-wr1-f44.google.com with SMTP id k1so16132029wrd.8;
-        Fri, 18 Feb 2022 11:12:15 -0800 (PST)
-X-Gm-Message-State: AOAM533joUi99m6tHOwqyOjALj46j60P31MJHPAHcRJXN4axWxmrGOFG
-        wzLK3VkYfZ8qaivQYkLmjZmJskpoZTgpc+GjHNc=
-X-Google-Smtp-Source: ABdhPJyWH4CFWTT1Ll+WXb+18S8oGb/1G5KWI/Y6rIcTot+u2tQMSfX5AgtBvvz8Ecbi6oD9pAUYOK3hEgORTiO+gTs=
-X-Received: by 2002:a5d:6884:0:b0:1e4:ed7b:fd71 with SMTP id
- h4-20020a5d6884000000b001e4ed7bfd71mr7205218wru.550.1645211533454; Fri, 18
- Feb 2022 11:12:13 -0800 (PST)
+        with ESMTP id S229752AbiBTHS5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 20 Feb 2022 02:18:57 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF85F50B3F
+        for <linux-efi@vger.kernel.org>; Sat, 19 Feb 2022 23:18:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1645341516; x=1676877516;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=JOx/OAKUaOvO4+mTKUU7iFLR34/0olEbMC0/Qg7PFks=;
+  b=CMqU/WHYOwhlyDdcy3ECneeQUvGRWxryeb+Httfr5Sa/7+t4nkD3InJZ
+   P2AAjXJISbZUxf0ZaVP1wi5tUY5WDTn0m3LKF6WPiZLAt53iAqFECT36n
+   6vPHqOD77B1VFbd/1cekCFVO5MnFFJ+PaoPSh383KsF2rS28MQm8bDhZ+
+   2i2+Z67IAzZE/qpFzWwVnxligC2wi3LIVYwVGMVchKPy+ENrj2e8GUCHD
+   GYc3Cwx0XpUIJxdD56roQRSDXjKx3erOrLKhQ1um8m/S0Vj43Z+SKgeSt
+   SNqOlX9gTQ0+FOsmVedKPzrKALYrpKvgrJrOH3OIl/APUOvoq//nR2CKy
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10263"; a="231320910"
+X-IronPort-AV: E=Sophos;i="5.88,383,1635231600"; 
+   d="scan'208";a="231320910"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2022 23:18:36 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,383,1635231600"; 
+   d="scan'208";a="638208658"
+Received: from lkp-server01.sh.intel.com (HELO da3212ac2f54) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 19 Feb 2022 23:18:34 -0800
+Received: from kbuild by da3212ac2f54 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nLgUM-00005i-5l; Sun, 20 Feb 2022 07:18:34 +0000
+Date:   Sun, 20 Feb 2022 15:17:43 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS 1e9e574abaea04b78913ef887d79038ba5d1d2e8
+Message-ID: <6211eb17.sU6M59qu0lOqgCka%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20220218180559.1432559-1-jannh@google.com>
-In-Reply-To: <20220218180559.1432559-1-jannh@google.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 18 Feb 2022 20:12:02 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXE23L05mwadr_DH548T=BMG5dhkL0X+4+R75NDJUHxkYQ@mail.gmail.com>
-Message-ID: <CAMj1kXE23L05mwadr_DH548T=BMG5dhkL0X+4+R75NDJUHxkYQ@mail.gmail.com>
-Subject: Re: [PATCH] efivars: Respect "block" flag in efivar_entry_set_safe()
-To:     Jann Horn <jannh@google.com>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,60 +60,117 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 18 Feb 2022 at 19:06, Jann Horn <jannh@google.com> wrote:
->
-> When the "block" flag is false, the old code would sometimes still call
-> check_var_size(), which wrongly tells ->query_variable_store() that it can
-> block.
->
-> As far as I can tell, this can't really materialize as a bug at the moment,
-> because ->query_variable_store only does something on X86 with generic EFI,
-> and in that configuration we always take the efivar_entry_set_nonblocking()
-> path. So I'm not marking this for stable backporting.
->
-> Fixes: ca0e30dcaa53 ("efi: Add nonblocking option to efi_query_variable_store()")
-> Signed-off-by: Jann Horn <jannh@google.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+branch HEAD: 1e9e574abaea04b78913ef887d79038ba5d1d2e8  riscv/efi_stub: Fix get_boot_hartid_from_fdt() return value
 
-Thanks Jann. I'll queue this up.
+elapsed time: 3507m
 
-> ---
->
->  drivers/firmware/efi/vars.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
-> index abdc8a6a3963..cae590bd08f2 100644
-> --- a/drivers/firmware/efi/vars.c
-> +++ b/drivers/firmware/efi/vars.c
-> @@ -742,6 +742,7 @@ int efivar_entry_set_safe(efi_char16_t *name, efi_guid_t vendor, u32 attributes,
->  {
->         const struct efivar_operations *ops;
->         efi_status_t status;
-> +       unsigned long varsize;
->
->         if (!__efivars)
->                 return -EINVAL;
-> @@ -764,15 +765,17 @@ int efivar_entry_set_safe(efi_char16_t *name, efi_guid_t vendor, u32 attributes,
->                 return efivar_entry_set_nonblocking(name, vendor, attributes,
->                                                     size, data);
->
-> +       varsize = size + ucs2_strsize(name, 1024);
->         if (!block) {
->                 if (down_trylock(&efivars_lock))
->                         return -EBUSY;
-> +               status = check_var_size_nonblocking(attributes, varsize);
->         } else {
->                 if (down_interruptible(&efivars_lock))
->                         return -EINTR;
-> +               status = check_var_size(attributes, varsize);
->         }
->
-> -       status = check_var_size(attributes, size + ucs2_strsize(name, 1024));
->         if (status != EFI_SUCCESS) {
->                 up(&efivars_lock);
->                 return -ENOSPC;
->
-> base-commit: 83e396641110663d3c7bb25b9bc0c6a750359ecf
-> --
-> 2.35.1.473.g83b2b277ed-goog
->
+configs tested: 96
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                          randconfig-c001
+powerpc                       maple_defconfig
+arc                                 defconfig
+sh                         microdev_defconfig
+mips                  decstation_64_defconfig
+parisc                generic-32bit_defconfig
+m68k                            mac_defconfig
+ia64                         bigsur_defconfig
+powerpc                        cell_defconfig
+arc                          axs101_defconfig
+arc                        vdk_hs38_defconfig
+arc                    vdk_hs38_smp_defconfig
+xtensa                generic_kc705_defconfig
+powerpc                 mpc834x_itx_defconfig
+powerpc                       eiger_defconfig
+h8300                               defconfig
+microblaze                      mmu_defconfig
+powerpc                      pasemi_defconfig
+arm                           h5000_defconfig
+arm                  randconfig-c002-20220217
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
+
+clang tested configs:
+arm                      tct_hammer_defconfig
+riscv                            alldefconfig
+powerpc                     tqm5200_defconfig
+arm                        magician_defconfig
+x86_64                        randconfig-a005
+x86_64                        randconfig-a003
+x86_64                        randconfig-a001
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
+hexagon              randconfig-r045-20220217
+hexagon              randconfig-r041-20220217
+riscv                randconfig-r042-20220217
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
