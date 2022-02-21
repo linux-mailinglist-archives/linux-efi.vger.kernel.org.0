@@ -2,92 +2,157 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A53F64BE776
-	for <lists+linux-efi@lfdr.de>; Mon, 21 Feb 2022 19:03:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D296C4BE9E3
+	for <lists+linux-efi@lfdr.de>; Mon, 21 Feb 2022 19:08:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358756AbiBUNPt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 21 Feb 2022 08:15:49 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49882 "EHLO
+        id S229527AbiBURlt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 21 Feb 2022 12:41:49 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:50126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358737AbiBUNPs (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 21 Feb 2022 08:15:48 -0500
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 147651EECE
-        for <linux-efi@vger.kernel.org>; Mon, 21 Feb 2022 05:15:25 -0800 (PST)
-Received: by mail-wr1-x434.google.com with SMTP id p9so26990568wra.12
-        for <linux-efi@vger.kernel.org>; Mon, 21 Feb 2022 05:15:25 -0800 (PST)
+        with ESMTP id S229720AbiBURlR (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 21 Feb 2022 12:41:17 -0500
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA38526ADF
+        for <linux-efi@vger.kernel.org>; Mon, 21 Feb 2022 09:40:26 -0800 (PST)
+Received: by mail-lj1-x233.google.com with SMTP id e17so15734884ljk.5
+        for <linux-efi@vger.kernel.org>; Mon, 21 Feb 2022 09:40:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=FyG0ATSkb5fmrso4VuDc0KiEUJrvvMWML2pstdAYUxY=;
-        b=idntWtAKFEO/YVc6i1eFf332nYQeo62iuyg7SSBsClCMXapSXqwAoN4J8LAtIADN1f
-         eHh8qyfPDSLfQLz50fTLBmbOrCitMZbvJNpm85atWfFGlVgOt0KTHP1b/pMC38GOrXeQ
-         apwpi/3e9gRTS1gEiRRGkPRTqSJXhfHdK95iy996vias25lQFgeVYOP5NPhFvBpoVo1a
-         LJYpQ6M9H1NVJjgKGK/hpxenppyIaieAVxueZZ2YOED4BQv/1cimMXj6q9ZLjz2PAEER
-         SBpPIcgmRuYqcWqDeed+yv+PG/NjvrNFDAu5sjkWljsqO1EYPIpgsDL9GsDSQYLFJtLT
-         n9UQ==
+        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=xEuyjFrM9XwMrClBWbdS/xCWNoJfoXGzRHNpn8EHVe8=;
+        b=EvNZ4JN1PESakWqiNhVErkDTF8azxH7NkFupvW940zHErR8fbltkz8fMM3erSSAkua
+         SVbCJAx5x99BdcVvfCbuOi6eihjGnlTLy32uvWD8S02HQh5C6ntMJgadw9JJD95XWSe6
+         FYzVQ3ZEYFWfNS89g5hsLbaL7gMl81XsfzVoLPHnM9uLGNjC7SYyyUsU2Qwm8B1zZjsQ
+         opiHv5yc1+vfHrioBcT0Su4bI0Uo1cnoWi2VTaIof4su3DEprcGE3luxKhgjxtku3cgW
+         c2nbRU/0MTpXeAhcfUwbGoQnEXkyZAFRlK6RJqkkSBHexXVWxzj39goDYznkCJbICaie
+         0Eeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=FyG0ATSkb5fmrso4VuDc0KiEUJrvvMWML2pstdAYUxY=;
-        b=zDxsALg8PTyA48fcbIZ96dgv+m2w2ufo/fCyFybnDsosEuKam3nbYPwk+bdjsjgbge
-         H9/PIl4BRbnW1iv/f5fNuACQmy5rnapgKIla/1CBeFfEr5LOuypcnThKmAs3dn8q0amK
-         DsGYEU9rcYiCDjCqCyDJaA1fKR3yT4oDAx9NnNZoragiHQANwBabJWuu2cBqIksv7G8T
-         QX7Fc5t32aR8EBfIBPbUr14bCLH51kyCQrNgW0oSvFXFxjsJFJKzW1oyUA3ut4wPA4f8
-         bwfJtTFCSDOvdIIK9kNpQaMeVEyUpJJEkxzrg7X68lz8F9CnNGwk353xSisQyyO9le5h
-         Qg7A==
-X-Gm-Message-State: AOAM532uBLllWVHMww5TsEbYPfkU+bcs+qCrxzaUbSbRftUKMXH8P7Vw
-        AvYyMDsJHFOSuZfTu6hniRU=
-X-Google-Smtp-Source: ABdhPJyG6RNrdlHxdnKCoban5c3z5Og0ArIPqGyWfAlkw5jgz92a9HHxrUCYLoaZus3hPdZtMpREeA==
-X-Received: by 2002:adf:c509:0:b0:1e3:f23:5bb2 with SMTP id q9-20020adfc509000000b001e30f235bb2mr15038229wrf.157.1645449323713;
-        Mon, 21 Feb 2022 05:15:23 -0800 (PST)
-Received: from [192.168.0.133] ([5.193.8.34])
-        by smtp.gmail.com with ESMTPSA id m13-20020a05600c3b0d00b0037c00e01771sm7717377wms.34.2022.02.21.05.15.20
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Mon, 21 Feb 2022 05:15:23 -0800 (PST)
-Message-ID: <6213906b.1c69fb81.f921d.9a47@mx.google.com>
-From:   Mrs Maria Elisabeth Schaeffler <briankevin154@gmail.com>
-X-Google-Original-From: Mrs Maria Elisabeth Schaeffler
-Content-Type: text/plain; charset="iso-8859-1"
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=xEuyjFrM9XwMrClBWbdS/xCWNoJfoXGzRHNpn8EHVe8=;
+        b=TiCT20HeoeeRnCBazbcSuWZA9gECgHlhhxYWymK1UwFZNqF73LoMl8qNPvQ9jd1XnS
+         /l5+eFEHASeHzkkahW1+DyESQ83aQ5E2CZr8Yc9hKis+5TCtXzrsTOiygLUiijPq4XRt
+         Yp9WHonj2RTd1k5KW3+WkVm5W7ZXglPicr8WxxAvuuHxbUpthi1vkM7zhkUBClyDZCu3
+         15F7a6HpfHNrn6YJLm0hPsZu7yBE094u3LC7SwkRY9dfakU7gBsG8AxqXFRi8GYdSSNt
+         apK+60yOPaumzWBJnZ2AIapPgdyWdyd/tvot/UhTfQ4krq5ILzsvabatB7OD1HG+hAc1
+         U7Hw==
+X-Gm-Message-State: AOAM533hcCjjQB1F+sKvQrv3LDqZ5uHH1bqPdE67QLrNQxJbqEKY0E9S
+        7Yw+0T0IXjJluk5EZm3PRHhvUQ==
+X-Google-Smtp-Source: ABdhPJyMpVcgpGjVDM1tE/A1ztFlJLD5B8plNpKCAvS4oAZ2w0SyAG5LTlNyt81HXrIEaGhcKYOhLA==
+X-Received: by 2002:a2e:a4ae:0:b0:244:dac8:4590 with SMTP id g14-20020a2ea4ae000000b00244dac84590mr8981123ljm.231.1645465224829;
+        Mon, 21 Feb 2022 09:40:24 -0800 (PST)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id v18sm1417023ljb.98.2022.02.21.09.40.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Feb 2022 09:40:24 -0800 (PST)
+Received: by box.localdomain (Postfix, from userid 1000)
+        id 748CC1039EE; Mon, 21 Feb 2022 20:41:21 +0300 (+03)
+Date:   Mon, 21 Feb 2022 20:41:21 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v10 21/45] x86/mm: Add support to validate memory when
+ changing C-bit
+Message-ID: <20220221174121.ceeplpoaz63q72kv@box>
+References: <Ygz88uacbwuTTNat@zn.tnic.mbx>
+ <20220216160457.1748381-1-brijesh.singh@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Spende
-To:     Recipients <Mrs@vger.kernel.org>
-Date:   Mon, 21 Feb 2022 17:15:16 +0400
-Reply-To: mariaeisaeth001@gmail.com
-X-Spam-Status: No, score=2.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,TO_MALFORMED,T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220216160457.1748381-1-brijesh.singh@amd.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hallo,
+On Wed, Feb 16, 2022 at 10:04:57AM -0600, Brijesh Singh wrote:
+> @@ -287,6 +301,7 @@ struct x86_platform_ops {
+>  	struct x86_legacy_features legacy;
+>  	void (*set_legacy_features)(void);
+>  	struct x86_hyper_runtime hyper;
+> +	struct x86_guest guest;
+>  };
 
-Ich bin Frau Maria Elisabeth Schaeffler, eine deutsche Wirtschaftsmagnatin,=
- Investorin und Philanthropin. Ich bin der Vorsitzende von Wipro Limited. I=
-ch habe 25 Prozent meines pers=F6nlichen Verm=F6gens f=FCr wohlt=E4tige Zwe=
-cke ausgegeben. Und ich habe auch versprochen zu geben
-der Rest von 25% geht dieses Jahr 2021 an Einzelpersonen. Ich habe mich ent=
-schlossen, Ihnen 1.500.000,00 Euro zu spenden. Wenn Sie an meiner Spende in=
-teressiert sind, kontaktieren Sie mich f=FCr weitere Informationen.
+I used 'cc' instead of 'guest'. 'guest' looks too generic.
 
-Sie k=F6nnen auch =FCber den untenstehenden Link mehr =FCber mich lesen
+Also, I'm not sure why not to use pointer to ops struct instead of stroing
+them directly in x86_platform. Yes, it is consistent with 'hyper', but I
+don't see it as a strong argument.
 
+>  
+> index b4072115c8ef..a55477a6e578 100644
+> --- a/arch/x86/mm/pat/set_memory.c
+> +++ b/arch/x86/mm/pat/set_memory.c
+> @@ -2012,8 +2012,15 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
+>  	 */
+>  	cpa_flush(&cpa, !this_cpu_has(X86_FEATURE_SME_COHERENT));
+>  
+> +	/* Notify HV that we are about to set/clr encryption attribute. */
+> +	x86_platform.guest.enc_status_change_prepare(addr, numpages, enc);
+> +
+>  	ret = __change_page_attr_set_clr(&cpa, 1);
 
-https://en.wikipedia.org/wiki/Maria-Elisabeth_Schaeffler
+This doesn't cover difference in flushing requirements. Can we get it too?
 
-Sch=F6ne Gr=FC=DFe
-Gesch=E4ftsf=FChrer Wipro Limited
-Maria-Elisabeth_Schaeffler
-Email: mariaeisaeth001@gmail.com=20
+>  
+> +	/* Notify HV that we have succesfully set/clr encryption attribute. */
+> +	if (!ret)
+> +		x86_platform.guest.enc_status_change_finish(addr, numpages, enc);
+> +
+
+Any particular reason you moved it above cpa_flush()? I don't think it
+makes a difference for TDX, but still.
+
+>  	/*
+>  	 * After changing the encryption attribute, we need to flush TLBs again
+>  	 * in case any speculative TLB caching occurred (but no need to flush
+> @@ -2023,12 +2030,6 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
+>  	 */
+>  	cpa_flush(&cpa, 0);
+>  
+> -	/*
+> -	 * Notify hypervisor that a given memory range is mapped encrypted
+> -	 * or decrypted.
+> -	 */
+> -	notify_range_enc_status_changed(addr, numpages, enc);
+> -
+>  	return ret;
+>  }
+>  
+> -- 
+> 2.25.1
+> 
+
+-- 
+ Kirill A. Shutemov
