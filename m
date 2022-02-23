@@ -2,56 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 713BC4C1A38
-	for <lists+linux-efi@lfdr.de>; Wed, 23 Feb 2022 18:51:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 139954C1C26
+	for <lists+linux-efi@lfdr.de>; Wed, 23 Feb 2022 20:29:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242788AbiBWRvv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 23 Feb 2022 12:51:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44866 "EHLO
+        id S241548AbiBWTaN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 23 Feb 2022 14:30:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231815AbiBWRvt (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 23 Feb 2022 12:51:49 -0500
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF65926C
-        for <linux-efi@vger.kernel.org>; Wed, 23 Feb 2022 09:51:20 -0800 (PST)
-Received: by mail-lj1-x235.google.com with SMTP id bn33so25782446ljb.6
-        for <linux-efi@vger.kernel.org>; Wed, 23 Feb 2022 09:51:20 -0800 (PST)
+        with ESMTP id S233668AbiBWTaN (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 23 Feb 2022 14:30:13 -0500
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1650547AE9
+        for <linux-efi@vger.kernel.org>; Wed, 23 Feb 2022 11:29:45 -0800 (PST)
+Received: by mail-pj1-x102d.google.com with SMTP id j10-20020a17090a94ca00b001bc2a9596f6so3936759pjw.5
+        for <linux-efi@vger.kernel.org>; Wed, 23 Feb 2022 11:29:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RrdEVsjsD+nqXmQqBvUEIQg+R+7+UWVmueHZbvxi/fY=;
-        b=HrqUskcTi7myVyE20lUHGxJ5Cbqhrcee6XGl5vkm8NnzpACCfPRFm/+h5jJFvLnJIH
-         J09n5gnVJYBhqvTpCNt326dmBcHXVR9YUWVcgJOUx74XOdS76Di+Wn+9quQYy+pi6ymr
-         AsBJ+RxttBSyKX71ZYQ6bNvnrcXsiJ1bMJZvziOq0mEDMa/C6SnANiHyPjCmlEDftBo/
-         /dmao04eFUAwrM4TWxdQ2+Jv6uDUNIJ/Y7xhQ5+9z5AGuZ7My4MfYahlXf0wQULDAW0S
-         WUl4lShCV5B1BEGM+itp8+KvXaDTINCwBbb3TuBr8OUEIxfhmCSDYRJNrwhzTrZlOXR8
-         AoMQ==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=rcZtDDDiBwFJfxUmlCOz3RDMEXHNKOOpzN1iEr3gL5U=;
+        b=QWBzyrjZbDyYSLOvasncoWEYru0Moni/yVGRO01JjZbgsx9D2Olu/maNAtD0effRNG
+         wNYTVyenRE2iN8/gxF8zvDFIp1czImRucV3q+rH/Db4mDxfkNsMa5DdPNA12q8f3hQw0
+         CGhSrzqNOX9eTGM8sUUHgDxFqNl+jJQdeU/Ko=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RrdEVsjsD+nqXmQqBvUEIQg+R+7+UWVmueHZbvxi/fY=;
-        b=nErAFeEuRdEOUdpfh++IAE1JQVe0RuR01RTvaG4biM9nvA5blfRcHmX7C/ElmGbrDJ
-         HfMT7I/WNfLKycncbeQB1i+OPDTYYCwJXoiXKt8XCQoeQmhzlLrhZlaMxxsTK/J4iaOf
-         jPdsT7zuqW5uYsjrgOdBEYRhOTE7rpnioCP7lGb8Nen68Dyz+n6oO3dub8COfLLP5o2A
-         yfeWWnMvawOnOuxUmct2jzYqzhSleqCI84eXYA+F4ws4KNVyqZTcBaDSDpu6cZMPuadp
-         IkAF2s7ens7cjx/sUXsiIKY+72J/NVPGL2JOmgB6i/+HvRaYtQeKM/WB8qnU4jCD10xp
-         1gdw==
-X-Gm-Message-State: AOAM5303JniwMoGrxSpF0Bf46z7QFsvxKo00rISUaZkMu/CUBGhdqAFe
-        0j0CKW2Dg+aLutN4uoiS3w161nCEbKOET4sFeq5DrA==
-X-Google-Smtp-Source: ABdhPJyy2+PbEHWjK5m1pGy4RMoMiz8/1ddYOLWwa6WdZj216uctOj7fPykTeNcuWhj9vtR5ujN+1LSrAt9hQfe4l5g=
-X-Received: by 2002:a2e:b78f:0:b0:246:6331:c1bc with SMTP id
- n15-20020a2eb78f000000b002466331c1bcmr378483ljo.188.1645638679148; Wed, 23
- Feb 2022 09:51:19 -0800 (PST)
-MIME-Version: 1.0
-References: <20220218181950.1438236-1-jannh@google.com> <8D85619E-99BD-4DB5-BDDB-A205B057C910@chromium.org>
-In-Reply-To: <8D85619E-99BD-4DB5-BDDB-A205B057C910@chromium.org>
-From:   Jann Horn <jannh@google.com>
-Date:   Wed, 23 Feb 2022 18:50:52 +0100
-Message-ID: <CAG48ez0UJDBzoaB4=c0Uju6L-eZvhWMdnzAp8N3QfeERbzYv2w@mail.gmail.com>
-Subject: Re: [PATCH v2] pstore: Don't use semaphores in always-atomic-context code
-To:     Kees Cook <keescook@chromium.org>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=rcZtDDDiBwFJfxUmlCOz3RDMEXHNKOOpzN1iEr3gL5U=;
+        b=ccNLlRTe4WPXbqdli4s+7S4Pcpr3dm/rLuw/zaplE66U2QTcpYwesrRASrW+m3XNmy
+         IjiXXqGSQ0q28/dlbiTkin3Wr/Y78hBu7uU3QFjeyFUPgEgTgWx+t0EkOXUsAsORUrlq
+         9Acsdf5RjR8bCMIVGCUXfC5t5IzcNqCdGtJtpGxfHev3vUj+lGkLHcA09M5moSbqIDby
+         fGhldVQ9UXddfb5L0cBv9rSzFOL55DMsg6QQTY5Mw9N+LRMaEvM7l2nvoE7MDCkNqz2I
+         AaTdGIfYn2FlTAimw5aWtcLZAP04cw0C097MJXDrUepoZ1Vnc6zZgliW6VwKk5alx+0H
+         kHRw==
+X-Gm-Message-State: AOAM530nHq6pPXDVtH01plmimjNLa6++DXYDyJjx77cZSQSXk4RA+i5Q
+        9iC8WiJ3s3PzWUCqS4S10A7cxQ==
+X-Google-Smtp-Source: ABdhPJxlXjAtTppGbdCoaBZt4izIbAhB7dGQ5TNK+YADNjZYa3D+4W9K2F3X6jY0EE0TLHnQMMfldA==
+X-Received: by 2002:a17:902:ab12:b0:14f:ce60:2ae4 with SMTP id ik18-20020a170902ab1200b0014fce602ae4mr1048141plb.87.1645644584562;
+        Wed, 23 Feb 2022 11:29:44 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id on17sm246496pjb.40.2022.02.23.11.29.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Feb 2022 11:29:44 -0800 (PST)
+Date:   Wed, 23 Feb 2022 11:29:43 -0800
+From:   Kees Cook <keescook@chromium.org>
+To:     Jann Horn <jannh@google.com>
 Cc:     Anton Vorontsov <anton@enomsg.org>,
         Colin Cross <ccross@android.com>,
         Tony Luck <tony.luck@intel.com>,
@@ -59,76 +54,100 @@ Cc:     Anton Vorontsov <anton@enomsg.org>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v2] pstore: Don't use semaphores in always-atomic-context
+ code
+Message-ID: <202202231128.E7445769AD@keescook>
+References: <20220218181950.1438236-1-jannh@google.com>
+ <8D85619E-99BD-4DB5-BDDB-A205B057C910@chromium.org>
+ <CAG48ez0UJDBzoaB4=c0Uju6L-eZvhWMdnzAp8N3QfeERbzYv2w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAG48ez0UJDBzoaB4=c0Uju6L-eZvhWMdnzAp8N3QfeERbzYv2w@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Feb 23, 2022 at 8:50 AM Kees Cook <keescook@chromium.org> wrote:
-> On February 18, 2022 10:19:50 AM PST, Jann Horn <jannh@google.com> wrote:
-> >pstore_dump() is *always* invoked in atomic context (nowadays in an RCU
-> >read-side critical section, before that under a spinlock).
-> >It doesn't make sense to try to use semaphores here.
->
-> Ah, very nice. Thanks for the analysis!
->
-> >[...]
-> >-static bool pstore_cannot_wait(enum kmsg_dump_reason reason)
-> >+bool pstore_cannot_block_path(enum kmsg_dump_reason reason)
->
-> Why the rename,
+On Wed, Feb 23, 2022 at 06:50:52PM +0100, Jann Horn wrote:
+> On Wed, Feb 23, 2022 at 8:50 AM Kees Cook <keescook@chromium.org> wrote:
+> > On February 18, 2022 10:19:50 AM PST, Jann Horn <jannh@google.com> wrote:
+> > >pstore_dump() is *always* invoked in atomic context (nowadays in an RCU
+> > >read-side critical section, before that under a spinlock).
+> > >It doesn't make sense to try to use semaphores here.
+> >
+> > Ah, very nice. Thanks for the analysis!
+> >
+> > >[...]
+> > >-static bool pstore_cannot_wait(enum kmsg_dump_reason reason)
+> > >+bool pstore_cannot_block_path(enum kmsg_dump_reason reason)
+> >
+> > Why the rename,
+> 
+> That's one of the parts of commit ea84b580b955 that I included in the
+> revert. "wait" in the name is not accurate, since "wait" in the kernel
+> normally refers to scheduling away until some condition is fulfilled.
+> (Though I guess "block" also isn't the best name either... idk.) The
+> place where we might want to have different behavior depending on
+> whether we're handling a kernel crash are spinlocks; during a kernel
+> crash, we shouldn't deadlock on them, but otherwise, AFAIK it's fine
+> to block on them.
 
-That's one of the parts of commit ea84b580b955 that I included in the
-revert. "wait" in the name is not accurate, since "wait" in the kernel
-normally refers to scheduling away until some condition is fulfilled.
-(Though I guess "block" also isn't the best name either... idk.) The
-place where we might want to have different behavior depending on
-whether we're handling a kernel crash are spinlocks; during a kernel
-crash, we shouldn't deadlock on them, but otherwise, AFAIK it's fine
-to block on them.
+Gotcha. I'm find to avoid "wait"; I was just curious why it was
+changing, but I see now.
 
-> extern, and EXPORT? This appears to still only have the same single caller?
+> 
+> > extern, and EXPORT? This appears to still only have the same single caller?
+> 
+> Also part of the revert. I figured it might make sense to also revert
+> that part because:
+> 
+> With this commit applied, the EFI code will always take the "nonblock"
+> path for now, but that's kinda suboptimal; on some platforms the
+> "blocking" path uses a semaphore, so we really can't take that, but on
+> x86 it uses a spinlock, which we could block on if we're not oopsing.
+> We could avoid needlessly losing non-crash dmesg dumps there; I don't
+> know whether we care about that though.
+> 
+> So I figured that we might want to start adding new callers to this
+> later on. But if you want, I'll remove that part of the revert and
+> resend?
 
-Also part of the revert. I figured it might make sense to also revert
-that part because:
+Yeah, let's just keep this static -- there's no reason to export it.
 
-With this commit applied, the EFI code will always take the "nonblock"
-path for now, but that's kinda suboptimal; on some platforms the
-"blocking" path uses a semaphore, so we really can't take that, but on
-x86 it uses a spinlock, which we could block on if we're not oopsing.
-We could avoid needlessly losing non-crash dmesg dumps there; I don't
-know whether we care about that though.
+> 
+> > > [...]
+> > >-                      pr_err("dump skipped in %s path: may corrupt error record\n",
+> > >-                              in_nmi() ? "NMI" : why);
+> > >-                      return;
+> > >-              }
+> > >-              if (down_interruptible(&psinfo->buf_lock)) {
+> > >-                      pr_err("could not grab semaphore?!\n");
+> > >+      if (pstore_cannot_block_path(reason)) {
+> > >+              if (!spin_trylock_irqsave(&psinfo->buf_lock, flags)) {
+> > >+                      pr_err("dump skipped in %s path because of concurrent dump\n"
+> > >+                                     , in_nmi() ? "NMI" : why);
+> >
+> > The pr_err had the comma following the format string moved,
+> 
+> Ah, whoops, that was also part of the revert, but I guess I should
+> have left that part out...
+> 
+> > and the note about corruption removed. Is that no longer accurate?
+> 
+> There should be no more corruption since commit 959217c84c27 ("pstore:
+> Actually give up during locking failure") - if we're bailing out, we
+> can't be causing corruption, I believe?
 
-So I figured that we might want to start adding new callers to this
-later on. But if you want, I'll remove that part of the revert and
-resend?
+Yeah, agreed. String content change is fine, the weird leading comma I'd
+like to do without. :)
 
-> > [...]
-> >-                      pr_err("dump skipped in %s path: may corrupt error record\n",
-> >-                              in_nmi() ? "NMI" : why);
-> >-                      return;
-> >-              }
-> >-              if (down_interruptible(&psinfo->buf_lock)) {
-> >-                      pr_err("could not grab semaphore?!\n");
-> >+      if (pstore_cannot_block_path(reason)) {
-> >+              if (!spin_trylock_irqsave(&psinfo->buf_lock, flags)) {
-> >+                      pr_err("dump skipped in %s path because of concurrent dump\n"
-> >+                                     , in_nmi() ? "NMI" : why);
->
-> The pr_err had the comma following the format string moved,
+Thanks!
 
-Ah, whoops, that was also part of the revert, but I guess I should
-have left that part out...
-
-> and the note about corruption removed. Is that no longer accurate?
-
-There should be no more corruption since commit 959217c84c27 ("pstore:
-Actually give up during locking failure") - if we're bailing out, we
-can't be causing corruption, I believe?
+-- 
+Kees Cook
