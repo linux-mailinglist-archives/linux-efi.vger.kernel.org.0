@@ -2,48 +2,70 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 158C54C501A
-	for <lists+linux-efi@lfdr.de>; Fri, 25 Feb 2022 21:52:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 078D44C513B
+	for <lists+linux-efi@lfdr.de>; Fri, 25 Feb 2022 23:09:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237737AbiBYUwO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 25 Feb 2022 15:52:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48668 "EHLO
+        id S234564AbiBYWKG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 25 Feb 2022 17:10:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237718AbiBYUwN (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 25 Feb 2022 15:52:13 -0500
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2004D2028BA;
-        Fri, 25 Feb 2022 12:51:41 -0800 (PST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id 4DD8F1F44C;
-        Fri, 25 Feb 2022 20:51:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1645822299; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
+        with ESMTP id S231470AbiBYWKF (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 25 Feb 2022 17:10:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A2D84522D9
+        for <linux-efi@vger.kernel.org>; Fri, 25 Feb 2022 14:09:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1645826971;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=y2XvDcM8YOYz/VUNaYX8jiMEFs9ojmeNsJn6nrjEuyM=;
-        b=06XkM1h2jd35HkRX/acDRdvzPNnk02benHoaKaKMRtyyPxUva9DM2tRBSRJwyIL+QMBEGL
-        VL1BPZubuIoqOJ2cEKlSA7jqnKrgdvkd9NChFmSG340CxvZmPqg/bWyydDsEzMU5aOmf88
-        CpYO7qjSszPsjJmoDh89Fr81OTruIKc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1645822299;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=y2XvDcM8YOYz/VUNaYX8jiMEFs9ojmeNsJn6nrjEuyM=;
-        b=sYsD+vMoBk5i5p1DpUIelO6X7NTIYmwqFdAS1E4m3rp70EjsweaH1hRoAQq70I6nS5QNmI
-        u6cEoiSVMAxhctCg==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
-        by relay2.suse.de (Postfix) with ESMTP id 18529A3B8F;
-        Fri, 25 Feb 2022 20:51:39 +0000 (UTC)
-From:   Michal Suchanek <msuchanek@suse.de>
-To:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>
-Cc:     Michal Suchanek <msuchanek@suse.de>,
-        Borislav Petkov <bp@alien8.de>,
+        bh=5PA9hg/jjTKbd4y1qX7Ux68wjGwVszX5ra4xkbOOiek=;
+        b=SAXQnjTffBrkkXf84yXpQyobBf4trw+3AsaNsGw25gSPMtlAUJPCqhp5OxbNrxqJbjRxV9
+        PAlouiSbsFde+PKZ0QF7zbVUA+wrcGdrTLxQTrfkzIE3ZeBrGTblDsI0aIbnul2mN5o4GR
+        lvLvgVcH5f2Szi6qGFyTstJD7QCnAwc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-225-UEal6pMXNRS1WR-XgS_fwg-1; Fri, 25 Feb 2022 17:09:30 -0500
+X-MC-Unique: UEal6pMXNRS1WR-XgS_fwg-1
+Received: by mail-wm1-f71.google.com with SMTP id ay7-20020a05600c1e0700b003813d7a7d03so1190940wmb.1
+        for <linux-efi@vger.kernel.org>; Fri, 25 Feb 2022 14:09:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=5PA9hg/jjTKbd4y1qX7Ux68wjGwVszX5ra4xkbOOiek=;
+        b=2dRoqPhZfpNFPt32Mz39g1FSFQKnHNTo21NtoYxCU0XuhG4T8CUYGWsxah8TAxZk8I
+         2n+1LyLu6S/E3/c9IshVnP7/rx6ZdtU9Acgb0bVto0klyMJv3x+aXDt0uvcGA+I3Wwut
+         rpILWGB9yceCjf0IASRlXE/y9RRFToZaa3iW/5SRwTpv56CIBoSB8xqrgqE2jzPE7xYz
+         gRDL3DsaWygUjZDagvWYPOxaJZ7KcQljKfKyWkz1dB0mze3kf5FK1Q6sqsrMkfWWmXNW
+         XHcEzpkMLJcH3XV6ykKeTyOMQRhuUYItWaYqNCma1r1eng2zuK99mLIYgiFVEfpCVpm3
+         Lr2w==
+X-Gm-Message-State: AOAM530bhKPypo4YMk0QQ1OqiKwqob4UMNXYGzNTtvHzVfyT29Bdrvum
+        yxi/AoPXfXXHwGyFRu8Ts7v3cRJ3Qgd/zHoGD+FWxrqPGvtp+bLQ+IrD63cAUjqOB4KplSZ/jyx
+        ZtRHibJkvs/eeL3u9Mr1j
+X-Received: by 2002:a05:600c:3483:b0:380:edaf:d479 with SMTP id a3-20020a05600c348300b00380edafd479mr4329865wmq.20.1645826969212;
+        Fri, 25 Feb 2022 14:09:29 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJyRz8kqXC26lmDuZDgPn8lbcKVBuJ71tDPuJGSpWOnTZ7pH1GMfhj1Tg6aY60ZvqiZQtVKhzw==
+X-Received: by 2002:a05:600c:3483:b0:380:edaf:d479 with SMTP id a3-20020a05600c348300b00380edafd479mr4329851wmq.20.1645826969002;
+        Fri, 25 Feb 2022 14:09:29 -0800 (PST)
+Received: from [192.168.1.102] ([92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id f12-20020a05600c154c00b0037df2e5d8c9sm4311870wmg.27.2022.02.25.14.09.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Feb 2022 14:09:28 -0800 (PST)
+Message-ID: <b87cf8eb-a27f-5060-7941-3b374c2792dd@redhat.com>
+Date:   Fri, 25 Feb 2022 23:09:27 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v4 1/3] sysfb: Make config option dependencies explicit
+Content-Language: en-US
+To:     Michal Suchanek <msuchanek@suse.de>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     Borislav Petkov <bp@alien8.de>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>,
         Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
@@ -60,17 +82,16 @@ Cc:     Michal Suchanek <msuchanek@suse.de>,
         David Herrmann <dh.herrmann@gmail.com>,
         linux-kernel@vger.kernel.org, linux-video@atrey.karlin.mff.cuni.cz,
         linux-efi@vger.kernel.org
-Subject: [PATCH v4 3/3] efifb: Remove redundant efifb_setup_from_dmi stub
-Date:   Fri, 25 Feb 2022 21:51:35 +0100
-Message-Id: <7416c439d68e9e96068ea5c77e05c99c7df41750.1645822213.git.msuchanek@suse.de>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <1f13e6f2-a87c-83ac-7119-8632c8c8ac8e@redhat.com>
 References: <1f13e6f2-a87c-83ac-7119-8632c8c8ac8e@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+ <a0fa41e9186653e4c41ad0a28259e5cdc71b1f66.1645822213.git.msuchanek@suse.de>
+From:   Javier Martinez Canillas <javierm@redhat.com>
+In-Reply-To: <a0fa41e9186653e4c41ad0a28259e5cdc71b1f66.1645822213.git.msuchanek@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,31 +99,26 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-efifb is the only user of efifb_setup_from_dmi which is provided by
-sysfb which is selected by efifb. That makes the stub redundant.
+Hello Michal,
 
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
----
-v4: new patch
----
- include/linux/efi.h | 4 ----
- 1 file changed, 4 deletions(-)
+On 2/25/22 21:51, Michal Suchanek wrote:
+> efifb and vesafb requires sysfb implicitly but this is not stated in
+> Kconfig. Add the dependency.
+> 
+> With that all drivers that require sysfb depend on it so it can default
+> to disabled.
+> 
+> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> ---
 
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index ccd4d3f91c98..0cbbc4103632 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -1329,10 +1329,6 @@ static inline struct efi_mokvar_table_entry *efi_mokvar_entry_find(
- }
- #endif
- 
--#ifdef CONFIG_SYSFB
- extern void efifb_setup_from_dmi(struct screen_info *si, const char *opt);
--#else
--static inline void efifb_setup_from_dmi(struct screen_info *si, const char *opt) { }
--#endif
- 
- #endif /* _LINUX_EFI_H */
+Thanks for the patch. This makes much more sense to me.
+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+
 -- 
-2.34.1
+Best regards,
+
+Javier Martinez Canillas
+Linux Engineering
+Red Hat
 
