@@ -2,134 +2,176 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDBB04C8952
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Mar 2022 11:31:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE54E4C895B
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Mar 2022 11:34:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233405AbiCAKci (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 1 Mar 2022 05:32:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35270 "EHLO
+        id S232541AbiCAKfH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 1 Mar 2022 05:35:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229586AbiCAKch (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Mar 2022 05:32:37 -0500
-X-Greylist: delayed 457 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 01 Mar 2022 02:31:55 PST
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B48FF60060
-        for <linux-efi@vger.kernel.org>; Tue,  1 Mar 2022 02:31:55 -0800 (PST)
-Received: from mail-wr1-f47.google.com ([209.85.221.47]) by
- mrelayeu.kundenserver.de (mreue109 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MmU9X-1o6Xg02KI5-00iRlQ; Tue, 01 Mar 2022 11:19:13 +0100
-Received: by mail-wr1-f47.google.com with SMTP id j17so19731748wrc.0;
-        Tue, 01 Mar 2022 02:19:13 -0800 (PST)
-X-Gm-Message-State: AOAM532h+TSsT7XvTtltQpow3PwSn4+2uzT8xgz1pYiE3i8l451g41cf
-        UNXRvarmF9I01/AqayURu6IwTnPEVV950GaoALM=
-X-Google-Smtp-Source: ABdhPJzzPOquGV619/Ft2Hlid0sPxXMa9f5QyUk3acsgXWRETaM+gTfyx5RKFPDTTgU6lhKUdNltea8NVoyAewfh61A=
-X-Received: by 2002:a5d:63c2:0:b0:1ef:840e:e139 with SMTP id
- c2-20020a5d63c2000000b001ef840ee139mr11569532wrw.192.1646129952971; Tue, 01
- Mar 2022 02:19:12 -0800 (PST)
+        with ESMTP id S230073AbiCAKfH (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Mar 2022 05:35:07 -0500
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F3F55642A
+        for <linux-efi@vger.kernel.org>; Tue,  1 Mar 2022 02:34:21 -0800 (PST)
+Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.54])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4K7D5K30Dhz1GByl;
+        Tue,  1 Mar 2022 18:29:41 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Tue, 1 Mar 2022 18:34:19 +0800
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2308.21; Tue, 1 Mar 2022 18:34:19 +0800
+Message-ID: <4792d478-edea-6c72-3e08-cf2a390f5a7c@huawei.com>
+Date:   Tue, 1 Mar 2022 18:34:18 +0800
 MIME-Version: 1.0
-References: <20220226110338.77547-1-chenhuacai@loongson.cn>
- <20220226110338.77547-10-chenhuacai@loongson.cn> <CAMj1kXHWRZcjF9H2jZ+p-HNuXyPs-=9B8WiYLsrDJGpipgKo_w@mail.gmail.com>
- <YhupaVZvbipgke2Z@kroah.com> <CAAhV-H6hmvyniHP-CMxtOopRHp6XYaF58re13snMrk_Umj+wSQ@mail.gmail.com>
- <CAMj1kXFa447Z21q3uu0UFExDDDG9Y42ZHtiUppu6QpuNA_5bhA@mail.gmail.com>
- <CAAhV-H7X+Txq4HaaF49QZ9deD=Dwx_GX-2E9q_nA8P76ZRDeXg@mail.gmail.com>
- <CAMj1kXGH1AtL8_KbFkK+FRgWQPzPm1dCdvEF0A2KksREGTSeCg@mail.gmail.com>
- <CAAhV-H6fdJwbVG_m0ZL_JGROKCrCbc-fKpj3dnOowaEUA+3ujQ@mail.gmail.com>
- <CAK8P3a2hr2rjyLpkeG1EKiOVGrY4UCB61OHGj5nzft-KCS3jYA@mail.gmail.com>
- <CAMj1kXHGG80LdNUUA+Ug1VBXWuvtPxKpqnuChg2N=6Hf2EhY7g@mail.gmail.com> <CAAhV-H6dxkdmDizd+ZVhJ_zHZ9RK8QjKU-3U-CaovLiNbEVpbg@mail.gmail.com>
-In-Reply-To: <CAAhV-H6dxkdmDizd+ZVhJ_zHZ9RK8QjKU-3U-CaovLiNbEVpbg@mail.gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 1 Mar 2022 11:18:56 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a2wF2XA8wCFtP9RNTNQf3W9D8fKOuQ704yE+dRSS5aCVw@mail.gmail.com>
-Message-ID: <CAK8P3a2wF2XA8wCFtP9RNTNQf3W9D8fKOuQ704yE+dRSS5aCVw@mail.gmail.com>
-Subject: Re: [PATCH V6 09/22] LoongArch: Add boot and setup routines
-To:     Huacai Chen <chenhuacai@gmail.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Airlie <airlied@linux.ie>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Xuefeng Li <lixuefeng@loongson.cn>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:XStCGZX/ROQSePDe1dyXr69F8I2kJSDcoRYdgl9fhDF89FNNCW1
- nl7YRK11Fp/q7Y2u5OU7dCpbyI0QK7AQ9lUDGcY0XS7/J3ubQpMAGQA7zTGx1I8haebHYrh
- Al/vYhQKudbTknC/RGK+Q07kfD3/1SETShIQeF6bkDlvbciFXCm1ftcmZvuAEm8HSodfAP5
- KlQpqVR5YoPF1QJu6+RbA==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:VwWDAcoEEjs=:7kXTKbEvaFhflZjDuxbe6d
- L+S9C1MIAYs/3zCt6BeXhlxaWifKUX7IRLEqVsBpSGmEuXcDe4fhVN4jvTJd5d/eYkgis6ktk
- 1suNpOmT3k9nT5wDJEA7ECFqxx9ldwuUqN5kfgKmg0kCLseQ7AIqOwMJMepoiO8WEM2rflDbU
- R52Q7y6qdrRgEc0QG4TT1erwNt8q3ydSEqNJuyJmVI7rYFE9geMneJZXI1oDa2tM+9XlHT2n/
- pvOvqm8MYxKzzpgOQzVn7N+Elvwvt0jO1YjdkhV255rK4wscz4WXJafqi9NKO5TGntybaIEXV
- Jv9vDX3MX2IUoYMFYw1szWbfV4jGnVQu+tyor9SStcQPLevuITikmLWjCMIdih9tfaSNpAGLA
- PYF+YCcZ7k1IUtjpYjTd2zMd5ZuYHbT9dT2IgiRB/NBpqeQAF5ofcsJlCZ2Fgftg9tBuk9FIo
- PR916WUNWcjUThXfz2LNKXcUajDDxdWW72/WzqRmpBy/Q5td0EHfCHInh8XZOVzvI9GA5DIpq
- TFRcxtCV9YHn3SrtYJMsTUvsC0ewjrqS1hw9gHNRjRlggcRO9KUgLm56c38vUQPonUImzQKeL
- RUMexx3VDzKfNMROf71IbbqzZtbNKzef7Uq5o1VZHE/d5kQn3D/GJGh6PuskCarBDmcSyAWcN
- Msh+6EO79dZqfL1Kph250tGJXfvhrLwy69B97GOXmokezJPltKBXXrSaatg13PWQcuJU=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.1
+Subject: Re: [Question] Should retain 2M alignment if kernel image is bad
+ aligned at entry or BSS overlaps?
+Content-Language: en-US
+To:     Ard Biesheuvel <ardb@kernel.org>
+CC:     Will Deacon <will@kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+References: <894d1598-7b05-9406-5c1a-162b749bb4e8@huawei.com>
+ <CAMj1kXH3p3fTF-MKqJ6TAYc3Jm0WRit8u+ugjZdr-ykAR8ahTA@mail.gmail.com>
+From:   Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <CAMj1kXH3p3fTF-MKqJ6TAYc3Jm0WRit8u+ugjZdr-ykAR8ahTA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: dggeme706-chm.china.huawei.com (10.1.199.102) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Mar 1, 2022 at 5:17 AM Huacai Chen <chenhuacai@gmail.com> wrote:
-> On Mon, Feb 28, 2022 at 7:35 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > On Mon, 28 Feb 2022 at 12:24, Arnd Bergmann <arnd@arndb.de> wrote:
-> > > On Mon, Feb 28, 2022 at 11:42 AM Huacai Chen <chenhuacai@gmail.com> wrote:
-> > > Can't you just use the UEFI protocol for kernel entry regardless
-> > > of the bootloader? It seems odd to use a different protocol for loading
-> > > grub and the kernel, especially if that means you end up having to
-> > > support both protocols inside of u-boot and grub, in order to chain-load
-> > > a uefi application like grub.
-> > >
-> >
-> > I think this would make sense. Now that the EFI stub has generic
-> > support for loading the initrd via a UEFI specific protocol (of which
-> > u-boot already carries an implementation), booting via UEFI only would
-> > mean that no Linux boot protocol would need to be defined outside of
-> > the kernel at all (i.e., where to load the kernel, where to put the
-> > command line, where to put the initrd, other arch specific rules etc
-> > etc) UEFI already supports both ACPI and DT boot
+
+On 2022/3/1 15:22, Ard Biesheuvel wrote:
+> On Tue, 1 Mar 2022 at 07:50, Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
+>> Hi Ard，Will and all maintainer，
+>>
+>> As commit 3a262423755b ("efi/libstub: arm64: Relax 2M alignment again
+>> for relocatable kernels") saids, a relocatable image does not need to
+>> be copied to a 2M aligned offset if it was loaded on a 64k boundary
+>> (for a 4 KB granule kernel) by EFI. But if there is some FIRMWARE BUG,
+>>
+>> 1) kernel image not aligned on 64k boundary
+>> or
+>> 2) Image BSS overlaps adjacent EFI memory region
+>>
+>> When kaslr is disabled(eg, EFI_RNG_PROTOCOL unavailable), it will leads
+>> KPTI forced ON after kernel image relocated, message shown below,
+>>
+>>     CPU features: kernel page table isolation forced ON by KASLR
+>>     ...
+>>     KASLR disabled due to lack of seed
+>>
+>> The KASLR don't enabled actually, and KPTI is forced enabled which could
+>> affect performance.
+>>
+> This message is misleading. If the alignment modulo 2M != 0, we still
+> have 5 bits of 'randomization', although these bits are probably
+> highly predictable on a given system.
+Yes， this kernel boot message is misleading, I am confused and find
+commit 3a262423755b ("efi/libstub: arm64: Relax 2M alignment again for
+relocatable kernels") leads to different behavior about KPTI.
+>> I found commit 7c116db24d94 ("efi/libstub/arm64: Retain 2MB kernel Image
+>> alignment if !KASLR") in v5.8, should we retain 2M alignment if kernel image
+>> is bad aligned at entry or BSS overlaps?
+>>
+> Personally, I think we're doing enough already to deal with Redhat's
+> broken out-of-tree GRUB/SHIM concoction, which is the primary reason
+> for these workarounds  IIRC.
+
+Not sure about this, what's your mean is that error message is enough and
+
+no need to adjust the alignment when image with bad aligned at entry or 
+BSS overlaps?
+
+> You can already pass nokalsr on the kernel command line if you want to
+> avoid the downsides entirely, so as I understand it, this is mostly
+> about an unquantified performance gain on systems that use a broken
+> bootloader and lack the entropy source for a KASLR seed, but are not
+> able to put nokaslr on the command line?
+
+nokaslr will use 2M alignment by default, but if some board with new 
+BIOS/GRUB
+
+the kaslr won't enabled unless change the grub to drop it one by one, it 
+is not kind
+
+for production deployment.
+
+Do you think the following adjustment make sense or it is definitely wrong?
+
+Any other option, thanks for your feedback.
+
+
 >
-> After one night thinking, I agree with Ard that we can use RISCV-style
-> fdt to support the raw elf kernel at present, and add efistub support
-> after new UEFI SPEC released.
-
-I think that is the opposite of what Ard and I discussed above.
-
-> If I'm right, it seems that RISC-V passes a0 (hartid) and a1 (fdt
-> pointer, which contains cmdline, initrd, etc.) to the raw elf kernel.
-> And in my opinion, the main drawback of current LoongArch method
-> (a0=argc a1=argv a2=bootparamsinterface pointer) is it uses a
-> non-standard method to pass kernel args and initrd. So, can the below
-> new solution be acceptable?
 >
-> a0=bootparamsinterface pointer (the same as a2 in current method)
-> a1=fdt pointer (contains cmdline, initrd, etc., like RISC-V, I think
-> this is the standard method)
-
-It would seem more logical to me to keep those details as part of the
-interface between the EFI stub and the kernel, rather than the
-documented boot interface.
-
-You said that there is already grub support using the UEFI
-loader, so I assume you have a working draft of the boot
-protocol. Are there still open questions about the interface
-definition for that preventing you from using it as the only
-way to enter the kernel from a bootloader?
-
-        Arnd
+>> diff --git a/drivers/firmware/efi/libstub/arm64-stub.c
+>> b/drivers/firmware/efi/libstub/arm64-stub.c
+>> index 9cc556013d08..47ecd9b80db3 100644
+>> --- a/drivers/firmware/efi/libstub/arm64-stub.c
+>> +++ b/drivers/firmware/efi/libstub/arm64-stub.c
+>> @@ -87,6 +87,7 @@ efi_status_t handle_kernel_image(unsigned long
+>> *image_addr,
+>>    {
+>>           efi_status_t status;
+>>           unsigned long kernel_size, kernel_memsize = 0;
+>> +       bool need_2m_aligned = false;
+>>           u32 phys_seed = 0;
+>>
+>>           /*
+>> @@ -119,9 +120,11 @@ efi_status_t handle_kernel_image(unsigned long
+>> *image_addr,
+>>           if (image->image_base != _text)
+>>                   efi_err("FIRMWARE BUG: efi_loaded_image_t::image_base
+>> has bogus value\n");
+>>
+>> -       if (!IS_ALIGNED((u64)_text, SEGMENT_ALIGN))
+>> +       if (!IS_ALIGNED((u64)_text, SEGMENT_ALIGN)) {
+>> +               need_2m_aligned = true;
+>>                   efi_err("FIRMWARE BUG: kernel image not aligned on %dk
+>> boundary\n",
+>>                           SEGMENT_ALIGN >> 10);
+>> +       }
+>>
+>>           kernel_size = _edata - _text;
+>>           kernel_memsize = kernel_size + (_end - _edata);
+>> @@ -142,6 +145,7 @@ efi_status_t handle_kernel_image(unsigned long
+>> *image_addr,
+>>
+>>           if (status != EFI_SUCCESS) {
+>>                   if (!check_image_region((u64)_text, kernel_memsize)) {
+>> +                       need_2m_aligned = true;
+>>                           efi_err("FIRMWARE BUG: Image BSS overlaps
+>> adjacent EFI memory region\n");
+>>                   } else if (IS_ALIGNED((u64)_text, min_kimg_align)) {
+>>                           /*
+>> @@ -152,7 +156,8 @@ efi_status_t handle_kernel_image(unsigned long
+>> *image_addr,
+>>                           *reserve_size = 0;
+>>                           return EFI_SUCCESS;
+>>                   }
+>> -
+>> +               if (efi_nokaslr & need_2m_aligned)
+>> +                       min_kimg_align = MIN_KIMG_ALIGN;
+>>                   status = efi_allocate_pages_aligned(*reserve_size,
+>> reserve_addr,
+>>                                                       ULONG_MAX,
+>> min_kimg_align);
+> .
