@@ -2,116 +2,131 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAA234C821F
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Mar 2022 05:19:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90CBD4C845A
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Mar 2022 07:50:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232244AbiCAETi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 28 Feb 2022 23:19:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44358 "EHLO
+        id S231262AbiCAGui (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 1 Mar 2022 01:50:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232246AbiCAETg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 28 Feb 2022 23:19:36 -0500
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17311FD3A;
-        Mon, 28 Feb 2022 20:18:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=SNG8dsJKnqg4yoB1IAs+5+zuDlU3R1ic4tYvheuBHLI=; b=BIJf36tfAUXQXZqcOnbeAxttFX
-        jFYQv0XXdHsIqDASqvzeCHFWihKYilk3cBB7YnenzeaqjtnWquPL2Fw2mclByXwyKXocnLBPj/MCX
-        RaBePffOxZitWR550+mebrZDyIePhbYVH0r8PHLVLJcQx24hXPGUVuFzs6eBqsxmapMTWV5dPeUOv
-        eNLkIn+YKoTteSp0QOkIc8uZW4AlOG4kySu/x+4CVBm28T0TzNfjGU8zpoKzPkyZzXMzw/b14XGcK
-        mTSNmUW4cjUWIdFr5LGTpKGAdsPHshNUie5Tz1iOkAOHpuzMM5XNAoc7gkQiVOqLXFUI9cQd1xprT
-        kRtI7Whg==;
-Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1nOtyQ-00Er1X-42; Tue, 01 Mar 2022 04:18:54 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Igor Zhbanov <i.zhbanov@omprussia.ru>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-        Lukas Wunner <lukas@wunner.de>,
-        Octavian Purdila <octavian.purdila@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Matt Fleming <matt@codeblueprint.co.uk>
-Subject: [PATCH] efi: fix return value of __setup handlers
-Date:   Mon, 28 Feb 2022 20:18:51 -0800
-Message-Id: <20220301041851.12459-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S232304AbiCAGuh (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Mar 2022 01:50:37 -0500
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DEA21C930
+        for <linux-efi@vger.kernel.org>; Mon, 28 Feb 2022 22:49:56 -0800 (PST)
+Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.54])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4K777d4gNRz9sSK;
+        Tue,  1 Mar 2022 14:46:21 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Tue, 1 Mar 2022 14:49:54 +0800
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2308.21; Tue, 1 Mar 2022 14:49:53 +0800
+Message-ID: <894d1598-7b05-9406-5c1a-162b749bb4e8@huawei.com>
+Date:   Tue, 1 Mar 2022 14:49:53 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.1
+Content-Language: en-US
+To:     Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>
+CC:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        <linux-efi@vger.kernel.org>, Mark Rutland <mark.rutland@arm.com>
+From:   Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: [Question] Should retain 2M alignment if kernel image is bad aligned
+ at entry or BSS overlaps?
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: dggeme710-chm.china.huawei.com (10.1.199.106) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-When "dump_apple_properties" is used on the kernel boot command line,
-it causes an Unknown parameter message and the string is added to init's
-argument strings:
+Hi Ard，Will and all maintainer，
 
-  Unknown kernel command line parameters "dump_apple_properties
-    BOOT_IMAGE=/boot/bzImage-517rc6 efivar_ssdt=newcpu_ssdt", will be
-    passed to user space.
+As commit 3a262423755b ("efi/libstub: arm64: Relax 2M alignment again
+for relocatable kernels") saids, a relocatable image does not need to
+be copied to a 2M aligned offset if it was loaded on a 64k boundary
+(for a 4 KB granule kernel) by EFI. But if there is some FIRMWARE BUG,
 
- Run /sbin/init as init process
-   with arguments:
-     /sbin/init
-     dump_apple_properties
-   with environment:
-     HOME=/
-     TERM=linux
-     BOOT_IMAGE=/boot/bzImage-517rc6
-     efivar_ssdt=newcpu_ssdt
+1) kernel image not aligned on 64k boundary
+or
+2) Image BSS overlaps adjacent EFI memory region
 
-Similarly when "efivar_ssdt=somestring" is used, it is added to the
-Unknown parameter message and to init's environment strings, polluting
-them (see examples above).
+When kaslr is disabled(eg, EFI_RNG_PROTOCOL unavailable), it will leads
+KPTI forced ON after kernel image relocated, message shown below,
 
-Change the return value of the __setup functions to 1 to indicate
-that the __setup options have been handled.
+   CPU features: kernel page table isolation forced ON by KASLR
+   ...
+   KASLR disabled due to lack of seed
 
-Fixes: 58c5475aba67 ("x86/efi: Retrieve and assign Apple device properties")
-Fixes: 475fb4e8b2f4 ("efi / ACPI: load SSTDs from EFI variables")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: Igor Zhbanov <i.zhbanov@omprussia.ru>
-Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org
-Cc: Lukas Wunner <lukas@wunner.de>
-Cc: Octavian Purdila <octavian.purdila@intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Matt Fleming <matt@codeblueprint.co.uk>
----
- drivers/firmware/efi/apple-properties.c |    2 +-
- drivers/firmware/efi/efi.c              |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+The KASLR don't enabled actually, and KPTI is forced enabled which could
+affect performance.
 
---- linux-next-20220228.orig/drivers/firmware/efi/apple-properties.c
-+++ linux-next-20220228/drivers/firmware/efi/apple-properties.c
-@@ -24,7 +24,7 @@ static bool dump_properties __initdata;
- static int __init dump_properties_enable(char *arg)
- {
- 	dump_properties = true;
--	return 0;
-+	return 1;
- }
- 
- __setup("dump_apple_properties", dump_properties_enable);
---- linux-next-20220228.orig/drivers/firmware/efi/efi.c
-+++ linux-next-20220228/drivers/firmware/efi/efi.c
-@@ -212,7 +212,7 @@ static int __init efivar_ssdt_setup(char
- 		memcpy(efivar_ssdt, str, strlen(str));
- 	else
- 		pr_warn("efivar_ssdt: name too long: %s\n", str);
--	return 0;
-+	return 1;
- }
- __setup("efivar_ssdt=", efivar_ssdt_setup);
- 
+I found commit 7c116db24d94 ("efi/libstub/arm64: Retain 2MB kernel Image
+alignment if !KASLR") in v5.8, should we retain 2M alignment if kernel image
+is bad aligned at entry or BSS overlaps?
+
+
+diff --git a/drivers/firmware/efi/libstub/arm64-stub.c 
+b/drivers/firmware/efi/libstub/arm64-stub.c
+index 9cc556013d08..47ecd9b80db3 100644
+--- a/drivers/firmware/efi/libstub/arm64-stub.c
++++ b/drivers/firmware/efi/libstub/arm64-stub.c
+@@ -87,6 +87,7 @@ efi_status_t handle_kernel_image(unsigned long 
+*image_addr,
+  {
+         efi_status_t status;
+         unsigned long kernel_size, kernel_memsize = 0;
++       bool need_2m_aligned = false;
+         u32 phys_seed = 0;
+
+         /*
+@@ -119,9 +120,11 @@ efi_status_t handle_kernel_image(unsigned long 
+*image_addr,
+         if (image->image_base != _text)
+                 efi_err("FIRMWARE BUG: efi_loaded_image_t::image_base 
+has bogus value\n");
+
+-       if (!IS_ALIGNED((u64)_text, SEGMENT_ALIGN))
++       if (!IS_ALIGNED((u64)_text, SEGMENT_ALIGN)) {
++               need_2m_aligned = true;
+                 efi_err("FIRMWARE BUG: kernel image not aligned on %dk 
+boundary\n",
+                         SEGMENT_ALIGN >> 10);
++       }
+
+         kernel_size = _edata - _text;
+         kernel_memsize = kernel_size + (_end - _edata);
+@@ -142,6 +145,7 @@ efi_status_t handle_kernel_image(unsigned long 
+*image_addr,
+
+         if (status != EFI_SUCCESS) {
+                 if (!check_image_region((u64)_text, kernel_memsize)) {
++                       need_2m_aligned = true;
+                         efi_err("FIRMWARE BUG: Image BSS overlaps 
+adjacent EFI memory region\n");
+                 } else if (IS_ALIGNED((u64)_text, min_kimg_align)) {
+                         /*
+@@ -152,7 +156,8 @@ efi_status_t handle_kernel_image(unsigned long 
+*image_addr,
+                         *reserve_size = 0;
+                         return EFI_SUCCESS;
+                 }
+-
++               if (efi_nokaslr & need_2m_aligned)
++                       min_kimg_align = MIN_KIMG_ALIGN;
+                 status = efi_allocate_pages_aligned(*reserve_size, 
+reserve_addr,
+                                                     ULONG_MAX, 
+min_kimg_align);
