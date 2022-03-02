@@ -2,172 +2,256 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B69A34C8C16
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Mar 2022 13:58:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EFF54C9B6E
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Mar 2022 03:50:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230415AbiCAM64 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 1 Mar 2022 07:58:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37902 "EHLO
+        id S239163AbiCBCvO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 1 Mar 2022 21:51:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234888AbiCAM6y (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Mar 2022 07:58:54 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D501015A33
-        for <linux-efi@vger.kernel.org>; Tue,  1 Mar 2022 04:58:11 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5B31DB80ACB
-        for <linux-efi@vger.kernel.org>; Tue,  1 Mar 2022 12:58:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC2FC36AEA
-        for <linux-efi@vger.kernel.org>; Tue,  1 Mar 2022 12:58:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1646139489;
-        bh=oO15uM2g5KV3kj0Wtl8vsq/R8QnLI6yfPGDIHa1QlsU=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=e+9nSUG59IZvP1TnIS4v47rdQf3FUeo+ntQKnPWt77tZYv+3qsSWghumf+lpRpoZI
-         Z0ZT3cJlzlW3wylH2AfJkfIId+QxTRMlz9Dy5j5Y9JxjN0hU7RWiyN98beGfGIuweX
-         iJe29CdSYV+SqH/DjsYoUHBc9Eh5awhU3gHQuU1E44qY4utPsHCuL5a4IJYJnF/vHT
-         nDoL19+cQe6csNtu4hwRWQsAp41Ps3USMMHQb0BoisqQsT3Go8ejUdQq62mrkWyOf3
-         cxpYIMIgkZiLCgi6tI9vdR6fgwn5XMhwVSPEeubJyhOQCNvA5dj3FCfMPmDN7I6K0I
-         xBe9LSJhRs7vA==
-Received: by mail-yb1-f178.google.com with SMTP id b35so26949771ybi.13
-        for <linux-efi@vger.kernel.org>; Tue, 01 Mar 2022 04:58:09 -0800 (PST)
-X-Gm-Message-State: AOAM530Z3Enjm5p2OlHRN+SKgv43S8JUmoW81qmZo8awSol2RB4BTFjA
-        Yz6S+KRq7pSOBBiFMm08t7wCmDwhU2HoM3XtggQ=
-X-Google-Smtp-Source: ABdhPJw1sd1iF21JSaK7ZWYpKZfj+/6o3ZNy296RvyKCleOArEHmtluYMgFKf50xXwVhO+t5MRQHnSnraNuaTT5Nb6g=
-X-Received: by 2002:a25:4214:0:b0:624:6215:4823 with SMTP id
- p20-20020a254214000000b0062462154823mr23744241yba.432.1646139488054; Tue, 01
- Mar 2022 04:58:08 -0800 (PST)
+        with ESMTP id S239167AbiCBCvO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Mar 2022 21:51:14 -0500
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E95C2AB475
+        for <linux-efi@vger.kernel.org>; Tue,  1 Mar 2022 18:50:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1646189432; x=1677725432;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=eoHfgChYosAG3lrcJTD3TkkcHiPENUi6fz2udL4gAtM=;
+  b=Ydf72jSni6rXd9FgWuU5pjwFFZrKuEttYSb603ioaFF2dCWVUpvrgRKC
+   6nV8GUsL/1anRMIiC+c8IQ2HxyTTOhqvo2yPDxwlOJW56UjBrHYugFrDb
+   Rb57GFPI20ZrUpInflZ1+6sfJkgsoh42gH45+x3FKipcFnUqPI4AmZrcl
+   Z8H/U/Fh6/0KWlbSy4/3IuMAYueNGUNX2EcBjjbnATK8xM/nb4DKPCXbo
+   pFrFAT6RwgyzsJReNxTU/3jpYhCoyoYJMsikkWDI1EaaeZ2xXHxY1aRwJ
+   HO+4nHz5nDi8kWIVF6ECdvVJforHM4kIbZos4BV/O0Bd/6dB/HfI9inJY
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10273"; a="233910642"
+X-IronPort-AV: E=Sophos;i="5.90,146,1643702400"; 
+   d="scan'208";a="233910642"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2022 18:50:31 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,146,1643702400"; 
+   d="scan'208";a="508042917"
+Received: from lkp-server02.sh.intel.com (HELO e9605edfa585) ([10.239.97.151])
+  by orsmga002.jf.intel.com with ESMTP; 01 Mar 2022 18:50:28 -0800
+Received: from kbuild by e9605edfa585 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nPF4N-0000Uw-Ro; Wed, 02 Mar 2022 02:50:27 +0000
+Date:   Wed, 02 Mar 2022 09:35:32 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ 9feaf8b387ee0ece9c1d7add308776b502a35d0c
+Message-ID: <621ec9e4.BidU9ih5nbQTv8jA%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <894d1598-7b05-9406-5c1a-162b749bb4e8@huawei.com>
- <CAMj1kXH3p3fTF-MKqJ6TAYc3Jm0WRit8u+ugjZdr-ykAR8ahTA@mail.gmail.com> <4792d478-edea-6c72-3e08-cf2a390f5a7c@huawei.com>
-In-Reply-To: <4792d478-edea-6c72-3e08-cf2a390f5a7c@huawei.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 1 Mar 2022 13:57:55 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXH=Sy8m_Zi5PNDqX3GQqFQdXnd1DQkxGhEeM-uovfvVLw@mail.gmail.com>
-Message-ID: <CAMj1kXH=Sy8m_Zi5PNDqX3GQqFQdXnd1DQkxGhEeM-uovfvVLw@mail.gmail.com>
-Subject: Re: [Question] Should retain 2M alignment if kernel image is bad
- aligned at entry or BSS overlaps?
-To:     Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc:     Will Deacon <will@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 1 Mar 2022 at 11:34, Kefeng Wang <wangkefeng.wang@huawei.com> wrote=
-:
->
->
-> On 2022/3/1 15:22, Ard Biesheuvel wrote:
-> > On Tue, 1 Mar 2022 at 07:50, Kefeng Wang <wangkefeng.wang@huawei.com> w=
-rote:
-> >> Hi Ard=EF=BC=8CWill and all maintainer=EF=BC=8C
-> >>
-> >> As commit 3a262423755b ("efi/libstub: arm64: Relax 2M alignment again
-> >> for relocatable kernels") saids, a relocatable image does not need to
-> >> be copied to a 2M aligned offset if it was loaded on a 64k boundary
-> >> (for a 4 KB granule kernel) by EFI. But if there is some FIRMWARE BUG,
-> >>
-> >> 1) kernel image not aligned on 64k boundary
-> >> or
-> >> 2) Image BSS overlaps adjacent EFI memory region
-> >>
-> >> When kaslr is disabled(eg, EFI_RNG_PROTOCOL unavailable), it will lead=
-s
-> >> KPTI forced ON after kernel image relocated, message shown below,
-> >>
-> >>     CPU features: kernel page table isolation forced ON by KASLR
-> >>     ...
-> >>     KASLR disabled due to lack of seed
-> >>
-> >> The KASLR don't enabled actually, and KPTI is forced enabled which cou=
-ld
-> >> affect performance.
-> >>
-> > This message is misleading. If the alignment modulo 2M !=3D 0, we still
-> > have 5 bits of 'randomization', although these bits are probably
-> > highly predictable on a given system.
-> Yes=EF=BC=8C this kernel boot message is misleading, I am confused and fi=
-nd
-> commit 3a262423755b ("efi/libstub: arm64: Relax 2M alignment again for
-> relocatable kernels") leads to different behavior about KPTI.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: 9feaf8b387ee0ece9c1d7add308776b502a35d0c  efi: fix return value of __setup handlers
 
-That commit log explains how we ended up forcing 2M alignment
-inadvertently if the EFI_RNG_PROTOCOL was not available. If we don't
-force 2M alignment, and the physical address of the kernel happens to
-be misaligned modulo 2M, the resulting offset is reused for virtual
-randomization as well. Hence the 5 additional bits.
+elapsed time: 1018m
 
-Given the predictability of those bits when used on their own, we
-could decide to disable KPTI in this case as well.
+configs tested: 172
+configs skipped: 3
 
-> >> I found commit 7c116db24d94 ("efi/libstub/arm64: Retain 2MB kernel Ima=
-ge
-> >> alignment if !KASLR") in v5.8, should we retain 2M alignment if kernel=
- image
-> >> is bad aligned at entry or BSS overlaps?
-> >>
-> > Personally, I think we're doing enough already to deal with Redhat's
-> > broken out-of-tree GRUB/SHIM concoction, which is the primary reason
-> > for these workarounds  IIRC.
->
-> Not sure about this, what's your mean is that error message is enough and
->
-> no need to adjust the alignment when image with bad aligned at entry or
-> BSS overlaps?
->
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-I am having difficulty understanding which part of the current
-behavior you think is causing a problem.
+gcc tested configs:
+arm                                 defconfig
+arm                              allyesconfig
+arm64                               defconfig
+arm64                            allyesconfig
+arm                              allmodconfig
+i386                          randconfig-c001
+arc                        vdk_hs38_defconfig
+m68k                       m5249evb_defconfig
+powerpc                      pasemi_defconfig
+sh                          kfr2r09_defconfig
+mips                     loongson1b_defconfig
+powerpc                 mpc837x_mds_defconfig
+sh                     magicpanelr2_defconfig
+h8300                       h8s-sim_defconfig
+nios2                         10m50_defconfig
+mips                           jazz_defconfig
+nds32                               defconfig
+powerpc                     tqm8548_defconfig
+openrisc                 simple_smp_defconfig
+sh                        sh7757lcr_defconfig
+powerpc                         ps3_defconfig
+arm                       multi_v4t_defconfig
+openrisc                  or1klitex_defconfig
+ia64                            zx1_defconfig
+m68k                       m5475evb_defconfig
+sparc                       sparc64_defconfig
+ia64                             alldefconfig
+arm                          iop32x_defconfig
+arm                     eseries_pxa_defconfig
+powerpc                      mgcoge_defconfig
+arc                    vdk_hs38_smp_defconfig
+mips                        vocore2_defconfig
+powerpc                      tqm8xx_defconfig
+arm                         nhk8815_defconfig
+mips                  maltasmvp_eva_defconfig
+m68k                         amcore_defconfig
+parisc64                         alldefconfig
+powerpc                mpc7448_hpc2_defconfig
+xtensa                              defconfig
+arm                        oxnas_v6_defconfig
+arc                           tb10x_defconfig
+arm                           h5000_defconfig
+xtensa                       common_defconfig
+powerpc                     redwood_defconfig
+parisc                generic-64bit_defconfig
+mips                          rb532_defconfig
+um                               alldefconfig
+sh                        edosk7705_defconfig
+sh                          polaris_defconfig
+sh                          urquell_defconfig
+arm                          gemini_defconfig
+mips                            ar7_defconfig
+powerpc                      arches_defconfig
+powerpc                        warp_defconfig
+mips                           ip32_defconfig
+sh                            hp6xx_defconfig
+sh                      rts7751r2d1_defconfig
+sh                           se7724_defconfig
+h8300                            alldefconfig
+arm                            zeus_defconfig
+arm                         assabet_defconfig
+sh                           se7343_defconfig
+mips                  decstation_64_defconfig
+sh                            migor_defconfig
+m68k                        stmark2_defconfig
+mips                       bmips_be_defconfig
+arm                       imx_v6_v7_defconfig
+microblaze                          defconfig
+m68k                          multi_defconfig
+riscv                    nommu_k210_defconfig
+ia64                        generic_defconfig
+csky                             alldefconfig
+sh                          lboxre2_defconfig
+arm                         axm55xx_defconfig
+sh                         ecovec24_defconfig
+sh                           se7780_defconfig
+arm                  randconfig-c002-20220301
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                             allnoconfig
+nios2                               defconfig
+arc                              allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+nios2                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+x86_64                        randconfig-a006
+i386                          randconfig-a003
+i386                          randconfig-a001
+i386                          randconfig-a005
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a015
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+arc                  randconfig-r043-20220301
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+x86_64                                  kexec
 
-In a nutshell, what the current code aims to do is to only move the
-image in memory if needed, and just boot if where it was loaded by EFI
-otherwise.
+clang tested configs:
+x86_64                        randconfig-c007
+powerpc              randconfig-c003-20220301
+riscv                randconfig-c006-20220301
+i386                          randconfig-c001
+arm                  randconfig-c002-20220301
+mips                 randconfig-c004-20220301
+mips                  cavium_octeon_defconfig
+powerpc                 mpc832x_rdb_defconfig
+arm                                 defconfig
+powerpc                  mpc866_ads_defconfig
+powerpc                     mpc5200_defconfig
+arm                          imote2_defconfig
+powerpc                      walnut_defconfig
+riscv                    nommu_virt_defconfig
+arm                         bcm2835_defconfig
+arm                         palmz72_defconfig
+arm                         orion5x_defconfig
+arm                        neponset_defconfig
+powerpc                        fsp2_defconfig
+arm                           spitz_defconfig
+arm                        spear3xx_defconfig
+x86_64                        randconfig-a001
+x86_64                        randconfig-a005
+x86_64                        randconfig-a003
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
+hexagon              randconfig-r045-20220301
+hexagon              randconfig-r041-20220301
+riscv                randconfig-r042-20220301
+s390                 randconfig-r044-20220301
 
-Reasons for moving it could be any of:
-- KASLR is enabled and we have a seed
-- nokaslr was passed, and we are not aligned to 2M
-- we are running a 64k pages + VMAP stack build, and the image is not
-aligned to 128k
-- the PE/COFF loader is broken, and ignored the minimum 64k alignment
-in the PE/COFF header
-- the PE/COFF loader is broken, and ignored the BSS size, resulting in
-an overlap with a memory region that is already in use.
-
-As you might have guessed, my grumbling about GRUB/SHIM was in
-relation to the latter 2 points - upstream GRUB does not have its own
-PE/COFF loader, but SHIM/GRUB implement their own, and don't follow
-the PE/COFF spec too rigorously.
-
-> > You can already pass nokalsr on the kernel command line if you want to
-> > avoid the downsides entirely, so as I understand it, this is mostly
-> > about an unquantified performance gain on systems that use a broken
-> > bootloader and lack the entropy source for a KASLR seed, but are not
-> > able to put nokaslr on the command line?
->
-> nokaslr will use 2M alignment by default, but if some board with new
-> BIOS/GRUB
->
-> the kaslr won't enabled unless change the grub to drop it one by one, it
-> is not kind
->
-> for production deployment.
->
-> Do you think the following adjustment make sense or it is definitely wron=
-g?
->
-
-I can only answer this if I understand which problem it solves. Why do
-you need the 2M alignment in this case?
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
