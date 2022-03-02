@@ -2,58 +2,87 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EFF54C9B6E
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Mar 2022 03:50:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2222A4CA012
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Mar 2022 09:56:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239163AbiCBCvO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 1 Mar 2022 21:51:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60300 "EHLO
+        id S240267AbiCBI5g (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 2 Mar 2022 03:57:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239167AbiCBCvO (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Mar 2022 21:51:14 -0500
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E95C2AB475
-        for <linux-efi@vger.kernel.org>; Tue,  1 Mar 2022 18:50:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1646189432; x=1677725432;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=eoHfgChYosAG3lrcJTD3TkkcHiPENUi6fz2udL4gAtM=;
-  b=Ydf72jSni6rXd9FgWuU5pjwFFZrKuEttYSb603ioaFF2dCWVUpvrgRKC
-   6nV8GUsL/1anRMIiC+c8IQ2HxyTTOhqvo2yPDxwlOJW56UjBrHYugFrDb
-   Rb57GFPI20ZrUpInflZ1+6sfJkgsoh42gH45+x3FKipcFnUqPI4AmZrcl
-   Z8H/U/Fh6/0KWlbSy4/3IuMAYueNGUNX2EcBjjbnATK8xM/nb4DKPCXbo
-   pFrFAT6RwgyzsJReNxTU/3jpYhCoyoYJMsikkWDI1EaaeZ2xXHxY1aRwJ
-   HO+4nHz5nDi8kWIVF6ECdvVJforHM4kIbZos4BV/O0Bd/6dB/HfI9inJY
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10273"; a="233910642"
-X-IronPort-AV: E=Sophos;i="5.90,146,1643702400"; 
-   d="scan'208";a="233910642"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2022 18:50:31 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,146,1643702400"; 
-   d="scan'208";a="508042917"
-Received: from lkp-server02.sh.intel.com (HELO e9605edfa585) ([10.239.97.151])
-  by orsmga002.jf.intel.com with ESMTP; 01 Mar 2022 18:50:28 -0800
-Received: from kbuild by e9605edfa585 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nPF4N-0000Uw-Ro; Wed, 02 Mar 2022 02:50:27 +0000
-Date:   Wed, 02 Mar 2022 09:35:32 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- 9feaf8b387ee0ece9c1d7add308776b502a35d0c
-Message-ID: <621ec9e4.BidU9ih5nbQTv8jA%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S240232AbiCBI5f (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Mar 2022 03:57:35 -0500
+Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com [IPv6:2607:f8b0:4864:20::e35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBBE15FF1E;
+        Wed,  2 Mar 2022 00:56:51 -0800 (PST)
+Received: by mail-vs1-xe35.google.com with SMTP id g21so1081139vsp.6;
+        Wed, 02 Mar 2022 00:56:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=HcoEJcECMe/jotZIINGybFP8QW9wjBMfp8v6i5TG95I=;
+        b=JBlTwDnfrOHbBBo1U81GQiw+GgldS4rNbUVuCvR4Bume8CMcpp7dy2Z6y1HPBVQxx4
+         fEkTD2Mf2dkkiAPwhi/6LRon4XKgub+wvS7UTjyz7usPC5nHOal2qiIf+1CuIBLxKpM1
+         FnasKV74JGxVHGuNfW+gt3mqIn4ORlkBV3oNrhMPO6mvWQHjRgJ8uwQfsdFDTKlfiF5n
+         0QiNc/Ybq5ifH7iq/lx7xbgSTPerbo9Eu+qqyLYEXqok3zlpO4Ov1rg9UvinUs3txdLP
+         KVdN7dxSXweSIKX5bi9vflS4+LXhDKkci7kRx3F52qNOLNchw2mPrW3FoAHWVTAtDFsm
+         1UHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HcoEJcECMe/jotZIINGybFP8QW9wjBMfp8v6i5TG95I=;
+        b=e68aW3EGx3/XOIwf5zDIUketclI1o0AjHGv+GBEs0IF7o9yta0N1nkVmlddutfgGwM
+         xOQVpyZHYCdVq5ZXEtv5Wna3sVCC0XxRFx8a8wRiYgItQA5k0M+55u2qOS0/8DoN2Rn2
+         6q+kibrK95e1fvYDsFBvvR8FeC2L256zJWMjl/X57gGnGT354RK28qF+ddDFI1JSNvl5
+         vsjC79nHHl74uHHZGe3KYHwStFvsNxPGGvNQbcJfryzPXrYGW0ov9IRihF18HMnoHoKK
+         b3kJilDNCbcPyrxxOTGYTkBIhMwMkW+LV7+5x514Oq1ZhG1NwdzV9mE9YCr/ce34jCkj
+         Nq3Q==
+X-Gm-Message-State: AOAM5326w/dUS/YOEg68pjZwMXtCXDjwif0a3wboh1Nf4+yhJl406hUw
+        Zaz1vwnImjOSaueD4jdrqScaEBVboAS/pzorRqRdzaBVGJE=
+X-Google-Smtp-Source: ABdhPJyDDEvUmvEeK1dRwMKTOHXN/Nslw1Ti8bPg/TfWL4Xs69not8WaPnMybQMLO7Gx2wlKMblqH8P/5S/OqBjHR8c=
+X-Received: by 2002:a05:6102:5589:b0:31b:dff9:3ddb with SMTP id
+ dc9-20020a056102558900b0031bdff93ddbmr12089286vsb.62.1646211410984; Wed, 02
+ Mar 2022 00:56:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+References: <20220226110338.77547-1-chenhuacai@loongson.cn>
+ <20220226110338.77547-10-chenhuacai@loongson.cn> <CAMj1kXHWRZcjF9H2jZ+p-HNuXyPs-=9B8WiYLsrDJGpipgKo_w@mail.gmail.com>
+ <YhupaVZvbipgke2Z@kroah.com> <CAAhV-H6hmvyniHP-CMxtOopRHp6XYaF58re13snMrk_Umj+wSQ@mail.gmail.com>
+ <CAMj1kXFa447Z21q3uu0UFExDDDG9Y42ZHtiUppu6QpuNA_5bhA@mail.gmail.com>
+ <CAAhV-H7X+Txq4HaaF49QZ9deD=Dwx_GX-2E9q_nA8P76ZRDeXg@mail.gmail.com>
+ <CAMj1kXGH1AtL8_KbFkK+FRgWQPzPm1dCdvEF0A2KksREGTSeCg@mail.gmail.com>
+ <CAAhV-H6fdJwbVG_m0ZL_JGROKCrCbc-fKpj3dnOowaEUA+3ujQ@mail.gmail.com>
+ <CAK8P3a2hr2rjyLpkeG1EKiOVGrY4UCB61OHGj5nzft-KCS3jYA@mail.gmail.com>
+ <CAMj1kXHGG80LdNUUA+Ug1VBXWuvtPxKpqnuChg2N=6Hf2EhY7g@mail.gmail.com>
+ <CAAhV-H6dxkdmDizd+ZVhJ_zHZ9RK8QjKU-3U-CaovLiNbEVpbg@mail.gmail.com> <CAK8P3a2wF2XA8wCFtP9RNTNQf3W9D8fKOuQ704yE+dRSS5aCVw@mail.gmail.com>
+In-Reply-To: <CAK8P3a2wF2XA8wCFtP9RNTNQf3W9D8fKOuQ704yE+dRSS5aCVw@mail.gmail.com>
+From:   Huacai Chen <chenhuacai@gmail.com>
+Date:   Wed, 2 Mar 2022 16:56:39 +0800
+Message-ID: <CAAhV-H65PeK8w0U2DSbQ0eSWzAR-zjhPz8swSgZhbtKKJAYAKg@mail.gmail.com>
+Subject: Re: [PATCH V6 09/22] LoongArch: Add boot and setup routines
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Airlie <airlied@linux.ie>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Xuefeng Li <lixuefeng@loongson.cn>,
+        Yanteng Si <siyanteng@loongson.cn>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,197 +90,75 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
-branch HEAD: 9feaf8b387ee0ece9c1d7add308776b502a35d0c  efi: fix return value of __setup handlers
+Hi, Arnd & Ard,
 
-elapsed time: 1018m
+On Tue, Mar 1, 2022 at 6:19 PM Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Tue, Mar 1, 2022 at 5:17 AM Huacai Chen <chenhuacai@gmail.com> wrote:
+> > On Mon, Feb 28, 2022 at 7:35 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+> > > On Mon, 28 Feb 2022 at 12:24, Arnd Bergmann <arnd@arndb.de> wrote:
+> > > > On Mon, Feb 28, 2022 at 11:42 AM Huacai Chen <chenhuacai@gmail.com> wrote:
+> > > > Can't you just use the UEFI protocol for kernel entry regardless
+> > > > of the bootloader? It seems odd to use a different protocol for loading
+> > > > grub and the kernel, especially if that means you end up having to
+> > > > support both protocols inside of u-boot and grub, in order to chain-load
+> > > > a uefi application like grub.
+> > > >
+> > >
+> > > I think this would make sense. Now that the EFI stub has generic
+> > > support for loading the initrd via a UEFI specific protocol (of which
+> > > u-boot already carries an implementation), booting via UEFI only would
+> > > mean that no Linux boot protocol would need to be defined outside of
+> > > the kernel at all (i.e., where to load the kernel, where to put the
+> > > command line, where to put the initrd, other arch specific rules etc
+> > > etc) UEFI already supports both ACPI and DT boot
+> >
+> > After one night thinking, I agree with Ard that we can use RISCV-style
+> > fdt to support the raw elf kernel at present, and add efistub support
+> > after new UEFI SPEC released.
+>
+> I think that is the opposite of what Ard and I discussed above.
+Hmm, I thought that new UEFI SPEC is a requirement of efistub, maybe I'm wrong?
 
-configs tested: 172
-configs skipped: 3
+>
+> > If I'm right, it seems that RISC-V passes a0 (hartid) and a1 (fdt
+> > pointer, which contains cmdline, initrd, etc.) to the raw elf kernel.
+> > And in my opinion, the main drawback of current LoongArch method
+> > (a0=argc a1=argv a2=bootparamsinterface pointer) is it uses a
+> > non-standard method to pass kernel args and initrd. So, can the below
+> > new solution be acceptable?
+> >
+> > a0=bootparamsinterface pointer (the same as a2 in current method)
+> > a1=fdt pointer (contains cmdline, initrd, etc., like RISC-V, I think
+> > this is the standard method)
+>
+> It would seem more logical to me to keep those details as part of the
+> interface between the EFI stub and the kernel, rather than the
+> documented boot interface.
+>
+> You said that there is already grub support using the UEFI
+> loader, so I assume you have a working draft of the boot
+> protocol. Are there still open questions about the interface
+> definition for that preventing you from using it as the only
+> way to enter the kernel from a bootloader?
+Things become simple if we only consider efistub rather than raw elf.
+But there are still some problems:
+1, We want the first patch series as minimal as possible, efistub
+support will add a lot of code.
+2, EFISTUB hides the interface between bootloader and raw kernel, but
+the interface does actually exist (efistub itself is also a
+bootloader, though it binds with the raw kernel). In the current
+implementation (a0=argc a1=argv a2=bootparaminterface), we should
+select EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER which is marked as
+deprecated. Is this acceptable? If not, we still need to change the
+bootloader-kernel interface, maybe use the method in my previous
+email?
+3, I know things without upstream means "nothing" for the community,
+but if we can provide raw elf kernel support to be compatible with
+existing products (not just a working draft, they are widely used
+now), it also seems reasonable.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Huacai
 
-gcc tested configs:
-arm                                 defconfig
-arm                              allyesconfig
-arm64                               defconfig
-arm64                            allyesconfig
-arm                              allmodconfig
-i386                          randconfig-c001
-arc                        vdk_hs38_defconfig
-m68k                       m5249evb_defconfig
-powerpc                      pasemi_defconfig
-sh                          kfr2r09_defconfig
-mips                     loongson1b_defconfig
-powerpc                 mpc837x_mds_defconfig
-sh                     magicpanelr2_defconfig
-h8300                       h8s-sim_defconfig
-nios2                         10m50_defconfig
-mips                           jazz_defconfig
-nds32                               defconfig
-powerpc                     tqm8548_defconfig
-openrisc                 simple_smp_defconfig
-sh                        sh7757lcr_defconfig
-powerpc                         ps3_defconfig
-arm                       multi_v4t_defconfig
-openrisc                  or1klitex_defconfig
-ia64                            zx1_defconfig
-m68k                       m5475evb_defconfig
-sparc                       sparc64_defconfig
-ia64                             alldefconfig
-arm                          iop32x_defconfig
-arm                     eseries_pxa_defconfig
-powerpc                      mgcoge_defconfig
-arc                    vdk_hs38_smp_defconfig
-mips                        vocore2_defconfig
-powerpc                      tqm8xx_defconfig
-arm                         nhk8815_defconfig
-mips                  maltasmvp_eva_defconfig
-m68k                         amcore_defconfig
-parisc64                         alldefconfig
-powerpc                mpc7448_hpc2_defconfig
-xtensa                              defconfig
-arm                        oxnas_v6_defconfig
-arc                           tb10x_defconfig
-arm                           h5000_defconfig
-xtensa                       common_defconfig
-powerpc                     redwood_defconfig
-parisc                generic-64bit_defconfig
-mips                          rb532_defconfig
-um                               alldefconfig
-sh                        edosk7705_defconfig
-sh                          polaris_defconfig
-sh                          urquell_defconfig
-arm                          gemini_defconfig
-mips                            ar7_defconfig
-powerpc                      arches_defconfig
-powerpc                        warp_defconfig
-mips                           ip32_defconfig
-sh                            hp6xx_defconfig
-sh                      rts7751r2d1_defconfig
-sh                           se7724_defconfig
-h8300                            alldefconfig
-arm                            zeus_defconfig
-arm                         assabet_defconfig
-sh                           se7343_defconfig
-mips                  decstation_64_defconfig
-sh                            migor_defconfig
-m68k                        stmark2_defconfig
-mips                       bmips_be_defconfig
-arm                       imx_v6_v7_defconfig
-microblaze                          defconfig
-m68k                          multi_defconfig
-riscv                    nommu_k210_defconfig
-ia64                        generic_defconfig
-csky                             alldefconfig
-sh                          lboxre2_defconfig
-arm                         axm55xx_defconfig
-sh                         ecovec24_defconfig
-sh                           se7780_defconfig
-arm                  randconfig-c002-20220301
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nds32                             allnoconfig
-nios2                               defconfig
-arc                              allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-nios2                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-i386                          randconfig-a003
-i386                          randconfig-a001
-i386                          randconfig-a005
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-x86_64                        randconfig-a015
-i386                          randconfig-a014
-i386                          randconfig-a012
-i386                          randconfig-a016
-arc                  randconfig-r043-20220301
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                                  kexec
-
-clang tested configs:
-x86_64                        randconfig-c007
-powerpc              randconfig-c003-20220301
-riscv                randconfig-c006-20220301
-i386                          randconfig-c001
-arm                  randconfig-c002-20220301
-mips                 randconfig-c004-20220301
-mips                  cavium_octeon_defconfig
-powerpc                 mpc832x_rdb_defconfig
-arm                                 defconfig
-powerpc                  mpc866_ads_defconfig
-powerpc                     mpc5200_defconfig
-arm                          imote2_defconfig
-powerpc                      walnut_defconfig
-riscv                    nommu_virt_defconfig
-arm                         bcm2835_defconfig
-arm                         palmz72_defconfig
-arm                         orion5x_defconfig
-arm                        neponset_defconfig
-powerpc                        fsp2_defconfig
-arm                           spitz_defconfig
-arm                        spear3xx_defconfig
-x86_64                        randconfig-a001
-x86_64                        randconfig-a005
-x86_64                        randconfig-a003
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a011
-i386                          randconfig-a013
-i386                          randconfig-a015
-hexagon              randconfig-r045-20220301
-hexagon              randconfig-r041-20220301
-riscv                randconfig-r042-20220301
-s390                 randconfig-r044-20220301
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+>
+>         Arnd
