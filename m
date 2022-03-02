@@ -2,89 +2,116 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 267A64CA081
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Mar 2022 10:21:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7838C4CA1B5
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Mar 2022 11:04:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240406AbiCBJVu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 2 Mar 2022 04:21:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47070 "EHLO
+        id S240853AbiCBKFW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 2 Mar 2022 05:05:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240411AbiCBJVr (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Mar 2022 04:21:47 -0500
-Received: from mail-ua1-x931.google.com (mail-ua1-x931.google.com [IPv6:2607:f8b0:4864:20::931])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC007BB56E;
-        Wed,  2 Mar 2022 01:21:04 -0800 (PST)
-Received: by mail-ua1-x931.google.com with SMTP id l45so515556uad.1;
-        Wed, 02 Mar 2022 01:21:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=wS/4vUPXRYVqIGA3oZCkB12D/JLXUJDmy57hV8s4aLk=;
-        b=jfxy4e3b7tvL4FubDYhKLeFBCXnNgn7ZkIvZ7G6Ju1whiXXeKffe9kqLGDhACXK8rd
-         wmVresVL6k2wakjfk5MY0MUCwcilUrr3rppfSnjXIDcAU4ZQjTvXPCAkuGKo7vH8/pBR
-         h1LDbG56PfkGM48Z8VvlzemcDciMYJ0pVCI4Z8SUbmuFrh0nfSEGROzepQPJBzEtJY99
-         rnQyPAiufVJgxUffMXNqHfRNOhYuSv+xVPGZ6FgzhXfgMMsdpUKrE60wI44s35MyYbVr
-         iym250wu1uxjesqc3Vc9ACnAEWu1weRPETdBzURsv9TD5N5BquiZZ4BP7hLKTpD5sNKD
-         MMJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=wS/4vUPXRYVqIGA3oZCkB12D/JLXUJDmy57hV8s4aLk=;
-        b=6UmJ1SMSbyIvLa8Y6uaSb3K7ftxMwUP41negb+m6x3etL9gPb4RhNHpp0vlg4oUxRO
-         yNFECYRdVf3D9uTP2ADF3JuSemsptdUXk7z3c9R89xESmTkNjgoqs96jpAVOi+99m4V1
-         RQIBXUMZX8ScrtllJqTOXLCBXdBhdn5m8PVBRYM6+FxnToTLnWlfghyGM15Gm6hw8elj
-         Wxy1tK7m7+UZqsVugmHUJ3CR6tCbTfMwmSTF/BbB+9m7xqWK+dfooyo1B4p+XqSxgmBC
-         fJcK0PknaRnq0+AOc6ct8cQO4abEYQIlN4zoTN5PRKuoSgj8jizEsxL6/6sXRFEOnHnH
-         HSwA==
-X-Gm-Message-State: AOAM533gRvFunJHdvQeyZ23A0s/rrblVVqa7cuZlP5TVagdifG+r3N5S
-        pdYPb2xzL2ieytIg5zwLeDzvFuaaiJkALMvNdiBmDmG8xRw=
-X-Google-Smtp-Source: ABdhPJxHP3Lkxre1yQfztsk1TwZkqkSIi0l0AWufxuHEMHFZtgfhdjTQwz5BrajdKfCpYGxjJm8xAiHds54zc6RLTGI=
-X-Received: by 2002:ab0:654d:0:b0:347:27e5:cb4a with SMTP id
- x13-20020ab0654d000000b0034727e5cb4amr5995264uap.67.1646212863772; Wed, 02
- Mar 2022 01:21:03 -0800 (PST)
+        with ESMTP id S240837AbiCBKFT (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Mar 2022 05:05:19 -0500
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AB018F61B;
+        Wed,  2 Mar 2022 02:04:36 -0800 (PST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2229q9aj009476;
+        Wed, 2 Mar 2022 10:03:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=SSTo2zwutQqS8CLOb41niC3MNo6la48+xhRkN6n2NQA=;
+ b=IHJb59jWV2n6AVqy4QJcw5fcIGW+c5muE1Rh09k7t0/yPSG/9BxWvDdpW/7713J3IXsl
+ pDL27VWCV66aHpNOwod6yIDxXFd6EfUli7fJ/eLMNKEHoyMeRbWPezyUIPDPy0gFnD/s
+ lsJ/T9owCVHFJviCyrNjPBU+Zr87a5CUOCcHbTMgADf60+Np0jhgDi5o6WIEJAgMxlEW
+ K6m+58cVoMNH10Xmm+wgyI97ezc4eQhdFLmd3Xp9Glc3mdSu+qBsCirSJo0hnte+X+mj
+ zILR+RHwrDKNEl0DQJ/erlzioCNgm1Cx891RJAla/kx1WJtFClkG+qP3u1XVR3fbjglk 8A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3ej425k2xj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 02 Mar 2022 10:03:51 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 2229s3tb015691;
+        Wed, 2 Mar 2022 10:03:50 GMT
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3ej425k2x2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 02 Mar 2022 10:03:50 +0000
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+        by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2229x5jP017232;
+        Wed, 2 Mar 2022 10:03:49 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com [9.57.198.29])
+        by ppma02wdc.us.ibm.com with ESMTP id 3efbua3h7m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 02 Mar 2022 10:03:49 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com [9.57.199.106])
+        by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 222A3kKp43581704
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 2 Mar 2022 10:03:46 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 760462805A;
+        Wed,  2 Mar 2022 10:03:46 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BB56628072;
+        Wed,  2 Mar 2022 10:03:39 +0000 (GMT)
+Received: from [9.160.11.222] (unknown [9.160.11.222])
+        by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+        Wed,  2 Mar 2022 10:03:39 +0000 (GMT)
+Message-ID: <c197dc02-b63a-eb45-8e52-275934177d7e@linux.ibm.com>
+Date:   Wed, 2 Mar 2022 12:03:38 +0200
 MIME-Version: 1.0
-References: <20220226110338.77547-1-chenhuacai@loongson.cn>
- <20220226110338.77547-10-chenhuacai@loongson.cn> <CAMj1kXHWRZcjF9H2jZ+p-HNuXyPs-=9B8WiYLsrDJGpipgKo_w@mail.gmail.com>
- <YhupaVZvbipgke2Z@kroah.com> <CAAhV-H6hmvyniHP-CMxtOopRHp6XYaF58re13snMrk_Umj+wSQ@mail.gmail.com>
- <CAMj1kXFa447Z21q3uu0UFExDDDG9Y42ZHtiUppu6QpuNA_5bhA@mail.gmail.com>
- <CAAhV-H7X+Txq4HaaF49QZ9deD=Dwx_GX-2E9q_nA8P76ZRDeXg@mail.gmail.com>
- <CAMj1kXGH1AtL8_KbFkK+FRgWQPzPm1dCdvEF0A2KksREGTSeCg@mail.gmail.com>
- <CAAhV-H6fdJwbVG_m0ZL_JGROKCrCbc-fKpj3dnOowaEUA+3ujQ@mail.gmail.com>
- <CAK8P3a2hr2rjyLpkeG1EKiOVGrY4UCB61OHGj5nzft-KCS3jYA@mail.gmail.com>
- <CAMj1kXHGG80LdNUUA+Ug1VBXWuvtPxKpqnuChg2N=6Hf2EhY7g@mail.gmail.com>
- <CAAhV-H6dxkdmDizd+ZVhJ_zHZ9RK8QjKU-3U-CaovLiNbEVpbg@mail.gmail.com>
- <CAK8P3a2wF2XA8wCFtP9RNTNQf3W9D8fKOuQ704yE+dRSS5aCVw@mail.gmail.com>
- <CAAhV-H65PeK8w0U2DSbQ0eSWzAR-zjhPz8swSgZhbtKKJAYAKg@mail.gmail.com> <CAMj1kXFgCu659zGuZPpRLYPzFemtBv0jsOt1Yz0U0-R4DucqTw@mail.gmail.com>
-In-Reply-To: <CAMj1kXFgCu659zGuZPpRLYPzFemtBv0jsOt1Yz0U0-R4DucqTw@mail.gmail.com>
-From:   Huacai Chen <chenhuacai@gmail.com>
-Date:   Wed, 2 Mar 2022 17:20:53 +0800
-Message-ID: <CAAhV-H6GrAH_HGehqernowaTyZjQRNOyp=O8QNE3_7RHfarUFQ@mail.gmail.com>
-Subject: Re: [PATCH V6 09/22] LoongArch: Add boot and setup routines
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Subject: Re: [PATCH v11 42/45] virt: Add SEV-SNP guest driver
+Content-Language: en-US
+To:     Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
         Peter Zijlstra <peterz@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Airlie <airlied@linux.ie>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Xuefeng Li <lixuefeng@loongson.cn>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com,
+        Dov Murik <dovmurik@linux.ibm.com>
+References: <20220224165625.2175020-1-brijesh.singh@amd.com>
+ <20220224165625.2175020-43-brijesh.singh@amd.com>
+From:   Dov Murik <dovmurik@linux.ibm.com>
+In-Reply-To: <20220224165625.2175020-43-brijesh.singh@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: tPmFrfdvKtFIkwgePH8oT6yOpKKelnIg
+X-Proofpoint-ORIG-GUID: l_elf4VPUcaG_X9PErd5Ml7SuErEqAB7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-02_01,2022-02-26_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1011
+ priorityscore=1501 lowpriorityscore=0 suspectscore=0 impostorscore=0
+ phishscore=0 mlxlogscore=999 bulkscore=0 mlxscore=0 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2203020039
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H5,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -92,90 +119,108 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi, Ard,
+Hi Brijesh,
 
-On Wed, Mar 2, 2022 at 4:58 PM Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Wed, 2 Mar 2022 at 09:56, Huacai Chen <chenhuacai@gmail.com> wrote:
-> >
-> > Hi, Arnd & Ard,
-> >
-> > On Tue, Mar 1, 2022 at 6:19 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> > >
-> > > On Tue, Mar 1, 2022 at 5:17 AM Huacai Chen <chenhuacai@gmail.com> wrote:
-> > > > On Mon, Feb 28, 2022 at 7:35 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > > > On Mon, 28 Feb 2022 at 12:24, Arnd Bergmann <arnd@arndb.de> wrote:
-> > > > > > On Mon, Feb 28, 2022 at 11:42 AM Huacai Chen <chenhuacai@gmail.com> wrote:
-> > > > > > Can't you just use the UEFI protocol for kernel entry regardless
-> > > > > > of the bootloader? It seems odd to use a different protocol for loading
-> > > > > > grub and the kernel, especially if that means you end up having to
-> > > > > > support both protocols inside of u-boot and grub, in order to chain-load
-> > > > > > a uefi application like grub.
-> > > > > >
-> > > > >
-> > > > > I think this would make sense. Now that the EFI stub has generic
-> > > > > support for loading the initrd via a UEFI specific protocol (of which
-> > > > > u-boot already carries an implementation), booting via UEFI only would
-> > > > > mean that no Linux boot protocol would need to be defined outside of
-> > > > > the kernel at all (i.e., where to load the kernel, where to put the
-> > > > > command line, where to put the initrd, other arch specific rules etc
-> > > > > etc) UEFI already supports both ACPI and DT boot
-> > > >
-> > > > After one night thinking, I agree with Ard that we can use RISCV-style
-> > > > fdt to support the raw elf kernel at present, and add efistub support
-> > > > after new UEFI SPEC released.
-> > >
-> > > I think that is the opposite of what Ard and I discussed above.
-> > Hmm, I thought that new UEFI SPEC is a requirement of efistub, maybe I'm wrong?
-> >
-> > >
-> > > > If I'm right, it seems that RISC-V passes a0 (hartid) and a1 (fdt
-> > > > pointer, which contains cmdline, initrd, etc.) to the raw elf kernel.
-> > > > And in my opinion, the main drawback of current LoongArch method
-> > > > (a0=argc a1=argv a2=bootparamsinterface pointer) is it uses a
-> > > > non-standard method to pass kernel args and initrd. So, can the below
-> > > > new solution be acceptable?
-> > > >
-> > > > a0=bootparamsinterface pointer (the same as a2 in current method)
-> > > > a1=fdt pointer (contains cmdline, initrd, etc., like RISC-V, I think
-> > > > this is the standard method)
-> > >
-> > > It would seem more logical to me to keep those details as part of the
-> > > interface between the EFI stub and the kernel, rather than the
-> > > documented boot interface.
-> > >
-> > > You said that there is already grub support using the UEFI
-> > > loader, so I assume you have a working draft of the boot
-> > > protocol. Are there still open questions about the interface
-> > > definition for that preventing you from using it as the only
-> > > way to enter the kernel from a bootloader?
-> > Things become simple if we only consider efistub rather than raw elf.
-> > But there are still some problems:
-> > 1, We want the first patch series as minimal as possible, efistub
-> > support will add a lot of code.
-> > 2, EFISTUB hides the interface between bootloader and raw kernel, but
-> > the interface does actually exist (efistub itself is also a
-> > bootloader, though it binds with the raw kernel). In the current
-> > implementation (a0=argc a1=argv a2=bootparaminterface), we should
-> > select EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER which is marked as
-> > deprecated. Is this acceptable? If not, we still need to change the
-> > bootloader-kernel interface, maybe use the method in my previous
-> > email?
->
-> Why do you need this?
-Because in the current implementation (a0=argc a1=argv
-a2=bootparaminterface), initrd should be passed by cmdline
-(initrd=xxxx). If without that option, efi_load_initrd_cmdline() will
-not call handle_cmdline_files().
+On 24/02/2022 18:56, Brijesh Singh wrote:
+> The SEV-SNP specification provides the guest a mechanism to communicate
+> with the PSP without risk from a malicious hypervisor who wishes to
+> read, alter, drop or replay the messages sent. The driver uses
+> snp_issue_guest_request() to issue GHCB SNP_GUEST_REQUEST or
+> SNP_EXT_GUEST_REQUEST NAE events to submit the request to PSP.
+> 
+> The PSP requires that all communication should be encrypted using key
+> specified through the platform_data.
+> 
+> Userspace can use SNP_GET_REPORT ioctl() to query the guest attestation
+> report.
+> 
+> See SEV-SNP spec section Guest Messages for more details.
+> 
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
 
-Huacai
->
-> > 3, I know things without upstream means "nothing" for the community,
-> > but if we can provide raw elf kernel support to be compatible with
-> > existing products (not just a working draft, they are widely used
-> > now), it also seems reasonable.
-> >
-> > Huacai
-> >
-> > >
-> > >         Arnd
+[...]
+
+> +
+> +static struct snp_guest_crypto *init_crypto(struct snp_guest_dev *snp_dev, u8 *key, size_t keylen)
+> +{
+> +	struct snp_guest_crypto *crypto;
+> +
+> +	crypto = kzalloc(sizeof(*crypto), GFP_KERNEL_ACCOUNT);
+> +	if (!crypto)
+> +		return NULL;
+> +
+> +	crypto->tfm = crypto_alloc_aead("gcm(aes)", 0, 0);
+> +	if (IS_ERR(crypto->tfm))
+> +		goto e_free;
+
+
+When trying this series, the sevguest module didn't load (and printed no
+error message).  After adding some debug messages, I found that the
+crypto_alloc_read() call returned an error.  I found out that
+CONFIG_CRYPTO_GCM was disabled in my config.
+
+Consider modifying sevguest/Kconfig to force it in:
+
+
+
+diff --git a/drivers/virt/coco/sevguest/Kconfig b/drivers/virt/coco/sevguest/Kconfig
+index 2be45820e86c..74ca1fe09437 100644
+--- a/drivers/virt/coco/sevguest/Kconfig
++++ b/drivers/virt/coco/sevguest/Kconfig
+@@ -1,7 +1,9 @@
+ config SEV_GUEST
+        tristate "AMD SEV Guest driver"
+        default m
+-       depends on AMD_MEM_ENCRYPT && CRYPTO_AEAD2
++       depends on AMD_MEM_ENCRYPT
++       select CRYPTO_AEAD2
++       select CRYPTO_GCM
+        help
+          SEV-SNP firmware provides the guest a mechanism to communicate with
+          the PSP without risk from a malicious hypervisor who wishes to read,
+
+
+
+Another thing to consider is to add messages to the various error paths
+in snp_guest_probe().  Not sure what is the common practice in other modules.
+
+-Dov
+
+
+> +
+> +	if (crypto_aead_setkey(crypto->tfm, key, keylen))
+> +		goto e_free_crypto;
+> +
+> +	crypto->iv_len = crypto_aead_ivsize(crypto->tfm);
+> +	crypto->iv = kmalloc(crypto->iv_len, GFP_KERNEL_ACCOUNT);
+> +	if (!crypto->iv)
+> +		goto e_free_crypto;
+> +
+> +	if (crypto_aead_authsize(crypto->tfm) > MAX_AUTHTAG_LEN) {
+> +		if (crypto_aead_setauthsize(crypto->tfm, MAX_AUTHTAG_LEN)) {
+> +			dev_err(snp_dev->dev, "failed to set authsize to %d\n", MAX_AUTHTAG_LEN);
+> +			goto e_free_iv;
+> +		}
+> +	}
+> +
+> +	crypto->a_len = crypto_aead_authsize(crypto->tfm);
+> +	crypto->authtag = kmalloc(crypto->a_len, GFP_KERNEL_ACCOUNT);
+> +	if (!crypto->authtag)
+> +		goto e_free_auth;
+> +
+> +	return crypto;
+> +
+> +e_free_auth:
+> +	kfree(crypto->authtag);
+> +e_free_iv:
+> +	kfree(crypto->iv);
+> +e_free_crypto:
+> +	crypto_free_aead(crypto->tfm);
+> +e_free:
+> +	kfree(crypto);
+> +
+> +	return NULL;
+> +}
+
+[...]
