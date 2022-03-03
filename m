@@ -2,95 +2,103 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2C724CBD21
-	for <lists+linux-efi@lfdr.de>; Thu,  3 Mar 2022 12:51:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FB3B4CBDC1
+	for <lists+linux-efi@lfdr.de>; Thu,  3 Mar 2022 13:26:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231998AbiCCLwL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 3 Mar 2022 06:52:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47942 "EHLO
+        id S230201AbiCCM1X (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 3 Mar 2022 07:27:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229848AbiCCLwK (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 3 Mar 2022 06:52:10 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5BA7F94FD;
-        Thu,  3 Mar 2022 03:51:22 -0800 (PST)
-Received: from nazgul.tnic (nat0.nue.suse.com [IPv6:2001:67c:2178:4000::1111])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 237E61EC032C;
-        Thu,  3 Mar 2022 12:51:17 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1646308277;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=4etORIg2Q6KJ92tEY8v0D9IqX+zqC98LN3nMR0UBOqA=;
-        b=dWOeNnBF7RaxfscWLq+DFbNU8NUKF85I2GUUohS4muRNYSW163/4jCh3x+ITc+ckdPvo25
-        IE2nqZFAlPScH8tklRX9QRDxdTDsBSMRVehoLhn7MH62b6JEmH3JS66iXecq7agtZpVVFC
-        SWiu4T172cJ4CdTwu49FO/VBRl8WN1M=
-Date:   Thu, 3 Mar 2022 12:51:20 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v11 39/45] x86/sev: Use firmware-validated CPUID for
- SEV-SNP guests
-Message-ID: <YiCrp61CoqJUXm5q@nazgul.tnic>
-References: <20220224165625.2175020-1-brijesh.singh@amd.com>
- <20220224165625.2175020-40-brijesh.singh@amd.com>
+        with ESMTP id S231787AbiCCM1W (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 3 Mar 2022 07:27:22 -0500
+Received: from out30-45.freemail.mail.aliyun.com (out30-45.freemail.mail.aliyun.com [115.124.30.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 289A5179274;
+        Thu,  3 Mar 2022 04:26:35 -0800 (PST)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01424;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0V67YNvg_1646310388;
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V67YNvg_1646310388)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Thu, 03 Mar 2022 20:26:32 +0800
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+To:     bp@alien8.de, rric@kernel.org
+Cc:     mchehab@kernel.org, tony.luck@intel.com, james.morse@arm.com,
+        ardb@kernel.org, linux-edac@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        xueshuai@linux.alibaba.com, zhangliguang@linux.alibaba.com,
+        zhuo.song@linux.alibaba.com
+Subject: [PATCH v6 0/2] EDAC/ghes: refactor memory error reporting to avoid code duplication
+Date:   Thu,  3 Mar 2022 20:26:24 +0800
+Message-Id: <20220303122626.99740-1-xueshuai@linux.alibaba.com>
+X-Mailer: git-send-email 2.30.1 (Apple Git-130)
+In-Reply-To: <20211210134019.28536-1-xueshuai@linux.alibaba.com>
+References: <20211210134019.28536-1-xueshuai@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220224165625.2175020-40-brijesh.singh@amd.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Feb 24, 2022 at 10:56:19AM -0600, Brijesh Singh wrote:
-> Also add an "sev_debug" kernel command-line parameter that will be used
-> (initially) to dump the CPUID table for debugging/analysis.
+ghes_edac_report_mem_error() in ghes_edac.c is a Long Method and have
+Duplicated Code with cper_mem_err_location(), cper_dimm_err_location(), and
+cper_mem_err_type_str() in drivers/firmware/efi/cper.c. In addition, the
+cper_print_mem() in drivers/firmware/efi/cper.c only reports the error
+status and misses its description.
 
-No, not "sev_debug" - "sev=debug".
+This patch set is to refactor ghes_edac_report_mem_error with:
 
-I'm pretty sure there will be need for other SEV-specific cmdline
-options so this thing should be a set, i.e.,
-	"sev=(option1,option2?,option3?,...)"
+- Patch 01 is to wrap up error status decoding logics and reuse it in
+    cper_print_mem().
+- Patch 02 is to introduces cper_*(), into ghes_edac_report_mem_error(),
+  this can avoid bunch of duplicate code lines;
+  
+Changes since v5:
+- Delete change summary in commit log
+- Link: https://lore.kernel.org/all/20220126081702.55167-1-xueshuai@linux.alibaba.com/
+- Thanks Borislav Petkov for review comments.
 
-etc.
+Changes since v4:
+- Fix alignment and format problem
+- Link: https://lore.kernel.org/all/20220125024939.30635-1-xueshuai@linux.alibaba.com/
+- Thanks Borislav Petkov for review comments.
 
-See mcheck_enable() and the comment above it for an example.
+Changes since v3:
+
+- make cper_mem_err_status_str table a lot more compact
+- Fix alignment and format problem
+- Link: https://lore.kernel.org/all/20220124024759.19176-1-xueshuai@linux.alibaba.com/
+- Thanks Borislav Petkov for review comments.
+
+Changes since v2:
+
+- delete the unified patch
+- adjusted the order of patches
+- Link: https://lore.kernel.org/all/20211210134019.28536-1-xueshuai@linux.alibaba.com/
+- Thanks Borislav Petkov for review comments.
+
+Changes since v1:
+
+- add a new patch to unify ghes and cper before removing duplication.
+- document the changes in patch description
+- add EXPORT_SYMBOL_GPL()s for cper_*()
+- document and the dependency and add UEFI_CPER dependency explicitly
+- Link: https://lore.kernel.org/all/20211207031905.61906-2-xueshuai@linux.alibaba.com/
+- Thanks Robert Richter for review comments.
+
+Shuai Xue (2):
+  efi/cper: add cper_mem_err_status_str to decode error description
+  EDAC/ghes: use cper functions to avoid code duplication
+
+ drivers/edac/Kconfig        |   1 +
+ drivers/edac/ghes_edac.c    | 196 +++++++-----------------------------
+ drivers/firmware/efi/cper.c |  66 ++++++++----
+ include/linux/cper.h        |   3 +
+ 4 files changed, 86 insertions(+), 180 deletions(-)
 
 -- 
-Regards/Gruss,
-    Boris.
+2.20.1.12.g72788fdb
 
-https://people.kernel.org/tglx/notes-about-netiquette
