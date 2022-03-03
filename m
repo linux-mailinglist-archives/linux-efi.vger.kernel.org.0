@@ -2,173 +2,203 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A58D4CB6D2
-	for <lists+linux-efi@lfdr.de>; Thu,  3 Mar 2022 07:14:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 599654CB79D
+	for <lists+linux-efi@lfdr.de>; Thu,  3 Mar 2022 08:26:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229898AbiCCGPE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 3 Mar 2022 01:15:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33328 "EHLO
+        id S230145AbiCCH1X (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 3 Mar 2022 02:27:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229877AbiCCGPD (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 3 Mar 2022 01:15:03 -0500
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D64FC145ADB
-        for <linux-efi@vger.kernel.org>; Wed,  2 Mar 2022 22:14:10 -0800 (PST)
-Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.53])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4K8LJ309fkzdfmc;
-        Thu,  3 Mar 2022 14:12:51 +0800 (CST)
-Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Thu, 3 Mar 2022 14:14:08 +0800
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2308.21; Thu, 3 Mar 2022 14:14:08 +0800
-Message-ID: <90370cea-a3d2-6ae8-0b9d-71a3a9d97c12@huawei.com>
-Date:   Thu, 3 Mar 2022 14:14:07 +0800
+        with ESMTP id S230103AbiCCH1W (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 3 Mar 2022 02:27:22 -0500
+Received: from mail-vs1-xe2a.google.com (mail-vs1-xe2a.google.com [IPv6:2607:f8b0:4864:20::e2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AB5416DAC4;
+        Wed,  2 Mar 2022 23:26:37 -0800 (PST)
+Received: by mail-vs1-xe2a.google.com with SMTP id y26so4542769vsq.8;
+        Wed, 02 Mar 2022 23:26:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7+0LcAnmkM9wGQugbJUgBGCWlpykkWIZ5TsUJCWVKaY=;
+        b=GkeLbmqT+oboHpufnUr7gqB6fh59mYWWWWQaMIT1ZMnX01koUgMYL0wu35CNfP+S7Z
+         VFMA1bg7sn41llWanQW+9m1MZ9XdDaAXmQdjtJwRm5HsKtFEbtEX8HHqszxLr9rI0D6j
+         04s70HnwulUup7jQZ2CjhNwvH+YOEPMV4BZzSg+JOMr3p2OU77TrjXqphVT1lemsHiAW
+         dOySLvkkj2VbRLyV8wiWz0Pbw4jk4j43OcefHwuvW77mF5EphERfjJ3pbqWsnZcagjBV
+         mPmhf7qovhS4hIC87EFmI8iwedglSJsgNd+OcotW7Jy4b/fJQpn2VDVklwhntGMdOxFs
+         AFWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7+0LcAnmkM9wGQugbJUgBGCWlpykkWIZ5TsUJCWVKaY=;
+        b=SDJKIaxeWWwOLlPKS/m09xhW/WS1DRlFCOQwGmz9KDTRjwvTQjVt9jx62YUKZLbj3e
+         TgFMyD0y0ToXd1RrqgssocXsn1EvVA0+LgRqsFbh3tW5Jh9m/FberABK6K9aS3Du7mov
+         ymUI5ua4jo6GeYtuvwD6+uTGcx4gbRLJAPwKZqmsE1WM3HeK3BlCDYMIiQWiA1LWppU9
+         Wl064rlpOyW7nG88Hszps/AGxXW//w8AaEAcI3jGkj1E9zIeHHGSKHgdbtgLyzc3s5Ob
+         Kg083FJlo1eKy+XvKk2KFRgTNUw9SYYyAaznxgaqhat9UaZtwNKtfujnfTnC3Sc4DpYE
+         8Big==
+X-Gm-Message-State: AOAM530lH5hI8LKMfa2l2rDAfJjzl4lAaotkmLIOeANW0asNWK83+cPZ
+        TOgkw6u9hqp5zl3NybZVQIfmSl7CA4rQ5SzA/VM=
+X-Google-Smtp-Source: ABdhPJwXNt0lwdSdsgDKqmoV8suTuHpVysKeUjMbaUsENsF5ipByz9glwU254c25NWREu+PvfmTC5kitg70vjmTSW9g=
+X-Received: by 2002:a05:6102:5589:b0:31b:dff9:3ddb with SMTP id
+ dc9-20020a056102558900b0031bdff93ddbmr14291452vsb.62.1646292396712; Wed, 02
+ Mar 2022 23:26:36 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.1
-Subject: Re: [Question] Should retain 2M alignment if kernel image is bad
- aligned at entry or BSS overlaps?
-Content-Language: en-US
+References: <20220226110338.77547-1-chenhuacai@loongson.cn>
+ <20220226110338.77547-10-chenhuacai@loongson.cn> <CAMj1kXHWRZcjF9H2jZ+p-HNuXyPs-=9B8WiYLsrDJGpipgKo_w@mail.gmail.com>
+ <YhupaVZvbipgke2Z@kroah.com> <CAAhV-H6hmvyniHP-CMxtOopRHp6XYaF58re13snMrk_Umj+wSQ@mail.gmail.com>
+ <CAMj1kXFa447Z21q3uu0UFExDDDG9Y42ZHtiUppu6QpuNA_5bhA@mail.gmail.com>
+ <CAAhV-H7X+Txq4HaaF49QZ9deD=Dwx_GX-2E9q_nA8P76ZRDeXg@mail.gmail.com>
+ <CAMj1kXGH1AtL8_KbFkK+FRgWQPzPm1dCdvEF0A2KksREGTSeCg@mail.gmail.com>
+ <CAAhV-H6fdJwbVG_m0ZL_JGROKCrCbc-fKpj3dnOowaEUA+3ujQ@mail.gmail.com>
+ <CAK8P3a2hr2rjyLpkeG1EKiOVGrY4UCB61OHGj5nzft-KCS3jYA@mail.gmail.com>
+ <CAMj1kXHGG80LdNUUA+Ug1VBXWuvtPxKpqnuChg2N=6Hf2EhY7g@mail.gmail.com>
+ <CAAhV-H6dxkdmDizd+ZVhJ_zHZ9RK8QjKU-3U-CaovLiNbEVpbg@mail.gmail.com>
+ <CAK8P3a2wF2XA8wCFtP9RNTNQf3W9D8fKOuQ704yE+dRSS5aCVw@mail.gmail.com>
+ <CAAhV-H65PeK8w0U2DSbQ0eSWzAR-zjhPz8swSgZhbtKKJAYAKg@mail.gmail.com>
+ <CAMj1kXFgCu659zGuZPpRLYPzFemtBv0jsOt1Yz0U0-R4DucqTw@mail.gmail.com> <CAAhV-H6GrAH_HGehqernowaTyZjQRNOyp=O8QNE3_7RHfarUFQ@mail.gmail.com>
+In-Reply-To: <CAAhV-H6GrAH_HGehqernowaTyZjQRNOyp=O8QNE3_7RHfarUFQ@mail.gmail.com>
+From:   Huacai Chen <chenhuacai@gmail.com>
+Date:   Thu, 3 Mar 2022 15:26:25 +0800
+Message-ID: <CAAhV-H7B0xxNeTLd5n1cqPbF_hCp2N1KTbnNMAXFGxfZDzMcpw@mail.gmail.com>
+Subject: Re: [PATCH V6 09/22] LoongArch: Add boot and setup routines
 To:     Ard Biesheuvel <ardb@kernel.org>
-CC:     Will Deacon <will@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-References: <894d1598-7b05-9406-5c1a-162b749bb4e8@huawei.com>
- <CAMj1kXH3p3fTF-MKqJ6TAYc3Jm0WRit8u+ugjZdr-ykAR8ahTA@mail.gmail.com>
- <4792d478-edea-6c72-3e08-cf2a390f5a7c@huawei.com>
- <CAMj1kXH=Sy8m_Zi5PNDqX3GQqFQdXnd1DQkxGhEeM-uovfvVLw@mail.gmail.com>
-From:   Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <CAMj1kXH=Sy8m_Zi5PNDqX3GQqFQdXnd1DQkxGhEeM-uovfvVLw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: dggeme706-chm.china.huawei.com (10.1.199.102) To
- dggpemm500001.china.huawei.com (7.185.36.107)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Airlie <airlied@linux.ie>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Xuefeng Li <lixuefeng@loongson.cn>,
+        Yanteng Si <siyanteng@loongson.cn>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+Hi, Ard & Arnd,
 
-On 2022/3/1 20:57, Ard Biesheuvel wrote:
-> On Tue, 1 Mar 2022 at 11:34, Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
->>
->> On 2022/3/1 15:22, Ard Biesheuvel wrote:
->>> On Tue, 1 Mar 2022 at 07:50, Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
->>>> Hi Ard，Will and all maintainer，
->>>>
->>>> As commit 3a262423755b ("efi/libstub: arm64: Relax 2M alignment again
->>>> for relocatable kernels") saids, a relocatable image does not need to
->>>> be copied to a 2M aligned offset if it was loaded on a 64k boundary
->>>> (for a 4 KB granule kernel) by EFI. But if there is some FIRMWARE BUG,
->>>>
->>>> 1) kernel image not aligned on 64k boundary
->>>> or
->>>> 2) Image BSS overlaps adjacent EFI memory region
->>>>
->>>> When kaslr is disabled(eg, EFI_RNG_PROTOCOL unavailable), it will leads
->>>> KPTI forced ON after kernel image relocated, message shown below,
->>>>
->>>>      CPU features: kernel page table isolation forced ON by KASLR
->>>>      ...
->>>>      KASLR disabled due to lack of seed
->>>>
->>>> The KASLR don't enabled actually, and KPTI is forced enabled which could
->>>> affect performance.
->>>>
->>> This message is misleading. If the alignment modulo 2M != 0, we still
->>> have 5 bits of 'randomization', although these bits are probably
->>> highly predictable on a given system.
->> Yes， this kernel boot message is misleading, I am confused and find
->> commit 3a262423755b ("efi/libstub: arm64: Relax 2M alignment again for
->> relocatable kernels") leads to different behavior about KPTI.
-> That commit log explains how we ended up forcing 2M alignment
-> inadvertently if the EFI_RNG_PROTOCOL was not available. If we don't
-> force 2M alignment, and the physical address of the kernel happens to
-> be misaligned modulo 2M, the resulting offset is reused for virtual
-> randomization as well. Hence the 5 additional bits.
+On Wed, Mar 2, 2022 at 5:20 PM Huacai Chen <chenhuacai@gmail.com> wrote:
 >
-> Given the predictability of those bits when used on their own, we
-> could decide to disable KPTI in this case as well.
+> Hi, Ard,
 >
->>>> I found commit 7c116db24d94 ("efi/libstub/arm64: Retain 2MB kernel Image
->>>> alignment if !KASLR") in v5.8, should we retain 2M alignment if kernel image
->>>> is bad aligned at entry or BSS overlaps?
->>>>
->>> Personally, I think we're doing enough already to deal with Redhat's
->>> broken out-of-tree GRUB/SHIM concoction, which is the primary reason
->>> for these workarounds  IIRC.
->> Not sure about this, what's your mean is that error message is enough and
->>
->> no need to adjust the alignment when image with bad aligned at entry or
->> BSS overlaps?
->>
-> I am having difficulty understanding which part of the current
-> behavior you think is causing a problem.
+> On Wed, Mar 2, 2022 at 4:58 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+> >
+> > On Wed, 2 Mar 2022 at 09:56, Huacai Chen <chenhuacai@gmail.com> wrote:
+> > >
+> > > Hi, Arnd & Ard,
+> > >
+> > > On Tue, Mar 1, 2022 at 6:19 PM Arnd Bergmann <arnd@arndb.de> wrote:
+> > > >
+> > > > On Tue, Mar 1, 2022 at 5:17 AM Huacai Chen <chenhuacai@gmail.com> wrote:
+> > > > > On Mon, Feb 28, 2022 at 7:35 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+> > > > > > On Mon, 28 Feb 2022 at 12:24, Arnd Bergmann <arnd@arndb.de> wrote:
+> > > > > > > On Mon, Feb 28, 2022 at 11:42 AM Huacai Chen <chenhuacai@gmail.com> wrote:
+> > > > > > > Can't you just use the UEFI protocol for kernel entry regardless
+> > > > > > > of the bootloader? It seems odd to use a different protocol for loading
+> > > > > > > grub and the kernel, especially if that means you end up having to
+> > > > > > > support both protocols inside of u-boot and grub, in order to chain-load
+> > > > > > > a uefi application like grub.
+> > > > > > >
+> > > > > >
+> > > > > > I think this would make sense. Now that the EFI stub has generic
+> > > > > > support for loading the initrd via a UEFI specific protocol (of which
+> > > > > > u-boot already carries an implementation), booting via UEFI only would
+> > > > > > mean that no Linux boot protocol would need to be defined outside of
+> > > > > > the kernel at all (i.e., where to load the kernel, where to put the
+> > > > > > command line, where to put the initrd, other arch specific rules etc
+> > > > > > etc) UEFI already supports both ACPI and DT boot
+> > > > >
+> > > > > After one night thinking, I agree with Ard that we can use RISCV-style
+> > > > > fdt to support the raw elf kernel at present, and add efistub support
+> > > > > after new UEFI SPEC released.
+> > > >
+> > > > I think that is the opposite of what Ard and I discussed above.
+> > > Hmm, I thought that new UEFI SPEC is a requirement of efistub, maybe I'm wrong?
+> > >
+> > > >
+> > > > > If I'm right, it seems that RISC-V passes a0 (hartid) and a1 (fdt
+> > > > > pointer, which contains cmdline, initrd, etc.) to the raw elf kernel.
+> > > > > And in my opinion, the main drawback of current LoongArch method
+> > > > > (a0=argc a1=argv a2=bootparamsinterface pointer) is it uses a
+> > > > > non-standard method to pass kernel args and initrd. So, can the below
+> > > > > new solution be acceptable?
+> > > > >
+> > > > > a0=bootparamsinterface pointer (the same as a2 in current method)
+> > > > > a1=fdt pointer (contains cmdline, initrd, etc., like RISC-V, I think
+> > > > > this is the standard method)
+> > > >
+> > > > It would seem more logical to me to keep those details as part of the
+> > > > interface between the EFI stub and the kernel, rather than the
+> > > > documented boot interface.
+> > > >
+> > > > You said that there is already grub support using the UEFI
+> > > > loader, so I assume you have a working draft of the boot
+> > > > protocol. Are there still open questions about the interface
+> > > > definition for that preventing you from using it as the only
+> > > > way to enter the kernel from a bootloader?
+> > > Things become simple if we only consider efistub rather than raw elf.
+> > > But there are still some problems:
+> > > 1, We want the first patch series as minimal as possible, efistub
+> > > support will add a lot of code.
+> > > 2, EFISTUB hides the interface between bootloader and raw kernel, but
+> > > the interface does actually exist (efistub itself is also a
+> > > bootloader, though it binds with the raw kernel). In the current
+> > > implementation (a0=argc a1=argv a2=bootparaminterface), we should
+> > > select EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER which is marked as
+> > > deprecated. Is this acceptable? If not, we still need to change the
+> > > bootloader-kernel interface, maybe use the method in my previous
+> > > email?
+> >
+> > Why do you need this?
+> Because in the current implementation (a0=argc a1=argv
+> a2=bootparaminterface), initrd should be passed by cmdline
+> (initrd=xxxx). If without that option, efi_load_initrd_cmdline() will
+> not call handle_cmdline_files().
+It seems I'm wrong. EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER controls
+"initrd=xxxx" from BIOS to EFISTUB, but has nothing to do with
+a0/a1/a2 usage (which controls the "initrd=xxxx" from efistub to raw
+kernel). The real reason is our UEFI BIOS has an old codebase without
+LoadFile2 support.
+
+Then, my new questions are:
+1, Is EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER an unacceptable option
+for a new Arch? If yes, we should backport LoadFile2 support to our
+BIOS.
+2, We now all agree that EFISTUB is the standard and maybe the only
+way in future. But, can we do the efistub work in the second series,
+in order to make the first series as minimal as possible? (I will
+update the commit message to make it clear that a0/a1/a2 usage is only
+an internal interface between efistub and raw kernel).
+
+Huacai
+
 >
-> In a nutshell, what the current code aims to do is to only move the
-> image in memory if needed, and just boot if where it was loaded by EFI
-> otherwise.
->
-> Reasons for moving it could be any of:
-> - KASLR is enabled and we have a seed
-> - nokaslr was passed, and we are not aligned to 2M
-> - we are running a 64k pages + VMAP stack build, and the image is not
-> aligned to 128k
-> - the PE/COFF loader is broken, and ignored the minimum 64k alignment
-> in the PE/COFF header
-> - the PE/COFF loader is broken, and ignored the BSS size, resulting in
-> an overlap with a memory region that is already in use.
->
-> As you might have guessed, my grumbling about GRUB/SHIM was in
-> relation to the latter 2 points - upstream GRUB does not have its own
-> PE/COFF loader, but SHIM/GRUB implement their own, and don't follow
-> the PE/COFF spec too rigorously.
->
->>> You can already pass nokalsr on the kernel command line if you want to
->>> avoid the downsides entirely, so as I understand it, this is mostly
->>> about an unquantified performance gain on systems that use a broken
->>> bootloader and lack the entropy source for a KASLR seed, but are not
->>> able to put nokaslr on the command line?
->> nokaslr will use 2M alignment by default, but if some board with new
->> BIOS/GRUB
->>
->> the kaslr won't enabled unless change the grub to drop it one by one, it
->> is not kind
->>
->> for production deployment.
->>
->> Do you think the following adjustment make sense or it is definitely wrong?
->>
-> I can only answer this if I understand which problem it solves. Why do
-> you need the 2M alignment in this case?
-> .
-
-Sorry for the late response，my purpose is that we don't want to enable 
-KPTI if
-
-KASLR is disabled. For now, if there are some firmware bug, the kernel 
-image is
-
-relocated which lead to kaslr_requires_kpti() returen 
-ture(kaslr_offset() > 0).
-
-the change to 2M alignment is a workaround and according to your 
-explanation,
-
-I don't think the workaround is necessary.  I want to make sure that the 
-above
-
-scene is expected? thanks.
-
+> Huacai
+> >
+> > > 3, I know things without upstream means "nothing" for the community,
+> > > but if we can provide raw elf kernel support to be compatible with
+> > > existing products (not just a working draft, they are widely used
+> > > now), it also seems reasonable.
+> > >
+> > > Huacai
+> > >
+> > > >
+> > > >         Arnd
