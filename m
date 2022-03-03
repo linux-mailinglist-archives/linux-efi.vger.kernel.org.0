@@ -2,21 +2,21 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53DB34CBFE4
-	for <lists+linux-efi@lfdr.de>; Thu,  3 Mar 2022 15:21:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B5634CBFE6
+	for <lists+linux-efi@lfdr.de>; Thu,  3 Mar 2022 15:21:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234018AbiCCOWW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 3 Mar 2022 09:22:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55536 "EHLO
+        id S233875AbiCCOWX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 3 Mar 2022 09:22:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234019AbiCCOWW (ORCPT
+        with ESMTP id S234017AbiCCOWW (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Thu, 3 Mar 2022 09:22:22 -0500
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A38C118DA9D;
-        Thu,  3 Mar 2022 06:21:35 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 772FF18DAA2;
+        Thu,  3 Mar 2022 06:21:36 -0800 (PST)
 Received: from localhost.localdomain (unknown [80.240.223.29])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 85F5840755C2;
-        Thu,  3 Mar 2022 14:21:33 +0000 (UTC)
+        by mail.ispras.ru (Postfix) with ESMTPSA id 2C9AF40755C9;
+        Thu,  3 Mar 2022 14:21:34 +0000 (UTC)
 From:   Baskov Evgeniy <baskov@ispras.ru>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Baskov Evgeniy <baskov@ispras.ru>,
@@ -24,9 +24,9 @@ Cc:     Baskov Evgeniy <baskov@ispras.ru>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/2] libstub: declare DXE services table
-Date:   Thu,  3 Mar 2022 17:21:19 +0300
-Message-Id: <20220303142120.1975-2-baskov@ispras.ru>
+Subject: [PATCH v3 2/2] libstub: ensure allocated memory to be executable
+Date:   Thu,  3 Mar 2022 17:21:20 +0300
+Message-Id: <20220303142120.1975-3-baskov@ispras.ru>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220303142120.1975-1-baskov@ispras.ru>
 References: <20220303142120.1975-1-baskov@ispras.ru>
@@ -41,181 +41,187 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-UEFI DXE services are not yet used in kernel code
-but are required to manipulate page table memory
-protection flags.
+There are UEFI versions that restrict execution of memory regions,
+preventing the kernel from booting. Parts that needs to be executable
+are:
 
-Add required declarations to use DXE services functions.
+* Area used for trampoline placement.
+* All memory regions that the kernel may be relocated before
+  and during extraction.
+
+Use DXE services to ensure aforementioned address ranges
+to be executable. Only modify attributes that does not
+have appropriate attributes.
 
 Signed-off-by: Baskov Evgeniy <baskov@ispras.ru>
 
-diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index 03cb12775043..4614d54383ac 100644
---- a/arch/x86/include/asm/efi.h
-+++ b/arch/x86/include/asm/efi.h
-@@ -352,6 +352,11 @@ static inline u32 efi64_convert_status(efi_status_t status)
- 						   runtime),		\
- 				    func, __VA_ARGS__))
+diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+index 2c3dac5ecb36..f44f8b746e42 100644
+--- a/drivers/firmware/efi/Kconfig
++++ b/drivers/firmware/efi/Kconfig
+@@ -91,6 +91,18 @@ config EFI_SOFT_RESERVE
  
-+#define efi_dxe_call(func, ...)						\
-+	(efi_is_native()						\
-+		? efi_dxe_table->func(__VA_ARGS__)			\
-+		: __efi64_thunk_map(efi_dxe_table, func, __VA_ARGS__))
+ 	  If unsure, say Y.
+ 
++config EFI_DXE_MEM_ATTRIBUTES
++	bool "Adjust memory attributes in EFISTUB"
++	depends on EFI && EFI_STUB && X86
++	default y
++	help
++	  UEFI specification does not guarantee all memory to be
++	  accessible for both write and execute as the kernel expects
++	  it to be.
++	  Use DXE services to check and alter memory protection
++	  attributes during boot via EFISTUB to ensure that memory
++	  ranges used by the kernel are writable and executable.
 +
- #else /* CONFIG_EFI_MIXED */
- 
- static inline bool efi_is_64bit(void)
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index edb77b0621ea..2dc24776899a 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -36,6 +36,9 @@ extern bool efi_novamap;
- 
- extern const efi_system_table_t *efi_system_table;
- 
-+typedef union efi_dxe_services_table efi_dxe_services_table_t;
-+extern const efi_dxe_services_table_t *efi_dxe_table;
-+
- efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 				   efi_system_table_t *sys_table_arg);
- 
-@@ -44,6 +47,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- #define efi_is_native()		(true)
- #define efi_bs_call(func, ...)	efi_system_table->boottime->func(__VA_ARGS__)
- #define efi_rt_call(func, ...)	efi_system_table->runtime->func(__VA_ARGS__)
-+#define efi_dxe_call(func, ...)	efi_dxe_table->func(__VA_ARGS__)
- #define efi_table_attr(inst, attr)	(inst->attr)
- #define efi_call_proto(inst, func, ...) inst->func(inst, ##__VA_ARGS__)
- 
-@@ -329,6 +333,76 @@ union efi_boot_services {
- 	} mixed_mode;
- };
- 
-+typedef enum {
-+	EfiGcdMemoryTypeNonExistent,
-+	EfiGcdMemoryTypeReserved,
-+	EfiGcdMemoryTypeSystemMemory,
-+	EfiGcdMemoryTypeMemoryMappedIo,
-+	EfiGcdMemoryTypePersistent,
-+	EfiGcdMemoryTypeMoreReliable,
-+	EfiGcdMemoryTypeMaximum
-+} efi_gcd_memory_type_t;
-+
-+typedef struct {
-+	efi_physical_addr_t base_address;
-+	u64 length;
-+	u64 capabilities;
-+	u64 attributes;
-+	efi_gcd_memory_type_t gcd_memory_type;
-+	void *image_handle;
-+	void *device_handle;
-+} efi_gcd_memory_space_desc_t;
-+
-+/*
-+ * EFI DXE Services table
-+ */
-+union efi_dxe_services_table {
-+	struct {
-+		efi_table_hdr_t hdr;
-+		void *add_memory_space;
-+		void *allocate_memory_space;
-+		void *free_memory_space;
-+		void *remove_memory_space;
-+		efi_status_t (__efiapi *get_memory_space_descriptor)(efi_physical_addr_t,
-+								     efi_gcd_memory_space_desc_t *);
-+		efi_status_t (__efiapi *set_memory_space_attributes)(efi_physical_addr_t,
-+								     u64, u64);
-+		void *get_memory_space_map;
-+		void *add_io_space;
-+		void *allocate_io_space;
-+		void *free_io_space;
-+		void *remove_io_space;
-+		void *get_io_space_descriptor;
-+		void *get_io_space_map;
-+		void *dispatch;
-+		void *schedule;
-+		void *trust;
-+		void *process_firmware_volume;
-+		void *set_memory_space_capabilities;
-+	};
-+	struct {
-+		efi_table_hdr_t hdr;
-+		u32 add_memory_space;
-+		u32 allocate_memory_space;
-+		u32 free_memory_space;
-+		u32 remove_memory_space;
-+		u32 get_memory_space_descriptor;
-+		u32 set_memory_space_attributes;
-+		u32 get_memory_space_map;
-+		u32 add_io_space;
-+		u32 allocate_io_space;
-+		u32 free_io_space;
-+		u32 remove_io_space;
-+		u32 get_io_space_descriptor;
-+		u32 get_io_space_map;
-+		u32 dispatch;
-+		u32 schedule;
-+		u32 trust;
-+		u32 process_firmware_volume;
-+		u32 set_memory_space_capabilities;
-+	} mixed_mode;
-+};
-+
- typedef union efi_uga_draw_protocol efi_uga_draw_protocol_t;
- 
- union efi_uga_draw_protocol {
+ config EFI_PARAMS_FROM_FDT
+ 	bool
+ 	help
 diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 01ddd4502e28..47fa1c8e7f40 100644
+index 47fa1c8e7f40..6e6b80884d6a 100644
 --- a/drivers/firmware/efi/libstub/x86-stub.c
 +++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -22,6 +22,7 @@
- #define MAXMEM_X86_64_4LEVEL (1ull << 46)
+@@ -212,9 +212,110 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
+ 	}
+ }
  
- const efi_system_table_t *efi_system_table;
-+const efi_dxe_services_table_t *efi_dxe_table;
- extern u32 image_offset;
- static efi_loaded_image_t *image = NULL;
- 
-@@ -677,11 +678,18 @@ unsigned long efi_main(efi_handle_t handle,
- 	efi_status_t status;
- 
- 	efi_system_table = sys_table_arg;
--
- 	/* Check if we were booted by the EFI firmware */
- 	if (efi_system_table->hdr.signature != EFI_SYSTEM_TABLE_SIGNATURE)
- 		efi_exit(handle, EFI_INVALID_PARAMETER);
- 
-+	efi_dxe_table = get_efi_config_table(EFI_DXE_SERVICES_TABLE_GUID);
++static void
++adjust_memory_range_protection(unsigned long start, unsigned long size)
++{
++	efi_status_t status;
++	efi_gcd_memory_space_desc_t desc;
++	unsigned long end, next;
++	unsigned long rounded_start, rounded_end;
++	unsigned long unprotect_start, unprotect_size;
++	int has_system_memory = 0;
 +
-+	if (efi_dxe_table == NULL ||
-+	    efi_dxe_table->hdr.signature != EFI_DXE_SERVICES_TABLE_SIGNATURE) {
-+		efi_warn("Unable to locate EFI DXE services table\n");
-+		efi_dxe_table = NULL;
++	if (efi_dxe_table == NULL)
++		return;
++
++	rounded_start = rounddown(start, EFI_PAGE_SIZE);
++	rounded_end = roundup(start + size, EFI_PAGE_SIZE);
++
++	/*
++	 * Don't modify memory region attributes, they are
++	 * already suitable, to lower the possibility to
++	 * encounter firmware bugs.
++	 */
++
++	for (end = start + size; start < end; start = next) {
++
++		status = efi_dxe_call(get_memory_space_descriptor, start, &desc);
++
++		if (status != EFI_SUCCESS)
++			return;
++
++		next = desc.base_address + desc.length;
++
++		/*
++		 * Only system memory is suitable for trampoline/kernel image placement,
++		 * so only this type of memory needs its attributes to be modified.
++		 */
++
++		if (desc.gcd_memory_type != EfiGcdMemoryTypeSystemMemory ||
++		    (desc.attributes & (EFI_MEMORY_RO | EFI_MEMORY_XP)) == 0)
++			continue;
++
++		unprotect_start = max(rounded_start, (unsigned long)desc.base_address);
++		unprotect_size = min(rounded_end, next) - unprotect_start;
++
++		status = efi_dxe_call(set_memory_space_attributes,
++				      unprotect_start, unprotect_size,
++				      EFI_MEMORY_WB);
++
++		if (status != EFI_SUCCESS) {
++			efi_warn("Unable to unprotect memory range [%08lx,%08lx]: %d\n",
++				 unprotect_start,
++				 unprotect_start + unprotect_size,
++				 (int)status);
++		}
 +	}
++}
 +
- 	/*
- 	 * If the kernel isn't already loaded at a suitable address,
- 	 * relocate it.
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index ccd4d3f91c98..8935efba57d2 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -383,6 +383,7 @@ void efi_native_runtime_setup(void);
- #define EFI_LOAD_FILE_PROTOCOL_GUID		EFI_GUID(0x56ec3091, 0x954c, 0x11d2,  0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
- #define EFI_LOAD_FILE2_PROTOCOL_GUID		EFI_GUID(0x4006c0c1, 0xfcb3, 0x403e,  0x99, 0x6d, 0x4a, 0x6c, 0x87, 0x24, 0xe0, 0x6d)
- #define EFI_RT_PROPERTIES_TABLE_GUID		EFI_GUID(0xeb66918a, 0x7eef, 0x402a,  0x84, 0x2e, 0x93, 0x1d, 0x21, 0xc3, 0x8a, 0xe9)
-+#define EFI_DXE_SERVICES_TABLE_GUID		EFI_GUID(0x05ad34ba, 0x6f02, 0x4214,  0x95, 0x2e, 0x4d, 0xa0, 0x39, 0x8e, 0x2b, 0xb9)
++/*
++ * Trampoline takes 2 pages and can be loaded in first megabyte of memory
++ * with its end placed between 128k and 640k where BIOS might start.
++ * (see arch/x86/boot/compressed/pgtable_64.c)
++ *
++ * We cannot find exact trampoline placement since memory map
++ * can be modified by UEFI, and it can alter the computed address.
++ */
++
++#define TRAMPOLINE_PLACEMENT_BASE ((128 - 8)*1024)
++#define TRAMPOLINE_PLACEMENT_SIZE (640*1024 - (128 - 8)*1024)
++
++void startup_32(struct boot_params *boot_params);
++
++static void
++setup_memory_protection(unsigned long image_base, unsigned long image_size)
++{
++	/*
++	 * Allow execution of possible trampoline used
++	 * for switching between 4- and 5-level page tables
++	 * and relocated kernel image.
++	 */
++
++	adjust_memory_range_protection(TRAMPOLINE_PLACEMENT_BASE,
++				       TRAMPOLINE_PLACEMENT_SIZE);
++
++#ifdef CONFIG_64BIT
++	if (image_base != (unsigned long)startup_32)
++		adjust_memory_range_protection(image_base, image_size);
++#else
++	/*
++	 * Clear protection flags on a whole range of possible
++	 * addresses used for KASLR. We don't need to do that
++	 * on x86_64, since KASLR/extraction is performed after
++	 * dedicated identity page tables are built and we only
++	 * need to remove possible protection on relocated image
++	 * itself disregarding further relocations.
++	 */
++	adjust_memory_range_protection(LOAD_PHYSICAL_ADDR,
++				       KERNEL_IMAGE_SIZE - LOAD_PHYSICAL_ADDR);
++#endif
++}
++
+ static const efi_char16_t apple[] = L"Apple";
  
- #define EFI_IMAGE_SECURITY_DATABASE_GUID	EFI_GUID(0xd719b2cb, 0x3d3a, 0x4596,  0xa3, 0xbc, 0xda, 0xd0, 0x0e, 0x67, 0x65, 0x6f)
- #define EFI_SHIM_LOCK_GUID			EFI_GUID(0x605dab50, 0xe046, 0x4300,  0xab, 0xb6, 0x3d, 0xd8, 0x10, 0xdd, 0x8b, 0x23)
-@@ -435,6 +436,7 @@ typedef struct {
- } efi_config_table_type_t;
+-static void setup_quirks(struct boot_params *boot_params)
++static void setup_quirks(struct boot_params *boot_params,
++			 unsigned long image_base,
++			 unsigned long image_size)
+ {
+ 	efi_char16_t *fw_vendor = (efi_char16_t *)(unsigned long)
+ 		efi_table_attr(efi_system_table, fw_vendor);
+@@ -223,6 +324,9 @@ static void setup_quirks(struct boot_params *boot_params)
+ 		if (IS_ENABLED(CONFIG_APPLE_PROPERTIES))
+ 			retrieve_apple_device_properties(boot_params);
+ 	}
++
++	if (IS_ENABLED(CONFIG_EFI_DXE_MEM_ATTRIBUTES))
++		setup_memory_protection(image_base, image_size);
+ }
  
- #define EFI_SYSTEM_TABLE_SIGNATURE ((u64)0x5453595320494249ULL)
-+#define EFI_DXE_SERVICES_TABLE_SIGNATURE ((u64)0x565245535f455844ULL)
+ /*
+@@ -342,8 +446,6 @@ static void __noreturn efi_exit(efi_handle_t handle, efi_status_t status)
+ 		asm("hlt");
+ }
  
- #define EFI_2_30_SYSTEM_TABLE_REVISION  ((2 << 16) | (30))
- #define EFI_2_20_SYSTEM_TABLE_REVISION  ((2 << 16) | (20))
+-void startup_32(struct boot_params *boot_params);
+-
+ void __noreturn efi_stub_entry(efi_handle_t handle,
+ 			       efi_system_table_t *sys_table_arg,
+ 			       struct boot_params *boot_params);
+@@ -799,7 +901,7 @@ unsigned long efi_main(efi_handle_t handle,
+ 
+ 	setup_efi_pci(boot_params);
+ 
+-	setup_quirks(boot_params);
++	setup_quirks(boot_params, bzimage_addr, buffer_end - buffer_start);
+ 
+ 	status = exit_boot(boot_params, handle);
+ 	if (status != EFI_SUCCESS) {
 -- 
 2.35.1
 
