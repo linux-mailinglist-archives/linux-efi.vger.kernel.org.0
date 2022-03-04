@@ -2,420 +2,228 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2F724CD22B
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Mar 2022 11:16:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 744094CD251
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Mar 2022 11:24:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230244AbiCDKQ4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 4 Mar 2022 05:16:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40962 "EHLO
+        id S232757AbiCDKYv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 4 Mar 2022 05:24:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229962AbiCDKQ4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Mar 2022 05:16:56 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67A4119F474;
-        Fri,  4 Mar 2022 02:16:07 -0800 (PST)
-Received: from nazgul.tnic (dynamic-002-247-254-208.2.247.pool.telefonica.de [2.247.254.208])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A55101EC01CE;
-        Fri,  4 Mar 2022 11:16:01 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1646388962;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=bFaJ+pgjAxFW1LzTGdEz+z955VNt8YjBwsq1/jL6288=;
-        b=Ji5NmR69d3nEw00/ommsOZz1LzfeiY62ytQlOKgpXfBltHGFX6TEyYC8wDqDGS/4rqbal5
-        TB6fRGJfGrBCLgkl+4X4X+nxtBISzKu9PgjsJxOdBRasXJDTplOdjTCeyuySfRvsRn/vfu
-        ILEheq2gWk2CZhFPyhAZqCyFXzBbv78=
-Date:   Fri, 4 Mar 2022 11:16:05 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Shuai Xue <xueshuai@linux.alibaba.com>
-Cc:     rric@kernel.org, mchehab@kernel.org, tony.luck@intel.com,
-        james.morse@arm.com, ardb@kernel.org, linux-edac@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        zhangliguang@linux.alibaba.com, zhuo.song@linux.alibaba.com
-Subject: Re: [PATCH v6 2/2] EDAC/ghes: use cper functions to avoid code
- duplication
-Message-ID: <YiHm1WHwO6HigCZx@nazgul.tnic>
-References: <20211210134019.28536-1-xueshuai@linux.alibaba.com>
- <20220303122626.99740-3-xueshuai@linux.alibaba.com>
+        with ESMTP id S231445AbiCDKYu (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Mar 2022 05:24:50 -0500
+Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 223F14EA21;
+        Fri,  4 Mar 2022 02:24:01 -0800 (PST)
+Received: by mail-vs1-xe36.google.com with SMTP id d11so8548656vsm.5;
+        Fri, 04 Mar 2022 02:24:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=PwCgFrKVYtlfIz8CnnCvaOjD8UASRKkBxkcuQcJ6l6A=;
+        b=Y9ZO8AtQhlGhlG5+TkZj1HExcNwp0f+E3W8wnWfIr4KqgBPS/5xha/nzqSzOI3zEJZ
+         UjJpihIQgM2LlKg7Z34ZqN4eZAJUIIxth9d1cGuUY8aWp6JU1GyoVbK5LCxpxOi6XQ7S
+         vgE69sJ8/qUPLWVVla3cbDWlG1v0LDZ1gdLky3Dyj+YjfZ/0eWjUukSgy7smOIoRdFXz
+         h8AcwYHbPD0Ci1h9YpAWfxGIiyi3w+0bCPn0w0V8QSw3USqvlfBO5KyUWn+l6WtJQBAT
+         7PnjX9LjGoEJ+pn2X84Ifk9IsswPhyNO8ANgBc5htWze+QvGJYtzS8Qxhf7QZ2REgyVy
+         aRjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=PwCgFrKVYtlfIz8CnnCvaOjD8UASRKkBxkcuQcJ6l6A=;
+        b=tysw6Ca0OodzcMuqDeHGaEIimmcZvPDSTuPH4TiffL36x6fnrr2LGPWfjRDNNP7h1P
+         qAWLWE2GR6wAvuJ4ZfxH2D8BLUSaDjJQYX0uRk7XmTrKdb07s+VPdmOGUiKT5teytrsI
+         3kFcUmcShqPz4ShDI1ID8f9fRwO0cWu4zzov+afHScIKIU8mAGDruWjHfDT3XtUE23OA
+         HMPFDpjvLPsRhaitsN69fBOyzOAYfovOmYXW8vnkcp/NbUybA3JLqnBIHJ9fM7giPeWG
+         5Sq9MYMNlvh9kdCJNj3lqZHINRArSlrhRr+/NYQ9Ffd8QveoJAlG3O6vI+H7xtomvC1k
+         XU4w==
+X-Gm-Message-State: AOAM532jhVcpwxOlrnQtGGA8OP8oJVucyXjmxUYf/SHy2E5bJCecNClv
+        hTvv+mOR3Jf1A3PcvYlug6xOcEwIkVe64SWPpOo=
+X-Google-Smtp-Source: ABdhPJwjLuVqoDFgtAh/T7A5IBTy0nkEOc4EOhnDv7STkYQqXNkZdWeRJ0Ugd32BXSmAqMJolhIwuxlpx2XCHBkAixk=
+X-Received: by 2002:a05:6102:5589:b0:31b:dff9:3ddb with SMTP id
+ dc9-20020a056102558900b0031bdff93ddbmr16907830vsb.62.1646389440179; Fri, 04
+ Mar 2022 02:24:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220303122626.99740-3-xueshuai@linux.alibaba.com>
+References: <20220226110338.77547-1-chenhuacai@loongson.cn>
+ <20220226110338.77547-10-chenhuacai@loongson.cn> <CAMj1kXHWRZcjF9H2jZ+p-HNuXyPs-=9B8WiYLsrDJGpipgKo_w@mail.gmail.com>
+ <YhupaVZvbipgke2Z@kroah.com> <CAAhV-H6hmvyniHP-CMxtOopRHp6XYaF58re13snMrk_Umj+wSQ@mail.gmail.com>
+ <CAMj1kXFa447Z21q3uu0UFExDDDG9Y42ZHtiUppu6QpuNA_5bhA@mail.gmail.com>
+ <CAAhV-H7X+Txq4HaaF49QZ9deD=Dwx_GX-2E9q_nA8P76ZRDeXg@mail.gmail.com>
+ <CAMj1kXGH1AtL8_KbFkK+FRgWQPzPm1dCdvEF0A2KksREGTSeCg@mail.gmail.com>
+ <CAAhV-H6fdJwbVG_m0ZL_JGROKCrCbc-fKpj3dnOowaEUA+3ujQ@mail.gmail.com>
+ <CAK8P3a2hr2rjyLpkeG1EKiOVGrY4UCB61OHGj5nzft-KCS3jYA@mail.gmail.com>
+ <CAMj1kXHGG80LdNUUA+Ug1VBXWuvtPxKpqnuChg2N=6Hf2EhY7g@mail.gmail.com>
+ <CAAhV-H6dxkdmDizd+ZVhJ_zHZ9RK8QjKU-3U-CaovLiNbEVpbg@mail.gmail.com>
+ <CAK8P3a2wF2XA8wCFtP9RNTNQf3W9D8fKOuQ704yE+dRSS5aCVw@mail.gmail.com>
+ <CAAhV-H65PeK8w0U2DSbQ0eSWzAR-zjhPz8swSgZhbtKKJAYAKg@mail.gmail.com>
+ <CAMj1kXFgCu659zGuZPpRLYPzFemtBv0jsOt1Yz0U0-R4DucqTw@mail.gmail.com>
+ <CAAhV-H6GrAH_HGehqernowaTyZjQRNOyp=O8QNE3_7RHfarUFQ@mail.gmail.com>
+ <CAAhV-H7B0xxNeTLd5n1cqPbF_hCp2N1KTbnNMAXFGxfZDzMcpw@mail.gmail.com> <CAMj1kXHc-Mpt_NTyR1CVzttV3ORtPerj23BBGNf=g7WmDu7BhA@mail.gmail.com>
+In-Reply-To: <CAMj1kXHc-Mpt_NTyR1CVzttV3ORtPerj23BBGNf=g7WmDu7BhA@mail.gmail.com>
+From:   Huacai Chen <chenhuacai@gmail.com>
+Date:   Fri, 4 Mar 2022 18:23:47 +0800
+Message-ID: <CAAhV-H5WS18XNaXVZUUKfL9BrVgb+xjH7vTsdyG7sJn0Pk0GEg@mail.gmail.com>
+Subject: Re: [PATCH V6 09/22] LoongArch: Add boot and setup routines
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Airlie <airlied@linux.ie>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Xuefeng Li <lixuefeng@loongson.cn>,
+        Yanteng Si <siyanteng@loongson.cn>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Mar 03, 2022 at 08:26:26PM +0800, Shuai Xue wrote:
-> To Borislav: Sorry, I only delete the format change summary in this commit
-> log in this version. If I missed any comments, could you please point out
-> clearly? Thank you very much.
+Hi, Ard & Arnd,
 
-I can't be more clear than the below - I simply took your patch and
-heavily massaged it because it is a lot quicker this way.
+On Thu, Mar 3, 2022 at 5:54 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> On Thu, 3 Mar 2022 at 07:26, Huacai Chen <chenhuacai@gmail.com> wrote:
+> >
+> > Hi, Ard & Arnd,
+> >
+> > On Wed, Mar 2, 2022 at 5:20 PM Huacai Chen <chenhuacai@gmail.com> wrote:
+> > >
+> > > Hi, Ard,
+> > >
+> > > On Wed, Mar 2, 2022 at 4:58 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+> > > >
+> > > > On Wed, 2 Mar 2022 at 09:56, Huacai Chen <chenhuacai@gmail.com> wrote:
+> > > > >
+> > > > > Hi, Arnd & Ard,
+> > > > >
+> > > > > On Tue, Mar 1, 2022 at 6:19 PM Arnd Bergmann <arnd@arndb.de> wrote:
+> > > > > >
+> > > > > > On Tue, Mar 1, 2022 at 5:17 AM Huacai Chen <chenhuacai@gmail.com> wrote:
+> > > > > > > On Mon, Feb 28, 2022 at 7:35 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+> > > > > > > > On Mon, 28 Feb 2022 at 12:24, Arnd Bergmann <arnd@arndb.de> wrote:
+> > > > > > > > > On Mon, Feb 28, 2022 at 11:42 AM Huacai Chen <chenhuacai@gmail.com> wrote:
+> > > > > > > > > Can't you just use the UEFI protocol for kernel entry regardless
+> > > > > > > > > of the bootloader? It seems odd to use a different protocol for loading
+> > > > > > > > > grub and the kernel, especially if that means you end up having to
+> > > > > > > > > support both protocols inside of u-boot and grub, in order to chain-load
+> > > > > > > > > a uefi application like grub.
+> > > > > > > > >
+> > > > > > > >
+> > > > > > > > I think this would make sense. Now that the EFI stub has generic
+> > > > > > > > support for loading the initrd via a UEFI specific protocol (of which
+> > > > > > > > u-boot already carries an implementation), booting via UEFI only would
+> > > > > > > > mean that no Linux boot protocol would need to be defined outside of
+> > > > > > > > the kernel at all (i.e., where to load the kernel, where to put the
+> > > > > > > > command line, where to put the initrd, other arch specific rules etc
+> > > > > > > > etc) UEFI already supports both ACPI and DT boot
+> > > > > > >
+> > > > > > > After one night thinking, I agree with Ard that we can use RISCV-style
+> > > > > > > fdt to support the raw elf kernel at present, and add efistub support
+> > > > > > > after new UEFI SPEC released.
+> > > > > >
+> > > > > > I think that is the opposite of what Ard and I discussed above.
+> > > > > Hmm, I thought that new UEFI SPEC is a requirement of efistub, maybe I'm wrong?
+> > > > >
+> > > > > >
+> > > > > > > If I'm right, it seems that RISC-V passes a0 (hartid) and a1 (fdt
+> > > > > > > pointer, which contains cmdline, initrd, etc.) to the raw elf kernel.
+> > > > > > > And in my opinion, the main drawback of current LoongArch method
+> > > > > > > (a0=argc a1=argv a2=bootparamsinterface pointer) is it uses a
+> > > > > > > non-standard method to pass kernel args and initrd. So, can the below
+> > > > > > > new solution be acceptable?
+> > > > > > >
+> > > > > > > a0=bootparamsinterface pointer (the same as a2 in current method)
+> > > > > > > a1=fdt pointer (contains cmdline, initrd, etc., like RISC-V, I think
+> > > > > > > this is the standard method)
+> > > > > >
+> > > > > > It would seem more logical to me to keep those details as part of the
+> > > > > > interface between the EFI stub and the kernel, rather than the
+> > > > > > documented boot interface.
+> > > > > >
+> > > > > > You said that there is already grub support using the UEFI
+> > > > > > loader, so I assume you have a working draft of the boot
+> > > > > > protocol. Are there still open questions about the interface
+> > > > > > definition for that preventing you from using it as the only
+> > > > > > way to enter the kernel from a bootloader?
+> > > > > Things become simple if we only consider efistub rather than raw elf.
+> > > > > But there are still some problems:
+> > > > > 1, We want the first patch series as minimal as possible, efistub
+> > > > > support will add a lot of code.
+> > > > > 2, EFISTUB hides the interface between bootloader and raw kernel, but
+> > > > > the interface does actually exist (efistub itself is also a
+> > > > > bootloader, though it binds with the raw kernel). In the current
+> > > > > implementation (a0=argc a1=argv a2=bootparaminterface), we should
+> > > > > select EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER which is marked as
+> > > > > deprecated. Is this acceptable? If not, we still need to change the
+> > > > > bootloader-kernel interface, maybe use the method in my previous
+> > > > > email?
+> > > >
+> > > > Why do you need this?
+> > > Because in the current implementation (a0=argc a1=argv
+> > > a2=bootparaminterface), initrd should be passed by cmdline
+> > > (initrd=xxxx). If without that option, efi_load_initrd_cmdline() will
+> > > not call handle_cmdline_files().
+> > It seems I'm wrong. EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER controls
+> > "initrd=xxxx" from BIOS to EFISTUB, but has nothing to do with
+> > a0/a1/a2 usage (which controls the "initrd=xxxx" from efistub to raw
+> > kernel). The real reason is our UEFI BIOS has an old codebase without
+> > LoadFile2 support.
+> >
+>
+> The problem with initrd= is that it can only load the initrd from the
+> same EFI block device that the kernel was loaded from, which is highly
+> restrictive, and doesn't work with bootloaders that call LoadImage()
+> on a kernel image loaded into memory. This is why x86 supports passing
+> the initrd in memory, and provide the base/size via struct bootparams,
+> and arm64 supports the same using DT.
+>
+> The LoadImage2 protocol based method intends to provide a generic
+> alternative to this, as it uses a pure EFI abstraction, and therefore
+> does not rely on struct bootparams or DT at all.
+>
+> So the LoadImage2() based method is preferred, but if your
+> architecture implements DT support already, there is nothing
+> preventing you from passing initrd information directly to the kernel
+> via the /chosen node.
+>
+> > Then, my new questions are:
+> > 1, Is EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER an unacceptable option
+> > for a new Arch? If yes, we should backport LoadFile2 support to our
+> > BIOS.
+>
+> See above.
+>
+> > 2, We now all agree that EFISTUB is the standard and maybe the only
+> > way in future. But, can we do the efistub work in the second series,
+> > in order to make the first series as minimal as possible? (I will
+> > update the commit message to make it clear that a0/a1/a2 usage is only
+> > an internal interface between efistub and raw kernel).
+> >
+>
+> I think it would be better to drop the UEFI and ACPI pieces for now,
+> and resubmit it once the dust has settled around this.
+FDT support is our future goal, at present we only have ACPI firmware
+and kernel. I mentioned FDT just wants to replace a0/a1 to pass
+cmdline, not means we already have FDT support.
 
-You can compare it with your version and see what needed to be changed.
-And you can of course ask questios why, if it is not clear. But it
-should be - a shortlog of what I did is also in the commit message.
+So, let's keep the existing a0/a1/a2 usage as an internal interface
+for now, then backport LoadFile2 and add efistub support.
 
-Now, when you look at the resulting patch you can see what the change
-does. Yours did more than one logical thing - which a patch should never
-do.
-
-Also, I'd really really urge you to read
-
-Documentation/process/submitting-patches.rst
-
-carefully before sending other patches. I won't do this heavy editing
-in the future so you're going to have to read review comments and
-*incorporate* them into your patches before submitting them again.
-
-You can test the below on your machine now to make sure it still
-performs as expected.
-
-Thx.
-
----
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-Date: Thu, 3 Mar 2022 20:26:26 +0800
-Subject: [PATCH] EDAC/ghes: Unify CPER memory error location reporting
-
-Switch the GHES EDAC memory error reporting functions to use the common
-CPER ones and get rid of code duplication.
-
-  [ bp:
-      - rewrite commit message, remove useless text
-      - rip out useless reformatting
-      - align function params on the opening brace
-      - rename function to a more descriptive name
-      - drop useless function exports
-      - handle buffer lengths properly when printing other detail
-      - remove useless casting
-  ]
-
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220303122626.99740-3-xueshuai@linux.alibaba.com
----
- drivers/edac/Kconfig        |   1 +
- drivers/edac/ghes_edac.c    | 200 +++++++-----------------------------
- drivers/firmware/efi/cper.c |   4 +-
- include/linux/cper.h        |   2 +
- 4 files changed, 42 insertions(+), 165 deletions(-)
-
-diff --git a/drivers/edac/Kconfig b/drivers/edac/Kconfig
-index 58ab63642e72..23f11554f400 100644
---- a/drivers/edac/Kconfig
-+++ b/drivers/edac/Kconfig
-@@ -55,6 +55,7 @@ config EDAC_DECODE_MCE
- config EDAC_GHES
- 	bool "Output ACPI APEI/GHES BIOS detected errors via EDAC"
- 	depends on ACPI_APEI_GHES && (EDAC=y)
-+	select UEFI_CPER
- 	help
- 	  Not all machines support hardware-driven error report. Some of those
- 	  provide a BIOS-driven error report mechanism via ACPI, using the
-diff --git a/drivers/edac/ghes_edac.c b/drivers/edac/ghes_edac.c
-index 6d1ddecbf0da..2805d5610300 100644
---- a/drivers/edac/ghes_edac.c
-+++ b/drivers/edac/ghes_edac.c
-@@ -15,11 +15,13 @@
- #include "edac_module.h"
- #include <ras/ras_event.h>
- 
-+#define OTHER_DETAIL_LEN	400
-+
- struct ghes_pvt {
- 	struct mem_ctl_info *mci;
- 
- 	/* Buffers for the error handling routine */
--	char other_detail[400];
-+	char other_detail[OTHER_DETAIL_LEN];
- 	char msg[80];
- };
- 
-@@ -235,8 +237,34 @@ static void ghes_scan_system(void)
- 	system_scanned = true;
- }
- 
-+static int print_mem_error_other_detail(const struct cper_sec_mem_err *mem, char *msg,
-+					const char *location, unsigned int len)
-+{
-+	u32 n;
-+
-+	if (!msg)
-+		return 0;
-+
-+	n = 0;
-+	len -= 1;
-+
-+	n += scnprintf(msg + n, len - n, "APEI location: %s ", location);
-+
-+	if (!(mem->validation_bits & CPER_MEM_VALID_ERROR_STATUS))
-+		goto out;
-+
-+	n += scnprintf(msg + n, len - n, "status(0x%016llx): ", mem->error_status);
-+	n += scnprintf(msg + n, len - n, "%s ", cper_mem_err_status_str(mem->error_status));
-+
-+out:
-+	msg[n] = '\0';
-+
-+	return n;
-+}
-+
- void ghes_edac_report_mem_error(int sev, struct cper_sec_mem_err *mem_err)
- {
-+	struct cper_mem_err_compact cmem;
- 	struct edac_raw_error_desc *e;
- 	struct mem_ctl_info *mci;
- 	struct ghes_pvt *pvt;
-@@ -292,60 +320,10 @@ void ghes_edac_report_mem_error(int sev, struct cper_sec_mem_err *mem_err)
- 
- 	/* Error type, mapped on e->msg */
- 	if (mem_err->validation_bits & CPER_MEM_VALID_ERROR_TYPE) {
-+		u8 etype = mem_err->error_type;
-+
- 		p = pvt->msg;
--		switch (mem_err->error_type) {
--		case 0:
--			p += sprintf(p, "Unknown");
--			break;
--		case 1:
--			p += sprintf(p, "No error");
--			break;
--		case 2:
--			p += sprintf(p, "Single-bit ECC");
--			break;
--		case 3:
--			p += sprintf(p, "Multi-bit ECC");
--			break;
--		case 4:
--			p += sprintf(p, "Single-symbol ChipKill ECC");
--			break;
--		case 5:
--			p += sprintf(p, "Multi-symbol ChipKill ECC");
--			break;
--		case 6:
--			p += sprintf(p, "Master abort");
--			break;
--		case 7:
--			p += sprintf(p, "Target abort");
--			break;
--		case 8:
--			p += sprintf(p, "Parity Error");
--			break;
--		case 9:
--			p += sprintf(p, "Watchdog timeout");
--			break;
--		case 10:
--			p += sprintf(p, "Invalid address");
--			break;
--		case 11:
--			p += sprintf(p, "Mirror Broken");
--			break;
--		case 12:
--			p += sprintf(p, "Memory Sparing");
--			break;
--		case 13:
--			p += sprintf(p, "Scrub corrected error");
--			break;
--		case 14:
--			p += sprintf(p, "Scrub uncorrected error");
--			break;
--		case 15:
--			p += sprintf(p, "Physical Memory Map-out event");
--			break;
--		default:
--			p += sprintf(p, "reserved error (%d)",
--				     mem_err->error_type);
--		}
-+		p += snprintf(p, sizeof(pvt->msg), "%s", cper_mem_err_type_str(etype));
- 	} else {
- 		strcpy(pvt->msg, "unknown error");
- 	}
-@@ -362,52 +340,19 @@ void ghes_edac_report_mem_error(int sev, struct cper_sec_mem_err *mem_err)
- 
- 	/* Memory error location, mapped on e->location */
- 	p = e->location;
--	if (mem_err->validation_bits & CPER_MEM_VALID_NODE)
--		p += sprintf(p, "node:%d ", mem_err->node);
--	if (mem_err->validation_bits & CPER_MEM_VALID_CARD)
--		p += sprintf(p, "card:%d ", mem_err->card);
--	if (mem_err->validation_bits & CPER_MEM_VALID_MODULE)
--		p += sprintf(p, "module:%d ", mem_err->module);
--	if (mem_err->validation_bits & CPER_MEM_VALID_RANK_NUMBER)
--		p += sprintf(p, "rank:%d ", mem_err->rank);
--	if (mem_err->validation_bits & CPER_MEM_VALID_BANK)
--		p += sprintf(p, "bank:%d ", mem_err->bank);
--	if (mem_err->validation_bits & CPER_MEM_VALID_BANK_GROUP)
--		p += sprintf(p, "bank_group:%d ",
--			     mem_err->bank >> CPER_MEM_BANK_GROUP_SHIFT);
--	if (mem_err->validation_bits & CPER_MEM_VALID_BANK_ADDRESS)
--		p += sprintf(p, "bank_address:%d ",
--			     mem_err->bank & CPER_MEM_BANK_ADDRESS_MASK);
--	if (mem_err->validation_bits & (CPER_MEM_VALID_ROW | CPER_MEM_VALID_ROW_EXT)) {
--		u32 row = mem_err->row;
--
--		row |= cper_get_mem_extension(mem_err->validation_bits, mem_err->extended);
--		p += sprintf(p, "row:%d ", row);
--	}
--	if (mem_err->validation_bits & CPER_MEM_VALID_COLUMN)
--		p += sprintf(p, "col:%d ", mem_err->column);
--	if (mem_err->validation_bits & CPER_MEM_VALID_BIT_POSITION)
--		p += sprintf(p, "bit_pos:%d ", mem_err->bit_pos);
-+	cper_mem_err_pack(mem_err, &cmem);
-+	p += cper_mem_err_location(&cmem, p);
-+
- 	if (mem_err->validation_bits & CPER_MEM_VALID_MODULE_HANDLE) {
--		const char *bank = NULL, *device = NULL;
- 		struct dimm_info *dimm;
- 
--		dmi_memdev_name(mem_err->mem_dev_handle, &bank, &device);
--		if (bank != NULL && device != NULL)
--			p += sprintf(p, "DIMM location:%s %s ", bank, device);
--		else
--			p += sprintf(p, "DIMM DMI handle: 0x%.4x ",
--				     mem_err->mem_dev_handle);
--
-+		p += cper_dimm_err_location(&cmem, p);
- 		dimm = find_dimm_by_handle(mci, mem_err->mem_dev_handle);
- 		if (dimm) {
- 			e->top_layer = dimm->idx;
- 			strcpy(e->label, dimm->label);
- 		}
- 	}
--	if (mem_err->validation_bits & CPER_MEM_VALID_CHIP_ID)
--		p += sprintf(p, "chipID: %d ",
--			     mem_err->extended >> CPER_MEM_CHIP_ID_SHIFT);
- 	if (p > e->location)
- 		*(p - 1) = '\0';
- 
-@@ -416,78 +361,7 @@ void ghes_edac_report_mem_error(int sev, struct cper_sec_mem_err *mem_err)
- 
- 	/* All other fields are mapped on e->other_detail */
- 	p = pvt->other_detail;
--	p += snprintf(p, sizeof(pvt->other_detail),
--		"APEI location: %s ", e->location);
--	if (mem_err->validation_bits & CPER_MEM_VALID_ERROR_STATUS) {
--		u64 status = mem_err->error_status;
--
--		p += sprintf(p, "status(0x%016llx): ", (long long)status);
--		switch ((status >> 8) & 0xff) {
--		case 1:
--			p += sprintf(p, "Error detected internal to the component ");
--			break;
--		case 16:
--			p += sprintf(p, "Error detected in the bus ");
--			break;
--		case 4:
--			p += sprintf(p, "Storage error in DRAM memory ");
--			break;
--		case 5:
--			p += sprintf(p, "Storage error in TLB ");
--			break;
--		case 6:
--			p += sprintf(p, "Storage error in cache ");
--			break;
--		case 7:
--			p += sprintf(p, "Error in one or more functional units ");
--			break;
--		case 8:
--			p += sprintf(p, "component failed self test ");
--			break;
--		case 9:
--			p += sprintf(p, "Overflow or undervalue of internal queue ");
--			break;
--		case 17:
--			p += sprintf(p, "Virtual address not found on IO-TLB or IO-PDIR ");
--			break;
--		case 18:
--			p += sprintf(p, "Improper access error ");
--			break;
--		case 19:
--			p += sprintf(p, "Access to a memory address which is not mapped to any component ");
--			break;
--		case 20:
--			p += sprintf(p, "Loss of Lockstep ");
--			break;
--		case 21:
--			p += sprintf(p, "Response not associated with a request ");
--			break;
--		case 22:
--			p += sprintf(p, "Bus parity error - must also set the A, C, or D Bits ");
--			break;
--		case 23:
--			p += sprintf(p, "Detection of a PATH_ERROR ");
--			break;
--		case 25:
--			p += sprintf(p, "Bus operation timeout ");
--			break;
--		case 26:
--			p += sprintf(p, "A read was issued to data that has been poisoned ");
--			break;
--		default:
--			p += sprintf(p, "reserved ");
--			break;
--		}
--	}
--	if (mem_err->validation_bits & CPER_MEM_VALID_REQUESTOR_ID)
--		p += sprintf(p, "requestorID: 0x%016llx ",
--			     (long long)mem_err->requestor_id);
--	if (mem_err->validation_bits & CPER_MEM_VALID_RESPONDER_ID)
--		p += sprintf(p, "responderID: 0x%016llx ",
--			     (long long)mem_err->responder_id);
--	if (mem_err->validation_bits & CPER_MEM_VALID_TARGET_ID)
--		p += sprintf(p, "targetID: 0x%016llx ",
--			     (long long)mem_err->responder_id);
-+	p += print_mem_error_other_detail(mem_err, p, e->location, OTHER_DETAIL_LEN);
- 	if (p > pvt->other_detail)
- 		*(p - 1) = '\0';
- 
-diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index 34eeaa59f04a..215c778fb33c 100644
---- a/drivers/firmware/efi/cper.c
-+++ b/drivers/firmware/efi/cper.c
-@@ -237,7 +237,7 @@ const char *cper_mem_err_status_str(u64 status)
- }
- EXPORT_SYMBOL_GPL(cper_mem_err_status_str);
- 
--static int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg)
-+int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg)
- {
- 	u32 len, n;
- 
-@@ -291,7 +291,7 @@ static int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg)
- 	return n;
- }
- 
--static int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg)
-+int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg)
- {
- 	u32 len, n;
- 	const char *bank = NULL, *device = NULL;
-diff --git a/include/linux/cper.h b/include/linux/cper.h
-index 5b1dd27b317d..eacb7dd7b3af 100644
---- a/include/linux/cper.h
-+++ b/include/linux/cper.h
-@@ -569,5 +569,7 @@ void cper_print_proc_arm(const char *pfx,
- 			 const struct cper_sec_proc_arm *proc);
- void cper_print_proc_ia(const char *pfx,
- 			const struct cper_sec_proc_ia *proc);
-+int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg);
-+int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg);
- 
- #endif
--- 
-2.23.0
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Huacai
