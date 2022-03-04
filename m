@@ -2,79 +2,149 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF6814CD468
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Mar 2022 13:43:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8366E4CD503
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Mar 2022 14:17:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229769AbiCDMoG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 4 Mar 2022 07:44:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44106 "EHLO
+        id S233555AbiCDNSb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 4 Mar 2022 08:18:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbiCDMoF (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Mar 2022 07:44:05 -0500
-Received: from mail-vs1-xe2a.google.com (mail-vs1-xe2a.google.com [IPv6:2607:f8b0:4864:20::e2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 343B6155C23;
-        Fri,  4 Mar 2022 04:43:17 -0800 (PST)
-Received: by mail-vs1-xe2a.google.com with SMTP id g20so8917972vsb.9;
-        Fri, 04 Mar 2022 04:43:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=2mO2VzycCtNIO/u2LxL3KMbj02vj50yVeeNdHwEmY5s=;
-        b=hxjDFkMhkLCmpMIqkXxzxIlh9mntkHi6I+zSIFw3QXJ6V7bCcwhwpjctOcErRwavGx
-         cLBoLwt4RBSvSjKpQ3oYJshA5S6DY2vB3a8TzMLdLOA1NK2td5Cuat1XkOccAmvNFwga
-         8qD/Y3TpeDGfOV/5RQW9lSUwayaIG/BIRLMp+2p3/rBTmzehDJgvQ6V85w9M609H31dP
-         lnD/ebLizcYrZpkVkJaclHgSuEMz2i639S8zSoj6EnzYNbhSEjVbNdA5XEwNGBFNj7sL
-         hMSsUexpoTY7PCa1QDdN6EmLVmF+mrkcjOwmZPmgaA3IrxShAG8riLFTM4Ofr+Fze0Ye
-         C3Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2mO2VzycCtNIO/u2LxL3KMbj02vj50yVeeNdHwEmY5s=;
-        b=zVHNOpyLhxxhePptPOAeZH5VTYHCddCgyBhwfv8C6pTTFzodgiPci13dquCMEh14eM
-         TJi3Vt+8XUe4wPcB+brEEolvlR+7N851ZRCOjMOe3ZR2NEhP3YeLxMsU4gt4u8p8LYMD
-         3szBpiNixQJUMvBkWhj3VozKe5Z/hJUCuACwumtmI/Sfd36HKTDeC3rEyW3uZE1+9qBs
-         M0OJmBlRRLeLLxU3YBfDkycGiiOkJ5+9kXGs5oFko9bDQkrAPTHa1ptBcqtzJIyHyDZk
-         /TOb+TYW3dpfDRrdT+woU4vp4zpAzAgoaG43evECnNmJlJalFYfwgkHxIMJ+JAXaxYTI
-         86Kw==
-X-Gm-Message-State: AOAM532mkKvb1srv1RXZk7W5JHxhaHLH1xCQr+iEJ/gYkpSTgwVCWn9m
-        AzK5IME+hDaV7gAXrCztoO3QJBVE14BKXXgylUM=
-X-Google-Smtp-Source: ABdhPJyJ1HWTXercL7713aP5IRTehuV00Pz1srXzFbB2ZajSJ7uj7dTlnrrksFFqSWgidcLGap6rR4r8qb86owXMIt4=
-X-Received: by 2002:a05:6102:418a:b0:307:8e85:7b7d with SMTP id
- cd10-20020a056102418a00b003078e857b7dmr16847605vsb.53.1646397796207; Fri, 04
- Mar 2022 04:43:16 -0800 (PST)
-MIME-Version: 1.0
-References: <20220226110338.77547-1-chenhuacai@loongson.cn>
- <20220226110338.77547-10-chenhuacai@loongson.cn> <YiCpYRwoUSmd/GE3@kernel.org>
- <CAAhV-H4-zVjjUkoVFw4ppg_tsM-wxBZmPr-2q8zuoLDHTWAE0w@mail.gmail.com> <YiHuuyqW8KSAri/M@kernel.org>
-In-Reply-To: <YiHuuyqW8KSAri/M@kernel.org>
-From:   Huacai Chen <chenhuacai@gmail.com>
-Date:   Fri, 4 Mar 2022 20:43:03 +0800
-Message-ID: <CAAhV-H6z3H3QbzvG6=fgVJF1z2qEvKVGnyqb--bkqomH3jTXJQ@mail.gmail.com>
-Subject: Re: [PATCH V6 09/22] LoongArch: Add boot and setup routines
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     Huacai Chen <chenhuacai@loongson.cn>,
-        Arnd Bergmann <arnd@arndb.de>,
+        with ESMTP id S232198AbiCDNS3 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Mar 2022 08:18:29 -0500
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2050.outbound.protection.outlook.com [40.107.223.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF84C45786;
+        Fri,  4 Mar 2022 05:17:39 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BQlwFInCtOjVg/PpRDxxxvwVxFX2GQaU/gTWqwn1JJWnhJhjRf3M7I3pjk639L4RikhrXbPL2WR+GK/LAnqSiWo4WxCEyBnHt/BHn1HpwYxUvI5cIsUGZNAUYtTQomazLtSEThRpHI1WQGwgAFIjgU4n+MZ/CmQuHnJV3RB9pHvInAEoAnNE8awLnYE2fxgIApKDCaLS/goc6dN7u0ets+5YXSWCDdsxuxoXtTnq0eglmkhXbAfhSOOV+6WsaogQqmpFzNFCIH1rgjSaIJdokWBqC99PMvzmrNNPxEu68pRA4JdI3QborR/UO/TSuTNIyHHNRZXZl9lHsQ/AG0Dv3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=twKKIzJUPkYkxrB1xTnr6l68Pzrm+3LpEDAHgIaCCs8=;
+ b=I7XY/G4Ca37GLTIvel5TzNPRGpL9votGyJZ78U6nlQrtfGExDnVaAYVF7Vf0h/7IiJhWz2IlYVbE8+x+hyTrqpelCD2OA7fDtd0Gl3lP6W7cBc+hCVZMGGQdRVSRcAY5T69PjsXxhykK0FTDXVRA7UkFij6qvGN2A+ddH5NRZyIPn8N/aIfEmdry0eZpzJWILVPXGWU8ghxhNlAprTQk2tH8SEfot90FxLFe+h11umO6we+eYXVl5x9z2SoBmGI6cqTiFpYEE2tWB6EK0/++V4sdHO1VE85HyLGvL/Rcth37nR/Zra1GCp32WONJ0HVfDOU6jZipZptrnvheoG0Otg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=twKKIzJUPkYkxrB1xTnr6l68Pzrm+3LpEDAHgIaCCs8=;
+ b=Djeg/Dyc/axDWlhde1h9PoanLxlefqNkRvOFCob1q25tvDGUZvwZiv1e4ZfyIrSRpej2nwHxg9AJ1bJzZP99to/f+oPxAvhPWqW3aGG93ZaZ5ZCMMyfFMUZlXSB5jIdUmBJwntp4Bca9NATbr3vZVL0Cw8VIqnXxN4MTMhg2tCU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by CH0PR12MB5249.namprd12.prod.outlook.com (2603:10b6:610:d0::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.15; Fri, 4 Mar
+ 2022 13:17:37 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::88ec:de2:30df:d4de]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::88ec:de2:30df:d4de%7]) with mapi id 15.20.5038.015; Fri, 4 Mar 2022
+ 13:17:37 +0000
+Message-ID: <9c075b36-e450-831b-0ae2-3b680686beb4@amd.com>
+Date:   Fri, 4 Mar 2022 07:17:33 -0600
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.6.1
+Cc:     brijesh.singh@amd.com, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
         Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
         Peter Zijlstra <peterz@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Airlie <airlied@linux.ie>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Xuefeng Li <lixuefeng@loongson.cn>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v11 42/45] virt: Add SEV-SNP guest driver
+Content-Language: en-US
+To:     Dave Hansen <dave.hansen@intel.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org
+References: <20220224165625.2175020-1-brijesh.singh@amd.com>
+ <20220224165625.2175020-43-brijesh.singh@amd.com>
+ <c85259c5-996c-902b-42b6-6b812282ee25@intel.com>
+From:   Brijesh Singh <brijesh.singh@amd.com>
+In-Reply-To: <c85259c5-996c-902b-42b6-6b812282ee25@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN7PR04CA0184.namprd04.prod.outlook.com
+ (2603:10b6:806:126::9) To SN6PR12MB2718.namprd12.prod.outlook.com
+ (2603:10b6:805:6f::22)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 0e8a7088-f709-4229-ef6e-08d9fde159d1
+X-MS-TrafficTypeDiagnostic: CH0PR12MB5249:EE_
+X-Microsoft-Antispam-PRVS: <CH0PR12MB52492A19FAC82376A3618592E5059@CH0PR12MB5249.namprd12.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 96jgIg0HysvT2jBLfSQrPqIzuz+B4nfCCoTQC8989U2aqNDU0UV8ja1AP1owYOThtWKFx3zMFkrtacVqgTPdyrHwNev+YKq7ia01wLELnwbT09k5OPJT121r8dRZJCjJS1R2cyy2u1xrJfvpGlZXPV9pKqh4Wm/13RMj2NDN3yM7UngXZk+9jwtVQa8sPIhbPVoYanEs77Z+lzugivBkmK3GDIKfYDJQt1MVBlOliz5w6uZFYtM+0tciBXdPhHJ7b1gjnMbEYU8OTGJGZrw4XIjTd6BvukROnH6dIp66K+h0mQM/kMCc3szZAKU8uF70pz2nHisuFNBxgWKhgylYSIv/QjHNW15GOXwqtw9tumbY3jzo8QkS37gdv1AobjwgLwtRZArsVG5lA+0GESyWnxkDzh2QVf1F3E5ZO8+NBGYDs22tkiRfUFqyeB2jtxfaE87JGnrZJp6vVULFgpfn7orlGs+LW2TC4dLrRD8sfj3WyQ1fGJ5WSVPiIKQbCf1mFNB89AX90z29vvNleQy9sdkaQC2gjI+PtaJm1rZopxEvI7lNXKCmidN9TFQBaMeSYLYsRwxhMVw5W3aOI9MveH5MKYwicrUPZe9C0AwNqV9c3RAf/VrgTsMD/DFIZZ/LptXusiftwlnMjNZIY/C5MJE6RgXkNCRk6dJyVdJtMALVn4ib09E6V9/FMpySNkCKr24FU3WuudnL6sn3fMohxhY4vBFqzOWW/KtNZrxVjq4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(8936002)(31686004)(44832011)(54906003)(2616005)(6512007)(66476007)(66556008)(316002)(36756003)(186003)(26005)(6666004)(7406005)(7416002)(5660300002)(66946007)(38100700002)(6506007)(53546011)(83380400001)(2906002)(8676002)(4326008)(6486002)(508600001)(86362001)(31696002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MGpnZzZ2Ni9nRmY2dGNjNnVHNVZ2N2UxTDdINTQyaTRZaXpoWTUweXlPVVBr?=
+ =?utf-8?B?SGFYT1diZExydmxhRFNnTHl0QkhNNmxLZFhMczlqUnkwbkphYjFrMWV1NUJ6?=
+ =?utf-8?B?ZHBPZm9GSktKQjQrQkw0VmJpa0hvZmpIQ0JYNzBjVTl4aEtLOWV2L2hYTGNT?=
+ =?utf-8?B?WkhCSFBDZ0R6SzF0TTVxMUM1RkxwZUdMZUZpNlNGWUorQ3ZuY0RGZTA0RnJh?=
+ =?utf-8?B?bjVyS0t3OVJUa1V3OVZYTG5uOUNsWXd2ZDFaQ0lRdDVFcHBaTDhoOUpYYWRx?=
+ =?utf-8?B?ZnVoc1ZDQ3dpaWE1MXlnYUx6QkFCSWdQQlBXT2NPTFVTc0p5SWN1dVozbUJC?=
+ =?utf-8?B?NGswSnhZNU5jKzI0VUhYa2pPN2VlaTJZYlhhT0NWVXNLQXkvc3kveE1XTVd3?=
+ =?utf-8?B?T2dqb2l0NTlGYUZ5T1NIWWtGUGRqK3RBR0ZCU3RPL0plZWRFNUh5cG8xMEhL?=
+ =?utf-8?B?THArMnFTRWUzbUszcWtvVlRJRVRkYkFmbm9pTDVUY0ZOWEg2ajVXUGpYT0RE?=
+ =?utf-8?B?bWR0cUdrOWJOQmllRnJoSXlxYXRzcm5pVWNlRFdzNUp1ZDM1c3hSVUlTdWdM?=
+ =?utf-8?B?RzdZMWloa20ycGkveE1EWXN2MG1CTk1VeEVVWnlhTWVhaTU5TnhrMDJObU9M?=
+ =?utf-8?B?UlJ0cHZIRDl5OFFCVkI0WnRFNUE3eDh4eTgwWDFCbHBJb2VvaFFKaFEwNVkz?=
+ =?utf-8?B?NFZLa3N4S0o1NDBVQXNuTkNRTEdKZlozZDNKUTU0VWJvWlFNYnowUlI4eU41?=
+ =?utf-8?B?Y3lGWGpwVzRra0NIcC9URjF4c0dWRXVEa1pxYVh4ZllpcWNTNit5TW1LbHMz?=
+ =?utf-8?B?Y2cvenBnRXI4cXFEdGdVb3BaaG5wZ3ppMEhHVHRUZGtpelBrNGpnMGVDa0RN?=
+ =?utf-8?B?ZHg5ZTdzSURjLzFyOXpyRE5FUGFaVC80aFFOZEdpNW5aOHpsTy8xRThFdnhu?=
+ =?utf-8?B?M1hDRkYzUWhUc0tHaGtUY0xEZXlVakJoRHNRNWFoY0JrdS9Cd25vWDM1a0Fi?=
+ =?utf-8?B?b2REYnRtdFZZQjBrTXArQlN3d0NLOGQvSHVuVDVhVnNwYVFHOEJMYi9ZV3RS?=
+ =?utf-8?B?aUxBV1ErVWpFb2NrcVVVWnl1TTBsWm1hRFd3TnV3cXdSQWZlSTVMSExsRlZz?=
+ =?utf-8?B?K1lpZmUraDE5eTZFdjdsTkJnMHMvc1o3MmlGMXJEMWhvTUY2emlmSmpOeVB0?=
+ =?utf-8?B?VnUrbWNmbXF3TG1qWFZCVS9qVEtEYkhMd3dqRTR3Z1QyUGRXQ1hhTjZ3N283?=
+ =?utf-8?B?aTFqY1VERW9tVGRwWGpMckFjZlhrUm5uTStWQWZ0RU5PNHpXeHplYjdsd3Mz?=
+ =?utf-8?B?OC8rUktIQ2gwbGM1K0pESjliejRDT0tMQWtRWnlGakF5VEdEN2dTc0NLL2Ri?=
+ =?utf-8?B?Q01tUUxidzJwZXQwN1Jhc2lGK2kwZitZNTlPWWxjREQzeVFTMTNlY0h3amtV?=
+ =?utf-8?B?QWtnZHhwcTNsbmU0WEx5NDY4ekVZM1NiNm5jNyt2NG5UdFJXcUp2SVZvVTl3?=
+ =?utf-8?B?U051YlM5bEFrSGhUTXpxMnUwN05teTVYU05EZlZHalpLOGt6dFcxYUw3VzA4?=
+ =?utf-8?B?dnRqTGhEazl5YVNUUm9STUJPb0o0Z3BnVm5kdGpEQ29FN1NNRkZId0xyRW9y?=
+ =?utf-8?B?V2QvSm5NOUlMQlNsYTYzQy9PWVhlUjlRZGtQbzJ2a1dwbWQvVFMvU1FCOTFr?=
+ =?utf-8?B?c3llQWxpbHZ3SDAyUllpRm55OThTbmw2SWxzTXZBVzc5V3ovU09HMkYzRkph?=
+ =?utf-8?B?N3BlQ3ptYmxBUFBmclhoRlE4Yll1Y1lGdS92OFdOZFEzYTloZjBreHhqOXNJ?=
+ =?utf-8?B?SXVnRUlaK0pHSlpCaDhTVWpDSmx4a2kvbGdIdElWdllWVGJ3cGpTU2RjYWE1?=
+ =?utf-8?B?RDVlSjN2SDU0MEtaTFhFUTFicFJDQjZNUHIra3hFM043c3RrbzdUckNhSGhE?=
+ =?utf-8?B?ekpkMndQcjVMaWZHNFRrVEE2ZVVsREk2R2ZBS212VjBYNVZydlFRc2EyUGdZ?=
+ =?utf-8?B?czhwSnpuNGVXMlVnN1RxY09Td09VMWxOZkg5Wlk4SEptaE84eGdoUWVJSWhT?=
+ =?utf-8?B?L1l3MmdiYXlzSFdiRDJieGxqTVpKcmNtKzVmemJBNFNLalhFWTY2TXRRQThC?=
+ =?utf-8?B?Kzl3dFh0aE5LeFZYUm01SkwvazlTYi9wamtiWTN0MzZiS2Y0NFpjaEFMRzlu?=
+ =?utf-8?Q?z7Fyy2gHdLRcZvzp6w+2obo=3D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e8a7088-f709-4229-ef6e-08d9fde159d1
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2022 13:17:36.8847
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4Rw651DkrEqPLH5OCgZ5O+Y4OAvgLWwF0BKs+VcNX/L/wWMmJ9C23fPW9G2jVN6sAgkARyKH3Fu0KarUsvVabw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB5249
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,287 +152,66 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi, Mike,
 
-On Fri, Mar 4, 2022 at 6:49 PM Mike Rapoport <rppt@kernel.org> wrote:
->
-> Hi,
->
-> On Thu, Mar 03, 2022 at 10:47:53PM +0800, Huacai Chen wrote:
-> > Hi, Mike,
-> >
-> > On Thu, Mar 3, 2022 at 7:41 PM Mike Rapoport <rppt@kernel.org> wrote:
-> > >
-> > > On Sat, Feb 26, 2022 at 07:03:25PM +0800, Huacai Chen wrote:
-> > > > This patch adds basic boot, setup and reset routines for LoongArch.
-> > > > LoongArch uses UEFI-based firmware. The firmware uses ACPI and DMI/
-> > > > SMBIOS to pass configuration information to the Linux kernel (in elf
-> > > > format).
-> > > >
-> > > > Now the boot information passed to kernel is like this:
-> > > > 1, kernel get 3 register values (a0, a1 and a2) from bootloader.
-> > > > 2, a0 is "argc", a1 is "argv", so "kernel cmdline" comes from a0/a1.
-> > > > 3, a2 is "environ", which is a pointer to "struct bootparamsinterface".
-> > > > 4, "struct bootparamsinterface" include a "systemtable" pointer, whose
-> > > >    type is "efi_system_table_t". Most configuration information, include
-> > > >    ACPI tables and SMBIOS tables, come from here.
-> > > >
-> > > > Cc: Ard Biesheuvel <ardb@kernel.org>
-> > > > Cc: linux-efi@vger.kernel.org
-> > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > > ---
-> > >
-> > > > +void __init arch_reserve_mem_area(acpi_physical_address addr, size_t size)
-> > > > +{
-> > > > +     memblock_mark_nomap(addr, size);
-> > > > +}
-> > >
-> > > Is there any problem if the memory ranges used by ACPI will be mapped into
-> > > the kernel page tables?
-> > >
-> > > If not, consider dropping this function.
-> >
-> > This API is mostly used for ACPI upgrading. ACPI upgrading alloc a
-> > normal memory block and then is used as ACPI memory, and this memory
-> > block will not be used by the page allocator. Other architectures,
-> > such as ARM64, do the same thing here.
->
-> ARM64 had quite a lot of issues with NOMAP memory, so I'd recommend to
-> avoid using memblock_mark_nomap() unless it is required by MMU constraints
-> on loongarch.
->
-> I'm not familiar with loongarch MMU details, so I can only give some
-> background for NOMAP for you to decide.
->
-> Marking memory region NOMAP is required when this region cannot be a part
-> of the kernel linear mapping because MMU does not allow aliased mappings
-> with different caching modes. E.g. in ARM64 case, ACPI memory that should
-> be mapped uncached cannot be mapped as cached in the kernel linear map.
->
-> If the memory block should not be used by the page allocator, it should be
-> memblock_reserve()'ed rather than marked NOMAP.
-Thank you for telling me the background, we will use memblock_reserve() instead.
+On 3/3/22 11:33 AM, Dave Hansen wrote:
 
->
-> > > > diff --git a/arch/loongarch/kernel/mem.c b/arch/loongarch/kernel/mem.c
-> > > > new file mode 100644
-> > > > index 000000000000..361d108a2b82
-> > > > --- /dev/null
-> > > > +++ b/arch/loongarch/kernel/mem.c
-> > > > @@ -0,0 +1,89 @@
-> > > > +// SPDX-License-Identifier: GPL-2.0-or-later
-> > > > +/*
-> > > > + * Copyright (C) 2020-2022 Loongson Technology Corporation Limited
-> > > > + */
-> > > > +#include <linux/fs.h>
-> > > > +#include <linux/mm.h>
-> > > > +#include <linux/memblock.h>
-> > > > +
-> > > > +#include <asm/bootinfo.h>
-> > > > +#include <asm/loongson.h>
-> > > > +#include <asm/sections.h>
-> > > > +
-> > > > +void __init early_memblock_init(void)
-> > > > +{
-> > > > +     int i;
-> > > > +     u32 mem_type;
-> > > > +     u64 mem_start, mem_end, mem_size;
-> > > > +
-> > > > +     /* Parse memory information */
-> > > > +     for (i = 0; i < loongson_mem_map->map_count; i++) {
-> > > > +             mem_type = loongson_mem_map->map[i].mem_type;
-> > > > +             mem_start = loongson_mem_map->map[i].mem_start;
-> > > > +             mem_size = loongson_mem_map->map[i].mem_size;
-> > > > +             mem_end = mem_start + mem_size;
-> > > > +
-> > > > +             switch (mem_type) {
-> > > > +             case ADDRESS_TYPE_SYSRAM:
-> > > > +                     memblock_add(mem_start, mem_size);
-> > > > +                     if (max_low_pfn < (mem_end >> PAGE_SHIFT))
-> > > > +                             max_low_pfn = mem_end >> PAGE_SHIFT;
-> > > > +                     break;
-> > > > +             }
-> > > > +     }
-> > > > +     memblock_set_current_limit(PFN_PHYS(max_low_pfn));
-> > > > +}
-> > > > +
-> > > > +void __init fw_init_memory(void)
-> > > > +{
-> > > > +     int i;
-> > > > +     u32 mem_type;
-> > > > +     u64 mem_start, mem_end, mem_size;
-> > > > +     unsigned long start_pfn, end_pfn;
-> > > > +     static unsigned long num_physpages;
-> > > > +
-> > > > +     /* Parse memory information */
-> > > > +     for (i = 0; i < loongson_mem_map->map_count; i++) {
-> > > > +             mem_type = loongson_mem_map->map[i].mem_type;
-> > > > +             mem_start = loongson_mem_map->map[i].mem_start;
-> > > > +             mem_size = loongson_mem_map->map[i].mem_size;
-> > > > +             mem_end = mem_start + mem_size;
-> > >
-> > > I think this loop can be merged with loop in early_memblock_init() then ...
-> > >
-> > > > +
-> > > > +             switch (mem_type) {
-> > > > +             case ADDRESS_TYPE_SYSRAM:
-> > > > +                     mem_start = PFN_ALIGN(mem_start);
-> > > > +                     mem_end = PFN_ALIGN(mem_end - PAGE_SIZE + 1);
-> > > > +                     num_physpages += (mem_size >> PAGE_SHIFT);
-> > > > +                     memblock_set_node(mem_start, mem_size, &memblock.memory, 0);
-> > >
-> > > this will become memblock_add_node()
-> > >
-> > > > +                     break;
-> > > > +             case ADDRESS_TYPE_ACPI:
-> > > > +                     mem_start = PFN_ALIGN(mem_start);
-> > > > +                     mem_end = PFN_ALIGN(mem_end - PAGE_SIZE + 1);
-> > > > +                     num_physpages += (mem_size >> PAGE_SHIFT);
-> > > > +                     memblock_add(mem_start, mem_size);
-> > > > +                     memblock_set_node(mem_start, mem_size, &memblock.memory, 0);
-> > >
-> > > as well as this.
-> > early_memblock_init() only adds the "usable" memory (SYSRAM) for early
-> > use and without numa node information. Other types of memory are
-> > handled later by fw_init_memory()/fw_init_numa_memory(), depending on
-> > whether CONFIG_NUMA is enabled. So, in
-> > fw_init_memory()/fw_init_numa_memory() we only need to call
-> > memblock_set_node() to add the node information for SYSRAM type.
->
-> There are two potential issues here with doing memblock_add() and
-> memblock_set_node() and memblock_reserve() separately with a couple of
-> functions called in between.
->
-> First, and most important is that you must to memblock_reserve() all the
-> memory used by the firmware, like ADDRESS_TYPE_ACPI, ADDRESS_TYPE_RESERVED,
-> kernel image, initrd etc *before* any call to memblock_alloc*()
-> functions. If you add memory to memblock before reserving firmware regions,
-> a call to memblock_alloc*() may allocate the used memory and all kinds of
-> errors may happen because of that.
->
-> Second, presuming you use SRAT for NUMA information, if you set nodes in
-> memblock after there were memory allocations from memblock you may impair
-> the ability to hot-remove memory banks.
->
-> So ideally, the physical memory detection and registration should follow
-> something like:
->
-> * memblock_reserve() the memory used by firmware, kernel and initrd
-> * detect NUMA topology
-> * add memory regions along with their node ids to memblock.
->
-> s390::setup_arch() is a good example of doing early reservations:
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/s390/kernel/setup.c#n988
-I have a fast reading of S390, and I think we can do some adjust:
-1, call memblock_set_node(0, ULONG_MAX, &memblock.memory, 0) in
-early_memblock_init().
-2, move memblock_reserve(PHYS_OFFSET, 0x200000) and
-memblock_reserve(__pa_symbol(&_text), __pa_symbol(&_end) -
-__pa_symbol(&_text)) to early_memblock_init().
-3, Reserve initrd memory in the first place.
-It is nearly the same as the S390, then.
+...
 
->
-> > > > diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
-> > > > new file mode 100644
-> > > > index 000000000000..8dfe1d9b55f7
-> > > > --- /dev/null
-> > > > +++ b/arch/loongarch/kernel/setup.c
-> > > > +
-> > > > +static int usermem __initdata;
-> > > > +
-> > > > +static int __init early_parse_mem(char *p)
-> > > > +{
-> > > > +     phys_addr_t start, size;
-> > > > +
-> > > > +     /*
-> > > > +      * If a user specifies memory size, we
-> > > > +      * blow away any automatically generated
-> > > > +      * size.
-> > > > +      */
-> > > > +     if (usermem == 0) {
-> > > > +             usermem = 1;
-> > > > +             memblock_remove(memblock_start_of_DRAM(),
-> > > > +                     memblock_end_of_DRAM() - memblock_start_of_DRAM());
-> > > > +     }
-> > > > +     start = 0;
-> > > > +     size = memparse(p, &p);
-> > > > +     if (*p == '@')
-> > > > +             start = memparse(p + 1, &p);
-> > > > +
-> > > > +     memblock_add(start, size);
-> > > > +
-> > > > +     return 0;
-> > > > +}
-> > > > +early_param("mem", early_parse_mem);
-> > > > +
-> > > > +static int __init early_parse_memmap(char *p)
-> > > > +{
-> > > > +     char *oldp;
-> > > > +     u64 start_at, mem_size;
-> > > > +
-> > > > +     if (!p)
-> > > > +             return -EINVAL;
-> > > > +
-> > > > +     if (!strncmp(p, "exactmap", 8)) {
-> > > > +             pr_err("\"memmap=exactmap\" invalid on LoongArch\n");
-> > > > +             return 0;
-> > > > +     }
-> > > > +
-> > > > +     oldp = p;
-> > > > +     mem_size = memparse(p, &p);
-> > > > +     if (p == oldp)
-> > > > +             return -EINVAL;
-> > > > +
-> > > > +     if (*p == '@') {
-> > > > +             start_at = memparse(p+1, &p);
-> > > > +             memblock_add(start_at, mem_size);
-> > > > +     } else if (*p == '#') {
-> > > > +             pr_err("\"memmap=nn#ss\" (force ACPI data) invalid on LoongArch\n");
-> > > > +             return -EINVAL;
-> > > > +     } else if (*p == '$') {
-> > > > +             start_at = memparse(p+1, &p);
-> > > > +             memblock_add(start_at, mem_size);
-> > > > +             memblock_reserve(start_at, mem_size);
-> > > > +     } else {
-> > > > +             pr_err("\"memmap\" invalid format!\n");
-> > > > +             return -EINVAL;
-> > > > +     }
-> > > > +
-> > > > +     if (*p == '\0') {
-> > > > +             usermem = 1;
-> > > > +             return 0;
-> > > > +     } else
-> > > > +             return -EINVAL;
-> > > > +}
-> > > > +early_param("memmap", early_parse_memmap);
-> > >
-> > > The memmap= processing is a hack indented to workaround bugs in firmware
-> > > related to the memory detection. Please don't copy if over unless there is
-> > > really strong reason.
-> >
-> > Hmmm, I have read the documents, most archs only support mem=limit,
-> > but MIPS support mem=limit@base. memmap not only supports
-> > memmap=limit@base, but also a lot of advanced syntax. LoongArch needs
-> > both limit and limit@base syntax. So can we make our code to support
-> > only mem=limit and memmap=limit@base, and remove all other syntax
-> > here?
->
-> The documentation describes what was there historically and both these
-> options tend not to play well with complex memory layouts.
->
-> If you must have them it's better to use x86 as an example rather than
-> MIPS, just take into the account that on x86 memory always starts from 0,
-> so they never needed to have a different base.
->
-> For what use-cases LoongArch needs options?
-The use-case of limit@base syntax is kdump, because our kernel is not
-relocatable. I'll use X86 as an example.
 
-Huacai
+>> +	 */
+>> +	if (count >= UINT_MAX) {
+>> +		pr_err_ratelimited("request message sequence counter overflow\n");
+>> +		return 0;
+>> +	}
+>> +
+>> +	return count;
+>> +}
+> I didn't see a pr_fmt defined anywhere.  But, for a "driver", should
+> this be a dev_err()?
 
+
+Okay, I can switch to dev_err() and will define pr_fmt.
+
+> ...
+>> +static void free_shared_pages(void *buf, size_t sz)
+>> +{
+>> +	unsigned int npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
+>> +
+>> +	if (!buf)
+>> +		return;
+>> +
+>> +	if (WARN_ONCE(set_memory_encrypted((unsigned long)buf, npages),
+>> +		      "failed to restore encryption mask (leak it)\n"))
+>> +		return;
+>> +
+>> +	__free_pages(virt_to_page(buf), get_order(sz));
+>> +}
+> Nit: It's a bad practice to do important things inside a WARN_ON() _or_
+> and if().  This should be:
 >
-> --
-> Sincerely yours,
-> Mike.
+> 	int ret;
+>
+> 	...
+>
+> 	ret = set_memory_encrypted((unsigned long)buf, npages));
+>
+> 	if (ret) {
+> 		WARN_ONCE(...);
+> 		return;
+> 	}
+> 	
+> BTW, this look like a generic allocator thingy.  But it's only ever used
+> to allocate a 'struct snp_guest_msg'.  Why all the trouble to allocate
+> and free one fixed-size structure?  The changelog and comments don't
+> shed any light.
+
+The GHCB specification says that a guest must use shared memory for
+request, response, and certificate blob. In this patch, you are seeing
+that {alloc,free}_shared_pages() used only to alloc/free the request and
+response page. In the last patch, we used the same generic function to
+allocate the certificate blob with a different size (~16K) than 'struct
+snp_guest_msg.'
+
+
+thanks
+
