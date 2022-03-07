@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55FD84D0980
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Mar 2022 22:34:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31B324D097A
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Mar 2022 22:34:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245613AbiCGVfs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Mar 2022 16:35:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36424 "EHLO
+        id S245554AbiCGVfp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Mar 2022 16:35:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245591AbiCGVfm (ORCPT
+        with ESMTP id S245590AbiCGVfm (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Mar 2022 16:35:42 -0500
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2081.outbound.protection.outlook.com [40.107.220.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 667A26D97F;
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2070.outbound.protection.outlook.com [40.107.223.70])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED71070046;
         Mon,  7 Mar 2022 13:34:40 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KLibb+aBNzix0uGZfSdn2zEJZAKOZTSaZ2V+uu47xY46w6hI8nh3DZN1uie5K2J+yPNQDemvT5kv03PVlbKp6Hi/g5LAqtfH0txLcVp5z5ZKvX2tXcAWCmkVtI/jSm0zttcZ+QHNTu/qc0YdPXgj8nGuWw8LKuFz2TfJ8xjiT1R3Vt5Oxfl57R/EdnbJcg2eL//RZ0Q8Ye3drMmpxoPa6ztOQOBN4CGoXgTRkL6/lElBVhtubgBCYvqiBevRPfNY1woKgbs+4nxUmiFIpM14mQzvZc4QNUNPTlBBbS3i6Xb491GFj3lz7Qh/FND5U4ozBdvVmozYngsvIJIJkJsWgw==
+ b=BsCX2gJypXK+YNHzLLko2hsSVVxP0f+vPw+/JGT8luqawZyAyh8zGuWoG74UROMU0YfGd4NA+N2WQsJFREWQTAK/nrdeLk5/yOkPDK79PQlm4Nl9dQRLhixC309N2bYa3OIgo0VlgsIET/+1O4rszSxvy2o0QNaYRnU0gb5HRb64f8X07kQOTJk572/HN4cYJmnAAaBXN6tXGsutKTY1K9Y6u+i8hRXpXSqdD3jdpvHS6lshesDYXu94UT6Q06OtPUOwJie5Y5Uga69yjxUUuQuKjIbE9p7+2SLE8KIXk/pF+ylhMbsA2+P29iD1bCA6DQUsbSLMwqlv5oE8B1PMxg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7aRp96xJYoJkUtJqh/6AVXRPkQBSGiHUk12Gp42+tkg=;
- b=IFzE1hnLf5HiapqZdamdBuQr6unVB5CNIcqVg/9dxMe+/Wu4QUbDSBoQQcIXPE6ceNd3l4zKqKH/OzLzg0277iXnlmQKDWhoc50xkxexBXCbFys/czMgtGiIZr6e7nugl4lFIobXi6cOxRbzE0WSIRBxBaDlgCX9GXFQ6gVqmUfUyYEYUCveEQAC0kl7TSya//r/wbZ2ScskvawWVNgg48zagBFA23HpexKGXlsaiO4nQ63p5ZKKeuReEtyhdL0fdw6nJYl33ZGAi+7ZMBeOjmOimiYd+uIgIYhtxnRl2VnGObSUmYTXL9a5B6vc/BPVFovxk0+L4X4v73JjxQw5Zw==
+ bh=za5TeV7uFgXdJIpp8R18s3v7VK9jY1eP0jI27ay+MSU=;
+ b=L+yw+LpoMUwF5PgD0QDyLz6oZ+cy4YFDZdFn3ooADq4MK693FPu4O33GrTXc0c9QKFJwtzUU8dVPWIj1nkK3Z0lBLrs0ILKeVX2E4AxcqvJiCOI8qWleeY5P/LXffdHdHZI367vTFLUBO9OJ6lKSIoitmdDUBZQCvVqKI9iMZQ9I4VVBe7Zoe5SpJycYtSV6Pel73ZumfbW0WamAT104dCpVdf0praE7YTtUmVD0I8YCfy7Uc7vTABcw08DlbWUThvtwiU1OMYv1JQ8jeGrnUmckr5GNHgWCpKLnBzZCwpxCUkb1xH4ETlNm3QJZRkbIXxfeKUDKGAxVl/U0bj6rGw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7aRp96xJYoJkUtJqh/6AVXRPkQBSGiHUk12Gp42+tkg=;
- b=rLC0XGBlRAq0Qx1aBLW+4wLDoBKCkFSkKuWSgGQCejbznnR77LNFbmhzRuXiSk82FgYD4a+KgDgh6fygW2yFrvTafRlValmhn1Zy3IiH1m0JGzY25JrzeHDOT2zx/hhZSNWJr6kqzyFZlVe0D2A6Qq0zzeSRKgRfNq8tHP1bFBU=
-Received: from BN9PR03CA0035.namprd03.prod.outlook.com (2603:10b6:408:fb::10)
- by SJ0PR12MB5634.namprd12.prod.outlook.com (2603:10b6:a03:429::7) with
+ bh=za5TeV7uFgXdJIpp8R18s3v7VK9jY1eP0jI27ay+MSU=;
+ b=pfeBU1/Sg38Org0A6NRhYAd9SjBBa3G3wQJRcXgG/Ck+bsFGERse2nXkYRBuu+aB8CfZutPrx2DkZp53SPDVf5zxgcvSzmxywycjlTL9eopL6LkdjKRCtwZUWjeynT/beQ7fBvTMbXoQb7+KZO28sJkP63ac1u9tjquwiOFoOsE=
+Received: from BN6PR18CA0016.namprd18.prod.outlook.com (2603:10b6:404:121::26)
+ by BN9PR12MB5306.namprd12.prod.outlook.com (2603:10b6:408:103::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.19; Mon, 7 Mar
- 2022 21:34:37 +0000
-Received: from BN8NAM11FT060.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:fb:cafe::c6) by BN9PR03CA0035.outlook.office365.com
- (2603:10b6:408:fb::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.14; Mon, 7 Mar
+ 2022 21:34:38 +0000
+Received: from BN8NAM11FT029.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:404:121:cafe::a8) by BN6PR18CA0016.outlook.office365.com
+ (2603:10b6:404:121::26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.14 via Frontend
- Transport; Mon, 7 Mar 2022 21:34:37 +0000
+ Transport; Mon, 7 Mar 2022 21:34:38 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -46,13 +46,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT060.mail.protection.outlook.com (10.13.177.211) with Microsoft SMTP
+ BN8NAM11FT029.mail.protection.outlook.com (10.13.177.68) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.20.5038.14 via Frontend Transport; Mon, 7 Mar 2022 21:34:37 +0000
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Mon, 7 Mar
- 2022 15:34:27 -0600
+ 2022 15:34:29 -0600
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
         <kvm@vger.kernel.org>, <linux-efi@vger.kernel.org>,
@@ -81,10 +81,11 @@ CC:     Thomas Gleixner <tglx@linutronix.de>,
         Andi Kleen <ak@linux.intel.com>,
         "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
         <brijesh.ksingh@gmail.com>, <tony.luck@intel.com>,
-        <marcorr@google.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: [PATCH v12 06/46] x86/boot: Use MSR read/write helpers instead of inline assembly
-Date:   Mon, 7 Mar 2022 15:33:16 -0600
-Message-ID: <20220307213356.2797205-7-brijesh.singh@amd.com>
+        <marcorr@google.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Brijesh Singh <brijesh.singh@amd.com>
+Subject: [PATCH v12 07/46] x86/compressed/64: Detect/setup SEV/SME features earlier in boot
+Date:   Mon, 7 Mar 2022 15:33:17 -0600
+Message-ID: <20220307213356.2797205-8-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220307213356.2797205-1-brijesh.singh@amd.com>
 References: <20220307213356.2797205-1-brijesh.singh@amd.com>
@@ -96,24 +97,24 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ad314e80-fb07-49a8-1423-08da0082479c
-X-MS-TrafficTypeDiagnostic: SJ0PR12MB5634:EE_
-X-Microsoft-Antispam-PRVS: <SJ0PR12MB5634C2E7275863C374CDDBABE5089@SJ0PR12MB5634.namprd12.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: 78223179-6686-44c2-7ac1-08da00824809
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5306:EE_
+X-Microsoft-Antispam-PRVS: <BN9PR12MB5306D7102E5D630C473790D2E5089@BN9PR12MB5306.namprd12.prod.outlook.com>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: B5dQYazEsqr58sEQ0GdznEH7vyRXF6Mr5ItlSk1WsoAPcL23RI2KqvwHUeeB8wq7vtTa6pg0KUOr09Yg4NKqQVZbo/IUAaNgSXHzp0+luoG6Xwztl/meXXf1k/w/lPLxL6kET6y+8BPKlKXw7t7A2oyfLr+xJkoZzllOMUUhfbn6XQmhUctXmR5Y6wz0jOGAtt+AzT2JKrVlRUxXTMgFUt9M2jI7gcWPcClXj2GM98dvD+2buEvLre1cT0BHNoAjN9EgdwoMVEyGJBAYVQmrNewy2znefD5Tpgyf6DxYDiqt9wEQL6VVOz5PN2HjqvTHPDb8NVnUEfLzGGM4YyOMRQj0/Hrr2LCQ6ZP7MKj9H8RojftrRSIfaGE421+8dxlb8mfiMkZuRiw4gT4u0qAM4TXULiab+rmizzyAy4UQtFkvuqt92YMK99ZTKSzInNDKb2TKgkRYmYTUpINaQA5zsTiomZNsV9VgZkwPKuMTyEP2XEpqolK2L+y4Kg/5wN63uzcGIsxYQ7+0YAVX4uVIw5vfbTAqDfyRJfjpgajHajKiRL/xeklkdELr2W44NA+ygxOeCpdwiIFsNPaqtZU3aEYjnE4Nm7Ta9JAFdYSUl5QJO0lk2aDVzRY7XCFHmXthij1e1XAYy2cJgU9sYwH2wNQsyPm5P1mgMfU7J/K/SBnLia55V6cMHQ2eBaYMbc+54D15+gxAzFtXlyrERoS6E8XC0k4y2ZdIBMvc7n1mCYI=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(40470700004)(46966006)(36840700001)(86362001)(186003)(356005)(336012)(16526019)(426003)(2616005)(1076003)(26005)(81166007)(82310400004)(7696005)(6666004)(5660300002)(47076005)(2906002)(36860700001)(4326008)(8676002)(40460700003)(70206006)(70586007)(83380400001)(36756003)(316002)(110136005)(54906003)(7416002)(8936002)(7406005)(44832011)(508600001)(2101003)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: JPqfvlVXdgwOsuJRBbr/OEPdq8X0+xguFOd/G2D2BzspyQ5m2zJiDdbqbJE5CgrgJurIaO62fIB2Wy6BACKFLUpDT+CNUJlvICb71mJzti8cFUiO2HqbibJhyCGfTjHorUMjYjWphxjEiUoC1/xLxwuon8WQHoCeXS4O9g3RJF5G+ZW1wP+LiW57zv7Z7HHza6/jBax+dUFyFY6r9n6c/U727Wl4/IuvL9IUpCAuuvrguQw4mUoXSWZjIyVT0ADVNNOnh0yhNaFDo2jxRXj2UCAr5iiADAmC7KFtO1GTv8qa+dfh//xTFJcNWoYkwHXmU4z3NzVypyBtjheBXBt2WA7lc9nXOvPgKu4iIsh/RzJ6W9mWxuA/GiRoLsO4qvYPTPSUNH4+CmWKfySOVAkW6VY3BMGEtufwM8BH62FuJhN1IP9PX1hXOsPxXQMegZS2kXkrVv0lS2hbgSc+ljH3pmOkbteCBpLd/mEBLNgxyUYELtF7ngfug3f4l7ZL3XulesGGiIFPo8Oxit84YKMPDvuM8lnGa1IWeqJuLzAknL+RVhEdXeUkmPVBUIrcLWlajmH5av2+bBqsK9Bne2MKLyADLXVgGDhyNpgnIjny7xjXMk6KN24HIRZNCk9st42SdhrO9+HlNG1uS8xZfvaaP2YsZgRV2c9Hef+wCInme0uUg+fVnr/B0WLj1nIdCaYhF3oMu0wGY7v6ogz+ExNuN3vwJQ/vt64I1076dWAfkpw=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(40470700004)(46966006)(36840700001)(47076005)(36860700001)(36756003)(7696005)(2616005)(83380400001)(2906002)(7406005)(7416002)(5660300002)(40460700003)(316002)(26005)(54906003)(82310400004)(8936002)(81166007)(70206006)(70586007)(44832011)(336012)(426003)(356005)(86362001)(186003)(1076003)(6666004)(16526019)(8676002)(4326008)(110136005)(508600001)(36900700001)(2101003);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2022 21:34:37.2568
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2022 21:34:37.9894
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ad314e80-fb07-49a8-1423-08da0082479c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 78223179-6686-44c2-7ac1-08da00824809
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT060.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT029.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5634
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5306
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -126,126 +127,216 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Michael Roth <michael.roth@amd.com>
 
-Update all C code to use the new boot_rdmsr()/boot_wrmsr() helpers
-instead of relying on inline assembly.
+With upcoming SEV-SNP support, SEV-related features need to be
+initialized earlier in boot, at the same point the initial #VC handler
+is set up, so that the SEV-SNP CPUID table can be utilized during the
+initial feature checks. Also, SEV-SNP feature detection will rely on
+EFI helper functions to scan the EFI config table for the Confidential
+Computing blob, and so would need to be implemented at least partially
+in C.
 
-Suggested-by: Borislav Petkov <bp@alien8.de>
+Currently set_sev_encryption_mask() is used to initialize the
+sev_status and sme_me_mask globals that advertise what SEV/SME features
+are available in a guest. Rename it to sev_enable() to better reflect
+that (SME is only enabled in the case of SEV guests in the
+boot/compressed kernel), and move it to just after the stage1 #VC
+handler is set up so that it can be used to initialize SEV-SNP as well
+in future patches.
+
+While at it, re-implement it as C code so that all SEV feature
+detection can be better consolidated with upcoming SEV-SNP feature
+detection, which will also be in C.
+
+The 32-bit entry path remains unchanged, as it never relied on the
+set_sev_encryption_mask() initialization to begin with, possibly due to
+the normal rva() helper for accessing globals only being usable by code
+in .head.text. Either way, 32-bit entry for SEV-SNP would likely only
+be supported for non-EFI boot paths, and so wouldn't rely on existing
+EFI helper functions, and so could be handled by a separate/simpler
+32-bit initializer in the future if needed.
+
 Signed-off-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/boot/compressed/sev.c | 17 +++++++----------
- arch/x86/boot/cpucheck.c       | 30 +++++++++++++++---------------
- 2 files changed, 22 insertions(+), 25 deletions(-)
+ arch/x86/boot/compressed/head_64.S     | 37 +++++++++++++++-----------
+ arch/x86/boot/compressed/mem_encrypt.S | 36 -------------------------
+ arch/x86/boot/compressed/misc.h        |  4 +--
+ arch/x86/boot/compressed/sev.c         | 36 +++++++++++++++++++++++++
+ 4 files changed, 60 insertions(+), 53 deletions(-)
 
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index fd9441f40457..4cd83afb9531 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -189,11 +189,11 @@ SYM_FUNC_START(startup_32)
+ 	subl	$32, %eax	/* Encryption bit is always above bit 31 */
+ 	bts	%eax, %edx	/* Set encryption mask for page tables */
+ 	/*
+-	 * Mark SEV as active in sev_status so that startup32_check_sev_cbit()
+-	 * will do a check. The sev_status memory will be fully initialized
+-	 * with the contents of MSR_AMD_SEV_STATUS later in
+-	 * set_sev_encryption_mask(). For now it is sufficient to know that SEV
+-	 * is active.
++	 * Set MSR_AMD64_SEV_ENABLED_BIT in sev_status so that
++	 * startup32_check_sev_cbit() will do a check. sev_enable() will
++	 * initialize sev_status with all the bits reported by
++	 * MSR_AMD_SEV_STATUS later, but only MSR_AMD64_SEV_ENABLED_BIT
++	 * needs to be set for now.
+ 	 */
+ 	movl	$1, rva(sev_status)(%ebp)
+ 1:
+@@ -447,6 +447,23 @@ SYM_CODE_START(startup_64)
+ 	call	load_stage1_idt
+ 	popq	%rsi
+ 
++#ifdef CONFIG_AMD_MEM_ENCRYPT
++	/*
++	 * Now that the stage1 interrupt handlers are set up, #VC exceptions from
++	 * CPUID instructions can be properly handled for SEV-ES guests.
++	 *
++	 * For SEV-SNP, the CPUID table also needs to be set up in advance of any
++	 * CPUID instructions being issued, so go ahead and do that now via
++	 * sev_enable(), which will also handle the rest of the SEV-related
++	 * detection/setup to ensure that has been done in advance of any dependent
++	 * code.
++	 */
++	pushq	%rsi
++	movq	%rsi, %rdi		/* real mode address */
++	call	sev_enable
++	popq	%rsi
++#endif
++
+ 	/*
+ 	 * paging_prepare() sets up the trampoline and checks if we need to
+ 	 * enable 5-level paging.
+@@ -559,17 +576,7 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
+ 	shrq	$3, %rcx
+ 	rep	stosq
+ 
+-/*
+- * If running as an SEV guest, the encryption mask is required in the
+- * page-table setup code below. When the guest also has SEV-ES enabled
+- * set_sev_encryption_mask() will cause #VC exceptions, but the stage2
+- * handler can't map its GHCB because the page-table is not set up yet.
+- * So set up the encryption mask here while still on the stage1 #VC
+- * handler. Then load stage2 IDT and switch to the kernel's own
+- * page-table.
+- */
+ 	pushq	%rsi
+-	call	set_sev_encryption_mask
+ 	call	load_stage2_idt
+ 
+ 	/* Pass boot_params to initialize_identity_maps() */
+diff --git a/arch/x86/boot/compressed/mem_encrypt.S b/arch/x86/boot/compressed/mem_encrypt.S
+index a63424d13627..a73e4d783cae 100644
+--- a/arch/x86/boot/compressed/mem_encrypt.S
++++ b/arch/x86/boot/compressed/mem_encrypt.S
+@@ -187,42 +187,6 @@ SYM_CODE_END(startup32_vc_handler)
+ 	.code64
+ 
+ #include "../../kernel/sev_verify_cbit.S"
+-SYM_FUNC_START(set_sev_encryption_mask)
+-#ifdef CONFIG_AMD_MEM_ENCRYPT
+-	push	%rbp
+-	push	%rdx
+-
+-	movq	%rsp, %rbp		/* Save current stack pointer */
+-
+-	call	get_sev_encryption_bit	/* Get the encryption bit position */
+-	testl	%eax, %eax
+-	jz	.Lno_sev_mask
+-
+-	bts	%rax, sme_me_mask(%rip)	/* Create the encryption mask */
+-
+-	/*
+-	 * Read MSR_AMD64_SEV again and store it to sev_status. Can't do this in
+-	 * get_sev_encryption_bit() because this function is 32-bit code and
+-	 * shared between 64-bit and 32-bit boot path.
+-	 */
+-	movl	$MSR_AMD64_SEV, %ecx	/* Read the SEV MSR */
+-	rdmsr
+-
+-	/* Store MSR value in sev_status */
+-	shlq	$32, %rdx
+-	orq	%rdx, %rax
+-	movq	%rax, sev_status(%rip)
+-
+-.Lno_sev_mask:
+-	movq	%rbp, %rsp		/* Restore original stack pointer */
+-
+-	pop	%rdx
+-	pop	%rbp
+-#endif
+-
+-	xor	%rax, %rax
+-	RET
+-SYM_FUNC_END(set_sev_encryption_mask)
+ 
+ 	.data
+ 
+diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+index 16ed360b6692..23e0e395084a 100644
+--- a/arch/x86/boot/compressed/misc.h
++++ b/arch/x86/boot/compressed/misc.h
+@@ -120,12 +120,12 @@ static inline void console_init(void)
+ { }
+ #endif
+ 
+-void set_sev_encryption_mask(void);
+-
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
++void sev_enable(struct boot_params *bp);
+ void sev_es_shutdown_ghcb(void);
+ extern bool sev_es_check_ghcb_fault(unsigned long address);
+ #else
++static inline void sev_enable(struct boot_params *bp) { }
+ static inline void sev_es_shutdown_ghcb(void) { }
+ static inline bool sev_es_check_ghcb_fault(unsigned long address)
+ {
 diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 28bcf04c022e..4e82101b7d13 100644
+index 4e82101b7d13..27ccd5a5ff60 100644
 --- a/arch/x86/boot/compressed/sev.c
 +++ b/arch/x86/boot/compressed/sev.c
-@@ -22,6 +22,7 @@
- #include <asm/svm.h>
- 
- #include "error.h"
-+#include "../msr.h"
- 
- struct ghcb boot_ghcb_page __aligned(PAGE_SIZE);
- struct ghcb *boot_ghcb;
-@@ -56,23 +57,19 @@ static unsigned long insn_get_seg_base(struct pt_regs *regs, int seg_reg_idx)
- 
- static inline u64 sev_es_rd_ghcb_msr(void)
- {
--	unsigned long low, high;
-+	struct msr m;
- 
--	asm volatile("rdmsr" : "=a" (low), "=d" (high) :
--			"c" (MSR_AMD64_SEV_ES_GHCB));
-+	boot_rdmsr(MSR_AMD64_SEV_ES_GHCB, &m);
- 
--	return ((high << 32) | low);
-+	return m.q;
+@@ -201,3 +201,39 @@ void do_boot_stage2_vc(struct pt_regs *regs, unsigned long exit_code)
+ 	else if (result != ES_RETRY)
+ 		sev_es_terminate(GHCB_SEV_ES_GEN_REQ);
  }
- 
- static inline void sev_es_wr_ghcb_msr(u64 val)
- {
--	u32 low, high;
++
++void sev_enable(struct boot_params *bp)
++{
++	unsigned int eax, ebx, ecx, edx;
 +	struct msr m;
- 
--	low  = val & 0xffffffffUL;
--	high = val >> 32;
--
--	asm volatile("wrmsr" : : "c" (MSR_AMD64_SEV_ES_GHCB),
--			"a"(low), "d" (high) : "memory");
-+	m.q = val;
-+	boot_wrmsr(MSR_AMD64_SEV_ES_GHCB, &m);
- }
- 
- static enum es_result vc_decode_insn(struct es_em_ctxt *ctxt)
-diff --git a/arch/x86/boot/cpucheck.c b/arch/x86/boot/cpucheck.c
-index e1478d32de1a..fed8d13ce252 100644
---- a/arch/x86/boot/cpucheck.c
-+++ b/arch/x86/boot/cpucheck.c
-@@ -27,6 +27,7 @@
- #include <asm/required-features.h>
- #include <asm/msr-index.h>
- #include "string.h"
-+#include "msr.h"
- 
- static u32 err_flags[NCAPINTS];
- 
-@@ -130,12 +131,11 @@ int check_cpu(int *cpu_level_ptr, int *req_level_ptr, u32 **err_flags_ptr)
- 		/* If this is an AMD and we're only missing SSE+SSE2, try to
- 		   turn them on */
- 
--		u32 ecx = MSR_K7_HWCR;
--		u32 eax, edx;
-+		struct msr m;
- 
--		asm("rdmsr" : "=a" (eax), "=d" (edx) : "c" (ecx));
--		eax &= ~(1 << 15);
--		asm("wrmsr" : : "a" (eax), "d" (edx), "c" (ecx));
-+		boot_rdmsr(MSR_K7_HWCR, &m);
-+		m.l &= ~(1 << 15);
-+		boot_wrmsr(MSR_K7_HWCR, &m);
- 
- 		get_cpuflags();	/* Make sure it really did something */
- 		err = check_cpuflags();
-@@ -145,28 +145,28 @@ int check_cpu(int *cpu_level_ptr, int *req_level_ptr, u32 **err_flags_ptr)
- 		/* If this is a VIA C3, we might have to enable CX8
- 		   explicitly */
- 
--		u32 ecx = MSR_VIA_FCR;
--		u32 eax, edx;
-+		struct msr m;
- 
--		asm("rdmsr" : "=a" (eax), "=d" (edx) : "c" (ecx));
--		eax |= (1<<1)|(1<<7);
--		asm("wrmsr" : : "a" (eax), "d" (edx), "c" (ecx));
-+		boot_rdmsr(MSR_VIA_FCR, &m);
-+		m.l |= (1 << 1) | (1 << 7);
-+		boot_wrmsr(MSR_VIA_FCR, &m);
- 
- 		set_bit(X86_FEATURE_CX8, cpu.flags);
- 		err = check_cpuflags();
- 	} else if (err == 0x01 && is_transmeta()) {
- 		/* Transmeta might have masked feature bits in word 0 */
- 
--		u32 ecx = 0x80860004;
--		u32 eax, edx;
-+		struct msr m, m_tmp;
- 		u32 level = 1;
- 
--		asm("rdmsr" : "=a" (eax), "=d" (edx) : "c" (ecx));
--		asm("wrmsr" : : "a" (~0), "d" (edx), "c" (ecx));
-+		boot_rdmsr(0x80860004, &m);
-+		m_tmp = m;
-+		m_tmp.l = ~0;
-+		boot_wrmsr(0x80860004, &m_tmp);
- 		asm("cpuid"
- 		    : "+a" (level), "=d" (cpu.flags[0])
- 		    : : "ecx", "ebx");
--		asm("wrmsr" : : "a" (eax), "d" (edx), "c" (ecx));
-+		boot_wrmsr(0x80860004, &m);
- 
- 		err = check_cpuflags();
- 	} else if (err == 0x01 &&
++
++	/* Check for the SME/SEV support leaf */
++	eax = 0x80000000;
++	ecx = 0;
++	native_cpuid(&eax, &ebx, &ecx, &edx);
++	if (eax < 0x8000001f)
++		return;
++
++	/*
++	 * Check for the SME/SEV feature:
++	 *   CPUID Fn8000_001F[EAX]
++	 *   - Bit 0 - Secure Memory Encryption support
++	 *   - Bit 1 - Secure Encrypted Virtualization support
++	 *   CPUID Fn8000_001F[EBX]
++	 *   - Bits 5:0 - Pagetable bit position used to indicate encryption
++	 */
++	eax = 0x8000001f;
++	ecx = 0;
++	native_cpuid(&eax, &ebx, &ecx, &edx);
++	/* Check whether SEV is supported */
++	if (!(eax & BIT(1)))
++		return;
++
++	/* Set the SME mask if this is an SEV guest. */
++	boot_rdmsr(MSR_AMD64_SEV, &m);
++	sev_status = m.q;
++	if (!(sev_status & MSR_AMD64_SEV_ENABLED))
++		return;
++
++	sme_me_mask = BIT_ULL(ebx & 0x3f);
++}
 -- 
 2.25.1
 
