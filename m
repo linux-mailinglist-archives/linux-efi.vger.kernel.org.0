@@ -2,41 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15FDB4D09CD
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Mar 2022 22:36:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CDB1F4D09C6
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Mar 2022 22:36:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343507AbiCGVgm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Mar 2022 16:36:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36360 "EHLO
+        id S1343490AbiCGVhJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Mar 2022 16:37:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245649AbiCGVgY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Mar 2022 16:36:24 -0500
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2072.outbound.protection.outlook.com [40.107.92.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB41288784;
-        Mon,  7 Mar 2022 13:34:59 -0800 (PST)
+        with ESMTP id S245691AbiCGVg2 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Mar 2022 16:36:28 -0500
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2078.outbound.protection.outlook.com [40.107.94.78])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86B2A88B16;
+        Mon,  7 Mar 2022 13:35:05 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dZCelW6G1qxV0ySTFOaEQUvlugKk9MglBBe9A7+rIqSBLi898lneuwoXsyLOgFHxaQplpcZETc+7Xmk0uLlUC1oXUDxXnZxPYny1Xg4HFnqbEOp0RaQT9kjbSQp0opv3MqqJSgLhICt3G4sDhZB+JJgtwroGfUFE7VJAb6g0FpHI41j7mqrO3Gt83hRTpzz5tWJQ6+GLXqYBeIUH4dRmu2HWKY+dgk7MXZnM+yMvYdoIEZV/uRnCLLzHPFwU2W1QEmLQ5fIfbiFh+vitVw5xZUQmu9AawDJOnMOT6W4N7k4NCwV+hPaMUvyhlqm2hYjJvvkAnS8hqaeUkAk6hZNUvw==
+ b=nC4nZxNTqCLo9IiunEngGNejLNXql/F6kcmDvSbk/DBRtKpnNLIJ4fUUfz7Gvceallrl/K410ytz59K8Un9kUhJxejZxt2Z0iIeuJt4MfexjFmVh5TKN9bCF3DnKcjNJovF0C+TqmtQQBSVQh0qfD+hAetiCbHS2o/F6nolrklKEwCWANmVfhQJ9u5MoGLEW8f+4+0eFgnHbee8Q9Gpv0+JAXzNO8a/P176Un+wgAGdp611mNuHAB86m9e1do7xm6netBEnEFmCtk33ach++ZL+Lwu4faP03BwXSHfTppRqUNMnP+cJiusCj70/IasZhPfknwQCj+ywtvqok1lD/uQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dQ99cfpt0m7da6oqy/rXr/yW8LVwNmJ3ynuO/U1I9WU=;
- b=hXsdbKFzn/wj4/7KYVfkPcow3jLUUr0RjUK4/Nss5m185dO+8GLlMy9GzyJ5bTufmfqO8jTrxx8r1V+a7oGvINKKFGUy+GoYQqTCrz/bHhXrTDeRMd8Q4X7nFrHG86w6od4I7MKqYsNNQj38fBpu8MSNsEnN8FrTJovP69PD/u9K9pQpOhCJf34Hx8rxa2iqmFq/k0yH4VPDGW9ws/uL0UCQk5KKC0bl5fUo5Hvqm36816qeIFx0+WkBjyZnMVPBcwaPjH6uozglcIZU7kmkmrt/XImGCiXb/m+FQ2PrfIlH9h29QJSwzSs0KamcdoixOB7NCmVJJgxogrc8O0/NOg==
+ bh=0IeNR3dE235Aur/W4uNaSSGW5/OsmrS029NUXjkxG0A=;
+ b=MIC8SspNj+taq2l+ZqY5rnJxp7NHlCE66TKDuzwTWfay6Ogok5pR0XtTwPf7WhcDBFc3jEYxndGlK6jms9oAXDPMmed/76f30sAyM/VbkVP86vSXYVTtxkwrai01InroRK28ihIoK1iUNTp23AK2RlzaiSa295qe7ZW539OX3froXFLruO4T1tqszaF0m4iFzXTP47Ul9zE6b8oFuJY+n3VIuULTFj6Otvcvw1gLjMjHdVgltMhGHSyb4SOymGCO41M2L4K/IYpALSjwDKz5Raf+oabGrAQAOJKJpPYqXuK6GLv3KPxqzjXKuSAXt0h4NhiA+OwXc4SsCfgeHbOcJw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dQ99cfpt0m7da6oqy/rXr/yW8LVwNmJ3ynuO/U1I9WU=;
- b=O6GMTIQuyNBCgEn/r6dhZNkmV0jEK6eGlxe3YZqW07RytvZJDP7XaOLMal5Jfu3II0NEW6m6mjLviwMu1CaXpOGKdXKGJ0a7xBEQuy0uYucTF984nngpY0yQ8D3FG/W563j4k72KBvDzNkseVgi1PL/XogQUdomq3p/un5YWQ2M=
-Received: from BN9PR03CA0364.namprd03.prod.outlook.com (2603:10b6:408:f7::9)
- by BN8PR12MB3170.namprd12.prod.outlook.com (2603:10b6:408:98::33) with
+ bh=0IeNR3dE235Aur/W4uNaSSGW5/OsmrS029NUXjkxG0A=;
+ b=qlcKtXBvk7nnxN4+E9s7A39L1j/1i/O1ezXwF/ort2zC2E77JAehUgC6ltaqHJjPgpMWJgnILpr80o+QxTPR2Y2csfipkEkKGskyc5+NIZ7suGuEtq4nK5jlIlr6sGQD+43/D8DHckjafP/cFamrvPzpJVJEEXdBJHabO8gogmg=
+Received: from BN0PR10CA0025.namprd10.prod.outlook.com (2603:10b6:408:143::22)
+ by MW4PR12MB5668.namprd12.prod.outlook.com (2603:10b6:303:16b::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.14; Mon, 7 Mar
- 2022 21:34:56 +0000
-Received: from BN8NAM11FT031.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:f7:cafe::d3) by BN9PR03CA0364.outlook.office365.com
- (2603:10b6:408:f7::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5017.21; Mon, 7 Mar
+ 2022 21:34:57 +0000
+Received: from BN8NAM11FT048.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:143:cafe::93) by BN0PR10CA0025.outlook.office365.com
+ (2603:10b6:408:143::22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.14 via Frontend
  Transport; Mon, 7 Mar 2022 21:34:56 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
@@ -46,13 +46,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT031.mail.protection.outlook.com (10.13.177.25) with Microsoft SMTP
+ BN8NAM11FT048.mail.protection.outlook.com (10.13.177.117) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.20.5038.14 via Frontend Transport; Mon, 7 Mar 2022 21:34:56 +0000
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Mon, 7 Mar
- 2022 15:34:45 -0600
+ 2022 15:34:47 -0600
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
         <kvm@vger.kernel.org>, <linux-efi@vger.kernel.org>,
@@ -82,11 +82,10 @@ CC:     Thomas Gleixner <tglx@linutronix.de>,
         "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
         <brijesh.ksingh@gmail.com>, <tony.luck@intel.com>,
         <marcorr@google.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Venu Busireddy <venu.busireddy@oracle.com>
-Subject: [PATCH v12 16/46] x86/compressed: Register GHCB memory when SEV-SNP is active
-Date:   Mon, 7 Mar 2022 15:33:26 -0600
-Message-ID: <20220307213356.2797205-17-brijesh.singh@amd.com>
+        Brijesh Singh <brijesh.singh@amd.com>
+Subject: [PATCH v12 17/46] x86/sev: Register GHCB memory when SEV-SNP is active
+Date:   Mon, 7 Mar 2022 15:33:27 -0600
+Message-ID: <20220307213356.2797205-18-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220307213356.2797205-1-brijesh.singh@amd.com>
 References: <20220307213356.2797205-1-brijesh.singh@amd.com>
@@ -98,24 +97,24 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: eabeab00-f93a-451b-75ba-08da008252fe
-X-MS-TrafficTypeDiagnostic: BN8PR12MB3170:EE_
-X-Microsoft-Antispam-PRVS: <BN8PR12MB31707FB791730075FBA74538E5089@BN8PR12MB3170.namprd12.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: 1b305bd5-18f5-4614-512f-08da0082532e
+X-MS-TrafficTypeDiagnostic: MW4PR12MB5668:EE_
+X-Microsoft-Antispam-PRVS: <MW4PR12MB5668A25A6D7C2317E89D6493E5089@MW4PR12MB5668.namprd12.prod.outlook.com>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: WuzsaRaaygPxy1PRsxQhQ162xh17LAcxjukcFrh5sRJs1+bMe4G7qqDMthhJOqOHsi5WafrYaGXogOL0hWPAmaG3rb+0q1dF9EHJdFnGknAkX2Q8Y6SD+HbrV3KbQ7ue4G+KowRAZC0sjJIXpbB1erGkg2+tmoy7cYQZ8+dCFVDt/+JczuLRroPovHcBeisd0unmhq4lMRQN32eEG1+AGzkr0xKOdkJcXf0APZSrWde4iQIy23VxDqs2j0jDsd6JBbww+BZZOvu1Lh/9zV6XSqovwHE2nyHUoN4YChuMo0kAIz6QDTGtt+D3AJAG4NTH+PhmkIkfpHnied6wAlyoD5lYDTzXV7rks+WvHYi/XkITKfNF7vp6adb+KZKEcZGcZgf+lc1C2rN4TJdK76au8AUhtteFFgTd/oakljcpb6ygjENqIld7+qx1xUZjyqhoRk7Dk7daw0WEzY8+wByZwFlCiuGddYunztMSJfvgDV/MfNSn6sTzTBIO3GoLkARNPm4nQSkiaHJdBUJTGJOrvb2VibmXVMh1/BMYmVwPiiwsRsHG6bGpUsd5Dx3N5Akm//CLulw4yMiUR4IJc9iHAe2tiMwWilLm6W4o17eXnSSu8rsoV/RhA9TwL4VGfaWC37QRQuoZTkBiaxXslOCUm50VMgzcbfuzh8M4VsJ3TmWQ18CbMJH/6dqjZzSHJrGDZCNgzbehCe8hH5Fa8kQKZx4Oc+7JZ64rtDTQDum3B+g=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(46966006)(36840700001)(40470700004)(40460700003)(70206006)(316002)(336012)(54906003)(8676002)(4326008)(86362001)(44832011)(82310400004)(8936002)(356005)(81166007)(2906002)(2616005)(5660300002)(7416002)(7406005)(426003)(508600001)(70586007)(110136005)(26005)(1076003)(16526019)(186003)(7696005)(6666004)(36860700001)(47076005)(36756003)(36900700001)(2101003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: QtwUkbo5RiXatxgjUSiztKiwGZ2kCxWSLMLjGZjUuVsbAj6IcQCE1hZwLQPMd97rcVlb4WCbXURm6o6WUVyIs+RlmcxR3VRqVbLIdum+PQ31XI6BWbhbb8PB3VvrWNfzcsZNiby0V3+3JZsH/ClMmGjJ915OJiUhuPkxaLVlWB3C04fcTZBB5px/GYKPpCTdR6MhFfLKmgZpcngSazJsXhpCwARzVpVWUz9syOHqqIgydrtfcAFrXVob0umeM3D1kkGZ5Uc/Pf7lujt1wyOGXxxI2VJ63MxDsK1B8yuCIkid7ZinbDgxb/6sB+A8X023fVLHEwxE5a0HxfCYZdXkfIlZBBPP66IolRzQ9R/c80jqZ2/FdKt4ukSYz4nQhCdY54Z+at7xUdOdaUIs0skwXfr61rjx2YSKFLjaxZp3IXXh+VGxSxi3a5fAdTlHebKbr/tdECLQ+4vPmQ1cTcKUnOT0aBnwN5x6wK43m5sLhCs2NWCcwtXglUZeWIuQnETqN/42P441TtkE0gKWTw7lvkUKcLK9JSxPZaTz7qphat64F8BReSSMxnIYsLWFuBswmn5r7CIr0qnSnfQdxst2tQGnHJ5DqywERyThFoGJQDUn5WL4dcGrgo247RqAdslsKgYxffTMtjnShkUSRPxFIPIn/qPJqfrWFh0e7y1FRvzI3Xtn2uk3gnRTILSTHq93qNoPle/zI3YOZ5oGBvaH6xPkdX5ZKtcyf2oO8zSVt5I=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(36840700001)(40470700004)(46966006)(336012)(40460700003)(8936002)(356005)(81166007)(82310400004)(5660300002)(7406005)(7416002)(36860700001)(70586007)(16526019)(47076005)(70206006)(44832011)(4326008)(83380400001)(8676002)(86362001)(36756003)(26005)(316002)(186003)(54906003)(6666004)(7696005)(1076003)(110136005)(2616005)(2906002)(508600001)(426003)(2101003)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2022 21:34:56.3878
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2022 21:34:56.7014
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: eabeab00-f93a-451b-75ba-08da008252fe
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b305bd5-18f5-4614-512f-08da0082532e
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT031.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT048.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN8PR12MB3170
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5668
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -132,83 +131,168 @@ that a guest use a consistent and/or specific GPA for the GHCB associated
 with a vCPU. For more information, see the GHCB specification section
 "GHCB GPA Registration".
 
-If hypervisor can not work with the guest provided GPA then terminate the
-guest boot.
-
-Reviewed-by: Venu Busireddy <venu.busireddy@oracle.com>
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/boot/compressed/sev.c    |  4 ++++
- arch/x86/include/asm/sev-common.h | 13 +++++++++++++
- arch/x86/kernel/sev-shared.c      | 16 ++++++++++++++++
- 3 files changed, 33 insertions(+)
+ arch/x86/include/asm/sev.h   |  2 ++
+ arch/x86/kernel/cpu/common.c |  4 +++
+ arch/x86/kernel/head64.c     |  4 ++-
+ arch/x86/kernel/sev-shared.c |  2 +-
+ arch/x86/kernel/sev.c        | 47 +++++++++++++++++++++++++++---------
+ 5 files changed, 45 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 23978d858297..485410a182b0 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -175,6 +175,10 @@ static bool early_setup_ghcb(void)
- 	/* Initialize lookup tables for the instruction decoder */
- 	inat_init_tables();
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index e37451849165..48df02713ee0 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -122,6 +122,7 @@ static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate)
  
-+	/* SNP guest requires the GHCB GPA must be registered */
-+	if (sev_snp_enabled())
-+		snp_register_ghcb_early(__pa(&boot_ghcb_page));
-+
- 	return true;
+ 	return rc;
  }
++void setup_ghcb(void);
+ #else
+ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+ static inline void sev_es_ist_exit(void) { }
+@@ -130,6 +131,7 @@ static inline void sev_es_nmi_complete(void) { }
+ static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
+ static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate) { return 0; }
+ static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigned long attrs) { return 0; }
++static inline void setup_ghcb(void) { }
+ #endif
  
-diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
-index fe7fe16e5fd5..f077a6c95e67 100644
---- a/arch/x86/include/asm/sev-common.h
-+++ b/arch/x86/include/asm/sev-common.h
-@@ -57,6 +57,19 @@
- #define GHCB_MSR_AP_RESET_HOLD_REQ	0x006
- #define GHCB_MSR_AP_RESET_HOLD_RESP	0x007
+ #endif
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 64deb7727d00..2e0dd7f4018e 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -59,6 +59,7 @@
+ #include <asm/cpu_device_id.h>
+ #include <asm/uv/uv.h>
+ #include <asm/sigframe.h>
++#include <asm/sev.h>
  
-+/* GHCB GPA Register */
-+#define GHCB_MSR_REG_GPA_REQ		0x012
-+#define GHCB_MSR_REG_GPA_REQ_VAL(v)			\
-+	/* GHCBData[63:12] */				\
-+	(((u64)((v) & GENMASK_ULL(51, 0)) << 12) |	\
-+	/* GHCBData[11:0] */				\
-+	GHCB_MSR_REG_GPA_REQ)
+ #include "cpu.h"
+ 
+@@ -2067,6 +2068,9 @@ void cpu_init_exception_handling(void)
+ 
+ 	load_TR_desc();
+ 
++	/* GHCB need to be setup to handle #VC. */
++	setup_ghcb();
 +
-+#define GHCB_MSR_REG_GPA_RESP		0x013
-+#define GHCB_MSR_REG_GPA_RESP_VAL(v)			\
-+	/* GHCBData[63:12] */				\
-+	(((u64)(v) & GENMASK_ULL(63, 12)) >> 12)
-+
- /*
-  * SNP Page State Change Operation
-  *
+ 	/* Finally load the IDT */
+ 	load_current_idt();
+ }
+diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
+index cbc285ddc4ac..83514b9827e6 100644
+--- a/arch/x86/kernel/head64.c
++++ b/arch/x86/kernel/head64.c
+@@ -597,8 +597,10 @@ static void startup_64_load_idt(unsigned long physbase)
+ void early_setup_idt(void)
+ {
+ 	/* VMM Communication Exception */
+-	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT))
++	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT)) {
++		setup_ghcb();
+ 		set_bringup_idt_handler(bringup_idt_table, X86_TRAP_VC, vc_boot_ghcb);
++	}
+ 
+ 	bringup_idt_descr.address = (unsigned long)bringup_idt_table;
+ 	native_load_idt(&bringup_idt_descr);
 diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index 4a876e684f67..e9ff13cd90b0 100644
+index e9ff13cd90b0..3aaef1a18ffe 100644
 --- a/arch/x86/kernel/sev-shared.c
 +++ b/arch/x86/kernel/sev-shared.c
-@@ -68,6 +68,22 @@ static u64 get_hv_features(void)
+@@ -68,7 +68,7 @@ static u64 get_hv_features(void)
  	return GHCB_MSR_HV_FT_RESP_VAL(val);
  }
  
-+static void __maybe_unused snp_register_ghcb_early(unsigned long paddr)
-+{
-+	unsigned long pfn = paddr >> PAGE_SHIFT;
-+	u64 val;
+-static void __maybe_unused snp_register_ghcb_early(unsigned long paddr)
++static void snp_register_ghcb_early(unsigned long paddr)
+ {
+ 	unsigned long pfn = paddr >> PAGE_SHIFT;
+ 	u64 val;
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index cb20fb0c608e..cc382c4f89ef 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -41,7 +41,7 @@ static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
+  * Needs to be in the .data section because we need it NULL before bss is
+  * cleared
+  */
+-static struct ghcb __initdata *boot_ghcb;
++static struct ghcb *boot_ghcb __section(".data");
+ 
+ /* Bitmap of SEV features supported by the hypervisor */
+ static u64 sev_hv_features __ro_after_init;
+@@ -647,15 +647,40 @@ static enum es_result vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
+ 	return ret;
+ }
+ 
+-/*
+- * This function runs on the first #VC exception after the kernel
+- * switched to virtual addresses.
+- */
+-static bool __init sev_es_setup_ghcb(void)
++static void snp_register_per_cpu_ghcb(void)
+ {
++	struct sev_es_runtime_data *data;
++	struct ghcb *ghcb;
 +
-+	sev_es_wr_ghcb_msr(GHCB_MSR_REG_GPA_REQ_VAL(pfn));
-+	VMGEXIT();
++	data = this_cpu_read(runtime_data);
++	ghcb = &data->ghcb_page;
 +
-+	val = sev_es_rd_ghcb_msr();
-+
-+	/* If the response GPA is not ours then abort the guest */
-+	if ((GHCB_RESP_CODE(val) != GHCB_MSR_REG_GPA_RESP) ||
-+	    (GHCB_MSR_REG_GPA_RESP_VAL(val) != pfn))
-+		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_REGISTER);
++	snp_register_ghcb_early(__pa(ghcb));
 +}
 +
- static bool sev_es_negotiate_protocol(void)
- {
- 	u64 val;
++void setup_ghcb(void)
++{
++	if (!cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
++		return;
++
+ 	/* First make sure the hypervisor talks a supported protocol. */
+ 	if (!sev_es_negotiate_protocol())
+-		return false;
++		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
++
++	/*
++	 * Check whether the runtime #VC exception handler is active.
++	 * The runtime exception handler uses the per-CPU GHCB page, and
++	 * the GHCB page would be setup by sev_es_init_vc_handling().
++	 *
++	 * If SNP is active, then register the per-CPU GHCB page so that
++	 * the runtime exception handler can use it.
++	 */
++	if (initial_vc_handler == (unsigned long)kernel_exc_vmm_communication) {
++		if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
++			snp_register_per_cpu_ghcb();
++
++		return;
++	}
+ 
+ 	/*
+ 	 * Clear the boot_ghcb. The first exception comes in before the bss
+@@ -666,7 +691,9 @@ static bool __init sev_es_setup_ghcb(void)
+ 	/* Alright - Make the boot-ghcb public */
+ 	boot_ghcb = &boot_ghcb_page;
+ 
+-	return true;
++	/* SNP guest requires that GHCB GPA must be registered. */
++	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
++		snp_register_ghcb_early(__pa(&boot_ghcb_page));
+ }
+ 
+ #ifdef CONFIG_HOTPLUG_CPU
+@@ -1397,10 +1424,6 @@ bool __init handle_vc_boot_ghcb(struct pt_regs *regs)
+ 	struct es_em_ctxt ctxt;
+ 	enum es_result result;
+ 
+-	/* Do initial setup or terminate the guest */
+-	if (unlikely(boot_ghcb == NULL && !sev_es_setup_ghcb()))
+-		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
+-
+ 	vc_ghcb_invalidate(boot_ghcb);
+ 
+ 	result = vc_init_em_ctxt(&ctxt, regs, exit_code);
 -- 
 2.25.1
 
