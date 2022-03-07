@@ -2,42 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E695A4D09C1
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Mar 2022 22:36:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DC664D09A6
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Mar 2022 22:36:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245717AbiCGVhH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Mar 2022 16:37:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39296 "EHLO
+        id S1343530AbiCGVgo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Mar 2022 16:36:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245693AbiCGVg2 (ORCPT
+        with ESMTP id S245626AbiCGVg2 (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Mar 2022 16:36:28 -0500
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2048.outbound.protection.outlook.com [40.107.237.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1885488B1B;
-        Mon,  7 Mar 2022 13:35:05 -0800 (PST)
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2045.outbound.protection.outlook.com [40.107.244.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89C72888FD;
+        Mon,  7 Mar 2022 13:35:03 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=a/X00GmcdoJ41LJyFG5RQi89zMyL4E+LflhIqrw2lRF1g0A/KlpX1nPkk1tt4TTzgOvZ1yu1+42rdXUTCED0WvKRR/Ezq5gOAedxqtLQ99CGuEPEjHXqzGsxhX4Q0DWU+KjL9hCWcMc8MqZlX3rC7zVpGU3tPgLnejJf5SYjCXOEpvv9QwXzqYw0ZD7M4PIXszMEoHqfFZ+EzRP+QBGgyr+ZBlAZvErI7g0Uf8QEq3Jzkd+Q9vSaZYajD1cmXLPltRTP02n51013NeoC546KVGwMW1UsM7urTgB4sxmcc5vyju37fUD88FtQ47nbFnsibAyrgo9hX0Tt9kUGzKxiiw==
+ b=IAOrdI9H57G1BD96N9lwL/tViUEieD06fY8c9QLjIXsaGScaZvwDA75ChiKI7UEeKypc3+4aohx/NDEfJCiv/JlIeJS0QKZ/mhgu6x1jC5CEZSPfFxJZ3E+78/oSn1euZgAv/geOhd9AQt7m+ogjwJX83PkFRtASTPay8Seip9Kt5SH1UwWkQtjSVf497tlEyvQ/jnKoikfx2KdeH1/zfrQTMzqVv56i5wzHuDounF+Bg9VWkhpzmu08+Hvrin9uLKbeL3Sq5nIXIeMlP7cjQuoyI1iMuSEGQ4o6ahbhMhQM5/LH/au0/Tj1BykDNMa5Yu95jy2mKNFD/EM34v6SEQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IP1obJvu6OsHJZcZ8vx43TaKjIyen/YfL7sTU73FQTw=;
- b=Q7ZNIpwwk0XEc4JbKrdur+nhYskPYhbkyunaSrJrFkkI/HMB625mkKky7ckOx+/vK2omxM3C4X13GTis/hhjhC+4eQnU0irfjeXZkO/1aXHIoUY+yZrTyYGCggNFfN2sn9Vjdjpwu4AbYCWYRLwgwABRrsDN2QqU8VAq95Z3QY3dIYg1doXCMrliKS7Q3UBWnBB+cqiFdO6h74EHg6HKdn/74zq2Gey21tuQath70jFE+WEzBpGw7BvjsH5HZ0bAYDPF+BUCrUyDF1JRFabwYH0l68YUXuakqtiSf1UtRObNcA/gj4mY9lECkwuDfo67mYL7LmDkkvD5LW3dMonLPg==
+ bh=4Qoa3GE/PvZqDew1v4prOu26bqexSkadMT5+HigHZUI=;
+ b=Nq/QO7X6DFzlrx9AG9eHdlUnHB5Bf5FmIb9FaybAPhUbMBFAt+/dQZZEbGzkhJYsg74sGRW0H+pFw0JUupmxb2tRBjUBdQhApWpWDMOqJGXDFZNpwpxqE5YBxcZCO0V4eFLriwlYuQS0e+R/pr4HqM291wkvt0ZS5WHEF6gwWIwMqy/nZxydFHGco/S/JKjun5iUakngR5TnMylbRXf/1KI83sO9AkvauHGbX7uaW1fj0wOVpz1EanPwcv/b2JQrk8FyreG3Xm60pOhDVr0IsXh7l7hu2Wj6f5dwrzidHwdXEUAa9hY0PtRQVQckz9hRmr+ssK2XvxlV/Z5uMfFGDw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IP1obJvu6OsHJZcZ8vx43TaKjIyen/YfL7sTU73FQTw=;
- b=WVXxwYh7PJBYG3BL78UX62IDAZrWu0VO0QhyX7nWywzt0b3YmjTgfo3TmYWRZNqvsVbe4QjEW2IWNr0jXslpSwOn1F1lYSnTVoLWiZdWedG+lUvu40BdJdIzn4OMGeGpF17eMwYMub45X0D+EDGbOD7Pbo66A1x4x69+ynetpcU=
-Received: from BN9PR03CA0377.namprd03.prod.outlook.com (2603:10b6:408:f7::22)
- by DM5PR12MB1657.namprd12.prod.outlook.com (2603:10b6:4:d::21) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5038.17; Mon, 7 Mar 2022 21:35:00 +0000
-Received: from BN8NAM11FT031.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:f7:cafe::ef) by BN9PR03CA0377.outlook.office365.com
- (2603:10b6:408:f7::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.14 via Frontend
- Transport; Mon, 7 Mar 2022 21:35:00 +0000
+ bh=4Qoa3GE/PvZqDew1v4prOu26bqexSkadMT5+HigHZUI=;
+ b=ktWrZricvqqs1yhzEtsacu/JVWN6EEfRAaahQactlsCHwIIhXC+KTnVT4He1uyg8fSqb0lyE/SmJ9JcrIQgy64oTmnDtKqy9TXbQnY18IR62anDwiUuWFihTwtRZePm1vq7IR7SIgiuHphOQUiZSgrnqwqtJS5NCIzWtU2pIo1U=
+Received: from BN0PR10CA0005.namprd10.prod.outlook.com (2603:10b6:408:143::19)
+ by SA1PR12MB5616.namprd12.prod.outlook.com (2603:10b6:806:22a::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.14; Mon, 7 Mar
+ 2022 21:35:00 +0000
+Received: from BN8NAM11FT048.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:143:cafe::22) by BN0PR10CA0005.outlook.office365.com
+ (2603:10b6:408:143::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.13 via Frontend
+ Transport; Mon, 7 Mar 2022 21:34:59 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -45,13 +46,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT031.mail.protection.outlook.com (10.13.177.25) with Microsoft SMTP
+ BN8NAM11FT048.mail.protection.outlook.com (10.13.177.117) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.20.5038.14 via Frontend Transport; Mon, 7 Mar 2022 21:34:59 +0000
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Mon, 7 Mar
- 2022 15:34:54 -0600
+ 2022 15:34:55 -0600
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
         <kvm@vger.kernel.org>, <linux-efi@vger.kernel.org>,
@@ -82,9 +83,9 @@ CC:     Thomas Gleixner <tglx@linutronix.de>,
         <brijesh.ksingh@gmail.com>, <tony.luck@intel.com>,
         <marcorr@google.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>,
         Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH v12 21/46] x86/mm: Validate memory when changing the C-bit
-Date:   Mon, 7 Mar 2022 15:33:31 -0600
-Message-ID: <20220307213356.2797205-22-brijesh.singh@amd.com>
+Subject: [PATCH v12 22/46] x86/sev: Use SEV-SNP AP creation to start secondary CPUs
+Date:   Mon, 7 Mar 2022 15:33:32 -0600
+Message-ID: <20220307213356.2797205-23-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220307213356.2797205-1-brijesh.singh@amd.com>
 References: <20220307213356.2797205-1-brijesh.singh@amd.com>
@@ -96,330 +97,423 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 61ebe13e-05e2-437a-55ce-08da008254ee
-X-MS-TrafficTypeDiagnostic: DM5PR12MB1657:EE_
-X-Microsoft-Antispam-PRVS: <DM5PR12MB16570AF48B9C6E1297F96215E5089@DM5PR12MB1657.namprd12.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: 63f07fff-d5a4-4a84-6fa4-08da008254fa
+X-MS-TrafficTypeDiagnostic: SA1PR12MB5616:EE_
+X-Microsoft-Antispam-PRVS: <SA1PR12MB5616CF2CB3F1292E8D2D6EE5E5089@SA1PR12MB5616.namprd12.prod.outlook.com>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: IR3OZ3Rbo1wZl1Sp/QSMnUmVwP5FD1kx5EEfyJV39cRNZfJeqU9VcpepWq3EUXY1QBSjPZEa5JycEwc2Zkn8bNHASxYx5jYTI13q2PJnBjOA/F3pvLKTJcMKvDai/bTU/xQsmNGZB8DqGl9vWYuVbEBUwVh7AfdEbn0lkVL2rq2zrQBnzLIcSfsec2S6/yA3zlv+vcQJBVc/PT6O3cysN/ARoiVHZ6l2wa5+T5VrabJFidW6yOET8jJxWMKB7vDV3QoRkLbyKNp8oAiX6EDl+b5i9rnjOyH3X/wdPRshPHkhEmUi5SHSpVjlnR2ZiW4ppxzmg4r43JagYUAaCKlrx4SCYbKZiaid+3y6kmJceX/996wRgfsgnZSCWX2G+kf1sC7WNC7gvHM9qJbGOLhsvZzfnMSFtgIw7lrrc/lIbOpBcxydw3pnmF/j98O2mg/0uyDY60iQ9PF1dxfSspUcXpFqvI1p4A9gfKR2H/6Dx3Pe3+jh5/0g9dY/bxOKrCcVZOQ9iPUM0OG9D6XVqm+ceunqLES6ZhVt/9dQR8vBdXCzbDy8O3rOs5eIdFbnS59lsTsxgyBr3sJmAbnAQ3xOa+ZD87J6H6wxsI/mP3AVZXXLdNYlsnReM6qGNAzvrKWCppjaw708txtz9mcHu3ehOYF93OHFGrHBfXe+EUnnHEcZpgMRC4iJxLpfefCu9CDoNj3Dbgu7fKFkLKi/xbLn5CgqyQ2HohJzu/ZXEMZhJio=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(40470700004)(46966006)(36840700001)(5660300002)(81166007)(2906002)(86362001)(15650500001)(36860700001)(44832011)(47076005)(508600001)(8676002)(7416002)(7406005)(70586007)(70206006)(4326008)(6666004)(356005)(40460700003)(7696005)(8936002)(82310400004)(83380400001)(54906003)(426003)(336012)(1076003)(186003)(26005)(110136005)(36756003)(316002)(2616005)(16526019)(36900700001)(2101003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 8FHuCOhBU7lY4hjAfu9qFHz3sJ5Z+AKTec3zQvBHYy9BhhEbApBOGGsQl8WSRjs5JDYytzc3m3e0r5h59hqn+YSmE76wei9N1ITgdDWNM/J+HX+pFLTbp5hsrZIibfIqQyDzwzuxCP0eh8+6MeO4Yxdlh5yUV0pIVqaq0JvfU1RXbr86vVzmQjAoe2r1jBUcMqgnfGS3phbE2O604nZuScxNwyWt13LQVWf3BMCZ+nzRLpXXRBMWJudptiWrG1jvLeqaNNbgNC0nF5ypfNfi5w6COU+xN5PnHaXMsUz0bMMMJKwDb1BQvA58yz8emub/a3eD50TiaHjA+u3OTjjTIG/ZXlsAIcL3ATyaWRvPTyJ54VO0FHXBLWG6Ni5gfDqG83+bObeK94kaYE37hn2WckB7v+LnJPkSIvjK9fj581L40pmqPoF3w4P+SOj6UpdYD+kfHV1iNRUNGzrkz91i4DJ4iOiwt5CGG/bS0saFW6Kcbrb1VwN0IftT/Pmjj6nIZcS5mNU4bC8g9460lH3ro+HsVtZjAvXw8ArLGQsycnKmzzLgbzsXZ0pv7MlxzqSuOtb2YaJoHFcnjbvhnMLHx12gpyHLd1kU4+vX339DnlW/Gcl7OKDs6BFH6avfSuDVLBjMi/IK0b1xFWKmC+My+7ZTCLhGb/T18UBqKSz0yFf1ubvOMmPSNw0ii/So2+9BEzJJ60Eg9PBdxQ4H9Fuk/yIRtpTWHxxVOlILaRzZb6M=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(40470700004)(46966006)(36840700001)(82310400004)(2616005)(508600001)(7406005)(5660300002)(7416002)(86362001)(6666004)(30864003)(7696005)(2906002)(81166007)(44832011)(1076003)(54906003)(26005)(336012)(426003)(186003)(40460700003)(16526019)(83380400001)(47076005)(36860700001)(8676002)(4326008)(316002)(70206006)(36756003)(110136005)(70586007)(356005)(8936002)(2101003)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2022 21:34:59.6375
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2022 21:34:59.7012
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 61ebe13e-05e2-437a-55ce-08da008254ee
+X-MS-Exchange-CrossTenant-Network-Message-Id: 63f07fff-d5a4-4a84-6fa4-08da008254fa
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT031.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT048.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB1657
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5616
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_FILL_THIS_FORM_SHORT,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Add the needed functionality to change pages state from shared
-to private and vice-versa using the Page State Change VMGEXIT as
-documented in the GHCB spec.
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
+To provide a more secure way to start APs under SEV-SNP, use the SEV-SNP
+AP Creation NAE event. This allows for guest control over the AP register
+state rather than trusting the hypervisor with the SEV-ES Jump Table
+address.
+
+During native_smp_prepare_cpus(), invoke an SEV-SNP function that, if
+SEV-SNP is active, will set/override apic->wakeup_secondary_cpu. This
+will allow the SEV-SNP AP Creation NAE event method to be used to boot
+the APs. As a result of installing the override when SEV-SNP is active,
+this method of starting the APs becomes the required method. The override
+function will fail to start the AP if the hypervisor does not have
+support for AP creation.
+
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/include/asm/sev-common.h |  22 ++++
+ arch/x86/include/asm/sev-common.h |   1 +
  arch/x86/include/asm/sev.h        |   4 +
- arch/x86/include/uapi/asm/svm.h   |   2 +
- arch/x86/kernel/sev.c             | 168 ++++++++++++++++++++++++++++++
- arch/x86/mm/mem_encrypt_amd.c     |  13 +++
- 5 files changed, 209 insertions(+)
+ arch/x86/include/uapi/asm/svm.h   |   5 +
+ arch/x86/kernel/sev.c             | 244 ++++++++++++++++++++++++++++++
+ arch/x86/kernel/smpboot.c         |   3 +
+ 5 files changed, 257 insertions(+)
 
 diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
-index f077a6c95e67..1aa72b5c2490 100644
+index 1aa72b5c2490..e9b6815b3b3d 100644
 --- a/arch/x86/include/asm/sev-common.h
 +++ b/arch/x86/include/asm/sev-common.h
-@@ -105,6 +105,28 @@ enum psc_op {
+@@ -104,6 +104,7 @@ enum psc_op {
+ 	(((u64)(v) & GENMASK_ULL(63, 12)) >> 12)
  
  #define GHCB_HV_FT_SNP			BIT_ULL(0)
++#define GHCB_HV_FT_SNP_AP_CREATION	BIT_ULL(1)
  
-+/* SNP Page State Change NAE event */
-+#define VMGEXIT_PSC_MAX_ENTRY		253
-+
-+struct psc_hdr {
-+	u16 cur_entry;
-+	u16 end_entry;
-+	u32 reserved;
-+} __packed;
-+
-+struct psc_entry {
-+	u64	cur_page	: 12,
-+		gfn		: 40,
-+		operation	: 4,
-+		pagesize	: 1,
-+		reserved	: 7;
-+} __packed;
-+
-+struct snp_psc_desc {
-+	struct psc_hdr hdr;
-+	struct psc_entry entries[VMGEXIT_PSC_MAX_ENTRY];
-+} __packed;
-+
- #define GHCB_MSR_TERM_REQ		0x100
- #define GHCB_MSR_TERM_REASON_SET_POS	12
- #define GHCB_MSR_TERM_REASON_SET_MASK	0xf
+ /* SNP Page State Change NAE event */
+ #define VMGEXIT_PSC_MAX_ENTRY		253
 diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index f65d257e3d4a..feeb93e6ec97 100644
+index feeb93e6ec97..a3203b2caaca 100644
 --- a/arch/x86/include/asm/sev.h
 +++ b/arch/x86/include/asm/sev.h
-@@ -128,6 +128,8 @@ void __init early_snp_set_memory_private(unsigned long vaddr, unsigned long padd
- void __init early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr,
- 					unsigned int npages);
+@@ -66,6 +66,8 @@ extern bool handle_vc_boot_ghcb(struct pt_regs *regs);
+ /* RMP page size */
+ #define RMP_PG_SIZE_4K			0
+ 
++#define RMPADJUST_VMSA_PAGE_BIT		BIT(16)
++
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+ extern struct static_key_false sev_es_enable_key;
+ extern void __sev_es_ist_enter(struct pt_regs *regs);
+@@ -130,6 +132,7 @@ void __init early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr
  void __init snp_prep_memory(unsigned long paddr, unsigned int sz, enum psc_op op);
-+void snp_set_memory_shared(unsigned long vaddr, unsigned int npages);
-+void snp_set_memory_private(unsigned long vaddr, unsigned int npages);
+ void snp_set_memory_shared(unsigned long vaddr, unsigned int npages);
+ void snp_set_memory_private(unsigned long vaddr, unsigned int npages);
++void snp_set_wakeup_secondary_cpu(void);
  #else
  static inline void sev_es_ist_enter(struct pt_regs *regs) { }
  static inline void sev_es_ist_exit(void) { }
-@@ -142,6 +144,8 @@ early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr, unsigned
- static inline void __init
- early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr, unsigned int npages) { }
+@@ -146,6 +149,7 @@ early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr, unsigned i
  static inline void __init snp_prep_memory(unsigned long paddr, unsigned int sz, enum psc_op op) { }
-+static inline void snp_set_memory_shared(unsigned long vaddr, unsigned int npages) { }
-+static inline void snp_set_memory_private(unsigned long vaddr, unsigned int npages) { }
+ static inline void snp_set_memory_shared(unsigned long vaddr, unsigned int npages) { }
+ static inline void snp_set_memory_private(unsigned long vaddr, unsigned int npages) { }
++static inline void snp_set_wakeup_secondary_cpu(void) { }
  #endif
  
  #endif
 diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
-index b0ad00f4c1e1..0dcdb6e0c913 100644
+index 0dcdb6e0c913..8b4c57baec52 100644
 --- a/arch/x86/include/uapi/asm/svm.h
 +++ b/arch/x86/include/uapi/asm/svm.h
-@@ -108,6 +108,7 @@
- #define SVM_VMGEXIT_AP_JUMP_TABLE		0x80000005
+@@ -109,6 +109,10 @@
  #define SVM_VMGEXIT_SET_AP_JUMP_TABLE		0
  #define SVM_VMGEXIT_GET_AP_JUMP_TABLE		1
-+#define SVM_VMGEXIT_PSC				0x80000010
+ #define SVM_VMGEXIT_PSC				0x80000010
++#define SVM_VMGEXIT_AP_CREATION			0x80000013
++#define SVM_VMGEXIT_AP_CREATE_ON_INIT		0
++#define SVM_VMGEXIT_AP_CREATE			1
++#define SVM_VMGEXIT_AP_DESTROY			2
  #define SVM_VMGEXIT_HV_FEATURES			0x8000fffd
  #define SVM_VMGEXIT_UNSUPPORTED_EVENT		0x8000ffff
  
-@@ -219,6 +220,7 @@
- 	{ SVM_VMGEXIT_NMI_COMPLETE,	"vmgexit_nmi_complete" }, \
+@@ -221,6 +225,7 @@
  	{ SVM_VMGEXIT_AP_HLT_LOOP,	"vmgexit_ap_hlt_loop" }, \
  	{ SVM_VMGEXIT_AP_JUMP_TABLE,	"vmgexit_ap_jump_table" }, \
-+	{ SVM_VMGEXIT_PSC,	"vmgexit_page_state_change" }, \
+ 	{ SVM_VMGEXIT_PSC,	"vmgexit_page_state_change" }, \
++	{ SVM_VMGEXIT_AP_CREATION,	"vmgexit_ap_creation" }, \
  	{ SVM_VMGEXIT_HV_FEATURES,	"vmgexit_hypervisor_feature" }, \
  	{ SVM_EXIT_ERR,         "invalid_guest_state" }
  
 diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 1e8dc71e7ba6..4315be1602d1 100644
+index 4315be1602d1..bc9bb7e0c04d 100644
 --- a/arch/x86/kernel/sev.c
 +++ b/arch/x86/kernel/sev.c
-@@ -655,6 +655,174 @@ void __init snp_prep_memory(unsigned long paddr, unsigned int sz, enum psc_op op
- 		WARN(1, "invalid memory op %d\n", op);
+@@ -18,6 +18,7 @@
+ #include <linux/memblock.h>
+ #include <linux/kernel.h>
+ #include <linux/mm.h>
++#include <linux/cpumask.h>
+ 
+ #include <asm/cpu_entry_area.h>
+ #include <asm/stacktrace.h>
+@@ -31,9 +32,26 @@
+ #include <asm/svm.h>
+ #include <asm/smp.h>
+ #include <asm/cpu.h>
++#include <asm/apic.h>
+ 
+ #define DR7_RESET_VALUE        0x400
+ 
++/* AP INIT values as documented in the APM2  section "Processor Initialization State" */
++#define AP_INIT_CS_LIMIT		0xffff
++#define AP_INIT_DS_LIMIT		0xffff
++#define AP_INIT_LDTR_LIMIT		0xffff
++#define AP_INIT_GDTR_LIMIT		0xffff
++#define AP_INIT_IDTR_LIMIT		0xffff
++#define AP_INIT_TR_LIMIT		0xffff
++#define AP_INIT_RFLAGS_DEFAULT		0x2
++#define AP_INIT_DR6_DEFAULT		0xffff0ff0
++#define AP_INIT_GPAT_DEFAULT		0x0007040600070406ULL
++#define AP_INIT_XCR0_DEFAULT		0x1
++#define AP_INIT_X87_FTW_DEFAULT		0x5555
++#define AP_INIT_X87_FCW_DEFAULT		0x0040
++#define AP_INIT_CR0_DEFAULT		0x60000010
++#define AP_INIT_MXCSR_DEFAULT		0x1f80
++
+ /* For early boot hypervisor communication in SEV-ES enabled guests */
+ static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
+ 
+@@ -90,6 +108,8 @@ struct ghcb_state {
+ static DEFINE_PER_CPU(struct sev_es_runtime_data*, runtime_data);
+ DEFINE_STATIC_KEY_FALSE(sev_es_enable_key);
+ 
++static DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
++
+ static __always_inline bool on_vc_stack(struct pt_regs *regs)
+ {
+ 	unsigned long sp = regs->sp;
+@@ -823,6 +843,230 @@ void snp_set_memory_private(unsigned long vaddr, unsigned int npages)
+ 	pvalidate_pages(vaddr, npages, true);
  }
  
-+static int vmgexit_psc(struct snp_psc_desc *desc)
++static int snp_set_vmsa(void *va, bool vmsa)
 +{
-+	int cur_entry, end_entry, ret = 0;
-+	struct snp_psc_desc *data;
-+	struct ghcb_state state;
-+	struct es_em_ctxt ctxt;
-+	unsigned long flags;
-+	struct ghcb *ghcb;
++	u64 attrs;
 +
 +	/*
-+	 * __sev_get_ghcb() needs to run with IRQs disabled because it is using
-+	 * a per-CPU GHCB.
++	 * Running at VMPL0 allows the kernel to change the VMSA bit for a page
++	 * using the RMPADJUST instruction. However, for the instruction to
++	 * succeed it must target the permissions of a lesser privileged
++	 * VMPL level, so use VMPL1 (refer to the RMPADJUST instruction in the
++	 * AMD64 APM Volume 3).
 +	 */
++	attrs = 1;
++	if (vmsa)
++		attrs |= RMPADJUST_VMSA_PAGE_BIT;
++
++	return rmpadjust((unsigned long)va, RMP_PG_SIZE_4K, attrs);
++}
++
++#define __ATTR_BASE		(SVM_SELECTOR_P_MASK | SVM_SELECTOR_S_MASK)
++#define INIT_CS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_READ_MASK | SVM_SELECTOR_CODE_MASK)
++#define INIT_DS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_WRITE_MASK)
++
++#define INIT_LDTR_ATTRIBS	(SVM_SELECTOR_P_MASK | 2)
++#define INIT_TR_ATTRIBS		(SVM_SELECTOR_P_MASK | 3)
++
++static void *snp_alloc_vmsa_page(void)
++{
++	struct page *p;
++
++	/*
++	 * Allocate VMSA page to work around the SNP erratum where the CPU will
++	 * incorrectly signal an RMP violation #PF if a large page (2MB or 1GB)
++	 * collides with the RMP entry of VMSA page. The recommended workaround
++	 * is to not use a large page.
++	 */
++
++	/* Allocate an 8k page which is also 8k-aligned */
++	p = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO, 1);
++	if (!p)
++		return NULL;
++
++	split_page(p, 1);
++
++	/* Free the first 4k. This page may be 2M/1G aligned and cannot be used. */
++	__free_page(p);
++
++	return page_address(p + 1);
++}
++
++static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa)
++{
++	int err;
++
++	err = snp_set_vmsa(vmsa, false);
++	if (err)
++		pr_err("clear VMSA page failed (%u), leaking page\n", err);
++	else
++		free_page((unsigned long)vmsa);
++}
++
++static int wakeup_cpu_via_vmgexit(int apic_id, unsigned long start_ip)
++{
++	struct sev_es_save_area *cur_vmsa, *vmsa;
++	struct ghcb_state state;
++	unsigned long flags;
++	struct ghcb *ghcb;
++	u8 sipi_vector;
++	int cpu, ret;
++	u64 cr4;
++
++	/*
++	 * SNP AP creation requires that the hypervisor must support SNP and
++	 * the AP creation feature. The SNP feature check was already checked
++	 * prior to getting here, so just check for the AP_CREATION feature
++	 * flag.
++	 */
++	if (!(sev_hv_features & GHCB_HV_FT_SNP_AP_CREATION))
++		return -EOPNOTSUPP;
++
++	/*
++	 * Verify the desired start IP against the known trampoline start IP
++	 * to catch any future new trampolines that may be introduced that
++	 * would require a new protected guest entry point.
++	 */
++	if (WARN_ONCE(start_ip != real_mode_header->trampoline_start,
++		      "Unsupported SNP start_ip: %lx\n", start_ip))
++		return -EINVAL;
++
++	/* Override start_ip with known protected guest start IP */
++	start_ip = real_mode_header->sev_es_trampoline_start;
++
++	/* Find the logical CPU for the APIC ID */
++	for_each_present_cpu(cpu) {
++		if (arch_match_cpu_phys_id(cpu, apic_id))
++			break;
++	}
++	if (cpu >= nr_cpu_ids)
++		return -EINVAL;
++
++	cur_vmsa = per_cpu(sev_vmsa, cpu);
++
++	/*
++	 * A new VMSA is created each time because there is no guarantee that
++	 * the current VMSA is the kernels or that the vCPU is not running. If
++	 * an attempt was done to use the current VMSA with a running vCPU, a
++	 * #VMEXIT of that vCPU would wipe out all of the settings being done
++	 * here.
++	 */
++	vmsa = (struct sev_es_save_area *)snp_alloc_vmsa_page();
++	if (!vmsa)
++		return -ENOMEM;
++
++	/* CR4 should maintain the MCE value */
++	cr4 = native_read_cr4() & X86_CR4_MCE;
++
++	/* Set the CS value based on the start_ip converted to a SIPI vector */
++	sipi_vector		= (start_ip >> 12);
++	vmsa->cs.base		= sipi_vector << 12;
++	vmsa->cs.limit		= AP_INIT_CS_LIMIT;
++	vmsa->cs.attrib		= INIT_CS_ATTRIBS;
++	vmsa->cs.selector	= sipi_vector << 8;
++
++	/* Set the RIP value based on start_ip */
++	vmsa->rip		= start_ip & 0xfff;
++
++	/* Set AP INIT defaults as documented in the APM */
++	vmsa->ds.limit		= AP_INIT_DS_LIMIT;
++	vmsa->ds.attrib		= INIT_DS_ATTRIBS;
++	vmsa->es		= vmsa->ds;
++	vmsa->fs		= vmsa->ds;
++	vmsa->gs		= vmsa->ds;
++	vmsa->ss		= vmsa->ds;
++
++	vmsa->gdtr.limit	= AP_INIT_GDTR_LIMIT;
++	vmsa->ldtr.limit	= AP_INIT_LDTR_LIMIT;
++	vmsa->ldtr.attrib	= INIT_LDTR_ATTRIBS;
++	vmsa->idtr.limit	= AP_INIT_IDTR_LIMIT;
++	vmsa->tr.limit		= AP_INIT_TR_LIMIT;
++	vmsa->tr.attrib		= INIT_TR_ATTRIBS;
++
++	vmsa->cr4		= cr4;
++	vmsa->cr0		= AP_INIT_CR0_DEFAULT;
++	vmsa->dr7		= DR7_RESET_VALUE;
++	vmsa->dr6		= AP_INIT_DR6_DEFAULT;
++	vmsa->rflags		= AP_INIT_RFLAGS_DEFAULT;
++	vmsa->g_pat		= AP_INIT_GPAT_DEFAULT;
++	vmsa->xcr0		= AP_INIT_XCR0_DEFAULT;
++	vmsa->mxcsr		= AP_INIT_MXCSR_DEFAULT;
++	vmsa->x87_ftw		= AP_INIT_X87_FTW_DEFAULT;
++	vmsa->x87_fcw		= AP_INIT_X87_FCW_DEFAULT;
++
++	/* SVME must be set. */
++	vmsa->efer		= EFER_SVME;
++
++	/*
++	 * Set the SNP-specific fields for this VMSA:
++	 *   VMPL level
++	 *   SEV_FEATURES (matches the SEV STATUS MSR right shifted 2 bits)
++	 */
++	vmsa->vmpl		= 0;
++	vmsa->sev_features	= sev_status >> 2;
++
++	/* Switch the page over to a VMSA page now that it is initialized */
++	ret = snp_set_vmsa(vmsa, true);
++	if (ret) {
++		pr_err("set VMSA page failed (%u)\n", ret);
++		free_page((unsigned long)vmsa);
++
++		return -EINVAL;
++	}
++
++	/* Issue VMGEXIT AP Creation NAE event */
 +	local_irq_save(flags);
 +
 +	ghcb = __sev_get_ghcb(&state);
-+	if (!ghcb) {
-+		ret = 1;
-+		goto out_unlock;
++
++	vc_ghcb_invalidate(ghcb);
++	ghcb_set_rax(ghcb, vmsa->sev_features);
++	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_CREATION);
++	ghcb_set_sw_exit_info_1(ghcb, ((u64)apic_id << 32) | SVM_VMGEXIT_AP_CREATE);
++	ghcb_set_sw_exit_info_2(ghcb, __pa(vmsa));
++
++	sev_es_wr_ghcb_msr(__pa(ghcb));
++	VMGEXIT();
++
++	if (!ghcb_sw_exit_info_1_is_valid(ghcb) ||
++	    lower_32_bits(ghcb->save.sw_exit_info_1)) {
++		pr_err("SNP AP Creation error\n");
++		ret = -EINVAL;
 +	}
 +
-+	/* Copy the input desc into GHCB shared buffer */
-+	data = (struct snp_psc_desc *)ghcb->shared_buffer;
-+	memcpy(ghcb->shared_buffer, desc, min_t(int, GHCB_SHARED_BUF_SIZE, sizeof(*desc)));
-+
-+	/*
-+	 * As per the GHCB specification, the hypervisor can resume the guest
-+	 * before processing all the entries. Check whether all the entries
-+	 * are processed. If not, then keep retrying. Note, the hypervisor
-+	 * will update the data memory directly to indicate the status, so
-+	 * reference the data->hdr everywhere.
-+	 *
-+	 * The strategy here is to wait for the hypervisor to change the page
-+	 * state in the RMP table before guest accesses the memory pages. If the
-+	 * page state change was not successful, then later memory access will
-+	 * result in a crash.
-+	 */
-+	cur_entry = data->hdr.cur_entry;
-+	end_entry = data->hdr.end_entry;
-+
-+	while (data->hdr.cur_entry <= data->hdr.end_entry) {
-+		ghcb_set_sw_scratch(ghcb, (u64)__pa(data));
-+
-+		/* This will advance the shared buffer data points to. */
-+		ret = sev_es_ghcb_hv_call(ghcb, true, &ctxt, SVM_VMGEXIT_PSC, 0, 0);
-+
-+		/*
-+		 * Page State Change VMGEXIT can pass error code through
-+		 * exit_info_2.
-+		 */
-+		if (WARN(ret || ghcb->save.sw_exit_info_2,
-+			 "SNP: PSC failed ret=%d exit_info_2=%llx\n",
-+			 ret, ghcb->save.sw_exit_info_2)) {
-+			ret = 1;
-+			goto out;
-+		}
-+
-+		/* Verify that reserved bit is not set */
-+		if (WARN(data->hdr.reserved, "Reserved bit is set in the PSC header\n")) {
-+			ret = 1;
-+			goto out;
-+		}
-+
-+		/*
-+		 * Sanity check that entry processing is not going backwards.
-+		 * This will happen only if hypervisor is tricking us.
-+		 */
-+		if (WARN(data->hdr.end_entry > end_entry || cur_entry > data->hdr.cur_entry,
-+"SNP: PSC processing going backward, end_entry %d (got %d) cur_entry %d (got %d)\n",
-+			 end_entry, data->hdr.end_entry, cur_entry, data->hdr.cur_entry)) {
-+			ret = 1;
-+			goto out;
-+		}
-+	}
-+
-+out:
 +	__sev_put_ghcb(&state);
 +
-+out_unlock:
 +	local_irq_restore(flags);
++
++	/* Perform cleanup if there was an error */
++	if (ret) {
++		snp_cleanup_vmsa(vmsa);
++		vmsa = NULL;
++	}
++
++	/* Free up any previous VMSA page */
++	if (cur_vmsa)
++		snp_cleanup_vmsa(cur_vmsa);
++
++	/* Record the current VMSA page */
++	per_cpu(sev_vmsa, cpu) = vmsa;
 +
 +	return ret;
 +}
 +
-+static void __set_pages_state(struct snp_psc_desc *data, unsigned long vaddr,
-+			      unsigned long vaddr_end, int op)
-+{
-+	struct psc_hdr *hdr;
-+	struct psc_entry *e;
-+	unsigned long pfn;
-+	int i;
-+
-+	hdr = &data->hdr;
-+	e = data->entries;
-+
-+	memset(data, 0, sizeof(*data));
-+	i = 0;
-+
-+	while (vaddr < vaddr_end) {
-+		if (is_vmalloc_addr((void *)vaddr))
-+			pfn = vmalloc_to_pfn((void *)vaddr);
-+		else
-+			pfn = __pa(vaddr) >> PAGE_SHIFT;
-+
-+		e->gfn = pfn;
-+		e->operation = op;
-+		hdr->end_entry = i;
-+
-+		/*
-+		 * Current SNP implementation doesn't keep track of the RMP page
-+		 * size so use 4K for simplicity.
-+		 */
-+		e->pagesize = RMP_PG_SIZE_4K;
-+
-+		vaddr = vaddr + PAGE_SIZE;
-+		e++;
-+		i++;
-+	}
-+
-+	if (vmgexit_psc(data))
-+		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
-+}
-+
-+static void set_pages_state(unsigned long vaddr, unsigned int npages, int op)
-+{
-+	unsigned long vaddr_end, next_vaddr;
-+	struct snp_psc_desc *desc;
-+
-+	desc = kmalloc(sizeof(*desc), GFP_KERNEL_ACCOUNT);
-+	if (!desc)
-+		panic("SNP: failed to allocate memory for PSC descriptor\n");
-+
-+	vaddr = vaddr & PAGE_MASK;
-+	vaddr_end = vaddr + (npages << PAGE_SHIFT);
-+
-+	while (vaddr < vaddr_end) {
-+		/* Calculate the last vaddr that fits in one struct snp_psc_desc. */
-+		next_vaddr = min_t(unsigned long, vaddr_end,
-+				   (VMGEXIT_PSC_MAX_ENTRY * PAGE_SIZE) + vaddr);
-+
-+		__set_pages_state(desc, vaddr, next_vaddr, op);
-+
-+		vaddr = next_vaddr;
-+	}
-+
-+	kfree(desc);
-+}
-+
-+void snp_set_memory_shared(unsigned long vaddr, unsigned int npages)
++void snp_set_wakeup_secondary_cpu(void)
 +{
 +	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
 +		return;
 +
-+	pvalidate_pages(vaddr, npages, false);
-+
-+	set_pages_state(vaddr, npages, SNP_PAGE_STATE_SHARED);
-+}
-+
-+void snp_set_memory_private(unsigned long vaddr, unsigned int npages)
-+{
-+	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
-+		return;
-+
-+	set_pages_state(vaddr, npages, SNP_PAGE_STATE_PRIVATE);
-+
-+	pvalidate_pages(vaddr, npages, true);
++	/*
++	 * Always set this override if SNP is enabled. This makes it the
++	 * required method to start APs under SNP. If the hypervisor does
++	 * not support AP creation, then no APs will be started.
++	 */
++	apic->wakeup_secondary_cpu = wakeup_cpu_via_vmgexit;
 +}
 +
  int sev_es_setup_ap_jump_table(struct real_mode_header *rmh)
  {
  	u16 startup_cs, startup_ip;
-diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
-index 8539dd6f24ff..d3c88d9ef8d6 100644
---- a/arch/x86/mm/mem_encrypt_amd.c
-+++ b/arch/x86/mm/mem_encrypt_amd.c
-@@ -316,11 +316,24 @@ static void enc_dec_hypercall(unsigned long vaddr, int npages, bool enc)
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 617012f4619f..ad23d53b39ac 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -82,6 +82,7 @@
+ #include <asm/spec-ctrl.h>
+ #include <asm/hw_irq.h>
+ #include <asm/stackprotector.h>
++#include <asm/sev.h>
  
- static void amd_enc_status_change_prepare(unsigned long vaddr, int npages, bool enc)
- {
-+	/*
-+	 * To maintain the security guarantees of SEV-SNP guests, make sure
-+	 * to invalidate the memory before encryption attribute is cleared.
-+	 */
-+	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP) && !enc)
-+		snp_set_memory_shared(vaddr, npages);
+ #ifdef CONFIG_ACPI_CPPC_LIB
+ #include <acpi/cppc_acpi.h>
+@@ -1436,6 +1437,8 @@ void __init native_smp_prepare_cpus(unsigned int max_cpus)
+ 	smp_quirk_init_udelay();
+ 
+ 	speculative_store_bypass_ht_init();
++
++	snp_set_wakeup_secondary_cpu();
  }
  
- /* Return true unconditionally: return value doesn't matter for the SEV side */
- static bool amd_enc_status_change_finish(unsigned long vaddr, int npages, bool enc)
- {
-+	/*
-+	 * After memory is mapped encrypted in the page table, validate it
-+	 * so that it is consistent with the page table updates.
-+	 */
-+	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP) && enc)
-+		snp_set_memory_private(vaddr, npages);
-+
- 	if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
- 		enc_dec_hypercall(vaddr, npages, enc);
- 
+ void arch_thaw_secondary_cpus_begin(void)
 -- 
 2.25.1
 
