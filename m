@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 543164D09F3
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Mar 2022 22:39:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 652014D0A07
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Mar 2022 22:40:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343575AbiCGVj5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Mar 2022 16:39:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39296 "EHLO
+        id S1343642AbiCGVkD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Mar 2022 16:40:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343637AbiCGVhu (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Mar 2022 16:37:50 -0500
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2077.outbound.protection.outlook.com [40.107.237.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E38C8B6C4;
-        Mon,  7 Mar 2022 13:35:39 -0800 (PST)
+        with ESMTP id S1343646AbiCGVhv (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Mar 2022 16:37:51 -0500
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam07on2050.outbound.protection.outlook.com [40.107.212.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C3B58B6E7;
+        Mon,  7 Mar 2022 13:35:41 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XYfPwc2OTVi5cDqm1U/TN+BsBWd9UDl0yAzN1JZWSBlXo+o6jeiDQqKp9u0/FF42NChXwVPsErz1rE9J6hYFbjj8nqVIiVwepfOely8CeyOOyyyEH0At+qkRcYRvYShIP0fH8CJAM/Gwj27B+k/mSHOQoCUifing88Zb5a5ekV3vGZhNgsS5VUEgBakGTjiAxPMZgmJqYY7gXaaz5Bt5A+FJ0x5JUheIgAU7Bq4mRN6C7iptnqSVsl8g/cLgjys4KM9syNdd8yIazWu+xQERJyQvATW6HM58huN9k1EYn0nnM0O2CTRja2YSujN75uR+ivx38Vy49GqXwpzK7IHPGw==
+ b=HQIgLg9Dan9rj4YHphLyB0PMVMxYeWVd4AGPE8h4XVNp+avxa5sZn/f/TaZpAaQ4+vnqKdWJhmfo7ztoHxu2kVfy6B/FeitHu0blqXDs53LSlikXRCzWXDrZ+F21kZp+3ktqIgrJ/oMBInND2bKkAC18hjlc3IJ7ARQcgZMHPr1V+sIHB/roShJigtE4orrHyafMgEHrT/HLqSlhBBI5N/gaWhsSd2WOhzjbeMTPFrg39992/NwN/qF4QezTTHaO07KnsxOx3ydwgpPHTFOGD/YQnc4Jp8qQWRYI7scPX9dssfZq6dGwdeCGS65v3jfobvrsCDNOIF5bsxLo6lcDrg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fbYtPu/R4hZSC0fOc8BmZk5t0+Odd/LLecFlmc4pxCo=;
- b=f2+EOjJ/QPwFjN7KSMffSEbNpJ83UUqFPuSQNckREkygtShPrYGDFWqeNz/OvbWM1XIRCOaxqp/3sHORjC5zC/TDiqTma9R7J7iN1VILaD6NuK3+TwlLV0reqe3SEt24EJtGFGxlgEKVl7CGImJY+ysUGFZfxzpPnbaSDQ6Pux3nmhA6vAKzklrFABZEPg3TceopLGESGhC5uIdOSixPEBggHiC195N8o2IDvtv7RYk5OfVxTK4K2kD2MJzZkwARr3dwFkGnzEikFFpTwhHn979uNGESsPUNbQgxP3E6QD02lZQUuOolfFVGLpIrkSulFE6i86QmnqQ7CcPchqBaeQ==
+ bh=ONB4YuxHXa++hwuSa4pidiloNkIVh6LyvbA7ZAHShv0=;
+ b=RyLavGtEgXErmXgDPDt5nxqAERg6vZlfAFQgFOmLOlozB6j02UchyXIL0sl4yAPda8MVUEIkgJuOYnIlGJ8GD+jjPuA0LDOUcBnnmLfD02Qdz5PvQk6I3mmkfjI8YJ9wRDQfcPOPorb5y1QLNlU4SYXMBgE9EOoUv80AO52+5dObGgz0jM6tqabQu3+cgTvjj+LSuUeXQYZZid9tZ665Jnx284DsSsf2aZfktww4g1GZcXYPqO3zX1kWx4KUooKyXndCyUEqBEekMgyBetc0BlhjEZ97C5htYtPG+ESAeQYBuzyxaQrl5FEt7ZXu1vMBAW1THT8T7JsS2y7JZf1rhQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fbYtPu/R4hZSC0fOc8BmZk5t0+Odd/LLecFlmc4pxCo=;
- b=uoBIUFiZIxJuNDC5IhVzkWpWdqRxmD3GCsQWMczWdl2JRxUdbuMmi146HrJnYTVjfi+QH8KmsPg/gnuBZ6kOjJodp7fuVU/nZvGv8FE1Ag17thvLZR76swOhnMCLAxJ1AbXUZltxlLQXsMrmXV22Odju9Xj9T/SVfI3lvDAh9Tc=
-Received: from BN9PR03CA0098.namprd03.prod.outlook.com (2603:10b6:408:fd::13)
- by DM5PR12MB1433.namprd12.prod.outlook.com (2603:10b6:3:73::22) with
+ bh=ONB4YuxHXa++hwuSa4pidiloNkIVh6LyvbA7ZAHShv0=;
+ b=w/ZSZvbk5jQy9I7WyJjubNU7FsH7CpuV93g44z1Yg+u1cefu9qno/zuneBBeRq/TMPZ47rOuahO0eERmeIwRyvsP++J9GTCVRkgZxgd6CyZPPH72y6Ti9jqP2dWX1oHQHrCZYtSv304bX+UgsidUcxt6Hf63xFAD0IhgYFMKnbY=
+Received: from BN9PR03CA0096.namprd03.prod.outlook.com (2603:10b6:408:fd::11)
+ by MW4PR12MB5603.namprd12.prod.outlook.com (2603:10b6:303:16a::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.14; Mon, 7 Mar
- 2022 21:35:24 +0000
+ 2022 21:35:25 +0000
 Received: from BN8NAM11FT005.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:fd:cafe::57) by BN9PR03CA0098.outlook.office365.com
- (2603:10b6:408:fd::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.14 via Frontend
- Transport; Mon, 7 Mar 2022 21:35:24 +0000
+ (2603:10b6:408:fd:cafe::11) by BN9PR03CA0096.outlook.office365.com
+ (2603:10b6:408:fd::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.16 via Frontend
+ Transport; Mon, 7 Mar 2022 21:35:25 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -52,7 +52,7 @@ Received: from SATLEXMB04.amd.com (165.204.84.17) by
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Mon, 7 Mar
- 2022 15:35:18 -0600
+ 2022 15:35:20 -0600
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
         <kvm@vger.kernel.org>, <linux-efi@vger.kernel.org>,
@@ -81,11 +81,10 @@ CC:     Thomas Gleixner <tglx@linutronix.de>,
         Andi Kleen <ak@linux.intel.com>,
         "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
         <brijesh.ksingh@gmail.com>, <tony.luck@intel.com>,
-        <marcorr@google.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH v12 35/46] x86/compressed: Use firmware-validated CPUID leaves for SEV-SNP guests
-Date:   Mon, 7 Mar 2022 15:33:45 -0600
-Message-ID: <20220307213356.2797205-36-brijesh.singh@amd.com>
+        <marcorr@google.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: [PATCH v12 36/46] x86/compressed: Export and rename add_identity_map()
+Date:   Mon, 7 Mar 2022 15:33:46 -0600
+Message-ID: <20220307213356.2797205-37-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220307213356.2797205-1-brijesh.singh@amd.com>
 References: <20220307213356.2797205-1-brijesh.singh@amd.com>
@@ -97,24 +96,24 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: cce0c59b-1a89-45c5-a63f-08da0082638e
-X-MS-TrafficTypeDiagnostic: DM5PR12MB1433:EE_
-X-Microsoft-Antispam-PRVS: <DM5PR12MB1433D58830DDBBD4CB5D877AE5089@DM5PR12MB1433.namprd12.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: c445c3bd-609f-4a8d-295c-08da008263f5
+X-MS-TrafficTypeDiagnostic: MW4PR12MB5603:EE_
+X-Microsoft-Antispam-PRVS: <MW4PR12MB5603FF6C4FCD923B615E41CDE5089@MW4PR12MB5603.namprd12.prod.outlook.com>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: aD0UhYngMyrTyhoVnHCrC2WZUlYRq8JMEqZZ7yYe8TR5/sOCJdB0metYvu6U3HgAc6XOUX/lr7v2CaV0yQh3AR1PXJiboz9N2afnlF+hiRHhprB6IotW+3U82evP9MJMTsW8yI9LEmIgCPG/CQdpK1JsjpioAVLO2Av2XCeywsZyrtbipaRCb7NbTIhu7RoJVIkWLudjh39yvecygrbLt1FZqveumCTTYwiEO3uSf4oGmS7kvDexTgPaGPCOCp2Ih8UJaQ6Le89HChvxS5CfcYRad2pqRQsOcqHvtsdGX743blnV3Hl0BhQBrfVcDGVuKhnJvkv1Wz75NSr7TjRr9JGOWeN4HT0V1m0u8VE+i7wDahDtBY8LrS5hK/rMnf+MAbrdNeIWFuUzge4nSykjKTguh5dtKCmhR/Mmhv/RxmEtQbRstvOmFYghV5i5ThCQLH1LxeM0OqtDIYTspaiyz8s6H+34xAfZutNarfYgIp7lFQRjEF5wgsQfQ8SMlUNfeSCTvASHtdcL2kqOhTXPqC0xLMNDDGaQ5/d4crZzKS9tXLy9zipQX2zB13fAz6mthlQQK5wfRCrU0JJVWWuglTaV/bhxow7x4ioeGKeDmhgmixVFSzvrYn9+1KMw2m80fBcnQJ4ekCNpV3TWqQ9wJmlFJvIDHTppiMpFd6TnkH2frX5b4TQkoFIh2TyvW6GJzU/SRX+nmJVZnrmhELZBr28Nn0WJnoX6X92JYwPhsHU=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(46966006)(40470700004)(36840700001)(356005)(2906002)(82310400004)(81166007)(7696005)(36860700001)(2616005)(86362001)(316002)(47076005)(70586007)(508600001)(70206006)(1076003)(8676002)(4326008)(6666004)(15650500001)(16526019)(336012)(26005)(8936002)(5660300002)(186003)(83380400001)(110136005)(36756003)(426003)(40460700003)(7416002)(7406005)(54906003)(44832011)(2101003)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 7So/Kju6vIpxxeBZmLlhFQbsW34En/LnmWnZxRcrgnQdtgX1+gthAuD1TceG7QXVyjiZPGTR25BnmthJc6/dLE2tHN6P6HriSlBM+lZ1TXyhppffNAIk8OgJUeptkmiNtzC55Ut2LTCEKBR6SGf35RuuGTc1RokAMrZo3ngNkrFGbGpCQfvZ4vOXrI4uxKhB1hKgcjzNUMm72/+x9l7fPpzdJNUIqRBMWUYbYqMmsXVzWM9uyDwvg4G2Riwq3KIcjoggLVgTevxbuFstfgEXb3r7xrsxGv2WAGB0bEkzqVIkztwW6hj6Px00iX0C0M7oSgNJQ9dwPF6DjeElMcfu89t78ZFoo3fadG54XOl9D63kE9y6Lt0yUXgBsGSwLliPgSTD0ovROx4I6MGEzhmpKJRZG8QmA2Zkyo2SIaVRPfPqZuzvIkRNP+0zB9y8YWb/v1eHovGtkRmtkpY2a7o8vwdRrtY7KZ40jLrXTi15kFG96GgaGN79w+XTeY/C9Sxj2O6FRigXNVzIv3nwJJVy9wpMKX9EbpMuDksOzIVxH2m0CUNCOuYRI/os+AdVPtNVq5fIjPhjy1CU7m3G+G4NhikoCHCSTjx0B/6azZIsUq/TGFRKMYtjQ7cnI/fcTyHunASR9cJjQTSyZygsaA/uTBdNqWkNXuWeWvXpn0cXwmo/w9NumZDzdshBJaMQXYVSvUuNAvaI5BEYt6aYdgE3QCo/Cp9S1j3C079hjprCgbg=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(46966006)(36840700001)(40470700004)(4326008)(70586007)(70206006)(2906002)(8676002)(36756003)(508600001)(7696005)(6666004)(336012)(1076003)(82310400004)(426003)(186003)(26005)(16526019)(36860700001)(2616005)(316002)(54906003)(110136005)(356005)(86362001)(83380400001)(44832011)(81166007)(47076005)(5660300002)(7406005)(40460700003)(8936002)(7416002)(2101003)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2022 21:35:24.1763
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2022 21:35:24.8325
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cce0c59b-1a89-45c5-a63f-08da0082638e
+X-MS-Exchange-CrossTenant-Network-Message-Id: c445c3bd-609f-4a8d-295c-08da008263f5
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT005.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB1433
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5603
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -127,86 +126,87 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Michael Roth <michael.roth@amd.com>
 
-SEV-SNP guests will be provided the location of special 'secrets'
-'CPUID' pages via the Confidential Computing blob. This blob is
-provided to the boot kernel either through an EFI config table entry,
-or via a setup_data structure as defined by the Linux Boot Protocol.
+SEV-specific code will need to add some additional mappings, but doing
+this within ident_map_64.c requires some SEV-specific helpers to be
+exported and some SEV-specific struct definitions to be pulled into
+ident_map_64.c. Instead, export add_identity_map() so SEV-specific (and
+other subsystem-specific) code can be better contained outside of
+ident_map_64.c.
 
-Locate the Confidential Computing from these sources and, if found,
-use the provided CPUID page/table address to create a copy that the
-boot kernel will use when servicing cpuid instructions via a #VC CPUID
-handler.
+While at it, rename the function to kernel_add_identity_map(), similar
+to the kernel_ident_mapping_init() function it relies upon.
 
+No functional changes.
+
+Suggested-by: Borislav Petkov <bp@alien8.de>
 Signed-off-by: Michael Roth <michael.roth@amd.com>
-Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/boot/compressed/sev.c | 46 ++++++++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+ arch/x86/boot/compressed/ident_map_64.c | 18 +++++++++---------
+ arch/x86/boot/compressed/misc.h         |  1 +
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 9e281e89037a..42cc41c9cd86 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -408,6 +408,43 @@ static struct cc_blob_sev_info *find_cc_blob(struct boot_params *bp)
- 	return cc_info;
- }
- 
-+/*
-+ * Initialize the kernel's copy of the SNP CPUID table, and set up the
-+ * pointer that will be used to access it.
-+ *
-+ * Maintaining a direct mapping of the SNP CPUID table used by firmware would
-+ * be possible as an alternative, but the approach is brittle since the
-+ * mapping needs to be updated in sync with all the changes to virtual memory
-+ * layout and related mapping facilities throughout the boot process.
-+ */
-+static void setup_cpuid_table(const struct cc_blob_sev_info *cc_info)
-+{
-+	const struct snp_cpuid_table *cpuid_table_fw, *cpuid_table;
-+	int i;
-+
-+	if (!cc_info || !cc_info->cpuid_phys || cc_info->cpuid_len < PAGE_SIZE)
-+		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_CPUID);
-+
-+	cpuid_table_fw = (const struct snp_cpuid_table *)cc_info->cpuid_phys;
-+	if (!cpuid_table_fw->count || cpuid_table_fw->count > SNP_CPUID_COUNT_MAX)
-+		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_CPUID);
-+
-+	cpuid_table = snp_cpuid_get_table();
-+	memcpy((void *)cpuid_table, cpuid_table_fw, sizeof(*cpuid_table));
-+
-+	/* Initialize CPUID ranges for range-checking. */
-+	for (i = 0; i < cpuid_table->count; i++) {
-+		const struct snp_cpuid_fn *fn = &cpuid_table->fn[i];
-+
-+		if (fn->eax_in == 0x0)
-+			cpuid_std_range_max = fn->eax;
-+		else if (fn->eax_in == 0x40000000)
-+			cpuid_hyp_range_max = fn->eax;
-+		else if (fn->eax_in == 0x80000000)
-+			cpuid_ext_range_max = fn->eax;
-+	}
-+}
-+
+diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
+index 3d566964b829..7975680f521f 100644
+--- a/arch/x86/boot/compressed/ident_map_64.c
++++ b/arch/x86/boot/compressed/ident_map_64.c
+@@ -90,7 +90,7 @@ static struct x86_mapping_info mapping_info;
  /*
-  * Indicate SNP based on presence of SNP-specific CC blob. Subsequent checks
-  * will verify the SNP CPUID/MSR bits.
-@@ -423,6 +460,15 @@ bool snp_init(struct boot_params *bp)
- 	if (!cc_info)
- 		return false;
+  * Adds the specified range to the identity mappings.
+  */
+-static void add_identity_map(unsigned long start, unsigned long end)
++void kernel_add_identity_map(unsigned long start, unsigned long end)
+ {
+ 	int ret;
  
-+	/*
-+	 * If a SNP-specific Confidential Computing blob is present, then
-+	 * firmware/bootloader have indicated SNP support. Verifying this
-+	 * involves CPUID checks which will be more reliable if the SNP
-+	 * CPUID table is used. See comments over snp_setup_cpuid_table() for
-+	 * more details.
-+	 */
-+	setup_cpuid_table(cc_info);
-+
- 	/*
- 	 * Pass run-time kernel a pointer to CC info via boot_params so EFI
- 	 * config table doesn't need to be searched again during early startup
+@@ -157,11 +157,11 @@ void initialize_identity_maps(void *rmode)
+ 	 * explicitly here in case the compressed kernel does not touch them,
+ 	 * or does not touch all the pages covering them.
+ 	 */
+-	add_identity_map((unsigned long)_head, (unsigned long)_end);
++	kernel_add_identity_map((unsigned long)_head, (unsigned long)_end);
+ 	boot_params = rmode;
+-	add_identity_map((unsigned long)boot_params, (unsigned long)(boot_params + 1));
++	kernel_add_identity_map((unsigned long)boot_params, (unsigned long)(boot_params + 1));
+ 	cmdline = get_cmd_line_ptr();
+-	add_identity_map(cmdline, cmdline + COMMAND_LINE_SIZE);
++	kernel_add_identity_map(cmdline, cmdline + COMMAND_LINE_SIZE);
+ 
+ 	/* Load the new page-table. */
+ 	sev_verify_cbit(top_level_pgt);
+@@ -246,10 +246,10 @@ static int set_clr_page_flags(struct x86_mapping_info *info,
+ 	 * It should already exist, but keep things generic.
+ 	 *
+ 	 * To map the page just read from it and fault it in if there is no
+-	 * mapping yet. add_identity_map() can't be called here because that
+-	 * would unconditionally map the address on PMD level, destroying any
+-	 * PTE-level mappings that might already exist. Use assembly here so
+-	 * the access won't be optimized away.
++	 * mapping yet. kernel_add_identity_map() can't be called here because
++	 * that would unconditionally map the address on PMD level, destroying
++	 * any PTE-level mappings that might already exist. Use assembly here
++	 * so the access won't be optimized away.
+ 	 */
+ 	asm volatile("mov %[address], %%r9"
+ 		     :: [address] "g" (*(unsigned long *)address)
+@@ -363,5 +363,5 @@ void do_boot_page_fault(struct pt_regs *regs, unsigned long error_code)
+ 	 * Error code is sane - now identity map the 2M region around
+ 	 * the faulting address.
+ 	 */
+-	add_identity_map(address, end);
++	kernel_add_identity_map(address, end);
+ }
+diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+index ba538af37e90..aae2722c6e9a 100644
+--- a/arch/x86/boot/compressed/misc.h
++++ b/arch/x86/boot/compressed/misc.h
+@@ -156,6 +156,7 @@ static inline int count_immovable_mem_regions(void) { return 0; }
+ #ifdef CONFIG_X86_5LEVEL
+ extern unsigned int __pgtable_l5_enabled, pgdir_shift, ptrs_per_p4d;
+ #endif
++extern void kernel_add_identity_map(unsigned long start, unsigned long end);
+ 
+ /* Used by PAGE_KERN* macros: */
+ extern pteval_t __default_kernel_pte_mask;
 -- 
 2.25.1
 
