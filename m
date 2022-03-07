@@ -2,43 +2,42 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A04654D0A0C
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Mar 2022 22:40:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46A924D0A0E
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Mar 2022 22:40:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343551AbiCGVjx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Mar 2022 16:39:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37326 "EHLO
+        id S1343615AbiCGVj6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Mar 2022 16:39:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343525AbiCGVgn (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Mar 2022 16:36:43 -0500
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1anam02on2041.outbound.protection.outlook.com [40.107.96.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37BF289CFC;
-        Mon,  7 Mar 2022 13:35:19 -0800 (PST)
+        with ESMTP id S1343635AbiCGVhu (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Mar 2022 16:37:50 -0500
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2064.outbound.protection.outlook.com [40.107.92.64])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B689A7E09E;
+        Mon,  7 Mar 2022 13:35:37 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=E3LAQgrjUz6jfIm8Dz7eqLjcCHkinuJZUUIhqIxmdkv508C+olH3KIc65ROeF6etqEQmWT/L4xSnSNgp9KmE7MfhtQOwqiNOV+/S4lkcKpcMBGAZ7ZWQxJr3lfsBt2tg+2cOrqcMEJSO430GK8ZWa37MXKv+NiDILQtVqdIZhzjfAJxQUuHugi8eTV4iVdtoY1PseyvCXbFs4nsbGBWKPGAqRRmD4HnPNtFwubotDHq7y3j9NmykrhRIkAXrhmrV0uI9bT4yq0OM7S1GjUEgaV7L4myMOPrzZAJs4nIIgwE2JTcLvbGQatsg6+p0nVzO+y0pvM7TaAvnFI1NMdVhJQ==
+ b=gdqJyHUIhawAd1I0n6LY2FmbTOHISh2OL2TFJUBpoZg2bokz1nU2f6YPRhg3W/fckSwoGV4EaKkXiT7Th0P6v5eSL0LucDpbQXbY4cEL5Nst62muXL8DIV50JReMpw7/M87eUIcqKTba46nZ/ewUilH8wrhwnSqXSakHGszat5kPBf1frWPlRP4Pr/anzL8yrL1VZ1QUJfJRt8qrJnTKDrxUwf5XrlH+/aOba+7bGj8lk5d43ExElAWAD4ZbDmYi50hrPwGpxZY+fKzk4RJn82Jws/FouN8W2ie3pw8WQb+aQMGrJek8yf+ggtrt+kZG2asfgsAYPCHoi638oS5X+Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H6s1C/Zn/hZRROUmwhJnVXMc2cu/EWhVAXRDi+KITkc=;
- b=hQa1fvvauKphvqU/25YWPYgb4GKrRQGDfTWLGoDtVoaWoVVUYZPTwLRwagpxOKXrf7xjCYUPHLt+57uXV4yleVkLrHf4EcWKpkC6BEmTbzS7KgumFcppuVyAahWgRo8gixSfszDRff13F+QEYANBHy1SFDnvwaZdTzoF/lw4mD+RUYt84T4bymgk25xWn7e386lqBy8w9g30l/3/stZ53Jz9HG9y+gUhFngJThhIHdR3QYXw8hVk0UoQAN+PnJl4G578lHPhkJu0YFH4U5aUIcJ8PjLGzkj/GnzVoscp78GCLJx3lozEa+DsfB7Hct4PrvY0EbKlc6e8l3PWYrVCYw==
+ bh=TauUiJrOWGEd/a9biVcu7UHR5VGYer6dt/kZECY4sCM=;
+ b=OFEOMarmexMD0lo/wGozn0r5p+aw1/8kYnBX2zSqmYZZmW5VoTGlqpcStUupJC2bgS9/6KWShW03GyaEJW8LbtcODNHg7erBY1J/2/TBBR4rxq68y6fj2SkPIc1n2k0skndPgPI4eaTAOcBMsB9HBrxpAHhT1royFwJynv/Lo/fYsvIHVThoWCxQwcRHHzaHGYSIOGyh3qL9kla8QjxdGzaCUnwYvSQGB6ciqK1Lf3IW12lFUjXJ/yOAVvqzlzGgYlQfV94UOSRK+j5ExRd8GHm72mM/cX477pwMCdy2h4Z+aHP8sFyt/96mja0AY0ImiKte9M3pBewFkIjDgmlFQQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H6s1C/Zn/hZRROUmwhJnVXMc2cu/EWhVAXRDi+KITkc=;
- b=Tng3dtiI400SQA52GEoA8YhkDKDos8YHZnrUhDsuccj4mFjl1k6En/Gn8dJFkUOLwXf/HkLwBDBFt1/BDlMBrM1PRD5x4FWTBhseMuWLssEqqQ+FqB4z6bn9OramHcDpm1foGkLUWhWtNNPSEMXZOlcQI+Bt/rIfVFZchjFIgNk=
-Received: from BN9PR03CA0145.namprd03.prod.outlook.com (2603:10b6:408:fe::30)
- by CY4PR12MB1381.namprd12.prod.outlook.com (2603:10b6:903:42::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.19; Mon, 7 Mar
- 2022 21:35:16 +0000
-Received: from BN8NAM11FT009.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:fe:cafe::f3) by BN9PR03CA0145.outlook.office365.com
- (2603:10b6:408:fe::30) with Microsoft SMTP Server (version=TLS1_2,
+ bh=TauUiJrOWGEd/a9biVcu7UHR5VGYer6dt/kZECY4sCM=;
+ b=4jL4NLJvUdMFfz3UCDaNv7/sdz/zDV30SyDxGy3HLq5QVkV8ovsQoKWDOiBBT24CG+DaiFMbBAmnuljokdW0UO4t3l5Gu2m+6w8Yu0DmPu7h3O5R03CyWcZ2wL97uDZNvFtovcx/prK7pyl4Tqf+D+BCljJF6zhR6JYoPQkzxUQ=
+Received: from DM5PR10CA0022.namprd10.prod.outlook.com (2603:10b6:4:2::32) by
+ BN8PR12MB2929.namprd12.prod.outlook.com (2603:10b6:408:9c::15) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5038.14; Mon, 7 Mar 2022 21:35:21 +0000
+Received: from DM6NAM11FT048.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:4:2:cafe::80) by DM5PR10CA0022.outlook.office365.com
+ (2603:10b6:4:2::32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.14 via Frontend
- Transport; Mon, 7 Mar 2022 21:35:16 +0000
+ Transport; Mon, 7 Mar 2022 21:35:21 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -46,13 +45,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT009.mail.protection.outlook.com (10.13.176.65) with Microsoft SMTP
+ DM6NAM11FT048.mail.protection.outlook.com (10.13.173.114) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.5038.14 via Frontend Transport; Mon, 7 Mar 2022 21:35:15 +0000
+ 15.20.5038.14 via Frontend Transport; Mon, 7 Mar 2022 21:35:20 +0000
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Mon, 7 Mar
- 2022 15:35:11 -0600
+ 2022 15:35:13 -0600
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
         <kvm@vger.kernel.org>, <linux-efi@vger.kernel.org>,
@@ -83,9 +82,9 @@ CC:     Thomas Gleixner <tglx@linutronix.de>,
         <brijesh.ksingh@gmail.com>, <tony.luck@intel.com>,
         <marcorr@google.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>,
         Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH v12 31/46] x86/sev: Move MSR-based VMGEXITs for CPUID to helper
-Date:   Mon, 7 Mar 2022 15:33:41 -0600
-Message-ID: <20220307213356.2797205-32-brijesh.singh@amd.com>
+Subject: [PATCH v12 32/46] x86/compressed/64: Add support for SEV-SNP CPUID table in #VC handlers
+Date:   Mon, 7 Mar 2022 15:33:42 -0600
+Message-ID: <20220307213356.2797205-33-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220307213356.2797205-1-brijesh.singh@amd.com>
 References: <20220307213356.2797205-1-brijesh.singh@amd.com>
@@ -97,24 +96,24 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 96d1ccc5-acc4-4de4-6877-08da00825e97
-X-MS-TrafficTypeDiagnostic: CY4PR12MB1381:EE_
-X-Microsoft-Antispam-PRVS: <CY4PR12MB13817BD477F4C30B695CFFA2E5089@CY4PR12MB1381.namprd12.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: c969079c-6018-4137-42af-08da00826187
+X-MS-TrafficTypeDiagnostic: BN8PR12MB2929:EE_
+X-Microsoft-Antispam-PRVS: <BN8PR12MB2929E0122AEAD5CF5AE168EBE5089@BN8PR12MB2929.namprd12.prod.outlook.com>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: kjecHdwwKIYS1WqG2Es40+lCwhHuEE3kX38solBv3odjlxU+HZ7uxH6yMhqz5RMNKVoSQmUGM/iF410HuByNQVoYeqVGLMBM9ZX8j+0oVdzVlqFQ6fezwThTRh01R4NpHMR/6q8NeStOfALpTWpGBzweHQx+A8dN+KtawC2/6a8PQ5m97iyHLJU+1gVVb2GqdSIH+MmWStAePpdQu+g4x6y3Iss/DRvaOZvLeZn8wP0rl3K9O87cWiSGUMO1hOGz7hd6/sxf8XAbcwiAEsjFdwX4tlFI9ipbWDWSST/ZuSAgGSOMru2cL1WOuFDFZ5h7S9rQJoOsjQ58G3WPE/0fqUE19kBYzahWxlzAf3/Aeab8C9zIXHrscCroEucdo7/1iDUlmK8r7h/XjMxA35t3XTuViqKrm9CfUkooZnQ9HnUzgFC9Pl+RP72HRQc/PdRQ9FSC3I37mOVAN2bVYaYzZgoSZUXKCjJU96LgY7mWt+hxXnURV09B87ctpCpLel1xYYFXsYD21yTvGfPZzWM4wGcRnXXEeay5BuWtqDHuh1J6DzOKJ7JD/JZjUmCciICSexsii16ZmGspqyQMu6hJg7SvxltpWcp7lC9xkQhAZUTibZuvP76BY6afCzIerFMjRROgFTT9bl59Qn9wUbT5xmWVu1tjwdWv8HPCLjOL+upZIfJa5w5sVExyZPGriHgo10jsg4SemtzL22/g9xSxMsqa9xpLrKNYTu7PTIpiij8=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(46966006)(40470700004)(36840700001)(86362001)(16526019)(186003)(2616005)(1076003)(26005)(81166007)(40460700003)(356005)(83380400001)(426003)(70586007)(336012)(82310400004)(36860700001)(47076005)(8676002)(36756003)(54906003)(70206006)(110136005)(316002)(4326008)(8936002)(2906002)(5660300002)(7416002)(44832011)(7406005)(508600001)(7696005)(6666004)(36900700001)(2101003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: QOLJqks6LYrZCSuWQoGY+rZlMa8GApQErDAvU/TXfUFqzivR4FDK7/YIX8PbH/OeJG0VtDW3oVFgtZnOWhgHWUDPwvGAbfLwPqQE6a5GNdOi2xh8weFYylcpBAdBU3q+dxEUi5QNm1gnMxmSruiZO5xl10wi9ejB2HUYGPx/TgT9IoxE96XZ+7HLVk71Cd/KQIWlxJhp7txVt7iHGT7XEWsjNeGJCxy3qTdB157PBtj6E+HbQz1EguuqLmR+8QS2FoxIJ9gybuWAyK/vA9ZXqDM95olpeWdDoaUeWkr7k6aV8sY/j26AD9IdOzb8grp02rfxLcHDS+npVCcD3jViIXxi/jYPiY0yQv2uImtB3ajquBi7Zz75/7WgxOSJovP/O6NHWVqHsrMXd4xJcufD61XP4JHsEo66paXpmMcWfZsvrvlEqodtvsRDAWHUhzoCWjL5+8/nzPBeAkrN+Q19OP5Yue9vR5ASGnikZn/5dEpRB/isxe2m21X0FW9tjhz76H7wm0j3EtDQJvoB/8rExjehToogKVpt+7MJGK6GaVKEF1l2RhFFDPGpYir1qiSWRUtjpvVIfgSclxR3aCCDtaG7UYIIVt3ulS8ZDqFohwRK9dP+MmEckDjYW4M40nD4cj8q3hyHgut/hJwv8zGJ5PQnbaVMUBuiiPobwPoVet7+XdgMyJvuPjy3cUInOE9ev/AgBy1JGZ5GW208wkZEg7Z02B0uuV6BT7mPodG2WP0=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(40470700004)(36840700001)(46966006)(7416002)(5660300002)(44832011)(508600001)(7696005)(7406005)(86362001)(8936002)(30864003)(6666004)(70206006)(1076003)(2906002)(16526019)(186003)(26005)(40460700003)(4326008)(8676002)(82310400004)(70586007)(2616005)(47076005)(110136005)(356005)(81166007)(36860700001)(316002)(54906003)(336012)(426003)(36756003)(83380400001)(36900700001)(2101003);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2022 21:35:15.8294
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2022 21:35:20.7411
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 96d1ccc5-acc4-4de4-6877-08da00825e97
+X-MS-Exchange-CrossTenant-Network-Message-Id: c969079c-6018-4137-42af-08da00826187
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT009.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT048.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR12MB1381
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN8PR12MB2929
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -127,162 +126,415 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Michael Roth <michael.roth@amd.com>
 
-This code will also be used later for SEV-SNP-validated CPUID code in
-some cases, so move it to a common helper.
+CPUID instructions generate a #VC exception for SEV-ES/SEV-SNP guests,
+for which early handlers are currently set up to handle. In the case
+of SEV-SNP, guests can use a configurable location in guest memory
+that has been pre-populated with a firmware-validated CPUID table to
+look up the relevant CPUID values rather than requesting them from
+hypervisor via a VMGEXIT. Add the various hooks in the #VC handlers to
+allow CPUID instructions to be handled via the table. The code to
+actually configure/enable the table will be added in a subsequent
+commit.
 
-While here, also add a check to terminate in cases where the CPUID
-function/subfunction is indexed and the subfunction is non-zero, since
-the GHCB MSR protocol does not support non-zero subfunctions.
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/boot/compressed/sev.c |  1 +
- arch/x86/kernel/sev-shared.c   | 83 +++++++++++++++++++++++-----------
- arch/x86/kernel/sev.c          |  1 +
- 3 files changed, 59 insertions(+), 26 deletions(-)
+ arch/x86/include/asm/sev-common.h |   2 +
+ arch/x86/kernel/sev-shared.c      | 324 ++++++++++++++++++++++++++++++
+ 2 files changed, 326 insertions(+)
 
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 485410a182b0..ed717b6dd246 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -20,6 +20,7 @@
- #include <asm/fpu/xcr.h>
- #include <asm/ptrace.h>
- #include <asm/svm.h>
-+#include <asm/cpuid.h>
+diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+index e9b6815b3b3d..0759af9b1acf 100644
+--- a/arch/x86/include/asm/sev-common.h
++++ b/arch/x86/include/asm/sev-common.h
+@@ -152,6 +152,8 @@ struct snp_psc_desc {
+ #define GHCB_TERM_PSC			1	/* Page State Change failure */
+ #define GHCB_TERM_PVALIDATE		2	/* Pvalidate failure */
+ #define GHCB_TERM_NOT_VMPL0		3	/* SNP guest is not running at VMPL-0 */
++#define GHCB_TERM_CPUID			4	/* CPUID-validation failure */
++#define GHCB_TERM_CPUID_HV		5	/* CPUID failure during hypervisor fallback */
  
- #include "error.h"
- #include "../msr.h"
+ #define GHCB_RESP_CODE(v)		((v) & GHCB_MSR_INFO_MASK)
+ 
 diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index 3aaef1a18ffe..b4d5558c9d0a 100644
+index b4d5558c9d0a..0f1375164ff0 100644
 --- a/arch/x86/kernel/sev-shared.c
 +++ b/arch/x86/kernel/sev-shared.c
-@@ -14,6 +14,16 @@
- #define has_cpuflag(f)	boot_cpu_has(f)
- #endif
+@@ -24,6 +24,36 @@ struct cpuid_leaf {
+ 	u32 edx;
+ };
  
-+/* I/O parameters for CPUID-related helpers */
-+struct cpuid_leaf {
-+	u32 fn;
-+	u32 subfn;
++/*
++ * Individual entries of the SNP CPUID table, as defined by the SNP
++ * Firmware ABI, Revision 0.9, Section 7.1, Table 14.
++ */
++struct snp_cpuid_fn {
++	u32 eax_in;
++	u32 ecx_in;
++	u64 xcr0_in;
++	u64 xss_in;
 +	u32 eax;
 +	u32 ebx;
 +	u32 ecx;
 +	u32 edx;
-+};
++	u64 __reserved;
++} __packed;
++
++/*
++ * SNP CPUID table, as defined by the SNP Firmware ABI, Revision 0.9,
++ * Section 8.14.2.6. Also noted there is the SNP firmware-enforced limit
++ * of 64 entries per CPUID table.
++ */
++#define SNP_CPUID_COUNT_MAX 64
++
++struct snp_cpuid_table {
++	u32 count;
++	u32 __reserved1;
++	u64 __reserved2;
++	struct snp_cpuid_fn fn[SNP_CPUID_COUNT_MAX];
++} __packed;
 +
  /*
   * Since feature negotiation related variables are set early in the boot
   * process they must reside in the .data section so as not to be zeroed
-@@ -194,6 +204,44 @@ enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb, bool set_ghcb_msr,
- 	return verify_exception_info(ghcb, ctxt);
+@@ -33,6 +63,19 @@ struct cpuid_leaf {
+  */
+ static u16 ghcb_version __ro_after_init;
+ 
++/* Copy of the SNP firmware's CPUID page. */
++static struct snp_cpuid_table cpuid_table_copy __ro_after_init;
++
++/*
++ * These will be initialized based on CPUID table so that non-present
++ * all-zero leaves (for sparse tables) can be differentiated from
++ * invalid/out-of-range leaves. This is needed since all-zero leaves
++ * still need to be post-processed.
++ */
++static u32 cpuid_std_range_max __ro_after_init;
++static u32 cpuid_hyp_range_max __ro_after_init;
++static u32 cpuid_ext_range_max __ro_after_init;
++
+ static bool __init sev_es_check_cpu_features(void)
+ {
+ 	if (!has_cpuflag(X86_FEATURE_RDRAND)) {
+@@ -242,6 +285,252 @@ static int sev_cpuid_hv(struct cpuid_leaf *leaf)
+ 	return ret;
  }
  
-+static int __sev_cpuid_hv(u32 fn, int reg_idx, u32 *reg)
++/*
++ * This may be called early while still running on the initial identity
++ * mapping. Use RIP-relative addressing to obtain the correct address
++ * while running with the initial identity mapping as well as the
++ * switch-over to kernel virtual addresses later.
++ */
++static const struct snp_cpuid_table *snp_cpuid_get_table(void)
 +{
-+	u64 val;
++	void *ptr;
 +
-+	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(fn, reg_idx));
-+	VMGEXIT();
-+	val = sev_es_rd_ghcb_msr();
-+	if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
-+		return -EIO;
++	asm ("lea cpuid_table_copy(%%rip), %0"
++	     : "=r" (ptr)
++	     : "p" (&cpuid_table_copy));
 +
-+	*reg = (val >> 32);
++	return ptr;
++}
++
++/*
++ * The SNP Firmware ABI, Revision 0.9, Section 7.1, details the use of
++ * XCR0_IN and XSS_IN to encode multiple versions of 0xD subfunctions 0
++ * and 1 based on the corresponding features enabled by a particular
++ * combination of XCR0 and XSS registers so that a guest can look up the
++ * version corresponding to the features currently enabled in its XCR0/XSS
++ * registers. The only values that differ between these versions/table
++ * entries is the enabled XSAVE area size advertised via EBX.
++ *
++ * While hypervisors may choose to make use of this support, it is more
++ * robust/secure for a guest to simply find the entry corresponding to the
++ * base/legacy XSAVE area size (XCR0=1 or XCR0=3), and then calculate the
++ * XSAVE area size using subfunctions 2 through 64, as documented in APM
++ * Volume 3, Rev 3.31, Appendix E.3.8, which is what is done here.
++ *
++ * Since base/legacy XSAVE area size is documented as 0x240, use that value
++ * directly rather than relying on the base size in the CPUID table.
++ *
++ * Return: XSAVE area size on success, 0 otherwise.
++ */
++static u32 snp_cpuid_calc_xsave_size(u64 xfeatures_en, bool compacted)
++{
++	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
++	u64 xfeatures_found = 0;
++	u32 xsave_size = 0x240;
++	int i;
++
++	for (i = 0; i < cpuid_table->count; i++) {
++		const struct snp_cpuid_fn *e = &cpuid_table->fn[i];
++
++		if (!(e->eax_in == 0xD && e->ecx_in > 1 && e->ecx_in < 64))
++			continue;
++		if (!(xfeatures_en & (BIT_ULL(e->ecx_in))))
++			continue;
++		if (xfeatures_found & (BIT_ULL(e->ecx_in)))
++			continue;
++
++		xfeatures_found |= (BIT_ULL(e->ecx_in));
++
++		if (compacted)
++			xsave_size += e->eax;
++		else
++			xsave_size = max(xsave_size, e->eax + e->ebx);
++	}
++
++	/*
++	 * Either the guest set unsupported XCR0/XSS bits, or the corresponding
++	 * entries in the CPUID table were not present. This is not a valid
++	 * state to be in.
++	 */
++	if (xfeatures_found != (xfeatures_en & GENMASK_ULL(63, 2)))
++		return 0;
++
++	return xsave_size;
++}
++
++static bool
++snp_cpuid_get_validated_func(struct cpuid_leaf *leaf)
++{
++	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
++	int i;
++
++	for (i = 0; i < cpuid_table->count; i++) {
++		const struct snp_cpuid_fn *e = &cpuid_table->fn[i];
++
++		if (e->eax_in != leaf->fn)
++			continue;
++
++		if (cpuid_function_is_indexed(leaf->fn) && e->ecx_in != leaf->subfn)
++			continue;
++
++		/*
++		 * For 0xD subfunctions 0 and 1, only use the entry corresponding
++		 * to the base/legacy XSAVE area size (XCR0=1 or XCR0=3, XSS=0).
++		 * See the comments above snp_cpuid_calc_xsave_size() for more
++		 * details.
++		 */
++		if (e->eax_in == 0xD && (e->ecx_in == 0 || e->ecx_in == 1))
++			if (!(e->xcr0_in == 1 || e->xcr0_in == 3) || e->xss_in)
++				continue;
++
++		leaf->eax = e->eax;
++		leaf->ebx = e->ebx;
++		leaf->ecx = e->ecx;
++		leaf->edx = e->edx;
++
++		return true;
++	}
++
++	return false;
++}
++
++static void snp_cpuid_hv(struct cpuid_leaf *leaf)
++{
++	if (sev_cpuid_hv(leaf))
++		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_CPUID_HV);
++}
++
++static int snp_cpuid_postprocess(struct cpuid_leaf *leaf)
++{
++	struct cpuid_leaf leaf_hv = *leaf;
++
++	switch (leaf->fn) {
++	case 0x1:
++		snp_cpuid_hv(&leaf_hv);
++
++		/* initial APIC ID */
++		leaf->ebx = (leaf_hv.ebx & GENMASK(31, 24)) | (leaf->ebx & GENMASK(23, 0));
++		/* APIC enabled bit */
++		leaf->edx = (leaf_hv.edx & BIT(9)) | (leaf->edx & ~BIT(9));
++
++		/* OSXSAVE enabled bit */
++		if (native_read_cr4() & X86_CR4_OSXSAVE)
++			leaf->ecx |= BIT(27);
++		break;
++	case 0x7:
++		/* OSPKE enabled bit */
++		leaf->ecx &= ~BIT(4);
++		if (native_read_cr4() & X86_CR4_PKE)
++			leaf->ecx |= BIT(4);
++		break;
++	case 0xB:
++		leaf_hv.subfn = 0;
++		snp_cpuid_hv(&leaf_hv);
++
++		/* extended APIC ID */
++		leaf->edx = leaf_hv.edx;
++		break;
++	case 0xD: {
++		bool compacted = false;
++		u64 xcr0 = 1, xss = 0;
++		u32 xsave_size;
++
++		if (leaf->subfn != 0 && leaf->subfn != 1)
++			return 0;
++
++		if (native_read_cr4() & X86_CR4_OSXSAVE)
++			xcr0 = xgetbv(XCR_XFEATURE_ENABLED_MASK);
++		if (leaf->subfn == 1) {
++			/* Get XSS value if XSAVES is enabled. */
++			if (leaf->eax & BIT(3)) {
++				unsigned long lo, hi;
++
++				asm volatile("rdmsr" : "=a" (lo), "=d" (hi)
++						     : "c" (MSR_IA32_XSS));
++				xss = (hi << 32) | lo;
++			}
++
++			/*
++			 * The PPR and APM aren't clear on what size should be
++			 * encoded in 0xD:0x1:EBX when compaction is not enabled
++			 * by either XSAVEC (feature bit 1) or XSAVES (feature
++			 * bit 3) since SNP-capable hardware has these feature
++			 * bits fixed as 1. KVM sets it to 0 in this case, but
++			 * to avoid this becoming an issue it's safer to simply
++			 * treat this as unsupported for SNP guests.
++			 */
++			if (!(leaf->eax & (BIT(1) | BIT(3))))
++				return -EINVAL;
++
++			compacted = true;
++		}
++
++		xsave_size = snp_cpuid_calc_xsave_size(xcr0 | xss, compacted);
++		if (!xsave_size)
++			return -EINVAL;
++
++		leaf->ebx = xsave_size;
++		}
++		break;
++	case 0x8000001E:
++		snp_cpuid_hv(&leaf_hv);
++
++		/* extended APIC ID */
++		leaf->eax = leaf_hv.eax;
++		/* compute ID */
++		leaf->ebx = (leaf->ebx & GENMASK(31, 8)) | (leaf_hv.ebx & GENMASK(7, 0));
++		/* node ID */
++		leaf->ecx = (leaf->ecx & GENMASK(31, 8)) | (leaf_hv.ecx & GENMASK(7, 0));
++		break;
++	default:
++		/* No fix-ups needed, use values as-is. */
++		break;
++	}
 +
 +	return 0;
 +}
 +
-+static int sev_cpuid_hv(struct cpuid_leaf *leaf)
++/*
++ * Returns -EOPNOTSUPP if feature not enabled. Any other non-zero return value
++ * should be treated as fatal by caller.
++ */
++static int snp_cpuid(struct cpuid_leaf *leaf)
 +{
-+	int ret;
++	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
 +
-+	/*
-+	 * MSR protocol does not support fetching non-zero subfunctions, but is
-+	 * sufficient to handle current early-boot cases. Should that change,
-+	 * make sure to report an error rather than ignoring the index and
-+	 * grabbing random values. If this issue arises in the future, handling
-+	 * can be added here to use GHCB-page protocol for cases that occur late
-+	 * enough in boot that GHCB page is available.
-+	 */
-+	if (cpuid_function_is_indexed(leaf->fn) && leaf->subfn)
-+		return -EINVAL;
++	if (!cpuid_table->count)
++		return -EOPNOTSUPP;
 +
-+	ret =         __sev_cpuid_hv(leaf->fn, GHCB_CPUID_REQ_EAX, &leaf->eax);
-+	ret = ret ? : __sev_cpuid_hv(leaf->fn, GHCB_CPUID_REQ_EBX, &leaf->ebx);
-+	ret = ret ? : __sev_cpuid_hv(leaf->fn, GHCB_CPUID_REQ_ECX, &leaf->ecx);
-+	ret = ret ? : __sev_cpuid_hv(leaf->fn, GHCB_CPUID_REQ_EDX, &leaf->edx);
++	if (!snp_cpuid_get_validated_func(leaf)) {
++		/*
++		 * Some hypervisors will avoid keeping track of CPUID entries
++		 * where all values are zero, since they can be handled the
++		 * same as out-of-range values (all-zero). This is useful here
++		 * as well as it allows virtually all guest configurations to
++		 * work using a single SNP CPUID table.
++		 *
++		 * To allow for this, there is a need to distinguish between
++		 * out-of-range entries and in-range zero entries, since the
++		 * CPUID table entries are only a template that may need to be
++		 * augmented with additional values for things like
++		 * CPU-specific information during post-processing. So if it's
++		 * not in the table, set the values to zero. Then, if they are
++		 * within a valid CPUID range, proceed with post-processing
++		 * using zeros as the initial values. Otherwise, skip
++		 * post-processing and just return zeros immediately.
++		 */
++		leaf->eax = leaf->ebx = leaf->ecx = leaf->edx = 0;
 +
-+	return ret;
++		/* Skip post-processing for out-of-range zero leafs. */
++		if (!(leaf->fn <= cpuid_std_range_max ||
++		      (leaf->fn >= 0x40000000 && leaf->fn <= cpuid_hyp_range_max) ||
++		      (leaf->fn >= 0x80000000 && leaf->fn <= cpuid_ext_range_max)))
++			return 0;
++	}
++
++	return snp_cpuid_postprocess(leaf);
 +}
 +
  /*
   * Boot VC Handler - This is the first VC handler during boot, there is no GHCB
   * page yet, so it only supports the MSR based communication with the
-@@ -201,40 +249,23 @@ enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb, bool set_ghcb_msr,
-  */
- void __init do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code)
- {
-+	unsigned int subfn = lower_bits(regs->cx, 32);
+@@ -252,6 +541,7 @@ void __init do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code)
+ 	unsigned int subfn = lower_bits(regs->cx, 32);
  	unsigned int fn = lower_bits(regs->ax, 32);
--	unsigned long val;
-+	struct cpuid_leaf leaf;
+ 	struct cpuid_leaf leaf;
++	int ret;
  
  	/* Only CPUID is supported via MSR protocol */
  	if (exit_code != SVM_EXIT_CPUID)
+@@ -259,9 +549,18 @@ void __init do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code)
+ 
+ 	leaf.fn = fn;
+ 	leaf.subfn = subfn;
++
++	ret = snp_cpuid(&leaf);
++	if (!ret)
++		goto cpuid_done;
++
++	if (ret != -EOPNOTSUPP)
++		goto fail;
++
+ 	if (sev_cpuid_hv(&leaf))
  		goto fail;
  
--	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(fn, GHCB_CPUID_REQ_EAX));
--	VMGEXIT();
--	val = sev_es_rd_ghcb_msr();
--	if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
--		goto fail;
--	regs->ax = val >> 32;
--
--	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(fn, GHCB_CPUID_REQ_EBX));
--	VMGEXIT();
--	val = sev_es_rd_ghcb_msr();
--	if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
--		goto fail;
--	regs->bx = val >> 32;
--
--	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(fn, GHCB_CPUID_REQ_ECX));
--	VMGEXIT();
--	val = sev_es_rd_ghcb_msr();
--	if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
-+	leaf.fn = fn;
-+	leaf.subfn = subfn;
-+	if (sev_cpuid_hv(&leaf))
- 		goto fail;
--	regs->cx = val >> 32;
++cpuid_done:
+ 	regs->ax = leaf.eax;
+ 	regs->bx = leaf.ebx;
+ 	regs->cx = leaf.ecx;
+@@ -556,12 +855,37 @@ static enum es_result vc_handle_ioio(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
+ 	return ret;
+ }
  
--	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(fn, GHCB_CPUID_REQ_EDX));
--	VMGEXIT();
--	val = sev_es_rd_ghcb_msr();
--	if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
--		goto fail;
--	regs->dx = val >> 32;
-+	regs->ax = leaf.eax;
-+	regs->bx = leaf.ebx;
-+	regs->cx = leaf.ecx;
-+	regs->dx = leaf.edx;
++static int vc_handle_cpuid_snp(struct pt_regs *regs)
++{
++	struct cpuid_leaf leaf;
++	int ret;
++
++	leaf.fn = regs->ax;
++	leaf.subfn = regs->cx;
++	ret = snp_cpuid(&leaf);
++	if (!ret) {
++		regs->ax = leaf.eax;
++		regs->bx = leaf.ebx;
++		regs->cx = leaf.ecx;
++		regs->dx = leaf.edx;
++	}
++
++	return ret;
++}
++
+ static enum es_result vc_handle_cpuid(struct ghcb *ghcb,
+ 				      struct es_em_ctxt *ctxt)
+ {
+ 	struct pt_regs *regs = ctxt->regs;
+ 	u32 cr4 = native_read_cr4();
+ 	enum es_result ret;
++	int snp_cpuid_ret;
++
++	snp_cpuid_ret = vc_handle_cpuid_snp(regs);
++	if (!snp_cpuid_ret)
++		return ES_OK;
++	if (snp_cpuid_ret != -EOPNOTSUPP)
++		return ES_VMM_ERROR;
  
- 	/*
- 	 * This is a VC handler and the #VC is only raised when SEV-ES is
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index bc9bb7e0c04d..97c0aa44ce2d 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -33,6 +33,7 @@
- #include <asm/smp.h>
- #include <asm/cpu.h>
- #include <asm/apic.h>
-+#include <asm/cpuid.h>
- 
- #define DR7_RESET_VALUE        0x400
- 
+ 	ghcb_set_rax(ghcb, regs->ax);
+ 	ghcb_set_rcx(ghcb, regs->cx);
 -- 
 2.25.1
 
