@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B99D4D0A13
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Mar 2022 22:40:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB00F4D0A01
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Mar 2022 22:39:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343620AbiCGVj6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Mar 2022 16:39:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39544 "EHLO
+        id S1343634AbiCGVkC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Mar 2022 16:40:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343707AbiCGVh4 (ORCPT
+        with ESMTP id S1343710AbiCGVh4 (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Mar 2022 16:37:56 -0500
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2084.outbound.protection.outlook.com [40.107.93.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2265175E4E;
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2058.outbound.protection.outlook.com [40.107.93.58])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FE66888FB;
         Mon,  7 Mar 2022 13:35:58 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bNmtcd/wc1kVYSvNM6iMRRZvpCDNdTqshmPk6X2++eZP/BIzOQvcZj1PVFGegbH5xF0BNr0u20dveeR5OON/Fvl5ye1iwa0HM9I/PLK/7cFkpxlvS3jL0dxCBLaKHPHAph7flpSqho87sWpg11wVEQeGROtVXSMFswWoV2E1xM9KMdWYHwf8WaWNtEeb0tBPYSnB6JL7UdhDILI24TUxICvY9ihdXnPVsQIcUxYPKEVoa5kAXDdHH5WN7qPfZ6IQgnawoSFVBc1xlLS4dSvjQyLjKrHGWoonp3WoCf5lVPEViYZ9JqGcZlsR0ytvjkX6cLOqNqbrBzFRj6z/YC1s3w==
+ b=SCM4VN6Tp+XEHMssS2/4WvjygiSzpSgH7S2y3lE4BBSEiKvIfwUSpF8SAkMI93c8d2hNOTYknXFFnXtqdM9kA4WdZtIwY5zjqt82vx1N5KVNOp8jiGQFqj8C8VHElFfneG7LvAASUxS9vYLUXjSErdrGcDcn5EPXfIF08xLfA8l92fHCpz5vjKXCilkjdG7CRARwNIEKCTFhBGdt+AZUsyYwE682yVxvUtIZcJQyZjNPNJotnZiSaqTnkbbahB9v/dNYkF0+glXiEZ0Fu3oiGQa7BiGNTjrjXuIMoCeK+WFmNG1oeXMfazq6N9t9i9GPGjeSAxGW7xc7F83FgCEZcA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sWobb2aiOG2Wk/2j/o4EOfKRABBsz/YlVzD0P5q7RJg=;
- b=LJRL8lDqX8JKPALtgGZUi5ieWV+TJs1QyHQNo6Zn1l8S08OcgXmmGlsdhk1gKD5cAXWqidGBrnNUnBIYmWKPIAR2J/DzfWOtQLVfX9fh0rzb/arj8YCEi/1a69dAujzzXmqpaWoyLp83t+pc8Mkgy9jly4TWaOAsc/mwG4yhzr2AImaAiK7OwNxg0/UnccsAwvFH90AUkY6GBDjKpvZJdA0Tjw8anHTKRiYtvZMkdl/rM95IPgAJ/64n9T6kHczwT0HJcFsgTWW5DVPCfg4xvLJHNYmbCqXZJ05GIYF6mKoMT/AMxDXtBo+vrNqYVM0qA5iplHwcFyK+PVmFA1N55w==
+ bh=CUF91Z4+/PiHB/Ji8QJJ7MDEZVs+38Eie2kIQWcidsc=;
+ b=msnXMUQxAkUYuHB276nUk0++Dc1p27IFAiJ+9WKBXWJgvW0fur8WuaTzia0Pfg3+Dc2MI+cg84ifcCIqLIuWgsl5uuoVke3qSLpIx4LS4JgY7hDzA9u8f7IF11MxQti+KmI2/WqjIkS9KDM5EnQvQbiiXWEv4GYpzZ5PAEhG5Lk75yP4nzFfdXXrIxZirCJ9P0aOZ1CqJYynwAYg0sk0N90zT7gySn7E+l2t46LsmXFPiEWgkrq2A/VIhzRfjM/HbKz5knT5eEY8xwe5/aWALxmagXIOI7MUCxwz0uFzPJGpHwyyHvSETtLoPBDVP4MqXmFzs7Ydg+bXKVOC63+bdg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sWobb2aiOG2Wk/2j/o4EOfKRABBsz/YlVzD0P5q7RJg=;
- b=36Sbjgwf2yxVRjnizh4xt3mQft2XvaOVwMUVytBP9CMa8HrjHBkpLeFwmgO+vCy/BNa6WEHSaOMfPZOZjHecxYSVKVDJlJYkbLMvMVaaZSW662DL1mrKZBUKN7tb1cpMYEb1XInRSulmG9z7oZ4gl3ntxQvByw5n1dflDnNYsvg=
-Received: from BN9PR03CA0110.namprd03.prod.outlook.com (2603:10b6:408:fd::25)
- by CY4PR12MB1336.namprd12.prod.outlook.com (2603:10b6:903:40::21) with
+ bh=CUF91Z4+/PiHB/Ji8QJJ7MDEZVs+38Eie2kIQWcidsc=;
+ b=krfci3yXy5+Cz9kMaYfM/6Tgma+HzFjI3BwsJz14N7o/Yfe0Kl9gY7O95BRP+9ofA1ybDQ3l0sMo5YZ6Cf1wazzMqu553thKYo+FGDrxCuWJvXEptq09jgy/JxLiHmxM9NSoY4odur3tmQc5gS0utZmAEYlV2vT+jcdntSh9bqQ=
+Received: from BN9PR03CA0093.namprd03.prod.outlook.com (2603:10b6:408:fd::8)
+ by PH7PR12MB5806.namprd12.prod.outlook.com (2603:10b6:510:1d2::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.18; Mon, 7 Mar
- 2022 21:35:34 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.15; Mon, 7 Mar
+ 2022 21:35:36 +0000
 Received: from BN8NAM11FT005.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:fd:cafe::6c) by BN9PR03CA0110.outlook.office365.com
- (2603:10b6:408:fd::25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.13 via Frontend
- Transport; Mon, 7 Mar 2022 21:35:34 +0000
+ (2603:10b6:408:fd:cafe::da) by BN9PR03CA0093.outlook.office365.com
+ (2603:10b6:408:fd::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.15 via Frontend
+ Transport; Mon, 7 Mar 2022 21:35:35 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,11 +48,11 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
  BN8NAM11FT005.mail.protection.outlook.com (10.13.176.69) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.5038.14 via Frontend Transport; Mon, 7 Mar 2022 21:35:34 +0000
+ 15.20.5038.14 via Frontend Transport; Mon, 7 Mar 2022 21:35:35 +0000
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Mon, 7 Mar
- 2022 15:35:27 -0600
+ 2022 15:35:29 -0600
 From:   Brijesh Singh <brijesh.singh@amd.com>
 To:     <x86@kernel.org>, <linux-kernel@vger.kernel.org>,
         <kvm@vger.kernel.org>, <linux-efi@vger.kernel.org>,
@@ -81,10 +81,11 @@ CC:     Thomas Gleixner <tglx@linutronix.de>,
         Andi Kleen <ak@linux.intel.com>,
         "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
         <brijesh.ksingh@gmail.com>, <tony.luck@intel.com>,
-        <marcorr@google.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: [PATCH v12 40/46] x86/sev: add sev=debug cmdline option to dump SNP CPUID table
-Date:   Mon, 7 Mar 2022 15:33:50 -0600
-Message-ID: <20220307213356.2797205-41-brijesh.singh@amd.com>
+        <marcorr@google.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Brijesh Singh <brijesh.singh@amd.com>
+Subject: [PATCH v12 41/46] x86/sev: Provide support for SNP guest request NAEs
+Date:   Mon, 7 Mar 2022 15:33:51 -0600
+Message-ID: <20220307213356.2797205-42-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220307213356.2797205-1-brijesh.singh@amd.com>
 References: <20220307213356.2797205-1-brijesh.singh@amd.com>
@@ -96,24 +97,24 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 195064d7-d6e7-4cb3-c9fa-08da008269a5
-X-MS-TrafficTypeDiagnostic: CY4PR12MB1336:EE_
-X-Microsoft-Antispam-PRVS: <CY4PR12MB13364996282E26A37B6D8957E5089@CY4PR12MB1336.namprd12.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: e9966f74-4f99-426d-4b62-08da00826a2b
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5806:EE_
+X-Microsoft-Antispam-PRVS: <PH7PR12MB5806D6E3297C0740F0959B89E5089@PH7PR12MB5806.namprd12.prod.outlook.com>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: cg17bm2oRggRCeIy8edPGWl1sK8gj9ubIPJOlg3pEHc9tdE7MSy61V3jxv3X5+Q6sE4rMNBvGfwer7xaYjPGDs03d+PYrGrGszsITTutqSqqYZJtTePaDLruemrlwVFu0KSGOFxfm1f8KZmVd49VBtkdBSJ6leVUgl3bjZ/poAY9PcQSH8nzwFaycMIIr9QO2swMRgZYYZBVf4TpynJo8KxxN9Rl6RXseA71F1760gL6Vk+9XLb22KALT7hzt2O9zWujexJAVxO1vEKHE7TCbT9R5rXbR5Ijv8KFKIr8FXzSowLQME3hIpga+B5whmm2nC1zMoxE1Uj7wT2cS3bPiG3mRrDMi0PRiiLNAvtNXy35cwtyCPSMhtBHVkmIerdZ/Fi3ZJN5Jn8dPi8jMId2hCJzoxrcCsZUQX5eGNjVN2blKzcMBi6jhait0Ke3x/Hj6UWwNRkIn5wt8e3hXMvXidrUT7rkUG7eYMTjsWN/iJYmWkahrCZkhaJFnRtklrEqsiK5cpdhHSDUm1hAZM0mTezVFLJGblN/0S5gl3yOMJceCr9OvLPW8fllM3AMOaK1+A66aKe4VkzDntmkZfMUYOKhIin1a6S6qcsPBcQZChekw4Xk/taqACOjKJ2Qvwq/KzNnavLSnciDUau1lEgKFnHmhVQuAP5EQnwY+6V5Z0S1kf58gqumTHjei35WROzXWRYjy3Sk3IcMG3+wiaVe/yg1Z8zvGZryNnaj/T7AjYI=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(36840700001)(46966006)(40470700004)(2906002)(508600001)(5660300002)(81166007)(86362001)(6666004)(36860700001)(7416002)(7406005)(7696005)(44832011)(336012)(47076005)(82310400004)(83380400001)(426003)(356005)(8676002)(36756003)(70586007)(70206006)(1076003)(40460700003)(26005)(2616005)(186003)(16526019)(316002)(54906003)(8936002)(110136005)(4326008)(36900700001)(2101003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: Rdh154kpH3ejESQZvEaLuH5rmAYsMTCvq+RuGTU/+py1hW1dT1p/8qdqZuJDRtYysT+uxCqGjW4RtfSiqNTWTwEo6LorOWgNt/e6pMArTRj176rq52vKWTLblj1CgDjSGDjocpPHPIuGqV70W7U66qZYlBJ0S24Jk/wEohUbquS0lYHf3vDg4utn3jgPNG29xAzhXGqvq7BhiJ39GFXRucnjNp/3RwqX5uLcCPwypZhCdzruZUhSO7Tj3L8VdLdnLMCoBI8DEjhP2WFvaZsPvy+EkPtTKgZ5UPFPWyApAIyzZfEIUqDDj5itjs4f889XwcDiMqnlvWT+Jkyd8T1ueOEfbYzE+W4LmBeQ9our2ntlRxAc/mdLmCxWmBxraLMuCKUCAkdnD5RkgvTuPglT77ddMlUV5kuFP3tZ7mht/mTbNI5/Ewb2EPtM/+fNN9Q9gxGyP1qhQmjMQkMZP7MeUDNQQvwDpEU+K+QJMYPrEzImaHR90deHyFIA9OdzsSfv5AUaM0tP6p3J2tOSHqfmAmvAoOdxBP7TkpDjm5OyJtg5dxqedux0dAT05QsrkJPxHfz+NjyBuzRJaeeaCkYTaxwzP0uJ64H8XqRoeKCPmcvLVwfLKXhBEsKzCwK+/11uEyN2RT/fmh6bG+oexWfmJ+XmfK7LTmTeXi3CPmbbK1IRqmqnyvebxYYhqZYtehc8fPf4oAWvs9mdJHdAARw84OgqZqSnxycSHNhFKBe9m6U=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(36840700001)(46966006)(40470700004)(186003)(7696005)(36860700001)(54906003)(16526019)(44832011)(110136005)(26005)(316002)(40460700003)(82310400004)(356005)(81166007)(336012)(426003)(47076005)(70586007)(8936002)(2906002)(2616005)(6666004)(83380400001)(7416002)(1076003)(86362001)(36756003)(7406005)(4326008)(8676002)(5660300002)(508600001)(70206006)(36900700001)(2101003);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2022 21:35:34.3786
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2022 21:35:35.2535
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 195064d7-d6e7-4cb3-c9fa-08da008269a5
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9966f74-4f99-426d-4b62-08da00826a2b
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT005.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR12MB1336
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5806
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -124,141 +125,163 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Michael Roth <michael.roth@amd.com>
+Version 2 of GHCB specification provides SNP_GUEST_REQUEST and
+SNP_EXT_GUEST_REQUEST NAE that can be used by the SNP guest to communicate
+with the PSP.
 
-For debugging purposes it is very useful to have a way to see the full
-contents of the SNP CPUID table provided to a guest. Add an sev=debug
-kernel command-line option to do so.
+While at it, add a snp_issue_guest_request() helper that will be used by
+driver or other subsystem to issue the request to PSP.
 
-Also introduce some infrastructure so that additional options can be
-specified via sev=option1[,option2] over time in a consistent manner.
+See SEV-SNP firmware and GHCB spec for more details.
 
-Suggested-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- .../admin-guide/kernel-parameters.txt         |  2 +
- Documentation/x86/x86_64/boot-options.rst     | 14 +++++
- arch/x86/kernel/sev.c                         | 58 +++++++++++++++++++
- 3 files changed, 74 insertions(+)
+ arch/x86/include/asm/sev-common.h |  3 ++
+ arch/x86/include/asm/sev.h        | 14 ++++++++
+ arch/x86/include/uapi/asm/svm.h   |  4 +++
+ arch/x86/kernel/sev.c             | 57 +++++++++++++++++++++++++++++++
+ 4 files changed, 78 insertions(+)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index f5a27f067db9..809e8adc9bb2 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -5229,6 +5229,8 @@
+diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+index 0759af9b1acf..b8357d6ecd47 100644
+--- a/arch/x86/include/asm/sev-common.h
++++ b/arch/x86/include/asm/sev-common.h
+@@ -128,6 +128,9 @@ struct snp_psc_desc {
+ 	struct psc_entry entries[VMGEXIT_PSC_MAX_ENTRY];
+ } __packed;
  
- 	serialnumber	[BUGS=X86-32]
++/* Guest message request error code */
++#define SNP_GUEST_REQ_INVALID_LEN	BIT_ULL(32)
++
+ #define GHCB_MSR_TERM_REQ		0x100
+ #define GHCB_MSR_TERM_REASON_SET_POS	12
+ #define GHCB_MSR_TERM_REASON_SET_MASK	0xf
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 219abb4590f2..9830ee1d6ef0 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -87,6 +87,14 @@ extern bool handle_vc_boot_ghcb(struct pt_regs *regs);
  
-+	sev=option[,option...] [X86-64] See Documentation/x86/x86_64/boot-options.rst
-+
- 	shapers=	[NET]
- 			Maximal number of shapers.
+ #define RMPADJUST_VMSA_PAGE_BIT		BIT(16)
  
-diff --git a/Documentation/x86/x86_64/boot-options.rst b/Documentation/x86/x86_64/boot-options.rst
-index 07aa0007f346..66c970117f0e 100644
---- a/Documentation/x86/x86_64/boot-options.rst
-+++ b/Documentation/x86/x86_64/boot-options.rst
-@@ -310,3 +310,17 @@ Miscellaneous
-     Do not use GB pages for kernel direct mappings.
-   gbpages
-     Use GB pages for kernel direct mappings.
-+
-+
-+AMD SEV (Secure Encrypted Virtualization)
-+=========================================
-+Options relating to AMD SEV, specified via the following format:
-+
-+::
-+
-+   sev=option1[,option2]
-+
-+The available options are:
-+
-+   debug
-+     Enable verbose debug messages.
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index c6b2e0c58255..0b70ebb6df1d 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -112,6 +112,13 @@ DEFINE_STATIC_KEY_FALSE(sev_es_enable_key);
- 
- static DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
- 
-+struct sev_config {
-+	__u64 debug		: 1,
-+	      __reserved	: 63;
++/* SNP Guest message request */
++struct snp_req_data {
++	unsigned long req_gpa;
++	unsigned long resp_gpa;
++	unsigned long data_gpa;
++	unsigned int data_npages;
 +};
 +
-+static struct sev_config sev_cfg __read_mostly;
-+
- static __always_inline bool on_vc_stack(struct pt_regs *regs)
- {
- 	unsigned long sp = regs->sp;
-@@ -2045,6 +2052,23 @@ void __init snp_abort(void)
- 	sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
- }
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+ extern struct static_key_false sev_es_enable_key;
+ extern void __sev_es_ist_enter(struct pt_regs *regs);
+@@ -154,6 +162,7 @@ void snp_set_memory_private(unsigned long vaddr, unsigned int npages);
+ void snp_set_wakeup_secondary_cpu(void);
+ bool snp_init(struct boot_params *bp);
+ void snp_abort(void);
++int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, unsigned long *fw_err);
+ #else
+ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+ static inline void sev_es_ist_exit(void) { }
+@@ -173,6 +182,11 @@ static inline void snp_set_memory_private(unsigned long vaddr, unsigned int npag
+ static inline void snp_set_wakeup_secondary_cpu(void) { }
+ static inline bool snp_init(struct boot_params *bp) { return false; }
+ static inline void snp_abort(void) { }
++static inline int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input,
++					  unsigned long *fw_err)
++{
++	return -ENOTTY;
++}
+ #endif
  
-+static void dump_cpuid_table(void)
-+{
-+	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
-+	int i = 0;
-+
-+	pr_info("count=%d reserved=0x%x reserved2=0x%llx\n",
-+		cpuid_table->count, cpuid_table->__reserved1, cpuid_table->__reserved2);
-+
-+	for (i = 0; i < SNP_CPUID_COUNT_MAX; i++) {
-+		const struct snp_cpuid_fn *fn = &cpuid_table->fn[i];
-+
-+		pr_info("index=%3d fn=0x%08x subfn=0x%08x: eax=0x%08x ebx=0x%08x ecx=0x%08x edx=0x%08x xcr0_in=0x%016llx xss_in=0x%016llx reserved=0x%016llx\n",
-+			i, fn->eax_in, fn->ecx_in, fn->eax, fn->ebx, fn->ecx,
-+			fn->edx, fn->xcr0_in, fn->xss_in, fn->__reserved);
-+	}
-+}
-+
- /*
-  * It is useful from an auditing/testing perspective to provide an easy way
-  * for the guest owner to know that the CPUID table has been initialized as
-@@ -2062,6 +2086,40 @@ static int __init report_cpuid_table(void)
- 	pr_info("Using SNP CPUID table, %d entries present.\n",
- 		cpuid_table->count);
- 
-+	if (sev_cfg.debug)
-+		dump_cpuid_table();
-+
- 	return 0;
+ #endif
+diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
+index 8b4c57baec52..5b8bc2b65a5e 100644
+--- a/arch/x86/include/uapi/asm/svm.h
++++ b/arch/x86/include/uapi/asm/svm.h
+@@ -109,6 +109,8 @@
+ #define SVM_VMGEXIT_SET_AP_JUMP_TABLE		0
+ #define SVM_VMGEXIT_GET_AP_JUMP_TABLE		1
+ #define SVM_VMGEXIT_PSC				0x80000010
++#define SVM_VMGEXIT_GUEST_REQUEST		0x80000011
++#define SVM_VMGEXIT_EXT_GUEST_REQUEST		0x80000012
+ #define SVM_VMGEXIT_AP_CREATION			0x80000013
+ #define SVM_VMGEXIT_AP_CREATE_ON_INIT		0
+ #define SVM_VMGEXIT_AP_CREATE			1
+@@ -225,6 +227,8 @@
+ 	{ SVM_VMGEXIT_AP_HLT_LOOP,	"vmgexit_ap_hlt_loop" }, \
+ 	{ SVM_VMGEXIT_AP_JUMP_TABLE,	"vmgexit_ap_jump_table" }, \
+ 	{ SVM_VMGEXIT_PSC,	"vmgexit_page_state_change" }, \
++	{ SVM_VMGEXIT_GUEST_REQUEST,		"vmgexit_guest_request" }, \
++	{ SVM_VMGEXIT_EXT_GUEST_REQUEST,	"vmgexit_ext_guest_request" }, \
+ 	{ SVM_VMGEXIT_AP_CREATION,	"vmgexit_ap_creation" }, \
+ 	{ SVM_VMGEXIT_HV_FEATURES,	"vmgexit_hypervisor_feature" }, \
+ 	{ SVM_EXIT_ERR,         "invalid_guest_state" }
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index 0b70ebb6df1d..97c86541b9c6 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -2123,3 +2123,60 @@ static int __init init_sev_config(char *str)
+ 	return 1;
  }
- arch_initcall(report_cpuid_table);
+ __setup("sev", init_sev_config);
 +
-+static bool matches_option(const char *option, const char *arg, int arg_len)
++int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, unsigned long *fw_err)
 +{
-+	return strncmp(option, arg, max(arg_len, (int)strlen(option))) == 0;
-+}
++	struct ghcb_state state;
++	struct es_em_ctxt ctxt;
++	unsigned long flags;
++	struct ghcb *ghcb;
++	int ret;
 +
-+static int __init init_sev_config(char *str)
-+{
-+	if ((*str) == '=')
-+		str++;
++	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
++		return -ENODEV;
 +
-+	while (*str) {
-+		char *arg = str;
-+		int arg_len;
++	if (!fw_err)
++		return -EINVAL;
 +
-+		while (*str && *str != ',')
-+			str++;
++	/*
++	 * __sev_get_ghcb() needs to run with IRQs disabled because it is using
++	 * a per-CPU GHCB.
++	 */
++	local_irq_save(flags);
 +
-+		arg_len = str - arg;
-+		if (*str == ',')
-+			str++;
-+
-+		if (matches_option("debug", arg, arg_len))
-+			sev_cfg.debug = true;
-+		else
-+			pr_info("SEV command-line option '%.*s' was not recognized\n", arg_len, arg);
++	ghcb = __sev_get_ghcb(&state);
++	if (!ghcb) {
++		ret = -EIO;
++		goto e_restore_irq;
 +	}
 +
-+	return 1;
++	vc_ghcb_invalidate(ghcb);
++
++	if (exit_code == SVM_VMGEXIT_EXT_GUEST_REQUEST) {
++		ghcb_set_rax(ghcb, input->data_gpa);
++		ghcb_set_rbx(ghcb, input->data_npages);
++	}
++
++	ret = sev_es_ghcb_hv_call(ghcb, true, &ctxt, exit_code, input->req_gpa, input->resp_gpa);
++	if (ret)
++		goto e_put;
++
++	if (ghcb->save.sw_exit_info_2) {
++		/* Number of expected pages are returned in RBX */
++		if (exit_code == SVM_VMGEXIT_EXT_GUEST_REQUEST &&
++		    ghcb->save.sw_exit_info_2 == SNP_GUEST_REQ_INVALID_LEN)
++			input->data_npages = ghcb_get_rbx(ghcb);
++
++		*fw_err = ghcb->save.sw_exit_info_2;
++
++		ret = -EIO;
++	}
++
++e_put:
++	__sev_put_ghcb(&state);
++e_restore_irq:
++	local_irq_restore(flags);
++
++	return ret;
 +}
-+__setup("sev", init_sev_config);
++EXPORT_SYMBOL_GPL(snp_issue_guest_request);
 -- 
 2.25.1
 
