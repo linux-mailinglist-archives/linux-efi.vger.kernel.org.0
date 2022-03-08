@@ -2,81 +2,40 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6A854D0EE7
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Mar 2022 06:01:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A4A34D1AD2
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Mar 2022 15:41:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231408AbiCHFCX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 8 Mar 2022 00:02:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37382 "EHLO
+        id S230270AbiCHOmK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 8 Mar 2022 09:42:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230105AbiCHFCU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Mar 2022 00:02:20 -0500
-Received: from mail-ua1-x92e.google.com (mail-ua1-x92e.google.com [IPv6:2607:f8b0:4864:20::92e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 300CC24BC3;
-        Mon,  7 Mar 2022 21:01:24 -0800 (PST)
-Received: by mail-ua1-x92e.google.com with SMTP id l45so7479045uad.1;
-        Mon, 07 Mar 2022 21:01:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=HKvhppFceChLgmUpgQVEk1mZ3VY0JaSZJA2aB43Q7Vk=;
-        b=VSM2HLY0kX84OL07y9j206vTbYJdekrGShRw4CrfWN3ujt3SEitgG1bAfG8KlfUSOw
-         ElJWiSRFumUKR+fyDaiQhfWzvG908o7Ub3CRG6tvrBdC1ZBAlcQns5X15xg+DVcA98sR
-         xefn8uAIem+hS4+KTbQmIiAaZstaqv+dXPNdvJdQEX0DTlkxdbO9uz+LJhZEGYcq5ydy
-         SRQ8UlIZvCr9Ep4TQyn6e0AenP5jKJY5XOt87AXUbuP0M3OpLMIYGV1YwjzxOFyFeqvX
-         7GfhoIaJGtsAqYuTKqfFV/EG2YMuWM5eOZkavzjm/tqiEgUyIZLQSpgKMSrca/ZKaTP0
-         ItkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HKvhppFceChLgmUpgQVEk1mZ3VY0JaSZJA2aB43Q7Vk=;
-        b=dwxDxgOS+ujuBkT3lpxio1d75N8uR53sk19RGz+cUYlyV7aNGJ2GlO0PNKwFj1FAoH
-         uKUij1fTeRS3uMZuBehrVoskwPR33nuEzrfmGvh36JcL19j9ofQFUzZIL1mqfPBpOVni
-         eVupYGaKFkFOKKSR1oc4LSaD5eUKsdnCpY5yR6/exPAInQ09s++iupjv5UAemlDxZ2Qe
-         tE3kjHpOUI2tNwVG83jgHJh42NkD7GA/IgzkkhiY8y+g8VNJG5uietHRzbREm6A8oJgB
-         ozypjOrUqEd8mSDW/13O+6h0Fwa/Jdy8h0pFUPwTWIBErHzCLg7DZJiWgCDwnSdwZKRb
-         2b5g==
-X-Gm-Message-State: AOAM531Mod8Awta1IAXu/WmqgkzIWxaMlQiOZYtucITNMGOzO1otic3+
-        +1T9fSSyPziHALMaGWe3QeisdWFd5KkSfKc1SGQvVkbFS3ldCA==
-X-Google-Smtp-Source: ABdhPJzbMqED95ln7Nv/0kYruwHO9Qug+J1OiHrch1cXgj6krfHGEm91/jREsdcS5fHYIgs4Bkzz5WRXAqvKWZl8ixc=
-X-Received: by 2002:a9f:24d6:0:b0:348:d872:5917 with SMTP id
- 80-20020a9f24d6000000b00348d8725917mr5014892uar.118.1646715683203; Mon, 07
- Mar 2022 21:01:23 -0800 (PST)
+        with ESMTP id S239493AbiCHOmJ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Mar 2022 09:42:09 -0500
+Received: from out30-54.freemail.mail.aliyun.com (out30-54.freemail.mail.aliyun.com [115.124.30.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ABA03968C;
+        Tue,  8 Mar 2022 06:41:11 -0800 (PST)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R231e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04423;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0V6f6D4z_1646750458;
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V6f6D4z_1646750458)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Tue, 08 Mar 2022 22:41:07 +0800
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+To:     bp@alien8.de, rric@kernel.org
+Cc:     mchehab@kernel.org, tony.luck@intel.com, james.morse@arm.com,
+        ardb@kernel.org, linux-edac@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        xueshuai@linux.alibaba.com, zhangliguang@linux.alibaba.com,
+        zhuo.song@linux.alibaba.com
+Subject: [PATCH v7 0/3] EDAC/ghes: refactor memory error reporting to avoid code duplication
+Date:   Tue,  8 Mar 2022 22:40:50 +0800
+Message-Id: <20220308144053.49090-1-xueshuai@linux.alibaba.com>
+X-Mailer: git-send-email 2.30.1 (Apple Git-130)
+In-Reply-To: <20211210134019.28536-1-xueshuai@linux.alibaba.com>
+References: <20211210134019.28536-1-xueshuai@linux.alibaba.com>
 MIME-Version: 1.0
-References: <20220226110338.77547-1-chenhuacai@loongson.cn>
- <20220226110338.77547-10-chenhuacai@loongson.cn> <YiCpYRwoUSmd/GE3@kernel.org>
- <CAAhV-H4-zVjjUkoVFw4ppg_tsM-wxBZmPr-2q8zuoLDHTWAE0w@mail.gmail.com>
- <YiHuuyqW8KSAri/M@kernel.org> <CAAhV-H6z3H3QbzvG6=fgVJF1z2qEvKVGnyqb--bkqomH3jTXJQ@mail.gmail.com>
- <YiZCypeuJ+0FCJ+w@kernel.org>
-In-Reply-To: <YiZCypeuJ+0FCJ+w@kernel.org>
-From:   Huacai Chen <chenhuacai@gmail.com>
-Date:   Tue, 8 Mar 2022 13:01:11 +0800
-Message-ID: <CAAhV-H6WnnqVs+9syRcRYWTdqYKWr1c03TR2_cJB-tN223MS-w@mail.gmail.com>
-Subject: Re: [PATCH V6 09/22] LoongArch: Add boot and setup routines
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     Huacai Chen <chenhuacai@loongson.cn>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Airlie <airlied@linux.ie>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Xuefeng Li <lixuefeng@loongson.cn>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -84,93 +43,65 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi, Mike,
+ghes_edac_report_mem_error() in ghes_edac.c is a Long Method and have
+Duplicated Code with cper_mem_err_location(), cper_dimm_err_location(), and
+cper_mem_err_type_str() in drivers/firmware/efi/cper.c. In addition, the
+cper_print_mem() in drivers/firmware/efi/cper.c only reports the error
+status and misses its description.
 
-On Tue, Mar 8, 2022 at 1:37 AM Mike Rapoport <rppt@kernel.org> wrote:
->
-> Hi,
->
-> On Fri, Mar 04, 2022 at 08:43:03PM +0800, Huacai Chen wrote:
-> > Hi, Mike,
-> >
-> > On Fri, Mar 4, 2022 at 6:49 PM Mike Rapoport <rppt@kernel.org> wrote:
-> > >
-> > > Hi,
-> > >
-> > >
-> > > So ideally, the physical memory detection and registration should follow
-> > > something like:
-> > >
-> > > * memblock_reserve() the memory used by firmware, kernel and initrd
-> > > * detect NUMA topology
-> > > * add memory regions along with their node ids to memblock.
-> > >
-> > > s390::setup_arch() is a good example of doing early reservations:
-> > >
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/s390/kernel/setup.c#n988
-> > I have a fast reading of S390, and I think we can do some adjust:
-> > 1, call memblock_set_node(0, ULONG_MAX, &memblock.memory, 0) in
-> > early_memblock_init().
-> > 2, move memblock_reserve(PHYS_OFFSET, 0x200000) and
-> > memblock_reserve(__pa_symbol(&_text), __pa_symbol(&_end) -
-> > __pa_symbol(&_text)) to early_memblock_init().
-> > 3, Reserve initrd memory in the first place.
-> > It is nearly the same as the S390, then.
->
-> It does not have to look like the same as s390 :)
-> The important thing is to reserve all the memory before memblock
-> allocations are possible.
-New version is here, it's not completely the same as S390, but very similar:
-https://lore.kernel.org/linux-arch/20220306112850.811504-1-chenhuacai@loongson.cn/T/#Z2e.:..:20220306112850.811504-10-chenhuacai::40loongson.cn:1arch:loongarch:kernel:mem.c
+This patch set is to refactor ghes_edac_report_mem_error with:
 
-Firmware is not in SYSRAM regions, so we don't need to reserve them.
-The first 2MB and the kernel region are reserved in
-early_memblock_init(), before any allocations.
+- Patch 01 is to wrap up error status decoding logics and reuse it in
+    cper_print_mem().
+- Patch 02 is to introduces cper_*(), into ghes_edac_report_mem_error(),
+  this can avoid bunch of duplicate code lines;
+- Patch 03 is to improve report format  
 
-Initrd information is passed by cmdline, and initrd is now reserved
-immediately after cmdline has parsed, by merging
-init_initrd/finalize_initrd as you suggested:
-https://lore.kernel.org/linux-arch/20220306112850.811504-1-chenhuacai@loongson.cn/T/#Z2e.:..:20220306112850.811504-10-chenhuacai::40loongson.cn:1arch:loongarch:kernel:setup.c
+Changes since v6:
+- Rework patch 02 by Borislav Petkov
+- add patch 03 to improve format
+- Link: https://lore.kernel.org/r/20220303122626.99740-3-xueshuai@linux.alibaba.com
+  
+Changes since v5:
+- Delete change summary in commit log
+- Link: https://lore.kernel.org/all/20220126081702.55167-1-xueshuai@linux.alibaba.com/
+- Thanks Borislav Petkov for review comments.
 
->
-> > > > > > +early_param("memmap", early_parse_memmap);
-> > > > >
-> > > > > The memmap= processing is a hack indented to workaround bugs in firmware
-> > > > > related to the memory detection. Please don't copy if over unless there is
-> > > > > really strong reason.
-> > > >
-> > > > Hmmm, I have read the documents, most archs only support mem=limit,
-> > > > but MIPS support mem=limit@base. memmap not only supports
-> > > > memmap=limit@base, but also a lot of advanced syntax. LoongArch needs
-> > > > both limit and limit@base syntax. So can we make our code to support
-> > > > only mem=limit and memmap=limit@base, and remove all other syntax
-> > > > here?
-> > >
-> > > The documentation describes what was there historically and both these
-> > > options tend not to play well with complex memory layouts.
-> > >
-> > > If you must have them it's better to use x86 as an example rather than
-> > > MIPS, just take into the account that on x86 memory always starts from 0,
-> > > so they never needed to have a different base.
-> > >
-> > > For what use-cases LoongArch needs options?
-> >
-> > The use-case of limit@base syntax is kdump, because our kernel is not
-> > relocatable. I'll use X86 as an example.
->
-> I missed that mem= can be used several times, so with MIPS implementation
-> it's possible to define something like "mem=limit0@base0 mem=limit1@base1"
-> and this will create two contiguous memory regions.
-The new version is here:
-https://lore.kernel.org/linux-arch/20220306112850.811504-1-chenhuacai@loongson.cn/T/#Z2e.:..:20220306112850.811504-10-chenhuacai::40loongson.cn:1arch:loongarch:kernel:setup.c
-If I use the MIPS implementation, then memmap= is useless and can be
-removed, but the MIPS implementation is not obey the rules in kernel
-documents.
+Changes since v4:
+- Fix alignment and format problem
+- Link: https://lore.kernel.org/all/20220125024939.30635-1-xueshuai@linux.alibaba.com/
 
-Huacai
->
-> > Huacai
->
-> --
-> Sincerely yours,
-> Mike.
+Changes since v3:
+
+- make cper_mem_err_status_str table a lot more compact
+- Fix alignment and format problem
+- Link: https://lore.kernel.org/all/20220124024759.19176-1-xueshuai@linux.alibaba.com/
+
+Changes since v2:
+
+- delete the unified patch
+- adjusted the order of patches
+- Link: https://lore.kernel.org/all/20211210134019.28536-1-xueshuai@linux.alibaba.com/
+
+Changes since v1:
+
+- add a new patch to unify ghes and cper before removing duplication.
+- document the changes in patch description
+- add EXPORT_SYMBOL_GPL()s for cper_*()
+- document and the dependency and add UEFI_CPER dependency explicitly
+- Link: https://lore.kernel.org/all/20211207031905.61906-2-xueshuai@linux.alibaba.com/
+
+Shuai Xue (3):
+  efi/cper: add cper_mem_err_status_str to decode error description
+  EDAC/ghes: Unify CPER memory error location reporting
+  efi/cper: reformat CPER memory error location to more readable
+
+ drivers/edac/Kconfig        |   1 +
+ drivers/edac/ghes_edac.c    | 200 +++++++-----------------------------
+ drivers/firmware/efi/cper.c |  64 ++++++++----
+ include/linux/cper.h        |   3 +
+ 4 files changed, 87 insertions(+), 181 deletions(-)
+
+-- 
+2.20.1.12.g72788fdb
+
