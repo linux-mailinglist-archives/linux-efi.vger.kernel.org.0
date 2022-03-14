@@ -2,163 +2,177 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AEBD4D6731
-	for <lists+linux-efi@lfdr.de>; Fri, 11 Mar 2022 18:07:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 195584D7D95
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Mar 2022 09:27:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350587AbiCKRIH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 11 Mar 2022 12:08:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49134 "EHLO
+        id S232439AbiCNI2M (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 14 Mar 2022 04:28:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350607AbiCKRH4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 11 Mar 2022 12:07:56 -0500
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C08611D63A2;
-        Fri, 11 Mar 2022 09:06:52 -0800 (PST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        with ESMTP id S231159AbiCNI2L (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Mar 2022 04:28:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 518101C90D
+        for <linux-efi@vger.kernel.org>; Mon, 14 Mar 2022 01:27:02 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 200491F441;
-        Fri, 11 Mar 2022 17:06:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1647018411; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=JSXcqRdGy8e39Bfyh4bjxSE8ya8/hJV+iGXqtr1mwZU=;
-        b=zQyt4+5n13hOeCa9xgCswD1KUwJoBAVHqClZsOVB/PC81hDRKVuQgH1NmYqJHrPtu7uSBy
-        PhKQMACw5TXT3jEJnxs41RXUlcaW2trrHTw/O9jZxqtPwhLGzXcXKc1h5hTKvlf/IDc0dP
-        5Ixbw+BN/hU3tzWgbjphSRqoV6EI8m0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1647018411;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=JSXcqRdGy8e39Bfyh4bjxSE8ya8/hJV+iGXqtr1mwZU=;
-        b=QCVBTLAApqTWfX+QacBXJ4GMfGLfvOFCxwcaEUXx1xHk0oPnraa4sv0x634bkXioi9HjnJ
-        26OphLW7CWS9nCDA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 05DD013A8E;
-        Fri, 11 Mar 2022 17:06:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 7gxNOqmBK2IROQAAMHmgww
-        (envelope-from <jroedel@suse.de>); Fri, 11 Mar 2022 17:06:49 +0000
-Date:   Fri, 11 Mar 2022 18:06:49 +0100
-From:   Joerg Roedel <jroedel@suse.de>
-To:     Michael Roth <michael.roth@amd.com>
-Cc:     Peter Gonda <pgonda@google.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kvm list <kvm@vger.kernel.org>, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev,
-        linux-mm@kvack.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        brijesh.ksingh@gmail.com, Tony Luck <tony.luck@intel.com>,
-        Marc Orr <marcorr@google.com>,
-        Sathyanarayanan Kuppuswamy 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: Re: [PATCH v12 32/46] x86/compressed/64: Add support for SEV-SNP
- CPUID table in #VC handlers
-Message-ID: <YiuBqZnjEUyMfBMu@suse.de>
-References: <20220307213356.2797205-1-brijesh.singh@amd.com>
- <20220307213356.2797205-33-brijesh.singh@amd.com>
- <CAMkAt6pO0xZb2pye-VEKdFQ_dYFgLA21fkYmnYPTWo8mzPrKDQ@mail.gmail.com>
- <20220310212504.2kt6sidexljh2s6p@amd.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E22326124F
+        for <linux-efi@vger.kernel.org>; Mon, 14 Mar 2022 08:27:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92184C340E9;
+        Mon, 14 Mar 2022 08:26:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1647246421;
+        bh=sIQV0KigsF9VL9HA872oOMHiHrPBTf/WVLidEKFWSVY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=fIPRb/p1kTzJJeActzbh9oONBLA30qVDCvl+DplxY1iBvchQ8RueOILwhK/trL32A
+         pPFuzc+6hJQ0lnfozJ5dpzKIozD2V+FOUBjRMKsZ5xFnMh8HCVaOMCn4KpkxoUPMCl
+         fUjDPKfWnK0egEDYobtLtHi6oaw83hSlWc6fUNSz401e4ts2dSnqJR77WlsWPBgIha
+         DzKl5pWwN+TrhtKEMczkzG+yD8JZouChf/YQM4w3qngXfY4DnkSbdr1+rpHD8Deh0l
+         7mD/HQ5WK9XvzOH6hDBzYQHR0DMTnhH9zrHRTxis4PCNHRSxJ7PI1eytJtjlgqNXRC
+         tFmNq8gNYh6kw==
+From:   ardb@kernel.org
+To:     linux-efi@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@google.com>, Marc Zyngier <maz@kernel.org>,
+        Will Deacon <will@kernel.org>,
+        Quentin Perret <qperret@google.com>,
+        David Brazdil <dbrazdil@google.com>,
+        Fuad Tabba <tabba@google.com>,
+        Kees Cook <keescook@chromium.org>
+Subject: [RFC PATCH v0 0/6] Minimal Linux/arm64 VM firmware (written in Rust)
+Date:   Mon, 14 Mar 2022 09:26:38 +0100
+Message-Id: <20220314082644.3436071-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220310212504.2kt6sidexljh2s6p@amd.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Mar 10, 2022 at 03:25:04PM -0600, Michael Roth wrote:
-> Joerg, do you have more background on that? Would it make sense, outside
-> of this series, to change it to a terminate? Maybe with a specific set
-> of error codes for ES_{OK,UNSUPPORTED,VMM_ERROR,DECODE_FAILED}?
+From: Ard Biesheuvel <ardb@google.com>
 
-This seems to be a left over from development of the SEV-ES guest
-patch-set. I wanted to see whether the VM crashed due to a triple fault
-or an error in the #VC handler. The halt loop can be replaced by
-termination request now.
+One of the tedious bits of booting a virtual machine under KVM on ARM is
+dealing with guest memory coherency. This is due the fact that running
+with the MMU off is problematic, as manipulations of memory by the guest
+are incoherent with the host's cached view of memory. For this reason,
+KVM needs to keep track of the MMU state of the guest, and perform cache
+maintenance to the point of coherency (PoC) on all memory that is
+exposed to the guest (and populated at stage 2) at that point.
 
-> > I am still working on why the early_printk()s in that function are not
-> > working, it seems that they lead to a different halt.
-> 
-> I don't see a different halt. They just don't seem to print anything.
-> (keep in mind you still need to advance the IP or else the guest is
-> still gonna end up spinning here, even if you're removing the halt loop
-> for testing purposes)
+Existing VM firmware is often based on bare metal firmware, which sets
+up page tables with the MMU and caches off, and does the necessary (as
+well as unnecessary *) cache maintenance to ensure that all
+manipulations of memory performed with the MMU off are coherent, and not
+covered by stale cachelines (either clean or dirty) that either obstruct
+the view of the real memory contents, or are at risk of corrupting them
+if such dirty cachelines are evicted and written back inadvertently.
 
-The early_printks() also cause #VC exceptions, and if that handling is
-broken for some reason nothing will be printed.
+As firmware is usually intimately tied to the memory topology of the
+platform, we can do much better than this. Instead of setting up the
+initial page tables at runtime, we can bake the into the boot image,
+provided that it runs at an a priori known address. This means we can
+enable MMU and caches straight out of reset, and defer all memory
+accesses that go via the D side until after.
 
-> 
-> > working, it seems that they lead to a different halt. Have you tested
-> > any of those error paths manually? For example if you set your CPUID
-> > bits to explicitly fail here do you see the expected printks?
-> 
-> I think at that point in the code, when the XSAVE stuff is setup, the
-> console hasn't been enabled yet, so messages would get buffered until they
-> get flushed later (which won't happen since there's halt loop after). I
-> know in some cases devs will dump the log buffer from memory instead to get
-> at the error messages for early failures. (Maybe that's also why Joerg
-> decided to use a halt loop there instead of terminating?)
+This is the approach taken by this series: it implements a minimal
+firmware/bootloader for booting a Linux arm64 kernel on QEMU's
+mach-virt, which does minimal code execution and no memory access (other
+than instruction fetching) with the MMU disabled. Combined with the
+series that I sent out recently [0] for Linux, which implements
+something similar for the kernel itself, virtually all cache maintenance
+to the PoC can be dropped from the boot flow (with the exception of the
+.idmap page in the kernel itself). Given that no stores to memory occur
+at all with the MMU off, KVM should be able to detect that the PoC
+maintenance is no longer necessary when the MMU is turned on.
 
-It is hard to dump the log-buffer from encrypted memory :) But I
-remember having seen messages from these early_printks under SEV-ES for
-different bugs. Not sure why they don't appear in this situation.
+This is not only a simplification in itself, it also means that minimal
+code execution occurs while restricted memory permissions are being
+honoured: the firmware boots with WXN protections enabled, and the Rust
+code itself as well as the text section of the loaded kernel Image need
+to be mapped with read-only permissions in order to execute them.
 
-> So maybe reworking the error handling in handle_vc_boot_ghcb() to use
-> sev_es_terminate() might be warranted, but probably worth checking with
-> Joerg first, and should be done as a separate series since it is not
-> SNP-related.
+This prototype is presented as v0, as it cuts some corners, while the
+intent is to make this an implementation of EFI that provides all that
+Linux needs to boot. Most notably,
 
-I am fine with this change.
+- only ~900 MiB of DRAM is supported, due to the fact that the page
+  table code I nicked greedily maps down to pages, and the heap is only
+  around 2 MiB, so we run out of memory if we try to map more.
 
-Regards,
+- it boots via the kernel's 'bare metal' entrypoint as EFI features are
+  entirely missing for the moment.
+
+- only uncompressed kernels are supported
+
+How to build and run:
+
+(first, build a kernel with [0] applied, so the image tolerates being
+booted with MMU and caches enabled)
+
+$ cargo build  # using a nightly Rust compiler
+
+$ objcopy -O binary target/aarch64-unknown-linux-gnu/debug/efilite efilite.bin
+
+$ qemu-system-aarch64 \
+    -M virt,gic-version=host -cpu host -enable-kvm -smp 4 \
+    -net none -nographic -m 900m -bios efilite.bin -kernel path/to/Image \
+    -drive if=virtio,file=path/to/hda.xxx,format=xxx -append root=/dev/vda2
+
+* U-Boot in particular carries a lot of set/way cache maintenance that
+  was cargo culted from the v7 days, and should never be needed in VM
+
+[0] https://lore.kernel.org/all/20220304175657.2744400-1-ardb@kernel.org/
+
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Quentin Perret <qperret@google.com>
+Cc: David Brazdil <dbrazdil@google.com>
+Cc: Fuad Tabba <tabba@google.com>
+Cc: Kees Cook <keescook@chromium.org>
+
+Ard Biesheuvel (6):
+  Implement a bare metal Rust runtime on top of QEMU's mach-virt
+  Add DTB processing
+  Add paging code to manage the full ID map
+  Discover QEMU fwcfg device and use it to load the kernel
+  Remap code section of loaded kernel and boot it
+  Temporarily pass the kaslr seed via register X1
+
+ .cargo/config    |   5 +
+ .gitignore       |   2 +
+ Cargo.lock       |  87 ++++
+ Cargo.toml       |  12 +
+ efilite.lds      |  62 +++
+ src/cmo.rs       |  37 ++
+ src/console.rs   |  57 +++
+ src/cstring.rs   |   9 +
+ src/fwcfg.rs     |  85 ++++
+ src/head.S       | 121 +++++
+ src/main.rs      | 155 +++++-
+ src/pagealloc.rs |  44 ++
+ src/paging.rs    | 499 ++++++++++++++++++++
+ src/pecoff.rs    |  23 +
+ src/ttable.S     |  37 ++
+ 15 files changed, 1233 insertions(+), 2 deletions(-)
+ create mode 100644 .cargo/config
+ create mode 100644 Cargo.lock
+ create mode 100644 efilite.lds
+ create mode 100644 src/cmo.rs
+ create mode 100644 src/console.rs
+ create mode 100644 src/cstring.rs
+ create mode 100644 src/fwcfg.rs
+ create mode 100644 src/head.S
+ create mode 100644 src/pagealloc.rs
+ create mode 100644 src/paging.rs
+ create mode 100644 src/pecoff.rs
+ create mode 100644 src/ttable.S
 
 -- 
-Jörg Rödel
-jroedel@suse.de
-
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5
-90409 Nürnberg
-Germany
- 
-(HRB 36809, AG Nürnberg)
-Geschäftsführer: Ivo Totev
+2.30.2
 
