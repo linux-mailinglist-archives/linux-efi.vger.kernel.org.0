@@ -2,63 +2,67 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79D744D8845
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Mar 2022 16:37:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F3F64D8ADE
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Mar 2022 18:35:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242524AbiCNPi3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 14 Mar 2022 11:38:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54478 "EHLO
+        id S239124AbiCNRgK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 14 Mar 2022 13:36:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242542AbiCNPi2 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Mar 2022 11:38:28 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0461A443F1
-        for <linux-efi@vger.kernel.org>; Mon, 14 Mar 2022 08:37:17 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id q5so22469348ljb.11
-        for <linux-efi@vger.kernel.org>; Mon, 14 Mar 2022 08:37:16 -0700 (PDT)
+        with ESMTP id S234321AbiCNRgI (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Mar 2022 13:36:08 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DEAB64E6
+        for <linux-efi@vger.kernel.org>; Mon, 14 Mar 2022 10:34:56 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id g17so28518417lfh.2
+        for <linux-efi@vger.kernel.org>; Mon, 14 Mar 2022 10:34:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=kVfmtFDSCvEKnN5uVHIJTuQQYlsxOsGyYkf8pyY+0/Q=;
-        b=ly6VgkyE/N2DilB66OlGgTRs7XW4ikkdeCj07AHpzwPTXmBvg/eY2zam8ApFTRlOR5
-         nYovovt0CjCv0mVFSdNNRfD1GBVc98xUTH+4hYovxh5gLLysSq2wur504PTEG7cXYGzk
-         +jkPBUqOQv7lTNsllfuiADSGF2qWM+CK0jYEiKkOeZX+chYHMrRb45BRHJrBu4Jf8w6g
-         g8K5/Gotpcv8hvk7q9iB5jA2GHMwmm9zGE4Zz7n+REZaUOmbpBXU/YkfD9h+I400cL5l
-         XV0ZgIKwTM1nv/8HsVU0lty08o+lppZiLyPoP2ZAWtdnBTDuHImmVUyRAagMg+LpSgsO
-         R1yg==
+         :cc:content-transfer-encoding;
+        bh=8A3cxPbkf5/imDcGfqUsgEkAZ/Yq4pAldU3s8K2mQzc=;
+        b=tfX+LbUtQWULAhzeWtmsYWPMAURZzqdsjSM/aDGl+qglrfZ5bNzfGleMtHFaTt3jZv
+         3UyQ5yndXqQ8IyXR6tjdhKwpYv9aaculLUgdA6PMil4v28IhdiEX2uhZI0KYNH460tQ6
+         GKcfKXGVcGVxcLcjPvKm3Y+xr7jKp0lTmNP15knWHThq1yVvN8ocGYyB/el//U+71WsO
+         9kxkVPpZ6bjpiPklFVZMRSxBgbjd89SZz6rNYPQo0Uto/u5sjUUJwJwIeOikglGO6VNE
+         lvYLAnfBrGRNUOM81j19C9LApg+tiwD55XcFvJbf4tDEynsa5BMJpjgefQARvNRiNVXn
+         Zf9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kVfmtFDSCvEKnN5uVHIJTuQQYlsxOsGyYkf8pyY+0/Q=;
-        b=IQiJIHD0KvMa95DbY9vSy8wkD7qcBFepboN8Pvf6zXKq0o/zuNpICD6QGMo4XlalKR
-         ZLA+Ecehxs2da/fl9PkdMB+jintaUpXj2UeCSctpM8K67wuNbugiaVUq9BO0PJVM8GSZ
-         e5b+FhyGhvxVLwcGJmwz36WJ8z9cklmSF0JYpzgSkwn02j5khOEuUHtMoTA9E0nxBCBr
-         mtB6yQ0QnuPyVaMXhbAco3Uz1IGRdFH3/1uyk+bu7w20MVeAtbLg/VEzOMmXSt4oJFf+
-         P5hqLXdEjfaHmzgQri1wTt2puBgtLvCe2jdfVDDBVZgqemP8+MSCrCHoWZnsyAcV4DOH
-         3kYQ==
-X-Gm-Message-State: AOAM533XhrUsXO1etkk40O2kCAT8iOZmAt6NwqeM66rMy2oDUzscoC/8
-        OvCbvmP7yhJC6v3ZQ6uHDtywZ/n2UKjNuGwCdbpwKQ==
-X-Google-Smtp-Source: ABdhPJypcCytiOSWiftk8g5xIcm1i6Q4xC23lRZ00aVkchh307Y/e92ibN4O2ilaRQP1fEwUjwULABkE209J2py0EZQ=
-X-Received: by 2002:a2e:9654:0:b0:244:bb3f:6555 with SMTP id
- z20-20020a2e9654000000b00244bb3f6555mr14586391ljh.282.1647272234801; Mon, 14
- Mar 2022 08:37:14 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=8A3cxPbkf5/imDcGfqUsgEkAZ/Yq4pAldU3s8K2mQzc=;
+        b=Q7Jr5byGMKEW4JJA6H7a6ulhJoH9U42lkqFQgeM9ECMKZp9YG2ZHsgwOH6eLrB8DpZ
+         dJwZwQTaH54zlW20U3mcUCVgill1Hg6Z0VHwSOGpSxklW/4XUVWEMhJ1LICxF3qNxn1M
+         DgSmezt+C+w6AvYO8Mond4//lQaE49GvaG+DrxO5oewVauHQIaiIn/pytcUbD9Sz1ld9
+         8/a3Qk/v+M3VjVTnNh7pso8/I19umc3mGawz4RLWX2z2ISLzwF4+PFBylsEAtSNlJfk3
+         s3wjd9I6Uc7+WBHEpcUKgCZEG8muNNXUHKODYnZ8lYRJlvQMN4skRPMAs76p6r+zk5oS
+         XOpw==
+X-Gm-Message-State: AOAM532wcYaKa0D7U0SwH5QBDjvnOG3qjy5q1eVb+t3ddPv4Igb7Bc5Q
+        HNml3K8drOTVk0/g5RSedPFSKjc1ey8/OQFbWGIktw==
+X-Google-Smtp-Source: ABdhPJwyJUQnuBymc31Rm47cQ/NdVZrkI9p8VQjPdQxJrZbxv7kE4yinBibZy7OcE53BDtGYf0q134NUBFysmwbOxgc=
+X-Received: by 2002:a19:ca07:0:b0:448:7eab:f1a with SMTP id
+ a7-20020a19ca07000000b004487eab0f1amr7790394lfg.456.1647279294144; Mon, 14
+ Mar 2022 10:34:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220307213356.2797205-1-brijesh.singh@amd.com> <20220307213356.2797205-47-brijesh.singh@amd.com>
-In-Reply-To: <20220307213356.2797205-47-brijesh.singh@amd.com>
+References: <20220307213356.2797205-1-brijesh.singh@amd.com>
+ <20220307213356.2797205-33-brijesh.singh@amd.com> <CAMkAt6pO0xZb2pye-VEKdFQ_dYFgLA21fkYmnYPTWo8mzPrKDQ@mail.gmail.com>
+ <20220310212504.2kt6sidexljh2s6p@amd.com> <YiuBqZnjEUyMfBMu@suse.de>
+In-Reply-To: <YiuBqZnjEUyMfBMu@suse.de>
 From:   Peter Gonda <pgonda@google.com>
-Date:   Mon, 14 Mar 2022 09:37:03 -0600
-Message-ID: <CAMkAt6pTwo0e6deCtdY7zjEi7-45Mb_Pr7R0uK8WL8uUZAadRw@mail.gmail.com>
-Subject: Re: [PATCH v12 46/46] virt: sevguest: Add documentation for SEV-SNP
- CPUID Enforcement
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     "the arch/x86 maintainers" <x86@kernel.org>,
+Date:   Mon, 14 Mar 2022 11:34:42 -0600
+Message-ID: <CAMkAt6r==_=U4Ha6ZTmii-JL3htJ3-dD4tc+QBqN7dVt711N2A@mail.gmail.com>
+Subject: Re: [PATCH v12 32/46] x86/compressed/64: Add support for SEV-SNP
+ CPUID table in #VC handlers
+To:     Joerg Roedel <jroedel@suse.de>
+Cc:     Michael Roth <michael.roth@amd.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         kvm list <kvm@vger.kernel.org>, linux-efi@vger.kernel.org,
         platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev,
         linux-mm@kvack.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Ingo Molnar <mingo@redhat.com>,
         Tom Lendacky <thomas.lendacky@amd.com>,
         "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
         Paolo Bonzini <pbonzini@redhat.com>,
@@ -74,7 +78,6 @@ Cc:     "the arch/x86 maintainers" <x86@kernel.org>,
         Dov Murik <dovmurik@linux.ibm.com>,
         Tobin Feldman-Fitzthum <tobin@ibm.com>,
         Borislav Petkov <bp@alien8.de>,
-        Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
         Andi Kleen <ak@linux.intel.com>,
@@ -84,6 +87,7 @@ Cc:     "the arch/x86 maintainers" <x86@kernel.org>,
         Sathyanarayanan Kuppuswamy 
         <sathyanarayanan.kuppuswamy@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
@@ -95,19 +99,74 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Mar 7, 2022 at 2:35 PM Brijesh Singh <brijesh.singh@amd.com> wrote:
+On Fri, Mar 11, 2022 at 10:06 AM Joerg Roedel <jroedel@suse.de> wrote:
 >
-> From: Michael Roth <michael.roth@amd.com>
+> On Thu, Mar 10, 2022 at 03:25:04PM -0600, Michael Roth wrote:
+> > Joerg, do you have more background on that? Would it make sense, outsid=
+e
+> > of this series, to change it to a terminate? Maybe with a specific set
+> > of error codes for ES_{OK,UNSUPPORTED,VMM_ERROR,DECODE_FAILED}?
 >
-> Update the documentation with information regarding SEV-SNP CPUID
-> Enforcement details and what sort of assurances it provides to guests.
+> This seems to be a left over from development of the SEV-ES guest
+> patch-set. I wanted to see whether the VM crashed due to a triple fault
+> or an error in the #VC handler. The halt loop can be replaced by
+> termination request now.
 >
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> > > I am still working on why the early_printk()s in that function are no=
+t
+> > > working, it seems that they lead to a different halt.
+> >
+> > I don't see a different halt. They just don't seem to print anything.
+> > (keep in mind you still need to advance the IP or else the guest is
+> > still gonna end up spinning here, even if you're removing the halt loop
+> > for testing purposes)
+>
+> The early_printks() also cause #VC exceptions, and if that handling is
+> broken for some reason nothing will be printed.
+>
+> >
+> > > working, it seems that they lead to a different halt. Have you tested
+> > > any of those error paths manually? For example if you set your CPUID
+> > > bits to explicitly fail here do you see the expected printks?
+> >
+> > I think at that point in the code, when the XSAVE stuff is setup, the
+> > console hasn't been enabled yet, so messages would get buffered until t=
+hey
+> > get flushed later (which won't happen since there's halt loop after). I
+> > know in some cases devs will dump the log buffer from memory instead to=
+ get
+> > at the error messages for early failures. (Maybe that's also why Joerg
+> > decided to use a halt loop there instead of terminating?)
+>
+> It is hard to dump the log-buffer from encrypted memory :) But I
+> remember having seen messages from these early_printks under SEV-ES for
+> different bugs. Not sure why they don't appear in this situation.
+>
+> > So maybe reworking the error handling in handle_vc_boot_ghcb() to use
+> > sev_es_terminate() might be warranted, but probably worth checking with
+> > Joerg first, and should be done as a separate series since it is not
+> > SNP-related.
+>
+> I am fine with this change.
 
-Tested-by: Peter Gonda <pgonda@google.com>
+I'll send a patch out for that.
 
-I've booted these V12 patches on our internal KVM stack and then
-tested these new driver ioctls with some basic usage. Feel free to add
-this tag to all the driver patches, I am not sure if a basic boot test
-qualifies this for the entire series though.
+I was also thinking about adding a vcpu run exit reason for
+termination. It would be nice to get a more informative exit reason
+than -EINVAL in userspace. Thoughts?
+
+>
+> Regards,
+>
+> --
+> J=C3=B6rg R=C3=B6del
+> jroedel@suse.de
+>
+> SUSE Software Solutions Germany GmbH
+> Maxfeldstr. 5
+> 90409 N=C3=BCrnberg
+> Germany
+>
+> (HRB 36809, AG N=C3=BCrnberg)
+> Gesch=C3=A4ftsf=C3=BChrer: Ivo Totev
+>
