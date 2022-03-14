@@ -2,105 +2,112 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A780E4D7D9B
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Mar 2022 09:27:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79D744D8845
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Mar 2022 16:37:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237116AbiCNI22 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 14 Mar 2022 04:28:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59140 "EHLO
+        id S242524AbiCNPi3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 14 Mar 2022 11:38:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237016AbiCNI20 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Mar 2022 04:28:26 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF0931C90D
-        for <linux-efi@vger.kernel.org>; Mon, 14 Mar 2022 01:27:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 3C8E9CE10C0
-        for <linux-efi@vger.kernel.org>; Mon, 14 Mar 2022 08:27:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F30C340F4;
-        Mon, 14 Mar 2022 08:27:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647246434;
-        bh=0eiMuQnYJxpXHSlilUSyfpYbrccsw17ywT8caWbUXDg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tOmeaEfApmiNG90U4mupIzm/QCVpL53n1TmrFHyHLIMK/ugWHJ+aEGLjUPpsPqX4v
-         RJdy5fpLcoJTrNTMKaVTn+gd4wAL0057h25yErKXo+2SEnIMs3z73l5bWwgq1ngE5S
-         zafNp8V//Aw/2X+gkWM+TWnYu+Y7FGviTWti3Ss6YLSJfeGlDLmIwnM8uVCY6QUxhP
-         tOKUWZ6cghXKzgGGlbgMe1i7JgtkqCO4Lfd5/kguDG6Zel7PJ3hXU/vtpaVq66Whtg
-         gEPMk99mBgVvF5NY4AoBRc889uTe4KJdzBuqLxIGlWH54WHQ0eY1aXGl/QEREKjmBp
-         E6kIUwAbXRvHQ==
-From:   ardb@kernel.org
-To:     linux-efi@vger.kernel.org
-Cc:     Ard Biesheuvel <ardb@google.com>, Marc Zyngier <maz@kernel.org>,
-        Will Deacon <will@kernel.org>,
-        Quentin Perret <qperret@google.com>,
-        David Brazdil <dbrazdil@google.com>,
-        Fuad Tabba <tabba@google.com>,
-        Kees Cook <keescook@chromium.org>
-Subject: [RFC PATCH v0 6/6] Temporarily pass the kaslr seed via register X1
-Date:   Mon, 14 Mar 2022 09:26:44 +0100
-Message-Id: <20220314082644.3436071-7-ardb@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220314082644.3436071-1-ardb@kernel.org>
-References: <20220314082644.3436071-1-ardb@kernel.org>
+        with ESMTP id S242542AbiCNPi2 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Mar 2022 11:38:28 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0461A443F1
+        for <linux-efi@vger.kernel.org>; Mon, 14 Mar 2022 08:37:17 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id q5so22469348ljb.11
+        for <linux-efi@vger.kernel.org>; Mon, 14 Mar 2022 08:37:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=kVfmtFDSCvEKnN5uVHIJTuQQYlsxOsGyYkf8pyY+0/Q=;
+        b=ly6VgkyE/N2DilB66OlGgTRs7XW4ikkdeCj07AHpzwPTXmBvg/eY2zam8ApFTRlOR5
+         nYovovt0CjCv0mVFSdNNRfD1GBVc98xUTH+4hYovxh5gLLysSq2wur504PTEG7cXYGzk
+         +jkPBUqOQv7lTNsllfuiADSGF2qWM+CK0jYEiKkOeZX+chYHMrRb45BRHJrBu4Jf8w6g
+         g8K5/Gotpcv8hvk7q9iB5jA2GHMwmm9zGE4Zz7n+REZaUOmbpBXU/YkfD9h+I400cL5l
+         XV0ZgIKwTM1nv/8HsVU0lty08o+lppZiLyPoP2ZAWtdnBTDuHImmVUyRAagMg+LpSgsO
+         R1yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=kVfmtFDSCvEKnN5uVHIJTuQQYlsxOsGyYkf8pyY+0/Q=;
+        b=IQiJIHD0KvMa95DbY9vSy8wkD7qcBFepboN8Pvf6zXKq0o/zuNpICD6QGMo4XlalKR
+         ZLA+Ecehxs2da/fl9PkdMB+jintaUpXj2UeCSctpM8K67wuNbugiaVUq9BO0PJVM8GSZ
+         e5b+FhyGhvxVLwcGJmwz36WJ8z9cklmSF0JYpzgSkwn02j5khOEuUHtMoTA9E0nxBCBr
+         mtB6yQ0QnuPyVaMXhbAco3Uz1IGRdFH3/1uyk+bu7w20MVeAtbLg/VEzOMmXSt4oJFf+
+         P5hqLXdEjfaHmzgQri1wTt2puBgtLvCe2jdfVDDBVZgqemP8+MSCrCHoWZnsyAcV4DOH
+         3kYQ==
+X-Gm-Message-State: AOAM533XhrUsXO1etkk40O2kCAT8iOZmAt6NwqeM66rMy2oDUzscoC/8
+        OvCbvmP7yhJC6v3ZQ6uHDtywZ/n2UKjNuGwCdbpwKQ==
+X-Google-Smtp-Source: ABdhPJypcCytiOSWiftk8g5xIcm1i6Q4xC23lRZ00aVkchh307Y/e92ibN4O2ilaRQP1fEwUjwULABkE209J2py0EZQ=
+X-Received: by 2002:a2e:9654:0:b0:244:bb3f:6555 with SMTP id
+ z20-20020a2e9654000000b00244bb3f6555mr14586391ljh.282.1647272234801; Mon, 14
+ Mar 2022 08:37:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220307213356.2797205-1-brijesh.singh@amd.com> <20220307213356.2797205-47-brijesh.singh@amd.com>
+In-Reply-To: <20220307213356.2797205-47-brijesh.singh@amd.com>
+From:   Peter Gonda <pgonda@google.com>
+Date:   Mon, 14 Mar 2022 09:37:03 -0600
+Message-ID: <CAMkAt6pTwo0e6deCtdY7zjEi7-45Mb_Pr7R0uK8WL8uUZAadRw@mail.gmail.com>
+Subject: Re: [PATCH v12 46/46] virt: sevguest: Add documentation for SEV-SNP
+ CPUID Enforcement
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     "the arch/x86 maintainers" <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kvm list <kvm@vger.kernel.org>, linux-efi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev,
+        linux-mm@kvack.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        brijesh.ksingh@gmail.com, Tony Luck <tony.luck@intel.com>,
+        Marc Orr <marcorr@google.com>,
+        Sathyanarayanan Kuppuswamy 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Ard Biesheuvel <ardb@google.com>
+On Mon, Mar 7, 2022 at 2:35 PM Brijesh Singh <brijesh.singh@amd.com> wrote:
+>
+> From: Michael Roth <michael.roth@amd.com>
+>
+> Update the documentation with information regarding SEV-SNP CPUID
+> Enforcement details and what sort of assurances it provides to guests.
+>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 
-Currently, we boot the kernel via its 'bare metal' entry point, rather
-than via the EFI entry point, as we haven't implemented EFI yet.
+Tested-by: Peter Gonda <pgonda@google.com>
 
-Booting with the MMU enabled requires that the KASLR seed is known
-before setting up the page tables, as we will do so only once, rather
-than twice when reading the seed from the DT. For this reason, the EFI
-stub passes the KASLR seed via register X1 as well as the kaslr-seed
-property in chosen, and those values need to be in sync.
-
-So as long as we are not using the EFI entry point, pass the DT's
-kaslr-seed value via register X1 at boot.
----
- src/main.rs | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/src/main.rs b/src/main.rs
-index 81208c18d094..ad12e069372f 100644
---- a/src/main.rs
-+++ b/src/main.rs
-@@ -118,9 +118,21 @@ extern "C" fn efilite_main(base: usize, mapped: usize, used: usize) {
-     paging::map_range(LOAD_ADDRESS as u64, code_size, nor_flags);
-     paging::activate();
- 
-+    // TODO remove this once we boot via the EFI entry point
-+    // passing the kaslr seed via x1 is part of the stub's internal boot protocol
-+    let kaslr_seed: u64 = {
-+        let mut seed: u64 = 0;
-+        let chosen = fdt.find_node("/chosen").unwrap();
-+        if let Some(prop) = chosen.property("kaslr-seed") {
-+            seed = prop.as_usize().unwrap() as _;
-+            info!("/chosen/kaslr-seed: {:#x}\n", seed);
-+        };
-+        seed
-+    };
-+
-     unsafe {
-         let entrypoint: EntryFn = core::mem::transmute(LOAD_ADDRESS);
--        entrypoint(&_dtb as *const _, 0, 0, 0);
-+        entrypoint(&_dtb as *const _, kaslr_seed, 0, 0);
-     }
- }
- 
--- 
-2.30.2
-
+I've booted these V12 patches on our internal KVM stack and then
+tested these new driver ioctls with some basic usage. Feel free to add
+this tag to all the driver patches, I am not sure if a basic boot test
+qualifies this for the entire series though.
