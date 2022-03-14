@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0ECA4D7D99
-	for <lists+linux-efi@lfdr.de>; Mon, 14 Mar 2022 09:27:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA1B74D7D9A
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Mar 2022 09:27:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237084AbiCNI2X (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        id S237028AbiCNI2X (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
         Mon, 14 Mar 2022 04:28:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59108 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237028AbiCNI2W (ORCPT
+        with ESMTP id S237016AbiCNI2W (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Mar 2022 04:28:22 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA2AE1C90D
-        for <linux-efi@vger.kernel.org>; Mon, 14 Mar 2022 01:27:12 -0700 (PDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73BFE1CFDF
+        for <linux-efi@vger.kernel.org>; Mon, 14 Mar 2022 01:27:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7CF84B80B01
-        for <linux-efi@vger.kernel.org>; Mon, 14 Mar 2022 08:27:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88578C340F6;
-        Mon, 14 Mar 2022 08:27:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 10A6861244
+        for <linux-efi@vger.kernel.org>; Mon, 14 Mar 2022 08:27:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B64B8C340E9;
+        Mon, 14 Mar 2022 08:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647246430;
-        bh=z/YGAz9LQB8pb8wT8N++FTB8PEZI7HV+rq1+GaYfjpU=;
+        s=k20201202; t=1647246432;
+        bh=06tI/T1GvhECF+IatJT8s2EXaWx5xagNfQnNrKsZMMY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fNzdZjkDs+iRFcUzGzvBd/xrLOEyuqcphlEFIf8vsyckpcgWaxbEkgxDOX83ST/vc
-         ruvWX7GX9uiAOxi1xKAGgVC3y2L8Tg66VAVURVUSUiTa8b8Sws/JWwXNUH0Ngbz4YC
-         HQ8R9NJgt1QSzaJvKI2czyaZucn57gboovH03Zah9JrAWj03I9UgpCxJuSJstUvPA1
-         Gi+rBJ3B7r/q9f9qPBEvSIDKAk5uQAJ8Kv+B6gcqaL6lwrkxM/Tk1950prPMvaLELF
-         3LDOymK8RirWsaKmd0Tn+3Z3EuZxeVbaXGbZGTUmmontSOS656NqbHciWybR1bYOEl
-         CqWvaLBWjyO8g==
+        b=ELoP4rvEy7ZpK5RCFCWN1lim32r836rjlT8rAYg4g9TJH3n0m1EMjGwglMKTf/F0G
+         aeiYg5AG3NDaL3A7Cq5aOL35wwRe3wOW1SOt+sd39dJZlzaGW1bQKqjUm27aBV6ZFW
+         SVG0S0V54AaP/kOmJqYMT2zlqZZYzQiXrbr0nddd5exHerKfjvn29LshIqohEfJBDf
+         JzR5A2fInJFBVDfuJuVfFLvZ1+bi1esL0OxEAAOTEP+t5zxN3UmLlw7o2wliW37pG0
+         1OjM92y9IurC19jGDE24PFcNGcAhdnTq9D/B+cnzQZnKcrgEOyh3YFWdVMV1xCQzC4
+         uR0qO1gzDAaxQ==
 From:   ardb@kernel.org
 To:     linux-efi@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@google.com>, Marc Zyngier <maz@kernel.org>,
@@ -39,9 +39,9 @@ Cc:     Ard Biesheuvel <ardb@google.com>, Marc Zyngier <maz@kernel.org>,
         David Brazdil <dbrazdil@google.com>,
         Fuad Tabba <tabba@google.com>,
         Kees Cook <keescook@chromium.org>
-Subject: [RFC PATCH v0 4/6] Discover QEMU fwcfg device and use it to load the kernel
-Date:   Mon, 14 Mar 2022 09:26:42 +0100
-Message-Id: <20220314082644.3436071-5-ardb@kernel.org>
+Subject: [RFC PATCH v0 5/6] Remap code section of loaded kernel and boot it
+Date:   Mon, 14 Mar 2022 09:26:43 +0100
+Message-Id: <20220314082644.3436071-6-ardb@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220314082644.3436071-1-ardb@kernel.org>
 References: <20220314082644.3436071-1-ardb@kernel.org>
@@ -59,148 +59,144 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Ard Biesheuvel <ardb@google.com>
 
-QEMU exposes a paravirtualized interface to load various items exposed
-by the host into the guest. Implement a minimal driver for it, and use
-it to load the kernel image into DRAM.
----
- src/fwcfg.rs | 85 ++++++++++++++++++++
- src/main.rs  | 18 +++++
- 2 files changed, 103 insertions(+)
+Implement the bare minimum needed to discover the size of the
+text/rodata region of the loaded image, and use it to remap this region
+read-only so that we can execute it while WXN protections are enabled.
 
-diff --git a/src/fwcfg.rs b/src/fwcfg.rs
+Then, boot the loaded image by jumping to the start of it.
+---
+ src/cmo.rs    | 37 ++++++++++++++++++++
+ src/main.rs   | 22 ++++++++++++
+ src/pecoff.rs | 23 ++++++++++++
+ 3 files changed, 82 insertions(+)
+
+diff --git a/src/cmo.rs b/src/cmo.rs
 new file mode 100644
-index 000000000000..57f405df174b
+index 000000000000..49456222c705
 --- /dev/null
-+++ b/src/fwcfg.rs
-@@ -0,0 +1,85 @@
++++ b/src/cmo.rs
+@@ -0,0 +1,37 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +
-+use mmio::{Allow, Deny, VolBox};
++use core::arch::asm;
 +
-+pub struct FwCfg {
-+    // read-only data register
-+    data: VolBox<u64, Allow, Deny>,
++const CTR_IDC: u64 = 1 << 28;
 +
-+    // write-only selector register
-+    selector: VolBox<u16, Deny, Allow>,
++const CTR_DMINLINE_SHIFT: u64 = 16;
++const CTR_DMINLINE_MASK: u64 = 0xf;
 +
-+    // write-only DMA register
-+    dmacontrol: VolBox<u64, Deny, Allow>,
-+}
++pub fn dcache_clean_to_pou(base: *const u8, size: isize) {
++    let ctr = unsafe {
++        let mut l: u64;
++        asm!("mrs {reg}, ctr_el0", // CTR: cache type register
++            reg = out(reg) l,
++            options(pure, nomem, nostack, preserves_flags),
++        );
++        l
++    };
 +
-+const CFG_KERNEL_SIZE: u16 = 0x08;
-+const CFG_KERNEL_DATA: u16 = 0x11;
++    // Perform the clean only if needed for coherency with the I side
++    if (ctr & CTR_IDC) == 0 {
++        let line_shift = 2 + ((ctr >> CTR_DMINLINE_SHIFT) & CTR_DMINLINE_MASK);
++        let line_size: isize = 1 << line_shift;
++        let num_lines = (size + line_size - 1) >> line_shift;
++        let mut offset: isize = 0;
 +
-+const CFG_DMACTL_DONE: u32 = 0;
-+const CFG_DMACTL_ERROR: u32 = 1;
-+const CFG_DMACTL_READ: u32 = 2;
-+
-+#[repr(C)]
-+struct DmaTransfer {
-+    control: u32,
-+    length: u32,
-+    address: u64,
-+}
-+
-+impl FwCfg {
-+    pub fn from_fdt_node(node: fdt::node::FdtNode) -> Option<FwCfg> {
-+        if let Some(mut iter) = node.reg() {
-+            iter.next().map(|reg| {
-+                let addr = reg.starting_address;
-+                unsafe {
-+                    FwCfg {
-+                        data: VolBox::<u64, Allow, Deny>::new(addr as *mut u64),
-+                        selector: VolBox::<u16, Deny, Allow>::new(addr.offset(8) as *mut u16),
-+                        dmacontrol: VolBox::<u64, Deny, Allow>::new(addr.offset(16) as *mut u64),
-+                    }
-+                }
-+            })
-+        } else {
-+            None
-+        }
-+    }
-+
-+    unsafe fn dma_transfer(
-+        &mut self,
-+        load_address: *mut u8,
-+        size: usize,
-+        config_item: u16,
-+    ) -> Result<(), &str> {
-+        let xfer = DmaTransfer {
-+            control: u32::to_be(CFG_DMACTL_READ),
-+            length: u32::to_be(size as u32),
-+            address: u64::to_be(load_address as u64),
-+        };
-+        self.selector.write(u16::to_be(config_item));
-+        self.dmacontrol.write(u64::to_be(&xfer as *const _ as u64));
-+
-+        let control = VolBox::<u32, Allow, Deny>::new(&xfer.control as *const _ as *mut u32);
-+        loop {
-+            match control.read() {
-+                CFG_DMACTL_DONE => return Ok(()),
-+                CFG_DMACTL_ERROR => return Err("fwcfg DMA error"),
-+                _ => (), // keep polling
++        for _ in 1..=num_lines {
++            unsafe {
++                asm!("dc cvau, {reg}",
++                    reg = in(reg) base.offset(offset),
++                    options(nomem, nostack, preserves_flags),
++                );
 +            }
-+        }
-+    }
-+
-+    pub fn get_kernel_size(&mut self) -> usize {
-+        self.selector.write(u16::to_be(CFG_KERNEL_SIZE));
-+        self.data.read() as usize
-+    }
-+
-+    pub fn load_kernel_image(&mut self, load_address: *mut u8) -> Result<(), &str> {
-+        let size = self.get_kernel_size();
-+        if size > 0 {
-+            unsafe { self.dma_transfer(load_address, size, CFG_KERNEL_DATA) }
-+        } else {
-+            Err("No kernel image provided by fwcfg")
++            offset += line_size;
 +        }
 +    }
 +}
 diff --git a/src/main.rs b/src/main.rs
-index af58ccc0318d..048d1b4842cb 100644
+index 048d1b4842cb..81208c18d094 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -8,6 +8,7 @@
+@@ -6,11 +6,13 @@
+ #![allow(incomplete_features)]
+ #![feature(specialization)]
  
++mod cmo;
  mod console;
  mod cstring;
-+mod fwcfg;
+ mod fwcfg;
  mod pagealloc;
  mod paging;
++mod pecoff;
  
-@@ -28,6 +29,8 @@ extern "C" {
+ use core::{arch::global_asm, panic::PanicInfo};
+ use linked_list_allocator::LockedHeap;
+@@ -29,6 +31,8 @@ extern "C" {
      static _dtb_end: u8;
  }
  
-+const LOAD_ADDRESS: *mut u8 = 0x43210000 as _;
++type EntryFn = unsafe extern "C" fn(*const u8, u64, u64, u64) -> !;
 +
- #[no_mangle]
- extern "C" fn efilite_main(base: usize, mapped: usize, used: usize) {
-     #[cfg(debug_assertions)]
-@@ -79,6 +82,21 @@ extern "C" fn efilite_main(base: usize, mapped: usize, used: usize) {
-     // Switch to the new ID map so we can use all of DRAM
-     paging::activate();
+ const LOAD_ADDRESS: *mut u8 = 0x43210000 as _;
  
-+    let compat = ["qemu,fw-cfg-mmio"];
-+    let fwcfg_node = fdt
-+        .find_compatible(&compat)
-+        .expect("QEMU fwcfg node not found");
+ #[no_mangle]
+@@ -97,9 +101,27 @@ extern "C" fn efilite_main(base: usize, mapped: usize, used: usize) {
+         .load_kernel_image(LOAD_ADDRESS)
+         .expect("Failed to load kernel image");
+ 
++    let pe_image = pecoff::Parser::from_ptr(LOAD_ADDRESS);
 +
-+    info!("QEMU fwcfg node found: {}\n", fwcfg_node.name);
-+
-+    let mut fwcfg = fwcfg::FwCfg::from_fdt_node(fwcfg_node).expect("Failed to open fwcfg device");
-+
-+    // TODO allocate fwcfg.get_kernel_size() bytes here instead of using a fixed address
-+
-+    fwcfg
-+        .load_kernel_image(LOAD_ADDRESS)
-+        .expect("Failed to load kernel image");
++    // Clean the code region of the loaded image to the PoU so we
++    // can safely fetch instructions from it once the PXN/UXN
++    // attributes are cleared
++    let code_size = pe_image.get_code_size();
++    cmo::dcache_clean_to_pou(LOAD_ADDRESS, code_size as isize);
 +
      // Switch back to the initial ID map so we can remap
      // the loaded kernel image with different permissions
      paging::deactivate();
++
++    // Remap the text/rodata part of the image read-only so we will
++    // be able to execute it with WXN protections enabled
++    paging::map_range(LOAD_ADDRESS as u64, code_size, nor_flags);
++    paging::activate();
++
++    unsafe {
++        let entrypoint: EntryFn = core::mem::transmute(LOAD_ADDRESS);
++        entrypoint(&_dtb as *const _, 0, 0, 0);
++    }
+ }
+ 
+ #[no_mangle]
+diff --git a/src/pecoff.rs b/src/pecoff.rs
+new file mode 100644
+index 000000000000..b9b82fc5cc53
+--- /dev/null
++++ b/src/pecoff.rs
+@@ -0,0 +1,23 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++pub struct Parser {
++    base_of_code: u64,
++    size_of_code: u64,
++}
++
++impl Parser {
++    pub fn from_ptr(ptr: *const u8) -> Parser {
++        // TODO check magic number, arch, etc
++        // TODO deal with variable PE header offset
++        let pehdr_offset = 64;
++
++        Parser {
++            base_of_code: unsafe { *(ptr.offset(pehdr_offset + 28) as *const u32) } as u64,
++            size_of_code: unsafe { *(ptr.offset(pehdr_offset + 44) as *const u32) } as u64,
++        }
++    }
++
++    pub fn get_code_size(&self) -> u64 {
++        return self.base_of_code + self.size_of_code;
++    }
++}
 -- 
 2.30.2
 
