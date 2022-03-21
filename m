@@ -2,32 +2,32 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADEA94E2987
-	for <lists+linux-efi@lfdr.de>; Mon, 21 Mar 2022 15:04:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F8784E2A21
+	for <lists+linux-efi@lfdr.de>; Mon, 21 Mar 2022 15:13:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346092AbiCUOFa (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 21 Mar 2022 10:05:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38212 "EHLO
+        id S240738AbiCUOOA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 21 Mar 2022 10:14:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348893AbiCUOEG (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 21 Mar 2022 10:04:06 -0400
+        with ESMTP id S1347546AbiCUOHp (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 21 Mar 2022 10:07:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 955EE33378;
-        Mon, 21 Mar 2022 07:01:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CAA840E59;
+        Mon, 21 Mar 2022 07:02:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BEF3B6129A;
-        Mon, 21 Mar 2022 14:01:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A33D2C340E8;
-        Mon, 21 Mar 2022 14:01:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF41B61291;
+        Mon, 21 Mar 2022 14:02:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C77C3C340E8;
+        Mon, 21 Mar 2022 14:02:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1647871276;
-        bh=+5XscdXFlROL7LE0XhkkVwHD8z4u39zM1wNi9pM8m7k=;
+        s=korg; t=1647871331;
+        bh=pyps9KTcDO8WjOHx8j2dMRE9vR8E3xDRAC8V3DWspiY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Kn9rVg5lE159ethtuUykJ2miKMCzR67Cv971xUnvF7R4yr58o8ASHNYT7cM2MF6XR
-         iWVNNSTy9FssvwaIfzkNrM3/kSvyxh4AUVbr3c0HJrM6hitefPhLXNSSJ+rP5kC6Gn
-         Ym61tZ2+fOGhCaO/ZgIeU2uxeIxN6I+6uhQOaZEM=
+        b=IgJbHWdWwGqqK8MbkjgYy727FTNOcWx5VtcwdMMaONch8EikKv6fLmjAnmKtOFPNo
+         DXwo4PSimyobqVeKbTJ5FtGfeLv3dNgAuinhEFE0hXh1BX35UvVlXiwCSDngMr4xgv
+         torscAj4VNzPHz2xzSj45ya3Wczz8G6QYyppt1JA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -39,12 +39,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Matt Fleming <matt@codeblueprint.co.uk>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 06/32] efi: fix return value of __setup handlers
-Date:   Mon, 21 Mar 2022 14:52:42 +0100
-Message-Id: <20220321133220.747644115@linuxfoundation.org>
+Subject: [PATCH 5.16 06/37] efi: fix return value of __setup handlers
+Date:   Mon, 21 Mar 2022 14:52:48 +0100
+Message-Id: <20220321133221.479389067@linuxfoundation.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220321133220.559554263@linuxfoundation.org>
-References: <20220321133220.559554263@linuxfoundation.org>
+In-Reply-To: <20220321133221.290173884@linuxfoundation.org>
+References: <20220321133221.290173884@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -121,10 +121,10 @@ index 4c3201e290e2..ea84108035eb 100644
  
  __setup("dump_apple_properties", dump_properties_enable);
 diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 9fa86288b78a..e3df82d5d37a 100644
+index 7de3f5b6e8d0..5502e176d51b 100644
 --- a/drivers/firmware/efi/efi.c
 +++ b/drivers/firmware/efi/efi.c
-@@ -209,7 +209,7 @@ static int __init efivar_ssdt_setup(char *str)
+@@ -212,7 +212,7 @@ static int __init efivar_ssdt_setup(char *str)
  		memcpy(efivar_ssdt, str, strlen(str));
  	else
  		pr_warn("efivar_ssdt: name too long: %s\n", str);
