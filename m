@@ -2,107 +2,133 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0F7E4E1FB3
-	for <lists+linux-efi@lfdr.de>; Mon, 21 Mar 2022 05:59:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 859FF4E2408
+	for <lists+linux-efi@lfdr.de>; Mon, 21 Mar 2022 11:10:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344126AbiCUFBJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 21 Mar 2022 01:01:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49474 "EHLO
+        id S236327AbiCUKL3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 21 Mar 2022 06:11:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243479AbiCUFBI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 21 Mar 2022 01:01:08 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B161F1EAC9;
-        Sun, 20 Mar 2022 21:59:43 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id s72so6805417pgc.5;
-        Sun, 20 Mar 2022 21:59:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=JIgHZDed9PIspLBbM5lPWdLUcFy0yV12Bw9ldjirghI=;
-        b=ji8GCtCBicLxy3lk2fMdGpM+NyvXyi4eLh/3+FzN8mdLRW2+K/83g4Y3gX39C54ePX
-         +P/jtU3rF3bq5XvEIWexsKogdpasdCaVqhuBU/Pgoc19lOE8cnJOPnGtwoEhGP81ez7X
-         EdUgK8Bc5onPybzgllcMqxTn5LQ6lEnCx2B3A5IYby0/GUmbPHr8teE/xyUdm/4wZpiI
-         b1owOSGQGUL7tA6SEpo7298XXFWvIdJshlPdqgjW/+aFY15rU391AH+Z/tYqWbysVPqc
-         ntLoeoxNH0cnZ64iTbOVwpwixTe49CBHOSKsV3x1V+EuIc5VT+0pI8d67hmZP4Z95cvc
-         kiWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=JIgHZDed9PIspLBbM5lPWdLUcFy0yV12Bw9ldjirghI=;
-        b=AekMtwb9qSkqGaB7H4hF/F9vMDu3gzdmSOjZ13AdoUT5FHii39SWfyBQFWI8hh8E0b
-         abym9G4DdIagf7QeEU/9J8uBhRxBXO1IpKKYaXd0TJsPt58Oy0MBa2EfADv3l3b9CGjD
-         utKaXgeFFr9FjeI8lj78BkNbY6EXSxzScJuPKK115ZWMUl45c9KK4tzEi2Pzr4dJ1trd
-         TN2IEmVf9AA7rHMmqoUkh/nA0qHXtnVWze/DzpqcdQRkBozkCCHdSaGiEkXXtv1U1ukQ
-         z6NfVIpgLpyjjWpydfiN36DHpXsfQDQHeuUdToXEe9eolb7Qz76p1NBBb3RsJ3g2WwJ4
-         b0KQ==
-X-Gm-Message-State: AOAM530w/47ByvEHrDZUwC6ahlPvarz2hE0oGlZzDe1sUw/iXopxFig5
-        HCpGt5sJdUb/WhOIfM6/lI+25HK2A+M=
-X-Google-Smtp-Source: ABdhPJw4qzO2fT/83eP9ukobw6P+/9PRsTwsNIyPlsfXAEYKwQOnOWENU9OVZAfuZL3HpOeET2Glgw==
-X-Received: by 2002:a63:6942:0:b0:380:153e:63f9 with SMTP id e63-20020a636942000000b00380153e63f9mr17076839pgc.212.1647838782477;
-        Sun, 20 Mar 2022 21:59:42 -0700 (PDT)
-Received: from fedora-qemu.flets-east.jp (p912131-ipoe.ipoe.ocn.ne.jp. [153.243.13.130])
-        by smtp.gmail.com with ESMTPSA id x23-20020a63fe57000000b0036490068f12sm12868770pgj.90.2022.03.20.21.59.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Mar 2022 21:59:41 -0700 (PDT)
-From:   Akihiko Odaki <akihiko.odaki@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-efi@vger.kernel.org, x86@kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Akihiko Odaki <akihiko.odaki@gmail.com>
-Subject: [PATCH] x86/efi: Remove references of EFI earlyprintk from documentation
-Date:   Mon, 21 Mar 2022 13:58:53 +0900
-Message-Id: <20220321045853.3324-1-akihiko.odaki@gmail.com>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S233527AbiCUKL3 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 21 Mar 2022 06:11:29 -0400
+X-Greylist: delayed 308 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 21 Mar 2022 03:10:04 PDT
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A14E694B0
+        for <linux-efi@vger.kernel.org>; Mon, 21 Mar 2022 03:10:03 -0700 (PDT)
+Received: from mail-wm1-f49.google.com ([209.85.128.49]) by
+ mrelayeu.kundenserver.de (mreue107 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1M7s1M-1nSPQK0PmE-0050Iu; Mon, 21 Mar 2022 11:04:54 +0100
+Received: by mail-wm1-f49.google.com with SMTP id j13-20020a05600c1c0d00b0038c8f94aac2so3793118wms.3;
+        Mon, 21 Mar 2022 03:04:53 -0700 (PDT)
+X-Gm-Message-State: AOAM532x53b4mI0pNF8Qfs3glIUYpZjGPMil69+jK+hRMkCEHhC9Ui54
+        FGuwoGmQOzwiZ/LDOIDxy+bswmMl9c5/4tpALOs=
+X-Google-Smtp-Source: ABdhPJxjEc9bzYesuwCKdzUo5YCU+Maot3VI/4zz2PDoJ/C9nonejO7aSCHEJYC3ozg6TMkFNtWWtvUlXTjVI63bZYY=
+X-Received: by 2002:a05:600c:4b83:b0:38c:49b5:5bfc with SMTP id
+ e3-20020a05600c4b8300b0038c49b55bfcmr24295350wmp.33.1647856738182; Mon, 21
+ Mar 2022 02:58:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220319142759.1026237-1-chenhuacai@loongson.cn>
+ <20220319143817.1026708-1-chenhuacai@loongson.cn> <20220319143817.1026708-2-chenhuacai@loongson.cn>
+In-Reply-To: <20220319143817.1026708-2-chenhuacai@loongson.cn>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Mon, 21 Mar 2022 10:58:42 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a11-cRsFDYv-NzqWtWV3h8=xYoHGf_V33BhSRDBFPDXpA@mail.gmail.com>
+Message-ID: <CAK8P3a11-cRsFDYv-NzqWtWV3h8=xYoHGf_V33BhSRDBFPDXpA@mail.gmail.com>
+Subject: Re: [PATCH V8 09/22] LoongArch: Add boot and setup routines
+To:     Huacai Chen <chenhuacai@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Airlie <airlied@linux.ie>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Xuefeng Li <lixuefeng@loongson.cn>,
+        Yanteng Si <siyanteng@loongson.cn>,
+        Huacai Chen <chenhuacai@gmail.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:NTZYbBHtfGesGoqv+h7F2I5E/pFV1xoBScyg3KX17CM+0GiB9R0
+ fZXoaQoX5QibEzLioznve/rxBrR/zHG1e4OTpJEgvt/63BfTGS4vkEEyRaBHT8MIa8ILEij
+ j7/SOVTids1h5/FgAhguIUaBIN/KtG84ykr7I3rL8j4uFd+1OGY0e/jwRzFg+qjyKrCKTEi
+ 2ejdlGw/Ax+vRwSm9I1pA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:96RDr76jcCU=:EZNfrE6tqcPabrz3Y5LZI4
+ ygQ8Z/fa0WtTYK6dC71R5w8FKQETTuSCBXAMm9/G700ZwJwedwDApUuVpg9OwhqdEtKcmY9Wo
+ BJQSBLLtjesNm0ZrZ79JUmq0Ex+k+Ch+sDIalQgouuiwETu10cFE/QMGUaeNmS9Ito+Ofd2LC
+ mgew5lb8gC1dDjccsy1wPZGrN09MaRr1bX2iRplIAPAkbFY/ojBetcL208eQthWKEdReyUe7b
+ Uc3FB1h1G7UCRpWDRCUl8Od4AVL2YrFSGF7DUhs3PcQ0GRgV/vu3M2VXPIhYKvnaEzsybSLV5
+ ytfYwJja6t9ZlG9jvE2SkW0LVTIBsnqtmeuuoLy/SbKCISg92JXsvjBxQjOOOS48zTDGPmit+
+ iL+ZX38SaO4G7U4Aagtu9Y77FYptuGnpNbDQsGmKsempyutcCbXulnRGbzXrm6XSKVrxW+Ggj
+ vqB8v/QDigQVWZ9BzOe5rU+1Gv9iR3/MoDVpRovGvckfuyNRc/NkVvNsATeP++hgQFVuGtP8/
+ +ZRNDV9edkO6ll1u0pA26zyVid/lJfL7/nWJ8K92P/+Wh+P5aTEvoUk/0GdITskxzBl1s7DUr
+ y6Sez8GbTFdDeRSK/HgR5cYhEtk1++o/N7U32i65u6pJfRw5iq5sYB5WBGnzFo91Oa3nTqmPm
+ IMA2cRNJSnq8RXKmrkBAdoppUcEEiM+SNXs911SUXA8gNuLc7i1QH14QXuxYgiKMID4NzOAq9
+ Yr1BRRFPwVyV9199Eo6VrfE4IWyKeA4y58WNmDfF7nxqbAlDgrAceB6eFgXJd0guvH6xVW5K+
+ qfDE5X+TDlGOpHJGgwrXsaWUGMdmYiPr5hsG6jSLznnKqHo1CA=
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-x86 EFI earlyprink was removed with commit 69c1f396f25b ("efi/x86:
-Convert x86 EFI earlyprintk into generic earlycon implementation").
+On Sat, Mar 19, 2022 at 3:38 PM Huacai Chen <chenhuacai@kernel.org> wrote:
+>
+> This patch adds basic boot, setup and reset routines for LoongArch.
+> LoongArch uses UEFI-based firmware. The firmware uses ACPI and DMI/
+> SMBIOS to pass configuration information to the Linux kernel.
+>
+> Now the boot information passed to kernel is like this:
+> 1, kernel get 3 register values (a0, a1 and a2) from bootloader.
+> 2, a0 is "argc", a1 is "argv", so "kernel cmdline" comes from a0/a1.
+> 3, a2 is "environ", which is a pointer to the "struct boot_params".
+> 4, "struct boot_params" include a "systemtable" pointer, whose type is
+>    "efi_system_table_t". Most configuration information, include ACPI
+>    tables and SMBIOS tables, come from here.
+>
+> The above interface is an internal interface between bootloader (grub,
+> efistub, etc.) and the raw kernel. You can use this method to boot the
+> Linux kernel in raw elf format, but it is recommend to use the standard
+> UEFI boot protocol when efistub is added later.
+>
+> ECR for adding LoongArch support in ACPI:
+> https://mantis.uefi.org/mantis/view.php?id=2203
+>
+> ECR for adding LoongArch support in ACPI (version update):
+> https://mantis.uefi.org/mantis/view.php?id=2268
+>
+> ECR for adding LoongArch support in UEFI:
+> https://mantis.uefi.org/mantis/view.php?id=2313
+>
+> ACPI changes of LoongArch have been approved in the last year, but the
+> new version of ACPI SPEC hasn't been made public yet. And UEFI changes
+> of LoongArch are under review now.
+>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: linux-efi@vger.kernel.org
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@gmail.com>
----
- Documentation/admin-guide/kernel-parameters.txt | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I think this is still the most controversial bit of the series, and my
+feeling is that it would be better to have the UEFI stub bits in place
+first, so the custom entry point can be avoided completely.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index f5a27f067db9..fb39337f4123 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -1252,7 +1252,7 @@
- 			Append ",keep" to not disable it when the real console
- 			takes over.
- 
--			Only one of vga, efi, serial, or usb debug port can
-+			Only one of vga, serial, or usb debug port can
- 			be used at a time.
- 
- 			Currently only ttyS0 and ttyS1 may be specified by
-@@ -1267,7 +1267,7 @@
- 			Interaction with the standard serial driver is not
- 			very good.
- 
--			The VGA and EFI output is eventually overwritten by
-+			The VGA output is eventually overwritten by
- 			the real console.
- 
- 			The xen option can only be used in Xen domains.
--- 
-2.35.1
+Unfortunately I don't have access to mantis.uefi.org, can you
+explain what the current status is? Are there still ABI relevant
+decisions that need to be made about the UEFI entry point?
 
+If the timing works out, the best approach may be to instead send
+a draft version of the UEFI wrapper based boot implementation
+for review now, so it can be merged once the standard has found
+consensus. Having the code openly accessible should also help
+with speed up the review.
+
+         Arnd
