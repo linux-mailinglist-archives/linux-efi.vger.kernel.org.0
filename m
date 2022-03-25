@@ -2,131 +2,255 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98DCA4E6F48
-	for <lists+linux-efi@lfdr.de>; Fri, 25 Mar 2022 09:07:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 010004E6FF5
+	for <lists+linux-efi@lfdr.de>; Fri, 25 Mar 2022 10:25:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347178AbiCYIIW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 25 Mar 2022 04:08:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35420 "EHLO
+        id S1356624AbiCYJ0f (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 25 Mar 2022 05:26:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353468AbiCYIIU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 25 Mar 2022 04:08:20 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2571CC518;
-        Fri, 25 Mar 2022 01:06:46 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S243091AbiCYJ0b (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 25 Mar 2022 05:26:31 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFA8ECF4B1;
+        Fri, 25 Mar 2022 02:24:57 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 66D54B82705;
-        Fri, 25 Mar 2022 08:06:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DA0C340F6;
-        Fri, 25 Mar 2022 08:06:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648195604;
-        bh=+IuwM8J1LTQxPvWn0rnPm1DRUsb3A005zWWx/PosR9s=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=vQFXiry0Y6zGbDoP5rfQvkhnVBb5og/SKAnr4t0pk9g0LJeXur4xdOkA7UXjkp9Ua
-         HdoFVf8gsESFMXpURBloZ6DPyfm5NA59Qkeo/79u6tnBv1bnv2u+bcFBIU27pxEGXK
-         0jiiKRKC4+v9xXA2zR96dSU0AhYChlP8GmFrZfgOT8A4GwAAvuIdLGQhcwO8BwvZoM
-         JNn7ShN9lK5UQ4e3+nZJmfE/I50hOr/wupDHgGuqrrqCYaMYhHhObWMwogHCj4YcTa
-         ZXJ0W+OkXZ157Kx1tDakrSVmiV5DsYLKRnuKffzWYXmBwu/HDuE76UNHbMV0zUZ8Mh
-         4qaUqx3ro8dLw==
-Received: by mail-ot1-f43.google.com with SMTP id e25-20020a0568301e5900b005b236d5d74fso5007832otj.0;
-        Fri, 25 Mar 2022 01:06:44 -0700 (PDT)
-X-Gm-Message-State: AOAM532RRDd+202C6okeuisTctUYJdnRW/H/G4j7Sb9qjffJJYUGAYqp
-        jlPnu2tk4/7P7riagOAqxgXHZrZmPpDSLXeWVB0=
-X-Google-Smtp-Source: ABdhPJzTiMtlkysj9cRZHyAUygoCJV3uzQgMIJ8ylt8KauQ3Sr8JU6P4Vheb3YMSFQwQCMeTjBvPiT59ZnF3JxNFMYQ=
-X-Received: by 2002:a05:6830:2e7:b0:5b2:68c1:182a with SMTP id
- r7-20020a05683002e700b005b268c1182amr3726604ote.71.1648195603145; Fri, 25 Mar
- 2022 01:06:43 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220224154330.26564-1-baskov@ispras.ru> <CAMj1kXGg=HAv3P_NKqUHCg6bRFsB0qhfa_z-TOdmi-G8EqPrZA@mail.gmail.com>
- <20220228183044.GA18400@srcf.ucam.org> <9787f1c1948cc640e70a50e4b929f44f@ispras.ru>
- <20220303204759.GA20294@srcf.ucam.org> <20220318163739.5doimyda5e3kdcef@redhat.com>
- <20e2f5b9ab008b12f14e763127f5ca1b@ispras.ru>
-In-Reply-To: <20e2f5b9ab008b12f14e763127f5ca1b@ispras.ru>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 25 Mar 2022 09:06:31 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFgy=e6FEtcWMUU4_aGqy7DA_22S=JaqQRCGinD+9OUrA@mail.gmail.com>
-Message-ID: <CAMj1kXFgy=e6FEtcWMUU4_aGqy7DA_22S=JaqQRCGinD+9OUrA@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 0/2] Handle UEFI NX-restricted page tables
-To:     Baskov Evgeniy <baskov@ispras.ru>
-Cc:     Matthew Garrett <mjg59@srcf.ucam.org>,
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 250B01F745;
+        Fri, 25 Mar 2022 09:24:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1648200296; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dvN7myr0MDfmtMFkdZ1k/72coAzlBsKoPtLN6KtQ1CQ=;
+        b=v7ByO0o1ZIbFE5mwJyFIHpW2wINXiMWRB8n9NTThT5QJklwm6VB3tMgmaRuw+BNeQ0mIaN
+        Jra5pct2F+ssPqGHTFKPmuvlUlbIXuuHfP7ZhD13c++eR5WgQH6r+oHxYAsW3qQmYfS9EK
+        fRwHZZabz/9vqllHvpg8l/abeRokoCA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1648200296;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dvN7myr0MDfmtMFkdZ1k/72coAzlBsKoPtLN6KtQ1CQ=;
+        b=QRumQzO+afwTgRwYz9SpOF+rQLK40HkIs3BRJSzs/Q2UZ3AYLDcTAHwYgb+zNjJPFOPBGT
+        mt53x2Wzp/5juLAQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 12EAE132E9;
+        Fri, 25 Mar 2022 09:24:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id TmabBGiKPWIRfwAAMHmgww
+        (envelope-from <bp@suse.de>); Fri, 25 Mar 2022 09:24:56 +0000
+Date:   Fri, 25 Mar 2022 10:24:50 +0100
+From:   Borislav Petkov <bp@suse.de>
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        X86 ML <x86@kernel.org>, linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Peter Jones <pjones@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v12 40/46] x86/sev: add sev=debug cmdline option to dump
+ SNP CPUID table
+Message-ID: <Yj2KYsdvz7NOtF7w@zn.tnic>
+References: <20220307213356.2797205-1-brijesh.singh@amd.com>
+ <20220307213356.2797205-41-brijesh.singh@amd.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220307213356.2797205-41-brijesh.singh@amd.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 24 Mar 2022 at 17:39, <baskov@ispras.ru> wrote:
->
-> On 2022-03-18 19:37, Peter Jones wrote:
-> > On Thu, Mar 03, 2022 at 08:47:59PM +0000, Matthew Garrett wrote:
-> >> On Thu, Mar 03, 2022 at 04:42:07PM +0300, baskov@ispras.ru wrote:
-> >> > On 2022-02-28 21:30, Matthew Garrett wrote:
-> >> > > On Mon, Feb 28, 2022 at 05:45:53PM +0100, Ard Biesheuvel wrote:
-> >> > >
-> >> > > > Given that this is a workaround for a very specific issue arising on
-> >> > > > PI based implementations of UEFI, I consider this a quirk, and so I
-> >> > > > think this approach is reasonable. I'd still like to gate it on some
-> >> > > > kind of identification, though - perhaps something related to DMI like
-> >> > > > the x86 core kernel does as well.
-> >> > >
-> >> > > When the V1 patches were reviewed, you suggested allocating
-> >> > > EFI_LOADER_CODE rather than EFI_LOADER_DATA. The example given for a
-> >> > > failure case is when NxMemoryProtectionPolicy is set to 0x7fd4, in which
-> >> > > case EFI_LOADER_CODE, EFI_BOOT_SERVICES_CODE and
-> >> > > EFI_RUNTIEM_SERVICES_CODE should not have the nx policy applied. So it
-> >> > > seems like your initial suggestion (s/LOADER_DATA/LOADER_CODE/) should
-> >> > > have worked, even if there was disagreement about whether the spec
-> >> > > required it to. Is this firmware applying a stricter policy?
-> >> >
-> >> > Yes, this firmware is being modified to enforce stricter policy.
-> >>
-> >> Ok. I think this should really go through the UEFI spec process - I
-> >> agree that from a strict interpretation of the spec, what this
-> >> firmware
-> >> is doing is legitimate, but I don't like having a situation where we
-> >> have to depend on the DXE spec.
-> >
-> > It's in the process of getting into the UEFI spec now as
-> > https://bugzilla.tianocore.org/show_bug.cgi?id=3519 .
-> >
-> >> How does Windows handle this? Just update the page tables itself for
-> >> any
-> >> regions it needs during boot?
-> >
-> > Microsoft's bootloader sets up its own pagetables, though I believe
-> > they're switching it to use the (soon to be) standardized API.
->
-> The third version of the patch is the most close in structure
-> to the proposed protocol. And until the protocol is standardized and
-> implemented on problematic firmware, I think, it remains the better
-> solution in terms of simplicity and further porting to the new
-> protocol.
->
-> It is desirable to get the issue resolved, and make the kernel stricter
-> comply to the spec, without waiting for the new API implementation.
-> And later, switch the kernel to be using the protocol with
-> subsequent patches as soon as it gets usable.
->
-> So, is there a chance for these patches to be accepted in current
-> form, or with some modifications?
->
+On Mon, Mar 07, 2022 at 03:33:50PM -0600, Brijesh Singh wrote:
+> From: Michael Roth <michael.roth@amd.com>
+> 
+> For debugging purposes it is very useful to have a way to see the full
+> contents of the SNP CPUID table provided to a guest. Add an sev=debug
+> kernel command-line option to do so.
+> 
+> Also introduce some infrastructure so that additional options can be
+> specified via sev=option1[,option2] over time in a consistent manner.
+> 
+> Suggested-by: Borislav Petkov <bp@alien8.de>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>  .../admin-guide/kernel-parameters.txt         |  2 +
+>  Documentation/x86/x86_64/boot-options.rst     | 14 +++++
+>  arch/x86/kernel/sev.c                         | 58 +++++++++++++++++++
+>  3 files changed, 74 insertions(+)
 
-I am fine with taking the v3, as it is the most likely to only affect
-the systems that actually need this change in behavior.
+I simplified the string parsing:
 
-So unless there are any objections, I will queue these up after the
-merge window.
+---
+From: Michael Roth <michael.roth@amd.com>
+Date: Mon, 7 Mar 2022 15:33:50 -0600
+Subject: [PATCH] x86/sev: Add a sev= cmdline option
+
+For debugging purposes it is very useful to have a way to see the full
+contents of the SNP CPUID table provided to a guest. Add an sev=debug
+kernel command-line option to do so.
+
+Also introduce some infrastructure so that additional options can be
+specified via sev=option1[,option2] over time in a consistent manner.
+
+  [ bp: Massage, simplify string parsing. ]
+
+Suggested-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20220307213356.2797205-41-brijesh.singh@amd.com
+---
+ .../admin-guide/kernel-parameters.txt         |  2 +
+ Documentation/x86/x86_64/boot-options.rst     | 14 ++++++
+ arch/x86/kernel/sev.c                         | 44 +++++++++++++++++++
+ 3 files changed, 60 insertions(+)
+
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 7123524a86b8..5f7fa7c141dc 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -5229,6 +5229,8 @@
+ 
+ 	serialnumber	[BUGS=X86-32]
+ 
++	sev=option[,option...] [X86-64] See Documentation/x86/x86_64/boot-options.rst
++
+ 	shapers=	[NET]
+ 			Maximal number of shapers.
+ 
+diff --git a/Documentation/x86/x86_64/boot-options.rst b/Documentation/x86/x86_64/boot-options.rst
+index ccb7e86bf8d9..eaecb5d89167 100644
+--- a/Documentation/x86/x86_64/boot-options.rst
++++ b/Documentation/x86/x86_64/boot-options.rst
+@@ -317,3 +317,17 @@ Miscellaneous
+     Do not use GB pages for kernel direct mappings.
+   gbpages
+     Use GB pages for kernel direct mappings.
++
++
++AMD SEV (Secure Encrypted Virtualization)
++=========================================
++Options relating to AMD SEV, specified via the following format:
++
++::
++
++   sev=option1[,option2]
++
++The available options are:
++
++   debug
++     Enable debug messages.
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index c8733725d8bf..70ecc6e2f251 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -112,6 +112,13 @@ DEFINE_STATIC_KEY_FALSE(sev_es_enable_key);
+ 
+ static DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
+ 
++struct sev_config {
++	__u64 debug		: 1,
++	      __reserved	: 63;
++};
++
++static struct sev_config sev_cfg __read_mostly;
++
+ static __always_inline bool on_vc_stack(struct pt_regs *regs)
+ {
+ 	unsigned long sp = regs->sp;
+@@ -2042,6 +2049,23 @@ void __init snp_abort(void)
+ 	sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
+ }
+ 
++static void dump_cpuid_table(void)
++{
++	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
++	int i = 0;
++
++	pr_info("count=%d reserved=0x%x reserved2=0x%llx\n",
++		cpuid_table->count, cpuid_table->__reserved1, cpuid_table->__reserved2);
++
++	for (i = 0; i < SNP_CPUID_COUNT_MAX; i++) {
++		const struct snp_cpuid_fn *fn = &cpuid_table->fn[i];
++
++		pr_info("index=%3d fn=0x%08x subfn=0x%08x: eax=0x%08x ebx=0x%08x ecx=0x%08x edx=0x%08x xcr0_in=0x%016llx xss_in=0x%016llx reserved=0x%016llx\n",
++			i, fn->eax_in, fn->ecx_in, fn->eax, fn->ebx, fn->ecx,
++			fn->edx, fn->xcr0_in, fn->xss_in, fn->__reserved);
++	}
++}
++
+ /*
+  * It is useful from an auditing/testing perspective to provide an easy way
+  * for the guest owner to know that the CPUID table has been initialized as
+@@ -2059,6 +2083,26 @@ static int __init report_cpuid_table(void)
+ 	pr_info("Using SNP CPUID table, %d entries present.\n",
+ 		cpuid_table->count);
+ 
++	if (sev_cfg.debug)
++		dump_cpuid_table();
++
+ 	return 0;
+ }
+ arch_initcall(report_cpuid_table);
++
++static int __init init_sev_config(char *str)
++{
++	char *s;
++
++	while ((s = strsep(&str, ","))) {
++		if (!strcmp(s, "debug")) {
++			sev_cfg.debug = true;
++			continue;
++		}
++
++		pr_info("SEV command-line option '%s' was not recognized\n", s);
++	}
++
++	return 1;
++}
++__setup("sev=", init_sev_config);
+-- 
+2.35.1
+
+-- 
+Regards/Gruss,
+    Boris.
+
+SUSE Software Solutions Germany GmbH, GF: Ivo Totev, HRB 36809, AG Nürnberg
