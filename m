@@ -2,125 +2,52 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FB264E7F7A
-	for <lists+linux-efi@lfdr.de>; Sat, 26 Mar 2022 07:28:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D14994E804E
+	for <lists+linux-efi@lfdr.de>; Sat, 26 Mar 2022 11:08:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231716AbiCZG36 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 26 Mar 2022 02:29:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56772 "EHLO
+        id S232267AbiCZKKU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 26 Mar 2022 06:10:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231586AbiCZG3z (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 26 Mar 2022 02:29:55 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A32BE171EE5;
-        Fri, 25 Mar 2022 23:27:47 -0700 (PDT)
-Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.54])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4KQTXP3XcCzcbQS;
-        Sat, 26 Mar 2022 14:27:33 +0800 (CST)
-Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
- dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Sat, 26 Mar 2022 14:27:45 +0800
-Received: from localhost.localdomain (10.175.112.125) by
- dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Sat, 26 Mar 2022 14:27:44 +0800
-From:   Wupeng Ma <mawupeng1@huawei.com>
-To:     <akpm@linux-foundation.org>, <catalin.marinas@arm.com>,
-        <will@kernel.org>, <corbet@lwn.net>
-CC:     <ardb@kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
-        <bp@alien8.de>, <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-        <hpa@zyccr.com>, <dvhart@infradead.org>, <andy@infradead.org>,
-        <rppt@kernel.org>, <paulmck@kernel.org>, <peterz@infradead.org>,
-        <jroedel@suse.de>, <songmuchun@bytedance.com>, <macro@orcam.me.uk>,
-        <frederic@kernel.org>, <W_Armin@gmx.de>, <john.garry@huawei.com>,
-        <seanjc@google.com>, <tsbogend@alpha.franken.de>,
-        <anshuman.khandual@arm.com>, <chenhuacai@kernel.org>,
-        <david@redhat.com>, <gpiccoli@igalia.com>, <mark.rutland@arm.com>,
-        <wangkefeng.wang@huawei.com>, <mawupeng1@huawei.com>,
-        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-efi@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
-        <platform-driver-x86@vger.kernel.org>, <linux-mm@kvack.org>
-Subject: [PATCH 9/9] ia64/efi: Code simplification in efi_init
-Date:   Sat, 26 Mar 2022 14:46:32 +0800
-Message-ID: <20220326064632.131637-10-mawupeng1@huawei.com>
-X-Mailer: git-send-email 2.18.0.huawei.25
-In-Reply-To: <20220326064632.131637-1-mawupeng1@huawei.com>
-References: <20220326064632.131637-1-mawupeng1@huawei.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.112.125]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemm500014.china.huawei.com (7.185.36.153)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230031AbiCZKKU (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 26 Mar 2022 06:10:20 -0400
+X-Greylist: delayed 325 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 26 Mar 2022 03:08:44 PDT
+Received: from usloft6343.startdedicated.com (usloft6343.startdedicated.com [148.72.177.9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6694531DE7
+        for <linux-efi@vger.kernel.org>; Sat, 26 Mar 2022 03:08:42 -0700 (PDT)
+Received: by usloft6343.startdedicated.com (Postfix, from userid 10000)
+        id 3529CC5E11AA; Sat, 26 Mar 2022 05:03:17 -0500 (CDT)
+To:     linux-efi@vger.kernel.org
+Subject: Contacto BillByte
+From:   noresponder@billbyte.co
+Reply-To: noresponder@billbyte.co
+X-Mailer: PHP/7.4.3
+Message-Id: <20220326100317.3529CC5E11AA@usloft6343.startdedicated.com>
+Date:   Sat, 26 Mar 2022 05:03:17 -0500 (CDT)
+X-Spam-Status: Yes, score=6.7 required=5.0 tests=BAYES_99,BAYES_999,
+        PP_MIME_FAKE_ASCII_TEXT,SHORT_SHORTNER,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
+        *      [score: 0.9999]
+        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+        *      [score: 0.9999]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  1.0 PP_MIME_FAKE_ASCII_TEXT BODY: MIME text/plain claims to be
+        *      ASCII but isn't
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.0 SHORT_SHORTNER Short body with little more than a link to a
+        *      shortener
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Ma Wupeng <mawupeng1@huawei.com>
+GRACIAS POR CONTACTARSE CON NOSOTROS.
 
-Since efi_print_memmap() was made public, print EFI memory map in
-efi_init() can be simplified by using efi_print_memmap().
-
-Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
----
- arch/ia64/kernel/efi.c | 37 +------------------------------------
- 1 file changed, 1 insertion(+), 36 deletions(-)
-
-diff --git a/arch/ia64/kernel/efi.c b/arch/ia64/kernel/efi.c
-index 31149e41f9be..4b8209b8797d 100644
---- a/arch/ia64/kernel/efi.c
-+++ b/arch/ia64/kernel/efi.c
-@@ -557,42 +557,7 @@ efi_init (void)
- 
- #if EFI_DEBUG
- 	/* print EFI memory map: */
--	{
--		efi_memory_desc_t *md;
--		void *p;
--		unsigned int i;
--
--		for (i = 0, p = efi_map_start; p < efi_map_end;
--		     ++i, p += efi_desc_size)
--		{
--			const char *unit;
--			unsigned long size;
--			char buf[64];
--
--			md = p;
--			size = md->num_pages << EFI_PAGE_SHIFT;
--
--			if ((size >> 40) > 0) {
--				size >>= 40;
--				unit = "TB";
--			} else if ((size >> 30) > 0) {
--				size >>= 30;
--				unit = "GB";
--			} else if ((size >> 20) > 0) {
--				size >>= 20;
--				unit = "MB";
--			} else {
--				size >>= 10;
--				unit = "KB";
--			}
--
--			printk("mem%02d: %s "
--			       "range=[0x%016llx-0x%016llx) (%4lu%s)\n",
--			       i, efi_md_typeattr_format(buf, sizeof(buf), md),
--			       md->phys_addr,
--			       md->phys_addr + efi_md_size(md), size, unit);
--		}
--	}
-+	efi_print_memmap();
- #endif
- 
- 	efi_map_pal_code();
--- 
-2.18.0.huawei.25
+Nombre: ❤️ Emma want to meet you! Click here: https://clck.ru/eSAJP?p234t ❤️
+Correo: linux-efi@vger.kernel.org
+Telefono: 884560587566
 
