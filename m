@@ -2,211 +2,151 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03B324EADFE
-	for <lists+linux-efi@lfdr.de>; Tue, 29 Mar 2022 14:57:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81FE94EB2D9
+	for <lists+linux-efi@lfdr.de>; Tue, 29 Mar 2022 19:41:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233895AbiC2M6s (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 29 Mar 2022 08:58:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37874 "EHLO
+        id S237815AbiC2Rmr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 29 Mar 2022 13:42:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237047AbiC2M6A (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 29 Mar 2022 08:58:00 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 204B85FE8;
-        Tue, 29 Mar 2022 05:56:16 -0700 (PDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22TAuZXs003538;
-        Tue, 29 Mar 2022 12:55:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=K8srbVD97aBzbFKQRRvFsxZKalyJdMdPYve7feegeqo=;
- b=gED/f7sP3QkJCr3Ag5xybc5apnsX3GY9yyAp3GUrsKtPekBnVghBcQeZqM7lsL+aypyY
- KCDCSjs/7teRCQdas8JNKZPywykPzXxMHkx99Jnsp5j68tzKGdXe/lMCBMkvOZGgmlPd
- omP0zaNP18eVEitO2uxuL8QltArnteXltkhEeuvEI4Jz7Wo+hNk2DNFw6kjOswv/QAoV
- tsc0CSEKIRhzhs8vRYdsCtBeq92Aq+JvCm1Pym8W185sVISTLFpEQJoBIHh4j3yhjFN3
- gm4uUlnJ3WRRY++iQb+skqwmUapajANRP5B8fkwTw5/X/bX2XLHu9Lf3eyym0zlWpxKb sQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3f40t82hjp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 29 Mar 2022 12:55:48 +0000
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22TBeHcF005691;
-        Tue, 29 Mar 2022 12:55:47 GMT
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3f40t82hj5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 29 Mar 2022 12:55:47 +0000
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
-        by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22TCrTcR025140;
-        Tue, 29 Mar 2022 12:55:46 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
-        by ppma04dal.us.ibm.com with ESMTP id 3f1tf9snbt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 29 Mar 2022 12:55:46 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
-        by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 22TCtj6S26739196
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 29 Mar 2022 12:55:45 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 4D2A6112067;
-        Tue, 29 Mar 2022 12:55:45 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id DDA13112063;
-        Tue, 29 Mar 2022 12:55:40 +0000 (GMT)
-Received: from [9.160.79.229] (unknown [9.160.79.229])
-        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
-        Tue, 29 Mar 2022 12:55:40 +0000 (GMT)
-Message-ID: <f2fb7553-0313-6393-c93c-2bb6619086dc@linux.ibm.com>
-Date:   Tue, 29 Mar 2022 15:55:38 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v8 0/4] Allow guest access to EFI confidential computing
- secret area
-Content-Language: en-US
-To:     Borislav Petkov <bp@suse.de>
-Cc:     linux-efi@vger.kernel.org, Ashish Kalra <ashish.kalra@amd.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Andrew Scull <ascull@google.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Lenny Szubowicz <lszubowi@redhat.com>,
-        Peter Gonda <pgonda@google.com>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>,
-        Daniele Buono <dbuono@linux.vnet.ibm.com>,
-        linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>
-References: <20220228114254.1099945-1-dovmurik@linux.ibm.com>
- <YjydSNnG6EJ1KWx0@zn.tnic>
-From:   Dov Murik <dovmurik@linux.ibm.com>
-In-Reply-To: <YjydSNnG6EJ1KWx0@zn.tnic>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Yr3QtwC9c6b71TvjRjZOXB9MPeM1WEI4
-X-Proofpoint-GUID: hXEZmmRtRw7JWMAZA1Jxsy53t_CFW_xT
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+        with ESMTP id S240306AbiC2Rmq (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 29 Mar 2022 13:42:46 -0400
+Received: from cavan.codon.org.uk (irc.codon.org.uk [IPv6:2a00:1098:84:22e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4155E33A37;
+        Tue, 29 Mar 2022 10:40:59 -0700 (PDT)
+Received: by cavan.codon.org.uk (Postfix, from userid 1000)
+        id 4368C40A73; Tue, 29 Mar 2022 18:40:57 +0100 (BST)
+Date:   Tue, 29 Mar 2022 18:40:57 +0100
+From:   Matthew Garrett <mjg59@srcf.ucam.org>
+To:     Daniel Kiper <daniel.kiper@oracle.com>
+Cc:     Alec Brown <alec.r.brown@oracle.com>,
+        Kanth Ghatraju <kanth.ghatraju@oracle.com>,
+        Ross Philipson <ross.philipson@oracle.com>,
+        "dpsmith@apertussolutions.com" <dpsmith@apertussolutions.com>,
+        "piotr.krol@3mdeb.com" <piotr.krol@3mdeb.com>,
+        "krystian.hebel@3mdeb.com" <krystian.hebel@3mdeb.com>,
+        "persaur@gmail.com" <persaur@gmail.com>,
+        "Yoder, Stuart" <stuart.yoder@arm.com>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        "michal.zygowski@3mdeb.com" <michal.zygowski@3mdeb.com>,
+        James Bottomley <James.Bottomley@HansenPartnership.com>,
+        "lukasz@hawrylko.pl" <lukasz@hawrylko.pl>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        grub-devel@gnu.org
+Subject: Linux DRTM on UEFI platforms
+Message-ID: <20220329174057.GA17778@srcf.ucam.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-29_04,2022-03-29_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
- clxscore=1011 impostorscore=0 phishscore=0 priorityscore=1501 mlxscore=0
- suspectscore=0 spamscore=0 mlxlogscore=999 adultscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
- definitions=main-2203290076
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H5,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,KHOP_HELO_FCRDNS,SPF_HELO_NEUTRAL,
+        SPF_NEUTRAL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello Boris,
+We're still trying to come to a conclusion about the most maintainable 
+approach to getting DRTM implementations like Intel TXT working on UEFI 
+platforms under Linux. I'm going to try to summarise the situation here 
+- I'm not an expert, so details may be inaccurate, but I think this is 
+the rough shape of things.
 
-On 24/03/2022 18:33, Borislav Petkov wrote:
-> On Mon, Feb 28, 2022 at 11:42:50AM +0000, Dov Murik wrote:
->> Confidential computing (coco) hardware such as AMD SEV (Secure Encrypted
->> Virtualization) allows guest owners to inject secrets into the VMs
->> memory without the host/hypervisor being able to read them.  In SEV,
->> secret injection is performed early in the VM launch process, before the
->> guest starts running.
->>
->> OVMF already reserves designated area for secret injection (in its
->> AmdSev package; see edk2 commit 01726b6d23d4 "OvmfPkg/AmdSev: Expose the
->> Sev Secret area using a configuration table" [1]), but the secrets were
->> not available in the guest kernel.
->>
->> The patch series keeps the address of the EFI-provided memory for
->> injected secrets, and exposes the secrets to userspace via securityfs
->> using a new efi_secret kernel module.  The module is autoloaded (by the
->> EFI driver) if the secret area is populated.
-> 
-> Right, so this thing.
-> 
-> Tom and I were talking about SEV* guest debugging today and I believe
-> there might be another use case for this: SEV-ES guests cannot find out
-> from an attestation report - like SNP guests can - whether they're being
-> debugged or not so it would be very helpful if the fact that a -ES guest
-> is being debugged, could be supplied through such a secrets blob.
-> 
-> Because then, when I'm singlestepping the guest with gdb over the
-> gdbstub, the guest could determine based on those guest-owner previously
-> injected secrets whether it should allow debugging or not.
-> 
+Under normal circumstances on UEFI platforms, the bootloader (or system 
+firmware directly) load the kernel and execute code in the boot stub. 
+This boot stub code interacts with the firmware in various ways, 
+including working around some platform-specific issues and doing things 
+like copying the TPM event log into memory that can be used by the 
+kernel proper. While it remains technically possible to boot the kernel 
+on x86 UEFI platforms by jumping directly to the kernel entry point and 
+skipping the boot stub, this risks disabling certain functionality and 
+leaving the kernel in a slightly unexpected state. The contract that 
+exists between the UEFI stub and the kernel is not meaningfully 
+documented - portions are carried out by updating the contents of the 
+bootparams struct on x86 or devicetree on ARM, but other information is 
+conveyed via UEFI configuration tables, the boot stub may modify the 
+contents of certain UEFI variables, and some of this is implicit in 
+the form of hardware state.
 
-Let's see if I understand this correctly:
+The Trenchboot project is attempting to implement DRTM under Linux. 
+Traditional measured boot takes the form of a static root of trust - 
+each component in the boot chain is measured by the previous component 
+before being executed, and each measures what it considers to be 
+security relevant configuration and behavioural state. Modifying any 
+component will change the measurements, even if the end result is 
+equivalent. Dynamic Root of Trust Measurement aims to provide more 
+useful measurements by performing a measurement at a specific point in 
+time - as a result, DRTM cares only about what the state *is*, not what 
+happened before then.
 
-You want the guest to know if the its own SEV VM policy allows
-debugging.  And that flag has to be trusted -- so passed from the Guest
-Owner in a secure channel (otherwise the host could set it to
-ALLOW_DEBUGGING even though the Guest Owner didn't approve that).
+There's a bunch of complexity involved in this that's vendor specific, 
+but the short version is that a launch environment is set up and a 
+specific CPU instruction executed that triggers a secure launch event. 
+The Trenchboot code consists of patches to bootloaders to support 
+setting up this environment, and patches to the kernel to provide 
+support for the "Secure Launch" kernel that handles DRTM before handing 
+control off to the kernel proper, skipping the UEFI boot stub.
 
+Since this skips the UEFI boot stub, it's then the responsibility of the 
+bootloader to implement the functionality of the boot stub. This is made 
+difficult due to the absence of an express contract between the boot 
+stub and the rest of the kernel - our assumption has been that the code 
+is the contract, and this is free to change arbitrarily since both the 
+producer and the consumer of the information can be updated 
+simultaneously and can't get out of sync. That seems to leave us with 
+two options:
 
+1) Formalise the contract between the boot stub and the kernel, making 
+it easier for other boot loaders to implement the contract. This has the 
+downside that even within the scope of the contract we may end up with 
+divergent behaviour, and also new functionality in the kernel may not be 
+available without the bootloader also being updated.
 
-> And this is where your set comes in.
-> 
-> However, I'm wondering if - instead of defining your own secrets structs
-> etc - you could use the SNP confidential computing blob machinery the
-> SNP set is adding. In particular:
-> 
-> https://lore.kernel.org/all/20220307213356.2797205-30-brijesh.singh@amd.com/
-> 
-> And you're adding another GUID but maybe you could simply use the SNP
-> thing called EFI_CC_BLOB_GUID and mimick that layout.
-> 
-> That should unify things more. And then guest kernel code could query
-> the blob also for debugging policy and so on.
->
+2) Modify the boot stub such that it can be provided with a callback, 
+and instead of jumping to the kernel it can jump to the callback. The 
+boot flow would then involve the boot loader setting up the launch 
+environment, calling the boot stub code, and then performing the DRTM 
+event. This avoids requiring an explicit contract (the boot stub would 
+remain part of the kernel image and would be updated in lockstep).
 
-Maybe you could do that, but that will unify things that are not the
-same, so I think it is the wrong approach here.
+One complexity for both approaches is that the secure launch environment 
+needs to be aware of all security-critical state in the system. The 
+firmware nominally exposes that information for everything it's aware 
+of that's security-critical, but the boot stub may have performed 
+security-critical actions or exposed security-critical state that the 
+firmware is unaware of. The secure launch code from Trenchboot has to be 
+aware of this in order to ensure it's measured.
 
-The SNP secrets are secrets generated by the AMD-SP and allow the guest
-to communicate with the PSP.  There are exactly 4 of them (if I remember
-correctly) and they are only AES-256-GCM keys (if I remember correctly).
+If there's a contract, then in theory this would be embodied in the 
+contract and when the contract is updated the secure launch code could 
+also be updated. If there's no contract, every change to the boot stub 
+would need to be examined and the secure launch code updated if 
+necessary.
 
-On the other hand, the SEV launch secrets (which this series is about)
-are secrets populated by the Guest Owner and are intended for the proper
-operation of the applications in the guest (example use cases: luks
-passphrase, secret API keys, file decryption keys, encrypted container
-images keys, ...).
+While the secure launch code is currently out of tree, the goal is for 
+it to be integrated into the kernel tree. My feeling is that it's 
+going to be easier to manage this if everything is in tree - ie, all the 
+EFI setup code that does anything security-critical is either in the 
+firmware (and so the firmware takes responsibility for exposing it) or 
+is in the Linux tree (and so we take responsibility for updating the 
+secure launch code whenever something relevant changes in the boot 
+stub). But this requires support from the EFI maintainers in terms of 
+not merging things until we've established whether updates are required 
+to the secure launch code. The alternative is effectively the same, 
+except it would require updating the contract instead.
 
-The SEV launch secrets area can also be read by grub [1], for example,
-to fetch a luks passphrase from there (instead of from keyboard).
-That's why its structure is generic.
+But, as mentioned, that's just my feeling - I know that Daniel feels 
+that the contract approach is preferable. So:
 
-[1] https://lists.gnu.org/archive/html/grub-devel/2022-02/msg00066.html
+1) From an EFI maintainer perspective, is making the contract between 
+the boot stub and the kernel explicit viable?
 
+2) If so, is it desirable?
 
-> Thoughts, opinions?
-> 
-
-I think Guest Owner can add a 1-byte predefined secret to the SEV secret
-table, let's say an entry with GUID 2b91a212-b0e1-4816-b021-1e9991ddb6af
-and value "\x01" to indicate debugging is allowed.
-
-With the efi_secrets module, a 1-byte file called
-/sys/kernel/security/secrets/coco/2b91a212-b0e1-4816-b021-1e9991ddb6af
-will appear with "\x01" in its content.
-
-This can indicate to the guest that debugging was permitted by the Guest
-Owner.
-
-If you want this unified in the kernel, maybe we can look for this entry
-and set the relevant kernel variable.
-
--Dov
+3) If either (1) or (2) is "no", is it reasonable to ensure that all 
+potentially security-critical state or configuration changes to the 
+boot stub are reviewed by DRTM people to verify whether the secure 
+launch code needs to be updated to match?
