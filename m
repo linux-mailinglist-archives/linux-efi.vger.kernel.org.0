@@ -2,188 +2,211 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE6574EABDE
-	for <lists+linux-efi@lfdr.de>; Tue, 29 Mar 2022 13:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03B324EADFE
+	for <lists+linux-efi@lfdr.de>; Tue, 29 Mar 2022 14:57:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235515AbiC2LF0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 29 Mar 2022 07:05:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52270 "EHLO
+        id S233895AbiC2M6s (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 29 Mar 2022 08:58:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231437AbiC2LFZ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 29 Mar 2022 07:05:25 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33F071A82E;
-        Tue, 29 Mar 2022 04:03:39 -0700 (PDT)
-Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.55])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4KSRWF10D9z1GD1m;
-        Tue, 29 Mar 2022 19:03:21 +0800 (CST)
-Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
- dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Tue, 29 Mar 2022 19:03:37 +0800
-Received: from [10.174.178.120] (10.174.178.120) by
- dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2308.21; Tue, 29 Mar 2022 19:03:35 +0800
-Message-ID: <4136ec1c-51a9-3874-9bf3-c81cd88e868a@huawei.com>
-Date:   Tue, 29 Mar 2022 19:03:35 +0800
-MIME-Version: 1.0
+        with ESMTP id S237047AbiC2M6A (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 29 Mar 2022 08:58:00 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 204B85FE8;
+        Tue, 29 Mar 2022 05:56:16 -0700 (PDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22TAuZXs003538;
+        Tue, 29 Mar 2022 12:55:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=K8srbVD97aBzbFKQRRvFsxZKalyJdMdPYve7feegeqo=;
+ b=gED/f7sP3QkJCr3Ag5xybc5apnsX3GY9yyAp3GUrsKtPekBnVghBcQeZqM7lsL+aypyY
+ KCDCSjs/7teRCQdas8JNKZPywykPzXxMHkx99Jnsp5j68tzKGdXe/lMCBMkvOZGgmlPd
+ omP0zaNP18eVEitO2uxuL8QltArnteXltkhEeuvEI4Jz7Wo+hNk2DNFw6kjOswv/QAoV
+ tsc0CSEKIRhzhs8vRYdsCtBeq92Aq+JvCm1Pym8W185sVISTLFpEQJoBIHh4j3yhjFN3
+ gm4uUlnJ3WRRY++iQb+skqwmUapajANRP5B8fkwTw5/X/bX2XLHu9Lf3eyym0zlWpxKb sQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3f40t82hjp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 29 Mar 2022 12:55:48 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22TBeHcF005691;
+        Tue, 29 Mar 2022 12:55:47 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3f40t82hj5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 29 Mar 2022 12:55:47 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+        by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22TCrTcR025140;
+        Tue, 29 Mar 2022 12:55:46 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
+        by ppma04dal.us.ibm.com with ESMTP id 3f1tf9snbt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 29 Mar 2022 12:55:46 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
+        by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 22TCtj6S26739196
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 29 Mar 2022 12:55:45 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 4D2A6112067;
+        Tue, 29 Mar 2022 12:55:45 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id DDA13112063;
+        Tue, 29 Mar 2022 12:55:40 +0000 (GMT)
+Received: from [9.160.79.229] (unknown [9.160.79.229])
+        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+        Tue, 29 Mar 2022 12:55:40 +0000 (GMT)
+Message-ID: <f2fb7553-0313-6393-c93c-2bb6619086dc@linux.ibm.com>
+Date:   Tue, 29 Mar 2022 15:55:38 +0300
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.7.0
-Subject: Re: [PATCH 0/9] introduce mirrored memory support for arm64
-To:     <ardb@kernel.org>
-CC:     <akpm@linux-foundation.org>, <catalin.marinas@arm.com>,
-        <will@kernel.org>, <corbet@lwn.net>, <tglx@linutronix.de>,
-        <mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-        <x86@kernel.org>, <hpa@zyccr.com>, <dvhart@infradead.org>,
-        <andy@infradead.org>, <rppt@kernel.org>, <paulmck@kernel.org>,
-        <peterz@infradead.org>, <jroedel@suse.de>,
-        <songmuchun@bytedance.com>, <macro@orcam.me.uk>,
-        <frederic@kernel.org>, <W_Armin@gmx.de>, <john.garry@huawei.com>,
-        <seanjc@google.com>, <tsbogend@alpha.franken.de>,
-        <anshuman.khandual@arm.com>, <chenhuacai@kernel.org>,
-        <david@redhat.com>, <gpiccoli@igalia.com>, <mark.rutland@arm.com>,
-        <wangkefeng.wang@huawei.com>, <linux-doc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-efi@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
-        <platform-driver-x86@vger.kernel.org>, <linux-mm@kvack.org>
-References: <20220326064632.131637-1-mawupeng1@huawei.com>
- <CAMj1kXEwzJE8V-tqJJwZ-RqHB3atKJvoRZ8C6_EVM7caNbttxw@mail.gmail.com>
-From:   mawupeng <mawupeng1@huawei.com>
-In-Reply-To: <CAMj1kXEwzJE8V-tqJJwZ-RqHB3atKJvoRZ8C6_EVM7caNbttxw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.120]
-X-ClientProxiedBy: dggeme706-chm.china.huawei.com (10.1.199.102) To
- dggpemm500014.china.huawei.com (7.185.36.153)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Subject: Re: [PATCH v8 0/4] Allow guest access to EFI confidential computing
+ secret area
+Content-Language: en-US
+To:     Borislav Petkov <bp@suse.de>
+Cc:     linux-efi@vger.kernel.org, Ashish Kalra <ashish.kalra@amd.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Andrew Scull <ascull@google.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Lenny Szubowicz <lszubowi@redhat.com>,
+        Peter Gonda <pgonda@google.com>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+        Jim Cadden <jcadden@ibm.com>,
+        Daniele Buono <dbuono@linux.vnet.ibm.com>,
+        linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>
+References: <20220228114254.1099945-1-dovmurik@linux.ibm.com>
+ <YjydSNnG6EJ1KWx0@zn.tnic>
+From:   Dov Murik <dovmurik@linux.ibm.com>
+In-Reply-To: <YjydSNnG6EJ1KWx0@zn.tnic>
+Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Yr3QtwC9c6b71TvjRjZOXB9MPeM1WEI4
+X-Proofpoint-GUID: hXEZmmRtRw7JWMAZA1Jxsy53t_CFW_xT
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-29_04,2022-03-29_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ clxscore=1011 impostorscore=0 phishscore=0 priorityscore=1501 mlxscore=0
+ suspectscore=0 spamscore=0 mlxlogscore=999 adultscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
+ definitions=main-2203290076
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H5,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+Hello Boris,
 
-
-在 2022/3/29 16:26, Ard Biesheuvel 写道:
-> On Sat, 26 Mar 2022 at 07:27, Wupeng Ma <mawupeng1@huawei.com> wrote:
+On 24/03/2022 18:33, Borislav Petkov wrote:
+> On Mon, Feb 28, 2022 at 11:42:50AM +0000, Dov Murik wrote:
+>> Confidential computing (coco) hardware such as AMD SEV (Secure Encrypted
+>> Virtualization) allows guest owners to inject secrets into the VMs
+>> memory without the host/hypervisor being able to read them.  In SEV,
+>> secret injection is performed early in the VM launch process, before the
+>> guest starts running.
 >>
->> From: Ma Wupeng <mawupeng1@huawei.com>
+>> OVMF already reserves designated area for secret injection (in its
+>> AmdSev package; see edk2 commit 01726b6d23d4 "OvmfPkg/AmdSev: Expose the
+>> Sev Secret area using a configuration table" [1]), but the secrets were
+>> not available in the guest kernel.
 >>
->> Commit b05b9f5f9dcf ("x86, mirror: x86 enabling - find mirrored memory ranges")
->> introduced mirrored memory support for x86. This support rely on UEFI to
->> report mirrored memory address ranges.  See UEFI 2.5 spec pages 157-158:
->>
->>    http://www.uefi.org/sites/default/files/resources/UEFI%202_5.pdf
->>
->> Arm64 can support this too. So mirrored memory support is added to support
->> arm64.
->>
+>> The patch series keeps the address of the EFI-provided memory for
+>> injected secrets, and exposes the secrets to userspace via securityfs
+>> using a new efi_secret kernel module.  The module is autoloaded (by the
+>> EFI driver) if the secret area is populated.
 > 
-> What is the point of this if the kernel itself is not loaded in
-> EFI_MORE_RELIABLE memory? On x86, this is handled by the decompressor,
-> but that does not exist on arm64.
-
-Do you mean this is x86, commit c05cd79750fb
-("x86/boot/KASLR: Prefer mirrored memory regions for the kernel physical address").
-This scenario is not considered.
-
->  
-> The problem here is that UEFI defines this as a memory *attribute*
-> rather than a memory *type*, which means you cannot allocate
-> EFI_MORE_RELIABLE memory easily: you have to iterate over the memory
-> map and look for regions with the desired attribute, and allocate
-> those pages explicitly. I'd prefer to implement this in the
-> bootloader, and only add minimal logic to the stub to respect the
-> placement of the kernel by the loader if the loader signals it to do
-> so (there are other reasons for this - I will cc you on a patch
-> shortly that implements this)
-
-Thanks for your incoming patch.
-
+> Right, so this thing.
 > 
-> This also means that the fake_mem stuff is not going to work: the
-> memory map observed by the stub comes straight from the firmware, and
-> if the stub needs to be involved in placing (or respecting the
-> placement by the loader of) the kernel image, it needs to observe
-> those EFI_MORE_RELIABLE regions too. If you don't have access to a
-> machine that actually exposes EFI_MORE_RELIABLE memory, I suggest you
-> prototype it in QEMU/edk2 instead.
-
-You are right fake_mem stuff is not going to work. But, efi_fake_mem is
-used for testing mirrored features and will not be used in production
-environment. This test features can fake memory's attribute values.
-
-The reason why efi_fake_mem support is put first is that memory's attribute
-is reported by BIOS which is hard to simulate. With this support, any arm64
-machines with efi support can easily test mirrored features.
-
+> Tom and I were talking about SEV* guest debugging today and I believe
+> there might be another use case for this: SEV-ES guests cannot find out
+> from an attestation report - like SNP guests can - whether they're being
+> debugged or not so it would be very helpful if the fact that a -ES guest
+> is being debugged, could be supplied through such a secrets blob.
 > 
-> In fact, we have been trying very hard not to touch the firmware
-> provided memory map at all on ARM, rather than use it as a scratchpad
-> for all kinds of annotations. This means, for instance, that kexec is
-> idempotent - the next kernel should not be affected by modifications
-> to the memory map applied by the previous kernel.
-
-Yes, you're absolutely right. Efi_fake_mem is incompatible with kdump which
-will use kexec. But we can remove specify cmdline(efi_fake_mem=xx) by
-modofing /etc/sysconfig/kdump. Efi_fake_mem is only used for testing and
-will not be used in production environment.
-
+> Because then, when I'm singlestepping the guest with gdb over the
+> gdbstub, the guest could determine based on those guest-owner previously
+> injected secrets whether it should allow debugging or not.
 > 
-> In summary, implementing kernelcore=mirror for arm64 is fine with me,
-> but there are some issues we need to address first.
+
+Let's see if I understand this correctly:
+
+You want the guest to know if the its own SEV VM policy allows
+debugging.  And that flag has to be trusted -- so passed from the Guest
+Owner in a secure channel (otherwise the host could set it to
+ALLOW_DEBUGGING even though the Guest Owner didn't approve that).
+
+
+
+> And this is where your set comes in.
+> 
+> However, I'm wondering if - instead of defining your own secrets structs
+> etc - you could use the SNP confidential computing blob machinery the
+> SNP set is adding. In particular:
+> 
+> https://lore.kernel.org/all/20220307213356.2797205-30-brijesh.singh@amd.com/
+> 
+> And you're adding another GUID but maybe you could simply use the SNP
+> thing called EFI_CC_BLOB_GUID and mimick that layout.
+> 
+> That should unify things more. And then guest kernel code could query
+> the blob also for debugging policy and so on.
 >
-Can you be clear what the issues are?
 
-The main purpose of this patchset is to introduce mirrored support for
-arm64 and we have already fixed the problems we had which is shown in
-patch #5 to patch #7 and try to bring total isolation in patch #8 which
-will disable mirror feature if kernelcore is not specified.
+Maybe you could do that, but that will unify things that are not the
+same, so I think it is the wrong approach here.
 
-Thanks for reviewing.
+The SNP secrets are secrets generated by the AMD-SP and allow the guest
+to communicate with the PSP.  There are exactly 4 of them (if I remember
+correctly) and they are only AES-256-GCM keys (if I remember correctly).
 
+On the other hand, the SEV launch secrets (which this series is about)
+are secrets populated by the Guest Owner and are intended for the proper
+operation of the applications in the guest (example use cases: luks
+passphrase, secret API keys, file decryption keys, encrypted container
+images keys, ...).
+
+The SEV launch secrets area can also be read by grub [1], for example,
+to fetch a luks passphrase from there (instead of from keyboard).
+That's why its structure is generic.
+
+[1] https://lists.gnu.org/archive/html/grub-devel/2022-02/msg00066.html
+
+
+> Thoughts, opinions?
 > 
-> 
-> 
->> Patch #1-#2 introduce efi_fake_mem support for arm64.
->> Patch #3-#4 introduce mirrored memory support form arm64.
->> Patch #5-#7 fix some bugs for arm64 if memory reliable is enabled.
->> Patch #8 disable mirror feature if kernelcore is not specified.
->> Patch #9 remove some redundant code in ia64 efi_init.
->>
->> Ma Wupeng (9):
->>    efi: Make efi_print_memmap() public
->>    arm64: efi: Add fake memory support
->>    efi: Make efi_find_mirror() public
->>    arm64/mirror: arm64 enabling - find mirrored memory ranges
->>    mm: Ratelimited mirrored memory related warning messages
->>    mm: Demote warning message in vmemmap_verify() to debug level
->>    mm: Calc the right pfn if page size is not 4K
->>    efi: Disable mirror feature if kernelcore is not specified
->>    ia64/efi: Code simplification in efi_init
->>
->>   .../admin-guide/kernel-parameters.txt         |  4 +-
->>   arch/arm64/kernel/setup.c                     |  3 ++
->>   arch/ia64/kernel/efi.c                        | 37 +-----------------
->>   arch/x86/include/asm/efi.h                    |  5 ---
->>   arch/x86/platform/efi/efi.c                   | 39 -------------------
->>   drivers/firmware/efi/Kconfig                  |  2 +-
->>   drivers/firmware/efi/efi.c                    | 26 +++++++++++++
->>   drivers/firmware/efi/memmap.c                 | 16 ++++++++
->>   include/linux/efi.h                           |  4 ++
->>   include/linux/mm.h                            |  2 +
->>   mm/memblock.c                                 |  4 +-
->>   mm/page_alloc.c                               |  4 +-
->>   mm/sparse-vmemmap.c                           |  2 +-
->>   13 files changed, 60 insertions(+), 88 deletions(-)
->>
->> --
->> 2.18.0.huawei.25
->>
-> .
+
+I think Guest Owner can add a 1-byte predefined secret to the SEV secret
+table, let's say an entry with GUID 2b91a212-b0e1-4816-b021-1e9991ddb6af
+and value "\x01" to indicate debugging is allowed.
+
+With the efi_secrets module, a 1-byte file called
+/sys/kernel/security/secrets/coco/2b91a212-b0e1-4816-b021-1e9991ddb6af
+will appear with "\x01" in its content.
+
+This can indicate to the guest that debugging was permitted by the Guest
+Owner.
+
+If you want this unified in the kernel, maybe we can look for this entry
+and set the relevant kernel variable.
+
+-Dov
