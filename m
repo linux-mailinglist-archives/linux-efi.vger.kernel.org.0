@@ -2,159 +2,143 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4578D4EB354
-	for <lists+linux-efi@lfdr.de>; Tue, 29 Mar 2022 20:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A8944EB3AD
+	for <lists+linux-efi@lfdr.de>; Tue, 29 Mar 2022 20:47:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240528AbiC2ScD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 29 Mar 2022 14:32:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46710 "EHLO
+        id S237119AbiC2StF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 29 Mar 2022 14:49:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240092AbiC2ScC (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 29 Mar 2022 14:32:02 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC74DBF958;
-        Tue, 29 Mar 2022 11:30:19 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 6EE7B1FDA3;
-        Tue, 29 Mar 2022 18:30:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1648578618; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
+        with ESMTP id S234858AbiC2StE (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 29 Mar 2022 14:49:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1CE1D1A6E4A
+        for <linux-efi@vger.kernel.org>; Tue, 29 Mar 2022 11:47:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1648579639;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=pOgdSKA448mvMIFJegctVtXbSB40Eewz2P1qKdU/+4o=;
-        b=jln/eGy+t9QQXg9ItPX+VThMJb1y5WfUgJWvEUUnVSi1L/Aqy1OxEYUBmA/yiAXActJAzj
-        qzUmjdyKzgzkK3PUPv22U0KHv2f20i10T3YQLQXOleJb2pFmjLjygsoo2Lkmyl2bejoHqt
-        PB3AwvaeFc3GlElB+X4c/+bUC+fTcKo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1648578618;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pOgdSKA448mvMIFJegctVtXbSB40Eewz2P1qKdU/+4o=;
-        b=KtwN2BVo5Rf7aWs71cCI2/PAOWICzY5Ga0CrEtjEdRaCgLoGMeDINXlXA62fjYrk7MpcIv
-        Bm4lthLj8agf2uAg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        bh=F+hFNVkkgjGz9IaZzNaUdch/kgipd5Sk9YhwiWCqBjg=;
+        b=Msh8EMXtuY0uaSPZlxW5PCPfOfg9fHgYi+Fx431JmQc/m3VOlldUdCd+QzhxcH7rFVRx3Q
+        W4cOiA6b/tlHbVxv5NOJ9N0lJeDGlARrk/KJUbEqvHSbeK8l5hMhiVZz/LpL9e+4jIyEAG
+        IuJMT0KlyZRFY/s/v3yIqsAFpfsKtf0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-100-18P0M4RXObKXdj1XMiX7ag-1; Tue, 29 Mar 2022 14:47:15 -0400
+X-MC-Unique: 18P0M4RXObKXdj1XMiX7ag-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5D5A713A7E;
-        Tue, 29 Mar 2022 18:30:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id ZKvHFjpQQ2KbRAAAMHmgww
-        (envelope-from <bp@suse.de>); Tue, 29 Mar 2022 18:30:18 +0000
-Date:   Tue, 29 Mar 2022 20:30:15 +0200
-From:   Borislav Petkov <bp@suse.de>
-To:     Dov Murik <dovmurik@linux.ibm.com>
-Cc:     linux-efi@vger.kernel.org, Ashish Kalra <ashish.kalra@amd.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Andrew Scull <ascull@google.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Lenny Szubowicz <lszubowi@redhat.com>,
-        Peter Gonda <pgonda@google.com>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>,
-        Daniele Buono <dbuono@linux.vnet.ibm.com>,
-        linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 0/4] Allow guest access to EFI confidential computing
- secret area
-Message-ID: <YkNQNzNa02Sndu+q@zn.tnic>
-References: <20220228114254.1099945-1-dovmurik@linux.ibm.com>
- <YjydSNnG6EJ1KWx0@zn.tnic>
- <f2fb7553-0313-6393-c93c-2bb6619086dc@linux.ibm.com>
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DFCFC91BD81;
+        Tue, 29 Mar 2022 18:47:14 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.17.205])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 5DD84401E2A;
+        Tue, 29 Mar 2022 18:47:14 +0000 (UTC)
+Date:   Tue, 29 Mar 2022 14:47:12 -0400
+From:   Peter Jones <pjones@redhat.com>
+To:     baskov@ispras.ru
+Cc:     ardb@kernel.org, Matthew Garrett <mjg59@srcf.ucam.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        X86 ML <x86@kernel.org>, linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH RFC v2 0/2] Handle UEFI NX-restricted page tables
+Message-ID: <20220329184712.vl7jzq23h5m5kvqh@redhat.com>
+References: <20220224154330.26564-1-baskov@ispras.ru>
+ <CAMj1kXGg=HAv3P_NKqUHCg6bRFsB0qhfa_z-TOdmi-G8EqPrZA@mail.gmail.com>
+ <20220228183044.GA18400@srcf.ucam.org>
+ <9787f1c1948cc640e70a50e4b929f44f@ispras.ru>
+ <20220303204759.GA20294@srcf.ucam.org>
+ <20220318163739.5doimyda5e3kdcef@redhat.com>
+ <20e2f5b9ab008b12f14e763127f5ca1b@ispras.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f2fb7553-0313-6393-c93c-2bb6619086dc@linux.ibm.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20e2f5b9ab008b12f14e763127f5ca1b@ispras.ru>
+User-Agent: NeoMutt/20180716
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.10
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Dov,
-
-On Tue, Mar 29, 2022 at 03:55:38PM +0300, Dov Murik wrote:
-> Let's see if I understand this correctly:
+On Thu, Mar 24, 2022 at 07:39:47PM +0300, baskov@ispras.ru wrote:
+> On 2022-03-18 19:37, Peter Jones wrote:
+> > On Thu, Mar 03, 2022 at 08:47:59PM +0000, Matthew Garrett wrote:
+> > > On Thu, Mar 03, 2022 at 04:42:07PM +0300, baskov@ispras.ru wrote:
+> > > > On 2022-02-28 21:30, Matthew Garrett wrote:
+> > > > > On Mon, Feb 28, 2022 at 05:45:53PM +0100, Ard Biesheuvel wrote:
+> > > > >
+> > > > > > Given that this is a workaround for a very specific issue arising on
+> > > > > > PI based implementations of UEFI, I consider this a quirk, and so I
+> > > > > > think this approach is reasonable. I'd still like to gate it on some
+> > > > > > kind of identification, though - perhaps something related to DMI like
+> > > > > > the x86 core kernel does as well.
+> > > > >
+> > > > > When the V1 patches were reviewed, you suggested allocating
+> > > > > EFI_LOADER_CODE rather than EFI_LOADER_DATA. The example given for a
+> > > > > failure case is when NxMemoryProtectionPolicy is set to 0x7fd4, in which
+> > > > > case EFI_LOADER_CODE, EFI_BOOT_SERVICES_CODE and
+> > > > > EFI_RUNTIEM_SERVICES_CODE should not have the nx policy applied. So it
+> > > > > seems like your initial suggestion (s/LOADER_DATA/LOADER_CODE/) should
+> > > > > have worked, even if there was disagreement about whether the spec
+> > > > > required it to. Is this firmware applying a stricter policy?
+> > > >
+> > > > Yes, this firmware is being modified to enforce stricter policy.
+> > > 
+> > > Ok. I think this should really go through the UEFI spec process - I
+> > > agree that from a strict interpretation of the spec, what this
+> > > firmware
+> > > is doing is legitimate, but I don't like having a situation where we
+> > > have to depend on the DXE spec.
+> > 
+> > It's in the process of getting into the UEFI spec now as
+> > https://bugzilla.tianocore.org/show_bug.cgi?id=3519 .
+> > 
+> > > How does Windows handle this? Just update the page tables itself for
+> > > any
+> > > regions it needs during boot?
+> > 
+> > Microsoft's bootloader sets up its own pagetables, though I believe
+> > they're switching it to use the (soon to be) standardized API.
 > 
-> You want the guest to know if the its own SEV VM policy allows
-> debugging.  And that flag has to be trusted -- so passed from the Guest
-> Owner in a secure channel (otherwise the host could set it to
-> ALLOW_DEBUGGING even though the Guest Owner didn't approve that).
+> The third version of the patch is the most close in structure
+> to the proposed protocol. And until the protocol is standardized and
+> implemented on problematic firmware, I think, it remains the better
+> solution in terms of simplicity and further porting to the new
+> protocol.
 
-Yeah, and then dump all the guest memory and thus bypass the whole
-memory encryption fun. So yeah, it should be encrypted and accessible
-only to the guest and supplied by the guest owner.
+The ECR was approved at last week's meeting, it'll be in the next UEFI
+spec.  Details of what spec version that'll be and when it will
+officially be released are still under discussion, but it's been
+approved in its current form.  Microsoft has been kind enough to provide
+us code for test firmware, though the build process is a little rough.
 
-> The SEV launch secrets area can also be read by grub [1], for example,
-> to fetch a luks passphrase from there (instead of from keyboard).
-> That's why its structure is generic.
+I've done some builds of it here: https://copr.fedorainfracloud.org/coprs/pjones/mu-qemuq35/builds/ .
+The src rpm there is a bit absurdly large, because I've done the very
+quick-and-dirty hack of just shoving a pile of git repos into it instead
+of trying to make release tarballs of everything, and it needs the
+network enabled to rebuild it for fairly dumb reasons.  But the result
+is a firmware that works in QEMU.
 
-Ok, fair enough.
+> It is desirable to get the issue resolved, and make the kernel stricter
+> comply to the spec, without waiting for the new API implementation.
+> And later, switch the kernel to be using the protocol with
+> subsequent patches as soon as it gets usable.
 
-> I think Guest Owner can add a 1-byte predefined secret to the SEV secret
-> table, let's say an entry with GUID 2b91a212-b0e1-4816-b021-1e9991ddb6af
-> and value "\x01" to indicate debugging is allowed.
-> 
-> With the efi_secrets module, a 1-byte file called
-> /sys/kernel/security/secrets/coco/2b91a212-b0e1-4816-b021-1e9991ddb6af
-
-I'd love it if that were more user-friendly:
-
-/sys/kernel/security/secrets/coco/attributes
-
-and there's:
-
-debugging:1
-...
-
-and others.
-
-> will appear with "\x01" in its content.
-> 
-> This can indicate to the guest that debugging was permitted by the Guest
-> Owner.
-
-But yeah, that should be the gist of the functionality.
-
-> If you want this unified in the kernel, maybe we can look for this entry
-> and set the relevant kernel variable.
-
-So now that I think of it, it would be even nicer if the fact whether
-guest debugging is allowed, were available to the guest *very early*
-during boot. Because I think the most important cases where you'd want
-to singlestep a SEV* guest with the qemu gdbstub is early guest kernel
-boot code. So it would be cool if we'd have access to the debugging
-setting that early.
-
-Lemme have a look at your patches in detail to get an idea what's
-happening there.
-
-Thx.
+It works for the bootloaders in my development trees; I've booted a
+kernel with your patches.  From the bootloader POV we do need one more
+simple patch to enable the compatibility flag in the headers, I'll send
+it as a follow-up to this mail.
 
 -- 
-Regards/Gruss,
-    Boris.
+        Peter
 
-SUSE Software Solutions Germany GmbH, GF: Ivo Totev, HRB 36809, AG Nürnberg
