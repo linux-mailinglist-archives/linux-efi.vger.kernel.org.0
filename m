@@ -2,48 +2,48 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 757B14EC88F
-	for <lists+linux-efi@lfdr.de>; Wed, 30 Mar 2022 17:42:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A78954EC890
+	for <lists+linux-efi@lfdr.de>; Wed, 30 Mar 2022 17:42:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348334AbiC3PoB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 30 Mar 2022 11:44:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54370 "EHLO
+        id S1348346AbiC3PoG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 30 Mar 2022 11:44:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239041AbiC3PoA (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 30 Mar 2022 11:44:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D23833E0A
-        for <linux-efi@vger.kernel.org>; Wed, 30 Mar 2022 08:42:15 -0700 (PDT)
+        with ESMTP id S1348339AbiC3PoE (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 30 Mar 2022 11:44:04 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE29533E0A
+        for <linux-efi@vger.kernel.org>; Wed, 30 Mar 2022 08:42:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 083BA616D1
-        for <linux-efi@vger.kernel.org>; Wed, 30 Mar 2022 15:42:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12330C34112;
-        Wed, 30 Mar 2022 15:42:12 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 835F1B81D6C
+        for <linux-efi@vger.kernel.org>; Wed, 30 Mar 2022 15:42:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEFDAC340F0;
+        Wed, 30 Mar 2022 15:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648654934;
-        bh=uNVpd+BcO15TfkQMvEjdAPTLmgNpGrNTiCbvCKq3dY4=;
+        s=k20201202; t=1648654936;
+        bh=1RGgIYkJzMKOK6H4zT0uJAGD/fEmshmpfZYVR6Ez7YU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TRb1JIQcex+u3P3bTToCz/ZXzgIc4JFUFWBw7LGmDaC5jV9voAvaVb2jXZfW5o72E
-         QzI1DeMuV5y+hny/9l3mJzJ06pyTV+8LGmGgVzq528qum4A9+CNJNOOBPdSMkoZHo0
-         FI6IUi2UBN2qJSC4InubUtNeJZO5G3rvs1Q/B4DGWOckJsWOybMSVFF+b0Amg2ThPG
-         ZuMdk5WDjZqX/1xMjGx0xUKqJLdg0VBPYyz7PsTEWWzUpJs5uwLaCkEUg8D6ZfZA38
-         mpHU0VLbFGloERSOx7JWCEBHxgvVSIR39yAPHnBwwzhexOjeCIipFtovQAAJJSAXoh
-         2sNnES/rcVMtg==
+        b=g/dykukBVQCwUdpqkVfQ5+FWd+9ClF46VDw2pSZOgLg7phIG+n2T11j3/PZiUPn1v
+         IIAdMQ1z4Ro62d8G/Pe6MFlrHDNHUPgI5aVdgbgJc4LdwtQWCV56riFQ6BMhgTclWd
+         yWwkAogImQbVwYl4olG1BmUdrod0GLi9DBxLffDwHdupWUbncf61F6d+di7cY9AHhN
+         tDtZ2n410gOg83KqTEA5uExzlhdEaJsNujG9gOrfXMHuHAXvRpj2e9RGPRSfn70N2e
+         4iM6lNeesdzm4PUc7avdKD9dDrskFuNV50piGfN1EV78WnZwE5knJVtwZUoC3ePZlP
+         A3w7SjX3S6CzA==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org, keescook@chromium.org,
         mark.rutland@arm.com, catalin.marinas@arm.com,
         Ard Biesheuvel <ardb@kernel.org>
-Subject: [RFC PATCH v2 01/18] arm64: head: drop idmap_ptrs_per_pgd
-Date:   Wed, 30 Mar 2022 17:41:48 +0200
-Message-Id: <20220330154205.2483167-2-ardb@kernel.org>
+Subject: [RFC PATCH v2 02/18] arm64: head: split off idmap creation code
+Date:   Wed, 30 Mar 2022 17:41:49 +0200
+Message-Id: <20220330154205.2483167-3-ardb@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220330154205.2483167-1-ardb@kernel.org>
 References: <20220330154205.2483167-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2491; h=from:subject; bh=uNVpd+BcO15TfkQMvEjdAPTLmgNpGrNTiCbvCKq3dY4=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBiRHowjDNUTuBzPDhj4tlrcnrufU18eJ0Y2QTq8ucm sqP5WaWJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYkR6MAAKCRDDTyI5ktmPJBZJDA CTSp+PWIMaN/3XJAbyd2n6gJ9iLXY2j8OpCD7V8ippIWkmw/Jsl1E8UmxDIhHRLO0upjnVkdQgOMkG gj8fpVM8Oy6/h6nD2l30bob6HIpljdnTozXpJYSsYUI0ATnG4QAVs/PvUQ//s+j0c71jWtiXPdkPJu DaJK+w77dD0nuIvvMunGa3iPtwH/VCSMQ01PH7+Ca0ItAq32zrQef4QH5rztegzCi64K4eS42LlyZL cWSIQ6bxhT1OuFAMrytfnbDhZwjR/F9HYFO/mYQr9VbGYoY/TVL36UF5TfLF5k91AaJcINnqUKJ3EH R/n8x759FK8AYsFih7ibbc9W1EDumJrUtxJbPOrd+Mkh5/avHC9k4lz3vZHMQuY24NxAMMdNn0oJkl bg8avvRtQQGGblzLAgvUxfKeKvvzdYjiZ7g0PY7gZmyR/qdugL8GdlTdeZtmG3YVLlLbJDnUfPhIo7 eIV68gkUfbvcfUnV8TZ22Vz212So1jWpcFkmG6qpyDIno=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5833; h=from:subject; bh=1RGgIYkJzMKOK6H4zT0uJAGD/fEmshmpfZYVR6Ez7YU=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBiRHox/YZB+W3jSlgP1/vvwe92Hgoxw3EU7ALxZtEH ShywPCeJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYkR6MQAKCRDDTyI5ktmPJJ/uDA CfmmpKX0vmqVPFIFnkpzPRGTF1hHjEA3fQtSj13xpjRxy7IrhgzzVBTuGnXn6D9Bvr+R3RB3NVaQGw vqvu+Rq3gR2T7oyGRPM741zb7CPD0JSkQNhHDzenXm49l6yw2AEmKCLMzhkuviWc8eWeAMCYMiZG7D 2NM6DicgmhMU2g5dv3gpkD/cQc/sxVdiHZO6lUH5kocyOgV/aaY6aaku5iYskspn18b/SPfTm7oRhn BhaChJezGIAjXxP3IExajDFSJ2XgTJVhIJhDKzUk+hDTzulFiwe2WqgqhE0whJNCs0r2LZvZzyoIST VhAa4AfI31p5gRs6bGhg8S84eRzXyrewg0cwzixw4L42UiTxOKg3J5mT2wmoiK5sVLPCVn1akif9Jd cyta+wuLPTbjLn9PPivrdOv5qVJcaLj1yb2Y3BWqFSK7HZ/FHdUY9WRL6OnVLk7hWOV4jhM1V4s/u7 BuXqDv8fiLAuucM+Gdu/DrwBJjVK0CyVLUBVzeygu1djM=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -56,72 +56,187 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The assignment of idmap_ptrs_per_pgd lacks any cache invalidation, even
-though it is updated with the MMU and caches disabled. However, we never
-bother to read the value again except in the very next instruction, and
-so we can just drop the variable entirely.
+Split off the creation of the ID map page tables, so that we can avoid
+running it again unnecessarily when KASLR is in effect (which only
+randomizes the virtual placement). This will permit us to drop some
+explicit cache maintenance to the PoC which was necessary because the
+cache invalidation being performed on some global variables might
+otherwise clobber unrelated variables that happen to share a cacheline.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/include/asm/mmu_context.h | 1 -
- arch/arm64/kernel/head.S             | 4 ++--
- arch/arm64/mm/mmu.c                  | 1 -
- 3 files changed, 2 insertions(+), 4 deletions(-)
+ arch/arm64/kernel/head.S | 101 ++++++++++----------
+ 1 file changed, 52 insertions(+), 49 deletions(-)
 
-diff --git a/arch/arm64/include/asm/mmu_context.h b/arch/arm64/include/asm/mmu_context.h
-index 6770667b34a3..52eb234101a2 100644
---- a/arch/arm64/include/asm/mmu_context.h
-+++ b/arch/arm64/include/asm/mmu_context.h
-@@ -61,7 +61,6 @@ static inline void cpu_switch_mm(pgd_t *pgd, struct mm_struct *mm)
-  * physical memory, in which case it will be smaller.
-  */
- extern u64 idmap_t0sz;
--extern u64 idmap_ptrs_per_pgd;
- 
- /*
-  * Ensure TCR.T0SZ is set to the provided value.
 diff --git a/arch/arm64/kernel/head.S b/arch/arm64/kernel/head.S
-index 6a98f1a38c29..127e29f38715 100644
+index 127e29f38715..275cd14a70c2 100644
 --- a/arch/arm64/kernel/head.S
 +++ b/arch/arm64/kernel/head.S
-@@ -318,6 +318,7 @@ SYM_FUNC_START_LOCAL(__create_page_tables)
- 	 * this number conveniently equals the number of leading zeroes in
- 	 * the physical address of __idmap_text_end.
+@@ -84,7 +84,7 @@
+ 	 *  Register   Scope                      Purpose
+ 	 *  x21        primary_entry() .. start_kernel()        FDT pointer passed at boot in x0
+ 	 *  x23        primary_entry() .. start_kernel()        physical misalignment/KASLR offset
+-	 *  x28        __create_page_tables()                   callee preserved temp register
++	 *  x28        clear_page_tables()                      callee preserved temp register
+ 	 *  x19/x20    __primary_switch()                       callee preserved temp registers
+ 	 *  x24        __primary_switch() .. relocate_kernel()  current RELR displacement
  	 */
-+	mov	x4, PTRS_PER_PGD
- 	adrp	x5, __idmap_text_end
- 	clz	x5, x5
- 	cmp	x5, TCR_T0SZ(VA_BITS_MIN) // default T0SZ small enough?
-@@ -345,16 +346,15 @@ SYM_FUNC_START_LOCAL(__create_page_tables)
- 
- 	mov	x4, EXTRA_PTRS
- 	create_table_entry x0, x3, EXTRA_SHIFT, x4, x5, x6
-+	mov	x4, PTRS_PER_PGD
- #else
+@@ -94,7 +94,10 @@ SYM_CODE_START(primary_entry)
+ 	adrp	x23, __PHYS_OFFSET
+ 	and	x23, x23, MIN_KIMG_ALIGN - 1	// KASLR offset, defaults to 0
+ 	bl	set_cpu_boot_mode_flag
+-	bl	__create_page_tables
++	bl	clear_page_tables
++	bl	create_idmap
++	bl	create_kernel_mapping
++
  	/*
- 	 * If VA_BITS == 48, we don't have to configure an additional
- 	 * translation level, but the top-level table has more entries.
- 	 */
- 	mov	x4, #1 << (PHYS_MASK_SHIFT - PGDIR_SHIFT)
--	str_l	x4, idmap_ptrs_per_pgd, x5
+ 	 * The following calls CPU setup code, see arch/arm64/mm/proc.S for
+ 	 * details.
+@@ -122,6 +125,35 @@ SYM_CODE_START_LOCAL(preserve_boot_args)
+ 	b	dcache_inval_poc		// tail call
+ SYM_CODE_END(preserve_boot_args)
+ 
++SYM_FUNC_START_LOCAL(clear_page_tables)
++	mov	x28, lr
++
++	/*
++	 * Invalidate the init page tables to avoid potential dirty cache lines
++	 * being evicted. Other page tables are allocated in rodata as part of
++	 * the kernel image, and thus are clean to the PoC per the boot
++	 * protocol.
++	 */
++	adrp	x0, init_pg_dir
++	adrp	x1, init_pg_end
++	bl	dcache_inval_poc
++
++	/*
++	 * Clear the init page tables.
++	 */
++	adrp	x0, init_pg_dir
++	adrp	x1, init_pg_end
++	sub	x1, x1, x0
++1:	stp	xzr, xzr, [x0], #16
++	stp	xzr, xzr, [x0], #16
++	stp	xzr, xzr, [x0], #16
++	stp	xzr, xzr, [x0], #16
++	subs	x1, x1, #64
++	b.ne	1b
++
++	ret	x28
++SYM_FUNC_END(clear_page_tables)
++
+ /*
+  * Macro to create a table entry to the next page.
+  *
+@@ -252,44 +284,8 @@ SYM_CODE_END(preserve_boot_args)
+ 	populate_entries \tbl, \count, \istart, \iend, \flags, #SWAPPER_BLOCK_SIZE, \tmp
+ 	.endm
+ 
+-/*
+- * Setup the initial page tables. We only setup the barest amount which is
+- * required to get the kernel running. The following sections are required:
+- *   - identity mapping to enable the MMU (low address, TTBR0)
+- *   - first few MB of the kernel linear mapping to jump to once the MMU has
+- *     been enabled
+- */
+-SYM_FUNC_START_LOCAL(__create_page_tables)
+-	mov	x28, lr
+ 
+-	/*
+-	 * Invalidate the init page tables to avoid potential dirty cache lines
+-	 * being evicted. Other page tables are allocated in rodata as part of
+-	 * the kernel image, and thus are clean to the PoC per the boot
+-	 * protocol.
+-	 */
+-	adrp	x0, init_pg_dir
+-	adrp	x1, init_pg_end
+-	bl	dcache_inval_poc
+-
+-	/*
+-	 * Clear the init page tables.
+-	 */
+-	adrp	x0, init_pg_dir
+-	adrp	x1, init_pg_end
+-	sub	x1, x1, x0
+-1:	stp	xzr, xzr, [x0], #16
+-	stp	xzr, xzr, [x0], #16
+-	stp	xzr, xzr, [x0], #16
+-	stp	xzr, xzr, [x0], #16
+-	subs	x1, x1, #64
+-	b.ne	1b
+-
+-	mov	x7, SWAPPER_MM_MMUFLAGS
+-
+-	/*
+-	 * Create the identity mapping.
+-	 */
++SYM_FUNC_START_LOCAL(create_idmap)
+ 	adrp	x0, idmap_pg_dir
+ 	adrp	x3, __idmap_text_start		// __pa(__idmap_text_start)
+ 
+@@ -356,12 +352,23 @@ SYM_FUNC_START_LOCAL(__create_page_tables)
  #endif
  1:
--	ldr_l	x4, idmap_ptrs_per_pgd
  	adr_l	x6, __idmap_text_end		// __pa(__idmap_text_end)
++	mov	x7, SWAPPER_MM_MMUFLAGS
  
  	map_memory x0, x1, x3, x6, x7, x3, x4, x10, x11, x12, x13, x14
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 626ec32873c6..e74a6453cb14 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -44,7 +44,6 @@
- #define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
  
- u64 idmap_t0sz = TCR_T0SZ(VA_BITS_MIN);
--u64 idmap_ptrs_per_pgd = PTRS_PER_PGD;
+ 	/*
+-	 * Map the kernel image (starting with PHYS_OFFSET).
++	 * Since the page tables have been populated with non-cacheable
++	 * accesses (MMU disabled), invalidate those tables again to
++	 * remove any speculatively loaded cache lines.
+ 	 */
++	dmb	sy
++
++	adrp	x0, idmap_pg_dir
++	adrp	x1, idmap_pg_end
++	b	dcache_inval_poc		// tail call
++SYM_FUNC_END(create_idmap)
++
++SYM_FUNC_START_LOCAL(create_kernel_mapping)
+ 	adrp	x0, init_pg_dir
+ 	mov_q	x5, KIMAGE_VADDR		// compile time __va(_text)
+ 	add	x5, x5, x23			// add KASLR displacement
+@@ -370,6 +377,7 @@ SYM_FUNC_START_LOCAL(__create_page_tables)
+ 	adrp	x3, _text			// runtime __pa(_text)
+ 	sub	x6, x6, x3			// _end - _text
+ 	add	x6, x6, x5			// runtime __va(_end)
++	mov	x7, SWAPPER_MM_MMUFLAGS
  
- u64 __section(".mmuoff.data.write") vabits_actual;
- EXPORT_SYMBOL(vabits_actual);
+ 	map_memory x0, x1, x5, x6, x7, x3, x4, x10, x11, x12, x13, x14
+ 
+@@ -380,16 +388,10 @@ SYM_FUNC_START_LOCAL(__create_page_tables)
+ 	 */
+ 	dmb	sy
+ 
+-	adrp	x0, idmap_pg_dir
+-	adrp	x1, idmap_pg_end
+-	bl	dcache_inval_poc
+-
+ 	adrp	x0, init_pg_dir
+ 	adrp	x1, init_pg_end
+-	bl	dcache_inval_poc
+-
+-	ret	x28
+-SYM_FUNC_END(__create_page_tables)
++	b	dcache_inval_poc		// tail call
++SYM_FUNC_END(create_kernel_mapping)
+ 
+ 	/*
+ 	 * Initialize CPU registers with task-specific and cpu-specific context.
+@@ -881,7 +883,8 @@ SYM_FUNC_START_LOCAL(__primary_switch)
+ 	pre_disable_mmu_workaround
+ 	msr	sctlr_el1, x20			// disable the MMU
+ 	isb
+-	bl	__create_page_tables		// recreate kernel mapping
++	bl	clear_page_tables
++	bl	create_kernel_mapping		// recreate kernel mapping
+ 
+ 	tlbi	vmalle1				// Remove any stale TLB entries
+ 	dsb	nsh
 -- 
 2.30.2
 
