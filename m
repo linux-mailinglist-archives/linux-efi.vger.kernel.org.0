@@ -2,48 +2,48 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C1044EC8A2
-	for <lists+linux-efi@lfdr.de>; Wed, 30 Mar 2022 17:42:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28C8D4EC89E
+	for <lists+linux-efi@lfdr.de>; Wed, 30 Mar 2022 17:42:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236569AbiC3PoW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 30 Mar 2022 11:44:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55918 "EHLO
+        id S1348356AbiC3PoX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 30 Mar 2022 11:44:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348356AbiC3PoU (ORCPT
+        with ESMTP id S1348358AbiC3PoU (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Wed, 30 Mar 2022 11:44:20 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B774533E9E
-        for <linux-efi@vger.kernel.org>; Wed, 30 Mar 2022 08:42:33 -0700 (PDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1785834644
+        for <linux-efi@vger.kernel.org>; Wed, 30 Mar 2022 08:42:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6C9BEB81D69
-        for <linux-efi@vger.kernel.org>; Wed, 30 Mar 2022 15:42:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C4CC3410F;
-        Wed, 30 Mar 2022 15:42:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E1276171D
+        for <linux-efi@vger.kernel.org>; Wed, 30 Mar 2022 15:42:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0731C34110;
+        Wed, 30 Mar 2022 15:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648654951;
-        bh=VnakrP68jMnJ7VVKYfr1DkuBhjm1zYhf09fUkYU6tZU=;
+        s=k20201202; t=1648654953;
+        bh=xZEdYTbXCe7JfKTWqI5SD0j4aITkdy54wHudB8ZRqoQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kdgtQYJqkSbJnuPBFalasAzfOTUx1wAITPJ+pY/7TjyD3WxqwT8NKr4Yj8UilIgi9
-         lcq0SADqc60yQgYXXlo0dDOjowsJzRya1V+zFhjOfaMOYp19/Rdj7UhcsODSceMZm1
-         HGxJlU/etR1o3MddqJxs9Soq0bRxvUJBmoGD5/ew+tRhItA2t+EOwGL6V4BVLK7dmF
-         Fu/rH/za9+DB+nMEfVNSDSzeq46knU8nBfQ8yc4b82Xdz+dWDp//WelDDu3dmA28DF
-         9IHyIVyi3c0AcmWAgQAwKIIrAGYuN8WybUByqJAsHKr6RrLVvaU3KFAOLwFBwiVHOX
-         g7fJAEDqDGKaw==
+        b=iqPjDKiVvC/q9jrWWAragOI3tdS90fir5S014dwlWqlG8VJABNRI8KL5fy+nn0hgx
+         MCoNH2IptPoLXDlkB77oplr7NUMOwD7IWH+yQsh95AzuXF1Q0K/PeTRg5N3wfqa99e
+         +/jUx6ru7pWrJmEQjP6v4rE9bo0ICaGmykeUx/peBy24gyeoTYntpv2scMDbIV4Gq0
+         M4sykywYpAY7RNd4TnrhRpT+/t4OPb3pUmxsHSX0rx33bOk/QcYtqlR4r78QRk2Bdj
+         j/v68AWVsQUzgE71dib7O6lqYWV9me0DLFWbUSAYkYzagH2f+kcXF6FG98GXGXuNcu
+         UwhG0bthgd9hA==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org, keescook@chromium.org,
         mark.rutland@arm.com, catalin.marinas@arm.com,
         Ard Biesheuvel <ardb@kernel.org>
-Subject: [RFC PATCH v2 10/18] arm64: head: record the MMU state at primary entry
-Date:   Wed, 30 Mar 2022 17:41:57 +0200
-Message-Id: <20220330154205.2483167-11-ardb@kernel.org>
+Subject: [RFC PATCH v2 11/18] arm64: mm: make vabits_actual a build time constant if possible
+Date:   Wed, 30 Mar 2022 17:41:58 +0200
+Message-Id: <20220330154205.2483167-12-ardb@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220330154205.2483167-1-ardb@kernel.org>
 References: <20220330154205.2483167-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2220; h=from:subject; bh=VnakrP68jMnJ7VVKYfr1DkuBhjm1zYhf09fUkYU6tZU=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBiRHo/CuCO1CDC3F1jfOi5U0g6OytEgCjUpRq73M4e itcfC8+JAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYkR6PwAKCRDDTyI5ktmPJOhGC/ wLFqlyboSaMzIoukbL6OLiJ3OnHkaSboDffWF0+ubx9bTG+iFNXqYQBxNzf3yhQtTFwJxtc8LhsXG6 9ZlmIqPDh+G9/mxpBLNQ3ZqCA0h3t/nw4EXPBYxVOD+n1lkgTl2umjU6T8kgTqB5uOYjFLgPDBBO0a npXhBQ93uGI1oyGERO/CTulm6qIOm12P8QSi6t7KY891PVNWfYDD+7mz72ILJIkFHt+BINs6MzUmIq 38yKERoUjE051YcDAnE7wJO6agxlyGrv5kp+HXF+FQQuVEDoWoalGKdjtyzpeLKrGFb+nxTWpeRTs6 cx+GwH9bZj2TBp+xTjM7bNOkD9KyGW/IYdJn/A0+kCgunQGOJTfUr5fBQJ2A7VtJiPfSZ5AVKRH8Eh 2lJ93E0cdyn8owuQWclmXDFuUd5We1Mc/lO80HfFDXX6wwNFByoiRhkS6KhfByHceMspO5VLr+nJ2l mwwihh0Sjyk8tu9V0yB10BwYIPZ/1LXBW6GXLIPJmuZTw=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2363; h=from:subject; bh=xZEdYTbXCe7JfKTWqI5SD0j4aITkdy54wHudB8ZRqoQ=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBiRHpA9D1NAzcsAwAeK2EcEXC9/Ejp2XtNMHroPqRu zaDYGsOJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYkR6QAAKCRDDTyI5ktmPJLi2C/ 4gIjV/TkGE0WFbGB/dko/5oilOKU7Tau+yxXGclk607mrcLQnhsBsZNWwFdxuuW4KUxteHZgV52X63 jdANoEcM/L+WjuwgRE9nzG3FACaDU7waFNAVLTrUcoYfGX8AikV4xymSJtuEjZTlqtgECQSbsbgL2o cJhx1J9xXY/IYAGm48rdUi+9uA7RX0DExKJHOOoT0VsHzO0VDmwd0VXcJpK61N13cQuAjZqc+x3UMy IXw7rmqmRwIV+sbDiL1aRnmMhFnDOh8+MhIHxh/2ohPh652V5OLLkhkZfDiUr55cOWIODlCFtQ+5cN uxkYc++qqsCduZvSEP2T61AeM6GNbSFJOpFiy3wYZWvNuPBZ+W5UVTizskngjA3KyBiQpnEKbkYr/c GnDYoiiyeCT9/nCivettCvAQMIvWL+MIJ/LvIn6ICxtXKqBlvNMzoJDVptjMOxH7122YyaW6nbPxgU /Kd6r+KpQ4oNKtSuxnC6pi1CAyG1As7pcwZ9lRaO9mdrg=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -56,77 +56,84 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Prepare for being able to deal with primary entry with the MMU and
-caches enabled, by recording whether or not we entered with the MMU on
-in register x22.
-
-While at it, add disable_mmu_workaround macro invocations to
-init_kernel_el, as its manipulation of SCTLR_ELx may come down to
-disabling of the MMU after subsequent patches.
+Currently, we only support 52-bit virtual addressing on 64k pages
+configurations, and in all other cases, vabits_actual is guaranteed to
+equal VA_BITS (== VA_BITS_MIN). So get rid of the variable entirely in
+that case.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/kernel/head.S | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/arm64/include/asm/memory.h | 4 ++++
+ arch/arm64/kernel/head.S        | 7 +++----
+ arch/arm64/mm/mmu.c             | 2 ++
+ 3 files changed, 9 insertions(+), 4 deletions(-)
 
+diff --git a/arch/arm64/include/asm/memory.h b/arch/arm64/include/asm/memory.h
+index 2f1a48be11cf..c989f6bf5426 100644
+--- a/arch/arm64/include/asm/memory.h
++++ b/arch/arm64/include/asm/memory.h
+@@ -174,7 +174,11 @@
+ #include <linux/types.h>
+ #include <asm/bug.h>
+ 
++#if VA_BITS > 48
+ extern u64			vabits_actual;
++#else
++#define vabits_actual		VA_BITS
++#endif
+ 
+ extern s64			memstart_addr;
+ /* PHYS_OFFSET - the physical address of the start of memory. */
 diff --git a/arch/arm64/kernel/head.S b/arch/arm64/kernel/head.S
-index f3b096daf1c5..44e2e39046a9 100644
+index 44e2e39046a9..836237289ffb 100644
 --- a/arch/arm64/kernel/head.S
 +++ b/arch/arm64/kernel/head.S
-@@ -83,9 +83,11 @@
- 	 *
- 	 *  Register   Scope                      Purpose
- 	 *  x21        primary_entry() .. start_kernel()        FDT pointer passed at boot in x0
-+	 *  x22        primary_entry() .. start_kernel()        whether we entered with the MMU on
- 	 *  x23        __primary_switch() .. relocate_kernel()  physical misalignment/KASLR offset
- 	 */
- SYM_CODE_START(primary_entry)
-+	bl	record_mmu_state
- 	bl	preserve_boot_args
- 	bl	init_kernel_el			// w0=cpu_boot_mode
- 	bl	set_cpu_boot_mode_flag
-@@ -101,6 +103,17 @@ SYM_CODE_START(primary_entry)
- 	b	__primary_switch
- SYM_CODE_END(primary_entry)
+@@ -283,19 +283,18 @@ SYM_FUNC_START_LOCAL(create_idmap)
+ 	adrp	x0, idmap_pg_dir
+ 	adrp	x3, _text			// __pa(_text)
  
-+SYM_CODE_START_LOCAL(record_mmu_state)
-+	mrs	x22, CurrentEL
-+	cmp	x22, #CurrentEL_EL2
-+	mrs	x22, sctlr_el1
-+	b.ne	0f
-+	mrs	x22, sctlr_el2
-+0:	tst	x22, #SCTLR_ELx_M
-+	cset	w22, ne
-+	ret
-+SYM_CODE_END(record_mmu_state)
-+
- /*
-  * Preserve the arguments passed by the bootloader in x0 .. x3
-  */
-@@ -485,6 +498,7 @@ SYM_FUNC_START(init_kernel_el)
- 
- SYM_INNER_LABEL(init_el1, SYM_L_LOCAL)
- 	mov_q	x0, INIT_SCTLR_EL1_MMU_OFF
-+	pre_disable_mmu_workaround
- 	msr	sctlr_el1, x0
- 	isb
- 	mov_q	x0, INIT_PSTATE_EL1
-@@ -516,6 +530,7 @@ SYM_INNER_LABEL(init_el2, SYM_L_LOCAL)
- 
- 	/* Switching to VHE requires a sane SCTLR_EL1 as a start */
- 	mov_q	x0, INIT_SCTLR_EL1_MMU_OFF
-+	pre_disable_mmu_workaround
- 	msr_s	SYS_SCTLR_EL12, x0
- 
- 	/*
-@@ -531,6 +546,7 @@ SYM_INNER_LABEL(init_el2, SYM_L_LOCAL)
- 
+-#ifdef CONFIG_ARM64_VA_BITS_52
++#if (VA_BITS > 48)
+ 	mrs_s	x6, SYS_ID_AA64MMFR2_EL1
+ 	and	x6, x6, #(0xf << ID_AA64MMFR2_LVA_SHIFT)
+ 	mov	x5, #52
+ 	cbnz	x6, 1f
+-#endif
+ 	mov	x5, #VA_BITS_MIN
  1:
- 	mov_q	x0, INIT_SCTLR_EL1_MMU_OFF
-+	pre_disable_mmu_workaround
- 	msr	sctlr_el1, x0
+ 	adr_l	x6, vabits_actual
+ 	str	x5, [x6]
+ 	dmb	sy
+ 	dc	ivac, x6		// Invalidate potentially stale cache line
+-
++#endif
+ 	/*
+ 	 * VA_BITS may be too small to allow for an ID mapping to be created
+ 	 * that covers system RAM if that is located sufficiently high in the
+@@ -725,7 +724,7 @@ SYM_FUNC_START(__enable_mmu)
+ SYM_FUNC_END(__enable_mmu)
  
- 	msr	elr_el2, lr
+ SYM_FUNC_START(__cpu_secondary_check52bitva)
+-#ifdef CONFIG_ARM64_VA_BITS_52
++#if (VA_BITS > 48)
+ 	ldr_l	x0, vabits_actual
+ 	cmp	x0, #52
+ 	b.ne	2f
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index 20dd95a750bc..8933d4f72427 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -45,8 +45,10 @@
+ 
+ u64 idmap_t0sz = TCR_T0SZ(VA_BITS_MIN);
+ 
++#if (VA_BITS > 48)
+ u64 __section(".mmuoff.data.write") vabits_actual;
+ EXPORT_SYMBOL(vabits_actual);
++#endif
+ 
+ u64 kimage_voffset __ro_after_init;
+ EXPORT_SYMBOL(kimage_voffset);
 -- 
 2.30.2
 
