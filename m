@@ -2,157 +2,203 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C95664EBAA4
-	for <lists+linux-efi@lfdr.de>; Wed, 30 Mar 2022 08:12:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A76F14EBB62
+	for <lists+linux-efi@lfdr.de>; Wed, 30 Mar 2022 09:02:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229950AbiC3GOR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 30 Mar 2022 02:14:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57506 "EHLO
+        id S243548AbiC3HEZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 30 Mar 2022 03:04:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241944AbiC3GOP (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 30 Mar 2022 02:14:15 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2E42344C7;
-        Tue, 29 Mar 2022 23:12:30 -0700 (PDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22U4uadu035415;
-        Wed, 30 Mar 2022 06:12:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=2p+VfMA5uwCNYrlHBOCjlIzvMpTMcxZ4c82raGuzbWE=;
- b=COYcBlOBPQtNJt9mJEpxPIghjADJKZ7w4oYjykadGnc86iKz2McfzFzmrWy9brCAbJkb
- 0VJjhwEBRF4QYni4Z2TM7KTF/BVxCOf6MNRhkXfIRdfOaN2AicyIFzkYvEvBl1glOirs
- FTJvLf7aVnfv2AnaDi+PNtOHBNstDA+nk8bg2qLb+WQS1A45RM3UkmeND4VYYlOl13rr
- GTtensacYaGi5N16kMe6Rv+TQyvhRilcVuCqZmE0zlQqOCRckMGnJsrfzJaey4CBJgcR
- cLJrLdsJpg26PptyUNuoyNOgyMQsmx8/UrbBzWim+AMKvoqKt5bulqHDImE66X5oS3TL Bw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3f40c8x594-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 30 Mar 2022 06:12:02 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22U65l7I007664;
-        Wed, 30 Mar 2022 06:12:01 GMT
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3f40c8x58v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 30 Mar 2022 06:12:01 +0000
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
-        by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22U69LdH032360;
-        Wed, 30 Mar 2022 06:12:00 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
-        by ppma05wdc.us.ibm.com with ESMTP id 3f1tfa31mh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 30 Mar 2022 06:12:00 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
-        by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 22U6Bxf022741458
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 30 Mar 2022 06:11:59 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D5220112062;
-        Wed, 30 Mar 2022 06:11:59 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 703DE112067;
-        Wed, 30 Mar 2022 06:11:55 +0000 (GMT)
-Received: from [9.160.79.229] (unknown [9.160.79.229])
-        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
-        Wed, 30 Mar 2022 06:11:55 +0000 (GMT)
-Message-ID: <247080bd-fef5-c892-7753-f9b7cf650166@linux.ibm.com>
-Date:   Wed, 30 Mar 2022 09:11:54 +0300
+        with ESMTP id S242559AbiC3HET (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 30 Mar 2022 03:04:19 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 571EEE3898;
+        Wed, 30 Mar 2022 00:02:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 15321B81B7F;
+        Wed, 30 Mar 2022 07:02:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB750C34116;
+        Wed, 30 Mar 2022 07:02:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648623750;
+        bh=wpVECZ3sXO7GwRz1XNWKB5ozsYjbXV0ijOo0t5EBFf4=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=BvqOQs/jqyJKbjDS+B3LViQLKZj9KlDyTt9BLeCtqzcJHakXaG7RdemePGiezBRyU
+         rAQBE4w71PMZhUgSjDygTcZSkGRVHyXWUulVbbjCNo//fojusTiTaQn+bU/68Ij2mz
+         qjBwtho7rI+ppRly6VLcL7OlGxbe6DfFGIESISgrckzfnOs1IP8cn0qYXIMVKUf2d5
+         asPIkUGPaa2bPRCS1zmufh6CMbGSx9xCEE7jbyNJo34zTwG1SWK07ojB6jihok8pM3
+         XIHZQWPG+hcerN1IxpvYKRZfKMPvvnJGaDP8UT877xfcJlumnE3S/EZctoMgXX7CR4
+         Rhmwuh/9XKl9A==
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-de3ca1efbaso21198273fac.9;
+        Wed, 30 Mar 2022 00:02:30 -0700 (PDT)
+X-Gm-Message-State: AOAM531EmzXbDXls/st5j3Z1DpUAjTVTqnx2OBbymn5SPtugh7yR9rKm
+        gscPQh+emAjcO3aUhPDTBmaxYHispcP/ITxfLdE=
+X-Google-Smtp-Source: ABdhPJycQ0z03NeGuyDd4f+VqMbzka78HzPg5y9ZP9zP0S4NCdSssehttV8PYxT/KoPr4OTaVPtS1io+ePzyQJwTXZQ=
+X-Received: by 2002:a05:6870:b027:b0:de:7fcd:fabf with SMTP id
+ y39-20020a056870b02700b000de7fcdfabfmr1579995oae.126.1648623749792; Wed, 30
+ Mar 2022 00:02:29 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v8 0/4] Allow guest access to EFI confidential computing
- secret area
-Content-Language: en-US
-To:     Borislav Petkov <bp@suse.de>
-Cc:     linux-efi@vger.kernel.org, Ashish Kalra <ashish.kalra@amd.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Andrew Scull <ascull@google.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Lenny Szubowicz <lszubowi@redhat.com>,
-        Peter Gonda <pgonda@google.com>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>,
-        Daniele Buono <dbuono@linux.vnet.ibm.com>,
-        linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>
-References: <20220228114254.1099945-1-dovmurik@linux.ibm.com>
- <YjydSNnG6EJ1KWx0@zn.tnic>
- <f2fb7553-0313-6393-c93c-2bb6619086dc@linux.ibm.com>
- <YkNQNzNa02Sndu+q@zn.tnic>
- <7696ba46-91c7-7119-bd68-b3521459cf37@linux.ibm.com>
-From:   Dov Murik <dovmurik@linux.ibm.com>
-In-Reply-To: <7696ba46-91c7-7119-bd68-b3521459cf37@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: hwm7FFhPyN3fkPL7ktrNEzWHOT8Cvb0b
-X-Proofpoint-GUID: YrtY1ADfDzcA_fuzCXaHOyAuxmCX6GwG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-30_02,2022-03-29_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
- mlxscore=0 spamscore=0 malwarescore=0 impostorscore=0 lowpriorityscore=0
- adultscore=0 phishscore=0 priorityscore=1501 mlxlogscore=999 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
- definitions=main-2203300028
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H4,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220329174057.GA17778@srcf.ucam.org>
+In-Reply-To: <20220329174057.GA17778@srcf.ucam.org>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 30 Mar 2022 09:02:18 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXE-7yPTBgQQKXRnQbdvLMv6D7=CowtQ38PdpPVa3SW-Ag@mail.gmail.com>
+Message-ID: <CAMj1kXE-7yPTBgQQKXRnQbdvLMv6D7=CowtQ38PdpPVa3SW-Ag@mail.gmail.com>
+Subject: Re: Linux DRTM on UEFI platforms
+To:     Matthew Garrett <mjg59@srcf.ucam.org>
+Cc:     Daniel Kiper <daniel.kiper@oracle.com>,
+        Alec Brown <alec.r.brown@oracle.com>,
+        Kanth Ghatraju <kanth.ghatraju@oracle.com>,
+        Ross Philipson <ross.philipson@oracle.com>,
+        "dpsmith@apertussolutions.com" <dpsmith@apertussolutions.com>,
+        "piotr.krol@3mdeb.com" <piotr.krol@3mdeb.com>,
+        "krystian.hebel@3mdeb.com" <krystian.hebel@3mdeb.com>,
+        "persaur@gmail.com" <persaur@gmail.com>,
+        "Yoder, Stuart" <stuart.yoder@arm.com>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        "michal.zygowski@3mdeb.com" <michal.zygowski@3mdeb.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        "lukasz@hawrylko.pl" <lukasz@hawrylko.pl>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        The development of GNU GRUB <grub-devel@gnu.org>,
+        Kees Cook <keescook@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+Hi Matt,
 
+On Tue, 29 Mar 2022 at 19:41, Matthew Garrett <mjg59@srcf.ucam.org> wrote:
+>
+> We're still trying to come to a conclusion about the most maintainable
+> approach to getting DRTM implementations like Intel TXT working on UEFI
+> platforms under Linux. I'm going to try to summarise the situation here
+> - I'm not an expert, so details may be inaccurate, but I think this is
+> the rough shape of things.
+>
+> Under normal circumstances on UEFI platforms, the bootloader (or system
+> firmware directly) load the kernel and execute code in the boot stub.
+> This boot stub code interacts with the firmware in various ways,
+> including working around some platform-specific issues and doing things
+> like copying the TPM event log into memory that can be used by the
+> kernel proper. While it remains technically possible to boot the kernel
+> on x86 UEFI platforms by jumping directly to the kernel entry point and
+> skipping the boot stub, this risks disabling certain functionality and
+> leaving the kernel in a slightly unexpected state. The contract that
+> exists between the UEFI stub and the kernel is not meaningfully
+> documented - portions are carried out by updating the contents of the
+> bootparams struct on x86 or devicetree on ARM, but other information is
+> conveyed via UEFI configuration tables, the boot stub may modify the
+> contents of certain UEFI variables, and some of this is implicit in
+> the form of hardware state.
+>
+> The Trenchboot project is attempting to implement DRTM under Linux.
+> Traditional measured boot takes the form of a static root of trust -
+> each component in the boot chain is measured by the previous component
+> before being executed, and each measures what it considers to be
+> security relevant configuration and behavioural state. Modifying any
+> component will change the measurements, even if the end result is
+> equivalent. Dynamic Root of Trust Measurement aims to provide more
+> useful measurements by performing a measurement at a specific point in
+> time - as a result, DRTM cares only about what the state *is*, not what
+> happened before then.
+>
+> There's a bunch of complexity involved in this that's vendor specific,
+> but the short version is that a launch environment is set up and a
+> specific CPU instruction executed that triggers a secure launch event.
+> The Trenchboot code consists of patches to bootloaders to support
+> setting up this environment, and patches to the kernel to provide
+> support for the "Secure Launch" kernel that handles DRTM before handing
+> control off to the kernel proper, skipping the UEFI boot stub.
+>
+> Since this skips the UEFI boot stub, it's then the responsibility of the
+> bootloader to implement the functionality of the boot stub. This is made
+> difficult due to the absence of an express contract between the boot
+> stub and the rest of the kernel - our assumption has been that the code
+> is the contract, and this is free to change arbitrarily since both the
+> producer and the consumer of the information can be updated
+> simultaneously and can't get out of sync. That seems to leave us with
+> two options:
+>
+> 1) Formalise the contract between the boot stub and the kernel, making
+> it easier for other boot loaders to implement the contract. This has the
+> downside that even within the scope of the contract we may end up with
+> divergent behaviour, and also new functionality in the kernel may not be
+> available without the bootloader also being updated.
+>
+> 2) Modify the boot stub such that it can be provided with a callback,
+> and instead of jumping to the kernel it can jump to the callback. The
+> boot flow would then involve the boot loader setting up the launch
+> environment, calling the boot stub code, and then performing the DRTM
+> event. This avoids requiring an explicit contract (the boot stub would
+> remain part of the kernel image and would be updated in lockstep).
+>
+> One complexity for both approaches is that the secure launch environment
+> needs to be aware of all security-critical state in the system. The
+> firmware nominally exposes that information for everything it's aware
+> of that's security-critical, but the boot stub may have performed
+> security-critical actions or exposed security-critical state that the
+> firmware is unaware of. The secure launch code from Trenchboot has to be
+> aware of this in order to ensure it's measured.
+>
+> If there's a contract, then in theory this would be embodied in the
+> contract and when the contract is updated the secure launch code could
+> also be updated. If there's no contract, every change to the boot stub
+> would need to be examined and the secure launch code updated if
+> necessary.
+>
+> While the secure launch code is currently out of tree, the goal is for
+> it to be integrated into the kernel tree. My feeling is that it's
+> going to be easier to manage this if everything is in tree - ie, all the
+> EFI setup code that does anything security-critical is either in the
+> firmware (and so the firmware takes responsibility for exposing it) or
+> is in the Linux tree (and so we take responsibility for updating the
+> secure launch code whenever something relevant changes in the boot
+> stub). But this requires support from the EFI maintainers in terms of
+> not merging things until we've established whether updates are required
+> to the secure launch code. The alternative is effectively the same,
+> except it would require updating the contract instead.
+>
+> But, as mentioned, that's just my feeling - I know that Daniel feels
+> that the contract approach is preferable. So:
+>
+> 1) From an EFI maintainer perspective, is making the contract between
+> the boot stub and the kernel explicit viable?
+>
 
-On 29/03/2022 23:28, Dov Murik wrote:
-> 
-> 
-> On 29/03/2022 21:30, Borislav Petkov wrote:
-> 
->>
->> So now that I think of it, it would be even nicer if the fact whether
->> guest debugging is allowed, were available to the guest *very early*
->> during boot. Because I think the most important cases where you'd want
->> to singlestep a SEV* guest with the qemu gdbstub is early guest kernel
->> boot code. So it would be cool if we'd have access to the debugging
->> setting that early.
->>
->> Lemme have a look at your patches in detail to get an idea what's
->> happening there.
-> 
+No. The direction of travel has been to define EFI boot only in terms
+of the handover from the loader to the stub. What happens next is up
+to the architecture, and is deliberately not specified, because it is
+considered to be internal Linux ABI. We've deviated from this once for
+Xen on ARM, but this means we have already painted ourselves into a
+corner when it comes the way we use DT internally at the handover
+point between stub and kernel proper, and I am not eager to repeat
+that. Locking down the stub-to-kernel protocol for all architectures
+is not the way to go.
 
-After a night's sleep I figured out that an SEV guest cannot tell if a
-value it's reading was (a) encrypted by the host using
-KVM_SEV_LAUNCH_UPDATE_DATA, or (b) added using secret injection using
-KVM_SEV_LAUNCH_SECRET.
+> 2) If so, is it desirable?
+>
+> 3) If either (1) or (2) is "no", is it reasonable to ensure that all
+> potentially security-critical state or configuration changes to the
+> boot stub are reviewed by DRTM people to verify whether the secure
+> launch code needs to be updated to match?
 
-The only difference is that if the host is using
-KVM_SEV_LAUNCH_UPDATE_DATA, then it changes the measurement.  But maybe
-for debugging scenarios we (= Guest Owner) don't care about the
-measurement being correct.
+Wouldn't it be better for the secure launch kernel to boot the EFI
+entrypoint directly? As it happens, I just completed a PoC last week
+for a minimal implementation of EFI (in Rust) that only carries the
+pieces that the EFI stub needs to boot Linux. It is currently just a
+proof of concept that only works on QEMU/arm64, but it should not be
+too hard to adapt it for x86 and for booting a kernel that has already
+been loaded to memory.
 
-If that's the case, we don't need a secure channel and secret injection.
-You can use a simple "sev=debug" (or whatever) in the kernel
-command-line to indicate your needs.
-
-
-Did I miss something?
-
-
--Dov
-
+[0] https://github.com/ardbiesheuvel/efilite
