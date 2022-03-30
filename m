@@ -2,48 +2,48 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BD064EC893
-	for <lists+linux-efi@lfdr.de>; Wed, 30 Mar 2022 17:42:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 280334EC897
+	for <lists+linux-efi@lfdr.de>; Wed, 30 Mar 2022 17:42:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348341AbiC3PoJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 30 Mar 2022 11:44:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54854 "EHLO
+        id S1348354AbiC3PoK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 30 Mar 2022 11:44:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348339AbiC3PoG (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 30 Mar 2022 11:44:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06C2533E3E
-        for <linux-efi@vger.kernel.org>; Wed, 30 Mar 2022 08:42:21 -0700 (PDT)
+        with ESMTP id S1348339AbiC3PoJ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 30 Mar 2022 11:44:09 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53E7133E3E
+        for <linux-efi@vger.kernel.org>; Wed, 30 Mar 2022 08:42:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9111F61562
-        for <linux-efi@vger.kernel.org>; Wed, 30 Mar 2022 15:42:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 906F7C340F2;
-        Wed, 30 Mar 2022 15:42:18 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 086F6B81D69
+        for <linux-efi@vger.kernel.org>; Wed, 30 Mar 2022 15:42:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69AB7C340F0;
+        Wed, 30 Mar 2022 15:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648654940;
-        bh=c6iRYtAbo4zUXLvlyPL5mdWMCH5xxMM/KqJwOLjBhFA=;
+        s=k20201202; t=1648654941;
+        bh=C6C0qQGA9jNONZmANfUf7mwnHxAXIQajunpYmEvB7yU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hGM4OE8iUs2dTV3Li+2QCehHoWLE5Hfp/1lNKWqux4NMiIXtNUtcvuSHwJ0cithwq
-         lBpHzfqCeeFlWckA1d6Hz8m3PD1kNtgRu7Ln16vG7vXA7Wsj/jFD2lF0gbqSvMUfO3
-         NP0pXqEFszKZhRNVWzxKFNdwu25HT4MjjwWo3U9pIL16Mj3vj2b+QPvH2jzATecI4u
-         W/8BNBN6iTI4q/NXuOB7V6NQHXNR5ciB64r7LOvKFI5LbshM4h985NLNql0vtrcclV
-         ARjGOAq2QFTsCtiJFUIqr4uE+aFX0bUxYgy+znPGVGnXqmdlY/SpCYdbhy3TSrSTjb
-         UpVR5+SAYh94g==
+        b=f4b5Ga789w3AGlqQYMf5WrUaz7b60GPwjU+YLWov+2FDFLfyEvian6UP3xFTDbvdS
+         5cN122YtljDMQbOEF1lRzNv5pCWfMcLTq4XINNwajglsQ9esUC7X7eMS1WCPnNTi3h
+         A4uBMwlsXX/xfcMpyPNcKL/O9UrVubq8E67ig+zL6S0+Qym6vGQyPgRTfJsp9A55VS
+         NdSpcbV+e8UAisSzIifKoCm2hJqfgxjghh3B+GiAgg+F2H7HfP4xNLztPs5tvd3ttE
+         j9jq8IiqIQyZ08GgpjY5q+Ve7ZouDgHdEahpsCm9JRexhxFMb4CdxRqSCYl0kYEVPg
+         Kbdn0Tj02fSKA==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org, keescook@chromium.org,
         mark.rutland@arm.com, catalin.marinas@arm.com,
         Ard Biesheuvel <ardb@kernel.org>
-Subject: [RFC PATCH v2 04/18] arm64: head: cover entire kernel image in ID map
-Date:   Wed, 30 Mar 2022 17:41:51 +0200
-Message-Id: <20220330154205.2483167-5-ardb@kernel.org>
+Subject: [RFC PATCH v2 05/18] arm64: head: factor out TTBR1 assignment into a macro
+Date:   Wed, 30 Mar 2022 17:41:52 +0200
+Message-Id: <20220330154205.2483167-6-ardb@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220330154205.2483167-1-ardb@kernel.org>
 References: <20220330154205.2483167-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2885; h=from:subject; bh=c6iRYtAbo4zUXLvlyPL5mdWMCH5xxMM/KqJwOLjBhFA=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBiRHo1bwvcFKr9aJYAFLwhx72X6WP77BHK5U7s1aXY iI6OdOuJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYkR6NQAKCRDDTyI5ktmPJFfBC/ 9ioYg7jfchoEqb2LfzWB/OTkgGcnJdBDUVkCn1V4WqhDm4AjW/bJ9tTwdrkzzngucwbo+czZdezmzd nDJ8AMsh2Fa11XJ65JGrDrU9zhCoFOD0ThFUa+rCBFaOWxFc+pZJbsCTWzKFxbufsz9GnM048UnBs2 XSrAl2rkGctFqe45M5/lLJbSNhGIgEmI23uNlFkgjDB2MHas6pdOvDoTSc2114tY9xhmXeY8+W2n4c /XUplmxgQ863qNFgnnVrJfdBjg4M7IQLvFY2ReT34kFXFyL0PnafJ7mQXEeBx72OYgpoQrkDYoIQbc YOqGgfhNMQB4pgNNgD3d/euCEumC5daNmLPXo45foz5FleZQdd1C4v4TP9OHhXj4ihgJJlH0WSamSw ortlOB1XPSgUlfTVolRLcjEdHq5sRq00C2w6IvxnEhTwg+UVe86kfObwZJ4HHkVfgTIPgefQN7MZuR 1ies9362rUr7Iit6hW5lpwAG0AJ9wj/JzzYIAXX0SRmA8=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1123; h=from:subject; bh=C6C0qQGA9jNONZmANfUf7mwnHxAXIQajunpYmEvB7yU=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBiRHo2VzGldtY/dOXDs7D0e/ZC+4x1EHdDREJDvGZA ZrhHzPuJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYkR6NgAKCRDDTyI5ktmPJJp8DA C924FnzqpibCHGRKI/D7t5IAZ82m/aQehy3KiM+kxqzbRSLbUQ6P2Btsfmg2N5NfzNh6yEp2O+YQu/ NqbO+/KoldFnHkuqX8nti598X68JVDC7Z1tLZIyd6FoZiJBPMRfQ/uy5aBl4bYE3Va0uNNZ8OayvYi aYOPHIOQTa5rbkQRFw3AmqpXjDNpafc9l8ezLdfMalOQa96D7EpryS7bfWeHDspCH/fkTrjX8HRRn9 9uL3AJOGlzqbeXHX4+OHbShVYOr6XHYlGDA11EcGnMXkdx+kTf+RHzHzAVBaz73sgiwUDAisFdbU4O lGOlgaFHvp6KtOxGtaSdUIVr+fqxkwOR5E/CXT4xseJclrH2eOyCWrn+iHG35JFVqDY3rU4zL7DQSo xADcWXT0y6Jo55R+dKDJNRTfxrRkmfekazxUYXOzQM00FX1Pgf9VmmJbunY3SqI89BJCERfaaSgYmR 5Yi94FgXXFvlnNhRmDwKrIuNmZp2/eeOKOxrJwhNXFF5k=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -56,76 +56,46 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-As a first step towards avoiding the need to create, tear down and
-recreate the kernel virtual mapping with MMU and caches disabled, start
-by expanding the ID map so it covers the page tables as well as all
-executable code. This will allow us to populate the page tables with the
-MMU and caches on, and call KASLR init code before setting up the
-virtual mapping.
+Create a macro load_ttbr1 to avoid having to repeat the same instruction
+sequence 3 times in a subsequent patch. No functional change intended.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/include/asm/kernel-pgtable.h |  2 +-
- arch/arm64/kernel/head.S                | 10 +++++-----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ arch/arm64/kernel/head.S | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/include/asm/kernel-pgtable.h b/arch/arm64/include/asm/kernel-pgtable.h
-index 96dc0f7da258..b62200a9456e 100644
---- a/arch/arm64/include/asm/kernel-pgtable.h
-+++ b/arch/arm64/include/asm/kernel-pgtable.h
-@@ -87,7 +87,7 @@
- 			+ EARLY_PUDS((vstart), (vend))	/* each PUD needs a next level page table */	\
- 			+ EARLY_PMDS((vstart), (vend)))	/* each PMD needs a next level page table */
- #define INIT_DIR_SIZE (PAGE_SIZE * EARLY_PAGES(KIMAGE_VADDR, _end))
--#define IDMAP_DIR_SIZE		(IDMAP_PGTABLE_LEVELS * PAGE_SIZE)
-+#define IDMAP_DIR_SIZE		INIT_DIR_SIZE
- 
- /* Initial memory map size */
- #if ARM64_KERNEL_USES_PMD_MAPS
 diff --git a/arch/arm64/kernel/head.S b/arch/arm64/kernel/head.S
-index 275cd14a70c2..727561972e4a 100644
+index 727561972e4a..7c4aefacf6c2 100644
 --- a/arch/arm64/kernel/head.S
 +++ b/arch/arm64/kernel/head.S
-@@ -287,7 +287,7 @@ SYM_FUNC_END(clear_page_tables)
+@@ -688,6 +688,13 @@ SYM_FUNC_END(__secondary_too_slow)
+ 	dc	ivac, \tmp1			// Invalidate potentially stale cache line
+ 	.endm
  
- SYM_FUNC_START_LOCAL(create_idmap)
- 	adrp	x0, idmap_pg_dir
--	adrp	x3, __idmap_text_start		// __pa(__idmap_text_start)
-+	adrp	x3, _text			// __pa(_text)
++	.macro		load_ttbr1, reg, tmp
++	phys_to_ttbr	\reg, \reg
++	offset_ttbr1 	\reg, \tmp
++	msr		ttbr1_el1, \reg
++	isb
++	.endm
++
+ /*
+  * Enable the MMU.
+  *
+@@ -709,12 +716,9 @@ SYM_FUNC_START(__enable_mmu)
+ 	b.gt    __no_granule_support
+ 	update_early_cpu_boot_status 0, x2, x3
+ 	adrp	x2, idmap_pg_dir
+-	phys_to_ttbr x1, x1
+ 	phys_to_ttbr x2, x2
+ 	msr	ttbr0_el1, x2			// load TTBR0
+-	offset_ttbr1 x1, x3
+-	msr	ttbr1_el1, x1			// load TTBR1
+-	isb
++	load_ttbr1 x1, x3
  
- #ifdef CONFIG_ARM64_VA_BITS_52
- 	mrs_s	x6, SYS_ID_AA64MMFR2_EL1
-@@ -312,10 +312,10 @@ SYM_FUNC_START_LOCAL(create_idmap)
- 	 * Calculate the maximum allowed value for TCR_EL1.T0SZ so that the
- 	 * entire ID map region can be mapped. As T0SZ == (64 - #bits used),
- 	 * this number conveniently equals the number of leading zeroes in
--	 * the physical address of __idmap_text_end.
-+	 * the physical address of _end.
- 	 */
- 	mov	x4, PTRS_PER_PGD
--	adrp	x5, __idmap_text_end
-+	adrp	x5, _end
- 	clz	x5, x5
- 	cmp	x5, TCR_T0SZ(VA_BITS_MIN) // default T0SZ small enough?
- 	b.ge	1f			// .. then skip VA range extension
-@@ -351,7 +351,7 @@ SYM_FUNC_START_LOCAL(create_idmap)
- 	mov	x4, #1 << (PHYS_MASK_SHIFT - PGDIR_SHIFT)
- #endif
- 1:
--	adr_l	x6, __idmap_text_end		// __pa(__idmap_text_end)
-+	adr_l	x6, _end			// __pa(_end)
- 	mov	x7, SWAPPER_MM_MMUFLAGS
+ 	set_sctlr_el1	x0
  
- 	map_memory x0, x1, x3, x6, x7, x3, x4, x10, x11, x12, x13, x14
-@@ -884,7 +884,7 @@ SYM_FUNC_START_LOCAL(__primary_switch)
- 	msr	sctlr_el1, x20			// disable the MMU
- 	isb
- 	bl	clear_page_tables
--	bl	create_kernel_mapping		// recreate kernel mapping
-+	bl	create_kernel_mapping		// Recreate kernel mapping
- 
- 	tlbi	vmalle1				// Remove any stale TLB entries
- 	dsb	nsh
 -- 
 2.30.2
 
