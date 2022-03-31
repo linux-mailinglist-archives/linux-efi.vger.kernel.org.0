@@ -2,127 +2,127 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 991174EE3DA
-	for <lists+linux-efi@lfdr.de>; Fri,  1 Apr 2022 00:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 415204EE3EB
+	for <lists+linux-efi@lfdr.de>; Fri,  1 Apr 2022 00:20:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241816AbiCaWN3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 31 Mar 2022 18:13:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45042 "EHLO
+        id S240576AbiCaWWC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 31 Mar 2022 18:22:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242294AbiCaWN2 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 31 Mar 2022 18:13:28 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 611A32467D5;
-        Thu, 31 Mar 2022 15:11:40 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id dr20so2108365ejc.6;
-        Thu, 31 Mar 2022 15:11:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=rSHqaeCwi2QD3QGRa2HT7kH4AFnUyMZ52I3NV95q5GM=;
-        b=Pan4DsKz/3eGh99T01l3+pjIWjhQWcMXgqhP6g3wWts1Nc3tuD/v8nE9cIUShX+1+6
-         N/uT3WyhLdhLZgH7p1Pmpp7rn/jgGyhrMzyPT7FomwdA68v5BrmFhiFhngsP0zuxLk19
-         EblbpXz3Mb5bfjrFqtCdvFNawCYr5KizCrMMS3hgv0WApHIRzMTyao8DS6ByGRnz7adF
-         Ijlmoivly5IS86Mrg9+YuixMXgwVSq9t8x76CtIBcf5iH8bMmuXRN/Igzua63es8gYG0
-         F3J+KX0GoAKD5VFYOCaX6YYnjj63XR5AsJemXHpmRPaozh18Sr+D232fxWKoQx2ofHni
-         tKKA==
+        with ESMTP id S242373AbiCaWWB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 31 Mar 2022 18:22:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4667E174BB3
+        for <linux-efi@vger.kernel.org>; Thu, 31 Mar 2022 15:20:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1648765212;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=lcacMdqd3bf9RhdWBIFn3jh9EYGsuLJ5EDgnlxHe6hY=;
+        b=Fl8KZtA1UjKncuRQwhuJ/kfcnWl+tIaFxovzxBX9KsFJrnxDEVFZxFv4MIHWX3ZQvMM+s3
+        8V8laQhr2MAmaAgIqeB8svyzK1JeMBI0zF9xVfNpcQMY4fse20BX7/+JWweITs5fZ3rQ5P
+        QCbHyPz+tZGbh7izNfih0WJBndSqIBU=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-447-qgfvOY4vO1yfegBOWyvX7Q-1; Thu, 31 Mar 2022 18:20:10 -0400
+X-MC-Unique: qgfvOY4vO1yfegBOWyvX7Q-1
+Received: by mail-ej1-f72.google.com with SMTP id de52-20020a1709069bf400b006dffb966922so524462ejc.2
+        for <linux-efi@vger.kernel.org>; Thu, 31 Mar 2022 15:20:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=rSHqaeCwi2QD3QGRa2HT7kH4AFnUyMZ52I3NV95q5GM=;
-        b=XwssCdNT02qwbQJr0A46qrddAbJ5hJPs8tVhkBsJFfx31+PQwGLxJvHymrmLRCAeZK
-         K81Pi/9/+xvx3qPqSkZKJpApSktq+6UaYm2SvwyTdKrzLaF1/1BqoC6cSx57LoqBDEoj
-         bVLeJaQq7STa4c/5pybztgOVrlUuDYR+cve23ZpIoN/S19GYVsFZzP7My9FXKqtaTM+0
-         WE1JFDe2TZK3oimDFzI0QCoTo4svLb040sdc3V34EKNr6ZQPXPaHp4s2lGDzn5zq2MGH
-         Mnrnunsg80rYpufiCM3f35Lk4uSd1/1QwVh0es4HDgtqw0q8W9dLUO0bzlv/pq0ZAmp0
-         fXFw==
-X-Gm-Message-State: AOAM531/UekHJAYii0el7Ebqd9ll+54xiHTlMbESeuzFzIXxZRRvZf8H
-        bDtZYMbrv1MIdY3YfYA195M8tVe7TfS8Cg==
-X-Google-Smtp-Source: ABdhPJyqWITxbnsFHIxvaXumnsP+t28c0RZ1VaYZy5bhDwV+SEVUTXvlHQUE7rUmWP+CXDa5mLgmrw==
-X-Received: by 2002:a17:906:3ec7:b0:6d6:e52b:b with SMTP id d7-20020a1709063ec700b006d6e52b000bmr6931528ejj.521.1648764698980;
-        Thu, 31 Mar 2022 15:11:38 -0700 (PDT)
-Received: from localhost.localdomain (i130160.upc-i.chello.nl. [62.195.130.160])
-        by smtp.googlemail.com with ESMTPSA id z6-20020a056402274600b004194fc1b7casm321322edd.48.2022.03.31.15.11.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Mar 2022 15:11:38 -0700 (PDT)
-From:   Jakob Koschel <jakobkoschel@gmail.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mike Rapoport <rppt@kernel.org>,
-        "Brian Johannesmeyer" <bjohannesmeyer@gmail.com>,
-        Cristiano Giuffrida <c.giuffrida@vu.nl>,
-        "Bos, H.J." <h.j.bos@vu.nl>, Jakob Koschel <jakobkoschel@gmail.com>
-Subject: [PATCH 2/2] efi: replace usage of found with dedicated list iterator variable
-Date:   Fri,  1 Apr 2022 00:10:30 +0200
-Message-Id: <20220331221030.889718-2-jakobkoschel@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220331221030.889718-1-jakobkoschel@gmail.com>
-References: <20220331221030.889718-1-jakobkoschel@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lcacMdqd3bf9RhdWBIFn3jh9EYGsuLJ5EDgnlxHe6hY=;
+        b=K22yreVyY0senyZLA3sD6AxHVYZbGnE2417Gl+y/Rlks3RsvHTI+wKz1Ai0z58yK5v
+         GPf/bo3F4DiGcu9k0P21d4lok7+7RiongQweZrqCqIU5jE4C7MNsUQn3a7Ckm1Ny71Cv
+         CUrq1BIP4h0pEOJFWfX2EIV7KqdUzJsN9nEpl61dEXVoVMAW9YsjfDc44FrS8Kbkejht
+         m+y6lueQpxv/3iQXrB1+Wxj1axLWKwTG07a/5NRloCxybakhssc4OKuCZxt7XJXqpY2L
+         L8EqXIsXAA6rhgl98ZxYg+jtg85fJoJUecZclAxU6BrPJtB46w8clw1+kFGJUHE/lWaG
+         qQxg==
+X-Gm-Message-State: AOAM531/MNb7LGlgFpUNzgBc/SrK45c4vWNgSgUzJhNIheQsp8YaVL/Z
+        GpC12jKgHg0x85cDtuLTCfIE3ZAZnVJ+sc8ZEUFI5qPQI5SJZQ8t+5oYVuMoBhiudsUW2R970ca
+        KADrrHI5s7Gm+h/+dg0NCIvGQyEauYNI9cA2h
+X-Received: by 2002:aa7:c789:0:b0:413:605d:8d17 with SMTP id n9-20020aa7c789000000b00413605d8d17mr18443749eds.100.1648765208973;
+        Thu, 31 Mar 2022 15:20:08 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxJS+G0lRPGKhUebBKREDAXsEcg0UrX4NCWqjao2fTUSk/VCXDWb6txzdyF194RLS6KRUjV8UwtsdLq0U1h44U=
+X-Received: by 2002:aa7:c789:0:b0:413:605d:8d17 with SMTP id
+ n9-20020aa7c789000000b00413605d8d17mr18443736eds.100.1648765208701; Thu, 31
+ Mar 2022 15:20:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220331151654.184433-1-javierm@redhat.com> <CAMj1kXHgyjB_BVzXx+CK0tBuJpZ3h=8XKus7nWiyovECjVQ0gw@mail.gmail.com>
+ <YkYA/Wpqa/PMczkp@lx-t490>
+In-Reply-To: <YkYA/Wpqa/PMczkp@lx-t490>
+From:   Javier Martinez Canillas <javierm@redhat.com>
+Date:   Fri, 1 Apr 2022 00:19:57 +0200
+Message-ID: <CAFOAJEeKNy0HW82W6HV_49d5sc5L0m62QDfY9qA1906_ZzGRYg@mail.gmail.com>
+Subject: Re: [PATCH v2] efi: Allow to enable EFI runtime services by default
+ on RT
+To:     "Ahmed S. Darwish" <a.darwish@linutronix.de>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Brian Masney <bmasney@redhat.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Al Stone <ahs3@redhat.com>,
+        Peter Robinson <pbrobinson@gmail.com>,
+        Robbie Harwood <rharwood@redhat.com>,
+        Peter Jones <pjones@redhat.com>,
+        Alexander Larsson <alexl@redhat.com>,
+        Andrew Halaney <ahalaney@redhat.com>,
+        linux-rt-users@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-To move the list iterator variable into the list_for_each_entry_*()
-macro in the future it should be avoided to use the list iterator
-variable after the loop body.
+Hello Ahmed,
 
-To *never* use the list iterator variable after the loop it was
-concluded to use a separate iterator variable instead of a
-found boolean [1].
+On Thu, Mar 31, 2022 at 9:36 PM Ahmed S. Darwish
+<a.darwish@linutronix.de> wrote:
+>
+> Hi Ard, Javier,
+>
+> Am Do, Mar 31, 2022, schrieb Ard Biesheuvel:
+> > On Thu, 31 Mar 2022 at 17:17, Javier Martinez Canillas
+> > <javierm@redhat.com> wrote:
+>
 
-This removes the need to use a found variable and simply checking if
-the variable was set, can determine if the break/goto was hit.
+[snip]
 
-Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/
-Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
----
- drivers/firmware/efi/vars.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+> In case of (CONFIG_PREEMPT_RT=y && CONFIG_EFI_DISABLE_RUNTIME=n),
+> shouldn't we add a small message in the kernel log warning that EFI
+> runtime services are enabled for the RT kernel?
+>
+> In almost all HW, except custom ones with "verified" firmware, such a
+> warning would be useful... This is especially true since in the embedded
 
-diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
-index 3994aad38661..e4e1cc593441 100644
---- a/drivers/firmware/efi/vars.c
-+++ b/drivers/firmware/efi/vars.c
-@@ -809,22 +809,21 @@ EXPORT_SYMBOL_GPL(efivar_entry_set_safe);
- struct efivar_entry *efivar_entry_find(efi_char16_t *name, efi_guid_t guid,
- 				       struct list_head *head, bool remove)
- {
--	struct efivar_entry *entry, *n;
-+	struct efivar_entry *entry = NULL, *iter, *n;
- 	int strsize1, strsize2;
--	bool found = false;
- 
--	list_for_each_entry_safe(entry, n, head, list) {
-+	list_for_each_entry_safe(iter, n, head, list) {
- 		strsize1 = ucs2_strsize(name, 1024);
--		strsize2 = ucs2_strsize(entry->var.VariableName, 1024);
-+		strsize2 = ucs2_strsize(iter->var.VariableName, 1024);
- 		if (strsize1 == strsize2 &&
--		    !memcmp(name, &(entry->var.VariableName), strsize1) &&
--		    !efi_guidcmp(guid, entry->var.VendorGuid)) {
--			found = true;
-+		    !memcmp(name, &(iter->var.VariableName), strsize1) &&
-+		    !efi_guidcmp(guid, iter->var.VendorGuid)) {
-+			entry = iter;
- 			break;
- 		}
- 	}
- 
--	if (!found)
-+	if (!entry)
- 		return NULL;
- 
- 	if (remove) {
--- 
-2.25.1
+I considered that as well but was not sure about what that message should be.
+
+Since it will be printed even on systems whose EFI firmwares do not
+have such long call times as the ones described in the commit that
+disabled the runtime services for RT.
+
+And in that case the warning may be misleading and make users believe
+that a problem exists, which might not be accurate.
+
+> domain, manually-configured RT kernels are almost always the norm.
+>
+
+Agreed. That is why the default for CONFIG_EFI_DISABLE_RUNTIME=y, if
+CONFIG_PREEMPT_RT=y. So users will need to explicitly disable the
+option if they want the EFI runtime services to be enabled with
+CONFIG_PREEMPT_RT.
+
+Best regards,
+Javier
 
