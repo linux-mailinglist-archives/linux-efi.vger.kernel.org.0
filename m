@@ -2,180 +2,172 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C51FC4F53BE
-	for <lists+linux-efi@lfdr.de>; Wed,  6 Apr 2022 06:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D18D64F53C1
+	for <lists+linux-efi@lfdr.de>; Wed,  6 Apr 2022 06:38:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351617AbiDFEFa (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 6 Apr 2022 00:05:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43466 "EHLO
+        id S1443377AbiDFEGa (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 6 Apr 2022 00:06:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1573697AbiDETnG (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 5 Apr 2022 15:43:06 -0400
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0782BE05
-        for <linux-efi@vger.kernel.org>; Tue,  5 Apr 2022 12:41:07 -0700 (PDT)
-Received: by mail-pg1-x536.google.com with SMTP id s72so272410pgc.5
-        for <linux-efi@vger.kernel.org>; Tue, 05 Apr 2022 12:41:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=mSWn+bwJl0JXyj3IYwZGhRTiDd7qYXvMXLFtGw/g+rg=;
-        b=AlCCPq+JKrSyY6/MdAWK+LJuFWEhXLOG2iRM8eu949iBowZOgYJpjjEZpvcwItS8+d
-         FEsIJdYmNNMsbMLSdUVjIs4nmz5vT7bZ7g0IC7PS/W33SVLgyOhPMKVc1hrkM/ybgdzd
-         i2jtISpWLxcxVWQR/Nn5bREeHtnuDwJpw37LvO7wCQo11vKt0AwUemLOuwYj1VFxKVXR
-         hMIICCbOonqXvUjzSbqP4umdws0neDr1awH1mbCXQOE1HRfpfmMRHUA++iIBc/IcROVl
-         uvLnKsuTqIOV5nEgg1TUvo47C8T7k/JqnB0mapIqQiPSvV58KN+OHoUlSQjUoTb3h1mP
-         6oAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=mSWn+bwJl0JXyj3IYwZGhRTiDd7qYXvMXLFtGw/g+rg=;
-        b=MiEH44GR6qw3rIAr7HX+rem9PsMqgm1zLOp2nBVQcbvE/QHDXMq55wg+lxgK7dzUTR
-         8eROVQkF98e6mqC/dNezFTnWq6DRMlM8gJzxiPE2KLuToUTbtrVeY86ItYukm+J7HsZB
-         QT0du7SVBTNpbD6FE5TZz7/N6RUSMJCYFARK7J3bLGDCRlbd4of8odxCjlIanucRLmYM
-         c/ILj5lZw8LCxTJhBW0vHysDEQRnvF1yIpjvegXCzbUtJHbBx9IeAJsF7CDwPaWbkjTn
-         CwJrdglD9cLWJKQYi3342FJ4UDkIQkGmH28rwYqWUlKdwiOHtdEFOYwHraVOaGJusNoU
-         djBA==
-X-Gm-Message-State: AOAM533KRZajlywzqENvFYbCPmzcAWX9OWUFg6ux8wEeF5RBCTcuqy7f
-        iB8G4ySVknrjBa9eDbkVinVRig==
-X-Google-Smtp-Source: ABdhPJwz4yMK7s1pjudVER/qr9fFsGeQA/N/GsijRhlaiArSrhqko6pULldJx680awQe2eXzGIRGzw==
-X-Received: by 2002:a05:6a00:1828:b0:4fd:e0e5:6115 with SMTP id y40-20020a056a00182800b004fde0e56115mr5257368pfa.52.1649187666833;
-        Tue, 05 Apr 2022 12:41:06 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id j9-20020aa78009000000b004fde2dd78b0sm11969754pfi.109.2022.04.05.12.41.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Apr 2022 12:41:06 -0700 (PDT)
-Date:   Tue, 5 Apr 2022 19:41:02 +0000
-From:   Sean Christopherson <seanjc@google.com>
-To:     Brijesh Singh <brijesh.singh@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        with ESMTP id S1850026AbiDFCqv (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 5 Apr 2022 22:46:51 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F37B9293E7D;
+        Tue,  5 Apr 2022 16:48:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649202520; x=1680738520;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tsti2G/5iL+RgXBI2ZibkXK3KW/Q8xOXVOQ6AV2zHjs=;
+  b=iS9JyyzEN14fQGeyVuL5VnxLtsPYhQmpWQRYYb5DF8Y+7ilvbd8oWIt2
+   1WTn/fYcB/lXV1gl2+b1Ibrzh4PcvsLe5RFAdi+wp2Dhttv+VXeqcSe9E
+   jZbxjcrf1szfMIeB2nkkRkQdXJa6bIBoWpubZhQcRkS26jT5fnlwl04R/
+   H9if96JC+q6vphBz/7IPSIdqs00/jqQGWsTF7MzPj/RHT7bwMQQ8iXV+S
+   1XNH+ckNta6WBnr7H/f2j91GQt7xgejVBIdYnaxk68Q/dIHVeSiMYYejn
+   32DbbuFKrNKyIcwcaF7/6iSqvzG7hzvMHCANfjvpeToNGzGENtI8oQzeG
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10308"; a="261068996"
+X-IronPort-AV: E=Sophos;i="5.90,238,1643702400"; 
+   d="scan'208";a="261068996"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2022 16:48:40 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,238,1643702400"; 
+   d="scan'208";a="620560765"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga004.fm.intel.com with ESMTP; 05 Apr 2022 16:48:34 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+        id 78046132; Wed,  6 Apr 2022 02:43:47 +0300 (EEST)
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
         David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Michael Roth <michael.roth@amd.com>,
         Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v12 22/46] x86/sev: Use SEV-SNP AP creation to start
- secondary CPUs
-Message-ID: <YkybTnVYBKZ1zvz6@google.com>
-References: <20220307213356.2797205-1-brijesh.singh@amd.com>
- <20220307213356.2797205-23-brijesh.singh@amd.com>
- <YkuMTdckSgSB9M6f@google.com>
- <f4369605-7c8d-1a89-bd0e-b82710d0772a@amd.com>
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Varad Gautam <varad.gautam@suse.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>, x86@kernel.org,
+        linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv4 0/8] mm, x86/cc: Implement support for unaccepted memory
+Date:   Wed,  6 Apr 2022 02:43:35 +0300
+Message-Id: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f4369605-7c8d-1a89-bd0e-b82710d0772a@amd.com>
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Apr 05, 2022, Brijesh Singh wrote:
-> Hi Sean,
->
-> On 4/4/22 19:24, Sean Christopherson wrote:
->
-> > > +static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa)
-> > > +{
-> > > + int err;
-> > > +
-> > > + err = snp_set_vmsa(vmsa, false);
-> >
-> > Uh, so what happens if a malicious guest does RMPADJUST to convert a VMSA page
-> > back to a "normal" page while the host is trying to VMRUN that VMSA?  Does VMRUN
-> > fault?
->
-> When SEV-SNP is enabled, the VMRUN instruction performs an additional
-> security checks on various memory pages. In the case of VMSA page, hardware
-> enforce that page is marked as "VMSA" in the RMP table. If not,  VMRUN will
-> fail with VMEXIT_INVALID.
->
-> After the VMRUN is successful, the VMSA page is marked IN_USE by the
-> hardware, any attempt to modify the RMP entries will result in FAIL_INUSE
-> error. The IN_USE marking is automatically cleared by the hardware after the
-> #VMEXIT.
->
-> Please see the APM vol2 section 15.36.12 for additional information.
+UEFI Specification version 2.9 introduces the concept of memory
+acceptance: some Virtual Machine platforms, such as Intel TDX or AMD
+SEV-SNP, requiring memory to be accepted before it can be used by the
+guest. Accepting happens via a protocol specific for the Virtual
+Machine platform.
 
-Thanks!
+Accepting memory is costly and it makes VMM allocate memory for the
+accepted guest physical address range. It's better to postpone memory
+acceptance until memory is needed. It lowers boot time and reduces
+memory overhead.
 
-> > Can Linux refuse to support this madness and instead require the ACPI MP wakeup
-> > protocol being proposed/implemented for TDX?  That would allow KVM to have at
->
-> My two cents
->
-> In the current architecture, the HV track VMSAs by their SPA and guest
-> controls when they are runnable. It provides flexibility to the guest, which
-> can add and remove the VMSA. This flexibility may come in handy to support
-> the kexec and reboot use cases.
+The kernel needs to know what memory has been accepted. Firmware
+communicates this information via memory map: a new memory type --
+EFI_UNACCEPTED_MEMORY -- indicates such memory.
 
-I understand it provides the guest flexibility, but IMO it completely inverts the
-separation of concerns between host and guest.  The host should have control of
-when a vCPU is added/removed and with what state, and the guest should be able to
-verify/acknowledge any changes.  This scheme gives the guest the bulk of the control,
-and doesn't even let the host verify much at all since the VMSA is opaque.
+Range-based tracking works fine for firmware, but it gets bulky for
+the kernel: e820 has to be modified on every page acceptance. It leads
+to table fragmentation, but there's a limited number of entries in the
+e820 table
 
-That the guest can yank the rug out from the host at any time just adds to the pain.
-VMEXIT_INVALID isn't the end of the world, but it breaks the assumption that such
-errors are host bugs.  To guard against such behavior, the host would have to unmap
-the VMSA page in order to prevent unwanted RMPADJUST, and that gets ugly fast if a
-VMSA can be any arbitrary guest page.
+Another option is to mark such memory as usable in e820 and track if the
+range has been accepted in a bitmap. One bit in the bitmap represents
+2MiB in the address space: one 4k page is enough to track 64GiB or
+physical address space.
 
-Another example is the 2mb alignment erratum.  Technically, the guest can't workaround
-the erratum with 100% certainty because there's no guarantee that the host uses the
-same alignment for gfns and pfns.  I don't actually expect a host to use unaligned
-mappings, just pointing out how backwards this is.
+In the worst-case scenario -- a huge hole in the middle of the
+address space -- It needs 256MiB to handle 4PiB of the address
+space.
 
-I fully realize there's basically zero chance of getting any of this changed in
-hardware/firmware, but I'm hoping we can concoct a software/GHCB solution to the
-worst issues.
+Any unaccepted memory that is not aligned to 2M gets accepted upfront.
 
-I don't see an way easy to address the guest getting to shove state directly into
-the VMSA, but the location of the VMSA gfn/pfn is a very solvable problem.  E.g.
-the host gets full control over each vCPU's VMSA, and the host-provided VMSA is
-discoverable in the guest.  That allows the guest to change vCPU state, e.g. for AP
-bringup, kexec, etc..., but gives the host the ability to protect itself without
-having to support arbitrary VMSA pages.  E.g. the host can dynamically map/unmap the
-VMSA from the guest: map on fault, unmap on AP "creation", refuse to run the vCPU if
-its VMSA isn't in the unmap state.  The VMSA pfn is fully host controlled, so
-there's no need for the guest to be aware of the 2mb alignment erratum.
+The approach lowers boot time substantially. Boot to shell is ~2.5x
+faster for 4G TDX VM and ~4x faster for 64G.
 
-Requiring such GHCB extensions in the guest would make Linux incompatible with
-hypervisors that aren't updated, but IMO that's not a ridiculous ask given that
-it would be in the best interested of any hypervisor that isn't running a fully
-trusted, paravirt VMPL0.
+Patches 1-6/7 are generic and don't have any dependencies on TDX. They
+should serve AMD SEV needs as well. TDX-specific code isolated in the
+last patch. This patch requires the core TDX patchset which is currently
+under review.
 
-> The current approach does not depend on
-> ACPI; it will also come in handy to support microvm (minimalist machine type
-> without PCI nor ACPI support).
+v4:
+ - PageBuddyUnaccepted() -> PageUnaccepted;
+ - Use separate page_type, not shared with offline;
+ - Rework interface between core-mm and arch code;
+ - Adjust commit messages;
+ - Ack from Mike;
+Kirill A. Shutemov (8):
+  mm: Add support for unaccepted memory
+  efi/x86: Get full memory map in allocate_e820()
+  efi/x86: Implement support for unaccepted memory
+  x86/boot/compressed: Handle unaccepted memory
+  x86/mm: Reserve unaccepted memory bitmap
+  x86/mm: Provide helpers for unaccepted memory
+  x86/tdx: Unaccepted memory support
+  mm/vmstat: Add counter for memory accepting
 
-Eh, a microvm really shouldn't need AP bringup in the first place, just run all
-APs from time zero and route them to where they need to be.
+ Documentation/x86/zero-page.rst              |  1 +
+ arch/x86/Kconfig                             |  1 +
+ arch/x86/boot/compressed/Makefile            |  1 +
+ arch/x86/boot/compressed/bitmap.c            | 86 +++++++++++++++++++
+ arch/x86/boot/compressed/kaslr.c             | 14 +++-
+ arch/x86/boot/compressed/misc.c              | 11 +++
+ arch/x86/boot/compressed/tdx.c               | 41 +++++++++
+ arch/x86/boot/compressed/unaccepted_memory.c | 88 ++++++++++++++++++++
+ arch/x86/coco/tdx/tdx.c                      | 29 +++++--
+ arch/x86/include/asm/page.h                  |  5 ++
+ arch/x86/include/asm/shared/tdx.h            | 20 +++++
+ arch/x86/include/asm/tdx.h                   | 19 -----
+ arch/x86/include/asm/unaccepted_memory.h     | 15 ++++
+ arch/x86/include/uapi/asm/bootparam.h        |  3 +-
+ arch/x86/kernel/e820.c                       | 10 +++
+ arch/x86/mm/Makefile                         |  2 +
+ arch/x86/mm/unaccepted_memory.c              | 58 +++++++++++++
+ drivers/firmware/efi/Kconfig                 | 15 ++++
+ drivers/firmware/efi/efi.c                   |  1 +
+ drivers/firmware/efi/libstub/x86-stub.c      | 88 ++++++++++++++++----
+ include/linux/efi.h                          |  3 +-
+ include/linux/page-flags.h                   | 24 ++++++
+ include/linux/vm_event_item.h                |  3 +
+ mm/internal.h                                | 11 +++
+ mm/memblock.c                                |  9 ++
+ mm/page_alloc.c                              | 57 ++++++++++++-
+ mm/vmstat.c                                  |  3 +
+ 27 files changed, 569 insertions(+), 49 deletions(-)
+ create mode 100644 arch/x86/boot/compressed/bitmap.c
+ create mode 100644 arch/x86/boot/compressed/unaccepted_memory.c
+ create mode 100644 arch/x86/include/asm/unaccepted_memory.h
+ create mode 100644 arch/x86/mm/unaccepted_memory.c
+
+-- 
+2.35.1
+
