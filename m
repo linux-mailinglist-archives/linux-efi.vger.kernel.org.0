@@ -2,42 +2,42 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD0584F9D89
-	for <lists+linux-efi@lfdr.de>; Fri,  8 Apr 2022 21:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E62D14F9D9C
+	for <lists+linux-efi@lfdr.de>; Fri,  8 Apr 2022 21:21:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231682AbiDHTOD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 8 Apr 2022 15:14:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33972 "EHLO
+        id S232075AbiDHTXX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 8 Apr 2022 15:23:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229676AbiDHTOC (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 8 Apr 2022 15:14:02 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D6B539B83;
-        Fri,  8 Apr 2022 12:11:57 -0700 (PDT)
+        with ESMTP id S231718AbiDHTXW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 8 Apr 2022 15:23:22 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 860931DF84C;
+        Fri,  8 Apr 2022 12:21:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649445117; x=1680981117;
+  t=1649445677; x=1680981677;
   h=message-id:date:mime-version:to:cc:references:from:
    subject:in-reply-to:content-transfer-encoding;
-  bh=+rU6SoAJQ46qQf+w0uFH/OvSXa690ikdV/2AaUpsdzc=;
-  b=D16xrJxsd6/i7hNoCy4UGr0AdKHzTFY9iNBjOCXsii9t/Uh4pdvMK4U+
-   mv0pt16H53YAbDxuC3FtsXWxPX561dVbMAtfHynktngJO7fzb669Vb+pM
-   8DEIfU4XGUkF+qfc9DGg1cg2aJYCW8j97z6tlN7Yv+bZ8tSWHdY0sFAjQ
-   QFl/hHJ3Z7RTHF1378GsWCQMDyqvnfKSFd4uWniYLMp592DFMBQ1H02yN
-   XVrtHCCvHYHgFE+TnCHAGQhfbyB/sTfsOx1m20Z/hsE6NqVa8/HvYuJng
-   VqeBTCjnLhEwGlll3K59cuxpFx626YbLIQ1/zxexJORzu0fVxPBQB2E5F
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10311"; a="286667834"
+  bh=an1kgKT916kkjGguwaSRlVUu2JyLvI48Hqx3SubWWec=;
+  b=hdoUuMjvrFk1liUS+EtEi8aSu2HUvXnNmgolDnNQfI9Ep9t3L+IisXhu
+   3s9MnWqQbxY66M1h9HDqjFkfLug/C6F1GgjFRryxb9PP0z8hTz4BuJAQn
+   1DA4VkhpTC12RSHbjhi671j/Th0z+Y6T/ij+pI1zI0xPEnaRIK46hKeK5
+   hnMbpCxInCckM+scRHph5aGKnhFnWPh+6l3JYoXwvmSbBvDGrGPW5j/Yq
+   ikR6dZOS4k1ihI7BC/GS1ZL/56kLuejFJ9a4vxQoOaDutRymdA+pyF5L/
+   rI7bgVunQXxsylTXCyF01Z5Ccx8P5JQgd3KuaQi574ELN4znWzsMARve4
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10311"; a="348106442"
 X-IronPort-AV: E=Sophos;i="5.90,245,1643702400"; 
-   d="scan'208";a="286667834"
+   d="scan'208";a="348106442"
 Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 12:11:56 -0700
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 12:21:17 -0700
 X-IronPort-AV: E=Sophos;i="5.90,245,1643702400"; 
-   d="scan'208";a="525492958"
+   d="scan'208";a="525495656"
 Received: from tsungtae-mobl.amr.corp.intel.com (HELO [10.134.43.198]) ([10.134.43.198])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 12:11:55 -0700
-Message-ID: <93a7cfdf-02e6-6880-c563-76b01c9f41f5@intel.com>
-Date:   Fri, 8 Apr 2022 12:11:58 -0700
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 12:21:15 -0700
+Message-ID: <0e366406-9a3a-0bf3-e073-272279f6abf2@intel.com>
+Date:   Fri, 8 Apr 2022 12:21:19 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.7.0
@@ -65,20 +65,18 @@ Cc:     Andi Kleen <ak@linux.intel.com>,
         Mike Rapoport <rppt@kernel.org>,
         David Hildenbrand <david@redhat.com>, x86@kernel.org,
         linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mike Rapoport <rppt@linux.ibm.com>
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
- <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
+ <20220405234343.74045-7-kirill.shutemov@linux.intel.com>
 From:   Dave Hansen <dave.hansen@intel.com>
-Subject: Re: [PATCHv4 1/8] mm: Add support for unaccepted memory
-In-Reply-To: <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCHv4 6/8] x86/mm: Provide helpers for unaccepted memory
+In-Reply-To: <20220405234343.74045-7-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -86,46 +84,56 @@ List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 On 4/5/22 16:43, Kirill A. Shutemov wrote:
-> Kernel only needs to accept memory once after boot, so during the boot
-> and warm up phase there will be a lot of memory acceptance. After things
-> are settled down the only price of the feature if couple of checks for
-> PageUnaccepted() in allocate and free paths. The check refers a hot
-> variable (that also encodes PageBuddy()), so it is cheap and not visible
-> on profiles.
+> +void accept_memory(phys_addr_t start, phys_addr_t end)
+> +{
+> +	unsigned long *unaccepted_memory;
+> +	unsigned long flags;
+> +	unsigned int rs, re;
+> +
+> +	if (!boot_params.unaccepted_memory)
+> +		return;
+> +
+> +	unaccepted_memory = __va(boot_params.unaccepted_memory);
+> +	rs = start / PMD_SIZE;
+> +
+> +	spin_lock_irqsave(&unaccepted_memory_lock, flags);
+> +	for_each_set_bitrange_from(rs, re, unaccepted_memory,
+> +				   DIV_ROUND_UP(end, PMD_SIZE)) {
+> +		/* Platform-specific memory-acceptance call goes here */
+> +		panic("Cannot accept memory");
+> +		bitmap_clear(unaccepted_memory, rs, re - rs);
+> +	}
+> +	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
+> +}
 
-Let's also not sugar-coat this.  Page acceptance is hideously slow.
-It's agonizingly slow.  To boot, it's done holding a global spinlock
-with interrupts disabled (see patch 6/8).  At the very, very least, each
-acceptance operation involves a couple of what are effectively ring
-transitions, a 2MB memset(), and a bunch of cache flushing.
+Just to reiterate: this is a global spinlock.  It's disabling
+interrupts.  "Platform-specific memory-acceptance call" will soon become:
 
-The system is going to be downright unusable during this time, right?
+	tdx_accept_memory(rs * PMD_SIZE, re * PMD_SIZE);
 
-Sure, it's *temporary* and only happens once at boot.  But, it's going
-to suck.
+which is a page-by-page __tdx_module_call():
 
-Am I over-stating this in any way?
+> +	for (i = 0; i < (end - start) / PAGE_SIZE; i++) {
+> +		if (__tdx_module_call(TDACCEPTPAGE, start + i * PAGE_SIZE,
+> +				      0, 0, 0, NULL)) {
+> +			error("Cannot accept memory: page accept failed\n");
+> +		}
+> +	}
 
-The ACCEPT_MEMORY vmstat is good to have around.  Thanks for adding it.
- But, I think we should also write down some guidance like:
+Each __tdx_module_call() involves a privilege transition that also
+surely includes things like changing CR3.  It can't be cheap.  It also
+is presumably touching the memory and probably flushing it out of the
+CPU caches.  It's also unbounded:
 
-	If your TDX system seems as slow as snail after boot, look at
-	the "accept_memory" counter in /proc/vmstat.  If it is
-	incrementing, then TDX memory acceptance is likely to blame.
+	spin_lock_irqsave(&unaccepted_memory_lock, flags);
+	for (i = 0; i < (end - start) / PAGE_SIZE; i++)
+		// thousands?  tens-of-thousands of cycles??
+	spin_lock_irqsave(&unaccepted_memory_lock, flags);
 
-Do we need anything more discrete to tell users when acceptance is over?
- For instance, maybe they run something and it goes really slow, they
-watch "accept_memory" until it stops.  They rejoice at their good
-fortune!  Then, memory allocation starts falling over to a new node and
-the agony beings anew.
+How far apart can end and start be?  It's at *least* 2MB in the page
+allocator, which is on the order of a millisecond.  Are we sure there
+aren't any callers that want to do this at a gigabyte granularity?  That
+would hold the global lock and disable interrupts on the order of a second.
 
-I can think of dealing with this in two ways:
-
-	cat /sys/.../unaccepted_pages_left
-
-which just walks the bitmap and counts the amount of pages remaining. or
-something like:
-
-	echo 1 > /sys/devices/system/node/node0/make_the_pain_stop
-
-Which will, well, make the pain stop on node0.
+Do we want to bound the time that the lock can be held?  Or, should we
+just let the lockup detectors tell us that we're being naughty?
