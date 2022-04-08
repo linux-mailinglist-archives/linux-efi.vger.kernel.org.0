@@ -2,42 +2,42 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD6D24F9CB1
-	for <lists+linux-efi@lfdr.de>; Fri,  8 Apr 2022 20:28:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BEEF4F9D5C
+	for <lists+linux-efi@lfdr.de>; Fri,  8 Apr 2022 20:56:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238688AbiDHSae (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 8 Apr 2022 14:30:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34954 "EHLO
+        id S230493AbiDHS6E (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 8 Apr 2022 14:58:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229740AbiDHSad (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 8 Apr 2022 14:30:33 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A871102427;
-        Fri,  8 Apr 2022 11:28:28 -0700 (PDT)
+        with ESMTP id S239191AbiDHS5v (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 8 Apr 2022 14:57:51 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34BE91B60E4;
+        Fri,  8 Apr 2022 11:55:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649442508; x=1680978508;
+  t=1649444147; x=1680980147;
   h=message-id:date:mime-version:to:cc:references:from:
    subject:in-reply-to:content-transfer-encoding;
-  bh=MKvwCaA6SimRTFhHge/2AB0twtlCpITErS3yVnsdKdc=;
-  b=NnNP+Bm3m1jrT8cgnYaBVYoKMsCkzpWpoJ6i8i9grjTovdeV46xv3QFw
-   oa2bfGLk/1pr0ErgzuSUXrrwU/Dm0z8RRQeVMIeAVxAD+9NYuIPARyqLm
-   gXDkB+/7ZGelim+EOUtqPbs36sDBfuZDW8nQWhawX2FT7/S1C2eTD7Qzt
-   /6bU91ja9X5838VPJtEVub46R8Z0/Lx5rAApd9vyqDe807uilYH0xjM4n
-   LQr6EmXWGY70CHf/JnkOGFKEh5YlCaab66Z57wvIeOy/EGTcrUm+oPc/X
-   7cfgUmcehHWJVakcBoWbzeglGiKV6V0BOmqHZqv3VeaOui22oV6BdScYW
+  bh=jeF8CC6CYVdLywq4UaXPKYUk87tu72pqbVJTNPs4600=;
+  b=UZswd2LqzCS3cPTR8RiX9aDV/4T3F6JXLQIZIGsUZcRgqN0H56ZgeaqA
+   cwO/KahpSCio3HXquXaDswDT3P7Dcwd133bqoENLOXBaDkpMFlQdNvfHM
+   f/LVZtQYS4NCxfLeYLB5eyNvRQ2FddATn6+EfxAgMOgt+Mi/C2IcSxl4G
+   DTOXVwf2uoeOhP7cO8EW+K2gsSF1ccabVyscrHrSEQpHY4Wm5Ibx054GC
+   Zkim5A9RuFcJpuDCghNsxAmV1lzcSzLHhHMTg1S12RRxM7Yll1Ajym+KG
+   nXzqfx2PvxOlt0flmMcPhy3LzpCZtBBvjbEDt9mC6+iBiWk+BTIk6AEii
    Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10311"; a="242255505"
+X-IronPort-AV: E=McAfee;i="6400,9594,10311"; a="259262666"
 X-IronPort-AV: E=Sophos;i="5.90,245,1643702400"; 
-   d="scan'208";a="242255505"
+   d="scan'208";a="259262666"
 Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 11:28:27 -0700
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 11:55:42 -0700
 X-IronPort-AV: E=Sophos;i="5.90,245,1643702400"; 
-   d="scan'208";a="525480901"
+   d="scan'208";a="525487576"
 Received: from tsungtae-mobl.amr.corp.intel.com (HELO [10.134.43.198]) ([10.134.43.198])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 11:28:26 -0700
-Message-ID: <69dedc57-b4cf-b0b2-99a5-46c87e99fd9a@intel.com>
-Date:   Fri, 8 Apr 2022 11:28:30 -0700
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 11:55:39 -0700
+Message-ID: <767c2100-c171-1fd3-6a92-0af2e4bf3067@intel.com>
+Date:   Fri, 8 Apr 2022 11:55:43 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.7.0
@@ -65,17 +65,18 @@ Cc:     Andi Kleen <ak@linux.intel.com>,
         Mike Rapoport <rppt@kernel.org>,
         David Hildenbrand <david@redhat.com>, x86@kernel.org,
         linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mike Rapoport <rppt@linux.ibm.com>
 References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
- <20220405234343.74045-8-kirill.shutemov@linux.intel.com>
+ <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
 From:   Dave Hansen <dave.hansen@intel.com>
-Subject: Re: [PATCHv4 7/8] x86/tdx: Unaccepted memory support
-In-Reply-To: <20220405234343.74045-8-kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCHv4 1/8] mm: Add support for unaccepted memory
+In-Reply-To: <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -84,298 +85,242 @@ List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 On 4/5/22 16:43, Kirill A. Shutemov wrote:
-> All preparations are complete. Hookup TDX-specific code to accept memory.
+> UEFI Specification version 2.9 introduces the concept of memory
+> acceptance. Some Virtual Machine platforms, such as Intel TDX or AMD
+> SEV-SNP, requiring memory to be accepted before it can be used by the
+
+		^ require
+
+> guest. Accepting happens via a protocol specific for the Virtual Machine
+> platform.
+
+							^ s/for/to
+
+> Accepting memory is costly and it makes VMM allocate memory for the
+> accepted guest physical address range. It's better to postpone memory
+> acceptance until memory is needed. It lowers boot time and reduces
+> memory overhead.
 > 
-> There are two tdx_accept_memory() implementations: one in main kernel
-> and one in the decompresser.
+> Support of such memory requires a few changes in core-mm code:
 > 
-> The implementation in core kernel uses tdx_enc_status_changed().
-> The helper is not available in the decompresser, self-contained
-> implementation added there instead.
+>   - memblock has to accept memory on allocation;
+> 
+>   - page allocator has to accept memory on the first allocation of the
+>     page;
+> 
+> Memblock change is trivial.
+> 
+> The page allocator is modified to accept pages on the first allocation.
+> PageUnaccepted() is used to indicate that the page requires acceptance.
 
-Why isn't it available?
+Does this consume an actual page flag or is it aliased?
 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 7021ec725dd3..e4c31dbea6d7 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -885,6 +885,7 @@ config INTEL_TDX_GUEST
->  	select ARCH_HAS_CC_PLATFORM
->  	select X86_MEM_ENCRYPT
->  	select X86_MCE
-> +	select UNACCEPTED_MEMORY
->  	help
->  	  Support running as a guest under Intel TDX.  Without this support,
->  	  the guest kernel can not boot or run under TDX.
+> Kernel only needs to accept memory once after boot, so during the boot
+> and warm up phase there will be a lot of memory acceptance. After things
+> are settled down the only price of the feature if couple of checks for
+> PageUnaccepted() in allocate and free paths. The check refers a hot
 
-Ahh, there we go.  Nice.
+							       ^ to
 
-> diff --git a/arch/x86/boot/compressed/tdx.c b/arch/x86/boot/compressed/tdx.c
-> index 918a7606f53c..a0bd1426d235 100644
-> --- a/arch/x86/boot/compressed/tdx.c
-> +++ b/arch/x86/boot/compressed/tdx.c
-> @@ -9,6 +9,7 @@
->  #include <uapi/asm/vmx.h>
+...
+> + /*
+> +  * PageUnaccepted() indicates that the page has to be "accepted" before it can
+> +  * be used. Page allocator has to call accept_page() before returning the page
+> +  * to the caller.
+> +  */
+
+Let's talk about "used" with a bit more detail.  Maybe:
+
+/*
+ * PageUnaccepted() indicates that the page has to be "accepted" before
+ * it can be read or written.  The page allocator must to call
+ * accept_page() before touching the page or returning it to the caller.
+ */
+
+...
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 2db95780e003..53f4aa1c92a7 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -121,6 +121,12 @@ typedef int __bitwise fpi_t;
+>   */
+>  #define FPI_SKIP_KASAN_POISON	((__force fpi_t)BIT(2))
 >  
->  #include <asm/shared/tdx.h>
-> +#include <asm/page_types.h>
->  
->  /* Called from __tdx_hypercall() for unrecoverable failure */
->  void __tdx_hypercall_failed(void)
-> @@ -75,3 +76,43 @@ void early_tdx_detect(void)
->  	pio_ops.f_outb = tdx_outb;
->  	pio_ops.f_outw = tdx_outw;
->  }
-> +
-> +#define TDACCEPTPAGE		6
-> +#define TDVMCALL_MAP_GPA	0x10001
-
-That seems like unnecessary duplication.  Can't a #define be trivially
-shared?
-
 > +/*
-> + * Wrapper for standard use of __tdx_hypercall with no output aside from
-> + * return code.
+> + * Check if the page needs to be marked as PageUnaccepted().
+> + * Used for the new pages added to the buddy allocator for the first time.
 > + */
-> +static inline u64 _tdx_hypercall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15)
-> +{
-> +	struct tdx_hypercall_args args = {
-> +		.r10 = TDX_HYPERCALL_STANDARD,
-> +		.r11 = fn,
-> +		.r12 = r12,
-> +		.r13 = r13,
-> +		.r14 = r14,
-> +		.r15 = r15,
-> +	};
+> +#define FPI_UNACCEPTED		((__force fpi_t)BIT(3))
 > +
-> +	return __tdx_hypercall(&args, 0);
-> +}
-
-Ditto on the sharing.
-
-> +void tdx_accept_memory(phys_addr_t start, phys_addr_t end)
+>  /* prevent >1 _updater_ of zone percpu pageset ->high and ->batch fields */
+>  static DEFINE_MUTEX(pcp_batch_high_lock);
+>  #define MIN_PERCPU_PAGELIST_HIGH_FRACTION (8)
+> @@ -1023,6 +1029,26 @@ buddy_merge_likely(unsigned long pfn, unsigned long buddy_pfn,
+>  	return page_is_buddy(higher_page, higher_buddy, order + 1);
+>  }
+>  
+> +static void accept_page(struct page *page, unsigned int order)
 > +{
+> +	phys_addr_t start = page_to_phys(page);
 > +	int i;
 > +
-> +	if (_tdx_hypercall(TDVMCALL_MAP_GPA, start, end - start, 0, 0))
-> +		error("Cannot accept memory: MapGPA failed\n");
+> +	accept_memory(start, start + (PAGE_SIZE << order));
 > +
-> +	/*
-> +	 * For shared->private conversion, accept the page using TDACCEPTPAGE
-> +	 * TDX module call.
-> +	 */
-
-What does the shared->private conversion have to do with this?  I feel
-like I'm missing something.  Is unaccepted memory shared initially?
-
-> +	for (i = 0; i < (end - start) / PAGE_SIZE; i++) {
-> +		if (__tdx_module_call(TDACCEPTPAGE, start + i * PAGE_SIZE,
-> +				      0, 0, 0, NULL)) {
-> +			error("Cannot accept memory: page accept failed\n");
-> +		}
+> +	for (i = 0; i < (1 << order); i++) {
+> +		if (PageUnaccepted(page + i))
+> +			__ClearPageUnaccepted(page + i);
 > +	}
 > +}
-> diff --git a/arch/x86/boot/compressed/unaccepted_memory.c b/arch/x86/boot/compressed/unaccepted_memory.c
-> index 3ebab63789bb..662ec32e3c42 100644
-> --- a/arch/x86/boot/compressed/unaccepted_memory.c
-> +++ b/arch/x86/boot/compressed/unaccepted_memory.c
-> @@ -1,12 +1,33 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  
-> +#include <asm/shared/tdx.h>
->  #include "error.h"
->  #include "misc.h"
-> +#include "tdx.h"
-> +
-> +static bool is_tdx_guest(void)
+
+It's probably worth a comment somewhere that this can be really slow.
+
+> +static bool page_is_unaccepted(struct page *page, unsigned int order)
 > +{
-> +	static bool once;
-> +	static bool is_tdx;
+> +	phys_addr_t start = page_to_phys(page);
 > +
-> +	if (!once) {
-> +		u32 eax, sig[3];
-> +
-> +		cpuid_count(TDX_CPUID_LEAF_ID, 0, &eax,
-> +			    &sig[0], &sig[2],  &sig[1]);
-> +		is_tdx = !memcmp(TDX_IDENT, sig, sizeof(sig));
-> +	}
-> +
-> +	return is_tdx;
-> +}
-
-Do you need to set 'once'?
-
->  static inline void __accept_memory(phys_addr_t start, phys_addr_t end)
->  {
->  	/* Platform-specific memory-acceptance call goes here */
-> -	error("Cannot accept memory");
-> +	if (is_tdx_guest())
-> +		tdx_accept_memory(start, end);
-> +	else
-> +		error("Cannot accept memory");
->  }
-
-Should those is_tdx_guest() checks be a new CC_ attribute, say:
-
-	cc_guest_has(CC_UNACCEPTED_MEMORY)
-
-and then have a:
-
-	cc_accept_memory(start, end);
-
-?
-
-Or is that overkill when we only have TDX?
-
->  void mark_unaccepted(struct boot_params *params, u64 start, u64 end)
-> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> index 03deb4d6920d..0fcb54e07797 100644
-> --- a/arch/x86/coco/tdx/tdx.c
-> +++ b/arch/x86/coco/tdx/tdx.c
-> @@ -606,16 +606,8 @@ static bool try_accept_one(phys_addr_t *start, unsigned long len,
->  	return true;
->  }
->  
-> -/*
-> - * Inform the VMM of the guest's intent for this physical page: shared with
-> - * the VMM or private to the guest.  The VMM is expected to change its mapping
-> - * of the page in response.
-> - */
-> -static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
-> +static bool __tdx_enc_status_changed(phys_addr_t start, phys_addr_t end, bool enc)
->  {
-> -	phys_addr_t start = __pa(vaddr);
-> -	phys_addr_t end   = __pa(vaddr + numpages * PAGE_SIZE);
-> -
->  	if (!enc) {
->  		/* Set the shared (decrypted) bits: */
->  		start |= cc_mkdec(0);
-> @@ -660,6 +652,25 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
->  	return true;
->  }
->  
-> +void tdx_accept_memory(phys_addr_t start, phys_addr_t end)
-> +{
-> +	if (!__tdx_enc_status_changed(start, end, true))
-> +		panic("Accepting memory failed\n");
-> +}
-
-Could we make a bit better use of our naming bytes?  "__" tells us
-nothing.  What if we had:
-
-	tdx_enc_status_changed_phys()
-
-we could call the other one _virt() or leave it alone too.
-
-> +/*
-> + * Inform the VMM of the guest's intent for this physical page: shared with
-> + * the VMM or private to the guest.  The VMM is expected to change its mapping
-> + * of the page in response.
-> + */
-> +static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
-> +{
-> +	phys_addr_t start = __pa(vaddr);
-> +	phys_addr_t end = __pa(vaddr + numpages * PAGE_SIZE);
-> +
-> +	return __tdx_enc_status_changed(start, end, enc);
+> +	return memory_is_unaccepted(start, start + (PAGE_SIZE << order));
 > +}
 > +
->  void __init tdx_early_init(void)
->  {
->  	u64 cc_mask;
-> diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-> index e53f26228fbb..4eca6492b108 100644
-> --- a/arch/x86/include/asm/shared/tdx.h
-> +++ b/arch/x86/include/asm/shared/tdx.h
-> @@ -36,5 +36,25 @@ u64 __tdx_hypercall(struct tdx_hypercall_args *args, unsigned long flags);
->  /* Called from __tdx_hypercall() for unrecoverable failure */
->  void __tdx_hypercall_failed(void);
->  
-> +/*
-> + * Used in __tdx_module_call() to gather the output registers' values of the
-> + * TDCALL instruction when requesting services from the TDX module. This is a
-> + * software only structure and not part of the TDX module/VMM ABI
-> + */
-> +struct tdx_module_output {
-> +	u64 rcx;
-> +	u64 rdx;
-> +	u64 r8;
-> +	u64 r9;
-> +	u64 r10;
-> +	u64 r11;
-> +};
-
-Is this the first module call with an output?
-
-> +/* Used to communicate with the TDX module */
-> +u64 __tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
-> +		      struct tdx_module_output *out);
-> +
-> +void tdx_accept_memory(phys_addr_t start, phys_addr_t end);
-> +
->  #endif /* !__ASSEMBLY__ */
->  #endif /* _ASM_X86_SHARED_TDX_H */
-> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-> index 020c81a7c729..d9106d3e89f8 100644
-> --- a/arch/x86/include/asm/tdx.h
-> +++ b/arch/x86/include/asm/tdx.h
-> @@ -20,21 +20,6 @@
->  
->  #ifndef __ASSEMBLY__
->  
-> -/*
-> - * Used to gather the output registers values of the TDCALL and SEAMCALL
-> - * instructions when requesting services from the TDX module.
-> - *
-> - * This is a software only structure and not part of the TDX module/VMM ABI.
-> - */
-> -struct tdx_module_output {
-> -	u64 rcx;
-> -	u64 rdx;
-> -	u64 r8;
-> -	u64 r9;
-> -	u64 r10;
-> -	u64 r11;
-> -};
-> -
 >  /*
->   * Used by the #VE exception handler to gather the #VE exception
->   * info from the TDX module. This is a software only structure
-> @@ -55,10 +40,6 @@ struct ve_info {
+>   * Freeing function for a buddy system allocator.
+>   *
+> @@ -1058,6 +1084,7 @@ static inline void __free_one_page(struct page *page,
+>  	unsigned long combined_pfn;
+>  	struct page *buddy;
+>  	bool to_tail;
+> +	bool unaccepted = PageUnaccepted(page);
 >  
->  void __init tdx_early_init(void);
->  
-> -/* Used to communicate with the TDX module */
-> -u64 __tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
-> -		      struct tdx_module_output *out);
-> -
->  void tdx_get_ve_info(struct ve_info *ve);
+>  	VM_BUG_ON(!zone_is_initialized(zone));
+>  	VM_BUG_ON_PAGE(page->flags & PAGE_FLAGS_CHECK_AT_PREP, page);
+> @@ -1089,6 +1116,11 @@ static inline void __free_one_page(struct page *page,
+>  			clear_page_guard(zone, buddy, order, migratetype);
+>  		else
+>  			del_page_from_free_list(buddy, zone, order);
+> +
+> +		/* Mark page unaccepted if any of merged pages were unaccepted */
+> +		if (PageUnaccepted(buddy))
+> +			unaccepted = true;
 
-There's enough TDX helper munging going on here that I'd probably break
-this out into a separate patch.
+Naming nit: following the logic with a double-negative like !unaccepted
+is a bit hard.  Would this be more readable if it were:
 
-> diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
-> index 3588a7cb954c..2f1c3c0375cd 100644
-> --- a/arch/x86/mm/unaccepted_memory.c
-> +++ b/arch/x86/mm/unaccepted_memory.c
-> @@ -6,6 +6,7 @@
+	bool page_needs_acceptance = PageUnaccepted(page);
+
+and then the code below...
+
+>  		combined_pfn = buddy_pfn & pfn;
+>  		page = page + (combined_pfn - pfn);
+>  		pfn = combined_pfn;
+> @@ -1124,6 +1156,17 @@ static inline void __free_one_page(struct page *page,
+>  done_merging:
+>  	set_buddy_order(page, order);
 >  
->  #include <asm/io.h>
->  #include <asm/setup.h>
-> +#include <asm/shared/tdx.h>
->  #include <asm/unaccepted_memory.h>
+> +	/*
+> +	 * Check if the page needs to be marked as PageUnaccepted().
+> +	 * Used for the new pages added to the buddy allocator for the first
+> +	 * time.
+> +	 */
+> +	if (!unaccepted && (fpi_flags & FPI_UNACCEPTED))
+> +		unaccepted = page_is_unaccepted(page, order);
+
+	if (page_needs_acceptance && (fpi_flags & FPI_UNACCEPTED))
+		page_needs_acceptance = page_is_unaccepted(page, order);
+
+> +	if (unaccepted)
+> +		__SetPageUnaccepted(page);
+
+This is getting hard for me to follow.
+
+There are:
+1. Pages that come in here with PageUnaccepted()==1
+2. Pages that come in here with PageUnaccepted()==0, but a buddy that
+   was PageUnaccepted()==1
+
+In either of those cases, the bitmap will be consulted to see if the
+page is *truly* unaccepted or not.  But, I'm struggling to figure out
+how a page could end up in one of those scenarios and *not* be
+page_is_unaccepted().
+
+There are three pieces of information that come in:
+1. PageUnaccepted(page)
+2. PageUnaccepted(buddies[])
+3. the bitmap
+
+and one piece of information going out:
+
+PageUnaccepted(page);
+
+I think I need a more coherent description of how those four things fit
+together.
+
+>  	if (fpi_flags & FPI_TO_TAIL)
+>  		to_tail = true;
+>  	else if (is_shuffle_order(order))
+> @@ -1149,7 +1192,8 @@ static inline void __free_one_page(struct page *page,
+>  static inline bool page_expected_state(struct page *page,
+>  					unsigned long check_flags)
+>  {
+> -	if (unlikely(atomic_read(&page->_mapcount) != -1))
+> +	if (unlikely(atomic_read(&page->_mapcount) != -1) &&
+> +	    !PageUnaccepted(page))
+>  		return false;
+
+That probably deserves a comment, and maybe its own if() statement.
+
+>  	if (unlikely((unsigned long)page->mapping |
+> @@ -1654,7 +1698,8 @@ void __free_pages_core(struct page *page, unsigned int order)
+>  	 * Bypass PCP and place fresh pages right to the tail, primarily
+>  	 * relevant for memory onlining.
+>  	 */
+> -	__free_pages_ok(page, order, FPI_TO_TAIL | FPI_SKIP_KASAN_POISON);
+> +	__free_pages_ok(page, order,
+> +			FPI_TO_TAIL | FPI_SKIP_KASAN_POISON | FPI_UNACCEPTED);
+>  }
 >  
->  static DEFINE_SPINLOCK(unaccepted_memory_lock);
-> @@ -26,7 +27,10 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
->  	for_each_set_bitrange_from(rs, re, unaccepted_memory,
->  				   DIV_ROUND_UP(end, PMD_SIZE)) {
->  		/* Platform-specific memory-acceptance call goes here */
-> -		panic("Cannot accept memory");
-> +		if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST))
-> +			tdx_accept_memory(rs * PMD_SIZE, re * PMD_SIZE);
-> +		else
-> +			panic("Cannot accept memory");
->  		bitmap_clear(unaccepted_memory, rs, re - rs);
+>  #ifdef CONFIG_NUMA
+> @@ -1807,6 +1852,7 @@ static void __init deferred_free_range(unsigned long pfn,
+>  		return;
 >  	}
->  	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
+>  
+> +	accept_memory(pfn << PAGE_SHIFT, (pfn + nr_pages) << PAGE_SHIFT);
+>  	for (i = 0; i < nr_pages; i++, page++, pfn++) {
+>  		if ((pfn & (pageblock_nr_pages - 1)) == 0)
+>  			set_pageblock_migratetype(page, MIGRATE_MOVABLE);
 
+Comment, please.  I assume doing the slow accept up front is OK here
+because this is in the deferred path.  But, it would be nice to know for
+sure.
+
+> @@ -2266,6 +2312,10 @@ static inline void expand(struct zone *zone, struct page *page,
+>  		if (set_page_guard(zone, &page[size], high, migratetype))
+>  			continue;
+>  
+> +		/* Transfer PageUnaccepted() to the newly split pages */
+> +		if (PageUnaccepted(page))
+> +			__SetPageUnaccepted(&page[size]);
+
+We don't want to just accept the page here, right?  Because we're
+holding the zone lock?  Maybe we should mention that:
+
+		/*
+		 * Transfer PageUnaccepted() to the newly split pages so
+		 * they can be accepted after dropping the zone lock.
+		 */
+
+>  		add_to_free_list(&page[size], zone, high, migratetype);
+>  		set_buddy_order(&page[size], high);
+>  	}
+> @@ -2396,6 +2446,9 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
+>  	 */
+>  	kernel_unpoison_pages(page, 1 << order);
+>  
+> +	if (PageUnaccepted(page))
+> +		accept_page(page, order);
+> +
+>  	/*
+>  	 * As memory initialization might be integrated into KASAN,
+>  	 * KASAN unpoisoning and memory initializion code must be
+
+Is accepted memory guaranteed to be zeroed?  Do we want to skip the
+__GFP_ZERO behavior later in this function?  Or is that just a silly
+over-optimization?
