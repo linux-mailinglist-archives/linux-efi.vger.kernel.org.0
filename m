@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4211E4FB840
-	for <lists+linux-efi@lfdr.de>; Mon, 11 Apr 2022 11:50:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3E0F4FB843
+	for <lists+linux-efi@lfdr.de>; Mon, 11 Apr 2022 11:50:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344815AbiDKJwN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 11 Apr 2022 05:52:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38066 "EHLO
+        id S1344829AbiDKJwP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 11 Apr 2022 05:52:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344863AbiDKJwB (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 11 Apr 2022 05:52:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FF60419B6
-        for <linux-efi@vger.kernel.org>; Mon, 11 Apr 2022 02:49:17 -0700 (PDT)
+        with ESMTP id S1344820AbiDKJwC (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 11 Apr 2022 05:52:02 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF6D5419BA
+        for <linux-efi@vger.kernel.org>; Mon, 11 Apr 2022 02:49:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D25B361182
-        for <linux-efi@vger.kernel.org>; Mon, 11 Apr 2022 09:49:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515A7C385B0;
-        Mon, 11 Apr 2022 09:49:14 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id F05CEB80F97
+        for <linux-efi@vger.kernel.org>; Mon, 11 Apr 2022 09:49:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1886C385AC;
+        Mon, 11 Apr 2022 09:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649670556;
-        bh=TEd74fUGGrd4Z1cRABQmAm27ke5FtcewQadVTliZWAk=;
+        s=k20201202; t=1649670558;
+        bh=O1r2IiWLwP2lKrF/aCfJ2B+0w6PbipWxiDGaVVY2Mw4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=APCDKPvnrCFnc/yFQCpADw9E/+8oaOnTBY3oiuTMME/g2E5WUtw9Ug1Egx1RPyxzT
-         EjiEzpbQnwpfVC2LZHJQELZoltQTiGPa0ghutlkMEVeZ6lKxHxlz56ookfqsAB8sZz
-         Gnv4uVaYRmN+lyXILOrrys4CXZ6IZMfIDfGQBvM3T407gd8dgOl7nDJqtkBbqhl/fo
-         bkYj//+mvVzGWLQCG5dcS5x2Rk8MFhWcyqXxQRAsASipW9n9tzrpdXKj6pAQuB1VhP
-         b23fo96u8xrd/fH4Ba9cF7P87FnRomkI7XY541RnmtUGi/mjQUtb2Ik/wV4ufVS1LX
-         k3qd3J3EdpHHA==
+        b=b8xOBj62cDHSDh68r9NzNmWSDDyKiBmzl5Q8287izZwwm1YT5S8gIKkeOKdF8TrGq
+         Xe1iGzsl9BI41zT8Fnp0ihPGkspzNvghuj0uT6bmYWRwt0uYCpZaNxeFKRcDW8HfnE
+         3RC2x4eKI/CAQdw3jXfRwnKe2hKNoLyPtNoUgFDD+sacWV4p0N8zpzcHzJcGcd78Bb
+         eUC5PXrt448+mX0GhL8s/62aXyN1ck6vOga409CQSQS4EJ2gHgZtgnUGzWk4GHR6jN
+         aMvAlq56rwUtnfTZWFfe/S4k6LlLuyhoPVTa7vjAMCc9rqsmbGyug9piyGIruotkQK
+         +EpfZAAo0zIog==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-arm-kernel@lists.infradead.org
 Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -39,14 +39,14 @@ Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Kees Cook <keescook@chromium.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Mark Brown <broonie@kernel.org>
-Subject: [PATCH v3 14/30] arm64: head: create a temporary FDT mapping in the initial ID map
-Date:   Mon, 11 Apr 2022 11:48:08 +0200
-Message-Id: <20220411094824.4176877-15-ardb@kernel.org>
+Subject: [PATCH v3 15/30] arm64: idreg-override: use early FDT mapping in ID map
+Date:   Mon, 11 Apr 2022 11:48:09 +0200
+Message-Id: <20220411094824.4176877-16-ardb@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220411094824.4176877-1-ardb@kernel.org>
 References: <20220411094824.4176877-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3233; h=from:subject; bh=TEd74fUGGrd4Z1cRABQmAm27ke5FtcewQadVTliZWAk=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBiU/lMCk6FU1TDgS+d/bUIgpicu6zDRlE/gdeBj3bp /lk4Jn6JAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYlP5TAAKCRDDTyI5ktmPJLGMC/ 9hBgnHrXB5qXx9kUoOG/jVi3qO3tUka8huOBorTeivyB/WXIQIn1ee8HVbMbsMvEA8nRkKkozI/YUR fEO5YHcy2EB0g/4cpFiHOyXBfR9AyYUmeV0BIbsMq3V+UbOkrA8OH5YmHU3uqZNaISOwCDOI5KEq2o /9X711XQ4DP0aWBdishsWkAa+lkqfeknOCGji8bePW6A0UZKrRbgio5Jl54RNN9CPL9jBnsC3NBG/Q +vsk+S4a6T9gGSpsY6XdQOB3KbxtHMV87+yQB5bauNvGMwlNg/nR+MDiK0GvE5+WUUfRCPkBSxE4oi y9H0W7xYC0E3RVbff4WmeiQVxAAFmKnELoApi8O5NwVCFRuyFpIO7HBKQrchQQIE7nbxqs+6UYZGG3 OufMrJhtuhYpHSDStTY1y1IRmlpZ4Je2O6dK2Mv6r+3MhY2455pxM26mX8VnLSS/9p3Z15tFWkl73Y PaZKpgB/CJZgjVU6vyaldd+9Jqk7BplYHIlmE1Q9pKBVE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2638; h=from:subject; bh=O1r2IiWLwP2lKrF/aCfJ2B+0w6PbipWxiDGaVVY2Mw4=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBiU/lOmbAezGtgD+Q+3AsS4gfsGcUHYqihpwQH2LdG Ylm7TnCJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYlP5TgAKCRDDTyI5ktmPJKrlC/ 4maa/z3WiiLpAoKax6pd6HSHh4iwqwfzHGw4rMp8K2seUZwVBljjaTRhAkQDllZbAWJ6jo1d1C+MjC 1+hSCAQhdYNuWdQ4EFTuiKJhbu357YQcd4LH1dJt1X266mAIUAu8qZINGZkMQdPtG9Oz/jjO8HRlDm oGhVRKTOi13lHqMAVV6NcWp/Y14XVobSKDrmx3EQ3U2vmIzuNsrIjQGZomwxHHV6mJrOtHFB7Qhp/S pFK1Nkv6BoSlsTqSOgB4WxacYDXY6psOQGlBQr0zXjiNDdJRmond0A/23oXwLnEuNcuMiNnV/GNjhw cjJGsU5lQ/tOeKhNV2cgl1YH9LFGJiDH3eLeB4bRCuCReoKfXydPo14qyUJxsom7MzA9/Q1e/VnvhP zEZDqNet11qeKkXZawLZ8FBdCudJEmoOym6tK9j7eEUYE3+qmUitBoAbis8uPuyCBQleckOQVulGrO MngyLxQfeuwCTBbVgqvoUEj0r63KqY4RtwC1lZo8eLSFk=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -59,86 +59,85 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-We need to access the DT very early to get at the command line and the
-KASLR seed, which currently means we rely on some hacks to call into the
-kernel before really calling into the kernel, which is undesirable.
-
-So instead, let's create a mapping for the FDT in the initial ID map,
-which is feasible now that it has been extended to cover more than a
-single page or block, and can be updated in place to remap other output
-addresses.
+Instead of calling into the kernel to map the FDT into the kernel page
+tables before even calling start_kernel(), let's switch to the initial,
+temporary mapping of the device tree that has been added to the ID map.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/include/asm/kernel-pgtable.h |  6 ++++--
- arch/arm64/kernel/head.S                | 14 +++++++++++++-
- 2 files changed, 17 insertions(+), 3 deletions(-)
+ arch/arm64/kernel/head.S           |  3 +--
+ arch/arm64/kernel/idreg-override.c | 17 ++++++-----------
+ 2 files changed, 7 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm64/include/asm/kernel-pgtable.h b/arch/arm64/include/asm/kernel-pgtable.h
-index 5395e5a04f35..02e59fa8f293 100644
---- a/arch/arm64/include/asm/kernel-pgtable.h
-+++ b/arch/arm64/include/asm/kernel-pgtable.h
-@@ -8,6 +8,7 @@
- #ifndef __ASM_KERNEL_PGTABLE_H
- #define __ASM_KERNEL_PGTABLE_H
- 
-+#include <asm/boot.h>
- #include <asm/pgtable-hwdef.h>
- #include <asm/sparsemem.h>
- 
-@@ -88,10 +89,11 @@
- 
- /* the initial ID map may need two extra pages if it needs to be extended */
- #if VA_BITS < 48
--#define INIT_IDMAP_DIR_SIZE	(INIT_DIR_SIZE + (2 * PAGE_SIZE))
-+#define INIT_IDMAP_DIR_SIZE	((INIT_IDMAP_DIR_PAGES + 2) * PAGE_SIZE)
- #else
--#define INIT_IDMAP_DIR_SIZE	INIT_DIR_SIZE
-+#define INIT_IDMAP_DIR_SIZE	(INIT_IDMAP_DIR_PAGES * PAGE_SIZE)
- #endif
-+#define INIT_IDMAP_DIR_PAGES	EARLY_PAGES(KIMAGE_VADDR, _end + MAX_FDT_SIZE + SWAPPER_BLOCK_SIZE)
- 
- /* Initial memory map size */
- #if ARM64_KERNEL_USES_PMD_MAPS
 diff --git a/arch/arm64/kernel/head.S b/arch/arm64/kernel/head.S
-index 2c491cac4871..bec3805c941c 100644
+index bec3805c941c..eae147fabbee 100644
 --- a/arch/arm64/kernel/head.S
 +++ b/arch/arm64/kernel/head.S
-@@ -82,6 +82,7 @@
- 	 * primary lowlevel boot path:
- 	 *
- 	 *  Register   Scope                      Purpose
-+	 *  x19        create_idmap() .. __ start_kernel()      ID map VA of the DT blob
- 	 *  x21        primary_entry() .. start_kernel()        FDT pointer passed at boot in x0
- 	 *  x23        primary_entry() .. start_kernel()        physical misalignment/KASLR offset
- 	 *  x28        clear_page_tables()                      callee preserved temp register
-@@ -346,7 +347,7 @@ SYM_FUNC_START_LOCAL(create_idmap)
+@@ -468,8 +468,7 @@ SYM_FUNC_START_LOCAL(__primary_switched)
+ #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
+ 	bl	kasan_early_init
  #endif
- 	adrp	x0, init_idmap_pg_dir
- 	adrp	x3, _text
--	adrp	x6, _end
-+	adrp	x6, _end + MAX_FDT_SIZE + SWAPPER_BLOCK_SIZE
- 	mov	x7, SWAPPER_RX_MMUFLAGS
+-	mov	x0, x21				// pass FDT address in x0
+-	bl	early_fdt_map			// Try mapping the FDT early
++	mov	x0, x19				// pass FDT address in x0
+ 	bl	init_feature_override		// Parse cpu feature overrides
+ #ifdef CONFIG_RANDOMIZE_BASE
+ 	tst	x23, ~(MIN_KIMG_ALIGN - 1)	// already running randomized?
+diff --git a/arch/arm64/kernel/idreg-override.c b/arch/arm64/kernel/idreg-override.c
+index 8a2ceb591686..f92836e196e5 100644
+--- a/arch/arm64/kernel/idreg-override.c
++++ b/arch/arm64/kernel/idreg-override.c
+@@ -201,16 +201,11 @@ static __init void __parse_cmdline(const char *cmdline, bool parse_aliases)
+ 	} while (1);
+ }
  
- 	map_memory x0, x1, x3, x6, x7, x3, IDMAP_PGD_ORDER, x10, x11, x12, x13, x14, EXTRA_SHIFT
-@@ -360,6 +361,17 @@ SYM_FUNC_START_LOCAL(create_idmap)
- 	mov	x6, #SWAPPER_BLOCK_SHIFT
- 	bl	remap_region
+-static __init const u8 *get_bootargs_cmdline(void)
++static __init const u8 *get_bootargs_cmdline(const void *fdt)
+ {
+ 	const u8 *prop;
+-	void *fdt;
+ 	int node;
  
-+	/* Remap the FDT read-only after the kernel image */
-+	adrp	x1, _text
-+	adrp	x19, _end + SWAPPER_BLOCK_SIZE
-+	bic	x2, x19, #SWAPPER_BLOCK_SIZE - 1
-+	bfi	x19, x21, #0, #SWAPPER_BLOCK_SHIFT		// remapped FDT address
-+	add	x3, x2, #MAX_FDT_SIZE + SWAPPER_BLOCK_SIZE
-+	bic	x4, x21, #SWAPPER_BLOCK_SIZE - 1
-+	mov	x5, SWAPPER_RX_MMUFLAGS
-+	mov	x6, #SWAPPER_BLOCK_SHIFT
-+	bl	remap_region
-+
- 	/*
- 	 * Since the page tables have been populated with non-cacheable
- 	 * accesses (MMU disabled), invalidate those tables again to
+-	fdt = get_early_fdt_ptr();
+-	if (!fdt)
+-		return NULL;
+-
+ 	node = fdt_path_offset(fdt, "/chosen");
+ 	if (node < 0)
+ 		return NULL;
+@@ -222,9 +217,9 @@ static __init const u8 *get_bootargs_cmdline(void)
+ 	return strlen(prop) ? prop : NULL;
+ }
+ 
+-static __init void parse_cmdline(void)
++static __init void parse_cmdline(const void *fdt)
+ {
+-	const u8 *prop = get_bootargs_cmdline();
++	const u8 *prop = get_bootargs_cmdline(fdt);
+ 
+ 	if (IS_ENABLED(CONFIG_CMDLINE_FORCE) || !prop)
+ 		__parse_cmdline(CONFIG_CMDLINE, true);
+@@ -234,9 +229,9 @@ static __init void parse_cmdline(void)
+ }
+ 
+ /* Keep checkers quiet */
+-void init_feature_override(void);
++void init_feature_override(const void *fdt);
+ 
+-asmlinkage void __init init_feature_override(void)
++asmlinkage void __init init_feature_override(const void *fdt)
+ {
+ 	int i;
+ 
+@@ -247,7 +242,7 @@ asmlinkage void __init init_feature_override(void)
+ 		}
+ 	}
+ 
+-	parse_cmdline();
++	parse_cmdline(fdt);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(regs); i++) {
+ 		if (regs[i]->override)
 -- 
 2.30.2
 
