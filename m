@@ -2,111 +2,91 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 829B84FE5B1
-	for <lists+linux-efi@lfdr.de>; Tue, 12 Apr 2022 18:19:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5240C4FE66A
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Apr 2022 18:59:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344410AbiDLQWL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 12 Apr 2022 12:22:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44192 "EHLO
+        id S1357903AbiDLRBn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 12 Apr 2022 13:01:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244084AbiDLQWK (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 12 Apr 2022 12:22:10 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F9FA4F460;
-        Tue, 12 Apr 2022 09:19:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649780392; x=1681316392;
-  h=message-id:date:mime-version:to:cc:references:from:
-   subject:in-reply-to:content-transfer-encoding;
-  bh=0rhW/syVVmAH9bt4RVUxl07dFxjacizqjOlvBoRg8/g=;
-  b=k/FZyHUkaiChIUHg/bzf4Mm5gO0zGiYb4XR9p/zFJokYmHYOhGrBPIcn
-   eLs8moWv7Yc6ujoiaEobel8kdBn5dkjxvpOcAMU96qbIQnMXGQZyQ10Sm
-   J8rbnWYmwfYILNjRY+MAKIXfaw5sfayMF6knLWz9plKviIAKKjwVVSJL6
-   sCLE0ongEsosooaOdfkbqwv7p29usbZ/aSfEQdGf1NGZntXI1tqgIiW5x
-   taKUk1YD179gdTg27A+CmHWHMyTbN0BfChA17DDkZoMJVdWo+16070RbN
-   PFIIi4jxJWgCkpRjfXKZ0YfVxj1F6wpJDlTb4Wg2Uqu3etC/9ZhD4mn5k
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10315"; a="287438118"
-X-IronPort-AV: E=Sophos;i="5.90,254,1643702400"; 
-   d="scan'208";a="287438118"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2022 09:08:39 -0700
-X-IronPort-AV: E=Sophos;i="5.90,254,1643702400"; 
-   d="scan'208";a="551773930"
-Received: from vtelkarx-mobl.amr.corp.intel.com (HELO [10.209.191.73]) ([10.209.191.73])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2022 09:08:37 -0700
-Message-ID: <ebf3ccef-e6fe-62d5-74e8-91e30e7c2642@intel.com>
-Date:   Tue, 12 Apr 2022 09:08:43 -0700
+        with ESMTP id S1357912AbiDLRBk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 12 Apr 2022 13:01:40 -0400
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78C1E11A1E
+        for <linux-efi@vger.kernel.org>; Tue, 12 Apr 2022 09:59:22 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id q3so6082919plg.3
+        for <linux-efi@vger.kernel.org>; Tue, 12 Apr 2022 09:59:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=sbmtZUHdeimKmpPh1bMlzq0hwzuYX2yluMhfz3rlFSU=;
+        b=HWCdYoytGsbjpCL3FGrjxUsGb1RC/BkyeetyCir4NM7dpKTa2umTcHsZYPt8Ts5ZRT
+         kkj+OUC2PEuL0b3WmGpSF+16uQqDbUJ5pdvod+3q8BfrGWryansUrTEPMW6R1H6nzHnO
+         E+fPvRLMTZAMVhvfA8aSE9c3Z3BjJxvKXteXI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=sbmtZUHdeimKmpPh1bMlzq0hwzuYX2yluMhfz3rlFSU=;
+        b=jtPcZvUtHQBHm3ahO2h0mh8uFKwRnMLKCiLQ4UC9QExr7RxHc8YmAh/USJuozybRPv
+         3Z7T31+3QV1p/hI0nzFCYplwGp8ERSgfK0nSdXMU5E4P6f6hX/55i7NN2FDaGPwDTxbF
+         Q5H/cdCeLaBpNA+OxzoKYIiDnlazUNdX4tJunMuKi2I0i7fb9CWAYfT30FGRenq+tsNM
+         vAuIyxKHDzKxcNgtm2XyMxRw/GIEPlnVZ84YnBGuvDDplc6TKSlRxN/8MoQsPtBXNS/T
+         /9yX/aouPdDd9Ia0kdgZr6W5jOj4xC28SpdNGvMSSe4ysn0j4lmXGb54p+O4OXXUTJw9
+         HvyQ==
+X-Gm-Message-State: AOAM533e/bsEC0hpBjfcwQVPaMpotUIey/6Iuf22LyDp31opnCXt3d/X
+        Z1r2QkpNtG5iBJ3giAu5Qiqvrw==
+X-Google-Smtp-Source: ABdhPJw7iU/gNPjilL7EEmCqgRzrhmwbFxKjdbW0t3zk1Pz/3+QxpbfZlGwcC2qUvSClQTbZ5U1T+Q==
+X-Received: by 2002:a17:90b:4d01:b0:1cd:46e8:215a with SMTP id mw1-20020a17090b4d0100b001cd46e8215amr618262pjb.73.1649782761864;
+        Tue, 12 Apr 2022 09:59:21 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id l4-20020a056a0016c400b004f79504ef9csm39595061pfc.3.2022.04.12.09.59.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Apr 2022 09:59:21 -0700 (PDT)
+Date:   Tue, 12 Apr 2022 09:59:20 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
+        Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v3 00/30] arm64: support WXN and entry with MMU enabled
+Message-ID: <202204120956.B0ECA2FC@keescook>
+References: <20220411094824.4176877-1-ardb@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Content-Language: en-US
-To:     David Hildenbrand <david@redhat.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Varad Gautam <varad.gautam@suse.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Mike Rapoport <rppt@kernel.org>, x86@kernel.org,
-        linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mike Rapoport <rppt@linux.ibm.com>
-References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
- <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
- <93a7cfdf-02e6-6880-c563-76b01c9f41f5@intel.com>
- <ff9e0bad-be9a-97ac-ae88-d22bcfbe80d4@redhat.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-Subject: Re: [PATCHv4 1/8] mm: Add support for unaccepted memory
-In-Reply-To: <ff9e0bad-be9a-97ac-ae88-d22bcfbe80d4@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220411094824.4176877-1-ardb@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 4/12/22 01:15, David Hildenbrand wrote:
-> Can we simply automate this using a kthread or smth like that, which
-> just traverses the free page lists and accepts pages (similar, but
-> different to free page reporting)?
+On Mon, Apr 11, 2022 at 11:47:54AM +0200, Ard Biesheuvel wrote:
+>   - allow WXN to be enabled (with an opt-out) so writable mappings are
+>     never executable;
 
-That's definitely doable.
+Besides all the rest of this series's awesomeness; this really stands
+out to me. I didn't even know this was a feature in aarch64. Nice! I
+really like the idea of having this enabled -- anything executing out of
+a writable mapping should already be considered a mistake (and tons of
+work over the last 2 decades has already gone into making stuff this
+doesn't happen in both the kernel and userspace). We could even make a
+new LKDTM test for this. (Right now stuff like EXEC_DATA just verifies
+that the .data segment doesn't have the X bit... but adding something
+like EXEC_WXN where a memory region is made explicitly W+X, and it
+_still_ can't be executed would be great.)
 
-The downside is that this will force premature consumption of physical
-memory resources that the guest may never use.  That's a particular
-problem on TDX systems since there is no way for a VMM to reclaim guest
-memory short of killing the guest.
+Cool!
 
-In other words, I can see a good argument either way:
-1. The kernel should accept everything to avoid the perf nastiness
-2. The kernel should accept only what it needs in order to reduce memory
-   use
+-Kees
 
-I'm kinda partial to #1 though, if I had to pick only one.
-
-The other option might be to tie this all to DEFERRED_STRUCT_PAGE_INIT.
- Have the rule that everything that gets a 'struct page' must be
-accepted.  If you want to do delayed acceptance, you do it via
-DEFERRED_STRUCT_PAGE_INIT.
+-- 
+Kees Cook
