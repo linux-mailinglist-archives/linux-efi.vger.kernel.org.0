@@ -2,85 +2,103 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E84B04FC6CE
-	for <lists+linux-efi@lfdr.de>; Mon, 11 Apr 2022 23:35:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B80F4FDC19
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Apr 2022 13:00:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350199AbiDKVha (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 11 Apr 2022 17:37:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55642 "EHLO
+        id S1344667AbiDLKO0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 12 Apr 2022 06:14:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240775AbiDKVh3 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 11 Apr 2022 17:37:29 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 422CD32EC3;
-        Mon, 11 Apr 2022 14:35:13 -0700 (PDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id 933201F38D;
-        Mon, 11 Apr 2022 21:35:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1649712911; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
+        with ESMTP id S1358186AbiDLJBY (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 12 Apr 2022 05:01:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DA3041834A
+        for <linux-efi@vger.kernel.org>; Tue, 12 Apr 2022 01:15:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1649751313;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=r3uWqyQeh3AA+Cb46dnWvEZ3Eid4YgcxD15T0bs7OF0=;
-        b=x0Y0t9ignpUl5ppfhCGjNNVzR3W2LNG7TIA+jRNvkPwW6FTlHMpmEZLNyHfBvuN9wvLliT
-        vyRlXNTDtCCF8OPpwP/+cQ9Ww6cPwV0gOWqNSHFD84Rsti9dz5v3NpljGwbfNCxlDxCvJ8
-        FVKPDKp/Od3Pfp13LahQTCoMntoEjVk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1649712911;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=r3uWqyQeh3AA+Cb46dnWvEZ3Eid4YgcxD15T0bs7OF0=;
-        b=Og1/lO74QMsxltiaEGnXBQ3qTUSdssihtPWBqe7B1xPnv5j2TtvEoklcTp41wddCYhku+J
-        u2AYR6PAxvbBUMAw==
-Received: from kunlun.suse.cz (unknown [10.100.128.76])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 93C70A3B83;
-        Mon, 11 Apr 2022 21:35:10 +0000 (UTC)
-Date:   Mon, 11 Apr 2022 23:35:09 +0200
-From:   Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To:     Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     David Howells <dhowells@redhat.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "ardb@kernel.org" <ardb@kernel.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        "jmorris@namei.org" <jmorris@namei.org>,
-        "serge@hallyn.com" <serge@hallyn.com>,
-        "nayna@linux.ibm.com" <nayna@linux.ibm.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        "keescook@chromium.org" <keescook@chromium.org>,
-        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
-        "weiyongjun1@huawei.com" <weiyongjun1@huawei.com>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org" 
-        <linux-security-module@vger.kernel.org>,
-        "James.Bottomley@hansenpartnership.com" 
-        <James.Bottomley@hansenpartnership.com>,
-        "pjones@redhat.com" <pjones@redhat.com>,
-        Konrad Wilk <konrad.wilk@oracle.com>
-Subject: Re: [PATCH v10 8/8] integrity: Only use machine keyring when
- uefi_check_trust_mok_keys is true
-Message-ID: <20220411213509.GG163591@kunlun.suse.cz>
-References: <20220126025834.255493-1-eric.snowberg@oracle.com>
- <20220126025834.255493-9-eric.snowberg@oracle.com>
- <20220411110640.GC163591@kunlun.suse.cz>
- <C970A5DB-0238-4B5A-9935-588DF9B1DDEF@oracle.com>
- <20220411172450.GD163591@kunlun.suse.cz>
- <54B1CDD9-F690-4F1F-9A9A-9412AAB21A72@oracle.com>
+        bh=8HjmZzAIO50unb7pGZAQpRPqJO313RFErJC/+pOp/R0=;
+        b=IkzNmt59JwO6895i4gRWAyjJEFTZrALQ8hNEZ2lfgWxKwr6MYvPmJOdUCGEFEX6gvMtZNP
+        c9JU84/KA5L/asP6PBXmKhPMZB/1I/vYxg9u84i8dEzXzjKRS60p1v3pfcm01ePEqgJ0F/
+        4nlJG2VJtY21qI05Lt6oK7FsIdyyB2k=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-85-URhQ71o_NZKy-7vLuXooMA-1; Tue, 12 Apr 2022 04:15:11 -0400
+X-MC-Unique: URhQ71o_NZKy-7vLuXooMA-1
+Received: by mail-wm1-f72.google.com with SMTP id k16-20020a7bc310000000b0038e6cf00439so953470wmj.0
+        for <linux-efi@vger.kernel.org>; Tue, 12 Apr 2022 01:15:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent
+         :content-language:to:cc:references:from:organization:subject
+         :in-reply-to:content-transfer-encoding;
+        bh=8HjmZzAIO50unb7pGZAQpRPqJO313RFErJC/+pOp/R0=;
+        b=vgLLef7iFsYd39+QZi4iPKw3T/+EqjsILa0JsrrzDei8RsLozKcKl2RP+a6/97kGOY
+         uclulkOJ1s7X9JB4I+j9JBDPmTmjCya1BZv6zMxYcm2sS2NUtS+16fLP6n4ulLRnTRId
+         WhS7vHtMDBMMCvsi4JARlw+pcX7+vqn8IhOc/UpTEcDORON2S93YqHfYfhaWEQsUw8PI
+         cVVMJSiX5NADSV/s2XkkUOy9e4OkUthkhxhb9UNjtTyrS73q56w8lk7FnUOmjkYiSwj4
+         YP7SMRFO3FzEePAy44pjawr4G23DrJopjuAklzRPR/5vKeoCxYklVYMccDKG527XYoBX
+         zUmg==
+X-Gm-Message-State: AOAM530ONyOwZfNY8spVxycsSI2cZVf2pNKrTFtcA+B14/nJQGv85ZSS
+        89l9DgTWwGveAohaKvzIsmhxbOHC4TORXrOJltQyfXXz/zbgPyw/eMO/TdkNrcld4znxO1De8t8
+        NjraB3GGueA6sjxExs5nP
+X-Received: by 2002:adf:ed8b:0:b0:206:1771:e373 with SMTP id c11-20020adfed8b000000b002061771e373mr28461580wro.84.1649751310602;
+        Tue, 12 Apr 2022 01:15:10 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxZYmHGzijmWq4j1QgvJKMtTI4uehpfCeAgJZFkKQ0wTIJR1ucWkaH70j+SivEpEn8AXTnKWA==
+X-Received: by 2002:adf:ed8b:0:b0:206:1771:e373 with SMTP id c11-20020adfed8b000000b002061771e373mr28461563wro.84.1649751310358;
+        Tue, 12 Apr 2022 01:15:10 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c707:1800:7c14:16cc:5291:a9f3? (p200300cbc70718007c1416cc5291a9f3.dip0.t-ipconnect.de. [2003:cb:c707:1800:7c14:16cc:5291:a9f3])
+        by smtp.gmail.com with ESMTPSA id b14-20020a7bc24e000000b003899c8053e1sm1814456wmj.41.2022.04.12.01.15.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Apr 2022 01:15:09 -0700 (PDT)
+Message-ID: <ff9e0bad-be9a-97ac-ae88-d22bcfbe80d4@redhat.com>
+Date:   Tue, 12 Apr 2022 10:15:07 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <54B1CDD9-F690-4F1F-9A9A-9412AAB21A72@oracle.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Content-Language: en-US
+To:     Dave Hansen <dave.hansen@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Varad Gautam <varad.gautam@suse.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Mike Rapoport <rppt@kernel.org>, x86@kernel.org,
+        linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mike Rapoport <rppt@linux.ibm.com>
+References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
+ <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
+ <93a7cfdf-02e6-6880-c563-76b01c9f41f5@intel.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCHv4 1/8] mm: Add support for unaccepted memory
+In-Reply-To: <93a7cfdf-02e6-6880-c563-76b01c9f41f5@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -88,77 +106,81 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Apr 11, 2022 at 08:34:55PM +0000, Eric Snowberg wrote:
+On 08.04.22 21:11, Dave Hansen wrote:
+> On 4/5/22 16:43, Kirill A. Shutemov wrote:
+>> Kernel only needs to accept memory once after boot, so during the boot
+>> and warm up phase there will be a lot of memory acceptance. After things
+>> are settled down the only price of the feature if couple of checks for
+>> PageUnaccepted() in allocate and free paths. The check refers a hot
+>> variable (that also encodes PageBuddy()), so it is cheap and not visible
+>> on profiles.
 > 
+> Let's also not sugar-coat this.  Page acceptance is hideously slow.
+> It's agonizingly slow.  To boot, it's done holding a global spinlock
+> with interrupts disabled (see patch 6/8).  At the very, very least, each
+> acceptance operation involves a couple of what are effectively ring
+> transitions, a 2MB memset(), and a bunch of cache flushing.
 > 
-> > On Apr 11, 2022, at 11:24 AM, Michal Suchánek <msuchanek@suse.de> wrote:
-> > 
-> > On Mon, Apr 11, 2022 at 04:39:42PM +0000, Eric Snowberg wrote:
-> >> 
-> >> 
-> >>> On Apr 11, 2022, at 5:06 AM, Michal Suchánek <msuchanek@suse.de> wrote:
-> >>> 
-> >>> Hello,
-> >>> 
-> >>> On Tue, Jan 25, 2022 at 09:58:34PM -0500, Eric Snowberg wrote:
-> >>>> With the introduction of uefi_check_trust_mok_keys, it signifies the end-
-> >>> 
-> >>> What value does such flag have?
-> >>> 
-> >>> The user is as much in control of the flag as the MOK keys.
-> >> 
-> >> The flag allows the system owner (not root) the ability to determine 
-> >> if they want to load MOKList into the machine keyring.  Keys contained 
-> >> in the machine keyring are then linked to the secondary.  The flag is no 
-> >> different than the '—ignore-db' currently available in shim, which then 
-> >> gets propagated to Linux (uefi_check_ignore_db).  These flags can be 
-> >> set by the system owner, who can prove physical presence.  
-> > 
-> > Managing the MOK keys requires physical presence equally.
-> > 
-> > Moreover, these keys are trusted for running code at ring0, in fact the
-> > running kernel is expected to be signed by one of them, and can be
-> > signed by any of them.
-> > 
-> > Then what exact purpose does this extra flag serve?
-> > 
-> > If such compile-time flag exists in the kernel it cannot be overriden by
-> > the root once the kernel is signed, either.
-> > 
-> >>>> user wants to trust the machine keyring as trusted keys.  If they have
-> >>>> chosen to trust the machine keyring, load the qualifying keys into it
-> >>>> during boot, then link it to the secondary keyring .  If the user has not
-> >>>> chosen to trust the machine keyring, it will be empty and not linked to
-> >>>> the secondary keyring.
-> >>> 
-> >>> Why is importing the keys and using them linked together?
-> >>> 
-> >>> If later we get, say, machine keyring on powerpc managed by secvarctl
-> >>> then it has its value to import the keyring and be able to list the
-> >>> content with the same tools on EFI and powerpc.
-> >> 
-> >> The machine keyring is linked to the secondary keyring, exactly the same way 
-> >> the builtin is linked to it.  Linking this way should eliminate the need to change 
-> >> any user space tools to list the contents. 
-> > 
-> > That's answer to a completely different question, though.
-> > 
-> > You either import the keys and use them, or you don't use them and don't
-> > import them. The option to import and not use is not available.
+> The system is going to be downright unusable during this time, right?
 > 
-> Why import something into a keyring that can not be used?
+> Sure, it's *temporary* and only happens once at boot.  But, it's going
+> to suck.
 > 
-> MOKList keys get imported into one of two keyrings, either the machine or the 
-> platform.  If uefi_check_trust_mok_keys returns false, the MOKList keys are 
-> loaded into the platform along with the UEFI SB DB keys.  If true, they are loaded 
-> into the machine keyring.
+> Am I over-stating this in any way?
+> 
+> The ACCEPT_MEMORY vmstat is good to have around.  Thanks for adding it.
+>  But, I think we should also write down some guidance like:
+> 
+> 	If your TDX system seems as slow as snail after boot, look at
+> 	the "accept_memory" counter in /proc/vmstat.  If it is
+> 	incrementing, then TDX memory acceptance is likely to blame.
+> 
+> Do we need anything more discrete to tell users when acceptance is over?
+>  For instance, maybe they run something and it goes really slow, they
+> watch "accept_memory" until it stops.  They rejoice at their good
+> fortune!  Then, memory allocation starts falling over to a new node and
+> the agony beings anew.
+> 
+> I can think of dealing with this in two ways:
+> 
+> 	cat /sys/.../unaccepted_pages_left
+> 
+> which just walks the bitmap and counts the amount of pages remaining. or
+> something like:
+> 
+> 	echo 1 > /sys/devices/system/node/node0/make_the_pain_stop
+> 
+> Which will, well, make the pain stop on node0.
+> 
 
-Ooh, such quirky and convoluted design. Not sure how anyone is supposed
-to make any sense of this but hey, none of this can possibly change to
-not break something.
+Either I'm missing something important or the random pain might just
+take a really long time to stop?
 
-Now I at least know.
+I mean, we tend to reallocate the memory first that we freed last
+(putting it to the head of the freelist when freeing and picking from
+the head when allocating).
 
-Thanks
+So unless your kernel goes crazy and allocates each and every page right
+after boot, essentially accepting all memory, you might have random
+unaccepted pages lurking at the tail of the freelists.
 
-Michal
+So if the VM is running for 355 days without significant memory
+pressure, you can still run into unaccepted pages at day 356 that
+results in a random delay due to acceptance of memory.
+
+
+I think we most certainly want some way to make the random pain stop, or
+to make the random pain go away after boot quickly. The
+"unaccepted_pages_left" indicator would just be a "hey, there might be
+random delays, but you cannot do anything about it". Magic toggles like
+"make_the_pain_stop" are not so nice.
+
+Can we simply automate this using a kthread or smth like that, which
+just traverses the free page lists and accepts pages (similar, but
+different to free page reporting)?
+
+-- 
+Thanks,
+
+David / dhildenb
+
