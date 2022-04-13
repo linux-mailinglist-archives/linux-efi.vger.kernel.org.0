@@ -2,76 +2,60 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F34314FFBB6
-	for <lists+linux-efi@lfdr.de>; Wed, 13 Apr 2022 18:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A08124FFC0F
+	for <lists+linux-efi@lfdr.de>; Wed, 13 Apr 2022 19:05:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233716AbiDMQvD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 13 Apr 2022 12:51:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36734 "EHLO
+        id S234478AbiDMRHj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 13 Apr 2022 13:07:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234921AbiDMQvC (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 13 Apr 2022 12:51:02 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88447694A8;
-        Wed, 13 Apr 2022 09:48:37 -0700 (PDT)
+        with ESMTP id S237194AbiDMRHi (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 13 Apr 2022 13:07:38 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E48A34D608;
+        Wed, 13 Apr 2022 10:05:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3A518B825EF;
-        Wed, 13 Apr 2022 16:48:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D956BC385B1;
-        Wed, 13 Apr 2022 16:48:34 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8C8A0B82647;
+        Wed, 13 Apr 2022 17:05:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47141C385A4;
+        Wed, 13 Apr 2022 17:05:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649868514;
-        bh=W5Rf60oEFjgZFRko4gvOWE22lbGgMYC79qcAyl6Bjeg=;
+        s=k20201202; t=1649869514;
+        bh=WWIxMpH9GtvS1cWNsIeOZIYDmiEJjhi2r4f8nEZPIB8=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=L75BlIuyCHjaQA4HE7L2QX1kjx7k7yMTESX1l9XEcRsUGtwiiU80X2IVM92A8GCp7
-         3l2EVJbbFLfUCD+OTKr1U6uDCYqdwzhgLnzfsgmG3rc8rEe8HonznGLtvH0ic1icRG
-         lV6VX9vnSe6oqwJJG4t/yQeWE0HW/MzBXwJJfIyccB4eyaoIx2KA7hIepMJYx5BO79
-         7Gl40lh54niuprVWr90ykPKhxdr8RsVTjuoV2tqa/kDb9CywcfBlIOlDYltF42n1Sh
-         5OPDgkueHMdvScuzJ23S94/qO9phhEagxL2+3nOpreKl0PrPYN/hNqm87UU1z0JyGv
-         7ML4DPNzhkjXQ==
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-d39f741ba0so2557022fac.13;
-        Wed, 13 Apr 2022 09:48:34 -0700 (PDT)
-X-Gm-Message-State: AOAM531lALGMhFBrgDnfMFkH0FK4jUAAXx+/rMmF4o/UDH9i1uixpVGr
-        H4MRG48utTb7VeZbekC1hAGYMrs8QKfk+xUFhMM=
-X-Google-Smtp-Source: ABdhPJwvWPaFmaZO9HwJqmqb82Kyqfurf4iagadp+RDPFOZFqf24kux+lbZxjGE6wAO6Limf6s0sASYqCfxTaRnVklo=
-X-Received: by 2002:a05:6870:eaa5:b0:da:b3f:2b45 with SMTP id
- s37-20020a056870eaa500b000da0b3f2b45mr4914280oap.228.1649868513679; Wed, 13
- Apr 2022 09:48:33 -0700 (PDT)
+        b=sJWW1cEullj1839qNY3O+KpNbTFhTNEVWK3vIl991pB6yfrBmc2nOC/UeSmekHXZp
+         PpZ4vSxvp+okXfJLCPbsB3mgnGPXzXorLYSHU5LNiy3ZfHglO46ggiMg+qv/677+Pp
+         0sb3jx3cBiNbxZOu2PHMES8of47TT9nnv+Icu0PVG+8MRdCFppFMRREF80yZ2S37OR
+         5RXgafClhJON3vZRNQlTgBcLtrolPUbRbR1SWSufFjx3D4injRAMhI6Qek3XUz0JBC
+         kWZs7ovPcARmm1o5RV+7GqV/EfADAgN/882JUVdR6GdOwkENycrJqvmWGTYiI9iZmR
+         rnfchPfTTDwIg==
+Received: by mail-oi1-f170.google.com with SMTP id s1so2714653oie.6;
+        Wed, 13 Apr 2022 10:05:14 -0700 (PDT)
+X-Gm-Message-State: AOAM5338eZ1AoROP48xlRhyfkjHbv+X8vN8gk3V0x0Y3VU7zmS6ScINR
+        n4BY3uGPiHdXrDjTfEKoFjjgdLTPKEFnxvw1bqE=
+X-Google-Smtp-Source: ABdhPJyRJkMVdOQ/gxiaPWQe+iM951dfmw3PWzMCuQTSaUHKFO3znZg7K3fb3bkkXp6ryuMiimz3XkmPyCuzt5jksmA=
+X-Received: by 2002:a05:6808:1596:b0:2f7:5d89:eec7 with SMTP id
+ t22-20020a056808159600b002f75d89eec7mr4775213oiw.228.1649869513405; Wed, 13
+ Apr 2022 10:05:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220412212127.154182-1-dovmurik@linux.ibm.com>
-In-Reply-To: <20220412212127.154182-1-dovmurik@linux.ibm.com>
+References: <20220331221030.889718-1-jakobkoschel@gmail.com>
+In-Reply-To: <20220331221030.889718-1-jakobkoschel@gmail.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 13 Apr 2022 18:48:22 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFJaC-wdy1_ExOzP9UvGV_Ht+-SF_ySGzyzjd8aD92=BQ@mail.gmail.com>
-Message-ID: <CAMj1kXFJaC-wdy1_ExOzP9UvGV_Ht+-SF_ySGzyzjd8aD92=BQ@mail.gmail.com>
-Subject: Re: [PATCH v10 0/4] Allow guest access to EFI confidential computing
- secret area
-To:     Dov Murik <dovmurik@linux.ibm.com>,
-        Jonathan Corbet <corbet@lwn.net>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Borislav Petkov <bp@suse.de>,
-        Ashish Kalra <ashish.kalra@amd.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Andrew Scull <ascull@google.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Lenny Szubowicz <lszubowi@redhat.com>,
-        Peter Gonda <pgonda@google.com>,
+Date:   Wed, 13 Apr 2022 19:05:01 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXE2r4xrtFc+=OJfzutZzTtaUoFtW=f7y9+us9h+xGVEnA@mail.gmail.com>
+Message-ID: <CAMj1kXE2r4xrtFc+=OJfzutZzTtaUoFtW=f7y9+us9h+xGVEnA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] efi: remove use of list iterator variable after loop
+To:     Jakob Koschel <jakobkoschel@gmail.com>,
         Matthew Garrett <mjg59@srcf.ucam.org>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>,
-        Daniele Buono <dbuono@linux.vnet.ibm.com>,
-        linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Peter Jones <pjones@redhat.com>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
+        Cristiano Giuffrida <c.giuffrida@vu.nl>,
+        "Bos, H.J." <h.j.bos@vu.nl>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -83,105 +67,63 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-(cc Jon for the Documentation/ changes)
+On Fri, 1 Apr 2022 at 00:11, Jakob Koschel <jakobkoschel@gmail.com> wrote:
+>
+> In preparation to limiting the scope of a list iterator to the list
+> traversal loop, use a dedicated pointer to iterate through the list [1].
+>
+> In the current state the list_for_each_entry() is guaranteed to
+> hit a break or goto in order to work properly. If the list iterator
+> executes completely or the list is empty the iterator variable contains
+> a type confused bogus value infered from the head of the list.
+>
+> With this patch the variable used past the list iterator is only set
+> if the list exists early and is NULL otherwise. It should therefore
+> be safe to just set *prev = NULL (as it was before).
+>
 
-On Tue, 12 Apr 2022 at 23:21, Dov Murik <dovmurik@linux.ibm.com> wrote:
->
-> Confidential computing (coco) hardware such as AMD SEV (Secure Encrypted
-> Virtualization) allows guest owners to inject secrets into the VMs
-> memory without the host/hypervisor being able to read them.  In SEV,
-> secret injection is performed early in the VM launch process, before the
-> guest starts running.
->
-> OVMF already reserves designated area for secret injection (in its
-> AmdSev package; see edk2 commit 01726b6d23d4 "OvmfPkg/AmdSev: Expose the
-> Sev Secret area using a configuration table" [1]), but the secrets were
-> not available in the guest kernel.
->
-> The patch series keeps the address of the EFI-provided memory for
-> injected secrets, and exposes the secrets to userspace via securityfs
-> using a new efi_secret kernel module.  The module is autoloaded (by the
-> EFI driver) if the secret area is populated.
->
-> The first patch in EFI keeps the address of the secret area as passed in
-> the EFI configuration table.  The second patch introduces the new
-> efi_secret module that exposes the content of the secret entries as
-> securityfs files, and allows clearing out secrets with a file unlink
-> interface.  The third patch auto-loads the efi_secret module during
-> startup if the injected secrets area is populated.  The last patch
-> documents the data flow of confidential computing secret injection.
->
-> As a usage example, consider a guest performing computations on
-> encrypted files.  The Guest Owner provides the decryption key (= secret)
-> using the secret injection mechanism.  The guest application reads the
-> secret from the efi_secret filesystem and proceeds to decrypt the files
-> into memory and then performs the needed computations on the content.
->
-> In this example, the host can't read the files from the disk image
-> because they are encrypted.  Host can't read the decryption key because
-> it is passed using the secret injection mechanism (= secure channel).
-> Host can't read the decrypted content from memory because it's a
-> confidential (memory-encrypted) guest.
->
-> This has been tested with AMD SEV and SEV-ES guests, but the kernel side
-> of handling the secret area has no SEV-specific dependencies, and
-> therefore might be usable (perhaps with minor changes) for any
-> confidential computing hardware that can publish the secret area via the
-> standard EFI config table entry.
->
-> To enable this functionality, set CONFIG_EFI_SECRET=m when building the
-> guest kernel.
->
-> Here is a simple example for usage of the efi_secret module in a guest
-> to which an EFI secret area with 4 secrets was injected during launch:
->
-> ...
-> [    0.000000] efi: EFI v2.70 by EDK II
-> [    0.000000] efi: CocoSecret=0x7f222680 SMBIOS=0x7f541000 ACPI=0x7f77e000 ACPI 2.0=0x7f77e014 MEMATTR=0x7ea16418
-> ...
-> [    1.127627] Run /init as init process
-> Loading, please wait...
-> Starting version 245.4-4ubuntu3.15
-> ...
-> [    0.763204] efi_secret efi_secret.0: Created 4 entries in securityfs secrets/coco
-> ...
->
-> # ls -la /sys/kernel/security/secrets/coco
-> total 0
-> drwxr-xr-x 2 root root 0 Jun 28 11:54 .
-> drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
-> -r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
-> -r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
-> -r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
-> -r--r----- 1 root root 0 Jun 28 11:54 e6f5a162-d67f-4750-a67c-5d065f2a9910
->
-> # hd /sys/kernel/security/secrets/coco/e6f5a162-d67f-4750-a67c-5d065f2a9910
-> 00000000  74 68 65 73 65 2d 61 72  65 2d 74 68 65 2d 6b 61  |these-are-the-ka|
-> 00000010  74 61 2d 73 65 63 72 65  74 73 00 01 02 03 04 05  |ta-secrets......|
-> 00000020  06 07                                             |..|
-> 00000022
->
-> # rm /sys/kernel/security/secrets/coco/e6f5a162-d67f-4750-a67c-5d065f2a9910
->
-> # ls -la /sys/kernel/security/secrets/coco
-> total 0
-> drwxr-xr-x 2 root root 0 Jun 28 11:55 .
-> drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
-> -r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
-> -r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
-> -r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
->
->
-> [1] https://github.com/tianocore/edk2/commit/01726b6d23d4
->
->
+This generic boilerplate is fine to include, but it would help if you
+could point out why repainting the current logic with your new brush
+is appropriate here.
+
+In this particular case, I wonder whether updating *prev makes sense
+to begin with if we are returning an error, and if we fix that, the
+issue disappears as well.
+
+
+> Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/
+> Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
 > ---
+>  drivers/firmware/efi/vars.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
 >
-> v10 changes:
-> - Add #ifdef CONFIG_EFI_COCO_SECRET to platform device registration in
->   patch 3.
+> diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
+> index cae590bd08f2..3994aad38661 100644
+> --- a/drivers/firmware/efi/vars.c
+> +++ b/drivers/firmware/efi/vars.c
+> @@ -1081,14 +1081,16 @@ int __efivar_entry_iter(int (*func)(struct efivar_entry *, void *),
+>                         struct list_head *head, void *data,
+>                         struct efivar_entry **prev)
+>  {
+> -       struct efivar_entry *entry, *n;
+> +       struct efivar_entry *entry = NULL, *iter, *n;
+>         int err = 0;
 >
-
-I have queued this up in efi/next. Jon, is that ok with you?
-
-Thanks all,
+>         if (!prev || !*prev) {
+> -               list_for_each_entry_safe(entry, n, head, list) {
+> -                       err = func(entry, data);
+> -                       if (err)
+> +               list_for_each_entry_safe(iter, n, head, list) {
+> +                       err = func(iter, data);
+> +                       if (err) {
+> +                               entry = iter;
+>                                 break;
+> +                       }
+>                 }
+>
+>                 if (prev)
+>
+> base-commit: d888c83fcec75194a8a48ccd283953bdba7b2550
+> --
+> 2.25.1
+>
