@@ -2,57 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AF184FF5FC
-	for <lists+linux-efi@lfdr.de>; Wed, 13 Apr 2022 13:43:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1349D4FF919
+	for <lists+linux-efi@lfdr.de>; Wed, 13 Apr 2022 16:39:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229505AbiDMLqP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 13 Apr 2022 07:46:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42380 "EHLO
+        id S233163AbiDMOl6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 13 Apr 2022 10:41:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbiDMLqN (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 13 Apr 2022 07:46:13 -0400
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 288415BD32
-        for <linux-efi@vger.kernel.org>; Wed, 13 Apr 2022 04:43:52 -0700 (PDT)
-Received: by mail-lj1-x231.google.com with SMTP id b21so1848171ljf.4
-        for <linux-efi@vger.kernel.org>; Wed, 13 Apr 2022 04:43:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=zEOvVQ8ODptnK3WwFBWfeYgjoqgGL18PHLUqQQVknZE=;
-        b=IbDWQ6exmcYIF5xlYm/WQBVMxiI8gzxIlrURJHj4gun+Tfehojc623NglyuXPeXtem
-         s3kj95CbN5IpEZiShOZ3p7KWR6T1IoH8Vve+GD9QG5gDR+5bRDwWfyK3ITy5zWsiBXXA
-         OClXS6PkEVcFzkwMiMHnkuffDW2E3/DZN0BKFCw6B5FpphArioxoqdyai/uUZbJshTQY
-         UxLKrifaPneqZ6/twcwWr+6+uR4Uw0E+Tmq9sBS9A0B1B5p1Ou835VDKJ3PdD3aX+Jza
-         YPiSrtykL2uJOyQxThOQ0kd3qKwpkxfSZFANqbL7zFkBJBPclnW6dbKo1eZuEPcXqeUR
-         451Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=zEOvVQ8ODptnK3WwFBWfeYgjoqgGL18PHLUqQQVknZE=;
-        b=1dz2q4/+tOT0D7sNx4g649gULQfuaHABNP828gKOM2jnpGpvsSfLXPCxPi95T+hRy7
-         zPHiY3E75in9u4b5uo0wlbVswaWOY8ivxU26wxKbRNvaHWbBI4LJMxPCFU4T9+qCGclv
-         y+vG9QcEigVmay/nOax1V7j0HC2Ml63cjuYkTLdqAA0QiEzU+6DgEwAyrjHi+ZfhzyyE
-         kOzxhQXceIjzqD7HWm5YvmG4jqF30GxcD7RMr91PBKFmHwNKTLQnb8sEVyFPo9KG+JSI
-         0UsMp6qoaTlz/+ccLqk8Q0hX0XeuA7k6OyMu/ZBxvgqlAP+CAMB82PefzNK7re9Zt/V9
-         pwwA==
-X-Gm-Message-State: AOAM533Cmw0aB9aS45LJCk7ad4vzGYd7OuAoIxVHdN5z117tW321zDyY
-        wH13AzoRTvdmDP0dvixjpqTZjA==
-X-Google-Smtp-Source: ABdhPJxSc2DiuJ8ztlJC/7du5pH7HUiYvKu1fv1sdTG2x0jctLC+Bp5dpszyE0eMhivO+pDlpFDILQ==
-X-Received: by 2002:a05:651c:1781:b0:247:daa7:4358 with SMTP id bn1-20020a05651c178100b00247daa74358mr25671523ljb.477.1649850230444;
-        Wed, 13 Apr 2022 04:43:50 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id j4-20020a05651231c400b0044ac20061ecsm4099397lfe.128.2022.04.13.04.43.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Apr 2022 04:43:49 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
-        id B7F8010369B; Wed, 13 Apr 2022 14:45:23 +0300 (+03)
-Date:   Wed, 13 Apr 2022 14:45:23 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        with ESMTP id S230492AbiDMOl5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 13 Apr 2022 10:41:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38A0BFD1C;
+        Wed, 13 Apr 2022 07:39:35 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D120360DEA;
+        Wed, 13 Apr 2022 14:39:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7A8C385A4;
+        Wed, 13 Apr 2022 14:39:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1649860774;
+        bh=8yJB3RTfMHAvG+qVCpJGHNnXUQN/4L5d65PERRX6VvI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=R6UmbR9Nnkyyb0sa6mU+ScjeQj6ySSju0otK3fB765GF5jbY38UmFbxK8+CO3WWmv
+         F90FPJTu6x0c5EdcRloalAL0l4kvi4dhG77+C7x2aoN2CGYa6EA/STzOwkBp+H1/bI
+         /dxmdZQhK/FfXWeHKOiRPHwA8AtpSvBl86ja5Y46Vm/w1prNZkBZoE3Ds4VCn5CFtq
+         v+/MnU4bLFcgdCigJu1Yg2hJWLSN6KwcZQ+9ZG0DtRkfjHjUMcvOE04QbRbZ0gYAeB
+         /XCJIHJAHtZ9YjazAXQfpXUbK9a31JvULtIkqEwSTHTpvcazlHD76suMOabluS2C0x
+         7aPTRxcwuEDKQ==
+Date:   Wed, 13 Apr 2022 17:39:20 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     David Hildenbrand <david@redhat.com>
+Cc:     Dave Hansen <dave.hansen@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
         Andy Lutomirski <luto@kernel.org>,
         Sean Christopherson <seanjc@google.com>,
         Andrew Morton <akpm@linux-foundation.org>,
@@ -70,90 +54,63 @@ Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Ingo Molnar <mingo@redhat.com>,
         Varad Gautam <varad.gautam@suse.com>,
         Dario Faggioli <dfaggioli@suse.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>, x86@kernel.org,
+        Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
         linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv4 2/8] efi/x86: Get full memory map in allocate_e820()
-Message-ID: <20220413114523.5si2ywl7zlgestz5@box.shutemov.name>
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCHv4 1/8] mm: Add support for unaccepted memory
+Message-ID: <YlbgmOwb9uXMt49l@kernel.org>
 References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
- <20220405234343.74045-3-kirill.shutemov@linux.intel.com>
- <Ylae+bejPzRMPrDw@zn.tnic>
+ <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
+ <93a7cfdf-02e6-6880-c563-76b01c9f41f5@intel.com>
+ <ff9e0bad-be9a-97ac-ae88-d22bcfbe80d4@redhat.com>
+ <ebf3ccef-e6fe-62d5-74e8-91e30e7c2642@intel.com>
+ <a458c13f-9994-b227-ff61-bfdfec10bc27@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Ylae+bejPzRMPrDw@zn.tnic>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <a458c13f-9994-b227-ff61-bfdfec10bc27@redhat.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Apr 13, 2022 at 11:59:21AM +0200, Borislav Petkov wrote:
-> On Wed, Apr 06, 2022 at 02:43:37AM +0300, Kirill A. Shutemov wrote:
-> > diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-> > index 01ddd4502e28..d18cac8ab436 100644
-> > --- a/drivers/firmware/efi/libstub/x86-stub.c
-> > +++ b/drivers/firmware/efi/libstub/x86-stub.c
-> > @@ -569,30 +569,28 @@ static efi_status_t alloc_e820ext(u32 nr_desc, struct setup_data **e820ext,
-> >  }
-> >  
-> >  static efi_status_t allocate_e820(struct boot_params *params,
-> > +				  struct efi_boot_memmap *map,
-> >  				  struct setup_data **e820ext,
-> >  				  u32 *e820ext_size)
-> >  {
-> > -	unsigned long map_size, desc_size, map_key;
-> >  	efi_status_t status;
-> > -	__u32 nr_desc, desc_version;
-> > +	__u32 nr_desc;
-> >  
-> > -	/* Only need the size of the mem map and size of each mem descriptor */
-> > -	map_size = 0;
-> > -	status = efi_bs_call(get_memory_map, &map_size, NULL, &map_key,
-> > -			     &desc_size, &desc_version);
-> > -	if (status != EFI_BUFFER_TOO_SMALL)
-> > -		return (status != EFI_SUCCESS) ? status : EFI_UNSUPPORTED;
-> > -
-> > -	nr_desc = map_size / desc_size + EFI_MMAP_NR_SLACK_SLOTS;
-> > +	status = efi_get_memory_map(map);
-> > +	if (status != EFI_SUCCESS)
-> > +		return status;
-> >  
-> > -	if (nr_desc > ARRAY_SIZE(params->e820_table)) {
-> > -		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table);
-> > +	nr_desc = *map->map_size / *map->desc_size;
-> > +	if (nr_desc > ARRAY_SIZE(params->e820_table) - EFI_MMAP_NR_SLACK_SLOTS) {
-> > +		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table) +
-> > +			EFI_MMAP_NR_SLACK_SLOTS;
-> >  
-> >  		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
-> >  		if (status != EFI_SUCCESS)
-> > -			return status;
-> > +			goto out;
+On Wed, Apr 13, 2022 at 12:36:11PM +0200, David Hildenbrand wrote:
+> On 12.04.22 18:08, Dave Hansen wrote:
+> > On 4/12/22 01:15, David Hildenbrand wrote:
+> > 
+> > The other option might be to tie this all to DEFERRED_STRUCT_PAGE_INIT.
+> >  Have the rule that everything that gets a 'struct page' must be
+> > accepted.  If you want to do delayed acceptance, you do it via
+> > DEFERRED_STRUCT_PAGE_INIT.
 > 
-> This looks weird. With the goto out of the way, this code turns into:
-> 
->   		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
-> 		if (status != EFI_SUCCESS) {
-> 			efi_bs_call(free_pool, *map->map);
-> 			return EFI_SUCCESS;
-> 		}
-> 
-> I think you want to return status as above after having called
-> 
-> 	efi_bs_call(free_pool, *map->map);
-> 
-> ...
+> That could also be an option, yes. At least being able to chose would be
+> good. But IIRC, DEFERRED_STRUCT_PAGE_INIT will still make the system get
+> stuck during boot and wait until everything was accepted.
 
-Ah. Right. I actually fix this in the next patch.
+The deferred page init runs multithreaded, so guest with SMP will be stuck
+for less time.
+ 
+> I see the following variants:
+> 
+> 1) Slow boot; after boot, all memory is already accepted.
+> 2) Fast boot; after boot, all memory will slowly but steadily get
+>    accepted in the background. After a while, all memory is accepted and
+>    can be signaled to user space.
+> 3) Fast boot; after boot, memory gets accepted on demand. This is what
+>    we have in this series.
+> 
+> I somehow don't quite like 3), but with deferred population in the
+> hypervisor, it might just make sense.
 
-Will move it here.
+IMHO, deferred population in hypervisor will be way more complex than this
+series with similar "visible" performance.
 
 -- 
- Kirill A. Shutemov
+Sincerely yours,
+Mike.
