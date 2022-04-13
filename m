@@ -2,55 +2,55 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 011504FFC43
-	for <lists+linux-efi@lfdr.de>; Wed, 13 Apr 2022 19:20:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B99F84FFCFA
+	for <lists+linux-efi@lfdr.de>; Wed, 13 Apr 2022 19:38:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234010AbiDMRWo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 13 Apr 2022 13:22:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58784 "EHLO
+        id S231937AbiDMRlK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 13 Apr 2022 13:41:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237322AbiDMRWm (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 13 Apr 2022 13:22:42 -0400
+        with ESMTP id S235554AbiDMRlH (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 13 Apr 2022 13:41:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BD3752E6C;
-        Wed, 13 Apr 2022 10:20:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E39B6C973
+        for <linux-efi@vger.kernel.org>; Wed, 13 Apr 2022 10:38:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA1A461E9C;
-        Wed, 13 Apr 2022 17:20:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A9CC385A8;
-        Wed, 13 Apr 2022 17:20:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2773961EEF
+        for <linux-efi@vger.kernel.org>; Wed, 13 Apr 2022 17:38:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A9EAC385A3
+        for <linux-efi@vger.kernel.org>; Wed, 13 Apr 2022 17:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649870420;
-        bh=cd1OS579F8P5cfiY9Bbwx5RCM4PGh4h+DqwC6PuVcR4=;
+        s=k20201202; t=1649871524;
+        bh=gtUkGYq1IimTkF0/YY4TakXdA5Zd5rQvfl03j5cJDj4=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Kf18OhECYLGZH8wbde+UHfoN5fbuDIlSLuNazbIh+Nal+k/f20tXp8K0mWpk19ItQ
-         6rmJguL3geTZ3HeNft4CdzXgu7YHwYI0ZIMS27Nto7/p4wBPbgXo+GqcHqUq+pVnBa
-         FmuwIcglmddoVtp2R6PYF4SPfMzfsKXhSHE/PbYngrdNzlau/yEuH05Hwk6Qo3oEgr
-         pK0IWUJqdC15h6Yoop5dsaREVG6HYlf5cFLljUap0aiMAqxSS767wA6y0HRIXQ9U6e
-         luy4ZgPk/y7wgWnwFPH/BEgApc7GHuQESZolqvtmGw9JD39EHqWq3p+TUFr68hg6xX
-         n+2BN7WAME4+Q==
-Received: by mail-oo1-f52.google.com with SMTP id w20-20020a4ae9f4000000b003243aa2c71aso463765ooc.0;
-        Wed, 13 Apr 2022 10:20:20 -0700 (PDT)
-X-Gm-Message-State: AOAM530slrhd1C6xxNfX0pNPAa1qNMP13hewtd1wHcCGqEcP8cPTSzoV
-        94CyDVmvJ6l+p841gaO1qjqZSZ7BIByxihper6E=
-X-Google-Smtp-Source: ABdhPJzSqbHk9eXUEuAkD5T3Q/MtGbeX3UEr1WcBXvB0gbVie0xrcXPCwdHKBSP1XJbTxSIH6U1W/r7doz7hYYy3rwo=
-X-Received: by 2002:a4a:95f3:0:b0:331:3e74:ed5d with SMTP id
- p48-20020a4a95f3000000b003313e74ed5dmr1604304ooi.60.1649870419423; Wed, 13
- Apr 2022 10:20:19 -0700 (PDT)
+        b=K3XG/tEJ+aSOthPD4m/R9tiqXwQWnHtEGqa0E0s4ey2WhRqEFxk1xi/l+qenRKd48
+         1K95fXieHekFrLsmVB6DkRgc3qpG1Tl+LxmfORgNQNAV5Vl8SIHxzrFqiC8kdlImQn
+         OP6xV8SeS/IOZXJ6dFBVHQbP8M2M6nbU6LT3apyC0lZl3QUJgwjWZ7kp9v/PYldufL
+         NKWlMcMWSRbdxGtbTZklrO4tf+eK4SkAd9xjpgJLaqf8WovZutbaHoCtFNvBNipbqe
+         E9YqxCTHPtTf4QDwQOOl0UnDyIRjlzZlJikTyKEq0r8js/qi+qeL/Cktrww26sLKjn
+         SZW1gTNLIsIKw==
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-de3eda6b5dso2788382fac.0
+        for <linux-efi@vger.kernel.org>; Wed, 13 Apr 2022 10:38:44 -0700 (PDT)
+X-Gm-Message-State: AOAM533Ei+BzYfzH/RbNKWFiqKCyGdeWsZnz2goRER1gTVPt/IXqBmT1
+        ktM6b3qaJSgQfPpkWzkQdQ5sCH4C6vFP1yn9Jw0=
+X-Google-Smtp-Source: ABdhPJwM5ukrbn1jgSwYyMXRuZUXodi/Zy+in6S6dZa3FcS0BZ19trGtwWLaNd1KhmHU9rfQ/qJraJdCytYslpqkeVc=
+X-Received: by 2002:a05:6870:b027:b0:de:7fcd:fabf with SMTP id
+ y39-20020a056870b02700b000de7fcdfabfmr16647oae.126.1649871523675; Wed, 13 Apr
+ 2022 10:38:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <c28d3f86-dd72-27d1-e2c2-40971b8da6bd@siemens.com>
-In-Reply-To: <c28d3f86-dd72-27d1-e2c2-40971b8da6bd@siemens.com>
+References: <CAGRPHE+Jn4UAV3THuK6nwF4G0R5LxT2EhQndTUqw8fOPMjWZPw@mail.gmail.com>
+In-Reply-To: <CAGRPHE+Jn4UAV3THuK6nwF4G0R5LxT2EhQndTUqw8fOPMjWZPw@mail.gmail.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 13 Apr 2022 19:20:08 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFkDES_b9NA6KHd6mf_UeS0gjbfdtknK24aBD0hAE7pVw@mail.gmail.com>
-Message-ID: <CAMj1kXFkDES_b9NA6KHd6mf_UeS0gjbfdtknK24aBD0hAE7pVw@mail.gmail.com>
-Subject: Re: [PATCH] efi: Add missing prototype for efi_capsule_setup_info
-To:     Jan Kiszka <jan.kiszka@siemens.com>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Wed, 13 Apr 2022 19:38:31 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFf=AXQ1YKacXijX98fo5dQBsEEy0dOQ-21gXo9NC89CA@mail.gmail.com>
+Message-ID: <CAMj1kXFf=AXQ1YKacXijX98fo5dQBsEEy0dOQ-21gXo9NC89CA@mail.gmail.com>
+Subject: Re: Increasing EFI_MMAP_NR_SLACK_SLOTS
+To:     =?UTF-8?Q?V=C3=ADctor_Gonzalo?= <victor.gonzalo@anddroptable.net>
+Cc:     linux-efi <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -61,34 +61,28 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 4 Mar 2022 at 07:36, Jan Kiszka <jan.kiszka@siemens.com> wrote:
+On Fri, 3 Sept 2021 at 00:26, V=C3=ADctor Gonzalo
+<victor.gonzalo@anddroptable.net> wrote:
 >
-> From: Jan Kiszka <jan.kiszka@siemens.com>
+> Hello
 >
-> Fixes "no previous declaration for 'efi_capsule_setup_info'" warnings
-> under W=1.
+> I had an issue in a big server in which no linux distro I tried was
+> able to boot. It failed with the messages:
 >
-> Fixes: 2959c95d510c ("efi/capsule: Add support for Quark security header")
-> Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+> EFI stub: ERROR: exit_boot() failed!
+> EFI stub: ERROR: efi_main() failed!
+>
+> Digging through the rabbit hole I reached the error in the call to
+> efi_bs_call(get_memory_map) inside efi_exit_boot_services() in
+> efi-stub-helper.c which returned EFI_BUFFER_TOO_SMALL, so everything
+> collapsed after that.
+>
+> It looks like despite what the comment suggests, the headroom was not eno=
+ugh.
+> I fixed it by increasing the value of EFI_MMAP_NR_SLACK_SLOTS to 16.
+>
+> Is this the right approach to fix the issue?
+> Would it be ok to change the value in the mainline?
+>
 
-Thanks Jan, I've queued this up now.
-
-> ---
->  include/linux/efi.h | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index ccd4d3f91c98..cc6d2be2ffd5 100644
-> --- a/include/linux/efi.h
-> +++ b/include/linux/efi.h
-> @@ -213,6 +213,8 @@ struct capsule_info {
->         size_t                  page_bytes_remain;
->  };
->
-> +int efi_capsule_setup_info(struct capsule_info *cap_info, void *kbuff,
-> +                           size_t hdr_bytes);
->  int __efi_capsule_setup_info(struct capsule_info *cap_info);
->
->  /*
-> --
-> 2.34.1
+I don't think changing that would be a problem. Patches welcome.
