@@ -2,62 +2,133 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56B9C4FF3B5
-	for <lists+linux-efi@lfdr.de>; Wed, 13 Apr 2022 11:38:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCFEF4FF450
+	for <lists+linux-efi@lfdr.de>; Wed, 13 Apr 2022 12:00:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234540AbiDMJjk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 13 Apr 2022 05:39:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54612 "EHLO
+        id S231203AbiDMKB5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 13 Apr 2022 06:01:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234537AbiDMJjj (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 13 Apr 2022 05:39:39 -0400
-Received: from mail.growthmindset24.pl (mail.growthmindset24.pl [212.237.36.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 178185469E
-        for <linux-efi@vger.kernel.org>; Wed, 13 Apr 2022 02:37:17 -0700 (PDT)
-Received: by mail.growthmindset24.pl (Postfix, from userid 1001)
-        id 987C488961; Wed, 13 Apr 2022 08:41:25 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=growthmindset24.pl;
-        s=mail; t=1649835716;
-        bh=FDuFY3XQoq0gMX1b2gxgT7Py2p4Sxl0PJZYZ4NVaPho=;
-        h=Date:From:To:Subject:From;
-        b=aiXrrT3mrxGnqJ2ws1/K+1TKskqTqFcLoIdXboZdO3tI8OCTwqcpqoObe7IwSovnB
-         ruYHBkxs1gnqPvEN+16iDXrou5byFuDOYsPHgHQaPgkFCe20s2jBq2iNWQ8w2gohxa
-         0dd+PJT3yHWXH2zb3yuJr8mFwyk1EdBS+QkxBRBy6kt/DLIDmgAo7EWYFnNPodL4jX
-         pqwqtFO1FAOMtLbFhOxBQFwOsHd4fLFfnS/4t2meAhyoBwYdP1/w4NtUf4wTFbC1mT
-         0MqYj7kdVg1+sssOkTIWzSBJwTqtEGHwGmB1iGMFqpbXz7uKHr9TnjAOKNkev4ug1P
-         FrXFV14JzV5jg==
-Received: by mail.growthmindset24.pl for <linux-efi@vger.kernel.org>; Wed, 13 Apr 2022 07:40:10 GMT
-Message-ID: <20220413074502-0.1.2x.dtvb.0.g3s8n0ckcl@growthmindset24.pl>
-Date:   Wed, 13 Apr 2022 07:40:10 GMT
-From:   =?UTF-8?Q? "Przemys=C5=82aw_Wr=C3=B3blewski" ?= 
-        <przemyslaw.wroblewski@growthmindset24.pl>
-To:     <linux-efi@vger.kernel.org>
-Subject: Wycena paneli fotowoltaicznych
-X-Mailer: mail.growthmindset24.pl
+        with ESMTP id S234811AbiDMKBw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 13 Apr 2022 06:01:52 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECFBB25E1;
+        Wed, 13 Apr 2022 02:59:26 -0700 (PDT)
+Received: from zn.tnic (p200300ea971b584e329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:584e:329c:23ff:fea6:a903])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5A3651EC0541;
+        Wed, 13 Apr 2022 11:59:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1649843961;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=Dzm9Q8xBuRXK4mGHHOX6fanOLpLEt+HqmgdG3ufabDI=;
+        b=kH4m8hby7lSr/nMjW8zktpQlA5REnvZ5SauP0KqRlKsBQmvZycCStBD+i0x1w0MNO3FcVE
+        heBC7WWUJoYOLsqKKZ9EHpGKiA/+a8NcKpj76cq7Rh59uWDhIM+8QBrghXme/2ZhybIA/O
+        8j+GVlgmmD0cxpv7CmiaWxrlWyNuLic=
+Date:   Wed, 13 Apr 2022 11:59:21 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc:     Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Varad Gautam <varad.gautam@suse.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>, x86@kernel.org,
+        linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv4 2/8] efi/x86: Get full memory map in allocate_e820()
+Message-ID: <Ylae+bejPzRMPrDw@zn.tnic>
+References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
+ <20220405234343.74045-3-kirill.shutemov@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220405234343.74045-3-kirill.shutemov@linux.intel.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Wed, Apr 06, 2022 at 02:43:37AM +0300, Kirill A. Shutemov wrote:
+> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+> index 01ddd4502e28..d18cac8ab436 100644
+> --- a/drivers/firmware/efi/libstub/x86-stub.c
+> +++ b/drivers/firmware/efi/libstub/x86-stub.c
+> @@ -569,30 +569,28 @@ static efi_status_t alloc_e820ext(u32 nr_desc, struct setup_data **e820ext,
+>  }
+>  
+>  static efi_status_t allocate_e820(struct boot_params *params,
+> +				  struct efi_boot_memmap *map,
+>  				  struct setup_data **e820ext,
+>  				  u32 *e820ext_size)
+>  {
+> -	unsigned long map_size, desc_size, map_key;
+>  	efi_status_t status;
+> -	__u32 nr_desc, desc_version;
+> +	__u32 nr_desc;
+>  
+> -	/* Only need the size of the mem map and size of each mem descriptor */
+> -	map_size = 0;
+> -	status = efi_bs_call(get_memory_map, &map_size, NULL, &map_key,
+> -			     &desc_size, &desc_version);
+> -	if (status != EFI_BUFFER_TOO_SMALL)
+> -		return (status != EFI_SUCCESS) ? status : EFI_UNSUPPORTED;
+> -
+> -	nr_desc = map_size / desc_size + EFI_MMAP_NR_SLACK_SLOTS;
+> +	status = efi_get_memory_map(map);
+> +	if (status != EFI_SUCCESS)
+> +		return status;
+>  
+> -	if (nr_desc > ARRAY_SIZE(params->e820_table)) {
+> -		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table);
+> +	nr_desc = *map->map_size / *map->desc_size;
+> +	if (nr_desc > ARRAY_SIZE(params->e820_table) - EFI_MMAP_NR_SLACK_SLOTS) {
+> +		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table) +
+> +			EFI_MMAP_NR_SLACK_SLOTS;
+>  
+>  		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
+>  		if (status != EFI_SUCCESS)
+> -			return status;
+> +			goto out;
 
-dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
-irm=C4=85.
+This looks weird. With the goto out of the way, this code turns into:
 
-=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
-ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
+  		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
+		if (status != EFI_SUCCESS) {
+			efi_bs_call(free_pool, *map->map);
+			return EFI_SUCCESS;
+		}
 
-Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
-ropozycji?
+I think you want to return status as above after having called
 
+	efi_bs_call(free_pool, *map->map);
 
-Pozdrawiam,
-Przemys=C5=82aw Wr=C3=B3blewski
+...
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
