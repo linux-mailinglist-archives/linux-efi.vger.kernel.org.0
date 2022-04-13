@@ -2,135 +2,155 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A44AF4FFD19
-	for <lists+linux-efi@lfdr.de>; Wed, 13 Apr 2022 19:50:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45A7D4FFD7C
+	for <lists+linux-efi@lfdr.de>; Wed, 13 Apr 2022 20:08:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236329AbiDMRw7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 13 Apr 2022 13:52:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37772 "EHLO
+        id S234597AbiDMSKi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 13 Apr 2022 14:10:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235080AbiDMRw5 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 13 Apr 2022 13:52:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CAEF37BEF;
-        Wed, 13 Apr 2022 10:50:36 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 99A6261EFF;
-        Wed, 13 Apr 2022 17:50:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06590C385AD;
-        Wed, 13 Apr 2022 17:50:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649872235;
-        bh=72D0BQpOM8DgsMxYOZ4xGuBKKYvsyfG0yqN4ABcAeNo=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ciqNFSB3a6s+6tQacQsr3LwWwxt9yqkxO4Rep5osYLHbC/F7hQJ32xBpsylcBrOTT
-         IrhxgTN10JEvYMF9KPVFBPe0IWBtj+ew8cEdj4V/AtmiUeenjbBNdAH7L5UpVSDrB2
-         PNTgogotTNstEeFYFT578TG4ipBdUm2vThOWL/lyS/EM95uz5M1N3BUjfLtyJok+we
-         tueNkYfafZ9SkL7MZyiXfSiIBdBG7GFEPCojZV9jKQSg0B65hvv1eiVDB4glm93axt
-         CQN1QDV4msZvT2V2WRCcXEnrMyoROzIqJs2opaM1yVrEPBraJVthbUVnUTX/sIZjmP
-         dLbmmrkQXGCrw==
-Received: by mail-oi1-f174.google.com with SMTP id r8so2860477oib.5;
-        Wed, 13 Apr 2022 10:50:34 -0700 (PDT)
-X-Gm-Message-State: AOAM533c0zjAlaqH+tEXd5qa9jpugUhaCDSn/HFxUagOgWIBVBdnzk1M
-        COuf9R2sW89aLJNc52HUt8x9NA7/j9WPncK09I0=
-X-Google-Smtp-Source: ABdhPJwMqB9JakBeMKzBTAQG1328aJ3fK+Q/YGyjfvegtP7jyVLxEMe3r2eQNXMCXu4zy5HvILllejSX9U63sYr5T7A=
-X-Received: by 2002:a05:6808:1513:b0:2fa:7a40:c720 with SMTP id
- u19-20020a056808151300b002fa7a40c720mr988027oiw.126.1649872234062; Wed, 13
- Apr 2022 10:50:34 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220224154330.26564-1-baskov@ispras.ru> <CAMj1kXGg=HAv3P_NKqUHCg6bRFsB0qhfa_z-TOdmi-G8EqPrZA@mail.gmail.com>
- <20220228183044.GA18400@srcf.ucam.org> <9787f1c1948cc640e70a50e4b929f44f@ispras.ru>
- <20220303204759.GA20294@srcf.ucam.org> <20220318163739.5doimyda5e3kdcef@redhat.com>
- <20e2f5b9ab008b12f14e763127f5ca1b@ispras.ru> <CAMj1kXFgy=e6FEtcWMUU4_aGqy7DA_22S=JaqQRCGinD+9OUrA@mail.gmail.com>
-In-Reply-To: <CAMj1kXFgy=e6FEtcWMUU4_aGqy7DA_22S=JaqQRCGinD+9OUrA@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 13 Apr 2022 19:50:22 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFzO+=z3Zx3BX_1O2YDsB2Xz=Wb0O0miyi84SLOYBUwnQ@mail.gmail.com>
-Message-ID: <CAMj1kXFzO+=z3Zx3BX_1O2YDsB2Xz=Wb0O0miyi84SLOYBUwnQ@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 0/2] Handle UEFI NX-restricted page tables
-To:     Baskov Evgeniy <baskov@ispras.ru>
+        with ESMTP id S230224AbiDMSKh (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 13 Apr 2022 14:10:37 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E5774CD5D;
+        Wed, 13 Apr 2022 11:08:15 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id v15so3371345edb.12;
+        Wed, 13 Apr 2022 11:08:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=t3Z4H/kFFCbW0ZdMfLUxHxEdfJOsHw95Ck+l8KFJXOY=;
+        b=kpM7EldlTHVf/3AyxgiSxvjhHU8ApOvL3dt5h/Opo0LEPmbnasw9MEjmTxMxEhYD4t
+         A5gCUmPXjsIBGwYwV0lyQ3sz2rYjkN8WV/mzKSOnWT7ND8IpsGoiKHcd71+bP9/FBb2+
+         LMFn7Vov8OhaLzpJadz7VmjP/rFF2zIxrRp7U8jKgvmDXvYa3RSFYWpjzO4gx56P2DVC
+         H8cq3Qlx/PzG8fiWtAdWUGDIinTDITYdgyrenw3DasSxCnqWG7rG9qdTWbQhn1nb6lOj
+         bqD+kL5bIF3YZzjrB6wy/w/8Xg48QmZzixwSItmrZir+WQbBS87GJ84wNZvE3EBOO72t
+         KFzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=t3Z4H/kFFCbW0ZdMfLUxHxEdfJOsHw95Ck+l8KFJXOY=;
+        b=Tnp2DgaedS8mR/+fBSxGwFKb0wNbF0XIykeZgUh/JG+xpF321lwmA2xMu2JAdkFBX5
+         L6eTSppwsxt8QQW+8BWdSmh44ZTRlK8tL5fYyKIxcjmjQVhNfwV3j7VtSy0eluB4MLjb
+         k4URYsuLRcD9aJXaoHQKl8mI4LerCP476gjxpS9F5gQdfhMzboejQNp9NgcdT0yoIeuA
+         v0fU/HNz0GtTeBGbPzvZbDGUKCB+TrFhgglqJYO+TkBDlUuGbNW8f/v2MWMlSdClH+3N
+         C1cTA3/U1GyzCIJNnVSystKEcMXHhrwN2w7ECqnjXA5KqvVQTjQRqcR/GXZwvZMmofLB
+         Wc7Q==
+X-Gm-Message-State: AOAM533A6K4pHtY9TRv98qQ2X0+8yznIpjlrAOZQpnjASzwyfseEnXO+
+        TUlNYqgFdxy73hWjRHLsFbep9dIQgmI=
+X-Google-Smtp-Source: ABdhPJyRvUjO4b6PbA+EN0H/xsxVePqfcUMyEszcuLBuOaK1OMGVkEJM0w1dcn7Gw8iWwhvNmPXBzQ==
+X-Received: by 2002:aa7:d0c9:0:b0:41d:9137:fcea with SMTP id u9-20020aa7d0c9000000b0041d9137fceamr9972980edo.110.1649873293812;
+        Wed, 13 Apr 2022 11:08:13 -0700 (PDT)
+Received: from smtpclient.apple (i130160.upc-i.chello.nl. [62.195.130.160])
+        by smtp.gmail.com with ESMTPSA id r29-20020a50c01d000000b00415fb0dc793sm1487440edb.47.2022.04.13.11.08.12
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 13 Apr 2022 11:08:12 -0700 (PDT)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.80.82.1.1\))
+Subject: Re: [PATCH 1/2] efi: remove use of list iterator variable after loop
+From:   Jakob Koschel <jakobkoschel@gmail.com>
+In-Reply-To: <CAMj1kXE2r4xrtFc+=OJfzutZzTtaUoFtW=f7y9+us9h+xGVEnA@mail.gmail.com>
+Date:   Wed, 13 Apr 2022 20:08:09 +0200
 Cc:     Matthew Garrett <mjg59@srcf.ucam.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        X86 ML <x86@kernel.org>, linux-efi <linux-efi@vger.kernel.org>,
+        Peter Jones <pjones@redhat.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Peter Jones <pjones@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Mike Rapoport <rppt@kernel.org>,
+        Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
+        Cristiano Giuffrida <c.giuffrida@vu.nl>,
+        "Bos, H.J." <h.j.bos@vu.nl>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9142505E-720F-401E-AD48-BA9D0880EDD1@gmail.com>
+References: <20220331221030.889718-1-jakobkoschel@gmail.com>
+ <CAMj1kXE2r4xrtFc+=OJfzutZzTtaUoFtW=f7y9+us9h+xGVEnA@mail.gmail.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+X-Mailer: Apple Mail (2.3696.80.82.1.1)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 25 Mar 2022 at 09:06, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Thu, 24 Mar 2022 at 17:39, <baskov@ispras.ru> wrote:
-> >
-> > On 2022-03-18 19:37, Peter Jones wrote:
-> > > On Thu, Mar 03, 2022 at 08:47:59PM +0000, Matthew Garrett wrote:
-> > >> On Thu, Mar 03, 2022 at 04:42:07PM +0300, baskov@ispras.ru wrote:
-> > >> > On 2022-02-28 21:30, Matthew Garrett wrote:
-> > >> > > On Mon, Feb 28, 2022 at 05:45:53PM +0100, Ard Biesheuvel wrote:
-> > >> > >
-> > >> > > > Given that this is a workaround for a very specific issue arising on
-> > >> > > > PI based implementations of UEFI, I consider this a quirk, and so I
-> > >> > > > think this approach is reasonable. I'd still like to gate it on some
-> > >> > > > kind of identification, though - perhaps something related to DMI like
-> > >> > > > the x86 core kernel does as well.
-> > >> > >
-> > >> > > When the V1 patches were reviewed, you suggested allocating
-> > >> > > EFI_LOADER_CODE rather than EFI_LOADER_DATA. The example given for a
-> > >> > > failure case is when NxMemoryProtectionPolicy is set to 0x7fd4, in which
-> > >> > > case EFI_LOADER_CODE, EFI_BOOT_SERVICES_CODE and
-> > >> > > EFI_RUNTIEM_SERVICES_CODE should not have the nx policy applied. So it
-> > >> > > seems like your initial suggestion (s/LOADER_DATA/LOADER_CODE/) should
-> > >> > > have worked, even if there was disagreement about whether the spec
-> > >> > > required it to. Is this firmware applying a stricter policy?
-> > >> >
-> > >> > Yes, this firmware is being modified to enforce stricter policy.
-> > >>
-> > >> Ok. I think this should really go through the UEFI spec process - I
-> > >> agree that from a strict interpretation of the spec, what this
-> > >> firmware
-> > >> is doing is legitimate, but I don't like having a situation where we
-> > >> have to depend on the DXE spec.
-> > >
-> > > It's in the process of getting into the UEFI spec now as
-> > > https://bugzilla.tianocore.org/show_bug.cgi?id=3519 .
-> > >
-> > >> How does Windows handle this? Just update the page tables itself for
-> > >> any
-> > >> regions it needs during boot?
-> > >
-> > > Microsoft's bootloader sets up its own pagetables, though I believe
-> > > they're switching it to use the (soon to be) standardized API.
-> >
-> > The third version of the patch is the most close in structure
-> > to the proposed protocol. And until the protocol is standardized and
-> > implemented on problematic firmware, I think, it remains the better
-> > solution in terms of simplicity and further porting to the new
-> > protocol.
-> >
-> > It is desirable to get the issue resolved, and make the kernel stricter
-> > comply to the spec, without waiting for the new API implementation.
-> > And later, switch the kernel to be using the protocol with
-> > subsequent patches as soon as it gets usable.
-> >
-> > So, is there a chance for these patches to be accepted in current
-> > form, or with some modifications?
-> >
->
-> I am fine with taking the v3, as it is the most likely to only affect
-> the systems that actually need this change in behavior.
->
-> So unless there are any objections, I will queue these up after the
-> merge window.
 
-I have queued these up now.
+
+> On 13. Apr 2022, at 19:05, Ard Biesheuvel <ardb@kernel.org> wrote:
+>=20
+> On Fri, 1 Apr 2022 at 00:11, Jakob Koschel <jakobkoschel@gmail.com> =
+wrote:
+>>=20
+>> In preparation to limiting the scope of a list iterator to the list
+>> traversal loop, use a dedicated pointer to iterate through the list =
+[1].
+>>=20
+>> In the current state the list_for_each_entry() is guaranteed to
+>> hit a break or goto in order to work properly. If the list iterator
+>> executes completely or the list is empty the iterator variable =
+contains
+>> a type confused bogus value infered from the head of the list.
+>>=20
+>> With this patch the variable used past the list iterator is only set
+>> if the list exists early and is NULL otherwise. It should therefore
+>> be safe to just set *prev =3D NULL (as it was before).
+>>=20
+>=20
+> This generic boilerplate is fine to include, but it would help if you
+> could point out why repainting the current logic with your new brush
+> is appropriate here.
+
+This makes sense, I can see that the commit message should be improved =
+here.
+
+>=20
+> In this particular case, I wonder whether updating *prev makes sense
+> to begin with if we are returning an error, and if we fix that, the
+> issue disappears as well.
+
+Actually I'm rethinking this now. The only use of 'prev' that I can see =
+is
+in efi_pstore_erase_name(). It only uses it if found !=3D 0
+which would mean err !=3D 0 in __efivar_entry_iter().
+
+This would allow massively simplifying the entire function.
+The valid case is updating *prev when there is an "error" as far as I =
+can tell.
+
+I've sketched up a rewritten function that should hopefully be more =
+clear and
+archive the same goal, I'm curious what you think:
+
+
+	int __efivar_entry_iter(int (*func)(struct efivar_entry *, void =
+*),
+				struct list_head *head, void *data,
+				struct efivar_entry **prev)
+	{
+		struct efivar_entry *entry, *n;
+		int err =3D 0;
+
+		/* If prev is set and *prev !=3D NULL start iterating =
+from there */
+		if (prev)
+			entry =3D list_prepare_entry(*prev, head, list);
+		/* Otherwise start at the beginning */
+		else
+			entry =3D list_entry(head, typeof(*entry), =
+list);
+		list_for_each_entry_safe_continue(entry, n, head, list) =
+{
+			err =3D func(entry, data);
+			if (err && prev)
+				*prev =3D entry;
+			if (err)
+				return err;
+		}
+
+		return 0;
+	}
+
