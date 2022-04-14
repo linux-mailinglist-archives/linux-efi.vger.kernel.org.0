@@ -2,29 +2,29 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F0D3500A74
-	for <lists+linux-efi@lfdr.de>; Thu, 14 Apr 2022 11:54:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93BF1500A78
+	for <lists+linux-efi@lfdr.de>; Thu, 14 Apr 2022 11:54:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241445AbiDNJ47 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        id S241771AbiDNJ47 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
         Thu, 14 Apr 2022 05:56:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51034 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233679AbiDNJ45 (ORCPT
+        with ESMTP id S230483AbiDNJ45 (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Thu, 14 Apr 2022 05:56:57 -0400
 Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88F86CEA;
-        Thu, 14 Apr 2022 02:54:30 -0700 (PDT)
-Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.54])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4KfF9Z22C9zFpvV;
-        Thu, 14 Apr 2022 17:52:02 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 580B32DE6;
+        Thu, 14 Apr 2022 02:54:31 -0700 (PDT)
+Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4KfF9b4wyyzFppJ;
+        Thu, 14 Apr 2022 17:52:03 +0800 (CST)
 Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
- dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
+ dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 14 Apr 2022 17:54:28 +0800
+ 15.1.2375.24; Thu, 14 Apr 2022 17:54:29 +0800
 Received: from localhost.localdomain (10.175.112.125) by
  dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 14 Apr 2022 17:54:26 +0800
+ 15.1.2375.24; Thu, 14 Apr 2022 17:54:28 +0800
 From:   Wupeng Ma <mawupeng1@huawei.com>
 To:     <akpm@linux-foundation.org>, <catalin.marinas@arm.com>,
         <will@kernel.org>, <corbet@lwn.net>
@@ -42,10 +42,12 @@ CC:     <ardb@kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-efi@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
         <platform-driver-x86@vger.kernel.org>, <linux-mm@kvack.org>
-Subject: [PATCH v2 0/9] introduce mirrored memory support for arm64
-Date:   Thu, 14 Apr 2022 18:13:05 +0800
-Message-ID: <20220414101314.1250667-1-mawupeng1@huawei.com>
+Subject: [PATCH v2 1/9] efi: Make efi_print_memmap() public
+Date:   Thu, 14 Apr 2022 18:13:06 +0800
+Message-ID: <20220414101314.1250667-2-mawupeng1@huawei.com>
 X-Mailer: git-send-email 2.18.0.huawei.25
+In-Reply-To: <20220414101314.1250667-1-mawupeng1@huawei.com>
+References: <20220414101314.1250667-1-mawupeng1@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.175.112.125]
@@ -63,79 +65,92 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Ma Wupeng <mawupeng1@huawei.com>
 
-Commit b05b9f5f9dcf ("x86, mirror: x86 enabling - find mirrored memory ranges")
-introduced mirrored memory support for x86. This support rely on UEFI to
-report mirrored memory address ranges.  See UEFI 2.5 spec pages 157-158:
+Make efi_print_memmap() public in preparation for adding fake memory
+support for architecture with efi support, eg, arm64.
 
-  http://www.uefi.org/sites/default/files/resources/UEFI%202_5.pdf
+Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
+---
+ arch/x86/include/asm/efi.h    |  1 -
+ arch/x86/platform/efi/efi.c   | 16 ----------------
+ drivers/firmware/efi/memmap.c | 16 ++++++++++++++++
+ include/linux/efi.h           |  1 +
+ 4 files changed, 17 insertions(+), 17 deletions(-)
 
-Memory mirroring is a technique used to separate memory into two separate
-channels, usually on a memory device, like a server. In memory mirroring,
-one channel is copied to another to create redundancy. This method makes
-input/output (I/O) registers and memory appear with more than one address
-range because the same physical byte is accessible at more than one
-address. Using memory mirroring, higher memory reliability and a higher
-level of memory consolidation are possible.
-
-Arm64 can support this too. So mirrored memory support is added to support
-arm64.
-
-Efi_fake_mem is used for testing mirrored features and will not be used in
-production environment. This test features can fake memory's attribute
-values.
-
-The reason why efi_fake_mem support is put first is that memory's attribute
-is reported by BIOS which is hard to simulate. With this support, any arm64
-machines with efi support can easily test mirrored features.
-
-The main purpose of this patchset is to introduce mirrored support for
-arm64 and we have already fixed the problems we had which is shown in
-patch #5 to patch #7 and try to bring total isolation in patch #8 which
-will disable mirror feature if kernelcore is not specified.
-
-In order to test this support in arm64:
-- patch this patchset
-- add efi_fake_mem=8G@0:0x10000 in kernel parameter to simulate mirrored
-  memroy between phy addr 0-8G.
-- add kernelcore=mirror in kernel parameter
-- start you kernel
-
-Patch #1-#2 introduce efi_fake_mem support for arm64.
-Patch #3-#4 introduce mirrored memory support form arm64.
-Patch #5-#7 fix some bugs for arm64 if memory reliable is enabled.
-Patch #8 disable mirror feature if kernelPHYS_PFNcore is not specified.
-Patch #9 remove some redundant code in ia64 efi_init.
-
-Changelog since v1:
-- update changelog in cover letter
-- use PHYS_PFN in patch #7 
-
-Ma Wupeng (9):
-  efi: Make efi_print_memmap() public
-  arm64: efi: Add fake memory support
-  efi: Make efi_find_mirror() public
-  arm64/mirror: arm64 enabling - find mirrored memory ranges
-  mm: Ratelimited mirrored memory related warning messages
-  mm: Demote warning message in vmemmap_verify() to debug level
-  mm: Calc the right pfn if page size is not 4K
-  efi: Disable mirror feature if kernelcore is not specified
-  ia64/efi: Code simplification in efi_init
-
- .../admin-guide/kernel-parameters.txt         |  4 +-
- arch/arm64/kernel/setup.c                     |  3 ++
- arch/ia64/kernel/efi.c                        | 37 +-----------------
- arch/x86/include/asm/efi.h                    |  5 ---
- arch/x86/platform/efi/efi.c                   | 39 -------------------
- drivers/firmware/efi/Kconfig                  |  2 +-
- drivers/firmware/efi/efi.c                    | 26 +++++++++++++
- drivers/firmware/efi/memmap.c                 | 16 ++++++++
- include/linux/efi.h                           |  4 ++
- include/linux/mm.h                            |  2 +
- mm/memblock.c                                 |  4 +-
- mm/page_alloc.c                               |  4 +-
- mm/sparse-vmemmap.c                           |  2 +-
- 13 files changed, 60 insertions(+), 88 deletions(-)
-
+diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+index 98938a68251c..686968073f48 100644
+--- a/arch/x86/include/asm/efi.h
++++ b/arch/x86/include/asm/efi.h
+@@ -150,7 +150,6 @@ extern asmlinkage u64 __efi_call(void *fp, ...);
+ #endif /* CONFIG_X86_32 */
+ 
+ extern int __init efi_memblock_x86_reserve_range(void);
+-extern void __init efi_print_memmap(void);
+ extern void __init efi_map_region(efi_memory_desc_t *md);
+ extern void __init efi_map_region_fixed(efi_memory_desc_t *md);
+ extern void efi_sync_low_kernel_mappings(void);
+diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+index 147c30a81f15..7b130f39d841 100644
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -323,22 +323,6 @@ static void __init efi_clean_memmap(void)
+ 	}
+ }
+ 
+-void __init efi_print_memmap(void)
+-{
+-	efi_memory_desc_t *md;
+-	int i = 0;
+-
+-	for_each_efi_memory_desc(md) {
+-		char buf[64];
+-
+-		pr_info("mem%02u: %s range=[0x%016llx-0x%016llx] (%lluMB)\n",
+-			i++, efi_md_typeattr_format(buf, sizeof(buf), md),
+-			md->phys_addr,
+-			md->phys_addr + (md->num_pages << EFI_PAGE_SHIFT) - 1,
+-			(md->num_pages >> (20 - EFI_PAGE_SHIFT)));
+-	}
+-}
+-
+ static int __init efi_systab_init(unsigned long phys)
+ {
+ 	int size = efi_enabled(EFI_64BIT) ? sizeof(efi_system_table_64_t)
+diff --git a/drivers/firmware/efi/memmap.c b/drivers/firmware/efi/memmap.c
+index 4df55a55da84..04cc1f2cdfa4 100644
+--- a/drivers/firmware/efi/memmap.c
++++ b/drivers/firmware/efi/memmap.c
+@@ -376,3 +376,19 @@ void __init efi_memmap_insert(struct efi_memory_map *old_memmap, void *buf,
+ 		}
+ 	}
+ }
++
++void __init efi_print_memmap(void)
++{
++	efi_memory_desc_t *md;
++	int i = 0;
++
++	for_each_efi_memory_desc(md) {
++		char buf[64];
++
++		pr_info("mem%02u: %s range=[0x%016llx-0x%016llx] (%lluMB)\n",
++			i++, efi_md_typeattr_format(buf, sizeof(buf), md),
++			md->phys_addr,
++			md->phys_addr + (md->num_pages << EFI_PAGE_SHIFT) - 1,
++			(md->num_pages >> (20 - EFI_PAGE_SHIFT)));
++	}
++}
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index ccd4d3f91c98..de05682b233b 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -684,6 +684,7 @@ extern int __init efi_memmap_split_count(efi_memory_desc_t *md,
+ 					 struct range *range);
+ extern void __init efi_memmap_insert(struct efi_memory_map *old_memmap,
+ 				     void *buf, struct efi_mem_range *mem);
++extern void __init efi_print_memmap(void);
+ 
+ #ifdef CONFIG_EFI_ESRT
+ extern void __init efi_esrt_init(void);
 -- 
 2.18.0.huawei.25
 
