@@ -2,29 +2,29 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7931500A8F
-	for <lists+linux-efi@lfdr.de>; Thu, 14 Apr 2022 11:56:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FF14500A92
+	for <lists+linux-efi@lfdr.de>; Thu, 14 Apr 2022 11:56:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242108AbiDNJ5P (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 14 Apr 2022 05:57:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51334 "EHLO
+        id S233679AbiDNJ5N (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 14 Apr 2022 05:57:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242009AbiDNJ5D (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 14 Apr 2022 05:57:03 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32E1F13D7D;
-        Thu, 14 Apr 2022 02:54:38 -0700 (PDT)
-Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.57])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4KfF7Y2TgCzCr14;
-        Thu, 14 Apr 2022 17:50:17 +0800 (CST)
+        with ESMTP id S242046AbiDNJ5E (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 14 Apr 2022 05:57:04 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84AA614018;
+        Thu, 14 Apr 2022 02:54:39 -0700 (PDT)
+Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.55])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4KfF9m0WzxzFprV;
+        Thu, 14 Apr 2022 17:52:12 +0800 (CST)
 Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
- dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
+ dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 14 Apr 2022 17:54:36 +0800
+ 15.1.2375.24; Thu, 14 Apr 2022 17:54:37 +0800
 Received: from localhost.localdomain (10.175.112.125) by
  dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 14 Apr 2022 17:54:34 +0800
+ 15.1.2375.24; Thu, 14 Apr 2022 17:54:36 +0800
 From:   Wupeng Ma <mawupeng1@huawei.com>
 To:     <akpm@linux-foundation.org>, <catalin.marinas@arm.com>,
         <will@kernel.org>, <corbet@lwn.net>
@@ -42,9 +42,9 @@ CC:     <ardb@kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-efi@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
         <platform-driver-x86@vger.kernel.org>, <linux-mm@kvack.org>
-Subject: [PATCH v2 6/9] mm: Demote warning message in vmemmap_verify() to debug level
-Date:   Thu, 14 Apr 2022 18:13:11 +0800
-Message-ID: <20220414101314.1250667-7-mawupeng1@huawei.com>
+Subject: [PATCH v2 7/9] mm: Calc the right pfn if page size is not 4K
+Date:   Thu, 14 Apr 2022 18:13:12 +0800
+Message-ID: <20220414101314.1250667-8-mawupeng1@huawei.com>
 X-Mailer: git-send-email 2.18.0.huawei.25
 In-Reply-To: <20220414101314.1250667-1-mawupeng1@huawei.com>
 References: <20220414101314.1250667-1-mawupeng1@huawei.com>
@@ -65,32 +65,29 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Ma Wupeng <mawupeng1@huawei.com>
 
-For a system only have limited mirrored memory or some numa node without
-mirrored memory, the per node vmemmap page_structs prefer to allocate
-memory from mirrored region, which will lead to vmemmap_verify() report
-lots of warning message.
-
-This patch demote the "potential offnode page_structs" warning messages
-to debug level to avoid a very long print during bootup.
+Previous 0x100000 is used to check the 4G limit in
+find_zone_movable_pfns_for_nodes(). This is right in x86 because
+the page size can only be 4K. But 16K and 64K are available in
+arm64. So replace it with PHYS_PFN(SZ_4G).
 
 Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
 ---
- mm/sparse-vmemmap.c | 2 +-
+ mm/page_alloc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index 8aecd6b3896c..a63470dafc35 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -528,7 +528,7 @@ void __meminit vmemmap_verify(pte_t *pte, int node,
- 	int actual_node = early_pfn_to_nid(pfn);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 6e5b4488a0c5..570d0ebf98df 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -7870,7 +7870,7 @@ static void __init find_zone_movable_pfns_for_nodes(void)
  
- 	if (node_distance(actual_node, node) > LOCAL_DISTANCE)
--		pr_warn("[%lx-%lx] potential offnode page_structs\n",
-+		pr_debug("[%lx-%lx] potential offnode page_structs\n",
- 			start, end - 1);
- }
+ 			usable_startpfn = memblock_region_memory_base_pfn(r);
  
+-			if (usable_startpfn < 0x100000) {
++			if (usable_startpfn < PHYS_PFN(SZ_4G)) {
+ 				mem_below_4gb_not_mirrored = true;
+ 				continue;
+ 			}
 -- 
 2.18.0.huawei.25
 
