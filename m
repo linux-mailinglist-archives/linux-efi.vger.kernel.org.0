@@ -2,106 +2,82 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD9C05034C5
-	for <lists+linux-efi@lfdr.de>; Sat, 16 Apr 2022 09:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B075503557
+	for <lists+linux-efi@lfdr.de>; Sat, 16 Apr 2022 10:48:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230144AbiDPHwD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 16 Apr 2022 03:52:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43274 "EHLO
+        id S230435AbiDPIuz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 16 Apr 2022 04:50:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230154AbiDPHwB (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 16 Apr 2022 03:52:01 -0400
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1000FFF92
-        for <linux-efi@vger.kernel.org>; Sat, 16 Apr 2022 00:49:27 -0700 (PDT)
-Received: by mail-il1-x142.google.com with SMTP id y16so5896960ilc.7
-        for <linux-efi@vger.kernel.org>; Sat, 16 Apr 2022 00:49:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
-        b=bJd2DIgtyK+bZCVQpMa9XLiI7bVnFQgVFeGzbZ6bXamjrEFIUCNaIDR9YpvR5iTRQC
-         EoRjHn2hxdGgHpTmUXoJLhLdkz8kw8CpdMkf+RjOM2yxgJf0M2w5tnzpw0NiczM9cGQm
-         aTRY2J48j2+AVBVM6ZplapTERLwB7sqpQHn0KTPy+GATyEE1HlWbU25nZewZyTln9PiO
-         eb2iuPe3VcoLkYjZ6tmC44EeIcF1BzRiek/y+/+gg720T1wEvd/5m2iOgdTIUS3isI5Z
-         q2z1OdX/gYACU6OexrbNcXzEKBC+MKUq0Bm7V68HpmeyS3D5tFhEEP1iOfnkPKJo7x6w
-         XtNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
-        b=745I7IyxRxjxgwBLft9XVkCTrxUChtguWlkBi7XSTmjXIYma1wuVVORg1xS1FKxQ5G
-         V1d3uQ0mUJcXjR9tRnK2WVV5VI3TU6LlO/Z4aFH0SqGRLD0WcNnTDU3xkp5hNEbMD5lX
-         OuCjScco4W/5xjM4PQw0twvkE0pqzKCfuciy9dCau6elcz1O8Ue8x1rG3wOJ2o9iTtG1
-         pVzE9Z/eThrBRycpkrApr/MQ+GCb5j913awMfYXWA4Ilw9t1UtDAVmIxUptMJxmnzznW
-         E6YTs67zAdhuZ7deAHDcGNRm95Rm+JvRK+YcO05s+8Hl4u+yH7xZ1T9vFAOGevlleKEr
-         Y3LA==
-X-Gm-Message-State: AOAM532/v52i9xsuzNbCPx4q+NbHDQAd5mLwr7PXzmGnd6QEHeF9MkuM
-        NS5jVtc17DxfuPf2RW9KrLma7PGXDPWRLIFptIg=
-X-Google-Smtp-Source: ABdhPJzPQ782jxaaybf4v05kBQtFRTzv0MMrux20NcZ4Q10XmGrK6dnUIabFDBNBmBOv8fFyQY5zqzYAgf4Cnc3KaCc=
-X-Received: by 2002:a92:508:0:b0:2cb:ebd8:a76b with SMTP id
- q8-20020a920508000000b002cbebd8a76bmr1009500ile.156.1650095366830; Sat, 16
- Apr 2022 00:49:26 -0700 (PDT)
+        with ESMTP id S229871AbiDPIuy (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 16 Apr 2022 04:50:54 -0400
+Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00549D9E8B;
+        Sat, 16 Apr 2022 01:48:21 -0700 (PDT)
+Received: from localhost (mdns.lwn.net [45.79.72.68])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ms.lwn.net (Postfix) with ESMTPSA id 2B92A2CC;
+        Sat, 16 Apr 2022 08:48:20 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 2B92A2CC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+        t=1650098901; bh=wL3NkiIKFRdID28VPA7Y7koeQlHQ1FfnpEFD9gBGabE=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=IuQQnXtH7YOY0hKaNn75/nwtHB8ScUrzlWYrQ9//YLDGKrwYtXAmDDHbkZqbF2dtJ
+         VxyHvnRSWGdKgiQKkkriH1W5clEMFgmn05MHwn3NxfkC+C2jEW8CsI2jQdAr4LowxB
+         PHaa/sxgo1jH0YXwNBH+xV1sMuPaxBEYgnmP69BWWqFHb2qeEpLRvosQ060MJEY2Ri
+         1Fypoean6uBLsIgIkv+hiEmxvJWF9I3F+3aiOmbbx46Ur4z8ROaBrGBeFBZTEdwrcl
+         iM4hxInGzLf8q9fNgBkK/8DT9FgGi16RJJpUSzkzBlRz6TPEQWfS587+y8zJE5tJsV
+         x9N5q+hAG8CGw==
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Akihiko Odaki <akihiko.odaki@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-efi@vger.kernel.org, x86@kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H . Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH] x86/efi: Remove references of EFI earlyprintk from
+ documentation
+In-Reply-To: <CAMj1kXGHQm7yy2QPCEVRiXBzb8HWOHzKMCuoS+mbnBKujEXQnA@mail.gmail.com>
+References: <20220321045853.3324-1-akihiko.odaki@gmail.com>
+ <87bkxfebsu.fsf@meer.lwn.net>
+ <CAMj1kXGHQm7yy2QPCEVRiXBzb8HWOHzKMCuoS+mbnBKujEXQnA@mail.gmail.com>
+Date:   Sat, 16 Apr 2022 02:48:17 -0600
+Message-ID: <87v8v92z3i.fsf@meer.lwn.net>
 MIME-Version: 1.0
-Received: by 2002:a05:6638:1309:0:0:0:0 with HTTP; Sat, 16 Apr 2022 00:49:26
- -0700 (PDT)
-Reply-To: daniel.seyba@yahoo.com
-From:   Seyba Daniel <royhalton13@gmail.com>
-Date:   Sat, 16 Apr 2022 09:49:26 +0200
-Message-ID: <CALSxb2w9zQYotuLcRSCPns53ksvT9UrEMVx-1Cp1f8RE7er3cA@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:142 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [royhalton13[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [royhalton13[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello,
+Ard Biesheuvel <ardb@kernel.org> writes:
 
-I am so sorry contacting you in this means especially when we have never
-met before. I urgently seek your service to represent me in investing in
-your region / country and you will be rewarded for your service without
-affecting your present job with very little time invested in it.
+> On Tue, 5 Apr 2022 at 18:26, Jonathan Corbet <corbet@lwn.net> wrote:
+>>
+>> Akihiko Odaki <akihiko.odaki@gmail.com> writes:
+>>
+>> > x86 EFI earlyprink was removed with commit 69c1f396f25b ("efi/x86:
+>> > Convert x86 EFI earlyprintk into generic earlycon implementation").
+>>
+>> So I will confess that I don't know this area well enough to know
+>> whether this patch makes sense or not.  To help with that, it would have
+>> been good to CC Ard, who is the author of the patch you cite above.
+>> Adding him now.
+>>
+>> Ard, do you agree with this change (preserved below)?
+>>
+>
+> Yes, it looks fine to me.
+>
+> Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
 
-My interest is in buying real estate, private schools or companies with
-potentials for rapid growth in long terms.
+Great.  Applied, thanks.
 
-So please confirm interest by responding back.
-
-My dearest regards
-
-Seyba Daniel
+jon
