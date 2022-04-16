@@ -2,148 +2,106 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D61E5033E3
-	for <lists+linux-efi@lfdr.de>; Sat, 16 Apr 2022 07:48:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD9C05034C5
+	for <lists+linux-efi@lfdr.de>; Sat, 16 Apr 2022 09:49:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229577AbiDPCT0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 15 Apr 2022 22:19:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51876 "EHLO
+        id S230144AbiDPHwD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 16 Apr 2022 03:52:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbiDPCTA (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 15 Apr 2022 22:19:00 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A45A93C72F;
-        Fri, 15 Apr 2022 19:16:24 -0700 (PDT)
-Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.55])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4KgFtl21SZzCr3Z;
-        Sat, 16 Apr 2022 09:27:43 +0800 (CST)
-Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
- dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Sat, 16 Apr 2022 09:32:04 +0800
-Received: from [10.174.178.120] (10.174.178.120) by
- dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Sat, 16 Apr 2022 09:32:02 +0800
-Message-ID: <6de859df-e1c3-e9aa-4530-3b61b9c69a28@huawei.com>
-Date:   Sat, 16 Apr 2022 09:32:01 +0800
+        with ESMTP id S230154AbiDPHwB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 16 Apr 2022 03:52:01 -0400
+Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1000FFF92
+        for <linux-efi@vger.kernel.org>; Sat, 16 Apr 2022 00:49:27 -0700 (PDT)
+Received: by mail-il1-x142.google.com with SMTP id y16so5896960ilc.7
+        for <linux-efi@vger.kernel.org>; Sat, 16 Apr 2022 00:49:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
+        b=bJd2DIgtyK+bZCVQpMa9XLiI7bVnFQgVFeGzbZ6bXamjrEFIUCNaIDR9YpvR5iTRQC
+         EoRjHn2hxdGgHpTmUXoJLhLdkz8kw8CpdMkf+RjOM2yxgJf0M2w5tnzpw0NiczM9cGQm
+         aTRY2J48j2+AVBVM6ZplapTERLwB7sqpQHn0KTPy+GATyEE1HlWbU25nZewZyTln9PiO
+         eb2iuPe3VcoLkYjZ6tmC44EeIcF1BzRiek/y+/+gg720T1wEvd/5m2iOgdTIUS3isI5Z
+         q2z1OdX/gYACU6OexrbNcXzEKBC+MKUq0Bm7V68HpmeyS3D5tFhEEP1iOfnkPKJo7x6w
+         XtNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
+        b=745I7IyxRxjxgwBLft9XVkCTrxUChtguWlkBi7XSTmjXIYma1wuVVORg1xS1FKxQ5G
+         V1d3uQ0mUJcXjR9tRnK2WVV5VI3TU6LlO/Z4aFH0SqGRLD0WcNnTDU3xkp5hNEbMD5lX
+         OuCjScco4W/5xjM4PQw0twvkE0pqzKCfuciy9dCau6elcz1O8Ue8x1rG3wOJ2o9iTtG1
+         pVzE9Z/eThrBRycpkrApr/MQ+GCb5j913awMfYXWA4Ilw9t1UtDAVmIxUptMJxmnzznW
+         E6YTs67zAdhuZ7deAHDcGNRm95Rm+JvRK+YcO05s+8Hl4u+yH7xZ1T9vFAOGevlleKEr
+         Y3LA==
+X-Gm-Message-State: AOAM532/v52i9xsuzNbCPx4q+NbHDQAd5mLwr7PXzmGnd6QEHeF9MkuM
+        NS5jVtc17DxfuPf2RW9KrLma7PGXDPWRLIFptIg=
+X-Google-Smtp-Source: ABdhPJzPQ782jxaaybf4v05kBQtFRTzv0MMrux20NcZ4Q10XmGrK6dnUIabFDBNBmBOv8fFyQY5zqzYAgf4Cnc3KaCc=
+X-Received: by 2002:a92:508:0:b0:2cb:ebd8:a76b with SMTP id
+ q8-20020a920508000000b002cbebd8a76bmr1009500ile.156.1650095366830; Sat, 16
+ Apr 2022 00:49:26 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v2 0/9] introduce mirrored memory support for arm64
-To:     <ardb@kernel.org>
-CC:     <akpm@linux-foundation.org>, <catalin.marinas@arm.com>,
-        <will@kernel.org>, <corbet@lwn.net>, <tglx@linutronix.de>,
-        <mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-        <x86@kernel.org>, <hpa@zyccr.com>, <dvhart@infradead.org>,
-        <andy@infradead.org>, <rppt@kernel.org>, <paulmck@kernel.org>,
-        <peterz@infradead.org>, <jroedel@suse.de>,
-        <songmuchun@bytedance.com>, <macro@orcam.me.uk>,
-        <frederic@kernel.org>, <W_Armin@gmx.de>, <john.garry@huawei.com>,
-        <seanjc@google.com>, <tsbogend@alpha.franken.de>,
-        <anshuman.khandual@arm.com>, <chenhuacai@kernel.org>,
-        <david@redhat.com>, <gpiccoli@igalia.com>, <mark.rutland@arm.com>,
-        <wangkefeng.wang@huawei.com>, <linux-doc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-efi@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
-        <platform-driver-x86@vger.kernel.org>, <linux-mm@kvack.org>
-References: <20220414101314.1250667-1-mawupeng1@huawei.com>
- <CAMj1kXGSStDgj9ABmUaTLnBmpQFksh3wx4tx=mJohum4GQe3Gg@mail.gmail.com>
-From:   mawupeng <mawupeng1@huawei.com>
-In-Reply-To: <CAMj1kXGSStDgj9ABmUaTLnBmpQFksh3wx4tx=mJohum4GQe3Gg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.120]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemm500014.china.huawei.com (7.185.36.153)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Received: by 2002:a05:6638:1309:0:0:0:0 with HTTP; Sat, 16 Apr 2022 00:49:26
+ -0700 (PDT)
+Reply-To: daniel.seyba@yahoo.com
+From:   Seyba Daniel <royhalton13@gmail.com>
+Date:   Sat, 16 Apr 2022 09:49:26 +0200
+Message-ID: <CALSxb2w9zQYotuLcRSCPns53ksvT9UrEMVx-1Cp1f8RE7er3cA@mail.gmail.com>
+Subject: Hello,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:142 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [royhalton13[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [royhalton13[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+Hello,
 
+I am so sorry contacting you in this means especially when we have never
+met before. I urgently seek your service to represent me in investing in
+your region / country and you will be rewarded for your service without
+affecting your present job with very little time invested in it.
 
-在 2022/4/14 18:22, Ard Biesheuvel 写道:
-> On Thu, 14 Apr 2022 at 11:54, Wupeng Ma <mawupeng1@huawei.com> wrote:
->>
->> From: Ma Wupeng <mawupeng1@huawei.com>
->>
->> Commit b05b9f5f9dcf ("x86, mirror: x86 enabling - find mirrored memory ranges")
->> introduced mirrored memory support for x86. This support rely on UEFI to
->> report mirrored memory address ranges.  See UEFI 2.5 spec pages 157-158:
->>
->>    http://www.uefi.org/sites/default/files/resources/UEFI%202_5.pdf
->>
->> Memory mirroring is a technique used to separate memory into two separate
->> channels, usually on a memory device, like a server. In memory mirroring,
->> one channel is copied to another to create redundancy. This method makes
->> input/output (I/O) registers and memory appear with more than one address
->> range because the same physical byte is accessible at more than one
->> address. Using memory mirroring, higher memory reliability and a higher
->> level of memory consolidation are possible.
->>
->> Arm64 can support this too. So mirrored memory support is added to support
->> arm64.
->>
->> Efi_fake_mem is used for testing mirrored features and will not be used in
->> production environment. This test features can fake memory's attribute
->> values.
->>
->> The reason why efi_fake_mem support is put first is that memory's attribute
->> is reported by BIOS which is hard to simulate. With this support, any arm64
->> machines with efi support can easily test mirrored features.
->>
->> The main purpose of this patchset is to introduce mirrored support for
->> arm64 and we have already fixed the problems we had which is shown in
->> patch #5 to patch #7 and try to bring total isolation in patch #8 which
->> will disable mirror feature if kernelcore is not specified.
->>
->> In order to test this support in arm64:
->> - patch this patchset
->> - add efi_fake_mem=8G@0:0x10000 in kernel parameter to simulate mirrored
->>    memroy between phy addr 0-8G.
->> - add kernelcore=mirror in kernel parameter
->> - start you kernel
->>
-> 
-> As I explained before:
-> 
-> - NAK to EFI fake_mem support on arm64
+My interest is in buying real estate, private schools or companies with
+potentials for rapid growth in long terms.
 
-fake_mem support on arm64 will be removed in subsequent version.
+So please confirm interest by responding back.
 
-> - NAK to the whole series until you come up with a proposal on how to
-> locate the static kernel image itself into more reliable memory, as
-> there is really no point to any of this otherwise.
+My dearest regards
 
-Sorry I am not familiar with this, as you metioned before,
-
- > you have to iterate over the memory map and look for regions with
- > the desired attribute, and allocate those pages explicitly.
-
-Do you mean this is x86, commit c05cd79750fb
-("x86/boot/KASLR: Prefer mirrored memory regions for the kernel physical address").
-I will do some research.
-
- > I'd prefer to implement this in the bootloader, and only add minimal
- > logic to the stub to respect the placement of the kernel by the loader
- > if the loader signals it to do so.
-
-Does this bootloader refer to grub and then add minimal logic to arm64-stub.c?
-
-What is the loader signal?
-System exists mirrored memory reported by uefi?
-
-Thanks for reviewing, sorry for my ignorance on this.
-
-> .
-
-
-
+Seyba Daniel
