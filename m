@@ -2,90 +2,145 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07DD150697C
-	for <lists+linux-efi@lfdr.de>; Tue, 19 Apr 2022 13:13:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F8205071CB
+	for <lists+linux-efi@lfdr.de>; Tue, 19 Apr 2022 17:28:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236545AbiDSLQW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 19 Apr 2022 07:16:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43430 "EHLO
+        id S239807AbiDSPbL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 19 Apr 2022 11:31:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230010AbiDSLQV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 19 Apr 2022 07:16:21 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5664C2B1B2;
-        Tue, 19 Apr 2022 04:13:39 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BB81B1042;
-        Tue, 19 Apr 2022 04:13:38 -0700 (PDT)
-Received: from [10.163.40.223] (unknown [10.163.40.223])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B88BE3F73B;
-        Tue, 19 Apr 2022 04:13:22 -0700 (PDT)
-Message-ID: <672ff459-81bd-38ef-882d-e718992d295c@arm.com>
-Date:   Tue, 19 Apr 2022 16:44:06 +0530
+        with ESMTP id S232503AbiDSPbK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 19 Apr 2022 11:31:10 -0400
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73A4313F2B
+        for <linux-efi@vger.kernel.org>; Tue, 19 Apr 2022 08:28:27 -0700 (PDT)
+Received: by mail-lj1-x22e.google.com with SMTP id y11so3431977ljh.5
+        for <linux-efi@vger.kernel.org>; Tue, 19 Apr 2022 08:28:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=IPYkjAqB00Xxjikyucyrlisswxv3Uu4wKk4/LnVwWm8=;
+        b=ET2dFk9aXbq+2du32xy0VJqQN1YDmZMLNM/xlOZkTY4XHyGVyzEkvOVxE5UmMLn+Wp
+         YExIWYqo2rtEyCEv7QIXQpM20AA/xQeiAysy34JEPURNAMpqA3JBsOu604Lh2hPw+5/c
+         E8hHPr0WCvb8dYnwnsNbVYuWCbGAv89QMKUDiEDqUFibiIWuzAAUPttZxNrbO1S9BV0s
+         pzFdWnmFKbNVmXjSAKIB3rCAgGPKQ4U8YVKtVEgIrKpuK3oVlT8ntMSJQx+py4vFhPCq
+         X8dRTTTGhxkUJqDhgSE8/4qnvNyK9Eg09cY3Oj7ufQ+uVc9YgodTclsGipgsgT1AZ5Nm
+         BdFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=IPYkjAqB00Xxjikyucyrlisswxv3Uu4wKk4/LnVwWm8=;
+        b=xAl3rcbjFgu0jLyWiWBh8UzIjzqjnt1HZFFBmNO2OjyzpiAthJ3lz53+BEJljS8J6Y
+         w2s9SdVKLlkFj17b21P85JG5QjvAGw3WfkN96cL+Xb3aBOjp3whoTLSm7Lz8DPgwyjMl
+         l1C3g13raJ4UYmKAvrjn78zaNolFHRt1MiOxA1He6zppK5+SURKseAImu6M3HKQqhjv8
+         pXWcSL9vICFWJLvkBUhnWtlRFL9Rql2SWOzaADwIN2NuvVY920RzOBL4grm25kNVSReh
+         eri83g6/ohokk0oqXI8nxTcimV4WN4T5s93FreWSjkR9aA0nk9z3HCgrIElWDiUB3jxr
+         sIeA==
+X-Gm-Message-State: AOAM532MEBAXXfqQI1uBrz/BIc9/SqQOpdbhOv7H8T7OVfiSkFNiCA79
+        R24A02gSujjEjp2yeBu4r3gC9xaMNNKWz9GE
+X-Google-Smtp-Source: ABdhPJxFgaQNwsrkGsQvpbSc49Nh0VBtkIBJACRSpLsWn2p7SstiY+esd57CVUrx8BbP8cSpEJr3cw==
+X-Received: by 2002:a2e:84cc:0:b0:247:e395:7948 with SMTP id q12-20020a2e84cc000000b00247e3957948mr10253293ljh.499.1650382105629;
+        Tue, 19 Apr 2022 08:28:25 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id e5-20020a196745000000b0046b8b922c1csm1543311lfj.158.2022.04.19.08.28.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Apr 2022 08:28:25 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+        id 140FE103C63; Tue, 19 Apr 2022 18:30:02 +0300 (+03)
+Date:   Tue, 19 Apr 2022 18:30:02 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Varad Gautam <varad.gautam@suse.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>, x86@kernel.org,
+        linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv4 3/8] efi/x86: Implement support for unaccepted memory
+Message-ID: <20220419153002.ffh2ybdl7x2mm7zw@box.shutemov.name>
+References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
+ <20220405234343.74045-4-kirill.shutemov@linux.intel.com>
+ <Ylnwmvygp796+qcA@zn.tnic>
+ <20220418155545.a567xnxa6elglapl@box.shutemov.name>
+ <Yl2UHOQ4iZJ29k0q@zn.tnic>
+ <20220418202431.whvql4w57c7l5vpw@box.shutemov.name>
+ <Yl3RmPhdZieSr8W2@zn.tnic>
+ <20220418235015.mnujtlmmlyin7y6m@box.shutemov.name>
+ <Yl5nSSC4HpSWqfY7@zn.tnic>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v2 7/9] mm: Calc the right pfn if page size is not 4K
-Content-Language: en-US
-To:     Wupeng Ma <mawupeng1@huawei.com>, akpm@linux-foundation.org,
-        catalin.marinas@arm.com, will@kernel.org, corbet@lwn.net
-Cc:     ardb@kernel.org, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zyccr.com, dvhart@infradead.org, andy@infradead.org,
-        rppt@kernel.org, paulmck@kernel.org, peterz@infradead.org,
-        jroedel@suse.de, songmuchun@bytedance.com, macro@orcam.me.uk,
-        frederic@kernel.org, W_Armin@gmx.de, john.garry@huawei.com,
-        seanjc@google.com, tsbogend@alpha.franken.de,
-        chenhuacai@kernel.org, david@redhat.com, gpiccoli@igalia.com,
-        mark.rutland@arm.com, wangkefeng.wang@huawei.com,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
-        linux-ia64@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-mm@kvack.org
-References: <20220414101314.1250667-1-mawupeng1@huawei.com>
- <20220414101314.1250667-8-mawupeng1@huawei.com>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20220414101314.1250667-8-mawupeng1@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-10.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Yl5nSSC4HpSWqfY7@zn.tnic>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-
-
-On 4/14/22 15:43, Wupeng Ma wrote:
-> From: Ma Wupeng <mawupeng1@huawei.com>
+On Tue, Apr 19, 2022 at 09:39:53AM +0200, Borislav Petkov wrote:
+> On Tue, Apr 19, 2022 at 02:50:15AM +0300, Kirill A. Shutemov wrote:
+> > I find it strange that you go after <linux/bitmap.h> which has limited
+> > exposure while <linux/acpi.h> and <linux/efi.h> are there already.
 > 
-> Previous 0x100000 is used to check the 4G limit in
-> find_zone_movable_pfns_for_nodes(). This is right in x86 because
-> the page size can only be 4K. But 16K and 64K are available in
-> arm64. So replace it with PHYS_PFN(SZ_4G).
+> Funny you should mention that:
 > 
-> Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
-> ---
->  mm/page_alloc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> https://lore.kernel.org/r/YlCKWhMJEMUgJmjF@zn.tnic
 > 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 6e5b4488a0c5..570d0ebf98df 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -7870,7 +7870,7 @@ static void __init find_zone_movable_pfns_for_nodes(void)
->  
->  			usable_startpfn = memblock_region_memory_base_pfn(r);
->  
-> -			if (usable_startpfn < 0x100000) {
-> +			if (usable_startpfn < PHYS_PFN(SZ_4G)) {
->  				mem_below_4gb_not_mirrored = true;
->  				continue;
->  			}
+> I *have* been working towards that but it's a losing whack-a-mole game
+> when you and others keep adding new stuff.
+> 
+> So no, we won't take a pile of changes and let the maintainer clean it
+> up afterwards.
+> 
+> > What do you want me to do here?
+> 
+> I think the stuff coming from the linux/ namespace you can simply copy
+> into a header in compressed/, like I've done with efi.h.
 
-Regardless PFN value should never be encoded directly.
+Hm. Dave was worried about having copies of _find_next_bit() and
+__bitmap_*() inside compressed/.
 
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+How do we rectify code duplication and making decompresser self-contained?
+Do we care about multiple copies of the same code in the kernel?
+Do we care about keeping them in sync?
+
+> > // <asm/bitops.h>
+> 
+> The asm/ stuff can be put into a shared/ namespace header like the io
+> stuff you did.
+> 
+> > As 1 bit represents 2M, not all chunks can be represented in the bitmap
+> > and they have to be accepted. But the *goal* is to record unaccepted
+> > memory into bitmap. Some accepting is a side effect.
+> > 
+> > The early_accept_memory() name is just wrong.
+> 
+> Ok, how about process_unaccepted_memory(). It should be generic enough.
+
+Sounds good.
+
+-- 
+ Kirill A. Shutemov
