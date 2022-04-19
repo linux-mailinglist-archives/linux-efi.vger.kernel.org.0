@@ -2,159 +2,133 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90972507333
-	for <lists+linux-efi@lfdr.de>; Tue, 19 Apr 2022 18:39:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40EFB507939
+	for <lists+linux-efi@lfdr.de>; Tue, 19 Apr 2022 20:42:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354722AbiDSQlo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 19 Apr 2022 12:41:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50828 "EHLO
+        id S244228AbiDSSi0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 19 Apr 2022 14:38:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234063AbiDSQlj (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 19 Apr 2022 12:41:39 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACF471409E;
-        Tue, 19 Apr 2022 09:38:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1650386336; x=1681922336;
-  h=message-id:date:mime-version:to:cc:references:from:
-   subject:in-reply-to;
-  bh=/sjp7gFP/WNMm0rhzedY8jJRt5eNgyrw8SaiEPlBRkw=;
-  b=U4sD6VP4rs6MsMNXzjHQVOX+f0q4g/MO2CpF/Cj4rfoxHbJukqZnbcru
-   5Yjfl4MeMDm/gbHdBPc5ubHrJjuNpmcIwVkJfLTD1uR5XtBCW+XtRratq
-   eexSLLv8JGySwOZgPU/Go1ynJID+Dplr31v5PaUqSN2zKm9sg2R9+55za
-   IAmmFZlUp+jPvV35CUXBvDfvCaEfS4cUiTDHmhZjkUrsP/18yYgbzOH2K
-   /6vsMte6k2bunQTPkYLrzxAsO+gN37t4/e0IW2fpOjV0xIZUhOE74lA8n
-   1v/SAdN8LMteElfLY8x0OZZ20Y7xHYS6Hy16CMgAwHLDqr6/R71s5FUhg
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10322"; a="324253344"
-X-IronPort-AV: E=Sophos;i="5.90,273,1643702400"; 
-   d="scan'208";a="324253344"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2022 09:38:56 -0700
-X-IronPort-AV: E=Sophos;i="5.90,273,1643702400"; 
-   d="scan'208";a="530465027"
-Received: from sazizi-mobl2.amr.corp.intel.com (HELO [10.212.98.167]) ([10.212.98.167])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2022 09:38:54 -0700
-Content-Type: multipart/mixed; boundary="------------eWVLiKb8hW4mlc5kPUXDDJhx"
-Message-ID: <79df6889-aa74-2a86-7565-be882623ddad@intel.com>
-Date:   Tue, 19 Apr 2022 09:38:53 -0700
+        with ESMTP id S1357578AbiDSShl (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 19 Apr 2022 14:37:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C7464EA28;
+        Tue, 19 Apr 2022 11:29:40 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3811E61598;
+        Tue, 19 Apr 2022 18:29:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EA2C385A5;
+        Tue, 19 Apr 2022 18:29:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1650392979;
+        bh=P3K1tP6cpjTFzC+59oPXafdJm30VtMZbfwvyBn+l0nE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=KGDjP4xyx8qxb3jFDHz8SacfWd77hO7wBWOMnWzPRIf+36togREFgtvY+2GisJ5ua
+         EHD0M8aZbVy49xB218L2eVROCktRHVlRDvSaLidilao+Y7wl7Xx0LYiLyJmIsL03a8
+         bfW9XhwszwFNoSqXz0JnBmWXMG8R7GlFmt6q1YIPhRWQEz7n4rc2ff5LPJp2cPtXxi
+         xa07K/QiNPc9XT3RmJMMChldEU66W8w7gOIpgjivdwmaolnQBl7AxOI1yM09fKC4Aj
+         f/FYgrjmGmOaSrNgobpe1cKny6M9qVvgfpDYRTw/gRU6hssP9eo9T4rMq5ZDQevZWI
+         0o4WyjwLZNeRQ==
+Received: by mail-ot1-f44.google.com with SMTP id w23-20020a056830111700b00603c6d1ce73so8591016otq.9;
+        Tue, 19 Apr 2022 11:29:39 -0700 (PDT)
+X-Gm-Message-State: AOAM531U5wTZFEqw1TVcTgTASE88ztCsgEsa2eCEZVrz+95Xsj3B0K3z
+        o63NrQwtHVl1MO2P0f0Z9+HK/skzfYQiAvZU99M=
+X-Google-Smtp-Source: ABdhPJx9o5nnG+qju6sQJMbe2eMJR893omMynSTe6NVIGWkG2uzYm2akaRvmqHO268QDgzdEY4zNawIK3ayZ+NJ0zEc=
+X-Received: by 2002:a05:6830:33eb:b0:5f8:d36d:3831 with SMTP id
+ i11-20020a05683033eb00b005f8d36d3831mr6341951otu.265.1650392978707; Tue, 19
+ Apr 2022 11:29:38 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Content-Language: en-US
-To:     "Kirill A. Shutemov" <kirill@shutemov.name>,
-        Borislav Petkov <bp@alien8.de>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
+References: <20220414101314.1250667-1-mawupeng1@huawei.com>
+ <20220414101314.1250667-8-mawupeng1@huawei.com> <672ff459-81bd-38ef-882d-e718992d295c@arm.com>
+In-Reply-To: <672ff459-81bd-38ef-882d-e718992d295c@arm.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 19 Apr 2022 20:29:27 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFnEhJ4Qu50Ads9psY6kmT3ddw5Za+6-YqUM+eYj1Oafw@mail.gmail.com>
+Message-ID: <CAMj1kXFnEhJ4Qu50Ads9psY6kmT3ddw5Za+6-YqUM+eYj1Oafw@mail.gmail.com>
+Subject: Re: [PATCH v2 7/9] mm: Calc the right pfn if page size is not 4K
+To:     Anshuman Khandual <anshuman.khandual@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Wupeng Ma <mawupeng1@huawei.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Varad Gautam <varad.gautam@suse.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        X86 ML <x86@kernel.org>, hpa@zyccr.com,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
         Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>, x86@kernel.org,
-        linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
- <20220405234343.74045-4-kirill.shutemov@linux.intel.com>
- <Ylnwmvygp796+qcA@zn.tnic>
- <20220418155545.a567xnxa6elglapl@box.shutemov.name>
- <Yl2UHOQ4iZJ29k0q@zn.tnic>
- <20220418202431.whvql4w57c7l5vpw@box.shutemov.name>
- <Yl3RmPhdZieSr8W2@zn.tnic>
- <20220418235015.mnujtlmmlyin7y6m@box.shutemov.name>
- <Yl5nSSC4HpSWqfY7@zn.tnic>
- <20220419153002.ffh2ybdl7x2mm7zw@box.shutemov.name>
-From:   Dave Hansen <dave.hansen@intel.com>
-Subject: Re: [PATCHv4 3/8] efi/x86: Implement support for unaccepted memory
-In-Reply-To: <20220419153002.ffh2ybdl7x2mm7zw@box.shutemov.name>
-X-Spam-Status: No, score=-6.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Joerg Roedel <jroedel@suse.de>, songmuchun@bytedance.com,
+        macro@orcam.me.uk, Frederic Weisbecker <frederic@kernel.org>,
+        W_Armin@gmx.de, John Garry <john.garry@huawei.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        chenhuacai@kernel.org, David Hildenbrand <david@redhat.com>,
+        gpiccoli@igalia.com, Mark Rutland <mark.rutland@arm.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        linux-ia64@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------eWVLiKb8hW4mlc5kPUXDDJhx
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+On Tue, 19 Apr 2022 at 13:13, Anshuman Khandual
+<anshuman.khandual@arm.com> wrote:
+>
+>
+>
+> On 4/14/22 15:43, Wupeng Ma wrote:
+> > From: Ma Wupeng <mawupeng1@huawei.com>
+> >
+> > Previous 0x100000 is used to check the 4G limit in
+> > find_zone_movable_pfns_for_nodes(). This is right in x86 because
+> > the page size can only be 4K. But 16K and 64K are available in
+> > arm64. So replace it with PHYS_PFN(SZ_4G).
+> >
+> > Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
+> > ---
+> >  mm/page_alloc.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> > index 6e5b4488a0c5..570d0ebf98df 100644
+> > --- a/mm/page_alloc.c
+> > +++ b/mm/page_alloc.c
+> > @@ -7870,7 +7870,7 @@ static void __init find_zone_movable_pfns_for_nodes(void)
+> >
+> >                       usable_startpfn = memblock_region_memory_base_pfn(r);
+> >
+> > -                     if (usable_startpfn < 0x100000) {
+> > +                     if (usable_startpfn < PHYS_PFN(SZ_4G)) {
+> >                               mem_below_4gb_not_mirrored = true;
+> >                               continue;
+> >                       }
+>
+> Regardless PFN value should never be encoded directly.
+>
+> Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
-On 4/19/22 08:30, Kirill A. Shutemov wrote:
->> I think the stuff coming from the linux/ namespace you can simply copy
->> into a header in compressed/, like I've done with efi.h.
-> Hm. Dave was worried about having copies of _find_next_bit() and
-> __bitmap_*() inside compressed/.
-> 
-> How do we rectify code duplication and making decompresser self-contained?
-> Do we care about multiple copies of the same code in the kernel?
-> Do we care about keeping them in sync?
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
-Would it be feasible to have the common code defined as a 'static
-inline' in a header that both the main kernel and the decompressor could
-include?  Something like the attached patch.
+Andrew, can you please take this one through the -mm tree? The rest of
+the series needs a bit more work, but is an obvious fix and there is
+no point in holding it up.
 
-I'd much rather duplicate something like this:
-
-int strncasecmp(const char *s1, const char *s2, size_t len)
-{
-        return __lib_strncasecmp(s1, s1, len);
-}
-
-in the decompressor versus a real full implementation.
---------------eWVLiKb8hW4mlc5kPUXDDJhx
-Content-Type: text/x-patch; charset=UTF-8; name="lib-header.patch"
-Content-Disposition: attachment; filename="lib-header.patch"
-Content-Transfer-Encoding: base64
-
-Y29tbWl0IGQ5NGZhNjg0MmIyNTgwOTk1ODkwM2ZkZDMzZDQ5OGJiNjIyNjk1YTUKQXV0aG9y
-OiBEYXZlIEhhbnNlbiA8ZGF2ZS5oYW5zZW5AbGludXguaW50ZWwuY29tPgpEYXRlOiAgIFR1
-ZSBBcHIgMTkgMDk6MzE6MDcgMjAyMiAtMDcwMAoKICAgIGZvbwogICAgCiAgICBiYXIxCgpk
-aWZmIC0tZ2l0IGEvbGliL3N0cmluZy1pbnRlcm5hbC5oIGIvbGliL3N0cmluZy1pbnRlcm5h
-bC5oCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAwMDAwMC4uMjMwYzIyODY0
-Yjc1Ci0tLSAvZGV2L251bGwKKysrIGIvbGliL3N0cmluZy1pbnRlcm5hbC5oCkBAIC0wLDAg
-KzEsMzEgQEAKKyNpbmNsdWRlIDxsaW51eC9jdHlwZS5oPgorCisvKioKKyAqIHN0cm5jYXNl
-Y21wIC0gQ2FzZSBpbnNlbnNpdGl2ZSwgbGVuZ3RoLWxpbWl0ZWQgc3RyaW5nIGNvbXBhcmlz
-b24KKyAqIEBzMTogT25lIHN0cmluZworICogQHMyOiBUaGUgb3RoZXIgc3RyaW5nCisgKiBA
-bGVuOiB0aGUgbWF4aW11bSBudW1iZXIgb2YgY2hhcmFjdGVycyB0byBjb21wYXJlCisgKi8K
-K3N0YXRpYyBpbmxpbmUgaW50IF9fbGliX3N0cm5jYXNlY21wKGNvbnN0IGNoYXIgKnMxLCBj
-b25zdCBjaGFyICpzMiwgc2l6ZV90IGxlbikKK3sKKwkvKiBZZXMsIFZpcmdpbmlhLCBpdCBo
-YWQgYmV0dGVyIGJlIHVuc2lnbmVkICovCisJdW5zaWduZWQgY2hhciBjMSwgYzI7CisKKwlp
-ZiAoIWxlbikKKwkJcmV0dXJuIDA7CisKKwlkbyB7CisJCWMxID0gKnMxKys7CisJCWMyID0g
-KnMyKys7CisJCWlmICghYzEgfHwgIWMyKQorCQkJYnJlYWs7CisJCWlmIChjMSA9PSBjMikK
-KwkJCWNvbnRpbnVlOworCQljMSA9IHRvbG93ZXIoYzEpOworCQljMiA9IHRvbG93ZXIoYzIp
-OworCQlpZiAoYzEgIT0gYzIpCisJCQlicmVhazsKKwl9IHdoaWxlICgtLWxlbik7CisJcmV0
-dXJuIChpbnQpYzEgLSAoaW50KWMyOworfQorI2VuZGlmCmRpZmYgLS1naXQgYS9saWIvc3Ry
-aW5nLmMgYi9saWIvc3RyaW5nLmMKaW5kZXggNDg1Nzc3YzlkYTgzLi43MDViNzk5ZTNiNWMg
-MTAwNjQ0Ci0tLSBhL2xpYi9zdHJpbmcuYworKysgYi9saWIvc3RyaW5nLmMKQEAgLTI5LDYg
-KzI5LDcgQEAKICNpbmNsdWRlIDxhc20vd29yZC1hdC1hLXRpbWUuaD4KICNpbmNsdWRlIDxh
-c20vcGFnZS5oPgogCisjaW5jbHVkZSAic3RyaW5nLWludGVybmFsLmgiCiAjaWZuZGVmIF9f
-SEFWRV9BUkNIX1NUUk5DQVNFQ01QCiAvKioKICAqIHN0cm5jYXNlY21wIC0gQ2FzZSBpbnNl
-bnNpdGl2ZSwgbGVuZ3RoLWxpbWl0ZWQgc3RyaW5nIGNvbXBhcmlzb24KQEAgLTM4LDI1ICsz
-OSw3IEBACiAgKi8KIGludCBzdHJuY2FzZWNtcChjb25zdCBjaGFyICpzMSwgY29uc3QgY2hh
-ciAqczIsIHNpemVfdCBsZW4pCiB7Ci0JLyogWWVzLCBWaXJnaW5pYSwgaXQgaGFkIGJldHRl
-ciBiZSB1bnNpZ25lZCAqLwotCXVuc2lnbmVkIGNoYXIgYzEsIGMyOwotCi0JaWYgKCFsZW4p
-Ci0JCXJldHVybiAwOwotCi0JZG8gewotCQljMSA9ICpzMSsrOwotCQljMiA9ICpzMisrOwot
-CQlpZiAoIWMxIHx8ICFjMikKLQkJCWJyZWFrOwotCQlpZiAoYzEgPT0gYzIpCi0JCQljb250
-aW51ZTsKLQkJYzEgPSB0b2xvd2VyKGMxKTsKLQkJYzIgPSB0b2xvd2VyKGMyKTsKLQkJaWYg
-KGMxICE9IGMyKQotCQkJYnJlYWs7Ci0JfSB3aGlsZSAoLS1sZW4pOwotCXJldHVybiAoaW50
-KWMxIC0gKGludCljMjsKKwlyZXR1cm4gX19saWJfc3RybmNhc2VjbXAoczEsIHMxLCBsZW4p
-OwogfQogRVhQT1JUX1NZTUJPTChzdHJuY2FzZWNtcCk7CiAjZW5kaWYK
-
---------------eWVLiKb8hW4mlc5kPUXDDJhx--
+Thanks,
+Ard.
