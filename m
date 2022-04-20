@@ -2,170 +2,110 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D3C1507EB4
-	for <lists+linux-efi@lfdr.de>; Wed, 20 Apr 2022 04:13:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6E1D5092CB
+	for <lists+linux-efi@lfdr.de>; Thu, 21 Apr 2022 00:27:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358829AbiDTCQ3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 19 Apr 2022 22:16:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47834 "EHLO
+        id S1382738AbiDTWak (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 20 Apr 2022 18:30:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229791AbiDTCQ2 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 19 Apr 2022 22:16:28 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90B50289BC;
-        Tue, 19 Apr 2022 19:13:43 -0700 (PDT)
-Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.56])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Kjkjr0kH9zhXYf;
-        Wed, 20 Apr 2022 10:13:36 +0800 (CST)
-Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
- dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Wed, 20 Apr 2022 10:13:41 +0800
-Received: from [10.174.178.120] (10.174.178.120) by
- dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Wed, 20 Apr 2022 10:13:40 +0800
-Message-ID: <b2864968-3cc7-dba3-5361-d8ee4cc3482a@huawei.com>
-Date:   Wed, 20 Apr 2022 10:13:40 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v2 0/9] introduce mirrored memory support for arm64
-To:     <ardb@kernel.org>
-CC:     <akpm@linux-foundation.org>, <catalin.marinas@arm.com>,
-        <will@kernel.org>, <corbet@lwn.net>, <tglx@linutronix.de>,
-        <mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-        <x86@kernel.org>, <dvhart@infradead.org>, <andy@infradead.org>,
-        <rppt@kernel.org>, <paulmck@kernel.org>, <peterz@infradead.org>,
-        <jroedel@suse.de>, <songmuchun@bytedance.com>, <macro@orcam.me.uk>,
-        <frederic@kernel.org>, <W_Armin@gmx.de>, <john.garry@huawei.com>,
-        <seanjc@google.com>, <tsbogend@alpha.franken.de>,
-        <anshuman.khandual@arm.com>, <chenhuacai@kernel.org>,
-        <david@redhat.com>, <gpiccoli@igalia.com>, <mark.rutland@arm.com>,
-        <wangkefeng.wang@huawei.com>, <linux-doc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-efi@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
-        <platform-driver-x86@vger.kernel.org>, <linux-mm@kvack.org>
+        with ESMTP id S234341AbiDTWaj (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 20 Apr 2022 18:30:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BF7B419BD;
+        Wed, 20 Apr 2022 15:27:52 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EB80C61A2A;
+        Wed, 20 Apr 2022 22:27:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F4FDC385A1;
+        Wed, 20 Apr 2022 22:27:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1650493671;
+        bh=f03i65TjXt1wV5OHqyMzJA28lOrn/DtPA2CRRbwKgHM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=xRbqkjM/Ie8wCDh8lFTNir4DAVmdMcY9LuvmcZeYIeVsAxk69Iwg886RahAwszQNg
+         wVjc8SbPk43znMip1B4TlXacUysfNXzwaIkbHXzV6admkQsk7YhOnTHETUxb0zsuBC
+         YrKCJS/XJxlq2z5hFQlM4v0qkitAQ4WYCT5uOG5E=
+Date:   Wed, 20 Apr 2022 15:27:49 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
+        Wupeng Ma <mawupeng1@huawei.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        X86 ML <x86@kernel.org>, hpa@zyccr.com,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Joerg Roedel <jroedel@suse.de>, songmuchun@bytedance.com,
+        macro@orcam.me.uk, Frederic Weisbecker <frederic@kernel.org>,
+        W_Armin@gmx.de, John Garry <john.garry@huawei.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        chenhuacai@kernel.org, David Hildenbrand <david@redhat.com>,
+        gpiccoli@igalia.com, Mark Rutland <mark.rutland@arm.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        linux-ia64@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH v2 7/9] mm: Calc the right pfn if page size is not 4K
+Message-Id: <20220420152749.d41097e7d53ccd6a2a2aea5f@linux-foundation.org>
+In-Reply-To: <CAMj1kXFnEhJ4Qu50Ads9psY6kmT3ddw5Za+6-YqUM+eYj1Oafw@mail.gmail.com>
 References: <20220414101314.1250667-1-mawupeng1@huawei.com>
- <CAMj1kXGSStDgj9ABmUaTLnBmpQFksh3wx4tx=mJohum4GQe3Gg@mail.gmail.com>
- <6de859df-e1c3-e9aa-4530-3b61b9c69a28@huawei.com>
- <CAMj1kXGyKQMeFWSK-s84pdL89qPTyTN_x3WHTgp_R7sH1+qOfA@mail.gmail.com>
-From:   mawupeng <mawupeng1@huawei.com>
-In-Reply-To: <CAMj1kXGyKQMeFWSK-s84pdL89qPTyTN_x3WHTgp_R7sH1+qOfA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.120]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpemm500014.china.huawei.com (7.185.36.153)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        <20220414101314.1250667-8-mawupeng1@huawei.com>
+        <672ff459-81bd-38ef-882d-e718992d295c@arm.com>
+        <CAMj1kXFnEhJ4Qu50Ads9psY6kmT3ddw5Za+6-YqUM+eYj1Oafw@mail.gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-11.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Tue, 19 Apr 2022 20:29:27 +0200 Ard Biesheuvel <ardb@kernel.org> wrote:
 
+> > > --- a/mm/page_alloc.c
+> > > +++ b/mm/page_alloc.c
+> > > @@ -7870,7 +7870,7 @@ static void __init find_zone_movable_pfns_for_nodes(void)
+> > >
+> > >                       usable_startpfn = memblock_region_memory_base_pfn(r);
+> > >
+> > > -                     if (usable_startpfn < 0x100000) {
+> > > +                     if (usable_startpfn < PHYS_PFN(SZ_4G)) {
+> > >                               mem_below_4gb_not_mirrored = true;
+> > >                               continue;
+> > >                       }
+> >
+> > Regardless PFN value should never be encoded directly.
+> >
+> > Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> 
+> Acked-by: Ard Biesheuvel <ardb@kernel.org>
+> 
+> Andrew, can you please take this one through the -mm tree? The rest of
+> the series needs a bit more work, but is an obvious fix and there is
+> no point in holding it up.
 
-在 2022/4/20 2:32, Ard Biesheuvel 写道:
-> On Sat, 16 Apr 2022 at 03:32, mawupeng <mawupeng1@huawei.com> wrote:
->>
->>
->>
->> 在 2022/4/14 18:22, Ard Biesheuvel 写道:
->>> On Thu, 14 Apr 2022 at 11:54, Wupeng Ma <mawupeng1@huawei.com> wrote:
->>>>
->>>> From: Ma Wupeng <mawupeng1@huawei.com>
->>>>
->>>> Commit b05b9f5f9dcf ("x86, mirror: x86 enabling - find mirrored memory ranges")
->>>> introduced mirrored memory support for x86. This support rely on UEFI to
->>>> report mirrored memory address ranges.  See UEFI 2.5 spec pages 157-158:
->>>>
->>>>     http://www.uefi.org/sites/default/files/resources/UEFI%202_5.pdf
->>>>
->>>> Memory mirroring is a technique used to separate memory into two separate
->>>> channels, usually on a memory device, like a server. In memory mirroring,
->>>> one channel is copied to another to create redundancy. This method makes
->>>> input/output (I/O) registers and memory appear with more than one address
->>>> range because the same physical byte is accessible at more than one
->>>> address. Using memory mirroring, higher memory reliability and a higher
->>>> level of memory consolidation are possible.
->>>>
->>>> Arm64 can support this too. So mirrored memory support is added to support
->>>> arm64.
->>>>
->>>> Efi_fake_mem is used for testing mirrored features and will not be used in
->>>> production environment. This test features can fake memory's attribute
->>>> values.
->>>>
->>>> The reason why efi_fake_mem support is put first is that memory's attribute
->>>> is reported by BIOS which is hard to simulate. With this support, any arm64
->>>> machines with efi support can easily test mirrored features.
->>>>
->>>> The main purpose of this patchset is to introduce mirrored support for
->>>> arm64 and we have already fixed the problems we had which is shown in
->>>> patch #5 to patch #7 and try to bring total isolation in patch #8 which
->>>> will disable mirror feature if kernelcore is not specified.
->>>>
->>>> In order to test this support in arm64:
->>>> - patch this patchset
->>>> - add efi_fake_mem=8G@0:0x10000 in kernel parameter to simulate mirrored
->>>>     memroy between phy addr 0-8G.
->>>> - add kernelcore=mirror in kernel parameter
->>>> - start you kernel
->>>>
->>>
->>> As I explained before:
->>>
->>> - NAK to EFI fake_mem support on arm64
->>
->> fake_mem support on arm64 will be removed in subsequent version.
->>
->>> - NAK to the whole series until you come up with a proposal on how to
->>> locate the static kernel image itself into more reliable memory, as
->>> there is really no point to any of this otherwise.
->>
->> Sorry I am not familiar with this, as you metioned before,
->>
->>   > you have to iterate over the memory map and look for regions with
->>   > the desired attribute, and allocate those pages explicitly.
->>
->> Do you mean this is x86, commit c05cd79750fb
->> ("x86/boot/KASLR: Prefer mirrored memory regions for the kernel physical address").
->> I will do some research.
->>
->>   > I'd prefer to implement this in the bootloader, and only add minimal
->>   > logic to the stub to respect the placement of the kernel by the loader
->>   > if the loader signals it to do so.
->>
->> Does this bootloader refer to grub and then add minimal logic to arm64-stub.c?
->>
-> 
-> Any bootloader, yes.
-> 
->> What is the loader signal?
-> 
-> A protocol installed onto the image handle, as I suggested before. I
-> even cc'ed you on a patch that implements this.
+Sure.
 
-Sorry to bother you.
-I didn't receive any patches.
-Could you share the link?
+I'm not seeing any description of the runtime effects of this
+shortcoming.  I tentatively queued the fix for 5.18, without a
+cc:stable for backporting.  But that might not be the best decision?
 
-> 
->> System exists mirrored memory reported by uefi?
->>
-> 
-> What on earth is the point of any of this if the only use case being
-> targeted is efi_fake_mem with arbitrary fake mirrored regions?
-> 
-> So yes, unless there are systems that need this, I don't see a point
-> in merging any of this
-We do have mirrored memory reported by uefi and efi_fake_mem is added for easy testing
-with qemu/hardware without update UEFI.
-
-> .
