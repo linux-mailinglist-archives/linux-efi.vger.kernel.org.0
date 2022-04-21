@@ -2,61 +2,94 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 856C4509A91
-	for <lists+linux-efi@lfdr.de>; Thu, 21 Apr 2022 10:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D90D509F95
+	for <lists+linux-efi@lfdr.de>; Thu, 21 Apr 2022 14:26:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230247AbiDUIZx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 21 Apr 2022 04:25:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40478 "EHLO
+        id S1384198AbiDUM3X (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 21 Apr 2022 08:29:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1386632AbiDUIZn (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 21 Apr 2022 04:25:43 -0400
-X-Greylist: delayed 2314 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 21 Apr 2022 01:22:55 PDT
-Received: from mail.rubyinfo.pl (mail.rubyinfo.pl [5.249.159.30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62E771DA5F
-        for <linux-efi@vger.kernel.org>; Thu, 21 Apr 2022 01:22:55 -0700 (PDT)
-Received: by mail.rubyinfo.pl (Postfix, from userid 1001)
-        id 3EC70A5C69; Thu, 21 Apr 2022 08:44:06 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rubyinfo.pl; s=mail;
-        t=1650527061; bh=/9MpKlGUGEWWhiQdedVnMqaLo1WTRqCWHemvvbwCPnM=;
-        h=Date:From:To:Subject:From;
-        b=bpwEaawzPHLWetOtVWJ+XXvKg8EjYD4BiimHKYLX66F20hqVPQogzG62X1HhG9Uw+
-         C6r857rk2EGaHq+aCZbya0wSxgxuqp0dDGGxcQHu0QUQGHPz2qtb/U8n1dDO5Z0QYu
-         sOe3upinc3a6q3VHSEUnhNGBnpxDfok0Iy25CZQg5v1HEEY8Kexoyrn2MEG1kLC6Ma
-         9SfVH3o8T55DskQGqBTulwjHS5pABSDoJcWRITtAOIOwKBPgSbRpA8S0bpH1UHPoQw
-         CGGP1wPB5inaENrBiGGGRmVPoiihE6WhthYR5EWXJDSlb04utxxG4MeQekShEcRw0P
-         RhIA83Oh0oyTA==
-Received: by mail.rubyinfo.pl for <linux-efi@vger.kernel.org>; Thu, 21 Apr 2022 07:43:33 GMT
-Message-ID: <20220421073001-0.1.4t.p8yl.0.qujgjn7v47@rubyinfo.pl>
-Date:   Thu, 21 Apr 2022 07:43:33 GMT
-From:   =?UTF-8?Q? "Miko=C5=82aj_Rudzik" ?= <mikolaj.rudzik@rubyinfo.pl>
-To:     <linux-efi@vger.kernel.org>
-Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
-X-Mailer: mail.rubyinfo.pl
+        with ESMTP id S1384629AbiDUM3Q (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 21 Apr 2022 08:29:16 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5523431DF8;
+        Thu, 21 Apr 2022 05:26:12 -0700 (PDT)
+Received: from zn.tnic (p200300ea971b581b329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:581b:329c:23ff:fea6:a903])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C2BB51EC013E;
+        Thu, 21 Apr 2022 14:26:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1650543966;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=xyKJnAeN7yKmid38WcQJNn0eWYl8gpGj0iKqWc+guSU=;
+        b=eWY+KoZMJAriDXLApTF7jtqT13LYR6DBbS+OI9+ktsNcZGrfoDK97t/4GvoI3jnBJSHUND
+        5QmrHwCIk9Yem4NI9RM8smqSmPMrprfoigMlmwcsXPzrvW7EvtpMF95mvVNpSuOPKp9nmp
+        fTAMVttTaHotKycHa4tGe+XfM9IYWqA=
+Date:   Thu, 21 Apr 2022 14:26:02 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Varad Gautam <varad.gautam@suse.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>, x86@kernel.org,
+        linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv4 3/8] efi/x86: Implement support for unaccepted memory
+Message-ID: <YmFNWnZ91a4n5Il3@zn.tnic>
+References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
+ <20220405234343.74045-4-kirill.shutemov@linux.intel.com>
+ <Ylnwmvygp796+qcA@zn.tnic>
+ <20220418155545.a567xnxa6elglapl@box.shutemov.name>
+ <Yl2UHOQ4iZJ29k0q@zn.tnic>
+ <20220418202431.whvql4w57c7l5vpw@box.shutemov.name>
+ <Yl3RmPhdZieSr8W2@zn.tnic>
+ <20220418235015.mnujtlmmlyin7y6m@box.shutemov.name>
+ <Yl5nSSC4HpSWqfY7@zn.tnic>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Yl5nSSC4HpSWqfY7@zn.tnic>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Tue, Apr 19, 2022 at 09:39:53AM +0200, Borislav Petkov wrote:
+> I find it really weird that you feel so strongly about it. If I would
+> have been asked to do it, I would've done it without even considering
+> it. But ok, since you feel so strongly about it, I've asked what the
+> other maintainers think.
 
-chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
-skania nowych zlece=C5=84 ze strony www.
+Ok, Dave thinks separate files are better so let's leave it at that. We
+can always change things later.
 
-Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
-, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
-=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
-jonowania strony w Google.
+-- 
+Regards/Gruss,
+    Boris.
 
-Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
-
-
-Pozdrawiam serdecznie,
-Miko=C5=82aj Rudzik
+https://people.kernel.org/tglx/notes-about-netiquette
