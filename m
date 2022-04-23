@@ -2,98 +2,74 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB5B750B868
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Apr 2022 15:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60E8D50C637
+	for <lists+linux-efi@lfdr.de>; Sat, 23 Apr 2022 03:51:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1447800AbiDVN21 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 22 Apr 2022 09:28:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58610 "EHLO
+        id S231552AbiDWBxp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 22 Apr 2022 21:53:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1447998AbiDVN1h (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 22 Apr 2022 09:27:37 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78AB5583B1
-        for <linux-efi@vger.kernel.org>; Fri, 22 Apr 2022 06:24:43 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id x33so14300428lfu.1
-        for <linux-efi@vger.kernel.org>; Fri, 22 Apr 2022 06:24:43 -0700 (PDT)
+        with ESMTP id S230231AbiDWBxp (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 22 Apr 2022 21:53:45 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 395331148
+        for <linux-efi@vger.kernel.org>; Fri, 22 Apr 2022 18:50:49 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id h1so9551933pfv.12
+        for <linux-efi@vger.kernel.org>; Fri, 22 Apr 2022 18:50:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Uh/i7pONWs9zNhFkmIOXxH8K9rX2pqq3+dxTkHV4IDc=;
-        b=jaaEpWQcqbaEyYdutWZeZdjw+QQcJSdbCS9SFtmkIjJKr2AaQYFmeKaXsRSZNqL/du
-         5uA3obMPxfFyjez258m1b1o3+55hDt6FJiMIMDWDq4Wcce1C2cvATWGciaROy62EMuEf
-         F6qX6s4f12Eef6QMWAdbw2PzdFVAkvZ/6g9u6GJeE7ms2M0vZyA6a7eXbsB8WedPWvuF
-         +FcQspQ/1qjQqM/t+unssU2WbArmsbheEoBeA+Gq2TWwJR2DCcRugpRMkubOnFbxiUbD
-         vPq3O5uD/3VmxTCRiieDxY5FMecKZkf+z9RQ8DqinlJg182Sn3YFbeJs3VVUD1Hne/cw
-         /oMg==
+        d=dabbelt-com.20210112.gappssmtp.com; s=20210112;
+        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
+         :content-transfer-encoding;
+        bh=iuHt4Iz4FeZBvfTekgoBxhqf7wWZiBSKlKE/b+2tuYo=;
+        b=goIqv8VMZbjl/c21Jd/hdMFrKYsyG7ZmdvPyMP0a/LfpPFogQ2pz0rqGGlL/AbTqAs
+         9pSaiVPXATwgYFD5N5J3yDUb/pSsg0GPEKelq16yimQnW972dgloHJe65mdFFqD9Do1K
+         rfbVg7wta3owfIXNgtPf9exTJ5PLWsXRn7YHotwHXiR3Lkj659kCquaRDrj310oN7KKB
+         jMZM6HpvA98IESGZVPUiQud4tbPccE2u3eNVzqTqrXy3s0yTKF6yVKnJ7iGeA60/fd96
+         +GWnu5/SHFOm3yjfGlSdAu7G7dd4BdX/igL9srOjG3lvbYLAaHSMkweQg27Zn7pzyHq/
+         VUDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Uh/i7pONWs9zNhFkmIOXxH8K9rX2pqq3+dxTkHV4IDc=;
-        b=JPhAEMLonL/V7NS6yJbSLX+o8on5ryWo20PiT/lnj7oSdE6gV7i2CSsbyMZDUoj/ae
-         Ec7igju3PXRa370W4M88IIJQsmU1XyENglfAJrMhN/KPIGQS2hQRbPCATsoDxciiZfsf
-         eCzjSwF1xUHlhXptB4HhXIc8SFMgV5Dag8XR7279h40G/8th1p42S7u8eKCB+asLg95i
-         seL9dV9gRk7oz2jSnhIy8xaCPjjo2N/OKsarn1yfiWihALozJ4B1E9DKqdINYCXHs9HW
-         hHMPqX/mjuRmjLVezlm9KfMhn210gaS53chsdbw0os9WUj8QYlZEOzKLhzf25jCCgYwN
-         ckhA==
-X-Gm-Message-State: AOAM530/tPkYc0CGSb/Cu7o7DgrvZ1F7ZsP/OrM5PFaLwzThPG86XKHj
-        C9K5IpgViSThtVIr1hcO/VsPjw==
-X-Google-Smtp-Source: ABdhPJzZtxkAjlCvb/TUt3cLoRv5l+ol9ToRYGDDMNmm0Vv66uA83/NBrnntGKbTm/BO4hUpHvgFow==
-X-Received: by 2002:a05:6512:228d:b0:471:c287:9715 with SMTP id f13-20020a056512228d00b00471c2879715mr3171748lfu.660.1650633881512;
-        Fri, 22 Apr 2022 06:24:41 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id w23-20020a197b17000000b0046d1729e7d9sm224621lfc.294.2022.04.22.06.24.40
+        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
+         :mime-version:content-transfer-encoding;
+        bh=iuHt4Iz4FeZBvfTekgoBxhqf7wWZiBSKlKE/b+2tuYo=;
+        b=R6Qbkve3WCJpUbOyLhv43IItVtEhUWj+dW0hcLJackoJ7a3Bbu2aY98nLKu15HHhyK
+         X+k3n1fOHe9XDTW8S0Hkn5Y1tGZ6GJ/g/f7HqNWtgyriiRykP5cGqVAdSDH38pYWHrOs
+         g+CPXI4LblWAGyj/6E1qV2PK5JjzcLa+OshCEukj2df9t3jB1gUBzClTmxlh5cJIKWs7
+         A7OBIL1ylKU1bV2UClzEePLP3mGPPDy0Wl1rY9c3cok6noG/C2cfjUqRnrTJLELFayBO
+         dsJgiXv4Dus8Ro9XedVvAyOtHmTbqovwgDoEFf8uJYCJHzdMVzIAouxcB9I+ArPbd3xo
+         TnOg==
+X-Gm-Message-State: AOAM530GNzysJbgJE/09D/rc379QAYdCsXVt850v8d0gSeS+ycoss3OJ
+        Qrm7CZiX2z04fBii3y/v3Upqkw==
+X-Google-Smtp-Source: ABdhPJxJGqglrviMvw8Swe1RM63k2IYS5w00YAqVduQcH5u9WbhL2yia4TEU96zrIIxxdu1APdK0XA==
+X-Received: by 2002:a63:c5:0:b0:3aa:9882:9f91 with SMTP id 188-20020a6300c5000000b003aa98829f91mr6164187pga.574.1650678648423;
+        Fri, 22 Apr 2022 18:50:48 -0700 (PDT)
+Received: from localhost ([12.3.194.138])
+        by smtp.gmail.com with ESMTPSA id 123-20020a620681000000b004fa7c20d732sm3684931pfg.133.2022.04.22.18.50.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Apr 2022 06:24:40 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
-        id 1CD12104429; Fri, 22 Apr 2022 16:26:19 +0300 (+03)
-Date:   Fri, 22 Apr 2022 16:26:19 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Varad Gautam <varad.gautam@suse.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>, x86@kernel.org,
-        linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv4 3/8] efi/x86: Implement support for unaccepted memory
-Message-ID: <20220422132619.54e754fyzeaaoqog@box.shutemov.name>
-References: <20220405234343.74045-4-kirill.shutemov@linux.intel.com>
- <Ylnwmvygp796+qcA@zn.tnic>
- <20220418155545.a567xnxa6elglapl@box.shutemov.name>
- <Yl2UHOQ4iZJ29k0q@zn.tnic>
- <20220418202431.whvql4w57c7l5vpw@box.shutemov.name>
- <Yl3RmPhdZieSr8W2@zn.tnic>
- <20220418235015.mnujtlmmlyin7y6m@box.shutemov.name>
- <Yl5nSSC4HpSWqfY7@zn.tnic>
- <20220422002124.lwd7b56zko24gbll@box.shutemov.name>
- <YmJ1o9UmPIW12Nu7@zn.tnic>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YmJ1o9UmPIW12Nu7@zn.tnic>
+        Fri, 22 Apr 2022 18:50:47 -0700 (PDT)
+Date:   Fri, 22 Apr 2022 18:50:47 -0700 (PDT)
+X-Google-Original-Date: Fri, 22 Apr 2022 18:50:27 PDT (-0700)
+Subject:     Re: [PATCH v3 00/13] Introduce sv48 support without relocatable kernel
+In-Reply-To: <CA+zEjCuyEsB0cHoL=zepejcRbn9Rwg9nRXLMZCOXe_daSWbvig@mail.gmail.com>
+CC:     corbet@lwn.net, Paul Walmsley <paul.walmsley@sifive.com>,
+        aou@eecs.berkeley.edu, zong.li@sifive.com, anup@brainfault.org,
+        Atish.Patra@rivosinc.com, Christoph Hellwig <hch@lst.de>,
+        ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
+        dvyukov@google.com, ardb@kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        keescook@chromium.org, guoren@linux.alibaba.com,
+        heinrich.schuchardt@canonical.com, mchitale@ventanamicro.com,
+        panqinglin2020@iscas.ac.cn, linux-doc@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kasan-dev@googlegroups.com, linux-efi@vger.kernel.org,
+        linux-arch@vger.kernel.org
+From:   Palmer Dabbelt <palmer@dabbelt.com>
+To:     alexandre.ghiti@canonical.com
+Message-ID: <mhng-f386a42e-77d9-4644-914f-552a8e721f5c@palmer-ri-x1c9>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -101,93 +77,185 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Apr 22, 2022 at 11:30:11AM +0200, Borislav Petkov wrote:
-> On Fri, Apr 22, 2022 at 03:21:24AM +0300, Kirill A. Shutemov wrote:
-> > There's still #include <linux/efi.h> in misc.h. You removed one, but
-> > there's a second one for some reason.
-> 
-> I don't know which tree you're looking at but latest tip/master has:
-> 
-> $ git grep -E "efi\.h" arch/x86/boot/
-> arch/x86/boot/compressed/acpi.c:6:#include "efi.h"
-> arch/x86/boot/compressed/kaslr.c:25:#include "efi.h"
-> arch/x86/boot/compressed/misc.h:40:#include "efi.h"
-> arch/x86/boot/compressed/pgtable_64.c:7:#include "efi.h"
+On Fri, 01 Apr 2022 05:56:30 PDT (-0700), alexandre.ghiti@canonical.com wrote:
+> On Fri, Feb 18, 2022 at 11:45 AM Alexandre Ghiti
+> <alexandre.ghiti@canonical.com> wrote:
+>>
+>> Hi Palmer,
+>>
+>> On Thu, Jan 20, 2022 at 11:05 AM Alexandre Ghiti
+>> <alexandre.ghiti@canonical.com> wrote:
+>> >
+>> > On Thu, Jan 20, 2022 at 8:30 AM Alexandre Ghiti
+>> > <alexandre.ghiti@canonical.com> wrote:
+>> > >
+>> > > On Thu, Jan 20, 2022 at 5:18 AM Palmer Dabbelt <palmer@dabbelt.com> wrote:
+>> > > >
+>> > > > On Mon, 06 Dec 2021 02:46:44 PST (-0800), alexandre.ghiti@canonical.com wrote:
+>> > > > > * Please note notable changes in memory layouts and kasan population *
+>> > > > >
+>> > > > > This patchset allows to have a single kernel for sv39 and sv48 without
+>> > > > > being relocatable.
+>> > > > >
+>> > > > > The idea comes from Arnd Bergmann who suggested to do the same as x86,
+>> > > > > that is mapping the kernel to the end of the address space, which allows
+>> > > > > the kernel to be linked at the same address for both sv39 and sv48 and
+>> > > > > then does not require to be relocated at runtime.
+>> > > > >
+>> > > > > This implements sv48 support at runtime. The kernel will try to
+>> > > > > boot with 4-level page table and will fallback to 3-level if the HW does not
+>> > > > > support it. Folding the 4th level into a 3-level page table has almost no
+>> > > > > cost at runtime.
+>> > > > >
+>> > > > > Note that kasan region had to be moved to the end of the address space
+>> > > > > since its location must be known at compile-time and then be valid for
+>> > > > > both sv39 and sv48 (and sv57 that is coming).
+>> > > > >
+>> > > > > Tested on:
+>> > > > >   - qemu rv64 sv39: OK
+>> > > > >   - qemu rv64 sv48: OK
+>> > > > >   - qemu rv64 sv39 + kasan: OK
+>> > > > >   - qemu rv64 sv48 + kasan: OK
+>> > > > >   - qemu rv32: OK
+>> > > > >
+>> > > > > Changes in v3:
+>> > > > >   - Fix SZ_1T, thanks to Atish
+>> > > > >   - Fix warning create_pud_mapping, thanks to Atish
+>> > > > >   - Fix k210 nommu build, thanks to Atish
+>> > > > >   - Fix wrong rebase as noted by Samuel
+>> > > > >   - * Downgrade to sv39 is only possible if !KASAN (see commit changelog) *
+>> > > > >   - * Move KASAN next to the kernel: virtual layouts changed and kasan population *
+>> > > > >
+>> > > > > Changes in v2:
+>> > > > >   - Rebase onto for-next
+>> > > > >   - Fix KASAN
+>> > > > >   - Fix stack canary
+>> > > > >   - Get completely rid of MAXPHYSMEM configs
+>> > > > >   - Add documentation
+>> > > > >
+>> > > > > Alexandre Ghiti (13):
+>> > > > >   riscv: Move KASAN mapping next to the kernel mapping
+>> > > > >   riscv: Split early kasan mapping to prepare sv48 introduction
+>> > > > >   riscv: Introduce functions to switch pt_ops
+>> > > > >   riscv: Allow to dynamically define VA_BITS
+>> > > > >   riscv: Get rid of MAXPHYSMEM configs
+>> > > > >   asm-generic: Prepare for riscv use of pud_alloc_one and pud_free
+>> > > > >   riscv: Implement sv48 support
+>> > > > >   riscv: Use pgtable_l4_enabled to output mmu_type in cpuinfo
+>> > > > >   riscv: Explicit comment about user virtual address space size
+>> > > > >   riscv: Improve virtual kernel memory layout dump
+>> > > > >   Documentation: riscv: Add sv48 description to VM layout
+>> > > > >   riscv: Initialize thread pointer before calling C functions
+>> > > > >   riscv: Allow user to downgrade to sv39 when hw supports sv48 if !KASAN
+>> > > > >
+>> > > > >  Documentation/riscv/vm-layout.rst             |  48 ++-
+>> > > > >  arch/riscv/Kconfig                            |  37 +-
+>> > > > >  arch/riscv/configs/nommu_k210_defconfig       |   1 -
+>> > > > >  .../riscv/configs/nommu_k210_sdcard_defconfig |   1 -
+>> > > > >  arch/riscv/configs/nommu_virt_defconfig       |   1 -
+>> > > > >  arch/riscv/include/asm/csr.h                  |   3 +-
+>> > > > >  arch/riscv/include/asm/fixmap.h               |   1
+>> > > > >  arch/riscv/include/asm/kasan.h                |  11 +-
+>> > > > >  arch/riscv/include/asm/page.h                 |  20 +-
+>> > > > >  arch/riscv/include/asm/pgalloc.h              |  40 ++
+>> > > > >  arch/riscv/include/asm/pgtable-64.h           | 108 ++++-
+>> > > > >  arch/riscv/include/asm/pgtable.h              |  47 +-
+>> > > > >  arch/riscv/include/asm/sparsemem.h            |   6 +-
+>> > > > >  arch/riscv/kernel/cpu.c                       |  23 +-
+>> > > > >  arch/riscv/kernel/head.S                      |   4 +-
+>> > > > >  arch/riscv/mm/context.c                       |   4 +-
+>> > > > >  arch/riscv/mm/init.c                          | 408 ++++++++++++++----
+>> > > > >  arch/riscv/mm/kasan_init.c                    | 250 ++++++++---
+>> > > > >  drivers/firmware/efi/libstub/efi-stub.c       |   2
+>> > > > >  drivers/pci/controller/pci-xgene.c            |   2 +-
+>> > > > >  include/asm-generic/pgalloc.h                 |  24 +-
+>> > > > >  include/linux/sizes.h                         |   1
+>> > > > >  22 files changed, 833 insertions(+), 209 deletions(-)
+>> > > >
+>> > > > Sorry this took a while.  This is on for-next, with a bit of juggling: a
+>> > > > handful of trivial fixes for configs that were failing to build/boot and
+>> > > > some merge issues.  I also pulled out that MAXPHYSMEM fix to the top, so
+>> > > > it'd be easier to backport.  This is bigger than something I'd normally like to
+>> > > > take late in the cycle, but given there's a lot of cleanups, likely some fixes,
+>> > > > and it looks like folks have been testing this I'm just going to go with it.
+>> > > >
+>> > >
+>> > > Yes yes yes! That's fantastic news :)
+>> > >
+>> > > > Let me know if there's any issues with the merge, it was a bit hairy.
+>> > > > Probably best to just send along a fixup patch at this point.
+>> > >
+>> > > I'm going to take a look at that now, and I'll fix anything that comes
+>> > > up quickly :)
+>> >
+>> > I see in for-next that you did not take the following patches:
+>> >
+>> >   riscv: Improve virtual kernel memory layout dump
+>> >   Documentation: riscv: Add sv48 description to VM layout
+>> >   riscv: Initialize thread pointer before calling C functions
+>> >   riscv: Allow user to downgrade to sv39 when hw supports sv48 if !KASAN
+>> >
+>> > I'm not sure this was your intention. If it was, I believe that at
+>> > least the first 2 patches are needed in this series, the 3rd one is a
+>> > useful fix and we can discuss the 4th if that's an issue for you.
+>>
+>> Can you confirm that this was intentional and maybe explain the
+>> motivation behind it? Because I see value in those patches.
+>
+> Palmer,
+>
+> I read that you were still taking patches for 5.18, so I confirm again
+> that the patches above are needed IMO.
 
-Sorry for the noise. I read 'elf.h' as 'efi.h' :/
+It was too late for this when it was sent (I saw it then, but just got 
+around to actually doing the work to sort it out).
 
-But it also includes <linux/bitmap.h> indirectly:
+It took me a while to figure out exactly what was going on here, but I 
+think I remember now: that downgrade patch (and the follow-on I just 
+sent) is broken for medlow, because mm/init.c must be built medany 
+(which we're using for the mostly-PIC qualities).  I remember being in 
+the middle of rebasing/debugging this a while ago, I must have forgotten 
+I was in the middle of that and accidentally merged the branch as-is.  
+Certainly wasn't trying to silently take half the patch set and leave 
+the rest in limbo, that's the wrong way to do things. 
 
-In file included from include/linux/elf.h:6:
-In file included from arch/x86/include/asm/elf.h:8:
-In file included from include/linux/thread_info.h:60:
-In file included from arch/x86/include/asm/thread_info.h:53:
-In file included from arch/x86/include/asm/cpufeature.h:5:
-In file included from arch/x86/include/asm/processor.h:22:
-In file included from arch/x86/include/asm/msr.h:11:
-In file included from arch/x86/include/asm/cpumask.h:5:
-In file included from include/linux/cpumask.h:12:
+I'm not sure what the right answer is here, but I just sent a patch to 
+drop support for medlow.  We'll have to talk about that, for now I 
+cleaned up some other minor issues, rearranged that docs and fix to come 
+first, and put this at palmer/riscv-sv48.  I think that fix is 
+reasonable to take the doc and fix into fixes, then the dump improvement 
+on for-next.  We'll have to see what folks think about the medany-only 
+kernels, the other option would be to build FDT as medany which seems a 
+bit awkward.  
 
-> > Any plans for <linux/acpi.h>? It includes <linux/bitmap.h>:
-> 
-> So if misc.h is including linux/bitmap.h indirectly, you can simply
-> include misc.h right?
+> Maybe even the relocatable series?
 
-Yes.
+Do you mind giving me a pointer?  I'm not sure why I'm so drop-prone 
+with your patches, I promise I'm not doing it on purpose.
 
-> And then you'll slide under the closing door, as you say below. :)
-
-Is it sarcasm or clearance to go?
-
-> > I also underesitmated what is required to be copied because of the
-> > indirect include. The list was only to compile bitmap.c. mem.c (former
-> > unaccepted_memory.c) would require more.
-> 
-> More like?
-
-for_each_clear_bitrange() is pain to unwind.
-
-> Maybe I can help out converting some of the stuff. You could push your
-> current state somewhere - even if it doesn't build - so that I can take
-> a look...
-
-I will push what I have a bit later today.
-
-> > BTW, do we have a white list of linux/ includes that allowed? minmax.h?
-> > math.h? What is the line.
-> 
-> Well, that's the thing. Even if those look innocuous now, if they get
-> new includes added to them, that has an influence on the decompressor.
-> 
-> So I'm thinking copying the required bits would be the proper way
-> forward.
-
-I understand where you comes from. But on my side I face suddenly higher
-entry bar. Yes, it is bad excuse, I know.
-
-> > Maybe allow what is included directly or indirectly now? (Yes, it is my
-> > poor attempt to slide under closing door.)
-> 
-> That's basically saying, can I get this done so that I can mark my
-> checkbox that my task is done - you can deal with the crap later
-> yourself.
-> 
-> How about we take our time and solve this properly instead of hurrying
-> constantly?
-
-I'm okay with this. But I lack coherent understating on how you want it
-to look like.
-
-Like, looking on your new "efi.h", I see it still implicitly depends on
-<linux/types.h> and <linux/uuid.h>. Why is it okay? Is it temporary? What
-is criteria of what is okay to keep for now?
-
-You mentioned having <asm/shared/bitops.h> as we do <asm/shared/io.h>. But
-<asm/bitops.h> has non-trivial dependencies on its own.
-
-Okay, we can move them into asm/shared as well, but how to deal with
-asm-generic/ things? And linux/ dependencies? Do we create a copy in
-x86/include?
-
--- 
- Kirill A. Shutemov
+>
+> Thanks,
+>
+> Alex
+>
+>>
+>> Thanks,
+>>
+>> Alex
+>>
+>> >
+>> > I tested for-next on both sv39 and sv48 successfully, I took a glance
+>> > at the code and noticed you fixed the PTRS_PER_PGD error, thanks for
+>> > that. Otherwise nothing obvious has popped.
+>> >
+>> > Thanks again,
+>> >
+>> > Alex
+>> >
+>> > >
+>> > > Thanks!
+>> > >
+>> > > Alex
+>> > >
+>> > > >
+>> > > > Thanks!
