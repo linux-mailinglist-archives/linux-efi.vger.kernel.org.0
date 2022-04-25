@@ -2,260 +2,218 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60E8D50C637
-	for <lists+linux-efi@lfdr.de>; Sat, 23 Apr 2022 03:51:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B69F50D7A5
+	for <lists+linux-efi@lfdr.de>; Mon, 25 Apr 2022 05:39:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231552AbiDWBxp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 22 Apr 2022 21:53:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50876 "EHLO
+        id S240682AbiDYDmr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 24 Apr 2022 23:42:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230231AbiDWBxp (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 22 Apr 2022 21:53:45 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 395331148
-        for <linux-efi@vger.kernel.org>; Fri, 22 Apr 2022 18:50:49 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id h1so9551933pfv.12
-        for <linux-efi@vger.kernel.org>; Fri, 22 Apr 2022 18:50:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20210112.gappssmtp.com; s=20210112;
-        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
-         :content-transfer-encoding;
-        bh=iuHt4Iz4FeZBvfTekgoBxhqf7wWZiBSKlKE/b+2tuYo=;
-        b=goIqv8VMZbjl/c21Jd/hdMFrKYsyG7ZmdvPyMP0a/LfpPFogQ2pz0rqGGlL/AbTqAs
-         9pSaiVPXATwgYFD5N5J3yDUb/pSsg0GPEKelq16yimQnW972dgloHJe65mdFFqD9Do1K
-         rfbVg7wta3owfIXNgtPf9exTJ5PLWsXRn7YHotwHXiR3Lkj659kCquaRDrj310oN7KKB
-         jMZM6HpvA98IESGZVPUiQud4tbPccE2u3eNVzqTqrXy3s0yTKF6yVKnJ7iGeA60/fd96
-         +GWnu5/SHFOm3yjfGlSdAu7G7dd4BdX/igL9srOjG3lvbYLAaHSMkweQg27Zn7pzyHq/
-         VUDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
-         :mime-version:content-transfer-encoding;
-        bh=iuHt4Iz4FeZBvfTekgoBxhqf7wWZiBSKlKE/b+2tuYo=;
-        b=R6Qbkve3WCJpUbOyLhv43IItVtEhUWj+dW0hcLJackoJ7a3Bbu2aY98nLKu15HHhyK
-         X+k3n1fOHe9XDTW8S0Hkn5Y1tGZ6GJ/g/f7HqNWtgyriiRykP5cGqVAdSDH38pYWHrOs
-         g+CPXI4LblWAGyj/6E1qV2PK5JjzcLa+OshCEukj2df9t3jB1gUBzClTmxlh5cJIKWs7
-         A7OBIL1ylKU1bV2UClzEePLP3mGPPDy0Wl1rY9c3cok6noG/C2cfjUqRnrTJLELFayBO
-         dsJgiXv4Dus8Ro9XedVvAyOtHmTbqovwgDoEFf8uJYCJHzdMVzIAouxcB9I+ArPbd3xo
-         TnOg==
-X-Gm-Message-State: AOAM530GNzysJbgJE/09D/rc379QAYdCsXVt850v8d0gSeS+ycoss3OJ
-        Qrm7CZiX2z04fBii3y/v3Upqkw==
-X-Google-Smtp-Source: ABdhPJxJGqglrviMvw8Swe1RM63k2IYS5w00YAqVduQcH5u9WbhL2yia4TEU96zrIIxxdu1APdK0XA==
-X-Received: by 2002:a63:c5:0:b0:3aa:9882:9f91 with SMTP id 188-20020a6300c5000000b003aa98829f91mr6164187pga.574.1650678648423;
-        Fri, 22 Apr 2022 18:50:48 -0700 (PDT)
-Received: from localhost ([12.3.194.138])
-        by smtp.gmail.com with ESMTPSA id 123-20020a620681000000b004fa7c20d732sm3684931pfg.133.2022.04.22.18.50.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Apr 2022 18:50:47 -0700 (PDT)
-Date:   Fri, 22 Apr 2022 18:50:47 -0700 (PDT)
-X-Google-Original-Date: Fri, 22 Apr 2022 18:50:27 PDT (-0700)
-Subject:     Re: [PATCH v3 00/13] Introduce sv48 support without relocatable kernel
-In-Reply-To: <CA+zEjCuyEsB0cHoL=zepejcRbn9Rwg9nRXLMZCOXe_daSWbvig@mail.gmail.com>
-CC:     corbet@lwn.net, Paul Walmsley <paul.walmsley@sifive.com>,
-        aou@eecs.berkeley.edu, zong.li@sifive.com, anup@brainfault.org,
-        Atish.Patra@rivosinc.com, Christoph Hellwig <hch@lst.de>,
-        ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
-        dvyukov@google.com, ardb@kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        keescook@chromium.org, guoren@linux.alibaba.com,
-        heinrich.schuchardt@canonical.com, mchitale@ventanamicro.com,
-        panqinglin2020@iscas.ac.cn, linux-doc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kasan-dev@googlegroups.com, linux-efi@vger.kernel.org,
-        linux-arch@vger.kernel.org
-From:   Palmer Dabbelt <palmer@dabbelt.com>
-To:     alexandre.ghiti@canonical.com
-Message-ID: <mhng-f386a42e-77d9-4644-914f-552a8e721f5c@palmer-ri-x1c9>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
+        with ESMTP id S240680AbiDYDmq (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 24 Apr 2022 23:42:46 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F416D2F01A;
+        Sun, 24 Apr 2022 20:39:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1650857981; x=1682393981;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=YE2m7vjbBEAvaTYRxGOmnaa0fOqIRylP+ci0sDothHE=;
+  b=b1k6Rs8EP7ks94me+l53+2ANDCVpbbR312wcaa8qim8btbFWaGULT1+S
+   JdJhjLWU+v/q1O2N0jzAhViS/9MLaD3WAh9DaP8eE84Tq11irl7TWqBDG
+   3MPFlLepza8OpZSmWNzZrCFTw0ycLaWtPdX4e0jsxcZiRHqZkI3L4+wIv
+   1Lw8JHX5X5jVaDfgMiekwvixSlQpmOurOECDsBZPIE/BM77buA2LhuSKo
+   LwbzVrbU3BLCHwUGESoOP9fNYwlXwKrNfkOtHTFgIoYnxl/EO83NcDcul
+   KL7cTaYmS6xgHwzooyFSTpKeATXbkKMcF4BKfxhZPYhC+tVoSCePaJQLI
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10327"; a="245055670"
+X-IronPort-AV: E=Sophos;i="5.90,287,1643702400"; 
+   d="scan'208";a="245055670"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2022 20:39:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,287,1643702400"; 
+   d="scan'208";a="563911364"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga007.fm.intel.com with ESMTP; 24 Apr 2022 20:39:35 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+        id 7E6D1120; Mon, 25 Apr 2022 06:39:35 +0300 (EEST)
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Varad Gautam <varad.gautam@suse.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>, x86@kernel.org,
+        linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv5 00/12] mm, x86/cc: Implement support for unaccepted memory
+Date:   Mon, 25 Apr 2022 06:39:22 +0300
+Message-Id: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 01 Apr 2022 05:56:30 PDT (-0700), alexandre.ghiti@canonical.com wrote:
-> On Fri, Feb 18, 2022 at 11:45 AM Alexandre Ghiti
-> <alexandre.ghiti@canonical.com> wrote:
->>
->> Hi Palmer,
->>
->> On Thu, Jan 20, 2022 at 11:05 AM Alexandre Ghiti
->> <alexandre.ghiti@canonical.com> wrote:
->> >
->> > On Thu, Jan 20, 2022 at 8:30 AM Alexandre Ghiti
->> > <alexandre.ghiti@canonical.com> wrote:
->> > >
->> > > On Thu, Jan 20, 2022 at 5:18 AM Palmer Dabbelt <palmer@dabbelt.com> wrote:
->> > > >
->> > > > On Mon, 06 Dec 2021 02:46:44 PST (-0800), alexandre.ghiti@canonical.com wrote:
->> > > > > * Please note notable changes in memory layouts and kasan population *
->> > > > >
->> > > > > This patchset allows to have a single kernel for sv39 and sv48 without
->> > > > > being relocatable.
->> > > > >
->> > > > > The idea comes from Arnd Bergmann who suggested to do the same as x86,
->> > > > > that is mapping the kernel to the end of the address space, which allows
->> > > > > the kernel to be linked at the same address for both sv39 and sv48 and
->> > > > > then does not require to be relocated at runtime.
->> > > > >
->> > > > > This implements sv48 support at runtime. The kernel will try to
->> > > > > boot with 4-level page table and will fallback to 3-level if the HW does not
->> > > > > support it. Folding the 4th level into a 3-level page table has almost no
->> > > > > cost at runtime.
->> > > > >
->> > > > > Note that kasan region had to be moved to the end of the address space
->> > > > > since its location must be known at compile-time and then be valid for
->> > > > > both sv39 and sv48 (and sv57 that is coming).
->> > > > >
->> > > > > Tested on:
->> > > > >   - qemu rv64 sv39: OK
->> > > > >   - qemu rv64 sv48: OK
->> > > > >   - qemu rv64 sv39 + kasan: OK
->> > > > >   - qemu rv64 sv48 + kasan: OK
->> > > > >   - qemu rv32: OK
->> > > > >
->> > > > > Changes in v3:
->> > > > >   - Fix SZ_1T, thanks to Atish
->> > > > >   - Fix warning create_pud_mapping, thanks to Atish
->> > > > >   - Fix k210 nommu build, thanks to Atish
->> > > > >   - Fix wrong rebase as noted by Samuel
->> > > > >   - * Downgrade to sv39 is only possible if !KASAN (see commit changelog) *
->> > > > >   - * Move KASAN next to the kernel: virtual layouts changed and kasan population *
->> > > > >
->> > > > > Changes in v2:
->> > > > >   - Rebase onto for-next
->> > > > >   - Fix KASAN
->> > > > >   - Fix stack canary
->> > > > >   - Get completely rid of MAXPHYSMEM configs
->> > > > >   - Add documentation
->> > > > >
->> > > > > Alexandre Ghiti (13):
->> > > > >   riscv: Move KASAN mapping next to the kernel mapping
->> > > > >   riscv: Split early kasan mapping to prepare sv48 introduction
->> > > > >   riscv: Introduce functions to switch pt_ops
->> > > > >   riscv: Allow to dynamically define VA_BITS
->> > > > >   riscv: Get rid of MAXPHYSMEM configs
->> > > > >   asm-generic: Prepare for riscv use of pud_alloc_one and pud_free
->> > > > >   riscv: Implement sv48 support
->> > > > >   riscv: Use pgtable_l4_enabled to output mmu_type in cpuinfo
->> > > > >   riscv: Explicit comment about user virtual address space size
->> > > > >   riscv: Improve virtual kernel memory layout dump
->> > > > >   Documentation: riscv: Add sv48 description to VM layout
->> > > > >   riscv: Initialize thread pointer before calling C functions
->> > > > >   riscv: Allow user to downgrade to sv39 when hw supports sv48 if !KASAN
->> > > > >
->> > > > >  Documentation/riscv/vm-layout.rst             |  48 ++-
->> > > > >  arch/riscv/Kconfig                            |  37 +-
->> > > > >  arch/riscv/configs/nommu_k210_defconfig       |   1 -
->> > > > >  .../riscv/configs/nommu_k210_sdcard_defconfig |   1 -
->> > > > >  arch/riscv/configs/nommu_virt_defconfig       |   1 -
->> > > > >  arch/riscv/include/asm/csr.h                  |   3 +-
->> > > > >  arch/riscv/include/asm/fixmap.h               |   1
->> > > > >  arch/riscv/include/asm/kasan.h                |  11 +-
->> > > > >  arch/riscv/include/asm/page.h                 |  20 +-
->> > > > >  arch/riscv/include/asm/pgalloc.h              |  40 ++
->> > > > >  arch/riscv/include/asm/pgtable-64.h           | 108 ++++-
->> > > > >  arch/riscv/include/asm/pgtable.h              |  47 +-
->> > > > >  arch/riscv/include/asm/sparsemem.h            |   6 +-
->> > > > >  arch/riscv/kernel/cpu.c                       |  23 +-
->> > > > >  arch/riscv/kernel/head.S                      |   4 +-
->> > > > >  arch/riscv/mm/context.c                       |   4 +-
->> > > > >  arch/riscv/mm/init.c                          | 408 ++++++++++++++----
->> > > > >  arch/riscv/mm/kasan_init.c                    | 250 ++++++++---
->> > > > >  drivers/firmware/efi/libstub/efi-stub.c       |   2
->> > > > >  drivers/pci/controller/pci-xgene.c            |   2 +-
->> > > > >  include/asm-generic/pgalloc.h                 |  24 +-
->> > > > >  include/linux/sizes.h                         |   1
->> > > > >  22 files changed, 833 insertions(+), 209 deletions(-)
->> > > >
->> > > > Sorry this took a while.  This is on for-next, with a bit of juggling: a
->> > > > handful of trivial fixes for configs that were failing to build/boot and
->> > > > some merge issues.  I also pulled out that MAXPHYSMEM fix to the top, so
->> > > > it'd be easier to backport.  This is bigger than something I'd normally like to
->> > > > take late in the cycle, but given there's a lot of cleanups, likely some fixes,
->> > > > and it looks like folks have been testing this I'm just going to go with it.
->> > > >
->> > >
->> > > Yes yes yes! That's fantastic news :)
->> > >
->> > > > Let me know if there's any issues with the merge, it was a bit hairy.
->> > > > Probably best to just send along a fixup patch at this point.
->> > >
->> > > I'm going to take a look at that now, and I'll fix anything that comes
->> > > up quickly :)
->> >
->> > I see in for-next that you did not take the following patches:
->> >
->> >   riscv: Improve virtual kernel memory layout dump
->> >   Documentation: riscv: Add sv48 description to VM layout
->> >   riscv: Initialize thread pointer before calling C functions
->> >   riscv: Allow user to downgrade to sv39 when hw supports sv48 if !KASAN
->> >
->> > I'm not sure this was your intention. If it was, I believe that at
->> > least the first 2 patches are needed in this series, the 3rd one is a
->> > useful fix and we can discuss the 4th if that's an issue for you.
->>
->> Can you confirm that this was intentional and maybe explain the
->> motivation behind it? Because I see value in those patches.
->
-> Palmer,
->
-> I read that you were still taking patches for 5.18, so I confirm again
-> that the patches above are needed IMO.
+UEFI Specification version 2.9 introduces the concept of memory
+acceptance: some Virtual Machine platforms, such as Intel TDX or AMD
+SEV-SNP, requiring memory to be accepted before it can be used by the
+guest. Accepting happens via a protocol specific for the Virtual
+Machine platform.
 
-It was too late for this when it was sent (I saw it then, but just got 
-around to actually doing the work to sort it out).
+Accepting memory is costly and it makes VMM allocate memory for the
+accepted guest physical address range. It's better to postpone memory
+acceptance until memory is needed. It lowers boot time and reduces
+memory overhead.
 
-It took me a while to figure out exactly what was going on here, but I 
-think I remember now: that downgrade patch (and the follow-on I just 
-sent) is broken for medlow, because mm/init.c must be built medany 
-(which we're using for the mostly-PIC qualities).  I remember being in 
-the middle of rebasing/debugging this a while ago, I must have forgotten 
-I was in the middle of that and accidentally merged the branch as-is.  
-Certainly wasn't trying to silently take half the patch set and leave 
-the rest in limbo, that's the wrong way to do things. 
+The kernel needs to know what memory has been accepted. Firmware
+communicates this information via memory map: a new memory type --
+EFI_UNACCEPTED_MEMORY -- indicates such memory.
 
-I'm not sure what the right answer is here, but I just sent a patch to 
-drop support for medlow.  We'll have to talk about that, for now I 
-cleaned up some other minor issues, rearranged that docs and fix to come 
-first, and put this at palmer/riscv-sv48.  I think that fix is 
-reasonable to take the doc and fix into fixes, then the dump improvement 
-on for-next.  We'll have to see what folks think about the medany-only 
-kernels, the other option would be to build FDT as medany which seems a 
-bit awkward.  
+Range-based tracking works fine for firmware, but it gets bulky for
+the kernel: e820 has to be modified on every page acceptance. It leads
+to table fragmentation, but there's a limited number of entries in the
+e820 table
 
-> Maybe even the relocatable series?
+Another option is to mark such memory as usable in e820 and track if the
+range has been accepted in a bitmap. One bit in the bitmap represents
+2MiB in the address space: one 4k page is enough to track 64GiB or
+physical address space.
 
-Do you mind giving me a pointer?  I'm not sure why I'm so drop-prone 
-with your patches, I promise I'm not doing it on purpose.
+In the worst-case scenario -- a huge hole in the middle of the
+address space -- It needs 256MiB to handle 4PiB of the address
+space.
 
->
-> Thanks,
->
-> Alex
->
->>
->> Thanks,
->>
->> Alex
->>
->> >
->> > I tested for-next on both sv39 and sv48 successfully, I took a glance
->> > at the code and noticed you fixed the PTRS_PER_PGD error, thanks for
->> > that. Otherwise nothing obvious has popped.
->> >
->> > Thanks again,
->> >
->> > Alex
->> >
->> > >
->> > > Thanks!
->> > >
->> > > Alex
->> > >
->> > > >
->> > > > Thanks!
+Any unaccepted memory that is not aligned to 2M gets accepted upfront.
+
+The approach lowers boot time substantially. Boot to shell is ~2.5x
+faster for 4G TDX VM and ~4x faster for 64G.
+
+TDX-specific code isolated from the core of unaccepted memory support. It
+supposed to help to plug-in different implementation of unaccepted memory
+such as SEV-SNP.
+
+The tree can be found here:
+
+https://github.com/intel/tdx.git guest-unaccepted-memory
+
+v5:
+ - Updates comments and commit messages;
+   + Explain options for unaccepted memory handling;
+ - Expose amount of unaccepted memory in /proc/meminfo
+ - Adjust check in page_expected_state();
+ - Fix error code handling in allocate_e820();
+ - Centralize __pa()/__va() definitions in the boot stub;
+ - Avoid includes from the main kernel in the boot stub;
+ - Use an existing hole in boot_param for unaccepted_memory, instead of adding
+   to the end of the structure;
+ - Extract allocate_unaccepted_memory() form allocate_e820();
+ - Complain if there's unaccepted memory, but kernel does not support it;
+ - Fix vmstat counter;
+ - Split up few preparatory patches;
+ - Random readability adjustments;
+v4:
+ - PageBuddyUnaccepted() -> PageUnaccepted;
+ - Use separate page_type, not shared with offline;
+ - Rework interface between core-mm and arch code;
+ - Adjust commit messages;
+ - Ack from Mike;
+
+Kirill A. Shutemov (12):
+  x86/boot/: Centralize __pa()/__va() definitions
+  mm: Add support for unaccepted memory
+  efi/x86: Get full memory map in allocate_e820()
+  x86/boot: Add infrastructure required for unaccepted memory support
+  efi/x86: Implement support for unaccepted memory
+  x86/boot/compressed: Handle unaccepted memory
+  x86/mm: Reserve unaccepted memory bitmap
+  x86/mm: Provide helpers for unaccepted memory
+  x86/tdx: Make _tdx_hypercall() and __tdx_module_call() available in
+    boot stub
+  x86/tdx: Unaccepted memory support
+  mm/vmstat: Add counter for memory accepting
+  x86/mm: Report unaccepted memory in /proc/meminfo
+
+ Documentation/x86/zero-page.rst          |   1 +
+ arch/x86/Kconfig                         |   1 +
+ arch/x86/boot/bitops.h                   |  40 ++++++++
+ arch/x86/boot/compressed/Makefile        |   1 +
+ arch/x86/boot/compressed/align.h         |  14 +++
+ arch/x86/boot/compressed/bitmap.c        |  43 +++++++++
+ arch/x86/boot/compressed/bitmap.h        |  49 ++++++++++
+ arch/x86/boot/compressed/bits.h          |  36 ++++++++
+ arch/x86/boot/compressed/compiler.h      |   9 ++
+ arch/x86/boot/compressed/find.c          |  54 +++++++++++
+ arch/x86/boot/compressed/find.h          |  80 ++++++++++++++++
+ arch/x86/boot/compressed/ident_map_64.c  |   8 --
+ arch/x86/boot/compressed/kaslr.c         |  14 ++-
+ arch/x86/boot/compressed/math.h          |  37 ++++++++
+ arch/x86/boot/compressed/mem.c           | 111 +++++++++++++++++++++++
+ arch/x86/boot/compressed/minmax.h        |  61 +++++++++++++
+ arch/x86/boot/compressed/misc.c          |   9 ++
+ arch/x86/boot/compressed/misc.h          |   9 ++
+ arch/x86/boot/compressed/sev.c           |   2 -
+ arch/x86/boot/compressed/tdx.c           |  85 +++++++++++++++++
+ arch/x86/coco/tdx/tdx.c                  |  57 +++++-------
+ arch/x86/include/asm/page.h              |   3 +
+ arch/x86/include/asm/set_memory.h        |   2 +
+ arch/x86/include/asm/shared/tdx.h        |  47 ++++++++++
+ arch/x86/include/asm/tdx.h               |  19 ----
+ arch/x86/include/asm/unaccepted_memory.h |  25 +++++
+ arch/x86/include/uapi/asm/bootparam.h    |   2 +-
+ arch/x86/kernel/e820.c                   |  10 ++
+ arch/x86/mm/Makefile                     |   2 +
+ arch/x86/mm/init.c                       |   8 ++
+ arch/x86/mm/pat/set_memory.c             |   2 +-
+ arch/x86/mm/unaccepted_memory.c          |  98 ++++++++++++++++++++
+ drivers/firmware/efi/Kconfig             |  15 +++
+ drivers/firmware/efi/efi.c               |   1 +
+ drivers/firmware/efi/libstub/x86-stub.c  |  97 +++++++++++++++++---
+ include/linux/efi.h                      |   3 +-
+ include/linux/page-flags.h               |  31 +++++++
+ include/linux/vm_event_item.h            |   3 +
+ mm/internal.h                            |  11 +++
+ mm/memblock.c                            |   9 ++
+ mm/page_alloc.c                          |  77 +++++++++++++++-
+ mm/vmstat.c                              |   3 +
+ 42 files changed, 1103 insertions(+), 86 deletions(-)
+ create mode 100644 arch/x86/boot/compressed/align.h
+ create mode 100644 arch/x86/boot/compressed/bitmap.c
+ create mode 100644 arch/x86/boot/compressed/bitmap.h
+ create mode 100644 arch/x86/boot/compressed/bits.h
+ create mode 100644 arch/x86/boot/compressed/compiler.h
+ create mode 100644 arch/x86/boot/compressed/find.c
+ create mode 100644 arch/x86/boot/compressed/find.h
+ create mode 100644 arch/x86/boot/compressed/math.h
+ create mode 100644 arch/x86/boot/compressed/mem.c
+ create mode 100644 arch/x86/boot/compressed/minmax.h
+ create mode 100644 arch/x86/include/asm/unaccepted_memory.h
+ create mode 100644 arch/x86/mm/unaccepted_memory.c
+
+-- 
+2.35.1
+
