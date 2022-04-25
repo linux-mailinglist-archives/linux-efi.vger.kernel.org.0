@@ -2,97 +2,97 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16F6350DD3D
-	for <lists+linux-efi@lfdr.de>; Mon, 25 Apr 2022 11:55:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C709050E3F2
+	for <lists+linux-efi@lfdr.de>; Mon, 25 Apr 2022 17:05:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239935AbiDYJ6O (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 25 Apr 2022 05:58:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51932 "EHLO
+        id S242684AbiDYPHv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 25 Apr 2022 11:07:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240453AbiDYJ5m (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 25 Apr 2022 05:57:42 -0400
-Received: from mail-yw1-x1141.google.com (mail-yw1-x1141.google.com [IPv6:2607:f8b0:4864:20::1141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AFFD1A05D
-        for <linux-efi@vger.kernel.org>; Mon, 25 Apr 2022 02:54:38 -0700 (PDT)
-Received: by mail-yw1-x1141.google.com with SMTP id 00721157ae682-2f7ca2ce255so42715597b3.7
-        for <linux-efi@vger.kernel.org>; Mon, 25 Apr 2022 02:54:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=s9IGPqOTuFEFxKMxMPq1P/MfyJrhGXNasZNiCUUGkGw=;
-        b=ATyrrXg7Zde9kNKDF5ZCIwB8sFwpTlj1alooHiv5B82ElZ6NtBEuNx95Avx3yfEG+v
-         SR3Pi9YiGn8JkKlYHD/qdytouxQeX3oJ0iJvxi83jqS7n6ODsQVEo3TYQchW3Es2L9VU
-         WpUkJmlaB6wVhppaQWj/4q6pjGxtcDa4HJW4QOfeOpSLK6Z6UVte2AgKSDjpTAjhaUvp
-         1vlu8JD8M0fsDcaE5ehzA10bFVyNVT/sZxFBm7wzmvCvDzerVUlRGvU96jP/8ljbUbru
-         odoIA7j0rE1KKiANkkvBpPl/x2AfmHungJLTzDrn645E4r+5rvRovpsE1TzToHsa3UvN
-         2Ivg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=s9IGPqOTuFEFxKMxMPq1P/MfyJrhGXNasZNiCUUGkGw=;
-        b=fM4uNeM1c+yVyPvBUqbMC3kJQ0nNDkIE/vWKfKu8vO0pp4F+rgtcmRRWH59NsojO1I
-         OHYKvnuCasP5vaA0QbH9HUENBf/3g3DsiDoqJu/Q4Lc6QuzpVk8ZZ7YYh/eFaAgqjI+L
-         AOYnoR+MKasDgnYnho5RW2pCYTMXxrFeG9xlk5Jv1e3xZ9SgIBvh1+J5G72BMc8+DqoT
-         SxLmU4x5AYp5cd1H9nz2t7DHx5nZbFSBHZ6fTNMe/3CDsJyqE1rcrtHPKS1aBUsZVClU
-         JmaXO7NFGhdTHkJMahg2InTP/oYKk96YR3sCRL+QjqSb1mnpTMpsYSn43xvvtEi1/7Y+
-         QTZw==
-X-Gm-Message-State: AOAM533iF9/v6T3IchxulSHOt3sV7Iy3n0Hj7GtbvBI2HA1b54+Hm5gF
-        ECLF1bxW0wwPZJmVYpa7WYSTjlen50UK3ZreZQc=
-X-Google-Smtp-Source: ABdhPJxQijnkVqO46AP9dZFBb+zIV+lJgA02aHBxz50/JloNDj/GM6qY165L4Ew15qf1giwmqZ6pYLM3j+WeCcqd3IM=
-X-Received: by 2002:a0d:d787:0:b0:2f4:dfc5:9a70 with SMTP id
- z129-20020a0dd787000000b002f4dfc59a70mr16308194ywd.447.1650880477612; Mon, 25
- Apr 2022 02:54:37 -0700 (PDT)
+        with ESMTP id S242759AbiDYPHo (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 25 Apr 2022 11:07:44 -0400
+Received: from fudo.makrotopia.org (fudo.makrotopia.org [IPv6:2a07:2ec0:3002::71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FB6053E09;
+        Mon, 25 Apr 2022 08:04:39 -0700 (PDT)
+Received: from local
+        by fudo.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+         (Exim 4.94.2)
+        (envelope-from <daniel@makrotopia.org>)
+        id 1nj09V-0000nn-AS; Mon, 25 Apr 2022 16:57:25 +0200
+Date:   Mon, 25 Apr 2022 15:57:19 +0100
+From:   Daniel Golle <daniel@makrotopia.org>
+To:     linux-block@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     Tom Rini <trini@konsulko.com>, Jens Axboe <axboe@kernel.dk>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Masahiro Yamada <masahiroy@kernel.org>
+Subject: [RFC PATCH 0/5] partition parser for U-Boot's uImage.FIT
+Message-ID: <Yma2zxtH/Ot3iADM@makrotopia.org>
 MIME-Version: 1.0
-Received: by 2002:a05:7000:bf06:0:0:0:0 with HTTP; Mon, 25 Apr 2022 02:54:37
- -0700 (PDT)
-Reply-To: lawrencetansanco.y@gmail.com
-From:   Lawrence Tansanco <lt01102203@gmail.com>
-Date:   Mon, 25 Apr 2022 09:54:37 +0000
-Message-ID: <CAHP1huHfPzicY=hdR831QxbM-x=dFovv4_naSGV3EfxdN+Ra9g@mail.gmail.com>
-Subject: THANKS FOR YOUR RESPONSE AND GOD BLESS
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,SUBJ_ALL_CAPS,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:1141 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4809]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [lt01102203[at]gmail.com]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [lt01102203[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  3.6 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=0.1 required=5.0 tests=BAYES_00,PDS_OTHER_BAD_TLD,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-.
-I will like to disclose something very important to you,
-get back for more details please.
+Add uImage.FIT partition parser and wire it up to allow mounting
+filesystem sub-images from uImage.FIT in GPT partitions as well as
+mtdblock and ubiblock devices within Linux (e.g. as root filesystem).
 
-Regards.
-Mr Lawrence Tansanco Y.
+Using uImage.FIT to store the root filesystem besides kernel and dtb has
+several obvious advantages which are hard to obtain in any other way:
+ * single image accross different storage types
+ * dynamically sized partitions for kernel and rootfs
+ * hash also for rootfs checked by U-Boot before launching kernel
+ * images may include additional filesystems e.g. for localization or
+   brandinge
+
+For this to work, the image has to be created with external data and
+sub-images aligned to the system's memory page boundaries, ie.
+ mkimage -E -B 0x1000 -p 0x1000 ...
+
+Booting such images has been supported by U-Boot since v2018.01.
+
+A previous version of this partition parser is in production use on
+some OpenWrt devices, eg. the BananaPi R64 where using the FIT parser
+allows booting the very same image from eMMC, SD Card or SPI-NAND/UBI
+and also using it as a firmware-upgrade image at the same time.
+
+Most recently U-Boot now also passes down the selected configuration
+node name via device tree to allow the partition parser (or userspace
+process via sysfs) to identify the image configuration.
+
+Device Tree schema for that:
+https://github.com/devicetree-org/dt-schema/commit/a24d97d43491e55d4def006213213a6c4045b646
+
+Daniel Golle (5):
+  block: add new flag to add partitions read-only
+  block: add partition parser for U-Boot uImage.FIT
+  partitions/efi: add support for uImage.FIT sub-partitions
+  mtd_blkdevs: scan partitions on mtdblock if FIT_PARTITION is set
+  mtd/ubi/block: scan for partitions in case FIT_PARTITION is set
+
+ MAINTAINERS               |   6 +
+ block/blk.h               |   1 +
+ block/partitions/Kconfig  |  14 ++
+ block/partitions/Makefile |   1 +
+ block/partitions/check.h  |   5 +
+ block/partitions/core.c   |   6 +
+ block/partitions/efi.c    |   9 +
+ block/partitions/efi.h    |   3 +
+ block/partitions/fit.c    | 352 ++++++++++++++++++++++++++++++++++++++
+ drivers/mtd/mtd_blkdevs.c |   2 +
+ drivers/mtd/ubi/block.c   |   2 +
+ 11 files changed, 401 insertions(+)
+ create mode 100644 block/partitions/fit.c
+
+-- 
+2.36.0
+
