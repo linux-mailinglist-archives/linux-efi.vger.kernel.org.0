@@ -2,45 +2,69 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 104CD50D7B8
-	for <lists+linux-efi@lfdr.de>; Mon, 25 Apr 2022 05:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 190BA50DA46
+	for <lists+linux-efi@lfdr.de>; Mon, 25 Apr 2022 09:38:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240730AbiDYDnG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 24 Apr 2022 23:43:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55898 "EHLO
+        id S231616AbiDYHlb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 25 Apr 2022 03:41:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240724AbiDYDnC (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 24 Apr 2022 23:43:02 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABED12F031;
-        Sun, 24 Apr 2022 20:39:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1650857992; x=1682393992;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=UW/BHigZ6spgrKRAqG9bWiHedWVnA5vrB2UptEivfzc=;
-  b=Wq3ULo2C+tSeDwqVzZIb01wooRUSz5J6Ob+G8UmhDkVjAb0MTnxhSPLx
-   oloyCDzn3SspBr/TWszB9ij0hbPDnOMmtMQZFJP27R6fHrt97eg8CQPOh
-   Nz/h3AiKoeLC9UenNXulARhpYfsUMLNZpa4aPXQL3/hMbT3ZziNJtr45g
-   lBpmmsYcOTRe5FAWFQ/6xkYSghNJbMHmppGbaENAsjDmkVezv/zhersXW
-   7pcmOqcvlqxsRamG1FfPOXV1rlFFjZUCNBnLqqLeHZPfzNyOS5zhl0YaZ
-   hpWad1RfoSjetmfBMIhMHR1uPL4BP0ZNzTEeolTt8QEcrPrVpwdY/WTSr
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10327"; a="325612384"
-X-IronPort-AV: E=Sophos;i="5.90,287,1643702400"; 
-   d="scan'208";a="325612384"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2022 20:39:49 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,287,1643702400"; 
-   d="scan'208";a="659959901"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga002.fm.intel.com with ESMTP; 24 Apr 2022 20:39:43 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-        id 288BC7E0; Mon, 25 Apr 2022 06:39:36 +0300 (EEST)
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+        with ESMTP id S238693AbiDYHlT (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 25 Apr 2022 03:41:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 861AD12AE3
+        for <linux-efi@vger.kernel.org>; Mon, 25 Apr 2022 00:38:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1650872295;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=D4+EWp9YScvG0/opJ/baqbMoZiCpKGj3I6/h6CC0ZAI=;
+        b=QwKT+GN3wCRoZHpAz4fJNodwCQig0Qb2WES9Q4dCrL925MYg2vp/N/8OV0ZRa9Ag1caUX2
+        jSTRS8pQ70o+n69OVK8mDNQRWFbo/dQXatqcbgGOeGnKcVD7qzpcAlNjzTSXB3I4bRVtU3
+        6QzGHKzAto2+NpNUfEgMqIHvCVi8P18=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-48-_Oy82YJAM5mJ1sVEztkTZw-1; Mon, 25 Apr 2022 03:38:13 -0400
+X-MC-Unique: _Oy82YJAM5mJ1sVEztkTZw-1
+Received: by mail-wm1-f69.google.com with SMTP id 186-20020a1c02c3000000b003928cd3853aso5435565wmc.9
+        for <linux-efi@vger.kernel.org>; Mon, 25 Apr 2022 00:38:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:organization:in-reply-to
+         :content-transfer-encoding;
+        bh=D4+EWp9YScvG0/opJ/baqbMoZiCpKGj3I6/h6CC0ZAI=;
+        b=aTzTcVMT0iYk0qZV7XAyDqMviAPuQxTskBuNa31v+O534OVzefRECDf/D4kOL2lFyF
+         07Dc24H/0N4Z6qgs9FxadnRInmgPowvAamYjpISaHTd3H9ZRE4XBV5q0YElcbRbZKr37
+         dH3gz7pHPx8/DcqO9aXQzZEnne/Xv5uTfc027iPWn2TsOVIf66bHc3ixqYon0U4ghS0Q
+         /WGTUOzyc1fwOSEBuXCQ58sbwhkTOyuUXxzgR6m/IFbbbKcWJZbFeS9KVq/WfM1bSIuZ
+         jrh8eAaMhHFyfx+CsoeSXiGk/aeYmykEBSu+qrQbI8KmjOYATh1F+4V5bE3NwZzPoWNK
+         4cAA==
+X-Gm-Message-State: AOAM532eniF5soIPYuFKFuYus0SGzswqlZTb2B3R8lh/5MiDyN9IvZd9
+        o/KiUvwkNK2UuojLwSeb9xKuf1gzMDACDYxithehgptj9S00n6JsqmpnopwyxEkUAqXntpKfw30
+        rt5nk8j8opUcbgwxd9ws8
+X-Received: by 2002:a05:600c:1c90:b0:393:e5b9:b567 with SMTP id k16-20020a05600c1c9000b00393e5b9b567mr8792588wms.27.1650872292389;
+        Mon, 25 Apr 2022 00:38:12 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyGrMqdIG1qplpHlWo0bNbUMWHaIb+N0Tidl5Idj4Oc/xX/CaDQW7fkXG1PkG7Hd/M5o1cGWw==
+X-Received: by 2002:a05:600c:1c90:b0:393:e5b9:b567 with SMTP id k16-20020a05600c1c9000b00393e5b9b567mr8792555wms.27.1650872292152;
+        Mon, 25 Apr 2022 00:38:12 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c700:fc00:490d:ed6a:8b22:223a? (p200300cbc700fc00490ded6a8b22223a.dip0.t-ipconnect.de. [2003:cb:c700:fc00:490d:ed6a:8b22:223a])
+        by smtp.gmail.com with ESMTPSA id y6-20020a056000168600b0020a96d2cf8fsm9498136wrd.60.2022.04.25.00.37.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Apr 2022 00:38:09 -0700 (PDT)
+Message-ID: <f8ee624f-d1f0-342e-227b-8ffa9d133ba1@redhat.com>
+Date:   Mon, 25 Apr 2022 09:37:52 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Subject: Re: [PATCHv5 01/12] x86/boot/: Centralize __pa()/__va() definitions
+Content-Language: en-US
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
         Sean Christopherson <seanjc@google.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Joerg Roedel <jroedel@suse.de>,
@@ -59,173 +83,38 @@ Cc:     Andi Kleen <ak@linux.intel.com>,
         Dario Faggioli <dfaggioli@suse.com>,
         Dave Hansen <dave.hansen@intel.com>,
         Brijesh Singh <brijesh.singh@amd.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>, x86@kernel.org,
+        Mike Rapoport <rppt@kernel.org>, x86@kernel.org,
         linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv5 12/12] x86/mm: Report unaccepted memory in /proc/meminfo
-Date:   Mon, 25 Apr 2022 06:39:34 +0300
-Message-Id: <20220425033934.68551-13-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+ <20220425033934.68551-2-kirill.shutemov@linux.intel.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20220425033934.68551-2-kirill.shutemov@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Track amount of unaccepted memory and report it in /proc/meminfo.
+On 25.04.22 05:39, Kirill A. Shutemov wrote:
+> Replace multiple __pa()/__va() definitions with a single one in misc.h.
+> 
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> ---
+>
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- arch/x86/include/asm/set_memory.h        |  2 ++
- arch/x86/include/asm/unaccepted_memory.h |  9 ++++++
- arch/x86/mm/init.c                       |  8 ++++++
- arch/x86/mm/pat/set_memory.c             |  2 +-
- arch/x86/mm/unaccepted_memory.c          | 36 +++++++++++++++++++++++-
- 5 files changed, 55 insertions(+), 2 deletions(-)
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
-diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
-index 78ca53512486..e467f3941d22 100644
---- a/arch/x86/include/asm/set_memory.h
-+++ b/arch/x86/include/asm/set_memory.h
-@@ -86,6 +86,8 @@ bool kernel_page_present(struct page *page);
- 
- extern int kernel_set_to_readonly;
- 
-+void direct_map_meminfo(struct seq_file *m);
-+
- #ifdef CONFIG_X86_64
- /*
-  * Prevent speculative access to the page by either unmapping
-diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
-index a59264ee0ab3..7c93661152a9 100644
---- a/arch/x86/include/asm/unaccepted_memory.h
-+++ b/arch/x86/include/asm/unaccepted_memory.h
-@@ -3,7 +3,10 @@
- #ifndef _ASM_X86_UNACCEPTED_MEMORY_H
- #define _ASM_X86_UNACCEPTED_MEMORY_H
- 
-+#include <linux/types.h>
-+
- struct boot_params;
-+struct seq_file;
- 
- void process_unaccepted_memory(struct boot_params *params, u64 start, u64 num);
- 
-@@ -12,5 +15,11 @@ void process_unaccepted_memory(struct boot_params *params, u64 start, u64 num);
- void accept_memory(phys_addr_t start, phys_addr_t end);
- bool memory_is_unaccepted(phys_addr_t start, phys_addr_t end);
- 
-+void unaccepted_meminfo(struct seq_file *m);
-+
-+#else
-+
-+static inline void unaccepted_meminfo(struct seq_file *m) {}
-+
- #endif
- #endif
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index d8cfce221275..7e92a9d93994 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -1065,3 +1065,11 @@ unsigned long max_swapfile_size(void)
- 	return pages;
- }
- #endif
-+
-+#ifdef CONFIG_PROC_FS
-+void arch_report_meminfo(struct seq_file *m)
-+{
-+	direct_map_meminfo(m);
-+	unaccepted_meminfo(m);
-+}
-+#endif
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index abf5ed76e4b7..2880ba01451c 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -105,7 +105,7 @@ static void split_page_count(int level)
- 	direct_pages_count[level - 1] += PTRS_PER_PTE;
- }
- 
--void arch_report_meminfo(struct seq_file *m)
-+void direct_map_meminfo(struct seq_file *m)
- {
- 	seq_printf(m, "DirectMap4k:    %8lu kB\n",
- 			direct_pages_count[PG_LEVEL_4K] << 2);
-diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
-index 65cd49b93c50..66a6c529bf31 100644
---- a/arch/x86/mm/unaccepted_memory.c
-+++ b/arch/x86/mm/unaccepted_memory.c
-@@ -3,14 +3,17 @@
- #include <linux/mm.h>
- #include <linux/pfn.h>
- #include <linux/spinlock.h>
-+#include <linux/seq_file.h>
- 
-+#include <asm/e820/api.h>
- #include <asm/io.h>
- #include <asm/setup.h>
- #include <asm/shared/tdx.h>
- #include <asm/unaccepted_memory.h>
- 
--/* Protects unaccepted memory bitmap */
-+/* Protects unaccepted memory bitmap and nr_unaccepted */
- static DEFINE_SPINLOCK(unaccepted_memory_lock);
-+static unsigned long nr_unaccepted;
- 
- void accept_memory(phys_addr_t start, phys_addr_t end)
- {
-@@ -39,6 +42,12 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
- 
- 		bitmap_clear(unaccepted_memory, range_start, len);
- 		count_vm_events(ACCEPT_MEMORY, len * PMD_SIZE / PAGE_SIZE);
-+
-+		/* In early boot nr_unaccepted is not yet initialized */
-+		if (nr_unaccepted) {
-+			WARN_ON(nr_unaccepted < len);
-+			nr_unaccepted -= len;
-+		}
- 	}
- 	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
- }
-@@ -62,3 +71,28 @@ bool memory_is_unaccepted(phys_addr_t start, phys_addr_t end)
- 
- 	return ret;
- }
-+
-+void unaccepted_meminfo(struct seq_file *m)
-+{
-+	seq_printf(m, "UnacceptedMem:  %8lu kB\n",
-+		   (READ_ONCE(nr_unaccepted) * PMD_SIZE) >> 10);
-+}
-+
-+static int __init unaccepted_meminfo_init(void)
-+{
-+	unsigned long *unaccepted_memory;
-+	unsigned long flags, bitmap_size;
-+
-+	if (!boot_params.unaccepted_memory)
-+		return 0;
-+
-+	bitmap_size = e820__end_of_ram_pfn() * PAGE_SIZE / PMD_SIZE;
-+	unaccepted_memory = __va(boot_params.unaccepted_memory);
-+
-+	spin_lock_irqsave(&unaccepted_memory_lock, flags);
-+	nr_unaccepted = bitmap_weight(unaccepted_memory, bitmap_size);
-+	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
-+
-+	return 0;
-+}
-+fs_initcall(unaccepted_meminfo_init);
+
 -- 
-2.35.1
+Thanks,
+
+David / dhildenb
 
