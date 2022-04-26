@@ -2,65 +2,113 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75D3050E705
-	for <lists+linux-efi@lfdr.de>; Mon, 25 Apr 2022 19:24:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A108C50EF9B
+	for <lists+linux-efi@lfdr.de>; Tue, 26 Apr 2022 06:10:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238124AbiDYR0Z (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 25 Apr 2022 13:26:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40796 "EHLO
+        id S243960AbiDZENX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 26 Apr 2022 00:13:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236300AbiDYR0Z (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 25 Apr 2022 13:26:25 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DCCC40E40;
-        Mon, 25 Apr 2022 10:23:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 2D3E8B818B0;
-        Mon, 25 Apr 2022 17:23:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C5FC385A4;
-        Mon, 25 Apr 2022 17:23:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1650907397;
-        bh=VjTnhuQicGOmkGkCoCTapKBWoxqmayPx+DgY9NCIrMg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=RzBpZ2Qln5fmrU4WNMsYu1/qxHLDWPtHTCKeTegCgw9hNDSJoE+fYL6PineKaHxWU
-         dK3D9Zy38F9lCRx0NXhUD3NA97VUNAkNa3CUxqqYmigxJY51ZxkwERrB5F+v4PxSWb
-         fnA0rmV8lSPenJ74LzplsDKWefkm6nZ91fYfga5k=
-Date:   Mon, 25 Apr 2022 10:23:16 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Martin Fernandez <martin.fernandez@eclypsium.com>
-Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
-        gregkh@linuxfoundation.org, rafael@kernel.org, rppt@kernel.org,
-        daniel.gutson@eclypsium.com, hughsient@gmail.com,
-        alex.bazhaniuk@eclypsium.com, alison.schofield@intel.com,
-        keescook@chromium.org
-Subject: Re: [PATCH v7 0/8] x86: Show in sysfs if a memory node is able to
- do encryption
-Message-Id: <20220425102316.5c6ae3065363767e89d8855f@linux-foundation.org>
-In-Reply-To: <20220425171526.44925-1-martin.fernandez@eclypsium.com>
-References: <20220425171526.44925-1-martin.fernandez@eclypsium.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-9.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S243948AbiDZENW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 26 Apr 2022 00:13:22 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F18761080;
+        Mon, 25 Apr 2022 21:10:15 -0700 (PDT)
+Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.53])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4KnT1P2SRFzhYqg;
+        Tue, 26 Apr 2022 12:10:01 +0800 (CST)
+Received: from [10.67.110.173] (10.67.110.173) by
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Tue, 26 Apr 2022 12:10:13 +0800
+Message-ID: <853635d6-9e74-c3dc-f6dc-d4166616c8e5@huawei.com>
+Date:   Tue, 26 Apr 2022 12:10:13 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: How to list keys used for kexec
+Content-Language: en-US
+To:     =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>
+References: <20220414175930.GM163591@kunlun.suse.cz>
+From:   "Guozihua (Scott)" <guozihua@huawei.com>
+In-Reply-To: <20220414175930.GM163591@kunlun.suse.cz>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.110.173]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemm500024.china.huawei.com (7.185.36.203)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-6.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 25 Apr 2022 14:15:18 -0300 Martin Fernandez <martin.fernandez@eclypsium.com> wrote:
+On 2022/4/15 1:59, Michal Suchánek wrote:
+> Hello,
+> 
+> apparently modules are verified by keys from 'secondary' keyring on all
+> platforms.
+> 
+> If you happen to know that it's this particular keyring, and know how
+> to list keyrings recursively you can find the keys that are used for
+> verifying modules.
+> 
+> However, for kexec we have
+> 
+>   - primary keyring on aarch64
+>   - platform keyring on s390
+>   - secondary AND platform keyring on x86
+> 
+> How is a user supposed to know which keys are used for kexec image
+> verification?
+> 
+> There is an implicit keyring that is ad-hoc constructed by the code that
+> does the kexec verification but there is no key list observable from
+> userspace that corresponds to this ad-hoc keyring only known to the kexec
+> code.
+> 
+> Can the kernel make the information which keys are used for what purpose
+> available to the user?
+> 
+> Thanks
+> 
+> Michal
+> 
+> .
 
-> Show for each node if every memory descriptor in that node has the
-> EFI_MEMORY_CPU_CRYPTO attribute.
+Hi Michal
 
-The MM patches look OK to me.  Mike, can you please opine?
+I'll try my best to understand and answer your question.
+
+First of all, the "key" you mentioned here is actually certificate. And 
+there are no way for the kernel to know "which certificate is used for 
+what purpose" but to get a hint from the certificate's extension, if 
+they exist. However, the extension only points out what this certificate 
+should be used for, but not exactly what it is actually used for.
+
+Secondly, the verification process requires the module (kernel image in 
+this question) to contain information on which certificate should be 
+used to verify itself. The signature provided by the module is in PKCS#7 
+format which contains a list of certificates for the verifier to 
+construct a "chain of trust". Each certificates contains information 
+pointing to the certificate of it's issuer, and eventually to one of the 
+certificate stored in one of the keyrings you mentioned.
+
+All in all, certificates in these keyrings you mentioned can be used for 
+various purpose, and it's the responsibility for the modules being 
+verified to provide information stating which certificate should be used 
+for verification. Thus, the best way to find out which key is used for 
+kexec is to look at key used to sign the kernel image.
+
+-- 
+Best
+GUO Zihua
