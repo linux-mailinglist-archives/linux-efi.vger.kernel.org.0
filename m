@@ -2,164 +2,201 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC1D350F0D3
-	for <lists+linux-efi@lfdr.de>; Tue, 26 Apr 2022 08:18:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 305D450F0BA
+	for <lists+linux-efi@lfdr.de>; Tue, 26 Apr 2022 08:11:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244142AbiDZGVQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 26 Apr 2022 02:21:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56618 "EHLO
+        id S244937AbiDZGOP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 26 Apr 2022 02:14:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232042AbiDZGVP (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 26 Apr 2022 02:21:15 -0400
-X-Greylist: delayed 1235 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 25 Apr 2022 23:18:09 PDT
-Received: from mailgate.ics.forth.gr (mailgate.ics.forth.gr [139.91.1.2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38A8313CF4
-        for <linux-efi@vger.kernel.org>; Mon, 25 Apr 2022 23:18:08 -0700 (PDT)
-Received: from av3.ics.forth.gr (av3in.ics.forth.gr [139.91.1.77])
-        by mailgate.ics.forth.gr (8.15.2/ICS-FORTH/V10-1.8-GATE) with ESMTP id 23Q5vVS3063351
-        for <linux-efi@vger.kernel.org>; Tue, 26 Apr 2022 08:57:31 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; d=ics.forth.gr; s=av; c=relaxed/simple;
-        q=dns/txt; i=@ics.forth.gr; t=1650952645; x=1653544645;
-        h=From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=LL28OJv509egBstFeV2Ig3Njtp/Ayo/hHdAQn0ETPec=;
-        b=inL8gMH1cWEb8U7PIiRtwnnf7GjL0T6zk5P4mLcmVnQKraiGPCW26ZMn5iYuHdZO
-        AZepokb2YUfIpjs60yqFS/QWUkH/djpkRawTJrAYBqC/m1DaBLBF8eRS96GpM+OH
-        IuTtb578KJ13c4XPndM0b1Yvk2he35rQYyKLHiyaxwUeiUDmGziGvc0HibvBmOV7
-        pTmUr89xvwVvQzyanmsERc96wk7UWsVWyeBZhnh2hoJy95KGRYuHvYlTbUGEtpJt
-        0UsKF081i4iAG43/bmtnm4yObPosq92f0OOcDeAOHo6QCSzhvbqP/4pOasl/UFUn
-        CcvdEM211o5gHpxie02+sA==;
-X-AuditID: 8b5b014d-f2ab27000000641e-1f-626789c58245
-Received: from enigma.ics.forth.gr (enigma.ics.forth.gr [139.91.151.35])
-        by av3.ics.forth.gr (Symantec Messaging Gateway) with SMTP id C3.C0.25630.5C987626; Tue, 26 Apr 2022 08:57:25 +0300 (EEST)
-X-ICS-AUTH-INFO: Authenticated user: mick at ics.forth.gr
-Message-ID: <ff85cdc4-b1e3-06a3-19fc-a7e1acf99d40@ics.forth.gr>
-Date:   Tue, 26 Apr 2022 08:57:19 +0300
+        with ESMTP id S244963AbiDZGOO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 26 Apr 2022 02:14:14 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C7913B6;
+        Mon, 25 Apr 2022 23:11:07 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9EED3B818FE;
+        Tue, 26 Apr 2022 06:11:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62CA1C385AC;
+        Tue, 26 Apr 2022 06:10:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1650953464;
+        bh=hfNYTM7tCR7XMLe8YNkDfgK4t27yGuoKsqJS1LzijzI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=e85e/ugCVVRQZCqy0k0uEuBzNQnCcVx4WIUnqB8C0T6QPCXjnaKf7IO2/aQ70Kljd
+         vlE4dJmT//ZnuuDmcnfIhOT57sUgCI4rjNzURBa9MW8cg4J84Usgk9AUu2dYZFR/+P
+         hOkua1+28HL8BCIBylnlN1u6bKb2qhmrdltoCCIDJmbqxwYWY9pUqfwQpqZJlHSrlb
+         c3JJnANcPzM7wIjCbIMP18/4VwFmH3zWpvcoh2husAGZShb0RGCKuHgbUtchKoP9gq
+         CNMmVG1ZRlp+uAHYK7X2HFON6jui9rVE1nNBwvP42hjrz1Rts6UOYHVHApUZyJLHth
+         937AxW/3WnxlQ==
+Date:   Tue, 26 Apr 2022 09:10:45 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Martin Fernandez <martin.fernandez@eclypsium.com>
+Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
+        gregkh@linuxfoundation.org, rafael@kernel.org,
+        akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
+        hughsient@gmail.com, alex.bazhaniuk@eclypsium.com,
+        alison.schofield@intel.com, keescook@chromium.org
+Subject: Re: [PATCH v7 1/8] mm/memblock: Tag memblocks with crypto
+ capabilities
+Message-ID: <YmeM5fklUssR/74e@kernel.org>
+References: <20220425171526.44925-1-martin.fernandez@eclypsium.com>
+ <20220425171526.44925-2-martin.fernandez@eclypsium.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v3 07/13] riscv: Implement sv48 support
-Content-Language: el-en
-To:     Alexandre Ghiti <alexandre.ghiti@canonical.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Zong Li <zong.li@sifive.com>, Anup Patel <anup@brainfault.org>,
-        Atish Patra <Atish.Patra@rivosinc.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Kees Cook <keescook@chromium.org>,
-        Guo Ren <guoren@linux.alibaba.com>,
-        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-        Mayuresh Chitale <mchitale@ventanamicro.com>,
-        panqinglin2020@iscas.ac.cn, linux-doc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kasan-dev@googlegroups.com, linux-efi@vger.kernel.org,
-        linux-arch@vger.kernel.org
-References: <20211206104657.433304-1-alexandre.ghiti@canonical.com>
- <20211206104657.433304-8-alexandre.ghiti@canonical.com>
-From:   Nick Kossifidis <mick@ics.forth.gr>
-In-Reply-To: <20211206104657.433304-8-alexandre.ghiti@canonical.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Rf0yMcRzH973n6Xmezo5vV/jKsF0MISw/vtTC2HpMfi3ze+Oqx/VL9HQ1
-        vx3ydN1hV6R5dPTjSsVC59JdIlnESlcNpd24MnNNhAiN0cXWf6993p/3+/3ZPgwhf0n6MjEJ
-        ao5PUMYrKCmp35btN6suXRUx5+a5QFyWb/fA/RnZNE7t/eCBLQMijX/0fQT4V+ZDGuutWgK/
-        qUkD2OAUaJz2qZrAjzptJC65WifB9mPtNC5++0qCG/S7sdb2lcR5gonEgvMlwK22HApXfEml
-        cFZ9F4ldracIfPlTL4UFcRR+ZLlF4F7HRWqpLzvwMxOwWQMNJCtqTlPsRU0zyb53uUj2gbaP
-        Zq2ig2Zzy5PZOxmPKfZupRmw5aXpFGt1LmLNpqNsVbuGYgvOnPVg28TN67y3SoOjuPiYFI6f
-        HbJTGv3678F7NfJ9TelGWgNKR+qAJ4PgPNR2wkDpgJSRwzqAclL7wJCwCJk/u8hBlsElqKtM
-        oAeZhFNQY3kHMTT3Qo8vvHHvjIabUZEty83eMAjdtJjdOQQci2wtOslggQ+sYVB9r9EdJIeH
-        kenJOzdTcDq63HL/r5lhPOEKlP5NPeRdgHQW3b+cSeh2Tw5hAKPEYdXisApxmEUcZskFZCmA
-        ypTAgJjIpIBde3h1dICKLwfu94PVlaDD3BNQCyQMqAWIIRQ+sqwpuyLksijl/gMcv2cHnxzP
-        JdWC8QypGCuj326KkEOVUs3Fcdxejv+vShhPX40ERDqrT9pvREQvb6yyLR7Zlg8tE88fmqCI
-        LNqy9nl/Siq89O1glDT8Wr598tQSR2PIVB+bv/lHN0z0exrkLxRKqrbLuaYKXWhlact0LdR3
-        tJnzjBmGLV1SU0H1jnFHRqwpenB//k/HEiGxInZOdzOZ2KrqDj/F+7vCus9Vh60MNlQCB0Gk
-        5RbeE7zM9jFN1lDvS2vHnS0JWv9bMiK3+Pv+1/mynuvqbGeB/vO7muCBhNiqkMS40ECDX/8R
-        r9irB7XWmZ2zjM9ySmQ+T6c9+74hLlJV1t5wRedYMSNPWmesCd8YVhy7bKewynQ32WPiws4X
-        25ufK3+tmly/5rhYOLu/RUEmRSvn+hN8kvIP4RAOL20DAAA=
-X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220425171526.44925-2-martin.fernandez@eclypsium.com>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello Alex,
-
-On 12/6/21 12:46, Alexandre Ghiti wrote:
+On Mon, Apr 25, 2022 at 02:15:19PM -0300, Martin Fernandez wrote:
+> Add the capability to mark regions of the memory memory_type able of
+> hardware memory encryption.
 > 
-> +#ifdef CONFIG_64BIT
-> +static void __init disable_pgtable_l4(void)
-> +{
-> +	pgtable_l4_enabled = false;
-> +	kernel_map.page_offset = PAGE_OFFSET_L3;
-> +	satp_mode = SATP_MODE_39;
-> +}
-> +
-> +/*
-> + * There is a simple way to determine if 4-level is supported by the
-> + * underlying hardware: establish 1:1 mapping in 4-level page table mode
-> + * then read SATP to see if the configuration was taken into account
-> + * meaning sv48 is supported.
+> Also add the capability to query if all regions of a memory node are
+> able to do hardware memory encryption to call it when initializing the
+> nodes. Warn the user if a node has both encryptable and
+> non-encryptable regions.
+> 
+> Signed-off-by: Martin Fernandez <martin.fernandez@eclypsium.com>
+> ---
+>  include/linux/memblock.h |  5 ++++
+>  mm/memblock.c            | 62 ++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 67 insertions(+)
+> 
+> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+> index 50ad19662a32..00c4f1a20335 100644
+> --- a/include/linux/memblock.h
+> +++ b/include/linux/memblock.h
+> @@ -40,6 +40,7 @@ extern unsigned long long max_possible_pfn;
+>   * via a driver, and never indicated in the firmware-provided memory map as
+>   * system RAM. This corresponds to IORESOURCE_SYSRAM_DRIVER_MANAGED in the
+>   * kernel resource tree.
+> + * @MEMBLOCK_CRYPTO_CAPABLE: capable of hardware encryption
+>   */
+>  enum memblock_flags {
+>  	MEMBLOCK_NONE		= 0x0,	/* No special request */
+> @@ -47,6 +48,7 @@ enum memblock_flags {
+>  	MEMBLOCK_MIRROR		= 0x2,	/* mirrored region */
+>  	MEMBLOCK_NOMAP		= 0x4,	/* don't add to kernel direct mapping */
+>  	MEMBLOCK_DRIVER_MANAGED = 0x8,	/* always detected via a driver */
+> +	MEMBLOCK_CRYPTO_CAPABLE = 0x10,	/* capable of hardware encryption */
+>  };
+>  
+>  /**
+> @@ -120,6 +122,9 @@ int memblock_physmem_add(phys_addr_t base, phys_addr_t size);
+>  void memblock_trim_memory(phys_addr_t align);
+>  bool memblock_overlaps_region(struct memblock_type *type,
+>  			      phys_addr_t base, phys_addr_t size);
+> +bool memblock_node_is_crypto_capable(int nid);
+> +int memblock_mark_crypto_capable(phys_addr_t base, phys_addr_t size);
+> +int memblock_clear_crypto_capable(phys_addr_t base, phys_addr_t size);
+>  int memblock_mark_hotplug(phys_addr_t base, phys_addr_t size);
+>  int memblock_clear_hotplug(phys_addr_t base, phys_addr_t size);
+>  int memblock_mark_mirror(phys_addr_t base, phys_addr_t size);
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index e4f03a6e8e56..fe62f81572e6 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -191,6 +191,40 @@ bool __init_memblock memblock_overlaps_region(struct memblock_type *type,
+>  	return i < type->cnt;
+>  }
+>  
+> +/**
+> + * memblock_node_is_crypto_capable - get if whole node is capable
+> + * of encryption
+> + * @nid: number of node
+> + *
+> + * Iterate over all memory memblock_type and find if all regions under
+> + * node @nid are capable of hardware encryption.
+> + *
+> + * Return:
+> + * true if every region in memory memblock_type is capable of
+
+I'd s/in memory memblock_type/in @nid
+
+> + * encryption, false otherwise.
 > + */
-> +static __init void set_satp_mode(void)
+> +bool __init_memblock memblock_node_is_crypto_capable(int nid)
 > +{
-> +	u64 identity_satp, hw_satp;
-> +	uintptr_t set_satp_mode_pmd;
+> +	struct memblock_region *region;
+> +	int crypto_capables = 0;
+> +	int not_crypto_capables = 0;
 > +
-> +	set_satp_mode_pmd = ((unsigned long)set_satp_mode) & PMD_MASK;
-> +	create_pgd_mapping(early_pg_dir,
-> +			   set_satp_mode_pmd, (uintptr_t)early_pud,
-> +			   PGDIR_SIZE, PAGE_TABLE);
-> +	create_pud_mapping(early_pud,
-> +			   set_satp_mode_pmd, (uintptr_t)early_pmd,
-> +			   PUD_SIZE, PAGE_TABLE);
-> +	/* Handle the case where set_satp_mode straddles 2 PMDs */
-> +	create_pmd_mapping(early_pmd,
-> +			   set_satp_mode_pmd, set_satp_mode_pmd,
-> +			   PMD_SIZE, PAGE_KERNEL_EXEC);
-> +	create_pmd_mapping(early_pmd,
-> +			   set_satp_mode_pmd + PMD_SIZE,
-> +			   set_satp_mode_pmd + PMD_SIZE,
-> +			   PMD_SIZE, PAGE_KERNEL_EXEC);
+> +	for_each_mem_region(region) {
+> +		if (memblock_get_region_node(region) == nid) {
+> +			if (region->flags & MEMBLOCK_CRYPTO_CAPABLE)
+> +				crypto_capables++;
+> +			else
+> +				not_crypto_capables++;
+> +		}
+> +	}
 > +
-> +	identity_satp = PFN_DOWN((uintptr_t)&early_pg_dir) | satp_mode;
+> +	if (crypto_capables > 0 && not_crypto_capables > 0)
+> +		pr_warn("Node %d has %d regions that are encryptable and %d regions that aren't",
+> +			nid, not_crypto_capables, crypto_capables);
 > +
-> +	local_flush_tlb_all();
-> +	csr_write(CSR_SATP, identity_satp);
-> +	hw_satp = csr_swap(CSR_SATP, 0ULL);
-> +	local_flush_tlb_all();
-> +
-> +	if (hw_satp != identity_satp)
-> +		disable_pgtable_l4();
-> +
-> +	memset(early_pg_dir, 0, PAGE_SIZE);
-> +	memset(early_pud, 0, PAGE_SIZE);
-> +	memset(early_pmd, 0, PAGE_SIZE);
+> +	return not_crypto_capables == 0;
+
+This will return true for memoryless nodes as well. Do you mean to consider
+them as capable of encryption?
+
 > +}
-> +#endif
 > +
+>  /**
+>   * __memblock_find_range_bottom_up - find free area utility in bottom-up
+>   * @start: start of candidate range
+> @@ -891,6 +925,34 @@ static int __init_memblock memblock_setclr_flag(phys_addr_t base,
+>  	return 0;
+>  }
+>  
+> +/**
+> + * memblock_mark_crypto_capable - Mark memory regions capable of hardware
+> + * encryption with flag MEMBLOCK_CRYPTO_CAPABLE.
+> + * @base: the base phys addr of the region
+> + * @size: the size of the region
+> + *
+> + * Return: 0 on success, -errno on failure.
+> + */
+> +int __init_memblock memblock_mark_crypto_capable(phys_addr_t base,
+> +						 phys_addr_t size)
+> +{
+> +	return memblock_setclr_flag(base, size, 1, MEMBLOCK_CRYPTO_CAPABLE);
+> +}
+> +
+> +/**
+> + * memblock_clear_crypto_capable - Clear flag MEMBLOCK_CRYPTO for a
+> + * specified region.
+> + * @base: the base phys addr of the region
+> + * @size: the size of the region
+> + *
+> + * Return: 0 on success, -errno on failure.
+> + */
+> +int __init_memblock memblock_clear_crypto_capable(phys_addr_t base,
+> +						  phys_addr_t size)
+> +{
+> +	return memblock_setclr_flag(base, size, 0, MEMBLOCK_CRYPTO_CAPABLE);
+> +}
+> +
+>  /**
+>   * memblock_mark_hotplug - Mark hotpluggable memory with flag MEMBLOCK_HOTPLUG.
+>   * @base: the base phys addr of the region
+> -- 
+> 2.30.2
+> 
 
-When doing the 1:1 mapping you don't take into account the limitation 
-that all bits above 47 need to have the same value as bit 47. If the 
-kernel exists at a high physical address with bit 47 set the 
-corresponding virtual address will be invalid, resulting an instruction 
-fetch fault as the privilege spec mandates. We verified this bug on our 
-prototype. I suggest we re-write this in assembly and do a proper satp 
-switch like we do on head.S, so that we don't need the 1:1 mapping and 
-we also have a way to recover in case this fails.
-
-Regards,
-Nick
+-- 
+Sincerely yours,
+Mike.
