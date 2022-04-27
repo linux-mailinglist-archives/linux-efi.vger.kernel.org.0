@@ -2,117 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10BEC510D18
-	for <lists+linux-efi@lfdr.de>; Wed, 27 Apr 2022 02:19:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A444C510EE0
+	for <lists+linux-efi@lfdr.de>; Wed, 27 Apr 2022 04:39:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354557AbiD0AWX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 26 Apr 2022 20:22:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44940 "EHLO
+        id S1356820AbiD0Ckp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 26 Apr 2022 22:40:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343562AbiD0AWX (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 26 Apr 2022 20:22:23 -0400
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2052.outbound.protection.outlook.com [40.107.236.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33044B36A9;
-        Tue, 26 Apr 2022 17:19:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HWqmu87NaRiGS0tXiTnRLJPHulP4BkqNaj8HcWiPlZfHnXLTBCVeWP1Gc5MHErq5zZ2FKoJ0LobIz8Yiv4SZL58iG4u+47a7u4gth6azs2lXMlJOqEh/+H+MbHgGbJN9Mnl2JfiisSxtqBW755kBpsN7F4Gudx0+3XwiWz4S6to4UkaUy2eWf5tAAtN8TDTIYAHPxyTcHHLLcr/IxQkpZgea105NYB4ZhV/eMo12d/f6iceEJ4JHu4FXY54drWVsKasKfKUYhnFdiLxc0ymgxv58j5Dd1rOaAiye+hZrncjJ34xLJ0WG0l1aV+Zc5HHpyktiytA3qPhbcfIkzPALLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GGvJkGEElOO+I7QSdBBYxqWBU7tSa2Gogm11ZKVVK8g=;
- b=LBVcuXLi0IeuFCCxBxpw/fp2k8ZYyVBW9YGnYjhYoPNejkkNgI51J6QGgLTyPwW8IHR+ngZJTymSHVeKCU9gqTXi8aCoJiNvb9ryY8Er/zzapm2pkUuwXIALTb4LeAw/RrxqIqjW97vzyNC1Bt5fFG/jvPUm1tQdbqiqzIssCXWaEXDcPGxIJ5ScWhCB5DP2h+STKGkORx59T4UrCIdE1EnOEB3lTzeFt2z0iFOi+9/vOSQazp76Ffbz56Ud8eY2gm1ziqbEXWccxvu7rLBQSY9SAGzZ4MGAzZsvX7TTjbGI4wLj423k3N4YLV8KR3gzwwA/egbxq5z4NiFmEfIDKw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GGvJkGEElOO+I7QSdBBYxqWBU7tSa2Gogm11ZKVVK8g=;
- b=rGzGkMVraDPJaJlKDl6S/6VHjDKodcfuQ3wAFc3qfdXLYpm4MjwLrFAkUxx39/ecGH4FQKfBnrwphhki0Dy0BixI7aCyfPzSihbphrfid3dj/8zuFMHexlOlhryEDJeVP/zNRf9Jc7HXdiktOlnXOHsQmDYYO40OQm3yXtfloxE=
-Received: from BN9PR03CA0803.namprd03.prod.outlook.com (2603:10b6:408:13f::28)
- by CY4PR12MB1286.namprd12.prod.outlook.com (2603:10b6:903:44::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5186.15; Wed, 27 Apr
- 2022 00:19:10 +0000
-Received: from BN8NAM11FT018.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:13f:cafe::fd) by BN9PR03CA0803.outlook.office365.com
- (2603:10b6:408:13f::28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5186.15 via Frontend
- Transport; Wed, 27 Apr 2022 00:19:10 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT018.mail.protection.outlook.com (10.13.176.89) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.5206.12 via Frontend Transport; Wed, 27 Apr 2022 00:19:10 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Tue, 26 Apr
- 2022 19:18:57 -0500
-Date:   Tue, 26 Apr 2022 19:17:56 -0500
-From:   Michael Roth <michael.roth@amd.com>
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-CC:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
-        "Sean Christopherson" <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Kuppuswamy Sathyanarayanan" 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Peter Zijlstra" <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        "Ingo Molnar" <mingo@redhat.com>,
-        Varad Gautam <varad.gautam@suse.com>,
-        "Dario Faggioli" <dfaggioli@suse.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        "Brijesh Singh" <brijesh.singh@amd.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        "David Hildenbrand" <david@redhat.com>, <x86@kernel.org>,
-        <linux-mm@kvack.org>, <linux-coco@lists.linux.dev>,
-        <linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCHv5 06/12] x86/boot/compressed: Handle unaccepted memory
-Message-ID: <20220427001756.xefhkwwc7uhxuusk@amd.com>
-References: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
- <20220425033934.68551-7-kirill.shutemov@linux.intel.com>
+        with ESMTP id S1357196AbiD0Cko (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 26 Apr 2022 22:40:44 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D1633E5C1;
+        Tue, 26 Apr 2022 19:37:34 -0700 (PDT)
+Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.56])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Kp2q01xLHzCsQ2;
+        Wed, 27 Apr 2022 10:33:00 +0800 (CST)
+Received: from [10.67.110.173] (10.67.110.173) by
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 27 Apr 2022 10:37:29 +0800
+Message-ID: <c48a42b1-a25c-cb69-4242-2a964ac4ad05@huawei.com>
+Date:   Wed, 27 Apr 2022 10:37:28 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20220425033934.68551-7-kirill.shutemov@linux.intel.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 0154363a-a992-4b07-6188-08da27e38ceb
-X-MS-TrafficTypeDiagnostic: CY4PR12MB1286:EE_
-X-Microsoft-Antispam-PRVS: <CY4PR12MB12867069932ACEAD37B6C0C395FA9@CY4PR12MB1286.namprd12.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: pJvZ0FLm04FTBpyFMOmpVBaxE1pdekoK5sfZ+rGSEmKRL9VkkREO/WHsBkcvyGmsHP7bbsEy5kcJ8F6AsAusYQkuaU2NwUDmylwICl4EH9rxPPx81D77s534TrNxwx83ui0wgmZhUt4AjB9W9EKPDFbdRUOi4T2JC0EJg9OOlRG1Mllsfs6dImdUeu1BMuWvdV7WG20vxi4O7oUIQdp2BXtRMc0G+qQ6KYFkb7QSIk5DbyTazRyii77TP+RoKv2AAlP6U486NFb698OTN+3PEogtKtse65llZnutH6W2nG3H5+kiDIF+JTHAvLY0IuJg2VGFwTtoOl1n/oYIzm1tMyTWtslF7SiGQB8mZy0uC2WNkIIq5vsmyeKVaVoxnn79QMl7lYJmZMyjWMbRSJT1PIfEm3m8805Er5QhHYil3XczcWqsTYh0i5rhfHcDz2ONOXUl3IeSXJXzy8JUbtEMdE+lJLsI3Bvu0uuYHXXCHW50Gh/m32Ot1jVUodtyEBn3E/Z9ZyHUNAM8Z8W2Rh3oUFI3RhhDqUM+BU1t+i5fuS1PlmtkuynjnclMY42VWo9nyDOm5i2pD3G2XbfjlLji2p/JGL5XoPj117M3J6NovgcAW8dEwLzb3ZoaDVF7zoseN2naUjoyRTXyTwZTD7CH1kS0VkrZY+fdAOSX8KFR2IYqc2CTCW3bGBrsL5UnCZKzdyGnkKqS6EcSFeX3vT7HWw==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(36840700001)(40470700004)(46966006)(2906002)(83380400001)(1076003)(16526019)(44832011)(8936002)(7416002)(186003)(82310400005)(70206006)(70586007)(356005)(8676002)(4326008)(36860700001)(36756003)(47076005)(5660300002)(426003)(336012)(2616005)(316002)(81166007)(54906003)(26005)(6916009)(40460700003)(508600001)(86362001)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2022 00:19:10.0860
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0154363a-a992-4b07-6188-08da27e38ceb
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT018.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR12MB1286
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: How to list keys used for kexec
+Content-Language: en-US
+To:     =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
+CC:     "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>
+References: <20220414175930.GM163591@kunlun.suse.cz>
+ <853635d6-9e74-c3dc-f6dc-d4166616c8e5@huawei.com>
+ <20220426085220.GE163591@kunlun.suse.cz>
+From:   "Guozihua (Scott)" <guozihua@huawei.com>
+In-Reply-To: <20220426085220.GE163591@kunlun.suse.cz>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.110.173]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemm500024.china.huawei.com (7.185.36.203)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-6.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -120,65 +54,95 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Apr 25, 2022 at 06:39:28AM +0300, Kirill A. Shutemov wrote:
-> The firmware will pre-accept the memory used to run the stub. But, the
-> stub is responsible for accepting the memory into which it decompresses
-> the main kernel. Accept memory just before decompression starts.
+On 2022/4/26 16:52, Michal Suchánek wrote:
+> On Tue, Apr 26, 2022 at 12:10:13PM +0800, Guozihua (Scott) wrote:
+>> On 2022/4/15 1:59, Michal Suchánek wrote:
+>>> Hello,
+>>>
+>>> apparently modules are verified by keys from 'secondary' keyring on all
+>>> platforms.
+>>>
+>>> If you happen to know that it's this particular keyring, and know how
+>>> to list keyrings recursively you can find the keys that are used for
+>>> verifying modules.
+>>>
+>>> However, for kexec we have
+>>>
+>>>    - primary keyring on aarch64
+>>>    - platform keyring on s390
+>>>    - secondary AND platform keyring on x86
+>>>
+>>> How is a user supposed to know which keys are used for kexec image
+>>> verification?
+>>>
+>>> There is an implicit keyring that is ad-hoc constructed by the code that
+>>> does the kexec verification but there is no key list observable from
+>>> userspace that corresponds to this ad-hoc keyring only known to the kexec
+>>> code.
+>>>
+>>> Can the kernel make the information which keys are used for what purpose
+>>> available to the user?
+>>>
+>>> Thanks
+>>>
+>>> Michal
+>>>
+>>> .
+>>
+>> Hi Michal
+>>
+>> I'll try my best to understand and answer your question.
+>>
+>> First of all, the "key" you mentioned here is actually certificate. And
+>> there are no way for the kernel to know "which certificate is used for what
+>> purpose" but to get a hint from the certificate's extension, if they exist.
+>> However, the extension only points out what this certificate should be used
+>> for, but not exactly what it is actually used for.
 > 
-> The stub is also responsible for choosing a physical address in which to
-> place the decompressed kernel image. The KASLR mechanism will randomize
-> this physical address. Since the unaccepted memory region is relatively
-> small, KASLR would be quite ineffective if it only used the pre-accepted
-> area (EFI_CONVENTIONAL_MEMORY). Ensure that KASLR randomizes among the
-> entire physical address space by also including EFI_UNACCEPTED_MEMOR
+>> Secondly, the verification process requires the module (kernel image in this
+>> question) to contain information on which certificate should be used to
+>> verify itself. The signature provided by the module is in PKCS#7 format
+>> which contains a list of certificates for the verifier to construct a "chain
+>> of trust". Each certificates contains information pointing to the
+>> certificate of it's issuer, and eventually to one of the certificate stored
+>> in one of the keyrings you mentioned.
 > 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> ---
->  arch/x86/boot/compressed/Makefile        |  2 +-
->  arch/x86/boot/compressed/kaslr.c         | 14 ++++++++++++--
->  arch/x86/boot/compressed/mem.c           | 21 +++++++++++++++++++++
->  arch/x86/boot/compressed/misc.c          |  9 +++++++++
->  arch/x86/include/asm/unaccepted_memory.h |  2 ++
->  5 files changed, 45 insertions(+), 3 deletions(-)
+> Indeed, that's not really relevant to this problem.
+> Sure, if the certificates extension does exist and does not state that
+> the certificate can be used for code signing then the signature should
+> be rejected. The same if the signature is malformed and does not provide
+> enough information to determine which key was used to create it.
 > 
-> diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-> index 7f672f7e2fea..b59007e57cbf 100644
-> --- a/arch/x86/boot/compressed/Makefile
-> +++ b/arch/x86/boot/compressed/Makefile
-> @@ -102,7 +102,7 @@ endif
->  
->  vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
->  vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o
-> -vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/bitmap.o $(obj)/mem.o
-> +vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/bitmap.o $(obj)/find.o $(obj)/mem.o
+> The question which key will be checked, though.
+>>
+>> All in all, certificates in these keyrings you mentioned can be used for
+>> various purpose, and it's the responsibility for the modules being verified
+>> to provide information stating which certificate should be used for
+>> verification. Thus, the best way to find out which key is used for kexec is
+>> to look at key used to sign the kernel image.
+> 
+> There aren't really good tools for working with the kernel signatures
+> but I can tell what certificate it was signed with jumping throught some
+> hoops.
+> 
+> What I can't tell without reading the kernel code (different for each
+> architecture) is what certificates the kernel considers valid for
+> signing kernels. The kernel surely knows but does not tell.
 
-Since it's possible to have CONFIG_UNACCEPTED_MEMORY=y while
-CONFIG_INTEL_TDX_GUEST=n (e.g. for SNP-only guest kernels), this can
-result in mem.o reporting linker errors due to tdx_accept_memory() not
-being defined. I think it needs a stub for !CONFIG_INTEL_TDX_GUEST, or
-something along that line.
+It's quite true on this one, maybe some documentation would help.
+> 
+> That is, for example, if I have a known bad kernel I want to be able to
+> tell if it's loadable without actually loading it.
 
->  
->  vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_thunk_$(BITS).o
->  efi-obj-$(CONFIG_EFI_STUB) = $(objtree)/drivers/firmware/efi/libstub/lib.a
-> diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-> index 411b268bc0a2..59db90626042 100644
-> --- a/arch/x86/boot/compressed/kaslr.c
-> +++ b/arch/x86/boot/compressed/kaslr.c
-> @@ -725,10 +725,20 @@ process_efi_entries(unsigned long minimum, unsigned long image_size)
->  		 * but in practice there's firmware where using that memory leads
->  		 * to crashes.
->  		 *
-> -		 * Only EFI_CONVENTIONAL_MEMORY is guaranteed to be free.
-> +		 * Only EFI_CONVENTIONAL_MEMORY and EFI_UNACCEPTED_MEMORY (if
-> +		 * supported) are guaranteed to be free.
->  		 */
-> -		if (md->type != EFI_CONVENTIONAL_MEMORY)
-> +
-> +		switch (md->type) {
-> +		case EFI_CONVENTIONAL_MEMORY:
-> +			break;
-> +		case EFI_UNACCEPTED_MEMORY:
+For this you can try the -l option with kexec which loads the kernel but 
+will not execute it. And then you can use -u option to unload the kernel 
+again and see whether it resolves your requirement.
+> 
+> Thanks
+> 
+> Michal
+> .
 
-Just FYI, but with latest tip boot/compressed now relies on a separate header
-in arch/x86/boot/compressed/efi.h where this need to be defined again.
+-- 
+Best
+GUO Zihua
