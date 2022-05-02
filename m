@@ -2,74 +2,112 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8590D51730D
-	for <lists+linux-efi@lfdr.de>; Mon,  2 May 2022 17:41:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 594A6517400
+	for <lists+linux-efi@lfdr.de>; Mon,  2 May 2022 18:15:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1385954AbiEBPot (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 2 May 2022 11:44:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52578 "EHLO
+        id S1386224AbiEBQSb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 2 May 2022 12:18:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1385941AbiEBPos (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 2 May 2022 11:44:48 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26E42F72
-        for <linux-efi@vger.kernel.org>; Mon,  2 May 2022 08:41:19 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id v12so20027287wrv.10
-        for <linux-efi@vger.kernel.org>; Mon, 02 May 2022 08:41:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=kdTSJmnbBK4N/virhew8A7fzQDKu0iWJnLEnGHSX4Dw=;
-        b=LiDnLEt9mMDcOUqe/y+G7PLlyLQ2PDwgp6TDpNZqUbbnzLevTkk2hqa5oP4qOkhVZp
-         TZF69jYA8rlqeLHQolaHiJaBRX/gD8RbJZVtnj/1DrQ/baBCHIkhL3Zj5Zjpu8yV6Hwn
-         SGZdKypbE7W780qgiJ+fz67GeKkj0J2r73jmahViqDnzjpSy8W1Vt13nv59wLr7o0r3b
-         zAdKAg4Qt6/WeKUbNfDIwug7M7j0sUaGfE4tQ/SMylmac3l7OPaxBSxuZWbrQ/tHvNXA
-         eRfhV1Np33vY302pf5LvB2W2zuBa0uYt3+zpoYWMWtBGmNX8ALOtqIalGGhM8BTu7Evv
-         BH1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=kdTSJmnbBK4N/virhew8A7fzQDKu0iWJnLEnGHSX4Dw=;
-        b=mZahAhJFr977fYZdYKT7Zt3YuE+dyH0Ekls9gLALGhZO7G5RuSGR12EsVVgJvOsXWi
-         nUd+LuuspLE2MYfVVX4WU3c/nfcR0cZuUPHrpGyZSzgQjlbxgcaU4uPXMX8quCpSoOSf
-         SkWE5E3bWdPOfr4Z3xRa/Xt757tm2w8ds/Qyff+YencTqAmQsWaCa+/OlAZENm6U1ojU
-         id6fgmyjvYPdl/xKi5shRfuPr30VwlXRGB9jmzrcODtgCXIkarv4Tq+yOPMl4tTcs0AG
-         WdlYYPBcXDkUOqU0XbwNW1CQWJOkz3ZBe8OombMv5qvl30vbkCA0c4zV1p+UzrfVcbfI
-         gIZg==
-X-Gm-Message-State: AOAM531Tf1Y/QMPnlUw6Wq2V6xXlasEe+mbgVYwOhoBmx2Nq3qMMEN7U
-        tebB6fExm//lY81x5XOwtPawi9KcAWbFG+wfb31bSFmbAQU=
-X-Google-Smtp-Source: ABdhPJxQnoPAmGDkrnWenR9mItq06e4ef1D3WBimAj2Hf0fi9PpGTmNe2mQQ/IajB0EwH90WPecfV26+ZZYtEIqZSp8=
-X-Received: by 2002:a05:6512:2398:b0:473:9cf5:1750 with SMTP id
- c24-20020a056512239800b004739cf51750mr3834545lfv.300.1651506066453; Mon, 02
- May 2022 08:41:06 -0700 (PDT)
+        with ESMTP id S1357459AbiEBQSa (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 2 May 2022 12:18:30 -0400
+Received: from fudo.makrotopia.org (fudo.makrotopia.org [IPv6:2a07:2ec0:3002::71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF1DABC93;
+        Mon,  2 May 2022 09:15:00 -0700 (PDT)
+Received: from local
+        by fudo.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+         (Exim 4.94.2)
+        (envelope-from <daniel@makrotopia.org>)
+        id 1nlYhM-00085n-QZ; Mon, 02 May 2022 18:14:57 +0200
+Date:   Mon, 2 May 2022 17:14:48 +0100
+From:   Daniel Golle <daniel@makrotopia.org>
+To:     linux-block@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     Tom Rini <trini@konsulko.com>, Jens Axboe <axboe@kernel.dk>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 0/5] partition parser for U-Boot's uImage.FIT
+Message-ID: <YnADeJSWFYmP8ekM@makrotopia.org>
 MIME-Version: 1.0
-Sender: arunadogbe@gmail.com
-Received: by 2002:a05:6512:22c5:0:0:0:0 with HTTP; Mon, 2 May 2022 08:41:05
- -0700 (PDT)
-From:   Lisa Williams <lw4666555@gmail.com>
-Date:   Mon, 2 May 2022 16:41:05 +0100
-X-Google-Sender-Auth: Us32P7O15QDQmfhDpX_dAhvk4jw
-Message-ID: <CAPsVOGzyJPMeju17bbvX5hTyTOHJGABCr0Oy1WjZZxhKcxQcvQ@mail.gmail.com>
-Subject: Hi Dear!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=0.1 required=5.0 tests=BAYES_00,PDS_OTHER_BAD_TLD,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+Add uImage.FIT partition parser and wire it up to allow mounting
+filesystem sub-images from uImage.FIT in GPT partitions as well as
+mtdblock and ubiblock devices within Linux (e.g. as root filesystem).
+
+Using uImage.FIT to store the root filesystem besides kernel and dtb has
+several obvious advantages which are hard to obtain in any other way:
+ * single image accross different storage types
+ * dynamically sized partitions for kernel and rootfs
+ * hash also for rootfs checked by U-Boot before launching kernel
+ * images may include additional filesystems e.g. for localization or
+   branding
+
+For this to work, the image has to be created with external data and
+sub-images aligned to the system's memory page boundaries, ie.
+ mkimage -E -B 0x1000 -p 0x1000 ...
+
+Booting such images has been supported by U-Boot since v2018.01.
+
+A previous version of this partition parser is in production use on
+some OpenWrt devices, eg. the BananaPi R64 where using the FIT parser
+allows booting the very same image from eMMC, SD Card or SPI-NAND/UBI
+and also using it as a firmware-upgrade image at the same time.
+The Ubiquiti UniFi 6 LR access served as a reference board with SPI-NOR
+flash and use of the partition parser on top of a mtdblock device.
+
+Most recently U-Boot now passes down the selected configuration
+node name via device tree to allow the partition parser (or userspace
+process via sysfs) to identify the image configuration.
+
+Device Tree schema for that:
+https://github.com/devicetree-org/dt-schema/commit/a24d97d43491e55d4def006213213a6c4045b646
+
+In most cases this partition parser can be used without relying on the
+bootloader to pass-down the configuration node name. The default
+configuration node is used then.
+
+Changes since RFC:
+ * fixed wrong variable used in error path
+ * introduced dedicated Kconfig options to enable partition
+   parsers on mtdblock and ubiblock
+ * drop #ifdef'ery, use IS_ENABLED(...) where needed
+
+Daniel Golle (5):
+  block: add new flag to add partitions read-only
+  block: add partition parser for U-Boot uImage.FIT
+  partitions/efi: add support for uImage.FIT sub-partitions
+  mtd_blkdevs: add option to enable scanning for partitions
+  mtd: ubi: block: add option to enable scanning for partitions
+
+ MAINTAINERS               |   6 +
+ block/blk.h               |   1 +
+ block/partitions/Kconfig  |  14 ++
+ block/partitions/Makefile |   1 +
+ block/partitions/check.h  |   5 +
+ block/partitions/core.c   |   6 +
+ block/partitions/efi.c    |   9 +
+ block/partitions/efi.h    |   3 +
+ block/partitions/fit.c    | 352 ++++++++++++++++++++++++++++++++++++++
+ drivers/mtd/Kconfig       |  11 ++
+ drivers/mtd/mtd_blkdevs.c |   4 +-
+ drivers/mtd/ubi/Kconfig   |  10 ++
+ drivers/mtd/ubi/block.c   |   5 +-
+ 13 files changed, 425 insertions(+), 2 deletions(-)
+ create mode 100644 block/partitions/fit.c
+
 -- 
-Hi Dear
+2.36.0
 
-My name is Lisa Williams, I am from United States of America, Its my
-pleasure to contact you for new and special friendship, I will be glad to
-see your reply for us to know each other better
-
-Yours
-Lisa
