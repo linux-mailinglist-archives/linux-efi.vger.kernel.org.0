@@ -2,118 +2,109 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2346516EB8
-	for <lists+linux-efi@lfdr.de>; Mon,  2 May 2022 13:17:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 220B35170A5
+	for <lists+linux-efi@lfdr.de>; Mon,  2 May 2022 15:36:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1384581AbiEBLU6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 2 May 2022 07:20:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34990 "EHLO
+        id S233529AbiEBNkI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 2 May 2022 09:40:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1381044AbiEBLU5 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 2 May 2022 07:20:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A00ABCB0;
-        Mon,  2 May 2022 04:17:29 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 04F626128E;
-        Mon,  2 May 2022 11:17:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B402EC385B2;
-        Mon,  2 May 2022 11:17:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651490248;
-        bh=KdTG5ILW+BimV/rUokcRVUnKrnKVJkh0mRI8hwDxv9c=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nY3YeUh8wq/b7ruMqOaCgr+Td8NbU3vfs7xE26erkktuhf80/mBaLpY+hFB1S/n1a
-         moxQYIUGqIlPHq8GojuWdeb/EbyfandoaZzVRlhqNj3D0/gMB2o5bT40O9ooWkxAff
-         9isDKWAm2SJs8bOlppVHFII36BSTNyIGAktodVcydUTvMj7+rsGt1EG7n3dJRxbCI4
-         50L1yLmLXRIOp/isyK6Nf2BzD0bnXVNuKYbUUKLthwjPm8rZH08giIaKTHZI0qhEjw
-         /sx622IM3TBihssx4RNtul9RKQpM65kH7IdprfeLDmwHtJd+2+aPDYhlnnStEbVMql
-         XR9Tx+wFiu/hg==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Cc:     catalin.marinas@arm.com, will@kernel.org,
+        with ESMTP id S1385368AbiEBNkF (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 2 May 2022 09:40:05 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F306115702
+        for <linux-efi@vger.kernel.org>; Mon,  2 May 2022 06:36:28 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id w1so25293064lfa.4
+        for <linux-efi@vger.kernel.org>; Mon, 02 May 2022 06:36:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=sPNChsGYk7kHE/rCDooMX11EJCDPE+Ox4AJuqojjAS4=;
+        b=oMyzTIQDDDkGSqMMk6jcH3Jg3mOWazFOFwqR8EyExlL855INKMIuaBkCZwvdgRpQSD
+         biuD4BmyhgnU+ANzhEkwdNHyFuPiASTFGfXH7JoHfMhBtseilEctTctKHd1Z5QYpIeyh
+         XCBKI9nH1N78fYzf8GPhsTsXjmLO8rakFYZrfwhEpi9DGSBHuyM7Kyzd7RCTX53lpQV2
+         AAgicbO0zVpm57tZpTUKqHTOhO/EJQ9lQ16JCpzBQasFSbKey6Q9NKDvke2t9g+Su53U
+         XrVFnmOMFo0w1Fu6ajlfu9QgB04IgkrRWFpyWkdh+dnaXEjEmg6QDV7a4CYqhpLi/K7r
+         jzBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=sPNChsGYk7kHE/rCDooMX11EJCDPE+Ox4AJuqojjAS4=;
+        b=M7Pyy2C1DTPutK/mRGDt3ebimL1wP/NtudRzKA8nkn4hbEedK04wq6rvvOkF943XUZ
+         72B4Uum8X4aZqg51b04hCAwhp8uajNDcjBCiFD486hq+jltdjSMayw9hjlEtWGj7llV7
+         lMajTTrbcyDyGsJLLg+2MKhYPpadRoGRyU+enNSI+HDIlq0b7mhQbQGYMMLfceQgIOhH
+         5o/xCT2UDXAybfPHzHiyGiOJqpXx81WT1qNGbbKtOV4VRpcw4e6LaQ94LxvOofJQj1Bx
+         tl8NrFb04Cdt6KgTug3PhRoRkw/xMnrGqSt+zdUwy91Db7SIjeUGD6JfeXUgN7U7GW/6
+         e8Rg==
+X-Gm-Message-State: AOAM531wx1bVVt7yJMqr9DGs6MrPICB8N00MLu4pzu0HvJRzX7FTmeMO
+        UWASxkQpMBmFuVr0XrVohaqgQQ==
+X-Google-Smtp-Source: ABdhPJxn5B/JuXc6CCfatjGdv/+EBL9v9FlbJORmKz12IPtE+wybn1otAHjNPLgeBTtopFpf2dEoaA==
+X-Received: by 2002:a05:6512:3986:b0:472:4f5:33a0 with SMTP id j6-20020a056512398600b0047204f533a0mr8679514lfu.341.1651498587285;
+        Mon, 02 May 2022 06:36:27 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id h18-20020ac25d72000000b0047255d210e2sm704383lft.17.2022.05.02.06.36.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 May 2022 06:36:26 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+        id 6096C104AD8; Mon,  2 May 2022 16:38:10 +0300 (+03)
+Date:   Mon, 2 May 2022 16:38:10 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Wander Lairson Costa <wander@redhat.com>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Huacai Chen <chenhuacai@loongson.cn>
-Subject: [RFC PATCH 4/4] arm64: efi: enable generic EFI compressed boot
-Date:   Mon,  2 May 2022 13:17:10 +0200
-Message-Id: <20220502111710.4093567-5-ardb@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220502111710.4093567-1-ardb@kernel.org>
-References: <20220502111710.4093567-1-ardb@kernel.org>
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Varad Gautam <varad.gautam@suse.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>, x86@kernel.org,
+        linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv5 04/12] x86/boot: Add infrastructure required for
+ unaccepted memory support
+Message-ID: <20220502133810.gvmaqxvspzdvzrhv@box.shutemov.name>
+References: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
+ <20220425033934.68551-5-kirill.shutemov@linux.intel.com>
+ <YmvExncBpvDdfTjd@fedora>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1967; h=from:subject; bh=KdTG5ILW+BimV/rUokcRVUnKrnKVJkh0mRI8hwDxv9c=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBib721YQFXgTQ9rqQ5/5YC4MqDvd8W4LTztnbWv0qD +YGJ/PaJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYm+9tQAKCRDDTyI5ktmPJK92DA Cmdai5hwUZeWh8eqa1ig9Jiloi7qFITUH0u7nxxbmrhJwnJmPgdZbQOaXbmEpPcOt77JaoihxwAbYU ee4zh+LH0b8crlPyZyMFFwNBR4RQy8jOl257Un58tUHGtvfa/zOPAWaXKI0xaoKJ2kXn7ZODrDaRIk C92VrPPu8EJKJ8jhd4ytCbKi2NECM9EIHMGkMEtC6cQAWYgsSIEIHIXkNagThjDkw5VESOUsO4KmTL MImvTIxzCloCXUaLt425tAwxS5lh6Du9BxgUnynu+r2mES5cYRyKhyRQcpkFE7xIc0t1yCwnV6gYUN kUwQ1zcyyBhd/1j4N36mYNv54zH5DRXj1bK2JHq8Od16LFoYj6k0KXk2xK9ZgMHgevcBdoo76mWt2k suAj+Ctz0MNBX9Nz0EcG2h3P5qEN/4wktE2jWF2TI/kFegCuicNU/S1nd7nZYCBvTXvL6/LFDmZQQb Fg1B+gNcUdX1awONYrDDSzR8NQ8/VYNi53yUems0BjFvE=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YmvExncBpvDdfTjd@fedora>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Wire up the generic EFI zboot support for arm64.
+On Fri, Apr 29, 2022 at 07:58:14AM -0300, Wander Lairson Costa wrote:
+> On Mon, Apr 25, 2022 at 06:39:26AM +0300, Kirill A. Shutemov wrote:
+> 
+> [snip]
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/arm64/Makefile      |  5 +++++
- arch/arm64/boot/Makefile | 17 ++++++++++++++++-
- 2 files changed, 21 insertions(+), 1 deletion(-)
+As I said in the commit message, all that code added by the patch is copy
+of the battle-tested code from the main kernel. I'm not sure what the
+value of these review comment. Hm?
 
-diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-index 2f1de88651e6..c9580f78439f 100644
---- a/arch/arm64/Makefile
-+++ b/arch/arm64/Makefile
-@@ -162,6 +162,11 @@ Image: vmlinux
- Image.%: Image
- 	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
- 
-+ifneq ($(CONFIG_EFI_ZBOOT),)
-+zImage.efi: Image
-+	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
-+endif
-+
- install: install-image := Image
- zinstall: install-image := Image.gz
- install zinstall:
-diff --git a/arch/arm64/boot/Makefile b/arch/arm64/boot/Makefile
-index ebe80faab883..81500267ab79 100644
---- a/arch/arm64/boot/Makefile
-+++ b/arch/arm64/boot/Makefile
-@@ -16,7 +16,7 @@
- 
- OBJCOPYFLAGS_Image :=-O binary -R .note -R .note.gnu.build-id -R .comment -S
- 
--targets := Image Image.bz2 Image.gz Image.lz4 Image.lzma Image.lzo
-+targets := Image Image.bz2 Image.gz Image.lz4 Image.lzma Image.lzo zImage.efi
- 
- $(obj)/Image: vmlinux FORCE
- 	$(call if_changed,objcopy)
-@@ -35,3 +35,18 @@ $(obj)/Image.lzma: $(obj)/Image FORCE
- 
- $(obj)/Image.lzo: $(obj)/Image FORCE
- 	$(call if_changed,lzo)
-+
-+OBJCOPYFLAGS_Image.gz.o := -O elf64-littleaarch64 -I binary \
-+			   --rename-section .data=.gzdata,load,alloc,readonly,contents
-+$(obj)/Image.gz.o: $(obj)/Image.gz FORCE
-+	$(call if_changed,objcopy)
-+
-+ZBOOT_DEPS := memcpy.o memset.o strnlen.o
-+$(obj)/zImage.efi.elf: $(obj)/Image.gz.o $(addprefix $(objtree)/arch/arm64/lib/,$(ZBOOT_DEPS))
-+	$(Q)$(LD) -T $(srctree)/drivers/firmware/efi/libstub/zboot.lds \
-+		-o $@ $^ $(objtree)/drivers/firmware/efi/libstub/lib.a \
-+		--defsym=pe_machine_type=0xaa64
-+
-+$(obj)/zImage.efi: OBJCOPYFLAGS := -O binary
-+$(obj)/zImage.efi: $(obj)/zImage.efi.elf FORCE
-+	$(call if_changed,objcopy)
 -- 
-2.30.2
-
+ Kirill A. Shutemov
