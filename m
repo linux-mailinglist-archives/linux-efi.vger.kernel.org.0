@@ -2,81 +2,89 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2003151DCB9
-	for <lists+linux-efi@lfdr.de>; Fri,  6 May 2022 18:01:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 741AE51DD4F
+	for <lists+linux-efi@lfdr.de>; Fri,  6 May 2022 18:13:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1443307AbiEFQE4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 6 May 2022 12:04:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36230 "EHLO
+        id S1443798AbiEFQRR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 6 May 2022 12:17:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1443270AbiEFQEz (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 6 May 2022 12:04:55 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AB4469CCB
-        for <linux-efi@vger.kernel.org>; Fri,  6 May 2022 09:01:09 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id o69so7394687pjo.3
-        for <linux-efi@vger.kernel.org>; Fri, 06 May 2022 09:01:09 -0700 (PDT)
+        with ESMTP id S1443669AbiEFQRK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 6 May 2022 12:17:10 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6971A6E8E7
+        for <linux-efi@vger.kernel.org>; Fri,  6 May 2022 09:12:15 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id t25so9827779ljd.6
+        for <linux-efi@vger.kernel.org>; Fri, 06 May 2022 09:12:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DJQuHSIAlHGIpor5c5dPdkEnVxEx8DbE7jmudCub3d4=;
-        b=jQ7xZaZTB7N7rBpIHs/0CElGn01l9AQXdNaX6k8jXrAaJqQ25NEB9BM5bbodgfv0cZ
-         o8v4laiuonAI3gk+YGqelG0OD+DVySSMRg63uSIqREDRrPhJMR3KSuT35wwaUS8YFYch
-         rOrxpkfD5RuaAn4QY/2lg91WF1zOptOKzMP2JKXphcGymjOcFefW0nQQh9kP7UJMY1GG
-         OiLAM9wX+KmK/RtQGaobXp58jVCwVZnXJF4OhYZCQMkQfwBS7mr1AOvo0j7jY7pfCkbU
-         dUVjbhAvhfetI4VuQjiWvUUR2qZuZOW3KhYQrFs63jjEkTtnpgJAig8xUxU2zRQZBPk2
-         my1w==
+        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=3LVCF+EC61p3SRHqy5+HBfYg8g8sBVA6E2RSjLMm3ic=;
+        b=71gELqa8e3JZdAR40f88qYRAendRWwJy32RDkq6jbbgAR1oFpqUnUAh7JDtx9eVM4b
+         hXnwylvyfzfwO1l5pR5a8tj6McjLg1BgMlPCXYajEuS9KSDUdhDD4IEadqjiXDqkc5MN
+         jgRnaEFuE4vFyEl8fmIM9iQXW9RSsk/YvT+UGEyx56ucVrRD6B9KQ/k3MQeUHryYIjuD
+         6HSmA9SD2cmqfM/Rtv+U/n0Ew972cSEgHdE7tNtlrRWpD4u3DVdtKECy53If23SgbnzR
+         xej7+9vB9kXXhnte6xgRsD1WPNIKMmy+MI5P0vF2w3FABpNop43zQpwmMAvrts8IUo6u
+         Ay6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DJQuHSIAlHGIpor5c5dPdkEnVxEx8DbE7jmudCub3d4=;
-        b=2xyEgJWqw1XRX9kKQKamA/nZRg3Qeac9TqT2fEgAe7A3oLVxdp7WdUfu78hCCyA4ZC
-         1jDlqbVAtxCLH/IJzIPF2b8wUqgTXIZWN8C4XanaboEgzHVeWL0W6y4qzBNXRhkewbHK
-         OjaRiHQ/NKv05S+euO8dSlcOgrXIiaWB/ixYg9f/u5yEza1AqnReDOU1EGMwjgCVWsya
-         wPLUzQuX8lzrNGy/dci5DC3/68qOcb9JcRuCxt+5IsH1wgRUOB408WD5RYuS7oRU9Cjh
-         4SaJatq9s6quYXzHaYjijdAe1SslIyryqnrs2cBWqyqWdVEx6RklOoc7YOpwrL590wXz
-         5mxw==
-X-Gm-Message-State: AOAM53154WMsWd34kcj41PUTzzR45ssnN2ALw77VExvEK+RxMx/NwEtQ
-        E9/sYca3SrhWxQ6l7307imz2DSrZaa26v7uYevAa2A==
-X-Google-Smtp-Source: ABdhPJzetNCcmtdzsuA7MVysj4PUmFLJT04ZeXbzfGR3fv4T/RqwwNln8yT470KW1ll1x94sH07JlabaHewBC2MmUDk=
-X-Received: by 2002:a17:902:da8b:b0:15e:c0e8:d846 with SMTP id
- j11-20020a170902da8b00b0015ec0e8d846mr4360481plx.34.1651852868602; Fri, 06
- May 2022 09:01:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220429201717.1946178-1-martin.fernandez@eclypsium.com>
- <YnKr+aMf4PspDpHZ@zn.tnic> <CAKgze5YDD02AsrF0yESv2sptZ4qxyTMgCDmnOKcbQWjKQsJRsw@mail.gmail.com>
- <YnUYLDjIThbIz/Uf@zn.tnic> <6d90c832-af4a-7ed6-4f72-dae08bb69c37@intel.com>
-In-Reply-To: <6d90c832-af4a-7ed6-4f72-dae08bb69c37@intel.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Fri, 6 May 2022 09:00:57 -0700
-Message-ID: <CAPcyv4i73m6iPPfJE9CBdxf-OWGXahvGqvh6G-pqVO=3LB6ktQ@mail.gmail.com>
-Subject: Re: [PATCH v8 0/8] x86: Show in sysfs if a memory node is able to do encryption
-To:     Dave Hansen <dave.hansen@intel.com>
-Cc:     Borislav Petkov <bp@alien8.de>,
-        Martin Fernandez <martin.fernandez@eclypsium.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        platform-driver-x86@vger.kernel.org, Linux MM <linux-mm@kvack.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        X86 ML <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Mike Rapoport <rppt@kernel.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=3LVCF+EC61p3SRHqy5+HBfYg8g8sBVA6E2RSjLMm3ic=;
+        b=DCcKbroLrTLB++KVNUj6r/V+EGpLPrHIxVwPSLKDhfcUtWvQcObaiZYwZEZ7lJYt9E
+         PoMu6r6Syw1xisef7MHFjT8T35ce66TBg0hygcA6n6p1xjYNCqTH2KT7e9SpCeopjUL+
+         k4EuJrQ63dtoIiGaprQRTF/XpyIm7aVfDcfsgh0BdxhW1W2TJ1lemBfZ56FFlsYiRPuE
+         EYTOWZ6Wi2XxRE8w0IIjjfu+5O6rLxUlR5U1ICUAeQqqlyxMxQJuYX7EfcbRLQtuigl8
+         DMjDJKIepsfjKRrFcueoMGUYHfU85mJJtIxYZ40JuMIpJHZeLchWj5YssBb6nJO+BRi8
+         gkVA==
+X-Gm-Message-State: AOAM532zs4xiirhYNvwjhd7/N6woLUp3JWaOqH7RfnMuTFgbXlwOEPP1
+        s2TK8hct/WnY99lWe91QhWKmoA==
+X-Google-Smtp-Source: ABdhPJxcoFt3N3AtHGRW62qNedg2H/hvHQ56BxLep0ct05gnPOlLMPFLw3EGV7t5IJpESnjqgxaHQQ==
+X-Received: by 2002:a2e:b6c6:0:b0:24f:3919:5923 with SMTP id m6-20020a2eb6c6000000b0024f39195923mr2365023ljo.398.1651853533664;
+        Fri, 06 May 2022 09:12:13 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id v17-20020a2e9611000000b0024f3d1daed9sm680999ljh.97.2022.05.06.09.12.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 May 2022 09:12:13 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+        id 27825104AFD; Fri,  6 May 2022 19:13:59 +0300 (+03)
+Date:   Fri, 6 May 2022 19:13:59 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        daniel.gutson@eclypsium.com, hughsient@gmail.com,
-        alex.bazhaniuk@eclypsium.com,
-        "Schofield, Alison" <alison.schofield@intel.com>,
-        Kees Cook <keescook@chromium.org>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        "Huang, Kai" <kai.huang@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Varad Gautam <varad.gautam@suse.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>, x86@kernel.org,
+        linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv5 08/12] x86/mm: Provide helpers for unaccepted memory
+Message-ID: <20220506161359.4j5j5fxrw53fdbyr@box.shutemov.name>
+References: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
+ <20220425033934.68551-9-kirill.shutemov@linux.intel.com>
+ <YnJfhiiHn+48H2vb@zn.tnic>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YnJfhiiHn+48H2vb@zn.tnic>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
@@ -87,37 +95,46 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, May 6, 2022 at 8:32 AM Dave Hansen <dave.hansen@intel.com> wrote:
->
-> On 5/6/22 05:44, Borislav Petkov wrote:
-> >> Dave Hansen pointed those out in a previuos patch serie, here is the
-> >> quote:
-> >>
-> >>> CXL devices will have normal RAM on them, be exposed as "System RAM" and
-> >>> they won't have encryption capabilities.  I think these devices were
-> >>> probably the main motivation for EFI_MEMORY_CPU_CRYPTO.
-> > So this would mean that if a system doesn't have CXL devices and has
-> > TME/SME/SEV-* enabled, then it is running with encrypted memory.
-> >
-> > Which would then also mean, you don't need any of that code - you only
-> > need to enumerate CXL devices which, it seems, do not support memory
-> > encryption, and then state that memory encryption is enabled on the
-> > whole system, except for the memory of those devices.
->
-> CXL devices are just the easiest example to explain, but they are not
-> the only problem.
->
-> For example, Intel NVDIMMs don't support TDX (or MKTME with integrity)
-> since TDX requires integrity protection and NVDIMMs don't have metadata
-> space available.
->
-> Also, if this were purely a CXL problem, I would have expected this to
-> have been dealt with in the CXL spec alone.  But, this series is
-> actually driven by an ACPI spec.  That tells me that we'll see these
-> mismatched encryption capabilities in many more places than just CXL
-> devices.
+On Wed, May 04, 2022 at 01:12:06PM +0200, Borislav Petkov wrote:
+> On Mon, Apr 25, 2022 at 06:39:30AM +0300, Kirill A. Shutemov wrote:
+> > +	unaccepted_memory = __va(boot_params.unaccepted_memory);
+> > +	range_start = start / PMD_SIZE;
+> > +
+> > +	spin_lock_irqsave(&unaccepted_memory_lock, flags);
+> > +	for_each_set_bitrange_from(range_start, range_end, unaccepted_memory,
+> > +				   DIV_ROUND_UP(end, PMD_SIZE)) {
+> > +		unsigned long len = range_end - range_start;
+> > +
+> > +		/* Platform-specific memory-acceptance call goes here */
+> > +		panic("Cannot accept memory");
+> 
+> Yeah, no, WARN_ON_ONCE() pls.
 
-Yes, the problem is that encryption capabilities cut across multiple
-specifications. For example, you might need to consult a CPU
-vendor-specific manual, ACPI, EFI, PCI, and CXL specifications for a
-single security feature.
+Failure to accept the memory is fatal. Why pretend it is not?
+
+For TDX it will result in a crash on the first access. Prolonging the
+suffering just make it harder to understand what happened.
+
+> > +	unsigned long flags;
+> > +	bool ret = false;
+> > +
+> > +	spin_lock_irqsave(&unaccepted_memory_lock, flags);
+> > +	while (start < end) {
+> > +		if (test_bit(start / PMD_SIZE, unaccepted_memory)) {
+> > +			ret = true;
+> 
+> Wait, what?
+> 
+> That thing is lying: it'll return true for *some* PMD which is accepted
+> but not the whole range of [start, end].
+
+That's true. Note also that the check is inherently racy. Other CPU can
+get the range or subrange accepted just after spin_unlock().
+
+The check indicates that accept_memory() has to be called on the range
+before first access.
+
+Do you have problem with a name? Maybe has_unaccepted_memory()?
+
+-- 
+ Kirill A. Shutemov
