@@ -2,153 +2,116 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36FBB51E60D
-	for <lists+linux-efi@lfdr.de>; Sat,  7 May 2022 11:28:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D887A51FA68
+	for <lists+linux-efi@lfdr.de>; Mon,  9 May 2022 12:50:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377761AbiEGJcQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 7 May 2022 05:32:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37550 "EHLO
+        id S230016AbiEIKvf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 9 May 2022 06:51:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245217AbiEGJcP (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 7 May 2022 05:32:15 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1F1A55343;
-        Sat,  7 May 2022 02:28:28 -0700 (PDT)
-Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.57])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4KwMXR5vqtz1JBtC;
-        Sat,  7 May 2022 17:27:19 +0800 (CST)
-Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
- dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Sat, 7 May 2022 17:28:26 +0800
-Received: from [10.174.178.120] (10.174.178.120) by
- dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Sat, 7 May 2022 17:28:25 +0800
-Message-ID: <c65d22b4-f654-21aa-bd5f-d4f8b0939a25@huawei.com>
-Date:   Sat, 7 May 2022 17:28:24 +0800
+        with ESMTP id S231167AbiEIKv2 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 9 May 2022 06:51:28 -0400
+Received: from fudo.makrotopia.org (fudo.makrotopia.org [IPv6:2a07:2ec0:3002::71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C25481ECB9E;
+        Mon,  9 May 2022 03:47:27 -0700 (PDT)
+Received: from local
+        by fudo.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+         (Exim 4.94.2)
+        (envelope-from <daniel@makrotopia.org>)
+        id 1no0vD-0000FY-PM; Mon, 09 May 2022 12:47:23 +0200
+Date:   Mon, 9 May 2022 11:47:17 +0100
+From:   Daniel Golle <daniel@makrotopia.org>
+To:     linux-block@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     Tom Rini <trini@konsulko.com>, Jens Axboe <axboe@kernel.dk>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH v2 0/5] partition parser for U-Boot's uImage.FIT
+Message-ID: <YnjxNcN6+7rYp9RH@makrotopia.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH 0/2] Add support to relocate kernel image to mirrored
- region
-To:     <ardb@kernel.org>
-CC:     <akpm@linux-foundation.org>, <catalin.marinas@arm.com>,
-        <will@kernel.org>, <corbet@lwn.net>, <tglx@linutronix.de>,
-        <mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-        <x86@kernel.org>, <dvhart@infradead.org>, <andy@infradead.org>,
-        <rppt@kernel.org>, <paulmck@kernel.org>, <peterz@infradead.org>,
-        <jroedel@suse.de>, <songmuchun@bytedance.com>, <macro@orcam.me.uk>,
-        <frederic@kernel.org>, <W_Armin@gmx.de>, <john.garry@huawei.com>,
-        <seanjc@google.com>, <tsbogend@alpha.franken.de>,
-        <anshuman.khandual@arm.com>, <chenhuacai@kernel.org>,
-        <david@redhat.com>, <gpiccoli@igalia.com>, <mark.rutland@arm.com>,
-        <wangkefeng.wang@huawei.com>, <linux-doc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-efi@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
-        <platform-driver-x86@vger.kernel.org>, <linux-mm@kvack.org>,
-        <mawupeng1@huawei.com>
-References: <CAMj1kXGSStDgj9ABmUaTLnBmpQFksh3wx4tx=mJohum4GQe3Gg@mail.gmail.com>
- <20220419070150.254377-1-mawupeng1@huawei.com>
- <CAMj1kXHr2RdYSPor1st1ZnL=O42c8N6e=bNG+eFhatfefWLUrw@mail.gmail.com>
-From:   mawupeng <mawupeng1@huawei.com>
-In-Reply-To: <CAMj1kXHr2RdYSPor1st1ZnL=O42c8N6e=bNG+eFhatfefWLUrw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.120]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpemm500014.china.huawei.com (7.185.36.153)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=0.1 required=5.0 tests=BAYES_00,PDS_OTHER_BAD_TLD,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+Add uImage.FIT partition parser and wire it up to allow mounting
+filesystem sub-images from uImage.FIT in GPT partitions as well as
+mtdblock and ubiblock devices within Linux (e.g. as root filesystem).
 
+Using uImage.FIT to store the root filesystem besides kernel and dtb has
+several obvious advantages which are hard to obtain in any other way:
+ * single image accross different storage types
+ * dynamically sized partitions for kernel and rootfs
+ * hash also for rootfs checked by U-Boot before launching kernel
+ * images may include additional filesystems e.g. for localization or
+   branding
 
-在 2022/5/3 17:58, Ard Biesheuvel 写道:
-> On Tue, 19 Apr 2022 at 08:43, Wupeng Ma <mawupeng1@huawei.com> wrote:
->>
->> From: Ma Wupeng <mawupeng1@huawei.com>
->>
->> Now system image will perfer to be located to mirrored regions both KASLR
->> on and off.
->>
-> 
-> Hello Ma Wupeng,
-> 
-> I wonder if we could simplify this as follows:
-> - ignore the non-KASLR case for now, and rely on the bootloader  > load the image into mirrored memory if it exists;
+For this to work, the image has to be created with external data and
+sub-images aligned to the system's memory page boundaries, ie.
+ mkimage -E -B 0x1000 -p 0x1000 ...
 
-In grub, memory for static image is allocated via the following path:
+Booting such images has been supported by U-Boot since v2018.01.
 
-grub_cmd_linux
-   kernel = grub_malloc(filelen)
-   kernel_alloc_addr = grub_efi_allocate_any_pages (kernel_alloc_pages)
-   grub_memcpy (kernel_addr, kernel, grub_min(filelen, kernel_size))
-    grub_loader_set (grub_linux_boot, grub_linux_unload, 0)
+A previous version of this partition parser is in production use on
+some OpenWrt devices, eg. the BananaPi R64 where using the FIT parser
+allows booting the very same image from eMMC, SD Card or SPI-NAND/UBI
+and also using it as a firmware-upgrade image at the same time.
+The Ubiquiti UniFi 6 LR access served as a reference board with SPI-NOR
+flash and use of the partition parser on top of a mtdblock device.
 
-Can we get memory from mirrored region by the following steps:
-1. get memory map by calling grub_efi_get_memory_map()
-2. iter all memory map to find a suitable mirrored memory area
-3. locate kernel image to this area
+Most recently U-Boot now passes down the selected configuration
+node name via device tree to allow the partition parser (or userspace
+process via sysfs) to identify the image configuration.
 
-So, if kaslr is not enabled
-  - grub will load kernel into mirrored region
-else
-  - arm64-stub.c will relocate kernel image to mirrored region
+Device Tree schema for that:
+https://github.com/devicetree-org/dt-schema/commit/a24d97d43491e55d4def006213213a6c4045b646
 
-Is this feasible?
+In most cases this partition parser can be used without relying on the
+bootloader to pass-down the configuration node name. The default
+configuration node is used then.
 
-> - simplify the KASLR case to the below.
+Changes since v1:
+ * Use again #ifdef's in partitions/efi to only build against FIT
+   parser symbols if it is actually selected. Otherwise the efi/gpt
+   would unconditionally depend on the FTT parser to be present.
 
-Yes, we can certainly do this. I will remove my code and use yours.
+Changes since RFC:
+ * fixed wrong variable used in error path
+ * introduced dedicated Kconfig options to enable partition
+   parsers on mtdblock and ubiblock
+ * drop #ifdef'ery, use IS_ENABLED(...) where needed
 
-> 
-> I think this is reasonable, because it means we take mirrored memory
-> into account when we decide to move the image anyway, but expect the
-> boot chain to take care of this if there is no need to move the image.
-> 
-> -------------8<------------------
-> --- a/drivers/firmware/efi/libstub/randomalloc.c
-> +++ b/drivers/firmware/efi/libstub/randomalloc.c
-> @@ -56,6 +56,7 @@ efi_status_t efi_random_alloc(unsigned long size,
->                                unsigned long random_seed)
->   {
->          unsigned long map_size, desc_size, total_slots = 0, target_slot;
-> +       unsigned long total_mirrored_slots = 0;
->          unsigned long buff_size;
->          efi_status_t status;
->          efi_memory_desc_t *memory_map;
-> @@ -86,8 +87,14 @@ efi_status_t efi_random_alloc(unsigned long size,
->                  slots = get_entry_num_slots(md, size, ilog2(align));
->                  MD_NUM_SLOTS(md) = slots;
->                  total_slots += slots;
-> +               if (md->attribute & EFI_MEMORY_MORE_RELIABLE)
-> +                       total_mirrored_slots += slots;
->          }
-> 
-> +       /* only consider mirrored slots for randomization if any exist */
-> +       if (total_mirrored_slots > 0)
-> +               total_slots = total_mirrored_slots;
-> +
->          /* find a random number between 0 and total_slots */
->          target_slot = (total_slots * (u64)(random_seed & U32_MAX)) >> 32;
-> 
-> @@ -107,6 +114,10 @@ efi_status_t efi_random_alloc(unsigned long size,
->                  efi_physical_addr_t target;
->                  unsigned long pages;
-> 
-> +               if (total_mirrored_slots > 0 &&
-> +                   !(md->attribute & EFI_MEMORY_MORE_RELIABLE))
-> +                       continue;
-> +
->                  if (target_slot >= MD_NUM_SLOTS(md)) {
->                          target_slot -= MD_NUM_SLOTS(md);
->                          continue;
-> .
+Daniel Golle (5):
+  block: add new flag to add partitions read-only
+  block: add partition parser for U-Boot uImage.FIT
+  partitions/efi: add support for uImage.FIT sub-partitions
+  mtd_blkdevs: add option to enable scanning for partitions
+  mtd: ubi: block: add option to enable scanning for partitions
+
+ MAINTAINERS               |   6 +
+ block/blk.h               |   1 +
+ block/partitions/Kconfig  |  14 ++
+ block/partitions/Makefile |   1 +
+ block/partitions/check.h  |   5 +
+ block/partitions/core.c   |   6 +
+ block/partitions/efi.c    |   9 +
+ block/partitions/efi.h    |   3 +
+ block/partitions/fit.c    | 352 ++++++++++++++++++++++++++++++++++++++
+ drivers/mtd/Kconfig       |  11 ++
+ drivers/mtd/mtd_blkdevs.c |   4 +-
+ drivers/mtd/ubi/Kconfig   |  10 ++
+ drivers/mtd/ubi/block.c   |   5 +-
+ 13 files changed, 425 insertions(+), 2 deletions(-)
+ create mode 100644 block/partitions/fit.c
+
+-- 
+2.36.0
