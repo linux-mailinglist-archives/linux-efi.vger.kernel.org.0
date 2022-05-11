@@ -2,151 +2,104 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FA0E5228D4
-	for <lists+linux-efi@lfdr.de>; Wed, 11 May 2022 03:17:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA87E522B1F
+	for <lists+linux-efi@lfdr.de>; Wed, 11 May 2022 06:39:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231674AbiEKBRW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 10 May 2022 21:17:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46418 "EHLO
+        id S237427AbiEKEjZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 11 May 2022 00:39:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238832AbiEKBRV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 10 May 2022 21:17:21 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2112D381B8
-        for <linux-efi@vger.kernel.org>; Tue, 10 May 2022 18:17:20 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id q130so686327ljb.5
-        for <linux-efi@vger.kernel.org>; Tue, 10 May 2022 18:17:20 -0700 (PDT)
+        with ESMTP id S236012AbiEKEjW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 11 May 2022 00:39:22 -0400
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E71114C772
+        for <linux-efi@vger.kernel.org>; Tue, 10 May 2022 21:39:13 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id cx11-20020a17090afd8b00b001d9fe5965b3so3807798pjb.3
+        for <linux-efi@vger.kernel.org>; Tue, 10 May 2022 21:39:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=l/R7CNjWmMZ859kdXkriliqHFZFmcdN2UKowY7vVOHU=;
-        b=8CJByluZYe0dkhytOZ7LANy/Q36T2SzxDWXpHLGeWnfxyvns0y176nq5wqABdl8MuS
-         8JWwhkw/8Dz/zjo0vYLE6X4ieGVgty19A6fmFFJfTAkZf0XwfmaUvEBa51chzTSw2fNk
-         NCZFjZAzOuQZeVDNUshWB0ME+BKf6rAkRWyRi2suCa4HnC5cIEI70C8pbRMMhYKfUACy
-         lHeDeT9I/k+fOz1ysSaU8nlyyAjEfuSDDWejsXcoXUidz55t1Wl6dZHJV9vvCP+L3IFs
-         RWxkEh2zXcgX0WJ+D7S89UL9SGee8sjbbN4mdh9bgMFty7a0McfOFAswPU9H9kpsEhbS
-         0otA==
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
+        b=nrkBIDyCffFbQz5WNhQU88q5l+bx8m1CoLNL/nRcxBFZRgp3B2RwRJzpJi69hjmFPQ
+         Eotn36CVTQor8sTwq84btYhQQ+OsypTpYdHIfGkC/Ekjg8a9U0HkQq0T/gbcQg5/if4Y
+         i1yzcJYhTRMm8ny1NIiOYUNRazrfloxlCC/1XVxW2+TG0ItQpx2/G3cXjgMuOALgO1Rc
+         auxKHXwS3ghK6vFFIfR8essc70JXfRi2oIpi3YT/VLqISCMTaVWCOI/Xf0rWfpfTmlnw
+         XgqCFC8jOuHD5AjsEtox3h0b9tzcHlVM0fA1RrJyDFubK9aS707t1BYf/K43qSc4slo4
+         wrQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=l/R7CNjWmMZ859kdXkriliqHFZFmcdN2UKowY7vVOHU=;
-        b=NAi95QrXVqtnzot4U/CPa0yOK2HV3fbCDHHXqGDaP5j/e4pFlYQ+IKkZrFaHf6/4JY
-         xmDOpKh+awSjLELsSkpBvXozakkkBfzlniA3hrurDBRcHu1zVaCIer2D3e2OF8gOtYVj
-         pWFWvNk2yRK4ZSXWAqYLGyfW2k7CWeSRmWwKeqFNP2mi9K0lL4IhUH5G2KElyb5yj3Tr
-         76d8phDD05e3gs8FaX2tN1/cgE/fJUYW5pUNxR3UKUDcs3AC6J64E/P2uIsGxAny3tnm
-         S+HklrgJxzfeedsSs911iODZz4Dip5aIIgrY5VNyUeOJpWKryq7nXDL1soCfTPUr4AQI
-         hGiw==
-X-Gm-Message-State: AOAM531UXGr0U8pVizGVlXhvdTvjpOoDSJjRXkMCLH6MQ/LvDY0qdwS9
-        rAnKzlefyMJp0IA9kVqpS5hlvg==
-X-Google-Smtp-Source: ABdhPJyrXOYBkxfOLvXU9Mn81RSN5B1FseXt9b41D13lneI6qmBsXWNhAHs+SC3qXiT0Ejz37PQkVA==
-X-Received: by 2002:a2e:a810:0:b0:250:a19f:8b30 with SMTP id l16-20020a2ea810000000b00250a19f8b30mr14868052ljq.397.1652231838459;
-        Tue, 10 May 2022 18:17:18 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id c20-20020ac25f74000000b0047255d21187sm62003lfc.182.2022.05.10.18.17.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 May 2022 18:17:17 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
-        id 78BFE104757; Wed, 11 May 2022 04:19:06 +0300 (+03)
-Date:   Wed, 11 May 2022 04:19:06 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Varad Gautam <varad.gautam@suse.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>, x86@kernel.org,
-        linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv5 10/12] x86/tdx: Unaccepted memory support
-Message-ID: <20220511011906.el4m54fns7ilh7fr@box.shutemov.name>
-References: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
- <20220425033934.68551-11-kirill.shutemov@linux.intel.com>
- <YnOjJB8h3ZUR9sLX@zn.tnic>
- <20220506204423.gu6jrb53kmuxze5r@box.shutemov.name>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
+        b=zdr+Zl9yulF2vXUw3eG8rH9TjGXMwMtFc3DML3ygkoFXhuuV/4cr0YoOBqFowTHTee
+         FBib7E70sgodOD6ZhvY/3s2wZMoM8Q+IGJLeRwMPxPAGEfxLoGWT7ttzsMQa8VLyjArF
+         OqR8a2wdtI71ZCqn40LdityX7epgkkTeBi/1m5kXQ/3WalR7W2POjP8a0o7XfV7jziLf
+         D8ctPcJyWa6P9PnnGVk57syrjQr1mcPPRRJoSrY/q89nKTiV9oDGTHhSezxPRPXHEjQn
+         9MN8v/fyafCjgG6Az3Esg5CtUr0kwugVMSXbtUAGdd98zTdMuhIDv4NbFa9VhX4KDfBh
+         4hOg==
+X-Gm-Message-State: AOAM532bE+YCKonmfu/zHdQKAJKzBFUB84Nr5zN2MdsDpM22JX/58HDk
+        LrYHhR5aK39mA4ettFcNhAxGMCNuG3z/ef8+iJ0=
+X-Google-Smtp-Source: ABdhPJwbKHmbnZDflMHBZCcp2YbZAAZvFdPcM4owWeuPIkoxodmwIZJ+Xpgi08ylB1RFXLrw63SQRxJzumbwJKMTxhs=
+X-Received: by 2002:a17:90b:1007:b0:1dc:9862:68af with SMTP id
+ gm7-20020a17090b100700b001dc986268afmr3261389pjb.205.1652243951499; Tue, 10
+ May 2022 21:39:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220506204423.gu6jrb53kmuxze5r@box.shutemov.name>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6a10:319:0:0:0:0 with HTTP; Tue, 10 May 2022 21:39:10
+ -0700 (PDT)
+From:   Private Mail <privatemail1961@gmail.com>
+Date:   Tue, 10 May 2022 21:39:10 -0700
+Message-ID: <CANjAOAiiVcSrSv31FjThCVmeppS54UVvGVj3SRSvMfxOB+T8DA@mail.gmail.com>
+Subject: Have you had this? It is for your Benefit
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.3 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
+        BAYES_50,DEAR_BENEFICIARY,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
+        DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,
+        LOTS_OF_MONEY,MONEY_FRAUD_5,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, May 06, 2022 at 11:44:23PM +0300, Kirill A. Shutemov wrote:
-> > > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> > > index 7021ec725dd3..e4c31dbea6d7 100644
-> > > --- a/arch/x86/Kconfig
-> > > +++ b/arch/x86/Kconfig
-> > > @@ -885,6 +885,7 @@ config INTEL_TDX_GUEST
-> > >  	select ARCH_HAS_CC_PLATFORM
-> > >  	select X86_MEM_ENCRYPT
-> > >  	select X86_MCE
-> > > +	select UNACCEPTED_MEMORY
-> > 
-> > WARNING: unmet direct dependencies detected for UNACCEPTED_MEMORY
-> >   Depends on [n]: EFI [=y] && EFI_STUB [=y] && !KEXEC_CORE [=y]
-> >   Selected by [y]:
-> >   - INTEL_TDX_GUEST [=y] && HYPERVISOR_GUEST [=y] && X86_64 [=y] && CPU_SUP_INTEL [=y] && X86_X2APIC [=y]
-> > 
-> > WARNING: unmet direct dependencies detected for UNACCEPTED_MEMORY
-> >   Depends on [n]: EFI [=y] && EFI_STUB [=y] && !KEXEC_CORE [=y]
-> >   Selected by [y]:
-> >   - INTEL_TDX_GUEST [=y] && HYPERVISOR_GUEST [=y] && X86_64 [=y] && CPU_SUP_INTEL [=y] && X86_X2APIC [=y]
-> 
-> Ughh. Any ideas how to get around it? (Except for implementing kexec
-> support right away?)
+Our Ref: BG/WA0151/2022
 
-I reworked this to boot-time kexec disable.
+Dear Beneficiary
 
+Subject: An Estate of US$15.8 Million
 
-> > Also, it doesn't need to be bool - you can simply return accept_size on
-> > success and 0 on error so that you don't have an I/O argument.
-> 
-> So on the calling side it would look like:
-> 
-> 	accepted = try_accept_one(start, len, PG_LEVEL_1G)
-> 	if (accepted) {
-> 		start += accepted;
-> 		continue;
-> 	}
-> 
-> And the similar for other levels. Is it really better?
+Blount and Griffin Genealogical Investigators specializes in probate
+research to locate missing heirs and beneficiaries to estates in the
+United Kingdom and Europe.
 
-JFYI, I've reworked it as
+We can also help you find wills, obtain copies of certificates, help
+you to administer an estate, as well as calculating how an estate,
+intestacy or trust should be distributed.
 
-		accepted = try_accept_one(start, len, PG_LEVEL_1G);
-		if (!accepted)
-			accepted = try_accept_one(start, len, PG_LEVEL_2M);
-		if (!accepted)
-			accepted = try_accept_one(start, len, PG_LEVEL_4K);
-		if (!accepted)
-			return false;
-		start += accepted;
+You may be entitled to a large pay out for an inheritance in Europe
+worth US$15.8 million. We have discovered an estate belonging to the
+late Depositor has remained unclaimed since he died in 2011 and we
+have strong reasons to believe you are the closest living relative to
+the deceased we can find.
 
-looks good to me.
+You may unknowingly be the heir of this person who died without
+leaving a will (intestate). We will conduct a probate research to
+prove your entitlement, and can submit a claim on your behalf all at
+no risk to yourselves.
 
--- 
- Kirill A. Shutemov
+Our service fee of 10% will be paid to us after you have received the estate.
+
+The estate transfer process should take just a matter of days as we
+have the mechanism and expertise to get this done very quickly. This
+message may come to you as a shock, however we hope to work with you
+to transfer the estate to you as quickly as possible.
+
+Feel free to email our senior case worker Mr. Malcolm Casey on email:
+malcolmcasey68@yahoo.com for further discussions.
+
+With warm regards,
+
+Mr. Blount W. Gort, CEO.
+Blount and Griffin Associates Inc
