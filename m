@@ -2,24 +2,24 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDE0C5255EB
-	for <lists+linux-efi@lfdr.de>; Thu, 12 May 2022 21:39:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFABE5255EC
+	for <lists+linux-efi@lfdr.de>; Thu, 12 May 2022 21:40:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358133AbiELTji (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 12 May 2022 15:39:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60424 "EHLO
+        id S1358150AbiELTj6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 12 May 2022 15:39:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358144AbiELTjh (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 12 May 2022 15:39:37 -0400
+        with ESMTP id S1358151AbiELTj5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 12 May 2022 15:39:57 -0400
 Received: from fudo.makrotopia.org (fudo.makrotopia.org [IPv6:2a07:2ec0:3002::71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D892252DD0;
-        Thu, 12 May 2022 12:39:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E4312689FB;
+        Thu, 12 May 2022 12:39:54 -0700 (PDT)
 Received: from local
         by fudo.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
          (Exim 4.94.2)
         (envelope-from <daniel@makrotopia.org>)
-        id 1npEeq-0004vd-NO; Thu, 12 May 2022 21:39:32 +0200
-Date:   Thu, 12 May 2022 20:39:27 +0100
+        id 1npEfA-0004wY-E8; Thu, 12 May 2022 21:39:52 +0200
+Date:   Thu, 12 May 2022 20:39:46 +0100
 From:   Daniel Golle <daniel@makrotopia.org>
 To:     linux-block@vger.kernel.org, linux-efi@vger.kernel.org,
         linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org
@@ -29,9 +29,9 @@ Cc:     Tom Rini <trini@konsulko.com>, Jens Axboe <axboe@kernel.dk>,
         Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH v3 4/5] mtd_blkdevs: add option to enable scanning for
+Subject: [PATCH v3 5/5] mtd: ubi: block: add option to enable scanning for
  partitions
-Message-ID: <Yn1ibyUeXZttNX2a@makrotopia.org>
+Message-ID: <Yn1igrfT/yUipBUs@makrotopia.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -44,52 +44,50 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Add Kconfig boolean CONFIG_MTD_BLOCK_PARTITIONS and enable block
-partition parsers on non-NAND mtdblock devices in case it is selected.
+Add Kconfig option CONFIG_MTD_UBI_BLOCK_PARTITIONS and enable block
+partition parsers on ubiblock devices in case it is selected.
 
 Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 ---
- drivers/mtd/Kconfig       | 11 +++++++++++
- drivers/mtd/mtd_blkdevs.c |  4 +++-
+ drivers/mtd/ubi/Kconfig | 10 ++++++++++
+ drivers/mtd/ubi/block.c |  5 ++++-
  2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/Kconfig b/drivers/mtd/Kconfig
-index 796a2eccbef0b8..12874dec15692a 100644
---- a/drivers/mtd/Kconfig
-+++ b/drivers/mtd/Kconfig
-@@ -69,6 +69,17 @@ config MTD_BLOCK_RO
- 	  You do not need this option for use with the DiskOnChip devices. For
- 	  those, enable NFTL support (CONFIG_NFTL) instead.
+diff --git a/drivers/mtd/ubi/Kconfig b/drivers/mtd/ubi/Kconfig
+index 2ed77b7b3fcb56..491330e42ab201 100644
+--- a/drivers/mtd/ubi/Kconfig
++++ b/drivers/mtd/ubi/Kconfig
+@@ -104,4 +104,14 @@ config MTD_UBI_BLOCK
  
-+config MTD_BLOCK_PARTITIONS
-+	bool "Scan for partitions on MTD block devices"
-+	depends on MTD_BLOCK || MTD_BLOCK_RO
+ 	   If in doubt, say "N".
+ 
++config MTD_UBI_BLOCK_PARTITIONS
++	bool "Scan UBI block devices for partitions"
 +	default y if FIT_PARTITION
++	depends on MTD_UBI_BLOCK
 +	help
-+	  Scan MTD block devices for partitions (ie. MBR, GPT, uImage.FIT, ...).
-+	  (NAND devices are omitted, ubiblock should be used instead when)
++	  Scan UBI block devices for partitions (ie. MBR, GPT, uImage.FIT, ...).
 +
-+	  Unless your MTD partitions contain sub-partitions mapped using a
-+	  partition table, say no.
++	  Unless your UBI volumes contain sub-partitions mapped using a partition
++	  table, say no.
 +
- comment "Note that in some cases UBI block is preferred. See MTD_UBI_BLOCK."
- 	depends on MTD_BLOCK || MTD_BLOCK_RO
- 
-diff --git a/drivers/mtd/mtd_blkdevs.c b/drivers/mtd/mtd_blkdevs.c
-index f7317211146550..c67ce2e6fbeb0a 100644
---- a/drivers/mtd/mtd_blkdevs.c
-+++ b/drivers/mtd/mtd_blkdevs.c
-@@ -359,7 +359,9 @@ int add_mtd_blktrans_dev(struct mtd_blktrans_dev *new)
- 	} else {
- 		snprintf(gd->disk_name, sizeof(gd->disk_name),
- 			 "%s%d", tr->name, new->devnum);
--		gd->flags |= GENHD_FL_NO_PART;
-+
-+		if (!IS_ENABLED(CONFIG_MTD_BLOCK_PARTITIONS) || mtd_type_is_nand(new->mtd))
-+			gd->flags |= GENHD_FL_NO_PART;
+ endif # MTD_UBI
+diff --git a/drivers/mtd/ubi/block.c b/drivers/mtd/ubi/block.c
+index a78fdf3b30f7e6..8b26e38f082ce4 100644
+--- a/drivers/mtd/ubi/block.c
++++ b/drivers/mtd/ubi/block.c
+@@ -430,7 +430,10 @@ int ubiblock_create(struct ubi_volume_info *vi)
+ 		ret = -ENODEV;
+ 		goto out_cleanup_disk;
  	}
- 
- 	set_capacity(gd, ((u64)new->size * tr->blksize) >> 9);
+-	gd->flags |= GENHD_FL_NO_PART;
++
++	if (!IS_ENABLED(CONFIG_MTD_UBI_BLOCK_PARTITIONS))
++		gd->flags |= GENHD_FL_NO_PART;
++
+ 	gd->private_data = dev;
+ 	sprintf(gd->disk_name, "ubiblock%d_%d", dev->ubi_num, dev->vol_id);
+ 	set_capacity(gd, disk_capacity);
 -- 
 2.36.0
 
