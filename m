@@ -2,185 +2,92 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79E4052C578
-	for <lists+linux-efi@lfdr.de>; Wed, 18 May 2022 23:22:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ECC552C6DE
+	for <lists+linux-efi@lfdr.de>; Thu, 19 May 2022 00:57:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242956AbiERVFX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 18 May 2022 17:05:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55630 "EHLO
+        id S231277AbiERW5I (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 18 May 2022 18:57:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242992AbiERVFW (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 May 2022 17:05:22 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E73B25B064;
-        Wed, 18 May 2022 14:05:14 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9AC1AB8217A;
-        Wed, 18 May 2022 21:03:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62235C385A9;
-        Wed, 18 May 2022 21:03:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652907836;
-        bh=C6ZPEPxOZAN12azD/fwrk+j/6+C5D+/6JNnA8f0Hn7A=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=KdlUM67kO4vLjc+9iXpu0HAnvVxOp555umS5H+ikJYYBRpEIsdKSj9ues56wGG5y5
-         9EpT3b1LdmueOYEf1vkgQXdlCMxJvZPinX4EYDZKL7TyEaC614UC3wCB/6zFs4M0D4
-         RsE6zlAlBNO9HAbRyyJYCBEBbt/4SMTWPcs+BvnpdzlNPznEgFCW/Agi3CSFXER2FS
-         0/COcp3KrMY/zUY2cavHMXAGGorH9yA5bHqVQ1Y+Jxk1BhtN+a072UOfZCdMNa2Xzs
-         2wKbozqpFaZROYYHeOQ4BoqwvTmMbd5CQwljEhe8pQnLYzCUopoiP7ylMUgIxoyQFf
-         OY7uaGzddauiQ==
-Received: by mail-oi1-f172.google.com with SMTP id t144so943996oie.7;
-        Wed, 18 May 2022 14:03:56 -0700 (PDT)
-X-Gm-Message-State: AOAM533pPGQBQpUeVRSueafHD+UwffR4V+hhEdDf+/QaIY7QY+ZcSQEM
-        m+hnnf6Dsh7WyzupKVtzv3Q0tROF3QDaOAQ65sg=
-X-Google-Smtp-Source: ABdhPJxAy0RYlypDvElW+UxqxkK2Lu4KGok9yXXBZxGkdD9cQ5Fo0NzIt8Z1EFuUYz6J3hd2igAnh7kCqgXYR+7pJsI=
-X-Received: by 2002:a05:6808:e8d:b0:322:bac0:2943 with SMTP id
- k13-20020a0568080e8d00b00322bac02943mr885914oil.126.1652907835508; Wed, 18
- May 2022 14:03:55 -0700 (PDT)
+        with ESMTP id S231205AbiERW5A (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 May 2022 18:57:00 -0400
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E1702AFB
+        for <linux-efi@vger.kernel.org>; Wed, 18 May 2022 15:56:55 -0700 (PDT)
+Received: by mail-yb1-xb30.google.com with SMTP id o80so6185429ybg.1
+        for <linux-efi@vger.kernel.org>; Wed, 18 May 2022 15:56:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=mZ3wqB4NmL7z6lpFr/h15h1rYqsZKafJnUpMVahbEPg=;
+        b=ovbcf3BPb/ZrA/FpQ+ZjErGDIEZ9sF3fYOxqsE4Z0xdiTlYY9UY36hS3ty6MLllddq
+         FdZzNc2PcFHW5cwKZ0FlQqx6F8uTY06Ab/cmT+eL89dkm6I4fHT5v6DDGzwY+fqIjM8b
+         RjeYQt93Ckr4p0lPVWY342OwWKznH6xDl4nV36uj7bwrBPcHFh3ePzF5GNEmu/mQBhIV
+         GwWDekgJIDWSV60014hyLdzt2NtjUStY8MI6SiwBWMH8LEBnRGkE0W6Db0zUE9IYWmDQ
+         Ifd6nbhkESdcIbQrjo3sdEfmdPtb1VAIHCw/LAZv1DOtvQwqLYnhML4dVDmuoYeMmVFn
+         q7TQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=mZ3wqB4NmL7z6lpFr/h15h1rYqsZKafJnUpMVahbEPg=;
+        b=FvR1eRpdtJ9ZbemszQrU3dnRdjVO6Fluoqk93X1HMTo5tSgHFNeLuY8HvgEQfjMgFu
+         uOAZx0ir/rC/cahIhJ0BuK9Cv0/FNvgKj7pAAm1ZE4sfJvUCsqFEu0bB/D5I14Ych9f6
+         dYSICCZTbupbBChFO579kuCW6gbjqSlHhxSx9TgLKddVz/SHEcB66m0OsgsechBdbAqH
+         +4cx94b6cL0/BOGYZAZpEDxRlc3oN+MjDh1FhpbawOxXW8Mv5R49C0b/o6bxYkDbbenr
+         1LmbDUsYGb4S4pd95woRiON9T08jNcbF+WR1ec8oNrbUu/bKaR0NpFkZuXmJS4neR9kh
+         CKWg==
+X-Gm-Message-State: AOAM532JxKHuB8/nLXDTqNNWWAbvjkOHZFWJTOs2X4E+HNn7IeZMkpYF
+        QCT6ynbXfxLIc7IG3pOOgODOb8QiD2WEFaUIzdE=
+X-Google-Smtp-Source: ABdhPJyyLDAg+sVdsLTxwEXiZ5avjedwK/uWMP/Y3UWcChEjwDE+iXuY4kOycHY8vIqM/rcV0hLTcVdg0IN0RAQYgBc=
+X-Received: by 2002:a5b:f87:0:b0:64a:9aa6:e181 with SMTP id
+ q7-20020a5b0f87000000b0064a9aa6e181mr1852277ybh.157.1652914614913; Wed, 18
+ May 2022 15:56:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220518095646.47548-1-sunilvl@ventanamicro.com> <20220518095646.47548-2-sunilvl@ventanamicro.com>
-In-Reply-To: <20220518095646.47548-2-sunilvl@ventanamicro.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 18 May 2022 23:03:44 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXF2N+0zRCNg0Aq9Y8Y35FUaQ1V+swzY__y86sayKW7PPA@mail.gmail.com>
-Message-ID: <CAMj1kXF2N+0zRCNg0Aq9Y8Y35FUaQ1V+swzY__y86sayKW7PPA@mail.gmail.com>
-Subject: Re: [PATCH V4 1/1] riscv/efi_stub: Add support for RISCV_EFI_BOOT_PROTOCOL
-To:     Sunil V L <sunilvl@ventanamicro.com>
-Cc:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-        Atish Patra <atishp@rivosinc.com>,
-        Anup Patel <apatel@ventanamicro.com>,
-        Jessica Clarke <jrtc27@jrtc27.com>,
-        Abner Chang <abner.chang@hpe.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Palmer Dabbelt <palmer@rivosinc.com>
+Received: by 2002:a05:7000:7143:0:0:0:0 with HTTP; Wed, 18 May 2022 15:56:53
+ -0700 (PDT)
+Reply-To: tonywenn@asia.com
+From:   Tony Wen <weboutloock4@gmail.com>
+Date:   Thu, 19 May 2022 06:56:53 +0800
+Message-ID: <CAE2_YrD=5bo8j9+ah-xptEBBV-HEC4=Gb0SRHf996phiopc3WQ@mail.gmail.com>
+Subject: engage
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:b30 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4959]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [weboutloock4[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [weboutloock4[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.4 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 18 May 2022 at 11:57, Sunil V L <sunilvl@ventanamicro.com> wrote:
->
-> This patch adds the support for getting the boot hart ID in
-> Linux EFI stub using RISCV_EFI_BOOT_PROTOCOL. This protocol
-> is preferred method over existing DT based solution since it
-> works irrespective of DT or ACPI.
->
-> The specification of the protocol is hosted at:
-> https://github.com/riscv-non-isa/riscv-uefi
->
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-> Reviewed-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-> ---
->  drivers/firmware/efi/libstub/efistub.h    |  7 ++++++
->  drivers/firmware/efi/libstub/riscv-stub.c | 29 +++++++++++++++++++----
->  include/linux/efi.h                       |  1 +
->  3 files changed, 32 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-> index edb77b0621ea..aced62a0907e 100644
-> --- a/drivers/firmware/efi/libstub/efistub.h
-> +++ b/drivers/firmware/efi/libstub/efistub.h
-> @@ -720,6 +720,13 @@ union efi_tcg2_protocol {
->         } mixed_mode;
->  };
->
-> +struct riscv_efi_boot_protocol {
-> +       u64 revision;
-> +
-> +       efi_status_t (__efiapi * get_boot_hartid)(struct riscv_efi_boot_protocol *this,
-> +                                                 size_t *boot_hartid);
-
-size_t is not a EFI type, and your spec uses UINTN here, which is
-equivalent to 'unsigned long'. However, jump_kernel_func() takes a
-unsigned int for the hartid. Please clean this up.
-
-
-> +};
-> +
->  typedef union efi_load_file_protocol efi_load_file_protocol_t;
->  typedef union efi_load_file_protocol efi_load_file2_protocol_t;
->
-> diff --git a/drivers/firmware/efi/libstub/riscv-stub.c b/drivers/firmware/efi/libstub/riscv-stub.c
-> index 9c460843442f..012504f6f9a4 100644
-> --- a/drivers/firmware/efi/libstub/riscv-stub.c
-> +++ b/drivers/firmware/efi/libstub/riscv-stub.c
-> @@ -23,7 +23,7 @@
->
->  typedef void __noreturn (*jump_kernel_func)(unsigned int, unsigned long);
->
-> -static u32 hartid;
-> +static size_t hartid;
->
-
-and here
-
->  static int get_boot_hartid_from_fdt(void)
->  {
-> @@ -47,14 +47,33 @@ static int get_boot_hartid_from_fdt(void)
->         return 0;
->  }
->
-> +static efi_status_t get_boot_hartid_from_efi(void)
-> +{
-> +       efi_guid_t boot_protocol_guid = RISCV_EFI_BOOT_PROTOCOL_GUID;
-> +       efi_status_t status;
-> +       struct riscv_efi_boot_protocol *boot_protocol;
-> +
-> +       status = efi_bs_call(locate_protocol, &boot_protocol_guid, NULL,
-> +                            (void **)&boot_protocol);
-> +       if (status == EFI_SUCCESS) {
-> +               status = efi_call_proto(boot_protocol,
-> +                                       get_boot_hartid, &hartid);
-> +       }
-> +       return status;
-> +}
-> +
->  efi_status_t check_platform_features(void)
->  {
->         int ret;
-> +       efi_status_t status;
->
-> -       ret = get_boot_hartid_from_fdt();
-> -       if (ret) {
-> -               efi_err("/chosen/boot-hartid missing or invalid!\n");
-> -               return EFI_UNSUPPORTED;
-> +       status = get_boot_hartid_from_efi();
-> +       if (status != EFI_SUCCESS) {
-> +               ret = get_boot_hartid_from_fdt();
-> +               if (ret) {
-> +                       efi_err("Failed to get boot hartid!\n");
-> +                       return EFI_UNSUPPORTED;
-> +               }
->         }
->         return EFI_SUCCESS;
->  }
-> diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index ccd4d3f91c98..9822c730207c 100644
-> --- a/include/linux/efi.h
-> +++ b/include/linux/efi.h
-> @@ -380,6 +380,7 @@ void efi_native_runtime_setup(void);
->  #define EFI_CONSOLE_OUT_DEVICE_GUID            EFI_GUID(0xd3b36f2c, 0xd551, 0x11d4,  0x9a, 0x46, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
->  #define APPLE_PROPERTIES_PROTOCOL_GUID         EFI_GUID(0x91bd12fe, 0xf6c3, 0x44fb,  0xa5, 0xb7, 0x51, 0x22, 0xab, 0x30, 0x3a, 0xe0)
->  #define EFI_TCG2_PROTOCOL_GUID                 EFI_GUID(0x607f766c, 0x7455, 0x42be,  0x93, 0x0b, 0xe4, 0xd7, 0x6d, 0xb2, 0x72, 0x0f)
-> +#define RISCV_EFI_BOOT_PROTOCOL_GUID           EFI_GUID(0xccd15fec, 0x6f73, 0x4eec,  0x83, 0x95, 0x3e, 0x69, 0xe4, 0xb9, 0x40, 0xbf)
->  #define EFI_LOAD_FILE_PROTOCOL_GUID            EFI_GUID(0x56ec3091, 0x954c, 0x11d2,  0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
->  #define EFI_LOAD_FILE2_PROTOCOL_GUID           EFI_GUID(0x4006c0c1, 0xfcb3, 0x403e,  0x99, 0x6d, 0x4a, 0x6c, 0x87, 0x24, 0xe0, 0x6d)
->  #define EFI_RT_PROPERTIES_TABLE_GUID           EFI_GUID(0xeb66918a, 0x7eef, 0x402a,  0x84, 0x2e, 0x93, 0x1d, 0x21, 0xc3, 0x8a, 0xe9)
-> --
-> 2.25.1
->
+Can I engage your services?
