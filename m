@@ -2,115 +2,101 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F408F52A9ED
-	for <lists+linux-efi@lfdr.de>; Tue, 17 May 2022 20:07:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B4CA52B449
+	for <lists+linux-efi@lfdr.de>; Wed, 18 May 2022 10:06:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242131AbiEQSFx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 17 May 2022 14:05:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40044 "EHLO
+        id S232715AbiERHwz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 18 May 2022 03:52:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351937AbiEQSF1 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 17 May 2022 14:05:27 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F16151599;
-        Tue, 17 May 2022 11:04:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1652810677; x=1684346677;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=mMyjDi4hwSid116h3PB/BgQEO9/8AhfI/qetQElWaiI=;
-  b=IwDEQMqiOlZBmls+c7mceIkUPkV/ySPHps158G4UdVLTrsl7djxjG8x+
-   NuMexlHFbNZsoI8FVAtG6+5SnZZUzgLJMrBgmGTrMLLq0MoqeshpDIuDb
-   UfefwEzLHSPLtek1uVFc8Eeubc0JB+XZkhtKUe9SV/gTsn+D2KQSnvDS/
-   m7+UuBeLHobYuODJtsjpFdm5hNGpA/9I1aRuYXiO72F3np7DzJrnqOgBE
-   LtI2nFEETzMjo/psA1IwaX+BIh19CoEjcGe4hp0J8+AiS711dMDe5aW1A
-   pI1k8XTk/sgHt6peAFsWNvYPBs/WixFE0qK37Z5utGjj02BPnHc1dr44v
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10350"; a="251783948"
-X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; 
-   d="scan'208";a="251783948"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 11:04:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; 
-   d="scan'208";a="700178885"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga004.jf.intel.com with ESMTP; 17 May 2022 11:04:19 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-        id ADE56CE; Tue, 17 May 2022 21:04:19 +0300 (EEST)
-Date:   Tue, 17 May 2022 21:04:19 +0300
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Joerg Roedel <jroedel@suse.de>,
+        with ESMTP id S232690AbiERHwx (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 May 2022 03:52:53 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DC361D0E4;
+        Wed, 18 May 2022 00:52:53 -0700 (PDT)
+Received: from zn.tnic (p200300ea974657d0329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9746:57d0:329c:23ff:fea6:a903])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 903F21EC0666;
+        Wed, 18 May 2022 09:52:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1652860367;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=gUc3S3Gcatvt5eEi+z7OKNcWBrt7L039MRb0Fapa9rg=;
+        b=WyIYPFDdDPaRV9LCi7UZ3Z46r1RXVEfi+ihmhgCPEF7cdGk8pAW8wQ7lt8OqOVoz05Wd1w
+        XQHMnhFBhTguaXpbCYdLe23xw93WsOXOkhfY+ShAaok+Za9L9zn8bXRvCHYIlJQgyTPR7N
+        gsMLIlVEozKbPeChEI3wjYU/oc/WLTY=
+Date:   Wed, 18 May 2022 09:52:46 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Richard Hughes <hughsient@gmail.com>
+Cc:     Dave Hansen <dave.hansen@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Martin Fernandez <martin.fernandez@eclypsium.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        platform-driver-x86@vger.kernel.org, Linux MM <linux-mm@kvack.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, daniel.gutson@eclypsium.com,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Kees Cook <keescook@chromium.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
         Ingo Molnar <mingo@redhat.com>,
-        Varad Gautam <varad.gautam@suse.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Dave Hansen <dave.hansen@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, X86 ML <x86@kernel.org>,
+        "Schofield, Alison" <alison.schofield@intel.com>,
+        alex.bazhaniuk@eclypsium.com, Greg KH <gregkh@linuxfoundation.org>,
         Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
-        khalid.elmously@canonical.com, philip.cox@canonical.com,
-        x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCHv6 02/15] mm: Add support for unaccepted memory
-Message-ID: <20220517180419.ysqhiyrsa3jns53p@black.fi.intel.com>
-References: <20220517153444.11195-1-kirill.shutemov@linux.intel.com>
- <20220517153444.11195-3-kirill.shutemov@linux.intel.com>
- <20220517104516.16fb0be5cb28153104b80654@linux-foundation.org>
+        Ben Widawsky <ben.widawsky@intel.com>,
+        "Huang, Kai" <kai.huang@intel.com>
+Subject: Re: [PATCH v8 0/8] x86: Show in sysfs if a memory node is able to do
+ encryption
+Message-ID: <YoSlzqSGLrQ+jdnD@zn.tnic>
+References: <CAKgze5YDD02AsrF0yESv2sptZ4qxyTMgCDmnOKcbQWjKQsJRsw@mail.gmail.com>
+ <YnUYLDjIThbIz/Uf@zn.tnic>
+ <6d90c832-af4a-7ed6-4f72-dae08bb69c37@intel.com>
+ <CAPcyv4i73m6iPPfJE9CBdxf-OWGXahvGqvh6G-pqVO=3LB6ktQ@mail.gmail.com>
+ <47140A56-D3F8-4292-B355-5F92E3BA9F67@alien8.de>
+ <6abea873-52a2-f506-b21b-4b567bee1874@intel.com>
+ <FDABC5C8-B80A-4977-9F97-5A8FC47F69D6@alien8.de>
+ <4bc56567-e2ce-40ec-19ab-349c8de8d969@intel.com>
+ <CE52D65A-C9F4-408D-B18A-72D87495A433@alien8.de>
+ <CAD2FfiHe3hCSNHEA0mSWPbH4LEWhj+FgxkhO83U1GgYEJR6wrw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220517104516.16fb0be5cb28153104b80654@linux-foundation.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <CAD2FfiHe3hCSNHEA0mSWPbH4LEWhj+FgxkhO83U1GgYEJR6wrw@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, May 17, 2022 at 10:45:16AM -0700, Andrew Morton wrote:
-> On Tue, 17 May 2022 18:34:31 +0300 "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com> wrote:
-> 
-> > UEFI Specification version 2.9 introduces the concept of memory
-> > acceptance. Some Virtual Machine platforms, such as Intel TDX or AMD
-> > SEV-SNP, require memory to be accepted before it can be used by the
-> > guest. Accepting happens via a protocol specific to the Virtual Machine
-> > platform.
-> > 
-> > ...
-> >
-> > --- a/include/linux/page-flags.h
-> > +++ b/include/linux/page-flags.h
-> > @@ -928,6 +928,14 @@ static inline bool is_page_hwpoison(struct page *page)
-> >  #define PG_offline	0x00000100
-> >  #define PG_table	0x00000200
-> >  #define PG_guard	0x00000400
-> > +#define PG_unaccepted	0x00000800
-> 
-> "For pages that are never mapped to userspace (and aren't PageSlab),
-> page_type may be used."
-> 
-> Is that true of these pages?
+On Mon, May 16, 2022 at 09:39:06AM +0100, Richard Hughes wrote:
+> This is still something consumers need; at the moment users have no
+> idea if data is *actually* being encrypted.
 
-Yes. PG_unaccepted is never set for any allocated page. It is only set for
-pages on free lists. It gets cleared in post_alloc_hook().
+As it was already pointed out - that's in /proc/cpuinfo.
+
+> I think Martin has done an admirable job going down the rabbit hole
+> to add this functionality in the proper manner -- so it's actually
+> accurate and useful for other use cases to that of fwupd.
+
+Only after I scratched the surface as to why this is needed.
+
+> At the moment my professional advice to people asking about Intel
+> memory encryption
+
+Well, what kind of memory encryption? Host, guest?
 
 -- 
- Kirill A. Shutemov
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
