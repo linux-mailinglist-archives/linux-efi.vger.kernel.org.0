@@ -2,59 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B52152CE02
-	for <lists+linux-efi@lfdr.de>; Thu, 19 May 2022 10:14:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCD7A52CE42
+	for <lists+linux-efi@lfdr.de>; Thu, 19 May 2022 10:25:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229612AbiESIOC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 19 May 2022 04:14:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36538 "EHLO
+        id S229551AbiESIZA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 19 May 2022 04:25:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229489AbiESIOB (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 19 May 2022 04:14:01 -0400
+        with ESMTP id S229450AbiESIY7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 19 May 2022 04:24:59 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85D5F5F259;
-        Thu, 19 May 2022 01:14:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD0D76A012;
+        Thu, 19 May 2022 01:24:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 38217B8237F;
-        Thu, 19 May 2022 08:13:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2870C34119;
-        Thu, 19 May 2022 08:13:57 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5D7ECB8238B;
+        Thu, 19 May 2022 08:24:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EF9C34117;
+        Thu, 19 May 2022 08:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652948037;
-        bh=4plX3uAS0SdnNX/Myvz2UrgGFPyHEHdk2KPq8Rkr4mc=;
+        s=k20201202; t=1652948696;
+        bh=ZEJekTBIhFTQMReJEVjcc3RAMBP+23vqG3lt6ArNBuY=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=p0HxlkY0Ho5DNCZnUU1uEZNgZf5rGqqa0iGKzJxvwq9h74upAs5gnVnK1AMIh0kI2
-         oZnxix2xtNoqa4FoVFc5J586PcQm14fhJ0W6vZLz+oXyE8bz12NBVmZqfjsdUOwnlH
-         IWC/elkhrLHAQ8BpeR4Z4Rkb2ehit8my6ADlrASp2GhEAGuRGSZY0eFW1y4GzGs0GQ
-         8xSLc8/M2aNvESilk8RD3WhfJKNGnsTc1SgRsn+USrhqZSGuJ5D+kLBZIe7RmrxkVp
-         DW0Nq/fMQuJwDsuujio2cu9AGJpMbkS0qZYbkWxjP4idCgPsctWOF1fMG9EuX85g9Z
-         ZXom/N0rMMh2w==
-Received: by mail-ot1-f45.google.com with SMTP id p12-20020a9d4e0c000000b00606b40860a3so3033762otf.11;
-        Thu, 19 May 2022 01:13:57 -0700 (PDT)
-X-Gm-Message-State: AOAM532Wq8n6NetVUbJbkqQAGCAcMu/dc0WBeKpz8VPPhlQ6Dtd8ccL5
-        yvGDtTSIIH8TLOkU1NicOHiRxt4non57ZZzm/Tg=
-X-Google-Smtp-Source: ABdhPJwAAiXUyk+6r2tu1xnOHDPmu3iQD/VTSnREM+hS2xEtjPlVcokUQo0nNQ+np9MYI+FTF10/GOrHTvdCeXNeVvg=
-X-Received: by 2002:a9d:84f:0:b0:605:e229:3c82 with SMTP id
- 73-20020a9d084f000000b00605e2293c82mr1435134oty.71.1652948036975; Thu, 19 May
- 2022 01:13:56 -0700 (PDT)
+        b=dEtFcmxiEJ6sgHea4RZuUAZeGzEUGhX2674PO0HO1NrXxAsQyAs01hHiWqDggHvZF
+         ksbhD6muJDuWDZqJTCgiehzNMdeISNEgSVhe30iK0+7RPQpwkvYHNGGtzuvaRXGGUB
+         rCNudm9716X8VSpVFry6DzPAhmEbeGfDbFTx8eD5jcABUQ5x243MPYCaVbB+XFtIsK
+         9IebHbX8NqMwqI7iaCu+UeEN50FvOZmJBXaUERVG8VzMhsQBdfAwz9Rf+eJOBHQ92h
+         nmpMeG6fuzlCOOEVxDqCmbunfu9rKm2ls2bKoxfVPvYr/UKzQSKLrJXhsaMxN7BG/q
+         IxjoKb5Rk/Ezg==
+Received: by mail-oo1-f43.google.com with SMTP id c19-20020a4a3813000000b0035ea4a3b97eso858431ooa.12;
+        Thu, 19 May 2022 01:24:55 -0700 (PDT)
+X-Gm-Message-State: AOAM533u8b+XTWWUKUmoqnutjK9deC5HVU3ZB0yoBJ57bhuGMzy1y7Oj
+        hHZwHJABk0Zkzymn4JRYC67qXoMGpYlfnWwr/As=
+X-Google-Smtp-Source: ABdhPJyXvlMk/ygLVnefCeYTBQZGYT2K371fd41lrDtSmbtessxv4fo/MoxgnCYY9+sbNWg3+ZcsQE3BVONYvS8ty3Q=
+X-Received: by 2002:a4a:314f:0:b0:35e:9802:1ce5 with SMTP id
+ v15-20020a4a314f000000b0035e98021ce5mr1476434oog.60.1652948695168; Thu, 19
+ May 2022 01:24:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220518095646.47548-1-sunilvl@ventanamicro.com>
- <20220518095646.47548-2-sunilvl@ventanamicro.com> <CAMj1kXF2N+0zRCNg0Aq9Y8Y35FUaQ1V+swzY__y86sayKW7PPA@mail.gmail.com>
- <04ed20b1-e312-dfc2-c314-02750c076681@canonical.com>
-In-Reply-To: <04ed20b1-e312-dfc2-c314-02750c076681@canonical.com>
+References: <20220519051512.136724-1-sunilvl@ventanamicro.com> <20220519051512.136724-2-sunilvl@ventanamicro.com>
+In-Reply-To: <20220519051512.136724-2-sunilvl@ventanamicro.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 19 May 2022 10:13:46 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEX0DWprb7cv_js1=M1J1hSXLBa=cOOjVo3tTVyGT0siQ@mail.gmail.com>
-Message-ID: <CAMj1kXEX0DWprb7cv_js1=M1J1hSXLBa=cOOjVo3tTVyGT0siQ@mail.gmail.com>
-Subject: Re: [PATCH V4 1/1] riscv/efi_stub: Add support for RISCV_EFI_BOOT_PROTOCOL
-To:     Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Cc:     Sunil V L <sunilvl@ventanamicro.com>,
+Date:   Thu, 19 May 2022 10:24:44 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHPXqXndUK408W9kB9VrOy_zXfAaXFiLhzXBs_FVYnXmQ@mail.gmail.com>
+Message-ID: <CAMj1kXHPXqXndUK408W9kB9VrOy_zXfAaXFiLhzXBs_FVYnXmQ@mail.gmail.com>
+Subject: Re: [PATCH V5 1/1] riscv/efi_stub: Add support for RISCV_EFI_BOOT_PROTOCOL
+To:     Sunil V L <sunilvl@ventanamicro.com>
+Cc:     Paul Walmsley <paul.walmsley@sifive.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
         Albert Ou <aou@eecs.berkeley.edu>,
         Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
         Atish Patra <atishp@rivosinc.com>,
         Anup Patel <apatel@ventanamicro.com>,
         Jessica Clarke <jrtc27@jrtc27.com>,
@@ -62,7 +60,8 @@ Cc:     Sunil V L <sunilvl@ventanamicro.com>,
         linux-efi <linux-efi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-riscv <linux-riscv@lists.infradead.org>,
-        Palmer Dabbelt <palmer@rivosinc.com>
+        Palmer Dabbelt <palmer@rivosinc.com>,
+        Sunil V L <sunil.vl@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -74,103 +73,117 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 19 May 2022 at 08:17, Heinrich Schuchardt
-<heinrich.schuchardt@canonical.com> wrote:
+On Thu, 19 May 2022 at 07:15, Sunil V L <sunilvl@ventanamicro.com> wrote:
 >
+> This patch adds the support for getting the boot hart ID in
+> Linux EFI stub using RISCV_EFI_BOOT_PROTOCOL. This protocol
+> is preferred method over existing DT based solution since it
+> works irrespective of DT or ACPI.
 >
+> The specification of the protocol is hosted at:
+> https://github.com/riscv-non-isa/riscv-uefi
 >
-> On 5/18/22 23:03, Ard Biesheuvel wrote:
-> > On Wed, 18 May 2022 at 11:57, Sunil V L <sunilvl@ventanamicro.com> wrote:
-> >>
-> >> This patch adds the support for getting the boot hart ID in
-> >> Linux EFI stub using RISCV_EFI_BOOT_PROTOCOL. This protocol
-> >> is preferred method over existing DT based solution since it
-> >> works irrespective of DT or ACPI.
-> >>
-> >> The specification of the protocol is hosted at:
-> >> https://github.com/riscv-non-isa/riscv-uefi
-> >>
-> >> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> >> Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-> >> Reviewed-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-> >> ---
-> >>   drivers/firmware/efi/libstub/efistub.h    |  7 ++++++
-> >>   drivers/firmware/efi/libstub/riscv-stub.c | 29 +++++++++++++++++++----
-> >>   include/linux/efi.h                       |  1 +
-> >>   3 files changed, 32 insertions(+), 5 deletions(-)
-> >>
-> >> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-> >> index edb77b0621ea..aced62a0907e 100644
-> >> --- a/drivers/firmware/efi/libstub/efistub.h
-> >> +++ b/drivers/firmware/efi/libstub/efistub.h
-> >> @@ -720,6 +720,13 @@ union efi_tcg2_protocol {
-> >>          } mixed_mode;
-> >>   };
-> >>
-> >> +struct riscv_efi_boot_protocol {
-> >> +       u64 revision;
-> >> +
-> >> +       efi_status_t (__efiapi * get_boot_hartid)(struct riscv_efi_boot_protocol *this,
-> >> +                                                 size_t *boot_hartid);
-> >
-> > size_t is not a EFI type, and your spec uses UINTN here, which is
-> > equivalent to 'unsigned long'. However, jump_kernel_func() takes a
-> > unsigned int for the hartid. Please clean this up.
->
-> unsigned long and size_t have the same number of bits. This seems to be
-> a question of taste where we should follow the maintainer.
->
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+> Reviewed-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
 
-We use unsigned long wherever the UEFI spec uses UINTN. This is not a
-matter of taste, really.
+Queued in efi/next, thanks all.
 
-> jump_kernel_func() assuming boot hart ID to be an unsigned int is not in
-> line with the RISC-V ISA which allows to use all xlen bits.
->
-> >
-> >
-> >> +};
-> >> +
-> >>   typedef union efi_load_file_protocol efi_load_file_protocol_t;
-> >>   typedef union efi_load_file_protocol efi_load_file2_protocol_t;
-> >>
-> >> diff --git a/drivers/firmware/efi/libstub/riscv-stub.c b/drivers/firmware/efi/libstub/riscv-stub.c
-> >> index 9c460843442f..012504f6f9a4 100644
-> >> --- a/drivers/firmware/efi/libstub/riscv-stub.c
-> >> +++ b/drivers/firmware/efi/libstub/riscv-stub.c
-> >> @@ -23,7 +23,7 @@
-> >>
-> >>   typedef void __noreturn (*jump_kernel_func)(unsigned int, unsigned long);
-> >>
-> >> -static u32 hartid;
-> >> +static size_t hartid;
-> >>
-> >
-> > and here
-> >
-> >>   static int get_boot_hartid_from_fdt(void)
-> >>   {
-> >> @@ -47,14 +47,33 @@ static int get_boot_hartid_from_fdt(void)
-> >>          return 0;
-> >>   }
-> >>
-> >> +static efi_status_t get_boot_hartid_from_efi(void)
-> >> +{
-> >> +       efi_guid_t boot_protocol_guid = RISCV_EFI_BOOT_PROTOCOL_GUID;
-> >> +       efi_status_t status;
-> >> +       struct riscv_efi_boot_protocol *boot_protocol;
-> >> +
-> >> +       status = efi_bs_call(locate_protocol, &boot_protocol_guid, NULL,
-> >> +                            (void **)&boot_protocol);
-> >> +       if (status == EFI_SUCCESS) {
-> >> +               status = efi_call_proto(boot_protocol,
-> >> +                                       get_boot_hartid, &hartid);
->
-> A lot of the kernel code seems to be unfit to handle hart IDs exceeding
-> INT_MAX (e.g. sbi_cpu_is_stopped()). Until this is fixed we have to
-> treat hartid > INT_MAX as an error.
->
+Sunil: I made some minor tweaks for coding style, whitespace etc when
+applying, please double check that I did not make any mistakes.
+Thanks.
 
-This is an issue in the core kernel code, not in the EFI stub. As you
-pointed out, the ISA implies UINTN / unsigned long here, and if the
-startup code cannot deal with that, it can be fixed separately.
+
+> ---
+>  drivers/firmware/efi/libstub/efistub.h    |  7 +++++
+>  drivers/firmware/efi/libstub/riscv-stub.c | 31 ++++++++++++++++++-----
+>  include/linux/efi.h                       |  1 +
+>  3 files changed, 33 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+> index edb77b0621ea..87aa66e8ef43 100644
+> --- a/drivers/firmware/efi/libstub/efistub.h
+> +++ b/drivers/firmware/efi/libstub/efistub.h
+> @@ -720,6 +720,13 @@ union efi_tcg2_protocol {
+>         } mixed_mode;
+>  };
+>
+> +struct riscv_efi_boot_protocol {
+> +       u64 revision;
+> +
+> +       efi_status_t (__efiapi * get_boot_hartid)(struct riscv_efi_boot_protocol *this,
+> +                                                 unsigned long *boot_hartid);
+> +};
+> +
+>  typedef union efi_load_file_protocol efi_load_file_protocol_t;
+>  typedef union efi_load_file_protocol efi_load_file2_protocol_t;
+>
+> diff --git a/drivers/firmware/efi/libstub/riscv-stub.c b/drivers/firmware/efi/libstub/riscv-stub.c
+> index 9c460843442f..10c59295f379 100644
+> --- a/drivers/firmware/efi/libstub/riscv-stub.c
+> +++ b/drivers/firmware/efi/libstub/riscv-stub.c
+> @@ -21,9 +21,9 @@
+>  #define MIN_KIMG_ALIGN         SZ_4M
+>  #endif
+>
+> -typedef void __noreturn (*jump_kernel_func)(unsigned int, unsigned long);
+> +typedef void __noreturn (*jump_kernel_func)(unsigned long, unsigned long);
+>
+> -static u32 hartid;
+> +static unsigned long hartid;
+>
+>  static int get_boot_hartid_from_fdt(void)
+>  {
+> @@ -47,14 +47,33 @@ static int get_boot_hartid_from_fdt(void)
+>         return 0;
+>  }
+>
+> +static efi_status_t get_boot_hartid_from_efi(void)
+> +{
+> +       efi_guid_t boot_protocol_guid = RISCV_EFI_BOOT_PROTOCOL_GUID;
+> +       efi_status_t status;
+> +       struct riscv_efi_boot_protocol *boot_protocol;
+> +
+> +       status = efi_bs_call(locate_protocol, &boot_protocol_guid, NULL,
+> +                            (void **)&boot_protocol);
+> +       if (status == EFI_SUCCESS) {
+> +               status = efi_call_proto(boot_protocol,
+> +                                       get_boot_hartid, &hartid);
+> +       }
+> +       return status;
+> +}
+> +
+>  efi_status_t check_platform_features(void)
+>  {
+>         int ret;
+> +       efi_status_t status;
+>
+> -       ret = get_boot_hartid_from_fdt();
+> -       if (ret) {
+> -               efi_err("/chosen/boot-hartid missing or invalid!\n");
+> -               return EFI_UNSUPPORTED;
+> +       status = get_boot_hartid_from_efi();
+> +       if (status != EFI_SUCCESS) {
+> +               ret = get_boot_hartid_from_fdt();
+> +               if (ret) {
+> +                       efi_err("Failed to get boot hartid!\n");
+> +                       return EFI_UNSUPPORTED;
+> +               }
+>         }
+>         return EFI_SUCCESS;
+>  }
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index ccd4d3f91c98..9822c730207c 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -380,6 +380,7 @@ void efi_native_runtime_setup(void);
+>  #define EFI_CONSOLE_OUT_DEVICE_GUID            EFI_GUID(0xd3b36f2c, 0xd551, 0x11d4,  0x9a, 0x46, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
+>  #define APPLE_PROPERTIES_PROTOCOL_GUID         EFI_GUID(0x91bd12fe, 0xf6c3, 0x44fb,  0xa5, 0xb7, 0x51, 0x22, 0xab, 0x30, 0x3a, 0xe0)
+>  #define EFI_TCG2_PROTOCOL_GUID                 EFI_GUID(0x607f766c, 0x7455, 0x42be,  0x93, 0x0b, 0xe4, 0xd7, 0x6d, 0xb2, 0x72, 0x0f)
+> +#define RISCV_EFI_BOOT_PROTOCOL_GUID           EFI_GUID(0xccd15fec, 0x6f73, 0x4eec,  0x83, 0x95, 0x3e, 0x69, 0xe4, 0xb9, 0x40, 0xbf)
+>  #define EFI_LOAD_FILE_PROTOCOL_GUID            EFI_GUID(0x56ec3091, 0x954c, 0x11d2,  0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+>  #define EFI_LOAD_FILE2_PROTOCOL_GUID           EFI_GUID(0x4006c0c1, 0xfcb3, 0x403e,  0x99, 0x6d, 0x4a, 0x6c, 0x87, 0x24, 0xe0, 0x6d)
+>  #define EFI_RT_PROPERTIES_TABLE_GUID           EFI_GUID(0xeb66918a, 0x7eef, 0x402a,  0x84, 0x2e, 0x93, 0x1d, 0x21, 0xc3, 0x8a, 0xe9)
+> --
+> 2.25.1
+>
