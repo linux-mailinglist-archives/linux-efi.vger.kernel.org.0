@@ -2,73 +2,69 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C237152DC62
-	for <lists+linux-efi@lfdr.de>; Thu, 19 May 2022 20:07:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86D1252DED9
+	for <lists+linux-efi@lfdr.de>; Thu, 19 May 2022 22:59:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243617AbiESSHp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 19 May 2022 14:07:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36646 "EHLO
+        id S242402AbiESU7Z (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 19 May 2022 16:59:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243604AbiESSHo (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 19 May 2022 14:07:44 -0400
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D96D941AF
-        for <linux-efi@vger.kernel.org>; Thu, 19 May 2022 11:07:41 -0700 (PDT)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-2f863469afbso65665137b3.0
-        for <linux-efi@vger.kernel.org>; Thu, 19 May 2022 11:07:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=atishpatra.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=fcjVw/C61oH9MO2vq0TEosk2QoMcMTcOP6iTXwM1Imk=;
-        b=Bly4/VIk2mp1Zm47Z/R9VCAnjQXGxCkstcgbPY9u9zlTpUFi/hyiG6VJBRjZk7F7yS
-         Te3BRmhK4WXN5cOqtwQ34P9mq0DlEwkn/nDsng7QxQKAo3XESNflSuenlim2O6Oy0Ctd
-         B6VRybdO47cd2XGSrFZlWgFgaMQlmLPnGXFyc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fcjVw/C61oH9MO2vq0TEosk2QoMcMTcOP6iTXwM1Imk=;
-        b=OuSTlv+4DVzppE9RTVzQyILsPBWPq6cUSjIs/0ko1nn8/GMxl0hpP9NbI6t2y7+jj7
-         scc3JEA8jbwjMV8Haf6YOwn8zDL22Fjmo8tbpSdzGh/yW30mx16KMY8IfCF4F4I1xwGu
-         Nrt+RnHspzA5D1WEQXpXsyi3bIzIqKn6Vz9V6VEb8dr9v6NNamRgisbKjydFEp+tcXKb
-         Ibu1N33cAX9lkquYoxFS5xrmnKgnb8kvnDCNfMNQWnw4OLaaxfrX+pkN04ku8oAvn3VU
-         ojERmKkNIK/bzs5eRBVPtkilQ8NkxhcKyhJEUUW3bkI5DiFpKGmYW96WTJsmUu4839pL
-         rbUQ==
-X-Gm-Message-State: AOAM532NRqlNxsawQCA/XHTwsiYLUeJgkqWg7Br88R6ppVFKBfjIzubg
-        +D7wDdYI36rYW/PTRAfLoO/TEiwHDhpIyZcMwqQR
-X-Google-Smtp-Source: ABdhPJzoPGSuS7/uwFvjd9b5dItfqWlDbb3NqKkTyeYmTFTSu7vWkaWgdbD31EmpuTMbzawsYzbFEl9Gvt+LTBESob0=
-X-Received: by 2002:a81:8494:0:b0:2fe:ff73:cdb7 with SMTP id
- u142-20020a818494000000b002feff73cdb7mr5778647ywf.373.1652983660355; Thu, 19
- May 2022 11:07:40 -0700 (PDT)
+        with ESMTP id S244928AbiESU7Y (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 19 May 2022 16:59:24 -0400
+Received: from sender4-of-o51.zoho.com (sender4-of-o51.zoho.com [136.143.188.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C4BEEC3DD;
+        Thu, 19 May 2022 13:59:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1652993938; cv=none; 
+        d=zohomail.com; s=zohoarc; 
+        b=RiZQ0ZOTCial1OVArSdR7fF+wyx602CWnh9upFkwMOgiN5jQmc7ShQ7vWR2Wn4SEJ+ssuf1sS1/SPG7Z5AAH9/WoPz5tBjXfHjPorALtLNtbEQ3bMHdsD4+RiQs+J6zbLw7mOpz8ooiFpPwZr7hFlL6HikEpTAh3jX0Mzhr1fJU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+        t=1652993938; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=+lxcsbkWlW5OwDAWmQ8OTx1rv/aXJYWx9gMImQtgn8Q=; 
+        b=GOHuI5g9gHB4MCyQoxHacvW+aswhr5onkesYg+TC7HaCt5vjIPs2gt3tKwPfPlFJrYWRxYj8gbNOuAhDPOePwV6WEBasjV6WAo8DgvUQ/qmS7WHpDM9h0etJhCRu/Ym3Fgv1yQSJfjB3P82bZr3sh6dWp0+xFTCrD6RvmcY9pv0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+        dkim=pass  header.i=apertussolutions.com;
+        spf=pass  smtp.mailfrom=dpsmith@apertussolutions.com;
+        dmarc=pass header.from=<dpsmith@apertussolutions.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1652993938;
+        s=zoho; d=apertussolutions.com; i=dpsmith@apertussolutions.com;
+        h=Message-ID:Date:Date:MIME-Version:To:To:Cc:Cc:References:From:From:Subject:Subject:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+        bh=+lxcsbkWlW5OwDAWmQ8OTx1rv/aXJYWx9gMImQtgn8Q=;
+        b=rlYFZ24nM6N02tt/RhCI30K/UlgCtuaE+iIC4nQ6cTV/EsnpMIWUgJ2tmYWAYaYt
+        2SG20ToIvS5VQGiOEVw/Rs4GxsiUUxjbMg3PxrigsY8bkkqc/8GFj8tPaaakj6SPW42
+        8JnHonQc99bESroQHYUwJLiNhY/caMg0ViTQ68mc=
+Received: from [10.10.1.138] (static-72-81-132-2.bltmmd.fios.verizon.net [72.81.132.2]) by mx.zohomail.com
+        with SMTPS id 1652993933360319.6557389531473; Thu, 19 May 2022 13:58:53 -0700 (PDT)
+Message-ID: <f9622b47-c45f-8c91-cb85-e5db7fd541cf@apertussolutions.com>
+Date:   Thu, 19 May 2022 16:57:36 -0400
 MIME-Version: 1.0
-References: <20220518095646.47548-1-sunilvl@ventanamicro.com>
- <20220518095646.47548-2-sunilvl@ventanamicro.com> <CAMj1kXF2N+0zRCNg0Aq9Y8Y35FUaQ1V+swzY__y86sayKW7PPA@mail.gmail.com>
- <04ed20b1-e312-dfc2-c314-02750c076681@canonical.com> <CAMj1kXEX0DWprb7cv_js1=M1J1hSXLBa=cOOjVo3tTVyGT0siQ@mail.gmail.com>
-In-Reply-To: <CAMj1kXEX0DWprb7cv_js1=M1J1hSXLBa=cOOjVo3tTVyGT0siQ@mail.gmail.com>
-From:   Atish Patra <atishp@atishpatra.org>
-Date:   Thu, 19 May 2022 11:07:28 -0700
-Message-ID: <CAOnJCULUoedeARe0J=aduAVD35uHMe0MN9Pc_LDkavWZ-VtOkg@mail.gmail.com>
-Subject: Re: [PATCH V4 1/1] riscv/efi_stub: Add support for RISCV_EFI_BOOT_PROTOCOL
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-        Sunil V L <sunilvl@ventanamicro.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Atish Patra <atishp@rivosinc.com>,
-        Anup Patel <apatel@ventanamicro.com>,
-        Jessica Clarke <jrtc27@jrtc27.com>,
-        Abner Chang <abner.chang@hpe.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Palmer Dabbelt <palmer@rivosinc.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Content-Language: en-US
+To:     Matthew Garrett <mjg59@srcf.ucam.org>,
+        Daniel Kiper <daniel.kiper@oracle.com>
+Cc:     Alec Brown <alec.r.brown@oracle.com>,
+        Kanth Ghatraju <kanth.ghatraju@oracle.com>,
+        Ross Philipson <ross.philipson@oracle.com>,
+        "piotr.krol@3mdeb.com" <piotr.krol@3mdeb.com>,
+        "krystian.hebel@3mdeb.com" <krystian.hebel@3mdeb.com>,
+        "persaur@gmail.com" <persaur@gmail.com>,
+        "Yoder, Stuart" <stuart.yoder@arm.com>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        "michal.zygowski@3mdeb.com" <michal.zygowski@3mdeb.com>,
+        James Bottomley <James.Bottomley@HansenPartnership.com>,
+        "lukasz@hawrylko.pl" <lukasz@hawrylko.pl>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        grub-devel@gnu.org, James Morris <jmorris@namei.org>
+References: <20220329174057.GA17778@srcf.ucam.org>
+From:   "Daniel P. Smith" <dpsmith@apertussolutions.com>
+Subject: Re: Linux DRTM on UEFI platforms
+In-Reply-To: <20220329174057.GA17778@srcf.ucam.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,120 +72,169 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, May 19, 2022 at 1:14 AM Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Thu, 19 May 2022 at 08:17, Heinrich Schuchardt
-> <heinrich.schuchardt@canonical.com> wrote:
-> >
-> >
-> >
-> > On 5/18/22 23:03, Ard Biesheuvel wrote:
-> > > On Wed, 18 May 2022 at 11:57, Sunil V L <sunilvl@ventanamicro.com> wrote:
-> > >>
-> > >> This patch adds the support for getting the boot hart ID in
-> > >> Linux EFI stub using RISCV_EFI_BOOT_PROTOCOL. This protocol
-> > >> is preferred method over existing DT based solution since it
-> > >> works irrespective of DT or ACPI.
-> > >>
-> > >> The specification of the protocol is hosted at:
-> > >> https://github.com/riscv-non-isa/riscv-uefi
-> > >>
-> > >> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> > >> Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-> > >> Reviewed-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-> > >> ---
-> > >>   drivers/firmware/efi/libstub/efistub.h    |  7 ++++++
-> > >>   drivers/firmware/efi/libstub/riscv-stub.c | 29 +++++++++++++++++++----
-> > >>   include/linux/efi.h                       |  1 +
-> > >>   3 files changed, 32 insertions(+), 5 deletions(-)
-> > >>
-> > >> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-> > >> index edb77b0621ea..aced62a0907e 100644
-> > >> --- a/drivers/firmware/efi/libstub/efistub.h
-> > >> +++ b/drivers/firmware/efi/libstub/efistub.h
-> > >> @@ -720,6 +720,13 @@ union efi_tcg2_protocol {
-> > >>          } mixed_mode;
-> > >>   };
-> > >>
-> > >> +struct riscv_efi_boot_protocol {
-> > >> +       u64 revision;
-> > >> +
-> > >> +       efi_status_t (__efiapi * get_boot_hartid)(struct riscv_efi_boot_protocol *this,
-> > >> +                                                 size_t *boot_hartid);
-> > >
-> > > size_t is not a EFI type, and your spec uses UINTN here, which is
-> > > equivalent to 'unsigned long'. However, jump_kernel_func() takes a
-> > > unsigned int for the hartid. Please clean this up.
-> >
-> > unsigned long and size_t have the same number of bits. This seems to be
-> > a question of taste where we should follow the maintainer.
-> >
->
-> We use unsigned long wherever the UEFI spec uses UINTN. This is not a
-> matter of taste, really.
->
-> > jump_kernel_func() assuming boot hart ID to be an unsigned int is not in
-> > line with the RISC-V ISA which allows to use all xlen bits.
-> >
-> > >
-> > >
-> > >> +};
-> > >> +
-> > >>   typedef union efi_load_file_protocol efi_load_file_protocol_t;
-> > >>   typedef union efi_load_file_protocol efi_load_file2_protocol_t;
-> > >>
-> > >> diff --git a/drivers/firmware/efi/libstub/riscv-stub.c b/drivers/firmware/efi/libstub/riscv-stub.c
-> > >> index 9c460843442f..012504f6f9a4 100644
-> > >> --- a/drivers/firmware/efi/libstub/riscv-stub.c
-> > >> +++ b/drivers/firmware/efi/libstub/riscv-stub.c
-> > >> @@ -23,7 +23,7 @@
-> > >>
-> > >>   typedef void __noreturn (*jump_kernel_func)(unsigned int, unsigned long);
-> > >>
-> > >> -static u32 hartid;
-> > >> +static size_t hartid;
-> > >>
-> > >
-> > > and here
-> > >
-> > >>   static int get_boot_hartid_from_fdt(void)
-> > >>   {
-> > >> @@ -47,14 +47,33 @@ static int get_boot_hartid_from_fdt(void)
-> > >>          return 0;
-> > >>   }
-> > >>
-> > >> +static efi_status_t get_boot_hartid_from_efi(void)
-> > >> +{
-> > >> +       efi_guid_t boot_protocol_guid = RISCV_EFI_BOOT_PROTOCOL_GUID;
-> > >> +       efi_status_t status;
-> > >> +       struct riscv_efi_boot_protocol *boot_protocol;
-> > >> +
-> > >> +       status = efi_bs_call(locate_protocol, &boot_protocol_guid, NULL,
-> > >> +                            (void **)&boot_protocol);
-> > >> +       if (status == EFI_SUCCESS) {
-> > >> +               status = efi_call_proto(boot_protocol,
-> > >> +                                       get_boot_hartid, &hartid);
-> >
-> > A lot of the kernel code seems to be unfit to handle hart IDs exceeding
-> > INT_MAX (e.g. sbi_cpu_is_stopped()). Until this is fixed we have to
-> > treat hartid > INT_MAX as an error.
-> >
->
-> This is an issue in the core kernel code, not in the EFI stub. As you
-> pointed out, the ISA implies UINTN / unsigned long here, and if the
-> startup code cannot deal with that, it can be fixed separately.
 
-It was kept as unsigned int because hartid > INT_MAX is very unlikely to happen.
-But I agree that we should just follow the spec(allowing XLEN bits for
-hartid) and
-change "unsigned int" to "unsigned long" wherever hartid is concerned.
+Greetings,
 
-As the hartid is changed to unsigned long, get_boot_hartid_from_fdt
-should be fixed as well.
-Currently, it is using fdt32_to_cpu.
+Based on the discussions that occurred in this thread, there seems to be
+two issues at hand that should be decoupled, as their solutions can and
+should be implemented independently. These are:
+- the handling of the Dynamic Launch preamble
+- providing the complete kernel configuration for measurement
 
+For the former, it is believed there is a consensus that Matthew's
+proposed callback approach would be the preferred method. Through some
+contemplating and prototyping, the determination is that this will in
+fact be an approach that will ultimately benefit the TrenchBoot project
+itself.
 
+In general, the preamble consists of two activities: 1. preparing the
+contents in memory and 2. preparing the hardware in order to call the
+Dynamic Launch instruction. In past implementations, these two
+activities were conducted sequentially, but in reality the time delta
+between the two may be arbitrary. Introducing this separation does not
+introduce any security concerns due to how the Dynamic Launch works. Any
+tampering of the contents in memory will either cause the Dynamic Launch
+to fail or result in a detectable difference in the Dynamic Launch
+measurement chain.
 
---
-Regards,
-Atish
+In order to separate the hardware interactions into what will be called
+the DLE Handler, this will require a collection of information regarding
+how the environment is set up. When working through what would be
+required, this led to the realization that this really should be
+generalized into a formal specification for TrenchBoot's Secure Launch.
+This will enable a reusable solution for the TrenchBoot project, versus
+implementing a one-off solution for Linux. A prototype of is near
+completion, for which below is a visual depiction along with a
+step-by-step walk through of how it would work for efi-stub.
+
+Secure Launch Flow:
+
+                         +-----------------+
+                         |                 |
+         +-------------->| Secure Launch   +---------------+
+         |               | Resource Table  |               |
+         |               |                 |    +------|---------------+
+         |               +--------+--------+    |      |         DLME  |
+         |                        |             |      v               |
+         |                        |             | +---------------+    |
+   +-----+---------+              v             | |               |    |
++--+-------------+ |       +-------------+      | | Secure Launch |    |
+|                | +------>|             +------->|     Entry     |    |
+| Bootloader(s)  | |       | DLE Handler |      | |               |    |
+|                +-+       |             |      | +---------------+    |
++----------------+         +-------------+      +----------------------+
+
+A quick note on the flow diagram, for simplicity all entities prior to
+the DLE Handler are represented by the "Bootloader(s)" block due to the
+fact that what entities are involved can and will vary. This is where
+both GRUB and efi-stub are being represented even though for Linux EFI,
+GRUB is considered the bootmanager while efi-stub is the bootloader.
+
+An efi-stub walk-thru:
+
+1. - GRUB
+1.1 - GRUB will initialize the Secure Launch Resource Table (SLRT)
+1.2 - GRUB will set up DLE Handler and register it in SLRT
+1.5 - GRUB will load Linux kernel
+1.3 - GRUB will set up DL environment appropriately for HW platform
+1.4 - GRUB will record DL setup in SLRT
+1.5 - GRUB will record SLRT location in platform's DL config structure
+1.5 - GRUB will register SLRT in EFI configuration table under SL GUID
+1.6 - GRUB will invoke efi-stub
+
+2. - efi-stub
+2.1 - efi-stub will check if SL GUID is in EFI configuration table
+2.2 - for each efi-stub config action, an SLRT EFI config event will be
+      recorded
+2.3 - efi-stub calls EBS() then jumps to DLE Handler registered in SLRT
+      while passing the SLRT address
+
+3. - DL Handler
+3.1 - DL Handler will retrieve SL Entry from SLRT
+3.2 - DL Handler will prepare HW for calling DL CPU instruction
+3.3 - DL Handler will execute DL CPU instruction
+
+4. SL Entry
+4.1 SL Entry will retrieve SLRT address from platform's DL config struct
+4.2 SL Entry will use policy in SLRT to determine what to measure
+4.3 SL Entry will set up HW to what Linux expects
+4.4 SL Entry will jump into Linux setup kernel
+4.5 SL Entry will record measurements into TPM prior to init process
+    starting
+
+While Matthew's original proposal was around having a location in the
+efi-stub for the callback to be registered, it is felt that it would be
+better suited as part of the Secure Launch specification. What is
+proposed is for the address of the DL Handler to be stored in the SLRT,
+details for the SLRT are below. Then the bootloader that is responsible
+for loading the DL Handler will register the SLRT in the EFI
+configuration table. Checking for the SLRT GUID in the EFI configuration
+table will enable the EFI bootoader responsible for calling EBS, in this
+case efi-stub, to know that a Dynamic Launch has been requested. It also
+seems this would be more in line with how EFI tends to work, versus a
+Linux-specific callback boot param or something similar.
+
+Hopefully this resolves the first of the two issues mentioned at the
+beginning of this email in a manner that addresses most of the concerns
+raised in the earlier discussions. This leaves the second issue over how
+to get an accurate measurement of how the kernel was configured by
+efi-stub. When reviewing the comments in the discussion, it was realized
+the originally requested approach was in fact in reverse. Instead of
+asking for efi-stub's internal API/ABI to be documented, Secure Launch
+should specify an ABI for how any bootloader should be invoking a Secure
+Launch entrypoint, particularly capturing how an EFI bootloader
+configured the environment. This is the second motivation for devising
+the SLRT. Specifying this ABI also provided the opportunity to
+incorporate a measurement policy and thus allowing for it to be
+separated away from sl-stub, as it is in the current implementation. For
+this discussion the focus will be on the portions of the SLRT relating
+to EFI Environments and in particular the EFI config event record
+mentioned in step 2.2 of the efi-stub walk-thru.
+
+First, a short review of what the Secure Launch Resource Table is and
+its purpose. The SLRT is to provide a platform and kernel agnostic
+configuration table of the meta-data pertinent to the Secure Launch
+entry points for the variety of kernels the TrenchBoot project will be
+seeking to support. The specification for the table is in progress, but
+the consensus is that it will consist of a header structure followed by
+a packed series of TLV records. The specification will describe the
+various types of records, but the ones of interests in this discussion
+are those that efi-stub would use to record how it configured the
+environment.
+
+The initially proposed TLV record, see below, for EFI configuration
+information was devised around allowing an EFI bootloader to save
+multiple config events under a single TLV record. In discussions on the
+specification thus far, there are questions if it would be better to
+have a TLV record for each config event or the proposed multiple events
+per TLV record. It is worth noting that an assumption is being made in
+the proposed record. The assumption is that a config event will either
+be setting a configuration value between 1 and 8 bytes, or it will be a
+data blob for which the address and size will be recorded. The question
+is whether that covers all actions the efi-stub does or expects that it
+will have to do in the near future.
+
+struct slrt_entry_efi_config_event {
+        struct slrt_entry_hdr hdr;
+        uint32_t identifier;                /* EFI bootloader ID */
+        uint16_t reserved;
+        uint16_t nr_entries;                /* Num cfg records */
+        struct efi_cfg_value values[0];     /* Array of cfg values */
+    };
+
+    struct efi_cfg_value {
+        uint64_t data;          /* cfg data (address or value) */
+        uint32_t size;          /* data size if data is an addr */
+        uint32_t flags;         /* 1L<0 IS_ADDR: data is an addr */
+        char evt_info[8];       /* event info str for TPM event log */
+    };
+
+Hopefully the general approach here is agreeable, as IMHO it does
+provide a fairly elegant approach to resolving the issues at hand.
+Details can always be negotiated to address various implementation
+concerns. Provided this is acceptable, then everyone here is welcome to
+provide input on the Secure Launch specification, link forthcoming.
+
+V/r,
+Daniel P. Smith
+Apertus Solutions, LLC
