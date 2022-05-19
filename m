@@ -2,92 +2,119 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ECC552C6DE
-	for <lists+linux-efi@lfdr.de>; Thu, 19 May 2022 00:57:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1102D52CB6D
+	for <lists+linux-efi@lfdr.de>; Thu, 19 May 2022 07:15:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231277AbiERW5I (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 18 May 2022 18:57:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45052 "EHLO
+        id S233883AbiESFPX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 19 May 2022 01:15:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231205AbiERW5A (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 May 2022 18:57:00 -0400
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E1702AFB
-        for <linux-efi@vger.kernel.org>; Wed, 18 May 2022 15:56:55 -0700 (PDT)
-Received: by mail-yb1-xb30.google.com with SMTP id o80so6185429ybg.1
-        for <linux-efi@vger.kernel.org>; Wed, 18 May 2022 15:56:55 -0700 (PDT)
+        with ESMTP id S233875AbiESFPW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 19 May 2022 01:15:22 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A63EC994D0
+        for <linux-efi@vger.kernel.org>; Wed, 18 May 2022 22:15:21 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id r71so4114472pgr.0
+        for <linux-efi@vger.kernel.org>; Wed, 18 May 2022 22:15:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=mZ3wqB4NmL7z6lpFr/h15h1rYqsZKafJnUpMVahbEPg=;
-        b=ovbcf3BPb/ZrA/FpQ+ZjErGDIEZ9sF3fYOxqsE4Z0xdiTlYY9UY36hS3ty6MLllddq
-         FdZzNc2PcFHW5cwKZ0FlQqx6F8uTY06Ab/cmT+eL89dkm6I4fHT5v6DDGzwY+fqIjM8b
-         RjeYQt93Ckr4p0lPVWY342OwWKznH6xDl4nV36uj7bwrBPcHFh3ePzF5GNEmu/mQBhIV
-         GwWDekgJIDWSV60014hyLdzt2NtjUStY8MI6SiwBWMH8LEBnRGkE0W6Db0zUE9IYWmDQ
-         Ifd6nbhkESdcIbQrjo3sdEfmdPtb1VAIHCw/LAZv1DOtvQwqLYnhML4dVDmuoYeMmVFn
-         q7TQ==
+        d=ventanamicro.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=FnRdlHrEla6Dyd7Er3np/FEhy1piZaEXssJQV5c0vBg=;
+        b=X7PIGUbjsnX+9thxa6uAkZM4MwFqyfuO4+IGUv2xRCyk5KRtzRZXdWCZ/en+OvmeqJ
+         GfV655FXoVrgKNk6QgccY0PhQvGiTmcaWuXE/KRNvfc984v2kPu1yCJOXvWzchYyx6PB
+         mhZ+1pMW0w3QdGDGh5Be9vxSsEwiRrn6rcffLyQv/68t++moJQZ86Mv9QD8YlP094BVq
+         PO48tBY1ruxvX0shzKumY9T4woWYVg/co4PnQ5yycMkyiCujBG6b3vF1EdIuCXTZ1BJf
+         Z0z5dIcQfRyVOgxgGeAnDP8BHaIzCS0UbXRKpervsgpiTzCvLb7ZYq8MuAHoOmObxp4m
+         CK8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=mZ3wqB4NmL7z6lpFr/h15h1rYqsZKafJnUpMVahbEPg=;
-        b=FvR1eRpdtJ9ZbemszQrU3dnRdjVO6Fluoqk93X1HMTo5tSgHFNeLuY8HvgEQfjMgFu
-         uOAZx0ir/rC/cahIhJ0BuK9Cv0/FNvgKj7pAAm1ZE4sfJvUCsqFEu0bB/D5I14Ych9f6
-         dYSICCZTbupbBChFO579kuCW6gbjqSlHhxSx9TgLKddVz/SHEcB66m0OsgsechBdbAqH
-         +4cx94b6cL0/BOGYZAZpEDxRlc3oN+MjDh1FhpbawOxXW8Mv5R49C0b/o6bxYkDbbenr
-         1LmbDUsYGb4S4pd95woRiON9T08jNcbF+WR1ec8oNrbUu/bKaR0NpFkZuXmJS4neR9kh
-         CKWg==
-X-Gm-Message-State: AOAM532JxKHuB8/nLXDTqNNWWAbvjkOHZFWJTOs2X4E+HNn7IeZMkpYF
-        QCT6ynbXfxLIc7IG3pOOgODOb8QiD2WEFaUIzdE=
-X-Google-Smtp-Source: ABdhPJyyLDAg+sVdsLTxwEXiZ5avjedwK/uWMP/Y3UWcChEjwDE+iXuY4kOycHY8vIqM/rcV0hLTcVdg0IN0RAQYgBc=
-X-Received: by 2002:a5b:f87:0:b0:64a:9aa6:e181 with SMTP id
- q7-20020a5b0f87000000b0064a9aa6e181mr1852277ybh.157.1652914614913; Wed, 18
- May 2022 15:56:54 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=FnRdlHrEla6Dyd7Er3np/FEhy1piZaEXssJQV5c0vBg=;
+        b=s6tnNEPBK2UCshtIVgSyMC58BBJKQVSjg7trtlWN4HMW/7+F3yfyXrc8Te2BPFPcyJ
+         YQByQ9zqSM8/Uj8pVS1rpLTXEltwnhsdsiestNnb2NJdNsV+aqiVn5XKYoPQ10QIIsWj
+         vBRWUDkItG18BVhrct6vgZwwaWzlmGoe7TZpY/wc5OxPJ6WUqYqirOwA1UJrmmMpxtbO
+         6qsoLynpfVxMCExxKgdM3DdaP/lApq5/eqKoVSyoOUajnq3BMFI3flwzg/gt6HkHHJ14
+         SCsvDinovFLvy/LpSClP26my8w2IiY6GIP7eBAhpy2iwNdzWoa7s/uYy+KAvrWZw346w
+         W85g==
+X-Gm-Message-State: AOAM531LPTDiLwnplb4tV926Q1hP3i6ZOIZY6UKHyUNP9/fSpUlZrXcW
+        yW0BKlyMArEA46PQOzX8gASQCg==
+X-Google-Smtp-Source: ABdhPJyfsA7vHd6Skw4UKaV0vjCh4Vet52VObBCGk1xXZ8PdZ5VGQsKj41jCUnIXPgWRqs2DXVr8lw==
+X-Received: by 2002:a05:6a00:24c1:b0:50d:33cf:811f with SMTP id d1-20020a056a0024c100b0050d33cf811fmr3177502pfv.78.1652937321167;
+        Wed, 18 May 2022 22:15:21 -0700 (PDT)
+Received: from kerodipc.Dlink ([49.206.10.235])
+        by smtp.gmail.com with ESMTPSA id j19-20020a056a00235300b0050dc76281a3sm2929007pfj.125.2022.05.18.22.15.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 May 2022 22:15:20 -0700 (PDT)
+From:   Sunil V L <sunilvl@ventanamicro.com>
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc:     Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+        Atish Patra <atishp@rivosinc.com>,
+        Anup Patel <apatel@ventanamicro.com>,
+        Jessica Clarke <jrtc27@jrtc27.com>,
+        Abner Chang <abner.chang@hpe.com>, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+        Sunil V L <sunilvl@ventanamicro.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
+        Sunil V L <sunil.vl@gmail.com>
+Subject: [PATCH V5 0/1] RISCV_EFI_BOOT_PROTOCOL support in linux
+Date:   Thu, 19 May 2022 10:45:11 +0530
+Message-Id: <20220519051512.136724-1-sunilvl@ventanamicro.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:a05:7000:7143:0:0:0:0 with HTTP; Wed, 18 May 2022 15:56:53
- -0700 (PDT)
-Reply-To: tonywenn@asia.com
-From:   Tony Wen <weboutloock4@gmail.com>
-Date:   Thu, 19 May 2022 06:56:53 +0800
-Message-ID: <CAE2_YrD=5bo8j9+ah-xptEBBV-HEC4=Gb0SRHf996phiopc3WQ@mail.gmail.com>
-Subject: engage
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:b30 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4959]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [weboutloock4[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [weboutloock4[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.4 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Can I engage your services?
+This patch adds support for getting the boot hart ID using new
+RISCV_EFI_BOOT_PROTOCOL in linux efi stub. While there is an existing
+solution of passing the boot hart ID through Device Tree, it doesn't work for
+ACPI. Hence an EFI protocol protocol is recommended which works for both DT
+and ACPI based platforms.
+
+The spec of this new protocol post public review (Ratification-ready) is
+available at:
+https://github.com/riscv-non-isa/riscv-uefi/releases/download/1.0.0/RISCV_UEFI_PROTOCOL-spec.pdf
+
+This is tested in qemu with both u-boot and edk2.
+
+Changes since V4:
+  - Changed data type of hartid to unsigned long
+  - Updated jump_kernel_func() to take unsigned long for hartid
+
+Changes since V3:
+  - Rebased, no code changes.
+  - cover letter updated with link to spec version after public review
+
+Changes since V2:
+  - Updated error message
+
+Changes since V1:
+  - Rebased to get the "Fix get_boot_hartid_from_fdt() return value"
+    patch
+  - Removed mixed_mode member
+  - Separated return value and status.
+
+Sunil V L (1):
+  riscv/efi_stub: Add support for RISCV_EFI_BOOT_PROTOCOL
+
+ drivers/firmware/efi/libstub/efistub.h    |  7 +++++
+ drivers/firmware/efi/libstub/riscv-stub.c | 31 ++++++++++++++++++-----
+ include/linux/efi.h                       |  1 +
+ 3 files changed, 33 insertions(+), 6 deletions(-)
+
+-- 
+2.25.1
+
