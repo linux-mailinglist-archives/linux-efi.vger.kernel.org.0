@@ -2,34 +2,34 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4604152F400
-	for <lists+linux-efi@lfdr.de>; Fri, 20 May 2022 21:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF2C752F40C
+	for <lists+linux-efi@lfdr.de>; Fri, 20 May 2022 21:53:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353317AbiETTvb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 20 May 2022 15:51:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45816 "EHLO
+        id S1353316AbiETTwf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 20 May 2022 15:52:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353318AbiETTva (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 20 May 2022 15:51:30 -0400
+        with ESMTP id S1353342AbiETTwd (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 20 May 2022 15:52:33 -0400
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B84BF5A2E3;
-        Fri, 20 May 2022 12:51:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A841519C38A;
+        Fri, 20 May 2022 12:52:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
         s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
         Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
         :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
         List-Post:List-Owner:List-Archive;
-        bh=i1SabHWBF9yjaawRYqmI4JtnrLJvNYnK3oYqAVGf7Ao=; b=gesr4pHQ0zxgkl4V4UHZOm/9At
-        KVQwK8sl9PhTHOAgnypdTxNXRdkr4bWPbUK6Li6GY/6LRRY/OTndzqrYB+wh5lLbyiv5wCVLQIm5P
-        fYyOUVReou6EYoVA/0t/qOjs6hxpyWFPQzJ1htTgcxM9t8DHtec9N7KXN03AGiaE51w09F/xGYSJl
-        vdlSJkoWe+NXaNOgRtbx77ASGNpf6PugBB5YcKh7/kYy7lCooFnkz/NFBEHxEehRXtMbjbc+CI0Ba
-        142I0nIDZEhkGopOp5PAE/n9Yb35rOttg5fc7SE2WE0avYKZjdTqEW72WUd51ielFusXPxF6mesHd
-        PcrvrEcQ==;
+        bh=sN/LpPLdT2mbsP7DF3PDcCREB6oSMVQAq5zqlYlmSbg=; b=jkPDL8A4W/pvGUu0xaZAVxejzh
+        rwNPL/9VrA1vhD5VyCfsIbOG+DQhTNF8A90elI7Qkp0XkK9VmorpU7gxvAnHbQKjcGIfrklkj5zEl
+        ID7zK9z4VhTn/P+dbjGNQZaSrsE2l1M2cZG7iaCCc/cGjWpmdEdN2Gkr8hroisd1vaIpuMRPH+blg
+        QJfkh6mQu71Il4vr7Ydq8HgS6gs0qQ1YNUMgnMXWZ1IPbg/YVlz5yB5a5Yhnhl9G2cDWaDr18kE7q
+        KSQ9vE5/5BQO2DUbeIQ1uUKfD+1nrSUWYL9cq1Ujyb80oOCd7IdS6ipvqEjT0yLqWOiDGd8doERdy
+        Hcf8QoQg==;
 Received: from 200-161-159-120.dsl.telesp.net.br ([200.161.159.120] helo=localhost)
         by fanzine2.igalia.com with esmtpsa 
         (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-        id 1ns8ei-00D3mx-Qz; Fri, 20 May 2022 21:51:25 +0200
+        id 1ns8fm-00D3rs-3e; Fri, 20 May 2022 21:52:30 +0200
 From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
 To:     ardb@kernel.org, linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, kernel-dev@igalia.com,
@@ -37,9 +37,9 @@ Cc:     linux-kernel@vger.kernel.org, kernel-dev@igalia.com,
         keescook@chromium.org, matt@codeblueprint.co.uk,
         matthew.garrett@nebula.com, tony.luck@intel.com,
         "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Subject: [PATCH 1/2] efi: Add a generic helper to convert strings to unicode
-Date:   Fri, 20 May 2022 16:50:27 -0300
-Message-Id: <20220520195028.1347426-2-gpiccoli@igalia.com>
+Subject: [PATCH 2/2] efi-panic: Introduce the UEFI panic notification module
+Date:   Fri, 20 May 2022 16:50:28 -0300
+Message-Id: <20220520195028.1347426-3-gpiccoli@igalia.com>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220520195028.1347426-1-gpiccoli@igalia.com>
 References: <20220520195028.1347426-1-gpiccoli@igalia.com>
@@ -54,108 +54,179 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Currently both efi-pstore and efibc rely in simple for-loops
-to convert from regular char pointers to u16/unicode strings;
-efibc has even a nice helper to perform such work.
+Despite we have pstore, kdump and other panic-time  mechanisms,
+there's no generic way to let the firmware know a panic event
+happened. Some hypervisors might have special code for that, but
+that's not generic.
 
-So, let's export this helper to common EFI code to prevent
-code duplication (like in efi-pstore); this helper will also
-be used in a subsequent patch (adding a new module).
+The UEFI panic notification module hereby proposed aims to fill
+this need: once we face a panic, through the panic notifier
+infrastructure we set a UEFI variable named PanicWarn with a
+value - default is 0xFF, but it's adjustable via module parameter.
+The firmware is then enabled to take a proper action.
 
-Notice that efi-pstore didn't write the end NULL char in the
-unicode string before this patch, but this should not change
-anything. No functional change is expected here.
+The module also let the users know that last execution likely
+panicked if the UEFI variable is present on module load - then
+it clears that to avoid confusing users, only the last panic
+event is recorded.
 
 Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
 ---
- drivers/firmware/efi/efi-pstore.c |  5 ++---
- drivers/firmware/efi/efibc.c      | 16 ++++------------
- include/linux/efi.h               | 15 +++++++++++++++
- 3 files changed, 21 insertions(+), 15 deletions(-)
+ drivers/firmware/efi/Kconfig     | 10 ++++
+ drivers/firmware/efi/Makefile    |  1 +
+ drivers/firmware/efi/efi-panic.c | 97 ++++++++++++++++++++++++++++++++
+ include/linux/efi.h              |  1 +
+ 4 files changed, 109 insertions(+)
+ create mode 100644 drivers/firmware/efi/efi-panic.c
 
-diff --git a/drivers/firmware/efi/efi-pstore.c b/drivers/firmware/efi/efi-pstore.c
-index 7e771c56c13c..299116ecfb4e 100644
---- a/drivers/firmware/efi/efi-pstore.c
-+++ b/drivers/firmware/efi/efi-pstore.c
-@@ -249,7 +249,7 @@ static int efi_pstore_write(struct pstore_record *record)
- 	char name[DUMP_NAME_LEN];
- 	efi_char16_t efi_name[DUMP_NAME_LEN];
- 	efi_guid_t vendor = LINUX_EFI_CRASH_GUID;
--	int i, ret = 0;
-+	int ret = 0;
+diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+index 2c3dac5ecb36..12f2d963333e 100644
+--- a/drivers/firmware/efi/Kconfig
++++ b/drivers/firmware/efi/Kconfig
+@@ -145,6 +145,16 @@ config EFI_BOOTLOADER_CONTROL
+ 	  bootloader reads this reboot reason and takes particular
+ 	  action according to its policy.
  
- 	record->id = generic_id(record->time.tv_sec, record->part,
- 				record->count);
-@@ -262,8 +262,7 @@ static int efi_pstore_write(struct pstore_record *record)
- 		 (long long)record->time.tv_sec,
- 		 record->compressed ? 'C' : 'D');
- 
--	for (i = 0; i < DUMP_NAME_LEN; i++)
--		efi_name[i] = name[i];
-+	efi_str8_to_str16(efi_name, name, DUMP_NAME_LEN - 1);
- 
- 	ret = efivar_entry_set_safe(efi_name, vendor, PSTORE_EFI_ATTRIBUTES,
- 			      false, record->size, record->psi->buf);
-diff --git a/drivers/firmware/efi/efibc.c b/drivers/firmware/efi/efibc.c
-index 15a47539dc56..63fe2bf753cb 100644
---- a/drivers/firmware/efi/efibc.c
-+++ b/drivers/firmware/efi/efibc.c
-@@ -11,16 +11,6 @@
- #include <linux/reboot.h>
- #include <linux/slab.h>
- 
--static void efibc_str_to_str16(const char *str, efi_char16_t *str16)
--{
--	size_t i;
--
--	for (i = 0; i < strlen(str); i++)
--		str16[i] = str[i];
--
--	str16[i] = '\0';
--}
--
- static int efibc_set_variable(const char *name, const char *value)
- {
- 	int ret;
-@@ -39,8 +29,10 @@ static int efibc_set_variable(const char *name, const char *value)
- 		return -ENOMEM;
- 	}
- 
--	efibc_str_to_str16(name, entry->var.VariableName);
--	efibc_str_to_str16(value, (efi_char16_t *)entry->var.Data);
-+	efi_str8_to_str16(entry->var.VariableName, name, strlen(name));
-+	efi_str8_to_str16((efi_char16_t *)entry->var.Data, value,
-+			  strlen(value));
++config EFI_PANIC_NOTIFIER
++	tristate "UEFI Panic Notifier"
++	depends on EFI
++	default n
++	help
++	  With this module, kernel creates the UEFI variable "PanicWarn" if
++	  the system faces a panic event. With that, the firmware is entitled
++	  to take an action if the last kernel panicked; it also shows a
++	  message during boot time if last run faced a panic event.
 +
- 	memcpy(&entry->var.VendorGuid, &guid, sizeof(guid));
- 
- 	ret = efivar_entry_set_safe(entry->var.VariableName,
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index ccd4d3f91c98..066ebc5bcb2a 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -1030,6 +1030,21 @@ efivar_unregister(struct efivar_entry *var)
- 	kobject_put(&var->kobj);
- }
- 
+ config EFI_CAPSULE_LOADER
+ 	tristate "EFI capsule loader"
+ 	depends on EFI && !IA64
+diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
+index c02ff25dd477..abbc7d9af2da 100644
+--- a/drivers/firmware/efi/Makefile
++++ b/drivers/firmware/efi/Makefile
+@@ -26,6 +26,7 @@ obj-$(CONFIG_EFI_RUNTIME_WRAPPERS)	+= runtime-wrappers.o
+ subdir-$(CONFIG_EFI_STUB)		+= libstub
+ obj-$(CONFIG_EFI_FAKE_MEMMAP)		+= fake_map.o
+ obj-$(CONFIG_EFI_BOOTLOADER_CONTROL)	+= efibc.o
++obj-$(CONFIG_EFI_PANIC_NOTIFIER)	+= efi-panic.o
+ obj-$(CONFIG_EFI_TEST)			+= test/
+ obj-$(CONFIG_EFI_DEV_PATH_PARSER)	+= dev-path-parser.o
+ obj-$(CONFIG_APPLE_PROPERTIES)		+= apple-properties.o
+diff --git a/drivers/firmware/efi/efi-panic.c b/drivers/firmware/efi/efi-panic.c
+new file mode 100644
+index 000000000000..c59655e22fc7
+--- /dev/null
++++ b/drivers/firmware/efi/efi-panic.c
+@@ -0,0 +1,97 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Helper that converts regular char buffer to u16 unicode-like strings;
-+ * notice that the unicode buffer requires to be at least len+1 in size.
++ * efi-panic: UEFI panic notification mechanism
 + */
-+static inline void
-+efi_str8_to_str16(efi_char16_t *str16, const char *str8, size_t len)
++
++#define pr_fmt(fmt) "efi-panic: " fmt
++
++#include <linux/efi.h>
++#include <linux/slab.h>
++#include <linux/module.h>
++#include <linux/panic_notifier.h>
++
++#define EFI_PANIC_ATTR		(EFI_VARIABLE_NON_VOLATILE |\
++				 EFI_VARIABLE_BOOTSERVICE_ACCESS |\
++				 EFI_VARIABLE_RUNTIME_ACCESS)
++
++#define EFI_DATA_SIZE		(2 * sizeof(efi_char16_t))
++
++static struct efivar_entry *entry;
++
++static u8 panic_warn_val = 0xFF;
++module_param(panic_warn_val, byte, 0644);
++MODULE_PARM_DESC(panic_warn_val,
++		 "Value written to PanicWarn efivar on panic event [default=0xFF]");
++
++static int efi_panic_cb(struct notifier_block *nb, unsigned long ev,
++			void *unused)
 +{
-+	size_t i;
++	int ret;
 +
-+	for (i = 0; i < len; i++)
-+		str16[i] = str8[i];
++	efi_str8_to_str16((efi_char16_t *)entry->var.Data, &panic_warn_val, 1);
++	ret = efivar_entry_set_safe(entry->var.VariableName,
++				    entry->var.VendorGuid,
++				    EFI_PANIC_ATTR, false, EFI_DATA_SIZE,
++				    entry->var.Data);
++	if (ret)
++		pr_err("failed to notify panic to UEFI\n");
 +
-+	str16[i] = '\0';
++	return NOTIFY_DONE;
 +}
 +
- int efivars_register(struct efivars *efivars,
- 		     const struct efivar_operations *ops,
- 		     struct kobject *kobject);
++static struct notifier_block efi_panic_notifier = {
++	.notifier_call = efi_panic_cb,
++};
++
++static int __init efi_panic_init(void)
++{
++	efi_guid_t guid = LINUX_EFI_PANIC_WARN_GUID;
++	unsigned long sz = EFI_DATA_SIZE;
++	const char *name = "PanicWarn";
++	u8 data[EFI_DATA_SIZE];
++	int err;
++
++	if (!efivars_kobject() || !efivar_supports_writes()) {
++		pr_err("UEFI vars not available (or not writable)\n");
++		return -ENODEV;
++	}
++
++	entry = kzalloc(sizeof(*entry), GFP_KERNEL);
++	if (!entry)
++		return -ENOMEM;
++
++	memcpy(&entry->var.VendorGuid, &guid, sizeof(guid));
++	efi_str8_to_str16(entry->var.VariableName, name, strlen(name));
++
++	err = efivar_entry_get(entry, NULL, &sz, (void *)data);
++
++	if (!err) {
++		pr_info("previous kernel (likely) had a panic\n");
++
++		if (__efivar_entry_delete(entry))
++			pr_err("cannot delete %s UEFI variable\n", name);
++
++		memset(entry->var.Data, 0, EFI_DATA_SIZE);
++	} else {
++		if (err != -ENOENT)
++			pr_err("can't read the UEFI variables (err=%d)\n", err);
++	}
++
++	atomic_notifier_chain_register(&panic_notifier_list,
++				       &efi_panic_notifier);
++
++	return 0;
++}
++module_init(efi_panic_init);
++
++static void __exit efi_panic_exit(void)
++{
++	atomic_notifier_chain_unregister(&panic_notifier_list,
++					 &efi_panic_notifier);
++	kfree(entry);
++}
++module_exit(efi_panic_exit);
++
++MODULE_AUTHOR("Guilherme G. Piccoli <gpiccoli@igalia.com>");
++MODULE_DESCRIPTION("UEFI Panic Notification Mechanism");
++MODULE_LICENSE("GPL");
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 066ebc5bcb2a..4219f3d44183 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -365,6 +365,7 @@ void efi_native_runtime_setup(void);
+ #define EFI_GLOBAL_VARIABLE_GUID		EFI_GUID(0x8be4df61, 0x93ca, 0x11d2,  0xaa, 0x0d, 0x00, 0xe0, 0x98, 0x03, 0x2b, 0x8c)
+ #define UV_SYSTEM_TABLE_GUID			EFI_GUID(0x3b13a7d4, 0x633e, 0x11dd,  0x93, 0xec, 0xda, 0x25, 0x56, 0xd8, 0x95, 0x93)
+ #define LINUX_EFI_CRASH_GUID			EFI_GUID(0xcfc8fc79, 0xbe2e, 0x4ddc,  0x97, 0xf0, 0x9f, 0x98, 0xbf, 0xe2, 0x98, 0xa0)
++#define LINUX_EFI_PANIC_WARN_GUID		EFI_GUID(0x9e85b665, 0x08d4, 0x42c9,  0x83, 0x24, 0x47, 0xed, 0x5f, 0xe5, 0x0b, 0xf3)
+ #define LOADED_IMAGE_PROTOCOL_GUID		EFI_GUID(0x5b1b31a1, 0x9562, 0x11d2,  0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+ #define EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID	EFI_GUID(0x9042a9de, 0x23dc, 0x4a38,  0x96, 0xfb, 0x7a, 0xde, 0xd0, 0x80, 0x51, 0x6a)
+ #define EFI_UGA_PROTOCOL_GUID			EFI_GUID(0x982c298b, 0xf4fa, 0x41cb,  0xb8, 0x38, 0x77, 0xaa, 0x68, 0x8f, 0xb8, 0x39)
 -- 
 2.36.0
 
