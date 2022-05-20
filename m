@@ -2,84 +2,86 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E929352E3F7
-	for <lists+linux-efi@lfdr.de>; Fri, 20 May 2022 06:44:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7A4F52E55C
+	for <lists+linux-efi@lfdr.de>; Fri, 20 May 2022 08:52:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345396AbiETEnt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 20 May 2022 00:43:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58680 "EHLO
+        id S243407AbiETGwW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 20 May 2022 02:52:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345400AbiETEnr (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 20 May 2022 00:43:47 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90C6614ACA2
-        for <linux-efi@vger.kernel.org>; Thu, 19 May 2022 21:43:41 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id o13-20020a17090a9f8d00b001df3fc52ea7so10472549pjp.3
-        for <linux-efi@vger.kernel.org>; Thu, 19 May 2022 21:43:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=+tw51RCYcGj1foniXotGyrQteUlHw6mmELp0RHwCfbM=;
-        b=QGegZ0Aye9ox2p2Qn/4S0srcNwplKH5EmehYsQWLax4ZKn/TePnw6ptFMtriZ5MGTt
-         cRCrO2y0aujrYXFY6/zWO5ViduZDoc9QcN6HKspYEvsTai5SD7qyKUltZKxbY/qoGBkl
-         DOB+ZVPpBmD2evL7YAMOj9wq+d0x5ytZGIFJseNer5UESLx0t4HzpeJLA37EBLMVWSob
-         4JSCQnrW/Km/0NpPOSrwWGMci8ytdcrPSeeOhU2GZQM018GtctGGc/TJ0vkZ/xKIqw81
-         cKrxe6dVofe4/SGdwTuxuLWBT8rRMcL22Ql5eZSSn1YllodXIhQDoGTaqfRTiBP4DiIh
-         hMeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=+tw51RCYcGj1foniXotGyrQteUlHw6mmELp0RHwCfbM=;
-        b=p0Vuv5VQnD25xFcnnd/G53l/3E5HDXLR6GCqLgv8XzB2yAXoXVp7FgKD5kUrOUGyhm
-         Dyg+REX6+NxUNn/4Ak+o3S1pMQ04pKrlm4wAef8nz5jRJ/GNoyNZLvMT7Et7XxlrFv2/
-         FAJm0DFUmh62Y/LZtHN3LtEmNkhBuO86r5Oikkpix9NE2hCUfl5tQhCan7PJB4tYKV7M
-         mlyTb/5vxJ0CmzxZy8eCCxsZm2t9zdc9zjiXixfU+xguAs9fJsknflWVuGzco39BbDNv
-         JzC5r40LV2i9lJtPxzJrs4tWurQxo1mqh7MaE92WYAodTlkS411h3kSR1cjXasTAkddr
-         /oqA==
-X-Gm-Message-State: AOAM5332r3meChsjZeogHXCwOHycJjSriinwWOFV/dCMvjEuE0TkOpN/
-        OoIwa78RnFuyAxOtLBfJGMQXtg==
-X-Google-Smtp-Source: ABdhPJzoOXpK/+v9gIuGmqCLtuPcdAPIyNdQCAfB3sonYpZrLmhj1w0h9srj29FMKj1LZM5iQzxKZw==
-X-Received: by 2002:a17:902:d2c3:b0:161:ab47:8afe with SMTP id n3-20020a170902d2c300b00161ab478afemr7676365plc.8.1653021821057;
-        Thu, 19 May 2022 21:43:41 -0700 (PDT)
-Received: from sunil-laptop ([49.206.9.238])
-        by smtp.gmail.com with ESMTPSA id r5-20020a63e505000000b003c63ae859d3sm4412015pgh.83.2022.05.19.21.43.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 May 2022 21:43:40 -0700 (PDT)
-Date:   Fri, 20 May 2022 10:13:32 +0530
-From:   Sunil V L <sunilvl@ventanamicro.com>
-To:     Atish Patra <atishp@atishpatra.org>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Atish Patra <atishp@rivosinc.com>,
-        Anup Patel <apatel@ventanamicro.com>,
-        Jessica Clarke <jrtc27@jrtc27.com>,
-        Abner Chang <abner.chang@hpe.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Palmer Dabbelt <palmer@rivosinc.com>
-Subject: Re: [PATCH V4 1/1] riscv/efi_stub: Add support for
- RISCV_EFI_BOOT_PROTOCOL
-Message-ID: <20220520044332.GA4509@sunil-laptop>
-References: <20220518095646.47548-1-sunilvl@ventanamicro.com>
- <20220518095646.47548-2-sunilvl@ventanamicro.com>
- <CAMj1kXF2N+0zRCNg0Aq9Y8Y35FUaQ1V+swzY__y86sayKW7PPA@mail.gmail.com>
- <04ed20b1-e312-dfc2-c314-02750c076681@canonical.com>
- <CAMj1kXEX0DWprb7cv_js1=M1J1hSXLBa=cOOjVo3tTVyGT0siQ@mail.gmail.com>
- <CAOnJCULUoedeARe0J=aduAVD35uHMe0MN9Pc_LDkavWZ-VtOkg@mail.gmail.com>
+        with ESMTP id S239485AbiETGwV (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 20 May 2022 02:52:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75792562F9;
+        Thu, 19 May 2022 23:52:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1987961DAD;
+        Fri, 20 May 2022 06:52:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A1BC3411B;
+        Fri, 20 May 2022 06:52:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653029539;
+        bh=sgNd0vtqp83N2s1CaS4qcYCZ1Em1yEUBxHGWRZy2GF4=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=QJBTW/RwnaTwqYXJN8e7engo5uBawXCQTvmCdGvUS74l9X8TDS1QOyLsWI5uKXyLl
+         z4mcTAEHIllWYWzAWLvEqFQSVWA32pMZOO5rV0hQ76pRqnCkjg+uHjPRlQhFvoL3pk
+         S/APCr1bAALi9XnsrfiRcp5eTRBKjNuEkQjPgzSmc4cr82m2Yn2166lyMu8gdFNv+V
+         9OQycaz9hf0jXTvYhYsi7Fap6X1mFAoahOANs7pZPkc4DkbDp15FLM1CMmm+YQalNU
+         pIhNUBmoXl8vZ5ih7RzVCxqVn9MrEkNHQcn0ctt+y/zyJkvn1B8ldM3OjofP7BiqGf
+         PPytbnwyBdBzA==
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-f1d2ea701dso9333010fac.10;
+        Thu, 19 May 2022 23:52:19 -0700 (PDT)
+X-Gm-Message-State: AOAM533X3U4X/Fhw25PbbXfwFzto6i+qGsW8RxrTfTPiqX6yA2792NVz
+        ga7asyjjoMNMeHEZ1KKb5h/eNHRt80EwpBmRW1Y=
+X-Google-Smtp-Source: ABdhPJyUGKjChdSOGekyhnWuYeiWn9PaC4+0BZipYBFb+HJq3aKZ3nWX3el0jnXK/bPQXUK7A1ce3Km9EF5ppdRDfgo=
+X-Received: by 2002:a05:6870:f112:b0:f1:f1e9:e8f1 with SMTP id
+ k18-20020a056870f11200b000f1f1e9e8f1mr3897703oac.126.1653029538554; Thu, 19
+ May 2022 23:52:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOnJCULUoedeARe0J=aduAVD35uHMe0MN9Pc_LDkavWZ-VtOkg@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+References: <CAMj1kXGSStDgj9ABmUaTLnBmpQFksh3wx4tx=mJohum4GQe3Gg@mail.gmail.com>
+ <20220419070150.254377-1-mawupeng1@huawei.com> <CAMj1kXHr2RdYSPor1st1ZnL=O42c8N6e=bNG+eFhatfefWLUrw@mail.gmail.com>
+ <c65d22b4-f654-21aa-bd5f-d4f8b0939a25@huawei.com> <7058b8d8-c0cb-108e-0db9-2fdf5fb154cf@huawei.com>
+In-Reply-To: <7058b8d8-c0cb-108e-0db9-2fdf5fb154cf@huawei.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 20 May 2022 08:52:07 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHnL12j6FPGtEeSQB2-kHzoVF+LJMUF9YBq43Yi1UntDg@mail.gmail.com>
+Message-ID: <CAMj1kXHnL12j6FPGtEeSQB2-kHzoVF+LJMUF9YBq43Yi1UntDg@mail.gmail.com>
+Subject: Re: [PATCH 0/2] Add support to relocate kernel image to mirrored region
+To:     mawupeng <mawupeng1@huawei.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        X86 ML <x86@kernel.org>, Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Joerg Roedel <jroedel@suse.de>, songmuchun@bytedance.com,
+        macro@orcam.me.uk, Frederic Weisbecker <frederic@kernel.org>,
+        W_Armin@gmx.de, John Garry <john.garry@huawei.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        chenhuacai@kernel.org, David Hildenbrand <david@redhat.com>,
+        gpiccoli@igalia.com, Mark Rutland <mark.rutland@arm.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        linux-ia64@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -87,127 +89,65 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, May 19, 2022 at 11:07:28AM -0700, Atish Patra wrote:
-> On Thu, May 19, 2022 at 1:14 AM Ard Biesheuvel <ardb@kernel.org> wrote:
+On Thu, 19 May 2022 at 13:09, mawupeng <mawupeng1@huawei.com> wrote:
+>
+>
+>
+> =E5=9C=A8 2022/5/7 17:28, mawupeng =E5=86=99=E9=81=93:
 > >
-> > On Thu, 19 May 2022 at 08:17, Heinrich Schuchardt
-> > <heinrich.schuchardt@canonical.com> wrote:
-> > >
-> > >
-> > >
-> > > On 5/18/22 23:03, Ard Biesheuvel wrote:
-> > > > On Wed, 18 May 2022 at 11:57, Sunil V L <sunilvl@ventanamicro.com> wrote:
-> > > >>
-> > > >> This patch adds the support for getting the boot hart ID in
-> > > >> Linux EFI stub using RISCV_EFI_BOOT_PROTOCOL. This protocol
-> > > >> is preferred method over existing DT based solution since it
-> > > >> works irrespective of DT or ACPI.
-> > > >>
-> > > >> The specification of the protocol is hosted at:
-> > > >> https://github.com/riscv-non-isa/riscv-uefi
-> > > >>
-> > > >> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> > > >> Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-> > > >> Reviewed-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-> > > >> ---
-> > > >>   drivers/firmware/efi/libstub/efistub.h    |  7 ++++++
-> > > >>   drivers/firmware/efi/libstub/riscv-stub.c | 29 +++++++++++++++++++----
-> > > >>   include/linux/efi.h                       |  1 +
-> > > >>   3 files changed, 32 insertions(+), 5 deletions(-)
-> > > >>
-> > > >> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-> > > >> index edb77b0621ea..aced62a0907e 100644
-> > > >> --- a/drivers/firmware/efi/libstub/efistub.h
-> > > >> +++ b/drivers/firmware/efi/libstub/efistub.h
-> > > >> @@ -720,6 +720,13 @@ union efi_tcg2_protocol {
-> > > >>          } mixed_mode;
-> > > >>   };
-> > > >>
-> > > >> +struct riscv_efi_boot_protocol {
-> > > >> +       u64 revision;
-> > > >> +
-> > > >> +       efi_status_t (__efiapi * get_boot_hartid)(struct riscv_efi_boot_protocol *this,
-> > > >> +                                                 size_t *boot_hartid);
-> > > >
-> > > > size_t is not a EFI type, and your spec uses UINTN here, which is
-> > > > equivalent to 'unsigned long'. However, jump_kernel_func() takes a
-> > > > unsigned int for the hartid. Please clean this up.
-> > >
-> > > unsigned long and size_t have the same number of bits. This seems to be
-> > > a question of taste where we should follow the maintainer.
-> > >
 > >
-> > We use unsigned long wherever the UEFI spec uses UINTN. This is not a
-> > matter of taste, really.
+> > =E5=9C=A8 2022/5/3 17:58, Ard Biesheuvel =E5=86=99=E9=81=93:
+> >> On Tue, 19 Apr 2022 at 08:43, Wupeng Ma <mawupeng1@huawei.com> wrote:
+> >>>
+> >>> From: Ma Wupeng <mawupeng1@huawei.com>
+> >>>
+> >>> Now system image will perfer to be located to mirrored regions both K=
+ASLR
+> >>> on and off.
+> >>>
+> >>
+> >> Hello Ma Wupeng,
+> >>
+> >> I wonder if we could simplify this as follows:
+> >> - ignore the non-KASLR case for now, and rely on the bootloader  > loa=
+d the image into mirrored memory if it exists;
 > >
-> > > jump_kernel_func() assuming boot hart ID to be an unsigned int is not in
-> > > line with the RISC-V ISA which allows to use all xlen bits.
-> > >
-> > > >
-> > > >
-> > > >> +};
-> > > >> +
-> > > >>   typedef union efi_load_file_protocol efi_load_file_protocol_t;
-> > > >>   typedef union efi_load_file_protocol efi_load_file2_protocol_t;
-> > > >>
-> > > >> diff --git a/drivers/firmware/efi/libstub/riscv-stub.c b/drivers/firmware/efi/libstub/riscv-stub.c
-> > > >> index 9c460843442f..012504f6f9a4 100644
-> > > >> --- a/drivers/firmware/efi/libstub/riscv-stub.c
-> > > >> +++ b/drivers/firmware/efi/libstub/riscv-stub.c
-> > > >> @@ -23,7 +23,7 @@
-> > > >>
-> > > >>   typedef void __noreturn (*jump_kernel_func)(unsigned int, unsigned long);
-> > > >>
-> > > >> -static u32 hartid;
-> > > >> +static size_t hartid;
-> > > >>
-> > > >
-> > > > and here
-> > > >
-> > > >>   static int get_boot_hartid_from_fdt(void)
-> > > >>   {
-> > > >> @@ -47,14 +47,33 @@ static int get_boot_hartid_from_fdt(void)
-> > > >>          return 0;
-> > > >>   }
-> > > >>
-> > > >> +static efi_status_t get_boot_hartid_from_efi(void)
-> > > >> +{
-> > > >> +       efi_guid_t boot_protocol_guid = RISCV_EFI_BOOT_PROTOCOL_GUID;
-> > > >> +       efi_status_t status;
-> > > >> +       struct riscv_efi_boot_protocol *boot_protocol;
-> > > >> +
-> > > >> +       status = efi_bs_call(locate_protocol, &boot_protocol_guid, NULL,
-> > > >> +                            (void **)&boot_protocol);
-> > > >> +       if (status == EFI_SUCCESS) {
-> > > >> +               status = efi_call_proto(boot_protocol,
-> > > >> +                                       get_boot_hartid, &hartid);
-> > >
-> > > A lot of the kernel code seems to be unfit to handle hart IDs exceeding
-> > > INT_MAX (e.g. sbi_cpu_is_stopped()). Until this is fixed we have to
-> > > treat hartid > INT_MAX as an error.
-> > >
+> > In grub, memory for static image is allocated via the following path:
 > >
-> > This is an issue in the core kernel code, not in the EFI stub. As you
-> > pointed out, the ISA implies UINTN / unsigned long here, and if the
-> > startup code cannot deal with that, it can be fixed separately.
-> 
-> It was kept as unsigned int because hartid > INT_MAX is very unlikely to happen.
-> But I agree that we should just follow the spec(allowing XLEN bits for
-> hartid) and
-> change "unsigned int" to "unsigned long" wherever hartid is concerned.
-> 
-> As the hartid is changed to unsigned long, get_boot_hartid_from_fdt
-> should be fixed as well.
-> Currently, it is using fdt32_to_cpu.
+> > grub_cmd_linux
+> >    kernel =3D grub_malloc(filelen)
+> >    kernel_alloc_addr =3D grub_efi_allocate_any_pages (kernel_alloc_page=
+s)
+> >    grub_memcpy (kernel_addr, kernel, grub_min(filelen, kernel_size))
+> >     grub_loader_set (grub_linux_boot, grub_linux_unload, 0)
+> >
+> > Can we get memory from mirrored region by the following steps:
+> > 1. get memory map by calling grub_efi_get_memory_map()
+> > 2. iter all memory map to find a suitable mirrored memory area
+> > 3. locate kernel image to this area
+> >
+> > So, if kaslr is not enabled
+> >   - grub will load kernel into mirrored region
+> > else
+> >   - arm64-stub.c will relocate kernel image to mirrored region
+> >
+> > Is this feasible?
+>
+> Is this a feasible proposal to relocate the static kernel image itself
+> into more reliable memory?
+>
 
-I am working on a separate patch series to modify these instances. Will send
-soon for your feedback.
+I'm not sure, it all depends on the firmware.
 
-Thanks
-Sunil
-> 
-> 
-> 
-> --
-> Regards,
-> Atish
+When GRUB calls LoadImage(), the firmware will reallocate the image
+and unpack it there. So it is really the firmware's job to ensure that
+the image is loaded into a suitable location.
+
+I have some code here that implements a EFI based decompressor, and
+which loads the kernel image into mirrored memory if it exists,
+without the need to move it again. It could trivially be modified to
+deal with non-randomized loads as well.
+
+But the bottom line is that UEFI should expose the ability to target
+mirrored memory, hacking around it like this is not a sustainable
+approach.
