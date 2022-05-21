@@ -2,155 +2,293 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7914E52FA66
-	for <lists+linux-efi@lfdr.de>; Sat, 21 May 2022 11:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E1EE52FC40
+	for <lists+linux-efi@lfdr.de>; Sat, 21 May 2022 13:52:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236211AbiEUJoH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 21 May 2022 05:44:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49694 "EHLO
+        id S1343548AbiEULwn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 21 May 2022 07:52:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234199AbiEUJn7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 21 May 2022 05:43:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 26EEF5D649
-        for <linux-efi@vger.kernel.org>; Sat, 21 May 2022 02:43:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1653126238;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=dQakkrlXQRKntd0RRpdtvvmaPsTow/BNKvunF/X2S4o=;
-        b=Drs+euNcA9RhCcViZLBlKNLhg0oRcZm6yLx8wth9kUO2xZZZJVQ2s5D5NlFL5RbnCB8R9g
-        Pc0bVmM2w93QDd3fFZv8DtuJOmtMphvCsoadbdh/IVxXBXZllX/vTa5wLo7asfZojP6nBY
-        0nibLRg9yXGS8y/mJSBSCNsAt6fv7VI=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-564-ADAgTNh-OGCGoaWmu8Vp5A-1; Sat, 21 May 2022 05:43:51 -0400
-X-MC-Unique: ADAgTNh-OGCGoaWmu8Vp5A-1
-Received: by mail-wm1-f72.google.com with SMTP id i64-20020a1c3b43000000b00397330faf1dso3211165wma.0
-        for <linux-efi@vger.kernel.org>; Sat, 21 May 2022 02:43:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=dQakkrlXQRKntd0RRpdtvvmaPsTow/BNKvunF/X2S4o=;
-        b=xG5Zd1IEozg9Q8C03z2kCy9ThhD8YvXkExcUsqz6MNfwoxs44C4P9NOpNJBSjuJp0A
-         BDRRzBqLHb2M3WWaPA7plgzUlqQpRvGNGwpKwO26SIJ1sNLx8U3P/wDQgILK6P5BKnHS
-         D90JMS58IVjUna14bxB8D3JRytvVucPnw5jYkfJQfs8TlaLcXDqhrvjmnmgEG2Cr2AGN
-         zfp3GkgbkqwnLHNBSRyyddBsGqJUxF2JMejTOxwRSpHy+dJ2yqRTszikzCkd/CEguMqX
-         j6il2ydP1UJzHuaVK+5jf6nZqN88nsP7iYgy5r/3UA1gfjQzQFsa5yYNj0AledXixPnd
-         i8ug==
-X-Gm-Message-State: AOAM532fhpAu0dAd0z9J8GbzDWTXXyUMB/L/LN3CKH2dq0UBbyBoNyQI
-        83q6a5FbF6VyXS4PjKPcUG9kq59Kkc5Y1NcC/y/Pn75DTaYBOSyk+1lEsaDxrLGPJm+2/ywIwo/
-        xG1GHgfLtu5PCvUxArq9h
-X-Received: by 2002:a05:6000:144e:b0:20e:6719:c376 with SMTP id v14-20020a056000144e00b0020e6719c376mr11371518wrx.715.1653126230196;
-        Sat, 21 May 2022 02:43:50 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyNY4l0J3NU0fU5ldjpTVsJKjUF0HOYrRkkJ7veXmwkg/db0qArtoiGUueey/Ksa0YlGIw9oQ==
-X-Received: by 2002:a05:6000:144e:b0:20e:6719:c376 with SMTP id v14-20020a056000144e00b0020e6719c376mr11371508wrx.715.1653126229992;
-        Sat, 21 May 2022 02:43:49 -0700 (PDT)
-Received: from [192.168.1.129] (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id d21-20020adf9b95000000b0020d06e7c16fsm4529325wrc.84.2022.05.21.02.43.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 21 May 2022 02:43:49 -0700 (PDT)
-Message-ID: <20bde9a2-592d-30a8-8cdc-03bdf1bf3e93@redhat.com>
-Date:   Sat, 21 May 2022 11:43:48 +0200
+        with ESMTP id S231675AbiEULwk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 21 May 2022 07:52:40 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1300E606E5
+        for <linux-efi@vger.kernel.org>; Sat, 21 May 2022 04:52:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1653133960; x=1684669960;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ipwTpA4Vt4edxkbfT3v+6Fnw+7VKV92SVTco4RNtv18=;
+  b=JbTwJGvXXuswsRMUmUYmIa0cXZU7rxLYS85j0fDk67B0Nl4TB7PfaE5q
+   r/foU3t/+amvmDLWCuuc9XKPUSCWs9G66MfCRbOgjNorwoCSgRFawU11t
+   YoLYNkqXux8Dg23lEKEb8R460YB3xDjdebMACFN9ZEFMAwYRTTldzEzPN
+   9fRGQLAlVrsIsrd0BU0aUepw4UArszIHryvnj95qmiKxzdh9ct7VmxHUC
+   H4nsb1Eo5J68wxl1CTD7+VMCA9KH66BHyyD84Gl7qyFFgOTx6xV0UKV4g
+   gkvMpaCAs96DuTWJ/XEzMsmQBFd8UMpM/Nk0o2Qr2lADqoSMMWqFLoOB2
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10353"; a="260430570"
+X-IronPort-AV: E=Sophos;i="5.91,242,1647327600"; 
+   d="scan'208";a="260430570"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2022 04:52:39 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,242,1647327600"; 
+   d="scan'208";a="547103168"
+Received: from lkp-server02.sh.intel.com (HELO 242b25809ac7) ([10.239.97.151])
+  by orsmga006.jf.intel.com with ESMTP; 21 May 2022 04:52:38 -0700
+Received: from kbuild by 242b25809ac7 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nsNev-0006G1-QQ;
+        Sat, 21 May 2022 11:52:37 +0000
+Date:   Sat, 21 May 2022 19:52:28 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS 3f68e69520d3d52d66a6ad872a75b7d8f2ea7665
+Message-ID: <6288d27c.BwFeusV1fyTOhE4C%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH V11 09/22] LoongArch: Add boot and setup routines
-Content-Language: en-US
-To:     Huacai Chen <chenhuacai@gmail.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Airlie <airlied@linux.ie>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Xuefeng Li <lixuefeng@loongson.cn>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Guo Ren <guoren@kernel.org>, Xuerui Wang <kernel@xen0n.name>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        linux-efi <linux-efi@vger.kernel.org>
-References: <20220518092619.1269111-1-chenhuacai@loongson.cn>
- <20220518092619.1269111-10-chenhuacai@loongson.cn>
- <CAMj1kXEBVWi2ZdR5Le5-G0DA43u-AMxmSO=pVt39qwN=PkzQfw@mail.gmail.com>
- <0bae0df1-48ae-d02f-bce4-d1f69acf269e@redhat.com>
- <CAAhV-H5dqNiecER3fChkBjQUGGszj6gwcpOFM1b4Kaax5vz27g@mail.gmail.com>
- <cdbb002a-9f0a-caa9-445e-4ba20328171a@redhat.com>
- <CAAhV-H7yKVWaiU_VKnc2YnCSeZPOwedRWMY8ZTS-VWwk+vE0AA@mail.gmail.com>
- <256e0b82-5d0f-cf40-87c6-c2505d2a6d3b@redhat.com>
- <CAAhV-H7bJv5V5UKJCWgEbOdOWZhnma3_3eAXbbY1MX_uKodjgg@mail.gmail.com>
- <859d5489-9361-3db0-1da4-1417ed2fad6c@redhat.com>
- <CAAhV-H4UxkyHr=NQGFAAjCXwXHXDLsN_CV-tSCn6oonOSSjb0A@mail.gmail.com>
- <7caec251-20e7-4a8c-93ee-b28558ec580f@redhat.com>
- <CAAhV-H6pfv4OQ5PhSfzG9YM_q5DYdgZ0DHVT7Aac9sppXGgnaA@mail.gmail.com>
-From:   Javier Martinez Canillas <javierm@redhat.com>
-In-Reply-To: <CAAhV-H6pfv4OQ5PhSfzG9YM_q5DYdgZ0DHVT7Aac9sppXGgnaA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello Huacai,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+branch HEAD: 3f68e69520d3d52d66a6ad872a75b7d8f2ea7665  riscv/efi_stub: Add support for RISCV_EFI_BOOT_PROTOCOL
 
-On 5/21/22 11:13, Huacai Chen wrote:
-> Hi, Javier,
-> 
-> On Sat, May 21, 2022 at 5:06 PM Javier Martinez Canillas
-> <javierm@redhat.com> wrote:
->>
->> Hello Huacai,
->>
->> On 5/21/22 09:37, Huacai Chen wrote:
->>
->> [snip]
->>
->>>>
->>>> A problem with moving to subsys_initcall_sync() is that this will delay
->>>> more when a display is available in the system, and just to cope up with
->>>> a corner case (as mentioned the common case is native drivers as module).
->>> OK, your method seems better, but I think moving to
->>> subsys_initcall_sync() can make the screen display as early as
->>> possible.
->>>
->>
->> But it doesn't cover all cases. For example, you will get the same error
->> if for example your native driver is built-in and efifb built as module.
->>
->> So my opinion is that instead of playing with the init call levels, is
->> just better for you to build your native driver as a module instead of
->> making it built-in.
-> I mean moving to subsys_initcall_sync() on top of your patchset, not
-> replacing them (Just for display earlier).
->
+elapsed time: 3066m
 
-Ah, I see what you mean. Yes, that makes sense indeed.
+configs tested: 209
+configs skipped: 5
 
-Feel free to post a patch proposing that. If you do, please also include
-Thomas Zimmermann <tzimmermann@suse.de> to the Cc list. Thanks!
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm64                               defconfig
+arm64                            allyesconfig
+arm                              allmodconfig
+arm                                 defconfig
+arm                              allyesconfig
+i386                          randconfig-c001
+powerpc64                           defconfig
+arc                                 defconfig
+powerpc                     asp8347_defconfig
+m68k                            mac_defconfig
+ia64                            zx1_defconfig
+ia64                      gensparse_defconfig
+arm                            pleb_defconfig
+arm                      footbridge_defconfig
+s390                          debug_defconfig
+xtensa                    xip_kc705_defconfig
+sh                         microdev_defconfig
+sh                               j2_defconfig
+s390                       zfcpdump_defconfig
+arm                         axm55xx_defconfig
+mips                           ci20_defconfig
+xtensa                          iss_defconfig
+s390                             allyesconfig
+ia64                        generic_defconfig
+powerpc                      chrp32_defconfig
+mips                  maltasmvp_eva_defconfig
+riscv                            allyesconfig
+powerpc                      pcm030_defconfig
+sh                   sh7770_generic_defconfig
+h8300                    h8300h-sim_defconfig
+arm                        mini2440_defconfig
+xtensa                           allyesconfig
+m68k                            q40_defconfig
+sh                           se7721_defconfig
+arm                           tegra_defconfig
+h8300                            allyesconfig
+arm                          badge4_defconfig
+arm                        cerfcube_defconfig
+arm                           corgi_defconfig
+sh                        sh7763rdp_defconfig
+powerpc                     sequoia_defconfig
+arm                      jornada720_defconfig
+um                                  defconfig
+powerpc                        cell_defconfig
+sh                                  defconfig
+powerpc                    klondike_defconfig
+powerpc                        warp_defconfig
+mips                       capcella_defconfig
+powerpc                 linkstation_defconfig
+xtensa                  audio_kc705_defconfig
+arm                           h3600_defconfig
+parisc                generic-64bit_defconfig
+sh                           se7619_defconfig
+powerpc                      ppc40x_defconfig
+alpha                               defconfig
+arm                           h5000_defconfig
+arm                        multi_v7_defconfig
+ia64                         bigsur_defconfig
+sh                          landisk_defconfig
+alpha                            allyesconfig
+sh                           se7343_defconfig
+sh                            migor_defconfig
+nios2                            alldefconfig
+arc                        nsimosci_defconfig
+powerpc                     stx_gp3_defconfig
+sparc64                          alldefconfig
+i386                                defconfig
+arc                            hsdk_defconfig
+mips                    maltaup_xpa_defconfig
+arc                      axs103_smp_defconfig
+powerpc                      ep88xc_defconfig
+powerpc                     mpc83xx_defconfig
+powerpc                 mpc834x_mds_defconfig
+h8300                       h8s-sim_defconfig
+arm                            lart_defconfig
+sh                          urquell_defconfig
+xtensa                         virt_defconfig
+arm                        keystone_defconfig
+xtensa                    smp_lx200_defconfig
+xtensa                       common_defconfig
+m68k                       m5208evb_defconfig
+mips                  decstation_64_defconfig
+m68k                       bvme6000_defconfig
+mips                             allyesconfig
+x86_64                           alldefconfig
+powerpc                 canyonlands_defconfig
+sh                          sdk7786_defconfig
+mips                 decstation_r4k_defconfig
+um                             i386_defconfig
+m68k                          hp300_defconfig
+mips                         mpc30x_defconfig
+m68k                             allyesconfig
+powerpc                 mpc837x_mds_defconfig
+arm                           viper_defconfig
+arm                           imxrt_defconfig
+powerpc                      ppc6xx_defconfig
+arm                             pxa_defconfig
+m68k                        mvme147_defconfig
+openrisc                 simple_smp_defconfig
+xtensa                generic_kc705_defconfig
+powerpc                       holly_defconfig
+powerpc                     rainier_defconfig
+powerpc                      mgcoge_defconfig
+mips                     loongson1b_defconfig
+arc                         haps_hs_defconfig
+sh                               allmodconfig
+sh                   secureedge5410_defconfig
+arm                        realview_defconfig
+sh                   rts7751r2dplus_defconfig
+m68k                           sun3_defconfig
+arm                           sama5_defconfig
+sh                           se7724_defconfig
+sh                 kfr2r09-romimage_defconfig
+m68k                          sun3x_defconfig
+sh                        sh7757lcr_defconfig
+x86_64                        randconfig-c001
+arm                  randconfig-c002-20220519
+ia64                                defconfig
+ia64                             allmodconfig
+ia64                             allyesconfig
+riscv                             allnoconfig
+m68k                             allmodconfig
+m68k                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+csky                                defconfig
+nios2                            allyesconfig
+s390                                defconfig
+s390                             allmodconfig
+parisc                              defconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+sparc                               defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+x86_64                        randconfig-a011
+x86_64                        randconfig-a013
+x86_64                        randconfig-a015
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+arc                  randconfig-r043-20220519
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+x86_64                                  kexec
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+
+clang tested configs:
+s390                 randconfig-c005-20220519
+powerpc              randconfig-c003-20220519
+x86_64                        randconfig-c007
+riscv                randconfig-c006-20220519
+mips                 randconfig-c004-20220519
+i386                          randconfig-c001
+arm                  randconfig-c002-20220519
+powerpc                          g5_defconfig
+hexagon                             defconfig
+mips                      pic32mzda_defconfig
+powerpc                      ppc64e_defconfig
+mips                      malta_kvm_defconfig
+arm                              alldefconfig
+arm                          ixp4xx_defconfig
+riscv                          rv32_defconfig
+powerpc                   bluestone_defconfig
+powerpc                      katmai_defconfig
+powerpc                        icon_defconfig
+powerpc                      ppc44x_defconfig
+arm                       spear13xx_defconfig
+mips                           rs90_defconfig
+powerpc                 mpc8272_ads_defconfig
+arm                         palmz72_defconfig
+mips                            e55_defconfig
+arm                        mvebu_v5_defconfig
+powerpc                  mpc885_ads_defconfig
+powerpc                    gamecube_defconfig
+x86_64                        randconfig-a005
+x86_64                        randconfig-a003
+x86_64                        randconfig-a001
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
+s390                 randconfig-r044-20220519
+hexagon              randconfig-r045-20220519
+riscv                randconfig-r042-20220519
+hexagon              randconfig-r041-20220519
+hexagon              randconfig-r045-20220521
+hexagon              randconfig-r041-20220521
+s390                 randconfig-r044-20220521
+riscv                randconfig-r042-20220521
 
 -- 
-Best regards,
-
-Javier Martinez Canillas
-Linux Engineering
-Red Hat
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
