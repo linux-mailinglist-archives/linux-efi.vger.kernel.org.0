@@ -2,84 +2,54 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AACF953134A
-	for <lists+linux-efi@lfdr.de>; Mon, 23 May 2022 18:23:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CA71531625
+	for <lists+linux-efi@lfdr.de>; Mon, 23 May 2022 22:50:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237305AbiEWOmP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 23 May 2022 10:42:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56482 "EHLO
+        id S231673AbiEWTe3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 23 May 2022 15:34:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237280AbiEWOmO (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 23 May 2022 10:42:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FBB126AFB;
-        Mon, 23 May 2022 07:42:12 -0700 (PDT)
+        with ESMTP id S229647AbiEWTeX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 23 May 2022 15:34:23 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA2E314030
+        for <linux-efi@vger.kernel.org>; Mon, 23 May 2022 12:20:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB989611E3;
-        Mon, 23 May 2022 14:42:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36000C3411C;
-        Mon, 23 May 2022 14:42:11 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6C7A4B81262
+        for <linux-efi@vger.kernel.org>; Mon, 23 May 2022 19:20:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id F36A5C385AA;
+        Mon, 23 May 2022 19:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653316931;
-        bh=+pn/Aag3Y2GhS2+/HoXWr9nr1Lt0Lmr9+7jaO0VvYuo=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=qjvyhsayW0yHC6C3Z5GhrrVaWktvr8ASpC9Olc1tkAMJAij5GQY58GuMcrLFNW/9A
-         C1JZzzjUTOjbY5sZwjkUowiJxSLMFNh8CbOvLRCiPsdrZExkCaahITJqIt0MsC4cO/
-         1/hPHMUppuqcI6KFdmdvfsBG2c9hwzCqjJdqHfbVf+moydsrWg3YUYScIS+3Uyv1Uc
-         Q3hDIucWEQpEmvlFo04X8piythLawYiFP/yJrO/aaxOhChVzd6y4imeoZWXJ1DxRlM
-         eUOJGB7+bFZF3nT+fChRSoQJ1/oUpWimV9wlZG4fjj+jC7LE9HsxVXxzAxxjPzV16V
-         Jt4ogDhn+fSPQ==
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-e93bbb54f9so18680543fac.12;
-        Mon, 23 May 2022 07:42:11 -0700 (PDT)
-X-Gm-Message-State: AOAM533d6axMe3YHv3xOX0YZqXF+RnCjcVqcWQuZKSg7mFdw5BHfT3Ey
-        nFLHVHjaTbLmueRCe46iyG9BAPo3jt5wSQe0d9A=
-X-Google-Smtp-Source: ABdhPJxNPJQumGg2r2267lmg4ZuxwjhwAj2wPi6tOvIo735VqndOP4syN/jAR+ON3DwuLvxLZIdsdol8ceNwEmlZYRk=
-X-Received: by 2002:a05:6870:f112:b0:f1:f1e9:e8f1 with SMTP id
- k18-20020a056870f11200b000f1f1e9e8f1mr11327387oac.126.1653316930318; Mon, 23
- May 2022 07:42:10 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAMj1kXGSStDgj9ABmUaTLnBmpQFksh3wx4tx=mJohum4GQe3Gg@mail.gmail.com>
- <20220419070150.254377-1-mawupeng1@huawei.com> <CAMj1kXHr2RdYSPor1st1ZnL=O42c8N6e=bNG+eFhatfefWLUrw@mail.gmail.com>
- <c65d22b4-f654-21aa-bd5f-d4f8b0939a25@huawei.com> <7058b8d8-c0cb-108e-0db9-2fdf5fb154cf@huawei.com>
- <CAMj1kXHnL12j6FPGtEeSQB2-kHzoVF+LJMUF9YBq43Yi1UntDg@mail.gmail.com> <7a1ce182-343a-75f9-5447-f7ca12cb0c36@huawei.com>
-In-Reply-To: <7a1ce182-343a-75f9-5447-f7ca12cb0c36@huawei.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 23 May 2022 16:41:58 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXE_xc4FvdOLqfK+awqTqoGje=Gy7bmVUFTZY_hjw1K9=w@mail.gmail.com>
-Message-ID: <CAMj1kXE_xc4FvdOLqfK+awqTqoGje=Gy7bmVUFTZY_hjw1K9=w@mail.gmail.com>
-Subject: Re: [PATCH 0/2] Add support to relocate kernel image to mirrored region
-To:     mawupeng <mawupeng1@huawei.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        X86 ML <x86@kernel.org>, Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Joerg Roedel <jroedel@suse.de>, songmuchun@bytedance.com,
-        macro@orcam.me.uk, Frederic Weisbecker <frederic@kernel.org>,
-        W_Armin@gmx.de, John Garry <john.garry@huawei.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        chenhuacai@kernel.org, David Hildenbrand <david@redhat.com>,
-        gpiccoli@igalia.com, Mark Rutland <mark.rutland@arm.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-ia64@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        Linux Memory Management List <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        s=k20201202; t=1653333607;
+        bh=C8eF1/10TLX/B3hLzzd98rzbNbIzg+7gt4DqWVqc76M=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=a0ouo1ehzrA1IR3m/rLptT4dBJfMLBBuNlGSjgLqsV50y0TB5Z0aAkg1jHoOp8hcM
+         UiJnwQ3D/T9W8cP+kYyIzPpw6Ngo5kq+tW4wZHpeWQrsjAIqiiaKrydHNDA8BDcjp3
+         ADLRlmoqYfQdVS4KBoU2JGURaGT++IN7tEYzpaSdTIfnAWAHIMl6UUA67dAJCfphbQ
+         0bKejJevzKeCo1LjUzpJwf1+P9j8m9F68KB57cYhRw0oBl1l7K5MvZDkZMieE5C4jQ
+         T55x2XZfyJ2F6Rm36v9yuYw6kqnwjj+Hq9RXzGFPMqRrnc6W8CsQHY5VkdNtHQySP3
+         lB3duNFaeh0Jw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id DFD91F03935;
+        Mon, 23 May 2022 19:20:06 +0000 (UTC)
+Subject: Re: [GIT PULL] EFI updates for v5.19
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20220520083946.549534-1-ardb@kernel.org>
+References: <20220520083946.549534-1-ardb@kernel.org>
+X-PR-Tracked-List-Id: <linux-efi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20220520083946.549534-1-ardb@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next-for-v5.19
+X-PR-Tracked-Commit-Id: 3f68e69520d3d52d66a6ad872a75b7d8f2ea7665
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: bf2431021c8cfe52c866d7bf640ced03a35ebe91
+Message-Id: <165333360690.1924.5881232796237315482.pr-tracker-bot@kernel.org>
+Date:   Mon, 23 May 2022 19:20:06 +0000
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, torvalds@linux-foundation.org,
+        Ard Biesheuvel <ardb@kernel.org>
 X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -90,82 +60,15 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 23 May 2022 at 03:18, mawupeng <mawupeng1@huawei.com> wrote:
->
->
->
-> =E5=9C=A8 2022/5/20 14:52, Ard Biesheuvel =E5=86=99=E9=81=93:
-> > On Thu, 19 May 2022 at 13:09, mawupeng <mawupeng1@huawei.com> wrote:
-> >>
-> >>
-> >>
-> >> =E5=9C=A8 2022/5/7 17:28, mawupeng =E5=86=99=E9=81=93:
-> >>>
-> >>>
-> >>> =E5=9C=A8 2022/5/3 17:58, Ard Biesheuvel =E5=86=99=E9=81=93:
-> >>>> On Tue, 19 Apr 2022 at 08:43, Wupeng Ma <mawupeng1@huawei.com> wrote=
-:
-> >>>>>
-> >>>>> From: Ma Wupeng <mawupeng1@huawei.com>
-> >>>>>
-> >>>>> Now system image will perfer to be located to mirrored regions both=
- KASLR
-> >>>>> on and off.
-> >>>>>
-> >>>>
-> >>>> Hello Ma Wupeng,
-> >>>>
-> >>>> I wonder if we could simplify this as follows:
-> >>>> - ignore the non-KASLR case for now, and rely on the bootloader  > l=
-oad the image into mirrored memory if it exists;
-> >>>
-> >>> In grub, memory for static image is allocated via the following path:
-> >>>
-> >>> grub_cmd_linux
-> >>>     kernel =3D grub_malloc(filelen)
-> >>>     kernel_alloc_addr =3D grub_efi_allocate_any_pages (kernel_alloc_p=
-ages)
-> >>>     grub_memcpy (kernel_addr, kernel, grub_min(filelen, kernel_size))
-> >>>      grub_loader_set (grub_linux_boot, grub_linux_unload, 0)
-> >>>
-> >>> Can we get memory from mirrored region by the following steps:
-> >>> 1. get memory map by calling grub_efi_get_memory_map()
-> >>> 2. iter all memory map to find a suitable mirrored memory area
-> >>> 3. locate kernel image to this area
-> >>>
-> >>> So, if kaslr is not enabled
-> >>>    - grub will load kernel into mirrored region
-> >>> else
-> >>>    - arm64-stub.c will relocate kernel image to mirrored region
-> >>>
-> >>> Is this feasible?
-> >>
-> >> Is this a feasible proposal to relocate the static kernel image itself
-> >> into more reliable memory?
-> >>
-> >
-> > I'm not sure, it all depends on the firmware.
-> >
-> > When GRUB calls LoadImage(), the firmware will reallocate the image
-> > and unpack it there. So it is really the firmware's job to ensure that
-> > the image is loaded into a suitable location.
-> >
-> > I have some code here that implements a EFI based decompressor, and
-> > which loads the kernel image into mirrored memory if it exists,
-> > without the need to move it again. It could trivially be modified to
-> > deal with non-randomized loads as well.
-> >
-> > But the bottom line is that UEFI should expose the ability to target
-> > mirrored memory, hacking around it like this is not a sustainable
-> > approach.
->
-> Since firmware is responsible for put kernel static image into mirrored
-> region and kernel is responsible for relocate this image into mirrored
-> region if kaslr is enabled. There is no conflict between these two.
->
-> Can we integrate the kernel part(introduce mirrored support to arm64) fir=
-st?
->
+The pull request you sent on Fri, 20 May 2022 10:39:46 +0200:
 
-Yes. If you drop the changes related to fake memmap and rebase, please
-resend them after -rc1 is released.
+> git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next-for-v5.19
+
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/bf2431021c8cfe52c866d7bf640ced03a35ebe91
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
