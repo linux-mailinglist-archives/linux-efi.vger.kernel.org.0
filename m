@@ -2,79 +2,63 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 096B3532434
-	for <lists+linux-efi@lfdr.de>; Tue, 24 May 2022 09:38:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 773BD5324FB
+	for <lists+linux-efi@lfdr.de>; Tue, 24 May 2022 10:12:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231688AbiEXHh5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 24 May 2022 03:37:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33630 "EHLO
+        id S231355AbiEXIMJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 24 May 2022 04:12:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234094AbiEXHhz (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 24 May 2022 03:37:55 -0400
-Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BCC56D4EB
-        for <linux-efi@vger.kernel.org>; Tue, 24 May 2022 00:37:54 -0700 (PDT)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed30:4593:272c:6293:e2cc])
-        by michel.telenet-ops.be with bizsmtp
-        id aXdt270012jQL2A06XdtYc; Tue, 24 May 2022 09:37:53 +0200
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1ntP72-001RqZ-JU; Tue, 24 May 2022 09:37:52 +0200
-Received: from geert by rox.of.borg with local (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1ntP72-005tgW-4a; Tue, 24 May 2022 09:37:52 +0200
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Ard Biesheuvel <ardb@kernel.org>,
-        Javier Martinez Canillas <javierm@redhat.com>
-Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH v2] efi: EFI_DISABLE_RUNTIME should depend on EFI
-Date:   Tue, 24 May 2022 09:37:51 +0200
-Message-Id: <ea51a17e00a10f3ab25d94b9a5885eb9142aa12b.1653377840.git.geert@linux-m68k.org>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S231415AbiEXIMG (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 24 May 2022 04:12:06 -0400
+Received: from mail.greatagencyonline.pl (mail.greatagencyonline.pl [89.40.125.71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10DE737BDF
+        for <linux-efi@vger.kernel.org>; Tue, 24 May 2022 01:12:04 -0700 (PDT)
+Received: by mail.greatagencyonline.pl (Postfix, from userid 1001)
+        id 52A0BA2758; Tue, 24 May 2022 09:01:29 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=greatagencyonline.pl;
+        s=mail; t=1653379313;
+        bh=ksvwLPFdjL017OLwir5xHXy3Vmrj/5fhZ5DwBI62qzc=;
+        h=Date:From:To:Subject:From;
+        b=TFqYnAQArQ8YWkIKguUqixT677AqPvC1I/6LoOTrGXSpK8Nu4QxVnQd7193Y3GKcs
+         4k8KOu7VeHDAE7G80pRw8jqPT8YKqH7p4+6jJd+sBl3n1I3qIQPTvrYCXuBXW4+dXZ
+         I6ejKd+5qw6H0Dukjabs5EP5pVERXWX1kfdmCy5BOL6T4G7B8pFUIUPBU+KgXoIoQc
+         OzrGzJ80xeL4+aicOa6Tx0VXge2tSdCqVaxBlewjWRi9QAGTpVTLK7Sdt3YsTJyUTo
+         4E2fnstacFXithyh06FMFFcoSFD20Vxv/GcpqTUuCCfyv6+EgH0LP0B/+Urgqkbtax
+         0nU7vSVtJ/Hbw==
+Received: by mail.greatagencyonline.pl for <linux-efi@vger.kernel.org>; Tue, 24 May 2022 08:00:54 GMT
+Message-ID: <20220524074502-0.1.43.vxxr.0.ug440or2yc@greatagencyonline.pl>
+Date:   Tue, 24 May 2022 08:00:54 GMT
+From:   =?UTF-8?Q? "Miko=C5=82aj_Rudzik" ?= 
+        <mikolaj.rudzik@greatagencyonline.pl>
+To:     <linux-efi@vger.kernel.org>
+Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
+X-Mailer: mail.greatagencyonline.pl
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The EFI_DISABLE_RUNTIME config option controls the use of Extensible
-Firmware Interface (EFI) runtime services, which matters only if EFI
-support is enabled.
+Dzie=C5=84 dobry,
 
-Hence add a dependency on EFI, to prevent asking the user about this
-control knob when configuring a kernel without EFI support.
+chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
+skania nowych zlece=C5=84 ze strony www.
 
-Fixes: a031651ff2144a3d ("efi: Allow to enable EFI runtime services by default on RT")
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
----
-v2:
-  - Add Acked-by,
-  - Fix typo s/with/without/.
----
- drivers/firmware/efi/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
+, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
+=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
+jonowania strony w Google.
 
-diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-index 4720ba98cec312e7..ff6e7bfa8355cfc2 100644
---- a/drivers/firmware/efi/Kconfig
-+++ b/drivers/firmware/efi/Kconfig
-@@ -299,6 +299,7 @@ config EFI_CUSTOM_SSDT_OVERLAYS
- 
- config EFI_DISABLE_RUNTIME
- 	bool "Disable EFI runtime services support by default"
-+	depends on EFI
- 	default y if PREEMPT_RT
- 	help
- 	  Allow to disable the EFI runtime services support by default. This can
--- 
-2.25.1
+Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
 
+
+Pozdrawiam,
+Miko=C5=82aj Rudzik
