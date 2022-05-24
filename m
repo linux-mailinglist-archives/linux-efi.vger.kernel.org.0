@@ -2,122 +2,108 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BBF353286A
-	for <lists+linux-efi@lfdr.de>; Tue, 24 May 2022 13:00:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0475A53297A
+	for <lists+linux-efi@lfdr.de>; Tue, 24 May 2022 13:43:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233792AbiEXK77 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 24 May 2022 06:59:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52260 "EHLO
+        id S235171AbiEXLlu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 24 May 2022 07:41:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233493AbiEXK76 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 24 May 2022 06:59:58 -0400
-Received: from mail-ua1-x92d.google.com (mail-ua1-x92d.google.com [IPv6:2607:f8b0:4864:20::92d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2FF76FA39;
-        Tue, 24 May 2022 03:59:57 -0700 (PDT)
-Received: by mail-ua1-x92d.google.com with SMTP id k13so3578976uad.0;
-        Tue, 24 May 2022 03:59:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=OyNGMzB8eRzvXkgcGkGr6qv15WPNXqDuFiVrIoJC1xE=;
-        b=hl+MbcoLRG5p6f0tyPfx9hEebKnCInbyfKFlgIhrxiMaZxGo75slJlOpukMI+qmtY4
-         vKs6XkrY6enhD9LKHO5yaO5a0YSYrFD8s/80jGcTSCC7zmgoGrXDXaJNVa4gpvJ/DQvk
-         DB0DDXIkGH3Oc5mRDsPmISjVD6gCQ0S2fZXivHEKGv/ccLLdlQ6CoX/2cASy2OKUOMoi
-         z0LF9lDmcO39Z7WoVQTxyPUk0SMPgoo4VZj0YbXMDaGNwyLLQvqIc1xH5UNs8Gt8TJPw
-         PImI4UvFCmWNvCjQbvPp0d0c802Bq6aHQpZ4xcpuupIgfwrXENlxhvuCQjAywT2pxv/A
-         3cWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=OyNGMzB8eRzvXkgcGkGr6qv15WPNXqDuFiVrIoJC1xE=;
-        b=0XnFRP9du1+hNVfTPdU+uei3hKlS+DHjOKZqSLxDwqZfuAw5BVTMg2VbyA1IW9Ex7M
-         dSyg62ZljkKGnmsX01TofECUFHE4fxUA9FU4GPjebegxclDu2RCvktYaXD5hTwy5IXWC
-         8027Pwt9VJCikJvHnxpyx1qmAfYJTO37Hov2lmyuxpJX6zZ9X1v9Sbt04h5cTJtA31ml
-         ReZCLJQjKidbpgsL5mPeRfB4ebijXaodedbP2H+t0v1H6vbEX2/8fFhB/8EVcbvpKrhD
-         5lyZ6EV86QqOVsGwKWGlZ+gRsfmI/AqslB+gWK3wRwxI66Pu6W8k9kwfDIYhg1ANpor2
-         k8kQ==
-X-Gm-Message-State: AOAM530m1N4+gQpfgZ5I3B0W3hlITLYxFgTg++2JSmtCSUJvunndMhAZ
-        qL0Knt1xDGmSje8kaa6bMGIAp6D1pujVvdtPEWg8tfAl8IC9t/RH
-X-Google-Smtp-Source: ABdhPJzjHep8EeU03Bdx8UMpAopw7ydL9VNQPgVLtJw/4rEwY7HBf0Z0i+/xdekLJoG+9rVYRDr7nM0cHPOyFMNEYeg=
-X-Received: by 2002:ab0:6999:0:b0:368:a1e8:74c9 with SMTP id
- t25-20020ab06999000000b00368a1e874c9mr8496825uaq.21.1653389996991; Tue, 24
- May 2022 03:59:56 -0700 (PDT)
+        with ESMTP id S236945AbiEXLlr (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 24 May 2022 07:41:47 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E65E8E2B;
+        Tue, 24 May 2022 04:41:13 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id CADF7CE19E5;
+        Tue, 24 May 2022 11:41:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F1F5C34113;
+        Tue, 24 May 2022 11:41:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653392467;
+        bh=xyWOEhDS7IyLf1PZjyOsltV+5LA6MRIE8wzpbN6RO0s=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=VIvgCy9gSHU5nSmAvmpaFooT8IVlIoVYtfN8vlLvB2J5MQiwXn1CsnZAP4IIUeuGh
+         W62P/g2ArPB6jVng0iBr+zRO3vAscMZ+kaP8SMBnlbPrBzvNjjja+p1fWLlbzbjXNb
+         +vR/ci7tlER5iez/aDsJfjXrLjUY+nvp6OKwaXhpuJht1dQXqwnkzLlQOdN5uLuP2V
+         PRg/WwXWZysf6ZtLE9GhCrcyBiX1mgmLn1pg6kmpBjr70ez7KzglZWQeCZY/UnK/Hs
+         hw1JSsDJvXc0wqD11glOK7qSsJLiPnlEd3dkZLwL/BFMFCXmQBVuaXY5cVYW1jbfgd
+         //alJL979cQOg==
+Received: by mail-vs1-f43.google.com with SMTP id j7so5862472vsp.12;
+        Tue, 24 May 2022 04:41:07 -0700 (PDT)
+X-Gm-Message-State: AOAM533Ml/z/pXFgsfrw3YyIkuGOd7TgG8ZuA871AF6T5WjYuvYBLzkZ
+        XUQbAggIHauUKmCOx9VZktdEQHSv+95aLxWXB2Q=
+X-Google-Smtp-Source: ABdhPJzCJ2u9jysf3Y3UYbKCx2FPWfsiC1PXV3/DgImJFn80toQja8XBmo+Xx7+ajGyarrIJNUtFoQlBmChBHi8+Zs0=
+X-Received: by 2002:a67:ea4f:0:b0:328:1db4:d85c with SMTP id
+ r15-20020a67ea4f000000b003281db4d85cmr10238947vso.20.1653392466187; Tue, 24
+ May 2022 04:41:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220518092619.1269111-1-chenhuacai@loongson.cn>
- <20220518092619.1269111-10-chenhuacai@loongson.cn> <14f922495a09898017e4db3baed5b434acadac12.camel@xry111.site>
-In-Reply-To: <14f922495a09898017e4db3baed5b434acadac12.camel@xry111.site>
-From:   Huacai Chen <chenhuacai@gmail.com>
-Date:   Tue, 24 May 2022 18:59:50 +0800
-Message-ID: <CAAhV-H4BHUTshe2w-KnJ3hLveaFWRJihyDwnOnAbSYWDV_18LA@mail.gmail.com>
-Subject: Re: [PATCH V11 09/22] LoongArch: Add boot and setup routines
-To:     Xi Ruoyao <xry111@xry111.site>, lichao@loongson.cn
-Cc:     Huacai Chen <chenhuacai@loongson.cn>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Airlie <airlied@linux.ie>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Xuefeng Li <lixuefeng@loongson.cn>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Guo Ren <guoren@kernel.org>, Xuerui Wang <kernel@xen0n.name>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
+References: <1653360644-28872-1-git-send-email-baihaowen@meizu.com>
+ <CAAhV-H7Xw-LPdHg1mVF1aZ67RQACBP0kans+moZ3GaRb5PF6VA@mail.gmail.com> <CAAhV-H4Qcj9y6opY3WMTbE8myo77fYRb8Z42C+MPYuScz8N67g@mail.gmail.com>
+In-Reply-To: <CAAhV-H4Qcj9y6opY3WMTbE8myo77fYRb8Z42C+MPYuScz8N67g@mail.gmail.com>
+From:   Huacai Chen <chenhuacai@kernel.org>
+Date:   Tue, 24 May 2022 19:40:59 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H6tKeyeo3L7=C2NUQyw_cJpusWYmGUrm8LVVidvjB3MgQ@mail.gmail.com>
+Message-ID: <CAAhV-H6tKeyeo3L7=C2NUQyw_cJpusWYmGUrm8LVVidvjB3MgQ@mail.gmail.com>
+Subject: Re: [PATCH] LoongArch: take size of pointed value, not pointer
+To:     Haowen Bai <baihaowen@meizu.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>
+        LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi, Ruoyao,
+Hi, Haowen,
 
-On Tue, May 24, 2022 at 4:27 PM Xi Ruoyao <xry111@xry111.site> wrote:
+On Tue, May 24, 2022 at 12:03 PM Huacai Chen <chenhuacai@kernel.org> wrote:
 >
-> On Wed, 2022-05-18 at 17:26 +0800, Huacai Chen wrote:
-> > Currently an existing interface between the kernel and the bootloader
-> > is  implemented. Kernel gets 2 values from the bootloader, passed in
-> > registers a0 and a1; a0 is an "EFI boot flag" distinguishing UEFI and
-> > non-UEFI firmware, while a1 is a pointer to an FDT with systable,
-> > memmap, cmdline and initrd information.
->
-> If I understand this correctly, we can:
->
-> - set a0 to 0
-> - set a1 a pointer (virtual address or physical address?) to the FDT
-> with these information
->
-> in the bootloader before invoking the kernel, then it will be possible
-> to boot this kernel w/o firmware update?
-Unfortunately, there is no released firmware for you since we recently
-changed the interface again and again. :(
-You can contact with Li Chao (lichao@loongson.cn), I think he can
-provide help as much as possible (at least provide temporary firmwares
-for developers).
-We will also provide qemu-system and virtual machine's firmware as
-soon as possible.
+> On Tue, May 24, 2022 at 11:06 AM Huacai Chen <chenhuacai@kernel.org> wrote:
+> >
+> > Hi, Haowen,
+> >
+> > On Tue, May 24, 2022 at 10:52 AM Haowen Bai <baihaowen@meizu.com> wrote:
+> > >
+> > > Sizeof a pointer-typed expression returns the size of the pointer, not
+> > > that of the pointed data.
+> > Your patch is correct, but the original patch hasn't been upstream, I don't
+> > know how to handle it.
+> I've squash your patch to the original one and add a Co-developed-by:,
+> not sure it is the best solution. Thanks.
+I was suggested that a "Suggested-by" is suitable.
+https://lore.kernel.org/lkml/CAAhV-H6k=xC-fDYnwsqSeoj7QPPn8RAcR+waQMa8yTs5J-XOSg@mail.gmail.com/T/#t
 
 Huacai
-
 >
-> I'd prefer to receive a firmware update anyway, but we need an
-> alternative if some vendor just say "no way, our customized distro works
-> fine and you should use it".  (I'm not accusing LoongArch: such annoying
-> behavior is common among vendors of all architectures, and even worse
-> with x86 because they often say "just use Windoge".)
-> --
-> Xi Ruoyao <xry111@xry111.site>
-> School of Aerospace Science and Technology, Xidian University
+> >
+> > >
+> > > Signed-off-by: Haowen Bai <baihaowen@meizu.com>
+> > > ---
+> > >  arch/loongarch/kernel/efi.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/arch/loongarch/kernel/efi.c b/arch/loongarch/kernel/efi.c
+> > > index f9fdeb1ae358..f0e5d0feffc2 100644
+> > > --- a/arch/loongarch/kernel/efi.c
+> > > +++ b/arch/loongarch/kernel/efi.c
+> > > @@ -180,7 +180,7 @@ void __init efi_init(void)
+> > >         if (!efi_system_table)
+> > >                 return;
+> > >
+> > > -       efi_systab = (efi_system_table_t *)early_memremap_ro(efi_system_table, sizeof(efi_systab));
+> > > +       efi_systab = (efi_system_table_t *)early_memremap_ro(efi_system_table, sizeof(*efi_systab));
+> > >         if (!efi_systab) {
+> > >                 pr_err("Can't find EFI system table.\n");
+> > >                 return;
+> > > --
+> > > 2.7.4
+> > >
