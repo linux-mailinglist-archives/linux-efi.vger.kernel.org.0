@@ -2,84 +2,87 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DBBB5340EB
-	for <lists+linux-efi@lfdr.de>; Wed, 25 May 2022 18:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A73253410F
+	for <lists+linux-efi@lfdr.de>; Wed, 25 May 2022 18:09:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245429AbiEYP7S (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 25 May 2022 11:59:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45476 "EHLO
+        id S237127AbiEYQJM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 25 May 2022 12:09:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245386AbiEYP7G (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 25 May 2022 11:59:06 -0400
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DC71B36FE
-        for <linux-efi@vger.kernel.org>; Wed, 25 May 2022 08:59:03 -0700 (PDT)
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
+        with ESMTP id S234454AbiEYQJM (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 25 May 2022 12:09:12 -0400
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 504ACAE27A
+        for <linux-efi@vger.kernel.org>; Wed, 25 May 2022 09:09:11 -0700 (PDT)
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 9E0543F804
-        for <linux-efi@vger.kernel.org>; Wed, 25 May 2022 15:59:01 +0000 (UTC)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id AFBFA3FBC9
+        for <linux-efi@vger.kernel.org>; Wed, 25 May 2022 16:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1653494341;
-        bh=ceTyIPuj0mdwf7qJM6JGPSBEklD8LtuaTMx0pA8AGQY=;
+        s=20210705; t=1653494949;
+        bh=d8wzs0GJmElvjOENQNOKSUNkK9vo5WqYmuRjW9+dNXI=;
         h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
          In-Reply-To:Content-Type;
-        b=XfoJSqIZdov5QHGY/D4uU2Lwk8ZpZOGG3NWWi3JxYb2mlR8qMtQ8mrNEtRtVgHYD/
-         KPk+7DYI6tMKAnbWIBDQBq2I7vBX16isGsdA1AX8ry1IwNaVuivVEyyhpZNOb47iib
-         J0mPWe0apCmzGuEjWTMurNk/pDIMgPSlRRT+a5fef/UiLR0ZnXDtbPE6hMm4GIJLg4
-         YuCWVvn4vGTjjprBElh3ZKwAtKvKJ6ydkebwuMaakGYOqWGmCkUgQ7eDxlJUvX7tYh
-         VKOGzBTE6mnswQDBIar9NSnpdlcKTbJ/hiib4l9teRH2ptco56bjWiE96ZwSb8uJsM
-         /1Fcppbl0zVKg==
-Received: by mail-ed1-f71.google.com with SMTP id u1-20020aa7d981000000b0042acd1f2253so15136352eds.4
-        for <linux-efi@vger.kernel.org>; Wed, 25 May 2022 08:59:01 -0700 (PDT)
+        b=uzvbVzPg57zawLEoif9hNY8Cvh9w868svVFrpMiNCK/PSjubMfYKgtdRZqddogKoi
+         4Vi+XjaUEd04hjrf5LpkpZBYHYTuGuDheXrx3oGiWcMrsg9cZ9mS4n0o8nj1ei7Ujp
+         /nY9vMtzOQNT+pL8LadCNzJn65Tfjd9Z/t42HJnY7Ewb3iG+YdrfyP5AvFpaU80k9/
+         LaWC/RTGeEDzSEyeKjZtLmezhfEv/Of2rKAZPYMR7F/o06LZcdxpz2D7nPHEbjQEVX
+         y35idsoiFak2lIVbc3JESME5Z3CpPXMJZk1OntD/TGmxHvQGYJ0pr4imbSBzIWEgPo
+         EyjamqBmJkuvw==
+Received: by mail-ed1-f69.google.com with SMTP id u1-20020aa7d981000000b0042acd1f2253so15156916eds.4
+        for <linux-efi@vger.kernel.org>; Wed, 25 May 2022 09:09:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=ceTyIPuj0mdwf7qJM6JGPSBEklD8LtuaTMx0pA8AGQY=;
-        b=Fm/x64pUN7i10jixOFbx503J+3DZAQixPD78O07NYvZeqagdjfo29Z8p/nvnKdXvVM
-         49a9BHGzjaj1v3DH/9JTblSGQGvlPaNV2DqToUOvh5lFQjF9R3eC0vIPpqTAoAiLSDJ8
-         I2Xhr+qnZR8NHiVd+7uMjnSypcDNZXIbuUQphYfjAKCKfEj4Vf4MUo1P+PorTyqkD08z
-         laoZJxlxShUZabUlqnOlkLZiAikM9GvdOa/DpAoAnP7vlhxyvvtVBdBaIsEzsMwJbQI1
-         xgsGOZXOlLb5jWQJEe62t1mdfQVk6h84ab1g++UPAuyDtbKHv5H04C3nZu4+WM5fXAoD
-         vzXQ==
-X-Gm-Message-State: AOAM53312jChiFkhUE3CTdMC6zccNsooXDX7vMHj8uhlxIeH2S7LL3+M
-        dbQO77PdHLmPlCo1FaIysqCK1udDhZtVTDgKJgJM90XxYNT72OQj7/pWX7hJPCZEWPFkDtOh3Bq
-        yqp8fr3PS+n8/4pHyAZA/Me0PYTRKF7FuTWOUYw==
-X-Received: by 2002:aa7:c615:0:b0:42b:cdcc:5844 with SMTP id h21-20020aa7c615000000b0042bcdcc5844mr2769931edq.312.1653494339816;
-        Wed, 25 May 2022 08:58:59 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJx94oaHZAUQqbKeS616bkQPP3+D2aG2FQiBBhy3mgd3CzCggc7oTgSKb95EHir2Xerc0gQJxg==
-X-Received: by 2002:aa7:c615:0:b0:42b:cdcc:5844 with SMTP id h21-20020aa7c615000000b0042bcdcc5844mr2769909edq.312.1653494339621;
-        Wed, 25 May 2022 08:58:59 -0700 (PDT)
+        bh=d8wzs0GJmElvjOENQNOKSUNkK9vo5WqYmuRjW9+dNXI=;
+        b=Vw/vfpRMyWmBJnQVGFh0bUkG3rsm/kCb3PTqkbmcDWmZ7Bj9ngG6Eu4RmRzcpdOueT
+         2QDcuK0YscKX5cOJXKVShyUvxISMrC0//IBTkHoKxf97unnt1CjNDAqT3PrpHhhX2VHD
+         v42qrHGyZaMyJ88TvF2Ddui80cL7C9w9m+teyfCqpYQ2MZgicT+Ls+KITS5IWpTFMKMR
+         +NdgHhigbO1UTNsVt0f3Igqoufqcf/Z25/32NDn3B0FponVaYrClnYSOXiqe5CE9+UTO
+         Fo1+L7Zhf76DmsZvlvyPc9kncY3Mst20JdQBSL7Bx1G47YxSkFHl/r5Uzr3UndNYmF2I
+         8ArQ==
+X-Gm-Message-State: AOAM530RQwvMqp6vp4UU0XJKzbj8BfMSwIKQQ6MY9I0r8faTYNuPcfC4
+        ZbobHGeor/2JTSenUC9GZxd3pRyH4T80ftWCkSas9ozPxgRAnYXtLuZAhX1ui1GG12ayxfuQK35
+        vSrzpdLefaYq865gJORKJh3554lNgAuDxW4UuHw==
+X-Received: by 2002:a05:6402:1914:b0:42b:73ae:e082 with SMTP id e20-20020a056402191400b0042b73aee082mr14382693edz.31.1653494948054;
+        Wed, 25 May 2022 09:09:08 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxpqXsCgcavHTP6/CfZQf4opU8VPdadSWqUfI+xqHjR9H80zRw2o39oJtqvERVspav9HAZUAA==
+X-Received: by 2002:a05:6402:1914:b0:42b:73ae:e082 with SMTP id e20-20020a056402191400b0042b73aee082mr14382654edz.31.1653494947825;
+        Wed, 25 May 2022 09:09:07 -0700 (PDT)
 Received: from [192.168.123.67] (ip-062-143-094-109.um16.pools.vodafone-ip.de. [62.143.94.109])
-        by smtp.gmail.com with ESMTPSA id my44-20020a1709065a6c00b006f3ef214de4sm7747900ejc.74.2022.05.25.08.58.58
+        by smtp.gmail.com with ESMTPSA id vw13-20020a170907058d00b006feec47dae7sm2963066ejb.149.2022.05.25.09.09.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 May 2022 08:58:59 -0700 (PDT)
-Message-ID: <fff02688-e272-3462-d950-427ebe4ad862@canonical.com>
-Date:   Wed, 25 May 2022 17:58:58 +0200
+        Wed, 25 May 2022 09:09:06 -0700 (PDT)
+Message-ID: <1e90b15b-8c73-0de8-2885-1292923b7575@canonical.com>
+Date:   Wed, 25 May 2022 18:09:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.0
-Subject: Re: [PATCH 3/5] riscv: smp: Support for 64bit hartid
+Subject: Re: [PATCH 5/5] riscv/efi_stub: Support for 64bit boot-hartid
 Content-Language: en-US
-To:     Sunil V L <sunilvl@ventanamicro.com>
-Cc:     linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, Sunil V L <sunil.vl@gmail.com>,
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Paul Walmsley <paul.walmsley@sifive.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>,
         Atish Patra <atishp@rivosinc.com>,
         Anup Patel <apatel@ventanamicro.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Marc Zyngier <maz@kernel.org>
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Sunil V L <sunil.vl@gmail.com>,
+        Sunil V L <sunilvl@ventanamicro.com>
 References: <20220525151106.2176147-1-sunilvl@ventanamicro.com>
- <20220525151106.2176147-4-sunilvl@ventanamicro.com>
+ <20220525151106.2176147-6-sunilvl@ventanamicro.com>
+ <CAMj1kXFhEBv7MVCKZuXdx9=hZx3qWbkATdLDwXAe_Zn9Xyx=dg@mail.gmail.com>
 From:   Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-In-Reply-To: <20220525151106.2176147-4-sunilvl@ventanamicro.com>
+In-Reply-To: <CAMj1kXFhEBv7MVCKZuXdx9=hZx3qWbkATdLDwXAe_Zn9Xyx=dg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -92,62 +95,69 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 5/25/22 17:11, Sunil V L wrote:
-> The hartid can be a 64bit value on RV64 platforms. This patch
-> modifies the hartid parameter in riscv_hartid_to_cpuid() as
-> unsigned long so that it can hold 64bit value on RV64 platforms.
+On 5/25/22 17:48, Ard Biesheuvel wrote:
+> On Wed, 25 May 2022 at 17:11, Sunil V L <sunilvl@ventanamicro.com> wrote:
+>>
+>> The boot-hartid can be a 64bit value on RV64 platforms. Currently,
+>> the "boot-hartid" in DT is assumed to be 32bit only. This patch
+>> detects the size of the "boot-hartid" and uses 32bit or 64bit
+>> FDT reads appropriately.
+>>
+>> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+>> ---
+>>   drivers/firmware/efi/libstub/riscv-stub.c | 12 +++++++++---
+>>   1 file changed, 9 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/firmware/efi/libstub/riscv-stub.c b/drivers/firmware/efi/libstub/riscv-stub.c
+>> index 9e85e58d1f27..d748533f1329 100644
+>> --- a/drivers/firmware/efi/libstub/riscv-stub.c
+>> +++ b/drivers/firmware/efi/libstub/riscv-stub.c
+>> @@ -29,7 +29,7 @@ static int get_boot_hartid_from_fdt(void)
+>>   {
+>>          const void *fdt;
+>>          int chosen_node, len;
+>> -       const fdt32_t *prop;
+>> +       const void *prop;
+>>
+>>          fdt = get_efi_config_table(DEVICE_TREE_GUID);
+>>          if (!fdt)
+>> @@ -40,10 +40,16 @@ static int get_boot_hartid_from_fdt(void)
+>>                  return -EINVAL;
+>>
+>>          prop = fdt_getprop((void *)fdt, chosen_node, "boot-hartid", &len);
+>> -       if (!prop || len != sizeof(u32))
+>> +       if (!prop)
+>> +               return -EINVAL;
+>> +
+>> +       if (len == sizeof(u32))
+>> +               hartid = (unsigned long) fdt32_to_cpu(*(fdt32_t *)prop);
+>> +       else if (len == sizeof(u64))
+>> +               hartid = (unsigned long) fdt64_to_cpu(*(fdt64_t *)prop);
 > 
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> Does RISC-V care about alignment? A 64-bit quantity is not guaranteed
+> to appear 64-bit aligned in the DT, and the cast violates C alignment
+> rules, so this should probably used get_unaligned_be64() or something
+> like that.
 
-Reviewed-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+When running in S-mode the SBI handles unaligned access but this has a 
+performance penalty.
 
-> ---
->   arch/riscv/include/asm/smp.h | 4 ++--
->   arch/riscv/kernel/smp.c      | 4 ++--
->   2 files changed, 4 insertions(+), 4 deletions(-)
+We could use fdt64_to_cpu(__get_unaligned_t(fdt64_t, prop)) here.
+
+Best regards
+
+Heinrich
+
 > 
-> diff --git a/arch/riscv/include/asm/smp.h b/arch/riscv/include/asm/smp.h
-> index 23170c933d73..d3443be7eedc 100644
-> --- a/arch/riscv/include/asm/smp.h
-> +++ b/arch/riscv/include/asm/smp.h
-> @@ -42,7 +42,7 @@ void arch_send_call_function_ipi_mask(struct cpumask *mask);
->   /* Hook for the generic smp_call_function_single() routine. */
->   void arch_send_call_function_single_ipi(int cpu);
->   
-> -int riscv_hartid_to_cpuid(int hartid);
-> +int riscv_hartid_to_cpuid(unsigned long hartid);
->   
->   /* Set custom IPI operations */
->   void riscv_set_ipi_ops(const struct riscv_ipi_ops *ops);
-> @@ -70,7 +70,7 @@ static inline void show_ipi_stats(struct seq_file *p, int prec)
->   {
->   }
->   
-> -static inline int riscv_hartid_to_cpuid(int hartid)
-> +static inline int riscv_hartid_to_cpuid(unsigned long hartid)
->   {
->   	if (hartid == boot_cpu_hartid)
->   		return 0;
-> diff --git a/arch/riscv/kernel/smp.c b/arch/riscv/kernel/smp.c
-> index b5d30ea92292..018e7dc45df6 100644
-> --- a/arch/riscv/kernel/smp.c
-> +++ b/arch/riscv/kernel/smp.c
-> @@ -47,7 +47,7 @@ static struct {
->   	unsigned long bits ____cacheline_aligned;
->   } ipi_data[NR_CPUS] __cacheline_aligned;
->   
-> -int riscv_hartid_to_cpuid(int hartid)
-> +int riscv_hartid_to_cpuid(unsigned long hartid)
->   {
->   	int i;
->   
-> @@ -55,7 +55,7 @@ int riscv_hartid_to_cpuid(int hartid)
->   		if (cpuid_to_hartid_map(i) == hartid)
->   			return i;
->   
-> -	pr_err("Couldn't find cpu id for hartid [%d]\n", hartid);
-> +	pr_err("Couldn't find cpu id for hartid [%lu]\n", hartid);
->   	return -ENOENT;
->   }
->   
+> 
+>> +       else
+>>                  return -EINVAL;
+>>
+>> -       hartid = fdt32_to_cpu(*prop);
+>>          return 0;
+>>   }
+>>
+>> --
+>> 2.25.1
+>>
 
