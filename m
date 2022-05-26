@@ -2,51 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7634534D02
-	for <lists+linux-efi@lfdr.de>; Thu, 26 May 2022 12:11:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47B12534D05
+	for <lists+linux-efi@lfdr.de>; Thu, 26 May 2022 12:12:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231981AbiEZKLp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 26 May 2022 06:11:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41446 "EHLO
+        id S1346999AbiEZKL5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 26 May 2022 06:11:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346961AbiEZKLo (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 26 May 2022 06:11:44 -0400
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52A6A10EE
-        for <linux-efi@vger.kernel.org>; Thu, 26 May 2022 03:11:43 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id w3so1039851plp.13
-        for <linux-efi@vger.kernel.org>; Thu, 26 May 2022 03:11:43 -0700 (PDT)
+        with ESMTP id S1346966AbiEZKLx (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 26 May 2022 06:11:53 -0400
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2431E218F
+        for <linux-efi@vger.kernel.org>; Thu, 26 May 2022 03:11:47 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id d22so1049894plr.9
+        for <linux-efi@vger.kernel.org>; Thu, 26 May 2022 03:11:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ventanamicro.com; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=R1Oz1yAZDHQvhQh2SWx4vMTfkt8zOrGF2iQud75B5Lk=;
-        b=MeBvlYLKJh6EnE4Nk4fnvlwLHRYUqSTpb3CTh8pn85TV32ZdSCclJiU4pcvaTDtwkA
-         RZbKn8P//rgHWSQg9zJ8xqvTjG1wd8fm2yEN7plSFM4jAukcfO5ZPNZLN62yaHGP446f
-         OsYZwKq12ORSAtDuUkFSQa3gr9WaXe7cH1K+StKOeIZS26YGAlqMye3q8lokxQ5dSMcF
-         jKEKvVeOJ9qWyneCm3ObTYXlMLJK1mEq5SeCL4CISyt3QDyZVcMYYWoKUkSRXRt/iNOJ
-         y+BTc8jKia4Tyw239NwQz9dEOEI5n8gY6PO71NKx3vrvGN9W1RCwgirGLD4gqqsJjqf3
-         ohBA==
+        bh=wbBG7lEDJH2LFVXucK5oQ/R2hCfil/fSiH5Kza4Gi8k=;
+        b=V5XR0cYmYpPHz45TXlrQdMJrLi9mC6lsy2W+x/KJ31gATxWb3Jcl0MrAB+D24bI7f3
+         4cWVas5pCyylxxCZLBWe4mQfSoke/VDU2WYlrymgElTYZAOaG723fCyOoELiQShkPJOT
+         1JZwGsy0Lp23kfxFyXK4dhbP3HKfGwYOKkJB0bxLkU+akzyGUbizbF/W22JUzStz/kvb
+         /YZE17RoALpfuH1WSU7xai3fAWdlXw2P6hUoIe1PwT4W09BwfsX4JWi9svdHWlFZSnTi
+         XZgvOErgNi8zbTcAf6Ej1LPhdSLC9CuCpS7dDMCmuN5koT27cwVrnYTiCV3TrhPaZwT8
+         /aOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=R1Oz1yAZDHQvhQh2SWx4vMTfkt8zOrGF2iQud75B5Lk=;
-        b=j7ksEvGwga+f27yvtu55VustxYmm2hvp6TawdSyfwE876ulPKyRTIe256PpxRc5Mti
-         wOhxwvKvFhdp3GRR20y4yKJwXGNb2dzMG4bmO1v3fVbK+5v4dSSTFsYOTSk5hRpVBlCc
-         t/OOh1LtP2FhE31KiSrPkVGK5isP4aoGtacLGpUsxpJUIttTkVb8qpYZU5LRgYCpQQeH
-         DZ4DsX/F9C3w62svrjbbm0E7qw07VfOJGxaICld4s3a/VGEbUR7Q4/Z3deztnJ2q48Mo
-         yrOizPx25OIJDtOk6nta+EvYhcyLf8Fj9Wgy7jPTSqatKgZNboWeCUqLCRKV6yH70Izv
-         u1qg==
-X-Gm-Message-State: AOAM531J4+mbJj9td9P4fD7wsQgKLUlPUpyy4YUc/50wRP7qgJN5hQ2x
-        bKQf0MHabjx+r8shyHQBUgQUsw==
-X-Google-Smtp-Source: ABdhPJyAv5zPzU2IwZPeCQVSm/VsddqxuggiHGPcUvNa4rsGUhxfdC58ncib9zaXi0NWNziwb/aigQ==
-X-Received: by 2002:a17:902:8bca:b0:15f:28b6:ad46 with SMTP id r10-20020a1709028bca00b0015f28b6ad46mr37153228plo.69.1653559902867;
-        Thu, 26 May 2022 03:11:42 -0700 (PDT)
+        bh=wbBG7lEDJH2LFVXucK5oQ/R2hCfil/fSiH5Kza4Gi8k=;
+        b=ZUWsMpXytxlmw0/n1l22dla+ReEG1EL3C36VbdMD6BvpzVDO/wA58er0aK6tpBjmdX
+         YVkf2fqAHhkXXdprv/OCP0PPpnPif/Z2AFMHW55rCXIUP+6XZwS7JjfpkDQ8k4LLouMQ
+         UCXdJcvHTItp8m5vCAWaV0erp74SQu6ae9DlUr7qFZAvwy586dQ1/yu6U6cVvwizX61P
+         kV4TZa8qrH8gN2BbvWJtKw4J3qU0chmizU+HtBYUFHxmnEIUNIei3Aj8NsYfUdTOOhPN
+         KWsEcCB+efKlwkKTyTr0gBEAKxcb4eOmE0aaGYTLGbHxLnoRRAhrKtACkej3L229/P+s
+         pT4w==
+X-Gm-Message-State: AOAM530r2AaQSzWKBtVuz5X7g2Zy58O4Y9NVWqmb4rjVqcc554sRMfO6
+        qLGPB2sQDRMMhqBmp1mxK9uAdPG5DOjh+Rez
+X-Google-Smtp-Source: ABdhPJwr+qQVKMcopGMW+cRM74SlJB+kkVtaSsSNVzIL44tSlSNiDBT302sF2fUP6vTOWuit+8GjCQ==
+X-Received: by 2002:a17:902:d50e:b0:163:80b4:30a3 with SMTP id b14-20020a170902d50e00b0016380b430a3mr937520plg.159.1653559907098;
+        Thu, 26 May 2022 03:11:47 -0700 (PDT)
 Received: from kerodipc.Dlink ([49.206.9.238])
-        by smtp.gmail.com with ESMTPSA id z17-20020a170902d55100b0015f309f14d0sm1114861plf.56.2022.05.26.03.11.39
+        by smtp.gmail.com with ESMTPSA id z17-20020a170902d55100b0015f309f14d0sm1114861plf.56.2022.05.26.03.11.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 May 2022 03:11:42 -0700 (PDT)
+        Thu, 26 May 2022 03:11:46 -0700 (PDT)
 From:   Sunil V L <sunilvl@ventanamicro.com>
 To:     Paul Walmsley <paul.walmsley@sifive.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
@@ -60,10 +60,10 @@ To:     Paul Walmsley <paul.walmsley@sifive.com>,
         Anup Patel <apatel@ventanamicro.com>
 Cc:     linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-efi@vger.kernel.org, Sunil V L <sunil.vl@gmail.com>,
-        Sunil V L <sunilvl@ventanamicro.com>
-Subject: [PATCH V2 1/5] riscv: cpu_ops_sbi: Support for 64bit hartid
-Date:   Thu, 26 May 2022 15:41:27 +0530
-Message-Id: <20220526101131.2340729-2-sunilvl@ventanamicro.com>
+        Sunil V L <sunilvl@ventanamicro.com>, stable@vger.kernel.org
+Subject: [PATCH V2 2/5] riscv: spinwait: Fix hartid variable type
+Date:   Thu, 26 May 2022 15:41:28 +0530
+Message-Id: <20220526101131.2340729-3-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220526101131.2340729-1-sunilvl@ventanamicro.com>
 References: <20220526101131.2340729-1-sunilvl@ventanamicro.com>
@@ -79,38 +79,40 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The hartid can be a 64bit value on RV64 platforms. This patch modifies
-the hartid variable type to unsigned long so that it can hold 64bit
-value on RV64 platforms.
+The hartid variable is of type int but compared with
+ULONG_MAX(INVALID_HARTID). This issue is fixed by changing
+the hartid variable type to unsigned long.
+
+Fixes: c78f94f35cf6 ("RISC-V: Use __cpu_up_stack/task_pointer only for spinwait method")
+Cc: stable@vger.kernel.org
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-Reviewed-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
 ---
- arch/riscv/kernel/cpu_ops_sbi.c | 4 ++--
+ arch/riscv/kernel/cpu_ops_spinwait.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/kernel/cpu_ops_sbi.c b/arch/riscv/kernel/cpu_ops_sbi.c
-index 4f5a6f84e2a4..efa0f0816634 100644
---- a/arch/riscv/kernel/cpu_ops_sbi.c
-+++ b/arch/riscv/kernel/cpu_ops_sbi.c
-@@ -65,7 +65,7 @@ static int sbi_hsm_hart_get_status(unsigned long hartid)
- static int sbi_cpu_start(unsigned int cpuid, struct task_struct *tidle)
+diff --git a/arch/riscv/kernel/cpu_ops_spinwait.c b/arch/riscv/kernel/cpu_ops_spinwait.c
+index 346847f6c41c..3ade9152a3c7 100644
+--- a/arch/riscv/kernel/cpu_ops_spinwait.c
++++ b/arch/riscv/kernel/cpu_ops_spinwait.c
+@@ -18,7 +18,7 @@ void *__cpu_spinwait_task_pointer[NR_CPUS] __section(".data");
+ static void cpu_update_secondary_bootdata(unsigned int cpuid,
+ 				   struct task_struct *tidle)
  {
- 	unsigned long boot_addr = __pa_symbol(secondary_start_sbi);
--	int hartid = cpuid_to_hartid_map(cpuid);
-+	unsigned long hartid = cpuid_to_hartid_map(cpuid);
- 	unsigned long hsm_data;
- 	struct sbi_hart_boot_data *bdata = &per_cpu(boot_data, cpuid);
- 
-@@ -107,7 +107,7 @@ static void sbi_cpu_stop(void)
- static int sbi_cpu_is_stopped(unsigned int cpuid)
- {
- 	int rc;
 -	int hartid = cpuid_to_hartid_map(cpuid);
 +	unsigned long hartid = cpuid_to_hartid_map(cpuid);
  
- 	rc = sbi_hsm_hart_get_status(hartid);
+ 	/*
+ 	 * The hartid must be less than NR_CPUS to avoid out-of-bound access
+@@ -27,7 +27,7 @@ static void cpu_update_secondary_bootdata(unsigned int cpuid,
+ 	 * spinwait booting is not the recommended approach for any platforms
+ 	 * booting Linux in S-mode and can be disabled in the future.
+ 	 */
+-	if (hartid == INVALID_HARTID || hartid >= NR_CPUS)
++	if (hartid == INVALID_HARTID || hartid >= (unsigned long) NR_CPUS)
+ 		return;
  
+ 	/* Make sure tidle is updated */
 -- 
 2.25.1
 
