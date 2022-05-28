@@ -2,133 +2,113 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07CA7536BE7
-	for <lists+linux-efi@lfdr.de>; Sat, 28 May 2022 11:26:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6A7F536C05
+	for <lists+linux-efi@lfdr.de>; Sat, 28 May 2022 11:40:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232712AbiE1J0i (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 28 May 2022 05:26:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50052 "EHLO
+        id S232766AbiE1Jjh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 28 May 2022 05:39:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232748AbiE1J0h (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 28 May 2022 05:26:37 -0400
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BF7E6423
-        for <linux-efi@vger.kernel.org>; Sat, 28 May 2022 02:26:33 -0700 (PDT)
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        with ESMTP id S232644AbiE1Jjg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 28 May 2022 05:39:36 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F41D17A80;
+        Sat, 28 May 2022 02:39:35 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 30E843FBF9
-        for <linux-efi@vger.kernel.org>; Sat, 28 May 2022 09:26:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1653729992;
-        bh=51HZ/ZF/DBZUi+hYAZR96Rw1JBH9NEA5/WPL/bsRkcs=;
-        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-         In-Reply-To:Content-Type;
-        b=IbWt7EywTX/wYiCw+Dao7QAouHWfhPgbX4fU7IRKpBXkk+jq2+4otGMpC1zHG/xO8
-         R5WOQZ7NfkS5mlL1qUjYnV3Spc3yyALKhFSBkujAcZ+pOgoB4OWBP6w4FweqISPjba
-         PhGlWbC3kj48J1Ed5fnI5TpjF0EUwts29ZZXhnuv4WCaPcw9wGVzBhzUa1oxQm1vmi
-         8Lqdoq3ouqRT1AZIMQpv0/7WgAftJuKOR85muP+OdK7jqHbAUhIGZoIxYWjXduF7KC
-         Wc4/Al8E+FGsly2RH4Z2ERCxCSz/eEZGdeLM2xqViSEi//jV6oF6cBDDQIOA8W93Iv
-         Mq3PDJskqoZdQ==
-Received: by mail-ed1-f69.google.com with SMTP id u19-20020a056402065300b0042d92237184so1155377edx.8
-        for <linux-efi@vger.kernel.org>; Sat, 28 May 2022 02:26:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=51HZ/ZF/DBZUi+hYAZR96Rw1JBH9NEA5/WPL/bsRkcs=;
-        b=wAJd2WPsxZNGJLlKq9yyI8NYC0FFez4iAwiUY+OzWTh/PANmmP3j+W91MSYUyicETU
-         bfGNhBGemBr/iq56CR8iWRJqnvTNuV0DVW3X+MHj3GiY/1jwmqlWo/zUz6h1HMeu13S2
-         gzL9+DdfczIjMbOKWazHOJHXMNWtGnfUIojc95K6gNxo5h3LDTQXuQpVjyaW3k+Jx1As
-         TnAa3UoCDqA0QjTChGNehLaFZUz/L9xKRN42GZj3w2rieoP4y8E23XzLtCURQAN8kmRH
-         cug93MNQIcCGawGpEEH6jhNGj9GsMloStxO1ol7cl0sIz48zvhIamMcmr40zqz/19Yx4
-         VSfA==
-X-Gm-Message-State: AOAM5339CN0gH/rtVM9a/lnx8GzuTyOD/khl/V3EQQ7zV67NZX0G0r4N
-        DsbKeIsQO6cnl9g7kD5mW5IlWV9HzRorOEkSKWuV2J2JEanrZBHL4eaWeEZiT7bwGenlMMymJeV
-        iBYWi+zkHW+XyadSdaUxoVRyyJlOEC8ocAx9XNA==
-X-Received: by 2002:a17:907:6e12:b0:6fe:c2fd:89b7 with SMTP id sd18-20020a1709076e1200b006fec2fd89b7mr28883571ejc.581.1653729991235;
-        Sat, 28 May 2022 02:26:31 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyTIoHfWrOT9U2e85CFhK4imRJ1Ycox2VrkT/sTmCYMzAKvkrW+16CaVVHurj+g2SGaWKw6qQ==
-X-Received: by 2002:a17:907:6e12:b0:6fe:c2fd:89b7 with SMTP id sd18-20020a1709076e1200b006fec2fd89b7mr28883553ejc.581.1653729990956;
-        Sat, 28 May 2022 02:26:30 -0700 (PDT)
-Received: from [192.168.123.94] (ip-062-143-094-109.um16.pools.vodafone-ip.de. [62.143.94.109])
-        by smtp.gmail.com with ESMTPSA id w24-20020a50d798000000b0042db87b5ff4sm607240edi.88.2022.05.28.02.26.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 28 May 2022 02:26:30 -0700 (PDT)
-Message-ID: <7b93efe6-fb54-d6f8-dd3b-3fb260652f15@canonical.com>
-Date:   Sat, 28 May 2022 11:26:28 +0200
+        by ams.source.kernel.org (Postfix) with ESMTPS id DF4B6B816F4;
+        Sat, 28 May 2022 09:39:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44A0C34100;
+        Sat, 28 May 2022 09:39:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653730772;
+        bh=+jA1Bp8CM4ALpWYkpR1+uBpuu0hpBW+rO9hvYyLjKl0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=R5eNYLn1ow1UI70uVvuT4iPgQcBxFl80oB08uCUMIJ9KOXreHpAxmDLZ6VY7GT3We
+         ARlfgaYb+MX0G+/RWiYp9vQpBMBC5W1VkFtDShi8dVCyQShQWqGAYWGk/6TORQouY0
+         u8rvHXPAgNyMfP/d68ngBv4QTQ1ZCWc71JAxlHuf/GBAppno033kBVOqWdqTYIdTEh
+         hJjevcPqPw6Ob/wC4AjfLfgTioVz2UGfIprhchOkHYKue8tRMaJjg4pMM9kwu9KGAa
+         0X3mzg67Vvg11O3/8HS4tQx0BRVqjZAL/Mg1GBcYD0nxcRxfVVRVY2m7zRF0I/Imss
+         PP5f90UNJkWQg==
+Received: by mail-oi1-f177.google.com with SMTP id r68so8405023oie.12;
+        Sat, 28 May 2022 02:39:32 -0700 (PDT)
+X-Gm-Message-State: AOAM532cEVFodTrzV0rwFv9GzRUTKAQROMOCtRQXfcRkkpZN4XWD/Ih1
+        SaxU8eolWncXFEkTUsXpww4fk5rbK2PPmdPvAMY=
+X-Google-Smtp-Source: ABdhPJzvrE4SMNE48ZhDXunAUOmUjnaHS3ik+lHHctxdvkid9O+w6XgXzWtWXjh9d3Ly4N8zafm37B4N9P26GH1r2nI=
+X-Received: by 2002:a05:6808:e8d:b0:322:bac0:2943 with SMTP id
+ k13-20020a0568080e8d00b00322bac02943mr6081516oil.126.1653730771880; Sat, 28
+ May 2022 02:39:31 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH] riscv: read-only pages should not be writable
-Content-Language: en-US
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Atish Patra <atishp@atishpatra.org>,
+References: <ea51a17e00a10f3ab25d94b9a5885eb9142aa12b.1653377840.git.geert@linux-m68k.org>
+ <CAMj1kXEUiuSLLcuQ-H7A4djyJF_rdr9bD4JrCP_p98Qg3K=Fow@mail.gmail.com>
+In-Reply-To: <CAMj1kXEUiuSLLcuQ-H7A4djyJF_rdr9bD4JrCP_p98Qg3K=Fow@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Sat, 28 May 2022 11:39:20 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXF8XUGrLQq+A04_nNEBQzq=8AsyXGQ-ZJoVqxFUeAoH0A@mail.gmail.com>
+Message-ID: <CAMj1kXF8XUGrLQq+A04_nNEBQzq=8AsyXGQ-ZJoVqxFUeAoH0A@mail.gmail.com>
+Subject: Re: [PATCH v2] efi: EFI_DISABLE_RUNTIME should depend on EFI
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Javier Martinez Canillas <javierm@redhat.com>,
         linux-efi <linux-efi@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        stable@vger.kernel.org
-References: <20220528014132.91052-1-heinrich.schuchardt@canonical.com>
- <CAMj1kXGmwwD==yOnzfYgPg8Bpz1POK7aPBULcuMdgS-E1G2EAw@mail.gmail.com>
-From:   Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-In-Reply-To: <CAMj1kXGmwwD==yOnzfYgPg8Bpz1POK7aPBULcuMdgS-E1G2EAw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Sat, 28 May 2022 at 11:24, Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> On Tue, 24 May 2022 at 09:37, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> >
+> > The EFI_DISABLE_RUNTIME config option controls the use of Extensible
+> > Firmware Interface (EFI) runtime services, which matters only if EFI
+> > support is enabled.
+> >
+> > Hence add a dependency on EFI, to prevent asking the user about this
+> > control knob when configuring a kernel without EFI support.
+> >
+> > Fixes: a031651ff2144a3d ("efi: Allow to enable EFI runtime services by default on RT")
+> > Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> > Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+> > ---
+> > v2:
+> >   - Add Acked-by,
+> >   - Fix typo s/with/without/.
+> > ---
+> >  drivers/firmware/efi/Kconfig | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+>
+> Can we just move this option into the menu/endmenu scope that already
+> depends on EFI?
+>
+
+We can, and there are other candidates as well. So I'll drop this
+patch, and send out another one that covers some other options too.
+
+Thanks,
+Ard.
 
 
-On 5/28/22 11:13, Ard Biesheuvel wrote:
-> On Sat, 28 May 2022 at 03:41, Heinrich Schuchardt
-> <heinrich.schuchardt@canonical.com> wrote:
->>
->> If EFI pages are marked as read-only,
->> we should remove the _PAGE_WRITE flag.
->>
->> The current code overwrites an unused value.
->>
->> Fixes: b91540d52a08b ("RISC-V: Add EFI runtime services")
->> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
->> ---
->>   arch/riscv/kernel/efi.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/riscv/kernel/efi.c b/arch/riscv/kernel/efi.c
->> index 024159298231..1aa540350abd 100644
->> --- a/arch/riscv/kernel/efi.c
->> +++ b/arch/riscv/kernel/efi.c
->> @@ -65,7 +65,7 @@ static int __init set_permissions(pte_t *ptep, unsigned long addr, void *data)
->>
->>          if (md->attribute & EFI_MEMORY_RO) {
->>                  val = pte_val(pte) & ~_PAGE_WRITE;
->> -               val = pte_val(pte) | _PAGE_READ;
->> +               val |= _PAGE_READ;
->>                  pte = __pte(val);
->>          }
->>          if (md->attribute & EFI_MEMORY_XP) {
->> --
->> 2.36.1
->>
-> 
-> Thanks Heinrich
-> 
-> Queued in efi/urgent.
-
-I guess this should also be down-ported to 5.15 and 5.10.
-
-Best regards
-
-Heinrich
+> > diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+> > index 4720ba98cec312e7..ff6e7bfa8355cfc2 100644
+> > --- a/drivers/firmware/efi/Kconfig
+> > +++ b/drivers/firmware/efi/Kconfig
+> > @@ -299,6 +299,7 @@ config EFI_CUSTOM_SSDT_OVERLAYS
+> >
+> >  config EFI_DISABLE_RUNTIME
+> >         bool "Disable EFI runtime services support by default"
+> > +       depends on EFI
+> >         default y if PREEMPT_RT
+> >         help
+> >           Allow to disable the EFI runtime services support by default. This can
+> > --
+> > 2.25.1
+> >
