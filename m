@@ -2,46 +2,56 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF276536BD1
-	for <lists+linux-efi@lfdr.de>; Sat, 28 May 2022 11:15:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 077EF536BE3
+	for <lists+linux-efi@lfdr.de>; Sat, 28 May 2022 11:25:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232443AbiE1JPD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 28 May 2022 05:15:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57260 "EHLO
+        id S232502AbiE1JZJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 28 May 2022 05:25:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350466AbiE1JOv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 28 May 2022 05:14:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 605B212AFF
-        for <linux-efi@vger.kernel.org>; Sat, 28 May 2022 02:14:47 -0700 (PDT)
+        with ESMTP id S232678AbiE1JZI (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 28 May 2022 05:25:08 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12E56B04;
+        Sat, 28 May 2022 02:25:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B75A60C5E
-        for <linux-efi@vger.kernel.org>; Sat, 28 May 2022 09:14:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528ACC34100;
-        Sat, 28 May 2022 09:14:45 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2BBF7B8009F;
+        Sat, 28 May 2022 09:25:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B60C2C34100;
+        Sat, 28 May 2022 09:25:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653729286;
-        bh=yCAE2V8GHOKSESnFT1awaNz6crl1SymY3o7FvM04iwg=;
-        h=From:To:Cc:Subject:Date:From;
-        b=cydht5ydijvCBAY4P2a2NPkENK9kZWkiHWkCmr+7k+9Zrj9muFkR+aJGMnXFKoT2u
-         oRQMwTJ6SCTCf7OhhRMsgVre19t+o1seUP8+/h7PvhDyADfW3vg63HPeY0LxCsTcro
-         CjU/YqB8j7edutrDYKxcCCNC/Zycgv79jtu7oDSS1697rNzmKFQhyVxLFOk+rgMrkA
-         HBY/IAYf0f2g7rzDFZKs0aTriERgbtrq3M1p/u/3ITAWbRzrAstTKi70Qlt+akdV7t
-         bMMmxe4X0vSk1y75XI4QCOJQulnZAoYqvXzwbqUEUs2mIw+0i6cDp4dBn85/+I3H0c
-         IohYUyaeqAyzQ==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH] efi/x86: libstub: Make DXE calls mixed mode safe
-Date:   Sat, 28 May 2022 11:14:28 +0200
-Message-Id: <20220528091428.1957448-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        s=k20201202; t=1653729903;
+        bh=8frCxiKNd8eyxrEJcIesYdoOkj5o3mUQaDZcp8v+trM=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=e9QrKOapiM1jkadFYPEwRzyE6o904p8q3NKhkQff6eFFsvRVbO4/z64BFnL5wftWq
+         3ETgkqpmkrdzFd/aPafqAaPV/ykxIGTKbXY7v8EqhcdF88hHC9zBXuQc/qaHAbVTqV
+         89e6XoDDdzsvSlulHpfNRdmKnPRNWjthouFKN1neDdNwFodsZgX1LEhAJL+avgLx1j
+         E8KapNp9V1K//i6CeNKzQKL6xWOU7Y9BSR9Oo5bsouQXwpWuKqfdUMuCdIqE9EIv3P
+         qd9NO2oGzPWOXTCbBQ6eYLhT2XXvuiC5wlhUG/COFRbV6r5dlZOeL9KhhfUKPLuekG
+         BT4mfSouDLH5w==
+Received: by mail-oi1-f169.google.com with SMTP id k187so4241600oif.1;
+        Sat, 28 May 2022 02:25:03 -0700 (PDT)
+X-Gm-Message-State: AOAM533Ts1CDQBXsxxPca2XnKOY4YLbrBGnWkXGAIpQhyx13C/Y05Sfe
+        dEE8X9H3Ru3bzRo4T6MY1NrRlECW/LtY3+fknJ8=
+X-Google-Smtp-Source: ABdhPJw/KSVIgB6CIM6hlCN2YWx6BBc/TVNQmZShe5tWZpx+UOt0hu9WYhl/UWHhHjKlIAuMBpGKGXrxUDU5+oJjr20=
+X-Received: by 2002:a05:6808:e8d:b0:322:bac0:2943 with SMTP id
+ k13-20020a0568080e8d00b00322bac02943mr6061590oil.126.1653729902924; Sat, 28
+ May 2022 02:25:02 -0700 (PDT)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2428; h=from:subject; bh=yCAE2V8GHOKSESnFT1awaNz6crl1SymY3o7FvM04iwg=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBikefwKoYsFC/EuCezbpSfS3GO/qjJo4JQgZkK35Q9 AESTGBKJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYpHn8AAKCRDDTyI5ktmPJK7zDA CFC1QoFtmiZbqtUCm3q3hxAWFkxb8U1YEdWJCApCSj1grZ7itc0Ri5QcMX9ujj8L8PZEk+2F73jNeQ pQJr2rXK/JPRLxn0hQzMAYgmvAx9ka/o0Ln2gWc9+8BGsx5sxFbLt7+lJWvu8zjOSv7JVL8c3Uo3AU C7X7gDrSR7pSlLb8D88RuKw+2SG7/tnxrKDjJ1PFmLDfp+kwl0RNaIDLHYyFEm+9S0yHSAzQ1RN5hY qmYizOwZ2blTlg6nxmwZvFuLy0UzAtaSV4Nwh9RM1vq90GyY+C50gOO/lVgNDMm5xJlXYVRifDfiEq nH4kNNFAdCPB2WWkKCymlXn24XWFbuxWCK6M21qRrUTCrq7PJ9e0+epEZuRz7h7cFp8WzixUU/2DNx NLWkYYRo4ucj04L/GYXmnk5CLlVzfN/ZFNuBpmY2Xd75owWg0A8thNF91kfFHQs9WBnFCm6wYViIDk zgbZ9HvY+8vUxlj4ttsY3S0f/iBHPLUpFfGtsLZ57IXTs=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
+References: <ea51a17e00a10f3ab25d94b9a5885eb9142aa12b.1653377840.git.geert@linux-m68k.org>
+In-Reply-To: <ea51a17e00a10f3ab25d94b9a5885eb9142aa12b.1653377840.git.geert@linux-m68k.org>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Sat, 28 May 2022 11:24:51 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEUiuSLLcuQ-H7A4djyJF_rdr9bD4JrCP_p98Qg3K=Fow@mail.gmail.com>
+Message-ID: <CAMj1kXEUiuSLLcuQ-H7A4djyJF_rdr9bD4JrCP_p98Qg3K=Fow@mail.gmail.com>
+Subject: Re: [PATCH v2] efi: EFI_DISABLE_RUNTIME should depend on EFI
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Javier Martinez Canillas <javierm@redhat.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-7.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -52,65 +62,42 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The newly added DXE calls use 64-bit quantities, which means we need to
-marshall them explicitly when running in mixed mode. Currently, we get
-away without it because we just bail when GetMemorySpaceDescriptor()
-fails, which is guaranteed to happen due to the function argument mixup.
+On Tue, 24 May 2022 at 09:37, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>
+> The EFI_DISABLE_RUNTIME config option controls the use of Extensible
+> Firmware Interface (EFI) runtime services, which matters only if EFI
+> support is enabled.
+>
+> Hence add a dependency on EFI, to prevent asking the user about this
+> control knob when configuring a kernel without EFI support.
+>
+> Fixes: a031651ff2144a3d ("efi: Allow to enable EFI runtime services by default on RT")
+> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+> ---
+> v2:
+>   - Add Acked-by,
+>   - Fix typo s/with/without/.
+> ---
+>  drivers/firmware/efi/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+>
 
-Let's fix this properly, though, by defining the macros that describe
-how to marshall the arguments. While at it, drop an incorrect cast on a
-status variable.
+Can we just move this option into the menu/endmenu scope that already
+depends on EFI?
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/x86/include/asm/efi.h              | 9 +++++++++
- drivers/firmware/efi/libstub/x86-stub.c | 4 ++--
- 2 files changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index bed74a0f2932..71943dce691e 100644
---- a/arch/x86/include/asm/efi.h
-+++ b/arch/x86/include/asm/efi.h
-@@ -270,6 +270,8 @@ static inline u32 efi64_convert_status(efi_status_t status)
- 	return (u32)(status | (u64)status >> 32);
- }
- 
-+#define __efi64_split(val)		(val) & U32_MAX, (u64)(val) >> 32
-+
- #define __efi64_argmap_free_pages(addr, size)				\
- 	((addr), 0, (size))
- 
-@@ -317,6 +319,13 @@ static inline u32 efi64_convert_status(efi_status_t status)
- #define __efi64_argmap_hash_log_extend_event(prot, fl, addr, size, ev)	\
- 	((prot), (fl), 0ULL, (u64)(addr), 0ULL, (u64)(size), 0ULL, ev)
- 
-+/* DXE services */
-+#define __efi64_argmap_get_memory_space_descriptor(phys, desc) \
-+	(__efi64_split(phys), (desc))
-+
-+#define __efi64_argmap_set_memory_space_descriptor(phys, size, flags) \
-+	(__efi64_split(phys), __efi64_split(size), __efi64_split(flags))
-+
- /*
-  * The macros below handle the plumbing for the argument mapping. To add a
-  * mapping for a specific EFI method, simply define a macro
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index b14e88ccefca..05ae8bcc9d67 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -260,10 +260,10 @@ adjust_memory_range_protection(unsigned long start, unsigned long size)
- 				      EFI_MEMORY_WB);
- 
- 		if (status != EFI_SUCCESS) {
--			efi_warn("Unable to unprotect memory range [%08lx,%08lx]: %d\n",
-+			efi_warn("Unable to unprotect memory range [%08lx,%08lx]: %lx\n",
- 				 unprotect_start,
- 				 unprotect_start + unprotect_size,
--				 (int)status);
-+				 status);
- 		}
- 	}
- }
--- 
-2.30.2
-
+> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+> index 4720ba98cec312e7..ff6e7bfa8355cfc2 100644
+> --- a/drivers/firmware/efi/Kconfig
+> +++ b/drivers/firmware/efi/Kconfig
+> @@ -299,6 +299,7 @@ config EFI_CUSTOM_SSDT_OVERLAYS
+>
+>  config EFI_DISABLE_RUNTIME
+>         bool "Disable EFI runtime services support by default"
+> +       depends on EFI
+>         default y if PREEMPT_RT
+>         help
+>           Allow to disable the EFI runtime services support by default. This can
+> --
+> 2.25.1
+>
