@@ -2,103 +2,166 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8339538585
-	for <lists+linux-efi@lfdr.de>; Mon, 30 May 2022 17:54:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3278353999C
+	for <lists+linux-efi@lfdr.de>; Wed,  1 Jun 2022 00:41:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238114AbiE3Pxy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 30 May 2022 11:53:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45056 "EHLO
+        id S1348487AbiEaWk3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 31 May 2022 18:40:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240316AbiE3PxH (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 30 May 2022 11:53:07 -0400
-Received: from mail-vk1-xa29.google.com (mail-vk1-xa29.google.com [IPv6:2607:f8b0:4864:20::a29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B473488A4
-        for <linux-efi@vger.kernel.org>; Mon, 30 May 2022 08:28:07 -0700 (PDT)
-Received: by mail-vk1-xa29.google.com with SMTP id ay20so5070399vkb.5
-        for <linux-efi@vger.kernel.org>; Mon, 30 May 2022 08:28:07 -0700 (PDT)
+        with ESMTP id S1348495AbiEaWk1 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 31 May 2022 18:40:27 -0400
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 536E89EB6C
+        for <linux-efi@vger.kernel.org>; Tue, 31 May 2022 15:40:26 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id h75so20378633ybg.4
+        for <linux-efi@vger.kernel.org>; Tue, 31 May 2022 15:40:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=XJqXgw0Qi4Ge6Q57wB4GlvotoYnhUuSq68y9152a6AE=;
-        b=HG9jjzwsem6I8HITcCm+mxozluHX2cl0ot3OPL4X08aG6nPfTvo4ID8FNgGvy3p/sz
-         F4Q9RQW2LgxQueJyCF4y1hi5Lrv9OBvtFfB2trSoxkNlco3QHxKf6fjEcSAbFFBz1wXG
-         gef8GyWSvkDURM1MC+BW41Z0/h+S3EltX4N+FjEY7YkqJBpqAdwkVIJ0ww0/92Ve5HBG
-         oLVf3sG989rZL4QFP2yauDFFgD6wDhlRtqtPHHdN6vlQpNt2/HRbWdJ9wra1LG7cXlMc
-         PH6eE3JIyPZrcijQZL8D2Gix8m3IIylksbdvHV5V7Uei8Qqb3U9eE4cpPI4W8ZnZA4Uc
-         askw==
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=iSXfdXWQRyUCbk0G9o7KyBhlDTpNCnQev8nhR/I/TdY=;
+        b=HsksBcqdyPpSCCWP1DiXPiE1a14eVxR7MRHdI7Z5cpzZAy9lO7ruMphxUv9jF2C2sw
+         /pgCZCCeJVk9cxgvTdmK1FsevcWFWH/+i8JgrsxFWUScnpMihGH6PE+aKcXA03iPeJdj
+         dZ4Fy8JMSO77H9VgxNZVjTS2CE7+rjPwOQ1nkywPuJ4OjM7zlIgYglNeD5R5RdHU9TQd
+         ZGEbQvqw79MCww+sZgynuaRCvhUuCusnjWfYIg9yFNCv09hwSDywXkSSafnIp55ACSaP
+         7kfB7e7yTdJwIGcs5EiZYEHjSftx3J+hMbbAJxZGkLLhtDcVt5vIiRiCUs6uyPTV7LFu
+         JzIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=XJqXgw0Qi4Ge6Q57wB4GlvotoYnhUuSq68y9152a6AE=;
-        b=IBZ3y8V3ax9EdAByDpPeE6kLNvkcaT9Cek93ImjScB0dTECHrxMMTlcpsf/vHxS1UN
-         AgF2CkJGLq4NcHiPDbrS1Kk+Z0a8DFj+tHMSEhrz7tuu9PMpPLOsaXVUIeSTcojjc6g7
-         3+YsHekEgpxvGTevpgGFeT8I7EhSZ4Tl5P6yfkdzqjL6qoaTcJwrUGYWXjQ/V9ZkwsVh
-         P8SUhkMAx71KhekWB6py2ycimI3AqhGyxqFj5D/2oEHBjrcjYAGgO3IJLdOXMTcbbAkS
-         W+wEdjgb3kWLob5WtcljnV03YGjeJnlxGhHJ8ZJK+fjXDt6UBqRd8sklYrfigy342zPg
-         BzNA==
-X-Gm-Message-State: AOAM533vcjN7laxYlWmRgOhk3cwfm08c8xag2pjrTaHMuktl+EnnHYsO
-        Q4uWq1T3udiSxXiJ6egrE9kX2i1GFMzFBzQQ95A=
-X-Google-Smtp-Source: ABdhPJyktVWQ+e7TIlwCmbQpUcB9YOW3/bjYQMNb99AKpKuB2nLjGJ/ZbYVDHJ2BFt8M5vQJiOTWTkDbP8KyAQgesBY=
-X-Received: by 2002:a05:6122:17a5:b0:357:239e:7b9e with SMTP id
- o37-20020a05612217a500b00357239e7b9emr20700812vkf.18.1653924486373; Mon, 30
- May 2022 08:28:06 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=iSXfdXWQRyUCbk0G9o7KyBhlDTpNCnQev8nhR/I/TdY=;
+        b=UjwEhze0KvanZJ5dXtiOoWwRXz3RWSZXJ5g+NVKEqvJK4uDTe9Q8XgGDwma3nSSOWc
+         ooNxLCPvzC1MetXKTeoWJZA4JLHEa4k/245a8xs44MKXgSUwVY17iLB4gUf51xN7vpFL
+         4gxGyhwpYmH388/RJw4zBpqLfnPfzubOiP/EzcbvAG4yTHqpbe/umaRQPQq+ZMu8uQ2U
+         8CQR4i3rh1MjqMOae6Qmsp6l6ECl9C0nS9CR13tlg1fUgVmNw4Q+k0Ksg045ow2FFq5R
+         v3m2HcBgwdW1E9YSmSdT0HGooDW7tYiDa7+U1Efqnfsf5SsAszO4vOyEYMNZxGXacbxu
+         VYKA==
+X-Gm-Message-State: AOAM532+r9KS4GwtLNtnPz+6Xyb6ea7TaTqg+qmY6SC70fg9mEhCyNcf
+        M25pL4LWo2BKxCi98ujlefsArC+1dYwuHJi3NovdtA==
+X-Google-Smtp-Source: ABdhPJzmrJqSRhhHz6N0GieGJg5FYLwCAVR0BwL5OtlM2bEaoCxd7rSGbpFZm9hJ3VmDFMNfIbaxRaCkI7t+1HHGplQ=
+X-Received: by 2002:a5b:411:0:b0:65c:d336:ddf7 with SMTP id
+ m17-20020a5b0411000000b0065cd336ddf7mr13814723ybp.321.1654036825375; Tue, 31
+ May 2022 15:40:25 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a59:c94c:0:b0:2a8:7408:9cd2 with HTTP; Mon, 30 May 2022
- 08:28:05 -0700 (PDT)
-Reply-To: barristerbenjamin221@gmail.com
-From:   Attorney Amadou <djatodes@gmail.com>
-Date:   Mon, 30 May 2022 08:28:05 -0700
-Message-ID: <CAN_5zZhxobp0-xqM=cjOod9td4NPcf4M4TpTQyO_m8w=WshCkg@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
+References: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
+ <20220425033934.68551-7-kirill.shutemov@linux.intel.com> <YnE4ZzzVrxUnr3Uv@zn.tnic>
+ <20220506153013.e6v4q2qhuhqumfiu@box.shutemov.name> <YnpGnMoviGoK4Ucq@zn.tnic>
+ <CAAH4kHYRxgUNnGRUO473q02q3akLzgiTvbA2qKEP5jq6jFV-uA@mail.gmail.com>
+ <Yn4ed1gupKmNz2jn@zn.tnic> <20220513144515.fx2cvo3rjued3vy5@black.fi.intel.com>
+ <PH0PR11MB5064B561086BE6350CC1DCDCC5CF9@PH0PR11MB5064.namprd11.prod.outlook.com>
+In-Reply-To: <PH0PR11MB5064B561086BE6350CC1DCDCC5CF9@PH0PR11MB5064.namprd11.prod.outlook.com>
+From:   Dionna Amalie Glaze <dionnaglaze@google.com>
+Date:   Tue, 31 May 2022 15:40:14 -0700
+Message-ID: <CAAH4kHbU4FJ=veYQxncdpYD837M90vq2o2saVaUCJ6=pfuNRpA@mail.gmail.com>
+Subject: Re: [PATCHv5 06/12] x86/boot/compressed: Handle unaccepted memory
+To:     "Xu, Min M" <min.m.xu@intel.com>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Borislav Petkov <bp@suse.de>,
+        "Gao, Jiaqi" <jiaqi.gao@intel.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Borislav Petkov <bp@alien8.de>,
+        "Kirill A. Shutemov" <kirill@shutemov.name>,
+        "Lutomirski, Andy" <luto@kernel.org>,
+        "Christopherson,, Sean" <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Rodel, Jorg" <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Varad Gautam <varad.gautam@suse.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: Yes, score=5.3 required=5.0 tests=BAYES_60,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:a29 listed in]
-        [list.dnswl.org]
-        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
-        *      [score: 0.6230]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [djatodes[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [barristerbenjamin221[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-SGVsbG8gZGVhciBmcmllbmQuDQoNClBsZWFzZSBJIHdpbGwgbG92ZSB0byBkaXNjdXNzIHNvbWV0
-aGluZyB2ZXJ5IGltcG9ydGFudCB3aXRoIHlvdSwgSQ0Kd2lsbCBhcHByZWNpYXRlIGl0IGlmIHlv
-dSBncmFudCBtZSBhdWRpZW5jZS4NCg0KU2luY2VyZWx5Lg0KQmFycmlzdGVyIEFtYWRvdSBCZW5q
-YW1pbiBFc3EuDQouLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
-Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4NCuimquaEm+OB
-quOCi+WPi+S6uuOAgeOBk+OCk+OBq+OBoeOBr+OAgg0KDQrnp4Hjga/jgYLjgarjgZ/jgajpnZ7l
-uLjjgavph43opoHjgarjgZPjgajjgavjgaTjgYTjgaboqbHjgZflkIjjgYbjga7jgYzlpKflpb3j
-gY3jgafjgZnjgIHjgYLjgarjgZ/jgYznp4HjgavogbTooYbjgpLkuI7jgYjjgabjgY/jgozjgozj
-gbDnp4Hjga/jgZ3jgozjgpLmhJ/orJ3jgZfjgb7jgZnjgIINCg0K5b+D44GL44KJ44CCDQrjg5Dj
-g6rjgrnjgr/jg7zjgqLjg57jg4njgqXjg5njg7Pjgrjjg6Pjg5/jg7NFc3HjgIINCg==
+Hi y'all, I've made minimal changes to OVMF to prevalidate only up to
+4GB and leave the rest unaccepted, as Thomas Lendacky recommended
+https://github.com/AMDESE/ovmf/pull/4#issuecomment-1138606275 and ran
+a memtouch test to see if this change behaves as expected. One thing
+that struck me is that an 8GB machine reports 2044MB free with this
+change (free -k) whereas without it, I see 7089MB free. I think that
+unaccepted memory should be classified as free in meminfo, no? I'm not
+familiar enough with that code to say what specific change needs to be
+made.
+
+(resent in text mode)
+
+
+On Sun, May 15, 2022 at 11:47 PM Xu, Min M <min.m.xu@intel.com> wrote:
+>
+> On May 13, 2022 10:45 PM, Kirill A. Shutemov wrote:
+> > On Fri, May 13, 2022 at 11:01:43AM +0200, Borislav Petkov wrote:
+> > > + mroth
+> > > - brijesh
+> > >
+> > > On Thu, May 12, 2022 at 10:34:02PM -0700, Dionna Amalie Glaze wrote:
+> > > > Kirill, I've been tracking these changes to see if we can handle th=
+e
+> > > > unaccepted memory type for SEV-SNP, but testing has been an issue.
+> > > > The proposed patch in Ovmf to introduce unaccepted memory seems to
+> > > > have stalled out last September
+> > > > (https://www.mail-archive.com/devel@edk2.groups.io/msg35842.html)
+> > > > and is particularly difficult to adapt to SEV-SNP since it doesn't
+> > > > follow the TDVF way of initializing all memory. Is there a differen=
+t
+> > > > development I might have missed so that we might test these cases?
+> > > > Without the UEFI introducing EFI_UNACCEPTED_MEMORY type, any
+> > kernel
+> > > > uses are essentially dead code.
+> >
+> > + Min, Jiaqi.
+> >
+> > I don't follow firmware development. Min, Jiaqi, could you comment?
+> >
+> We have prepared the patch for unaccepted memory and it is now working in=
+ our internal release.
+> But there is an obstacle to upstream it to edk2 master branch.
+> The patch-set depends on the definition of UEFI_RESOURCE_MEMORY_UNACCEPTE=
+D in PI spec. This is proposed in https://github.com/microsoft/mu_basecore/=
+pull/66/files#diff-b20a11152d1ce9249c691be5690b4baf52069efadf2e2546cdd2eb66=
+3d80c9e4R237, according to UEFI-Code-First. The proposal was approved in 20=
+21 in UEFI Mantis, and will be added to the new PI.next specification. (Til=
+l now it has not been added in the latest PI spec.)
+> So UEFI_RESOURCE_MEMORY_UNACCEPTED cannot be added in MdePkg which make i=
+t difficult to submit the patch to edk2 community for review. See this link=
+: https://edk2.groups.io/g/devel/message/87558
+>
+> Please be noted: UEFI_RESOURCE_MEMORY_UNACCEPTED (defined in PI spec) is =
+different from EFI_UNACCEPTED_MEMORY (defined in UEFI spec)
+>
+> I will submit the patch-set once the new definition is added in the new P=
+I.next spec.
+>
+> Thanks
+> Min
+
+
+
+--=20
+-Dionna Glaze, PhD (she/her)
