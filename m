@@ -2,119 +2,129 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3A9553BA7C
-	for <lists+linux-efi@lfdr.de>; Thu,  2 Jun 2022 16:09:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4099B53BB99
+	for <lists+linux-efi@lfdr.de>; Thu,  2 Jun 2022 17:32:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235731AbiFBOJm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 2 Jun 2022 10:09:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44944 "EHLO
+        id S236478AbiFBPcA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 2 Jun 2022 11:32:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234646AbiFBOJl (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 2 Jun 2022 10:09:41 -0400
-Received: from mailbox.box.xen0n.name (mail.xen0n.name [115.28.160.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4A0C2A5500;
-        Thu,  2 Jun 2022 07:09:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xen0n.name; s=mail;
-        t=1654178973; bh=rULKadNuRUmxsRHBTvF37ibbVCBVzs4lGOC6A+8n0R8=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=LjPfY4RmCaGNed0hYjvZdi9282Fy30mTAzDUxPpJVMoSCO31bTsp7+8miCdPNDiJB
-         0bUpEVgnYT0mxb0I5CVVf3fr++T/jXf9g2VcDw9qH5Mas7gVidwFK1+R8OOUJI2wGv
-         Mai2UTqjMFJg9+s7B/tZWxGpr9i00eSD6sB00zKw=
-Received: from [192.168.9.172] (unknown [101.88.28.48])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mailbox.box.xen0n.name (Postfix) with ESMTPSA id 4D683600FF;
-        Thu,  2 Jun 2022 22:09:33 +0800 (CST)
-Message-ID: <d88ede74-b7a5-e568-1863-107c6c7f5fe0@xen0n.name>
-Date:   Thu, 2 Jun 2022 22:09:32 +0800
+        with ESMTP id S236455AbiFBPb4 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 2 Jun 2022 11:31:56 -0400
+Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C804BC8A
+        for <linux-efi@vger.kernel.org>; Thu,  2 Jun 2022 08:31:52 -0700 (PDT)
+Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-300628e76f3so54920257b3.12
+        for <linux-efi@vger.kernel.org>; Thu, 02 Jun 2022 08:31:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8Knz9JmJqm4EucxNHcnCzTZMEqb1eXMDB2BBmxOvSfo=;
+        b=A5BEurTXTqPI2SJfMM+0Og5mkfT1VMkGbC38WlggmdEdOivuFGZMJrBOEArKLrgmjd
+         ispcV5TBg8MDV6Pw1F93Jo101+POqcpuj3mm1Cx7/NWgjNEQVIrUM26/JOdE6eIM9PNe
+         NK5jB9oLoo+rd+ELGFkAdAstHirBUwRDd0X1CRUyvyl4zf02btaqHCrhk1Mo3f2mp9p1
+         PwcArktmbaggGkq20umNK6JKAtWRVvfsfnKee0/0oA68IQr72FAwhg3zsPurigPZynB4
+         WrPeKRvKMWcdQNpGntCfhvjn3oaDTMSsKRF5TSZ/yGtFOgxPk0tMfTtjbfikgukep6cx
+         7O7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8Knz9JmJqm4EucxNHcnCzTZMEqb1eXMDB2BBmxOvSfo=;
+        b=spT9qIcdcbX28vEds6ZuArrv3F3Cr9kJc5EuDQycxPATn49FP7BW1eonYAbgVsDbj2
+         plZw1CtgipJviJ3BmxYcFYlotOhjcK9NIpRmZqrygYhf2wPnjF9yshLLHdJAGQF2ZlP+
+         +0+x/aXTEQWCYC+JQb158H1LxI21trIDCaetJKw7bXTRPM3/ZUMxpM6k8hgvMJVx08ZC
+         d/oUVcq3FP5RyzCky5lafMgaVQVOcOmoSfiThiUmW6sZqwD1AY5ANwuPVjGh79koK9p+
+         nWGFjfL0t3Oi48mud+0jJElNx8mhiH0Nc4erDnCIt0mDDC1gXHOp6yuWm6V1oeZrggzY
+         rQ8w==
+X-Gm-Message-State: AOAM530eWo4ca3SDKQqAM7NGI5aXT4oQtzmy5ccHDYRAH3pRLLgI90rJ
+        JZWzCvp2ocu8yvALOsvWHAkYDDMofnmR13ZexlLf7w==
+X-Google-Smtp-Source: ABdhPJyDgn+XcjAIve032i0v41nPDh9/gB1Ke2pcinTpAdoGGtfFIm2nBM+7mIhCzFsvqob6zbUErmaGn6ssSdJrp54=
+X-Received: by 2002:a0d:ca08:0:b0:30c:b11b:8cfc with SMTP id
+ m8-20020a0dca08000000b0030cb11b8cfcmr6352036ywd.362.1654183911131; Thu, 02
+ Jun 2022 08:31:51 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101
- Thunderbird/103.0a1
-Subject: Steps forward for the LoongArch UEFI bringup patch? (was: Re: [PATCH
- V14 11/24] LoongArch: Add boot and setup routines)
-Content-Language: en-US
-To:     Ard Biesheuvel <ardb@kernel.org>,
-        Huacai Chen <chenhuacai@loongson.cn>
-Cc:     linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Xuefeng Li <lixuefeng@loongson.cn>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Huacai Chen <chenhuacai@gmail.com>,
-        Guo Ren <guoren@kernel.org>, Xuerui Wang <kernel@xen0n.name>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        linux-efi@vger.kernel.org, WANG Xuerui <git@xen0n.name>,
-        Yun Liu <liuyun@loongson.cn>, Jonathan Corbet <corbet@lwn.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andy Lutomirski <luto@kernel.org>,
+References: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
+ <20220425033934.68551-7-kirill.shutemov@linux.intel.com> <YnE4ZzzVrxUnr3Uv@zn.tnic>
+ <20220506153013.e6v4q2qhuhqumfiu@box.shutemov.name> <YnpGnMoviGoK4Ucq@zn.tnic>
+ <CAAH4kHYRxgUNnGRUO473q02q3akLzgiTvbA2qKEP5jq6jFV-uA@mail.gmail.com>
+ <Yn4ed1gupKmNz2jn@zn.tnic> <20220513144515.fx2cvo3rjued3vy5@black.fi.intel.com>
+ <PH0PR11MB5064B561086BE6350CC1DCDCC5CF9@PH0PR11MB5064.namprd11.prod.outlook.com>
+ <CAAH4kHbU4FJ=veYQxncdpYD837M90vq2o2saVaUCJ6=pfuNRpA@mail.gmail.com>
+ <0c545c5f-3540-1441-7a7d-359b6795f43a@amd.com> <CAAH4kHYj9WOKngeXYL=KnNb1fXa-MaFGTBGZcBX726Od858Q3A@mail.gmail.com>
+ <19ac7bbc-82f1-8350-8638-163303d682b1@amd.com>
+In-Reply-To: <19ac7bbc-82f1-8350-8638-163303d682b1@amd.com>
+From:   Dionna Amalie Glaze <dionnaglaze@google.com>
+Date:   Thu, 2 Jun 2022 08:31:40 -0700
+Message-ID: <CAAH4kHbPyCAxwQgqPpgDQ3bEioHZ+WboUMGTHazxC9f9jEEwWg@mail.gmail.com>
+Subject: Re: [PATCHv5 06/12] x86/boot/compressed: Handle unaccepted memory
+To:     "Gupta, Pankaj" <pankaj.gupta@amd.com>
+Cc:     "Xu, Min M" <min.m.xu@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Borislav Petkov <bp@suse.de>,
+        "Gao, Jiaqi" <jiaqi.gao@intel.com>,
+        Michael Roth <michael.roth@amd.com>,
+        Borislav Petkov <bp@alien8.de>,
+        "Kirill A. Shutemov" <kirill@shutemov.name>,
+        "Lutomirski, Andy" <luto@kernel.org>,
+        "Christopherson,, Sean" <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Rodel, Jorg" <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Peter Zijlstra <peterz@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Airlie <airlied@linux.ie>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-References: <20220602115141.3962749-1-chenhuacai@loongson.cn>
- <20220602115141.3962749-12-chenhuacai@loongson.cn>
-From:   WANG Xuerui <kernel@xen0n.name>
-In-Reply-To: <20220602115141.3962749-12-chenhuacai@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Varad Gautam <varad.gautam@suse.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Ard,
+On Thu, Jun 2, 2022 at 5:51 AM Gupta, Pankaj <pankaj.gupta@amd.com> wrote:
+> AFAIU the unaccepted memory also stays in buddy (first via slow path)
+> and should be accounted automatically in free?
+>
 
-Sorry for sounding particularly rushed and I really don't like rushing 
-things either, but as explained in the previous reply [1], what we want 
-to do is mainly to get the arch/loongarch into mainline first, 
-stabilizing an ABI surface already under heavy testing for many months; 
-plus Huacai has removed the questioned kernel version string, and the 
-Loongson-specific "boardinfo" sysfs file that doesn't really belong to 
-/sys/firmware/efi.
+No, the last patch adds unaccepted mem as a differently accounted memory type.
 
-So, would you please clarify and explain how Huacai and I could best 
-proceed to hopefully get the *rest* of the port readied for a (late) 
-merge window PR? Otherwise much of userspace development would have to 
-shift target once more, and many Linux distros would have to carry and 
-rebase this big patchset for another 2 months which is real churn.
+> >
+> > So when I see 2044MB free vs 7089MB free in my VMs, the two are
+> > roughly 5GB different.
+>
+> Is it possible all memory got allocated with memblock? Maybe some
+> variable tests to validate with '/proc/meminfo | grep UnacceptedMem'
+> would give you more clue.
+>
 
-If some more background is necessary, let me explain a bit more about 
-the LoongArch boot protocol peculiarities...
-
-For one thing, the standard EFI stub boot flow is a recent development, 
-and has not shipped yet; all currently existing LoongArch systems 
-actually implement the previous Loongson-specific boot protocol based on 
-"struct bootparamsinterface", or BPI for short, that was carried over 
-from the MIPS era. Systems with BPI firmware provide full EFI services 
-too, but all pointers in BPI structs are virtual addresses, and the 
-memory maps are not provided in the same way as their new firmware. In 
-addition to that, all BPI systems launch Linux via a special GRUB2 that 
-can only boot ELF files (so cannot chainload an EFI stub), and it's 
-unclear whether directly booting an EFI stub would work, so the EFI stub 
-logic is not invoked at all but SVAM still have to be executed somehow 
-to ensure sanity. All of this means the SVAM oddity will eventually get 
-in, regardless of whether we take it out now or not, if the BPI support 
-is to be mainlined in the future.
-
-For another thing, it seems Loongson really wanted to support the "PMON" 
-use case that wouldn't provide full EFI services but sharing some logic 
-with UEFI boot. PMON is one of the MIPS firmware varieties that Loongson 
-has supported back in the days, and they seem to have ported it to 
-LoongArch as well.
-
-For this, I don't know if Huacai should really just leave those 
-modification in the downstream fork to keep the upstream Linux clean of 
-such hacks, because to some degree dealing with such notoriety is life, 
-it seems to me. I think at this point Huacai would cooperate and tweak 
-the patch to get rid of the SVAM and other nonstandard bits as much as 
-possible, and I'll help him where necessary too.
+free -k parses /proc/meminfo for MemFree and SwapFree in
+/proc/meminfo, so it sounds like it should also add in UnacceptedMem.
+We'll try that. Thanks.
 
 
-[1]: 
-https://lore.kernel.org/all/47b559c0-b1e8-e800-0491-2431e2083dad@xen0n.name/
 
+
+--
+-Dionna Glaze, PhD (she/her)
