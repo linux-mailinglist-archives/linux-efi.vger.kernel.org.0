@@ -2,215 +2,265 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E42B53B106
-	for <lists+linux-efi@lfdr.de>; Thu,  2 Jun 2022 03:22:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA7CD53B23A
+	for <lists+linux-efi@lfdr.de>; Thu,  2 Jun 2022 05:46:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232891AbiFBBFg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 1 Jun 2022 21:05:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52046 "EHLO
+        id S229455AbiFBDoG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 1 Jun 2022 23:44:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232885AbiFBBFe (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 1 Jun 2022 21:05:34 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24CE827237C
-        for <linux-efi@vger.kernel.org>; Wed,  1 Jun 2022 18:05:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654131933; x=1685667933;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=tFjkRR5Ohf5vpdsKco/qiUT0mSKGXKMzvurYp0VSee8=;
-  b=lrmmbW+dFCV5lQi1uf8Ieq7gPNChcqWuu8z6OyPC5lhsEioVFzd93cWg
-   hXyf9oNllBN/3gqQMjwhzCPC4uGOFvapZtNlP6xGHz7D7tUm/ePyx3d2D
-   GLDOG6BWCsMuOuLiefe73XrhYys5j0NMj0BE1/LQJLPtRXSf3LTruvKX7
-   Vza7uUo3P0RpYvilCW0yV+wQgEhQ8QzGDsf84PkF7bXJhzx+9KQgpAP2Q
-   YbTo5+KtthMNRYanr5aPiOd+qs83e9ayFwLwDaGjEqTRttUnevR+WSIRz
-   UlvCPL50p5ZGcf8/ladCc4L7I9bpLk5uwmqQM+UuHUk4pDUcFxdMKTgVe
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10365"; a="362154432"
-X-IronPort-AV: E=Sophos;i="5.91,270,1647327600"; 
-   d="scan'208";a="362154432"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2022 18:05:32 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,270,1647327600"; 
-   d="scan'208";a="904718691"
-Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 01 Jun 2022 18:05:31 -0700
-Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nwZHH-0004bJ-5M;
-        Thu, 02 Jun 2022 01:05:31 +0000
-Date:   Thu, 02 Jun 2022 09:05:23 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS 75ed63d919400b803691a0c757ee23c6f767a625
-Message-ID: <62980cd3.Y7kdHunRW8Po9nvL%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229454AbiFBDoD (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 1 Jun 2022 23:44:03 -0400
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEC65140846
+        for <linux-efi@vger.kernel.org>; Wed,  1 Jun 2022 20:44:00 -0700 (PDT)
+Received: by mail-pg1-x532.google.com with SMTP id 129so3675705pgc.2
+        for <linux-efi@vger.kernel.org>; Wed, 01 Jun 2022 20:44:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dabbelt-com.20210112.gappssmtp.com; s=20210112;
+        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
+         :content-transfer-encoding;
+        bh=41Cix8/wz/98CXmQSSNUVoc/eGMSQu30WNS71XR8dIw=;
+        b=xlIUxlaBeKYzS7iUqyyVg/FYULyNn8vEmUTA5PcIHuIOtLrrU7nbkXrOKP9Lg6mqiK
+         W5/9UgFSa3Alf1969E1hbz1M5DB1P5ur5GONVnGfG//sbT+TiORVPZiRTZi5KK4w7bJ+
+         pZtm0lUbV42MuWDuh+RlzKGoAVZ8GKtMcfkihTJrye/Nj4Z5HAWOnfKNs7IVmk3cCWey
+         ROVwkByRLmZjiOLtcjmmWDuU+1lSkucqYjL6LEafERcG9yUMdkV00JL4uO8flM/XkiLQ
+         ya2K1hW0u7leuQU71+7MsxCIP2xAbwHayNxOkSNT9fSUqUwPxMYp3R0LzC5Od+CIBSzI
+         ZF6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
+         :mime-version:content-transfer-encoding;
+        bh=41Cix8/wz/98CXmQSSNUVoc/eGMSQu30WNS71XR8dIw=;
+        b=2n8p2U9LitYpg5JS76/ACDvKRW+DWZiGH3DbDCEJbYKCcd1DjoE9gNTBsX3GEWSALE
+         KUE08vCwkYkJdqdXBEXQiMwCxez8C3YMpHUczUmKCGafEK7ko05L5mip1qlcXSBbbDlX
+         l3uZkxl2hmZ2Tu1Eph0CjgzCFrpbmY6gkUbU89CS+R27sPgLx8TCFf8Zm2vWAmoUqazY
+         UnmOMdfSuik7MsLTd6OXpqv0cm/fPnj9M7VNkpOSeYwcZ6ay0ilXTmXKaVapOWeLYaE5
+         ebvlX0wr0BD6vQeXPK1xGB2o9HXwRTjtBijp97A57vt5YXxpMKmFPoBeWLlpyZoFbwfu
+         EGpA==
+X-Gm-Message-State: AOAM532N80rKOC4CJPyQqoPNe5EF1zH+zTcho8NZjKeK1MvazEOu8ABY
+        EbPfiohYkHmjBQJ0lRy0N2LiRQ==
+X-Google-Smtp-Source: ABdhPJwj8pNW5zGNYm4XHNrU/V+RpEOW+y5QQGSkxJYkaR5O97+HdBnk7f1z0+QUbeTv16fOV5xp7A==
+X-Received: by 2002:a63:6b02:0:b0:3fb:da5e:42a1 with SMTP id g2-20020a636b02000000b003fbda5e42a1mr2388919pgc.273.1654141439808;
+        Wed, 01 Jun 2022 20:43:59 -0700 (PDT)
+Received: from localhost ([12.3.194.138])
+        by smtp.gmail.com with ESMTPSA id g2-20020aa79f02000000b005185407eda5sm2254092pfr.44.2022.06.01.20.43.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jun 2022 20:43:59 -0700 (PDT)
+Date:   Wed, 01 Jun 2022 20:43:59 -0700 (PDT)
+X-Google-Original-Date: Wed, 01 Jun 2022 20:40:23 PDT (-0700)
+Subject:     Re: [PATCH v3 00/13] Introduce sv48 support without relocatable kernel
+In-Reply-To: <mhng-f386a42e-77d9-4644-914f-552a8e721f5c@palmer-ri-x1c9>
+CC:     corbet@lwn.net, Paul Walmsley <paul.walmsley@sifive.com>,
+        aou@eecs.berkeley.edu, zong.li@sifive.com, anup@brainfault.org,
+        Atish.Patra@rivosinc.com, Christoph Hellwig <hch@lst.de>,
+        ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
+        dvyukov@google.com, ardb@kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        keescook@chromium.org, guoren@linux.alibaba.com,
+        heinrich.schuchardt@canonical.com, mchitale@ventanamicro.com,
+        panqinglin2020@iscas.ac.cn, linux-doc@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kasan-dev@googlegroups.com, linux-efi@vger.kernel.org,
+        linux-arch@vger.kernel.org
+From:   Palmer Dabbelt <palmer@dabbelt.com>
+To:     alexandre.ghiti@canonical.com
+Message-ID: <mhng-2ff855c7-1f97-46c9-b692-84ea3735eb05@palmer-ri-x1c9>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: 75ed63d919400b803691a0c757ee23c6f767a625  efi: clean up Kconfig dependencies on CONFIG_EFI
+On Fri, 22 Apr 2022 18:50:47 PDT (-0700), Palmer Dabbelt wrote:
+> On Fri, 01 Apr 2022 05:56:30 PDT (-0700), alexandre.ghiti@canonical.com wrote:
+>> On Fri, Feb 18, 2022 at 11:45 AM Alexandre Ghiti
+>> <alexandre.ghiti@canonical.com> wrote:
+>>>
+>>> Hi Palmer,
+>>>
+>>> On Thu, Jan 20, 2022 at 11:05 AM Alexandre Ghiti
+>>> <alexandre.ghiti@canonical.com> wrote:
+>>> >
+>>> > On Thu, Jan 20, 2022 at 8:30 AM Alexandre Ghiti
+>>> > <alexandre.ghiti@canonical.com> wrote:
+>>> > >
+>>> > > On Thu, Jan 20, 2022 at 5:18 AM Palmer Dabbelt <palmer@dabbelt.com> wrote:
+>>> > > >
+>>> > > > On Mon, 06 Dec 2021 02:46:44 PST (-0800), alexandre.ghiti@canonical.com wrote:
+>>> > > > > * Please note notable changes in memory layouts and kasan population *
+>>> > > > >
+>>> > > > > This patchset allows to have a single kernel for sv39 and sv48 without
+>>> > > > > being relocatable.
+>>> > > > >
+>>> > > > > The idea comes from Arnd Bergmann who suggested to do the same as x86,
+>>> > > > > that is mapping the kernel to the end of the address space, which allows
+>>> > > > > the kernel to be linked at the same address for both sv39 and sv48 and
+>>> > > > > then does not require to be relocated at runtime.
+>>> > > > >
+>>> > > > > This implements sv48 support at runtime. The kernel will try to
+>>> > > > > boot with 4-level page table and will fallback to 3-level if the HW does not
+>>> > > > > support it. Folding the 4th level into a 3-level page table has almost no
+>>> > > > > cost at runtime.
+>>> > > > >
+>>> > > > > Note that kasan region had to be moved to the end of the address space
+>>> > > > > since its location must be known at compile-time and then be valid for
+>>> > > > > both sv39 and sv48 (and sv57 that is coming).
+>>> > > > >
+>>> > > > > Tested on:
+>>> > > > >   - qemu rv64 sv39: OK
+>>> > > > >   - qemu rv64 sv48: OK
+>>> > > > >   - qemu rv64 sv39 + kasan: OK
+>>> > > > >   - qemu rv64 sv48 + kasan: OK
+>>> > > > >   - qemu rv32: OK
+>>> > > > >
+>>> > > > > Changes in v3:
+>>> > > > >   - Fix SZ_1T, thanks to Atish
+>>> > > > >   - Fix warning create_pud_mapping, thanks to Atish
+>>> > > > >   - Fix k210 nommu build, thanks to Atish
+>>> > > > >   - Fix wrong rebase as noted by Samuel
+>>> > > > >   - * Downgrade to sv39 is only possible if !KASAN (see commit changelog) *
+>>> > > > >   - * Move KASAN next to the kernel: virtual layouts changed and kasan population *
+>>> > > > >
+>>> > > > > Changes in v2:
+>>> > > > >   - Rebase onto for-next
+>>> > > > >   - Fix KASAN
+>>> > > > >   - Fix stack canary
+>>> > > > >   - Get completely rid of MAXPHYSMEM configs
+>>> > > > >   - Add documentation
+>>> > > > >
+>>> > > > > Alexandre Ghiti (13):
+>>> > > > >   riscv: Move KASAN mapping next to the kernel mapping
+>>> > > > >   riscv: Split early kasan mapping to prepare sv48 introduction
+>>> > > > >   riscv: Introduce functions to switch pt_ops
+>>> > > > >   riscv: Allow to dynamically define VA_BITS
+>>> > > > >   riscv: Get rid of MAXPHYSMEM configs
+>>> > > > >   asm-generic: Prepare for riscv use of pud_alloc_one and pud_free
+>>> > > > >   riscv: Implement sv48 support
+>>> > > > >   riscv: Use pgtable_l4_enabled to output mmu_type in cpuinfo
+>>> > > > >   riscv: Explicit comment about user virtual address space size
+>>> > > > >   riscv: Improve virtual kernel memory layout dump
+>>> > > > >   Documentation: riscv: Add sv48 description to VM layout
+>>> > > > >   riscv: Initialize thread pointer before calling C functions
+>>> > > > >   riscv: Allow user to downgrade to sv39 when hw supports sv48 if !KASAN
+>>> > > > >
+>>> > > > >  Documentation/riscv/vm-layout.rst             |  48 ++-
+>>> > > > >  arch/riscv/Kconfig                            |  37 +-
+>>> > > > >  arch/riscv/configs/nommu_k210_defconfig       |   1 -
+>>> > > > >  .../riscv/configs/nommu_k210_sdcard_defconfig |   1 -
+>>> > > > >  arch/riscv/configs/nommu_virt_defconfig       |   1 -
+>>> > > > >  arch/riscv/include/asm/csr.h                  |   3 +-
+>>> > > > >  arch/riscv/include/asm/fixmap.h               |   1
+>>> > > > >  arch/riscv/include/asm/kasan.h                |  11 +-
+>>> > > > >  arch/riscv/include/asm/page.h                 |  20 +-
+>>> > > > >  arch/riscv/include/asm/pgalloc.h              |  40 ++
+>>> > > > >  arch/riscv/include/asm/pgtable-64.h           | 108 ++++-
+>>> > > > >  arch/riscv/include/asm/pgtable.h              |  47 +-
+>>> > > > >  arch/riscv/include/asm/sparsemem.h            |   6 +-
+>>> > > > >  arch/riscv/kernel/cpu.c                       |  23 +-
+>>> > > > >  arch/riscv/kernel/head.S                      |   4 +-
+>>> > > > >  arch/riscv/mm/context.c                       |   4 +-
+>>> > > > >  arch/riscv/mm/init.c                          | 408 ++++++++++++++----
+>>> > > > >  arch/riscv/mm/kasan_init.c                    | 250 ++++++++---
+>>> > > > >  drivers/firmware/efi/libstub/efi-stub.c       |   2
+>>> > > > >  drivers/pci/controller/pci-xgene.c            |   2 +-
+>>> > > > >  include/asm-generic/pgalloc.h                 |  24 +-
+>>> > > > >  include/linux/sizes.h                         |   1
+>>> > > > >  22 files changed, 833 insertions(+), 209 deletions(-)
+>>> > > >
+>>> > > > Sorry this took a while.  This is on for-next, with a bit of juggling: a
+>>> > > > handful of trivial fixes for configs that were failing to build/boot and
+>>> > > > some merge issues.  I also pulled out that MAXPHYSMEM fix to the top, so
+>>> > > > it'd be easier to backport.  This is bigger than something I'd normally like to
+>>> > > > take late in the cycle, but given there's a lot of cleanups, likely some fixes,
+>>> > > > and it looks like folks have been testing this I'm just going to go with it.
+>>> > > >
+>>> > >
+>>> > > Yes yes yes! That's fantastic news :)
+>>> > >
+>>> > > > Let me know if there's any issues with the merge, it was a bit hairy.
+>>> > > > Probably best to just send along a fixup patch at this point.
+>>> > >
+>>> > > I'm going to take a look at that now, and I'll fix anything that comes
+>>> > > up quickly :)
+>>> >
+>>> > I see in for-next that you did not take the following patches:
+>>> >
+>>> >   riscv: Improve virtual kernel memory layout dump
+>>> >   Documentation: riscv: Add sv48 description to VM layout
+>>> >   riscv: Initialize thread pointer before calling C functions
+>>> >   riscv: Allow user to downgrade to sv39 when hw supports sv48 if !KASAN
+>>> >
+>>> > I'm not sure this was your intention. If it was, I believe that at
+>>> > least the first 2 patches are needed in this series, the 3rd one is a
+>>> > useful fix and we can discuss the 4th if that's an issue for you.
+>>>
+>>> Can you confirm that this was intentional and maybe explain the
+>>> motivation behind it? Because I see value in those patches.
+>>
+>> Palmer,
+>>
+>> I read that you were still taking patches for 5.18, so I confirm again
+>> that the patches above are needed IMO.
+>
+> It was too late for this when it was sent (I saw it then, but just got
+> around to actually doing the work to sort it out).
+>
+> It took me a while to figure out exactly what was going on here, but I
+> think I remember now: that downgrade patch (and the follow-on I just
+> sent) is broken for medlow, because mm/init.c must be built medany
+> (which we're using for the mostly-PIC qualities).  I remember being in
+> the middle of rebasing/debugging this a while ago, I must have forgotten
+> I was in the middle of that and accidentally merged the branch as-is.
+> Certainly wasn't trying to silently take half the patch set and leave
+> the rest in limbo, that's the wrong way to do things.
+>
+> I'm not sure what the right answer is here, but I just sent a patch to
+> drop support for medlow.  We'll have to talk about that, for now I
+> cleaned up some other minor issues, rearranged that docs and fix to come
+> first, and put this at palmer/riscv-sv48.  I think that fix is
+> reasonable to take the doc and fix into fixes, then the dump improvement
+> on for-next.  We'll have to see what folks think about the medany-only
+> kernels, the other option would be to build FDT as medany which seems a
+> bit awkward.
 
-elapsed time: 724m
+All but the last one are on for-next, there's some discussion on that 
+last one that pointed out some better ways to do it.
 
-configs tested: 133
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm64                               defconfig
-arm64                            allyesconfig
-arm                              allmodconfig
-arm                                 defconfig
-arm                              allyesconfig
-i386                          randconfig-c001
-s390                       zfcpdump_defconfig
-sh                          r7785rp_defconfig
-sh                          rsk7201_defconfig
-powerpc                    adder875_defconfig
-ia64                        generic_defconfig
-xtensa                    xip_kc705_defconfig
-ia64                            zx1_defconfig
-sh                           se7750_defconfig
-arm                          badge4_defconfig
-mips                       capcella_defconfig
-arm                           tegra_defconfig
-arm                        shmobile_defconfig
-arm                       omap2plus_defconfig
-arm                      footbridge_defconfig
-mips                          rb532_defconfig
-ia64                         bigsur_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                        dreamcast_defconfig
-parisc                generic-64bit_defconfig
-ia64                             alldefconfig
-arm                         lpc18xx_defconfig
-arc                 nsimosci_hs_smp_defconfig
-arm                             rpc_defconfig
-sh                          kfr2r09_defconfig
-arm                        mini2440_defconfig
-arm                           sunxi_defconfig
-arm                        spear6xx_defconfig
-arm                          pxa910_defconfig
-sh                             shx3_defconfig
-arc                          axs103_defconfig
-sh                      rts7751r2d1_defconfig
-powerpc                mpc7448_hpc2_defconfig
-sh                     magicpanelr2_defconfig
-arm                           corgi_defconfig
-x86_64                        randconfig-c001
-arm                  randconfig-c002-20220531
-ia64                             allmodconfig
-ia64                             allyesconfig
-ia64                                defconfig
-riscv                             allnoconfig
-m68k                                defconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-nios2                               defconfig
-arc                              allyesconfig
-alpha                               defconfig
-csky                                defconfig
-alpha                            allyesconfig
-nios2                            allyesconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-s390                                defconfig
-s390                             allmodconfig
-parisc                              defconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-s390                             allyesconfig
-sparc                               defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allmodconfig
-mips                             allyesconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-x86_64                        randconfig-a015
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-arc                  randconfig-r043-20220531
-s390                 randconfig-r044-20220531
-riscv                randconfig-r042-20220531
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-riscv                            allmodconfig
-riscv                            allyesconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                                  kexec
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-
-clang tested configs:
-mips                 randconfig-c004-20220531
-x86_64                        randconfig-c007
-i386                          randconfig-c001
-s390                 randconfig-c005-20220531
-arm                  randconfig-c002-20220531
-powerpc              randconfig-c003-20220531
-riscv                randconfig-c006-20220531
-powerpc                     tqm8540_defconfig
-powerpc                     skiroot_defconfig
-mips                          rm200_defconfig
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a011
-i386                          randconfig-a013
-i386                          randconfig-a015
-hexagon              randconfig-r041-20220531
-hexagon              randconfig-r045-20220531
-hexagon              randconfig-r045-20220601
-s390                 randconfig-r044-20220601
-riscv                randconfig-r042-20220601
-hexagon              randconfig-r041-20220601
-x86_64                        randconfig-a005
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+>
+>> Maybe even the relocatable series?
+>
+> Do you mind giving me a pointer?  I'm not sure why I'm so drop-prone
+> with your patches, I promise I'm not doing it on purpose.
+>
+>>
+>> Thanks,
+>>
+>> Alex
+>>
+>>>
+>>> Thanks,
+>>>
+>>> Alex
+>>>
+>>> >
+>>> > I tested for-next on both sv39 and sv48 successfully, I took a glance
+>>> > at the code and noticed you fixed the PTRS_PER_PGD error, thanks for
+>>> > that. Otherwise nothing obvious has popped.
+>>> >
+>>> > Thanks again,
+>>> >
+>>> > Alex
+>>> >
+>>> > >
+>>> > > Thanks!
+>>> > >
+>>> > > Alex
+>>> > >
+>>> > > >
+>>> > > > Thanks!
