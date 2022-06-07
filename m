@@ -2,29 +2,29 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C859053F954
-	for <lists+linux-efi@lfdr.de>; Tue,  7 Jun 2022 11:16:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84CD453F963
+	for <lists+linux-efi@lfdr.de>; Tue,  7 Jun 2022 11:17:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239191AbiFGJQ5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 7 Jun 2022 05:16:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41816 "EHLO
+        id S239208AbiFGJRF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 7 Jun 2022 05:17:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239198AbiFGJQu (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 7 Jun 2022 05:16:50 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 794FFB7DF7;
-        Tue,  7 Jun 2022 02:16:48 -0700 (PDT)
-Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.54])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4LHPps2DC1zjdbL;
-        Tue,  7 Jun 2022 17:15:49 +0800 (CST)
+        with ESMTP id S239221AbiFGJQw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 7 Jun 2022 05:16:52 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9253DD2476;
+        Tue,  7 Jun 2022 02:16:49 -0700 (PDT)
+Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.55])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4LHPpS5pBrzjcSw;
+        Tue,  7 Jun 2022 17:15:28 +0800 (CST)
 Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
- dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 7 Jun 2022 17:16:45 +0800
+ 15.1.2375.24; Tue, 7 Jun 2022 17:16:47 +0800
 Received: from localhost.localdomain (10.175.112.125) by
  dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 7 Jun 2022 17:16:44 +0800
+ 15.1.2375.24; Tue, 7 Jun 2022 17:16:45 +0800
 From:   Wupeng Ma <mawupeng1@huawei.com>
 To:     <corbet@lwn.net>, <will@kernel.org>, <ardb@kernel.org>,
         <catalin.marinas@arm.com>
@@ -46,9 +46,9 @@ CC:     <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
         <linux-mm@kvack.org>, <linux-riscv@lists.infradead.org>
-Subject: [PATCH v3 2/6] arm64/mirror: arm64 enabling - find mirrored memory ranges
-Date:   Tue, 7 Jun 2022 17:38:01 +0800
-Message-ID: <20220607093805.1354256-3-mawupeng1@huawei.com>
+Subject: [PATCH v3 3/6] mm: Ratelimited mirrored memory related warning messages
+Date:   Tue, 7 Jun 2022 17:38:02 +0800
+Message-ID: <20220607093805.1354256-4-mawupeng1@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220607093805.1354256-1-mawupeng1@huawei.com>
 References: <20220607093805.1354256-1-mawupeng1@huawei.com>
@@ -70,44 +70,41 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Ma Wupeng <mawupeng1@huawei.com>
 
-Commit b05b9f5f9dcf ("x86, mirror: x86 enabling - find mirrored memory ranges")
-introduced mirrored memory support for x86 and this could be used on arm64.
+If system has mirrored memory, memblock will try to allocate mirrored
+memory firstly and fallback to non-mirrored memory when fails, but if with
+limited mirrored memory or some numa node without mirrored memory, lots of
+warning message about memblock allocation will occur.
 
-Since we only support this feature on arm64, efi_find_mirror() won't be placed
-into efi_init(), which is used by riscv/arm/arm64, it is added in setup_arch()
-to scan the memory map and mark mirrored memory in memblock.
+This patch ratelimit the warning message to avoid a very long print during
+bootup.
 
 Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
 ---
- Documentation/admin-guide/kernel-parameters.txt | 2 +-
- arch/arm64/kernel/setup.c                       | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ mm/memblock.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 8090130b544b..e3537646b6f7 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -2301,7 +2301,7 @@
+diff --git a/mm/memblock.c b/mm/memblock.c
+index e4f03a6e8e56..b1d2a0009733 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -327,7 +327,7 @@ static phys_addr_t __init_memblock memblock_find_in_range(phys_addr_t start,
+ 					    NUMA_NO_NODE, flags);
  
- 	keepinitrd	[HW,ARM]
+ 	if (!ret && (flags & MEMBLOCK_MIRROR)) {
+-		pr_warn("Could not allocate %pap bytes of mirrored memory\n",
++		pr_warn_ratelimited("Could not allocate %pap bytes of mirrored memory\n",
+ 			&size);
+ 		flags &= ~MEMBLOCK_MIRROR;
+ 		goto again;
+@@ -1384,7 +1384,7 @@ phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size,
  
--	kernelcore=	[KNL,X86,IA-64,PPC]
-+	kernelcore=	[KNL,X86,IA-64,PPC,ARM64]
- 			Format: nn[KMGTPE] | nn% | "mirror"
- 			This parameter specifies the amount of memory usable by
- 			the kernel for non-movable allocations.  The requested
-diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
-index cf3a759f10d4..6e9acd7ecf0f 100644
---- a/arch/arm64/kernel/setup.c
-+++ b/arch/arm64/kernel/setup.c
-@@ -328,6 +328,7 @@ void __init __no_sanitize_address setup_arch(char **cmdline_p)
- 
- 	xen_early_init();
- 	efi_init();
-+	efi_find_mirror();
- 
- 	if (!efi_enabled(EFI_BOOT) && ((u64)_text % MIN_KIMG_ALIGN) != 0)
- 	     pr_warn(FW_BUG "Kernel image misaligned at boot, please fix your bootloader!");
+ 	if (flags & MEMBLOCK_MIRROR) {
+ 		flags &= ~MEMBLOCK_MIRROR;
+-		pr_warn("Could not allocate %pap bytes of mirrored memory\n",
++		pr_warn_ratelimited("Could not allocate %pap bytes of mirrored memory\n",
+ 			&size);
+ 		goto again;
+ 	}
 -- 
 2.25.1
 
