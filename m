@@ -2,90 +2,132 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29CBA54376F
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Jun 2022 17:32:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92A14544564
+	for <lists+linux-efi@lfdr.de>; Thu,  9 Jun 2022 10:13:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243892AbiFHPc2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 8 Jun 2022 11:32:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53446 "EHLO
+        id S240599AbiFIINu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 9 Jun 2022 04:13:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242493AbiFHPc1 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Jun 2022 11:32:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB4C43E0F3
-        for <linux-efi@vger.kernel.org>; Wed,  8 Jun 2022 08:32:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 16BEA6150F
-        for <linux-efi@vger.kernel.org>; Wed,  8 Jun 2022 15:32:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93CAFC34116;
-        Wed,  8 Jun 2022 15:32:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654702341;
-        bh=C3ueUCzlHUTWj8mWOVipy4/erVn4YI/Pup+HBZUB6wQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=o845C7TyV9IUBAupYQBsLApIVwd0hz0xGWN2h9FUMC4uzp46w+Jb0TZU27SZHxHDq
-         /z0k/f13WO46G1Z9CQrydX2ay2QxQ49xLzGcnDQ42SLy81ztp4sz06Oggn5lLcEzKK
-         0smRxEDnJY1UoDb7waTobUb+cv6M+9CMHTW/fFvT/J3tSMc+i1NB1XKLXdjNdhCsOM
-         8+W4hp6hjs5qxkgRdIPYRNYM82gv2Q6iy3p3EIQlSs+OD0e/UoLChaiBjA5jhiOG7+
-         BHPPzGHZBhXnGbzWv71M6n7dbN4klSKjdHEWSNwJPo++1Z07keQDrZukBJsYg4QwN9
-         AYZ4a5qABuGpQ==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     Jason@zx2c4.com, Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH] efi: random: wait for CRNG to become ready before refreshing the seed
-Date:   Wed,  8 Jun 2022 17:32:15 +0200
-Message-Id: <20220608153216.1480073-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S240611AbiFIINt (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 9 Jun 2022 04:13:49 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 513CA60DB8;
+        Thu,  9 Jun 2022 01:13:47 -0700 (PDT)
+Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.55])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4LJcKx5gqNz8wtL;
+        Thu,  9 Jun 2022 16:13:25 +0800 (CST)
+Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 9 Jun 2022 16:13:45 +0800
+Received: from [10.174.178.120] (10.174.178.120) by
+ dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 9 Jun 2022 16:13:43 +0800
+Message-ID: <8d5e867f-e51a-d763-5ac3-6dfc4e67a376@huawei.com>
+Date:   Thu, 9 Jun 2022 16:13:43 +0800
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1568; h=from:subject; bh=C3ueUCzlHUTWj8mWOVipy4/erVn4YI/Pup+HBZUB6wQ=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBioMD/lZ42fSBt9AwnuQUtm/FIkHkejm30QNjzdbRk B6XKja2JAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYqDA/wAKCRDDTyI5ktmPJLhxC/ 4soXHQG9IVx5cTaqQ7jqs3C3ba2vZ64GCilRgJ71h1Q1MAS9ZmtApw40o9MwgaLZrXbydgAAAjDWb4 ZQIhApBidZxOE4RlxbORFXnLGVI0ETHKNHW0XAnWBQpbUKqYeOgG8kMpyq5tbfef3N74lxEJimxuxl 91GnDZX3YMMwYMWNCPxJVlD7TEsZYtdo7VTHwAoehRSj8lTQKaNno61oW5PFcxjNQJMclUWX8ZVtjD we93sNjsyAmPaNbKXp8T3/u7zWKYyt9PA/OUr2RBukF7E/22Cuj3KSmeqsgaJaZZ3oaYsycYZrqISv +wly60jm+u7l0EVE9QVXz8Z/tjuZEgMa1NaslrpoXGDBLKfgw9zb90r4ODi0Cc8P0ssB96u595871h 4OyaHeGKdGXzzPDso442QtKoAUTeEHB/fEMh0bBKLKQK+GVMe55lCHtmz5KeU8DHaK+POaq8CwWvca Alku9OuJMRsRRU/m+c4hmWRoM3GIYv3kGbN6fhi18zfcs=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+From:   mawupeng <mawupeng1@huawei.com>
+Subject: Re: [PATCH v3 4/6] mm: Demote warning message in vmemmap_verify() to
+ debug level
+To:     <anshuman.khandual@arm.com>, <david@redhat.com>, <corbet@lwn.net>,
+        <will@kernel.org>, <ardb@kernel.org>, <catalin.marinas@arm.com>
+CC:     <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+        <dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+        <dvhart@infradead.org>, <andy@infradead.org>, <rppt@kernel.org>,
+        <akpm@linux-foundation.org>, <paul.walmsley@sifive.com>,
+        <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>,
+        <paulmck@kernel.org>, <keescook@chromium.org>,
+        <songmuchun@bytedance.com>, <rdunlap@infradead.org>,
+        <damien.lemoal@opensource.wdc.com>, <swboyd@chromium.org>,
+        <wei.liu@kernel.org>, <robin.murphy@arm.com>,
+        <thunder.leizhen@huawei.com>, <wangkefeng.wang@huawei.com>,
+        <gpiccoli@igalia.com>, <chenhuacai@kernel.org>,
+        <geert@linux-m68k.org>, <vijayb@linux.microsoft.com>,
+        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
+        <linux-mm@kvack.org>, <linux-riscv@lists.infradead.org>,
+        <mawupeng1@huawei.com>
+References: <20220607093805.1354256-1-mawupeng1@huawei.com>
+ <20220607093805.1354256-5-mawupeng1@huawei.com>
+ <b1975f44-2552-a03c-bb6f-1452f1fd99c0@redhat.com>
+ <a820f287-e879-6183-a917-6a577b6160ab@huawei.com>
+ <1f2a76d5-7c4e-46bc-ce66-20a962eac73c@arm.com>
+In-Reply-To: <1f2a76d5-7c4e-46bc-ce66-20a962eac73c@arm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Originating-IP: [10.174.178.120]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemm500014.china.huawei.com (7.185.36.153)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The EFI stub executes only once after boot, and kexec'd kernels reuse
-the firmware context created on the first boot. This is intentional: we
-preserve as much of the original firmware provided context as we can,
-and pass it on unmodified, making kexec mostly idempotent.
 
-However, there is one piece of firmware context that we should not
-reuse, which is the EFI random seed, especially in cases where the
-kexec'ed kernel trusts the bootloader, and we declare the CRNG ready as
-soon as the firmware seed is mixed in. So in kexec capable kernels, we
-refresh the EFI random seed before passing it on.
 
-Currently, we refresh the seed without taking into account whether or
-not the RNG subsystem is fully initialized, which means we may end up
-passing on a seed that is weaker than desired. To avoid this, switch to
-get_random_bytes_wait(), which will wait for the CRNG init to complete.
+在 2022/6/8 18:00, Anshuman Khandual 写道:
+> 
+> 
+> On 6/8/22 06:56, mawupeng wrote:
+>>
+>>
+>> 在 2022/6/7 20:25, David Hildenbrand 写道:
+>>> On 07.06.22 11:38, Wupeng Ma wrote:
+>>>> From: Ma Wupeng <mawupeng1@huawei.com>
+>>>>
+>>>> For a system only have limited mirrored memory or some numa node without
+>>>> mirrored memory, the per node vmemmap page_structs prefer to allocate
+>>>> memory from mirrored region, which will lead to vmemmap_verify() in
+>>>> vmemmap_populate_basepages() report lots of warning message.
+>>>>
+>>>> This patch demote the "potential offnode page_structs" warning messages
+>>>> to debug level to avoid a very long print during bootup.
+>>>>
+>>>> Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
+>>>> ---
+>>>>    mm/sparse-vmemmap.c | 2 +-
+>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+>>>> index f4fa61dbbee3..78debdb89eb1 100644
+>>>> --- a/mm/sparse-vmemmap.c
+>>>> +++ b/mm/sparse-vmemmap.c
+>>>> @@ -528,7 +528,7 @@ void __meminit vmemmap_verify(pte_t *pte, int node,
+>>>>        int actual_node = early_pfn_to_nid(pfn);
+>>>>          if (node_distance(actual_node, node) > LOCAL_DISTANCE)
+>>>> -        pr_warn("[%lx-%lx] potential offnode page_structs\n",
+>>>> +        pr_debug("[%lx-%lx] potential offnode page_structs\n",
+>>>>                start, end - 1);
+>>>>    }
+>>>>    
+>>>
+>>> This will possibly hide it in environments where this might indeed
+>>> indicate performance issues.
+>>>
+>>> What about a pr_warn_once()?
+>>>
+>>
+>> Sure.
+>>
+>> This will works. We can certainly use a pr_warn_once().
+> 
+> Why not pr_warn_ratelimited() like in the previous patch ?
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/efi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Function vmemmap_populate_basepages() is used to populate base pages.
+System with huge memory will produce lots lots of warning message
+during this populate process even with ratelimited. This may lead to slow
+startup.
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 860534bcfdac..7da49c783c01 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -1035,7 +1035,7 @@ static int update_efi_random_seed(struct notifier_block *nb,
- 				MEMREMAP_WB);
- 		if (seed != NULL) {
- 			seed->size = size;
--			get_random_bytes(seed->bits, seed->size);
-+			get_random_bytes_wait(seed->bits, seed->size);
- 			memunmap(seed);
- 		} else {
- 			pr_err("Could not map UEFI random seed!\n");
--- 
-2.30.2
+Thanks for reviewing.
 
+> .
