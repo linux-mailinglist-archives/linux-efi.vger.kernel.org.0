@@ -2,59 +2,82 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8E71547269
-	for <lists+linux-efi@lfdr.de>; Sat, 11 Jun 2022 08:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF3BC547371
+	for <lists+linux-efi@lfdr.de>; Sat, 11 Jun 2022 11:56:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229436AbiFKGtO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 11 Jun 2022 02:49:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51754 "EHLO
+        id S229740AbiFKJ42 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 11 Jun 2022 05:56:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbiFKGtM (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 11 Jun 2022 02:49:12 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF3D62DAA8
-        for <linux-efi@vger.kernel.org>; Fri, 10 Jun 2022 23:49:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654930149; x=1686466149;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=zFmdPxLMWYpZr9styXgMiIURGi3antOM0dZ3j7vBVao=;
-  b=PnI/40UPaSxAKfjdTPPnMPDVn0GwGoQrH7BV5LPsM92RgdE8YvnuVTYc
-   gLVUYi3h2RtZw2abI/m4FeOVOu5Lkm1VvsKPz+NjOhBQgVAWH0tFnnwMu
-   yWZk6lLpQjPplIGHGQ+bITAD9br9hxMtBvksTyfqRmPCnHTtQBTtiuF5y
-   naYLtzhBdSzjUsVSj/MErekqaQa3Wq8jxQeZ46UraUqormYv2+kCkxUwi
-   jYzaaM87jZd9RBd79w7ND6SLuakm15QzMLxmyZH7Yp1IF2I5quj5KzucZ
-   oEWax2gsg6g4PdhEYKbnsKsgGy+UDkfQDTQkO2sWlY4mOOYtXyV3YaAvE
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10374"; a="341888162"
-X-IronPort-AV: E=Sophos;i="5.91,292,1647327600"; 
-   d="scan'208";a="341888162"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2022 23:49:06 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,292,1647327600"; 
-   d="scan'208";a="760850649"
-Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 10 Jun 2022 23:49:05 -0700
-Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nzuvg-000Ict-GX;
-        Sat, 11 Jun 2022 06:49:04 +0000
-Date:   Sat, 11 Jun 2022 14:48:56 +0800
-From:   kernel test robot <lkp@intel.com>
+        with ESMTP id S229541AbiFKJ41 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 11 Jun 2022 05:56:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08B6BEE15;
+        Sat, 11 Jun 2022 02:56:27 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 965DA60BA3;
+        Sat, 11 Jun 2022 09:56:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF641C3411E;
+        Sat, 11 Jun 2022 09:56:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1654941386;
+        bh=G3SijAZJFwW8PPbomjAxbmJ1C1Qf1Qf77wWOoRRw+dg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=je5xCyBasUps0lw+zm8BT+55x7BMo8QBuhxo7JbtlactdaXmHz6lygNzLVrkm8nAX
+         HjEppJFc+QzCFrtWjpMbQ5TNT070wVV+inQya2B9+gtBdLCpCi5lhYrB8oioVSA00t
+         hIu1Oa3GrD0WLeAPrt7UP5jlkYHkU2fo87dm0Y2tsE2pbKenH7urJXTDUAgrXYtoWI
+         sACEfm3Hy0H/485yd2z03sytvQHGo5HqeAr0OHZgDGtUHNS7u3v0z9DoUqRmcgnTGS
+         yJ2Edt+EBxtqLD6Zk4/TW4K+j7AB4xUoNv3rGt0AT9EmLHGsWZAuNEVqCOGQlFxuD6
+         6hRDH3YDodvdQ==
+Date:   Sat, 11 Jun 2022 12:56:12 +0300
+From:   Mike Rapoport <rppt@kernel.org>
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- 05c800c26b21e089e22e1738ea28568a2be5bd61
-Message-ID: <62a43ad8.gzKQ87Hqlb4haHg3%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Cc:     Wupeng Ma <mawupeng1@huawei.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        X86 ML <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Kees Cook <keescook@chromium.org>, songmuchun@bytedance.com,
+        Randy Dunlap <rdunlap@infradead.org>,
+        damien.lemoal@opensource.wdc.com,
+        Stephen Boyd <swboyd@chromium.org>,
+        Wei Liu <wei.liu@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        David Hildenbrand <david@redhat.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Zhen Lei <thunder.leizhen@huawei.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>, gpiccoli@igalia.com,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        chenzhou10@huawei.com, vijayb@linux.microsoft.com,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-mm@kvack.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH v3 0/6] introduce mirrored memory support for arm64
+Message-ID: <YqRmvJDiy2UQkEDu@kernel.org>
+References: <20220607093805.1354256-1-mawupeng1@huawei.com>
+ <CAMj1kXH5r=CUoLCndBUsZ04_0UCJ2VqgJDdp2wbdNCtEx0Yxag@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXH5r=CUoLCndBUsZ04_0UCJ2VqgJDdp2wbdNCtEx0Yxag@mail.gmail.com>
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,108 +85,84 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
-branch HEAD: 05c800c26b21e089e22e1738ea28568a2be5bd61  efi/x86: libstub: Fix typo in __efi64_argmap* name
+On Fri, Jun 10, 2022 at 01:23:34PM +0200, Ard Biesheuvel wrote:
+> On Tue, 7 Jun 2022 at 11:16, Wupeng Ma <mawupeng1@huawei.com> wrote:
+> >
+> > From: Ma Wupeng <mawupeng1@huawei.com>
+> >
+> > Commit b05b9f5f9dcf ("x86, mirror: x86 enabling - find mirrored memory ranges")
+> > introduced mirrored memory support for x86. This support rely on UEFI to
+> > report mirrored memory address ranges.  See UEFI 2.5 spec pages 157-158:
+> >
+> >   http://www.uefi.org/sites/default/files/resources/UEFI%202_5.pdf
+> >
+> > Memory mirroring is a technique used to separate memory into two separate
+> > channels, usually on a memory device, like a server. In memory mirroring,
+> > one channel is copied to another to create redundancy. This method makes
+> > input/output (I/O) registers and memory appear with more than one address
+> > range because the same physical byte is accessible at more than one
+> > address. Using memory mirroring, higher memory reliability and a higher
+> > level of memory consolidation are possible.
+> >
+> > These EFI memory regions have various attributes, and the "mirrored"
+> > attribute is one of them. The physical memory region whose descriptors
+> > in EFI memory map has EFI_MEMORY_MORE_RELIABLE attribute (bit: 16) are
+> > mirrored. The address range mirroring feature of the kernel arranges such
+> > mirrored regions into normal zones and other regions into movable zones.
+> >
+> > Arm64 can support this too. So mirrored memory support is added to support
+> > arm64.
+> >
+> > The main purpose of this patch set is to introduce mirrored support for
+> > arm64 and we have already fixed the problems we had which is shown in
+> > patch #5 to patch #8 and try to bring total isolation in patch #9 which
+> > will disable mirror feature if kernelcore is not specified.
+> >
+> > In order to test this support in arm64:
+> > - patch this patch set
+> > - add kernelcore=mirror in kernel parameter
+> > - start you kernel
+> >
+> > Patch #1-#2 introduce mirrored memory support form arm64.
+> > Patch #3-#5 fix some bugs for arm64 if memory reliable is enabled.
+> > Patch #6 disable mirror feature if kernelcore is not specified.
+> >
+> > Thanks to Ard Biesheuvel's hard work [1], now kernel will perfer mirrored
+> > memory if kaslr is enabled.
+> >
+> > [1] https://lore.kernel.org/linux-arm-kernel/CAMj1kXEPVEzMgOM4+Yj6PxHA-jFuDOAUdDJSiSxy_XaP4P7LSw@mail.gmail.com/T/
+> >
+> > Changelog since v2:
+> > - remove efi_fake_mem support
+> > - remove Commit ("remove some redundant code in ia64 efi_init") since
+> >   efi_print_memmap() is not public
+> > - add mirror flag back on initrd memory
+> >
+> > Changelog since v1:
+> > - update changelog in cover letter
+> > - use PHYS_PFN in patch #7
+> >
+> > Ma Wupeng (6):
+> >   efi: Make efi_find_mirror() public
+> >   arm64/mirror: arm64 enabling - find mirrored memory ranges
+> >   mm: Ratelimited mirrored memory related warning messages
+> >   mm: Demote warning message in vmemmap_verify() to debug level
+> >   mm: Add mirror flag back on initrd memory
+> >   efi: Disable mirror feature if kernelcore is not specified
+> >
+> 
+> I have tested these changes on QEMU/arm64 with the patch below, and
+> things seem to work as expected. We have some minor issues to work out
+> but the general shape of this code is good.
+> 
+> As for the mm/ changes: does anyone mind if I take those through the
+> EFI tree as well?
 
-elapsed time: 1250m
+No objections from me.
 
-configs tested: 87
-configs skipped: 4
+> I don't think the EFI and -mm changes depend on each other, so they
+> can go into -mm separately as well.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm64                               defconfig
-arm64                            allyesconfig
-arm                              allmodconfig
-arm                                 defconfig
-arm                              allyesconfig
-i386                          randconfig-c001
-arc                         haps_hs_defconfig
-mips                          rb532_defconfig
-ia64                         bigsur_defconfig
-m68k                        m5272c3_defconfig
-sh                            titan_defconfig
-powerpc                 mpc837x_mds_defconfig
-mips                         tb0226_defconfig
-sh                           se7750_defconfig
-powerpc                 linkstation_defconfig
-powerpc64                           defconfig
-sh                          rsk7201_defconfig
-powerpc                 canyonlands_defconfig
-sh                          lboxre2_defconfig
-arm                          pxa3xx_defconfig
-sh                              ul2_defconfig
-xtensa                  cadence_csp_defconfig
-sh                               alldefconfig
-powerpc                      ep88xc_defconfig
-um                           x86_64_defconfig
-sh                   sh7770_generic_defconfig
-arc                    vdk_hs38_smp_defconfig
-ia64                                defconfig
-riscv                             allnoconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-csky                                defconfig
-nios2                            allyesconfig
-alpha                               defconfig
-alpha                            allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-s390                                defconfig
-s390                             allmodconfig
-parisc                              defconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-s390                             allyesconfig
-sparc                               defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-riscv                            allmodconfig
-riscv                            allyesconfig
-x86_64                    rhel-8.3-kselftests
-um                             i386_defconfig
-x86_64                                  kexec
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-
-clang tested configs:
-powerpc                    socrates_defconfig
-powerpc                     ppa8548_defconfig
-powerpc               mpc834x_itxgp_defconfig
-arm                             mxs_defconfig
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+--
+Sincerely yours,
+Mike.
