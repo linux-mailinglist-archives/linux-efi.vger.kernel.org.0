@@ -2,135 +2,143 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A055E548BC1
-	for <lists+linux-efi@lfdr.de>; Mon, 13 Jun 2022 18:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57140549809
+	for <lists+linux-efi@lfdr.de>; Mon, 13 Jun 2022 18:36:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348109AbiFMMYb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 13 Jun 2022 08:24:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55650 "EHLO
+        id S1349870AbiFMMYd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 13 Jun 2022 08:24:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354186AbiFMMVi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Jun 2022 08:21:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 60EE857127
-        for <linux-efi@vger.kernel.org>; Mon, 13 Jun 2022 04:03:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1655118197;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=j5D3sK3qxzP9CGnwsiLKPN/J+KjY10e+k7sKDOcqT5o=;
-        b=BpQnBRJkM+s/JPW3AwqucdVXJhFoPad+rXc4rMel291fDEE1AjZBJQ88JKERjhwpplUGai
-        DGZ4TwlSg4wGbtLQMq+9g3npiZCOgkqTcQuNFKN/X0Fj/yyXdrwBb/3ABekRgqiTHfQ2oV
-        0mtJwwvbcaZFCI9nUr/hdp0tQssaqLQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-653-uscEAHdTNpaecfPM29vF3g-1; Mon, 13 Jun 2022 07:03:16 -0400
-X-MC-Unique: uscEAHdTNpaecfPM29vF3g-1
-Received: by mail-wm1-f72.google.com with SMTP id l17-20020a05600c4f1100b0039c860db521so2706727wmq.5
-        for <linux-efi@vger.kernel.org>; Mon, 13 Jun 2022 04:03:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:organization:in-reply-to
-         :content-transfer-encoding;
-        bh=j5D3sK3qxzP9CGnwsiLKPN/J+KjY10e+k7sKDOcqT5o=;
-        b=kz6cxYMdmF8qEZVHdYdjFeA7joc79H471wVruuXoMbCDYQu679VU66s0UK19m6muFn
-         /rt8xwYJC/wgXONFDuDW78CeN701yYq4mw2o0877kSpgmQwaEPETaEQ40IBs3UuFkVuk
-         6exrHi+GZqTt4xJ67QuK/1JtYGIR1ZsSkErGnDvyTEvmtYrPXcyz1cQHIbA2MWl7Kt7A
-         AlpcQ2eIi+fW4HAQBwTC4MaxwCIAK24FxilhBuc81FLzBHujibWkbXMPUqw4+4aFu3jn
-         tPwAUCE8v8SPtUTR333BqlQrEcAcBr1u1u+GRoir+wKeRHZXYm8pOzmagUq5icEr0H4V
-         +70Q==
-X-Gm-Message-State: AOAM532Y+DNvSwBEF4bzJEAHiiEyo+qswpij7um7zumIuU237NXswuZj
-        E2km1elXv8ncgp3Xtp8HnFBveASEVNBMLeHs7YxMyVXAecgmEPJgH3vMsIddwAjah5PwrvuwFHn
-        VnOTRnzgzg3+hwggV84RC
-X-Received: by 2002:a05:600c:3508:b0:39c:8240:5538 with SMTP id h8-20020a05600c350800b0039c82405538mr13049409wmq.165.1655118195259;
-        Mon, 13 Jun 2022 04:03:15 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyDoO2UACoWH0XUMegJUwRA9D70xt70UBbXMGCQlKNX3UWoHBV/NMn9vGGLzctDprJh1GcUdg==
-X-Received: by 2002:a05:600c:3508:b0:39c:8240:5538 with SMTP id h8-20020a05600c350800b0039c82405538mr13049370wmq.165.1655118194993;
-        Mon, 13 Jun 2022 04:03:14 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c706:bd00:963c:5455:c10e:fa6f? (p200300cbc706bd00963c5455c10efa6f.dip0.t-ipconnect.de. [2003:cb:c706:bd00:963c:5455:c10e:fa6f])
-        by smtp.gmail.com with ESMTPSA id s7-20020a5d4247000000b0021018642ff8sm8136796wrr.76.2022.06.13.04.03.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Jun 2022 04:03:14 -0700 (PDT)
-Message-ID: <4c4cf0a8-aab6-2a17-e1f9-59d6700821b7@redhat.com>
-Date:   Mon, 13 Jun 2022 13:03:12 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH v4 4/6] mm: Limit warning message in vmemmap_verify() to
- once
-Content-Language: en-US
-To:     Wupeng Ma <mawupeng1@huawei.com>, corbet@lwn.net, will@kernel.org,
-        ardb@kernel.org, catalin.marinas@arm.com
-Cc:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        dvhart@infradead.org, andy@infradead.org, rppt@kernel.org,
+        with ESMTP id S1356106AbiFMMYB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Jun 2022 08:24:01 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 861BB1FA76;
+        Mon, 13 Jun 2022 04:05:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B4264B80E92;
+        Mon, 13 Jun 2022 11:05:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA26C34114;
+        Mon, 13 Jun 2022 11:05:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655118317;
+        bh=k9aUUnqcx7zhYyOXA4iphpmzLpkcUokEnBIJoGzV800=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=uzP0GwrIIUvxLbEj5B1z2I4q/fkYHdxOBYFqKYQZL8zqRBMOlOnZT43ZKJHsrLuXl
+         cipSxarShAqtSB1sU1Ser/ZNFiFrtEoyHVL+HdztzjouFS1UltSOAA8sBjH6sMKosd
+         TW3yGWDTPLWUkj+q5vWjWBpZ+HP4UAkajg/fjdtCpIAKMC9Rfgh9UOxYexBSe5SYz4
+         2YSzkZux8MxlhXu6DZPUnA1ullgrB9VKbi0+GAlywJ5U4uVJp0vd4cjZM1mtGqrWbO
+         5knf8XGOYAsnLGi0PFadaEKXm3/iYrzaJ3Ngk8A1H3Gb0KPbIChGibpNWN6JHkZJl6
+         tfL55Kv0OB6ew==
+Date:   Mon, 13 Jun 2022 14:05:04 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Wupeng Ma <mawupeng1@huawei.com>
+Cc:     corbet@lwn.net, will@kernel.org, ardb@kernel.org,
+        catalin.marinas@arm.com, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        hpa@zytor.com, dvhart@infradead.org, andy@infradead.org,
         akpm@linux-foundation.org, paul.walmsley@sifive.com,
         palmer@dabbelt.com, aou@eecs.berkeley.edu, paulmck@kernel.org,
         keescook@chromium.org, songmuchun@bytedance.com,
         rdunlap@infradead.org, damien.lemoal@opensource.wdc.com,
         swboyd@chromium.org, wei.liu@kernel.org, robin.murphy@arm.com,
-        anshuman.khandual@arm.com, thunder.leizhen@huawei.com,
-        wangkefeng.wang@huawei.com, gpiccoli@igalia.com,
-        chenhuacai@kernel.org, geert@linux-m68k.org,
+        david@redhat.com, anshuman.khandual@arm.com,
+        thunder.leizhen@huawei.com, wangkefeng.wang@huawei.com,
+        gpiccoli@igalia.com, chenhuacai@kernel.org, geert@linux-m68k.org,
         vijayb@linux.microsoft.com, linux-doc@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-mm@kvack.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH v4 6/6] memblock: Disable mirror feature if kernelcore is
+ not specified
+Message-ID: <YqcZ4O3pwceVtKYm@kernel.org>
 References: <20220613082147.183145-1-mawupeng1@huawei.com>
- <20220613082147.183145-5-mawupeng1@huawei.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20220613082147.183145-5-mawupeng1@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+ <20220613082147.183145-7-mawupeng1@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220613082147.183145-7-mawupeng1@huawei.com>
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 13.06.22 10:21, Wupeng Ma wrote:
+On Mon, Jun 13, 2022 at 04:21:47PM +0800, Wupeng Ma wrote:
 > From: Ma Wupeng <mawupeng1@huawei.com>
 > 
-> For a system only have limited mirrored memory or some numa node without
-> mirrored memory, the per node vmemmap page_structs prefer to allocate
-> memory from mirrored region, which will lead to vmemmap_verify() in
-> vmemmap_populate_basepages() report lots of warning message.
+> If system have some mirrored memory and mirrored feature is not specified
+> in boot parameter, the basic mirrored feature will be enabled and this will
+> lead to the following situations:
 > 
-> This patch change the frequency of "potential offnode page_structs" warning
-> messages to only once to avoid a very long print during bootup.
+> - memblock memory allocation prefers mirrored region. This may have some
+>   unexpected influence on numa affinity.
+> 
+> - contiguous memory will be split into several parts if parts of them
+>   is mirrored memory via memblock_mark_mirror().
+> 
+> To fix this, variable mirrored_kernelcore will be checked in
+> memblock_mark_mirror(). Mark mirrored memory with flag MEMBLOCK_MIRROR iff
+> kernelcore=mirror is added in the kernel parameters.
 > 
 > Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
 > ---
->  mm/sparse-vmemmap.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  mm/internal.h   | 2 ++
+>  mm/memblock.c   | 3 +++
+>  mm/page_alloc.c | 2 +-
+>  3 files changed, 6 insertions(+), 1 deletion(-)
 > 
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index f4fa61dbbee3..f34c6889b0a6 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -528,7 +528,7 @@ void __meminit vmemmap_verify(pte_t *pte, int node,
->  	int actual_node = early_pfn_to_nid(pfn);
+> diff --git a/mm/internal.h b/mm/internal.h
+> index c0f8fbe0445b..ddd2d6a46f1b 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -861,4 +861,6 @@ struct folio *try_grab_folio(struct page *page, int refs, unsigned int flags);
 >  
->  	if (node_distance(actual_node, node) > LOCAL_DISTANCE)
-> -		pr_warn("[%lx-%lx] potential offnode page_structs\n",
-> +		pr_warn_once("[%lx-%lx] potential offnode page_structs\n",
->  			start, end - 1);
->  }
+>  DECLARE_PER_CPU(struct per_cpu_nodestat, boot_nodestats);
 >  
+> +extern bool mirrored_kernelcore;
+> +
+>  #endif	/* __MM_INTERNAL_H */
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index b1d2a0009733..a9f18b988b7f 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -924,6 +924,9 @@ int __init_memblock memblock_clear_hotplug(phys_addr_t base, phys_addr_t size)
+>   */
+>  int __init_memblock memblock_mark_mirror(phys_addr_t base, phys_addr_t size)
+>  {
+> +	if (!mirrored_kernelcore)
+> +		return 0;
+> +
 
-Acked-by: David Hildenbrand <david@redhat.com>
+Hmm, this changes the way x86 uses mirrored memory.
+This change makes sense for x86 as well, but we should get an Ack from x86 folks.
+
+>  	system_has_some_mirror = true;
+>  
+>  	return memblock_setclr_flag(base, size, 1, MEMBLOCK_MIRROR);
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index e008a3df0485..9b030aeb4983 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -356,7 +356,7 @@ static unsigned long required_kernelcore_percent __initdata;
+>  static unsigned long required_movablecore __initdata;
+>  static unsigned long required_movablecore_percent __initdata;
+>  static unsigned long zone_movable_pfn[MAX_NUMNODES] __initdata;
+> -static bool mirrored_kernelcore __meminitdata;
+> +bool mirrored_kernelcore __initdata;
+>  
+>  /* movable_zone is the "real" zone pages in ZONE_MOVABLE are taken from */
+>  int movable_zone;
+> -- 
+> 2.25.1
+> 
 
 -- 
-Thanks,
-
-David / dhildenb
-
+Sincerely yours,
+Mike.
