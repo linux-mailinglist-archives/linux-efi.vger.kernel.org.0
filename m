@@ -2,29 +2,29 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E310154811A
+	by mail.lfdr.de (Postfix) with ESMTP id 990D7548119
 	for <lists+linux-efi@lfdr.de>; Mon, 13 Jun 2022 10:02:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229505AbiFMIBC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 13 Jun 2022 04:01:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46518 "EHLO
+        id S234823AbiFMIAi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 13 Jun 2022 04:00:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239490AbiFMIA7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Jun 2022 04:00:59 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F165355B2;
-        Mon, 13 Jun 2022 01:00:58 -0700 (PDT)
-Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.55])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4LM3sF3Gy1zDqtf;
-        Mon, 13 Jun 2022 16:00:33 +0800 (CST)
+        with ESMTP id S231630AbiFMIAf (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Jun 2022 04:00:35 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEBDF2AC0;
+        Mon, 13 Jun 2022 01:00:33 -0700 (PDT)
+Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.54])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4LM3q01pKfzgYpM;
+        Mon, 13 Jun 2022 15:58:36 +0800 (CST)
 Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
- dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
+ dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Mon, 13 Jun 2022 16:00:30 +0800
+ 15.1.2375.24; Mon, 13 Jun 2022 16:00:31 +0800
 Received: from localhost.localdomain (10.175.112.125) by
  dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Mon, 13 Jun 2022 16:00:28 +0800
+ 15.1.2375.24; Mon, 13 Jun 2022 16:00:30 +0800
 From:   Wupeng Ma <mawupeng1@huawei.com>
 To:     <corbet@lwn.net>, <will@kernel.org>, <ardb@kernel.org>,
         <catalin.marinas@arm.com>
@@ -44,11 +44,10 @@ CC:     <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
         <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
-        <linux-mm@kvack.org>, <linux-riscv@lists.infradead.org>,
-        Mike Rapoport <rppt@linux.ibm.com>
-Subject: [PATCH v4 3/6] mm: Ratelimited mirrored memory related warning messages
-Date:   Mon, 13 Jun 2022 16:21:44 +0800
-Message-ID: <20220613082147.183145-4-mawupeng1@huawei.com>
+        <linux-mm@kvack.org>, <linux-riscv@lists.infradead.org>
+Subject: [PATCH v4 4/6] mm: Limit warning message in vmemmap_verify() to once
+Date:   Mon, 13 Jun 2022 16:21:45 +0800
+Message-ID: <20220613082147.183145-5-mawupeng1@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220613082147.183145-1-mawupeng1@huawei.com>
 References: <20220613082147.183145-1-mawupeng1@huawei.com>
@@ -70,45 +69,32 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Ma Wupeng <mawupeng1@huawei.com>
 
-If system has mirrored memory, memblock will try to allocate mirrored
-memory firstly and fallback to non-mirrored memory when fails, but if with
-limited mirrored memory or some numa node without mirrored memory, lots of
-warning message about memblock allocation will occur.
+For a system only have limited mirrored memory or some numa node without
+mirrored memory, the per node vmemmap page_structs prefer to allocate
+memory from mirrored region, which will lead to vmemmap_verify() in
+vmemmap_populate_basepages() report lots of warning message.
 
-This patch ratelimit the warning message to avoid a very long print during
-bootup.
+This patch change the frequency of "potential offnode page_structs" warning
+messages to only once to avoid a very long print during bootup.
 
 Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Acked-by: Mike Rapoport <rppt@linux.ibm.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
- mm/memblock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/sparse-vmemmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/memblock.c b/mm/memblock.c
-index e4f03a6e8e56..b1d2a0009733 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -327,7 +327,7 @@ static phys_addr_t __init_memblock memblock_find_in_range(phys_addr_t start,
- 					    NUMA_NO_NODE, flags);
+diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+index f4fa61dbbee3..f34c6889b0a6 100644
+--- a/mm/sparse-vmemmap.c
++++ b/mm/sparse-vmemmap.c
+@@ -528,7 +528,7 @@ void __meminit vmemmap_verify(pte_t *pte, int node,
+ 	int actual_node = early_pfn_to_nid(pfn);
  
- 	if (!ret && (flags & MEMBLOCK_MIRROR)) {
--		pr_warn("Could not allocate %pap bytes of mirrored memory\n",
-+		pr_warn_ratelimited("Could not allocate %pap bytes of mirrored memory\n",
- 			&size);
- 		flags &= ~MEMBLOCK_MIRROR;
- 		goto again;
-@@ -1384,7 +1384,7 @@ phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size,
+ 	if (node_distance(actual_node, node) > LOCAL_DISTANCE)
+-		pr_warn("[%lx-%lx] potential offnode page_structs\n",
++		pr_warn_once("[%lx-%lx] potential offnode page_structs\n",
+ 			start, end - 1);
+ }
  
- 	if (flags & MEMBLOCK_MIRROR) {
- 		flags &= ~MEMBLOCK_MIRROR;
--		pr_warn("Could not allocate %pap bytes of mirrored memory\n",
-+		pr_warn_ratelimited("Could not allocate %pap bytes of mirrored memory\n",
- 			&size);
- 		goto again;
- 	}
 -- 
 2.25.1
 
