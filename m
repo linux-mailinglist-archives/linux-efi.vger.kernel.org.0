@@ -2,65 +2,70 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FFFE54839B
-	for <lists+linux-efi@lfdr.de>; Mon, 13 Jun 2022 11:45:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46872548350
+	for <lists+linux-efi@lfdr.de>; Mon, 13 Jun 2022 11:44:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234627AbiFMJlq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 13 Jun 2022 05:41:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33452 "EHLO
+        id S240401AbiFMJnK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 13 Jun 2022 05:43:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240106AbiFMJlp (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Jun 2022 05:41:45 -0400
+        with ESMTP id S239350AbiFMJnJ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Jun 2022 05:43:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65842183BD;
-        Mon, 13 Jun 2022 02:41:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06D61FD3E;
+        Mon, 13 Jun 2022 02:43:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 48A7161389;
-        Mon, 13 Jun 2022 09:41:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C43C3411E;
-        Mon, 13 Jun 2022 09:41:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9765B61381;
+        Mon, 13 Jun 2022 09:43:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 049FEC34114;
+        Mon, 13 Jun 2022 09:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655113301;
-        bh=3puFac3kf4giRZYoO/LUKKimJuAXXCEnp+VaAFnVp0o=;
+        s=k20201202; t=1655113388;
+        bh=ulBYdazc2wFX860EwjmZxCF5MO+a9+ET23gEIOuI9uU=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=EI79bY9mlA9e+vYEx3uUUMNO6sq8+/PDdG2zOjbwdzhpBT5leidQSOyGozcRT3Ghb
-         o5ssxRmDK/wronkeLdXsP/EtgKSNYhpVUDSKuo+aULIi8qsZpvwOQvf4MJXUvkqCRP
-         2KwNLhRCBMaFJW2XwbGPwj7v0j7/aRmSzBjskTIl1fT+5riJV9/6hkIB2hDoidLE8h
-         3tYi0lftDAzhGMOosxrgU8tJZer3KygMzLqjr8gJ5irMmV4lVlj9kDhRX2evUc0fXk
-         LbGk1oFBMga+929A47QJVIYO6FMcnq0H8XwAGKBcYv4mpD8mSp69g9yTmqlumu7DG2
-         oy3cQxwTwh6fw==
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-fe4ac3b87fso7720993fac.3;
-        Mon, 13 Jun 2022 02:41:41 -0700 (PDT)
-X-Gm-Message-State: AOAM530KsL050976LyuIWh1WxMoZYMWd1Fom5jJ2A6Dy4pcYmR8kNMtu
-        jphEtEYwwU9YfuHkBUPGuprUOxL6InAAxddRZX8=
-X-Google-Smtp-Source: ABdhPJzJUE5eQIFQw1wDEuVAU3BsFccZwzLeam8ZSG5GUbrm7+bJ19w2hvDgq/MdVlhPhpH4bgTqWjWDxk7foXjlYlM=
-X-Received: by 2002:a05:6871:5c8:b0:f3:3c1c:126f with SMTP id
- v8-20020a05687105c800b000f33c1c126fmr7222252oan.126.1655113289866; Mon, 13
- Jun 2022 02:41:29 -0700 (PDT)
+        b=tsoF5PUgEdm+pCcqk1wEO/j63pF1rIMskWsdXvKiw9oelaPCL63JkGSUZBVCW+Up8
+         OdU4GgnikAs86gCW772iq2GdT/k7Lw+tK0SF9qk5BpHuIEaEFUzwMfJZkEeMuabWWC
+         23ktv6pcWgBceNYn0HIZowp9HjxC3oKlMAX9/XsQ1JxxQXpaOZ4Yxdc/d8yBv+Flew
+         vBwy+eYVEmw4iXocJ6jhRQd+xEfLUKwyl2ToUDONmUKCOX4odS9gvX9y1u0vN7Lr9F
+         F28Txo+thuVrxRbkDkQXaIUYDC+KI6tPhQhBsX1pIERKoIU28SNqeSzj+8kzUA1+32
+         kWU82zQ+k1m+w==
+Received: by mail-yb1-f173.google.com with SMTP id r82so8886411ybc.13;
+        Mon, 13 Jun 2022 02:43:07 -0700 (PDT)
+X-Gm-Message-State: AOAM533GFsvjR/HbyF8YhyZkTVf7bUMyMmW4NfAD5z74g2rmb8oS4IMZ
+        FMedLNfA44MMaUE2fod0jAUZtC1Ax2Pnn9FXUlo=
+X-Google-Smtp-Source: ABdhPJzmP9blBBv2mg91KpFnNjYRBYxTtwemJ3QI215u5foHBkyL5k8czGe5M8VE60LXBByru/7LVHtt6lQCMWUK07g=
+X-Received: by 2002:a05:6820:1501:b0:41b:d535:325c with SMTP id
+ ay1-20020a056820150100b0041bd535325cmr5522819oob.60.1655113376804; Mon, 13
+ Jun 2022 02:42:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220613082147.183145-1-mawupeng1@huawei.com> <20220613082147.183145-3-mawupeng1@huawei.com>
-In-Reply-To: <20220613082147.183145-3-mawupeng1@huawei.com>
+References: <20220613082147.183145-1-mawupeng1@huawei.com> <20220613082147.183145-6-mawupeng1@huawei.com>
+In-Reply-To: <20220613082147.183145-6-mawupeng1@huawei.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 13 Jun 2022 11:41:17 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEWRXKZdLz3C2MofKXgx6yadSOQru979brm3r_sgBdMgw@mail.gmail.com>
-Message-ID: <CAMj1kXEWRXKZdLz3C2MofKXgx6yadSOQru979brm3r_sgBdMgw@mail.gmail.com>
-Subject: Re: [PATCH v4 2/6] arm64/mirror: arm64 enabling - find mirrored
- memory ranges
-To:     Wupeng Ma <mawupeng1@huawei.com>
-Cc:     corbet@lwn.net, will@kernel.org, catalin.marinas@arm.com,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        dvhart@infradead.org, andy@infradead.org, rppt@kernel.org,
-        akpm@linux-foundation.org, paul.walmsley@sifive.com,
-        palmer@dabbelt.com, aou@eecs.berkeley.edu, paulmck@kernel.org,
-        keescook@chromium.org, songmuchun@bytedance.com,
-        rdunlap@infradead.org, damien.lemoal@opensource.wdc.com,
-        swboyd@chromium.org, wei.liu@kernel.org, robin.murphy@arm.com,
-        david@redhat.com, anshuman.khandual@arm.com,
-        thunder.leizhen@huawei.com, wangkefeng.wang@huawei.com,
-        gpiccoli@igalia.com, chenhuacai@kernel.org, geert@linux-m68k.org,
+Date:   Mon, 13 Jun 2022 11:42:44 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFn_FKt2jLJOntvT0FBtL9b=VWZdrBFpn48LBMDLy1WBQ@mail.gmail.com>
+Message-ID: <CAMj1kXFn_FKt2jLJOntvT0FBtL9b=VWZdrBFpn48LBMDLy1WBQ@mail.gmail.com>
+Subject: Re: [PATCH v4 5/6] mm: Only remove nomap flag for initrd
+To:     Wupeng Ma <mawupeng1@huawei.com>, Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        X86 ML <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, paulmck@kernel.org, keescook@chromium.org,
+        songmuchun@bytedance.com, rdunlap@infradead.org,
+        damien.lemoal@opensource.wdc.com, swboyd@chromium.org,
+        wei.liu@kernel.org, robin.murphy@arm.com, david@redhat.com,
+        anshuman.khandual@arm.com, thunder.leizhen@huawei.com,
+        wangkefeng.wang@huawei.com, gpiccoli@igalia.com,
+        chenhuacai@kernel.org, geert@linux-m68k.org,
         vijayb@linux.microsoft.com, linux-doc@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
@@ -80,47 +85,44 @@ On Mon, 13 Jun 2022 at 10:00, Wupeng Ma <mawupeng1@huawei.com> wrote:
 >
 > From: Ma Wupeng <mawupeng1@huawei.com>
 >
-> Commit b05b9f5f9dcf ("x86, mirror: x86 enabling - find mirrored memory ranges")
-> introduced mirrored memory support for x86 and this could be used on arm64.
+> Commit 177e15f0c144 ("arm64: add the initrd region to the linear mapping explicitly")
+> remove all the flags of the memory used by initrd. This is fine since
+> MEMBLOCK_MIRROR is not used in arm64.
 >
-> Since we only support this feature on arm64, efi_find_mirror() won't be placed
-> into efi_init(), which is used by riscv/arm/arm64, it is added in setup_arch()
-> to scan the memory map and mark mirrored memory in memblock.
+> However with mirrored feature introduced to arm64, this will clear the mirrored
+> flag used by initrd, which will lead to error log printed by
+> find_zone_movable_pfns_for_nodes() if the lower 4G range has some non-mirrored
+> memory.
+>
+> To solve this problem, only MEMBLOCK_NOMAP flag will be removed via
+> memblock_clear_nomap().
 >
 > Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
-> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+
+This needs and ack from the arm64 maintainers, please?
+And also please fix the subject to include 'arm64'
+
+
 > ---
->  Documentation/admin-guide/kernel-parameters.txt | 2 +-
->  arch/arm64/kernel/setup.c                       | 1 +
->  2 files changed, 2 insertions(+), 1 deletion(-)
+>  arch/arm64/mm/init.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index 8090130b544b..e3537646b6f7 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -2301,7 +2301,7 @@
+> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+> index 339ee84e5a61..8456dbae9441 100644
+> --- a/arch/arm64/mm/init.c
+> +++ b/arch/arm64/mm/init.c
+> @@ -350,8 +350,8 @@ void __init arm64_memblock_init(void)
+>                         "initrd not fully accessible via the linear mapping -- please check your bootloader ...\n")) {
+>                         phys_initrd_size = 0;
+>                 } else {
+> -                       memblock_remove(base, size); /* clear MEMBLOCK_ flags */
+>                         memblock_add(base, size);
+> +                       memblock_clear_nomap(base, size);
+>                         memblock_reserve(base, size);
+>                 }
+>         }
+> --
+> 2.25.1
 >
->         keepinitrd      [HW,ARM]
->
-> -       kernelcore=     [KNL,X86,IA-64,PPC]
-> +       kernelcore=     [KNL,X86,IA-64,PPC,ARM64]
->                         Format: nn[KMGTPE] | nn% | "mirror"
->                         This parameter specifies the amount of memory usable by
->                         the kernel for non-movable allocations.  The requested
-> diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
-> index cf3a759f10d4..6e9acd7ecf0f 100644
-> --- a/arch/arm64/kernel/setup.c
-> +++ b/arch/arm64/kernel/setup.c
-> @@ -328,6 +328,7 @@ void __init __no_sanitize_address setup_arch(char **cmdline_p)
->
->         xen_early_init();
->         efi_init();
-> +       efi_find_mirror();
->
->         if (!efi_enabled(EFI_BOOT) && ((u64)_text % MIN_KIMG_ALIGN) != 0)
->              pr_warn(FW_BUG "Kernel image misaligned at boot, please fix your bootloader!");
-
-As suggested by Kefeng Wang, I think this call needs to be moved into
-efi_init() [the generic version]
-
-Please drop this hunk, and add this call to efi_init() in patch #1.
