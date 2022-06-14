@@ -2,29 +2,29 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB3ED54ACC6
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Jun 2022 11:02:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E886E54ACAC
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Jun 2022 11:02:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239936AbiFNJAx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 14 Jun 2022 05:00:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38816 "EHLO
+        id S232212AbiFNJBv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Jun 2022 05:01:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238355AbiFNJAw (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Jun 2022 05:00:52 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AD3427B37;
-        Tue, 14 Jun 2022 02:00:51 -0700 (PDT)
-Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.56])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4LMj4W5JmMzRj8K;
-        Tue, 14 Jun 2022 16:57:31 +0800 (CST)
+        with ESMTP id S239852AbiFNJBs (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Jun 2022 05:01:48 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FAD32F00B;
+        Tue, 14 Jun 2022 02:01:47 -0700 (PDT)
+Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.53])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4LMj783mwBzgZDS;
+        Tue, 14 Jun 2022 16:59:48 +0800 (CST)
 Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
- dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 14 Jun 2022 17:00:41 +0800
+ 15.1.2375.24; Tue, 14 Jun 2022 17:00:43 +0800
 Received: from localhost.localdomain (10.175.112.125) by
  dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 14 Jun 2022 17:00:40 +0800
+ 15.1.2375.24; Tue, 14 Jun 2022 17:00:41 +0800
 From:   Wupeng Ma <mawupeng1@huawei.com>
 To:     <corbet@lwn.net>, <will@kernel.org>, <ardb@kernel.org>,
         <catalin.marinas@arm.com>
@@ -45,9 +45,9 @@ CC:     <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
         <linux-mm@kvack.org>, <linux-riscv@lists.infradead.org>
-Subject: [PATCH v5 4/5] arm64: mm: Only remove nomap flag for initrd
-Date:   Tue, 14 Jun 2022 17:21:55 +0800
-Message-ID: <20220614092156.1972846-5-mawupeng1@huawei.com>
+Subject: [PATCH v5 5/5] memblock: Disable mirror feature if kernelcore is not specified
+Date:   Tue, 14 Jun 2022 17:21:56 +0800
+Message-ID: <20220614092156.1972846-6-mawupeng1@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220614092156.1972846-1-mawupeng1@huawei.com>
 References: <20220614092156.1972846-1-mawupeng1@huawei.com>
@@ -69,38 +69,66 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Ma Wupeng <mawupeng1@huawei.com>
 
-Commit 177e15f0c144 ("arm64: add the initrd region to the linear mapping explicitly")
-remove all the flags of the memory used by initrd. This is fine since
-MEMBLOCK_MIRROR is not used in arm64.
+If system have some mirrored memory and mirrored feature is not specified
+in boot parameter, the basic mirrored feature will be enabled and this will
+lead to the following situations:
 
-However with mirrored feature introduced to arm64, this will clear the mirrored
-flag used by initrd, which will lead to error log printed by
-find_zone_movable_pfns_for_nodes() if the lower 4G range has some non-mirrored
-memory.
+- memblock memory allocation prefers mirrored region. This may have some
+  unexpected influence on numa affinity.
 
-To solve this problem, only MEMBLOCK_NOMAP flag will be removed via
-memblock_clear_nomap().
+- contiguous memory will be split into several parts if parts of them
+  is mirrored memory via memblock_mark_mirror().
+
+To fix this, variable mirrored_kernelcore will be checked in
+memblock_mark_mirror(). Mark mirrored memory with flag MEMBLOCK_MIRROR iff
+kernelcore=mirror is added in the kernel parameters.
 
 Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/mm/init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/internal.h   | 2 ++
+ mm/memblock.c   | 3 +++
+ mm/page_alloc.c | 2 +-
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-index 339ee84e5a61..8456dbae9441 100644
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -350,8 +350,8 @@ void __init arm64_memblock_init(void)
- 			"initrd not fully accessible via the linear mapping -- please check your bootloader ...\n")) {
- 			phys_initrd_size = 0;
- 		} else {
--			memblock_remove(base, size); /* clear MEMBLOCK_ flags */
- 			memblock_add(base, size);
-+			memblock_clear_nomap(base, size);
- 			memblock_reserve(base, size);
- 		}
- 	}
+diff --git a/mm/internal.h b/mm/internal.h
+index c0f8fbe0445b..ddd2d6a46f1b 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -861,4 +861,6 @@ struct folio *try_grab_folio(struct page *page, int refs, unsigned int flags);
+ 
+ DECLARE_PER_CPU(struct per_cpu_nodestat, boot_nodestats);
+ 
++extern bool mirrored_kernelcore;
++
+ #endif	/* __MM_INTERNAL_H */
+diff --git a/mm/memblock.c b/mm/memblock.c
+index b1d2a0009733..a9f18b988b7f 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -924,6 +924,9 @@ int __init_memblock memblock_clear_hotplug(phys_addr_t base, phys_addr_t size)
+  */
+ int __init_memblock memblock_mark_mirror(phys_addr_t base, phys_addr_t size)
+ {
++	if (!mirrored_kernelcore)
++		return 0;
++
+ 	system_has_some_mirror = true;
+ 
+ 	return memblock_setclr_flag(base, size, 1, MEMBLOCK_MIRROR);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index e008a3df0485..10dc35ec7479 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -356,7 +356,7 @@ static unsigned long required_kernelcore_percent __initdata;
+ static unsigned long required_movablecore __initdata;
+ static unsigned long required_movablecore_percent __initdata;
+ static unsigned long zone_movable_pfn[MAX_NUMNODES] __initdata;
+-static bool mirrored_kernelcore __meminitdata;
++bool mirrored_kernelcore __initdata_memblock;
+ 
+ /* movable_zone is the "real" zone pages in ZONE_MOVABLE are taken from */
+ int movable_zone;
 -- 
 2.25.1
 
