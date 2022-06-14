@@ -2,152 +2,151 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D63954A334
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Jun 2022 02:46:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6134D54ACB2
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Jun 2022 11:02:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233330AbiFNAqq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 13 Jun 2022 20:46:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35080 "EHLO
+        id S238355AbiFNJBJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Jun 2022 05:01:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229853AbiFNAqo (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Jun 2022 20:46:44 -0400
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90E612FFEA
-        for <linux-efi@vger.kernel.org>; Mon, 13 Jun 2022 17:46:43 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id w21so7260082pfc.0
-        for <linux-efi@vger.kernel.org>; Mon, 13 Jun 2022 17:46:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=s2FWD/PtgY9oueUwTZqKdyU1Zetmw+d/ZG43eXlDlcM=;
-        b=YgSLK9gviQctEV72wBcPKr3rDhijCNprOQ+gp2fOSYMwl+z8m/ywJFJNdRTPfdRN6x
-         iDRg42v/QZUmhq4AMxM+546r3kFUi55RAc+j47EeF+C6skbeoGymucTmWpWLGBIjymwN
-         uCP4s+WQkriW77kbjxxgNIF7QaYBwwsZzcUDKSti8Czi1gIsPCEV4pAVmZvrc7Ueaqhw
-         lOHhx1muh9QhVGl7UTGDpBBFbxdvLgwbahBIYa67KFXU4u9bWvK0IQr6jEiB+VXErtmh
-         6ToX5gd8nYLLeOC0TQ5G60KE/adZglCpxc3QxuFm4VL16SHCtIdEzNaKBM/HaQhyF4O5
-         +Rww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=s2FWD/PtgY9oueUwTZqKdyU1Zetmw+d/ZG43eXlDlcM=;
-        b=6JFbzkEyqT10TjgLcM+TDN2hj26RtDFKJ2y4Ckczdfldf+4eeieXubMiTxJCok0/ox
-         zQRBeJsR2ns/pRtCVj6+HzUccwYrqxz5v05+FdN7rxRxDXfOtjMRwJPi2Gmq69dT6zie
-         96h8DAlewvWTpxNhQPPGWUVl++mPZ2JHpUv4vstd3CixrWQBB0oW4P/PDC1NseTKd8/v
-         5bK+6wEtPvG0TMWNRAC3jr9FGUyIZ7atUQc/w47w4kAdvNcajWwjCL3gLco0D5RSNdg1
-         qKBL54rer+SseVCRk41nWjck4lNOmjtHnO2i0P7g4pA+D57Xh/GNGVX9IP8ojHuX9IiG
-         Pgxw==
-X-Gm-Message-State: AOAM533pdIH9XcIZ/Xcf6xyV5DxZzGAgr+qkij8xhWNZzF4/mJ9jMOOc
-        TZ/4iSX0qnsGOtKw1z1KwyveCm0Z5RJ5Rg==
-X-Google-Smtp-Source: ABdhPJyqpKu6p1u5KzVVLMZAfN9ra4WcAcLZdMNT/RwAJ4w3TWcPwfXbJl2ut/OvLAU1lo600eJCYA==
-X-Received: by 2002:a05:6a00:179b:b0:51b:f51f:992e with SMTP id s27-20020a056a00179b00b0051bf51f992emr2018667pfg.60.1655167602802;
-        Mon, 13 Jun 2022 17:46:42 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id u4-20020a17090a2b8400b001e31fea8c85sm8035481pjd.14.2022.06.13.17.46.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jun 2022 17:46:42 -0700 (PDT)
-Date:   Tue, 14 Jun 2022 00:46:38 +0000
-From:   Sean Christopherson <seanjc@google.com>
-To:     Michael Roth <michael.roth@amd.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v12 19/46] x86/kernel: Make the .bss..decrypted section
- shared in RMP table
-Message-ID: <YqfabnTRxFSM+LoX@google.com>
-References: <20220307213356.2797205-1-brijesh.singh@amd.com>
- <20220307213356.2797205-20-brijesh.singh@amd.com>
+        with ESMTP id S241913AbiFNJBI (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Jun 2022 05:01:08 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3CD827B37;
+        Tue, 14 Jun 2022 02:01:06 -0700 (PDT)
+Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.55])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4LMj4q5qWfzRhtq;
+        Tue, 14 Jun 2022 16:57:47 +0800 (CST)
+Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Tue, 14 Jun 2022 17:00:35 +0800
+Received: from localhost.localdomain (10.175.112.125) by
+ dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Tue, 14 Jun 2022 17:00:33 +0800
+From:   Wupeng Ma <mawupeng1@huawei.com>
+To:     <corbet@lwn.net>, <will@kernel.org>, <ardb@kernel.org>,
+        <catalin.marinas@arm.com>
+CC:     <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+        <dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+        <dvhart@infradead.org>, <andy@infradead.org>, <rppt@kernel.org>,
+        <akpm@linux-foundation.org>, <paul.walmsley@sifive.com>,
+        <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>,
+        <paulmck@kernel.org>, <keescook@chromium.org>,
+        <songmuchun@bytedance.com>, <rdunlap@infradead.org>,
+        <damien.lemoal@opensource.wdc.com>, <swboyd@chromium.org>,
+        <wei.liu@kernel.org>, <robin.murphy@arm.com>, <david@redhat.com>,
+        <mawupeng1@huawei.com>, <anshuman.khandual@arm.com>,
+        <thunder.leizhen@huawei.com>, <wangkefeng.wang@huawei.com>,
+        <gpiccoli@igalia.com>, <chenhuacai@kernel.org>,
+        <geert@linux-m68k.org>, <vijayb@linux.microsoft.com>,
+        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
+        <linux-mm@kvack.org>, <linux-riscv@lists.infradead.org>
+Subject: [PATCH v5 0/5] introduce mirrored memory support for arm64
+Date:   Tue, 14 Jun 2022 17:21:51 +0800
+Message-ID: <20220614092156.1972846-1-mawupeng1@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220307213356.2797205-20-brijesh.singh@amd.com>
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.112.125]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemm500014.china.huawei.com (7.185.36.153)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-s/Brijesh/Michael
+From: Ma Wupeng <mawupeng1@huawei.com>
 
-On Mon, Mar 07, 2022, Brijesh Singh wrote:
-> The encryption attribute for the .bss..decrypted section is cleared in the
-> initial page table build. This is because the section contains the data
-> that need to be shared between the guest and the hypervisor.
-> 
-> When SEV-SNP is active, just clearing the encryption attribute in the
-> page table is not enough. The page state need to be updated in the RMP
-> table.
-> 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/kernel/head64.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-> index 83514b9827e6..656d2f3e2cf0 100644
-> --- a/arch/x86/kernel/head64.c
-> +++ b/arch/x86/kernel/head64.c
-> @@ -143,7 +143,20 @@ static unsigned long __head sme_postprocess_startup(struct boot_params *bp, pmdv
->  	if (sme_get_me_mask()) {
->  		vaddr = (unsigned long)__start_bss_decrypted;
->  		vaddr_end = (unsigned long)__end_bss_decrypted;
-> +
->  		for (; vaddr < vaddr_end; vaddr += PMD_SIZE) {
-> +			/*
-> +			 * On SNP, transition the page to shared in the RMP table so that
-> +			 * it is consistent with the page table attribute change.
-> +			 *
-> +			 * __start_bss_decrypted has a virtual address in the high range
-> +			 * mapping (kernel .text). PVALIDATE, by way of
-> +			 * early_snp_set_memory_shared(), requires a valid virtual
-> +			 * address but the kernel is currently running off of the identity
-> +			 * mapping so use __pa() to get a *currently* valid virtual address.
-> +			 */
-> +			early_snp_set_memory_shared(__pa(vaddr), __pa(vaddr), PTRS_PER_PMD);
+Commit b05b9f5f9dcf ("x86, mirror: x86 enabling - find mirrored memory ranges")
+introduced mirrored memory support for x86. This support rely on UEFI to
+report mirrored memory address ranges.  See UEFI 2.5 spec pages 157-158:
 
-This breaks SME on Rome and Milan when compiling with clang-13.  I haven't been
-able to figure out exactly what goes wrong.  printk isn't functional at this point,
-and interactive debug during boot on our test systems is beyond me.  I can't even
-verify that the bug is specific to clang because the draconian build system for our
-test systems apparently is stuck pointing at gcc-4.9.
+  http://www.uefi.org/sites/default/files/resources/UEFI%202_5.pdf
 
-I suspect the issue is related to relocation and/or encrypting memory, as skipping
-the call to early_snp_set_memory_shared() if SNP isn't active masks the issue.
-I've dug through the assembly and haven't spotted a smoking gun, e.g. no obvious
-use of absolute addresses.
+Memory mirroring is a technique used to separate memory into two separate
+channels, usually on a memory device, like a server. In memory mirroring,
+one channel is copied to another to create redundancy. This method makes
+input/output (I/O) registers and memory appear with more than one address
+range because the same physical byte is accessible at more than one
+address. Using memory mirroring, higher memory reliability and a higher
+level of memory consolidation are possible.
 
-Forcing a VM through the same path doesn't fail.  I can't test an SEV guest at the
-moment because INIT_EX is also broken.
+These EFI memory regions have various attributes, and the "mirrored"
+attribute is one of them. The physical memory region whose descriptors
+in EFI memory map has EFI_MEMORY_MORE_RELIABLE attribute (bit: 16) are
+mirrored. The address range mirroring feature of the kernel arranges such
+mirrored regions into normal zones and other regions into movable zones.
 
-The crash incurs a very, very slow reboot, and I was out of cycles to work on this
-about three hours ago.  If someone on the AMD side can repro, it would be much
-appreciated.
+Arm64 can support this too. So mirrored memory support is added to support
+arm64.
+
+The main purpose of this patch set is to introduce mirrored support for
+arm64 and we have already fixed the problems we had which is shown in
+patch #5 to patch #8 and try to bring total isolation in patch #9 which
+will disable mirror feature if kernelcore is not specified.
+
+In order to test this support in arm64:
+- patch this patch set
+- add kernelcore=mirror in kernel parameter
+- start you kernel
+
+Patch #1 introduce mirrored memory support form arm64.
+Patch #2-#4 fix some bugs for arm64 if memory reliable is enabled.
+Patch #5 disable mirror feature if kernelcore is not specified.
+
+Thanks to Ard Biesheuvel's hard work [1], now kernel will perfer mirrored
+memory if kaslr is enabled.
+
+[1] https://lore.kernel.org/linux-arm-kernel/CAMj1kXEPVEzMgOM4+Yj6PxHA-jFuDOAUdDJSiSxy_XaP4P7LSw@mail.gmail.com/T/
+
+Changelog since v4:
+- merge the first two patches into one
+- change __initdata to __initdata_memblock in patch #5
+
+Changelog since v3:
+- limit warning message in vmemmap_verify via pr_warn_once()
+- only clear memblock_nomap flags rather than bring the mirrored flag back
+- disable mirrored feature in memblock_mark_mirror()
+
+Changelog since v2:
+- remove efi_fake_mem support
+- remove Commit ("remove some redundant code in ia64 efi_init") since
+  efi_print_memmap() is not public
+- add mirror flag back on initrd memory
+
+Changelog since v1:
+- update changelog in cover letter
+- use PHYS_PFN in patch #7
+
+Ma Wupeng (5):
+  efi: arm64: Introduce ability to find mirrored memory ranges
+  mm: Ratelimited mirrored memory related warning messages
+  mm: Limit warning message in vmemmap_verify() to once
+  arm64: mm: Only remove nomap flag for initrd
+  memblock: Disable mirror feature if kernelcore is not specified
+
+ arch/arm64/mm/init.c            |  2 +-
+ arch/x86/include/asm/efi.h      |  4 ----
+ arch/x86/platform/efi/efi.c     | 23 -----------------------
+ drivers/firmware/efi/efi-init.c |  1 +
+ drivers/firmware/efi/efi.c      | 23 +++++++++++++++++++++++
+ include/linux/efi.h             |  3 +++
+ mm/internal.h                   |  2 ++
+ mm/memblock.c                   |  7 +++++--
+ mm/page_alloc.c                 |  2 +-
+ mm/sparse-vmemmap.c             |  2 +-
+ 10 files changed, 37 insertions(+), 32 deletions(-)
+
+-- 
+2.25.1
+
