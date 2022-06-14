@@ -2,29 +2,29 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6134D54ACB2
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Jun 2022 11:02:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E3D854ACC4
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Jun 2022 11:02:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238355AbiFNJBJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 14 Jun 2022 05:01:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39176 "EHLO
+        id S231224AbiFNJAr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Jun 2022 05:00:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241913AbiFNJBI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Jun 2022 05:01:08 -0400
+        with ESMTP id S229758AbiFNJAq (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Jun 2022 05:00:46 -0400
 Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3CD827B37;
-        Tue, 14 Jun 2022 02:01:06 -0700 (PDT)
-Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.55])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4LMj4q5qWfzRhtq;
-        Tue, 14 Jun 2022 16:57:47 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDE5E27158;
+        Tue, 14 Jun 2022 02:00:43 -0700 (PDT)
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4LMj4M4SW0zRjS7;
+        Tue, 14 Jun 2022 16:57:23 +0800 (CST)
 Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
- dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
+ dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 14 Jun 2022 17:00:35 +0800
+ 15.1.2375.24; Tue, 14 Jun 2022 17:00:36 +0800
 Received: from localhost.localdomain (10.175.112.125) by
  dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 14 Jun 2022 17:00:33 +0800
+ 15.1.2375.24; Tue, 14 Jun 2022 17:00:35 +0800
 From:   Wupeng Ma <mawupeng1@huawei.com>
 To:     <corbet@lwn.net>, <will@kernel.org>, <ardb@kernel.org>,
         <catalin.marinas@arm.com>
@@ -45,10 +45,12 @@ CC:     <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
         <linux-mm@kvack.org>, <linux-riscv@lists.infradead.org>
-Subject: [PATCH v5 0/5] introduce mirrored memory support for arm64
-Date:   Tue, 14 Jun 2022 17:21:51 +0800
-Message-ID: <20220614092156.1972846-1-mawupeng1@huawei.com>
+Subject: [PATCH v5 1/5] efi: arm64: Introduce ability to find mirrored memory ranges
+Date:   Tue, 14 Jun 2022 17:21:52 +0800
+Message-ID: <20220614092156.1972846-2-mawupeng1@huawei.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220614092156.1972846-1-mawupeng1@huawei.com>
+References: <20220614092156.1972846-1-mawupeng1@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -67,86 +69,149 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Ma Wupeng <mawupeng1@huawei.com>
 
-Commit b05b9f5f9dcf ("x86, mirror: x86 enabling - find mirrored memory ranges")
-introduced mirrored memory support for x86. This support rely on UEFI to
-report mirrored memory address ranges.  See UEFI 2.5 spec pages 157-158:
+Commit b05b9f5f9dcf ("x86, mirror: x86 enabling - find mirrored memory
+ranges") introduce the efi_find_mirror() function on x86. In order to reuse
+the API we make it public.
 
-  http://www.uefi.org/sites/default/files/resources/UEFI%202_5.pdf
+Arm64 can support mirrored memory too, so function efi_find_mirror() is added to
+efi_init() to this support for arm64.
 
-Memory mirroring is a technique used to separate memory into two separate
-channels, usually on a memory device, like a server. In memory mirroring,
-one channel is copied to another to create redundancy. This method makes
-input/output (I/O) registers and memory appear with more than one address
-range because the same physical byte is accessible at more than one
-address. Using memory mirroring, higher memory reliability and a higher
-level of memory consolidation are possible.
+Since efi_init() is shared by ARM, arm64 and riscv, this patch will bring
+mirror memory support for these architectures, but this support is only tested
+in arm64.
 
-These EFI memory regions have various attributes, and the "mirrored"
-attribute is one of them. The physical memory region whose descriptors
-in EFI memory map has EFI_MEMORY_MORE_RELIABLE attribute (bit: 16) are
-mirrored. The address range mirroring feature of the kernel arranges such
-mirrored regions into normal zones and other regions into movable zones.
-
-Arm64 can support this too. So mirrored memory support is added to support
-arm64.
-
-The main purpose of this patch set is to introduce mirrored support for
-arm64 and we have already fixed the problems we had which is shown in
-patch #5 to patch #8 and try to bring total isolation in patch #9 which
-will disable mirror feature if kernelcore is not specified.
-
-In order to test this support in arm64:
-- patch this patch set
-- add kernelcore=mirror in kernel parameter
-- start you kernel
-
-Patch #1 introduce mirrored memory support form arm64.
-Patch #2-#4 fix some bugs for arm64 if memory reliable is enabled.
-Patch #5 disable mirror feature if kernelcore is not specified.
-
-Thanks to Ard Biesheuvel's hard work [1], now kernel will perfer mirrored
-memory if kaslr is enabled.
-
-[1] https://lore.kernel.org/linux-arm-kernel/CAMj1kXEPVEzMgOM4+Yj6PxHA-jFuDOAUdDJSiSxy_XaP4P7LSw@mail.gmail.com/T/
-
-Changelog since v4:
-- merge the first two patches into one
-- change __initdata to __initdata_memblock in patch #5
-
-Changelog since v3:
-- limit warning message in vmemmap_verify via pr_warn_once()
-- only clear memblock_nomap flags rather than bring the mirrored flag back
-- disable mirrored feature in memblock_mark_mirror()
-
-Changelog since v2:
-- remove efi_fake_mem support
-- remove Commit ("remove some redundant code in ia64 efi_init") since
-  efi_print_memmap() is not public
-- add mirror flag back on initrd memory
-
-Changelog since v1:
-- update changelog in cover letter
-- use PHYS_PFN in patch #7
-
-Ma Wupeng (5):
-  efi: arm64: Introduce ability to find mirrored memory ranges
-  mm: Ratelimited mirrored memory related warning messages
-  mm: Limit warning message in vmemmap_verify() to once
-  arm64: mm: Only remove nomap flag for initrd
-  memblock: Disable mirror feature if kernelcore is not specified
-
- arch/arm64/mm/init.c            |  2 +-
+Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
+---
  arch/x86/include/asm/efi.h      |  4 ----
  arch/x86/platform/efi/efi.c     | 23 -----------------------
  drivers/firmware/efi/efi-init.c |  1 +
  drivers/firmware/efi/efi.c      | 23 +++++++++++++++++++++++
  include/linux/efi.h             |  3 +++
- mm/internal.h                   |  2 ++
- mm/memblock.c                   |  7 +++++--
- mm/page_alloc.c                 |  2 +-
- mm/sparse-vmemmap.c             |  2 +-
- 10 files changed, 37 insertions(+), 32 deletions(-)
+ 5 files changed, 27 insertions(+), 27 deletions(-)
 
+diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+index 71943dce691e..eb90206eae80 100644
+--- a/arch/x86/include/asm/efi.h
++++ b/arch/x86/include/asm/efi.h
+@@ -383,7 +383,6 @@ static inline bool efi_is_64bit(void)
+ extern bool efi_reboot_required(void);
+ extern bool efi_is_table_address(unsigned long phys_addr);
+ 
+-extern void efi_find_mirror(void);
+ extern void efi_reserve_boot_services(void);
+ #else
+ static inline void parse_efi_setup(u64 phys_addr, u32 data_len) {}
+@@ -395,9 +394,6 @@ static inline  bool efi_is_table_address(unsigned long phys_addr)
+ {
+ 	return false;
+ }
+-static inline void efi_find_mirror(void)
+-{
+-}
+ static inline void efi_reserve_boot_services(void)
+ {
+ }
+diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+index 1591d67e0bcd..6e598bd78eef 100644
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -108,29 +108,6 @@ static int __init setup_add_efi_memmap(char *arg)
+ }
+ early_param("add_efi_memmap", setup_add_efi_memmap);
+ 
+-void __init efi_find_mirror(void)
+-{
+-	efi_memory_desc_t *md;
+-	u64 mirror_size = 0, total_size = 0;
+-
+-	if (!efi_enabled(EFI_MEMMAP))
+-		return;
+-
+-	for_each_efi_memory_desc(md) {
+-		unsigned long long start = md->phys_addr;
+-		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
+-
+-		total_size += size;
+-		if (md->attribute & EFI_MEMORY_MORE_RELIABLE) {
+-			memblock_mark_mirror(start, size);
+-			mirror_size += size;
+-		}
+-	}
+-	if (mirror_size)
+-		pr_info("Memory: %lldM/%lldM mirrored memory\n",
+-			mirror_size>>20, total_size>>20);
+-}
+-
+ /*
+  * Tell the kernel about the EFI memory map.  This might include
+  * more than the max 128 entries that can fit in the passed in e820
+diff --git a/drivers/firmware/efi/efi-init.c b/drivers/firmware/efi/efi-init.c
+index b2c829e95bd1..8e3a0d14dac5 100644
+--- a/drivers/firmware/efi/efi-init.c
++++ b/drivers/firmware/efi/efi-init.c
+@@ -241,6 +241,7 @@ void __init efi_init(void)
+ 	 */
+ 	early_init_dt_check_for_usable_mem_range();
++	efi_find_mirror();
+ 	efi_esrt_init();
+ 	efi_mokvar_table_init();
+ 
+ 	memblock_reserve(data.phys_map & PAGE_MASK,
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 860534bcfdac..79c232e07de7 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -446,6 +446,29 @@ static int __init efisubsys_init(void)
+ 
+ subsys_initcall(efisubsys_init);
+ 
++void __init efi_find_mirror(void)
++{
++	efi_memory_desc_t *md;
++	u64 mirror_size = 0, total_size = 0;
++
++	if (!efi_enabled(EFI_MEMMAP))
++		return;
++
++	for_each_efi_memory_desc(md) {
++		unsigned long long start = md->phys_addr;
++		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
++
++		total_size += size;
++		if (md->attribute & EFI_MEMORY_MORE_RELIABLE) {
++			memblock_mark_mirror(start, size);
++			mirror_size += size;
++		}
++	}
++	if (mirror_size)
++		pr_info("Memory: %lldM/%lldM mirrored memory\n",
++			mirror_size>>20, total_size>>20);
++}
++
+ /*
+  * Find the efi memory descriptor for a given physical address.  Given a
+  * physical address, determine if it exists within an EFI Memory Map entry,
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 7d9b0bb47eb3..53f64c14a525 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -872,6 +872,7 @@ static inline bool efi_rt_services_supported(unsigned int mask)
+ {
+ 	return (efi.runtime_supported_mask & mask) == mask;
+ }
++extern void efi_find_mirror(void);
+ #else
+ static inline bool efi_enabled(int feature)
+ {
+@@ -889,6 +890,8 @@ static inline bool efi_rt_services_supported(unsigned int mask)
+ {
+ 	return false;
+ }
++
++static inline void efi_find_mirror(void) {}
+ #endif
+ 
+ extern int efi_status_to_err(efi_status_t status);
 -- 
 2.25.1
 
