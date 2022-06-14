@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DEE754AFC9
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Jun 2022 14:04:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09FFC54AFDE
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Jun 2022 14:04:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356217AbiFNMCp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 14 Jun 2022 08:02:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53914 "EHLO
+        id S1356187AbiFNMCo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Jun 2022 08:02:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356199AbiFNMCj (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Jun 2022 08:02:39 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9868219C3D;
-        Tue, 14 Jun 2022 05:02:36 -0700 (PDT)
+        with ESMTP id S1356186AbiFNMCi (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Jun 2022 08:02:38 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0848218B0F;
+        Tue, 14 Jun 2022 05:02:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1655208156; x=1686744156;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=GFpQ+/mE/sWJAfnOObzg9+iqOuEtZS5nHGCJB+ROj7k=;
-  b=lR0Tlrth9jb2eA4DpCFuMHriYJH1U86vrFxnkN+OU0+Csxxm9aT6jx70
-   wBmnE4h5RKtwKGBLnP+AknBZHSH3uEV4tljEDGyaHybw4XlApzpz+4mDh
-   P3oggA8OaPBSRYOQ1CxoCJpUGflQUwgo18KlTlayMXcZV29KOvjs9dlZk
-   7lHDQV/h3lXPd5tPD7EeqrvO5J680ZPfZheeB7OE/4VyXgvRXZnKvbB5A
-   OtuGfQQ1WZu6BqUIZMnFzFK/ayPBPG7QDd3dLE1b5je8UXTcfCDpi3UIY
-   SxztVRDf8imJ46DVscdNed1Zl/GOzOMHkkk4vx7+ERJpWpTiWossKH1hT
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10377"; a="364934642"
+  bh=z3vk4MiFaMowdZHoqTpUcMK79OckKcSoieuVm3Gi93o=;
+  b=ky3RaF4EmmAnUZNGSbxuoxsdS8YEX7+RCp7nD6jah/6yxNCq6nuaA2dq
+   VMUc8V6xSJhKbETzAHXyZLKrJzVYQztrVqyvDKnGWSr+pjtEX2qQKCBaE
+   JJZmV9pt566MQVddgyDKYQ2Q0VWeCmSQXW0g1CTB+19UI99TARPjLtiaL
+   peOgIhfza6qi1Y8fzKhpVsxGsA3c+YnRah0Wo87dxMmvoD6t1nZiNuR9e
+   VWQXGYO7aKZzeswjJ7DFDaLep0k2q0+L+HAg1to9maWCaZFcetmD0LqpQ
+   IE6luplQVtgWcVMPA4gfISzg/FS++Ec534RjPX/QkXjByBOv1DT4eCoF/
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10377"; a="277380181"
 X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
-   d="scan'208";a="364934642"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2022 05:02:35 -0700
+   d="scan'208";a="277380181"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2022 05:02:35 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
-   d="scan'208";a="588429901"
+   d="scan'208";a="652001263"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga007.fm.intel.com with ESMTP; 14 Jun 2022 05:02:28 -0700
+  by fmsmga004.fm.intel.com with ESMTP; 14 Jun 2022 05:02:28 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-        id 94DE65D3; Tue, 14 Jun 2022 15:02:32 +0300 (EEST)
+        id 9CB1660E; Tue, 14 Jun 2022 15:02:32 +0300 (EEST)
 From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
         Sean Christopherson <seanjc@google.com>,
@@ -65,9 +65,9 @@ Cc:     Andi Kleen <ak@linux.intel.com>,
         x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv7 03/14] mm: Report unaccepted memory in meminfo
-Date:   Tue, 14 Jun 2022 15:02:20 +0300
-Message-Id: <20220614120231.48165-4-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv7 04/14] efi/x86: Get full memory map in allocate_e820()
+Date:   Tue, 14 Jun 2022 15:02:21 +0300
+Message-Id: <20220614120231.48165-5-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
 References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
@@ -83,132 +83,81 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Track amount of unaccepted memory and report it in /proc/meminfo and in
-node meminfo.
+Currently allocate_e820() only interested in the size of map and size of
+memory descriptor to determine how many e820 entries the kernel needs.
+
+UEFI Specification version 2.9 introduces a new memory type --
+unaccepted memory. To track unaccepted memory kernel needs to allocate
+a bitmap. The size of the bitmap is dependent on the maximum physical
+address present in the system. A full memory map is required to find
+the maximum address.
+
+Modify allocate_e820() to get a full memory map.
+
+This is preparation for the next patch that implements handling of
+unaccepted memory in EFI stub.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- drivers/base/node.c    | 7 +++++++
- fs/proc/meminfo.c      | 5 +++++
- include/linux/mmzone.h | 1 +
- mm/page_alloc.c        | 9 ++++++++-
- mm/vmstat.c            | 1 +
- 5 files changed, 22 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/libstub/x86-stub.c | 28 +++++++++++--------------
+ 1 file changed, 12 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index 0ac6376ef7a1..fc7cf4d91eb6 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -446,6 +446,9 @@ static ssize_t node_read_meminfo(struct device *dev,
- 			     "Node %d ShmemPmdMapped: %8lu kB\n"
- 			     "Node %d FileHugePages: %8lu kB\n"
- 			     "Node %d FilePmdMapped: %8lu kB\n"
-+#endif
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+			     "Node %d UnacceptedPages: %8lu kB\n"
- #endif
- 			     ,
- 			     nid, K(node_page_state(pgdat, NR_FILE_DIRTY)),
-@@ -474,6 +477,10 @@ static ssize_t node_read_meminfo(struct device *dev,
- 			     nid, K(node_page_state(pgdat, NR_SHMEM_PMDMAPPED)),
- 			     nid, K(node_page_state(pgdat, NR_FILE_THPS)),
- 			     nid, K(node_page_state(pgdat, NR_FILE_PMDMAPPED))
-+#endif
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+			     ,
-+			     nid, K(node_page_state(pgdat, NR_UNACCEPTED))
- #endif
- 			    );
- 	len += hugetlb_report_node_meminfo(buf, len, nid);
-diff --git a/fs/proc/meminfo.c b/fs/proc/meminfo.c
-index 6e89f0e2fd20..796544e50365 100644
---- a/fs/proc/meminfo.c
-+++ b/fs/proc/meminfo.c
-@@ -153,6 +153,11 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
- 		    global_zone_page_state(NR_FREE_CMA_PAGES));
- #endif
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 05ae8bcc9d67..504955368934 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -672,31 +672,27 @@ static efi_status_t alloc_e820ext(u32 nr_desc, struct setup_data **e820ext,
+ }
  
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+	show_val_kb(m, "UnacceptedPages:",
-+		    global_node_page_state(NR_UNACCEPTED));
-+#endif
-+
- 	hugetlb_report_meminfo(m);
+ static efi_status_t allocate_e820(struct boot_params *params,
++				  struct efi_boot_memmap *map,
+ 				  struct setup_data **e820ext,
+ 				  u32 *e820ext_size)
+ {
+-	unsigned long map_size, desc_size, map_key;
+ 	efi_status_t status;
+-	__u32 nr_desc, desc_version;
++	__u32 nr_desc;
  
- 	arch_report_meminfo(m);
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index aab70355d64f..aa08cd7eaaf5 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -212,6 +212,7 @@ enum node_stat_item {
- 	NR_FOLL_PIN_ACQUIRED,	/* via: pin_user_page(), gup flag: FOLL_PIN */
- 	NR_FOLL_PIN_RELEASED,	/* pages returned via unpin_user_page() */
- 	NR_KERNEL_STACK_KB,	/* measured in KiB */
-+	NR_UNACCEPTED,
- #if IS_ENABLED(CONFIG_SHADOW_CALL_STACK)
- 	NR_KERNEL_SCS_KB,	/* measured in KiB */
- #endif
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 279c2746aaa8..6316d695a567 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1012,6 +1012,7 @@ static void accept_page(struct page *page, unsigned int order)
+-	/* Only need the size of the mem map and size of each mem descriptor */
+-	map_size = 0;
+-	status = efi_bs_call(get_memory_map, &map_size, NULL, &map_key,
+-			     &desc_size, &desc_version);
+-	if (status != EFI_BUFFER_TOO_SMALL)
+-		return (status != EFI_SUCCESS) ? status : EFI_UNSUPPORTED;
+-
+-	nr_desc = map_size / desc_size + EFI_MMAP_NR_SLACK_SLOTS;
++	status = efi_get_memory_map(map);
++	if (status != EFI_SUCCESS)
++		return status;
  
- 	accept_memory(start, start + (PAGE_SIZE << order));
- 	__ClearPageUnaccepted(page);
-+	mod_node_page_state(page_pgdat(page), NR_UNACCEPTED, -(1 << order));
+-	if (nr_desc > ARRAY_SIZE(params->e820_table)) {
+-		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table);
++	nr_desc = *map->map_size / *map->desc_size;
++	if (nr_desc > ARRAY_SIZE(params->e820_table) - EFI_MMAP_NR_SLACK_SLOTS) {
++		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table) +
++			EFI_MMAP_NR_SLACK_SLOTS;
  
- 	/* Assert that there is no PageUnaccepted() on tail pages */
- 	if (IS_ENABLED(CONFIG_DEBUG_VM)) {
-@@ -1063,6 +1064,7 @@ static inline void __free_one_page(struct page *page,
- 	struct page *buddy;
- 	bool to_tail;
- 	bool page_needs_acceptance = false;
-+	int nr_unaccepted = 0;
- 
- 	VM_BUG_ON(!zone_is_initialized(zone));
- 	VM_BUG_ON_PAGE(page->flags & PAGE_FLAGS_CHECK_AT_PREP, page);
-@@ -1076,6 +1078,7 @@ static inline void __free_one_page(struct page *page,
- 
- 	if (PageUnaccepted(page)) {
- 		page_needs_acceptance = true;
-+		nr_unaccepted += 1 << order;
- 		__ClearPageUnaccepted(page);
+ 		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
+-		if (status != EFI_SUCCESS)
+-			return status;
  	}
  
-@@ -1117,6 +1120,7 @@ static inline void __free_one_page(struct page *page,
- 		/* Mark page unaccepted if any of merged pages were unaccepted */
- 		if (PageUnaccepted(buddy)) {
- 			page_needs_acceptance = true;
-+			nr_unaccepted += 1 << order;
- 			__ClearPageUnaccepted(buddy);
- 		}
+-	return EFI_SUCCESS;
++	efi_bs_call(free_pool, *map->map);
++	return status;
+ }
  
-@@ -1143,8 +1147,11 @@ static inline void __free_one_page(struct page *page,
- 	 */
- 	if (!page_needs_acceptance && (fpi_flags & FPI_UNACCEPTED_SLOWPATH))
- 		page_needs_acceptance = page_contains_unaccepted(page, order);
--	if (page_needs_acceptance)
-+	if (page_needs_acceptance) {
- 		__SetPageUnaccepted(page);
-+		__mod_node_page_state(page_pgdat(page), NR_UNACCEPTED,
-+				    (1 << order) - nr_unaccepted);
-+	}
+ struct exit_boot_struct {
+@@ -745,7 +741,7 @@ static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
+ 	priv.boot_params	= boot_params;
+ 	priv.efi		= &boot_params->efi_info;
  
- 	if (fpi_flags & FPI_TO_TAIL)
- 		to_tail = true;
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index 373d2730fcf2..4e12d22f1e04 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1236,6 +1236,7 @@ const char * const vmstat_text[] = {
- 	"nr_foll_pin_acquired",
- 	"nr_foll_pin_released",
- 	"nr_kernel_stack",
-+	"nr_unaccepted",
- #if IS_ENABLED(CONFIG_SHADOW_CALL_STACK)
- 	"nr_shadow_call_stack",
- #endif
+-	status = allocate_e820(boot_params, &e820ext, &e820ext_size);
++	status = allocate_e820(boot_params, &map, &e820ext, &e820ext_size);
+ 	if (status != EFI_SUCCESS)
+ 		return status;
+ 
 -- 
 2.35.1
 
