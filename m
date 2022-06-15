@@ -2,136 +2,92 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B599954CC1D
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Jun 2022 17:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D931854CD62
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Jun 2022 17:49:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236362AbiFOPDi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 15 Jun 2022 11:03:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52248 "EHLO
+        id S237659AbiFOPtj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 15 Jun 2022 11:49:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234243AbiFOPDg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Jun 2022 11:03:36 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83F293206E
-        for <linux-efi@vger.kernel.org>; Wed, 15 Jun 2022 08:03:28 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id d18so13614273ljc.4
-        for <linux-efi@vger.kernel.org>; Wed, 15 Jun 2022 08:03:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=+ZUiH7xUjYjG63QUOQNlcHltjn5KoG/fwg1/o9vk8ew=;
-        b=gmM5PYGKhtiKN/GQbdXDENmVjVligh9DIPiQkG8g9EDUaaAsjjHXs85qVkWWbbgi+B
-         nszrQbXgZRqTwAgSVchLmIr1m8NPS9bv1EsKB+/xz7kNOjgnEcOt3TRr3ysREOzDAeRh
-         bEnhDJ1ESjIS6/vP+qs+svbNVimu+a8X1ilLtTXxAt2+7vonJ+je4mAzwOZe0I5DBayV
-         LaifTuCEM8AsEcmaD0lCMRhjg/POC/AoBLOb1N+6qWIrQl+g55UKPUvA0EgFMmu7yl4S
-         ygVcSI0g+8rzQy4hxPbmjMblUCycMgOwWgGfW7dOebiG5auWZDOu0mAq02s1hm6IBcs3
-         ipIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=+ZUiH7xUjYjG63QUOQNlcHltjn5KoG/fwg1/o9vk8ew=;
-        b=p69K49JEGtAQlMW9HssSGwT3Lbjio6G/I74xRyWWg5tPwTcuGLF4rgrj34jl2wolJ0
-         MnY3Gpnz117scGRmwEKmTT/dVQG9q6ATfgzE45emskEI7jEAN6fscerWOXRDeapT5lpR
-         Y0q8O4XJLPUGkphODO6K3mV7+ji7748pZvaDqbP5SYGnbOn6s4oUoirmhk7tsU5u4f7K
-         7Ut8B3aJElKHxYnQXYEhZzYx+TEN65G1ZLjhcYjhHNZbysTbwuKY0/j7VC2a8GZX5d3G
-         rWIkQjTJdacTt73coKRPG4V9Aiwk872RJdiYynIcb6xhM89vgT7lO3zGCO3NaqeBz0tT
-         asWA==
-X-Gm-Message-State: AJIora9oUhGTyk/NBuMLBmgbAhTykiovh7pmKtOuFvG6Noj/uPxQ4yc5
-        dX1J/JQz30sngnCcrx6V/cVOcA==
-X-Google-Smtp-Source: AGRyM1uaqkfz9EUjbtFXt3ETq72/vRGrVuX/XEUXnzqPAo5EoI+iVXmhnWWWeIjIy+Gowg+91p1KrQ==
-X-Received: by 2002:a2e:22c6:0:b0:258:fd28:b253 with SMTP id i189-20020a2e22c6000000b00258fd28b253mr85119lji.418.1655305406697;
-        Wed, 15 Jun 2022 08:03:26 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id k13-20020a2e92cd000000b002556e77236dsm1670253ljh.62.2022.06.15.08.03.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jun 2022 08:03:25 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
-        id EFD7A103B9F; Wed, 15 Jun 2022 18:05:34 +0300 (+03)
-Date:   Wed, 15 Jun 2022 18:05:34 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Varad Gautam <varad.gautam@suse.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
-        khalid.elmously@canonical.com, philip.cox@canonical.com,
-        x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv7 05/14] x86/boot: Add infrastructure required for
- unaccepted memory support
-Message-ID: <20220615150534.ylkref3runa4kmyj@box.shutemov.name>
-References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-6-kirill.shutemov@linux.intel.com>
- <YqmyQZa4CTHkH3gT@hirez.programming.kicks-ass.net>
+        with ESMTP id S229662AbiFOPti (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Jun 2022 11:49:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BDE515FD1
+        for <linux-efi@vger.kernel.org>; Wed, 15 Jun 2022 08:49:38 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE819617C7
+        for <linux-efi@vger.kernel.org>; Wed, 15 Jun 2022 15:49:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE35C34115
+        for <linux-efi@vger.kernel.org>; Wed, 15 Jun 2022 15:49:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655308177;
+        bh=btYuattQlY3+yfbB5rv4Kea1Zz5par/ieeNjePTbxQg=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=j8B04AI7I/+YoTurK07GE1byp8gnpSZq+tIAp42/6Ppdpy/6ph+W4MdutqeStdrIm
+         DUt6/YkOVdilNWeZZcgUAGYu3JnVQuZHbrxZA5Mlv6q+boqBgcYjhXNSj3ZkfiSqUT
+         h58RmzuTC8BiwUJVIlOIkrbK5OkPlUzO5DyD+V2XWsu1kG5W7hLw0I4bSMJgmPCuRN
+         IXctZch3EF7dlRMGAQdUlvg5ac3Z3pNvCxvEvO38Xx+SC3V1LrWeijE6QnwAHVRHtU
+         KnaQRP58ebmdiV9FKXNTtekjjGVh2vXi34wDbEImWjlDp7wKizBAY9SRLb6qStQG93
+         YZDSNJb63MuZA==
+Received: by mail-oi1-f179.google.com with SMTP id bf7so14767627oib.11
+        for <linux-efi@vger.kernel.org>; Wed, 15 Jun 2022 08:49:37 -0700 (PDT)
+X-Gm-Message-State: AOAM530NWBXC4PP7kEfroVLMOlCj7TE7eicQm/0t9qU3fZxZoNYkIrmm
+        JsLM6TX0dbZ1AhXl5J8o6FUHZyAiVNyI9XAp3tc=
+X-Google-Smtp-Source: ABdhPJytBueWy+kL3STv0h8CkO7mbpcQw6+9cqJE8HpuWyp/eCXmZv3zwADutGN7rO5634x0J3+rQ/ZT8gkNla31Gnk=
+X-Received: by 2002:aca:aad5:0:b0:32f:3b9b:e0f with SMTP id
+ t204-20020acaaad5000000b0032f3b9b0e0fmr5447234oie.228.1655308176362; Wed, 15
+ Jun 2022 08:49:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YqmyQZa4CTHkH3gT@hirez.programming.kicks-ass.net>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+References: <20220614114805.631-1-liuzixian4@huawei.com>
+In-Reply-To: <20220614114805.631-1-liuzixian4@huawei.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 15 Jun 2022 17:49:23 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXE4HZjkurV1+u6r+g-yjpMk=b_0LXc++meb-zhL7r5omg@mail.gmail.com>
+Message-ID: <CAMj1kXE4HZjkurV1+u6r+g-yjpMk=b_0LXc++meb-zhL7r5omg@mail.gmail.com>
+Subject: Re: [PATCH] Correct comment on efi_memmap_alloc
+To:     Liu Zixian <liuzixian4@huawei.com>
+Cc:     dan.j.williams@intel.com, mingo@kernel.org,
+        linux-efi@vger.kernel.org, linfeilong@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jun 15, 2022 at 12:19:45PM +0200, Peter Zijlstra wrote:
-> On Tue, Jun 14, 2022 at 03:02:22PM +0300, Kirill A. Shutemov wrote:
-> > Pull functionality from the main kernel headers and lib/ that is
-> > required for unaccepted memory support.
-> > 
-> > This is preparatory patch. The users for the functionality will come in
-> > following patches.
-> > 
-> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > ---
-> >  arch/x86/boot/bitops.h                   | 40 ++++++++++++
-> >  arch/x86/boot/compressed/align.h         | 14 +++++
-> >  arch/x86/boot/compressed/bitmap.c        | 43 +++++++++++++
-> >  arch/x86/boot/compressed/bitmap.h        | 49 +++++++++++++++
-> >  arch/x86/boot/compressed/bits.h          | 36 +++++++++++
-> >  arch/x86/boot/compressed/compiler.h      |  9 +++
-> >  arch/x86/boot/compressed/find.c          | 54 ++++++++++++++++
-> >  arch/x86/boot/compressed/find.h          | 80 ++++++++++++++++++++++++
-> >  arch/x86/boot/compressed/math.h          | 37 +++++++++++
-> >  arch/x86/boot/compressed/minmax.h        | 61 ++++++++++++++++++
-> >  arch/x86/boot/compressed/pgtable_types.h | 25 ++++++++
-> 
-> That's quite a lot of duplicated code; is there really no way so share
-> this?
+On Tue, 14 Jun 2022 at 13:48, Liu Zixian <liuzixian4@huawei.com> wrote:
+>
+> Returning zero means success now.
+>
+> Fixes: 1db91035d01a("efi: Add tracking for dynamically allocated memmaps")
+> Signed-off-by: Liu Zixian <liuzixian4@huawei.com>
 
-Code duplication also make me uncomfortable. But that what Borislav wanted
-to see. efi.h in the boot stub which copies bulk of <linux/efi.h> also
-sets the trend in the direction.
+Applied, thanks.
 
-Alternative is creating a subset of headers that can be used in both in
-main kernel and boot stub. It is more complex and doesn't allow for short
-cuts that can be made on copy if you know the context it is used in.
-
-It also sounds painfully similar to uapi/ project. I'm not sure we want to
-go this path.
-
--- 
- Kirill A. Shutemov
+> ---
+>  drivers/firmware/efi/memmap.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/drivers/firmware/efi/memmap.c b/drivers/firmware/efi/memmap.c
+> index 4df55a55d..cf87dd7bb 100644
+> --- a/drivers/firmware/efi/memmap.c
+> +++ b/drivers/firmware/efi/memmap.c
+> @@ -59,8 +59,7 @@ static void __init efi_memmap_free(void)
+>   * Depending on whether mm_init() has already been invoked or not,
+>   * either memblock or "normal" page allocation is used.
+>   *
+> - * Returns the physical address of the allocated memory map on
+> - * success, zero on failure.
+> + * Returns zero on success, a negative error code on failure.
+>   */
+>  int __init efi_memmap_alloc(unsigned int num_entries,
+>                 struct efi_memory_map_data *data)
+> --
+> 2.33.0
+>
