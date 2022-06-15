@@ -2,43 +2,59 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA04354C5E7
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Jun 2022 12:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B599954CC1D
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Jun 2022 17:03:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347652AbiFOKVh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 15 Jun 2022 06:21:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38208 "EHLO
+        id S236362AbiFOPDi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 15 Jun 2022 11:03:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347946AbiFOKUs (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Jun 2022 06:20:48 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F7464E397;
-        Wed, 15 Jun 2022 03:20:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=OTj5z30HkEHTzFiSxL8zrtVzrsYfnlyDuMzdm361bU0=; b=HCUls9LzF3Ps7n0VKUrnzevomJ
-        ia+L7aZ6++crtm+I+wasUYBWPh4AONMp82XIzv46xzbr01uby2v9ZiREiWfuzUzGt3xvdb+xXDpTx
-        Ys5ExBktr3NiVd3FTPKxiQFYFafBmQzU4CmKSgypkau70lUhzVwL4xFYfp13PoBtiK60KPa2492ik
-        EWetzqpBqWUpLY9Rd0yKtpw/HIuYRRbaE11vYU5KnLQVEh6T62LQ0SJ8Saj/n4m0NN/8Rb1trWyy8
-        ujTRzVQCCrKXBehhcJBgGpLLblOsGcwZPb8tcKk5+Lnp+vGBLVChofkwqzoA6VvFvPZEmEY5SC/7Y
-        XIDLNMTA==;
-Received: from dhcp-077-249-017-003.chello.nl ([77.249.17.3] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1o1Q7n-000yG9-2r; Wed, 15 Jun 2022 10:19:47 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id E9F553007C6;
-        Wed, 15 Jun 2022 12:19:45 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id D38BF201A4F6D; Wed, 15 Jun 2022 12:19:45 +0200 (CEST)
-Date:   Wed, 15 Jun 2022 12:19:45 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+        with ESMTP id S234243AbiFOPDg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Jun 2022 11:03:36 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83F293206E
+        for <linux-efi@vger.kernel.org>; Wed, 15 Jun 2022 08:03:28 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id d18so13614273ljc.4
+        for <linux-efi@vger.kernel.org>; Wed, 15 Jun 2022 08:03:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=+ZUiH7xUjYjG63QUOQNlcHltjn5KoG/fwg1/o9vk8ew=;
+        b=gmM5PYGKhtiKN/GQbdXDENmVjVligh9DIPiQkG8g9EDUaaAsjjHXs85qVkWWbbgi+B
+         nszrQbXgZRqTwAgSVchLmIr1m8NPS9bv1EsKB+/xz7kNOjgnEcOt3TRr3ysREOzDAeRh
+         bEnhDJ1ESjIS6/vP+qs+svbNVimu+a8X1ilLtTXxAt2+7vonJ+je4mAzwOZe0I5DBayV
+         LaifTuCEM8AsEcmaD0lCMRhjg/POC/AoBLOb1N+6qWIrQl+g55UKPUvA0EgFMmu7yl4S
+         ygVcSI0g+8rzQy4hxPbmjMblUCycMgOwWgGfW7dOebiG5auWZDOu0mAq02s1hm6IBcs3
+         ipIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=+ZUiH7xUjYjG63QUOQNlcHltjn5KoG/fwg1/o9vk8ew=;
+        b=p69K49JEGtAQlMW9HssSGwT3Lbjio6G/I74xRyWWg5tPwTcuGLF4rgrj34jl2wolJ0
+         MnY3Gpnz117scGRmwEKmTT/dVQG9q6ATfgzE45emskEI7jEAN6fscerWOXRDeapT5lpR
+         Y0q8O4XJLPUGkphODO6K3mV7+ji7748pZvaDqbP5SYGnbOn6s4oUoirmhk7tsU5u4f7K
+         7Ut8B3aJElKHxYnQXYEhZzYx+TEN65G1ZLjhcYjhHNZbysTbwuKY0/j7VC2a8GZX5d3G
+         rWIkQjTJdacTt73coKRPG4V9Aiwk872RJdiYynIcb6xhM89vgT7lO3zGCO3NaqeBz0tT
+         asWA==
+X-Gm-Message-State: AJIora9oUhGTyk/NBuMLBmgbAhTykiovh7pmKtOuFvG6Noj/uPxQ4yc5
+        dX1J/JQz30sngnCcrx6V/cVOcA==
+X-Google-Smtp-Source: AGRyM1uaqkfz9EUjbtFXt3ETq72/vRGrVuX/XEUXnzqPAo5EoI+iVXmhnWWWeIjIy+Gowg+91p1KrQ==
+X-Received: by 2002:a2e:22c6:0:b0:258:fd28:b253 with SMTP id i189-20020a2e22c6000000b00258fd28b253mr85119lji.418.1655305406697;
+        Wed, 15 Jun 2022 08:03:26 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id k13-20020a2e92cd000000b002556e77236dsm1670253ljh.62.2022.06.15.08.03.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jun 2022 08:03:25 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+        id EFD7A103B9F; Wed, 15 Jun 2022 18:05:34 +0300 (+03)
+Date:   Wed, 15 Jun 2022 18:05:34 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
         Sean Christopherson <seanjc@google.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Joerg Roedel <jroedel@suse.de>,
@@ -63,16 +79,17 @@ Cc:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCHv7 05/14] x86/boot: Add infrastructure required for
  unaccepted memory support
-Message-ID: <YqmyQZa4CTHkH3gT@hirez.programming.kicks-ass.net>
+Message-ID: <20220615150534.ylkref3runa4kmyj@box.shutemov.name>
 References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
  <20220614120231.48165-6-kirill.shutemov@linux.intel.com>
+ <YqmyQZa4CTHkH3gT@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220614120231.48165-6-kirill.shutemov@linux.intel.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+In-Reply-To: <YqmyQZa4CTHkH3gT@hirez.programming.kicks-ass.net>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,26 +97,41 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Jun 14, 2022 at 03:02:22PM +0300, Kirill A. Shutemov wrote:
-> Pull functionality from the main kernel headers and lib/ that is
-> required for unaccepted memory support.
+On Wed, Jun 15, 2022 at 12:19:45PM +0200, Peter Zijlstra wrote:
+> On Tue, Jun 14, 2022 at 03:02:22PM +0300, Kirill A. Shutemov wrote:
+> > Pull functionality from the main kernel headers and lib/ that is
+> > required for unaccepted memory support.
+> > 
+> > This is preparatory patch. The users for the functionality will come in
+> > following patches.
+> > 
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > ---
+> >  arch/x86/boot/bitops.h                   | 40 ++++++++++++
+> >  arch/x86/boot/compressed/align.h         | 14 +++++
+> >  arch/x86/boot/compressed/bitmap.c        | 43 +++++++++++++
+> >  arch/x86/boot/compressed/bitmap.h        | 49 +++++++++++++++
+> >  arch/x86/boot/compressed/bits.h          | 36 +++++++++++
+> >  arch/x86/boot/compressed/compiler.h      |  9 +++
+> >  arch/x86/boot/compressed/find.c          | 54 ++++++++++++++++
+> >  arch/x86/boot/compressed/find.h          | 80 ++++++++++++++++++++++++
+> >  arch/x86/boot/compressed/math.h          | 37 +++++++++++
+> >  arch/x86/boot/compressed/minmax.h        | 61 ++++++++++++++++++
+> >  arch/x86/boot/compressed/pgtable_types.h | 25 ++++++++
 > 
-> This is preparatory patch. The users for the functionality will come in
-> following patches.
-> 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> ---
->  arch/x86/boot/bitops.h                   | 40 ++++++++++++
->  arch/x86/boot/compressed/align.h         | 14 +++++
->  arch/x86/boot/compressed/bitmap.c        | 43 +++++++++++++
->  arch/x86/boot/compressed/bitmap.h        | 49 +++++++++++++++
->  arch/x86/boot/compressed/bits.h          | 36 +++++++++++
->  arch/x86/boot/compressed/compiler.h      |  9 +++
->  arch/x86/boot/compressed/find.c          | 54 ++++++++++++++++
->  arch/x86/boot/compressed/find.h          | 80 ++++++++++++++++++++++++
->  arch/x86/boot/compressed/math.h          | 37 +++++++++++
->  arch/x86/boot/compressed/minmax.h        | 61 ++++++++++++++++++
->  arch/x86/boot/compressed/pgtable_types.h | 25 ++++++++
+> That's quite a lot of duplicated code; is there really no way so share
+> this?
 
-That's quite a lot of duplicated code; is there really no way so share
-this?
+Code duplication also make me uncomfortable. But that what Borislav wanted
+to see. efi.h in the boot stub which copies bulk of <linux/efi.h> also
+sets the trend in the direction.
+
+Alternative is creating a subset of headers that can be used in both in
+main kernel and boot stub. It is more complex and doesn't allow for short
+cuts that can be made on copy if you know the context it is used in.
+
+It also sounds painfully similar to uapi/ project. I'm not sure we want to
+go this path.
+
+-- 
+ Kirill A. Shutemov
