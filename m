@@ -2,58 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C66754D9FF
-	for <lists+linux-efi@lfdr.de>; Thu, 16 Jun 2022 07:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6467C54E10C
+	for <lists+linux-efi@lfdr.de>; Thu, 16 Jun 2022 14:47:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357128AbiFPFtv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 16 Jun 2022 01:49:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41664 "EHLO
+        id S229702AbiFPMrx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 16 Jun 2022 08:47:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229739AbiFPFtu (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 16 Jun 2022 01:49:50 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67CBB5B8A2
-        for <linux-efi@vger.kernel.org>; Wed, 15 Jun 2022 22:49:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655358590; x=1686894590;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=jLBhXUJCmfw3KgYOdMex2wccYRDDj7Fey4+OudzzgQM=;
-  b=LLCpDrlOQYFndzVMCL1FXVDeT9Yscw3kosUOm4HiGKsdaJNWZYQNYHks
-   E8px4ar81NQEnj9w2I2J1yADgT+Me1dDfnbmw7dx3YfszE0h+VjGmERv5
-   hj0RoM2KOTv7PTkdzi0OhM/jhf5Zgiu2kcXrCRzgcp5yQgNjm6/pz9jNZ
-   20QQ9YyPzvqk3/O9mzb3r6QCUTuN8+hzcf7CaFuEShjkAbJd8GsH8m7oq
-   cMb+Ki6BBWEL6R8hCDzPBiIYxSnbr3w8TnWCeA2UlJxtKE1ekfPhqJlN9
-   vVv2lCs+aqGK170efnTgjnYISYl4jjrfE5Va8Hf4FN/WJ3P+dUUsxJhJQ
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10379"; a="277968994"
-X-IronPort-AV: E=Sophos;i="5.91,304,1647327600"; 
-   d="scan'208";a="277968994"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2022 22:49:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,304,1647327600"; 
-   d="scan'208";a="912020395"
-Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 15 Jun 2022 22:49:49 -0700
-Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o1iO4-000O7P-MK;
-        Thu, 16 Jun 2022 05:49:48 +0000
-Date:   Thu, 16 Jun 2022 13:49:00 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS 902c2d91582c7ff0cb5f57ffb3766656f9b910c6
-Message-ID: <62aac44c.AcgeTOmrlT+hVkRy%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S229666AbiFPMrw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 16 Jun 2022 08:47:52 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5ED51114C;
+        Thu, 16 Jun 2022 05:47:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 59000B823A2;
+        Thu, 16 Jun 2022 12:47:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E68C34114;
+        Thu, 16 Jun 2022 12:47:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655383667;
+        bh=mJJreglfsq/eInk2uZxJOkVl6NKRtBddILNxwJFwCJc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=pmrUP0fiYCoJ/nxsLqMoXDdinbjHwvnY3pgdMGhnqtd35JLltImWxPyoDu24XKmA0
+         kiTNRpbVBSf4OJ7nCvAFBWfxSWRM2/m9jDgxAweVr6I6st72nFeUYKJwmpSVLk8xyK
+         qt4X83xbqPQg5LVq9aLRM6youjAfJieDpv9Dhtd0rSM8HDghAqSTAIVcLS6p28uUeH
+         wfetsRVURBNtWL1MHN+mOAwVRTVd1CEF5vEztNbAbZ12hkFaGB2wU2sZqWxLOfE4pT
+         BaiaVAJm1z2DWmiPGvbS6OXU20kXSLHq0lEkdft2AE5S9qQ6GJ2QoOdAwjEi8GO4WN
+         XTdfGhpQi8p/g==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Peter Jones <pjones@redhat.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Kees Cook <keescook@chromium.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        linux-kselftest@vger.kernel.org
+Subject: [RFC PATCH 0/2] efi: get rid of deprecated sysfs varstore interface
+Date:   Thu, 16 Jun 2022 14:47:38 +0200
+Message-Id: <20220616124740.580708-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1862; h=from:subject; bh=mJJreglfsq/eInk2uZxJOkVl6NKRtBddILNxwJFwCJc=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBiqyZnPA5pZvI6IIBxs1t527DYNp4QCuHwsySNN1iL GHFf08uJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYqsmZwAKCRDDTyI5ktmPJCvSC/ 0Zk573HY0jo00PuecMNMiY/UAHGnFN5JkvkfE57PxSoe5bm5WFYgsfoG4E/ME0dhlTYhSRu9rnH4T/ /CMJ7A6kPa8TxXw/qZoeifAOEGeyiIlHcHzwlxd4Ppc2c3PpYNhkvq8mhONOqtgoBHldsFWIOxGTPM c/o0/B0EAyVywfAqcAizACmKSqbtRvs+216uAsemq/Oee+suaWlW1XRLde5BDYgyHhgyF7w5q1L9fn 40JFt6J1Bz1XYUBI3Zy6G91cglMiW5gWhNm6Tng0jR5moGCPl9Df7TU03IavMjPEQIzvOUI3hvfwbl 57h6BhGqod0IOtpT4IcNhAIEIfGjJ5OwfqB0vcQ5kbEr6OE+IY6caRh67vyOput/o64naFrQLTNC8o c7b7UEA/DmSzwUEC/pSX8g898Xq91MJvZ9eGhcYthHFvtGe3QonOOni9mgLJyU3OUCMFVJZUK1+2X9 UBK334QTZ/brfhGMclFAQ9yz7ThXfCQi8W7Uq0AEqtF0A=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,71 +60,45 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: 902c2d91582c7ff0cb5f57ffb3766656f9b910c6  memblock: Disable mirror feature if kernelcore is not specified
+EFI still has two ways of exposing EFI variable to user space: the
+original sysfs interface and the efivarfs pseudo-filesystem that
+supersedes it, and which was introduced almost 10 years ago.
 
-elapsed time: 1117m
+As a preparatory step towards refactoring the underlying infrastructure
+shared between efivarfs and efi-pstore, I would like to finally get rid
+of the sysfs interface which also uses that, but which is only enabled
+on x86 and Itanium.
 
-configs tested: 52
-configs skipped: 5
+Cc: Matthew Garrett <mjg59@srcf.ucam.org>
+Cc: Peter Jones <pjones@redhat.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: linux-kselftest@vger.kernel.org
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Ard Biesheuvel (2):
+  selftests/kexec: remove broken EFI_VARS secure boot fallback check
+  efi: remove deprecated 'efivars' sysfs interface
 
-gcc tested configs:
-arm64                               defconfig
-arm64                            allyesconfig
-arm                              allmodconfig
-arm                                 defconfig
-arm                              allyesconfig
-ia64                                defconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-csky                                defconfig
-nios2                            allyesconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-s390                                defconfig
-s390                             allmodconfig
-parisc                              defconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-s390                             allyesconfig
-sparc                               defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-riscv                             allnoconfig
-riscv                            allmodconfig
-riscv                            allyesconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                                  kexec
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                           rhel-8.3-syz
-x86_64                    rhel-8.3-kselftests
-x86_64                         rhel-8.3-kunit
+ Documentation/x86/x86_64/uefi.rst                 |   2 +-
+ arch/arm/configs/milbeaut_m10v_defconfig          |   1 -
+ arch/ia64/configs/bigsur_defconfig                |   1 -
+ arch/ia64/configs/generic_defconfig               |   1 -
+ arch/ia64/configs/gensparse_defconfig             |   1 -
+ arch/ia64/configs/tiger_defconfig                 |   1 -
+ arch/ia64/configs/zx1_defconfig                   |   1 -
+ arch/x86/configs/i386_defconfig                   |   1 -
+ arch/x86/configs/x86_64_defconfig                 |   1 -
+ drivers/firmware/efi/Kconfig                      |  12 -
+ drivers/firmware/efi/Makefile                     |   1 -
+ drivers/firmware/efi/efivars.c                    | 671 --------------------
+ tools/testing/selftests/kexec/kexec_common_lib.sh |  36 +-
+ 13 files changed, 3 insertions(+), 727 deletions(-)
+ delete mode 100644 drivers/firmware/efi/efivars.c
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.35.1
+
