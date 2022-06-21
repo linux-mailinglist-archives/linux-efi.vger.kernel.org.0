@@ -2,66 +2,54 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B9325537BC
-	for <lists+linux-efi@lfdr.de>; Tue, 21 Jun 2022 18:19:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DD62553981
+	for <lists+linux-efi@lfdr.de>; Tue, 21 Jun 2022 20:28:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353848AbiFUQTl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 21 Jun 2022 12:19:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39830 "EHLO
+        id S243045AbiFUS1y (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 21 Jun 2022 14:27:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353832AbiFUQTl (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 21 Jun 2022 12:19:41 -0400
+        with ESMTP id S241434AbiFUS1v (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 21 Jun 2022 14:27:51 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C116229341;
-        Tue, 21 Jun 2022 09:19:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE5A227CE4
+        for <linux-efi@vger.kernel.org>; Tue, 21 Jun 2022 11:27:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 65C12B81A68;
-        Tue, 21 Jun 2022 16:19:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D51BC341CD;
-        Tue, 21 Jun 2022 16:19:38 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 635BFB81B07
+        for <linux-efi@vger.kernel.org>; Tue, 21 Jun 2022 18:27:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2FE63C341C4;
+        Tue, 21 Jun 2022 18:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655828378;
-        bh=+aUKE0SFMaGezZlSeajtIkMvPvTFPzVipH+jo+TsWqA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=e8pnXNhu/Uvp7P+YdDcoB4ahSriETYOE2AN2yvBMsIZFSrhVhl6BsNUdy1eAHmq35
-         Lvt0EOwOjDXzfBsXdXgHofOREO0yiI2Xme5UGIUI8BUHmmbeMm45xnXFfhuNBfD7OI
-         UGfb6NrcwNh9rQyFkDg9Ubfc+rCvKOZFlCK5D2KNh2TL03grdoTcsO/OtTooEiZFL1
-         ZOFF6oP9d9QR2x1mhmEE+60BF2vIOBNSxWv8DQC1/Hul1ykH4oS9cT1Utolqqusp+M
-         5yQCGn6EC7PDcPXIMlNtpLhDE/4eR3CGw+/1z70T3QVBlKnX74i3OS6oxSUjmA5bWf
-         JVSTJjMr7Du1g==
-Received: by mail-lj1-f174.google.com with SMTP id d19so16038461lji.10;
-        Tue, 21 Jun 2022 09:19:37 -0700 (PDT)
-X-Gm-Message-State: AJIora+kgbTqTLlswsw8pj6TG5c1/nLL7LanptySa7DyNCWM0ZdDfoYQ
-        jCCgoPR0gzjYUYAAYyiIqvrkTdan7d2rO/ROSJs=
-X-Google-Smtp-Source: AGRyM1tC5ZyuRR6Qjr+zkCD7Q1NS2YCBKqcMBusMiPyh19mwiXS1NxFzEuOurJy0IUhaQMbG+flgP1Lz6wLFBF4dTdE=
-X-Received: by 2002:a05:651c:54c:b0:25a:641b:3aaa with SMTP id
- q12-20020a05651c054c00b0025a641b3aaamr8196677ljp.421.1655828376063; Tue, 21
- Jun 2022 09:19:36 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220617174851.1286026-1-ardb@kernel.org> <87bkunpv42.fsf@kernel.org>
-In-Reply-To: <87bkunpv42.fsf@kernel.org>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 21 Jun 2022 18:19:24 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHQribJA=JyQ9t_NPYmj3c6rdXn7W_TieXOULPF1RfOew@mail.gmail.com>
-Message-ID: <CAMj1kXHQribJA=JyQ9t_NPYmj3c6rdXn7W_TieXOULPF1RfOew@mail.gmail.com>
-Subject: Re: [PATCH 0/4] efivar: remove inappropriate uses of the efivar API
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        linux-input@vger.kernel.org, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com
-Content-Type: text/plain; charset="UTF-8"
+        s=k20201202; t=1655836068;
+        bh=FBWheTK/W7CNujSETBJE3ezqISpSkL1JYhuPy5GE5bc=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=McviW07VC4it5jW9fke6v4+NJwqm5JmfK7BfyNE1zUmE53N/SjhEPwpdg677fjcGv
+         lvgYYYLIsYZbWIRzqgOyZp5N4v9GMMSloOeRZGeNgtgI3+6Sd+V3z9q/+aHh4SJ63L
+         AAgbNW0N6EkNuU6mKyS81BCpFOqj9RYi53ximUBG5l2kOVUJXXHR/KMExz6ETaTvlv
+         AyR7Da++z8TYyU0Hw28XftRjGqNWjuvmS7llp2QBdQiCpVU1LVBodUsqXtPv3quKx2
+         eN4yysFbb51Rq5sTlhDCSjXv0NydNGLJ6kKxfRkjjOfVQyuZ8gAzjFezDXJxMPnOUW
+         7bmwuuscZhWCg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 1394FE73856;
+        Tue, 21 Jun 2022 18:27:48 +0000 (UTC)
+Subject: Re: [GIT PULL] EFI fixes for v5.19 #1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20220621161618.3787669-1-ardb@kernel.org>
+References: <20220621161618.3787669-1-ardb@kernel.org>
+X-PR-Tracked-List-Id: <linux-efi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20220621161618.3787669-1-ardb@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent-for-v5.19-1
+X-PR-Tracked-Commit-Id: aa6d1ed107eba26f49933216cffe797253914132
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: ca1fdab7fd27eb069df1384b2850dcd0c2bebe8d
+Message-Id: <165583606807.899.14245384258728980209.pr-tracker-bot@kernel.org>
+Date:   Tue, 21 Jun 2022 18:27:48 +0000
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     torvalds@linux-foundation.org, linux-efi@vger.kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -72,33 +60,15 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 20 Jun 2022 at 11:00, Kalle Valo <kvalo@kernel.org> wrote:
->
-> Ard Biesheuvel <ardb@kernel.org> writes:
->
-> > The efivar layer is a caching non-volatile variable store abstraction
-> > that is normally backed by EFI, but in some cases, might be backed by
-> > Google SMI firmware interfaces instead.
-> >
-> > It is mainly used by efivarfs and EFI pstore, both of which actually
-> > need the caching and abstraction properties. However, there are a few
-> > other occurrences where efivar is not necessary, or used in an invalid
-> > way. So let's fix this up, and remove some impediments to refactoring
-> > and cleaning up the efivars layer in the future.
-> >
-> > Assuming there are no objections to these changes, I intend to queue
-> > them up in the EFI tree fairly soon, so that ongoing work depending on
-> > these changes can continue as well.
-> >
->
-> [...]
->
-> >  drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c |  25 ++---
-> >  drivers/net/wireless/intel/iwlwifi/fw/uefi.c                |  96 ++++++------------
->
-> Feel free to take the wireless patches via your tree:
->
-> Acked-by: Kalle Valo <kvalo@kernel.org>
->
+The pull request you sent on Tue, 21 Jun 2022 18:16:18 +0200:
 
-Thanks, I've queued these up.
+> git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent-for-v5.19-1
+
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/ca1fdab7fd27eb069df1384b2850dcd0c2bebe8d
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
