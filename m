@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6656C553634
-	for <lists+linux-efi@lfdr.de>; Tue, 21 Jun 2022 17:36:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0394F553631
+	for <lists+linux-efi@lfdr.de>; Tue, 21 Jun 2022 17:36:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352126AbiFUPgl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 21 Jun 2022 11:36:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45856 "EHLO
+        id S1352198AbiFUPgs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 21 Jun 2022 11:36:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352100AbiFUPgj (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 21 Jun 2022 11:36:39 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D9E02A734;
-        Tue, 21 Jun 2022 08:36:39 -0700 (PDT)
+        with ESMTP id S1352122AbiFUPgl (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 21 Jun 2022 11:36:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55C312AC5D;
+        Tue, 21 Jun 2022 08:36:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BD050B81A3C;
-        Tue, 21 Jun 2022 15:36:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C356C341C0;
-        Tue, 21 Jun 2022 15:36:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CD973617B1;
+        Tue, 21 Jun 2022 15:36:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02DC9C341C4;
+        Tue, 21 Jun 2022 15:36:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655825796;
-        bh=56IF+p6ZRKtIMtoS9fAs8VmyAr/kQM9xHoUlBuj9S2A=;
+        s=k20201202; t=1655825799;
+        bh=KD/hF3zJ/eAmndtkBzYxCLXSh9ebX5LMntETgnfP0/4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ScW07YE5t3mYhd3WBlBt+RJSvGOwaS1mEb6NqRHuDd4h0bc2HuBncwi2AS/yRAHju
-         8b/miZl16XcEjkOcpUxQNCByOmOsy/4+349QdqmZDEEZZc928U5stZocmamGxp5pR8
-         KUqVsf+PEvKKOGG+3q2SN3jlb6Yq2OzoGHSinwyYAH9w42leRD9w1r6wZjJ5ZHGSNZ
-         NKr0vvsu2kjpd2s5ll/j69u9L0C4e0KTs/SEEL5ypBWMW8Faj7mLpfdObFHfyO2MrL
-         8atOYatu5gqHbtdHGeH4vSPE6oBUmXyRH65tIcsdQ6SVqR018bJsV3VSXwuPpJ3yF+
-         dx4dZVHAki0RQ==
+        b=TlPSpPmu3e30kgnDu69SM3B8HUTaIaXAPl/GYETdbHEVuTiCKn2dnSOvejeOneUL2
+         p7ALcCymGPjGpO6tvE0d7gHFePmWygemv7fN1HJCKAr7O5gcOHBTv3AOuTbI7o+hyA
+         0+FuEG5/5e/8vfTeRqqWPkQghEEPX7aFuDR1W0GgHs/z6KRJNoqkmuIqjyQb2B0QF8
+         jJEZxECyqEz5HUmbisuHKThc/Aex9WlW4VhGmUzWsc4AzTILS5LUEYYAojE3lGVnhc
+         ZIwSCKh1x8QzRmNPTm1ltKcV/RpBr6Pr2kwgIMGWwQjJZGe0oq/CNBeqDYGKnbAkcz
+         dRR3eg07kY0SQ==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -41,174 +41,264 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH v2 2/9] efi: vars: Don't drop lock in the middle of efivar_init()
-Date:   Tue, 21 Jun 2022 17:36:16 +0200
-Message-Id: <20220621153623.3786960-3-ardb@kernel.org>
+Subject: [PATCH v2 3/9] efi: vars: Add thin wrapper around EFI get/set variable interface
+Date:   Tue, 21 Jun 2022 17:36:17 +0200
+Message-Id: <20220621153623.3786960-4-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220621153623.3786960-1-ardb@kernel.org>
 References: <20220621153623.3786960-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5517; h=from:subject; bh=56IF+p6ZRKtIMtoS9fAs8VmyAr/kQM9xHoUlBuj9S2A=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBiseVqsbWXK1ba1qtaxOzy6beuyeIfsZcL6+fe4pEi OKlnrDuJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYrHlagAKCRDDTyI5ktmPJHwHDA C7jrT8oNH+DGZpJaHGRhGvkgr/ygN3T8jfqTaQiPumMFy6W6nWEUO2WANfAuTh0mHu++qhbIkSK+5Q sQivNL5EQfFr1OrNiE5v4MwQ3KT/Sy09PBS2C0zY6RNBeelDnCL+l/cZz+4lJ4lNt/f2KbTX5xtQ0n 1q7gzeFIgakpO/8h7UXF0ksnaOMfGmU5+DeF59azX+mMgoUzCB3zKTebM8iLu+ickN4wEmB62RRP6D xIBbxXglkNw3XBKMMXoaYslrjPR6hBkBi/RIPiTEf6NUxcK771BHbsM8LoDHfq0gXZHv1b20Pf5pLA Nk+oS9m+Tp/p7MqfEXLavFExoltxAwPAD09xlc+owjFu2thfMkDMMnjBkPXj2jGyuX0B/zwb5cJ1EI NO8ZVjYoNKWeOsAiKmk2/r+j09zrFJnI2lq4reNbCJc0Vz3MzBfXvugtaSbe70uXlVPWOLLPzfZPXN Q1IpB8wV/ooOrPfU2dLm+pV8M68c7PMzUaTk0kQTQlE/k=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7635; h=from:subject; bh=KD/hF3zJ/eAmndtkBzYxCLXSh9ebX5LMntETgnfP0/4=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBiseVrkn24VTgSrWc+EHPzY1wDUPYo3MkPh6frskhc mhCu0O2JAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYrHlawAKCRDDTyI5ktmPJN2KC/ 0QGS5WsXOEr+FSFjPu40oqgtd6gMe8FcuCOLFl6JP9ExUckt4PKkolh0HEYdNquxWnwDH4ZB71r0kJ cuBSHlp7j3S6OqRDVAjqnB4dbDv6TI4ORHD6ATV/GK32n2UA7TSS2i5RyOYx4tm7AZNEhvf7JlU1JY 4IbDHhoF0lxh3zsH/Ui3PZgWXUtLQQ3Tu5jBZTel1k2HlWg4RNJKimVLaYE7J+lcDMChgGW4ZHIb9A IxNBW+N1nw2XJGP70JZNhhZ4o65Y1AyuTQhzspBYpkzy4DsRF5MKPtLQ8A4o/QGvV0aUFwNe0ih1Xw 2SfzMcY6Pc+qj+A0b89SNQlF909iocbIp6zFYi7HPqp5CGHqJj6IVXjWDIycWkAYwv/econbJdljOo 1w2gXoTTMKbhy+3HSYd66wUrgj1949+TwKcm+LnDhSiVmiXsqgBQQdeHNd5UZ+gAwUMN5f6zQsybgn oaAFAsmrqTAfDwhNWUXvNqQ2OU1Hw6bjYYp+m2wST7DXE=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Even though the efivars_lock lock is documented as protecting the
-efivars->ops pointer (among other things), efivar_init() happily
-releases and reacquires the lock for every EFI variable that it
-enumerates. This used to be needed because the lock was originally a
-spinlock, which prevented the callback that is invoked for every
-variable from being able to sleep. However, releasing the lock could
-potentially invalidate the ops pointer, but more importantly, it might
-allow a SetVariable() runtime service call to take place concurrently,
-and the UEFI spec does not define how this affects an enumeration that
-is running in parallel using the GetNextVariable() runtime service,
-which is what efivar_init() uses.
+The current efivars layer is a jumble of list iterators, shadow data
+structures and safe variable manipulation helpers that really belong in
+the efivarfs pseudo file system once the obsolete sysfs access method to
+EFI variables is removed.
 
-In the meantime, the lock has been converted into a semaphore, and the
-only reason we need to drop the lock is because the efivarfs pseudo
-filesystem driver will otherwise deadlock when it invokes the efivars
-API from the callback to create the efivar_entry items and insert them
-into the linked list. (EFI pstore is affected in a similar way)
-
-So let's switch to helpers that can be used while the lock is already
-taken. This way, we can hold on to the lock throughout the enumeration.
+So split off a minimal efivar get/set variable API that reuses the
+existing efivars_lock semaphore to mediate access to the various runtime
+services, primarily to ensure that performing a SetVariable() on one CPU
+while another is calling GetNextVariable() in a loop to enumerate the
+contents of the EFI variable store does not result in surprises.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/efi-pstore.c |  7 ++-----
- drivers/firmware/efi/efivars.c    |  5 +----
- drivers/firmware/efi/vars.c       | 22 ++++++++++----------
- fs/efivarfs/super.c               |  6 ++----
- include/linux/efi.h               |  1 +
- 5 files changed, 17 insertions(+), 24 deletions(-)
+ drivers/firmware/efi/vars.c | 154 ++++++++++++++++++--
+ include/linux/efi.h         |  20 +++
+ 2 files changed, 164 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/firmware/efi/efi-pstore.c b/drivers/firmware/efi/efi-pstore.c
-index 7e771c56c13c..0d80cc7ff6ca 100644
---- a/drivers/firmware/efi/efi-pstore.c
-+++ b/drivers/firmware/efi/efi-pstore.c
-@@ -364,7 +364,6 @@ static int efi_pstore_callback(efi_char16_t *name, efi_guid_t vendor,
- 			       unsigned long name_size, void *data)
- {
- 	struct efivar_entry *entry;
--	int ret;
- 
- 	entry = kzalloc(sizeof(*entry), GFP_KERNEL);
- 	if (!entry)
-@@ -373,11 +372,9 @@ static int efi_pstore_callback(efi_char16_t *name, efi_guid_t vendor,
- 	memcpy(entry->var.VariableName, name, name_size);
- 	entry->var.VendorGuid = vendor;
- 
--	ret = efivar_entry_add(entry, &efi_pstore_list);
--	if (ret)
--		kfree(entry);
-+	__efivar_entry_add(entry, &efi_pstore_list);
- 
--	return ret;
-+	return 0;
- }
- 
- static int efi_pstore_update_entry(efi_char16_t *name, efi_guid_t vendor,
-diff --git a/drivers/firmware/efi/efivars.c b/drivers/firmware/efi/efivars.c
-index ea0bc39dc965..c19db0b35c0d 100644
---- a/drivers/firmware/efi/efivars.c
-+++ b/drivers/firmware/efi/efivars.c
-@@ -527,10 +527,7 @@ efivar_create_sysfs_entry(struct efivar_entry *new_var)
- 	}
- 
- 	kobject_uevent(&new_var->kobj, KOBJ_ADD);
--	if (efivar_entry_add(new_var, &efivar_sysfs_list)) {
--		efivar_unregister(new_var);
--		return -EINTR;
--	}
-+	__efivar_entry_add(new_var, &efivar_sysfs_list);
- 
- 	return 0;
- }
 diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
-index cae590bd08f2..146360e2f1cb 100644
+index 146360e2f1cb..41c82614a4b2 100644
 --- a/drivers/firmware/efi/vars.c
 +++ b/drivers/firmware/efi/vars.c
-@@ -450,9 +450,6 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
- 						&vendor_guid);
- 		switch (status) {
- 		case EFI_SUCCESS:
--			if (duplicates)
--				up(&efivars_lock);
--
- 			variable_name_size = var_name_strnsize(variable_name,
- 							       variable_name_size);
- 
-@@ -476,14 +473,6 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
- 				if (err)
- 					status = EFI_NOT_FOUND;
- 			}
--
--			if (duplicates) {
--				if (down_interruptible(&efivars_lock)) {
--					err = -EINTR;
--					goto free;
--				}
--			}
--
- 			break;
- 		case EFI_UNSUPPORTED:
- 			err = -EOPNOTSUPP;
-@@ -526,6 +515,17 @@ int efivar_entry_add(struct efivar_entry *entry, struct list_head *head)
+@@ -298,14 +298,10 @@ efivar_variable_is_removable(efi_guid_t vendor, const char *var_name,
  }
- EXPORT_SYMBOL_GPL(efivar_entry_add);
+ EXPORT_SYMBOL_GPL(efivar_variable_is_removable);
  
-+/**
-+ * __efivar_entry_add - add entry to variable list
-+ * @entry: entry to add to list
-+ * @head: list head
-+ */
-+void __efivar_entry_add(struct efivar_entry *entry, struct list_head *head)
-+{
-+	list_add(&entry->list, head);
-+}
-+EXPORT_SYMBOL_GPL(__efivar_entry_add);
+-static efi_status_t
+-check_var_size(u32 attributes, unsigned long size)
++efi_status_t check_var_size(u32 attributes, unsigned long size)
+ {
+ 	const struct efivar_operations *fops;
+ 
+-	if (!__efivars)
+-		return EFI_UNSUPPORTED;
+-
+ 	fops = __efivars->ops;
+ 
+ 	if (!fops->query_variable_store)
+@@ -313,15 +309,12 @@ check_var_size(u32 attributes, unsigned long size)
+ 
+ 	return fops->query_variable_store(attributes, size, false);
+ }
++EXPORT_SYMBOL_NS_GPL(check_var_size, EFIVAR);
+ 
+-static efi_status_t
+-check_var_size_nonblocking(u32 attributes, unsigned long size)
++efi_status_t check_var_size_nonblocking(u32 attributes, unsigned long size)
+ {
+ 	const struct efivar_operations *fops;
+ 
+-	if (!__efivars)
+-		return EFI_UNSUPPORTED;
+-
+ 	fops = __efivars->ops;
+ 
+ 	if (!fops->query_variable_store)
+@@ -329,6 +322,7 @@ check_var_size_nonblocking(u32 attributes, unsigned long size)
+ 
+ 	return fops->query_variable_store(attributes, size, true);
+ }
++EXPORT_SYMBOL_NS_GPL(check_var_size_nonblocking, EFIVAR);
+ 
+ static bool variable_is_present(efi_char16_t *variable_name, efi_guid_t *vendor,
+ 				struct list_head *head)
+@@ -1220,3 +1214,143 @@ int efivar_supports_writes(void)
+ 	return __efivars && __efivars->ops->set_variable;
+ }
+ EXPORT_SYMBOL_GPL(efivar_supports_writes);
 +
- /**
-  * efivar_entry_remove - remove entry from variable list
-  * @entry: entry to remove from list
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 15880a68faad..09dfa8362f50 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -155,10 +155,8 @@ static int efivarfs_callback(efi_char16_t *name16, efi_guid_t vendor,
- 		goto fail_inode;
- 	}
- 
--	efivar_entry_size(entry, &size);
--	err = efivar_entry_add(entry, &efivarfs_list);
--	if (err)
--		goto fail_inode;
-+	__efivar_entry_get(entry, NULL, &size, NULL);
-+	__efivar_entry_add(entry, &efivarfs_list);
- 
- 	/* copied by the above to local storage in the dentry. */
- 	kfree(name);
++/*
++ * efivar_lock() - obtain the efivar lock, wait for it if needed
++ * @return 0 on success, error code on failure
++ */
++int efivar_lock(void)
++{
++	if (down_interruptible(&efivars_lock))
++		return -EINTR;
++	if (!__efivars->ops) {
++		up(&efivars_lock);
++		return -ENODEV;
++	}
++	return 0;
++}
++EXPORT_SYMBOL_NS_GPL(efivar_lock, EFIVAR);
++
++/*
++ * efivar_lock() - obtain the efivar lock if it is free
++ * @return 0 on success, error code on failure
++ */
++int efivar_trylock(void)
++{
++	if (down_trylock(&efivars_lock))
++		 return -EBUSY;
++	if (!__efivars->ops) {
++		up(&efivars_lock);
++		return -ENODEV;
++	}
++	return 0;
++}
++EXPORT_SYMBOL_NS_GPL(efivar_trylock, EFIVAR);
++
++/*
++ * efivar_unlock() - release the efivar lock
++ */
++void efivar_unlock(void)
++{
++	up(&efivars_lock);
++}
++EXPORT_SYMBOL_NS_GPL(efivar_unlock, EFIVAR);
++
++/*
++ * efivar_get_variable() - retrieve a variable identified by name/vendor
++ *
++ * Must be called with efivars_lock held.
++ */
++efi_status_t efivar_get_variable(efi_char16_t *name, efi_guid_t *vendor,
++				 u32 *attr, unsigned long *size, void *data)
++{
++	return __efivars->ops->get_variable(name, vendor, attr, size, data);
++}
++EXPORT_SYMBOL_NS_GPL(efivar_get_variable, EFIVAR);
++
++/*
++ * efivar_get_next_variable() - enumerate the next name/vendor pair
++ *
++ * Must be called with efivars_lock held.
++ */
++efi_status_t efivar_get_next_variable(unsigned long *name_size,
++				      efi_char16_t *name, efi_guid_t *vendor)
++{
++	return __efivars->ops->get_next_variable(name_size, name, vendor);
++}
++EXPORT_SYMBOL_NS_GPL(efivar_get_next_variable, EFIVAR);
++
++/*
++ * efivar_set_variable_blocking() - local helper function for set_variable
++ *
++ * Must be called with efivars_lock held.
++ */
++static efi_status_t
++efivar_set_variable_blocking(efi_char16_t *name, efi_guid_t *vendor,
++			     u32 attr, unsigned long data_size, void *data)
++{
++	efi_status_t status;
++
++	if (data_size > 0) {
++		status = check_var_size(attr, data_size +
++					      ucs2_strsize(name, 1024));
++		if (status != EFI_SUCCESS)
++			return status;
++	}
++	return __efivars->ops->set_variable(name, vendor, attr, data_size, data);
++}
++
++/*
++ * efivar_set_variable_locked() - set a variable identified by name/vendor
++ *
++ * Must be called with efivars_lock held. If @nonblocking is set, it will use
++ * non-blocking primitives so it is guaranteed not to sleep.
++ */
++efi_status_t efivar_set_variable_locked(efi_char16_t *name, efi_guid_t *vendor,
++					u32 attr, unsigned long data_size,
++					void *data, bool nonblocking)
++{
++	efi_set_variable_t *setvar;
++	efi_status_t status;
++
++	if (!nonblocking)
++		return efivar_set_variable_blocking(name, vendor, attr,
++						    data_size, data);
++
++	/*
++	 * If no _nonblocking variant exists, the ordinary one
++	 * is assumed to be non-blocking.
++	 */
++	setvar = __efivars->ops->set_variable_nonblocking ?:
++		 __efivars->ops->set_variable;
++
++	if (data_size > 0) {
++		status = check_var_size_nonblocking(attr, data_size +
++							  ucs2_strsize(name, 1024));
++		if (status != EFI_SUCCESS)
++			return status;
++	}
++	return setvar(name, vendor, attr, data_size, data);
++}
++EXPORT_SYMBOL_NS_GPL(efivar_set_variable_locked, EFIVAR);
++
++/*
++ * efivar_set_variable() - set a variable identified by name/vendor
++ *
++ * Can be called without holding the efivars_lock. Will sleep on obtaining the
++ * lock, or on obtaining other locks that are needed in order to complete the
++ * call.
++ */
++efi_status_t efivar_set_variable(efi_char16_t *name, efi_guid_t *vendor,
++				 u32 attr, unsigned long data_size, void *data)
++{
++	efi_status_t status;
++
++	if (efivar_lock())
++		return EFI_ABORTED;
++
++	status = efivar_set_variable_blocking(name, vendor, attr, data_size, data);
++	efivar_unlock();
++	return status;
++}
++EXPORT_SYMBOL_NS_GPL(efivar_set_variable, EFIVAR);
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 53f64c14a525..56f04b6daeb0 100644
+index 56f04b6daeb0..c828ab6f0e2a 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
-@@ -1064,6 +1064,7 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
- 		void *data, bool duplicates, struct list_head *head);
+@@ -1099,6 +1099,26 @@ bool efivar_validate(efi_guid_t vendor, efi_char16_t *var_name, u8 *data,
+ bool efivar_variable_is_removable(efi_guid_t vendor, const char *name,
+ 				  size_t len);
  
- int efivar_entry_add(struct efivar_entry *entry, struct list_head *head);
-+void __efivar_entry_add(struct efivar_entry *entry, struct list_head *head);
- int efivar_entry_remove(struct efivar_entry *entry);
++int efivar_lock(void);
++int efivar_trylock(void);
++void efivar_unlock(void);
++
++efi_status_t efivar_get_variable(efi_char16_t *name, efi_guid_t *vendor,
++				 u32 *attr, unsigned long *size, void *data);
++
++efi_status_t efivar_get_next_variable(unsigned long *name_size,
++				      efi_char16_t *name, efi_guid_t *vendor);
++
++efi_status_t efivar_set_variable_locked(efi_char16_t *name, efi_guid_t *vendor,
++					u32 attr, unsigned long data_size,
++					void *data, bool nonblocking);
++
++efi_status_t efivar_set_variable(efi_char16_t *name, efi_guid_t *vendor,
++				 u32 attr, unsigned long data_size, void *data);
++
++efi_status_t check_var_size(u32 attributes, unsigned long size);
++efi_status_t check_var_size_nonblocking(u32 attributes, unsigned long size);
++
+ #if IS_ENABLED(CONFIG_EFI_CAPSULE_LOADER)
+ extern bool efi_capsule_pending(int *reset_type);
  
- int __efivar_entry_delete(struct efivar_entry *entry);
 -- 
 2.35.1
 
