@@ -2,65 +2,69 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23299553D8E
-	for <lists+linux-efi@lfdr.de>; Tue, 21 Jun 2022 23:23:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 451C4553DA3
+	for <lists+linux-efi@lfdr.de>; Tue, 21 Jun 2022 23:25:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355488AbiFUVXB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 21 Jun 2022 17:23:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37576 "EHLO
+        id S1356160AbiFUVZP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 21 Jun 2022 17:25:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355464AbiFUVWi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 21 Jun 2022 17:22:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0F7562F6;
-        Tue, 21 Jun 2022 14:12:29 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8EA076155D;
-        Tue, 21 Jun 2022 21:12:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDD8C341C4;
-        Tue, 21 Jun 2022 21:12:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655845949;
-        bh=nUYoRoex6w347HOwhaDxEO5t5c8d600lKv1dhQIfL5c=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ZbGRF/Y8Bn6KTBDQOCtPqsTiGZyLokKfBISfZJAG4yobQaKFvMV2Jck7Uyz14tUjw
-         W8SqMmRA/nqwnxrLPI1ASP0cBWkpUiVPCCXGoacD3d8Gis5eI4FjMH0jwDHal4aVij
-         gP7XFSac0HWyOg3tfsyz1dhmDLd6A4xiWC2Jwj6b1eOGWI+W5At3H/KYWL/+Mdqm6z
-         joY8UCbXj+v+fA2B0n27l/cB0SFv4tZ6LkJsnWgTTc0sgqKPmbz9QQLOeR5TrWuxkz
-         xrleY2ClSfYSEwyGccRtNLpEijg4US7s9tyzibRACrGJxdjxdpL8hzhL/GNhiNBWLo
-         ERboSqUl81VjQ==
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-101d2e81bceso11180349fac.0;
-        Tue, 21 Jun 2022 14:12:28 -0700 (PDT)
-X-Gm-Message-State: AJIora/yKFWUcduipDUo75V7CaCU9oPGBjW6m+y92yubfZ2KZQPSqWBC
-        EgKGkIsdBx2AZghFOu6E1DAtREHgS1uiYlJD5Yg=
-X-Google-Smtp-Source: AGRyM1tatOOl+GEd9ZOd7DehrkpsULz9y5U1aqhVWL3SL9NiTCcfADEG6C6z6SP1xp7bqTcqm4hJ4zAnDzQq+zbY6ow=
-X-Received: by 2002:a05:6870:d587:b0:101:dfd4:4cfa with SMTP id
- u7-20020a056870d58700b00101dfd44cfamr41237oao.126.1655845948158; Tue, 21 Jun
- 2022 14:12:28 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220621153623.3786960-1-ardb@kernel.org> <20220621153623.3786960-5-ardb@kernel.org>
- <202206211357.C66CD742E5@keescook>
-In-Reply-To: <202206211357.C66CD742E5@keescook>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 21 Jun 2022 23:12:17 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGPi+Cy-D8am8tr-rm8gbmUQ-G0bfibD3R3nx=rL7-XVw@mail.gmail.com>
-Message-ID: <CAMj1kXGPi+Cy-D8am8tr-rm8gbmUQ-G0bfibD3R3nx=rL7-XVw@mail.gmail.com>
-Subject: Re: [PATCH v2 4/9] efi: pstore: Omit efivars caching EFI varstore
- access layer
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        with ESMTP id S1356152AbiFUVY4 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 21 Jun 2022 17:24:56 -0400
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B63AE2F652
+        for <linux-efi@vger.kernel.org>; Tue, 21 Jun 2022 14:19:15 -0700 (PDT)
+Received: by mail-pg1-x532.google.com with SMTP id 68so8797219pgb.10
+        for <linux-efi@vger.kernel.org>; Tue, 21 Jun 2022 14:19:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=Pw6tOf0NPXvUgCcHpFOHSG/5Ay8ndP0eK1Ju1RYmRfI=;
+        b=U2W7vdfgAxIgUEg7l9O4E/VMMQlsLTmezTIDBqG5h6pjmmvxwDMZmZLarqOeb7Wje1
+         0xWyG8P2Z+hoG8iHH8gqVe3Wgq8s2we20AfndFGBGC3Y+zBgkbFAQesqeIvgKrLM1mO9
+         +iQCUR3ww0HBZXdoYbDfUrrIF7+gQau2zDz3s=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Pw6tOf0NPXvUgCcHpFOHSG/5Ay8ndP0eK1Ju1RYmRfI=;
+        b=KOe3gGINsxlUVZg2X+Z8PaWCPYKCPMtf4T46x3Km/oY6PnQF1RIimOtjXFasUEMOjH
+         50zA+7+YLwoL0v84P0Ar+GjE5ayMvMRsVI6t8dxLsQw4/7KVIHrLQopty+EsF73Et6Tn
+         89uWbsyCzQI9ggmaaxN2oedrZzOj6zAI3sL+dfn+OmSXToQnJVR752sAc70wINl8wYy5
+         yW8CmfudS1eKw6+jg6YrtVuXnyzlNNviUYtts5vwteOPIVlzoZTqCjzaBNqheeV1Zt+G
+         TcnAQ2TRUuQF/51ejQOmMnJ5RNFxXeAaU3leWNd/A8ShQugiKU+YfH/N2CKyD1ZjR+5X
+         nGpg==
+X-Gm-Message-State: AJIora+fOA5+vevfzJTUKUFvLt6PGxwZLWN5IbD19hFVvLeynZpmSnkS
+        pvFKIMMVx+qrSvHnx4xdA3IJxaSxSBbZCg==
+X-Google-Smtp-Source: AGRyM1tso6knQYUy+Fp/H+yAT+CIm2phikJ+bzB99yq1r6ctawOAnKOwSY68yKxnHNb3wtkcWgir0Q==
+X-Received: by 2002:a63:7f0a:0:b0:40c:7993:f177 with SMTP id a10-20020a637f0a000000b0040c7993f177mr16846264pgd.204.1655846355281;
+        Tue, 21 Jun 2022 14:19:15 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id q11-20020a056a00084b00b0051bc3a2355csm11905905pfk.64.2022.06.21.14.19.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jun 2022 14:19:15 -0700 (PDT)
+Date:   Tue, 21 Jun 2022 14:19:14 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Matthew Garrett <mjg59@srcf.ucam.org>,
         Peter Jones <pjones@redhat.com>,
         Tony Luck <tony.luck@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Subject: Re: [PATCH v2 1/9] pstore: Don't expose ECC metadata via pstore file
+ system
+Message-ID: <202206211402.1D0B5A4D7@keescook>
+References: <20220621153623.3786960-1-ardb@kernel.org>
+ <20220621153623.3786960-2-ardb@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220621153623.3786960-2-ardb@kernel.org>
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -69,27 +73,36 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 21 Jun 2022 at 23:00, Kees Cook <keescook@chromium.org> wrote:
->
-> On Tue, Jun 21, 2022 at 05:36:18PM +0200, Ard Biesheuvel wrote:
-> > Avoid the efivars layer and simply call the newly introduced EFI
-> > varstore helpers instead. This simplifies the code substantially, and
-> > also allows us to remove some hacks in the shared efivars layer that
-> > were added for efi-pstore specifically.
-> >
-> > Since we don't store the name of the associated EFI variable into each
-> > pstore record when enumerating them, we have to guess the variable name
-> > it was constructed from at deletion time, since we no longer keep a
-> > shadow copy of the variable store. To make this a bit more exact, store
-> > the CRC-32 of the ASCII name into the pstore record's ECC region so we
-> > can use it later to make an educated guess regarding the name of the EFI
-> > variable.
->
-> I wonder if pstore_record should have a "private" field for backends to
-> use? That seems like it solve the need for overloading the ecc field,
-> and allow for arbitrarily more information to be stored (i.e. store full
-> efi var name instead of an easily-colliding crc32?)
->
+On Tue, Jun 21, 2022 at 05:36:15PM +0200, Ard Biesheuvel wrote:
+> If a pstore record has its ecc_notice_size field set to >0, it means the
+> record's buffer has that many additional bytes appended to the end that
+> carry backend specific metadata, typically used for error correction.
+> 
+> Given that this is backend specific, and that user space cannot really
+> make sense of this metadata anyway, let's not expose it via the pstore
+> filesystem.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 
-We could easily add that - we'd just have to decide how to free the
-memory it points to.
+"ecc_notice_size" is actually describing the length of the string
+generated and appended by persistent_ram_ecc_string().
+
+I've been bothered by this string, though, as it confuses what was
+actually stored with additional lines. "Why does every entry end with a
+string about ECC?"
+
+I think it's more sensible to show to userspace the record "as stored". We
+already prepend some chunking details when a panic write may split the
+dump across multiple records, so if anyone needs this IN the userspace
+file contents again, it could move there.
+
+I'd rather ECC status be reported at boot, really. Given that nothing I
+can find[1] parses the ECC notice string, I think it'd be fine to just
+remove it from the string buffer entirely.
+
+-Kees
+
+[1] https://codesearch.debian.net/search?q=Corrected+bytes
+
+-- 
+Kees Cook
