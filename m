@@ -2,56 +2,65 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADED4556E21
-	for <lists+linux-efi@lfdr.de>; Wed, 22 Jun 2022 23:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8A6A556E71
+	for <lists+linux-efi@lfdr.de>; Thu, 23 Jun 2022 00:29:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359577AbiFVV7L (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 22 Jun 2022 17:59:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41948 "EHLO
+        id S230245AbiFVW3M (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 22 Jun 2022 18:29:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235179AbiFVV5q (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 22 Jun 2022 17:57:46 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C8EA40A02;
-        Wed, 22 Jun 2022 14:57:45 -0700 (PDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25MLqjO4025445;
-        Wed, 22 Jun 2022 21:57:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=h+uTqCXrf4FFxJFWfTluGUJzYCQR4/0b1sDhf+WiCxQ=;
- b=aAUAt1nPl3LvTj8FwbT3OsqPzQdf7Fv3O4WIZZkUNj4/Y7qZzpAFIU4kBHkKBO5Qrwik
- KSzS+0X9mT0/zHr40ts31zekuoGlmAh1GXxRxrjWvf+TFVM75pc5/uZAICdhvdVyKhcL
- RjI6z6LZoVsbLgTqvgP4DHzoG7AjQNjdIQMHl8a29C8p4G48bdHknQ+LUpeeC5/OTm0k
- mwnZgpVYEhVQf8/tg+0noVDXNaWCN7l5VpprqaOxc1OHtkxcOeU8KGRGFDjefMaVGNxP
- HhNqjQWkpeUhm2Px2CChtSavLu205zwy06F8Rx+GQOkdWjDE3mqmIFsa4mrarabs3ORy 5A== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gvbcs842e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 22 Jun 2022 21:57:19 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-        by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25MLqKwn002781;
-        Wed, 22 Jun 2022 21:57:16 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-        by ppma03ams.nl.ibm.com with ESMTP id 3gs6b8x8h4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 22 Jun 2022 21:57:16 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25MLvD2i19595730
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 22 Jun 2022 21:57:13 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 1CA3FA4051;
-        Wed, 22 Jun 2022 21:57:13 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id B35F5A4040;
-        Wed, 22 Jun 2022 21:57:09 +0000 (GMT)
-Received: from li-4b5937cc-25c4-11b2-a85c-cea3a66903e4.ibm.com.com (unknown [9.211.125.38])
-        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Wed, 22 Jun 2022 21:57:09 +0000 (GMT)
-From:   Nayna Jain <nayna@linux.ibm.com>
-To:     linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org
+        with ESMTP id S234702AbiFVW3K (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 22 Jun 2022 18:29:10 -0400
+Received: from sonic316-27.consmr.mail.ne1.yahoo.com (sonic316-27.consmr.mail.ne1.yahoo.com [66.163.187.153])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EE342FE55
+        for <linux-efi@vger.kernel.org>; Wed, 22 Jun 2022 15:29:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1655936948; bh=dZC6eUKWDJPOTz/ILqg/qfRTRRpuLgPdjkd8hAWc1/Q=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=gmA5qq8KBrWCdVlEiApeNXxhc7d26NhcZizNy2hTxaXzMAdBF7Pm+zzwAd+J04rb7xiUsRQuggGNLlQdBsYFth7QVxfZ1cvk9zlBrWgafE55gQgKuVqdapm3eqHpuVuuDA4Keir38vy16T5roVbsgMgVeVtIU9WgLzGa8k/sfNCcO+jmGwdGHTcIMzx4m4D6Fx8sQY0u4nzRdihhAlgKZ5MPUy57Gvrp83z0oD+S16u6zK78CA0Sx0yRoIYoASRhUQPMpUsYReJTwObuduZQjXMcxhp+5dKt71MCeKy6ZJHWTiOHXA9DKUa4lzXW3gBV83yhIeFvQMkFUdcVLzUzJA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1655936948; bh=eWvgXRw/NN9Soa6GuLG55pF5QCgnCTIj2Opi7yZiQ9H=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=VawDe6+LVHybt/oRwkcXYQviRKqUlss8RY/YPnDkrsXC54hKT2oo7lUamyL6z+91wRQcU5dsXLelKFJn0yODLt6BO+fRBmAvEsK0JzSkULmhVi6l+0cSx29AmQ8bVhpcv/b9qO8Hxg15n4thxyv1CwW71GTAl2eC9rg6kWLTHF+HtsNRxwv3FKmS1LqSVjV3yyTri1CxkWffPlwvRKjCQ5aZN16HkI6k2wqvuPJVo4MVP1Op2eOAHDSd+RRyFVL/v7eOZb4hLRRrjBfm7MJ6pZk0O9uYLu8WJBr9Gcyul9/Cwda1quYO8jvqltiPRzq34/U1bAtCQlTm2Upc8JmAaQ==
+X-YMail-OSG: x72rNU0VM1nEYZaFdpF0mO.I7gF2rRQ4WqrLnJClgRUeN7S5lpig9biLmMI1dqM
+ xx2i1dL5JGPVyEOqLlfgaEVf0JNMh5gtoHY3AtVJBfZ3wvhmQXMGNKC1wGSjElot2LDaX1reSvrG
+ Nc8Ntl8MfqSP5PwJCQbA2SCaN62cKdboWAgzYuo7Jp0KK_fuCoWu1LSFRVPBgMRApIWRtbqXapNi
+ hm1PFMO8x3JK.t40V8ZL9Fb9ZtQdE0soRWMsfgLhyehdcinj1SNFjKEAoDuV4Ku4Z94tjnc29UJH
+ sjycwX0zheeUaJGWsIZiuERfBBhpRyxXhlCS1zvjwaKz5bKWQFgL6BxA9_7ne.4ukC_Ty3_.ZepB
+ CUHPYAWaKiYJhW9fLlOU3Rxw3ksXccsi_r1YophLPv.oxGA2GoMO7WGT1yovCFrIDPlW.XXjuB17
+ YM1HeiNcLTBV4T2hZxNQWQmMd8TfFAFfjQrbqe37XztM8yx4BSe8tIdorgZAKQlBNmMWd4USPlYI
+ VPe4wZFDzsWCPgFKpdlXB4dxEw3mp_uu6Wx.s_4DPszkQ_VOLTcZfRNWHLhtAyxFyHeTFntdJSyg
+ jYCz8.XeW.Ve.fosLlu6InV1uLkEvQRVwuIjN7Q5AIQrh5ZcVuSX2_fnEnTo6A4G6W4BVhbD1ex2
+ f0rhxp27pDz.m5rvYbH8WRUPX2mgI5mU5eSsRCSlS5EUxULLgoTMMpcY0Ut9Phlla3Ibdd6r1CB1
+ DfoZXIfSl1IQJKTVGd5mjwJ_Owrv8bTSz5Y4K7qQwCiGHw9FtjM4JogXIm4sKXtr8fpPRhLyfut0
+ eAxQv9HDr1MJIjbhoAUTGLG2dxIxEb7z5iTVE42i9_3ke2E5f1Lbk8tlCjdKZeV959XXIVgl2W8l
+ OWDpey49qZTW.iHRVbx4bv1OBxaMpaFR56Ymczk04TaDJNx1Bz7woC2AbgqS4xvufzSpJtKFyGFz
+ yLwNHPOO3kk1N6dihGoA3wreDDJ0gpFi.AiOlgFPQsCbFpUTOAvw3x16g1tIocaIfmDNwLJnXjEj
+ 8i2LxaUrRh6_96mOS1ki9bXIqZpIUas3kWR68dJUDB0tmIwOYG8XOD3EKGjFW1LVsqXCbDAToxoR
+ JvCPWGUwfTWaSZp4Ge_AvY8Xff9wP7OyuFaoFZ2agwlKOcXyQJR5mbxhNP5PrGg.1Wep3g1tv5AW
+ Vr87U2MmeFoL4zF.mgJoMCYjk1fwwJH15.9sqjXmluUUq9MKq0EOEZgt6z8Y4O7C6YydjILezgcE
+ VB426gpMht7VeA0Dy1_c_FME3mOhIfWkemP65OJDnRkY1bDTBgdkqEfzzjGgoDvdCKNR40J2QuJ5
+ As83a6J4fK9z_eJzu18MQaiEPbBbtB0YqkCMPJKrnFLnu1g4wEUwS_div48o0Lz_fYhfwQ_gccjQ
+ XwrYWPYHTzbUr54Knfyv59VTdeDfLIYpy9vWVtaD4Kghc67.8uyMa8YSB62A9xYe0ifVh2Vn3lUc
+ rhVPJhz5b94tE3lHGDNWMTTjdYXkAVhfEoX0OH8kFBew74IOVTlSV6bIlP_ILHEQMHJr8FRiiBIr
+ dHVxlTTY07kxaZUjf7Xk1.gOfRCcte4ynMEEQhHBYQ9Ru3z6rjOSKa8fk9cUs4sR3QWwbx6dAtZJ
+ vpTKeKpyS3LSDenPo.YYGH.ZllD.T4kj2i_aHIYbx.9HQwvZ1dUebYTNN50XazgnQp1a4k1F3hRU
+ zQU_qkp25XKFzgBehVSrA16kRsBEbZvbmNpNW78AIW1wxERQxC4Dsjx0Gem5SU4k1Wi3.5WqSonX
+ S2tY1ckr5sJw44WgBtO4GH3B2krIO_KOAJYAC425FY6iJCF03.TI2jxr5ZGzFf4xDfcac4n.uXxG
+ uU0X49ThlUAwj3vT5vMkZiNcKgv.xpa1Oq_q5RYZ63dv5p_lX2VHPsu8zm_It2pCIg9TY4LhdcnZ
+ DIeSXwHeAKdESrASswRNTGY2irc.RGq0ZA.OKD.A4M0HDXMeo1u5JDtlIVMw9zMFzmtIBkv2f.12
+ SyDk0wFRY81wdx9mdPFdj5GsyC040eMEEKeqce5aRkFhpHNAGe_mEZD0dcParvZNnlZpZ5s1P5Mu
+ 79uGXcrBVPN4Twq5E51IibEZgxWZ.u01LmjIwZzl8of4UlLLa0j0yePwwxBfOOHle5K7dM1bzdJF
+ q8cpzfyobvhkq8qDvwKXU3isaaWRErmryWIWpZqYrEG_Aj.qthdDgZadVLUBG7_spxZutDMSMQiT
+ Qo0pb.AzxdbOh1ExfblvSmmboJBPHHKSabQ2AR9lZ75Csbo0qcWQJ7Lz2b91mQHUgTd4-
+X-Sonic-MF: <casey@schaufler-ca.com>
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.ne1.yahoo.com with HTTP; Wed, 22 Jun 2022 22:29:08 +0000
+Received: by hermes--canary-production-bf1-8bb76d6cf-xkxwt (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 4ef53ffbd9b7aee469fc3bb4f33f3a85;
+          Wed, 22 Jun 2022 22:29:03 +0000 (UTC)
+Message-ID: <e5399b47-5382-99e6-9a79-c0947a696917@schaufler-ca.com>
+Date:   Wed, 22 Jun 2022 15:29:01 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [RFC PATCH v2 2/3] fs: define a firmware security filesystem
+ named fwsecurityfs
+Content-Language: en-US
+To:     Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-fsdevel@vger.kernel.org
 Cc:     linux-efi@vger.kernel.org,
         linux-security-module <linux-security-module@vger.kernel.org>,
         linux-kernel@vger.kernel.org,
@@ -63,425 +72,32 @@ Cc:     linux-efi@vger.kernel.org,
         Dave Hansen <dave.hansen@intel.com>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
-        Nayna Jain <nayna@linux.ibm.com>
-Subject: [RFC PATCH v2 3/3] powerpc/pseries: expose authenticated variables stored in LPAR PKS
-Date:   Wed, 22 Jun 2022 17:56:48 -0400
-Message-Id: <20220622215648.96723-4-nayna@linux.ibm.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20220622215648.96723-1-nayna@linux.ibm.com>
+        Casey Schaufler <casey@schaufler-ca.com>
 References: <20220622215648.96723-1-nayna@linux.ibm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: uPe6-Ern24Q0dEX6STb0zo-EtHatNIBI
-X-Proofpoint-ORIG-GUID: uPe6-Ern24Q0dEX6STb0zo-EtHatNIBI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-06-22_08,2022-06-22_03,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
- mlxscore=0 priorityscore=1501 mlxlogscore=999 phishscore=0 malwarescore=0
- impostorscore=0 clxscore=1015 lowpriorityscore=0 suspectscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206220097
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+ <20220622215648.96723-3-nayna@linux.ibm.com>
+From:   Casey Schaufler <casey@schaufler-ca.com>
+In-Reply-To: <20220622215648.96723-3-nayna@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.20280 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-PowerVM Guest Secure boot feature need to expose firmware managed
-secure variables for user management. These variables store keys for
-grub/kernel verification and also corresponding denied list.
+On 6/22/2022 2:56 PM, Nayna Jain wrote:
+> securityfs is meant for linux security subsystems to expose policies/logs
+> or any other information. However, there are various firmware security
+> features which expose their variables for user management via kernel.
+> There is currently no single place to expose these variables. Different
+> platforms use sysfs/platform specific filesystem(efivarfs)/securityfs
+> interface as find appropriate. Thus, there is a gap in kernel interfaces
+> to expose variables for security features.
 
-Expose these variables to the userpace via fwsecurityfs.
-
-Example:
-
-Example:
-
-# cd /sys/firmware/security/secvars
-
-# pwd
-/sys/firmware/security/secvars
-
-# cat /tmp/PK.bin > PK
-
-# ls -l
-total 0
--rw-r--r-- 1 root root 2497 Jun 22 08:34 PK
-
-# hexdump -C PK
-00000000  00 00 00 00 00 08 00 00  a1 59 c0 a5 e4 94 a7 4a  |.........Y.....J|
-00000010  87 b5 ab 15 5c 2b f0 72  3f 03 00 00 00 00 00 00  |....\+.r?.......|
-00000020  23 03 00 00 ca 18 1d 1c  01 7d eb 11 9a 71 08 94  |#........}...q..|
-00000030  ef 31 fb e4 30 82 03 0f  30 82 01 f7 a0 03 02 01  |.1..0...0.......|
-00000040  02 02 14 22 ab 18 2f d5  aa dd c5 ba 98 27 60 26  |..."../......'`&|
-00000050  f1 63 89 54 4c 52 d9 30  0d 06 09 2a 86 48 86 f7  |.c.TLR.0...*.H..|
-...
-
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/Kconfig        |  17 ++
- arch/powerpc/platforms/pseries/plpks/Makefile |   2 +
- .../pseries/plpks/fwsecurityfs_arch.c         |  16 ++
- .../platforms/pseries/plpks/internal.h        |  18 ++
- .../powerpc/platforms/pseries/plpks/secvars.c | 239 ++++++++++++++++++
- include/linux/fwsecurityfs.h                  |   4 +
- 6 files changed, 296 insertions(+)
- create mode 100644 arch/powerpc/platforms/pseries/plpks/fwsecurityfs_arch.c
- create mode 100644 arch/powerpc/platforms/pseries/plpks/internal.h
- create mode 100644 arch/powerpc/platforms/pseries/plpks/secvars.c
-
-diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
-index 6c1ca487103f..9c52095e20c4 100644
---- a/arch/powerpc/platforms/pseries/Kconfig
-+++ b/arch/powerpc/platforms/pseries/Kconfig
-@@ -152,6 +152,23 @@ config PSERIES_PLPKS
- 	  config to enable operating system interface to hypervisor to
- 	  access this space.
- 
-+config PSERIES_FWSECURITYFS_ARCH
-+	depends on FWSECURITYFS
-+	bool "Support fwsecurityfs for pseries"
-+	help
-+	  Enable fwsecuirtyfs arch specific code. This would initialize
-+	  the firmware security filesystem with initial platform specific
-+	  structure.
-+
-+config PSERIES_PLPKS_SECVARS
-+	depends on PSERIES_PLPKS
-+	select PSERIES_FWSECURITYFS_ARCH
-+	tristate "Support for secvars"
-+	help
-+	  This interface exposes authenticated variables stored in the LPAR
-+	  Platform KeyStore using fwsecurityfs interface.
-+	  If you are unsure how to use it, say N.
-+
- config PAPR_SCM
- 	depends on PPC_PSERIES && MEMORY_HOTPLUG && LIBNVDIMM
- 	tristate "Support for the PAPR Storage Class Memory interface"
-diff --git a/arch/powerpc/platforms/pseries/plpks/Makefile b/arch/powerpc/platforms/pseries/plpks/Makefile
-index e651ace920db..ff3d4b4cd3d7 100644
---- a/arch/powerpc/platforms/pseries/plpks/Makefile
-+++ b/arch/powerpc/platforms/pseries/plpks/Makefile
-@@ -5,3 +5,5 @@
- #
- 
- obj-$(CONFIG_PSERIES_PLPKS)  += plpks.o
-+obj-$(CONFIG_PSERIES_FWSECURITYFS_ARCH) += fwsecurityfs_arch.o
-+obj-$(CONFIG_PSERIES_PLPKS_SECVARS) += secvars.o
-diff --git a/arch/powerpc/platforms/pseries/plpks/fwsecurityfs_arch.c b/arch/powerpc/platforms/pseries/plpks/fwsecurityfs_arch.c
-new file mode 100644
-index 000000000000..6ccdfe4000a6
---- /dev/null
-+++ b/arch/powerpc/platforms/pseries/plpks/fwsecurityfs_arch.c
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * POWER LPAR Platform KeyStore (PLPKS)
-+ * Copyright (C) 2022 IBM Corporation
-+ * Author: Nayna Jain <nayna@linux.ibm.com>
-+ *
-+ */
-+
-+#include <linux/fwsecurityfs.h>
-+
-+#include "internal.h"
-+
-+int arch_fwsecurity_init(void)
-+{
-+	return plpks_secvars_init();
-+}
-diff --git a/arch/powerpc/platforms/pseries/plpks/internal.h b/arch/powerpc/platforms/pseries/plpks/internal.h
-new file mode 100644
-index 000000000000..6061ffd37677
---- /dev/null
-+++ b/arch/powerpc/platforms/pseries/plpks/internal.h
-@@ -0,0 +1,18 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (C) 2022 IBM Corporation
-+ * Author: Nayna Jain <nayna@linux.ibm.com>
-+ *
-+ */
-+#ifndef PKS_FWSEC_INTERNAL
-+#define PKS_FWSEC_INTERNAL
-+
-+#ifdef CONFIG_PSERIES_PLPKS_SECVARS
-+int plpks_secvars_init(void);
-+#else
-+int plpks_secvars_init(void)
-+{
-+	return 0;
-+}
-+#endif
-+#endif
-diff --git a/arch/powerpc/platforms/pseries/plpks/secvars.c b/arch/powerpc/platforms/pseries/plpks/secvars.c
-new file mode 100644
-index 000000000000..8852cb8f2f3c
---- /dev/null
-+++ b/arch/powerpc/platforms/pseries/plpks/secvars.c
-@@ -0,0 +1,239 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * POWER LPAR Platform KeyStore (PLPKS)
-+ * Copyright (C) 2022 IBM Corporation
-+ * Author: Nayna Jain <nayna@linux.ibm.com>
-+ *
-+ */
-+
-+#include <linux/fs.h>
-+#include <linux/fs_context.h>
-+#include <linux/mount.h>
-+#include <linux/pagemap.h>
-+#include <linux/init.h>
-+#include <linux/namei.h>
-+#include <linux/ctype.h>
-+#include <linux/fwsecurityfs.h>
-+#include <asm/plpks.h>
-+
-+#include "internal.h"
-+
-+static struct dentry *secvar_dir;
-+
-+static const char * const names[] = {
-+	"PK",
-+	"KEK",
-+	"db",
-+	"dbx",
-+	"grubdb",
-+	"sbat",
-+	"moduledb",
-+	"trustedcadb",
-+	NULL
-+};
-+
-+static int validate_name(char *name)
-+{
-+	int i = 0;
-+
-+	while (names[i] != NULL) {
-+		if ((strlen(names[i]) == strlen(name))
-+		&& (strncmp(name, names[i], strlen(names[i])) == 0))
-+			return 0;
-+		i++;
-+	}
-+	pr_err("Invalid name, allowed ones are (dbx,grubdb,sbat,moduledb,trustedcadb)\n");
-+
-+	return -EINVAL;
-+}
-+
-+static u32 get_policy(char *name)
-+{
-+	if ((strncmp(name, "PK", 2) == 0)
-+	|| (strncmp(name, "KEK", 3) == 0)
-+	|| (strncmp(name, "db", 2) == 0)
-+	|| (strncmp(name, "dbx", 3) == 0)
-+	|| (strncmp(name, "grubdb", 6) == 0)
-+	|| (strncmp(name, "sbat", 4) == 0))
-+		return (WORLDREADABLE & SIGNEDUPDATE);
-+	else
-+		return SIGNEDUPDATE;
-+}
-+
-+static ssize_t plpks_secvar_file_write(struct file *file,
-+				     const char __user *userbuf,
-+				     size_t count, loff_t *ppos)
-+{
-+	struct plpks_var var;
-+	void *data;
-+	struct inode *inode = file->f_mapping->host;
-+	u16 datasize = count;
-+	ssize_t bytes;
-+
-+	data = memdup_user(userbuf, datasize);
-+	if (IS_ERR(data))
-+		return PTR_ERR(data);
-+
-+	var.component = NULL;
-+	var.name = file->f_path.dentry->d_iname;
-+	var.namelen = strlen(var.name);
-+	var.policy = get_policy(var.name);
-+	var.datalen = datasize;
-+	var.data = data;
-+	bytes = plpks_signed_update_var(var);
-+
-+	if (bytes) {
-+		pr_err("Update of the variable failed with error %ld\n", bytes);
-+		goto out;
-+	}
-+
-+	inode_lock(inode);
-+	i_size_write(inode, datasize);
-+	inode->i_mtime = current_time(inode);
-+	inode_unlock(inode);
-+
-+	bytes = count;
-+out:
-+	kfree(data);
-+
-+	return bytes;
-+
-+}
-+
-+static ssize_t plpks_secvar_file_read(struct file *file, char __user *userbuf,
-+				    size_t count, loff_t *ppos)
-+{
-+	struct plpks_var var;
-+	char *out;
-+	u32 outlen;
-+	int rc;
-+	size_t size;
-+
-+	var.name = file->f_path.dentry->d_iname;
-+	var.namelen = strlen(var.name);
-+	var.component = NULL;
-+	rc = plpks_read_os_var(&var);
-+	if (rc) {
-+		pr_err("Error reading object %d\n", rc);
-+		return rc;
-+	}
-+
-+	outlen = sizeof(var.policy) + var.datalen;
-+	out = kzalloc(outlen, GFP_KERNEL);
-+	memcpy(out, &var.policy, sizeof(var.policy));
-+
-+	memcpy(out + sizeof(var.policy), var.data, var.datalen);
-+
-+	size = simple_read_from_buffer(userbuf, count, ppos,
-+				       out, outlen);
-+	kfree(out);
-+	return size;
-+}
-+
-+
-+static const struct file_operations plpks_secvar_file_operations = {
-+	.open   = simple_open,
-+	.read   = plpks_secvar_file_read,
-+	.write  = plpks_secvar_file_write,
-+	.llseek = no_llseek,
-+};
-+
-+static int plpks_secvar_create(struct user_namespace *mnt_userns, struct inode *dir,
-+			     struct dentry *dentry, umode_t mode, bool excl)
-+{
-+	int namelen, i = 0;
-+	char *varname;
-+	int rc = 0;
-+
-+	namelen = dentry->d_name.len;
-+
-+	varname = kzalloc(namelen + 1, GFP_KERNEL);
-+	if (!varname)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < namelen; i++)
-+		varname[i] = dentry->d_name.name[i];
-+	varname[i] = '\0';
-+
-+	rc = validate_name(varname);
-+	if (rc)
-+		goto out;
-+
-+	rc = validate_name(varname);
-+	if (rc)
-+		goto out;
-+
-+	rc = fwsecurityfs_create_file(varname, S_IFREG|0644, 0, secvar_dir,
-+				      dentry, &plpks_secvar_file_operations);
-+	if (rc)
-+		pr_err("Error creating file\n");
-+
-+out:
-+	kfree(varname);
-+
-+	return rc;
-+}
-+
-+static const struct inode_operations plpks_secvar_dir_inode_operations = {
-+	.lookup = simple_lookup,
-+	.create = plpks_secvar_create,
-+};
-+
-+static int plpks_fill_secvars(struct super_block *sb)
-+{
-+	struct plpks_var *var = NULL;
-+	int err;
-+	int i = 0;
-+
-+	while (names[i] != NULL) {
-+		var = kzalloc(sizeof(struct plpks_var), GFP_KERNEL);
-+		var->name = (char *)names[i];
-+		var->namelen = strlen(names[i]);
-+		pr_debug("name is %s\n", var->name);
-+		var->component = NULL;
-+		i++;
-+		err = plpks_read_os_var(var);
-+		if (err) {
-+			kfree(var);
-+			continue;
-+		}
-+
-+		err = fwsecurityfs_create_file(var->name, S_IFREG|0644,
-+					       var->datalen, secvar_dir,
-+					       NULL,
-+					       &plpks_secvar_file_operations);
-+
-+		kfree(var);
-+		if (err) {
-+			pr_err("Error creating file\n");
-+			break;
-+		}
-+	}
-+	return  err;
-+};
-+
-+int plpks_secvars_init(void)
-+{
-+	int error;
-+
-+	struct super_block *sb;
-+
-+	secvar_dir = fwsecurityfs_create_dir("secvars", S_IFDIR | 0755, NULL,
-+					     &plpks_secvar_dir_inode_operations);
-+	if (IS_ERR(secvar_dir)) {
-+		int ret = PTR_ERR(secvar_dir);
-+
-+		if (ret != -ENODEV)
-+			pr_err("Unable to create integrity sysfs dir: %d\n",
-+					ret);
-+		secvar_dir = NULL;
-+		return ret;
-+	}
-+
-+	sb = fwsecurityfs_get_superblock();
-+	error = plpks_fill_secvars(sb);
-+	if (error)
-+		pr_err("Filling secvars failed\n");
-+
-+	return 0;
-+};
-diff --git a/include/linux/fwsecurityfs.h b/include/linux/fwsecurityfs.h
-index c079ce939f42..d5fd51aa6322 100644
---- a/include/linux/fwsecurityfs.h
-+++ b/include/linux/fwsecurityfs.h
-@@ -21,9 +21,13 @@ struct dentry *fwsecurityfs_create_dir(const char *name, umode_t mode,
- 				       const struct inode_operations *iops);
- int fwsecurityfs_remove_dir(struct dentry *dentry);
- 
-+#ifdef CONFIG_PSERIES_FWSECURITYFS_ARCH
-+int arch_fwsecurity_init(void);
-+#else
- static int arch_fwsecurity_init(void)
- {
- 	return 0;
- }
-+#endif
- 
- #endif /* _FWSECURITYFS_H_ */
--- 
-2.27.0
+Why not put the firmware entries under /sys/kernel/security/firmware?
 
