@@ -2,261 +2,208 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD6CC555523
-	for <lists+linux-efi@lfdr.de>; Wed, 22 Jun 2022 21:59:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B4BE556E0A
+	for <lists+linux-efi@lfdr.de>; Wed, 22 Jun 2022 23:57:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376871AbiFVT7C (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 22 Jun 2022 15:59:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37070 "EHLO
+        id S232045AbiFVV5m (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 22 Jun 2022 17:57:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347203AbiFVT7B (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 22 Jun 2022 15:59:01 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96A0E2F660;
-        Wed, 22 Jun 2022 12:58:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655927938; x=1687463938;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=/AkwmRb71k4NSPIVIddCWDYPziSccddt8BBoov0zW9c=;
-  b=HCbR0t8H227ex0h5xoXchTVpXzTT0GKm1sO1f5C5ExtLEa9NpS2AW7Rx
-   Hyyc58mc6J3+uHQyfrS0+/inE8YAYBynI8srmeJhZh1ot6A4d2/CgvVKO
-   zd/FODI45XUeeCdEUFDoer2dom6p2YWWz4PpCjH8USadiwqfUM5IE68tt
-   4tPNM3oMCinARLz2pjtwHBmGLpBgH0c0worDh7BJ898TCdjF11EFq9Mys
-   mMoh0IwIzemkgLEiJpB0YhSuU65HAI1lWhPzJSgZ4RFBjv8PPXabJoMvT
-   MibRSdo8yuguNa3+zx7GssXg6oIKkemBE7nufPxOtNEPe8N2wpfE7HPeG
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10386"; a="278079717"
-X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
-   d="scan'208";a="278079717"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 12:58:58 -0700
-X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
-   d="scan'208";a="677723423"
-Received: from bshakya-mobl.amr.corp.intel.com (HELO [10.212.188.76]) ([10.212.188.76])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 12:58:56 -0700
-Message-ID: <0f139dac-dabf-d6c0-21cf-e680ff2bddf6@intel.com>
-Date:   Wed, 22 Jun 2022 12:58:36 -0700
+        with ESMTP id S229794AbiFVV5l (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 22 Jun 2022 17:57:41 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB78640A02;
+        Wed, 22 Jun 2022 14:57:40 -0700 (PDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25MLPvrW013871;
+        Wed, 22 Jun 2022 21:57:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=wNrQVEVaFcDMWmqDST9SZuYibDEqKfSUZp7T+Wo55Ac=;
+ b=G2u+N0OgeVVS8kzXrD4OajoJy1zGHoZg8PXfuSlx38UTYBP1e83uWZmCjNA4Is4j/5Nu
+ cZSQ9Ft7AkyrVfLZe1uWpdQ7PT0zDv+ILR0dQYjKEopnetCS7Jw3WygGTEEGxdzVxKMx
+ bW0sYVM5LEYXLEi6zhrDxPBDmBMZGnJ5QgRi1co0/b4J5G0URJAe/ruSPONt4j5B+uJL
+ xFtvpASaNBQso0snWI2t83Z2IzARV0k6V0YJy3C61BfSX4c6A7juaLALGtMm+b4+hFoa
+ ohXsKsOo8SXl4h4caRJM8RGorZ2Ihq6ClYS+KtRMegSTJkKnIk50WmzyaIDzUOetVBZ/ JA== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gvb08gsc1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 22 Jun 2022 21:57:07 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+        by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25MLqKwm002781;
+        Wed, 22 Jun 2022 21:57:05 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+        by ppma03ams.nl.ibm.com with ESMTP id 3gs6b8x8h1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 22 Jun 2022 21:57:05 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25MLuEX912714340
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 22 Jun 2022 21:56:14 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B8240A4040;
+        Wed, 22 Jun 2022 21:57:01 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 4158EA404D;
+        Wed, 22 Jun 2022 21:56:58 +0000 (GMT)
+Received: from li-4b5937cc-25c4-11b2-a85c-cea3a66903e4.ibm.com.com (unknown [9.211.125.38])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed, 22 Jun 2022 21:56:58 +0000 (GMT)
+From:   Nayna Jain <nayna@linux.ibm.com>
+To:     linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org
+Cc:     linux-efi@vger.kernel.org,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        George Wilson <gcwilson@linux.ibm.com>, gjoyce@ibm.com,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Nayna Jain <nayna@linux.ibm.com>
+Subject: [RFC PATCH v2 0/3] powerpc/pseries: add support for local secure storage called Platform KeyStore(PKS) 
+Date:   Wed, 22 Jun 2022 17:56:45 -0400
+Message-Id: <20220622215648.96723-1-nayna@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ie8oPpULTEbPRXGCYP4_7THoM8DyvL3m
+X-Proofpoint-GUID: ie8oPpULTEbPRXGCYP4_7THoM8DyvL3m
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCHv7 06/14] efi/x86: Implement support for unaccepted memory
-Content-Language: en-US
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Varad Gautam <varad.gautam@suse.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
-        khalid.elmously@canonical.com, philip.cox@canonical.com,
-        x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-7-kirill.shutemov@linux.intel.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <20220614120231.48165-7-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-06-22_08,2022-06-22_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ lowpriorityscore=0 mlxscore=0 suspectscore=0 bulkscore=0 malwarescore=0
+ phishscore=0 clxscore=1011 mlxlogscore=999 spamscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2204290000
+ definitions=main-2206220097
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 6/14/22 05:02, Kirill A. Shutemov wrote:
-...
-> +/*
-> + * The accepted memory bitmap only works at PMD_SIZE granularity. If a request
-> + * comes in to mark memory as unaccepted which is not PMD_SIZE-aligned, simply
-> + * accept the memory now since it can not be *marked* as unaccepted.
-> + */
+PowerVM provides an isolated Platform KeyStore(PKS)[1] storage allocation
+for each partition(LPAR) with individually managed access controls to store
+sensitive information securely. Linux Kernel can access this storage by
+interfacing with hypervisor using a new set of hypervisor calls. 
 
-/*
- * The accepted memory bitmap only works at PMD_SIZE granularity.  This
- * function takes unaligned start/end addresses and either:
- *  1. Accepts the memory immediately and in its entirety
- *  2. Accepts unaligned parts, and marks *some* aligned part unaccepted
- *
- * The function will never reach the bitmap_set() with zero bits to set.
- */
+PowerVM guest secure boot feature intend to use Platform KeyStore for
+the purpose of storing public keys. Secure boot requires public keys to
+be able to verify the grub and boot kernel. To allow authenticated
+ manipulation of keys, it supports variables to store key authorities
+- PK/KEK. Other variables are used to store code signing keys - db/grubdb.
+It also supports denied list to disallow booting even if signed with
+valid key. This is done via denied list database - dbx or sbat. These
+variables would be stored in PKS, and are managed and controlled by
+firmware.
 
+The purpose of this patchset is to add userspace interface to manage
+these variables.
 
-> +void process_unaccepted_memory(struct boot_params *params, u64 start, u64 end)
-> +{
-> +	/*
-> +	 * Accept small regions that might not be able to be represented
-> +	 * in the bitmap.  This is a bit imprecise and may accept some
-> +	 * areas that could have been represented in the bitmap instead.
+For v1[2] version, we received following feedback
+"Ok, this is like the 3rd or 4th different platform-specific proposal for
+this type of functionality.  I think we need to give up on
+platform-specific user/kernel apis on this (random sysfs/securityfs
+files scattered around the tree), and come up with a standard place for
+all of this."
 
-	/*
-	 * Ensure that at least one bit will be set in the bitmap by
-	 * immediately accepting all regions under 2*PMD_SIZE.  This is
-	 * imprecise and may immediately accept some areas that could
-	 * have been represented in the bitmap.  But, results in simpler
-	 * code below.
+Currently, OpenPOWER exposes variables via sysfs, while EFI platforms
+have used sysfs and then moved to their own efivarfs filesystem.
+Recently, coco feature is using securityfs to expose their
+secrets. All of these environments are different both syntactically and
+semantically.
 
-> +	 * Consider case like this:
-> +	 *
-> +	 * | 4k | 2044k |    2048k   |
-> +	 * ^ 0x0        ^ 2MB        ^ 4MB
-> +	 *
-> +	 * all memory in the range is unaccepted, except for the first 4k.
-> +	 * The second 2M can be represented in the bitmap, but kernel accept it
-> +	 * right away. The imprecision makes the code simpler by ensuring that
-> +	 * at least one bit will be set int the bitmap below.
-> +	 */
+securityfs is meant for linux security subsystems to expose policies/logs
+or any other information, and do not interact with firmware for managing
+these variables. However, there are various firmware security
+features which expose their variables for user management via kernel as
+discussed above. There is currently no single place to expose these
+variables. Different platforms use sysfs/platform specific
+filesystem(efivarfs)/securityfs interface as find appropriate. This has
+resulted in interfaces scattered around the tree.
 
-	...
-	* Only the first 4k has been accepted.  The 0MB->2MB region can
-	* not be represented in the bitmap.  The 2MB->4MB region can be
-	* represented in the bitmap.  But, the 0MB->4MB region is
-	* <2*PMD_SIZE and will be immediately accepted in its entirety.
-	*/
+This resulted in demand of a need for a common single place for new
+platform interfaces to expose their variables for firmware security
+features. This would simplify the interface for users of these platforms.
+This patchset proposes firmware security filesystem(fwsecurityfs). Any
+platform can expose the variables which are required by firmware security
+features via this interface. Going forward, this would give a common place
+for exposing variables managed by firmware while still allowing platforms
+to implement their own underlying semantics.
 
-> +	if (end - start < 2 * PMD_SIZE) {
-> +		__accept_memory(start, end);
-> +		return;
-> +	}
-> +
-> +	/*
-> +	 * No matter how the start and end are aligned, at least one unaccepted
-> +	 * PMD_SIZE area will remain.
-> +	 */
+This design consists of two parts:
+1. firmware security filesystem(fwsecurityfs) that provides platforms with
+APIs to create their own underlying directory and file structure. It is
+recommended to establish a well known mount point:
+i.e. /sys/firmware/security/
 
-I'd probably add:
+2. platform specific implementation for these variables which implements
+underlying semantics. Platforms can expose their variables as files
+allowing read/write/add/delete operations by defining their own inode and
+file operations.
 
-	... to be marked in the bitmap
+This patchset defines:
+1. pseries driver to access LPAR Platform Key Store(PLPKS)
+2. firmware security filesystem named fwsecurityfs
+3. Interface to expose secure variables stored in LPAR PKS via fwsecurityfs
 
+[1] https://community.ibm.com/community/user/power/blogs/chris-engel1/2020/11/20/powervm-introduces-the-platform-keystore
+[2] https://lore.kernel.org/linuxppc-dev/20220122005637.28199-1-nayna@linux.ibm.com/
 
-<snip>
-> @@ -607,6 +608,17 @@ setup_e820(struct boot_params *params, struct setup_data *e820ext, u32 e820ext_s
->  			e820_type = E820_TYPE_PMEM;
->  			break;
->  
-> +		case EFI_UNACCEPTED_MEMORY:
-> +			if (!IS_ENABLED(CONFIG_UNACCEPTED_MEMORY)) {
-> +				efi_warn_once("The system has unaccepted memory,"
-> +					     " but kernel does not support it\n");
-> +				efi_warn_once("Consider enabling CONFIG_UNACCEPTED_MEMORY\n");
-> +				continue;
-> +			}
-> +			e820_type = E820_TYPE_RAM;
-> +			process_unaccepted_memory(params, d->phys_addr,
-> +						  d->phys_addr + PAGE_SIZE * d->num_pages);
-> +			break;
->  		default:
->  			continue;
->  		}
-> @@ -671,6 +683,59 @@ static efi_status_t alloc_e820ext(u32 nr_desc, struct setup_data **e820ext,
->  	return status;
->  }
->  
-> +static efi_status_t allocate_unaccepted_memory(struct boot_params *params,
-> +					       __u32 nr_desc,
-> +					       struct efi_boot_memmap *map)
+Changelog:
 
-I think this is misnamed.  This function is allocating a bitmap, not
-"unaccepted_memory" itself.  Right?
+v1:
 
-> +{
-> +	unsigned long *mem = NULL;
-> +	u64 size, max_addr = 0;
-> +	efi_status_t status;
-> +	bool found = false;
-> +	int i;
-> +
-> +	/* Check if there's any unaccepted memory and find the max address */
-> +	for (i = 0; i < nr_desc; i++) {
-> +		efi_memory_desc_t *d;
-> +
-> +		d = efi_early_memdesc_ptr(*map->map, *map->desc_size, i);
-> +		if (d->type == EFI_UNACCEPTED_MEMORY)
-> +			found = true;
-> +		if (d->phys_addr + d->num_pages * PAGE_SIZE > max_addr)
-> +			max_addr = d->phys_addr + d->num_pages * PAGE_SIZE;
-> +	}
-> +
-> +	if (!found) {
-> +		params->unaccepted_memory = 0;
-> +		return EFI_SUCCESS;
-> +	}
-> +
-> +	/*
-> +	 * If unaccepted memory is present allocate a bitmap to track what
-			
-					  ^ comma
+* Defined unified interface(firmware security filesystem) for all platforms
+to expose their variables used for security features. 
+* Expose secvars using firmware security fileystem.
+* Renamed PKS driver to PLPKS to avoid naming conflict as mentioned by
+Dave Hanson.
 
-> +	 * memory has to be accepted before access.
-> +	 *
-> +	 * One bit in the bitmap represents 2MiB in the address space:
-> +	 * A 4k bitmap can track 64GiB of physical address space.
-> +	 *
-> +	 * In the worst case scenario -- a huge hole in the middle of the
-> +	 * address space -- It needs 256MiB to handle 4PiB of the address
-> +	 * space.
-> +	 *
-> +	 * TODO: handle situation if params->unaccepted_memory is already set.
-> +	 * It's required to deal with kexec.
-> +	 *
-> +	 * The bitmap will be populated in setup_e820() according to the memory
-> +	 * map after efi_exit_boot_services().
-> +	 */
-> +	size = DIV_ROUND_UP(max_addr, PMD_SIZE * BITS_PER_BYTE);
-> +	status = efi_allocate_pages(size, (unsigned long *)&mem, ULONG_MAX);
-> +	if (status == EFI_SUCCESS) {
-> +		memset(mem, 0, size);
-> +		params->unaccepted_memory = (unsigned long)mem;
-> +	}
-> +
-> +	return status;
-> +}
-> +
->  static efi_status_t allocate_e820(struct boot_params *params,
->  				  struct efi_boot_memmap *map,
->  				  struct setup_data **e820ext,
-> @@ -691,6 +756,9 @@ static efi_status_t allocate_e820(struct boot_params *params,
->  		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
->  	}
->  
-> +	if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY) && status == EFI_SUCCESS)
-> +		status = allocate_unaccepted_memory(params, nr_desc, map);
-> +
->  	efi_bs_call(free_pool, *map->map);
->  	return status;
->  }
-> diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index 7d9b0bb47eb3..9c2fa94f2f93 100644
-> --- a/include/linux/efi.h
-> +++ b/include/linux/efi.h
-> @@ -108,7 +108,8 @@ typedef	struct {
->  #define EFI_MEMORY_MAPPED_IO_PORT_SPACE	12
->  #define EFI_PAL_CODE			13
->  #define EFI_PERSISTENT_MEMORY		14
-> -#define EFI_MAX_MEMORY_TYPE		15
-> +#define EFI_UNACCEPTED_MEMORY		15
-> +#define EFI_MAX_MEMORY_TYPE		16
->  
->  /* Attribute values: */
->  #define EFI_MEMORY_UC		((u64)0x0000000000000001ULL)	/* uncached */
+Nayna Jain (3):
+  powerpc/pseries: define driver for Platform KeyStore
+  fs: define a firmware security filesystem named fwsecurityfs
+  powerpc/pseries: expose authenticated variables stored in LPAR PKS
 
+ arch/powerpc/include/asm/hvcall.h             |  12 +-
+ arch/powerpc/include/asm/plpks.h              |  92 ++++
+ arch/powerpc/platforms/pseries/Kconfig        |  27 +
+ arch/powerpc/platforms/pseries/Makefile       |   2 +
+ arch/powerpc/platforms/pseries/plpks/Makefile |   9 +
+ .../pseries/plpks/fwsecurityfs_arch.c         |  16 +
+ .../platforms/pseries/plpks/internal.h        |  18 +
+ arch/powerpc/platforms/pseries/plpks/plpks.c  | 517 ++++++++++++++++++
+ .../powerpc/platforms/pseries/plpks/secvars.c | 239 ++++++++
+ fs/Kconfig                                    |   1 +
+ fs/Makefile                                   |   1 +
+ fs/fwsecurityfs/Kconfig                       |  14 +
+ fs/fwsecurityfs/Makefile                      |  10 +
+ fs/fwsecurityfs/inode.c                       | 159 ++++++
+ fs/fwsecurityfs/internal.h                    |  13 +
+ fs/fwsecurityfs/super.c                       | 154 ++++++
+ include/linux/fwsecurityfs.h                  |  33 ++
+ include/uapi/linux/magic.h                    |   1 +
+ 18 files changed, 1317 insertions(+), 1 deletion(-)
+ create mode 100644 arch/powerpc/include/asm/plpks.h
+ create mode 100644 arch/powerpc/platforms/pseries/plpks/Makefile
+ create mode 100644 arch/powerpc/platforms/pseries/plpks/fwsecurityfs_arch.c
+ create mode 100644 arch/powerpc/platforms/pseries/plpks/internal.h
+ create mode 100644 arch/powerpc/platforms/pseries/plpks/plpks.c
+ create mode 100644 arch/powerpc/platforms/pseries/plpks/secvars.c
+ create mode 100644 fs/fwsecurityfs/Kconfig
+ create mode 100644 fs/fwsecurityfs/Makefile
+ create mode 100644 fs/fwsecurityfs/inode.c
+ create mode 100644 fs/fwsecurityfs/internal.h
+ create mode 100644 fs/fwsecurityfs/super.c
+ create mode 100644 include/linux/fwsecurityfs.h
+
+-- 
+2.27.0
