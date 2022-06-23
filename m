@@ -2,152 +2,212 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D6B3557CCF
-	for <lists+linux-efi@lfdr.de>; Thu, 23 Jun 2022 15:23:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 123C755863E
+	for <lists+linux-efi@lfdr.de>; Thu, 23 Jun 2022 20:09:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231680AbiFWNXh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 23 Jun 2022 09:23:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35672 "EHLO
+        id S236275AbiFWSJw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 23 Jun 2022 14:09:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229772AbiFWNXg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 23 Jun 2022 09:23:36 -0400
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A3ED22B05;
-        Thu, 23 Jun 2022 06:23:32 -0700 (PDT)
+        with ESMTP id S236825AbiFWSIg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 23 Jun 2022 14:08:36 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7872BC241;
+        Thu, 23 Jun 2022 10:19:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1655990602;
-        bh=2+RnhRSYBf9t0pLNaFxZTzdzl+ka8qJGuDaaIJ0J+SE=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=jQZxMm2qirAr+munyYWPBowvfq9hHN90Qjs6CLjfowE3BiVJ37/R2Y0y+OoSYHzov
-         2ODPECkLsMZa5jHp4mf5/RN+kal13JqodQkywQs78EY54f1wTMg44+63Yjp8wsGgs7
-         /Et2tUa+r685pKlwTloW2yk1NNkDyjconWxyZO/c=
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 02B821281161;
-        Thu, 23 Jun 2022 09:23:22 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 9zhIpAMrBkCT; Thu, 23 Jun 2022 09:23:21 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1655990601;
-        bh=2+RnhRSYBf9t0pLNaFxZTzdzl+ka8qJGuDaaIJ0J+SE=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=eBrnwNmoTPKz2acfj3bSSE37qXRZymR6d57PTcwrdbVLvtNEzgwvb/jnjwQM3LZxK
-         DABRjQo8IG8dpHo8+xRe79xEm+ChL5obtdmWZsLK8l3DoFbw5T0QrjGxcarv7kfRHq
-         k+DN7QN6QiXBzDt0DlqdF03HzXqaw670zyu8Vl9A=
-Received: from [IPv6:2601:5c4:4300:c551:a71:90ff:fec2:f05b] (unknown [IPv6:2601:5c4:4300:c551:a71:90ff:fec2:f05b])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id A62431280DD8;
-        Thu, 23 Jun 2022 09:23:20 -0400 (EDT)
-Message-ID: <41ca51e8db9907d9060cc38adb59a66dcae4c59b.camel@HansenPartnership.com>
-Subject: Re: [RFC PATCH v2 2/3] fs: define a firmware security filesystem
- named fwsecurityfs
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nayna Jain <nayna@linux.ibm.com>
-Cc:     linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-        linux-efi@vger.kernel.org,
-        linux-security-module <linux-security-module@vger.kernel.org>,
-        linux-kernel@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        George Wilson <gcwilson@linux.ibm.com>, gjoyce@ibm.com,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>
-Date:   Thu, 23 Jun 2022 09:23:19 -0400
-In-Reply-To: <YrQqPhi4+jHZ1WJc@kroah.com>
-References: <20220622215648.96723-1-nayna@linux.ibm.com>
-         <20220622215648.96723-3-nayna@linux.ibm.com> <YrQqPhi4+jHZ1WJc@kroah.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1656004792; x=1687540792;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=2yZfCAUS0MYfDCPoO0523LT8rgoWa8z9eTj07PaU7AU=;
+  b=fvj2i8HHUPSz29/3GnfE5v8ftSUsieZLIAUfb41hqDI3V5EYHGYjpA4S
+   4HtVIxu866sBu4oaIWkgV1dc4tPN0mDrTLqSU/TajVOdynwkjD+Cy3r/N
+   LR/J74CGUCYDv5a5FFzur6Ca3hc4dOJoAXTrL06gURnuDiuOP0Jfy2nRK
+   sAe5dkVGGZpYKBHYq3BZdbY61I1pPitW08SiETXZdbleZ+YXYWqkhSs2O
+   Yl/RI0LTJ+Iq4BIPZwAmCF9Hh+cX3JTuckQmOgrcuN/71E3dyrbgUxLNu
+   Vbe9YojRs7BoZnLc1r2epUa2LrwyFir8KZrrHUsaINRW9HDC3AnhrO5M7
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10387"; a="263818203"
+X-IronPort-AV: E=Sophos;i="5.92,216,1650956400"; 
+   d="scan'208";a="263818203"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2022 10:19:42 -0700
+X-IronPort-AV: E=Sophos;i="5.92,216,1650956400"; 
+   d="scan'208";a="563530605"
+Received: from ckeane-mobl1.amr.corp.intel.com (HELO [10.209.81.98]) ([10.209.81.98])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2022 10:19:41 -0700
+Message-ID: <a2731ed4-72c1-4838-5049-3002e4bf8db9@intel.com>
+Date:   Thu, 23 Jun 2022 10:19:15 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCHv7 10/14] x86/mm: Avoid load_unaligned_zeropad() stepping
+ into unaccepted memory
+Content-Language: en-US
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Varad Gautam <varad.gautam@suse.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
+        khalid.elmously@canonical.com, philip.cox@canonical.com,
+        x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-11-kirill.shutemov@linux.intel.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <20220614120231.48165-11-kirill.shutemov@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 2022-06-23 at 10:54 +0200, Greg Kroah-Hartman wrote:
-[...]
-> > diff --git a/fs/fwsecurityfs/inode.c b/fs/fwsecurityfs/inode.c
-> > new file mode 100644
-> > index 000000000000..5d06dc0de059
-> > --- /dev/null
-> > +++ b/fs/fwsecurityfs/inode.c
-> > @@ -0,0 +1,159 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +/*
-> > + * Copyright (C) 2022 IBM Corporation
-> > + * Author: Nayna Jain <nayna@linux.ibm.com>
-> > + */
-> > +
-> > +#include <linux/sysfs.h>
-> > +#include <linux/kobject.h>
-> > +#include <linux/fs.h>
-> > +#include <linux/fs_context.h>
-> > +#include <linux/mount.h>
-> > +#include <linux/pagemap.h>
-> > +#include <linux/init.h>
-> > +#include <linux/namei.h>
-> > +#include <linux/security.h>
-> > +#include <linux/lsm_hooks.h>
-> > +#include <linux/magic.h>
-> > +#include <linux/ctype.h>
-> > +#include <linux/fwsecurityfs.h>
-> > +
-> > +#include "internal.h"
-> > +
-> > +int fwsecurityfs_remove_file(struct dentry *dentry)
-> > +{
-> > +	drop_nlink(d_inode(dentry));
-> > +	dput(dentry);
-> > +	return 0;
-> > +};
-> > +EXPORT_SYMBOL_GPL(fwsecurityfs_remove_file);
-> > +
-> > +int fwsecurityfs_create_file(const char *name, umode_t mode,
-> > +					u16 filesize, struct dentry
-> > *parent,
-> > +					struct dentry *dentry,
-> > +					const struct file_operations
-> > *fops)
-> > +{
-> > +	struct inode *inode;
-> > +	int error;
-> > +	struct inode *dir;
-> > +
-> > +	if (!parent)
-> > +		return -EINVAL;
-> > +
-> > +	dir = d_inode(parent);
-> > +	pr_debug("securityfs: creating file '%s'\n", name);
+On 6/14/22 05:02, Kirill A. Shutemov wrote:
+> load_unaligned_zeropad() can lead to unwanted loads across page boundaries.
+> The unwanted loads are typically harmless. But, they might be made to
+> totally unrelated or even unmapped memory. load_unaligned_zeropad()
+> relies on exception fixup (#PF, #GP and now #VE) to recover from these
+> unwanted loads.
 > 
-> Did you forget to call simple_pin_fs() here or anywhere else?
+> But, this approach does not work for unaccepted memory. For TDX, a load
+> from unaccepted memory will not lead to a recoverable exception within
+> the guest. The guest will exit to the VMM where the only recourse is to
+> terminate the guest.
 > 
-> And this can be just one function with the directory creation file,
-> just check the mode and you will be fine.  Look at securityfs as an
-> example of how to make this simpler.
+> There are three parts to fix this issue and comprehensively avoid access
+> to unaccepted memory. Together these ensure that an extra “guard” page
+> is accepted in addition to the memory that needs to be used.
+> 
+> 1. Implicitly extend the range_contains_unaccepted_memory(start, end)
+>    checks up to end+2M if ‘end’ is aligned on a 2M boundary.
+> 2. Implicitly extend accept_memory(start, end) to end+2M if ‘end’ is
+>    aligned on a 2M boundary.
+> 3. Set PageUnaccepted() on both memory that itself needs to be accepted
+>    *and* memory where the next page needs to be accepted. Essentially,
+>    make PageUnaccepted(page) a marker for whether work needs to be done
+>    to make ‘page’ usable. That work might include accepting pages in
+>    addition to ‘page’ itself.
+...
 
-Actually, before you go down this route can you consider the namespace
-ramifications.  In fact we're just having to rework securityfs to pull
-out all the simple_pin_... calls because simple_pin_... is completely
-inimical to namespaces.
+That all looks pretty good.
 
-The first thing to consider is if you simply use securityfs you'll
-inherit all the simple_pin_... removal work and be namespace ready.  It
-could be that creating a new filesystem that can't be namespaced is the
-right thing to do here, but at least ask the question: would we ever
-want any of these files to be presented selectively inside containers? 
-If the answer is "yes" then simple_pin_... is the wrong interface.
+> diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
+> index 1df918b21469..bcd56fe82b9e 100644
+> --- a/arch/x86/mm/unaccepted_memory.c
+> +++ b/arch/x86/mm/unaccepted_memory.c
+> @@ -23,6 +23,38 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
+>  	bitmap = __va(boot_params.unaccepted_memory);
+>  	range_start = start / PMD_SIZE;
+>  
+> +	/*
+> +	 * load_unaligned_zeropad() can lead to unwanted loads across page
+> +	 * boundaries. The unwanted loads are typically harmless. But, they
+> +	 * might be made to totally unrelated or even unmapped memory.
+> +	 * load_unaligned_zeropad() relies on exception fixup (#PF, #GP and now
+> +	 * #VE) to recover from these unwanted loads.
+> +	 *
+> +	 * But, this approach does not work for unaccepted memory. For TDX, a
+> +	 * load from unaccepted memory will not lead to a recoverable exception
+> +	 * within the guest. The guest will exit to the VMM where the only
+> +	 * recourse is to terminate the guest.
+> +	 *
+> +	 * There are three parts to fix this issue and comprehensively avoid
+> +	 * access to unaccepted memory. Together these ensure that an extra
+> +	 * “guard” page is accepted in addition to the memory that needs to be
+> +	 * used:
+> +	 *
+> +	 * 1. Implicitly extend the range_contains_unaccepted_memory(start, end)
+> +	 *    checks up to end+2M if ‘end’ is aligned on a 2M boundary.
+> +	 *
+> +	 * 2. Implicitly extend accept_memory(start, end) to end+2M if ‘end’ is
+> +	 *    aligned on a 2M boundary.
+> +	 *
+> +	 * 3. Set PageUnaccepted() on both memory that itself needs to be
+> +	 *    accepted *and* memory where the next page needs to be accepted.
+> +	 *    Essentially, make PageUnaccepted(page) a marker for whether work
+> +	 *    needs to be done to make ‘page’ usable. That work might include
+> +	 *    accepting pages in addition to ‘page’ itself.
+> +	 */
 
-James
+One nit with this: I'd much rather add one sentence to these to help tie
+the code implementing it with this comment.  Maybe something like:
+
+ * 2. Implicitly extend accept_memory(start, end) to end+2M if ‘end’ is
+ *    aligned on a 2M boundary. (immediately following this comment)
 
 
+> +	if (!(end % PMD_SIZE))
+> +		end += PMD_SIZE;
+> +
+>  	spin_lock_irqsave(&unaccepted_memory_lock, flags);
+>  	for_each_set_bitrange_from(range_start, range_end, bitmap,
+>  				   DIV_ROUND_UP(end, PMD_SIZE)) {
+> @@ -46,6 +78,10 @@ bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end)
+>  
+>  	bitmap = __va(boot_params.unaccepted_memory);
+>  
+> +	/* See comment on load_unaligned_zeropad() in accept_memory() */
+> +	if (!(end % PMD_SIZE))
+> +		end += PMD_SIZE;
+
+It's a wee bit hard to follow this back to the comment that it
+references, even with them sitting next to each other in this diff.  How
+about adding:
+
+	/*
+	 * Also consider the unaccepted state of the *next* page.  See
+	 * fix #1 in the comment on load_unaligned_zeropad() in
+	 * accept_memory().
+	 */
+
+>  	spin_lock_irqsave(&unaccepted_memory_lock, flags);
+>  	while (start < end) {
+>  		if (test_bit(start / PMD_SIZE, bitmap)) {
+> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+> index b91c89100b2d..bc1110509de4 100644
+> --- a/drivers/firmware/efi/libstub/x86-stub.c
+> +++ b/drivers/firmware/efi/libstub/x86-stub.c
+> @@ -709,6 +709,13 @@ static efi_status_t allocate_unaccepted_memory(struct boot_params *params,
+>  		return EFI_SUCCESS;
+>  	}
+>  
+> +	/*
+> +	 * range_contains_unaccepted_memory() may need to check one 2M chunk
+> +	 * beyond the end of RAM to deal with load_unaligned_zeropad(). Make
+> +	 * sure that the bitmap is large enough handle it.
+> +	 */
+> +	max_addr += PMD_SIZE;
+
+I guess the alternative to this would have been to record 'max_addr',
+then special case 'max_addr'+2M in the bitmap checks.  I agree this is
+probably nicer.
+
+Also, the changelog needs to at least *mention* this little tidbit.  It
+was a bit of a surprise when I got here.
+
+With those fixed:
+
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
