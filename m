@@ -2,65 +2,65 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8A6A556E71
-	for <lists+linux-efi@lfdr.de>; Thu, 23 Jun 2022 00:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 669FA5570A1
+	for <lists+linux-efi@lfdr.de>; Thu, 23 Jun 2022 03:54:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230245AbiFVW3M (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 22 Jun 2022 18:29:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32788 "EHLO
+        id S1377595AbiFWBxu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 22 Jun 2022 21:53:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234702AbiFVW3K (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 22 Jun 2022 18:29:10 -0400
-Received: from sonic316-27.consmr.mail.ne1.yahoo.com (sonic316-27.consmr.mail.ne1.yahoo.com [66.163.187.153])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EE342FE55
-        for <linux-efi@vger.kernel.org>; Wed, 22 Jun 2022 15:29:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1655936948; bh=dZC6eUKWDJPOTz/ILqg/qfRTRRpuLgPdjkd8hAWc1/Q=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=gmA5qq8KBrWCdVlEiApeNXxhc7d26NhcZizNy2hTxaXzMAdBF7Pm+zzwAd+J04rb7xiUsRQuggGNLlQdBsYFth7QVxfZ1cvk9zlBrWgafE55gQgKuVqdapm3eqHpuVuuDA4Keir38vy16T5roVbsgMgVeVtIU9WgLzGa8k/sfNCcO+jmGwdGHTcIMzx4m4D6Fx8sQY0u4nzRdihhAlgKZ5MPUy57Gvrp83z0oD+S16u6zK78CA0Sx0yRoIYoASRhUQPMpUsYReJTwObuduZQjXMcxhp+5dKt71MCeKy6ZJHWTiOHXA9DKUa4lzXW3gBV83yhIeFvQMkFUdcVLzUzJA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1655936948; bh=eWvgXRw/NN9Soa6GuLG55pF5QCgnCTIj2Opi7yZiQ9H=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=VawDe6+LVHybt/oRwkcXYQviRKqUlss8RY/YPnDkrsXC54hKT2oo7lUamyL6z+91wRQcU5dsXLelKFJn0yODLt6BO+fRBmAvEsK0JzSkULmhVi6l+0cSx29AmQ8bVhpcv/b9qO8Hxg15n4thxyv1CwW71GTAl2eC9rg6kWLTHF+HtsNRxwv3FKmS1LqSVjV3yyTri1CxkWffPlwvRKjCQ5aZN16HkI6k2wqvuPJVo4MVP1Op2eOAHDSd+RRyFVL/v7eOZb4hLRRrjBfm7MJ6pZk0O9uYLu8WJBr9Gcyul9/Cwda1quYO8jvqltiPRzq34/U1bAtCQlTm2Upc8JmAaQ==
-X-YMail-OSG: x72rNU0VM1nEYZaFdpF0mO.I7gF2rRQ4WqrLnJClgRUeN7S5lpig9biLmMI1dqM
- xx2i1dL5JGPVyEOqLlfgaEVf0JNMh5gtoHY3AtVJBfZ3wvhmQXMGNKC1wGSjElot2LDaX1reSvrG
- Nc8Ntl8MfqSP5PwJCQbA2SCaN62cKdboWAgzYuo7Jp0KK_fuCoWu1LSFRVPBgMRApIWRtbqXapNi
- hm1PFMO8x3JK.t40V8ZL9Fb9ZtQdE0soRWMsfgLhyehdcinj1SNFjKEAoDuV4Ku4Z94tjnc29UJH
- sjycwX0zheeUaJGWsIZiuERfBBhpRyxXhlCS1zvjwaKz5bKWQFgL6BxA9_7ne.4ukC_Ty3_.ZepB
- CUHPYAWaKiYJhW9fLlOU3Rxw3ksXccsi_r1YophLPv.oxGA2GoMO7WGT1yovCFrIDPlW.XXjuB17
- YM1HeiNcLTBV4T2hZxNQWQmMd8TfFAFfjQrbqe37XztM8yx4BSe8tIdorgZAKQlBNmMWd4USPlYI
- VPe4wZFDzsWCPgFKpdlXB4dxEw3mp_uu6Wx.s_4DPszkQ_VOLTcZfRNWHLhtAyxFyHeTFntdJSyg
- jYCz8.XeW.Ve.fosLlu6InV1uLkEvQRVwuIjN7Q5AIQrh5ZcVuSX2_fnEnTo6A4G6W4BVhbD1ex2
- f0rhxp27pDz.m5rvYbH8WRUPX2mgI5mU5eSsRCSlS5EUxULLgoTMMpcY0Ut9Phlla3Ibdd6r1CB1
- DfoZXIfSl1IQJKTVGd5mjwJ_Owrv8bTSz5Y4K7qQwCiGHw9FtjM4JogXIm4sKXtr8fpPRhLyfut0
- eAxQv9HDr1MJIjbhoAUTGLG2dxIxEb7z5iTVE42i9_3ke2E5f1Lbk8tlCjdKZeV959XXIVgl2W8l
- OWDpey49qZTW.iHRVbx4bv1OBxaMpaFR56Ymczk04TaDJNx1Bz7woC2AbgqS4xvufzSpJtKFyGFz
- yLwNHPOO3kk1N6dihGoA3wreDDJ0gpFi.AiOlgFPQsCbFpUTOAvw3x16g1tIocaIfmDNwLJnXjEj
- 8i2LxaUrRh6_96mOS1ki9bXIqZpIUas3kWR68dJUDB0tmIwOYG8XOD3EKGjFW1LVsqXCbDAToxoR
- JvCPWGUwfTWaSZp4Ge_AvY8Xff9wP7OyuFaoFZ2agwlKOcXyQJR5mbxhNP5PrGg.1Wep3g1tv5AW
- Vr87U2MmeFoL4zF.mgJoMCYjk1fwwJH15.9sqjXmluUUq9MKq0EOEZgt6z8Y4O7C6YydjILezgcE
- VB426gpMht7VeA0Dy1_c_FME3mOhIfWkemP65OJDnRkY1bDTBgdkqEfzzjGgoDvdCKNR40J2QuJ5
- As83a6J4fK9z_eJzu18MQaiEPbBbtB0YqkCMPJKrnFLnu1g4wEUwS_div48o0Lz_fYhfwQ_gccjQ
- XwrYWPYHTzbUr54Knfyv59VTdeDfLIYpy9vWVtaD4Kghc67.8uyMa8YSB62A9xYe0ifVh2Vn3lUc
- rhVPJhz5b94tE3lHGDNWMTTjdYXkAVhfEoX0OH8kFBew74IOVTlSV6bIlP_ILHEQMHJr8FRiiBIr
- dHVxlTTY07kxaZUjf7Xk1.gOfRCcte4ynMEEQhHBYQ9Ru3z6rjOSKa8fk9cUs4sR3QWwbx6dAtZJ
- vpTKeKpyS3LSDenPo.YYGH.ZllD.T4kj2i_aHIYbx.9HQwvZ1dUebYTNN50XazgnQp1a4k1F3hRU
- zQU_qkp25XKFzgBehVSrA16kRsBEbZvbmNpNW78AIW1wxERQxC4Dsjx0Gem5SU4k1Wi3.5WqSonX
- S2tY1ckr5sJw44WgBtO4GH3B2krIO_KOAJYAC425FY6iJCF03.TI2jxr5ZGzFf4xDfcac4n.uXxG
- uU0X49ThlUAwj3vT5vMkZiNcKgv.xpa1Oq_q5RYZ63dv5p_lX2VHPsu8zm_It2pCIg9TY4LhdcnZ
- DIeSXwHeAKdESrASswRNTGY2irc.RGq0ZA.OKD.A4M0HDXMeo1u5JDtlIVMw9zMFzmtIBkv2f.12
- SyDk0wFRY81wdx9mdPFdj5GsyC040eMEEKeqce5aRkFhpHNAGe_mEZD0dcParvZNnlZpZ5s1P5Mu
- 79uGXcrBVPN4Twq5E51IibEZgxWZ.u01LmjIwZzl8of4UlLLa0j0yePwwxBfOOHle5K7dM1bzdJF
- q8cpzfyobvhkq8qDvwKXU3isaaWRErmryWIWpZqYrEG_Aj.qthdDgZadVLUBG7_spxZutDMSMQiT
- Qo0pb.AzxdbOh1ExfblvSmmboJBPHHKSabQ2AR9lZ75Csbo0qcWQJ7Lz2b91mQHUgTd4-
-X-Sonic-MF: <casey@schaufler-ca.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.ne1.yahoo.com with HTTP; Wed, 22 Jun 2022 22:29:08 +0000
-Received: by hermes--canary-production-bf1-8bb76d6cf-xkxwt (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 4ef53ffbd9b7aee469fc3bb4f33f3a85;
-          Wed, 22 Jun 2022 22:29:03 +0000 (UTC)
-Message-ID: <e5399b47-5382-99e6-9a79-c0947a696917@schaufler-ca.com>
-Date:   Wed, 22 Jun 2022 15:29:01 -0700
+        with ESMTP id S1377277AbiFWBwW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 22 Jun 2022 21:52:22 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5240443AF0;
+        Wed, 22 Jun 2022 18:51:52 -0700 (PDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25N1FPnN029418;
+        Thu, 23 Jun 2022 01:50:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=TsI+ILPUKVz3yg7piZ6IP0m7tWX8TJEnXWgNEGMDWNc=;
+ b=bY4gNorDsHYNJG2Bf7vLFZ9c7LcQJRlzLlHQz6IP10ZnGAfNcqnbh0O1IuDT8cLTS7Lt
+ 1nYfP7kdHEM1Lw4ozSdfDo3PWjcfmwa2pobiTI7dFCJciaHxLFjnx6U6CDeCEB1Nu/tk
+ VrVoa4J39NN56aQOFrgcjqvsJH45Lhz7wkMMdcK+W6Ya3+SD+xpQvil4WsOCUn8Ac8cP
+ gBdgo+Ie6cD9STH9X2471OYHcYpaYBAUsSb5HMaeQa8kYqsrbjmNBeF24EnqX24Uxr08
+ PC5z8qPq6ekKDxxDQGQyGsBXEfU3yFv9cPy6N43LUd3l4K2d3SQ4IhVlctaPb5TKZZcW QA== 
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+        by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gvebm0q3u-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 23 Jun 2022 01:50:48 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+        by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25N1aPW6003841;
+        Thu, 23 Jun 2022 01:50:47 GMT
+Received: from b03cxnp07027.gho.boulder.ibm.com (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
+        by ppma01dal.us.ibm.com with ESMTP id 3guk92kbnh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 23 Jun 2022 01:50:47 +0000
+Received: from b03ledav006.gho.boulder.ibm.com (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+        by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25N1okmM35651890
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 23 Jun 2022 01:50:46 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 54C0AC605A;
+        Thu, 23 Jun 2022 01:50:46 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 7AAF7C6057;
+        Thu, 23 Jun 2022 01:50:45 +0000 (GMT)
+Received: from [9.211.125.38] (unknown [9.211.125.38])
+        by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Thu, 23 Jun 2022 01:50:45 +0000 (GMT)
+Message-ID: <e200854b-116a-cbf3-256d-92a9c490b9bc@linux.vnet.ibm.com>
+Date:   Wed, 22 Jun 2022 21:50:45 -0400
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.0
 Subject: Re: [RFC PATCH v2 2/3] fs: define a firmware security filesystem
  named fwsecurityfs
 Content-Language: en-US
-To:     Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-fsdevel@vger.kernel.org
+To:     Casey Schaufler <casey@schaufler-ca.com>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org
 Cc:     linux-efi@vger.kernel.org,
         linux-security-module <linux-security-module@vger.kernel.org>,
         linux-kernel@vger.kernel.org,
@@ -71,18 +71,28 @@ Cc:     linux-efi@vger.kernel.org,
         Matthew Garrett <mjg59@srcf.ucam.org>,
         Dave Hansen <dave.hansen@intel.com>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Casey Schaufler <casey@schaufler-ca.com>
+        Paul Mackerras <paulus@samba.org>
 References: <20220622215648.96723-1-nayna@linux.ibm.com>
  <20220622215648.96723-3-nayna@linux.ibm.com>
-From:   Casey Schaufler <casey@schaufler-ca.com>
-In-Reply-To: <20220622215648.96723-3-nayna@linux.ibm.com>
+ <e5399b47-5382-99e6-9a79-c0947a696917@schaufler-ca.com>
+From:   Nayna <nayna@linux.vnet.ibm.com>
+In-Reply-To: <e5399b47-5382-99e6-9a79-c0947a696917@schaufler-ca.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.20280 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: xCCZ1rp5CwqPjADRXKVg0nEJScoazKR5
+X-Proofpoint-GUID: xCCZ1rp5CwqPjADRXKVg0nEJScoazKR5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-06-22_08,2022-06-22_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ mlxlogscore=835 priorityscore=1501 spamscore=0 suspectscore=0
+ impostorscore=0 clxscore=1011 adultscore=0 mlxscore=0 bulkscore=0
+ phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2204290000 definitions=main-2206230004
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -90,14 +100,43 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 6/22/2022 2:56 PM, Nayna Jain wrote:
-> securityfs is meant for linux security subsystems to expose policies/logs
-> or any other information. However, there are various firmware security
-> features which expose their variables for user management via kernel.
-> There is currently no single place to expose these variables. Different
-> platforms use sysfs/platform specific filesystem(efivarfs)/securityfs
-> interface as find appropriate. Thus, there is a gap in kernel interfaces
-> to expose variables for security features.
 
-Why not put the firmware entries under /sys/kernel/security/firmware?
+On 6/22/22 18:29, Casey Schaufler wrote:
+> On 6/22/2022 2:56 PM, Nayna Jain wrote:
+>> securityfs is meant for linux security subsystems to expose 
+>> policies/logs
+>> or any other information. However, there are various firmware security
+>> features which expose their variables for user management via kernel.
+>> There is currently no single place to expose these variables. Different
+>> platforms use sysfs/platform specific filesystem(efivarfs)/securityfs
+>> interface as find appropriate. Thus, there is a gap in kernel interfaces
+>> to expose variables for security features.
+>
+> Why not put the firmware entries under /sys/kernel/security/firmware?
+
+ From man 5 sysfs page:
+
+/sys/firmware: This subdirectory contains interfaces for viewing and 
+manipulating firmware-specific objects and attributes.
+
+/sys/kernel: This subdirectory contains various files and subdirectories 
+that provide information about the running kernel.
+
+The security variables which are supposed to be exposed via fwsecurityfs 
+are managed by firmware, stored in firmware managed space and also often 
+consumed by firmware for enabling various security features.
+
+ From git commit b67dbf9d4c1987c370fd18fdc4cf9d8aaea604c2, the purpose 
+of securityfs(/sys/kernel/security) is to provide a common place for all 
+kernel LSMs to use a common place. The idea of 
+fwsecurityfs(/sys/firmware/security) is to similarly provide a common 
+place for all firmware security objects.
+
+By having another firmware directory within /sys/kernel/security would 
+mean scattering firmware objects at multiple places and confusing the 
+purpose of /sys/kernel and /sys/firmware.
+
+Thanks & Regards,
+
+      - Nayna
 
