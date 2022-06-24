@@ -2,58 +2,62 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9433855A059
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Jun 2022 20:08:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AB0755A0A2
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Jun 2022 20:29:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229783AbiFXSFw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 24 Jun 2022 14:05:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38224 "EHLO
+        id S230073AbiFXSKV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 24 Jun 2022 14:10:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229533AbiFXSFv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 24 Jun 2022 14:05:51 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59615766B0
-        for <linux-efi@vger.kernel.org>; Fri, 24 Jun 2022 11:05:50 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id t24so5797550lfr.4
-        for <linux-efi@vger.kernel.org>; Fri, 24 Jun 2022 11:05:50 -0700 (PDT)
+        with ESMTP id S229586AbiFXSKU (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 24 Jun 2022 14:10:20 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B23649F8B
+        for <linux-efi@vger.kernel.org>; Fri, 24 Jun 2022 11:10:19 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id z13so5731609lfj.13
+        for <linux-efi@vger.kernel.org>; Fri, 24 Jun 2022 11:10:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=amHl1LwfBMa5KDjXqZHtC9+AbtdwaHnaESVYa8U2byA=;
-        b=H3sKSrgk4dk9/Hswlf5QYJecr2rGepFCacSgMNlU5bXC/icuTUS4zFuhsYf8UFjjCl
-         7/uIbmhnQiOjSjUOFuIuBSts3AMRMzgWX3yVxFfx3qaF3if0Z9wLFrEPzXxT6ROgcn0l
-         gaMeTc9x99Xx1Wx+cZ9YaO54F8L5PBMeuY0cPogpowiUHI3o8nS6Q72kFDv3YskTyoW6
-         ei3dsCuqyqMjnfD+uwcmzgj2yWMVDCsAxOUG/UsCydZsHdLxr7Pr0cfTobtEFm6CV0JK
-         gWUVtOIWoX1tS164asj2tha1HSnVTDEw1BECD2k7dNu62R2ysxNEmQ41MUY+c/3LHM49
-         C0eQ==
+         :cc;
+        bh=hcN3XwIcZstb9s64xvU12TX0znKfRFFze9XJS0Qbx3c=;
+        b=i388ivDFxBMUiQA7obdzFBcEsHyr2kSx+7nBsDjM07lnEAK/xcdqGFSUgzgUY2x5hz
+         DEXehsWQSvUsV1Imkd8PWGjk00nG59mSuOc1lCrJJBgRYyUpD1jYVMip2WU88Ju3wXQC
+         9mMUu5erd6kQecAreB6NiXoTvzd9EWpyT6+hFRSjep65bDfex49cbaRobzUMHHHZ0Z84
+         eXEGdW5cEkmpQdRIfZYO6ikD12SduftZiMeR9H+O6dCGKcrFYtydLGHlB5ozixdcHDZo
+         Sofuo2cji7slhGZ5UqgKB7QK/oxD3m0HAUfdsQDFVoue1IcLToG3jzOqCB83xL9+874H
+         Tl3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=amHl1LwfBMa5KDjXqZHtC9+AbtdwaHnaESVYa8U2byA=;
-        b=3XHi8+7AFRBoHyPMPtjbtlgJ6E6gPymrmp5V3NcGOwvD/a6SgX5ZAdBfYiLyPgzCAw
-         kVjOb4m9E3Ron51vp3GNwgqmzOLbWeZ2O8eiXMQ2/VxUxj7gc8OFmG+sjkC6F8YAJb6c
-         esTcMT+XXV/ag0+KmSQq4TWISp/YBEvCzyQlLQTj9ELrhiRiPJaVgj8NVSGvgd4XMx6Z
-         WYfsPJc0XCRVL+/BRF7md7LjDybejauPWJrHyWFw1wfNYZ2Qd8/mTanppw3QN/VutTfV
-         Jxi70ebRbFutJ0M4Ez3TPdIavaaA0CwihCImmYk+rc98tKwfC+sHIPJCNzwtO3cr3VK8
-         BHNA==
-X-Gm-Message-State: AJIora9yWvxMGcolp+V7a+geHA5Iqs73oU1MjLcLfTj2MlADM5i1R5VM
-        O18ERkeId+4dIyuHjuHyxy89iCWoYSrFBdhkaUzcpA==
-X-Google-Smtp-Source: AGRyM1tQtvJ18kWM/znxc03I5G944GYbAvbUIXDCbDeZWIxGFl9h3QrIwEsXgHtgvQ25f40ZDrIp4mN4pcgMt5IV8i0=
-X-Received: by 2002:a05:6512:a94:b0:47f:6621:cf2a with SMTP id
- m20-20020a0565120a9400b0047f6621cf2amr73823lfu.193.1656093948467; Fri, 24 Jun
- 2022 11:05:48 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=hcN3XwIcZstb9s64xvU12TX0znKfRFFze9XJS0Qbx3c=;
+        b=M3KbZ1cMW18p7PZxIaVuWnNcycJE5Qimmwp/W22gdFWxZPzzOMUdAPqgHEKvG82BBb
+         gLbVyl8hlSt+HK4EoGotZu7Eg+u0qpwxOveoBv8y/X6ufG9Rjy3VRR3wVlvKfed6v1MD
+         ELX7z57S9D1358NCLFBHtSuAOSy/jSfVp7cxw9izqnvqSbcDmjVbcLoshI14BNbYSweV
+         2klk4BTK76dMijZ+R9JI04oX4GCM7+2AVAdpUNe4XGhjuedCPiaNRIU/9SVAazUwMRjt
+         VjDUyJDiTbJVeseArt5exJn50aGA/WB4Q3AMajvb6YryjbFVuX9hwK5AhdnctjrKzXjq
+         sJdw==
+X-Gm-Message-State: AJIora9iEQupayf5Wva5jhoQnyxqRH6T4mMg9n6D7FImBmugMsK2LPrh
+        kABdHWa8QMAcC7nyaqNhLGX1tiFIAHWKgd6mL+FzDw==
+X-Google-Smtp-Source: AGRyM1tdkubN4l5CrWuEurB1wstbops6ikfefa6G3OKJ5WraDCy19/A/YOyuGj3Y9SbrsN+Oqd+6FVxlMDlWtFoEghE=
+X-Received: by 2002:ac2:5974:0:b0:47f:92db:4480 with SMTP id
+ h20-20020ac25974000000b0047f92db4480mr59927lfp.685.1656094217190; Fri, 24 Jun
+ 2022 11:10:17 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <CAMkAt6osbEGBFrgn=y1=x4mDHC1aL40BwaW0NdGHF8qmWd7ktA@mail.gmail.com> <20220624174057.72dwo7v36lokmoub@amd.com>
-In-Reply-To: <20220624174057.72dwo7v36lokmoub@amd.com>
+ <CAMkAt6osbEGBFrgn=y1=x4mDHC1aL40BwaW0NdGHF8qmWd7ktA@mail.gmail.com>
+ <5af19000-4482-7eb9-f158-0a461891f087@intel.com> <CAA03e5F480=psSECDAkXQEvNKk3une-4dJV57Hde4z4MMzh=1A@mail.gmail.com>
+ <e09dae40-d269-cfed-d048-3e62275c1bb7@intel.com> <CAA03e5HxiLkOUbOrsgbzVdAUNZvnnryuNcqrz1ZWECtWLwKMXA@mail.gmail.com>
+ <1e7ad728-d796-c84d-b7ba-b96d8f9fcd0c@intel.com>
+In-Reply-To: <1e7ad728-d796-c84d-b7ba-b96d8f9fcd0c@intel.com>
 From:   Peter Gonda <pgonda@google.com>
-Date:   Fri, 24 Jun 2022 12:05:36 -0600
-Message-ID: <CAMkAt6oRv_X_af1tEdi0-eXUd23SekAkssHGo5h8f+8+KP8eHw@mail.gmail.com>
+Date:   Fri, 24 Jun 2022 12:10:05 -0600
+Message-ID: <CAMkAt6pzMSUuuA7Kc-sVEGw1FYpDoRrKs-dco++2rpqB219_ng@mail.gmail.com>
 Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted memory
-To:     Michael Roth <michael.roth@amd.com>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+To:     Dave Hansen <dave.hansen@intel.com>
+Cc:     Marc Orr <marcorr@google.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Borislav Petkov <bp@alien8.de>,
         Andy Lutomirski <luto@kernel.org>,
         Sean Christopherson <seanjc@google.com>,
@@ -72,7 +76,6 @@ Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Ingo Molnar <mingo@redhat.com>,
         Varad Gautam <varad.gautam@suse.com>,
         Dario Faggioli <dfaggioli@suse.com>,
-        Dave Hansen <dave.hansen@intel.com>,
         Mike Rapoport <rppt@kernel.org>,
         David Hildenbrand <david@redhat.com>,
         Marcelo <marcelo.cerri@canonical.com>, tim.gardner@canonical.com,
@@ -82,7 +85,6 @@ Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
         LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
@@ -94,126 +96,54 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jun 24, 2022 at 11:41 AM Michael Roth <michael.roth@amd.com> wrote:
+On Fri, Jun 24, 2022 at 11:47 AM Dave Hansen <dave.hansen@intel.com> wrote:
 >
-> On Fri, Jun 24, 2022 at 10:37:10AM -0600, Peter Gonda wrote:
-> > On Tue, Jun 14, 2022 at 6:03 AM Kirill A. Shutemov
-> > <kirill.shutemov@linux.intel.com> wrote:
-> > >
-> > > UEFI Specification version 2.9 introduces the concept of memory
-> > > acceptance: some Virtual Machine platforms, such as Intel TDX or AMD
-> > > SEV-SNP, requiring memory to be accepted before it can be used by the
-> > > guest. Accepting happens via a protocol specific for the Virtual
-> > > Machine platform.
-> > >
-> > > Accepting memory is costly and it makes VMM allocate memory for the
-> > > accepted guest physical address range. It's better to postpone memory
-> > > acceptance until memory is needed. It lowers boot time and reduces
-> > > memory overhead.
-> > >
-> > > The kernel needs to know what memory has been accepted. Firmware
-> > > communicates this information via memory map: a new memory type --
-> > > EFI_UNACCEPTED_MEMORY -- indicates such memory.
-> > >
-> > > Range-based tracking works fine for firmware, but it gets bulky for
-> > > the kernel: e820 has to be modified on every page acceptance. It lead=
-s
-> > > to table fragmentation, but there's a limited number of entries in th=
-e
-> > > e820 table
-> > >
-> > > Another option is to mark such memory as usable in e820 and track if =
-the
-> > > range has been accepted in a bitmap. One bit in the bitmap represents
-> > > 2MiB in the address space: one 4k page is enough to track 64GiB or
-> > > physical address space.
-> > >
-> > > In the worst-case scenario -- a huge hole in the middle of the
-> > > address space -- It needs 256MiB to handle 4PiB of the address
-> > > space.
-> > >
-> > > Any unaccepted memory that is not aligned to 2M gets accepted upfront=
-.
-> > >
-> > > The approach lowers boot time substantially. Boot to shell is ~2.5x
-> > > faster for 4G TDX VM and ~4x faster for 64G.
-> > >
-> > > TDX-specific code isolated from the core of unaccepted memory support=
-. It
-> > > supposed to help to plug-in different implementation of unaccepted me=
-mory
-> > > such as SEV-SNP.
-> > >
-> > > The tree can be found here:
-> > >
-> > > https://nam11.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fg=
-ithub.com%2Fintel%2Ftdx.git&amp;data=3D05%7C01%7Cmichael.roth%40amd.com%7C7=
-3bacba017c84291482a08da55ffd481%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%=
-7C637916854542432349%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2=
-luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=3DP%2FUJOL30=
-5xo85NLXGxGouQVGHgzLJpmBdNyZ7Re5%2FB0%3D&amp;reserved=3D0 guest-unaccepted-=
-memory
-> >
-> > Hi Kirill,
-> >
-> > I have a couple questions about this feature mainly about how cloud
-> > customers can use this, I assume since this is a confidential compute
-> > feature a large number of the users of these patches will be cloud
-> > customers using TDX and SNP. One issue I see with these patches is how
-> > do we as a cloud provider know whether a customer's linux image
-> > supports this feature, if the image doesn't have these patches UEFI
-> > needs to fully validate the memory, if the image does we can use this
-> > new protocol. In GCE we supply our VMs with a version of the EDK2 FW
-> > and the customer doesn't input into which UEFI we run, as far as I can
-> > tell from the Azure SNP VM documentation it seems very similar. We
-> > need to somehow tell our UEFI in the VM what to do based on the image.
-> > The current way I can see to solve this issue would be to have our
-> > customers give us metadata about their VM's image but this seems kinda
-> > burdensome on our customers (I assume we'll have more features which
-> > both UEFI and kernel need to both support inorder to be turned on like
-> > this one) and error-prone, if a customer incorrectly labels their
+> On 6/24/22 10:19, Marc Orr wrote:
+> >> Is this a matter of
+> >>
+> >>         can boot from a guest firmware that doesn't pre-validate all the
+> >>         guest memory?
+> >>
+> >> or
+> >>
+> >>         can boot from a guest firmware that doesn't pre-validate all the
+> >>         guest memory ... with access to all of that guest's RAM?
+> >>
+> >> In other words, are we talking about "fails to boot" or "can't see all
+> >> the RAM"?
+> > Ah... yeah, you're right, Dave -- I guess it's the latter. The guest
+> > won't have access to all of the memory that the customer is paying
+> > for. But that's still bad. If the customer buys a 96 GB VM and can
+> > only see 4GB because they're kernel doesn't have these patches they're
+> > going to be confused and frustrated.
 >
-> > image it may fail to boot.. Has there been any discussion about how to
-> > solve this? My naive thoughts were what if UEFI and Kernel had some
-> > sort of feature negotiation. Maybe that could happen via an extension
-> > to exit boot services or a UEFI runtime driver, I'm not sure what's
-> > best here just some ideas.
->
-> Not sure if you've seen this thread or not, but there's also been some
-> discussion around this in the context of the UEFI support:
->
->   https://patchew.org/EDK2/cover.1654420875.git.min.m.xu@intel.com/cce5ea=
-2aaaeddd9ce9df6fa7ac1ef52976c5c7e6.1654420876.git.min.m.xu@intel.com/#20220=
-608061805.vvsjiqt55rqnl3fw@sirius.home.kraxel.org
->
-> 2 things being discussed there really, which I think roughly boil down
-> to:
->
->  1) how to configure OVMF to enable/disable lazy acceptance
->     - compile time option most likely: accept-all/accept-minimum/accept-1=
-GB
->
->  2) how to introduce an automatic mode in the future where OVMF does the
->     right thing based on what the guest supports. Gerd floated the idea o=
-f
->     tying it to ExitBootServices as well, but not sure there's a solid
->     plan on what to do here yet.
->
-> If that's accurate, it seems like the only 'safe' option is to disable it=
- via
-> #1 (accept-all), and then when #2 comes along, compile OVMF to just Do Th=
-e
-> Right Thing.
->
-> Users who know their VMs implement lazy acceptance can force it on via
-> accept-all OVMF compile option.
+> They'll at least be a _bit_ less angry and frustrated than if they were
+> staring at a blank screen. ;)  But, yeah, I totally get the point.
 
-Thanks for this Mike! I will bring this to the EDK2 community.
-
-The issue for us is our users use a GCE built EDK2 not their own
-compiled version so they don't have the choice. Reading the Azure docs
-it seems the same for them, and for AWS so I don't know how often
-customers actually get to bring their own firmware.
+Ha! Well we do have that issue in some cases. If you try to run an SEV
+VM with an image that doesn't support SEV you will just get a blank
+serial screen. If we had something like this back then the FW could
+have surfaced a nice error to the user but that's history now.
 
 >
-> -Mike
+> How big is the window going to be where we have guests that can have
+> unaccepted memory, but don't have acceptance support?  For TDX, it's
+> looking like it'll probably _just_ be 5.19.  Is TDX on 5.19 in shape
+> that cloud providers can deploy it?  Or, is stuff like lack of
+> attestation a deal breaker?
+
+This is complicated because distros don't run upstream linux versions.
+If I understand correctly (I see some distro emails on here so please
+correct me) distros normally maintain forks which they backport things
+into. So I cannot answer this question. It is possible that a
+hypothetical distro backports only the SNP/TDX initial patches and
+doesn't take these for many releases.
+
+I am more familiar with SNP and it does have some attestation support
+in the first patch sets.
+
+Also I should have been more clear. I don't want to try and hold up
+this feature but instead discuss a future usability add-on feature.
+
+>
+>
