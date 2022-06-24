@@ -2,55 +2,64 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD92B559523
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Jun 2022 10:16:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07F1D559542
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Jun 2022 10:21:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229498AbiFXIQm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 24 Jun 2022 04:16:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37510 "EHLO
+        id S231512AbiFXIUe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 24 Jun 2022 04:20:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229824AbiFXIQm (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 24 Jun 2022 04:16:42 -0400
+        with ESMTP id S231511AbiFXIUd (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 24 Jun 2022 04:20:33 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 288E96F485;
-        Fri, 24 Jun 2022 01:16:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D1676F78F;
+        Fri, 24 Jun 2022 01:20:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C5FDCB827BC;
-        Fri, 24 Jun 2022 08:16:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78538C341CA;
-        Fri, 24 Jun 2022 08:16:38 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 56E15B827BF;
+        Fri, 24 Jun 2022 08:20:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D12DC341CC;
+        Fri, 24 Jun 2022 08:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656058598;
-        bh=jWpHXWlGqc4Z0J1vvGJZN3RIBEMWZLt5R5rFiivhRQ4=;
+        s=k20201202; t=1656058830;
+        bh=FcLlyPrf+AWrPxtRYAiOsrBgwpm9O+rmChbmP3sd0wY=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=iJChLPgVV8wr+MUF13gVCra/GQlpqJA7N620ahB99PBLE3kJ7vXsCTJPzcOdQMm//
-         p1lCJ6W9+FKCxS1al+pn9loJcvyux8JpAxyE7MAqUxiQ7i5pINXSw0xDabaRA4qeoS
-         WbsK7KWkPZUw90Us4+4Wswec3soX+RgZiqJvbTg4SKa7A2mYZqRIiNvjU7xXlyoXIy
-         PLb6ALeTdODqKUX1nzqwma/XtQGe9QN4n1v80bB4LRaOGh3b9RThHYXPnYcpKrbV1K
-         aEBuKLZ74m98YoT1xXOW539MSW7iqJfFyIUJo2UgwecsYoPHGnqgulutq8+6NKE2c2
-         tH+Pq/1qt2rzg==
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-101cdfddfacso2811441fac.7;
-        Fri, 24 Jun 2022 01:16:38 -0700 (PDT)
-X-Gm-Message-State: AJIora93y5xMtjHGLTX1qhNjUe68k7TZKRkp3yUIvWmMbq3/ipI2L5+Q
-        0pFLwYa2QN3gcHpX18XBbM+KQNWaN1yGOjZdABA=
-X-Google-Smtp-Source: AGRyM1vjOvx9tFgwlcG8UvBr5ri2ogVJI4fNjHBtGEIiYbZ/bX90t2oFgFqWprXFsVm0fclrfFbDHI6uAuibIsTZ6ks=
-X-Received: by 2002:a05:6870:e98b:b0:fe:219a:2449 with SMTP id
- r11-20020a056870e98b00b000fe219a2449mr1240963oao.228.1656058597624; Fri, 24
- Jun 2022 01:16:37 -0700 (PDT)
+        b=XNpqqTnFiQiQJZzBEufwWE28MJ0aOsyAy2KEUHaB1BH4s8HTiMq2VnpCOYcK2uiHt
+         6hPcr6jSaPU8AKFcBlCVQienOkPhBpHdVcc57fh5OJQIyYFinFgrD8zjPcxZBbvub4
+         poU+y/NSsVc/kPHU/LIXPFWx6CgZ18on+MHP3ZuIWOgiaLsBGSwpk35dMgNiTKKT4p
+         hPncKazS4R645pBJdBVdX5PYEfw1nyXKLQo+enzFQ6kJYxS3gDLVPxXjC00euYose6
+         1TFpC2K4GZ353AtZOF/iceCHYjbm6myWzpEdkR1JHm0kjnr26L5UOgnkFibV+skVfh
+         h5a8ZcHfygaCQ==
+Received: by mail-oi1-f182.google.com with SMTP id u9so2655872oiv.12;
+        Fri, 24 Jun 2022 01:20:29 -0700 (PDT)
+X-Gm-Message-State: AJIora915IUXubE2wCPuKAmnXrbLERiq7Ts9quA86XeZ0a69AQ6KD7wJ
+        Y+rcxZe/Sz1qUiSQUpwdFq3hQVSwFSMHL7AAJsU=
+X-Google-Smtp-Source: AGRyM1vD+QRApq+BxH0OZkrLfEtJbkX9khKKuqalP0FlAmgF7yLvq3N4ZOo0N3wmIU1EpYhYOZVcip/2Pl3XtJb7Zyk=
+X-Received: by 2002:a05:6808:13c6:b0:335:3e54:94bc with SMTP id
+ d6-20020a05680813c600b003353e5494bcmr1174367oiw.228.1656058829220; Fri, 24
+ Jun 2022 01:20:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220617174851.1286026-1-ardb@kernel.org> <20220617174851.1286026-3-ardb@kernel.org>
-In-Reply-To: <20220617174851.1286026-3-ardb@kernel.org>
+References: <20220616124740.580708-1-ardb@kernel.org> <20220616124740.580708-2-ardb@kernel.org>
+ <dba0cbb3e516ce715939be3638d2b5639608f2c1.camel@linux.ibm.com>
+In-Reply-To: <dba0cbb3e516ce715939be3638d2b5639608f2c1.camel@linux.ibm.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 24 Jun 2022 10:16:26 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGyjhYFAefU4JSXchV5T-w3YuWh1B4+sgsLHoi+KLeACw@mail.gmail.com>
-Message-ID: <CAMj1kXGyjhYFAefU4JSXchV5T-w3YuWh1B4+sgsLHoi+KLeACw@mail.gmail.com>
-Subject: Re: [PATCH 2/4] Input: applespi - avoid efivars API and invoke EFI
- services directly
-To:     linux-efi <linux-efi@vger.kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Kees Cook <keescook@chromium.org>, linux-input@vger.kernel.org
+Date:   Fri, 24 Jun 2022 10:20:18 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEvhtpF45R7-d6Q2ROhZRJ9i7JsSj3tScJk6b=TmG_kgQ@mail.gmail.com>
+Message-ID: <CAMj1kXEvhtpF45R7-d6Q2ROhZRJ9i7JsSj3tScJk6b=TmG_kgQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/2] selftests/kexec: remove broken EFI_VARS secure
+ boot fallback check
+To:     Mimi Zohar <zohar@linux.ibm.com>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Peter Jones <pjones@redhat.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Kees Cook <keescook@chromium.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>, Shuah Khan <shuah@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -62,93 +71,29 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 17 Jun 2022 at 19:49, Ard Biesheuvel <ardb@kernel.org> wrote:
+On Fri, 17 Jun 2022 at 05:51, Mimi Zohar <zohar@linux.ibm.com> wrote:
 >
-> This driver abuses the efivar API, by using a few of its helpers on
-> entries that were not instantiated by the API itself. This is a problem
-> as future cleanup work on efivars is complicated by this.
+> On Thu, 2022-06-16 at 14:47 +0200, Ard Biesheuvel wrote:
+> > Commit b433a52aa28733e0 ("selftests/kexec: update get_secureboot_mode")
+> > refactored the code that discovers the EFI secure boot mode so it only
+> > depends on either the efivars pseudo filesystem or the efivars sysfs
+> > interface, but never both.
+> >
+> > However, the latter version was not implemented correctly, given the
+> > fact that the local 'efi_vars' variable never assumes a value. This
+> > means the fallback has been dead code ever since it was introduced.
+> >
+> > So let's drop the fallback altogether. The sysfs interface has been
+> > deprecated for ~10 years now, and is only enabled on x86 to begin with,
+> > so it is time to get rid of it entirely.
+> >
+> > Cc: Shuah Khan <shuah@kernel.org>
+> > Cc: Mimi Zohar <zohar@linux.ibm.com>
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 >
-> So let's just switch to the get/set variable runtime wrappers directly.
+> Thanks, Ard.
 >
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> Reviewed-by:  Mimi Zohar <zohar@linux.ibm.com>
+>
 
-Unless anyone minds, I will queue this up in efi/next
-
-> ---
->  drivers/input/keyboard/applespi.c | 42 +++++++-------------
->  1 file changed, 14 insertions(+), 28 deletions(-)
->
-> diff --git a/drivers/input/keyboard/applespi.c b/drivers/input/keyboard/applespi.c
-> index d1f5354d5ea2..cbc6c0d4670a 100644
-> --- a/drivers/input/keyboard/applespi.c
-> +++ b/drivers/input/keyboard/applespi.c
-> @@ -1597,52 +1597,38 @@ static u32 applespi_notify(acpi_handle gpe_device, u32 gpe, void *context)
->
->  static int applespi_get_saved_bl_level(struct applespi_data *applespi)
->  {
-> -       struct efivar_entry *efivar_entry;
-> +       efi_status_t sts = EFI_NOT_FOUND;
->         u16 efi_data = 0;
-> -       unsigned long efi_data_len;
-> -       int sts;
-> -
-> -       efivar_entry = kmalloc(sizeof(*efivar_entry), GFP_KERNEL);
-> -       if (!efivar_entry)
-> -               return -ENOMEM;
-> -
-> -       memcpy(efivar_entry->var.VariableName, EFI_BL_LEVEL_NAME,
-> -              sizeof(EFI_BL_LEVEL_NAME));
-> -       efivar_entry->var.VendorGuid = EFI_BL_LEVEL_GUID;
-> -       efi_data_len = sizeof(efi_data);
-> +       unsigned long efi_data_len = sizeof(efi_data);
->
-> -       sts = efivar_entry_get(efivar_entry, NULL, &efi_data_len, &efi_data);
-> -       if (sts && sts != -ENOENT)
-> +       if (efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE))
-> +               sts = efi.get_variable(EFI_BL_LEVEL_NAME, &EFI_BL_LEVEL_GUID,
-> +                                      NULL, &efi_data_len, &efi_data);
-> +       if (sts != EFI_SUCCESS && sts != EFI_NOT_FOUND)
->                 dev_warn(&applespi->spi->dev,
-> -                        "Error getting backlight level from EFI vars: %d\n",
-> +                        "Error getting backlight level from EFI vars: 0x%lx\n",
->                          sts);
->
-> -       kfree(efivar_entry);
-> -
-> -       return sts ? sts : efi_data;
-> +       return sts != EFI_SUCCESS ? -ENODEV : efi_data;
->  }
->
->  static void applespi_save_bl_level(struct applespi_data *applespi,
->                                    unsigned int level)
->  {
-> -       efi_guid_t efi_guid;
-> +       efi_status_t sts = EFI_UNSUPPORTED;
->         u32 efi_attr;
-> -       unsigned long efi_data_len;
->         u16 efi_data;
-> -       int sts;
->
-> -       /* Save keyboard backlight level */
-> -       efi_guid = EFI_BL_LEVEL_GUID;
->         efi_data = (u16)level;
-> -       efi_data_len = sizeof(efi_data);
->         efi_attr = EFI_VARIABLE_NON_VOLATILE | EFI_VARIABLE_BOOTSERVICE_ACCESS |
->                    EFI_VARIABLE_RUNTIME_ACCESS;
->
-> -       sts = efivar_entry_set_safe((efi_char16_t *)EFI_BL_LEVEL_NAME, efi_guid,
-> -                                   efi_attr, true, efi_data_len, &efi_data);
-> -       if (sts)
-> +       if (efi_rt_services_supported(EFI_RT_SUPPORTED_SET_VARIABLE))
-> +               sts = efi.set_variable(EFI_BL_LEVEL_NAME, &EFI_BL_LEVEL_GUID,
-> +                                      efi_attr, sizeof(efi_data), &efi_data);
-> +       if (sts != EFI_SUCCESS)
->                 dev_warn(&applespi->spi->dev,
-> -                        "Error saving backlight level to EFI vars: %d\n", sts);
-> +                        "Error saving backlight level to EFI vars: 0x%lx\n", sts);
->  }
->
->  static int applespi_probe(struct spi_device *spi)
-> --
-> 2.35.1
->
+Thanks Mimi, I've queued this up in efi/next.
