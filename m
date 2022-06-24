@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 739525595B1
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Jun 2022 10:50:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC62E5595BF
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Jun 2022 10:50:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231450AbiFXIuN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 24 Jun 2022 04:50:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37760 "EHLO
+        id S231612AbiFXIuO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 24 Jun 2022 04:50:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230509AbiFXIuC (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 24 Jun 2022 04:50:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 363D8766A5;
-        Fri, 24 Jun 2022 01:49:54 -0700 (PDT)
+        with ESMTP id S231151AbiFXIuJ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 24 Jun 2022 04:50:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C74BC74E62;
+        Fri, 24 Jun 2022 01:49:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A89D62033;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E03562039;
+        Fri, 24 Jun 2022 08:49:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF3CC341CA;
         Fri, 24 Jun 2022 08:49:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FD2C341CC;
-        Fri, 24 Jun 2022 08:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656060592;
-        bh=4Rb29Z1aVzlLhWQRMeSQlmJDimXz9N6C1pQVV5PMA2M=;
+        s=k20201202; t=1656060595;
+        bh=BFgf0zqrAMHCzVhB0LR42v1zFL2DGd2X7e3aolkhaXg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UYt2ehf6zPsyTI0dBSY83/Nm6lE4FRixID0oHOkc7muaiVCtQd47BmpYI0dX9CXad
-         5Au63kZiRi02ohWj1d6ySyuXOfaRCTbPkJitDC3siOd2+xj0HyYuULx6P7aKHzJm0x
-         kYZeeYGYnh7qK/LgdldpJEFKsj8/tnI7qhVMDGdEO/msyqB/FUduc+k8bTQdZnpMpZ
-         nWPhODgrT8DHZqStGkWdS0hhRB1gXzY3Jy7m4BvQChQVvleVWK+KusA0TdUGrQ5BNS
-         YBXyVMd0YKlUYzBY1qGGYa4rrRE2Z+zRI1DV5H7Y+YgTJmxOEYSrFtcC9SongEwl6X
-         0ZHvGCnWeTFIg==
+        b=H9UqJuszxn09wCbbQi2ykrdDpU5W//kqkm4nSyXjbs6+KQ4G1LfFsmAWuwAtrJm4/
+         ik49ESy9EdffXKFCQFUrPSQ69CeySKyMLz0gmRSnt83kPOAvIUS3QYCyoqKDWwT/a/
+         q4CW4XlfP4hwPz3SbWTeShk7L4XikaW1mN+7RqNuwdb5HtgooY+LKWCheXH5KDpXQW
+         6Hqpg7IZr5SU/6/MpbDwxQ12y/TLPBdo1/Q0X6nFjexMbTua+ZG8YYxShlPpf/2Yaz
+         pCUQYrAkI9DGDlowABuay94E1YNoDAr3HB1YofllL/Xs5XEsT2NY/g19HGzNWbV6Oh
+         Ui/4FWEojJt3g==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -41,14 +41,14 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH v3 5/9] efi: vars: Use locking version to iterate over efivars linked lists
-Date:   Fri, 24 Jun 2022 10:49:21 +0200
-Message-Id: <20220624084925.724516-6-ardb@kernel.org>
+Subject: [PATCH v3 6/9] efi: vars: Drop __efivar_entry_iter() helper which is no longer used
+Date:   Fri, 24 Jun 2022 10:49:22 +0200
+Message-Id: <20220624084925.724516-7-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220624084925.724516-1-ardb@kernel.org>
 References: <20220624084925.724516-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4084; h=from:subject; bh=4Rb29Z1aVzlLhWQRMeSQlmJDimXz9N6C1pQVV5PMA2M=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBitXqNTEDyWClHWF38GkRuxb+Vstxxuh/fdnFY7bsT C3mGRbaJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYrV6jQAKCRDDTyI5ktmPJKtKC/ 0cLp4vst0qbIpkpr5hbJ1Ru3VjiXyRbVSoE7JGN8L/ZbAm4npKeMCG+Q31IBGG/CiAOJSCQK9ExU+J BbHPV82/vaLifLxLUkdRIpm2nFY1QbRG2JoNNU1/s8Fcbv5Nl24hrTrFIFB5Kv9rGS/d2TNNc9szV8 C4mYQ1LrKG5LnrTdm4WwnBeOohYlCeq7J36YKd6L+6XEHa0Gb24gBkRi0RSD0FdUKcGJDzjhYnZvIL dGQLi3eFZi5QUwoMH6uL07NfAyhLPLwLuxX/hAbtG04ey71IhJfiv1VaRvnvHzHVw5DbErFkf2Uzxc oVChBYa1M8MXEcRQBvUig7KM2Uz+Wwe1Fk+CAZRvivUPccUtm3juCcqDH4y0O2Jdg3TYhxQWxC9DYC PcRjTzKXZfiS8GPCx7tUYVCabB3pzcbsKkHWoYdLoSdQB+5D0rZTB4UG6hhLvjRuMaRSmDZIFyjWjR Knl6kUxFtfrIa48jV/bRni0tROGHG62kapHor1xu8V2NY=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3578; h=from:subject; bh=BFgf0zqrAMHCzVhB0LR42v1zFL2DGd2X7e3aolkhaXg=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBitXqPIqcpwelyfxmZMoxYNwsSZIUcY7u1TlZrlFba KjdWVCWJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYrV6jwAKCRDDTyI5ktmPJIQqDA CczRRSIEUNMxQiaDtv76g4VXUkdzggParBWyTqGp6vDDbM34rpBVXEps+pMvm7w50WrFoMFckb2gHH 6m48RcY0yCfsKffBfUYUbF2Q40aO55WsV6yVzAve4GvN27becmIXwwvK2IVNNL0ItvWRO4j7Qc1yIE 6IumdDjwdTnuStEZk/TNgI95oadkGyFCPsXraHTKfG9K2zVNZxi60acJsAPuq3jqDV3SNfqH1odg87 Caib/o6AKC3x5az+1/r0I5sDBgfTEo16Kpxq9vZvDy0+iyOFb+bQsYcG6HOMfPi9FpUlNVEsHDwcmd d6vTn5p28FNPeiXo4Yfn/Vaz2wplS3zehmvgzHJTr0FXzwxAIhOr7/FojQQpeZK5Vuc+EHmqL7vWbT fPbmm+aON8dc9aZ+8PgVq2cXbvrssi34Y9GjWSqJKP3Kmy5RqcC+prFbgVuxbWXQVCC7WITc1hCu1d B/uI2lC6OswOnM0K53hqIzYQSb6ONxZAZiL253ZydU+IU=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -61,119 +61,119 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Both efivars and efivarfs uses __efivar_entry_iter() to go over the
-linked list that shadows the list of EFI variables held by the firmware,
-but fail to call the begin/end helpers that are documented as a
-prerequisite.
+__efivar_entry_iter() uses a list iterator in a dubious way, i.e., it
+assumes that the iteration variable always points to an object of the
+appropriate type, even if the list traversal exhausts the list
+completely, in which case it will point somewhere in the vicinity of the
+list's anchor instead.
 
-So switch to the proper version, which is efivar_entry_iter(). Given
-that in both cases, efivar_entry_remove() is invoked with the lock held
-already, don't take the lock there anymore.
+Fortunately, we no longer use this function so we can just get rid of it
+entirely.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/efivars.c | 8 ++------
- drivers/firmware/efi/vars.c    | 9 +--------
- fs/efivarfs/super.c            | 9 +++------
- include/linux/efi.h            | 2 +-
- 4 files changed, 7 insertions(+), 21 deletions(-)
+ drivers/firmware/efi/vars.c | 61 +++-----------------
+ include/linux/efi.h         |  3 -
+ 2 files changed, 7 insertions(+), 57 deletions(-)
 
-diff --git a/drivers/firmware/efi/efivars.c b/drivers/firmware/efi/efivars.c
-index 8341fb15f62e..801a65582172 100644
---- a/drivers/firmware/efi/efivars.c
-+++ b/drivers/firmware/efi/efivars.c
-@@ -602,10 +602,7 @@ static int efivars_sysfs_callback(efi_char16_t *name, efi_guid_t vendor,
- 
- static int efivar_sysfs_destroy(struct efivar_entry *entry, void *data)
- {
--	int err = efivar_entry_remove(entry);
--
--	if (err)
--		return err;
-+	efivar_entry_remove(entry);
- 	efivar_unregister(entry);
- 	return 0;
- }
-@@ -615,8 +612,7 @@ static void efivars_sysfs_exit(void)
- 	/* Remove all entries and destroy */
- 	int err;
- 
--	err = __efivar_entry_iter(efivar_sysfs_destroy, &efivar_sysfs_list,
--				  NULL, NULL);
-+	err = efivar_entry_iter(efivar_sysfs_destroy, &efivar_sysfs_list, NULL);
- 	if (err) {
- 		pr_err("efivars: Failed to destroy sysfs entries\n");
- 		return;
 diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
-index 5640ffa81544..29540013b358 100644
+index 29540013b358..932435945c85 100644
 --- a/drivers/firmware/efi/vars.c
 +++ b/drivers/firmware/efi/vars.c
-@@ -523,17 +523,10 @@ EXPORT_SYMBOL_GPL(__efivar_entry_add);
- /**
-  * efivar_entry_remove - remove entry from variable list
-  * @entry: entry to remove from list
+@@ -1034,59 +1034,6 @@ void efivar_entry_iter_end(void)
+ }
+ EXPORT_SYMBOL_GPL(efivar_entry_iter_end);
+ 
+-/**
+- * __efivar_entry_iter - iterate over variable list
+- * @func: callback function
+- * @head: head of the variable list
+- * @data: function-specific data to pass to callback
+- * @prev: entry to begin iterating from
 - *
-- * Returns 0 on success, or a kernel error code on failure.
-  */
--int efivar_entry_remove(struct efivar_entry *entry)
-+void efivar_entry_remove(struct efivar_entry *entry)
- {
--	if (down_interruptible(&efivars_lock))
--		return -EINTR;
- 	list_del(&entry->list);
--	up(&efivars_lock);
+- * Iterate over the list of EFI variables and call @func with every
+- * entry on the list. It is safe for @func to remove entries in the
+- * list via efivar_entry_delete().
+- *
+- * You MUST call efivar_entry_iter_begin() before this function, and
+- * efivar_entry_iter_end() afterwards.
+- *
+- * It is possible to begin iteration from an arbitrary entry within
+- * the list by passing @prev. @prev is updated on return to point to
+- * the last entry passed to @func. To begin iterating from the
+- * beginning of the list @prev must be %NULL.
+- *
+- * The restrictions for @func are the same as documented for
+- * efivar_entry_iter().
+- */
+-int __efivar_entry_iter(int (*func)(struct efivar_entry *, void *),
+-			struct list_head *head, void *data,
+-			struct efivar_entry **prev)
+-{
+-	struct efivar_entry *entry, *n;
+-	int err = 0;
 -
--	return 0;
- }
- EXPORT_SYMBOL_GPL(efivar_entry_remove);
- 
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 09dfa8362f50..6780fc81cc11 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -180,10 +180,7 @@ static int efivarfs_callback(efi_char16_t *name16, efi_guid_t vendor,
- 
- static int efivarfs_destroy(struct efivar_entry *entry, void *data)
- {
--	int err = efivar_entry_remove(entry);
+-	if (!prev || !*prev) {
+-		list_for_each_entry_safe(entry, n, head, list) {
+-			err = func(entry, data);
+-			if (err)
+-				break;
+-		}
 -
--	if (err)
+-		if (prev)
+-			*prev = entry;
+-
 -		return err;
-+	efivar_entry_remove(entry);
- 	kfree(entry);
- 	return 0;
- }
-@@ -219,7 +216,7 @@ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
+-	}
+-
+-
+-	list_for_each_entry_safe_continue((*prev), n, head, list) {
+-		err = func(*prev, data);
+-		if (err)
+-			break;
+-	}
+-
+-	return err;
+-}
+-EXPORT_SYMBOL_GPL(__efivar_entry_iter);
+-
+ /**
+  * efivar_entry_iter - iterate over variable list
+  * @func: callback function
+@@ -1104,12 +1051,18 @@ EXPORT_SYMBOL_GPL(__efivar_entry_iter);
+ int efivar_entry_iter(int (*func)(struct efivar_entry *, void *),
+ 		      struct list_head *head, void *data)
+ {
++	struct efivar_entry *entry, *n;
+ 	int err = 0;
  
- 	err = efivar_init(efivarfs_callback, (void *)sb, true, &efivarfs_list);
+ 	err = efivar_entry_iter_begin();
  	if (err)
--		__efivar_entry_iter(efivarfs_destroy, &efivarfs_list, NULL, NULL);
-+		efivar_entry_iter(efivarfs_destroy, &efivarfs_list, NULL);
+ 		return err;
+-	err = __efivar_entry_iter(func, head, data, NULL);
++
++	list_for_each_entry_safe(entry, n, head, list) {
++		err = func(entry, data);
++		if (err)
++			break;
++	}
+ 	efivar_entry_iter_end();
  
  	return err;
- }
-@@ -244,7 +241,7 @@ static void efivarfs_kill_sb(struct super_block *sb)
- 	kill_litter_super(sb);
- 
- 	/* Remove all entries and destroy */
--	__efivar_entry_iter(efivarfs_destroy, &efivarfs_list, NULL, NULL);
-+	efivar_entry_iter(efivarfs_destroy, &efivarfs_list, NULL);
- }
- 
- static struct file_system_type efivarfs_type = {
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 08bc6215e3b4..54ca2d6b6c78 100644
+index 54ca2d6b6c78..93ce85a14a46 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
-@@ -1063,7 +1063,7 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
+@@ -1083,9 +1083,6 @@ int efivar_entry_set_safe(efi_char16_t *name, efi_guid_t vendor, u32 attributes,
+ int efivar_entry_iter_begin(void);
+ void efivar_entry_iter_end(void);
  
- int efivar_entry_add(struct efivar_entry *entry, struct list_head *head);
- void __efivar_entry_add(struct efivar_entry *entry, struct list_head *head);
--int efivar_entry_remove(struct efivar_entry *entry);
-+void efivar_entry_remove(struct efivar_entry *entry);
+-int __efivar_entry_iter(int (*func)(struct efivar_entry *, void *),
+-			struct list_head *head, void *data,
+-			struct efivar_entry **prev);
+ int efivar_entry_iter(int (*func)(struct efivar_entry *, void *),
+ 		      struct list_head *head, void *data);
  
- int __efivar_entry_delete(struct efivar_entry *entry);
- int efivar_entry_delete(struct efivar_entry *entry);
 -- 
 2.35.1
 
