@@ -2,65 +2,53 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07F1D559542
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Jun 2022 10:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE0995595BC
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Jun 2022 10:50:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231512AbiFXIUe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 24 Jun 2022 04:20:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41288 "EHLO
+        id S229683AbiFXItn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 24 Jun 2022 04:49:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231511AbiFXIUd (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 24 Jun 2022 04:20:33 -0400
+        with ESMTP id S229745AbiFXItm (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 24 Jun 2022 04:49:42 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D1676F78F;
-        Fri, 24 Jun 2022 01:20:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A5C863631;
+        Fri, 24 Jun 2022 01:49:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 56E15B827BF;
-        Fri, 24 Jun 2022 08:20:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D12DC341CC;
-        Fri, 24 Jun 2022 08:20:29 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id F19E2B8274C;
+        Fri, 24 Jun 2022 08:49:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEFEC341C8;
+        Fri, 24 Jun 2022 08:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656058830;
-        bh=FcLlyPrf+AWrPxtRYAiOsrBgwpm9O+rmChbmP3sd0wY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=XNpqqTnFiQiQJZzBEufwWE28MJ0aOsyAy2KEUHaB1BH4s8HTiMq2VnpCOYcK2uiHt
-         6hPcr6jSaPU8AKFcBlCVQienOkPhBpHdVcc57fh5OJQIyYFinFgrD8zjPcxZBbvub4
-         poU+y/NSsVc/kPHU/LIXPFWx6CgZ18on+MHP3ZuIWOgiaLsBGSwpk35dMgNiTKKT4p
-         hPncKazS4R645pBJdBVdX5PYEfw1nyXKLQo+enzFQ6kJYxS3gDLVPxXjC00euYose6
-         1TFpC2K4GZ353AtZOF/iceCHYjbm6myWzpEdkR1JHm0kjnr26L5UOgnkFibV+skVfh
-         h5a8ZcHfygaCQ==
-Received: by mail-oi1-f182.google.com with SMTP id u9so2655872oiv.12;
-        Fri, 24 Jun 2022 01:20:29 -0700 (PDT)
-X-Gm-Message-State: AJIora915IUXubE2wCPuKAmnXrbLERiq7Ts9quA86XeZ0a69AQ6KD7wJ
-        Y+rcxZe/Sz1qUiSQUpwdFq3hQVSwFSMHL7AAJsU=
-X-Google-Smtp-Source: AGRyM1vD+QRApq+BxH0OZkrLfEtJbkX9khKKuqalP0FlAmgF7yLvq3N4ZOo0N3wmIU1EpYhYOZVcip/2Pl3XtJb7Zyk=
-X-Received: by 2002:a05:6808:13c6:b0:335:3e54:94bc with SMTP id
- d6-20020a05680813c600b003353e5494bcmr1174367oiw.228.1656058829220; Fri, 24
- Jun 2022 01:20:29 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220616124740.580708-1-ardb@kernel.org> <20220616124740.580708-2-ardb@kernel.org>
- <dba0cbb3e516ce715939be3638d2b5639608f2c1.camel@linux.ibm.com>
-In-Reply-To: <dba0cbb3e516ce715939be3638d2b5639608f2c1.camel@linux.ibm.com>
+        s=k20201202; t=1656060578;
+        bh=hcpK43yfcPU8Fo/wkspzSo2yBD21jEkf+MEbeXQrAJ8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ESpVJkgrlIGqVLbgYk3MBLlkpRpCbxm6LNMRjYdyg/GhxgQLYN/A/5hPd8zX8Xdsk
+         lVEdp5iVM0dt64wOivVKK+cAJa6o6v+jflJhtEHw94IuDD4yhvucMHY413cKpOimWD
+         pQRvfDnFVN6oJOssMrfrwscjwipDvNfqA41+8xH1rvVHq1K/TrA0XhxRPaZ5CGRyW5
+         pvGs5JHWfYpjtGeYDtPFp0Dk6r0puDO1ov962eHMdOBNmeeNoX7IJ9UmkvFfHxvhk/
+         nrWkCWCjySqEJc8NGCzJsappQ3sZrv9qyEb9SljWGS9R90vv/hWorRDcTNv+eU4LNM
+         YPTKI2yJymDTA==
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 24 Jun 2022 10:20:18 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEvhtpF45R7-d6Q2ROhZRJ9i7JsSj3tScJk6b=TmG_kgQ@mail.gmail.com>
-Message-ID: <CAMj1kXEvhtpF45R7-d6Q2ROhZRJ9i7JsSj3tScJk6b=TmG_kgQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] selftests/kexec: remove broken EFI_VARS secure
- boot fallback check
-To:     Mimi Zohar <zohar@linux.ibm.com>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
+To:     linux-efi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Matthew Garrett <mjg59@srcf.ucam.org>,
-        Peter Jones <pjones@redhat.com>,
+        Peter Jones <pjones@redhat.com>, Jeremy Kerr <jk@ozlabs.org>,
         Tony Luck <tony.luck@intel.com>,
         Kees Cook <keescook@chromium.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>, Shuah Khan <shuah@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH v3 0/9] efi: Restructure EFI varstore driver
+Date:   Fri, 24 Jun 2022 10:49:16 +0200
+Message-Id: <20220624084925.724516-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5230; h=from:subject; bh=hcpK43yfcPU8Fo/wkspzSo2yBD21jEkf+MEbeXQrAJ8=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBitXqFWZihnXMsXp/Wke3D8PpPy2OqTkiG5crgdZnk uSkP6vaJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYrV6hQAKCRDDTyI5ktmPJGhLC/ 9aJ2qC1JdusDprO/90LQCIdD6gvMqE7uWMrjZoaiJvNaeFXIJIdV5PpJg0yShLGQzgaYZcgmo5q/ye sV4FOQU4Qk8xqa4MV6+1iVoX9qSHhe4eehqOO3z3y99g8ktJdrRVUxX46vXYa85zPpKtFVy8bF7Del 2zu06vKsz6oO87ziZbflLrruXDKPMCsQzigTSGrqbFIfc6gR6xrNIKjPeI44l4wScoSCcgOfAWwW03 XkO6xFVKUawjxW8xaaa/Lv+eC23sTiyIBHLrIppKGu+KDPZmpnR3OKHXtYJWcsupmAU+YIxVJ90MPH okGpNfFtnm/CpGPLoXzN0EN62hs+p/cbSW9IzrAuF/vIAvjTv2+uWfVa3/JQ/RmR3SfNZ36StxMbXR hSMbn+KOyEeXFgId1tdKsghnZdb+RQGMveDn1auzjZRhTei9BRUBD3x/shxr1C6P0cM1RkTFP36L+X 3jaQzZKQcuWB9xoNBHnet4BfXDvu0KwISuAAc/PB/BoYo=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -71,29 +59,110 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 17 Jun 2022 at 05:51, Mimi Zohar <zohar@linux.ibm.com> wrote:
->
-> On Thu, 2022-06-16 at 14:47 +0200, Ard Biesheuvel wrote:
-> > Commit b433a52aa28733e0 ("selftests/kexec: update get_secureboot_mode")
-> > refactored the code that discovers the EFI secure boot mode so it only
-> > depends on either the efivars pseudo filesystem or the efivars sysfs
-> > interface, but never both.
-> >
-> > However, the latter version was not implemented correctly, given the
-> > fact that the local 'efi_vars' variable never assumes a value. This
-> > means the fallback has been dead code ever since it was introduced.
-> >
-> > So let's drop the fallback altogether. The sysfs interface has been
-> > deprecated for ~10 years now, and is only enabled on x86 to begin with,
-> > so it is time to get rid of it entirely.
-> >
-> > Cc: Shuah Khan <shuah@kernel.org>
-> > Cc: Mimi Zohar <zohar@linux.ibm.com>
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
->
-> Thanks, Ard.
->
-> Reviewed-by:  Mimi Zohar <zohar@linux.ibm.com>
->
+Currently, efi-pstore, efivarfs and the efivars sysfs interface all
+share a common support layer which manages a linked list containing
+efivar_entry items describing each EFI variable that this support layer
+assumes to be present in the EFI variable store managed by the firmware.
 
-Thanks Mimi, I've queued this up in efi/next.
+This shared layer also contains an efivars_operations pointer, which
+carries function pointers that refer to the underlying EFI get/set
+variable routines, but can be superseded by other implementations
+(currently, this is only implemented for Google x86 systems that
+implement the GSMI interface)
+
+Each user of this shared layer has its own linked list, which means they
+all have a different view of the underlying variable store, even though
+they might operate on the same variables. For EFI pstore related
+variables in particular, manipulating these behind the back of the other
+drivers is likely to result in fun.
+
+This shared layer as well as its 3 different users all use a single
+semaphore to mediate access to the individual linked lists and the ops
+pointer.
+
+The shared layer carries a substantial amount of 'business logic'
+related to which EFI variables are relevant to the firmware, to limit
+whether and how they may be manipulated. This aspect of the code is
+only relevant when such variables can be manipulated arbitrarily, e.g.
+by user space, but EFI pstore, for example, has no need for this, as it
+uses its own GUIDed namespace for EFI variables, and does not permit
+other variables to be manipulated.
+
+The two remaining users are efivars sysfs and efivarfs, both of which
+provide a cached view of these 'important' variables. Given that the
+former has been deprecated for a long time, and given the potential
+concerns around using both concurrently, let's get rid of the sysfs
+based one.
+
+Then, we can restructure the efivars API so that this business logic
+can be incorporated into the efivarfs driver, leaving only a minimal
+wrapper around the get/set variable calls, allowing the GSMI replacement
+to remain in use, as well as mediate access to the different services
+using the existing semaphore. This is mainly useful to ensure that
+set_variable() calls do no invalidate an enumeration of the EFI
+variables that is in progress using get_next_variable() by another task.
+
+Some of the prerequisites of this work have been posted separately and
+have been queued up in efi/next already, mainly to move other users away
+from the efivar API which they were using in the wrong way, or without a
+good reason.
+
+Changes since v2:
+- add a pstore_record::priv field and use it to record the EFI variable
+  name exactly as it was used to retrieve the entry;
+- drop another pstore patch related to the ECC field that is no longer
+  needed;
+- drop some remaining EXPORT_SYMBOL()s of the efivar API symbols that
+  are now private to efivarfs
+
+Cc: Matthew Garrett <mjg59@srcf.ucam.org>
+Cc: Peter Jones <pjones@redhat.com>
+Cc: Jeremy Kerr <jk@ozlabs.org>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+
+Ard Biesheuvel (9):
+  pstore: Add priv field to pstore_record for backend specific use
+  efi: vars: Don't drop lock in the middle of efivar_init()
+  efi: vars: Add thin wrapper around EFI get/set variable interface
+  efi: pstore: Omit efivars caching EFI varstore access layer
+  efi: vars: Use locking version to iterate over efivars linked lists
+  efi: vars: Drop __efivar_entry_iter() helper which is no longer used
+  efi: vars: Remove deprecated 'efivars' sysfs interface
+  efi: vars: Switch to new wrapper layer
+  efi: vars: Move efivar caching layer into efivarfs
+
+ Documentation/x86/x86_64/uefi.rst        |    2 +-
+ arch/arm/configs/milbeaut_m10v_defconfig |    1 -
+ arch/ia64/configs/bigsur_defconfig       |    1 -
+ arch/ia64/configs/generic_defconfig      |    1 -
+ arch/ia64/configs/gensparse_defconfig    |    1 -
+ arch/ia64/configs/tiger_defconfig        |    1 -
+ arch/ia64/configs/zx1_defconfig          |    1 -
+ arch/x86/configs/i386_defconfig          |    1 -
+ arch/x86/configs/x86_64_defconfig        |    1 -
+ drivers/firmware/efi/Kconfig             |   13 +-
+ drivers/firmware/efi/Makefile            |    1 -
+ drivers/firmware/efi/efi-pstore.c        |  377 ++----
+ drivers/firmware/efi/efi.c               |    1 +
+ drivers/firmware/efi/efivars.c           |  671 -----------
+ drivers/firmware/efi/vars.c              | 1219 +++-----------------
+ fs/efivarfs/Makefile                     |    2 +-
+ fs/efivarfs/internal.h                   |   40 +
+ fs/efivarfs/super.c                      |   15 +-
+ fs/efivarfs/vars.c                       |  738 ++++++++++++
+ fs/pstore/inode.c                        |    1 +
+ fs/pstore/platform.c                     |    1 +
+ include/linux/efi.h                      |   80 +-
+ include/linux/pstore.h                   |    4 +
+ 23 files changed, 1031 insertions(+), 2142 deletions(-)
+ delete mode 100644 drivers/firmware/efi/efivars.c
+ create mode 100644 fs/efivarfs/vars.c
+
+-- 
+2.35.1
+
