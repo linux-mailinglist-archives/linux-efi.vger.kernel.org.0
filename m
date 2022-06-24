@@ -2,52 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B960A55A06F
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Jun 2022 20:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07720559FD4
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Jun 2022 20:07:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230253AbiFXRlr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 24 Jun 2022 13:41:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41612 "EHLO
+        id S230313AbiFXRm2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 24 Jun 2022 13:42:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230239AbiFXRlq (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 24 Jun 2022 13:41:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5017B22BE9;
-        Fri, 24 Jun 2022 10:41:46 -0700 (PDT)
+        with ESMTP id S230441AbiFXRm1 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 24 Jun 2022 13:42:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A3057C517;
+        Fri, 24 Jun 2022 10:42:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E5F2561F0D;
-        Fri, 24 Jun 2022 17:41:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A89C3411C;
-        Fri, 24 Jun 2022 17:41:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B645E61F5F;
+        Fri, 24 Jun 2022 17:42:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A4F7C341CB;
+        Fri, 24 Jun 2022 17:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656092505;
-        bh=pe98CI9kCtS1Z+q8yXfT3SeDJPX3/R3m/CosNWDamWI=;
+        s=k20201202; t=1656092545;
+        bh=LF2SHOm4r17rRet4Wnn5vy1AmxEoTlBW4PCJIg4inWA=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ibE5U0/j9jkIKhC+tjYF3b1ypWLCXgHEjiJqJVE3ZE6yeqT4rL3D6PFuUZw0COffu
-         QaX37rbWvwf9hkyEsOb4Xeloqr3Rm4U1NZyhxDigTiQkCkdoKXjcl84nuaTixGnqAZ
-         11dKeRstUuvLSkanhit98+qbHdzBPpbo4LSAqw6I0e1qNAX8R5jCjxIFt/7Am1WWT6
-         ikH9+O7x78mXervpgP4eXAEImBXWVKFqDXFJjP1OMOKEQ/te0Z/zmxB9aPXXDq6Exx
-         LTFeQWTGut2psennWZlMXRJvNW1nU4bIvBvRQmA3VzBF1ftRt6HGfPd1VA4RavcEDv
-         Tyk1sipTDbZ7w==
-Received: by mail-oi1-f169.google.com with SMTP id be10so4460448oib.7;
-        Fri, 24 Jun 2022 10:41:45 -0700 (PDT)
-X-Gm-Message-State: AJIora/4M66gJLXf53wk+l56oIOW6kaLmwSfNgQbuhiq1fWjhhBfiXj0
-        jBktLXMMVZJ+A5rcW8eaPRVm1Pel37FNOBMIBcU=
-X-Google-Smtp-Source: AGRyM1sSG7rQV/siZ5/AO6SL294YHu79aRFgAW9PSWR9NoI5jlkbofCIbWS+/AonubZrtRC3RqqDXurne3KByTcXHn0=
-X-Received: by 2002:a05:6808:13c6:b0:335:3e54:94bc with SMTP id
- d6-20020a05680813c600b003353e5494bcmr2544949oiw.228.1656092504520; Fri, 24
- Jun 2022 10:41:44 -0700 (PDT)
+        b=PSMMrMK07gFSEFdyAmLvi13+8WQUr4Ro3aky6QFgZ50Us07pfSNa1HItsAmMYCO06
+         wJiHAY1ay8Ns3P+0RHedp5xKlrvIH8Tb7k5zsNA0L5PHYdw0WJV4/r6cA9jVm9MuQ/
+         GUNGy0c4eD1KdMfCUoR7AVizxnSj8VRfz4DvIhn1++0LBwJpmXE6jBAmDUmVLBmT/A
+         qKGo9RlETCXQ0yGJ9tx2Kzcia/arfYd9hjheJDVldwhgNjfztoZn3X5oYV/NKWyb0y
+         FRuVzPxefHwKQd8izcPqYQGaicPV7PyZdZrHc7gYtN4AAqtlqNeQgxpGW6WaVhUEqL
+         9MDEyG3+8QOcw==
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-101bb9275bcso4690717fac.8;
+        Fri, 24 Jun 2022 10:42:25 -0700 (PDT)
+X-Gm-Message-State: AJIora8nXLBCMdFetPbvCgJt8JAE366UGiSrCcMk4qfLIah5WaWyUvAH
+        Nyh7XMusQGkcwJJKGz9OjjVP9V053g7cE36Zh6o=
+X-Google-Smtp-Source: AGRyM1urfEjxd1IK/VX60Siu2XV6KeXkE3snPHlR/G5Gj+IvQvlh7jg3WsjtBtQqulSynE4oE4e2nL+cR3LyJ5RpQfs=
+X-Received: by 2002:a05:6870:5b91:b0:108:374a:96b0 with SMTP id
+ em17-20020a0568705b9100b00108374a96b0mr90061oab.126.1656092544307; Fri, 24
+ Jun 2022 10:42:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220624152331.4009502-1-sudeep.holla@arm.com> <20220624152331.4009502-3-sudeep.holla@arm.com>
-In-Reply-To: <20220624152331.4009502-3-sudeep.holla@arm.com>
+References: <20220624152331.4009502-1-sudeep.holla@arm.com> <20220624152331.4009502-4-sudeep.holla@arm.com>
+In-Reply-To: <20220624152331.4009502-4-sudeep.holla@arm.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 24 Jun 2022 19:41:33 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXH4fo_mm2aRTU2ehkk=gzf0r93cXk4OMX54-hGDt76U7Q@mail.gmail.com>
-Message-ID: <CAMj1kXH4fo_mm2aRTU2ehkk=gzf0r93cXk4OMX54-hGDt76U7Q@mail.gmail.com>
-Subject: Re: [PATCH 2/3] ACPI: Enable Platform Runtime Mechanism(PRM) support
- on ARM64
+Date:   Fri, 24 Jun 2022 19:42:13 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFskTNcSwfiGomndZNyR2XaMhixiQvB=9h83-++kp_6-w@mail.gmail.com>
+Message-ID: <CAMj1kXFskTNcSwfiGomndZNyR2XaMhixiQvB=9h83-++kp_6-w@mail.gmail.com>
+Subject: Re: [PATCH 3/3] ACPI: Move PRM config option under the main ACPI config
 To:     Sudeep Holla <sudeep.holla@arm.com>
 Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
@@ -69,31 +68,68 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 On Fri, 24 Jun 2022 at 17:23, Sudeep Holla <sudeep.holla@arm.com> wrote:
 >
-> There is interest to make use of PRM(Platform Runtime Mechanism) even on
-> ARM64 ACPI platforms. Allow PRM to be enabled on ARM64 platforms. It will
-> be enabled by default as on x86_64.
+> Currently PRM(Platform Runtime Mechanism) config options is list along
+> with the mainA CPI (Advanced Configuration and Power Interface) option
+> at the same level. On ARM64 platforms unlike x86, ACPI option is listed
+> at the topmost level of configuration menu. It is rather very confusing
+> to see PRM option also listed along with ACPI in the topmost level.
+>
+> Move the same under ACPI config option. No functional change, just changes
+> the level of visibility of this option under the configuration menu.
 >
 > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 
 Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
 > ---
->  drivers/acpi/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/acpi/Kconfig | 30 +++++++++++++++---------------
+>  1 file changed, 15 insertions(+), 15 deletions(-)
 >
 > diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index 1e34f846508f..d08b7408f0a5 100644
+> index d08b7408f0a5..218b5b59df31 100644
 > --- a/drivers/acpi/Kconfig
 > +++ b/drivers/acpi/Kconfig
-> @@ -592,7 +592,7 @@ config X86_PM_TIMER
+> @@ -572,6 +572,21 @@ source "drivers/acpi/pmic/Kconfig"
+>  config ACPI_VIOT
+>         bool
 >
->  config ACPI_PRMT
->         bool "Platform Runtime Mechanism Support"
-> -       depends on EFI && X86_64
+> +config ACPI_PRMT
+> +       bool "Platform Runtime Mechanism Support"
 > +       depends on EFI && (X86_64 || ARM64)
->         default y
->         help
->           Platform Runtime Mechanism (PRM) is a firmware interface exposing a
+> +       default y
+> +       help
+> +         Platform Runtime Mechanism (PRM) is a firmware interface exposing a
+> +         set of binary executables that can be called from the AML interpreter
+> +         or directly from device drivers.
+> +
+> +         Say Y to enable the AML interpreter to execute the PRM code.
+> +
+> +         While this feature is optional in principle, leaving it out may
+> +         substantially increase computational overhead related to the
+> +         initialization of some server systems.
+> +
+>  endif  # ACPI
+>
+>  config X86_PM_TIMER
+> @@ -589,18 +604,3 @@ config X86_PM_TIMER
+>
+>           You should nearly always say Y here because many modern
+>           systems require this timer.
+> -
+> -config ACPI_PRMT
+> -       bool "Platform Runtime Mechanism Support"
+> -       depends on EFI && (X86_64 || ARM64)
+> -       default y
+> -       help
+> -         Platform Runtime Mechanism (PRM) is a firmware interface exposing a
+> -         set of binary executables that can be called from the AML interpreter
+> -         or directly from device drivers.
+> -
+> -         Say Y to enable the AML interpreter to execute the PRM code.
+> -
+> -         While this feature is optional in principle, leaving it out may
+> -         substantially increase computational overhead related to the
+> -         initialization of some server systems.
 > --
 > 2.36.1
 >
