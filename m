@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 064CE5595B6
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Jun 2022 10:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3751E5595AD
+	for <lists+linux-efi@lfdr.de>; Fri, 24 Jun 2022 10:50:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230380AbiFXItp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 24 Jun 2022 04:49:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37504 "EHLO
+        id S230467AbiFXItz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 24 Jun 2022 04:49:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229745AbiFXIto (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 24 Jun 2022 04:49:44 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14FC25D105;
-        Fri, 24 Jun 2022 01:49:44 -0700 (PDT)
+        with ESMTP id S230451AbiFXItq (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 24 Jun 2022 04:49:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B9315D105;
+        Fri, 24 Jun 2022 01:49:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BAE91B8274C;
-        Fri, 24 Jun 2022 08:49:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B79C341CB;
-        Fri, 24 Jun 2022 08:49:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 152E86202E;
+        Fri, 24 Jun 2022 08:49:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE48C341C8;
+        Fri, 24 Jun 2022 08:49:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656060581;
-        bh=quDxoLCSV3k0NYsjwvT2zdum/ntBKP4WJKq7KS9sLKQ=;
+        s=k20201202; t=1656060584;
+        bh=56IF+p6ZRKtIMtoS9fAs8VmyAr/kQM9xHoUlBuj9S2A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SlO1VyKlxktRWZExTVsjivXwkX1lLjCoeJSuKfp/joI8GTur7ruI0eifzk9xBG2RP
-         hteY4bq0pUOK1VMhIoeEsm1KlBYX9YZfx1CZYvRvAQh7hcVkh8Q7LaE9vN8l143m7F
-         eGjPGqc+67OFqdCQ78rXyGxmObGzTCd41koGkuws014eglbA0K7cqfDywL5aud+8wX
-         zo7wLyR/mJA/lvxnccLcV6mtUweM6358si3pi7fdSPXvBj66NDGCgdiVZGb5gEwl2m
-         GItvM7vwnspCcEQ+wfuMD4TRIK/+hnfCLn5N/TOr6EqHrY8hBK1loDVAI8cMb/+6YL
-         oUnkqg6dUhkmg==
+        b=jCNeaeqzee1PP9ObcGzhMXyBbyDSH+IMHbMFn6j9/8ZbgRJcdu8il3r/Q878AN+AX
+         kS6ukb/vSi/tzZ9O/TduWyf5t+/ORANCMfPprCu9C5OHg/wTfF4SbItG11NuxQLPhm
+         XR+TLeMSQi+BtzPKzPm1ntuDIvEWseU4S3DsM5vbJTvICnHBkQ/FV2pzCYsn9f5UrQ
+         alpIc4h1NR3IzpWJ391ZhsAwIlu5ZWZTGI/Yh5Gmwmp90Z87IcWT5D/4gCm/F8Zq79
+         ZX6kgIfY3xron0CEeX1rG/WnLHs5Q1pB5dG1vLiK7PtJJhGbRi7vDViXJFk26kXuII
+         V12DGBfKlNZVg==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -41,85 +41,174 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH v3 1/9] pstore: Add priv field to pstore_record for backend specific use
-Date:   Fri, 24 Jun 2022 10:49:17 +0200
-Message-Id: <20220624084925.724516-2-ardb@kernel.org>
+Subject: [PATCH v3 2/9] efi: vars: Don't drop lock in the middle of efivar_init()
+Date:   Fri, 24 Jun 2022 10:49:18 +0200
+Message-Id: <20220624084925.724516-3-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220624084925.724516-1-ardb@kernel.org>
 References: <20220624084925.724516-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1966; h=from:subject; bh=quDxoLCSV3k0NYsjwvT2zdum/ntBKP4WJKq7KS9sLKQ=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBitXqGJ13sMqMYNtfXgKUZ3t5hymJ3nwoeoBBq8n8M pC8NVY2JAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYrV6hgAKCRDDTyI5ktmPJMZ4DA CuTOVM4o38c3b2aY1NN8AusBeEtLrUmrfVYnUDaNj7nnTiBgjvfRvu1O6eZ0Uf7d98OknG/niI9qLO eH/0nqlPl0uwnOmGQkrFy2G7Abr1ukYrvZ8vxqKrseLk0daVx1YAVKVdkD6cgf+5UTrWUu3Qqml5A5 VXbRvpZ9wUzYRvr4y2sqRKjJF0BA813iJx+GENzb9+4jcv5Ai1ewW83FIUdAVf8WOQm3QeSp2NIVoo QOt/rNPP3nunmRZZ8W5PH1K9trtzpv0hkrcAMzYKz9hUisGMXDG4nfdbTfLAl4AztT4aruvwsOsnxV aeCjzKos4GgKwhBGjNEEGTCSCi0Lp5lCihycwVKmjc8syQZZO0gRGpgMVFgD/FC1OZD3KJSjcCIMi1 KGWQZrL6pXilvbXbkvFWvTpnG2r0gKa4+hLUdxQ+WISlJbJm1MwrOn6gdapQntTMdmOb8gMjBBgK8D hBuzH504+Ts4qitTcJ5nmtOQYmuOnwyK1fi1uMqPEEsmo=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5517; h=from:subject; bh=56IF+p6ZRKtIMtoS9fAs8VmyAr/kQM9xHoUlBuj9S2A=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBitXqIsbWXK1ba1qtaxOzy6beuyeIfsZcL6+fe4pEi OKlnrDuJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYrV6iAAKCRDDTyI5ktmPJMgVC/ 9sNS4ITTheU9lbTc+VDw2CSbOhcZ1Ly7NxJEdkrC9TV27nZo0XNTi24CnjW3Fbyt8fOSCdLgWcdMvI V7FR64mfENCHr0Afh5+jk6Hw8yX3n5hrG+1cHK8cSSgAW2s37+gBQHerrL9aunhNN3SPqi1uujm5sP 45R1JkLyc4QRwnuhsIfZdphGUWn6Hg2K/KftbxswT9xah7gt+Xtkir6B2F9qE1O1GXcABfcc2EQD5X iqg/Yf4R8kJsI2BSNrqIsEyz4JX5IrZ8X2PhUPWOHqgU+tnEisnNJTypcjxC0jKLU7f0h++y8u2MBk F+YvZGKtV95RdpmLNAZ0ikk47tSg5Oztccz0hzTzT98m7wKEx0tuw1cFzzhHjrnwn4ZWYoTqojdCKM VsQny6cZp7+R6nQOTNwxYQtW6oZjLaol2c96Q9PBaxfvCsbbdVWSlpm4I8JxvRAAQcVg78t8ch4e8r 3kngV6IDgXg52QHNYUCjt+TdHvll+LrEXxEu6rGGLHqn4=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The EFI pstore backend will need to store per-record variable name data
-when we switch away from the efivars layer. Add a priv field to struct
-pstore_record, and document it as holding a backend specific pointer
-that is assumed to be a kmalloc()d buffer, and will be kfree()d when the
-entire record is freed.
+Even though the efivars_lock lock is documented as protecting the
+efivars->ops pointer (among other things), efivar_init() happily
+releases and reacquires the lock for every EFI variable that it
+enumerates. This used to be needed because the lock was originally a
+spinlock, which prevented the callback that is invoked for every
+variable from being able to sleep. However, releasing the lock could
+potentially invalidate the ops pointer, but more importantly, it might
+allow a SetVariable() runtime service call to take place concurrently,
+and the UEFI spec does not define how this affects an enumeration that
+is running in parallel using the GetNextVariable() runtime service,
+which is what efivar_init() uses.
+
+In the meantime, the lock has been converted into a semaphore, and the
+only reason we need to drop the lock is because the efivarfs pseudo
+filesystem driver will otherwise deadlock when it invokes the efivars
+API from the callback to create the efivar_entry items and insert them
+into the linked list. (EFI pstore is affected in a similar way)
+
+So let's switch to helpers that can be used while the lock is already
+taken. This way, we can hold on to the lock throughout the enumeration.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- fs/pstore/inode.c      | 1 +
- fs/pstore/platform.c   | 1 +
- include/linux/pstore.h | 4 ++++
- 3 files changed, 6 insertions(+)
+ drivers/firmware/efi/efi-pstore.c |  7 ++-----
+ drivers/firmware/efi/efivars.c    |  5 +----
+ drivers/firmware/efi/vars.c       | 22 ++++++++++----------
+ fs/efivarfs/super.c               |  6 ++----
+ include/linux/efi.h               |  1 +
+ 5 files changed, 17 insertions(+), 24 deletions(-)
 
-diff --git a/fs/pstore/inode.c b/fs/pstore/inode.c
-index 14658b009f1b..ffbadb8b3032 100644
---- a/fs/pstore/inode.c
-+++ b/fs/pstore/inode.c
-@@ -55,6 +55,7 @@ static void free_pstore_private(struct pstore_private *private)
- 		return;
- 	if (private->record) {
- 		kfree(private->record->buf);
-+		kfree(private->record->priv);
- 		kfree(private->record);
- 	}
- 	kfree(private);
-diff --git a/fs/pstore/platform.c b/fs/pstore/platform.c
-index e26162f102ff..0c034ea39954 100644
---- a/fs/pstore/platform.c
-+++ b/fs/pstore/platform.c
-@@ -769,6 +769,7 @@ void pstore_get_backend_records(struct pstore_info *psi,
- 		if (rc) {
- 			/* pstore_mkfile() did not take record, so free it. */
- 			kfree(record->buf);
-+			kfree(record->priv);
- 			kfree(record);
- 			if (rc != -EEXIST || !quiet)
- 				failed++;
-diff --git a/include/linux/pstore.h b/include/linux/pstore.h
-index e97a8188f0fd..638507a3c8ff 100644
---- a/include/linux/pstore.h
-+++ b/include/linux/pstore.h
-@@ -57,6 +57,9 @@ struct pstore_info;
-  * @size:	size of @buf
-  * @ecc_notice_size:
-  *		ECC information for @buf
-+ * @priv:	pointer for backend specific use, will be
-+ *		kfree()d by the pstore core if non-NULL
-+ *		when the record is freed.
-  *
-  * Valid for PSTORE_TYPE_DMESG @type:
-  *
-@@ -74,6 +77,7 @@ struct pstore_record {
- 	char			*buf;
- 	ssize_t			size;
- 	ssize_t			ecc_notice_size;
-+	void			*priv;
+diff --git a/drivers/firmware/efi/efi-pstore.c b/drivers/firmware/efi/efi-pstore.c
+index 7e771c56c13c..0d80cc7ff6ca 100644
+--- a/drivers/firmware/efi/efi-pstore.c
++++ b/drivers/firmware/efi/efi-pstore.c
+@@ -364,7 +364,6 @@ static int efi_pstore_callback(efi_char16_t *name, efi_guid_t vendor,
+ 			       unsigned long name_size, void *data)
+ {
+ 	struct efivar_entry *entry;
+-	int ret;
  
- 	int			count;
- 	enum kmsg_dump_reason	reason;
+ 	entry = kzalloc(sizeof(*entry), GFP_KERNEL);
+ 	if (!entry)
+@@ -373,11 +372,9 @@ static int efi_pstore_callback(efi_char16_t *name, efi_guid_t vendor,
+ 	memcpy(entry->var.VariableName, name, name_size);
+ 	entry->var.VendorGuid = vendor;
+ 
+-	ret = efivar_entry_add(entry, &efi_pstore_list);
+-	if (ret)
+-		kfree(entry);
++	__efivar_entry_add(entry, &efi_pstore_list);
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static int efi_pstore_update_entry(efi_char16_t *name, efi_guid_t vendor,
+diff --git a/drivers/firmware/efi/efivars.c b/drivers/firmware/efi/efivars.c
+index ea0bc39dc965..c19db0b35c0d 100644
+--- a/drivers/firmware/efi/efivars.c
++++ b/drivers/firmware/efi/efivars.c
+@@ -527,10 +527,7 @@ efivar_create_sysfs_entry(struct efivar_entry *new_var)
+ 	}
+ 
+ 	kobject_uevent(&new_var->kobj, KOBJ_ADD);
+-	if (efivar_entry_add(new_var, &efivar_sysfs_list)) {
+-		efivar_unregister(new_var);
+-		return -EINTR;
+-	}
++	__efivar_entry_add(new_var, &efivar_sysfs_list);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
+index cae590bd08f2..146360e2f1cb 100644
+--- a/drivers/firmware/efi/vars.c
++++ b/drivers/firmware/efi/vars.c
+@@ -450,9 +450,6 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
+ 						&vendor_guid);
+ 		switch (status) {
+ 		case EFI_SUCCESS:
+-			if (duplicates)
+-				up(&efivars_lock);
+-
+ 			variable_name_size = var_name_strnsize(variable_name,
+ 							       variable_name_size);
+ 
+@@ -476,14 +473,6 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
+ 				if (err)
+ 					status = EFI_NOT_FOUND;
+ 			}
+-
+-			if (duplicates) {
+-				if (down_interruptible(&efivars_lock)) {
+-					err = -EINTR;
+-					goto free;
+-				}
+-			}
+-
+ 			break;
+ 		case EFI_UNSUPPORTED:
+ 			err = -EOPNOTSUPP;
+@@ -526,6 +515,17 @@ int efivar_entry_add(struct efivar_entry *entry, struct list_head *head)
+ }
+ EXPORT_SYMBOL_GPL(efivar_entry_add);
+ 
++/**
++ * __efivar_entry_add - add entry to variable list
++ * @entry: entry to add to list
++ * @head: list head
++ */
++void __efivar_entry_add(struct efivar_entry *entry, struct list_head *head)
++{
++	list_add(&entry->list, head);
++}
++EXPORT_SYMBOL_GPL(__efivar_entry_add);
++
+ /**
+  * efivar_entry_remove - remove entry from variable list
+  * @entry: entry to remove from list
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index 15880a68faad..09dfa8362f50 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -155,10 +155,8 @@ static int efivarfs_callback(efi_char16_t *name16, efi_guid_t vendor,
+ 		goto fail_inode;
+ 	}
+ 
+-	efivar_entry_size(entry, &size);
+-	err = efivar_entry_add(entry, &efivarfs_list);
+-	if (err)
+-		goto fail_inode;
++	__efivar_entry_get(entry, NULL, &size, NULL);
++	__efivar_entry_add(entry, &efivarfs_list);
+ 
+ 	/* copied by the above to local storage in the dentry. */
+ 	kfree(name);
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 53f64c14a525..56f04b6daeb0 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1064,6 +1064,7 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
+ 		void *data, bool duplicates, struct list_head *head);
+ 
+ int efivar_entry_add(struct efivar_entry *entry, struct list_head *head);
++void __efivar_entry_add(struct efivar_entry *entry, struct list_head *head);
+ int efivar_entry_remove(struct efivar_entry *entry);
+ 
+ int __efivar_entry_delete(struct efivar_entry *entry);
 -- 
 2.35.1
 
