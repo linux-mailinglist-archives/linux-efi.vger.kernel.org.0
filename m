@@ -2,57 +2,45 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8C0755A7EB
-	for <lists+linux-efi@lfdr.de>; Sat, 25 Jun 2022 09:59:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A28E055A8BB
+	for <lists+linux-efi@lfdr.de>; Sat, 25 Jun 2022 12:20:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230124AbiFYH7A (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 25 Jun 2022 03:59:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36242 "EHLO
+        id S231797AbiFYKLp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 25 Jun 2022 06:11:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229630AbiFYH7A (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 25 Jun 2022 03:59:00 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92C49403D1
-        for <linux-efi@vger.kernel.org>; Sat, 25 Jun 2022 00:58:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656143939; x=1687679939;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=RCf7fwlgY7jejDDZFhN74TlolkCOgjwTvaT9xhTY7kM=;
-  b=j1LZ6acDZ5p6OBUPOny0XvcolDlGo4Shr8HxlsHBpofyY6taJMzvGDNJ
-   Ug6UtnNacxJyOkRgBUgoARm0urSS8RtH8yzrAuechHECVFIXBsA8OHebT
-   wss3vx73q07sbwcE90ivgu1hWKbR7DhqklHuDWkxY8EAOhhpqYYpJxhT1
-   IQkO9XjEyBYNnQf5avtZddLI6aF1rAWcIBI+wtrDJRqFIasAF7pH0uL9a
-   UJbzfB++1lphQRtIKEM+Jpv5Nwu5w2EerYXHzaXO8sWhOMVAqE+cigmm8
-   +mBdEQuCq/YQ/o0EE+yxMCy0xAufIL/dkRrXhg9RCgAAb2TcM4oIcEmCX
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10388"; a="342850500"
-X-IronPort-AV: E=Sophos;i="5.92,221,1650956400"; 
-   d="scan'208";a="342850500"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2022 00:58:59 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,221,1650956400"; 
-   d="scan'208";a="656960432"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 25 Jun 2022 00:58:58 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o50gz-0005WZ-Gy;
-        Sat, 25 Jun 2022 07:58:57 +0000
-Date:   Sat, 25 Jun 2022 15:58:20 +0800
-From:   kernel test robot <lkp@intel.com>
+        with ESMTP id S230401AbiFYKLo (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 25 Jun 2022 06:11:44 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 20429175A9;
+        Sat, 25 Jun 2022 03:11:43 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EC5D123A;
+        Sat, 25 Jun 2022 03:11:42 -0700 (PDT)
+Received: from bogus (unknown [10.57.39.193])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 614DD3F66F;
+        Sat, 25 Jun 2022 03:11:40 -0700 (PDT)
+Date:   Sat, 25 Jun 2022 11:10:29 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS 2d82e6227ea189c0589e7383a36616ac2a2d248c
-Message-ID: <62b6c01c.eKtZey2FW/J9vfC2%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jose Marinho <jose.marinho@arm.com>
+Subject: Re: [PATCH 1/3] arm64: efi: Simplify arch_efi_call_virt macro by not
+ using efi_##f##_t type
+Message-ID: <20220625101029.qekxekisalya2iys@bogus>
+References: <20220624152331.4009502-1-sudeep.holla@arm.com>
+ <20220624152331.4009502-2-sudeep.holla@arm.com>
+ <CAMj1kXFAwzttyi=--fJyh9bGXv30Z4dkVR02_taS3JtKJXsLhA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXFAwzttyi=--fJyh9bGXv30Z4dkVR02_taS3JtKJXsLhA@mail.gmail.com>
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,71 +49,33 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: 2d82e6227ea189c0589e7383a36616ac2a2d248c  efi: vars: Move efivar caching layer into efivarfs
+On Fri, Jun 24, 2022 at 07:45:14PM +0200, Ard Biesheuvel wrote:
+> On Fri, 24 Jun 2022 at 17:23, Sudeep Holla <sudeep.holla@arm.com> wrote:
+> >
+> > Currently, the arch_efi_call_virt() assumes all users of it will have
+> > defined a type 'efi_##f##_t' to make use of it. It is unnecessarily
+> > forcing the users to create a new typedef when __efi_rt_asm_wrapper()
+> > actually expects void pointer.
+> >
+> > Simplify the arch_efi_call_virt() macro by typecasting p->f to (void *)
+> > as required by __efi_rt_asm_wrapper() and eliminate the explicit need
+> > for efi_##f##_t type for every user of this macro.
+> >
+>
+> Can't we just use typeof() here?
 
-elapsed time: 739m
+I had tried that, but unless p->f is pointer of some type, we will get
+the warning as it is passed without a cast to __efi_rt_asm_wrapper().
 
-configs tested: 50
-configs skipped: 2
+> __efi_rt_asm_wrapper() was intended as a temporary thing, so I'd
+> prefer to avoid starting to rely on the void* type of its first
+> argument.
+>
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Fair enough. Can we expect p->f to be some pointer then ? If yes, then
+PRMT driver needs to change the handler_addr from u64 to some pointer
+which sounds OK to me.
 
-gcc tested configs:
-arm                                 defconfig
-arm                              allyesconfig
-arm64                            allyesconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-mips                             allyesconfig
-sh                               allmodconfig
-i386                             allyesconfig
-i386                                defconfig
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-i386                          randconfig-a001
-i386                          randconfig-a003
-x86_64                        randconfig-a015
-i386                          randconfig-a014
-i386                          randconfig-a012
-i386                          randconfig-a016
-riscv                randconfig-r042-20220625
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                           rhel-8.3-syz
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-
-clang tested configs:
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
-x86_64                        randconfig-a014
-x86_64                        randconfig-a012
-x86_64                        randconfig-a016
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-riscv                randconfig-r042-20220624
-hexagon              randconfig-r041-20220624
-hexagon              randconfig-r045-20220624
-s390                 randconfig-r044-20220624
-hexagon              randconfig-r041-20220625
-hexagon              randconfig-r045-20220625
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+--
+Regards,
+Sudeep
