@@ -2,102 +2,161 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D968555AB75
-	for <lists+linux-efi@lfdr.de>; Sat, 25 Jun 2022 18:09:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1BD055B12F
+	for <lists+linux-efi@lfdr.de>; Sun, 26 Jun 2022 12:34:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232987AbiFYQBv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 25 Jun 2022 12:01:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37682 "EHLO
+        id S234234AbiFZKcy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 26 Jun 2022 06:32:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229516AbiFYQBv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 25 Jun 2022 12:01:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 365D915A2A;
-        Sat, 25 Jun 2022 09:01:50 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B38ED614FB;
-        Sat, 25 Jun 2022 16:01:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA262C3411C;
-        Sat, 25 Jun 2022 16:01:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656172908;
-        bh=P3GsmeThlxmqDDdq7R03/BK/ND7CKY2z2N/15Usv7Lg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ajhzmGjAMwuwcFkWretu1EACoUZpnSvor6yMJSys/jzpVeAQqFc6NV8q1W8rtIh2l
-         41aaN/A6+hzBluhHLvJHUfD5rU3OgQuhkDqQcrsKRP4eAYP0yuDlxvqrnomYaLBhAa
-         DZE6MqF1XBEUn4+MvdsoDAOpxdzobIirLBDk/4RmZvT9a/Kn9Sw/dMNpokZ6zhBDyI
-         EDdoYKQwdXmj9vWXYqgTS23ggpz5uzlRPthm5cdeWuZx5w6cU2Gbb2+qOUsuL6BBui
-         M26vzO886o/0ai/sosVIasFK/vAwv6JmxN6fcE9dJlH7prgIVXEOWHqGiGm0DxtU6b
-         onZfelp0Fh/ZQ==
-Received: by mail-oi1-f180.google.com with SMTP id s124so7455517oia.0;
-        Sat, 25 Jun 2022 09:01:48 -0700 (PDT)
-X-Gm-Message-State: AJIora+MBZVpgdrGJV+5UUXrP/7aRhmpbG1zHivgKF57aVLZsbgZzOBZ
-        nCSoIc7jDkMbwND+KUoMiDa1e4qDfTfryAzokG4=
-X-Google-Smtp-Source: AGRyM1uaCHY8Lb3HoMmR8FXrGTi6khWzu6IOICO4hwYBBDxF7teFrFP6XD97v3ogLiRq4VNhJA+E4lqQDnfPpm4fFLY=
-X-Received: by 2002:a05:6808:300e:b0:32c:425e:df34 with SMTP id
- ay14-20020a056808300e00b0032c425edf34mr2869227oib.126.1656172907994; Sat, 25
- Jun 2022 09:01:47 -0700 (PDT)
+        with ESMTP id S232828AbiFZKcx (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 26 Jun 2022 06:32:53 -0400
+Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2023F1275B
+        for <linux-efi@vger.kernel.org>; Sun, 26 Jun 2022 03:32:53 -0700 (PDT)
+Received: by mail-pg1-x52d.google.com with SMTP id x8so1863278pgj.13
+        for <linux-efi@vger.kernel.org>; Sun, 26 Jun 2022 03:32:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=hkHZM8wb80oIrqVifGkSOXwF074+9iUQtUPwitWPy70=;
+        b=I7MW+SwZuOjkYhWocpwZRvUUsabAt6//H5v0aRz9oUy4i1MCrWtVnxxmBzUBrMtlMN
+         9hEUiLDKruRtF5vxY8VmIZ0eXAyVubZC7WtRXg4gaLkJ8WRTlxcCSrcitPa/0P1GaB9D
+         +T9j3c5CDZvL6eiY4jEoLHFuSkYEqshbfr9kcsL4+1PTNuMSYoMqiyY3mW6R+SJRUFkb
+         MxGo2Tp30ryoksQqLy+rZpeyr8wYEo+s/049ADuBkf9qm1m9KH6pul+y+/k8nqJokoGQ
+         8BxNnk/Zi3zKzw0Opn9yTUykmWIkod7/RHgQ/4EhhrcccN2wRNClgvzpEzBAAvA/IpzC
+         7img==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=hkHZM8wb80oIrqVifGkSOXwF074+9iUQtUPwitWPy70=;
+        b=Iote8mbXCnJOffojQh5O7i0hes9BcZkmk4hZwvSi9X+SHuy1AMjDCEOa4X3KxuzYPq
+         cUEL4Bdh6tVRDB/rwZG1Cmq1SuNn1v6/z30y6zFpI4aO35+rMTIIPLmMN8wKtZWqmZuw
+         TPMSrz+65Bb9cqMIRhLQBC5171gi+o362xKrnDGoUfNgq8M16pX18Ttsp4h2JxQX7nPM
+         R/EL9r3c+gNmWN1kzfodR5UWE6om855Dyrrz6XAGwdr8YGImTPU36olnenzRZxRQCGS9
+         sCHyp2ZfxSLBpqlc2ptrHFuFE805GU4eAb1beHH9D0Y3CXrqQ23xqcSf3c3Wtkk1ps8+
+         fs/w==
+X-Gm-Message-State: AJIora+RU9eoNox6RYvLhrRmvY3QJjjxvI4hd9eQzNyBMRm+b9CHd4bh
+        PoRbPJUA71kqkypP7PA6MB/ag45/FKh4sA==
+X-Google-Smtp-Source: AGRyM1vt6wl5ymi3ioVfXjmh523Iksmz5hY8sd+uC7rPOtVsNax97kSH0EFeWX9o8PsZaIiBt9JYTQ==
+X-Received: by 2002:a63:8641:0:b0:40d:d04d:1b22 with SMTP id x62-20020a638641000000b0040dd04d1b22mr3915516pgd.418.1656239572482;
+        Sun, 26 Jun 2022 03:32:52 -0700 (PDT)
+Received: from ubuntu ([175.124.254.119])
+        by smtp.gmail.com with ESMTPSA id a8-20020aa78e88000000b0052534ade61dsm4975828pfr.185.2022.06.26.03.32.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Jun 2022 03:32:52 -0700 (PDT)
+Date:   Sun, 26 Jun 2022 03:32:48 -0700
+From:   Hyunwoo Kim <imv4bel@gmail.com>
+To:     ardb@kernel.org
+Cc:     linux-efi@vger.kernel.org
+Subject: [PATCH] efi/capsule-loader: Fix use-after-free in efi_capsule_write
+Message-ID: <20220626103248.GA57385@ubuntu>
 MIME-Version: 1.0
-References: <20220624152331.4009502-1-sudeep.holla@arm.com>
- <20220624152331.4009502-2-sudeep.holla@arm.com> <CAMj1kXFAwzttyi=--fJyh9bGXv30Z4dkVR02_taS3JtKJXsLhA@mail.gmail.com>
- <20220625101029.qekxekisalya2iys@bogus>
-In-Reply-To: <20220625101029.qekxekisalya2iys@bogus>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Sat, 25 Jun 2022 18:01:37 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFRqCv1AoXO8CoVXo2KJ=xhRzEYaA8sjGV3PKPZk9y9xw@mail.gmail.com>
-Message-ID: <CAMj1kXFRqCv1AoXO8CoVXo2KJ=xhRzEYaA8sjGV3PKPZk9y9xw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] arm64: efi: Simplify arch_efi_call_virt macro by not
- using efi_##f##_t type
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jose Marinho <jose.marinho@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, 25 Jun 2022 at 12:11, Sudeep Holla <sudeep.holla@arm.com> wrote:
->
-> On Fri, Jun 24, 2022 at 07:45:14PM +0200, Ard Biesheuvel wrote:
-> > On Fri, 24 Jun 2022 at 17:23, Sudeep Holla <sudeep.holla@arm.com> wrote:
-> > >
-> > > Currently, the arch_efi_call_virt() assumes all users of it will have
-> > > defined a type 'efi_##f##_t' to make use of it. It is unnecessarily
-> > > forcing the users to create a new typedef when __efi_rt_asm_wrapper()
-> > > actually expects void pointer.
-> > >
-> > > Simplify the arch_efi_call_virt() macro by typecasting p->f to (void *)
-> > > as required by __efi_rt_asm_wrapper() and eliminate the explicit need
-> > > for efi_##f##_t type for every user of this macro.
-> > >
-> >
-> > Can't we just use typeof() here?
->
-> I had tried that, but unless p->f is pointer of some type, we will get
-> the warning as it is passed without a cast to __efi_rt_asm_wrapper().
->
-> > __efi_rt_asm_wrapper() was intended as a temporary thing, so I'd
-> > prefer to avoid starting to rely on the void* type of its first
-> > argument.
-> >
->
-> Fair enough. Can we expect p->f to be some pointer then ? If yes, then
-> PRMT driver needs to change the handler_addr from u64 to some pointer
-> which sounds OK to me.
->
+If the user calls close() during a copy operation in copy_from_user() of efi_capsule_write(), 
+a race condition may occur in which the user's buffer is copied to the freed page.
 
-We are dealing with function pointers here, so passing those as u64 is
-just sloppy.
+This is because .flush of file_operations is called unconditionally 
+regardless of ->f_count, unlike .release.
+
+This driver is writable only with root privileges, so it is not a security vulnerability.
+However, it is recommended to add mutexes to efi_capsule_write() and efi_capsule_flush() 
+as root can accidentally break the page while in use.
+
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+---
+ drivers/firmware/efi/capsule-loader.c | 12 ++++++++++++
+ include/linux/efi.h                   |  1 +
+ 2 files changed, 13 insertions(+)
+
+diff --git a/drivers/firmware/efi/capsule-loader.c b/drivers/firmware/efi/capsule-loader.c
+index 4dde8edd53b6..e50ede51ef38 100644
+--- a/drivers/firmware/efi/capsule-loader.c
++++ b/drivers/firmware/efi/capsule-loader.c
+@@ -177,6 +177,8 @@ static ssize_t efi_capsule_write(struct file *file, const char __user *buff,
+ 	if (count == 0)
+ 		return 0;
+ 
++	mutex_lock(&cap_info->write_lock);
++
+ 	/* Return error while NO_FURTHER_WRITE_ACTION is flagged */
+ 	if (cap_info->index < 0)
+ 		return -EIO;
+@@ -233,12 +235,16 @@ static ssize_t efi_capsule_write(struct file *file, const char __user *buff,
+ 			goto failed;
+ 	}
+ 
++	mutex_unlock(&cap_info->write_lock);
++
+ 	return write_byte;
+ 
+ fail_unmap:
+ 	kunmap(page);
+ failed:
+ 	efi_free_all_buff_pages(cap_info);
++	mutex_unlock(&cap_info->write_lock);
++
+ 	return ret;
+ }
+ 
+@@ -256,12 +262,16 @@ static int efi_capsule_flush(struct file *file, fl_owner_t id)
+ 	int ret = 0;
+ 	struct capsule_info *cap_info = file->private_data;
+ 
++	mutex_lock(&cap_info->write_lock);
++
+ 	if (cap_info->index > 0) {
+ 		pr_err("capsule upload not complete\n");
+ 		efi_free_all_buff_pages(cap_info);
+ 		ret = -ECANCELED;
+ 	}
+ 
++	mutex_unlock(&cap_info->write_lock);
++
+ 	return ret;
+ }
+ 
+@@ -315,6 +325,8 @@ static int efi_capsule_open(struct inode *inode, struct file *file)
+ 		return -ENOMEM;
+ 	}
+ 
++	mutex_init(&cap_info->write_lock);
++
+ 	file->private_data = cap_info;
+ 
+ 	return 0;
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 7d9b0bb47eb3..e274c4e8d7c6 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -204,6 +204,7 @@ struct efi_image_auth {
+ struct capsule_info {
+ 	efi_capsule_header_t	header;
+ 	efi_capsule_header_t	*capsule;
++	struct mutex		write_mutex;
+ 	int			reset_type;
+ 	long			index;
+ 	size_t			count;
+-- 
+2.25.1
+
+Dear all,
+
+I submitted this patch 2 weeks ago, this is my 3rd submission of this patch.
+
+Can I get feedback on this patch?
+
+Regards,
+Hyunwoo Kim.
