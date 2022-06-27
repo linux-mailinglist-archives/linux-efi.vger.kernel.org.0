@@ -2,214 +2,192 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4603A55E1D5
-	for <lists+linux-efi@lfdr.de>; Tue, 28 Jun 2022 15:34:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09F8455DC10
+	for <lists+linux-efi@lfdr.de>; Tue, 28 Jun 2022 15:25:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234514AbiF0Ldr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 27 Jun 2022 07:33:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55540 "EHLO
+        id S238326AbiF0Lut (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 27 Jun 2022 07:50:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236139AbiF0LdS (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 27 Jun 2022 07:33:18 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E13CBF68;
-        Mon, 27 Jun 2022 04:30:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656329422; x=1687865422;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=O/C94ZB/s6G9BRryYo+Qz3Y2uZ2+Yo0+K1mSVtuIqz8=;
-  b=GoQhvd/vnnanULk14E/nPoQuQfmKn2BvtLFPVhVvjQUgraW+S9ZYDILp
-   fTloZ6l8TsVywLZPmSEnmhUR9TK3VLDWKFlXPWUiaBVXVf2wVsKfmkAC7
-   MArFRZoIx/MH4lHt/+dOEbJhcyqCbXRziWTnKd+UdMJ2/mkhSna3iRrVI
-   Ai1KUJ3Qxp6Ld6RRw3Oz8shlhQDL5AGCQwKbagAnAsXCBiZrPhPZjjZN5
-   lq5sCDY+kKPpLAQO12XccJD+5rINYoZDpvoHH8uuYCgrjdcl1U9bz0e5Q
-   TZeaQLdZekXGQpEfeV9yDn5kzWp9LP6dW+1stsoaLZlAd+JTkEkWoGrq7
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10390"; a="282161563"
-X-IronPort-AV: E=Sophos;i="5.92,226,1650956400"; 
-   d="scan'208";a="282161563"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2022 04:30:21 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,226,1650956400"; 
-   d="scan'208";a="916678660"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga005.fm.intel.com with ESMTP; 27 Jun 2022 04:30:14 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-        id 1C5F7D9; Mon, 27 Jun 2022 14:30:19 +0300 (EEST)
-Date:   Mon, 27 Jun 2022 14:30:19 +0300
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To:     Peter Gonda <pgonda@google.com>
-Cc:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
+        with ESMTP id S238590AbiF0Lss (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 27 Jun 2022 07:48:48 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F037D45
+        for <linux-efi@vger.kernel.org>; Mon, 27 Jun 2022 04:42:33 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id d2so6801258ejy.1
+        for <linux-efi@vger.kernel.org>; Mon, 27 Jun 2022 04:42:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=U96yknaouPbBJnn6hQmbtloh8lKJEQa8m942bJHa948=;
+        b=gR09IPhQCrv3LwR2L7BZnlde8fwVSTkEfqgZYCg+h1/8OnDr3nZee0MNthTw6HlGrY
+         2AQrJ0g+oPw8+luhOr0iDZuRW0ybwzVsyCnlXbiaED7GgzAcjvqlGB3nmH6OXcDPAscz
+         tW+tnXzlhE8BHKI0oYgKTq+r//qbVVvmJMk1DZsl3RTTp6OK6s5/HrwEi9XzrVNUKZsF
+         byyfBDxPRQwrDuZpkIhu114h7eljFiRRKBQWHoRACyC/PbjHheqf4037fa429yoPP/ob
+         SOVHl11OyPz56nCmN7dnP0jEk58sZhsKLu5xM21ssBip7ookihOyAU34qcO0jLMc5O4d
+         Seuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=U96yknaouPbBJnn6hQmbtloh8lKJEQa8m942bJHa948=;
+        b=cRtnpKI38cjcAiPSoP2LHEdVJLhSVvR9c62Aheek1UAvxOnXTeCswjqXhiScWxkd3k
+         mfmyNIoIzaXnNfberzCn39jUwNLMAcD8qxe5HlibteV3Qpmplz7eW7NTEfnkuXrTu7HI
+         WVdNLsMe2fD26It7JoGxxUyQM8hvwwmn9NT7J1iRt85cL+v7LbRja47v/TK/e5K955x6
+         F1pa7wHMwRlKVZG5imfB0eRacyI4gj2LkLdi3swVWk8+U/fyJ67qTwc4e4WSpk2hgxla
+         sLdl+WBnP2WdQPjkLhSqSLJw6/ZH4v1c8OxekeVVQfdaVOGx52V69IrEvznj29qi0kTG
+         E/5w==
+X-Gm-Message-State: AJIora/R9Zp/V6lhw5BUvUrn/ZsbykMvqZU46emTZwNWrN1C35n13JdD
+        TOEF1I8nmU5keN/drT0K/0BKsQ==
+X-Google-Smtp-Source: AGRyM1u2TvQPgd533Q8/sOg471TCJvIlg4REDbqbfTzwcOpw2EpWH6A0ulTqXsYQiaAvbj9MCmB8aw==
+X-Received: by 2002:a17:907:3f82:b0:726:3732:961c with SMTP id hr2-20020a1709073f8200b007263732961cmr12757395ejc.727.1656330151600;
+        Mon, 27 Jun 2022 04:42:31 -0700 (PDT)
+Received: from linaro.org ([94.52.112.99])
+        by smtp.gmail.com with ESMTPSA id x10-20020a170906298a00b00722e8f4b459sm4984948eje.93.2022.06.27.04.42.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jun 2022 04:42:31 -0700 (PDT)
+Date:   Mon, 27 Jun 2022 14:42:29 +0300
+From:   Abel Vesa <abel.vesa@linaro.org>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Marc Zyngier <maz@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Varad Gautam <varad.gautam@suse.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
-        khalid.elmously@canonical.com, philip.cox@canonical.com,
-        the arch/x86 maintainers <x86@kernel.org>,
-        linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted
- memory
-Message-ID: <20220627113019.3q62luiay7izhehr@black.fi.intel.com>
-References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <CAMkAt6osbEGBFrgn=y1=x4mDHC1aL40BwaW0NdGHF8qmWd7ktA@mail.gmail.com>
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        kernel-team@android.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 13/17] driver core: Use device's fwnode to check if it
+ is waiting for suppliers
+Message-ID: <YrmXpcU1NTYW6T/n@linaro.org>
+References: <20201121020232.908850-1-saravanak@google.com>
+ <20201121020232.908850-14-saravanak@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMkAt6osbEGBFrgn=y1=x4mDHC1aL40BwaW0NdGHF8qmWd7ktA@mail.gmail.com>
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20201121020232.908850-14-saravanak@google.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jun 24, 2022 at 10:37:10AM -0600, Peter Gonda wrote:
-> On Tue, Jun 14, 2022 at 6:03 AM Kirill A. Shutemov
-> <kirill.shutemov@linux.intel.com> wrote:
-> >
-> > UEFI Specification version 2.9 introduces the concept of memory
-> > acceptance: some Virtual Machine platforms, such as Intel TDX or AMD
-> > SEV-SNP, requiring memory to be accepted before it can be used by the
-> > guest. Accepting happens via a protocol specific for the Virtual
-> > Machine platform.
-> >
-> > Accepting memory is costly and it makes VMM allocate memory for the
-> > accepted guest physical address range. It's better to postpone memory
-> > acceptance until memory is needed. It lowers boot time and reduces
-> > memory overhead.
-> >
-> > The kernel needs to know what memory has been accepted. Firmware
-> > communicates this information via memory map: a new memory type --
-> > EFI_UNACCEPTED_MEMORY -- indicates such memory.
-> >
-> > Range-based tracking works fine for firmware, but it gets bulky for
-> > the kernel: e820 has to be modified on every page acceptance. It leads
-> > to table fragmentation, but there's a limited number of entries in the
-> > e820 table
-> >
-> > Another option is to mark such memory as usable in e820 and track if the
-> > range has been accepted in a bitmap. One bit in the bitmap represents
-> > 2MiB in the address space: one 4k page is enough to track 64GiB or
-> > physical address space.
-> >
-> > In the worst-case scenario -- a huge hole in the middle of the
-> > address space -- It needs 256MiB to handle 4PiB of the address
-> > space.
-> >
-> > Any unaccepted memory that is not aligned to 2M gets accepted upfront.
-> >
-> > The approach lowers boot time substantially. Boot to shell is ~2.5x
-> > faster for 4G TDX VM and ~4x faster for 64G.
-> >
-> > TDX-specific code isolated from the core of unaccepted memory support. It
-> > supposed to help to plug-in different implementation of unaccepted memory
-> > such as SEV-SNP.
-> >
-> > The tree can be found here:
-> >
-> > https://github.com/intel/tdx.git guest-unaccepted-memory
-> 
-> Hi Kirill,
-> 
-> I have a couple questions about this feature mainly about how cloud
-> customers can use this, I assume since this is a confidential compute
-> feature a large number of the users of these patches will be cloud
-> customers using TDX and SNP. One issue I see with these patches is how
-> do we as a cloud provider know whether a customer's linux image
-> supports this feature, if the image doesn't have these patches UEFI
-> needs to fully validate the memory, if the image does we can use this
-> new protocol. In GCE we supply our VMs with a version of the EDK2 FW
-> and the customer doesn't input into which UEFI we run, as far as I can
-> tell from the Azure SNP VM documentation it seems very similar. We
-> need to somehow tell our UEFI in the VM what to do based on the image.
-> The current way I can see to solve this issue would be to have our
-> customers give us metadata about their VM's image but this seems kinda
-> burdensome on our customers (I assume we'll have more features which
-> both UEFI and kernel need to both support inorder to be turned on like
-> this one) and error-prone, if a customer incorrectly labels their
-> image it may fail to boot.. Has there been any discussion about how to
-> solve this? My naive thoughts were what if UEFI and Kernel had some
-> sort of feature negotiation. Maybe that could happen via an extension
-> to exit boot services or a UEFI runtime driver, I'm not sure what's
-> best here just some ideas.
+On 20-11-20 18:02:28, Saravana Kannan wrote:
+> To check if a device is still waiting for its supplier devices to be
+> added, we used to check if the devices is in a global
+> waiting_for_suppliers list. Since the global list will be deleted in
+> subsequent patches, this patch stops using this check.
+>
+> Instead, this patch uses a more device specific check. It checks if the
+> device's fwnode has any fwnode links that haven't been converted to
+> device links yet.
+>
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> ---
+>  drivers/base/core.c | 18 ++++++++----------
+>  1 file changed, 8 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index 395dece1c83a..1873cecb0cc4 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -51,6 +51,7 @@ static DEFINE_MUTEX(wfs_lock);
+>  static LIST_HEAD(deferred_sync);
+>  static unsigned int defer_sync_state_count = 1;
+>  static DEFINE_MUTEX(fwnode_link_lock);
+> +static bool fw_devlink_is_permissive(void);
+>
+>  /**
+>   * fwnode_link_add - Create a link between two fwnode_handles.
+> @@ -995,13 +996,13 @@ int device_links_check_suppliers(struct device *dev)
+>  	 * Device waiting for supplier to become available is not allowed to
+>  	 * probe.
+>  	 */
+> -	mutex_lock(&wfs_lock);
+> -	if (!list_empty(&dev->links.needs_suppliers) &&
+> -	    dev->links.need_for_probe) {
+> -		mutex_unlock(&wfs_lock);
+> +	mutex_lock(&fwnode_link_lock);
+> +	if (dev->fwnode && !list_empty(&dev->fwnode->suppliers) &&
+> +	    !fw_devlink_is_permissive()) {
+> +		mutex_unlock(&fwnode_link_lock);
 
-Just as an idea, we can put info into UTS_VERSION which can be read from
-the built bzImage. We have info on SMP and preeption there already.
+Hi Saravana,
 
-Patch below does this:
+First of, sorry for going back to this.
 
-$ file arch/x86/boot/bzImage
-arch/x86/boot/bzImage: Linux kernel x86 boot executable bzImage, version 5.19.0-rc3-00016-g2f6aa48e28d9-dirty (kas@box) #2300 SMP PREEMPT_DYNAMIC UNACCEPTED_MEMORY Mon Jun 27 14:23:04 , RO-rootFS, swap_dev 0XC, Normal VGA
+There is a scenario where this check will not work and probably should
+work. It goes like this:
 
-Note UNACCEPTED_MEMORY in the output.
+A clock controller is not allowed to probe because it uses a clock from a child device of a
+consumer, like so:
 
-Probably we want to have there info on which flavour of unaccepted memory
-is supported (TDX/SNP/whatever). It is a bit more tricky.
+	dispcc: clock-controller@af00000 {
+        	clocks = <&dsi0_phy 0>;
+	};
 
-Any opinion?
+	mdss: mdss@ae00000 {
+		clocks = <&dispcc DISP_CC_MDSS_MDP_CLK>;
 
-diff --git a/init/Makefile b/init/Makefile
-index d82623d7fc8e..6688ea43e6bf 100644
---- a/init/Makefile
-+++ b/init/Makefile
-@@ -32,7 +32,7 @@ quiet_cmd_compile.h = CHK     $@
- 	$(CONFIG_SHELL) $(srctree)/scripts/mkcompile_h $@	\
- 	"$(UTS_MACHINE)" "$(CONFIG_SMP)" "$(CONFIG_PREEMPT_BUILD)"	\
- 	"$(CONFIG_PREEMPT_DYNAMIC)" "$(CONFIG_PREEMPT_RT)" \
--	"$(CONFIG_CC_VERSION_TEXT)" "$(LD)"
-+	"$(CONFIG_UNACCEPTED_MEMORY)" "$(CONFIG_CC_VERSION_TEXT)" "$(LD)"
+		dsi0_phy: dsi-phy@ae94400 {
+        		clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
+		};
+	};
 
- include/generated/compile.h: FORCE
- 	$(call cmd,compile.h)
-diff --git a/scripts/mkcompile_h b/scripts/mkcompile_h
-index ca40a5258c87..efacfecad699 100755
---- a/scripts/mkcompile_h
-+++ b/scripts/mkcompile_h
-@@ -7,8 +7,9 @@ SMP=$3
- PREEMPT=$4
- PREEMPT_DYNAMIC=$5
- PREEMPT_RT=$6
--CC_VERSION="$7"
--LD=$8
-+UNACCEPTED_MEMORY=$7
-+CC_VERSION="$8"
-+LD=$9
+This is a real scenario actually, but I stripped it down to the essentials.
 
- # Do not expand names
- set -f
-@@ -51,6 +52,10 @@ elif [ -n "$PREEMPT" ] ; then
- 	CONFIG_FLAGS="$CONFIG_FLAGS PREEMPT"
- fi
+So, the dsi0_phy will be "device_add'ed" (through of_platform_populate) by the mdss probe.
+The mdss will probe defer waiting for the DISP_CC_MDSS_MDP_CLK, while
+the dispcc will probe defer waiting for the dsi0_phy (supplier).
 
-+if [ -n "$UNACCEPTED_MEMORY" ] ; then
-+	CONFIG_FLAGS="$CONFIG_FLAGS UNACCEPTED_MEMORY"
-+fi
-+
- # Truncate to maximum length
- UTS_LEN=64
- UTS_VERSION="$(echo $UTS_VERSION $CONFIG_FLAGS $TIMESTAMP | cut -b -$UTS_LEN)"
--- 
- Kirill A. Shutemov
+Basically, this 'supplier availability check' does not work when a supplier might
+be populated by a consumer of the device that is currently trying to probe.
+
+
+Abel
+
+
+>  		return -EPROBE_DEFER;
+>  	}
+> -	mutex_unlock(&wfs_lock);
+> +	mutex_unlock(&fwnode_link_lock);
+>
+>  	device_links_write_lock();
+>
+> @@ -1167,10 +1168,7 @@ static ssize_t waiting_for_supplier_show(struct device *dev,
+>  	bool val;
+>
+>  	device_lock(dev);
+> -	mutex_lock(&wfs_lock);
+> -	val = !list_empty(&dev->links.needs_suppliers)
+> -	      && dev->links.need_for_probe;
+> -	mutex_unlock(&wfs_lock);
+> +	val = !list_empty(&dev->fwnode->suppliers);
+>  	device_unlock(dev);
+>  	return sysfs_emit(buf, "%u\n", val);
+>  }
+> @@ -2202,7 +2200,7 @@ static int device_add_attrs(struct device *dev)
+>  			goto err_remove_dev_groups;
+>  	}
+>
+> -	if (fw_devlink_flags && !fw_devlink_is_permissive()) {
+> +	if (fw_devlink_flags && !fw_devlink_is_permissive() && dev->fwnode) {
+>  		error = device_create_file(dev, &dev_attr_waiting_for_supplier);
+>  		if (error)
+>  			goto err_remove_dev_online;
+> --
+> 2.29.2.454.gaff20da3a2-goog
+>
+>
