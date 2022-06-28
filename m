@@ -2,52 +2,52 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84F9355EAB0
-	for <lists+linux-efi@lfdr.de>; Tue, 28 Jun 2022 19:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2AEE55EAAD
+	for <lists+linux-efi@lfdr.de>; Tue, 28 Jun 2022 19:12:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229747AbiF1RK4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 28 Jun 2022 13:10:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52880 "EHLO
+        id S232259AbiF1RLj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 28 Jun 2022 13:11:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229835AbiF1RKz (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 28 Jun 2022 13:10:55 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 097322C126;
-        Tue, 28 Jun 2022 10:10:54 -0700 (PDT)
+        with ESMTP id S232444AbiF1RLe (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 28 Jun 2022 13:11:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E31452C643;
+        Tue, 28 Jun 2022 10:11:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A0298B81F22;
-        Tue, 28 Jun 2022 17:10:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59DA2C3411D;
-        Tue, 28 Jun 2022 17:10:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E30F6157F;
+        Tue, 28 Jun 2022 17:11:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF110C341C6;
+        Tue, 28 Jun 2022 17:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656436252;
-        bh=y7R0If87iXFVZW5EDCHe+hyyf85O9pxirHIaWDy/8wE=;
+        s=k20201202; t=1656436292;
+        bh=JdkQu53AselSLliWKDvntWSUMoGLrg2rdsFsZxB3KLA=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=N4YwlwNAz30DRITabX3Aa+5JGYcPR9e32omzEgpDnKbr+EQoFBa50bmkiFKyWdM/Q
-         0yKvkY19bRkO29VG1a1egn75rtteAcLeK30Cme2jVyvQo9wi7/vbrxf9zSLowYp3af
-         nfJA9QmWFbaek3tB2sYSXJ8Zh8OupDrrTUmRUzsKl1uZkpkGUCL78Dtmw5GYduVjQp
-         jZPjPnnunwSYjG+2uzu2+j09yTTGJtgXAmCsdzLDJvHldzUV+0A6+hnrGnlojiNz60
-         csQhFQRPe4atnd7rwlPQDyrfZ0joeujGZ7Ov5XQN4JMcmq+fr4j9+gZOX0MSSIUCnS
-         VCHnELG4CWtdA==
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-101ec2d6087so17907767fac.3;
-        Tue, 28 Jun 2022 10:10:52 -0700 (PDT)
-X-Gm-Message-State: AJIora80HJ9DnRSXy8gWgLvIjWsG5WkpKc1AM/wXQ9Wemx29XTNxgZVw
-        2nq+67av1DP5LJIg2QwpCKS1s0r0DA7gUoNSe4E=
-X-Google-Smtp-Source: AGRyM1viQhNsrIF6vca1gnBTJBbE8orJXMgOk/K90eoD5AAZtP9179RUZFCZdm3OIkBxzHMY32/iaZUjF9vazOp5sgA=
-X-Received: by 2002:a05:6870:5b91:b0:108:374a:96b0 with SMTP id
- em17-20020a0568705b9100b00108374a96b0mr384342oab.126.1656436251542; Tue, 28
- Jun 2022 10:10:51 -0700 (PDT)
+        b=OnbFjM8gg37G341sX+UmXyHRuLm5Adpw0m39qaArdcJgaEefNkePnbKCo8KDewttf
+         3m0tjcK/KRKEt38aRRPJRvW8d5mcuO2Yq50lfilBmwTYkdt8qMKnLg0KpRbPgKbCdX
+         EbyEcOmV4ttzZuxyOT4q2d8IhrNjsxeW8xxPsRMgf8b/0MERrv8a2xO9+ncQ8Q8N2Y
+         3IQKAaRL604q/mM8gfUk/Bgf7AGj7+QhL3VibNoK0lWdgRZn4pp2cTdQAEeklb8xhT
+         1S6NSAqYUEM1l9PmPKGlUnfy6l4mT2/A2fRYIqEIt0vlUSLNJ+Wz/S0LvYe7kn2meZ
+         jhkW/LCelbxRQ==
+Received: by mail-oi1-f177.google.com with SMTP id e131so18006521oif.13;
+        Tue, 28 Jun 2022 10:11:32 -0700 (PDT)
+X-Gm-Message-State: AJIora8ZK2hesvXTrJEQ3oXqLWPgE/IFMR2Mcm9SPUmwCkl++Hp1oZFB
+        mAtylROC8ufO+D56+YJ+drQbwAfXQhQq9ln59Tw=
+X-Google-Smtp-Source: AGRyM1vsOYiemvsdmCFIomLR/LEeDUMxh5adZ6uPQY+0ddio67mn1BJ2dsX4A2d3uwfg1Ldo0TK3c8mYKM85m8aFO3Y=
+X-Received: by 2002:a05:6808:13c6:b0:335:3e54:94bc with SMTP id
+ d6-20020a05680813c600b003353e5494bcmr406222oiw.228.1656436292008; Tue, 28 Jun
+ 2022 10:11:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220628125346.693304-1-sudeep.holla@arm.com> <20220628125346.693304-3-sudeep.holla@arm.com>
-In-Reply-To: <20220628125346.693304-3-sudeep.holla@arm.com>
+References: <20220628125346.693304-1-sudeep.holla@arm.com> <20220628125346.693304-4-sudeep.holla@arm.com>
+In-Reply-To: <20220628125346.693304-4-sudeep.holla@arm.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 28 Jun 2022 19:10:40 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFrYCOOcwYznde+bOD5_yTSKU5dTerue8192aNp4L9qjw@mail.gmail.com>
-Message-ID: <CAMj1kXFrYCOOcwYznde+bOD5_yTSKU5dTerue8192aNp4L9qjw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] arm64: efi: Simplify arch_efi_call_virt() macro by
- using typeof()
+Date:   Tue, 28 Jun 2022 19:11:21 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFo-U+QWMSue=g5QfZC+o2RyqPw24s+RmO+eL2UY3HNpQ@mail.gmail.com>
+Message-ID: <CAMj1kXFo-U+QWMSue=g5QfZC+o2RyqPw24s+RmO+eL2UY3HNpQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] ACPI: Enable Platform Runtime Mechanism(PRM)
+ support on ARM64
 To:     Sudeep Holla <sudeep.holla@arm.com>
 Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
@@ -67,47 +67,33 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 28 Jun 2022 at 14:53, Sudeep Holla <sudeep.holla@arm.com> wrote:
+On Tue, 28 Jun 2022 at 14:54, Sudeep Holla <sudeep.holla@arm.com> wrote:
 >
-> Currently, the arch_efi_call_virt() assumes all users of it will have
-> defined a type 'efi_##f##_t' to make use of it. It is unnecessarily
-> forcing the users to create a new typedef when __efi_rt_asm_wrapper()
-> actually expects void pointer.
->
-> Simplify the arch_efi_call_virt() macro by using typeof(p->f) which must
-> be a pointer as required by __efi_rt_asm_wrapper() and eliminate the
-> explicit need for efi_##f##_t type for every user of this macro.
->
-> This is needed now in preparation to enable PRMT support on ARM64.
+> There is interest to make use of PRM(Platform Runtime Mechanism) even on
+> ARM64 ACPI platforms. Allow PRM to be enabled on ARM64 platforms. It will
+> be enabled by default as on x86_64.
 >
 > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+
 > ---
->  arch/arm64/include/asm/efi.h | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  drivers/acpi/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
-> index ad55079abe47..53376cdab175 100644
-> --- a/arch/arm64/include/asm/efi.h
-> +++ b/arch/arm64/include/asm/efi.h
-> @@ -29,8 +29,7 @@ int efi_set_mapping_permissions(struct mm_struct *mm, efi_memory_desc_t *md);
+> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> index 1e34f846508f..d08b7408f0a5 100644
+> --- a/drivers/acpi/Kconfig
+> +++ b/drivers/acpi/Kconfig
+> @@ -592,7 +592,7 @@ config X86_PM_TIMER
 >
->  #define arch_efi_call_virt(p, f, args...)                              \
->  ({                                                                     \
-> -       efi_##f##_t *__f;                                               \
-> -       __f = p->f;                                                     \
-> +       typeof(p->f) __f = p->f;                                        \
->         __efi_rt_asm_wrapper(__f, #f, args);                            \
->  })
+>  config ACPI_PRMT
+>         bool "Platform Runtime Mechanism Support"
+> -       depends on EFI && X86_64
+> +       depends on EFI && (X86_64 || ARM64)
+>         default y
+>         help
+>           Platform Runtime Mechanism (PRM) is a firmware interface exposing a
+> --
+> 2.37.0
 >
-
-Similar to the other patches, we could simply do
-
-#define arch_efi_call_virt(p, f, args...) \
-        __efi_rt_asm_wrapper((p)->f, #f, args)
-
-here.
-
-Note, though, that the second argument stringifies the struct field
-name, which will contain "handler_addr" in the case of PRM, but this
-is fine (we shouldn't hit that diagnostic for new code anyway, as it
-is only used to check whether X18 was corrupted by the firmware)
