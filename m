@@ -2,312 +2,115 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD07C55EC3C
-	for <lists+linux-efi@lfdr.de>; Tue, 28 Jun 2022 20:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B622355EC43
+	for <lists+linux-efi@lfdr.de>; Tue, 28 Jun 2022 20:10:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234719AbiF1SJ5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 28 Jun 2022 14:09:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54166 "EHLO
+        id S232506AbiF1SK3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 28 Jun 2022 14:10:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234705AbiF1SJ4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 28 Jun 2022 14:09:56 -0400
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0C5718346
-        for <linux-efi@vger.kernel.org>; Tue, 28 Jun 2022 11:09:54 -0700 (PDT)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-317a66d62dfso125532867b3.7
-        for <linux-efi@vger.kernel.org>; Tue, 28 Jun 2022 11:09:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=LYcXptv76jiUKLMxUytxxor8YPRPJV8ed1Ksm57QMfY=;
-        b=gPaHaeaaI978b5ydBeuwCXwB7p5+rQlSV6qxfhLqvTHAolXdRgH8jO8iMj9MKGX2Mz
-         fZH0DdWiowmwJ8lSWm0ZCZ+yjf0cCUVW53JB1iFi2sItpocpjFjm4tbySPjzqRplqQr7
-         o2wkPTO8Ypud1ki4voNQUIE+PtXs2d0UJXppZ7zoWulorSoLG2mYpuxqKBiuIBzgMk+T
-         klTK8NLAY3n5ZQnPicfJjI3Z5G7B6D2nzZmnN/5r+RBUnHk+tO8L+AfVimj9wc198spi
-         6l2MXrGL1n/2vnY7thTm9OlNWdzJKD7gzIZTg23EjGMeP/fmtGnR7dG8XyT8cQiF0UJr
-         uO2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=LYcXptv76jiUKLMxUytxxor8YPRPJV8ed1Ksm57QMfY=;
-        b=ICgXvTX6LgfsqiCJPqFd6ZXdmN/iW9xy0OfvF92s9sn7PxKhtXjzbArXKCzc5qNwyV
-         3GdpPoH5xsd2YAJhJDvhMW0fqXp0AbKhdk7j9nRxmzAlUFjKpVgO/YsHV45ZjfYKW1i3
-         Z4miPiuLb86CWgJMyPnXT9lE3GuqfL9dnhMP1rhwYA0FytL16ZEUXEiVtw2nZOr2jzPx
-         I/6QhXsK0yOVrdBHvHLgBLzfR1uDWnfuorkGwQP94ZWIVIfmZsNJXGL8QccrbT3Xi3CR
-         DRqJeZQ2uaMMlMz3Ry0uBy7jIZdLG64dYZvU68ZpQolf5n7MYjzJk3jLICH44GsRgW79
-         wikA==
-X-Gm-Message-State: AJIora9J9C3I0tiS8Ly2fKTHJrE94xHLJOHqAiZjtIqVaL6DzZ9cvcli
-        sYeAuyaAN2KliMJxBq/oMaT8ZSXT0+eg8/n0qmRw0Q==
-X-Google-Smtp-Source: AGRyM1vXSF/CgiisBepoUdbqGMK1G70avpb5M7kcqEegWFWm9L/EdrvdapqcodHm0q1VzDBGk3UOcFlAe/HDnnYt2hE=
-X-Received: by 2002:a0d:ca16:0:b0:31b:7adf:d91 with SMTP id
- m22-20020a0dca16000000b0031b7adf0d91mr21041838ywd.455.1656439793741; Tue, 28
- Jun 2022 11:09:53 -0700 (PDT)
+        with ESMTP id S230126AbiF1SK2 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 28 Jun 2022 14:10:28 -0400
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FCDF17E2E;
+        Tue, 28 Jun 2022 11:10:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+        s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=N5V6yhQZocPY9lrZhJiakOTZAyixUEqJkpQve70yjSk=; b=IgLPxRhsTgZvDEAJyg4Wb6LG7n
+        Ufwno2GsVrmZzvT12hAjSGiT7G2nZ66BmBmLaZ1mKGSbytWgN1Hc3ewF38M3/eZVCRzMQLDSq3O6s
+        PcvoX8BOkFmZA3lcbN3ss3f8ECBkITScAfe30tjLtAVp3Lnh9jkUk/hVmtB0a9HMirgmrZJ5EljNL
+        1KQLcUk7F6PuI+N9kBsqU/EnoDAJmi6YS6q4uN6go7IiCWqFzX+vpKIEBvCQOldaFW5y3uvO8kdJ8
+        EgcvPdpcKulgbLSFgQ4Pemx1we/b+V5c9mR5n3w4DGHXVmISREpyD2y6vXbd30aVg4EU0n8V0Tt1/
+        rx0YQSFg==;
+Received: from [84.78.148.123] (helo=[192.168.1.105])
+        by fanzine2.igalia.com with esmtpsa 
+        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+        id 1o6FfI-00CFAj-EV; Tue, 28 Jun 2022 20:10:20 +0200
+Message-ID: <b11ff46a-2e20-01b6-cbd9-2038b7bf4bc9@igalia.com>
+Date:   Tue, 28 Jun 2022 20:10:09 +0200
 MIME-Version: 1.0
-References: <20201121020232.908850-1-saravanak@google.com> <20201121020232.908850-14-saravanak@google.com>
- <YrmXpcU1NTYW6T/n@linaro.org> <CAGETcx8dwNcZFFzhhv=kMhpuQnyaEekrycpAmGusD-s+qfvA9g@mail.gmail.com>
- <YrskVLshWeps+NXw@linaro.org>
-In-Reply-To: <YrskVLshWeps+NXw@linaro.org>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Tue, 28 Jun 2022 11:09:17 -0700
-Message-ID: <CAGETcx8F0wP+RA0KpjOJeZfc=DVG-MbM_=SkRHD4UhD2ReL7Kw@mail.gmail.com>
-Subject: Re: [PATCH v2 13/17] driver core: Use device's fwnode to check if it
- is waiting for suppliers
-To:     Abel Vesa <abel.vesa@linaro.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        kernel-team@android.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        linux-arm-msm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH 0/2] UEFI panic notification mechanism
+Content-Language: en-US
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel-dev@igalia.com, kernel@gpiccoli.net,
+        Anton Vorontsov <anton@enomsg.org>,
+        Colin Cross <ccross@android.com>,
+        Kees Cook <keescook@chromium.org>,
+        Matt Fleming <matt@codeblueprint.co.uk>,
+        Matthew Garrett <matthew.garrett@nebula.com>,
+        Tony Luck <tony.luck@intel.com>,
+        linux-efi <linux-efi@vger.kernel.org>
+References: <20220520195028.1347426-1-gpiccoli@igalia.com>
+ <d3dd4f45-1d50-2164-447b-d4f27ac6e133@igalia.com>
+ <CAMj1kXFDqhvE3R4ckD32ftkb66CjHZcGPCF0OsX6bev2MmnorA@mail.gmail.com>
+From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <CAMj1kXFDqhvE3R4ckD32ftkb66CjHZcGPCF0OsX6bev2MmnorA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Jun 28, 2022 at 8:55 AM Abel Vesa <abel.vesa@linaro.org> wrote:
->
-> On 22-06-27 15:30:25, Saravana Kannan wrote:
-> > On Mon, Jun 27, 2022 at 4:42 AM Abel Vesa <abel.vesa@linaro.org> wrote:
-> > >
-> > > On 20-11-20 18:02:28, Saravana Kannan wrote:
-> > > > To check if a device is still waiting for its supplier devices to be
-> > > > added, we used to check if the devices is in a global
-> > > > waiting_for_suppliers list. Since the global list will be deleted in
-> > > > subsequent patches, this patch stops using this check.
-> > > >
-> > > > Instead, this patch uses a more device specific check. It checks if the
-> > > > device's fwnode has any fwnode links that haven't been converted to
-> > > > device links yet.
-> > > >
-> > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > > > ---
-> > > >  drivers/base/core.c | 18 ++++++++----------
-> > > >  1 file changed, 8 insertions(+), 10 deletions(-)
-> > > >
-> > > > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > > > index 395dece1c83a..1873cecb0cc4 100644
-> > > > --- a/drivers/base/core.c
-> > > > +++ b/drivers/base/core.c
-> > > > @@ -51,6 +51,7 @@ static DEFINE_MUTEX(wfs_lock);
-> > > >  static LIST_HEAD(deferred_sync);
-> > > >  static unsigned int defer_sync_state_count = 1;
-> > > >  static DEFINE_MUTEX(fwnode_link_lock);
-> > > > +static bool fw_devlink_is_permissive(void);
-> > > >
-> > > >  /**
-> > > >   * fwnode_link_add - Create a link between two fwnode_handles.
-> > > > @@ -995,13 +996,13 @@ int device_links_check_suppliers(struct device *dev)
-> > > >        * Device waiting for supplier to become available is not allowed to
-> > > >        * probe.
-> > > >        */
-> > > > -     mutex_lock(&wfs_lock);
-> > > > -     if (!list_empty(&dev->links.needs_suppliers) &&
-> > > > -         dev->links.need_for_probe) {
-> > > > -             mutex_unlock(&wfs_lock);
-> > > > +     mutex_lock(&fwnode_link_lock);
-> > > > +     if (dev->fwnode && !list_empty(&dev->fwnode->suppliers) &&
-> > > > +         !fw_devlink_is_permissive()) {
-> > > > +             mutex_unlock(&fwnode_link_lock);
-> > >
-> > > Hi Saravana,
-> > >
-> > > First of, sorry for going back to this.
-> >
-> > No worries at all. If there's an issue with fw_devlink, I want to have it fixed.
-> >
-> > > There is a scenario where this check will not work and probably should
-> > > work. It goes like this:
-> > >
-> > > A clock controller is not allowed to probe because it uses a clock from a child device of a
-> > > consumer, like so:
-> > >
-> > >         dispcc: clock-controller@af00000 {
-> > >                 clocks = <&dsi0_phy 0>;
-> > >         };
-> > >
-> > >         mdss: mdss@ae00000 {
-> > >                 clocks = <&dispcc DISP_CC_MDSS_MDP_CLK>;
-> > >
-> > >                 dsi0_phy: dsi-phy@ae94400 {
-> > >                         clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
-> > >                 };
-> > >         };
-> > >
-> > > This is a real scenario actually, but I stripped it down to the essentials.
-> >
-> > I'm well aware of this scenario and explicitly wrote code to address this :)
-> >
->
-> Actually, the problem seems to be when you have two dsi phys.
-> Like so:
->
->          dispcc: clock-controller@af00000 {
->                  clocks = <&dsi0_phy 0>;
->                  clocks = <&dsi1_phy 0>;
->          };
->
->          mdss: mdss@ae00000 {
->                  clocks = <&dispcc DISP_CC_MDSS_MDP_CLK>;
->
->                  dsi0_phy: dsi-phy@ae94400 {
->                          clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
->                  };
->
->                  dsi1_phy: dsi-phy@ae64400 {
->                          clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
->                  };
->          };
->
-> And from what I've seen happening so far is that the device_is_dependent
-> check for the parent of the supplier (if it also a consumer) seems to return
-> false on second pass of the same link due to the DL_FLAG_SYNC_STATE_ONLY
-> being set this time around.
->
-> > See this comment in fw_devlink_create_devlink()
-> >
-> >        /*
-> >          * If we can't find the supplier device from its fwnode, it might be
-> >          * due to a cyclic dependency between fwnodes. Some of these cycles can
-> >          * be broken by applying logic. Check for these types of cycles and
-> >          * break them so that devices in the cycle probe properly.
-> >          *
-> >          * If the supplier's parent is dependent on the consumer, then the
-> >          * consumer and supplier have a cyclic dependency. Since fw_devlink
-> >          * can't tell which of the inferred dependencies are incorrect, don't
-> >          * enforce probe ordering between any of the devices in this cyclic
-> >          * dependency. Do this by relaxing all the fw_devlink device links in
-> >          * this cycle and by treating the fwnode link between the consumer and
-> >          * the supplier as an invalid dependency.
-> >          */
-> >
->
-> So when this thing you mentioned above is happening for the second dsi
-> phy (order doesn't matter), since the dsi phy itself cannot be found,
-> the device_is_dependent is run for the same link: dispcc -> mdss
-> (supplier -> consumer), but again, since it has the
-> DL_FLAG_SYNC_STATE_ONLY this time around, it will skip that specific
-> link.
+On 28/06/2022 09:49, Ard Biesheuvel wrote:
+> On Thu, 2 Jun 2022 at 19:40, Guilherme G. Piccoli <gpiccoli@igalia.com> wrote:
+>>
+>> Hi Ard, apologies for annoying!
+>>
+> 
+> No worries, just very busy :-)
+> 
+>> Just a friendly ping asking if you have any opinions about these patches.
+>>
+> 
+> Honestly, I'm not sure I see the value of this. You want to 'notify
+> the UEFI firmware' but the firmware doesn't really care about these
+> variables, only your bespoke tooling does. EFI pstore captures far
+> more data, so if you just wipe /sys/fs/pstore after each clean boot,
+> you already have all the data you need, no?
+> 
+> Also, I'm in the process of removing the public efivar_entry_xxx() API
+> - please look at the efi/next tree for a peek. This is related to your
+> point 3), i.e., the efivar layer is a disaster in terms of consistency
+> between different observers of the EFI variable store. Switching to
+> efivar_set_variable() [the new API] should fix that.
 
-Ugh... I knew there was this gap, but didn't expect it to be a real world issue.
+Hi Ard, thanks a lot for your review! Lemme split my points in some
+bullets below:
 
-There are different ways of addressing this and they all fall
-somewhere within a spectrum of:
-"stop enforcing very specific edges of the dependency graph when you
-find a cycles"
-To
-"just don't enforce any dependency for devices in a cycle and let the
-drivers figure out when to -EPROBE_DEFER".
+a) What about patch 1, is it good as-is?
 
-And each of those are of varying complexity. Ideally I'd prefer to
-relax specific edges, but I need to balance it out with the code
-complexity. Let me soak this for a few weeks to decide on what option
-to take.
 
-Thanks for the report.
+b) Cool about efivar_set_variable(), could fix that in V2.
 
--Saravana
 
->
-> > Applying this comment to your example, dispcc is the "consumer",
-> > dsi0_phy is the "supplier" and mdss is the "supplier's parent".
-> >
-> > And because we can't guarantee the order of addition of these top
-> > level devices is why I also have this piece of recursive call inside
-> > __fw_devlink_link_to_suppliers():
-> >
-> >                 /*
-> >                  * If a device link was successfully created to a supplier, we
-> >                  * now need to try and link the supplier to all its suppliers.
-> >                  *
-> >                  * This is needed to detect and delete false dependencies in
-> >                  * fwnode links that haven't been converted to a device link
-> >                  * yet. See comments in fw_devlink_create_devlink() for more
-> >                  * details on the false dependency.
-> >                  *
-> >                  * Without deleting these false dependencies, some devices will
-> >                  * never probe because they'll keep waiting for their false
-> >                  * dependency fwnode links to be converted to device links.
-> >                  */
-> >                 sup_dev = get_dev_from_fwnode(sup);
-> >                 __fw_devlink_link_to_suppliers(sup_dev, sup_dev->fwnode);
-> >                 put_device(sup_dev);
-> >
-> > So when mdss gets added, we'll link it to dispcc and then check if
-> > dispcc has any suppliers it needs to link to. And that's when the
-> > logic will catch the cycle and fix it.
-> >
-> > Can you tell me why this wouldn't unblock the probing of dispcc? Are
-> > you actually hitting this on a device? If so, can you please check why
-> > this logic isn't sufficient to catch and undo the cycle?
-> >
->
-> This is happening on Qualcomm SDM845 with Linus's tree.
->
-> > Thanks,
-> > Saravana
-> >
-> > > So, the dsi0_phy will be "device_add'ed" (through of_platform_populate) by the mdss probe.
-> > > The mdss will probe defer waiting for the DISP_CC_MDSS_MDP_CLK, while
-> > > the dispcc will probe defer waiting for the dsi0_phy (supplier).
-> > >
-> > > Basically, this 'supplier availability check' does not work when a supplier might
-> > > be populated by a consumer of the device that is currently trying to probe.
-> > >
-> > >
-> > > Abel
-> > >
-> > >
-> > > >               return -EPROBE_DEFER;
-> > > >       }
-> > > > -     mutex_unlock(&wfs_lock);
-> > > > +     mutex_unlock(&fwnode_link_lock);
-> > > >
-> > > >       device_links_write_lock();
-> > > >
-> > > > @@ -1167,10 +1168,7 @@ static ssize_t waiting_for_supplier_show(struct device *dev,
-> > > >       bool val;
-> > > >
-> > > >       device_lock(dev);
-> > > > -     mutex_lock(&wfs_lock);
-> > > > -     val = !list_empty(&dev->links.needs_suppliers)
-> > > > -           && dev->links.need_for_probe;
-> > > > -     mutex_unlock(&wfs_lock);
-> > > > +     val = !list_empty(&dev->fwnode->suppliers);
-> > > >       device_unlock(dev);
-> > > >       return sysfs_emit(buf, "%u\n", val);
-> > > >  }
-> > > > @@ -2202,7 +2200,7 @@ static int device_add_attrs(struct device *dev)
-> > > >                       goto err_remove_dev_groups;
-> > > >       }
-> > > >
-> > > > -     if (fw_devlink_flags && !fw_devlink_is_permissive()) {
-> > > > +     if (fw_devlink_flags && !fw_devlink_is_permissive() && dev->fwnode) {
-> > > >               error = device_create_file(dev, &dev_attr_waiting_for_supplier);
-> > > >               if (error)
-> > > >                       goto err_remove_dev_online;
-> > > > --
-> > > > 2.29.2.454.gaff20da3a2-goog
-> > > >
-> > > >
-> >
+c) Now, to the most relevant thing, the value of this. I might be
+mistaken, but is there any known way to let UEFI know a panic happened?
+For now, maybe only my UEFI fw might use that (and the usage is very
+nice, showing a panic logo), but this opens a myriad of potential uses.
+We can think in RAM preserving mechanism conditional to panic scenarios,
+special resets for panic vs. cold boot, and even maybe a firmware vmcore
+capturing.
+
+If there is any other way to let UEFI know about a panic, let me know
+and that will likely be more than enough for me. Otherwise, do you think
+such small code would be a big burden to carry, considering the
+cost/benefit for my use case?
+
+Thanks in advance for your analysis.
+Cheers,
+
+
+Guilherme
