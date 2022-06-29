@@ -2,149 +2,93 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C899955FCC2
-	for <lists+linux-efi@lfdr.de>; Wed, 29 Jun 2022 12:01:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53DAF560A13
+	for <lists+linux-efi@lfdr.de>; Wed, 29 Jun 2022 21:12:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233190AbiF2J75 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 29 Jun 2022 05:59:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45524 "EHLO
+        id S229842AbiF2TMy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 29 Jun 2022 15:12:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbiF2J74 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 29 Jun 2022 05:59:56 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD6E936B5C
-        for <linux-efi@vger.kernel.org>; Wed, 29 Jun 2022 02:59:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656496795; x=1688032795;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=W0RP4TZ53dD5l1WORQt4cgCXuq5GrCtezZvhrfQCEbA=;
-  b=bAarefaGxWHQKSqiFtNXDpZ1H42jwq1JOSE9RQhyx1sKT7L0T+tj441Q
-   //cfttIFEE9/0t5ospipvtBWCQTiJ6FguLF903oumtArFLjBQ3hem0+rZ
-   jClxr1XMgBaNpv3vxOj05C7kG8fcpOSogIkNDq1WN+AQRvPZKZpRDQfCa
-   oAuH9PFEpOv0s2plW7lyMDaRHOaBFImMUFeo16PQPzOHied+7lbU2gd7P
-   hi4oWdW3SPm574vqSbhvVVkkV+LTjZ/apv+SBCpBK2pPhHsdJNgluH8sR
-   fh2tlhFf/eQaq53nnvEF7ekPSh/tbJh4uWr8qD9ThoSzfCgRRTaEzzeId
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10392"; a="345982654"
-X-IronPort-AV: E=Sophos;i="5.92,231,1650956400"; 
-   d="scan'208";a="345982654"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2022 02:59:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,231,1650956400"; 
-   d="scan'208";a="595177442"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 29 Jun 2022 02:59:54 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o6UUD-000B4g-GR;
-        Wed, 29 Jun 2022 09:59:53 +0000
-Date:   Wed, 29 Jun 2022 17:59:06 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS dc977c0c9ac244db8ce1871e0a4f3c1a25d38e84
-Message-ID: <62bc226a.2Z27qQap0HwaXi/o%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S229476AbiF2TMx (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 29 Jun 2022 15:12:53 -0400
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 050D83336D;
+        Wed, 29 Jun 2022 12:12:51 -0700 (PDT)
+Received: by mail-yb1-f170.google.com with SMTP id p136so23492949ybg.4;
+        Wed, 29 Jun 2022 12:12:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=cg4E+Wh5Xs3hBBKf1ibHf3ZyuhOE7sEJuSViPjSoZBY=;
+        b=5X4n8KZVGGPnAwfWj/YIJ3Z4KFawbfoiHjwC0CVKkeZ4/SG2DhUWJVgEsqvSZO7QyC
+         4BWAeTp8B1maBm2KC26lwf3k4O/c40m2D5rHacgVrzkloe1lpX64pkmJ7u9X/5TOZu9S
+         4UH4stKIZSyxwhCZ58lIcTXXeXVrtteVBNA86Yw+kkP/UePPs2FqJ1QvVH7gsAaA6Bnq
+         gNCf0V4LGIL3L/7Smirx+dNS1rqh/DeBmtImusJnwvTXeDHAeUdGCXDJOs0XfvTKF39R
+         9KqdzLZS1FmW9agrw98GZ3jxoF20CwYYl0XzBytM0O71EPnc4GHeQDiecebMirfMEaKV
+         ynEw==
+X-Gm-Message-State: AJIora+h1W5t7Krp7/5N/JhYw+MWS+q5shQmkBHa6dpBS0HACNu3LKEz
+        NN/CYu26HIJFJ+aIizmWQ//edFJ3rNeh2zWNIDXiNvP6
+X-Google-Smtp-Source: AGRyM1sGcuDvB+XUTfQi2i05PaHWkOQ59uwaSEFN3O2cwM2V45sN4Ec0Na43K00o707AOJ9R41BrwxxNem2qyUYgeZU=
+X-Received: by 2002:a25:9847:0:b0:669:b4c6:d081 with SMTP id
+ k7-20020a259847000000b00669b4c6d081mr4868895ybo.633.1656529970285; Wed, 29
+ Jun 2022 12:12:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220628125346.693304-1-sudeep.holla@arm.com> <20220629090635.6kf7thawc4qc4zi2@bogus>
+ <20220629092137.a5fl33recfds7bq3@bogus>
+In-Reply-To: <20220629092137.a5fl33recfds7bq3@bogus>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 29 Jun 2022 21:12:39 +0200
+Message-ID: <CAJZ5v0iuOMxmwbHr_2F4V6+VtNLR42BxkXDuty-EFhaeZwHvNg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] ACPI: Enable Platform Runtime Mechanism(PRM)
+ support on ARM64
+To:     Sudeep Holla <sudeep.holla@arm.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jose Marinho <jose.marinho@arm.com>,
+        Ard Biesheuvel <ardb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: dc977c0c9ac244db8ce1871e0a4f3c1a25d38e84  Merge branch 'efivars-cleanup' into efi/next
+On Wed, Jun 29, 2022 at 11:22 AM Sudeep Holla <sudeep.holla@arm.com> wrote:
+>
+> On Wed, Jun 29, 2022 at 10:06:35AM +0100, Sudeep Holla wrote:
+> > Hi Rafael,
+> >
+> > On Tue, Jun 28, 2022 at 01:53:42PM +0100, Sudeep Holla wrote:
+> > > Hi,
+> > >
+> > > This tiny series is to enable Platform Runtime Mechanism(PRM) support on
+> > > ARM64. Not much changes. Just enabling the build and moving the config
+> > > option so that it is not listed under the topmost menu for ARM64.
+> > >
+> >
+> > Ard has slightly modified version of patch 2/4 which updates few other
+> > arch code. Since the PRMT driver build is dependent on that, is it OK
+> > for you to ACK if you agree with other 3 patches(1,3,4) so that it can
+> > be routed via efi tree. Alternatively, Ard has offered to provide a stable
+> > branch if needed.
+>
+> Sorry pressed enter too early. I wanted to add reference to the commit in
+> Ard's efi queue I was referring[1] and the email where we discussed how
+> to deal with these PRMT patches[2]
 
-elapsed time: 854m
+The ACPI changes in this series are fine with me, so please feel free to add
 
-configs tested: 69
-configs skipped: 3
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+to the patches and route them through the EFI tree.
 
-gcc tested configs:
-arm64                            allyesconfig
-arm                                 defconfig
-arm                              allyesconfig
-i386                          randconfig-c001
-xtensa                  audio_kc705_defconfig
-sh                              ul2_defconfig
-i386                             alldefconfig
-powerpc                         ps3_defconfig
-m68k                        stmark2_defconfig
-arm                            mps2_defconfig
-arm                          simpad_defconfig
-sh                ecovec24-romimage_defconfig
-arm                        realview_defconfig
-arm                        cerfcube_defconfig
-arc                    vdk_hs38_smp_defconfig
-powerpc                 mpc837x_mds_defconfig
-sh                           se7712_defconfig
-arm                      jornada720_defconfig
-ia64                             allmodconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-powerpc                           allnoconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-sh                               allmodconfig
-i386                             allyesconfig
-i386                                defconfig
-x86_64               randconfig-a012-20220627
-x86_64               randconfig-a011-20220627
-x86_64               randconfig-a013-20220627
-x86_64               randconfig-a014-20220627
-x86_64               randconfig-a016-20220627
-x86_64               randconfig-a015-20220627
-i386                 randconfig-a014-20220627
-i386                 randconfig-a011-20220627
-i386                 randconfig-a012-20220627
-i386                 randconfig-a015-20220627
-i386                 randconfig-a016-20220627
-i386                 randconfig-a013-20220627
-arc                  randconfig-r043-20220627
-s390                 randconfig-r044-20220627
-riscv                randconfig-r042-20220627
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-x86_64                           rhel-8.3-syz
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-x86_64                         rhel-8.3-kunit
-
-clang tested configs:
-arm                        neponset_defconfig
-x86_64                        randconfig-k001
-x86_64               randconfig-a002-20220627
-x86_64               randconfig-a003-20220627
-x86_64               randconfig-a001-20220627
-x86_64               randconfig-a005-20220627
-x86_64               randconfig-a004-20220627
-x86_64               randconfig-a006-20220627
-i386                 randconfig-a002-20220627
-i386                 randconfig-a003-20220627
-i386                 randconfig-a004-20220627
-i386                 randconfig-a001-20220627
-i386                 randconfig-a006-20220627
-i386                 randconfig-a005-20220627
-hexagon              randconfig-r041-20220627
-hexagon              randconfig-r045-20220627
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Thanks!
