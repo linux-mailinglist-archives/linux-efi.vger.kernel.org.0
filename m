@@ -2,83 +2,113 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E70F5625A9
-	for <lists+linux-efi@lfdr.de>; Thu, 30 Jun 2022 23:54:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D38F56384C
+	for <lists+linux-efi@lfdr.de>; Fri,  1 Jul 2022 18:51:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237617AbiF3Vyo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 30 Jun 2022 17:54:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44508 "EHLO
+        id S232214AbiGAQvZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 1 Jul 2022 12:51:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232633AbiF3Vyn (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 30 Jun 2022 17:54:43 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49BBE564DE;
-        Thu, 30 Jun 2022 14:54:43 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id d129so584148pgc.9;
-        Thu, 30 Jun 2022 14:54:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=hkusf/I+psqk5rW3cP7Gl/cJmKwrAYd/DX73WJiRNgA=;
-        b=NWT96R/CjSOLMCOw75p5A7SQaK5Qj/Do//wLI0sKhyeTNBp8zhbcRmkBNtJ7tp/oET
-         6LQAdyYuVPPvPc65HFtJrzJvkgxHQdw/CIzPNKo7QrEH1MHaFpZ7DU1mAlgJT5aL5SWy
-         ZV9CqAcW2gSaZ3SQcWUSt1FmCIIEmoPyaPxhZ4gcwJHMeOV5wTGZdu/Tc/P2vRtTuPXW
-         91i6Brg4JffGktS6qpbc0/cqqHsNbZdib13OdkhPR1WDf2BCIqnBkgOcidg4wzVItLVb
-         ICBbt4q9KAjWkBoOJuXzlA+A4JZ3+s5L5ECKUQZbbiRzr3x7ym9Ipzz1eO6NBR7wM1nP
-         mJAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=hkusf/I+psqk5rW3cP7Gl/cJmKwrAYd/DX73WJiRNgA=;
-        b=QjVErIP/Lf3AW0oVdnBdQJJsOgwSoqNJVlONjKn0z38j59PYM8eBSx8v66/ky4Zpnl
-         IHjEy6ZNHcifijUCg15lv2c3vak5ImBJJwdL5dTn5wLX0L6M4bykZ+E8Y3f+lOJCxzH2
-         JzY3tHuVPzc2sdKi4G4jUeqmO6mAh1HInbLp+Rwbpsj7bkdz39uJDuRgqE4L+qgVLIfO
-         0IHgxrVvo1fN82Y4T/UOgkYBwIO48AJdIo9sYLfGgUO6DHQWG7oKxo/RyLw2666SeqqK
-         77G7dNcWRFPtBhU45DGIh+ysc8JQEpODYq7g/iB0RsDRt7aqBmb5r5GUlsvAbuUmJ4IT
-         uV8w==
-X-Gm-Message-State: AJIora8VfGnX8p0ClTKZWxZTw6W2x6o/cvJZ7fiJMzjJNt2GGbxahO3u
-        o/Kumwl2H2kLaW9VJlhm3oysEQ1PFiS/z3/zuNqsj0KLvZ9zSaXW
-X-Google-Smtp-Source: AGRyM1smCYdmATUfFVrve6D92ZEZlb0u2AGoTmsF8R1ygzsMYkgiMsWTi2YbL5hIGxJPJNwjkPaiQzRBBvDruPm+TS8=
-X-Received: by 2002:a63:4710:0:b0:410:ac39:831b with SMTP id
- u16-20020a634710000000b00410ac39831bmr9369035pga.395.1656626082869; Thu, 30
- Jun 2022 14:54:42 -0700 (PDT)
+        with ESMTP id S229476AbiGAQvY (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 1 Jul 2022 12:51:24 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29A5D44A0A;
+        Fri,  1 Jul 2022 09:51:23 -0700 (PDT)
+Received: from zn.tnic (p200300ea970ff648329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:970f:f648:329c:23ff:fea6:a903])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 43EFA1EC064A;
+        Fri,  1 Jul 2022 18:51:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1656694277;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=LsRagpxJ0d6m6LED7HHfWRzzrUzw8aGp7k8R8oF5VaQ=;
+        b=kVgbaLHTIsuv3Te5Rsh4ZkmUq+hTiJvlWYa0pGnkSJ1yBJNazGmA2MlsU8d0LXoBgXZDOs
+        BK/Mwzu4AfZefSG/tFTr/kXyg/+2uZlvmUlaGKGG9Ycsc+noYabQkfcWzq5iRgMug9P5/h
+        w9QwkfALpCmGSrcjBNsjLmOwQ/3hJ1w=
+Date:   Fri, 1 Jul 2022 18:51:13 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Sean Christopherson <seanjc@google.com>
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
+        Michael Roth <michael.roth@amd.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v12 19/46] x86/kernel: Make the .bss..decrypted section
+ shared in RMP table
+Message-ID: <Yr8mARnQT+VZK0iy@zn.tnic>
+References: <20220307213356.2797205-1-brijesh.singh@amd.com>
+ <20220307213356.2797205-20-brijesh.singh@amd.com>
+ <YqfabnTRxFSM+LoX@google.com>
+ <YqistMvngNKEJu2o@google.com>
+ <daaf7a84-4204-48ca-e40c-7ba296b4789c@amd.com>
+ <YqizrTCk460kov/X@google.com>
+ <6db51d45-e17a-38dd-131d-e43132c55dfb@amd.com>
+ <Yqjm/b3deMlxxePh@google.com>
+ <9abe9a71-242d-91d5-444a-b56c8b9b6d90@amd.com>
+ <YqtdIf7OSivLxFL0@google.com>
 MIME-Version: 1.0
-From:   Ariel Cabello Mateos <080ariel@gmail.com>
-Date:   Thu, 30 Jun 2022 21:54:31 +0000
-Message-ID: <CALRJROAKxEP4Dw93CoUS7SPdq=n5zDg7nbOwTW_bYdFhRREOcA@mail.gmail.com>
-Subject: [Question] efi: First 512 bytes of image oddity.
-To:     linux-efi@vger.kernel.org, ardb@kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        FROM_STARTS_WITH_NUMS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <YqtdIf7OSivLxFL0@google.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello:
+On Thu, Jun 16, 2022 at 04:41:05PM +0000, Sean Christopherson wrote:
+> > I worry that another use of cc_platform_has() could creep in at some point
+> > and cause the same issue. Not sure how bad it would be, performance-wise, to
+> > remove the jump table optimization for arch/x86/coco/core.c.
 
-I am not able to understand why the function efi_pe_entry in
-drivers/firmware/efi/libstub/x86-stub.c
-(which if im not mistaken its the first function executed in a efistub
-kernel) does not copy the part of setup_header which is in the first
-512 bytes of the kernel image.
+Is there a gcc switch for that?
 
-There is a comment that says:
+> One thought would be to initialize "vendor" to a bogus value, disallow calls to
+> cc_set_vendor() until after the kernel as gotten to a safe point, and then WARN
+> (or panic?) if cc_platform_has() is called before "vendor" is explicitly set.
+> New calls can still get in, but they'll be much easier to detect and less likely
+> to escape initial testing.
 
-/*
-* Fill out some of the header fields ourselves because the
-* EFI firmware loader doesn't load the first sector.
-*/
+The invalid vendor thing makes sense but I don't think it'll help in
+this case.
 
-But from what I understood about the uefi spec, the boot firmware
-should do a loadImage() which in turn does a OpenEx() in the file to
-load it. It does not mention anything about not loading the 512 first
-bytes of the image so... why does the stub do that?
+We set vendor in sme_enable() which comes before the
 
-Thanks in advance,
-Ariel.
+__startup_64 -> sme_postprocess_startup
+
+path you're hitting.
+
+We could do only the aspect of checking whether it hasn't been set yet
+and warn then, in order to make the usage more robust...
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
