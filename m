@@ -2,99 +2,72 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8A46564E86
-	for <lists+linux-efi@lfdr.de>; Mon,  4 Jul 2022 09:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D88AF5657FC
+	for <lists+linux-efi@lfdr.de>; Mon,  4 Jul 2022 15:58:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233518AbiGDHTO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 4 Jul 2022 03:19:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47346 "EHLO
+        id S233493AbiGDN6t (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 4 Jul 2022 09:58:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232501AbiGDHTN (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 4 Jul 2022 03:19:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AF0E32706
-        for <linux-efi@vger.kernel.org>; Mon,  4 Jul 2022 00:19:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1656919151;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=XZvdib+oo3lvrA14EYB6RpofmfTNnpFnXxq1/Do0txY=;
-        b=NyROsQjoe259DiSQz5tdbIEJZt6l/phMbyT4YJSjqgtwPOX0BpzB5fMy9vuMZMrwLtU1gR
-        QYl81T/M5YySd9F+wj8s4gVNGi9tCrLGHXbi3hlCQI6Nos5BuPJkPejl4j46Jr3EIuPRPy
-        biT69DyMS5N9nVlPxq5G/P+DQxhOLEI=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-298-dJkSgp9dNK2-u8QL2WcaQA-1; Mon, 04 Jul 2022 03:19:07 -0400
-X-MC-Unique: dJkSgp9dNK2-u8QL2WcaQA-1
-Received: by mail-wr1-f70.google.com with SMTP id f20-20020adfc994000000b0021d4aca9d0eso1123808wrh.0
-        for <linux-efi@vger.kernel.org>; Mon, 04 Jul 2022 00:19:06 -0700 (PDT)
+        with ESMTP id S233777AbiGDN6s (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 4 Jul 2022 09:58:48 -0400
+Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com [IPv6:2607:f8b0:4864:20::e30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D61265D4
+        for <linux-efi@vger.kernel.org>; Mon,  4 Jul 2022 06:58:46 -0700 (PDT)
+Received: by mail-vs1-xe30.google.com with SMTP id z66so9094556vsb.3
+        for <linux-efi@vger.kernel.org>; Mon, 04 Jul 2022 06:58:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=eclypsium.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ztA+AcW0Z5yxncYBDtWD6STNULe14Sk0EXcXnPOw+f4=;
+        b=fydK2EY08GUj6bqmi53Jl6xaXTvB65A9lj5bRNFxZeapv/tUcE4QN7t8PznT4jlW+e
+         0rDG6bJ0fMViPwfaDZiR/WIecntHzLs+ddCh3VrBeb4zitUcdM4x9plNiNeRTVIh0TvV
+         TCkTeM70nq5ZST24ywg8pMnTQH5Nr32Q5LoEisV+hSJlt5MkxVO1wZMYxq90Nc/hOK+Q
+         ZOfpFu0DI6+kpXPe2V9WmbXwON5GNop+xAneuw6eQB/d6b2Q8kRPFp0roAy+/AEX7cPj
+         PER7yvGdPFy4Zj+r4qgMqMHWyIRWibEKlqXWQwU+rttUX3ngf2alEHE/VenxQKdvwEGh
+         uU8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=XZvdib+oo3lvrA14EYB6RpofmfTNnpFnXxq1/Do0txY=;
-        b=FT7F69z7BTQWHfmfK+qrRvsh3HO1JLhST+kf36/U7Zwdp06C1IuwtQ7rFeVJlhIwTn
-         wjDBr9KotXFz2Cq6E/M+Hn3sPyteIDagf8QvgQpQonvbtIXMI0MQORUepibUhA+Zf2MT
-         5oayKUGPJ3S/OnKPoxPYsZwhSzQLTkqatRKBuR0scGTInppYlNX6GtguWStjhVO8W2qa
-         GcUfn4CG6W/PuOMBbfCH9KIY89er1pfvWgRsTLQ7HsIrGFxEW3sm2EU1ukR5EzPETtwV
-         Ntp2DGyJfRQY/AZxfYjeVvMsjyuQXcf67SE3ABxQKz6Pxjs2tcfO/IPkamYndBK2nk/U
-         mcRg==
-X-Gm-Message-State: AJIora//1dks90IlY/oMrpTbi3K4gxikqUGIL17jhjDUmBgCoGBHBCtq
-        YhtEQWwgmuuEc0yYEUujf4Lr8tWry6/mGAY8cpP5ovXLYbjZu7E6TCJC4jingWiGPYjT7p9S635
-        sYnv3feAa+LcTtwBPtpiu2lAsYKGJX3DjrAFO
-X-Received: by 2002:a7b:cd08:0:b0:3a0:37f9:6e5d with SMTP id f8-20020a7bcd08000000b003a037f96e5dmr29297900wmj.167.1656919145801;
-        Mon, 04 Jul 2022 00:19:05 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1tkdZbo2UPOn3erwRwVBiaO/vhxvuXgkMCqyD6lyQOAT9BAwU6xS4YUbV77VaB9q2ElZmkyOxqjB6Wsp4Bc8ZM=
-X-Received: by 2002:a7b:cd08:0:b0:3a0:37f9:6e5d with SMTP id
- f8-20020a7bcd08000000b003a037f96e5dmr29297854wmj.167.1656919145478; Mon, 04
- Jul 2022 00:19:05 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ztA+AcW0Z5yxncYBDtWD6STNULe14Sk0EXcXnPOw+f4=;
+        b=jqiYv8QX846eHu1XDLGU3kMALpz3AZ/do7eNeBcy2ENUfZ9Z3frjiHt3CgTO4behQU
+         EuDfyAD6S2eUfm4XDYCh08FPu60NLYhsr/P2RsdMAS6e8gEuxZ96lB5X4KVOuqD6Hnne
+         V+ff9L/GBV5hrAVdV9vQ1x4al44d25bpBab11iDXvDpwy0YUIRqtsNQCKjSXx327qxoU
+         4aWlx02QtWobB9fNEzJkIF+W6pmyrEvBmsdCPgpCqbE1XidN0qxAg8VK5KTtOyddY8oO
+         xD8RtGWjiFA5dVnWd6eRi4lzAlGf/+1ttsptRypFd5mGPjoUQzavryg31HZLhS0SQr9u
+         7veg==
+X-Gm-Message-State: AJIora+Pam7ddSJAsPjTtHhsDTe577DbWh/c4XLMuP885aE/MIzeOWQx
+        AnQW9uzQVov7n8t3g9zWE0Ivwg==
+X-Google-Smtp-Source: AGRyM1sE6X+ncoLXgmaxZR7/g+iA8gyRtqST2d07S2Z+ia/JWZThIFFbyNf15t/vtifF0SiuZRjkgg==
+X-Received: by 2002:a05:6102:1504:b0:354:397f:51c5 with SMTP id f4-20020a056102150400b00354397f51c5mr17054790vsv.63.1656943125320;
+        Mon, 04 Jul 2022 06:58:45 -0700 (PDT)
+Received: from localhost ([181.97.174.128])
+        by smtp.gmail.com with ESMTPSA id bi44-20020a05612218ac00b0036bff0dc94esm4494942vkb.34.2022.07.04.06.58.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Jul 2022 06:58:45 -0700 (PDT)
+From:   Martin Fernandez <martin.fernandez@eclypsium.com>
+To:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
+        kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org
+Cc:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
+        gregkh@linuxfoundation.org, rafael@kernel.org, rppt@kernel.org,
+        akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
+        hughsient@gmail.com, alex.bazhaniuk@eclypsium.com,
+        alison.schofield@intel.com, keescook@chromium.org,
+        Martin Fernandez <martin.fernandez@eclypsium.com>
+Subject: [PATCH v9 0/9] x86: Show in sysfs if a memory node is able to do encryption
+Date:   Mon,  4 Jul 2022 10:58:24 -0300
+Message-Id: <20220704135833.1496303-1-martin.fernandez@eclypsium.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-12-kirill.shutemov@linux.intel.com> <6be29d38-5c93-7cc9-0de7-235d3f83773c@intel.com>
- <87a6a3aw50.fsf@email.froward.int.ebiederm.org> <20220624020005.txpxlsbjbebf6oq4@black.fi.intel.com>
- <20220628235105.z6ytdzxofrdkjti4@black.fi.intel.com> <88fe385c-fe40-d659-5081-7f3cdd9493e4@intel.com>
- <20220629005915.gieli3dbjzvjbk5i@black.fi.intel.com>
-In-Reply-To: <20220629005915.gieli3dbjzvjbk5i@black.fi.intel.com>
-From:   Dave Young <dyoung@redhat.com>
-Date:   Mon, 4 Jul 2022 15:18:54 +0800
-Message-ID: <CALu+AoQdEGpecj1wm9U2MpKqPbN5UmFF6+w3JaJSvddeRwf0dw@mail.gmail.com>
-Subject: Re: [PATCHv7 11/14] x86: Disable kexec if system has unaccepted memory
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     Dave Hansen <dave.hansen@intel.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Varad Gautam <varad.gautam@suse.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
-        khalid.elmously@canonical.com, philip.cox@canonical.com,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org,
-        "open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" 
-        <linux-kernel@vger.kernel.org>, kexec@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -102,38 +75,145 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 29 Jun 2022 at 08:59, Kirill A. Shutemov
-<kirill.shutemov@linux.intel.com> wrote:
->
-> On Tue, Jun 28, 2022 at 05:10:56PM -0700, Dave Hansen wrote:
-> > On 6/28/22 16:51, Kirill A. Shutemov wrote:
-> > > On Fri, Jun 24, 2022 at 05:00:05AM +0300, Kirill A. Shutemov wrote:
-> > >>> If there is some deep and fundamental why this can not be supported
-> > >>> then it probably makes sense to put some code in the arch_kexec_load
-> > >>> hook that verifies that deep and fundamental reason is present.
-> > ...
-> > > +   /*
-> > > +    * TODO: Information on memory acceptance status has to be communicated
-> > > +    * between kernel.
-> > > +    */
-> >
-> > So, the deep and fundamental reason is... drum roll... you haven't
-> > gotten around to implementing bitmap passing yet?!?!?   I have the
-> > feeling that wasn't what Eric was looking for.
->
-> The deep fundamental reason is that everything cannot be implemented and
-> upstreamed at once.
+Show for each node if every memory descriptor in that node has the
+EFI_MEMORY_CPU_CRYPTO attribute.
 
-If the only thing is to pass bitmap to kexec kernel, since you have
-reserved the bitmap memory I guess it is straightforward to set the
-kexec bootparams.unaccepted_memory as the old value.  Not sure if
-there are problems when the decompress code accepts memory again
-though.
-for kernel kexec_file_load, refer to function setup_boot_parameters()
-in arch/x86/kernel/kexec-bzimage64.c for kexec_file_load,
-for kexec-tools kexec_load code refer to
-setup_linux_system_parameters() kexec/arch/i386/x86-linux-setup.c
+fwupd project plans to use it as part of a check to see if the users
+have properly configured memory hardware encryption
+capabilities. fwupd's people have seen cases where it seems like there
+is memory encryption because all the hardware is capable of doing it,
+but on a closer look there is not, either because of system firmware
+or because some component requires updating to enable the feature.
 
-Thanks
-Dave
+The MKTME/TME spec says that it will only encrypt those memory regions
+which are flagged with the EFI_MEMORY_CPU_CRYPTO attribute.
+
+If all nodes are capable of encryption and if the system have tme/sme
+on we can pretty confidently say that the device is actively
+encrypting all its memory.
+
+It's planned to make this check part of an specification that can be
+passed to people purchasing hardware
+
+These checks will run at every boot. The specification is called Host
+Security ID: https://fwupd.github.io/libfwupdplugin/hsi.html.
+
+We choosed to do it a per-node basis because although an ABI that
+shows that the whole system memory is capable of encryption would be
+useful for the fwupd use case, doing it in a per-node basis would make
+the path easier to give the capability to the user to target
+allocations from applications to NUMA nodes which have encryption
+capabilities in the future.
+
+
+Changes since v8:
+
+Add unit tests to e820_range_* functions
+
+
+Changes since v7:
+
+Less kerneldocs
+
+Less verbosity in the e820 code
+
+
+Changes since v6:
+
+Fixes in __e820__handle_range_update
+
+Const correctness in e820.c
+
+Correct alignment in memblock.h
+
+Rework memblock_overlaps_region
+
+
+Changes since v5:
+
+Refactor e820__range_{update, remove, set_crypto_capable} in order to
+avoid code duplication.
+
+Warn the user when a node has both encryptable and non-encryptable
+regions.
+
+Check that e820_table has enough size to store both current e820_table
+and EFI memmap.
+
+
+Changes since v4:
+
+Add enum to represent the cryptographic capabilities in e820:
+e820_crypto_capabilities.
+
+Revert __e820__range_update, only adding the new argument for
+__e820__range_add about crypto capabilities.
+
+Add a function __e820__range_update_crypto similar to
+__e820__range_update but to only update this new field.
+
+
+Changes since v3:
+
+Update date in Doc/ABI file.
+
+More information about the fwupd usecase and the rationale behind
+doing it in a per-NUMA-node.
+
+
+Changes since v2:
+
+e820__range_mark_crypto -> e820__range_mark_crypto_capable.
+
+In e820__range_remove: Create a region with crypto capabilities
+instead of creating one without it and then mark it.
+
+
+Changes since v1:
+
+Modify __e820__range_update to update the crypto capabilities of a
+range; now this function will change the crypto capability of a range
+if it's called with the same old_type and new_type. Rework
+efi_mark_e820_regions_as_crypto_capable based on this.
+
+Update do_add_efi_memmap to mark the regions as it creates them.
+
+Change the type of crypto_capable in e820_entry from bool to u8.
+
+Fix e820__update_table changes.
+
+Remove memblock_add_crypto_capable. Now you have to add the region and
+mark it then.
+
+Better place for crypto_capable in pglist_data.
+
+Martin Fernandez (9):
+  mm/memblock: Tag memblocks with crypto capabilities
+  mm/mmzone: Tag pg_data_t with crypto capabilities
+  x86/e820: Add infrastructure to refactor e820__range_{update,remove}
+  x86/e820: Refactor __e820__range_update
+  x86/e820: Refactor e820__range_remove
+  x86/e820: Tag e820_entry with crypto capabilities
+  x86/e820: Add unit tests for e820_range_* functions
+  x86/efi: Mark e820_entries as crypto capable from EFI memmap
+  drivers/node: Show in sysfs node's crypto capabilities
+
+ Documentation/ABI/testing/sysfs-devices-node |  10 +
+ arch/x86/Kconfig.debug                       |  10 +
+ arch/x86/include/asm/e820/api.h              |   1 +
+ arch/x86/include/asm/e820/types.h            |  12 +-
+ arch/x86/kernel/e820.c                       | 393 ++++++++++++++-----
+ arch/x86/kernel/e820_test.c                  | 249 ++++++++++++
+ arch/x86/platform/efi/efi.c                  |  37 ++
+ drivers/base/node.c                          |  10 +
+ include/linux/memblock.h                     |   5 +
+ include/linux/mmzone.h                       |   3 +
+ mm/memblock.c                                |  62 +++
+ mm/page_alloc.c                              |   1 +
+ 12 files changed, 695 insertions(+), 98 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-devices-node
+ create mode 100644 arch/x86/kernel/e820_test.c
+
+-- 
+2.30.2
 
