@@ -2,73 +2,68 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF07E567586
-	for <lists+linux-efi@lfdr.de>; Tue,  5 Jul 2022 19:24:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 941515675DB
+	for <lists+linux-efi@lfdr.de>; Tue,  5 Jul 2022 19:35:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232562AbiGERYX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 5 Jul 2022 13:24:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46030 "EHLO
+        id S229478AbiGERfY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 5 Jul 2022 13:35:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231626AbiGERYV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 5 Jul 2022 13:24:21 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AD131C910
-        for <linux-efi@vger.kernel.org>; Tue,  5 Jul 2022 10:24:19 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id c143so14508897ybf.3
-        for <linux-efi@vger.kernel.org>; Tue, 05 Jul 2022 10:24:19 -0700 (PDT)
+        with ESMTP id S229807AbiGERfX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 5 Jul 2022 13:35:23 -0400
+Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B7671B79E
+        for <linux-efi@vger.kernel.org>; Tue,  5 Jul 2022 10:35:20 -0700 (PDT)
+Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-31c9b70c382so53891997b3.6
+        for <linux-efi@vger.kernel.org>; Tue, 05 Jul 2022 10:35:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=eclypsium.com; s=google;
         h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=5e8U35PaIrJWquC7BxkxdNfD7FPQvOY1UJKYTwQZSkM=;
-        b=hWTA/pwJJBrlNoWP6gkRVXoLOFru6NZVViPF9ZyKYS1hcSgIKnUjJ3LipxLT0AkdQt
-         ha79KzH1DfTiC6vuYJK+s06v4IHp856qAP+0YpOLRuIEntDDO0YH/kiKqVxroHqIEXNp
-         pMtfpXlKJ15T7yq33Lb873sE1KJBBMwsjKcgPg0wU6S+Y3upWej/Ys3FHYuIx8QP9Iox
-         78WWWKW43p8fI4OxWfc3aqCtCK1j3qHQ0kZRX19cjcCRO0PgbDGVutnylhw+1raOfveG
-         sdzQwXfq1EBXv99aLTtmpGbtSw22rDVCs0mDy1+d1lycBOiEQhHIb7l+y4yet62IP2Dq
-         X1sw==
+        bh=N1RVv8GLah3jMA4qO6jppLWYR2xCPjLlybVcMFi9TkA=;
+        b=XbUoFpk32JL+JGxIDO7PVWAY8WdDSLRS1iq3ntXuQM+1PWdVu30+UFGLgZ63ajxHMh
+         l6CxkOFMRyYI85VpaVmv/O4B5HAi/wCgn/0pXNd+yjx+1+o4WA1lGl/38pLCNIVc7LgX
+         s2+VolMOZXiNOaDOn31Y6AWXId+uhJmbj9+rpqKTX9Z0YRjjWgHNuqqBwmlZTKBVieVF
+         Vw/ZD0Pv8fBHt9NIrvvnh/GFpTwzKY9QvStEHBluThfy9s0lFfam7fjTUNuXaD6A4AKq
+         tMUmhaUdZFbapqU9oSdl3gjDgfoeCeKyrIOYQUqVBtsLNBQAeat1Oh/pU/a9nJGe78D+
+         r3VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=5e8U35PaIrJWquC7BxkxdNfD7FPQvOY1UJKYTwQZSkM=;
-        b=RgMLJvlY1uHMGHRVaytfaPllFQgGS7lEusPecB+b/ksmWSlq5MDw7wv/H2VhYBT6OS
-         4l8BYWPIDYEe1hxebSJjw/IzfDiubzdUJyrpIR9Z4v4psoJoHB0RyA5G/6SBAVjYr/1o
-         I3xZcDhI28xnQflGxeRKnoxAy1o2KS9BU9OHsYTH1LWFSvnSlNibnLsnyFnZvJTbYJLf
-         Owy0y9Jw3Ii6yAFDFRNtyApb/htWV5796rU14Xm7zrVECpSj4LhMq1Oe95RggNOvKFmU
-         fK3Ko6/rromR91LzgO7rcRoJQ7Zry2bocpoyzrjYiRocDPewE25Aw06ly9DWT2Iq0FvN
-         55CQ==
-X-Gm-Message-State: AJIora9/xs5+KjcTv8xkloCUEC03f2admXOijYt2mXMWAno93iW6HNEx
-        3QljSBP5WrYMiC0HvA0JDCVPdtk8fe0gpgD8rsbzwH59s7I=
-X-Google-Smtp-Source: AGRyM1tU7x3FA8K1Sj+Bhm/Qn/0xEwAwL4v5km/eCdYFcPNq7BAeSYUCW3DFj0NCeaEgFuKj4EXZKDrfxQnrt04RgMg=
-X-Received: by 2002:a05:6902:70e:b0:66e:86f5:af79 with SMTP id
- k14-20020a056902070e00b0066e86f5af79mr2652220ybt.229.1657041858321; Tue, 05
- Jul 2022 10:24:18 -0700 (PDT)
+        bh=N1RVv8GLah3jMA4qO6jppLWYR2xCPjLlybVcMFi9TkA=;
+        b=HR2s94e2e/fo7ooOH6RkKJp2WXH6qDY2JnsUruRjIxy4CFBIJn8mRqX0ub14cGeInw
+         ZjVIB9zcTgT7oLqT5hXpQOSg+PJUEGsVQtFrxKE1RME4OHhvibdEcKobz8YmpJS4Vmfa
+         hREt6CzFBzQH9RDxTijuRI3bC+sv2866JP6CgbxpQjCK1zEMHhpCzpsyjw2+ntS1k8eG
+         YN9UI6qjbfcln/zBXTXSKmE+ssyrEwdk/NouHPeI8o9CxlxO3v42FcpxcP+ZA7wdVXHW
+         7YGrCP0FEJLbIj7XYtf2VpzRy+9/HghXLJIVUsVJROoI00nQuQ0JT9obnifeX3A1z2IQ
+         GUAA==
+X-Gm-Message-State: AJIora+kjSuSXQ/+m2POQbT33QI9grNTHy5KeWg1xbJUwvB6us55Kper
+        +AP5S/mLmMl3STxBBX5ewl82pfnNMTt5uvGb7yIQvw==
+X-Google-Smtp-Source: AGRyM1slzBuJVxbvk6YiQUttWqqnmkJPffeEwA+zeKfyrL6oTKEeCyul8ggbc1OS1eYwXXU9UdtHEhFAX11lTJVPIzk=
+X-Received: by 2002:a0d:ca93:0:b0:31b:ac58:1047 with SMTP id
+ m141-20020a0dca93000000b0031bac581047mr39435104ywd.323.1657042519381; Tue, 05
+ Jul 2022 10:35:19 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a0d:f944:0:0:0:0:0 with HTTP; Tue, 5 Jul 2022 10:24:17 -0700 (PDT)
-In-Reply-To: <CABVgOS=V+-AN65mZRnzZo8LqDZgEPXrwGPXTSsPUsnBvzi7+WA@mail.gmail.com>
+Received: by 2002:a0d:f944:0:0:0:0:0 with HTTP; Tue, 5 Jul 2022 10:35:18 -0700 (PDT)
+In-Reply-To: <YsL6XCWmgiIeLKJ9@kroah.com>
 References: <20220704135833.1496303-1-martin.fernandez@eclypsium.com>
- <20220704135833.1496303-8-martin.fernandez@eclypsium.com> <CABVgOS=V+-AN65mZRnzZo8LqDZgEPXrwGPXTSsPUsnBvzi7+WA@mail.gmail.com>
+ <20220704135833.1496303-10-martin.fernandez@eclypsium.com> <YsL6XCWmgiIeLKJ9@kroah.com>
 From:   Martin Fernandez <martin.fernandez@eclypsium.com>
-Date:   Tue, 5 Jul 2022 14:24:17 -0300
-Message-ID: <CAKgze5ahanzdTWawTkNxG8KbkX0GRX2YRQROPjpm7AjHpFp_fA@mail.gmail.com>
-Subject: Re: [PATCH v9 7/9] x86/e820: Add unit tests for e820_range_* functions
-To:     David Gow <davidgow@google.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        KUnit Development <kunit-dev@googlegroups.com>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>, tglx@linutronix.de,
-        Ingo Molnar <mingo@redhat.com>, bp@alien8.de,
+Date:   Tue, 5 Jul 2022 14:35:18 -0300
+Message-ID: <CAKgze5aD3vJwMQwzJ1syzAKvSvPgYDFvtapDea_zBki5taoFEQ@mail.gmail.com>
+Subject: Re: [PATCH v9 9/9] drivers/node: Show in sysfs node's crypto capabilities
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
+        kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
         dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
         ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rafael@kernel.org, rppt@kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
+        rafael@kernel.org, rppt@kernel.org, akpm@linux-foundation.org,
         daniel.gutson@eclypsium.com, hughsient@gmail.com,
         alex.bazhaniuk@eclypsium.com, alison.schofield@intel.com,
-        Kees Cook <keescook@chromium.org>
+        keescook@chromium.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -80,407 +75,62 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 7/4/22, David Gow <davidgow@google.com> wrote:
-> On Mon, Jul 4, 2022 at 9:59 PM 'Martin Fernandez' via KUnit
-> Development <kunit-dev@googlegroups.com> wrote:
->>
->> Add KUnit tests for the e820_range_* functions.
+On 7/4/22, Greg KH <gregkh@linuxfoundation.org> wrote:
+> On Mon, Jul 04, 2022 at 10:58:33AM -0300, Martin Fernandez wrote:
+>> Show in each node in sysfs if its memory is able to do be encrypted by
+>> the CPU; on EFI systems: if all its memory is marked with
+>> EFI_MEMORY_CPU_CRYPTO in the EFI memory map.
 >>
 >> Signed-off-by: Martin Fernandez <martin.fernandez@eclypsium.com>
 >> ---
->
-> This looks good to me from a KUnit point of view. I've tested it on
-> both 32- and 64- bit x86 under qemu with the following:
-> ./tools/testing/kunit/kunit.py run --arch=i386 'e820'
-> ./tools/testing/kunit/kunit.py run --arch=x86_64 'e820'
-
-Yes, that's how I ran it. The new qemu executions are great by the way :)
-
-> Two notes inline below:
-> - An indentation error in the Kconfig entry, which stops it from compiling.
-> - Some minor pontificating about how KUnit wants to name macros in
-> general. (No action required: just making a note that this is probably
-> okay.)
->
-> With the indentation issue fixed, this is:
->
-> Reviewed-by: David Gow <davidgow@google.com>
->
-> Cheers,
-> -- David
->
->>  arch/x86/Kconfig.debug      |  10 ++
->>  arch/x86/kernel/e820.c      |   5 +
->>  arch/x86/kernel/e820_test.c | 249 ++++++++++++++++++++++++++++++++++++
->>  3 files changed, 264 insertions(+)
->>  create mode 100644 arch/x86/kernel/e820_test.c
+>>  Documentation/ABI/testing/sysfs-devices-node | 10 ++++++++++
+>>  drivers/base/node.c                          | 10 ++++++++++
+>>  2 files changed, 20 insertions(+)
+>>  create mode 100644 Documentation/ABI/testing/sysfs-devices-node
 >>
->> diff --git a/arch/x86/Kconfig.debug b/arch/x86/Kconfig.debug
->> index d872a7522e55..b5040d345fb4 100644
->> --- a/arch/x86/Kconfig.debug
->> +++ b/arch/x86/Kconfig.debug
->> @@ -225,6 +225,16 @@ config PUNIT_ATOM_DEBUG
->>           The current power state can be read from
->>           /sys/kernel/debug/punit_atom/dev_power_state
->>
->> +config E820_KUNIT_TEST
->> +       tristate "Tests for E820" if !KUNIT_ALL_TESTS
->> +       depends on KUNIT=y
->> +       default KUNIT_ALL_TESTS
->> +       help
->> +         This option enables unit tests for the e820.c code. It
->> +         should be enabled only in development environments.
->> +
->> +         If unsure, say N.
->
-> The indentation here seems to be one space off, leading to errors building
-> it:
->
-> arch/x86/Kconfig.debug:236: syntax error
-> arch/x86/Kconfig.debug:235:warning: ignoring unsupported character ','
-> arch/x86/Kconfig.debug:235:warning: ignoring unsupported character '.'
-> arch/x86/Kconfig.debug:235: unknown statement "If"
-> make[2]: *** [../scripts/kconfig/Makefile:77: olddefconfig] Error 1
-
-I don't know what happened, I saw checkpatch warning me about the a
-help description but since it looked good to me I didn't mind. Now I
-see the actual error.
-
->> +
->>  choice
->>         prompt "Choose kernel unwinder"
->>         default UNWINDER_ORC if X86_64
->> diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
->> index dade59758b9f..a6ced3e306dd 100644
->> --- a/arch/x86/kernel/e820.c
->> +++ b/arch/x86/kernel/e820.c
->> @@ -1546,3 +1546,8 @@ void __init e820__memblock_setup(void)
->>
->>         memblock_dump_all();
->>  }
->> +
->> +#ifdef CONFIG_E820_KUNIT_TEST
->> +/* Let e820_test have access the static functions in this file */
->> +#include "e820_test.c"
->> +#endif
->> diff --git a/arch/x86/kernel/e820_test.c b/arch/x86/kernel/e820_test.c
+>> diff --git a/Documentation/ABI/testing/sysfs-devices-node
+>> b/Documentation/ABI/testing/sysfs-devices-node
 >> new file mode 100644
->> index 000000000000..6b28ea131380
+>> index 000000000000..0e95420bd7c5
 >> --- /dev/null
->> +++ b/arch/x86/kernel/e820_test.c
->> @@ -0,0 +1,249 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +#include <kunit/test.h>
->> +
->> +#include <asm/e820/api.h>
->> +#include <asm/setup.h>
->> +
->> +#define KUNIT_EXPECT_E820_ENTRY_EQ(_test, _entry, _addr, _size, _type,
->>      \
->> +                                  _crypto_capable)
->>     \
->> +       do {
->>     \
->> +               KUNIT_EXPECT_EQ((_test), (_entry).addr, (_addr));
->>     \
->> +               KUNIT_EXPECT_EQ((_test), (_entry).size, (_size));
->>     \
->> +               KUNIT_EXPECT_EQ((_test), (_entry).type, (_type));
->>     \
->> +               KUNIT_EXPECT_EQ((_test), (_entry).crypto_capable,
->>     \
->> +                               (_crypto_capable));
->>     \
->> +       } while (0)
->> +
+>> +++ b/Documentation/ABI/testing/sysfs-devices-node
+>> @@ -0,0 +1,10 @@
+>> +What:		/sys/devices/system/node/nodeX/crypto_capable
+>> +Date:		April 2022
+>> +Contact:	Martin Fernandez <martin.fernandez@eclypsium.com>
+>> +Users:		fwupd (https://fwupd.org)
+>> +Description:
+>> +		This value is 1 if all system memory in this node is
+>> +		capable of being protected with the CPU's memory
+>> +		cryptographic capabilities.  It is 0 otherwise.
+>> +		On EFI systems the node will be marked with
+>> +		EFI_MEMORY_CPU_CRYPTO.
 >
-> I'm not 100% sure we ever came to a decision about tests naming their
-> own expect macros KUNIT_EXPECT_*. I know KASAN is doing it, though the
-> thought there was that other tests might have sensible reasons to
-> expect given memory accesses, so it might not be limited to the one
-> test.
+> Where will such a node be "marked"?  I do not understand this last
+> sentence, sorry, can you please reword this?
+
+What I meant is that if all the memory regions in a given node are
+flagged with EFI_MEMORY_CPU_CRYPTO then that file will hold a 1.
+
+Maybe it's a little confusing if you don't know what
+EFI_MEMORY_CPU_CRYPTO is.
+
+> And why is EFI an issue here at all?
+
+Checking for EFI_MEMORY_CPU_CRYPTO is the way to know if a memory
+region is able to be encrypted by the CPU on EFI platforms. It's not
+really an issue and it's currently the only implementation for this
+file.
+
+Is it clearer here?
+
+  This value is 1 if the memory in this node is capable of being
+  protected with the CPU's memory cryptographic capabilities.  It is 0
+  otherwise.
+  On EFI systems this means that all the memory regions of the node
+  have the EFI_MEMORY_CPU_CRYPTO attribute set.
+
+> thanks,
 >
-> Personally, I don't mind it, particularly since it's obvious that this
-> is specific to the e820 test.
-
-That's true, I didn't think about, because as you said the naming is
-quite obviuos, but I get that it could be an issue.
-
->> +struct e820_table test_table __initdata;
->> +
->> +static void __init test_e820_range_add(struct kunit *test)
->> +{
->> +       u32 full = ARRAY_SIZE(test_table.entries);
->> +       /* Add last entry. */
->> +       test_table.nr_entries = full - 1;
->> +       __e820__range_add(&test_table, 0, 15, 0, 0);
->> +       KUNIT_EXPECT_EQ(test, test_table.nr_entries, full);
->> +       /* Skip new entry when full. */
->> +       __e820__range_add(&test_table, 0, 15, 0, 0);
->> +       KUNIT_EXPECT_EQ(test, test_table.nr_entries, full);
->> +}
->> +
->> +static void __init test_e820_range_update(struct kunit *test)
->> +{
->> +       u64 entry_size = 15;
->> +       u64 updated_size = 0;
->> +       /* Initialize table */
->> +       test_table.nr_entries = 0;
->> +       __e820__range_add(&test_table, 0, entry_size, E820_TYPE_RAM,
->> +                         E820_NOT_CRYPTO_CAPABLE);
->> +       __e820__range_add(&test_table, entry_size, entry_size,
->> E820_TYPE_RAM,
->> +                         E820_NOT_CRYPTO_CAPABLE);
->> +       __e820__range_add(&test_table, entry_size * 2, entry_size,
->> +                         E820_TYPE_ACPI, E820_NOT_CRYPTO_CAPABLE);
->> +
->> +       updated_size = __e820__range_update(&test_table, 0, entry_size *
->> 2,
->> +                                           E820_TYPE_RAM,
->> E820_TYPE_RESERVED);
->> +
->> +       /* The first 2 regions were updated */
->> +       KUNIT_EXPECT_EQ(test, updated_size, entry_size * 2);
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[0], 0,
->> entry_size,
->> +                                  E820_TYPE_RESERVED,
->> E820_NOT_CRYPTO_CAPABLE);
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[1],
->> entry_size,
->> +                                  entry_size, E820_TYPE_RESERVED,
->> +                                  E820_NOT_CRYPTO_CAPABLE);
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[2], entry_size
->> * 2,
->> +                                  entry_size, E820_TYPE_ACPI,
->> +                                  E820_NOT_CRYPTO_CAPABLE);
->> +
->> +       updated_size = __e820__range_update(&test_table, 0, entry_size *
->> 3,
->> +                                           E820_TYPE_RESERVED,
->> E820_TYPE_RAM);
->> +
->> +       /*
->> +        * Only the first 2 regions were updated,
->> +        * since E820_TYPE_ACPI > E820_TYPE_RESERVED
->> +        */
->> +       KUNIT_EXPECT_EQ(test, updated_size, entry_size * 2);
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[0], 0,
->> entry_size,
->> +                                  E820_TYPE_RAM,
->> E820_NOT_CRYPTO_CAPABLE);
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[1],
->> entry_size,
->> +                                  entry_size, E820_TYPE_RAM,
->> +                                  E820_NOT_CRYPTO_CAPABLE);
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[2], entry_size
->> * 2,
->> +                                  entry_size, E820_TYPE_ACPI,
->> +                                  E820_NOT_CRYPTO_CAPABLE);
->> +}
->> +
->> +static void __init test_e820_range_remove(struct kunit *test)
->> +{
->> +       u64 entry_size = 15;
->> +       u64 removed_size = 0;
->> +
->> +       struct e820_entry_updater updater = { .should_update =
->> +
->> remover__should_update,
->> +                                             .update = remover__update,
->> +                                             .new = NULL };
->> +
->> +       struct e820_remover_data data = { .check_type = true,
->> +                                         .old_type = E820_TYPE_RAM };
->> +
->> +       /* Initialize table */
->> +       test_table.nr_entries = 0;
->> +       __e820__range_add(&test_table, 0, entry_size, E820_TYPE_RAM,
->> +                         E820_NOT_CRYPTO_CAPABLE);
->> +       __e820__range_add(&test_table, entry_size, entry_size,
->> E820_TYPE_RAM,
->> +                         E820_NOT_CRYPTO_CAPABLE);
->> +       __e820__range_add(&test_table, entry_size * 2, entry_size,
->> +                         E820_TYPE_ACPI, E820_NOT_CRYPTO_CAPABLE);
->> +
->> +       /*
->> +        * Need to use __e820__handle_range_update because
->> +        * e820__range_remove doesn't ask for the table
->> +        */
->> +       removed_size = __e820__handle_range_update(&test_table,
->> +                                                  0, entry_size * 2,
->> +                                                  &updater, &data);
->> +
->> +       /* The first two regions were removed */
->> +       KUNIT_EXPECT_EQ(test, removed_size, entry_size * 2);
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[0], 0, 0, 0,
->> 0);
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[1], 0, 0, 0,
->> 0);
->> +
->> +       removed_size = __e820__handle_range_update(&test_table,
->> +                                                  0, entry_size * 3,
->> +                                                  &updater, &data);
->> +
->> +       /* Nothing was removed, since nothing matched the target type */
->> +       KUNIT_EXPECT_EQ(test, removed_size, 0);
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[0], 0, 0, 0,
->> 0);
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[1], 0, 0, 0,
->> 0);
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[2], entry_size
->> * 2,
->> +                                  entry_size, E820_TYPE_ACPI,
->> +                                  E820_NOT_CRYPTO_CAPABLE);
->> +}
->> +
->> +static void __init test_e820_range_crypto_update(struct kunit *test)
->> +{
->> +       u64 entry_size = 15;
->> +       u64 updated_size = 0;
->> +       /* Initialize table */
->> +       test_table.nr_entries = 0;
->> +       __e820__range_add(&test_table, 0, entry_size, E820_TYPE_RAM,
->> +                         E820_CRYPTO_CAPABLE);
->> +       __e820__range_add(&test_table, entry_size, entry_size,
->> E820_TYPE_RAM,
->> +                         E820_NOT_CRYPTO_CAPABLE);
->> +       __e820__range_add(&test_table, entry_size * 2, entry_size,
->> +                         E820_TYPE_RAM, E820_CRYPTO_CAPABLE);
->> +
->> +       updated_size = __e820__range_update_crypto(&test_table,
->> +                                                  0, entry_size * 3,
->> +                                                  E820_CRYPTO_CAPABLE);
->> +
->> +       /* Only the region in the middle was updated */
->> +       KUNIT_EXPECT_EQ(test, updated_size, entry_size);
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[0], 0,
->> entry_size,
->> +                                  E820_TYPE_RAM, E820_CRYPTO_CAPABLE);
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[1],
->> entry_size,
->> +                                  entry_size, E820_TYPE_RAM,
->> +                                  E820_CRYPTO_CAPABLE);
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[2], entry_size
->> * 2,
->> +                                  entry_size, E820_TYPE_RAM,
->> +                                  E820_CRYPTO_CAPABLE);
->> +}
->> +
->> +static void __init test_e820_handle_range_update_intersection(struct
->> kunit *test)
->> +{
->> +       struct e820_entry_updater updater = {
->> +               .should_update = type_updater__should_update,
->> +               .update = type_updater__update,
->> +               .new = type_updater__new
->> +       };
->> +
->> +       struct e820_type_updater_data data = { .old_type = E820_TYPE_RAM,
->> +                                              .new_type =
->> E820_TYPE_RESERVED };
->> +
->> +       u64 entry_size = 15;
->> +       u64 intersection_size = 2;
->> +       u64 updated_size = 0;
->> +       /* Initialize table */
->> +       test_table.nr_entries = 0;
->> +       __e820__range_add(&test_table, 0, entry_size, E820_TYPE_RAM,
->> +                         E820_NOT_CRYPTO_CAPABLE);
->> +
->> +       updated_size =
->> +               __e820__handle_range_update(&test_table, 0,
->> +                                           entry_size -
->> intersection_size,
->> +                                           &updater, &data);
->> +
->> +       KUNIT_EXPECT_EQ(test, updated_size, entry_size -
->> intersection_size);
->> +
->> +       /* There is a new entry */
->> +       KUNIT_EXPECT_EQ(test, test_table.nr_entries, intersection_size);
->> +
->> +       /* The original entry now is moved */
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[0],
->> +                                  entry_size - intersection_size,
->> +                                  intersection_size, E820_TYPE_RAM,
->> +                                  E820_NOT_CRYPTO_CAPABLE);
->> +
->> +       /* The new entry has the correct values */
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[1], 0,
->> +                                  entry_size - intersection_size,
->> +                                  E820_TYPE_RESERVED,
->> E820_NOT_CRYPTO_CAPABLE);
->> +}
->> +
->> +static void __init test_e820_handle_range_update_inside(struct kunit
->> *test)
->> +{
->> +       struct e820_entry_updater updater = {
->> +               .should_update = type_updater__should_update,
->> +               .update = type_updater__update,
->> +               .new = type_updater__new
->> +       };
->> +
->> +       struct e820_type_updater_data data = { .old_type = E820_TYPE_RAM,
->> +                                              .new_type =
->> E820_TYPE_RESERVED };
->> +
->> +       u64 entry_size = 15;
->> +       u64 updated_size = 0;
->> +       /* Initialize table */
->> +       test_table.nr_entries = 0;
->> +       __e820__range_add(&test_table, 0, entry_size, E820_TYPE_RAM,
->> +                         E820_NOT_CRYPTO_CAPABLE);
->> +
->> +       updated_size = __e820__handle_range_update(&test_table, 5,
->> +                                                  entry_size - 10,
->> +                                                  &updater, &data);
->> +
->> +       KUNIT_EXPECT_EQ(test, updated_size, entry_size - 10);
->> +
->> +       /* There are two new entrie */
->> +       KUNIT_EXPECT_EQ(test, test_table.nr_entries, 3);
->> +
->> +       /* The original entry now shrunk */
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[0], 0, 5,
->> +                                  E820_TYPE_RAM,
->> E820_NOT_CRYPTO_CAPABLE);
->> +
->> +       /* The new entries have the correct values */
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[1], 5,
->> +                                  entry_size - 10, E820_TYPE_RESERVED,
->> +                                  E820_NOT_CRYPTO_CAPABLE);
->> +       /* Left over of the original region */
->> +       KUNIT_EXPECT_E820_ENTRY_EQ(test, test_table.entries[2], entry_size
->> - 5,
->> +                                  5, E820_TYPE_RAM,
->> E820_NOT_CRYPTO_CAPABLE);
->> +}
->> +
->> +static struct kunit_case e820_test_cases[] __initdata = {
->> +       KUNIT_CASE(test_e820_range_add),
->> +       KUNIT_CASE(test_e820_range_update),
->> +       KUNIT_CASE(test_e820_range_remove),
->> +       KUNIT_CASE(test_e820_range_crypto_update),
->> +       KUNIT_CASE(test_e820_handle_range_update_intersection),
->> +       KUNIT_CASE(test_e820_handle_range_update_inside),
->> +       {}
->> +};
->> +
->> +static struct kunit_suite e820_test_suite __initdata = {
->> +       .name = "e820",
->> +       .test_cases = e820_test_cases,
->> +};
->> +
->> +kunit_test_init_section_suite(e820_test_suite);
->> --
->> 2.30.2
->>
->> --
->> You received this message because you are subscribed to the Google Groups
->> "KUnit Development" group.
->> To unsubscribe from this group and stop receiving emails from it, send an
->> email to kunit-dev+unsubscribe@googlegroups.com.
->> To view this discussion on the web visit
->> https://groups.google.com/d/msgid/kunit-dev/20220704135833.1496303-8-martin.fernandez%40eclypsium.com.
+> greg k-h
 >
