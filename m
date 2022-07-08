@@ -2,87 +2,161 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96FF956BAFF
-	for <lists+linux-efi@lfdr.de>; Fri,  8 Jul 2022 15:39:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E924456C0CE
+	for <lists+linux-efi@lfdr.de>; Fri,  8 Jul 2022 20:37:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238241AbiGHNg6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 8 Jul 2022 09:36:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43188 "EHLO
+        id S238854AbiGHQhu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 8 Jul 2022 12:37:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238057AbiGHNg5 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 8 Jul 2022 09:36:57 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39B8D1D312;
-        Fri,  8 Jul 2022 06:36:57 -0700 (PDT)
-Received: from [192.168.2.145] (109-252-119-232.nat.spd-mgts.ru [109.252.119.232])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        with ESMTP id S238547AbiGHQhu (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 8 Jul 2022 12:37:50 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DD86167EF;
+        Fri,  8 Jul 2022 09:37:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: dmitry.osipenko)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 3EBC666019BD;
-        Fri,  8 Jul 2022 14:36:55 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1657287416;
-        bh=uGsFBhHc9kJWk3WsIFFI61YBmGvbTRXKlcjd/9PjAq4=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=DS9pf2KztkBHA3zmK8czLuFCzxQkTopMbjqIMeSgl+9qwWFHDQzfAxnNcYNHERx6q
-         cKlVmHGzJDJWXNmi6bOw1yQqCGiEbaTcVB5jp5rRZQJwzHhVRSTtnmQ55AJUBq0voh
-         pQEnFcfAGvXpE98f3kCaPATOC9lCFqj7M+/NpRtmGQ5k9dtBkxVjXVQcl5wCLKHHi+
-         GFqqE6kYqFMuHIsJIxwv7VAssf6KYqUtZnFZaYHGH5Z6uJM6TMzWncpZrs19LoYIH8
-         Rz1HS6Si9Jg8wLwCnO6b7HOaEH+Y8xadUVEVhQMYXimM2j+0Ah235a6QZc8ivAuq8f
-         VU1u/z4liIeJg==
-Message-ID: <f7ad68fa-7a32-d89b-efbd-2c056ed0999d@collabora.com>
-Date:   Fri, 8 Jul 2022 16:36:52 +0300
+        by ams.source.kernel.org (Postfix) with ESMTPS id B4B00B828B5;
+        Fri,  8 Jul 2022 16:37:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F8D3C341C6;
+        Fri,  8 Jul 2022 16:37:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1657298266;
+        bh=faBbiFmeCk/XXmJzoX4Ig8MuGcWSSVfGfVZBC0uD89k=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=JnNXQWwfR5Pobgkk8oUvEGVJBSmO2r9GUMSSXlJVJdnjacOYs4rzXZWR5xmnv4a9V
+         EgIw/O7MB3F2AVQe10p3DSyNGUskkhA9GX0KFE45XYEH6U2oqHPwNF2s0PTOM6Tbqb
+         +NrTONPkT3X+4Vth/c+oAIggdeCp4m3/wCte3gkq9csT28C2fUd8cgL8vEn2SbmI8z
+         FP4DKekY/u9cbEm5oWQS/AAC1NyCHA/KobF2VwgAUerALCK/Z4B7EYl3T1sjPXN/2R
+         4GXx4zL0QFw2MDFbeBxRG6I3RHAs7Jz4ihj0wGobXZq+EHQLU3c03k26EXfXlRR2CW
+         f+Ip/z3hWi6lA==
+Received: by mail-ot1-f45.google.com with SMTP id q18-20020a9d7c92000000b00616b27cda7cso16572452otn.9;
+        Fri, 08 Jul 2022 09:37:46 -0700 (PDT)
+X-Gm-Message-State: AJIora/ERigHeK+aorDpCkoc6Ighsdjp5BrWUnaNgxSS3bFuDQytH3pt
+        t4g6ymRDrjkMWlCtsP3WV9NbK6rj/tSHF/22NVM=
+X-Google-Smtp-Source: AGRyM1svHSEUASsl57J1Bv3MiYQY3jBtqML3YrRdG2TT3OOBZQNPUyNOlB3mW51SOJdsvRkRATEvgOuuAgNAADolzfA=
+X-Received: by 2002:a9d:7cc7:0:b0:61a:4fe8:95c4 with SMTP id
+ r7-20020a9d7cc7000000b0061a4fe895c4mr1924578otn.71.1657298265369; Fri, 08 Jul
+ 2022 09:37:45 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH 1/2] platform/x86: x86-android-tablets: Fix Lenovo Yoga
- Tablet 2 830/1050 poweroff again
-Content-Language: en-US
-To:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
+References: <20220708131412.81078-1-hdegoede@redhat.com> <20220708131412.81078-3-hdegoede@redhat.com>
+In-Reply-To: <20220708131412.81078-3-hdegoede@redhat.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 8 Jul 2022 18:37:34 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXH8sck_WMQObNVuT0RkoRFpdZ-V7A4wNW2Mj9CmwdSmZw@mail.gmail.com>
+Message-ID: <CAMj1kXH8sck_WMQObNVuT0RkoRFpdZ-V7A4wNW2Mj9CmwdSmZw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] efi: Fix efi_power_off() not being run before
+ acpi_power_off() when necessary
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
         Mark Gross <markgross@kernel.org>,
         Andy Shevchenko <andy@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, x86@kernel.org,
-        linux-efi@vger.kernel.org
-References: <20220708131412.81078-1-hdegoede@redhat.com>
- <20220708131412.81078-2-hdegoede@redhat.com>
-From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <20220708131412.81078-2-hdegoede@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        platform-driver-x86@vger.kernel.org, X86 ML <x86@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 7/8/22 16:14, Hans de Goede wrote:
-> @@ -950,13 +953,19 @@ static int __init lenovo_yoga_tab2_830_1050_init(void)
->  	if (ret)
->  		return ret;
->  
-> -	pm_power_off = lenovo_yoga_tab2_830_1050_power_off;
-> +	/* SYS_OFF_PRIO_FIRMWARE + 1 so that it runs before acpi_power_off */
-> +	lenovo_yoga_tab2_830_1050_sys_off_handler =
-> +		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF, SYS_OFF_PRIO_FIRMWARE + 1,
-> +					 lenovo_yoga_tab2_830_1050_power_off, NULL);
-> +	if (IS_ERR(lenovo_yoga_tab2_830_1050_sys_off_handler))
-> +		return PTR_ERR(lenovo_yoga_tab2_830_1050_sys_off_handler);
+On Fri, 8 Jul 2022 at 15:14, Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Commit 98f30d0ecf79 ("ACPI: power: Switch to sys-off handler API")
+> switched the ACPI sleep code from directly setting the old global
+> pm_power_off handler to using the new register_sys_off_handler()
+> mechanism with a priority of SYS_OFF_PRIO_FIRMWARE.
+>
+> This is a problem when the old global pm_power_off handler would later
+> be overwritten, such as done by the late_initcall(efi_shutdown_init):
+>
+>         if (efi_poweroff_required())
+>                 pm_power_off = efi_power_off;
+>
+> The old global pm_power_off handler gets run with a priority of
+> SYS_OFF_PRIO_DEFAULT which is lower then SYS_OFF_PRIO_FIRMWARE, causing
+> acpi_power_off() to run first, changing the behavior from before
+> the ACPI sleep code switched to the new register_sys_off_handler().
+>
+> Switch the registering of efi_power_off over to register_sys_off_handler()
+> with a priority of SYS_OFF_PRIO_FIRMWARE + 1 so that it will run before
+> acpi_power_off() as before.
+>
+> Note since the new sys-off-handler code will try all handlers in
+> priority order, there is no more need for the EFI code to store and
+> call the original pm_power_off handler.
+>
+> Fixes: 98f30d0ecf79 ("ACPI: power: Switch to sys-off handler API")
+> Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-Please note that technically we could ignore the registration error
-(maybe print error message) and allow the rest of the module to work
-without the power-off.
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
-The unregister_sys_off_handler() will skip the ERR_PTR handler.
+Note that, as far as I know, this should only affect x86 even though
+this is generic EFI code, and arm64 also supports ACPI boot, but it
+doesn't use ACPI for poweroff/reboot etc
 
--- 
-Best regards,
-Dmitry
+> ---
+>  drivers/firmware/efi/reboot.c | 21 +++++++++++----------
+>  1 file changed, 11 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/firmware/efi/reboot.c b/drivers/firmware/efi/reboot.c
+> index 73089a24f04b..ceae84c19d22 100644
+> --- a/drivers/firmware/efi/reboot.c
+> +++ b/drivers/firmware/efi/reboot.c
+> @@ -6,7 +6,7 @@
+>  #include <linux/efi.h>
+>  #include <linux/reboot.h>
+>
+> -static void (*orig_pm_power_off)(void);
+> +static struct sys_off_handler *efi_sys_off_handler;
+>
+>  int efi_reboot_quirk_mode = -1;
+>
+> @@ -51,15 +51,11 @@ bool __weak efi_poweroff_required(void)
+>         return false;
+>  }
+>
+> -static void efi_power_off(void)
+> +static int efi_power_off(struct sys_off_data *data)
+>  {
+>         efi.reset_system(EFI_RESET_SHUTDOWN, EFI_SUCCESS, 0, NULL);
+> -       /*
+> -        * The above call should not return, if it does fall back to
+> -        * the original power off method (typically ACPI poweroff).
+> -        */
+> -       if (orig_pm_power_off)
+> -               orig_pm_power_off();
+> +
+> +       return NOTIFY_DONE;
+>  }
+>
+>  static int __init efi_shutdown_init(void)
+> @@ -68,8 +64,13 @@ static int __init efi_shutdown_init(void)
+>                 return -ENODEV;
+>
+>         if (efi_poweroff_required()) {
+> -               orig_pm_power_off = pm_power_off;
+> -               pm_power_off = efi_power_off;
+> +               /* SYS_OFF_PRIO_FIRMWARE + 1 so that it runs before acpi_power_off */
+> +               efi_sys_off_handler =
+> +                       register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
+> +                                                SYS_OFF_PRIO_FIRMWARE + 1,
+> +                                                efi_power_off, NULL);
+> +               if (IS_ERR(efi_sys_off_handler))
+> +                       return PTR_ERR(efi_sys_off_handler);
+>         }
+>
+>         return 0;
+> --
+> 2.36.0
+>
