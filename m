@@ -2,170 +2,138 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAA9856ACE2
-	for <lists+linux-efi@lfdr.de>; Thu,  7 Jul 2022 22:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5F8656B0E9
+	for <lists+linux-efi@lfdr.de>; Fri,  8 Jul 2022 05:42:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236462AbiGGUns (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 7 Jul 2022 16:43:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40924 "EHLO
+        id S236513AbiGHDge (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 7 Jul 2022 23:36:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236336AbiGGUnr (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 7 Jul 2022 16:43:47 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 610EB2409B
-        for <linux-efi@vger.kernel.org>; Thu,  7 Jul 2022 13:43:45 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id o12so8173413pfp.5
-        for <linux-efi@vger.kernel.org>; Thu, 07 Jul 2022 13:43:45 -0700 (PDT)
+        with ESMTP id S235510AbiGHDgd (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 7 Jul 2022 23:36:33 -0400
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C5FB735BD;
+        Thu,  7 Jul 2022 20:36:32 -0700 (PDT)
+Received: by mail-io1-xd36.google.com with SMTP id r76so2497989iod.10;
+        Thu, 07 Jul 2022 20:36:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=ll20ZcAb0w9z6zV6paEiNQvrdmi0bjy9wQYysAR+tA8=;
-        b=URF1boc84AH8v3HsZBbgNOqHaD2PrXzBbYwtXSIfIVRywqeC1B6KsyAiYI58j7p8Ll
-         w+BpTtRDUQDJMzOvCRjLMRlP/I4XvBlIw0fmlot8jvJ4iTPyGKKHpugbxZbP42XsyQPt
-         0zpbeWv6tIlOzL0jPLkJCDZBGjh0PyOY0jp2S31IKnOXJ2gPxDiRBrVdra/sEZ7CqSxR
-         jyEsVkeYWIAW55BczsdSKQ4cHzs7S1sruDMhUa9dcTtj6rR8RxyN7Rd6tWIgt6TA24zc
-         6StG5dlQKRb9/JD+KpgqdRiSHCG6KbPQuHygtUPG1uZy1vtJqtdlxyRNnpCo9gnlodNf
-         DwPA==
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1nEpcbWWBpE3b8WlOr/etnrR3ATmUbpbxzoGFQMckxI=;
+        b=mPxKB+MEqY67kiGFEE5EhZd4Bjphdd+29NRvv62yj1iiF/v2OcMFy52539cYwddbtx
+         Vx3KEqqRZLPqtA0m1vMqWea9hUOfaNGwUMILEvWo7n48KmMgOjO9bRcig9M2oyI5lXvG
+         agkhM/OfK2kRTPdSul+a3gcbs8+lWnDNQGaAlDhomiQOVdUjhTjkEQo63+NdMPZK39CZ
+         50oUDIcdDd8toKyAXeuESn3ADdh5d/Z6/bhskSTRUxvVaBUX86sgPniwqZzeTrw9cbgV
+         BEspLlFbzugBZvdOP8pMtEZZKytAsCnv/5t6zzKA5AXhrTkL493hkonoOcGIw3jRiY+h
+         1vdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ll20ZcAb0w9z6zV6paEiNQvrdmi0bjy9wQYysAR+tA8=;
-        b=JrWh3+4J3cJGKJaQj/pGYUOHvDEXnFBs3XAP5JZnAGv7CPgI/9P5/i5UOO1XmJ/FuU
-         +04BeywxeR6saRGZyEzWyHFElQFezFI6KiUeI3Z6Ej4L98rtWKNnMtCP0L/JCpSqMdJL
-         NxtaE363C+1HuMjV8K4vLOF3HIUcSCUgeOphmZxyu9yrrphjR/nFq7ZGYwuqtpRiety+
-         NfABIeDKLeT3oIvGXEp3DEeLk7ZI1DY/GnQd11GKotEoOFlmFzfy/ibmzwoGFKUlx7fe
-         pnH+XHzf98z02+hoU7ieww7YPYkM1FDIy/yZWAeUt82lPl+7kDUP1wEw2UDLcolzrSE6
-         aRFg==
-X-Gm-Message-State: AJIora+KfMd7g3BhO1qI54HbHJKskCjfBiyx1/xD8pVPchsYkVkYPXDa
-        6CGUnGmx7rYwycSVTykgrc0v4seUSK778g==
-X-Google-Smtp-Source: AGRyM1snpqN5XIgDiCvMqPlmhkqtR4FIdb2NphBLO/yR046bU8RX+GmUkvAlMCeGkCa4G4i/R5k0NQ==
-X-Received: by 2002:a05:6a00:a8e:b0:527:9d23:c613 with SMTP id b14-20020a056a000a8e00b005279d23c613mr55562111pfl.53.1657226624708;
-        Thu, 07 Jul 2022 13:43:44 -0700 (PDT)
-Received: from google.com (123.65.230.35.bc.googleusercontent.com. [35.230.65.123])
-        by smtp.gmail.com with ESMTPSA id g16-20020a63e610000000b0041264dec901sm6517163pgh.21.2022.07.07.13.43.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Jul 2022 13:43:43 -0700 (PDT)
-Date:   Thu, 7 Jul 2022 20:43:40 +0000
-From:   Sean Christopherson <seanjc@google.com>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
-        Michael Roth <michael.roth@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v12 19/46] x86/kernel: Make the .bss..decrypted section
- shared in RMP table
-Message-ID: <YsdFfL231NXvYOXu@google.com>
-References: <20220307213356.2797205-20-brijesh.singh@amd.com>
- <YqfabnTRxFSM+LoX@google.com>
- <YqistMvngNKEJu2o@google.com>
- <daaf7a84-4204-48ca-e40c-7ba296b4789c@amd.com>
- <YqizrTCk460kov/X@google.com>
- <6db51d45-e17a-38dd-131d-e43132c55dfb@amd.com>
- <Yqjm/b3deMlxxePh@google.com>
- <9abe9a71-242d-91d5-444a-b56c8b9b6d90@amd.com>
- <YqtdIf7OSivLxFL0@google.com>
- <Yr8mARnQT+VZK0iy@zn.tnic>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1nEpcbWWBpE3b8WlOr/etnrR3ATmUbpbxzoGFQMckxI=;
+        b=67Xj/AKhecRgtb27WiytIOgLxXtlu4pW3AQMGlmtRvPSks3VuwwHFKeg02H35Qw6ee
+         3BxNpfA0mankO/xAWOz4j6iTZT8xzxZ1yVthbiUI66nHy1GQJZmTSN1POUBV4eYRNcEa
+         JddfqrHL4qvLmMYgyAuMpkQU/dRWQWAUs941Gzg4rajglDk0eis/uL1F3z9YF0bZjhgR
+         j5aGYi1IVAXGMEJUcKEhvUcWUCKmyW3CwwfAuNCvohdEiuRNZr0Cv8jCjIfvX5COkvtM
+         gD3TOC6H7peVcoAC1+OCqU4wZ8YcTz5+Dn4eEoErJHF5U2cEvrmn9ChWQ+VVE3E7znDp
+         kdFg==
+X-Gm-Message-State: AJIora8lYygXcEark5QVpfglZDHoJ/0eg7RRkgtPlqlEGH43fRzCVt4w
+        yUUmjPmI0wVHWoaMyIjPj2BM66hmnIWqCBPyEp8=
+X-Google-Smtp-Source: AGRyM1vdpip4CSiT7Uez+RwzkhWBuCEAcIGaSeqj6PrAhpBLP17jxBfwmU6cX1ShR23q8fZi4cZzVwNrhDy7SgQVRB0=
+X-Received: by 2002:a05:6638:1493:b0:33e:c04e:56e4 with SMTP id
+ j19-20020a056638149300b0033ec04e56e4mr971061jak.282.1657251391950; Thu, 07
+ Jul 2022 20:36:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Yr8mARnQT+VZK0iy@zn.tnic>
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+References: <20220329174057.GA17778@srcf.ucam.org> <f9622b47-c45f-8c91-cb85-e5db7fd541cf@apertussolutions.com>
+ <CAMj1kXEUT8BK_akqjF1Wx0JkLniFyV_h9s1TfQnPqfxCHsKfWw@mail.gmail.com>
+ <7aab2990-9c57-2456-b08d-299ae96ac919@apertussolutions.com>
+ <CAELHeEfZ-feZnexp7Gx3VAJPerENcoO1Uccbe3xxUX95jvLUdA@mail.gmail.com> <b1e7b545-8e66-5dc0-ff5a-9f69d1751a5f@apertussolutions.com>
+In-Reply-To: <b1e7b545-8e66-5dc0-ff5a-9f69d1751a5f@apertussolutions.com>
+From:   Brendan Trotter <btrotter@gmail.com>
+Date:   Fri, 8 Jul 2022 13:06:19 +0930
+Message-ID: <CAELHeEcEN=4YrPJROvzHoOiqqe5Bk0f8pDCZDnQ6aS=2LdwNow@mail.gmail.com>
+Subject: Re: Linux DRTM on UEFI platforms
+To:     "Daniel P. Smith" <dpsmith@apertussolutions.com>
+Cc:     The development of GNU GRUB <grub-devel@gnu.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Daniel Kiper <daniel.kiper@oracle.com>,
+        Alec Brown <alec.r.brown@oracle.com>,
+        Kanth Ghatraju <kanth.ghatraju@oracle.com>,
+        Ross Philipson <ross.philipson@oracle.com>,
+        "piotr.krol@3mdeb.com" <piotr.krol@3mdeb.com>,
+        "krystian.hebel@3mdeb.com" <krystian.hebel@3mdeb.com>,
+        "persaur@gmail.com" <persaur@gmail.com>,
+        "Yoder, Stuart" <stuart.yoder@arm.com>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        "michal.zygowski@3mdeb.com" <michal.zygowski@3mdeb.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        "lukasz@hawrylko.pl" <lukasz@hawrylko.pl>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        James Morris <jmorris@namei.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jul 01, 2022, Borislav Petkov wrote:
-> On Thu, Jun 16, 2022 at 04:41:05PM +0000, Sean Christopherson wrote:
-> > > I worry that another use of cc_platform_has() could creep in at some point
-> > > and cause the same issue. Not sure how bad it would be, performance-wise, to
-> > > remove the jump table optimization for arch/x86/coco/core.c.
-> 
-> Is there a gcc switch for that?
+Hi,
 
-I believe -fno-jump-tables will do the trick.  That also reminds me exactly why
-CONFIG_RETPOLINE=y isn't broken, jump tables are disabled when retpolines are enabled[*].
+On Thu, Jul 7, 2022 at 7:18 PM Daniel P. Smith
+<dpsmith@apertussolutions.com> wrote:
+> On 7/5/22 20:03, Brendan Trotter wrote:
+> Greetings!
+>
+> Not sure why I got dropped from distro, but no worries.
+>
+> > On Wed, Jul 6, 2022 at 4:52 AM Daniel P. Smith
+> > <dpsmith@apertussolutions.com> wrote:
+> >> On 6/10/22 12:40, Ard Biesheuvel wrote:> On Thu, 19 May 2022 at 22:59,
+> >> To help provide clarity, consider the following flows for comparison,
+> >>
+> >> Normal/existing efi-stub:
+> >>    EFI -> efi-stub -> head_64.S
+> >>
+> >> Proposed secure launch:
+> >>    EFI -> efi-stub -> dl-handler -> [cpu] -> sl_stub ->head_64.S
+> >
+> > For more clarity; the entire point is to ensure that the kernel only
+> > has to trust itself and the CPU/TPM hardware (and does not have to
+> > trust a potentially malicious boot loader)..Any attempt to avoid a
+> > one-off solution for Linux is an attempt to weaken security.
+>
+> Please elaborate so I might understand how this entrypoint allows for
+> the kernel to only trust itself and the CPU/TPM.
 
-[*] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=86952
+Is this a serious request?
 
-> > One thought would be to initialize "vendor" to a bogus value, disallow calls to
-> > cc_set_vendor() until after the kernel as gotten to a safe point, and then WARN
-> > (or panic?) if cc_platform_has() is called before "vendor" is explicitly set.
-> > New calls can still get in, but they'll be much easier to detect and less likely
-> > to escape initial testing.
-> 
-> The invalid vendor thing makes sense but I don't think it'll help in
-> this case.
-> 
-> We set vendor in sme_enable() which comes before the
-> 
-> __startup_64 -> sme_postprocess_startup
-> 
-> path you're hitting.
+Kernel is started (via. firmware using the kernel's efi-stub, or via.
+"kexec()", or..); and regardless of how the kernel was started the
+kernel establishes its own dynamic root of trust.(e.g. AMD"s SKINIT or
+Intel's TXT, followed by measuring the remainder of itself and
+anything passed from firmware like APCI tables) without relying on a
+call-back provided by "untrusted by kernel" third-parties that don't
+exist in most cases. The dynamic root of trust that kernel creates
+depends on the kernel, CPU, TPM, etc (and excludes untrusted and
+unnecessary third parties)..
 
-Right, but that's easily solved, no?  E.g.
+The only potential benefit that the callback solution provides is that
+it, in theory, it could reduce duplication of work for other operating
+systems (FreeBSD, Solaris, Haiku, Fuchsia, .. could use the same
+callback instead of doing it themselves); but previous discussions
+(talk of formalising the contract between the boot stub and the Linux
+kernel) suggest that you aren't interested in any other OS.
 
-diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
-index e8f7953fda83..ed3118f5bf62 100644
---- a/arch/x86/mm/mem_encrypt_amd.c
-+++ b/arch/x86/mm/mem_encrypt_amd.c
-@@ -487,6 +487,8 @@ void __init sme_early_init(void)
-        if (!sme_me_mask)
-                return;
+This leaves me wondering what your true motivation is. Are you trying
+to benefit GRUB/Trenchboot (at the expense of security, end-user
+convenience, distro installer hassle, etc); or trying to manufacture
+scope for future man-in-the middle attacks (by promoting a solution
+that requires something between firmware and kernel)?
 
-+       cc_set_vendor(CC_VENDOR_AMD);
-+
-        early_pmd_flags = __sme_set(early_pmd_flags);
-
-        __supported_pte_mask = __sme_set(__supported_pte_mask);
-diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
-index f415498d3175..6b1c60032400 100644
---- a/arch/x86/mm/mem_encrypt_identity.c
-+++ b/arch/x86/mm/mem_encrypt_identity.c
-@@ -611,7 +611,6 @@ void __init sme_enable(struct boot_params *bp)
- out:
-        if (sme_me_mask) {
-                physical_mask &= ~sme_me_mask;
--               cc_set_vendor(CC_VENDOR_AMD);
-                cc_set_mask(sme_me_mask);
-        }
- }
-
-And disallow cc_set_vendor() before x86_64_start_kernel(), then fix any fallout.
-
-> We could do only the aspect of checking whether it hasn't been set yet
-> and warn then, in order to make the usage more robust...
-> 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> https://people.kernel.org/tglx/notes-about-netiquette
+- Brendan
