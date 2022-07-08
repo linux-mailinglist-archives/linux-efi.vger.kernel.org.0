@@ -2,148 +2,106 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C1B756BA70
-	for <lists+linux-efi@lfdr.de>; Fri,  8 Jul 2022 15:14:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D278B56BAAB
+	for <lists+linux-efi@lfdr.de>; Fri,  8 Jul 2022 15:29:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238038AbiGHNOZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 8 Jul 2022 09:14:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54720 "EHLO
+        id S237743AbiGHN3X (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 8 Jul 2022 09:29:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238044AbiGHNOY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 8 Jul 2022 09:14:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C70A61A3BB
-        for <linux-efi@vger.kernel.org>; Fri,  8 Jul 2022 06:14:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1657286062;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pTLPSkPg91ZVPHWFVosWsgpnvQEs03edyu3/bORaMt0=;
-        b=jQkfCcy4V9Pwn4U4+4HKU5loImlIKz2UR969jWyssJ1FFcZKtg7TTGa6apnB/Q5uzHmIbp
-        QD1kgMF5klSbHT7ZLk0zCDLrghZWFhOGMNx51zx9COydRctfXLm60NwZUR5IcJ8vB+fUg2
-        19ZNXxHSsqYWzVPIBLus8pe7p0ENMXw=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-202-G1U-F32WNdiLXCRnoW8U9g-1; Fri, 08 Jul 2022 09:14:18 -0400
-X-MC-Unique: G1U-F32WNdiLXCRnoW8U9g-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S237419AbiGHN3W (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 8 Jul 2022 09:29:22 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 063902CC89;
+        Fri,  8 Jul 2022 06:29:22 -0700 (PDT)
+Received: from [192.168.2.145] (109-252-119-232.nat.spd-mgts.ru [109.252.119.232])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F02E5380406B;
-        Fri,  8 Jul 2022 13:14:17 +0000 (UTC)
-Received: from shalem.redhat.com (unknown [10.39.193.188])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 61C381121314;
-        Fri,  8 Jul 2022 13:14:16 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        (Authenticated sender: dmitry.osipenko)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 0DA7366019BD;
+        Fri,  8 Jul 2022 14:29:19 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1657286960;
+        bh=kYuvuzoKyfF8He1pBh2mVcn/g+3TU24CLCFthngUncQ=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=UtRVuGZTETFIO5meZShAMsL+bwK2NYecNGPsBKytgct9kclAQTpVCfMfWaMj2813Q
+         Mt8Q1CzMLQchmPKZolQ5UJ6BL3bM4c4W7nr5vfLoBxxt/P+8r6KaZrLHs74hj6eYJE
+         Gy2ZfJ52iQ6Fzoxzl13jACyO0eT6MFGWu713IpcTOXmYF9tEaje7KcPRTipBNJQfbJ
+         t1hHajALHFUQ10L1iYC4B1c3CQZdQDA+4+V/imfNFwvKThS2PJlSV4vHS9d2vCkjHQ
+         ABqfLyYXwUYNPRKOq2UJXiYqqvLvJmBzpm+9qaknDL2kS6WSUJ3UKACOMKaIXVGRTi
+         0k3bD7L/xwKSw==
+Message-ID: <e6dccc45-5b69-dd65-a3dc-88a219fb238e@collabora.com>
+Date:   Fri, 8 Jul 2022 16:29:17 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH 0/2] Fix 2 5.19 power-off regressions caused by
+ sys-off-handler work
+Content-Language: en-US
+To:     Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
         Mark Gross <markgross@kernel.org>,
         Andy Shevchenko <andy@kernel.org>,
         Ard Biesheuvel <ardb@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        x86@kernel.org, linux-efi@vger.kernel.org
-Subject: [PATCH 2/2] efi: Fix efi_power_off() not being run before acpi_power_off() when necessary
-Date:   Fri,  8 Jul 2022 15:14:12 +0200
-Message-Id: <20220708131412.81078-3-hdegoede@redhat.com>
-In-Reply-To: <20220708131412.81078-1-hdegoede@redhat.com>
+Cc:     linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, x86@kernel.org,
+        linux-efi@vger.kernel.org
 References: <20220708131412.81078-1-hdegoede@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.78 on 10.11.54.3
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <20220708131412.81078-1-hdegoede@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Commit 98f30d0ecf79 ("ACPI: power: Switch to sys-off handler API")
-switched the ACPI sleep code from directly setting the old global
-pm_power_off handler to using the new register_sys_off_handler()
-mechanism with a priority of SYS_OFF_PRIO_FIRMWARE.
+On 7/8/22 16:14, Hans de Goede wrote:
+> Hi All,
+> 
+> I noticed that my Lenovo Yoga Tablet 2 1050L was hanging on power-off again
+> with 5.19, even though I had implemented a workaround for this in 5.17 .
+> 
+> I quickly realized that this was caused by the recent sys-off-handler work
+> and fixed this by switching the workaround over to register_sys_off_handler
+> with a priority of SYS_OFF_PRIO_FIRMWARE + 1, so that the workaround runs
+> before acpi_power_off() get a chance to run.
+> 
+> This made me realize that the efi_power_off handler which sometimes is
+> used in preference of acpi_power_off had the same problem, so the second
+> patch in this series fixes that.
+> 
+> I plan to include patch 1/2 in a fixes pull-req to Linus soon. Ard,
+> if I can get your Ack for 2/2 then I can include this in the pull-req
+> if you want; or you can send this to Linus yourself.
+> 
+> Regards,
+> 
+> Hans
+> 
+> 
+> Hans de Goede (2):
+>   platform/x86: x86-android-tablets: Fix Lenovo Yoga Tablet 2 830/1050
+>     poweroff again
+>   efi: Fix efi_power_off() not being run before acpi_power_off() when
+>     necessary
+> 
+>  drivers/firmware/efi/reboot.c              | 21 +++++++++++----------
+>  drivers/platform/x86/x86-android-tablets.c | 17 +++++++++++++----
+>  2 files changed, 24 insertions(+), 14 deletions(-)
+> 
 
-This is a problem when the old global pm_power_off handler would later
-be overwritten, such as done by the late_initcall(efi_shutdown_init):
+Thank you for the fixes. It's great that the RC is getting more testing
+since I couldn't test everything and we don't have CI for the power-off
+testing.
 
-	if (efi_poweroff_required())
-		pm_power_off = efi_power_off;
-
-The old global pm_power_off handler gets run with a priority of
-SYS_OFF_PRIO_DEFAULT which is lower then SYS_OFF_PRIO_FIRMWARE, causing
-acpi_power_off() to run first, changing the behavior from before
-the ACPI sleep code switched to the new register_sys_off_handler().
-
-Switch the registering of efi_power_off over to register_sys_off_handler()
-with a priority of SYS_OFF_PRIO_FIRMWARE + 1 so that it will run before
-acpi_power_off() as before.
-
-Note since the new sys-off-handler code will try all handlers in
-priority order, there is no more need for the EFI code to store and
-call the original pm_power_off handler.
-
-Fixes: 98f30d0ecf79 ("ACPI: power: Switch to sys-off handler API")
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/firmware/efi/reboot.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/firmware/efi/reboot.c b/drivers/firmware/efi/reboot.c
-index 73089a24f04b..ceae84c19d22 100644
---- a/drivers/firmware/efi/reboot.c
-+++ b/drivers/firmware/efi/reboot.c
-@@ -6,7 +6,7 @@
- #include <linux/efi.h>
- #include <linux/reboot.h>
- 
--static void (*orig_pm_power_off)(void);
-+static struct sys_off_handler *efi_sys_off_handler;
- 
- int efi_reboot_quirk_mode = -1;
- 
-@@ -51,15 +51,11 @@ bool __weak efi_poweroff_required(void)
- 	return false;
- }
- 
--static void efi_power_off(void)
-+static int efi_power_off(struct sys_off_data *data)
- {
- 	efi.reset_system(EFI_RESET_SHUTDOWN, EFI_SUCCESS, 0, NULL);
--	/*
--	 * The above call should not return, if it does fall back to
--	 * the original power off method (typically ACPI poweroff).
--	 */
--	if (orig_pm_power_off)
--		orig_pm_power_off();
-+
-+	return NOTIFY_DONE;
- }
- 
- static int __init efi_shutdown_init(void)
-@@ -68,8 +64,13 @@ static int __init efi_shutdown_init(void)
- 		return -ENODEV;
- 
- 	if (efi_poweroff_required()) {
--		orig_pm_power_off = pm_power_off;
--		pm_power_off = efi_power_off;
-+		/* SYS_OFF_PRIO_FIRMWARE + 1 so that it runs before acpi_power_off */
-+		efi_sys_off_handler =
-+			register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
-+						 SYS_OFF_PRIO_FIRMWARE + 1,
-+						 efi_power_off, NULL);
-+		if (IS_ERR(efi_sys_off_handler))
-+			return PTR_ERR(efi_sys_off_handler);
- 	}
- 
- 	return 0;
 -- 
-2.36.0
-
+Best regards,
+Dmitry
