@@ -2,133 +2,100 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89EA756CFC4
-	for <lists+linux-efi@lfdr.de>; Sun, 10 Jul 2022 17:28:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07A0457107A
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Jul 2022 04:52:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229591AbiGJP17 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 10 Jul 2022 11:27:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42862 "EHLO
+        id S229789AbiGLCwW convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-efi@lfdr.de>); Mon, 11 Jul 2022 22:52:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbiGJP16 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 10 Jul 2022 11:27:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AD9D5BE3A
-        for <linux-efi@vger.kernel.org>; Sun, 10 Jul 2022 08:27:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1657466876;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WEgc4+9EZyWOg0DX1APF1+peVAF/Sf5RwA1DWtcyQls=;
-        b=RUpHmKoPheQr+PLhu/555ZV7Q1Mfj0evTog10PHypJI3itORN402oqMinFsYv4rWh1chh8
-        TDtPyta3XhvxzrQBCrcVmnaGKeqKPf5eomf8HYt9ajKY/ZytN26me9QUhlsMZ2mM+m8GxS
-        ZF2b2tbPsKl174YoWPnXMTWr6nrQDAQ=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-461-8komDlC8PBaZ__0zWe8bIw-1; Sun, 10 Jul 2022 11:27:55 -0400
-X-MC-Unique: 8komDlC8PBaZ__0zWe8bIw-1
-Received: by mail-ed1-f69.google.com with SMTP id g7-20020a056402424700b0043ac55ccf15so1872713edb.4
-        for <linux-efi@vger.kernel.org>; Sun, 10 Jul 2022 08:27:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=WEgc4+9EZyWOg0DX1APF1+peVAF/Sf5RwA1DWtcyQls=;
-        b=TpW8anZLr7wM4y3tJWvc9NmjRo4ge4DgIfrBZJex94e7K+/UB4IHUbZIugA1a57YjX
-         pnYUZY79X5u0cKFc0XzL09Ici1bwdDCO6UK0/OvvVxPCPWM2QRsGu3Oh9/GGWRM4r5a5
-         vNkV6wCZGCp2uzgjbiZnebx/lKmsaAiNr69wFbVfSsilLKQvXWCdxXe97E6yL/8w4u0j
-         iD210LDMmcoFfrjg3blAkGZvWD1J5QCfIBJnZ8aBe1EPCjF/s/TISS7MhLcMI40woOUZ
-         LJSsr1zGNIi2P3ZOczt3cgv5CKyd4rgnR2OKHxJWCUPS7SX1c9jYxZh+q46E9mg5YR/R
-         XDCw==
-X-Gm-Message-State: AJIora8xfD7fHNJUe3syPSVUOq2su1/1OU/tMasvzuIjXMMm0CqW8UGs
-        SiPVcjD99qsQS8PLbqiAusOSzaCwVZhOz+l4jLb8TMKn8YndEVfVsWhXrQHRnliZa7yO0FWIgS+
-        7t5wgt2NfPbgy9+jfpIYd
-X-Received: by 2002:a05:6402:35c5:b0:437:140d:5cb3 with SMTP id z5-20020a05640235c500b00437140d5cb3mr18766578edc.72.1657466874432;
-        Sun, 10 Jul 2022 08:27:54 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1sar1BApa+f5UiaF83FXmU4bkBODkz9o1fNx7/o9HOXstI0QKL9JWDfHduHhfrrwr0qUspBig==
-X-Received: by 2002:a05:6402:35c5:b0:437:140d:5cb3 with SMTP id z5-20020a05640235c500b00437140d5cb3mr18766565edc.72.1657466874293;
-        Sun, 10 Jul 2022 08:27:54 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
-        by smtp.gmail.com with ESMTPSA id y26-20020a056402135a00b00435a742e350sm2895727edw.75.2022.07.10.08.27.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 10 Jul 2022 08:27:53 -0700 (PDT)
-Message-ID: <c00dc0f7-dfe8-ecd7-ee6d-72b11a4ab3dc@redhat.com>
-Date:   Sun, 10 Jul 2022 17:27:52 +0200
+        with ESMTP id S229542AbiGLCwV (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 11 Jul 2022 22:52:21 -0400
+X-Greylist: delayed 25777 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 11 Jul 2022 19:52:19 PDT
+Received: from gw12.vladavia.ru (mx1.vladavia.ru [91.207.252.247])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 089EA2A421
+        for <linux-efi@vger.kernel.org>; Mon, 11 Jul 2022 19:52:18 -0700 (PDT)
+Received: from ec2-3-140-195-239.us-east-2.compute.amazonaws.com ([3.140.195.239]:57151 helo=johnlewis.com)
+        by gw12.vladavia.ru with esmtpsa  (TLS1) tls TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
+        (Exim 4.95)
+        (envelope-from <robert_turner256@johnlewis.com>)
+        id 1oAzIg-0000MT-0M
+        for linux-efi@vger.kernel.org;
+        Tue, 12 Jul 2022 05:42:34 +1000
+X-SASI-Hits: BODYTEXTP_SIZE_3000_LESS 0.000000, BODY_SIZE_1300_1399 0.000000,
+        BODY_SIZE_2000_LESS 0.000000, BODY_SIZE_5000_LESS 0.000000,
+        BODY_SIZE_7000_LESS 0.000000, FROM_NAME_PHRASE 0.000000, HTML_00_01 0.050000,
+        HTML_00_10 0.050000, NO_URI_HTTPS 0.000000, RDNS_GENERIC_POOLED 0.000000,
+        RDNS_SUSP 0.000000, RDNS_SUSP_GENERIC 0.000000,
+        REPLYTO_FROM_DIFF_ADDY 0.100000, SENDER_NO_AUTH 0.000000,
+        SINGLE_URI_IN_BODY 0.000000, __ANY_URI 0.000000, __BODY_NO_MAILTO 0.000000,
+        __BUSINESS_SIGNATURE 0.000000, __CT 0.000000, __CTE 0.000000,
+        __CT_TEXT_PLAIN 0.000000, __FRAUD_COMMON 0.000000, __FRAUD_REPLY 0.000000,
+        __FROM_NAME_NOT_IN_BODY 0.000000, __FUR_HEADER 0.000000, __HAS_FROM 0.000000,
+        __HAS_MSGID 0.000000, __HAS_REPLYTO 0.000000, __HEADER_ORDER_FROM 0.000000,
+        __INT_PROD_LOC 0.000000, __INVOICE_MULTILINGUAL 0.000000,
+        __LINES_OF_YELLING 0.000000, __MIME_TEXT_ONLY 0.000000,
+        __MIME_TEXT_P 0.000000, __MIME_TEXT_P1 0.000000, __MIME_VERSION 0.000000,
+        __NO_HTML_TAG_RAW 0.000000, __SANE_MSGID 0.000000,
+        __SINGLE_URI_TEXT 0.000000, __STOCK_PHRASE_6 0.000000,
+        __TO_MALFORMED_2 0.000000, __TO_NO_NAME 0.000000, __URI_IN_BODY 0.000000,
+        __URI_MAILTO 0.000000, __URI_NOT_IMG 0.000000, __URI_NO_PATH 0.000000,
+        __URI_WITHOUT_PATH 0.000000
+X-SASI-Probability: 8%
+X-SASI-RCODE: 200
+X-SASI-Version: Antispam-Engine: 4.1.4, AntispamData: 2022.3.11.110917
+Reply-To: robert_turner@johnlewis-trades.com
+From:   John Lewis & Partnership <robert_turner256@johnlewis.com>
+To:     linux-efi@vger.kernel.org
+Subject: JL-(11/07/22)-Order_Enquiry =
+Date:   12 Jul 2022 05:42:32 +1000
+Message-ID: <20220712014320.55F6362A50B6B06D@johnlewis.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH 0/2] Fix 2 5.19 power-off regressions caused by
- sys-off-handler work
-Content-Language: en-US
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, x86@kernel.org,
-        linux-efi@vger.kernel.org
-References: <20220708131412.81078-1-hdegoede@redhat.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220708131412.81078-1-hdegoede@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=2.0 required=5.0 tests=ADVANCE_FEE_3_NEW,BAYES_50,
+        RCVD_IN_DNSWL_MED,SPF_FAIL,SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi,
+Dear linux-efi
 
-On 7/8/22 15:14, Hans de Goede wrote:
-> Hi All,
-> 
-> I noticed that my Lenovo Yoga Tablet 2 1050L was hanging on power-off again
-> with 5.19, even though I had implemented a workaround for this in 5.17 .
-> 
-> I quickly realized that this was caused by the recent sys-off-handler work
-> and fixed this by switching the workaround over to register_sys_off_handler
-> with a priority of SYS_OFF_PRIO_FIRMWARE + 1, so that the workaround runs
-> before acpi_power_off() get a chance to run.
-> 
-> This made me realize that the efi_power_off handler which sometimes is
-> used in preference of acpi_power_off had the same problem, so the second
-> patch in this series fixes that.
-> 
-> I plan to include patch 1/2 in a fixes pull-req to Linus soon. Ard,
-> if I can get your Ack for 2/2 then I can include this in the pull-req
-> if you want; or you can send this to Linus yourself.
 
-I've added these to my review-hans (soon to be for-next) branch now
-and I'll include them in my upcoming 5.19 fixes pull-req.
+ 
+The world famous brand John Lewis & Partners, is UK's largest 
+multi-channel retailer with over 126 shops and multiple expansion 
+in Africa furnished by European/Asian/American products. We are
+sourcing new products to attract new customers and also retain 
+our existing ones, create new partnerships with companies dealing 
+with different kinds of goods globally.
+ 
+Your company's products are of interest to our market as we have 
+an amazing market for your products.Provide us your current 
+catalog through email to review more. We hope to be able to order
+with you and start a long-term friendly, respectable and solid 
+business partnership. Please we would appreciate it if you could 
+send us your stock availability via email if any.
 
-Regards,
+ 
+Our payment terms are 15 days net in Europe, 30 days Net in UK 
+and 30 days net in Asia/USA as we have operated with over 5297 
+suppliers around the globe for the past 50 years now. For
+immediate response Send your reply to "robert_turner@johnlewis-
+trades.com" for us to be able to treat with care and urgency.
 
-Hans
-
-> 
-> Regards,
-> 
-> Hans
-> 
-> 
-> Hans de Goede (2):
->   platform/x86: x86-android-tablets: Fix Lenovo Yoga Tablet 2 830/1050
->     poweroff again
->   efi: Fix efi_power_off() not being run before acpi_power_off() when
->     necessary
-> 
->  drivers/firmware/efi/reboot.c              | 21 +++++++++++----------
->  drivers/platform/x86/x86-android-tablets.c | 17 +++++++++++++----
->  2 files changed, 24 insertions(+), 14 deletions(-)
-> 
-
+ 
+Best Regards
+Rob Turner
+Head Of Procurement Operations
+John Lewis & Partners.
+robert_turner@johnlewis-trades.com
+Tel: +44-7451-274090
+WhatsApp: +447497483925
+www.johnlewis.com
+REGISTERED OFFICE: 171 VICTORIA STREET, LONDON SW1E 5NN
