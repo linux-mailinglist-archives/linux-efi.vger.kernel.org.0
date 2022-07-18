@@ -2,95 +2,182 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13EEC57776F
-	for <lists+linux-efi@lfdr.de>; Sun, 17 Jul 2022 19:16:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E8C0578118
+	for <lists+linux-efi@lfdr.de>; Mon, 18 Jul 2022 13:42:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229487AbiGQRQo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 17 Jul 2022 13:16:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42850 "EHLO
+        id S233775AbiGRLmC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 18 Jul 2022 07:42:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232951AbiGQRQo (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 17 Jul 2022 13:16:44 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DF721122;
-        Sun, 17 Jul 2022 10:16:43 -0700 (PDT)
-Received: from zn.tnic (p200300ea97297694329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9729:7694:329c:23ff:fea6:a903])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 213E61EC00F8;
-        Sun, 17 Jul 2022 19:16:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1658078197;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=YMyRMtPkAHFEJeFlvvh7As/CmA56O06Fs8vTb9G0On4=;
-        b=NjA9bS4O6bVxhNEDGAr9WgB6eGW0WbnqYgLiVPeKtwN7ATIzlWyhQOvcxnxfqJ6yoEX2XE
-        Bh8d+arMLXrlPA7tVeGKYc+VD5FScRS0U3BhUUovD/2iMNW2PwiCT9Xp3Q2fEZNkJKwtEd
-        R1JtfB7Btx8JubJXOlp3JKhR+eTf0yQ=
-Date:   Sun, 17 Jul 2022 19:16:32 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Varad Gautam <varad.gautam@suse.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
-        khalid.elmously@canonical.com, philip.cox@canonical.com,
-        x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv7 05/14] x86/boot: Add infrastructure required for
- unaccepted memory support
-Message-ID: <YtRD8MJGTJLzRRV2@zn.tnic>
-References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-6-kirill.shutemov@linux.intel.com>
- <YqmyQZa4CTHkH3gT@hirez.programming.kicks-ass.net>
- <20220615150534.ylkref3runa4kmyj@box.shutemov.name>
+        with ESMTP id S230249AbiGRLmC (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 18 Jul 2022 07:42:02 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5ADFB4E;
+        Mon, 18 Jul 2022 04:42:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=EEc9IHZIWJwHYmyzdLOeoXjAFOJf8a2lOt0xm5QgV3w=; b=T+cIZZ3bhcx8LfA9eyofGJrDhv
+        zy6tBDbb4qBFCHdlXaxIdQxJJNjascLa6qWnSS4kO6uvbc48k+UniEGd/L/dvhbrSXryRPqbd+/Pl
+        sQa1/OY6pFczLuEF054UxJh4D214/RgxImxXHsY6xzpvD8Ft01So1580ctcmigeWn9Usmto6n9W/l
+        npRD39zyWsSUTqmQ0hoMRu1/4X07fIpeiaagnyUMPe9cMUsirrzg8UwFENG/F0xdZSZc+Xell3mtE
+        VtZ8SNFb450+ILrXP7Mg8m1BJorpkZigjTPSHPVbCMos1tAAOrwIEW+4XT409PjaE//v3kcnRIqRM
+        bSvgwg5Q==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=worktop.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1oDP87-004oSC-0E; Mon, 18 Jul 2022 11:41:39 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+        id D2E17980239; Mon, 18 Jul 2022 13:41:37 +0200 (CEST)
+Date:   Mon, 18 Jul 2022 13:41:37 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        x86@kernel.org, ardb@kernel.org, tglx@linutronix.de,
+        gregkh@linuxfoundation.org, torvalds@linux-foundation.org,
+        Guenter Roeck <linux@roeck-us.net>,
+        Borislav Petkov <bp@suse.de>,
+        Josh Poimboeuf <jpoimboe@kernel.org>, stable@vger.kernel.org,
+        Andrew Cooper <Andrew.Cooper3@citrix.com>
+Subject: Re: [PATCH] efi/x86: use naked RET on mixed mode call wrapper
+Message-ID: <YtVG8VBmFikS6GMn@worktop.programming.kicks-ass.net>
+References: <20220715194550.793957-1-cascardo@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220615150534.ylkref3runa4kmyj@box.shutemov.name>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20220715194550.793957-1-cascardo@canonical.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jun 15, 2022 at 06:05:34PM +0300, Kirill A. Shutemov wrote:
-> It also sounds painfully similar to uapi/ project. I'm not sure we want to
-> go this path.
+On Fri, Jul 15, 2022 at 04:45:50PM -0300, Thadeu Lima de Souza Cascardo wrote:
+> When running with return thunks enabled under 32-bit EFI, the system
+> crashes with:
+> 
+> [    0.137688] kernel tried to execute NX-protected page - exploit attempt? (uid: 0)
+> [    0.138136] BUG: unable to handle page fault for address: 000000005bc02900
+> [    0.138136] #PF: supervisor instruction fetch in kernel mode
+> [    0.138136] #PF: error_code(0x0011) - permissions violation
+> [    0.138136] PGD 18f7063 P4D 18f7063 PUD 18ff063 PMD 190e063 PTE 800000005bc02063
+> [    0.138136] Oops: 0011 [#1] PREEMPT SMP PTI
+> [    0.138136] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.19.0-rc6+ #166
+> [    0.138136] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+> [    0.138136] RIP: 0010:0x5bc02900
+> [    0.138136] Code: Unable to access opcode bytes at RIP 0x5bc028d6.
+> [    0.138136] RSP: 0018:ffffffffb3203e10 EFLAGS: 00010046
+> [    0.138136] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000048
+> [    0.138136] RDX: 000000000190dfac RSI: 0000000000001710 RDI: 000000007eae823b
+> [    0.138136] RBP: ffffffffb3203e70 R08: 0000000001970000 R09: ffffffffb3203e28
+> [    0.138136] R10: 747563657865206c R11: 6c6977203a696665 R12: 0000000000001710
+> [    0.138136] R13: 0000000000000030 R14: 0000000001970000 R15: 0000000000000001
+> [    0.138136] FS:  0000000000000000(0000) GS:ffff8e013ca00000(0000) knlGS:0000000000000000
+> [    0.138136] CS:  0010 DS: 0018 ES: 0018 CR0: 0000000080050033
+> [    0.138136] CR2: 000000005bc02900 CR3: 0000000001930000 CR4: 00000000000006f0
+> [    0.138136] Call Trace:
+> [    0.138136]  <TASK>
+> [    0.138136]  ? efi_set_virtual_address_map+0x9c/0x175
+> [    0.138136]  efi_enter_virtual_mode+0x4a6/0x53e
+> [    0.138136]  start_kernel+0x67c/0x71e
+> [    0.138136]  x86_64_start_reservations+0x24/0x2a
+> [    0.138136]  x86_64_start_kernel+0xe9/0xf4
+> [    0.138136]  secondary_startup_64_no_verify+0xe5/0xeb
+> [    0.138136]  </TASK>
+> 
+> That's because it cannot jump to the return thunk from the 32-bit code.
+> Using a naked RET and marking it as safe allows the system to proceed
+> booting.
+> 
+> Fixes: aa3d480315ba ("x86: Use return-thunk in asm code")
+> Reported-by: Guenter Roeck <linux@roeck-us.net>
+> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+> Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Cc: Borislav Petkov <bp@suse.de>
+> Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+> Cc: <stable@vger.kernel.org>
+> ---
+> 
+> Does this leave one potential attack vector open? Perhaps, since this is
+> running under a different mapping (AFAIU), the risk is reduced? Or rather, the
+> attacker could attack using the firmware RETs anyway?
+> 
+> Alternatively, we could use IBPB when available when using the wrapper.
+> 
+> Thoughts?
 
-It is the same path perf tool is taking - see first paragraph:
+What actual uarch are you running this on? Is this AMD hardware?
 
-https://lore.kernel.org/r/YtQM40VmiLTkPND2@kernel.org
+For Intel we'll enable IBRS for firmware if it is not otherwise enabled
+(upstream will always enable IBRS for the SKL family chips, but Thomas
+just posted the retbleed=stuff approach yesterday that will not)
 
-I don't want to deal with the regular breakages or hacks to
-boot/compressed/ just because little duplication. We copy the header
-once and that's it - it doesn't even have to get updated like perf tool
-does from time to time.
+On AMD I think you're stuck with IBPB, but that has to be issued
+*before* calling the firmware muck.
 
--- 
-Regards/Gruss,
-    Boris.
+In either case, I think the patch as proposed is fine. But perhaps we
+want something like the below on top.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+---
+Subject: x86/amd: Use IBPB for firmware calls
+
+On AMD IBRS does not prevent Retbleed; as such use IBPB before a
+firmware call to flush the branch history state.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+---
+ arch/x86/include/asm/cpufeatures.h   |  1 +
+ arch/x86/include/asm/nospec-branch.h |  2 ++
+ arch/x86/kernel/cpu/bugs.c           | 11 ++++++++++-
+ 3 files changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index 00f5227c8459..a77b915d36a8 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -302,6 +302,7 @@
+ #define X86_FEATURE_RETPOLINE_LFENCE	(11*32+13) /* "" Use LFENCE for Spectre variant 2 */
+ #define X86_FEATURE_RETHUNK		(11*32+14) /* "" Use REturn THUNK */
+ #define X86_FEATURE_UNRET		(11*32+15) /* "" AMD BTB untrain return */
++#define X86_FEATURE_USE_IBPB_FW		(11*32+16) /* "" Use IBPB during runtime firmware calls */
+ 
+ /* Intel-defined CPU features, CPUID level 0x00000007:1 (EAX), word 12 */
+ #define X86_FEATURE_AVX_VNNI		(12*32+ 4) /* AVX VNNI instructions */
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index 10a3bfc1eb23..f934dcdb7c0d 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -297,6 +297,8 @@ do {									\
+ 	alternative_msr_write(MSR_IA32_SPEC_CTRL,			\
+ 			      spec_ctrl_current() | SPEC_CTRL_IBRS,	\
+ 			      X86_FEATURE_USE_IBRS_FW);			\
++	altnerative_msr_write(MSR_IA32_PRED_CMD, PRED_CMD_IBPB,		\
++			      X86_FEATURE_USE_IBPB_FW);			\
+ } while (0)
+ 
+ #define firmware_restrict_branch_speculation_end()			\
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index aa34f908c39f..78c9082242a9 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1516,7 +1516,16 @@ static void __init spectre_v2_select_mitigation(void)
+ 	 * the CPU supports Enhanced IBRS, kernel might un-intentionally not
+ 	 * enable IBRS around firmware calls.
+ 	 */
+-	if (boot_cpu_has(X86_FEATURE_IBRS) && !spectre_v2_in_ibrs_mode(mode)) {
++	if (boot_cpu_has_bug(X86_BUG_RETBLEED) &&
++	    (boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
++	     boot_cpu_data.x86_vendor == X86_VENDOR_HYGON)) {
++
++		if (retbleed_cmd != RETBLEED_CMD_IBPB) {
++			setup_force_cpu_cap(X86_FEATURE_USE_IBPB_FW);
++			pr_info("Enabling Speculation Barrier for firmware calls\n");
++		}
++
++	} else if (boot_cpu_has(X86_FEATURE_IBRS) && !spectre_v2_in_ibrs_mode(mode)) {
+ 		setup_force_cpu_cap(X86_FEATURE_USE_IBRS_FW);
+ 		pr_info("Enabling Restricted Speculation for firmware calls\n");
+ 	}
