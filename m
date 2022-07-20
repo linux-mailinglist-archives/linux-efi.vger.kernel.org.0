@@ -2,114 +2,124 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAA2957B01B
-	for <lists+linux-efi@lfdr.de>; Wed, 20 Jul 2022 06:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C9A857B07B
+	for <lists+linux-efi@lfdr.de>; Wed, 20 Jul 2022 07:44:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235726AbiGTErB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 20 Jul 2022 00:47:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51608 "EHLO
+        id S229617AbiGTFon (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 20 Jul 2022 01:44:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229624AbiGTErA (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 20 Jul 2022 00:47:00 -0400
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 676415B784
-        for <linux-efi@vger.kernel.org>; Tue, 19 Jul 2022 21:46:58 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id g126so15528850pfb.3
-        for <linux-efi@vger.kernel.org>; Tue, 19 Jul 2022 21:46:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20210112.gappssmtp.com; s=20210112;
-        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
-         :content-transfer-encoding;
-        bh=VtF9+07gASHhrIu6wD3FN1xOsSjHByW20JZ9pcO8ds0=;
-        b=fjQHDQLqh1A1CvsX2jafefzTGE36QKfdh3Qilgur+BwmX5uXp/iLBU4QybnFkKJVmG
-         pNABvDJrsAlwuXpzvTuIT5usg1eR++fZZZDamrFa8h3thcwUlBZnsOBf1ZmrICn3YSTj
-         T0Kcbxh3rIDHWJhYw3iXXLT9ja0KNaFgSGnuvEtGxH4R/1Yh/BHxeozZpnxsnFbA1soR
-         CDjSmGCruHE6nPmvn3/nPRAo6knbDZsoTXhw1FiwBGAm7jrQynzd6Eef+IE5+7qEdZPq
-         F9/35voq1+L1YkK0ibuaWgdnaDue1kGCBYqcebE+hQUo1D55mIvHYG0osACVHYXl0rGL
-         uCag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
-         :mime-version:content-transfer-encoding;
-        bh=VtF9+07gASHhrIu6wD3FN1xOsSjHByW20JZ9pcO8ds0=;
-        b=L8SApChQNBP/GjnCnJFuGDW9EYtiWMrQmwGu4x00PGIFVfXMZ+Ii7Kl7j1vJhQQXeg
-         nmW/4spTe/8M6OSiuomMG7pIG4fAtBOxLIhXsDppuFkSNb22AGpyBzCygeF4y9alfH/U
-         jHTZGRt97uMTGJXPD86gP5Q5OnQ1TZzDiWvzTrgtKAxHCi9qCjUlksGamRTkOiBBWzP8
-         miLgGBzfbwDwWkrgk59J13Oov9cyypeMEHldRWrKOMj1/BecrJwsPmtdsYFGRtycifKV
-         VOJLPwU3PSblWGGDjksstCc+iq6KTQN/2biGu9+FazKmHFWqvBRi92w8aHG0AyL0XL/A
-         Mhdw==
-X-Gm-Message-State: AJIora9w1DpSDlHPMqf5ftpNupCeAgToDD8XkYu6coyAvAPGJf9gk/vZ
-        +M6Qo4hXVP9KluZpEvDPwE3uIKSdl0v3qg==
-X-Google-Smtp-Source: AGRyM1vlzCdD69HQD5gb1Q92kSqgBlWCPv0ppUY5psQ46BDf24I6J7L22UUFB0Qj3qfpd4QsIhj9Eg==
-X-Received: by 2002:a05:6a00:134e:b0:52a:d5b4:19bb with SMTP id k14-20020a056a00134e00b0052ad5b419bbmr37009701pfu.45.1658292417692;
-        Tue, 19 Jul 2022 21:46:57 -0700 (PDT)
-Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net. [76.210.143.223])
-        by smtp.gmail.com with ESMTPSA id i5-20020a17090a4b8500b001f0097c2fb2sm481628pjh.28.2022.07.19.21.46.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Jul 2022 21:46:56 -0700 (PDT)
-Date:   Tue, 19 Jul 2022 21:46:56 -0700 (PDT)
-X-Google-Original-Date: Tue, 19 Jul 2022 21:16:19 PDT (-0700)
-Subject:     Re: [PATCH V3 0/5] Support for 64bit hartid on RV64 platforms
-In-Reply-To: <20220527051743.2829940-1-sunilvl@ventanamicro.com>
-CC:     Paul Walmsley <paul.walmsley@sifive.com>, aou@eecs.berkeley.edu,
-        daniel.lezcano@linaro.org, tglx@linutronix.de, ardb@kernel.org,
-        Marc Zyngier <maz@kernel.org>,
-        Atish Patra <atishp@rivosinc.com>,
-        heinrich.schuchardt@canonical.com, apatel@ventanamicro.com,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, sunil.vl@gmail.com,
-        sunilvl@ventanamicro.com
-From:   Palmer Dabbelt <palmer@dabbelt.com>
-To:     sunilvl@ventanamicro.com
-Message-ID: <mhng-4c49edf1-6367-4dd0-bec7-c6719745ecb5@palmer-mbp2014>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S229578AbiGTFom (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 20 Jul 2022 01:44:42 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F8D068DF2;
+        Tue, 19 Jul 2022 22:44:41 -0700 (PDT)
+Received: from zn.tnic (p200300ea97297623329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9729:7623:329c:23ff:fea6:a903])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 58EB21EC0441;
+        Wed, 20 Jul 2022 07:44:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1658295875;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=KnJwTmrzbZQLag/zXC8r1DfsvGYW7gz9MNnMX3SapF8=;
+        b=ZfYqD87cUp3d3RCVgQSTgRjJ+N08DElz++nUMe5bD+K3/fLnKnr7qdkX1tkfAs3ADQ8kl2
+        Nvg6g871wMLcTqfLbq9aGOJdqYcWvyfu5fdRsYFnnQPy1aeAfIyXEVcDWZ8aRHlRtrOjcQ
+        IVzPH0ngUJQG0jEPQX7MEf/VuGaNFLE=
+Date:   Wed, 20 Jul 2022 07:44:30 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Marc Orr <marcorr@google.com>
+Cc:     Dave Hansen <dave.hansen@intel.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Dionna Amalie Glaze <dionnaglaze@google.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Peter Gonda <pgonda@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Varad Gautam <varad.gautam@suse.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        Marcelo Cerri <marcelo.cerri@canonical.com>,
+        tim.gardner@canonical.com,
+        Khalid ElMously <khalid.elmously@canonical.com>,
+        philip.cox@canonical.com,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        linux-coco@lists.linux.dev, linux-efi <linux-efi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "Yao, Jiewen" <jiewen.yao@intel.com>
+Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted
+ memory
+Message-ID: <YteWPj7HytPrcplB@zn.tnic>
+References: <CAAH4kHYR+VkSJ5J8eWmeaEvstuRz_EuqVQqPfwmp5dhNGRyJwQ@mail.gmail.com>
+ <CAAH4kHaHJo4NUb72tHeica4a34hq5u_QP6d6Vuzngf6EqTJ8Aw@mail.gmail.com>
+ <CAAH4kHaB2tL+sAn0NAciu5DQeX5hpNkDees=n=f83S=Ph9Y6tw@mail.gmail.com>
+ <YtcCWfCQuEsVhH6W@zn.tnic>
+ <CAMj1kXEKtcieycyyFMyuLKJK61FgaDwtLieC0N47W1Sa5LaBsA@mail.gmail.com>
+ <YtcgxxMyFTReuuRw@zn.tnic>
+ <bb7479df-7871-9861-600d-c2fed783b659@intel.com>
+ <YtcnQbiRgZPtR+rQ@zn.tnic>
+ <22d54786-bc12-ecc5-2b37-cbaa56090aa8@intel.com>
+ <CAA03e5FMEyswDhoXRJ5U_n9RG4QM524aQYpF4473ydnAVJr1PA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAA03e5FMEyswDhoXRJ5U_n9RG4QM524aQYpF4473ydnAVJr1PA@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 26 May 2022 22:17:38 PDT (-0700), sunilvl@ventanamicro.com wrote:
-> The hartid can be a 64bit value on RV64 platforms. This series updates
-> the code so that 64bit hartid can be supported on RV64 platforms.
->
-> The series has been tested on both RV32 and RV64 qemu platforms.
->
-> Changes since V2:
-> 	1) Modified commit messages to mention RV64 and add RB tags.
->
-> Changes since V1:
-> 	1) Updated RB tag for PATCH 1 and PATCH3
-> 	2) Type Casting NR_CPUS before comparing with hartid in PATCH 2
-> 	3) Changed commit message of PATCH 2 to provide details about
-> 	   the bug it is fixing.
-> 	4) Updated PATCH 5 for unaligned 64bit read
->
->
-> Sunil V L (5):
->   riscv: cpu_ops_sbi: Add 64bit hartid support on RV64
->   riscv: spinwait: Fix hartid variable type
->   riscv: smp: Add 64bit hartid support on RV64
->   riscv: cpu: Add 64bit hartid support on RV64
->   riscv/efi_stub: Add 64bit boot-hartid support on RV64
->
->  arch/riscv/include/asm/processor.h        |  4 ++--
->  arch/riscv/include/asm/smp.h              |  4 ++--
->  arch/riscv/kernel/cpu.c                   | 26 +++++++++++++----------
->  arch/riscv/kernel/cpu_ops_sbi.c           |  4 ++--
->  arch/riscv/kernel/cpu_ops_spinwait.c      |  4 ++--
->  arch/riscv/kernel/cpufeature.c            |  6 ++++--
->  arch/riscv/kernel/smp.c                   |  4 ++--
->  arch/riscv/kernel/smpboot.c               |  9 ++++----
->  drivers/clocksource/timer-riscv.c         | 15 +++++++------
->  drivers/firmware/efi/libstub/riscv-stub.c | 13 +++++++++---
->  drivers/irqchip/irq-riscv-intc.c          |  7 +++---
->  drivers/irqchip/irq-sifive-plic.c         |  7 +++---
->  12 files changed, 60 insertions(+), 43 deletions(-)
+On Tue, Jul 19, 2022 at 05:26:21PM -0700, Marc Orr wrote:
+> These feature tags are a mess to keep track of.
 
-Thanks, this is on for-next.
+Well, looking at those tags, it doesn't look like you'll stop using them
+anytime soon.
+
+And once all the required SNP/TDX features are part of the guest image,
+- including unaccepted memory - if anything, you'll have less tags.
+
+:-)
+
+> - Do we anticipate (many) more features for confidential compute in
+> the future that require code in both the guest FW and guest kernel? If
+> yes, then designing a FW-kernel feature negotiation could be useful
+> beyond this situation.
+
+Good question.
+
+> - Dave's suggestion to "2. Boot some intermediate thing like a
+> bootloader that does acceptance ..." is pretty clever! So if upstream
+> thinks this FW-kernel negotiation is not a good direction, maybe we
+> (Google) can pursue this idea to avoid introducing yet another tag on
+> our images.
+
+Are those tags really that nasty so that you guys are looking at
+upstream changes just to avoid them?
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
