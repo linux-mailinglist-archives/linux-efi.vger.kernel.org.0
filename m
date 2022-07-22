@@ -2,50 +2,37 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECCD157D240
-	for <lists+linux-efi@lfdr.de>; Thu, 21 Jul 2022 19:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E57757E365
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Jul 2022 17:07:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229436AbiGUROL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 21 Jul 2022 13:14:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43694 "EHLO
+        id S231700AbiGVPHZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 22 Jul 2022 11:07:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230129AbiGUROK (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 21 Jul 2022 13:14:10 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69A7286C29;
-        Thu, 21 Jul 2022 10:14:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1658423649; x=1689959649;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=2VsP1VnPxrhHVMrqEWBHwDQJS/BpBEhQECyvetxj8xs=;
-  b=MNK4vwZsK4QL4TxSdrw8U4oOxGg+J1redBWZQRUw044/3DrmxL/gGmQ4
-   aTXekKij+tb+CutYHCgPTsWovRqIm9hvJmiuDvndSLE47Rp748Nl72JtB
-   Upnt4lnE2BJbWkxxe/NIfsEolvV0gjYUwqAiIZvsmBNLOM5tG8Bf+o4il
-   pKaNJwzZaw8zIloL991QdCShpOsZ/PnZcLw/RCggF1XZePMEr3x0pf7zD
-   DdZfokTyktwmWF3cC/cA+E3W4bWC1UPBA7z/PfBWcdKv7LxcTIfQ89+Ml
-   QkoyWzb7+KQ5qQzisM4S/o+dHqbh7/MSC9fgn7QWVc7FxzpxocibVWZ/S
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10415"; a="285875337"
-X-IronPort-AV: E=Sophos;i="5.93,183,1654585200"; 
-   d="scan'208";a="285875337"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2022 10:12:17 -0700
-X-IronPort-AV: E=Sophos;i="5.93,183,1654585200"; 
-   d="scan'208";a="573825972"
-Received: from vasantgx-mobl.amr.corp.intel.com (HELO [10.212.244.191]) ([10.212.244.191])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2022 10:12:15 -0700
-Message-ID: <ffb4ae72-7fd4-d2a0-df10-3969cf8ca07f@intel.com>
-Date:   Thu, 21 Jul 2022 10:12:14 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted
- memory
-Content-Language: en-US
+        with ESMTP id S235393AbiGVPHY (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 22 Jul 2022 11:07:24 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72DF48810B;
+        Fri, 22 Jul 2022 08:07:23 -0700 (PDT)
+Received: from zn.tnic (p200300ea97297665329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9729:7665:329c:23ff:fea6:a903])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DCB0B1EC04E4;
+        Fri, 22 Jul 2022 17:07:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1658502438;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=3Hc0Vuv3k27qn5hRTK62cKaY/chLQcEx0JaH2giHRug=;
+        b=fFn7fCbE9fzF8IoOrgQ/x1EoTFvBSRPNJLjiw+qpNnOmbOf65mkhNsyc0cETIHlUak1sm/
+        qOkO8NF/s4BDSD8YxmO71pol1top4QIOpBgu/2bqpyTZC67PPk7hajToBOT++7Gm1GT4fO
+        nwOhQ/PnGxR+T4CmEfYCAQnMLgFMbSM=
+Date:   Fri, 22 Jul 2022 17:07:13 +0200
+From:   Borislav Petkov <bp@alien8.de>
 To:     Marc Orr <marcorr@google.com>
-Cc:     Borislav Petkov <bp@alien8.de>, Ard Biesheuvel <ardb@kernel.org>,
+Cc:     Dave Hansen <dave.hansen@intel.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
         Dionna Amalie Glaze <dionnaglaze@google.com>,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Peter Gonda <pgonda@google.com>,
@@ -76,38 +63,98 @@ Cc:     Borislav Petkov <bp@alien8.de>, Ard Biesheuvel <ardb@kernel.org>,
         linux-coco@lists.linux.dev, linux-efi <linux-efi@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         "Yao, Jiewen" <jiewen.yao@intel.com>
-References: <20220627223808.ihgy3epdx6ofll43@black.fi.intel.com>
- <CAMj1kXEdS9SzFZZ4WGH6sR0WDCOgYDZ3Geg6X2sqSnQ-CXXpZA@mail.gmail.com>
- <20220718172159.4vwjzrfthelovcty@black.fi.intel.com>
- <CAAH4kHYR+VkSJ5J8eWmeaEvstuRz_EuqVQqPfwmp5dhNGRyJwQ@mail.gmail.com>
- <CAAH4kHaHJo4NUb72tHeica4a34hq5u_QP6d6Vuzngf6EqTJ8Aw@mail.gmail.com>
- <CAAH4kHaB2tL+sAn0NAciu5DQeX5hpNkDees=n=f83S=Ph9Y6tw@mail.gmail.com>
+Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted
+ memory
+Message-ID: <Ytq9IWopJS4EGqEq@zn.tnic>
+References: <CAAH4kHaB2tL+sAn0NAciu5DQeX5hpNkDees=n=f83S=Ph9Y6tw@mail.gmail.com>
  <YtcCWfCQuEsVhH6W@zn.tnic>
  <CAMj1kXEKtcieycyyFMyuLKJK61FgaDwtLieC0N47W1Sa5LaBsA@mail.gmail.com>
- <YtcgxxMyFTReuuRw@zn.tnic> <bb7479df-7871-9861-600d-c2fed783b659@intel.com>
- <YtcnQbiRgZPtR+rQ@zn.tnic> <22d54786-bc12-ecc5-2b37-cbaa56090aa8@intel.com>
+ <YtcgxxMyFTReuuRw@zn.tnic>
+ <bb7479df-7871-9861-600d-c2fed783b659@intel.com>
+ <YtcnQbiRgZPtR+rQ@zn.tnic>
+ <22d54786-bc12-ecc5-2b37-cbaa56090aa8@intel.com>
  <CAA03e5FMEyswDhoXRJ5U_n9RG4QM524aQYpF4473ydnAVJr1PA@mail.gmail.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <CAA03e5FMEyswDhoXRJ5U_n9RG4QM524aQYpF4473ydnAVJr1PA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+ <YteWPj7HytPrcplB@zn.tnic>
+ <CAA03e5H8-n23eZ5sMWLQADpJ+AQCrhMoDng_aiw3-C5cPHEwnA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAA03e5H8-n23eZ5sMWLQADpJ+AQCrhMoDng_aiw3-C5cPHEwnA@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 7/19/22 17:26, Marc Orr wrote:
-> - Dave's suggestion to "2. Boot some intermediate thing like a
-> bootloader that does acceptance ..." is pretty clever! So if upstream
-> thinks this FW-kernel negotiation is not a good direction, maybe we
-> (Google) can pursue this idea to avoid introducing yet another tag on
-> our images.
+On Wed, Jul 20, 2022 at 10:03:40AM -0700, Marc Orr wrote:
+> Generally, no. But the problem with tags is that distros tag their
+> images wrong sometimes. And that leads to problems. For example, I
+> just got a bug assigned to me yesterday about some ARM image tagged as
+> SEV_CAPABLE. Oops. Lol :-). (Though, I'm pretty sure we won't try to
+> boot an ARM image on a non-ARM host anyway; but it's still wrong...)
 
-I'm obviously speaking only for myself here and not for "upstream" as a
-whole, but I clearly don't like the FW/kernel negotiation thing.  It's a
-permanent pain in our necks to solve a very temporary problem.
+Yeah, even if, let it crash'n'burn - people will notice pretty quickly.
+
+> That being said, this lazy accept problem is sort of a special case,
+> since it requires deploying code to the guest FW and the guest kernel.
+> I'm still relatively new at all of this, but other than the
+> SNP/TDX-enlightenment patches themselves,  I haven't really seen any
+> other examples of this. So that goes back to my previous question. Is
+> this going to happen a lot more?
+
+Good question.
+
+Unfortunately, not even the architects of coco could give you an answer
+because, as you see yourself, those additional features like memory
+acceptance, live migration, etc keep changing - the whole coco thing is
+pretty much a moving target.
+
+For example, if someone comes along and says, err, see, I have this live
+migration helper and that thing runs as an EFI executable and it is so
+much better...
+
+Not saying it'll happen but it could. I hope you're catching my drift.
+
+> If not, I can definitely see value in the argument to skip the
+> complexity of the FW/kernel feature negotiation.
+>
+> Another thing I thought of since my last reply, that's mostly an
+> internal solution to this problem on our side: Going back to Dave's
+> 10k-foot view of the different angles of how to solve this. For "1.
+> Deal with that at the host level configuration", I'm thinking we could
+> tag the images with their internal guest kernel version. For example,
+> if an image has a 5.15 kernel, then we could have a `KERNEL_5_15` tag.
+> This would then allow us to have logic in the guest FW like:
+> 
+> if (guest_kernel_is_at_least(/*major=*/5, /*minor=*/15)
+>      enable_lazy_accept = true;
+
+Well, I don't want to spoil your idea but imagine distros like SLE or
+others backport features into old kernels. All of a sudden 5.14 or older
+can do memory acceptance too. And then that version-based scheme falls
+apart.
+
+So I'm guessing it would probably be better to explicitly tag distro
+images. Thing is, once all needed support gets in, you can drop the tags
+and simply say, you don't support those old images anymore and assume
+all required support is there and implicit...
+
+> Also, tagging images with their underlying kernel versions still seems
+> susceptible to mis-labeling. But this seems like it can be mostly
+> "fixed" via automation (e.g., write a tool to boot the guest and ask
+> it what it's kernel version is and use the result to attach the tag).
+
+I'll do you one better: boot the image and check for all required
+features and produce tags. Or do not accept the image as a possible coco
+image. And so on.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
