@@ -2,159 +2,175 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E57757E365
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Jul 2022 17:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F59157E41C
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Jul 2022 18:08:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231700AbiGVPHZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 22 Jul 2022 11:07:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54688 "EHLO
+        id S234717AbiGVQG6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 22 Jul 2022 12:06:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235393AbiGVPHY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 22 Jul 2022 11:07:24 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72DF48810B;
-        Fri, 22 Jul 2022 08:07:23 -0700 (PDT)
-Received: from zn.tnic (p200300ea97297665329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9729:7665:329c:23ff:fea6:a903])
+        with ESMTP id S235110AbiGVQGm (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 22 Jul 2022 12:06:42 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 958A12CE31
+        for <linux-efi@vger.kernel.org>; Fri, 22 Jul 2022 09:06:34 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DCB0B1EC04E4;
-        Fri, 22 Jul 2022 17:07:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1658502438;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=3Hc0Vuv3k27qn5hRTK62cKaY/chLQcEx0JaH2giHRug=;
-        b=fFn7fCbE9fzF8IoOrgQ/x1EoTFvBSRPNJLjiw+qpNnOmbOf65mkhNsyc0cETIHlUak1sm/
-        qOkO8NF/s4BDSD8YxmO71pol1top4QIOpBgu/2bqpyTZC67PPk7hajToBOT++7Gm1GT4fO
-        nwOhQ/PnGxR+T4CmEfYCAQnMLgFMbSM=
-Date:   Fri, 22 Jul 2022 17:07:13 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Marc Orr <marcorr@google.com>
-Cc:     Dave Hansen <dave.hansen@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Dionna Amalie Glaze <dionnaglaze@google.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Peter Gonda <pgonda@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        by ams.source.kernel.org (Postfix) with ESMTPS id 247CFB82967
+        for <linux-efi@vger.kernel.org>; Fri, 22 Jul 2022 16:06:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152EAC341CA;
+        Fri, 22 Jul 2022 16:06:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1658505991;
+        bh=EJHBuxChM+NAH3O85qfWLA2F5qwJSKyKUhMXpCNoyWM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=rpuZVW7QbiLhuk/2dQ9DZW6/UzkCfL9RVxOj7Iv1yH0Orbl8DDrervWwGju/cu6X1
+         ngXNWybydsyjZHdTYwXB/8MEIYBggtLoe1q/4m+LzHGc/nat/C/A5sGNFBMJrH2sm5
+         jmo0gHYIJQtRlwAQzGRE2QF8KDG0SBaxMlZhtbORppNUU2ElVQ4cWW0IccyEB3Mu0K
+         9X1E+0VMgbc6P3LxYRiTvhVNXSHmV5sfX/tPIjUGtqWH3XcRTi/8MfyP82z+heKV70
+         G0q4faPJOpaYx34GkV4Uw4zEpYeSrXdheC2UPBBDibJW0d06ysOt0uCcUUxU7pt0oV
+         A1ID8DDs9z03Q==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>, tglx@linutronix.de,
+        torvalds@linux-foundation.org,
+        Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
         Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Varad Gautam <varad.gautam@suse.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Marcelo Cerri <marcelo.cerri@canonical.com>,
-        tim.gardner@canonical.com,
-        Khalid ElMously <khalid.elmously@canonical.com>,
-        philip.cox@canonical.com,
-        the arch/x86 maintainers <x86@kernel.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        linux-coco@lists.linux.dev, linux-efi <linux-efi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "Yao, Jiewen" <jiewen.yao@intel.com>
-Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted
- memory
-Message-ID: <Ytq9IWopJS4EGqEq@zn.tnic>
-References: <CAAH4kHaB2tL+sAn0NAciu5DQeX5hpNkDees=n=f83S=Ph9Y6tw@mail.gmail.com>
- <YtcCWfCQuEsVhH6W@zn.tnic>
- <CAMj1kXEKtcieycyyFMyuLKJK61FgaDwtLieC0N47W1Sa5LaBsA@mail.gmail.com>
- <YtcgxxMyFTReuuRw@zn.tnic>
- <bb7479df-7871-9861-600d-c2fed783b659@intel.com>
- <YtcnQbiRgZPtR+rQ@zn.tnic>
- <22d54786-bc12-ecc5-2b37-cbaa56090aa8@intel.com>
- <CAA03e5FMEyswDhoXRJ5U_n9RG4QM524aQYpF4473ydnAVJr1PA@mail.gmail.com>
- <YteWPj7HytPrcplB@zn.tnic>
- <CAA03e5H8-n23eZ5sMWLQADpJ+AQCrhMoDng_aiw3-C5cPHEwnA@mail.gmail.com>
+        Borislav Petkov <bp@suse.de>,
+        Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: [PATCH] efi/x86-mixed: leave RET unmitigated but move it into .rodata
+Date:   Fri, 22 Jul 2022 18:06:12 +0200
+Message-Id: <20220722160612.2976-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAA03e5H8-n23eZ5sMWLQADpJ+AQCrhMoDng_aiw3-C5cPHEwnA@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4210; h=from:subject; bh=EJHBuxChM+NAH3O85qfWLA2F5qwJSKyKUhMXpCNoyWM=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBi2srzdnYnkcllKgNaotFJGbnbleypYhIaeuEUjG/y uwzMDQ+JAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYtrK8wAKCRDDTyI5ktmPJKh3DA C8wxFlkBaZREac8xX4MNbyKP6epOYfRJplPueiCCWb7qzoj62tONsNXn9SjBOPlcaITIFIW5cu5avL dNKKdQczftDPtmLbXYJOUTbGlYimsqz5e1I292xuqL4A/A4bja1p/COFdn6tVBTImA/pb3ZeIZZOHd QUWSp3DzA633VaN/yvmPeKJzbmYQ8n2oRcF/QA6e4cDXi3GITPnZWDPaBqNOvDO6840GbrTe3QHZ2u kVLCXgxfLdIWgyoeFhi7UbXfG+GWXTvJiDXUv5jfSvblxR9bwxUffBNKaE0Up+vgildrtddox0JVJg +fFNdGsmsn+HbUjqxEV3mwzeL0V2tLrJgyLkdp8btjA6Jt68ntuagVEZvTe3w6AS0bnJErqPOnO9ja hBMv8XmJy7tsfcDx/GZ/cgXYc/627ix+3rWh6zuBD+DHqM05T78GVG7ESTKmMRQqT+T+WHz+qnzOYj il9xhViwokFqtANJxHQwdrfCpmqczZefnzEnkRZO9Hzvs=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jul 20, 2022 at 10:03:40AM -0700, Marc Orr wrote:
-> Generally, no. But the problem with tags is that distros tag their
-> images wrong sometimes. And that leads to problems. For example, I
-> just got a bug assigned to me yesterday about some ARM image tagged as
-> SEV_CAPABLE. Oops. Lol :-). (Though, I'm pretty sure we won't try to
-> boot an ARM image on a non-ARM host anyway; but it's still wrong...)
+Thadeu reports that the retbleed mitigations have broken EFI runtime
+services in mixed mode, as the RET macro now expands to a relative
+branch that jumps to nowhere when executed from the 1:1 mapping of the
+kernel text that the EFI mixed mode thunk uses on its return back to the
+caller.
 
-Yeah, even if, let it crash'n'burn - people will notice pretty quickly.
+So as Thadeu suggested in [1], we should switch to a bare 'ret' opcode
+followed by 'int3' (to limit straight line speculation). However, doing
+so leaves an unmitigated RET in the kernel text that is always present,
+even on non-EFI or non-mixed mode systems (which are quite rare these
+days to begin with)
 
-> That being said, this lazy accept problem is sort of a special case,
-> since it requires deploying code to the guest FW and the guest kernel.
-> I'm still relatively new at all of this, but other than the
-> SNP/TDX-enlightenment patches themselves,  I haven't really seen any
-> other examples of this. So that goes back to my previous question. Is
-> this going to happen a lot more?
+So let's take Thadeu's fix a bit further, and move the EFI mixed mode
+return trampoline that contains the RET into .rodata, so it is normally
+mapped without executable permissions. And given that this snippet of
+code is really the only kernel code that we ever execute via this 1:1
+mapping, let's make the 1:1 mapping of the kernel .text non-executable
+as well, and only map the page that covers the return trampoline with
+executable permissions.
 
-Good question.
+Note that mapping .text and .rodata is still necessary, as otherwise,
+they will be covered by the default 1:1 mapping of the RAM below 4 GB,
+which uses read-write permissions. Also note that merging the mappings
+of .text and .rodata is not possible, even if they now use the same
+permissions, due to the fact that the hole in the middle may contain
+read-write data (such as the mixed mode stack)
 
-Unfortunately, not even the architects of coco could give you an answer
-because, as you see yourself, those additional features like memory
-acceptance, live migration, etc keep changing - the whole coco thing is
-pretty much a moving target.
+[1] https://lore.kernel.org/linux-efi/20220715194550.793957-1-cascardo@canonical.com/
 
-For example, if someone comes along and says, err, see, I have this live
-migration helper and that thing runs as an EFI executable and it is so
-much better...
+Cc: tglx@linutronix.de
+Cc: torvalds@linux-foundation.org
+Cc: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Borislav Petkov <bp@suse.de>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ arch/x86/platform/efi/efi_64.c       | 15 ++++++++++++---
+ arch/x86/platform/efi/efi_thunk_64.S |  9 +++++++--
+ 2 files changed, 19 insertions(+), 5 deletions(-)
 
-Not saying it'll happen but it could. I hope you're catching my drift.
-
-> If not, I can definitely see value in the argument to skip the
-> complexity of the FW/kernel feature negotiation.
->
-> Another thing I thought of since my last reply, that's mostly an
-> internal solution to this problem on our side: Going back to Dave's
-> 10k-foot view of the different angles of how to solve this. For "1.
-> Deal with that at the host level configuration", I'm thinking we could
-> tag the images with their internal guest kernel version. For example,
-> if an image has a 5.15 kernel, then we could have a `KERNEL_5_15` tag.
-> This would then allow us to have logic in the guest FW like:
-> 
-> if (guest_kernel_is_at_least(/*major=*/5, /*minor=*/15)
->      enable_lazy_accept = true;
-
-Well, I don't want to spoil your idea but imagine distros like SLE or
-others backport features into old kernels. All of a sudden 5.14 or older
-can do memory acceptance too. And then that version-based scheme falls
-apart.
-
-So I'm guessing it would probably be better to explicitly tag distro
-images. Thing is, once all needed support gets in, you can drop the tags
-and simply say, you don't support those old images anymore and assume
-all required support is there and implicit...
-
-> Also, tagging images with their underlying kernel versions still seems
-> susceptible to mis-labeling. But this seems like it can be mostly
-> "fixed" via automation (e.g., write a tool to boot the guest and ask
-> it what it's kernel version is and use the result to attach the tag).
-
-I'll do you one better: boot the image and check for all required
-features and produce tags. Or do not accept the image as a possible coco
-image. And so on.
-
-Thx.
-
+diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
+index 1f3675453a57..d8661fb31c76 100644
+--- a/arch/x86/platform/efi/efi_64.c
++++ b/arch/x86/platform/efi/efi_64.c
+@@ -176,7 +176,8 @@ virt_to_phys_or_null_size(void *va, unsigned long size)
+ 
+ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
+ {
+-	unsigned long pfn, text, pf, rodata;
++	extern const u8 __efi64_thunk_ret_tramp[];
++	unsigned long pfn, text, pf, rodata, tramp;
+ 	struct page *page;
+ 	unsigned npages;
+ 	pgd_t *pgd = efi_mm.pgd;
+@@ -240,7 +241,7 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
+ 	text = __pa(_text);
+ 	pfn = text >> PAGE_SHIFT;
+ 
+-	pf = _PAGE_ENC;
++	pf = _PAGE_NX | _PAGE_ENC;
+ 	if (kernel_map_pages_in_pgd(pgd, pfn, text, npages, pf)) {
+ 		pr_err("Failed to map kernel text 1:1\n");
+ 		return 1;
+@@ -250,12 +251,20 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
+ 	rodata = __pa(__start_rodata);
+ 	pfn = rodata >> PAGE_SHIFT;
+ 
+-	pf = _PAGE_NX | _PAGE_ENC;
+ 	if (kernel_map_pages_in_pgd(pgd, pfn, rodata, npages, pf)) {
+ 		pr_err("Failed to map kernel rodata 1:1\n");
+ 		return 1;
+ 	}
+ 
++	tramp = __pa(__efi64_thunk_ret_tramp);
++	pfn = tramp >> PAGE_SHIFT;
++
++	pf = _PAGE_ENC;
++	if (kernel_map_pages_in_pgd(pgd, pfn, tramp, 1, pf)) {
++		pr_err("Failed to map kernel rodata 1:1\n");
++		return 1;
++	}
++
+ 	return 0;
+ }
+ 
+diff --git a/arch/x86/platform/efi/efi_thunk_64.S b/arch/x86/platform/efi/efi_thunk_64.S
+index 9ffe2bad27d5..e436ce03741e 100644
+--- a/arch/x86/platform/efi/efi_thunk_64.S
++++ b/arch/x86/platform/efi/efi_thunk_64.S
+@@ -71,17 +71,22 @@ STACK_FRAME_NON_STANDARD __efi64_thunk
+ 	pushq	$__KERNEL32_CS
+ 	pushq	%rdi			/* EFI runtime service address */
+ 	lretq
++SYM_FUNC_END(__efi64_thunk)
+ 
++	.section ".rodata", "a", @progbits
++	.balign	16
++SYM_DATA_START(__efi64_thunk_ret_tramp)
+ 1:	movq	0x20(%rsp), %rsp
+ 	pop	%rbx
+ 	pop	%rbp
+-	RET
++	ret
++	int3
+ 
+ 	.code32
+ 2:	pushl	$__KERNEL_CS
+ 	pushl	%ebp
+ 	lret
+-SYM_FUNC_END(__efi64_thunk)
++SYM_DATA_END(__efi64_thunk_ret_tramp)
+ 
+ 	.bss
+ 	.balign 8
 -- 
-Regards/Gruss,
-    Boris.
+2.35.1
 
-https://people.kernel.org/tglx/notes-about-netiquette
