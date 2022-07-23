@@ -2,51 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B5FF57F1EB
-	for <lists+linux-efi@lfdr.de>; Sun, 24 Jul 2022 00:50:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71CD957F1F1
+	for <lists+linux-efi@lfdr.de>; Sun, 24 Jul 2022 00:50:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235844AbiGWWuV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 23 Jul 2022 18:50:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42540 "EHLO
+        id S238945AbiGWWu1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 23 Jul 2022 18:50:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233480AbiGWWuU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 23 Jul 2022 18:50:20 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEF3DDEBF;
-        Sat, 23 Jul 2022 15:50:18 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id h8so11054044wrw.1;
-        Sat, 23 Jul 2022 15:50:18 -0700 (PDT)
+        with ESMTP id S236550AbiGWWuW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 23 Jul 2022 18:50:22 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF1E66585;
+        Sat, 23 Jul 2022 15:50:19 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id b26so11064151wrc.2;
+        Sat, 23 Jul 2022 15:50:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=U4feOfgdszd52ign/rC5yr4G94ED3BCh3olKGZLq9jY=;
-        b=HobejFmBqaA3QY+GQhb38Vr+H7EUXYq4dLPswmMXNAh3OCspZ7n5njAvmRnZ+/TJ/w
-         bpO2A4OFwzfGX6Q4ab+YeCkJUVgo+9M0v/02WzDSDQ+B+EnsZ33n+az/iHCTYwKvoP5C
-         4SHJXNexDgATBzGO1wqlOWxfwKbb8juxIVl1eZltLKEBUjeBOJVE6o5aVASKahAk+40f
-         yP2z+KMqHbI5MPk1+DND0C1hiDD/ULpGQUAV/neynRnARbjefoqLxMzpR4UfJwvW9FNq
-         JhN5FU3SdLbjtwzDPL404m+URnE0+w849nytBrxy2ybLg8dB4NpzK6y4MThw+KGOJt1c
-         2IVg==
+        bh=nS7CEJW3CSJLv7QHR4eF5PtLWVNSlyK217wlBFGDjiI=;
+        b=FwMzEZKDCVL3gUM3pPZofsTGh0LzO8uvDS0/gw98qmx8nbBM6/yCEXfft97FMLRSjS
+         qpPOW8lWKYrIqVq58wFWQ0e9l3/348PCb0Gkjc8Cn18C8oWQ5TFsMBn5c93nhKoML6Og
+         1KULewF2M95v54v/p+QUhAoIuI3jVjy7M6XNGsRrXHS6daoaLaKBunKEahP9ZexTijy7
+         sH5gfI+LWRw1ODNzxa4mO5EP2EqtS7KvK+GXTr3Y/e2p+MUMElYWJmTDVRH3o9CAJq2Y
+         oTMwu3bMMQ1EWR1jEY9eBD60sCXYSUBEr8RTlhz4EYyV1w/WXUkDGKymW2X7UHugEnaY
+         Skxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=U4feOfgdszd52ign/rC5yr4G94ED3BCh3olKGZLq9jY=;
-        b=5L/woKoUqEEQbOAB062PWDV+CjyovNOgew9DnCO1/wAnZCmAGVtnYKOQhbneuHw+8s
-         zfzh/2gDIth8piYS+F95QzGsD3VSHiOJu4YtkQ04yPQnb2tEDudSdOBBdEcmCB01bW98
-         b9nnvzinA5XfHAvzPDnDDas7Y6mdH/5PqsHhEZtOO05ThX0mBkOfPipnI7kEIwDv/xP9
-         jvNiJoRiUoeMmaTcm87XPeoFnjuz/pZ+eC8hky5+b4+V/1kn8hAqLXERPhi57mP2iT3S
-         nWehFdfzSPv+NFdBqPdkFmWq1zxSB/WkZ751v4/ZRKnWpAQRyTrP/hysPPAlmjfZEQjL
-         RdxQ==
-X-Gm-Message-State: AJIora+KsTKiqyFVhfx5tWJ+JJ9ejXJUao8njh6ODtjUt9LT3q8SAX8o
-        y2Ifm8jTwOSIbh7cRYcmdw3Yp990LZo=
-X-Google-Smtp-Source: AGRyM1tjDcbL+26/64wg71B8JLS1bO8J0lqwNSwLRq5PsPCUf3BPMAH//g6ClaZ+cjTlET8yKPQ0DA==
-X-Received: by 2002:a05:6000:18a2:b0:21d:bc7c:1c83 with SMTP id b2-20020a05600018a200b0021dbc7c1c83mr3577150wri.420.1658616616855;
-        Sat, 23 Jul 2022 15:50:16 -0700 (PDT)
+        bh=nS7CEJW3CSJLv7QHR4eF5PtLWVNSlyK217wlBFGDjiI=;
+        b=zOuqX7oDYYFXjynICb+qKlL+rYlHWzOQP4yyG1Tm56nP1WeW451jowGIYh/T/oqJCb
+         P34cOthqNz5bTxSYV9UGJ/CM6epPbhe0EgHb29rSUs76XJ5tR27UxJGGhDxc29aJSdHh
+         J1y/d3AmfagfSTAfJcLmhitDFDmsi0Gk/L/eZwWtQ730we2q6vt/wEgqud6ATWSINVNQ
+         yLz27uaqJpB02o3eZgzCNcKwBILkIu82BeVA1nrhTxPHKg4+EE9XC7ZvQbS4h8qrAVVV
+         euSkFuKMzfh0JtVkx+HpfgJU0G/I3oPrNEE1BePvOJdOg0WYEvutzZ87E4sTXeH3vUyW
+         hNnA==
+X-Gm-Message-State: AJIora+R6QpPG+8EShU2b4U02Rb55beuq9l+F1fSvbSFXV/f4qvpxOq7
+        i91jp0KTtIcVQUYtUdiQ+MU=
+X-Google-Smtp-Source: AGRyM1sVQj552QvefKG0V5Y0LbiaMDc9nkPii2XKE8ID+lawS574g8N4G2A1GZUgatW+HKkjQiK5Lw==
+X-Received: by 2002:a5d:6dc7:0:b0:21e:4f85:fa3e with SMTP id d7-20020a5d6dc7000000b0021e4f85fa3emr3748580wrz.266.1658616618090;
+        Sat, 23 Jul 2022 15:50:18 -0700 (PDT)
 Received: from xws.localdomain (pd9ea3743.dip0.t-ipconnect.de. [217.234.55.67])
-        by smtp.gmail.com with ESMTPSA id x3-20020adff0c3000000b0021deba99142sm7799284wro.40.2022.07.23.15.50.15
+        by smtp.gmail.com with ESMTPSA id x3-20020adff0c3000000b0021deba99142sm7799284wro.40.2022.07.23.15.50.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Jul 2022 15:50:16 -0700 (PDT)
+        Sat, 23 Jul 2022 15:50:17 -0700 (PDT)
 From:   Maximilian Luz <luzmaximilian@gmail.com>
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
@@ -62,9 +62,9 @@ Cc:     Konrad Dybcio <konrad.dybcio@somainline.org>,
         linux-arm-msm@vger.kernel.org, linux-efi@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Maximilian Luz <luzmaximilian@gmail.com>
-Subject: [PATCH 2/4] firmware: Add support for Qualcomm Trusted Execution Environment SCM calls
-Date:   Sun, 24 Jul 2022 00:49:47 +0200
-Message-Id: <20220723224949.1089973-3-luzmaximilian@gmail.com>
+Subject: [PATCH 3/4] firmware: Add support for Qualcomm UEFI Secure Application
+Date:   Sun, 24 Jul 2022 00:49:48 +0200
+Message-Id: <20220723224949.1089973-4-luzmaximilian@gmail.com>
 X-Mailer: git-send-email 2.37.1
 In-Reply-To: <20220723224949.1089973-1-luzmaximilian@gmail.com>
 References: <20220723224949.1089973-1-luzmaximilian@gmail.com>
@@ -80,476 +80,855 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Add support for SCM calls to Secure OS and the Trusted Execution
-Environment (TEE/TrEE) residing in the TrustZone (TZ). This allows
-communication with Secure/TZ applications, for example 'uefisecapp'
-managing access to UEFI variables.
+On platforms using the Qualcomm UEFI Secure Application (uefisecapp),
+EFI variables cannot be accessed via the standard interface in EFI
+runtime mode. The respective functions return EFI_UNSUPPORTED. On these
+platforms, we instead need to talk to uefisecapp. This commit provides
+support for this and registers the respective efivars operations to
+access EFI variables from the kernel.
 
-While this patch introduces only a very basic interface without the more
-advanced features (such as re-entrant and blocking SCM calls and
-listeners/callbacks), this is enough to talk to the aforementioned
-'uefisecapp'.
+Communication with uefisecapp follows the standard Qualcomm Trusted
+Environment (TEE or TrEE) / Secure OS conventions via the respective SCM
+call interface. This is also the reason why variable access works
+normally while boot services are active. During this time, said SCM
+interface is managed by the boot services. When calling
+ExitBootServices(), the ownership is transferred to the kernel.
+Therefore, UEFI must not use that interface itself (as multiple parties
+accessing this interface at the same time may lead to complications) and
+cannot access variables for us.
 
 Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
 ---
- MAINTAINERS                 |   7 ++
- drivers/firmware/Kconfig    |   4 +
- drivers/firmware/Makefile   |   1 +
- drivers/firmware/qcom_tee.c | 213 ++++++++++++++++++++++++++++++++++++
- include/linux/qcom_tee.h    | 179 ++++++++++++++++++++++++++++++
- 5 files changed, 404 insertions(+)
- create mode 100644 drivers/firmware/qcom_tee.c
- create mode 100644 include/linux/qcom_tee.h
+ MAINTAINERS                            |   6 +
+ drivers/firmware/Kconfig               |  16 +
+ drivers/firmware/Makefile              |   1 +
+ drivers/firmware/qcom_tee_uefisecapp.c | 761 +++++++++++++++++++++++++
+ 4 files changed, 784 insertions(+)
+ create mode 100644 drivers/firmware/qcom_tee_uefisecapp.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index e9eaceeb61ef..e174747df92f 100644
+index e174747df92f..6e014e16fc82 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -16587,6 +16587,13 @@ F:	Documentation/networking/device_drivers/cellular/qualcomm/rmnet.rst
- F:	drivers/net/ethernet/qualcomm/rmnet/
- F:	include/linux/if_rmnet.h
+@@ -16603,6 +16603,12 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
+ F:	drivers/thermal/qcom/
  
-+QUALCOMM TRUSTED EXECUTION ENVIRONMENT DRIVER
++QUALCOMM UEFISECAPP DRIVER
 +M:	Maximilian Luz <luzmaximilian@gmail.com>
 +L:	linux-arm-msm@vger.kernel.org
 +S:	Maintained
-+F:	drivers/firmware/qcom_tee.c
-+F:	include/linux/qcom_tee.h
++F:	drivers/firmware/qcom_tee_uefisecapp.c
 +
- QUALCOMM TSENS THERMAL DRIVER
- M:	Amit Kucheria <amitk@kernel.org>
- M:	Thara Gopinath <thara.gopinath@linaro.org>
+ QUALCOMM VENUS VIDEO ACCELERATOR DRIVER
+ M:	Stanimir Varbanov <stanimir.varbanov@linaro.org>
+ L:	linux-media@vger.kernel.org
 diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-index b59e3041fd62..cde60a332b3c 100644
+index cde60a332b3c..4e9e2c227899 100644
 --- a/drivers/firmware/Kconfig
 +++ b/drivers/firmware/Kconfig
-@@ -226,6 +226,10 @@ config QCOM_SCM_DOWNLOAD_MODE_DEFAULT
+@@ -230,6 +230,22 @@ config QCOM_TEE
+ 	tristate
+ 	select QCOM_SCM
  
- 	  Say Y here to enable "download mode" by default.
- 
-+config QCOM_TEE
-+	tristate
-+	select QCOM_SCM
++config QCOM_TEE_UEFISECAPP
++	tristate "Qualcomm TrEE UEFI Secure App client driver"
++	select QCOM_TEE
++	depends on EFI
++	help
++	  Various Qualcomm SoCs do not allow direct access to EFI variables.
++	  Instead, these need to be accessed via the UEFI Secure Application
++	  (uefisecapp), residing in the Trusted Execution Environment (TrEE).
++
++	  This module provides a client driver for uefisecapp, installing efivar
++	  operations to allow the kernel accessing EFI variables, and via that also
++	  provide user-space with access to EFI variables to via efivarfs.
++
++	  Select Y or M here to provide access to EFI variables on the
++	  aforementioned platforms.
 +
  config SYSFB
  	bool
  	select BOOT_VESA_SUPPORT
 diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
-index 28fcddcd688f..93dbc6b5a603 100644
+index 93dbc6b5a603..3d8e28368b55 100644
 --- a/drivers/firmware/Makefile
 +++ b/drivers/firmware/Makefile
-@@ -20,6 +20,7 @@ obj-$(CONFIG_RASPBERRYPI_FIRMWARE) += raspberrypi.o
- obj-$(CONFIG_FW_CFG_SYSFS)	+= qemu_fw_cfg.o
+@@ -21,6 +21,7 @@ obj-$(CONFIG_FW_CFG_SYSFS)	+= qemu_fw_cfg.o
  obj-$(CONFIG_QCOM_SCM)		+= qcom-scm.o
  qcom-scm-objs += qcom_scm.o qcom_scm-smc.o qcom_scm-legacy.o
-+obj-$(CONFIG_QCOM_TEE)		+= qcom_tee.o
+ obj-$(CONFIG_QCOM_TEE)		+= qcom_tee.o
++obj-$(CONFIG_QCOM_TEE_UEFISECAPP) += qcom_tee_uefisecapp.o
  obj-$(CONFIG_SYSFB)		+= sysfb.o
  obj-$(CONFIG_SYSFB_SIMPLEFB)	+= sysfb_simplefb.o
  obj-$(CONFIG_TI_SCI_PROTOCOL)	+= ti_sci.o
-diff --git a/drivers/firmware/qcom_tee.c b/drivers/firmware/qcom_tee.c
+diff --git a/drivers/firmware/qcom_tee_uefisecapp.c b/drivers/firmware/qcom_tee_uefisecapp.c
 new file mode 100644
-index 000000000000..7a93776a901d
+index 000000000000..65573e4b815a
 --- /dev/null
-+++ b/drivers/firmware/qcom_tee.c
-@@ -0,0 +1,213 @@
++++ b/drivers/firmware/qcom_tee_uefisecapp.c
+@@ -0,0 +1,761 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
-+ * Interface driver for the Qualcomm Trusted Execution Environment (TrEE or
-+ * TEE) / TrustZone secure OS (TzOS). Manages communication via Secure Channel
-+ * Manager (SCM) calls.
++ * Client driver for Qualcomm UEFI Secure Application (qcom.tz.uefisecapp).
++ * Provides access to UEFI variables on platforms where they are secured by the
++ * aforementioned Trusted Execution Environment (TEE) application.
 + *
 + * Copyright (C) 2022 Maximilian Luz <luzmaximilian@gmail.com>
 + */
 +
-+#include <asm/barrier.h>
-+#include <linux/device.h>
++#include <linux/efi.h>
 +#include <linux/kernel.h>
 +#include <linux/module.h>
-+#include <linux/qcom_scm.h>
-+#include <linux/string.h>
-+
++#include <linux/mutex.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
 +#include <linux/qcom_tee.h>
-+
-+
-+/* -- Secure-OS SCM call interface. ----------------------------------------- */
-+
-+static DEFINE_MUTEX(scm_call_lock);
-+
-+static int __qctee_os_scm_call(const struct qcom_scm_desc *desc,
-+			       struct qctee_os_scm_resp *res)
-+{
-+	struct qcom_scm_res scm_res = {};
-+	int status;
-+
-+	status = qcom_scm_call(desc, &scm_res);
-+
-+	res->status = scm_res.result[0];
-+	res->resp_type = scm_res.result[1];
-+	res->data = scm_res.result[2];
-+
-+	if (status)
-+		return status;
-+
-+	return 0;
-+}
-+
-+/**
-+ * qctee_os_scm_call() - Perform a TrEE SCM call.
-+ * @dev:  The (client) device to use for logging.
-+ * @desc: SCM call descriptor.
-+ * @res:  SCM call response (output).
-+ *
-+ * Performs the TrEE SCM call described by @desc, returning the response in
-+ * @rsp. The provided device @dev is used exclusively for logging.
-+ *
-+ * Return: Returns zero on success, nonzero on failure.
-+ */
-+int qctee_os_scm_call(struct device *dev, const struct qcom_scm_desc *desc,
-+		      struct qctee_os_scm_resp *res)
-+{
-+	int status;
-+
-+	/*
-+	 * Note: Multiple TrEE SCM calls should not be executed same time, so
-+	 * lock things here. This needs to be extended to callback/listener
-+	 * handling when support for that is implemented.
-+	 */
-+
-+	mutex_lock(&scm_call_lock);
-+	status = __qctee_os_scm_call(desc, res);
-+	mutex_unlock(&scm_call_lock);
-+
-+	dev_dbg(dev, "%s: owner=%x, svc=%x, cmd=%x, status=%lld, type=%llx, data=%llx",
-+		__func__, desc->owner, desc->svc, desc->cmd, res->status,
-+		res->resp_type, res->data);
-+
-+	if (status) {
-+		dev_err(dev, "qcom_scm_call failed with error %d\n", status);
-+		return status;
-+	}
-+
-+	/*
-+	 * TODO: Handle incomplete and blocked calls:
-+	 *
-+	 * Incomplete and blocked calls are not supported yet. Some devices
-+	 * and/or commands require those, some don't. Let's warn about them
-+	 * prominently in case someone attempts to try these commands with a
-+	 * device/command combination that isn't supported yet.
-+	 */
-+	WARN_ON(res->status == QCTEE_OS_RESULT_INCOMPLETE);
-+	WARN_ON(res->status == QCTEE_OS_RESULT_BLOCKED_ON_LISTENER);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(qctee_os_scm_call);
-+
-+
-+/* -- Secure App interface. ------------------------------------------------- */
-+
-+/**
-+ * qctee_app_get_id() - Query the app ID for a given TrEE app name.
-+ * @dev:      The (client) device used for logging and DMA mapping.
-+ * @app_name: The name of the app.
-+ * @app_id:   The returned app ID.
-+ *
-+ * Query and return the application ID of the TrEE app identified by the given
-+ * name. This returned ID is the unique identifier of the app required for
-+ * subsequent communication.
-+ *
-+ * Return: Returns zero on success, nonzero on failure. Returns -ENOENT if the
-+ * app has not been loaded or could not be found.
-+ */
-+int qctee_app_get_id(struct device *dev, const char *app_name, u32 *app_id)
-+{
-+	unsigned long name_buf_size = QCTEE_MAX_APP_NAME_SIZE;
-+	unsigned long app_name_len = strlen(app_name);
-+	struct qcom_scm_desc desc = {};
-+	struct qctee_os_scm_resp res = {};
-+	dma_addr_t name_buf_phys;
-+	char *name_buf;
-+	int status;
-+
-+	if (app_name_len >= name_buf_size)
-+		return -EINVAL;
-+
-+	name_buf = kzalloc(name_buf_size, GFP_KERNEL);
-+	if (!name_buf)
-+		return -ENOMEM;
-+
-+	memcpy(name_buf, app_name, app_name_len);
-+
-+	name_buf_phys = dma_map_single(dev, name_buf, name_buf_size, DMA_TO_DEVICE);
-+	if (dma_mapping_error(dev, name_buf_phys)) {
-+		kfree(name_buf);
-+		dev_err(dev, "failed to map dma address\n");
-+		return -EFAULT;
-+	}
-+
-+	desc.owner = QCTEE_TZ_OWNER_QSEE_OS;
-+	desc.svc = QCTEE_TZ_SVC_APP_MGR;
-+	desc.cmd = 0x03;
-+	desc.arginfo = QCOM_SCM_ARGS(2, QCOM_SCM_RW, QCOM_SCM_VAL);
-+	desc.args[0] = name_buf_phys;
-+	desc.args[1] = app_name_len;
-+
-+	status = qctee_os_scm_call(dev, &desc, &res);
-+	dma_unmap_single(dev, name_buf_phys, name_buf_size, DMA_TO_DEVICE);
-+	kfree(name_buf);
-+
-+	if (status)
-+		return status;
-+
-+	if (res.status != QCTEE_OS_RESULT_SUCCESS)
-+		return -ENOENT;
-+
-+	*app_id = res.data;
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(qctee_app_get_id);
-+
-+/**
-+ * qctee_app_send() - Send to and receive data from a given TrEE app.
-+ * @dev:    The (client) device used for logging.
-+ * @app_id: The ID of the app to communicate with.
-+ * @req:    DMA region of the request sent to the app.
-+ * @rsp:    DMA region of the response returned by the app.
-+ *
-+ * Sends a request to the TrEE app identified by the given ID and read back its
-+ * response. The caller must provide two DMA memory regions, one for the
-+ * request and one for the response, and fill out the @req region with the
-+ * respective (app-specific) request data. The TrEE app reads this and returns
-+ * its response in the @rsp region.
-+ *
-+ * Return: Returns zero on success, nonzero on failure.
-+ */
-+int qctee_app_send(struct device *dev, u32 app_id, struct qctee_dma *req, struct qctee_dma *rsp)
-+{
-+	struct qctee_os_scm_resp res = {};
-+	int status;
-+
-+	struct qcom_scm_desc desc = {
-+		.owner = QCTEE_TZ_OWNER_TZ_APPS,
-+		.svc = QCTEE_TZ_SVC_APP_ID_PLACEHOLDER,
-+		.cmd = 0x01,
-+		.arginfo = QCOM_SCM_ARGS(5, QCOM_SCM_VAL,
-+					 QCOM_SCM_RW, QCOM_SCM_VAL,
-+					 QCOM_SCM_RW, QCOM_SCM_VAL),
-+		.args[0] = app_id,
-+		.args[1] = req->phys,
-+		.args[2] = req->size,
-+		.args[3] = rsp->phys,
-+		.args[4] = rsp->size,
-+	};
-+
-+	/* Make sure the request is fully written before sending it off. */
-+	dma_wmb();
-+
-+	status = qctee_os_scm_call(dev, &desc, &res);
-+
-+	/* Make sure we don't attempt any reads before the SCM call is done. */
-+	dma_rmb();
-+
-+	if (status)
-+		return status;
-+
-+	if (res.status != QCTEE_OS_RESULT_SUCCESS)
-+		return -EIO;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(qctee_app_send);
-+
-+
-+/* -- Module metadata. ------------------------------------------------------ */
-+
-+MODULE_AUTHOR("Maximilian Luz <luzmaximilian@gmail.com>");
-+MODULE_DESCRIPTION("Interface for Qualcomm TrEE/TZ secure OS and secure applications");
-+MODULE_LICENSE("GPL");
-diff --git a/include/linux/qcom_tee.h b/include/linux/qcom_tee.h
-new file mode 100644
-index 000000000000..b904d6a010d7
---- /dev/null
-+++ b/include/linux/qcom_tee.h
-@@ -0,0 +1,179 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Interface driver for the Qualcomm Trusted Execution Environment (TrEE/TEE) /
-+ * TrustZone OS (TzOS). Manages communication via Secure Channel Manager (SCM)
-+ * calls.
-+ *
-+ * Copyright (C) 2022 Maximilian Luz <luzmaximilian@gmail.com>
-+ */
-+
-+#ifndef _LINUX_QCOM_TEE_H
-+#define _LINUX_QCOM_TEE_H
-+
-+#include <linux/device.h>
-+#include <linux/dma-mapping.h>
-+#include <linux/kernel.h>
-+#include <linux/mm.h>
-+#include <linux/qcom_scm.h>
++#include <linux/slab.h>
 +#include <linux/types.h>
 +
 +
-+/* -- DMA helpers. ---------------------------------------------------------- */
++/* -- UTF-16 helpers. ------------------------------------------------------- */
 +
-+/* DMA requirements for TrEE SCM calls. */
-+#define QCTEE_DMA_ALIGNMENT		8
-+#define QCTEE_DMA_ALIGN(ptr)		ALIGN(ptr, QCTEE_DMA_ALIGNMENT)
++static unsigned long utf16_strnlen(const efi_char16_t *str, unsigned long max)
++{
++	size_t i;
++
++	for (i = 0; *str != 0 && i < max; i++, str++) {
++		/* Do nothing, all is handled in the for statement. */
++	}
++
++	return i;
++}
 +
 +/**
-+ * struct qctee_dma - DMA memory region.
-+ * @size: Size of the memory region, in bytes.
-+ * @virt: Pointer / virtual address to the memory, accessible by the kernel.
-+ * @phys: Physical address of the memory region.
++ * utf16_strsize() - Compute the number of bytes required to store a
++ * null-terminated UTF-16 string.
++ * @str: The string to compute the size for.
++ *
++ * Return: Returns the minimum number of bytes required to store the given
++ * null-terminated string, including its null-terminator.
 + */
-+struct qctee_dma {
-+	unsigned long size;
-+	void *virt;
-+	dma_addr_t phys;
++static unsigned long utf16_strsize(const efi_char16_t *str)
++{
++	return (utf16_strnlen(str, U32_MAX) + 1) * sizeof(str[0]);
++}
++
++static unsigned long utf16_strlcpy(efi_char16_t *dst, const efi_char16_t *src, unsigned long size)
++{
++	unsigned long actual = utf16_strnlen(src, size - 1);
++
++	memcpy(dst, src, actual * sizeof(src[0]));
++	dst[actual] = 0;
++
++	return actual;
++}
++
++/**
++ * utf16_copy_to_buf() - Copy the given UTF-16 string to a buffer.
++ * @dst:   Pointer to the output buffer
++ * @src:   Pointer to the null-terminated UTF-16 string to be copied.
++ * @bytes: Maximum number of bytes to copy.
++ *
++ * Copies the given string to the given buffer, ensuring that the output buffer
++ * is not overrun and that the string in the output buffer will always be
++ * null-terminated.
++ *
++ * Return: Returns the length of the copied string, without null-terminator.
++ */
++static unsigned long utf16_copy_to_buf(efi_char16_t *dst, const efi_char16_t *src,
++				       unsigned long bytes)
++{
++	return utf16_strlcpy(dst, src, bytes / sizeof(src[0]));
++}
++
++
++/* -- Qualcomm "uefisecapp" interface definitions. -------------------------- */
++
++#define QCTEE_UEFISEC_APP_NAME			"qcom.tz.uefisecapp"
++
++#define QCTEE_CMD_UEFI(x)			(0x8000 | (x))
++#define QCTEE_CMD_UEFI_GET_VARIABLE		QCTEE_CMD_UEFI(0)
++#define QCTEE_CMD_UEFI_SET_VARIABLE		QCTEE_CMD_UEFI(1)
++#define QCTEE_CMD_UEFI_GET_NEXT_VARIABLE	QCTEE_CMD_UEFI(2)
++#define QCTEE_CMD_UEFI_QUERY_VARIABLE_INFO	QCTEE_CMD_UEFI(3)
++
++/**
++ * struct qctee_req_uefi_get_variable - Request for GetVariable command.
++ * @command_id:  The ID of the command. Must be %QCTEE_CMD_UEFI_GET_VARIABLE.
++ * @length:      Length of the request in bytes, including this struct and any
++ *               parameters (name, GUID) stored after it as well as any padding
++ *               thereof for alignment.
++ * @name_offset: Offset from the start of this struct to where the variable
++ *               name is stored (as utf-16 string), in bytes.
++ * @name_size:   Size of the name parameter in bytes, including null-terminator.
++ * @guid_offset: Offset from the start of this struct to where the GUID
++ *               parameter is stored, in bytes.
++ * @guid_size:   Size of the GUID parameter in bytes, i.e. sizeof(efi_guid_t).
++ * @data_size:   Size of the output buffer, in bytes.
++ */
++struct qctee_req_uefi_get_variable {
++	u32 command_id;
++	u32 length;
++	u32 name_offset;
++	u32 name_size;
++	u32 guid_offset;
++	u32 guid_size;
++	u32 data_size;
++} __packed;
++
++/**
++ * struct qctee_rsp_uefi_get_variable - Response for GetVariable command.
++ * @command_id:  The ID of the command. Should be %QCTEE_CMD_UEFI_GET_VARIABLE.
++ * @length:      Length of the response in bytes, including this struct and the
++ *               returned data.
++ * @status:      Status of this command.
++ * @attributes:  EFI variable attributes.
++ * @data_offset: Offset from the start of this struct to where the data is
++ *               stored, in bytes.
++ * @data_size:   Size of the returned data, in bytes. In case status indicates
++ *               that the buffer is too small, this will be the size required
++ *               to store the EFI variable data.
++ */
++struct qctee_rsp_uefi_get_variable {
++	u32 command_id;
++	u32 length;
++	u32 status;
++	u32 attributes;
++	u32 data_offset;
++	u32 data_size;
++} __packed;
++
++/**
++ * struct qctee_req_uefi_set_variable - Request for the SetVariable command.
++ * @command_id:  The ID of the command. Must be %QCTEE_CMD_UEFI_SET_VARIABLE.
++ * @length:      Length of the request in bytes, including this struct and any
++ *               parameters (name, GUID, data) stored after it as well as any
++ *               padding thereof required for alignment.
++ * @name_offset: Offset from the start of this struct to where the variable
++ *               name is stored (as utf-16 string), in bytes.
++ * @name_size:   Size of the name parameter in bytes, including null-terminator.
++ * @guid_offset: Offset from the start of this struct to where the GUID
++ *               parameter is stored, in bytes.
++ * @guid_size:   Size of the GUID parameter in bytes, i.e. sizeof(efi_guid_t).
++ * @attributes:  The EFI variable attributes to set for this variable.
++ * @data_offset: Offset from the start of this struct to where the EFI variable
++ *               data is stored, in bytes.
++ * @data_size:   Size of EFI variable data, in bytes.
++ *
++ */
++struct qctee_req_uefi_set_variable {
++	u32 command_id;
++	u32 length;
++	u32 name_offset;
++	u32 name_size;
++	u32 guid_offset;
++	u32 guid_size;
++	u32 attributes;
++	u32 data_offset;
++	u32 data_size;
++} __packed;
++
++/**
++ * struct qctee_rsp_uefi_set_variable - Response for the SetVariable command.
++ * @command_id:  The ID of the command. Should be %QCTEE_CMD_UEFI_SET_VARIABLE.
++ * @length:      The length of this response, i.e. the size of this struct in
++ *               bytes.
++ * @status:      Status of this command.
++ * @_unknown1:   Unknown response field.
++ * @_unknown2:   Unknown response field.
++ */
++struct qctee_rsp_uefi_set_variable {
++	u32 command_id;
++	u32 length;
++	u32 status;
++	u32 _unknown1;
++	u32 _unknown2;
++} __packed;
++
++/**
++ * struct qctee_req_uefi_get_next_variable - Request for the
++ * GetNextVariableName command.
++ * @command_id:  The ID of the command. Must be
++ *               %QCTEE_CMD_UEFI_GET_NEXT_VARIABLE.
++ * @length:      Length of the request in bytes, including this struct and any
++ *               parameters (name, GUID) stored after it as well as any padding
++ *               thereof for alignment.
++ * @guid_offset: Offset from the start of this struct to where the GUID
++ *               parameter is stored, in bytes.
++ * @guid_size:   Size of the GUID parameter in bytes, i.e. sizeof(efi_guid_t).
++ * @name_offset: Offset from the start of this struct to where the variable
++ *               name is stored (as utf-16 string), in bytes.
++ * @name_size:   Size of the name parameter in bytes, including null-terminator.
++ */
++struct qctee_req_uefi_get_next_variable {
++	u32 command_id;
++	u32 length;
++	u32 guid_offset;
++	u32 guid_size;
++	u32 name_offset;
++	u32 name_size;
++} __packed;
++
++/**
++ * struct qctee_rsp_uefi_get_next_variable - Response for the
++ * GetNextVariableName command.
++ * @command_id:  The ID of the command. Should be
++ *               %QCTEE_CMD_UEFI_GET_NEXT_VARIABLE.
++ * @length:      Length of the response in bytes, including this struct and any
++ *               parameters (name, GUID) stored after it as well as any padding
++ *               thereof for alignment.
++ * @status:      Status of this command.
++ * @guid_size:   Size of the GUID parameter in bytes, i.e. sizeof(efi_guid_t).
++ * @name_offset: Offset from the start of this struct to where the variable
++ *               name is stored (as utf-16 string), in bytes.
++ * @name_size:   Size of the name parameter in bytes, including null-terminator.
++ */
++struct qctee_rsp_uefi_get_next_variable {
++	u32 command_id;
++	u32 length;
++	u32 status;
++	u32 guid_offset;
++	u32 guid_size;
++	u32 name_offset;
++	u32 name_size;
++} __packed;
++
++/**
++ * struct qctee_req_uefi_query_variable_info - Response for the
++ * GetNextVariableName command.
++ * @command_id: The ID of the command. Must be
++ *              %QCTEE_CMD_UEFI_QUERY_VARIABLE_INFO.
++ * @length:     The length of this request, i.e. the size of this struct in
++ *              bytes.
++ * @attributes: The storage attributes to query the info for.
++ */
++struct qctee_req_uefi_query_variable_info {
++	u32 command_id;
++	u32 length;
++	u32 attributes;
++} __packed;
++
++/**
++ * struct qctee_rsp_uefi_query_variable_info - Response for the
++ * GetNextVariableName command.
++ * @command_id:        The ID of the command. Must be
++ *                     %QCTEE_CMD_UEFI_QUERY_VARIABLE_INFO.
++ * @length:            The length of this response, i.e. the size of this
++ *                     struct in bytes.
++ * @status:            Status of this command.
++ * @_pad:              Padding.
++ * @storage_space:     Full storage space size, in bytes.
++ * @remaining_space:   Free storage space available, in bytes.
++ * @max_variable_size: Maximum variable data size, in bytes.
++ */
++struct qctee_rsp_uefi_query_variable_info {
++	u32 command_id;
++	u32 length;
++	u32 status;
++	u32 _pad;
++	u64 storage_space;
++	u64 remaining_space;
++	u64 max_variable_size;
++} __packed;
++
++
++/* -- UEFI app interface. --------------------------------------------------- */
++
++struct qcuefi_client {
++	struct device *dev;
++	struct kobject *kobj;
++	struct efivars efivars;
++	struct qctee_dma dma;
++	u32 app_id;
 +};
 +
-+/**
-+ * qctee_dma_alloc() - Allocate a DMA-able memory region suitable for TrEE SCM
-+ * calls.
-+ * @dev:  The device used for DMA memory allocation.
-+ * @dma:  Where to write the allocated memory addresses and size to.
-+ * @size: Minimum size of the memory to be allocated.
-+ * @gfp:  Flags used for allocation.
-+ *
-+ * Allocate a DMA-able memory region suitable for interaction with TrEE
-+ * services and the TzOS. The provided size is treated as the minimum required
-+ * size and rounded up, if necessary. The actually allocated memory region will
-+ * be stored in @dma. Allocated memory must be freed via qctee_dma_free().
-+ *
-+ * Return: Returns zero on success, -ENOMEM on allocation failure.
-+ */
-+static inline int qctee_dma_alloc(struct device *dev, struct qctee_dma *dma,
-+				  unsigned long size, gfp_t gfp)
++static efi_status_t qctee_uefi_status_to_efi(u32 status)
 +{
-+	size = PAGE_ALIGN(size);
++	u64 category = status & 0xf0000000;
++	u64 code = status & 0x0fffffff;
 +
-+	dma->virt = dma_alloc_coherent(dev, size, &dma->phys, GFP_KERNEL);
-+	if (!dma->virt)
++	return category << (BITS_PER_LONG - 32) | code;
++}
++
++static efi_status_t qctee_uefi_get_variable(struct qcuefi_client *qcuefi, const efi_char16_t *name,
++					    const efi_guid_t *guid, u32 *attributes,
++					    unsigned long *data_size, void *data)
++{
++	struct qctee_req_uefi_get_variable *req_data;
++	struct qctee_rsp_uefi_get_variable *rsp_data;
++	struct qctee_dma dma_req;
++	struct qctee_dma dma_rsp;
++	unsigned long name_size = utf16_strsize(name);
++	unsigned long buffer_size = *data_size;
++	unsigned long size;
++	efi_status_t efi_status;
++	int status;
++
++	/* Validation: We need a name and GUID. */
++	if (!name || !guid)
++		return EFI_INVALID_PARAMETER;
++
++	/* Validation: We need a buffer if the buffer_size is nonzero. */
++	if (buffer_size && !data)
++		return EFI_INVALID_PARAMETER;
++
++	/* Compute required size (upper limit with alignments). */
++	size = sizeof(*req_data) + sizeof(*guid) + name_size  /* Inputs. */
++	       + sizeof(*rsp_data) + buffer_size              /* Outputs. */
++	       + 2 * (QCTEE_DMA_ALIGNMENT - 1)                /* Input parameter alignments. */
++	       + 1 * (QCTEE_DMA_ALIGNMENT - 1);               /* Output parameter alignments. */
++
++	/* Make sure we have enough DMA memory. */
++	status = qctee_dma_realloc(qcuefi->dev, &qcuefi->dma, size, GFP_KERNEL);
++	if (status)
++		return EFI_OUT_OF_RESOURCES;
++
++	/* Align request struct. */
++	qctee_dma_aligned(&qcuefi->dma, &dma_req, 0);
++	req_data = dma_req.virt;
++
++	/* Set up request data. */
++	req_data->command_id = QCTEE_CMD_UEFI_GET_VARIABLE;
++	req_data->data_size = buffer_size;
++	req_data->name_offset = sizeof(*req_data);
++	req_data->name_size = name_size;
++	req_data->guid_offset = QCTEE_DMA_ALIGN(req_data->name_offset + name_size);
++	req_data->guid_size = sizeof(*guid);
++	req_data->length = req_data->guid_offset + req_data->guid_size;
++
++	dma_req.size = req_data->length;
++
++	/* Copy request parameters. */
++	utf16_copy_to_buf(dma_req.virt + req_data->name_offset, name, name_size);
++	memcpy(dma_req.virt + req_data->guid_offset, guid, req_data->guid_size);
++
++	/* Align response struct. */
++	qctee_dma_aligned(&qcuefi->dma, &dma_rsp, req_data->length);
++	rsp_data = dma_rsp.virt;
++
++	/* Perform SCM call. */
++	status = qctee_app_send(qcuefi->dev, qcuefi->app_id, &dma_req, &dma_rsp);
++
++	/* Check for errors and validate. */
++	if (status)
++		return EFI_DEVICE_ERROR;
++
++	if (rsp_data->command_id != QCTEE_CMD_UEFI_GET_VARIABLE)
++		return EFI_DEVICE_ERROR;
++
++	if (rsp_data->length < sizeof(*rsp_data) || rsp_data->length > dma_rsp.size)
++		return EFI_DEVICE_ERROR;
++
++	if (rsp_data->status) {
++		dev_dbg(qcuefi->dev, "%s: uefisecapp error: 0x%x\n", __func__, rsp_data->status);
++		efi_status = qctee_uefi_status_to_efi(rsp_data->status);
++
++		/* Update size and attributes in case buffer is too small. */
++		if (efi_status == EFI_BUFFER_TOO_SMALL) {
++			*data_size = rsp_data->data_size;
++			if (attributes)
++				*attributes = rsp_data->attributes;
++		}
++
++		return efi_status;
++	}
++
++	if (rsp_data->data_offset + rsp_data->data_size > rsp_data->length)
++		return EFI_DEVICE_ERROR;
++
++	/* Set attributes and data size even if buffer is too small. */
++	*data_size = rsp_data->data_size;
++	if (attributes)
++		*attributes = rsp_data->attributes;
++
++	/*
++	 * If we have a buffer size of zero and no buffer, just return
++	 * attributes and required size.
++	 */
++	if (buffer_size == 0 && !data)
++		return EFI_SUCCESS;
++
++	/* Validate output buffer size. */
++	if (buffer_size < rsp_data->data_size)
++		return EFI_BUFFER_TOO_SMALL;
++
++	/* Copy to output buffer. Note: We're guaranteed to have one at this point. */
++	memcpy(data, dma_rsp.virt + rsp_data->data_offset, rsp_data->data_size);
++	return EFI_SUCCESS;
++}
++
++static efi_status_t qctee_uefi_set_variable(struct qcuefi_client *qcuefi, const efi_char16_t *name,
++					    const efi_guid_t *guid, u32 attributes,
++					    unsigned long data_size, const void *data)
++{
++	struct qctee_req_uefi_set_variable *req_data;
++	struct qctee_rsp_uefi_set_variable *rsp_data;
++	struct qctee_dma dma_req;
++	struct qctee_dma dma_rsp;
++	unsigned long name_size = utf16_strsize(name);
++	unsigned long size;
++	int status;
++
++	/* Validate inputs. */
++	if (!name || !guid)
++		return EFI_INVALID_PARAMETER;
++
++	/*
++	 * Make sure we have some data if data_size is nonzero. Note: Using a
++	 * size of zero is valid and deletes the variable.
++	 */
++	if (data_size && !data)
++		return EFI_INVALID_PARAMETER;
++
++	/* Compute required size (upper limit with alignments). */
++	size = sizeof(*req_data) + name_size + sizeof(*guid) + data_size  /* Inputs. */
++	       + sizeof(*rsp_data)                            /* Outputs. */
++	       + 2 * (QCTEE_DMA_ALIGNMENT - 1)                /* Input parameter alignments. */
++	       + 1 * (QCTEE_DMA_ALIGNMENT - 1);               /* Output parameter alignments. */
++
++	/* Make sure we have enough DMA memory. */
++	status = qctee_dma_realloc(qcuefi->dev, &qcuefi->dma, size, GFP_KERNEL);
++	if (status)
++		return EFI_OUT_OF_RESOURCES;
++
++	/* Align request struct. */
++	qctee_dma_aligned(&qcuefi->dma, &dma_req, 0);
++	req_data = dma_req.virt;
++
++	/* Set up request data. */
++	req_data->command_id = QCTEE_CMD_UEFI_SET_VARIABLE;
++	req_data->attributes = attributes;
++	req_data->name_offset = sizeof(*req_data);
++	req_data->name_size = name_size;
++	req_data->guid_offset = QCTEE_DMA_ALIGN(req_data->name_offset + name_size);
++	req_data->guid_size = sizeof(*guid);
++	req_data->data_offset = req_data->guid_offset + req_data->guid_size;
++	req_data->data_size = data_size;
++	req_data->length = req_data->data_offset + data_size;
++
++	/* Copy request parameters. */
++	utf16_copy_to_buf(dma_req.virt + req_data->name_offset, name, req_data->name_size);
++	memcpy(dma_req.virt + req_data->guid_offset, guid, req_data->guid_size);
++
++	if (data_size)
++		memcpy(dma_req.virt + req_data->data_offset, data, req_data->data_size);
++
++	/* Align response struct. */
++	qctee_dma_aligned(&qcuefi->dma, &dma_rsp, req_data->length);
++	rsp_data = dma_rsp.virt;
++
++	/* Perform SCM call. */
++	dma_req.size = req_data->length;
++	dma_rsp.size = sizeof(*rsp_data);
++
++	status = qctee_app_send(qcuefi->dev, qcuefi->app_id, &dma_req, &dma_rsp);
++
++	/* Check for errors and validate. */
++	if (status)
++		return EFI_DEVICE_ERROR;
++
++	if (rsp_data->command_id != QCTEE_CMD_UEFI_SET_VARIABLE)
++		return EFI_DEVICE_ERROR;
++
++	if (rsp_data->length < sizeof(*rsp_data) || rsp_data->length > dma_rsp.size)
++		return EFI_DEVICE_ERROR;
++
++	if (rsp_data->status) {
++		dev_dbg(qcuefi->dev, "%s: uefisecapp error: 0x%x\n", __func__, rsp_data->status);
++		return qctee_uefi_status_to_efi(rsp_data->status);
++	}
++
++	return EFI_SUCCESS;
++}
++
++static efi_status_t qctee_uefi_get_next_variable(struct qcuefi_client *qcuefi,
++						 unsigned long *name_size, efi_char16_t *name,
++						 efi_guid_t *guid)
++{
++	struct qctee_req_uefi_get_next_variable *req_data;
++	struct qctee_rsp_uefi_get_next_variable *rsp_data;
++	struct qctee_dma dma_req;
++	struct qctee_dma dma_rsp;
++	unsigned long size;
++	efi_status_t efi_status;
++	int status;
++
++	/* We need some buffers. */
++	if (!name_size || !name || !guid)
++		return EFI_INVALID_PARAMETER;
++
++	/* There needs to be at least a single null-character. */
++	if (*name_size == 0)
++		return EFI_INVALID_PARAMETER;
++
++	/* Compute required size (upper limit with alignments). */
++	size = sizeof(*req_data) + sizeof(*guid) + *name_size    /* Inputs. */
++	       + sizeof(*rsp_data) + sizeof(*guid) + *name_size  /* Outputs. */
++	       + 2 * (QCTEE_DMA_ALIGNMENT - 1)                   /* Input parameter alignments. */
++	       + 1 * (QCTEE_DMA_ALIGNMENT - 1);                  /* Output parameter alignments. */
++
++	/* Make sure we have enough DMA memory. */
++	status = qctee_dma_realloc(qcuefi->dev, &qcuefi->dma, size, GFP_KERNEL);
++	if (status)
++		return EFI_OUT_OF_RESOURCES;
++
++	/* Align request struct. */
++	qctee_dma_aligned(&qcuefi->dma, &dma_req, 0);
++	req_data = dma_req.virt;
++
++	/* Set up request data. */
++	req_data->command_id = QCTEE_CMD_UEFI_GET_NEXT_VARIABLE;
++	req_data->guid_offset = QCTEE_DMA_ALIGN(sizeof(*req_data));
++	req_data->guid_size = sizeof(*guid);
++	req_data->name_offset = req_data->guid_offset + req_data->guid_size;
++	req_data->name_size = *name_size;
++	req_data->length = req_data->name_offset + req_data->name_size;
++
++	dma_req.size = req_data->length;
++
++	/* Copy request parameters. */
++	memcpy(dma_req.virt + req_data->guid_offset, guid, req_data->guid_size);
++	utf16_copy_to_buf(dma_req.virt + req_data->name_offset, name, *name_size);
++
++	/* Align response struct. */
++	qctee_dma_aligned(&qcuefi->dma, &dma_rsp, req_data->length);
++	rsp_data = dma_rsp.virt;
++
++	/* Perform SCM call. */
++	status = qctee_app_send(qcuefi->dev, qcuefi->app_id, &dma_req, &dma_rsp);
++
++	/* Check for errors and validate. */
++	if (status)
++		return EFI_DEVICE_ERROR;
++
++	if (rsp_data->command_id != QCTEE_CMD_UEFI_GET_NEXT_VARIABLE)
++		return EFI_DEVICE_ERROR;
++
++	if (rsp_data->length < sizeof(*rsp_data) || rsp_data->length > dma_rsp.size)
++		return EFI_DEVICE_ERROR;
++
++	if (rsp_data->status) {
++		dev_dbg(qcuefi->dev, "%s: uefisecapp error: 0x%x\n", __func__, rsp_data->status);
++		efi_status = qctee_uefi_status_to_efi(rsp_data->status);
++
++		/* Update size with required size in case buffer is too small. */
++		if (efi_status == EFI_BUFFER_TOO_SMALL)
++			*name_size = rsp_data->name_size;
++
++		return efi_status;
++	}
++
++	if (rsp_data->name_offset + rsp_data->name_size > rsp_data->length)
++		return EFI_DEVICE_ERROR;
++
++	if (rsp_data->guid_offset + rsp_data->guid_size > rsp_data->length)
++		return EFI_DEVICE_ERROR;
++
++	if (rsp_data->name_size > *name_size) {
++		*name_size = rsp_data->name_size;
++		return EFI_BUFFER_TOO_SMALL;
++	}
++
++	if (rsp_data->guid_size != sizeof(*guid))
++		return EFI_DEVICE_ERROR;
++
++	/* Copy response fields. */
++	memcpy(guid, dma_rsp.virt + rsp_data->guid_offset, rsp_data->guid_size);
++	utf16_copy_to_buf(name, dma_rsp.virt + rsp_data->name_offset, rsp_data->name_size);
++	*name_size = rsp_data->name_size;
++
++	return 0;
++}
++
++
++/* -- Global efivar interface. ---------------------------------------------- */
++
++static struct qcuefi_client *__qcuefi;
++static DEFINE_MUTEX(__qcuefi_lock);
++
++static int qcuefi_set_reference(struct qcuefi_client *qcuefi)
++{
++	mutex_lock(&__qcuefi_lock);
++
++	if (qcuefi && __qcuefi) {
++		mutex_unlock(&__qcuefi_lock);
++		return -EEXIST;
++	}
++
++	__qcuefi = qcuefi;
++
++	mutex_unlock(&__qcuefi_lock);
++	return 0;
++}
++
++static struct qcuefi_client *qcuefi_acquire(void)
++{
++	mutex_lock(&__qcuefi_lock);
++	return __qcuefi;
++}
++
++static void qcuefi_release(void)
++{
++	mutex_unlock(&__qcuefi_lock);
++}
++
++static efi_status_t qcuefi_get_variable(efi_char16_t *name, efi_guid_t *vendor, u32 *attr,
++					unsigned long *data_size, void *data)
++{
++	struct qcuefi_client *qcuefi;
++	efi_status_t status;
++
++	qcuefi = qcuefi_acquire();
++	if (!qcuefi)
++		return EFI_NOT_READY;
++
++	status = qctee_uefi_get_variable(qcuefi, name, vendor, attr, data_size, data);
++
++	qcuefi_release();
++	return status;
++}
++
++static efi_status_t qcuefi_set_variable(efi_char16_t *name, efi_guid_t *vendor,
++					u32 attr, unsigned long data_size, void *data)
++{
++	struct qcuefi_client *qcuefi;
++	efi_status_t status;
++
++	qcuefi = qcuefi_acquire();
++	if (!qcuefi)
++		return EFI_NOT_READY;
++
++	status = qctee_uefi_set_variable(qcuefi, name, vendor, attr, data_size, data);
++
++	qcuefi_release();
++	return status;
++}
++
++static efi_status_t qcuefi_get_next_variable(unsigned long *name_size, efi_char16_t *name,
++					     efi_guid_t *vendor)
++{
++	struct qcuefi_client *qcuefi;
++	efi_status_t status;
++
++	qcuefi = qcuefi_acquire();
++	if (!qcuefi)
++		return EFI_NOT_READY;
++
++	status = qctee_uefi_get_next_variable(qcuefi, name_size, name, vendor);
++
++	qcuefi_release();
++	return status;
++}
++
++static const struct efivar_operations qcom_efivar_ops = {
++	.get_variable = qcuefi_get_variable,
++	.set_variable = qcuefi_set_variable,
++	.get_next_variable = qcuefi_get_next_variable,
++};
++
++
++/* -- Driver setup. --------------------------------------------------------- */
++
++static int qcom_uefisecapp_probe(struct platform_device *pdev)
++{
++	struct qcuefi_client *qcuefi;
++	int status;
++
++	/* Defer until SCM is available. */
++	if (!qcom_scm_is_available())
++		return -EPROBE_DEFER;
++
++	/* Allocate driver data. */
++	qcuefi = devm_kzalloc(&pdev->dev, sizeof(*qcuefi), GFP_KERNEL);
++	if (!qcuefi)
 +		return -ENOMEM;
 +
-+	dma->size = size;
++	qcuefi->dev = &pdev->dev;
++
++	/* Get application id for uefisecapp. */
++	status = qctee_app_get_id(&pdev->dev, QCTEE_UEFISEC_APP_NAME, &qcuefi->app_id);
++	if (status) {
++		dev_err(&pdev->dev, "failed to query app ID: %d\n", status);
++		return status;
++	}
++
++	/* Set up DMA. One page should be plenty to start with. */
++	if (dma_set_mask(&pdev->dev, DMA_BIT_MASK(64))) {
++		dev_warn(&pdev->dev, "no suitable DMA available\n");
++		return -EFAULT;
++	}
++
++	status = qctee_dma_alloc(&pdev->dev, &qcuefi->dma, PAGE_SIZE, GFP_KERNEL);
++	if (status)
++		return status;
++
++	/* Set up kobject for efivars interface. */
++	qcuefi->kobj = kobject_create_and_add("qcom_tee_uefisecapp", firmware_kobj);
++	if (!qcuefi->kobj) {
++		status = -ENOMEM;
++		goto err_kobj;
++	}
++
++	/* Register global reference. */
++	platform_set_drvdata(pdev, qcuefi);
++	status = qcuefi_set_reference(qcuefi);
++	if (status)
++		goto err_ref;
++
++	/* Register efivar ops. */
++	status = efivars_register(&qcuefi->efivars, &qcom_efivar_ops, qcuefi->kobj);
++	if (status)
++		goto err_register;
++
 +	return 0;
++
++err_register:
++	qcuefi_set_reference(NULL);
++err_ref:
++	kobject_put(qcuefi->kobj);
++err_kobj:
++	qctee_dma_free(qcuefi->dev, &qcuefi->dma);
++	return status;
 +}
 +
-+/**
-+ * qctee_dma_free() - Free a DMA memory region.
-+ * @dev: The device used for allocation.
-+ * @dma: The DMA region to be freed.
-+ *
-+ * Free a DMA region previously allocated via qctee_dma_alloc(). Note that
-+ * freeing sub-regions is not supported.
-+ */
-+static inline void qctee_dma_free(struct device *dev, struct qctee_dma *dma)
++static int qcom_uefisecapp_remove(struct platform_device *pdev)
 +{
-+	dma_free_coherent(dev, dma->size, dma->virt, dma->phys);
-+}
++	struct qcuefi_client *qcuefi = platform_get_drvdata(pdev);
 +
-+/**
-+ * qctee_dma_realloc() - Re-allocate DMA memory region with the requested size.
-+ * @dev:  The device used for allocation.
-+ * @dma:  The region descriptor to be updated.
-+ * @size: The new requested size.
-+ * @gfp:  Flags used for allocation.
-+ *
-+ * Re-allocates a DMA memory region suitable for TrEE SCM calls to fit the
-+ * requested amount of bytes, if necessary. Does nothing if the provided region
-+ * already has enough space to store the requested data.
-+ *
-+ * See qctee_dma_alloc() for details.
-+ *
-+ * Return: Returns zero on success, -ENOMEM on allocation failure.
-+ */
-+static inline int qctee_dma_realloc(struct device *dev, struct qctee_dma *dma,
-+				    unsigned long size, gfp_t gfp)
-+{
-+	if (PAGE_ALIGN(size) <= dma->size)
-+		return 0;
++	/* Unregister efivar ops. */
++	efivars_unregister(&qcuefi->efivars);
 +
-+	qctee_dma_free(dev, dma);
-+	return qctee_dma_alloc(dev, dma, size, gfp);
-+}
++	/* Block on pending calls and unregister global reference. */
++	qcuefi_set_reference(NULL);
 +
-+/**
-+ * qctee_dma_aligned() - Create a aligned DMA memory sub-region suitable for
-+ * TrEE SCM calls.
-+ * @base:   Base DMA memory region, in which the new region will reside.
-+ * @out:    Descriptor to store the aligned sub-region in.
-+ * @offset: The offset inside base region at which to place the new sub-region.
-+ *
-+ * Creates an aligned DMA memory region suitable for TrEE SCM calls at or after
-+ * the given offset. The size of the sub-region will be set to the remaining
-+ * size in the base region after alignment, i.e. the end of the sub-region will
-+ * be equal the end of the base region.
-+ *
-+ * Return: Returns zero on success or -EINVAL if the new aligned memory address
-+ * would point outside the base region.
-+ */
-+static inline int qctee_dma_aligned(const struct qctee_dma *base, struct qctee_dma *out,
-+				    unsigned long offset)
-+{
-+	void *aligned = (void *)QCTEE_DMA_ALIGN((uintptr_t)base->virt + offset);
-+
-+	if (aligned - base->virt > base->size)
-+		return -EINVAL;
-+
-+	out->virt = aligned;
-+	out->phys = base->phys + (out->virt - base->virt);
-+	out->size = base->size - (out->virt - base->virt);
++	/* Free remaining resources. */
++	kobject_put(qcuefi->kobj);
++	qctee_dma_free(qcuefi->dev, &qcuefi->dma);
 +
 +	return 0;
 +}
 +
-+
-+/* -- Secure-OS SCM call interface. ----------------------------------------- */
-+
-+#define QCTEE_TZ_OWNER_TZ_APPS			48
-+#define QCTEE_TZ_OWNER_QSEE_OS			50
-+
-+#define QCTEE_TZ_SVC_APP_ID_PLACEHOLDER		0
-+#define QCTEE_TZ_SVC_APP_MGR			1
-+
-+enum qctee_os_scm_result {
-+	QCTEE_OS_RESULT_SUCCESS			= 0,
-+	QCTEE_OS_RESULT_INCOMPLETE		= 1,
-+	QCTEE_OS_RESULT_BLOCKED_ON_LISTENER	= 2,
-+	QCTEE_OS_RESULT_FAILURE			= 0xFFFFFFFF,
++static const struct of_device_id qcom_uefisecapp_dt_match[] = {
++	{ .compatible = "qcom,tee-uefisecapp", },
++	{ }
 +};
++MODULE_DEVICE_TABLE(of, qcom_uefisecapp_dt_match);
 +
-+enum qctee_os_scm_resp_type {
-+	QCTEE_OS_SCM_RES_APP_ID			= 0xEE01,
-+	QCTEE_OS_SCM_RES_QSEOS_LISTENER_ID	= 0xEE02,
++static struct platform_driver qcom_uefisecapp_driver = {
++	.probe = qcom_uefisecapp_probe,
++	.remove = qcom_uefisecapp_remove,
++	.driver = {
++		.name = "qcom_tee_uefisecapp",
++		.of_match_table = qcom_uefisecapp_dt_match,
++		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
++	},
 +};
++module_platform_driver(qcom_uefisecapp_driver);
 +
-+/**
-+ * struct qctee_os_scm_resp - TrEE / TzOS SCM call response.
-+ * @status:    Status of the SCM call. See &enum qctee_os_scm_result.
-+ * @resp_type: Type of the response. See &enum qctee_os_scm_resp_type.
-+ * @data:      Response data. The type of this data is given in @resp_type.
-+ */
-+struct qctee_os_scm_resp {
-+	u64 status;
-+	u64 resp_type;
-+	u64 data;
-+};
-+
-+int qctee_os_scm_call(struct device *dev, const struct qcom_scm_desc *desc,
-+		      struct qctee_os_scm_resp *res);
-+
-+
-+/* -- Secure App interface. ------------------------------------------------- */
-+
-+#define QCTEE_MAX_APP_NAME_SIZE			64
-+
-+int qctee_app_get_id(struct device *dev, const char *app_name, u32 *app_id);
-+int qctee_app_send(struct device *dev, u32 app_id, struct qctee_dma *req, struct qctee_dma *rsp);
-+
-+#endif /* _LINUX_QCOM_TEE_H */
++MODULE_AUTHOR("Maximilian Luz <luzmaximilian@gmail.com>");
++MODULE_DESCRIPTION("Client driver for Qualcomm TrEE/TZ UEFI Secure App");
++MODULE_LICENSE("GPL");
 -- 
 2.37.1
 
