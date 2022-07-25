@@ -2,41 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 994C357FF68
-	for <lists+linux-efi@lfdr.de>; Mon, 25 Jul 2022 15:00:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AF6C57FF6E
+	for <lists+linux-efi@lfdr.de>; Mon, 25 Jul 2022 15:02:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234839AbiGYNAh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 25 Jul 2022 09:00:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33428 "EHLO
+        id S234425AbiGYNC6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 25 Jul 2022 09:02:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232202AbiGYNAg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 25 Jul 2022 09:00:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F9C1FE7;
-        Mon, 25 Jul 2022 06:00:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S231991AbiGYNC4 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 25 Jul 2022 09:02:56 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 229D6101EE;
+        Mon, 25 Jul 2022 06:02:56 -0700 (PDT)
+Received: from zn.tnic (p200300ea972976f8329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9729:76f8:329c:23ff:fea6:a903])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0848060B08;
-        Mon, 25 Jul 2022 13:00:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3126DC341CD;
-        Mon, 25 Jul 2022 13:00:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658754034;
-        bh=Z2zzzoZrRO4S3EO/OVriM7FNu33t82mtKGNUW8yxdMo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NTlzQhT+8azuC/qm812aifg/DmWh2eB2EqFOBkKQdycA2qCFLnrbnSv+IGxscEV7w
-         VxuRZ5zyIUkwMh+cu4ohMYZvn81JRF5aHk7+SlhD6qJAxylWrauDExuot+Ct5iSgb6
-         TmLxAzU/jxOVaHVX8LyXQ0Bz62L8r4ZKJWS9tELLxLeInMTkttTlDqUIJVou8vzAEY
-         Do+9YAz9S7qmUtM+Wy+8ThqHEXu0U2xMoh4hvRpG/jVBLZdJye1mIAzOCH0NJJdvx7
-         Nl79BRb4YBrpvRbqeW2KhqzG/mI30Sff/868k5qahgPtSNCL69+Megu+Ec7MWN3+G/
-         BsrRDWtE/NOow==
-Date:   Mon, 25 Jul 2022 16:00:14 +0300
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Dave Hansen <dave.hansen@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AC7D11EC066E;
+        Mon, 25 Jul 2022 15:02:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1658754170;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=sg9QEcRa1MfRVFIbCkiOWE7hE+M2YmvA70MYII4fxdg=;
+        b=ClhNtHScdoG8Y5fyZ2k/x94410/Qs23KCbUM+qrzXtS6kzCj1WAwBU31plS1ksqGHVHF7u
+        0f38hv6VwQDEPorch8AA6dKTLZ+myaMuboUrTBI7Vsbs878fDiRmN+IkGi44zmCtR87b5e
+        cElxaQ9wb1Rkzx4qWtSldGDlVoPYhvw=
+Date:   Mon, 25 Jul 2022 15:02:50 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc:     Andy Lutomirski <luto@kernel.org>,
         Sean Christopherson <seanjc@google.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Joerg Roedel <jroedel@suse.de>,
@@ -53,67 +48,65 @@ Cc:     Dave Hansen <dave.hansen@intel.com>,
         Ingo Molnar <mingo@redhat.com>,
         Varad Gautam <varad.gautam@suse.com>,
         Dario Faggioli <dfaggioli@suse.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
         David Hildenbrand <david@redhat.com>,
         marcelo.cerri@canonical.com, tim.gardner@canonical.com,
         khalid.elmously@canonical.com, philip.cox@canonical.com,
         x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
-Message-ID: <Yt6T3vlbTZ5z0nZ/@kernel.org>
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv7 04/14] efi/x86: Get full memory map in allocate_e820()
+Message-ID: <Yt6UelWxDnvLDxhD@zn.tnic>
 References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-3-kirill.shutemov@linux.intel.com>
- <YtltYRuL+2uQkYUK@zn.tnic>
- <ebcf2979-45fc-8d41-cc28-ac8da0d24245@intel.com>
- <Ytr4FCV2xPGUBLqs@zn.tnic>
- <707ca113-c2a2-8fe2-a22c-5be13adc7bb4@intel.com>
- <Yt6LOD9Ae2NqyG1N@zn.tnic>
+ <20220614120231.48165-5-kirill.shutemov@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Yt6LOD9Ae2NqyG1N@zn.tnic>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20220614120231.48165-5-kirill.shutemov@linux.intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Jul 25, 2022 at 02:23:20PM +0200, Borislav Petkov wrote:
-> On Fri, Jul 22, 2022 at 12:30:36PM -0700, Dave Hansen wrote:
-> > Sure does...  *Something* has to manage the cache coherency so that old
-> > physical aliases of the converted memory don't write back and clobber
-> > new data.  But, maybe the hardware is doing that now.
-> 
-> Let's hope.
-> 
-> > Yeah, that two-tier system is the way it's happening today from what
-> > I understand. This whole conversation is about how to handle the >4GB
-> > memory.
-> 
-> Would it be possible to pre-accept a bunch of mem - think "pre-fault" -
-> from userspace?
-> 
-> I.e., I'm thinking some huge process is going to start in the VM, VM
-> userspace goes and causes a chunk of memory to be pre-accepted and then
-> the process starts and runs more-or-less smoothly as the majority of its
-> memory has already been "prepared".
+On Tue, Jun 14, 2022 at 03:02:21PM +0300, Kirill A. Shutemov wrote:
+> Currently allocate_e820() only interested in the size of map and size of
+			   ^
+			   is
 
-An application in the VM can do mlock() or mmap(..., MAP_POPULATE, ...) and
-this will essentially force acceptance of that memory.
 
-But there's no sysctl or something for that.
- 
-> Or does that not make any sense from mm perspective?
+> memory descriptor to determine how many e820 entries the kernel needs.
 > 
-> -- 
-> Regards/Gruss,
->     Boris.
+> UEFI Specification version 2.9 introduces a new memory type --
+> unaccepted memory. To track unaccepted memory kernel needs to allocate
+> a bitmap. The size of the bitmap is dependent on the maximum physical
+> address present in the system. A full memory map is required to find
+> the maximum address.
 > 
-> https://people.kernel.org/tglx/notes-about-netiquette
+> Modify allocate_e820() to get a full memory map.
+> 
+> This is preparation for the next patch that implements handling of
+> unaccepted memory in EFI stub.
+
+As already pointed out, the concept of "next patch" is ambiguous in git.
+Just drop the whole sentence.
+
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> ---
+>  drivers/firmware/efi/libstub/x86-stub.c | 28 +++++++++++--------------
+>  1 file changed, 12 insertions(+), 16 deletions(-)
+
+With the above addressed:
+
+Reviewed-by: Borislav Petkov <bp@suse.de>
+
+Thx.
 
 -- 
-Sincerely yours,
-Mike.
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
