@@ -2,127 +2,111 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7FA657F6B3
-	for <lists+linux-efi@lfdr.de>; Sun, 24 Jul 2022 21:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5EDD57F7DA
+	for <lists+linux-efi@lfdr.de>; Mon, 25 Jul 2022 03:06:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229564AbiGXTRw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 24 Jul 2022 15:17:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45780 "EHLO
+        id S229687AbiGYBGi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 24 Jul 2022 21:06:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229542AbiGXTRv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 24 Jul 2022 15:17:51 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E327E003
-        for <linux-efi@vger.kernel.org>; Sun, 24 Jul 2022 12:17:50 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 54B8A1FD9A;
-        Sun, 24 Jul 2022 19:17:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1658690269; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Vl6lZOjOEFjROV8d3eQcQSZkZEYmBxouwT7yKgBmhIE=;
-        b=cUeJztvCUz7tJ11JPxK1cf4IYJfKe/YMeSURBo4pGkkpgJ11BUA5n/ppPNxdAegIue2z+v
-        Oo9beS0ay1u0G9MsZ3HQd/4WndSGbEKQ851ZbiEXWYLDByXcXtXt0ObWyfuTR695+49ZqD
-        vThTEBRqIwDgJcM64ippSiWbphlwSnE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1658690269;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Vl6lZOjOEFjROV8d3eQcQSZkZEYmBxouwT7yKgBmhIE=;
-        b=ywegGjTRhNY8OzxHPwAKWmOjUrBq94xz1vri1yLr7ruS9ooOUMoC+eVZoHaL3hox/8Zpu9
-        WN8NfJwtEqqb1FBA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 47C1B13A91;
-        Sun, 24 Jul 2022 19:17:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id cq1+Ed2a3WLydwAAMHmgww
-        (envelope-from <bp@suse.de>); Sun, 24 Jul 2022 19:17:49 +0000
-Date:   Sun, 24 Jul 2022 21:17:44 +0200
-From:   Borislav Petkov <bp@suse.de>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: Re: [PATCH] efi/x86-mixed: leave RET unmitigated but move it into
- .rodata
-Message-ID: <Yt2a2P69i8pHRO97@zn.tnic>
-References: <20220722160612.2976-1-ardb@kernel.org>
- <CAHk-=wgBM5n_q76tTqLae0YddpzY=LX90s_wWge_JpnqjSK2YA@mail.gmail.com>
- <CAMj1kXGT7OEZc3Y6B-AcWWmec2POZFYb+UpE1eMcHuVag9LSew@mail.gmail.com>
- <Yt2BHIMhXPd0cuMt@zn.tnic>
- <CAMj1kXEM2tXxCqcjDDNSS_OHsnJ1XTDNWBGdfFc-4zKJKpkTXg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMj1kXEM2tXxCqcjDDNSS_OHsnJ1XTDNWBGdfFc-4zKJKpkTXg@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229437AbiGYBGh (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 24 Jul 2022 21:06:37 -0400
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0CB89FD6;
+        Sun, 24 Jul 2022 18:06:36 -0700 (PDT)
+Received: by mail-ot1-f42.google.com with SMTP id g20-20020a9d6a14000000b0061c84e679f5so7670254otn.2;
+        Sun, 24 Jul 2022 18:06:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=QNCEP/Jd9p9U+kHeTNbZg9vzuQ68V1YM3OnqLNp9aiY=;
+        b=ESlvsy5UyFcNEZ/mdB/h29qdxZNvN5FPQ08G0mOwYmlycN6b9ZFFd97Ewud5LdNYzy
+         Y8hiFpKTj5/KzojzmLCh2RtTIdXXt5pZaflVFt0cgsxu2sskoCBwaXXO9IlQlNC1qv4i
+         z2hi5cvpBNm4DnqZaxqXDiOWMoL0QfQdWQ6Urjhe9CiVqSt+Kw2q3tySPbGDdssROL10
+         kW10MdgaoY35liZUB8rvG1PqV886d5XzusIIhmU9F9cKgNhnsRejUatsXkfu7JP4arSH
+         QB2QSnX3KI15//FX1MNxzs4UninsTqUTQhnjDP2O0NdHoQG8sPEfU9o1mjfud45G5HvW
+         /a4w==
+X-Gm-Message-State: AJIora/RLb+3SsUJPkXxDfiTcvi/v7rdmLqMj/HNqPct/MBkfMXElJ9B
+        uRqwcDujQbvIyOcCVw5Xog==
+X-Google-Smtp-Source: AGRyM1s5XKEnlQ5my1VSNVGytH3TBZejI+JtkvAk9JTSOphfdgVAoaZgqQddJRx6BCAc/nkzgm5u6g==
+X-Received: by 2002:a05:6830:d0b:b0:61c:1bc2:fbc0 with SMTP id bu11-20020a0568300d0b00b0061c1bc2fbc0mr3760368otb.348.1658711195791;
+        Sun, 24 Jul 2022 18:06:35 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id t21-20020a056870f21500b0010dc461410bsm3389440oao.38.2022.07.24.18.06.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Jul 2022 18:06:35 -0700 (PDT)
+Received: (nullmailer pid 678621 invoked by uid 1000);
+        Mon, 25 Jul 2022 01:06:32 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Maximilian Luz <luzmaximilian@gmail.com>
+Cc:     Steev Klimaszewski <steev@kali.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        linux-arm-msm@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Shawn Guo <shawn.guo@linaro.org>, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+In-Reply-To: <20220723224949.1089973-5-luzmaximilian@gmail.com>
+References: <20220723224949.1089973-1-luzmaximilian@gmail.com> <20220723224949.1089973-5-luzmaximilian@gmail.com>
+Subject: Re: [PATCH 4/4] dt-bindings: firmware: Add Qualcomm UEFI Secure Application client
+Date:   Sun, 24 Jul 2022 19:06:32 -0600
+Message-Id: <1658711192.682597.678620.nullmailer@robh.at.kernel.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sun, Jul 24, 2022 at 08:34:36PM +0200, Ard Biesheuvel wrote:
-> Are you sure you fixed up the conflict correctly? It seems the
-> __efi64_thunk end marker ends up in .rodata in your case.
+On Sun, 24 Jul 2022 00:49:49 +0200, Maximilian Luz wrote:
+> Add bindings for the Qualcomm Trusted Execution Environment (TrEE) UEFI
+> Secure application (uefisecapp) client.
+> 
+> Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
+> ---
+>  .../firmware/qcom,tee-uefisecapp.yaml         | 38 +++++++++++++++++++
+>  MAINTAINERS                                   |  1 +
+>  2 files changed, 39 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/firmware/qcom,tee-uefisecapp.yaml
+> 
 
-Yep, I f*cked up the merge even if it was pretty easy in meld - sorry
-about that.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-Now it is correct but it complains differently:
+yamllint warnings/errors:
 
-vmlinux.o: warning: objtool: efi_thunk_query_variable_info_nonblocking+0x1ba: unreachable instruction
+dtschema/dtc warnings/errors:
+./Documentation/devicetree/bindings/firmware/qcom,tee-uefisecapp.yaml: $id: relative path/filename doesn't match actual path or filename
+	expected: http://devicetree.org/schemas/firmware/qcom,tee-uefisecapp.yaml#
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/soc/qcom/qcom,rpmh-rsc.yaml: duplicate '$id' value 'http://devicetree.org/schemas/soc/qcom/qcom,rpmh-rsc.yaml#'
+Documentation/devicetree/bindings/firmware/qcom,tee-uefisecapp.example.dtb:0:0: /example-0/firmware/scm: failed to match any schema with compatible: ['qcom,scm-sc8180x', 'qcom,scm']
+Documentation/devicetree/bindings/firmware/qcom,tee-uefisecapp.example.dtb:0:0: /example-0/firmware/scm: failed to match any schema with compatible: ['qcom,scm-sc8180x', 'qcom,scm']
+Documentation/devicetree/bindings/soc/qcom/qcom,rpmh-rsc.example.dtb:0:0: /example-0/rsc@179c0000: failed to match any schema with compatible: ['qcom,rpmh-rsc']
+Documentation/devicetree/bindings/soc/qcom/qcom,rpmh-rsc.example.dtb:0:0: /example-1/rsc@af20000: failed to match any schema with compatible: ['qcom,rpmh-rsc']
+Documentation/devicetree/bindings/soc/qcom/qcom,rpmh-rsc.example.dtb:0:0: /example-2/rsc@18200000: failed to match any schema with compatible: ['qcom,rpmh-rsc']
 
-$ ./scripts/faddr2line vmlinux.o efi_thunk_query_variable_info_nonblocking+0x1ba
-efi_thunk_query_variable_info_nonblocking+0x1ba/0x330:
-efi_thunk_query_variable_info_nonblocking at /home/boris/kernel/linux/arch/x86/platform/efi/efi_64.c:787
-(inlined by) efi_thunk_query_variable_info_nonblocking at /home/boris/kernel/linux/arch/x86/platform/efi/efi_64.c:769
+doc reference errors (make refcheckdocs):
 
-and looking at the asm, it points to:
+See https://patchwork.ozlabs.org/patch/
 
-# 0 "" 2
-#NO_APP
-	movq	efi(%rip), %rax	# efi.runtime, efi.runtime
-	movl	12(%rsp), %r8d	# %sfp, prephitmp_87
-	leaq	16(%rsp), %r9	#,
-	movl	%r15d, %ecx	# _104,
-	movl	%r14d, %edx	# _95,
-	movl	%ebp, %esi	# attr,
-	movl	76(%rax), %edi	# _30->mixed_mode.query_variable_info, _30->mixed_mode.query_variable_info
-	call	__efi64_thunk	#
-#APP
-# 787 "arch/x86/platform/efi/efi_64.c" 1
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
 
-1:	movl %r12d,%ds			# __val		<---
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
 
-this here, after the __efi64_thunk call, which is that segment restoring
-after the __efi_thunk call:
+pip3 install dtschema --upgrade
 
-	loadsegment(ds, __ds);
+Please check and re-submit.
 
-Weird, I don't see why though - that should be reachable.
-
--- 
-Regards/Gruss,
-    Boris.
-
-SUSE Software Solutions Germany GmbH
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Martje Boudien Moerman
-(HRB 36809, AG Nürnberg)
