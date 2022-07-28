@@ -2,183 +2,168 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3638558385C
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Jul 2022 08:04:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8541D5839CB
+	for <lists+linux-efi@lfdr.de>; Thu, 28 Jul 2022 09:48:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231807AbiG1GEW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 28 Jul 2022 02:04:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47926 "EHLO
+        id S234545AbiG1HsT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 28 Jul 2022 03:48:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231782AbiG1GEV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Jul 2022 02:04:21 -0400
-Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C8295C955
-        for <linux-efi@vger.kernel.org>; Wed, 27 Jul 2022 23:04:20 -0700 (PDT)
-Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-31f661b3f89so8450807b3.11
-        for <linux-efi@vger.kernel.org>; Wed, 27 Jul 2022 23:04:20 -0700 (PDT)
+        with ESMTP id S233032AbiG1HsT (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Jul 2022 03:48:19 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B58A6170F
+        for <linux-efi@vger.kernel.org>; Thu, 28 Jul 2022 00:48:17 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id y11so1658963lfs.6
+        for <linux-efi@vger.kernel.org>; Thu, 28 Jul 2022 00:48:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=CA4wATDSYUWB9Gpjzl6nBaY/UX8ZMyWfJ9JqsbS9J10=;
-        b=ZqZo9AKJEwlaUWQDb0iOO1tLCjpPom4IAWxcinWucbh9rSYXGka3QSSV/Z5Ce/Vtxd
-         G1TBGbz4Uq9bTL/e0Hf4maFiVDLquc6ak5ku7fvn2gXLCdKIrC+C/ZTmDsdXuMWaACa/
-         h1z2tZU7fQcrxPlJK45IFfQ28LuocH021UpxVapmlB0Zl9aADmjaV0uLNL5xoXDQj540
-         7QwMs6JmAlfImuFEbkbaEKVn0yJIr3WaG85YkWbbmNPNrB44AB6OC61n5Ju0OpFxqioz
-         TXBNHzP8wT2hIEXD8qy2cGYctY5p7Q+5BY4mEp/yffq1u0YiPQWQB4HvxIEnwpLXefU7
-         OWmA==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=fCUzkrrVti+DuQ9YZ66uDbjkm2O9p7N93LSf/4Y1rqw=;
+        b=FcT3HD9UuvhS0fZm//5zxRGb1EhPOh3t/FJB6OWvAfsVKWqT7XUYgKcSrCYv82NtFG
+         clfqrKO3uRhEgTVGdRV1V/Xe87qmNqaL7fZmyIRmrY9XGSIyhZ7SLrWncsTLE+cVcS8o
+         H2CbJ+ZeSA39R6hTegJnVjTAFXseAMScED4CPXt1byZYCJ75/2P7zx2EdpnwnvKy63Dw
+         3RyTJxsZjPZIg3fKH3tvvgRXwYqcNg5JK/gdms/Kh5nLgVR9xwfrs5LpeyZSDRptlPOO
+         jb3hFCCV2OvHbDPxfI5cOAV8yH4UC+1hD+WJIqhefTXbVk/6UM2RTuxQ6OssTd84hObL
+         ok4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CA4wATDSYUWB9Gpjzl6nBaY/UX8ZMyWfJ9JqsbS9J10=;
-        b=ItjcgyhoUVmLInw+85p7/mFkspKkncoTkkG4MI+76DQuZGGHVKY8AnM11X25Y2HMZN
-         GvDXoavSNXQisLUHP8zDgVbxsLmxB89ZaVhgnwF89MwF3ECZKMxGzewkZmGayIJX9wr4
-         8nMK/S7CuFwRhzKi32fUp+z9pV3nTCs0lko4kyspCVnYtTmWQoxF/xxz02bGmf+aIE2q
-         EhEoRmx+9NEOqDERGa8I1SpHOaXft3KV4EBz8c6YLpyTlwX01/boxHRzHE188isBvrhL
-         DLlG2COlhZRqn8W7+jWgu9g1T6rBaCDN+nVZSSEPcg/jLyIl1XBiGu1l5NQQDzOeE+F0
-         3HWg==
-X-Gm-Message-State: AJIora/IVNFQeApxi35zO5RQE4LI3bpcJ1vcFGl926IbWOHkVLhor2dw
-        S+RdHyChZfdmyLJUuI7lmyWX/ALcINoDlCB1xLT+/g==
-X-Google-Smtp-Source: AGRyM1udlf3/HhTv0KnlYVLgoG36EzZB0C9m8/ZLmxBcNlB5imRW/rCGDa9yRafy4GMMrBICMoGoRw64/lyMtA4d3Bo=
-X-Received: by 2002:a81:d542:0:b0:31e:c878:7565 with SMTP id
- l2-20020a81d542000000b0031ec8787565mr21125377ywj.382.1658988259228; Wed, 27
- Jul 2022 23:04:19 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=fCUzkrrVti+DuQ9YZ66uDbjkm2O9p7N93LSf/4Y1rqw=;
+        b=JfGzz3XazDhbZNHfOiKZuR6XPTssYL++lPGl3ZLP1bgKTcmy1KJnAbzLhryOUFh23Z
+         o8vI8kpBNuiS6GC6nl5OfB3AJ9Dj1hTFAXLNLhNrJsAoOM0bNRkQTnDkVzpYcVjzikBG
+         5yzqajnu9kvqzv5cXevHCvbV/4OrUNi9is2Zg0Q/uO4mYkFb8MpqINWEn4Fpl+RsFPJI
+         ojWwzjlN4M7/ngxHg2FTm1isqzFW48xzmWoCgkVMxzZJS/oieVql6LHZ8kLmj20q1emG
+         TVQwssDn9pnnfnbZEL+vwsY9xLqHRWFuoJLWeXgspM+AkvC092gwTM/7HBvXT+4c+W8n
+         lo8w==
+X-Gm-Message-State: AJIora8JgMjtJJOC1BfhNm5+31GbJ6OfCjTIK0n938mUSimezEm3usUe
+        OHq1gR4Nzh7TFvbc+1W/nGiDtQ==
+X-Google-Smtp-Source: AGRyM1uXGhPeR606LsJssvTDJlC4T3k/CuVwOkQjtbV4yuWokpohwSrNa+3v0DyoVMsl7lRB4A4mrQ==
+X-Received: by 2002:a05:6512:220a:b0:48a:7b14:d51c with SMTP id h10-20020a056512220a00b0048a7b14d51cmr8647513lfu.267.1658994495906;
+        Thu, 28 Jul 2022 00:48:15 -0700 (PDT)
+Received: from [192.168.3.197] (78-26-46-173.network.trollfjord.no. [78.26.46.173])
+        by smtp.gmail.com with ESMTPSA id b3-20020a056512304300b0048a7ebb3151sm68149lfb.181.2022.07.28.00.48.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 Jul 2022 00:48:15 -0700 (PDT)
+Message-ID: <95cbcda8-d1bc-376c-b338-92d1b923f04a@linaro.org>
+Date:   Thu, 28 Jul 2022 09:48:13 +0200
 MIME-Version: 1.0
-References: <20220723224949.1089973-1-luzmaximilian@gmail.com>
- <20220723224949.1089973-5-luzmaximilian@gmail.com> <20220726143005.wt4be7yo7sbd3xut@bogus>
- <829c8fee-cae5-597d-933d-784b4b57bd73@gmail.com> <20220726154138.74avqs6iqlzqpzjk@bogus>
- <d1bc99bb-82ce-aa6e-7fad-e9309fa1c19b@gmail.com> <7284953b-52bb-37ac-fbe1-1fa845c44ff9@linaro.org>
- <3d752603-365d-3a33-e13e-ca241cee9a11@gmail.com> <20220727132437.pjob3z2nyxsuxgam@bogus>
-In-Reply-To: <20220727132437.pjob3z2nyxsuxgam@bogus>
-From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date:   Thu, 28 Jul 2022 09:03:42 +0300
-Message-ID: <CAC_iWj+Pn+h8k=fuDHzYwqD0g4m6jGRt8sCzcz+5+rYqvz9q4w@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
 Subject: Re: [PATCH 4/4] dt-bindings: firmware: Add Qualcomm UEFI Secure
  Application client
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     Maximilian Luz <luzmaximilian@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+Content-Language: en-US
+To:     Maximilian Luz <luzmaximilian@gmail.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Konrad Dybcio <konrad.dybcio@somainline.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Steev Klimaszewski <steev@kali.org>,
         Shawn Guo <shawn.guo@linaro.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
         Cristian Marussi <cristian.marussi@arm.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-arm-msm@vger.kernel.org, linux-efi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>
+References: <20220723224949.1089973-1-luzmaximilian@gmail.com>
+ <20220723224949.1089973-5-luzmaximilian@gmail.com>
+ <e88d1036-dc58-3fc8-c388-edba9b2d62a7@linaro.org>
+ <87c19c5a-d7f4-7183-1322-f62267e01b3b@gmail.com>
+ <11e5c369-c0da-7756-b9e2-ac375dc78e9d@linaro.org>
+ <2e522bcd-5d55-e87f-126c-514f5edaa560@gmail.com>
+ <53a602e2-0590-6c6a-597b-fd55faa3a4ab@linaro.org>
+ <acd7b231-3167-e35c-5cdf-8b3127a7d710@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <acd7b231-3167-e35c-5cdf-8b3127a7d710@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi all,
+On 27/07/2022 15:00, Maximilian Luz wrote:
+>>> Then again, if you prefer to name everything based on
+>>> "qcom,<device>-<soc>" I don't have any strong arguments against it and
+>>> I'm happy to change that. I just think it will unnecessarily introduce
+>>> a bunch of compatibles and doesn't reflect the interface "versioning"
+>>> situation as I see it.
+>>
+>> Why bunch? All devices could bind to one specific compatible, as they
+>> are compatible.
+> 
+> Ah, I think I misunderstood you there. I thought you were advocating for
+> creating compatibles for each SoC just because it's a new SoC and things
+> might be different. I'm not at all against naming this something like
+> qcom,tee-uefisecapp-sc8180x then using that on all platforms that work.
+> I just didn't like the idea of having a bunch of different
+> qcom,tee-uefisecapp-<soc> pointing to the exact same thing without any
+> difference at all.
 
-On Wed, 27 Jul 2022 at 16:24, Sudeep Holla <sudeep.holla@arm.com> wrote:
->
-> On Wed, Jul 27, 2022 at 03:03:49PM +0200, Maximilian Luz wrote:
-> >
-> > Is there really a good way around it?
->
-> Yes rely on the firmware preferably auto discover, if that is not an option,
-> how about query. It seem to be working in your case.
+You start with one specific compatible and if needed later either add
+more specific upfront (qcom,sc8280x-tee-uefisecapp,
+qcom,sc8180x-tee-uefisecapp) or as entirely new one if it is not compatible.
 
-That's a good point.  We have a similar situation with some Arm
-devices and U-Boot.  Let me try to explain a bit.
+> 
+>>>>>>> +
+>>>>>>> +required:
+>>>>>>> +  - compatible
+>>>>>>> +
+>>>>>>> +additionalProperties: false
+>>>>>>> +
+>>>>>>> +examples:
+>>>>>>> +  - |
+>>>>>>> +    firmware {
+>>>>>>> +        scm {
+>>>>>>> +            compatible = "qcom,scm-sc8180x", "qcom,scm";
+>>>>>>> +        };
+>>>>>>> +        tee-uefisecapp {
+>>>>>>> +            compatible = "qcom,tee-uefisecapp";
+>>>>>>
+>>>>>> You did not model here any dependency on SCM. This is not full
+>>>>>> description of the firmware/hardware
+>>>>>
+>>>>> How would I do that? A lot of other stuff also depends on SCM being
+>>>>> present (e.g. qcom_q6v5_pas for loading mdt files) and I don't see them
+>>>>> declare this in the device tree. As far as I can tell, SCM is pretty
+>>>>> much expected to be there at all times (i.e. can't be unloaded) and
+>>>>> drivers check for it when probing via qcom_scm_is_available(),
+>>>>> deferring probe if not.
+>>>>
+>>>> It seems this will be opening a can of worms...
+>>>
+>>> Indeed.
+>>>
+>>>> The problem with existing approach is:
+>>>> 1. Lack of any probe ordering or probe deferral support.
+>>>> 2. Lack of any other dependencies, e.g. for PM.
+>>>
+>>> I'm not entirely sure what you mean by "lack of probe deferral support".
+>>> We have qcom_scm_is_available() and defer probe if that fails. So
+>>> deferral works, unless I'm misunderstanding something.
+>>
+>> And how do you differentiate that qcom_scm_is_available() failed because
+>> it is not yet available (defer probe) or it is broken and will never
+>> load? All regular consumer-provider interfaces have it sorted out.
+> 
+> Fair point. By shifting that to device links you'll at least know what
+> it's waiting for and the driver won't attempt to probe until that's
+> resolved. But your question applies to that then as well: How do you
+> differentiate between the device link or supplier being broken somehow
+> and the supplier being just not ready yet?
 
-There's code plugged in in OP-TEE and U-Boot atm which allows you to
-store EFI variables on an RPMB.  This is a nice alternative if your
-device doesn't have any other secure storage,  however it presents
-some challenges after ExitBootServices, similar to the ones you have
-here.
+For example like tegra_bpmp_get() is doing.
 
-The eMMC controller usually lives in the non-secure world.  OP-TEE
-can't access that, so it relies on a userspace supplicant to perform
-the RPMB accesses.  That supplicant is present in U-Boot and
-Get/SetVariable works fine before ExitBootServices.  Once Linux boots,
- the 'U-Boot supplicant' goes away and we launch the linux equivalent
-one from userspace.  Since variable accessing is a runtime service and
-it still has to go through the firmware we can't use those anymore
-since U-Boot doesn't preserve the supplicant, the eMMC driver and the
-OP-TEE portions needed in the runtime section(and even if it did we
-would now have 2 drivers racing to access the same hardware).  Instead
-U-Boot copies the variables in runtime memory and
-GetVariable/GetNextVariable still works, but SetVariable returns
-EFI_UNSUPPORTED.
-
-I've spent enough time looking at available solutions and although
-this indeed breaks the EFI spec, something along the lines of
-replacing the runtime services with ones that give you direct access
-to the secure world, completely bypassing the firmware is imho our
-least bad option.
-
-I have an ancient branch somewhere that I can polish up and send an
-RFC [1],  but the way I enabled that was to install an empty config
-table from the firmware.  That empty table is basically an indication
-to the kernel saying "Hey I can't store variables, can you do that for
-me".
-
-Is there any chance we can do something similar on that device (or
-find a reasonable way of inferring that we need to replace some
-services).  That way we could at least have a common entry point to
-the kernel and leave out the DT changes.
-
-[1] https://git.linaro.org/people/ilias.apalodimas/net-next.git/log/?h=setvar_rt_optee_3
-
-Thanks
-/Ilias
-
->
-> > As far as I can see the alternative (especially for the apps that
-> > need to be loaded manually) is hard-coding everything in the driver.
-> > Which IMHO just spreads device specific information everywhere.
-> >
->
-> It may not be too bad compared to putting loads of firmware details
-> in the DT. What happens if you get a firmware upgrade with changed
-> number of firmware entities or even if the names are changed.
->
-> Are these name user ABI in a way that they won't be changed ? Generally
-> these entities tend to use UUID and the name you have might get changed.
->
-> I would ideally prefer even the name to be supplied from the userspace.
-> In this particular case, make this a driver and have the name as the
-> parameter. If the secure side services are used by some non-secure
-> applications, then you will need to have a user-interface which means
-> you can get the named from the userspace. No need to change the driver
-> in either case. Please let me know if I am missing anything to consider
-> here.
->
-> > Also: Let's use the TPM app as example. If that would be a SPI or I2C
-> > device, you'd model it in the DT. Just because it's a hardware device
-> > that's accessible via SCM/firmware you now don't?
-> >
->
-> Not sure if I understand the comparison here. But if there is some device
-> that is access restricted but needs to be accessed and has mechanism to
-> access, then you would model it as device in DT.
->
-> But the one $subject is addressing looks pure software and doesn't make
-> sense to model in DT IMO.
->
-> > If I were absolutely certain that there is a reliable mechanism to
-> > detect these apps, I'd agree with having a driver to instantiate those
-> > devices. But I am not.
-> >
->
-> You did say you use some query API to check this. I haven't seen the driver,
-> so relying on what you said earlier.
->
-> --
-> Regards,
-> Sudeep
+Best regards,
+Krzysztof
