@@ -2,139 +2,132 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82ADB5842C8
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Jul 2022 17:16:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2D5A5842CB
+	for <lists+linux-efi@lfdr.de>; Thu, 28 Jul 2022 17:16:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231182AbiG1PQm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 28 Jul 2022 11:16:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58590 "EHLO
+        id S231268AbiG1PQx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 28 Jul 2022 11:16:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230483AbiG1PQl (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Jul 2022 11:16:41 -0400
-Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 294DE4F6B2
-        for <linux-efi@vger.kernel.org>; Thu, 28 Jul 2022 08:16:40 -0700 (PDT)
-Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-2ef5380669cso22705937b3.9
-        for <linux-efi@vger.kernel.org>; Thu, 28 Jul 2022 08:16:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=I/V7r/JjnXzUGcT6ui2gSCucu1LvJKddLujQ+JW0ayQ=;
-        b=gtAegM1F7Ga+mua1tY0e5tEW6tISaVKUX4kBorZeA23I7ZxrtAHlX6MMeI7VPUS7Z8
-         JasOmqNpNBjQV13JSpTdrN/pR7yns90gilE4ACtbhzDK/p/HW6ySpgJ7CJZsLZNu2zNL
-         CILNfwTlct/Rnd7xJdyp89hoOw+7XyPFNRCmIAzftsNXvDbdfKx3lCmeiCdfpMyMZKFu
-         HYqcjJNSLeh7uKHSlcifaPueU54vOp10O3VVMNmFXGnlbYw61STJ0H+f1p0nssrlj7U5
-         J5cNHKjJ1RyN9kDYIkTS3HSMcSDpTeVIFGPLgotsQ/pyJ6a3VvKsvzPZ3J147/XOnS+U
-         WvnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=I/V7r/JjnXzUGcT6ui2gSCucu1LvJKddLujQ+JW0ayQ=;
-        b=SpaIsHj2DLT+nADRH21xH6+R30sk1CMEsIodyqNsTlxVauJhmZIb5wGL3l7wcx+Hdu
-         823gzHfRIVxwgz5b1b2hOSi9R6l93HgVZovUwpYAh089zu6t8Hg9CvHMtMrqtnFVlPOd
-         8x1qgbZNgtNCvi91y1k2Sy4Jpy0vPZDPcwQcAuYoRpTGTtn5p9hOPda9TVeKTkzu0+Hv
-         YTlAr9mjdpMRzCZJZs/Um2QszCBVSH/BlvtpdYDEnHv5dMzb7BfiNmqFcstE088r7U6C
-         yh5sV2y7EUvhwgBnXM8MC9NAZ6a9HS2oc9GP3hNxGYR7C6ShzQEmnrMB0Dlt9V8eHC/E
-         oJkg==
-X-Gm-Message-State: AJIora/peTQovdt5WWdI/2kA+zjuY0wazZqAXXteneAEV5WSMkQ0P1h5
-        QZuyQ+jQjeQYMaVEMZy3mxfw+NQxG0bm22NBExOy3g==
-X-Google-Smtp-Source: AGRyM1vcmGJ+mmue/tBswMy79EHyowZgJFZhNzrIrwc9P7sgN6Pu3ui4GIF00O3/ldF3QTLG8lR4xHsP9ul10IGd220=
-X-Received: by 2002:a81:a149:0:b0:31f:fded:b121 with SMTP id
- y70-20020a81a149000000b0031ffdedb121mr5995007ywg.122.1659021399305; Thu, 28
- Jul 2022 08:16:39 -0700 (PDT)
+        with ESMTP id S230073AbiG1PQw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Jul 2022 11:16:52 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 569B846D93;
+        Thu, 28 Jul 2022 08:16:50 -0700 (PDT)
+Received: from mail-ed1-f48.google.com ([209.85.208.48]) by
+ mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1N4R4o-1nHwPf1aDu-011SJ4; Thu, 28 Jul 2022 17:16:49 +0200
+Received: by mail-ed1-f48.google.com with SMTP id z15so2575047edc.7;
+        Thu, 28 Jul 2022 08:16:49 -0700 (PDT)
+X-Gm-Message-State: AJIora89W2UCTWHyw2Opf6RLtXodZIQWv5s1za0N2/J6HrS+owSyITSi
+        Y+Pz9FNkPhqKhnJQMwkYp0K9t9nTVaf+sinGkXs=
+X-Google-Smtp-Source: AGRyM1vWuOSQ5jkdH83jWj0RrtQb7QqIeQadUBaSrg3Qh2GudbEb/nqWHTWnFuVbZrtnJIU4rYColKF2SYdmGBop/yk=
+X-Received: by 2002:a05:6402:1d4c:b0:43b:c85f:5c95 with SMTP id
+ dz12-20020a0564021d4c00b0043bc85f5c95mr28453461edb.213.1659021408962; Thu, 28
+ Jul 2022 08:16:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220723224949.1089973-5-luzmaximilian@gmail.com>
- <20220726143005.wt4be7yo7sbd3xut@bogus> <829c8fee-cae5-597d-933d-784b4b57bd73@gmail.com>
- <20220726154138.74avqs6iqlzqpzjk@bogus> <d1bc99bb-82ce-aa6e-7fad-e9309fa1c19b@gmail.com>
- <7284953b-52bb-37ac-fbe1-1fa845c44ff9@linaro.org> <3d752603-365d-3a33-e13e-ca241cee9a11@gmail.com>
- <20220727132437.pjob3z2nyxsuxgam@bogus> <CAC_iWj+Pn+h8k=fuDHzYwqD0g4m6jGRt8sCzcz+5+rYqvz9q4w@mail.gmail.com>
- <fd922f0f-99fd-55a3-a0b5-b62ad2dbfb45@gmail.com> <20220728113347.ver6argevzmlsc2c@bogus>
- <CAMj1kXHYb-zrKOS_titU79c487ab9WPyKwJBXuj7pdqum=ygaA@mail.gmail.com>
-In-Reply-To: <CAMj1kXHYb-zrKOS_titU79c487ab9WPyKwJBXuj7pdqum=ygaA@mail.gmail.com>
-From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date:   Thu, 28 Jul 2022 18:16:03 +0300
-Message-ID: <CAC_iWjJTENeF_4jvD0VGo_mbtw0ZH2xd9oX2JdvJJFK=vAxBcw@mail.gmail.com>
-Subject: Re: [PATCH 4/4] dt-bindings: firmware: Add Qualcomm UEFI Secure
- Application client
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Sudeep Holla <sudeep.holla@arm.com>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Steev Klimaszewski <steev@kali.org>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        Cristian Marussi <cristian.marussi@arm.com>,
+References: <20220728142824.3836-1-markuss.broks@gmail.com>
+ <20220728142824.3836-3-markuss.broks@gmail.com> <CAK8P3a2fZ9O6vSEyxY1KW71pG_Oyvwxp3zTbW2GuaSD6aj+Qfw@mail.gmail.com>
+ <8e694cb6-c3dc-74e3-6804-fc532f108523@gmail.com>
+In-Reply-To: <8e694cb6-c3dc-74e3-6804-fc532f108523@gmail.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Thu, 28 Jul 2022 17:16:32 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a2vJFCJmeMj-vuasUhwa2=2P+hAr=ScGhT21TcjQ1Z8Aw@mail.gmail.com>
+Message-ID: <CAK8P3a2vJFCJmeMj-vuasUhwa2=2P+hAr=ScGhT21TcjQ1Z8Aw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] efi: earlycon: Add support for generic framebuffers
+ and move to fbdev subsystem
+To:     Markuss Broks <markuss.broks@gmail.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>,
+        Ard Biesheuvel <ardb@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Borislav Petkov <bp@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Kees Cook <keescook@chromium.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Michal Suchanek <msuchanek@suse.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Wei Ming Chen <jj251510319013@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tony Lindgren <tony@atomide.com>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Rob Herring <robh@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Provags-ID: V03:K1:rCxTKLoMsKF+qy1+w1yA5c+w412i/gDEbQw04N3nxbN3DJdhvUp
+ F2gi5G/PFuuJFwleT8TaffAEaAFb/JXhwkaHNVFb6akoax/3d89aZJ26aE0MHLgwFBI/j5F
+ 7wgq3q7/W71RajaRDc+n/+xAJL6VvIQfawNJUW4TUs1wGdLwpsdPja/20TNIRn1/FL5eP7V
+ WdFX/7d9ESsZDDIKECRGg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:BwAYqLL4sg8=:datghrcUFVSGlpEFX0NyqP
+ 6Lkk1DQlbdb4iy0idbgVhVJUNXowmZ3GafWicZaGVAy78IIP2CnDpMQBhm5X/fOuGqHvidvST
+ O7pKUz4McOuP3bvFtZNACCRw2T6wOK83m/vf/LOogiZpibL4Hw/QyrVg0D7LEuYVGovOqD78K
+ clt1e7fBrdsDtrSAvGdUXn1+AWJHJk6uxH31l92hVoBBkZ/lWOKu9nr/eRc6hjaYkuSqenEHi
+ mPfHavXfbMbgz8GnCqvd1f4vQyygPsRyPGk1evEPro4ZqzpiaCyZCjG2WKhYMtWrXxmn7SajL
+ viV4U7IVFoNu+XwST9qMb5p93S3SeA9xHVxVVkeVG+a8lVWi2hWSdOYJDRVSbTwv7saYDKd1g
+ q7RgcV0XB9qgVoHz0E4l8VF88AMvozWRteT9EjLtCPyffziaIupTHxq4M2fXTjTIdp35Sl3ja
+ 1yWuUnBS4yokT4NOjQH0ni2gTJ17vN7VSQ2/3J3EmqoDsylCGZxwzK0dPYPEDIlULYxrt2EOS
+ qo8djFyA3AH7ejW2DK7/8Cx4+P8Vp2f3fyjNAle8U7s3grAybnHM7D4tQbIM9+o9yvKyDZ+uF
+ 0cyVOq+M5ygEmCIF1AQT/hlxwR+p8pirOR6D2koqZhbd9VXohL1+fIzIPGOMdUCP5o8tcNnUc
+ 34vYjbSgwTMfBTeyscHSxXlYyEAQyVHeWEpSA9j2VoGiA1gfB1EUZw6+dYyN7P/19sU5j/9JJ
+ SjlfVUQEPtdlUZ1GJt9cfc3u8TpkO5o7ZJCa9pa9kBMLwDQITalhR2qVvs+kw84ACEQzjiFv5
+ gznkHOw9f0/BhHvzt/qrGCzNgX1zfAXMr5qfhT/Wao4b20KtSUaEYjy1hnr051U/S8XXOYmWf
+ J/7hTnlWw1OmgN/OMHfOQaZPoOxknugtub35qgrUA8QZXLYNMvk9coHpYjGNpixKvsL0s5Qu0
+ XJckCnYGmwzJ0IsEZs/vNDEUa6L2iiNipIrRmtqrRVRK1J0uf5xzp
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Ard,
-
-[...]
-
-> > > From an end-user perspective, it's annoying enough that we'll have to
-> > > stick with DTs for the time being due to the use of PEPs in ACPI.
+On Thu, Jul 28, 2022 at 4:57 PM Markuss Broks <markuss.broks@gmail.com> wrote:
+> On 7/28/22 17:48, Arnd Bergmann wrote:
+> > On Thu, Jul 28, 2022 at 4:28 PM Markuss Broks <markuss.broks@gmail.com> wrote:
+> >>
+> >> Add early console support for generic linear framebuffer devices.
+> >> This driver supports probing from cmdline early parameters
+> >> or from the device-tree using information in simple-framebuffer node.
+> >> The EFI functionality should be retained in whole.
+> >> The driver was disabled on ARM because of a bug in early_ioremap
+> >> implementation on ARM.
+> >>
+> >> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+> >> ---
+> >>   .../admin-guide/kernel-parameters.txt         |  12 +-
+> >>   MAINTAINERS                                   |   5 +
+> >>   drivers/firmware/efi/Kconfig                  |   6 +-
+> >>   drivers/firmware/efi/Makefile                 |   1 -
+> >>   drivers/firmware/efi/earlycon.c               | 246 --------------
+> >>   drivers/video/fbdev/Kconfig                   |  11 +
+> >>   drivers/video/fbdev/Makefile                  |   1 +
+> >>   drivers/video/fbdev/earlycon.c                | 301 ++++++++++++++++++
 > >
-> > But have we explored or investigated what it takes to rewrite ACPI f/w
-> > to just use standard methods ? Does it require more firmware changes or
-> > new firmware entities or impossible at any cost ?
-> >
-> > For me that is more important than just getting this one on DT. Because
-> > if you take that path, we will have to keep doing that, with loads of
-> > unnecessary drivers if they are not shared with any other SoC with DT
-> > support upstream. We might also miss chance to get things added to the ACPI
-> > spec as we don't care which means that we never be able to use ACPI on
-> > similar future platforms even though they get shipped with ACPI.
-> >
-> > It will be a loop where we constantly keep converting this ACPI shipped
-> > platform into DT upstream. IMHO we don't want to be there.
-> >
+> > It looks like this is not actually related to fbdev, and since drivers are
+> > moving from fbdev/simplefb towards drm/simpledrm, maybe it would be
+> > better to put this into either drivers/gpu/drm/tiny/ or possibly
+> > drivers/video/console to let this be used without enabling fbdev?
 >
-> Supporting these devices in Linux in ACPI mode would involve
-> reimplementing the PEP subsystem, and reimplementing PEP drivers for
-> all these QCOM peripherals to manage the probing and the power states.
-> I don't think this is realistic at all, and a huge waste of
-> engineering effort otherwise.
->
-> It is also orthogonal to the discussion, as far as I understand: ACPI
-> is not telling the system whether or not these TZ services should be
-> used instead of EFI runtime calls.
->
-> So I think this is a reasonable way to expose these EFI services,
-> although I am not thrilled about the fact that it is needed.
-> Surprisingly, Microsoft also supports this model both on x86 and arm64
-> for platforms that keep their variables on eMMC (or any other kind of
-> storage that sits behind a controller that cannot be shared between
-> the OS and the firmware). So if we agree that we will support these
-> systems as best we can, supporting EFI variables at runtime is
-> something that we should support as well. (Note that I am not
-> convinced about the latter point myself: on many systems, the EFI
-> variable store is used precisely once, when GRUB gets installed and
-> its path added to the boot order, so if we could find a way to
-> streamline that without EFI runtime services, the story around why EFI
-> runtime services are important becomes quite weak)
+> Ideally this shouldn't depend on anything, because it isn't utilizing
+> any of fbdev code and won't be utilizing any of drm/console code. I
+> agree that either of those would be a better place for it, but which one
+> do you think would suit more for this driver?
 
-Unfortunately this is not entirely true.  Yes the majority of use
-cases is what you describe, however we also need SetVariable for
-capsule update on disk.
+I think ideally this would be integrated with simpledrm in the long run,
+but I have no idea what that means in terms of future code changes.
 
-[...]
+Maybe Thomas Zimmermann has an idea here.
+
+        Arnd
