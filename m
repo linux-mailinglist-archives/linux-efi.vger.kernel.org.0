@@ -2,238 +2,145 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E4315847A0
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Jul 2022 23:20:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF5305847EB
+	for <lists+linux-efi@lfdr.de>; Fri, 29 Jul 2022 00:02:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233234AbiG1VUx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 28 Jul 2022 17:20:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46222 "EHLO
+        id S231160AbiG1WCI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 28 Jul 2022 18:02:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229620AbiG1VUx (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Jul 2022 17:20:53 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FFC26E8B4;
-        Thu, 28 Jul 2022 14:20:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1659043251; x=1690579251;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pxP46KbMMLqAAyC8VE4buMLpi2fN+uP6X+8JG9II198=;
-  b=mtAf7M2Hm39W3dG176XEBoR+wivQb+Ai36XZ0PsscK4411xLciFDHu27
-   d3YtmZC7WdAWM6zJTlyp4bo8/yJDxvyzY/ToV8MVKqa+msXJzzQbokoej
-   8RMfulLbCFv28Mv309iJCxh/dvTWi7Ok0crtxQfkJZ+akmf91Dr6FMfiE
-   XjjQvUEZAUeX8KLYhbtKM1d7Eh9y/6B7FfrGFYkVjWo3sLnjsSlMDMiiB
-   XEjKqfsVJU8AQCY5W9vV8m5mTTKU4Z0yYicIpI27pnyB15VJZbDopjufd
-   M9u9J/wSL/nNQt+xzGMcBaH1GWcubGtYnoHNI2rHE666CBbFvsdRl/9V8
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10422"; a="352630431"
-X-IronPort-AV: E=Sophos;i="5.93,199,1654585200"; 
-   d="scan'208";a="352630431"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2022 14:20:51 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,199,1654585200"; 
-   d="scan'208";a="703958074"
-Received: from lkp-server01.sh.intel.com (HELO e0eace57cfef) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 28 Jul 2022 14:20:45 -0700
-Received: from kbuild by e0eace57cfef with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oHAw0-000Ab2-16;
-        Thu, 28 Jul 2022 21:20:44 +0000
-Date:   Fri, 29 Jul 2022 05:20:22 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Markuss Broks <markuss.broks@gmail.com>,
-        linux-kernel@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, linux-fbdev@vger.kernel.org,
-        linux-efi@vger.kernel.org, Markuss Broks <markuss.broks@gmail.com>,
-        linux-doc@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
-        dri-devel@lists.freedesktop.org,
-        Wei Ming Chen <jj251510319013@gmail.com>,
-        phone-devel@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        linux-serial@vger.kernel.org, Borislav Petkov <bp@suse.de>,
-        Kees Cook <keescook@chromium.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Michal Suchanek <msuchanek@suse.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        Helge Deller <deller@gmx.de>
-Subject: Re: [PATCH 2/2] efi: earlycon: Add support for generic framebuffers
- and move to fbdev subsystem
-Message-ID: <202207290523.Br8Zr7V3-lkp@intel.com>
-References: <20220728142824.3836-3-markuss.broks@gmail.com>
+        with ESMTP id S230346AbiG1WCI (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Jul 2022 18:02:08 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD95E6249C
+        for <linux-efi@vger.kernel.org>; Thu, 28 Jul 2022 15:02:04 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id j195so5374497ybj.11
+        for <linux-efi@vger.kernel.org>; Thu, 28 Jul 2022 15:02:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=KKJMz2p0fMbqbmhUA2NRK8taNgQHWFCPCykk0R/nVkQ=;
+        b=BIAqjFwuvscZyaQvaO2Pp5Tm2K8Fcr9ETnXvpU5e3wVsse21Jc6+b/sSURRzcM4QRX
+         f+AUZdMnE7et9mw5oGUM8bOIP7AqPCPEFZ5JFqKRH4odWmwDZ0FjP8rMMLUG8y3aCwAh
+         lwgedBwQkhfs5enr6DiCZ/gKqdYfyYsGa6781lN44ppqnMvdnKWZaI1L0KYuIh0w3h/W
+         Ex4VAWe01YlKol56ws7q0/gUwiDhufvbMAS97qfg8YmOtZ7iNvuxcaVvr0OuapoWpqSG
+         zk5SMyBnMxjyNUeOtF5G284TFqrCbKyKwnrUsp1SvrzycKfu/wMWOIfliAogPsiP7m2l
+         e2ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=KKJMz2p0fMbqbmhUA2NRK8taNgQHWFCPCykk0R/nVkQ=;
+        b=iN9kNn5xbgSZHgQ3ng3kzcy6aoWxJo83i/yg6705RXr5Lrdu2CcjvByiyhH4jMnfof
+         RBg5/KXm19rcvk3ipEfGSZ4XSc9s/PtEqaYmFO2Ib71BAFm8EhLqMPOrkvsb7AzSIQBH
+         a9KoOAIIm2jPSgVcXdpI55qChzDp3OUeg5hZXZ25GF3c9L6ycY14REz6KDYiG1mhqDM+
+         caYQcgtXcQU3UxUELchhvUix4hD7G/d2nCUcXZGsNxpLevy8sYKYii3x2Ye5l6GunETm
+         1bZprQ0/Oaep1wOMEZ/D7D0EWI2NUBuFazyl2xUiqaw6oRSNh8YPXWvjgprFcyOLIWwS
+         +SSQ==
+X-Gm-Message-State: ACgBeo3mpL1SKX5ZUck/gPb1swWR7gfM6fHVxuqO2ObfHbY9ZK6IOkP0
+        gyfUDuvS/PFTa6XRZmlolLo4ohI3ORcBYDDKtnkQPA==
+X-Google-Smtp-Source: AA6agR6CsM1GKbxoIN8NWcO7GQfLofiour4J2FuUY6Juif22kb1aJ6rJGRSLyGPjmgf+UOW6vfxySZ2NKkNcgLC9zMk=
+X-Received: by 2002:a05:6902:128d:b0:670:9009:f859 with SMTP id
+ i13-20020a056902128d00b006709009f859mr549949ybu.321.1659045723977; Thu, 28
+ Jul 2022 15:02:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220728142824.3836-3-markuss.broks@gmail.com>
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220627223808.ihgy3epdx6ofll43@black.fi.intel.com>
+ <CAMj1kXEdS9SzFZZ4WGH6sR0WDCOgYDZ3Geg6X2sqSnQ-CXXpZA@mail.gmail.com>
+ <20220718172159.4vwjzrfthelovcty@black.fi.intel.com> <CAAH4kHYR+VkSJ5J8eWmeaEvstuRz_EuqVQqPfwmp5dhNGRyJwQ@mail.gmail.com>
+ <CAAH4kHaHJo4NUb72tHeica4a34hq5u_QP6d6Vuzngf6EqTJ8Aw@mail.gmail.com>
+ <CAAH4kHaB2tL+sAn0NAciu5DQeX5hpNkDees=n=f83S=Ph9Y6tw@mail.gmail.com>
+ <YtcCWfCQuEsVhH6W@zn.tnic> <CAMj1kXEKtcieycyyFMyuLKJK61FgaDwtLieC0N47W1Sa5LaBsA@mail.gmail.com>
+ <YtcgxxMyFTReuuRw@zn.tnic> <bb7479df-7871-9861-600d-c2fed783b659@intel.com>
+ <YtcnQbiRgZPtR+rQ@zn.tnic> <22d54786-bc12-ecc5-2b37-cbaa56090aa8@intel.com>
+ <CAA03e5FMEyswDhoXRJ5U_n9RG4QM524aQYpF4473ydnAVJr1PA@mail.gmail.com>
+ <ffb4ae72-7fd4-d2a0-df10-3969cf8ca07f@intel.com> <CAMj1kXHEc=vEt=CtfdiPEsUe2i8QogAi+jvtY6h1awo7GZ-nRg@mail.gmail.com>
+In-Reply-To: <CAMj1kXHEc=vEt=CtfdiPEsUe2i8QogAi+jvtY6h1awo7GZ-nRg@mail.gmail.com>
+From:   Dionna Amalie Glaze <dionnaglaze@google.com>
+Date:   Thu, 28 Jul 2022 15:01:52 -0700
+Message-ID: <CAAH4kHYGZ179eYREi-YcYNd4Xd8gTPa2WX0iphr=Kiz6-A7hnQ@mail.gmail.com>
+Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted memory
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Dave Hansen <dave.hansen@intel.com>, Marc Orr <marcorr@google.com>,
+        Borislav Petkov <bp@alien8.de>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Peter Gonda <pgonda@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Varad Gautam <varad.gautam@suse.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        Marcelo Cerri <marcelo.cerri@canonical.com>,
+        tim.gardner@canonical.com,
+        Khalid ElMously <khalid.elmously@canonical.com>,
+        philip.cox@canonical.com,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        linux-coco@lists.linux.dev, linux-efi <linux-efi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "Yao, Jiewen" <jiewen.yao@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Markuss,
+>
+> What I strongly object to is inventing a new bespoke way for the
+> firmware to make inferences about the capabilities of the image by
+> inspecting fields in the file representation of the image (which is
+> not guaranteed by EFI to be identical to its in-memory representation,
+> as, e.g., the PE/COFF header could be omitted by a loader without
+> violating the spec)
+>
+> As for the intermediate thing: yes, that would be a valuable thing to
+> have in OVMF (and I will gladly take EDK2 patches that implement
+> this). However, I'm not sure how you decide whether or not this thing
+> should be active or not, doesn't that just move the problem around?
 
-I love your patch! Yet something to improve:
+This does just move the problem around, but it makes correct behavior
+the default instead of silently ignoring most of the VM's memory and
+booting regularly. I have the driver mostly written to change the
+behavior to accept all by default unless a driver has been installed
+to set a particular boolean to make it not. Still that's yet another
+thing as you say.
 
-[auto build test ERROR on tty/tty-testing]
-[also build test ERROR on efi/next staging/staging-testing usb/usb-testing linus/master v5.19-rc8 next-20220728]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I agree with everyone that this situation just stinks. "Can't you just
+boot it?" was asked before, and yes we can, but at the scale of a CSP
+managing anybody's image uploads, that not-insignificant cost has to
+be paid by someone. It's a hard problem to route the image to the
+right kind of machine that's expected to be able to run it... it's a
+big ol' mess.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Markuss-Broks/Add-generic-framebuffer-support-to-EFI-earlycon-driver/20220728-223117
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git tty-testing
-config: ia64-allmodconfig (https://download.01.org/0day-ci/archive/20220729/202207290523.Br8Zr7V3-lkp@intel.com/config)
-compiler: ia64-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/b6a59e731326deaa78f7dcbd97520e2eed2bc707
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Markuss-Broks/Add-generic-framebuffer-support-to-EFI-earlycon-driver/20220728-223117
-        git checkout b6a59e731326deaa78f7dcbd97520e2eed2bc707
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=ia64 SHELL=/bin/bash drivers/video/fbdev/
+One thing is for sure: these patches shouldn't be blocked by the "how
+do we detect it" question. I'm glad to see so much engagement with
+this problem, but I fear I might have delayed its progress towards a
+merge. I know AMD has a follow-up to add SEV-SNP accept_memory support
+to finish this all up.
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All error/warnings (new ones prefixed by >>):
-
-   drivers/video/fbdev/earlycon.c: In function 'simplefb_earlycon_map':
->> drivers/video/fbdev/earlycon.c:65:16: error: implicit declaration of function 'early_memremap_prot'; did you mean 'early_memremap'? [-Werror=implicit-function-declaration]
-      65 |         return early_memremap_prot(info.phys_base + start, len, pgprot_val(fb_prot));
-         |                ^~~~~~~~~~~~~~~~~~~
-         |                early_memremap
->> drivers/video/fbdev/earlycon.c:65:16: warning: returning 'int' from a function with return type 'void *' makes pointer from integer without a cast [-Wint-conversion]
-      65 |         return early_memremap_prot(info.phys_base + start, len, pgprot_val(fb_prot));
-         |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   cc1: some warnings being treated as errors
-   {standard input}: Assembler messages:
-   {standard input}:210: Error: Register number out of range 0..0
-   {standard input}:211: Error: Register number out of range 0..0
-   {standard input}:211: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 35
-   {standard input}:211: Warning: Only the first path encountering the conflict is reported
-   {standard input}:210: Warning: This is the location of the conflicting usage
-   {standard input}:212: Error: Register number out of range 0..0
-   {standard input}:212: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 35
-   {standard input}:212: Warning: Only the first path encountering the conflict is reported
-   {standard input}:210: Warning: This is the location of the conflicting usage
-   {standard input}:212: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 35
-   {standard input}:212: Warning: Only the first path encountering the conflict is reported
-   {standard input}:211: Warning: This is the location of the conflicting usage
-   {standard input}:214: Error: Register number out of range 0..0
-   {standard input}:214: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 35
-   {standard input}:214: Warning: Only the first path encountering the conflict is reported
-   {standard input}:210: Warning: This is the location of the conflicting usage
-   {standard input}:214: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 35
-   {standard input}:214: Warning: Only the first path encountering the conflict is reported
-   {standard input}:211: Warning: This is the location of the conflicting usage
-   {standard input}:214: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 35
-   {standard input}:214: Warning: Only the first path encountering the conflict is reported
-   {standard input}:212: Warning: This is the location of the conflicting usage
-   {standard input}:215: Error: Register number out of range 0..0
-   {standard input}:215: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 35
-   {standard input}:215: Warning: Only the first path encountering the conflict is reported
-   {standard input}:210: Warning: This is the location of the conflicting usage
-   {standard input}:215: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 35
-   {standard input}:215: Warning: Only the first path encountering the conflict is reported
-   {standard input}:211: Warning: This is the location of the conflicting usage
-   {standard input}:215: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 35
-   {standard input}:215: Warning: Only the first path encountering the conflict is reported
-   {standard input}:212: Warning: This is the location of the conflicting usage
-   {standard input}:215: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 35
-   {standard input}:215: Warning: Only the first path encountering the conflict is reported
-   {standard input}:214: Warning: This is the location of the conflicting usage
-   {standard input}:216: Error: Register number out of range 0..0
-   {standard input}:216: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 35
-   {standard input}:216: Warning: Only the first path encountering the conflict is reported
-   {standard input}:210: Warning: This is the location of the conflicting usage
-   {standard input}:216: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 35
-   {standard input}:216: Warning: Only the first path encountering the conflict is reported
-   {standard input}:211: Warning: This is the location of the conflicting usage
-   {standard input}:216: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 35
-   {standard input}:216: Warning: Only the first path encountering the conflict is reported
-   {standard input}:212: Warning: This is the location of the conflicting usage
-   {standard input}:216: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 35
-   {standard input}:216: Warning: Only the first path encountering the conflict is reported
-   {standard input}:214: Warning: This is the location of the conflicting usage
-   {standard input}:216: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 35
-   {standard input}:216: Warning: Only the first path encountering the conflict is reported
-   {standard input}:215: Warning: This is the location of the conflicting usage
-   {standard input}:220: Error: Register number out of range 0..0
-   {standard input}:376: Error: Register number out of range 0..1
-   {standard input}:376: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 37
-   {standard input}:376: Warning: Only the first path encountering the conflict is reported
-   {standard input}:374: Warning: This is the location of the conflicting usage
-   {standard input}:378: Error: Register number out of range 0..1
-   {standard input}:378: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 37
-   {standard input}:378: Warning: Only the first path encountering the conflict is reported
-   {standard input}:374: Warning: This is the location of the conflicting usage
-   {standard input}:378: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 37
-   {standard input}:378: Warning: Only the first path encountering the conflict is reported
-   {standard input}:376: Warning: This is the location of the conflicting usage
-   {standard input}:379: Error: Register number out of range 0..1
-   {standard input}:379: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 37
-   {standard input}:379: Warning: Only the first path encountering the conflict is reported
-   {standard input}:374: Warning: This is the location of the conflicting usage
-   {standard input}:379: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 37
-   {standard input}:379: Warning: Only the first path encountering the conflict is reported
-   {standard input}:376: Warning: This is the location of the conflicting usage
-   {standard input}:379: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 37
-   {standard input}:379: Warning: Only the first path encountering the conflict is reported
-   {standard input}:378: Warning: This is the location of the conflicting usage
-   {standard input}:380: Error: Register number out of range 0..1
-   {standard input}:380: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 37
-   {standard input}:380: Warning: Only the first path encountering the conflict is reported
-   {standard input}:374: Warning: This is the location of the conflicting usage
-   {standard input}:380: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 37
-   {standard input}:380: Warning: Only the first path encountering the conflict is reported
-   {standard input}:376: Warning: This is the location of the conflicting usage
-   {standard input}:380: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 37
-   {standard input}:380: Warning: Only the first path encountering the conflict is reported
-   {standard input}:378: Warning: This is the location of the conflicting usage
-   {standard input}:380: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 37
-   {standard input}:380: Warning: Only the first path encountering the conflict is reported
-   {standard input}:379: Warning: This is the location of the conflicting usage
-   {standard input}:383: Error: Register number out of range 0..1
-   {standard input}:384: Error: Register number out of range 0..1
-   {standard input}:384: Warning: Use of 'mov' violates WAW dependency 'GR%, % in 1 - 127' (impliedf), specific resource number is 37
-   {standard input}:384: Warning: Only the first path encountering the conflict is reported
-   {standard input}:383: Warning: This is the location of the conflicting usage
-
-
-vim +65 drivers/video/fbdev/earlycon.c
-
-    56	
-    57	static __ref void *simplefb_earlycon_map(unsigned long start, unsigned long len)
-    58	{
-    59		pgprot_t fb_prot;
-    60	
-    61		if (info.virt_base)
-    62			return info.virt_base + start;
-    63	
-    64		fb_prot = PAGE_KERNEL;
-  > 65		return early_memremap_prot(info.phys_base + start, len, pgprot_val(fb_prot));
-    66	}
-    67	
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+I'll try to get the ear of all the distributions that are tracking
+towards providing SEV-SNP-supported images for CSPs to get them on the
+release that includes these patches. I'll also see about upstreaming
+that EFI driver and EDK2 changes in case there's a slip in the kernel
+release and we need this workaround.
+--
+-Dionna Glaze, PhD (she/her)
