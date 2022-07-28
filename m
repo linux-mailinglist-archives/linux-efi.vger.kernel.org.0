@@ -2,51 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4780F584116
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Jul 2022 16:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29F1958412C
+	for <lists+linux-efi@lfdr.de>; Thu, 28 Jul 2022 16:29:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231671AbiG1O2o (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 28 Jul 2022 10:28:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56462 "EHLO
+        id S231845AbiG1O24 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 28 Jul 2022 10:28:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbiG1O2n (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Jul 2022 10:28:43 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AE3065D48;
-        Thu, 28 Jul 2022 07:28:42 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id sz17so3446369ejc.9;
-        Thu, 28 Jul 2022 07:28:41 -0700 (PDT)
+        with ESMTP id S231807AbiG1O2y (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Jul 2022 10:28:54 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F12C565D66;
+        Thu, 28 Jul 2022 07:28:52 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id j22so3491429ejs.2;
+        Thu, 28 Jul 2022 07:28:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=gvXbeuK/nDPmsZZTRnDVNdv3SfvIgHhFwFU2kIzHG68=;
-        b=UUn+zotXHe6ND+iqyztenRNM6eQqekQZejLSPdmR7TqJ/qPLS7+rJB6KdPHJxTiZK+
-         q3BotwxEHcUR0oxFWmR8c3559LeGfizKqWvCE/alvuJctwxRL+0/gyKCu9GT2leHLrOY
-         x6tXIjp7tGWh5atJIbhoXTGnFxQq658fGLd3SHG4ZCyiHaQh+hZLHXksYqUzfQJzK2cv
-         Y0LACEGoBZWEGxcBTk5kV+NcgEpQ30wdddhf+ysl1YBNQjYAYClayxzS9uXCs2IkNZnR
-         OOT27cxCpxgBMtOTuQyLc9fuI8ymnflO2gnBwmGQSNljurU5u2C3BQ7S9PDmoZyfO6h9
-         e0mg==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=+qxi1BsKPmynG3xfpNZLp6J5s/IWJprPFoEGd6KJx1s=;
+        b=Dqobgjs1nII8eXteQLjz2ED1bVraj/SM6DyKm259IZRg1sN9fXwxKHIjnG2b0D3INP
+         CJtDIdhUiiT3FrZ8VGIV5YyCY/B5CS56vg2LrtG2qoKAVoBPg5C5Rc4irrfAhqzUR8Gh
+         +kybMZBZKngEWg1dyX5m4BVx0V2laC+H53UD1uGBiO18QUV/cjUgIsNB5O4VSdrtTV9W
+         Cjr63Q11WQXEj+bfEst6CJpV6b6nywbFMPcaGL39fGMjwTeOGbNRQn9EtmKqq7ZN4xwN
+         pF26gzooknPqRasWoevZQAJ4FehkqRleQDodSdYOcvnJ8YGzspu/VUm+wAjSwHvBT353
+         9FoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=gvXbeuK/nDPmsZZTRnDVNdv3SfvIgHhFwFU2kIzHG68=;
-        b=A+k/JTpdFYWttticERrj01uw8e9nqMOqqqpofWA0LmqhYEaJXKjcRmBHKv0OL9XvJ4
-         iQ6S/42SF1CQXTZ9GX0xoVzW6rL3i2GO4v2SJ684AOoBvvViD2ONAcxI6te3CtrBX25k
-         ih/skHD17aNktL81ZVopS7p2wMdhfVXn23sS0Y+7xQwbL2sEKkk5bQNPkwAnNV8H+Z3Y
-         uzGNQDarxtp2JSrY+zIMGDTSRPOdDWaITFeabPHqMHv0nU1/nZniYd33Auc7dARAYnmV
-         zZbENdAHNJYm+LICSaxUh74cMdt9/Y0g8LpWGvL5KkYs91KbuAbyHMicIxrjeL1Ow8jK
-         a11A==
-X-Gm-Message-State: AJIora/6Pq+lV3lD5k8eX79+IjxQTbXHAxNj/d7To7xG6sYa5BTjeEzO
-        rOLPITw9Dw4JAWEDoTEtUC4AuxP/qecyApbz
-X-Google-Smtp-Source: AGRyM1usb4SPM3cGqtqin0Wwas0cy7iM0Lq2zERxvCAmcTEakP2TyeXIbIB/uwiXZ00pIE3dJWi/UQ==
-X-Received: by 2002:a17:907:6d01:b0:72f:53f:7a25 with SMTP id sa1-20020a1709076d0100b0072f053f7a25mr20932970ejc.126.1659018519713;
-        Thu, 28 Jul 2022 07:28:39 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=+qxi1BsKPmynG3xfpNZLp6J5s/IWJprPFoEGd6KJx1s=;
+        b=HBiH159v6FP5hmFNEK1MbJWvrDYIqVclT5Dl+AOO0iKd0yHrkxHnbsO58UF3dO770+
+         hEF952flatyyhaMQX7pTelv6SWMFjW4K5pNdiwlOLxNqGzDT97hVFYlyapWCorZpMtWB
+         0uy1lu/vysX5fUd+pQ312MxgwSDyR+FWIjCCVHCKb7RXa74Py+xi8/yCN9wztZVszwu1
+         GTXHlYHs/+5b71YUB1HZ2jW2x48TesaXd4Emr5jK5yZkvg11JRqyK7k7lM5b33GMteZL
+         KK7erNO0ijxdKiqNWS+huOqDTYzVhj2khydwnOiBS507h+9QHCqQKuGJKwlaVt1POxvM
+         SAXQ==
+X-Gm-Message-State: AJIora+rHdZaamCrYfr2AnIh9uK5Ad2uAfyA0RKBUHuj0fIWP6egv66r
+        YAux1owDDUEwsfCbH1hbPclwCQiID5pQIKCj
+X-Google-Smtp-Source: AGRyM1thhqvyGnz1B8Vxf/2phwUgpIo+oFuDvwayWQtnd+524pm6oLNhycj5/sutoRUawvMv1D4DGA==
+X-Received: by 2002:a17:907:6089:b0:72f:56db:ccb6 with SMTP id ht9-20020a170907608900b0072f56dbccb6mr21020085ejc.318.1659018530972;
+        Thu, 28 Jul 2022 07:28:50 -0700 (PDT)
 Received: from nergzd-desktop.localdomain ([23.154.177.9])
-        by smtp.gmail.com with ESMTPSA id y1-20020aa7d501000000b0043cce1d3a0fsm755949edq.87.2022.07.28.07.28.34
+        by smtp.gmail.com with ESMTPSA id y1-20020aa7d501000000b0043cce1d3a0fsm755949edq.87.2022.07.28.07.28.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Jul 2022 07:28:39 -0700 (PDT)
+        Thu, 28 Jul 2022 07:28:50 -0700 (PDT)
 From:   Markuss Broks <markuss.broks@gmail.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -71,11 +71,14 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Tony Lindgren <tony@atomide.com>, linux-doc@vger.kernel.org,
         linux-efi@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH 0/2] Add generic framebuffer support to EFI earlycon driver
-Date:   Thu, 28 Jul 2022 17:28:17 +0300
-Message-Id: <20220728142824.3836-1-markuss.broks@gmail.com>
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Petr Mladek <pmladek@suse.com>
+Subject: [PATCH 1/2] drivers: serial: earlycon: Pass device-tree node
+Date:   Thu, 28 Jul 2022 17:28:18 +0300
+Message-Id: <20220728142824.3836-2-markuss.broks@gmail.com>
 X-Mailer: git-send-email 2.37.0
+In-Reply-To: <20220728142824.3836-1-markuss.broks@gmail.com>
+References: <20220728142824.3836-1-markuss.broks@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -88,37 +91,42 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Make the EFI earlycon driver be suitable for any linear framebuffers.
-This should be helpful for early porting of boards with no other means of
-output, like smartphones/tablets. There seems to be an issue with early_ioremap
-function on ARM32, but I am unable to find the exact cause. It appears the mappings
-returned by it are somehow incorrect, thus the driver is disabled on ARM. EFI early
-console was disabled on IA64 previously, so I kept it in EFI earlycon Kconfig.
+Pass a pointer to device-tree node in case the driver probed from
+OF. This makes early console drivers able to fetch options from
+device-tree node properties.
 
-This patch also changes behavior on EFI systems, by selecting the mapping type
-based on if the framebuffer region intersects with system RAM. If it does, it's
-common sense that it should be in RAM as a whole, and so the system RAM mapping is
-used. It was tested to be working on my PC (Intel Z490 platform).
+Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+---
+ drivers/tty/serial/earlycon.c | 3 +++
+ include/linux/serial_core.h   | 1 +
+ 2 files changed, 4 insertions(+)
 
-Markuss Broks (2):
-  drivers: serial: earlycon: Pass device-tree node
-  efi: earlycon: Add support for generic framebuffers and move to fbdev
-    subsystem
-
- .../admin-guide/kernel-parameters.txt         |  12 +-
- MAINTAINERS                                   |   5 +
- drivers/firmware/efi/Kconfig                  |   6 +-
- drivers/firmware/efi/Makefile                 |   1 -
- drivers/firmware/efi/earlycon.c               | 246 --------------
- drivers/tty/serial/earlycon.c                 |   3 +
- drivers/video/fbdev/Kconfig                   |  11 +
- drivers/video/fbdev/Makefile                  |   1 +
- drivers/video/fbdev/earlycon.c                | 301 ++++++++++++++++++
- include/linux/serial_core.h                   |   1 +
- 10 files changed, 331 insertions(+), 256 deletions(-)
- delete mode 100644 drivers/firmware/efi/earlycon.c
- create mode 100644 drivers/video/fbdev/earlycon.c
-
+diff --git a/drivers/tty/serial/earlycon.c b/drivers/tty/serial/earlycon.c
+index 57c70851f22a0e78805f34d1a7700708104b6f6a..14e8a7fe54486a1c377a6659c37a73858de5bf0b 100644
+--- a/drivers/tty/serial/earlycon.c
++++ b/drivers/tty/serial/earlycon.c
+@@ -304,6 +304,9 @@ int __init of_setup_earlycon(const struct earlycon_id *match,
+ 		strlcpy(early_console_dev.options, options,
+ 			sizeof(early_console_dev.options));
+ 	}
++
++	early_console_dev.node = node;
++
+ 	earlycon_init(&early_console_dev, match->name);
+ 	err = match->setup(&early_console_dev, options);
+ 	earlycon_print_info(&early_console_dev);
+diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+index cbd5070bc87f42aa450c4ca7af8a9b59fbe88574..3295721f33e482124fae8370b5889d5d6c012303 100644
+--- a/include/linux/serial_core.h
++++ b/include/linux/serial_core.h
+@@ -349,6 +349,7 @@ struct earlycon_device {
+ 	struct uart_port port;
+ 	char options[16];		/* e.g., 115200n8 */
+ 	unsigned int baud;
++	unsigned long node;
+ };
+ 
+ struct earlycon_id {
 -- 
 2.37.0
 
