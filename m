@@ -2,90 +2,84 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAB555840B0
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Jul 2022 16:10:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4780F584116
+	for <lists+linux-efi@lfdr.de>; Thu, 28 Jul 2022 16:28:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231395AbiG1OKp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 28 Jul 2022 10:10:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38196 "EHLO
+        id S231671AbiG1O2o (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 28 Jul 2022 10:28:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231159AbiG1OKB (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Jul 2022 10:10:01 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C9CC66120;
-        Thu, 28 Jul 2022 07:09:48 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id ay11-20020a05600c1e0b00b003a3013da120so2589401wmb.5;
-        Thu, 28 Jul 2022 07:09:48 -0700 (PDT)
+        with ESMTP id S229531AbiG1O2n (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Jul 2022 10:28:43 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AE3065D48;
+        Thu, 28 Jul 2022 07:28:42 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id sz17so3446369ejc.9;
+        Thu, 28 Jul 2022 07:28:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=ixqHRPr6e7MHs/cE0ogao0EJfks3+o9Xq3/fufygzUo=;
-        b=GX9O/gveVrekkyIe1HGILQb6uOLCLpBWU/EWtJr30BOpjOUJSdJrxcKPOjH9jshgdS
-         axn+o9F83Xtyk2FgV6lPzzQDfvSYMduZflssUI4i7xt/hGwfPz4dlZCYwbzPOhNW85+P
-         x8vIhPNHctkTl5maKKiAk+68zirbIPK85PE+feXTixiBX8e9Cs+kPW8GCkFKLD4wLDMe
-         RiVd3iIZ2r7l4KmgY1KKXWC4Pgyi0qWp5GZu7F8nn6TlycuuBDfCHX28YQy/z/lxECuy
-         HRuhRyTiisc1cj0hva/FHqs2CMCSd+i9DoNqWPh/vgnCIPjUrZtMX98b76C5tqMgxipm
-         LhVw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=gvXbeuK/nDPmsZZTRnDVNdv3SfvIgHhFwFU2kIzHG68=;
+        b=UUn+zotXHe6ND+iqyztenRNM6eQqekQZejLSPdmR7TqJ/qPLS7+rJB6KdPHJxTiZK+
+         q3BotwxEHcUR0oxFWmR8c3559LeGfizKqWvCE/alvuJctwxRL+0/gyKCu9GT2leHLrOY
+         x6tXIjp7tGWh5atJIbhoXTGnFxQq658fGLd3SHG4ZCyiHaQh+hZLHXksYqUzfQJzK2cv
+         Y0LACEGoBZWEGxcBTk5kV+NcgEpQ30wdddhf+ysl1YBNQjYAYClayxzS9uXCs2IkNZnR
+         OOT27cxCpxgBMtOTuQyLc9fuI8ymnflO2gnBwmGQSNljurU5u2C3BQ7S9PDmoZyfO6h9
+         e0mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=ixqHRPr6e7MHs/cE0ogao0EJfks3+o9Xq3/fufygzUo=;
-        b=dhUQTkr2vCkKMC4JGEc5CPc6aShYEJBb5EzkMk/IMoiVH/zOgTlfOb/UtaPqOzxmwM
-         NYCub7maHYGCV5aD8sws3BzdhIoL3WWiUxqvQCyEBzDw/i8QefNV3QBae6YSpWtVyd13
-         2dtTW/+s+kAOUIYwLIXm3/ufa4EZapXcxjZIDjSY3V0yrAPee462S+3QhaR7I1kwTjq1
-         eRfQg/sUDyQrx1mQqyorOW3H9VrZ7KQ2grgMuc8yxGeqnqrsVOttuIr1VyAwLm9S8uWB
-         Pt/FhTr7O+58m1hoLvGAo3yJS3PRfE92x9HjGggf+F+eFQ+zJ8yA2pnCYTswZ28QDLto
-         CUdQ==
-X-Gm-Message-State: AJIora8Xsg3W4rAa1Iue9N58qU3zx/BL8BZBvR2jWMCNYtR8yoMHmG3Z
-        dJIoIeNbD7PJGmQmkbK3hdE=
-X-Google-Smtp-Source: AGRyM1uQ8JmKJbrJWgcUJogFvOJNGMZ7Key56sa6wlDnx+PMBxeRB0c9qy5i4aS4okzS8GvyWxQzzw==
-X-Received: by 2002:a1c:288:0:b0:3a3:5332:9d16 with SMTP id 130-20020a1c0288000000b003a353329d16mr6702665wmc.168.1659017386588;
-        Thu, 28 Jul 2022 07:09:46 -0700 (PDT)
-Received: from [192.168.2.202] (pd9ea36f8.dip0.t-ipconnect.de. [217.234.54.248])
-        by smtp.gmail.com with ESMTPSA id o5-20020a05600c510500b003a2d6f26babsm1539451wms.3.2022.07.28.07.09.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Jul 2022 07:09:46 -0700 (PDT)
-Message-ID: <d16d14fd-3edc-32f8-d00b-23b4b8a799fa@gmail.com>
-Date:   Thu, 28 Jul 2022 16:09:44 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH 4/4] dt-bindings: firmware: Add Qualcomm UEFI Secure
- Application client
-Content-Language: en-US
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        bh=gvXbeuK/nDPmsZZTRnDVNdv3SfvIgHhFwFU2kIzHG68=;
+        b=A+k/JTpdFYWttticERrj01uw8e9nqMOqqqpofWA0LmqhYEaJXKjcRmBHKv0OL9XvJ4
+         iQ6S/42SF1CQXTZ9GX0xoVzW6rL3i2GO4v2SJ684AOoBvvViD2ONAcxI6te3CtrBX25k
+         ih/skHD17aNktL81ZVopS7p2wMdhfVXn23sS0Y+7xQwbL2sEKkk5bQNPkwAnNV8H+Z3Y
+         uzGNQDarxtp2JSrY+zIMGDTSRPOdDWaITFeabPHqMHv0nU1/nZniYd33Auc7dARAYnmV
+         zZbENdAHNJYm+LICSaxUh74cMdt9/Y0g8LpWGvL5KkYs91KbuAbyHMicIxrjeL1Ow8jK
+         a11A==
+X-Gm-Message-State: AJIora/6Pq+lV3lD5k8eX79+IjxQTbXHAxNj/d7To7xG6sYa5BTjeEzO
+        rOLPITw9Dw4JAWEDoTEtUC4AuxP/qecyApbz
+X-Google-Smtp-Source: AGRyM1usb4SPM3cGqtqin0Wwas0cy7iM0Lq2zERxvCAmcTEakP2TyeXIbIB/uwiXZ00pIE3dJWi/UQ==
+X-Received: by 2002:a17:907:6d01:b0:72f:53f:7a25 with SMTP id sa1-20020a1709076d0100b0072f053f7a25mr20932970ejc.126.1659018519713;
+        Thu, 28 Jul 2022 07:28:39 -0700 (PDT)
+Received: from nergzd-desktop.localdomain ([23.154.177.9])
+        by smtp.gmail.com with ESMTPSA id y1-20020aa7d501000000b0043cce1d3a0fsm755949edq.87.2022.07.28.07.28.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Jul 2022 07:28:39 -0700 (PDT)
+From:   Markuss Broks <markuss.broks@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Steev Klimaszewski <steev@kali.org>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        Cristian Marussi <cristian.marussi@arm.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-arm-msm@vger.kernel.org, linux-efi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220723224949.1089973-1-luzmaximilian@gmail.com>
- <20220723224949.1089973-5-luzmaximilian@gmail.com>
- <20220726143005.wt4be7yo7sbd3xut@bogus>
- <829c8fee-cae5-597d-933d-784b4b57bd73@gmail.com>
- <20220726154138.74avqs6iqlzqpzjk@bogus>
- <d1bc99bb-82ce-aa6e-7fad-e9309fa1c19b@gmail.com>
- <20220728082330.w4ppmzvjaeywsglu@bogus>
- <4e777590-616a-558a-031e-3ef1f1e492b4@gmail.com>
- <20220728112150.hs5el6wufljeoqyy@bogus>
- <b018e909-e371-fd57-2790-9f0a37b63f29@gmail.com>
- <20220728134222.hs2v75zkxgtcctrx@bogus>
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-In-Reply-To: <20220728134222.hs2v75zkxgtcctrx@bogus>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Jiri Slaby <jirislaby@kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Borislav Petkov <bp@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Kees Cook <keescook@chromium.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Michal Suchanek <msuchanek@suse.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Wei Ming Chen <jj251510319013@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tony Lindgren <tony@atomide.com>, linux-doc@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: [PATCH 0/2] Add generic framebuffer support to EFI earlycon driver
+Date:   Thu, 28 Jul 2022 17:28:17 +0300
+Message-Id: <20220728142824.3836-1-markuss.broks@gmail.com>
+X-Mailer: git-send-email 2.37.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -94,31 +88,37 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 7/28/22 15:42, Sudeep Holla wrote:
-> On Thu, Jul 28, 2022 at 01:45:57PM +0200, Maximilian Luz wrote:
->>
->> Would something like this work for you: Add a compatible for the TrEE
->> interface (e.g. qcom,sc8180x-tee) but not for the specific apps running
-> 
-> IIUC, you would introduce a compatible for each unique production if there
-> is a need. This constitutes as a strong need for that, but you need just
-> that, no need to have any notion or info to indicate TrEE/TEE as you know
-> this product runs those in TEE.
-> 
-> In short, just use the platform specific(not SoC or SoC family) specific
-> compatible to initialise your driver and don't introduce any specific
-> compatible for this particular firmware interface need.
+Make the EFI earlycon driver be suitable for any linear framebuffers.
+This should be helpful for early porting of boards with no other means of
+output, like smartphones/tablets. There seems to be an issue with early_ioremap
+function on ARM32, but I am unable to find the exact cause. It appears the mappings
+returned by it are somehow incorrect, thus the driver is disabled on ARM. EFI early
+console was disabled on IA64 previously, so I kept it in EFI earlycon Kconfig.
 
-As Krzysztof mentioned, it would be good to ensure proper device
-ordering wrt. SCM. Having a device node for the overall TrEE interface
-would allow specifying that via DT. We could then still use the platform
-compatible to load the specific things inside that driver.
-Alternatively, we would need to do this extra stuff in qcom_scm.
+This patch also changes behavior on EFI systems, by selecting the mapping type
+based on if the framebuffer region intersects with system RAM. If it does, it's
+common sense that it should be in RAM as a whole, and so the system RAM mapping is
+used. It was tested to be working on my PC (Intel Z490 platform).
 
-I think separating this from qcom_scm into a new driver would be better
-from a code separation and maintenance point of view. Also, this
-reflects what's present in ACPI: There is a QCOM040B device for SCM and
-a QCOM0476 device for TrEE.
+Markuss Broks (2):
+  drivers: serial: earlycon: Pass device-tree node
+  efi: earlycon: Add support for generic framebuffers and move to fbdev
+    subsystem
 
-Regards,
-Max
+ .../admin-guide/kernel-parameters.txt         |  12 +-
+ MAINTAINERS                                   |   5 +
+ drivers/firmware/efi/Kconfig                  |   6 +-
+ drivers/firmware/efi/Makefile                 |   1 -
+ drivers/firmware/efi/earlycon.c               | 246 --------------
+ drivers/tty/serial/earlycon.c                 |   3 +
+ drivers/video/fbdev/Kconfig                   |  11 +
+ drivers/video/fbdev/Makefile                  |   1 +
+ drivers/video/fbdev/earlycon.c                | 301 ++++++++++++++++++
+ include/linux/serial_core.h                   |   1 +
+ 10 files changed, 331 insertions(+), 256 deletions(-)
+ delete mode 100644 drivers/firmware/efi/earlycon.c
+ create mode 100644 drivers/video/fbdev/earlycon.c
+
+-- 
+2.37.0
+
