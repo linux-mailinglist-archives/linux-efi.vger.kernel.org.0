@@ -2,61 +2,61 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D11D583BFA
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Jul 2022 12:25:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28224583C2D
+	for <lists+linux-efi@lfdr.de>; Thu, 28 Jul 2022 12:38:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234891AbiG1KZp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 28 Jul 2022 06:25:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54404 "EHLO
+        id S234891AbiG1Kia (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 28 Jul 2022 06:38:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233296AbiG1KZo (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Jul 2022 06:25:44 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC2148CBB;
-        Thu, 28 Jul 2022 03:25:42 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id q18so1593780wrx.8;
-        Thu, 28 Jul 2022 03:25:42 -0700 (PDT)
+        with ESMTP id S235970AbiG1Ki1 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Jul 2022 06:38:27 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50090558FA
+        for <linux-efi@vger.kernel.org>; Thu, 28 Jul 2022 03:38:26 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id t17so2284408lfk.0
+        for <linux-efi@vger.kernel.org>; Thu, 28 Jul 2022 03:38:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=linaro.org; s=google;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=C2NORPL69rdS/U3sQy8SH5nhaMctHSblMz/j5TFc1qU=;
-        b=RVllnvZbKqvxgjkF8jZ3dNEwDhUbJv2ZQCgSl+Dk70BceDMHGABft7XwtNRjqe8prt
-         gWcQxWJXxkA+DJIkxNRltxYYmEaLp8IvvW5dKn+rhmxcZWjgKuOZQe6xzoCKkMw9fXjR
-         Set/zPeq7GoMUlSO7A5LBiKq595meQNyo27pghVYBZ8uOqtAy4HSIT7BKU7uN61l2ttC
-         3FZmyltrUSiQQ7oZV9yix5geqjca2TUffOvlbeJ078rPR8/Xl8vIvAs7epY52X+1sGh9
-         e+lxzcbu4gXiSfzPDZ9XMlIzaJfGUCWJkOqQibKA+CvR4ciJvg+9OUdNn7lF5DzQazkC
-         RFBA==
+        bh=8m/gkzSEeNVGRFeYIZRczc0LCDlyyEDYTWCS8S+fEHE=;
+        b=XqLaXF2NeoAQW2dMnoSIDTZU0KG6eCdZEAY5fhmVPd/5x50fX4JXudcgltKeyaotQ0
+         O5ULowKZ4NKoWL2xhBvMkDBRHlO+3nZnyD8rVN0R1USPZ5NqUi53UsRnmrRriN3vSfR6
+         H/4PSGLLVf+pz3k34Epn+3R6uSXJEaaEinGw5oBQmu2/vBKiVsFg8d5CHssFfN1khEGK
+         CEC3/E/6j4XJQ+X7zbw1+0HDRvHXdG8YrYuQJl2B+KJlqxsllu1E9xZTjEGFKKoqdkc2
+         RXOVtqLeYuiHlVZeS3f7HeKxk8Y8d3cTS+oUii8HaBeXv1mSk7fTYM+2ildVCtirszrh
+         KqZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=C2NORPL69rdS/U3sQy8SH5nhaMctHSblMz/j5TFc1qU=;
-        b=C/FxVJK5rKNGssa3qx7jjHcsJKh8Achzkdxf97VqBaWBoCeoFAc8p5JD6kcqInXhNf
-         uYuaYNX3rjrLVsrqxSmy8qgyV3fSCdFIJWOg2OIJF/kDigKdXcPJjeixC7zMJVyXA9a2
-         Sy05SPIjA50oVM78RLGRu2WPoxy9ICP8ITirMCKq4VM0WVyKB9+qxksERs/VyKc+p6sO
-         4k+A5ow8zhGnWN0iEHT3qZrcHO2VRuUh1lJOOnFpioP2nVguPbvzM0peM+2erVZ7J34g
-         wIWfjrOBBKijXxDbtFmJbr8BOPVOFqmPugYO75E2L6OnMeZWOcNFbzKGwLb1FzwGH/0p
-         PM7Q==
-X-Gm-Message-State: AJIora+x8e/GREz+BvIYkR/TKnXTcnuj3Ue/mJJkoVi3o7IEM5UsXaZj
-        kSqelVlHKvN2N1SqTzfxDxTZKkYWXk8=
-X-Google-Smtp-Source: AGRyM1s3dbTxWhkFSBBq6ctU/0Q/tLg5Q9T6wj12SY3gymJlFn2blUAW+DLpnpAg2SNksr6Ci+ZK4A==
-X-Received: by 2002:adf:fbc4:0:b0:21e:bd8d:be09 with SMTP id d4-20020adffbc4000000b0021ebd8dbe09mr6207738wrs.216.1659003941111;
-        Thu, 28 Jul 2022 03:25:41 -0700 (PDT)
-Received: from [192.168.2.202] (pd9ea36f8.dip0.t-ipconnect.de. [217.234.54.248])
-        by smtp.gmail.com with ESMTPSA id f11-20020a05600c4e8b00b003a31673515bsm6038414wmq.7.2022.07.28.03.25.40
+        bh=8m/gkzSEeNVGRFeYIZRczc0LCDlyyEDYTWCS8S+fEHE=;
+        b=RkayELIelCTIRsSVtJ8N+S9jXEItKAvo3AAyjlURIDw2Cbd5AUwXELtcmTS/93q+9H
+         50elsGUIddATXvsmIsZZ7MzP6wCgPYJX+uPDDFbTHstVbPzBuz0yYtkc6+Wsvrmmdkbc
+         n/Qyk1dY8C0CwcfEhlf98NeMeXsgoDt91xiJhyjHnaY4VINebmdKfEbvZ2mU/iAuD3f4
+         rfPBT7bT4GCH2jjmPJJy8I67+0kmsz3pQXRoIRQ7rs+JOchK6TPpXIV8v97hJau751ew
+         PEuPWjfb/E8RIyeKY7nXpLSWiy5/NbWSXxyXF4b/fnFbpdraw4qI8KQiJL7Eqhsofxnz
+         Ym6w==
+X-Gm-Message-State: AJIora/i1qNRNtvGaO2h0Tda7WE+zRds7wqv27V/S6HKQXIdAFq7Tht6
+        +JoUD9u83VCDSCWkN9jmPcZe0Q==
+X-Google-Smtp-Source: AGRyM1s0UetzE1MnFh1Eb1ryFBat7KSzR7WNDyYfOitPLcyRuZriydrL2o7MLluKluE7GI2HTDn+cA==
+X-Received: by 2002:a05:6512:3b81:b0:48a:9787:7837 with SMTP id g1-20020a0565123b8100b0048a97877837mr6118077lfv.678.1659004704638;
+        Thu, 28 Jul 2022 03:38:24 -0700 (PDT)
+Received: from [192.168.3.197] (78-26-46-173.network.trollfjord.no. [78.26.46.173])
+        by smtp.gmail.com with ESMTPSA id r1-20020a2e8e21000000b0025e0a13bf42sm76850ljk.53.2022.07.28.03.38.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Jul 2022 03:25:40 -0700 (PDT)
-Message-ID: <fe2b820b-9f3b-814b-4792-e6685b13ede6@gmail.com>
-Date:   Thu, 28 Jul 2022 12:25:39 +0200
+        Thu, 28 Jul 2022 03:38:24 -0700 (PDT)
+Message-ID: <d8510e53-673a-7913-32be-1be691a79511@linaro.org>
+Date:   Thu, 28 Jul 2022 12:38:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
+ Thunderbird/91.12.0
 Subject: Re: [PATCH 4/4] dt-bindings: firmware: Add Qualcomm UEFI Secure
  Application client
 Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+To:     Maximilian Luz <luzmaximilian@gmail.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Ard Biesheuvel <ardb@kernel.org>
@@ -81,49 +81,40 @@ References: <20220723224949.1089973-1-luzmaximilian@gmail.com>
  <53a602e2-0590-6c6a-597b-fd55faa3a4ab@linaro.org>
  <acd7b231-3167-e35c-5cdf-8b3127a7d710@gmail.com>
  <95cbcda8-d1bc-376c-b338-92d1b923f04a@linaro.org>
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-In-Reply-To: <95cbcda8-d1bc-376c-b338-92d1b923f04a@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <fe2b820b-9f3b-814b-4792-e6685b13ede6@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <fe2b820b-9f3b-814b-4792-e6685b13ede6@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 7/28/22 09:48, Krzysztof Kozlowski wrote:
-
-[...]
-
->>>>> The problem with existing approach is:
->>>>> 1. Lack of any probe ordering or probe deferral support.
->>>>> 2. Lack of any other dependencies, e.g. for PM.
->>>>
->>>> I'm not entirely sure what you mean by "lack of probe deferral support".
->>>> We have qcom_scm_is_available() and defer probe if that fails. So
->>>> deferral works, unless I'm misunderstanding something.
->>>
->>> And how do you differentiate that qcom_scm_is_available() failed because
->>> it is not yet available (defer probe) or it is broken and will never
->>> load? All regular consumer-provider interfaces have it sorted out.
->>
->> Fair point. By shifting that to device links you'll at least know what
->> it's waiting for and the driver won't attempt to probe until that's
->> resolved. But your question applies to that then as well: How do you
->> differentiate between the device link or supplier being broken somehow
->> and the supplier being just not ready yet?
+On 28/07/2022 12:25, Maximilian Luz wrote:
+> On 7/28/22 09:48, Krzysztof Kozlowski wrote:
 > 
-> For example like tegra_bpmp_get() is doing.
+> [...]
+> 
+>>
+>> For example like tegra_bpmp_get() is doing.
+> 
+> But tegra_bpmp_get() can also not differentiate whether the supplier driver is
+> ever going to be successfully probed or not. I'm not sure you can ever really
+> solve that. The only thing it does in addition is check whether the phandle and
+> device is there. Or do you mean those not being present by "broken"? That's a
+> point I agree should be improved with SCM.
 
-But tegra_bpmp_get() can also not differentiate whether the supplier driver is
-ever going to be successfully probed or not. I'm not sure you can ever really
-solve that. The only thing it does in addition is check whether the phandle and
-device is there. Or do you mean those not being present by "broken"? That's a
-point I agree should be improved with SCM.
+Yes, at least it checks if phandles points to proper device and device
+is there. That's what we want.
 
-Regards,
-Max
+We are not solving here case of providing being in a module which never
+gets loaded (thus endless EPROBE_DEFER). Such case is ok.
+
+Best regards,
+Krzysztof
