@@ -2,223 +2,231 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 690195855B7
-	for <lists+linux-efi@lfdr.de>; Fri, 29 Jul 2022 21:48:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D9F7585945
+	for <lists+linux-efi@lfdr.de>; Sat, 30 Jul 2022 10:55:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238240AbiG2Tsq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 29 Jul 2022 15:48:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60620 "EHLO
+        id S232432AbiG3IzL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 30 Jul 2022 04:55:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237998AbiG2Tsp (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 29 Jul 2022 15:48:45 -0400
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A915E88E0B;
-        Fri, 29 Jul 2022 12:48:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-        s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=IIBd4JO9tjHfeGjjy6pkVi9dYz0wqG2cJ6lj/g2SiG4=; b=I2VaxXyS7tS1t2SfreP/xJuVJj
-        JxJEHs03tnPSZE1E95bh2aCH+zc9XrgSn0MEeImpRw8+c6+JcTShDDQG2roisqt++Syksty+QD3/E
-        KQ6SWESD2WgE0c+BYj3u1RJgD6i+E6i9I695AZNGeuj6l0rNw5+BbPyUDgLpdyPVtrEuUrjiKW5Jp
-        EHdgPfijK76ETsB5nmACeG+wPVHIwK7wmN/R4G6OEQEESJtYwxbRMEiAB22AHLp67SgtbbuR8Gs+A
-        /BePOTUv7QVLBZ1EAcSXzblhhldizDiMNUFCFUJRvE13nRDabzp+dJ1+dix6/KrkFjMJZQHRz7W5B
-        4DYpcLew==;
-Received: from [177.83.209.223] (helo=localhost)
-        by fanzine2.igalia.com with esmtpsa 
-        (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-        id 1oHVyS-00BML8-D5; Fri, 29 Jul 2022 21:48:42 +0200
-From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-To:     ardb@kernel.org, linux-efi@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, kernel-dev@igalia.com,
-        kernel@gpiccoli.net, anton@enomsg.org, ccross@android.com,
-        keescook@chromium.org, matt@codeblueprint.co.uk,
-        mjg59@srcf.ucam.org, tony.luck@intel.com,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Subject: [PATCH v2 3/3] efi-panic: Introduce the UEFI panic notification mechanism
-Date:   Fri, 29 Jul 2022 16:45:32 -0300
-Message-Id: <20220729194532.228403-4-gpiccoli@igalia.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220729194532.228403-1-gpiccoli@igalia.com>
-References: <20220729194532.228403-1-gpiccoli@igalia.com>
+        with ESMTP id S229720AbiG3IzK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 30 Jul 2022 04:55:10 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 747B1F43;
+        Sat, 30 Jul 2022 01:55:09 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id tk8so12115687ejc.7;
+        Sat, 30 Jul 2022 01:55:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=bxfY1htXxbYgZJF5B+dESeWX+UdX+4GjUNZm08CoJ8E=;
+        b=YbS/lcslcbmkXpey5cpFq+X/ytIJj3qLqsAi5z2w3lorLorzgulYzXLv7skrAU7gN0
+         EX8kGu++8KCaP8JbTGm7Bo3U8kDDvcQXkGjM1MLqVjThH9BjNQnNUYSsBpwGPt78mnIV
+         OmvNjkD5/22LUnX3abOBs3Ip/74gtvYpkMEqaB47rKWbISEtyBK4LuIyQGvszb2bZdoL
+         CgvYhVFbtXuOgKbSqVay5FL3qu2DJiuNMGh1IjG0TKwGsmXbUFFznpLlY3RbMcwjVw9M
+         adMX/40d2nJLNi65Qz4IOrP2vL7GL5fg4YlumPSgmRc3Lgb1LQGlkLtbz97XAWPK/J7w
+         FrgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=bxfY1htXxbYgZJF5B+dESeWX+UdX+4GjUNZm08CoJ8E=;
+        b=QXCKSPv1a/lGjPkdu9538fZa3ZWu1gFi+KWhDhgH2AkJvxXrqUAb+H+jlhm4XCS4ms
+         EF65XDo4YB1K229xJ4H1GMWiRMtYnDV3s7nx0BELxvSQOv3d9y4v/EsUDviE16/eigER
+         S8OkqPxNWCvgeSx2imUMp0/msB27p8GNMG9/Dwpk6Zs/mMFz8IfI5edHOwBZ05FCiflr
+         g9mGaroQtBBSoTvrAe9a811QQQDRgoaksGru54rG9ifnxhrezQNdl1//BpmynEYGtUvQ
+         fxnskJXx9IPFkgCyezvuJJTt2cEvd77ULpeZMciDTFS3fcGZy1DnWPzhYT1P6uDzAsWf
+         gYVg==
+X-Gm-Message-State: AJIora8pZusH4ReJ3SYqcx0wcuYINDKf4vmey5oOlR+aBrXfHxHqvJJH
+        I5vhqKwiwQS/h8JU7RcKFu0=
+X-Google-Smtp-Source: AGRyM1sheQBaWBbZ2/dbYWLUaQqAMJRtzg5nrxQDGH46I4vLTxOvUd/Zbug1LN1Ia1i+sismD/uiGg==
+X-Received: by 2002:a17:907:970c:b0:72e:e972:5c73 with SMTP id jg12-20020a170907970c00b0072ee9725c73mr5518137ejc.352.1659171307805;
+        Sat, 30 Jul 2022 01:55:07 -0700 (PDT)
+Received: from [0.0.0.0] ([81.17.18.61])
+        by smtp.gmail.com with ESMTPSA id 19-20020a170906319300b0072b8fbc9be1sm2699005ejy.187.2022.07.30.01.54.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 30 Jul 2022 01:55:07 -0700 (PDT)
+Message-ID: <3c55e119-5b6f-25ab-99c9-2c99b1dfd9e9@gmail.com>
+Date:   Sat, 30 Jul 2022 14:54:41 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH 2/2] efi: earlycon: Add support for generic framebuffers
+ and move to fbdev subsystem
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Borislav Petkov <bp@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Kees Cook <keescook@chromium.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Michal Suchanek <msuchanek@suse.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Wei Ming Chen <jj251510319013@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Linux Documentation List <linux-doc@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Rob Herring <robh@kernel.org>
+References: <20220728142824.3836-1-markuss.broks@gmail.com>
+ <20220728142824.3836-3-markuss.broks@gmail.com>
+ <CAHp75VdaDyyqRw9fAkUOhNjsyifeozVx6JuYXSU1HpoO+VHDNA@mail.gmail.com>
+From:   Markuss Broks <markuss.broks@gmail.com>
+In-Reply-To: <CAHp75VdaDyyqRw9fAkUOhNjsyifeozVx6JuYXSU1HpoO+VHDNA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Despite we have pstore, kdump and other panic-time mechanisms,
-there's no generic way to let the firmware know a panic event
-happened. Some hypervisors might have special code for that, but
-that's not generic.
+Hi Andy,
 
-The UEFI panic notification module hereby proposed aims to fill
-this need: once we face a panic, through the panic notifier
-infrastructure we set a UEFI variable named PanicWarn with a
-value - default is 0xFF, but it's adjustable via module parameter.
-The firmware is then enabled to take a proper action.
+On 7/29/22 00:19, Andy Shevchenko wrote:
+> On Thu, Jul 28, 2022 at 4:32 PM Markuss Broks <markuss.broks@gmail.com> wrote:
+>>
+>> Add early console support for generic linear framebuffer devices.
+>> This driver supports probing from cmdline early parameters
+>> or from the device-tree using information in simple-framebuffer node.
+>> The EFI functionality should be retained in whole.
+>> The driver was disabled on ARM because of a bug in early_ioremap
+>> implementation on ARM.
+> 
+> ...
+> 
+>> -               efifb,[options]
+>> +               efifb
+>>                          Start an early, unaccelerated console on the EFI
+>> -                       memory mapped framebuffer (if available). On cache
+>> -                       coherent non-x86 systems that use system memory for
+>> -                       the framebuffer, pass the 'ram' option so that it is
+>> -                       mapped with the correct attributes.
+>> +                       memory mapped framebuffer (if available).
+> 
+> If somebody passes those (legacy) options, what will happen?
 
-The module also let the users know that last execution likely
-panicked if the UEFI variable is present on module load - then
-it clears that to avoid confusing users, only the last panic
-event is recorded.
+Those would be ignored. Instead it would be automatically determined if 
+framebuffer is located in RAM or in the I/O space.
 
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
----
- drivers/firmware/efi/Kconfig     | 10 ++++
- drivers/firmware/efi/Makefile    |  1 +
- drivers/firmware/efi/efi-panic.c | 89 ++++++++++++++++++++++++++++++++
- include/linux/efi.h              |  1 +
- 4 files changed, 101 insertions(+)
- create mode 100644 drivers/firmware/efi/efi-panic.c
+> 
+> ...
+> 
+>>   config EFI_EARLYCON
+>> -       def_bool y
+>> -       depends on SERIAL_EARLYCON && !ARM && !IA64
+>> -       select FONT_SUPPORT
+>> -       select ARCH_USE_MEMREMAP_PROT
+>> +       bool "EFI early console support"
+>> +       depends on FB_EARLYCON && !IA64
+> 
+> This doesn't sound right. Previously on my configuration it was
+> selected automatically, now I need to select it explicitly? I mean
+> that for me EFI_EARLYCON should be selected by default as it was
+> before.
 
-diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-index 6cb7384ad2ac..f1ed6128d623 100644
---- a/drivers/firmware/efi/Kconfig
-+++ b/drivers/firmware/efi/Kconfig
-@@ -147,6 +147,16 @@ config EFI_BOOTLOADER_CONTROL
- 	  bootloader reads this reboot reason and takes particular
- 	  action according to its policy.
- 
-+config EFI_PANIC_NOTIFIER
-+	tristate "UEFI Panic Notifier"
-+	depends on EFI
-+	default n
-+	help
-+	  With this module, kernel creates the UEFI variable "PanicWarn" if
-+	  the system faces a panic event. With that, the firmware is entitled
-+	  to take an action if the last kernel panicked; it also shows a
-+	  message during boot time if last run faced a panic event.
-+
- config EFI_CAPSULE_LOADER
- 	tristate "EFI capsule loader"
- 	depends on EFI && !IA64
-diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
-index 8d151e332584..c7cf3dcb284e 100644
---- a/drivers/firmware/efi/Makefile
-+++ b/drivers/firmware/efi/Makefile
-@@ -25,6 +25,7 @@ obj-$(CONFIG_EFI_RUNTIME_WRAPPERS)	+= runtime-wrappers.o
- subdir-$(CONFIG_EFI_STUB)		+= libstub
- obj-$(CONFIG_EFI_FAKE_MEMMAP)		+= fake_map.o
- obj-$(CONFIG_EFI_BOOTLOADER_CONTROL)	+= efibc.o
-+obj-$(CONFIG_EFI_PANIC_NOTIFIER)	+= efi-panic.o
- obj-$(CONFIG_EFI_TEST)			+= test/
- obj-$(CONFIG_EFI_DEV_PATH_PARSER)	+= dev-path-parser.o
- obj-$(CONFIG_APPLE_PROPERTIES)		+= apple-properties.o
-diff --git a/drivers/firmware/efi/efi-panic.c b/drivers/firmware/efi/efi-panic.c
-new file mode 100644
-index 000000000000..02ffa4930039
---- /dev/null
-+++ b/drivers/firmware/efi/efi-panic.c
-@@ -0,0 +1,89 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * efi-panic: UEFI panic notification mechanism
-+ */
-+
-+#define pr_fmt(fmt) "efi-panic: " fmt
-+
-+#include <linux/efi.h>
-+#include <linux/module.h>
-+#include <linux/panic_notifier.h>
-+
-+#define EFI_PANIC_ATTR		(EFI_VARIABLE_NON_VOLATILE |\
-+				 EFI_VARIABLE_BOOTSERVICE_ACCESS |\
-+				 EFI_VARIABLE_RUNTIME_ACCESS)
-+
-+#define EFI_DATA_SIZE		(2 * sizeof(efi_char16_t))
-+
-+static efi_char16_t *panic_warn_name = L"PanicWarn";
-+
-+static u8 panic_warn_val = 0xFF;
-+module_param(panic_warn_val, byte, 0644);
-+MODULE_PARM_DESC(panic_warn_val,
-+		 "Value written to PanicWarn efivar on panic event [default=0xFF]");
-+
-+static int efi_panic_cb(struct notifier_block *nb, unsigned long ev,
-+			void *unused)
-+{
-+	efi_char16_t val[2];
-+	efi_status_t ret;
-+
-+	efi_str8_to_str16(val, &panic_warn_val, 1);
-+	ret = efi.set_variable_nonblocking(panic_warn_name,
-+					      &LINUX_EFI_PANIC_WARN_GUID,
-+					      EFI_PANIC_ATTR, EFI_DATA_SIZE,
-+					      val);
-+
-+	if (ret != EFI_SUCCESS)
-+		pr_err("failed notifying UEFI about the panic (0x%lx)\n", ret);
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static struct notifier_block efi_panic_notifier = {
-+	.notifier_call = efi_panic_cb,
-+};
-+
-+static int __init efi_panic_init(void)
-+{
-+	unsigned long sz = EFI_DATA_SIZE;
-+	u8 data[EFI_DATA_SIZE];
-+	efi_status_t ret;
-+
-+	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_SET_VARIABLE))
-+		return -ENODEV;
-+
-+	ret = efi.get_variable(panic_warn_name, &LINUX_EFI_PANIC_WARN_GUID,
-+			       NULL, &sz, data);
-+
-+	if (ret == EFI_SUCCESS) {
-+		pr_info("previous kernel (likely) had a panic\n");
-+
-+		ret = efi.set_variable(panic_warn_name,
-+				       &LINUX_EFI_PANIC_WARN_GUID,
-+				       EFI_PANIC_ATTR, 0, NULL);
-+		if (ret != EFI_SUCCESS)
-+			pr_warn("cannot delete the UEFI variable\n");
-+
-+	} else {
-+		if (ret != EFI_NOT_FOUND)
-+			pr_err("can't read the UEFI variable (err=%lx)\n", ret);
-+	}
-+
-+	atomic_notifier_chain_register(&panic_notifier_list,
-+				       &efi_panic_notifier);
-+
-+	return 0;
-+}
-+module_init(efi_panic_init);
-+
-+static void __exit efi_panic_exit(void)
-+{
-+	atomic_notifier_chain_unregister(&panic_notifier_list,
-+					 &efi_panic_notifier);
-+}
-+module_exit(efi_panic_exit);
-+
-+MODULE_AUTHOR("Guilherme G. Piccoli <gpiccoli@igalia.com>");
-+MODULE_DESCRIPTION("UEFI Panic Notification Mechanism");
-+MODULE_LICENSE("GPL");
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index c0ea01be3772..38a5056cc72a 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -367,6 +367,7 @@ void efi_native_runtime_setup(void);
- #define EFI_GLOBAL_VARIABLE_GUID		EFI_GUID(0x8be4df61, 0x93ca, 0x11d2,  0xaa, 0x0d, 0x00, 0xe0, 0x98, 0x03, 0x2b, 0x8c)
- #define UV_SYSTEM_TABLE_GUID			EFI_GUID(0x3b13a7d4, 0x633e, 0x11dd,  0x93, 0xec, 0xda, 0x25, 0x56, 0xd8, 0x95, 0x93)
- #define LINUX_EFI_CRASH_GUID			EFI_GUID(0xcfc8fc79, 0xbe2e, 0x4ddc,  0x97, 0xf0, 0x9f, 0x98, 0xbf, 0xe2, 0x98, 0xa0)
-+#define LINUX_EFI_PANIC_WARN_GUID		EFI_GUID(0x9e85b665, 0x08d4, 0x42c9,  0x83, 0x24, 0x47, 0xed, 0x5f, 0xe5, 0x0b, 0xf3)
- #define LOADED_IMAGE_PROTOCOL_GUID		EFI_GUID(0x5b1b31a1, 0x9562, 0x11d2,  0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
- #define EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID	EFI_GUID(0x9042a9de, 0x23dc, 0x4a38,  0x96, 0xfb, 0x7a, 0xde, 0xd0, 0x80, 0x51, 0x6a)
- #define EFI_UGA_PROTOCOL_GUID			EFI_GUID(0x982c298b, 0xf4fa, 0x41cb,  0xb8, 0x38, 0x77, 0xaa, 0x68, 0x8f, 0xb8, 0x39)
--- 
-2.37.1
+The problem I had with EFI_EARLYCON selected by default was that it 
+would also carry fbdev with itself. Luckily, that's solved if it's moved 
+to console subsystem.
 
+> 
+> ...
+> 
+>> +static int __init simplefb_earlycon_remap_fb(void)
+>> +{
+>> +       int is_ram;
+> 
+> + blank line.
+> 
+>> +       /* bail if there is no bootconsole or it has been disabled already */
+>> +       if (!earlycon_console || !(earlycon_console->flags & CON_ENABLED))
+>> +               return 0;
+>> +
+>> +       is_ram = region_intersects(info.phys_base, info.size,
+>> +                                  IORESOURCE_SYSTEM_RAM, IORES_DESC_NONE);
+>> +       is_ram = is_ram == REGION_INTERSECTS;
+> 
+> Was it in the original code? Otherwise, I would go with plain conditional:
+> 
+>    if (region_intersects())
+>      base = ...
+>    else
+>      base = ...
+
+It wasn't in original code. Original code assumed MEMREMAP_WC always
+unless "ram" was specified as an option to efifb (e.g.
+earlycon=efifb,ram). This code instead checks if the framebuffer is in 
+RAM, and sets the mapping accordingly.
+
+Another issue is that region_intersects() returns REGION_INTERSECTS 
+(defined as 0) when true. I suppose we could use something like:
+
+if (region_intersects() == REGION_INTERSECTS)
+...
+
+> 
+>> +       info.virt_base = memremap(info.phys_base, info.size,
+>> +                                 is_ram ? MEMREMAP_WB : MEMREMAP_WC);
+>> +
+>> +       return info.virt_base ? 0 : -ENOMEM;
+>> +}
+> 
+> ...
+> 
+>> +static void simplefb_earlycon_write_char(u8 *dst, unsigned char c, unsigned int h)
+>> +{
+>> +       const u8 *src;
+>> +       int m, n, bytes;
+>> +       u8 x;
+>> +
+>> +       bytes = BITS_TO_BYTES(font->width);
+>> +       src = font->data + c * font->height * bytes + h * bytes;
+>> +
+>> +       for (m = 0; m < font->width; m++) {
+>> +               n = m % 8;
+>> +               x = *(src + m / 8);
+>> +               if ((x >> (7 - n)) & 1)
+>> +                       memset(dst, 0xff, (info.depth / 8));
+>> +               else
+>> +                       memset(dst, 0, (info.depth / 8));
+>> +               dst += (info.depth / 8);
+>> +       }
+>> +}
+> 
+> Wondering if we already have something like this in DRM/fbdev and can
+> split into a generic helper.
+> 
+> ...
+> 
+>> +       ret = sscanf(device->options, "%u,%u,%u", &info.x, &info.y, &info.depth);
+>> +       if (ret != 3)
+>> +               return -ENODEV;
+> 
+> Don't we have some standard template of this, something like XxYxD,
+> where X, Y, and D are respective decimal numbers?
+
+I'm not aware of this.
+
+> 
+
+-Markuss
