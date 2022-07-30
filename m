@@ -2,61 +2,59 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D9F7585945
-	for <lists+linux-efi@lfdr.de>; Sat, 30 Jul 2022 10:55:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C36D585A16
+	for <lists+linux-efi@lfdr.de>; Sat, 30 Jul 2022 12:26:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232432AbiG3IzL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 30 Jul 2022 04:55:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35022 "EHLO
+        id S233075AbiG3K0Q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 30 Jul 2022 06:26:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229720AbiG3IzK (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 30 Jul 2022 04:55:10 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 747B1F43;
-        Sat, 30 Jul 2022 01:55:09 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id tk8so12115687ejc.7;
-        Sat, 30 Jul 2022 01:55:09 -0700 (PDT)
+        with ESMTP id S233419AbiG3K0P (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 30 Jul 2022 06:26:15 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A0871A387;
+        Sat, 30 Jul 2022 03:26:13 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id b16so930437edd.4;
+        Sat, 30 Jul 2022 03:26:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=bxfY1htXxbYgZJF5B+dESeWX+UdX+4GjUNZm08CoJ8E=;
-        b=YbS/lcslcbmkXpey5cpFq+X/ytIJj3qLqsAi5z2w3lorLorzgulYzXLv7skrAU7gN0
-         EX8kGu++8KCaP8JbTGm7Bo3U8kDDvcQXkGjM1MLqVjThH9BjNQnNUYSsBpwGPt78mnIV
-         OmvNjkD5/22LUnX3abOBs3Ip/74gtvYpkMEqaB47rKWbISEtyBK4LuIyQGvszb2bZdoL
-         CgvYhVFbtXuOgKbSqVay5FL3qu2DJiuNMGh1IjG0TKwGsmXbUFFznpLlY3RbMcwjVw9M
-         adMX/40d2nJLNi65Qz4IOrP2vL7GL5fg4YlumPSgmRc3Lgb1LQGlkLtbz97XAWPK/J7w
-         FrgQ==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=l0Q/7yx9FyNBDJt9oRASfJ20HzyIqt7jep5RdGQdu90=;
+        b=kdqdPdfXhJMF2w1UJLc87Kqy9nPsRpmxfI7UKx53cigvdJ8cyHSe54qVTNrI6YQ0Tn
+         40e+x/LcCMjU1pxuJWC+nZ8aRHGqVld5kwZ1Kf0w2Wgur79tXLwBh8rSq7YTbVMzMqbk
+         1DVwsy130N3THSReljll0MNEFs1HbZd5Yc7XZhC6J8NFJyPr9KtVAq/ofE+uV3mQFAqm
+         YcSjWpwVAZ6pSrKIGOB2GVK7ucXlONSqQZGGXgFnYb6gbJ2qbeujZjYkqMyYIUmYZt9l
+         pXeFF3PVa+MNUjpPgdY/w8jcldeydqpOp1/z9Z+4B9V1O/PWa0bQ/CIPZBtROnIJTDNo
+         EzMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=bxfY1htXxbYgZJF5B+dESeWX+UdX+4GjUNZm08CoJ8E=;
-        b=QXCKSPv1a/lGjPkdu9538fZa3ZWu1gFi+KWhDhgH2AkJvxXrqUAb+H+jlhm4XCS4ms
-         EF65XDo4YB1K229xJ4H1GMWiRMtYnDV3s7nx0BELxvSQOv3d9y4v/EsUDviE16/eigER
-         S8OkqPxNWCvgeSx2imUMp0/msB27p8GNMG9/Dwpk6Zs/mMFz8IfI5edHOwBZ05FCiflr
-         g9mGaroQtBBSoTvrAe9a811QQQDRgoaksGru54rG9ifnxhrezQNdl1//BpmynEYGtUvQ
-         fxnskJXx9IPFkgCyezvuJJTt2cEvd77ULpeZMciDTFS3fcGZy1DnWPzhYT1P6uDzAsWf
-         gYVg==
-X-Gm-Message-State: AJIora8pZusH4ReJ3SYqcx0wcuYINDKf4vmey5oOlR+aBrXfHxHqvJJH
-        I5vhqKwiwQS/h8JU7RcKFu0=
-X-Google-Smtp-Source: AGRyM1sheQBaWBbZ2/dbYWLUaQqAMJRtzg5nrxQDGH46I4vLTxOvUd/Zbug1LN1Ia1i+sismD/uiGg==
-X-Received: by 2002:a17:907:970c:b0:72e:e972:5c73 with SMTP id jg12-20020a170907970c00b0072ee9725c73mr5518137ejc.352.1659171307805;
-        Sat, 30 Jul 2022 01:55:07 -0700 (PDT)
-Received: from [0.0.0.0] ([81.17.18.61])
-        by smtp.gmail.com with ESMTPSA id 19-20020a170906319300b0072b8fbc9be1sm2699005ejy.187.2022.07.30.01.54.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 30 Jul 2022 01:55:07 -0700 (PDT)
-Message-ID: <3c55e119-5b6f-25ab-99c9-2c99b1dfd9e9@gmail.com>
-Date:   Sat, 30 Jul 2022 14:54:41 +0300
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=l0Q/7yx9FyNBDJt9oRASfJ20HzyIqt7jep5RdGQdu90=;
+        b=DlYZFmDD62xjawkHSLI3Uc3PyBz2wNLDPuIl1mOYK9VV7/h91GerICRFvEsXAY6Uwp
+         niT838OU8ofu7hNCUUWhEDsLGscZVfNH+Ja+Spp8L4L/7+6lFjPz7OqD5l+uXUVWT+HI
+         M5AN0N6KnxlTcIXGd/mBgsJ/BQGDN+EuLlxIOzne3T1f6GpnoyuqN+CLTtxj7l0etTMV
+         oLkJIR0gentzF6sDeJW+57gryLTXa921YV6NW/SazwTdcNw+KDs/xfsgzKJMrW95DMZi
+         Jb7kAKcGz3WUhci0l68QHEJpnQLLgm3zgbEnD019XB7ZRs3e6LTiWbvKF9x6apNAX9SM
+         YLQA==
+X-Gm-Message-State: AJIora93ugdPyKob0ENkZa1IH3heP/No4y3ZE0XuMPHFqcqWaXxeQYyY
+        Omv4I5yALPWaePmQ7X+i6vNO+HS8M7JhO9JtiF0=
+X-Google-Smtp-Source: AGRyM1uzdkY14o0hN5mVxeuk86vh5sIURGkQFnGzfLTCYvW7dVNz/f6Do420hxAyaoLNy5TcoYGS9EXPlPGIYYkEMTM=
+X-Received: by 2002:a05:6402:2714:b0:43c:1c1:717e with SMTP id
+ y20-20020a056402271400b0043c01c1717emr7419196edd.67.1659176771666; Sat, 30
+ Jul 2022 03:26:11 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
+References: <20220728142824.3836-1-markuss.broks@gmail.com>
+ <20220728142824.3836-3-markuss.broks@gmail.com> <CAHp75VdaDyyqRw9fAkUOhNjsyifeozVx6JuYXSU1HpoO+VHDNA@mail.gmail.com>
+ <3c55e119-5b6f-25ab-99c9-2c99b1dfd9e9@gmail.com>
+In-Reply-To: <3c55e119-5b6f-25ab-99c9-2c99b1dfd9e9@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 30 Jul 2022 12:25:34 +0200
+Message-ID: <CAHp75Vcu2C-+XyVtLrX8Awxb18uNx6_n3CCCVUyekL4yP755Xw@mail.gmail.com>
 Subject: Re: [PATCH 2/2] efi: earlycon: Add support for generic framebuffers
  and move to fbdev subsystem
-Content-Language: en-US
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     Markuss Broks <markuss.broks@gmail.com>
 Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Jonathan Corbet <corbet@lwn.net>,
@@ -84,149 +82,44 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
         dri-devel <dri-devel@lists.freedesktop.org>,
         Rob Herring <robh@kernel.org>
-References: <20220728142824.3836-1-markuss.broks@gmail.com>
- <20220728142824.3836-3-markuss.broks@gmail.com>
- <CAHp75VdaDyyqRw9fAkUOhNjsyifeozVx6JuYXSU1HpoO+VHDNA@mail.gmail.com>
-From:   Markuss Broks <markuss.broks@gmail.com>
-In-Reply-To: <CAHp75VdaDyyqRw9fAkUOhNjsyifeozVx6JuYXSU1HpoO+VHDNA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Andy,
+On Sat, Jul 30, 2022 at 10:55 AM Markuss Broks <markuss.broks@gmail.com> wrote:
+> On 7/29/22 00:19, Andy Shevchenko wrote:
+> > On Thu, Jul 28, 2022 at 4:32 PM Markuss Broks <markuss.broks@gmail.com> wrote:
 
-On 7/29/22 00:19, Andy Shevchenko wrote:
-> On Thu, Jul 28, 2022 at 4:32 PM Markuss Broks <markuss.broks@gmail.com> wrote:
->>
->> Add early console support for generic linear framebuffer devices.
->> This driver supports probing from cmdline early parameters
->> or from the device-tree using information in simple-framebuffer node.
->> The EFI functionality should be retained in whole.
->> The driver was disabled on ARM because of a bug in early_ioremap
->> implementation on ARM.
-> 
-> ...
-> 
->> -               efifb,[options]
->> +               efifb
->>                          Start an early, unaccelerated console on the EFI
->> -                       memory mapped framebuffer (if available). On cache
->> -                       coherent non-x86 systems that use system memory for
->> -                       the framebuffer, pass the 'ram' option so that it is
->> -                       mapped with the correct attributes.
->> +                       memory mapped framebuffer (if available).
-> 
-> If somebody passes those (legacy) options, what will happen?
-
-Those would be ignored. Instead it would be automatically determined if 
-framebuffer is located in RAM or in the I/O space.
-
-> 
-> ...
-> 
->>   config EFI_EARLYCON
->> -       def_bool y
->> -       depends on SERIAL_EARLYCON && !ARM && !IA64
->> -       select FONT_SUPPORT
->> -       select ARCH_USE_MEMREMAP_PROT
->> +       bool "EFI early console support"
->> +       depends on FB_EARLYCON && !IA64
-> 
-> This doesn't sound right. Previously on my configuration it was
-> selected automatically, now I need to select it explicitly? I mean
-> that for me EFI_EARLYCON should be selected by default as it was
-> before.
-
-The problem I had with EFI_EARLYCON selected by default was that it 
-would also carry fbdev with itself. Luckily, that's solved if it's moved 
-to console subsystem.
-
-> 
-> ...
-> 
->> +static int __init simplefb_earlycon_remap_fb(void)
->> +{
->> +       int is_ram;
-> 
-> + blank line.
-> 
->> +       /* bail if there is no bootconsole or it has been disabled already */
->> +       if (!earlycon_console || !(earlycon_console->flags & CON_ENABLED))
->> +               return 0;
->> +
->> +       is_ram = region_intersects(info.phys_base, info.size,
->> +                                  IORESOURCE_SYSTEM_RAM, IORES_DESC_NONE);
->> +       is_ram = is_ram == REGION_INTERSECTS;
-> 
-> Was it in the original code? Otherwise, I would go with plain conditional:
-> 
->    if (region_intersects())
->      base = ...
->    else
->      base = ...
-
-It wasn't in original code. Original code assumed MEMREMAP_WC always
-unless "ram" was specified as an option to efifb (e.g.
-earlycon=efifb,ram). This code instead checks if the framebuffer is in 
-RAM, and sets the mapping accordingly.
-
-Another issue is that region_intersects() returns REGION_INTERSECTS 
-(defined as 0) when true. I suppose we could use something like:
-
-if (region_intersects() == REGION_INTERSECTS)
 ...
 
-> 
->> +       info.virt_base = memremap(info.phys_base, info.size,
->> +                                 is_ram ? MEMREMAP_WB : MEMREMAP_WC);
->> +
->> +       return info.virt_base ? 0 : -ENOMEM;
->> +}
-> 
-> ...
-> 
->> +static void simplefb_earlycon_write_char(u8 *dst, unsigned char c, unsigned int h)
->> +{
->> +       const u8 *src;
->> +       int m, n, bytes;
->> +       u8 x;
->> +
->> +       bytes = BITS_TO_BYTES(font->width);
->> +       src = font->data + c * font->height * bytes + h * bytes;
->> +
->> +       for (m = 0; m < font->width; m++) {
->> +               n = m % 8;
->> +               x = *(src + m / 8);
->> +               if ((x >> (7 - n)) & 1)
->> +                       memset(dst, 0xff, (info.depth / 8));
->> +               else
->> +                       memset(dst, 0, (info.depth / 8));
->> +               dst += (info.depth / 8);
->> +       }
->> +}
-> 
-> Wondering if we already have something like this in DRM/fbdev and can
-> split into a generic helper.
-> 
-> ...
-> 
->> +       ret = sscanf(device->options, "%u,%u,%u", &info.x, &info.y, &info.depth);
->> +       if (ret != 3)
->> +               return -ENODEV;
-> 
-> Don't we have some standard template of this, something like XxYxD,
-> where X, Y, and D are respective decimal numbers?
+> I suppose we could use something like:
+>
+> if (region_intersects() == REGION_INTERSECTS)
 
-I'm not aware of this.
+Yes.
 
-> 
+...
 
--Markuss
+> >> +       ret = sscanf(device->options, "%u,%u,%u", &info.x, &info.y, &info.depth);
+> >> +       if (ret != 3)
+> >> +               return -ENODEV;
+> >
+> > Don't we have some standard template of this, something like XxYxD,
+> > where X, Y, and D are respective decimal numbers?
+>
+> I'm not aware of this.
+
+I believe we won't introduce more chaos in already existing formats of
+one or another thing, so I prefer to be stuck with in practice use
+(e.g. "1024x768x16" without quotes for x=1024, y=768, depth=16).
+
+-- 
+With Best Regards,
+Andy Shevchenko
