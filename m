@@ -2,124 +2,201 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C36D585A16
-	for <lists+linux-efi@lfdr.de>; Sat, 30 Jul 2022 12:26:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91EF2585E5B
+	for <lists+linux-efi@lfdr.de>; Sun, 31 Jul 2022 11:54:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233075AbiG3K0Q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 30 Jul 2022 06:26:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38190 "EHLO
+        id S232575AbiGaJyz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 31 Jul 2022 05:54:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233419AbiG3K0P (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 30 Jul 2022 06:26:15 -0400
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A0871A387;
-        Sat, 30 Jul 2022 03:26:13 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id b16so930437edd.4;
-        Sat, 30 Jul 2022 03:26:13 -0700 (PDT)
+        with ESMTP id S236214AbiGaJyu (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 31 Jul 2022 05:54:50 -0400
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A14C51209E
+        for <linux-efi@vger.kernel.org>; Sun, 31 Jul 2022 02:54:48 -0700 (PDT)
+Received: by mail-yb1-xb2b.google.com with SMTP id o15so14548396yba.10
+        for <linux-efi@vger.kernel.org>; Sun, 31 Jul 2022 02:54:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=l0Q/7yx9FyNBDJt9oRASfJ20HzyIqt7jep5RdGQdu90=;
-        b=kdqdPdfXhJMF2w1UJLc87Kqy9nPsRpmxfI7UKx53cigvdJ8cyHSe54qVTNrI6YQ0Tn
-         40e+x/LcCMjU1pxuJWC+nZ8aRHGqVld5kwZ1Kf0w2Wgur79tXLwBh8rSq7YTbVMzMqbk
-         1DVwsy130N3THSReljll0MNEFs1HbZd5Yc7XZhC6J8NFJyPr9KtVAq/ofE+uV3mQFAqm
-         YcSjWpwVAZ6pSrKIGOB2GVK7ucXlONSqQZGGXgFnYb6gbJ2qbeujZjYkqMyYIUmYZt9l
-         pXeFF3PVa+MNUjpPgdY/w8jcldeydqpOp1/z9Z+4B9V1O/PWa0bQ/CIPZBtROnIJTDNo
-         EzMQ==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=BsZfWrLyYjP0/eroAD6Tswpaa/jZnIwA/CULSdWEsRw=;
+        b=Te2BLHgKyWcngv+lgmyImbh71a//Cv1duStFCayIsf0NUJPLngkUldq0f9S3qHK7Cx
+         c/0zzsaMtN0H1qc9Du2fJt4BBAJHbKOC12EeBPe9qcZ4SexySj8dOm4sHreXcyfG6MAP
+         YLps9hBwq0H97frk/FYEQgEw93EIKYleJUwyXyyghkNag4m0gP/KYmGiDlGo72fc8H2i
+         9HXv/47I3Lo1HbyjZJ6ZNKEKeMhnYkP3KQ+2NIoTou3FNknkV32ZSU0e7T7ayzeUL4dk
+         CG1xp8yBmEO3zY2hkSKezY6hmorwGhaERPgJc1L3P88xj+XzfaXeWQ5/FZce9JZG6dHe
+         Q2FQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=l0Q/7yx9FyNBDJt9oRASfJ20HzyIqt7jep5RdGQdu90=;
-        b=DlYZFmDD62xjawkHSLI3Uc3PyBz2wNLDPuIl1mOYK9VV7/h91GerICRFvEsXAY6Uwp
-         niT838OU8ofu7hNCUUWhEDsLGscZVfNH+Ja+Spp8L4L/7+6lFjPz7OqD5l+uXUVWT+HI
-         M5AN0N6KnxlTcIXGd/mBgsJ/BQGDN+EuLlxIOzne3T1f6GpnoyuqN+CLTtxj7l0etTMV
-         oLkJIR0gentzF6sDeJW+57gryLTXa921YV6NW/SazwTdcNw+KDs/xfsgzKJMrW95DMZi
-         Jb7kAKcGz3WUhci0l68QHEJpnQLLgm3zgbEnD019XB7ZRs3e6LTiWbvKF9x6apNAX9SM
-         YLQA==
-X-Gm-Message-State: AJIora93ugdPyKob0ENkZa1IH3heP/No4y3ZE0XuMPHFqcqWaXxeQYyY
-        Omv4I5yALPWaePmQ7X+i6vNO+HS8M7JhO9JtiF0=
-X-Google-Smtp-Source: AGRyM1uzdkY14o0hN5mVxeuk86vh5sIURGkQFnGzfLTCYvW7dVNz/f6Do420hxAyaoLNy5TcoYGS9EXPlPGIYYkEMTM=
-X-Received: by 2002:a05:6402:2714:b0:43c:1c1:717e with SMTP id
- y20-20020a056402271400b0043c01c1717emr7419196edd.67.1659176771666; Sat, 30
- Jul 2022 03:26:11 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BsZfWrLyYjP0/eroAD6Tswpaa/jZnIwA/CULSdWEsRw=;
+        b=WWvGBEKVpTRTWZimvtAAyOo1Ui0NLT62i8AdZkZ1MT7eTVmkKIUHeK5MW8YrCmLvFL
+         NkDrzVsWsnvD/0JqMV5qUfotgK4FMnMIsepW7XGI0tpWCmoNdErxaryAvSKDukEVvHnw
+         xuu7Pgal/xLnP4WIGxzeuJbzqRRkpPxU5AwbLK+B+Fb8e7Qse+LEq+eavMhDmHjQ4VyK
+         atEROCtRMeKODfc49DcR8Fly3jV+TE+zBq8T9v/lakH0Gez86Gh8vquSpTxdFB9sKG9o
+         gLWFqPh5R1UhbSyfX1zXTuBZ38FwJWfOOJVHQHlqKlyq/2SGzWmJtdORgPa3jbtkVRaW
+         hkFA==
+X-Gm-Message-State: ACgBeo3VDa1CXwM7KxTlwdTfOcYszo4c2g7aWeMowRzBASTEi9eQC5IR
+        BA/InzFGuTWBPh5F05Vlp4T9n+q2CcrCrgicdMNyPg==
+X-Google-Smtp-Source: AA6agR47nDSR8GcbtgCBHh+yHO9YCzoEII6fBOCusqMmxOnIcuKViwritOpcw9qD7bVBj07lvPbygE5GF3WtPvievts=
+X-Received: by 2002:a25:424f:0:b0:671:816f:6979 with SMTP id
+ p76-20020a25424f000000b00671816f6979mr7555758yba.26.1659261287749; Sun, 31
+ Jul 2022 02:54:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220728142824.3836-1-markuss.broks@gmail.com>
- <20220728142824.3836-3-markuss.broks@gmail.com> <CAHp75VdaDyyqRw9fAkUOhNjsyifeozVx6JuYXSU1HpoO+VHDNA@mail.gmail.com>
- <3c55e119-5b6f-25ab-99c9-2c99b1dfd9e9@gmail.com>
-In-Reply-To: <3c55e119-5b6f-25ab-99c9-2c99b1dfd9e9@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 30 Jul 2022 12:25:34 +0200
-Message-ID: <CAHp75Vcu2C-+XyVtLrX8Awxb18uNx6_n3CCCVUyekL4yP755Xw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] efi: earlycon: Add support for generic framebuffers
- and move to fbdev subsystem
-To:     Markuss Broks <markuss.broks@gmail.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
+References: <20220723224949.1089973-1-luzmaximilian@gmail.com>
+ <20220723224949.1089973-5-luzmaximilian@gmail.com> <20220726143005.wt4be7yo7sbd3xut@bogus>
+ <829c8fee-cae5-597d-933d-784b4b57bd73@gmail.com> <20220726154138.74avqs6iqlzqpzjk@bogus>
+ <d1bc99bb-82ce-aa6e-7fad-e9309fa1c19b@gmail.com> <7284953b-52bb-37ac-fbe1-1fa845c44ff9@linaro.org>
+ <3d752603-365d-3a33-e13e-ca241cee9a11@gmail.com> <20220727132437.pjob3z2nyxsuxgam@bogus>
+ <CAC_iWj+Pn+h8k=fuDHzYwqD0g4m6jGRt8sCzcz+5+rYqvz9q4w@mail.gmail.com>
+ <fd922f0f-99fd-55a3-a0b5-b62ad2dbfb45@gmail.com> <CAC_iWjLWBJLth26ifFfHvimProHZu_w5SjQNWSH_D2Fs_JXjbA@mail.gmail.com>
+ <b703f678-b2c5-cdeb-ac40-9646e043d1c3@gmail.com> <CAC_iWjLrntWuJUzVuRi0ZOtG6JXNwz7SbS2mrqpuTgU5TV6rQA@mail.gmail.com>
+ <d5a19e17-08eb-8bd6-ea18-5da638d13622@gmail.com>
+In-Reply-To: <d5a19e17-08eb-8bd6-ea18-5da638d13622@gmail.com>
+From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date:   Sun, 31 Jul 2022 12:54:11 +0300
+Message-ID: <CAC_iWj+mEEAVzZ-_Cn9KKw6H9sUB9sz8f16neXi-wXFXWSLycg@mail.gmail.com>
+Subject: Re: [PATCH 4/4] dt-bindings: firmware: Add Qualcomm UEFI Secure
+ Application client
+To:     Maximilian Luz <luzmaximilian@gmail.com>
+Cc:     Sudeep Holla <sudeep.holla@arm.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
         Ard Biesheuvel <ardb@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Steev Klimaszewski <steev@kali.org>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        Cristian Marussi <cristian.marussi@arm.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Helge Deller <deller@gmx.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Borislav Petkov <bp@suse.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Kees Cook <keescook@chromium.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Michal Suchanek <msuchanek@suse.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Wei Ming Chen <jj251510319013@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux Documentation List <linux-doc@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Rob Herring <robh@kernel.org>
+        linux-arm-msm@vger.kernel.org, linux-efi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, Jul 30, 2022 at 10:55 AM Markuss Broks <markuss.broks@gmail.com> wrote:
-> On 7/29/22 00:19, Andy Shevchenko wrote:
-> > On Thu, Jul 28, 2022 at 4:32 PM Markuss Broks <markuss.broks@gmail.com> wrote:
+Hi Maximilian,
 
-...
-
-> I suppose we could use something like:
+On Thu, 28 Jul 2022 at 20:27, Maximilian Luz <luzmaximilian@gmail.com> wrote:
 >
-> if (region_intersects() == REGION_INTERSECTS)
 
-Yes.
+[...]
 
-...
-
-> >> +       ret = sscanf(device->options, "%u,%u,%u", &info.x, &info.y, &info.depth);
-> >> +       if (ret != 3)
-> >> +               return -ENODEV;
+> >>>>>
+> >>>>> [1] https://git.linaro.org/people/ilias.apalodimas/net-next.git/log/?h=setvar_rt_optee_3
+> >>>>
+> >>>> I would very much like to avoid the need for special bootloaders. The
+> >>>> devices we're talking about are WoA devices, meaning they _should_
+> >>>> ideally boot just fine with EFI and ACPI.
+> >>>
+> >>> I've already responded to following email, but I'll repeat it here for
+> >>> completeness. It's not a special bootloader.  It's the opposite, it's
+> >>> a generic UEFI compliant bootloader which takes advantage of the fact
+> >>> EFI is extensible. We are doing something very similar in how we load
+> >>> our initrd via the EFI_LOAD_FILE2 protocol.  Whether Qualcomm can add
+> >>> that to their bootloaders is a different topic though.  But at some
+> >>> point we need to draw a line than keep overloading the DT because a
+> >>> vendor decided to go down it's own path.
+> >>
+> >> But still, you're asking users to install an extra thing in the boot
+> >> chain.
 > >
-> > Don't we have some standard template of this, something like XxYxD,
-> > where X, Y, and D are respective decimal numbers?
+> > Not users.  EFI firmware implementations that want to support this in
+> > a generic way.
 >
-> I'm not aware of this.
+> The whole point here is that we don't have control over that. I'd like
+> to fix the firmware, but we're talking about WoA devices where, let's
+> face it, both device and SoC vendor don't really care about Linux. Even
+> if you'd convince them to implement that for future generations, you'd
+> still need them to push firmware updates for older generations.
+> Generations that are end-of-life. IMHO, we should still try support
+> those. Or we just say "sorry, Linux doesn't support that on your WoA
+> device".
 
-I believe we won't introduce more chaos in already existing formats of
-one or another thing, so I prefer to be stuck with in practice use
-(e.g. "1024x768x16" without quotes for x=1024, y=768, depth=16).
+Yea we agree on that.  I've mentioned on a previous mail that whether
+Qualcomm wants to support this in a generic way is questionable, since
+we have no control over the firmware.  My only 'objection' is that the
+kernel has a generic way of discovering which runtime services are
+supported, which we will completely ignore based on some DT entries.
 
--- 
-With Best Regards,
-Andy Shevchenko
+In any case let's find something that fits OP-TEE as well, since I can
+send those patches afterwards.
+
+>
+> >> That's what I mean by "special". So the situation would then be
+> >> this: User needs a) GRUB (or something similar) for booting the kernel
+> >> (or dual-booting, ...), b) DTBLoader for loading the device-tree because
+> >> we don't support the ACPI Qualcomm provided, and c) your thing for EFI
+> >> variables and potentially other firmware fix-ups. b) and c) are both
+> >> things that "normal" users don't expect. IMHO we should try to get rid
+> >> of those "non-standard" things, not add more.
+> >
+> > But that's exactly why EFI is extensible .  You can have non standard
+> > functionality on your firmware for cases like this which doesn't need
+> > to land in the spec.
+> >
+> >>
+> >>>>    From an end-user perspective, it's annoying enough that we'll have to
+> >>>> stick with DTs for the time being due to the use of PEPs in ACPI. I
+> >>>> really don't want to add some special bootloader for fixups to that.
+> >>>> Also, this would just move the problem from kernel to bootloader.
+> >>>
+> >>> But it *is* a bootloader problem.  The bootloader is aware of the fact
+> >>> that it can't provide runtime services for X reasons and that's
+> >>> exactly why we are trying to set EFI_RT_PROPERTIES_TABLE correctly
+> >>> from the firmware.  All we are doing is install a config table to tell
+> >>> the OS "I can't do that, can you find a way around it?".
+> >>
+> >> Sure, but is making the Linux installation process more device
+> >> dependent and complicated really the best way to solve this?
+> >
+> > Isn't it device dependent already?  That boat has sailed already since
+> > we need to change the very definition of runtime services and replace
+> > them with OS specific ones.  If we add it on the DT, you'll end up
+> > with different DTs per OS and potentially per use case.  In my head
+> > the DTs should be part of the firmware (and authenticated by the
+> > firmware as well) instead of loading whatever we want each time.  By
+> > using a config table we can add a u64 (random thought),  that tells
+> > the kernel which TEE implementation will handle variable storage.  So
+> > we can have a common extension to boot loaders, which at least uses
+> > EFI interfaces to communicate the functionality.
+>
+> The only thing that is making the installation-process for end-users
+> device dependent is installing the DTB. We can handle the device
+> specific stuff in the kernel, just as we already handle buggy devices.
+>
+> Further, you seem to assume that these devices provide a DT in the first
+> place. WoA devices use ACPI, so they don't. But for the time being (as
+> discussed elsewhere) we unfortunately need to stick with DTs and can't
+> really use ACPI. I agree that we should avoid OS and use-case specific
+> DTs, but I don't see how this would make a DT use-case or OS specific.
+> Things are firmware specific, the interface doesn't change with a
+> different OS, and we're only indicating the presence of that interface.
+>
+> My current suggestion (already sent to Sudeep earlier) is (roughly)
+> this: Add one compatible for the TrEE / TrustZone interface. Then decide
+> to load or instantiate what needs to be loaded in the driver for that.
+> That (depending on maybe SoC / platform / vendor) includes installing
+> the efivar operations. This way we don't have to fill the DT with the
+> specific things running in firmware.
+
+As far as OP-TEE is concerned, I think we can make the 'feature'
+discoverable.  I'll go propose that to op-tee but if that gets
+accepted, we don't need any extra nodes (other than the existing one),
+to wire up efivars_register().
+
+Thanks
+/Ilias
+>
+> Regards,
+> Max
