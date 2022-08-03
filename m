@@ -2,48 +2,49 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F1055884E0
-	for <lists+linux-efi@lfdr.de>; Wed,  3 Aug 2022 01:46:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA329588E29
+	for <lists+linux-efi@lfdr.de>; Wed,  3 Aug 2022 16:02:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234762AbiHBXqk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 2 Aug 2022 19:46:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47606 "EHLO
+        id S238589AbiHCOCg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 3 Aug 2022 10:02:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234716AbiHBXqk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 2 Aug 2022 19:46:40 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B58754673;
-        Tue,  2 Aug 2022 16:46:39 -0700 (PDT)
+        with ESMTP id S238048AbiHCOCe (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 3 Aug 2022 10:02:34 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 425DE2CE1C;
+        Wed,  3 Aug 2022 07:02:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1659483999; x=1691019999;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=6rXGmJONj6b+nIwOClpJuGcxiMNJkmRdeSvTUzrRYKw=;
-  b=ewQmNbUhWJEhDFRchni37SDkuFJYWwsO549xArF+m0avudCnxywe/ej6
-   wO1oivLgr+mEPgwMMF6r5LakoxYArgLJfDYQg1hR7JfbK5gADVw/27t1X
-   6o5LtJhoHsH2AZOewI0V2dVZxIoDjJFLif8ehE3AIweiMfY1lbxswj41w
-   aWAyK9nifE0bnl4YlPiwlc95z2Cz/i4T7nXuxzrPsLPmE0ke5xJAzlimj
-   fIj1KEozGPklLWa0JBWcwXXc1wln5pQP7cG54n1kb/d2Vt2F8WYrz3Sfd
-   48kIbt9+L2QtRAWmnaOjpQUm3LPN6oAfkeloEVYYzoHmOJVkjvAB261oB
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10427"; a="269315114"
-X-IronPort-AV: E=Sophos;i="5.93,212,1654585200"; 
-   d="scan'208";a="269315114"
+  t=1659535352; x=1691071352;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=3kbiD6sIxSxAjVpFKmkjnzMfUr0hXQ3N3rtFHjcQbH4=;
+  b=hx32VLxKoA7yyXx+uPpqfWeyh1L5SxpNJCDxVR1v/8QoGsH20dP+s3Mh
+   J5uWD+xrZ4URuqYuj0ZQAf7lNeGHSRkElDAM3Uuakvwml+AL/el2o7VKQ
+   CuAY5DxWDi4ROqj6Qv9aqr8ff50B9UJELoZeEMdSCL0HXEP4CxgOXXqdf
+   Q4Vqqyf9cHkqDg7nt4MXwZt3JnegAxG3UEU5qd7hfAwk5GfQ+3GxaLPsC
+   vLOyaJcpxQebQ8lTWf3JeOqVu/e2jnd0CJ6IovXjt0ucUJxNAVTgFp6eN
+   GxbJeDuNd+El9dQtsgBKuYfmNrURhqNp1YvEx8yRbWINAN1XWyxGYzdts
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10428"; a="375977435"
+X-IronPort-AV: E=Sophos;i="5.93,214,1654585200"; 
+   d="scan'208";a="375977435"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2022 16:46:38 -0700
-X-IronPort-AV: E=Sophos;i="5.93,212,1654585200"; 
-   d="scan'208";a="630919269"
-Received: from ywagle-mobl.amr.corp.intel.com (HELO [10.209.29.213]) ([10.209.29.213])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2022 16:46:38 -0700
-Message-ID: <80cc204b-a24f-684f-ec66-1361b69cae39@intel.com>
-Date:   Tue, 2 Aug 2022 16:46:38 -0700
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2022 07:02:31 -0700
+X-IronPort-AV: E=Sophos;i="5.93,214,1654585200"; 
+   d="scan'208";a="631159385"
+Received: from buichris-mobl.amr.corp.intel.com (HELO [10.209.124.150]) ([10.209.124.150])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2022 07:02:30 -0700
+Message-ID: <073c5a97-272c-c5a0-19f2-c3f14f916c72@intel.com>
+Date:   Wed, 3 Aug 2022 07:02:31 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.11.0
 Subject: Re: [PATCHv7 10/14] x86/mm: Avoid load_unaligned_zeropad() stepping
  into unaccepted memory
 Content-Language: en-US
+From:   Dave Hansen <dave.hansen@intel.com>
 To:     Borislav Petkov <bp@alien8.de>,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Cc:     Andy Lutomirski <luto@kernel.org>,
@@ -71,14 +72,13 @@ Cc:     Andy Lutomirski <luto@kernel.org>,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
  <20220614120231.48165-11-kirill.shutemov@linux.intel.com>
- <Yt/ANO5usdV+JSSW@zn.tnic>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <Yt/ANO5usdV+JSSW@zn.tnic>
+ <Yt/ANO5usdV+JSSW@zn.tnic> <80cc204b-a24f-684f-ec66-1361b69cae39@intel.com>
+In-Reply-To: <80cc204b-a24f-684f-ec66-1361b69cae39@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_NONE autolearn=ham
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -86,42 +86,38 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 7/26/22 03:21, Borislav Petkov wrote:
-> On Tue, Jun 14, 2022 at 03:02:27PM +0300, Kirill A. Shutemov wrote:
->> But, this approach does not work for unaccepted memory. For TDX, a load
->> from unaccepted memory will not lead to a recoverable exception within
->> the guest. The guest will exit to the VMM where the only recourse is to
->> terminate the guest.
-> FTR, this random-memory-access-to-unaccepted-memory-is-deadly thing is
-> really silly. We should be able to handle such cases - because they do
-> happen often - in a more resilient way. Just look at the complex dance
-> this patch needs to do just to avoid this.
+On 8/2/22 16:46, Dave Hansen wrote:
+> To sum it all up, I'm not happy with the complexity of the page
+> acceptance code either but I'm not sure that it's bad tradeoff compared
+> to greater #VE complexity or fragility.
 > 
-> IOW, this part of the coco technology needs improvement.
+> Does anyone think we should go back and really reconsider this?
 
-This particular wound is self-inflicted.  The hardware can *today*
-generate a #VE for these accesses.  But, to make writing the #VE code
-more straightforward, we asked that the hardware not even bother
-delivering the exception.  At the time, nobody could come up with a case
-why there would ever be a legitimate, non-buggy access to unaccepted memory.
+One other thing I remembered as I re-read my write up on this.
 
-We learned about load_unaligned_zeropad() the hard way.  I never ran
-into it and never knew it was there.  Dangit.
+In the "new" mode, guests never get #VE's for unaccepted memory.  They
+just exit to the host and can never be reentered.  They must be killed.
 
-We _could_ go back to the way it was originally.  We could add
-load_unaligned_zeropad() support to the #VE handler, and there's little
-risk of load_unaligned_zeropad() itself being used in the
-interrupts-disabled window early in the #VE handler.  That would get rid
-of all the nasty adjacent page handling in the unaccepted memory code.
+In the "old" mode, I _believe_ that the guest always gets a #VE for
+non-EPT-present memory.  The #VE is basically the same no matter if the
+page is unaccepted or if the host goes out and makes a
+previously-accepted page non-present.
 
-But, that would mean that we can land in the #VE handler from more
-contexts.  Any normal, non-buggy use of load_unaligned_zeropad() can end
-up there, obviously.  We would, for instance, need to be more careful
-about #VE recursion.  We'd also have to make sure that _bugs_ that land
-in the #VE handler can still be handled in a sane way.
+One really nasty implication of this "old" mode is that the host can
+remove *accepted* pages that are used in the syscall gap.  That means
+that the #VE handler would need to be of the paranoid variety which
+opens up all kinds of other fun.
 
-To sum it all up, I'm not happy with the complexity of the page
-acceptance code either but I'm not sure that it's bad tradeoff compared
-to greater #VE complexity or fragility.
+ * "Old" - #VE's can happen in the syscall gap
+ * "New" - #VE's happen at better-defined times.  Unexpected ones are
+   fatal.
 
-Does anyone think we should go back and really reconsider this?
+There's a third option which I proposed but doesn't yet exist.  The TDX
+module _could_ separate the behavior of unaccepted memory #VE's and
+host-induced #VEs.  This way, we could use load_unaligned_zeropad() with
+impunity and handle it in the #VE handler.  At the same time, the host
+would not be allowed to remove accepted memory and cause problems in the
+syscall gap.  Kinda the best of both worlds.
+
+But, I'm not sure how valuable that would be now that we have the
+(admittedly squirrelly) code to avoid load_unaligned_zeropad() #VE's.
