@@ -2,69 +2,71 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80CB3589C2C
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Aug 2022 15:07:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C348B589C90
+	for <lists+linux-efi@lfdr.de>; Thu,  4 Aug 2022 15:26:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229625AbiHDNHs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 4 Aug 2022 09:07:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46060 "EHLO
+        id S234642AbiHDNZ7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 4 Aug 2022 09:25:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230092AbiHDNHr (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 4 Aug 2022 09:07:47 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC91463C5
-        for <linux-efi@vger.kernel.org>; Thu,  4 Aug 2022 06:07:44 -0700 (PDT)
+        with ESMTP id S232685AbiHDNZ6 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 4 Aug 2022 09:25:58 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A4B0BE3D
+        for <linux-efi@vger.kernel.org>; Thu,  4 Aug 2022 06:25:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6EA6CB82492
-        for <linux-efi@vger.kernel.org>; Thu,  4 Aug 2022 13:07:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF15FC433B5
-        for <linux-efi@vger.kernel.org>; Thu,  4 Aug 2022 13:07:41 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 2B175CE2625
+        for <linux-efi@vger.kernel.org>; Thu,  4 Aug 2022 13:25:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F39A6C4347C
+        for <linux-efi@vger.kernel.org>; Thu,  4 Aug 2022 13:25:52 +0000 (UTC)
 Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="jLH9m/iO"
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="KvF7F/jT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1659618458;
+        t=1659619550;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=SHpXpetfvhI+GjnukjzJ1jUP7ZppZWoiQjyERBvsIpk=;
-        b=jLH9m/iOLfK7M4SeZFboVPJ7KnujIvuz6hNU8BLjuz51GhWsR378jGDNCM1abrdlRZcWyR
-        AKlLKcrA/J4dywy5LngXkOQZj7LADb84m1BCd0NzjvebHC15mms8HQE7jZPJ8qS+xPoapt
-        XdvL/mAyRufO221/TKx5M20su+X1JTE=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 2cb74099 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+        bh=ZJwChJPqW5yYgZvwHhdHDcO5vZjLpvP+FfYNZRPIs/g=;
+        b=KvF7F/jTWTei3Ylx8KpVUMsXR++z/X9kxskbih2vi44wJPldRf3rf26Xn2wxn3yu9ZxibM
+        eAXsLMEffmh2C5hefTWf1Wz3yhQgOkuBMGWn3yDDkqvszm7hDd52VCbjf1n1hZ7YikZcKr
+        Xh/mH8U5Jb/6K8ZejXHH4wu6L1fFHFM=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 5497a4f1 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
         for <linux-efi@vger.kernel.org>;
-        Thu, 4 Aug 2022 13:07:38 +0000 (UTC)
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-32868f43dd6so23504507b3.8
-        for <linux-efi@vger.kernel.org>; Thu, 04 Aug 2022 06:07:37 -0700 (PDT)
-X-Gm-Message-State: ACgBeo0OBdZ9xnfd9+y56SDdZV2KdYTrp8GyKz8Wc0aCy8RJiGO0/S4J
-        69KvuvtSfzGLWhANL1o0IejaN4Fg38HKZGnmyNs=
-X-Google-Smtp-Source: AA6agR6n0CErDYOCo4pVtebQuVAsWeuo9kEQV1vFNfq9HNitnVeH04jMWbTZmh+Z1vA8B14eFAa7YJMCegzthfMCuro=
-X-Received: by 2002:a0d:ca85:0:b0:328:3048:530f with SMTP id
- m127-20020a0dca85000000b003283048530fmr1612943ywd.414.1659618456702; Thu, 04
- Aug 2022 06:07:36 -0700 (PDT)
+        Thu, 4 Aug 2022 13:25:49 +0000 (UTC)
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-31f443e276fso200691147b3.1
+        for <linux-efi@vger.kernel.org>; Thu, 04 Aug 2022 06:25:49 -0700 (PDT)
+X-Gm-Message-State: ACgBeo3IckyB9OJmEAlGDwuatAP/mFSW1w7TNq7Mrjj5DaUoDi/1HtNU
+        s2VVvrqqd7vVAZUd6WMLUHAMp++tOx1oWFXN2ro=
+X-Google-Smtp-Source: AA6agR7VGtCGDy/xKzbNIibGDkvBRNQqDdAzczsuC9aF07Ujc+qdaysyi5sjNLsMZUR8VVk6yeBqaUU5f63RfmjsN9I=
+X-Received: by 2002:a81:1590:0:b0:328:2f5c:4704 with SMTP id
+ 138-20020a811590000000b003282f5c4704mr1731575ywv.79.1659619548364; Thu, 04
+ Aug 2022 06:25:48 -0700 (PDT)
 MIME-Version: 1.0
 References: <YusVVLNbLgsk49PK@zx2c4.com> <20220804004411.1343158-1-Jason@zx2c4.com>
- <YuvBaxwcWPGvW0gZ@redhat.com>
-In-Reply-To: <YuvBaxwcWPGvW0gZ@redhat.com>
+ <20220804030012-mutt-send-email-mst@kernel.org> <bfa5704d-755c-5a52-e7cc-bd9b34e5bb03@redhat.com>
+ <YuuQb3D/YY1SiUqY@redhat.com> <CAMj1kXFr6Bv4_G0-wCTu4fp_iCrG060NHJx_j2dbnyiFJKYYeQ@mail.gmail.com>
+ <eadc852a-63f9-a017-aef7-f046eb56e28f@redhat.com> <Yuu3YeTRLE/gx6YC@zx2c4.com>
+ <CAHmME9qQQZH1+Dy4zY5L-MdxN4kXtujW9XaH1x+RyCn-SjsTOA@mail.gmail.com> <5528ca40-50fb-8e92-7f24-80e20c4c983e@redhat.com>
+In-Reply-To: <5528ca40-50fb-8e92-7f24-80e20c4c983e@redhat.com>
 From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Thu, 4 Aug 2022 15:07:25 +0200
-X-Gmail-Original-Message-ID: <CAHmME9p-3ssXmyX6D=Ji9mBHqFoB8yeQgfWx=U1qfm1si9q3aQ@mail.gmail.com>
-Message-ID: <CAHmME9p-3ssXmyX6D=Ji9mBHqFoB8yeQgfWx=U1qfm1si9q3aQ@mail.gmail.com>
+Date:   Thu, 4 Aug 2022 15:25:37 +0200
+X-Gmail-Original-Message-ID: <CAHmME9pjwaHeczJjLgZoXe__J_OnMH4zAnwFyo=ieMtj7QMEDw@mail.gmail.com>
+Message-ID: <CAHmME9pjwaHeczJjLgZoXe__J_OnMH4zAnwFyo=ieMtj7QMEDw@mail.gmail.com>
 Subject: Re: [PATCH v2] hw/i386: place setup_data at fixed place in memory
-To:     =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc:     QEMU Developers <qemu-devel@nongnu.org>,
+To:     Laszlo Ersek <lersek@redhat.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        QEMU Developers <qemu-devel@nongnu.org>,
         Xiaoyao Li <xiaoyao.li@intel.com>,
         Paolo Bonzini <pbonzini@redhat.com>,
         Richard Henderson <richard.henderson@linaro.org>,
         Peter Maydell <peter.maydell@linaro.org>,
-        "Michael S . Tsirkin" <mst@redhat.com>,
         Gerd Hoffmann <kraxel@redhat.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
         RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -75,97 +77,57 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Daniel,
+Hi Laszlo,
 
-On Thu, Aug 4, 2022 at 2:54 PM Daniel P. Berrang=C3=A9 <berrange@redhat.com=
-> wrote:
+On Thu, Aug 4, 2022 at 3:17 PM Laszlo Ersek <lersek@redhat.com> wrote:
 >
-> On Thu, Aug 04, 2022 at 02:44:11AM +0200, Jason A. Donenfeld wrote:
-> > The boot parameter header refers to setup_data at an absolute address,
-> > and each setup_data refers to the next setup_data at an absolute addres=
-s
-> > too. Currently QEMU simply puts the setup_datas right after the kernel
-> > image, and since the kernel_image is loaded at prot_addr -- a fixed
-> > address knowable to QEMU apriori -- the setup_data absolute address
-> > winds up being just `prot_addr + a_fixed_offset_into_kernel_image`.
+> On 08/04/22 14:47, Jason A. Donenfeld wrote:
+> > On Thu, Aug 4, 2022 at 2:11 PM Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+> >>
+> >> Hi Laszlo,
+> >>
+> >> On Thu, Aug 04, 2022 at 01:31:36PM +0200, Laszlo Ersek wrote:
+> >>> None of the existing info passing methods seem early enough, generic
+> >>> enough, and secure enough (at the same time)...
+> >>
+> >> Can you look at the v2 patch? It seems to work on every configuration I
+> >> throw at it. Keep in mind that setup_data is only used very, very early.
+> >> I can think of a few other places to put it too, looking at the x86
+> >> memory map, that will survive long enough.
+> >>
+> >> I think this might actually be a straightforwardly solvable problem if
+> >> you think about it more basically.
 > >
-> > This mostly works fine, so long as the kernel image really is loaded at
-> > prot_addr. However, OVMF doesn't load the kernel at prot_addr, and
-> > generally EFI doesn't give a good way of predicting where it's going to
-> > load the kernel. So when it loads it at some address !=3D prot_addr, th=
-e
-> > absolute addresses in setup_data now point somewhere bogus, causing
-> > crashes when EFI stub tries to follow the next link.
-> >
-> > Fix this by placing setup_data at some fixed place in memory, relative
-> > to real_addr, not as part of the kernel image, and then pointing the
-> > setup_data absolute address to that fixed place in memory. This way,
-> > even if OVMF or other chains relocate the kernel image, the boot
-> > parameter still points to the correct absolute address.
-> >
-> > Fixes: 3cbeb52467 ("hw/i386: add device tree support")
-> > Reported-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> > Cc: Paolo Bonzini <pbonzini@redhat.com>
-> > Cc: Richard Henderson <richard.henderson@linaro.org>
-> > Cc: Peter Maydell <peter.maydell@linaro.org>
-> > Cc: Michael S. Tsirkin <mst@redhat.com>
-> > Cc: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> > Cc: Gerd Hoffmann <kraxel@redhat.com>
-> > Cc: Ard Biesheuvel <ardb@kernel.org>
-> > Cc: linux-efi@vger.kernel.org
-> > Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-> > ---
-> >  hw/i386/x86.c | 38 ++++++++++++++++++++------------------
-> >  1 file changed, 20 insertions(+), 18 deletions(-)
-> >
-> > diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-> > index 050eedc0c8..8b853abf38 100644
-> > --- a/hw/i386/x86.c
-> > +++ b/hw/i386/x86.c
+> > And just to put things in perspective here... We only need like 48
+> > bytes or something at some easy fixed address. That's not much. That's
+> > *got* to be a fairly tractable problem. If v2 has issues, I can't see
+> > why there wouldn't be a different easy place to put a meger 48 bytes
+> > of stuff that then is allowed to be wiped out after early boot.
 >
+> I've looked at v2. It still relies on passing information from QEMU to
+> the guest kernel through guest RAM such that the whole firmware
+> execution takes place in-between, without the firmware knowing anything
+> about that particular area -- effectively treating it as free system
+> RAM. Such exceptions are time bombs.
 >
-> >      if (!legacy_no_rng_seed) {
-> > -        setup_data_offset =3D QEMU_ALIGN_UP(kernel_size, 16);
-> > -        kernel_size =3D setup_data_offset + sizeof(struct setup_data) =
-+ RNG_SEED_LENGTH;
-> > -        kernel =3D g_realloc(kernel, kernel_size);
-> > -        setup_data =3D (struct setup_data *)(kernel + setup_data_offse=
-t);
-> > +        setup_data_item_len =3D sizeof(struct setup_data) + RNG_SEED_L=
-ENGTH;
-> > +        setup_datas =3D g_realloc(setup_datas, setup_data_total_len + =
-setup_data_item_len);
-> > +        setup_data =3D (struct setup_data *)(setup_datas + setup_data_=
-total_len);
-> >          setup_data->next =3D cpu_to_le64(first_setup_data);
-> > -        first_setup_data =3D prot_addr + setup_data_offset;
-> > +        first_setup_data =3D setup_data_base + setup_data_total_len;
-> > +        setup_data_total_len +=3D setup_data_item_len;
-> >          setup_data->type =3D cpu_to_le32(SETUP_RNG_SEED);
-> >          setup_data->len =3D cpu_to_le32(RNG_SEED_LENGTH);
-> >          qemu_guest_getrandom_nofail(setup_data->data, RNG_SEED_LENGTH)=
-;
-> >      }
-> >
-> > -    /* Offset 0x250 is a pointer to the first setup_data link. */
-> > -    stq_p(header + 0x250, first_setup_data);
-> > +    if (first_setup_data) {
-> > +            /* Offset 0x250 is a pointer to the first setup_data link.=
- */
-> > +            stq_p(header + 0x250, first_setup_data);
-> > +            rom_add_blob("setup_data", setup_datas, setup_data_total_l=
-en, setup_data_total_len,
-> > +                         setup_data_base, NULL, NULL, NULL, NULL, fals=
-e);
-> > +    }
+> We *have* used hard-coded addresses, sometimes they are unavoidable, but
+> then they are open-coded in both QEMU and the firmware, and some early
+> part of the firmware takes care to either move the data to a "safe"
+> place, or to cover it in-place with a kind of reservation that prevents
+> other parts of the firmware from trampling over it. I've debugged
+> mistakes (memory corruption) when such reservation was forgotten; it's
+> not fun.
 >
-> The boot measurements with AMD SEV now succeed, but I'm a little
-> worried about the implications of adding this ROM, when a few lines
-> later here we're discarding the 'header' changes for AMD SEV. Is
-> this still going to operate correctly in the guest OS if we've
-> discarded the header changes below ?
+> In short, I have nothing against the QEMU patch, but then the current
+> OvmfPkg maintainers should accept a patch for the firmware too, for
+> protecting the area from later firmware components, as early as possible.
 
-I'll add a !sev_enabled() condition to that block too, so it also
-skips adding the ROM, for v3.
+What you say mostly makes sense. Though, I was wondering if there's
+some unused space (maybe a historical low address) that nothing
+touches because it's always been considered reserved. Some kind of
+ancient video data region, for example. We only need 48 bytes after
+all... My hope was that somebody with a lot of deep x86 knowledge
+would be able to smell their way to something that's always good like
+that. (Alternatively, there's my real_addr thing from v2.)
 
 Jason
