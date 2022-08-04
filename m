@@ -2,58 +2,59 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C348B589C90
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Aug 2022 15:26:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52CEA589CA5
+	for <lists+linux-efi@lfdr.de>; Thu,  4 Aug 2022 15:28:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234642AbiHDNZ7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 4 Aug 2022 09:25:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59690 "EHLO
+        id S239684AbiHDN2k (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 4 Aug 2022 09:28:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232685AbiHDNZ6 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 4 Aug 2022 09:25:58 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A4B0BE3D
-        for <linux-efi@vger.kernel.org>; Thu,  4 Aug 2022 06:25:57 -0700 (PDT)
+        with ESMTP id S238145AbiHDN2j (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 4 Aug 2022 09:28:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEBEB1F2F2
+        for <linux-efi@vger.kernel.org>; Thu,  4 Aug 2022 06:28:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 2B175CE2625
-        for <linux-efi@vger.kernel.org>; Thu,  4 Aug 2022 13:25:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F39A6C4347C
-        for <linux-efi@vger.kernel.org>; Thu,  4 Aug 2022 13:25:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 473876182A
+        for <linux-efi@vger.kernel.org>; Thu,  4 Aug 2022 13:28:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE32C433B5
+        for <linux-efi@vger.kernel.org>; Thu,  4 Aug 2022 13:28:36 +0000 (UTC)
 Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="KvF7F/jT"
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Oh0IjWgR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1659619550;
+        t=1659619714;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZJwChJPqW5yYgZvwHhdHDcO5vZjLpvP+FfYNZRPIs/g=;
-        b=KvF7F/jTWTei3Ylx8KpVUMsXR++z/X9kxskbih2vi44wJPldRf3rf26Xn2wxn3yu9ZxibM
-        eAXsLMEffmh2C5hefTWf1Wz3yhQgOkuBMGWn3yDDkqvszm7hDd52VCbjf1n1hZ7YikZcKr
-        Xh/mH8U5Jb/6K8ZejXHH4wu6L1fFHFM=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 5497a4f1 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+        bh=wPRUR1d6C2o6R/GtiyamMys3pOb0dun1S6OPApUp3Js=;
+        b=Oh0IjWgRw2Ed78mxBMIz5B/I/JXVCiYW9W/ahaeImg15bicUrZ1yntnNXixnTP+mTQ8rqn
+        m40w1PcGgxfMgizh0o3CDlqyZ71Lk//snUe/0Y7IK/lbW+8/+tCDJq6iM+Q56s64aKr73c
+        UAvfA4Iq2i/NYQrDb2hwQRBRRoGZxqM=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 8a785cb0 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
         for <linux-efi@vger.kernel.org>;
-        Thu, 4 Aug 2022 13:25:49 +0000 (UTC)
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-31f443e276fso200691147b3.1
-        for <linux-efi@vger.kernel.org>; Thu, 04 Aug 2022 06:25:49 -0700 (PDT)
-X-Gm-Message-State: ACgBeo3IckyB9OJmEAlGDwuatAP/mFSW1w7TNq7Mrjj5DaUoDi/1HtNU
-        s2VVvrqqd7vVAZUd6WMLUHAMp++tOx1oWFXN2ro=
-X-Google-Smtp-Source: AA6agR7VGtCGDy/xKzbNIibGDkvBRNQqDdAzczsuC9aF07Ujc+qdaysyi5sjNLsMZUR8VVk6yeBqaUU5f63RfmjsN9I=
-X-Received: by 2002:a81:1590:0:b0:328:2f5c:4704 with SMTP id
- 138-20020a811590000000b003282f5c4704mr1731575ywv.79.1659619548364; Thu, 04
- Aug 2022 06:25:48 -0700 (PDT)
+        Thu, 4 Aug 2022 13:28:33 +0000 (UTC)
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-328a1cff250so18602027b3.6
+        for <linux-efi@vger.kernel.org>; Thu, 04 Aug 2022 06:28:33 -0700 (PDT)
+X-Gm-Message-State: ACgBeo0Bemnp00csNj783mW4cZ4cot9ji09tcPbZQyB5Z3o4sJdb0fdY
+        EH7p67J2dQwIkGpK2d1o98I90PQDy57VJM61tWM=
+X-Google-Smtp-Source: AA6agR40k1E4YmnnhSWG7HXjl6FctLL8NnSVBGu7WbqOWvWx/bLc6aRclXaBoeM+Y+q9XVpFXTCXPnOpcSr5urg8JCo=
+X-Received: by 2002:a0d:c003:0:b0:325:314c:9924 with SMTP id
+ b3-20020a0dc003000000b00325314c9924mr1591061ywd.259.1659619712489; Thu, 04
+ Aug 2022 06:28:32 -0700 (PDT)
 MIME-Version: 1.0
 References: <YusVVLNbLgsk49PK@zx2c4.com> <20220804004411.1343158-1-Jason@zx2c4.com>
  <20220804030012-mutt-send-email-mst@kernel.org> <bfa5704d-755c-5a52-e7cc-bd9b34e5bb03@redhat.com>
- <YuuQb3D/YY1SiUqY@redhat.com> <CAMj1kXFr6Bv4_G0-wCTu4fp_iCrG060NHJx_j2dbnyiFJKYYeQ@mail.gmail.com>
- <eadc852a-63f9-a017-aef7-f046eb56e28f@redhat.com> <Yuu3YeTRLE/gx6YC@zx2c4.com>
- <CAHmME9qQQZH1+Dy4zY5L-MdxN4kXtujW9XaH1x+RyCn-SjsTOA@mail.gmail.com> <5528ca40-50fb-8e92-7f24-80e20c4c983e@redhat.com>
-In-Reply-To: <5528ca40-50fb-8e92-7f24-80e20c4c983e@redhat.com>
+ <YuuQb3D/YY1SiUqY@redhat.com> <Yuu1kX9CAqSUNNAj@zx2c4.com>
+ <Yuu3ee1iB3IoLdZS@redhat.com> <CAMj1kXFAz1ttRmt5_utReSC=TjdfmrgwbwSaAZTDnx6OPGuRRg@mail.gmail.com>
+ <cf60456e-a2cd-a64d-0cee-4bea30708fc9@redhat.com>
+In-Reply-To: <cf60456e-a2cd-a64d-0cee-4bea30708fc9@redhat.com>
 From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Thu, 4 Aug 2022 15:25:37 +0200
-X-Gmail-Original-Message-ID: <CAHmME9pjwaHeczJjLgZoXe__J_OnMH4zAnwFyo=ieMtj7QMEDw@mail.gmail.com>
-Message-ID: <CAHmME9pjwaHeczJjLgZoXe__J_OnMH4zAnwFyo=ieMtj7QMEDw@mail.gmail.com>
+Date:   Thu, 4 Aug 2022 15:28:21 +0200
+X-Gmail-Original-Message-ID: <CAHmME9pUdckUwei234Xdge_G-=b6q2e9a8mTVExrV4WE=6TLig@mail.gmail.com>
+Message-ID: <CAHmME9pUdckUwei234Xdge_G-=b6q2e9a8mTVExrV4WE=6TLig@mail.gmail.com>
 Subject: Re: [PATCH v2] hw/i386: place setup_data at fixed place in memory
 To:     Laszlo Ersek <lersek@redhat.com>
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
@@ -67,6 +68,7 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Gerd Hoffmann <kraxel@redhat.com>,
         linux-efi <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
         RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -77,57 +79,91 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Laszlo,
-
-On Thu, Aug 4, 2022 at 3:17 PM Laszlo Ersek <lersek@redhat.com> wrote:
+On Thu, Aug 4, 2022 at 3:25 PM Laszlo Ersek <lersek@redhat.com> wrote:
 >
-> On 08/04/22 14:47, Jason A. Donenfeld wrote:
-> > On Thu, Aug 4, 2022 at 2:11 PM Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+> On 08/04/22 14:16, Ard Biesheuvel wrote:
+> > On Thu, 4 Aug 2022 at 14:11, Daniel P. Berrang=C3=A9 <berrange@redhat.c=
+om> wrote:
 > >>
-> >> Hi Laszlo,
+> >> On Thu, Aug 04, 2022 at 02:03:29PM +0200, Jason A. Donenfeld wrote:
+> >>> Hi Daniel,
+> >>>
+> >>> On Thu, Aug 04, 2022 at 10:25:36AM +0100, Daniel P. Berrang=C3=A9 wro=
+te:
+> >>>> Yep, and ultimately the inability to distinguish UEFI vs other firmw=
+are
+> >>>> is arguably correct by design, as the QEMU <-> firmware interface is
+> >>>> supposed to be arbitrarily pluggable for any firmware implementation
+> >>>> not  limited to merely UEFI + seabios.
+> >>>
+> >>> Indeed, I agree with this.
+> >>>
+> >>>>
+> >>>>> For now I suggest either reverting the original patch, or at least =
+not
+> >>>>> enabling the knob by default for any machine types. In particular, =
+when
+> >>>>> using MicroVM, the user must leave the knob disabled when direct bo=
+oting
+> >>>>> a kernel on OVMF, and the user may or may not enable the knob when
+> >>>>> direct booting a kernel on SeaBIOS.
+> >>>>
+> >>>> Having it opt-in via a knob would defeat Jason's goal of having the =
+seed
+> >>>> available automatically.
+> >>>
+> >>> Yes, adding a knob is absolutely out of the question.
+> >>>
+> >>> It also doesn't actually solve the problem: this triggers when QEMU
+> >>> passes a DTB too. It's not just for the new RNG seed thing. This bug
+> >>> isn't new.
 > >>
-> >> On Thu, Aug 04, 2022 at 01:31:36PM +0200, Laszlo Ersek wrote:
-> >>> None of the existing info passing methods seem early enough, generic
-> >>> enough, and secure enough (at the same time)...
+> >> In the other thread I also mentioned that this RNG Seed addition has
+> >> caused a bug with AMD SEV too, making boot measurement attestation
+> >> fail because the kernel blob passed to the firmware no longer matches
+> >> what the tenant expects, due to the injected seed.
 > >>
-> >> Can you look at the v2 patch? It seems to work on every configuration I
-> >> throw at it. Keep in mind that setup_data is only used very, very early.
-> >> I can think of a few other places to put it too, looking at the x86
-> >> memory map, that will survive long enough.
-> >>
-> >> I think this might actually be a straightforwardly solvable problem if
-> >> you think about it more basically.
 > >
-> > And just to put things in perspective here... We only need like 48
-> > bytes or something at some easy fixed address. That's not much. That's
-> > *got* to be a fairly tractable problem. If v2 has issues, I can't see
-> > why there wouldn't be a different easy place to put a meger 48 bytes
-> > of stuff that then is allowed to be wiped out after early boot.
+> > I was actually expecting this to be an issue in the
+> > signing/attestation department as well, and you just confirmed my
+> > suspicion.
+> >
+> > But does this mean that populating the setup_data pointer is out of
+> > the question altogether? Or only that putting the setup_data linked
+> > list nodes inside the image is a problem?
 >
-> I've looked at v2. It still relies on passing information from QEMU to
-> the guest kernel through guest RAM such that the whole firmware
-> execution takes place in-between, without the firmware knowing anything
-> about that particular area -- effectively treating it as free system
-> RAM. Such exceptions are time bombs.
+> QEMU already has to inject a whole bunch of stuff into confidential
+> computing guests. The way it's done (IIRC) is that the non-compressed,
+> trailing part of pflash (basically where the reset vector code lives
+> too) is populated at OVMF build time with a chain of GUID-ed structures,
+> and fields of those structures are filled in (at OVMF build time) from
+> various fixed PCDs. The fixed PCDs in turn are populated from the FD
+> files, using various MEMFD regions. When QEMU launches the guest, it can
+> parse the GPAs from the on-disk pflash image (traversing the list of
+> GUID-ed structs), at which addresses the guest firmware will then expect
+> the various crypto artifacts to be injected.
 >
-> We *have* used hard-coded addresses, sometimes they are unavoidable, but
-> then they are open-coded in both QEMU and the firmware, and some early
-> part of the firmware takes care to either move the data to a "safe"
-> place, or to cover it in-place with a kind of reservation that prevents
-> other parts of the firmware from trampling over it. I've debugged
-> mistakes (memory corruption) when such reservation was forgotten; it's
-> not fun.
+> The point is that "who's in control" is reversed. The firmware exposes
+> (at build time) at what GPAs it can accept data injections, and QEMU
+> follows that. Of course the firmware ensures that nothing else in the
+> firmware will try to own those GPAs.
 >
-> In short, I have nothing against the QEMU patch, but then the current
-> OvmfPkg maintainers should accept a patch for the firmware too, for
-> protecting the area from later firmware components, as early as possible.
+> The only thing that needed to be hard-coded when this feature was
+> introduced was the "entry point", that is, the flash offset at which
+> QEMU starts the GUID-ed structure traversal.
+>
+> AMD and IBM developers can likely much better describe this mechanism,
+> as I've not dealt with it in over a year. The QEMU side code is in
+> "hw/i386/pc_sysfw_ovmf.c".
+>
+> We can make setup_data chaining work with OVMF, but the whole chain
+> should be located in a GPA range that OVMF dictates.
 
-What you say mostly makes sense. Though, I was wondering if there's
-some unused space (maybe a historical low address) that nothing
-touches because it's always been considered reserved. Some kind of
-ancient video data region, for example. We only need 48 bytes after
-all... My hope was that somebody with a lot of deep x86 knowledge
-would be able to smell their way to something that's always good like
-that. (Alternatively, there's my real_addr thing from v2.)
+It sounds like what you describe is pretty OVMF-specific though,
+right? Do we want to tie things together so tightly like that?
+
+Given we only need 48 bytes or so, isn't there a more subtle place we
+could just throw this in ram that doesn't need such complex
+coordination?
 
 Jason
