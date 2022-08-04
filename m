@@ -2,55 +2,61 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A314589B86
-	for <lists+linux-efi@lfdr.de>; Thu,  4 Aug 2022 14:16:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CB96589B88
+	for <lists+linux-efi@lfdr.de>; Thu,  4 Aug 2022 14:18:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239700AbiHDMQk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 4 Aug 2022 08:16:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45422 "EHLO
+        id S237920AbiHDMSM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 4 Aug 2022 08:18:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234356AbiHDMQk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 4 Aug 2022 08:16:40 -0400
+        with ESMTP id S234356AbiHDMSL (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 4 Aug 2022 08:18:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC69021821
-        for <linux-efi@vger.kernel.org>; Thu,  4 Aug 2022 05:16:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14F1921821
+        for <linux-efi@vger.kernel.org>; Thu,  4 Aug 2022 05:18:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 48A5761791
-        for <linux-efi@vger.kernel.org>; Thu,  4 Aug 2022 12:16:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A78B1C433D6
-        for <linux-efi@vger.kernel.org>; Thu,  4 Aug 2022 12:16:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659615397;
-        bh=ylX5TvV3j6D/3PNgjjVFZ8XJIszfvNtpvYJyO6MWB74=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=MWzg0Wn9L+HRdl6ind7nuh5aMjSbZrMFxrqCRVCDRkWPNJIyQvo4SXN59gPm3NnCj
-         IPm1YTAZ0az6yN3sB7+6lAEo72rfPeLYIcPZhF/zroCfty12tcHg+jLodXX4C8YUn3
-         GNT9EbT+iGKGOuuRhems+rBoNlA/RrQClTa7EHqvsmVP98J7lpq2f061RUupoBF4sj
-         PQehCfB/+3JZhIBsX7LK/yDIkG6jwUOFb4aq6uNqA+/6NtN5Ozrwt0zD3kgc0pEtkH
-         0gwYgYMfFTGb0KW3yDCa/xLbVN4OV9Hd43cnYXALizlOw/KN6uBcxtJ1tXcvkNEYB+
-         GcJTQDjdWh/dQ==
-Received: by mail-oi1-f178.google.com with SMTP id q184so4056468oif.1
-        for <linux-efi@vger.kernel.org>; Thu, 04 Aug 2022 05:16:37 -0700 (PDT)
-X-Gm-Message-State: ACgBeo3ZVhKrbbmqevDj7vrNaieGv34w/x6icWLTUOdH2Eee83Z8Oj7W
-        DkVFi4GmBIkg8NjnCIeY1q0RISgX4hGeAe9S6Jc=
-X-Google-Smtp-Source: AA6agR5imbDAqwKCycIGCGe8+Zb2VBwMHNw5iTGf+N0g6gDs/ql1UNJdZhCl7JyYPsETSPX6IXsE/0fz/UVoBvinsuE=
-X-Received: by 2002:a05:6808:16ac:b0:33b:32ce:edd8 with SMTP id
- bb44-20020a05680816ac00b0033b32ceedd8mr708838oib.126.1659615396761; Thu, 04
- Aug 2022 05:16:36 -0700 (PDT)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A7AA0616DE
+        for <linux-efi@vger.kernel.org>; Thu,  4 Aug 2022 12:18:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E3CC433D6
+        for <linux-efi@vger.kernel.org>; Thu,  4 Aug 2022 12:18:09 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="FsTmYygX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1659615487;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=8vMn/hCMRgqyRF5OiL+CnB6rpk4e72FzWg7m17HZd/0=;
+        b=FsTmYygXOK7PO4uaeVD4LAvqziGZyCf3UlnrlmIZF6KAEjp2qqT3yBIvmx0UHKKqss/PsN
+        Ugm9tTirbDckjwj9xoCgxIv/FDzOaREWBue9eMh6fDwVG8/Q7BoE3VbZRzOHmWtkaVxtBe
+        cH7Lt+cOX8WiK+/u3HyHynX0W6CC/mo=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id f698338a (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+        for <linux-efi@vger.kernel.org>;
+        Thu, 4 Aug 2022 12:18:07 +0000 (UTC)
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-31f41584236so198648277b3.5
+        for <linux-efi@vger.kernel.org>; Thu, 04 Aug 2022 05:18:06 -0700 (PDT)
+X-Gm-Message-State: ACgBeo3+kQIbhqr3MHXfHYG3GOYUDcQB2Dj86XcOa/fBUyO3sWJMLXBQ
+        3LNZ0UKdpkKuPPXDsHrwPNFbNecqjPsKLEh5bgU=
+X-Google-Smtp-Source: AA6agR4/qEWxiWGUgHTJ0mtVsYhRZJ82Sv/FYZoI5TsQH65nMjnJ1Rt7GCdruhlbY3fMkJ9l4k8Jv/YoLTYOACxgiQw=
+X-Received: by 2002:a81:59c4:0:b0:31f:4804:76ad with SMTP id
+ n187-20020a8159c4000000b0031f480476admr1375391ywb.143.1659615486288; Thu, 04
+ Aug 2022 05:18:06 -0700 (PDT)
 MIME-Version: 1.0
 References: <YusVVLNbLgsk49PK@zx2c4.com> <20220804004411.1343158-1-Jason@zx2c4.com>
  <20220804030012-mutt-send-email-mst@kernel.org> <bfa5704d-755c-5a52-e7cc-bd9b34e5bb03@redhat.com>
- <YuuQb3D/YY1SiUqY@redhat.com> <Yuu1kX9CAqSUNNAj@zx2c4.com> <Yuu3ee1iB3IoLdZS@redhat.com>
-In-Reply-To: <Yuu3ee1iB3IoLdZS@redhat.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 4 Aug 2022 14:16:25 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFAz1ttRmt5_utReSC=TjdfmrgwbwSaAZTDnx6OPGuRRg@mail.gmail.com>
-Message-ID: <CAMj1kXFAz1ttRmt5_utReSC=TjdfmrgwbwSaAZTDnx6OPGuRRg@mail.gmail.com>
+ <YuuQb3D/YY1SiUqY@redhat.com> <Yuu1kX9CAqSUNNAj@zx2c4.com>
+ <Yuu3ee1iB3IoLdZS@redhat.com> <CAMj1kXFAz1ttRmt5_utReSC=TjdfmrgwbwSaAZTDnx6OPGuRRg@mail.gmail.com>
+In-Reply-To: <CAMj1kXFAz1ttRmt5_utReSC=TjdfmrgwbwSaAZTDnx6OPGuRRg@mail.gmail.com>
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date:   Thu, 4 Aug 2022 14:17:55 +0200
+X-Gmail-Original-Message-ID: <CAHmME9pxrFpGWXiubxU9r2sDMV-P+QuDiZvw4OaSZvWOkDbyTA@mail.gmail.com>
+Message-ID: <CAHmME9pxrFpGWXiubxU9r2sDMV-P+QuDiZvw4OaSZvWOkDbyTA@mail.gmail.com>
 Subject: Re: [PATCH v2] hw/i386: place setup_data at fixed place in memory
-To:     =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
         Laszlo Ersek <lersek@redhat.com>,
         "Michael S. Tsirkin" <mst@redhat.com>,
         QEMU Developers <qemu-devel@nongnu.org>,
@@ -62,61 +68,76 @@ Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
         linux-efi <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 4 Aug 2022 at 14:11, Daniel P. Berrang=C3=A9 <berrange@redhat.com> =
-wrote:
->
-> On Thu, Aug 04, 2022 at 02:03:29PM +0200, Jason A. Donenfeld wrote:
-> > Hi Daniel,
-> >
-> > On Thu, Aug 04, 2022 at 10:25:36AM +0100, Daniel P. Berrang=C3=A9 wrote=
-:
-> > > Yep, and ultimately the inability to distinguish UEFI vs other firmwa=
-re
-> > > is arguably correct by design, as the QEMU <-> firmware interface is
-> > > supposed to be arbitrarily pluggable for any firmware implementation
-> > > not  limited to merely UEFI + seabios.
-> >
-> > Indeed, I agree with this.
-> >
-> > >
-> > > > For now I suggest either reverting the original patch, or at least =
-not
-> > > > enabling the knob by default for any machine types. In particular, =
-when
-> > > > using MicroVM, the user must leave the knob disabled when direct bo=
-oting
-> > > > a kernel on OVMF, and the user may or may not enable the knob when
-> > > > direct booting a kernel on SeaBIOS.
-> > >
-> > > Having it opt-in via a knob would defeat Jason's goal of having the s=
-eed
-> > > available automatically.
-> >
-> > Yes, adding a knob is absolutely out of the question.
-> >
-> > It also doesn't actually solve the problem: this triggers when QEMU
-> > passes a DTB too. It's not just for the new RNG seed thing. This bug
-> > isn't new.
->
-> In the other thread I also mentioned that this RNG Seed addition has
-> caused a bug with AMD SEV too, making boot measurement attestation
-> fail because the kernel blob passed to the firmware no longer matches
-> what the tenant expects, due to the injected seed.
->
+Hi Ard,
 
-I was actually expecting this to be an issue in the
-signing/attestation department as well, and you just confirmed my
-suspicion.
+On Thu, Aug 4, 2022 at 2:16 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> On Thu, 4 Aug 2022 at 14:11, Daniel P. Berrang=C3=A9 <berrange@redhat.com=
+> wrote:
+> >
+> > On Thu, Aug 04, 2022 at 02:03:29PM +0200, Jason A. Donenfeld wrote:
+> > > Hi Daniel,
+> > >
+> > > On Thu, Aug 04, 2022 at 10:25:36AM +0100, Daniel P. Berrang=C3=A9 wro=
+te:
+> > > > Yep, and ultimately the inability to distinguish UEFI vs other firm=
+ware
+> > > > is arguably correct by design, as the QEMU <-> firmware interface i=
+s
+> > > > supposed to be arbitrarily pluggable for any firmware implementatio=
+n
+> > > > not  limited to merely UEFI + seabios.
+> > >
+> > > Indeed, I agree with this.
+> > >
+> > > >
+> > > > > For now I suggest either reverting the original patch, or at leas=
+t not
+> > > > > enabling the knob by default for any machine types. In particular=
+, when
+> > > > > using MicroVM, the user must leave the knob disabled when direct =
+booting
+> > > > > a kernel on OVMF, and the user may or may not enable the knob whe=
+n
+> > > > > direct booting a kernel on SeaBIOS.
+> > > >
+> > > > Having it opt-in via a knob would defeat Jason's goal of having the=
+ seed
+> > > > available automatically.
+> > >
+> > > Yes, adding a knob is absolutely out of the question.
+> > >
+> > > It also doesn't actually solve the problem: this triggers when QEMU
+> > > passes a DTB too. It's not just for the new RNG seed thing. This bug
+> > > isn't new.
+> >
+> > In the other thread I also mentioned that this RNG Seed addition has
+> > caused a bug with AMD SEV too, making boot measurement attestation
+> > fail because the kernel blob passed to the firmware no longer matches
+> > what the tenant expects, due to the injected seed.
+> >
+>
+> I was actually expecting this to be an issue in the
+> signing/attestation department as well, and you just confirmed my
+> suspicion.
+>
+> But does this mean that populating the setup_data pointer is out of
+> the question altogether? Or only that putting the setup_data linked
+> list nodes inside the image is a problem?
 
-But does this mean that populating the setup_data pointer is out of
-the question altogether? Or only that putting the setup_data linked
-list nodes inside the image is a problem?
+If you look at the v2 patch, populating boot_param->setup_data winds
+up being a fixed value. So even if that part was a problem (though I
+don't think it is), it won't be with the v2 patch, since it's always
+the same.
+
+Jason
