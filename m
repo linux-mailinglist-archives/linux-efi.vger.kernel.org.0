@@ -2,263 +2,201 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B5EF58AB16
-	for <lists+linux-efi@lfdr.de>; Fri,  5 Aug 2022 14:54:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F90B58ABBA
+	for <lists+linux-efi@lfdr.de>; Fri,  5 Aug 2022 15:39:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233191AbiHEMyN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 5 Aug 2022 08:54:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49202 "EHLO
+        id S237496AbiHENjD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 5 Aug 2022 09:39:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240780AbiHEMyL (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 Aug 2022 08:54:11 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64882205F3;
-        Fri,  5 Aug 2022 05:54:07 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S236060AbiHENjC (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 Aug 2022 09:39:02 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93CA51AD92;
+        Fri,  5 Aug 2022 06:39:01 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 000DBB828C0;
-        Fri,  5 Aug 2022 12:54:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F21C43143;
-        Fri,  5 Aug 2022 12:54:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659704044;
-        bh=kv7S0eFsiAct17ZXvq0jNqmfMCiLtvDDXWKyk1Yqn2U=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=kfiRxd57Fg1PaEadZcXmCqaQjueEVyyxKAhfTXKhHRqeMwjIDbLtCiemvgYwOg1Su
-         cioL85XPSq5e7VZnR8gaAky3EmKPQi2mou7+6KNpZIykIz/dnFJCAHcVHCCYYN9AGE
-         qdNUfzlvDAlE6IHil176S1Z0ysigvfvoeH56PBE94LP04QyB+lQCqAS6fJhKefLbxr
-         Rtsd+Bzforc5LC4KE+LEA9aoTPyRmo5J8Jvv3CSL11tZyQ5GUrbMJoIEn2bXURbT83
-         HJ/YImWcOXts41Lui1V1RNqg53Qd0H91nQgQb/j/o++b42wyOqUw1VsqgfEY1nC8be
-         OjEdnToc7lyvw==
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-10ec41637b3so2843250fac.4;
-        Fri, 05 Aug 2022 05:54:04 -0700 (PDT)
-X-Gm-Message-State: ACgBeo20KyrB4C3w40eJE8w9q1dRuBwiXplBdla8jHCSq3meTPve8t+E
-        VDtFhXlQDwQhqh8lABKg6qsAB0Dm67dhKhqYGdY=
-X-Google-Smtp-Source: AA6agR6u5bHuJAZYSvHzty7NuAi+ipTOECIu/MXNfqFegh1eIH7VP2MvKUvQAyHfuvQd72VmLiHE0Knn7UWQ0xag8Rs=
-X-Received: by 2002:a05:6870:a90a:b0:10d:9e83:98a6 with SMTP id
- eq10-20020a056870a90a00b0010d9e8398a6mr6193471oab.228.1659704043595; Fri, 05
- Aug 2022 05:54:03 -0700 (PDT)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 18E34205C1;
+        Fri,  5 Aug 2022 13:39:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1659706740; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=4fUGftCh+M9MgogM/ULV9Ld8sZEIEZ7PClbDaS2W+nE=;
+        b=D+kEVNjzYfXvldJYaFOj5ruPF3HbAPd1RTtNyDXO5s9Vr7b1FvUVwcELgPkROgutphj7nM
+        iiSynX1+4TbllV29hbsrR302sIj7NfXZ7IJX60SePWGOU3/zaepY+xQ42vPlATE3nVKiVV
+        r8DHVCwFJzRdQ5klIaNM0LEzfHm/818=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1659706740;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=4fUGftCh+M9MgogM/ULV9Ld8sZEIEZ7PClbDaS2W+nE=;
+        b=CLiDkKcWHQhufTXRuMvyOhl3nB3aO/ZcIjwms2qYoxLv6GjUOx+1rIHjF1ArgPsKth9MMu
+        BsA7bdcANtdIV7Cw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9E898133B5;
+        Fri,  5 Aug 2022 13:38:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id rQT5JXMd7WKCNQAAMHmgww
+        (envelope-from <vbabka@suse.cz>); Fri, 05 Aug 2022 13:38:59 +0000
+Message-ID: <f936b024-43e1-5390-e33f-ad7d355a2802@suse.cz>
+Date:   Fri, 5 Aug 2022 15:38:59 +0200
 MIME-Version: 1.0
-References: <20220329174057.GA17778@srcf.ucam.org> <f9622b47-c45f-8c91-cb85-e5db7fd541cf@apertussolutions.com>
- <CAMj1kXEUT8BK_akqjF1Wx0JkLniFyV_h9s1TfQnPqfxCHsKfWw@mail.gmail.com> <7aab2990-9c57-2456-b08d-299ae96ac919@apertussolutions.com>
-In-Reply-To: <7aab2990-9c57-2456-b08d-299ae96ac919@apertussolutions.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 5 Aug 2022 14:53:52 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFx_9q8t_HT=jvaKKftPNHf+iqWJM3fMiwpDyjFy0-d1g@mail.gmail.com>
-Message-ID: <CAMj1kXFx_9q8t_HT=jvaKKftPNHf+iqWJM3fMiwpDyjFy0-d1g@mail.gmail.com>
-Subject: Re: Linux DRTM on UEFI platforms
-To:     "Daniel P. Smith" <dpsmith@apertussolutions.com>
-Cc:     Matthew Garrett <mjg59@srcf.ucam.org>,
-        Daniel Kiper <daniel.kiper@oracle.com>,
-        Alec Brown <alec.r.brown@oracle.com>,
-        Kanth Ghatraju <kanth.ghatraju@oracle.com>,
-        Ross Philipson <ross.philipson@oracle.com>,
-        "piotr.krol@3mdeb.com" <piotr.krol@3mdeb.com>,
-        "krystian.hebel@3mdeb.com" <krystian.hebel@3mdeb.com>,
-        "persaur@gmail.com" <persaur@gmail.com>,
-        "Yoder, Stuart" <stuart.yoder@arm.com>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        "michal.zygowski@3mdeb.com" <michal.zygowski@3mdeb.com>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        "lukasz@hawrylko.pl" <lukasz@hawrylko.pl>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        The development of GNU GRUB <grub-devel@gnu.org>,
-        James Morris <jmorris@namei.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.0.3
+Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
+Content-Language: en-US
+To:     David Hildenbrand <david@redhat.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Mike Rapoport <rppt@kernel.org>, marcelo.cerri@canonical.com,
+        tim.gardner@canonical.com, khalid.elmously@canonical.com,
+        philip.cox@canonical.com, x86@kernel.org, linux-mm@kvack.org,
+        linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
+        Mel Gorman <mgorman@techsingularity.net>
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-3-kirill.shutemov@linux.intel.com>
+ <8cf143e7-2b62-1a1e-de84-e3dcc6c027a4@suse.cz>
+ <cb9d3310-3bc0-8ecf-5e71-becce980235f@redhat.com>
+From:   Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <cb9d3310-3bc0-8ecf-5e71-becce980235f@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 5 Jul 2022 at 21:22, Daniel P. Smith
-<dpsmith@apertussolutions.com> wrote:
->
-> On 6/10/22 12:40, Ard Biesheuvel wrote:
-...
-> > The EFI stub to core kernel handover ABI is private to Linux,
-> > architecture specific, and subject to change. This is basically the
-> > point I made before: if you want to boot Linux in EFI mode, you have
-> > to go via the EFI stub, and the EFI stub is in charge of booting the
-> > kernel proper. This is why I (we?) suggested some kind of callback
-> > mechanism, where the EFI stub makes a D-RTM specific call after EBS(),
-> > but does regain control over the boot flow.
->
-> Literally, this is not how the hardware works nor in line with the
-> architecture developed by TrenchBoot. By doing the Dynamic Launch Event
-> (DLE) the system, meaning the CPU, has effectively been reset. The
-> CPU/Dynamic Configuration Environment (DCE) is expecting to be provided
-> a kernel to measures, an entrypoint within that kernel to jump to, and
-> that kernel understands the reset state of the system. As agreed, the
-> callback approach is the most satisfactory approach to allow the
-> efi-stub to do its private protocol. Once the flow has switched to a
-> dynamic launch, the system is now starting the kernel via a dynamic
-> launch sequence. The dynamic launch entrypoint, sl-stub, is and will be
-> used as the entrypoint regardless of the firmware,
-> UEFI/coreboot/oreboot/slimboot/etc., or CPU vendor, Intel/AMD, in use.
-> Once efi-stub finishes and invokes the callback, its job is complete and
-> the new dl-handler along with sl-stub from the current patch set will
-> handle the system and security setup needed before entering into the
-> kernel proper.
->
-> To help provide clarity, consider the following flows for comparison,
->
-> Normal/existing efi-stub:
->   EFI -> efi-stub -> head_64.S
->
-> Proposed secure launch:
->   EFI -> efi-stub -> dl-handler -> [cpu] -> sl_stub ->head_64.S
->
-> Effectively, all this is doing is after efi-stub is done, instead of
-> jumping into head_64.S, it will call the dynamic launch handler to do
-> the dynamic launch, let sl_stub bring the system back into an expected
-> state, and then enter head_64.S just as efi-stub would have done.
->
+On 8/5/22 14:09, David Hildenbrand wrote:
+> On 05.08.22 13:49, Vlastimil Babka wrote:
+>> On 6/14/22 14:02, Kirill A. Shutemov wrote:
+>>> UEFI Specification version 2.9 introduces the concept of memory
+>>> acceptance. Some Virtual Machine platforms, such as Intel TDX or AMD
+>>> SEV-SNP, require memory to be accepted before it can be used by the
+>>> guest. Accepting happens via a protocol specific to the Virtual Machine
+>>> platform.
+>>>
+>>> There are several ways kernel can deal with unaccepted memory:
+>>>
+>>>  1. Accept all the memory during the boot. It is easy to implement and
+>>>     it doesn't have runtime cost once the system is booted. The downside
+>>>     is very long boot time.
+>>>
+>>>     Accept can be parallelized to multiple CPUs to keep it manageable
+>>>     (i.e. via DEFERRED_STRUCT_PAGE_INIT), but it tends to saturate
+>>>     memory bandwidth and does not scale beyond the point.
+>>>
+>>>  2. Accept a block of memory on the first use. It requires more
+>>>     infrastructure and changes in page allocator to make it work, but
+>>>     it provides good boot time.
+>>>
+>>>     On-demand memory accept means latency spikes every time kernel steps
+>>>     onto a new memory block. The spikes will go away once workload data
+>>>     set size gets stabilized or all memory gets accepted.
+>>>
+>>>  3. Accept all memory in background. Introduce a thread (or multiple)
+>>>     that gets memory accepted proactively. It will minimize time the
+>>>     system experience latency spikes on memory allocation while keeping
+>>>     low boot time.
+>>>
+>>>     This approach cannot function on its own. It is an extension of #2:
+>>>     background memory acceptance requires functional scheduler, but the
+>>>     page allocator may need to tap into unaccepted memory before that.
+>>>
+>>>     The downside of the approach is that these threads also steal CPU
+>>>     cycles and memory bandwidth from the user's workload and may hurt
+>>>     user experience.
+>>>
+>>> Implement #2 for now. It is a reasonable default. Some workloads may
+>>> want to use #1 or #3 and they can be implemented later based on user's
+>>> demands.
+>>>
+>>> Support of unaccepted memory requires a few changes in core-mm code:
+>>>
+>>>   - memblock has to accept memory on allocation;
+>>>
+>>>   - page allocator has to accept memory on the first allocation of the
+>>>     page;
+>>>
+>>> Memblock change is trivial.
+>>>
+>>> The page allocator is modified to accept pages on the first allocation.
+>>> The new page type (encoded in the _mapcount) -- PageUnaccepted() -- is
+>>> used to indicate that the page requires acceptance.
+>>>
+>>> Architecture has to provide two helpers if it wants to support
+>>> unaccepted memory:
+>>>
+>>>  - accept_memory() makes a range of physical addresses accepted.
+>>>
+>>>  - range_contains_unaccepted_memory() checks anything within the range
+>>>    of physical addresses requires acceptance.
+>>>
+>>> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+>>> Acked-by: Mike Rapoport <rppt@linux.ibm.com>	# memblock
+>>> Reviewed-by: David Hildenbrand <david@redhat.com>
+>> 
+>> Hmm I realize it's not ideal to raise this at v7, and maybe it was discussed
+>> before, but it's really not great how this affects the core page allocator
+>> paths. Wouldn't it be possible to only release pages to page allocator when
+>> accepted, and otherwise use some new per-zone variables together with the
+>> bitmap to track how much exactly is where to accept? Then it could be hooked
+>> in get_page_from_freelist() similarly to CONFIG_DEFERRED_STRUCT_PAGE_INIT -
+>> if we fail zone_watermark_fast() and there are unaccepted pages in the zone,
+>> accept them and continue. With a static key to flip in case we eventually
+>> accept everything. Because this is really similar scenario to the deferred
+>> init and that one was solved in a way that adds minimal overhead.
+> 
+> I kind of like just having the memory stats being correct (e.g., free
+> memory) and acceptance being an internal detail to be triggered when
+> allocating pages -- just like the arch_alloc_page() callback.
 
-OK, understood.
+Hm, good point about the stats. Could be tweaked perhaps so it appears
+correct on the outside, but might be tricky.
 
-> > If we add another entry point into the kernel proper for the Secure
-> > Launch Entry component to use, we are again exposing an internal ABI
-> > in a way that limits our future ability to make changes to the EFI <->
-> > kernel handover.
->
-> I am not sure how you make that jump, but as I stated above, when
-> incorporating dynamic launch it is no longer a straight pass from EFI to
-> kernel proper. The sl-stub is there to provide a common entry point from
-> the CPU as the result of a dynamic launch, regardless of firmware or
-> vendor. Once sl-stub is done with its start-of-day setup, it will jump
-> to the same location efi-stub would have jumped. This means, efi-stub
-> does everything it always has and is free to change what it does. The
-> only addition is that it will now enable a call-out to allow secure
-> launch to do what it needs to do, and then execution returns back to
-> head_64.S. To be concise, it specifically returns where efi-stub would
-> have jumped to without removing or circumventing anything from the
-> existing flow.
->
+> I'm sure we could optimize for the !unaccepted memory via static keys
+> also in this version with some checks at the right places if we find
+> this to hurt performance?
 
-Excellent, that answers another question I had regarding the above.
+It would be great if we would at least somehow hit the necessary code only
+when dealing with a >=pageblock size block. The bitmap approach and
+accepting everything smaller uprofront actually seems rather compatible. Yet
+in the current patch we e.g. check PageUnaccepted(buddy) on every buddy size
+while merging.
 
-> It should also be noted that sl-stub will not be looking to reconfigure
-> the kernel. It will use the kernel as it was set up by efi-stub. The
-> only job of sl-stub is to make the world right, measure what efi-stub
-> provided for measurement, and then enter the kernel proper. The design
-> of the SLRT structure below is specifically not to bind to anything from
-> the efi-stub ABI/API. The only information needed to take the
-> measurements is the location of any config items, their size, and an
-> identifier for each item. The efi-stub is free to add to and/or remove
-> from the list of items, along with changing where it is stored, or even
-> change the format of existing items. The one recommendation, not
-> requirement, is that the identifiers should not freely be changed. While
-> it has no impact on sl-stub, it will likely be unpopular with anyone
-> attempting to keep a manifest of valid efi-stub config items for
-> attestation verification. It will result in having to maintain a
-> volatile two-parameter map of (kernel version, identifier) to config
-> item, at a minimum.
->
-
-OK, noted. Can we add these recommendations to the header files
-please? And let's make it a requirement - it's easier to relax it
-later than the other way around.
-
-> <snip/>
->
-> >> First, a short review of what the Secure Launch Resource Table is and
-> >> its purpose. The SLRT is to provide a platform and kernel agnostic
-> >> configuration table of the meta-data pertinent to the Secure Launch
-> >> entry points for the variety of kernels the TrenchBoot project will be
-> >> seeking to support. The specification for the table is in progress, but
-> >> the consensus is that it will consist of a header structure followed by
-> >> a packed series of TLV records. The specification will describe the
-> >> various types of records, but the ones of interests in this discussion
-> >> are those that efi-stub would use to record how it configured the
-> >> environment.
-> >>
-> >> The initially proposed TLV record, see below, for EFI configuration
-> >> information was devised around allowing an EFI bootloader to save
-> >> multiple config events under a single TLV record. In discussions on the
-> >> specification thus far, there are questions if it would be better to
-> >> have a TLV record for each config event or the proposed multiple events
-> >> per TLV record. It is worth noting that an assumption is being made in
-> >> the proposed record. The assumption is that a config event will either
-> >> be setting a configuration value between 1 and 8 bytes, or it will be a
-> >> data blob for which the address and size will be recorded. The question
-> >> is whether that covers all actions the efi-stub does or expects that it
-> >> will have to do in the near future.
-> >>
-> >> struct slrt_entry_efi_config_event {
-> >>          struct slrt_entry_hdr hdr;
-> >>          uint32_t identifier;                /* EFI bootloader ID */
-> >>          uint16_t reserved;
-> >>          uint16_t nr_entries;                /* Num cfg records */
-> >>          struct efi_cfg_value values[0];     /* Array of cfg values */
-
-Nit: use [] for flex arrays please - we will become more pedantic
-about this when using newer compilers.
-
-> >>      };
-> >>
-> >>      struct efi_cfg_value {
-> >>          uint64_t data;          /* cfg data (address or value) */
-> >>          uint32_t size;          /* data size if data is an addr */
-> >>          uint32_t flags;         /* 1L<0 IS_ADDR: data is an addr */
-> >>          char evt_info[8];       /* event info str for TPM event log */
-> >>      };
-> >>
-> >> Hopefully the general approach here is agreeable, as IMHO it does
-> >> provide a fairly elegant approach to resolving the issues at hand.
-> >> Details can always be negotiated to address various implementation
-> >> concerns. Provided this is acceptable, then everyone here is welcome to
-> >> provide input on the Secure Launch specification, link forthcoming.
-> >>
-> >
-> > Given that this is EFI, I would expect all these implementation
-> > details to be exposed via a protocol that the stub can invoke, in a
-> > way that will likely be similar (or the same?) as the TCG protocol
-> > used for recording PCR measurements.
->
-> The intent here was not to devise a new EFI protocol. This table is an
-> agnostic structure that all TrenchBoot Secure Launch implementations
-> will be using for all firmware environments, and will provide platform
-> relevant sections like the EFI section outlined above. The table will
-> inform the dl-handler so that it may take appropriate setup actions for
-> the dynamic launch. The larger user of the table will be the sl-stub,
-> which it will use to have an understanding of the world it inherited
-> from whomever invoked the dynamic launch.
->
-
-OK. We'll need some useful abstraction for this internally in the stub
-code, but that is not too relevant for this discussion. (We recently
-added some code that measures the initrd into the TPM, and having
-calls to two different kinds of measurement APIs all over the stub is
-something I'd like to avoid)
-
-> > So could you elaborate on the types of actions? Is this simply things
-> > like the command line, initrd contents, initrd load address, kernel
-> > load address etc etc? There isn't generally that much going on in the
-> > stub beyond that.
->
-> Actually, those items are already in well-defined locations for which we
-> are already taking measurements. The items of concern are the items
-> being passed or configured that are stored outside the boot params.
-
-You mean the x86 specific struct bootparams, right? Not relevant, but
-just out of interest: I take it you are also measuring the setup_data
-linked list? This is currently being augmented to carry a RNG seed,
-which may cause problems for you in the future.
-
-> For
-> instance, ROM files passed to the kernel or EFI environment variables
-> that efi-stub may have set and/or will be used by the kernel.
->
-
-Hmm, ok. I'd really like to get a peek at the impact on the code - if
-we will have hooks all over the place, it is a strong indication that
-you are intercepting this at the wrong level. Perhaps you'll need to
-do something along the lines of interposing the boot and runtime
-services, and measuring the invocations that are relevant to you.
+A list that sits besides the existing free_area, contains only >=pageblock
+order sizes of unaccepted pages (no migratetype distinguished) and we tap
+into it approximately before __rmqueue_fallback()? There would be some
+trickery around releasing zone-lock for doing accept_memory(), but should be
+manageable.
