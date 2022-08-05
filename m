@@ -2,67 +2,96 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9021558AF45
-	for <lists+linux-efi@lfdr.de>; Fri,  5 Aug 2022 19:56:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D93FE58AFA5
+	for <lists+linux-efi@lfdr.de>; Fri,  5 Aug 2022 20:17:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241448AbiHER4f (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 5 Aug 2022 13:56:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39166 "EHLO
+        id S229697AbiHESR4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 5 Aug 2022 14:17:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241482AbiHER4e (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 Aug 2022 13:56:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14B1211A06
-        for <linux-efi@vger.kernel.org>; Fri,  5 Aug 2022 10:56:33 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S229577AbiHESRz (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 Aug 2022 14:17:55 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D9DA1A39D;
+        Fri,  5 Aug 2022 11:17:54 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C7A66191C
-        for <linux-efi@vger.kernel.org>; Fri,  5 Aug 2022 17:56:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1735C43141
-        for <linux-efi@vger.kernel.org>; Fri,  5 Aug 2022 17:56:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659722192;
-        bh=YhasxSDyI4slT9TaDXzSb4BbP4M3MtpH6v54pjBX2W4=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=duHRYD9VmqQD3wVmUH2SBvfZxofkwLrKk4e+lCrY9jUlA+2zrisMpIEN7+y0Xproq
-         HQnYM3LPKgiZ+qvlbbRXC14c3ztjNJoidXfw/wBTKIKqyjfbcL1IiSEcRnnXfHaV39
-         2vjPxJhryOd9dOPpflTRgjMxegazIgg1LT0s3MhYR9ckEnHWoq3tOA2V0RKTgJwhbh
-         hHGY42IYzVbwNn51azIjGXum9e6svQi9YhzbdCIWQWoEKjPAEkoyoAJuIYMzEIBERm
-         Gjd1AsyJnr3wyumZyvZQ2ubO5pQRbVxDUxxtV2qt2zX6vDnH2XUSRGpARAKXcfDLfs
-         g10hGwDuZPsxA==
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-10ea7d8fbf7so3697534fac.7
-        for <linux-efi@vger.kernel.org>; Fri, 05 Aug 2022 10:56:31 -0700 (PDT)
-X-Gm-Message-State: ACgBeo3vpbpMo0gLOte6pvgIiKoUP0i3uQzHeDuSB6hN1MTfavbZD6wu
-        e9U0TsiNjzBJF2cbsvqnLoJbp0qhdhboKrrOdxE=
-X-Google-Smtp-Source: AA6agR6oRpwKgaz40rV0PVZGx2D8+KdCC17YSjJKY2v1+hdVsQkJwoCMtY/US6zKxUSkFVTk/Yo0Hjk0eePeoLuFw1k=
-X-Received: by 2002:a05:6870:a90a:b0:10d:9e83:98a6 with SMTP id
- eq10-20020a056870a90a00b0010d9e8398a6mr6781986oab.228.1659722191032; Fri, 05
- Aug 2022 10:56:31 -0700 (PDT)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id EBF34349FD;
+        Fri,  5 Aug 2022 18:17:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1659723472; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=IzpiBFPwlBSeiyCmg4i8g32ALBSJCReWlJys+QhxFS8=;
+        b=HEvQrK0z2flbkWu3D4bi6Huu9V6B98l37hfFD6hspbwEp6re5HjF/Yu81/d71Yyh/aa1F+
+        I7BNV4EpToX8myv1isx7IZTxjYrhx+NnCFVLAfX32A2r8QXYROHSvRxSbFf4KLV/2UsIuJ
+        ZVrU4VJ7qbcrVA8P4y+TSLkNjlt7Y+g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1659723472;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=IzpiBFPwlBSeiyCmg4i8g32ALBSJCReWlJys+QhxFS8=;
+        b=U1lAlK/bqMUOrKEDOATRLkf3iu/ZOAEGHfjjcQhARV8Kqz/D1wQ4Em8MU/QEXhid1WfmII
+        3k0L6l4IM75ob6Dg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7B519133B5;
+        Fri,  5 Aug 2022 18:17:52 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id vqNoHdBe7WKZFQAAMHmgww
+        (envelope-from <vbabka@suse.cz>); Fri, 05 Aug 2022 18:17:52 +0000
+Message-ID: <cecbaa10-6d0a-8925-004b-ff53d9f56e83@suse.cz>
+Date:   Fri, 5 Aug 2022 20:17:52 +0200
 MIME-Version: 1.0
-References: <YuxOgtykRQb1HU3e@zx2c4.com> <20220804230411.17720-1-Jason@zx2c4.com>
- <40fdfb11-1e40-a36a-d3a4-fcbef546a78a@redhat.com> <CAMj1kXFDs8HCCCcVAVwjLcATh6MYcUSAha5yvi0ftMw+Ddy_Xg@mail.gmail.com>
- <0bd57fab-836b-9898-9e3f-84dc66eca175@redhat.com>
-In-Reply-To: <0bd57fab-836b-9898-9e3f-84dc66eca175@redhat.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 5 Aug 2022 19:56:20 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEmsDjStijJciuWjmugqAm8yvX_qihyg1Uah=V56mg2Bg@mail.gmail.com>
-Message-ID: <CAMj1kXEmsDjStijJciuWjmugqAm8yvX_qihyg1Uah=V56mg2Bg@mail.gmail.com>
-Subject: Re: [PATCH v3] hw/i386: place setup_data at fixed place in memory
-To:     Paolo Bonzini <pbonzini@redhat.com>
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        QEMU Developers <qemu-devel@nongnu.org>,
-        Xiaoyao Li <xiaoyao.li@intel.com>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Peter Maydell <peter.maydell@linaro.org>,
-        "Michael S . Tsirkin" <mst@redhat.com>,
-        =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Laszlo Ersek <lersek@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.0.3
+Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
+Content-Language: en-US
+To:     Dave Hansen <dave.hansen@intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Mike Rapoport <rppt@kernel.org>, marcelo.cerri@canonical.com,
+        tim.gardner@canonical.com, khalid.elmously@canonical.com,
+        philip.cox@canonical.com, x86@kernel.org, linux-mm@kvack.org,
+        linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
+        Mel Gorman <mgorman@techsingularity.net>
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-3-kirill.shutemov@linux.intel.com>
+ <8cf143e7-2b62-1a1e-de84-e3dcc6c027a4@suse.cz>
+ <cb9d3310-3bc0-8ecf-5e71-becce980235f@redhat.com>
+ <f936b024-43e1-5390-e33f-ad7d355a2802@suse.cz>
+ <eb83fcd9-f331-4d54-1ab9-78db106ee66d@intel.com>
+From:   Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <eb83fcd9-f331-4d54-1ab9-78db106ee66d@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -71,74 +100,45 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 5 Aug 2022 at 19:29, Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> On 8/5/22 13:08, Ard Biesheuvel wrote:
-> >>
-> >> Does it work to place setup_data at the end of the cmdline file instead
-> >> of having it at the end of the kernel file?  This way the first item
-> >> will be at 0x20000 + cmdline_size.
-> >>
-> > Does QEMU always allocate the command line statically like that?
-> > AFAIK, OVMF never accesses that memory to read the command line, it
-> > uses fw_cfg to copy it into a buffer it allocates itself. And I guess
-> > that implies that this region could be clobbered by OVMF unless it is
-> > told to preserve it.
->
-> No it's not. :(  It also goes to gBS->AllocatePages in the end.
->
-> At this point it seems to me that without extra changes the whole
-> setup_data concept is dead on arrival for OVMF.  In principle there's no
-> reason why the individual setup_data items couldn't include interior
-> pointers, meaning that the setup_data _has_ to be at the address
-> provided in fw_cfg by QEMU.
->
+On 8/5/22 16:41, Dave Hansen wrote:
+> On 8/5/22 06:38, Vlastimil Babka wrote:
+>>> I'm sure we could optimize for the !unaccepted memory via static keys
+>>> also in this version with some checks at the right places if we find
+>>> this to hurt performance?
+>> It would be great if we would at least somehow hit the necessary code only
+>> when dealing with a >=pageblock size block. The bitmap approach and
+>> accepting everything smaller uprofront actually seems rather compatible. Yet
+>> in the current patch we e.g. check PageUnaccepted(buddy) on every buddy size
+>> while merging.
+> 
+> Needing to check PageUnaccepted() during the merge is fallout from
+> moving the acceptance to post_alloc_hook().  I _think_ an earlier
+> version of this did page acceptance under the zone lock, closer to where
+> the page comes off the 2M/4M lists.
+> 
+> But, page acceptance is horribly slow, so I asked Kirill to move it out
+> from under the zone lock.  Doing it in post_alloc_hook() (after the zone
+> lock is dropped) makes a lot of sense since we do zeroing in there and
+> zeroing is also nice and slow.
+> 
+> But, post_alloc_hook() is long after the 2M page has been split and that
+> means that we have to deal with potentially unaccepted pages during merges.
+> 
+> I think there are three basic options:
+> 
+> 1. This patch: Do acceptance after the zone lock is dropped and deal
+>    with mixed-acceptance merges
+> 2. Do acceptance under the zone lock as pages come off the 2M/4M lists,
+>    but before the page is split.
 
-AIUI, the setup_data nodes are appended at the end, so they are not
-covered by the setup_data fw_cfg file but the kernel one.
+Rather not, as acceptance can be slow and we shouldn't hog the zone lock
+while doing it.
 
-> One way to "fix" it would be for OVMF to overwrite the pointer to the
-> head of the list, so that the kernel ignores the setup data provided by
-> QEMU. Another way would be to put it in the command line fw_cfg blob and
-> teach OVMF to use a fixed address for the command line.  Both are ugly,
-> and both are also broken for new QEMU / old OVMF.
->
+> 3. Pull the page off the 2M/4M lists, drop the zone lock, accept it,
+>    then put it back.
 
-This is the 'pure EFI' boot path in OVMF, which means that the
-firmware does not rely on definitions of struct bootparams or struct
-setup_header at all. Introducing that dependency just for this is
-something I'd really prefer to avoid.
+Worth trying, IMHO. Perhaps easier to manage if the lists are distinct from
+the normal ones, as I suggested.
 
-> In any case, I don't think this should be fixed so close to the release.
->   We have two possibilities:
->
-> 1) if we believe "build setup_data in QEMU" is a feasible design that
-> only needs more yak shaving, we can keep the code in, but disabled by
-> default, and sort it out in 7.2.
->
+> I'm not sure any of those other options are better.
 
-As I argued before, conflating the 'file' representation with the
-'memory' representation like this is fundamentally flawed. fw_cfg
-happily DMA's those files anywhere you like, so their contents should
-not be position dependent like this.
-
-So Jason's fix gets us halfway there, although we now pass information
-to the kernel that is not covered by signatures or measurements, where
-the setup_data pointer itself is. This means you can replace a single
-SETUP_RNG_SEED node in memory with a whole set of SETUP_xxx nodes that
-might be rigged to manipulate the boot in a way that measured boot
-won't detect.
-
-This is perhaps a bit of a stretch, and arguably only a problem if
-secure or measured boot are enabled to begin with, in which case we
-could impose additional policy on the use of setup_data. But still ...
-
-> 2) if we go for an alternative design, it needs to be reverted.  For
-> example the randomness could be in _another_ fw_cfg file, and the
-> linuxboot DMA can patch it in the setup_data.
->
->
-> With (2) the OVMF breakage would be limited to -dtb, which more or less
-> nobody cares about, and we can just look the other way.
->
-> Paolo
