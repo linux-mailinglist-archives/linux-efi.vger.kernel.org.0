@@ -2,51 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D91958B6E2
-	for <lists+linux-efi@lfdr.de>; Sat,  6 Aug 2022 18:34:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67CB758B6E7
+	for <lists+linux-efi@lfdr.de>; Sat,  6 Aug 2022 18:34:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233479AbiHFQeX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 6 Aug 2022 12:34:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53382 "EHLO
+        id S233656AbiHFQef (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 6 Aug 2022 12:34:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233518AbiHFQeT (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 6 Aug 2022 12:34:19 -0400
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3662912AE1;
-        Sat,  6 Aug 2022 09:34:18 -0700 (PDT)
-Received: by mail-io1-xd2c.google.com with SMTP id h138so3959043iof.12;
-        Sat, 06 Aug 2022 09:34:18 -0700 (PDT)
+        with ESMTP id S233518AbiHFQef (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 6 Aug 2022 12:34:35 -0400
+Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C24E11453;
+        Sat,  6 Aug 2022 09:34:34 -0700 (PDT)
+Received: by mail-il1-x131.google.com with SMTP id p9so1489107ilq.13;
+        Sat, 06 Aug 2022 09:34:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc;
-        bh=SaUBoqntZ3xpwrUzgeOy0DwQIiOjlZNYBHlnYS80ldA=;
-        b=ALOJApgiU1Bu3FBCE6WOR5MxyhMFROfvC2N4q2QgxbdLU8q5Oz6ouEKcxRaLJXRvm2
-         u4X1wlQszDadkFj1NVcSc2LBAot93rNmccBTeeZQvnjT5sFyawYLZxOiiFGCx1qHtA9Y
-         rt2WpaBNi9ispLb4kU+UPMPeTIV52hJ68eHHc3jHHpnROX/dDCvv3NyGJRDuCmErtkZF
-         fM9CZacWKhb8Gdr7qb62NorcVrVZgfgxa/qI5WaUTQLuJ5MoLskJKQO91Zovgdc/LhZJ
-         QxyoAryeDy01p1QYDyvYi7bHwzQyCWOQ+/vR82/J9aUf/tInw8ceycHXAF2AV7MJUHM3
-         0sXQ==
+        bh=lQzsDSHH/Bii36GW148CpzzSSa0PYzrLw0cKTC8v8kk=;
+        b=hFobmJQK6P0zU3BwVaJVOeRfR8NjKJd0BpCBeJV8Sv60LNy1tvgi4Hk8og/34srU3k
+         eS7VOeHEv8DM21kQAlThdmquREUGhJWZIyHuXcQUhNBP8e3T/jfREWt/ZUs9Sdj+qkhy
+         yjHhdJWbGEyKadKAP6Vj44sBZ1bKbCRmBpgFJQJ08E7tnf8Wpemw7VNHbFdYMJ48ONFC
+         5Gwj275ZOjz3goTKvLPQeA0Zl8IcMLk4Xyup5NmFma3pkWx1ufB41aMDkMZ6e49PvTqv
+         EMW90DQQTQb8XDvEwxbzO6THMs1tNkoVIUE0GiZ8y8XKZXMdsGRMgftZH9K+eq1QpXK1
+         assw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
-        bh=SaUBoqntZ3xpwrUzgeOy0DwQIiOjlZNYBHlnYS80ldA=;
-        b=N1amumODcw+Kbu9dmyI7A90U3dcToZGX8i11It896ClfFjI3x71YBjbunJjAEmnLeZ
-         P7NchMR6rPfbHMX3htMlwzL+8vuDEGi8MnhZCiSHpxDqIvG+yCmOpN+pCrMpqj22cMTY
-         HEBcMFjpaXgcOEeH22xwVKKlyEbitZseE7X1Wa1mhr7DpJXZiDFTyIfI1cYX7QW/Rlfl
-         oHXraW3g9RBAnjZPdKUTcTJ8FgvHXypr21Wh4YXD+oZaTsKo10hjoD79iY2EtVKNwNpn
-         7hA5EIsjTI3yl3UuC1LszGelT2sSETno5+Q+/VbCwuYBxxf/BjMHhUQNei30qL9mqcSz
-         5vog==
-X-Gm-Message-State: ACgBeo3BmjCXM0YLQcBGAK6k6dEsMIBf9vs5JWhVEdzF0IPonp9vSpOf
-        BgzWWFvXELOHYS+PCAwPm9JX+052YNtqVsjd
-X-Google-Smtp-Source: AA6agR7DiKfCMvxm+CA/RzSBpZzX9VjXHcm3LmI4qDSBMzjn4WzFx9p3rf/PMs3V8fkzCvhnxs8qUg==
-X-Received: by 2002:a05:6602:2c01:b0:65d:d998:680c with SMTP id w1-20020a0566022c0100b0065dd998680cmr4791990iov.132.1659803657459;
-        Sat, 06 Aug 2022 09:34:17 -0700 (PDT)
+        bh=lQzsDSHH/Bii36GW148CpzzSSa0PYzrLw0cKTC8v8kk=;
+        b=e+q+P+bD2IeP7bVNGK/pSGjZ06o4dlQb/7/gzPwYEsxDWPXJd5IySPEfSmvJ8c6Q9G
+         CFVWu27YH/cxBCdWWUzjoLXQYNsnesrBhi8hgJTrzSw6mNKlzibvIOxXdbMPmAWeY+WK
+         1OuFoZJiYwGJ1bTh42lbAgbK7x63IwUBZeNaG5ASKcrpTrlbFOCa9rrqFOHLmcc3VQBk
+         KRmSHacZURgCkgQlrv7rY79XM7BUI5R/dMviwbHtKDiBsN3ZEmH7V4gvXmC8opl2Lik4
+         rx3NaR5LVIoKqW/BKQuGiLnVUN0VpgyfETa8cfz0FBr6xy6uQp0PC2E+COiH/ZvMzjno
+         1pWg==
+X-Gm-Message-State: ACgBeo23WlXlrynw/6nbWbPsjLK9GCVGDRyMo0M0agwPSrOMpUf3UiYA
+        XnEZgWrn1AytWqNLSGXJQRcOh5uOji8r2kwY
+X-Google-Smtp-Source: AA6agR5CMSPTnUTrWYTukW0U5sy4javWSpA0m81oq3pZpfkjgXKOFa2aByaa4rMOqVFbgga7cPkFag==
+X-Received: by 2002:a05:6e02:1a81:b0:2de:a8d7:de0c with SMTP id k1-20020a056e021a8100b002dea8d7de0cmr5324479ilv.309.1659803673460;
+        Sat, 06 Aug 2022 09:34:33 -0700 (PDT)
 Received: from nergzd-desktop.localdomain (tor-exit-50.for-privacy.net. [185.220.101.50])
-        by smtp.gmail.com with ESMTPSA id a20-20020a056e020e1400b002de6fa0d0c0sm2908009ilk.63.2022.08.06.09.34.07
+        by smtp.gmail.com with ESMTPSA id a20-20020a056e020e1400b002de6fa0d0c0sm2908009ilk.63.2022.08.06.09.34.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 06 Aug 2022 09:34:17 -0700 (PDT)
+        Sat, 06 Aug 2022 09:34:33 -0700 (PDT)
 From:   Markuss Broks <markuss.broks@gmail.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -71,11 +71,10 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Tony Lindgren <tony@atomide.com>, linux-doc@vger.kernel.org,
         linux-efi@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH v2 1/3] drivers: serial: earlycon: Correct argument name
-Date:   Sat,  6 Aug 2022 19:32:22 +0300
-Message-Id: <20220806163255.10404-2-markuss.broks@gmail.com>
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: [PATCH v2 2/3] drivers: serial: earlycon: Pass device-tree node
+Date:   Sat,  6 Aug 2022 19:32:23 +0300
+Message-Id: <20220806163255.10404-3-markuss.broks@gmail.com>
 X-Mailer: git-send-email 2.37.0
 In-Reply-To: <20220806163255.10404-1-markuss.broks@gmail.com>
 References: <20220806163255.10404-1-markuss.broks@gmail.com>
@@ -91,74 +90,42 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The "node" argument is actually an offset, and it's also
-an "int", and not "unsigned long". Correct the of_setup_earlycon
-function.
+Pass a pointer to device-tree node in case the driver probed from
+OF. This makes early console drivers able to fetch options from
+device-tree node properties.
 
 Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
 ---
- drivers/tty/serial/earlycon.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/tty/serial/earlycon.c | 3 +++
+ include/linux/serial_core.h   | 1 +
+ 2 files changed, 4 insertions(+)
 
 diff --git a/drivers/tty/serial/earlycon.c b/drivers/tty/serial/earlycon.c
-index 57c70851f22a0e78805f34d1a7700708104b6f6a..bc210ae8173d97d5ef422468acf2755a853cb943 100644
+index bc210ae8173d97d5ef422468acf2755a853cb943..be2f01520f6608f6ece725dd83d2526e30477b47 100644
 --- a/drivers/tty/serial/earlycon.c
 +++ b/drivers/tty/serial/earlycon.c
-@@ -244,7 +244,7 @@ early_param("earlycon", param_setup_earlycon);
- #ifdef CONFIG_OF_EARLY_FLATTREE
- 
- int __init of_setup_earlycon(const struct earlycon_id *match,
--			     unsigned long node,
-+			     int offset,
- 			     const char *options)
- {
- 	int err;
-@@ -255,25 +255,25 @@ int __init of_setup_earlycon(const struct earlycon_id *match,
- 
- 	spin_lock_init(&port->lock);
- 	port->iotype = UPIO_MEM;
--	addr = of_flat_dt_translate_address(node);
-+	addr = of_flat_dt_translate_address(offset);
- 	if (addr == OF_BAD_ADDR) {
- 		pr_warn("[%s] bad address\n", match->name);
- 		return -ENXIO;
+@@ -304,6 +304,9 @@ int __init of_setup_earlycon(const struct earlycon_id *match,
+ 		strlcpy(early_console_dev.options, options,
+ 			sizeof(early_console_dev.options));
  	}
- 	port->mapbase = addr;
++
++	early_console_dev.offset = offset;
++
+ 	earlycon_init(&early_console_dev, match->name);
+ 	err = match->setup(&early_console_dev, options);
+ 	earlycon_print_info(&early_console_dev);
+diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+index cbd5070bc87f42aa450c4ca7af8a9b59fbe88574..e65b9aba4e5fdaedb560d2cbbf326a11cfecbcac 100644
+--- a/include/linux/serial_core.h
++++ b/include/linux/serial_core.h
+@@ -349,6 +349,7 @@ struct earlycon_device {
+ 	struct uart_port port;
+ 	char options[16];		/* e.g., 115200n8 */
+ 	unsigned int baud;
++	int offset;
+ };
  
--	val = of_get_flat_dt_prop(node, "reg-offset", NULL);
-+	val = of_get_flat_dt_prop(offset, "reg-offset", NULL);
- 	if (val)
- 		port->mapbase += be32_to_cpu(*val);
- 	port->membase = earlycon_map(port->mapbase, SZ_4K);
- 
--	val = of_get_flat_dt_prop(node, "reg-shift", NULL);
-+	val = of_get_flat_dt_prop(offset, "reg-shift", NULL);
- 	if (val)
- 		port->regshift = be32_to_cpu(*val);
--	big_endian = of_get_flat_dt_prop(node, "big-endian", NULL) != NULL ||
-+	big_endian = of_get_flat_dt_prop(offset, "big-endian", NULL) != NULL ||
- 		(IS_ENABLED(CONFIG_CPU_BIG_ENDIAN) &&
--		 of_get_flat_dt_prop(node, "native-endian", NULL) != NULL);
--	val = of_get_flat_dt_prop(node, "reg-io-width", NULL);
-+		 of_get_flat_dt_prop(offset, "native-endian", NULL) != NULL);
-+	val = of_get_flat_dt_prop(offset, "reg-io-width", NULL);
- 	if (val) {
- 		switch (be32_to_cpu(*val)) {
- 		case 1:
-@@ -291,11 +291,11 @@ int __init of_setup_earlycon(const struct earlycon_id *match,
- 		}
- 	}
- 
--	val = of_get_flat_dt_prop(node, "current-speed", NULL);
-+	val = of_get_flat_dt_prop(offset, "current-speed", NULL);
- 	if (val)
- 		early_console_dev.baud = be32_to_cpu(*val);
- 
--	val = of_get_flat_dt_prop(node, "clock-frequency", NULL);
-+	val = of_get_flat_dt_prop(offset, "clock-frequency", NULL);
- 	if (val)
- 		port->uartclk = be32_to_cpu(*val);
- 
+ struct earlycon_id {
 -- 
 2.37.0
 
