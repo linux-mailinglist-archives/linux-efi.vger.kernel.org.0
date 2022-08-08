@@ -2,125 +2,121 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D56A58CB5E
-	for <lists+linux-efi@lfdr.de>; Mon,  8 Aug 2022 17:38:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8836358CB6D
+	for <lists+linux-efi@lfdr.de>; Mon,  8 Aug 2022 17:44:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235514AbiHHPiW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 8 Aug 2022 11:38:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46504 "EHLO
+        id S243010AbiHHPoI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 8 Aug 2022 11:44:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233652AbiHHPiV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 8 Aug 2022 11:38:21 -0400
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CBD16599;
-        Mon,  8 Aug 2022 08:38:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-        s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=7mDwuqu1nsWLkvdlsGue1nXAGyykJn4H1kQrpjJWKK4=; b=nvwwtNT9v+5EaJYdYt7rD+i76Z
-        A+qfeXLo54sRVHQkL6knwB+rhdWkzmhrz0GI6se2mb4qXp79J+AINty7ndHbNziIwI2DN3eimBLNh
-        Whee4B4u8Abu7EsEy0jO8isTNizj5NAuDPdgDDc/gDCWJeO799pW1h2dodNc9pJAbzpKdidEAfyFW
-        DkqmqiWbdA1qcB8lf3F2nJmUMPWYY+wPYT+eR3Apomdy5tIn1+gk82LIX8U0kTWRZeLdahbhzKhEK
-        /qZOUo+yZYQGhdflMJTwxHoN45L9Sb1zdlV4MYrzNHaHuW0EaXEywPnC2wyHEMzHQyhS3aDnYWm9F
-        rA38+8Bg==;
-Received: from [187.56.70.103] (helo=[192.168.1.60])
-        by fanzine2.igalia.com with esmtpsa 
-        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-        id 1oL4pZ-002u80-Gv; Mon, 08 Aug 2022 17:38:13 +0200
-Message-ID: <55a074a0-ca3a-8afc-4336-e40cff757394@igalia.com>
-Date:   Mon, 8 Aug 2022 12:37:46 -0300
+        with ESMTP id S235606AbiHHPoH (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 8 Aug 2022 11:44:07 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A121E1E8;
+        Mon,  8 Aug 2022 08:44:06 -0700 (PDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 278EQG4m023357;
+        Mon, 8 Aug 2022 15:43:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=TJRNHRKMYb+wVCTUJoKgdADLtCM9GmrKnPjThoWBHlM=;
+ b=tI16lyH+taLovUzzgjkd7N6g+v6kBA7yOnia5elj8PpZApKFe7fzhz6vecoEAfgdB3BN
+ lUVx2TGNiJ+zXSexObttnbtj/O4NVDf6vHnDVR7zFA6QMtjTGXOkVvYkCHL2+i/aJVn3
+ hO9tg89MAHGOwFsuWdfJ0Vlsets9c/DVCjhdGVs8vVmBAUwbnufL5To1Sd57xnJEfi6U
+ x6sf96NhBYBjTwx9rQImXnSNLiVjFR8E3uMHHp7IwhMRvppLGmXDdXGrRXnixMGtDkNF
+ 7Px4PT385HBA/usNL7iHr2K5ubHP6qGIZk7NBzM6IJ865F8lQWu/BTR4PVJRDrEpmcjE mg== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hu48fawdc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 08 Aug 2022 15:43:50 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+        by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 278FaInk001436;
+        Mon, 8 Aug 2022 15:43:49 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+        by ppma02dal.us.ibm.com with ESMTP id 3hsfx98m4m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 08 Aug 2022 15:43:49 +0000
+Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+        by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 278FhmFT18809532
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 8 Aug 2022 15:43:48 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B4BA17805F;
+        Mon,  8 Aug 2022 15:43:48 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 856E478066;
+        Mon,  8 Aug 2022 15:43:47 +0000 (GMT)
+Received: from rhel-laptop.ibm.com.com (unknown [9.160.34.213])
+        by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Mon,  8 Aug 2022 15:43:47 +0000 (GMT)
+From:   gjoyce@linux.vnet.ibm.com
+To:     linux-block@vger.kernel.org
+Cc:     linuxppc-dev@lists.ozlabs.org, jonathan.derrick@linux.dev,
+        brking@linux.vnet.ibm.com, msuchanek@suse.de, mpe@ellerman.id.au,
+        nayna@linux.ibm.com, axboe@kernel.dk, akpm@linux-foundation.org,
+        gjoyce@linux.vnet.ibm.com, linux-efi@vger.kernel.org,
+        keyrings@vger.kernel.org
+Subject: [PATCH v3a 0/2] generic and PowerPC accessor functions for arch keystore
+Date:   Mon,  8 Aug 2022 10:43:43 -0500
+Message-Id: <20220808154345.11240-1-gjoyce@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v2 03/13] firmware: google: Test spinlock on panic path to
- avoid lockups
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Evan Green <evgreen@chromium.org>, linux-efi@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>, bhe@redhat.com,
-        Petr Mladek <pmladek@suse.com>, kexec@lists.infradead.org,
-        linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-        x86@kernel.org, kernel-dev@igalia.com, kernel@gpiccoli.net,
-        halves@canonical.com, fabiomirmar@gmail.com,
-        alejandro.j.jimenez@oracle.com,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
-        Jonathan Corbet <corbet@lwn.net>, d.hatayama@jp.fujitsu.com,
-        dave.hansen@linux.intel.com, dyoung@redhat.com,
-        feng.tang@intel.com, mikelley@microsoft.com,
-        hidehiro.kawai.ez@hitachi.com, jgross@suse.com,
-        john.ogness@linutronix.de, Kees Cook <keescook@chromium.org>,
-        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
-        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
-        senozhatsky@chromium.org, Alan Stern <stern@rowland.harvard.edu>,
-        Thomas Gleixner <tglx@linutronix.de>, vgoyal@redhat.com,
-        vkuznets@redhat.com, Will Deacon <will@kernel.org>,
-        David Gow <davidgow@google.com>,
-        Julius Werner <jwerner@chromium.org>
-References: <20220719195325.402745-1-gpiccoli@igalia.com>
- <20220719195325.402745-4-gpiccoli@igalia.com>
- <CAE=gft71vH+P3iAFXC0bLu0M2x2V4uJGWc82Xa+246ECuUdT-w@mail.gmail.com>
- <019ae735-3d69-cb4e-c003-b83cc8cd76f8@igalia.com>
- <YvErMyM8FNjeDeiW@kroah.com>
-From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <YvErMyM8FNjeDeiW@kroah.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: xQ0zENTjHMPLyJS0S3NO8-iy9hc8sWi0
+X-Proofpoint-ORIG-GUID: xQ0zENTjHMPLyJS0S3NO8-iy9hc8sWi0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-08_10,2022-08-08_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 impostorscore=0 suspectscore=0 adultscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxlogscore=843 phishscore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2208080075
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 08/08/2022 12:26, Greg Kroah-Hartman wrote:
-> [...]
->>
->> Ard / Greg, do you think you could get this patch through your -next (or
->> -fixes) trees? Not sure which tree is the most common for picking GSMI
->> stuff.
-> 
-> Picking out an individual patch from a series with as many responses and
-> threads like this one is quite difficult.
-> 
-> Just resend this as a stand-alone patch if you want it applied
-> stand-alone as our tools want to apply a whole patch series at once.
-> 
->> I'm trying to get these fixes merged individually in their trees to not
->> stall the whole series and increase the burden of re-submitting.
-> 
-> The burden is on the submitter, not the maintainer as we have more
-> submitters than reviewers/maintainers.
-> 
+From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
 
-I understand, thanks for letting me know!
+Changelog v3a:
+        - No code changes, but per reviewer requests, adding additional
+          mailing lists(keyring, EFI) for wider review.
 
-Let me clarify / ask something: this series, for example, is composed as
-a bunch of patches "centered" around the same idea, panic notifiers
-improvements/fixes. But its patches belong to completely different
-subsystems, like EFI/misc, architectures (alpha, parisc, arm), core
-kernel code, etc.
+Architectural neutral functions have been defined for accessing
+architecture specific variable store. The neutral functions are
+defined as weak so that they may be superseded by platform
+specific versions. The functions have been desigined so that 
+they can support a large range of platforms/architectures.
 
-What is the best way of getting this merged?
-(a) Re-send individual patches with the respective Review/ACK tags to
-the proper subsystem, or;
+PowerPC/pseries versions of these functions provide read/write access
+to the non-volatile PLPKS data store.
 
-(b) Wait until the whole series is ACKed/Reviewed, and a single
-maintainer (like you or Andrew, for example) would pick the whole series
-and apply at once, even if it spans across multiple parts of the kernel?
+This functionality allows kernel code such as the block SED opal
+driver to store authentication keys in a secure permanent store.
 
-Let me know what is the general preference of the kernel maintainers,
-and I'll gladly follow that =)
+Greg Joyce (2):
+  lib: define generic accessor functions for arch specific keystore
+  powerpc/pseries: Override lib/arch_vars.c functions
 
-Thanks,
+ arch/powerpc/platforms/pseries/Makefile       |   1 +
+ .../platforms/pseries/plpks_arch_ops.c        | 167 ++++++++++++++++++
+ include/linux/arch_vars.h                     |  23 +++
+ lib/Makefile                                  |   2 +-
+ lib/arch_vars.c                               |  25 +++
+ 5 files changed, 217 insertions(+), 1 deletion(-)
+ create mode 100644 arch/powerpc/platforms/pseries/plpks_arch_ops.c
+ create mode 100644 include/linux/arch_vars.h
+ create mode 100644 lib/arch_vars.c
 
 
-Guilherme
+Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+base-commit: ff6992735ade75aae3e35d16b17da1008d753d28
+-- 
+2.27.0
+
