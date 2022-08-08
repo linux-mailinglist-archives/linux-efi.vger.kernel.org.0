@@ -2,137 +2,102 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A891858CBA5
-	for <lists+linux-efi@lfdr.de>; Mon,  8 Aug 2022 17:55:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE13258CBAA
+	for <lists+linux-efi@lfdr.de>; Mon,  8 Aug 2022 17:56:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242339AbiHHPzc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 8 Aug 2022 11:55:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59596 "EHLO
+        id S243421AbiHHP4L (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 8 Aug 2022 11:56:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235696AbiHHPzc (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 8 Aug 2022 11:55:32 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AD8EA450;
-        Mon,  8 Aug 2022 08:55:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1659974131; x=1691510131;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=adBjDflubgueY7hGEhT8HFxQtuN3PdKVUrGiUqSnREU=;
-  b=QNl8boFMSdd13fHRMSLuu6+NrsXbgOEBFB63vn1QA34ztvfht9YrpV4j
-   RNht1lLlATlrr9mudTlGBhSDGParDryEqrFWshfi7VyNXdHWX/iPLYr4D
-   lGwlcgJn1MXEiEubNmtsiQX6mckyrxo6bQ2nzOGm5VPfMV+R1XiOKsKYJ
-   pzQg9c0RP55Stryj7BZHi+DyY0WZhHrEa3nNNvFVwZ8uaNizAeWsRZ6/h
-   jOIb2VTBsOTy40JiD0Kr6uenlovaJQYmWRWf1xRacDqpo8Wd0pcmQmPfb
-   eH9WL0zenRFMT/KBGYXZQPaepgx5lkssOUmlwxyoSycMNiHfDTPWer7Oo
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10433"; a="291406259"
-X-IronPort-AV: E=Sophos;i="5.93,222,1654585200"; 
-   d="scan'208";a="291406259"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2022 08:55:08 -0700
-X-IronPort-AV: E=Sophos;i="5.93,222,1654585200"; 
-   d="scan'208";a="604416918"
-Received: from sankarka-mobl1.amr.corp.intel.com (HELO [10.212.251.15]) ([10.212.251.15])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2022 08:55:08 -0700
-Message-ID: <4992c5b3-b9a9-b4ff-b09c-1383faf1ea6f@intel.com>
-Date:   Mon, 8 Aug 2022 08:55:09 -0700
+        with ESMTP id S236569AbiHHP4K (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 8 Aug 2022 11:56:10 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24086A47B;
+        Mon,  8 Aug 2022 08:56:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id CEF8EB80FCD;
+        Mon,  8 Aug 2022 15:56:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E36DC43149;
+        Mon,  8 Aug 2022 15:56:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1659974167;
+        bh=v2lgBXjNZtsYzCboM1GnlUy05vvC9EjJee5FKw0cYsQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=mIHwvx+tj2BxsPEjBZ0vinsl4KXkSc+hUHjGOo+mlAFTJmKRMbMY/LMLgKCe1QNv4
+         nWVNNWJGt7Id3daVXh9gG0kGjCNCY90Ec8lpHmpiS1DGviiH1Ye9GbbRrGb+16XcTk
+         luRIciiAM6aSFU/64rT51FuMNb4ojhjb2dLoLIYZ+W9kTOL0L7kKvRP7p2k9OZgB3Z
+         GtVeNG5fVpg6X/jx4l8owP7xHWDcjmfsPc734Gi4Kp9fRvQ5uBJr6nArf2AwQYpBwM
+         SN13eiIZoUhJYu5L0DT1feKn/7/6/FgwtFdgCYbKqZXXmX4XC/KvDmagMFJjHVaUCk
+         W3BZthQ+6i1fg==
+Received: by mail-vk1-f179.google.com with SMTP id x128so1554356vke.3;
+        Mon, 08 Aug 2022 08:56:07 -0700 (PDT)
+X-Gm-Message-State: ACgBeo0LKoPn+86gdnjt8QxyNSMi8FgwachBS1wcPtvnAN2QD9BgOtHz
+        zZ3EmJYhrO/f1C0WUxy9g+VwzkqwBcXFCasTCg==
+X-Google-Smtp-Source: AA6agR6IlSvPTzHVkYtc/Dl9eo8Po13k4nQJVZL4SY2rHsdelBv+y2wXVK/2+5kYFhsWJQqicxm/4R8FPkDt1nisypg=
+X-Received: by 2002:a1f:2dc2:0:b0:377:84fa:dbe5 with SMTP id
+ t185-20020a1f2dc2000000b0037784fadbe5mr8008232vkt.15.1659974166257; Mon, 08
+ Aug 2022 08:56:06 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
-Content-Language: en-US
-To:     Vlastimil Babka <vbabka@suse.cz>,
-        David Hildenbrand <david@redhat.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
+References: <20220806163255.10404-1-markuss.broks@gmail.com> <20220806163255.10404-2-markuss.broks@gmail.com>
+In-Reply-To: <20220806163255.10404-2-markuss.broks@gmail.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Mon, 8 Aug 2022 09:55:54 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJE7VzqdcoDDNw2QkDHyKr4WgOrgLwsHWJa+BwPTb=A8w@mail.gmail.com>
+Message-ID: <CAL_JsqJE7VzqdcoDDNw2QkDHyKr4WgOrgLwsHWJa+BwPTb=A8w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] drivers: serial: earlycon: Correct argument name
+To:     Markuss Broks <markuss.broks@gmail.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
+        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>, Andy
+        Shevchenko <andy.shevchenko@gmail.com>," 
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        phone-devel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Borislav Petkov <bp@suse.de>,
+        Kees Cook <keescook@chromium.org>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Mike Rapoport <rppt@kernel.org>, marcelo.cerri@canonical.com,
-        tim.gardner@canonical.com, khalid.elmously@canonical.com,
-        philip.cox@canonical.com, x86@kernel.org, linux-mm@kvack.org,
-        linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
-        Mel Gorman <mgorman@techsingularity.net>
-References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-3-kirill.shutemov@linux.intel.com>
- <8cf143e7-2b62-1a1e-de84-e3dcc6c027a4@suse.cz>
- <cb9d3310-3bc0-8ecf-5e71-becce980235f@redhat.com>
- <f936b024-43e1-5390-e33f-ad7d355a2802@suse.cz>
- <eb83fcd9-f331-4d54-1ab9-78db106ee66d@intel.com>
- <cecbaa10-6d0a-8925-004b-ff53d9f56e83@suse.cz>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <cecbaa10-6d0a-8925-004b-ff53d9f56e83@suse.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        Randy Dunlap <rdunlap@infradead.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Michal Suchanek <msuchanek@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Wei Ming Chen <jj251510319013@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 8/5/22 11:17, Vlastimil Babka wrote:
->> 3. Pull the page off the 2M/4M lists, drop the zone lock, accept it,
->>    then put it back.
-> Worth trying, IMHO. Perhaps easier to manage if the lists are distinct from
-> the normal ones, as I suggested.
+On Sat, Aug 6, 2022 at 10:34 AM Markuss Broks <markuss.broks@gmail.com> wrote:
+>
+> The "node" argument is actually an offset,
 
-I was playing with another series recently where I did this, momentarily
-taking pages off some of the high-order lists and dropping the zone lock.
+It's an offset to a node in the FDT. The fact that it is an offset is
+an internal implementation detail of the FDT format. So really, it's a
+handle to a node. 'node' is more descriptive to its purpose.
 
-Kirill, if you go looking at this, just make sure that you don't let
-this happen to too much memory at once.  You might end up yanking memory
-out of the allocator that's not reflected in NR_FREE_PAGES.
+> and it's also an "int", and not "unsigned long".
 
-You might, for instance want to make sure that only a small number of
-threads can have pulled memory off the free lists at once.  Something
-*logically* like this:
+Uh, no it's not. of_flat_dt_*() functions all take an unsigned long.
 
-// Limit to two threads at once:
-atomic_t nr_accepting_threads = ATOMIC_INIT(2);
-
-	page = del_page_from_free_list();
-	if (!PageAccepted(page)) {
-		if (atomic_dec_and_test(&nr_accepting_threads)) {
-			// already at the thread limit
-			add_page_from_free_list(page, ...);
-			spin_unlock_irq(&zone->lock);
-			// wait for a slot...
-			spin_lock_irq(&zone->lock);
-			goto retry;
-		} else {
-			spin_unlock_irq(&zone->lock);
-			accept_page(page);
-			spin_lock_irq(&zone->lock);
-			add_page_from_free_list(page, ...);
-			// do merging if it was a 2M page
-		}
-	}
-
-It's a little nasty because the whole thing is not a sleepable context.
- I also know that the merging code needs some refactoring if you want to
-do merging with 2M pages here.  It might all get easier if you move all
-the page allocator stuff to only work at the 4M granularity.
-
-In any case, I'm not trying to dissuade anyone from listening to the
-other reviewer feedback.  Just trying to save you a few cycles on a
-similar problem I was looking at recently.
+Rob
