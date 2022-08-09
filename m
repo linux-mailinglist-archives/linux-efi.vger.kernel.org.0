@@ -2,208 +2,144 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15E3558CC47
-	for <lists+linux-efi@lfdr.de>; Mon,  8 Aug 2022 18:42:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD69858D52B
+	for <lists+linux-efi@lfdr.de>; Tue,  9 Aug 2022 10:10:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243584AbiHHQmf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 8 Aug 2022 12:42:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37552 "EHLO
+        id S233614AbiHIIKr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 9 Aug 2022 04:10:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234259AbiHHQme (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 8 Aug 2022 12:42:34 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E5041115B;
-        Mon,  8 Aug 2022 09:42:33 -0700 (PDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id EBB9033957;
-        Mon,  8 Aug 2022 16:42:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1659976950; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=eCEQGHVmNw/cgwCaF0zGm8frJ7CvTePwYOpj6ZdhHkU=;
-        b=zwj8Pfj/JakzPXURLrlS0ReAMfvX/5uASA/CF5HNZdC5sGir/BjvPZXAcV7AdGk+yC32/n
-        cvXBDjpZDCtNU9XAgmrvGW+51yXpNj29GHZS9Ml42at9pUxASVaAw1aCqHSF9al+fSS26T
-        0F0rYNXyeatXdSnA51/6pkrB4S0akuQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1659976950;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=eCEQGHVmNw/cgwCaF0zGm8frJ7CvTePwYOpj6ZdhHkU=;
-        b=z8nffUQp/r84zWBn1rgTRX5povHS/YFZA55vtYHlDAQKli35GGtnLfE0orehHRiv8XVZ2O
-        nUrICPZT6Or4hUCQ==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+        with ESMTP id S233351AbiHIIKr (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 9 Aug 2022 04:10:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50567BF7B
+        for <linux-efi@vger.kernel.org>; Tue,  9 Aug 2022 01:10:46 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 96D3A2C143;
-        Mon,  8 Aug 2022 16:42:30 +0000 (UTC)
-Date:   Mon, 8 Aug 2022 18:42:29 +0200
-From:   Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc:     "gjoyce@linux.vnet.ibm.com" <gjoyce@linux.vnet.ibm.com>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "axboe@kernel.dk" <axboe@kernel.dk>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "nayna@linux.ibm.com" <nayna@linux.ibm.com>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "jonathan.derrick@linux.dev" <jonathan.derrick@linux.dev>,
-        "brking@linux.vnet.ibm.com" <brking@linux.vnet.ibm.com>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH v3a 1/2] lib: generic accessor functions for arch keystore
-Message-ID: <20220808164229.GM17705@kitsune.suse.cz>
-References: <20220808154345.11240-1-gjoyce@linux.vnet.ibm.com>
- <20220808154345.11240-2-gjoyce@linux.vnet.ibm.com>
- <1d4338cc-d7ec-383f-b201-222140a813bd@csgroup.eu>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E18F8612E6
+        for <linux-efi@vger.kernel.org>; Tue,  9 Aug 2022 08:10:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588A0C433C1;
+        Tue,  9 Aug 2022 08:10:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660032645;
+        bh=811jnPqLnkp6atI8McTN6peGWiDf8Xq+/StSpgTNa58=;
+        h=From:To:Cc:Subject:Date:From;
+        b=tPDUzTfu+Cwd+9AJd9TgPPdrSaZFf855qIoGPXO5aD7Crz2gQAf4kCIvoyOj226Tb
+         /f1Mku4UTyUmazt2c6fJCRSJrOO3THduDA2VTMP0j1u/ymFrrFN/fdgb1Xk+noeZlL
+         lxed5jnNtYFfZEykMTX5xwoCIxUhoWWCRnEjYbC1n+Rw/Vvoo28IyQohnVNuJgvKa1
+         kUBsLWhGb8p2NQH+Pg16QFxKM9VHWJivVjvg/yBHM5M+x35E4WtbZupjihoRKlAsFH
+         jQszVAqYMOVHy6p8BNQQuNYu5CxESiGaOPtKUmvxPWH1DYg9ijYXBEmUX+5aEUocJG
+         VcRtduf2Vf5lw==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     catalin.marinas@arm.com, will@kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Peter Jones <pjones@redhat.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+        AKASHI Takahiro <takahiro.akashi@linaro.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Atish Patra <atishp@atishpatra.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Lennart Poettering <lennart@poettering.net>
+Subject: [PATCH v2 0/6] efi: implement generic compressed boot support
+Date:   Tue,  9 Aug 2022 10:09:38 +0200
+Message-Id: <20220809080944.1119654-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4138; i=ardb@kernel.org; h=from:subject; bh=811jnPqLnkp6atI8McTN6peGWiDf8Xq+/StSpgTNa58=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBi8hY5pLxBBkQN7Pgapqn8GV+srZmd1WQVdtvu4rx6 g/inUdSJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYvIWOQAKCRDDTyI5ktmPJMhHC/ 4/rCJm7EWWFrNv+7iWmV9KagQAodZLOHEmzRypY3QcVUQTC8/UhZ5mp8BNvtsUmPSQ119eWs6lJl5Z IwnCGg+W3r52YAUv+hXg5xJacnAcu6ir6U+5gcCxN6DtYwBHIVWe9KkDM40h2bAA8i3EFNbJV/3d6f CLRh60Ed2/WNK5w1Rr0FHf2S6z6+ravmBMBSFOW818z8db4bTBYYgc24teZO1XxtzymoBlyR2EwTCZ sisQzM2jDH01bo4K+TeZp3zC04fLEfN5lgXRp+0bqh7Nk4BMBf6MtwEtJUVAFaHyrvwDDVlTNT6uA4 +/qm1LeNwIM3Q0PM56G6IeYJ5l2FsJy/IUpIRK9QrHo1EinL0ruQIay7ldxbZA9IvhtfVrM91S+97R bKgKTK9Gowxoq8Kt+Jg0a+oVR8glsw8kBSHPAbJt881SPYXXU2KJZBf96ugFSkUGn7yOOq08s7c+DJ 0fj90ddne5ZHuxfwzSTZ4Z5+4BC9/8tef9SCGp42t1b7Q=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1d4338cc-d7ec-383f-b201-222140a813bd@csgroup.eu>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Aug 08, 2022 at 04:31:06PM +0000, Christophe Leroy wrote:
-> 
-> 
-> Le 08/08/2022 à 17:43, gjoyce@linux.vnet.ibm.com a écrit :
-> > From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-> > 
-> > Generic kernel subsystems may rely on platform specific persistent
-> > KeyStore to store objects containing sensitive key material. In such case,
-> > they need to access architecture specific functions to perform read/write
-> > operations on these variables.
-> > 
-> > Define the generic variable read/write prototypes to be implemented by
-> > architecture specific versions. The default(weak) implementations of
-> > these prototypes return -EOPNOTSUPP unless overridden by architecture
-> > versions.
-> > 
-> > Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-> > ---
-> >   include/linux/arch_vars.h | 23 +++++++++++++++++++++++
-> >   lib/Makefile              |  2 +-
-> >   lib/arch_vars.c           | 25 +++++++++++++++++++++++++
-> >   3 files changed, 49 insertions(+), 1 deletion(-)
-> >   create mode 100644 include/linux/arch_vars.h
-> >   create mode 100644 lib/arch_vars.c
-> > 
-> > diff --git a/include/linux/arch_vars.h b/include/linux/arch_vars.h
-> > new file mode 100644
-> > index 000000000000..9c280ff9432e
-> > --- /dev/null
-> > +++ b/include/linux/arch_vars.h
-> > @@ -0,0 +1,23 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +/*
-> > + * Platform variable opearations.
-> 
-> Is it platform specific or architecture specific ?
-> 
-> > + *
-> > + * Copyright (C) 2022 IBM Corporation
-> > + *
-> > + * These are the accessor functions (read/write) for architecture specific
-> > + * variables. Specific architectures can provide overrides.
-> 
-> "variables" is a very generic word which I think doesn't match what you 
-> want to do.
-> 
-> For me "variables" are local variables and global variables in a C file. 
-> Here it seems to be something completely different hence the name is 
-> really meaningfull and misleading.
-> 
-> > + *
-> > + */
-> > +
-> > +#include <linux/kernel.h>
-> > +
-> > +enum arch_variable_type {
-> 
-> arch_variable_type ? What's that ? variable types are char, short, long, 
-> long long, etc ...
-> 
-> > +	ARCH_VAR_OPAL_KEY      = 0,     /* SED Opal Authentication Key */
-> > +	ARCH_VAR_OTHER         = 1,     /* Other type of variable */
-> > +	ARCH_VAR_MAX           = 1,     /* Maximum type value */
-> > +};
-> 
-> Why the hell do you need an enum for two values only ?
-> 
-> > +
-> > +int arch_read_variable(enum arch_variable_type type, char *varname,
-> > +		       void *varbuf, u_int *varlen);
-> > +int arch_write_variable(enum arch_variable_type type, char *varname,
-> > +			void *varbuf, u_int varlen);
-> > diff --git a/lib/Makefile b/lib/Makefile
-> > index f99bf61f8bbc..b90c4cb0dbbb 100644
-> > --- a/lib/Makefile
-> > +++ b/lib/Makefile
-> > @@ -48,7 +48,7 @@ obj-y += bcd.o sort.o parser.o debug_locks.o random32.o \
-> >   	 bsearch.o find_bit.o llist.o memweight.o kfifo.o \
-> >   	 percpu-refcount.o rhashtable.o \
-> >   	 once.o refcount.o usercopy.o errseq.o bucket_locks.o \
-> > -	 generic-radix-tree.o
-> > +	 generic-radix-tree.o arch_vars.o
-> >   obj-$(CONFIG_STRING_SELFTEST) += test_string.o
-> >   obj-y += string_helpers.o
-> >   obj-$(CONFIG_TEST_STRING_HELPERS) += test-string_helpers.o
-> > diff --git a/lib/arch_vars.c b/lib/arch_vars.c
-> > new file mode 100644
-> > index 000000000000..e6f16d7d09c1
-> > --- /dev/null
-> > +++ b/lib/arch_vars.c
-> 
-> The name is meaningless, too generic.
-> 
-> 
-> > @@ -0,0 +1,25 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +/*
-> > + * Platform variable operations.
-> 
-> platform versus architecture ?
-> 
-> > + *
-> > + * Copyright (C) 2022 IBM Corporation
-> > + *
-> > + * These are the accessor functions (read/write) for architecture specific
-> > + * variables. Specific architectures can provide overrides.
-> > + *
-> > + */
-> > +
-> > +#include <linux/kernel.h>
-> > +#include <linux/arch_vars.h>
-> > +
-> > +int __weak arch_read_variable(enum arch_variable_type type, char *varname,
-> > +			      void *varbuf, u_int *varlen)
-> 
-> Sorry, to read a variable, I use READ_ONCE or I read it directly.
+Relatively modern architectures such as arm64 or RISC-V don't implement
+a self-decompressing kernel, and leave it up to the bootloader to
+decompress the compressed image before executing it. For bare metal
+boot, this policy makes sense, as a self-decompressing image essentially
+duplicates a lot of fiddly preparation work to create a 1:1 mapping and
+set up the C runtime, and to discover or infer where DRAM lives from
+device trees or other firmware tables.
 
-This is supposed to be used for things like the EFI variables and the
-already existing powernv secure variables.
+For EFI boot, the situation is a bit different: the EFI entrypoint is
+called with a 1:1 cached mapping covering all of DRAM already active,
+and with a stack, a heap, a memory map and boot services to load and
+start images. This means it is rather trivial to implement a
+self-decompressing wrapper for EFI boot in a generic manner, and reuse
+it across architectures that implement EFI boot.
 
-Nonetheless, without adding the plumbing for the existing
-implementations it is not clear what it's doing, and the interface is
-agruably meaningless.
+The only slight downside is that when UEFI secure boot is enabled, the
+generic LoadImage/StartImage only allow signed images to be loaded and
+started, and we prefer to avoid the need to sign both the inner and
+outer PE/COFF images. This series adopts the EFI shim approach, i.e., to
+override an internal UEFI/PI protocol that is used by the image loader,
+to allow the inner image to be booted after decompression. This has been
+tested to work with Tianocore based EFI implementations on arm64, but
+u-boot will need some interoperability tweaks as well, ideally just a
+protocol that exposes a LoadImage/StartImage combo that the decompresor
+can use directly to circumvent the signature check. (Note that EFI apps
+have full control over the CPU, page tables, etc. so having code that
+circumvents authentication checks is not as crazy as it sounds, given
+that the app can do anything it pleases already.)
 
-Hence I would either suggest to provide the plumbing necessary for
-existing (secure) variable implementations to make use of the interface,
-or use private implementations like all the existing platforms do
-without exposing the values in any generic way, and leave that to
-somebody who is comfortable with designing a working general inteface
-for this.
+The code is wired up for arm64 and RISC-V. The latter was build tested
+only.
 
-Thanks
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Matthew Garrett <mjg59@srcf.ucam.org>
+Cc: Peter Jones <pjones@redhat.com>
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Cc: AKASHI Takahiro <takahiro.akashi@linaro.org>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Atish Patra <atishp@atishpatra.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Lennart Poettering <lennart@poettering.net>
 
-Michal
+Ard Biesheuvel (6):
+  efi: stub: add some missing boot service prototypes
+  efi: stub: split off printk() routines
+  efi: stub: move efi_system_table global var into separate object
+  efi: stub: implement generic EFI zboot
+  arm64: efi: enable generic EFI compressed boot
+  riscv: efi: enable generic EFI compressed boot
+
+ arch/arm64/Makefile                            |   5 +
+ arch/arm64/boot/Makefile                       |  12 ++
+ arch/riscv/Makefile                            |   5 +
+ arch/riscv/boot/Makefile                       |  14 ++
+ drivers/firmware/efi/Kconfig                   |   9 +
+ drivers/firmware/efi/libstub/Makefile          |   7 +-
+ drivers/firmware/efi/libstub/Makefile.zboot    |  30 +++
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 141 ---------------
+ drivers/firmware/efi/libstub/efi-stub.c        |   2 -
+ drivers/firmware/efi/libstub/efistub.h         |  12 +-
+ drivers/firmware/efi/libstub/printk.c          | 158 ++++++++++++++++
+ drivers/firmware/efi/libstub/systable.c        |   8 +
+ drivers/firmware/efi/libstub/zboot-header.S    | 144 +++++++++++++++
+ drivers/firmware/efi/libstub/zboot.c           | 191 ++++++++++++++++++++
+ drivers/firmware/efi/libstub/zboot.lds         |  41 +++++
+ include/linux/efi.h                            |   2 +
+ 16 files changed, 633 insertions(+), 148 deletions(-)
+ create mode 100644 drivers/firmware/efi/libstub/Makefile.zboot
+ create mode 100644 drivers/firmware/efi/libstub/printk.c
+ create mode 100644 drivers/firmware/efi/libstub/systable.c
+ create mode 100644 drivers/firmware/efi/libstub/zboot-header.S
+ create mode 100644 drivers/firmware/efi/libstub/zboot.c
+ create mode 100644 drivers/firmware/efi/libstub/zboot.lds
+
+-- 
+2.35.1
+
