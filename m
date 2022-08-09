@@ -2,137 +2,88 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D47758D865
-	for <lists+linux-efi@lfdr.de>; Tue,  9 Aug 2022 13:51:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8314458D8A4
+	for <lists+linux-efi@lfdr.de>; Tue,  9 Aug 2022 14:17:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242874AbiHILvi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 9 Aug 2022 07:51:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40220 "EHLO
+        id S231130AbiHIMRi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 9 Aug 2022 08:17:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232697AbiHILvh (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 9 Aug 2022 07:51:37 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC18C15FCB;
-        Tue,  9 Aug 2022 04:51:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1660045895; x=1691581895;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=eDgcat5jz2gPDhDhIYJ5SQ3oYmJhT05bUBFYCgTExWE=;
-  b=jubm97hKIGKMHQ2kVDVwxIrF+zt3G0AfnfaL16pa/3x7IKtQyfee1goa
-   tzui3e3Nqy/JxqxiU7yzWzw1mj0Ig05m0Zf+NmQCz5WzjfHOPyuSi4G7h
-   cgVWc5jiBWVWY88HJjYXf3TCtyhY0omVeCSdl46KBIkBoqmScnky+9cTY
-   OH8yVMdhMvbYfXMIY5tTroA3bYHhvGVLJRcB9uYOVv03aTqr7qdp9xsus
-   7Y4yejQMTKmC+JErasdalJNbs7YtF5qVtYotIyV/YJuEJBMJhAVJafwI3
-   HPrwgqhFGB7HOTZRUF3Sh81bBdFhf/dt6QpqDh/04rheyDuc0IunM9+3o
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10433"; a="316744620"
-X-IronPort-AV: E=Sophos;i="5.93,224,1654585200"; 
-   d="scan'208";a="316744620"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2022 04:51:35 -0700
-X-IronPort-AV: E=Sophos;i="5.93,224,1654585200"; 
-   d="scan'208";a="747012231"
-Received: from labukara-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.214.212])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2022 04:51:29 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-        id 7CAAF103886; Tue,  9 Aug 2022 14:54:27 +0300 (+03)
-Date:   Tue, 9 Aug 2022 14:54:27 +0300
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Dave Hansen <dave.hansen@intel.com>, Marc Orr <marcorr@google.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dionna Amalie Glaze <dionnaglaze@google.com>,
-        Peter Gonda <pgonda@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Varad Gautam <varad.gautam@suse.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Marcelo Cerri <marcelo.cerri@canonical.com>,
-        tim.gardner@canonical.com,
-        Khalid ElMously <khalid.elmously@canonical.com>,
-        philip.cox@canonical.com,
-        the arch/x86 maintainers <x86@kernel.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        linux-coco@lists.linux.dev, linux-efi <linux-efi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "Yao, Jiewen" <jiewen.yao@intel.com>
-Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted
- memory
-Message-ID: <20220809115427.bmkbap434oupinq2@box.shutemov.name>
-References: <CAMj1kXEKtcieycyyFMyuLKJK61FgaDwtLieC0N47W1Sa5LaBsA@mail.gmail.com>
- <YtcgxxMyFTReuuRw@zn.tnic>
- <bb7479df-7871-9861-600d-c2fed783b659@intel.com>
- <YtcnQbiRgZPtR+rQ@zn.tnic>
- <22d54786-bc12-ecc5-2b37-cbaa56090aa8@intel.com>
- <CAA03e5FMEyswDhoXRJ5U_n9RG4QM524aQYpF4473ydnAVJr1PA@mail.gmail.com>
- <ffb4ae72-7fd4-d2a0-df10-3969cf8ca07f@intel.com>
- <CAMj1kXHEc=vEt=CtfdiPEsUe2i8QogAi+jvtY6h1awo7GZ-nRg@mail.gmail.com>
- <20220809111436.kudwg2nprnnsfvuh@box.shutemov.name>
- <CAMj1kXE67H_cgYbufUxQ7HXg929dFopWH+cKX5ijAdePP8Zt-g@mail.gmail.com>
+        with ESMTP id S230380AbiHIMRh (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 9 Aug 2022 08:17:37 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7054DF51
+        for <linux-efi@vger.kernel.org>; Tue,  9 Aug 2022 05:17:35 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 86DD1B8118F
+        for <linux-efi@vger.kernel.org>; Tue,  9 Aug 2022 12:17:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 167E0C433C1;
+        Tue,  9 Aug 2022 12:17:31 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="nH7s8dX9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1660047450;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=yTUBmcb7StG1xZ+XFh2SpEbQEQFJ+Uex4VrAw/Y2TfU=;
+        b=nH7s8dX98oiqdhz7UDPdTm8bCw/tYsAznVG0QysdzDwoL/iN/GvM2RVGAgOTKMJEwwQqry
+        UWSprxgkprU/UQ2CUo8qDziNCzLOHbbwgeyN9K5fwtt94m4Wk0JSUh4HKT9YJiK3sWBUQi
+        /RDzy0blulxNDbH60UShrC7J2YlvHjI=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 6fcacff3 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+        Tue, 9 Aug 2022 12:17:30 +0000 (UTC)
+Date:   Tue, 9 Aug 2022 14:17:23 +0200
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+To:     Paolo Bonzini <pbonzini@redhat.com>
+Cc:     qemu-devel@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Peter Maydell <peter.maydell@linaro.org>,
+        "Michael S . Tsirkin" <mst@redhat.com>,
+        Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Laszlo Ersek <lersek@redhat.com>, linux-efi@vger.kernel.org
+Subject: Re: [PATCH v3] hw/i386: place setup_data at fixed place in memory
+Message-ID: <YvJQU0vS3sKDNPWn@zx2c4.com>
+References: <YuxOgtykRQb1HU3e@zx2c4.com>
+ <20220804230411.17720-1-Jason@zx2c4.com>
+ <40fdfb11-1e40-a36a-d3a4-fcbef546a78a@redhat.com>
+ <Yu0RX2b+e9BpGsJ6@zx2c4.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXE67H_cgYbufUxQ7HXg929dFopWH+cKX5ijAdePP8Zt-g@mail.gmail.com>
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <Yu0RX2b+e9BpGsJ6@zx2c4.com>
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Aug 09, 2022 at 01:36:00PM +0200, Ard Biesheuvel wrote:
-> On Tue, 9 Aug 2022 at 13:11, Kirill A. Shutemov
-> <kirill.shutemov@linux.intel.com> wrote:
-> >
-> > On Sat, Jul 23, 2022 at 01:14:07PM +0200, Ard Biesheuvel wrote:
-> > > On Thu, 21 Jul 2022 at 19:13, Dave Hansen <dave.hansen@intel.com> wrote:
-> > > >
-> > > > On 7/19/22 17:26, Marc Orr wrote:
-> > > > > - Dave's suggestion to "2. Boot some intermediate thing like a
-> > > > > bootloader that does acceptance ..." is pretty clever! So if upstream
-> > > > > thinks this FW-kernel negotiation is not a good direction, maybe we
-> > > > > (Google) can pursue this idea to avoid introducing yet another tag on
-> > > > > our images.
-> > > >
-> > > > I'm obviously speaking only for myself here and not for "upstream" as a
-> > > > whole, but I clearly don't like the FW/kernel negotiation thing.  It's a
-> > > > permanent pain in our necks to solve a very temporary problem.
-> > >
-> > > EFI is basically our existing embodiment of this fw/kernel negotiation
-> > > thing, and iff we need it, I have no objection to using it for this
-> > > purpose, i.e., to allow the firmware to infer whether or not it should
-> > > accept all available memory on behalf of the OS before exiting boot
-> > > services. But if we don't need this, even better.
-> >
-> > FW/kernel negotiation does not work if there's a boot loader in the middle
-> > that does ExitBootServices(). By the time kernel can announce if it
-> > supports unaccepted memory there's nobody to announce to.
-> >
+Hey Paolo,
+
+On Fri, Aug 05, 2022 at 02:47:27PM +0200, Jason A. Donenfeld wrote:
+> Hi Paolo,
 > 
-> Why would you want to support such bootloaders for TDX anyway? TDX
-> heavily relies on measured boot abstractions and other things that are
-> heavily tied to firmware.
+> On Fri, Aug 05, 2022 at 10:10:02AM +0200, Paolo Bonzini wrote:
+> > On 8/5/22 01:04, Jason A. Donenfeld wrote:
+> > > +    /* Nothing else uses this part of the hardware mapped region */
+> > > +    setup_data_base = 0xfffff - 0x1000;
+> > 
+> > Isn't this where the BIOS lives?  I don't think this works.
+> 
+> That's the segment dedicated to ROM and hardware mapped addresses. So
+> that's a place to put ROM material. No actual software will use it.
+> 
+> Jason
 
-I don't understand it either. And, yet, there's demand for it.
+Unless I've misread the thread, I don't think there are any remaining
+objections, right? Can we try merging this and seeing if it fixes the
+issue for good?
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Jason
