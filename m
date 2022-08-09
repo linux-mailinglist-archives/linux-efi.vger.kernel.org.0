@@ -2,72 +2,54 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5BBC58D593
-	for <lists+linux-efi@lfdr.de>; Tue,  9 Aug 2022 10:42:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 975A958D59F
+	for <lists+linux-efi@lfdr.de>; Tue,  9 Aug 2022 10:46:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240409AbiHIImo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 9 Aug 2022 04:42:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45390 "EHLO
+        id S236497AbiHIIq2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 9 Aug 2022 04:46:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241009AbiHIImm (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 9 Aug 2022 04:42:42 -0400
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D94E3220DC
-        for <linux-efi@vger.kernel.org>; Tue,  9 Aug 2022 01:42:39 -0700 (PDT)
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        with ESMTP id S239186AbiHIIqS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 9 Aug 2022 04:46:18 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A210022286
+        for <linux-efi@vger.kernel.org>; Tue,  9 Aug 2022 01:46:17 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 144063F467
-        for <linux-efi@vger.kernel.org>; Tue,  9 Aug 2022 08:42:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1660034558;
-        bh=rMu3QBc2zrhp5woSh3VBBx+UaxeyaUxzWhvH3YRNXDE=;
-        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-         In-Reply-To:Content-Type;
-        b=B5Z0crqCxn+9S59s+yb9/BppSxeX//qPrFZVbkndUSXzISEx1GkKOqRrPKohhsRnC
-         tIADSeeqgYqx8dU+8WZbvonXE80+XKZoe6jWQow+ZTLUa5SP7sgbU298PXc+J+6VXM
-         llpzmYTQdP+p6GVChdle8dXIztPLwN2B74MOJYCbUBZidQv/SALtkplMg0DUlD4VzW
-         A9oKJ0vnANSoDS6fjS3ry8l/aKl5hT34VtEKd2cGK+iE46QZDn2jzKKL4TVTu8V8IO
-         GP8Ven9K/WXYJ+9vFkQ1ile02cUzyLKMT9qOCbp5qs8s81Z4gD0KqoznwVFbX6i5LV
-         8Pd2dTzQguqAQ==
-Received: by mail-ed1-f70.google.com with SMTP id m22-20020a056402431600b0043d6a88130aso6840917edc.18
-        for <linux-efi@vger.kernel.org>; Tue, 09 Aug 2022 01:42:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=rMu3QBc2zrhp5woSh3VBBx+UaxeyaUxzWhvH3YRNXDE=;
-        b=5F3+uzvzbOd/fTU9yMkPJEmBfec8rnLEEFGIEw21np/lUaldlu0uYHJwaCabLcib0w
-         MZ5LFwQQXjtmlqAj4QoRkBJdYWjXDmeBYkqu1tHgfc2RuS+S+ZQiP7+2KPnSP0WFG9ia
-         y6GLRrTQeZC2kLAwc6hA298izyyJysKUv8D3L9pO2APTINTk1juACDysYbT0O0MKdut6
-         jW5QtdrCx56eBgdzkJc6xvv4uie68BuwimLtkZIw1p6mj86j2VTqnwyXesQHkP89+48r
-         XEKOhLGfAwcBeAr+9eaa5TNpfHp7qZb6GNsKUEAqPsSv45EoOG9FIYCGvPmrgTSOCZTz
-         /7iQ==
-X-Gm-Message-State: ACgBeo2H0gvXSEZqqShtmeaTsgh8JsQfhLvaJsXW5hy1Flx2qiDpLU6o
-        MIqoyy4b0CJ+Xbwl5MKV/DQI/TiBF1WXLzFIZ8TuRtQDXmbfvBqLNTCRinOA9EHeiTXETcGSeGO
-        jPfYQaLVi5fbzZCL3MfCUwoPwKl0/DLiqqbbGVA==
-X-Received: by 2002:aa7:cf18:0:b0:43d:34e:11b9 with SMTP id a24-20020aa7cf18000000b0043d034e11b9mr21127001edy.145.1660034557645;
-        Tue, 09 Aug 2022 01:42:37 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR57TYulbw78SFuNZwHg1OzdggdMnuEQUgPUomyOBzpksEBVMJJKRK1/TYAIr3mTWYSl7vlZnA==
-X-Received: by 2002:aa7:cf18:0:b0:43d:34e:11b9 with SMTP id a24-20020aa7cf18000000b0043d034e11b9mr21126987edy.145.1660034557453;
-        Tue, 09 Aug 2022 01:42:37 -0700 (PDT)
-Received: from [192.168.123.67] (ip-062-143-094-109.um16.pools.vodafone-ip.de. [62.143.94.109])
-        by smtp.gmail.com with ESMTPSA id f21-20020a056402005500b0043ceb444515sm5700364edu.5.2022.08.09.01.42.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Aug 2022 01:42:37 -0700 (PDT)
-Message-ID: <73e60ddb-85ae-3b98-aa26-4bf864a02734@canonical.com>
-Date:   Tue, 9 Aug 2022 10:42:35 +0200
+        by ams.source.kernel.org (Postfix) with ESMTPS id 57406B80E11
+        for <linux-efi@vger.kernel.org>; Tue,  9 Aug 2022 08:46:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F74C43470
+        for <linux-efi@vger.kernel.org>; Tue,  9 Aug 2022 08:46:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660034775;
+        bh=OTZ8/JwjQqwzyMYwa7jslxXAyseBM4QxNjPCRrabTEI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Vb92JwLlt1xTfLseeoADrsjl+oEaA5z4b8xjx7GyGbGfIC5b4sCG817lu/SkTUcRi
+         6Q3nfKffyOg1J/qUvrWHCqKtkCXUW6GyO9reyDfSWJ+pxgI1nKmhWGvy8buR2YczNU
+         Vn6savZpqrcm1RP+srllVZZSGnbNmOmvEvYmze7iMsDtWnGju6sMdPODY5Xcz69bU4
+         HQrBUYOPR3tH6eEzO8n8I/sPsehmgVm7i6TTQDZdT0p8W+lgNKmbL+18A+tOXjo1VN
+         WOZ027EAda+FWrWESQ8fg9V4F6jitLbySRwZfeFFVgWIP3uWclmS405fOEeKUY6/Dg
+         Iqho+G4HpGcHg==
+Received: by mail-wr1-f45.google.com with SMTP id z12so13515797wrs.9
+        for <linux-efi@vger.kernel.org>; Tue, 09 Aug 2022 01:46:14 -0700 (PDT)
+X-Gm-Message-State: ACgBeo0k0ww9O1tkclDbWq3RR8wso4C8m9GNVKQiePl+d5EXeE71OTK2
+        fW7yQcyKtLFH2llLeTlE4l6FbuTFVvvQhf0hqW8=
+X-Google-Smtp-Source: AA6agR5ZkEb0RAyVdP+oMDvO3PQoZBaTZheBMd/goKRNO2Q+cqqDfFPm1KwcdhAyN1yWG17ppp+cOTQHE3I4AB/3utU=
+X-Received: by 2002:a05:6000:186f:b0:222:c091:9c59 with SMTP id
+ d15-20020a056000186f00b00222c0919c59mr8272802wri.78.1660034773199; Tue, 09
+ Aug 2022 01:46:13 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.0
-Subject: Re: [PATCH v2 1/6] efi: stub: add some missing boot service
- prototypes
-Content-Language: en-US
-To:     Ard Biesheuvel <ardb@kernel.org>
+References: <20220809080944.1119654-1-ardb@kernel.org> <28a84915-7fa0-7691-08e7-69db792979c7@canonical.com>
+In-Reply-To: <28a84915-7fa0-7691-08e7-69db792979c7@canonical.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 9 Aug 2022 10:46:02 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHLw419xpULVP5wZUW0fnAz0ovJ+RmkFFdDGtUmNM2wSQ@mail.gmail.com>
+Message-ID: <CAMj1kXHLw419xpULVP5wZUW0fnAz0ovJ+RmkFFdDGtUmNM2wSQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] efi: implement generic compressed boot support
+To:     Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
 Cc:     catalin.marinas@arm.com, will@kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
         Matthew Garrett <mjg59@srcf.ucam.org>,
         Peter Jones <pjones@redhat.com>,
         Ilias Apalodimas <ilias.apalodimas@linaro.org>,
@@ -78,63 +60,96 @@ Cc:     catalin.marinas@arm.com, will@kernel.org,
         Huacai Chen <chenhuacai@loongson.cn>,
         Lennart Poettering <lennart@poettering.net>,
         linux-efi@vger.kernel.org
-References: <20220809080944.1119654-1-ardb@kernel.org>
- <20220809080944.1119654-2-ardb@kernel.org>
-From:   Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-In-Reply-To: <20220809080944.1119654-2-ardb@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 8/9/22 10:09, Ard Biesheuvel wrote:
-> Define the correct prototypes for the load_image/start_image and
-> install_multiple_protocol_interfaces boot service pointers so we can
-> call them from the EFI zboot code.
-> 
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+On Tue, 9 Aug 2022 at 10:38, Heinrich Schuchardt
+<heinrich.schuchardt@canonical.com> wrote:
+>
+> On 8/9/22 10:09, Ard Biesheuvel wrote:
+> > Relatively modern architectures such as arm64 or RISC-V don't implement
+> > a self-decompressing kernel, and leave it up to the bootloader to
+> > decompress the compressed image before executing it. For bare metal
+> > boot, this policy makes sense, as a self-decompressing image essentially
+> > duplicates a lot of fiddly preparation work to create a 1:1 mapping and
+> > set up the C runtime, and to discover or infer where DRAM lives from
+> > device trees or other firmware tables.
+> >
+> > For EFI boot, the situation is a bit different: the EFI entrypoint is
+> > called with a 1:1 cached mapping covering all of DRAM already active,
+> > and with a stack, a heap, a memory map and boot services to load and
+> > start images. This means it is rather trivial to implement a
+> > self-decompressing wrapper for EFI boot in a generic manner, and reuse
+> > it across architectures that implement EFI boot.
+> >
+> > The only slight downside is that when UEFI secure boot is enabled, the
+> > generic LoadImage/StartImage only allow signed images to be loaded and
+> > started, and we prefer to avoid the need to sign both the inner and
+> > outer PE/COFF images. This series adopts the EFI shim approach, i.e., to
+> > override an internal UEFI/PI protocol that is used by the image loader,
+> > to allow the inner image to be booted after decompression. This has been
+>
+> We should avoid requiring anything that is not in the UEFI
+> specification. If you have any additional requirements, please, create a
+> change request for the UEFI specification.
+>
 
-Reviewed-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+As I have explained numerous times before, the EFI spec was intended
+to be extensible (hence the 'E'). The ACPI, SMBIOS and TCG specs all
+augment the EFI specification by defining protocols, GUIDs and other
+things that are only relevant in a EFI context, but none of those are
+covered by the EFI spec itself.
 
-> ---
->   drivers/firmware/efi/libstub/efistub.h | 12 ++++++++----
->   1 file changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-> index ab9e990447d3..33215d7bd276 100644
-> --- a/drivers/firmware/efi/libstub/efistub.h
-> +++ b/drivers/firmware/efi/libstub/efistub.h
-> @@ -254,8 +254,12 @@ union efi_boot_services {
->   							    efi_handle_t *);
->   		efi_status_t (__efiapi *install_configuration_table)(efi_guid_t *,
->   								     void *);
-> -		void *load_image;
-> -		void *start_image;
-> +		efi_status_t (__efiapi *load_image)(bool, efi_handle_t,
-> +						    efi_device_path_protocol_t *,
-> +						    void *, unsigned long,
-> +						    efi_handle_t *);
-> +		efi_status_t (__efiapi *start_image)(efi_handle_t, unsigned long *,
-> +						     efi_char16_t **);
->   		efi_status_t __noreturn (__efiapi *exit)(efi_handle_t,
->   							 efi_status_t,
->   							 unsigned long,
-> @@ -277,8 +281,8 @@ union efi_boot_services {
->   		void *locate_handle_buffer;
->   		efi_status_t (__efiapi *locate_protocol)(efi_guid_t *, void *,
->   							 void **);
-> -		void *install_multiple_protocol_interfaces;
-> -		void *uninstall_multiple_protocol_interfaces;
-> +		efi_status_t (__efiapi *install_multiple_protocol_interfaces)(efi_handle_t *, ...);
-> +		efi_status_t (__efiapi *uninstall_multiple_protocol_interfaces)(efi_handle_t, ...);
->   		void *calculate_crc32;
->   		void *copy_mem;
->   		void *set_mem;
+> Overriding the services of the system table is dangerous and should be
+> avoided.
+>
 
+Agreed. But this is not what is happening here.
+
+> There is no need for two UEFI binaries one inside the other and we
+> should avoid such overengineering.
+>
+
+I disagree. Using an EFI app to encapsulate another one is the only
+generic way to go about this, as far as I can tell.
+
+> Today we append an uncompressed kernel to the EFI stub. The stub
+> relocates it, sets up the memory map and calls it entry point.
+>
+
+Not exactly. On arm64 as well as RISC-V, the EFI stub and the kernel
+proper are essentially the same executable image.
+
+> Just add decompressor code to the EFI stub and instead of appending an
+> uncompressed kernel append a compressed one. Then sign a binary
+> consisting of the EFI stub and the compressed kernel.
+>
+
+Yes, this would be a cleaner approach, although it would require more
+re-engineering of the EFI stub, in particular, it would require
+cloning more code, and adding additional build and link steps.
+
+> This way you don't need any change to UEFI firmware at all and you don't
+> need to override UEFI services.
+>
+> Another reasonable approach would be to zip the signed UEFI binary (EFI
+> stub with uncompressed kernel) and let the UEFI firmware unzip it and
+> check the signature of the decompressed UEFI binary. This would not
+> require any patch in Linux at all and would be simple to implement in
+> U-Boot.
+>
+
+This is how it works today. One problem with this is that the image
+needs to be decompressed in order to sign it, or verify its signature.
+In general, having compression at the outside like this is fiddly
+because it is no longer a PE/COFF image, and the EFI spec only reasons
+about PE/COFF images as executable images. So we'd need to change the
+UEFI spec or the PE/COFF spec.
