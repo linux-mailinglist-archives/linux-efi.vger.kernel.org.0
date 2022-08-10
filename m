@@ -2,74 +2,64 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3007158EC5A
-	for <lists+linux-efi@lfdr.de>; Wed, 10 Aug 2022 14:54:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA04D58EE61
+	for <lists+linux-efi@lfdr.de>; Wed, 10 Aug 2022 16:32:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230506AbiHJMyt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 10 Aug 2022 08:54:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48430 "EHLO
+        id S232480AbiHJOca (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 10 Aug 2022 10:32:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229611AbiHJMyk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 10 Aug 2022 08:54:40 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A096483F3D;
-        Wed, 10 Aug 2022 05:54:39 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5330DB81C67;
-        Wed, 10 Aug 2022 12:54:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F2DC433D6;
-        Wed, 10 Aug 2022 12:54:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1660136077;
-        bh=uPLuF+DDW04LT9gSOZbFu31bMHZHY7AuwxnDEymETPY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UNkY0zZ/dvbVjljh7EO1ErSs2YeEMilfLO5c7AcIqM6C1wcyaDC45s2CAW4+v+5bm
-         aSZTtEljP0xweM/nDWXYsXgAGq/7xNaMyvKwesvewAHqmg1qJ58a7fWwmZ2C2n+tlo
-         KD8eRKVStYwt20VObVfv4seCARLA42wybbg5rK9E=
-Date:   Wed, 10 Aug 2022 14:54:34 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc:     Evan Green <evgreen@chromium.org>, linux-efi@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
+        with ESMTP id S232601AbiHJOcK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 10 Aug 2022 10:32:10 -0400
+X-Greylist: delayed 512 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 10 Aug 2022 07:32:07 PDT
+Received: from outbound-smtp12.blacknight.com (outbound-smtp12.blacknight.com [46.22.139.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE2042A731
+        for <linux-efi@vger.kernel.org>; Wed, 10 Aug 2022 07:32:07 -0700 (PDT)
+Received: from mail.blacknight.com (pemlinmail04.blacknight.ie [81.17.254.17])
+        by outbound-smtp12.blacknight.com (Postfix) with ESMTPS id 168931C4250
+        for <linux-efi@vger.kernel.org>; Wed, 10 Aug 2022 15:23:33 +0100 (IST)
+Received: (qmail 10887 invoked from network); 10 Aug 2022 14:23:32 -0000
+Received: from unknown (HELO techsingularity.net) (mgorman@techsingularity.net@[84.203.198.246])
+  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 10 Aug 2022 14:23:32 -0000
+Date:   Wed, 10 Aug 2022 15:19:59 +0100
+From:   Mel Gorman <mgorman@techsingularity.net>
+To:     Vlastimil Babka <vbabka@suse.cz>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>, bhe@redhat.com,
-        Petr Mladek <pmladek@suse.com>, kexec@lists.infradead.org,
-        linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-        x86@kernel.org, kernel-dev@igalia.com, kernel@gpiccoli.net,
-        halves@canonical.com, fabiomirmar@gmail.com,
-        alejandro.j.jimenez@oracle.com,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
-        Jonathan Corbet <corbet@lwn.net>, d.hatayama@jp.fujitsu.com,
-        dave.hansen@linux.intel.com, dyoung@redhat.com,
-        feng.tang@intel.com, mikelley@microsoft.com,
-        hidehiro.kawai.ez@hitachi.com, jgross@suse.com,
-        john.ogness@linutronix.de, Kees Cook <keescook@chromium.org>,
-        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
-        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
-        senozhatsky@chromium.org, Alan Stern <stern@rowland.harvard.edu>,
-        Thomas Gleixner <tglx@linutronix.de>, vgoyal@redhat.com,
-        vkuznets@redhat.com, Will Deacon <will@kernel.org>,
-        David Gow <davidgow@google.com>,
-        Julius Werner <jwerner@chromium.org>
-Subject: Re: [PATCH v2 03/13] firmware: google: Test spinlock on panic path
- to avoid lockups
-Message-ID: <YvOqimNnybaCDDBm@kroah.com>
-References: <20220719195325.402745-1-gpiccoli@igalia.com>
- <20220719195325.402745-4-gpiccoli@igalia.com>
- <CAE=gft71vH+P3iAFXC0bLu0M2x2V4uJGWc82Xa+246ECuUdT-w@mail.gmail.com>
- <019ae735-3d69-cb4e-c003-b83cc8cd76f8@igalia.com>
- <YvErMyM8FNjeDeiW@kroah.com>
- <55a074a0-ca3a-8afc-4336-e40cff757394@igalia.com>
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
+        khalid.elmously@canonical.com, philip.cox@canonical.com,
+        x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
+Message-ID: <20220810141959.ictqchz7josyd7pt@techsingularity.net>
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-3-kirill.shutemov@linux.intel.com>
+ <8cf143e7-2b62-1a1e-de84-e3dcc6c027a4@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-15
 Content-Disposition: inline
-In-Reply-To: <55a074a0-ca3a-8afc-4336-e40cff757394@igalia.com>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <8cf143e7-2b62-1a1e-de84-e3dcc6c027a4@suse.cz>
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,27 +67,114 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Aug 08, 2022 at 12:37:46PM -0300, Guilherme G. Piccoli wrote:
-> Let me clarify / ask something: this series, for example, is composed as
-> a bunch of patches "centered" around the same idea, panic notifiers
-> improvements/fixes. But its patches belong to completely different
-> subsystems, like EFI/misc, architectures (alpha, parisc, arm), core
-> kernel code, etc.
+On Fri, Aug 05, 2022 at 01:49:41PM +0200, Vlastimil Babka wrote:
+> On 6/14/22 14:02, Kirill A. Shutemov wrote:
+> > UEFI Specification version 2.9 introduces the concept of memory
+> > acceptance. Some Virtual Machine platforms, such as Intel TDX or AMD
+> > SEV-SNP, require memory to be accepted before it can be used by the
+> > guest. Accepting happens via a protocol specific to the Virtual Machine
+> > platform.
+> > 
+> > There are several ways kernel can deal with unaccepted memory:
+> > 
+> >  1. Accept all the memory during the boot. It is easy to implement and
+> >     it doesn't have runtime cost once the system is booted. The downside
+> >     is very long boot time.
+> > 
+> >     Accept can be parallelized to multiple CPUs to keep it manageable
+> >     (i.e. via DEFERRED_STRUCT_PAGE_INIT), but it tends to saturate
+> >     memory bandwidth and does not scale beyond the point.
+> > 
+> >  2. Accept a block of memory on the first use. It requires more
+> >     infrastructure and changes in page allocator to make it work, but
+> >     it provides good boot time.
+> > 
+> >     On-demand memory accept means latency spikes every time kernel steps
+> >     onto a new memory block. The spikes will go away once workload data
+> >     set size gets stabilized or all memory gets accepted.
+> > 
+> >  3. Accept all memory in background. Introduce a thread (or multiple)
+> >     that gets memory accepted proactively. It will minimize time the
+> >     system experience latency spikes on memory allocation while keeping
+> >     low boot time.
+> > 
+> >     This approach cannot function on its own. It is an extension of #2:
+> >     background memory acceptance requires functional scheduler, but the
+> >     page allocator may need to tap into unaccepted memory before that.
+> > 
+> >     The downside of the approach is that these threads also steal CPU
+> >     cycles and memory bandwidth from the user's workload and may hurt
+> >     user experience.
+> > 
+> > Implement #2 for now. It is a reasonable default. Some workloads may
+> > want to use #1 or #3 and they can be implemented later based on user's
+> > demands.
+> > 
+> > Support of unaccepted memory requires a few changes in core-mm code:
+> > 
+> >   - memblock has to accept memory on allocation;
+> > 
+> >   - page allocator has to accept memory on the first allocation of the
+> >     page;
+> > 
+> > Memblock change is trivial.
+> > 
+> > The page allocator is modified to accept pages on the first allocation.
+> > The new page type (encoded in the _mapcount) -- PageUnaccepted() -- is
+> > used to indicate that the page requires acceptance.
+> > 
+> > Architecture has to provide two helpers if it wants to support
+> > unaccepted memory:
+> > 
+> >  - accept_memory() makes a range of physical addresses accepted.
+> > 
+> >  - range_contains_unaccepted_memory() checks anything within the range
+> >    of physical addresses requires acceptance.
+> > 
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > Acked-by: Mike Rapoport <rppt@linux.ibm.com>	# memblock
+> > Reviewed-by: David Hildenbrand <david@redhat.com>
 > 
-> What is the best way of getting this merged?
-> (a) Re-send individual patches with the respective Review/ACK tags to
-> the proper subsystem, or;
+> Hmm I realize it's not ideal to raise this at v7, and maybe it was discussed
+> before, but it's really not great how this affects the core page allocator
+> paths. Wouldn't it be possible to only release pages to page allocator when
+> accepted, and otherwise use some new per-zone variables together with the
+> bitmap to track how much exactly is where to accept? Then it could be hooked
+> in get_page_from_freelist() similarly to CONFIG_DEFERRED_STRUCT_PAGE_INIT -
+> if we fail zone_watermark_fast() and there are unaccepted pages in the zone,
+> accept them and continue. With a static key to flip in case we eventually
+> accept everything. Because this is really similar scenario to the deferred
+> init and that one was solved in a way that adds minimal overhead.
+> 
 
-Yes.
+I think it might be more straight-forward to always accept pages in the
+size of the pageblock. Smaller ranges should matter because they have been
+accepted in deferred_free_range. In expand, if PageUnaccepted is set on
+a pageblock-sized page, take it off the list, drop the zone->lock leaving
+IRQs disabled, accept the memory and reacquire the lock to split the page
+into the required order.
 
-> (b) Wait until the whole series is ACKed/Reviewed, and a single
-> maintainer (like you or Andrew, for example) would pick the whole series
-> and apply at once, even if it spans across multiple parts of the kernel?
+IRQs being left disabled is unfortunate but even if the acceptance is slow,
+it's presumably not so slow to cause major problems. This would would reduce
+and probably eliminate the need to do the assert check in accept_page. It
+might also simplify __free_one_page if it's known that a pageblock range
+of pages are either all accepted or unaccepted.
 
-No, only do this after a kernel release cycle happens and there are
-straggler patches that did not get picked up by the relevant subsystem
-maintainers.
+Lastly, the default behaviour should probably be "accept all memory at
+boot" and use Kconfig to allow acceptable be deferred or overridden by
+command line. There are at least two reasons for this. Even though this
+is a virtual machine, there still may be latency sensitive applications
+running early in boot using pinned vcpu->pcpu and no memory overcommit.
+The unpredictable performance of the application early in boot may be
+unacceptable and unavoidable. It might take a long time but it could
+eventually generate bug reports about "unpredictable performance early
+in boot" that will be hard to track down unless accept_memory is observed
+using perf at the right time. Even when that does happen, there will need
+to be an option to turn it off if the unpredictable performance cannot
+be tolerated. Second, any benchmarking done early in boot is likely to
+be disrupted making the series a potential bisection magnet that masks a
+performance bug elsewhere in the merge window.
 
-thanks,
-
-greg k-h
+-- 
+Mel Gorman
+SUSE Labs
