@@ -2,44 +2,44 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78A9F591BD9
-	for <lists+linux-efi@lfdr.de>; Sat, 13 Aug 2022 18:03:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3148591BE1
+	for <lists+linux-efi@lfdr.de>; Sat, 13 Aug 2022 18:05:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239699AbiHMQDl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 13 Aug 2022 12:03:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48430 "EHLO
+        id S239928AbiHMQF2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 13 Aug 2022 12:05:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235696AbiHMQDl (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 13 Aug 2022 12:03:41 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42A56BE20
-        for <linux-efi@vger.kernel.org>; Sat, 13 Aug 2022 09:03:40 -0700 (PDT)
+        with ESMTP id S235696AbiHMQF1 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 13 Aug 2022 12:05:27 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84361BE35
+        for <linux-efi@vger.kernel.org>; Sat, 13 Aug 2022 09:05:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DEB81B80688
-        for <linux-efi@vger.kernel.org>; Sat, 13 Aug 2022 16:03:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965EBC433D6;
-        Sat, 13 Aug 2022 16:03:36 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 42835B806A0
+        for <linux-efi@vger.kernel.org>; Sat, 13 Aug 2022 16:05:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF93BC433D6;
+        Sat, 13 Aug 2022 16:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660406617;
-        bh=8AKntuXc65i1saqB877W3R6RYDsPiOzfHdOG82gubqU=;
+        s=k20201202; t=1660406723;
+        bh=3g9RQwus4TjJnSLEmDO7GO8w4lhwGY5MWBNfeGUrI14=;
         h=In-Reply-To:References:Date:From:To:Cc:Subject:From;
-        b=PhTckigvrk6wORM1yefMuhw4OzzCT5g0MqPXfKBkB8Ikh82SWyxGormHL2RVr4qaa
-         5RaurmRXRFFSNRxF4WZl0vecbOzuu815Ii4L3Bvj5VRZN4Padu85IFiJaSZXzV/uTj
-         bkAC3PraOdUJ3Rn3lWl+DmWbtt/fAEPmj9x3xH7d31AtXJtDZVyoZ4C0UWM/ti7blF
-         TQ+CDO8qaPlwRFWZqW7TEIkNT01056UTuWfVNyCayV1STzUhrHZQLNS71p3Bjx7s8E
-         9q/siV67O39uPnKXtapHZ4pyNVn6akegu/zvDkxPnOshvvzsDsIMA0bws64+k+llO5
-         jijaAWyfZbLmw==
+        b=bR3utfteio3+HXiiA5b9ZVNOesXk99inIzLdtSS3Fbr4O2vhnqjAKFXnIUNKErZU1
+         AXlqTpnV+qv86BuGxlLt8Uswr1e9UsMcDl/tWW7lYBmIEThfMUqBYA/vB9H0GEoZlF
+         /gKQdhBaqegWs78Sn/gdnhx1jwE+1BhLHOQhhRpfpE3L52xy6RRYPfC2Cv8tp7XBo0
+         e+5Eugq7TqDz4Z68+k6mXXnc8WDhTS7WOAWrP2Rm43CtwGTrNLZPQEwR1DcChwNm65
+         JXptI7Xq2yutap0/sMdFhWOD4woGK/ikcOLQmk3yZi2hqSFKwUGc8ZSJWj3Lv/zBTu
+         PdllclRHsw4nQ==
 Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 6EC2127C0054;
-        Sat, 13 Aug 2022 12:03:35 -0400 (EDT)
+        by mailauth.nyi.internal (Postfix) with ESMTP id CB83A27C005A;
+        Sat, 13 Aug 2022 12:05:20 -0400 (EDT)
 Received: from imap48 ([10.202.2.98])
-  by compute2.internal (MEProxy); Sat, 13 Aug 2022 12:03:35 -0400
-X-ME-Sender: <xms:Vcv3YsmErhiITZcZb1ewvRfGp8WKYVpcCSXPLaOoZqAoZDRI6hMUnw>
-    <xme:Vcv3Yr073Ux4YxlVXeReMUjlfVHbyjJTg9gzfkEI1_SSyoaJvzwU0N9J0zq5_ZmVj
-    MW4wzlFK57Q5lD522Y>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdegkedgleekucetufdoteggodetrfdotf
+  by compute2.internal (MEProxy); Sat, 13 Aug 2022 12:05:20 -0400
+X-ME-Sender: <xms:wMv3Yh1znTFOlpPKRQXsFsX0gbQh_RkV1b-kLRRUvVbQr6AlAq5IZg>
+    <xme:wMv3YoEtKCJ70L7KpOgNKT50af-yNGCo_PVCuFAj12suYKJQAwAkBuljC7VTuIEzF
+    kQmiuOZeIU9t3CL7eI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdegkedgleelucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
     cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
@@ -49,27 +49,28 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdegkedgleekucetufdoteggod
     hrohhmpegrnhguhidomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudduiedu
     keehieefvddqvdeifeduieeitdekqdhluhhtoheppehkvghrnhgvlhdrohhrgheslhhinh
     hugidrlhhuthhordhush
-X-ME-Proxy: <xmx:Vcv3YqqVem25JP1OVJnbkzhneXfFS9Q6S16Buho6LI7VhRipN9G56Q>
-    <xmx:Vcv3YonhQ2lB9dIGV-tpxJr6DPp91xlTAaOrQF7DCczlz-fILodArA>
-    <xmx:Vcv3Yq3hF8NrHj1hB7NM97Hzs6hqRPFCqxfri8C8NapB8tV7HSaWqg>
-    <xmx:V8v3YuKfQi2x3medjAB6zQWBJAqajbP7rJJnRCJw1sUHKgQR5oCasw>
+X-ME-Proxy: <xmx:wMv3Yh6eSWyZepVnU6ZzOhKtIyjlm-JuAUVTDDVDEu_7tABQEHiFSw>
+    <xmx:wMv3Yu2y8kvttoCDlkJouXGwn-w1WnxG7XgU-_L1RcKirCbjUpMlEg>
+    <xmx:wMv3YkHh1hdCZdkLL1eKipSaJXM7F4eDCgJN2rSatQqYJbtbpw2cZQ>
+    <xmx:wMv3Ynb5fDEj8dsYNQuRpGtjpogyHyKlFlRkH267crqDACrgSGeToQ>
 Feedback-ID: ieff94742:Fastmail
 Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id BB8CF31A0062; Sat, 13 Aug 2022 12:03:33 -0400 (EDT)
+        id 1B36831A0063; Sat, 13 Aug 2022 12:05:20 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 User-Agent: Cyrus-JMAP/3.7.0-alpha0-841-g7899e99a45-fm-20220811.002-g7899e99a
 Mime-Version: 1.0
-Message-Id: <453fb432-ac13-4819-8395-95561bca948b@www.fastmail.com>
-In-Reply-To: <20220809113827.fchtnyzy44z5fuis@box.shutemov.name>
+Message-Id: <f2cf11d3-c2f8-4add-ab58-19a4844be361@www.fastmail.com>
+In-Reply-To: <073c5a97-272c-c5a0-19f2-c3f14f916c72@intel.com>
 References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
  <20220614120231.48165-11-kirill.shutemov@linux.intel.com>
- <7cec93c5-3db4-409b-8c1e-bc1f10dd68fc@www.fastmail.com>
- <20220809113827.fchtnyzy44z5fuis@box.shutemov.name>
-Date:   Sat, 13 Aug 2022 09:03:13 -0700
+ <Yt/ANO5usdV+JSSW@zn.tnic> <80cc204b-a24f-684f-ec66-1361b69cae39@intel.com>
+ <073c5a97-272c-c5a0-19f2-c3f14f916c72@intel.com>
+Date:   Sat, 13 Aug 2022 09:04:58 -0700
 From:   "Andy Lutomirski" <luto@kernel.org>
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     "Borislav Petkov" <bp@alien8.de>,
-        "Sean Christopherson" <seanjc@google.com>,
+To:     "Dave Hansen" <dave.hansen@intel.com>,
+        "Borislav Petkov" <bp@alien8.de>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc:     "Sean Christopherson" <seanjc@google.com>,
         "Andrew Morton" <akpm@linux-foundation.org>,
         "Joerg Roedel" <jroedel@suse.de>,
         "Ard Biesheuvel" <ardb@kernel.org>,
@@ -85,7 +86,6 @@ Cc:     "Borislav Petkov" <bp@alien8.de>,
         "Ingo Molnar" <mingo@redhat.com>,
         "Varad Gautam" <varad.gautam@suse.com>,
         "Dario Faggioli" <dfaggioli@suse.com>,
-        "Dave Hansen" <dave.hansen@intel.com>,
         "Mike Rapoport" <rppt@kernel.org>,
         "David Hildenbrand" <david@redhat.com>,
         "Marcelo Henrique Cerri" <marcelo.cerri@canonical.com>,
@@ -110,55 +110,50 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 
 
-On Tue, Aug 9, 2022, at 4:38 AM, Kirill A. Shutemov wrote:
-> On Tue, Jul 26, 2022 at 01:17:13PM -0700, Andy Lutomirski wrote:
+On Wed, Aug 3, 2022, at 7:02 AM, Dave Hansen wrote:
+> On 8/2/22 16:46, Dave Hansen wrote:
+>> To sum it all up, I'm not happy with the complexity of the page
+>> acceptance code either but I'm not sure that it's bad tradeoff compar=
+ed
+>> to greater #VE complexity or fragility.
 >>=20
->>=20
->> On Tue, Jun 14, 2022, at 5:02 AM, Kirill A. Shutemov wrote:
->> > load_unaligned_zeropad() can lead to unwanted loads across page bou=
-ndaries.
->> > The unwanted loads are typically harmless. But, they might be made =
-to
->> > totally unrelated or even unmapped memory. load_unaligned_zeropad()
->> > relies on exception fixup (#PF, #GP and now #VE) to recover from th=
-ese
->> > unwanted loads.
->> >
->> > But, this approach does not work for unaccepted memory. For TDX, a =
-load
->> > from unaccepted memory will not lead to a recoverable exception wit=
-hin
->> > the guest. The guest will exit to the VMM where the only recourse i=
-s to
->> > terminate the guest.
->>=20
->> Why is unaccepted memory marked present in the direct map in the firs=
-t place?
->>=20
->> Having kernel code assume that every valid address is followed by
->> several bytes of memory that may be read without side effects other t=
-han
->> #PF also seems like a mistake, but I probably won=E2=80=99t win that =
-fight. But
->> sticking guard pages in front of definitely-not-logically present pag=
-es
->> seems silly to me.  Let=E2=80=99s just not map it.
+>> Does anyone think we should go back and really reconsider this?
 >
-> It would mean no 1G pages in direct mapping for TDX as we accept 2M a
-> time.
+> One other thing I remembered as I re-read my write up on this.
 >
->> (What if MMIO memory is mapped next to regular memory?  Doing random
->> unaligned reads that cross into MMIO seems unwise.)
+> In the "new" mode, guests never get #VE's for unaccepted memory.  They
+> just exit to the host and can never be reentered.  They must be killed.
 >
-> MMIO is shared, not unaccpted private. We already handle the situation.
-> See 1e7769653b06 ("x86/tdx: Handle load_unaligned_zeropad() page-cross=
- to
-> a shared page").
+> In the "old" mode, I _believe_ that the guest always gets a #VE for
+> non-EPT-present memory.  The #VE is basically the same no matter if the
+> page is unaccepted or if the host goes out and makes a
+> previously-accepted page non-present.
 >
+> One really nasty implication of this "old" mode is that the host can
+> remove *accepted* pages that are used in the syscall gap.  That means
+> that the #VE handler would need to be of the paranoid variety which
+> opens up all kinds of other fun.
+>
+>  * "Old" - #VE's can happen in the syscall gap
+>  * "New" - #VE's happen at better-defined times.  Unexpected ones are
+>    fatal.
+>
+> There's a third option which I proposed but doesn't yet exist.  The TDX
+> module _could_ separate the behavior of unaccepted memory #VE's and
+> host-induced #VEs.  This way, we could use load_unaligned_zeropad() wi=
+th
+> impunity and handle it in the #VE handler.  At the same time, the host
+> would not be allowed to remove accepted memory and cause problems in t=
+he
+> syscall gap.  Kinda the best of both worlds.
+>
+> But, I'm not sure how valuable that would be now that we have the
+> (admittedly squirrelly) code to avoid load_unaligned_zeropad() #VE's.
 
-I don=E2=80=99t mean in a confidential guest =E2=80=94 I mean generally.=
- This whole model of =E2=80=9Coverrun the buffer =E2=80=94 no big deal=E2=
-=80=9D is just fragile.
+How would that be implemented?  It would need to track which GPAs *were*=
+ accepted across a host-induced unmap/remap cycle. This would involve pr=
+eventing the host from ever completely removing a secure EPT table witho=
+ut the guest=E2=80=99s help, right?
 
-> --=20
->   Kiryl Shutsemau / Kirill A. Shutemov
+Admittedly this would IMO be better behavior. Is it practical to impleme=
+nt?
