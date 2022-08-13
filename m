@@ -2,52 +2,52 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA5EB591CA2
-	for <lists+linux-efi@lfdr.de>; Sat, 13 Aug 2022 22:55:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00D81591CA4
+	for <lists+linux-efi@lfdr.de>; Sat, 13 Aug 2022 22:59:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240204AbiHMUzV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 13 Aug 2022 16:55:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56640 "EHLO
+        id S240276AbiHMU7Q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 13 Aug 2022 16:59:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240199AbiHMUzT (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 13 Aug 2022 16:55:19 -0400
+        with ESMTP id S240280AbiHMU7P (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 13 Aug 2022 16:59:15 -0400
 Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 009A010F0;
-        Sat, 13 Aug 2022 13:55:17 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.nyi.internal (Postfix) with ESMTP id A927F5C0055;
-        Sat, 13 Aug 2022 16:55:14 -0400 (EDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE8E110FDE;
+        Sat, 13 Aug 2022 13:59:13 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id 2B8695C0107;
+        Sat, 13 Aug 2022 16:59:13 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Sat, 13 Aug 2022 16:55:14 -0400
+  by compute2.internal (MEProxy); Sat, 13 Aug 2022 16:59:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
          h=cc:cc:content-transfer-encoding:content-type:date:date:from
         :from:in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm2; t=1660424114; x=
-        1660510514; bh=WBtXdFNwOXpOa6UfovUW6zsllC8njQzZuj2bCxqBaEM=; b=I
-        1K4U+AGqp/MMbwesWBM9vBj8wAOP3vmcIDtL3xl52a63UjnUpGsuQpWPbgMPQY7m
-        HGsZkYYdaPB9wcZ7qf9fyEctX5KspAm+ZYDxEkQKg5unYGKjTTqLwFSyha8/a8z2
-        jSjxJD9RYLt7x1oiHcLAhPT+Mu5Nb8/VZ3kzFfEVKmr6d0Idbd1xdGA9YQJiKy/+
-        a4tuy+2RzGYBFkrljcCzw60H1t2yI033463Mbua6iGGys5CGQwRjOwanqYUrTRrB
-        yqnR209KUbusnRoa06wdE4uImR6H/byf+gp5kznfgrEn3sP+28xksln+ot8rjMHR
-        QFJ4vRj1m/EDMSjWpX/Nw==
+        :reply-to:sender:subject:subject:to:to; s=fm2; t=1660424353; x=
+        1660510753; bh=8ehvrQN0pYNFeadixhtX5cZ4eBy7Bgjn0JWqP+l7wXQ=; b=g
+        FDwk5/6lXnt8IgUJBQ5h3ul+WnJaUqC6rkxWEvv2tFpia49i71CkydK1KyQRQDD7
+        tFdrCBX0nFbwO2ac4cjfh58oN2SyUIGUMGewk4oGA6t/spNXjma8R8AeTilZ/FHM
+        fIgHoqm4Gt4ACoZNrK99W/TOU2JbDMMyEABj3iMQpk7j3PqAWbzpv0eMpauS9Wyq
+        GCMy+rz4NDG4A/Oc+xvm16J1c/v1AfGcc072nSHEtXA3byTtikqFjdymuQ2hsbQ5
+        jqtzU0gweDS4Qtxkm0L//zUvrve55VVROdC/j1E4W68G30B8k3OXFu5+Pt+qEdsZ
+        Q3z7tOhGVFvkcIbpcR93A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         messagingengine.com; h=cc:cc:content-transfer-encoding
         :content-type:date:date:feedback-id:feedback-id:from:from
         :in-reply-to:in-reply-to:message-id:mime-version:references
         :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1660424114; x=
-        1660510514; bh=WBtXdFNwOXpOa6UfovUW6zsllC8njQzZuj2bCxqBaEM=; b=q
-        0vzkHqvTCDkp3HiSnaEixVQzmYsa+ilbD31vvOVioD02JNu9/tBFSiA5/mx6Qbnr
-        yXyM1jdC79dIlt3QY+ZLlJcVOkF+0nUi3NTciKZSvrkNdQkndYfLS9sFWVdlcI/K
-        p9hiUmqyc0JgK8HMWWWUes+q0siITM0CykdtB5sY1t7UzY3yYXNPeB53ksAbGVwl
-        5ZKxsy4j4kB8MjavDFxYa3IhBl++VAfKwuBTqXfigQrhLYlrDBZKj+ymwATl1aoL
-        Qf5LINu4bbbzzmzgpD49fx/ZKRAfKjoa2ZrqttLgeAmr3ygtjpg0emI6QdPbgPN2
-        tVqjabZIx4SzUq0MgwtXQ==
-X-ME-Sender: <xms:sA_4Yv-k82_jEtSKZ-I1Im3Q_O3F1V6URf834z-3PyX9M3o2xx7lrw>
-    <xme:sA_4Yrt2BBZhsxsKAjBo-lA9ntOcovCaa5W1JE9dL6QiuU5XhLHjJBVi0kjkf9aNz
-    wRGZB0ocZBzXn70f9E>
-X-ME-Received: <xmr:sA_4YtDnVvic2B5fPb5NdqujLy3K8jB7Su2UkqQm5yNzgBkC4q1wnNzPbU6mcHC0EIZpKQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdegkedgudehjecutefuodetggdotefrod
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1660424353; x=
+        1660510753; bh=8ehvrQN0pYNFeadixhtX5cZ4eBy7Bgjn0JWqP+l7wXQ=; b=k
+        /y/rtfU1c0w9XkXRQQ2h9nUAvJe3+XoGwPui0wznHuh3MWeSsxNaVmbxLt2g0gxV
+        qn3QGn7HklA3lTPFu8x3xaYDrikQa0uRzhUeLf7s5hIQzoIIz1vGgDEImDzla7mY
+        6atxbGqUfzrAygK5+7BV3wRE3WAYToZQOKhu/ELdLOImaD7n+8ENYA+jAJhH93RI
+        S5p6R5s6r2281WnD4UBdQifTLvMWmZ/foovmWYg2ozAljvmjCPtaKlmObWsbINsK
+        v2jq9v6zXlOA7ScMETizfN/1Pa932O56p+yYYZFLFXIOnRzxz8RSh/bzRKgEA0cR
+        Hx0SAxmFUKXMUK+swjv2g==
+X-ME-Sender: <xms:oBD4YmbnHUcZ05Fi9g_fQdBsukxw9Muj_clN-RMEnLChGabXHdPlUQ>
+    <xme:oBD4YpZGnzMyawcBJLvkEsO8A24ig_OeA2CH6AfFrL2zh33VLTm1VJlJN9EV9S1KE
+    zHMNOC03XRO7bmhVSM>
+X-ME-Received: <xmr:oBD4Yg8q5DF9DL90EBCefi43RXaJ7690L3gICRGUi1VpbkII-RtTLM_QkDxqOrpCYMqiqg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdegkedgudehkecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
     necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
     enucfjughrpeffhffvvefukfhfgggtugfgjgesthektddttddtjeenucfhrhhomhepfdfm
@@ -55,21 +55,20 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdegkedgudehjecutefuodetgg
     drnhgrmhgvqeenucggtffrrghtthgvrhhnpefgjeeikefffeefvedugfdtkedvhfdttdei
     feevtdehgefgjeffleelgffggfdvkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
     grmhepmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvg
-X-ME-Proxy: <xmx:sQ_4Yrf_6CnNmErf-FyJxQP9wSgpokIcH-J1kHMPNrlzrP-lbJE8lA>
-    <xmx:sQ_4YkMP69jKuCWtnGMAaXh4hxH8Xm097ipzqBubo2IZb8_MVxk8Zg>
-    <xmx:sQ_4YtlNdjg1lmMBrrXNF-suaqvP0wv2vMzqGg1GDQJL3y2iGNdGWQ>
-    <xmx:sg_4Ypbn7td2rTwiwWnuPf8zRTluy-P64Pi0n-2FKwLyEleY-Fd7mQ>
+X-ME-Proxy: <xmx:oBD4YorOpkilMY54cma3E5WvcODN-cZxGvlukzoP3gxjT3Bq38D2nw>
+    <xmx:oBD4YhqxERzJTeppq3_iPpkUQ-QyanzRofDirgs6kbOSahPfuoIEUw>
+    <xmx:oBD4YmRghClAjK7t-5ICrgBOoyBcRfKH_0Vil58Ak8Wi605i2K1uKQ>
+    <xmx:oRD4YkXyL_uZTHn7KBrlE0FZYFwJuRLurhibJzr8ZX2MkSLLo5Mehw>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 13 Aug 2022 16:55:12 -0400 (EDT)
+ 13 Aug 2022 16:59:12 -0400 (EDT)
 Received: by box.shutemov.name (Postfix, from userid 1000)
-        id E987C104A08; Sat, 13 Aug 2022 23:58:13 +0300 (+03)
-Date:   Sat, 13 Aug 2022 23:58:13 +0300
+        id 57259104A08; Sun, 14 Aug 2022 00:02:15 +0300 (+03)
+Date:   Sun, 14 Aug 2022 00:02:15 +0300
 From:   "Kirill A. Shutemov" <kirill@shutemov.name>
 To:     Andy Lutomirski <luto@kernel.org>
-Cc:     Dave Hansen <dave.hansen@intel.com>,
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Borislav Petkov <bp@alien8.de>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Sean Christopherson <seanjc@google.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Joerg Roedel <jroedel@suse.de>,
@@ -86,6 +85,7 @@ Cc:     Dave Hansen <dave.hansen@intel.com>,
         Ingo Molnar <mingo@redhat.com>,
         Varad Gautam <varad.gautam@suse.com>,
         Dario Faggioli <dfaggioli@suse.com>,
+        Dave Hansen <dave.hansen@intel.com>,
         Mike Rapoport <rppt@kernel.org>,
         David Hildenbrand <david@redhat.com>,
         Marcelo Henrique Cerri <marcelo.cerri@canonical.com>,
@@ -97,18 +97,17 @@ Cc:     Dave Hansen <dave.hansen@intel.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCHv7 10/14] x86/mm: Avoid load_unaligned_zeropad() stepping
  into unaccepted memory
-Message-ID: <20220813205813.mx2zxzq7npbaxbxn@box.shutemov.name>
+Message-ID: <20220813210215.ti7f2vqdg6olthjv@box.shutemov.name>
 References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
  <20220614120231.48165-11-kirill.shutemov@linux.intel.com>
- <Yt/ANO5usdV+JSSW@zn.tnic>
- <80cc204b-a24f-684f-ec66-1361b69cae39@intel.com>
- <073c5a97-272c-c5a0-19f2-c3f14f916c72@intel.com>
- <f2cf11d3-c2f8-4add-ab58-19a4844be361@www.fastmail.com>
+ <7cec93c5-3db4-409b-8c1e-bc1f10dd68fc@www.fastmail.com>
+ <20220809113827.fchtnyzy44z5fuis@box.shutemov.name>
+ <453fb432-ac13-4819-8395-95561bca948b@www.fastmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <f2cf11d3-c2f8-4add-ab58-19a4844be361@www.fastmail.com>
+In-Reply-To: <453fb432-ac13-4819-8395-95561bca948b@www.fastmail.com>
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
@@ -119,59 +118,55 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, Aug 13, 2022 at 09:04:58AM -0700, Andy Lutomirski wrote:
+On Sat, Aug 13, 2022 at 09:03:13AM -0700, Andy Lutomirski wrote:
 > 
 > 
-> On Wed, Aug 3, 2022, at 7:02 AM, Dave Hansen wrote:
-> > On 8/2/22 16:46, Dave Hansen wrote:
-> >> To sum it all up, I'm not happy with the complexity of the page
-> >> acceptance code either but I'm not sure that it's bad tradeoff compared
-> >> to greater #VE complexity or fragility.
+> On Tue, Aug 9, 2022, at 4:38 AM, Kirill A. Shutemov wrote:
+> > On Tue, Jul 26, 2022 at 01:17:13PM -0700, Andy Lutomirski wrote:
 > >> 
-> >> Does anyone think we should go back and really reconsider this?
+> >> 
+> >> On Tue, Jun 14, 2022, at 5:02 AM, Kirill A. Shutemov wrote:
+> >> > load_unaligned_zeropad() can lead to unwanted loads across page boundaries.
+> >> > The unwanted loads are typically harmless. But, they might be made to
+> >> > totally unrelated or even unmapped memory. load_unaligned_zeropad()
+> >> > relies on exception fixup (#PF, #GP and now #VE) to recover from these
+> >> > unwanted loads.
+> >> >
+> >> > But, this approach does not work for unaccepted memory. For TDX, a load
+> >> > from unaccepted memory will not lead to a recoverable exception within
+> >> > the guest. The guest will exit to the VMM where the only recourse is to
+> >> > terminate the guest.
+> >> 
+> >> Why is unaccepted memory marked present in the direct map in the first place?
+> >> 
+> >> Having kernel code assume that every valid address is followed by
+> >> several bytes of memory that may be read without side effects other than
+> >> #PF also seems like a mistake, but I probably won’t win that fight. But
+> >> sticking guard pages in front of definitely-not-logically present pages
+> >> seems silly to me.  Let’s just not map it.
 > >
-> > One other thing I remembered as I re-read my write up on this.
-> >
-> > In the "new" mode, guests never get #VE's for unaccepted memory.  They
-> > just exit to the host and can never be reentered.  They must be killed.
-> >
-> > In the "old" mode, I _believe_ that the guest always gets a #VE for
-> > non-EPT-present memory.  The #VE is basically the same no matter if the
-> > page is unaccepted or if the host goes out and makes a
-> > previously-accepted page non-present.
-> >
-> > One really nasty implication of this "old" mode is that the host can
-> > remove *accepted* pages that are used in the syscall gap.  That means
-> > that the #VE handler would need to be of the paranoid variety which
-> > opens up all kinds of other fun.
-> >
-> >  * "Old" - #VE's can happen in the syscall gap
-> >  * "New" - #VE's happen at better-defined times.  Unexpected ones are
-> >    fatal.
-> >
-> > There's a third option which I proposed but doesn't yet exist.  The TDX
-> > module _could_ separate the behavior of unaccepted memory #VE's and
-> > host-induced #VEs.  This way, we could use load_unaligned_zeropad() with
-> > impunity and handle it in the #VE handler.  At the same time, the host
-> > would not be allowed to remove accepted memory and cause problems in the
-> > syscall gap.  Kinda the best of both worlds.
-> >
-> > But, I'm not sure how valuable that would be now that we have the
-> > (admittedly squirrelly) code to avoid load_unaligned_zeropad() #VE's.
-> 
-> How would that be implemented?  It would need to track which GPAs *were*
-> accepted across a host-induced unmap/remap cycle. This would involve
-> preventing the host from ever completely removing a secure EPT table
-> without the guest’s help, right?
-> 
-> Admittedly this would IMO be better behavior. Is it practical to implement?
+> > It would mean no 1G pages in direct mapping for TDX as we accept 2M a
+> > time.
 
-I don't think it is better if you look from host POV. It owns resources of
-the machine and it has to have a way to pull memory from uncooperative TD
-at any point.
+As of now, we don't have a way to recover direct mapping from
+fragmentation. So once we split 1G to 2M it stays this way.
 
-It also would require more complicated private->shared conversion as guest
-has to notify TDX module about the change, not only host as we do now.
+> >> (What if MMIO memory is mapped next to regular memory?  Doing random
+> >> unaligned reads that cross into MMIO seems unwise.)
+> >
+> > MMIO is shared, not unaccpted private. We already handle the situation.
+> > See 1e7769653b06 ("x86/tdx: Handle load_unaligned_zeropad() page-cross to
+> > a shared page").
+> >
+> 
+> I don’t mean in a confidential guest — I mean generally. This whole
+> model of “overrun the buffer — no big deal” is just fragile.
+
+If you want to remove load_unaligned_zeropad(), I would not object. It can
+make life easier.
+
+I presumed that optimization it brings has measuarable benefit (otherwise,
+why bother).
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
