@@ -2,98 +2,107 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77EF5595784
-	for <lists+linux-efi@lfdr.de>; Tue, 16 Aug 2022 12:07:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5200E5958F9
+	for <lists+linux-efi@lfdr.de>; Tue, 16 Aug 2022 12:51:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234259AbiHPKHZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 16 Aug 2022 06:07:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33978 "EHLO
+        id S234789AbiHPKvH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 16 Aug 2022 06:51:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234266AbiHPKHB (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 16 Aug 2022 06:07:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A1F263AB15
-        for <linux-efi@vger.kernel.org>; Tue, 16 Aug 2022 01:55:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1660640124;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=fcnqwnWtPrrvQuTtaWbHZpJ2oy+s8SGKXBXZ/UhqXho=;
-        b=dIg+eMszH3NXxKS06ECxemX4z4sT2elqmL7vUZmTsFXxiF4SukHNAmxhPIG1x6hU3DLiM4
-        2gPWmxqmxAdr7o4wlEpmgBiFb7Am4fUg1niZmJuUwxf9kSoe90i06J3+I40LhLvB+GIq9P
-        h7d+81HnN5TnPldUxDZtZr0K6glp3Ow=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-17-Byi7xf3fOISl72gwyChfYg-1; Tue, 16 Aug 2022 04:55:14 -0400
-X-MC-Unique: Byi7xf3fOISl72gwyChfYg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A4048811E75;
-        Tue, 16 Aug 2022 08:55:13 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.6])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id E5941140EBE3;
-        Tue, 16 Aug 2022 08:55:12 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
-        id 8FFF918003A8; Tue, 16 Aug 2022 10:55:11 +0200 (CEST)
-Date:   Tue, 16 Aug 2022 10:55:11 +0200
-From:   Gerd Hoffmann <kraxel@redhat.com>
-To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc:     Laszlo Ersek <lersek@redhat.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        QEMU Developers <qemu-devel@nongnu.org>,
-        Xiaoyao Li <xiaoyao.li@intel.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Peter Maydell <peter.maydell@linaro.org>,
-        linux-efi <linux-efi@vger.kernel.org>
-Subject: Re: [PATCH v2] hw/i386: place setup_data at fixed place in memory
-Message-ID: <20220816085511.nw5w3wt5vemkyryt@sirius.home.kraxel.org>
-References: <YusVVLNbLgsk49PK@zx2c4.com>
- <20220804004411.1343158-1-Jason@zx2c4.com>
- <20220804030012-mutt-send-email-mst@kernel.org>
- <bfa5704d-755c-5a52-e7cc-bd9b34e5bb03@redhat.com>
- <YuuQb3D/YY1SiUqY@redhat.com>
- <Yuu1kX9CAqSUNNAj@zx2c4.com>
- <Yuu3ee1iB3IoLdZS@redhat.com>
- <CAMj1kXFAz1ttRmt5_utReSC=TjdfmrgwbwSaAZTDnx6OPGuRRg@mail.gmail.com>
- <cf60456e-a2cd-a64d-0cee-4bea30708fc9@redhat.com>
- <CAHmME9pUdckUwei234Xdge_G-=b6q2e9a8mTVExrV4WE=6TLig@mail.gmail.com>
+        with ESMTP id S235225AbiHPKug (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 16 Aug 2022 06:50:36 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6A00CE447
+        for <linux-efi@vger.kernel.org>; Tue, 16 Aug 2022 03:17:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=HgqeyUTXX3FZUQq2VGK36jBd/82HyyTY7s6+z4I2q0s=; b=NRxyDrqIqNfF1K7tBGJTQHp9pr
+        IHLuusmG1Kdn26lQJz4uYd8Ymg223U46g5mTSWX72exbubX0y4zZrthCJKZpTr0J+0BPFQJrKPFtM
+        eALM4ns//Ta3b/ypoy+FpTSFGr8zNQvHZMWq7kjdN/r96FMBN9SerQsI55gXLYpVmc62UhtJqJXCQ
+        sSO9neTyb4Iho+xHyOEHpeZlxxUFI0w8WURO/2F/jJ1ulc5MF6LAa+j7ggRI5ztk1/9x/7sAc5BnT
+        IincukPCw/127fEm7AXe46FYJ/dUwtHxqylf3W0QYLhtnynEdtqWU5+pPA4fnvf4XiDGvJwVkrGfx
+        3qn02Qow==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=worktop.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1oNtda-006occ-7p; Tue, 16 Aug 2022 10:17:30 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 58559980083; Tue, 16 Aug 2022 12:17:29 +0200 (CEST)
+Date:   Tue, 16 Aug 2022 12:17:29 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Borislav Petkov <bp@alien8.de>,
+        Josh Poimboeuf <jpoimboe@kernel.org>, linux-efi@vger.kernel.org
+Subject: Re: [PATCH] efi/x86-mixed: move unmitigated RET into .rodata
+Message-ID: <Yvtuufkkzr3G6cIp@worktop.programming.kicks-ass.net>
+References: <20220815132028.732531-1-ardb@kernel.org>
+ <YvqiiKBPockZbRqG@zn.tnic>
+ <CAMj1kXE47YJhApf0Xkj9JdDL1cTGrCcWCuCSqJVVQ3MTi4u1dw@mail.gmail.com>
+ <YvqqGD0IrqutH20a@zn.tnic>
+ <CAMj1kXHUyAZQqLbT8uqKJTb9QHq1A4ZUbVnx+J0yQfZihJGjbg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHmME9pUdckUwei234Xdge_G-=b6q2e9a8mTVExrV4WE=6TLig@mail.gmail.com>
-X-Scanned-By: MIMEDefang 2.85 on 10.11.54.7
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <CAMj1kXHUyAZQqLbT8uqKJTb9QHq1A4ZUbVnx+J0yQfZihJGjbg@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-  Hi,
-
-> > We can make setup_data chaining work with OVMF, but the whole chain
-> > should be located in a GPA range that OVMF dictates.
+On Tue, Aug 16, 2022 at 09:04:56AM +0200, Ard Biesheuvel wrote:
+> (cc Peter and Josh)
 > 
-> It sounds like what you describe is pretty OVMF-specific though,
-> right? Do we want to tie things together so tightly like that?
+> On Mon, 15 Aug 2022 at 22:18, Borislav Petkov <bp@alien8.de> wrote:
+> >
+> > On Mon, Aug 15, 2022 at 09:57:50PM +0200, Ard Biesheuvel wrote:
+> > > I'm not seeing that warning. Any config in particular beyond
+> > > x86_64_defconfig that you have enabled?
+> >
+> > It is my workstation's tailored config. Attached.
+> >
+> > > I'm using Debian GCC 12.1.0 btw
+> >
+> > gcc (Debian 11.2.0-19) 11.2.0
+> >
 > 
-> Given we only need 48 bytes or so, isn't there a more subtle place we
-> could just throw this in ram that doesn't need such complex
-> coordination?
+> Complete thread here:
+> https://lore.kernel.org/all/20220815132028.732531-1-ardb@kernel.org/
+> 
+> On Mon, 15 Aug 2022 at 22:18, Borislav Petkov <bp@alien8.de> wrote:
+> >
+> > For some reason, objtool is not happy here:
+> > vmlinux.o: warning: objtool: efi_thunk_query_variable_info_nonblocking+0x1ba: unreachable instruction
+> 
+> [which is the instruction right after the call to __efi_thunk64()]
+> 
+> However, with the same config but without the patch (i.e., v6.0-rc1
+> with nothing on top), I see:
+> 
+> vmlinux.o: warning: objtool: sme_enable+0x71: unreachable instruction
+> 
+> It appears that objtool is making inferences about whether or not
+> __efi_thunk64() returns, even though it is marked as
+> STACK_FRAME_NON_STANDARD. And note that I am not seeing any of these
+> with x86_64_defconfig, only with Boris's config (attached)
 
-Joining the party late (and still catching up the thread).  Given we
-don't need that anyway with EFI, only with legacy BIOS:  Can't that just
-be a protocol between qemu and pc-bios/optionrom/*boot*.S on how to pass
-those 48 bytes random seed?
+STACK_FRAME_NON_STANDARD has no bearing on a call to that symbol being
+noreturn or not.
 
-take care,
-  Gerd
+noreturn is a bit of a pain point in that the compiler leaves no clue
+in the object file. Objtool has a bunch of heuristics to guess at
+noreturn, but the only surefire way to make things consistent is to
+annotate the function with __noreturn and add it to the
+global_noreturns[] array in tools/objtool/check.c
 
+Alternatively, if objtool guesses wrong, you can annotate the assembler
+with 'REACHABLE'.
+
+Josh; should we create a config file for objtool to contain many of this
+stuff? Then again, parsing a config file over and over and over again
+isn't going to make it faster :/
