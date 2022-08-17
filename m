@@ -2,128 +2,85 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B870596B6A
-	for <lists+linux-efi@lfdr.de>; Wed, 17 Aug 2022 10:37:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E23C596B75
+	for <lists+linux-efi@lfdr.de>; Wed, 17 Aug 2022 10:37:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229980AbiHQIgZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 17 Aug 2022 04:36:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50602 "EHLO
+        id S231971AbiHQIhU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 17 Aug 2022 04:37:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229794AbiHQIgZ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 17 Aug 2022 04:36:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B5C46B8E7
-        for <linux-efi@vger.kernel.org>; Wed, 17 Aug 2022 01:36:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S229794AbiHQIhT (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 17 Aug 2022 04:37:19 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0CA97A518;
+        Wed, 17 Aug 2022 01:37:18 -0700 (PDT)
+Received: from zn.tnic (p2e55d27b.dip0.t-ipconnect.de [46.85.210.123])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D119661336
-        for <linux-efi@vger.kernel.org>; Wed, 17 Aug 2022 08:36:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D52C433B5
-        for <linux-efi@vger.kernel.org>; Wed, 17 Aug 2022 08:36:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660725383;
-        bh=Z+PQtXqf/OLjNf2ZFvtv3fYc30t2T5CScmSeX09WGiU=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=u9L6Ly4kNbgidbAYUuw1s21uAoVOrCnRQFdUfvMXfbutKWGtQ2EZnRAsmhkxy2vtH
-         KiQsnAWROv/L2FQwJ+/ah8s0ZuxeIXd4LLdMgykmBrfdcTsyh8rI902QWsrlbJCgmW
-         CtuUvz1cRsUScm6o7rMz6tjVLx9AkHv7iEhFtLfMPBJ8lp3GzQ4lLabZWB2Rdot5qs
-         IF/xUgJgkPguE8BgRubp8CioGsQYBbXAQ73I0FNeD3kgT60LqK8yX5WsgBIqKUOuPR
-         +L7g0fAWzd45OBf8QR7+PKMK/WDAbVmlBZ9uNxJOslQDd+hw9xLen0ENrZM5bSjYYb
-         yqnlOYEwXWwJQ==
-Received: by mail-wm1-f51.google.com with SMTP id bd26-20020a05600c1f1a00b003a5e82a6474so589758wmb.4
-        for <linux-efi@vger.kernel.org>; Wed, 17 Aug 2022 01:36:23 -0700 (PDT)
-X-Gm-Message-State: ACgBeo2yeq45goLYLx7Sy9+NpMT/VMCj92J4bspxT1AmmjEmDRQCfcle
-        TXX901/osfnwe7v5jJodBVPi3/l6k4d8lBN0tyM=
-X-Google-Smtp-Source: AA6agR4upO21rpjoHkIymE4aWOK5QZEwql/e8jMJf1j2cgIyX1R86Wr00jmzxP/rZ6hitfIMTttzDODyokaqkgcjSVo=
-X-Received: by 2002:a05:600c:34d3:b0:3a5:fea5:1be8 with SMTP id
- d19-20020a05600c34d300b003a5fea51be8mr1375860wmq.106.1660725381457; Wed, 17
- Aug 2022 01:36:21 -0700 (PDT)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3907D1EC04F0;
+        Wed, 17 Aug 2022 10:37:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1660725433;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=flMrwpLpNIbeVUWLCXG1+5u4wzSiDBK+MUv8SabEeFQ=;
+        b=ecDe3hxpUw4zMT/0CcSlrG3Un59lf77Rh5UgscVpLI+KL4qoxypnDgx5Xh4thaOCtIRXxq
+        D4DS4t7RhgmIoTavkFQwuovFuWvT18R4ew+oBpQuVLBFhVWJJNYoLaNhC2UkcnlFWuHP2d
+        RcaaBHcDODYtqdqeBMhri95GNveEFfk=
+Date:   Wed, 17 Aug 2022 10:36:56 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Justin He <Justin.He@arm.com>
+Cc:     "toshi.kani@hpe.com" <toshi.kani@hpe.com>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        James Morse <James.Morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Shuai Xue <xueshuai@linux.alibaba.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        nd <nd@arm.com>, "stable@kernel.org" <stable@kernel.org>
+Subject: Re: [PATCH 2/2] EDAC/ghes: Modularize ghes_edac driver to remove the
+ dependency on ghes
+Message-ID: <YvynOu+Mjkspreva@zn.tnic>
+References: <20220811091713.10427-1-justin.he@arm.com>
+ <20220811091713.10427-3-justin.he@arm.com>
+ <YvZnrTrXhRn8FV3I@zn.tnic>
+ <DBBPR08MB45385132F6FC09B4941B5706F7689@DBBPR08MB4538.eurprd08.prod.outlook.com>
 MIME-Version: 1.0
-References: <20220617145754.582056-1-chenhuacai@loongson.cn>
- <CAMj1kXERN209b7dbVs_hy4BeUwrmk2p9_vF+Wq2W8PUeHOQTkg@mail.gmail.com>
- <CAAhV-H60CJDRY4c+Eu+L=rNgHsXQqx=HK9nNSqg69WVV+Bm3SQ@mail.gmail.com>
- <CAMj1kXE1MijqonkPeH+Ydg8ti4_4YFXxBKK6Wztb=HtSY5EAgQ@mail.gmail.com>
- <CAAhV-H503hgyUZND2MmZ2h3qVb3SRt79HcQy7HrFmfGBci-QMA@mail.gmail.com>
- <CAMj1kXEzzAXYP3nXo8-Ny+iwuDorrO-JqoKjg3R+4kmhV_v_KQ@mail.gmail.com>
- <CAAhV-H60mSKx3k1CwBCdubswosgqe+NuVaMtKA=hpjBhq5w5wA@mail.gmail.com>
- <CAMj1kXFi0o3dOmpW9qarJPH2L2EWKCPKE--3z=jsGjaYh1JrTQ@mail.gmail.com>
- <CAAhV-H5CXeG9mNxqJLouvSGLqno4DSwbpPOO5xG2D6ptF2dSTQ@mail.gmail.com>
- <CAMj1kXEuQMy4+uMxg3A0W=F=PnRHUNLfrN=BPpR3pi_kbWaVpQ@mail.gmail.com> <137f829f227602593327461b6349abeaf4bb1f26.camel@xry111.site>
-In-Reply-To: <137f829f227602593327461b6349abeaf4bb1f26.camel@xry111.site>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 17 Aug 2022 10:36:10 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXF=kosmBuF7fd_+gkcxxF0MnB8OdvJ+k3k0uL+Oh3haXg@mail.gmail.com>
-Message-ID: <CAMj1kXF=kosmBuF7fd_+gkcxxF0MnB8OdvJ+k3k0uL+Oh3haXg@mail.gmail.com>
-Subject: Re: EFI zboot on LoongArch [was: LoongArch: Add efistub booting support]
-To:     Xi Ruoyao <xry111@xry111.site>
-Cc:     Huacai Chen <chenhuacai@kernel.org>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        loongarch@lists.linux.dev, Xuefeng Li <lixuefeng@loongson.cn>,
-        Xuerui Wang <kernel@xen0n.name>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <DBBPR08MB45385132F6FC09B4941B5706F7689@DBBPR08MB4538.eurprd08.prod.outlook.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 17 Aug 2022 at 09:59, Xi Ruoyao <xry111@xry111.site> wrote:
->
-> On Wed, 2022-08-17 at 09:49 +0200, Ard Biesheuvel wrote:
->
-> > > > > >
-> > I am trying to port the generic EFI zboot support to LoongArch, but I
-> > am running into a problem:
-> >
-> > The zboot EFI image consists of
-> >
-> > zImage.o, created with objcopy -O binary
-> > zboot-header.o, created using the assembler
-> > libstub.a, created as usual
-> >
-> > This results in errors such as
-> > arch/loongarch/boot/zboot-header.o: can't link different ABI object.
-> > failed to merge target specific data of file
-> > arch/loongarch/boot/zboot-header.o
-> >
-> > which I think is caused by the fact that objcopy does not set the LP64
-> > soft float flags on the ELF object it creates.
-> >
-> > Do you see any way around this limitation?
->
-> Update to Binutils-2.39
-> (https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=83c5f3a)
->
+On Mon, Aug 15, 2022 at 01:32:40AM +0000, Justin He wrote:
+> But is ghes_proc_in_irq() in the irq context which can invoke the notifier?
+> I described it in the commit log:
+> >To resolve the build dependency of ghes_edac_report_mem_error() for ghes,
+> >introduce a notifier which is registered by ghes_edac module. atomic
+> >notifier is used because ghes_proc_in_irq() is in the irq context.
 
-Thanks, that worked. I can now build the LoongArch EFI stub and the
-zboot decompressor.
+Ah, yes, there's that aspect. atomic it is.
 
-Unfortunately, while the normal EFI stub kernel boots ok in QEMU/edk2,
-the zboot one crashes with
+Thx.
 
-CRMD   0xB0
-PRMD   0x4
-ECFG  0x800
-ESTAT   0x40000
-ERA    0x17B87719C
-BADV    0x17C634000
-BADI 0x381031A5
-PC 0x00017B87719C
+-- 
+Regards/Gruss,
+    Boris.
 
-or
-
-CRMD   0xB0
-PRMD   0x4
-ECFG  0x800
-ESTAT   0x40000
-ERA    0x17B138D10
-BADV    0x17C3CC000
-BADI 0x294000F7
-PC 0x00017B138D10
+https://people.kernel.org/tglx/notes-about-netiquette
