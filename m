@@ -2,39 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B991C596D47
-	for <lists+linux-efi@lfdr.de>; Wed, 17 Aug 2022 13:05:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96E29596DD2
+	for <lists+linux-efi@lfdr.de>; Wed, 17 Aug 2022 13:53:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236214AbiHQLEY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 17 Aug 2022 07:04:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42798 "EHLO
+        id S239153AbiHQLxn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 17 Aug 2022 07:53:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239138AbiHQLER (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 17 Aug 2022 07:04:17 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3D6A52E7C
-        for <linux-efi@vger.kernel.org>; Wed, 17 Aug 2022 04:04:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 678B9B81CC2
-        for <linux-efi@vger.kernel.org>; Wed, 17 Aug 2022 11:04:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4959DC433D6;
-        Wed, 17 Aug 2022 11:04:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660734254;
-        bh=8IAJ0ZQrulsaPBLmhj3ziWJ6mZQt2SMXAvZ7QS0nG24=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V3TRiajrs05cwLyxXwsSzz/NH8snY8Gac2nP3zw0aUg9pR1gigN58M2NEAwIxt5c8
-         iuZNCK3BI3aHlvyPrQkPCDfLxX1gZN7nc+Q80YnjwFkSzfbCmxvUsj64pNMgBaPflR
-         nV+75bXTEg8Cw/R8CsYjB1+ceePhDWc3hvJoX2v5NmcrLxCoB1e9xJgMmTaUMCSKNJ
-         eU/8jj7txUQ/Y/ZXPB+oLeOGc6V8jCAGusv26R3BBbEa/kg/+kLjD7dpD8WXCOM3xb
-         oZg0ahDK2KqZyxYEi6AoVmgSh7oI/HBlZnIWBoxQCdH2tQQOXsCCCI91xxmB9zOafE
-         c9bkKSHq0BdrQ==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        with ESMTP id S229764AbiHQLxe (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 17 Aug 2022 07:53:34 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 353571C916
+        for <linux-efi@vger.kernel.org>; Wed, 17 Aug 2022 04:53:31 -0700 (PDT)
+Received: from mail-ed1-f42.google.com ([209.85.208.42]) by
+ mrelayeu.kundenserver.de (mreue107 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1MRnXY-1nwCtn2PP8-00TFRk for <linux-efi@vger.kernel.org>; Wed, 17 Aug 2022
+ 13:53:29 +0200
+Received: by mail-ed1-f42.google.com with SMTP id y3so17163595eda.6
+        for <linux-efi@vger.kernel.org>; Wed, 17 Aug 2022 04:53:29 -0700 (PDT)
+X-Gm-Message-State: ACgBeo38vvS0QExRyL+vT2i5i4Sb6OW/sRDhTukZ1rj/KDwt4twB2QIU
+        2+HZuMDUOU2VKQBgT1EGFKL7vue+qRdEfOVtFp4=
+X-Google-Smtp-Source: AA6agR5ZusYFZnvDv014BIRhEHbBXvdnfQ6ZLvUu40QPcEMr3BF8W/ibSF0iWZROYkzFYjXFA9Uu7edSy+kt79jVYnE=
+X-Received: by 2002:a05:6402:520e:b0:43d:df14:fbed with SMTP id
+ s14-20020a056402520e00b0043ddf14fbedmr23168292edd.16.1660737209216; Wed, 17
+ Aug 2022 04:53:29 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220817110345.1771267-1-ardb@kernel.org> <20220817110345.1771267-5-ardb@kernel.org>
+In-Reply-To: <20220817110345.1771267-5-ardb@kernel.org>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Wed, 17 Aug 2022 13:53:12 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a17HJXYhVLou+Xc2tZyLggcmqH-V+9MRjrDHAc0TUYZ2Q@mail.gmail.com>
+Message-ID: <CAK8P3a17HJXYhVLou+Xc2tZyLggcmqH-V+9MRjrDHAc0TUYZ2Q@mail.gmail.com>
+Subject: Re: [PATCH v3 4/6] efi/libstub: implement generic EFI zboot
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
         Matthew Garrett <mjg59@srcf.ucam.org>,
         Peter Jones <pjones@redhat.com>,
         Ilias Apalodimas <ilias.apalodimas@linaro.org>,
@@ -46,19 +48,27 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Huacai Chen <chenhuacai@loongson.cn>,
         Lennart Poettering <lennart@poettering.net>,
         Jeremy Linton <jeremy.linton@arm.com>
-Subject: [PATCH v3 6/6] riscv: efi: enable generic EFI compressed boot
-Date:   Wed, 17 Aug 2022 13:03:45 +0200
-Message-Id: <20220817110345.1771267-7-ardb@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220817110345.1771267-1-ardb@kernel.org>
-References: <20220817110345.1771267-1-ardb@kernel.org>
-MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1200; i=ardb@kernel.org; h=from:subject; bh=8IAJ0ZQrulsaPBLmhj3ziWJ6mZQt2SMXAvZ7QS0nG24=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBi/MsPOCIYdhgRvcW6uwKzfxp5TtSdl6L7YsvEuI23 SfpyFj6JAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYvzLDwAKCRDDTyI5ktmPJHmzDA C/8mxrYSs+Ew1Ho63n634wqspGqrCXwePQArdpWTKfBkqRTz7tppFW41dVsF6uEbzC8X5JTrX0K8Yd QgK3/QwyBLX4Mu3qq1iNM9r8J0fnpHjGkV9gncudwdofESj8i0Kq3k58z2SibRf/qBD9wpWMbyCTS/ mtVYm6Z24FSXDUvoP/qa2XlF2Bt2N1CZN7Ga4v6nhgyqL2ZzmeOM3jCJWe0UZvbkS12sC/VOX5RGJ7 TLXuErECXo9LQ17zl1KHFCjVu9pQdUtz6Wem0yURIMIan5/HIw47JzEpo5GJLcvsCETl1/btVt8+Zx CgtUpz+CDSKep1DN0542RGSCYoyAUcSf9TTJnZ7aBZGtmt16XU5kWNzY3hf8a8pedxdPZmYZSPk3kI VGCAm3yQ9e2SHUoszehe/jlMJEGIlkBOLo+lwS4ijEK+jqWGyt30enPGFo2WaV3Fsctdut7Irh+044 +VE+OkLDho4fCFDsK+/aRPfzkEHcvqZDYA97tCLYdWt5Y=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:qrKp2IR4Y8GzuFlQH6uX7IdoyZVyKutUbl2EgJw6mXSXIeF9YF6
+ xm4lKZsehgbar5xcR3P6GXT9gMh9k0D5IzcQvt1aoB9an81gjyjmpN2YShNm26RyPJUbVNg
+ Z0+NfnTpzE53gZM0RUX/FubxVZ/4Unu5S5LUu6ltIV0vPhtIl40RxkHpIbpZe6Wy+/QvGLO
+ xekTZCyH/lMrNkme2h7Aw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Y6m2vZyjHW4=:3yoxVhxh9Dp9sKc3Fj2RUX
+ T09E+aD8Yz3G/nDb46FGdyfjnB5HBpnQ53RcCO2wqfsdhFplaTnTpvTu9EJU/HjKC++H7pQeE
+ MXI5FCcK0v+YYn+KRXeiTJWDiI1QwBhljMYIPB/QBZbBXZ6w/Zig809o7yHVVaZ4iysbmNupa
+ LJA1ncMu5M3Pmy7ignuQ7scZLDHw2t0g37rtGShfckMaGw1t7wlmICqjzV65gYK/bVpWtSnK3
+ Ax2p2CSWajelPyRD3p1nH6sqjIuRCxoKETNJl2fW6pUp4KzXfawWQ/D6CGTC1YAnBd6KBO4by
+ 9wlIpIvWDiJBlwY0LqgOj6I5l82IsqQUkCKlc3VTo3ApWYgjey6ar8j5l2MZcxrZOdnIHP013
+ 6SzGGFHovpG8h2HgFuxOfqOdvYEKiAHvcircpX3BeSyCkiIOQ6fjicvHEwsNJvZ6RGw3RK6Gj
+ 1AIVkTPul2+QYZRXcSrzJFd90g873vMXeX1so/J3Krd1Z/0RJvzR8kMrV6Wzp1ZqSbFoZTYcO
+ q94NwCS982BBpq5oEV9+D267bCgFueKehHEHQPZ2E2ji4k5KaqSJ7IZTAC9NbeBkazWAl52Wm
+ GOoLKicvmMPNU7ldeGRd70Z5GmizEmLsltccNX8mwR/10r9eUeVJQBhRpp1Hpw56xDd3ej8cN
+ s3cm3o02vsv4e3xnkHLajWD8w5uTkDZSVLkWvB2Gi7dmFEgJjIjmQJmutPHXE/5zYa7smZreO
+ LkvnpniB5el8wk+o6ivqDEo1dbMsnNdv+I86GCjd/zV8dRSQeUajDHeuMUH+lTzvqMHpFCi21
+ gkP4eONA0hcToLpJm/u1Rk0UozfzfiqGkGuKnHgVJkqrkZ+pUFbJyXHytS3SfT7Ek+5Q0m+fT
+ YXPBa04WzZUJ1m+fyyWA==
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,44 +76,28 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Wire up the generic EFI zboot support for RISC-V.
+On Wed, Aug 17, 2022 at 1:03 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+> BZIP2 has been omitted from the set of supported compression algorithms,
+> given that its performance is mediocre both in speed and size, and it
+> uses a disproportionate amount of memory. For optimal compression, use
+> LZMA. For the fastest boot speed, use LZO.
+...
+> +config EFI_ZBOOT
+> +       bool "Enable the generic EFI decompressor"
+> +       depends on EFI_GENERIC_STUB && !ARM
+> +       select HAVE_KERNEL_GZIP
+> +       select HAVE_KERNEL_LZ4
+> +       select HAVE_KERNEL_LZMA
+> +       select HAVE_KERNEL_LZO
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/riscv/Makefile      | 5 +++++
- arch/riscv/boot/Makefile | 6 ++++++
- 2 files changed, 11 insertions(+)
+I hope I don't turn this into a bike-shed discussion, but it feels
+like if you give
+the choice between these four, you should also offer ZSTD, which combines
+high compression ratio with fast decompression speed.
+XZ is probably more widely installed than LZMA.
 
-diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-index 3fa8ef336822..23f1b934c825 100644
---- a/arch/riscv/Makefile
-+++ b/arch/riscv/Makefile
-@@ -150,6 +150,11 @@ $(BOOT_TARGETS): vmlinux
- Image.%: Image
- 	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
- 
-+ifneq ($(CONFIG_EFI_ZBOOT),)
-+zImage.efi: Image
-+	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
-+endif
-+
- install: KBUILD_IMAGE := $(boot)/Image
- zinstall: KBUILD_IMAGE := $(boot)/Image.gz
- install zinstall:
-diff --git a/arch/riscv/boot/Makefile b/arch/riscv/boot/Makefile
-index becd0621071c..82970c4a91b5 100644
---- a/arch/riscv/boot/Makefile
-+++ b/arch/riscv/boot/Makefile
-@@ -58,3 +58,9 @@ $(obj)/Image.lzo: $(obj)/Image FORCE
- 
- $(obj)/loader.bin: $(obj)/loader FORCE
- 	$(call if_changed,objcopy)
-+
-+EFI_ZBOOT_PAYLOAD	:= $(obj)/Image
-+EFI_ZBOOT_BFD_TARGET	:= elf$(BITS)-littleriscv
-+EFI_ZBOOT_MACH_TYPE	:= RISCV$(BITS)
-+
-+include $(srctree)/drivers/firmware/efi/libstub/Makefile.zboot
--- 
-2.35.1
+I would be happy with just gzip (to minimize build dependencies) and
+zstd, but there is little harm in also including the other ones you have
+here, or all seven of them.
 
+        Arnd
