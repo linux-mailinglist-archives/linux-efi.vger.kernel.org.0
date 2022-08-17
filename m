@@ -2,74 +2,61 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99509596CAC
-	for <lists+linux-efi@lfdr.de>; Wed, 17 Aug 2022 12:19:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B1CC596D46
+	for <lists+linux-efi@lfdr.de>; Wed, 17 Aug 2022 13:05:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230480AbiHQKRN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 17 Aug 2022 06:17:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51170 "EHLO
+        id S235469AbiHQLEG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 17 Aug 2022 07:04:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229752AbiHQKRM (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 17 Aug 2022 06:17:12 -0400
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2083658DCE
-        for <linux-efi@vger.kernel.org>; Wed, 17 Aug 2022 03:17:10 -0700 (PDT)
-Received: from [10.20.42.170] (unknown [10.20.42.170])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8BxnmsawPxi+zUDAA--.3662S3;
-        Wed, 17 Aug 2022 18:16:58 +0800 (CST)
-Message-ID: <62f83c65-7e8c-cbe4-0ec1-a8dc8ce0d6b6@loongson.cn>
-Date:   Wed, 17 Aug 2022 18:16:58 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: EFI zboot on LoongArch [was: LoongArch: Add efistub booting
- support]
-Content-Language: en-US
-To:     Huacai Chen <chenhuacai@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     Xi Ruoyao <xry111@xry111.site>,
+        with ESMTP id S235425AbiHQLD7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 17 Aug 2022 07:03:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FCBE50073
+        for <linux-efi@vger.kernel.org>; Wed, 17 Aug 2022 04:03:56 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 70BD2614AB
+        for <linux-efi@vger.kernel.org>; Wed, 17 Aug 2022 11:03:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B13C433C1;
+        Wed, 17 Aug 2022 11:03:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660734234;
+        bh=vxk1LY//tCgSW926i0slQiwtTUg7I+PuhcgmvlcYSv4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=CDTTEXfUSkYgI8mtGjpdLw81bmllp+PjvZhjhfxJkQLucwYTc6PTATvFWLOoZaUSn
+         ly/eUGq+j6+f+1H8oFXbnxZIGKx9F5ebIICAgkYj7wko9NGCQWldMQT+8QToUU06fE
+         hdbV3oMgWJTlQJi0/2Ky58Bk5rV29I+IlqB9oV3mQrR+0HqSg2vj8FcwLpRX2mLU1E
+         wXCfrKWKeN7sYKJ9wncsrjnIeX34AtsivXodrV0acYaYUdngtjGcrAO0SfkYjsvygm
+         BXf4ymaCA3v0jL97l9PDxoRAb5rmZIz1tzF9gOYhLjM9A5iXg5E1nJFe1OPZj+NPv1
+         JP7vMcxSC+/IA==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Peter Jones <pjones@redhat.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+        AKASHI Takahiro <takahiro.akashi@linaro.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Atish Patra <atishp@atishpatra.org>,
+        Arnd Bergmann <arnd@arndb.de>,
         Huacai Chen <chenhuacai@loongson.cn>,
-        loongarch@lists.linux.dev, Xuefeng Li <lixuefeng@loongson.cn>,
-        Xuerui Wang <kernel@xen0n.name>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        linux-efi <linux-efi@vger.kernel.org>
-References: <20220617145754.582056-1-chenhuacai@loongson.cn>
- <CAMj1kXERN209b7dbVs_hy4BeUwrmk2p9_vF+Wq2W8PUeHOQTkg@mail.gmail.com>
- <CAAhV-H60CJDRY4c+Eu+L=rNgHsXQqx=HK9nNSqg69WVV+Bm3SQ@mail.gmail.com>
- <CAMj1kXE1MijqonkPeH+Ydg8ti4_4YFXxBKK6Wztb=HtSY5EAgQ@mail.gmail.com>
- <CAAhV-H503hgyUZND2MmZ2h3qVb3SRt79HcQy7HrFmfGBci-QMA@mail.gmail.com>
- <CAMj1kXEzzAXYP3nXo8-Ny+iwuDorrO-JqoKjg3R+4kmhV_v_KQ@mail.gmail.com>
- <CAAhV-H60mSKx3k1CwBCdubswosgqe+NuVaMtKA=hpjBhq5w5wA@mail.gmail.com>
- <CAMj1kXFi0o3dOmpW9qarJPH2L2EWKCPKE--3z=jsGjaYh1JrTQ@mail.gmail.com>
- <CAAhV-H5CXeG9mNxqJLouvSGLqno4DSwbpPOO5xG2D6ptF2dSTQ@mail.gmail.com>
- <CAMj1kXEuQMy4+uMxg3A0W=F=PnRHUNLfrN=BPpR3pi_kbWaVpQ@mail.gmail.com>
- <137f829f227602593327461b6349abeaf4bb1f26.camel@xry111.site>
- <CAMj1kXF=kosmBuF7fd_+gkcxxF0MnB8OdvJ+k3k0uL+Oh3haXg@mail.gmail.com>
- <CAAhV-H6e9WH5GxYiK9CFnUnJC=NzG=bsmNwuR7Waiz7LadV5xg@mail.gmail.com>
-From:   maobibo <maobibo@loongson.cn>
-In-Reply-To: <CAAhV-H6e9WH5GxYiK9CFnUnJC=NzG=bsmNwuR7Waiz7LadV5xg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+        Lennart Poettering <lennart@poettering.net>,
+        Jeremy Linton <jeremy.linton@arm.com>
+Subject: [PATCH v3 0/6] efi: implement generic compressed boot support
+Date:   Wed, 17 Aug 2022 13:03:39 +0200
+Message-Id: <20220817110345.1771267-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5104; i=ardb@kernel.org; h=from:subject; bh=vxk1LY//tCgSW926i0slQiwtTUg7I+PuhcgmvlcYSv4=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBi/MsCJjOn5St/w2MUJDO7L2MngA7RW+1RJjU3C/31 VHV61F2JAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYvzLAgAKCRDDTyI5ktmPJMvwC/ 41YMYh+Igi46OfRTGTonuhlC28rRAZblcAH92QDHa6AtcJc/aQC1KKIma9qgDjypeUKU/hMzU+EizT 9KfcGIuIEJ0+9jRlbw1h8UQyuIooN5R44xf5p9EEmKfSurTzrMLOa7nnh/+/4aBbubdCr2HI5lJh4/ pvGRG61PekPjLm7jpRQwPRfL26FLNVRYODig0jfFg/z0/eAzsq1y7dmmQ5EqdI9THba+Da+yPcDcFS 2NrldEIJgge77tZBxnZJmPHlvhxqCYKFeRGhoYSh/3r6S2TM3wN9DVue0OATZAOt+Yfaoiaaoyq7c7 TiRnrQqw5Tk40Cz6haN1/2Op3jPFLv85mJycdQLE3JEjtywJKl0CGwvDUWtvrgvVfadkTLWmXkQvvU pQKC+hF75wEcNSm2A7P30/s32jM+HVhJBlgYKRaeUkLEfr0Z86yAOg7oOVzDoWKalsf6D9Uou6F19J MsKLHWI9aZnqE5VpSpbc/huwhrEW7fvdHL0O1SfY2GWJE=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxnmsawPxi+zUDAA--.3662S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7WrWrZFyDWFW5WF17WF4Uurg_yoW8AFW3pa
-        yxAFyqyFs5tF48tr1vvw1DX342ywsFyryvqw15XryIkFn0qr1UJr1UtFykWrZrJFWrJwn0
-        va4Sqas7Cr4qv3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUv0b7Iv0xC_KF4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
-        jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwV
-        C2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-        0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-        1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4CEbIxvr21l
-        c2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-        8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8
-        ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-        0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-        Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8
-        IzuJUUUUU==
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,75 +64,102 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+Relatively modern architectures such as arm64 or RISC-V don't implement
+a self-decompressing kernel, and leave it up to the bootloader to
+decompress the compressed image before executing it. For bare metal
+boot, this policy makes sense, as a self-decompressing image essentially
+duplicates a lot of fiddly preparation work to create a 1:1 mapping and
+set up the C runtime, and to discover or infer where DRAM lives from
+device trees or other firmware tables.
 
+For EFI boot, the situation is a bit different: the EFI entrypoint is
+called with a 1:1 cached mapping covering all of DRAM already active,
+and with a stack, a heap, a memory map and boot services to load and
+start images. This means it is rather trivial to implement a
+self-decompressing wrapper for EFI boot in a generic manner, and reuse
+it across architectures that implement EFI boot.
 
-在 2022/8/17 17:09, Huacai Chen 写道:
-> Hi, Ard,
-> 
-> On Wed, Aug 17, 2022 at 4:36 PM Ard Biesheuvel <ardb@kernel.org> wrote:
->>
->> On Wed, 17 Aug 2022 at 09:59, Xi Ruoyao <xry111@xry111.site> wrote:
->>>
->>> On Wed, 2022-08-17 at 09:49 +0200, Ard Biesheuvel wrote:
->>>
->>>>>>>>
->>>> I am trying to port the generic EFI zboot support to LoongArch, but I
->>>> am running into a problem:
->>>>
->>>> The zboot EFI image consists of
->>>>
->>>> zImage.o, created with objcopy -O binary
->>>> zboot-header.o, created using the assembler
->>>> libstub.a, created as usual
->>>>
->>>> This results in errors such as
->>>> arch/loongarch/boot/zboot-header.o: can't link different ABI object.
->>>> failed to merge target specific data of file
->>>> arch/loongarch/boot/zboot-header.o
->>>>
->>>> which I think is caused by the fact that objcopy does not set the LP64
->>>> soft float flags on the ELF object it creates.
->>>>
->>>> Do you see any way around this limitation?
->>>
->>> Update to Binutils-2.39
->>> (https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=83c5f3a)
->>>
->>
->> Thanks, that worked. I can now build the LoongArch EFI stub and the
->> zboot decompressor.
->>
->> Unfortunately, while the normal EFI stub kernel boots ok in QEMU/edk2,
->> the zboot one crashes with
->>
->> CRMD   0xB0
->> PRMD   0x4
->> ECFG  0x800
->> ESTAT   0x40000
->> ERA    0x17B87719C
->> BADV    0x17C634000
->> BADI 0x381031A5
->> PC 0x00017B87719C
->>
->> or
->>
->> CRMD   0xB0
->> PRMD   0x4
->> ECFG  0x800
->> ESTAT   0x40000
->> ERA    0x17B138D10
->> BADV    0x17C3CC000
->> BADI 0x294000F7
->> PC 0x00017B138D10
+The only slight downside is that when UEFI secure boot is enabled, the
+generic LoadImage/StartImage only allow signed images to be loaded and
+started, and we would prefer to avoid the need to sign both the inner
+and outer PE/COFF images.
 
-From the ESTAT 0x40000, it seems that it is writing unallocated
-memory in efi stage with address 0x17C3CC000 or 0x17C634000.
+However, the only truly generic and portable way to achieve this is to
+rely on LoadImage/StartImage as the EFI spec defines them, and avoid
+making assumptions about how things might work under the hood, and how
+we might circumvent that. This includes just loading the image into
+memory and jumping to the PE entry point: in the context of secure boot,
+measured boot and other hardening measures the firmware may take (such
+as disallowing mappings that are both writable and executable), using
+the firmware's image loading API is the only maintainable choice.
 
-regards
-bibo,mao
+For this reason, this version of the series includes support for signing
+the images using sbsign, if the signing key and cert are specified in
+Kconfig.
 
-> 
-> Bibo is a key developer of QEMU/EDK2, maybe he can give some help.
-> 
-> Huacai
+The code is wired up for arm64 and RISC-V. The latter was build tested
+only. I also tested the code with the upcoming LoongArch EFI stub
+support, which built correctly (using binutils 2.39) but needs some
+additional work before it will run as expected.
+
+Changes since v2:
+- drop some of the refactoring work to make efi_printk() available in
+  the decompressor, and just use fixed strings instead;
+- provide memcpy/memmove/memset based on the UEFI boot services, instead
+  of having to specify for each architecture how to wire these up;
+- drop PI/DXE based signature check circumvention, and just sign the
+  inner image instead, if needed;
+- add a header to the zimage binary that identifies it as a EFI zboot
+  image, and describes the compression algorithm and where the payload
+  lives in the image - this might be used by non-EFI loaders to locate
+  and decompress the bare metal image, given that the EFI zboot one is
+  not a hybrid like the one it encapsulates.
+
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Matthew Garrett <mjg59@srcf.ucam.org>
+Cc: Peter Jones <pjones@redhat.com>
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Cc: AKASHI Takahiro <takahiro.akashi@linaro.org>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Atish Patra <atishp@atishpatra.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Lennart Poettering <lennart@poettering.net>
+Cc: Jeremy Linton <jeremy.linton@arm.com>
+
+Ard Biesheuvel (6):
+  efi/libstub: use EFI provided memcpy/memset routines
+  efi/libstub: add some missing boot service prototypes
+  efi/libstub: move efi_system_table global var into separate object
+  efi/libstub: implement generic EFI zboot
+  arm64: efi: enable generic EFI compressed boot
+  riscv: efi: enable generic EFI compressed boot
+
+ arch/arm64/Makefile                         |   7 +-
+ arch/arm64/boot/Makefile                    |   6 +
+ arch/arm64/kernel/image-vars.h              |  13 --
+ arch/riscv/Makefile                         |   5 +
+ arch/riscv/boot/Makefile                    |   6 +
+ arch/riscv/kernel/image-vars.h              |   9 --
+ drivers/firmware/efi/Kconfig                |  31 ++++-
+ drivers/firmware/efi/libstub/Makefile       |  11 +-
+ drivers/firmware/efi/libstub/Makefile.zboot |  69 ++++++++++
+ drivers/firmware/efi/libstub/efi-stub.c     |   2 -
+ drivers/firmware/efi/libstub/efistub.h      |  12 +-
+ drivers/firmware/efi/libstub/intrinsics.c   |  30 +++++
+ drivers/firmware/efi/libstub/systable.c     |   8 ++
+ drivers/firmware/efi/libstub/zboot-header.S | 139 ++++++++++++++++++++
+ drivers/firmware/efi/libstub/zboot.c        | 101 ++++++++++++++
+ drivers/firmware/efi/libstub/zboot.lds      |  39 ++++++
+ 16 files changed, 453 insertions(+), 35 deletions(-)
+ create mode 100644 drivers/firmware/efi/libstub/Makefile.zboot
+ create mode 100644 drivers/firmware/efi/libstub/intrinsics.c
+ create mode 100644 drivers/firmware/efi/libstub/systable.c
+ create mode 100644 drivers/firmware/efi/libstub/zboot-header.S
+ create mode 100644 drivers/firmware/efi/libstub/zboot.c
+ create mode 100644 drivers/firmware/efi/libstub/zboot.lds
+
+-- 
+2.35.1
 
