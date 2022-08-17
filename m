@@ -2,38 +2,37 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E23C596B75
-	for <lists+linux-efi@lfdr.de>; Wed, 17 Aug 2022 10:37:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FAFF596BA6
+	for <lists+linux-efi@lfdr.de>; Wed, 17 Aug 2022 10:53:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231971AbiHQIhU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 17 Aug 2022 04:37:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51274 "EHLO
+        id S234133AbiHQIuL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 17 Aug 2022 04:50:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229794AbiHQIhT (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 17 Aug 2022 04:37:19 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0CA97A518;
-        Wed, 17 Aug 2022 01:37:18 -0700 (PDT)
-Received: from zn.tnic (p2e55d27b.dip0.t-ipconnect.de [46.85.210.123])
+        with ESMTP id S230514AbiHQIuL (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 17 Aug 2022 04:50:11 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D0406A489;
+        Wed, 17 Aug 2022 01:50:10 -0700 (PDT)
+Received: from zn.tnic (p200300ea971b9855329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:9855:329c:23ff:fea6:a903])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3907D1EC04F0;
-        Wed, 17 Aug 2022 10:37:13 +0200 (CEST)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BFF501EC04F0;
+        Wed, 17 Aug 2022 10:50:04 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1660725433;
+        t=1660726204;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=flMrwpLpNIbeVUWLCXG1+5u4wzSiDBK+MUv8SabEeFQ=;
-        b=ecDe3hxpUw4zMT/0CcSlrG3Un59lf77Rh5UgscVpLI+KL4qoxypnDgx5Xh4thaOCtIRXxq
-        D4DS4t7RhgmIoTavkFQwuovFuWvT18R4ew+oBpQuVLBFhVWJJNYoLaNhC2UkcnlFWuHP2d
-        RcaaBHcDODYtqdqeBMhri95GNveEFfk=
-Date:   Wed, 17 Aug 2022 10:36:56 +0200
+        bh=1Nc9t7mJDNJm7tX2tDtri09eHBfV+Ex+cKn6gDnLpQc=;
+        b=GcbLLw8ZpGKMrGQvsebCopv6bxKAXNMYcNfrs/TS+KIQqjHHVTyMTCVsFZ8if02hCMOvYR
+        aNEOyZ/tUNxQbGU9Y+dJCxmS1HzRbnYVUvKQswbw1s/TfpbCdWF71i138SESUjd56D1C0n
+        L0ynhx3AO0JdOJsu3Jwtf+RshCVT0Sw=
+Date:   Wed, 17 Aug 2022 10:50:00 +0200
 From:   Borislav Petkov <bp@alien8.de>
-To:     Justin He <Justin.He@arm.com>
-Cc:     "toshi.kani@hpe.com" <toshi.kani@hpe.com>,
-        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        James Morse <James.Morse@arm.com>,
+To:     "Kani, Toshi" <toshi.kani@hpe.com>
+Cc:     Justin He <Justin.He@arm.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Len Brown <lenb@kernel.org>, James Morse <James.Morse@arm.com>,
         Tony Luck <tony.luck@intel.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Robert Richter <rric@kernel.org>,
@@ -49,15 +48,16 @@ Cc:     "toshi.kani@hpe.com" <toshi.kani@hpe.com>,
         nd <nd@arm.com>, "stable@kernel.org" <stable@kernel.org>
 Subject: Re: [PATCH 2/2] EDAC/ghes: Modularize ghes_edac driver to remove the
  dependency on ghes
-Message-ID: <YvynOu+Mjkspreva@zn.tnic>
+Message-ID: <YvyruNX+BUi+O3Df@zn.tnic>
 References: <20220811091713.10427-1-justin.he@arm.com>
  <20220811091713.10427-3-justin.he@arm.com>
  <YvZnrTrXhRn8FV3I@zn.tnic>
- <DBBPR08MB45385132F6FC09B4941B5706F7689@DBBPR08MB4538.eurprd08.prod.outlook.com>
+ <DBBPR08MB45389A9DB098F1AC14C19074F76B9@DBBPR08MB4538.eurprd08.prod.outlook.com>
+ <PH7PR84MB1838203B478319EA45167BB4826A9@PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <DBBPR08MB45385132F6FC09B4941B5706F7689@DBBPR08MB4538.eurprd08.prod.outlook.com>
+In-Reply-To: <PH7PR84MB1838203B478319EA45167BB4826A9@PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -68,14 +68,27 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Aug 15, 2022 at 01:32:40AM +0000, Justin He wrote:
-> But is ghes_proc_in_irq() in the irq context which can invoke the notifier?
-> I described it in the commit log:
-> >To resolve the build dependency of ghes_edac_report_mem_error() for ghes,
-> >introduce a notifier which is registered by ghes_edac module. atomic
-> >notifier is used because ghes_proc_in_irq() is in the irq context.
+On Wed, Aug 17, 2022 at 01:39:32AM +0000, Kani, Toshi wrote:
+> Yes, but the impact is not necessarily limited to these modules.
 
-Ah, yes, there's that aspect. atomic it is.
+The impact is limited only to the modules which would otherwise
+potentially load on a HP system which advertizes as "HPE ", "Server ".
+
+You're the only user of ghes_edac. So please state which drivers you
+want blocked from loading on those platforms and where ghes_edac should
+load instead.
+
+From looking at
+
+  301375e76432 ("EDAC: Add owner check to the x86 platform drivers")
+
+it is 4 drivers.
+
+> I think a new check with ghes_get_device() can replace the owner check
+> in xx_init().
+
+The owner thing should not be touched now - it can be a cleanup ontop if
+you - Justin - feel like doing it afterwards.
 
 Thx.
 
