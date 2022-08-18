@@ -2,142 +2,166 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB359598069
-	for <lists+linux-efi@lfdr.de>; Thu, 18 Aug 2022 10:56:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37FF1598073
+	for <lists+linux-efi@lfdr.de>; Thu, 18 Aug 2022 10:59:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243588AbiHRI4P (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 18 Aug 2022 04:56:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34588 "EHLO
+        id S243060AbiHRI6x (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 18 Aug 2022 04:58:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239820AbiHRI4O (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 18 Aug 2022 04:56:14 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF08FB07F0
-        for <linux-efi@vger.kernel.org>; Thu, 18 Aug 2022 01:56:13 -0700 (PDT)
+        with ESMTP id S239820AbiHRI6w (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 18 Aug 2022 04:58:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A144979DE
+        for <linux-efi@vger.kernel.org>; Thu, 18 Aug 2022 01:58:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9222EB81DEB
-        for <linux-efi@vger.kernel.org>; Thu, 18 Aug 2022 08:56:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D8DC433D6;
-        Thu, 18 Aug 2022 08:56:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 03D5161313
+        for <linux-efi@vger.kernel.org>; Thu, 18 Aug 2022 08:58:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566F4C433D6
+        for <linux-efi@vger.kernel.org>; Thu, 18 Aug 2022 08:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660812971;
-        bh=qcwQefREXPmKgrFWHMrnNH4iddUEkHLg9MKUfINhGnE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KK2Y3Li9gbm+9FqhUtcJAlaPGbz5TxGqxWQRRIvAVsAZESubAB261L0UAnMBBb1g2
-         V7eTkTK26VXW2ktelR8IAVGARC0pz8JMfRDOBRswuofottahq89R8FNnlfaBRqhhbz
-         vUU9fMnyb3u32m0/1f+/rFusfAbZvr+uq4Ab/5arrT6kqXdviq923BCyyU2aU5XxNO
-         oXxAiOMIWD+UOx7CqmVQL7gTIn/mPw4lvArrnHnSM9T+87q80cuqwVSvahYPus/Dsk
-         Zx+zmqmFXaxMQUMRBZFa+Z+gPs+OlrLkueJiiN/PVliPG/Wk5ed82uDdjEVpXVDvWG
-         U7FzLQs2X0kHw==
+        s=k20201202; t=1660813130;
+        bh=sw6/pPEbBo90CaEqv4LYs6u6hnDnLNAC1v165Yx2L0g=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=N5K+pBUAdrbul1KxRlydh4g056scXT/LJJCd3U4BbMxPa0X/TVoxDsq+SCwdVdcJ+
+         U3eQ/93+LdPkOBs2iszzVEP7/ajjZAOsR0Tf4A4kTUVpugEfFF69qiJIw0yhF+yILO
+         SN5PYcEO27yHL/cY2HGWe8Sol/5TLl4fEzo2P4tQmGsYdxSE0WWCkRTn/tlD8iPKWl
+         I6yYjoanvA5W1FNB36zbyuexTBqE9gNsZnm3i/mhUVcAwgnFPDARg0A/Xy7BfEv5vJ
+         FnOWGOCZHqIYCr3Q4ANJkHNvhlFfr99PZ8PewYM5YiQ26IUVXHOBm6wGmrjF4b2Mvm
+         yjWKuBIBA+FZQ==
+Received: by mail-wr1-f50.google.com with SMTP id j7so960033wrh.3
+        for <linux-efi@vger.kernel.org>; Thu, 18 Aug 2022 01:58:50 -0700 (PDT)
+X-Gm-Message-State: ACgBeo3haig4mbasyO06LwO6+5yytfusQezRW/5o5rKv6llw1ahja6pJ
+        GCeUpSv5fuuGyOekW6HTsBdMiWghQG5hGdtKa0Q=
+X-Google-Smtp-Source: AA6agR5UFw+9XrEiqw/YIjnIdJsMJ9CAYnwl6pJjPMFdeaXZvn/v3b21kExP611KnyKnVVAdqmU/CkrPv7Rp/cifTUg=
+X-Received: by 2002:a5d:64e9:0:b0:220:7dd7:63eb with SMTP id
+ g9-20020a5d64e9000000b002207dd763ebmr1044097wri.590.1660813128596; Thu, 18
+ Aug 2022 01:58:48 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220818085540.2075028-1-ardb@kernel.org>
+In-Reply-To: <20220818085540.2075028-1-ardb@kernel.org>
 From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Thu, 18 Aug 2022 10:58:36 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEwnR-iTJGy6Yxxmt_tJM22Z57GBVKHqTcRTMAQS1PqgA@mail.gmail.com>
+Message-ID: <CAMj1kXEwnR-iTJGy6Yxxmt_tJM22Z57GBVKHqTcRTMAQS1PqgA@mail.gmail.com>
+Subject: Re: [PATCH resend 0/9] linux: implement LoadFile2 initrd loading
 To:     grub-devel@nongnu.org
-Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-        grub-devel@gnu.org, Daniel Kiper <daniel.kiper@oracle.com>,
+Cc:     linux-efi@vger.kernel.org, grub-devel@gnu.org,
+        Daniel Kiper <daniel.kiper@oracle.com>,
         Nikita Ermakov <arei@altlinux.org>,
         Atish Patra <atishp@atishpatra.org>,
         Huacai Chen <chenhuacai@loongson.cn>,
         Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
         dann frazier <dann.frazier@canonical.com>,
-        Julian Andres Klode <julian.klode@canonical.com>,
-        Leif Lindholm <leif@nuviainc.com>
-Subject: [PATCH resend 9/9] linux: ignore FDT unless we need to modify it
-Date:   Thu, 18 Aug 2022 10:55:39 +0200
-Message-Id: <20220818085540.2075028-10-ardb@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220818085540.2075028-1-ardb@kernel.org>
-References: <20220818085540.2075028-1-ardb@kernel.org>
-MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2654; i=ardb@kernel.org; h=from:subject; bh=qcwQefREXPmKgrFWHMrnNH4iddUEkHLg9MKUfINhGnE=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBi/f6KK1CRae61+/Iolc7eh6UzH7SGMFIoyBvop4T/ a2gB3+OJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYv3+igAKCRDDTyI5ktmPJOikDA CHGZvj03/pzJJdxwOHb78R8JOV/Exd1Ce84KNmgdNIUZSbQvD+nVzs9j9sh6niHLLDHTUJ3F7tVLlD F3Il8YItbUiBPhn2nDdCslGCVfJl/clY5b8CWk3cqUP2OIr+jxPT/NhTusaJTuzLNJtx+InKe081N6 4B/023wJ2xyFHW5VwOXwgOLNf8WddkbEHRL1tWAgK/evlZgmdBVbCiPqVqYJ5Wu0bT2dz6wUk7vzdP 36sCay8xbWaZkKlB9NISDqQVlmSo4yfBc1jnNHZ+g36Mst+NZouhH9qb+jwOzyMfcdjXdqLBLh9YRi LpVhIoTv8jpEomx7w/dKavoYnZ2y9+GHAuxshj4HsTJRQkHuHl1YnkJv50Z8JjcFB2MHwgULXNGjEC /R8cWBfLWmQQxE0SH/qZO65j58mjyBSaqZH7Iexb34AZ1tHeIOoRpKZQ5be+LscALPscg5IRCjbqM9 zPjDXG+0i1Zxtbn31W8AdY+pBykUcDMCX9Qv3fGw4tB4Y=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
+        Julian Andres Klode <julian.klode@canonical.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Now that we implemented supported for the LoadFile2 protocol for initrd
-loading, there is no longer a need to pass the initrd parameters via
-the device tree. This means there is no longer a reason to update the
-device tree in the first place, and so we can ignore it entirely.
+On Thu, 18 Aug 2022 at 10:55, Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> This implements the LoadFile2 initrd loading protocol, which is
+> essentially a callback interface into the bootloader to load the initrd
+> data into a caller provided buffer. This means the bootloader no longer
+> has to contain any policy regarding where to load the initrd (which
+> differs between architectures and kernel versions) and no longer has to
+> manipulate arch specific data structures such as DT or struct bootparams
+> to inform the OS where the initrd resides in memory. This is especially
+> relevant for the upcoming LoongArch support, which does not use either
+> DT or struct bootparams, and would have to rely on the initrd= command
+> line interface, which is deprecated and of limited utility [0].
+>
+> Sample output from booting a recent Linux/arm64 kernel:
+>
+>   grub> insmod part_msdos
+>   grub> linux (hd0,msdos1)/Image
+>   grub> initrd (hd0,msdos1)/initrd.img
+>   grub> boot
+>   EFI stub: Booting Linux Kernel...
+>   EFI stub: EFI_RNG_PROTOCOL unavailable, KASLR will be disabled
+>   EFI stub: Generating empty DTB
+>   EFI stub: Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path
+>   EFI stub: Exiting boot services and installing virtual address map...
+>   [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x411fd070]
+>
+> This is mostly a resend of my original v2 [1], although I did
+> cherry-pick Nikita's version of the first patch, which incorporates
+> Heinrich's suggestion to simply drop the argv[] argument from
+> grub_initrd_load(). I also included the patch I sent out the other day
+> to remove the pointless header magic number check, and included a fix
+> for the PXE boot issue reported by dann [2].
+>
+> [0] The initrd= command line loader can only access files that reside on
+> the same volume as the loaded image, which means GRUB would have to
+> present this volume abstraction in order to serve the initrd file.
+> Another reason why this method is problematic is generic EFI zboot,
+> which is being added to Linux, and which calls loadimage on another,
+> embedded PE/COFF image which would also need to expose this volume
+> abstraction.
+>
+> [1] https://lists.gnu.org/archive/html/grub-devel/2020-10/msg00124.html
+> [2] https://lists.gnu.org/archive/html/grub-devel/2022-04/msg00055.html
+>
+> Cc: grub-devel@gnu.org
 
-The only remaining reason to deal with the devicetree is if we are
-using the 'devicetree' command to load one from disk, so tweak the
-logic in grub_fdt_install() to take that into account.
+When cc'ing to this series, please note that i included an incorrect
+grub-devel@ address too - please remove.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Leif Lindholm <leif@nuviainc.com>
----
- grub-core/loader/arm64/linux.c | 22 ++++++++++----------
- grub-core/loader/efi/fdt.c     |  7 +++++--
- 2 files changed, 16 insertions(+), 13 deletions(-)
-
-diff --git a/grub-core/loader/arm64/linux.c b/grub-core/loader/arm64/linux.c
-index 82c7558b4c4c..68ed1502c68a 100644
---- a/grub-core/loader/arm64/linux.c
-+++ b/grub-core/loader/arm64/linux.c
-@@ -142,21 +142,21 @@ finalize_params_linux (void)
- 
-   void *fdt;
- 
--  fdt = grub_fdt_load (GRUB_EFI_LINUX_FDT_EXTRA_SPACE);
-+  /* Set initrd info */
-+  if (initrd_start && initrd_end > initrd_start)
-+    {
-+      fdt = grub_fdt_load (GRUB_EFI_LINUX_FDT_EXTRA_SPACE);
- 
--  if (!fdt)
--    goto failure;
-+      if (!fdt)
-+       goto failure;
- 
--  node = grub_fdt_find_subnode (fdt, 0, "chosen");
--  if (node < 0)
--    node = grub_fdt_add_subnode (fdt, 0, "chosen");
-+      node = grub_fdt_find_subnode (fdt, 0, "chosen");
-+      if (node < 0)
-+       node = grub_fdt_add_subnode (fdt, 0, "chosen");
- 
--  if (node < 1)
--    goto failure;
-+      if (node < 1)
-+       goto failure;
- 
--  /* Set initrd info */
--  if (initrd_start && initrd_end > initrd_start)
--    {
-       grub_dprintf ("linux", "Initrd @ %p-%p\n",
- 		    (void *) initrd_start, (void *) initrd_end);
- 
-diff --git a/grub-core/loader/efi/fdt.c b/grub-core/loader/efi/fdt.c
-index c86f283d756b..771d455c7319 100644
---- a/grub-core/loader/efi/fdt.c
-+++ b/grub-core/loader/efi/fdt.c
-@@ -89,13 +89,16 @@ grub_fdt_install (void)
-   grub_efi_guid_t fdt_guid = GRUB_EFI_DEVICE_TREE_GUID;
-   grub_efi_status_t status;
- 
-+  if (!fdt && !loaded_fdt)
-+    return GRUB_ERR_NONE;
-+
-   b = grub_efi_system_table->boot_services;
--  status = b->install_configuration_table (&fdt_guid, fdt);
-+  status = b->install_configuration_table (&fdt_guid, fdt ?: loaded_fdt);
-   if (status != GRUB_EFI_SUCCESS)
-     return grub_error (GRUB_ERR_IO, "failed to install FDT");
- 
-   grub_dprintf ("fdt", "Installed/updated FDT configuration table @ %p\n",
--		fdt);
-+		fdt ?: loaded_fdt);
-   return GRUB_ERR_NONE;
- }
- 
--- 
-2.35.1
-
+> Cc: Daniel Kiper <daniel.kiper@oracle.com>
+> Cc: Nikita Ermakov <arei@altlinux.org>
+> Cc: Atish Patra <atishp@atishpatra.org>
+> Cc: Huacai Chen <chenhuacai@loongson.cn>
+> Cc: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+> Cc: dann frazier <dann.frazier@canonical.com>
+> Cc: Julian Andres Klode <julian.klode@canonical.com>
+>
+> Ard Biesheuvel (8):
+>   efi: move MS-DOS stub out of generic PE header definition
+>   arm64/linux: Remove magic number header field check
+>   linux/arm: unify ARM/arm64 vs Xen PE/COFF header handling
+>   linux/arm: account for COFF headers appearing at unexpected offsets
+>   efi: add definition of LoadFile2 protocol
+>   efi/efinet: Don't close connections at fini_hw() time
+>   efi: implement LoadFile2 initrd loading protocol for Linux
+>   linux: ignore FDT unless we need to modify it
+>
+> Nikita Ermakov (1):
+>   loader: drop argv[] argument in grub_initrd_load()
+>
+>  grub-core/commands/efi/lsefi.c            |   1 +
+>  grub-core/kern/efi/efi.c                  |   5 +-
+>  grub-core/loader/arm/linux.c              |   2 +-
+>  grub-core/loader/arm64/linux.c            | 181 +++++++++++++++++---
+>  grub-core/loader/arm64/xen_boot.c         |  23 +--
+>  grub-core/loader/efi/fdt.c                |   7 +-
+>  grub-core/loader/i386/linux.c             |   2 +-
+>  grub-core/loader/i386/pc/linux.c          |   2 +-
+>  grub-core/loader/i386/xen.c               |   3 +-
+>  grub-core/loader/ia64/efi/linux.c         |   2 +-
+>  grub-core/loader/linux.c                  |   4 +-
+>  grub-core/loader/mips/linux.c             |   2 +-
+>  grub-core/loader/powerpc/ieee1275/linux.c |   2 +-
+>  grub-core/loader/sparc64/ieee1275/linux.c |   2 +-
+>  grub-core/net/drivers/efi/efinet.c        |  10 +-
+>  grub-core/net/net.c                       |   2 +-
+>  include/grub/arm/linux.h                  |   7 +-
+>  include/grub/arm64/linux.h                |   5 +-
+>  include/grub/efi/api.h                    |  15 ++
+>  include/grub/efi/efi.h                    |   4 +-
+>  include/grub/efi/pe32.h                   |   5 +-
+>  include/grub/linux.h                      |   2 +-
+>  include/grub/net.h                        |   3 +-
+>  23 files changed, 226 insertions(+), 65 deletions(-)
+>
+> --
+> 2.35.1
+>
