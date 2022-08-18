@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 486B859806E
-	for <lists+linux-efi@lfdr.de>; Thu, 18 Aug 2022 10:56:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB359598069
+	for <lists+linux-efi@lfdr.de>; Thu, 18 Aug 2022 10:56:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235263AbiHRI4M (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 18 Aug 2022 04:56:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34556 "EHLO
+        id S243588AbiHRI4P (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 18 Aug 2022 04:56:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243591AbiHRI4K (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 18 Aug 2022 04:56:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E7B5B07F6
-        for <linux-efi@vger.kernel.org>; Thu, 18 Aug 2022 01:56:09 -0700 (PDT)
+        with ESMTP id S239820AbiHRI4O (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 18 Aug 2022 04:56:14 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF08FB07F0
+        for <linux-efi@vger.kernel.org>; Thu, 18 Aug 2022 01:56:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 25D7F61313
-        for <linux-efi@vger.kernel.org>; Thu, 18 Aug 2022 08:56:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE8FC43140;
-        Thu, 18 Aug 2022 08:56:06 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9222EB81DEB
+        for <linux-efi@vger.kernel.org>; Thu, 18 Aug 2022 08:56:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D8DC433D6;
+        Thu, 18 Aug 2022 08:56:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660812968;
-        bh=E4aJPGS29hqrXtOm2Rk8yZNBA1ShxPq6XnAQv0Yzdgo=;
+        s=k20201202; t=1660812971;
+        bh=qcwQefREXPmKgrFWHMrnNH4iddUEkHLg9MKUfINhGnE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pGjOnN8PI/DBiZRpR0DFQSN3Tc6TFo8n7RiLBcsksYTKIlDsSKQHdq9mQweHetldU
-         BgPYEOdv5Y8gidQS/J+Yq0K/XLdh0LR6mOLrB0dLy4rMl/jugvGiVJtmI26+6VLVDg
-         m8wH7YNeBosKbcfwwIfhioeVHLpQKUQpyTsvg1Oj6p0I6zpNZf4Dw68WqCOwZE+Moy
-         WqbGDyFFkWYnzOtPyxIFtN8KFNxiinytVXOEdiRujeNoaCVVGb3Jy164SaKZ8v7WIB
-         U0uB7s/yEosGWYivVrOBWMfq3fbzGSgZ0q2RETPFGY8ab9NshbbacVPRximJzxFpMk
-         S7qZsjNmMwcyQ==
+        b=KK2Y3Li9gbm+9FqhUtcJAlaPGbz5TxGqxWQRRIvAVsAZESubAB261L0UAnMBBb1g2
+         V7eTkTK26VXW2ktelR8IAVGARC0pz8JMfRDOBRswuofottahq89R8FNnlfaBRqhhbz
+         vUU9fMnyb3u32m0/1f+/rFusfAbZvr+uq4Ab/5arrT6kqXdviq923BCyyU2aU5XxNO
+         oXxAiOMIWD+UOx7CqmVQL7gTIn/mPw4lvArrnHnSM9T+87q80cuqwVSvahYPus/Dsk
+         Zx+zmqmFXaxMQUMRBZFa+Z+gPs+OlrLkueJiiN/PVliPG/Wk5ed82uDdjEVpXVDvWG
+         U7FzLQs2X0kHw==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     grub-devel@nongnu.org
 Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -40,15 +40,16 @@ Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Huacai Chen <chenhuacai@loongson.cn>,
         Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
         dann frazier <dann.frazier@canonical.com>,
-        Julian Andres Klode <julian.klode@canonical.com>
-Subject: [PATCH resend 8/9] efi: implement LoadFile2 initrd loading protocol for Linux
-Date:   Thu, 18 Aug 2022 10:55:38 +0200
-Message-Id: <20220818085540.2075028-9-ardb@kernel.org>
+        Julian Andres Klode <julian.klode@canonical.com>,
+        Leif Lindholm <leif@nuviainc.com>
+Subject: [PATCH resend 9/9] linux: ignore FDT unless we need to modify it
+Date:   Thu, 18 Aug 2022 10:55:39 +0200
+Message-Id: <20220818085540.2075028-10-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220818085540.2075028-1-ardb@kernel.org>
 References: <20220818085540.2075028-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7202; i=ardb@kernel.org; h=from:subject; bh=E4aJPGS29hqrXtOm2Rk8yZNBA1ShxPq6XnAQv0Yzdgo=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBi/f6Hzl0gppHvBOfmhXqtA5gFYm+ewwTuCZwrrFvz zuPY55SJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYv3+hwAKCRDDTyI5ktmPJHIRC/ 0Zdod2xED5yDq3AmetnuExsEacDpDuIlX1tgQoJjIVUehQeCMopwYHl5SgopAk7ep2u9iAqpSGPQOb D04IQOEPe5FQdkt1XpvwS4Vu0fkc5HW4GgMWfW5irXSoBlD7tDhpZKYwFLDhwKQJGQzmnX8d8i3Wct 1pS+xMIV82alG0c9Xwtz6KOjcwyHtDEk8B92c6AWh2W9xVdDq1MGMcNyxf0pEZvq1DHTB4ZN5dQfAT swhv7Nc4zf5ky2e0EChG50WW05u+HnbUouC0ES2R623u5173YWIjZZ9eq+zsuFDF6x71JdpXzmb6Og K+5ti/HaVwa32eF5i1b4JsHA62NTmgj18BDRas3939yUCCYnmxdGLCZ2HIHoZOWMa/jxn1s9tsRI9W k2AOMLAMwioKTOocL5bREv+OCFw0b9lP81NHQVKdFBjrJNE7qFmjzn6KBNXqzRb4rKl4dp/srwnX5v HsY155z4pgqNrYpR5OS0t1qTJLpo6wH6TpsAfNMca/9uA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2654; i=ardb@kernel.org; h=from:subject; bh=qcwQefREXPmKgrFWHMrnNH4iddUEkHLg9MKUfINhGnE=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBi/f6KK1CRae61+/Iolc7eh6UzH7SGMFIoyBvop4T/ a2gB3+OJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYv3+igAKCRDDTyI5ktmPJOikDA CHGZvj03/pzJJdxwOHb78R8JOV/Exd1Ce84KNmgdNIUZSbQvD+nVzs9j9sh6niHLLDHTUJ3F7tVLlD F3Il8YItbUiBPhn2nDdCslGCVfJl/clY5b8CWk3cqUP2OIr+jxPT/NhTusaJTuzLNJtx+InKe081N6 4B/023wJ2xyFHW5VwOXwgOLNf8WddkbEHRL1tWAgK/evlZgmdBVbCiPqVqYJ5Wu0bT2dz6wUk7vzdP 36sCay8xbWaZkKlB9NISDqQVlmSo4yfBc1jnNHZ+g36Mst+NZouhH9qb+jwOzyMfcdjXdqLBLh9YRi LpVhIoTv8jpEomx7w/dKavoYnZ2y9+GHAuxshj4HsTJRQkHuHl1YnkJv50Z8JjcFB2MHwgULXNGjEC /R8cWBfLWmQQxE0SH/qZO65j58mjyBSaqZH7Iexb34AZ1tHeIOoRpKZQ5be+LscALPscg5IRCjbqM9 zPjDXG+0i1Zxtbn31W8AdY+pBykUcDMCX9Qv3fGw4tB4Y=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -61,205 +62,81 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Recent Linux kernels will invoke the LoadFile2 protocol installed on
-a well-known vendor media path to load the initrd if it is exposed by
-the firmware. Using this method is preferred for two reasons:
-- the Linux kernel is in charge of allocating the memory, and so it can
-  implement any placement policy it wants (given that these tend to
-  change between kernel versions),
-- it is no longer necessary to modify the device tree provided by the
-  firmware.
+Now that we implemented supported for the LoadFile2 protocol for initrd
+loading, there is no longer a need to pass the initrd parameters via
+the device tree. This means there is no longer a reason to update the
+device tree in the first place, and so we can ignore it entirely.
 
-So let's install this protocol when handling the 'initrd' command if
-such a recent kernel was detected (based on the PE/COFF image version),
-and defer loading the initrd contents until the point where the kernel
-invokes the LoadFile2 protocol.
+The only remaining reason to deal with the devicetree is if we are
+using the 'devicetree' command to load one from disk, so tweak the
+logic in grub_fdt_install() to take that into account.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Leif Lindholm <leif@nuviainc.com>
 ---
- grub-core/loader/arm64/linux.c | 129 +++++++++++++++++++-
- 1 file changed, 128 insertions(+), 1 deletion(-)
+ grub-core/loader/arm64/linux.c | 22 ++++++++++----------
+ grub-core/loader/efi/fdt.c     |  7 +++++--
+ 2 files changed, 16 insertions(+), 13 deletions(-)
 
 diff --git a/grub-core/loader/arm64/linux.c b/grub-core/loader/arm64/linux.c
-index 56ba8d0a6ea3..82c7558b4c4c 100644
+index 82c7558b4c4c..68ed1502c68a 100644
 --- a/grub-core/loader/arm64/linux.c
 +++ b/grub-core/loader/arm64/linux.c
-@@ -48,6 +48,48 @@ static grub_uint32_t cmdline_size;
- static grub_addr_t initrd_start;
- static grub_addr_t initrd_end;
+@@ -142,21 +142,21 @@ finalize_params_linux (void)
  
-+static grub_efi_guid_t load_file2_guid = GRUB_EFI_LOAD_FILE2_PROTOCOL_GUID;
-+static grub_efi_guid_t device_path_guid = GRUB_EFI_DEVICE_PATH_GUID;
-+static struct grub_linux_initrd_context initrd_ctx = { 0, 0, 0 };
-+static grub_efi_handle_t initrd_lf2_handle;
-+static int initrd_use_loadfile2;
-+
-+struct initrd_media_device_path {
-+  grub_efi_vendor_media_device_path_t  vendor;
-+  grub_efi_device_path_t               end;
-+} GRUB_PACKED;
-+
-+#define LINUX_EFI_INITRD_MEDIA_GUID  \
-+  { 0x5568e427, 0x68fc, 0x4f3d, \
-+    { 0xac, 0x74, 0xca, 0x55, 0x52, 0x31, 0xcc, 0x68 } \
-+  }
-+
-+static struct initrd_media_device_path initrd_lf2_device_path = {
-+  {
+   void *fdt;
+ 
+-  fdt = grub_fdt_load (GRUB_EFI_LINUX_FDT_EXTRA_SPACE);
++  /* Set initrd info */
++  if (initrd_start && initrd_end > initrd_start)
 +    {
-+      GRUB_EFI_MEDIA_DEVICE_PATH_TYPE,
-+      GRUB_EFI_VENDOR_MEDIA_DEVICE_PATH_SUBTYPE,
-+      sizeof(grub_efi_vendor_media_device_path_t),
-+    },
-+    LINUX_EFI_INITRD_MEDIA_GUID
-+  }, {
-+    GRUB_EFI_END_DEVICE_PATH_TYPE,
-+    GRUB_EFI_END_ENTIRE_DEVICE_PATH_SUBTYPE,
-+    sizeof(grub_efi_device_path_t)
-+  }
-+};
-+
-+static grub_efi_status_t
-+grub_efi_initrd_load_file2(grub_efi_load_file2_t *this,
-+                           grub_efi_device_path_t *device_path,
-+                           grub_efi_boolean_t boot_policy,
-+                           grub_efi_uintn_t *buffer_size,
-+                           void *buffer);
-+
-+static grub_efi_load_file2_t initrd_lf2 = {
-+  grub_efi_initrd_load_file2
-+};
-+
- grub_err_t
- grub_arch_efi_linux_load_image_header (grub_file_t file,
-                                       struct linux_arch_kernel_header * lh)
-@@ -78,6 +120,18 @@ grub_arch_efi_linux_load_image_header (grub_file_t file,
-        return grub_error(GRUB_ERR_FILE_READ_ERROR, "failed to read COFF image header");
-     }
++      fdt = grub_fdt_load (GRUB_EFI_LINUX_FDT_EXTRA_SPACE);
  
-+  /*
-+   * Linux kernels built for any architecture are guaranteed to support the
-+   * LoadFile2 based initrd loading protocol if the image version is >= 1.
-+   */
-+  if (lh->coff_image_header.optional_header.major_image_version >= 1)
-+    initrd_use_loadfile2 = 1;
-+   else
-+    initrd_use_loadfile2 = 0;
+-  if (!fdt)
+-    goto failure;
++      if (!fdt)
++       goto failure;
+ 
+-  node = grub_fdt_find_subnode (fdt, 0, "chosen");
+-  if (node < 0)
+-    node = grub_fdt_add_subnode (fdt, 0, "chosen");
++      node = grub_fdt_find_subnode (fdt, 0, "chosen");
++      if (node < 0)
++       node = grub_fdt_add_subnode (fdt, 0, "chosen");
+ 
+-  if (node < 1)
+-    goto failure;
++      if (node < 1)
++       goto failure;
+ 
+-  /* Set initrd info */
+-  if (initrd_start && initrd_end > initrd_start)
+-    {
+       grub_dprintf ("linux", "Initrd @ %p-%p\n",
+ 		    (void *) initrd_start, (void *) initrd_end);
+ 
+diff --git a/grub-core/loader/efi/fdt.c b/grub-core/loader/efi/fdt.c
+index c86f283d756b..771d455c7319 100644
+--- a/grub-core/loader/efi/fdt.c
++++ b/grub-core/loader/efi/fdt.c
+@@ -89,13 +89,16 @@ grub_fdt_install (void)
+   grub_efi_guid_t fdt_guid = GRUB_EFI_DEVICE_TREE_GUID;
+   grub_efi_status_t status;
+ 
++  if (!fdt && !loaded_fdt)
++    return GRUB_ERR_NONE;
 +
-+  grub_dprintf ("linux", "LoadFile2 initrd loading %sabled\n",
-+                initrd_use_loadfile2 ? "en" : "dis");
-+
+   b = grub_efi_system_table->boot_services;
+-  status = b->install_configuration_table (&fdt_guid, fdt);
++  status = b->install_configuration_table (&fdt_guid, fdt ?: loaded_fdt);
+   if (status != GRUB_EFI_SUCCESS)
+     return grub_error (GRUB_ERR_IO, "failed to install FDT");
+ 
+   grub_dprintf ("fdt", "Installed/updated FDT configuration table @ %p\n",
+-		fdt);
++		fdt ?: loaded_fdt);
    return GRUB_ERR_NONE;
  }
- 
-@@ -197,6 +251,8 @@ grub_linux_boot (void)
- static grub_err_t
- grub_linux_unload (void)
- {
-+  grub_efi_boot_services_t *b;
-+
-   grub_dl_unref (my_mod);
-   loaded = 0;
-   if (initrd_start)
-@@ -208,6 +264,19 @@ grub_linux_unload (void)
-     grub_efi_free_pages ((grub_addr_t) kernel_addr,
- 			 GRUB_EFI_BYTES_TO_PAGES (kernel_size));
-   grub_fdt_unload ();
-+
-+  if (initrd_lf2_handle)
-+    {
-+      b = grub_efi_system_table->boot_services;
-+      b->uninstall_multiple_protocol_interfaces (initrd_lf2_handle,
-+                                                 &load_file2_guid,
-+                                                 &initrd_lf2,
-+                                                 &device_path_guid,
-+                                                 &initrd_lf2_device_path,
-+                                                 NULL);
-+      initrd_lf2_handle = NULL;
-+      initrd_use_loadfile2 = 0;
-+    }
-   return GRUB_ERR_NONE;
- }
- 
-@@ -247,13 +316,50 @@ allocate_initrd_mem (int initrd_pages)
- 				       GRUB_EFI_LOADER_DATA);
- }
- 
-+static grub_efi_status_t
-+grub_efi_initrd_load_file2(grub_efi_load_file2_t *this,
-+                          grub_efi_device_path_t *device_path,
-+                          grub_efi_boolean_t boot_policy,
-+                          grub_efi_uintn_t *buffer_size,
-+                          void *buffer)
-+{
-+  grub_efi_status_t status = GRUB_EFI_SUCCESS;
-+  grub_efi_uintn_t initrd_size;
-+
-+  if (!this || this != &initrd_lf2 || !buffer_size)
-+    return GRUB_EFI_INVALID_PARAMETER;
-+
-+  if (device_path->type != GRUB_EFI_END_DEVICE_PATH_TYPE ||
-+      device_path->subtype != GRUB_EFI_END_ENTIRE_DEVICE_PATH_SUBTYPE)
-+    return GRUB_EFI_NOT_FOUND;
-+
-+  if (boot_policy)
-+    return GRUB_EFI_UNSUPPORTED;
-+
-+  initrd_size = grub_get_initrd_size (&initrd_ctx);
-+  if (!buffer || *buffer_size < initrd_size)
-+    {
-+      *buffer_size = initrd_size;
-+      return GRUB_EFI_BUFFER_TOO_SMALL;
-+    }
-+
-+  grub_dprintf ("linux", "Providing initrd via LOAD_FILE2_PROTOCOL\n");
-+
-+  if (grub_initrd_load (&initrd_ctx, buffer))
-+    status = GRUB_EFI_LOAD_ERROR;
-+
-+  grub_initrd_close (&initrd_ctx);
-+  return status;
-+}
-+
- static grub_err_t
- grub_cmd_initrd (grub_command_t cmd __attribute__ ((unused)),
- 		 int argc, char *argv[])
- {
--  struct grub_linux_initrd_context initrd_ctx = { 0, 0, 0 };
-   int initrd_size, initrd_pages;
-   void *initrd_mem = NULL;
-+  grub_efi_boot_services_t *b;
-+  grub_efi_status_t status;
- 
-   if (argc == 0)
-     {
-@@ -271,6 +377,27 @@ grub_cmd_initrd (grub_command_t cmd __attribute__ ((unused)),
-   if (grub_initrd_init (argc, argv, &initrd_ctx))
-     goto fail;
- 
-+  if (initrd_use_loadfile2)
-+    {
-+      if (!initrd_lf2_handle)
-+        {
-+          b = grub_efi_system_table->boot_services;
-+          status = b->install_multiple_protocol_interfaces (&initrd_lf2_handle,
-+                                                            &load_file2_guid,
-+                                                            &initrd_lf2,
-+                                                            &device_path_guid,
-+                                                            &initrd_lf2_device_path,
-+                                                            NULL);
-+          if (status == GRUB_EFI_OUT_OF_RESOURCES)
-+            {
-+              grub_error (GRUB_ERR_OUT_OF_MEMORY, N_("out of memory"));
-+              return grub_errno;
-+            }
-+        }
-+      grub_dprintf ("linux", "Using LoadFile2 initrd loading protocol\n");
-+      return GRUB_ERR_NONE;
-+    }
-+
-   initrd_size = grub_get_initrd_size (&initrd_ctx);
-   grub_dprintf ("linux", "Loading initrd\n");
  
 -- 
 2.35.1
