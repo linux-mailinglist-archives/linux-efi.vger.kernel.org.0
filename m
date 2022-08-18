@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF8B059805F
-	for <lists+linux-efi@lfdr.de>; Thu, 18 Aug 2022 10:56:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9098598066
+	for <lists+linux-efi@lfdr.de>; Thu, 18 Aug 2022 10:56:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241348AbiHRIzz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 18 Aug 2022 04:55:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34418 "EHLO
+        id S243489AbiHRIz7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 18 Aug 2022 04:55:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235263AbiHRIzy (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 18 Aug 2022 04:55:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85DC4B07E9
-        for <linux-efi@vger.kernel.org>; Thu, 18 Aug 2022 01:55:53 -0700 (PDT)
+        with ESMTP id S235263AbiHRIz6 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 18 Aug 2022 04:55:58 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6C80985AD
+        for <linux-efi@vger.kernel.org>; Thu, 18 Aug 2022 01:55:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B9D061303
-        for <linux-efi@vger.kernel.org>; Thu, 18 Aug 2022 08:55:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC11C433D6;
-        Thu, 18 Aug 2022 08:55:50 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8954CB8213D
+        for <linux-efi@vger.kernel.org>; Thu, 18 Aug 2022 08:55:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D2DC433C1;
+        Thu, 18 Aug 2022 08:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660812952;
-        bh=k2UO8HelSkz+8GRaRPGWyK8im8ylx1c2njdpoI2nOpU=;
+        s=k20201202; t=1660812955;
+        bh=UUvKXR2cO27YDKET1AyG/i9gzYw04CdLto0thocEz2Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DcqUIsPlBOaS50uRmOOBdwsEcurT0MyOrflb/x0elsocQ3PtoQxkCbpsPGiCL9nPn
-         iGQTxTauT5f65idC60m6mA1J4j4DEw/KeBPjLD5uxh6vghbg74Q81sIvOwh/xXKGhb
-         Wl+3k9hNPolKcQa9PpCa+JijzzDIXkiLCVusQ7KWURwgDeZW0kG000gKWOH53l2csA
-         MWhMrQMt/Oom/DxPEEs4IyRwH1ViU4tQKyqInok9GrL/InH7y2/ycpXhMKrv7oanxV
-         JAZzcfFnh5YhSnBiwn+E7Fb+GeNEGng7KNpd77bZJ3NboETMayJmiOF6wABCPStymj
-         GgxuxP59fMStg==
+        b=eZ3+lreY6dvpCx5DNQhI9brjoeeNla8/nRGqDU9UG+xKbVMdmoq7lgGU9JI1nJP3+
+         YURN7Wgs+A4qn58Pi+NbJdAglfTwWEMa+0db8JEct+53GwqhuC8NeWUt6RjT+mcb0D
+         jLiKePwk35+w6JPse7DYfwo3ttn24NKJ++n4XhHRWR1r/kHRP/XrRQ63uvaMpAW4uD
+         P1F+/ctW4dNzV+jlv8sHlHOWEd7JKKNzP/GIgw9KGheNIXBQMAPJoWrLSaYpN+Cpk1
+         SDsM/1Lg4x2asqITaqvrTQZ+6KlAZIzruuL+RaN46FHqugrb0mJCsQdia/GhPfV5GG
+         Lm5u45yo1dBDg==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     grub-devel@nongnu.org
 Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -41,14 +41,14 @@ Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
         dann frazier <dann.frazier@canonical.com>,
         Julian Andres Klode <julian.klode@canonical.com>
-Subject: [PATCH resend 2/9] efi: move MS-DOS stub out of generic PE header definition
-Date:   Thu, 18 Aug 2022 10:55:32 +0200
-Message-Id: <20220818085540.2075028-3-ardb@kernel.org>
+Subject: [PATCH resend 3/9] arm64/linux: Remove magic number header field check
+Date:   Thu, 18 Aug 2022 10:55:33 +0200
+Message-Id: <20220818085540.2075028-4-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220818085540.2075028-1-ardb@kernel.org>
 References: <20220818085540.2075028-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2567; i=ardb@kernel.org; h=from:subject; bh=k2UO8HelSkz+8GRaRPGWyK8im8ylx1c2njdpoI2nOpU=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBi/f56QdqCnOdynwO+RnWMsZoYnJV20mPQ/Lae/HQB bKHn2jiJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYv3+egAKCRDDTyI5ktmPJKs8C/ 0YWR2+S0Ee4+hBFdguiDzMuGbTNIiU/O0N3hrHqBWzRgYcK4W6tDwFKDeDCwjL3L8AJW0qugdmw6v8 3cAQkccamZOdtR6OqjUNqvmk9wGlGx8c/afLzac1C4ZSZO6a88ZRahMmjfWJE/syz0UXPyjP+wk0OG WQnGYrywimRpm8n3t2s/hdTdwGWdKcbkaMjP7dQKcjZ53rfz2zJ81zwCmmihDXzxBn3P52xMqnAK6l Xk0mPOkBjF/m972LDE4el3lu4n2okGxjHurnCLeLlhL9NYwOjPfHdGIix7lAx1leo0SKXHHjOiPdG4 nxIB04AWGLdK+9jPNjzXcnvQFfjUGgliT1duByVTvwTPFogj320BFIHXrFvf5QSug5v77383EhpuWQ jlCMwuwBNNCzlvtfGm7Lq6h+YIFgpZvs+1kXaGT7Tcjyc7U+tMAcK5AapQ/iLqqRyZeVJrepBPghW5 MD6zgtLgzkTRBRXu1aRq9JDmF9LFY+OLtklOfazbl5muc=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2374; i=ardb@kernel.org; h=from:subject; bh=UUvKXR2cO27YDKET1AyG/i9gzYw04CdLto0thocEz2Y=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBi/f59S2E/1h05DNgErqGpeX5fGPw91TcV1H2M0xeP qWzAX1OJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYv3+fQAKCRDDTyI5ktmPJGuIC/ 48Idyt81w/P+gZvj7mywXsJSt2MW0nB7uxRn0sr6qZoegCyZWFJ0zejv4QIQjevXqM/tTI5byTqZUF wNPAdrsqcvDj9Ibd7tOrXuFTZZStPMdyd1ZuMSIuEEb5VtJe1Sxd9O+H9BiAhch9PR6SN99LtgdMu8 fCBFpoh5K44L0XBDDTtO0wnA1V4Lq9n0Kzb1o4r9KEL9IS1nB9RtEd02i8BLQyt3Ntbz0sqMIdmdYW kMGfNuYXjT5uC0ssvt4G331s5lB7/GRoSqjuCHEr5mtCe+DEJ1GGC66Ed06w0WTVIXizNfwDKQq9Ni 7bp0HLGpGXHGabpjfP79oJqhrqyZabjGlFHSUa3S3a/DwFxaNJkmoUL0g3/3SmjJcKP59/9IVfIxjb XH+Vun9iOXCTUhL2ELVpMWydSEdtOJEcpMhb6mnkdy/iZxe4ORB3MwFyoFIbF9mrUrWtG98rxHruma hc0n09nc5Hs0SSuDJYqO8p86KEydddWp7Fg7IwtU28HTY=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -61,70 +61,64 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The PE/COFF spec permits the COFF signature and file header to appear
-anywhere in the file, and the actual offset is recorded in 4 byte
-little endian field at offset 0x3c of the image.
+The 'ARM\x64' magic number in the file header identifies an image as one
+that implements the bare metal boot protocol, allowing the loader to
+simply move the file to a suitably aligned address in memory, with
+sufficient headroom for the trailing .bss segment (the required memory
+size is described in the header as well).
 
-When GRUB is emitted as a PE/COFF binary, we reuse the 128 byte MS-DOS
-stub (even for non-x86 architectures), putting the COFF signature and
-file header at offset 0x80. However, other PE/COFF images may use
-different values, and non-x86 Linux kernels use an offset of 0x40
-instead.
+Note of this matters for GRUB, as it only supports EFI boot. EFI does
+not care about this magic number, and nor should GRUB: this prevents us
+from booting other PE linux images, such as the generic EFI zboot
+decompressor, which is a pure PE/COFF image, and does not implement the
+bare metal boot protocol.
 
-So let's get rid of the grub_pe32_header struct from pe32.h, given that
-it does not represent anything defined by the PE/COFF spec. Instead,
-use the GRUB_PE32_MSDOS_STUB_SIZE macro explicitly to reference the
-COFF header in the only place in the code where we rely on this.
-
-The remaining fields are moved into a struct grub_coff_image_header,
-which we will use later to access COFF header fields of arbitrary
-images (and which may therefore appear at different offsets)
+So drop the magic number check.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- grub-core/kern/efi/efi.c | 5 +++--
- include/grub/efi/pe32.h  | 5 +----
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ grub-core/loader/arm64/linux.c | 3 ---
+ include/grub/arm/linux.h       | 1 -
+ include/grub/arm64/linux.h     | 1 -
+ 3 files changed, 5 deletions(-)
 
-diff --git a/grub-core/kern/efi/efi.c b/grub-core/kern/efi/efi.c
-index e8a976a22f15..8bef81663853 100644
---- a/grub-core/kern/efi/efi.c
-+++ b/grub-core/kern/efi/efi.c
-@@ -302,7 +302,7 @@ grub_addr_t
- grub_efi_modules_addr (void)
+diff --git a/grub-core/loader/arm64/linux.c b/grub-core/loader/arm64/linux.c
+index aed7a200b848..b5b559c236e0 100644
+--- a/grub-core/loader/arm64/linux.c
++++ b/grub-core/loader/arm64/linux.c
+@@ -51,9 +51,6 @@ static grub_addr_t initrd_end;
+ grub_err_t
+ grub_arch_efi_linux_check_image (struct linux_arch_kernel_header * lh)
  {
-   grub_efi_loaded_image_t *image;
--  struct grub_pe32_header *header;
-+  struct grub_coff_image_header *header;
-   struct grub_pe32_coff_header *coff_header;
-   struct grub_pe32_section_table *sections;
-   struct grub_pe32_section_table *section;
-@@ -313,7 +313,8 @@ grub_efi_modules_addr (void)
-   if (! image)
-     return 0;
- 
--  header = image->image_base;
-+  header = (struct grub_coff_image_header *) ((char *) image->image_base
-+                                             + GRUB_PE32_MSDOS_STUB_SIZE);
-   coff_header = &(header->coff_header);
-   sections
-     = (struct grub_pe32_section_table *) ((char *) coff_header
-diff --git a/include/grub/efi/pe32.h b/include/grub/efi/pe32.h
-index 0ed8781f0376..a2da4b318c85 100644
---- a/include/grub/efi/pe32.h
-+++ b/include/grub/efi/pe32.h
-@@ -254,11 +254,8 @@ struct grub_pe32_section_table
- 
- #define GRUB_PE32_SIGNATURE_SIZE 4
- 
--struct grub_pe32_header
-+struct grub_coff_image_header
- {
--  /* This should be filled in with GRUB_PE32_MSDOS_STUB.  */
--  grub_uint8_t msdos_stub[GRUB_PE32_MSDOS_STUB_SIZE];
+-  if (lh->magic != GRUB_LINUX_ARMXX_MAGIC_SIGNATURE)
+-    return grub_error(GRUB_ERR_BAD_OS, "invalid magic number");
 -
-   /* This is always PE\0\0.  */
-   char signature[GRUB_PE32_SIGNATURE_SIZE];
+   if ((lh->code0 & 0xffff) != GRUB_PE32_MAGIC)
+     return grub_error (GRUB_ERR_NOT_IMPLEMENTED_YET,
+ 		       N_("plain image kernel not supported - rebuild with CONFIG_(U)EFI_STUB enabled"));
+diff --git a/include/grub/arm/linux.h b/include/grub/arm/linux.h
+index bcd5a7eb186e..bfab334dd87f 100644
+--- a/include/grub/arm/linux.h
++++ b/include/grub/arm/linux.h
+@@ -35,7 +35,6 @@ struct linux_arm_kernel_header {
+ };
+ 
+ #if defined(__arm__)
+-# define GRUB_LINUX_ARMXX_MAGIC_SIGNATURE GRUB_LINUX_ARM_MAGIC_SIGNATURE
+ # define linux_arch_kernel_header linux_arm_kernel_header
+ #endif
+ 
+diff --git a/include/grub/arm64/linux.h b/include/grub/arm64/linux.h
+index 7e22b4ab6990..96f1494e05a2 100644
+--- a/include/grub/arm64/linux.h
++++ b/include/grub/arm64/linux.h
+@@ -39,7 +39,6 @@ struct linux_arm64_kernel_header
+ };
+ 
+ #if defined(__aarch64__)
+-# define GRUB_LINUX_ARMXX_MAGIC_SIGNATURE GRUB_LINUX_ARM64_MAGIC_SIGNATURE
+ # define linux_arch_kernel_header linux_arm64_kernel_header
+ #endif
  
 -- 
 2.35.1
