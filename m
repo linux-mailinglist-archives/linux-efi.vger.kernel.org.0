@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C7BF598067
-	for <lists+linux-efi@lfdr.de>; Thu, 18 Aug 2022 10:56:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF8B059805F
+	for <lists+linux-efi@lfdr.de>; Thu, 18 Aug 2022 10:56:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243348AbiHRIzx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 18 Aug 2022 04:55:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34308 "EHLO
+        id S241348AbiHRIzz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 18 Aug 2022 04:55:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243575AbiHRIzv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 18 Aug 2022 04:55:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04CF6B07EF
-        for <linux-efi@vger.kernel.org>; Thu, 18 Aug 2022 01:55:51 -0700 (PDT)
+        with ESMTP id S235263AbiHRIzy (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 18 Aug 2022 04:55:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85DC4B07E9
+        for <linux-efi@vger.kernel.org>; Thu, 18 Aug 2022 01:55:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 85C566124A
-        for <linux-efi@vger.kernel.org>; Thu, 18 Aug 2022 08:55:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7574C433B5;
-        Thu, 18 Aug 2022 08:55:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B9D061303
+        for <linux-efi@vger.kernel.org>; Thu, 18 Aug 2022 08:55:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC11C433D6;
+        Thu, 18 Aug 2022 08:55:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660812949;
-        bh=niZBhpkIdscPcN208ArKi+A6d3GsNSweCzX3nRlNVU0=;
+        s=k20201202; t=1660812952;
+        bh=k2UO8HelSkz+8GRaRPGWyK8im8ylx1c2njdpoI2nOpU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s/jGf+iXDlaucr52n07TwBPBEYTwYtd6xTpfzVWAV4k/Ywc4lVOoMadj3bWKwWf31
-         XQAfOC8+RU6kybvtdRp9dgUwFBmtE5KyMCEmtn8x1BhEYnkJYMysgbcrwxGQdFImNI
-         cLbfG4Ty/f+eLs2HrIJY/YH/s9iV0Psj64kHRYcg/AhI5XkPVgHgcEtOIOSI8zJlVj
-         NlG6FzSbboyr1X4JaQsYz0cOc9OH7rcW7Rnghx1RUaeefPa/7DmyjOKeAqe0Lkqqn/
-         bTP3x9/KYV1DppbmOGBEjLnz4l4rvl0Awmxlr6Kz3XSwtszcmtVISaVPJZDDN5zahW
-         N6N6GtfU4rzMQ==
+        b=DcqUIsPlBOaS50uRmOOBdwsEcurT0MyOrflb/x0elsocQ3PtoQxkCbpsPGiCL9nPn
+         iGQTxTauT5f65idC60m6mA1J4j4DEw/KeBPjLD5uxh6vghbg74Q81sIvOwh/xXKGhb
+         Wl+3k9hNPolKcQa9PpCa+JijzzDIXkiLCVusQ7KWURwgDeZW0kG000gKWOH53l2csA
+         MWhMrQMt/Oom/DxPEEs4IyRwH1ViU4tQKyqInok9GrL/InH7y2/ycpXhMKrv7oanxV
+         JAZzcfFnh5YhSnBiwn+E7Fb+GeNEGng7KNpd77bZJ3NboETMayJmiOF6wABCPStymj
+         GgxuxP59fMStg==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     grub-devel@nongnu.org
 Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -41,14 +41,14 @@ Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
         dann frazier <dann.frazier@canonical.com>,
         Julian Andres Klode <julian.klode@canonical.com>
-Subject: [PATCH resend 1/9] loader: drop argv[] argument in grub_initrd_load()
-Date:   Thu, 18 Aug 2022 10:55:31 +0200
-Message-Id: <20220818085540.2075028-2-ardb@kernel.org>
+Subject: [PATCH resend 2/9] efi: move MS-DOS stub out of generic PE header definition
+Date:   Thu, 18 Aug 2022 10:55:32 +0200
+Message-Id: <20220818085540.2075028-3-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220818085540.2075028-1-ardb@kernel.org>
 References: <20220818085540.2075028-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6961; i=ardb@kernel.org; h=from:subject; bh=wQFzLxMZkWavlzJH8Og0nbf4Zqw+CNHB0gdJJ0VYcRY=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBi/f54vyc/5gAIH8tbljhw9fftrlbKH9aFI02A4l14 WVG0zQOJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYv3+eAAKCRDDTyI5ktmPJN75C/ 9rBG8POkI63bZ1k///q43La/3UJVVoKG7MvhrA1rs3A7ZqDYRPSPR3XwbCD5GnYd85+4hq/So6kjzN 77Mi/MR5tCTabPV8tBSCdXEgkg6MLpKCxcfaAJEFxLHM878BOZFCBxlHEXD+ZaKe4aItOv0g1Bq297 O768a2ypEHSVuiF371N63sNAPQ3RrLnvEYBS+zKD9zXT+VxrSw+BVLb2PGux8IrUIejLINvun7Xqcb Ocih5yKgS+P2X3FtM3vEd0CTbwn3a6PB0gMLikCyUuDcnEuMlHk4B9UBPNfROXnnH2NmTulrJMtjAQ XozufayXHoeG5OWJ5jmIsUDC88v4JWImNS1k5yhiRNWC019f8FnRmVooV3L6Vs7R+N/99ZbJLgPpYs Ug8k18+A2WzLt1BkdGlcqvO/RYAcIlCQM5/zmI3eFp+IDogeT7uHKUeFwpuPrJRr4rGtafpxhL2LeY /h/Xbnp+qBTZyfPjYjewzUMxzDsmtGoWUI5T2X6uhJew8=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2567; i=ardb@kernel.org; h=from:subject; bh=k2UO8HelSkz+8GRaRPGWyK8im8ylx1c2njdpoI2nOpU=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBi/f56QdqCnOdynwO+RnWMsZoYnJV20mPQ/Lae/HQB bKHn2jiJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYv3+egAKCRDDTyI5ktmPJKs8C/ 0YWR2+S0Ee4+hBFdguiDzMuGbTNIiU/O0N3hrHqBWzRgYcK4W6tDwFKDeDCwjL3L8AJW0qugdmw6v8 3cAQkccamZOdtR6OqjUNqvmk9wGlGx8c/afLzac1C4ZSZO6a88ZRahMmjfWJE/syz0UXPyjP+wk0OG WQnGYrywimRpm8n3t2s/hdTdwGWdKcbkaMjP7dQKcjZ53rfz2zJ81zwCmmihDXzxBn3P52xMqnAK6l Xk0mPOkBjF/m972LDE4el3lu4n2okGxjHurnCLeLlhL9NYwOjPfHdGIix7lAx1leo0SKXHHjOiPdG4 nxIB04AWGLdK+9jPNjzXcnvQFfjUGgliT1duByVTvwTPFogj320BFIHXrFvf5QSug5v77383EhpuWQ jlCMwuwBNNCzlvtfGm7Lq6h+YIFgpZvs+1kXaGT7Tcjyc7U+tMAcK5AapQ/iLqqRyZeVJrepBPghW5 MD6zgtLgzkTRBRXu1aRq9JDmF9LFY+OLtklOfazbl5muc=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -61,179 +61,71 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Nikita Ermakov <arei@altlinux.org>
+The PE/COFF spec permits the COFF signature and file header to appear
+anywhere in the file, and the actual offset is recorded in 4 byte
+little endian field at offset 0x3c of the image.
 
-In the case of an error grub_initrd_load() uses argv[] to print the
-filename that caused the error. It is also possible to obtain the
-filename from the file handles and there is no need to duplicate that
-information in argv[], so let's drop it.
+When GRUB is emitted as a PE/COFF binary, we reuse the 128 byte MS-DOS
+stub (even for non-x86 architectures), putting the COFF signature and
+file header at offset 0x80. However, other PE/COFF images may use
+different values, and non-x86 Linux kernels use an offset of 0x40
+instead.
 
-Signed-off-by: Nikita Ermakov <arei@altlinux.org>
+So let's get rid of the grub_pe32_header struct from pe32.h, given that
+it does not represent anything defined by the PE/COFF spec. Instead,
+use the GRUB_PE32_MSDOS_STUB_SIZE macro explicitly to reference the
+COFF header in the only place in the code where we rely on this.
+
+The remaining fields are moved into a struct grub_coff_image_header,
+which we will use later to access COFF header fields of arbitrary
+images (and which may therefore appear at different offsets)
+
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- grub-core/loader/arm/linux.c              | 2 +-
- grub-core/loader/arm64/linux.c            | 2 +-
- grub-core/loader/i386/linux.c             | 2 +-
- grub-core/loader/i386/pc/linux.c          | 2 +-
- grub-core/loader/i386/xen.c               | 3 +--
- grub-core/loader/ia64/efi/linux.c         | 2 +-
- grub-core/loader/linux.c                  | 4 ++--
- grub-core/loader/mips/linux.c             | 2 +-
- grub-core/loader/powerpc/ieee1275/linux.c | 2 +-
- grub-core/loader/sparc64/ieee1275/linux.c | 2 +-
- include/grub/linux.h                      | 2 +-
- 11 files changed, 12 insertions(+), 13 deletions(-)
+ grub-core/kern/efi/efi.c | 5 +++--
+ include/grub/efi/pe32.h  | 5 +----
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/grub-core/loader/arm/linux.c b/grub-core/loader/arm/linux.c
-index 30b366601c39..f00b538ebad0 100644
---- a/grub-core/loader/arm/linux.c
-+++ b/grub-core/loader/arm/linux.c
-@@ -422,7 +422,7 @@ grub_cmd_initrd (grub_command_t cmd __attribute__ ((unused)),
-   grub_dprintf ("loader", "Loading initrd to 0x%08x\n",
- 		(grub_addr_t) initrd_start);
- 
--  if (grub_initrd_load (&initrd_ctx, argv, (void *) initrd_start))
-+  if (grub_initrd_load (&initrd_ctx, (void *) initrd_start))
-     goto fail;
- 
-   initrd_end = initrd_start + size;
-diff --git a/grub-core/loader/arm64/linux.c b/grub-core/loader/arm64/linux.c
-index ef3e9f9444ca..aed7a200b848 100644
---- a/grub-core/loader/arm64/linux.c
-+++ b/grub-core/loader/arm64/linux.c
-@@ -266,7 +266,7 @@ grub_cmd_initrd (grub_command_t cmd __attribute__ ((unused)),
-       goto fail;
-     }
- 
--  if (grub_initrd_load (&initrd_ctx, argv, initrd_mem))
-+  if (grub_initrd_load (&initrd_ctx, initrd_mem))
-     goto fail;
- 
-   initrd_start = (grub_addr_t) initrd_mem;
-diff --git a/grub-core/loader/i386/linux.c b/grub-core/loader/i386/linux.c
-index c5984d4b27e9..edd6c2bb1d23 100644
---- a/grub-core/loader/i386/linux.c
-+++ b/grub-core/loader/i386/linux.c
-@@ -1107,7 +1107,7 @@ grub_cmd_initrd (grub_command_t cmd __attribute__ ((unused)),
-     initrd_mem_target = get_physical_target_address (ch);
-   }
- 
--  if (grub_initrd_load (&initrd_ctx, argv, initrd_mem))
-+  if (grub_initrd_load (&initrd_ctx, initrd_mem))
-     goto fail;
- 
-   grub_dprintf ("linux", "Initrd, addr=0x%x, size=0x%x\n",
-diff --git a/grub-core/loader/i386/pc/linux.c b/grub-core/loader/i386/pc/linux.c
-index 7b89d431051e..4adeee9ae001 100644
---- a/grub-core/loader/i386/pc/linux.c
-+++ b/grub-core/loader/i386/pc/linux.c
-@@ -462,7 +462,7 @@ grub_cmd_initrd (grub_command_t cmd __attribute__ ((unused)),
-     initrd_addr = get_physical_target_address (ch);
-   }
- 
--  if (grub_initrd_load (&initrd_ctx, argv, initrd_chunk))
-+  if (grub_initrd_load (&initrd_ctx, initrd_chunk))
-     goto fail;
- 
-   lh->ramdisk_image = initrd_addr;
-diff --git a/grub-core/loader/i386/xen.c b/grub-core/loader/i386/xen.c
-index cd24874ca324..3b856e842709 100644
---- a/grub-core/loader/i386/xen.c
-+++ b/grub-core/loader/i386/xen.c
-@@ -809,8 +809,7 @@ grub_cmd_initrd (grub_command_t cmd __attribute__ ((unused)),
-       if (err)
- 	goto fail;
- 
--      if (grub_initrd_load (&initrd_ctx, argv,
--			    get_virtual_current_address (ch)))
-+      if (grub_initrd_load (&initrd_ctx, get_virtual_current_address (ch)))
- 	goto fail;
-     }
- 
-diff --git a/grub-core/loader/ia64/efi/linux.c b/grub-core/loader/ia64/efi/linux.c
-index 41266109e03c..fb9b961f71a2 100644
---- a/grub-core/loader/ia64/efi/linux.c
-+++ b/grub-core/loader/ia64/efi/linux.c
-@@ -563,7 +563,7 @@ grub_cmd_initrd (grub_command_t cmd __attribute__ ((unused)),
-   grub_dprintf ("linux", "[addr=0x%lx, size=0x%lx]\n",
- 		(grub_uint64_t) initrd_mem, initrd_size);
- 
--  if (grub_initrd_load (&initrd_ctx, argv, initrd_mem))
-+  if (grub_initrd_load (&initrd_ctx, initrd_mem))
-     goto fail;
-  fail:
-   grub_initrd_close (&initrd_ctx);
-diff --git a/grub-core/loader/linux.c b/grub-core/loader/linux.c
-index ade9b2fef470..830360172c3d 100644
---- a/grub-core/loader/linux.c
-+++ b/grub-core/loader/linux.c
-@@ -271,7 +271,7 @@ grub_initrd_close (struct grub_linux_initrd_context *initrd_ctx)
- 
- grub_err_t
- grub_initrd_load (struct grub_linux_initrd_context *initrd_ctx,
--		  char *argv[], void *target)
-+		  void *target)
+diff --git a/grub-core/kern/efi/efi.c b/grub-core/kern/efi/efi.c
+index e8a976a22f15..8bef81663853 100644
+--- a/grub-core/kern/efi/efi.c
++++ b/grub-core/kern/efi/efi.c
+@@ -302,7 +302,7 @@ grub_addr_t
+ grub_efi_modules_addr (void)
  {
-   grub_uint8_t *ptr = target;
-   int i;
-@@ -317,7 +317,7 @@ grub_initrd_load (struct grub_linux_initrd_context *initrd_ctx,
- 	{
- 	  if (!grub_errno)
- 	    grub_error (GRUB_ERR_FILE_READ_ERROR, N_("premature end of file %s"),
--			argv[i]);
-+			initrd_ctx->components[i].file->name);
- 	  grub_initrd_close (initrd_ctx);
- 	  return grub_errno;
- 	}
-diff --git a/grub-core/loader/mips/linux.c b/grub-core/loader/mips/linux.c
-index 2f912c61ccda..7264ba2b663b 100644
---- a/grub-core/loader/mips/linux.c
-+++ b/grub-core/loader/mips/linux.c
-@@ -452,7 +452,7 @@ grub_cmd_initrd (grub_command_t cmd __attribute__ ((unused)),
-     initrd_dest = get_physical_target_address (ch) | 0x80000000;
-   }
+   grub_efi_loaded_image_t *image;
+-  struct grub_pe32_header *header;
++  struct grub_coff_image_header *header;
+   struct grub_pe32_coff_header *coff_header;
+   struct grub_pe32_section_table *sections;
+   struct grub_pe32_section_table *section;
+@@ -313,7 +313,8 @@ grub_efi_modules_addr (void)
+   if (! image)
+     return 0;
  
--  if (grub_initrd_load (&initrd_ctx, argv, initrd_src))
-+  if (grub_initrd_load (&initrd_ctx, initrd_src))
-     goto fail;
+-  header = image->image_base;
++  header = (struct grub_coff_image_header *) ((char *) image->image_base
++                                             + GRUB_PE32_MSDOS_STUB_SIZE);
+   coff_header = &(header->coff_header);
+   sections
+     = (struct grub_pe32_section_table *) ((char *) coff_header
+diff --git a/include/grub/efi/pe32.h b/include/grub/efi/pe32.h
+index 0ed8781f0376..a2da4b318c85 100644
+--- a/include/grub/efi/pe32.h
++++ b/include/grub/efi/pe32.h
+@@ -254,11 +254,8 @@ struct grub_pe32_section_table
  
- #ifdef GRUB_MACHINE_MIPS_QEMU_MIPS
-diff --git a/grub-core/loader/powerpc/ieee1275/linux.c b/grub-core/loader/powerpc/ieee1275/linux.c
-index 6fdd86313083..e6d071508d8d 100644
---- a/grub-core/loader/powerpc/ieee1275/linux.c
-+++ b/grub-core/loader/powerpc/ieee1275/linux.c
-@@ -349,7 +349,7 @@ grub_cmd_initrd (grub_command_t cmd __attribute__ ((unused)),
+ #define GRUB_PE32_SIGNATURE_SIZE 4
  
-   grub_dprintf ("loader", "Loading initrd at 0x%x, size 0x%x\n", addr, size);
+-struct grub_pe32_header
++struct grub_coff_image_header
+ {
+-  /* This should be filled in with GRUB_PE32_MSDOS_STUB.  */
+-  grub_uint8_t msdos_stub[GRUB_PE32_MSDOS_STUB_SIZE];
+-
+   /* This is always PE\0\0.  */
+   char signature[GRUB_PE32_SIGNATURE_SIZE];
  
--  if (grub_initrd_load (&initrd_ctx, argv, (void *) addr))
-+  if (grub_initrd_load (&initrd_ctx, (void *) addr))
-     goto fail;
- 
-   initrd_addr = addr;
-diff --git a/grub-core/loader/sparc64/ieee1275/linux.c b/grub-core/loader/sparc64/ieee1275/linux.c
-index bb47ee0cc640..ac2206f3c051 100644
---- a/grub-core/loader/sparc64/ieee1275/linux.c
-+++ b/grub-core/loader/sparc64/ieee1275/linux.c
-@@ -413,7 +413,7 @@ grub_cmd_initrd (grub_command_t cmd __attribute__ ((unused)),
-   grub_dprintf ("loader", "Loading initrd at vaddr 0x%lx, paddr 0x%lx, size 0x%lx\n",
- 		addr, paddr, size);
- 
--  if (grub_initrd_load (&initrd_ctx, argv, (void *) addr))
-+  if (grub_initrd_load (&initrd_ctx, (void *) addr))
-     goto fail;
- 
-   initrd_addr = addr;
-diff --git a/include/grub/linux.h b/include/grub/linux.h
-index 594a3f3079b0..a96ac20483d3 100644
---- a/include/grub/linux.h
-+++ b/include/grub/linux.h
-@@ -21,4 +21,4 @@ grub_initrd_close (struct grub_linux_initrd_context *initrd_ctx);
- 
- grub_err_t
- grub_initrd_load (struct grub_linux_initrd_context *initrd_ctx,
--		  char *argv[], void *target);
-+		  void *target);
 -- 
 2.35.1
 
