@@ -2,201 +2,617 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B77DC597B05
-	for <lists+linux-efi@lfdr.de>; Thu, 18 Aug 2022 03:28:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DF6F597BFC
+	for <lists+linux-efi@lfdr.de>; Thu, 18 Aug 2022 05:10:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233588AbiHRBYy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 17 Aug 2022 21:24:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34744 "EHLO
+        id S242979AbiHRDHV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 17 Aug 2022 23:07:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233625AbiHRBYx (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 17 Aug 2022 21:24:53 -0400
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-eopbgr60044.outbound.protection.outlook.com [40.107.6.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8137A031B;
-        Wed, 17 Aug 2022 18:24:51 -0700 (PDT)
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=pass;
- b=TCxMH5wCrd9vo410fFyFam3uBqY9VHC1w+fSL0Q6XyInrLynfOnzwZUjWZCp3YPGbKHWjLHUvVlDb7N57fwIs+ZuA2718DU5RPH29Sf/ce5yJqe++uSwJYFGVlIDbERzTIYaw5JAMO6zlNBzL0LUVzwqqVbIpcxKUX6/AP686ond7vh3KgyeZK+B6PQM5UHHOLLZmLMFLe0NfyomInqojA9+slBy+E3gSZZPfOz1HAHt8BMfIwWHb78SoNYjqqK0NCMrGIMEDUoNl76R7KAZTyNEhtrgVNXGj6abCq4Yp4Em03liSWE2YG1tJY7JAdwbcNO7rR/UiX+B5n26XxJeVw==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Euql1jYtaIJyWYKKzUapBjZstfLdidCKJy8QBv1ZE3w=;
- b=NKvbStazguPLTw6l00RlKjHAXiMF5ZYIWuO+ul9iIiclx/Shmj2Fucl6LuCe/HLVOVVKEi2roYlwlnJnKguLH2ywbE2OtmT52nCp7PdvagzG22Mn6//bShOc6B8OMJhJeMmKlygQ3KW10XNAwmzPUOy3Toj1Nkt+os5gkJXyQ39JtJOC8vpqv9hlw//q6xWFixPO4ytZL54dZtEw9LKVVe0LkeFjRs+EjAvOiojW5a2MZQZln8fsZ44v/zEd0fblJsGdrNtr6QZ8UFvtkz9G182tpFIukMbQCHEM57Su+K8pqK1OYzgxlk9XiNXrVMFSsU2PD2oo9+oeXI91K+NGNQ==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 63.35.35.123) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=arm.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
- dkim=pass (signature was verified) header.d=armh.onmicrosoft.com; arc=pass (0
- oda=1 ltdi=1 spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
- s=selector2-armh-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Euql1jYtaIJyWYKKzUapBjZstfLdidCKJy8QBv1ZE3w=;
- b=FslWQi/eW7G7Nb2J9LKVInzs5ow2giqy3H2jKDdJvxTQWLxcLpE+mmv9v1w4Js+bjgJkJTZ023Bm07xM5In+pJrIcSfFdMox2oxXuBt5fIDAFtKsWPQrmVTZZB4SMUyH4ubuyFOcmL4fpWT7UVpyTqzan81zxHWU+rYgpzlus54=
-Received: from AM6P191CA0031.EURP191.PROD.OUTLOOK.COM (2603:10a6:209:8b::44)
- by VE1PR08MB4783.eurprd08.prod.outlook.com (2603:10a6:802:a9::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5546.16; Thu, 18 Aug
- 2022 01:24:46 +0000
-Received: from AM7EUR03FT042.eop-EUR03.prod.protection.outlook.com
- (2603:10a6:209:8b:cafe::45) by AM6P191CA0031.outlook.office365.com
- (2603:10a6:209:8b::44) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5525.11 via Frontend
- Transport; Thu, 18 Aug 2022 01:24:46 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=armh.onmicrosoft.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 63.35.35.123 as permitted sender) receiver=protection.outlook.com;
- client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
- pr=C
-Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
- AM7EUR03FT042.mail.protection.outlook.com (100.127.140.209) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5546.15 via Frontend Transport; Thu, 18 Aug 2022 01:24:46 +0000
-Received: ("Tessian outbound 63c09d5d38ac:v123"); Thu, 18 Aug 2022 01:24:46 +0000
-X-CheckRecipientChecked: true
-X-CR-MTA-CID: bc801e11caa18d58
-X-CR-MTA-TID: 64aa7808
-Received: from 204ebf623a1b.1
-        by 64aa7808-outbound-1.mta.getcheckrecipient.com id 9A0A7915-FBAA-4C14-8158-C138C6B3B8B4.1;
-        Thu, 18 Aug 2022 01:24:35 +0000
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com
-    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id 204ebf623a1b.1
-    (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
-    Thu, 18 Aug 2022 01:24:35 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Gz47ycXetEpzis3g54/kYZBBN9CNNwlyQC3kYGONxBrsFpFK9M2viZMAo4f5xTI8DZIhodWrn0O+XE9zYSRcdtyP2L+puPeCz4AjpqHAmUUwuG8gqt3GnQi6McFpSsod8ORD8D+VJG6xhnOWq7VD0EgaKjLt++ghYBWozEoJZxiM4sT7I811BbSO28nYfHmvEqVmVYkXHPDGfHt927PkaxkSW2dHjrz1s+gxYFUSA3R/4RjfJtYt7PjFUlVi7OObOsD22VnwXI1APLei/+jVYVCJ6oHXtUHqVoQ1gyAg8A50skbKZVKSrhpVjQ86Q7VlRH1bdZjH5utBQMG1QeUtzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Euql1jYtaIJyWYKKzUapBjZstfLdidCKJy8QBv1ZE3w=;
- b=MsW69WgJLFx0G4L2Rku4HsslH6tQpQITu6IsDZxMSCeXMwgjiUvdGOJAvXDaRCgOwgP5z0tyEcNY6Kpzqnw4FP/pslhfawtehGkYl8Oaty+1LZB8f95hupD8gtiqugTRK03hGJM5XVQqFSYRCCWcj8czCezeln3i8AaqmfrydLmCmIFyCLIrhdP6CemU+dV6PxNX034+gKkbtjmW9s7n9Ja4hS9zX1ank36HPQw+UoEXf3DDsDwTNjrOlSZcA8BRAgC2e+LZ+rNpF3wUn43XhKvlhyyIfOhXF7pYAqSvTlZid0IS2elfPPavQ0eR6CZkw+XcjXpHdgyd475X/JWuaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
- s=selector2-armh-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Euql1jYtaIJyWYKKzUapBjZstfLdidCKJy8QBv1ZE3w=;
- b=FslWQi/eW7G7Nb2J9LKVInzs5ow2giqy3H2jKDdJvxTQWLxcLpE+mmv9v1w4Js+bjgJkJTZ023Bm07xM5In+pJrIcSfFdMox2oxXuBt5fIDAFtKsWPQrmVTZZB4SMUyH4ubuyFOcmL4fpWT7UVpyTqzan81zxHWU+rYgpzlus54=
-Received: from DBBPR08MB4538.eurprd08.prod.outlook.com (2603:10a6:10:d2::15)
- by DU0PR08MB8812.eurprd08.prod.outlook.com (2603:10a6:10:47b::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5525.19; Thu, 18 Aug
- 2022 01:24:33 +0000
-Received: from DBBPR08MB4538.eurprd08.prod.outlook.com
- ([fe80::9139:c501:db7f:6d6b]) by DBBPR08MB4538.eurprd08.prod.outlook.com
- ([fe80::9139:c501:db7f:6d6b%3]) with mapi id 15.20.5504.028; Thu, 18 Aug 2022
- 01:24:33 +0000
-From:   Justin He <Justin.He@arm.com>
-To:     Borislav Petkov <bp@alien8.de>, "Kani, Toshi" <toshi.kani@hpe.com>
-CC:     Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        James Morse <James.Morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        nd <nd@arm.com>, "stable@kernel.org" <stable@kernel.org>
-Subject: RE: [PATCH 2/2] EDAC/ghes: Modularize ghes_edac driver to remove the
- dependency on ghes
-Thread-Topic: [PATCH 2/2] EDAC/ghes: Modularize ghes_edac driver to remove the
- dependency on ghes
-Thread-Index: AQHYrWM9z4laCnaXtkSIa72TszXQIa2rWbmAgAV2I/CAAYnDAIAAeEUAgADBnQCAAAlZAIAAA7SAgAAHBQCAAD/okA==
-Date:   Thu, 18 Aug 2022 01:24:33 +0000
-Message-ID: <DBBPR08MB4538258B55E51ADD2E42C9E5F76D9@DBBPR08MB4538.eurprd08.prod.outlook.com>
-References: <20220811091713.10427-1-justin.he@arm.com>
- <20220811091713.10427-3-justin.he@arm.com> <YvZnrTrXhRn8FV3I@zn.tnic>
- <DBBPR08MB45389A9DB098F1AC14C19074F76B9@DBBPR08MB4538.eurprd08.prod.outlook.com>
- <PH7PR84MB1838203B478319EA45167BB4826A9@PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM>
- <YvyruNX+BUi+O3Df@zn.tnic>
- <PH7PR84MB183888AC20B37A3D891C332D826A9@PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM>
- <Yv1V+gWICIcuNXdE@zn.tnic>
- <PH7PR84MB1838B5AE91C939D3C9D872A2826A9@PH7PR84MB1838.NAMPRD84.PROD.OUTLOOK.COM>
- <Yv1e+Hez9ejaiHav@zn.tnic>
-In-Reply-To: <Yv1e+Hez9ejaiHav@zn.tnic>
-Accept-Language: en-US, zh-CN
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-X-MS-Office365-Filtering-Correlation-Id: 7f07c7b6-4b01-4b63-a060-08da80b86fe2
-x-ms-traffictypediagnostic: DU0PR08MB8812:EE_|AM7EUR03FT042:EE_|VE1PR08MB4783:EE_
-x-checkrecipientrouted: true
-nodisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted: BCL:0;
-X-Microsoft-Antispam-Message-Info-Original: NEpVU4qIREkZv8X2MUFI/PXJbBh0ZuMPtC6h0IavR3V5nK45tz7y/YIecyu7xomEhGqkNrNr/roePda/naVMhJNWOq3ofRrrFnlp7nqW9irXXIiI8zGTaYQ6HNvlvcZUe8y6Z8P8gkOaIIyQuqA11ypDzM20YxIWdskYYexntrssfAqYDRu2lkkDbdlSkq51hXPKSz24eH/l3xe7WYBYuWc52rUeQqEPckCGtwbldn4QRFmP8QN0Asf9tU/8haF3T8cbVDmVoslYqpHYLddOv7Rbfd8B1hopi7u/fyuncOfoSPT7QwfsjSlnkYsbOWSsPMqPQbHmltMSeJ7FMP8LZdX/Rsb0cnqdHeZzwnCu9zM3kERBkqgmYILQSVeCrw1t3fUdAtMux53T0KVK8C9Drn0oc+96qbWOCedQ9gwV/4bEdgDvDFgnbwbuByyYhwVUaYQv1lpcduv1S9tRKqQFkbzS2jhzj/8fTouWE+yQEoBdAl9QT6BuHZDzdWak88syjgBC5TAaVOJsoO8i63oU6tCVzDn8qVvjM7VVc0eDuPhxt/ntFvoLQybx8oiyDVZqFQa5NU3djlBwA4G4i/c/TMOavq23w7oPhGMJfHmxzrj4M4crxYDEZcqOwBMYMvxkBD1WzqMkAP9VWyXlXGCdX4oyI2/BdCjGUQBbLY/mmT0vmlqRxg0NuHO6/rA+jR8tH30LjGCHBMkr+CZdHN7SwS7W3pxKlt3DpJcjkXwAattJN74ccmAjKLOiUHmPfXxEEhdNP0xML+C1Nd/XPnGqlQ==
-X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR08MB4538.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(366004)(376002)(396003)(136003)(346002)(39860400002)(5660300002)(478600001)(7416002)(55016003)(71200400001)(316002)(110136005)(54906003)(2906002)(52536014)(66946007)(64756008)(66556008)(76116006)(8936002)(66476007)(8676002)(66446008)(4326008)(41300700001)(26005)(38070700005)(53546011)(9686003)(186003)(33656002)(86362001)(7696005)(6506007)(122000001)(83380400001)(38100700002);DIR:OUT;SFP:1101;
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S242976AbiHRDHU (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 17 Aug 2022 23:07:20 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0A4151435;
+        Wed, 17 Aug 2022 20:07:17 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6C7B2B81FFF;
+        Thu, 18 Aug 2022 03:07:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA8CC433C1;
+        Thu, 18 Aug 2022 03:07:11 +0000 (UTC)
+From:   Huacai Chen <chenhuacai@loongson.cn>
+To:     Arnd Bergmann <arnd@arndb.de>, Huacai Chen <chenhuacai@kernel.org>
+Cc:     loongarch@lists.linux.dev, linux-arch@vger.kernel.org,
+        Xuefeng Li <lixuefeng@loongson.cn>,
+        Guo Ren <guoren@kernel.org>, Xuerui Wang <kernel@xen0n.name>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Huacai Chen <chenhuacai@loongson.cn>,
+        Xi Ruoyao <xry111@xry111.site>
+Subject: [PATCH V2] LoongArch: Add efistub booting support
+Date:   Thu, 18 Aug 2022 11:07:07 +0800
+Message-Id: <20220818030707.2836607-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB8812
-Original-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped: AM7EUR03FT042.eop-EUR03.prod.protection.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs: 9f078233-b7e9-4bb6-1cac-08da80b867f9
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 0TrxezPWY/mIR1EL6HrMVIPZAJ8I3Fo7noCimdxOTDfeOTM2LnYc9Wu9B/GJcr1rgIduWpgWaa5h25nycen2pwLO/FC81RDSLIWQgDfyAVSQMqzjXixsaCD47vtojDgJ+otGfZQrIQojP9yRmggacPwdDSZNjopZ2i/bRqc9bNczuvpe+Ou1HBgfZ6czJtc78lKy5SfgUyBHg3lNmj4KaGIt0bFtnZBPjjaA5XRwNMm1Rvd/wWuus7aX358vyXpyvqhkRGtDGhMDWfDzZUf5n0PWCMO95C5/yWEePqak6wQBPs70nFJYVeTxwlx126rtXvw/OdoknDGiq758V3lVigqotH1Rp/piUymJIUwlGH5aUSmSL6okHRkTEw6Ttp69hzFW6wCHc5mqPR/IqcFtuh+4y+BIgsTjubyq8GZAcf/Jw9aEsspGMha3Qv7zTBzS/UZDWtp21A6vPEYEKvWkZo4EmD+6AzMBg0x5RrcOHd+EOi+NI761Q8DIrbi59gwJ63C/m7znKFGJn4sCc6OOopuqC3yiJtvWg5u4sQk8WaGVWFPHFsjSuEu6YFWGmTyKCgnKiIXMxV5uWwWrHA+ZO24AcORjimyZo7WYhOo5xX17jC6JXLPVNsecG0l+XTfRjER6ZsY/XDiqBd1xkS+PN6ss2QP9/RackoecOPYE5ZLpUaIaI0mx18mb/nStEYNNisUM0zQ5Ncz44y7G1Edsr9QxWpMo5iOeuPgU3rVWrdnKkFc7aT0DD8QvoyL+94X9kbfAxGIAAEC7DTveQSSIlA==
-X-Forefront-Antispam-Report: CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;CAT:NONE;SFS:(13230016)(4636009)(376002)(39860400002)(346002)(396003)(136003)(46966006)(40470700004)(36840700001)(336012)(83380400001)(186003)(81166007)(356005)(47076005)(82740400003)(36860700001)(450100002)(8676002)(70586007)(70206006)(4326008)(316002)(5660300002)(2906002)(52536014)(8936002)(54906003)(7696005)(6506007)(41300700001)(53546011)(26005)(9686003)(40460700003)(110136005)(478600001)(40480700001)(86362001)(55016003)(82310400005)(33656002);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2022 01:24:46.4557
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7f07c7b6-4b01-4b63-a060-08da80b86fe2
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
-X-MS-Exchange-CrossTenant-AuthSource: AM7EUR03FT042.eop-EUR03.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR08MB4783
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FORGED_SPF_HELO,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQm9yaXNsYXYgUGV0a292
-IDxicEBhbGllbjguZGU+DQo+IFNlbnQ6IFRodXJzZGF5LCBBdWd1c3QgMTgsIDIwMjIgNTozNSBB
-TQ0KPiBUbzogS2FuaSwgVG9zaGkgPHRvc2hpLmthbmlAaHBlLmNvbT4NCj4gQ2M6IEp1c3RpbiBI
-ZSA8SnVzdGluLkhlQGFybS5jb20+OyBBcmQgQmllc2hldXZlbCA8YXJkYkBrZXJuZWwub3JnPjsg
-TGVuDQo+IEJyb3duIDxsZW5iQGtlcm5lbC5vcmc+OyBKYW1lcyBNb3JzZSA8SmFtZXMuTW9yc2VA
-YXJtLmNvbT47IFRvbnkNCj4gTHVjayA8dG9ueS5sdWNrQGludGVsLmNvbT47IE1hdXJvIENhcnZh
-bGhvIENoZWhhYg0KPiA8bWNoZWhhYkBrZXJuZWwub3JnPjsgUm9iZXJ0IFJpY2h0ZXIgPHJyaWNA
-a2VybmVsLm9yZz47IFJvYmVydCBNb29yZQ0KPiA8cm9iZXJ0Lm1vb3JlQGludGVsLmNvbT47IGxp
-bnV4LWFjcGlAdmdlci5rZXJuZWwub3JnOw0KPiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3Jn
-OyBsaW51eC1lZGFjQHZnZXIua2VybmVsLm9yZzsgZGV2ZWxAYWNwaWNhLm9yZzsNCj4gUmFmYWVs
-IEogLiBXeXNvY2tpIDxyYWZhZWxAa2VybmVsLm9yZz47IFNodWFpIFh1ZQ0KPiA8eHVlc2h1YWlA
-bGludXguYWxpYmFiYS5jb20+OyBKYXJra28gU2Fra2luZW4gPGphcmtrb0BrZXJuZWwub3JnPjsN
-Cj4gbGludXgtZWZpQHZnZXIua2VybmVsLm9yZzsgbmQgPG5kQGFybS5jb20+OyBzdGFibGVAa2Vy
-bmVsLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENIIDIvMl0gRURBQy9naGVzOiBNb2R1bGFyaXpl
-IGdoZXNfZWRhYyBkcml2ZXIgdG8gcmVtb3ZlDQo+IHRoZSBkZXBlbmRlbmN5IG9uIGdoZXMNCj4g
-DQo+IE9uIFdlZCwgQXVnIDE3LCAyMDIyIGF0IDA5OjA5OjQxUE0gKzAwMDAsIEthbmksIFRvc2hp
-IHdyb3RlOg0KPiA+IFNpbmNlIHRoZW4sIHRoZSBjaGFuZ2UgYmVsb3cgZW5hYmxlZCBnaGVzX2Vk
-YWMgb24gQXJtIHdpdGhvdXQgdGhpcw0KPiA+IGtub3duLWdvb2QgcGxhdGZvcm1zIGNoZWNrLg0K
-PiA+DQo+ID4gY29tbWl0IGVhYTNhMWQ0NiAoIkVEQUMsIGdoZXM6IE1ha2UgcGxhdGZvcm0tYmFz
-ZWQgd2hpdGVsaXN0aW5nDQo+ID4geDg2LW9ubHkiKQ0KPiANCj4gQmFoLCBJIGhhZCBmb3Jnb3R0
-ZW4gYWJvdXQgdGhhdCBvbmUuLi4NCj4gDQo+IEluIGFueSBjYXNlLCBlZGFjX21jX2FkZF9tYyog
-aXMgdG9vIGxhdGUgaW4gdGhlIGluaXQgcGF0aCAtIHRoYXQgY2hlY2sgc2hvdWxkDQo+IGhhcHBl
-biBhcyB0aGUgdmVyeSBmaXJzdCB0aGluZyBpbiB0aGUgZHJpdmVyIGluaXQgZnVuY3Rpb24uDQo+
-IA0KPiBBbmQgbG9va2luZyBhdCB0aGUgQVJNNjQgRURBQyBkcml2ZXJzLCB0aGV5J3JlIG9ubHkg
-YSBjb3VwbGU6IHRodW5kZXJ4LA0KPiB4Z2VuZSwgYmx1ZWZpZWxkLCBkbWMtNTIwLi4uIEFuZCBJ
-J2Qgc3RpbGwgcHJlZmVyIGlmIHRoZWlyIG1haW50YWluZXJzIGV4cGxpY2l0bHkNCj4gQUNLIHN1
-Y2ggYSBjaGFuZ2UgdG8gY2FsbCBnaGVzX2dldF9kZXZpY2VzKCkgKGZvciBhIGxhY2sgb2YgYSBi
-ZXR0ZXIgaWRlYSkgYW5kDQo+IG5vdCBlbmFibGUgZ2hlc19lZGFjIG9uIHRoZW0gYmxpbmRseS4N
-Ck9rYXksIHdpbGwgaW5jbHVkZSBhYm92ZSBjaGFuZ2VzIGluIG5leHQgdmVyc2lvbiwgdGhhbmtz
-IGZvciB0aGUgcmVtaW5kZXIuDQoNCi0tDQpDaGVlcnMsDQpKdXN0aW4gKEppYSBIZSkNCg0KDQo=
+This patch adds efistub booting support, which is the standard UEFI boot
+protocol for us to use.
+
+We use generic efistub, which means we can pass boot information (i.e.,
+system table, memory map, kernel command line, initrd) via a light FDT
+and drop a lot of non-standard code.
+
+We use a flat mapping to map the efi runtime in the kernel's address
+space. In efi, VA = PA; in kernel, VA = PA + PAGE_OFFSET. As a result,
+flat mapping is not identity mapping, SetVirtualAddressMap() is still
+needed for the efi runtime.
+
+Tested-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+V1 --> V2:
+1, Call SetVirtualAddressMap() in stub;
+2, Use core kernel data directly in alloc_screen_info();
+3, Remove the magic number in MS-DOS header;
+4, Disable EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER;
+5, Some other small changes suggested by Ard Biesheuvel.
+
+ arch/loongarch/Kconfig                        |  9 ++
+ arch/loongarch/Makefile                       |  7 +-
+ arch/loongarch/boot/Makefile                  |  8 +-
+ arch/loongarch/include/asm/efi.h              | 10 +-
+ arch/loongarch/kernel/efi-header.S            | 99 +++++++++++++++++++
+ arch/loongarch/kernel/efi.c                   |  3 +
+ arch/loongarch/kernel/head.S                  | 20 ++++
+ arch/loongarch/kernel/image-vars.h            | 30 ++++++
+ arch/loongarch/kernel/setup.c                 | 12 +--
+ arch/loongarch/kernel/vmlinux.lds.S           |  1 +
+ drivers/firmware/efi/Kconfig                  |  4 +-
+ drivers/firmware/efi/libstub/Makefile         | 10 ++
+ drivers/firmware/efi/libstub/efi-stub.c       | 31 ++++--
+ drivers/firmware/efi/libstub/loongarch-stub.c | 60 +++++++++++
+ include/linux/pe.h                            |  2 +
+ 15 files changed, 282 insertions(+), 24 deletions(-)
+ create mode 100644 arch/loongarch/kernel/efi-header.S
+ create mode 100644 arch/loongarch/kernel/image-vars.h
+ create mode 100644 drivers/firmware/efi/libstub/loongarch-stub.c
+
+diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+index 9478f9646fa5..4cb412a82afa 100644
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -324,6 +324,15 @@ config EFI
+ 	  This enables the kernel to use EFI runtime services that are
+ 	  available (such as the EFI variable services).
+ 
++config EFI_STUB
++	bool "EFI boot stub support"
++	default y
++	depends on EFI
++	select EFI_GENERIC_STUB
++	help
++	  This kernel feature allows the kernel to be loaded directly by
++	  EFI firmware without the use of a bootloader.
++
+ config SMP
+ 	bool "Multi-Processing support"
+ 	help
+diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
+index ec3de6191276..2bd0a574ed73 100644
+--- a/arch/loongarch/Makefile
++++ b/arch/loongarch/Makefile
+@@ -7,7 +7,11 @@ boot	:= arch/loongarch/boot
+ 
+ KBUILD_DEFCONFIG := loongson3_defconfig
+ 
+-KBUILD_IMAGE	= $(boot)/vmlinux
++ifndef CONFIG_EFI_STUB
++KBUILD_IMAGE	= $(boot)/vmlinux.elf
++else
++KBUILD_IMAGE	= $(boot)/vmlinux.efi
++endif
+ 
+ #
+ # Select the object file format to substitute into the linker script.
+@@ -75,6 +79,7 @@ endif
+ head-y := arch/loongarch/kernel/head.o
+ 
+ libs-y += arch/loongarch/lib/
++libs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+ 
+ ifeq ($(KBUILD_EXTMOD),)
+ prepare: vdso_prepare
+diff --git a/arch/loongarch/boot/Makefile b/arch/loongarch/boot/Makefile
+index 0125b17edc98..fecf34f50e56 100644
+--- a/arch/loongarch/boot/Makefile
++++ b/arch/loongarch/boot/Makefile
+@@ -8,9 +8,13 @@ drop-sections := .comment .note .options .note.gnu.build-id
+ strip-flags   := $(addprefix --remove-section=,$(drop-sections)) -S
+ OBJCOPYFLAGS_vmlinux.efi := -O binary $(strip-flags)
+ 
+-targets := vmlinux
+ quiet_cmd_strip = STRIP	  $@
+       cmd_strip = $(STRIP) -s -o $@ $<
+ 
+-$(obj)/vmlinux: vmlinux FORCE
++targets := vmlinux.elf
++$(obj)/vmlinux.elf: vmlinux FORCE
+ 	$(call if_changed,strip)
++
++targets += vmlinux.efi
++$(obj)/vmlinux.efi: vmlinux FORCE
++	$(call if_changed,objcopy)
+diff --git a/arch/loongarch/include/asm/efi.h b/arch/loongarch/include/asm/efi.h
+index 9d44c6948be1..c7507a240f30 100644
+--- a/arch/loongarch/include/asm/efi.h
++++ b/arch/loongarch/include/asm/efi.h
+@@ -18,8 +18,14 @@ void efifb_setup_from_dmi(struct screen_info *si, const char *opt);
+ 
+ #define EFI_ALLOC_ALIGN		SZ_64K
+ 
+-struct screen_info *alloc_screen_info(void);
+-void free_screen_info(struct screen_info *si);
++static inline struct screen_info *alloc_screen_info(void)
++{
++	return &screen_info;
++}
++
++static inline void free_screen_info(struct screen_info *si)
++{
++}
+ 
+ static inline unsigned long efi_get_max_initrd_addr(unsigned long image_addr)
+ {
+diff --git a/arch/loongarch/kernel/efi-header.S b/arch/loongarch/kernel/efi-header.S
+new file mode 100644
+index 000000000000..8c1d229a2afa
+--- /dev/null
++++ b/arch/loongarch/kernel/efi-header.S
+@@ -0,0 +1,99 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (C) 2020-2022 Loongson Technology Corporation Limited
++ */
++
++#include <linux/pe.h>
++#include <linux/sizes.h>
++
++	.macro	__EFI_PE_HEADER
++	.long	PE_MAGIC
++.Lcoff_header:
++	.short	IMAGE_FILE_MACHINE_LOONGARCH64		/* Machine */
++	.short	.Lsection_count				/* NumberOfSections */
++	.long	0 					/* TimeDateStamp */
++	.long	0					/* PointerToSymbolTable */
++	.long	0					/* NumberOfSymbols */
++	.short	.Lsection_table - .Loptional_header	/* SizeOfOptionalHeader */
++	.short	IMAGE_FILE_DEBUG_STRIPPED | \
++		IMAGE_FILE_EXECUTABLE_IMAGE | \
++		IMAGE_FILE_LINE_NUMS_STRIPPED		/* Characteristics */
++
++.Loptional_header:
++	.short	PE_OPT_MAGIC_PE32PLUS			/* PE32+ format */
++	.byte	0x02					/* MajorLinkerVersion */
++	.byte	0x14					/* MinorLinkerVersion */
++	.long	__inittext_end - .Lefi_header_end	/* SizeOfCode */
++	.long	_end - __initdata_begin			/* SizeOfInitializedData */
++	.long	0					/* SizeOfUninitializedData */
++	.long	__efistub_efi_pe_entry - _head		/* AddressOfEntryPoint */
++	.long	.Lefi_header_end - _head		/* BaseOfCode */
++
++.Lextra_header_fields:
++	.quad	0					/* ImageBase */
++	.long	PECOFF_SEGMENT_ALIGN			/* SectionAlignment */
++	.long	PECOFF_FILE_ALIGN			/* FileAlignment */
++	.short	0					/* MajorOperatingSystemVersion */
++	.short	0					/* MinorOperatingSystemVersion */
++	.short	LINUX_EFISTUB_MAJOR_VERSION		/* MajorImageVersion */
++	.short	LINUX_EFISTUB_MINOR_VERSION		/* MinorImageVersion */
++	.short	0					/* MajorSubsystemVersion */
++	.short	0					/* MinorSubsystemVersion */
++	.long	0					/* Win32VersionValue */
++
++	.long	_end - _head				/* SizeOfImage */
++
++	/* Everything before the kernel image is considered part of the header */
++	.long	.Lefi_header_end - _head		/* SizeOfHeaders */
++	.long	0					/* CheckSum */
++	.short	IMAGE_SUBSYSTEM_EFI_APPLICATION		/* Subsystem */
++	.short	0					/* DllCharacteristics */
++	.quad	0					/* SizeOfStackReserve */
++	.quad	0					/* SizeOfStackCommit */
++	.quad	0					/* SizeOfHeapReserve */
++	.quad	0					/* SizeOfHeapCommit */
++	.long	0					/* LoaderFlags */
++	.long	(.Lsection_table - .) / 8		/* NumberOfRvaAndSizes */
++
++	.quad	0					/* ExportTable */
++	.quad	0					/* ImportTable */
++	.quad	0					/* ResourceTable */
++	.quad	0					/* ExceptionTable */
++	.quad	0					/* CertificationTable */
++	.quad	0					/* BaseRelocationTable */
++
++	/* Section table */
++.Lsection_table:
++	.ascii	".text\0\0\0"
++	.long	__inittext_end - .Lefi_header_end	/* VirtualSize */
++	.long	.Lefi_header_end - _head		/* VirtualAddress */
++	.long	__inittext_end - .Lefi_header_end	/* SizeOfRawData */
++	.long	.Lefi_header_end - _head		/* PointerToRawData */
++
++	.long	0					/* PointerToRelocations */
++	.long	0					/* PointerToLineNumbers */
++	.short	0					/* NumberOfRelocations */
++	.short	0					/* NumberOfLineNumbers */
++	.long	IMAGE_SCN_CNT_CODE | \
++		IMAGE_SCN_MEM_READ | \
++		IMAGE_SCN_MEM_EXECUTE			/* Characteristics */
++
++	.ascii	".data\0\0\0"
++	.long	_end - __initdata_begin			/* VirtualSize */
++	.long	__initdata_begin - _head		/* VirtualAddress */
++	.long	_edata - __initdata_begin		/* SizeOfRawData */
++	.long	__initdata_begin - _head		/* PointerToRawData */
++
++	.long	0					/* PointerToRelocations */
++	.long	0					/* PointerToLineNumbers */
++	.short	0					/* NumberOfRelocations */
++	.short	0					/* NumberOfLineNumbers */
++	.long	IMAGE_SCN_CNT_INITIALIZED_DATA | \
++		IMAGE_SCN_MEM_READ | \
++		IMAGE_SCN_MEM_WRITE			/* Characteristics */
++
++	.set	.Lsection_count, (. - .Lsection_table) / 40
++
++	.balign	0x10000					/* PECOFF_SEGMENT_ALIGN */
++.Lefi_header_end:
++	.endm
+diff --git a/arch/loongarch/kernel/efi.c b/arch/loongarch/kernel/efi.c
+index a50b60c587fa..1f1f755fb425 100644
+--- a/arch/loongarch/kernel/efi.c
++++ b/arch/loongarch/kernel/efi.c
+@@ -69,4 +69,7 @@ void __init efi_init(void)
+ 	config_tables = early_memremap(efi_config_table, efi_nr_tables * size);
+ 	efi_config_parse_tables(config_tables, efi_systab->nr_tables, arch_tables);
+ 	early_memunmap(config_tables, efi_nr_tables * size);
++
++	if (screen_info.orig_video_isVGA == VIDEO_TYPE_EFI)
++		memblock_reserve(screen_info.lfb_base, screen_info.lfb_size);
+ }
+diff --git a/arch/loongarch/kernel/head.S b/arch/loongarch/kernel/head.S
+index c60eb66793e3..01bac62a6442 100644
+--- a/arch/loongarch/kernel/head.S
++++ b/arch/loongarch/kernel/head.S
+@@ -12,6 +12,26 @@
+ #include <asm/loongarch.h>
+ #include <asm/stackframe.h>
+ 
++#ifdef CONFIG_EFI_STUB
++
++#include "efi-header.S"
++
++	__HEAD
++
++_head:
++	.word	MZ_MAGIC		/* "MZ", MS-DOS header */
++	.org	0x3c			/* 0x04 ~ 0x3b reserved */
++	.long	pe_header - _head	/* Offset to the PE header */
++
++pe_header:
++	__EFI_PE_HEADER
++
++SYM_DATA(kernel_asize, .long _end - _text);
++SYM_DATA(kernel_fsize, .long _edata - _text);
++SYM_DATA(kernel_offset, .long kernel_offset - _text);
++
++#endif
++
+ 	__REF
+ 
+ SYM_CODE_START(kernel_entry)			# kernel entry point
+diff --git a/arch/loongarch/kernel/image-vars.h b/arch/loongarch/kernel/image-vars.h
+new file mode 100644
+index 000000000000..c901ebb903f2
+--- /dev/null
++++ b/arch/loongarch/kernel/image-vars.h
+@@ -0,0 +1,30 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) 2020-2022 Loongson Technology Corporation Limited
++ */
++#ifndef __LOONGARCH_KERNEL_IMAGE_VARS_H
++#define __LOONGARCH_KERNEL_IMAGE_VARS_H
++
++#ifdef CONFIG_EFI_STUB
++
++__efistub_memcmp		= memcmp;
++__efistub_memchr		= memchr;
++__efistub_memcpy		= memcpy;
++__efistub_memmove		= memmove;
++__efistub_memset		= memset;
++__efistub_strcat		= strcat;
++__efistub_strcmp		= strcmp;
++__efistub_strlen		= strlen;
++__efistub_strncat		= strncat;
++__efistub_strnstr		= strnstr;
++__efistub_strnlen		= strnlen;
++__efistub_strrchr		= strrchr;
++__efistub_kernel_entry		= kernel_entry;
++__efistub_kernel_asize		= kernel_asize;
++__efistub_kernel_fsize		= kernel_fsize;
++__efistub_kernel_offset		= kernel_offset;
++__efistub_screen_info		= screen_info;
++
++#endif
++
++#endif /* __LOONGARCH_KERNEL_IMAGE_VARS_H */
+diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
+index 23ee293e1cd2..f938aae3e92c 100644
+--- a/arch/loongarch/kernel/setup.c
++++ b/arch/loongarch/kernel/setup.c
+@@ -49,9 +49,7 @@
+ #define SMBIOS_CORE_PACKAGE_OFFSET	0x23
+ #define LOONGSON_EFI_ENABLE		(1 << 3)
+ 
+-#ifdef CONFIG_VT
+-struct screen_info screen_info;
+-#endif
++struct screen_info screen_info __section(".data");
+ 
+ unsigned long fw_arg0, fw_arg1;
+ DEFINE_PER_CPU(unsigned long, kernelsp);
+@@ -122,16 +120,9 @@ static void __init parse_cpu_table(const struct dmi_header *dm)
+ 
+ static void __init parse_bios_table(const struct dmi_header *dm)
+ {
+-	int bios_extern;
+ 	char *dmi_data = (char *)dm;
+ 
+-	bios_extern = *(dmi_data + SMBIOS_BIOSEXTERN_OFFSET);
+ 	b_info.bios_size = (*(dmi_data + SMBIOS_BIOSSIZE_OFFSET) + 1) << 6;
+-
+-	if (bios_extern & LOONGSON_EFI_ENABLE)
+-		set_bit(EFI_BOOT, &efi.flags);
+-	else
+-		clear_bit(EFI_BOOT, &efi.flags);
+ }
+ 
+ static void __init find_tokens(const struct dmi_header *dm, void *dummy)
+@@ -145,6 +136,7 @@ static void __init find_tokens(const struct dmi_header *dm, void *dummy)
+ 		break;
+ 	}
+ }
++
+ static void __init smbios_parse(void)
+ {
+ 	b_info.bios_vendor = (void *)dmi_get_system_info(DMI_BIOS_VENDOR);
+diff --git a/arch/loongarch/kernel/vmlinux.lds.S b/arch/loongarch/kernel/vmlinux.lds.S
+index 69c76f26c1c5..36d042739f3c 100644
+--- a/arch/loongarch/kernel/vmlinux.lds.S
++++ b/arch/loongarch/kernel/vmlinux.lds.S
+@@ -12,6 +12,7 @@
+ #define BSS_FIRST_SECTIONS *(.bss..swapper_pg_dir)
+ 
+ #include <asm-generic/vmlinux.lds.h>
++#include "image-vars.h"
+ 
+ /*
+  * Max avaliable Page Size is 64K, so we set SectionAlignment
+diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+index 6cb7384ad2ac..cbf1c55dc224 100644
+--- a/drivers/firmware/efi/Kconfig
++++ b/drivers/firmware/efi/Kconfig
+@@ -107,7 +107,7 @@ config EFI_GENERIC_STUB
+ 
+ config EFI_ARMSTUB_DTB_LOADER
+ 	bool "Enable the DTB loader"
+-	depends on EFI_GENERIC_STUB && !RISCV
++	depends on EFI_GENERIC_STUB && !RISCV && !LOONGARCH
+ 	default y
+ 	help
+ 	  Select this config option to add support for the dtb= command
+@@ -124,7 +124,7 @@ config EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER
+ 	bool "Enable the command line initrd loader" if !X86
+ 	depends on EFI_STUB && (EFI_GENERIC_STUB || X86)
+ 	default y if X86
+-	depends on !RISCV
++	depends on !RISCV && !LOONGARCH
+ 	help
+ 	  Select this config option to add support for the initrd= command
+ 	  line parameter, allowing an initrd that resides on the same volume
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index d0537573501e..1588c61939e7 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -26,6 +26,8 @@ cflags-$(CONFIG_ARM)		:= $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
+ 				   $(call cc-option,-mno-single-pic-base)
+ cflags-$(CONFIG_RISCV)		:= $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
+ 				   -fpic
++cflags-$(CONFIG_LOONGARCH)	:= $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
++				   -fpic
+ 
+ cflags-$(CONFIG_EFI_GENERIC_STUB) += -I$(srctree)/scripts/dtc/libfdt
+ 
+@@ -70,6 +72,8 @@ lib-$(CONFIG_ARM)		+= arm32-stub.o
+ lib-$(CONFIG_ARM64)		+= arm64-stub.o
+ lib-$(CONFIG_X86)		+= x86-stub.o
+ lib-$(CONFIG_RISCV)		+= riscv-stub.o
++lib-$(CONFIG_LOONGARCH)		+= loongarch-stub.o
++
+ CFLAGS_arm32-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
+ 
+ # Even when -mbranch-protection=none is set, Clang will generate a
+@@ -125,6 +129,12 @@ STUBCOPY_FLAGS-$(CONFIG_RISCV)	+= --prefix-alloc-sections=.init \
+ 				   --prefix-symbols=__efistub_
+ STUBCOPY_RELOC-$(CONFIG_RISCV)	:= R_RISCV_HI20
+ 
++# For LoongArch, keep all the symbols in .init section and make sure that no
++# absolute symbols references doesn't exist.
++STUBCOPY_FLAGS-$(CONFIG_LOONGARCH)	+= --prefix-alloc-sections=.init \
++					   --prefix-symbols=__efistub_
++STUBCOPY_RELOC-$(CONFIG_LOONGARCH)	:= R_LARCH_MARK_LA
++
+ $(obj)/%.stub.o: $(obj)/%.o FORCE
+ 	$(call if_changed,stubcopy)
+ 
+diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
+index f515394cce6e..efb9219d8d49 100644
+--- a/drivers/firmware/efi/libstub/efi-stub.c
++++ b/drivers/firmware/efi/libstub/efi-stub.c
+@@ -40,14 +40,19 @@
+ 
+ #ifdef CONFIG_ARM64
+ # define EFI_RT_VIRTUAL_LIMIT	DEFAULT_MAP_WINDOW_64
+-#elif defined(CONFIG_RISCV)
++#elif defined(CONFIG_RISCV) || defined(CONFIG_LOONGARCH)
+ # define EFI_RT_VIRTUAL_LIMIT	TASK_SIZE_MIN
+-#else
++#else /* Only if TASK_SIZE is a constant */
+ # define EFI_RT_VIRTUAL_LIMIT	TASK_SIZE
+ #endif
+ 
++/*
++ * 0: No flat mapping
++ * 1: Flat mapping that VA = PA
++ * 2: Flat mapping that VA = PA + PAGE_OFFSET
++ */
++static int flat_va_mapping;
+ static u64 virtmap_base = EFI_RT_VIRTUAL_BASE;
+-static bool flat_va_mapping;
+ 
+ const efi_system_table_t *efi_system_table;
+ 
+@@ -121,6 +126,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ {
+ 	efi_loaded_image_t *image;
+ 	efi_status_t status;
++	unsigned long attrib;
+ 	unsigned long image_addr;
+ 	unsigned long image_size = 0;
+ 	/* addr/point and size pairs for memory management*/
+@@ -254,9 +260,11 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 	 * The easiest way to achieve that is to simply use a 1:1 mapping.
+ 	 */
+ 	prop_tbl = get_efi_config_table(EFI_PROPERTIES_TABLE_GUID);
+-	flat_va_mapping = prop_tbl &&
+-			  (prop_tbl->memory_protection_attribute &
+-			   EFI_PROPERTIES_RUNTIME_MEMORY_PROTECTION_NON_EXECUTABLE_PE_DATA);
++	attrib = prop_tbl ? prop_tbl->memory_protection_attribute : 0;
++	if (attrib & EFI_PROPERTIES_RUNTIME_MEMORY_PROTECTION_NON_EXECUTABLE_PE_DATA)
++		flat_va_mapping = 1;
++	if (IS_ENABLED(CONFIG_LOONGARCH))
++		flat_va_mapping = 2;
+ 
+ 	/* force efi_novamap if SetVirtualAddressMap() is unsupported */
+ 	efi_novamap |= !(get_supported_rt_services() &
+@@ -338,7 +346,16 @@ void efi_get_virtmap(efi_memory_desc_t *memory_map, unsigned long map_size,
+ 		paddr = in->phys_addr;
+ 		size = in->num_pages * EFI_PAGE_SIZE;
+ 
+-		in->virt_addr = in->phys_addr;
++		switch (flat_va_mapping) {
++		case 1:
++			in->virt_addr = in->phys_addr;
++			break;
++		case 2:
++			in->virt_addr = in->phys_addr + PAGE_OFFSET;
++			break;
++		default:
++			in->virt_addr = in->phys_addr;
++		}
+ 		if (efi_novamap) {
+ 			continue;
+ 		}
+diff --git a/drivers/firmware/efi/libstub/loongarch-stub.c b/drivers/firmware/efi/libstub/loongarch-stub.c
+new file mode 100644
+index 000000000000..b7ef8d2df59e
+--- /dev/null
++++ b/drivers/firmware/efi/libstub/loongarch-stub.c
+@@ -0,0 +1,60 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Author: Yun Liu <liuyun@loongson.cn>
++ *         Huacai Chen <chenhuacai@loongson.cn>
++ * Copyright (C) 2020-2022 Loongson Technology Corporation Limited
++ */
++
++#include <asm/efi.h>
++#include <asm/addrspace.h>
++#include "efistub.h"
++
++typedef void __noreturn (*kernel_entry_t)(bool efi, unsigned long fdt);
++
++extern int kernel_asize;
++extern int kernel_fsize;
++extern int kernel_offset;
++extern kernel_entry_t kernel_entry;
++
++efi_status_t check_platform_features(void)
++{
++	return EFI_SUCCESS;
++}
++
++efi_status_t handle_kernel_image(unsigned long *image_addr,
++				 unsigned long *image_size,
++				 unsigned long *reserve_addr,
++				 unsigned long *reserve_size,
++				 efi_loaded_image_t *image,
++				 efi_handle_t image_handle)
++{
++	efi_status_t status;
++	unsigned long kernel_addr = 0;
++
++	kernel_addr = (unsigned long)&kernel_offset - kernel_offset;
++
++	status = efi_relocate_kernel(&kernel_addr, kernel_fsize, kernel_asize,
++				     PHYSADDR(VMLINUX_LOAD_ADDRESS), SZ_2M, 0x0);
++
++	*image_addr = kernel_addr;
++	*image_size = kernel_asize;
++
++	return status;
++}
++
++void __noreturn efi_enter_kernel(unsigned long entrypoint, unsigned long fdt, unsigned long fdt_size)
++{
++	kernel_entry_t real_kernel_entry;
++
++	/* Config Direct Mapping */
++	csr_write64(CSR_DMW0_INIT, LOONGARCH_CSR_DMWIN0);
++	csr_write64(CSR_DMW1_INIT, LOONGARCH_CSR_DMWIN1);
++
++	real_kernel_entry = (kernel_entry_t)
++		((unsigned long)&kernel_entry - entrypoint + VMLINUX_LOAD_ADDRESS);
++
++	if (!efi_novamap)
++		real_kernel_entry(true, fdt);
++	else
++		real_kernel_entry(false, fdt);
++}
+diff --git a/include/linux/pe.h b/include/linux/pe.h
+index daf09ffffe38..1d3836ef9d92 100644
+--- a/include/linux/pe.h
++++ b/include/linux/pe.h
+@@ -65,6 +65,8 @@
+ #define	IMAGE_FILE_MACHINE_SH5		0x01a8
+ #define	IMAGE_FILE_MACHINE_THUMB	0x01c2
+ #define	IMAGE_FILE_MACHINE_WCEMIPSV2	0x0169
++#define	IMAGE_FILE_MACHINE_LOONGARCH32	0x6232
++#define	IMAGE_FILE_MACHINE_LOONGARCH64	0x6264
+ 
+ /* flags */
+ #define IMAGE_FILE_RELOCS_STRIPPED           0x0001
+-- 
+2.31.1
+
