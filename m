@@ -2,74 +2,73 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88CF3599189
-	for <lists+linux-efi@lfdr.de>; Fri, 19 Aug 2022 01:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 951F4599285
+	for <lists+linux-efi@lfdr.de>; Fri, 19 Aug 2022 03:31:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235268AbiHRX6Z (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 18 Aug 2022 19:58:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41468 "EHLO
+        id S239326AbiHSBaq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 18 Aug 2022 21:30:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240170AbiHRX6X (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 18 Aug 2022 19:58:23 -0400
+        with ESMTP id S239199AbiHSBap (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 18 Aug 2022 21:30:45 -0400
 Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFD0F2663;
-        Thu, 18 Aug 2022 16:58:21 -0700 (PDT)
-Received: from pps.filterd (m0148664.ppops.net [127.0.0.1])
-        by mx0b-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27IMCj9R024289;
-        Thu, 18 Aug 2022 23:56:58 GMT
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A1AACAC5B;
+        Thu, 18 Aug 2022 18:30:43 -0700 (PDT)
+Received: from pps.filterd (m0150245.ppops.net [127.0.0.1])
+        by mx0b-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27J1Sgsg022685;
+        Fri, 19 Aug 2022 01:29:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
  : date : message-id : references : in-reply-to : content-type :
  content-transfer-encoding : mime-version; s=pps0720;
- bh=BKLuobYsNTUwbjRVIMluKgKXPMYJY2eq/XX5JFjU8GI=;
- b=BCUCM6FdJZiiSpHIH/jfNoW4ZK/nrTs5oAFVEauNTYXQosXPTOSChI08uJzom+1X54v5
- rOhCzLroAjB7XEOe3LnajwhDKmrdUsxuwZYm8kKkivbLXkE/YmKnl88DVFbmYVwB7m32
- D57BmhJOxqsJK7gOhHPrpjn73SAeQTodAJ/Rc/IYcgX0CAD7VO3dgfkHuyaWJeNpUYYT
- 0UmE4uw8aiL88cC/ZOwlcm3ixkE3MUphYqIZDhwjmo1Gd16s7FiP/1jFS6lflE+V1heu
- JOdZazKe0Qx/lWCGf6hhm+UX23taovx6pFK6LFAk/EHYpLPKVx+kHd0sjGbGm1gLmWu6 sg== 
-Received: from p1lg14881.it.hpe.com (p1lg14881.it.hpe.com [16.230.97.202])
-        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3j1x12gna9-1
+ bh=VRkRcoh3Jh52i7miT7tFmjq6POaP5iqeQT6J7HFFKiA=;
+ b=cuxui7tzvj28EL2HiK2Y1oB3KU4DRVsdRrReFDvm+610tZfi4jB0CWgGgWWz0WTo+g4Z
+ aYcvedNqb5h2Dyon7FCSsqiEB30lUH3fepTW84YcOL7KUbyQiHuu9ISAWZ6xW9oIODXO
+ MIo2tFORYpHOoff8F9nre1V30CyM+butxgiZEMwIKxG5GY126lHQRIVn4QajH4OvUYGP
+ 9i++tPoPE3rx8eOpn4Fh/wZX9PbyudiQth6ocDk2m2jQNBvzB+7ZQLHAL/3+42suKwQo
+ hUEfowcw0xctt4PlkfzitMoNAeRGxHjEL8QTsIXkvl6hRSoe6XYwA4wGUcGRYPvQUyC/ NQ== 
+Received: from p1lg14879.it.hpe.com (p1lg14879.it.hpe.com [16.230.97.200])
+        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3j20vgg0aj-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 18 Aug 2022 23:56:58 +0000
+        Fri, 19 Aug 2022 01:29:40 +0000
 Received: from p1wg14923.americas.hpqcorp.net (unknown [10.119.18.111])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by p1lg14881.it.hpe.com (Postfix) with ESMTPS id 89D8A804C87;
-        Thu, 18 Aug 2022 23:56:56 +0000 (UTC)
+        by p1lg14879.it.hpe.com (Postfix) with ESMTPS id BD34AD2EE;
+        Fri, 19 Aug 2022 01:29:38 +0000 (UTC)
 Received: from p1wg14927.americas.hpqcorp.net (10.119.18.117) by
  p1wg14923.americas.hpqcorp.net (10.119.18.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Thu, 18 Aug 2022 11:56:56 -1200
-Received: from p1wg14928.americas.hpqcorp.net (10.119.18.116) by
+ 15.2.986.15; Thu, 18 Aug 2022 13:29:38 -1200
+Received: from p1wg14924.americas.hpqcorp.net (10.119.18.113) by
  p1wg14927.americas.hpqcorp.net (10.119.18.117) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Thu, 18 Aug 2022 11:56:55 -1200
+ 15.2.986.15; Thu, 18 Aug 2022 13:29:38 -1200
 Received: from P1WG14918.americas.hpqcorp.net (16.230.19.121) by
- p1wg14928.americas.hpqcorp.net (10.119.18.116) with Microsoft SMTP Server
+ p1wg14924.americas.hpqcorp.net (10.119.18.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.15
- via Frontend Transport; Thu, 18 Aug 2022 11:56:55 -1200
+ via Frontend Transport; Thu, 18 Aug 2022 13:29:38 -1200
 Received: from NAM12-DM6-obe.outbound.protection.outlook.com (192.58.206.38)
  by edge.it.hpe.com (16.230.19.121) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Thu, 18 Aug 2022 23:56:55 +0000
+ 15.2.986.15; Fri, 19 Aug 2022 01:29:37 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FAMw7YL7PJr/5hkGSUN2H9GHVmscwxMp8slpIVnaN17WmUtxicTRhcZz4ZrVCQXlv6oC2SL+BoM/BrwQ1AnbSwcyAMDlJXfkpX7ueoqAOj6R44EDhfL55YPIeb3q/javB4QC4yJ4aD//4GslYQpqQnBqc5AeT1+U54D3tWrOL0KoSAm14+Y3S3A/zz9dPgwx7+dnqA8iuv5iPWVHNPGiE4LMRDOm1/4S+So1qO1UdLaKK410PFeaxH2BCrcDdzw7qx/WY213pvXc4pjDlyTFaJU5K3W3aIiJaC+oXoIRiAfSWBObtiBVyhiOmFrV/Sr7+Qh3sepMTpvmryd7ki+QfA==
+ b=UaIn9BNLpo6H+0kCsUUhUzeml9FIoUuJRAjXe9G59sZ9ttRs9KKHh9djwEIjMf71duOnFR3vCMTGvaiwFBwBcI6ugh1Ohg7LUCJ8Juija2P1iHub8gLXTe5FD1NIUCHnYbo0Lr/nV8ukDKA8X0WpZqMsxUptvLPYUpRRzcIL3RIIX8GAv4LEJhf24Sr4Pvxe50mUK9uV7Ht00u0U+CRONiArGLeDMIlM3TPOVVd1z995lvbZKYVZUtSQD3PzRSSxYPKvSbil/Qafttkh3heOJEBxp78tq7JoRrNSQq4NtBP+CsWibTSwsVMQ9nleLipSm7zIxTHpjmJ6bb77R6QUqQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BKLuobYsNTUwbjRVIMluKgKXPMYJY2eq/XX5JFjU8GI=;
- b=BoaeFQ2wAAXixOHeBZBsBzYR+WhbJ2dBPQIxPgO9V3Hn6o9aAB0kIknT3jYNsG98nb5IJucSvVtfJI2zQ+sBYSSh6x0kFdSfTpStVJjvahe1sWtc2F4OFg4jdwniVbN1gKOlFEH/0H/dLsT2tqmA57qUcocCvIbv2r3VgP/bOHM/uE1wbAXD0lugXA9J/gy0VL08fwSVZ6YnbDZ0bYbAhWALS/ZG6cYHHxIiHGbhVnyOKnMM9BwnQHeKbReu/pa3SLB2+6jVEgGGQFcIu2TwX+fu8hTMpurlYQNSo2XuAHkbtWdSgfBSxGphQWmKSFWxVZ46ZVAST8NCw9hEpiAATw==
+ bh=VRkRcoh3Jh52i7miT7tFmjq6POaP5iqeQT6J7HFFKiA=;
+ b=X6Pi0HWiuyDBFUkGwZTEbVCfeRGCNqt0wJ67xUEe4ZDNuyu6fLPGYaGKuQBD8p4+DbjlQ9C18HQbEJHallS8JsHk6GOqDaYZJP3+XG9zpMzPRQWf+9/9H9Z5kkRnyrDVbbIOEnsl1/MsOqPbtpSbSKaBNqV9FOsYDiqwdmQctBrgsMZi15z40AABXSu1kqslTZA3gXlon1mjGWAh9TrvZTIAG8zdfdJg6r11uNe3XGAMXGnmzURZ74uIx8PUDCkso+ZBD62uR7N74Uitv+GU6Lmr/BwxDOZq8Zt3n4mLM2xTPxIbHXPeGk81UEf4Bz3Pm8xfMIu0+p1favZXa/4VWQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
  header.d=hpe.com; arc=none
 Received: from DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:4c::19) by
- PH7PR84MB1839.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:510:155::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5525.11; Thu, 18 Aug
- 2022 23:56:50 +0000
+ SJ1PR84MB3115.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:a03:45a::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5525.10; Fri, 19 Aug 2022 01:29:35 +0000
 Received: from DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM
  ([fe80::2033:298b:4062:29e6]) by DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::2033:298b:4062:29e6%5]) with mapi id 15.20.5546.016; Thu, 18 Aug 2022
- 23:56:50 +0000
+ ([fe80::2033:298b:4062:29e6%5]) with mapi id 15.20.5546.016; Fri, 19 Aug 2022
+ 01:29:35 +0000
 From:   "Kani, Toshi" <toshi.kani@hpe.com>
 To:     Jia He <justin.he@arm.com>, Ard Biesheuvel <ardb@kernel.org>,
         Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
@@ -89,81 +88,81 @@ CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
         Jarkko Sakkinen <jarkko@kernel.org>,
         "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
         "nd@arm.com" <nd@arm.com>
-Subject: RE: [PATCH v2 4/7] EDAC: Get chipset-specific edac drivers selected
- only when ghes_edac is not enabled
-Thread-Topic: [PATCH v2 4/7] EDAC: Get chipset-specific edac drivers selected
- only when ghes_edac is not enabled
-Thread-Index: AQHYskavWn87z7ecMUeX7zUOA1U3qa21Vw8g
-Date:   Thu, 18 Aug 2022 23:56:50 +0000
-Message-ID: <DM4PR84MB18537B0FA6BF7B6BCB583C88826D9@DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM>
+Subject: RE: [PATCH v2 5/7] EDAC/ghes: Prevent chipset-specific edac from
+ loading after ghes_edac is registered
+Thread-Topic: [PATCH v2 5/7] EDAC/ghes: Prevent chipset-specific edac from
+ loading after ghes_edac is registered
+Thread-Index: AQHYskazgdaGLeNebEWQzyv29780RK21ZjbQ
+Date:   Fri, 19 Aug 2022 01:29:35 +0000
+Message-ID: <DM4PR84MB18538A56870A280CDC4637A7826C9@DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM>
 References: <20220817143458.335938-1-justin.he@arm.com>
- <20220817143458.335938-5-justin.he@arm.com>
-In-Reply-To: <20220817143458.335938-5-justin.he@arm.com>
+ <20220817143458.335938-6-justin.he@arm.com>
+In-Reply-To: <20220817143458.335938-6-justin.he@arm.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 0d15ce8e-35c6-41f6-9e2f-08da8175517a
-x-ms-traffictypediagnostic: PH7PR84MB1839:EE_
+x-ms-office365-filtering-correlation-id: 67c61a9a-118a-4f2a-e188-08da81824692
+x-ms-traffictypediagnostic: SJ1PR84MB3115:EE_
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: qFAywpz7TMu6GIUDplGhFHla8EyNVes2PSwWKIMLKOMWEydf/RGof2zIyMTmnmtZALJ0t95G+L+hKLYV3BiXAaJfMryJfKwgbQpzEOukfWx9pransIO6EfjZHzvwuyDazEnFvAYzMSNLXL8g8KWidOhokqqSE2nTP9kYnWPw3kgmfdYtNWcSn4JhhcCmip53wRpEXo/NrU6/jxCh3zj6M/ABudO1b8K7Xg7qgGiMZUUq1SFLqEEfEyOohWez39EqZI4VeXjAvbZiq/ZfSEy68QjykC1MoFcIGYIUM0DmGP95Bb00HRdj+ZqLOWL81w6pcJiZ7Mq+oi3XIPg2FGiBbqfJDhAx5Bu2xm2UEOSt6OXHFrNto2dFSb7hQh3gvJRjpfwyVq80FJUDHVj9FptNQvRLsd03OluiFDhHLxA91oCnzYAm95wFSF1yB4AGtmoPHcznl1MDTw1vIADowo0c96GhPLY4Iud8/G0H1C0shE7LCQ1pN6T0M44YEst3vTQkaEC7Yjz849MWhczmcCJbXyUAvju8rWVw+tEtqdx132ljZWm/zDV+xGNetu0WUP5gsbxIDB1ORHSfUW57L/NquGACVQFotdfn21f0sxoBoXxZn8q6eVURlG+1JdbQcrsKWdrz5Utc3/PRfJ28dDSJ3j8MjLXhdBVPwFx2gRZTw802n+7FAXwDpuB7s8gHDpvOIRROJZzvBwIV5CdZEt18mXrdBujXfRX1ZcWjyviVhI41Qr0SxA+tBpAtkFV9sXPvaLQ8advlT1uR0jr5Dvf51vY1MKuIjtE5RWxGBz9W+AY=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(39860400002)(376002)(136003)(346002)(366004)(396003)(8936002)(82960400001)(38070700005)(5660300002)(316002)(66446008)(921005)(122000001)(33656002)(38100700002)(66476007)(76116006)(186003)(66946007)(8676002)(64756008)(66556008)(86362001)(52536014)(7696005)(26005)(4326008)(9686003)(2906002)(53546011)(110136005)(478600001)(55016003)(41300700001)(54906003)(71200400001)(7416002)(6506007);DIR:OUT;SFP:1102;
+x-microsoft-antispam-message-info: 1Aewm7Fb3NlS7+1EzDhk24tUy329+3aoOH4VUpKdDdoWrVyEC9oZEsSAWzd0VyADZTbFaCAQHzgH0mlzz4n7jSp/8FtLeC+guAPMbKmXD35MD3pke2KNpUS+VsdXn3O6q1PDh1npEmRkN8uMJN4sDmHBEGSwBU0+rCZmkm/azgFq/RI7soi+wt/SAxZU4wROwjQi1JlIzm4fmMKx+ow6KEOgHGEkDpO7R24rm3nZp2NmuuHdOA//eUndqmK81SWqcXGjwIu/ASqtE096ppwXpgfzBzQyDAUnjpO62hGzj+un1kOSUN3wdMF8+3ITpgzyXYbjn8CdcpH4fbgS5Ts4JIOsOMizRCiDjm55LLXd3BpCqmwA9KvVtLW3xe+261SYJxEZhSzNXb9iwTlR7JFoK9ivPaRcYrvKpqKPhrehH/LAEL1jl0KJ2MK4dgJQw+T5iYiHxqERQbfdEO6tjxnUUxY7O8+NXGzJaAY35Ea47g/jROos3rLw6rOlX8ZibYPG/qtVLmP6L49ihVF56B7/zRxZ3kdG3s3vOmIMKgcv33heWM0Ad/32RtgPtr9QPk31ld7XqITK4YYq9Tt2sg9AoYprmCytrrJ0yJAU0nxK+OVl72PvBcAxDQ1tUceqS7eiobp2JxoSs1R5vNtRv4SeO9tv44/NX/WB1Dup2ciZCbstvsK0j/BI2GhvOfMkfoseALWSEsUxr64aIIx13SJSoNCWn2qWtB+3QJczL6rvR+w0L1Dp2/mGK9CcswmYLfwK4c8A94MAB2H8lHnsPZ6JXJCS2x9+zZWRa2Mv6aqLKDo=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(366004)(39860400002)(396003)(376002)(136003)(346002)(7696005)(186003)(82960400001)(83380400001)(921005)(55016003)(71200400001)(41300700001)(478600001)(38100700002)(54906003)(66446008)(76116006)(7416002)(66556008)(38070700005)(8676002)(52536014)(316002)(5660300002)(9686003)(26005)(66946007)(64756008)(122000001)(53546011)(110136005)(4326008)(8936002)(2906002)(86362001)(66476007)(33656002)(6506007);DIR:OUT;SFP:1102;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?QGPsZin68lBv5Pkp+BX/LJ/nXRftNUOAQkUSYYl+Tl9pVeibOpRbbTQXPMmZ?=
- =?us-ascii?Q?oJZ9+At7nq21Z2S9mgAmjLz6U1ITl/UkpSIx9ddEcezukWe3JuKltSPgYmDu?=
- =?us-ascii?Q?RQWfi2nD1OJ3jP5tpPjoUgS3JfBTpHeMOdV/F0dYD0r2a5b7z9lYx2rv4Owa?=
- =?us-ascii?Q?ZUTTa/usdWpH/bex/ZQkTyeOhPwFMUdqGavdnMV9IZdNfcqkvIESkjHvuv7b?=
- =?us-ascii?Q?g1b1JwMTg9+XOjrxwV33cyEy+MZS4qigdjrxaeW8D8kuBSqT5ePc9Rg+mYA2?=
- =?us-ascii?Q?sIGnqfVVtaFL6nC5kwNWbNfHNbh7Wt3VbyV5wjAuA0hs7MloLNtxxjn2/M5M?=
- =?us-ascii?Q?AFTdSTo+YnZfpbzKkssgwH72uylcwnekhEKaPy4pwj8R1LzkoFppEfNKCy7D?=
- =?us-ascii?Q?B8SSbyJbNakKZt9KSkn1IVYHTw98nqxB/wY9+6IwynZRSPEBR0+c2cqO+gbB?=
- =?us-ascii?Q?edXhwHjMCXWtzQjT7iaLLcf9FT8TOHkL6m9kzHxbjH+A8I//OSiK12AcMWcG?=
- =?us-ascii?Q?fX/Wl4cISyPoPQek3vquYzXNCVH7lCo7nP8UV5nIP2Qss54SllpnQNgfvHJ1?=
- =?us-ascii?Q?+TWnVFgUNNucrapkW/JB6JSIgG4AZxoqF15Tu58nOLneg9dk6UOWah7e94zv?=
- =?us-ascii?Q?V0TeNuhoRat0K3EX9ZGUO+kMlSaWnf/Ax9/IsNb3KkBw3RxyNiaMzhGb3UaV?=
- =?us-ascii?Q?CkM8oDxlVBxjJ5fjutmQdDQO8z9vCLP9NyIK9XuaLJj1QmH2EyMdmWouP2fG?=
- =?us-ascii?Q?76CNFX+SF9eQMYrIGjaoHZJj6OUPvaJ453AIZ15asY3GJ1suX80LgMXFOhOL?=
- =?us-ascii?Q?TEgafJp6Htd552iNNo+uk3bNit7op0/4+SQ9lC/1mOY+jg1hU1ebk3B+OYid?=
- =?us-ascii?Q?wJxQiahiwvJHgbuEYNG5doAFS5n42+mq+DIsG82nfZgG8dIoKd8F4a4W8MTS?=
- =?us-ascii?Q?+KCF7XZ0EBbFoOwRgIJJZS9DL0sxSbKqNBoLdkbnnyvulbIRWEWO6UzvBrpl?=
- =?us-ascii?Q?vKyc2j/8i+mSLfmo8OfM+vbWUl8QSvYJOzGAgjWNRk++NkdWvBlnvR/pDmhL?=
- =?us-ascii?Q?zHGbpr2621by4GiBVPGwuA7tsJ0UBSXAucxj+QqA53sE/L2sW2S8bbTqh7UJ?=
- =?us-ascii?Q?2R+y8yIUkfeFmZNnR5Vi0LUIIdz3F+OrFDNtAz3TczzWCV2sNQJazqk09GvO?=
- =?us-ascii?Q?wFqmmTadCZ6tNQRoligabM6Ruv+sL2fghc/gy/bVVLfFOFyO+a0eMBduuMJ4?=
- =?us-ascii?Q?V83GT4ixtWCDfBW7ABa9yMHRsKQRzyXCRe0tCzabBQcnbiNYxUx5h+8F2+Vp?=
- =?us-ascii?Q?c8CIA01TVZLYZStJaGv0EBcpsBbayG4MLmZPabYbPuPAcpuCu7vskUQn3iOH?=
- =?us-ascii?Q?v6LYV9W/gHqk90IcyRC68Jj1Px2B3OVqzelAdJcsfQg/+kiwHzc1NkftVFib?=
- =?us-ascii?Q?YSLzKWMnWg+fUnrRviMVaK1ok9ixh6o8g0XgQhNi39zsuhbgj/0RdRAH1aqD?=
- =?us-ascii?Q?lLrLixwQppUs+nIwCxjqd7Lsp2v99HPyI4rDKxlSXsVAiVUGWOelDz21t4o0?=
- =?us-ascii?Q?oQ2FJyGpVFih+qsN2xMpRn14px2fwxZI/58qTq/R?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?NYl13J+6pPwb0CztsuHGCLulDj4q4wlCTpeRYP3HUdHORHIFg7vnxXHjK8WP?=
+ =?us-ascii?Q?4EnTztq0AeJvvxcISLiXyD/EiMlUYU2fI5AhkWpNCombdtDH8rWkwUYPYbEF?=
+ =?us-ascii?Q?uQysJuHffAjvOIxixK3CMHkLlVPw6DD21LubL3IQwF50cW+LB9/9JjxxNn7x?=
+ =?us-ascii?Q?/k97/45pUxRWAEo/r6bvAwO0v26wi83gjwdwAouDZHE3mcLucwy6w4AoGXbL?=
+ =?us-ascii?Q?opaGf2K0ZNPy77OWUrsHimxwqL/+0yI8ZJ/d9FUopFvDMFUVfu5cYnmXol4m?=
+ =?us-ascii?Q?FBCydbG7HrLFEyFibW8HQMiMmZ7Xe7Qoa2kYYA2TPoJBgoYC/vdBwUDrAYB0?=
+ =?us-ascii?Q?QoyCv4GqYk68DVfuchfZ2NnOzEv2/jB6kFeOZaKEt3nH66rr+cQTaDCXvZE2?=
+ =?us-ascii?Q?9lffaC8XEgonMa6JBVOxsB9+ELC9Y6oLarDe4vpo+cwroaviiaGdmaxH8Uyi?=
+ =?us-ascii?Q?Nod0B7+NoT/SHaKyYQR6iyaybgEPygG0k+0FuUTNkv9AlLDz1r30wV+Tdrmg?=
+ =?us-ascii?Q?JJ//tkByiSeHmxoaDLBPP0J8wPGrf+/+2qFprCMjNT78ApS5mZMpUfnZAJVu?=
+ =?us-ascii?Q?jDxIqA9tRXse4lx61Or16iuB1NGHYqGi2oZGWw9vgHJZYdv+SyhzMtiPMRWx?=
+ =?us-ascii?Q?iW1RSwaEVcvKuFV53hhdRUWVHbUatwg1B6/pxFJecE0JGyJDfzop6YnQ2cZa?=
+ =?us-ascii?Q?jg7zJcRgMAy7YX2hNDIZ49r3xKluhJvluDsx5HHwErR3dqCxQKT/1Flsi+GH?=
+ =?us-ascii?Q?6QMxMXurriKvuX4FKTcfgFFt6s7kpqOwKtbcPNHrf7CoLpqvlNk6nNZdGvrp?=
+ =?us-ascii?Q?hdJR9xMc76dC6GNUjxBflCF9HJ4wnouJ32RyHC2OdS1CzUdDjqFrH3E+hIOa?=
+ =?us-ascii?Q?f+5QwLpnJ/lUfmg72nTsGcuErqDZ42EEWrGuFf1YUVvjlYzK/cVDIm+6L8+j?=
+ =?us-ascii?Q?TgsIAeEhBXtyEryARyQbKkVnqFAAFSTyN4Q6ntsa9b5ChUttPN0l4lfivheD?=
+ =?us-ascii?Q?y9uQSFckl4mjXFj+QypI167B8R8A4p9dQawhSwQ5E8UWN4DiTDuwO6Z0qgHf?=
+ =?us-ascii?Q?YzNWaJkFXXaJSmjByM+hrx437XgrfhffeGWr7+/4/xht3aroWARb1uIdy2Nu?=
+ =?us-ascii?Q?UTSflNULRSzIresGer1K4Hf3PZGwqZOtfiMAN+N6dK1YUkc+kr0dmME2yJYQ?=
+ =?us-ascii?Q?eonpoasTCJLaLJnZelivj0fRB2Jy09WtO+pZHhzHE7ogW3O+0Gg1eErpF9G9?=
+ =?us-ascii?Q?Pvr0R+6HxdQJUwgejcQdLXZCZu0hXgc6EFxcpLKMQkdcvjD9bHMjiO98e6kN?=
+ =?us-ascii?Q?los914Ap6SYpCvFLpJr0UeTJkotVdiv46cQvykbxsPdj57dzYAlnfoWIp2bG?=
+ =?us-ascii?Q?NODtzNurIYOdiC3hdtI9aN82k7+dUnqjQkiCU9X6XpKC+nvntK+7YTZN2ML/?=
+ =?us-ascii?Q?S1q5qG4peXIttu2VmZGJnzF1NJ0QPkLMKTlJWLSZIhdFtPeXLuoCfAFLRj3+?=
+ =?us-ascii?Q?0UxyjkHaRz5gEzcFZl76U6en4FDIV+VgW4kRnAGor50ICpXCBelXKYbdh+Sx?=
+ =?us-ascii?Q?yJrpDJwcFb0vsuL4G2EGYyCYL9W2siCT0eyIYc9M?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d15ce8e-35c6-41f6-9e2f-08da8175517a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Aug 2022 23:56:50.4336
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67c61a9a-118a-4f2a-e188-08da81824692
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Aug 2022 01:29:35.5952
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 105b2061-b669-4b31-92ac-24d304d195dc
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: VNGQupoq+tyzqLFU/snDAWv3AqYIf78qn9BuIzUsRhisnBhkAQyl+ec7nauAUqSiAvXnx2RG5kFne0Lq3XJdww==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR84MB1839
+X-MS-Exchange-CrossTenant-userprincipalname: XKaK7TlfmxEqlahmv0VACAjrag5KiBnencFHq1P65fnKyCK7FWWu/l99/8pGUNITn6KcueLh1PszUF/KVGS70w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR84MB3115
 X-OriginatorOrg: hpe.com
-X-Proofpoint-ORIG-GUID: wgwaZHYi8iJTWXZqmdisDHoIl1SPCVXX
-X-Proofpoint-GUID: wgwaZHYi8iJTWXZqmdisDHoIl1SPCVXX
+X-Proofpoint-GUID: UddhV0LRjKxI3KUYrxTZ0lrnlLgAynkD
+X-Proofpoint-ORIG-GUID: UddhV0LRjKxI3KUYrxTZ0lrnlLgAynkD
 X-HPE-SCL: -1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
  definitions=2022-08-18_18,2022-08-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
- priorityscore=1501 clxscore=1011 malwarescore=0 lowpriorityscore=0
- mlxscore=0 suspectscore=0 mlxlogscore=868 adultscore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2208180088
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ suspectscore=0 bulkscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0
+ mlxlogscore=999 clxscore=1015 spamscore=0 adultscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2207270000
+ definitions=main-2208190004
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
@@ -175,39 +174,42 @@ List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 On Wednesday, August 17, 2022 8:35 AM, Jia He wrote:
-> When ghes_edac is loaded, a regular edac driver for the CPU type / platfo=
-rm
-> still attempts to register itself and fails in its module_init call.
+> Previous, there is only one edac can be registering in the EDAC core. Aft=
+er
+> ghes_edac is modularized, the registering of ghes devices may be deferred
+> when ghes_edac is loaded. Prevent the chipset-specific edac drivers from
+> loading after ghes_edac is registered, which allow the edac drivers to
+> get selected in e.g. HPE platform.
+...
+> @@ -1382,6 +1395,7 @@ static int ghes_probe(struct platform_device
+> *ghes_dev)
+>  	platform_set_drvdata(ghes_dev, ghes);
 >=20
-> Suggested-by: Toshi Kani <toshi.kani@hpe.com>
-> Suggested-by: Borislav Petkov <bp@alien8.de>
-> Signed-off-by: Jia He <justin.he@arm.com>
-> ---
->  drivers/edac/amd64_edac.c | 3 +++
->  drivers/edac/pnd2_edac.c  | 3 +++
->  drivers/edac/sb_edac.c    | 3 +++
->  drivers/edac/skx_base.c   | 3 +++
->  4 files changed, 12 insertions(+)
+>  	ghes->dev =3D &ghes_dev->dev;
+> +	set_ghes_devs_registered(false);
 
-Can you change i10nm_base.c and igen6_edac.c as well?
+This does not look right to me.
 
-They are listed in your list below.
+The condition of using ghes_edac is (ghes-present) && (ghes-preferred),
+where:
+ - ghes-present is latched on ghes_probe()
+ - ghes-preferred is true if the platform-check passes.
 
-On Monday, August 15, 2022 8:20 PM, Justin He wrote:
-> I assume that all those edac drivers which used owner checking are
-> impacted, right? So the impacted list should be:
-> drivers/edac/pnd2_edac.c:1532:  if (owner && strncmp(owner,
-> EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
-> drivers/edac/sb_edac.c:3513:    if (owner && strncmp(owner,
-> EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
-> drivers/edac/amd64_edac.c:4333: if (owner && strncmp(owner,
-> EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
-> drivers/edac/i10nm_base.c:552:  if (owner && strncmp(owner,
-> EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
-> drivers/edac/skx_base.c:657:    if (owner && strncmp(owner,
-> EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
-> drivers/edac/igen6_edac.c:1275: if (owner && strncmp(owner,
-> EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
+ghes_get_device() introduced in the previous patch works as the=20
+ghes-preferred check.
 
-Thanks,
+We cannot use ghes_edac registration as the ghes-present check in
+this scheme since it is deferred to module_init().
+
+I'd suggest the following changes:
+- Update ghes_get_device() to check a flag latched on ghes_probe().
+- Remove 'force' argument from ghes_get_device().  ghes_edac_init()
+is too late to set this flag.  Also, other edac drivers should not be able
+to control this flag.  I think this force_load kernel option needs to
+belong to ghes with this scheme.
+- ghes_get_device() exposes 'ghes_devs' to chipset-specific edac drivers,
+which should be internal to ghes.  ghes_get_device() may be renamed
+to something like ghes_edac_preferred() which returns true / false.
+
 Toshi
+
