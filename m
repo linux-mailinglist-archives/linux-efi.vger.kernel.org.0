@@ -2,197 +2,155 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AE3559A696
-	for <lists+linux-efi@lfdr.de>; Fri, 19 Aug 2022 21:40:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8193859A852
+	for <lists+linux-efi@lfdr.de>; Sat, 20 Aug 2022 00:29:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351517AbiHSTiH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 19 Aug 2022 15:38:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37294 "EHLO
+        id S230062AbiHSWTA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 19 Aug 2022 18:19:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351516AbiHSTiF (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 19 Aug 2022 15:38:05 -0400
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F25C711233C;
-        Fri, 19 Aug 2022 12:38:04 -0700 (PDT)
-Received: from pps.filterd (m0134422.ppops.net [127.0.0.1])
-        by mx0b-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27JJaj7i006153;
-        Fri, 19 Aug 2022 19:37:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
- : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pps0720;
- bh=Z14qp+QW9Tdq4XHkcAuA2glfC4kd6dCL5rJtKjxmgpU=;
- b=KxwCnAbSBvF6390SmanARHmG+aPfc8htt62c5LA3eFs6nOk44KzBsmJsTvEJZwEUWA0e
- UGt4P1Hrm1Y0cm6VqwjkeiYFl0veiOrk/YheKoBI0gByb0TSm8q/UxTdhrlUDFahPvhy
- bpRbWbLJNJK7+VkBq4k008wx8UetzbkX8DSsCPOEO0ac+fQgsAgOtlSWeqiHLY0+CM7X
- IOEVs6/j0n2pYARMYeGyTJT52aeDGSxUh/ggFyVH231J8+teVnuez9cYMdmeNutiJt+7
- h+DUDjigpNJMCUROVxW4STcbcDXPM1cPhMvvSN4XsUsqdXNuwqt0YKtYF3Za3FfCPGob Ag== 
-Received: from p1lg14878.it.hpe.com (p1lg14878.it.hpe.com [16.230.97.204])
-        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3j2gu2003m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 19 Aug 2022 19:37:22 +0000
-Received: from p1wg14925.americas.hpqcorp.net (unknown [10.119.18.114])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by p1lg14878.it.hpe.com (Postfix) with ESMTPS id 40A4CD2E2;
-        Fri, 19 Aug 2022 19:37:21 +0000 (UTC)
-Received: from p1wg14927.americas.hpqcorp.net (10.119.18.117) by
- p1wg14925.americas.hpqcorp.net (10.119.18.114) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Fri, 19 Aug 2022 07:37:21 -1200
-Received: from p1wg14926.americas.hpqcorp.net (10.119.18.115) by
- p1wg14927.americas.hpqcorp.net (10.119.18.117) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Fri, 19 Aug 2022 07:37:20 -1200
-Received: from p1wg14921.americas.hpqcorp.net (16.230.19.124) by
- p1wg14926.americas.hpqcorp.net (10.119.18.115) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.15
- via Frontend Transport; Fri, 19 Aug 2022 07:37:20 -1200
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (192.58.206.38)
- by edge.it.hpe.com (16.230.19.124) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Fri, 19 Aug 2022 07:37:20 -1200
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=T/ZlXZI8UhTNRI+7fDqgBlJLhK3PYfRctraBqgBIrGMifzaIuX01PEMKNE5DsFAUY6IDUSQE7xbfXViK7Fn6pD8N5gU2DWRMh3zwLQNp6gzcPq/XhmCfyil+01u31rgTBgd3K4yH6XWQ7XB2G7I7zYVme3Wrii/IaPtUNsYyToqNVgXYWajmNc5ZAgWpDv7kUnV5KJxSkbttpYk4BwoahxF7hEQY1CvgYb2QZOO8pihUd1UH2GiojMzLSqWat04FRkuI6aejZDKAn84NFbEgeZVZ650w0kvZQP+t2G9lO42xjNZ/E2Kolub+xYaz0EzHrJwl+tGAh8CvCa8dxQ/1QA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z14qp+QW9Tdq4XHkcAuA2glfC4kd6dCL5rJtKjxmgpU=;
- b=fQyXsGW4rU2AEMtif95YdHXycoDA79vq0x8aDlZVcRgAaf//YAwYQPoP64qO4zV3ISJvEWf451lPmLDh98F7+YYwx7uWtaXSDHmqhNjLni4Oqw3df8AlIRFY0PpmOebQo75Ut7zw2w9J3swoqqWz1zy3648PtXhAMfzVbeDaZlkITxleut6fVnWKdVw5yunzwO4f3D+Rj7KQifyAwXKH7mXpU2UkfrlN8Djd3wZ+ZFfzbYAgndnItdDj3Mercpev2/yeHn5jvjnGQnNq0p/S7iuZlUoZj+HKUl7BUEhf4EakTb4USHSaWx954KDkj+dCOSowq0qaTszuxvKOEXvx1A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
- header.d=hpe.com; arc=none
-Received: from DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:4c::19) by
- DM4PR84MB1973.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:4c::12) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5546.18; Fri, 19 Aug 2022 19:37:18 +0000
-Received: from DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::2033:298b:4062:29e6]) by DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::2033:298b:4062:29e6%5]) with mapi id 15.20.5546.016; Fri, 19 Aug 2022
- 19:37:18 +0000
-From:   "Kani, Toshi" <toshi.kani@hpe.com>
-To:     Borislav Petkov <bp@alien8.de>
-CC:     Justin He <Justin.He@arm.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        nd <nd@arm.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Len Brown <lenb@kernel.org>, James Morse <James.Morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>
-Subject: RE: [PATCH v2 5/7] EDAC/ghes: Prevent chipset-specific edac from
- loading after ghes_edac is registered
-Thread-Topic: [PATCH v2 5/7] EDAC/ghes: Prevent chipset-specific edac from
- loading after ghes_edac is registered
-Thread-Index: AQHYskazgdaGLeNebEWQzyv29780RK21ZjbQgACj04CAAE7iUIAANdmAgAADCCCAAAKzAIAAAGBAgAALBwCAAAFVQA==
-Date:   Fri, 19 Aug 2022 19:37:18 +0000
-Message-ID: <DM4PR84MB18530617E40AEC74145CD788826C9@DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM>
-References: <20220817143458.335938-1-justin.he@arm.com>
- <20220817143458.335938-6-justin.he@arm.com>
- <DM4PR84MB18538A56870A280CDC4637A7826C9@DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM>
- <DBBPR08MB453891E87563F1BBE291248AF76C9@DBBPR08MB4538.eurprd08.prod.outlook.com>
- <DM4PR84MB1853B213F2F45E495D9D6446826C9@DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM>
- <Yv/Wm/Zf0kdGgT33@zn.tnic>
- <DM4PR84MB185306C2C0DE95FF408173BA826C9@DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM>
- <Yv/batVmSf7PDRcL@zn.tnic>
- <DM4PR84MB185311667EA26C06348F6074826C9@DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM>
- <Yv/k+kcj6rRNRzkm@zn.tnic>
-In-Reply-To: <Yv/k+kcj6rRNRzkm@zn.tnic>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: b06ea7a8-6638-44f3-e12d-08da821a3a69
-x-ms-traffictypediagnostic: DM4PR84MB1973:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: ynp3AnrKWTcOA383Bj9kNn1CtJx6uLhkuYhvcPspSMrSxk1gM9rY0OdddtQzQxzw+DRqbcwQ/MF6VTqLECREyozztpoGuHvcMhslxrnI0zGixcyqFXFN8PaFe/vN+7I+qOUKqRzTBx/745/GgUSxxft9kZVwKsVhIgh7dCHZUhrtHEvJveIxLVobtGgryIhzPDUOWyKsPVfPTml8X3mDJ65rz6TiOzOalwfc7yWGtuhL9qWGbVF5okTRDmsSMSKj/BR0kAV+/TbFw7eqI0IUqlZPdaQiofqoAjqnZEdJh8wrE42NAcMuXPkRG7+8uLh/s2/MaR5VW6YMUEBIS3FFDp+w8IS/5ygm2xjMuM0tSR3Oz+DvdDcxxz6fBoyl72bx07X14N3pTfcZMc3YsQDH/cZLWKIHcBp4bvxrvgOAHDn3vosxadmHnwEUMdJ56Tc+QxqKrAiqoaSmZXjcS0Prnh7givP59Rr+uOXOQ09Uianhs4YxCRWmTVTKcFP+E7NA9anC+ozKvz0TL6xTXcS3/sWCnqjCgGGORi3AoB+kW4etSWu5gZadMH+ZxbKdY466XaxK3zMVv06SkEVLecEMpwWLufYr5NvmQOw2H8vAQmbIQjJ2aW61VtwUrfHOeDIzsuV/9jndC9yxJhPkWDjxUIuqkMOD5GZ4Kyji5yi6JKxUuU2a7o8kck5UJGkVv2cT27hJoKfWrpM6GpoITucE5Q9HzwlPQznxcWlKhRw9dLgvU9yffw4FGT+xOMi0I63jGEyopc1Nhv17fT0JJfnoBQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(39860400002)(366004)(136003)(396003)(346002)(376002)(76116006)(7696005)(6506007)(71200400001)(53546011)(5660300002)(52536014)(186003)(558084003)(66446008)(33656002)(66556008)(66476007)(4326008)(86362001)(64756008)(66946007)(26005)(9686003)(8676002)(55016003)(2906002)(82960400001)(38070700005)(83380400001)(7416002)(41300700001)(54906003)(6916009)(8936002)(122000001)(316002)(478600001)(38100700002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WlhYb25yWUhkZWVsQkZaNUx5MjJucUNGY2tGQjFUZWl5VUlxeTNnZnlOVkxO?=
- =?utf-8?B?WmRCbWRRejVqZ2xubElvZ1FUWEEvSmlzNXZ5T3BOM2hqMXdmMW5HUDdVNXF5?=
- =?utf-8?B?aUNzcDlOQ25kNDlCUUJNMnEveWFaQW5NbEQyQXJ2QTFYdFZ3a292eUdmZGMw?=
- =?utf-8?B?WE45OEUrdzFJRjdCR1FSamZDelpyZzZuTzFqZEJpeHJNVzhVRnpLODg1Q3Ar?=
- =?utf-8?B?QTZiSlFiUXNiYnlHZTRZOHA4TSt4VVZzekw2OU5Kc0FoQ0VnRzFJQUZUSHRV?=
- =?utf-8?B?cUd3dDhaTzVGZ3F2cE5wRHpwaXR4WktTYU9za0RLMXJlWFAwb1J4VndpaERC?=
- =?utf-8?B?aWVqVUk0aFpBblJwNW5qV0JmSnBmS240cWxNQy9xSzFsOEhmRFRXeEprbDg0?=
- =?utf-8?B?b2R5YmMrVVAxNlV1QkJ2dnNqMjNTczF2NUljRytLRzVaWDgySWlQck5zeTd2?=
- =?utf-8?B?bGZjeVRXejhUY1R6S0tKY21wdEpDYlJtTFFLMkJ6akgyWDhpaFhZWHJ6dGRW?=
- =?utf-8?B?MmV0NDkzRitHTzVHR21BeDhpbmhwLzZXRDVjSE03ZEttWUppUWhhMXNGN2p2?=
- =?utf-8?B?YW11VkhhV055RnM3bXBMVFplKzV5MVVrTWtseFduZGFRWWFKV040ZmprT09u?=
- =?utf-8?B?eVJOZjk4SEdRaFJ2cUxxVU9NcEhzdHoxcFYxOTg4amhpekYzRDRtRW1RdldS?=
- =?utf-8?B?VG9ZQkZDWkVOV3k5VTJIRDY0ak1yY05nSUV5TkFaR284cUpoanlnRGpzS2lN?=
- =?utf-8?B?R0ZOOEZUTDF2ZGU1TXU0ZkdMWnJmMVVLTmhIRlNweXJuQlRsaWZHOTl4a0NX?=
- =?utf-8?B?VkhCR1M5Z2pCTi80MHBjTWZJSXZKd2ZhUW5pck1PSmpNY3dBRkNmUGlaQS9I?=
- =?utf-8?B?ODVYMTROZFRlYW01amE3TnZNUjRHQTRMVkNNdlo3WEZIVEFBYWZZYVVKTVNa?=
- =?utf-8?B?aTFldVZueE9NOUQ4bEE0bVhRQjRUbC9ZRU9ra1hPRUZBa2hrRG1oUnl3cDhS?=
- =?utf-8?B?cVhJTUh0TU1VZ3M4RUhkNEpoUVY5OHFlRlBYakxWNmhqR1hGdkwyMkttWXpk?=
- =?utf-8?B?bWxNZHVjRlkzeXVRdkJVTmZLQ2Y1QmtrZGZ2Z1UvTTc3UWtxWHFiNlMvVEdE?=
- =?utf-8?B?U09FaTRjTHhqelpLeS9lTkZaZEZCMnN2dkUwUmNiQTJ1cGJ3dXRKcnMwY1Vq?=
- =?utf-8?B?OVNHR2cxWTBTOGVUQXAzODM4OGJETUlyWmFucVlWYWtzRCtCaEkrQktuQWd6?=
- =?utf-8?B?ZTN3Y1BhZjRUZHJzTk9CRE5GUzg4dERzaGdHdXcybW9jYXJxcGhmeGFHVUVa?=
- =?utf-8?B?WGd2TE9oQmpzemJqY0VDL0JoeGNqUkNvK3dhWGJsQzloUE9vYlMwRDFoR1NF?=
- =?utf-8?B?VXZDZDU2TFY0MXgzQTZHVGNqQ3lPWXk1Q2ZQVWw0L2tYN1g2bTB4RUVZRnkz?=
- =?utf-8?B?clMvVWFOckUzQjkrWlB5YitFclkwTXMvV3hpcFdkNTVCbDZ5Q0k1N1VsQ2tR?=
- =?utf-8?B?QjZBNmtETTRKZHNxSFo3YTd6VHNoZVNGV3F3NmtuWURubUNKYUFsY0dxT0xv?=
- =?utf-8?B?N0t3R01QcU1pTmI3Nm13SDNVQ0ovdkpFUWxISDVqV3NoN3ZQb0s3cFlzdW1P?=
- =?utf-8?B?Yk5jaDQ3SDA3ZmRkQXJvMmYrOG5JOWpUNFFVcDgwU29kUGZiTGVHU3c2MTQv?=
- =?utf-8?B?NnhWTnZ2c2lzQ29MemhKblppMmE4MzZ1cHBEdHgxZXJjWmhacDZ0Z2gwWDRN?=
- =?utf-8?B?L0F3SnpzY0tyZmxWYmVNZkpiaHpsY0Nnc2F4LzBWaUJYYk9yU3FtZVB4bG5x?=
- =?utf-8?B?L3FQMXJQU3Y5djdPTTdnSTEzU3F4Z2g2U1pVKzdqZTFqd051WHZleWZSbWhV?=
- =?utf-8?B?U1ZhL2dQZXg5cjlrcnl0Q3E5dWdTb2FiSGpLKzUvWGpsUzJ2RkZWRG54Vmo2?=
- =?utf-8?B?N2dLUW9CVzBTK0w4NE9CQWpUd0tJWDA5dzdhQjlwYnYyWkJzUXVpSlBWcFkx?=
- =?utf-8?B?TjRmNHBxWWJxZDl4d1FaSFkvcTBveU5vZDREeEl0VnBUbW0yRTJjSWxEd2Nq?=
- =?utf-8?B?enZwYUhrR21lMFZIZHE2UGExTnEzRVlXc1YyZElsVWRrUFdNZ2toZkxMcS9t?=
- =?utf-8?Q?6cy5X/Nv5/oKrbBnFVKwPhdzS?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S229802AbiHSWS7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 19 Aug 2022 18:18:59 -0400
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9984EB2851;
+        Fri, 19 Aug 2022 15:18:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+        s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+        Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=pfV3W5tIDS7uvHHlXIEyDkDagWNi+Z86KWqZSqCzOrI=; b=sY1n8Aq6cKn+8C+zsSeV/uxggm
+        nsj/09ZQvFYE+q97bRBlzjnW1zw5RbFDAnFolBKYT6KrCpDrsXE1skijRnZWS19ElGNWcV5X4mpAU
+        dPTTKVW8Ybf0lsZ+/2nZtUSKRL8Tsrvh7PeUAO5+1gcci5JuGcxPHddWjR8qmRG7owXlYfJB4r7z2
+        gygAEeJyjzZWEZLKLqNxZ2NITsVeZECMoYr2HilmMgOn6hF92BWV6bQedzTrYdl8A4e5mubOIC1f3
+        GjHAfCmlUSyzNEzj/212l9Gi3pAbATQtzxezcnnn2wIWy1pePhpNmlSJIReIg6cL3Lz4Qmauejy6k
+        jX0jtSbQ==;
+Received: from [179.232.144.59] (helo=localhost)
+        by fanzine2.igalia.com with esmtpsa 
+        (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+        id 1oPAJo-00Carb-O5; Sat, 20 Aug 2022 00:18:22 +0200
+From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+To:     akpm@linux-foundation.org, bhe@redhat.com, pmladek@suse.com,
+        kexec@lists.infradead.org
+Cc:     linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        netdev@vger.kernel.org, x86@kernel.org, kernel-dev@igalia.com,
+        kernel@gpiccoli.net, halves@canonical.com, fabiomirmar@gmail.com,
+        alejandro.j.jimenez@oracle.com, andriy.shevchenko@linux.intel.com,
+        arnd@arndb.de, bp@alien8.de, corbet@lwn.net,
+        d.hatayama@jp.fujitsu.com, dave.hansen@linux.intel.com,
+        dyoung@redhat.com, feng.tang@intel.com, gregkh@linuxfoundation.org,
+        mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com,
+        jgross@suse.com, john.ogness@linutronix.de, keescook@chromium.org,
+        luto@kernel.org, mhiramat@kernel.org, mingo@redhat.com,
+        paulmck@kernel.org, peterz@infradead.org, rostedt@goodmis.org,
+        senozhatsky@chromium.org, stern@rowland.harvard.edu,
+        tglx@linutronix.de, vgoyal@redhat.com, vkuznets@redhat.com,
+        will@kernel.org, xuqiang36@huawei.com,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        bcm-kernel-feedback-list@broadcom.com, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-um@lists.infradead.org
+Subject: [PATCH V3 00/11] The panic notifiers refactor - fixes/clean-ups (V3)
+Date:   Fri, 19 Aug 2022 19:17:20 -0300
+Message-Id: <20220819221731.480795-1-gpiccoli@igalia.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: b06ea7a8-6638-44f3-e12d-08da821a3a69
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Aug 2022 19:37:18.6811
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 105b2061-b669-4b31-92ac-24d304d195dc
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ym/Flz8I392R+agNQWG7OPba18gm491Vc2xFs46zCDli3UqB3uBhEfzjVKBvewS1F47MvO4MMoVcprQxz1NG0g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR84MB1973
-X-OriginatorOrg: hpe.com
-X-Proofpoint-GUID: vtXnBXPseQBpwj3w4mG9NsUGAYKkFkZ6
-X-Proofpoint-ORIG-GUID: vtXnBXPseQBpwj3w4mG9NsUGAYKkFkZ6
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-19_10,2022-08-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- malwarescore=0 priorityscore=1501 suspectscore=0 lowpriorityscore=0
- mlxlogscore=694 mlxscore=0 adultscore=0 phishscore=0 bulkscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2208190072
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-T24gRnJpZGF5LCBBdWd1c3QgMTksIDIwMjIgMTozMSBQTSwgQm9yaXNsYXYgUGV0a292IHdyb3Rl
-Og0KPiA+IFdoZW4gdGhlIHN5c3RlbSBkb2VzIG5vdCBpbXBsZW1lbnQgQUNQSSBHSEVTIHRhYmxl
-LA0KPiA+IHdoaWNoIEkgc3VwcG9zZSBpcyBtb3N0IG9mIHRoZSBjYXNlIG9uIEFSTS4NCj4gDQo+
-IFRoYXQgc2hvdWxkIGJlIGRldGVjdGVkIGluIGdoZXNfZ2V0X2RldmljZXMoKSAtIGp1c3QgbGlr
-ZSBvbiB4ODYuDQoNCkFncmVlZC4gIEFuZCB0aGF0IGlzIHRoZSBjaGVjayB0byBnaGVzX3ByZXNl
-bnQgZmxhZy4uLg0KDQpUb3NoaQ0K
+Hey everybody, this the third iteration of the panic notifiers
+fixes/clean-ups;
+
+V2 available at:
+https://lore.kernel.org/lkml/20220719195325.402745-1-gpiccoli@igalia.com/
+
+V1 (including the refactor) available at:
+https://lore.kernel.org/lkml/20220427224924.592546-1-gpiccoli@igalia.com/
+
+
+There wasn't much change here compared to V2 (the specifics are in the
+patches), but a global change is that I've rebased against 6.0-rc1.
+One patch got merged in -next, another one was re-submit in a standalone
+format (requested by maintainer), so both of these are not here anymore.
+
+
+As usual, tested this series building for all affected architecture/drivers
+and also through some boot/runtime tests; below the test "matrix" used:
+
+Build tests (using cross-compilers): alpha, arm, arm64, parisc, um, x86_64.
+Boot/Runtime tests: x86_64 (QEMU guests and Steam Deck).
+
+Here is the link with the .config files used:
+https://people.igalia.com/gpiccoli/panic_notifiers_configs/6.0-rc1/
+
+
+About the merge strategy: I've noticed there is a difference in maintainers
+preferences (and my preference as well), so I see 3 strategies for merge:
+
+(a) Maintainers pick patches that are good from the series and merge in
+their trees;
+
+(b) Some maintainer would pick the whole series and merge, at once, given
+that everything is fine/ack/reviewed.
+
+(c) I must re-send patches individually once they are reviewed/acked, as
+standalone patches to the relevant maintainers, so they can merge it in
+their trees.
+
+I'm willing to do what's best for everybody - (a) is my choice when possible,
+(b) seems to stall things and potentially cause conflicts, (c) seems to be
+the compromise. I'll do that as per preference of the respective maintainers.
+
+
+As usual, reviews / comments are always welcome, thanks in advance for them!
+Cheers,
+
+Guilherme
+
+
+Guilherme G. Piccoli (11):
+  ARM: Disable FIQs (but not IRQs) on CPUs shutdown paths
+  notifier: Add panic notifiers info and purge trailing whitespaces
+  alpha: Clean-up the panic notifier code
+  um: Improve panic notifiers consistency and ordering
+  parisc: Replace regular spinlock with spin_trylock on panic path
+  tracing: Improve panic/die notifiers
+  notifiers: Add tracepoints to the notifiers infrastructure
+  EDAC/altera: Skip the panic notifier if kdump is loaded
+  video/hyperv_fb: Avoid taking busy spinlock on panic path
+  drivers/hv/vmbus, video/hyperv_fb: Untangle and refactor Hyper-V panic notifiers
+  panic: Fixes the panic_print NMI backtrace setting
+
+ arch/alpha/kernel/setup.c        |  36 +++++-----
+ arch/arm/kernel/machine_kexec.c  |   2 +
+ arch/arm/kernel/smp.c            |   5 +-
+ arch/parisc/include/asm/pdc.h    |   1 +
+ arch/parisc/kernel/firmware.c    |  27 ++++++--
+ arch/um/drivers/mconsole_kern.c  |   7 +-
+ arch/um/kernel/um_arch.c         |   8 +--
+ drivers/edac/altera_edac.c       |  16 +++--
+ drivers/hv/ring_buffer.c         |  13 ++++
+ drivers/hv/vmbus_drv.c           | 109 +++++++++++++++++++------------
+ drivers/parisc/power.c           |  17 +++--
+ drivers/video/fbdev/hyperv_fb.c  |  16 ++++-
+ include/linux/hyperv.h           |   2 +
+ include/linux/notifier.h         |   8 ++-
+ include/trace/events/notifiers.h |  69 +++++++++++++++++++
+ kernel/notifier.c                |   6 ++
+ kernel/panic.c                   |  47 +++++++------
+ kernel/trace/trace.c             |  55 ++++++++--------
+ 18 files changed, 302 insertions(+), 142 deletions(-)
+ create mode 100644 include/trace/events/notifiers.h
+
+-- 
+2.37.2
+
