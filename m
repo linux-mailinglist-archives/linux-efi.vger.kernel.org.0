@@ -2,68 +2,53 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25E035995D5
-	for <lists+linux-efi@lfdr.de>; Fri, 19 Aug 2022 09:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57050599603
+	for <lists+linux-efi@lfdr.de>; Fri, 19 Aug 2022 09:31:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237247AbiHSHQm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 19 Aug 2022 03:16:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48386 "EHLO
+        id S1345238AbiHSHWi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 19 Aug 2022 03:22:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346992AbiHSHQk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 19 Aug 2022 03:16:40 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94F10E341D
-        for <linux-efi@vger.kernel.org>; Fri, 19 Aug 2022 00:16:37 -0700 (PDT)
+        with ESMTP id S232318AbiHSHWi (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 19 Aug 2022 03:22:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6115AE39A7
+        for <linux-efi@vger.kernel.org>; Fri, 19 Aug 2022 00:22:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id CAC69CE2416
-        for <linux-efi@vger.kernel.org>; Fri, 19 Aug 2022 07:16:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFE3C43142
-        for <linux-efi@vger.kernel.org>; Fri, 19 Aug 2022 07:16:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 001DC60A1C
+        for <linux-efi@vger.kernel.org>; Fri, 19 Aug 2022 07:22:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5894DC433D6
+        for <linux-efi@vger.kernel.org>; Fri, 19 Aug 2022 07:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660893394;
-        bh=wK/XF/F/2oIfqAatmRu9MAOiQXaBF+SFoRca/QzzhVU=;
+        s=k20201202; t=1660893756;
+        bh=zfZRkxoJtXkDJI5hREikgaBxaAPLQuFl63K3GXYWGNk=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Qf8I7VORalR7Q/MeO/yqh6bLYLKIQJB/dmeJpImBY0ZirfTQ/BHft9jEfFZ4435tp
-         /pih1r3llw8zpYu9VC1FJTBanNkBGrJRYcdRlfgT7qA4tM3DB11j3W+bfgsCricXoE
-         1Z3KFrJ8SFCdncIZJLUv/rI2tiXiqedV7ZbKhzSMn1Lnqn2TjsHvAG+UzZiOq7Jwot
-         9Li4HfsIrLEDJJXMFm25H08uidf6cYJvZ15TGX1FpBHTnv0qk8y32c6LOqRsHn35nm
-         1yCx09ncb54OUVKQ0lh0/F8zPqIEtlZakUoFPfoJNt4CXR3e8lPH6zZPvibB905cvN
-         crvgZWIOGhHdg==
-Received: by mail-wr1-f41.google.com with SMTP id h5so3342171wru.7
-        for <linux-efi@vger.kernel.org>; Fri, 19 Aug 2022 00:16:33 -0700 (PDT)
-X-Gm-Message-State: ACgBeo3St1hP27dIoKXteYwFOs+36ca3AUm+ei+jiF7LiQJIn3yRy54T
-        4PllqugHU/iTwpQmF92I5gWmAzxDa6Uqd2ecTRQ=
-X-Google-Smtp-Source: AA6agR4YxMUFB8Mh2wQONibmqrTFo5Kt/D9OYq2ZaJqwQHB+wo1l2FC9hYMF7c4Md0QVuZ4mRGyZwbGu1010D3C3m1k=
+        b=Gm7juNBAFy2Uxh1u7q3AphQCeKGtXjSmb2KpmHTuqNNc1SotMoL/Kd6muRx/uwXrL
+         Rr7H3YOnvwyyO+4dn58U8kAlDKilNk2D7pwn2hoT4troxP4zikg1LEA4tTYObxQJJo
+         0WfJWv2XMI6eimRabRuJLn3N0c/hUJdHIr1Yi9Fz+lHtNac3w6fRfKdwzwYZtAop0H
+         r3qXQ14r8l+XUu9CXuEvCxc4YDL9CNaTLHY8zI3EsgYboPPx5Frosm3x/enD+G/CLx
+         21VaNxAg6LE2+IC70EWggyAnkRdiJvklx7a2cw5lp406xxfnzMiqZX7ImpSBCRFpgu
+         /GyI+B/+WWFqA==
+Received: by mail-wr1-f53.google.com with SMTP id j7so4172683wrh.3
+        for <linux-efi@vger.kernel.org>; Fri, 19 Aug 2022 00:22:36 -0700 (PDT)
+X-Gm-Message-State: ACgBeo2u0PfvJ9Yb8SCnNQQewmPryQRAqJZsWDZwL95FQQ5JFUviQc9H
+        e5yLuIHOC4EgRJ9/ww+Q/GrbrB4gmYDxVdbS5wE=
+X-Google-Smtp-Source: AA6agR7LICS2/EOIrVP63UgKBJRLfMaySSMS1pBGlZwIlW2kVoQVXehJARcFxr51qJAE5GGB2OIj6UtOSMSSMU9ZpWY=
 X-Received: by 2002:a5d:6d89:0:b0:225:16c2:6816 with SMTP id
- l9-20020a5d6d89000000b0022516c26816mr3407896wrs.380.1660893392125; Fri, 19
- Aug 2022 00:16:32 -0700 (PDT)
+ l9-20020a5d6d89000000b0022516c26816mr3422381wrs.380.1660893754512; Fri, 19
+ Aug 2022 00:22:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220804030012-mutt-send-email-mst@kernel.org>
- <bfa5704d-755c-5a52-e7cc-bd9b34e5bb03@redhat.com> <YuuQb3D/YY1SiUqY@redhat.com>
- <Yuu1kX9CAqSUNNAj@zx2c4.com> <Yuu3ee1iB3IoLdZS@redhat.com>
- <CAMj1kXFAz1ttRmt5_utReSC=TjdfmrgwbwSaAZTDnx6OPGuRRg@mail.gmail.com>
- <cf60456e-a2cd-a64d-0cee-4bea30708fc9@redhat.com> <CAHmME9pUdckUwei234Xdge_G-=b6q2e9a8mTVExrV4WE=6TLig@mail.gmail.com>
- <20220816085511.nw5w3wt5vemkyryt@sirius.home.kraxel.org> <Yv5c/UMrEhTUlIID@zx2c4.com>
- <20220819064051.yopqxw3ynttnncca@sirius.home.kraxel.org>
-In-Reply-To: <20220819064051.yopqxw3ynttnncca@sirius.home.kraxel.org>
+References: <2e9741aa-562c-cd0d-7ee4-8281512bc2e0@iam.tj>
+In-Reply-To: <2e9741aa-562c-cd0d-7ee4-8281512bc2e0@iam.tj>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 19 Aug 2022 09:16:20 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXF_ESRptjm3QmmgB6uysYfY2Pd8+jTd9Fmgf=bwhMqMyQ@mail.gmail.com>
-Message-ID: <CAMj1kXF_ESRptjm3QmmgB6uysYfY2Pd8+jTd9Fmgf=bwhMqMyQ@mail.gmail.com>
-Subject: Re: [PATCH v2] hw/i386: place setup_data at fixed place in memory
-To:     Gerd Hoffmann <kraxel@redhat.com>
-Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Laszlo Ersek <lersek@redhat.com>,
-        =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        QEMU Developers <qemu-devel@nongnu.org>,
-        Xiaoyao Li <xiaoyao.li@intel.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Peter Maydell <peter.maydell@linaro.org>,
-        linux-efi <linux-efi@vger.kernel.org>
+Date:   Fri, 19 Aug 2022 09:22:22 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXH-uYwfxPrHv7YpKQ3iwS0aBEsj-OZ9aKpgr9SgyTdoWQ@mail.gmail.com>
+Message-ID: <CAMj1kXH-uYwfxPrHv7YpKQ3iwS0aBEsj-OZ9aKpgr9SgyTdoWQ@mail.gmail.com>
+Subject: Re: ExitBootServices() fails on Samsung W737 (Galaxy Book2)
+To:     Tj <linux@iam.tj>, Steev Klimaszewski <steev@kali.org>
+Cc:     linux-efi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -75,93 +60,91 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 19 Aug 2022 at 08:41, Gerd Hoffmann <kraxel@redhat.com> wrote:
+(cc Steve - not sure who else still works on this stuff these days)
+
+On Thu, 18 Aug 2022 at 13:00, Tj <linux@iam.tj> wrote:
 >
-> On Thu, Aug 18, 2022 at 05:38:37PM +0200, Jason A. Donenfeld wrote:
-> > Hey Gerd,
-> >
-> > > Joining the party late (and still catching up the thread).  Given we
-> > > don't need that anyway with EFI, only with legacy BIOS:  Can't that just
-> > > be a protocol between qemu and pc-bios/optionrom/*boot*.S on how to pass
-> > > those 48 bytes random seed?
-> >
-> > Actually, I want this to work with EFI, very much so.
-
-Even if we wire this up for EFI in some way, it will only affect
-direct kernel boot using -kernel/-initrd etc, which is a niche use
-case at best (AIUI libvirt uses it for the initial boot only)
-
-I personally rely on it heavily for development, and I imagine others
-might too, but that is hardly relevant here.
-
-> With EFI the kernel stub gets some random seed via EFI_RNG_PROTOCOL.
-> I can't see any good reason to derive from that.  It works no matter
-> how the kernel gets loaded.
+> I've been diagnosing a failure to boot on a Samsung Galaxy Book2 (W737)
+> but have not been able to get the kernel to boot, and would welcome some
+> assistance:
 >
-> OVMF ships with a driver for the virtio-rng device.  So just add that
-> to your virtual machine and seeding works fine ...
+> EFI stub: ERROR: Exit boot services failed
 >
-
-... or we find other ways for the platform to speak to the OS, using
-EFI protocols or other EFI methods.
-
-Currently, the 'pure EFI' boot code is arch agnostic - it can be built
-and run on any architecture that supports EFI boot. Adding Linux+x86
-specific hacks to it is out of the question.
-
-So that means that setup_data provided by QEMU will be consumed
-directly by the kernel (when doing direct kernel boot only), using an
-out of band channel that EFI/OVMF are completely unaware of, putting
-it outside the scope of secure boot, measure boot, etc.
-
-This is not acceptable to me.
-
-> > If our objective was to just not break EFI, the solution would be
-> > simple: in the kernel we can have EFISTUB ignore the setup_data field
-> > from the image, and then bump the boot header protocol number. If QEMU
-> > sees the boot protocol number is below this one, then it won't set
-> > setup_data. Done, fixed.
+> The problem occurs in
+> drivers/firmware/efi/libstub/efi-stub-helper.c::efi_exit_boot_services().
+> EFI_INVALID_PARAMETER is returned by efi_bs_call(exit_boot_services...).
 >
-> As mentioned elsewhere in the thread patching in physical addresses on
-> qemu side isn't going to fly due to the different load methods we have.
+> Based on reading the EDK source I suspected either the key was changing
+> or memory alignment is wrong based on a reading of EDK's
+> CoreExitBootServices() and CoreTerminateMemoryMap() - making a large
+> assumption that Lenovo/Aptio (American Megatrends) firmware is based
+> around EDK.
+>
+> Since the addition of commit d4b341269efb3 "arm64: dts: qcom: Add
+> support for Samsung Galaxy Book2" I had inferred it is now possible to
+> boot this device into Linux, but so far it seems not.
+>
+> I added extensive efi_debug() logging to try to identify the problem and
+> have reported the patches I'm using and results extensively (too
+> extensively for including in this email) at "Issue #11: Samsung Galaxy
+> Book2 (SM-W737Y) snapdragon 850" of the aarch64-laptops project:
+>
+> https://github.com/aarch64-laptops/debian-cdimage/issues/11
 >
 
-And it conflates the file representation with the in-memory
-representation, which I object to fundamentally - setup_data is part
-of the file image, and becomes part of the in-memory representation
-when it gets staged in memory for booting, which only happens in the
-EFI stub when using pure EFI boot.
+Looking at your adventures, it seems you are looking for something
+that the EFI stub in Linux is doing wrong, causing the
+ExitBootServices() call to fail.
 
-Using setup_data as a hidden comms channel between QEMU and the core
-kernel breaks that distinction.
+One thing to be aware of is that vendors of such hardware don't care
+about EFI compliance, and rarely run the certification tests or turn
+up for plugfests, etc. They only care about the Windows Logo sticker,
+which is a lower bar in terms of EFI compatibility, and apparently,
+their buggy firmware manages to boot Windows fine.
 
-> > Your option ROM idea is interesting; somebody mentioned that elsewhere
-> > too I think.
->
-> Doing the setup_data patching in the option rom has the advantage that
-> it'll only happen with that specific load method being used.  Also the
-> option rom knows where it places stuff in memory so it is in a much
-> better position to find a good & non-conflicting place for the random
-> seed.  Also reserve/allocate memory if needed etc.
->
+One thing you could try is setting the TPL level to TPL_HIGH before
+calling exit_boot_services (or just disable interrupts). That way,
+your first call is more likely to succeed, as nothing that could
+change the memory map could run in the meantime.
 
-Exactly. This is the only sensible place to do this.
-
-> > I'm wondering, though: do option ROMs still run when
-> > EFI/OVMF is being used?
+> The latest results show:
 >
-> No, they are not used with EFI.  OVMF has a completely independent
-> implementation for direct kernel boot.
->
-> The options I see for EFI are:
->
->   (1) Do nothing and continue to depend on virtio-rng.
->   (2) Implement an efi driver which gets those 48 seed bytes from
->       qemu by whatever means we'll define and hands them out via
->       EFI_RNG_PROTOCOL.
->
-
-We could explore other options, but SETUP_RNG_SEED is fundamentally
-incompatible with EFI boot (or any other boot method where the image
-is treated as an opaque file by the firmware/loader), so that is not
-an acceptable approach to me.
+> EFI stub: Booting Linux Kernel...
+> EFI stub: Using DTB from configuration table
+> EFI stub: DEBUG: Entering allocate_new_fdt_and_exit_boot()
+> EFI stub: Exiting boot services...
+> EFI stub: DEBUG: Calling efi_exit_boot_services() with map:
+> EFI stub: DEBUG: efi_boot_memmap = {map=0x000000009ffce870
+> map_size=0xa20 desc_size=0x30 desc_ver=0x1
+>   key_ptr=0x000000009ffce868 *key_ptr=0x2b2c buff_size=0xc90 }
+> EFI stub: DEBUG: Entered efi_exit_boot_services()
+> EFI stub: DEBUG: Memory map before calling priv_func():
+> EFI stub: DEBUG: efi_boot_memmap = {map=0x000000009ffce870
+> map_size=0xa20 desc_size=0x30 desc_ver=0x1
+>   key_ptr=0x000000009ffce868 *key_ptr=0x2b2c buff_size=0xc90 }
+> EFI stub: DEBUG: Memory map after calling priv_func():
+> EFI stub: DEBUG: efi_boot_memmap = {map=0x000000009ffce870
+> map_size=0xa20 desc_size=0x30 desc_ver=0x1
+>   key_ptr=0x000000009ffce868 *key_ptr=0x2b2c buff_size=0xc90 }
+> EFI stub: DEBUG: Calling efi_bs_call(exit_boot_services,
+> 0x00000000fcb87c98, 0x2b2c)
+> EFI stub: DEBUG: efi_bs_call() returned -9223372036854775806
+> (EFI_INVALID_PARAMETER)
+> EFI stub: DEBUG: Calling efi_bs_call() with get_memory_map
+> EFI stub: DEBUG: Memory map after calling get_memory_map() again:
+> EFI stub: DEBUG: efi_boot_memmap = {map=0x000000009ffce870
+> map_size=0xa20 desc_size=0x30 desc_ver=0x1
+>   key_ptr=0x000000009ffce868 *key_ptr=0x2b6e buff_size=0xc90 }
+> EFI stub: DEBUG: Calling priv_func() again
+> EFI stub: DEBUG: Memory map after calling priv_func() again:
+> EFI stub: DEBUG: efi_boot_memmap = {map=0x000000009ffce870
+> map_size=0xa20 desc_size=0x30 desc_ver=0x1
+>   key_ptr=0x000000009ffce868 *key_ptr=0x2b6e buff_size=0xc90 }
+> EFI stub: DEBUG: Calling (again!) efi_bs_call(exit_boot_services,
+> 0x00000000fcb87c98, 0x2b6e)
+> EFI stub: DEBUG: fail: efi_exit_boot_services() returns -9223372036854775806
+> EFI stub: DEBUG: Returned from efi_Exit_boot_services()
+> EFI stub: ERROR: Exit boot services failed.
+> EFI stub: DEBUG: fail_free_new_fdt: status= -9223372036854775806
+> EFI stub: DEBUG: fail: status= -9223372036854775806
+> EFI stub: DEBUG: Busy Wait so you can read the debug messages!
