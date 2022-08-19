@@ -2,50 +2,47 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77C0B599CCD
-	for <lists+linux-efi@lfdr.de>; Fri, 19 Aug 2022 15:19:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0859599F81
+	for <lists+linux-efi@lfdr.de>; Fri, 19 Aug 2022 18:30:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348710AbiHSNRk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 19 Aug 2022 09:17:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56352 "EHLO
+        id S1350722AbiHSP6j (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 19 Aug 2022 11:58:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348250AbiHSNRj (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 19 Aug 2022 09:17:39 -0400
-Received: from iam.tj (soggy.cloud [IPv6:2a01:7e00:e000:151::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38CA8EE4A2
-        for <linux-efi@vger.kernel.org>; Fri, 19 Aug 2022 06:17:37 -0700 (PDT)
-Received: from [IPV6:2a01:7e00:e001:ee80:145d:5eff:feb1:1df1] (unknown [IPv6:2a01:7e00:e001:ee80:145d:5eff:feb1:1df1])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-        (No client certificate requested)
-        by iam.tj (Postfix) with ESMTPSA id 6D703340AC;
-        Fri, 19 Aug 2022 14:17:35 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=iam.tj; s=2019;
-        t=1660915055; bh=zgNdj2VHM5NK+bgtoYXweWtcQctZhTl/gVTcXBVmcuk=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=UjfBexRZkUvNZhRH+cOWTRxy7xFHj0/9IN1eI9cIfLGwL4NvKCBvxQCuWgsVDUtQh
-         Kbub76z5qkW9UG/78H+MlnsNDhPWBXIPLNd+5IWAGhQrd/UmfRcJElO04VqFh6UmG7
-         jjzWj7vZli7uhX3Av52YvxOjpN3eUl7zrU61ijCVHLvP7W3cqPe+0CwqgdydmaT8OH
-         QqD3UvM1vH0lFIbeWXZGhWU9HX4fFEbCEeRlg/kBFIX9+Pqxsdtdid5PSzZ3lul4LG
-         aqM6hJ/BC1Sn60w6Qoa8ZU8gxQyEJcyBxYZeRO8MpvgR04ZUHb2/NUqIa6/MPELYki
-         uhNAK+ClwBY+A==
-Message-ID: <3c058feb-93f1-1966-6c1e-f030a7b951a1@iam.tj>
-Date:   Fri, 19 Aug 2022 14:17:34 +0100
+        with ESMTP id S1350724AbiHSP5C (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 19 Aug 2022 11:57:02 -0400
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FE52108B00;
+        Fri, 19 Aug 2022 08:51:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+        s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+        Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=28vkizyvUtYm4/sTyN+MXhOLB0Fo0DX7lO6TnmiJ624=; b=nRKFd6buwCNbA3003YPVFxn6ZF
+        8IfZbIwtydC8ZU5xNGIYjRMrNlaFUnAbH4BQ0psaGBPKAQdQNodJ9aAM8tBIDYEsilzFjaOOwGY0O
+        rURKPeOQkBy6IrMkwIE4NyAmPbUfMzLWtTFvpxK6rAHILVTNCRbWaFpTKW7moSBiRYZtYH/OV7Ytm
+        GEA8RDpIXlNJxOeqxSNqD3BZhbjrL4fLxFQdTK7aGM3qV5pE4wvEA7xMtH7Pv4YytPq1RzsONSVNM
+        yItfcCNT9tkveEBRM9cd2PIGqQHKtBBuoUaF9SI/sgQEoLq6TLrQnaZKjrMDfqC+5LVyQnQuJu/bd
+        oStPx5LA==;
+Received: from [179.232.144.59] (helo=localhost)
+        by fanzine2.igalia.com with esmtpsa 
+        (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+        id 1oP4HM-00CNLN-Dx; Fri, 19 Aug 2022 17:51:27 +0200
+From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+To:     arnd@arndb.de, gregkh@linuxfoundation.org, evgreen@chromium.org
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        gpiccoli@igalia.com, kernel@gpiccoli.net, ardb@kernel.org,
+        davidgow@google.com, jwerner@chromium.org
+Subject: [PATCH V3] firmware: google: Test spinlock on panic path to avoid lockups
+Date:   Fri, 19 Aug 2022 12:50:59 -0300
+Message-Id: <20220819155059.451674-1-gpiccoli@igalia.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: [Bug 216375] EFI stub: ERROR: Exit boot services failed
-Content-Language: en-GB
-To:     Ard Biesheuvel <ardb@kernel.org>,
-        Bugzilla <bugzilla-daemon@kernel.org>
-Cc:     linux-efi@vger.kernel.org, Steev Klimaszewski <steev@kali.org>
-References: <2e9741aa-562c-cd0d-7ee4-8281512bc2e0@iam.tj>
- <CAMj1kXH-uYwfxPrHv7YpKQ3iwS0aBEsj-OZ9aKpgr9SgyTdoWQ@mail.gmail.com>
-From:   Tj <linux@iam.tj>
-In-Reply-To: <CAMj1kXH-uYwfxPrHv7YpKQ3iwS0aBEsj-OZ9aKpgr9SgyTdoWQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,23 +50,67 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 19/08/2022 08:22, Ard Biesheuvel wrote:
-> (cc Steve - not sure who else still works on this stuff these days)
->>
->> EFI stub: ERROR: Exit boot services failed
->>
-> Looking at your adventures, it seems you are looking for something
-> that the EFI stub in Linux is doing wrong, causing the
-> ExitBootServices() call to fail.
-> 
-...
-> One thing you could try is setting the TPL level to TPL_HIGH before
-> calling exit_boot_services (or just disable interrupts). That way,
-> your first call is more likely to succeed, as nothing that could
-> change the memory map could run in the meantime.
+Currently the gsmi driver registers a panic notifier as well as
+reboot and die notifiers. The callbacks registered are called in
+atomic and very limited context - for instance, panic disables
+preemption and local IRQs, also all secondary CPUs (not executing
+the panic path) are shutdown.
 
-Can you give me guidance on how to do that; a grep for TPL_* and 
-{raise,restore}_tpl seems to indicate these are not currently implemented?
+With that said, taking a spinlock in this scenario is a dangerous
+invitation for lockup scenarios. So, fix that by checking if the
+spinlock is free to acquire in the panic notifier callback - if not,
+bail-out and avoid a potential hang.
 
-If so, presumably I need to do the same with those as I did with 
-GetNextMonotonicCount() / get_next_monotonic_count ?
+Fixes: 74c5b31c6618 ("driver: Google EFI SMI")
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: David Gow <davidgow@google.com>
+Cc: Julius Werner <jwerner@chromium.org>
+Reviewed-by: Evan Green <evgreen@chromium.org>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+---
+
+
+This is a re-submission of the patch - it was in a series [0], but
+Greg suggested me to resubmit individually in order it gets picked
+by the relevant maintainers, instead of asking them to merge
+individual patches from a series. Notice I've trimmed a bit the CC
+list, it was bigger due to the patch being in a series...
+
+This is truly the V3 of the patch, below is the diff between versions:
+
+V3:
+- added Evan's review tag - thanks!
+
+V2:
+- do not use spin_trylock anymore, to avoid messing with
+non-panic paths; now we just check the spinlock state in
+the panic notifier before taking it. Thanks Evan for the review!
+
+[0] https://lore.kernel.org/lkml/20220719195325.402745-4-gpiccoli@igalia.com/
+
+
+ drivers/firmware/google/gsmi.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/firmware/google/gsmi.c b/drivers/firmware/google/gsmi.c
+index adaa492c3d2d..3ef5f3c0b4e4 100644
+--- a/drivers/firmware/google/gsmi.c
++++ b/drivers/firmware/google/gsmi.c
+@@ -681,6 +681,14 @@ static struct notifier_block gsmi_die_notifier = {
+ static int gsmi_panic_callback(struct notifier_block *nb,
+ 			       unsigned long reason, void *arg)
+ {
++	/*
++	 * Perform the lock check before effectively trying
++	 * to acquire it on gsmi_shutdown_reason() to avoid
++	 * potential lockups in atomic context.
++	 */
++	if (spin_is_locked(&gsmi_dev.lock))
++		return NOTIFY_DONE;
++
+ 	gsmi_shutdown_reason(GSMI_SHUTDOWN_PANIC);
+ 	return NOTIFY_DONE;
+ }
+-- 
+2.37.2
+
