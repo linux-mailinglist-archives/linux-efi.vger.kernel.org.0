@@ -2,47 +2,60 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E5CD59C506
-	for <lists+linux-efi@lfdr.de>; Mon, 22 Aug 2022 19:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E41759C5A7
+	for <lists+linux-efi@lfdr.de>; Mon, 22 Aug 2022 20:03:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236135AbiHVRaJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 22 Aug 2022 13:30:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50544 "EHLO
+        id S236008AbiHVSDy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 22 Aug 2022 14:03:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236415AbiHVRaJ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 22 Aug 2022 13:30:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 525093ECC1
-        for <linux-efi@vger.kernel.org>; Mon, 22 Aug 2022 10:30:08 -0700 (PDT)
+        with ESMTP id S235832AbiHVSDv (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 22 Aug 2022 14:03:51 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AB98275C2;
+        Mon, 22 Aug 2022 11:03:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C499761245
-        for <linux-efi@vger.kernel.org>; Mon, 22 Aug 2022 17:30:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A32C433C1;
-        Mon, 22 Aug 2022 17:30:05 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AFB5DB816E6;
+        Mon, 22 Aug 2022 18:03:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0D5C43141;
+        Mon, 22 Aug 2022 18:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661189407;
-        bh=yHFWnlR+USiYmHUQaqc46XgPYdk1OtHdRS5BUOYmrDg=;
-        h=From:To:Cc:Subject:Date:From;
-        b=NRey/iu4YM/BiFaFAoim3mvqbXbCeKHn4t51RMjwv/ef8Pdoc7EL73PTYBYMftcDz
-         kAgFc2FgYVla0IWZ5QX8XoTU6Fbn1/5eezpX8fkgRShGpCozrXSK5w8AEOTfTJV/5t
-         +1a0ZZiSZPuW6Qu4iSN0vjZHTOkb74t5l2/ztCs9MyjPZu1PmYidXu3ek/6dyhINkp
-         GMafQDaXFF2M5b0Ry9P2ClD1o/6aXH9Z8L42HYxTlC7QeWAgdyaM1k4NLHBz3YxpMx
-         0sJeW28t+B1XovYKPICZhsYfsKrTN5zmtb1vsjt5hyFdkISwW+cbXbnK4r6Is0k7De
-         pVU+SHWY/ffyQ==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     keescook@chromium.org, Ard Biesheuvel <ardb@kernel.org>,
-        Daniel Marth <daniel.marth@inso.tuwien.ac.at>
-Subject: [PATCH] efi: libstub: Disable struct randomization
-Date:   Mon, 22 Aug 2022 19:29:53 +0200
-Message-Id: <20220822172953.3918414-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.35.1
+        s=k20201202; t=1661191415;
+        bh=JCw5k8+PFVcv8qIP5U9PsuiUeSBZubWCY+qgf+WP8Do=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=n/f09OF6skok1n2OaV2CtlrZFv1LmMn3PJkHBT76A5XESBJqqvEFwugLuE1TjKgqP
+         2vMiEP4EdeJVuGoNMqCTbQQ+ka80LalWkPNTJE1vJWOI5K7j6z990O8E2KIybKzN+B
+         MGuiIdNEecsdRcqsXIBT3FqSqs8MPLXZG2OBm66jztbKHO4ZW8c+kKk88KTIYVd6G3
+         P1M5Or3I729hys0r+dln38qH2B9rEf/V6gVU79G8GSDYRbpEoGxkTYOaO/mDPyqcD4
+         LhsA5apCkoEGp/57s/qVfFSCbsseedE6MPmWYP1qIT4MzN5n/pyOQnq48C7d6ugBw2
+         gsFvSUmw3Aswg==
+Received: by mail-wm1-f44.google.com with SMTP id k6-20020a05600c1c8600b003a54ecc62f6so6449028wms.5;
+        Mon, 22 Aug 2022 11:03:35 -0700 (PDT)
+X-Gm-Message-State: ACgBeo1a8UiI0W09PPkbqCYcmvlKvM6SIqKnqXNJMqa0DHocezzfbuT0
+        LGENd1W+/qLj3xZU45fuA0ebaDaDYEuBxusgBow=
+X-Google-Smtp-Source: AA6agR7y/zb3O/3tnCJdmuDYHyvsA1ns4At6tEspA/rC53mjvt/VInGLJOtWBXFQuyCbZudOi5VVCYH7LnZji+kJ9JI=
+X-Received: by 2002:a1c:3b55:0:b0:3a6:7b62:3901 with SMTP id
+ i82-20020a1c3b55000000b003a67b623901mr29347wma.113.1661191413596; Mon, 22 Aug
+ 2022 11:03:33 -0700 (PDT)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1940; i=ardb@kernel.org; h=from:subject; bh=yHFWnlR+USiYmHUQaqc46XgPYdk1OtHdRS5BUOYmrDg=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjA70Q70c+aAZDqm4V+5KDjee7Qp72OE9hjXIiDnwl 42XCmveJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYwO9EAAKCRDDTyI5ktmPJA47C/ oDAzBf8j4Ti2WyaUJx2gNyoYL/1++cEQzw4fakPI8siDw3AE+b6etkBbklyyQLJr7/mHRfnwacOmk6 xvLbRP7Zl6F5Sw2EGz14rFNpS3UXTVFgoatIgPlG35Fv28w/40viZh1mHKibvFKjtj8eE1SBeSgpOm TnoeJtjkt65NV5OTdEP95rV1zKajtN03kFzB+ZS5oNni3HSKrEGk3LWPMzI9Mftx8+MzWm0YCYlyPz B0o8hnE4bXBTOqRqba4560DUFju2cP6FQtZa+6zPlxm9tUE+fqV40gVC+DDNPckbMxA7gpLzTqIHYF u5LsJANa1DwXQGvGOdVOyvek98XcZ6zfbgr2v+Sji1gXo3hEaZM7C7Rh9tvVLlSgpHzKKua0/IS+S1 ElAwNb/QRHKTF4h4DTczwO8Y1fC0/d8KjLnYCCEuI4Up91uerSUWoRZ4/jy0LQSXVN1y+pK99Y2OhK UGnOslwIMXmaFbwH0gskIzT+UrnZU3jq6dJ71Rbzz12c4=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
+References: <20220819102037.2697798-1-chenhuacai@loongson.cn> <CAMj1kXGrWqaTeiSeK1vG=escABZg16cpekzzTTp5WaTwi3iUYg@mail.gmail.com>
+In-Reply-To: <CAMj1kXGrWqaTeiSeK1vG=escABZg16cpekzzTTp5WaTwi3iUYg@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Mon, 22 Aug 2022 20:03:22 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHec4pfkM6gGwpDPCRn-WbTQcpLam+MWpBph-1KAo1H4A@mail.gmail.com>
+Message-ID: <CAMj1kXHec4pfkM6gGwpDPCRn-WbTQcpLam+MWpBph-1KAo1H4A@mail.gmail.com>
+Subject: Re: [PATCH V3] LoongArch: Add efistub booting support
+To:     Huacai Chen <chenhuacai@loongson.cn>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Huacai Chen <chenhuacai@kernel.org>,
+        loongarch@lists.linux.dev, linux-arch@vger.kernel.org,
+        Xuefeng Li <lixuefeng@loongson.cn>,
+        Guo Ren <guoren@kernel.org>, Xuerui Wang <kernel@xen0n.name>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Xi Ruoyao <xry111@xry111.site>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -53,47 +66,78 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The EFI stub is a wrapper around the core kernel that makes it look like
-a EFI compatible PE/COFF application to the EFI firmware. EFI
-applications run on top of the EFI runtime, which is heavily based on
-so-called protocols, which are struct types consisting [mostly] of
-function pointer members that are instantiated and recorded in a
-protocol database.
+On Mon, 22 Aug 2022 at 12:44, Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> On Fri, 19 Aug 2022 at 12:20, Huacai Chen <chenhuacai@loongson.cn> wrote:
+> >
+> > This patch adds efistub booting support, which is the standard UEFI boot
+> > protocol for us to use.
+> >
+> > We use generic efistub, which means we can pass boot information (i.e.,
+> > system table, memory map, kernel command line, initrd) via a light FDT
+> > and drop a lot of non-standard code.
+> >
+> > We use a flat mapping to map the efi runtime in the kernel's address
+> > space. In efi, VA = PA; in kernel, VA = PA + PAGE_OFFSET. As a result,
+> > flat mapping is not identity mapping, SetVirtualAddressMap() is still
+> > needed for the efi runtime.
+> >
+> > Tested-by: Xi Ruoyao <xry111@xry111.site>
+> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > ---
+> > V1 --> V2:
+> > 1, Call SetVirtualAddressMap() in stub;
+> > 2, Use core kernel data directly in alloc_screen_info();
+> > 3, Remove the magic number in MS-DOS header;
+> > 4, Disable EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER;
+> > 5, Some other small changes suggested by Ard Biesheuvel.
+> >
+> > V2 --> V3:
+> > 1, Adjust Makefile to adapt zboot;
+> > 2, Introduce EFI_RT_VIRTUAL_OFFSET instead of changing flat_va_mapping.
+> >
+>
+> Thanks for the update.
+>
+> I am going to queue this up in the efi/next tree. However, due to the
+> many changes to arch/loongarch in this patch, conflicts are not
+> unlikely, so I created a signed stable tag for the patch that you can
+> merge into the loongarch arch tree if you want.
+>
+> *However*, you must *not* rebase your tree after merging this tag.
+> Therefore, it is probably best that the merge of this tag appears as
+> the very first change on your PR to Linus for v6.1. Everything after
+> can be rebased at will (assuming there are no other impediments to
+> doing so)
+>
+> You can fetch it and merge it like so:
+>
+> git fetch -t git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git
+> git verify-tag efi-loongarch-for-v6.1 # if you like
+> git merge efi-loongarch-for-v6.1
+>
+> and all your other v6.1 changes can go on top.
+>
+> This way, you can resolve conflicts locally without affecting the EFI
+> changes going via the other tree. The EFI stub for LoongArch change
+> will arrive into Linus's tree via whichever tree he pulls first: the
+> LoongArch one or the EFI one.
+>
+> I will rebase my zboot decompressor changes on top of this - I will cc
+> you again, as the LoongArch builds ok but still does not boot.
+>
 
-These structs look like the ideal randomization candidates to the
-randstruct plugin (as they only carry function pointers), but of course,
-these protocols are contracts between the firmware that exposes them,
-and the EFI applications (including our stubbed kernel) that invoke
-them. This means that struct randomization for EFI protocols is not a
-great idea, and given that the stub shares very little data with the
-core kernel that is represented as a randomizable struct, we're better
-off just disabling it completely here.
+I have pushed a branch here that includes EFI decompressor support for LoongArch
 
-Reported-by: Daniel Marth <daniel.marth@inso.tuwien.ac.at>
-Tested-by: Daniel Marth <daniel.marth@inso.tuwien.ac.at>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/libstub/Makefile | 7 +++++++
- 1 file changed, 7 insertions(+)
+https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efi-decompressor-v4
 
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index d0537573501e..dd8c8a218245 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -42,6 +42,13 @@ KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_SCS), $(KBUILD_CFLAGS))
- # disable LTO
- KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_LTO), $(KBUILD_CFLAGS))
- 
-+#
-+# struct randomization only makes sense for Linux internal types, which the EFI
-+# stub code never touches, so let's turn off struct randomization for the stub
-+# altogether
-+#
-+KBUILD_CFLAGS := $(filter-out $(RANDSTRUCT_CFLAGS), $(KBUILD_CFLAGS))
-+
- GCOV_PROFILE			:= n
- # Sanitizer runtimes are unavailable and cannot be linked here.
- KASAN_SANITIZE			:= n
--- 
-2.35.1
+You will need to enable CONFIG_EFI_ZBOOT and build the zImage.efi
+target. The resulting image should be bootable jus tlike the
+vmlinux.efi but for some reason, it produces the crash I reported
+earlier.
 
+Please give it a try, and if you manage to figure out what's wrong
+with my code, please let me know :-)
+
+Thanks,
+Ard.
