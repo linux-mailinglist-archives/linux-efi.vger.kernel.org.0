@@ -2,242 +2,137 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EBD059FED4
-	for <lists+linux-efi@lfdr.de>; Wed, 24 Aug 2022 17:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C9A55A0100
+	for <lists+linux-efi@lfdr.de>; Wed, 24 Aug 2022 20:02:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235867AbiHXPwk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 24 Aug 2022 11:52:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54700 "EHLO
+        id S240454AbiHXSCo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 24 Aug 2022 14:02:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236946AbiHXPwj (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 24 Aug 2022 11:52:39 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0251372FC9;
-        Wed, 24 Aug 2022 08:52:37 -0700 (PDT)
-Received: from zn.tnic (p200300ea971b9859329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:9859:329c:23ff:fea6:a903])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 34B1D1EC056A;
-        Wed, 24 Aug 2022 17:52:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1661356352;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=PBu2N2uipsqYRGU8bx2yq7gJv2+9Y2U5mdyTj0+/pTM=;
-        b=NB6YSRe/Ed3rUtDV9uiZDCWOh1AmqVaLjJr7swohSQBgEXc9Ml8+K+1qPwkVzabBT+Lz+T
-        0msrtdaC0S4A2mcX1OGqoxMuRHKbJNsW4RW5QLHEAY54tdqwlaA3FCXV6qpt2FqWjsiKmf
-        lRgsjSTC8LFhYEx4jgXYcDjls9XERvQ=
-Date:   Wed, 24 Aug 2022 17:52:31 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Jia He <justin.he@arm.com>
-Cc:     Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Jan Luebbe <jlu@pengutronix.de>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Kani Toshi <toshi.kani@hpe.com>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-        devel@acpica.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
-        nd@arm.com, "Paul E. McKenney" <paulmck@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Muchun Song <songmuchun@bytedance.com>,
-        linux-doc@vger.kernel.org
-Subject: Re: [RESEND PATCH v3 4/9] EDAC/ghes: Move ghes_edac.force_load to
- setup parameter
-Message-ID: <YwZJP25sfKcfw9eT@zn.tnic>
-References: <20220822154048.188253-1-justin.he@arm.com>
- <20220822154048.188253-5-justin.he@arm.com>
+        with ESMTP id S240483AbiHXSCX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 24 Aug 2022 14:02:23 -0400
+Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D35EC7C1FC
+        for <linux-efi@vger.kernel.org>; Wed, 24 Aug 2022 11:01:28 -0700 (PDT)
+Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-33387bf0c4aso480335787b3.11
+        for <linux-efi@vger.kernel.org>; Wed, 24 Aug 2022 11:01:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=DGuV+oKzfmFfApe8NxA2paN6tKmjViwBVg9JpKKUVew=;
+        b=aK7CLkv5P2RcCIQ4lBOyr8TSYIWgo/S7IAXUY+CksZwIzy0GAUD2JwRUYl1mFSlNy1
+         AlZYZ+MSnfLOvbuZkVTyk5hYpkNwyfw7XjHdVZIEBzoniE+PdMWI3Dkur8HhBI1VH++3
+         zG2zC0bKMzKEiqxXi/wzfVrA6uOVxHU694jVkzxalWH/7oz6JhUVaNQgLaUVbsF4Ja+t
+         m3unpH32vONLlCtLiTtPrym5TcCuV3jdyoTEvGYk3Tv3xyUaF9kJPtsQZ62M2XcawYY2
+         /Xq7h71eB0GYT/81B4VArgq0LRAgwploebcVMZfOKDuGJ6M4fYqAWEeqcb1m1QMMjszm
+         Wn2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=DGuV+oKzfmFfApe8NxA2paN6tKmjViwBVg9JpKKUVew=;
+        b=oBYDRcmZQ2l0P0zmNcVbN73C3LkdRh7m8obiZtpkyNIMHotbuS3ZBiKPFG7z5okjm0
+         f9nNmCfbYIkkLpFHMFmu5WF7i5DYdL0Vx+bkCbyBs0bwhkugVkOUimYBlnyfiGrsE5SU
+         BdU4WPF0DfG8XIn23xjlMGUbWGtRASbcSkwsAB9K72ciwwY+04gKUc3zMY6Lkb+Mu90+
+         wY/iSTe5eJTQyj50HeZ0OmsHKYREmrFIuU4v5BDRo9YrFl3kCBo0cc/IEDlxizbRFklR
+         E8bDOagtfMDgZDveW5fifBTfofdTQwnA28iWa0TMY4iNotU9GPINhbHIQtUHD07pwwm+
+         hd2Q==
+X-Gm-Message-State: ACgBeo1MmGHQlo5Mi8D+9nGtjbyPK1pHHO/d7ROEqqTCotKeqsq2AOg/
+        YcF9rPN7L1F2tit2ixm64pH5sZ1h9Gwdg2GL07BnBg==
+X-Google-Smtp-Source: AA6agR4krDxQhq5Y+22wT3eQhzuO1h8jJucGBjy3TIVyLauaMRohf/vMydVZsogFXj4WyTvzKkerLZ1BkZP/rZzLJXI=
+X-Received: by 2002:a81:6f43:0:b0:335:9e7e:ad25 with SMTP id
+ k64-20020a816f43000000b003359e7ead25mr347464ywc.518.1661364087931; Wed, 24
+ Aug 2022 11:01:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220822154048.188253-5-justin.he@arm.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220307213356.2797205-1-brijesh.singh@amd.com> <20220307213356.2797205-44-brijesh.singh@amd.com>
+In-Reply-To: <20220307213356.2797205-44-brijesh.singh@amd.com>
+From:   Dionna Amalie Glaze <dionnaglaze@google.com>
+Date:   Wed, 24 Aug 2022 11:01:16 -0700
+Message-ID: <CAAH4kHYm1BhjJXUMH12kzR0Xun=fUTj-3Hy6At0XR_09Bf0Ccw@mail.gmail.com>
+Subject: Re: [PATCH v12 43/46] virt: Add SEV-SNP guest driver
+To:     Brijesh Singh <brijesh.singh@amd.com>
+Cc:     "the arch/x86 maintainers" <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "open list:X86 KVM CPUs" <kvm@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        brijesh.ksingh@gmail.com, tony.luck@intel.com,
+        Marc Orr <marcorr@google.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Aug 22, 2022 at 03:40:43PM +0000, Jia He wrote:
-> ghes_edac_init() is too late to set this module flag ghes_edac.force_load.
-> Also, other edac drivers should not be able to control this flag.
-> 
-> Move this flag to setup parameter in ghes.
-> 
-> Suggested-by: Toshi Kani <toshi.kani@hpe.com>
-> Signed-off-by: Jia He <justin.he@arm.com>
-> ---
->  .../admin-guide/kernel-parameters.txt         |  5 +++
->  drivers/acpi/apei/ghes.c                      | 24 +++++++++++-
->  drivers/edac/ghes_edac.c                      | 38 +++++++------------
->  include/acpi/ghes.h                           |  7 +++-
->  4 files changed, 46 insertions(+), 28 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index d7f30902fda0..a5f0ee0d7727 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -1593,6 +1593,11 @@
->  			When zero, profiling data is discarded and associated
->  			debugfs files are removed at module unload time.
->  
-> +	ghes_edac_force= [X86] Skip the platform check and forcibly load the
+Apologies for the necropost, but I noticed strange behavior testing my
+own Golang-based wrapper around the /dev/sev-guest driver.
 
-So there already is ghes.disable which is using the module param thing.
-Why don't you do that too?
-
-> +			ghes_edac modules.
-
-"module" - singular.
-
-> +			Format: <bool>
-> +			default: false (0)
 > +
->  	goldfish	[X86] Enable the goldfish android emulator platform.
->  			Don't use this when you are not running on the
->  			android emulator
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 9c52183e3ad9..e17e0ee8f842 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -94,6 +94,26 @@
->  #define FIX_APEI_GHES_SDEI_CRITICAL	__end_of_fixed_addresses
->  #endif
->  
-> +/*
-> + * "ghes_edac_force=1" forcibly loads ghes_edac and skips the platform
-> + * check.
-> + */
-> +bool __read_mostly ghes_edac_force;
-> +EXPORT_SYMBOL(ghes_edac_force);
-> +
-> +static int __init setup_ghes_edac_load(char *str)
+> +static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, int msg_ver,
+> +                               u8 type, void *req_buf, size_t req_sz, void *resp_buf,
+> +                               u32 resp_sz, __u64 *fw_err)
 > +{
-> +	if (str)
-> +		if (!strcmp("true", str) || !strcmp("1", str))
-> +			ghes_edac_force = true;
+> +       unsigned long err;
+> +       u64 seqno;
+> +       int rc;
 > +
-> +	if (!IS_ENABLED(CONFIG_X86))
-> +		ghes_edac_force = true;
+> +       /* Get message sequence and verify that its a non-zero */
+> +       seqno = snp_get_msg_seqno(snp_dev);
+> +       if (!seqno)
+> +               return -EIO;
 > +
-> +	return 1;
-> +}
-> +__setup("ghes_edac_force=", setup_ghes_edac_load);
-
-Why all that?
-
-Isn't specifying
-
-ghes.edac_force_load
-
-on the kernel command line enough? I.e., you don't need to parse the
-passed in option - just the presence of the parameter is enough.
-
+> +       memset(snp_dev->response, 0, sizeof(struct snp_guest_msg));
 > +
->  static ATOMIC_NOTIFIER_HEAD(ghes_report_chain);
->  
->  static inline bool is_hest_type_generic_v2(struct ghes *ghes)
-> @@ -1517,13 +1537,13 @@ static struct acpi_platform_list plat_list[] = {
->  	{ } /* End */
->  };
->  
-> -struct list_head *ghes_get_devices(bool force)
-> +struct list_head *ghes_get_devices(void)
->  {
->  	int idx = -1;
->  
->  	if (IS_ENABLED(CONFIG_X86)) {
->  		idx = acpi_match_platform_list(plat_list);
-> -		if (idx < 0 && !force)
-> +		if (idx < 0 && !ghes_edac_force)
->  			return NULL;
->  	}
->  
-> diff --git a/drivers/edac/ghes_edac.c b/drivers/edac/ghes_edac.c
-> index bb3ea42ba70b..6a2b54cc7240 100644
-> --- a/drivers/edac/ghes_edac.c
-> +++ b/drivers/edac/ghes_edac.c
-> @@ -54,10 +54,6 @@ static DEFINE_MUTEX(ghes_reg_mutex);
->   */
->  static DEFINE_SPINLOCK(ghes_lock);
->  
-> -/* "ghes_edac.force_load=1" skips the platform check */
-> -static bool __read_mostly force_load;
-> -module_param(force_load, bool, 0);
-> -
->  static bool system_scanned;
->  
->  static struct list_head *ghes_devs;
-> @@ -437,23 +433,12 @@ static int ghes_edac_register(struct device *dev)
->  	mci->ctl_name = "ghes_edac";
->  	mci->dev_name = "ghes";
->  
-> -	if (fake) {
-> -		pr_info("This system has a very crappy BIOS: It doesn't even list the DIMMS.\n");
-> -		pr_info("Its SMBIOS info is wrong. It is doubtful that the error report would\n");
-> -		pr_info("work on such system. Use this driver with caution\n");
-> -	} else if (force_load) {
-> -		pr_info("This EDAC driver relies on BIOS to enumerate memory and get error reports.\n");
-> -		pr_info("Unfortunately, not all BIOSes reflect the memory layout correctly.\n");
-> -		pr_info("So, the end result of using this driver varies from vendor to vendor.\n");
-> -		pr_info("If you find incorrect reports, please contact your hardware vendor\n");
-> -		pr_info("to correct its BIOS.\n");
-> -		pr_info("This system has %d DIMM sockets.\n", ghes_hw.num_dimms);
-> -	}
-> -
->  	if (!fake) {
->  		struct dimm_info *src, *dst;
->  		int i = 0;
->  
-> +		pr_info("This system has %d DIMM sockets.\n", ghes_hw.num_dimms);
+> +       /* Encrypt the userspace provided payload */
+> +       rc = enc_payload(snp_dev, seqno, msg_ver, type, req_buf, req_sz);
+> +       if (rc)
+> +               return rc;
 > +
->  		mci_for_each_dimm(mci, dst) {
->  			src = &ghes_hw.dimms[i];
->  
-
-This hunk...
-
-> @@ -478,6 +463,17 @@ static int ghes_edac_register(struct device *dev)
->  	} else {
->  		struct dimm_info *dimm = edac_get_dimm(mci, 0, 0, 0);
->  
-> +		pr_info("This system has a very crappy BIOS: It doesn't even list the DIMMS.\n");
-> +		pr_info("Its SMBIOS info is wrong. It is doubtful that the error report would\n");
-> +		pr_info("work on such system. Use this driver with caution\n");
+> +       /* Call firmware to process the request */
+> +       rc = snp_issue_guest_request(exit_code, &snp_dev->input, &err);
+> +       if (fw_err)
+> +               *fw_err = err;
 > +
-> +		if (ghes_edac_force) {
-> +			pr_info("This EDAC driver relies on BIOS to enumerate memory and get\n");
-> +			pr_info("error reports. Unfortunately, not all BIOSes reflect the\n");
-> +			pr_info("memory layout correctly. If you find incorrect reports, please\n");
-> +			pr_info("contact your hardware vendor for its in correct BIOS.\n");
-> +		}
+> +       if (rc)
+> +               return rc;
 > +
->  		dimm->nr_pages = 1;
->  		dimm->grain = 128;
->  		dimm->mtype = MEM_UNKNOWN;
 
-... and this hunk look unrelated to what this patch is doing. What are
-they for?
+The fw_err is written back regardless of rc, so since err is
+uninitialized, you can end up with garbage written back. I've worked
+around this by only caring about fw_err when the result is -EIO, but
+thought that I should bring this up.
 
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+--
+-Dionna Glaze, PhD (she/her)
