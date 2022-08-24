@@ -2,48 +2,37 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FF6A59EB8F
-	for <lists+linux-efi@lfdr.de>; Tue, 23 Aug 2022 20:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AE6B59FE74
+	for <lists+linux-efi@lfdr.de>; Wed, 24 Aug 2022 17:37:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233920AbiHWSye (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 23 Aug 2022 14:54:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40522 "EHLO
+        id S238148AbiHXPht (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 24 Aug 2022 11:37:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230225AbiHWSyO (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 23 Aug 2022 14:54:14 -0400
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B3FB11CF0E;
-        Tue, 23 Aug 2022 10:19:48 -0700 (PDT)
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-3376851fe13so364340747b3.6;
-        Tue, 23 Aug 2022 10:19:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=FC6hnZbwBtmw6oIIpxsgV+B+7mA53uX/U4iba0ioviU=;
-        b=Sgp1vZry3w9ICcogpNTZspMfoxePVLCrdUka3sGuQ6bDG1ink0vr+w4Nh3PK+2r1Tp
-         Ei03BVFmD6+0PyA9DSbbsq0Zyjj/EalGbu+0qzqQDGQP3tLE165VQC1LDrTOWKVdw16N
-         TTcWGMglgrXNaRbmbSINtAwmMzdbCqKIULUfmGTjvhzskVwOgrx6v/hXekMejq7nnnS9
-         7kmJkkhhjS+7P01yH42iwM6/JGFbyh5m2iBkWJZ5YjKBNl3uR9Gj43yga0l/T17lCf8D
-         UcozXm82LepA7nSwn9gkQREx+tReUMz8tkgRqmQY58wPHW4WypYE6spYluHko0TlToQS
-         i6/g==
-X-Gm-Message-State: ACgBeo0TSa5nxDLFNQFIbdFvAjxprJv5kbwJhnJI+wIReNqQRh2FzrQ2
-        wG/6LkrfQZW0RsDK0spAFggPFgtTBbrd1rvODZg=
-X-Google-Smtp-Source: AA6agR4cTX5F8PyOjA1279e807GkwUK4KIWkE3KWOkDhaVt50kdCpplTQD6zGvPNuPABbFQ+fJ2lrIz5unWXRJ3z6zg=
-X-Received: by 2002:a81:9906:0:b0:2db:640f:49d8 with SMTP id
- q6-20020a819906000000b002db640f49d8mr7298558ywg.326.1661275179229; Tue, 23
- Aug 2022 10:19:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220822154048.188253-1-justin.he@arm.com> <DBBPR08MB45381EB46B4714E0DCE63ABBF7709@DBBPR08MB4538.eurprd08.prod.outlook.com>
-In-Reply-To: <DBBPR08MB45381EB46B4714E0DCE63ABBF7709@DBBPR08MB4538.eurprd08.prod.outlook.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 23 Aug 2022 19:19:28 +0200
-Message-ID: <CAJZ5v0hY5bA8iB4KdnZ3te8KOML8JQbPVs2Laaq7Lz=bh1amMA@mail.gmail.com>
-Subject: Re: [RESEND PATCH v3 0/9] Make ghes_edac a proper module
-To:     Justin He <Justin.He@arm.com>
-Cc:     Len Brown <lenb@kernel.org>, James Morse <James.Morse@arm.com>,
+        with ESMTP id S237255AbiHXPhX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 24 Aug 2022 11:37:23 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BC344D273;
+        Wed, 24 Aug 2022 08:37:22 -0700 (PDT)
+Received: from zn.tnic (p200300ea971b9859329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:9859:329c:23ff:fea6:a903])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id EBDF71EC0532;
+        Wed, 24 Aug 2022 17:37:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1661355437;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=JYAdElWSvwdqbqowgbtvuq6MWUw4TqGpXu8bQC/7Pm0=;
+        b=UvaT53Lw6sp3lDU5FY7nZjsV1hbuTZWYAMmqdC8eKRyh9ltPO6tLwxIlwKk+8WTRQWWyyA
+        AMVCFJSIqSBkfPt8bkMdizEECMfOW+s1lKwp+rXmY5TNNh3+/CH31j9ASnJsPM2WPV/yIF
+        o75/irqxga5m3fD7BkiINcNIrsXo/Xg=
+Date:   Wed, 24 Aug 2022 17:37:12 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Jia He <justin.he@arm.com>
+Cc:     Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
         Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Robert Richter <rric@kernel.org>,
         Robert Moore <robert.moore@intel.com>,
@@ -53,45 +42,112 @@ Cc:     Len Brown <lenb@kernel.org>, James Morse <James.Morse@arm.com>,
         Jan Luebbe <jlu@pengutronix.de>,
         Khuong Dinh <khuong@os.amperecomputing.com>,
         Kani Toshi <toshi.kani@hpe.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
+        devel@acpica.org, "Rafael J . Wysocki" <rafael@kernel.org>,
         Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        nd <nd@arm.com>, "Paul E. McKenney" <paulmck@kernel.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
+        nd@arm.com, "Paul E. McKenney" <paulmck@kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Neeraj Upadhyay <quic_neeraju@quicinc.com>,
         Randy Dunlap <rdunlap@infradead.org>,
         Damien Le Moal <damien.lemoal@opensource.wdc.com>,
         Muchun Song <songmuchun@bytedance.com>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        linux-doc@vger.kernel.org, stable@kernel.org
+Subject: Re: [RESEND PATCH v3 3/9] EDAC/ghes: Make ghes_edac a proper module
+ to remove the dependency on ghes
+Message-ID: <YwZFqHvcEzVpAxzn@zn.tnic>
+References: <20220822154048.188253-1-justin.he@arm.com>
+ <20220822154048.188253-4-justin.he@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220822154048.188253-4-justin.he@arm.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Aug 23, 2022 at 3:50 AM Justin He <Justin.He@arm.com> wrote:
->
-> Hi,
-> Sorry for resending the v3.
-> There is an exceptional interrupt when I tried to post v3 at the first time.
-> Maybe it is caused by a comma "," inside the mail name.
-> E.g.
-> Signed-off-by: Some, one <someone@site.com>
-> Looks like a git sendemail issue?
->
-> Anyway, sorry for the inconvenience.
+On Mon, Aug 22, 2022 at 03:40:42PM +0000, Jia He wrote:
+> Commit dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES in
+> apci_init()") introduced a bug that ghes_edac_register() would be invoked
+> before edac_init(). Because at that time, the bus "edac" hadn't been even
+> registered, this created sysfs /devices/mc0 instead of
+> /sys/devices/system/edac/mc/mc0 on an Ampere eMag server.
+> 
+> To remove the dependency of ghes_edac on ghes, make it a proper module. Use
+> a list to save the probing devices in ghes_probe(), and defer the
+> ghes_edac_register() to module_init() of the new ghes_edac module by
+> iterating over the devices list.
+> 
+> Co-developed-by: Borislav Petkov <bp@alien8.de>
+> Signed-off-by: Borislav Petkov <bp@alien8.de>
+> Signed-off-by: Jia He <justin.he@arm.com>
+> Fixes: dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES in apci_init()")
+> Cc: stable@kernel.org
 
-I've received it twice, but no problem.
+Why is this marked for stable?
 
-I need Boris to tell me what to do with this series.
+The prerequisite patches are needed too. I guess this needs to be
+communicated to stable folks somehow by doing
+
+Cc: stable@kernel.org # needs commits X, Y, ...
+
+but I guess the committer needs to do that because only at commit time
+will X and Y be known...
+
+So, is there any particular reason why this should be in stable?
+
+> @@ -1442,7 +1449,9 @@ static int ghes_remove(struct platform_device *ghes_dev)
+>  
+>  	ghes_fini(ghes);
+>  
+> -	ghes_edac_unregister(ghes);
+> +	mutex_lock(&ghes_devs_mutex);
+> +	list_del_rcu(&ghes->elist);
+
+Is that list RCU-protected?
+
+> +	mutex_unlock(&ghes_devs_mutex);
+>  
+>  	kfree(ghes);
+
+...
+
+> @@ -566,3 +549,35 @@ void ghes_edac_unregister(struct ghes *ghes)
+>  unlock:
+>  	mutex_unlock(&ghes_reg_mutex);
+>  }
+> +
+> +static int __init ghes_edac_init(void)
+> +{
+> +	struct ghes *g, *g_tmp;
+> +
+> +	if (!IS_ENABLED(CONFIG_X86))
+> +		force_load = true;
+
+No, this is not how this works.
+
+> +	ghes_devs = ghes_get_devices(force_load);
+> +	if (!ghes_devs)
+> +		return -ENODEV;
+
+You simply need to check force_load here.
+
+> +	list_for_each_entry_safe(g, g_tmp, ghes_devs, elist) {
+> +		ghes_edac_register(g->dev);
+> +	}
+> +
+> +	return 0;
+> +}
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
