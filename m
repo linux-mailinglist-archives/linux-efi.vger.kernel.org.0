@@ -2,82 +2,59 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 342555A1BAB
-	for <lists+linux-efi@lfdr.de>; Thu, 25 Aug 2022 23:52:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEBE05A1BF0
+	for <lists+linux-efi@lfdr.de>; Fri, 26 Aug 2022 00:10:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229519AbiHYVwr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 25 Aug 2022 17:52:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35574 "EHLO
+        id S232426AbiHYWKz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 25 Aug 2022 18:10:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233108AbiHYVwq (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 25 Aug 2022 17:52:46 -0400
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2EAF10B0;
-        Thu, 25 Aug 2022 14:52:45 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.nyi.internal (Postfix) with ESMTP id B0EDE5C00CC;
-        Thu, 25 Aug 2022 17:52:42 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Thu, 25 Aug 2022 17:52:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        invisiblethingslab.com; h=cc:cc:content-transfer-encoding:date
-        :date:from:from:in-reply-to:message-id:mime-version:reply-to
-        :sender:subject:subject:to:to; s=fm1; t=1661464362; x=
-        1661550762; bh=eBngPYnfwnG7xoaliE8DTL2MsPUwU79rcGpexwV7yhc=; b=I
-        Qv+VEfqWoMJSeXEJKz9mlw+liRX+kwS0KfUwr//FEqHDRFOqqXoq9HfvDU7BCD1l
-        jvDVyRXuD+6AtdHrVVbvwByaRfNt02T39TZPdKYGmVYLYciUax7qM8ymMgPVSoGr
-        hk2ithZtmxxGbccUjqmBPbumYsghNpjXNbeWfxZNa3XIPGrQztu3h5BYcu5PZsf+
-        au72SEgMvM9M8vGJepWKiMsulIXUzalXI6m3gcA9f6vQ4zG39FbZFAXrthEdaqI7
-        TqQb99KZf5JduQq4+Zm6Jr8CyiDXlk4nnLrrqRhG3FnUrxsOBt/DSc25stRNp3/h
-        RW0ZCeDqrQPPhuKUW6Nkg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:message-id
-        :mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-        1661464362; x=1661550762; bh=eBngPYnfwnG7xoaliE8DTL2MsPUwU79rcGp
-        exwV7yhc=; b=mmC5tWwroJgSQYu2gkGeMV/y51x3OfwAamKO4j4HCo0vcVTudC/
-        cIZiNoD4Uf27/wKCEvVMFFx8YtePSwtA2EtgB5DtoqsdmvCEtwq0GFZMIeqHtDCm
-        Mr2RhS1yhF3xFd2sGoLUQf6ptVgVxIctM3VnM/tp1kBm67pcF4KWJY8+LMc5+kUg
-        0n0NG2NM+K7sJyo6cdaAPgL+kYyD6KkeU8fluXtLDqQed1awrJYtAD9QruDuf948
-        OV+sOtGZYJexoCCe5NDxXvg66yA9jzNpGhKaWWGTBtCis96C3mf15R1F7uiW9+4n
-        IsQcZjhRekFOb6o/Dhp5BvigAmsRlb3yO/w==
-X-ME-Sender: <xms:Ku8HY4gj65wKTqjemlajD_Ebj4vytPzJ0dsaaDxXCvmBkhjXb2Cmyw>
-    <xme:Ku8HYxBtYAsoSnaLu6ajPQSbBI-tHWG6_bmQBe9lU6pjhfTKzY2LC5_FaWdoknD3q
-    Q7rpC-aaqKY_js>
-X-ME-Received: <xmr:Ku8HYwEoK9yftMbiTDydef6DHDhF9CwzCgCk2SY4KkkGX0Opogi6Pghm-cUJpIhDeLQJT3TfG9jU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdejgedgtdegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomhepffgvmhhiucfo
-    rghrihgvucfqsggvnhhouhhruceouggvmhhisehinhhvihhsihgslhgvthhhihhnghhslh
-    grsgdrtghomheqnecuggftrfgrthhtvghrnhepvdefgeekvdekgfffgeekhfeijedtffek
-    hefhleehfeejueetgfelgefgtdevieelnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
-    hrrghmpehmrghilhhfrhhomhepuggvmhhisehinhhvihhsihgslhgvthhhihhnghhslhgr
-    sgdrtghomh
-X-ME-Proxy: <xmx:Ku8HY5RaIIiChllvjYcE9wmb7n0BRLJGuHeQ5YBIpwhJf5JcnynSBg>
-    <xmx:Ku8HY1xN2xv8rl6MdQz4PW0JJ0UkRv8N_igbAmjBadi9dHO3CWU7Eg>
-    <xmx:Ku8HY340l31EG99I5ec2oQF-cg43TIpBfvsr-TjS5hcjBVD3v-zi3Q>
-    <xmx:Ku8HY4oHwYGzrxb6opYh1x49lls8TWNIyzOTpLVVHS6sVQKTpOy4UQ>
-Feedback-ID: iac594737:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 25 Aug 2022 17:52:41 -0400 (EDT)
-From:   Demi Marie Obenour <demi@invisiblethingslab.com>
-To:     Ard Biesheuvel <ardb@kernel.org>, Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Cc:     Demi Marie Obenour <demi@invisiblethingslab.com>,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        xen-devel@lists.xenproject.org
-Subject: [PATCH] Add support for ESRT loading under Xen
-Date:   Thu, 25 Aug 2022 17:52:18 -0400
-Message-Id: <20220825215218.1606-1-demi@invisiblethingslab.com>
-X-Mailer: git-send-email 2.37.2
+        with ESMTP id S235432AbiHYWKx (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 25 Aug 2022 18:10:53 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3F55422CA
+        for <linux-efi@vger.kernel.org>; Thu, 25 Aug 2022 15:10:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1661465451; x=1693001451;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=DcMww9DsPUBiYJ0+yF4S5RjFBV/SFmwC2Q36RrcggJQ=;
+  b=Z3xAqaQ+shm/sF0fhLOkcbQ/NYX5SIqmKfvy20fshwt3hXQhaJ7r0Iy6
+   KtAJb1lTqtMwsNx6POpF0rwupH4pZxbkYWiRf2TqaqdZ1hG4YfzL10nIq
+   JsYTqRgyhzTWqUNfzYc8CI+EQTeSOLXOmR+Re2HbxYJGJatT4B6p5ZpM+
+   caGQMdRtT9rYHV2EE6W7H9bVdNGiG5ce3Jm0qf2tq3nVaAJ7a4i53u8t0
+   W0KLdDKhmaY4jJJV7MpgwFhCZJb0EyRS7Ngr/kPL4Npb5B7rMZdu1EAvL
+   guBx1dxBGPJLMcweTEk149H4D5PF/tyxvgZElbOTZztZC8H15HetQcVCI
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10450"; a="320457478"
+X-IronPort-AV: E=Sophos;i="5.93,264,1654585200"; 
+   d="scan'208";a="320457478"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2022 15:10:51 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,264,1654585200"; 
+   d="scan'208";a="561208381"
+Received: from lkp-server02.sh.intel.com (HELO 34e741d32628) ([10.239.97.151])
+  by orsmga003.jf.intel.com with ESMTP; 25 Aug 2022 15:10:50 -0700
+Received: from kbuild by 34e741d32628 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oRL3p-0002yE-1J;
+        Thu, 25 Aug 2022 22:10:49 +0000
+Date:   Fri, 26 Aug 2022 06:10:14 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ 1a3887924a7e6edd331be76da7bf4c1e8eab4b1e
+Message-ID: <6307f346.dXgIL1OM7WX/N0zO%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -86,134 +63,156 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This is needed for fwupd to work in Qubes OS.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: 1a3887924a7e6edd331be76da7bf4c1e8eab4b1e  efi: libstub: Disable struct randomization
 
-Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
----
- drivers/firmware/efi/esrt.c | 34 ++++++++++++++++++++++++----------
- drivers/xen/efi.c           | 33 +++++++++++++++++++++++++++++++++
- include/linux/efi.h         | 10 ++++++++++
- 3 files changed, 67 insertions(+), 10 deletions(-)
+elapsed time: 725m
 
-diff --git a/drivers/firmware/efi/esrt.c b/drivers/firmware/efi/esrt.c
-index 2a2f52b017e736dd995c69e8aeb5fbd7761732e5..c0fc149a838044cc16bb08a374a0c8ea6b7dcbff 100644
---- a/drivers/firmware/efi/esrt.c
-+++ b/drivers/firmware/efi/esrt.c
-@@ -244,22 +244,36 @@ void __init efi_esrt_init(void)
- 	struct efi_system_resource_table tmpesrt;
- 	size_t size, max, entry_size, entries_size;
- 	efi_memory_desc_t md;
--	int rc;
- 	phys_addr_t end;
- 
--	if (!efi_enabled(EFI_MEMMAP))
--		return;
--
- 	pr_debug("esrt-init: loading.\n");
- 	if (!esrt_table_exists())
- 		return;
- 
--	rc = efi_mem_desc_lookup(efi.esrt, &md);
--	if (rc < 0 ||
--	    (!(md.attribute & EFI_MEMORY_RUNTIME) &&
--	     md.type != EFI_BOOT_SERVICES_DATA &&
--	     md.type != EFI_RUNTIME_SERVICES_DATA)) {
--		pr_warn("ESRT header is not in the memory map.\n");
-+	if (efi_enabled(EFI_MEMMAP)) {
-+		if (efi_mem_desc_lookup(efi.esrt, &md) < 0 ||
-+		    (!(md.attribute & EFI_MEMORY_RUNTIME) &&
-+		     md.type != EFI_BOOT_SERVICES_DATA &&
-+		     md.type != EFI_RUNTIME_SERVICES_DATA)) {
-+			pr_warn("ESRT header is not in the memory map.\n");
-+			return;
-+		}
-+	} else if (IS_ENABLED(CONFIG_XEN_EFI) && efi_enabled(EFI_PARAVIRT)) {
-+		if (!xen_efi_mem_desc_lookup(efi.esrt, &md)) {
-+			pr_warn("Failed to lookup ESRT header in Xen memory map\n");
-+			return;
-+		}
-+
-+		/* Recent Xen versions relocate the ESRT to memory of type
-+		 * EfiRuntimeServicesData, which Xen will not reuse.  If the ESRT
-+		 * is not in EfiRuntimeServicesData memory, it has not been reserved
-+		 * by Xen and might be allocated to other guests, so it cannot
-+		 * safely be used. */
-+		if (md.type != EFI_RUNTIME_SERVICES_DATA) {
-+			pr_warn("Xen did not reserve ESRT, ignoring it\n");
-+			return;
-+		}
-+	} else {
- 		return;
- 	}
- 
-diff --git a/drivers/xen/efi.c b/drivers/xen/efi.c
-index d1ff2186ebb48a7c0981ecb6d4afcbbb25ffcea0..b313f213822f0fd5ba6448f6f6f453cfda4c7e23 100644
---- a/drivers/xen/efi.c
-+++ b/drivers/xen/efi.c
-@@ -26,6 +26,7 @@
- 
- #include <xen/interface/xen.h>
- #include <xen/interface/platform.h>
-+#include <xen/page.h>
- #include <xen/xen.h>
- #include <xen/xen-ops.h>
- 
-@@ -40,6 +41,38 @@
- 
- #define efi_data(op)	(op.u.efi_runtime_call)
- 
-+static_assert(XEN_PAGE_SHIFT == EFI_PAGE_SHIFT,
-+              "Mismatch between EFI_PAGE_SHIFT and XEN_PAGE_SHIFT");
-+
-+bool xen_efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *md)
-+{
-+	struct xen_platform_op op = {
-+		.cmd = XENPF_firmware_info,
-+		.u.firmware_info = {
-+			.type = XEN_FW_EFI_INFO,
-+			.index = XEN_FW_EFI_MEM_INFO,
-+			.u.efi_info.mem.addr = phys_addr,
-+			.u.efi_info.mem.size = ((u64)-1ULL) - phys_addr,
-+		}
-+	};
-+	union xenpf_efi_info *info = &op.u.firmware_info.u.efi_info;
-+	int rc;
-+
-+	memset(md, 0, sizeof(*md)); /* initialize md even on failure */
-+	rc = HYPERVISOR_platform_op(&op);
-+	if (rc) {
-+		pr_warn("Could not obtain information on address %llu from Xen: "
-+			"error %d\n", phys_addr, rc);
-+		return false;
-+	}
-+
-+	md->attribute = info->mem.attr;
-+	md->type = info->mem.type;
-+	md->num_pages = info->mem.size >> XEN_PAGE_SHIFT;
-+	md->phys_addr = info->mem.addr;
-+	return true;
-+}
-+
- static efi_status_t xen_efi_get_time(efi_time_t *tm, efi_time_cap_t *tc)
- {
- 	struct xen_platform_op op = INIT_EFI_OP(get_time);
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index d2b84c2fec39f0268324d1a38a73ed67786973c9..0598869cdc924aef0e2b9cacc4450b728e1a98c7 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -1327,1 +1327,11 @@ struct linux_efi_coco_secret_area {
-+#if IS_ENABLED(CONFIG_XEN_EFI)
-+extern bool xen_efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md);
-+#else
-+static inline bool xen_efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
-+{
-+	BUILD_BUG();
-+	return false;
-+}
-+#endif
-+
- #endif /* _LINUX_EFI_H */
+configs tested: 135
+configs skipped: 5
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+arc                                 defconfig
+alpha                               defconfig
+loongarch                         allnoconfig
+powerpc                           allnoconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+loongarch                           defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+x86_64                        randconfig-a006
+s390                                defconfig
+sh                               allmodconfig
+s390                             allmodconfig
+i386                                defconfig
+powerpc                          allmodconfig
+mips                             allyesconfig
+csky                              allnoconfig
+alpha                             allnoconfig
+arc                               allnoconfig
+riscv                             allnoconfig
+s390                             allyesconfig
+i386                          randconfig-a001
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+i386                          randconfig-a003
+arc                  randconfig-r043-20220824
+riscv                randconfig-r042-20220824
+s390                 randconfig-r044-20220824
+i386                          randconfig-a005
+arc                  randconfig-r043-20220825
+arc                  randconfig-r043-20220823
+x86_64                           rhel-8.3-kvm
+x86_64                          rhel-8.3-func
+x86_64                           rhel-8.3-syz
+x86_64                    rhel-8.3-kselftests
+x86_64                         rhel-8.3-kunit
+nios2                            allyesconfig
+nios2                               defconfig
+parisc                              defconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+i386                             allyesconfig
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
+i386                          debian-10.3-kvm
+i386                        debian-10.3-kunit
+i386                         debian-10.3-func
+powerpc                          allyesconfig
+riscv                               defconfig
+riscv                            allmodconfig
+riscv                            allyesconfig
+sh                          rsk7269_defconfig
+m68k                                defconfig
+sparc                               defconfig
+xtensa                           allyesconfig
+csky                                defconfig
+sparc                            allyesconfig
+x86_64                                  kexec
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-c001
+i386                          randconfig-a016
+m68k                        m5272c3_defconfig
+arm                          iop32x_defconfig
+arm                          gemini_defconfig
+powerpc                     tqm8548_defconfig
+um                                  defconfig
+m68k                       m5249evb_defconfig
+microblaze                      mmu_defconfig
+arm                        realview_defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+sh                          r7780mp_defconfig
+sh                        edosk7760_defconfig
+sh                           se7751_defconfig
+powerpc                      arches_defconfig
+m68k                        stmark2_defconfig
+xtensa                         virt_defconfig
+arm                       imx_v6_v7_defconfig
+ia64                        generic_defconfig
+arm                        spear6xx_defconfig
+mips                            gpr_defconfig
+ia64                             alldefconfig
+powerpc                 mpc8540_ads_defconfig
+mips                           gcw0_defconfig
+m68k                       bvme6000_defconfig
+sh                            hp6xx_defconfig
+m68k                           virt_defconfig
+arm                            qcom_defconfig
+sparc                       sparc32_defconfig
+sh                           se7750_defconfig
+sh                         microdev_defconfig
+arc                     nsimosci_hs_defconfig
+arm64                               defconfig
+arm                              allmodconfig
+ia64                                defconfig
+mips                             allmodconfig
+ia64                             allmodconfig
+x86_64                        randconfig-a011
+x86_64                        randconfig-a013
+x86_64                        randconfig-a015
+
+clang tested configs:
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+hexagon              randconfig-r041-20220825
+i386                          randconfig-a002
+hexagon              randconfig-r041-20220824
+hexagon              randconfig-r045-20220824
+i386                          randconfig-a004
+riscv                randconfig-r042-20220825
+hexagon              randconfig-r041-20220823
+s390                 randconfig-r044-20220825
+hexagon              randconfig-r045-20220825
+riscv                randconfig-r042-20220823
+i386                          randconfig-a006
+hexagon              randconfig-r045-20220823
+s390                 randconfig-r044-20220823
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+x86_64                        randconfig-k001
+mips                       lemote2f_defconfig
+arm                         socfpga_defconfig
+
 -- 
-Sincerely,
-Demi Marie Obenour (she/her/hers)
-Invisible Things Lab
+0-DAY CI Kernel Test Service
+https://01.org/lkp
