@@ -2,171 +2,125 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 203A85A2259
-	for <lists+linux-efi@lfdr.de>; Fri, 26 Aug 2022 09:53:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC33C5A26A4
+	for <lists+linux-efi@lfdr.de>; Fri, 26 Aug 2022 13:11:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245712AbiHZHxp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 26 Aug 2022 03:53:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34252 "EHLO
+        id S1344118AbiHZLKi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 26 Aug 2022 07:10:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245737AbiHZHxk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 26 Aug 2022 03:53:40 -0400
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2048.outbound.protection.outlook.com [40.107.22.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F01DED4184;
-        Fri, 26 Aug 2022 00:53:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DZ+EGh0/1polVxEtbGjIWbltRlOk8UNxdpnohf4PxoJj5qA0bA+V4oLLLqhEMVqVvQflN4XferrXv9/8UUpIVF6gw3xnLVYpX5hjrAMyL2mG2hAHbaw6CWKPgQJzM1xOE+2tGq0UyfU9YoWAIqoojeZNSlKWSI+tIPLO6JGC+4xtfWCaVNsOI2HUGEqQuJrw/LgxrcCFQqL8UWPfuxE7tPoRyW3QKl88Dw9qMi7gGe60ZxeDRBWccBPX6LFoTMOZFCh+gsMzp9+dbR+icyqbbP6NMUJgr6jkC6oha10/0cOQ1/GdIt25YYqIke4CIFadt+o4x8PO/MvHSa4C1/VS1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q8CAIP1LbzZfdOfsH4p172fNfYeWMO79MKYu4mbRFYo=;
- b=NwzVLcLYTXNhpZCAWOl5fdhe9ZUrf1logQ8HrIgmMPpZe376PP7ZI+bfKFbwIo2w2YjzcbNFwpoqeF+SXok7H6yAVYBBaaRdp8fG9zwRC3eZ3zjadAwndD8dIs4w28iJJNca7LEFIu3fMVA6HUumOFBBxzDLyGnQPDsD6/qpMufFgTsvjP6yH193OEMH6kH5FYsmUTggoL3E7O59Z5sp4caADFJkkAuefzSNqhKzhBlZXNHOVJ1iG1h7Ucqz561F6LnIf/wL1EuUrCWnzSZ9N+frLNo7+f3qJaID3DyLjxyvsLBJ3oIUIhg/BgRwcUurLF0wSpliQOrOJaXzMvmbGA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
- dkim=pass header.d=suse.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=q8CAIP1LbzZfdOfsH4p172fNfYeWMO79MKYu4mbRFYo=;
- b=XoZMv3LwyA1xogPB4mj7Iaw89ylqN8/lcynhZs3zlbhc0F29Lkoejkye7CBy3bVCVJk/0FPvCXc7zt2wTxMyJGKHrvsxt9vfhP4iTCPtKcZrKe4tVYlQz+F85bSYyKZlvhM7hVm3mkjf8vNo9+4+AUwmSHLh+2ncMG4fVhTjKvAh3wwoGJ2uT1UUG8TuO916ec34yI8mRI5RPqtvxZL2KXEbzhMBNXbjfSQJg99CFjqq5vZk1qjTl+VZUxFnliDddqbJSw+Ul6GgXK9bHvvffpNKO1B5qAquaKP05H1ajkio6uoRGyHf903ZExn1dGXomztbDSIlgXe3h7eOOx6e4A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=suse.com;
-Received: from VE1PR04MB6560.eurprd04.prod.outlook.com (2603:10a6:803:122::25)
- by VI1PR04MB3167.eurprd04.prod.outlook.com (2603:10a6:802:8::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5566.15; Fri, 26 Aug
- 2022 07:53:33 +0000
-Received: from VE1PR04MB6560.eurprd04.prod.outlook.com
- ([fe80::2d5d:bae0:430f:70ad]) by VE1PR04MB6560.eurprd04.prod.outlook.com
- ([fe80::2d5d:bae0:430f:70ad%4]) with mapi id 15.20.5566.015; Fri, 26 Aug 2022
- 07:53:33 +0000
-Message-ID: <c2a22672-b9dd-7aa4-b61e-ccb0faaa3b01@suse.com>
-Date:   Fri, 26 Aug 2022 09:53:29 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH] Add support for ESRT loading under Xen
-Content-Language: en-US
-To:     Demi Marie Obenour <demi@invisiblethingslab.com>
-Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        xen-devel@lists.xenproject.org, Ard Biesheuvel <ardb@kernel.org>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-References: <20220825215218.1606-1-demi@invisiblethingslab.com>
-From:   Jan Beulich <jbeulich@suse.com>
-In-Reply-To: <20220825215218.1606-1-demi@invisiblethingslab.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM6PR10CA0035.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:209:89::48) To VE1PR04MB6560.eurprd04.prod.outlook.com
- (2603:10a6:803:122::25)
+        with ESMTP id S1344267AbiHZLKb (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 26 Aug 2022 07:10:31 -0400
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58FD76E2C3
+        for <linux-efi@vger.kernel.org>; Fri, 26 Aug 2022 04:10:30 -0700 (PDT)
+Received: by mail-io1-f69.google.com with SMTP id o10-20020a6b5a0a000000b0068aba769d73so734223iob.4
+        for <linux-efi@vger.kernel.org>; Fri, 26 Aug 2022 04:10:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc;
+        bh=ykKB6JtFGZwxwwDMGZo2OlEfzOvWnacKSlhlwZsEhWI=;
+        b=cmZs0BnTF/xcFj9FKOasHjTzvnT+i+CTeXlZG6rZAW6y9OV3RWshVOMUkoqit5hV03
+         lKtyRnjNYsmEUwsYgrLsrB6Jre/GcufWaS4jqg2qvPhHpam76VBEVK7pGCT7yU998ecM
+         SV6GlbTmCH+9udaIYJnAU8S6myexpH7/IYceBUnI8Tqbc62P4Z4AWFFYwAGf7qlX9XGj
+         SZbDUU3Q5JV4EN9AIW5/dChY1/YxAkKBc0AviLNbeJaqHmmWg33+sjhp1H7+W3CRmRvN
+         SdnGskVQJRxzFNuK4myQOH/md3wC5hUuuBo9ODDSG0RDQe0DhBsq5OYB7ArdsXTJvMEP
+         pmMA==
+X-Gm-Message-State: ACgBeo0vVp9o1vckhx3up+RQQ+GdQDXO1z+CbFrrP+9ypJzCMrvRvyA1
+        LbAsVkGzz2oGjeHrcUaJ83Pamv0xG4NkNfUWc6j4OZO65NIc
+X-Google-Smtp-Source: AA6agR7RWmam6Y6fNRRsH/Zisn7THQXfY3C9pomIW+kormK2wpFFUV/pv1idIbJ20RVF12wJKUsHt3obfzuMPy5VSv7Kt3U4BYAg
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 2023826e-6da9-4207-8a70-08da873812b6
-X-MS-TrafficTypeDiagnostic: VI1PR04MB3167:EE_
-X-LD-Processed: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba,ExtFwd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: luVbnwBHuA3Ju0iVGWgquCHV23HKwvhdcB7yn3mfvG/szoZJ7iWI9Wt84vdPAEGjC222Nctzpv6dTqUDYehsquSfdxcAQEZhQ45Z7zydSyeaIuGmcXMfHGj6vFya4ZkOMBBi6oT8eu2VGoPdEOm/hj+LqdNoVdALWjxt4R7siK5WzGAnzYCyydfrr+khJ/DOPNu0RrTuk6mccBVpBvtXHbqHhXrIW7anyFgJ0mUE7HK8QzA0QWZ8jce9rFBnPPpQ2lPCLdJEyr2YQwhXg33OHdoFKWpMkLWMNi7FJvB4ZbcOJokSTFVj2oo6kwhRniTgqzPOMMaQ/4GhQRCcFjFWF+W59B15mVOHN/abtMXw2/BEfFGAc1wIHf6u8M2FDYdp0fDvI54hPK+6LyUFRqFqQRIN3A4zIphWiDbpcV5p/U3oQ0bh1b/vPhuQzQrozKrTfjTQaz8NEEeEw64uNV/5Ai6Tc9PBFnUw0GRduQd23oM7aV5dgOpFj/NH69e50qZuxm0xaugdUb/L7OuuuXWUD5dH8LnK0yVJrjhe+Gm0V3GfTME2BbKMrRvXYIFZ7GkWg58LRg5fxF9bUjJoXtDdAFsDFZc2ta9f60Gn+hL8t4ZNMP8h4nZxfnjNOzOX8xmLmBc+rhA1DltHrMB0Th4/cxqQIY9eKsz0zO3casUA0MYD6J8S0LWsohMe1F8x5foPkwWuuOYrkiLkKW9+riPSg96viZp/Ib6bajQnhxt+XSRo7fVc0s91gIc6RGnBiXDtzN0x9WKa0o6Ewdrvsk/DfjuN8eVWnySmcSgFQivODRE=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB6560.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(39860400002)(366004)(396003)(376002)(346002)(136003)(66476007)(8936002)(5660300002)(4326008)(66556008)(41300700001)(31686004)(36756003)(478600001)(66946007)(38100700002)(316002)(6666004)(8676002)(54906003)(6916009)(53546011)(86362001)(6512007)(2616005)(186003)(2906002)(26005)(6506007)(6486002)(83380400001)(31696002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?a3pwSjB6SUtrdnQvODNmS1BoWFMrKzFNbTlTVkMvWnlZZDluc0ZZZjJ3QnYw?=
- =?utf-8?B?ME5HYlpBWVY0K2NnTXIweG9CMGdXRlIzOU5vbGtJRnpkUE5rdjlScW1oMnpM?=
- =?utf-8?B?OW9nL1FzODBHdlJQMk5jWjE3aHZkQjhTQ0JvTVZIZys5dG1NWksyV2o3ZFZR?=
- =?utf-8?B?V3F1WU1vVXRmQ202TWQrUHdnMW1TYmpEQ2oybnZGaURwSFZJSDhTNDhibFBO?=
- =?utf-8?B?RWc4VDhQd3lWWmNTN3hTcGthSW9hNUR6dUx5dUM3K3NJYVVIZ0hKZEVaRVhh?=
- =?utf-8?B?V2w3UWdaV0NFVTkrUmdlNDk0MGhTUU5PaHdBVFpRRGFLTHE2V3Y0QlY0T3ox?=
- =?utf-8?B?NEZtem0yMUd0QXlCSUdmZ0NFS0V1ditoRUFxQ015OVlFM0hscHYwNTdZL3Jh?=
- =?utf-8?B?Y2NIaEtrclZ0bjNacXR2N2laQTNZWG8wS2dVdGxGSnQrVUNDNHpDZEJOWGpp?=
- =?utf-8?B?S1NmOUM2R2ViQ2lObHhwLzFmd2VFbndZclYvN0xFRVAzWko1UGVTS2FIWFFa?=
- =?utf-8?B?d0E0MlBGVmZFcS9sTXhNd2FOVjkzZVVZQmQ3UTlEdkVJMCsyc0VWOHhkbm1C?=
- =?utf-8?B?S2tJTncxTmFxc2xxdk5Db3A0TnBka1hWak9OejRSQXB1QU9JVWcwRzlwQnRY?=
- =?utf-8?B?RE8xMEN5TGJ0aWFtU21Pc3dXazBObXFRaXc5bTdBRUovdHgwcjJXWlB0TVA1?=
- =?utf-8?B?bEN5WnNnOXZPRFBwZTlCUWJyUG5OWFBSempsMWV0ZnhZSzJuZmVoLzBZVVdB?=
- =?utf-8?B?VkZ3alphdGlZQUVNQnc0SFc5eE5zOVp2aTBBUW9nUmh1S2ZocUdETXBBZXpF?=
- =?utf-8?B?YnpwTmw5ZG9qMmFJV1dPSHFyMGUxRUd4RFdoVndVV3pDUXpEcHpGcFl0ZlZB?=
- =?utf-8?B?VFYyOEpielVZYkdMeHV6cVNBbUs2b3NNQnhqT3pOQmZ0SFROd2xsZnNaVFVa?=
- =?utf-8?B?VkVLbnhRMHFEb2d5UEIwSGhRNTR6S0JxbkVxRDRvaG5mWmFzMkZLVmhDaG1X?=
- =?utf-8?B?d3Y1L1pIc0dsWm1oZEJ5ajFqSEN2SXpvUFlpODQyUmZmT0EzdVRqYmVpOXgw?=
- =?utf-8?B?Y2ozN2pvYmVTRTBaT05Rd3NSVVNvTmhyNUFqaVVXMUh6NDhwaFF0TFJubVNN?=
- =?utf-8?B?N1dGMTFVMEtVUVlSUVBodWRNT2Jnb1ZZU2lCR0xvSzczSm1EWTVPNjBKZDEv?=
- =?utf-8?B?M3VVY1dVK1B0Vnk4ZlVrbGUvMUE0dndJWGZkZ3N1Qmwwb3lZSjNmYmtiTTJ4?=
- =?utf-8?B?Z3R1S1dnbVNNVi8zTG9JRDQ0MjlRTHFYMURXTjFEWXdReXdzekpwaExiN0RV?=
- =?utf-8?B?SGJ6UEc5eS9xUTJBbThZYll1NEEvdWFSeU8vVGkxK1ZyUDA1dDY5VmlqbUtj?=
- =?utf-8?B?TldjVi8zOWt5OThGSlZ5dDByenpwVjdaaysza2VXbWZyNE9YRDQ5T2t1dHlC?=
- =?utf-8?B?TGVUOFpsT3ZvSXlaZVVkRFFtem8vNmxMTGdiZFAxa0VPdFhZSVhMbHpybDZO?=
- =?utf-8?B?ZDkxQ25uWDlXWkpMQldCTmNvUnc5bk5BZkJFWkFmejBIRUREZGpTT24yeW96?=
- =?utf-8?B?WVVzNlJ5MW0zZEF5YlhsNk1ZdUN2c0VKazlUMHljekg0dTY1bFNDK29FcnBM?=
- =?utf-8?B?UlE0U0ZpejZvOEpXbUpqQ0hlSCtBTWxNL0RqUVN1c0JteHFLNjFUdXhUd01K?=
- =?utf-8?B?eFNvcW9qNE5aeXZacHFFV1hnWUk2bnNGT05EajZ6NytrWDMyZUdwTzhTUlNS?=
- =?utf-8?B?VTN4MlVTa091RXNBcWdRTHlnWTFSOUI5aU5rbnhDeU8zQ1BQVXd2N2g4cURy?=
- =?utf-8?B?bFNScFVXNDRPWjBtR052N29xK3k0STQ3d1JJQ29iM0xJYkZwZm1nc0ZHQzZs?=
- =?utf-8?B?UG50cVVyVVBqZWVERTdheVJpS21pUDU1N0cwZVg3d0pocFNLU3ArOEF0dHZW?=
- =?utf-8?B?bHlMYmlPY0lUMVdVM1JYUTVOLytKNmJIUEdyK0ROakNqeVM3eUkyWmFiUjI0?=
- =?utf-8?B?clVGb0NuSW9MV0FTN3dpbVFsK3J0VXJRMG5aV1pQaFhEMkJvRWlJdHNaVnFz?=
- =?utf-8?B?OWlBaXNYOFRSRWxpRXo3cnl4RTRKWFBhVW5QV2Joa3RxbW40UjlTWG14cWlT?=
- =?utf-8?Q?meoYQlR26cGXiwI7YZkplOsYb?=
-X-OriginatorOrg: suse.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2023826e-6da9-4207-8a70-08da873812b6
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB6560.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2022 07:53:32.9623
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /FObfbRoKPmfmcn04nk79CyXzrWRzEe1yOdjtBwFpAf9PzZv76569YIkPmEUBCYHkN7oUf5L01w71qC7sorDRA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB3167
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Received: by 2002:a05:6e02:194d:b0:2ea:373a:cbe4 with SMTP id
+ x13-20020a056e02194d00b002ea373acbe4mr3766138ilu.127.1661512229703; Fri, 26
+ Aug 2022 04:10:29 -0700 (PDT)
+Date:   Fri, 26 Aug 2022 04:10:29 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000003dd70305e722f605@google.com>
+Subject: [syzbot] BUG: corrupted list in efivar_entry_remove
+From:   syzbot <syzbot+1902c359bfcaf39c46f2@syzkaller.appspotmail.com>
+To:     ardb@kernel.org, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 25.08.2022 23:52, Demi Marie Obenour wrote:
-> @@ -40,6 +41,38 @@
->  
->  #define efi_data(op)	(op.u.efi_runtime_call)
->  
-> +static_assert(XEN_PAGE_SHIFT == EFI_PAGE_SHIFT,
-> +              "Mismatch between EFI_PAGE_SHIFT and XEN_PAGE_SHIFT");
-> +
-> +bool xen_efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *md)
-> +{
-> +	struct xen_platform_op op = {
-> +		.cmd = XENPF_firmware_info,
-> +		.u.firmware_info = {
-> +			.type = XEN_FW_EFI_INFO,
-> +			.index = XEN_FW_EFI_MEM_INFO,
-> +			.u.efi_info.mem.addr = phys_addr,
-> +			.u.efi_info.mem.size = ((u64)-1ULL) - phys_addr,
-> +		}
-> +	};
-> +	union xenpf_efi_info *info = &op.u.firmware_info.u.efi_info;
-> +	int rc;
-> +
-> +	memset(md, 0, sizeof(*md)); /* initialize md even on failure */
-> +	rc = HYPERVISOR_platform_op(&op);
-> +	if (rc) {
-> +		pr_warn("Could not obtain information on address %llu from Xen: "
-> +			"error %d\n", phys_addr, rc);
-> +		return false;
-> +	}
-> +
-> +	md->attribute = info->mem.attr;
-> +	md->type = info->mem.type;
-> +	md->num_pages = info->mem.size >> XEN_PAGE_SHIFT;
-> +	md->phys_addr = info->mem.addr;
+Hello,
 
-As indicated in reply to your patch changing XEN_FW_EFI_MEM_INFO in
-the hypervisor: While this may fit the ESRT purpose, the address you
-return here is not necessarily the start of the region, and hence
-this function is not a general Xen replacement for the non-Xen
-function. Therefore I think it also shouldn't give the impression of
-doing so.
+syzbot found the following issue on:
 
-Jan
+HEAD commit:    680fb5b009e8 Merge tag 'arm64-upstream' into for-kernelci
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+console output: https://syzkaller.appspot.com/x/log.txt?x=126f0865080000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=4557ad2600fc45f4
+dashboard link: https://syzkaller.appspot.com/bug?extid=1902c359bfcaf39c46f2
+compiler:       Debian clang version 13.0.1-++20220126092033+75e33f71c2da-1~exp1~20220126212112.63, GNU ld (GNU Binutils for Debian) 2.35.2
+userspace arch: arm64
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10039fc3080000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16f4ebc3080000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+1902c359bfcaf39c46f2@syzkaller.appspotmail.com
+
+list_del corruption. prev->next should be ffff0000c74fd828, but was ffff80000d5c37a0. (prev=ffff80000d5c37a0)
+------------[ cut here ]------------
+kernel BUG at lib/list_debug.c:53!
+Internal error: Oops - BUG: 0 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 0 PID: 3019 Comm: syz-executor150 Not tainted 5.19.0-rc8-syzkaller-01618-g680fb5b009e8 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/20/2022
+pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __list_del_entry_valid+0x94/0xa8 lib/list_debug.c:51
+lr : __list_del_entry_valid+0x94/0xa8 lib/list_debug.c:51
+sp : ffff80001317bc40
+x29: ffff80001317bc40 x28: ffff0000c65f0000 x27: 0000000000000000
+x26: 00000000000000c0 x25: ffff0000cae01828 x24: ffff0000c74fd000
+x23: ffff80000d309368 x22: ffff8000093f7a24 x21: ffff80000d5c37a0
+x20: 0000000000000000 x19: ffff0000c74fd000 x18: 0000000000000265
+x17: ffff80000bfed6bc x16: ffff80000db3b658 x15: ffff0000c65f0000
+x14: 0000000000000021 x13: 00000000ffffffff x12: ffff0000c65f0000
+x11: ff808000081bf324 x10: 0000000000000000 x9 : bdc8aea51905dc00
+x8 : bdc8aea51905dc00 x7 : ffff800008160c98 x6 : 0000000000000000
+x5 : 0000000000000080 x4 : 0000000000000001 x3 : 0000000000000000
+x2 : ffff0001fefbecd0 x1 : 0000000100000000 x0 : 000000000000006d
+Call trace:
+ __list_del_entry_valid+0x94/0xa8 lib/list_debug.c:51
+ __list_del_entry include/linux/list.h:134 [inline]
+ list_del include/linux/list.h:148 [inline]
+ efivar_entry_remove+0x4c/0xa4 drivers/firmware/efi/vars.c:539
+ efivarfs_destroy+0x20/0x5c fs/efivarfs/super.c:185
+ __efivar_entry_iter+0x94/0x100 drivers/firmware/efi/vars.c:1089
+ efivarfs_kill_sb+0x3c/0x4c fs/efivarfs/super.c:249
+ deactivate_locked_super+0x70/0xd4 fs/super.c:332
+ deactivate_super+0xb8/0xbc fs/super.c:363
+ cleanup_mnt+0x1a4/0x1e0 fs/namespace.c:1186
+ __cleanup_mnt+0x20/0x30 fs/namespace.c:1193
+ task_work_run+0xc4/0x208 kernel/task_work.c:177
+ resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
+ do_notify_resume+0x174/0x1d0 arch/arm64/kernel/signal.c:1117
+ prepare_exit_to_user_mode arch/arm64/kernel/entry-common.c:137 [inline]
+ exit_to_user_mode arch/arm64/kernel/entry-common.c:142 [inline]
+ el0_svc+0x9c/0x14c arch/arm64/kernel/entry-common.c:625
+ el0t_64_sync_handler+0x84/0xf0 arch/arm64/kernel/entry-common.c:642
+ el0t_64_sync+0x18c/0x190
+Code: 9001b300 912e7000 aa0803e3 94a6ef81 (d4210000) 
+---[ end trace 0000000000000000 ]---
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
