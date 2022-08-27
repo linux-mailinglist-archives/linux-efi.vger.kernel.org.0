@@ -2,53 +2,58 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B9F65A3892
-	for <lists+linux-efi@lfdr.de>; Sat, 27 Aug 2022 17:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 210CE5A3A37
+	for <lists+linux-efi@lfdr.de>; Sun, 28 Aug 2022 00:19:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233568AbiH0P7U (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 27 Aug 2022 11:59:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37554 "EHLO
+        id S229462AbiH0WTW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 27 Aug 2022 18:19:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233379AbiH0P7T (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 27 Aug 2022 11:59:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EF7B2A422
-        for <linux-efi@vger.kernel.org>; Sat, 27 Aug 2022 08:59:18 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 19BB060DE5
-        for <linux-efi@vger.kernel.org>; Sat, 27 Aug 2022 15:59:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F84C43470;
-        Sat, 27 Aug 2022 15:59:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661615957;
-        bh=IR05DDycZMbGq8a97hAoQd06qveIIORpmdL4ZSt3KMQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mMKH1fA6gwtK3UwoR8buZRqVmbq7v1VQOUOkf8t4pm9Kg3ZeV9LQ1Qcf2VJ2Jl0Kx
-         cc4ouXm6f2u+A2PKpjyrM5XpUY/dt837vjG2O5LzeJRch3Cxr2ie2n/J/AaFregJS+
-         tN4SO1GVWmSOs1HyX5uMT+FP81F8Qt8CMgwy73kRRnwbvp/JXW4piM5kOxtagixRpz
-         qXZKGTFGdWqOHVwn1KUQx4AHyXyZlGKsF2r0vMu0b/TTxxz2FU797Kn4/+UDUL8KBA
-         lUzH8sm3xN1hApSy0vPUHfAlt6X5BDK45B1UYoGavCpUkjR3GZdiAGbL7U0LZVAALQ
-         4eFiYNwWIrhxA==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     will@kernel.org, catalin.marinas@arm.com, maz@kernel.org,
-        mark.rutland@arm.com, linux-efi@vger.kernel.org,
-        keescook@chromium.org, Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH v3 7/7] arm64: efi/libstub: enter with the MMU on
-Date:   Sat, 27 Aug 2022 17:58:52 +0200
-Message-Id: <20220827155852.3338551-8-ardb@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220827155852.3338551-1-ardb@kernel.org>
-References: <20220827155852.3338551-1-ardb@kernel.org>
+        with ESMTP id S229455AbiH0WTV (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 27 Aug 2022 18:19:21 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 765E7356D5
+        for <linux-efi@vger.kernel.org>; Sat, 27 Aug 2022 15:19:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1661638760; x=1693174760;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=q1QitCEntgyOKNlYLgUqFl0bXmbzv7Bhy8wTBSjR0lk=;
+  b=IO9u3ICsFfiAGx+F1ncXZsIY/tEc5qWy3KrfpITW3RBmonz3/cXRr/KF
+   2lnKqh62kGlTjV5dK1f4K2yE1S2bwsyWrnQbCLSFSkQ64lJ94FDQ+pHaa
+   ANC8Nt3TGDsi8d7ZdyZLu5FniRfEBHtbD06zJL0nq4rFPBUbnT7RWImY6
+   54cxig4NE+D8XS2SZga2pl88JpubVVJjdA9LVCDJFjokybrR5Xh1t2UXu
+   q1JllKgRtI41WjTnAbziBy/H6V6hrC6YC2yr3zTNNItu2whcRL27VX/Pt
+   PTQ/OV/uXKbtKEYSc2GRHdP085wLuiLtbjl9hJJ+HbOmeWDcY8r8KW/va
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10452"; a="356408366"
+X-IronPort-AV: E=Sophos;i="5.93,269,1654585200"; 
+   d="scan'208";a="356408366"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2022 15:19:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,269,1654585200"; 
+   d="scan'208";a="939134837"
+Received: from lkp-server01.sh.intel.com (HELO fc16deae1c42) ([10.239.97.150])
+  by fmsmga005.fm.intel.com with ESMTP; 27 Aug 2022 15:19:18 -0700
+Received: from kbuild by fc16deae1c42 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oS497-0000X1-1k;
+        Sat, 27 Aug 2022 22:19:17 +0000
+Date:   Sun, 28 Aug 2022 06:18:44 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS bb45d2db8492036a6fc938ec0b228834ea6e1cf9
+Message-ID: <630a9844.i1RH1uWwvjCcT2oi%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6846; i=ardb@kernel.org; h=from:subject; bh=IR05DDycZMbGq8a97hAoQd06qveIIORpmdL4ZSt3KMQ=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjCj87bnkRye1v/ryi0LzQuneHcaCQv2/Q1OBlICj9 iOd3JA+JAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYwo/OwAKCRDDTyI5ktmPJNCxDA CG+7U2RGlMr7EHFyEs1TGh07arVMaDa1QZuqjdP5MtFlLbG1xAIJbKZ4Nddjx7Nnsm5THJCpVtqW7c ifxIXrqGEl/WwWshroC+xY18Hbs+YPCHyWANnWJgnt55hIRYNgVr/F6BHJTMFBfvnsgZz0KgzHmNMY zZudr7JevCb5AgZ0tYo2rSwIUJXjkqmc4nOuiYP47VVAdkd/uUmHgNt7C4SFzc+cpWIbTi/Z/UbHNC FmMtJx5NEsMdsgM6Xz5qRCCZMWaIml3yDIUnCnSjI0cIxXXGYD3nLK6Pi+h1ilAh09Es7PXkbsQqrl K3H9tIb2bd0snr1XCbmiCsmnlWPTKL5Scml7iU6RBb1Do5rHWcSOj5Zj0Uq0MbLL7YrhX0yJbUDQVV qiCebn+Ed5rY50AUruHtqdBZ+Wh3My1rcC2a2A2yIljffXtZQDqLt8fNBoGm5wFHc9nPkYxHXkXv2x kVVrKkPztXZyAvIKr3Udzhc4NL0oJ7Qf7PdHt5tz6pX14=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,211 +61,120 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Instead of disabling the MMU and caches before jumping to the kernel's
-entry point, just call it directly, and keep the MMU and caches enabled.
-This removes the need for any cache invalidation in the entry path. It
-also allows us to get rid of the asm routine, as doing the jump is
-easily done from C code.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+branch HEAD: bb45d2db8492036a6fc938ec0b228834ea6e1cf9  Merge tag 'efi-loongarch-for-v6.1' into efi/next
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/arm64/kernel/Makefile                |  9 +--
- arch/arm64/kernel/efi-entry.S             | 69 --------------------
- arch/arm64/kernel/image-vars.h            |  6 +-
- arch/arm64/mm/cache.S                     |  5 +-
- drivers/firmware/efi/libstub/arm64-stub.c | 18 ++++-
- 5 files changed, 24 insertions(+), 83 deletions(-)
+elapsed time: 720m
 
-diff --git a/arch/arm64/kernel/Makefile b/arch/arm64/kernel/Makefile
-index 1add7b01efa7..3c502facb7e1 100644
---- a/arch/arm64/kernel/Makefile
-+++ b/arch/arm64/kernel/Makefile
-@@ -36,12 +36,6 @@ obj-y			:= debug-monitors.o entry.o irq.o fpsimd.o		\
- 			   syscall.o proton-pack.o idreg-override.o idle.o	\
- 			   patching.o
- 
--targets			+= efi-entry.o
--
--OBJCOPYFLAGS := --prefix-symbols=__efistub_
--$(obj)/%.stub.o: $(obj)/%.o FORCE
--	$(call if_changed,objcopy)
--
- obj-$(CONFIG_COMPAT)			+= sys32.o signal32.o			\
- 					   sys_compat.o
- obj-$(CONFIG_COMPAT)			+= sigreturn32.o
-@@ -56,8 +50,7 @@ obj-$(CONFIG_CPU_PM)			+= sleep.o suspend.o
- obj-$(CONFIG_CPU_IDLE)			+= cpuidle.o
- obj-$(CONFIG_JUMP_LABEL)		+= jump_label.o
- obj-$(CONFIG_KGDB)			+= kgdb.o
--obj-$(CONFIG_EFI)			+= efi.o efi-entry.stub.o		\
--					   efi-rt-wrapper.o
-+obj-$(CONFIG_EFI)			+= efi.o efi-rt-wrapper.o
- obj-$(CONFIG_PCI)			+= pci.o
- obj-$(CONFIG_ARMV8_DEPRECATED)		+= armv8_deprecated.o
- obj-$(CONFIG_ACPI)			+= acpi.o
-diff --git a/arch/arm64/kernel/efi-entry.S b/arch/arm64/kernel/efi-entry.S
-deleted file mode 100644
-index 61a87fa1c305..000000000000
---- a/arch/arm64/kernel/efi-entry.S
-+++ /dev/null
-@@ -1,69 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
--/*
-- * EFI entry point.
-- *
-- * Copyright (C) 2013, 2014 Red Hat, Inc.
-- * Author: Mark Salter <msalter@redhat.com>
-- */
--#include <linux/linkage.h>
--#include <linux/init.h>
--
--#include <asm/assembler.h>
--
--	__INIT
--
--SYM_CODE_START(efi_enter_kernel)
--	/*
--	 * efi_pe_entry() will have copied the kernel image if necessary and we
--	 * end up here with device tree address in x1 and the kernel entry
--	 * point stored in x0. Save those values in registers which are
--	 * callee preserved.
--	 */
--	ldr	w2, =primary_entry_offset
--	add	x19, x0, x2		// relocated Image entrypoint
--	mov	x20, x1			// DTB address
--
--	/*
--	 * Clean the copied Image to the PoC, and ensure it is not shadowed by
--	 * stale icache entries from before relocation.
--	 */
--	ldr	w1, =kernel_size
--	add	x1, x0, x1
--	bl	dcache_clean_poc
--	ic	ialluis
--
--	/*
--	 * Clean the remainder of this routine to the PoC
--	 * so that we can safely disable the MMU and caches.
--	 */
--	adr	x0, 0f
--	adr	x1, 3f
--	bl	dcache_clean_poc
--0:
--	/* Turn off Dcache and MMU */
--	mrs	x0, CurrentEL
--	cmp	x0, #CurrentEL_EL2
--	b.ne	1f
--	mrs	x0, sctlr_el2
--	bic	x0, x0, #1 << 0	// clear SCTLR.M
--	bic	x0, x0, #1 << 2	// clear SCTLR.C
--	pre_disable_mmu_workaround
--	msr	sctlr_el2, x0
--	isb
--	b	2f
--1:
--	mrs	x0, sctlr_el1
--	bic	x0, x0, #1 << 0	// clear SCTLR.M
--	bic	x0, x0, #1 << 2	// clear SCTLR.C
--	pre_disable_mmu_workaround
--	msr	sctlr_el1, x0
--	isb
--2:
--	/* Jump to kernel entry point */
--	mov	x0, x20
--	mov	x1, xzr
--	mov	x2, xzr
--	mov	x3, xzr
--	br	x19
--3:
--SYM_CODE_END(efi_enter_kernel)
-diff --git a/arch/arm64/kernel/image-vars.h b/arch/arm64/kernel/image-vars.h
-index afa69e04e75e..cb97a9941425 100644
---- a/arch/arm64/kernel/image-vars.h
-+++ b/arch/arm64/kernel/image-vars.h
-@@ -10,8 +10,7 @@
- #error This file should only be included in vmlinux.lds.S
- #endif
- 
--PROVIDE(__efistub_kernel_size		= _edata - _text);
--PROVIDE(__efistub_primary_entry_offset	= primary_entry - _text);
-+PROVIDE(__efistub_primary_entry		= primary_entry);
- 
- /*
-  * The EFI stub has its own symbol namespace prefixed by __efistub_, to
-@@ -32,10 +31,11 @@ PROVIDE(__efistub_strnlen		= __pi_strnlen);
- PROVIDE(__efistub_strcmp		= __pi_strcmp);
- PROVIDE(__efistub_strncmp		= __pi_strncmp);
- PROVIDE(__efistub_strrchr		= __pi_strrchr);
--PROVIDE(__efistub_dcache_clean_poc	= __pi_dcache_clean_poc);
-+PROVIDE(__efistub_caches_clean_inval_pou = __pi_caches_clean_inval_pou);
- 
- PROVIDE(__efistub__text			= _text);
- PROVIDE(__efistub__end			= _end);
-+PROVIDE(__efistub___inittext_end       	= __inittext_end);
- PROVIDE(__efistub__edata		= _edata);
- PROVIDE(__efistub_screen_info		= screen_info);
- PROVIDE(__efistub__ctype		= _ctype);
-diff --git a/arch/arm64/mm/cache.S b/arch/arm64/mm/cache.S
-index 081058d4e436..8c3b3ee9b1d7 100644
---- a/arch/arm64/mm/cache.S
-+++ b/arch/arm64/mm/cache.S
-@@ -52,10 +52,11 @@ alternative_else_nop_endif
-  *	- start   - virtual start address of region
-  *	- end     - virtual end address of region
-  */
--SYM_FUNC_START(caches_clean_inval_pou)
-+SYM_FUNC_START(__pi_caches_clean_inval_pou)
- 	caches_clean_inval_pou_macro
- 	ret
--SYM_FUNC_END(caches_clean_inval_pou)
-+SYM_FUNC_END(__pi_caches_clean_inval_pou)
-+SYM_FUNC_ALIAS(caches_clean_inval_pou, __pi_caches_clean_inval_pou)
- 
- /*
-  *	caches_clean_inval_user_pou(start,end)
-diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-index f32e89b4049f..eb568ea3120b 100644
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -87,7 +87,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 				 efi_handle_t image_handle)
- {
- 	efi_status_t status;
--	unsigned long kernel_size, kernel_memsize = 0;
-+	unsigned long kernel_size, kernel_codesize, kernel_memsize = 0;
- 	u32 phys_seed = 0;
- 
- 	/*
-@@ -131,6 +131,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 			SEGMENT_ALIGN >> 10);
- 
- 	kernel_size = _edata - _text;
-+	kernel_codesize = __inittext_end - _text;
- 	kernel_memsize = kernel_size + (_end - _edata);
- 	*reserve_size = kernel_memsize;
- 
-@@ -174,6 +175,21 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 
- 	*image_addr = *reserve_addr;
- 	memcpy((void *)*image_addr, _text, kernel_size);
-+	caches_clean_inval_pou((void *)*image_addr,
-+			       (void *)*image_addr + kernel_codesize);
- 
- 	return EFI_SUCCESS;
- }
-+
-+asmlinkage void primary_entry(void);
-+
-+void __noreturn efi_enter_kernel(unsigned long entrypoint,
-+				 unsigned long fdt_addr,
-+				 unsigned long fdt_size)
-+{
-+	void (* __noreturn enter_kernel)(u64, u64, u64, u64);
-+	u64 offset = (char *)primary_entry - _text;
-+
-+	enter_kernel = (void *)entrypoint + offset;
-+	enter_kernel(fdt_addr, 0, 0, 0);
-+}
+configs tested: 99
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                        randconfig-a013
+x86_64                        randconfig-a002
+x86_64                        randconfig-a011
+arc                                 defconfig
+s390                             allmodconfig
+x86_64                        randconfig-a004
+riscv                             allnoconfig
+arc                  randconfig-r043-20220827
+powerpc                           allnoconfig
+x86_64                        randconfig-a015
+loongarch                         allnoconfig
+alpha                               defconfig
+x86_64                        randconfig-a006
+i386                   debian-10.3-kselftests
+i386                                defconfig
+i386                          randconfig-a001
+i386                              debian-10.3
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+x86_64                              defconfig
+powerpc                          allmodconfig
+riscv                          rv32_defconfig
+i386                          randconfig-a003
+x86_64                           rhel-8.3-kvm
+loongarch                           defconfig
+sh                               allmodconfig
+x86_64                               rhel-8.3
+s390                             allyesconfig
+i386                          randconfig-a005
+x86_64                    rhel-8.3-kselftests
+s390                                defconfig
+mips                             allyesconfig
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-syz
+i386                        debian-10.3-kunit
+i386                         debian-10.3-func
+i386                          debian-10.3-kvm
+x86_64                           allyesconfig
+arm                                 defconfig
+parisc                           allyesconfig
+parisc                              defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+m68k                             allmodconfig
+nios2                            allyesconfig
+arc                              allyesconfig
+parisc64                            defconfig
+alpha                            allyesconfig
+i386                             allyesconfig
+ia64                             allmodconfig
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+powerpc                          allyesconfig
+riscv                            allyesconfig
+arm                              allyesconfig
+riscv                            allmodconfig
+riscv                               defconfig
+arm64                            allyesconfig
+arm                             pxa_defconfig
+sh                             sh03_defconfig
+arc                    vdk_hs38_smp_defconfig
+powerpc                         ps3_defconfig
+sh                           se7750_defconfig
+arc                 nsimosci_hs_smp_defconfig
+mips                    maltaup_xpa_defconfig
+sh                        edosk7705_defconfig
+mips                         bigsur_defconfig
+sh                            titan_defconfig
+m68k                        m5272c3_defconfig
+arm64                            alldefconfig
+arm                          lpd270_defconfig
+i386                          randconfig-c001
+sparc                       sparc32_defconfig
+sh                          sdk7786_defconfig
+openrisc                            defconfig
+
+clang tested configs:
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a012
+hexagon              randconfig-r041-20220827
+hexagon              randconfig-r045-20220827
+x86_64                        randconfig-a014
+x86_64                        randconfig-a005
+s390                 randconfig-r044-20220827
+x86_64                        randconfig-a016
+i386                          randconfig-a002
+riscv                randconfig-r042-20220827
+i386                          randconfig-a004
+i386                          randconfig-a006
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+x86_64                        randconfig-k001
+arm                       netwinder_defconfig
+mips                        qi_lb60_defconfig
+powerpc                    ge_imp3a_defconfig
+
 -- 
-2.35.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
