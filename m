@@ -2,99 +2,76 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66E665A34D2
-	for <lists+linux-efi@lfdr.de>; Sat, 27 Aug 2022 07:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F99A5A3579
+	for <lists+linux-efi@lfdr.de>; Sat, 27 Aug 2022 09:14:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232298AbiH0FW7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 27 Aug 2022 01:22:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45106 "EHLO
+        id S230232AbiH0HOP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 27 Aug 2022 03:14:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbiH0FW6 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 27 Aug 2022 01:22:58 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A804DE2C46;
-        Fri, 26 Aug 2022 22:22:57 -0700 (PDT)
-Received: from zn.tnic (p200300ea971b98b8329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:98b8:329c:23ff:fea6:a903])
+        with ESMTP id S232507AbiH0HOP (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 27 Aug 2022 03:14:15 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE1BAB941F;
+        Sat, 27 Aug 2022 00:14:13 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2E2CA1EC067D;
-        Sat, 27 Aug 2022 07:22:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1661577772;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=ks0SLuNxmzCnAUYXrkhP9KdkQ0A8yo6GK50CfL3ynhw=;
-        b=MsQVr00LyBGGuBI6KG7MabIXhGiiWHeYWOBomu2gEVzUHMIW4Hm+z+1tHJBVIFhDoYyE5n
-        M7bkYm1OECG/iDPdga6rJPHJ/p0FMHzvR5nwwXOtLTuyBNaIU2acRoxGgbEOO9lCUfAB1m
-        TmO1cCN1MoKT4RkztjD04JhCVFTLiH4=
-Date:   Sat, 27 Aug 2022 07:22:48 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     "Elliott, Robert (Servers)" <elliott@hpe.com>
-Cc:     Jia He <justin.he@arm.com>, Len Brown <lenb@kernel.org>,
-        James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Jan Luebbe <jlu@pengutronix.de>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        "Kani, Toshi" <toshi.kani@hpe.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "nd@arm.com" <nd@arm.com>, "Paul E. McKenney" <paulmck@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Muchun Song <songmuchun@bytedance.com>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "stable@kernel.org" <stable@kernel.org>
-Subject: Re: [RESEND PATCH v3 3/9] EDAC/ghes: Make ghes_edac a proper module
- to remove the dependency on ghes
-Message-ID: <YwmqKPaYtgTS4xYT@zn.tnic>
-References: <20220822154048.188253-1-justin.he@arm.com>
- <20220822154048.188253-4-justin.he@arm.com>
- <MW5PR84MB1842F7107770654C46CB0311AB759@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
+        by ams.source.kernel.org (Postfix) with ESMTPS id A56ECB82B8D;
+        Sat, 27 Aug 2022 07:14:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F6ABC4347C;
+        Sat, 27 Aug 2022 07:14:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1661584451;
+        bh=bQaVKBfsaLgFQiFbtFaJvcqVdo/u/g4Ip0tVdWmYieQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=MuvtgXa0YJPctLv2mT8DfNi0I5KdPrtZD8YgtzWdktEzyf/YogOa/LKGqu5nVWK+H
+         Z/Jy1DsA5qi5+ZmGLhJTw6q30Ixe9S4To6brhk8PzAfRbitjd7TULsBwhQrwEU+S4h
+         KxTieZLSV2ngyyRacvTGeGvMRvGYw4ccE17vx4jHnsYBEyv0AA26+Egw8EjTGWz6zz
+         CdUTbOKzSpAfbv61qT2Cw2DFQvVD2BYJcfIDHAFaHnppPgtv9Qsp48xZUnifVtj70O
+         VZzHlRQZpQsXV/vyoNG1zSmyCYj6BoKL7bKeQbWWnpybGFjp6Biny5JZA/EOkd2Qqf
+         sqjS9WTInxJAg==
+Received: by mail-wm1-f53.google.com with SMTP id n23-20020a7bc5d7000000b003a62f19b453so5455948wmk.3;
+        Sat, 27 Aug 2022 00:14:11 -0700 (PDT)
+X-Gm-Message-State: ACgBeo2crqYSz1YLQi25NSxQUVPF3Gc74q4m02TB91HuiLt87Z6MTQaZ
+        wdF6KqZTUldAGrH6OIaHaz65FW6i/rhIjK9ze8w=
+X-Google-Smtp-Source: AA6agR7p8GijcUOtJGznPBKhpfg9HyxCqjidJlhRFBvsrg/twaTrPlEhxNPEg5Uu1s2eYVOnl4WfetJWsHoWy5eWk/c=
+X-Received: by 2002:a1c:3b55:0:b0:3a6:7b62:3901 with SMTP id
+ i82-20020a1c3b55000000b003a67b623901mr1520421wma.113.1661584449515; Sat, 27
+ Aug 2022 00:14:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <MW5PR84MB1842F7107770654C46CB0311AB759@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220819102037.2697798-1-chenhuacai@loongson.cn> <9b6f0aeaebbd36882b5b40d655f9ccd20c7be496.camel@xry111.site>
+In-Reply-To: <9b6f0aeaebbd36882b5b40d655f9ccd20c7be496.camel@xry111.site>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Sat, 27 Aug 2022 09:13:58 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFOd+gMHbi6MH0KHWkBEKN9V0LeZbyGRw8h630OxtMrdA@mail.gmail.com>
+Message-ID: <CAMj1kXFOd+gMHbi6MH0KHWkBEKN9V0LeZbyGRw8h630OxtMrdA@mail.gmail.com>
+Subject: Re: [PATCH V3] LoongArch: Add efistub booting support
+To:     Xi Ruoyao <xry111@xry111.site>
+Cc:     Huacai Chen <chenhuacai@loongson.cn>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
+        linux-arch@vger.kernel.org, Xuefeng Li <lixuefeng@loongson.cn>,
+        Guo Ren <guoren@kernel.org>, Xuerui Wang <kernel@xen0n.name>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Aug 26, 2022 at 10:42:13PM +0000, Elliott, Robert (Servers) wrote:
-> 4. In the help text for each module that looks for GHES and refuses to load 
-> (e.g., EDAC_AMD64), add a sentence:
-> 
->   This module does not load on a system supporting ACPI GHES.
+On Sat, 27 Aug 2022 at 06:41, Xi Ruoyao <xry111@xry111.site> wrote:
+>
+> Tested V3 with the magic number check manually removed in my GRUB build.
+> The system boots successfully.  I've not tested Arnd's zBoot patch yet.
 
-It is not "system supporting ACPI GHES." - it is on a system which is
-*known* to have a more or less tested GHES implementation. The notoriety
-of firmware RAS brokenness is well known.
+I am Ard not Arnd :-)
 
-So please stop this - there's a world outside HP BIOS.
-
-None of this is needed for this patchset.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Please use this branch when testing the EFI decompressor:
+https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efi-decompressor-v4
