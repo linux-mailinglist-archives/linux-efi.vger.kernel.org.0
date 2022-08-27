@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 677E55A3608
-	for <lists+linux-efi@lfdr.de>; Sat, 27 Aug 2022 10:39:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 062635A3605
+	for <lists+linux-efi@lfdr.de>; Sat, 27 Aug 2022 10:39:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231418AbiH0Ij1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 27 Aug 2022 04:39:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38586 "EHLO
+        id S231222AbiH0Ij2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 27 Aug 2022 04:39:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232911AbiH0IjX (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 27 Aug 2022 04:39:23 -0400
+        with ESMTP id S232557AbiH0Ij1 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 27 Aug 2022 04:39:27 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D80DBFC6B
-        for <linux-efi@vger.kernel.org>; Sat, 27 Aug 2022 01:39:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD81ABCCE2
+        for <linux-efi@vger.kernel.org>; Sat, 27 Aug 2022 01:39:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1DEAAB822E5
-        for <linux-efi@vger.kernel.org>; Sat, 27 Aug 2022 08:39:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEFDC433B5;
-        Sat, 27 Aug 2022 08:39:16 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8FA75B80E6F
+        for <linux-efi@vger.kernel.org>; Sat, 27 Aug 2022 08:39:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5130CC433C1;
+        Sat, 27 Aug 2022 08:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661589559;
-        bh=c82V61iIcOxdbLmW3edxD5a0MH1rbeC8C+w6vuiZUxg=;
+        s=k20201202; t=1661589563;
+        bh=BgNwH7xfBPv6l1sHY7W8lv62pNdIUhlpLRWtnyMfKTQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tyq9XW7k+MkqwYFN7gesGE/gH9rrQ0KjdYjZLPsQbsgEV3SdW1eItoQ3pE9/Kyho0
-         fjcARVUSSM24rpDYB3ZHDP3HqTdXMXnj3lOWqxf3svrA2/9rizfWW3vcxmF/J9nuQM
-         CiWFvzfH9Qxjg2eZj4sdiBlOyGubPLrNz3BkPCkz6JZK71myTQ9XZSaufoOvAhNAkZ
-         hTJ+ATZTYlToluIZlAifOG6jMQ8cu5apQQacp4W8HrMzswgM7OGStc2C78A1wGVAdN
-         aLJOtT+VmcpUllsnmdQ2eYi17KrYFZ5IS8EFG0aFDGLPGyjckMyH+YpSIuGh9sGV9E
-         S8YSPJNeIsJmg==
+        b=HZTVkKz+1FlZx1gaSXop7eGIQZi8rzBg2kr33mDB3b+WrGTfTo5tbzhERJvqyACWj
+         4GGzOyG3YPTm8mcX4bla83cGLUadK2uPa89xkmjhWlA4iEmdrCdjWA5YrIVQpXyH4L
+         YMWtsBnkuqYu/BeJtJfELLW5PY5Er2Ldxo/treMfdkFSm4pibPaLc4IxpCiTz7/xGY
+         CKokkvM8/Yc5KIXqkiFcS1/TY4KlVs2PuBIQ6zP6ZzNnxfZEby4h9JRWFaz+pEjCuu
+         dfFx4QKQcUgCmTEGIvRdAIXE4SCgiD0cKTHUaxSfukVH8lVHEDD890cjX4H4owzI3+
+         jkORFiTx+5F3A==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org,
@@ -48,14 +48,14 @@ Cc:     linux-arm-kernel@lists.infradead.org,
         Xi Ruoyao <xry111@xry111.site>,
         Lennart Poettering <lennart@poettering.net>,
         Jeremy Linton <jeremy.linton@arm.com>
-Subject: [PATCH v4 3/9] efi/libstub: use EFI provided memcpy/memset routines
-Date:   Sat, 27 Aug 2022 10:38:44 +0200
-Message-Id: <20220827083850.2702465-4-ardb@kernel.org>
+Subject: [PATCH v4 4/9] efi/libstub: move efi_system_table global var into separate object
+Date:   Sat, 27 Aug 2022 10:38:45 +0200
+Message-Id: <20220827083850.2702465-5-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220827083850.2702465-1-ardb@kernel.org>
 References: <20220827083850.2702465-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6505; i=ardb@kernel.org; h=from:subject; bh=c82V61iIcOxdbLmW3edxD5a0MH1rbeC8C+w6vuiZUxg=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjCdgPKf8vyKTN1fNb4hsOVagIZLJhDFXDLAOZVzAi Fc6ipFSJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYwnYDwAKCRDDTyI5ktmPJIkqDA C38EsHGxIcOKzSyMJypImt+olxyvd8XcGDoL2Dkd7iSfmr1m72q6yvsM5o60WTbeyqXdJOVgWTWum5 4qHzmftU2rQZG9YjUkiJW7i2KKWKaj3O0zIpNjFZggk7WwRe0DII8LjFROf4u4IYna04rp0ADFQW8+ O8ohNbGMblq5n7HpI0CG5HGHRuaAy1KtmgvbRht9XJAHBYYBe2Qz0gQNu0ECYtuv7v76i3UyQhEEas GmBaSATGuJfTJQmOvcTTjl30H6DDvah9RKVDVK0ePFhMG32ULQLnMVLp48XDKK/OyYe1w2FbiEOzk0 V+0U0roQDdNGiErFiJ/ETFGRnS363cyKI/LZzTnJm8CkUjEKN6KTEoa6+emsYuw+4OnpOODQ8q7dO/ dWqKtiHzY8XKvBnj8VGWsUhM9NFV1/jpx52Um51xutvQlogzJAUtHzRhGftGQs0tCM1EwvdmeEU7cg iHLxRktNTi8pgtlhKhlJ7rQ2GttSHoP43eB4KAlOMqwWs=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2060; i=ardb@kernel.org; h=from:subject; bh=BgNwH7xfBPv6l1sHY7W8lv62pNdIUhlpLRWtnyMfKTQ=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjCdgRYrCMeBKPNkBsfxIIEhlW6FxbWiIJTYHw4tIJ y7Qs+5mJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYwnYEQAKCRDDTyI5ktmPJJ3PC/ sGUEpWe63Hgzpvf9nGzGNA+f99uF7hln570rqVzyJFdGH8L+mOE7jCuUOzIZGMkLsgLmYMmCBUjF2V JNyAlsnRUFMoprwfwwm90hvyENy/LCUXGSZToZZUt3CeO0BsaSuY3dp4/FVVH1LlDEfU3zxQKmrdCg ZpuKMZfTTXHULFvllfHjruAifDnaB/SHlBYV3hvKhSPXjWxT/TZ3W+sH/xnnpPQioSd3fXPBwB42Cx xnfcsUCMIigdA0a1ONR88CCjwKUkPFz1tkrcRsXEws0JFqoTG9vW4R1rJPC/EnlbvrCot5PTg2o2zj HHG+KfSJ0jVQaykOprKDFCj8gRHSw638G1F3GcBoY2Kj5dReqJBoXudktqUuoo6yWJIfBgUVKnliNr C7+ljb7Wn37ubVe6cSxHutzhXnAeJMWjPRT2+Ee5w2ZJxrYlipNR/s8cdt0yRPR6sZ4bthurwAWSrz swj38uMrgLDd2d3J9jtqJVWwqXfSpy2S3GBj7zH0dfsmw=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -68,172 +68,58 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The stub is used in different execution environments, but on arm64,
-RISC-V and LoongArch, we still use the core kernel's implementation of
-memcpy and memset, as they are just a branch instruction away, and can
-generally be reused even from code such as the EFI stub that runs in a
-completely different address space.
-
-KAsan complicates this slightly, resulting in the need for some hacks to
-expose the uninstrumented, __ prefixed versions as the normal ones, as
-the latter are instrumented to include the KAsan checks, which only work
-in the core kernel.
-
-Unfortunately, #define'ing memcpy to __memcpy when building C code does
-not guarantee that no explicit memcpy() calls will be emitted. And with
-the upcoming zboot support, which consists of a separate binary which
-therefore needs its own implementation of memcpy/memset anyway, it's
-better to provide one explicitly instead of linking to the existing one.
-
-Given that EFI exposes implementations of memmove() and memset() via the
-boot services table, let's wire those up in the appropriate way, and
-drop the references to the core kernel ones.
+To avoid pulling in the wrong object when using the libstub static
+library to build the decompressor, define efi_system_table in a separate
+compilation unit.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/kernel/image-vars.h            | 13 ---------
- arch/loongarch/kernel/image-vars.h        |  3 --
- arch/riscv/kernel/image-vars.h            |  9 ------
- drivers/firmware/efi/libstub/Makefile     |  2 +-
- drivers/firmware/efi/libstub/efistub.h    |  4 +--
- drivers/firmware/efi/libstub/intrinsics.c | 30 ++++++++++++++++++++
- 6 files changed, 33 insertions(+), 28 deletions(-)
+ drivers/firmware/efi/libstub/Makefile   | 3 ++-
+ drivers/firmware/efi/libstub/efi-stub.c | 2 --
+ drivers/firmware/efi/libstub/systable.c | 8 ++++++++
+ 3 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/kernel/image-vars.h b/arch/arm64/kernel/image-vars.h
-index afa69e04e75e..11643f4d864d 100644
---- a/arch/arm64/kernel/image-vars.h
-+++ b/arch/arm64/kernel/image-vars.h
-@@ -24,9 +24,6 @@ PROVIDE(__efistub_primary_entry_offset	= primary_entry - _text);
-  */
- PROVIDE(__efistub_memcmp		= __pi_memcmp);
- PROVIDE(__efistub_memchr		= __pi_memchr);
--PROVIDE(__efistub_memcpy		= __pi_memcpy);
--PROVIDE(__efistub_memmove		= __pi_memmove);
--PROVIDE(__efistub_memset		= __pi_memset);
- PROVIDE(__efistub_strlen		= __pi_strlen);
- PROVIDE(__efistub_strnlen		= __pi_strnlen);
- PROVIDE(__efistub_strcmp		= __pi_strcmp);
-@@ -40,16 +37,6 @@ PROVIDE(__efistub__edata		= _edata);
- PROVIDE(__efistub_screen_info		= screen_info);
- PROVIDE(__efistub__ctype		= _ctype);
- 
--/*
-- * The __ prefixed memcpy/memset/memmove symbols are provided by KASAN, which
-- * instruments the conventional ones. Therefore, any references from the EFI
-- * stub or other position independent, low level C code should be redirected to
-- * the non-instrumented versions as well.
-- */
--PROVIDE(__efistub___memcpy		= __pi_memcpy);
--PROVIDE(__efistub___memmove		= __pi_memmove);
--PROVIDE(__efistub___memset		= __pi_memset);
--
- PROVIDE(__pi___memcpy			= __pi_memcpy);
- PROVIDE(__pi___memmove			= __pi_memmove);
- PROVIDE(__pi___memset			= __pi_memset);
-diff --git a/arch/loongarch/kernel/image-vars.h b/arch/loongarch/kernel/image-vars.h
-index c901ebb903f2..88f5d81702df 100644
---- a/arch/loongarch/kernel/image-vars.h
-+++ b/arch/loongarch/kernel/image-vars.h
-@@ -9,9 +9,6 @@
- 
- __efistub_memcmp		= memcmp;
- __efistub_memchr		= memchr;
--__efistub_memcpy		= memcpy;
--__efistub_memmove		= memmove;
--__efistub_memset		= memset;
- __efistub_strcat		= strcat;
- __efistub_strcmp		= strcmp;
- __efistub_strlen		= strlen;
-diff --git a/arch/riscv/kernel/image-vars.h b/arch/riscv/kernel/image-vars.h
-index 71a76a623257..d6e5f739905e 100644
---- a/arch/riscv/kernel/image-vars.h
-+++ b/arch/riscv/kernel/image-vars.h
-@@ -25,21 +25,12 @@
-  */
- __efistub_memcmp		= memcmp;
- __efistub_memchr		= memchr;
--__efistub_memcpy		= memcpy;
--__efistub_memmove		= memmove;
--__efistub_memset		= memset;
- __efistub_strlen		= strlen;
- __efistub_strnlen		= strnlen;
- __efistub_strcmp		= strcmp;
- __efistub_strncmp		= strncmp;
- __efistub_strrchr		= strrchr;
- 
--#ifdef CONFIG_KASAN
--__efistub___memcpy		= memcpy;
--__efistub___memmove		= memmove;
--__efistub___memset		= memset;
--#endif
--
- __efistub__start		= _start;
- __efistub__start_kernel		= _start_kernel;
- __efistub__end			= _end;
 diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index 68c181dcb8cf..498ea6f7a92a 100644
+index 498ea6f7a92a..fbe1900f47c4 100644
 --- a/drivers/firmware/efi/libstub/Makefile
 +++ b/drivers/firmware/efi/libstub/Makefile
-@@ -65,7 +65,7 @@ efi-deps-y := fdt_rw.c fdt_ro.c fdt_wip.c fdt.c fdt_empty_tree.c fdt_sw.c
- $(obj)/lib-%.o: $(srctree)/lib/%.c FORCE
- 	$(call if_changed_rule,cc_o_c)
+@@ -57,7 +57,8 @@ KCOV_INSTRUMENT			:= n
+ lib-y				:= efi-stub-helper.o gop.o secureboot.o tpm.o \
+ 				   file.o mem.o random.o randomalloc.o pci.o \
+ 				   skip_spaces.o lib-cmdline.o lib-ctype.o \
+-				   alignedmem.o relocate.o vsprintf.o
++				   alignedmem.o relocate.o vsprintf.o \
++				   systable.o
  
--lib-$(CONFIG_EFI_GENERIC_STUB)	+= efi-stub.o fdt.o string.o \
-+lib-$(CONFIG_EFI_GENERIC_STUB)	+= efi-stub.o fdt.o string.o intrinsics.o \
- 				   $(patsubst %.c,lib-%.o,$(efi-deps-y))
+ # include the stub's generic dependencies from lib/ when building for ARM/arm64
+ efi-deps-y := fdt_rw.c fdt_ro.c fdt_wip.c fdt.c fdt_empty_tree.c fdt_sw.c
+diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
+index 4bf751484e8b..57ea04378087 100644
+--- a/drivers/firmware/efi/libstub/efi-stub.c
++++ b/drivers/firmware/efi/libstub/efi-stub.c
+@@ -57,8 +57,6 @@
+ static u64 virtmap_base = EFI_RT_VIRTUAL_BASE;
+ static bool flat_va_mapping = (EFI_RT_VIRTUAL_OFFSET != 0);
  
- lib-y				+= $(ARCH)-stub.o
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index c7efc404e663..54f37e886be7 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -301,8 +301,8 @@ union efi_boot_services {
- 		efi_status_t (__efiapi *install_multiple_protocol_interfaces)(efi_handle_t *, ...);
- 		efi_status_t (__efiapi *uninstall_multiple_protocol_interfaces)(efi_handle_t, ...);
- 		void *calculate_crc32;
--		void *copy_mem;
--		void *set_mem;
-+		void (__efiapi *copy_mem)(void *, const void *, unsigned long);
-+		void (__efiapi *set_mem)(void *, unsigned long, unsigned char);
- 		void *create_event_ex;
- 	};
- 	struct {
-diff --git a/drivers/firmware/efi/libstub/intrinsics.c b/drivers/firmware/efi/libstub/intrinsics.c
+-const efi_system_table_t *efi_system_table;
+-
+ static struct screen_info *setup_graphics(void)
+ {
+ 	efi_guid_t gop_proto = EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
+diff --git a/drivers/firmware/efi/libstub/systable.c b/drivers/firmware/efi/libstub/systable.c
 new file mode 100644
-index 000000000000..a04ab39292b6
+index 000000000000..91d016b02f8c
 --- /dev/null
-+++ b/drivers/firmware/efi/libstub/intrinsics.c
-@@ -0,0 +1,30 @@
++++ b/drivers/firmware/efi/libstub/systable.c
+@@ -0,0 +1,8 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
 +#include <linux/efi.h>
 +#include <asm/efi.h>
-+#include <asm/string.h>
 +
 +#include "efistub.h"
 +
-+#ifdef CONFIG_KASAN
-+#undef memcpy
-+#undef memmove
-+#undef memset
-+void *__memcpy(void *__dest, const void *__src, size_t __n) __alias(memcpy);
-+void *__memmove(void *__dest, const void *__src, size_t count) __alias(memmove);
-+void *__memset(void *s, int c, size_t count) __alias(memset);
-+#endif
-+
-+void *memcpy(void *dst, const void *src, size_t len)
-+{
-+	efi_bs_call(copy_mem, dst, src, len);
-+	return dst;
-+}
-+
-+extern void *memmove(void *dst, const void *src, size_t len) __alias(memcpy);
-+
-+void *memset(void *dst, int c, size_t len)
-+{
-+	efi_bs_call(set_mem, dst, len, c & U8_MAX);
-+	return dst;
-+}
++const efi_system_table_t *efi_system_table;
 -- 
 2.35.1
 
