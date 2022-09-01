@@ -2,42 +2,48 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E6205A9F7B
-	for <lists+linux-efi@lfdr.de>; Thu,  1 Sep 2022 20:59:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40A0D5A9F85
+	for <lists+linux-efi@lfdr.de>; Thu,  1 Sep 2022 21:02:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233033AbiIAS72 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 1 Sep 2022 14:59:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56976 "EHLO
+        id S232649AbiIATCd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 1 Sep 2022 15:02:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232418AbiIAS71 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 1 Sep 2022 14:59:27 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D06AE753AB;
-        Thu,  1 Sep 2022 11:59:26 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 81C23B828F0;
-        Thu,  1 Sep 2022 18:59:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98892C433D6;
-        Thu,  1 Sep 2022 18:59:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1662058764;
-        bh=5fU70Ychqi0YYh788VsTJeDlLacntWYEQlFqq4z4IZQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qFlsCqygHYWv9aKauP3+SSgNjBuZyoilzR7aFbL2d8WrJ+SmjrXbGBhpw+8+PuiEL
-         1qLfZ5lrLz1yL6FAJrGUtj86Pov+pkGp8bkCRETnMkIvOa/iSRkFHHry0Tmmvfj0lW
-         cNTGV/ZTmukuQK1Tafr/1QJW7WB2XKYQjQVQ/pN4=
-Date:   Thu, 1 Sep 2022 20:59:21 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+        with ESMTP id S232599AbiIATCc (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 1 Sep 2022 15:02:32 -0400
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68E586F57E;
+        Thu,  1 Sep 2022 12:02:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+        s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=fEq7ylXFVAD0/Jym3hdJKK4evsjkFDxgx44dOr3dnPM=; b=gkA2hI4dMcnOiridULo7op/MPs
+        qkaaLntakJEq85jBxO0CoAztAK8QHCtnDdPErZqq9+AkL/gllioPMqfTn0MCpg55pk78cGIkiBLzx
+        RYjOuw90T8RjeYukCPsn3EOXC5lo0SWV6PF/tZXqbXmJAk/qV3fuXb8aT97kVW2OdouXROpLSA51O
+        6KYhZSqEpjOfzzi+vbV6BTnXriFhpYc3Nt76Qk1I/RU5W7nNxIKxZzf2DO6hAxZe6M+UnAzHrNnCm
+        Rc1fwk5LmuqHLEPGhEuJbMYAQWET5FpYeQ7e27nYIOYuqrxVQHlfKhGB4sGA0Zy/Eo/f5zDl812fV
+        8ElKfy0A==;
+Received: from 189-69-202-182.dial-up.telesp.net.br ([189.69.202.182] helo=[192.168.1.60])
+        by fanzine2.igalia.com with esmtpsa 
+        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+        id 1oTpSK-007uUo-4P; Thu, 01 Sep 2022 21:02:24 +0200
+Message-ID: <794efe45-2fef-0d3f-b6d0-f2f451be850c@igalia.com>
+Date:   Thu, 1 Sep 2022 16:02:08 -0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH V3] firmware: google: Test spinlock on panic path to avoid
+ lockups
+Content-Language: en-US
+To:     Greg KH <gregkh@linuxfoundation.org>,
+        Petr Mladek <pmladek@suse.com>,
+        Andrew Morton <akpm@linux-foundation.org>
 Cc:     evgreen@chromium.org, arnd@arndb.de, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel@gpiccoli.net, ardb@kernel.org,
-        davidgow@google.com, jwerner@chromium.org,
-        Petr Mladek <pmladek@suse.com>
-Subject: Re: [PATCH V3] firmware: google: Test spinlock on panic path to
- avoid lockups
-Message-ID: <YxEBCVRgWE8VTZaf@kroah.com>
+        davidgow@google.com, jwerner@chromium.org
 References: <20220819155059.451674-1-gpiccoli@igalia.com>
  <YxDVPqVkdgQbAIvY@kroah.com>
  <f89cd87c-7d1c-d8e6-ed95-6876f0201872@igalia.com>
@@ -47,98 +53,36 @@ References: <20220819155059.451674-1-gpiccoli@igalia.com>
  <85683284-db85-7e3a-57bd-750e1c204e3e@igalia.com>
  <YxD56RTI9v/P2QOL@kroah.com>
  <b050f00b-6c3a-a0d9-a3c1-175a724faf1c@igalia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b050f00b-6c3a-a0d9-a3c1-175a724faf1c@igalia.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+ <YxEBCVRgWE8VTZaf@kroah.com>
+From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <YxEBCVRgWE8VTZaf@kroah.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Sep 01, 2022 at 03:46:17PM -0300, Guilherme G. Piccoli wrote:
-> On 01/09/2022 15:28, Greg KH wrote:
-> > [...]
-> >> I honestly didn't understand exactly what you're suggesting Greg...
-> >> Mind clarifying?
-> > 
-> > Something like this totally untested code:
-> > 
-> > diff --git a/drivers/firmware/google/gsmi.c b/drivers/firmware/google/gsmi.c
-> > index adaa492c3d2d..6ad41b22671c 100644
-> > --- a/drivers/firmware/google/gsmi.c
-> > +++ b/drivers/firmware/google/gsmi.c
-> > @@ -19,6 +19,7 @@
-> >  #include <linux/dma-mapping.h>
-> >  #include <linux/fs.h>
-> >  #include <linux/slab.h>
-> > +#include <linux/panic.h>
-> >  #include <linux/panic_notifier.h>
-> >  #include <linux/ioctl.h>
-> >  #include <linux/acpi.h>
-> > @@ -611,6 +612,11 @@ static const struct attribute *gsmi_attrs[] = {
-> >  	NULL,
-> >  };
-> >  
-> > +static bool panic_in_progress(void)
-> > +{
-> > +	return unlikely(atomic_read(&panic_cpu) != PANIC_CPU_INVALID);
-> > +}
-> > +
-> >  static int gsmi_shutdown_reason(int reason)
-> >  {
-> >  	struct gsmi_log_entry_type_1 entry = {
-> > @@ -629,7 +635,8 @@ static int gsmi_shutdown_reason(int reason)
-> >  	if (saved_reason & (1 << reason))
-> >  		return 0;
-> >  
-> > -	spin_lock_irqsave(&gsmi_dev.lock, flags);
-> > +	if (!panic_in_progress())
-> > +		spin_lock_irqsave(&gsmi_dev.lock, flags);
-> >  
-> >  	saved_reason |= (1 << reason);
-> >  
-> > @@ -644,7 +651,8 @@ static int gsmi_shutdown_reason(int reason)
-> >  
-> >  	rc = gsmi_exec(GSMI_CALLBACK, GSMI_CMD_SET_EVENT_LOG);
-> >  
-> > -	spin_unlock_irqrestore(&gsmi_dev.lock, flags);
-> > +	if (!panic_in_progress())
-> > +		spin_unlock_irqrestore(&gsmi_dev.lock, flags);
-> >  
-> >  	if (rc < 0)
-> >  		printk(KERN_ERR "gsmi: Log Shutdown Reason failed\n");
-> > 
-> > 
-> >
+On 01/09/2022 15:59, Greg KH wrote:
+> [...]
+> Ick, I don't know, this all feels odd.  I want someone else to review
+> this and give their ack on the patch before I'll take it so someone else
+> can share in the blame :)
 > 
-> Thanks! Personally, I feel the approach a bit more complex than mine,
-> and...racy!
-> Imagine CPU0 runs your tests, right after the if (!panic_in_progress())
-> is done, spinlock is taken and boom - panic on CPU1. This would cause
-> the same issue...
+> thanks,
+> 
+> greg k-h
 
-True, it would, but so would yours if the unlock happens and then your
-test passes and then this lock is taken and then a panic happens.
+LOL, that's OK for me! Evan seems to be fine with it BTW.
 
-There's no "race free" way here perhaps.  The joys of notifier chains (I
-hate the things...)
+Let's see if Petr can jump in, also adding Andrew here since he's
+usually merging stuff for panic.
+Cheers,
 
-> My approach is zero racy, since it checks if spinlock was taken in a
-> moment that the machine is like a no-SMP, only a single CPU running...
 
-Ah, I missed that this path is only called if an panic is happening.
-Well, also a reboot.
-
-Ick, I don't know, this all feels odd.  I want someone else to review
-this and give their ack on the patch before I'll take it so someone else
-can share in the blame :)
-
-thanks,
-
-greg k-h
+Guilherme
