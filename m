@@ -2,173 +2,67 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E70C5AB74C
-	for <lists+linux-efi@lfdr.de>; Fri,  2 Sep 2022 19:14:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 308A75AC47F
+	for <lists+linux-efi@lfdr.de>; Sun,  4 Sep 2022 15:25:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235432AbiIBROx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 2 Sep 2022 13:14:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48434 "EHLO
+        id S233871AbiIDNZA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 4 Sep 2022 09:25:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234477AbiIBROv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 2 Sep 2022 13:14:51 -0400
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5A501139;
-        Fri,  2 Sep 2022 10:14:48 -0700 (PDT)
-Received: from pps.filterd (m0134421.ppops.net [127.0.0.1])
-        by mx0b-002e3701.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 282H9K9r016725;
-        Fri, 2 Sep 2022 17:14:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
- : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pps0720;
- bh=YNIDse07olkYKVBqhkEPEy0X+2MsJwW+/NIatVrvILs=;
- b=aLfhrWS7SyLV8uZ/IHl/0TE0mYf4gVxcTVV/i3jwsiP5cgV5dYQXlZrvTK+2ThiT/LoT
- spGQBo9vIlnDU25TwiuyqR3L85QcxBznSswwqbPCGCOqpzsfPJ7EsN+AdU4lcERJE22u
- cyu00daLfwwXhQFD09IkOImeEi3wCi7GDSWEsB7jrl/uZHEaM4Fyrp3Q7zupottsJcUZ
- hP2zuo02TtGVQte8j5MKeieRKnFq8VfzQQLHLX+1gU8z0DAHHs6MfdhOYKMFFWnbHOg4
- xPdb2QefLxWqTp5i7PFDqCgSlhhh0sv1wGYflYvA2gb4zLTp99qehlMDQJJVQjB6u56W YQ== 
-Received: from p1lg14878.it.hpe.com (p1lg14878.it.hpe.com [16.230.97.204])
-        by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3jbnyyg0wg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 02 Sep 2022 17:14:12 +0000
-Received: from p1wg14926.americas.hpqcorp.net (unknown [10.119.18.115])
+        with ESMTP id S229748AbiIDNY6 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 4 Sep 2022 09:24:58 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D8061E3E2;
+        Sun,  4 Sep 2022 06:24:56 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by p1lg14878.it.hpe.com (Postfix) with ESMTPS id D268DD281;
-        Fri,  2 Sep 2022 17:14:11 +0000 (UTC)
-Received: from p1wg14927.americas.hpqcorp.net (10.119.18.117) by
- p1wg14926.americas.hpqcorp.net (10.119.18.115) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Fri, 2 Sep 2022 05:13:26 -1200
-Received: from p1wg14928.americas.hpqcorp.net (10.119.18.116) by
- p1wg14927.americas.hpqcorp.net (10.119.18.117) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Fri, 2 Sep 2022 05:13:26 -1200
-Received: from p1wg14921.americas.hpqcorp.net (16.230.19.124) by
- p1wg14928.americas.hpqcorp.net (10.119.18.116) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.15
- via Frontend Transport; Fri, 2 Sep 2022 05:13:26 -1200
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (192.58.206.38)
- by edge.it.hpe.com (16.230.19.124) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.15; Fri, 2 Sep 2022 05:13:26 -1200
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=A8JXeRjAUCdGHetH4FyCDSZX8iCyXw+a4cu4E7kqyJqT+aDMgfBhr44MUNEM06bvsU6HDaP0TuCtfZNOw7OKrQnFj5Iw44cH683F75U47DRy4pi8oVR135Yj/ckUhBuqsGsurDAn7JCEGuu3wyvCGlI/yKQvcNpTG0lI9WrJWLIjf4kBLpsqSF4+FrfDPbTeNlAoxjo7UUSYSb6H9m/KvYXDo0BSlSs3MbVo2uLDCH/bmYASARKybdvRXzecFMevbh8pgZgKG3IWCdUbzmyD6WXadakV/vvMv3WWOWCrGkjNoimO35Fyrbk7oBBRuJ8qjPhASTzhCkSWj0npM9Dqlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YNIDse07olkYKVBqhkEPEy0X+2MsJwW+/NIatVrvILs=;
- b=ANMkg+pGg7yilAJb6Nzjbnn7K1xokGqu/lEmmCfIbSoujWKOdbwlNr2ZBfb462EuTw1t301PCQuLR1ztlrPnniY5QTa5H5/vUrLbmzo49WrzG2kC/P3iG2Z3B5orkHI9l1EvkPlUCOYlcEt59R4XqqhZqkkcbDAYGu8m8XYulxVPvasqKcP5umw6GJ/awzUWg1OQAJavyk0UwFu0GmtTf80gvkoGC/Hc7JkoIHrdFLP4Wq2pjkYUeILnKVQ8w3S22ZQ4eiYhvx3Ld7ojKvX1aB+bNvdoWoRw3xXyxsoJ/hXM8JVZzUb5QMzphXlh7nOWffxNU/Gk/Lzurugl19LuCw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
- header.d=hpe.com; arc=none
-Received: from DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:4c::19) by
- SJ0PR84MB1532.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:a03:432::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5588.11; Fri, 2 Sep 2022 17:13:23 +0000
-Received: from DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::2033:298b:4062:29e6]) by DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::2033:298b:4062:29e6%4]) with mapi id 15.20.5566.021; Fri, 2 Sep 2022
- 17:13:23 +0000
-From:   "Kani, Toshi" <toshi.kani@hpe.com>
-To:     Jia He <justin.he@arm.com>, Len Brown <lenb@kernel.org>,
-        James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Jan Luebbe <jlu@pengutronix.de>,
-        Khuong Dinh <khuong@os.amperecomputing.com>
-CC:     Ard Biesheuvel <ardb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-        "nd@arm.com" <nd@arm.com>
-Subject: RE: [PATCH v4 5/8] EDAC/ghes: Make ghes_edac a proper module to
- remove the dependency on ghes
-Thread-Topic: [PATCH v4 5/8] EDAC/ghes: Make ghes_edac a proper module to
- remove the dependency on ghes
-Thread-Index: AQHYvQ0gLFRG5y0niUeXpc2U7DO/1a3MXSXw
-Date:   Fri, 2 Sep 2022 17:13:23 +0000
-Message-ID: <DM4PR84MB1853F07391E61292D4119F21827A9@DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM>
-References: <20220831074027.13849-1-justin.he@arm.com>
- <20220831074027.13849-6-justin.he@arm.com>
-In-Reply-To: <20220831074027.13849-6-justin.he@arm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: b2871d11-3818-411c-875b-08da8d0670fc
-x-ms-traffictypediagnostic: SJ0PR84MB1532:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: vwvau0PF9g8xlgdR2WnXCNXcnxsz9qATvdjsJP1G8B43fwHLyYn03/pL1CzL7dcPxBHXS2m0syJ0dqGm65M+zVejsRWbvy3PExzhf83FY8q/A9HgI0vJM150w265lFvpMqHShYuOTQEdnPsc793z7RQdZ0fFkf/5o1YN9sOW52XOaxxqo9VwI8fARD3EaUsi64bXzb2wffJyhHv/GRL8eM9jhzHtAvOuSfLVCWjwnjotkeY0vvPNtg9BhjJGHDWbmyNI1Fo8kmYhFxfspE1dtqa1LT5qOKSI1lnQwaNCRcR1culNoe+y3T8NwXrAViXuzy7viGr5bklNv0BWYxRuz7W3dSeD4Dbgcc+djflHqmPHa+aKievCxrxDYJJwcVAUFD3bLG1RyE+lwDJdaivAtLbWsKDqQpZA8QjnB5OpXVfIm4vHvI5NKS2/WE430nYJIKOjdT3T91lleSQQtk1s8pAkrah2GL5yXfprtuQGVEnaWN9myCdIGhzXNioIoDbr5Ozf8saXBWbdb2YIjgmcIarkKgP/ALrvQIEjAcsgB0cB/6WY8G+BXJU+R8hCI5gHr7OFpxC+WUIBgajXhKuzEob5cUTZjbaK0tJKHh9AQ6Pxil7FlOH5GSWYVUEhQTXuEX0cePRa4acBEDNDRSOSmxOAuYM9DaBcea3pGzPgDEjOvVpmADtSDEzOc8M+Swje61k4lt0vVGXe32f2bYFb/uv6knY/TR51nGu7VOXfoNRbF9HgeNJBz8aJ7b7JT74npd2dsXD3qVKufkctDqY8lqMMNU8jy7+/+DsOUB+kMCk=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(366004)(346002)(376002)(39860400002)(136003)(396003)(4744005)(186003)(7416002)(52536014)(41300700001)(8936002)(26005)(33656002)(478600001)(4326008)(8676002)(66556008)(76116006)(66946007)(66476007)(66446008)(64756008)(2906002)(86362001)(7696005)(6506007)(53546011)(9686003)(55016003)(122000001)(38100700002)(5660300002)(54906003)(110136005)(38070700005)(316002)(82960400001)(921005)(71200400001)(83380400001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?B8SY2ttwJtBTPHqzI7eYfwK7eCHy+RHvnP+IE318QpwOZala/dqggLOLxV2S?=
- =?us-ascii?Q?w6XbftFk0aaofJof0QcK0xGOSSR1hgkY872F7bO6AXP+8DcMw8khvQjUIU0y?=
- =?us-ascii?Q?OE8fdXlFbhdWDg3tA/Jfs4HSOIwdF8sQ4Rsk0QYBHYc9/guB8p528tF0SQHY?=
- =?us-ascii?Q?2lgRf7Oqvu7JsJd9sskncHfOyclrT901kwUk9CNxul7TIT5hFthGPm8i+LeL?=
- =?us-ascii?Q?Iil3SGI6Ir0aMLk0vzVLxQTACl1XkzxaQkaKbdAsE9u4GLlN8uyWONMrzcNY?=
- =?us-ascii?Q?WP6MB1gokxbkcnL6siLAbTp1CIK1GRyJSGIMsePWF/DgGTL3H3EAUNI6yZH+?=
- =?us-ascii?Q?wi1eBBsro8FdEsGAuhsN0PusuK2ZlGnsCc7gbnaaP8q6r2jkAsWpIhGAt5Mi?=
- =?us-ascii?Q?rhbHFQ8NVxD8lEla+G/D6/4oFWfOZTPXuhxEvqE4YSL4A8QEIzUDyF6tL3EM?=
- =?us-ascii?Q?lHXvLAVkrDim1PuuD1KDjkHs28YGcKL9MrBRYQGaM5YBlzBVzGdPPwPx/Oeb?=
- =?us-ascii?Q?Z8Zjbl8qfHPgw6guKjBCE9Z2/aCBZfs5wv2cCFj/W+mWWfuzI8DMtNVI6bPb?=
- =?us-ascii?Q?3GskLKFBjqYPqCqXmDEhoIpE2pQLI21cm2Tb9iqFbxNyaN32Jc4zeTHkht07?=
- =?us-ascii?Q?qWmDXYJrO/rSIeogHSHu94+ew/jp+mQd/qYA6OwzIe+YG1oOYdfZsd0kOX/9?=
- =?us-ascii?Q?24ji8wiW4iZ9wyQNbS0s1UewL1EZi3iokbi4PAaf8DPi9FwMG1+j1X3f9iD4?=
- =?us-ascii?Q?KaXIykHTqD4b66JN/ICI5VOa/RKrjQK6BXih3LVuuyn0gLxvVgJdorrBAslY?=
- =?us-ascii?Q?qhJAS/2aZsjutrKUr90KqrQKK3LbmqedPBexu0L0GnjNF47fsPuWxMYWgKgC?=
- =?us-ascii?Q?yMKzbILvl9Z2A5Srmn8aczT0spqafH7z2TqdF410gqxylMTlOiuNgssvcTYe?=
- =?us-ascii?Q?vA5Ph+oIoOHtfC5HgfQX7CsaIZ/GfFCigJsgdk4fphc+N+agk8fd5HEJSqqD?=
- =?us-ascii?Q?6xOE4UqhY7lIZTZD/SQrBIjQ50iRLvbaB/+MqrEhQ6ZY45QVgXkkm6fxYOOo?=
- =?us-ascii?Q?trhPFF/fmoo6ExNWd/G4zeImMn/c5lrb2zNoknhDczw5ikr5KNTyNE2g6hjx?=
- =?us-ascii?Q?jF0VHA0dnwuxKi2RIz7OdtGKd2YG9LRslPr9SCGVVXdRsNMe2hCrANBEFMLN?=
- =?us-ascii?Q?GftrDm4g5oENJvIwquZqDGEKHFa/u602N2SCszdN82Un4TV/8RjJ8mDwI0jX?=
- =?us-ascii?Q?/0VVdYaQ0wilZB0iJG1jVH6LItA1ppnNxNHP3smifWJCkW2EsY4C/fHkwhN/?=
- =?us-ascii?Q?9yDDXUWk3VLgcgL0ymt26wusjtCJ9wFBptTfn+aneP+yZcx+BrB6HLYeQKIu?=
- =?us-ascii?Q?HNVGqhXT29bgUxEEyatNH8WnKlar9sEoIs2inxKQLLcv6k+A4pf8Y7J0nebB?=
- =?us-ascii?Q?97WSR2OYhUbUeyLFR4BNpeZnjrHE/KwizYLayJKIg/EVNe/vTGAkG/GI2W9m?=
- =?us-ascii?Q?GFnuuYAtLINo54wHSWi92RIin5errHpls8HnU9jaXTW/Uehd0ViXMbrOe76K?=
- =?us-ascii?Q?2i9U7QmbLtdFz/4pKUf5aKwRRddKDWXi2DqpZL3U?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        by sin.source.kernel.org (Postfix) with ESMTPS id 00DD3CE0EA9;
+        Sun,  4 Sep 2022 13:24:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E5CFC4347C;
+        Sun,  4 Sep 2022 13:24:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662297893;
+        bh=rl6fLZU0cQ0lmq75jhbnr25T1XXEIy5vIoogxAgbYxk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=SmYl2hECZR3wKwP+FMP1Gd8wTuF9lZuvDfmmxHZg94srIxB3nUdZUAKqkh7F+0bTa
+         CKO2jUfuZg8Y0U5tNgIK6sZ0H9rDqwAe2kZVpJygXouICSger77vb4WHfYTNcJng83
+         7ewP7a5EHhWyoyf985PhLtLWyec5WSYKsR9K8BY5RuOI42dw1qj3CTLLCQpj/ooNiN
+         ZARzUJSFT8eLRxfHn8XqiGkAFtXpF5cnMfCZQGvCqctNVAM5sevqlPi3dvNlwZLpIf
+         j+wzJG+lP7APtAYKInLayW+1mxccmxwJNJHaOqSyeVJmJP5EAPLUX68tAnpMhS8jsx
+         qaWk6BZxazCnQ==
+Received: by mail-ua1-f46.google.com with SMTP id s5so2474523uar.1;
+        Sun, 04 Sep 2022 06:24:53 -0700 (PDT)
+X-Gm-Message-State: ACgBeo10yMjmzWVL7VjnvcS2y7lL7BYN9eTS3fTn/akhxzFShTpe14iF
+        LxaXIqu2DG6mYHCA58ZXqbH2G65oPyM5n31k6bw=
+X-Google-Smtp-Source: AA6agR5Y4uVz9cAZw9EOYYNKxQt74TW6VgX0gb/I4EmRjuSpKKxu15vMq4u5YFoTjUSdQWo9wYv1viWPPTHI6+gP+sk=
+X-Received: by 2002:a05:6130:c13:b0:39f:58bb:d51c with SMTP id
+ cg19-20020a0561300c1300b0039f58bbd51cmr13564275uab.104.1662297892187; Sun, 04
+ Sep 2022 06:24:52 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR84MB1853.NAMPRD84.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: b2871d11-3818-411c-875b-08da8d0670fc
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Sep 2022 17:13:23.0952
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 105b2061-b669-4b31-92ac-24d304d195dc
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: fSVTM5OPEKf92sTxjblRYf9yRc7VmDJ9WWZbDBC92rZzMhkxCHkA+qtWVRf0MTKYFpuv++xzUgHFZK9Y8wjpsA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR84MB1532
-X-OriginatorOrg: hpe.com
-X-Proofpoint-ORIG-GUID: OpVxz5tH87eEQxRaMHCyYmmW9bjJf_CB
-X-Proofpoint-GUID: OpVxz5tH87eEQxRaMHCyYmmW9bjJf_CB
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-09-02_04,2022-08-31_03,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=792 bulkscore=0
- lowpriorityscore=0 spamscore=0 mlxscore=0 suspectscore=0 impostorscore=0
- priorityscore=1501 adultscore=0 phishscore=0 malwarescore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2207270000
- definitions=main-2209020080
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <20220819102037.2697798-1-chenhuacai@loongson.cn>
+ <9b6f0aeaebbd36882b5b40d655f9ccd20c7be496.camel@xry111.site>
+ <CAMj1kXFOd+gMHbi6MH0KHWkBEKN9V0LeZbyGRw8h630OxtMrdA@mail.gmail.com> <CAAhV-H6MR=rWhecY_uuiXAysED-BBJhKhGHj2cCkefJiPOo-ZQ@mail.gmail.com>
+In-Reply-To: <CAAhV-H6MR=rWhecY_uuiXAysED-BBJhKhGHj2cCkefJiPOo-ZQ@mail.gmail.com>
+From:   Huacai Chen <chenhuacai@kernel.org>
+Date:   Sun, 4 Sep 2022 21:24:39 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4KXVUBgNoQxOFiEj2AH-ojhnrEJ8QLvNrALY69MhXF3w@mail.gmail.com>
+Message-ID: <CAAhV-H4KXVUBgNoQxOFiEj2AH-ojhnrEJ8QLvNrALY69MhXF3w@mail.gmail.com>
+Subject: Re: [PATCH V3] LoongArch: Add efistub booting support
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Xi Ruoyao <xry111@xry111.site>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Arnd Bergmann <arnd@arndb.de>, loongarch@lists.linux.dev,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Xuefeng Li <lixuefeng@loongson.cn>,
+        Guo Ren <guoren@kernel.org>, Xuerui Wang <kernel@xen0n.name>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -176,31 +70,55 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wednesday, August 31, 2022 1:40 AM, Jia He wrote:
-> @@ -454,7 +437,7 @@ int ghes_edac_register(struct ghes *ghes, struct
-> device *dev)
->  		pr_info("This system has a very crappy BIOS: It doesn't even
-> list the DIMMS.\n");
->  		pr_info("Its SMBIOS info is wrong. It is doubtful that the error
-> report would\n");
->  		pr_info("work on such system. Use this driver with
-> caution\n");
-> -	} else if (idx < 0) {
-> +	} else if (ghes_edac_force_load) {
+Hi, Ard,
 
-This change causes the following messages to start showing up on Arm.
-Is that what you intend to do?
+On Thu, Sep 1, 2022 at 6:40 PM Huacai Chen <chenhuacai@kernel.org> wrote:
+>
+> Hi, Ard,
+>
+> On Sat, Aug 27, 2022 at 3:14 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+> >
+> > On Sat, 27 Aug 2022 at 06:41, Xi Ruoyao <xry111@xry111.site> wrote:
+> > >
+> > > Tested V3 with the magic number check manually removed in my GRUB build.
+> > > The system boots successfully.  I've not tested Arnd's zBoot patch yet.
+> >
+> > I am Ard not Arnd :-)
+> >
+> > Please use this branch when testing the EFI decompressor:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efi-decompressor-v4
+> The root cause of LoongArch zboot boot failure has been found, it is a
+> binutils bug, latest toolchain with the below patch can solve the
+> problem.
+>
+> diff --git a/bfd/elfnn-loongarch.c b/bfd/elfnn-loongarch.c
+> index 5b44901b9e0..fafdc7c7458 100644
+> --- a/bfd/elfnn-loongarch.c
+> +++ b/bfd/elfnn-loongarch.c
+> @@ -2341,9 +2341,10 @@ loongarch_elf_relocate_section (bfd
+> *output_bfd, struct bfd_link_info *info,
+>      case R_LARCH_SOP_PUSH_PLT_PCREL:
+>        unresolved_reloc = false;
+>
+> -      if (resolved_to_const)
+> +      if (!is_undefweak && resolved_to_const)
+>          {
+>            relocation += rel->r_addend;
+> +          relocation -= pc;
+>            break;
+>          }
+>        else if (is_undefweak)
+>
+>
+> Huacai
+Now the patch is submitted here:
+https://sourceware.org/pipermail/binutils/2022-September/122713.html
 
-The messages can be avoided by not setting the force flag on Arm unconditio=
-nally.
-This will need some change to the flag check in ghes_edac_unregister() thou=
-gh.
+And I have some other questions about kexec: kexec should jump to the
+elf entry or the pe entry? I think is the elf entry, because if we
+jump to the pe entry, then SVAM will be executed twice (but it should
+be executed only once). However, how can we jump to the elf entry if
+we use zboot? Maybe it is kexec-tool's responsibility to decompress
+the zboot kernel image?
 
->  		pr_info("This EDAC driver relies on BIOS to enumerate
-> memory and get error reports.\n");
->  		pr_info("Unfortunately, not all BIOSes reflect the memory
-> layout correctly.\n");
->  		pr_info("So, the end result of using this driver varies from
-> vendor to vendor.\n");
-
- Toshi
+Huacai
