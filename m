@@ -2,125 +2,153 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3F135AC580
-	for <lists+linux-efi@lfdr.de>; Sun,  4 Sep 2022 18:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A353E5AC7E5
+	for <lists+linux-efi@lfdr.de>; Sun,  4 Sep 2022 23:59:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233945AbiIDQxi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 4 Sep 2022 12:53:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56192 "EHLO
+        id S231374AbiIDV7p (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 4 Sep 2022 17:59:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230337AbiIDQxg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 4 Sep 2022 12:53:36 -0400
+        with ESMTP id S231735AbiIDV7n (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 4 Sep 2022 17:59:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7CAD220C8;
-        Sun,  4 Sep 2022 09:53:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA8CEBC16;
+        Sun,  4 Sep 2022 14:59:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 87C7260F77;
-        Sun,  4 Sep 2022 16:53:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D01DC433B5;
-        Sun,  4 Sep 2022 16:53:34 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="hLM4cvDc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1662310412;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=YXNcAp0liMqxmL43DGQLzGIaJVjmZ/8F5Gi+IgHDjE0=;
-        b=hLM4cvDcwMMrumPGPOpyNhk18viVfOQeL1tnv6RewDiAP+Vl5Y4jRfRJ/S7R72v0aJ0Jly
-        lkrVUANi/E2IqaJKJoJ0Q0k544veLxrapXSmPQS3rbH/WqpILwrloypkMkt+ShKLCzL7zp
-        Ed1etqpCAM+7lP4uM+VibNOMo92xDlQ=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 530cf8f3 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Sun, 4 Sep 2022 16:53:32 +0000 (UTC)
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org, ardb@kernel.org, bp@alien8.de
-Cc:     "Jason A . Donenfeld" <Jason@zx2c4.com>
-Subject: [PATCH] efi: x86: Wipe setup_data on pure EFI boot
-Date:   Sun,  4 Sep 2022 18:53:21 +0200
-Message-Id: <20220904165321.1140894-1-Jason@zx2c4.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A5F761000;
+        Sun,  4 Sep 2022 21:59:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4953C4347C;
+        Sun,  4 Sep 2022 21:59:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662328781;
+        bh=D+iyzZIHB2cM5PZLFOtFUR+KWPyV6ywMqPuWdApmM+M=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=K2LzFLQyGJok6JeQsjj/cNPKxF/VyLZPjbwvm99nHTyDEvphrvqkoc9ma4MYc/u/X
+         XyoxdSErW9gGvarq0hWx1KodOQjKRpEjuvtB95SkVCEVhcbk5LsoaPuVB0Nfa+yLhb
+         wlGuwySvA+XaaV1ynjWyP9g91iATXtakTaXCAW+yqsXLHF6aXEti8QjGi9B0BcMqQr
+         V6Z6BWzW7C2KOvnPxlrcsLEtTo3poe+ZxISr3Kf81/AEfo/fe6vmejoLj22Dg706eM
+         RucZGhZ6nruKasTKVjJLiCtuCuUcFMwQnYXL1KzzMdo6fnIqUQJ+qlr+FHaGFFPVxE
+         42WVqyc36jR1g==
+Received: by mail-lj1-f172.google.com with SMTP id b26so7464002ljk.12;
+        Sun, 04 Sep 2022 14:59:41 -0700 (PDT)
+X-Gm-Message-State: ACgBeo1K2N1eG9AuxSJVt+V4eFWqyCYeqm4TWrezSn2Gxw9pTzcShB/k
+        4Nq1xKp4E/xMPCgzYcNJD0ovpCx958XQ+X/ENCg=
+X-Google-Smtp-Source: AA6agR4MDdbTuFXMI/wun5KB8TsOF09ANKpd3b5UDdG9HJexkppqLqpmAclTBX5zWDCvsDWLv7CK19uDxdpLR1z4rbA=
+X-Received: by 2002:a2e:710c:0:b0:264:ed38:e57f with SMTP id
+ m12-20020a2e710c000000b00264ed38e57fmr9027418ljc.189.1662328779881; Sun, 04
+ Sep 2022 14:59:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220819102037.2697798-1-chenhuacai@loongson.cn>
+ <9b6f0aeaebbd36882b5b40d655f9ccd20c7be496.camel@xry111.site>
+ <CAMj1kXFOd+gMHbi6MH0KHWkBEKN9V0LeZbyGRw8h630OxtMrdA@mail.gmail.com>
+ <CAAhV-H6MR=rWhecY_uuiXAysED-BBJhKhGHj2cCkefJiPOo-ZQ@mail.gmail.com> <CAAhV-H4KXVUBgNoQxOFiEj2AH-ojhnrEJ8QLvNrALY69MhXF3w@mail.gmail.com>
+In-Reply-To: <CAAhV-H4KXVUBgNoQxOFiEj2AH-ojhnrEJ8QLvNrALY69MhXF3w@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Sun, 4 Sep 2022 23:59:28 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHJv_6mLhMikg+ic7=EUABLdrX3f__eBbHntrpGHjRfXg@mail.gmail.com>
+Message-ID: <CAMj1kXHJv_6mLhMikg+ic7=EUABLdrX3f__eBbHntrpGHjRfXg@mail.gmail.com>
+Subject: Re: [PATCH V3] LoongArch: Add efistub booting support
+To:     Huacai Chen <chenhuacai@kernel.org>
+Cc:     Xi Ruoyao <xry111@xry111.site>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Arnd Bergmann <arnd@arndb.de>, loongarch@lists.linux.dev,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Xuefeng Li <lixuefeng@loongson.cn>,
+        Guo Ren <guoren@kernel.org>, Xuerui Wang <kernel@xen0n.name>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On Sun, 4 Sept 2022 at 15:24, Huacai Chen <chenhuacai@kernel.org> wrote:
+>
+> Hi, Ard,
+>
+> On Thu, Sep 1, 2022 at 6:40 PM Huacai Chen <chenhuacai@kernel.org> wrote:
+> >
+> > Hi, Ard,
+> >
+> > On Sat, Aug 27, 2022 at 3:14 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+> > >
+> > > On Sat, 27 Aug 2022 at 06:41, Xi Ruoyao <xry111@xry111.site> wrote:
+> > > >
+> > > > Tested V3 with the magic number check manually removed in my GRUB build.
+> > > > The system boots successfully.  I've not tested Arnd's zBoot patch yet.
+> > >
+> > > I am Ard not Arnd :-)
+> > >
+> > > Please use this branch when testing the EFI decompressor:
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efi-decompressor-v4
+> > The root cause of LoongArch zboot boot failure has been found, it is a
+> > binutils bug, latest toolchain with the below patch can solve the
+> > problem.
+> >
+> > diff --git a/bfd/elfnn-loongarch.c b/bfd/elfnn-loongarch.c
+> > index 5b44901b9e0..fafdc7c7458 100644
+> > --- a/bfd/elfnn-loongarch.c
+> > +++ b/bfd/elfnn-loongarch.c
+> > @@ -2341,9 +2341,10 @@ loongarch_elf_relocate_section (bfd
+> > *output_bfd, struct bfd_link_info *info,
+> >      case R_LARCH_SOP_PUSH_PLT_PCREL:
+> >        unresolved_reloc = false;
+> >
+> > -      if (resolved_to_const)
+> > +      if (!is_undefweak && resolved_to_const)
+> >          {
+> >            relocation += rel->r_addend;
+> > +          relocation -= pc;
+> >            break;
+> >          }
+> >        else if (is_undefweak)
+> >
+> >
+> > Huacai
+> Now the patch is submitted here:
+> https://sourceware.org/pipermail/binutils/2022-September/122713.html
+>
 
-When booting the x86 kernel via EFI using the LoadImage/StartImage boot
-services [as opposed to the deprecated EFI handover protocol], the setup
-header is taken from the image directly, and given that EFI's LoadImage
-has no Linux/x86 specific knowledge regarding struct bootparams or
-struct setup_header, any absolute addresses in the setup header must
-originate from the file and not from a prior loading stage.
+Great. Given the severity of this bug, I imagine that building the
+LoongArch kernel will require a version of binutils that carries this
+fix.
 
-Since we cannot generally predict where LoadImage() decides to load an
-image (*), such absolute addresses must be treated as suspect: even if a
-prior boot stage intended to make them point somewhere inside the
-[signed] image, there is no way to validate that, and if they point at
-an arbitrary location in memory, the setup_data nodes will not be
-covered by any signatures or TPM measurements either, and could be made
-to contain an arbitrary sequence of SETUP_xxx nodes, which could
-interfere quite badly with the early x86 boot sequence.
+Therefore, i will revert back to the original approach for accessing
+uncompressed_size, using an extern declaration with an __aligned(1)
+attribute.
 
-(*) Note that, while LoadImage() does take a buffer/size tuple in
-addition to a device path, which can be used to provide the image
-contents directly, it will re-allocate such images, as the memory
-footprint of an image is generally larger than the PE/COFF file
-representation.
+> And I have some other questions about kexec: kexec should jump to the
+> elf entry or the pe entry? I think is the elf entry, because if we
+> jump to the pe entry, then SVAM will be executed twice (but it should
+> be executed only once). However, how can we jump to the elf entry if
+> we use zboot? Maybe it is kexec-tool's responsibility to decompress
+> the zboot kernel image?
+>
 
-Next, in order to allow hypervisors to still use setup_data in scenarios
-where it may be useful, bump the x86 boot protocol version, so that
-hypervisors, e.g. QEMU in the linked patch, can do the right thing
-automatically depending on whether it is safe.
+Yes, very good point. Kexec kernels cannot boot via the EFI entry
+point, as the boot services will already be shutdown. So the kexec
+kernel needs to boot via the same entrypoint in the core kernel that
+the EFI stub calls when it hands over.
 
-Link: https://lore.kernel.org/qemu-devel/20220904165058.1140503-1-Jason@zx2c4.com/
-Coauthored-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
----
- arch/x86/boot/header.S                  | 2 +-
- drivers/firmware/efi/libstub/x86-stub.c | 7 +++++++
- 2 files changed, 8 insertions(+), 1 deletion(-)
+For the EFI zboot image in particular, we will need to teach kexec how
+to decompress them. The zboot image has a header that
+a) describes it as a EFI linux zimg
+b) describes the start and end offset of the compressed payload
+c) describes which compression algorithm was used.
 
-diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-index f912d7770130..e4e2d6e33924 100644
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -307,7 +307,7 @@ _start:
- 	# Part 2 of the header, from the old setup.S
- 
- 		.ascii	"HdrS"		# header signature
--		.word	0x020f		# header version number (>= 0x0105)
-+		.word	0x0210		# header version number (>= 0x0105)
- 					# or else old loadlin-1.5 will fail)
- 		.globl realmode_swtch
- realmode_swtch:	.word	0, 0		# default_switch, SETUPSEG
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 05ae8bcc9d67..9780f32a9f24 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -517,6 +517,13 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 	hdr->ramdisk_image = 0;
- 	hdr->ramdisk_size = 0;
- 
-+	/*
-+	 * Disregard any setup data that was provided by the bootloader:
-+	 * setup_data could be pointing anywhere, and we have no way of
-+	 * authenticating or validating the payload.
-+	 */
-+	hdr->setup_data = 0;
-+
- 	efi_stub_entry(handle, sys_table_arg, boot_params);
- 	/* not reached */
- 
--- 
-2.37.3
-
+This means that any non-EFI loader (including kexec) should be able to
+extract the inner PE/COFF image and decompress it. For arm64 and
+RISC-V, this is sufficient as the EFI and raw images are the same. For
+LoongArch, I suppose it means we need a way to enter the core kernel
+directly via the entrypoint that the EFI stub uses when handing over
+(and pass the original DT argument so the kexec kernel has access to
+the EFI and ACPI firmware tables)
