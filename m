@@ -2,71 +2,60 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2C235ACCE7
-	for <lists+linux-efi@lfdr.de>; Mon,  5 Sep 2022 09:45:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CED75ACF2F
+	for <lists+linux-efi@lfdr.de>; Mon,  5 Sep 2022 11:51:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237012AbiIEHfb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 5 Sep 2022 03:35:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52732 "EHLO
+        id S236074AbiIEJvH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 5 Sep 2022 05:51:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236903AbiIEHfY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 5 Sep 2022 03:35:24 -0400
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D5F831A3B3;
-        Mon,  5 Sep 2022 00:35:02 -0700 (PDT)
-Received: from [10.130.0.193] (unknown [113.200.148.30])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8DxX+CWphVjdJgRAA--.7347S3;
-        Mon, 05 Sep 2022 15:34:47 +0800 (CST)
-Subject: Re: [PATCH V3] LoongArch: Add efistub booting support
-To:     Huacai Chen <chenhuacai@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>
-References: <20220819102037.2697798-1-chenhuacai@loongson.cn>
- <9b6f0aeaebbd36882b5b40d655f9ccd20c7be496.camel@xry111.site>
- <CAMj1kXFOd+gMHbi6MH0KHWkBEKN9V0LeZbyGRw8h630OxtMrdA@mail.gmail.com>
- <CAAhV-H6MR=rWhecY_uuiXAysED-BBJhKhGHj2cCkefJiPOo-ZQ@mail.gmail.com>
- <CAAhV-H4KXVUBgNoQxOFiEj2AH-ojhnrEJ8QLvNrALY69MhXF3w@mail.gmail.com>
- <CAMj1kXHJv_6mLhMikg+ic7=EUABLdrX3f__eBbHntrpGHjRfXg@mail.gmail.com>
- <CAAhV-H4WTCRU9qShDp57AZ2DG1uz+=GTz14zyAUaqVDjXrNABA@mail.gmail.com>
- <CAMj1kXFRsEJOS2Kim8T64rYF85_bmmZ5gW7kjb8eDXry5SA+cg@mail.gmail.com>
- <CAAhV-H4xDB6JPCEZqQ6+VadOPnzA3beguiuTRS-Ub=Ci5FgpPw@mail.gmail.com>
-Cc:     Xi Ruoyao <xry111@xry111.site>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Arnd Bergmann <arnd@arndb.de>, loongarch@lists.linux.dev,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Xuefeng Li <lixuefeng@loongson.cn>,
-        Guo Ren <guoren@kernel.org>, Xuerui Wang <kernel@xen0n.name>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-From:   Youling Tang <tangyouling@loongson.cn>
-Message-ID: <aecbb170-d351-f6a1-57f5-f17415017dbb@loongson.cn>
-Date:   Mon, 5 Sep 2022 15:34:46 +0800
-User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+        with ESMTP id S236065AbiIEJvG (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 5 Sep 2022 05:51:06 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1DDF40BCD;
+        Mon,  5 Sep 2022 02:51:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7B055B80F9F;
+        Mon,  5 Sep 2022 09:51:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E188C433D6;
+        Mon,  5 Sep 2022 09:51:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662371462;
+        bh=TC4ASRI8vJbkOfziXPT5lkIUvCxfswSY9VeZgHFbt7I=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=W1VqymmELtiUE2NCRtozTCmfWmKzZdqal3moduKeE6lW/vMEYs6D3hDDOuufk6HrE
+         ej6P/EpnXzLfSpaAOvzB8tq1Qa+6Fk4vTsjs08a4tfhpVMjQ1j6advp7cA6W3SjnKQ
+         fCvl9lofHZnzTxm/fxF1MzLRze4A76PBGE0LFiR1Ucw7A4n8F6FMUj6XNMOtpfJW13
+         TdlwAZRnJDws/553lAxtvrqKT6mLnyotDoiL3AR4O+lLMjoPY6bFpFVlK8/JkqBtwH
+         85fUrXrg/zgPadvLk8H53O/GSEdXC55BOdjbn2Av7ZySTLoCDXqFTimc4OXzcX8As4
+         8eTQCj/POXP1w==
+Received: by mail-lf1-f50.google.com with SMTP id bt10so12391438lfb.1;
+        Mon, 05 Sep 2022 02:51:02 -0700 (PDT)
+X-Gm-Message-State: ACgBeo3eMOGqvLK9bFeRxMFM0vuKdL5YZBLJ++47LUBxGZfoYiIysg5U
+        kv+cAqhCcen8qUqvcW3O6xU4b/zPsy6Bmcy6E9k=
+X-Google-Smtp-Source: AA6agR6z9azjJx1FLtw776LxSbwtUb4mmm2aNhcg9yzqHutGO3reia9oDTUVNtNZpr1IXXaYNruYwketugS/flEuK7I=
+X-Received: by 2002:a05:6512:150e:b0:492:d9fd:9bdf with SMTP id
+ bq14-20020a056512150e00b00492d9fd9bdfmr15455738lfb.583.1662371460116; Mon, 05
+ Sep 2022 02:51:00 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H4xDB6JPCEZqQ6+VadOPnzA3beguiuTRS-Ub=Ci5FgpPw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: AQAAf8DxX+CWphVjdJgRAA--.7347S3
-X-Coremail-Antispam: 1UD129KBjvJXoW3Wry5uryxGrW7tw4rtr4Dtwb_yoW7Xryxp3
-        4xGFW8tF4DJr1rGwn2q3WUua42vw13Ar17Xrn8try8Awn0vrnIqr1Iqr45uFyUZw1Ikw12
-        vF4jq347uF15ArJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUU9K14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-        1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-        6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-        CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-        2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-        W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
-        0xkIwI1lc7I2V7IY0VAS07AlzVAYIcxG8wCY02Avz4vE14v_GF4l42xK82IYc2Ij64vIr4
-        1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK
-        67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI
-        8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAv
-        wI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14
-        v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUeeOJUUUUU
-X-CM-SenderInfo: 5wdqw5prxox03j6o00pqjv00gofq/
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <20220729194532.228403-1-gpiccoli@igalia.com> <468b8369-84c2-da12-1eb0-6ec16d160b34@igalia.com>
+In-Reply-To: <468b8369-84c2-da12-1eb0-6ec16d160b34@igalia.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Mon, 5 Sep 2022 11:50:48 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGMmpLF8Sfcm16E+QpKosPgUGQ7FpO9qknoKxjyXY1zUQ@mail.gmail.com>
+Message-ID: <CAMj1kXGMmpLF8Sfcm16E+QpKosPgUGQ7FpO9qknoKxjyXY1zUQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] The UEFI panic notification mechanism, 2nd round
+To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-dev@igalia.com, kernel@gpiccoli.net, anton@enomsg.org,
+        ccross@android.com, keescook@chromium.org,
+        matt@codeblueprint.co.uk, mjg59@srcf.ucam.org, tony.luck@intel.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,129 +63,84 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi, Huacai
-
-On 09/05/2022 03:24 PM, Huacai Chen wrote:
-> Hi, Ard and Youling,
+On Mon, 29 Aug 2022 at 15:04, Guilherme G. Piccoli <gpiccoli@igalia.com> wrote:
 >
-> On Mon, Sep 5, 2022 at 3:02 PM Ard Biesheuvel <ardb@kernel.org> wrote:
->>
->> On Mon, 5 Sept 2022 at 05:51, Huacai Chen <chenhuacai@kernel.org> wrote:
->>>
->>> Hi, Ard,
->>>
->>> On Mon, Sep 5, 2022 at 5:59 AM Ard Biesheuvel <ardb@kernel.org> wrote:
->>>>
->>>> On Sun, 4 Sept 2022 at 15:24, Huacai Chen <chenhuacai@kernel.org> wrote:
->>>>>
->>>>> Hi, Ard,
->>>>>
->>>>> On Thu, Sep 1, 2022 at 6:40 PM Huacai Chen <chenhuacai@kernel.org> wrote:
->>>>>>
->>>>>> Hi, Ard,
->>>>>>
->>>>>> On Sat, Aug 27, 2022 at 3:14 PM Ard Biesheuvel <ardb@kernel.org> wrote:
->>>>>>>
->>>>>>> On Sat, 27 Aug 2022 at 06:41, Xi Ruoyao <xry111@xry111.site> wrote:
->>>>>>>>
->>>>>>>> Tested V3 with the magic number check manually removed in my GRUB build.
->>>>>>>> The system boots successfully.  I've not tested Arnd's zBoot patch yet.
->>>>>>>
->>>>>>> I am Ard not Arnd :-)
->>>>>>>
->>>>>>> Please use this branch when testing the EFI decompressor:
->>>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efi-decompressor-v4
->>>>>> The root cause of LoongArch zboot boot failure has been found, it is a
->>>>>> binutils bug, latest toolchain with the below patch can solve the
->>>>>> problem.
->>>>>>
->>>>>> diff --git a/bfd/elfnn-loongarch.c b/bfd/elfnn-loongarch.c
->>>>>> index 5b44901b9e0..fafdc7c7458 100644
->>>>>> --- a/bfd/elfnn-loongarch.c
->>>>>> +++ b/bfd/elfnn-loongarch.c
->>>>>> @@ -2341,9 +2341,10 @@ loongarch_elf_relocate_section (bfd
->>>>>> *output_bfd, struct bfd_link_info *info,
->>>>>>      case R_LARCH_SOP_PUSH_PLT_PCREL:
->>>>>>        unresolved_reloc = false;
->>>>>>
->>>>>> -      if (resolved_to_const)
->>>>>> +      if (!is_undefweak && resolved_to_const)
->>>>>>          {
->>>>>>            relocation += rel->r_addend;
->>>>>> +          relocation -= pc;
->>>>>>            break;
->>>>>>          }
->>>>>>        else if (is_undefweak)
->>>>>>
->>>>>>
->>>>>> Huacai
->>>>> Now the patch is submitted here:
->>>>> https://sourceware.org/pipermail/binutils/2022-September/122713.html
->>>>>
->>>>
->>>> Great. Given the severity of this bug, I imagine that building the
->>>> LoongArch kernel will require a version of binutils that carries this
->>>> fix.
->>>>
->>>> Therefore, i will revert back to the original approach for accessing
->>>> uncompressed_size, using an extern declaration with an __aligned(1)
->>>> attribute.
->>>>
->>>>> And I have some other questions about kexec: kexec should jump to the
->>>>> elf entry or the pe entry? I think is the elf entry, because if we
->>>>> jump to the pe entry, then SVAM will be executed twice (but it should
->>>>> be executed only once). However, how can we jump to the elf entry if
->>>>> we use zboot? Maybe it is kexec-tool's responsibility to decompress
->>>>> the zboot kernel image?
->>>>>
->>>>
->>>> Yes, very good point. Kexec kernels cannot boot via the EFI entry
->>>> point, as the boot services will already be shutdown. So the kexec
->>>> kernel needs to boot via the same entrypoint in the core kernel that
->>>> the EFI stub calls when it hands over.
->>>>
->>>> For the EFI zboot image in particular, we will need to teach kexec how
->>>> to decompress them. The zboot image has a header that
->>>> a) describes it as a EFI linux zimg
->>>> b) describes the start and end offset of the compressed payload
->>>> c) describes which compression algorithm was used.
->>>>
->>>> This means that any non-EFI loader (including kexec) should be able to
->>>> extract the inner PE/COFF image and decompress it. For arm64 and
->>>> RISC-V, this is sufficient as the EFI and raw images are the same. For
->>>> LoongArch, I suppose it means we need a way to enter the core kernel
->>>> directly via the entrypoint that the EFI stub uses when handing over
->>>> (and pass the original DT argument so the kexec kernel has access to
->>>> the EFI and ACPI firmware tables)
->>> OK, then is this implementation [1] acceptable? I remember that you
->>> said the MS-DOS header shouldn't contain other information, so I guess
->>> this is unacceptable?
->>>
->>
->> No, this looks reasonable to me. I objected to using magic numbers in
->> the 'pure PE' view of the image, as it does not make sense for a pure
->> PE loader such as GRUB to rely on such metadata.
->>
->> In this case (like on arm64), we are dealing with something else: we
->> need to identify the image to the kernel itself, and here, using the
->> unused space in the MS-DOS header is fine.
->>
->>> [1] https://lore.kernel.org/loongarch/c4dbb14a-5580-1e47-3d15-5d2079e88404@loongson.cn/T/#mb8c1dc44f7fa2d3ef638877f0cd3f958f0be96ad
-> OK, then there is no big problem here. And I found that arm64/riscv
-> don't need the kernel entry point in the header. I don't know why, but
-> I think it implies that a unified layout across architectures is
-> unnecessary, and I prefer to put the kernel entry point before
-> effective kernel size. :)
-
-The kernel entry point is added because LoongArch has not implemented
-purgatory in kexec-tools, so I want to get it from the head through a
-simpler method, similar to the elf image operation.
-
-Youling.
-
+> On 29/07/2022 16:45, Guilherme G. Piccoli wrote:
+> > Hey folks, this is the 2nd iteration of the patchset adding a simple
+> > mechanism to notify the UEFI firmware about a panic event in the kernel.
+> > V1 here:
+> > https://lore.kernel.org/lkml/20220520195028.1347426-1-gpiccoli@igalia.com/
+> >
+> >
+> > First thing, the differences in this V2:
+> >
+> > - Ardb response in V1 mentioned a refactor aimed for v5.20 that removes an
+> > obsolete/confusing way of setting EFI variables - this led to a weird
+> > condition, deleted variables stayed in sysfs after deletion. Well, I've
+> > refactored the code based on efi/next, so I'm using the recommended API
+> > now - thanks a bunch for the advice Ardb!
+> >
+> > - I've changed NULL-terminating char in patch 1 to the format I've seen
+> > in Ardb's code, L'\0'.
+> >
+> > - Patch 2 is new, it's somewhat a fix for a patch only in efi/next, part
+> > of the efivar refactor.
+> >
+> >
+> > In the V1 review, it was mentioned we could maybe use efi-pstore as a way
+> > to signal the firmware about a panic event - in the end, the efi-pstore
+> > mechanism can collect a dmesg, so it's even richer in the information level.
+> > But I disagree that it is the way to go, for 3 main reasons:
+> >
+> > a) efi-pstore could be impossible to use, if the users are already using
+> > another pstore backend (like ramoops), which is _exactly_ our case!
+> > Of course, we could rework pstore and allow 2 backends, quite a bit of work,
+> > but...see next points!
+> >
+> > b) Even if (a) is a not an issue, we have another one, even more important:
+> > signaling the firmware about a panic is *different* than collecting a bunch
+> > of data, a full dmesg even. This could be considered a security issue for
+> > some users; also, the dmesg collected consumes a bunch more memory in the
+> > (potentially scarce) UEFI available memory.
+> > Although related, the goal of pstore is orthogonal to our mechanism here:
+> > users rely on pstore to collect data, our proposal is a simple infrastructure
+> > to just let the firmware know about a panic. Our kernel module also shows a
+> > message and automatically clears the UEFI variable, so it tracks a single
+> > panic, whereas efi-pstore logs are kept by default, in order to provide
+> > data to users.
+> >
+> > c) Finally, it's faster and less "invasive"/risky to just write a byte in a
+> > variable on a panic event than having a ksmg dumper collecting the full dmesg
+> > and writing it to the UEFI memory; again, some users wish to have the logs,
+> > but not all of them.
+> >
+> >
+> > With all of that said, I think this module makes sense, it's a very simple
+> > solution that opens doors to firmware panic handling approaches, like in our
+> > proposed case (a different splash screen on panic).
+> >
+> > Finally, the variable name (PanicWarn) and value (0xFF by default, can be
+> > changed by a module parameter) are just my personal choices but I'm open to
+> > suggestions, not strongly attached to them heh
+> >
+> > Thanks again for the reviews/suggestions!
+> > Cheers,
+> >
+> >
+> > Guilherme
+> >
+> >
 >
-> Huacai
+> Hi Ard, sorry for the ping =]
 >
->>>
->>> Huacai
+> Any opinions in this one? Patch 2 is a simple fix, BTW.
 
+Hey,
+
+No worries about the ping - apologies for the late response, I was on vacation.
+
+I still don't see the point of this series, but I will take the fix if
+you could please rebase it so it doesn't depend on the first patch.
+
+Thanks,
+Ard.
