@@ -2,78 +2,79 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44A775AF1D1
-	for <lists+linux-efi@lfdr.de>; Tue,  6 Sep 2022 19:10:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E675AF250
+	for <lists+linux-efi@lfdr.de>; Tue,  6 Sep 2022 19:21:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236506AbiIFRH1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 6 Sep 2022 13:07:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53078 "EHLO
+        id S238746AbiIFRV3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 6 Sep 2022 13:21:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233777AbiIFRG4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Sep 2022 13:06:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C0E4186F7;
-        Tue,  6 Sep 2022 09:54:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 25ECE615D3;
-        Tue,  6 Sep 2022 16:54:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C67EC43148;
-        Tue,  6 Sep 2022 16:54:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662483279;
-        bh=dlrLPJ9VW2sLiclVTeLOaDTCcrNnK0V5SGX9NqEZ+bQ=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=mSScNXV5eNPo8Q03hxNBF1E7GxbLAdR4dQrRxWkLjglRTK1xh+T/4rqOjmigwjTY8
-         gqSPY7pxM2Ggi0f2szfwrD3iVoWzDhGiGopM1Z0DZ7FgzkuBRRMu/ufwHNQr3lGO7j
-         /bkDMZKGzDzt/B1TAdERWfCMAbQS3UYGOsU/xKBZKEhubggqoxorkrPeHBQQKTlyPd
-         npaAXKqlrsRd5G9PKa1D94x4RQ6LtShUNfs0BPs3MrpeW0KfYSXtMfF21voGUHmoTV
-         bKiCT3FrX8wBWHqftjbcK61d54GS/r0D9M9Z3nC68WpMODqU0FdeTJ6FFOtAEjC9Ln
-         IDwSJC/VY+Big==
-Received: by mail-lf1-f53.google.com with SMTP id bq23so18315491lfb.7;
-        Tue, 06 Sep 2022 09:54:39 -0700 (PDT)
-X-Gm-Message-State: ACgBeo2h9Bjy83Bq1Js+bL7jx7EklI+g3ln/wafF3nQTFGWnb+vMEse0
-        6DomiANrPTYqE2KRWiAj2OB5aIptzKDCQiXg4OM=
-X-Google-Smtp-Source: AA6agR4ZsAa0US91WfUU+IaEHtFS7q8sGZYyOWOHOoq1tpEGuakqhXudOy2kGnEsGzQpN8MaarQDnosu8Aj4ieKBKDQ=
-X-Received: by 2002:a05:6512:2294:b0:494:8dc5:10af with SMTP id
- f20-20020a056512229400b004948dc510afmr9295038lfu.426.1662483277282; Tue, 06
- Sep 2022 09:54:37 -0700 (PDT)
+        with ESMTP id S233909AbiIFRVN (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Sep 2022 13:21:13 -0400
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80A6383F39
+        for <linux-efi@vger.kernel.org>; Tue,  6 Sep 2022 10:10:02 -0700 (PDT)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-1278624b7c4so11514324fac.5
+        for <linux-efi@vger.kernel.org>; Tue, 06 Sep 2022 10:10:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=RzrA7ZBqVYMtFibz+PW8VCdXaj2t3XdsPwt06YL85hI=;
+        b=UTjgO6GvV4ki/VbfOVVNw+OD38IBtEz+scRoNXxg6ENaDmVLP3vZfH3zrGpDwMTEIu
+         0bv1+umxmtvjSnBXt0EdHZFt0HmjdceNXvwcPXIlqw1fkEQdfyc/76126TBXM9xIcMu9
+         jg41E2FJzPGWvYAp8eumaYKQxMEW/E9GAOOy4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=RzrA7ZBqVYMtFibz+PW8VCdXaj2t3XdsPwt06YL85hI=;
+        b=i1jpxvOdkUQiqT/GkUzElpZFnCcj/a/dsJd5Bd1bVUGeicNus6TdYJON2+PzdEm0Dh
+         StOqubC0B+emKif7VS9y79eiE+cLUq4OV0cU3Ww7lhIKcgNzFLXJrH4C6DMhq9OaLhlJ
+         h9UmX+E85E4mDV0bsA+f2nFk4y0D/MGvqj9wpNjOINVv+FbCP1xnDIKLnqHktsMtD7L0
+         q67uzoTn6TzvnalWM0KLkx/52hGE1pv7sCcjCDoCoAHBbP3hrz3i3eGZFR+3blEusEDI
+         5N0NGWjWwWsnLsIUVhgY3ydb3s4jLkBXpOD/SntmvjMMwsOFB1n9Eg2AnWaD8q0kNiGW
+         g67A==
+X-Gm-Message-State: ACgBeo0r66m2YNzV+D6f7APFzEmcag7sW9gTL1/NubL/mK62aFlvX50M
+        YTFGgxpavghcdQouf+tdkPb5+fMj2a9qUA==
+X-Google-Smtp-Source: AA6agR6ZYowqYaZNVnWl0XHPDqJobbP4/m7quLOGY1HuQ+I9j0HitGqi6pATbfsr93nK4VsM8k4FtA==
+X-Received: by 2002:a05:6870:5820:b0:11c:b6d0:b84c with SMTP id r32-20020a056870582000b0011cb6d0b84cmr11940636oap.236.1662484201195;
+        Tue, 06 Sep 2022 10:10:01 -0700 (PDT)
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com. [209.85.160.54])
+        by smtp.gmail.com with ESMTPSA id x14-20020a056870a78e00b0011bde9f5745sm6644958oao.23.2022.09.06.10.10.00
+        for <linux-efi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Sep 2022 10:10:00 -0700 (PDT)
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-11eab59db71so29667749fac.11
+        for <linux-efi@vger.kernel.org>; Tue, 06 Sep 2022 10:10:00 -0700 (PDT)
+X-Received: by 2002:a05:6871:7a4:b0:11e:b321:c396 with SMTP id
+ o36-20020a05687107a400b0011eb321c396mr11686290oap.241.1662484200169; Tue, 06
+ Sep 2022 10:10:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220806163255.10404-1-markuss.broks@gmail.com>
-In-Reply-To: <20220806163255.10404-1-markuss.broks@gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 6 Sep 2022 18:54:26 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHWWciFcO-ub4U4MB1VDifD_=bxiTVaTcBjTvYXzVTkgQ@mail.gmail.com>
-Message-ID: <CAMj1kXHWWciFcO-ub4U4MB1VDifD_=bxiTVaTcBjTvYXzVTkgQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] Add generic framebuffer support to EFI earlycon driver
-To:     Markuss Broks <markuss.broks@gmail.com>
-Cc:     linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Helge Deller <deller@gmx.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Borislav Petkov <bp@suse.de>,
-        Kees Cook <keescook@chromium.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Michal Suchanek <msuchanek@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Wei Ming Chen <jj251510319013@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tony Lindgren <tony@atomide.com>, linux-doc@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+References: <20220819155059.451674-1-gpiccoli@igalia.com> <YxDVPqVkdgQbAIvY@kroah.com>
+ <f89cd87c-7d1c-d8e6-ed95-6876f0201872@igalia.com> <YxDX9+p+58q2sip2@kroah.com>
+ <6bc5dbc3-2cdd-5cb8-1632-11de2008a85a@igalia.com> <YxDhiSDs4YcUrqV5@kroah.com>
+ <85683284-db85-7e3a-57bd-750e1c204e3e@igalia.com> <YxD56RTI9v/P2QOL@kroah.com>
+ <b050f00b-6c3a-a0d9-a3c1-175a724faf1c@igalia.com> <YxEBCVRgWE8VTZaf@kroah.com>
+ <794efe45-2fef-0d3f-b6d0-f2f451be850c@igalia.com> <20220901151320.3cff1767f88cfb33f394e9cb@linux-foundation.org>
+In-Reply-To: <20220901151320.3cff1767f88cfb33f394e9cb@linux-foundation.org>
+From:   Evan Green <evgreen@chromium.org>
+Date:   Tue, 6 Sep 2022 10:09:24 -0700
+X-Gmail-Original-Message-ID: <CAE=gft7bZ0DaX3YuVq4BgruC3JFSBvO=NQsak=K1cM3qh1qJww@mail.gmail.com>
+Message-ID: <CAE=gft7bZ0DaX3YuVq4BgruC3JFSBvO=NQsak=K1cM3qh1qJww@mail.gmail.com>
+Subject: Re: [PATCH V3] firmware: google: Test spinlock on panic path to avoid lockups
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Petr Mladek <pmladek@suse.com>, Arnd Bergmann <arnd@arndb.de>,
+        linux-efi@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        kernel@gpiccoli.net, Ard Biesheuvel <ardb@kernel.org>,
+        David Gow <davidgow@google.com>,
+        Julius Werner <jwerner@chromium.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,57 +82,47 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, 6 Aug 2022 at 18:34, Markuss Broks <markuss.broks@gmail.com> wrote:
+On Thu, Sep 1, 2022 at 3:13 PM Andrew Morton <akpm@linux-foundation.org> wrote:
 >
-> Make the EFI earlycon driver be suitable for any linear framebuffers.
-> This should be helpful for early porting of boards with no other means of
-> output, like smartphones/tablets. There seems to be an issue with early_ioremap
-> function on ARM32, but I am unable to find the exact cause. It appears the mappings
-> returned by it are somehow incorrect, thus the driver is disabled on ARM. EFI early
-> console was disabled on IA64 previously because of missing early_memremap_prot,
-> and this is inherited to this driver.
+> On Thu, 1 Sep 2022 16:02:08 -0300 "Guilherme G. Piccoli" <gpiccoli@igalia.com> wrote:
 >
-> This patch also changes behavior on EFI systems, by selecting the mapping type
-> based on if the framebuffer region intersects with system RAM. If it does, it's
-> common sense that it should be in RAM as a whole, and so the system RAM mapping is
-> used. It was tested to be working on my PC (Intel Z490 platform), as well as several
-> ARM64 boards (Samsung Galaxy S9 (Exynos), iPad Air 2, Xiaomi Mi Pad 4, ...).
+> > On 01/09/2022 15:59, Greg KH wrote:
+> > > [...]
+> > > Ick, I don't know, this all feels odd.  I want someone else to review
+> > > this and give their ack on the patch before I'll take it so someone else
+> > > can share in the blame :)
+> > >
+> > > thanks,
+> > >
+> > > greg k-h
+> >
+> > LOL, that's OK for me! Evan seems to be fine with it BTW.
+> >
+> > Let's see if Petr can jump in, also adding Andrew here since he's
+> > usually merging stuff for panic.
 >
-> Markuss Broks (2):
->   drivers: serial: earlycon: Pass device-tree node
->   efi: earlycon: Add support for generic framebuffers and move to fbdev
->     subsystem
->
->
-> v1 -> v2:
->
-> - a new patch correcting serial/earlycon.c argument name to "offset" instead
->   of "node"
-> - move IA64 exclusion from EFI earlycon Kconfig to earlycon driver Kconfig
->   (IA64 has no early_memremap_prot)
-> - move driver from fbdev to console subsystem
-> - select EFI earlycon by default
+> Are the usual gsmi developers not operational?
 
-Wasn't EFI earlycon already enabled by default?
+I'm unsure who that is, I sort of Mr. Beaned my way in here having
+touched the file recently. A lot of the people who historically
+touched this file have gone.
 
-> - fetch stride manually from device-tree, as on some devices it seems stride
->   doesn't match the horizontal resolution * bpp.
-> - use saner format (e.g. 1920x1080x32 instead of 1920,1080,32).
 >
->  .../admin-guide/kernel-parameters.txt         |  12 +-
->  MAINTAINERS                                   |   5 +
->  drivers/firmware/efi/Kconfig                  |   6 +-
->  drivers/firmware/efi/Makefile                 |   1 -
->  drivers/firmware/efi/earlycon.c               | 246 --------------
->  drivers/tty/serial/earlycon.c                 |   3 +
->  drivers/video/fbdev/Kconfig                   |  11 +
->  drivers/video/fbdev/Makefile                  |   1 +
->  drivers/video/fbdev/earlycon.c                | 301 ++++++++++++++++++
->  include/linux/serial_core.h                   |   1 +
->  10 files changed, 331 insertions(+), 256 deletions(-)
->  delete mode 100644 drivers/firmware/efi/earlycon.c
->  create mode 100644 drivers/video/fbdev/earlycon.c
+> Patch seems sensible to me, although the deadlock sounds pretty
+> theoretical.  A better code comment might be simply
 >
-> --
-> 2.37.0
+>         /*
+>          * Panic callbacks are executed with all other CPUs stopped, so we must
+>          * not attempt to spin waiting for gsmi_dev.lock to be released.
+>          */
 >
+> ?
+
+I basically came to the same conclusion as Andrew. It seems like this
+patch does fix a problem, which is a panic coming in on another CPU
+and NMIing on top of a CPU doing a normal operation holding this lock.
+The problem seems pretty theoretical, but I suppose I don't have
+numbers one way or another since any attempt to gather numbers would
+be reliant on this very mechanism. My Reviewed-by tag is already on
+there.
+-Evan
