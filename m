@@ -2,20 +2,20 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE2965AE59B
-	for <lists+linux-efi@lfdr.de>; Tue,  6 Sep 2022 12:42:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 988125AE58C
+	for <lists+linux-efi@lfdr.de>; Tue,  6 Sep 2022 12:42:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239562AbiIFKmH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 6 Sep 2022 06:42:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56862 "EHLO
+        id S239498AbiIFKmD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 6 Sep 2022 06:42:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239017AbiIFKl6 (ORCPT
+        with ESMTP id S239086AbiIFKl6 (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Sep 2022 06:41:58 -0400
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DEC961103;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A1D360689;
         Tue,  6 Sep 2022 03:41:48 -0700 (PDT)
 Received: from localhost.localdomain (unknown [83.149.199.65])
-        by mail.ispras.ru (Postfix) with ESMTPSA id B0B314076260;
+        by mail.ispras.ru (Postfix) with ESMTPSA id CC5964076261;
         Tue,  6 Sep 2022 10:41:39 +0000 (UTC)
 From:   Evgeniy Baskov <baskov@ispras.ru>
 To:     Ard Biesheuvel <ardb@kernel.org>
@@ -29,9 +29,9 @@ Cc:     Evgeniy Baskov <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
         lvc-project@linuxtesting.org, x86@kernel.org,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-hardening@vger.kernel.org
-Subject: [PATCH 13/16] efi/x86: Support extracting kernel from libstub
-Date:   Tue,  6 Sep 2022 13:41:17 +0300
-Message-Id: <502bf9da77574d6b2edeee0abec3df6b1510aaa0.1662459668.git.baskov@ispras.ru>
+Subject: [PATCH 14/16] x86/build: Make generated PE more spec compliant
+Date:   Tue,  6 Sep 2022 13:41:18 +0300
+Message-Id: <f417e037d2967d9c1b387c63c66a7c050763a48c.1662459668.git.baskov@ispras.ru>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <cover.1662459668.git.baskov@ispras.ru>
 References: <cover.1662459668.git.baskov@ispras.ru>
@@ -46,515 +46,1029 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Doing it that way allows setting up stricter memory attributes,
-simplifies boot code path and removes potential relocation
-of kernel image.
+Currently kernel image is not fully compliant PE image, so it may
+fail to boot with stricter implementations of UEFI PE loaders.
 
-Wire up required interfaces and minimally initialize zero page
-fields needed for it to function correctly.
+Set minimal alignments and sizes specified by PE documentation [1]
+referenced by UEFI specification [2]. Align PE header to 8 bytes.
+Generate '.reloc' section with 2 entries and set reloc data directory.
+
+To make code more readable refactor tools/build.c:
+	- Use mmap() to access kernel image.
+	- Generate sections dynamically.
+	- Setup sections protection. Since we cannot fit every
+	  needed section, set a part of protection flags
+	  dynamically during initialization. This step is omitted
+	  if CONFIG_EFI_DXE_MEM_ATTRIBUTES is not set.
+
+Reduce boot sector error message size since the space for the PE header
+before the zero page beginning is constrained.
+
+Explicitly change sections permissions in efi_pe_entry in case
+of incorrect EFI implementations and to reduce access rights to
+compressed kernel blob. By default it is set executable due to
+restriction in maximum number of sections that can fit before zero
+page.
+
+[1] https://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/pecoff_v83.docx
+[2] https://uefi.org/sites/default/files/resources/UEFI_Spec_2_9_2021_03_18.pdf
 
 Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
-
- create mode 100644 arch/x86/include/asm/shared/extract.h
- create mode 100644 drivers/firmware/efi/libstub/x86-extract-direct.c
 ---
- arch/x86/boot/compressed/head_32.S            |   6 +-
- arch/x86/boot/compressed/head_64.S            |  45 ++++
- arch/x86/include/asm/shared/extract.h         |  25 ++
- drivers/firmware/efi/Kconfig                  |  14 ++
- drivers/firmware/efi/libstub/Makefile         |   1 +
- drivers/firmware/efi/libstub/efistub.h        |   5 +
- .../firmware/efi/libstub/x86-extract-direct.c | 220 ++++++++++++++++++
- drivers/firmware/efi/libstub/x86-stub.c       |  45 ++--
- 8 files changed, 343 insertions(+), 18 deletions(-)
- create mode 100644 arch/x86/include/asm/shared/extract.h
- create mode 100644 drivers/firmware/efi/libstub/x86-extract-direct.c
+ arch/x86/boot/Makefile                  |   2 +-
+ arch/x86/boot/header.S                  | 110 +----
+ arch/x86/boot/tools/build.c             | 575 +++++++++++++++---------
+ drivers/firmware/efi/libstub/x86-stub.c |  63 ++-
+ 4 files changed, 452 insertions(+), 298 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/head_32.S b/arch/x86/boot/compressed/head_32.S
-index b46a1c4109cf..d2866f06bc9f 100644
---- a/arch/x86/boot/compressed/head_32.S
-+++ b/arch/x86/boot/compressed/head_32.S
-@@ -155,7 +155,11 @@ SYM_FUNC_START(efi32_stub_entry)
- 	add	$0x4, %esp
- 	movl	8(%esp), %esi	/* save boot_params pointer */
- 	call	efi_main
--	/* efi_main returns the possibly relocated address of startup_32 */
+diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
+index ffec8bb01ba8..828eb41c2603 100644
+--- a/arch/x86/boot/Makefile
++++ b/arch/x86/boot/Makefile
+@@ -90,7 +90,7 @@ $(obj)/vmlinux.bin: $(obj)/compressed/vmlinux FORCE
+ 
+ SETUP_OBJS = $(addprefix $(obj)/,$(setup-y))
+ 
+-sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|startup_64\|efi32_stub_entry\|efi64_stub_entry\|efi_pe_entry\|efi32_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|z_.*\)$$/\#define ZO_\2 0x\1/p'
++sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|startup_64\|efi32_stub_entry\|efi64_stub_entry\|efi_pe_entry\|efi32_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|_rodata\|z_.*\)$$/\#define ZO_\2 0x\1/p'
+ 
+ quiet_cmd_zoffset = ZOFFSET $@
+       cmd_zoffset = $(NM) $< | sed -n $(sed-zoffset) > $@
+diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
+index f912d7770130..05a75f0a1876 100644
+--- a/arch/x86/boot/header.S
++++ b/arch/x86/boot/header.S
+@@ -59,17 +59,16 @@ start2:
+ 	cld
+ 
+ 	movw	$bugger_off_msg, %si
++	movw	$bugger_off_msg_size, %cx
+ 
+ msg_loop:
+ 	lodsb
+-	andb	%al, %al
+-	jz	bs_die
+ 	movb	$0xe, %ah
+ 	movw	$7, %bx
+ 	int	$0x10
+-	jmp	msg_loop
++	decw	%cx
++	jnz	msg_loop
+ 
+-bs_die:
+ 	# Allow the user to press a key, then reboot
+ 	xorw	%ax, %ax
+ 	int	$0x16
+@@ -89,12 +88,12 @@ bs_die:
+ 
+ 	.section ".bsdata", "a"
+ bugger_off_msg:
+-	.ascii	"Use a boot loader.\r\n"
+-	.ascii	"\n"
+-	.ascii	"Remove disk and press any key to reboot...\r\n"
+-	.byte	0
++	.ascii	"Use a boot loader. "
++	.ascii	"Press a key to reboot"
++	.set bugger_off_msg_size, . - bugger_off_msg
+ 
+ #ifdef CONFIG_EFI_STUB
++	.align 8
+ pe_header:
+ 	.long	PE_MAGIC
+ 
+@@ -108,7 +107,7 @@ coff_header:
+ 	.set	pe_opt_magic, PE_OPT_MAGIC_PE32PLUS
+ 	.word	IMAGE_FILE_MACHINE_AMD64
+ #endif
+-	.word	section_count			# nr_sections
++	.word	0				# nr_sections
+ 	.long	0 				# TimeDateStamp
+ 	.long	0				# PointerToSymbolTable
+ 	.long	1				# NumberOfSymbols
+@@ -132,7 +131,7 @@ optional_header:
+ 	# Filled in by build.c
+ 	.long	0x0000				# AddressOfEntryPoint
+ 
+-	.long	0x0200				# BaseOfCode
++	.long	0x1000				# BaseOfCode
+ #ifdef CONFIG_X86_32
+ 	.long	0				# data
+ #endif
+@@ -145,8 +144,8 @@ extra_header_fields:
+ #else
+ 	.quad	image_base			# ImageBase
+ #endif
+-	.long	0x20				# SectionAlignment
+-	.long	0x20				# FileAlignment
++	.long	0x1000				# SectionAlignment
++	.long	0x200				# FileAlignment
+ 	.word	0				# MajorOperatingSystemVersion
+ 	.word	0				# MinorOperatingSystemVersion
+ 	.word	LINUX_EFISTUB_MAJOR_VERSION	# MajorImageVersion
+@@ -189,91 +188,14 @@ extra_header_fields:
+ 	.quad	0				# CertificationTable
+ 	.quad	0				# BaseRelocationTable
+ 
+-	# Section table
+-section_table:
+-	#
+-	# The offset & size fields are filled in by build.c.
+-	#
+-	.ascii	".setup"
+-	.byte	0
+-	.byte	0
+-	.long	0
+-	.long	0x0				# startup_{32,64}
+-	.long	0				# Size of initialized data
+-						# on disk
+-	.long	0x0				# startup_{32,64}
+-	.long	0				# PointerToRelocations
+-	.long	0				# PointerToLineNumbers
+-	.word	0				# NumberOfRelocations
+-	.word	0				# NumberOfLineNumbers
+-	.long	IMAGE_SCN_CNT_CODE		| \
+-		IMAGE_SCN_MEM_READ		| \
+-		IMAGE_SCN_MEM_EXECUTE		| \
+-		IMAGE_SCN_ALIGN_16BYTES		# Characteristics
+-
+-	#
+-	# The EFI application loader requires a relocation section
+-	# because EFI applications must be relocatable. The .reloc
+-	# offset & size fields are filled in by build.c.
+ 	#
+-	.ascii	".reloc"
+-	.byte	0
+-	.byte	0
+-	.long	0
+-	.long	0
+-	.long	0				# SizeOfRawData
+-	.long	0				# PointerToRawData
+-	.long	0				# PointerToRelocations
+-	.long	0				# PointerToLineNumbers
+-	.word	0				# NumberOfRelocations
+-	.word	0				# NumberOfLineNumbers
+-	.long	IMAGE_SCN_CNT_INITIALIZED_DATA	| \
+-		IMAGE_SCN_MEM_READ		| \
+-		IMAGE_SCN_MEM_DISCARDABLE	| \
+-		IMAGE_SCN_ALIGN_1BYTES		# Characteristics
+-
+-#ifdef CONFIG_EFI_MIXED
+-	#
+-	# The offset & size fields are filled in by build.c.
++	# Section table
++	# It is generated by build.c and here we just need
++	# to reserve some space for sections
+ 	#
+-	.asciz	".compat"
+-	.long	0
+-	.long	0x0
+-	.long	0				# Size of initialized data
+-						# on disk
+-	.long	0x0
+-	.long	0				# PointerToRelocations
+-	.long	0				# PointerToLineNumbers
+-	.word	0				# NumberOfRelocations
+-	.word	0				# NumberOfLineNumbers
+-	.long	IMAGE_SCN_CNT_INITIALIZED_DATA	| \
+-		IMAGE_SCN_MEM_READ		| \
+-		IMAGE_SCN_MEM_DISCARDABLE	| \
+-		IMAGE_SCN_ALIGN_1BYTES		# Characteristics
+-#endif
++section_table:
++	.fill 40*5, 1, 0
+ 
+-	#
+-	# The offset & size fields are filled in by build.c.
+-	#
+-	.ascii	".text"
+-	.byte	0
+-	.byte	0
+-	.byte	0
+-	.long	0
+-	.long	0x0				# startup_{32,64}
+-	.long	0				# Size of initialized data
+-						# on disk
+-	.long	0x0				# startup_{32,64}
+-	.long	0				# PointerToRelocations
+-	.long	0				# PointerToLineNumbers
+-	.word	0				# NumberOfRelocations
+-	.word	0				# NumberOfLineNumbers
+-	.long	IMAGE_SCN_CNT_CODE		| \
+-		IMAGE_SCN_MEM_READ		| \
+-		IMAGE_SCN_MEM_EXECUTE		| \
+-		IMAGE_SCN_ALIGN_16BYTES		# Characteristics
+-
+-	.set	section_count, (. - section_table) / 40
+ #endif /* CONFIG_EFI_STUB */
+ 
+ 	# Kernel attributes; used by setup.  This is part 1 of the
+diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
+index a3725ad46c5a..dc3a1efb290e 100644
+--- a/arch/x86/boot/tools/build.c
++++ b/arch/x86/boot/tools/build.c
+@@ -40,6 +40,8 @@ typedef unsigned char  u8;
+ typedef unsigned short u16;
+ typedef unsigned int   u32;
+ 
++#define round_up(x, n) (((x) + (n) - 1) & ~((n) - 1))
++
+ #define DEFAULT_MAJOR_ROOT 0
+ #define DEFAULT_MINOR_ROOT 0
+ #define DEFAULT_ROOT_DEV (DEFAULT_MAJOR_ROOT << 8 | DEFAULT_MINOR_ROOT)
+@@ -59,12 +61,74 @@ u8 buf[SETUP_SECT_MAX*512];
+ #define PECOFF_COMPAT_RESERVE 0x0
+ #endif
+ 
++#define PARAGRAPH_SIZE 16
++#define SECTOR_SIZE 512
++#define FILE_ALIGNMENT 512
++#define SECTION_ALIGNMENT 4096
++
++#define RELOC_SECTION_SIZE 12
++
++#ifdef CONFIG_EFI_MIXED
++#define COMPAT_SECTION_SIZE 8
++#else
++#define COMPAT_SECTION_SIZE 0
++#endif
++
++#define DOS_PECOFF_HEADER_OFFSET 0x3c
++
++#define PECOFF_CODE_SIZE_OFFSET 0x1c
++#define PECOFF_DATA_SIZE_OFFSET 0x20
++#define PECOFF_IMAGE_SIZE_OFFSET 0x50
++#define PECOFF_ENTRY_POINT_OFFSET 0x28
++#define PECOFF_SECTIONS_COUNT_OFFSET 0x6
++#define PECOFF_BASE_OF_CODE_OFFSET 0x2c
++
++#ifdef CONFIG_X86_32
++#define PECOFF_SECTION_TABLE_OFFSET 0xa8
++#define PECOFF_RELOC_DIR_OFFSET 0xa0
++#else
++#define PECOFF_SECTION_TABLE_OFFSET 0xb8
++#define PECOFF_RELOC_DIR_OFFSET 0xb0
++#endif
++
++#define PECOFF_SECTION_SIZE 0x28
++
++#define PECOFF_SCN_NAME_OFFSET 0x0
++#define PECOFF_SCN_NAME_SIZE 8
++#define PECOFF_SCN_MEMSZ_OFFSET 0x8
++#define PECOFF_SCN_VADDR_OFFSET 0xc
++#define PECOFF_SCN_FILESZ_OFFSET 0x10
++#define PECOFF_SCN_OFFSET_OFFSET 0x14
++#define PECOFF_SCN_FLAGS_OFFSET 0x24
++
++#define IMAGE_SCN_CNT_CODE	0x00000020 /* .text */
++#define IMAGE_SCN_CNT_INITIALIZED_DATA 0x00000040 /* .data */
++#define IMAGE_SCN_ALIGN_512BYTES 0x00a00000
++#define IMAGE_SCN_ALIGN_4096BYTES 0x00d00000
++#define IMAGE_SCN_MEM_DISCARDABLE 0x02000000 /* scn can be discarded */
++#define IMAGE_SCN_MEM_EXECUTE	0x20000000 /* can be executed as code */
++#define IMAGE_SCN_MEM_READ	0x40000000 /* readable */
++#define IMAGE_SCN_MEM_WRITE	0x80000000 /* writeable */
++
++#ifdef CONFIG_EFI_DXE_MEM_ATTRIBUTES
++#define SCN_RW (IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE | IMAGE_SCN_ALIGN_4096BYTES)
++#define SCN_RX (IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_EXECUTE | IMAGE_SCN_ALIGN_4096BYTES)
++#define SCN_RO (IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_4096BYTES)
++#else
++/* With memory protection disabled all sections are RWX */
++#define SCN_RW (IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE | \
++		IMAGE_SCN_MEM_EXECUTE | IMAGE_SCN_ALIGN_4096BYTES)
++#define SCN_RX SCN_RW
++#define SCN_RO SCN_RW
++#endif
++
+ static unsigned long efi32_stub_entry;
+ static unsigned long efi64_stub_entry;
+ static unsigned long efi_pe_entry;
+ static unsigned long efi32_pe_entry;
+ static unsigned long kernel_info;
+ static unsigned long startup_64;
++static unsigned long _rodata;
+ static unsigned long _ehead;
+ static unsigned long _end;
+ 
+@@ -152,91 +216,126 @@ static void usage(void)
+ 	die("Usage: build setup system zoffset.h image");
+ }
+ 
+-#ifdef CONFIG_EFI_STUB
+-
+-static void update_pecoff_section_header_fields(char *section_name, u32 vma, u32 size, u32 datasz, u32 offset)
++static void *map_file(const char *path, size_t *psize)
+ {
+-	unsigned int pe_header;
+-	unsigned short num_sections;
+-	u8 *section;
+-
+-	pe_header = get_unaligned_le32(&buf[0x3c]);
+-	num_sections = get_unaligned_le16(&buf[pe_header + 6]);
+-
+-#ifdef CONFIG_X86_32
+-	section = &buf[pe_header + 0xa8];
+-#else
+-	section = &buf[pe_header + 0xb8];
+-#endif
+-
+-	while (num_sections > 0) {
+-		if (strncmp((char*)section, section_name, 8) == 0) {
+-			/* section header size field */
+-			put_unaligned_le32(size, section + 0x8);
++	struct stat statbuf;
++	size_t size;
++	void *addr;
++	int fd;
+ 
+-			/* section header vma field */
+-			put_unaligned_le32(vma, section + 0xc);
++	fd = open(path, O_RDONLY);
++	if (fd < 0)
++		die("Unable to open `%s': %m", path);
++	if (fstat(fd, &statbuf))
++		die("Unable to stat `%s': %m", path);
+ 
+-			/* section header 'size of initialised data' field */
+-			put_unaligned_le32(datasz, section + 0x10);
++	size = statbuf.st_size;
++	/*
++	 * Map one byte more, to allow adding null-terminator
++	 * for text files.
++	 */
++	addr = mmap(NULL, size + 1, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0);
++	if (addr == MAP_FAILED)
++		die("Unable to mmap '%s': %m", path);
+ 
+-			/* section header 'file offset' field */
+-			put_unaligned_le32(offset, section + 0x14);
++	close(fd);
+ 
+-			break;
+-		}
+-		section += 0x28;
+-		num_sections--;
+-	}
++	*psize = size;
++	return addr;
+ }
+ 
+-static void update_pecoff_section_header(char *section_name, u32 offset, u32 size)
++static void unmap_file(void *addr, size_t size)
+ {
+-	update_pecoff_section_header_fields(section_name, offset, size, size, offset);
++	munmap(addr, size + 1);
+ }
+ 
+-static void update_pecoff_setup_and_reloc(unsigned int size)
++static void *map_output_file(const char *path, size_t size)
+ {
+-	u32 setup_offset = 0x200;
+-	u32 reloc_offset = size - PECOFF_RELOC_RESERVE - PECOFF_COMPAT_RESERVE;
+-#ifdef CONFIG_EFI_MIXED
+-	u32 compat_offset = reloc_offset + PECOFF_RELOC_RESERVE;
+-#endif
+-	u32 setup_size = reloc_offset - setup_offset;
++	void *addr;
++	int fd;
+ 
+-	update_pecoff_section_header(".setup", setup_offset, setup_size);
+-	update_pecoff_section_header(".reloc", reloc_offset, PECOFF_RELOC_RESERVE);
++	fd = open(path, O_RDWR | O_CREAT, 0660);
++	if (fd < 0)
++		die("Unable to create `%s': %m", path);
+ 
+-	/*
+-	 * Modify .reloc section contents with a single entry. The
+-	 * relocation is applied to offset 10 of the relocation section.
+-	 */
+-	put_unaligned_le32(reloc_offset + 10, &buf[reloc_offset]);
+-	put_unaligned_le32(10, &buf[reloc_offset + 4]);
++	if (ftruncate(fd, size))
++		die("Unable to resize `%s': %m", path);
+ 
+-#ifdef CONFIG_EFI_MIXED
+-	update_pecoff_section_header(".compat", compat_offset, PECOFF_COMPAT_RESERVE);
++	addr = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
++	if (addr == MAP_FAILED)
++		die("Unable to mmap '%s': %m", path);
+ 
+-	/*
+-	 * Put the IA-32 machine type (0x14c) and the associated entry point
+-	 * address in the .compat section, so loaders can figure out which other
+-	 * execution modes this image supports.
+-	 */
+-	buf[compat_offset] = 0x1;
+-	buf[compat_offset + 1] = 0x8;
+-	put_unaligned_le16(0x14c, &buf[compat_offset + 2]);
+-	put_unaligned_le32(efi32_pe_entry + size, &buf[compat_offset + 4]);
+-#endif
++	return addr;
+ }
+ 
+-static void update_pecoff_text(unsigned int text_start, unsigned int file_sz,
+-			       unsigned int init_sz)
++#ifdef CONFIG_EFI_STUB
++
++static unsigned int reloc_offset;
++static unsigned int compat_offset;
++
++#define MAX_SECTIONS 5
++
++static void emit_pecoff_section(const char *section_name, unsigned int size,
++				unsigned int bss, unsigned int *file_offset,
++				unsigned int *mem_offset, u32 flags)
+ {
++	unsigned int section_memsz, section_filesz;
+ 	unsigned int pe_header;
+-	unsigned int text_sz = file_sz - text_start;
+-	unsigned int bss_sz = init_sz - file_sz;
++	unsigned short num_sections;
++	u8 *pnum_sections;
++	u8 *section;
++
++	pe_header = get_unaligned_le32(&buf[DOS_PECOFF_HEADER_OFFSET]);
++	pnum_sections = &buf[pe_header + PECOFF_SECTIONS_COUNT_OFFSET];
++	num_sections = get_unaligned_le16(pnum_sections);
++	if (num_sections >= MAX_SECTIONS)
++		die("Not enough space to generate all sections");
++
++	section = &buf[pe_header + PECOFF_SECTION_TABLE_OFFSET];
++	section += PECOFF_SECTION_SIZE * num_sections;
++
++	if ((size & (FILE_ALIGNMENT - 1)) || (bss & (FILE_ALIGNMENT - 1)))
++		die("Section '%s' is improperly aligned", section_name);
++
++	section_memsz = round_up(size + bss, SECTION_ALIGNMENT);
++	section_filesz = round_up(size, FILE_ALIGNMENT);
++
++	/* Zero out all section fields */
++	memset(section, 0, PECOFF_SECTION_SIZE);
++
++	/* Section header size field */
++	strncpy((char *)(section + PECOFF_SCN_NAME_OFFSET),
++		section_name, PECOFF_SCN_NAME_SIZE);
+ 
+-	pe_header = get_unaligned_le32(&buf[0x3c]);
++	put_unaligned_le32(section_memsz, section + PECOFF_SCN_MEMSZ_OFFSET);
++	put_unaligned_le32(*mem_offset, section + PECOFF_SCN_VADDR_OFFSET);
++	put_unaligned_le32(section_filesz, section + PECOFF_SCN_FILESZ_OFFSET);
++	put_unaligned_le32(*file_offset, section + PECOFF_SCN_OFFSET_OFFSET);
++	put_unaligned_le32(flags, section + PECOFF_SCN_FLAGS_OFFSET);
++
++	put_unaligned_le16(num_sections + 1, pnum_sections);
++
++	*mem_offset += section_memsz;
++	*file_offset += section_filesz;
++
++}
++
++#define BASE_RVA 0x1000
++
++static unsigned int update_pecoff_sections(unsigned int setup_size,
++					   unsigned int file_size,
++					   unsigned int init_size,
++					   unsigned int text_size)
++{
++	/* First section starts at 512 byes, after PE header */
++	unsigned int mem_offset = BASE_RVA, file_offset = SECTOR_SIZE;
++	unsigned int compat_size, reloc_size, image_size, text_rva;
++	unsigned int pe_header, bss_size, text_rva_diff, reloc_rva;
++
++	pe_header = get_unaligned_le32(&buf[DOS_PECOFF_HEADER_OFFSET]);
++
++	if (get_unaligned_le32(&buf[pe_header + PECOFF_SECTIONS_COUNT_OFFSET]))
++		die("Some sections present in PE file");
+ 
+ 	/*
+ 	 * The PE/COFF loader may load the image at an address which is
+@@ -247,42 +346,121 @@ static void update_pecoff_text(unsigned int text_start, unsigned int file_sz,
+ 	 * add slack to allow the buffer to be aligned within the declared size
+ 	 * of the image.
+ 	 */
+-	bss_sz	+= CONFIG_PHYSICAL_ALIGN;
+-	init_sz	+= CONFIG_PHYSICAL_ALIGN;
++	init_size += CONFIG_PHYSICAL_ALIGN;
++	image_size = init_size;
++
++	reloc_size = round_up(RELOC_SECTION_SIZE, FILE_ALIGNMENT);
++	compat_size = round_up(COMPAT_SECTION_SIZE, FILE_ALIGNMENT);
 +
 +	/*
-+	 * efi_main returns the possibly
-+	 * relocated address of exteracted kernel entry point.
++	 * Let's remove extra memory used by special sections
++	 * and use it as a part of bss.
 +	 */
- 	jmp	*%eax
- SYM_FUNC_END(efi32_stub_entry)
- SYM_FUNC_ALIAS(efi_stub_entry, efi32_stub_entry)
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index 37ce094571b5..b6bae8e7ee71 100644
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -555,9 +555,54 @@ SYM_FUNC_START(efi64_stub_entry)
- 	and	$~0xf, %rsp			/* realign the stack */
- 	movq	%rdx, %rbx			/* save boot_params pointer */
- 	call	efi_main
++	init_size -= round_up(reloc_size, SECTION_ALIGNMENT);
++	init_size -= round_up(compat_size, SECTION_ALIGNMENT);
++	if (init_size < file_size + setup_size) {
++		init_size = file_size + setup_size;
++		image_size += round_up(reloc_size, SECTION_ALIGNMENT);
++		image_size += round_up(compat_size, SECTION_ALIGNMENT);
++	}
+ 
+ 	/*
+-	 * Size of code: Subtract the size of the first sector (512 bytes)
+-	 * which includes the header.
++	 * Update sections offsets.
++	 * NOTE: Order is important
+ 	 */
+-	put_unaligned_le32(file_sz - 512 + bss_sz, &buf[pe_header + 0x1c]);
+ 
+-	/* Size of image */
+-	put_unaligned_le32(init_sz, &buf[pe_header + 0x50]);
++	bss_size = init_size - file_size - setup_size;
 +
-+#ifdef CONFIG_EFI_STUB_EXTRACT_DIRECT
-+	cld
-+	cli
++	emit_pecoff_section(".setup", setup_size - SECTOR_SIZE, 0,
++			    &file_offset, &mem_offset, SCN_RO |
++			    IMAGE_SCN_CNT_INITIALIZED_DATA);
 +
-+	movq	%rbx, %rdi /* boot_params */
-+	movq	%rax, %rsi /* decompressed kernel address */
++	text_rva_diff = mem_offset - file_offset;
++	text_rva = mem_offset;
++	emit_pecoff_section(".text", text_size, 0,
++			    &file_offset, &mem_offset, SCN_RX |
++			    IMAGE_SCN_CNT_CODE);
 +
-+	/* Make sure we have GDT with 32-bit code segment */
-+	leaq	gdt64(%rip), %rax
-+	addq	%rax, 2(%rax)
-+	lgdt	(%rax)
++	/* Check that kernel sections mapping is contiguous */
++	if (text_rva_diff != mem_offset - file_offset)
++		die("Kernel sections mapping is wrong: %#x != %#x",
++		    mem_offset - file_offset, text_rva_diff);
 +
-+	/* Setup data segments. */
-+	xorl	%eax, %eax
-+	movl	%eax, %ds
-+	movl	%eax, %es
-+	movl	%eax, %ss
-+	movl	%eax, %fs
-+	movl	%eax, %gs
++	emit_pecoff_section(".data", file_size - text_size, bss_size,
++			    &file_offset, &mem_offset, SCN_RW |
++			    IMAGE_SCN_CNT_INITIALIZED_DATA);
 +
-+	pushq	%rsi
-+	pushq	%rdi
++	reloc_offset = file_offset;
++	reloc_rva = mem_offset;
++	emit_pecoff_section(".reloc", reloc_size, 0,
++			    &file_offset, &mem_offset, SCN_RW |
++			    IMAGE_SCN_CNT_INITIALIZED_DATA |
++			    IMAGE_SCN_MEM_DISCARDABLE);
 +
-+	call startup32_enable_nx_if_supported
++	compat_offset = file_offset;
++#ifdef CONFIG_EFI_MIXED
++	emit_pecoff_section(".comat", compat_size, 0,
++			    &file_offset, &mem_offset, SCN_RW |
++			    IMAGE_SCN_CNT_INITIALIZED_DATA |
++			    IMAGE_SCN_MEM_DISCARDABLE);
++#endif
 +
-+	call	trampoline_pgtable_init
-+	movq	%rax, %rdx
++	if (file_size + setup_size + reloc_size + compat_size != file_offset)
++		die("file_size(%#x) != filesz(%#x)",
++		    file_size + setup_size + reloc_size + compat_size, file_offset);
 +
++	/* Size of code. */
++	put_unaligned_le32(round_up(text_size, SECTION_ALIGNMENT),
++			   &buf[pe_header + PECOFF_CODE_SIZE_OFFSET]);
++	/*
++	 * Size of data.
++	 * Exclude text size and first sector, which contains PE header.
++	 */
++	put_unaligned_le32(mem_offset - round_up(text_size, SECTION_ALIGNMENT),
++			   &buf[pe_header + PECOFF_DATA_SIZE_OFFSET]);
 +
-+	/* Swap %rsi and %rsi */
-+	popq	%rsi
-+	popq	%rdi
++	/* Size of image. */
++	put_unaligned_le32(mem_offset, &buf[pe_header + PECOFF_IMAGE_SIZE_OFFSET]);
+ 
+ 	/*
+ 	 * Address of entry point for PE/COFF executable
+ 	 */
+-	put_unaligned_le32(text_start + efi_pe_entry, &buf[pe_header + 0x28]);
++	put_unaligned_le32(text_rva + efi_pe_entry, &buf[pe_header + PECOFF_ENTRY_POINT_OFFSET]);
+ 
+-	update_pecoff_section_header_fields(".text", text_start, text_sz + bss_sz,
+-					    text_sz, text_start);
+-}
++	/*
++	 * BaseOfCode for PE/COFF executable
++	 */
++	put_unaligned_le32(text_rva, &buf[pe_header + PECOFF_BASE_OF_CODE_OFFSET]);
+ 
+-static int reserve_pecoff_reloc_section(int c)
+-{
+-	/* Reserve 0x20 bytes for .reloc section */
+-	memset(buf+c, 0, PECOFF_RELOC_RESERVE);
+-	return PECOFF_RELOC_RESERVE;
++	/*
++	 * Since we have generated .reloc section, we need to
++	 * fill-in Reloc directory
++	 */
++	put_unaligned_le32(reloc_rva, &buf[pe_header + PECOFF_RELOC_DIR_OFFSET]);
++	put_unaligned_le32(RELOC_SECTION_SIZE, &buf[pe_header + PECOFF_RELOC_DIR_OFFSET + 4]);
 +
-+	/* Save the trampoline address in RCX */
-+	movq	trampoline_32bit(%rip), %rcx
++	return file_offset;
+ }
+ 
+-static void efi_stub_defaults(void)
++static void generate_pecoff_section_data(u8 *output, unsigned int setup_size)
+ {
+-	/* Defaults for old kernel */
+-#ifdef CONFIG_X86_32
+-	efi_pe_entry = 0x10;
+-#else
+-	efi_pe_entry = 0x210;
+-	startup_64 = 0x200;
++	/*
++	 * Modify .reloc section contents with a two entries. The
++	 * relocation is applied to offset 10 of the relocation section.
++	 */
++	put_unaligned_le32(reloc_offset + RELOC_SECTION_SIZE, &output[reloc_offset]);
++	put_unaligned_le32(RELOC_SECTION_SIZE, &output[reloc_offset + 4]);
 +
-+	/* Switch to compatibility mode (CS.L = 0 CS.D = 1) via far return */
-+	pushq	$__KERNEL32_CS
-+	leaq	TRAMPOLINE_32BIT_CODE_OFFSET(%rcx), %rax
-+	pushq	%rax
-+	lretq
++#ifdef CONFIG_EFI_MIXED
++	/*
++	 * Put the IA-32 machine type (0x14c) and the associated entry point
++	 * address in the .compat section, so loaders can figure out which other
++	 * execution modes this image supports.
++	 */
++	output[compat_offset] = 0x1;
++	output[compat_offset + 1] = 0x8;
++	put_unaligned_le16(0x14c, &output[compat_offset + 2]);
++	put_unaligned_le32(efi32_pe_entry + setup_size, &output[compat_offset + 4]);
+ #endif
+ }
+ 
+@@ -297,33 +475,27 @@ static void efi_stub_entry_update(void)
+ 
+ #ifdef CONFIG_EFI_MIXED
+ 	if (efi32_stub_entry != addr)
+-		die("32-bit and 64-bit EFI entry points do not match\n");
++		die("32-bit and 64-bit EFI entry points do not match");
+ #endif
+ 	put_unaligned_le32(addr, &buf[0x264]);
+ }
+ 
++static void efi_stub_update_defaults(void)
++{
++	/* Defaults for old kernel */
++#ifdef CONFIG_X86_32
++	efi_pe_entry = 0x10;
 +#else
- 	movq	%rbx,%rsi
- 	leaq	rva(startup_64)(%rax), %rax
- 	jmp	*%rax
++	efi_pe_entry = 0x210;
++	startup_64 = 0x200;
 +#endif
-+
- SYM_FUNC_END(efi64_stub_entry)
- SYM_FUNC_ALIAS(efi_stub_entry, efi64_stub_entry)
- #endif
-diff --git a/arch/x86/include/asm/shared/extract.h b/arch/x86/include/asm/shared/extract.h
-new file mode 100644
-index 000000000000..163678145884
---- /dev/null
-+++ b/arch/x86/include/asm/shared/extract.h
-@@ -0,0 +1,25 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef ASM_SHARED_EXTRACT_H
-+#define ASM_SHARED_EXTRACT_H
-+
-+#define MAP_WRITE	0x02 /* Writable memory */
-+#define MAP_EXEC	0x04 /* Executable memory */
-+#define MAP_ALLOC	0x10 /* Range needs to be allocated */
-+#define MAP_PROTECT	0x20 /* Set exact memory attributes for memory range */
-+
-+struct efi_iofunc {
-+	void (*putstr)(const char *msg);
-+	void (*puthex)(unsigned long x);
-+	unsigned long (*map_range)(unsigned long start,
-+				   unsigned long end,
-+				   unsigned int flags);
-+};
-+
-+void *efi_extract_kernel(struct boot_params *rmode,
-+			 struct efi_iofunc *iofunc,
-+			 unsigned char *input_data,
-+			 unsigned long input_len,
-+			 unsigned char *output,
-+			 unsigned long output_len);
-+
-+#endif /* ASM_SHARED_EXTRACT_H */
-diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-index 6cb7384ad2ac..2418402a0bda 100644
---- a/drivers/firmware/efi/Kconfig
-+++ b/drivers/firmware/efi/Kconfig
-@@ -91,6 +91,20 @@ config EFI_DXE_MEM_ATTRIBUTES
- 	  Use DXE services to check and alter memory protection
- 	  attributes during boot via EFISTUB to ensure that memory
- 	  ranges used by the kernel are writable and executable.
-+	  This option also enables stricter memory attributes
-+	  on compressed kernel PE image.
-+
-+config EFI_STUB_EXTRACT_DIRECT
-+	bool "Extract kernel directly from UEFI environment"
-+	depends on EFI && EFI_STUB && X86_64
-+	default y
-+	help
-+	  Extract kernel before exiting EFI boot services
-+	  This allows maintaining W^X for kernel image for
-+	  the whole execution of compressed kernel code.
-+	  This also slightly improves efficiency of extraction
-+	  code by removing the need to copy the kernel around
-+	  and rebuild page tables.
++}
+ #else
  
- config EFI_PARAMS_FROM_FDT
- 	bool
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index d0537573501e..1cea7d913356 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -69,6 +69,7 @@ lib-$(CONFIG_EFI_GENERIC_STUB)	+= efi-stub.o fdt.o string.o \
- lib-$(CONFIG_ARM)		+= arm32-stub.o
- lib-$(CONFIG_ARM64)		+= arm64-stub.o
- lib-$(CONFIG_X86)		+= x86-stub.o
-+lib-$(CONFIG_EFI_STUB_EXTRACT_DIRECT)	+= x86-extract-direct.o
- lib-$(CONFIG_RISCV)		+= riscv-stub.o
- CFLAGS_arm32-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
+-static inline void update_pecoff_setup_and_reloc(unsigned int size) {}
+-static inline void update_pecoff_text(unsigned int text_start,
+-				      unsigned int file_sz,
+-				      unsigned int init_sz) {}
+-static inline void efi_stub_defaults(void) {}
+-static inline void efi_stub_entry_update(void) {}
++static void efi_stub_update_defaults(void) {}
  
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index 22fe28385db7..cdd1bb50c786 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -968,6 +968,11 @@ static inline void
- efi_enable_reset_attack_mitigation(void) { }
- #endif
+-static inline int reserve_pecoff_reloc_section(int c)
+-{
+-	return 0;
+-}
+ #endif /* CONFIG_EFI_STUB */
  
-+#ifdef CONFIG_X86
-+unsigned long extract_kernel_direct(struct boot_params *boot_params);
-+void startup_32(struct boot_params *boot_params);
-+#endif
-+
- void efi_retrieve_tpm2_eventlog(void);
+-static int reserve_pecoff_compat_section(int c)
+-{
+-	/* Reserve 0x20 bytes for .compat section */
+-	memset(buf+c, 0, PECOFF_COMPAT_RESERVE);
+-	return PECOFF_COMPAT_RESERVE;
+-}
+-
+ /*
+  * Parse zoffset.h and find the entry points. We could just #include zoffset.h
+  * but that would mean tools/build would have to be rebuilt every time. It's
+@@ -336,20 +508,15 @@ static int reserve_pecoff_compat_section(int c)
  
- #endif
-diff --git a/drivers/firmware/efi/libstub/x86-extract-direct.c b/drivers/firmware/efi/libstub/x86-extract-direct.c
-new file mode 100644
-index 000000000000..6076bd75cfd6
---- /dev/null
-+++ b/drivers/firmware/efi/libstub/x86-extract-direct.c
-@@ -0,0 +1,220 @@
-+// SPDX-License-Identifier: GPL-2.0-only
+ static void parse_zoffset(char *fname)
+ {
+-	FILE *file;
+-	char *p;
+-	int c;
++	size_t size;
++	char *data, *p;
+ 
+-	file = fopen(fname, "r");
+-	if (!file)
+-		die("Unable to open `%s': %m", fname);
+-	c = fread(buf, 1, sizeof(buf) - 1, file);
+-	if (ferror(file))
+-		die("read-error on `zoffset.h'");
+-	fclose(file);
+-	buf[c] = 0;
++	data = map_file(fname, &size);
 +
-+#include <linux/acpi.h>
-+#include <linux/efi.h>
-+#include <linux/elf.h>
-+#include <linux/stddef.h>
++	/* We can do that, since we mapped one byte more */
++	data[size] = 0;
+ 
+-	p = (char *)buf;
++	p = (char *)data;
+ 
+ 	while (p && *p) {
+ 		PARSE_ZOFS(p, efi32_stub_entry);
+@@ -358,6 +525,7 @@ static void parse_zoffset(char *fname)
+ 		PARSE_ZOFS(p, efi32_pe_entry);
+ 		PARSE_ZOFS(p, kernel_info);
+ 		PARSE_ZOFS(p, startup_64);
++		PARSE_ZOFS(p, _rodata);
+ 		PARSE_ZOFS(p, _ehead);
+ 		PARSE_ZOFS(p, _end);
+ 
+@@ -365,82 +533,93 @@ static void parse_zoffset(char *fname)
+ 		while (p && (*p == '\r' || *p == '\n'))
+ 			p++;
+ 	}
 +
-+#include <asm/efi.h>
-+#include <asm/e820/types.h>
-+#include <asm/desc.h>
-+#include <asm/boot.h>
-+#include <asm/bootparam_utils.h>
-+#include <asm/shared/extract.h>
-+#include <asm/shared/pgtable.h>
++	unmap_file(data, size);
+ }
+ 
+-int main(int argc, char ** argv)
++static unsigned int read_setup(char *path)
+ {
+-	unsigned int i, sz, setup_sectors, init_sz;
+-	int c;
+-	u32 sys_size;
+-	struct stat sb;
+-	FILE *file, *dest;
+-	int fd;
+-	void *kernel;
+-	u32 crc = 0xffffffffUL;
+-
+-	efi_stub_defaults();
+-
+-	if (argc != 5)
+-		usage();
+-	parse_zoffset(argv[3]);
+-
+-	dest = fopen(argv[4], "w");
+-	if (!dest)
+-		die("Unable to write `%s': %m", argv[4]);
++	FILE *file;
++	unsigned int setup_size, file_size;
+ 
+ 	/* Copy the setup code */
+-	file = fopen(argv[1], "r");
++	file = fopen(path, "r");
+ 	if (!file)
+-		die("Unable to open `%s': %m", argv[1]);
+-	c = fread(buf, 1, sizeof(buf), file);
++		die("Unable to open `%s': %m", path);
 +
-+#include "efistub.h"
++	file_size = fread(buf, 1, sizeof(buf), file);
+ 	if (ferror(file))
+ 		die("read-error on `setup'");
+-	if (c < 1024)
 +
-+static void do_puthex(unsigned long value);
-+static void do_putstr(const char *msg);
++	if (file_size < 2 * SECTOR_SIZE)
+ 		die("The setup must be at least 1024 bytes");
+-	if (get_unaligned_le16(&buf[510]) != 0xAA55)
 +
-+static unsigned long do_map_range(unsigned long start,
-+				  unsigned long end,
-+				  unsigned int flags)
-+{
-+	efi_status_t status;
++	if (get_unaligned_le16(&buf[SECTOR_SIZE - 2]) != 0xAA55)
+ 		die("Boot block hasn't got boot flag (0xAA55)");
+-	fclose(file);
+ 
+-	c += reserve_pecoff_compat_section(c);
+-	c += reserve_pecoff_reloc_section(c);
++	fclose(file);
+ 
+ 	/* Pad unused space with zeros */
+-	setup_sectors = (c + 511) / 512;
+-	if (setup_sectors < SETUP_SECT_MIN)
+-		setup_sectors = SETUP_SECT_MIN;
+-	i = setup_sectors*512;
+-	memset(buf+c, 0, i-c);
++	setup_size = round_up(file_size, SECTOR_SIZE);
 +
-+	unsigned long size = end - start;
++	if (setup_size < SETUP_SECT_MIN * SECTOR_SIZE)
++		setup_size = SETUP_SECT_MIN * SECTOR_SIZE;
+ 
+-	update_pecoff_setup_and_reloc(i);
++	/*
++	 * Global buffer is already initialised
++	 * to 0, but just in case, zero out padding.
++	 */
 +
-+	if (flags & MAP_ALLOC) {
-+		if (start == (unsigned long)startup_32)
-+			start = LOAD_PHYSICAL_ADDR;
++	memset(buf + file_size, 0, setup_size - file_size);
 +
-+		unsigned long addr;
-+
-+		status = efi_low_alloc_above(size, CONFIG_PHYSICAL_ALIGN,
-+					     &addr, start);
-+		if (status != EFI_SUCCESS)
-+			efi_err("Unable to allocate memory for uncompressed kernel");
-+
-+		if (start != addr) {
-+			efi_debug("Unable to allocate at given address"
-+				  " (desired=0x%lx, actual=0x%lx)",
-+				  (unsigned long)start, addr);
-+			start = addr;
-+		}
-+	}
-+
-+	if (flags & (MAP_PROTECT | MAP_ALLOC)) {
-+		unsigned long attr = 0;
-+
-+		if (!(flags & MAP_EXEC))
-+			attr |= EFI_MEMORY_XP;
-+
-+		if (!(flags & MAP_WRITE))
-+			attr |= EFI_MEMORY_RO;
-+
-+		status = efi_adjust_memory_range_protection(start,
-+							    end - start,
-+							    attr);
-+		if (status != EFI_SUCCESS)
-+			efi_err("Unable to protect memory range");
-+	}
-+
-+	return start;
++	return setup_size;
 +}
 +
-+/*
-+ * Trampoline takes 3 pages and can be loaded in first megabyte of memory
-+ * with its end placed between 0 and 640k where BIOS might start.
-+ * (see arch/x86/boot/compressed/pgtable_64.c)
-+ */
-+
-+#ifdef CONFIG_64BIT
-+static efi_status_t prepare_trampoline(void)
++int main(int argc, char **argv)
 +{
-+	efi_status_t status;
++	size_t kern_file_size;
++	unsigned int setup_size;
++	unsigned int setup_sectors;
++	unsigned int init_size;
++	unsigned int total_size;
++	unsigned int kern_size;
++	void *kernel;
++	u32 crc = 0xffffffffUL;
++	u8 *output;
 +
-+	status = efi_allocate_pages(TRAMPOLINE_32BIT_SIZE,
-+				    (unsigned long *)&trampoline_32bit,
-+				    TRAMPOLINE_32BIT_PLACEMENT_MAX);
++	if (argc != 5)
++		usage();
 +
-+	if (status != EFI_SUCCESS)
-+		return status;
++	efi_stub_update_defaults();
++	parse_zoffset(argv[3]);
 +
-+	unsigned long trampoline_start = (unsigned long)trampoline_32bit;
++	setup_size = read_setup(argv[1]);
 +
-+	memset(trampoline_32bit, 0, TRAMPOLINE_32BIT_SIZE);
++	setup_sectors = setup_size/SECTOR_SIZE;
+ 
+ 	/* Set the default root device */
+ 	put_unaligned_le16(DEFAULT_ROOT_DEV, &buf[508]);
+ 
+-	/* Open and stat the kernel file */
+-	fd = open(argv[2], O_RDONLY);
+-	if (fd < 0)
+-		die("Unable to open `%s': %m", argv[2]);
+-	if (fstat(fd, &sb))
+-		die("Unable to stat `%s': %m", argv[2]);
+-	sz = sb.st_size;
+-	kernel = mmap(NULL, sz, PROT_READ, MAP_SHARED, fd, 0);
+-	if (kernel == MAP_FAILED)
+-		die("Unable to mmap '%s': %m", argv[2]);
+-	/* Number of 16-byte paragraphs, including space for a 4-byte CRC */
+-	sys_size = (sz + 15 + 4) / 16;
++	/* Map kernel file to memory */
++	kernel = map_file(argv[2], &kern_file_size);
 +
-+	/* First page of trampoline is a top level page table */
-+	efi_adjust_memory_range_protection(trampoline_start,
-+					   PAGE_SIZE,
-+					   EFI_MEMORY_XP);
-+
-+	/* Second page of trampoline is the code (with a padding) */
-+
-+	void *caddr = (void *)trampoline_32bit + TRAMPOLINE_32BIT_CODE_OFFSET;
-+
-+	memcpy(caddr, trampoline_32bit_src, TRAMPOLINE_32BIT_CODE_SIZE);
-+
-+	efi_adjust_memory_range_protection((unsigned long)caddr,
-+					   PAGE_SIZE,
-+					   EFI_MEMORY_RO);
-+
-+	/* And the last page of trampoline is the stack */
-+
-+	efi_adjust_memory_range_protection(trampoline_start + 2 * PAGE_SIZE,
-+					   PAGE_SIZE,
-+					   EFI_MEMORY_XP);
-+
-+	return EFI_SUCCESS;
-+}
+ #ifdef CONFIG_EFI_STUB
+-	/*
+-	 * COFF requires minimum 32-byte alignment of sections, and
+-	 * adding a signature is problematic without that alignment.
+-	 */
+-	sys_size = (sys_size + 1) & ~1;
++	/* PE specification require 512-byte minimum section file alignment */
++	kern_size = round_up(kern_file_size + 4, SECTOR_SIZE);
 +#else
-+static inline efi_status_t prepare_trampoline(void)
-+{
-+	return EFI_SUCCESS;
-+}
++	/* Number of 16-byte paragraphs, including space for a 4-byte CRC */
++	kern_size = round_up(kern_file_size + 4, PARAGRAPH_SIZE);
+ #endif
+ 
+ 	/* Patch the setup code with the appropriate size parameters */
+-	buf[0x1f1] = setup_sectors-1;
+-	put_unaligned_le32(sys_size, &buf[0x1f4]);
++	buf[0x1f1] = setup_sectors - 1;
++	put_unaligned_le32(kern_size/PARAGRAPH_SIZE, &buf[0x1f4]);
++
++	/* Update kernel_info offset. */
++	put_unaligned_le32(kernel_info, &buf[0x268]);
++
++	init_size = get_unaligned_le32(&buf[0x260]);
+ 
+-	init_sz = get_unaligned_le32(&buf[0x260]);
+ #ifdef CONFIG_EFI_STUB
+ 	/*
+ 	 * The decompression buffer will start at ImageBase. When relocating
+@@ -456,45 +635,39 @@ int main(int argc, char ** argv)
+ 	 * For future-proofing, increase init_sz if necessary.
+ 	 */
+ 
+-	if (init_sz - _end < i + _ehead) {
+-		init_sz = (i + _ehead + _end + 4095) & ~4095;
+-		put_unaligned_le32(init_sz, &buf[0x260]);
++	if (init_size - _end < setup_size + _ehead) {
++		init_size = round_up(setup_size + _ehead + _end, SECTION_ALIGNMENT);
++		put_unaligned_le32(init_size, &buf[0x260]);
+ 	}
+-#endif
+-	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16), init_sz);
+ 
+-	efi_stub_entry_update();
++	total_size = update_pecoff_sections(setup_size, kern_size, init_size, _rodata);
+ 
+-	/* Update kernel_info offset. */
+-	put_unaligned_le32(kernel_info, &buf[0x268]);
++	efi_stub_entry_update();
++#else
++	(void)init_size;
++	total_size = setup_size + kern_size;
 +#endif
-+
-+static efi_status_t init_loader_data(struct boot_params *params)
-+{
-+	struct efi_info *efi = (void *)&params->efi_info;
-+	efi_status_t status;
-+
-+	unsigned long map_size, desc_size, buff_size;
-+	u32 desc_ver;
-+	efi_memory_desc_t *mmap;
-+
-+	struct efi_boot_memmap map = {
-+		.map		= &mmap,
-+		.map_size	= &map_size,
-+		.desc_size	= &desc_size,
-+		.desc_ver	= &desc_ver,
-+		.key_ptr	= NULL,
-+		.buff_size	= &buff_size,
-+	};
-+
-+	status = efi_get_memory_map(&map);
-+
-+	if (status != EFI_SUCCESS) {
-+		efi_err("Unable to get EFI memory map...\n");
-+		return status;
-+	}
-+
-+	const char *signature = efi_is_64bit() ? EFI64_LOADER_SIGNATURE
-+					       : EFI32_LOADER_SIGNATURE;
-+
-+	memcpy(&efi->efi_loader_signature, signature, sizeof(__u32));
-+
-+	efi->efi_memdesc_size = desc_size;
-+	efi->efi_memdesc_version = desc_ver;
-+	efi->efi_memmap_size = map_size;
-+
-+	efi_set_u64_split((unsigned long)mmap,
-+			  &efi->efi_memmap, &efi->efi_memmap_hi);
-+
-+	efi_set_u64_split((unsigned long)efi_system_table,
-+			  &efi->efi_systab, &efi->efi_systab_hi);
-+
-+	return EFI_SUCCESS;
-+}
-+
-+static void free_loader_data(struct boot_params *params)
-+{
-+	struct efi_info *efi = (void *)&params->efi_info;
-+	unsigned long mmap = efi->efi_memmap;
-+
-+#ifdef CONFIG_64BIT
-+	mmap |= ((unsigned long)efi->efi_memmap_hi << 32);
+ 
+-	crc = partial_crc32(buf, i, crc);
+-	if (fwrite(buf, 1, i, dest) != i)
+-		die("Writing setup failed");
++	output = map_output_file(argv[4], total_size);
+ 
+-	/* Copy the kernel code */
+-	crc = partial_crc32(kernel, sz, crc);
+-	if (fwrite(kernel, 1, sz, dest) != sz)
+-		die("Writing kernel failed");
++	memcpy(output, buf, setup_size);
++	memcpy(output + setup_size, kernel, kern_file_size);
++	memset(output + setup_size + kern_file_size, 0, kern_size - kern_file_size);
+ 
+-	/* Add padding leaving 4 bytes for the checksum */
+-	while (sz++ < (sys_size*16) - 4) {
+-		crc = partial_crc32_one('\0', crc);
+-		if (fwrite("\0", 1, 1, dest) != 1)
+-			die("Writing padding failed");
+-	}
++#ifdef CONFIG_EFI_STUB
++	generate_pecoff_section_data(output, setup_size);
 +#endif
-+
-+	efi_bs_call(free_pool, (void *)mmap);
-+
-+	efi->efi_memdesc_size = 0;
-+	efi->efi_memdesc_version = 0;
-+	efi->efi_memmap_size = 0;
-+	efi_set_u64_split(0, &efi->efi_memmap, &efi->efi_memmap_hi);
-+}
-+
-+unsigned long extract_kernel_direct(struct boot_params *params)
-+{
-+
-+	extern unsigned char input_data[];
-+	extern unsigned int output_len, input_len;
-+
-+	void *res;
-+	efi_status_t status;
-+	struct efi_iofunc iof = { 0 };
-+
-+	status = prepare_trampoline();
-+
-+	if (status != EFI_SUCCESS)
-+		return 0;
-+
-+	/* Prepare environment for do_extract_kernel() call */
-+	status = init_loader_data(params);
-+
-+	if (status != EFI_SUCCESS)
-+		return 0;
-+
-+	iof.puthex = do_puthex;
-+	iof.putstr = do_putstr;
-+	iof.map_range = do_map_range;
-+
-+	res = efi_extract_kernel(params, &iof, input_data, input_len,
-+				 (unsigned char *)startup_32, output_len);
-+
-+	free_loader_data(params);
-+
-+	return (unsigned long)res;
-+}
-+
-+static void do_puthex(unsigned long value)
-+{
-+	efi_printk("%08lx", value);
-+}
-+
-+static void do_putstr(const char *msg)
-+{
-+	efi_printk("%s", msg);
-+}
+ 
+-	/* Write the CRC */
+-	put_unaligned_le32(crc, buf);
+-	if (fwrite(buf, 1, 4, dest) != 4)
+-		die("Writing CRC failed");
++	/* Calculate and write kernel checksum. */
++	crc = partial_crc32(output, total_size - 4, crc);
++	put_unaligned_le32(crc, &output[total_size - 4]);
+ 
+-	/* Catch any delayed write failures */
+-	if (fclose(dest))
+-		die("Writing image failed");
++	/* Catch any delayed write failures. */
++	if (munmap(output, total_size) < 0)
++		die("Writing kernel failed");
+ 
+-	close(fd);
++	unmap_file(kernel, kern_file_size);
+ 
+-	/* Everything is OK */
++	/* Everything is OK. */
+ 	return 0;
+ }
 diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 678f9c2ccafc..680184034cb7 100644
+index 680184034cb7..914106d547a6 100644
 --- a/drivers/firmware/efi/libstub/x86-stub.c
 +++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -230,26 +230,25 @@ static void
- setup_memory_protection(unsigned long image_base, unsigned long image_size)
- {
- 	/*
--	 * Allow execution of possible trampoline used
--	 * for switching between 4- and 5-level page tables
--	 * and relocated kernel image.
--	 */
-+	* Allow execution of possible trampoline used
-+	* for switching between 4- and 5-level page tables
-+	* and relocated kernel image.
-+	*/
- 
- 	efi_adjust_memory_range_protection(TRAMPOLINE_PLACEMENT_BASE,
- 					   TRAMPOLINE_PLACEMENT_SIZE, 0);
- 
- #ifdef CONFIG_64BIT
--	if (image_base != (unsigned long)startup_32)
--		efi_adjust_memory_range_protection(image_base, image_size, 0);
-+	efi_adjust_memory_range_protection(image_base, image_size, 0);
- #else
- 	/*
--	 * Clear protection flags on a whole range of possible
--	 * addresses used for KASLR. We don't need to do that
--	 * on x86_64, since KASLR/extraction is performed after
--	 * dedicated identity page tables are built and we only
--	 * need to remove possible protection on relocated image
--	 * itself disregarding further relocations.
--	 */
-+	* Clear protection flags on a whole range of possible
-+	* addresses used for KASLR. We don't need to do that
-+	* on x86_64, since KASLR/extraction is performed after
-+	* dedicated identity page tables are built and we only
-+	* need to remove possible protection on relocated image
-+	* itself disregarding further relocations.
-+	*/
- 	efi_adjust_memory_range_protection(LOAD_PHYSICAL_ADDR,
- 					   KERNEL_IMAGE_SIZE - LOAD_PHYSICAL_ADDR,
- 					   0);
-@@ -270,8 +269,10 @@ static void setup_quirks(struct boot_params *boot_params,
- 			retrieve_apple_device_properties(boot_params);
- 	}
- 
--	if (IS_ENABLED(CONFIG_EFI_DXE_MEM_ATTRIBUTES))
-+	if (IS_ENABLED(CONFIG_EFI_DXE_MEM_ATTRIBUTES) &&
-+	    !IS_ENABLED(CONFIG_EFI_STUB_EXTRACT_DIRECT)) {
- 		setup_memory_protection(image_base, image_size);
-+	}
+@@ -392,6 +392,60 @@ static void __noreturn efi_exit(efi_handle_t handle, efi_status_t status)
+ 		asm("hlt");
  }
  
- /*
-@@ -710,8 +711,10 @@ static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
- }
- 
- /*
-- * On success, we return the address of startup_32, which has potentially been
-- * relocated by efi_relocate_kernel.
-+ * On success, we return:
-+ *   - the address of startup_32, which has potentially been
-+ *     relocated by efi_relocate_kernel, if libstub direct extraction is disabled.
-+ *   - extracted kernel entry point if libstub direct extraction is enabled.
-  * On failure, we exit to the firmware via efi_exit instead of returning.
-  */
- unsigned long efi_main(efi_handle_t handle,
-@@ -736,6 +739,7 @@ unsigned long efi_main(efi_handle_t handle,
- 		efi_dxe_table = NULL;
- 	}
- 
-+#ifndef CONFIG_EFI_STUB_EXTRACT_DIRECT
- 	/*
- 	 * If the kernel isn't already loaded at a suitable address,
- 	 * relocate it.
-@@ -789,6 +793,7 @@ unsigned long efi_main(efi_handle_t handle,
- 		 */
- 		image_offset = 0;
- 	}
-+#endif
- 
- #ifdef CONFIG_CMDLINE_BOOL
- 	status = efi_parse_options(CONFIG_CMDLINE);
-@@ -845,7 +850,13 @@ unsigned long efi_main(efi_handle_t handle,
- 
- 	setup_efi_pci(boot_params);
- 
--	setup_quirks(boot_params, bzimage_addr, buffer_end - buffer_start);
-+	setup_quirks(boot_params, buffer_start, buffer_end - buffer_start);
 +
-+#ifdef CONFIG_EFI_STUB_EXTRACT_DIRECT
-+	bzimage_addr = extract_kernel_direct(boot_params);
-+	if (!bzimage_addr)
-+		goto fail;
++/*
++ * Manually setup memory protection attributes for each ELF section
++ * since we cannot do it properly by using PE sections.
++ */
++static void setup_sections_memory_protection(void *image_base,
++					     unsigned long init_size)
++{
++#ifdef CONFIG_EFI_DXE_MEM_ATTRIBUTES
++	efi_dxe_table = get_efi_config_table(EFI_DXE_SERVICES_TABLE_GUID);
++
++	if (!efi_dxe_table ||
++	    efi_dxe_table->hdr.signature != EFI_DXE_SERVICES_TABLE_SIGNATURE) {
++		efi_warn("Unable to locate EFI DXE services table\n");
++		efi_dxe_table = NULL;
++		return;
++	}
++
++	extern char _head[], _ehead[];
++	extern char _compressed[], _ecompressed[];
++	extern char _text[], _etext[];
++	extern char _rodata[], _erodata[];
++	extern char _data[];
++
++	/* .setup [image_base, _head] */
++	efi_adjust_memory_range_protection((unsigned long)image_base,
++					   (unsigned long)_head - (unsigned long)image_base,
++					   EFI_MEMORY_RO | EFI_MEMORY_XP);
++	/* .head.text [_head, _ehead] */
++	efi_adjust_memory_range_protection((unsigned long)_head,
++					   (unsigned long)_ehead - (unsigned long)_head,
++					   EFI_MEMORY_RO);
++	/* .rodata..compressed [_compressed, _ecompressed] */
++	efi_adjust_memory_range_protection((unsigned long)_compressed,
++					   (unsigned long)_ecompressed - (unsigned long)_compressed,
++					   EFI_MEMORY_RO | EFI_MEMORY_XP);
++	/* .text [_text, _etext] */
++	efi_adjust_memory_range_protection((unsigned long)_text,
++					   (unsigned long)_etext - (unsigned long)_text,
++					   EFI_MEMORY_RO);
++	/* .rodata [_rodata, _erodata] */
++	efi_adjust_memory_range_protection((unsigned long)_rodata,
++					   (unsigned long)_erodata - (unsigned long)_rodata,
++					   EFI_MEMORY_RO | EFI_MEMORY_XP);
++	/* .data, .bss [_data, image_base + init_size] */
++	efi_adjust_memory_range_protection((unsigned long)_data,
++					   (unsigned long)image_base + init_size - (unsigned long)_rodata,
++					   EFI_MEMORY_XP);
++#else
++	(void)image_base;
++	(void)init_size;
 +#endif
++}
++
+ void __noreturn efi_stub_entry(efi_handle_t handle,
+ 			       efi_system_table_t *sys_table_arg,
+ 			       struct boot_params *boot_params);
+@@ -438,10 +492,15 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
  
- 	status = exit_boot(boot_params, handle);
- 	if (status != EFI_SUCCESS) {
+ 	hdr = &boot_params->hdr;
+ 
+-	/* Copy the setup header from the second sector to boot_params */
+-	memcpy(&hdr->jump, image_base + 512,
++	/*
++	 * Copy the setup header from the second sector
++	 * (mapped to image_base + 0x1000) to boot_params
++	 */
++	memcpy(&hdr->jump, image_base + 0x1000,
+ 	       sizeof(struct setup_header) - offsetof(struct setup_header, jump));
+ 
++	setup_sections_memory_protection(image_base, hdr->init_size);
++
+ 	/*
+ 	 * Fill out some of the header fields ourselves because the
+ 	 * EFI firmware loader doesn't load the first sector.
 -- 
 2.35.1
 
