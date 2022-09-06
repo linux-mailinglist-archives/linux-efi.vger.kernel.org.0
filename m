@@ -2,79 +2,136 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE9965AE80B
-	for <lists+linux-efi@lfdr.de>; Tue,  6 Sep 2022 14:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44A775AF1D1
+	for <lists+linux-efi@lfdr.de>; Tue,  6 Sep 2022 19:10:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239955AbiIFM0e (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 6 Sep 2022 08:26:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44118 "EHLO
+        id S236506AbiIFRH1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 6 Sep 2022 13:07:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239784AbiIFM0H (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Sep 2022 08:26:07 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DDB47FE62;
-        Tue,  6 Sep 2022 05:22:27 -0700 (PDT)
+        with ESMTP id S233777AbiIFRG4 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Sep 2022 13:06:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C0E4186F7;
+        Tue,  6 Sep 2022 09:54:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 20B30B818B0;
-        Tue,  6 Sep 2022 12:21:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7D9C4347C;
-        Tue,  6 Sep 2022 12:21:52 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="BmUAtERM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1662466909;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=87p6evS16rOwfc+reZpx2sDISz3k1kYdRZgIQ45xujk=;
-        b=BmUAtERMAG4pDGmc2MVJ+DDFkzxv39wTbd+wJehM8wt6pNwTSw7frPubYqm0o9GM0COy0H
-        aAcWJ0sRLrh0tPi0e1hjH7SujW96aIXOr2hXXEl1JCVipnTL0Uvrn4bcS7+QMIYjW+j0o8
-        7a4Ojo/M8AOIa36WtKW7ZXoDQwHaHbQ=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id f6fdb045 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Tue, 6 Sep 2022 12:21:49 +0000 (UTC)
-Received: by mail-yb1-f174.google.com with SMTP id e126so9722820ybh.1;
-        Tue, 06 Sep 2022 05:21:48 -0700 (PDT)
-X-Gm-Message-State: ACgBeo1FyhV/DO5q9xIHlhWP27jxWn32jJo59E4KDu//5e6y14htCYFq
-        yPxo6GCrbm4PxysnRB7zmUFtJRGKfoF3nWYBsmg=
-X-Google-Smtp-Source: AA6agR6DlHZ2DQP25Da/H2mYl2dvW4b6xOX/+PgxLgff1j6vFIRgOZ8E7MS0iPzUnrZlFlm8vyq612vY+96rTE56Qsw=
-X-Received: by 2002:a25:3211:0:b0:6a9:19b2:43ab with SMTP id
- y17-20020a253211000000b006a919b243abmr7116752yby.24.1662466907857; Tue, 06
- Sep 2022 05:21:47 -0700 (PDT)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 25ECE615D3;
+        Tue,  6 Sep 2022 16:54:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C67EC43148;
+        Tue,  6 Sep 2022 16:54:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662483279;
+        bh=dlrLPJ9VW2sLiclVTeLOaDTCcrNnK0V5SGX9NqEZ+bQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=mSScNXV5eNPo8Q03hxNBF1E7GxbLAdR4dQrRxWkLjglRTK1xh+T/4rqOjmigwjTY8
+         gqSPY7pxM2Ggi0f2szfwrD3iVoWzDhGiGopM1Z0DZ7FgzkuBRRMu/ufwHNQr3lGO7j
+         /bkDMZKGzDzt/B1TAdERWfCMAbQS3UYGOsU/xKBZKEhubggqoxorkrPeHBQQKTlyPd
+         npaAXKqlrsRd5G9PKa1D94x4RQ6LtShUNfs0BPs3MrpeW0KfYSXtMfF21voGUHmoTV
+         bKiCT3FrX8wBWHqftjbcK61d54GS/r0D9M9Z3nC68WpMODqU0FdeTJ6FFOtAEjC9Ln
+         IDwSJC/VY+Big==
+Received: by mail-lf1-f53.google.com with SMTP id bq23so18315491lfb.7;
+        Tue, 06 Sep 2022 09:54:39 -0700 (PDT)
+X-Gm-Message-State: ACgBeo2h9Bjy83Bq1Js+bL7jx7EklI+g3ln/wafF3nQTFGWnb+vMEse0
+        6DomiANrPTYqE2KRWiAj2OB5aIptzKDCQiXg4OM=
+X-Google-Smtp-Source: AA6agR4ZsAa0US91WfUU+IaEHtFS7q8sGZYyOWOHOoq1tpEGuakqhXudOy2kGnEsGzQpN8MaarQDnosu8Aj4ieKBKDQ=
+X-Received: by 2002:a05:6512:2294:b0:494:8dc5:10af with SMTP id
+ f20-20020a056512229400b004948dc510afmr9295038lfu.426.1662483277282; Tue, 06
+ Sep 2022 09:54:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAHmME9ozPTL7tpj-QoFK3Dfyq58VAJgmM6MjUBW4VVM_TXo3VA@mail.gmail.com>
- <20220906104147.287726-1-Jason@zx2c4.com>
-In-Reply-To: <20220906104147.287726-1-Jason@zx2c4.com>
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Tue, 6 Sep 2022 14:21:36 +0200
-X-Gmail-Original-Message-ID: <CAHmME9qM+wygTbRoSQ3EiobjDqD=2RMXOYjM48Adfa2DgHb5XQ@mail.gmail.com>
-Message-ID: <CAHmME9qM+wygTbRoSQ3EiobjDqD=2RMXOYjM48Adfa2DgHb5XQ@mail.gmail.com>
-Subject: Re: [PATCH v2] efi: x86: Wipe setup_data on pure EFI boot
-To:     X86 ML <x86@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        Borislav Petkov <bp@suse.de>
-Cc:     linux-efi <linux-efi@vger.kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+References: <20220806163255.10404-1-markuss.broks@gmail.com>
+In-Reply-To: <20220806163255.10404-1-markuss.broks@gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 6 Sep 2022 18:54:26 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHWWciFcO-ub4U4MB1VDifD_=bxiTVaTcBjTvYXzVTkgQ@mail.gmail.com>
+Message-ID: <CAMj1kXHWWciFcO-ub4U4MB1VDifD_=bxiTVaTcBjTvYXzVTkgQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] Add generic framebuffer support to EFI earlycon driver
+To:     Markuss Broks <markuss.broks@gmail.com>
+Cc:     linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Borislav Petkov <bp@suse.de>,
+        Kees Cook <keescook@chromium.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Michal Suchanek <msuchanek@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Wei Ming Chen <jj251510319013@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tony Lindgren <tony@atomide.com>, linux-doc@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Boris and other x86ers,
-
-On Tue, Sep 6, 2022 at 12:41 PM Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+On Sat, 6 Aug 2022 at 18:34, Markuss Broks <markuss.broks@gmail.com> wrote:
 >
-> When booting the x86 kernel via EFI using the LoadImage/StartImage boot
-> services [as opposed to the deprecated EFI handover protocol], the setup
+> Make the EFI earlycon driver be suitable for any linear framebuffers.
+> This should be helpful for early porting of boards with no other means of
+> output, like smartphones/tablets. There seems to be an issue with early_ioremap
+> function on ARM32, but I am unable to find the exact cause. It appears the mappings
+> returned by it are somehow incorrect, thus the driver is disabled on ARM. EFI early
+> console was disabled on IA64 previously because of missing early_memremap_prot,
+> and this is inherited to this driver.
+>
+> This patch also changes behavior on EFI systems, by selecting the mapping type
+> based on if the framebuffer region intersects with system RAM. If it does, it's
+> common sense that it should be in RAM as a whole, and so the system RAM mapping is
+> used. It was tested to be working on my PC (Intel Z490 platform), as well as several
+> ARM64 boards (Samsung Galaxy S9 (Exynos), iPad Air 2, Xiaomi Mi Pad 4, ...).
+>
+> Markuss Broks (2):
+>   drivers: serial: earlycon: Pass device-tree node
+>   efi: earlycon: Add support for generic framebuffers and move to fbdev
+>     subsystem
+>
+>
+> v1 -> v2:
+>
+> - a new patch correcting serial/earlycon.c argument name to "offset" instead
+>   of "node"
+> - move IA64 exclusion from EFI earlycon Kconfig to earlycon driver Kconfig
+>   (IA64 has no early_memremap_prot)
+> - move driver from fbdev to console subsystem
+> - select EFI earlycon by default
 
-Just FYI, while this is an EFI change for Ard, it also bumps the x86
-boot protocol version, so it needs your ack or input on the matter.
+Wasn't EFI earlycon already enabled by default?
 
-Jason
+> - fetch stride manually from device-tree, as on some devices it seems stride
+>   doesn't match the horizontal resolution * bpp.
+> - use saner format (e.g. 1920x1080x32 instead of 1920,1080,32).
+>
+>  .../admin-guide/kernel-parameters.txt         |  12 +-
+>  MAINTAINERS                                   |   5 +
+>  drivers/firmware/efi/Kconfig                  |   6 +-
+>  drivers/firmware/efi/Makefile                 |   1 -
+>  drivers/firmware/efi/earlycon.c               | 246 --------------
+>  drivers/tty/serial/earlycon.c                 |   3 +
+>  drivers/video/fbdev/Kconfig                   |  11 +
+>  drivers/video/fbdev/Makefile                  |   1 +
+>  drivers/video/fbdev/earlycon.c                | 301 ++++++++++++++++++
+>  include/linux/serial_core.h                   |   1 +
+>  10 files changed, 331 insertions(+), 256 deletions(-)
+>  delete mode 100644 drivers/firmware/efi/earlycon.c
+>  create mode 100644 drivers/video/fbdev/earlycon.c
+>
+> --
+> 2.37.0
+>
