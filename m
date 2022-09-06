@@ -2,216 +2,291 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A5C65AF2D3
-	for <lists+linux-efi@lfdr.de>; Tue,  6 Sep 2022 19:39:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F07D5AF320
+	for <lists+linux-efi@lfdr.de>; Tue,  6 Sep 2022 19:51:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229508AbiIFRjM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 6 Sep 2022 13:39:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38586 "EHLO
+        id S229643AbiIFRvF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 6 Sep 2022 13:51:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232327AbiIFRib (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Sep 2022 13:38:31 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4052F59D;
-        Tue,  6 Sep 2022 10:35:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1662485721; x=1694021721;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=QR8gvZBpyv5eCF49zr2XkbTnFfFS99UEe8Eo81gM2mI=;
-  b=bo0Z5SViiEaPd5s4pN7GtrH8nu0PbSZZga8Ga+c+bB3F5kp2c/WOGPym
-   qVa4yaSjFBMFUhIcAxK8B8CjIxNJDHMmBg+BhzpArVPeCronl83rbV4Rq
-   xvHjr14llOMGTyQ+r53Me4dnbxuE/mUOXESGhDxZC3uhNn68kcK18dwI0
-   2sqLxOGc+dOgB0VlKH6RSZSn+6CvXWht97xk5ZColTgyXR6qG73uXiGNf
-   99RniHa/DLP3lq4O2GtxUSQ3zv3y9hSzsZSCWZw8Hocu3BWIAZYflc5wg
-   aS+O0hg7Syzig9Ldxpm4iChYwFAHqVHMl9AcEzytPCpz3ONqaBmcX0yIL
-   w==;
-X-IronPort-AV: E=Sophos;i="5.93,294,1654585200"; 
-   d="scan'208";a="179260968"
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 06 Sep 2022 10:35:19 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.12; Tue, 6 Sep 2022 10:35:18 -0700
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.12 via Frontend Transport; Tue, 6 Sep 2022 10:35:18 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AebR7Mtwii6SDzuUkKSRJyxYir8g1fbZmXY2wQpYH+dE2B2RKEjys+ry3Qof05yirRVPKbOQIylF6IyALDcdNi52WiKVMRSNvJK13JfOB/ZxiWeXVCjHjq5hTLCjjgLFgbdI85uyeR4r2FN257V2whaYONURkeDNK9SQ4f6pWGiBrHrFWDwIbpr6GAI0pmY4T82QdrHqFKzdA88sdDmjucCisAY8sImuHek0heEPWvQDS6AWNYu4f2oGhUtrX3nh10y/x5LwkXzbf69B+65e8jKw++A1zgGThsZnXCoDtL/xpLiAVhPtPSijftZqvg1YWucS+cVcmwvSR7IidFhyfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QR8gvZBpyv5eCF49zr2XkbTnFfFS99UEe8Eo81gM2mI=;
- b=P/fXNnb67mXddIKmD4khDKSSTNN/34LXHFzrj5EBxE2Nkn+5gdD46WIkl0VefBvxmlOA//Mc+5TGmdozfr068/q5NLulfsIGzviV/OEybhCgvhPgf9tofjyfv60LV1xTF4F7eDw6TJVo+zETEYQxoo5XuWocFRrbHhz4/6AcNo172y0/O1ZyrcK6BxrTyjGy8j2TCKR1L9GPW9tix/VQOIw+8V4hYaX6Uqwee73hMuxMzABY8pI6iovdUC62XVHoLlQOn6nsoRuksXJaXyKAeRFQ5aby16ulNDf0+A+ZjcGUWgcjc7XHNnhYxjE1DoNsb10FOPe3dErVnb+RCNEbfA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+        with ESMTP id S229733AbiIFRvA (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Sep 2022 13:51:00 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EE0B91D13
+        for <linux-efi@vger.kernel.org>; Tue,  6 Sep 2022 10:50:55 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id nc14so25006518ejc.4
+        for <linux-efi@vger.kernel.org>; Tue, 06 Sep 2022 10:50:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector2-microchiptechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QR8gvZBpyv5eCF49zr2XkbTnFfFS99UEe8Eo81gM2mI=;
- b=Nbv2w8ABmAvdrHMdRI+B4zd50NMRbwZrLTbfy8ld3ba3Kz4sNcWmxb5iZJWPeHxjvCnabAcjq5aDFbsEjH2dl+aVq/dm0kI7dDOX1QFOONqEBMEXxXyvhevd96+H/EGVVoakd1Cwe2PE32f/pLYyNC30Pydk7PuIdbwf6PzIkec=
-Received: from CO1PR11MB5154.namprd11.prod.outlook.com (2603:10b6:303:99::15)
- by CY4PR1101MB2088.namprd11.prod.outlook.com (2603:10b6:910:17::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5588.12; Tue, 6 Sep
- 2022 17:35:11 +0000
-Received: from CO1PR11MB5154.namprd11.prod.outlook.com
- ([fe80::545a:72f5:1940:e009]) by CO1PR11MB5154.namprd11.prod.outlook.com
- ([fe80::545a:72f5:1940:e009%3]) with mapi id 15.20.5588.018; Tue, 6 Sep 2022
- 17:35:11 +0000
-From:   <Conor.Dooley@microchip.com>
-To:     <guoren@kernel.org>, <oleg@redhat.com>, <vgupta@kernel.org>,
-        <linux@armlinux.org.uk>, <monstr@monstr.eu>, <dinguyen@kernel.org>,
-        <palmer@dabbelt.com>, <davem@davemloft.net>, <arnd@arndb.de>,
-        <shorne@gmail.com>, <paul.walmsley@sifive.com>,
-        <aou@eecs.berkeley.edu>, <ardb@kernel.org>, <heiko@sntech.de>,
-        <daolu@rivosinc.com>
-CC:     <linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-riscv@lists.infradead.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-snps-arc@lists.infradead.org>, <sparclinux@vger.kernel.org>,
-        <openrisc@lists.librecores.org>, <xianting.tian@linux.alibaba.com>,
-        <linux-efi@vger.kernel.org>
-Subject: Re: [PATCH] RISC-V: Add STACKLEAK erasing the kernel stack at the end
- of syscalls
-Thread-Topic: [PATCH] RISC-V: Add STACKLEAK erasing the kernel stack at the
- end of syscalls
-Thread-Index: AQHYuuW9rugSRYh05UmTe1hHac9Fz63SuDoA
-Date:   Tue, 6 Sep 2022 17:35:10 +0000
-Message-ID: <6c48657c-04df-132d-6167-49ed293dea44@microchip.com>
-References: <20220903162328.1952477-1-guoren@kernel.org>
- <20220828135407.3897717-1-xianting.tian@linux.alibaba.com>
-In-Reply-To: <20220828135407.3897717-1-xianting.tian@linux.alibaba.com>
-Accept-Language: en-IE, en-US
-Content-Language: en-IE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microchip.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: c76c48a0-5560-42cf-0b22-08da902e2633
-x-ms-traffictypediagnostic: CY4PR1101MB2088:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: PUEJXo+oFmqdtN2i7ThrqMpY2fphg4+cgcjZtJZDK9ttEX2yRJtyGX/aUPOpr3JVRd7SCWBkNue6WxL+AHAis27FFzoBLYwnaaFlbWJFpgjRE8Www9QTNTILXiTAqh3RDQqN08JS7BG0t5Y5qLZsjxQhhSkesNdHftyQlAAMHUnG9ChzMlozunl7T40LwukJ5UBWtiHOhiXKaoDKfcKhNXFkPXNPwb3qHymydDn90pnPeGb/4+2bgAlhtV3ofX8MayN3/3TWczLVW3Olc3BQ4TFkhrzjzxa/eONedQzQ00ZVWXWghmvrtT/VqmPkaluV6UV/EOjpCa003OWqe7hbJ6HQEfY2Bk2ihcMv9lbtu64cSpoSQQiRzZfxZf5DWhvrvBOFZiA8MXRpZHYtxM/D11cy6tzGX6IsyBjfNiziDRCzqbuuYMiVmAd53osWlqCjaihIpRywXuluOFaVr3cBkr5A+kwLygILUZ5xWxiiCdsQUhGOHSmQdeHSup5tcS9YuGs6Nie2kZgUU99EVwC/zxhjgvoLDWY+keq+RnoMbsJlxhnNQSOkbjjrT+3kFKhtXdp+9XT/yW3uc2K+0MGurjtviQ9LzpXdrUG5yntOTWp6etIzmFzJFbicNyrsagMgQqggLUjCsZW32WVuXrPeXlIqYpLS1HsEDJkGkzG9NXI4KJcNBLfFnVHUsuIx7CbrvpK46kqmvRT+G3KAafQREaPhXQ+9K43K/akyJlDB6D1OOFS0Z0mZGR7aWz4pC2Z5gx3Kr3dG4kDT5dI2PPEijq7VoalMTAxKmJTbT5Ww4rveY9J1UXbkIB51opv36MbuYDCEMEzW0PmLM6ngqXogqn1YVMBkKaiOVze3Ao8femCYEPk/SLZdEKtJj/ad7EYBL6In3Cdy30FqSKJBCQ7h6Co2mtpjeul0IzDZlURngKY=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB5154.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(366004)(136003)(376002)(396003)(346002)(39860400002)(8936002)(66476007)(76116006)(8676002)(91956017)(478600001)(71200400001)(6486002)(966005)(64756008)(54906003)(66556008)(66946007)(4326008)(316002)(110136005)(66446008)(38100700002)(2906002)(122000001)(7416002)(5660300002)(31696002)(31686004)(38070700005)(36756003)(83380400001)(921005)(6512007)(41300700001)(2616005)(186003)(26005)(53546011)(6506007)(86362001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?SE43ZFZieVlzTTFrNVJGRnNPakRVRHd4R2J6dVJWck9XNzd3b3hxclZINHJZ?=
- =?utf-8?B?anE4VWRlbG5WdEFKQmtMOWZ2MUxzTTJuZ2tZMTg5U2dSS1hndmE3UnJoNEx0?=
- =?utf-8?B?K05TZmM0YVNsQ3pKbU8zYkpjYWJ6d2RySlZIdjhYMVNYZmc4c1NCc2svMzU2?=
- =?utf-8?B?QzZBTkRnQjcvS3U3NWUzb0JHMVRaSHVTZGxjaDZFWWFZdDVRekZ1RWxHbEo5?=
- =?utf-8?B?ZHBYZ0haZVdFQTdlY0UrUmZ4UnFEcXFXc0hubVFKN1NYYkNZOTd1bXY0dnl4?=
- =?utf-8?B?T0tJZjBqOW03S2VOOUw2aG1qTU9xSS9pZE5pMU1YTDcrMXFHUXRqS0FLMVVa?=
- =?utf-8?B?enpJTS9xMjRqTkxPWkJXdVcydzVkT1NBbFZZQmkydTFQNGFSRXBzMmNJekZS?=
- =?utf-8?B?QWUrZkhwaDI2MDZnYTdhZEZORERsWVpja2pQbWZHYnFBQlhrcGIvTU05K1N6?=
- =?utf-8?B?TXNrZDQ4VmFjMy96dWdDOUxIQzBGeERJd2lpNjh5WUNwNGNvUUNhdUl4TnVz?=
- =?utf-8?B?aXNaREdEb3NWQW5nd2ZQVEp6RDhnb2c2ZTllTmVSUnh2K1pHa0UyMzdzNDJl?=
- =?utf-8?B?SzduMzR6a3NUUGs3UWhYTGFnRmxrL1dsZzljQm5lcGlsN29xUllpOXpwdHdC?=
- =?utf-8?B?dlpaNXZLYmNmNXhCL3d3QUcyclczSFl2L1ZmWXBycmw1OTZXbW1XbzBEZmQ1?=
- =?utf-8?B?L3Ava0gzWGxJdVhPK3ZreWExZTRGcjNDTkcxd0gwTHFvK1l6RVZPTUlQMkQv?=
- =?utf-8?B?MWlKQjR6NzFkUTNrMkN5eEZMQk1GQzdoM2t4cHlPeUtuc28wTk9EUC9lZWQ5?=
- =?utf-8?B?aEVZTWRWWERWTWM4dG1OT1lGaFhrYUVUSXpZNzhiWDFNOWMzaVJZYW5ObmxM?=
- =?utf-8?B?b3BMWDRtOExPUFF2MEVndzR1bEh4S0FqYmpLbGEvWVp3L29Yd2dnRDhDTTlC?=
- =?utf-8?B?RVBrY212T0xIaUpobEg0TDBxckFEWTF0bzBHZVFmUGNObnhJUXlSUjRYbzVl?=
- =?utf-8?B?M1JuNVZBZnlDTDBlTGoxVTlqZ2F0bFIwbUlsbnNlZnkzVDg4UGQ0S2ZRKzlh?=
- =?utf-8?B?VHhRMUx0d1BQYmxxdFE2NkVHcDRnM2lmVDJZWmtHTi9ybEd1S2s0c2I3RkUy?=
- =?utf-8?B?T0NLQmxnRG14a1ZMWU0xWVo1ZlljUHFwTnFBRjZZMWFYRVFNeTNFR2Y2WWs3?=
- =?utf-8?B?RUhLRDZhdDFiR2xWUkQxTWNaNkx1eEZoQURjM0swa1dZNmUwdTN1djRFVTA1?=
- =?utf-8?B?SjFSMldrTVdPTUFYNDRCc1lYNjNkb25hZ2RVdjI4MDlhcnZGVC9QdmJ0TEky?=
- =?utf-8?B?TGpWQkVXaHZLRXFrd3JQNUZvTi85NGpGRXAwL1d3d08rS1RaQlluSFpmOVNw?=
- =?utf-8?B?eWVSNDN0eUpGV0Mxc0s1YUliVUorMy9vSG9manl2dzhsNXZwM2JuZWJRWGJN?=
- =?utf-8?B?anJITXhuRUpUSHVmSTVSUUxEakpHNzB4UWNETUlRT1pYYjArZXl4WmxDaGpE?=
- =?utf-8?B?SkozK1g5TjhSR1NGVE5lZGpsRU1XUWtnTVNvb3BJV2VLSTREVndGVERVWGNh?=
- =?utf-8?B?N0V0UHNxbWNKaUZsUW9KczRqV0pYemEwWDllSHdjZGNCOEZYcGl6RFRCYnF5?=
- =?utf-8?B?RGNEWW9FNjVzVm1wMklYc3RKNHd1OGM4dWVwS0Z2Rld4dDBnR054NCsxc3FZ?=
- =?utf-8?B?Q1lzakFMMVdMNVdEZFNmZGFkZ1I4RjhmZmtlR3VOd0w2QUNrVVd6QUtjcmw4?=
- =?utf-8?B?UmxGWnA2ZUE2MDErSG1yWFFvV2ovNDQ4WEJlLzdCWnhHNDkyWk04OEVxeFJT?=
- =?utf-8?B?Q3JsSnpYTVIvMDAwcTRxOEZKdWMxcmw2Qk5FRlkzM2h0SFFjRW9HZCsrMXlw?=
- =?utf-8?B?cmNTb3NpdzFPMlAwdnl5Tjl0OGpsM0ZxLzVuK2U4enNteWdxQ25iQ3lpZTRu?=
- =?utf-8?B?SzJyam12MkdRaU9SVjMvVFZjaEZSSnc1Z3JXL1NNUi9WMmNGMjRvZGladlhl?=
- =?utf-8?B?bjd3YkNXR2Vxc3hzRkVESGxONDdBWEM1WnhLZXY4S1FCYVYwSU5wYjVEb25B?=
- =?utf-8?B?dEF5NU5ZOWNhbWRqUnYyQU1iZUc0Q2cxQkR3RGFsQ1U0Qll2UWtCLzBpak44?=
- =?utf-8?Q?LbBR2w3kgfv0ZFCtOdhEw+an5?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E20572F5CA14F145892642055954ACDB@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=7H88wtMLkwMZAvD9kp2P0Vp7n5A+FDLfMvNgtrBAFZI=;
+        b=CpW76y4yb0M3A5frtu1VM1KKgIg8n8jEvX+12EYSA8E8JNqez26Pr6wxP6az9uACYu
+         pjNnmBNbYPfFKQp/E9VIA22qWEn+ihBZnsNeIff5hwAw9DabKprL6AFh2YGbFVIBZa0R
+         iM2lHoMbWrDkAub5QZzHg0vXj5VnVn5AicjGCVCld5BqLcXILMNbMafvIyHuG2Ta7ROt
+         lXvc+hlvzYbEfijbS/ATmEqJxnZnTIAIH/X2sH9XQiqoTc7QToLbezY/FJQr4s28Imtb
+         AKi6F6Q3m3w1OcF5cv/hOKxPiblwa+cwAtrBQhIsDny4fKqQaWL2/NbrSY9jr9Qk3UBd
+         ikLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=7H88wtMLkwMZAvD9kp2P0Vp7n5A+FDLfMvNgtrBAFZI=;
+        b=rscXuaQe6uqqhZExWZVFauJSbfVMEYqNjW0zqyLTJTexFRBCpmbZTrqzy56ZwtmyEe
+         gMT36K0THHgFoFJ+i3WdBmInQjezpQOSIoULzMQotD66YhpesFHLLi/VzFPw6v8RXLBo
+         eLFeta2GD87imya3MoG4oErsF1LQCXbGBqqRZ6lzPslJDaeyW2WCGZ2V/b43XvCsE59b
+         k3FQGusNuj2Booalp5YiRjX1BSrdg838fH6ldToFSwTeXF6Tv0DDQpNLH9sJDpKFHEl3
+         xkNSnatdnUnKg6lBc2zhBTDGO9cznq4HMDZh7/n6siiOsZJ06u8MUpHDUx9bzhUO7xbk
+         PD1w==
+X-Gm-Message-State: ACgBeo3DnLJgRKvM97Oyxhiv62HrMhp3BdFEMQJcW1G3QnxLSGZebrc3
+        G7FaWsuPxwBr+z0yUdLgzr1HiP0Y6QVG8iJfDAo8pQ==
+X-Google-Smtp-Source: AA6agR7DkXf6FiVxQK2H6sJf/DSun78ukMecD+qq+aDjb6xxfkToyzJIKkZpxYuvOsTTNgPvpEgnH9T2PC5JHkfPyjg=
+X-Received: by 2002:a17:906:9b87:b0:733:1795:2855 with SMTP id
+ dd7-20020a1709069b8700b0073317952855mr40060290ejc.156.1662486653199; Tue, 06
+ Sep 2022 10:50:53 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB5154.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c76c48a0-5560-42cf-0b22-08da902e2633
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Sep 2022 17:35:10.9808
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Hniry5rVie9lqzo/bgPVCNOrqcvsKPAy3oTIJ07JkyyEaZ0xPKICQN0UckefZIvB+w15TOwcAWFja3mR+20YiDxDjO8oxlD9DRgl4T8Ogdw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR1101MB2088
-X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-3-kirill.shutemov@linux.intel.com> <8cf143e7-2b62-1a1e-de84-e3dcc6c027a4@suse.cz>
+ <20220810141959.ictqchz7josyd7pt@techsingularity.net> <CAAH4kHa6s3sBRySNu-TZG_6vOaN4KheVy4kvxG5s=wOTDGy2=Q@mail.gmail.com>
+ <2981e25e-9cda-518a-9750-b8694f2356b5@amd.com> <CAAH4kHbcfnVWNQHf6Mrg__bSFT6196Sx4kno6o0Zo7hsgOgnNw@mail.gmail.com>
+ <984e07ed-914f-93ca-a141-3fc8677878e0@intel.com>
+In-Reply-To: <984e07ed-914f-93ca-a141-3fc8677878e0@intel.com>
+From:   Dionna Amalie Glaze <dionnaglaze@google.com>
+Date:   Tue, 6 Sep 2022 10:50:42 -0700
+Message-ID: <CAAH4kHawguTEuDVyz1ysSbH0X_mT=SvxLi=UhwEzXM0abbWefg@mail.gmail.com>
+Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
+To:     Dave Hansen <dave.hansen@intel.com>
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        Marcelo Cerri <marcelo.cerri@canonical.com>,
+        tim.gardner@canonical.com,
+        Khalid ElMously <khalid.elmously@canonical.com>,
+        philip.cox@canonical.com,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        linux-coco@lists.linux.dev, linux-efi <linux-efi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-T24gMDMvMDkvMjAyMiAxNzoyMywgZ3VvcmVuQGtlcm5lbC5vcmcgd3JvdGU6DQo+IEVYVEVSTkFM
-IEVNQUlMOiBEbyBub3QgY2xpY2sgbGlua3Mgb3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3MgeW91
-IGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZQ0KPiANCj4gRnJvbTogWGlhbnRpbmcgVGlhbiA8eGlh
-bnRpbmcudGlhbkBsaW51eC5hbGliYWJhLmNvbT4NCj4gDQo+IFRoaXMgYWRkcyBzdXBwb3J0IGZv
-ciB0aGUgU1RBQ0tMRUFLIGdjYyBwbHVnaW4gdG8gUklTQy1WIGFuZCBkaXNhYmxlcw0KPiB0aGUg
-cGx1Z2luIGluIEVGSSBzdHViIGNvZGUsIHdoaWNoIGlzIG91dCBvZiBzY29wZSBmb3IgdGhlIHBy
-b3RlY3Rpb24uDQo+IA0KPiBGb3IgdGhlIGJlbmVmaXRzIG9mIFNUQUNLTEVBSyBmZWF0dXJlLCBw
-bGVhc2UgY2hlY2sgdGhlIGNvbW1pdA0KPiBhZmFlZjAxYzAwMTUgKCJ4ODYvZW50cnk6IEFkZCBT
-VEFDS0xFQUsgZXJhc2luZyB0aGUga2VybmVsIHN0YWNrIGF0IHRoZSBlbmQgb2Ygc3lzY2FsbHMi
-KQ0KPiANCj4gUGVyZm9ybWFuY2UgaW1wYWN0ICh0ZXN0ZWQgb24gcWVtdSBlbnYgd2l0aCAxIHJp
-c2N2NjQgaGFydCwgMUdCIG1lbSkNCj4gICAgIGhhY2tiZW5jaCAtcyA1MTIgLWwgMjAwIC1nIDE1
-IC1mIDI1IC1QDQo+ICAgICAyLjAlIHNsb3dkb3duDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBYaWFu
-dGluZyBUaWFuIDx4aWFudGluZy50aWFuQGxpbnV4LmFsaWJhYmEuY29tPg0KDQpXaGF0IGNoYW5n
-ZWQgc2luY2UgWGlhbnRpbmcgcG9zdGVkIGl0IGhpbXNlbGYgYSB3ZWVrIGFnbzoNCmh0dHBzOi8v
-bG9yZS5rZXJuZWwub3JnL2xpbnV4LXJpc2N2LzIwMjIwODI4MTM1NDA3LjM4OTc3MTctMS14aWFu
-dGluZy50aWFuQGxpbnV4LmFsaWJhYmEuY29tLw0KDQpUaGVyZSdzIGFuIG9sZGVyIHBhdGNoIGZy
-b20gRHUgTGFvIGFkZGluZyBTVEFDS0xFQUsgdG9vOg0KaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcv
-bGludXgtcmlzY3YvMjAyMjA2MTUyMTM4MzQuMzExNjEzNS0xLWRhb2x1QHJpdm9zaW5jLmNvbS8N
-Cg0KQnV0IHNpbmNlIHRoZXJlJ3MgYmVlbiBubyBhY3Rpdml0eSB0aGVyZSBzaW5jZSBKdW5lLi4u
-DQoNCj4gLS0tDQo+ICBhcmNoL3Jpc2N2L0tjb25maWcgICAgICAgICAgICAgICAgICAgIHwgMSAr
-DQo+ICBhcmNoL3Jpc2N2L2luY2x1ZGUvYXNtL3Byb2Nlc3Nvci5oICAgIHwgNCArKysrDQo+ICBh
-cmNoL3Jpc2N2L2tlcm5lbC9lbnRyeS5TICAgICAgICAgICAgIHwgMyArKysNCj4gIGRyaXZlcnMv
-ZmlybXdhcmUvZWZpL2xpYnN0dWIvTWFrZWZpbGUgfCAyICstDQo+ICA0IGZpbGVzIGNoYW5nZWQs
-IDkgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2FyY2gv
-cmlzY3YvS2NvbmZpZyBiL2FyY2gvcmlzY3YvS2NvbmZpZw0KPiBpbmRleCBlZDY2YzMxZTQ2NTUu
-LjYxZmQwZGFkNDQ2MyAxMDA2NDQNCj4gLS0tIGEvYXJjaC9yaXNjdi9LY29uZmlnDQo+ICsrKyBi
-L2FyY2gvcmlzY3YvS2NvbmZpZw0KPiBAQCAtODUsNiArODUsNyBAQCBjb25maWcgUklTQ1YNCj4g
-ICAgICAgICBzZWxlY3QgQVJDSF9FTkFCTEVfVEhQX01JR1JBVElPTiBpZiBUUkFOU1BBUkVOVF9I
-VUdFUEFHRQ0KPiAgICAgICAgIHNlbGVjdCBIQVZFX0FSQ0hfVEhSRUFEX1NUUlVDVF9XSElURUxJ
-U1QNCj4gICAgICAgICBzZWxlY3QgSEFWRV9BUkNIX1ZNQVBfU1RBQ0sgaWYgTU1VICYmIDY0QklU
-DQo+ICsgICAgICAgc2VsZWN0IEhBVkVfQVJDSF9TVEFDS0xFQUsNCj4gICAgICAgICBzZWxlY3Qg
-SEFWRV9BU01fTU9EVkVSU0lPTlMNCj4gICAgICAgICBzZWxlY3QgSEFWRV9DT05URVhUX1RSQUNL
-SU5HX1VTRVINCj4gICAgICAgICBzZWxlY3QgSEFWRV9ERUJVR19LTUVNTEVBSw0KPiBkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9maXJtd2FyZS9lZmkvbGlic3R1Yi9NYWtlZmlsZSBiL2RyaXZlcnMvZmly
-bXdhcmUvZWZpL2xpYnN0dWIvTWFrZWZpbGUNCj4gaW5kZXggZDA1Mzc1NzM1MDFlLi41ZTFmYzRm
-ODI4ODMgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvZmlybXdhcmUvZWZpL2xpYnN0dWIvTWFrZWZp
-bGUNCj4gKysrIGIvZHJpdmVycy9maXJtd2FyZS9lZmkvbGlic3R1Yi9NYWtlZmlsZQ0KPiBAQCAt
-MjUsNyArMjUsNyBAQCBjZmxhZ3MtJChDT05GSUdfQVJNKSAgICAgICAgICA6PSAkKHN1YnN0ICQo
-Q0NfRkxBR1NfRlRSQUNFKSwsJChLQlVJTERfQ0ZMQUdTKSkgXA0KPiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIC1mbm8tYnVpbHRpbiAtZnBpYyBcDQo+ICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgJChjYWxsIGNjLW9wdGlvbiwtbW5vLXNpbmdsZS1waWMtYmFz
-ZSkNCj4gIGNmbGFncy0kKENPTkZJR19SSVNDVikgICAgICAgICA6PSAkKHN1YnN0ICQoQ0NfRkxB
-R1NfRlRSQUNFKSwsJChLQlVJTERfQ0ZMQUdTKSkgXA0KPiAtICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIC1mcGljDQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-LWZwaWMgJChESVNBQkxFX1NUQUNLTEVBS19QTFVHSU4pDQo+IA0KPiAgY2ZsYWdzLSQoQ09ORklH
-X0VGSV9HRU5FUklDX1NUVUIpICs9IC1JJChzcmN0cmVlKS9zY3JpcHRzL2R0Yy9saWJmZHQNCj4g
-DQo+IC0tDQo+IDIuMTcuMQ0KPiANCj4gDQo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fDQo+IGxpbnV4LXJpc2N2IG1haWxpbmcgbGlzdA0KPiBsaW51eC1y
-aXNjdkBsaXN0cy5pbmZyYWRlYWQub3JnDQo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vbGludXgtcmlzY3YNCg0K
+>
+> It really helps this kind of stuff if you can post the *actual* error.
+> I assume this was a page fault, so there should have been some other
+> stuff before the RIP:...
+>
+
+I posted the error on August 15th.  I was bumping in my last post
+since I confirmed with Tom Lendacky that it wasn't AMD's patches at
+fault.
+Here's a new dump below that matches the disassembly:
+
+[    0.043137] Faking a node at [mem 0x0000000000000000-0x000000403fffffff]
+[    0.044018] NODE_DATA(0) allocated [mem 0x403fffc000-0x403fffffff]
+[    0.044922] Zone ranges:
+[    0.045250]   DMA      [mem 0x0000000000001000-0x0000000000ffffff]
+[    0.046039]   DMA32    [mem 0x0000000001000000-0x00000000ffffffff]
+[    0.046828]   Normal   [mem 0x0000000100000000-0x000000403fffffff]
+[    0.047657] Movable zone start for each node
+[    0.048201] Early memory node ranges
+[    0.048674]   node   0: [mem 0x0000000000001000-0x000000000009ffff]
+[    0.049474]   node   0: [mem 0x0000000000100000-0x000000000080cfff
+[    0.050274]   node   0: [mem 0x000000000080f000-0x00000000beceefff]
+[    0.051074]   node   0: [mem 0x00000000befff000-0x00000000bfbb0fff]
+[    0.051874]   node   0: [mem 0x00000000bfbb2000-0x00000000bffdbfff]
+[    0.052674]   node   0: [mem 0x0000000100000000-0x000000403fffffff]
+[    0.053530] Initmem setup node 0 [mem 0x0000000000001000-0x000000403fffffff]
+PANIC: Unsupported exit-code 0x404 in early #VC exception (IP:
+0xfffffffface0cdd0)
+[    0.056667] CPU: 0 PID: 0 Comm: swapper Not tainted
+5.17.0-rc6-173762-gffb12b02c6d7-dirty #1
+[    0.057744] Hardware name: Google Google Compute Engine/Google
+Compute Engine, BIOS Google 01/01/2011
+[    0.058920] RIP: 0010:memmap_init_range+0x11d/0x188
+[    0.059686] Code: 77 16 f6 42 10 02 74 10 48 03 42 08 48 c1 e8 0c
+48 89 c3 e9 3a ff ff ff 48 89 df 48 c1 e7 06 48 03 3d a4 1e 65 ff 48
+8d 47 08 <c7> 47 34 01 00 00 00 48 c7 47 38 00 00 00 00 c7 47 30 ff ff
+ff ff
+[    0.062121] RSP: 0000:ffffffffac603dc0 EFLAGS: 00010082 ORIG_RAX:
+0000000000000404
+[    0.063087] RAX: ffffda1ac0000048 RBX: 0000000000000001 RCX: 0000000000000000
+[    0.063998] RDX: 0300000000000000 RSI: 0000000000000000 RDI: ffffda1ac000004
+[    0.064944] RBP: 0000000000000000 R08: 0000000000001000 R09: 0000000000000000
+[    0.065873] R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
+[    0.066782] R13: 00000000000000a0 R14: 0000000000000000 R15: 0000000000000000
+[    0.067695] FS:  0000000000000000(0000) GS:ffffffffacd88000(0000)
+knlGS:0000000000000000
+[    0.068727] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.069488] CR2: ffffda1ac0000074 CR3: 00080020b680c000 CR4: 00000000000606b0
+[    0.070397] Call Trace:
+[    0.070710]  <TASK>
+[    0.070976]  ? free_area_init+0x724/0x7d4
+[    0.071486]  ? zone_sizes_init+0x52/0x6c
+[    0.071986]  ? setup_arch+0xa55/0xb77
+[    0.072453]  ? start_kernel+0x64/0x65f
+[    0.072931]  ? secondary_startup_64_no_verify+0xd6/0xdb
+[    0.073598]  </TASK>
+
+Note this is a crash in SEV-SNP, but I assume we'd get the same #VE in TDX.
+
+> Another thing that's really nice is to do the disassembly of the "Code:"
+> or share disassembly of memmap_init_range.
+
+0000000000000172 <memmap_init_range>:
+ 172:   41 56                   push   %r14
+ 174:   89 f0                   mov    %esi,%eax
+ 176:   45 89 ce                mov    %r9d,%r14d
+ 179:   41 55                   push   %r13
+ 17b:   4c 8d 2c 39             lea    (%rcx,%rdi,1),%r13
+ 17f:   41 54                   push   %r12
+ 181:   49 89 d4                mov    %rdx,%r12
+ 184:   49 8d 55 ff             lea    -0x1(%r13),%rdx
+ 188:   48 3b 15 00 00 00 00    cmp    0x0(%rip),%rdx        # 18f
+<memmap_init_range+0x1d>
+ 18f:   55                      push   %rbp
+ 190:   53                      push   %rbx
+ 191:   48 89 cb                mov    %rcx,%rbx
+ 194:   76 07                   jbe    19d <memmap_init_range+0x2b>
+ 196:   48 89 15 00 00 00 00    mov    %rdx,0x0(%rip)        # 19d
+<memmap_init_range+0x2b>
+ 19d:   4c 89 e5                mov    %r12,%rbp
+ 1a0:   ba 03 00 00 00          mov    $0x3,%edx
+ 1a5:   48 c1 e0 3a             shl    $0x3a,%rax
+ 1a9:   48 c1 e5 38             shl    $0x38,%rbp
+ 1ad:   48 c1 e2 38             shl    $0x38,%rdx
+ 1b1:   48 21 d5                and    %rdx,%rbp
+ 1b4:   48 09 c5                or     %rax,%rbp
+ 1b7:   49 39 dd                cmp    %rbx,%r13
+ 1ba:   0f 86 31 01 00 00       jbe    2f1 <memmap_init_range+0x17f>
+ 1c0:   45 85 f6                test   %r14d,%r14d
+ 1c3:   0f 85 b4 00 00 00       jne    27d <memmap_init_range+0x10b>
+ 1c9:   49 83 fc 03             cmp    $0x3,%r12
+ 1cd:   0f 94 c1                sete   %cl
+ 1d0:   22 0d 00 00 00 00       and    0x0(%rip),%cl        # 1d6
+<memmap_init_range+0x64>
+ 1d6:   0f 84 a1 00 00 00       je     27d <memmap_init_range+0x10b>
+ 1dc:   48 8b 15 00 00 00 00    mov    0x0(%rip),%rdx        # 1e3
+<memmap_init_range+0x71>
+ 1e3:   48 85 d2                test   %rdx,%rdx
+ 1e6:   74 10                   je     1f8 <memmap_init_range+0x86>
+ 1e8:   48 8b 42 08             mov    0x8(%rdx),%rax
+ 1ec:   48 03 02                add    (%rdx),%rax
+ 1ef:   48 c1 e8 0c             shr    $0xc,%rax
+ 1f3:   48 39 d8                cmp    %rbx,%rax
+ 1f6:   77 55                   ja     24d <memmap_init_range+0xdb>
+ 1f8:   48 8b 05 00 00 00 00    mov    0x0(%rip),%rax        # 1ff
+<memmap_init_range+0x8d>
+ 1ff:   4c 6b 05 00 00 00 00    imul   $0x18,0x0(%rip),%r8        #
+207 <memmap_init_range+0x95>
+ 206:   18
+ 207:   31 f6                   xor    %esi,%esi
+ 209:   48 89 05 00 00 00 00    mov    %rax,0x0(%rip)        # 210
+<memmap_init_range+0x9e>
+ 210:   49 01 c0                add    %rax,%r8
+ 213:   48 89 c7                mov    %rax,%rdi
+ 216:   4c 39 c0                cmp    %r8,%rax
+ 219:   73 26                   jae    241 <memmap_init_range+0xcf>
+ 21b:   48 8b 57 08             mov    0x8(%rdi),%rdx
+ 21f:   48 03 17                add    (%rdi),%rdx
+ 222:   48 83 c0 18             add    $0x18,%rax
+ 226:   48 c1 ea 0c             shr    $0xc,%rdx
+ 22a:   48 39 da                cmp    %rbx,%rdx
+ 22d:   76 0e                   jbe    23d <memmap_init_range+0xcb>
+ 22f:   40 84 f6                test   %sil,%sil
+ 232:   74 19                   je     24d <memmap_init_range+0xdb>
+ 234:   48 89 3d 00 00 00 00    mov    %rdi,0x0(%rip)        # 23b
+<memmap_init_range+0xc9>
+ 23b:   eb 10                   jmp    24d <memmap_init_range+0xdb>
+ 23d:   89 ce                   mov    %ecx,%esi
+ 23f:   eb d2                   jmp    213 <memmap_init_range+0xa1>
+ 241:   40 84 f6                test   %sil,%sil
+ 244:   74 07                   je     24d <memmap_init_range+0xdb>
+ 246:   48 89 05 00 00 00 00    mov    %rax,0x0(%rip)        # 24d
+<memmap_init_range+0xdb>
+ 24d:   48 8b 15 00 00 00 00    mov    0x0(%rip),%rdx        # 254
+<memmap_init_range+0xe2>
+ 254:   48 8b 02                mov    (%rdx),%rax
+ 257:   48 8d 88 ff 0f 00 00    lea    0xfff(%rax),%rcx
+ 25e:   48 c1 e9 0c             shr    $0xc,%rcx
+ 262:   48 39 d9                cmp    %rbx,%rcx
+ 265:   77 16                   ja     27d <memmap_init_range+0x10b>
+ 267:   f6 42 10 02             testb  $0x2,0x10(%rdx)
+ 26b:   74 10                   je     27d <memmap_init_range+0x10b>
+ 26d:   48 03 42 08             add    0x8(%rdx),%rax
+ 271:   48 c1 e8 0c             shr    $0xc,%rax
+ 275:   48 89 c3                mov    %rax,%rbx
+ 278:   e9 3a ff ff ff          jmp    1b7 <memmap_init_range+0x45>
+ 27d:   48 89 df                mov    %rbx,%rdi
+ 280:   48 c1 e7 06             shl    $0x6,%rdi
+ 284:   48 03 3d 00 00 00 00    add    0x0(%rip),%rdi        # 28b
+<memmap_init_range+0x119>
+ 28b:   48 8d 47 08             lea    0x8(%rdi),%rax
+ 28f:   c7 47 34 01 00 00 00    movl   $0x1,0x34(%rdi)    # Here's
+where the crash RIP is.
+ 296:   48 c7 47 38 00 00 00    movq   $0x0,0x38(%rdi)
+ 29d:   00
+ 29e:   c7 47 30 ff ff ff ff    movl   $0xffffffff,0x30(%rdi)
+ 2a5:   48 c7 47 28 00 00 00    movq   $0x0,0x28(%rdi)
+ 2ac:   00
+ 2ad:   48 c7 47 20 00 00 00    movq   $0x0,0x20(%rdi)
+ 2b4:   00
+ 2b5:   48 c7 47 18 00 00 00    movq   $0x0,0x18(%rdi)
+ 2bc:   00
+ 2bd:   48 89 2f                mov    %rbp,(%rdi)
+ 2c0:   48 89 47 08             mov    %rax,0x8(%rdi)
+ 2c4:   48 89 47 10             mov    %rax,0x10(%rdi)
+ 2c8:   41 83 fe 01             cmp    $0x1,%r14d
+ 2cc:   75 05                   jne    2d3 <memmap_init_range+0x161>
+ 2ce:   48 0f ba 2f 0c          btsq   $0xc,(%rdi)
+ 2d3:   f7 c3 ff 01 00 00       test   $0x1ff,%ebx
+ 2d9:   75 0e                   jne    2e9 <memmap_init_range+0x177>
+ 2db:   8b 74 24 38             mov    0x38(%rsp),%esi
+ 2df:   e8 00 00 00 00          call   2e4 <memmap_init_range+0x172>
+ 2e4:   e8 00 00 00 00          call   2e9 <memmap_init_range+0x177>
+ 2e9:   48 ff c3                inc    %rbx
+ 2ec:   e9 c6 fe ff ff          jmp    1b7 <memmap_init_range+0x45>
+ 2f1:   5b                      pop    %rbx
+ 2f2:   5d                      pop    %rbp
+ 2f3:   41 5c                   pop    %r12
+ 2f5:   41 5d                   pop    %r13
+ 2f7:   41 5e                   pop    %r14
+ 2f9:   c3                      ret
+
+> Even nicer would be to give
+> an faddr2line of the RIP value and track down which C code was actually
+> at fault.
+
+arch_atomic_set
+arch/x86/include/asm/atomic.h:41
+
+of INIT_LIST_HEAD in __init_single_page, called from memmap_init_range.
+--
+-Dionna Glaze, PhD (she/her)
