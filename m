@@ -2,20 +2,20 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A579F5AE59A
-	for <lists+linux-efi@lfdr.de>; Tue,  6 Sep 2022 12:42:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A44035AE591
+	for <lists+linux-efi@lfdr.de>; Tue,  6 Sep 2022 12:42:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233406AbiIFKmH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 6 Sep 2022 06:42:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56864 "EHLO
+        id S239491AbiIFKmB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 6 Sep 2022 06:42:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238932AbiIFKl6 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Sep 2022 06:41:58 -0400
+        with ESMTP id S234187AbiIFKl5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Sep 2022 06:41:57 -0400
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7081D5FF4D;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7904C60515;
         Tue,  6 Sep 2022 03:41:47 -0700 (PDT)
 Received: from localhost.localdomain (unknown [83.149.199.65])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 4FD22407625C;
+        by mail.ispras.ru (Postfix) with ESMTPSA id 73EC6407625D;
         Tue,  6 Sep 2022 10:41:39 +0000 (UTC)
 From:   Evgeniy Baskov <baskov@ispras.ru>
 To:     Ard Biesheuvel <ardb@kernel.org>
@@ -29,9 +29,9 @@ Cc:     Evgeniy Baskov <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
         lvc-project@linuxtesting.org, x86@kernel.org,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-hardening@vger.kernel.org
-Subject: [PATCH 10/16] x86/boot: Make console interface more abstract
-Date:   Tue,  6 Sep 2022 13:41:14 +0300
-Message-Id: <7a4b8d6827503ae0e30745014504c72f0c5d6316.1662459668.git.baskov@ispras.ru>
+Subject: [PATCH 11/16] x86/boot: Split trampoline and pt init code
+Date:   Tue,  6 Sep 2022 13:41:15 +0300
+Message-Id: <73823188b635f008dfb26168e5eb47ffa29b505b.1662459668.git.baskov@ispras.ru>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <cover.1662459668.git.baskov@ispras.ru>
 References: <cover.1662459668.git.baskov@ispras.ru>
@@ -46,380 +46,125 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-To be able to extract kernel from EFI, console output functions
-need to be replaceable by alternative implementations.
+When allocating trampoline from libstub trampoline allocation is
+performed separately, so it needs to be skipped.
 
-Make all of those functions pointers.
-Move serial console code to separate file.
+Split trampoline initialization and allocation code into two
+functions to make them invokable separately.
 
 Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
 ---
- arch/x86/boot/compressed/Makefile       |   2 +-
- arch/x86/boot/compressed/ident_map_64.c |  15 ++-
- arch/x86/boot/compressed/misc.c         | 109 +--------------------
- arch/x86/boot/compressed/misc.h         |  13 ++-
- arch/x86/boot/compressed/putstr.c       | 124 ++++++++++++++++++++++++
- 5 files changed, 146 insertions(+), 117 deletions(-)
- create mode 100644 arch/x86/boot/compressed/putstr.c
+ arch/x86/boot/compressed/pgtable_64.c | 73 +++++++++++++++++----------
+ 1 file changed, 46 insertions(+), 27 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index 35ce1a64068b..29411864bfcd 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -92,7 +92,7 @@ $(obj)/misc.o: $(obj)/../voffset.h
+diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
+index c7cf5a1059a8..1f7169248612 100644
+--- a/arch/x86/boot/compressed/pgtable_64.c
++++ b/arch/x86/boot/compressed/pgtable_64.c
+@@ -106,12 +106,8 @@ static unsigned long find_trampoline_placement(void)
+ 	return bios_start - TRAMPOLINE_32BIT_SIZE;
+ }
  
- vmlinux-objs-y := $(obj)/vmlinux.lds $(obj)/kernel_info.o $(obj)/head_$(BITS).o \
- 	$(obj)/misc.o $(obj)/string.o $(obj)/cmdline.o $(obj)/error.o \
--	$(obj)/piggy.o $(obj)/cpuflags.o
-+	$(obj)/piggy.o $(obj)/cpuflags.o $(obj)/putstr.o
- 
- vmlinux-objs-$(CONFIG_EARLY_PRINTK) += $(obj)/early_serial_console.o
- vmlinux-objs-$(CONFIG_RANDOMIZE_BASE) += $(obj)/kaslr.o
-diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
-index c20cd31e665f..c39373687e50 100644
---- a/arch/x86/boot/compressed/ident_map_64.c
-+++ b/arch/x86/boot/compressed/ident_map_64.c
-@@ -89,12 +89,20 @@ phys_addr_t physical_mask = (1ULL << __PHYSICAL_MASK_SHIFT) - 1;
- static struct x86_mapping_info mapping_info;
- int has_nx;
- 
-+/*
-+ * This points to actual implementation of mapping function.
-+ * Either the one down below or the UEFI API wrapper.
-+ */
-+unsigned long (*kernel_add_identity_map)(unsigned long start,
-+					 unsigned long end,
-+					 unsigned int flags);
-+
- /*
-  * Adds the specified range to the identity mappings.
-  */
--unsigned long kernel_add_identity_map(unsigned long start,
--				      unsigned long end,
--				      unsigned int flags)
-+unsigned long kernel_add_identity_map_(unsigned long start,
-+				       unsigned long end,
-+				       unsigned int flags)
+-struct paging_config paging_prepare(void *rmode)
++bool trampoline_pgtable_init(struct boot_params *boot_params)
  {
- 	int ret;
- 
-@@ -136,6 +144,7 @@ void initialize_identity_maps(void *rmode)
- 	struct setup_data *sd;
- 
- 	boot_params = rmode;
-+	kernel_add_identity_map = kernel_add_identity_map_;
- 
- 	/* Exclude the encryption mask from __PHYSICAL_MASK */
- 	physical_mask &= ~sme_me_mask;
-diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
-index d377e434c4e3..e2c0d05ac293 100644
---- a/arch/x86/boot/compressed/misc.c
-+++ b/arch/x86/boot/compressed/misc.c
-@@ -53,13 +53,6 @@ struct port_io_ops pio_ops;
- memptr free_mem_ptr;
- memptr free_mem_end_ptr;
- 
--static char *vidmem;
--static int vidport;
+-	struct paging_config paging_config = {};
 -
--/* These might be accessed before .bss is cleared, so use .data instead. */
--static int lines __section(".data");
--static int cols __section(".data");
--
- #ifdef CONFIG_KERNEL_GZIP
- #include "../../../../lib/decompress_inflate.c"
- #endif
-@@ -92,95 +85,6 @@ static int cols __section(".data");
-  * ../header.S.
-  */
- 
--static void scroll(void)
--{
--	int i;
--
--	memmove(vidmem, vidmem + cols * 2, (lines - 1) * cols * 2);
--	for (i = (lines - 1) * cols * 2; i < lines * cols * 2; i += 2)
--		vidmem[i] = ' ';
--}
--
--#define XMTRDY          0x20
--
--#define TXR             0       /*  Transmit register (WRITE) */
--#define LSR             5       /*  Line Status               */
--static void serial_putchar(int ch)
--{
--	unsigned timeout = 0xffff;
--
--	while ((inb(early_serial_base + LSR) & XMTRDY) == 0 && --timeout)
--		cpu_relax();
--
--	outb(ch, early_serial_base + TXR);
--}
--
--void __putstr(const char *s)
--{
--	int x, y, pos;
--	char c;
--
--	if (early_serial_base) {
--		const char *str = s;
--		while (*str) {
--			if (*str == '\n')
--				serial_putchar('\r');
--			serial_putchar(*str++);
--		}
--	}
--
--	if (lines == 0 || cols == 0)
--		return;
--
--	x = boot_params->screen_info.orig_x;
--	y = boot_params->screen_info.orig_y;
--
--	while ((c = *s++) != '\0') {
--		if (c == '\n') {
--			x = 0;
--			if (++y >= lines) {
--				scroll();
--				y--;
--			}
--		} else {
--			vidmem[(x + cols * y) * 2] = c;
--			if (++x >= cols) {
--				x = 0;
--				if (++y >= lines) {
--					scroll();
--					y--;
--				}
--			}
--		}
--	}
--
--	boot_params->screen_info.orig_x = x;
--	boot_params->screen_info.orig_y = y;
--
--	pos = (x + cols * y) * 2;	/* Update cursor position */
--	outb(14, vidport);
--	outb(0xff & (pos >> 9), vidport+1);
--	outb(15, vidport);
--	outb(0xff & (pos >> 1), vidport+1);
--}
--
--void __puthex(unsigned long value)
--{
--	char alpha[2] = "0";
--	int bits;
--
--	for (bits = sizeof(value) * 8 - 4; bits >= 0; bits -= 4) {
--		unsigned long digit = (value >> bits) & 0xf;
--
--		if (digit < 0xA)
--			alpha[0] = '0' + digit;
--		else
--			alpha[0] = 'a' + (digit - 0xA);
--
--		__putstr(alpha);
--	}
--}
--
- #ifdef CONFIG_X86_NEED_RELOCS
- static void handle_relocations(void *output, unsigned long output_len,
- 			       unsigned long virt_addr)
-@@ -407,17 +311,6 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
- 
- 	sanitize_boot_params(boot_params);
- 
--	if (boot_params->screen_info.orig_video_mode == 7) {
--		vidmem = (char *) 0xb0000;
--		vidport = 0x3b4;
--	} else {
--		vidmem = (char *) 0xb8000;
--		vidport = 0x3d4;
--	}
--
--	lines = boot_params->screen_info.orig_video_lines;
--	cols = boot_params->screen_info.orig_video_cols;
--
- 	init_default_io_ops();
+-	/* Initialize boot_params. Required for cmdline_find_option_bool(). */
+-	boot_params = rmode;
  
  	/*
-@@ -428,7 +321,7 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
+ 	 * Check if LA57 is desired and supported.
+@@ -125,26 +121,10 @@ struct paging_config paging_prepare(void *rmode)
+ 	 *
+ 	 * That's substitute for boot_cpu_has() in early boot code.
  	 */
- 	early_tdx_detect();
- 
--	console_init();
-+	init_bare_console();
+-	if (IS_ENABLED(CONFIG_X86_5LEVEL) &&
+-			!cmdline_find_option_bool("no5lvl") &&
+-			native_cpuid_eax(0) >= 7 &&
+-			(native_cpuid_ecx(7) & (1 << (X86_FEATURE_LA57 & 31)))) {
+-		paging_config.l5_required = 1;
+-	}
+-
+-	paging_config.trampoline_start = find_trampoline_placement();
+-
+-	trampoline_32bit = (unsigned long *)paging_config.trampoline_start;
+-
+-	/* Preserve trampoline memory */
+-	memcpy(trampoline_save, trampoline_32bit, TRAMPOLINE_32BIT_SIZE);
+-
+-	/* Clear trampoline memory first */
+-	memset(trampoline_32bit, 0, TRAMPOLINE_32BIT_SIZE);
+-
+-	/* Copy trampoline code in place */
+-	memcpy(trampoline_32bit + TRAMPOLINE_32BIT_CODE_OFFSET / sizeof(unsigned long),
+-			&trampoline_32bit_src, TRAMPOLINE_32BIT_CODE_SIZE);
++	bool l5_required = IS_ENABLED(CONFIG_X86_5LEVEL) &&
++			   !cmdline_find_option_bool("no5lvl") &&
++			   native_cpuid_eax(0) >= 7 &&
++			   (native_cpuid_ecx(7) & (1 << (X86_FEATURE_LA57 & 31)));
  
  	/*
- 	 * Save RSDP address for later use. Have this after console_init()
-diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-index a4f99516f310..39dc3de50268 100644
---- a/arch/x86/boot/compressed/misc.h
-+++ b/arch/x86/boot/compressed/misc.h
-@@ -53,8 +53,8 @@ extern memptr free_mem_end_ptr;
- void *malloc(int size);
- void free(void *where);
- extern struct boot_params *boot_params;
--void __putstr(const char *s);
--void __puthex(unsigned long value);
-+extern void (*__putstr)(const char *s);
-+extern void (*__puthex)(unsigned long value);
- #define error_putstr(__x)  __putstr(__x)
- #define error_puthex(__x)  __puthex(__x)
+ 	 * The code below prepares page table in trampoline memory.
+@@ -160,10 +140,10 @@ struct paging_config paging_prepare(void *rmode)
+ 	 * We are not going to use the page table in trampoline memory if we
+ 	 * are already in the desired paging mode.
+ 	 */
+-	if (paging_config.l5_required == !!(native_read_cr4() & X86_CR4_LA57))
++	if (l5_required == !!(native_read_cr4() & X86_CR4_LA57))
+ 		goto out;
  
-@@ -124,6 +124,9 @@ static inline void console_init(void)
- { }
- #endif
+-	if (paging_config.l5_required) {
++	if (l5_required) {
+ 		/*
+ 		 * For 4- to 5-level paging transition, set up current CR3 as
+ 		 * the first and the only entry in a new top-level page table.
+@@ -185,6 +165,45 @@ struct paging_config paging_prepare(void *rmode)
+ 		       (void *)src, PAGE_SIZE);
+ 	}
  
-+/* putstr.c */
-+void init_bare_console(void);
-+
- #ifdef CONFIG_AMD_MEM_ENCRYPT
- void sev_enable(struct boot_params *bp);
- void sev_es_shutdown_ghcb(void);
-@@ -172,9 +175,9 @@ static inline int count_immovable_mem_regions(void) { return 0; }
- extern unsigned int __pgtable_l5_enabled, pgdir_shift, ptrs_per_p4d;
- #endif
- #ifdef CONFIG_X86_64
--extern unsigned long kernel_add_identity_map(unsigned long start,
--					     unsigned long end,
--					     unsigned int flags);
-+extern unsigned long (*kernel_add_identity_map)(unsigned long start,
-+						unsigned long end,
-+						unsigned int flags);
- #else
- static inline unsigned long kernel_add_identity_map(unsigned long start,
- 						    unsigned long end,
-diff --git a/arch/x86/boot/compressed/putstr.c b/arch/x86/boot/compressed/putstr.c
-new file mode 100644
-index 000000000000..accba0de8be9
---- /dev/null
-+++ b/arch/x86/boot/compressed/putstr.c
-@@ -0,0 +1,124 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include "misc.h"
-+
-+/* These might be accessed before .bss is cleared, so use .data instead. */
-+static char *vidmem __section(".data");
-+static int vidport __section(".data");
-+static int lines __section(".data");
-+static int cols __section(".data");
-+
-+void (*__putstr)(const char *s);
-+void (*__puthex)(unsigned long value);
-+
-+static void putstr(const char *s);
-+static void puthex(unsigned long value);
-+
-+void init_bare_console(void)
-+{
-+	__putstr = putstr;
-+	__puthex = puthex;
-+
-+	if (boot_params->screen_info.orig_video_mode == 7) {
-+		vidmem = (char *) 0xb0000;
-+		vidport = 0x3b4;
-+	} else {
-+		vidmem = (char *) 0xb8000;
-+		vidport = 0x3d4;
-+	}
-+
-+	lines = boot_params->screen_info.orig_video_lines;
-+	cols = boot_params->screen_info.orig_video_cols;
-+
-+	console_init();
++out:
++	return l5_required;
 +}
 +
-+static void scroll(void)
++struct paging_config paging_prepare(void *rmode)
 +{
-+	int i;
++	struct paging_config paging_config = {};
++	bool early_trampoline_alloc = 0;
 +
-+	memmove(vidmem, vidmem + cols * 2, (lines - 1) * cols * 2);
-+	for (i = (lines - 1) * cols * 2; i < lines * cols * 2; i += 2)
-+		vidmem[i] = ' ';
-+}
++	/* Initialize boot_params. Required for cmdline_find_option_bool(). */
++	boot_params = rmode;
 +
-+#define XMTRDY          0x20
++	/*
++	 * We only need to find trampoline placement, if we have
++	 * not already done it from libstub.
++	 */
 +
-+#define TXR             0       /*  Transmit register (WRITE) */
-+#define LSR             5       /*  Line Status               */
++	paging_config.trampoline_start = find_trampoline_placement();
++	trampoline_32bit = (unsigned long *)paging_config.trampoline_start;
++	early_trampoline_alloc = 0;
 +
-+static void serial_putchar(int ch)
-+{
-+	unsigned int timeout = 0xffff;
++	/*
++	 * Preserve trampoline memory.
++	 * When trampoline is located in memory
++	 * owned by us, i.e. allocated in EFISTUB,
++	 * we don't care about previous contents
++	 * of this memory so copying can also be skipped.
++	 */
++	memcpy(trampoline_save, trampoline_32bit, TRAMPOLINE_32BIT_SIZE);
 +
-+	while ((inb(early_serial_base + LSR) & XMTRDY) == 0 && --timeout)
-+		cpu_relax();
++	/* Clear trampoline memory first */
++	memset(trampoline_32bit, 0, TRAMPOLINE_32BIT_SIZE);
 +
-+	outb(ch, early_serial_base + TXR);
-+}
++	/* Copy trampoline code in place */
++	memcpy(trampoline_32bit + TRAMPOLINE_32BIT_CODE_OFFSET / sizeof(unsigned long),
++			&trampoline_32bit_src, TRAMPOLINE_32BIT_CODE_SIZE);
 +
-+static void putstr(const char *s)
-+{
-+	int x, y, pos;
-+	char c;
++	paging_config.l5_required = trampoline_pgtable_init(boot_params);
 +
-+	if (early_serial_base) {
-+		const char *str = s;
-+
-+		while (*str) {
-+			if (*str == '\n')
-+				serial_putchar('\r');
-+			serial_putchar(*str++);
-+		}
-+	}
-+
-+	if (lines == 0 || cols == 0)
-+		return;
-+
-+	x = boot_params->screen_info.orig_x;
-+	y = boot_params->screen_info.orig_y;
-+
-+	while ((c = *s++) != '\0') {
-+		if (c == '\n') {
-+			x = 0;
-+			if (++y >= lines) {
-+				scroll();
-+				y--;
-+			}
-+		} else {
-+			vidmem[(x + cols * y) * 2] = c;
-+			if (++x >= cols) {
-+				x = 0;
-+				if (++y >= lines) {
-+					scroll();
-+					y--;
-+				}
-+			}
-+		}
-+	}
-+
-+	boot_params->screen_info.orig_x = x;
-+	boot_params->screen_info.orig_y = y;
-+
-+	pos = (x + cols * y) * 2;	/* Update cursor position */
-+	outb(14, vidport);
-+	outb(0xff & (pos >> 9), vidport+1);
-+	outb(15, vidport);
-+	outb(0xff & (pos >> 1), vidport+1);
-+}
-+
-+static void puthex(unsigned long value)
-+{
-+	char alpha[2] = "0";
-+	int bits;
-+
-+	for (bits = sizeof(value) * 8 - 4; bits >= 0; bits -= 4) {
-+		unsigned long digit = (value >> bits) & 0xf;
-+
-+		if (digit < 0xA)
-+			alpha[0] = '0' + digit;
-+		else
-+			alpha[0] = 'a' + (digit - 0xA);
-+
-+		putstr(alpha);
-+	}
-+}
+ out:
+ 	return paging_config;
+ }
 -- 
 2.35.1
 
