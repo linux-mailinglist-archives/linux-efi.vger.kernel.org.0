@@ -2,81 +2,145 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 452E75B084D
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Sep 2022 17:19:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97FB25B08A6
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Sep 2022 17:35:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229958AbiIGPTs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 7 Sep 2022 11:19:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58354 "EHLO
+        id S229559AbiIGPfU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 7 Sep 2022 11:35:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229695AbiIGPTr (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Sep 2022 11:19:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B3B31183B
-        for <linux-efi@vger.kernel.org>; Wed,  7 Sep 2022 08:19:46 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA59E61927
-        for <linux-efi@vger.kernel.org>; Wed,  7 Sep 2022 15:19:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25BBEC433D7
-        for <linux-efi@vger.kernel.org>; Wed,  7 Sep 2022 15:19:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662563985;
-        bh=reOF5s7klL1o+7hUZ0hnXG+k2+T3qj0fVEX64wDQL7k=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Ohs1BpFeUjUPkzL0rcAcbVdXKBi74kN3QX31OJYt7Q2vNQCxb4UVC3nOHEqFKWVmo
-         GgCFi98lJ1I8RJzKWpFyRjXq0Sj2ASfsIeCrLbemYAqMogFeBT5Fo6brN82MKInUxF
-         q+sxiJR8ltEG66pMaPC92Mcw3j6ayXR7J0Xh3HHGGPYpLf6E6zwVaJd9iELopUuhbF
-         QB80sQEvcz1VRBrxNkWj8+CYu+RMFk/H9n86TBTzBjVi3SwbFVD7doWPQIl4sF6byL
-         nOJai1Dz0Q1SKCjNzyklPFPNzwdnXnDDGtXEiaup0FmV4fCZnh+BDI19jzrW3qBlBY
-         7O0vCXweb0/zg==
-Received: by mail-lj1-f181.google.com with SMTP id z23so16412875ljk.1
-        for <linux-efi@vger.kernel.org>; Wed, 07 Sep 2022 08:19:45 -0700 (PDT)
-X-Gm-Message-State: ACgBeo0tsaJpYIeVqgiM6JnGYIZ0YSaWByf+Fsn8OQnd8R7a804bDgFa
-        Vcqz7MhQ2ep20a+sG9Yp0+R93MOZzw/YlxfpyKA=
-X-Google-Smtp-Source: AA6agR5vlQSDOU1Ceu+U7DKHy4tw0FtfReTmhiSMayvnGlXsvOQU/mr7Fwc5YRnkaXuVNI5PYTLOf+vbHiUpiFzMgjs=
-X-Received: by 2002:a2e:9115:0:b0:26a:c086:5138 with SMTP id
- m21-20020a2e9115000000b0026ac0865138mr1060546ljg.189.1662563983145; Wed, 07
- Sep 2022 08:19:43 -0700 (PDT)
+        with ESMTP id S229513AbiIGPfT (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Sep 2022 11:35:19 -0400
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DF1167158
+        for <linux-efi@vger.kernel.org>; Wed,  7 Sep 2022 08:35:18 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id z187so14989572pfb.12
+        for <linux-efi@vger.kernel.org>; Wed, 07 Sep 2022 08:35:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date;
+        bh=tcezKddoaOYGKfWECrHEAwsAR8wUyzBKlSKo0IIJr7I=;
+        b=U1rDRYKxu3ttJKziP9grpw2iQLoXjAtIzl3ctVXAJFcZUIsA6KJdqNRUAgSkafCZyy
+         lkMRZOhRXjwLcY2QnJrYRbOoUDRb19EkqNqXzjxe4dDwgL7jgHIZE6ESK9TNUTsyfK3q
+         3Djv7IHaZaE7Yw6kKohiCDF5rUqa/7MxHJqBIHqLlwwgLi1sJoXtLOmSit0Ez3NOiAe0
+         xc3Yp+Ovg9u0Q4nMeoW3oaBk1r4pxvj7DUscMQdz3BGCz+CVsEgnGmHsm0RcyPNQA8Go
+         2MCPPONe3vJveUxmrUxMad7cz5jJ7dHe81bl8xy9n0raiOP2SC46/MsSUgsfpjz2jUxr
+         UwdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=tcezKddoaOYGKfWECrHEAwsAR8wUyzBKlSKo0IIJr7I=;
+        b=lc9ifs/8uB2hnUugL5Ap2iJ2jxjgVS1M27fyICLwaYuo7QwUAKjFX68zteho3E1V1D
+         pPCS0hX14lyKK9KvNugWQG1PGZrGJgGxyWiS0BXyiCT3HYz16iPxnj2WAVFhu26U2t80
+         AVx9sFJQUTy6x2P/wqHxQrj4MSK++dgR5ddJSUUTbO/krGb0vwUrtmS2ka9pi3SgwFMN
+         5CTLE7QDUVrS+/9YKD+3YZUPsUsuhAE6s00mJYE2zjJITTSM/YP3ng5nab2JVzLHUngQ
+         6kdUxFiz+XDqKehQr4xJbLcAgB/JDj6+YIzJ7C4InqpS9sIuabLOjFWYyfWoqmbEdTeL
+         Aemg==
+X-Gm-Message-State: ACgBeo1K70epmtoTiWgtbr80/D0b5EsL/o0il83IIFRa8c5vQ/LQyFNG
+        Yclqe9DAq8X9hDMZU9xCHYzAorc4GOI=
+X-Google-Smtp-Source: AA6agR7SapapjFSPJrXFh+l1RMhgyxnsEIZm+eezMSGHq3R0RrOyfACb2wvwH2CpQ32R75oOYt31fQ==
+X-Received: by 2002:a63:fe12:0:b0:42a:e57:7464 with SMTP id p18-20020a63fe12000000b0042a0e577464mr3977953pgh.552.1662564918085;
+        Wed, 07 Sep 2022 08:35:18 -0700 (PDT)
+Received: from ubuntu ([175.124.254.119])
+        by smtp.gmail.com with ESMTPSA id p13-20020aa79e8d000000b0052e7f103138sm12867433pfq.38.2022.09.07.08.35.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Sep 2022 08:35:17 -0700 (PDT)
+Date:   Wed, 7 Sep 2022 08:35:13 -0700
+From:   Hyunwoo Kim <imv4bel@gmail.com>
+To:     ardb@kernel.org
+Cc:     linux-efi@vger.kernel.org, imv4bel@gmail.com
+Subject: [PATCH v4] efi: capsule-loader: Fix use-after-free in
+ efi_capsule_write
+Message-ID: <20220907153513.GA147130@ubuntu>
 MIME-Version: 1.0
-References: <20220626103248.GA57385@ubuntu> <CAMj1kXHo91v8u_RcXfu4r=x5eh-tShBu4gSDZXBRveOC275Fnw@mail.gmail.com>
- <20220907102920.GA88602@ubuntu> <CAMj1kXHKBkP8JHUSyzEELovvSzUpfO1j2nA+eUbP-smLWjKPog@mail.gmail.com>
- <20220907145426.GA127455@ubuntu> <20220907151701.GA127727@ubuntu>
-In-Reply-To: <20220907151701.GA127727@ubuntu>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 7 Sep 2022 17:19:32 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXG9Q8B6zugJdUzeFNHD5=obnNZJAWJzzKeXWv0ankYEaQ@mail.gmail.com>
-Message-ID: <CAMj1kXG9Q8B6zugJdUzeFNHD5=obnNZJAWJzzKeXWv0ankYEaQ@mail.gmail.com>
-Subject: Re: [PATCH] efi/capsule-loader: Fix use-after-free in efi_capsule_write
-To:     Hyunwoo Kim <imv4bel@gmail.com>
-Cc:     linux-efi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 7 Sept 2022 at 17:17, Hyunwoo Kim <imv4bel@gmail.com> wrote:
->
-> On Wed, Sep 07, 2022 at 07:54:26AM -0700, Hyunwoo Kim wrote:
-> > efi_capsule_flush() seems to exist for the purpose of canceling uploads in the middle.
-> >
-> > If buffer release is moved to .release, will there be any compatibility issues?
->
-> The way to submit capsules is to submit by calling write() multiple times by the user,
-> rather than in a structure that processes the copy operation at once inside efi_capsule_write().
-> In other words, if you just call close() when you want to cancel upload,
-> .release is automatically called after write() is finished, and upload is stopped.
-> So there is no need for .flush to exist.
->
-> So I think it would be ok to move the buffer free part to .release.
->
-> I'll submit you a v4 patch that moves the buffre free part to .release.
+A race condition may occur if the user calls close() on another
+thread during a write() operation on the device node of the efi capsule.
 
-OK
+This is a race condition that occurs between the efi_capsule_write()
+and efi_capsule_flush() functions of efi_capsule_fops,
+which ultimately results in UAF.
+
+So, the page freeing process is modified to be done in
+efi_capsule_release() instead of efi_capsule_flush().
+
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+---
+ drivers/firmware/efi/capsule-loader.c | 29 ++++++---------------------
+ 1 file changed, 6 insertions(+), 23 deletions(-)
+
+diff --git a/drivers/firmware/efi/capsule-loader.c b/drivers/firmware/efi/capsule-loader.c
+index 4dde8edd53b6..788e860304ae 100644
+--- a/drivers/firmware/efi/capsule-loader.c
++++ b/drivers/firmware/efi/capsule-loader.c
+@@ -243,18 +243,17 @@ static ssize_t efi_capsule_write(struct file *file, const char __user *buff,
+ }
+ 
+ /**
+- * efi_capsule_flush - called by file close or file flush
++ * efi_capsule_release - called by file close
++ * @inode: not used
+  * @file: file pointer
+- * @id: not used
+  *
+- *	If a capsule is being partially uploaded then calling this function
+- *	will be treated as upload termination and will free those completed
+- *	buffer pages and -ECANCELED will be returned.
++ *	We will not free successfully submitted pages since efi update
++ *	requires data to be maintained across system reboot.
+  **/
+-static int efi_capsule_flush(struct file *file, fl_owner_t id)
++static int efi_capsule_release(struct inode *inode, struct file *file)
+ {
+-	int ret = 0;
+ 	struct capsule_info *cap_info = file->private_data;
++	int ret = 0;
+ 
+ 	if (cap_info->index > 0) {
+ 		pr_err("capsule upload not complete\n");
+@@ -262,21 +261,6 @@ static int efi_capsule_flush(struct file *file, fl_owner_t id)
+ 		ret = -ECANCELED;
+ 	}
+ 
+-	return ret;
+-}
+-
+-/**
+- * efi_capsule_release - called by file close
+- * @inode: not used
+- * @file: file pointer
+- *
+- *	We will not free successfully submitted pages since efi update
+- *	requires data to be maintained across system reboot.
+- **/
+-static int efi_capsule_release(struct inode *inode, struct file *file)
+-{
+-	struct capsule_info *cap_info = file->private_data;
+-
+ 	kfree(cap_info->pages);
+ 	kfree(cap_info->phys);
+ 	kfree(file->private_data);
+@@ -324,7 +308,6 @@ static const struct file_operations efi_capsule_fops = {
+ 	.owner = THIS_MODULE,
+ 	.open = efi_capsule_open,
+ 	.write = efi_capsule_write,
+-	.flush = efi_capsule_flush,
+ 	.release = efi_capsule_release,
+ 	.llseek = no_llseek,
+ };
+-- 
+2.25.1
+
