@@ -2,58 +2,58 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A7E05B059A
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Sep 2022 15:46:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 019D85B05BB
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Sep 2022 15:52:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229728AbiIGNq4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 7 Sep 2022 09:46:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45766 "EHLO
+        id S229472AbiIGNwg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 7 Sep 2022 09:52:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230038AbiIGNqe (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Sep 2022 09:46:34 -0400
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF03EA3D3D
-        for <linux-efi@vger.kernel.org>; Wed,  7 Sep 2022 06:46:07 -0700 (PDT)
-Received: by mail-pg1-x536.google.com with SMTP id t65so2691013pgt.2
-        for <linux-efi@vger.kernel.org>; Wed, 07 Sep 2022 06:46:07 -0700 (PDT)
+        with ESMTP id S229477AbiIGNwf (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Sep 2022 09:52:35 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4DC579630
+        for <linux-efi@vger.kernel.org>; Wed,  7 Sep 2022 06:52:34 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id z187so14679486pfb.12
+        for <linux-efi@vger.kernel.org>; Wed, 07 Sep 2022 06:52:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date;
-        bh=fvvLgOpiiVxhgiqg0jJEN5rqJRa+7V40kP2JA0R4QjE=;
-        b=pf6WNJNDwap/Pz4C6V9eOqc9fN/2snu95ysWQKf3K9ONTgstVtrkGtQk9LnnBI7Fn0
-         OlOCola71+/URIghquVvu5zEIl5xf6RM05RnPOjWCzq3uNgIDyT9BOOo+m3CWfjCYWrp
-         rseRx3TOVVLkTiRb9obIsX6DSWwt6VHHHRulAvZBVdFUv/X6JLs4CaJGvMVWPKBrVMTZ
-         6+1jG1iMoK65JrLSaQNJZJ6j8yrt1OjBFC9bdAhlRzzFbV/8Zmmhbi5BF8U0FoyR6JwZ
-         D0FGt75vAx8+6VByCxFd2oV2JO3mYFrX8lCng2yhRQ/MS1459rfj8zIZtybe43OrLI9u
-         c9Lg==
+        bh=Os46oyuXrrUnaSHzX2Jq5aIhZgyL8+b3lVhx1qrbkDc=;
+        b=dkB94lF8C5dYlJ5scLm6XqDxQpSdghGmoDw5F1hPc6a8Ry24hdRHklg6DlZNrqVGe/
+         z81+QDHPXHchZ1FgRJv7oWIzm9mcLhvpQ3Cew3MbmHEghQWaq+9SuipEdZwvNcEZWQHH
+         /LSWgLyOyEnH6NdwqhBDjVv/pqtp+GbtOoAIuMafNfK1ai/w++mXxCo5G0ayRJe4mIdU
+         WzvvV8/ONQ/FolOwzc5SuLjLHzxmUCT5IEp+siyJ/Ld9w/qumi5+m9LtMwXhn3uDd2ZA
+         5MiBioESBD4S0V/3AMUjIMQLvtxTpUsAccEuw/mHYiQhDNr7Hx8t4hXRRyMkbFBpVolZ
+         XBXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date;
-        bh=fvvLgOpiiVxhgiqg0jJEN5rqJRa+7V40kP2JA0R4QjE=;
-        b=lvOEUgl6spNMspDe0M2mZnKr3ldeM5uqZ8rJMC6fr0ADQjlfiQXgYPDd1sU2/BQwPB
-         oWZr3SCsETv4i4utnXGXnkp+pOOWkJMFlz1JMhcakouQClu5vnPpY+cNwpn+xXHynaOZ
-         C1OjaUI9Q5MEJEGrrxN+1Ds06KrpEO7oxaUWq0UoWmjOTuHOYd0bgxD0MHBuwxyCnoGD
-         X+HhyOsx/MJj4tFe2P8o3wMXEZ2lsdrI/2j7rJDhMUZpaYLht4DDAHSM//GZaBAUl+No
-         qD3PGwmJwp/ayZelw2C4Miays6E7MbSDXk2/AB4tL5FUogB7I8hJfdHtEs2hVlbJ1kaj
-         89sg==
-X-Gm-Message-State: ACgBeo1160jJSG49eANH7J/0unWzl+sqh8eS5TagFqsg9hMFEHl/p6+S
-        P0WVN9r0H5ayT5x+C76obYuka2KFCfw=
-X-Google-Smtp-Source: AA6agR5XwPRHYMz0P5mZxBEJxZaR6BfIdSIfr+0WctMuMLBHZ2M6ZqiHfExbN8Rimv2ChRvQqJpblA==
-X-Received: by 2002:a63:4b43:0:b0:42a:b42a:d216 with SMTP id k3-20020a634b43000000b0042ab42ad216mr3477116pgl.530.1662558366452;
-        Wed, 07 Sep 2022 06:46:06 -0700 (PDT)
+        bh=Os46oyuXrrUnaSHzX2Jq5aIhZgyL8+b3lVhx1qrbkDc=;
+        b=c6sbl04HTW6ZfA1zIhP/gCosnRKL1nZTAtl49i0V6JxxzeVnC+ZnWC/uDjxcVPVAwh
+         b3c3WIsZnLRQBEOfbdwSAdpvrCJeuXaj0MiOTe7eGqBRMel0DJwD+xn+LGvhAQRqeHGo
+         50qpt4pHq6OjHDzel6JpJXCZQVuxCn3HCDvzqGqjduAhWqaAqYpKbjQck+R9jHiRXxIW
+         2xeD/7az5nkkILtTvmn1kR/ojQyH2WSM9HSQESaCcsfYqbt5DmESIw84J2u3Gp1wwdjl
+         qSDA4FZ/tVp6bZR0hygOjYBShpKGtE8mT8jd6DW3FNbGQQrHE+kOBrtb/IhTUS9BuXmz
+         zxKw==
+X-Gm-Message-State: ACgBeo0N+LkeEs4i4jmky6otJP7b13s3OlJK3L6pdMOpZ/+YVGZ3ow47
+        TwQpUHfiMwIijrBdW0b8K44=
+X-Google-Smtp-Source: AA6agR4ds+XmuM2Kb5JbF8smadZZAh7m8bZtKJiZs3j1y427pKB9fQNgih3nljL7A0brLglGIyyjiA==
+X-Received: by 2002:a63:798c:0:b0:42a:4612:c07b with SMTP id u134-20020a63798c000000b0042a4612c07bmr3545736pgc.519.1662558754079;
+        Wed, 07 Sep 2022 06:52:34 -0700 (PDT)
 Received: from ubuntu ([175.124.254.119])
-        by smtp.gmail.com with ESMTPSA id p5-20020aa79e85000000b0053826eaa1c7sm12541066pfq.22.2022.09.07.06.46.04
+        by smtp.gmail.com with ESMTPSA id p2-20020a17090a680200b001efa9e83927sm12064171pjj.51.2022.09.07.06.52.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Sep 2022 06:46:05 -0700 (PDT)
-Date:   Wed, 7 Sep 2022 06:46:02 -0700
+        Wed, 07 Sep 2022 06:52:33 -0700 (PDT)
+Date:   Wed, 7 Sep 2022 06:52:30 -0700
 From:   Hyunwoo Kim <imv4bel@gmail.com>
 To:     ardb@kernel.org
 Cc:     linux-efi@vger.kernel.org, imv4bel@gmail.com
 Subject: [PATCH v3] efi: capsule-loader: Fix use-after-free in
  efi_capsule_write
-Message-ID: <20220907134602.GA125834@ubuntu>
+Message-ID: <20220907135230.GA126279@ubuntu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -156,6 +156,8 @@ index d2b84c2fec39..f8b92a54d3c9 100644
 
 
 Fixed a typo in the v2 patch "struct mutex write_mutex".
+
+ah... I had a problem with my mutt client. Sent back with v3 patch. Sorry.
 
 Regards,
 Hyunwoo Kim.
