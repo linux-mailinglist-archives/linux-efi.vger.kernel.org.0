@@ -2,48 +2,65 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06F905AF972
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Sep 2022 03:48:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E1B65AF97A
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Sep 2022 03:51:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229482AbiIGBsV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 6 Sep 2022 21:48:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42334 "EHLO
+        id S229513AbiIGBvx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 6 Sep 2022 21:51:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbiIGBsV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Sep 2022 21:48:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 921D0832E3;
-        Tue,  6 Sep 2022 18:48:20 -0700 (PDT)
+        with ESMTP id S229436AbiIGBvw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Sep 2022 21:51:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0D9F80E99;
+        Tue,  6 Sep 2022 18:51:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 27B52616EB;
-        Wed,  7 Sep 2022 01:48:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8543C433D6;
-        Wed,  7 Sep 2022 01:48:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 800A5616EB;
+        Wed,  7 Sep 2022 01:51:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE50FC43148;
+        Wed,  7 Sep 2022 01:51:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662515299;
-        bh=t0Bxth8FdzneHjCPM3qPz7rrGj6ZZLOPNu/D055k2Rk=;
-        h=From:To:Cc:Subject:Date:From;
-        b=dkqwzy2EekUlmtvtOnaFGKlnP2G8hjNUGqKmPiR9Tb7NOu1cFbmZiq9olQIcpd35V
-         1CqL8B5Hf7u3LGeQvRtb9ducJkSz2MZeZYQ6snuLRcpiFCwrdTXBW69rWXuJrqBK98
-         McJ+1pJSQS2iVsMTtXubIxBsG0xIEIfquBbV+6EeK4wj4+36zq5r0U2zA0AwB21Dco
-         mqHKC5QisDCEI9RLc4VWRrlwBmbh8CyZIOwu4a4q7ARNwqSgvQwd/3SAguIUHKD2xI
-         nTSNlYOkCvznpWefQgKFhzTTUGiJt/Sdx6BsKvWlxN7GYKWU8LJrDdjfoEcH0aQMqx
-         M3QxFrjQceFpg==
-From:   guoren@kernel.org
-To:     tglx@linutronix.de, peterz@infradead.org, luto@kernel.org,
-        Conor.Dooley@microchip.com, xianting.tian@linux.alibaba.com,
-        daolu@rivosinc.com, arnd@arndb.de
-Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Guo Ren <guoren@linux.alibaba.com>, Guo Ren <guoren@kernel.org>
-Subject: [RFC PATCH] generic_entry: Add stackleak support
-Date:   Tue,  6 Sep 2022 21:48:09 -0400
-Message-Id: <20220907014809.919979-1-guoren@kernel.org>
-X-Mailer: git-send-email 2.36.1
+        s=k20201202; t=1662515509;
+        bh=ALcTG3mOVuLLio4WhI2L2jJkbp5XvNqkTSaJ5wmwyeM=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=KD4YkRAGIO3nhCBJBkD2pwrs2ava5BAoX9wtcgu3IFRoQVjrtiZuB4R9MgbpEzsxq
+         KW4AFCVtiUZlgB2+cstExwawru05w/BuMHDhwnpc7WjQGj+QVhkknLUVfBDmKGedGD
+         99jvlAe7BYgLqXHlUmDho9+hJ1g+JDEgK63SfRqWTf36g22O56vOPdF29EpBYq/p8b
+         dtek3UzHb1QYIE+Jy4pecoCJYlNRkpFOMwxlx+Mb+1LMdMCgPvlJIOZQE3xh2MIUwq
+         tR/PZy8WV7Tq4lJxm3DRN05aNFEm2H8PKdO2xzn+gkLKBPu+bFQhwgcCWo9JIcLYAj
+         kJ4OnuZ6o3Ctw==
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-127ba06d03fso9079218fac.3;
+        Tue, 06 Sep 2022 18:51:49 -0700 (PDT)
+X-Gm-Message-State: ACgBeo33eMSFNqgev5qm16SohsXvBqtm6nn2sWT/xYZyddz/j6hjcjYS
+        5OYyywvpH/0/Yu5sMXPtkhDbiv9SOxY5nINGIn8=
+X-Google-Smtp-Source: AA6agR5wU71q9oB13ta4xOEzTPcP8MJegkjW8lQNxzqUr3gEPcisWNIZ8cv6sJH9sEHuSDJ+obWgGJ+KHlsomjMI+dE=
+X-Received: by 2002:a05:6808:150f:b0:343:3202:91cf with SMTP id
+ u15-20020a056808150f00b00343320291cfmr10871221oiw.112.1662515508882; Tue, 06
+ Sep 2022 18:51:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220903162328.1952477-1-guoren@kernel.org> <20220828135407.3897717-1-xianting.tian@linux.alibaba.com>
+ <6c48657c-04df-132d-6167-49ed293dea44@microchip.com>
+In-Reply-To: <6c48657c-04df-132d-6167-49ed293dea44@microchip.com>
+From:   Guo Ren <guoren@kernel.org>
+Date:   Wed, 7 Sep 2022 09:51:36 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTQvPpXwrfS_fTo+Pn=nufeCWE_tCcmPB-YZAZjdt9GbvA@mail.gmail.com>
+Message-ID: <CAJF2gTQvPpXwrfS_fTo+Pn=nufeCWE_tCcmPB-YZAZjdt9GbvA@mail.gmail.com>
+Subject: Re: [PATCH] RISC-V: Add STACKLEAK erasing the kernel stack at the end
+ of syscalls
+To:     Conor.Dooley@microchip.com
+Cc:     oleg@redhat.com, vgupta@kernel.org, linux@armlinux.org.uk,
+        monstr@monstr.eu, dinguyen@kernel.org, palmer@dabbelt.com,
+        davem@davemloft.net, arnd@arndb.de, shorne@gmail.com,
+        paul.walmsley@sifive.com, aou@eecs.berkeley.edu, ardb@kernel.org,
+        heiko@sntech.de, daolu@rivosinc.com, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-snps-arc@lists.infradead.org, sparclinux@vger.kernel.org,
+        openrisc@lists.librecores.org, xianting.tian@linux.alibaba.com,
+        linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -54,94 +71,82 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Guo Ren <guoren@linux.alibaba.com>
+Hi all,
 
-Make generic_entry supports basic STACKLEAK, and no arch custom
-code is needed.
+How about the generic_entry version:
 
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Signed-off-by: Guo Ren <guoren@kernel.org>
----
- drivers/firmware/efi/libstub/Makefile | 4 +++-
- include/linux/stackleak.h             | 3 +++
- kernel/entry/common.c                 | 5 +++++
- security/Kconfig.hardening            | 2 +-
- 4 files changed, 12 insertions(+), 2 deletions(-)
+https://lore.kernel.org/lkml/20220907014809.919979-1-guoren@kernel.org/
 
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index d0537573501e..bb6ad37a9690 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -19,7 +19,7 @@ cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ \
- # arm64 uses the full KBUILD_CFLAGS so it's necessary to explicitly
- # disable the stackleak plugin
- cflags-$(CONFIG_ARM64)		:= $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
--				   -fpie $(DISABLE_STACKLEAK_PLUGIN) \
-+				   -fpie \
- 				   $(call cc-option,-mbranch-protection=none)
- cflags-$(CONFIG_ARM)		:= $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
- 				   -fno-builtin -fpic \
-@@ -27,6 +27,8 @@ cflags-$(CONFIG_ARM)		:= $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
- cflags-$(CONFIG_RISCV)		:= $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
- 				   -fpic
- 
-+cflags-$(CONFIG_GCC_PLUGIN_STACKLEAK) += $(DISABLE_STACKLEAK_PLUGIN)
-+
- cflags-$(CONFIG_EFI_GENERIC_STUB) += -I$(srctree)/scripts/dtc/libfdt
- 
- KBUILD_CFLAGS			:= $(cflags-y) -Os -DDISABLE_BRANCH_PROFILING \
-diff --git a/include/linux/stackleak.h b/include/linux/stackleak.h
-index c36e7a3b45e7..9890802a5868 100644
---- a/include/linux/stackleak.h
-+++ b/include/linux/stackleak.h
-@@ -76,8 +76,11 @@ static inline void stackleak_task_init(struct task_struct *t)
- # endif
- }
- 
-+void noinstr stackleak_erase(void);
-+
- #else /* !CONFIG_GCC_PLUGIN_STACKLEAK */
- static inline void stackleak_task_init(struct task_struct *t) { }
-+static inline void stackleak_erase(void) {}
- #endif
- 
- #endif
-diff --git a/kernel/entry/common.c b/kernel/entry/common.c
-index 063068a9ea9b..6acb1d6a1396 100644
---- a/kernel/entry/common.c
-+++ b/kernel/entry/common.c
-@@ -8,6 +8,7 @@
- #include <linux/livepatch.h>
- #include <linux/audit.h>
- #include <linux/tick.h>
-+#include <linux/stackleak.h>
- 
- #include "common.h"
- 
-@@ -194,6 +195,10 @@ static void exit_to_user_mode_prepare(struct pt_regs *regs)
- 
- 	lockdep_assert_irqs_disabled();
- 
-+#ifndef CONFIG_HAVE_ARCH_STACKLEAK
-+	stackleak_erase();
-+#endif
-+
- 	/* Flush pending rcuog wakeup before the last need_resched() check */
- 	tick_nohz_user_enter_prepare();
- 
-diff --git a/security/Kconfig.hardening b/security/Kconfig.hardening
-index bd2aabb2c60f..3329482beb8d 100644
---- a/security/Kconfig.hardening
-+++ b/security/Kconfig.hardening
-@@ -152,7 +152,7 @@ config GCC_PLUGIN_STRUCTLEAK_VERBOSE
- config GCC_PLUGIN_STACKLEAK
- 	bool "Poison kernel stack before returning from syscalls"
- 	depends on GCC_PLUGINS
--	depends on HAVE_ARCH_STACKLEAK
-+	depends on HAVE_ARCH_STACKLEAK || GENERIC_ENTRY
- 	help
- 	  This option makes the kernel erase the kernel stack before
- 	  returning from system calls. This has the effect of leaving
+On Wed, Sep 7, 2022 at 1:35 AM <Conor.Dooley@microchip.com> wrote:
+>
+> On 03/09/2022 17:23, guoren@kernel.org wrote:
+> > EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
+> >
+> > From: Xianting Tian <xianting.tian@linux.alibaba.com>
+> >
+> > This adds support for the STACKLEAK gcc plugin to RISC-V and disables
+> > the plugin in EFI stub code, which is out of scope for the protection.
+> >
+> > For the benefits of STACKLEAK feature, please check the commit
+> > afaef01c0015 ("x86/entry: Add STACKLEAK erasing the kernel stack at the end of syscalls")
+> >
+> > Performance impact (tested on qemu env with 1 riscv64 hart, 1GB mem)
+> >     hackbench -s 512 -l 200 -g 15 -f 25 -P
+> >     2.0% slowdown
+> >
+> > Signed-off-by: Xianting Tian <xianting.tian@linux.alibaba.com>
+>
+> What changed since Xianting posted it himself a week ago:
+> https://lore.kernel.org/linux-riscv/20220828135407.3897717-1-xianting.tian@linux.alibaba.com/
+>
+> There's an older patch from Du Lao adding STACKLEAK too:
+> https://lore.kernel.org/linux-riscv/20220615213834.3116135-1-daolu@rivosinc.com/
+>
+> But since there's been no activity there since June...
+>
+> > ---
+> >  arch/riscv/Kconfig                    | 1 +
+> >  arch/riscv/include/asm/processor.h    | 4 ++++
+> >  arch/riscv/kernel/entry.S             | 3 +++
+> >  drivers/firmware/efi/libstub/Makefile | 2 +-
+> >  4 files changed, 9 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> > index ed66c31e4655..61fd0dad4463 100644
+> > --- a/arch/riscv/Kconfig
+> > +++ b/arch/riscv/Kconfig
+> > @@ -85,6 +85,7 @@ config RISCV
+> >         select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
+> >         select HAVE_ARCH_THREAD_STRUCT_WHITELIST
+> >         select HAVE_ARCH_VMAP_STACK if MMU && 64BIT
+> > +       select HAVE_ARCH_STACKLEAK
+> >         select HAVE_ASM_MODVERSIONS
+> >         select HAVE_CONTEXT_TRACKING_USER
+> >         select HAVE_DEBUG_KMEMLEAK
+> > diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+> > index d0537573501e..5e1fc4f82883 100644
+> > --- a/drivers/firmware/efi/libstub/Makefile
+> > +++ b/drivers/firmware/efi/libstub/Makefile
+> > @@ -25,7 +25,7 @@ cflags-$(CONFIG_ARM)          := $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
+> >                                    -fno-builtin -fpic \
+> >                                    $(call cc-option,-mno-single-pic-base)
+> >  cflags-$(CONFIG_RISCV)         := $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
+> > -                                  -fpic
+> > +                                  -fpic $(DISABLE_STACKLEAK_PLUGIN)
+> >
+> >  cflags-$(CONFIG_EFI_GENERIC_STUB) += -I$(srctree)/scripts/dtc/libfdt
+> >
+> > --
+> > 2.17.1
+> >
+> >
+> > _______________________________________________
+> > linux-riscv mailing list
+> > linux-riscv@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/linux-riscv
+>
+
+
 -- 
-2.36.1
-
+Best Regards
+ Guo Ren
