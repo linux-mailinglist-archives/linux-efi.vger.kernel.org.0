@@ -2,78 +2,121 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50C945B09D9
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Sep 2022 18:15:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9AE05B0A8B
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Sep 2022 18:46:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229437AbiIGQPO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 7 Sep 2022 12:15:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59922 "EHLO
+        id S230030AbiIGQqs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 7 Sep 2022 12:46:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbiIGQPN (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Sep 2022 12:15:13 -0400
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22B016B15A
-        for <linux-efi@vger.kernel.org>; Wed,  7 Sep 2022 09:15:13 -0700 (PDT)
-Received: by mail-pl1-x62e.google.com with SMTP id jm11so15024774plb.13
-        for <linux-efi@vger.kernel.org>; Wed, 07 Sep 2022 09:15:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=y1V8Rd0tasidsOrF+ijJfw9HYzfXkLgwZoX7BeU6Rrs=;
-        b=fZQwLgPDoaUZJbcGTOjVCDAnjDbUfrKZD00iJpK+sP+qIlI8gZS/8hO4F3n1OSz7W/
-         qtXyo3Oiy2rpaq/WZYrx5O8EBNCxVr3yWST3UE9SH1gZWICicJTwgGoY7B8DbB2OieWS
-         aqyMD1/8dRY9GB8KpyhHU7S/bOT3mTiVT+rNgHg0+OloOFyCN69ppxXVCkgNJNiDrI5s
-         18xaL6PwwBYdHtvMmSWKo7+mkJflxG2hQVMekI1bxw6r9rpibpNnzF/Mv5woQpyaGqd5
-         xbxZJ42MU0P9sHqj/N5yLmoM/iNNa8RxVnxT1wFWQBrh+jMaGFFoJhXohDs4ZFOtkFYk
-         fZhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=y1V8Rd0tasidsOrF+ijJfw9HYzfXkLgwZoX7BeU6Rrs=;
-        b=L8FbW/J73GiO+3fws0G88+x3B2e01fgQ3gypV0SJJAHfEt8kSNFUbrKmXIDKLzgyYH
-         mEHyQe7/bvcTeV/ULijzMc9RvEbmBv6VIf2LhwtBI+FEHrdNH79R1P90tZpuC2bXFpG6
-         zbA5bcv13qBDuVQ+3r9vC1DsafrEa8zNYwunWS2IXBY4eVaZXRlW5FpMqonlS5O4osIR
-         DbWmRy3EpagL8WPolsL/jwyNR3OWenQY1Vyf+RRx+e+tPolAAPhzcMb+rGibJLx6XnU3
-         JyMC9EQGfWrmS3N2hfgBWw09KX+WCehNiDclvVgvpJzGGIPUF75vYCwLj2kPF3dlLblb
-         HWEw==
-X-Gm-Message-State: ACgBeo0lQqKrzGUfQV8FrQhVozStbj/C6LsQ25NXBhofBMInbY2sTqn2
-        ADrWGZWG3xGIusjdcM4JVb1zsISPTbA=
-X-Google-Smtp-Source: AA6agR5+pCDZQtc0ksrJhvi00HIuZCzUKzFCcAZLqCljMj6sgmGSvyGbnLLRoCtZX7fhGJODVIr2sw==
-X-Received: by 2002:a17:90b:180b:b0:1fd:d537:dd30 with SMTP id lw11-20020a17090b180b00b001fdd537dd30mr4898912pjb.75.1662567312677;
-        Wed, 07 Sep 2022 09:15:12 -0700 (PDT)
-Received: from ubuntu ([175.124.254.119])
-        by smtp.gmail.com with ESMTPSA id k5-20020a17090a910500b001f50c1f896esm11173369pjo.5.2022.09.07.09.15.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Sep 2022 09:15:12 -0700 (PDT)
-Date:   Wed, 7 Sep 2022 09:15:08 -0700
-From:   Hyunwoo Kim <imv4bel@gmail.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: Re: [PATCH v5] efi: capsule-loader: Fix use-after-free in
- efi_capsule_write
-Message-ID: <20220907161508.GA150175@ubuntu>
-References: <20220907160714.GA150039@ubuntu>
- <CAMj1kXES-fQ2jT6icvL0Jk7twV9gKYnwUpnNE956qcg96D4RUQ@mail.gmail.com>
+        with ESMTP id S229637AbiIGQqp (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Sep 2022 12:46:45 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B7F3BBA4E;
+        Wed,  7 Sep 2022 09:46:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1662569201; x=1694105201;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=y3/sBmBbm24o7Nrci6vLh859k+watYKfpLLsWrkIDIU=;
+  b=dARaclhQfqIBDY+1WQTgrf+aZqSg+kjASEGh4y746lx0jZ2/9LlLJTmt
+   auuGuWsdQV9B9XGdTQVCYgjG/6MeXJ7/D2GppNSgQVv9kOSyOG7Ssqh+7
+   SvGsZG3YminloUG7zZFsuVIE2x47X/W487rKxxUATp8BOnGAXE8uVCDnx
+   pX+fItIc1cbtnLqrDDejnC4pewbRCBS8pwmXpprMETOM+8IhYYDVwSIdL
+   VOmy4dnA3BIsqcZ3Qbp5WcFmEdCOsFo640MfrMisUOUB36JbFEm8sRv8d
+   XmYlhW1DrS/MsyBkk4HipfPJLMiRqFvv1tV3gDGEICYC429lYVsHeDeEI
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10463"; a="276670919"
+X-IronPort-AV: E=Sophos;i="5.93,297,1654585200"; 
+   d="scan'208";a="276670919"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2022 09:46:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,297,1654585200"; 
+   d="scan'208";a="859707324"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga006.fm.intel.com with ESMTP; 07 Sep 2022 09:45:55 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id C268FF7; Wed,  7 Sep 2022 19:46:11 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        devel@acpica.org
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+        Elie Morisse <syniurge@gmail.com>,
+        Nehal Shah <nehal-bakulchandra.shah@amd.com>,
+        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
+        Khalil Blaiech <kblaiech@nvidia.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Mark Brown <broonie@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH v1 0/8] ACPI: unify _UID handling as integer
+Date:   Wed,  7 Sep 2022 19:45:58 +0300
+Message-Id: <20220907164606.65742-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXES-fQ2jT6icvL0Jk7twV9gKYnwUpnNE956qcg96D4RUQ@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Sep 07, 2022 at 06:12:57PM +0200, Ard Biesheuvel wrote:
-> Thanks for the fix, I will queue it up before the end of the week.
+This series is about unification on how we handle ACPI _UID when
+it's known to be an integer-in-the-string.
 
-Okay. Thanks for the patch feedback.
+The idea of merging either all via ACPI tree, or (which I prefer)
+taking ACPI stuff for v6.1 while the rest may be picked up later
+on by respective maintainers separately.
 
-Regards,
-Hyunwoo Kim.
+Partially compile-tested (x86-64).
+
+Andy Shevchenko (8):
+  ACPI: utils: Add acpi_dev_uid_to_integer() helper to get _UID as
+    integer
+  ACPI: LPSS: Refactor _UID handling to use acpi_dev_uid_to_integer()
+  ACPI: x86: Refactor _UID handling to use acpi_dev_uid_to_integer()
+  i2c: amd-mp2-plat: Refactor _UID handling to use
+    acpi_dev_uid_to_integer()
+  i2c: mlxbf: Refactor _UID handling to use acpi_dev_uid_to_integer()
+  perf: qcom_l2_pmu: Refactor _UID handling to use
+    acpi_dev_uid_to_integer()
+  spi: pxa2xx: Refactor _UID handling to use acpi_dev_uid_to_integer()
+  efi/dev-path-parser: Refactor _UID handling to use
+    acpi_dev_uid_to_integer()
+
+ drivers/acpi/acpi_lpss.c               | 15 ++++++------
+ drivers/acpi/utils.c                   | 24 ++++++++++++++++++
+ drivers/acpi/x86/utils.c               | 14 ++++++++---
+ drivers/firmware/efi/dev-path-parser.c | 10 +++++---
+ drivers/i2c/busses/i2c-amd-mp2-plat.c  | 27 +++++++-------------
+ drivers/i2c/busses/i2c-mlxbf.c         | 19 +++++---------
+ drivers/perf/qcom_l2_pmu.c             |  7 +++---
+ drivers/spi/spi-pxa2xx.c               | 34 +++++++-------------------
+ include/acpi/acpi_bus.h                |  1 +
+ include/linux/acpi.h                   |  5 ++++
+ 10 files changed, 81 insertions(+), 75 deletions(-)
+
+-- 
+2.35.1
+
