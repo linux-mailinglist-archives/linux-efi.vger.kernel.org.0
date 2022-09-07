@@ -2,140 +2,166 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68E885AFF70
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Sep 2022 10:44:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EBB85AFF00
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Sep 2022 10:31:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230084AbiIGIoh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 7 Sep 2022 04:44:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46852 "EHLO
+        id S229589AbiIGIbH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 7 Sep 2022 04:31:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230159AbiIGIob (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Sep 2022 04:44:31 -0400
-X-Greylist: delayed 791 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 07 Sep 2022 01:44:14 PDT
-Received: from wnew1-smtp.messagingengine.com (wnew1-smtp.messagingengine.com [64.147.123.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D07CEA3D77;
-        Wed,  7 Sep 2022 01:44:13 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailnew.west.internal (Postfix) with ESMTP id BE3772B058E5;
-        Wed,  7 Sep 2022 04:22:26 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Wed, 07 Sep 2022 04:22:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm1; t=1662538946; x=1662542546; bh=X79Bowixk2
-        UfvY4aNNNBf2XN1vgN+OVQkvEi3n41B/0=; b=FHq3eWsWbj7AeTTcT3sCiG2Gid
-        zoMcoGnX87QaDKCL9Klc4femUTSwemZiQ3qSZVwFlxvWnOSM7bX1ZQzTRZr/ntO/
-        rUHgfMfaMnw/547ubHfdDxNcdibTQ2teOF/7DV2qlAmttNSlW7d5iyhtiWg/uUDJ
-        lO5qL1F586qegEJupGnmnHsI1IuCp/ImB2pbQwWZ70GdaaWn+oyXtexephhYdXmV
-        SQislyNm+YIIa72TtD5MTVU7il9ysVv6MvEvZIg7XCSWABdf8+1sk/oBKSO3pfZ1
-        uvi6NqIm6jxqcFGbLN03EAn7fM7h4L7Oi/Ji5N0dSTsTCHL9kkQrct9oFswQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm2; t=1662538946; x=1662542546; bh=X79Bowixk2UfvY4aNNNBf2XN1vgN
-        +OVQkvEi3n41B/0=; b=i2fgw7Lm2RcMVoE6K+rIusyvnZ4lyDN5dx8+fgyWxbIF
-        +AqTwmsIDN0yb6WUldLlrs74GDun+0ghaNFmnjAZTG/kG/DTX2Ue6Jo6AoIEGfnp
-        m23C0krGK+yRAnjvF9vuguVXjMShUCvrdItalepOHerr8sWvWVCUH+p2pz2BA84o
-        9CL/mCBfzT64N5Sg+EM/Sn8zu3t4Mmkl8ZGk/QCKdH6GT+U+UaWKS/+FhXt/OrSz
-        UJnDAu8M6YDAc3UEYGHiyeS8WJGorrnO8HOYrXp9DGJehh1+4dezsYWVDALjUEnt
-        h56fIcvzomWG4T8yO1l/aiAYb7MXV5HfHSWhSnNe0w==
-X-ME-Sender: <xms:wFQYY3OkJ587gJqTFniHmGsoib1jkjdGST-qEVi3IKekB1A8gjk2Ww>
-    <xme:wFQYYx9zmv0pewFSnpE2qd-qg4VthrNbv2mqpQ6fzyLh1lG1ncg64YLF8XhxEzdRd
-    HxfOqHKeDJhq7DxaTA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfedttddgtdduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:wFQYY2Q2JbiXtN04GC_Hse6TtfQrs-R6JzVpCd0xqk1-TcpRmNZX_A>
-    <xmx:wFQYY7tsyffEhqi73XQbt5gJ44AMPaQ4LgT-tZrwxuBOXwBcKVpCPw>
-    <xmx:wFQYY_cRGxurafke8L8pYB345DBK3SybXlKUd3IJpkYtG6W6mxVuLQ>
-    <xmx:wlQYYynsfP7agf-9b5bKj6YVeu5IB60g4wd5G4IyoTohz3aQSZ3gRnFKefaSHW1i>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 32FE6B60083; Wed,  7 Sep 2022 04:22:24 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-927-gf4c98c8499-fm-20220826.002-gf4c98c84
-Mime-Version: 1.0
-Message-Id: <e2e2a0c7-d859-4255-94b6-b030aa9dc277@www.fastmail.com>
-In-Reply-To: <YxfBGDg6YkIQ6Wzq@phenom.ffwll.local>
-References: <20220806163255.10404-1-markuss.broks@gmail.com>
- <20220806163255.10404-4-markuss.broks@gmail.com>
- <YxfBGDg6YkIQ6Wzq@phenom.ffwll.local>
-Date:   Wed, 07 Sep 2022 10:22:03 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Daniel Vetter" <daniel@ffwll.ch>,
-        "Markuss Broks" <markuss.broks@gmail.com>
-Cc:     linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        "Jonathan Corbet" <corbet@lwn.net>,
-        "Ard Biesheuvel" <ardb@kernel.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "Jiri Slaby" <jirislaby@kernel.org>,
-        "Helge Deller" <deller@gmx.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        "Borislav Petkov" <bp@suse.de>,
-        "Kees Cook" <keescook@chromium.org>,
-        "Andrew Morton" <akpm@linux-foundation.org>,
-        "Randy Dunlap" <rdunlap@infradead.org>,
-        "Damien Le Moal" <damien.lemoal@opensource.wdc.com>,
-        "Thomas Zimmermann" <tzimmermann@suse.de>,
-        "Michal Suchanek" <msuchanek@suse.de>,
-        "Javier Martinez Canillas" <javierm@redhat.com>,
-        "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
-        "Wei Ming Chen" <jj251510319013@gmail.com>,
-        "Bartlomiej Zolnierkiewicz" <b.zolnierkie@samsung.com>,
-        "Tony Lindgren" <tony@atomide.com>, linux-doc@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v2 3/3] efi: earlycon: Add support for generic framebuffers and
- move to console subsystem
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229829AbiIGIbB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Sep 2022 04:31:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B33FD8C445
+        for <linux-efi@vger.kernel.org>; Wed,  7 Sep 2022 01:30:58 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B770C617CE
+        for <linux-efi@vger.kernel.org>; Wed,  7 Sep 2022 08:30:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C3DC433D6
+        for <linux-efi@vger.kernel.org>; Wed,  7 Sep 2022 08:30:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662539457;
+        bh=HqK6ybS+auhbt2FgKh+qZPv0h47sFgxqf57DuHnUjOY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=iT/ztS1cRkx1DPcrx9KfzS+3EXje+xFgtIME9ZFDM4b5fcP0lUFmYK2nw2/6vZ9VZ
+         RX6LkGlUyQjILeNuyJkukrztuRfIcdoKLmUXrjWzOexwwMQhAMy5V5pAxMh9BYuQB2
+         G6GGgPn8OL6qaBpkYZEikcBcpr1d+giUYNrsJqrOiuGqmH/EUxWoYsrfAetrWFYVa0
+         IUj6gwb8UNNskSGfbYSmNP1UfTInSJgBRh+7MUOdLxwA2zkxpBr8A0wcBP/5UIjcZh
+         ikGRnpDkLfGgoUgMZRR1QRjdXHEueO5CrGJ/PlSv5OfK6Y+nmBePZ+8JyXvPpq3UzY
+         VNu6bApEXrlNA==
+Received: by mail-lf1-f48.google.com with SMTP id x14so5898947lfu.10
+        for <linux-efi@vger.kernel.org>; Wed, 07 Sep 2022 01:30:57 -0700 (PDT)
+X-Gm-Message-State: ACgBeo2YgeAaItv0Jwf2NpCGsH6crCN8Fr9m77vPDakyskyT2d/e242O
+        TCGo8eQDk2l6F6bQBhidNmRUYeAWWtvPjpLq18k=
+X-Google-Smtp-Source: AA6agR5th4zmzjT+wPRxofDxjfQar9NGe+CFrBDtFT1HjrxCWO/5zotPDX56OVrtUkxatHE+sIJm1TIteUwrN4LgTk0=
+X-Received: by 2002:a05:6512:2294:b0:494:8dc5:10af with SMTP id
+ f20-20020a056512229400b004948dc510afmr693729lfu.426.1662539455077; Wed, 07
+ Sep 2022 01:30:55 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220626103248.GA57385@ubuntu>
+In-Reply-To: <20220626103248.GA57385@ubuntu>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 7 Sep 2022 10:30:44 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHo91v8u_RcXfu4r=x5eh-tShBu4gSDZXBRveOC275Fnw@mail.gmail.com>
+Message-ID: <CAMj1kXHo91v8u_RcXfu4r=x5eh-tShBu4gSDZXBRveOC275Fnw@mail.gmail.com>
+Subject: Re: [PATCH] efi/capsule-loader: Fix use-after-free in efi_capsule_write
+To:     Hyunwoo Kim <imv4bel@gmail.com>
+Cc:     linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Sep 6, 2022, at 11:52 PM, Daniel Vetter wrote:
-> On Sat, Aug 06, 2022 at 07:32:24PM +0300, Markuss Broks wrote:
+On Sun, 26 Jun 2022 at 12:32, Hyunwoo Kim <imv4bel@gmail.com> wrote:
 >
-> Ok I have a more fundamental issue with this than the lack of proper patch
-> splitting I mentioned in the other thread.
+> If the user calls close() during a copy operation in copy_from_user() of efi_capsule_write(),
+> a race condition may occur in which the user's buffer is copied to the freed page.
 >
-> This is the wrong place.
+> This is because .flush of file_operations is called unconditionally
+> regardless of ->f_count, unlike .release.
 >
-> drivers/video/console is about the various vt console implementations,
-> which supply a struct consw to con_register_driver.
+> This driver is writable only with root privileges, so it is not a security vulnerability.
+> However, it is recommended to add mutexes to efi_capsule_write() and efi_capsule_flush()
+> as root can accidentally break the page while in use.
+>
 
-You are right, that was my mistake. The original patch was for
-drivers/video/fbdev/, and I suggested moving it out of there because
-it does not depend on the fbdev subsystem, but clearly my suggestions
-of drivers/video/console was equally wrong.
+Apologies for the late reply.
 
-> This otoh is an (early) kernel/printk console implemented using struct
-> console. Totally different thing, and really shouldn't end up in
-> drivers/video/console imo. Somewhere in drivers/firmware might still be
-> the best place, the sysfb stuff is also there. Maybe
-> drivers/firmware/sysfb_earlycon.c?
+Could you please elaborate? I.e., describe in more detail how the race
+condition may occur?
 
-drivers/firmware/ is better but doesn't sound great to me either,
-since one important thing the patch does is to not make it depend
-on EFI firmware or BIOS style screen_info any more. 
+Thanks,
 
-Maybe drivers/tty/earlycon_simplefb.c would work better, keeping
-it close to the earlycon base support in drivers/tty/serial/,
-the vt console and the old simplefb driver/, without tying to too
-closely to fbdev of UEFI.
-
-     Arnd
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> ---
+>  drivers/firmware/efi/capsule-loader.c | 12 ++++++++++++
+>  include/linux/efi.h                   |  1 +
+>  2 files changed, 13 insertions(+)
+>
+> diff --git a/drivers/firmware/efi/capsule-loader.c b/drivers/firmware/efi/capsule-loader.c
+> index 4dde8edd53b6..e50ede51ef38 100644
+> --- a/drivers/firmware/efi/capsule-loader.c
+> +++ b/drivers/firmware/efi/capsule-loader.c
+> @@ -177,6 +177,8 @@ static ssize_t efi_capsule_write(struct file *file, const char __user *buff,
+>         if (count == 0)
+>                 return 0;
+>
+> +       mutex_lock(&cap_info->write_lock);
+> +
+>         /* Return error while NO_FURTHER_WRITE_ACTION is flagged */
+>         if (cap_info->index < 0)
+>                 return -EIO;
+> @@ -233,12 +235,16 @@ static ssize_t efi_capsule_write(struct file *file, const char __user *buff,
+>                         goto failed;
+>         }
+>
+> +       mutex_unlock(&cap_info->write_lock);
+> +
+>         return write_byte;
+>
+>  fail_unmap:
+>         kunmap(page);
+>  failed:
+>         efi_free_all_buff_pages(cap_info);
+> +       mutex_unlock(&cap_info->write_lock);
+> +
+>         return ret;
+>  }
+>
+> @@ -256,12 +262,16 @@ static int efi_capsule_flush(struct file *file, fl_owner_t id)
+>         int ret = 0;
+>         struct capsule_info *cap_info = file->private_data;
+>
+> +       mutex_lock(&cap_info->write_lock);
+> +
+>         if (cap_info->index > 0) {
+>                 pr_err("capsule upload not complete\n");
+>                 efi_free_all_buff_pages(cap_info);
+>                 ret = -ECANCELED;
+>         }
+>
+> +       mutex_unlock(&cap_info->write_lock);
+> +
+>         return ret;
+>  }
+>
+> @@ -315,6 +325,8 @@ static int efi_capsule_open(struct inode *inode, struct file *file)
+>                 return -ENOMEM;
+>         }
+>
+> +       mutex_init(&cap_info->write_lock);
+> +
+>         file->private_data = cap_info;
+>
+>         return 0;
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index 7d9b0bb47eb3..e274c4e8d7c6 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -204,6 +204,7 @@ struct efi_image_auth {
+>  struct capsule_info {
+>         efi_capsule_header_t    header;
+>         efi_capsule_header_t    *capsule;
+> +       struct mutex            write_mutex;
+>         int                     reset_type;
+>         long                    index;
+>         size_t                  count;
+> --
+> 2.25.1
+>
+> Dear all,
+>
+> I submitted this patch 2 weeks ago, this is my 3rd submission of this patch.
+>
+> Can I get feedback on this patch?
+>
+> Regards,
+> Hyunwoo Kim.
