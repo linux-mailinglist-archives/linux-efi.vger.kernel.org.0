@@ -2,46 +2,47 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12AA65B1F1C
-	for <lists+linux-efi@lfdr.de>; Thu,  8 Sep 2022 15:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC3ED5B1F60
+	for <lists+linux-efi@lfdr.de>; Thu,  8 Sep 2022 15:38:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232431AbiIHN3s (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 8 Sep 2022 09:29:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58836 "EHLO
+        id S231872AbiIHNiF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 8 Sep 2022 09:38:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232402AbiIHN3O (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 8 Sep 2022 09:29:14 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 730D181B00;
-        Thu,  8 Sep 2022 06:29:12 -0700 (PDT)
+        with ESMTP id S231858AbiIHNiE (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 8 Sep 2022 09:38:04 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2E6BC2F80;
+        Thu,  8 Sep 2022 06:38:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662643752; x=1694179752;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=iMp9w4wgPvBJFcprqiqbm816Nf5nzWcjGT/HX2kTYFE=;
-  b=GsMmKkCtlCjuuF/zSeuF0ZMWHRiWiYz66eUAFBdwx3fobXIoFMB2BlKY
-   gWvVUlmEVYo97gp6r/r07/IPoRcTgmX9xX11RmPscLDjfNaqCT4BY4Z2P
-   lKPxrBWIh3XCVPEFsUm/TxLaFWbqVfFUqjwr4LvSJPLBiPfIZnJBs9Ncs
-   Ip1gRoNSmcrSlud/8ZfTFvdYpYMQ93Hyly/whyizw3hwqRwHzevY1K7Z0
-   Zdo7zBnJIrWDHcpxBO7/qxx9tdTkx0rubCCMX/GqwehkfbfABp8/B1cE9
-   8cjpZntpBPqMrjvE6Gg7o5ykBI6ig1S07JQ8/WlwYNLmPncAcBl7vBeSy
+  t=1662644283; x=1694180283;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=b3oDheI9HlriGFBUl+RRrQ8972WbuLW62mIovZOq/O4=;
+  b=AmoZm+W7TstuiHoN+lzO9Xwl3sOPu9V77HWp7FFB17i53WmsmrG43h5Q
+   MtkdjavKgjaTAaANdhPa5j2JFwsSDPOcTQs+5hss7DHVy90Q7zb6D8o8u
+   wy6dhPIGyiAfK0uWmNUVDnqRVfo5S4yaim4tGeGJ6va0r4snzfLkrfsHy
+   tB7F8HfGKnstiNcD3/nwRs6R/murSU8yp92639+eXcFblgUuKSTc49nHD
+   zj08SA19N788t8JF2CadK86Ee97M8bcXpcTof/5H/9fsHv89QCEGYE8G5
+   1GuLoOQfPl5avD+QZPHtt1sQHyPAnRB+JBkffpO6nuTKMCT0eEgTVZSg7
    A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10464"; a="284189185"
+X-IronPort-AV: E=McAfee;i="6500,9779,10464"; a="298508517"
 X-IronPort-AV: E=Sophos;i="5.93,300,1654585200"; 
-   d="scan'208";a="284189185"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2022 06:29:10 -0700
-X-ExtLoop1: 1
+   d="scan'208";a="298508517"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2022 06:38:02 -0700
 X-IronPort-AV: E=Sophos;i="5.93,300,1654585200"; 
-   d="scan'208";a="610693628"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga007.jf.intel.com with ESMTP; 08 Sep 2022 06:29:04 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 1A0726D1; Thu,  8 Sep 2022 16:29:13 +0300 (EEST)
+   d="scan'208";a="683234779"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2022 06:37:56 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oWHj6-00A92n-2S;
+        Thu, 08 Sep 2022 16:37:52 +0300
+Date:   Thu, 8 Sep 2022 16:37:52 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+To:     Hans de Goede <hdegoede@redhat.com>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Ard Biesheuvel <ardb@kernel.org>,
         Mark Brown <broonie@kernel.org>, linux-acpi@vger.kernel.org,
@@ -64,66 +65,44 @@ Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         Robert Moore <robert.moore@intel.com>,
         Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH v2 8/8] efi/dev-path-parser: Refactor _UID handling to use acpi_dev_uid_to_integer()
-Date:   Thu,  8 Sep 2022 16:29:10 +0300
-Message-Id: <20220908132910.62122-9-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220908132910.62122-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v2 0/8] ACPI: unify _UID handling as integer
+Message-ID: <YxnwMLvgQAPOkeeK@smile.fi.intel.com>
 References: <20220908132910.62122-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220908132910.62122-1-andriy.shevchenko@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-ACPI utils provide acpi_dev_uid_to_integer() helper to extract _UID as
-an integer. Use it instead of custom approach.
+On Thu, Sep 08, 2022 at 04:29:02PM +0300, Andy Shevchenko wrote:
+> This series is about unification on how we handle ACPI _UID when
+> it's known to be an integer-in-the-string.
+> 
+> The idea of merging either all via ACPI tree, or taking ACPI stuff
+> for the v6.1 while the rest may be picked up later on by respective
+> maintainers separately
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/dev-path-parser.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+>(currently all depends on Wolfram, other
+> patches have got the tags from the maintainers).
 
-diff --git a/drivers/firmware/efi/dev-path-parser.c b/drivers/firmware/efi/dev-path-parser.c
-index eb9c65f97841..f80d87c199c3 100644
---- a/drivers/firmware/efi/dev-path-parser.c
-+++ b/drivers/firmware/efi/dev-path-parser.c
-@@ -15,9 +15,11 @@
- static long __init parse_acpi_path(const struct efi_dev_path *node,
- 				   struct device *parent, struct device **child)
- {
--	char hid[ACPI_ID_LEN], uid[11]; /* UINT_MAX + null byte */
- 	struct acpi_device *adev;
- 	struct device *phys_dev;
-+	char hid[ACPI_ID_LEN];
-+	u64 uid;
-+	int ret;
- 
- 	if (node->header.length != 12)
- 		return -EINVAL;
-@@ -27,12 +29,12 @@ static long __init parse_acpi_path(const struct efi_dev_path *node,
- 		'A' + ((node->acpi.hid >>  5) & 0x1f) - 1,
- 		'A' + ((node->acpi.hid >>  0) & 0x1f) - 1,
- 			node->acpi.hid >> 16);
--	sprintf(uid, "%u", node->acpi.uid);
- 
- 	for_each_acpi_dev_match(adev, hid, NULL, -1) {
--		if (adev->pnp.unique_id && !strcmp(adev->pnp.unique_id, uid))
-+		ret = acpi_dev_uid_to_integer(adev, &uid);
-+		if (ret == 0 && node->acpi.uid == uid)
- 			break;
--		if (!adev->pnp.unique_id && node->acpi.uid == 0)
-+		if (ret == -ENODATA && node->acpi.uid == 0)
- 			break;
- 	}
- 	if (!adev)
+I stand corrected, the perf patch is not tagged yet.
+
+> Partially compile-tested (x86-64).
+
+Forgot to mention that there is a new user of this API is pending:
+https://lore.kernel.org/linux-gpio/20220908072621.3415957-1-jay.xu@rock-chips.com/
+
 -- 
-2.35.1
+With Best Regards,
+Andy Shevchenko
+
 
