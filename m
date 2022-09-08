@@ -2,59 +2,74 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04CCB5B1544
-	for <lists+linux-efi@lfdr.de>; Thu,  8 Sep 2022 09:02:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D969C5B15A6
+	for <lists+linux-efi@lfdr.de>; Thu,  8 Sep 2022 09:30:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231244AbiIHHCM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 8 Sep 2022 03:02:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57484 "EHLO
+        id S229776AbiIHHaF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 8 Sep 2022 03:30:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231255AbiIHHCD (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 8 Sep 2022 03:02:03 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4105A9C2D3
-        for <linux-efi@vger.kernel.org>; Thu,  8 Sep 2022 00:01:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662620518; x=1694156518;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=0b/bowG5sJz5hySUzC6MlhjQi2Opi3R7c+mtdnyTyC0=;
-  b=VK72Dzcs5Bxy/Q6PT1jGCgLPA48N8EFSCIXdjjUEnr5bGsOlbTX6n8sY
-   HA4G8nH+obUp+ryoghAeYwpFV6F6qFRMW3wGGp22YWqmEtTSEPGPFNTSw
-   XHxGRV8fAvTj5Zuof0vaEATrCC/aM/xtR0yyRPC81EYKPEE3MFOiE+z6n
-   NR1FKmDhFfORnFo7s5kUUWOsMyRUS8ekIqaZePq+IiT3Rtv7wvMz/DAnZ
-   uAZlE3MUR2iklYbSe3+ICTcynczJbbHrBd3N/bE/uJhOHvyytjg35B2R/
-   NvT0IRiiQcUL1LGNRvu9UQ6gZW+UeDLyCg5Hmn9fHFWfU6sa/tUjwCQuX
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10463"; a="297089066"
-X-IronPort-AV: E=Sophos;i="5.93,299,1654585200"; 
-   d="scan'208";a="297089066"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2022 00:01:56 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,299,1654585200"; 
-   d="scan'208";a="614781494"
-Received: from lkp-server02.sh.intel.com (HELO 95dfd251caa2) ([10.239.97.151])
-  by orsmga002.jf.intel.com with ESMTP; 08 Sep 2022 00:01:55 -0700
-Received: from kbuild by 95dfd251caa2 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oWBXu-0007TJ-1u;
-        Thu, 08 Sep 2022 07:01:54 +0000
-Date:   Thu, 08 Sep 2022 15:01:48 +0800
-From:   kernel test robot <lkp@intel.com>
+        with ESMTP id S229937AbiIHHaE (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 8 Sep 2022 03:30:04 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5C0725E8C
+        for <linux-efi@vger.kernel.org>; Thu,  8 Sep 2022 00:30:01 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id bj14so11226212wrb.12
+        for <linux-efi@vger.kernel.org>; Thu, 08 Sep 2022 00:30:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=BYBKvefnfog6brlu+T42oBrw7rDJ/U3oV7dRRMgICjg=;
+        b=pR3nzApapIbF1qh6bkt3G+bAmIZzPsTGzPFOR+29ueB+MZY9Nc4QCkmJyWVffMhH3g
+         KT/u2bujm4lZB5Siy/FMePO9XtJt6rEq5s/6EYoJfhJ1aFZPMZUdcFbfbqbHcr1KKguM
+         0VDqj4JVpgJ4ACsldYJPmbrk6Fs8ui7HPsJTh+RMktfPXSsh+kD86Vc10zyl0eYhnu0C
+         ZSpNh4Tyz/AfIqJGclMkLBS/NjYzUyeJ0uMb5P2zFXi2POnp6rIMBkeR2679mLRp+cDh
+         MIxw+00wLihgaakue3dXBKS4F0P+xcUPzbzoGUnqarQI1k4OVIeuaWShqkZMT+tzefqV
+         smzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=BYBKvefnfog6brlu+T42oBrw7rDJ/U3oV7dRRMgICjg=;
+        b=iXB2YQzXJjNC8WDGYNkx+CEyEkybMHT9Ypur/DiugwhQU9WYBHpKQ9TRT802i+2y7s
+         0aY6NNDl9FiYDcVSUVbWfbboahGDdcN6lf3oFIo4dSuOBLVKS88v9umsVMc6guBJrNcW
+         hygZRhrFF6QhgFrXtbLdMLQq26iQTnUZS2t5kKAR6JdK+GICjqmBen6Mhe3OKU+g3tlG
+         ZMfGILuh4phSj3NX0tE0qUU29VJ6CDzvy4jS4rT8yJSGm5FvHqluStabYyAsSsm5XRo6
+         hLo2jTaPUhVzdT94GdMG5aD53erkPXiwhLd73Cpm9+/dObB0UgdyzQzTEfYONzBkpSeO
+         B17A==
+X-Gm-Message-State: ACgBeo1jENmlm/dojS6M9NfR3FYEIrZs3f52kgrEYcvSDqb5F1usMeA6
+        fHWS7r+CAmjxhOhwappXQa1Qqw==
+X-Google-Smtp-Source: AA6agR5uQ72L3FTClNnWwWKdtCrJcSeqPU2gRXaIX5z/QkVD4GU5jcZLNyvVCnCgl1kmEMH7ClZOZA==
+X-Received: by 2002:a05:6000:118e:b0:228:9373:70ae with SMTP id g14-20020a056000118e00b00228937370aemr4123096wrx.467.1662622200143;
+        Thu, 08 Sep 2022 00:30:00 -0700 (PDT)
+Received: from hera ([46.103.15.185])
+        by smtp.gmail.com with ESMTPSA id z21-20020a05600c0a1500b003b332a7b898sm601008wmp.45.2022.09.08.00.29.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Sep 2022 00:29:59 -0700 (PDT)
+Date:   Thu, 8 Sep 2022 10:29:56 +0300
+From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- 9cb636b5f6a8cc6d1b50809ec8f8d33ae0c84c95
-Message-ID: <6319935c.0yisYcIl3oG/+R10%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Cc:     grub-devel@nongnu.org, linux-efi@vger.kernel.org,
+        grub-devel@gnu.org, Daniel Kiper <daniel.kiper@oracle.com>,
+        Nikita Ermakov <arei@altlinux.org>,
+        Atish Patra <atishp@atishpatra.org>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+        dann frazier <dann.frazier@canonical.com>,
+        Julian Andres Klode <julian.klode@canonical.com>
+Subject: Re: [PATCH resend 8/9] efi: implement LoadFile2 initrd loading
+ protocol for Linux
+Message-ID: <YxmZ9INMSU6lc00b@hera>
+References: <20220818085540.2075028-1-ardb@kernel.org>
+ <20220818085540.2075028-9-ardb@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Disposition: inline
+In-Reply-To: <20220818085540.2075028-9-ardb@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,145 +77,217 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
-branch HEAD: 9cb636b5f6a8cc6d1b50809ec8f8d33ae0c84c95  efi: capsule-loader: Fix use-after-free in efi_capsule_write
+Hi Ard,
 
-elapsed time: 856m
+On Thu, Aug 18, 2022 at 10:55:38AM +0200, Ard Biesheuvel wrote:
+> Recent Linux kernels will invoke the LoadFile2 protocol installed on
+> a well-known vendor media path to load the initrd if it is exposed by
+> the firmware. Using this method is preferred for two reasons:
+> - the Linux kernel is in charge of allocating the memory, and so it can
+>   implement any placement policy it wants (given that these tend to
+>   change between kernel versions),
+> - it is no longer necessary to modify the device tree provided by the
+>   firmware.
+> 
+> So let's install this protocol when handling the 'initrd' command if
+> such a recent kernel was detected (based on the PE/COFF image version),
+> and defer loading the initrd contents until the point where the kernel
+> invokes the LoadFile2 protocol.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  grub-core/loader/arm64/linux.c | 129 +++++++++++++++++++-
+>  1 file changed, 128 insertions(+), 1 deletion(-)
+> 
+> diff --git a/grub-core/loader/arm64/linux.c b/grub-core/loader/arm64/linux.c
+> index 56ba8d0a6ea3..82c7558b4c4c 100644
+> --- a/grub-core/loader/arm64/linux.c
+> +++ b/grub-core/loader/arm64/linux.c
+> @@ -48,6 +48,48 @@ static grub_uint32_t cmdline_size;
+>  static grub_addr_t initrd_start;
+>  static grub_addr_t initrd_end;
+>  
+> +static grub_efi_guid_t load_file2_guid = GRUB_EFI_LOAD_FILE2_PROTOCOL_GUID;
+> +static grub_efi_guid_t device_path_guid = GRUB_EFI_DEVICE_PATH_GUID;
+> +static struct grub_linux_initrd_context initrd_ctx = { 0, 0, 0 };
+> +static grub_efi_handle_t initrd_lf2_handle;
+> +static int initrd_use_loadfile2;
+> +
+> +struct initrd_media_device_path {
+> +  grub_efi_vendor_media_device_path_t  vendor;
+> +  grub_efi_device_path_t               end;
+> +} GRUB_PACKED;
+> +
+> +#define LINUX_EFI_INITRD_MEDIA_GUID  \
+> +  { 0x5568e427, 0x68fc, 0x4f3d, \
+> +    { 0xac, 0x74, 0xca, 0x55, 0x52, 0x31, 0xcc, 0x68 } \
+> +  }
+> +
+> +static struct initrd_media_device_path initrd_lf2_device_path = {
+> +  {
+> +    {
+> +      GRUB_EFI_MEDIA_DEVICE_PATH_TYPE,
+> +      GRUB_EFI_VENDOR_MEDIA_DEVICE_PATH_SUBTYPE,
+> +      sizeof(grub_efi_vendor_media_device_path_t),
+> +    },
+> +    LINUX_EFI_INITRD_MEDIA_GUID
+> +  }, {
+> +    GRUB_EFI_END_DEVICE_PATH_TYPE,
+> +    GRUB_EFI_END_ENTIRE_DEVICE_PATH_SUBTYPE,
+> +    sizeof(grub_efi_device_path_t)
+> +  }
+> +};
+> +
+> +static grub_efi_status_t
+> +grub_efi_initrd_load_file2(grub_efi_load_file2_t *this,
+> +                           grub_efi_device_path_t *device_path,
+> +                           grub_efi_boolean_t boot_policy,
+> +                           grub_efi_uintn_t *buffer_size,
+> +                           void *buffer);
+> +
+> +static grub_efi_load_file2_t initrd_lf2 = {
+> +  grub_efi_initrd_load_file2
+> +};
+> +
+>  grub_err_t
+>  grub_arch_efi_linux_load_image_header (grub_file_t file,
+>                                        struct linux_arch_kernel_header * lh)
+> @@ -78,6 +120,18 @@ grub_arch_efi_linux_load_image_header (grub_file_t file,
+>         return grub_error(GRUB_ERR_FILE_READ_ERROR, "failed to read COFF image header");
+>      }
+>  
+> +  /*
+> +   * Linux kernels built for any architecture are guaranteed to support the
+> +   * LoadFile2 based initrd loading protocol if the image version is >= 1.
+> +   */
+> +  if (lh->coff_image_header.optional_header.major_image_version >= 1)
+> +    initrd_use_loadfile2 = 1;
+> +   else
+> +    initrd_use_loadfile2 = 0;
+> +
+> +  grub_dprintf ("linux", "LoadFile2 initrd loading %sabled\n",
+> +                initrd_use_loadfile2 ? "en" : "dis");
+> +
+>    return GRUB_ERR_NONE;
+>  }
+>  
+> @@ -197,6 +251,8 @@ grub_linux_boot (void)
+>  static grub_err_t
+>  grub_linux_unload (void)
+>  {
+> +  grub_efi_boot_services_t *b;
+> +
+>    grub_dl_unref (my_mod);
+>    loaded = 0;
+>    if (initrd_start)
+> @@ -208,6 +264,19 @@ grub_linux_unload (void)
+>      grub_efi_free_pages ((grub_addr_t) kernel_addr,
+>  			 GRUB_EFI_BYTES_TO_PAGES (kernel_size));
+>    grub_fdt_unload ();
+> +
+> +  if (initrd_lf2_handle)
+> +    {
+> +      b = grub_efi_system_table->boot_services;
+> +      b->uninstall_multiple_protocol_interfaces (initrd_lf2_handle,
+> +                                                 &load_file2_guid,
+> +                                                 &initrd_lf2,
+> +                                                 &device_path_guid,
+> +                                                 &initrd_lf2_device_path,
+> +                                                 NULL);
+> +      initrd_lf2_handle = NULL;
+> +      initrd_use_loadfile2 = 0;
+> +    }
+>    return GRUB_ERR_NONE;
+>  }
+>  
+> @@ -247,13 +316,50 @@ allocate_initrd_mem (int initrd_pages)
+>  				       GRUB_EFI_LOADER_DATA);
+>  }
+>  
+> +static grub_efi_status_t
+> +grub_efi_initrd_load_file2(grub_efi_load_file2_t *this,
+> +                          grub_efi_device_path_t *device_path,
+> +                          grub_efi_boolean_t boot_policy,
+> +                          grub_efi_uintn_t *buffer_size,
+> +                          void *buffer)
+> +{
+> +  grub_efi_status_t status = GRUB_EFI_SUCCESS;
+> +  grub_efi_uintn_t initrd_size;
+> +
+> +  if (!this || this != &initrd_lf2 || !buffer_size)
+> +    return GRUB_EFI_INVALID_PARAMETER;
+> +
+> +  if (device_path->type != GRUB_EFI_END_DEVICE_PATH_TYPE ||
+> +      device_path->subtype != GRUB_EFI_END_ENTIRE_DEVICE_PATH_SUBTYPE)
+> +    return GRUB_EFI_NOT_FOUND;
+> +
+> +  if (boot_policy)
+> +    return GRUB_EFI_UNSUPPORTED;
+> +
+> +  initrd_size = grub_get_initrd_size (&initrd_ctx);
+> +  if (!buffer || *buffer_size < initrd_size)
+> +    {
+> +      *buffer_size = initrd_size;
+> +      return GRUB_EFI_BUFFER_TOO_SMALL;
+> +    }
+> +
+> +  grub_dprintf ("linux", "Providing initrd via LOAD_FILE2_PROTOCOL\n");
+> +
+> +  if (grub_initrd_load (&initrd_ctx, buffer))
+> +    status = GRUB_EFI_LOAD_ERROR;
+> +
+> +  grub_initrd_close (&initrd_ctx);
+> +  return status;
+> +}
+> +
+>  static grub_err_t
+>  grub_cmd_initrd (grub_command_t cmd __attribute__ ((unused)),
+>  		 int argc, char *argv[])
+>  {
+> -  struct grub_linux_initrd_context initrd_ctx = { 0, 0, 0 };
+>    int initrd_size, initrd_pages;
+>    void *initrd_mem = NULL;
+> +  grub_efi_boot_services_t *b;
+> +  grub_efi_status_t status;
+>  
+>    if (argc == 0)
+>      {
+> @@ -271,6 +377,27 @@ grub_cmd_initrd (grub_command_t cmd __attribute__ ((unused)),
+>    if (grub_initrd_init (argc, argv, &initrd_ctx))
+>      goto fail;
+>  
+> +  if (initrd_use_loadfile2)
+> +    {
+> +      if (!initrd_lf2_handle)
+> +        {
+> +          b = grub_efi_system_table->boot_services;
+> +          status = b->install_multiple_protocol_interfaces (&initrd_lf2_handle,
+> +                                                            &load_file2_guid,
+> +                                                            &initrd_lf2,
+> +                                                            &device_path_guid,
+> +                                                            &initrd_lf2_device_path,
+> +                                                            NULL);
+> +          if (status == GRUB_EFI_OUT_OF_RESOURCES)
+> +            {
+> +              grub_error (GRUB_ERR_OUT_OF_MEMORY, N_("out of memory"));
+> +              return grub_errno;
+> +            }
+> +        }
+> +      grub_dprintf ("linux", "Using LoadFile2 initrd loading protocol\n");
+> +      return GRUB_ERR_NONE;
+> +    }
+> +
+>    initrd_size = grub_get_initrd_size (&initrd_ctx);
+>    grub_dprintf ("linux", "Loading initrd\n");
+>  
+> -- 
+> 2.35.1
+> 
 
-configs tested: 124
-configs skipped: 3
+I tested this on u-boot n(which also support load_file2 for the initrd).
+Even if the user misconfigures the whole thing and try to install the
+protocol twice everything seems to be handled properly.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Tested-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 
-gcc tested configs:
-um                           x86_64_defconfig
-um                             i386_defconfig
-powerpc                          allmodconfig
-mips                             allyesconfig
-powerpc                           allnoconfig
-arc                  randconfig-r043-20220907
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                                defconfig
-sh                               allmodconfig
-x86_64                        randconfig-a013
-x86_64                              defconfig
-x86_64                        randconfig-a011
-i386                          randconfig-a005
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-x86_64                        randconfig-a015
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64                           rhel-8.3-kvm
-arm                                 defconfig
-x86_64                        randconfig-a006
-x86_64                           rhel-8.3-syz
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-csky                                defconfig
-sparc                            alldefconfig
-i386                             allyesconfig
-i386                          randconfig-a014
-arm                              allyesconfig
-i386                          randconfig-a012
-arm64                            allyesconfig
-i386                          randconfig-a016
-sparc                               defconfig
-um                                  defconfig
-sh                            titan_defconfig
-arm                            mps2_defconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-ia64                          tiger_defconfig
-arc                              alldefconfig
-i386                             alldefconfig
-powerpc                     ep8248e_defconfig
-m68k                          hp300_defconfig
-m68k                        m5272c3_defconfig
-arm                          exynos_defconfig
-sparc                             allnoconfig
-arm                        cerfcube_defconfig
-powerpc                      arches_defconfig
-openrisc                 simple_smp_defconfig
-powerpc                     asp8347_defconfig
-loongarch                           defconfig
-loongarch                         allnoconfig
-i386                          randconfig-c001
-csky                              allnoconfig
-alpha                             allnoconfig
-arc                               allnoconfig
-riscv                             allnoconfig
-sh                          r7785rp_defconfig
-arm                          iop32x_defconfig
-powerpc                     mpc83xx_defconfig
-xtensa                generic_kc705_defconfig
-sh                     sh7710voipgw_defconfig
-sh                             sh03_defconfig
-sh                           se7750_defconfig
-s390                             allmodconfig
-xtensa                       common_defconfig
-arm                        clps711x_defconfig
-arc                           tb10x_defconfig
-powerpc                       eiger_defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-sh                          r7780mp_defconfig
-arm                            qcom_defconfig
-arm                          pxa3xx_defconfig
-arm                         s3c6400_defconfig
-powerpc                     stx_gp3_defconfig
-arm64                            alldefconfig
-sh                           se7722_defconfig
-riscv                randconfig-r042-20220908
-arc                  randconfig-r043-20220908
-s390                 randconfig-r044-20220908
-nios2                            allyesconfig
-nios2                               defconfig
-parisc                              defconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-powerpc                         wii_defconfig
-xtensa                  cadence_csp_defconfig
-m68k                       m5275evb_defconfig
-sh                         ap325rxa_defconfig
-ia64                             allmodconfig
-
-clang tested configs:
-hexagon              randconfig-r041-20220907
-hexagon              randconfig-r045-20220907
-s390                 randconfig-r044-20220907
-riscv                randconfig-r042-20220907
-i386                          randconfig-a002
-x86_64                        randconfig-a012
-i386                          randconfig-a004
-i386                          randconfig-a006
-x86_64                        randconfig-a005
-x86_64                        randconfig-a001
-x86_64                        randconfig-a016
-x86_64                        randconfig-a003
-x86_64                        randconfig-a014
-i386                          randconfig-a013
-i386                          randconfig-a015
-i386                          randconfig-a011
-powerpc                 mpc8315_rdb_defconfig
-mips                           ip22_defconfig
-powerpc                     tqm8540_defconfig
-arm                           spitz_defconfig
-x86_64                        randconfig-k001
-powerpc                     akebono_defconfig
-mips                      malta_kvm_defconfig
-arm                    vt8500_v6_v7_defconfig
-arm                      pxa255-idp_defconfig
-s390                             alldefconfig
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
