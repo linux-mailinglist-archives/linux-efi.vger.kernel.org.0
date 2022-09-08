@@ -2,140 +2,88 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CACC5B199E
-	for <lists+linux-efi@lfdr.de>; Thu,  8 Sep 2022 12:07:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06DC35B1A66
+	for <lists+linux-efi@lfdr.de>; Thu,  8 Sep 2022 12:45:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231156AbiIHKHH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 8 Sep 2022 06:07:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48826 "EHLO
+        id S231533AbiIHKp0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 8 Sep 2022 06:45:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230481AbiIHKHG (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 8 Sep 2022 06:07:06 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBE68C6FD7;
-        Thu,  8 Sep 2022 03:07:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662631625; x=1694167625;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NCMYuaghCCLYiVfbRGO7/C8mw8n6/gmcgPBD0pal7aY=;
-  b=CqJiWelJBoB3UOW6tUdDXngLqmeMyX+frhWw1BQ5DINhGQWvox/ZyP2I
-   ns99I1qGS6+AznXxeyGrMgMY/W/ZzG6QpgAxGVnmJWroR9C0KStdaSbF8
-   L1fxu5pmEUo2b0tHiP8CzaZnTiF3qh8Mu0+vjJTy9IJmvDoLyeu4fEStS
-   2aF7PIcFshDgtoPbbI54f6zw1mXT0Iskx7ZfBEI+Rd5kRF2GPtEExLla/
-   TNSYcmMUKEv7zgC8PiHmSsXlftkZuKX/yx+kmcgBB1w/ylSD+514ufaCt
-   7VXFG4g5Egol0njhpchtQ6e+3vH1D2SuTEQBDeo74FVIiSQBqsUJ9WU3O
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10463"; a="323321525"
-X-IronPort-AV: E=Sophos;i="5.93,299,1654585200"; 
-   d="scan'208";a="323321525"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2022 03:07:05 -0700
-X-IronPort-AV: E=Sophos;i="5.93,299,1654585200"; 
-   d="scan'208";a="610639513"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2022 03:06:58 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1oWEQw-00A4Ra-1f;
-        Thu, 08 Sep 2022 13:06:54 +0300
-Date:   Thu, 8 Sep 2022 13:06:54 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        devel@acpica.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Elie Morisse <syniurge@gmail.com>,
-        Nehal Shah <nehal-bakulchandra.shah@amd.com>,
-        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
-        Khalil Blaiech <kblaiech@nvidia.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Mark Brown <broonie@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Wolfram Sang <wsa@kernel.org>
-Subject: Re: [PATCH v1 0/8] ACPI: unify _UID handling as integer
-Message-ID: <Yxm+vkO31ip16+q0@smile.fi.intel.com>
-References: <20220907164606.65742-1-andriy.shevchenko@linux.intel.com>
- <fd1c459c-0c49-8fee-f71e-b2756aad84e9@redhat.com>
+        with ESMTP id S231401AbiIHKpG (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 8 Sep 2022 06:45:06 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D3E563F35
+        for <linux-efi@vger.kernel.org>; Thu,  8 Sep 2022 03:44:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 07E96B820BD
+        for <linux-efi@vger.kernel.org>; Thu,  8 Sep 2022 10:44:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FCCC433D7;
+        Thu,  8 Sep 2022 10:44:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662633872;
+        bh=NKYJCLAWhrYyrrHwlwT5hNVYetsBT+7lnZ4+YR82A3w=;
+        h=From:To:Cc:Subject:Date:From;
+        b=lAN27rHxpBRa32XdoQvBxtZttUTP3fHHNYd0ajd7Y+gBw6knQgfzpe1qvSmfNEt8N
+         TxsXDt84WB28ydhYsgYkkyPgr0dFm2GtITW58FlReQu6UcA4WuAHVcwxBeqjfIOibp
+         3sXZESISEEVdphsvi3h5Y1iz7PUE+UJwcd6BTUHp+xz09XSD8+YYdMfBr1eoMWJ4g+
+         5MYR6WZ5KAuiWcNoUDqQfkhRnhU5bZrkXvLG+IhKOizA3r3T69rE1EwzglcqSsY/gw
+         U2pObdh0qUESFVJLfd65tusb25hEbTxhXYbNeu8gOq4v7erYo+nJpLLhILVFsMuqw0
+         A+5fh/8UhOhCg==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     torvalds@linux-foundation.org
+Cc:     linux-efi@vger.kernel.org, gregkh@linuxfoundation.org,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: [GIT PULL] EFI fixes for v6.0 #1
+Date:   Thu,  8 Sep 2022 12:43:59 +0200
+Message-Id: <20220908104359.1416858-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fd1c459c-0c49-8fee-f71e-b2756aad84e9@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1215; i=ardb@kernel.org; h=from:subject; bh=NKYJCLAWhrYyrrHwlwT5hNVYetsBT+7lnZ4+YR82A3w=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjGcdup+F1cyxtdeKpEIw9MgE+NWA6XiDuuI8Q3X1M TgIR1MeJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYxnHbgAKCRDDTyI5ktmPJH4tC/ 9cRItcmRpswXvOWaPzvRaNKU66J4sJaEkTF78edjmCcnKIWrUm95RIJfSIiiiai40cScufjHfTkd38 msyeh7pjlSkPxRM8UA906irT+y7mOtx1DJDnJ5yRJVnGidEwphzS6/cZLPhq4gcN/olspTXhZl8Kqo D12c3RfN5RwFfAll1fyvuOi4kUyRSTEyQMHS1BjY8to4DMlHPrNOmGw7DMrc6iP5UoHCNVcPXds2qy uUiKrQ6z4tqtw4odhsfZISOMRpnhLu01FVmcNaKz5bmIGyZiblj3EFHi2TOOM3dvoUGNdpkYPvwJjh wBDH0RM6fh9D/6B8WvqJgVa7aJEsA8ZDSdmoHv1m0Ccf6VZaDQIddfdvBgVq8Si1kS9iWJKVXMqjCm sxEybLKYp1StFm5vOyqZJiGqEa1XzE969NrQ1ahJfMwldjaaQE7PGesyL89COh1zH3baIbtYoxmu4d REZLuvv3+3WmFAliE9/Yh/kPbEq+sn2Z12RqU7enE2qls=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Sep 08, 2022 at 11:28:48AM +0200, Hans de Goede wrote:
-> On 9/7/22 18:45, Andy Shevchenko wrote:
-> > This series is about unification on how we handle ACPI _UID when
-> > it's known to be an integer-in-the-string.
-> > 
-> > The idea of merging either all via ACPI tree, or (which I prefer)
-> > taking ACPI stuff for v6.1 while the rest may be picked up later
-> > on by respective maintainers separately.
-> > 
-> > Partially compile-tested (x86-64).
-> > 
-> > Andy Shevchenko (8):
-> >   ACPI: utils: Add acpi_dev_uid_to_integer() helper to get _UID as
-> >     integer
-> >   ACPI: LPSS: Refactor _UID handling to use acpi_dev_uid_to_integer()
-> >   ACPI: x86: Refactor _UID handling to use acpi_dev_uid_to_integer()
-> >   i2c: amd-mp2-plat: Refactor _UID handling to use
-> >     acpi_dev_uid_to_integer()
-> >   i2c: mlxbf: Refactor _UID handling to use acpi_dev_uid_to_integer()
-> >   perf: qcom_l2_pmu: Refactor _UID handling to use
-> >     acpi_dev_uid_to_integer()
-> >   spi: pxa2xx: Refactor _UID handling to use acpi_dev_uid_to_integer()
-> >   efi/dev-path-parser: Refactor _UID handling to use
-> >     acpi_dev_uid_to_integer()
-> > 
-> >  drivers/acpi/acpi_lpss.c               | 15 ++++++------
-> >  drivers/acpi/utils.c                   | 24 ++++++++++++++++++
-> >  drivers/acpi/x86/utils.c               | 14 ++++++++---
-> >  drivers/firmware/efi/dev-path-parser.c | 10 +++++---
-> >  drivers/i2c/busses/i2c-amd-mp2-plat.c  | 27 +++++++-------------
-> >  drivers/i2c/busses/i2c-mlxbf.c         | 19 +++++---------
-> >  drivers/perf/qcom_l2_pmu.c             |  7 +++---
-> >  drivers/spi/spi-pxa2xx.c               | 34 +++++++-------------------
-> >  include/acpi/acpi_bus.h                |  1 +
-> >  include/linux/acpi.h                   |  5 ++++
-> >  10 files changed, 81 insertions(+), 75 deletions(-)
-> > 
-> 
-> Thanks, patches 1-7 look good to me:
-> 
-> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-> 
-> for patches 1-7.
-> 
-> I have one small remark for patch 8, which I will send in
-> a reply to patch 8.
+The following changes since commit 568035b01cfb107af8d2e4bd2fb9aea22cf5b868:
 
-Thanks for review!
+  Linux 6.0-rc1 (2022-08-14 15:50:18 -0700)
 
--- 
-With Best Regards,
-Andy Shevchenko
+are available in the Git repository at:
 
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent-for-v6.0-1
 
+for you to fetch changes up to 9cb636b5f6a8cc6d1b50809ec8f8d33ae0c84c95:
+
+  efi: capsule-loader: Fix use-after-free in efi_capsule_write (2022-09-07 18:23:56 +0200)
+
+----------------------------------------------------------------
+A couple of low-priority EFI fixes
+
+- prevent the randstruct plugin from re-ordering EFI protocol
+  definitions;
+- fix a use-after-free in the capsule loader
+- drop unused variable
+
+----------------------------------------------------------------
+Ard Biesheuvel (1):
+      efi: libstub: Disable struct randomization
+
+Hyunwoo Kim (1):
+      efi: capsule-loader: Fix use-after-free in efi_capsule_write
+
+chen zhang (1):
+      efi/x86: libstub: remove unused variable
+
+ drivers/firmware/efi/capsule-loader.c   | 31 +++++++------------------------
+ drivers/firmware/efi/libstub/Makefile   |  7 +++++++
+ drivers/firmware/efi/libstub/x86-stub.c |  1 -
+ 3 files changed, 14 insertions(+), 25 deletions(-)
