@@ -2,95 +2,124 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9870F5B403E
-	for <lists+linux-efi@lfdr.de>; Fri,  9 Sep 2022 21:55:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 503855B4055
+	for <lists+linux-efi@lfdr.de>; Fri,  9 Sep 2022 22:08:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230120AbiIITzI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 9 Sep 2022 15:55:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50808 "EHLO
+        id S229943AbiIIUI0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 9 Sep 2022 16:08:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231755AbiIITzG (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 9 Sep 2022 15:55:06 -0400
+        with ESMTP id S229774AbiIIUIZ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 9 Sep 2022 16:08:25 -0400
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92AE95756B;
-        Fri,  9 Sep 2022 12:55:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC085BD75D;
+        Fri,  9 Sep 2022 13:08:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-        s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=+EfySkeUE1JliUGkKRGldSXOPN09Mvht9g17GgJO/FY=; b=j+jof1YgrsTCDcYzQu00+9nrE6
-        lu+TXAFHDkIL20e/CGY9JwmMIQXWDtSOuNF2bO5Ocl61FT5j1dapXHaw2uagy3EWaBaQtBSteUREd
-        6fv0hUE/B2C4lBE/MOxYY+U/XgoucfDsv9lWpuLd2iDC3bHaWr61syNujclfloTSSqdZquGwCW95Y
-        MLv3mYKJ6CsnM66Ck0eztcZt08brD2QgLiV7zKaJZ2SCTIlPBNWMlORa+1uammgpBZac8wVNs9NJv
-        qTCqN/WKFAOX0WTWi6/y0/lJ0NHRZNp5x+HQxImRTgbcywEbwrVkPgeNsT5wSkwMWOhTQ5iq2tBVe
-        5Ws6yL9Q==;
-Received: from [177.215.76.177] (helo=[192.168.1.60])
+        s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+        Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=HA7Uy5oRnhI96bvv26nvlUGrOXxQG8yAcX5TDStsA9A=; b=cQXI/T11+BWlzLJJP5tHVFQR4c
+        5i/eVkQQ575n6Mjw/LImE8yb0QabditV4Od+STVQUKcfiwpvjI/QbcMnxyVk3q8NqlSbtrY9g6oi6
+        vTQndosIgDFTy4/vwMZIWinoCFafOWrQVDzecutDxPEogzlhtfwrdMtplgPYXf3QzhTSJgLmqvw5Q
+        kTjsLp1dTYpLcJdYv+QmwWgdUMyJN8yO5fN00dI+fuqjPpMXVIDcYny5xottm0563fWMOkOou5oi7
+        LYRf6m/nOKpYsSp8kBlRYRxynJQd7WKJNcKN1rrVIKIZs8SDndDspezghmog2yh2F82bdvrnQot+j
+        N1bNmOLg==;
+Received: from [177.215.76.177] (helo=localhost)
         by fanzine2.igalia.com with esmtpsa 
-        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-        id 1oWk58-00E66k-5o; Fri, 09 Sep 2022 21:54:30 +0200
-Message-ID: <75eef98f-8dd0-6769-21bb-14f21b9fd693@igalia.com>
-Date:   Fri, 9 Sep 2022 16:54:17 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v2 0/3] The UEFI panic notification mechanism, 2nd round
-Content-Language: en-US
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-dev@igalia.com, kernel@gpiccoli.net, anton@enomsg.org,
-        ccross@android.com, keescook@chromium.org,
-        matt@codeblueprint.co.uk, mjg59@srcf.ucam.org, tony.luck@intel.com
-References: <20220729194532.228403-1-gpiccoli@igalia.com>
- <468b8369-84c2-da12-1eb0-6ec16d160b34@igalia.com>
- <CAMj1kXGMmpLF8Sfcm16E+QpKosPgUGQ7FpO9qknoKxjyXY1zUQ@mail.gmail.com>
+        (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+        id 1oWkIX-00E6gL-52; Fri, 09 Sep 2022 22:08:21 +0200
 From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <CAMj1kXGMmpLF8Sfcm16E+QpKosPgUGQ7FpO9qknoKxjyXY1zUQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+To:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     kernel-dev@igalia.com, kernel@gpiccoli.net,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        David Gow <davidgow@google.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Julius Werner <jwerner@chromium.org>,
+        Petr Mladek <pmladek@suse.com>,
+        Evan Green <evgreen@chromium.org>
+Subject: [PATCH V4] firmware: google: Test spinlock on panic path to avoid lockups
+Date:   Fri,  9 Sep 2022 17:07:55 -0300
+Message-Id: <20220909200755.189679-1-gpiccoli@igalia.com>
+X-Mailer: git-send-email 2.37.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 05/09/2022 06:50, Ard Biesheuvel wrote:
-> [...]
->> Hi Ard, sorry for the ping =]
->>
->> Any opinions in this one? Patch 2 is a simple fix, BTW.
-> 
-> Hey,
-> 
-> No worries about the ping - apologies for the late response, I was on vacation.
+Currently the gsmi driver registers a panic notifier as well as
+reboot and die notifiers. The callbacks registered are called in
+atomic and very limited context - for instance, panic disables
+preemption and local IRQs, also all secondary CPUs (not executing
+the panic path) are shutdown.
 
-Hi Ard, no need for apologies at all - this is a known vacation period
-in the year =)
+With that said, taking a spinlock in this scenario is a dangerous
+invitation for lockup scenarios. So, fix that by checking if the
+spinlock is free to acquire in the panic notifier callback - if not,
+bail-out and avoid a potential hang.
 
-
-> 
-> I still don't see the point of this series, but I will take the fix if
-> you could please rebase it so it doesn't depend on the first patch.
-> 
-
-That part is sad heheh
-I mean, it's a pity I could convince you - I still don't see how can
-kernel let UEFI know about a panic without this patch (or pstore, which
-I still think is the wrong way and sometimes impossible to use, due to
-other pstore backend usage).
-
-Anyway, nothing I can do about that it seems, unfortunately heheh
-
-Submitted the V2 fix here:
-https://lore.kernel.org/linux-efi/20220909194214.186731-1-gpiccoli@igalia.com/
-
-Thanks,
+Fixes: 74c5b31c6618 ("driver: Google EFI SMI")
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: David Gow <davidgow@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Julius Werner <jwerner@chromium.org>
+Cc: Petr Mladek <pmladek@suse.com>
+Reviewed-by: Evan Green <evgreen@chromium.org>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+---
 
 
-Guilherme
+Hey folks, new version - V3 available at [0].
+
+@Greg, I think the panic situation is well-described in the commit
+message so I didn't rework that, lemme know if you want to add
+something to the text.
+
+@Evan, I kept your review tag even with the comment change, based on
+the V3 discussion. Lemme know if you want it removed in case you
+disagree with something!
+
+V4:
+* Reworked comment (thanks Andrew, for the suggestion!);
+* Rebased against 6.0-rc4;
+* Included more CCs (Andrew, Petr).
+
+[0] https://lore.kernel.org/linux-kernel/20220819155059.451674-1-gpiccoli@igalia.com/
+
+
+ drivers/firmware/google/gsmi.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/firmware/google/gsmi.c b/drivers/firmware/google/gsmi.c
+index adaa492c3d2d..4e2575dfeb90 100644
+--- a/drivers/firmware/google/gsmi.c
++++ b/drivers/firmware/google/gsmi.c
+@@ -681,6 +681,15 @@ static struct notifier_block gsmi_die_notifier = {
+ static int gsmi_panic_callback(struct notifier_block *nb,
+ 			       unsigned long reason, void *arg)
+ {
++
++	/*
++	 * Panic callbacks are executed with all other CPUs stopped,
++	 * so we must not attempt to spin waiting for gsmi_dev.lock
++	 * to be released.
++	 */
++	if (spin_is_locked(&gsmi_dev.lock))
++		return NOTIFY_DONE;
++
+ 	gsmi_shutdown_reason(GSMI_SHUTDOWN_PANIC);
+ 	return NOTIFY_DONE;
+ }
+-- 
+2.37.2
 
