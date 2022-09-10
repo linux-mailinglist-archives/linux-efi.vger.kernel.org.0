@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C876B5B452F
-	for <lists+linux-efi@lfdr.de>; Sat, 10 Sep 2022 10:13:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D65825B4532
+	for <lists+linux-efi@lfdr.de>; Sat, 10 Sep 2022 10:13:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229812AbiIJING (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 10 Sep 2022 04:13:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34234 "EHLO
+        id S229770AbiIJINS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 10 Sep 2022 04:13:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229730AbiIJIMq (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 10 Sep 2022 04:12:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED75C87698;
-        Sat, 10 Sep 2022 01:12:39 -0700 (PDT)
+        with ESMTP id S229771AbiIJIMx (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 10 Sep 2022 04:12:53 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAC2B89820;
+        Sat, 10 Sep 2022 01:12:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F16346115A;
+        by ams.source.kernel.org (Postfix) with ESMTPS id B37D9B80A1F;
+        Sat, 10 Sep 2022 08:12:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEDABC433D7;
         Sat, 10 Sep 2022 08:12:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5963C433C1;
-        Sat, 10 Sep 2022 08:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662797558;
-        bh=0ouOP9xoTyJITAHyjmd8EH9dpexRXhxT+Iu2CyWbYy0=;
+        s=k20201202; t=1662797562;
+        bh=lwtkWqnCdC5DTCxRNKDZAmqT7xFGdg5/mD/OyTi+jns=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uTjLsKgqX4XgLP7eSw0YZ90daypxBIDpGt7QPTKfv2sOxzcERUydbu0rue603CG3t
-         hJA0stKux6PRL2dD+TkB4RXwcQ90jqBaE6eY8vHMvWlGOGtOVSJEUOG4jm09hS6LmX
-         nZ06ulaXoiRviEzl2LmBOpjjkZFXnGqG0EUJNus5yZti6EeOrTbxH+OisdmYQjosei
-         PvH1Neq2XeyF5XvNt2bpmcjKH62K1M7Ees8VrfUffxQj9gQyGARqvrKOHlOWN5Ssel
-         cc0zoWQFtaHWrwT0xnMQGWPhqQQ5rwNd/vuNcnfJIxwHyzsa2HSvMXjUzyMHyKtAs7
-         0O4v8QKO+4hrA==
+        b=ZOdk3K0+fDQSXUkVV1UQVNrKkF1z8VQ6IrRebarYpJKGMhIIDynbV00pEBvpcWFmd
+         VJzD7vjT5pcn/L9XYHw4UvjYf8LVH9ZvOr8yt15syG7AGhnXifpWmopBXwUHSdxVss
+         /vqExpAel4cYuMHw4XKkKRbaarz8vLoNphuAwFfyfu4WX46MfuBxLc6nRVHq4zF1Ax
+         oCNhJf/MQ/4YHX0D1Hio3LI3p/dxJNCfwwuPki071rG+Ip1n5cjRFcOV/IrefGaUju
+         LeDc4EUuXjurHcERtalJCfsqfs9XFYbaAHjpGyVf2eVLFZ/uYCR5mH9fNDgZMnxtb/
+         npXste2NcsNZQ==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
@@ -50,14 +50,14 @@ Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         Jeremy Linton <jeremy.linton@arm.com>,
         Will Deacon <will@kernel.org>,
         Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH v5 7/8] riscv: efi: enable generic EFI compressed boot
-Date:   Sat, 10 Sep 2022 10:11:51 +0200
-Message-Id: <20220910081152.2238369-8-ardb@kernel.org>
+Subject: [PATCH v5 8/8] loongarch: efi: enable generic EFI compressed boot
+Date:   Sat, 10 Sep 2022 10:11:52 +0200
+Message-Id: <20220910081152.2238369-9-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220910081152.2238369-1-ardb@kernel.org>
 References: <20220910081152.2238369-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1646; i=ardb@kernel.org; h=from:subject; bh=0ouOP9xoTyJITAHyjmd8EH9dpexRXhxT+Iu2CyWbYy0=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjHEbGB0Nn9/B7FM1mxtDBajVOlkYZ+FfmjrQThfjS iiauInaJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYxxGxgAKCRDDTyI5ktmPJKdoC/ wMslwiCbB31366kUv9bXKX1pHHEq8Hs8mYWyHuPRLsV1z35J+nLhUciUF2gQsF7gXh7Kwugree/Gbz Xkwj8HZFplsRLN0BvvrU/WRZQFMmFAQJMh1BavDk2PlVCxIYXM1YGBATfuPG5sYGlmAV1FkxuxkAl+ by/j6GcydAkvWwSIj5onum8WGptJRp5iKHSlbMk8mX/bN+tpa45zue0H8FVnlo5F64erQaTB7904ho //Hd4XpUlPWvcSx2q4n7wywXBvUAPrIcvRy/WxXNXXxMs9yXOkzT9tMBWQCoZDjDG+QEH4IcAwc9cP jH2s6E2/tLOvQGK40nLjZ7s/KkDVKy2S+OfpnriiL7o0QgTZSUHg+b8b4F6oet62kSBK5GuPQSb0/5 lRa8dnwNHoWc6CIzKm2+HEsAukTWUQPTPTz889UgsF4qYssn7zm0yQM0u91dC9PrYBImV/J1GTkuO+ 4e0eXWSVYB/rZn3d9pC67BXkz50pgALmkYA7He4l6NhSA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2133; i=ardb@kernel.org; h=from:subject; bh=lwtkWqnCdC5DTCxRNKDZAmqT7xFGdg5/mD/OyTi+jns=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjHEbHfhsOWC6jY9/BchEKckyY8ye89Us81pOZvd6I L0O/jheJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYxxGxwAKCRDDTyI5ktmPJHjpC/ 9PvwfHLVyV0gx543xJ5aj4rBRcRSIT4OzOblDa0pQC7alXcteRi8zXtxqMIClOF/fRR7HSGL9OQboo /Ar/6F8I8a9KV6h9sNHvXjbskBYyKgRCClAd4En7AXgFKHMTNxqgjaC9v0p+08bgbQeydxvBCai3cQ QMxx0WwWc3EphmiSZ0qvEqIvvbvpiSealSogkU/3iQDSimCQnMNbz/KwBVNwhzcWkSdJhSiRy/aYlv J+T7mGNGhmKibk3CIxGnwr18XZVtvcoyt+psuBvIjncvaKOfL4yEXDW1wwqcNdtRkrZodh2NjGGDNm 2hWVmS/y/iAIfvM8SQ+t8jI7GcLYlwfYPDQzWaJGlff6Cudh6KPWr4EfodCkaQkkHJ1cXlN7tzVuOf 4GXm7IVOIjutmPpxx8QoZgVP0X5f9emhSDvpGgdIJdVaU0m6N/1ShIRPNyCIBFiWMVwN262gGluvgP 0yQtENAuDQtau0At5ub3UBxUl2pZm0SUJFlpMEcRUl4zI=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -70,57 +70,70 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Wire up the generic EFI zboot support for RISC-V.
+Wire up the generic EFI zboot support for LoongArch64
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/riscv/Makefile        | 6 +++++-
- arch/riscv/boot/.gitignore | 1 +
- arch/riscv/boot/Makefile   | 6 ++++++
- 3 files changed, 12 insertions(+), 1 deletion(-)
+ arch/loongarch/Kconfig         | 1 +
+ arch/loongarch/Makefile        | 4 ++--
+ arch/loongarch/boot/.gitignore | 1 +
+ arch/loongarch/boot/Makefile   | 6 ++++++
+ 4 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-index 3fa8ef336822..d63295e21373 100644
---- a/arch/riscv/Makefile
-+++ b/arch/riscv/Makefile
-@@ -136,10 +136,14 @@ ifneq ($(CONFIG_XIP_KERNEL),y)
- ifeq ($(CONFIG_RISCV_M_MODE)$(CONFIG_SOC_CANAAN),yy)
- KBUILD_IMAGE := $(boot)/loader.bin
+diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+index fca106a8b8af..f960dbbfb62d 100644
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -55,6 +55,7 @@ config LOONGARCH
+ 	select BUILDTIME_TABLE_SORT
+ 	select COMMON_CLK
+ 	select EFI
++	select EFI_ZBOOT
+ 	select GENERIC_CLOCKEVENTS
+ 	select GENERIC_CMOS_UPDATE
+ 	select GENERIC_CPU_AUTOPROBE
+diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
+index 4bc47f47cfd8..357ed2a771bf 100644
+--- a/arch/loongarch/Makefile
++++ b/arch/loongarch/Makefile
+@@ -10,7 +10,7 @@ KBUILD_DEFCONFIG := loongson3_defconfig
+ ifndef CONFIG_EFI_STUB
+ KBUILD_IMAGE	:= $(boot)/vmlinux.elf
  else
-+ifeq ($(CONFIG_EFI_ZBOOT),)
- KBUILD_IMAGE := $(boot)/Image.gz
-+else
-+KBUILD_IMAGE := $(boot)/vmlinuz.efi
-+endif
+-KBUILD_IMAGE	:= $(boot)/vmlinux.efi
++KBUILD_IMAGE	:= $(boot)/vmlinuz.efi
  endif
- endif
--BOOT_TARGETS := Image Image.gz loader loader.bin xipImage
-+BOOT_TARGETS := Image Image.gz loader loader.bin xipImage vmlinuz.efi
+ 
+ #
+@@ -93,7 +93,7 @@ vdso_install:
  
  all:	$(notdir $(KBUILD_IMAGE))
  
-diff --git a/arch/riscv/boot/.gitignore b/arch/riscv/boot/.gitignore
-index 0cea9f7fa9d5..e1bc507e8cb2 100644
---- a/arch/riscv/boot/.gitignore
-+++ b/arch/riscv/boot/.gitignore
-@@ -4,4 +4,5 @@ Image.*
- loader
- loader.lds
- loader.bin
-+vmlinuz*
- xipImage
-diff --git a/arch/riscv/boot/Makefile b/arch/riscv/boot/Makefile
-index becd0621071c..d1a49adcb1d7 100644
---- a/arch/riscv/boot/Makefile
-+++ b/arch/riscv/boot/Makefile
-@@ -58,3 +58,9 @@ $(obj)/Image.lzo: $(obj)/Image FORCE
+-vmlinux.elf vmlinux.efi: vmlinux
++vmlinux.elf vmlinux.efi vmlinuz.efi: vmlinux
+ 	$(Q)$(MAKE) $(build)=$(boot) $(bootvars-y) $(boot)/$@
  
- $(obj)/loader.bin: $(obj)/loader FORCE
+ install:
+diff --git a/arch/loongarch/boot/.gitignore b/arch/loongarch/boot/.gitignore
+index 49423ee96ef3..e5dc594dc4b6 100644
+--- a/arch/loongarch/boot/.gitignore
++++ b/arch/loongarch/boot/.gitignore
+@@ -1,2 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ vmlinux*
++vmlinuz*
+diff --git a/arch/loongarch/boot/Makefile b/arch/loongarch/boot/Makefile
+index fecf34f50e56..4e1c374c5782 100644
+--- a/arch/loongarch/boot/Makefile
++++ b/arch/loongarch/boot/Makefile
+@@ -18,3 +18,9 @@ $(obj)/vmlinux.elf: vmlinux FORCE
+ targets += vmlinux.efi
+ $(obj)/vmlinux.efi: vmlinux FORCE
  	$(call if_changed,objcopy)
 +
-+EFI_ZBOOT_PAYLOAD	:= Image
-+EFI_ZBOOT_BFD_TARGET	:= elf$(BITS)-littleriscv
-+EFI_ZBOOT_MACH_TYPE	:= RISCV$(BITS)
++EFI_ZBOOT_PAYLOAD      := vmlinux.efi
++EFI_ZBOOT_BFD_TARGET   := elf64-loongarch
++EFI_ZBOOT_MACH_TYPE    := LOONGARCH64
 +
 +include $(srctree)/drivers/firmware/efi/libstub/Makefile.zboot
 -- 
