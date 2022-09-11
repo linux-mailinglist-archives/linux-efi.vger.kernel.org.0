@@ -2,103 +2,76 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEC5E5B477D
-	for <lists+linux-efi@lfdr.de>; Sat, 10 Sep 2022 18:32:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D28E5B4F6E
+	for <lists+linux-efi@lfdr.de>; Sun, 11 Sep 2022 16:36:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229540AbiIJQcY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 10 Sep 2022 12:32:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55120 "EHLO
+        id S229514AbiIKOg1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 11 Sep 2022 10:36:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229527AbiIJQcX (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 10 Sep 2022 12:32:23 -0400
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BD624A83E;
-        Sat, 10 Sep 2022 09:32:22 -0700 (PDT)
-Received: by mail-yb1-f177.google.com with SMTP id f131so6899551ybf.7;
-        Sat, 10 Sep 2022 09:32:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=GkMFjVtDr0W10OJLyjB1PHKjRI7ZFioNTd0VYLRMl94=;
-        b=ThoRLvkIbjrCWL0q+TFVOHf3eGbii09QgZZ8+fnloYa65GmvZoYZxXRfi4dIf/o3/X
-         CHxXNCVetlaCzlNPH7RHeluIxXBW9UaWGxJbq44/RtWKjnWMdCJeIjeGpTxtZk7sC3XY
-         FC1+bATa/yirJyG/f0TfPtNbPuBdAW51Y4xNJXJOabOT0rud7KCnxWelfVT3WcqdnVvi
-         S/MvEcHpaC+v+YF47p1//uEddmEbtpH4EW44HoPAx6nua0qW6qe+AO4eBtEhW/IhMKDt
-         EtzYW5sIUxU/qV5nqC5OKkZTZ9vMESj0n6S0HZwEROc08lB3wnnH38cngZo5+KpEIQns
-         iUaQ==
-X-Gm-Message-State: ACgBeo09Bstel6aHIS4x5EoDtJZ7DCW8jizVZ0Jd0dyvtaTwHiRyqD8t
-        l7KDxBTL2gsd8LWoF2CLf5zUIJz+v4ZKxTCZ4bs=
-X-Google-Smtp-Source: AA6agR4n7pXTzaWGoZwbXMPbML7j3aWjxBABW4Ue2CuqwFbK1YnZzMiGo3Y8jNXuTBWAX9gMGWr6mCabLDZaslxS/Ik=
-X-Received: by 2002:a25:2f0c:0:b0:6a8:f230:12ed with SMTP id
- v12-20020a252f0c000000b006a8f23012edmr15745127ybv.633.1662827541557; Sat, 10
- Sep 2022 09:32:21 -0700 (PDT)
+        with ESMTP id S229510AbiIKOgZ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 11 Sep 2022 10:36:25 -0400
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D42A26AE1;
+        Sun, 11 Sep 2022 07:36:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+        s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=kpsNGXGOItgP3sw4KOrd3S9yFWs1L7+N0vhR0sDgBaY=; b=jOSVKasy912ZupPC6tF4+4gA4E
+        aq/7HZeJs78AhM0F8XVNCL1U8z3elkPNGUXZGTsUcxtQkh7zzgz5hGAvQ1wOzRZcURsJfniKKd223
+        7AlEeEcOdrK6OgysxCzoHOTePSWlzgDwjOFaSgkEaOaBoJhwKH/j9ll0Qjc0jhsZajGqgcl7mwo9s
+        ggoU5EFBIA5MYAfujMOiXPRupEN0KkUx6LYbkUYO7yG+t2NGzGieOyeXHoyfdTnbQYMijkg+8ixy+
+        L3R/8M8AambOj55ErYdhSOi/ujlatQB3b96K32Jid4J61ZMfSKvi3nZ6udL1hWpsQ7+mcxYzghkz1
+        KVv8HkuQ==;
+Received: from [177.215.76.177] (helo=[192.168.1.60])
+        by fanzine2.igalia.com with esmtpsa 
+        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+        id 1oXO4H-00FOtz-Ut; Sun, 11 Sep 2022 16:36:18 +0200
+Message-ID: <e8ce8fb4-baac-b3a5-5d6d-418e20c8d2d9@igalia.com>
+Date:   Sun, 11 Sep 2022 11:36:00 -0300
 MIME-Version: 1.0
-References: <20220908132910.62122-1-andriy.shevchenko@linux.intel.com> <YxnwMLvgQAPOkeeK@smile.fi.intel.com>
-In-Reply-To: <YxnwMLvgQAPOkeeK@smile.fi.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sat, 10 Sep 2022 18:32:10 +0200
-Message-ID: <CAJZ5v0j5FO+OcX6VdiR-tuDCrHFwErquxzZGUu3ZLQ1G57T-+Q@mail.gmail.com>
-Subject: Re: [PATCH v2 0/8] ACPI: unify _UID handling as integer
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Elie Morisse <syniurge@gmail.com>,
-        Nehal Shah <nehal-bakulchandra.shah@amd.com>,
-        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
-        Khalil Blaiech <kblaiech@nvidia.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Robert Moore <robert.moore@intel.com>,
-        Wolfram Sang <wsa@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH V2] efi: efibc: Guard against allocation failure
+Content-Language: en-US
+To:     ardb@kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-efi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, kernel-dev@igalia.com,
+        kernel@gpiccoli.net, matt@codeblueprint.co.uk, mjg59@srcf.ucam.org
+References: <20220909194214.186731-1-gpiccoli@igalia.com>
+ <04d65bd7-a6b2-bb14-fd69-632542ae9e86@wanadoo.fr>
+From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <04d65bd7-a6b2-bb14-fd69-632542ae9e86@wanadoo.fr>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Sep 8, 2022 at 3:38 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Thu, Sep 08, 2022 at 04:29:02PM +0300, Andy Shevchenko wrote:
-> > This series is about unification on how we handle ACPI _UID when
-> > it's known to be an integer-in-the-string.
-> >
-> > The idea of merging either all via ACPI tree, or taking ACPI stuff
-> > for the v6.1 while the rest may be picked up later on by respective
-> > maintainers separately
->
-> >(currently all depends on Wolfram, other
-> > patches have got the tags from the maintainers).
->
-> I stand corrected, the perf patch is not tagged yet.
->
-> > Partially compile-tested (x86-64).
+On 10/09/2022 01:56, Christophe JAILLET wrote:
+> [...]
+>>   	wdata = kmalloc(MAX_DATA_LEN * sizeof(efi_char16_t), GFP_KERNEL);
+> Hi,
+> 
+> even if mostly useless in this case, kmalloc_array()?
+> 
+> Or certainly maybe even better, kstrndup()?
+> 
+> CJ
+> 
 
-Tentatively applied as 6.1 material.
+Thanks! It's up to Ard, I could rework with this change if makes sense.
+Cheers,
 
-If there are updates, we'll make changes as they go.
 
-Thanks!
+Guilherme
