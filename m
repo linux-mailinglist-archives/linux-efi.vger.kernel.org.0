@@ -2,205 +2,161 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFBA25B4F8B
-	for <lists+linux-efi@lfdr.de>; Sun, 11 Sep 2022 17:04:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 197175B580B
+	for <lists+linux-efi@lfdr.de>; Mon, 12 Sep 2022 12:18:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229505AbiIKPEN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 11 Sep 2022 11:04:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40198 "EHLO
+        id S230032AbiILKSV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 12 Sep 2022 06:18:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbiIKPEM (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 11 Sep 2022 11:04:12 -0400
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8A5BC2E686;
-        Sun, 11 Sep 2022 08:04:06 -0700 (PDT)
-Received: from chenhuacai$loongson.cn ( [114.216.208.34] ) by
- ajax-webmail-localhost.localdomain (Coremail) ; Sun, 11 Sep 2022 23:02:38
- +0800 (GMT+08:00)
-X-Originating-IP: [114.216.208.34]
-Date:   Sun, 11 Sep 2022 23:02:38 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From:   =?UTF-8?B?6ZmI5Y2O5omN?= <chenhuacai@loongson.cn>
-To:     "Ard Biesheuvel" <ardb@kernel.org>
+        with ESMTP id S230054AbiILKSU (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 12 Sep 2022 06:18:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4E7B2C11B;
+        Mon, 12 Sep 2022 03:18:19 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 80AFE60B50;
+        Mon, 12 Sep 2022 10:18:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D09C43150;
+        Mon, 12 Sep 2022 10:18:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662977898;
+        bh=kWMe+7CNzjzp4rQ47QWRnkKq04EFkqQePpgjxxrETT0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=kQ3TQ5tXtnMgJDPPtVoB8Bec6sFR8CjOajsR7riY9VpKsQpePLQVOPwfFENxjXWsZ
+         7VDJZN8eIt8Po98Fx5++QRnaKoYz1N6+P3ePsgXBD+/wQB4EsHfI3XeQIlFc79FFFV
+         PF4WrTNH8U0vqTOAEfwaHEB/djY/642sK0MpDUwRqXaglNfXDSJeHdNUXaxEGleXhg
+         uJ1Q/JdxtoPBvJTyad5qw1AXcuwwMXcuehbd0XxEAORiGW7iZNkH16ZEwp4SC8o61O
+         6iJQolyxsM2mXsatX+aBxfnb3G1cIoPFTR4URZrQ3Je/xHHlIlKtPErI+wGnR8vV1E
+         kT/NrAKyhcWGA==
+Received: by mail-lf1-f54.google.com with SMTP id f9so13295685lfr.3;
+        Mon, 12 Sep 2022 03:18:18 -0700 (PDT)
+X-Gm-Message-State: ACgBeo31X4gHUFA+Sg8E0qCcqUiOmZVKNHkn/7Nt+r99DRWgBcdfD+J3
+        dONOax8lRqceFp3fvd3gQGKwfQVn+y/RKg+qLic=
+X-Google-Smtp-Source: AA6agR7O6xg9bgH0x4tI6uxzwzVJNBUTTbg0uuggt6ZblPTlbBD+d8aB6msOoYCXnSzyFMj81e920oC6STcRn0s3770=
+X-Received: by 2002:a05:6512:150e:b0:492:d9fd:9bdf with SMTP id
+ bq14-20020a056512150e00b00492d9fd9bdfmr8203912lfb.583.1662977896827; Mon, 12
+ Sep 2022 03:18:16 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220910081152.2238369-1-ardb@kernel.org> <20220910081152.2238369-9-ardb@kernel.org>
+ <6876236f.7b0c.18327c74248.Coremail.chenhuacai@loongson.cn>
+ <CAMj1kXFpQ1FkiMMXeA-E5FdnDzhZr7qmN15PNig_9KXxGNRJhQ@mail.gmail.com> <2c005589.7bc5.1832d12eb0c.Coremail.chenhuacai@loongson.cn>
+In-Reply-To: <2c005589.7bc5.1832d12eb0c.Coremail.chenhuacai@loongson.cn>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Mon, 12 Sep 2022 11:18:05 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXEvRfgMo+kJBwdNQfcBSfEXYGZ5vTbh2Ym8T6X+p9iWBA@mail.gmail.com>
+Message-ID: <CAMj1kXEvRfgMo+kJBwdNQfcBSfEXYGZ5vTbh2Ym8T6X+p9iWBA@mail.gmail.com>
+Subject: Re: Re: [PATCH v5 8/8] loongarch: efi: enable generic EFI compressed boot
+To:     =?UTF-8?B?6ZmI5Y2O5omN?= <chenhuacai@loongson.cn>
 Cc:     linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org,
         "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        "Matthew Garrett" <mjg59@srcf.ucam.org>,
-        "Peter Jones" <pjones@redhat.com>,
-        "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
-        "Heinrich Schuchardt" <heinrich.schuchardt@canonical.com>,
-        "AKASHI Takahiro" <takahiro.akashi@linaro.org>,
-        "Palmer Dabbelt" <palmer@dabbelt.com>,
-        "Atish Patra" <atishp@atishpatra.org>,
-        "Arnd Bergmann" <arnd@arndb.de>, "Xi Ruoyao" <xry111@xry111.site>,
-        "Lennart Poettering" <lennart@poettering.net>,
-        "Jeremy Linton" <jeremy.linton@arm.com>,
-        "Will Deacon" <will@kernel.org>,
-        "Catalin Marinas" <catalin.marinas@arm.com>
-Subject: Re: Re: [PATCH v5 8/8] loongarch: efi: enable generic EFI
- compressed boot
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20220411(feba7c69)
- Copyright (c) 2002-2022 www.mailtech.cn .loongson.cn
-In-Reply-To: <CAMj1kXFpQ1FkiMMXeA-E5FdnDzhZr7qmN15PNig_9KXxGNRJhQ@mail.gmail.com>
-References: <20220910081152.2238369-1-ardb@kernel.org>
- <20220910081152.2238369-9-ardb@kernel.org>
- <6876236f.7b0c.18327c74248.Coremail.chenhuacai@loongson.cn>
- <CAMj1kXFpQ1FkiMMXeA-E5FdnDzhZr7qmN15PNig_9KXxGNRJhQ@mail.gmail.com>
-Content-Transfer-Encoding: base64
-X-CM-CTRLDATA: yWG3s2Zvb3Rlcl90eHQ9NjU5Nzo2MTI=
-Content-Type: text/plain; charset=UTF-8
-MIME-Version: 1.0
-Message-ID: <2c005589.7bc5.1832d12eb0c.Coremail.chenhuacai@loongson.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: AQAAf8Axk+GO+B1jhdYWAA--.4856W
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/1tbiAQAFBmMcflwBwgAGsa
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
-        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-        daVFxhVjvjDU=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Peter Jones <pjones@redhat.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+        AKASHI Takahiro <takahiro.akashi@linaro.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Atish Patra <atishp@atishpatra.org>,
+        Arnd Bergmann <arnd@arndb.de>, Xi Ruoyao <xry111@xry111.site>,
+        Lennart Poettering <lennart@poettering.net>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-CgoKPiAtLS0tLeWOn+Wni+mCruS7ti0tLS0tCj4g5Y+R5Lu25Lq6OiAiQXJkIEJpZXNoZXV2ZWwi
-IDxhcmRiQGtlcm5lbC5vcmc+Cj4g5Y+R6YCB5pe26Ze0OjIwMjItMDktMTAgMjI6Mjg6MDQgKOaY
-n+acn+WFrSkKPiDmlLbku7bkuro6ICLpmYjljY7miY0iIDxjaGVuaHVhY2FpQGxvb25nc29uLmNu
-Pgo+IOaKhOmAgTogbGludXgtZWZpQHZnZXIua2VybmVsLm9yZywgbGludXgtYXJtLWtlcm5lbEBs
-aXN0cy5pbmZyYWRlYWQub3JnLCBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnLCAiSmFtZXMg
-RS5KLiBCb3R0b21sZXkiIDxKYW1lcy5Cb3R0b21sZXlAaGFuc2VucGFydG5lcnNoaXAuY29tPiwg
-Ik1hdHRoZXcgR2FycmV0dCIgPG1qZzU5QHNyY2YudWNhbS5vcmc+LCAiUGV0ZXIgSm9uZXMiIDxw
-am9uZXNAcmVkaGF0LmNvbT4sICJJbGlhcyBBcGFsb2RpbWFzIiA8aWxpYXMuYXBhbG9kaW1hc0Bs
-aW5hcm8ub3JnPiwgIkhlaW5yaWNoIFNjaHVjaGFyZHQiIDxoZWlucmljaC5zY2h1Y2hhcmR0QGNh
-bm9uaWNhbC5jb20+LCAiQUtBU0hJIFRha2FoaXJvIiA8dGFrYWhpcm8uYWthc2hpQGxpbmFyby5v
-cmc+LCAiUGFsbWVyIERhYmJlbHQiIDxwYWxtZXJAZGFiYmVsdC5jb20+LCAiQXRpc2ggUGF0cmEi
-IDxhdGlzaHBAYXRpc2hwYXRyYS5vcmc+LCAiQXJuZCBCZXJnbWFubiIgPGFybmRAYXJuZGIuZGU+
-LCAiWGkgUnVveWFvIiA8eHJ5MTExQHhyeTExMS5zaXRlPiwgIkxlbm5hcnQgUG9ldHRlcmluZyIg
-PGxlbm5hcnRAcG9ldHRlcmluZy5uZXQ+LCAiSmVyZW15IExpbnRvbiIgPGplcmVteS5saW50b25A
-YXJtLmNvbT4sICJXaWxsIERlYWNvbiIgPHdpbGxAa2VybmVsLm9yZz4sICJDYXRhbGluIE1hcmlu
-YXMiIDxjYXRhbGluLm1hcmluYXNAYXJtLmNvbT4KPiDkuLvpopg6IFJlOiBbUEFUQ0ggdjUgOC84
-XSBsb29uZ2FyY2g6IGVmaTogZW5hYmxlIGdlbmVyaWMgRUZJIGNvbXByZXNzZWQgYm9vdAo+IAo+
-IE9uIFNhdCwgMTAgU2VwdCAyMDIyIGF0IDE1OjIyLCDpmYjljY7miY0gPGNoZW5odWFjYWlAbG9v
-bmdzb24uY24+IHdyb3RlOgo+ID4KPiA+IEhpLCBBcmQsCj4gPgo+ID4gSSBwcmVmZXIgdG8gZ2l2
-ZSBhIGNoYW5jZSB0byBkaXNhYmxlIFpCT09ULCBzbyBJIGRvbid0IHdhbnQgdG8gc2VsZWN0IEVG
-SV9aQk9PVCB1bmNvbmRpdGlvbmFsbHkgaW4gS2NvbmZpZywgYW5kIHRoZW4gdGhlIE1ha2VmaWxl
-IGNhbiBiZSBsaWtlIHRoaXM6Cj4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9sb29uZ2FyY2gvTWFrZWZp
-bGUgYi9hcmNoL2xvb25nYXJjaC9NYWtlZmlsZQo+ID4gaW5kZXggYzNmNTc5YmRmOWU1Li5iYzZm
-ZTY1MTI1ZjUgMTAwNjQ0Cj4gPiAtLS0gYS9hcmNoL2xvb25nYXJjaC9NYWtlZmlsZQo+ID4gKysr
-IGIvYXJjaC9sb29uZ2FyY2gvTWFrZWZpbGUKPiA+IEBAIC0xNCw2ICsxNCwxMCBAQCBlbHNlCj4g
-PiAgS0JVSUxEX0lNQUdFICAgOj0gJChib290KS92bWxpbnV4LmVmaQo+ID4gIGVuZGlmCj4gPgo+
-ID4gK2lmZGVmIENPTkZJR19FRklfWkJPT1QKPiA+ICtLQlVJTERfSU1BR0UgICAgOj0gJChib290
-KS92bWxpbnV6LmVmaQo+ID4gK2VuZGlmCj4gPiArCj4gPiAgYXJjaHNjcmlwdHM6IHNjcmlwdHNf
-YmFzaWMKPiA+ICAgICAgICAgJChRKSQoTUFLRSkgJChidWlsZCk9YXJjaC9sb29uZ2FyY2gvYm9v
-dC90b29scyByZWxvY3MKPiA+Cj4gCj4gT0ssIEkgd2lsbCBmb2xkIHRoaXMgaW4uIFRoaXMgYWN0
-dWFsbHkgYWxpZ25zIGl0IHdpdGggdGhlIG90aGVyCj4gYXJjaGl0ZWN0dXJlcywgc28gSSBwcmVm
-ZXIgdGhpcyBhcHByb2FjaCBhcyB3ZWxsLgoKVGhhbmsgeW91LCBhbmQgaWYgIm1ha2UgaW5zdGFs
-bCIgY2FuIGFsc28gaGFuZGxlIHRoZSB6Ym9vdCBjYXNlLCB0aGF0J3MgZXZlbiBiZXR0ZXIuIDop
-CgpkaWZmIC0tZ2l0IGEvYXJjaC9sb29uZ2FyY2gvTWFrZWZpbGUgYi9hcmNoL2xvb25nYXJjaC9N
-YWtlZmlsZQppbmRleCBjM2Y1NzliZGY5ZTUuLjU0ODBmZTJkZTdjZCAxMDA2NDQKLS0tIGEvYXJj
-aC9sb29uZ2FyY2gvTWFrZWZpbGUKKysrIGIvYXJjaC9sb29uZ2FyY2gvTWFrZWZpbGUKQEAgLTEz
-Nyw3ICsxMzcsMTEgQEAgdm1saW51eC5lbGYgdm1saW51eC5lZmkgdm1saW51ei5lZmk6IHZtbGlu
-dXgKIGNvcmUteSArPSBhcmNoL2xvb25nYXJjaC9ib290L2R0cy8KCiBpbnN0YWxsOgoraWZuZGVm
-IENPTkZJR19FRklfWkJPT1QKICAgICAgICAkKFEpaW5zdGFsbCAtRCAtbSA3NTUgJChLQlVJTERf
-SU1BR0UpICQoSU5TVEFMTF9QQVRIKS92bWxpbnV4LSQoS0VSTkVMUkVMRUFTRSkKK2Vsc2UKKyAg
-ICAgICAkKFEpaW5zdGFsbCAtRCAtbSA3NTUgJChLQlVJTERfSU1BR0UpICQoSU5TVEFMTF9QQVRI
-KS92bWxpbnV6LSQoS0VSTkVMUkVMRUFTRSkKK2VuZGlmCiAgICAgICAgJChRKWluc3RhbGwgLUQg
-LW0gNjQ0IC5jb25maWcgJChJTlNUQUxMX1BBVEgpL2NvbmZpZy0kKEtFUk5FTFJFTEVBU0UpCiAg
-ICAgICAgJChRKWluc3RhbGwgLUQgLW0gNjQ0IFN5c3RlbS5tYXAgJChJTlNUQUxMX1BBVEgpL1N5
-c3RlbS5tYXAtJChLRVJORUxSRUxFQVNFKQoKCgo+IAo+IAo+ID4KPiA+ID4gLS0tLS3ljp/lp4vp
-gq7ku7YtLS0tLQo+ID4gPiDlj5Hku7bkuro6ICJBcmQgQmllc2hldXZlbCIgPGFyZGJAa2VybmVs
-Lm9yZz4KPiA+ID4g5Y+R6YCB5pe26Ze0OjIwMjItMDktMTAgMTY6MTE6NTIgKOaYn+acn+WFrSkK
-PiA+ID4g5pS25Lu25Lq6OiBsaW51eC1lZmlAdmdlci5rZXJuZWwub3JnCj4gPiA+IOaKhOmAgTog
-bGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnLCBsaW51eC1rZXJuZWxAdmdlci5r
-ZXJuZWwub3JnLCAiQXJkIEJpZXNoZXV2ZWwiIDxhcmRiQGtlcm5lbC5vcmc+LCAiSmFtZXMgRS5K
-LiBCb3R0b21sZXkiIDxKYW1lcy5Cb3R0b21sZXlASGFuc2VuUGFydG5lcnNoaXAuY29tPiwgIk1h
-dHRoZXcgR2FycmV0dCIgPG1qZzU5QHNyY2YudWNhbS5vcmc+LCAiUGV0ZXIgSm9uZXMiIDxwam9u
-ZXNAcmVkaGF0LmNvbT4sICJJbGlhcyBBcGFsb2RpbWFzIiA8aWxpYXMuYXBhbG9kaW1hc0BsaW5h
-cm8ub3JnPiwgIkhlaW5yaWNoIFNjaHVjaGFyZHQiIDxoZWlucmljaC5zY2h1Y2hhcmR0QGNhbm9u
-aWNhbC5jb20+LCAiQUtBU0hJIFRha2FoaXJvIiA8dGFrYWhpcm8uYWthc2hpQGxpbmFyby5vcmc+
-LCAiUGFsbWVyIERhYmJlbHQiIDxwYWxtZXJAZGFiYmVsdC5jb20+LCAiQXRpc2ggUGF0cmEiIDxh
-dGlzaHBAYXRpc2hwYXRyYS5vcmc+LCAiQXJuZCBCZXJnbWFubiIgPGFybmRAYXJuZGIuZGU+LCAi
-SHVhY2FpIENoZW4iIDxjaGVuaHVhY2FpQGxvb25nc29uLmNuPiwgIlhpIFJ1b3lhbyIgPHhyeTEx
-MUB4cnkxMTEuc2l0ZT4sICJMZW5uYXJ0IFBvZXR0ZXJpbmciIDxsZW5uYXJ0QHBvZXR0ZXJpbmcu
-bmV0PiwgIkplcmVteSBMaW50b24iIDxqZXJlbXkubGludG9uQGFybS5jb20+LCAiV2lsbCBEZWFj
-b24iIDx3aWxsQGtlcm5lbC5vcmc+LCAiQ2F0YWxpbiBNYXJpbmFzIiA8Y2F0YWxpbi5tYXJpbmFz
-QGFybS5jb20+Cj4gPiA+IOS4u+mimDogW1BBVENIIHY1IDgvOF0gbG9vbmdhcmNoOiBlZmk6IGVu
-YWJsZSBnZW5lcmljIEVGSSBjb21wcmVzc2VkIGJvb3QKPiA+ID4KPiA+ID4gV2lyZSB1cCB0aGUg
-Z2VuZXJpYyBFRkkgemJvb3Qgc3VwcG9ydCBmb3IgTG9vbmdBcmNoNjQKPiA+ID4KPiA+ID4gU2ln
-bmVkLW9mZi1ieTogQXJkIEJpZXNoZXV2ZWwgPGFyZGJAa2VybmVsLm9yZz4KPiA+ID4gLS0tCj4g
-PiA+ICBhcmNoL2xvb25nYXJjaC9LY29uZmlnICAgICAgICAgfCAxICsKPiA+ID4gIGFyY2gvbG9v
-bmdhcmNoL01ha2VmaWxlICAgICAgICB8IDQgKystLQo+ID4gPiAgYXJjaC9sb29uZ2FyY2gvYm9v
-dC8uZ2l0aWdub3JlIHwgMSArCj4gPiA+ICBhcmNoL2xvb25nYXJjaC9ib290L01ha2VmaWxlICAg
-fCA2ICsrKysrKwo+ID4gPiAgNCBmaWxlcyBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCspLCAyIGRl
-bGV0aW9ucygtKQo+ID4gPgo+ID4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9sb29uZ2FyY2gvS2NvbmZp
-ZyBiL2FyY2gvbG9vbmdhcmNoL0tjb25maWcKPiA+ID4gaW5kZXggZmNhMTA2YThiOGFmLi5mOTYw
-ZGJiZmI2MmQgMTAwNjQ0Cj4gPiA+IC0tLSBhL2FyY2gvbG9vbmdhcmNoL0tjb25maWcKPiA+ID4g
-KysrIGIvYXJjaC9sb29uZ2FyY2gvS2NvbmZpZwo+ID4gPiBAQCAtNTUsNiArNTUsNyBAQCBjb25m
-aWcgTE9PTkdBUkNICj4gPiA+ICAgICAgIHNlbGVjdCBCVUlMRFRJTUVfVEFCTEVfU09SVAo+ID4g
-PiAgICAgICBzZWxlY3QgQ09NTU9OX0NMSwo+ID4gPiAgICAgICBzZWxlY3QgRUZJCj4gPiA+ICsg
-ICAgIHNlbGVjdCBFRklfWkJPT1QKPiA+ID4gICAgICAgc2VsZWN0IEdFTkVSSUNfQ0xPQ0tFVkVO
-VFMKPiA+ID4gICAgICAgc2VsZWN0IEdFTkVSSUNfQ01PU19VUERBVEUKPiA+ID4gICAgICAgc2Vs
-ZWN0IEdFTkVSSUNfQ1BVX0FVVE9QUk9CRQo+ID4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9sb29uZ2Fy
-Y2gvTWFrZWZpbGUgYi9hcmNoL2xvb25nYXJjaC9NYWtlZmlsZQo+ID4gPiBpbmRleCA0YmM0N2Y0
-N2NmZDguLjM1N2VkMmE3NzFiZiAxMDA2NDQKPiA+ID4gLS0tIGEvYXJjaC9sb29uZ2FyY2gvTWFr
-ZWZpbGUKPiA+ID4gKysrIGIvYXJjaC9sb29uZ2FyY2gvTWFrZWZpbGUKPiA+ID4gQEAgLTEwLDcg
-KzEwLDcgQEAgS0JVSUxEX0RFRkNPTkZJRyA6PSBsb29uZ3NvbjNfZGVmY29uZmlnCj4gPiA+ICBp
-Zm5kZWYgQ09ORklHX0VGSV9TVFVCCj4gPiA+ICBLQlVJTERfSU1BR0UgOj0gJChib290KS92bWxp
-bnV4LmVsZgo+ID4gPiAgZWxzZQo+ID4gPiAtS0JVSUxEX0lNQUdFIDo9ICQoYm9vdCkvdm1saW51
-eC5lZmkKPiA+ID4gK0tCVUlMRF9JTUFHRSA6PSAkKGJvb3QpL3ZtbGludXouZWZpCj4gPiA+ICBl
-bmRpZgo+ID4gPgo+ID4gPiAgIwo+ID4gPiBAQCAtOTMsNyArOTMsNyBAQCB2ZHNvX2luc3RhbGw6
-Cj4gPiA+Cj4gPiA+ICBhbGw6ICQobm90ZGlyICQoS0JVSUxEX0lNQUdFKSkKPiA+ID4KPiA+ID4g
-LXZtbGludXguZWxmIHZtbGludXguZWZpOiB2bWxpbnV4Cj4gPiA+ICt2bWxpbnV4LmVsZiB2bWxp
-bnV4LmVmaSB2bWxpbnV6LmVmaTogdm1saW51eAo+ID4gPiAgICAgICAkKFEpJChNQUtFKSAkKGJ1
-aWxkKT0kKGJvb3QpICQoYm9vdHZhcnMteSkgJChib290KS8kQAo+ID4gPgo+ID4gPiAgaW5zdGFs
-bDoKPiA+ID4gZGlmZiAtLWdpdCBhL2FyY2gvbG9vbmdhcmNoL2Jvb3QvLmdpdGlnbm9yZSBiL2Fy
-Y2gvbG9vbmdhcmNoL2Jvb3QvLmdpdGlnbm9yZQo+ID4gPiBpbmRleCA0OTQyM2VlOTZlZjMuLmU1
-ZGM1OTRkYzRiNiAxMDA2NDQKPiA+ID4gLS0tIGEvYXJjaC9sb29uZ2FyY2gvYm9vdC8uZ2l0aWdu
-b3JlCj4gPiA+ICsrKyBiL2FyY2gvbG9vbmdhcmNoL2Jvb3QvLmdpdGlnbm9yZQo+ID4gPiBAQCAt
-MSwyICsxLDMgQEAKPiA+ID4gICMgU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAtb25s
-eQo+ID4gPiAgdm1saW51eCoKPiA+ID4gK3ZtbGludXoqCj4gPiA+IGRpZmYgLS1naXQgYS9hcmNo
-L2xvb25nYXJjaC9ib290L01ha2VmaWxlIGIvYXJjaC9sb29uZ2FyY2gvYm9vdC9NYWtlZmlsZQo+
-ID4gPiBpbmRleCBmZWNmMzRmNTBlNTYuLjRlMWMzNzRjNTc4MiAxMDA2NDQKPiA+ID4gLS0tIGEv
-YXJjaC9sb29uZ2FyY2gvYm9vdC9NYWtlZmlsZQo+ID4gPiArKysgYi9hcmNoL2xvb25nYXJjaC9i
-b290L01ha2VmaWxlCj4gPiA+IEBAIC0xOCwzICsxOCw5IEBAICQob2JqKS92bWxpbnV4LmVsZjog
-dm1saW51eCBGT1JDRQo+ID4gPiAgdGFyZ2V0cyArPSB2bWxpbnV4LmVmaQo+ID4gPiAgJChvYmop
-L3ZtbGludXguZWZpOiB2bWxpbnV4IEZPUkNFCj4gPiA+ICAgICAgICQoY2FsbCBpZl9jaGFuZ2Vk
-LG9iamNvcHkpCj4gPiA+ICsKPiA+ID4gK0VGSV9aQk9PVF9QQVlMT0FEICAgICAgOj0gdm1saW51
-eC5lZmkKPiA+ID4gK0VGSV9aQk9PVF9CRkRfVEFSR0VUICAgOj0gZWxmNjQtbG9vbmdhcmNoCj4g
-PiA+ICtFRklfWkJPT1RfTUFDSF9UWVBFICAgIDo9IExPT05HQVJDSDY0Cj4gPiA+ICsKPiA+ID4g
-K2luY2x1ZGUgJChzcmN0cmVlKS9kcml2ZXJzL2Zpcm13YXJlL2VmaS9saWJzdHViL01ha2VmaWxl
-Lnpib290Cj4gPiA+IC0tCj4gPiA+IDIuMzUuMQo+ID4KPiA+Cj4gPiDmnKzpgq7ku7blj4rlhbbp
-mYTku7blkKvmnInpvpnoiq/kuK3np5HnmoTllYbkuJrnp5jlr4bkv6Hmga/vvIzku4XpmZDkuo7l
-j5HpgIHnu5nkuIrpnaLlnLDlnYDkuK3liJflh7rnmoTkuKrkurrmiJbnvqTnu4TjgILnpoHmraLk
-u7vkvZXlhbbku5bkurrku6Xku7vkvZXlvaLlvI/kvb/nlKjvvIjljIXmi6zkvYbkuI3pmZDkuo7l
-hajpg6jmiJbpg6jliIblnLDms4TpnLLjgIHlpI3liLbmiJbmlaPlj5HvvInmnKzpgq7ku7blj4rl
-hbbpmYTku7bkuK3nmoTkv6Hmga/jgILlpoLmnpzmgqjplJnmlLbmnKzpgq7ku7bvvIzor7fmgqjn
-q4vljbPnlLXor53miJbpgq7ku7bpgJrnn6Xlj5Hku7bkurrlubbliKDpmaTmnKzpgq7ku7bjgIIK
-PiA+IFRoaXMgZW1haWwgYW5kIGl0cyBhdHRhY2htZW50cyBjb250YWluIGNvbmZpZGVudGlhbCBp
-bmZvcm1hdGlvbiBmcm9tIExvb25nc29uIFRlY2hub2xvZ3kgLCB3aGljaCBpcyBpbnRlbmRlZCBv
-bmx5IGZvciB0aGUgcGVyc29uIG9yIGVudGl0eSB3aG9zZSBhZGRyZXNzIGlzIGxpc3RlZCBhYm92
-ZS4gQW55IHVzZSBvZiB0aGUgaW5mb3JtYXRpb24gY29udGFpbmVkIGhlcmVpbiBpbiBhbnkgd2F5
-IChpbmNsdWRpbmcsIGJ1dCBub3QgbGltaXRlZCB0bywgdG90YWwgb3IgcGFydGlhbCBkaXNjbG9z
-dXJlLCByZXByb2R1Y3Rpb24gb3IgZGlzc2VtaW5hdGlvbikgYnkgcGVyc29ucyBvdGhlciB0aGFu
-IHRoZSBpbnRlbmRlZCByZWNpcGllbnQocykgaXMgcHJvaGliaXRlZC4gSWYgeW91IHJlY2VpdmUg
-dGhpcyBlbWFpbCBpbiBlcnJvciwgcGxlYXNlIG5vdGlmeSB0aGUgc2VuZGVyIGJ5IHBob25lIG9y
-IGVtYWlsIGltbWVkaWF0ZWx5IGFuZCBkZWxldGUgaXQuCg0KDQrmnKzpgq7ku7blj4rlhbbpmYTk
-u7blkKvmnInpvpnoiq/kuK3np5HnmoTllYbkuJrnp5jlr4bkv6Hmga/vvIzku4XpmZDkuo7lj5Hp
-gIHnu5nkuIrpnaLlnLDlnYDkuK3liJflh7rnmoTkuKrkurrmiJbnvqTnu4TjgILnpoHmraLku7vk
-vZXlhbbku5bkurrku6Xku7vkvZXlvaLlvI/kvb/nlKjvvIjljIXmi6zkvYbkuI3pmZDkuo7lhajp
-g6jmiJbpg6jliIblnLDms4TpnLLjgIHlpI3liLbmiJbmlaPlj5HvvInmnKzpgq7ku7blj4rlhbbp
-mYTku7bkuK3nmoTkv6Hmga/jgILlpoLmnpzmgqjplJnmlLbmnKzpgq7ku7bvvIzor7fmgqjnq4vl
-jbPnlLXor53miJbpgq7ku7bpgJrnn6Xlj5Hku7bkurrlubbliKDpmaTmnKzpgq7ku7bjgIIgDQpU
-aGlzIGVtYWlsIGFuZCBpdHMgYXR0YWNobWVudHMgY29udGFpbiBjb25maWRlbnRpYWwgaW5mb3Jt
-YXRpb24gZnJvbSBMb29uZ3NvbiBUZWNobm9sb2d5ICwgd2hpY2ggaXMgaW50ZW5kZWQgb25seSBm
-b3IgdGhlIHBlcnNvbiBvciBlbnRpdHkgd2hvc2UgYWRkcmVzcyBpcyBsaXN0ZWQgYWJvdmUuIEFu
-eSB1c2Ugb2YgdGhlIGluZm9ybWF0aW9uIGNvbnRhaW5lZCBoZXJlaW4gaW4gYW55IHdheSAoaW5j
-bHVkaW5nLCBidXQgbm90IGxpbWl0ZWQgdG8sIHRvdGFsIG9yIHBhcnRpYWwgZGlzY2xvc3VyZSwg
-cmVwcm9kdWN0aW9uIG9yIGRpc3NlbWluYXRpb24pIGJ5IHBlcnNvbnMgb3RoZXIgdGhhbiB0aGUg
-aW50ZW5kZWQgcmVjaXBpZW50KHMpIGlzIHByb2hpYml0ZWQuIElmIHlvdSByZWNlaXZlIHRoaXMg
-ZW1haWwgaW4gZXJyb3IsIHBsZWFzZSBub3RpZnkgdGhlIHNlbmRlciBieSBwaG9uZSBvciBlbWFp
-bCBpbW1lZGlhdGVseSBhbmQgZGVsZXRlIGl0LiA=
+On Sun, 11 Sept 2022 at 16:03, =E9=99=88=E5=8D=8E=E6=89=8D <chenhuacai@loon=
+gson.cn> wrote:
+>
+>
+>
+>
+> > -----=E5=8E=9F=E5=A7=8B=E9=82=AE=E4=BB=B6-----
+> > =E5=8F=91=E4=BB=B6=E4=BA=BA: "Ard Biesheuvel" <ardb@kernel.org>
+> > =E5=8F=91=E9=80=81=E6=97=B6=E9=97=B4:2022-09-10 22:28:04 (=E6=98=9F=E6=
+=9C=9F=E5=85=AD)
+> > =E6=94=B6=E4=BB=B6=E4=BA=BA: "=E9=99=88=E5=8D=8E=E6=89=8D" <chenhuacai@=
+loongson.cn>
+> > =E6=8A=84=E9=80=81: linux-efi@vger.kernel.org, linux-arm-kernel@lists.i=
+nfradead.org, linux-kernel@vger.kernel.org, "James E.J. Bottomley" <James.B=
+ottomley@hansenpartnership.com>, "Matthew Garrett" <mjg59@srcf.ucam.org>, "=
+Peter Jones" <pjones@redhat.com>, "Ilias Apalodimas" <ilias.apalodimas@lina=
+ro.org>, "Heinrich Schuchardt" <heinrich.schuchardt@canonical.com>, "AKASHI=
+ Takahiro" <takahiro.akashi@linaro.org>, "Palmer Dabbelt" <palmer@dabbelt.c=
+om>, "Atish Patra" <atishp@atishpatra.org>, "Arnd Bergmann" <arnd@arndb.de>=
+, "Xi Ruoyao" <xry111@xry111.site>, "Lennart Poettering" <lennart@poetterin=
+g.net>, "Jeremy Linton" <jeremy.linton@arm.com>, "Will Deacon" <will@kernel=
+.org>, "Catalin Marinas" <catalin.marinas@arm.com>
+> > =E4=B8=BB=E9=A2=98: Re: [PATCH v5 8/8] loongarch: efi: enable generic E=
+FI compressed boot
+> >
+> > On Sat, 10 Sept 2022 at 15:22, =E9=99=88=E5=8D=8E=E6=89=8D <chenhuacai@=
+loongson.cn> wrote:
+> > >
+> > > Hi, Ard,
+> > >
+> > > I prefer to give a chance to disable ZBOOT, so I don't want to select=
+ EFI_ZBOOT unconditionally in Kconfig, and then the Makefile can be like th=
+is:
+> > > diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
+> > > index c3f579bdf9e5..bc6fe65125f5 100644
+> > > --- a/arch/loongarch/Makefile
+> > > +++ b/arch/loongarch/Makefile
+> > > @@ -14,6 +14,10 @@ else
+> > >  KBUILD_IMAGE   :=3D $(boot)/vmlinux.efi
+> > >  endif
+> > >
+> > > +ifdef CONFIG_EFI_ZBOOT
+> > > +KBUILD_IMAGE    :=3D $(boot)/vmlinuz.efi
+> > > +endif
+> > > +
+> > >  archscripts: scripts_basic
+> > >         $(Q)$(MAKE) $(build)=3Darch/loongarch/boot/tools relocs
+> > >
+> >
+> > OK, I will fold this in. This actually aligns it with the other
+> > architectures, so I prefer this approach as well.
+>
+> Thank you, and if "make install" can also handle the zboot case, that's e=
+ven better. :)
+>
+> diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
+> index c3f579bdf9e5..5480fe2de7cd 100644
+> --- a/arch/loongarch/Makefile
+> +++ b/arch/loongarch/Makefile
+> @@ -137,7 +137,11 @@ vmlinux.elf vmlinux.efi vmlinuz.efi: vmlinux
+>  core-y +=3D arch/loongarch/boot/dts/
+>
+>  install:
+> +ifndef CONFIG_EFI_ZBOOT
+>         $(Q)install -D -m 755 $(KBUILD_IMAGE) $(INSTALL_PATH)/vmlinux-$(K=
+ERNELRELEASE)
+> +else
+> +       $(Q)install -D -m 755 $(KBUILD_IMAGE) $(INSTALL_PATH)/vmlinuz-$(K=
+ERNELRELEASE)
+> +endif
+>         $(Q)install -D -m 644 .config $(INSTALL_PATH)/config-$(KERNELRELE=
+ASE)
+>         $(Q)install -D -m 644 System.map $(INSTALL_PATH)/System.map-$(KER=
+NELRELEASE)
+>
+
+Is there any reason in particular this is open coded like this? Other
+architectures just do something like
+
+install:
+    $(call cmd,install)
+
+and be done with it.
