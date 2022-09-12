@@ -2,24 +2,24 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 135A55B5C66
-	for <lists+linux-efi@lfdr.de>; Mon, 12 Sep 2022 16:41:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A4075B5C6C
+	for <lists+linux-efi@lfdr.de>; Mon, 12 Sep 2022 16:41:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230208AbiILOlW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 12 Sep 2022 10:41:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50724 "EHLO
+        id S230256AbiILOla (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 12 Sep 2022 10:41:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230204AbiILOlQ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 12 Sep 2022 10:41:16 -0400
+        with ESMTP id S230235AbiILOlY (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 12 Sep 2022 10:41:24 -0400
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4A5F01FCF7;
-        Mon, 12 Sep 2022 07:41:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3E77513DDD;
+        Mon, 12 Sep 2022 07:41:22 -0700 (PDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 622CC139F;
-        Mon, 12 Sep 2022 07:41:21 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5E872113E;
+        Mon, 12 Sep 2022 07:41:28 -0700 (PDT)
 Received: from entos-ampere-02.shanghai.arm.com (entos-ampere-02.shanghai.arm.com [10.169.212.212])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 851623F73D;
-        Mon, 12 Sep 2022 07:41:08 -0700 (PDT)
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 896C13F73D;
+        Mon, 12 Sep 2022 07:41:15 -0700 (PDT)
 From:   Jia He <justin.he@arm.com>
 To:     Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
         Tony Luck <tony.luck@intel.com>,
@@ -38,9 +38,9 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-acpi@vger.kernel.org,
         Shuai Xue <xueshuai@linux.alibaba.com>,
         Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
         nd@arm.com, Jia He <justin.he@arm.com>
-Subject: [PATCH v6 1/8] efi/cper: export several helpers for ghes_edac to use
-Date:   Mon, 12 Sep 2022 14:39:58 +0000
-Message-Id: <20220912144005.212624-2-justin.he@arm.com>
+Subject: [PATCH v6 2/8] EDAC/ghes: Add a notifier for reporting memory errors
+Date:   Mon, 12 Sep 2022 14:39:59 +0000
+Message-Id: <20220912144005.212624-3-justin.he@arm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220912144005.212624-1-justin.he@arm.com>
 References: <20220912144005.212624-1-justin.he@arm.com>
@@ -55,43 +55,158 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Before ghes_edac can be turned back into a proper module again, export
-several helpers which are going to be used by it.
+To make a proper module, add a notifier for reporting memory errors. Use
+an atomic notifier because calls sites like ghes_proc_in_irq() run in
+interrupt context.
 
+Suggested-by: Borislav Petkov <bp@alien8.de>
 Signed-off-by: Jia He <justin.he@arm.com>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/cper.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/acpi/apei/ghes.c | 16 +++++++++++++++-
+ drivers/edac/ghes_edac.c | 19 +++++++++++++++++--
+ include/acpi/ghes.h      | 10 +++-------
+ 3 files changed, 35 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index e4e5ea7ce910..053eae13f409 100644
---- a/drivers/firmware/efi/cper.c
-+++ b/drivers/firmware/efi/cper.c
-@@ -290,6 +290,7 @@ int cper_mem_err_location(struct cper_mem_err_compact *mem, char *msg)
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index d91ad378c00d..8cb65f757d06 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -94,6 +94,8 @@
+ #define FIX_APEI_GHES_SDEI_CRITICAL	__end_of_fixed_addresses
+ #endif
  
- 	return n;
- }
-+EXPORT_SYMBOL_GPL(cper_mem_err_location);
- 
- int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg)
++static ATOMIC_NOTIFIER_HEAD(ghes_report_chain);
++
+ static inline bool is_hest_type_generic_v2(struct ghes *ghes)
  {
-@@ -310,6 +311,7 @@ int cper_dimm_err_location(struct cper_mem_err_compact *mem, char *msg)
+ 	return ghes->generic->header.type == ACPI_HEST_TYPE_GENERIC_ERROR_V2;
+@@ -645,7 +647,7 @@ static bool ghes_do_proc(struct ghes *ghes,
+ 		if (guid_equal(sec_type, &CPER_SEC_PLATFORM_MEM)) {
+ 			struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
  
+-			ghes_edac_report_mem_error(sev, mem_err);
++			atomic_notifier_call_chain(&ghes_report_chain, sev, mem_err);
+ 
+ 			arch_apei_report_mem_error(sev, mem_err);
+ 			queued = ghes_handle_memory_failure(gdata, sev);
+@@ -1497,3 +1499,15 @@ void __init acpi_ghes_init(void)
+ 	else
+ 		pr_info(GHES_PFX "Failed to enable APEI firmware first mode.\n");
+ }
++
++void ghes_register_report_chain(struct notifier_block *nb)
++{
++	atomic_notifier_chain_register(&ghes_report_chain, nb);
++}
++EXPORT_SYMBOL_GPL(ghes_register_report_chain);
++
++void ghes_unregister_report_chain(struct notifier_block *nb)
++{
++	atomic_notifier_chain_unregister(&ghes_report_chain, nb);
++}
++EXPORT_SYMBOL_GPL(ghes_unregister_report_chain);
+diff --git a/drivers/edac/ghes_edac.c b/drivers/edac/ghes_edac.c
+index c8fa7dcfdbd0..7b8d56a769f6 100644
+--- a/drivers/edac/ghes_edac.c
++++ b/drivers/edac/ghes_edac.c
+@@ -14,6 +14,7 @@
+ #include <linux/dmi.h>
+ #include "edac_module.h"
+ #include <ras/ras_event.h>
++#include <linux/notifier.h>
+ 
+ #define OTHER_DETAIL_LEN	400
+ 
+@@ -267,11 +268,14 @@ static int print_mem_error_other_detail(const struct cper_sec_mem_err *mem, char
  	return n;
  }
-+EXPORT_SYMBOL_GPL(cper_dimm_err_location);
  
- void cper_mem_err_pack(const struct cper_sec_mem_err *mem,
- 		       struct cper_mem_err_compact *cmem)
-@@ -331,6 +333,7 @@ void cper_mem_err_pack(const struct cper_sec_mem_err *mem,
- 	cmem->mem_array_handle = mem->mem_array_handle;
- 	cmem->mem_dev_handle = mem->mem_dev_handle;
+-void ghes_edac_report_mem_error(int sev, struct cper_sec_mem_err *mem_err)
++static int ghes_edac_report_mem_error(struct notifier_block *nb,
++				      unsigned long val, void *data)
+ {
++	struct cper_sec_mem_err *mem_err = (struct cper_sec_mem_err *)data;
+ 	struct cper_mem_err_compact cmem;
+ 	struct edac_raw_error_desc *e;
+ 	struct mem_ctl_info *mci;
++	unsigned long sev = val;
+ 	struct ghes_pvt *pvt;
+ 	unsigned long flags;
+ 	char *p;
+@@ -282,7 +286,7 @@ void ghes_edac_report_mem_error(int sev, struct cper_sec_mem_err *mem_err)
+ 	 * know.
+ 	 */
+ 	if (WARN_ON_ONCE(in_nmi()))
+-		return;
++		return NOTIFY_OK;
+ 
+ 	spin_lock_irqsave(&ghes_lock, flags);
+ 
+@@ -374,8 +378,15 @@ void ghes_edac_report_mem_error(int sev, struct cper_sec_mem_err *mem_err)
+ 
+ unlock:
+ 	spin_unlock_irqrestore(&ghes_lock, flags);
++
++	return NOTIFY_OK;
  }
-+EXPORT_SYMBOL_GPL(cper_mem_err_pack);
  
- const char *cper_mem_err_unpack(struct trace_seq *p,
- 				struct cper_mem_err_compact *cmem)
++static struct notifier_block ghes_edac_mem_err_nb = {
++	.notifier_call	= ghes_edac_report_mem_error,
++	.priority	= 0,
++};
++
+ /*
+  * Known systems that are safe to enable this module.
+  */
+@@ -503,6 +514,8 @@ int ghes_edac_register(struct ghes *ghes, struct device *dev)
+ 	ghes_pvt = pvt;
+ 	spin_unlock_irqrestore(&ghes_lock, flags);
+ 
++	ghes_register_report_chain(&ghes_edac_mem_err_nb);
++
+ 	/* only set on success */
+ 	refcount_set(&ghes_refcount, 1);
+ 
+@@ -548,6 +561,8 @@ void ghes_edac_unregister(struct ghes *ghes)
+ 	if (mci)
+ 		edac_mc_free(mci);
+ 
++	ghes_unregister_report_chain(&ghes_edac_mem_err_nb);
++
+ unlock:
+ 	mutex_unlock(&ghes_reg_mutex);
+ }
+diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
+index 34fb3431a8f3..5cbd38b6e4e1 100644
+--- a/include/acpi/ghes.h
++++ b/include/acpi/ghes.h
+@@ -76,18 +76,11 @@ int ghes_estatus_pool_init(int num_ghes);
+ /* From drivers/edac/ghes_edac.c */
+ 
+ #ifdef CONFIG_EDAC_GHES
+-void ghes_edac_report_mem_error(int sev, struct cper_sec_mem_err *mem_err);
+-
+ int ghes_edac_register(struct ghes *ghes, struct device *dev);
+ 
+ void ghes_edac_unregister(struct ghes *ghes);
+ 
+ #else
+-static inline void ghes_edac_report_mem_error(int sev,
+-				       struct cper_sec_mem_err *mem_err)
+-{
+-}
+-
+ static inline int ghes_edac_register(struct ghes *ghes, struct device *dev)
+ {
+ 	return -ENODEV;
+@@ -145,4 +138,7 @@ int ghes_notify_sea(void);
+ static inline int ghes_notify_sea(void) { return -ENOENT; }
+ #endif
+ 
++struct notifier_block;
++extern void ghes_register_report_chain(struct notifier_block *nb);
++extern void ghes_unregister_report_chain(struct notifier_block *nb);
+ #endif /* GHES_H */
 -- 
 2.25.1
 
