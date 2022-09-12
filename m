@@ -2,24 +2,24 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1DAD5B5C81
-	for <lists+linux-efi@lfdr.de>; Mon, 12 Sep 2022 16:42:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 026AF5B5C88
+	for <lists+linux-efi@lfdr.de>; Mon, 12 Sep 2022 16:43:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230353AbiILOmo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 12 Sep 2022 10:42:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50912 "EHLO
+        id S230324AbiILOm7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 12 Sep 2022 10:42:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230235AbiILOmI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 12 Sep 2022 10:42:08 -0400
+        with ESMTP id S230365AbiILOmV (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 12 Sep 2022 10:42:21 -0400
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5F9653A15C;
-        Mon, 12 Sep 2022 07:41:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 63EDC3A17B;
+        Mon, 12 Sep 2022 07:42:04 -0700 (PDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8AF21113E;
-        Mon, 12 Sep 2022 07:42:03 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8E34C113E;
+        Mon, 12 Sep 2022 07:42:10 -0700 (PDT)
 Received: from entos-ampere-02.shanghai.arm.com (entos-ampere-02.shanghai.arm.com [10.169.212.212])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 75B6F3F73D;
-        Mon, 12 Sep 2022 07:41:50 -0700 (PDT)
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B0DBA3F73D;
+        Mon, 12 Sep 2022 07:41:57 -0700 (PDT)
 From:   Jia He <justin.he@arm.com>
 To:     Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
         Tony Luck <tony.luck@intel.com>,
@@ -37,11 +37,10 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-acpi@vger.kernel.org,
         devel@acpica.org, "Rafael J . Wysocki" <rafael@kernel.org>,
         Shuai Xue <xueshuai@linux.alibaba.com>,
         Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
-        nd@arm.com, Jia He <justin.he@arm.com>,
-        kernel test robot <lkp@intel.com>
-Subject: [PATCH v6 7/8] apei/ghes: Use unrcu_pointer for cmpxchg
-Date:   Mon, 12 Sep 2022 14:40:04 +0000
-Message-Id: <20220912144005.212624-8-justin.he@arm.com>
+        nd@arm.com, Jia He <justin.he@arm.com>
+Subject: [PATCH v6 8/8] EDAC/igen6: Return consistent errno when another edac driver is enabled
+Date:   Mon, 12 Sep 2022 14:40:05 +0000
+Message-Id: <20220912144005.212624-9-justin.he@arm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220912144005.212624-1-justin.he@arm.com>
 References: <20220912144005.212624-1-justin.he@arm.com>
@@ -56,47 +55,28 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-ghes_estatus_caches should be add rcu annotation to avoid sparse warnings.
-   drivers/acpi/apei/ghes.c:733:25: sparse: sparse: incompatible types in comparison expression (different address spaces):
-   drivers/acpi/apei/ghes.c:733:25: sparse:    struct ghes_estatus_cache [noderef] __rcu *
-   drivers/acpi/apei/ghes.c:733:25: sparse:    struct ghes_estatus_cache *
-   drivers/acpi/apei/ghes.c:813:25: sparse: sparse: incompatible types in comparison expression (different address spaces):
-   drivers/acpi/apei/ghes.c:813:25: sparse:    struct ghes_estatus_cache [noderef] __rcu *
-   drivers/acpi/apei/ghes.c:813:25: sparse:    struct ghes_estatus_cache *
+Only a single edac driver can be enabled for EDAC MC. The igen6_init()
+should be returned with EBUSY instead of ENODEV, which is consistent with
+other edac drivers.
 
-unrcu_pointer is to strip the __rcu in cmpxchg.
-
-Reported-by: kernel test robot <lkp@intel.com>
 Signed-off-by: Jia He <justin.he@arm.com>
 ---
- drivers/acpi/apei/ghes.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/edac/igen6_edac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 4af269b22bd4..c0b09addb96f 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -153,7 +153,7 @@ struct ghes_vendor_record_entry {
- static struct gen_pool *ghes_estatus_pool;
- static unsigned long ghes_estatus_pool_size_request;
+diff --git a/drivers/edac/igen6_edac.c b/drivers/edac/igen6_edac.c
+index 4ac6d0c533ec..4646cb72b9f8 100644
+--- a/drivers/edac/igen6_edac.c
++++ b/drivers/edac/igen6_edac.c
+@@ -1276,7 +1276,7 @@ static int __init igen6_init(void)
  
--static struct ghes_estatus_cache *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
-+static struct ghes_estatus_cache __rcu *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
- static atomic_t ghes_estatus_cache_alloced;
+ 	owner = edac_get_owner();
+ 	if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
+-		return -ENODEV;
++		return -EBUSY;
  
- static int ghes_panic_timeout __read_mostly = 30;
-@@ -843,8 +843,9 @@ static void ghes_estatus_cache_add(
- 	}
- 	/* new_cache must be put into array after its contents are written */
- 	smp_wmb();
--	if (slot != -1 && cmpxchg(ghes_estatus_caches + slot,
--				  slot_cache, new_cache) == slot_cache) {
-+	if (slot != -1 && unrcu_pointer(cmpxchg(ghes_estatus_caches + slot,
-+				RCU_INITIALIZER(slot_cache),
-+				RCU_INITIALIZER(new_cache))) == slot_cache) {
- 		if (slot_cache)
- 			call_rcu(&slot_cache->rcu, ghes_estatus_cache_rcu_free);
- 	} else
+ 	edac_op_state = EDAC_OPSTATE_NMI;
+ 
 -- 
 2.25.1
 
