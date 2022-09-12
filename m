@@ -2,161 +2,111 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 197175B580B
-	for <lists+linux-efi@lfdr.de>; Mon, 12 Sep 2022 12:18:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 617AC5B5889
+	for <lists+linux-efi@lfdr.de>; Mon, 12 Sep 2022 12:39:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230032AbiILKSV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 12 Sep 2022 06:18:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33144 "EHLO
+        id S229836AbiILKjN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 12 Sep 2022 06:39:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230054AbiILKSU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 12 Sep 2022 06:18:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4E7B2C11B;
-        Mon, 12 Sep 2022 03:18:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 80AFE60B50;
-        Mon, 12 Sep 2022 10:18:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D09C43150;
-        Mon, 12 Sep 2022 10:18:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662977898;
-        bh=kWMe+7CNzjzp4rQ47QWRnkKq04EFkqQePpgjxxrETT0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=kQ3TQ5tXtnMgJDPPtVoB8Bec6sFR8CjOajsR7riY9VpKsQpePLQVOPwfFENxjXWsZ
-         7VDJZN8eIt8Po98Fx5++QRnaKoYz1N6+P3ePsgXBD+/wQB4EsHfI3XeQIlFc79FFFV
-         PF4WrTNH8U0vqTOAEfwaHEB/djY/642sK0MpDUwRqXaglNfXDSJeHdNUXaxEGleXhg
-         uJ1Q/JdxtoPBvJTyad5qw1AXcuwwMXcuehbd0XxEAORiGW7iZNkH16ZEwp4SC8o61O
-         6iJQolyxsM2mXsatX+aBxfnb3G1cIoPFTR4URZrQ3Je/xHHlIlKtPErI+wGnR8vV1E
-         kT/NrAKyhcWGA==
-Received: by mail-lf1-f54.google.com with SMTP id f9so13295685lfr.3;
-        Mon, 12 Sep 2022 03:18:18 -0700 (PDT)
-X-Gm-Message-State: ACgBeo31X4gHUFA+Sg8E0qCcqUiOmZVKNHkn/7Nt+r99DRWgBcdfD+J3
-        dONOax8lRqceFp3fvd3gQGKwfQVn+y/RKg+qLic=
-X-Google-Smtp-Source: AA6agR7O6xg9bgH0x4tI6uxzwzVJNBUTTbg0uuggt6ZblPTlbBD+d8aB6msOoYCXnSzyFMj81e920oC6STcRn0s3770=
-X-Received: by 2002:a05:6512:150e:b0:492:d9fd:9bdf with SMTP id
- bq14-20020a056512150e00b00492d9fd9bdfmr8203912lfb.583.1662977896827; Mon, 12
- Sep 2022 03:18:16 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220910081152.2238369-1-ardb@kernel.org> <20220910081152.2238369-9-ardb@kernel.org>
- <6876236f.7b0c.18327c74248.Coremail.chenhuacai@loongson.cn>
- <CAMj1kXFpQ1FkiMMXeA-E5FdnDzhZr7qmN15PNig_9KXxGNRJhQ@mail.gmail.com> <2c005589.7bc5.1832d12eb0c.Coremail.chenhuacai@loongson.cn>
-In-Reply-To: <2c005589.7bc5.1832d12eb0c.Coremail.chenhuacai@loongson.cn>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 12 Sep 2022 11:18:05 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEvRfgMo+kJBwdNQfcBSfEXYGZ5vTbh2Ym8T6X+p9iWBA@mail.gmail.com>
-Message-ID: <CAMj1kXEvRfgMo+kJBwdNQfcBSfEXYGZ5vTbh2Ym8T6X+p9iWBA@mail.gmail.com>
-Subject: Re: Re: [PATCH v5 8/8] loongarch: efi: enable generic EFI compressed boot
-To:     =?UTF-8?B?6ZmI5Y2O5omN?= <chenhuacai@loongson.cn>
-Cc:     linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        Peter Jones <pjones@redhat.com>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-        AKASHI Takahiro <takahiro.akashi@linaro.org>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Atish Patra <atishp@atishpatra.org>,
-        Arnd Bergmann <arnd@arndb.de>, Xi Ruoyao <xry111@xry111.site>,
-        Lennart Poettering <lennart@poettering.net>,
-        Jeremy Linton <jeremy.linton@arm.com>,
+        with ESMTP id S229496AbiILKjL (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 12 Sep 2022 06:39:11 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CAED21241;
+        Mon, 12 Sep 2022 03:39:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1662979151; x=1694515151;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=w3vFwdYLxWsQ9bEvrr+2hHC3zOoyKWcZ+8GtDAo7dCU=;
+  b=FUx8SQDi+VRECKMNKEnrPkpJ8h77lUkDB8/1EhzRLRgCAce1DSqj4Ind
+   BPryJaJGJCURHbm3FycsO0pHttBthL2JYA3Gc3pyWRDDVwFzFM057WQ/0
+   q5e6cwGM4zx5BpkcOPdjxOeoA9PF0iigpQA+r5z5sc18qGcSg7Yxi+Lvs
+   02wmm6NEf9vXY/qVbeDUhq6JUtaIxBdRlMjKO2DYAH3LZfb+aLw9OE1B8
+   xcOSLczz7hBLTMW+a9Akn5SICrseaiOI62IR4CP3zubvMvh3b6Qoh2Ku7
+   M2uIDcFwt2hl7feJvxAJDH/pr7tI4wMYII6D4GU7+zKl+blDsBia4UnCg
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10467"; a="359558492"
+X-IronPort-AV: E=Sophos;i="5.93,310,1654585200"; 
+   d="scan'208";a="359558492"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2022 03:39:10 -0700
+X-IronPort-AV: E=Sophos;i="5.93,310,1654585200"; 
+   d="scan'208";a="719712154"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2022 03:39:04 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oXgqC-001Irg-2C;
+        Mon, 12 Sep 2022 13:39:00 +0300
+Date:   Mon, 12 Sep 2022 13:39:00 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Len Brown <lenb@kernel.org>, Elie Morisse <syniurge@gmail.com>,
+        Nehal Shah <nehal-bakulchandra.shah@amd.com>,
+        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
+        Khalil Blaiech <kblaiech@nvidia.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
         Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Mark Rutland <mark.rutland@arm.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Robert Moore <robert.moore@intel.com>,
+        Wolfram Sang <wsa@kernel.org>
+Subject: Re: [PATCH v2 0/8] ACPI: unify _UID handling as integer
+Message-ID: <Yx8MRPxPrNG1XRqV@smile.fi.intel.com>
+References: <20220908132910.62122-1-andriy.shevchenko@linux.intel.com>
+ <YxnwMLvgQAPOkeeK@smile.fi.intel.com>
+ <CAJZ5v0j5FO+OcX6VdiR-tuDCrHFwErquxzZGUu3ZLQ1G57T-+Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0j5FO+OcX6VdiR-tuDCrHFwErquxzZGUu3ZLQ1G57T-+Q@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sun, 11 Sept 2022 at 16:03, =E9=99=88=E5=8D=8E=E6=89=8D <chenhuacai@loon=
-gson.cn> wrote:
->
->
->
->
-> > -----=E5=8E=9F=E5=A7=8B=E9=82=AE=E4=BB=B6-----
-> > =E5=8F=91=E4=BB=B6=E4=BA=BA: "Ard Biesheuvel" <ardb@kernel.org>
-> > =E5=8F=91=E9=80=81=E6=97=B6=E9=97=B4:2022-09-10 22:28:04 (=E6=98=9F=E6=
-=9C=9F=E5=85=AD)
-> > =E6=94=B6=E4=BB=B6=E4=BA=BA: "=E9=99=88=E5=8D=8E=E6=89=8D" <chenhuacai@=
-loongson.cn>
-> > =E6=8A=84=E9=80=81: linux-efi@vger.kernel.org, linux-arm-kernel@lists.i=
-nfradead.org, linux-kernel@vger.kernel.org, "James E.J. Bottomley" <James.B=
-ottomley@hansenpartnership.com>, "Matthew Garrett" <mjg59@srcf.ucam.org>, "=
-Peter Jones" <pjones@redhat.com>, "Ilias Apalodimas" <ilias.apalodimas@lina=
-ro.org>, "Heinrich Schuchardt" <heinrich.schuchardt@canonical.com>, "AKASHI=
- Takahiro" <takahiro.akashi@linaro.org>, "Palmer Dabbelt" <palmer@dabbelt.c=
-om>, "Atish Patra" <atishp@atishpatra.org>, "Arnd Bergmann" <arnd@arndb.de>=
-, "Xi Ruoyao" <xry111@xry111.site>, "Lennart Poettering" <lennart@poetterin=
-g.net>, "Jeremy Linton" <jeremy.linton@arm.com>, "Will Deacon" <will@kernel=
-.org>, "Catalin Marinas" <catalin.marinas@arm.com>
-> > =E4=B8=BB=E9=A2=98: Re: [PATCH v5 8/8] loongarch: efi: enable generic E=
-FI compressed boot
-> >
-> > On Sat, 10 Sept 2022 at 15:22, =E9=99=88=E5=8D=8E=E6=89=8D <chenhuacai@=
-loongson.cn> wrote:
-> > >
-> > > Hi, Ard,
-> > >
-> > > I prefer to give a chance to disable ZBOOT, so I don't want to select=
- EFI_ZBOOT unconditionally in Kconfig, and then the Makefile can be like th=
-is:
-> > > diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
-> > > index c3f579bdf9e5..bc6fe65125f5 100644
-> > > --- a/arch/loongarch/Makefile
-> > > +++ b/arch/loongarch/Makefile
-> > > @@ -14,6 +14,10 @@ else
-> > >  KBUILD_IMAGE   :=3D $(boot)/vmlinux.efi
-> > >  endif
-> > >
-> > > +ifdef CONFIG_EFI_ZBOOT
-> > > +KBUILD_IMAGE    :=3D $(boot)/vmlinuz.efi
-> > > +endif
-> > > +
-> > >  archscripts: scripts_basic
-> > >         $(Q)$(MAKE) $(build)=3Darch/loongarch/boot/tools relocs
-> > >
-> >
-> > OK, I will fold this in. This actually aligns it with the other
-> > architectures, so I prefer this approach as well.
->
-> Thank you, and if "make install" can also handle the zboot case, that's e=
-ven better. :)
->
-> diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
-> index c3f579bdf9e5..5480fe2de7cd 100644
-> --- a/arch/loongarch/Makefile
-> +++ b/arch/loongarch/Makefile
-> @@ -137,7 +137,11 @@ vmlinux.elf vmlinux.efi vmlinuz.efi: vmlinux
->  core-y +=3D arch/loongarch/boot/dts/
->
->  install:
-> +ifndef CONFIG_EFI_ZBOOT
->         $(Q)install -D -m 755 $(KBUILD_IMAGE) $(INSTALL_PATH)/vmlinux-$(K=
-ERNELRELEASE)
-> +else
-> +       $(Q)install -D -m 755 $(KBUILD_IMAGE) $(INSTALL_PATH)/vmlinuz-$(K=
-ERNELRELEASE)
-> +endif
->         $(Q)install -D -m 644 .config $(INSTALL_PATH)/config-$(KERNELRELE=
-ASE)
->         $(Q)install -D -m 644 System.map $(INSTALL_PATH)/System.map-$(KER=
-NELRELEASE)
->
+On Sat, Sep 10, 2022 at 06:32:10PM +0200, Rafael J. Wysocki wrote:
+> On Thu, Sep 8, 2022 at 3:38 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
 
-Is there any reason in particular this is open coded like this? Other
-architectures just do something like
+...
 
-install:
-    $(call cmd,install)
+> Tentatively applied as 6.1 material.
 
-and be done with it.
+Thanks!
+
+> If there are updates, we'll make changes as they go.
+
+There is one at least to fix a warning in the perf patch. Should I resend
+a fixed patch, just a fix, or entire series with a fixed patch?
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
