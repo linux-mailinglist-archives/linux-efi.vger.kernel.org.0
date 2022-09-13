@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32A435B7866
-	for <lists+linux-efi@lfdr.de>; Tue, 13 Sep 2022 19:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 776B75B784B
+	for <lists+linux-efi@lfdr.de>; Tue, 13 Sep 2022 19:43:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233310AbiIMRk2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 13 Sep 2022 13:40:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53896 "EHLO
+        id S233366AbiIMRkp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 13 Sep 2022 13:40:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233202AbiIMRjl (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 13 Sep 2022 13:39:41 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 785B2A7221;
-        Tue, 13 Sep 2022 09:32:20 -0700 (PDT)
+        with ESMTP id S233101AbiIMRjt (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 13 Sep 2022 13:39:49 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C98147D1F9;
+        Tue, 13 Sep 2022 09:32:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1663086741; x=1694622741;
+  t=1663086777; x=1694622777;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=AeDF2xSviZhU3KN3WMgjO56/nBhapQiTY2+YlehU628=;
-  b=kqXg0jVQyRYUjGvhycffGL62k+hT4NDc7mZZgp2G+h1XCeCP7u3Gf16N
-   AGp3l5q4T30L/OUrIIsr1cbfAjuFvr6FTz8MpWgEca92HEQ/6bdW1FuUp
-   CivFbQ27v+HJ3d2CnBjtKrcSw+KvG6BBRjINg/GjKxXgcVZqATglol90B
-   beX5FhdBuBxgPuklNW5MVcX0YCsiOLovHuT99n50tClpacpKjLFkZIIPO
-   Kr8+r74mu3PdeRZVKYuMJRtPy8Kh/ckGb48UOILHY04qPbY8bAD3mGimF
-   KTRrfM6+XGRF6et1vK5mxkGRlo9iOD+4d+I8WRUYYOG4cNaIb4U0tTlgZ
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10469"; a="362135470"
+  bh=NzmE1/IO0VatkJS0QWAbb13XUkBx68v4n4aNQ7ngE20=;
+  b=AdscNvfP0hVRPg1xTSCyPGA7BqPCzHAXHRGqmS2kFBJkP3f7Elhf/SVD
+   K9Nq62kwbdPmYXpXS7nNFTJrCRdv/mTWUVWva2GJRzW5dWGoz/Pk70Tl4
+   mL0LT9MxzsOYzZ5LFiD8tHikd1TVEXA7nb044UPFxlwOXBO96N9Mw5clp
+   zjlGv8bSu7xFN/FUnGLZ7lQM8C/v7Iv3lf5yVeVblz539l9Ysbd6V4/Hy
+   yMhT2uxkt776oJhQ6lP/z2Z5sSC9mpQLYJytWfsVBOmbvYWbOiGCuvE2N
+   0rTWJQNhGTUWEWQnQwfFwECWSOaJz5hD0pvyBStzJsegyOZ7tPUNLDnvH
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10469"; a="324433032"
 X-IronPort-AV: E=Sophos;i="5.93,313,1654585200"; 
-   d="scan'208";a="362135470"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2022 09:31:47 -0700
+   d="scan'208";a="324433032"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2022 09:31:46 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.93,313,1654585200"; 
-   d="scan'208";a="791992110"
+   d="scan'208";a="861610561"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga005.jf.intel.com with ESMTP; 13 Sep 2022 09:31:39 -0700
+  by fmsmga006.fm.intel.com with ESMTP; 13 Sep 2022 09:31:39 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 6CA7E50D; Tue, 13 Sep 2022 19:31:49 +0300 (EEST)
+        id 798A757F; Tue, 13 Sep 2022 19:31:49 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -63,20 +63,19 @@ Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
-        Robert Moore <robert.moore@intel.com>,
-        Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH v3 5/8] i2c: mlxbf: Refactor _UID handling to use acpi_dev_uid_to_integer()
-Date:   Tue, 13 Sep 2022 19:31:44 +0300
-Message-Id: <20220913163147.24258-6-andriy.shevchenko@linux.intel.com>
+        Robert Moore <robert.moore@intel.com>
+Subject: [PATCH v3 6/8] perf: qcom_l2_pmu: Refactor _UID handling to use acpi_dev_uid_to_integer()
+Date:   Tue, 13 Sep 2022 19:31:45 +0300
+Message-Id: <20220913163147.24258-7-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220913163147.24258-1-andriy.shevchenko@linux.intel.com>
 References: <20220913163147.24258-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -87,58 +86,45 @@ ACPI utils provide acpi_dev_uid_to_integer() helper to extract _UID as
 an integer. Use it instead of custom approach.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Wolfram Sang <wsa@kernel.org>
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/i2c/busses/i2c-mlxbf.c | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
+ drivers/perf/qcom_l2_pmu.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-mlxbf.c b/drivers/i2c/busses/i2c-mlxbf.c
-index 8716032f030a..32235c62f3d2 100644
---- a/drivers/i2c/busses/i2c-mlxbf.c
-+++ b/drivers/i2c/busses/i2c-mlxbf.c
-@@ -2229,35 +2229,27 @@ MODULE_DEVICE_TABLE(acpi, mlxbf_i2c_acpi_ids);
- static int mlxbf_i2c_acpi_probe(struct device *dev, struct mlxbf_i2c_priv *priv)
+diff --git a/drivers/perf/qcom_l2_pmu.c b/drivers/perf/qcom_l2_pmu.c
+index 30234c261b05..aaca6db7d8f6 100644
+--- a/drivers/perf/qcom_l2_pmu.c
++++ b/drivers/perf/qcom_l2_pmu.c
+@@ -840,16 +840,16 @@ static int l2_cache_pmu_probe_cluster(struct device *dev, void *data)
  {
- 	const struct acpi_device_id *aid;
--	struct acpi_device *adev;
--	unsigned long bus_id = 0;
--	const char *uid;
-+	u64 bus_id;
- 	int ret;
+ 	struct platform_device *pdev = to_platform_device(dev->parent);
+ 	struct platform_device *sdev = to_platform_device(dev);
+-	struct acpi_device *adev = ACPI_COMPANION(dev);
+ 	struct l2cache_pmu *l2cache_pmu = data;
+ 	struct cluster_pmu *cluster;
+-	unsigned long fw_cluster_id;
++	u64 fw_cluster_id;
+ 	int err;
+ 	int irq;
  
- 	if (acpi_disabled)
- 		return -ENOENT;
- 
--	adev = ACPI_COMPANION(dev);
--	if (!adev)
--		return -ENXIO;
--
- 	aid = acpi_match_device(mlxbf_i2c_acpi_ids, dev);
- 	if (!aid)
- 		return -ENODEV;
- 
- 	priv->chip = (struct mlxbf_i2c_chip_info *)aid->driver_data;
- 
--	uid = acpi_device_uid(adev);
--	if (!uid || !(*uid)) {
-+	ret = acpi_dev_uid_to_integer(ACPI_COMPANION(dev), &bus_id);
-+	if (ret) {
- 		dev_err(dev, "Cannot retrieve UID\n");
+-	if (!adev || kstrtoul(adev->pnp.unique_id, 10, &fw_cluster_id) < 0) {
++	err = acpi_dev_uid_to_integer(ACPI_COMPANION(dev), &fw_cluster_id);
++	if (err) {
+ 		dev_err(&pdev->dev, "unable to read ACPI uid\n");
 -		return -ENODEV;
-+		return ret;
++		return err;
  	}
  
--	ret = kstrtoul(uid, 0, &bus_id);
--	if (!ret)
--		priv->bus = bus_id;
-+	priv->bus = bus_id;
+ 	cluster = devm_kzalloc(&pdev->dev, sizeof(*cluster), GFP_KERNEL);
+@@ -879,7 +879,7 @@ static int l2_cache_pmu_probe_cluster(struct device *dev, void *data)
+ 	}
  
--	return ret;
-+	return 0;
- }
- #else
- static int mlxbf_i2c_acpi_probe(struct device *dev, struct mlxbf_i2c_priv *priv)
+ 	dev_info(&pdev->dev,
+-		"Registered L2 cache PMU cluster %ld\n", fw_cluster_id);
++		 "Registered L2 cache PMU cluster %lld\n", fw_cluster_id);
+ 
+ 	spin_lock_init(&cluster->pmu_lock);
+ 
 -- 
 2.35.1
 
