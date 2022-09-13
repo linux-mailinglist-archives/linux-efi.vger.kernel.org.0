@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B4415B784A
-	for <lists+linux-efi@lfdr.de>; Tue, 13 Sep 2022 19:43:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A90695B784E
+	for <lists+linux-efi@lfdr.de>; Tue, 13 Sep 2022 19:43:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233390AbiIMRk6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 13 Sep 2022 13:40:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52740 "EHLO
+        id S233202AbiIMRke (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 13 Sep 2022 13:40:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230141AbiIMRjt (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 13 Sep 2022 13:39:49 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6667B7D1C0;
-        Tue, 13 Sep 2022 09:32:57 -0700 (PDT)
+        with ESMTP id S233221AbiIMRjr (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 13 Sep 2022 13:39:47 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D85A0A7215;
+        Tue, 13 Sep 2022 09:32:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1663086777; x=1694622777;
+  t=1663086759; x=1694622759;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=k11LCc77TrkmYe+60oQhVeO6H7+ymxQKl+achfaYq9M=;
-  b=Qy2qfX95XoSvSDptAj6nZS02cVKogvI6tHxUHYBmJKf1T2oe3arXGJ5g
-   LYwLQ523M8qvZuNztuWzWRdq0RCkP1ky8WEH1RIrbOKCkUhx7XZDufVdU
-   bhYPZk7FZgImD4eUsMNywjDKvPOU17esjPOxYuJOCrOY0IS3REbRnvT9d
-   WyOclyqH8FwA1TD1TvFNJUVHcsIBbejIwcH6WExc8q64VCcHDnFzZii3U
-   qgHsefyEpZCEQjSdm5NiWx/gRrdAuWgxcWkzaAeJinMapXX7XXKK/DFCy
-   mYKWOQ/lLRvGhvkoIGa4Rw8LuFDLuvqarntmLhwyE+ZwFBE126AU7iF1T
+  bh=xgxQe/9VuRknZlyDDD0FzxD71AXddVq2scuKrzOQ48U=;
+  b=PQKh8CcCmDfCtZShfS4csAnrpi+MmrtSYBAGy/mt2jDQuV8+HXAXAUkX
+   V42vPtaBqCWinHhRwgg/GANyPx9sqHny3SfnKTHVhOaEtSyEQEtDHuNPk
+   ivQEOLe6JFgNs8scWVd9g438Fp7WCLd3oXWnN/Z2JUT9wgvyHIkD/ee7d
+   h8lHTatN/XMUkzi/R0hk9yaFRbcL5jKy3sCVH6Bfmos0nND3QeypLvrsb
+   Mvk3b34ctYrOLuk/oQTLeyYfz8Z454rCk29gp0WsGsMf9obkLPWd9GxKy
+   ljKI4iKGKWAEAqjv8H15gdSTHQaRp+SIOTZPOe0jXcRiJNWABh/TrcCOU
    Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10469"; a="324433037"
+X-IronPort-AV: E=McAfee;i="6500,9779,10469"; a="299523979"
 X-IronPort-AV: E=Sophos;i="5.93,313,1654585200"; 
-   d="scan'208";a="324433037"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2022 09:31:47 -0700
+   d="scan'208";a="299523979"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2022 09:31:47 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.93,313,1654585200"; 
-   d="scan'208";a="594008320"
+   d="scan'208";a="742221651"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga006.jf.intel.com with ESMTP; 13 Sep 2022 09:31:40 -0700
+  by orsmga004.jf.intel.com with ESMTP; 13 Sep 2022 09:31:40 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 8A2235E4; Tue, 13 Sep 2022 19:31:49 +0300 (EEST)
+        id 978916CD; Tue, 13 Sep 2022 19:31:49 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -64,18 +64,18 @@ Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         Robert Moore <robert.moore@intel.com>
-Subject: [PATCH v3 7/8] spi: pxa2xx: Refactor _UID handling to use acpi_dev_uid_to_integer()
-Date:   Tue, 13 Sep 2022 19:31:46 +0300
-Message-Id: <20220913163147.24258-8-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 8/8] efi/dev-path-parser: Refactor _UID handling to use acpi_dev_uid_to_integer()
+Date:   Tue, 13 Sep 2022 19:31:47 +0300
+Message-Id: <20220913163147.24258-9-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220913163147.24258-1-andriy.shevchenko@linux.intel.com>
 References: <20220913163147.24258-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -87,79 +87,44 @@ an integer. Use it instead of custom approach.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/spi/spi-pxa2xx.c | 37 ++++++++++---------------------------
- 1 file changed, 10 insertions(+), 27 deletions(-)
+ drivers/firmware/efi/dev-path-parser.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 986ffc4bf1ed..2bf21c2e7a52 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1441,31 +1441,6 @@ static const struct of_device_id pxa2xx_spi_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, pxa2xx_spi_of_match);
- 
--#ifdef CONFIG_ACPI
--
--static int pxa2xx_spi_get_port_id(struct device *dev)
--{
--	struct acpi_device *adev;
--	unsigned int devid;
--	int port_id = -1;
--
--	adev = ACPI_COMPANION(dev);
--	if (adev && adev->pnp.unique_id &&
--	    !kstrtouint(adev->pnp.unique_id, 0, &devid))
--		port_id = devid;
--	return port_id;
--}
--
--#else /* !CONFIG_ACPI */
--
--static int pxa2xx_spi_get_port_id(struct device *dev)
--{
--	return -1;
--}
--
--#endif /* CONFIG_ACPI */
--
--
- #ifdef CONFIG_PCI
- 
- static bool pxa2xx_spi_idma_filter(struct dma_chan *chan, void *param)
-@@ -1479,13 +1454,16 @@ static struct pxa2xx_spi_controller *
- pxa2xx_spi_init_pdata(struct platform_device *pdev)
+diff --git a/drivers/firmware/efi/dev-path-parser.c b/drivers/firmware/efi/dev-path-parser.c
+index eb9c65f97841..f80d87c199c3 100644
+--- a/drivers/firmware/efi/dev-path-parser.c
++++ b/drivers/firmware/efi/dev-path-parser.c
+@@ -15,9 +15,11 @@
+ static long __init parse_acpi_path(const struct efi_dev_path *node,
+ 				   struct device *parent, struct device **child)
  {
- 	struct pxa2xx_spi_controller *pdata;
-+	struct device *dev = &pdev->dev;
-+	struct device *parent = dev->parent;
- 	struct ssp_device *ssp;
- 	struct resource *res;
--	struct device *parent = pdev->dev.parent;
- 	struct pci_dev *pcidev = dev_is_pci(parent) ? to_pci_dev(parent) : NULL;
- 	const struct pci_device_id *pcidev_id = NULL;
- 	enum pxa_ssp_type type;
- 	const void *match;
-+	int status;
+-	char hid[ACPI_ID_LEN], uid[11]; /* UINT_MAX + null byte */
+ 	struct acpi_device *adev;
+ 	struct device *phys_dev;
++	char hid[ACPI_ID_LEN];
 +	u64 uid;
++	int ret;
  
- 	if (pcidev)
- 		pcidev_id = pci_match_id(pxa2xx_spi_pci_compound_match, pcidev);
-@@ -1529,7 +1507,12 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	if (node->header.length != 12)
+ 		return -EINVAL;
+@@ -27,12 +29,12 @@ static long __init parse_acpi_path(const struct efi_dev_path *node,
+ 		'A' + ((node->acpi.hid >>  5) & 0x1f) - 1,
+ 		'A' + ((node->acpi.hid >>  0) & 0x1f) - 1,
+ 			node->acpi.hid >> 16);
+-	sprintf(uid, "%u", node->acpi.uid);
  
- 	ssp->type = type;
- 	ssp->dev = &pdev->dev;
--	ssp->port_id = pxa2xx_spi_get_port_id(&pdev->dev);
-+
-+	status = acpi_dev_uid_to_integer(ACPI_COMPANION(dev), &uid);
-+	if (status)
-+		ssp->port_id = -1;
-+	else
-+		ssp->port_id = uid;
- 
- 	pdata->is_slave = device_property_read_bool(&pdev->dev, "spi-slave");
- 	pdata->num_chipselect = 1;
+ 	for_each_acpi_dev_match(adev, hid, NULL, -1) {
+-		if (adev->pnp.unique_id && !strcmp(adev->pnp.unique_id, uid))
++		ret = acpi_dev_uid_to_integer(adev, &uid);
++		if (ret == 0 && node->acpi.uid == uid)
+ 			break;
+-		if (!adev->pnp.unique_id && node->acpi.uid == 0)
++		if (ret == -ENODATA && node->acpi.uid == 0)
+ 			break;
+ 	}
+ 	if (!adev)
 -- 
 2.35.1
 
