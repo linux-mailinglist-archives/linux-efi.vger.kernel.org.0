@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 776B75B784B
+	by mail.lfdr.de (Postfix) with ESMTP id 1B4415B784A
 	for <lists+linux-efi@lfdr.de>; Tue, 13 Sep 2022 19:43:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233366AbiIMRkp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 13 Sep 2022 13:40:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54554 "EHLO
+        id S233390AbiIMRk6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 13 Sep 2022 13:40:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233101AbiIMRjt (ORCPT
+        with ESMTP id S230141AbiIMRjt (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Tue, 13 Sep 2022 13:39:49 -0400
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C98147D1F9;
-        Tue, 13 Sep 2022 09:32:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6667B7D1C0;
+        Tue, 13 Sep 2022 09:32:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1663086777; x=1694622777;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=NzmE1/IO0VatkJS0QWAbb13XUkBx68v4n4aNQ7ngE20=;
-  b=AdscNvfP0hVRPg1xTSCyPGA7BqPCzHAXHRGqmS2kFBJkP3f7Elhf/SVD
-   K9Nq62kwbdPmYXpXS7nNFTJrCRdv/mTWUVWva2GJRzW5dWGoz/Pk70Tl4
-   mL0LT9MxzsOYzZ5LFiD8tHikd1TVEXA7nb044UPFxlwOXBO96N9Mw5clp
-   zjlGv8bSu7xFN/FUnGLZ7lQM8C/v7Iv3lf5yVeVblz539l9Ysbd6V4/Hy
-   yMhT2uxkt776oJhQ6lP/z2Z5sSC9mpQLYJytWfsVBOmbvYWbOiGCuvE2N
-   0rTWJQNhGTUWEWQnQwfFwECWSOaJz5hD0pvyBStzJsegyOZ7tPUNLDnvH
+  bh=k11LCc77TrkmYe+60oQhVeO6H7+ymxQKl+achfaYq9M=;
+  b=Qy2qfX95XoSvSDptAj6nZS02cVKogvI6tHxUHYBmJKf1T2oe3arXGJ5g
+   LYwLQ523M8qvZuNztuWzWRdq0RCkP1ky8WEH1RIrbOKCkUhx7XZDufVdU
+   bhYPZk7FZgImD4eUsMNywjDKvPOU17esjPOxYuJOCrOY0IS3REbRnvT9d
+   WyOclyqH8FwA1TD1TvFNJUVHcsIBbejIwcH6WExc8q64VCcHDnFzZii3U
+   qgHsefyEpZCEQjSdm5NiWx/gRrdAuWgxcWkzaAeJinMapXX7XXKK/DFCy
+   mYKWOQ/lLRvGhvkoIGa4Rw8LuFDLuvqarntmLhwyE+ZwFBE126AU7iF1T
    Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10469"; a="324433032"
+X-IronPort-AV: E=McAfee;i="6500,9779,10469"; a="324433037"
 X-IronPort-AV: E=Sophos;i="5.93,313,1654585200"; 
-   d="scan'208";a="324433032"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2022 09:31:46 -0700
+   d="scan'208";a="324433037"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2022 09:31:47 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.93,313,1654585200"; 
-   d="scan'208";a="861610561"
+   d="scan'208";a="594008320"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga006.fm.intel.com with ESMTP; 13 Sep 2022 09:31:39 -0700
+  by orsmga006.jf.intel.com with ESMTP; 13 Sep 2022 09:31:40 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 798A757F; Tue, 13 Sep 2022 19:31:49 +0300 (EEST)
+        id 8A2235E4; Tue, 13 Sep 2022 19:31:49 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -64,9 +64,9 @@ Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         Robert Moore <robert.moore@intel.com>
-Subject: [PATCH v3 6/8] perf: qcom_l2_pmu: Refactor _UID handling to use acpi_dev_uid_to_integer()
-Date:   Tue, 13 Sep 2022 19:31:45 +0300
-Message-Id: <20220913163147.24258-7-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 7/8] spi: pxa2xx: Refactor _UID handling to use acpi_dev_uid_to_integer()
+Date:   Tue, 13 Sep 2022 19:31:46 +0300
+Message-Id: <20220913163147.24258-8-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220913163147.24258-1-andriy.shevchenko@linux.intel.com>
 References: <20220913163147.24258-1-andriy.shevchenko@linux.intel.com>
@@ -87,44 +87,79 @@ an integer. Use it instead of custom approach.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/perf/qcom_l2_pmu.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 37 ++++++++++---------------------------
+ 1 file changed, 10 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/perf/qcom_l2_pmu.c b/drivers/perf/qcom_l2_pmu.c
-index 30234c261b05..aaca6db7d8f6 100644
---- a/drivers/perf/qcom_l2_pmu.c
-+++ b/drivers/perf/qcom_l2_pmu.c
-@@ -840,16 +840,16 @@ static int l2_cache_pmu_probe_cluster(struct device *dev, void *data)
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 986ffc4bf1ed..2bf21c2e7a52 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1441,31 +1441,6 @@ static const struct of_device_id pxa2xx_spi_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, pxa2xx_spi_of_match);
+ 
+-#ifdef CONFIG_ACPI
+-
+-static int pxa2xx_spi_get_port_id(struct device *dev)
+-{
+-	struct acpi_device *adev;
+-	unsigned int devid;
+-	int port_id = -1;
+-
+-	adev = ACPI_COMPANION(dev);
+-	if (adev && adev->pnp.unique_id &&
+-	    !kstrtouint(adev->pnp.unique_id, 0, &devid))
+-		port_id = devid;
+-	return port_id;
+-}
+-
+-#else /* !CONFIG_ACPI */
+-
+-static int pxa2xx_spi_get_port_id(struct device *dev)
+-{
+-	return -1;
+-}
+-
+-#endif /* CONFIG_ACPI */
+-
+-
+ #ifdef CONFIG_PCI
+ 
+ static bool pxa2xx_spi_idma_filter(struct dma_chan *chan, void *param)
+@@ -1479,13 +1454,16 @@ static struct pxa2xx_spi_controller *
+ pxa2xx_spi_init_pdata(struct platform_device *pdev)
  {
- 	struct platform_device *pdev = to_platform_device(dev->parent);
- 	struct platform_device *sdev = to_platform_device(dev);
--	struct acpi_device *adev = ACPI_COMPANION(dev);
- 	struct l2cache_pmu *l2cache_pmu = data;
- 	struct cluster_pmu *cluster;
--	unsigned long fw_cluster_id;
-+	u64 fw_cluster_id;
- 	int err;
- 	int irq;
+ 	struct pxa2xx_spi_controller *pdata;
++	struct device *dev = &pdev->dev;
++	struct device *parent = dev->parent;
+ 	struct ssp_device *ssp;
+ 	struct resource *res;
+-	struct device *parent = pdev->dev.parent;
+ 	struct pci_dev *pcidev = dev_is_pci(parent) ? to_pci_dev(parent) : NULL;
+ 	const struct pci_device_id *pcidev_id = NULL;
+ 	enum pxa_ssp_type type;
+ 	const void *match;
++	int status;
++	u64 uid;
  
--	if (!adev || kstrtoul(adev->pnp.unique_id, 10, &fw_cluster_id) < 0) {
-+	err = acpi_dev_uid_to_integer(ACPI_COMPANION(dev), &fw_cluster_id);
-+	if (err) {
- 		dev_err(&pdev->dev, "unable to read ACPI uid\n");
--		return -ENODEV;
-+		return err;
- 	}
+ 	if (pcidev)
+ 		pcidev_id = pci_match_id(pxa2xx_spi_pci_compound_match, pcidev);
+@@ -1529,7 +1507,12 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
  
- 	cluster = devm_kzalloc(&pdev->dev, sizeof(*cluster), GFP_KERNEL);
-@@ -879,7 +879,7 @@ static int l2_cache_pmu_probe_cluster(struct device *dev, void *data)
- 	}
+ 	ssp->type = type;
+ 	ssp->dev = &pdev->dev;
+-	ssp->port_id = pxa2xx_spi_get_port_id(&pdev->dev);
++
++	status = acpi_dev_uid_to_integer(ACPI_COMPANION(dev), &uid);
++	if (status)
++		ssp->port_id = -1;
++	else
++		ssp->port_id = uid;
  
- 	dev_info(&pdev->dev,
--		"Registered L2 cache PMU cluster %ld\n", fw_cluster_id);
-+		 "Registered L2 cache PMU cluster %lld\n", fw_cluster_id);
- 
- 	spin_lock_init(&cluster->pmu_lock);
- 
+ 	pdata->is_slave = device_property_read_bool(&pdev->dev, "spi-slave");
+ 	pdata->num_chipselect = 1;
 -- 
 2.35.1
 
