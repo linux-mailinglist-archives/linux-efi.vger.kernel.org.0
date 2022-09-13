@@ -2,166 +2,252 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7A665B64DC
-	for <lists+linux-efi@lfdr.de>; Tue, 13 Sep 2022 03:00:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDFD45B6E51
+	for <lists+linux-efi@lfdr.de>; Tue, 13 Sep 2022 15:28:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229770AbiIMBAz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 12 Sep 2022 21:00:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38218 "EHLO
+        id S229803AbiIMN20 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 13 Sep 2022 09:28:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229771AbiIMBAw (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 12 Sep 2022 21:00:52 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2542C51A20;
-        Mon, 12 Sep 2022 18:00:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1663030849; x=1694566849;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ezLCKwkUBdNCoq39097eIEjcGDCqTdmZcynP14rPVWY=;
-  b=dEAsdcvPNpQnWlRIacB/K+Ish63Hwzc3uOPqw54D5l+2Hpq2w8a6uRU3
-   mIt1DW7bC4Sgrn32G4BMTPRzJX8nDHxR+EszpK0cllfbGUkU4RNf1tMqO
-   oyoTas/j/9HT1Raj786tHjOG9b5IQG1GO8c6UR+2acY6G/Q7XG4SDFENH
-   MUm/WZT843ua1pMq2pjBaNgOTahL57FMZ0ERB5Dt7xionALlzeIHj77cQ
-   W06+Uk7tjtpOAT0d5DIXmMBJ04unf20N8k509cYn3kwTjA5U7YS1A21gi
-   LwXW1Lbi29X0fSuEgcBMgDQtrPiGWpwtj4DpRUhVJILhT+0/YH5xp2Jce
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10468"; a="299345081"
-X-IronPort-AV: E=Sophos;i="5.93,311,1654585200"; 
-   d="scan'208";a="299345081"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2022 18:00:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,311,1654585200"; 
-   d="scan'208";a="684652243"
-Received: from lkp-server02.sh.intel.com (HELO 4011df4f4fd3) ([10.239.97.151])
-  by fmsmga004.fm.intel.com with ESMTP; 12 Sep 2022 18:00:38 -0700
-Received: from kbuild by 4011df4f4fd3 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oXuI1-00032x-2a;
-        Tue, 13 Sep 2022 01:00:37 +0000
-Date:   Tue, 13 Sep 2022 09:00:06 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Mark Brown <broonie@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        devel@acpica.org
-Cc:     kbuild-all@lists.01.org, Len Brown <lenb@kernel.org>,
-        Elie Morisse <syniurge@gmail.com>,
-        Nehal Shah <nehal-bakulchandra.shah@amd.com>,
-        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
-        Khalil Blaiech <kblaiech@nvidia.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Robert Moore <robert.moore@intel.com>,
-        Wolfram Sang <wsa-dev@sang-engineering.com>
-Subject: Re: [PATCH v2 7/8] spi: pxa2xx: Refactor _UID handling to use
- acpi_dev_uid_to_integer()
-Message-ID: <202209130810.dgrshDMB-lkp@intel.com>
-References: <20220908132910.62122-8-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S231802AbiIMN2Z (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 13 Sep 2022 09:28:25 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E947192B3;
+        Tue, 13 Sep 2022 06:28:21 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id 2B3F95C017F;
+        Tue, 13 Sep 2022 09:28:18 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Tue, 13 Sep 2022 09:28:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        invisiblethingslab.com; h=cc:cc:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm2; t=1663075698; x=
+        1663162098; bh=b5IwvONy+aPZig6uiZYmFqcObNpEzTolaCm7RCSv1cA=; b=Y
+        ceNynn/q4lo+Tu+LKJ5+jVUGr691gly7lTNYG+/V5B7SSSUBCb3FamtoQPBnuDN0
+        Dhx9DxLqajryeEinEA3GGYviHKWHpSJkg5W2BsNmIXg3I8Nd8dS4FABb/lcToQhb
+        VAD5wxNRJH/xcVgJVqKfPqpkW/0fXCyqBOd3fEvQQ85LVr3hOJxHC23MK70M65/F
+        VSdd/xNFbErJsueXmUFkWnU7nCFenJBt/tNOoqWz+nnUQVFAMV/zVtntzhYkcnnz
+        V6Y3YpHbmzfdEDqI/VoTwSAtUNdDAm7XyorzSHNFyoQwClvyrvN1yu3wnLyQsYfz
+        BJ7IY0DnaAY+wu3P4v5Qw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm2; t=1663075698; x=1663162098; bh=b5IwvONy+aPZig6uiZYmFqcObNpE
+        zTolaCm7RCSv1cA=; b=qqNpaJjRAO5/+5GFPFLvA2RrnjZDadkpv0YqDbCnsMGS
+        RDlR6r09f5ZfY+B124rHjgMVfmrKlb6kN4fCd5Y3jWCzKf1yCRmUEim1OP2hEKb1
+        64U+w/zcZBB+UroOIrsLZptt5JYm4/S1ycqlTJs/2Ddmw9dfeX6GbFy35L/ElnXS
+        yGUH0xNDLZBbkjsO1QhFSDw5CQrwR0OSa2DAAGEmPwifJ0+WhD7YLH+XGiIoPcNi
+        hB2LzDXhX00wIxiS3JKPxg36m9oCUw6OHmvnvWQ3hJjL09uwxic48Zdg9MwE6NhQ
+        rI8udxV14nmfqVmaFKsXUDbZusBdaemP4cSmAtL1iA==
+X-ME-Sender: <xms:cYUgY1uyjxZ5-rO0gILp_xhoxY_3jQE6acWJP3iRBGDegoys46YYyQ>
+    <xme:cYUgY-fORlPr9AMT3B_DOMuF9EAWpzqAy7xYPiA9qIUjewJOWN8ry7r3QyutL3FeE
+    _zHPoPluaEbyic>
+X-ME-Received: <xmr:cYUgY4z6XRkhGJFxWguCH5uU-LOWi3LkW7NGm2_Q0to0nAza4Ql2v_3JRX3c>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfedugedgieeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtvdenucfhrhhomhepffgvmhhi
+    ucforghrihgvucfqsggvnhhouhhruceouggvmhhisehinhhvihhsihgslhgvthhhihhngh
+    hslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepudeileefueetvdelheeuteffjeeg
+    jeegffekleevueelueekjeejudffteejkeetnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhepuggvmhhisehinhhvihhsihgslhgvthhhihhnghhs
+    lhgrsgdrtghomh
+X-ME-Proxy: <xmx:cYUgY8PhEOIgbOf8fbBV8A7NkVQTMzAwFR3q1L-FX16_MGchjUXWaw>
+    <xmx:cYUgY18WDeIN1aaxQzVrTsi17xCXqTBQKgPDude8kwH3Ctfvs89qMA>
+    <xmx:cYUgY8V8JoTzGuYJQ0zG2hmW-9HtDywX_9-xQ5Xth-TMiRzFGH8YPg>
+    <xmx:coUgYxYkMX3h9gr-wEAH2mbW6cgo1PDT7O5uf0bto8OLHXK5oCGDwg>
+Feedback-ID: iac594737:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 13 Sep 2022 09:28:17 -0400 (EDT)
+Date:   Tue, 13 Sep 2022 09:27:53 -0400
+From:   Demi Marie Obenour <demi@invisiblethingslab.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v2] Add support for ESRT loading under Xen
+Message-ID: <YyCFb7J6cJm5Ji9M@itl-email>
+References: <20220828025158.1455-1-demi@invisiblethingslab.com>
+ <CAMj1kXF5eH-HE1dkAEGGZ1qfG1eRThsNK7ayWkRmaHSO36sjfA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="37mLKXCcYa6M0yBY"
 Content-Disposition: inline
-In-Reply-To: <20220908132910.62122-8-andriy.shevchenko@linux.intel.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <CAMj1kXF5eH-HE1dkAEGGZ1qfG1eRThsNK7ayWkRmaHSO36sjfA@mail.gmail.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Andy,
 
-I love your patch! Perhaps something to improve:
+--37mLKXCcYa6M0yBY
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 13 Sep 2022 09:27:53 -0400
+From: Demi Marie Obenour <demi@invisiblethingslab.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v2] Add support for ESRT loading under Xen
 
-[auto build test WARNING on rafael-pm/linux-next]
-[also build test WARNING on wsa/i2c/for-next broonie-spi/for-next efi/next linus/master v6.0-rc5 next-20220912]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+On Mon, Sep 05, 2022 at 01:46:54PM +0200, Ard Biesheuvel wrote:
+> On Sun, 28 Aug 2022 at 04:52, Demi Marie Obenour
+> <demi@invisiblethingslab.com> wrote:
+> >
+> > This is needed for fwupd to work in Qubes OS.
+> >
+>=20
+> Please elaborate on:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/ACPI-unify-_UID-handling-as-integer/20220908-213543
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-config: x86_64-buildonly-randconfig-r006-20220912 (https://download.01.org/0day-ci/archive/20220913/202209130810.dgrshDMB-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-5) 11.3.0
-reproduce (this is a W=1 build):
-        # https://github.com/intel-lab-lkp/linux/commit/ea7999676bc9f75bb4165358cda640b340fe34d0
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Andy-Shevchenko/ACPI-unify-_UID-handling-as-integer/20220908-213543
-        git checkout ea7999676bc9f75bb4165358cda640b340fe34d0
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        make W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/spi/
+Will do in v3.
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
+> - the current situation
 
-All warnings (new ones prefixed by >>):
+The ESRT is not available in dom0 under Xen.
 
-   drivers/spi/spi-pxa2xx.c: In function 'pxa2xx_spi_init_pdata':
->> drivers/spi/spi-pxa2xx.c:1457:24: warning: unused variable 'dev' [-Wunused-variable]
-    1457 |         struct device *dev = &pdev->dev;
-         |                        ^~~
+> - why this is a problem
 
+fwupd requires the ESRT to be available in dom0.  Without it, users
+cannot update their firmware.
 
-vim +/dev +1457 drivers/spi/spi-pxa2xx.c
+> - why your approach is a reasonable solution.
 
-  1452	
-  1453	static struct pxa2xx_spi_controller *
-  1454	pxa2xx_spi_init_pdata(struct platform_device *pdev)
-  1455	{
-  1456		struct pxa2xx_spi_controller *pdata;
-> 1457		struct device *dev = &pdev->dev;
-  1458		struct ssp_device *ssp;
-  1459		struct resource *res;
-  1460		struct device *parent = pdev->dev.parent;
-  1461		struct pci_dev *pcidev = dev_is_pci(parent) ? to_pci_dev(parent) : NULL;
-  1462		const struct pci_device_id *pcidev_id = NULL;
-  1463		enum pxa_ssp_type type;
-  1464		const void *match;
-  1465		int status;
-  1466		u64 uid;
-  1467	
-  1468		if (pcidev)
-  1469			pcidev_id = pci_match_id(pxa2xx_spi_pci_compound_match, pcidev);
-  1470	
-  1471		match = device_get_match_data(&pdev->dev);
-  1472		if (match)
-  1473			type = (enum pxa_ssp_type)match;
-  1474		else if (pcidev_id)
-  1475			type = (enum pxa_ssp_type)pcidev_id->driver_data;
-  1476		else
-  1477			return ERR_PTR(-EINVAL);
-  1478	
-  1479		pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
-  1480		if (!pdata)
-  1481			return ERR_PTR(-ENOMEM);
-  1482	
-  1483		ssp = &pdata->ssp;
-  1484	
-  1485		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-  1486		ssp->mmio_base = devm_ioremap_resource(&pdev->dev, res);
-  1487		if (IS_ERR(ssp->mmio_base))
-  1488			return ERR_CAST(ssp->mmio_base);
-  1489	
-  1490		ssp->phys_base = res->start;
-  1491	
+It is the approach already chosen by Xen upstream.  See below for
+details.
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+> > Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
+> > ---
+> > Changes since v1:
+> >
+> > - Use a different type (struct xen_efi_mem_info) for memory information
+> >   provided by Xen, as Xen reports it in a different way than the
+> >   standard Linux functions do.
+> >
+> >  drivers/firmware/efi/esrt.c | 49 +++++++++++++++++++++++++++----------
+> >  drivers/xen/efi.c           | 32 ++++++++++++++++++++++++++
+> >  include/linux/efi.h         | 18 ++++++++++++++
+> >  3 files changed, 86 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/drivers/firmware/efi/esrt.c b/drivers/firmware/efi/esrt.c
+> > index 2a2f52b017e736dd995c69e8aeb5fbd7761732e5..c0fc149a838044cc16bb08a=
+374a0c8ea6b7dcbff 100644
+> > --- a/drivers/firmware/efi/esrt.c
+> > +++ b/drivers/firmware/efi/esrt.c
+> > @@ -243,27 +243,50 @@ void __init efi_esrt_init(void)
+> >         void *va;
+> >         struct efi_system_resource_table tmpesrt;
+> >         size_t size, max, entry_size, entries_size;
+> > -       efi_memory_desc_t md;
+> > -       int rc;
+> >         phys_addr_t end;
+> > -
+> > -       if (!efi_enabled(EFI_MEMMAP))
+> > -               return;
+> > +       uint32_t type;
+> >
+> >         pr_debug("esrt-init: loading.\n");
+> >         if (!esrt_table_exists())
+> >                 return;
+> >
+> > -       rc =3D efi_mem_desc_lookup(efi.esrt, &md);
+> > -       if (rc < 0 ||
+> > -           (!(md.attribute & EFI_MEMORY_RUNTIME) &&
+> > -            md.type !=3D EFI_BOOT_SERVICES_DATA &&
+> > -            md.type !=3D EFI_RUNTIME_SERVICES_DATA)) {
+> > -               pr_warn("ESRT header is not in the memory map.\n");
+> > +       if (efi_enabled(EFI_MEMMAP)) {
+> > +               efi_memory_desc_t md;
+> > +
+> > +               if (efi_mem_desc_lookup(efi.esrt, &md) < 0 ||
+> > +                   (!(md.attribute & EFI_MEMORY_RUNTIME) &&
+> > +                    md.type !=3D EFI_BOOT_SERVICES_DATA &&
+> > +                    md.type !=3D EFI_RUNTIME_SERVICES_DATA)) {
+> > +                       pr_warn("ESRT header is not in the memory map.\=
+n");
+> > +                       return;
+> > +               }
+> > +
+> > +               type =3D md.type;
+> > +               max =3D efi_mem_desc_end(&md);
+> > +       } else if (IS_ENABLED(CONFIG_XEN_EFI) && efi_enabled(EFI_PARAVI=
+RT)) {
+> > +               struct xen_efi_mem_info info;
+> > +
+> > +               if (!xen_efi_mem_info_query(efi.esrt, &info)) {
+> > +                       pr_warn("Failed to lookup ESRT header in Xen me=
+mory map\n");
+> > +                       return;
+> > +               }
+> > +
+> > +               type =3D info.type;
+> > +               max =3D info.addr + info.size;
+> > +
+> > +               /* Recent Xen versions relocate the ESRT to memory of t=
+ype
+> > +                * EfiRuntimeServicesData, which Xen will not reuse.  I=
+f the ESRT
+>=20
+> This violates the EFI spec, which spells out very clearly that the
+> ESRT must be in EfiBootServicesData memory. Why are you deviating from
+> this?
+
+Xen will freely use EfiBootServicesData memory for its own purposes
+after calling ExitBootServices().  In particular, such memory may be
+allocated to, and become writable by, other guests.  Since the ESRT is
+(of necessity) trusted, it cannot be used by Linux unless it is
+guaranteed to not be writable by other guests.
+
+Earlier patches to Xen just reserved the region containing the ESRT in
+the EFI memory map.  However, this was tricky to implement correctly and
+required a new platform op to alert dom0 that the ESRT had been reserved
+by Xen.  The final patch accepted upstream instead checks if the ESRT is
+in EfiBootServicesData memory, and if it is, relocates it to
+EfiRuntimeServicesData memory.  This allowes using existing hypercalls
+to check if the ESRT has been reserved by Xen, which is exactly what
+this patch does.
+
+If I recall correctly, some firmware already allocates the ESRT from
+EfiRuntimeServicesData memory, so operating systems already need to
+support this case.  Furthermore, the ESRT must not be clobbered by the
+OS or hypervisor, so EfiRuntimeServicesData is a more logical choice
+anyway.
+--=20
+Sincerely,
+Demi Marie Obenour (she/her/hers)
+Invisible Things Lab
+
+--37mLKXCcYa6M0yBY
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEdodNnxM2uiJZBxxxsoi1X/+cIsEFAmMghW8ACgkQsoi1X/+c
+IsFXOA/+L49ME+tYwPJiJQHmriPMx44MCB0a+MT8Q1JIsuTPZnCxWeT2gs6FN5q5
+zPncQzYMOOOzyFpKsAR9Q2AHKu8qIf3qFoX1bc1Dsc36lAW3ADWtQBSRDqMfK8WL
+Q4oQX2ypgW4x3v9OHhKMSwHPIWxTsxLLoh7hLjm83phikRHy7I0EZYs2AviOYsen
+u04rNCH/ZitfzDimI1BEy2Fqp2f0hskkn46TObnjrz3crtZndkld8n3f7AN5bXFi
+8dE5t9pHKKzGyj/R2HnDa4YV+agG5+87MW+LQrM0CgZC2aHNW5MRmmRaz/KAWOO1
+B7LYbcL0WWmhAMVaDegZDeQpTSVKHYR80z3JmKXEqL59SoNE+kC7ld2FlTdeFrFs
+/+vo9UxLYX7VW4FLGFh/iMnozy6wf4VK82Il1nDNCJGnsgiRXoS4DCn7FbjSyidh
+STdSZ6JE/OHtqUjmY8RUlZH9jUIiLUMfHa30xXP30mvP3yQ/ulvJgp9bVC3HxioG
+lM9Ik6pZD4lSfFaOtdQRf/h8zL1grd+d2SEDbfIBlKd7jkid6d5gjoPjHIEUyETq
+xxPJkEWGk33t/hSLhvlrB+FEcu5Egs11e+VMHt49bveiSOdMxPN5r5DUxjcwUvFI
+iV0wewWHAEfemwiX5D6H8Tmx285a5EwLGWJd/zIogQwZ2W10r2k=
+=78/p
+-----END PGP SIGNATURE-----
+
+--37mLKXCcYa6M0yBY--
