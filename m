@@ -2,74 +2,50 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36C2E5BA8B9
-	for <lists+linux-efi@lfdr.de>; Fri, 16 Sep 2022 10:56:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF68E5BAB55
+	for <lists+linux-efi@lfdr.de>; Fri, 16 Sep 2022 12:35:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229704AbiIPIz4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 16 Sep 2022 04:55:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39358 "EHLO
+        id S231293AbiIPKe3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 16 Sep 2022 06:34:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229503AbiIPIzy (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 16 Sep 2022 04:55:54 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0B279E2DC
-        for <linux-efi@vger.kernel.org>; Fri, 16 Sep 2022 01:55:52 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id dv25so47834703ejb.12
-        for <linux-efi@vger.kernel.org>; Fri, 16 Sep 2022 01:55:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date;
-        bh=9WYQ00oM/psZnfqZ8IN5UQuCscgsZZskY6DVgNNatHE=;
-        b=Ba1gRhP1OGNIHGffCQK675ZglFYIK88Dd/iWcUPj9faApbySB98SZYRz78E5CtZ1Cc
-         zjpl8Apj/M2GcQ3vXHaCGwIP0bkdCC/bTiwm0wjc1OzqVBQfUz5E7X83HD1YowXcYR95
-         l9UZ1sJcFbCSEnSvANbAuW889pq7TmVcSf3RBw7pDdoa+RQ2ypvwoS/RCCOgC9Blcroh
-         jHinARkOtkcJWbMBo1ed6QiL6hFVLYnbLiWtwdGBmOY6oqyWcLY9ifX0+5hq8hTbU71O
-         zGpD0a4gIGyf1Dv/yGKTzBmUI5JDgtBYNSE9AYmbb/6nfZCstLVM57K87z4Be9+t9MCj
-         gFuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=9WYQ00oM/psZnfqZ8IN5UQuCscgsZZskY6DVgNNatHE=;
-        b=iBJBQLXD4RYBtDWhCNy65MpFV16UcLFQfxLyygT73sZRLOzn8DYjGwGxgoqWVhGV1G
-         DXWdYNVaHEZzx42OH+mnIsTEoSudPb09LleTIX4i38F9iJ5CIdWhHvOzK5tqz3OHoqXG
-         CTj5M6ZR1xo4+ce45XDwE7e4Bqb+o7ybvXnNalK3Bt/F01G0LeCndOUHu8ei9aT00lla
-         orZ39+FsqJRL8Pzv7Wh8glQFLxk194a2ED3lURYdNk8iNFHcw2EPTgeGBpQWcN5x8DGT
-         xiPwEFrORilO/zy1TKS5mL7qfabEsK5gzlLpf3MM4Bvs16y3n0JcaH9gzgcyJJJokoD0
-         vVHw==
-X-Gm-Message-State: ACrzQf1JEjdlb51WVhngYmZLgiypkbpe2Rmzp6YTQliTqnaV6MLZ9Kxs
-        b+7SkpCgJ3u7w3hN9qlYKXl0+Q==
-X-Google-Smtp-Source: AMsMyM4kkO1+l0qae3N2unk3E9wEnD90ZjnDWCxJjg68+pqMozDBUB5CPVUYG15S/jbsSPP6FuOYtg==
-X-Received: by 2002:a17:907:25c7:b0:77b:c193:9230 with SMTP id ae7-20020a17090725c700b0077bc1939230mr2840163ejc.316.1663318551517;
-        Fri, 16 Sep 2022 01:55:51 -0700 (PDT)
-Received: from hera ([46.103.15.185])
-        by smtp.gmail.com with ESMTPSA id e17-20020a170906249100b00778e3e2830esm4684110ejb.9.2022.09.16.01.55.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Sep 2022 01:55:51 -0700 (PDT)
-Date:   Fri, 16 Sep 2022 11:55:48 +0300
-From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     pjones@redhat.com, daniel.kiper@oracle.com,
-        James.Bottomley@hansenpartnership.com, leif@nuviainc.com,
-        jroedel@suse.de, Sunil V L <sunilvl@ventanamicro.com>,
-        Baskov Evgeniy <baskov@ispras.ru>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] efi/libstub: measure EFI LoadOptions
-Message-ID: <YyQ6FFNfeG3sw4/n@hera>
-References: <20220916081441.1993492-1-ilias.apalodimas@linaro.org>
- <20220916081441.1993492-2-ilias.apalodimas@linaro.org>
- <CAMj1kXEtzCF-19MHNmBB45t3X343bd1G+PRNn=h8=PMfLVq+pA@mail.gmail.com>
+        with ESMTP id S231837AbiIPKd3 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 16 Sep 2022 06:33:29 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A6E36394
+        for <linux-efi@vger.kernel.org>; Fri, 16 Sep 2022 03:19:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6C91FB82572
+        for <linux-efi@vger.kernel.org>; Fri, 16 Sep 2022 10:19:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5229EC433C1;
+        Fri, 16 Sep 2022 10:18:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1663323541;
+        bh=ArJ0Aq/uRByH2p0oRANc/9e+rySb1VN37gb9AK9FVJs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=mMPeKsbu6S6MdnWzvPnhv7WHA/bN5bCLuUKuYJaO/7FdncJX00DMYgg2XZPsSzFbh
+         8EMaYvWP8/il9pUN0zOujgMWQjPPgxccR0BeOlWhf4jtv6W+5N9fFDxeYWddNnV1N2
+         5zTGqWw2szXmrQOj819QfqRbD2IjlkdFoBtl2FCbX6XyEx/pbvBy5lfrXKjJyorpw6
+         4Bx0tFRmcNX8XqVZZ/QAFJ2sXpLuTRaheDrbs8Vk7QgoldtwXt3cE6yY3iEwX7Dvff
+         1PrS4RchaSRAjpmgpiemD4b2ToGCU6NiHgTX5VRPkCnROy0HyO/O/NlHCjXDhRhI9h
+         6ULs8T9sOJSfg==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org, mark.rutland@arm.com,
+        probinson@gmail.com, andersson@kernel.org, catalin.marinas@arm.com,
+        will@kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH] efi/libstub: arm64: avoid SetVirtualAddressMap() when possible
+Date:   Fri, 16 Sep 2022 12:18:43 +0200
+Message-Id: <20220916101843.495879-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1930; i=ardb@kernel.org; h=from:subject; bh=ArJ0Aq/uRByH2p0oRANc/9e+rySb1VN37gb9AK9FVJs=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjJE2Cou4slodCTvcpov6C34JFi70JaD9PhOanWIgf 4MTLxeuJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYyRNggAKCRDDTyI5ktmPJCKeC/ 0ekQEjJgqxQ8MOatq+grhrCBtZdiKr2ORm88O4fFCt1m3pnNANNV47MMv95sgFVAIVP2nEuZ9+jSsn ROwJ/n8wJ0mPEemybS8u2NwDuU2oLdiHr3W5K09sLc9fRGGVEeT5rGvBZW9i2neu0PhFuyrXeq0lx+ pa0KDWnDbq41ItwyyTTwk6P/UPOwojKwb9sQF/wZgAfltLb5h3vMCMk9uRz1mSkw7YyJ4woqGWI2h/ dS5Hk0XO1JynK71+d7TGieQztW61kY+EoOOD2FiAHoFQkBfnrZzRUIUId+LDwNJTU02C2uFyUPf73b 5yZH/UJOkDH4ozgKxdB4MlhHF0xr4f0xBT/USKlvy1k4R37EBu1CBwq8rKonPDstkiXcO/qpzeVTnC Rt1zQmbKNRTQ8M6zWOsATPHC4TMAVcxn3BAw0Qn9qvLe2SZ5BeXDSOr48iy9ddi9m7RDLqtpH+rJzh t8FWWoMWnH3o0Gu1aAB1xPzgLqGksHUJ+tiXkAZabVh1w=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMj1kXEtzCF-19MHNmBB45t3X343bd1G+PRNn=h8=PMfLVq+pA@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,97 +53,51 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Ard, 
+EFI's SetVirtualAddressMap() runtime service is a horrid hack that we'd
+like to avoid using, if possible. For 64-bit architectures such as
+arm64, the user and kernel mappings are entirely disjoint, and given
+that we use the user region for mapping the UEFI runtime regions when
+running under the OS, we don't rely on SetVirtualAddressMap() in the
+conventional way, i.e., to permit kernel mappings of the OS to coexist
+with kernel region mappings of the firmware regions. This means that, in
+principle, we should be able to avoid SetVirtualAddressMap() altogether,
+and simply use the 1:1 mapping that UEFI uses at boot time. (Note that
+omitting SetVirtualAddressMap() is explicitly permitted by the UEFI
+spec).
 
-On Fri, Sep 16, 2022 at 10:26:46AM +0200, Ard Biesheuvel wrote:
-> On Fri, 16 Sept 2022 at 10:15, Ilias Apalodimas
-> <ilias.apalodimas@linaro.org> wrote:
-> >
-> > The EFI TCG spec, in §10.2.6 Measuring UEFI Variables and UEFI GPT Data,
-> > is  measuring the entire UEFI_LOAD_OPTION (in PCR5).  As a result boot
-> > variables that point to the same UEFI application but with different
-> > optional data,  will have distinct measurements.
-> >
-> 
-> That is not the main problem. The main problem is that
-> LoadImage()/StartImage() may be used to invoke things beyond Boot####
-> options, and at StartImage() time, the load options could be anything.
-> So not measuring the load options when the image is actually being
-> invoked is a huge oversight.
+However, there is a corner case on arm64, which, if configured for
+3-level paging (or 2-level paging when using 64k pages), may not be able
+to cover the entire range of firmware mappings (which might contain both
+memory and MMIO peripheral mappings).
 
-Fair enough, I'll update the description
+So let's avoid SetVirtualAddressMap() on arm64, but only if the VA space
+is guaranteed to be of sufficient size.
 
-> 
-> 
-> > However, PCR5 is used for more than that and there might be a need to use
-> > +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> > @@ -370,6 +370,27 @@ char *efi_convert_cmdline(efi_loaded_image_t *image, int *cmd_line_len)
-> >         int options_bytes = 0, safe_options_bytes = 0;  /* UTF-8 bytes */
-> >         bool in_quote = false;
-> >         efi_status_t status;
-> > +       static const struct efi_measured_event load_options_tcg2_event = {
-> > +               {
-> > +                       sizeof(load_options_tcg2_event) + sizeof("Load Options"),
-> > +                       {
-> > +                               sizeof(load_options_tcg2_event.event_data.event_header),
-> > +                               EFI_TCG2_EVENT_HEADER_VERSION,
-> > +                               9,
-> > +                               EV_EVENT_TAG,
-> > +                       },
-> > +               },
-> > +               {
-> > +                       LOAD_OPTIONS_EVENT_TAG_ID,
-> > +                       sizeof("Load Options"),
-> > +               },
-> > +               { "Load Options" },
-> > +       };
-> > +
-> > +       if (options_chars > 0)
-> > +               efi_measure_tagged_event((unsigned long) options,
-> > +                                        (unsigned long) options_chars,
-> > +                                        &load_options_tcg2_event);
-> >
-> 
-> The name 'options_chars' is a bit misleading here, as it is actually
-> the size in bytes at this point.
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/libstub/arm64-stub.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-True but any suggestions on how to fix this? Rename the declaration?
+diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
+index cd3bea25c762..4fff6c32899e 100644
+--- a/drivers/firmware/efi/libstub/arm64-stub.c
++++ b/drivers/firmware/efi/libstub/arm64-stub.c
+@@ -31,6 +31,15 @@ efi_status_t check_platform_features(void)
+ 			efi_err("This 16 KB granular kernel is not supported by your CPU\n");
+ 		return EFI_UNSUPPORTED;
+ 	}
++
++	/*
++	 * If we have 48 bits of VA space for TTBR0 mappings, we can map the
++	 * UEFI runtime regions 1:1 and so calling SetVirtualAddressMap() is
++	 * unnecessary.
++	 */
++	if (VA_BITS_MIN >= 48)
++		efi_novamap = true;
++
+ 	return EFI_SUCCESS;
+ }
+ 
+-- 
+2.35.1
 
-> 
-> >         efi_apply_loadoptions_quirk((const void **)&options, &options_chars);
-> >         options_chars /= sizeof(*options);
-> > diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-> > index cb7eb5ed9f14..e3605b383964 100644
-> > --- a/drivers/firmware/efi/libstub/efistub.h
-> > +++ b/drivers/firmware/efi/libstub/efistub.h
-> > @@ -741,6 +741,7 @@ union apple_properties_protocol {
-> >  typedef u32 efi_tcg2_event_log_format;
-> >
-> >  #define INITRD_EVENT_TAG_ID 0x8F3B22ECU
-> > +#define LOAD_OPTIONS_EVENT_TAG_ID 0x8F3B22EDU
-> 
-> Is this an arbitrarily chosen value?
-
-Yea.  As far as events are concerned I've found 2 event types:
-- EV_IPL: This event is deprecated for platform
-  firmware. It may be used by Boot Manager
-  Code to measure events
-- EV_EVENT_TAG: Used for PCRs defined for OS and
-  application usage.  Defined for use by Host Platform Operating
-  System or Software.
-
-The latter seemed better for our case and it must include a 
-'struct TCG_PCClientTaggedEvent' in the event. 
-The first member of that struct is the ID which is a unique identifier
-defined by the measuring OS or application. 
-
-Cheers
-/Ilias
-
-> 
-> >  #define EV_EVENT_TAG 0x00000006U
-> >  #define EFI_TCG2_EVENT_HEADER_VERSION  0x1
-> >
-> > --
-> > 2.34.1
-> >
