@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 297DC5BC01B
-	for <lists+linux-efi@lfdr.de>; Sun, 18 Sep 2022 23:36:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11B395BC01C
+	for <lists+linux-efi@lfdr.de>; Sun, 18 Sep 2022 23:36:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229614AbiIRVgR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 18 Sep 2022 17:36:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40574 "EHLO
+        id S229568AbiIRVgS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 18 Sep 2022 17:36:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229581AbiIRVgQ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 18 Sep 2022 17:36:16 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A053413FA8
-        for <linux-efi@vger.kernel.org>; Sun, 18 Sep 2022 14:36:14 -0700 (PDT)
+        with ESMTP id S229609AbiIRVgR (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 18 Sep 2022 17:36:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 267BC13FB7
+        for <linux-efi@vger.kernel.org>; Sun, 18 Sep 2022 14:36:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 38684B81333
-        for <linux-efi@vger.kernel.org>; Sun, 18 Sep 2022 21:36:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 028D3C433D6;
-        Sun, 18 Sep 2022 21:36:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A8CF1612A3
+        for <linux-efi@vger.kernel.org>; Sun, 18 Sep 2022 21:36:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A846C433B5;
+        Sun, 18 Sep 2022 21:36:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663536971;
-        bh=Ru0xfD16klS07tddkIVGAaa+CsTfftLp60yJwaNKzok=;
+        s=k20201202; t=1663536974;
+        bh=4IQCCp85/a9TbrSEYrwJOPa+sZS2yTCwU9hWVkII4gw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UXde3L850xj+N8MgEH72nGy7x9IGsPz8Mno9MQ/hayPJOlnkhIAN6L80aFep8I+7i
-         gOnI7k0TV8t8IgLRFk331EB1Vb4y33jR6w8seXIR8rVkEnw68SzU9l0REvRpAWFi54
-         VWQvQM7hTWWrxnjzvG18a2fvYCrUnKsq2sYhudtdKYRkZ/c46DxNOKltUbU3hLJ0ai
-         V9q+n97E/kAu1/d0L5RzBo3TTO1aO3XyfkQR+25shZxo+T++HK1vFJkjbTXMQWft0A
-         0QHtKg8nN6ujpBAVEK3olXd0vGeJPJ4cdh84mMHR6spbZ7/7CUMJEGIZ9/tkRpmKJC
-         Ys35FsBv6UUpw==
+        b=qqUgldACNBxS9W3H2oFaX5Gi6GbJUfFF/uYQGexaTEJVH4iQFkeweYRS0zdlZSdQ5
+         /6bM6kDTiTRasmis1WjiXfAf/5TkEkrsCF7Wl5/XTm4DiLylElBDTzAWZiBYXXXtT/
+         KR8MfnvEJq161LmzRkYkgQZOZwWNw+WgEaU6ehNlMGo7oeTV/JHDJ7E2vE/di9PWpI
+         NIZEPEF4OlI9N55sz+UZ7yYBmoI3FiMWgzHb3xta9g8yeZawVc0opuFui5j92j0XKx
+         2Gifu3zmcgkyU/0+YkTIiiGewbGEIEyqe7EnSWV7YHIVfiimk8Gj49PAsAJz+dPVqC
+         MGVO/5ni9JHAQ==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     loongarch@lists.linux.dev, linux@armlinux.org.uk,
@@ -39,14 +39,14 @@ Cc:     loongarch@lists.linux.dev, linux@armlinux.org.uk,
         Ilias Apalodimas <ilias.apalodimas@linaro.org>,
         Huacai Chen <chenhuacai@loongson.cn>,
         Xi Ruoyao <xry111@xry111.site>
-Subject: [PATCH 06/12] efi: libstub: simplify efi_get_memory_map() and struct efi_boot_memmap
-Date:   Sun, 18 Sep 2022 23:35:38 +0200
-Message-Id: <20220918213544.2176249-7-ardb@kernel.org>
+Subject: [PATCH 07/12] efi: libstub: unify initrd loading between architectures
+Date:   Sun, 18 Sep 2022 23:35:39 +0200
+Message-Id: <20220918213544.2176249-8-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220918213544.2176249-1-ardb@kernel.org>
 References: <20220918213544.2176249-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=20417; i=ardb@kernel.org; h=from:subject; bh=Ru0xfD16klS07tddkIVGAaa+CsTfftLp60yJwaNKzok=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjJ48k85QXWFEKklRYXxDnxrVLTgKHe7S4Vdrlh5mJ HEne0qKJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYyePJAAKCRDDTyI5ktmPJIymC/ 9wKkKZ6Lh/CLaiMy5IQfxcYT4ODsTZF9hpNdtK6QiBVxBaImhqXbPOZ8m7ZhR9C0AjXlBzIpk/9i4e Xkcd53IoNx/RRsCvYHPjh/bbOIF0rPAckKina2WIsff9L5VTaDyNakH8JUFXAev3luqqS3w/Sbcymf DWeDzLQ4DY1CAUtjjaylkUI5Ux6bhS8abf1g9rATcjDed1s80FGAmKiOQtmd2TgZJwryB2nK+HGjpg l5BpzG7zm7FodxY6zt+86AKBWPQUSyNnOKGa5FTO+QW3vkEeyys0dmGz4uojUC0nQfnQkIBSDnQ9IQ mn9uO/UAzH/A1tszbY38EDcx3r3SvLgUfNTXUC0jnZyZf4BsuYXq85VWAF9JClsuqAqZZQEQhVyve1 jI6AChIQIfHZKi0uYvVxpcSVkUA6EWnV47THGZXcyapF9W0Z2spcMEXZnn6Qs7kkgEHMuMDSlDpoTs +FfNxlhWCkHsSX4LbpYALqBczDzKTIKHi666yENIDMl4s=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=16521; i=ardb@kernel.org; h=from:subject; bh=4IQCCp85/a9TbrSEYrwJOPa+sZS2yTCwU9hWVkII4gw=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjJ48mmt4RTTOmDpsKtlySDVyqEe18HipGQwZayROG Qw4eu2GJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYyePJgAKCRDDTyI5ktmPJJWfC/ 4qMUPjfJpdpwYup2oxOH/XJIX9FLAjcLoRj210zSio7s+tWQrsjQSZQnKZ6k/LuZ6aIMMSfvFZgeVQ yidsFFrwQ9TjHnUYiQoUQmIJ3JVzIxrxMXENhdqTgBGpDYF2B9NTjjlkyCcmlwjaq7tdr3GwkHKNqp Fc4ul31aZuzNEX95C7oVCzS6GUF8MREWY0uuaveufoprxbi6uEGJeXDG8OS1yYykf83/csclBtOEm2 sPdwvXlot7hjr4TeUliHzhN7970TQMlzagWWjguTlrsTWqaF5zeHBSmWjw+ElsfpU9KTwhL4/h1jrB /xPNW4Ae50JWNzPouWPKCRSUZIsgsGWOebxdbjDRI1u69/mL5fgpBzDbIuZF1/i9IDaie388lBoYzY qfuhrYLzDvPzkmQNDau2g4UT4fRT8xOPRMaL1zDsM7fsJXmKvg9KZTTT23cgFNUmQ01vJtrpuZbRYP PRaOLMKBiOJcrTFro3Z9+iGHoeBJj/Zkn/XQOO6sF10x0=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -58,586 +58,428 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Currently, struct efi_boot_memmap is a struct that is passed around
-between callers of efi_get_memory_map() and the users of the resulting
-data, and which carries pointers to various variables whose values are
-provided by the EFI GetMemoryMap() boot service.
-
-This is overly complex, and it is much easier to carry these values in
-the struct itself. So turn the struct into one that carries these data
-items directly, including a flex array for the variable number of EFI
-memory descriptors that the boot service may return.
+Use a EFI configuration table to pass the initrd to the core kernel,
+instead of per-arch methods. This cleans up the code considerably, and
+should make it easier for architectures to get rid of their reliance on
+DT for doing EFI boot in the future.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/libstub/arm64-stub.c      | 17 ++---
- drivers/firmware/efi/libstub/efi-stub-helper.c | 26 ++++----
- drivers/firmware/efi/libstub/efistub.h         | 15 +----
- drivers/firmware/efi/libstub/fdt.c             | 37 +++++------
- drivers/firmware/efi/libstub/mem.c             | 65 ++++++--------------
- drivers/firmware/efi/libstub/randomalloc.c     | 23 +++----
- drivers/firmware/efi/libstub/relocate.c        | 21 ++-----
- drivers/firmware/efi/libstub/x86-stub.c        | 20 ++----
- include/linux/efi.h                            |  9 +++
- 9 files changed, 80 insertions(+), 153 deletions(-)
+ Documentation/arm/uefi.rst                     |  4 --
+ drivers/firmware/efi/efi.c                     | 15 +++++
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 64 ++++++++++----------
+ drivers/firmware/efi/libstub/efi-stub.c        | 14 ++---
+ drivers/firmware/efi/libstub/efistub.h         |  3 -
+ drivers/firmware/efi/libstub/fdt.c             | 41 +++----------
+ drivers/firmware/efi/libstub/x86-stub.c        | 10 +--
+ include/linux/efi.h                            |  5 ++
+ 8 files changed, 67 insertions(+), 89 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-index 71289b9d5309..e9d516ad5f97 100644
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -50,26 +50,17 @@ efi_status_t check_platform_features(void)
-  */
- static bool check_image_region(u64 base, u64 size)
- {
--	unsigned long map_size, desc_size, buff_size;
--	efi_memory_desc_t *memory_map;
--	struct efi_boot_memmap map;
-+	struct efi_boot_memmap *map;
- 	efi_status_t status;
- 	bool ret = false;
- 	int map_offset;
+diff --git a/Documentation/arm/uefi.rst b/Documentation/arm/uefi.rst
+index 9b0b5e458a1e..baebe688a006 100644
+--- a/Documentation/arm/uefi.rst
++++ b/Documentation/arm/uefi.rst
+@@ -65,10 +65,6 @@ linux,uefi-mmap-desc-size   32-bit   Size in bytes of each entry in the UEFI
  
--	map.map =	&memory_map;
--	map.map_size =	&map_size;
--	map.desc_size =	&desc_size;
--	map.desc_ver =	NULL;
--	map.key_ptr =	NULL;
--	map.buff_size =	&buff_size;
+ linux,uefi-mmap-desc-ver    32-bit   Version of the mmap descriptor format.
+ 
+-linux,initrd-start          64-bit   Physical start address of an initrd
 -
- 	status = efi_get_memory_map(&map);
- 	if (status != EFI_SUCCESS)
- 		return false;
+-linux,initrd-end            64-bit   Physical end address of an initrd
+-
+ kaslr-seed                  64-bit   Entropy used to randomize the kernel image
+                                      base address location.
+ ==========================  ======   ===========================================
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index e4080ad96089..f0c776916b9c 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -21,6 +21,7 @@
+ #include <linux/device.h>
+ #include <linux/efi.h>
+ #include <linux/of.h>
++#include <linux/initrd.h>
+ #include <linux/io.h>
+ #include <linux/kexec.h>
+ #include <linux/platform_device.h>
+@@ -55,6 +56,7 @@ EXPORT_SYMBOL(efi);
+ unsigned long __ro_after_init efi_rng_seed = EFI_INVALID_TABLE_ADDR;
+ static unsigned long __initdata mem_reserve = EFI_INVALID_TABLE_ADDR;
+ static unsigned long __initdata rt_prop = EFI_INVALID_TABLE_ADDR;
++static unsigned long __initdata initrd = EFI_INVALID_TABLE_ADDR;
  
--	for (map_offset = 0; map_offset < map_size; map_offset += desc_size) {
--		efi_memory_desc_t *md = (void *)memory_map + map_offset;
-+	for (map_offset = 0; map_offset < map->map_size; map_offset += map->desc_size) {
-+		efi_memory_desc_t *md = (void *)map->map + map_offset;
- 		u64 end = md->phys_addr + md->num_pages * EFI_PAGE_SIZE;
- 
- 		/*
-@@ -82,7 +73,7 @@ static bool check_image_region(u64 base, u64 size)
+ struct mm_struct efi_mm = {
+ 	.mm_rb			= RB_ROOT,
+@@ -532,6 +534,7 @@ static const efi_config_table_type_t common_tables[] __initconst = {
+ 	{LINUX_EFI_TPM_EVENT_LOG_GUID,		&efi.tpm_log,		"TPMEventLog"	},
+ 	{LINUX_EFI_TPM_FINAL_LOG_GUID,		&efi.tpm_final_log,	"TPMFinalLog"	},
+ 	{LINUX_EFI_MEMRESERVE_TABLE_GUID,	&mem_reserve,		"MEMRESERVE"	},
++	{LINUX_EFI_INITRD_MEDIA_GUID,		&initrd,		"INITRD"	},
+ 	{EFI_RT_PROPERTIES_TABLE_GUID,		&rt_prop,		"RTPROP"	},
+ #ifdef CONFIG_EFI_RCI2_TABLE
+ 	{DELLEMC_EFI_RCI2_TABLE_GUID,		&rci2_table_phys			},
+@@ -674,6 +677,18 @@ int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
  		}
  	}
  
--	efi_bs_call(free_pool, memory_map);
-+	efi_bs_call(free_pool, map);
- 
- 	return ret;
++	if (IS_ENABLED(CONFIG_BLK_DEV_INITRD) &&
++	    initrd != EFI_INVALID_TABLE_ADDR) {
++		struct linux_efi_initrd *tbl;
++
++		tbl = early_memremap(initrd, sizeof(*tbl));
++		if (tbl) {
++			phys_initrd_start = tbl->base;
++			phys_initrd_size = tbl->size;
++			early_memunmap(tbl, sizeof(*tbl));
++		}
++	}
++
+ 	return 0;
  }
+ 
 diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index 08b551b7eb32..e8af32377d75 100644
+index e8af32377d75..742ecd9e0df3 100644
 --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
 +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -420,7 +420,6 @@ char *efi_convert_cmdline(efi_loaded_image_t *image, int *cmd_line_len)
- /**
-  * efi_exit_boot_services() - Exit boot services
-  * @handle:	handle of the exiting image
-- * @map:	pointer to receive the memory map
-  * @priv:	argument to be passed to @priv_func
-  * @priv_func:	function to process the memory map before exiting boot services
-  *
-@@ -433,14 +432,13 @@ char *efi_convert_cmdline(efi_loaded_image_t *image, int *cmd_line_len)
-  *
-  * Return:	status code
+@@ -559,20 +559,16 @@ static const struct {
+  * * %EFI_SUCCESS if the initrd was loaded successfully, in which
+  *   case @load_addr and @load_size are assigned accordingly
+  * * %EFI_NOT_FOUND if no LoadFile2 protocol exists on the initrd device path
+- * * %EFI_INVALID_PARAMETER if load_addr == NULL or load_size == NULL
+  * * %EFI_OUT_OF_RESOURCES if memory allocation failed
+  * * %EFI_LOAD_ERROR in all other cases
   */
--efi_status_t efi_exit_boot_services(void *handle,
--				    struct efi_boot_memmap *map,
--				    void *priv,
-+efi_status_t efi_exit_boot_services(void *handle, void *priv,
- 				    efi_exit_boot_map_processing priv_func)
+ static
+-efi_status_t efi_load_initrd_dev_path(unsigned long *load_addr,
+-				      unsigned long *load_size,
++efi_status_t efi_load_initrd_dev_path(struct linux_efi_initrd *initrd,
+ 				      unsigned long max)
  {
-+	struct efi_boot_memmap *map;
+ 	efi_guid_t lf2_proto_guid = EFI_LOAD_FILE2_PROTOCOL_GUID;
+ 	efi_device_path_protocol_t *dp;
+ 	efi_load_file2_protocol_t *lf2;
+-	unsigned long initrd_addr;
+-	unsigned long initrd_size;
+ 	efi_handle_t handle;
  	efi_status_t status;
  
--	status = efi_get_memory_map(map);
-+	status = efi_get_memory_map(&map);
- 
+@@ -586,42 +582,39 @@ efi_status_t efi_load_initrd_dev_path(unsigned long *load_addr,
  	if (status != EFI_SUCCESS)
- 		goto fail;
-@@ -452,7 +450,7 @@ efi_status_t efi_exit_boot_services(void *handle,
- 	if (efi_disable_pci_dma)
- 		efi_pci_disable_bridge_busmaster();
+ 		return status;
  
--	status = efi_bs_call(exit_boot_services, handle, *map->key_ptr);
-+	status = efi_bs_call(exit_boot_services, handle, map->map_key);
+-	status = efi_call_proto(lf2, load_file, dp, false, &initrd_size, NULL);
++	initrd->size = 0;
++	status = efi_call_proto(lf2, load_file, dp, false, &initrd->size, NULL);
+ 	if (status != EFI_BUFFER_TOO_SMALL)
+ 		return EFI_LOAD_ERROR;
  
- 	if (status == EFI_INVALID_PARAMETER) {
- 		/*
-@@ -468,13 +466,13 @@ efi_status_t efi_exit_boot_services(void *handle,
- 		 * buffer should account for any changes in the map so the call
- 		 * to get_memory_map() is expected to succeed here.
- 		 */
--		*map->map_size = *map->buff_size;
-+		map->map_size = map->buff_size;
- 		status = efi_bs_call(get_memory_map,
--				     map->map_size,
--				     *map->map,
--				     map->key_ptr,
--				     map->desc_size,
--				     map->desc_ver);
-+				     &map->map_size,
-+				     &map->map,
-+				     &map->map_key,
-+				     &map->desc_size,
-+				     &map->desc_ver);
+-	status = efi_allocate_pages(initrd_size, &initrd_addr, max);
++	status = efi_allocate_pages(initrd->size, &initrd->base, max);
+ 	if (status != EFI_SUCCESS)
+ 		return status;
  
- 		/* exit_boot_services() was called, thus cannot free */
- 		if (status != EFI_SUCCESS)
-@@ -485,7 +483,7 @@ efi_status_t efi_exit_boot_services(void *handle,
- 		if (status != EFI_SUCCESS)
- 			goto fail;
+-	status = efi_call_proto(lf2, load_file, dp, false, &initrd_size,
+-				(void *)initrd_addr);
++	status = efi_call_proto(lf2, load_file, dp, false, &initrd->size,
++				(void *)initrd->base);
+ 	if (status != EFI_SUCCESS) {
+-		efi_free(initrd_size, initrd_addr);
++		efi_free(initrd->size, initrd->base);
+ 		return EFI_LOAD_ERROR;
+ 	}
+-
+-	*load_addr = initrd_addr;
+-	*load_size = initrd_size;
+ 	return EFI_SUCCESS;
+ }
  
--		status = efi_bs_call(exit_boot_services, handle, *map->key_ptr);
-+		status = efi_bs_call(exit_boot_services, handle, map->map_key);
+ static
+ efi_status_t efi_load_initrd_cmdline(efi_loaded_image_t *image,
+-				     unsigned long *load_addr,
+-				     unsigned long *load_size,
++				     struct linux_efi_initrd *initrd,
+ 				     unsigned long soft_limit,
+ 				     unsigned long hard_limit)
+ {
+ 	if (!IS_ENABLED(CONFIG_EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER) ||
+ 	    (IS_ENABLED(CONFIG_X86) && (!efi_is_native() || image == NULL))) {
+-		*load_addr = *load_size = 0;
++		initrd->size = 0;
+ 		return EFI_SUCCESS;
  	}
  
- 	/* exit_boot_services() was called, thus cannot free */
-@@ -495,7 +493,7 @@ efi_status_t efi_exit_boot_services(void *handle,
- 	return EFI_SUCCESS;
- 
- free_map:
--	efi_bs_call(free_pool, *map->map);
-+	efi_bs_call(free_pool, map);
- fail:
- 	return status;
- }
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index 20705712deff..2bd520b30192 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -160,15 +160,6 @@ void efi_set_u64_split(u64 data, u32 *lo, u32 *hi)
-  */
- #define EFI_MMAP_NR_SLACK_SLOTS	8
- 
--struct efi_boot_memmap {
--	efi_memory_desc_t	**map;
--	unsigned long		*map_size;
--	unsigned long		*desc_size;
--	u32			*desc_ver;
--	unsigned long		*key_ptr;
--	unsigned long		*buff_size;
--};
--
- typedef struct efi_generic_dev_path efi_device_path_protocol_t;
- 
- union efi_device_path_to_text_protocol {
-@@ -871,9 +862,7 @@ typedef efi_status_t (*efi_exit_boot_map_processing)(
- 	struct efi_boot_memmap *map,
- 	void *priv);
- 
--efi_status_t efi_exit_boot_services(void *handle,
--				    struct efi_boot_memmap *map,
--				    void *priv,
-+efi_status_t efi_exit_boot_services(void *handle, void *priv,
- 				    efi_exit_boot_map_processing priv_func);
- 
- efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
-@@ -912,7 +901,7 @@ void efi_apply_loadoptions_quirk(const void **load_options, u32 *load_options_si
- 
- char *efi_convert_cmdline(efi_loaded_image_t *image, int *cmd_line_len);
- 
--efi_status_t efi_get_memory_map(struct efi_boot_memmap *map);
-+efi_status_t efi_get_memory_map(struct efi_boot_memmap **map);
- 
- efi_status_t efi_allocate_pages(unsigned long size, unsigned long *addr,
- 				unsigned long max);
-diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
-index ab59889c38f1..91ca0c1597e5 100644
---- a/drivers/firmware/efi/libstub/fdt.c
-+++ b/drivers/firmware/efi/libstub/fdt.c
-@@ -170,25 +170,25 @@ static efi_status_t update_fdt_memmap(void *fdt, struct efi_boot_memmap *map)
- 	if (node < 0)
- 		return EFI_LOAD_ERROR;
- 
--	fdt_val64 = cpu_to_fdt64((unsigned long)*map->map);
-+	fdt_val64 = cpu_to_fdt64((unsigned long)map->map);
- 
- 	err = fdt_setprop_inplace_var(fdt, node, "linux,uefi-mmap-start", fdt_val64);
- 	if (err)
- 		return EFI_LOAD_ERROR;
- 
--	fdt_val32 = cpu_to_fdt32(*map->map_size);
-+	fdt_val32 = cpu_to_fdt32(map->map_size);
- 
- 	err = fdt_setprop_inplace_var(fdt, node, "linux,uefi-mmap-size", fdt_val32);
- 	if (err)
- 		return EFI_LOAD_ERROR;
- 
--	fdt_val32 = cpu_to_fdt32(*map->desc_size);
-+	fdt_val32 = cpu_to_fdt32(map->desc_size);
- 
- 	err = fdt_setprop_inplace_var(fdt, node, "linux,uefi-mmap-desc-size", fdt_val32);
- 	if (err)
- 		return EFI_LOAD_ERROR;
- 
--	fdt_val32 = cpu_to_fdt32(*map->desc_ver);
-+	fdt_val32 = cpu_to_fdt32(map->desc_ver);
- 
- 	err = fdt_setprop_inplace_var(fdt, node, "linux,uefi-mmap-desc-ver", fdt_val32);
- 	if (err)
-@@ -198,21 +198,24 @@ static efi_status_t update_fdt_memmap(void *fdt, struct efi_boot_memmap *map)
+ 	return handle_cmdline_files(image, L"initrd=", sizeof(L"initrd=") - 2,
+ 				    soft_limit, hard_limit,
+-				    load_addr, load_size);
++				    &initrd->base, &initrd->size);
  }
  
- struct exit_boot_struct {
-+	struct efi_boot_memmap	*boot_memmap;
- 	efi_memory_desc_t	*runtime_map;
- 	int			runtime_entry_count;
- 	void			*new_fdt_addr;
+ static const struct {
+@@ -645,7 +638,7 @@ static const struct {
+ 	{ "Linux initrd" },
  };
  
--static efi_status_t exit_boot_func(struct efi_boot_memmap *map,
--				   void *priv)
-+static efi_status_t exit_boot_func(struct efi_boot_memmap *map, void *priv)
+-static void efi_measure_initrd(unsigned long load_addr, unsigned long load_size)
++static void efi_measure_initrd(struct linux_efi_initrd *initrd)
  {
- 	struct exit_boot_struct *p = priv;
-+
-+	p->boot_memmap = map;
-+
- 	/*
- 	 * Update the memory map with virtual addresses. The function will also
- 	 * populate @runtime_map with copies of just the EFI_MEMORY_RUNTIME
- 	 * entries so that we can pass it straight to SetVirtualAddressMap()
- 	 */
--	efi_get_virtmap(*map->map, *map->map_size, *map->desc_size,
-+	efi_get_virtmap(map->map, map->map_size, map->desc_size,
- 			p->runtime_map, &p->runtime_entry_count);
- 
- 	return update_fdt_memmap(p->new_fdt_addr, map);
-@@ -243,20 +246,11 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
- 					    unsigned long fdt_addr,
- 					    unsigned long fdt_size)
- {
--	unsigned long map_size, desc_size, buff_size;
-+	unsigned long desc_size;
- 	u32 desc_ver;
--	unsigned long mmap_key;
--	efi_memory_desc_t *memory_map;
- 	efi_status_t status;
--	struct efi_boot_memmap map;
- 	struct exit_boot_struct priv;
- 
--	map.map_size	= &map_size;
--	map.desc_size	= &desc_size;
--	map.desc_ver	= &desc_ver;
--	map.key_ptr	= &mmap_key;
--	map.buff_size	= &buff_size;
--
- 	status = efi_alloc_virtmap(&priv.runtime_map, &desc_size, &desc_ver);
- 	if (status != EFI_SUCCESS) {
- 		efi_err("Unable to retrieve UEFI memory map.\n");
-@@ -265,7 +259,6 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
- 
- 	efi_info("Exiting boot services...\n");
- 
--	map.map = &memory_map;
- 	status = efi_allocate_pages(MAX_FDT_SIZE, new_fdt_addr, ULONG_MAX);
- 	if (status != EFI_SUCCESS) {
- 		efi_err("Unable to allocate memory for new device tree.\n");
-@@ -283,7 +276,7 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
- 
- 	priv.new_fdt_addr = (void *)*new_fdt_addr;
- 
--	status = efi_exit_boot_services(handle, &map, &priv, exit_boot_func);
-+	status = efi_exit_boot_services(handle, &priv, exit_boot_func);
- 
- 	if (status == EFI_SUCCESS) {
- 		efi_set_virtual_address_map_t *svam;
-@@ -302,6 +295,7 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
- 		 * incoming kernel but proceed normally otherwise.
- 		 */
- 		if (status != EFI_SUCCESS) {
-+			efi_memory_desc_t *p;
- 			int l;
- 
- 			/*
-@@ -310,8 +304,9 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
- 			 * the incoming kernel that no virtual translation has
- 			 * been installed.
- 			 */
--			for (l = 0; l < map_size; l += desc_size) {
--				efi_memory_desc_t *p = (void *)memory_map + l;
-+			for (l = 0; l < priv.boot_memmap->map_size;
-+			     l += priv.boot_memmap->desc_size) {
-+				p = (void *)priv.boot_memmap->map + l;
- 
- 				if (p->attribute & EFI_MEMORY_RUNTIME)
- 					p->virt_addr = 0;
-diff --git a/drivers/firmware/efi/libstub/mem.c b/drivers/firmware/efi/libstub/mem.c
-index feef8d4be113..40721573e494 100644
---- a/drivers/firmware/efi/libstub/mem.c
-+++ b/drivers/firmware/efi/libstub/mem.c
-@@ -5,71 +5,44 @@
- 
- #include "efistub.h"
- 
--static inline bool mmap_has_headroom(unsigned long buff_size,
--				     unsigned long map_size,
--				     unsigned long desc_size)
--{
--	unsigned long slack = buff_size - map_size;
--
--	return slack / desc_size >= EFI_MMAP_NR_SLACK_SLOTS;
--}
--
- /**
-  * efi_get_memory_map() - get memory map
-- * @map:	on return pointer to memory map
-+ * @map:		pointer to memory map pointer to which to assign the
-+ *			newly allocated memory map
-  *
-  * Retrieve the UEFI memory map. The allocated memory leaves room for
-  * up to EFI_MMAP_NR_SLACK_SLOTS additional memory map entries.
-  *
+ 	efi_guid_t tcg2_guid = EFI_TCG2_PROTOCOL_GUID;
+ 	efi_tcg2_protocol_t *tcg2 = NULL;
+@@ -654,7 +647,7 @@ static void efi_measure_initrd(unsigned long load_addr, unsigned long load_size)
+ 	efi_bs_call(locate_protocol, &tcg2_guid, NULL, (void **)&tcg2);
+ 	if (tcg2) {
+ 		status = efi_call_proto(tcg2, hash_log_extend_event,
+-					0, load_addr, load_size,
++					0, initrd->base, initrd->size,
+ 					&initrd_tcg2_event.event_data);
+ 		if (status != EFI_SUCCESS)
+ 			efi_warn("Failed to measure initrd data: 0x%lx\n",
+@@ -676,34 +669,39 @@ static void efi_measure_initrd(unsigned long load_addr, unsigned long load_size)
   * Return:	status code
   */
--efi_status_t efi_get_memory_map(struct efi_boot_memmap *map)
-+efi_status_t efi_get_memory_map(struct efi_boot_memmap **map)
+ efi_status_t efi_load_initrd(efi_loaded_image_t *image,
+-			     unsigned long *load_addr,
+-			     unsigned long *load_size,
+ 			     unsigned long soft_limit,
+ 			     unsigned long hard_limit)
  {
--	efi_memory_desc_t *m = NULL;
-+	struct efi_boot_memmap *m, tmp;
- 	efi_status_t status;
--	unsigned long key;
--	u32 desc_version;
-+	unsigned long size;
- 
--	*map->desc_size =	sizeof(*m);
--	*map->map_size =	*map->desc_size * 32;
--	*map->buff_size =	*map->map_size;
--again:
--	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
--			     *map->map_size, (void **)&m);
-+	tmp.map_size = 0;
-+	status = efi_bs_call(get_memory_map, &tmp.map_size, NULL, &tmp.map_key,
-+			     &tmp.desc_size, &tmp.desc_ver);
-+	if (status != EFI_BUFFER_TOO_SMALL)
-+		return EFI_LOAD_ERROR;
+-	efi_status_t status;
++	efi_guid_t tbl_guid = LINUX_EFI_INITRD_MEDIA_GUID;
++	efi_status_t status = EFI_SUCCESS;
++	struct linux_efi_initrd *initrd;
 +
-+	size = tmp.map_size + tmp.desc_size * EFI_MMAP_NR_SLACK_SLOTS;
-+	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, sizeof(*m) + size,
-+			     (void **)&m);
- 	if (status != EFI_SUCCESS)
--		goto fail;
-+		return status;
++	if (!efi_noinitrd) {
++		status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
++				     sizeof(*initrd), (void **)&initrd);
++		if (status != EFI_SUCCESS)
++			return status;
  
--	*map->desc_size = 0;
--	key = 0;
--	status = efi_bs_call(get_memory_map, map->map_size, m,
--			     &key, map->desc_size, &desc_version);
--	if (status == EFI_BUFFER_TOO_SMALL ||
--	    !mmap_has_headroom(*map->buff_size, *map->map_size,
--			       *map->desc_size)) {
--		efi_bs_call(free_pool, m);
--		/*
--		 * Make sure there is some entries of headroom so that the
--		 * buffer can be reused for a new map after allocations are
--		 * no longer permitted.  Its unlikely that the map will grow to
--		 * exceed this headroom once we are ready to trigger
--		 * ExitBootServices()
--		 */
--		*map->map_size += *map->desc_size * EFI_MMAP_NR_SLACK_SLOTS;
--		*map->buff_size = *map->map_size;
--		goto again;
--	}
-+	m->buff_size = m->map_size = size;
-+	status = efi_bs_call(get_memory_map, &m->map_size, m->map, &m->map_key,
-+			     &m->desc_size, &m->desc_ver);
- 
- 	if (status == EFI_SUCCESS) {
--		if (map->key_ptr)
--			*map->key_ptr = key;
--		if (map->desc_ver)
--			*map->desc_ver = desc_version;
-+		*map = m;
- 	} else {
- 		efi_bs_call(free_pool, m);
- 	}
- 
--fail:
--	*map->map = m;
- 	return status;
- }
- 
-diff --git a/drivers/firmware/efi/libstub/randomalloc.c b/drivers/firmware/efi/libstub/randomalloc.c
-index 715f37479154..5d6000c717cc 100644
---- a/drivers/firmware/efi/libstub/randomalloc.c
-+++ b/drivers/firmware/efi/libstub/randomalloc.c
-@@ -55,20 +55,11 @@ efi_status_t efi_random_alloc(unsigned long size,
- 			      unsigned long *addr,
- 			      unsigned long random_seed)
- {
--	unsigned long map_size, desc_size, total_slots = 0, target_slot;
-+	unsigned long total_slots = 0, target_slot;
- 	unsigned long total_mirrored_slots = 0;
--	unsigned long buff_size;
-+	struct efi_boot_memmap *map;
- 	efi_status_t status;
--	efi_memory_desc_t *memory_map;
- 	int map_offset;
--	struct efi_boot_memmap map;
--
--	map.map =	&memory_map;
--	map.map_size =	&map_size;
--	map.desc_size =	&desc_size;
--	map.desc_ver =	NULL;
--	map.key_ptr =	NULL;
--	map.buff_size =	&buff_size;
- 
- 	status = efi_get_memory_map(&map);
- 	if (status != EFI_SUCCESS)
-@@ -80,8 +71,8 @@ efi_status_t efi_random_alloc(unsigned long size,
- 	size = round_up(size, EFI_ALLOC_ALIGN);
- 
- 	/* count the suitable slots in each memory map entry */
--	for (map_offset = 0; map_offset < map_size; map_offset += desc_size) {
--		efi_memory_desc_t *md = (void *)memory_map + map_offset;
-+	for (map_offset = 0; map_offset < map->map_size; map_offset += map->desc_size) {
-+		efi_memory_desc_t *md = (void *)map->map + map_offset;
- 		unsigned long slots;
- 
- 		slots = get_entry_num_slots(md, size, ilog2(align));
-@@ -109,8 +100,8 @@ efi_status_t efi_random_alloc(unsigned long size,
- 	 * to calculate the randomly chosen address, and allocate it directly
- 	 * using EFI_ALLOCATE_ADDRESS.
- 	 */
--	for (map_offset = 0; map_offset < map_size; map_offset += desc_size) {
--		efi_memory_desc_t *md = (void *)memory_map + map_offset;
-+	for (map_offset = 0; map_offset < map->map_size; map_offset += map->desc_size) {
-+		efi_memory_desc_t *md = (void *)map->map + map_offset;
- 		efi_physical_addr_t target;
- 		unsigned long pages;
- 
-@@ -133,7 +124,7 @@ efi_status_t efi_random_alloc(unsigned long size,
- 		break;
- 	}
- 
--	efi_bs_call(free_pool, memory_map);
-+	efi_bs_call(free_pool, map);
- 
- 	return status;
- }
-diff --git a/drivers/firmware/efi/libstub/relocate.c b/drivers/firmware/efi/libstub/relocate.c
-index 8ee9eb2b9039..cd80db33ab1e 100644
---- a/drivers/firmware/efi/libstub/relocate.c
-+++ b/drivers/firmware/efi/libstub/relocate.c
-@@ -23,21 +23,12 @@
- efi_status_t efi_low_alloc_above(unsigned long size, unsigned long align,
- 				 unsigned long *addr, unsigned long min)
- {
--	unsigned long map_size, desc_size, buff_size;
--	efi_memory_desc_t *map;
-+	struct efi_boot_memmap *map;
- 	efi_status_t status;
- 	unsigned long nr_pages;
- 	int i;
--	struct efi_boot_memmap boot_map;
- 
--	boot_map.map		= &map;
--	boot_map.map_size	= &map_size;
--	boot_map.desc_size	= &desc_size;
--	boot_map.desc_ver	= NULL;
--	boot_map.key_ptr	= NULL;
--	boot_map.buff_size	= &buff_size;
--
--	status = efi_get_memory_map(&boot_map);
-+	status = efi_get_memory_map(&map);
- 	if (status != EFI_SUCCESS)
- 		goto fail;
- 
-@@ -52,12 +43,12 @@ efi_status_t efi_low_alloc_above(unsigned long size, unsigned long align,
- 
- 	size = round_up(size, EFI_ALLOC_ALIGN);
- 	nr_pages = size / EFI_PAGE_SIZE;
--	for (i = 0; i < map_size / desc_size; i++) {
-+	for (i = 0; i < map->map_size / map->desc_size; i++) {
- 		efi_memory_desc_t *desc;
--		unsigned long m = (unsigned long)map;
-+		unsigned long m = (unsigned long)map->map;
- 		u64 start, end;
- 
--		desc = efi_early_memdesc_ptr(m, desc_size, i);
-+		desc = efi_early_memdesc_ptr(m, map->desc_size, i);
- 
- 		if (desc->type != EFI_CONVENTIONAL_MEMORY)
- 			continue;
-@@ -87,7 +78,7 @@ efi_status_t efi_low_alloc_above(unsigned long size, unsigned long align,
+-	if (efi_noinitrd) {
+-		*load_addr = *load_size = 0;
+-		status = EFI_SUCCESS;
+-	} else {
+-		status = efi_load_initrd_dev_path(load_addr, load_size, hard_limit);
++		status = efi_load_initrd_dev_path(initrd, hard_limit);
+ 		if (status == EFI_SUCCESS) {
+ 			efi_info("Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path\n");
+-			if (*load_size > 0)
+-				efi_measure_initrd(*load_addr, *load_size);
++			if (initrd->size > 0)
++				efi_measure_initrd(initrd);
+ 		} else if (status == EFI_NOT_FOUND) {
+-			status = efi_load_initrd_cmdline(image, load_addr, load_size,
++			status = efi_load_initrd_cmdline(image, initrd,
+ 							 soft_limit, hard_limit);
+-			if (status == EFI_SUCCESS && *load_size > 0)
++			if (status == EFI_SUCCESS && initrd->size > 0)
+ 				efi_info("Loaded initrd from command line option\n");
  		}
+ 		if (status != EFI_SUCCESS) {
+ 			efi_err("Failed to load initrd: 0x%lx\n", status);
+-			*load_addr = *load_size = 0;
++			efi_bs_call(free_pool, initrd);
++			return status;
+ 		}
+-	}
+ 
++		status = efi_bs_call(install_configuration_table, &tbl_guid,
++				     initrd);
++	}
+ 	return status;
+ }
+ 
+diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
+index 6d9ce2c89576..88bdd0a6b488 100644
+--- a/drivers/firmware/efi/libstub/efi-stub.c
++++ b/drivers/firmware/efi/libstub/efi-stub.c
+@@ -130,8 +130,6 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 	unsigned long image_addr;
+ 	unsigned long image_size = 0;
+ 	/* addr/point and size pairs for memory management*/
+-	unsigned long initrd_addr = 0;
+-	unsigned long initrd_size = 0;
+ 	unsigned long fdt_addr = 0;  /* Original DTB */
+ 	unsigned long fdt_size = 0;
+ 	char *cmdline_ptr = NULL;
+@@ -247,7 +245,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 	if (!fdt_addr)
+ 		efi_info("Generating empty DTB\n");
+ 
+-	efi_load_initrd(image, &initrd_addr, &initrd_size, ULONG_MAX,
++	efi_load_initrd(image, ULONG_MAX,
+ 			efi_get_max_initrd_addr(image_addr));
+ 
+ 	efi_random_get_seed();
+@@ -290,11 +288,10 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 
+ 	install_memreserve_table();
+ 
+-	status = allocate_new_fdt_and_exit_boot(handle, &fdt_addr,
+-						initrd_addr, initrd_size,
+-						cmdline_ptr, fdt_addr, fdt_size);
++	status = allocate_new_fdt_and_exit_boot(handle, &fdt_addr, cmdline_ptr,
++						fdt_addr, fdt_size);
+ 	if (status != EFI_SUCCESS)
+-		goto fail_free_initrd;
++		goto fail_free_fdt;
+ 
+ 	if (IS_ENABLED(CONFIG_ARM))
+ 		efi_handle_post_ebs_state();
+@@ -302,10 +299,9 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 	efi_enter_kernel(image_addr, fdt_addr, fdt_totalsize((void *)fdt_addr));
+ 	/* not reached */
+ 
+-fail_free_initrd:
++fail_free_fdt:
+ 	efi_err("Failed to update FDT and exit boot services\n");
+ 
+-	efi_free(initrd_size, initrd_addr);
+ 	efi_free(fdt_size, fdt_addr);
+ 
+ fail_free_image:
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index 2bd520b30192..82cff342da05 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -867,7 +867,6 @@ efi_status_t efi_exit_boot_services(void *handle, void *priv,
+ 
+ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
+ 					    unsigned long *new_fdt_addr,
+-					    u64 initrd_addr, u64 initrd_size,
+ 					    char *cmdline_ptr,
+ 					    unsigned long fdt_addr,
+ 					    unsigned long fdt_size);
+@@ -944,8 +943,6 @@ static inline efi_status_t efi_load_dtb(efi_loaded_image_t *image,
+ }
+ 
+ efi_status_t efi_load_initrd(efi_loaded_image_t *image,
+-			     unsigned long *load_addr,
+-			     unsigned long *load_size,
+ 			     unsigned long soft_limit,
+ 			     unsigned long hard_limit);
+ /*
+diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
+index 91ca0c1597e5..a3cd603ea484 100644
+--- a/drivers/firmware/efi/libstub/fdt.c
++++ b/drivers/firmware/efi/libstub/fdt.c
+@@ -28,8 +28,7 @@ static void fdt_update_cell_size(void *fdt)
+ }
+ 
+ static efi_status_t update_fdt(void *orig_fdt, unsigned long orig_fdt_size,
+-			       void *fdt, int new_fdt_size, char *cmdline_ptr,
+-			       u64 initrd_addr, u64 initrd_size)
++			       void *fdt, int new_fdt_size, char *cmdline_ptr)
+ {
+ 	int node, num_rsv;
+ 	int status;
+@@ -93,21 +92,6 @@ static efi_status_t update_fdt(void *orig_fdt, unsigned long orig_fdt_size,
+ 			goto fdt_set_fail;
  	}
  
--	if (i == map_size / desc_size)
-+	if (i == map->map_size / map->desc_size)
- 		status = EFI_NOT_FOUND;
+-	/* Set initrd address/end in device tree, if present */
+-	if (initrd_size != 0) {
+-		u64 initrd_image_end;
+-		u64 initrd_image_start = cpu_to_fdt64(initrd_addr);
+-
+-		status = fdt_setprop_var(fdt, node, "linux,initrd-start", initrd_image_start);
+-		if (status)
+-			goto fdt_set_fail;
+-
+-		initrd_image_end = cpu_to_fdt64(initrd_addr + initrd_size);
+-		status = fdt_setprop_var(fdt, node, "linux,initrd-end", initrd_image_end);
+-		if (status)
+-			goto fdt_set_fail;
+-	}
+-
+ 	/* Add FDT entries for EFI runtime services in chosen node. */
+ 	node = fdt_subnode_offset(fdt, 0, "chosen");
+ 	fdt_val64 = cpu_to_fdt64((u64)(unsigned long)efi_system_table);
+@@ -226,22 +210,18 @@ static efi_status_t exit_boot_func(struct efi_boot_memmap *map, void *priv)
+ #endif
  
- 	efi_bs_call(free_pool, map);
+ /*
+- * Allocate memory for a new FDT, then add EFI, commandline, and
+- * initrd related fields to the FDT.  This routine increases the
+- * FDT allocation size until the allocated memory is large
+- * enough.  EFI allocations are in EFI_PAGE_SIZE granules,
+- * which are fixed at 4K bytes, so in most cases the first
+- * allocation should succeed.
+- * EFI boot services are exited at the end of this function.
+- * There must be no allocations between the get_memory_map()
+- * call and the exit_boot_services() call, so the exiting of
+- * boot services is very tightly tied to the creation of the FDT
+- * with the final memory map in it.
++ * Allocate memory for a new FDT, then add EFI and commandline related fields
++ * to the FDT.  This routine increases the FDT allocation size until the
++ * allocated memory is large enough.  EFI allocations are in EFI_PAGE_SIZE
++ * granules, which are fixed at 4K bytes, so in most cases the first allocation
++ * should succeed.  EFI boot services are exited at the end of this function.
++ * There must be no allocations between the get_memory_map() call and the
++ * exit_boot_services() call, so the exiting of boot services is very tightly
++ * tied to the creation of the FDT with the final memory map in it.
+  */
+ 
+ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
+ 					    unsigned long *new_fdt_addr,
+-					    u64 initrd_addr, u64 initrd_size,
+ 					    char *cmdline_ptr,
+ 					    unsigned long fdt_addr,
+ 					    unsigned long fdt_size)
+@@ -266,8 +246,7 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
+ 	}
+ 
+ 	status = update_fdt((void *)fdt_addr, fdt_size,
+-			    (void *)*new_fdt_addr, MAX_FDT_SIZE, cmdline_ptr,
+-			    initrd_addr, initrd_size);
++			    (void *)*new_fdt_addr, MAX_FDT_SIZE, cmdline_ptr);
+ 
+ 	if (status != EFI_SUCCESS) {
+ 		efi_err("Unable to construct new device tree.\n");
 diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 05ae8bcc9d67..1ae1e7e576b9 100644
+index 1ae1e7e576b9..8c67aa69fb7a 100644
 --- a/drivers/firmware/efi/libstub/x86-stub.c
 +++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -716,32 +716,22 @@ static efi_status_t exit_boot_func(struct efi_boot_memmap *map,
- 
- 	efi_set_u64_split((unsigned long)efi_system_table,
- 			  &p->efi->efi_systab, &p->efi->efi_systab_hi);
--	p->efi->efi_memdesc_size	= *map->desc_size;
--	p->efi->efi_memdesc_version	= *map->desc_ver;
--	efi_set_u64_split((unsigned long)*map->map,
-+	p->efi->efi_memdesc_size	= map->desc_size;
-+	p->efi->efi_memdesc_version	= map->desc_ver;
-+	efi_set_u64_split((unsigned long)map->map,
- 			  &p->efi->efi_memmap, &p->efi->efi_memmap_hi);
--	p->efi->efi_memmap_size		= *map->map_size;
-+	p->efi->efi_memmap_size		= map->map_size;
- 
- 	return EFI_SUCCESS;
- }
- 
- static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
- {
--	unsigned long map_sz, key, desc_size, buff_size;
--	efi_memory_desc_t *mem_map;
- 	struct setup_data *e820ext = NULL;
- 	__u32 e820ext_size = 0;
+@@ -766,7 +766,6 @@ unsigned long efi_main(efi_handle_t handle,
+ 	unsigned long bzimage_addr = (unsigned long)startup_32;
+ 	unsigned long buffer_start, buffer_end;
+ 	struct setup_header *hdr = &boot_params->hdr;
+-	unsigned long addr, size;
  	efi_status_t status;
--	__u32 desc_version;
--	struct efi_boot_memmap map;
- 	struct exit_boot_struct priv;
  
--	map.map			= &mem_map;
--	map.map_size		= &map_sz;
--	map.desc_size		= &desc_size;
--	map.desc_ver		= &desc_version;
--	map.key_ptr		= &key;
--	map.buff_size		= &buff_size;
- 	priv.boot_params	= boot_params;
- 	priv.efi		= &boot_params->efi_info;
- 
-@@ -750,7 +740,7 @@ static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
- 		return status;
- 
- 	/* Might as well exit boot services now */
--	status = efi_exit_boot_services(handle, &map, &priv, exit_boot_func);
-+	status = efi_exit_boot_services(handle, &priv, exit_boot_func);
+ 	efi_system_table = sys_table_arg;
+@@ -861,16 +860,9 @@ unsigned long efi_main(efi_handle_t handle,
+ 	 * arguments will be processed only if image is not NULL, which will be
+ 	 * the case only if we were loaded via the PE entry point.
+ 	 */
+-	status = efi_load_initrd(image, &addr, &size, hdr->initrd_addr_max,
+-				 ULONG_MAX);
++	status = efi_load_initrd(image, hdr->initrd_addr_max, ULONG_MAX);
  	if (status != EFI_SUCCESS)
- 		return status;
+ 		goto fail;
+-	if (size > 0) {
+-		efi_set_u64_split(addr, &hdr->ramdisk_image,
+-				  &boot_params->ext_ramdisk_image);
+-		efi_set_u64_split(size, &hdr->ramdisk_size,
+-				  &boot_params->ext_ramdisk_size);
+-	}
  
+ 	/*
+ 	 * If the boot loader gave us a value for secure_boot then we use that,
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 5efc3105f8e0..6ad8eda0de7d 100644
+index 6ad8eda0de7d..8668d9769bb0 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
-@@ -522,6 +522,15 @@ typedef union {
- 	efi_system_table_32_t mixed_mode;
- } efi_system_table_t;
+@@ -1343,6 +1343,11 @@ struct linux_efi_coco_secret_area {
+ 	u64	size;
+ };
  
-+struct efi_boot_memmap {
-+	unsigned long		map_size;
-+	unsigned long		desc_size;
-+	u32			desc_ver;
-+	unsigned long		map_key;
-+	unsigned long		buff_size;
-+	efi_memory_desc_t	map[];
++struct linux_efi_initrd {
++	unsigned long	base;
++	unsigned long	size;
 +};
 +
- /*
-  * Architecture independent structure for describing a memory map for the
-  * benefit of efi_memmap_init_early(), and for passing context between
+ /* Header of a populated EFI secret area */
+ #define EFI_SECRET_TABLE_HEADER_GUID	EFI_GUID(0x1e74f542, 0x71dd, 0x4d66,  0x96, 0x3e, 0xef, 0x42, 0x87, 0xff, 0x17, 0x3b)
+ 
 -- 
 2.35.1
 
