@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 696D65BC01D
-	for <lists+linux-efi@lfdr.de>; Sun, 18 Sep 2022 23:36:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CD7A5BC01E
+	for <lists+linux-efi@lfdr.de>; Sun, 18 Sep 2022 23:36:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229533AbiIRVgT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 18 Sep 2022 17:36:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40590 "EHLO
+        id S229586AbiIRVgW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 18 Sep 2022 17:36:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229561AbiIRVgS (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 18 Sep 2022 17:36:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DA5113FA8
-        for <linux-efi@vger.kernel.org>; Sun, 18 Sep 2022 14:36:17 -0700 (PDT)
+        with ESMTP id S229561AbiIRVgW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 18 Sep 2022 17:36:22 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB1AF13FA2
+        for <linux-efi@vger.kernel.org>; Sun, 18 Sep 2022 14:36:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D5239612AC
-        for <linux-efi@vger.kernel.org>; Sun, 18 Sep 2022 21:36:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86327C43470;
-        Sun, 18 Sep 2022 21:36:14 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A3125B81330
+        for <linux-efi@vger.kernel.org>; Sun, 18 Sep 2022 21:36:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C6EC433C1;
+        Sun, 18 Sep 2022 21:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663536976;
-        bh=ay6ANRnQboi0NxXKHvifHtY18HiC0iKwDUCc7TAOKyk=;
+        s=k20201202; t=1663536978;
+        bh=e2Iqplw0yzG3w2OvmovsVI5QKe97+qAlA9sWqfYGy+g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TkoQZhyPdXem6+IsM4vC41g0FhxE8TV7TOVYR7OXjZ/UMTir1oHRrtZFxAhaUbanZ
-         Bst/tocNNwK6Y/6mGOXk0SZXiZ6dpJuiQM/VN4cupJ9chxB3FfP+N8pd2tbWDVnLSG
-         vwbtjJsW3e280aBH19TA9MOrWgtsaXVTsUsT8S1Zfo3HX5xUM5GmVQS95N/ahgFXaO
-         ujyl9gV8Bp7oFDniy7LIX+uop9ypWVHvYnjkAiskXbqX1a0xdlrOotrgvwZGKLHUZE
-         LjNWN2SEi5B7MfqmsQe1WYoCsdlexlIrOq5OFbW/9rmKS1PDv6W1nwOczSyc8jJLYo
-         4vU5RGj7AmHUA==
+        b=QXNlShTlVDH3VpyDrZmv2sSBTnHCwdsqBf4dN8zCLeq/oqeJqmPRvKhRaT/XNH1rH
+         o0jmqvjEb1C/TJvUfwU8lI6gc4meQwJWREdIuRozSYNwR+IEEEMloUe8WBMzjPQYpP
+         ZXntaBRyuEl795ZdKgyOORvT5L3MWuEcmF+s9CgsLo6owLsbo1ZjdqTd03jo7a4aGt
+         fSd+z31P7SdI+8LqAxiwu2KFj1DnBnmGmy+Jcc4GSWyst/001jKNJpDZasvm9+ibRH
+         mWzTFTuHxzPPaDygfkhDU59G3m2GokKBqWEHTk38Qc0DbNkzaougcI5G2PHeQMzHJk
+         qmvwSLnvijTEg==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     loongarch@lists.linux.dev, linux@armlinux.org.uk,
@@ -39,14 +39,14 @@ Cc:     loongarch@lists.linux.dev, linux@armlinux.org.uk,
         Ilias Apalodimas <ilias.apalodimas@linaro.org>,
         Huacai Chen <chenhuacai@loongson.cn>,
         Xi Ruoyao <xry111@xry111.site>
-Subject: [PATCH 08/12] efi: libstub: remove DT dependency from generic stub
-Date:   Sun, 18 Sep 2022 23:35:40 +0200
-Message-Id: <20220918213544.2176249-9-ardb@kernel.org>
+Subject: [PATCH 09/12] efi: libstub: install boot-time memory map as config table
+Date:   Sun, 18 Sep 2022 23:35:41 +0200
+Message-Id: <20220918213544.2176249-10-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220918213544.2176249-1-ardb@kernel.org>
 References: <20220918213544.2176249-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7450; i=ardb@kernel.org; h=from:subject; bh=ay6ANRnQboi0NxXKHvifHtY18HiC0iKwDUCc7TAOKyk=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjJ48oQGwHYzRZQ0QbBxEQVVwJZmnB+PB+Oy3Eumk8 92zU3VqJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYyePKAAKCRDDTyI5ktmPJM2UDA CqrhE3945MA9gAe3NGX5BLlC58E6OSAkaQDF0yAAhz7RMR7Ixp/3qDgdCJQfO3gqZpXLY2+yPX9mVx u48w9gCDXr2QLBO0ygpW1GP6sjCgK1bLuAVKiyjiVpsoRzOvxRXY9o4ux1XIdnexSw9+34XT7A6bwt UsbOKW70Ul3e1RenIdpQwtCd6JN9AAoC2NZb5ZK7hjiwDdeL2WTvX5iI7MHMwoRkzCkoIZ0fd+Sx1p T+zdUadBRUR1N3BdSofx4FU67VvNJeys5yA0oc6sGYIpG4fg5IplKXztkBqBVeySz+elOWWIT8bdVg g4ftxqxDEN5hHVhevbXiNLqGZWfM4A7RoxJ8jWEdLtvxa0EaunAyxLVAr5oZSRiIqq5jIHOkqrTBYr PuTLUX/RimC+jJlTWOz28r4bYT3ljOFD4yNt+Auf6EHUudEWKjjM8BkleI/phaRK6GVQpsuhIZzVnf kvGQnejOa35HQFtpFQfniWxkepdbIcopsgjKZRTwv2Bgo=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6542; i=ardb@kernel.org; h=from:subject; bh=e2Iqplw0yzG3w2OvmovsVI5QKe97+qAlA9sWqfYGy+g=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjJ48p8Tg+X93WLpbB7UKaWHk+2RveAozj2ZDdoGkp 9ha4xU+JAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYyePKQAKCRDDTyI5ktmPJI/PC/ 4wuuZSvomTMUW3cTd9Xv5tWssa625ULpO+KgA9AZfx36e/IhTvAqUf4N1HBy+LcsCFJHbOw1Ax79p4 9t6rCy6CGDrQi7nMgmPBCAiunfwzBS/SR2aP/9QLZ5YFdW9JeQzXhqyxHcSQoCKYLGwV8aQc8kN2U4 oYQdlqoCDLV3EpBf0Auql8BpW2A0g/RPbNxn6BKSOVRhFd+RrWxOWHVUu9z1vrsAYIBOdGik5PG2Fd sTQVeOXjl9fUUc9/D3FM+wTqaUf4VRwiuYppeUYNzFKUDsZAieIbYuS8cS3HIwUkofbUsxBbZ8Kgsh tiJBaghWZxEKi794pfWyRMkIROK2uJCYv1Il+jM/65hjKPTBmhcQuVgrod0q67GU35vEgZdOVkXLt9 qoD62USu/j+L4uBbBBnkEuafPsf7en2gVZPsR1olA/x0iNrnTRo5K6Kr5bIgO8vE7D25eWL82QxQ6X rhSMKcW43HlJ24vmxSUEBWEIFIyssD5Zn05RglLWa0lyA=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -58,229 +58,161 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Refactor the generic EFI stub entry code so that all the dependencies on
-device tree are abstracted and hidden behind a generic efi_boot_kernel()
-routine that can also be implemented in other ways. This allows users of
-the generic stub to avoid using FDT for passing information to the core
-kernel.
+Expose the EFI boot time memory map to the kernel via a configuration
+table. This is arch agnostic and enables future changes that remove the
+dependency on DT on architectures that don't otherwise rely on it.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/libstub/efi-stub.c | 53 +---------------
- drivers/firmware/efi/libstub/efistub.h  |  7 +--
- drivers/firmware/efi/libstub/fdt.c      | 64 ++++++++++++++++++--
- 3 files changed, 63 insertions(+), 61 deletions(-)
+ drivers/firmware/efi/libstub/arm64-stub.c      |  2 +-
+ drivers/firmware/efi/libstub/efi-stub-helper.c |  2 +-
+ drivers/firmware/efi/libstub/efistub.h         |  3 ++-
+ drivers/firmware/efi/libstub/mem.c             | 26 ++++++++++++++++++--
+ drivers/firmware/efi/libstub/randomalloc.c     |  2 +-
+ drivers/firmware/efi/libstub/relocate.c        |  2 +-
+ include/linux/efi.h                            |  1 +
+ 7 files changed, 31 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
-index 88bdd0a6b488..8715f5a36b92 100644
---- a/drivers/firmware/efi/libstub/efi-stub.c
-+++ b/drivers/firmware/efi/libstub/efi-stub.c
-@@ -10,7 +10,6 @@
-  */
+diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
+index e9d516ad5f97..df05c53baa23 100644
+--- a/drivers/firmware/efi/libstub/arm64-stub.c
++++ b/drivers/firmware/efi/libstub/arm64-stub.c
+@@ -55,7 +55,7 @@ static bool check_image_region(u64 base, u64 size)
+ 	bool ret = false;
+ 	int map_offset;
  
- #include <linux/efi.h>
--#include <linux/libfdt.h>
- #include <asm/efi.h>
+-	status = efi_get_memory_map(&map);
++	status = efi_get_memory_map(&map, false);
+ 	if (status != EFI_SUCCESS)
+ 		return false;
  
- #include "efistub.h"
-@@ -130,14 +129,11 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 	unsigned long image_addr;
- 	unsigned long image_size = 0;
- 	/* addr/point and size pairs for memory management*/
--	unsigned long fdt_addr = 0;  /* Original DTB */
--	unsigned long fdt_size = 0;
- 	char *cmdline_ptr = NULL;
- 	int cmdline_size = 0;
- 	efi_guid_t loaded_image_proto = LOADED_IMAGE_PROTOCOL_GUID;
- 	unsigned long reserve_addr = 0;
- 	unsigned long reserve_size = 0;
--	enum efi_secureboot_mode secure_boot;
- 	struct screen_info *si;
- 	efi_properties_table_t *prop_tbl;
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index 742ecd9e0df3..f1f7a823be17 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -438,7 +438,7 @@ efi_status_t efi_exit_boot_services(void *handle, void *priv,
+ 	struct efi_boot_memmap *map;
+ 	efi_status_t status;
  
-@@ -213,38 +209,6 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 	/* Ask the firmware to clear memory on unclean shutdown */
- 	efi_enable_reset_attack_mitigation();
+-	status = efi_get_memory_map(&map);
++	status = efi_get_memory_map(&map, true);
  
--	secure_boot = efi_get_secureboot();
--
--	/*
--	 * Unauthenticated device tree data is a security hazard, so ignore
--	 * 'dtb=' unless UEFI Secure Boot is disabled.  We assume that secure
--	 * boot is enabled if we can't determine its state.
--	 */
--	if (!IS_ENABLED(CONFIG_EFI_ARMSTUB_DTB_LOADER) ||
--	     secure_boot != efi_secureboot_mode_disabled) {
--		if (strstr(cmdline_ptr, "dtb="))
--			efi_err("Ignoring DTB from command line.\n");
--	} else {
--		status = efi_load_dtb(image, &fdt_addr, &fdt_size);
--
--		if (status != EFI_SUCCESS) {
--			efi_err("Failed to load device tree!\n");
--			goto fail_free_image;
--		}
--	}
--
--	if (fdt_addr) {
--		efi_info("Using DTB from command line\n");
--	} else {
--		/* Look for a device tree configuration table entry. */
--		fdt_addr = (uintptr_t)get_fdt(&fdt_size);
--		if (fdt_addr)
--			efi_info("Using DTB from configuration table\n");
--	}
--
--	if (!fdt_addr)
--		efi_info("Generating empty DTB\n");
--
- 	efi_load_initrd(image, ULONG_MAX,
- 			efi_get_max_initrd_addr(image_addr));
- 
-@@ -288,23 +252,8 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 
- 	install_memreserve_table();
- 
--	status = allocate_new_fdt_and_exit_boot(handle, &fdt_addr, cmdline_ptr,
--						fdt_addr, fdt_size);
--	if (status != EFI_SUCCESS)
--		goto fail_free_fdt;
--
--	if (IS_ENABLED(CONFIG_ARM))
--		efi_handle_post_ebs_state();
--
--	efi_enter_kernel(image_addr, fdt_addr, fdt_totalsize((void *)fdt_addr));
--	/* not reached */
--
--fail_free_fdt:
--	efi_err("Failed to update FDT and exit boot services\n");
--
--	efi_free(fdt_size, fdt_addr);
-+	status = efi_boot_kernel(handle, image, image_addr, cmdline_ptr);
- 
--fail_free_image:
- 	efi_free(image_size, image_addr);
- 	efi_free(reserve_size, reserve_addr);
- fail_free_screeninfo:
+ 	if (status != EFI_SUCCESS)
+ 		goto fail;
 diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index 82cff342da05..f65a8a3844b8 100644
+index f65a8a3844b8..b4fb6d4e8a59 100644
 --- a/drivers/firmware/efi/libstub/efistub.h
 +++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -865,11 +865,8 @@ typedef efi_status_t (*efi_exit_boot_map_processing)(
- efi_status_t efi_exit_boot_services(void *handle, void *priv,
- 				    efi_exit_boot_map_processing priv_func);
+@@ -897,7 +897,8 @@ void efi_apply_loadoptions_quirk(const void **load_options, u32 *load_options_si
  
--efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
--					    unsigned long *new_fdt_addr,
--					    char *cmdline_ptr,
--					    unsigned long fdt_addr,
--					    unsigned long fdt_size);
-+efi_status_t efi_boot_kernel(void *handle, efi_loaded_image_t *image,
-+			     unsigned long image_addr, char *cmdline_ptr);
+ char *efi_convert_cmdline(efi_loaded_image_t *image, int *cmd_line_len);
  
- void *get_fdt(unsigned long *fdt_size);
+-efi_status_t efi_get_memory_map(struct efi_boot_memmap **map);
++efi_status_t efi_get_memory_map(struct efi_boot_memmap **map,
++				bool install_cfg_tbl);
  
-diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
-index a3cd603ea484..8251c9c8463d 100644
---- a/drivers/firmware/efi/libstub/fdt.c
-+++ b/drivers/firmware/efi/libstub/fdt.c
-@@ -219,17 +219,19 @@ static efi_status_t exit_boot_func(struct efi_boot_memmap *map, void *priv)
-  * exit_boot_services() call, so the exiting of boot services is very tightly
-  * tied to the creation of the FDT with the final memory map in it.
+ efi_status_t efi_allocate_pages(unsigned long size, unsigned long *addr,
+ 				unsigned long max);
+diff --git a/drivers/firmware/efi/libstub/mem.c b/drivers/firmware/efi/libstub/mem.c
+index 40721573e494..ed4c145afe11 100644
+--- a/drivers/firmware/efi/libstub/mem.c
++++ b/drivers/firmware/efi/libstub/mem.c
+@@ -9,14 +9,20 @@
+  * efi_get_memory_map() - get memory map
+  * @map:		pointer to memory map pointer to which to assign the
+  *			newly allocated memory map
++ * @install_cfg_tbl:	whether or not to install the boot memory map as a
++ *			configuration table
+  *
+  * Retrieve the UEFI memory map. The allocated memory leaves room for
+  * up to EFI_MMAP_NR_SLACK_SLOTS additional memory map entries.
+  *
+  * Return:	status code
   */
--
-+static
- efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
-+					    efi_loaded_image_t *image,
- 					    unsigned long *new_fdt_addr,
--					    char *cmdline_ptr,
--					    unsigned long fdt_addr,
--					    unsigned long fdt_size)
-+					    char *cmdline_ptr)
+-efi_status_t efi_get_memory_map(struct efi_boot_memmap **map)
++efi_status_t efi_get_memory_map(struct efi_boot_memmap **map,
++				bool install_cfg_tbl)
  {
- 	unsigned long desc_size;
- 	u32 desc_ver;
++	int memtype = install_cfg_tbl ? EFI_ACPI_RECLAIM_MEMORY
++				      : EFI_LOADER_DATA;
++	efi_guid_t tbl_guid = LINUX_EFI_BOOT_MEMMAP_GUID;
+ 	struct efi_boot_memmap *m, tmp;
  	efi_status_t status;
-+	enum efi_secureboot_mode secure_boot;
- 	struct exit_boot_struct priv;
-+	unsigned long fdt_addr = 0;
-+	unsigned long fdt_size = 0;
+ 	unsigned long size;
+@@ -28,11 +34,23 @@ efi_status_t efi_get_memory_map(struct efi_boot_memmap **map)
+ 		return EFI_LOAD_ERROR;
  
- 	status = efi_alloc_virtmap(&priv.runtime_map, &desc_size, &desc_ver);
- 	if (status != EFI_SUCCESS) {
-@@ -237,6 +239,38 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
+ 	size = tmp.map_size + tmp.desc_size * EFI_MMAP_NR_SLACK_SLOTS;
+-	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, sizeof(*m) + size,
++	status = efi_bs_call(allocate_pool, memtype, sizeof(*m) + size,
+ 			     (void **)&m);
+ 	if (status != EFI_SUCCESS)
  		return status;
+ 
++	if (install_cfg_tbl) {
++		/*
++		 * Installing a configuration table might allocate memory, and
++		 * this may modify the memory map. This means we should install
++		 * the configuration table first, and re-install or delete it
++		 * as needed.
++		 */
++		status = efi_bs_call(install_configuration_table, &tbl_guid, m);
++		if (status != EFI_SUCCESS)
++			goto free_map;
++	}
++
+ 	m->buff_size = m->map_size = size;
+ 	status = efi_bs_call(get_memory_map, &m->map_size, m->map, &m->map_key,
+ 			     &m->desc_size, &m->desc_ver);
+@@ -40,6 +58,10 @@ efi_status_t efi_get_memory_map(struct efi_boot_memmap **map)
+ 	if (status == EFI_SUCCESS) {
+ 		*map = m;
+ 	} else {
++		if (install_cfg_tbl)
++			efi_bs_call(install_configuration_table, &tbl_guid,
++				    NULL);
++free_map:
+ 		efi_bs_call(free_pool, m);
  	}
  
-+	secure_boot = efi_get_secureboot();
-+
-+	/*
-+	 * Unauthenticated device tree data is a security hazard, so ignore
-+	 * 'dtb=' unless UEFI Secure Boot is disabled.  We assume that secure
-+	 * boot is enabled if we can't determine its state.
-+	 */
-+	if (!IS_ENABLED(CONFIG_EFI_ARMSTUB_DTB_LOADER) ||
-+	    secure_boot != efi_secureboot_mode_disabled) {
-+		if (strstr(cmdline_ptr, "dtb="))
-+			efi_err("Ignoring DTB from command line.\n");
-+	} else {
-+		status = efi_load_dtb(image, &fdt_addr, &fdt_size);
-+
-+		if (status != EFI_SUCCESS) {
-+			efi_err("Failed to load device tree!\n");
-+			goto fail;
-+		}
-+	}
-+
-+	if (fdt_addr) {
-+		efi_info("Using DTB from command line\n");
-+	} else {
-+		/* Look for a device tree configuration table entry. */
-+		fdt_addr = (uintptr_t)get_fdt(&fdt_size);
-+		if (fdt_addr)
-+			efi_info("Using DTB from configuration table\n");
-+	}
-+
-+	if (!fdt_addr)
-+		efi_info("Generating empty DTB\n");
-+
- 	efi_info("Exiting boot services...\n");
+diff --git a/drivers/firmware/efi/libstub/randomalloc.c b/drivers/firmware/efi/libstub/randomalloc.c
+index 5d6000c717cc..9fb5869896be 100644
+--- a/drivers/firmware/efi/libstub/randomalloc.c
++++ b/drivers/firmware/efi/libstub/randomalloc.c
+@@ -61,7 +61,7 @@ efi_status_t efi_random_alloc(unsigned long size,
+ 	efi_status_t status;
+ 	int map_offset;
  
- 	status = efi_allocate_pages(MAX_FDT_SIZE, new_fdt_addr, ULONG_MAX);
-@@ -300,11 +334,33 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
- 	efi_free(MAX_FDT_SIZE, *new_fdt_addr);
+-	status = efi_get_memory_map(&map);
++	status = efi_get_memory_map(&map, false);
+ 	if (status != EFI_SUCCESS)
+ 		return status;
  
- fail:
-+	efi_free(fdt_size, fdt_addr);
-+
- 	efi_bs_call(free_pool, priv.runtime_map);
+diff --git a/drivers/firmware/efi/libstub/relocate.c b/drivers/firmware/efi/libstub/relocate.c
+index cd80db33ab1e..bf6fbd5d22a1 100644
+--- a/drivers/firmware/efi/libstub/relocate.c
++++ b/drivers/firmware/efi/libstub/relocate.c
+@@ -28,7 +28,7 @@ efi_status_t efi_low_alloc_above(unsigned long size, unsigned long align,
+ 	unsigned long nr_pages;
+ 	int i;
  
- 	return EFI_LOAD_ERROR;
- }
+-	status = efi_get_memory_map(&map);
++	status = efi_get_memory_map(&map, false);
+ 	if (status != EFI_SUCCESS)
+ 		goto fail;
  
-+efi_status_t efi_boot_kernel(void *handle, efi_loaded_image_t *image,
-+			     unsigned long image_addr, char *cmdline_ptr)
-+{
-+	unsigned long fdt_addr;
-+	efi_status_t status;
-+
-+	status = allocate_new_fdt_and_exit_boot(handle, image, &fdt_addr,
-+						cmdline_ptr);
-+	if (status != EFI_SUCCESS) {
-+		efi_err("Failed to update FDT and exit boot services\n");
-+		return status;
-+	}
-+
-+	if (IS_ENABLED(CONFIG_ARM))
-+		efi_handle_post_ebs_state();
-+
-+	efi_enter_kernel(image_addr, fdt_addr, fdt_totalsize((void *)fdt_addr));
-+	/* not reached */
-+}
-+
- void *get_fdt(unsigned long *fdt_size)
- {
- 	void *fdt;
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 8668d9769bb0..89f16ec3ebab 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -414,6 +414,7 @@ void efi_native_runtime_setup(void);
+ #define LINUX_EFI_ZBOOT_MEDIA_GUID		EFI_GUID(0xe565a30d, 0x47da, 0x4dbd,  0xb3, 0x54, 0x9b, 0xb5, 0xc8, 0x4f, 0x8b, 0xe2)
+ #define LINUX_EFI_MOK_VARIABLE_TABLE_GUID	EFI_GUID(0xc451ed2b, 0x9694, 0x45d3,  0xba, 0xba, 0xed, 0x9f, 0x89, 0x88, 0xa3, 0x89)
+ #define LINUX_EFI_COCO_SECRET_AREA_GUID		EFI_GUID(0xadf956ad, 0xe98c, 0x484c,  0xae, 0x11, 0xb5, 0x1c, 0x7d, 0x33, 0x64, 0x47)
++#define LINUX_EFI_BOOT_MEMMAP_GUID		EFI_GUID(0x800f683f, 0xd08b, 0x423a,  0xa2, 0x93, 0x96, 0x5c, 0x3c, 0x6f, 0xe2, 0xb4)
+ 
+ #define RISCV_EFI_BOOT_PROTOCOL_GUID		EFI_GUID(0xccd15fec, 0x6f73, 0x4eec,  0x83, 0x95, 0x3e, 0x69, 0xe4, 0xb9, 0x40, 0xbf)
+ 
 -- 
 2.35.1
 
