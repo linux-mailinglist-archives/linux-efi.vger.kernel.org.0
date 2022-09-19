@@ -1,423 +1,216 @@
 Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
-Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BAB65BC12B
-	for <lists+linux-efi@lfdr.de>; Mon, 19 Sep 2022 03:58:38 +0200 (CEST)
+Received: from out1.vger.email (unknown [IPv6:2620:137:e000::1:20])
+	by mail.lfdr.de (Postfix) with ESMTP id 7A2F55BC156
+	for <lists+linux-efi@lfdr.de>; Mon, 19 Sep 2022 04:22:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229682AbiISB6g (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 18 Sep 2022 21:58:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55038 "EHLO
+        id S229563AbiISCWg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 18 Sep 2022 22:22:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229599AbiISB6f (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 18 Sep 2022 21:58:35 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B48610FFF
-        for <linux-efi@vger.kernel.org>; Sun, 18 Sep 2022 18:58:33 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id F257CB80CAE
-        for <linux-efi@vger.kernel.org>; Mon, 19 Sep 2022 01:58:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5B1C43470
-        for <linux-efi@vger.kernel.org>; Mon, 19 Sep 2022 01:58:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663552710;
-        bh=hnAta75dlLOexK2zKgKGeRDtMF9TGcYnBf8AG/4DU+A=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=pqbAtcPjt2X8tvjh159Y+42hSyOnVmljqU40aSVdrJ/c6Ut/cgZG2PvXR8zQfBJV7
-         osLEQsZ+zKXwxNXTS4qoRC74sIlTf+yiviWsemWsVD4KuMuRziQVtc7y3jrMtKFv2A
-         9D+/earMXl8df0Px0zEw3F0foEKo+xbxdWBMPH3LpMzt33eyFcYfM7MO3ndRd14vQz
-         UhJ5avfktNJ7WiONzHg5cAJpAx6CaEOmCOK5i0lYV58BEkkQdECsSFrzCG1nH5hiTR
-         Sr4KwixhbCJ/sllryB1H62hzRf5POOZoXtpnOlc4XMpBXDTZXoH7CKzdi+uWHrRjHN
-         5gYqrt1F+NpXA==
-Received: by mail-ua1-f54.google.com with SMTP id b7so9958187uas.2
-        for <linux-efi@vger.kernel.org>; Sun, 18 Sep 2022 18:58:30 -0700 (PDT)
-X-Gm-Message-State: ACrzQf2w2CV67YL6DXs9ih1GeSy0zwZqNJktTN13etR1IWhqKkDCNw5f
-        L3AdOYQdfvOu8IEFk+CPwMZzx+ERk03HNUKEDXA=
-X-Google-Smtp-Source: AMsMyM4AhxQ0jdE1RCaIkoeJ1dSHxJP8BNRoExoVwi11oErljsBlb876Sgi6movtcbh6B6tasVR50SJ2lz5snh4pJnE=
-X-Received: by 2002:a05:6130:c13:b0:39f:58bb:d51c with SMTP id
- cg19-20020a0561300c1300b0039f58bbd51cmr5371602uab.104.1663552709216; Sun, 18
- Sep 2022 18:58:29 -0700 (PDT)
+        with ESMTP id S229483AbiISCWg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 18 Sep 2022 22:22:36 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 234F813F1A;
+        Sun, 18 Sep 2022 19:22:33 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C065613D5;
+        Sun, 18 Sep 2022 19:22:39 -0700 (PDT)
+Received: from [192.168.122.164] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7B0F33F73B;
+        Sun, 18 Sep 2022 19:22:32 -0700 (PDT)
+Message-ID: <a7bb4b9f-61bf-c951-19a6-5b099c399524@arm.com>
+Date:   Sun, 18 Sep 2022 21:22:22 -0500
 MIME-Version: 1.0
-References: <20220918213544.2176249-1-ardb@kernel.org> <20220918213544.2176249-12-ardb@kernel.org>
-In-Reply-To: <20220918213544.2176249-12-ardb@kernel.org>
-From:   Huacai Chen <chenhuacai@kernel.org>
-Date:   Mon, 19 Sep 2022 09:58:16 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H6Ke88sirvX9ut7JLWy+xaERZ7BeMEf97WHRWbsLqZC0A@mail.gmail.com>
-Message-ID: <CAAhV-H6Ke88sirvX9ut7JLWy+xaERZ7BeMEf97WHRWbsLqZC0A@mail.gmail.com>
-Subject: Re: [PATCH 11/12] efi/loongarch: libstub: remove dependency on
- flattened DT
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>, loongarch@lists.linux.dev,
-        "Russell King (Oracle)" <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v5 0/8] efi: implement generic compressed boot support
+Content-Language: en-US
+To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Peter Jones <pjones@redhat.com>,
         Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+        AKASHI Takahiro <takahiro.akashi@linaro.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Atish Patra <atishp@atishpatra.org>,
+        Arnd Bergmann <arnd@arndb.de>,
         Huacai Chen <chenhuacai@loongson.cn>,
-        Xi Ruoyao <xry111@xry111.site>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Xi Ruoyao <xry111@xry111.site>,
+        Lennart Poettering <lennart@poettering.net>,
+        Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>
+References: <20220910081152.2238369-1-ardb@kernel.org>
+From:   Jeremy Linton <jeremy.linton@arm.com>
+In-Reply-To: <20220910081152.2238369-1-ardb@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-10.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi, Ard,
+Hi,
 
-I think the parameters passed to the core kernel need to be discussed.
-The old way (so-called old world):
-a0=argc, a1=argv, a1=bpi
+With the BSS "fix" in grub for fedora/rhel, this is now working fine for 
+both systemd-boot and normal grub2, as well as booting directly from the 
+UEFI shell. Given both the magic number and the bss fix were merged at 
+the same time I don't think anyone should ever see the bad bss message, 
+at least not on the above distro's.
 
-The current way (so-called new world):
-a0=efi boot flag, a1=fdt pointer
+I've largely been testing this on the PFTF/RPi4, and in a libvirt 
+qemu/kvm env with/without ksan/etc on a mostly fedora configured kernel. 
+Hooking this up to kinstall makes sense and works, although i'm not a 
+big fan.
 
-The new way (in this patchset):
-a0=efi boot flag, a1=systemtable, a2=cmdline
+So, its looking good. All thumbs up here :)
 
-I prefer to use the current way, there are 3 reasons:
-1, both acpi system and dt system can use the same parameters passing method;
-2, arm64, riscv and loongarch can use similar logics (light FDT);
-3, out-of-tree patches can make compatibility with the old world
-easier by just judging whether a2 is zero.
+Tested-by: Jeremy Linton <jeremy.linton@arm.com>
 
-Huacai
 
-On Mon, Sep 19, 2022 at 5:36 AM Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> LoongArch does not use FDT or DT natively [yet], and the only reason it
-> currently uses it is so that it can reuse the existing EFI stub code.
->
-> Overloading the DT with data passed between the EFI stub and the core
-> kernel has been a source of problems: there is the overlap between
-> information provided by EFI which DT can also provide (initrd base/size,
-> command line, memory descriptions), requiring us to reason about which
-> is which and what to prioritize. It has also resulted in ABI leaks,
-> i.e., internal ABI being promoted to external ABI inadvertently because
-> the bootloader can set the EFI stub's DT properties as well (e.g.,
-> "kaslr-seed"). This has become especially problematic with boot
-> environments that want to pretend that EFI boot is being done (to access
-> ACPI and SMBIOS tables, for instance) but have no ability to execute the
-> EFI stub, and so the environment that the EFI stub creates is emulated
-> [poorly, in some cases].
->
-> Another downside of treating DT like this is that the DT binary that the
-> kernel receives is different from the one created by the firmware, which
-> is undesirable in the context of secure and measured boot.
->
-> Given that LoongArch support in Linux is brand new, we can avoid these
-> pitfalls, and treat the DT strictly as a hardware description, and use a
-> separate handover method between the EFI stub and the kernel. Now that
-> initrd loading and passing the EFI memory map have been refactored into
-> pure EFI routines that use EFI configuration tables, the only thing we
-> need to pass directly is the kernel command line (even if we could pass
-> this via a config table as well, it is used extremely early, so passing
-> it directly is preferred in this case.)
->
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  arch/loongarch/Kconfig                        |  3 --
->  arch/loongarch/include/asm/bootinfo.h         |  2 +-
->  arch/loongarch/kernel/efi.c                   | 30 ++++++++++-
->  arch/loongarch/kernel/env.c                   | 22 ++++----
->  arch/loongarch/kernel/head.S                  |  2 +
->  arch/loongarch/kernel/setup.c                 |  4 +-
->  drivers/firmware/efi/libstub/Makefile         | 13 +++--
->  drivers/firmware/efi/libstub/loongarch-stub.c | 56 +++++++++++++++++---
->  8 files changed, 100 insertions(+), 32 deletions(-)
->
-> diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-> index fca106a8b8af..14a2a1ec8561 100644
-> --- a/arch/loongarch/Kconfig
-> +++ b/arch/loongarch/Kconfig
-> @@ -104,8 +104,6 @@ config LOONGARCH
->         select MODULES_USE_ELF_RELA if MODULES
->         select NEED_PER_CPU_EMBED_FIRST_CHUNK
->         select NEED_PER_CPU_PAGE_FIRST_CHUNK
-> -       select OF
-> -       select OF_EARLY_FLATTREE
->         select PCI
->         select PCI_DOMAINS_GENERIC
->         select PCI_ECAM if ACPI
-> @@ -311,7 +309,6 @@ config DMI
->  config EFI
->         bool "EFI runtime service support"
->         select UCS2_STRING
-> -       select EFI_PARAMS_FROM_FDT
->         select EFI_RUNTIME_WRAPPERS
->         help
->           This enables the kernel to use EFI runtime services that are
-> diff --git a/arch/loongarch/include/asm/bootinfo.h b/arch/loongarch/include/asm/bootinfo.h
-> index e02ac4af7f6e..8e5881bc5ad1 100644
-> --- a/arch/loongarch/include/asm/bootinfo.h
-> +++ b/arch/loongarch/include/asm/bootinfo.h
-> @@ -36,7 +36,7 @@ struct loongson_system_configuration {
->  };
->
->  extern u64 efi_system_table;
-> -extern unsigned long fw_arg0, fw_arg1;
-> +extern unsigned long fw_arg0, fw_arg1, fw_arg2;
->  extern struct loongson_board_info b_info;
->  extern struct loongson_system_configuration loongson_sysconf;
->
-> diff --git a/arch/loongarch/kernel/efi.c b/arch/loongarch/kernel/efi.c
-> index 1f1f755fb425..3b80675726ec 100644
-> --- a/arch/loongarch/kernel/efi.c
-> +++ b/arch/loongarch/kernel/efi.c
-> @@ -27,8 +27,13 @@
->  static unsigned long efi_nr_tables;
->  static unsigned long efi_config_table;
->
-> +static unsigned long __initdata boot_memmap = EFI_INVALID_TABLE_ADDR;
-> +
->  static efi_system_table_t *efi_systab;
-> -static efi_config_table_type_t arch_tables[] __initdata = {{},};
-> +static efi_config_table_type_t arch_tables[] __initdata = {
-> +       {LINUX_EFI_BOOT_MEMMAP_GUID,    &boot_memmap,   "MEMMAP" },
-> +       {},
-> +};
->
->  void __init efi_runtime_init(void)
->  {
-> @@ -61,6 +66,8 @@ void __init efi_init(void)
->                 return;
->         }
->
-> +       efi_systab_report_header(&efi_systab->hdr, efi_systab->fw_vendor);
-> +
->         set_bit(EFI_64BIT, &efi.flags);
->         efi_nr_tables    = efi_systab->nr_tables;
->         efi_config_table = (unsigned long)efi_systab->tables;
-> @@ -72,4 +79,25 @@ void __init efi_init(void)
->
->         if (screen_info.orig_video_isVGA == VIDEO_TYPE_EFI)
->                 memblock_reserve(screen_info.lfb_base, screen_info.lfb_size);
-> +
-> +       if (boot_memmap != EFI_INVALID_TABLE_ADDR) {
-> +               struct efi_memory_map_data data;
-> +               struct efi_boot_memmap *tbl;
-> +
-> +               tbl = early_memremap_ro(boot_memmap, sizeof(*tbl));
-> +               if (tbl) {
-> +                       data.phys_map           = boot_memmap + sizeof(*tbl);
-> +                       data.size               = tbl->map_size;
-> +                       data.desc_size          = tbl->desc_size;
-> +                       data.desc_version       = tbl->desc_ver;
-> +
-> +                       if (efi_memmap_init_early(&data) < 0)
-> +                               panic("Unable to map EFI memory map.\n");
-> +
-> +                       memblock_reserve(data.phys_map & PAGE_MASK,
-> +                                        PAGE_ALIGN(data.size + (data.phys_map & ~PAGE_MASK)));
-> +
-> +                       early_memunmap(tbl, sizeof(*tbl));
-> +               }
-> +       }
->  }
-> diff --git a/arch/loongarch/kernel/env.c b/arch/loongarch/kernel/env.c
-> index 82b478a5c665..05c38d28476e 100644
-> --- a/arch/loongarch/kernel/env.c
-> +++ b/arch/loongarch/kernel/env.c
-> @@ -8,7 +8,6 @@
->  #include <linux/efi.h>
->  #include <linux/export.h>
->  #include <linux/memblock.h>
-> -#include <linux/of_fdt.h>
->  #include <asm/early_ioremap.h>
->  #include <asm/bootinfo.h>
->  #include <asm/loongson.h>
-> @@ -20,21 +19,18 @@ EXPORT_SYMBOL(loongson_sysconf);
->  void __init init_environ(void)
->  {
->         int efi_boot = fw_arg0;
-> -       struct efi_memory_map_data data;
-> -       void *fdt_ptr = early_memremap_ro(fw_arg1, SZ_64K);
->
-> -       if (efi_boot)
-> -               set_bit(EFI_BOOT, &efi.flags);
-> -       else
-> -               clear_bit(EFI_BOOT, &efi.flags);
-> +       if (efi_boot) {
-> +               char *cmdline = early_memremap_ro(fw_arg2, COMMAND_LINE_SIZE);
->
-> -       early_init_dt_scan(fdt_ptr);
-> -       early_init_fdt_reserve_self();
-> -       efi_system_table = efi_get_fdt_params(&data);
-> +               strscpy(boot_command_line, cmdline, COMMAND_LINE_SIZE);
-> +               early_memunmap(cmdline, COMMAND_LINE_SIZE);
->
-> -       efi_memmap_init_early(&data);
-> -       memblock_reserve(data.phys_map & PAGE_MASK,
-> -                        PAGE_ALIGN(data.size + (data.phys_map & ~PAGE_MASK)));
-> +               efi_system_table = fw_arg1;
-> +               set_bit(EFI_BOOT, &efi.flags);
-> +       } else {
-> +               clear_bit(EFI_BOOT, &efi.flags);
-> +       }
->  }
->
->  static int __init init_cpu_fullname(void)
-> diff --git a/arch/loongarch/kernel/head.S b/arch/loongarch/kernel/head.S
-> index 01bac62a6442..8f89f39fd31b 100644
-> --- a/arch/loongarch/kernel/head.S
-> +++ b/arch/loongarch/kernel/head.S
-> @@ -67,6 +67,8 @@ SYM_CODE_START(kernel_entry)                  # kernel entry point
->         st.d            a0, t0, 0               # firmware arguments
->         la              t0, fw_arg1
->         st.d            a1, t0, 0
-> +       la              t0, fw_arg2
-> +       st.d            a2, t0, 0
->
->         /* KSave3 used for percpu base, initialized as 0 */
->         csrwr           zero, PERCPU_BASE_KS
-> diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
-> index e8714b1d94c8..7fabf2306e80 100644
-> --- a/arch/loongarch/kernel/setup.c
-> +++ b/arch/loongarch/kernel/setup.c
-> @@ -51,7 +51,7 @@
->
->  struct screen_info screen_info __section(".data");
->
-> -unsigned long fw_arg0, fw_arg1;
-> +unsigned long fw_arg0, fw_arg1, fw_arg2;
->  DEFINE_PER_CPU(unsigned long, kernelsp);
->  struct cpuinfo_loongarch cpu_data[NR_CPUS] __read_mostly;
->
-> @@ -187,7 +187,6 @@ early_param("mem", early_parse_mem);
->
->  void __init platform_init(void)
->  {
-> -       efi_init();
->  #ifdef CONFIG_ACPI_TABLE_UPGRADE
->         acpi_table_upgrade();
->  #endif
-> @@ -347,6 +346,7 @@ void __init setup_arch(char **cmdline_p)
->         *cmdline_p = boot_command_line;
->
->         init_environ();
-> +       efi_init();
->         memblock_init();
->         parse_early_param();
->
-> diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-> index 0dbc6d93f2e6..d8d6657e6277 100644
-> --- a/drivers/firmware/efi/libstub/Makefile
-> +++ b/drivers/firmware/efi/libstub/Makefile
-> @@ -29,7 +29,7 @@ cflags-$(CONFIG_RISCV)                := $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
->  cflags-$(CONFIG_LOONGARCH)     := $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS)) \
->                                    -fpie
->
-> -cflags-$(CONFIG_EFI_GENERIC_STUB) += -I$(srctree)/scripts/dtc/libfdt
-> +cflags-$(CONFIG_EFI_PARAMS_FROM_FDT)   += -I$(srctree)/scripts/dtc/libfdt
->
->  KBUILD_CFLAGS                  := $(cflags-y) -Os -DDISABLE_BRANCH_PROFILING \
->                                    -include $(srctree)/include/linux/hidden.h \
-> @@ -60,14 +60,17 @@ lib-y                               := efi-stub-helper.o gop.o secureboot.o tpm.o \
->                                    alignedmem.o relocate.o vsprintf.o \
->                                    systable.o
->
-> -# include the stub's generic dependencies from lib/ when building for ARM/arm64
-> -efi-deps-y := fdt_rw.c fdt_ro.c fdt_wip.c fdt.c fdt_empty_tree.c fdt_sw.c
-> +# include the stub's libfdt dependencies from lib/ when needed
-> +libfdt-deps                    := fdt_rw.c fdt_ro.c fdt_wip.c fdt.c \
-> +                                  fdt_empty_tree.c fdt_sw.c
-> +
-> +lib-$(CONFIG_EFI_PARAMS_FROM_FDT) += fdt.o \
-> +                                    $(patsubst %.c,lib-%.o,$(libfdt-deps))
->
->  $(obj)/lib-%.o: $(srctree)/lib/%.c FORCE
->         $(call if_changed_rule,cc_o_c)
->
-> -lib-$(CONFIG_EFI_GENERIC_STUB) += efi-stub.o fdt.o string.o intrinsics.o \
-> -                                  $(patsubst %.c,lib-%.o,$(efi-deps-y))
-> +lib-$(CONFIG_EFI_GENERIC_STUB) += efi-stub.o string.o intrinsics.o
->
->  lib-$(CONFIG_ARM)              += arm32-stub.o
->  lib-$(CONFIG_ARM64)            += arm64-stub.o
-> diff --git a/drivers/firmware/efi/libstub/loongarch-stub.c b/drivers/firmware/efi/libstub/loongarch-stub.c
-> index b7ef8d2df59e..7c684d10f936 100644
-> --- a/drivers/firmware/efi/libstub/loongarch-stub.c
-> +++ b/drivers/firmware/efi/libstub/loongarch-stub.c
-> @@ -9,7 +9,8 @@
->  #include <asm/addrspace.h>
->  #include "efistub.h"
->
-> -typedef void __noreturn (*kernel_entry_t)(bool efi, unsigned long fdt);
-> +typedef void __noreturn (*kernel_entry_t)(bool efi, unsigned long systab,
-> +                                         unsigned long cmdline);
->
->  extern int kernel_asize;
->  extern int kernel_fsize;
-> @@ -42,19 +43,60 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
->         return status;
->  }
->
-> -void __noreturn efi_enter_kernel(unsigned long entrypoint, unsigned long fdt, unsigned long fdt_size)
-> +struct exit_boot_struct {
-> +       efi_memory_desc_t       *runtime_map;
-> +       int                     runtime_entry_count;
-> +};
-> +
-> +static efi_status_t exit_boot_func(struct efi_boot_memmap *map, void *priv)
-> +{
-> +       struct exit_boot_struct *p = priv;
-> +
-> +       /*
-> +        * Update the memory map with virtual addresses. The function will also
-> +        * populate @runtime_map with copies of just the EFI_MEMORY_RUNTIME
-> +        * entries so that we can pass it straight to SetVirtualAddressMap()
-> +        */
-> +       efi_get_virtmap(map->map, map->map_size, map->desc_size,
-> +                       p->runtime_map, &p->runtime_entry_count);
-> +
-> +       return EFI_SUCCESS;
-> +}
-> +
-> +efi_status_t efi_boot_kernel(void *handle, efi_loaded_image_t *image,
-> +                            unsigned long image_addr, char *cmdline_ptr)
->  {
->         kernel_entry_t real_kernel_entry;
-> +       struct exit_boot_struct priv;
-> +       unsigned long desc_size;
-> +       efi_status_t status;
-> +       u32 desc_ver;
-> +
-> +       status = efi_alloc_virtmap(&priv.runtime_map, &desc_size, &desc_ver);
-> +       if (status != EFI_SUCCESS) {
-> +               efi_err("Unable to retrieve UEFI memory map.\n");
-> +               return status;
-> +       }
-> +
-> +       efi_info("Exiting boot services\n");
-> +
-> +       efi_novamap = false;
-> +       status = efi_exit_boot_services(handle, &priv, exit_boot_func);
-> +       if (status != EFI_SUCCESS)
-> +               return status;
-> +
-> +       /* Install the new virtual address map */
-> +       efi_rt_call(set_virtual_address_map,
-> +                   priv.runtime_entry_count * desc_size, desc_size,
-> +                   desc_ver, priv.runtime_map);
->
->         /* Config Direct Mapping */
->         csr_write64(CSR_DMW0_INIT, LOONGARCH_CSR_DMWIN0);
->         csr_write64(CSR_DMW1_INIT, LOONGARCH_CSR_DMWIN1);
->
->         real_kernel_entry = (kernel_entry_t)
-> -               ((unsigned long)&kernel_entry - entrypoint + VMLINUX_LOAD_ADDRESS);
-> +               ((unsigned long)&kernel_entry - image_addr + VMLINUX_LOAD_ADDRESS);
->
-> -       if (!efi_novamap)
-> -               real_kernel_entry(true, fdt);
-> -       else
-> -               real_kernel_entry(false, fdt);
-> +       real_kernel_entry(true, (unsigned long)efi_system_table,
-> +                         (unsigned long)cmdline_ptr);
->  }
-> --
-> 2.35.1
->
->
+On 9/10/22 03:11, Ard Biesheuvel wrote:
+> Relatively modern architectures such as arm64 or RISC-V don't implement
+> a self-decompressing kernel, and leave it up to the bootloader to
+> decompress the compressed image before executing it. For bare metal
+> boot, this policy makes sense, as a self-decompressing image essentially
+> duplicates a lot of fiddly preparation work to create a 1:1 mapping and
+> set up the C runtime, and to discover or infer where DRAM lives from
+> device trees or other firmware tables.
+> 
+> For EFI boot, the situation is a bit different: the EFI entrypoint is
+> called with a 1:1 cached mapping covering all of DRAM already active,
+> and with a stack, a heap, a memory map and boot services to load and
+> start images. This means it is rather trivial to implement a
+> self-decompressing wrapper for EFI boot in a generic manner, and reuse
+> it across architectures that implement EFI boot.
+> 
+> The only slight downside is that when UEFI secure boot is enabled, the
+> generic LoadImage/StartImage only allow signed images to be loaded and
+> started, and we would prefer to avoid the need to sign both the inner
+> and outer PE/COFF images.
+> 
+> However, the only truly generic and portable way to achieve this is to
+> rely on LoadImage/StartImage as the EFI spec defines them, and avoid
+> making assumptions about how things might work under the hood, and how
+> we might circumvent that. This includes just loading the image into
+> memory and jumping to the PE entry point: in the context of secure boot,
+> measured boot and other hardening measures the firmware may take (such
+> as disallowing mappings that are both writable and executable), using
+> the firmware's image loading API is the only maintainable choice.
+> 
+> For this reason, this version of the series includes support for signing
+> the images using sbsign, if the signing key and cert are specified in
+> Kconfig.
+> 
+> The code is wired up for arm64, LoongArch and RISC-V. The latter was
+> build tested only.
+> 
+> Changes since v4:
+> - make CONFIG_EFI_ZBOOT user selectable again, and turn it on by default
+>    only for LoongArch
+> - set KBUILD_IMAGE to vmlinuz.efi if CONFIG_EFI_ZBOOT=y, so that make
+>    targets such as zinstall and bindeb-pkg do the right thing
+> - throw an error is BSS was not cleared by the loader - this is needed
+>    to detect broken distro implementations of LoadImage in shim and grub
+> - add vmlinuz.* to .gitignore on the various architectures
+> - switch back to defining uncompressed_size as 'extern __aligned(1)' so
+>    that the compiler will perform the unaligned access as appropriate on
+>    the architecture in question - this requires the latest binutils on
+>    LoongArch [0]
+> 
+> Changes since v3:
+> - add support for XZ and ZSTD compression
+> - deal with exit data returned by StartImage()
+> - use LoadFile2 based image loading instead of passing the raw buffer -
+>    this way, the provenance of the data is more visible, allowing us,
+>    for instance, to deal with initrd= on arm64 transparently (this means
+>    that systemd-boot on arm64 will work unmodified provided that the
+>    [deprecated] command line initrd loader is enabled in the kernel
+>    build)
+> - include LoongArch support
+> - rename compressed image to vmlinuz.efi on all architectures
+> 
+> Changes since v2:
+> - drop some of the refactoring work to make efi_printk() available in
+>    the decompressor, and just use fixed strings instead;
+> - provide memcpy/memmove/memset based on the UEFI boot services, instead
+>    of having to specify for each architecture how to wire these up;
+> - drop PI/DXE based signature check circumvention, and just sign the
+>    inner image instead, if needed;
+> - add a header to the zimage binary that identifies it as a EFI zboot
+>    image, and describes the compression algorithm and where the payload
+>    lives in the image - this might be used by non-EFI loaders to locate
+>    and decompress the bare metal image, given that the EFI zboot one is
+>    not a hybrid like the one it encapsulates.
+> 
+> [0] https://sourceware.org/pipermail/binutils/2022-September/122713.html
+> 
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: Matthew Garrett <mjg59@srcf.ucam.org>
+> Cc: Peter Jones <pjones@redhat.com>
+> Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+> Cc: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+> Cc: AKASHI Takahiro <takahiro.akashi@linaro.org>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> Cc: Atish Patra <atishp@atishpatra.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Huacai Chen <chenhuacai@loongson.cn>
+> Cc: Xi Ruoyao <xry111@xry111.site>
+> Cc: Lennart Poettering <lennart@poettering.net>
+> Cc: Jeremy Linton <jeremy.linton@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> 
+> Ard Biesheuvel (8):
+>    efi: name the ARCH-stub.c files uniformly
+>    efi/libstub: add some missing EFI prototypes
+>    efi/libstub: use EFI provided memcpy/memset routines
+>    efi/libstub: move efi_system_table global var into separate object
+>    efi/libstub: implement generic EFI zboot
+>    arm64: efi: enable generic EFI compressed boot
+>    riscv: efi: enable generic EFI compressed boot
+>    loongarch: efi: enable generic EFI compressed boot
+> 
+>   arch/arm64/Makefile                                       |   9 +-
+>   arch/arm64/boot/.gitignore                                |   1 +
+>   arch/arm64/boot/Makefile                                  |   6 +
+>   arch/arm64/kernel/image-vars.h                            |  13 -
+>   arch/loongarch/Kconfig                                    |   1 +
+>   arch/loongarch/Makefile                                   |   4 +-
+>   arch/loongarch/boot/.gitignore                            |   1 +
+>   arch/loongarch/boot/Makefile                              |   6 +
+>   arch/loongarch/kernel/image-vars.h                        |   3 -
+>   arch/riscv/Makefile                                       |   6 +-
+>   arch/riscv/boot/.gitignore                                |   1 +
+>   arch/riscv/boot/Makefile                                  |   6 +
+>   arch/riscv/kernel/image-vars.h                            |   9 -
+>   drivers/firmware/efi/Kconfig                              |  38 +++
+>   drivers/firmware/efi/libstub/Makefile                     |  21 +-
+>   drivers/firmware/efi/libstub/Makefile.zboot               |  70 +++++
+>   drivers/firmware/efi/libstub/{arm32-stub.c => arm-stub.c} |   0
+>   drivers/firmware/efi/libstub/efi-stub.c                   |   2 -
+>   drivers/firmware/efi/libstub/efistub.h                    |  35 ++-
+>   drivers/firmware/efi/libstub/file.c                       |  17 ++
+>   drivers/firmware/efi/libstub/intrinsics.c                 |  30 ++
+>   drivers/firmware/efi/libstub/systable.c                   |   8 +
+>   drivers/firmware/efi/libstub/zboot-header.S               | 143 ++++++++++
+>   drivers/firmware/efi/libstub/zboot.c                      | 296 ++++++++++++++++++++
+>   drivers/firmware/efi/libstub/zboot.lds                    |  43 +++
+>   include/linux/efi.h                                       |  13 +
+>   26 files changed, 732 insertions(+), 50 deletions(-)
+>   create mode 100644 drivers/firmware/efi/libstub/Makefile.zboot
+>   rename drivers/firmware/efi/libstub/{arm32-stub.c => arm-stub.c} (100%)
+>   create mode 100644 drivers/firmware/efi/libstub/intrinsics.c
+>   create mode 100644 drivers/firmware/efi/libstub/systable.c
+>   create mode 100644 drivers/firmware/efi/libstub/zboot-header.S
+>   create mode 100644 drivers/firmware/efi/libstub/zboot.c
+>   create mode 100644 drivers/firmware/efi/libstub/zboot.lds
+> 
+
