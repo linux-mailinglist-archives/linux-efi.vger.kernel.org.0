@@ -2,56 +2,56 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F1F15BC2DA
-	for <lists+linux-efi@lfdr.de>; Mon, 19 Sep 2022 08:33:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87F9A5BC9BF
+	for <lists+linux-efi@lfdr.de>; Mon, 19 Sep 2022 12:47:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbiISGdy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 19 Sep 2022 02:33:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38084 "EHLO
+        id S229864AbiISKrP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 19 Sep 2022 06:47:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbiISGdx (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 19 Sep 2022 02:33:53 -0400
+        with ESMTP id S229872AbiISKqs (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 19 Sep 2022 06:46:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37C4F1A053
-        for <linux-efi@vger.kernel.org>; Sun, 18 Sep 2022 23:33:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB17F28E0B
+        for <linux-efi@vger.kernel.org>; Mon, 19 Sep 2022 03:33:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D06D760B71
-        for <linux-efi@vger.kernel.org>; Mon, 19 Sep 2022 06:33:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3996EC43141
-        for <linux-efi@vger.kernel.org>; Mon, 19 Sep 2022 06:33:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5570661868
+        for <linux-efi@vger.kernel.org>; Mon, 19 Sep 2022 10:33:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52BAC43141
+        for <linux-efi@vger.kernel.org>; Mon, 19 Sep 2022 10:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663569231;
-        bh=qHWL4WdATNWAwk72mOr/16q6SJQs7sObRP3fl7UD6ig=;
+        s=k20201202; t=1663583613;
+        bh=ysJX6szW6pz1JwvY03A8E4Em9TB0e3od05CaX3KkoQA=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=GQ+RjgNs2DAFl7f7Pjr8b3giPjbus1Cx0XX+FkvZWiW+LoByaRZOtf42S7zLT3+5t
-         UTaH/HPHKhcZ7EsZKzBakpre4/+J3mcPlZCrvxv+A89N3CVAymtJ40guD0CUalrPHF
-         H17yVbxKtjEkdYq4WQs/SGtnC9j5fBz+Vrhn2mxKyK3tREDlWDZhuaQDLep6b2k5rv
-         vGPBsrqioS1o1cBKWGyACecVuH/vATTM7Znl4gPIMRnWiXPNNrMcbBcunos1+IfqfV
-         5GEuLGO6sj7oi8nXRwJa7E3e3gvovhx2ozmEt4dV2lGHtspG4SBe19CuL+zLUnt4xS
-         Mwxv2FnPwQ1Zw==
-Received: by mail-lf1-f47.google.com with SMTP id a3so33334715lfk.9
-        for <linux-efi@vger.kernel.org>; Sun, 18 Sep 2022 23:33:51 -0700 (PDT)
-X-Gm-Message-State: ACrzQf2TD1KMOhczndJUSgyXjv6b7q12whS4WDTgiq1nvQaYSjZDkdG9
-        pLIfLzJ9yy1qeKwcUl07io3FbvF2Mi8wzJhqKSM=
-X-Google-Smtp-Source: AMsMyM52yUt+ycJ0Ymsf2uNStsk+t/EEB9h3cAygM0MYTXeJ23B5gqMk5C8dokb4SG12lH2g7tY3h4LDMo26bOydXnM=
-X-Received: by 2002:a05:6512:150e:b0:492:d9fd:9bdf with SMTP id
- bq14-20020a056512150e00b00492d9fd9bdfmr5398289lfb.583.1663569229022; Sun, 18
- Sep 2022 23:33:49 -0700 (PDT)
+        b=me8VHgPTCTFPbrdIt8lhAqVBaJPnLMDWcVvnM5LCee75DYDfwpYb67Fgr9w7kgV5I
+         s4Y4hua+Uc+QMtMWZ7tViPoYYed4Ou7g39kLCNrJOooD5jWJclJDF64wd69qbZALS1
+         uj99sJlkta+ad8H2EGaH8o4OA9Z6ItcljKCavSTQ1mLlTGJ7JSfMSkel+boNdbu6RV
+         1lrvylXIZ9rpjzWabW3wIR4BFQfub4KAMSIZs1a7WWeclSiPn4GSlhFk13jmCCWe77
+         3lfc6waVI7gmRMOa/2/IbEgPRMSvtpzoBZlJm4WruhBJywYtUAJ7TAaaKYmhR/DFvr
+         eForprx9vh8oA==
+Received: by mail-vk1-f180.google.com with SMTP id b15so8527064vkp.2
+        for <linux-efi@vger.kernel.org>; Mon, 19 Sep 2022 03:33:33 -0700 (PDT)
+X-Gm-Message-State: ACrzQf2/F8wzjnwVX2bLDFkUM9xCb+nYjaPbX5hw94+lSelYRl86cSW7
+        /GQZ7PTgoJoFeH5lV6hDQqhaXmrsg7sT2sasX/E=
+X-Google-Smtp-Source: AMsMyM56wovbNd+PVnKAN/kkl+aKfr1TNN4ozJqMVeUmEGyJDvyhe6D0nv6KryVHp6OrilTbgF2zfO0HvMc+IbGkt88=
+X-Received: by 2002:a1f:94c7:0:b0:3a2:1dc2:af3f with SMTP id
+ w190-20020a1f94c7000000b003a21dc2af3fmr5790180vkd.12.1663583612603; Mon, 19
+ Sep 2022 03:33:32 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220918213544.2176249-1-ardb@kernel.org> <20220918213544.2176249-12-ardb@kernel.org>
  <CAAhV-H6Ke88sirvX9ut7JLWy+xaERZ7BeMEf97WHRWbsLqZC0A@mail.gmail.com>
  <CAMj1kXHuQHuCt9Z=qWRH_aZY5_+LzpicyE=agMyAX+O14khL_g@mail.gmail.com>
  <CAAhV-H7-JFwcwz5pBt7WZxJ2CkeUvc07OLgWxB9z-QTkr=njWw@mail.gmail.com> <CAMj1kXFKmvSt1092xBUHVXf9NxDFDSDyPDNpwfGUKWGWAPAE9Q@mail.gmail.com>
 In-Reply-To: <CAMj1kXFKmvSt1092xBUHVXf9NxDFDSDyPDNpwfGUKWGWAPAE9Q@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 19 Sep 2022 08:33:37 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHvAahn9kMvazoA=Zn6c7047zUP7zju6BEeMeATFORXEA@mail.gmail.com>
-Message-ID: <CAMj1kXHvAahn9kMvazoA=Zn6c7047zUP7zju6BEeMeATFORXEA@mail.gmail.com>
+From:   Huacai Chen <chenhuacai@kernel.org>
+Date:   Mon, 19 Sep 2022 18:33:21 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7-9yx4EmtLrvE6arVahsT7AySLyyxk0yXUWPicWfgRjQ@mail.gmail.com>
+Message-ID: <CAAhV-H7-9yx4EmtLrvE6arVahsT7AySLyyxk0yXUWPicWfgRjQ@mail.gmail.com>
 Subject: Re: [PATCH 11/12] efi/loongarch: libstub: remove dependency on
  flattened DT
-To:     Huacai Chen <chenhuacai@kernel.org>
+To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     linux-efi <linux-efi@vger.kernel.org>, loongarch@lists.linux.dev,
         "Russell King (Oracle)" <linux@armlinux.org.uk>,
         Arnd Bergmann <arnd@arndb.de>,
@@ -68,7 +68,9 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 19 Sept 2022 at 08:22, Ard Biesheuvel <ardb@kernel.org> wrote:
+Hi, Ard,
+
+On Mon, Sep 19, 2022 at 2:22 PM Ard Biesheuvel <ardb@kernel.org> wrote:
 >
 > On Mon, 19 Sept 2022 at 08:06, Huacai Chen <chenhuacai@kernel.org> wrote:
 > >
@@ -113,6 +115,12 @@ On Mon, 19 Sept 2022 at 08:22, Ard Biesheuvel <ardb@kernel.org> wrote:
 > a0=0x0 (non-efi), a1=DT, a2=0x0
 >
 > Do you intend to support non-EFI DT boot by the way?
+I think we needn't support non-EFI DT boot, so a0=efi boot flag,
+a1=systemtable, a2=cmdline is just OK (or maybe we can exchange a1/a2,
+which looks similar to the old-world). But I have another question: is
+it early enough to get DT from systemtable for DT boot (in the current
+way DT is the earliest thing)?
+
 >
 > So
 >
@@ -120,6 +128,36 @@ On Mon, 19 Sept 2022 at 08:22, Ard Biesheuvel <ardb@kernel.org> wrote:
 > a0 != 0x0 means EFI boot, a1 is the command line
 > a0 == 0x0 means !EFI boot, a1 is the DT
 >
+> > >
+> > > > 2, arm64, riscv and loongarch can use similar logics (light FDT);
+> > >
+> > > No need to repeat a mistake. I intend to fix RISC-V next.
+> > >
+> > > > 3, out-of-tree patches can make compatibility with the old world
+> > > > easier by just judging whether a2 is zero.
+> > > >
+> > >
+> > > The whole point of this series is that the EFI stub should not be
+> > > touching the DT at all. In other words, there is no DT pointer, so the
+> > > current method needs to be revised.
+> > >
+> > > What we might do is
+> > >
+> > > a0=systemtable, a1=cmdline
+> > >
+> > > as any non-zero value is treated as logic true. That way, your logic
+> > > to test a2 is zero will still work.
+> > I think the efi boot flag is still needed, even boot from efistub.
+> > Because if boot with "efi=novamap", the efi runtime should be
+> > disabled. Then we need efi_enabled(EFI_BOOT) to be false in
+> > efi_init().
+> >
+>
+> I don't think it makes sense to allow efi=novamap on LoongArch, given
+> that we cannot make use of the runtime services that way. So in my
+> code, efi_novamap is set to false unconditionally.
+Emm, I prefer to support "efi=novamap", the core kernel has already
+supported "noefi" to disable runtime, I don't want to hack
+efi_novamap. So please keep the efi boot flag, thanks.
 
-Note: the above applies if we decide to merge the EFI boolean and the
-system table pointer into register #0.
+Huacai
