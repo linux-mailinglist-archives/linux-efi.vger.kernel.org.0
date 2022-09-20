@@ -2,48 +2,50 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 634065BECD8
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Sep 2022 20:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 544005BECD9
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Sep 2022 20:36:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229512AbiITSgI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 20 Sep 2022 14:36:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41624 "EHLO
+        id S229885AbiITSgK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 20 Sep 2022 14:36:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229812AbiITSgH (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 20 Sep 2022 14:36:07 -0400
+        with ESMTP id S229738AbiITSgJ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 20 Sep 2022 14:36:09 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 507A65E32B
-        for <linux-efi@vger.kernel.org>; Tue, 20 Sep 2022 11:36:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AAD95E31F;
+        Tue, 20 Sep 2022 11:36:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0665EB81FAD
-        for <linux-efi@vger.kernel.org>; Tue, 20 Sep 2022 18:36:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294B8C433C1;
-        Tue, 20 Sep 2022 18:36:01 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1D2B0B81665;
+        Tue, 20 Sep 2022 18:36:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C369C433D7;
+        Tue, 20 Sep 2022 18:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663698963;
-        bh=ivCPc2oHxWWAe6CNvYUP2QQtDZ8+uBcU6Jmrj8llr00=;
-        h=From:To:Cc:Subject:Date:From;
-        b=BiGUNS9DJewIPpDFa34XrUXARiBY/iCXbKrBGn9XyTYdgJHUvBud1K4RF/9Yta3zD
-         cboFwUFqyWXuTC7Jxc8lSTpcDXtWhyfk6E5wJAaSVGWoYGb6ytVWCra0kg/xOnYK/y
-         H0GCUh3FpKG70C7rXFnEkfzKdXv1EO/26FxmSr6rKFBrixDvqAkRMFOzCvygvzrXEJ
-         tBQOckxnn8bi7tHvvnH6fsgYE7HGkS/aTqMLftoCl4CDMTXOpNWE7vFy1iog0gU+Fm
-         By2B6rfR+YQPeOv2vqFO+/E7iWXLQkFZwsPYsAA+UQGbPrOHMg4FaRttIEdWXEcPGc
-         B0NOUES+DdGeA==
+        s=k20201202; t=1663698965;
+        bh=TJjBRuCFTW+TJ1tt9NdDPb5mim7RRsT5BJz/uob9soA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=laYdq+TGmx+vSPPemLSoDGDOXD9nrqAi86aEbqfSRwGW8L6xr7EumHGREJgqXpUbS
+         ZXoNZplMXJ+c60i0BC2T80TUt0lZpADP3emU2cNipFlNIUfL9ULPG0cPrcv9Try9di
+         1VoCOC2vQOoYD+hCYWCrYqwoqjjpQ3yV7SvHQmdUYrMmsSP49oR4BLKcYV4dNPkvLR
+         ItJkQ8BtzO8LIgl0AWqtns8pmrhq2kIv2Dot9c6DxhJ3CShuhi6ocRHr0g45Ac8Z23
+         nx8XBakZuzkpL6RCojs2yac8wzq3LElQIz9R5BpznDjLt1EcUlX3yWmvWUb6su2ikq
+         FgBCw5WBQdjlA==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     loongarch@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>,
         Arnd Bergmann <arnd@arndb.de>,
         Ilias Apalodimas <ilias.apalodimas@linaro.org>,
         Huacai Chen <chenhuacai@loongson.cn>,
-        Xi Ruoyao <xry111@xry111.site>
-Subject: [PATCH v2 0/8] efi: disentangle the generic EFI stub from FDT
-Date:   Tue, 20 Sep 2022 20:35:46 +0200
-Message-Id: <20220920183554.3870247-1-ardb@kernel.org>
+        Xi Ruoyao <xry111@xry111.site>, stable@vger.kernel.org
+Subject: [PATCH v2 1/8] efi: libstub: drop pointless get_memory_map() call
+Date:   Tue, 20 Sep 2022 20:35:47 +0200
+Message-Id: <20220920183554.3870247-2-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220920183554.3870247-1-ardb@kernel.org>
+References: <20220920183554.3870247-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4108; i=ardb@kernel.org; h=from:subject; bh=ivCPc2oHxWWAe6CNvYUP2QQtDZ8+uBcU6Jmrj8llr00=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjKgf7CM7UM1z6wd5d+o/ryMIH+A2JYPPINfGBa3QA KwEXhZ2JAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYyoH+wAKCRDDTyI5ktmPJECyC/ 940HrvVelLQEfMobP99d/5GHD+jUX9KAbZhZ/fZrf3wvbUFsjN/vjAGsK/MlUW9XB0kbYRN7ViEeVh rv2wcJSN1pO5ClbRb7ySk+DWj45CP0OqbMhW5wEmQd8nBOG5Xy8bYrEHoIRVJ1mhcLD/nPOpUN2eAU 0dKgMVwHzo5SbI/XUaBzE3WQsiZdCEY/42HIeRRMHh548UM5F3X7RNBD9wactIbbsUoThd0SPL8vFk xNhFF+LqtPI+TBg9b7IKD8B6x9uG5GtVqAqV3sw+qx1sdU0Inyb6XtDC2hS4AnFJxJL0wOPx+cTuW6 dWlUhPFAs0WplUhIhto3bvBpTquiCxpzFPBdfgZILF4k/du0DKT0UAAYhGIjPm1r4bwf7OLagvqWgU yNrPLtoMOo/sOpQvpcopxGznG3JipgoKakTwLb72mDoK6tnytqIS3O4FNdl2NWSiYr3RuwEdPYrsI9 81iFAdn53jWrl53pzF9lH9zw5ItiajE4TPped14PRCtfQ=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1124; i=ardb@kernel.org; h=from:subject; bh=TJjBRuCFTW+TJ1tt9NdDPb5mim7RRsT5BJz/uob9soA=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjKgf9KlM+G5MYutM2WkSBF4HCuh+vKaoUimCOFi8b OqVzWv6JAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYyoH/QAKCRDDTyI5ktmPJHMWDA C+8E6HThM1auFgXloRCoGjtyYoFyaGcHeX6VIoxk1dddKLl1uW/4gKJocwNfvHuvR4JybPwquSJqaf EwZx/uLxGZSBDN3OXMOFei+5pTmD+3I/rIk1/nvKy8CLg67nwX7YkF7YXGUgTzr3hpCeiUguzVuybM Kv0S3N5KwvidqHVPpJ2PoNWppSMc5ycAsJNrndiwcy9jPBe0s6j+FguuLC8zLrTyMKXpWMdVtJNHpd EbQ5FPI1gexBhRKA1XIEhBLLT7mea86QFhj26UUwCs0YqM7g5K5J+mo768tBxIJZ7jqvxKheKHrgNp h8PtpCWESdAVNgeruode6i42KCnY+/9pih+qZ1DU3FMvOlnXqTmhDKYBBOZHo4sSCHOa+7AU0EyBfb VNEfH4R33J+cJBqaLSTCkoQN1ktVA5XVsszmI+CSz7iKNEiSrlGGrk0MVb/rbcYUTf7KAGXdMmkdoJ Q4Q5Ert8gWY7Y28igHQldB6zXif6LGas55XtJcFSH05aU=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -55,84 +57,35 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-EFI architectures other than x86 rely on FDT to pass information between
-the stub and the core kernel. In hindsight, this is probably a mistake,
-given the issues around abuse of the internal ABI, and potential
-inconsistencies between two sources of information that both originate
-in the firmware (memory map, command line, etc)
+Currently, the non-x86 stub code calls get_memory_map() redundantly,
+given that the data it returns is never used anywhere. So drop the call.
 
-Another reason for avoiding updates to the DT is the fact that it
-interferes with secure boot and measured boot. Even if we measure the
-original firmware provided DT into the TPM, the DT that the kernel
-receives is a completely different blob, and verifying it against the
-TPM event log is currently impossible.
+Cc: <stable@vger.kernel.org> # v4.14+
+Fixes: 24d7c494ce46 ("efi/arm-stub: Round up FDT allocation to mapping size")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/libstub/fdt.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-So let's start hacking away at this, and refactor the generic stub so
-that all the FDT pieces are isolated in a singe source file, and rely on
-generic EFI config tables for passing the initrd base and size.
-Ultimately, this should permit all EFI architectures doing DT boot to
-perform the handover to the core kernel in a different way, and pass on
-the firmware provided DT unmodified, but this requires some future work
-for ARM/arm64 and RISC-V.
-
-However, we can easily convert the newly added LoongArch code to adopt
-this approach, and to consume the DT strictly for hardware descriptions
-(if not doing ACPI boot), and pass the initrd, memory map and everything
-else via EFI config tables. Generating empty DTBs on ACPI platforms will
-no longer be needed.
-
-The first six patches as well as patch #10 are general cleanup, and can
-be merged separately. The remaining patches refactor the FDT code in the
-EFI stub so that we can avoid it on platforms that don't need it for
-other reasons. Finally, LoongArch is updated to use DT only for hardware
-descriptions when doing EFI boot.
-
-Changes since v1:
-- to ease merging this with the loongarch tree, drop unrelated cleanup
-  changes, which will be merged separately;
-- drop the patch to enable DT for hw descriptions - it will be picked up
-  again later
-- avoid creating the INITRD table if no initrd was actually loaded;
-- incorporate feedback from Huacai on the arch/loongarch changes;
-- other minor tweaks.
-
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>
-Cc: Xi Ruoyao <xry111@xry111.site>
-
-Ard Biesheuvel (8):
-  efi: libstub: drop pointless get_memory_map() call
-  efi: libstub: avoid efi_get_memory_map() for allocating the virt map
-  efi: libstub: simplify efi_get_memory_map() and struct efi_boot_memmap
-  efi: libstub: remove pointless goto kludge
-  efi: libstub: unify initrd loading between architectures
-  efi: libstub: remove DT dependency from generic stub
-  efi: libstub: install boot-time memory map as config table
-  efi/loongarch: libstub: remove dependency on flattened DT
-
- Documentation/arm/uefi.rst                     |   4 -
- arch/loongarch/Kconfig                         |   3 -
- arch/loongarch/include/asm/bootinfo.h          |   2 +-
- arch/loongarch/kernel/efi.c                    |  30 +++-
- arch/loongarch/kernel/env.c                    |  13 +-
- arch/loongarch/kernel/head.S                   |   2 +
- arch/loongarch/kernel/setup.c                  |   4 +-
- drivers/firmware/efi/efi.c                     |  15 ++
- drivers/firmware/efi/libstub/Makefile          |  13 +-
- drivers/firmware/efi/libstub/arm64-stub.c      |  19 +--
- drivers/firmware/efi/libstub/efi-stub-helper.c | 139 ++++++++--------
- drivers/firmware/efi/libstub/efi-stub.c        |  90 ++++------
- drivers/firmware/efi/libstub/efistub.h         |  28 +---
- drivers/firmware/efi/libstub/fdt.c             | 176 +++++++++++---------
- drivers/firmware/efi/libstub/loongarch-stub.c  |  56 ++++++-
- drivers/firmware/efi/libstub/mem.c             |  93 +++++------
- drivers/firmware/efi/libstub/randomalloc.c     |  25 +--
- drivers/firmware/efi/libstub/relocate.c        |  21 +--
- drivers/firmware/efi/libstub/x86-stub.c        |  30 +---
- include/linux/efi.h                            |  15 ++
- 20 files changed, 395 insertions(+), 383 deletions(-)
-
+diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
+index fe567be0f118..804f542be3f2 100644
+--- a/drivers/firmware/efi/libstub/fdt.c
++++ b/drivers/firmware/efi/libstub/fdt.c
+@@ -280,14 +280,6 @@ efi_status_t allocate_new_fdt_and_exit_boot(void *handle,
+ 		goto fail;
+ 	}
+ 
+-	/*
+-	 * Now that we have done our final memory allocation (and free)
+-	 * we can get the memory map key needed for exit_boot_services().
+-	 */
+-	status = efi_get_memory_map(&map);
+-	if (status != EFI_SUCCESS)
+-		goto fail_free_new_fdt;
+-
+ 	status = update_fdt((void *)fdt_addr, fdt_size,
+ 			    (void *)*new_fdt_addr, MAX_FDT_SIZE, cmdline_ptr,
+ 			    initrd_addr, initrd_size);
 -- 
 2.35.1
 
