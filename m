@@ -2,57 +2,47 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D8A15BEA54
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Sep 2022 17:36:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D46625BEA59
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Sep 2022 17:37:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230418AbiITPgt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 20 Sep 2022 11:36:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36644 "EHLO
+        id S229619AbiITPh6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 20 Sep 2022 11:37:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229760AbiITPgs (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 20 Sep 2022 11:36:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 765A7659E0;
-        Tue, 20 Sep 2022 08:36:47 -0700 (PDT)
+        with ESMTP id S229482AbiITPh5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 20 Sep 2022 11:37:57 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 791076172A
+        for <linux-efi@vger.kernel.org>; Tue, 20 Sep 2022 08:37:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 03A31623C6;
-        Tue, 20 Sep 2022 15:36:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D5C6C433C1;
-        Tue, 20 Sep 2022 15:36:46 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 30125B82A9A
+        for <linux-efi@vger.kernel.org>; Tue, 20 Sep 2022 15:37:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A68C433D7;
+        Tue, 20 Sep 2022 15:37:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663688206;
-        bh=D4fI20wsDZU6cBnEMfE+TOOp7Qrzm1qKp2H/6FoR1lw=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=RFTGMek09d+aDdEKwQI5h9B9rUkfk1jaIjyoKzeykvjmwn5OmC3Ab3M4BIHr+Zftn
-         hwQQXrOg06GmITriVcjkYKVYtZ/wedGGgOzbCwzUDOpF8QCEs8oupwqCKtMnOvy10W
-         GqCyYJ0iRjyJSk8IGuD5QNUBcXSYPHcjPuAtSVFCwmcX5XKtUjNe7lhNOx2HCyne2B
-         q9P2brJEWnSui/jrnLDBiiOY0QcQAB+emVwJWzLOHjgN0rNE9ubiA3vT1tBSWjv3Db
-         ktoHwtI+ZlmizOqxe4jujhPf9vXL8So3/bdagy34nv4Yb7UL+yrJXLZR+z3Tq8z3gN
-         9O0U98xNH7QPA==
-Received: by mail-lj1-f174.google.com with SMTP id q17so3445626lji.11;
-        Tue, 20 Sep 2022 08:36:46 -0700 (PDT)
-X-Gm-Message-State: ACrzQf0/DtBCWgVeTpRixEGW6D8Oy8uCEewQFyU0DP2idB7+H45YkLiK
-        l0hUs7Ga8gE8bUqBv1tAyBCBma4GBJ/Q1Ajdw4k=
-X-Google-Smtp-Source: AMsMyM48yyP2Hqwk6bUrxTHAQc4fBFlYjN+MCHW44sVapUcWvHsLb4wIHHgjlbB4nlnT1A6045csLq04qR0dn0WWsCw=
-X-Received: by 2002:a2e:2d0a:0:b0:26c:a1c:cdf with SMTP id t10-20020a2e2d0a000000b0026c0a1c0cdfmr7905440ljt.352.1663688204337;
- Tue, 20 Sep 2022 08:36:44 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220919193257.2031-1-demi@invisiblethingslab.com>
-In-Reply-To: <20220919193257.2031-1-demi@invisiblethingslab.com>
+        s=k20201202; t=1663688273;
+        bh=sEQUnLa6WsmKJz2gRQEnFY02HQKwwDS3OPdQPV8+AXk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=FXqJsj8Zive9P/Kxt4/fZfoRbDjQLP9HGjCfEU0vrZD/kkTuLUTB53B3YG/7dtYKi
+         taFwmn8pmR9SCMizypQK3CsTHy25d5TaPILmeL+inhkYp8zZ4wSjQ26je4MbZ6bV7E
+         ZUYSQqCoDOkX4+x9FbSis1Y+VgcIBe+Oy9rWVYsqMCXUhLYCzfIrS508RLAaosIM3n
+         Pwf0WPhC2yqnvNrtA3UzNuuK04RGr0xbnkDV/yqPknLItM/Bg3PCib9wzPLpxbfj+0
+         2d1aCGA0MazkOKEj80PK0z1320wZuY0iYW1fMAgHgVfs5aom/s8Ik3u0d7rU7wsoYq
+         JrLTFahmwjH6w==
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 20 Sep 2022 17:36:32 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEBfJUfTQ3THqqKxsU09_S98B_TjTECKwGM0WAv_5tZaA@mail.gmail.com>
-Message-ID: <CAMj1kXEBfJUfTQ3THqqKxsU09_S98B_TjTECKwGM0WAv_5tZaA@mail.gmail.com>
-Subject: Re: [PATCH v3] Support ESRT in Xen dom0
-To:     Demi Marie Obenour <demi@invisiblethingslab.com>
-Cc:     Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        xen-devel@lists.xenproject.org
-Content-Type: text/plain; charset="UTF-8"
+To:     linux-efi@vger.kernel.org
+Cc:     pjones@redhat.com, ilias.apalodimas@linaro.org,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH] efi: libstub: check Shim mode using MokSBStateRT
+Date:   Tue, 20 Sep 2022 17:37:43 +0200
+Message-Id: <20220920153743.3598053-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3377; i=ardb@kernel.org; h=from:subject; bh=sEQUnLa6WsmKJz2gRQEnFY02HQKwwDS3OPdQPV8+AXk=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjKd5GlorvrSqK1rcw10RoCxuRyGv+e6AK2bXl6Po3 duTEYY2JAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYyneRgAKCRDDTyI5ktmPJABLDA CzJePpnpN3UF9T4dX1Dx6MaxtTOxww+/27DwkEB5xRkvvLepRIikdLHQNM/1ZjtDvOI7DKk2VOafLj sj5dH76k0hJcBUgGVyKzy4mu0rtqI/GfpL8+tk86nL5DaQQxLn9zGmexOpPx18rLJh+K+7owdxwiWf PsIrDRDbugzjQLx9aO91WdnxaoJAU8iWHVniJxKdKp4vg+ToeX8nhrUmSRAYtr3gixKBwJ90BHVFf2 gssJoZFovsWRrzkRnZbA01CljB2K80JcYQ25bM0YuCQ6Jo8hxZN7hQb/K90QBPK36aYHgsMJ1sL/H2 HbqHficguGkkfwOqXsfkE7lGxOd15TGY07xfbw/ca+/ymBewFLWSKZJQFr9Hn+8aTUqbVL3tLUKwUG u0CuX2NbGAJDtaIJZ7e/Qrk99B9metJ3S4SVRn75qIvjshPPUPK0WB0ARTKiG+WHgJhQ4D649hZgWG +WfueO87pttv8sCx9f2dlGX+TxBszF3jOJcvedNJL/jcs=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -62,195 +52,88 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello Demi,
+We currently check the MokSBState variable to decide whether we should
+treat UEFI secure boot as being disabled, even if the firmware thinks
+otherwise. This is used by shim to indicate that it is not checking
+signatures on boot images. In the kernel, we use this to relax lockdown
+policies.
 
-On Mon, 19 Sept 2022 at 21:33, Demi Marie Obenour
-<demi@invisiblethingslab.com> wrote:
->
-> fwupd requires access to the EFI System Resource Table (ESRT) to
-> discover which firmware can be updated by the OS.  Currently, Linux does
-> not expose the ESRT when running as a Xen dom0.  Therefore, it is not
-> possible to use fwupd in a Xen dom0, which is a serious problem for e.g.
-> Qubes OS.
->
-> Before Xen 4.16, this was not fixable due to hypervisor limitations.
-> The UEFI specification requires the ESRT to be in EfiBootServicesData
-> memory, which Xen will use for whatever purposes it likes.  Therefore,
-> Linux cannot safely access the ESRT, as Xen may have overwritten it.
->
-> Starting with Xen 4.17, Xen checks if the ESRT is in EfiBootServicesData
-> or EfiRuntimeServicesData memory.  If the ESRT is in EfiBootServicesData
-> memory, Xen allocates some memory of type EfiRuntimeServicesData, copies
-> the ESRT to it, and finally replaces the ESRT pointer with a pointer to
-> the copy.  Since Xen will not clobber EfiRuntimeServicesData memory,
-> this ensures that the ESRT can safely be accessed by the OS.  It is safe
-> to access the ESRT under Xen if, and only if, it is in memory of type
-> EfiRuntimeServicesData.
->
+However, in cases where shim is not even being used, we don't want this
+variable to interfere with lockdown, given that the variable is
+non-volatile variable and therefore persists across a reboot. This means
+setting it once will persistently disable lockdown checks on a given
+system.
 
-Thanks for the elaborate explanation. This is really helpful.
+So switch to the mirrored version of this variable, called MokSBStateRT,
+which is supposed to be volatile, and this is something we can check.
 
-So here, you are explaining that the only way for Xen to prevent
-itself from potentially clobbering the ESRT is by creating a
-completely new allocation? What about other assets that may be passed
-via EFI boot services data regions?
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ arch/x86/xen/efi.c                        | 5 +++--
+ drivers/firmware/efi/libstub/secureboot.c | 8 ++++----
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-So first of all, EfiRuntimeServicesData has a special purpose: it is
-used to carry data that is part of the EFI runtime service
-implementations themselves. Therefore, it has to be mapped into the
-EFI page tables by the OS kernel, and carved out of the linear map (to
-prevent inadvertent access with mismatched attributes). So unless you
-are writing the code that backs GetVariable() or SetVariable(), there
-are never good reasons to use EfiRuntimeServicesData.
+diff --git a/arch/x86/xen/efi.c b/arch/x86/xen/efi.c
+index 7d7ffb9c826a..8bd65f2900b9 100644
+--- a/arch/x86/xen/efi.c
++++ b/arch/x86/xen/efi.c
+@@ -100,6 +100,7 @@ static enum efi_secureboot_mode xen_efi_get_secureboot(void)
+ 	enum efi_secureboot_mode mode;
+ 	efi_status_t status;
+ 	u8 moksbstate;
++	u32 attr;
+ 	unsigned long size;
+ 
+ 	mode = efi_get_secureboot_mode(efi.get_variable);
+@@ -113,13 +114,13 @@ static enum efi_secureboot_mode xen_efi_get_secureboot(void)
+ 	/* See if a user has put the shim into insecure mode. */
+ 	size = sizeof(moksbstate);
+ 	status = efi.get_variable(L"MokSBStateRT", &shim_guid,
+-				  NULL, &size, &moksbstate);
++				  &attr, &size, &moksbstate);
+ 
+ 	/* If it fails, we don't care why. Default to secure. */
+ 	if (status != EFI_SUCCESS)
+ 		goto secure_boot_enabled;
+ 
+-	if (moksbstate == 1)
++	if (!(attr & EFI_VARIABLE_NON_VOLATILE) && moksbstate == 1)
+ 		return efi_secureboot_mode_disabled;
+ 
+  secure_boot_enabled:
+diff --git a/drivers/firmware/efi/libstub/secureboot.c b/drivers/firmware/efi/libstub/secureboot.c
+index 8a18930f3eb6..516f4f0069bd 100644
+--- a/drivers/firmware/efi/libstub/secureboot.c
++++ b/drivers/firmware/efi/libstub/secureboot.c
+@@ -14,7 +14,7 @@
+ 
+ /* SHIM variables */
+ static const efi_guid_t shim_guid = EFI_SHIM_LOCK_GUID;
+-static const efi_char16_t shim_MokSBState_name[] = L"MokSBState";
++static const efi_char16_t shim_MokSBState_name[] = L"MokSBStateRT";
+ 
+ static efi_status_t get_var(efi_char16_t *name, efi_guid_t *vendor, u32 *attr,
+ 			    unsigned long *data_size, void *data)
+@@ -43,8 +43,8 @@ enum efi_secureboot_mode efi_get_secureboot(void)
+ 
+ 	/*
+ 	 * See if a user has put the shim into insecure mode. If so, and if the
+-	 * variable doesn't have the runtime attribute set, we might as well
+-	 * honor that.
++	 * variable doesn't have the non-volatile attribute set, we might as
++	 * well honor that.
+ 	 */
+ 	size = sizeof(moksbstate);
+ 	status = get_efi_var(shim_MokSBState_name, &shim_guid,
+@@ -53,7 +53,7 @@ enum efi_secureboot_mode efi_get_secureboot(void)
+ 	/* If it fails, we don't care why. Default to secure */
+ 	if (status != EFI_SUCCESS)
+ 		goto secure_boot_enabled;
+-	if (!(attr & EFI_VARIABLE_RUNTIME_ACCESS) && moksbstate == 1)
++	if (!(attr & EFI_VARIABLE_NON_VOLATILE) && moksbstate == 1)
+ 		return efi_secureboot_mode_disabled;
+ 
+ secure_boot_enabled:
+-- 
+2.35.1
 
-If you want to use a memory type that is suitable for firmware tables
-that are intended for consumption by the OS only (and not by the
-runtime services themselves), you might consider EfiAcpiReclaimMemory.
-
-TBH I still don't think this is a scalable approach. There are other
-configuration tables that may be passed in EFI boot services memory,
-and MS especially were pushing back in the UEFI forum on adding table
-types that were passed in anything other the EfiBootServicesData.
-
-> When running as a Xen dom0, check if the ESRT is in memory of type
-> EfiRuntimeServicesData, and if it is, parse it as if not running under
-> Xen.  This allows programs such as fwupd which require the ESRT to run
-> under Xen, and so makes fwupd support in Qubes OS possible.
->
-> Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
-> ---
-> Changes since v2:
->
-> - Massively updated commit message.
-> - Fetch the ESRT inline in drivers/firmware/efi/esrt.c, instead of using
->   a single-use helper in drivers/xen/efi.c.
->
-> Changes since v1:
->
-> - Use a different type (struct xen_efi_mem_info) for memory information
->   provided by Xen, as Xen reports it in a different way than the
->   standard Linux functions do.
->
->  drivers/firmware/efi/esrt.c | 71 ++++++++++++++++++++++++++++++-------
->  1 file changed, 58 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/firmware/efi/esrt.c b/drivers/firmware/efi/esrt.c
-> index 2a2f52b017e736dd995c69e8aeb5fbd7761732e5..378bf2ea770ad3bd747345a89258216919eb21bb 100644
-> --- a/drivers/firmware/efi/esrt.c
-> +++ b/drivers/firmware/efi/esrt.c
-> @@ -28,6 +28,11 @@
->  #include <asm/io.h>
->  #include <asm/early_ioremap.h>
->
-> +#ifdef CONFIG_XEN_EFI
-> +#include <asm/xen/hypercall.h>
-> +#include <xen/page.h>
-> +#endif
-> +
->  struct efi_system_resource_entry_v1 {
->         efi_guid_t      fw_class;
->         u32             fw_type;
-> @@ -243,27 +248,67 @@ void __init efi_esrt_init(void)
->         void *va;
->         struct efi_system_resource_table tmpesrt;
->         size_t size, max, entry_size, entries_size;
-> -       efi_memory_desc_t md;
-> -       int rc;
->         phys_addr_t end;
-> -
-> -       if (!efi_enabled(EFI_MEMMAP))
-> -               return;
-> +       uint32_t type;
->
->         pr_debug("esrt-init: loading.\n");
->         if (!esrt_table_exists())
->                 return;
->
-> -       rc = efi_mem_desc_lookup(efi.esrt, &md);
-> -       if (rc < 0 ||
-> -           (!(md.attribute & EFI_MEMORY_RUNTIME) &&
-> -            md.type != EFI_BOOT_SERVICES_DATA &&
-> -            md.type != EFI_RUNTIME_SERVICES_DATA)) {
-> -               pr_warn("ESRT header is not in the memory map.\n");
-> +       if (efi_enabled(EFI_MEMMAP)) {
-> +               efi_memory_desc_t md;
-> +
-> +               if (efi_mem_desc_lookup(efi.esrt, &md) < 0 ||
-> +                   (!(md.attribute & EFI_MEMORY_RUNTIME) &&
-> +                    md.type != EFI_BOOT_SERVICES_DATA &&
-> +                    md.type != EFI_RUNTIME_SERVICES_DATA)) {
-> +                       pr_warn("ESRT header is not in the memory map.\n");
-> +                       return;
-> +               }
-> +
-> +               type = md.type;
-> +               max = efi_mem_desc_end(&md);
-> +#ifdef CONFIG_XEN_EFI
-> +       } else if (efi_enabled(EFI_PARAVIRT)) {
-> +               static_assert(XEN_PAGE_SHIFT == EFI_PAGE_SHIFT,
-> +                             "Mismatch between EFI_PAGE_SHIFT and XEN_PAGE_SHIFT");
-> +
-> +               struct xen_platform_op op = {
-> +                       .cmd = XENPF_firmware_info,
-> +                       .u.firmware_info = {
-> +                               .type = XEN_FW_EFI_INFO,
-> +                               .index = XEN_FW_EFI_MEM_INFO,
-> +                               .u.efi_info.mem.addr = efi.esrt,
-> +                               .u.efi_info.mem.size = ((u64)-1ULL) - efi.esrt,
-> +                       }
-> +               };
-> +               union xenpf_efi_info *info = &op.u.firmware_info.u.efi_info;
-> +               int rc = HYPERVISOR_platform_op(&op);
-> +
-> +               if (rc) {
-> +                       pr_warn("Failed to lookup ESRT header %lu in Xen memory map: error %d\n",
-> +                               efi.esrt, rc);
-> +                       return;
-> +               }
-> +               type = info->mem.type;
-> +               max = info->mem.addr + info->mem.size;
-> +
-> +               /*
-> +                * Recent Xen versions relocate the ESRT to memory of type
-> +                * EfiRuntimeServicesData, which Xen will not reuse.  If the ESRT
-> +                * is not in EfiRuntimeServicesData memory, it has not been reserved
-> +                * by Xen and might be allocated to other guests, so it cannot
-> +                * safely be used.
-> +                */
-> +               if (type != EFI_RUNTIME_SERVICES_DATA) {
-> +                       pr_warn("Xen did not reserve ESRT, ignoring it\n");
-> +                       return;
-> +               }
-> +#endif
-
-I am really not happy with this. You are adding a special case
-specific to Xen to double check that it has violated the EFI spec as
-required. Even if some firmwares exist that do the same, codifying it
-like this on mainline Linux code is not something I am comfortable
-accepting.
-
-I take it that this also means that ESRT on dom0 is currently just
-broken, right?
-
-
-> +       } else {
->                 return;
->         }
->
-> -       max = efi_mem_desc_end(&md);
->         if (max < efi.esrt) {
->                 pr_err("EFI memory descriptor is invalid. (esrt: %p max: %p)\n",
->                        (void *)efi.esrt, (void *)max);
-> @@ -333,7 +378,7 @@ void __init efi_esrt_init(void)
->
->         end = esrt_data + size;
->         pr_info("Reserving ESRT space from %pa to %pa.\n", &esrt_data, &end);
-> -       if (md.type == EFI_BOOT_SERVICES_DATA)
-> +       if (type == EFI_BOOT_SERVICES_DATA)
->                 efi_mem_reserve(esrt_data, esrt_data_size);
->
->         pr_debug("esrt-init: loaded.\n");
-> --
-> Sincerely,
-> Demi Marie Obenour (she/her/hers)
-> Invisible Things Lab
