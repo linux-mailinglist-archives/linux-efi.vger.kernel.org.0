@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16B815BE6C6
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Sep 2022 15:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C2055BE963
+	for <lists+linux-efi@lfdr.de>; Tue, 20 Sep 2022 16:54:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229617AbiITNMW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 20 Sep 2022 09:12:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46904 "EHLO
+        id S229647AbiITOyQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 20 Sep 2022 10:54:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230262AbiITNMV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 20 Sep 2022 09:12:21 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ABD640BE6
-        for <linux-efi@vger.kernel.org>; Tue, 20 Sep 2022 06:12:20 -0700 (PDT)
+        with ESMTP id S229982AbiITOyO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 20 Sep 2022 10:54:14 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03E193AB06
+        for <linux-efi@vger.kernel.org>; Tue, 20 Sep 2022 07:54:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 24B8AB82921
-        for <linux-efi@vger.kernel.org>; Tue, 20 Sep 2022 13:12:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9A5C433C1
-        for <linux-efi@vger.kernel.org>; Tue, 20 Sep 2022 13:12:17 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A3725B820D6
+        for <linux-efi@vger.kernel.org>; Tue, 20 Sep 2022 14:54:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66238C433B5
+        for <linux-efi@vger.kernel.org>; Tue, 20 Sep 2022 14:54:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663679537;
-        bh=kV3P1Ayurr/bUyQnpN7hYH6x3tDKNWtxOqn5JZnGQOA=;
+        s=k20201202; t=1663685650;
+        bh=CaM7s7Djov6G3qBXIFRlh7mvT4+isDDpGNm0u28qY9g=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=qYDmhowgq0bLPjJpAQdB/m2Z9dDVLclNlK5OG600Z0yTVEgc1mNOYk1X2mGKAsFef
-         QrKIqKxTqH4uZhPJG6qTtW1TojRTUau/uZI1Cy5Wh91y9y0xrKJ7d16bcdZcVLyaha
-         KAv0ETstWCL4gR1Ll/f+nc1EbJEUA9mFefS1nK1pIR7rOhwVKssjj6Et4tdBYq5mhP
-         G5St/U0w5yeqVxlUmPvZPRmjcgMe+6eBLry9hmjYy1u/yL33P30DN25SrZcg3kU9cM
-         e//l5vpCznf2ztK8oOxiIzFMTshzrQXro9TlbHh64pbaNUV7HGcb8VfrWPGgfbUX6Y
-         TsiZyMlAWnBOg==
-Received: by mail-ua1-f47.google.com with SMTP id a14so1024006uat.13
-        for <linux-efi@vger.kernel.org>; Tue, 20 Sep 2022 06:12:17 -0700 (PDT)
-X-Gm-Message-State: ACrzQf2xXdRgxnUzaErScQHMyNJCPkrAw8SZsQMP/YnA/68qUD54Ci0P
-        YVIeX0qYiUoGTwW3wah1tHBsDklHNOq9IixabbI=
-X-Google-Smtp-Source: AMsMyM7vDI9iLAx2A/cXKn4EzLGAeGBRDjsKWFoB9it34YPczV1kzlegKSbkLMbOg3ZTSypvOQmXHp7yXUuVI/rAw7s=
-X-Received: by 2002:ab0:25d4:0:b0:3c1:c353:31cb with SMTP id
- y20-20020ab025d4000000b003c1c35331cbmr1070385uan.63.1663679536866; Tue, 20
- Sep 2022 06:12:16 -0700 (PDT)
+        b=toqFeBOQM0HvyEP+jvIiiKU5kHE2TVz2kzCTwTeAtmEd/OJ2GNULC32VLnoZ7TX0Q
+         X9o0475d2NVhtiivfmSCnCLiDLB69Qs5MFLgFh2kIBj/ouzI1C5/mUfktORXJUyC3F
+         QFrvm80kyxuLMAF5Hho3XFuvPXeVXZlctwJGB5HTfe8JRJRHxi8Ah9PvEB3GCws8Yt
+         kGFGmxK/VEf+uL0Q8QDOFnY1SygJsqBTXMFMPpB+cbnwzi0LT3f7ACqVT0HKsYXWFc
+         zu/PZKJ0EX2nokD1KiTTsJt7aQZqQWo/XIpHdIBJDIYLWwcAKJMszXxtQtavqH7D8J
+         oV2ejtxQ2FmEg==
+Received: by mail-lf1-f46.google.com with SMTP id k10so4226579lfm.4
+        for <linux-efi@vger.kernel.org>; Tue, 20 Sep 2022 07:54:10 -0700 (PDT)
+X-Gm-Message-State: ACrzQf2CMc/16sXdfQEqPFGuMJ/5Ll1JZr7+eNy2COykRUhazjW5Vck6
+        iCLyBui73vmBCHnGp+YqZ0rwE+kvBrnlDHIgFT0=
+X-Google-Smtp-Source: AMsMyM6CLpSd6Zxv69dKhdFodSrz06aukD3OG5n1an7+70s/lN+D0T9ucERS/QQiUm1N4IY+Zh5HSArxvjcdQbTZTfE=
+X-Received: by 2002:ac2:4431:0:b0:497:aaf5:83eb with SMTP id
+ w17-20020ac24431000000b00497aaf583ebmr8148815lfl.228.1663685648461; Tue, 20
+ Sep 2022 07:54:08 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220918213544.2176249-1-ardb@kernel.org> <20220918213544.2176249-12-ardb@kernel.org>
  <CAAhV-H6Ke88sirvX9ut7JLWy+xaERZ7BeMEf97WHRWbsLqZC0A@mail.gmail.com>
@@ -61,15 +61,16 @@ References: <20220918213544.2176249-1-ardb@kernel.org> <20220918213544.2176249-1
  <CAMj1kXGWLAJqf3fmqPm9JWTC06i=t2fhZi2_Tfjh40rtUQLwXg@mail.gmail.com>
  <CAAhV-H5iy1GC+JXGeSh0EPQ=TT9m_oFKMknk-7JSpQ-0HdK9Rw@mail.gmail.com>
  <CAMj1kXF=aGFktg1jGq4mN_73ko3j-jt4=Xc1xAR0jWx_OT0tVw@mail.gmail.com>
- <CAAhV-H5SVOwz9uM-SC_iDH2juGMhNEGMxd6j6itDsQhRENoBCw@mail.gmail.com> <CAMj1kXFVMtqRgiMQ0+ALVsRAmiBDtYZ8SGkqqtVYDLABm2HDoA@mail.gmail.com>
-In-Reply-To: <CAMj1kXFVMtqRgiMQ0+ALVsRAmiBDtYZ8SGkqqtVYDLABm2HDoA@mail.gmail.com>
-From:   Huacai Chen <chenhuacai@kernel.org>
-Date:   Tue, 20 Sep 2022 21:12:04 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5FPNaD532ZbgjV_SiH8-YaLsLNPvPttAm-a1T+9eW4EQ@mail.gmail.com>
-Message-ID: <CAAhV-H5FPNaD532ZbgjV_SiH8-YaLsLNPvPttAm-a1T+9eW4EQ@mail.gmail.com>
+ <CAAhV-H5SVOwz9uM-SC_iDH2juGMhNEGMxd6j6itDsQhRENoBCw@mail.gmail.com>
+ <CAMj1kXFVMtqRgiMQ0+ALVsRAmiBDtYZ8SGkqqtVYDLABm2HDoA@mail.gmail.com> <CAAhV-H5FPNaD532ZbgjV_SiH8-YaLsLNPvPttAm-a1T+9eW4EQ@mail.gmail.com>
+In-Reply-To: <CAAhV-H5FPNaD532ZbgjV_SiH8-YaLsLNPvPttAm-a1T+9eW4EQ@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 20 Sep 2022 16:53:57 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXH-LPThkCPPPK4Vgxk_Y-UtQLAa0=FMYqztNO3POvo83A@mail.gmail.com>
+Message-ID: <CAMj1kXH-LPThkCPPPK4Vgxk_Y-UtQLAa0=FMYqztNO3POvo83A@mail.gmail.com>
 Subject: Re: [PATCH 11/12] efi/loongarch: libstub: remove dependency on
  flattened DT
-To:     Ard Biesheuvel <ardb@kernel.org>
+To:     Huacai Chen <chenhuacai@kernel.org>
 Cc:     linux-efi <linux-efi@vger.kernel.org>, loongarch@lists.linux.dev,
         "Russell King (Oracle)" <linux@armlinux.org.uk>,
         Arnd Bergmann <arnd@arndb.de>,
@@ -86,45 +87,39 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi, Ard,
-
-On Tue, Sep 20, 2022 at 4:04 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+On Tue, 20 Sept 2022 at 15:12, Huacai Chen <chenhuacai@kernel.org> wrote:
 >
-> On Tue, 20 Sept 2022 at 03:45, Huacai Chen <chenhuacai@kernel.org> wrote:
+> Hi, Ard,
+>
+> On Tue, Sep 20, 2022 at 4:04 PM Ard Biesheuvel <ardb@kernel.org> wrote:
 > >
-> > Hi, Ard,
+> > On Tue, 20 Sept 2022 at 03:45, Huacai Chen <chenhuacai@kernel.org> wrote:
+> > >
+> > > Hi, Ard,
+> > >
+> > ...
+> > > I'm very sorry, after an offline discussion with my colleagues,
+> > > non-EFI DT boot is still needed (very sadly, we want to drop non-EFI
+> > > firmware but we can't do that). However, for non-EFI DT boot we will
+> > > use the same parameter passing method (a0=efi boot flag, a1=cmdline,
+> > > a2=systemtable), firmware will generate a simple systemtable only for
+> > > DT. In this way all boot methods share the same logic, and also make
+> > > kexec easy to implement.
+> > >
 > >
-> ...
-> > I'm very sorry, after an offline discussion with my colleagues,
-> > non-EFI DT boot is still needed (very sadly, we want to drop non-EFI
-> > firmware but we can't do that). However, for non-EFI DT boot we will
-> > use the same parameter passing method (a0=efi boot flag, a1=cmdline,
-> > a2=systemtable), firmware will generate a simple systemtable only for
-> > DT. In this way all boot methods share the same logic, and also make
-> > kexec easy to implement.
+> > OK, that should work. So I suppose you create a EFI system table along
+> > with EFI configuration tables for DT, SMBIOS, etc? In this case, I
+> > suggest you omit the MEMMAP config table that I am adding here, so
+> > that there is no ambiguity between the EFI provided memory map and the
+> > one provided by DT.
 > >
+> > I think that should be a clean way to implement this.
+> OK, thanks.
 >
-> OK, that should work. So I suppose you create a EFI system table along
-> with EFI configuration tables for DT, SMBIOS, etc? In this case, I
-> suggest you omit the MEMMAP config table that I am adding here, so
-> that there is no ambiguity between the EFI provided memory map and the
-> one provided by DT.
+> I have merged efi-cleanups-for-v6.1-v2 to
+> https://github.com/loongson/linux/commits/loongarch-next. It seems
+> everything work well except kexec.
 >
-> I think that should be a clean way to implement this.
-OK, thanks.
 
-I have merged efi-cleanups-for-v6.1-v2 to
-https://github.com/loongson/linux/commits/loongarch-next. It seems
-everything work well except kexec.
-
-Huacai
->
-> > So, let's make a0 the real "efi boot flag" and let it control
-> > EFI_BOOT, for efistub, we can just pass "true" unconditionally
-> > (whether support efi_novamap is not as important as the efi boot flag
-> > for us, as you said, efi_novamap is just for broken firmware).
->
-> Indeed. So as before, I will just set efi_novamap to false. You can
-> still use noefi or efi=noruntime to turn off the EFI runtime pieces if
-> needed (e.g., PREEMPT_RT tends to disable those by default to preserve
-> their bounded worst case latency)
+OK thanks for testing. I will send out a v2 today and merge the
+changes into efi/next tomorrow.
