@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A57325C0077
-	for <lists+linux-efi@lfdr.de>; Wed, 21 Sep 2022 16:55:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 472555C0079
+	for <lists+linux-efi@lfdr.de>; Wed, 21 Sep 2022 16:56:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229844AbiIUOz4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 21 Sep 2022 10:55:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44318 "EHLO
+        id S230461AbiIUOz6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 21 Sep 2022 10:55:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230340AbiIUOzL (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 21 Sep 2022 10:55:11 -0400
+        with ESMTP id S230346AbiIUOz1 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 21 Sep 2022 10:55:27 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E38E836879;
-        Wed, 21 Sep 2022 07:54:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B0A13C8F0;
+        Wed, 21 Sep 2022 07:55:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 71A7DB83032;
-        Wed, 21 Sep 2022 14:54:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DE7C433D6;
-        Wed, 21 Sep 2022 14:54:54 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B51B9B83034;
+        Wed, 21 Sep 2022 14:54:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8BD9C433D7;
+        Wed, 21 Sep 2022 14:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663772096;
-        bh=nlSUhbGA0ylsVYAt77oav3fesjwMW7rDea8nZZxp6aA=;
+        s=k20201202; t=1663772098;
+        bh=x9QO33G0fBHlsuj0aKM/8I+ExRaFzYG1mzjARFUKdJo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=quVsnzRLyj9UipR5MACVwJzqUP03IWwXX5bo0ZlYa+ordoXKGVnhA06Pad2Yz07+6
-         mUk8Guu6/36opXySWRZ9eaKEtn1JUvoMHQV2rxhXOVfPqV8RJePcf//5ONP4HI2kso
-         uI/pyPkfzktG3CDd4GtkjEf5hnI5Z6AxrIsYU+AUp+MkwqVeWK9430U+2ppI75o6mt
-         GC3VOaOydX/tb87Srcn3H/w+2/v2c3Aoi0jH8qxj9vQICQ0AAcAorBhMyvdF5y9Vg3
-         iM5i/RWaqybmRjbe7CHyYB526FYdKCJqTfXHb6JANFMNgAGJvOo8Qkz6BoI0Is1NV1
-         61+k7PaYuuQAQ==
+        b=ewcr9Qou6blbp16BAOckV+lTnOAxrp/LCppV9UzzKOt2fXy/Uomr6shLKwNWYUYxc
+         hq9fqz7+/ew/5uF86IyfllLNU+26mZvOtDmI7xlEwbMPRxExCqrAlW5S25udqcwhXS
+         t9TmSU8GB57UEo2xlvnvqQrN6E4lLrR50AVegXNqhvU7bgJlx2PtCgIaCaHrQUOouf
+         t3zQMS/VQvlqCBFDZXg74rM3ecGDt1NkZUHYKSqC6ss/tA3+e5qoyx46W1TzEwmONg
+         HJoOGhw3AF0xBYvUM48HXdLIdxBI5HhG/4qZE3ph2cn0H573i56/u1ijih5phwhSed
+         XnnNqGmaVdUrw==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -38,14 +38,14 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Michael Roth <michael.roth@amd.com>
-Subject: [PATCH v2 12/16] x86/compressed: move startup32_load_idt() out of head_64.S
-Date:   Wed, 21 Sep 2022 16:54:18 +0200
-Message-Id: <20220921145422.437618-13-ardb@kernel.org>
+Subject: [PATCH v2 13/16] x86/compressed: move startup32_check_sev_cbit() into .text
+Date:   Wed, 21 Sep 2022 16:54:19 +0200
+Message-Id: <20220921145422.437618-14-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220921145422.437618-1-ardb@kernel.org>
 References: <20220921145422.437618-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4991; i=ardb@kernel.org; h=from:subject; bh=nlSUhbGA0ylsVYAt77oav3fesjwMW7rDea8nZZxp6aA=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjKyWXnT+thXk9WFAYzVZ5ocJoz5PcVuJHGitoDGwK HFoMHGCJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYysllwAKCRDDTyI5ktmPJIl/DA Cp2FqDmbmvyiQDd9MYzjBjQZ+P2LJxT2a6EOoIg1IB6VDrHhN9nF6nQm/8flEZIfPYTucjSPhMd1ll ieYowd0QfXV6HC1CUF9d4SY+wUaPLj9ZxgGpAeIrFfFWGouzrp0zKSwjCKBpQDymm4P1zySNrSdmYh Sck3Vyeu3Myo8rOkVQ4CiSMzm6Tx2GUAqyuRK2zoyxU0Ybq9nq2uXA9ynAyoBXBr3Ov+hy6u2N6NIZ r0TU7BQWAODxeHZGt3tInOIQ9n7Z4vhcpI6oUWnNeTuLmgGBO/z0bZnbeG1t50o4DitvO3j91Z6KtG miB2iXdMBz9oYWEh1DfW0w/xm3UepnDsFzQ96hfdaJ8eKk/k1zI41FlAMcDWnwy1pag94/6QdJpcn4 R+3w+r2MBwk3hrG55xbPHkS/OO7fL3m90oPuhAODw+n07+3BYGBpI12NS0OLzJNJyCnz6ZSwcfSn/7 RgpHPLpsgoim4Bv8y7H2NZZzJUE0k5cnp2zbgEbZFoxuk=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3026; i=ardb@kernel.org; h=from:subject; bh=x9QO33G0fBHlsuj0aKM/8I+ExRaFzYG1mzjARFUKdJo=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjKyWYJKX7uFQWXpZctogrnphhHrnCH05LWnz8ZuZ1 RZI5PVaJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYyslmAAKCRDDTyI5ktmPJAcPDA CPpNdahgItmk3RFn+NLP19E2XOFiv7zhzJ8YkkaHjNi3Yx5bpz+TLdt3nZAJ2SsUh39m0fRfY739TK bFzAF9FkJQAOEw+XFkIPzIG9YZKbjdTZjY5AdBw6bYyPR6QtfCauxBFnpE4+3wTiHffXT5M0kpWgyn ejCeRpPqafLj6OvPoGynsWijtjCamIXVghDiVJt8hxotku4enQwP2YQnL6SQiNnrvM33dOeZjchpO3 1NTGyPhWYRV3fyBQtq4Nh9BMHtwL91t3lS6u8T9OUqF5XvudEFzfx/SecrzTvbyGKmWycqr6SHztDY 6/6EXq758Epl9oz435crIz7qNts6fnF+UPz07+0naAWB+qT4rl476oNEQPCs3OPqbwmeawIAxNQvfo m7DHellT6Pcx2M8GCu2HFF87J+fGSiPZtKe9nPPr8XJGQGaZ/AytLXoJyjVBjPxqOFQP6I8vvhzWxe 9RgcJhLDCGAwfE8/50jBP9YxRfzX8lpgJ6rzQle/1Y6V0=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -57,202 +57,109 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Now that startup32_load_idt() has been refactored into an ordinary
-callable function, move it into mem-encrypt.S where it belongs.
+Move startup32_check_sev_cbit() into the .text section and turn it into
+an ordinary function using the ordinary 32-bit calling convention,
+instead of saving/restoring the registers that are known to be live at
+the only call site. This improves maintainability, and makes it possible
+to move this function out of head_64.S and into a separate compilation
+unit that is specific to memory encryption.
+
+Note that this requires the call site to be moved before the mixed mode
+check, as %eax will be live otherwise.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/head_64.S     | 74 --------------------
- arch/x86/boot/compressed/mem_encrypt.S | 72 ++++++++++++++++++-
- 2 files changed, 71 insertions(+), 75 deletions(-)
+ arch/x86/boot/compressed/head_64.S | 35 +++++++++++---------
+ 1 file changed, 19 insertions(+), 16 deletions(-)
 
 diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index b4b2b76ed1af..abb5a650a816 100644
+index abb5a650a816..639f688e4949 100644
 --- a/arch/x86/boot/compressed/head_64.S
 +++ b/arch/x86/boot/compressed/head_64.S
-@@ -707,80 +707,6 @@ SYM_DATA_START(boot_idt)
- 	.endr
- SYM_DATA_END_LABEL(boot_idt, SYM_L_GLOBAL, boot_idt_end)
+@@ -251,6 +251,11 @@ SYM_FUNC_START(startup_32)
+ 	movl    $__BOOT_TSS, %eax
+ 	ltr	%ax
  
--#ifdef CONFIG_AMD_MEM_ENCRYPT
--SYM_DATA_START(boot32_idt_desc)
--	.word   boot32_idt_end - boot32_idt - 1
--	.long   0
--SYM_DATA_END(boot32_idt_desc)
--	.balign 8
--SYM_DATA_START(boot32_idt)
--	.rept 32
--	.quad 0
--	.endr
--SYM_DATA_END_LABEL(boot32_idt, SYM_L_GLOBAL, boot32_idt_end)
--#endif
--
--#ifdef CONFIG_AMD_MEM_ENCRYPT
--	.text
--	.code32
--/*
-- * Write an IDT entry into boot32_idt
-- *
-- * Parameters:
-- *
-- * %eax:	Handler address
-- * %edx:	Vector number
-- * %ecx:	IDT address
-- */
--SYM_FUNC_START_LOCAL(startup32_set_idt_entry)
--	/* IDT entry address to %ecx */
--	leal	(%ecx, %edx, 8), %ecx
--
--	/* Build IDT entry, lower 4 bytes */
--	movl    %eax, %edx
--	andl    $0x0000ffff, %edx		# Target code segment offset [15:0]
--	orl	$(__KERNEL32_CS << 16), %edx	# Target code segment selector
--
--	/* Store lower 4 bytes to IDT */
--	movl    %edx, (%ecx)
--
--	/* Build IDT entry, upper 4 bytes */
--	movl    %eax, %edx
--	andl    $0xffff0000, %edx	# Target code segment offset [31:16]
--	orl     $0x00008e00, %edx	# Present, Type 32-bit Interrupt Gate
--
--	/* Store upper 4 bytes to IDT */
--	movl    %edx, 4(%ecx)
--
--	RET
--SYM_FUNC_END(startup32_set_idt_entry)
--
--SYM_FUNC_START(startup32_load_idt)
--	push	%ebp
--	push	%ebx
--
--	call	1f
--1:	pop	%ebp
--
--	leal    (boot32_idt - 1b)(%ebp), %ebx
--
--	/* #VC handler */
--	leal    (startup32_vc_handler - 1b)(%ebp), %eax
--	movl    $X86_TRAP_VC, %edx
--	movl	%ebx, %ecx
--	call    startup32_set_idt_entry
--
--	/* Load IDT */
--	leal	(boot32_idt_desc - 1b)(%ebp), %ecx
--	movl	%ebx, 2(%ecx)
--	lidt    (%ecx)
--
--	pop	%ebx
--	pop	%ebp
--	RET
--SYM_FUNC_END(startup32_load_idt)
--#endif
--
- /*
-  * Check for the correct C-bit position when the startup_32 boot-path is used.
-  *
-diff --git a/arch/x86/boot/compressed/mem_encrypt.S b/arch/x86/boot/compressed/mem_encrypt.S
-index a73e4d783cae..6747e5e4c696 100644
---- a/arch/x86/boot/compressed/mem_encrypt.S
-+++ b/arch/x86/boot/compressed/mem_encrypt.S
-@@ -12,6 +12,8 @@
- #include <asm/processor-flags.h>
- #include <asm/msr.h>
- #include <asm/asm-offsets.h>
-+#include <asm/segment.h>
-+#include <asm/trapnr.h>
- 
- 	.text
- 	.code32
-@@ -98,7 +100,7 @@ SYM_CODE_START_LOCAL(sev_es_req_cpuid)
- 	jmp	1b
- SYM_CODE_END(sev_es_req_cpuid)
- 
--SYM_CODE_START(startup32_vc_handler)
-+SYM_CODE_START_LOCAL(startup32_vc_handler)
- 	pushl	%eax
- 	pushl	%ebx
- 	pushl	%ecx
-@@ -184,6 +186,63 @@ SYM_CODE_START(startup32_vc_handler)
- 	jmp .Lfail
- SYM_CODE_END(startup32_vc_handler)
- 
-+/*
-+ * Write an IDT entry into boot32_idt
-+ *
-+ * Parameters:
-+ *
-+ * %eax:	Handler address
-+ * %edx:	Vector number
-+ * %ecx:	IDT address
-+ */
-+SYM_FUNC_START_LOCAL(startup32_set_idt_entry)
-+	/* IDT entry address to %ecx */
-+	leal	(%ecx, %edx, 8), %ecx
++#ifdef CONFIG_AMD_MEM_ENCRYPT
++	/* Check if the C-bit position is correct when SEV is active */
++	call	startup32_check_sev_cbit
++#endif
 +
-+	/* Build IDT entry, lower 4 bytes */
-+	movl    %eax, %edx
-+	andl    $0x0000ffff, %edx		# Target code segment offset [15:0]
-+	orl	$(__KERNEL32_CS << 16), %edx	# Target code segment selector
-+
-+	/* Store lower 4 bytes to IDT */
-+	movl    %edx, (%ecx)
-+
-+	/* Build IDT entry, upper 4 bytes */
-+	movl    %eax, %edx
-+	andl    $0xffff0000, %edx	# Target code segment offset [31:16]
-+	orl     $0x00008e00, %edx	# Present, Type 32-bit Interrupt Gate
-+
-+	/* Store upper 4 bytes to IDT */
-+	movl    %edx, 4(%ecx)
-+
-+	RET
-+SYM_FUNC_END(startup32_set_idt_entry)
-+
-+SYM_FUNC_START(startup32_load_idt)
-+	push	%ebp
-+	push	%ebx
-+
-+	call	1f
-+1:	pop	%ebp
-+
-+	leal    (boot32_idt - 1b)(%ebp), %ebx
-+
-+	/* #VC handler */
-+	leal    (startup32_vc_handler - 1b)(%ebp), %eax
-+	movl    $X86_TRAP_VC, %edx
-+	movl	%ebx, %ecx
-+	call    startup32_set_idt_entry
-+
-+	/* Load IDT */
-+	leal	(boot32_idt_desc - 1b)(%ebp), %ecx
-+	movl	%ebx, 2(%ecx)
-+	lidt    (%ecx)
-+
-+	pop	%ebx
-+	pop	%ebp
-+	RET
-+SYM_FUNC_END(startup32_load_idt)
-+
- 	.code64
- 
- #include "../../kernel/sev_verify_cbit.S"
-@@ -195,4 +254,15 @@ SYM_CODE_END(startup32_vc_handler)
- SYM_DATA(sme_me_mask,		.quad 0)
- SYM_DATA(sev_status,		.quad 0)
- SYM_DATA(sev_check_data,	.quad 0)
-+
-+SYM_DATA_START_LOCAL(boot32_idt)
-+	.rept	32
-+	.quad	0
-+	.endr
-+SYM_DATA_END(boot32_idt)
-+
-+SYM_DATA_START_LOCAL(boot32_idt_desc)
-+	.word	. - boot32_idt - 1
-+	.long	0
-+SYM_DATA_END(boot32_idt_desc)
+ 	/*
+ 	 * Setup for the jump to 64bit mode
+ 	 *
+@@ -268,8 +273,6 @@ SYM_FUNC_START(startup_32)
+ 	leal	rva(startup_64_mixedmode)(%ebp), %eax
+ 1:
  #endif
+-	/* Check if the C-bit position is correct when SEV is active */
+-	call	startup32_check_sev_cbit
+ 
+ 	pushl	$__KERNEL_CS
+ 	pushl	%eax
+@@ -724,16 +727,17 @@ SYM_DATA_END_LABEL(boot_idt, SYM_L_GLOBAL, boot_idt_end)
+  * succeed. An incorrect C-bit position will map all memory unencrypted, so that
+  * the compare will use the encrypted random data and fail.
+  */
+-	__HEAD
+-SYM_FUNC_START(startup32_check_sev_cbit)
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+-	pushl	%eax
++	.text
++SYM_FUNC_START(startup32_check_sev_cbit)
+ 	pushl	%ebx
+-	pushl	%ecx
+-	pushl	%edx
++	pushl	%ebp
++
++	call	0f
++0:	popl	%ebp
+ 
+ 	/* Check for non-zero sev_status */
+-	movl	rva(sev_status)(%ebp), %eax
++	movl	(sev_status - 0b)(%ebp), %eax
+ 	testl	%eax, %eax
+ 	jz	4f
+ 
+@@ -748,17 +752,18 @@ SYM_FUNC_START(startup32_check_sev_cbit)
+ 	jnc	2b
+ 
+ 	/* Store to memory and keep it in the registers */
+-	movl	%eax, rva(sev_check_data)(%ebp)
+-	movl	%ebx, rva(sev_check_data+4)(%ebp)
++	leal	(sev_check_data - 0b)(%ebp), %ebp
++	movl	%eax, 0(%ebp)
++	movl	%ebx, 4(%ebp)
+ 
+ 	/* Enable paging to see if encryption is active */
+ 	movl	%cr0, %edx			 /* Backup %cr0 in %edx */
+ 	movl	$(X86_CR0_PG | X86_CR0_PE), %ecx /* Enable Paging and Protected mode */
+ 	movl	%ecx, %cr0
+ 
+-	cmpl	%eax, rva(sev_check_data)(%ebp)
++	cmpl	%eax, 0(%ebp)
+ 	jne	3f
+-	cmpl	%ebx, rva(sev_check_data+4)(%ebp)
++	cmpl	%ebx, 4(%ebp)
+ 	jne	3f
+ 
+ 	movl	%edx, %cr0	/* Restore previous %cr0 */
+@@ -770,13 +775,11 @@ SYM_FUNC_START(startup32_check_sev_cbit)
+ 	jmp	3b
+ 
+ 4:
+-	popl	%edx
+-	popl	%ecx
++	popl	%ebp
+ 	popl	%ebx
+-	popl	%eax
+-#endif
+ 	RET
+ SYM_FUNC_END(startup32_check_sev_cbit)
++#endif
+ 
+ /*
+  * Stack and heap for uncompression
 -- 
 2.35.1
 
