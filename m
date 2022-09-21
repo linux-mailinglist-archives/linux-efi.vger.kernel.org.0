@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F7FD5C005F
-	for <lists+linux-efi@lfdr.de>; Wed, 21 Sep 2022 16:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0BFC5C006C
+	for <lists+linux-efi@lfdr.de>; Wed, 21 Sep 2022 16:55:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230110AbiIUOyw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 21 Sep 2022 10:54:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43850 "EHLO
+        id S230326AbiIUOzJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 21 Sep 2022 10:55:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230116AbiIUOyn (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 21 Sep 2022 10:54:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 381422AFC;
-        Wed, 21 Sep 2022 07:54:41 -0700 (PDT)
+        with ESMTP id S230204AbiIUOyt (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 21 Sep 2022 10:54:49 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0746621274;
+        Wed, 21 Sep 2022 07:54:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C69F3630CF;
+        by sin.source.kernel.org (Postfix) with ESMTPS id 13904CE1D9A;
+        Wed, 21 Sep 2022 14:54:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D8FC43470;
         Wed, 21 Sep 2022 14:54:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63092C433B5;
-        Wed, 21 Sep 2022 14:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663772080;
-        bh=hjePMKZyCOenQTSHV4pGP5IYB9bZ4b3la+cxQPIBsrY=;
+        s=k20201202; t=1663772082;
+        bh=NK01Ptc0Knri4fwSSxLTZJDwNsU8cyDPzfvm17IQIMA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eOGQpxsG98m6Fox2F5dU2wuSzf0M6XmV8Ilp83LqMUqc9w2xhZMr5nojVmeWH47ea
-         XJzRdKCfW+MYXDzQPjPIXnXz8aNprXJhaW2VvzC6dPNmQ/wTfpoj4C7guudElhgfUA
-         I0JCUIHPtLF3OAneuP4KxLdhLAAZ9JC6jaETXIWj9XMXwJ8+zgg78q8Ui5arFrh22x
-         t7bnu7XmktKlhaVFY2l/FdX6VoT7VpR1a9gp/f6H7LkeuJ3XUHhjU3q5CTFqcBNCZX
-         u4VaOu1nepHFRLEknOOgPgotPMESUvtQly/bAXdeSaXlRj1b+eW29c9zM1Dv3KBZr1
-         t/HX77vUxcVhA==
+        b=NKIvydovmE+HTQL6rh7YDVbwepaQGLFvsTTPsIbyXoq6tIujsKAQskYJm69/+2P+i
+         rwUCrqZ8Hi+SLxbnyLKAEjde+CxPvTu/i/cswT2L+9UXb9KYO2VmnZi/qGL+1R7xQz
+         jSa9K/tV0YscEdSHfQtdqbzPfXDVGnolGY29hHCSXADeFrlQWF5hJvaE6m7dIHq1z/
+         BiLEbHNYuxsX2fsmWUSUwDBIn/v67wMFuzvGSWqKv8E7V7Q5HR48w7PrFzyMz06RJi
+         9qvb/YgOR4aT/DPcmP2Pw1CniwsV7PTWUR+ifJ667ZsSeCj/MMNTX+D5SvbINWWpq0
+         de7kenMpa2v8w==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -38,14 +38,14 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Michael Roth <michael.roth@amd.com>
-Subject: [PATCH v2 05/16] x86/compressed: efi-mixed: move efi32_entry out of head_64.S
-Date:   Wed, 21 Sep 2022 16:54:11 +0200
-Message-Id: <20220921145422.437618-6-ardb@kernel.org>
+Subject: [PATCH v2 06/16] x86/compressed: efi-mixed: move efi32_pe_entry() out of head_64.S
+Date:   Wed, 21 Sep 2022 16:54:12 +0200
+Message-Id: <20220921145422.437618-7-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220921145422.437618-1-ardb@kernel.org>
 References: <20220921145422.437618-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3927; i=ardb@kernel.org; h=from:subject; bh=hjePMKZyCOenQTSHV4pGP5IYB9bZ4b3la+cxQPIBsrY=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjKyWLVXF3ze3IV/DZKGamQFIJQTrLYmFVZTd1mPTv UeKZFKyJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYysliwAKCRDDTyI5ktmPJKjNC/ 9QxC+Hyf23IsALZspJ4N4tYNyyXNS/9AJ9F84+vyLnuSO4wk7quDdWvjKBH4rfsgTnQhci8jd5PY/L oXK7dVE4Hy60kRq0PzMjR84XkIuXFb3BKIr7o7a3CZcQXBI1PCfgpX57sfdgCMovbqDgM6X28FrOSt LZ1ZZOp719f3ZE5XfxG8xDH3XGeYz2WKSPODWihkCkp3jr5elPIhNapebM60x6zZEqKD6TmDxvsJ0g BOY5L4xvT4xKTV5+pFbylST3+QAMoXWruIrrYC2pAUmVZ7Co821SupIANUX8yh090aRZ9qTa4LCxv8 dlD6AUjg9ysEgBrVWAx2sGa6mwUs7uuDfFeJACB7vFlBrWRC0+fyPj1/ITX5/Q9obt5wg+BPq/e+bg s4zR68NBvQkdscFT3uu++fAzB5Sn46EWKo8q1p56R4QEs0jEligSU+hrD8+HwajnaSIJN7XsD8WTTO KXQTTOo3eieCtdRK5kbbUQTHjyX/Fk+mILFBfPZMxy1X4=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6576; i=ardb@kernel.org; h=from:subject; bh=NK01Ptc0Knri4fwSSxLTZJDwNsU8cyDPzfvm17IQIMA=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjKyWNuDyGXEdoWMwh7dkHdqw1aCMN9m22aDQW5bnh 1cHq00SJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYysljQAKCRDDTyI5ktmPJKA2C/ 4rPM9OTTMPG29oXbepy6QAATfyQS8V2f8xbll8wz94P7OKOjrOZqlO89XMqpTslRIktV3A5i8ev4tA /Vpn70D4OQTUqlNJijM/VQvVSShS7qbgBnUaEbeWQtrvmXtO2ENOFwZFXWgVcVW9H/BmUJpVUncWRx Q5gpMzE2KxHqkc8QtcyGcJ0njpJ63Vkz9dF/mKFJT/Ar91ybY3VZB1dA3njq4dVAd/iB+QWij5zv2/ P7ltrzEo2dKFXu32lE0viunoGIATlK8oHdZ7yLUUe+r5yprMv7PdFhKoOWUocStVJS+PcDczFewxy3 XP/pnK4LbhCDrj/5RaNEX/h3OMqTrUa0dV90AgP+QyKLzc/DXu2f0PWMG7By9dkH0pVZw+BHiJtU9v INviqX7LRLLIC0G8rVFotr9NUWV1YuHPjSO9eYlSUtzEMgPlDc+dQT/2MnIXYFtjIItFr/9sw8LRSU nNIQIIS6cVYSWVH0JbVxc13y840Db9KH3RCYzh5nEnWv0=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -57,135 +57,212 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Move the efi32_entry() routine out of head_64.S and into efi-mixed.S,
-which reduces clutter in the complicated startup routines. It also
-permits linkage of some symbols used by code to be made local.
+Move the implementation of efi32_pe_entry() into efi-mixed.S, which is a
+more suitable location that only gets built if EFI mixed mode is
+actually enabled.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/efi_mixed.S | 44 +++++++++++++++-----
- arch/x86/boot/compressed/head_64.S   | 32 --------------
- 2 files changed, 34 insertions(+), 42 deletions(-)
+ arch/x86/boot/compressed/efi_mixed.S | 81 ++++++++++++++++++
+ arch/x86/boot/compressed/head_64.S   | 86 +-------------------
+ 2 files changed, 82 insertions(+), 85 deletions(-)
 
 diff --git a/arch/x86/boot/compressed/efi_mixed.S b/arch/x86/boot/compressed/efi_mixed.S
-index 77e77c3ea393..5007a44cd966 100644
+index 5007a44cd966..838514f7685a 100644
 --- a/arch/x86/boot/compressed/efi_mixed.S
 +++ b/arch/x86/boot/compressed/efi_mixed.S
-@@ -105,7 +105,7 @@ SYM_FUNC_START(__efi64_thunk)
- 	/*
- 	 * Switch to IDT and GDT with 32-bit segments. This is the firmware GDT
- 	 * and IDT that was installed when the kernel started executing. The
--	 * pointers were saved at the EFI stub entry point in head_64.S.
-+	 * pointers were saved by the efi32_entry() routine below.
- 	 *
- 	 * Pass the saved DS selector to the 32-bit code, and use far return to
- 	 * restore the saved CS selector.
-@@ -217,22 +217,46 @@ SYM_FUNC_START_LOCAL(efi_enter32)
- 	lret
- SYM_FUNC_END(efi_enter32)
+@@ -244,6 +244,87 @@ SYM_FUNC_START(efi32_entry)
+ 	jmp	startup_32
+ SYM_FUNC_END(efi32_entry)
  
-+SYM_FUNC_START(efi32_entry)
++#define ST32_boottime		60 // offsetof(efi_system_table_32_t, boottime)
++#define BS32_handle_protocol	88 // offsetof(efi_boot_services_32_t, handle_protocol)
++#define LI32_image_base		32 // offsetof(efi_loaded_image_32_t, image_base)
++
++/*
++ * efi_status_t efi32_pe_entry(efi_handle_t image_handle,
++ *			       efi_system_table_32_t *sys_table)
++ */
++SYM_FUNC_START(efi32_pe_entry)
++	pushl	%ebp
++	movl	%esp, %ebp
++	pushl	%eax				// dummy push to allocate loaded_image
++
++	pushl	%ebx				// save callee-save registers
++	pushl	%edi
++
++	call	verify_cpu			// check for long mode support
++	testl	%eax, %eax
++	movl	$0x80000003, %eax		// EFI_UNSUPPORTED
++	jnz	2f
++
 +	call	1f
 +1:	pop	%ebx
 +
-+	/* Save firmware GDTR and code/data selectors */
-+	sgdtl	(efi32_boot_gdt - 1b)(%ebx)
-+	movw	%cs, (efi32_boot_cs - 1b)(%ebx)
-+	movw	%ds, (efi32_boot_ds - 1b)(%ebx)
++	/* Get the loaded image protocol pointer from the image handle */
++	leal	-4(%ebp), %eax
++	pushl	%eax				// &loaded_image
++	leal	(loaded_image_proto - 1b)(%ebx), %eax
++	pushl	%eax				// pass the GUID address
++	pushl	8(%ebp)				// pass the image handle
 +
-+	/* Store firmware IDT descriptor */
-+	sidtl	(efi32_boot_idt - 1b)(%ebx)
++	/*
++	 * Note the alignment of the stack frame.
++	 *   sys_table
++	 *   handle             <-- 16-byte aligned on entry by ABI
++	 *   return address
++	 *   frame pointer
++	 *   loaded_image       <-- local variable
++	 *   saved %ebx		<-- 16-byte aligned here
++	 *   saved %edi
++	 *   &loaded_image
++	 *   &loaded_image_proto
++	 *   handle             <-- 16-byte aligned for call to handle_protocol
++	 */
 +
-+	/* Store boot arguments */
-+	leal	(efi32_boot_args - 1b)(%ebx), %ebx
-+	movl	%ecx, 0(%ebx)
-+	movl	%edx, 4(%ebx)
-+	movl	%esi, 8(%ebx)
-+	movb	$0x0, 12(%ebx)          // efi_is64
++	movl	12(%ebp), %eax			// sys_table
++	movl	ST32_boottime(%eax), %eax	// sys_table->boottime
++	call	*BS32_handle_protocol(%eax)	// sys_table->boottime->handle_protocol
++	addl	$12, %esp			// restore argument space
++	testl	%eax, %eax
++	jnz	2f
 +
-+	/* Disable paging */
-+	movl	%cr0, %eax
-+	btrl	$X86_CR0_PG_BIT, %eax
-+	movl	%eax, %cr0
++	movl	8(%ebp), %ecx			// image_handle
++	movl	12(%ebp), %edx			// sys_table
++	movl	-4(%ebp), %esi			// loaded_image
++	movl	LI32_image_base(%esi), %esi	// loaded_image->image_base
++	leal	(startup_32 - 1b)(%ebx), %ebp	// runtime address of startup_32
++	/*
++	 * We need to set the image_offset variable here since startup_32() will
++	 * use it before we get to the 64-bit efi_pe_entry() in C code.
++	 */
++	subl	%esi, %ebp			// calculate image_offset
++	movl	%ebp, (image_offset - 1b)(%ebx)	// save image_offset
++	xorl	%esi, %esi
++	jmp	efi32_entry
 +
-+	jmp	startup_32
-+SYM_FUNC_END(efi32_entry)
++2:	popl	%edi				// restore callee-save registers
++	popl	%ebx
++	leave
++	RET
++SYM_FUNC_END(efi32_pe_entry)
++
++	.section ".rodata"
++	/* EFI loaded image protocol GUID */
++	.balign 4
++SYM_DATA_START_LOCAL(loaded_image_proto)
++	.long	0x5b1b31a1
++	.word	0x9562, 0x11d2
++	.byte	0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b
++SYM_DATA_END(loaded_image_proto)
 +
  	.data
  	.balign	8
--SYM_DATA_START(efi32_boot_gdt)
-+SYM_DATA_START_LOCAL(efi32_boot_gdt)
- 	.word	0
- 	.quad	0
- SYM_DATA_END(efi32_boot_gdt)
- 
--SYM_DATA_START(efi32_boot_idt)
-+SYM_DATA_START_LOCAL(efi32_boot_idt)
- 	.word	0
- 	.quad	0
- SYM_DATA_END(efi32_boot_idt)
- 
--SYM_DATA_START(efi32_boot_cs)
--	.word	0
--SYM_DATA_END(efi32_boot_cs)
--
--SYM_DATA_START(efi32_boot_ds)
--	.word	0
--SYM_DATA_END(efi32_boot_ds)
-+SYM_DATA_LOCAL(efi32_boot_cs, .word 0)
-+SYM_DATA_LOCAL(efi32_boot_ds, .word 0)
-+SYM_DATA_LOCAL(efi32_boot_args, .long 0, 0, 0)
-+SYM_DATA(efi_is64, .byte 1)
+ SYM_DATA_START_LOCAL(efi32_boot_gdt)
 diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index 9ae6ddccd3ef..be95d5685717 100644
+index be95d5685717..8da2396a35a8 100644
 --- a/arch/x86/boot/compressed/head_64.S
 +++ b/arch/x86/boot/compressed/head_64.S
-@@ -289,35 +289,6 @@ SYM_FUNC_START(efi32_stub_entry)
- 	popl	%esi
- 	jmp	efi32_entry
- SYM_FUNC_END(efi32_stub_entry)
+@@ -673,6 +673,7 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lno_longmode)
+ 	jmp     1b
+ SYM_FUNC_END(.Lno_longmode)
+ 
++	.globl	verify_cpu
+ #include "../../kernel/verify_cpu.S"
+ 
+ 	.data
+@@ -720,91 +721,6 @@ SYM_DATA_END_LABEL(boot32_idt, SYM_L_GLOBAL, boot32_idt_end)
+ #ifdef CONFIG_EFI_STUB
+ SYM_DATA(image_offset, .long 0)
+ #endif
+-#ifdef CONFIG_EFI_MIXED
+-#define ST32_boottime		60 // offsetof(efi_system_table_32_t, boottime)
+-#define BS32_handle_protocol	88 // offsetof(efi_boot_services_32_t, handle_protocol)
+-#define LI32_image_base		32 // offsetof(efi_loaded_image_32_t, image_base)
 -
 -	.text
--SYM_FUNC_START_LOCAL(efi32_entry)
+-	.code32
+-SYM_FUNC_START(efi32_pe_entry)
+-/*
+- * efi_status_t efi32_pe_entry(efi_handle_t image_handle,
+- *			       efi_system_table_32_t *sys_table)
+- */
+-
+-	pushl	%ebp
+-	movl	%esp, %ebp
+-	pushl	%eax				// dummy push to allocate loaded_image
+-
+-	pushl	%ebx				// save callee-save registers
+-	pushl	%edi
+-
+-	call	verify_cpu			// check for long mode support
+-	testl	%eax, %eax
+-	movl	$0x80000003, %eax		// EFI_UNSUPPORTED
+-	jnz	2f
+-
 -	call	1f
 -1:	pop	%ebx
 -
--	/* Save firmware GDTR and code/data selectors */
--	sgdtl	(efi32_boot_gdt - 1b)(%ebx)
--	movw	%cs, (efi32_boot_cs - 1b)(%ebx)
--	movw	%ds, (efi32_boot_ds - 1b)(%ebx)
+-	/* Get the loaded image protocol pointer from the image handle */
+-	leal	-4(%ebp), %eax
+-	pushl	%eax				// &loaded_image
+-	leal	(loaded_image_proto - 1b)(%ebx), %eax
+-	pushl	%eax				// pass the GUID address
+-	pushl	8(%ebp)				// pass the image handle
 -
--	/* Store firmware IDT descriptor */
--	sidtl	(efi32_boot_idt - 1b)(%ebx)
+-	/*
+-	 * Note the alignment of the stack frame.
+-	 *   sys_table
+-	 *   handle             <-- 16-byte aligned on entry by ABI
+-	 *   return address
+-	 *   frame pointer
+-	 *   loaded_image       <-- local variable
+-	 *   saved %ebx		<-- 16-byte aligned here
+-	 *   saved %edi
+-	 *   &loaded_image
+-	 *   &loaded_image_proto
+-	 *   handle             <-- 16-byte aligned for call to handle_protocol
+-	 */
 -
--	/* Store boot arguments */
--	leal	(efi32_boot_args - 1b)(%ebx), %ebx
--	movl	%ecx, 0(%ebx)
--	movl	%edx, 4(%ebx)
--	movl	%esi, 8(%ebx)
--	movb	$0x0, 12(%ebx)          // efi_is64
+-	movl	12(%ebp), %eax			// sys_table
+-	movl	ST32_boottime(%eax), %eax	// sys_table->boottime
+-	call	*BS32_handle_protocol(%eax)	// sys_table->boottime->handle_protocol
+-	addl	$12, %esp			// restore argument space
+-	testl	%eax, %eax
+-	jnz	2f
 -
--	/* Disable paging */
--	movl	%cr0, %eax
--	btrl	$X86_CR0_PG_BIT, %eax
--	movl	%eax, %cr0
+-	movl	8(%ebp), %ecx			// image_handle
+-	movl	12(%ebp), %edx			// sys_table
+-	movl	-4(%ebp), %esi			// loaded_image
+-	movl	LI32_image_base(%esi), %esi	// loaded_image->image_base
+-	leal	(startup_32 - 1b)(%ebx), %ebp	// runtime address of startup_32
+-	/*
+-	 * We need to set the image_offset variable here since startup_32() will
+-	 * use it before we get to the 64-bit efi_pe_entry() in C code.
+-	 */
+-	subl	%esi, %ebp			// calculate image_offset
+-	movl	%ebp, (image_offset - 1b)(%ebx)	// save image_offset
+-	xorl	%esi, %esi
+-	jmp	efi32_entry
 -
--	jmp	startup_32
--SYM_FUNC_END(efi32_entry)
--	__HEAD
- #endif
+-2:	popl	%edi				// restore callee-save registers
+-	popl	%ebx
+-	leave
+-	RET
+-SYM_FUNC_END(efi32_pe_entry)
+-
+-	.section ".rodata"
+-	/* EFI loaded image protocol GUID */
+-	.balign 4
+-SYM_DATA_START_LOCAL(loaded_image_proto)
+-	.long	0x5b1b31a1
+-	.word	0x9562, 0x11d2
+-	.byte	0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b
+-SYM_DATA_END(loaded_image_proto)
+-#endif
  
- 	.code64
-@@ -750,9 +721,6 @@ SYM_DATA_END_LABEL(boot32_idt, SYM_L_GLOBAL, boot32_idt_end)
- SYM_DATA(image_offset, .long 0)
- #endif
- #ifdef CONFIG_EFI_MIXED
--SYM_DATA(efi32_boot_args, .long 0, 0, 0)
--SYM_DATA(efi_is64, .byte 1)
--
- #define ST32_boottime		60 // offsetof(efi_system_table_32_t, boottime)
- #define BS32_handle_protocol	88 // offsetof(efi_boot_services_32_t, handle_protocol)
- #define LI32_image_base		32 // offsetof(efi_loaded_image_32_t, image_base)
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+ 	__HEAD
 -- 
 2.35.1
 
