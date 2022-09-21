@@ -2,56 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D7945E5399
-	for <lists+linux-efi@lfdr.de>; Wed, 21 Sep 2022 21:10:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0055A5E547E
+	for <lists+linux-efi@lfdr.de>; Wed, 21 Sep 2022 22:29:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229866AbiIUTKd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 21 Sep 2022 15:10:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51676 "EHLO
+        id S229519AbiIUU3v (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 21 Sep 2022 16:29:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229544AbiIUTKd (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 21 Sep 2022 15:10:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B034C580AA
-        for <linux-efi@vger.kernel.org>; Wed, 21 Sep 2022 12:10:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1663787430;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=VJoInkloU32C9AR3RPsVMPeMbfju4OFWPjPWO0xr8xg=;
-        b=ZtZQJiJfcrq+5MEXCsvpvS9aNci86edo9n9QZyUXDuCtqFdEYMI4Pi0D3IsAN+B3wGnBf3
-        cyEhibzhyHkxxxrcETH8o0jrisQVplJ7U/afWkCdnNHAVyZokQVjIf58rFs7/PwkGdTpCq
-        ZsPZq7qTj4tiIqfmFoYFdS2DnGzxqnY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-548-DWFGm2XkN5CZffQV61xUdA-1; Wed, 21 Sep 2022 15:10:27 -0400
-X-MC-Unique: DWFGm2XkN5CZffQV61xUdA-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BD10C85A5B6;
-        Wed, 21 Sep 2022 19:10:26 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.17.62])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 9160449BB65;
-        Wed, 21 Sep 2022 19:10:26 +0000 (UTC)
-Date:   Wed, 21 Sep 2022 15:10:24 -0400
-From:   Peter Jones <pjones@redhat.com>
-To:     Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
-Subject: Re: [PATCH] efi: libstub: check Shim mode using MokSBStateRT
-Message-ID: <20220921191023.dztlybd5t5dwdjay@redhat.com>
-References: <20220920153743.3598053-1-ardb@kernel.org>
- <CAC_iWjLjnPZQ2Fbo7kieH5C1NCTNaL3rnBdcW8L1q1FZ9td4aQ@mail.gmail.com>
+        with ESMTP id S231128AbiIUU3o (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 21 Sep 2022 16:29:44 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4104F64D7
+        for <linux-efi@vger.kernel.org>; Wed, 21 Sep 2022 13:29:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1663792183; x=1695328183;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=nZGOXG2o515bBVXM1KJLA9CvgmPfz2ctiOkqsDCf89I=;
+  b=GvLlCxK5kgFoiUYc86FqMTFgQvNZMaPVDOrpVvrf8CGbviXL6pnyjOsc
+   QDstKaT+JtpHxtCFvsYlpqGmsNk9c5q7BAdwZ/Dwp3qzV6QQm9il5yxzA
+   8yC7x8HUzGWR084gEIy8Vunc9xehXUH0YytJQl9vpzA+0zyQO3h3o/t8A
+   E+Fd2OuHrsrRZwP8ktdhsxylvFIvkgAnPIwb/AlFjIATHOs03aTHZajTn
+   o0O17bfY0FfPiVBARuR3Jrew65gZVd4XKHIOnUHA9wWnr0vVlX5aFBGgN
+   O/PIuEXzA23qCCD6X3EnY+Uik587lBSiGezwGRRmpiPNVWA0O26ncaxxO
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10477"; a="364096402"
+X-IronPort-AV: E=Sophos;i="5.93,334,1654585200"; 
+   d="scan'208";a="364096402"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2022 13:29:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,334,1654585200"; 
+   d="scan'208";a="948312185"
+Received: from lkp-server01.sh.intel.com (HELO c0a60f19fe7e) ([10.239.97.150])
+  by fmsmga005.fm.intel.com with ESMTP; 21 Sep 2022 13:29:40 -0700
+Received: from kbuild by c0a60f19fe7e with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1ob6Lk-0003vo-0K;
+        Wed, 21 Sep 2022 20:29:40 +0000
+Date:   Thu, 22 Sep 2022 04:28:42 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS 25a47cb1f2ce2d3ffd6b24af6ce3576370fc13a3
+Message-ID: <632b73fa.t7PFwDA5WIOtQrQ/%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAC_iWjLjnPZQ2Fbo7kieH5C1NCTNaL3rnBdcW8L1q1FZ9td4aQ@mail.gmail.com>
-User-Agent: NeoMutt/20180716
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,109 +60,74 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Sep 21, 2022 at 05:52:31PM +0200, Ilias Apalodimas wrote:
-> Hi Ard
-> 
-> On Tue, 20 Sept 2022 at 17:37, Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > We currently check the MokSBState variable to decide whether we should
-> > treat UEFI secure boot as being disabled, even if the firmware thinks
-> > otherwise. This is used by shim to indicate that it is not checking
-> > signatures on boot images. In the kernel, we use this to relax lockdown
-> > policies.
-> >
-> > However, in cases where shim is not even being used, we don't want this
-> > variable to interfere with lockdown, given that the variable is
-> > non-volatile variable and therefore persists across a reboot. This means
-> > setting it once will persistently disable lockdown checks on a given
-> > system.
-> >
-> > So switch to the mirrored version of this variable, called MokSBStateRT,
-> > which is supposed to be volatile, and this is something we can check.
-> >
-> 
-> Just out of curiosity was the mirroring implemented at the same time
-> in SHIM? IOW does MokSBState guarantee the presence of the -RT?
-> Regardless of the answer this fixes an actual problem, so fwiw
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+branch HEAD: 25a47cb1f2ce2d3ffd6b24af6ce3576370fc13a3  Merge tag 'efi-loongarch-for-v6.1-2' into HEAD
 
-Yes, since 2016.
+elapsed time: 720m
 
-Reviewed-by: Peter Jones <pjones@redhat.com>
+configs tested: 53
+configs skipped: 2
 
-> Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-> 
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >  arch/x86/xen/efi.c                        | 5 +++--
-> >  drivers/firmware/efi/libstub/secureboot.c | 8 ++++----
-> >  2 files changed, 7 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/arch/x86/xen/efi.c b/arch/x86/xen/efi.c
-> > index 7d7ffb9c826a..8bd65f2900b9 100644
-> > --- a/arch/x86/xen/efi.c
-> > +++ b/arch/x86/xen/efi.c
-> > @@ -100,6 +100,7 @@ static enum efi_secureboot_mode xen_efi_get_secureboot(void)
-> >         enum efi_secureboot_mode mode;
-> >         efi_status_t status;
-> >         u8 moksbstate;
-> > +       u32 attr;
-> >         unsigned long size;
-> >
-> >         mode = efi_get_secureboot_mode(efi.get_variable);
-> > @@ -113,13 +114,13 @@ static enum efi_secureboot_mode xen_efi_get_secureboot(void)
-> >         /* See if a user has put the shim into insecure mode. */
-> >         size = sizeof(moksbstate);
-> >         status = efi.get_variable(L"MokSBStateRT", &shim_guid,
-> > -                                 NULL, &size, &moksbstate);
-> > +                                 &attr, &size, &moksbstate);
-> >
-> >         /* If it fails, we don't care why. Default to secure. */
-> >         if (status != EFI_SUCCESS)
-> >                 goto secure_boot_enabled;
-> >
-> > -       if (moksbstate == 1)
-> > +       if (!(attr & EFI_VARIABLE_NON_VOLATILE) && moksbstate == 1)
-> >                 return efi_secureboot_mode_disabled;
-> >
-> >   secure_boot_enabled:
-> > diff --git a/drivers/firmware/efi/libstub/secureboot.c b/drivers/firmware/efi/libstub/secureboot.c
-> > index 8a18930f3eb6..516f4f0069bd 100644
-> > --- a/drivers/firmware/efi/libstub/secureboot.c
-> > +++ b/drivers/firmware/efi/libstub/secureboot.c
-> > @@ -14,7 +14,7 @@
-> >
-> >  /* SHIM variables */
-> >  static const efi_guid_t shim_guid = EFI_SHIM_LOCK_GUID;
-> > -static const efi_char16_t shim_MokSBState_name[] = L"MokSBState";
-> > +static const efi_char16_t shim_MokSBState_name[] = L"MokSBStateRT";
-> >
-> >  static efi_status_t get_var(efi_char16_t *name, efi_guid_t *vendor, u32 *attr,
-> >                             unsigned long *data_size, void *data)
-> > @@ -43,8 +43,8 @@ enum efi_secureboot_mode efi_get_secureboot(void)
-> >
-> >         /*
-> >          * See if a user has put the shim into insecure mode. If so, and if the
-> > -        * variable doesn't have the runtime attribute set, we might as well
-> > -        * honor that.
-> > +        * variable doesn't have the non-volatile attribute set, we might as
-> > +        * well honor that.
-> >          */
-> >         size = sizeof(moksbstate);
-> >         status = get_efi_var(shim_MokSBState_name, &shim_guid,
-> > @@ -53,7 +53,7 @@ enum efi_secureboot_mode efi_get_secureboot(void)
-> >         /* If it fails, we don't care why. Default to secure */
-> >         if (status != EFI_SUCCESS)
-> >                 goto secure_boot_enabled;
-> > -       if (!(attr & EFI_VARIABLE_RUNTIME_ACCESS) && moksbstate == 1)
-> > +       if (!(attr & EFI_VARIABLE_NON_VOLATILE) && moksbstate == 1)
-> >                 return efi_secureboot_mode_disabled;
-> >
-> >  secure_boot_enabled:
-> > --
-> > 2.35.1
-> >
-> 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arc                                 defconfig
+s390                             allmodconfig
+alpha                               defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+s390                                defconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+m68k                             allyesconfig
+s390                             allyesconfig
+powerpc                          allmodconfig
+mips                             allyesconfig
+powerpc                           allnoconfig
+sh                               allmodconfig
+i386                                defconfig
+arc                  randconfig-r043-20220921
+riscv                randconfig-r042-20220921
+x86_64                              defconfig
+s390                 randconfig-r044-20220921
+arm                                 defconfig
+x86_64                               rhel-8.3
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+x86_64                        randconfig-a006
+x86_64                           allyesconfig
+i386                          randconfig-a014
+arm                              allyesconfig
+i386                          randconfig-a012
+arm64                            allyesconfig
+i386                          randconfig-a016
+i386                             allyesconfig
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+x86_64                    rhel-8.3-kselftests
+ia64                             allmodconfig
+x86_64                           rhel-8.3-syz
+x86_64                          rhel-8.3-func
+m68k                             allmodconfig
+
+clang tested configs:
+x86_64                        randconfig-a016
+hexagon              randconfig-r041-20220921
+hexagon              randconfig-r045-20220921
+x86_64                        randconfig-a001
+i386                          randconfig-a002
+x86_64                        randconfig-a003
+i386                          randconfig-a004
+x86_64                        randconfig-a005
+i386                          randconfig-a013
+i386                          randconfig-a006
+i386                          randconfig-a011
+i386                          randconfig-a015
 
 -- 
-        Peter
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
