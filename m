@@ -2,93 +2,130 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C0A85BED7B
-	for <lists+linux-efi@lfdr.de>; Tue, 20 Sep 2022 21:19:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4DE85BF29F
+	for <lists+linux-efi@lfdr.de>; Wed, 21 Sep 2022 03:16:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229741AbiITTTR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 20 Sep 2022 15:19:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60712 "EHLO
+        id S229911AbiIUBQ5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 20 Sep 2022 21:16:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbiITTTQ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 20 Sep 2022 15:19:16 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC1A261D68;
-        Tue, 20 Sep 2022 12:19:14 -0700 (PDT)
-Received: from zn.tnic (p200300ea9733e791329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e791:329c:23ff:fea6:a903])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5C7241EC01D4;
-        Tue, 20 Sep 2022 21:19:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1663701549;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=FEzgIy7+VixOuaBNBHyswL6EnQKt/p0p/2LZpYHPS9U=;
-        b=mn7vCIJGvsWZLdM9xxpNou/6M4KSIPKPBzD8db6NOZvjnFqZi3TX9ksfL4zkdDNaH9Fh7D
-        Jn0s9NdlwuKB0lAVopNcz9qg/ODzwUsB4YusCJF9hofr6XVkzS8isw3wie50qMYLIZi8dP
-        Rc2aaia0xXB0QB6c9RB39MdDOyM9yGo=
-Date:   Tue, 20 Sep 2022 21:19:05 +0200
-From:   Borislav Petkov <bp@alien8.de>
+        with ESMTP id S229522AbiIUBQ4 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 20 Sep 2022 21:16:56 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 555E561D4D
+        for <linux-efi@vger.kernel.org>; Tue, 20 Sep 2022 18:16:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1663723015; x=1695259015;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=OvDqsz79k2IKlbb/WknNndZDgC5vMZQ/HeMG7oZ3aAQ=;
+  b=RLb4Qg4zTnglcbmVez0Jf8Q779WHtVRaySJ0aEOuDLAk+LlnqqaB/Enr
+   VF58URtKsYispmG9HYDB11NB/VJIJ811ogyafDUbTwoKNgUka9DmfjGr/
+   fEKYaBv6XFnEEXiYKjcMxQgZt8Dh4+Giqpc/lIoLp1Ooq56ypBecpMLIg
+   ggIJBCUMvvmblKBJY/i06Swp85BGM76cDXlJmnVC9p6Rdq0d3c04ItGuJ
+   19ff1rNSEQFBO4E9h553xkLZHsVd47kR2U8AHW2910uIRpSsIyUjdOhTR
+   1Q1ihX4wZz1fQdg5p/FmHwbuo/ljg7i2fzyTKr48Ena22J0osRZo68zeF
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10476"; a="298585810"
+X-IronPort-AV: E=Sophos;i="5.93,332,1654585200"; 
+   d="scan'208";a="298585810"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2022 18:16:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,332,1654585200"; 
+   d="scan'208";a="744756603"
+Received: from lkp-server01.sh.intel.com (HELO c0a60f19fe7e) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 20 Sep 2022 18:16:53 -0700
+Received: from kbuild by c0a60f19fe7e with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oaoM9-00035s-06;
+        Wed, 21 Sep 2022 01:16:53 +0000
+Date:   Wed, 21 Sep 2022 09:16:27 +0800
+From:   kernel test robot <lkp@intel.com>
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Michael Roth <michael.roth@amd.com>
-Subject: Re: [PATCH 1/6] x86/head_64: clean up mixed mode 32-bit entry code
-Message-ID: <YyoSKYQFDiqcqXWA@zn.tnic>
-References: <20220815134223.740112-1-ardb@kernel.org>
- <20220815134223.740112-2-ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS a241d94bb532dcfb7ef3f723e6a0a0e7cf8f10ea
+Message-ID: <632a65eb.LhJNCIsAXDXGyZMM%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220815134223.740112-2-ardb@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Aug 15, 2022 at 03:42:18PM +0200, Ard Biesheuvel wrote:
-> The x86_64 32-bit entry code is a jumble of EFI and SEV routines, which
-> is not good for maintainability. Let's isolate the EFI mixed mode code
-> and combine it with the boot service thunk that lives in another .S
-> file, so that we can remove it from head_64.S
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+branch HEAD: a241d94bb532dcfb7ef3f723e6a0a0e7cf8f10ea  efi: libstub: fix type confusion for load_options_size
 
-Who is "we"?
+elapsed time: 720m
 
-Please use passive voice in all text.
+configs tested: 51
+configs skipped: 2
 
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  arch/x86/boot/compressed/Makefile       |   6 +-
->  arch/x86/boot/compressed/efi_mixed.S    | 358 ++++++++++++++++++++
->  arch/x86/boot/compressed/efi_thunk_64.S | 195 -----------
->  arch/x86/boot/compressed/head_32.S      |   4 -
->  arch/x86/boot/compressed/head_64.S      | 149 +-------
->  drivers/firmware/efi/libstub/x86-stub.c |   3 +-
->  6 files changed, 370 insertions(+), 345 deletions(-)
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-So I'm really nervous about patches touching early asm code where
-multiple things happen all at once instead of each logical change being
-split into a single patch: here I see code movement but then other
-functionality is being added too.
+gcc tested configs:
+powerpc                           allnoconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+sh                               allmodconfig
+powerpc                          allmodconfig
+mips                             allyesconfig
+arc                  randconfig-r043-20220919
+arc                                 defconfig
+s390                 randconfig-r044-20220919
+s390                             allmodconfig
+riscv                randconfig-r042-20220919
+alpha                               defconfig
+x86_64                              defconfig
+i386                 randconfig-a012-20220919
+i386                 randconfig-a011-20220919
+s390                                defconfig
+i386                                defconfig
+i386                 randconfig-a014-20220919
+s390                             allyesconfig
+i386                 randconfig-a016-20220919
+i386                          randconfig-a016
+x86_64                        randconfig-a004
+i386                          randconfig-a005
+x86_64                        randconfig-a002
+x86_64                        randconfig-a006
+x86_64                        randconfig-a015
+arc                              allyesconfig
+alpha                            allyesconfig
+x86_64                               rhel-8.3
+m68k                             allyesconfig
+i386                             allyesconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+m68k                             allmodconfig
+x86_64                           rhel-8.3-syz
+ia64                             allmodconfig
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+arm                                 defconfig
+arm                              allyesconfig
+arm64                            allyesconfig
 
-So I'd really appreciate it if you split this one into smaller, obvious,
-even boring patches - this will simplify review considerably. For
-example, do only a mechanical code movement in one patch and then add
-the new startup_64_mixedmode thing in another. And so on.
-
-That would be greatly appreciated.
-
-Thx.
+clang tested configs:
+hexagon              randconfig-r041-20220919
+hexagon              randconfig-r045-20220919
+i386                          randconfig-a015
+x86_64                        randconfig-a005
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a016
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+0-DAY CI Kernel Test Service
+https://01.org/lkp
