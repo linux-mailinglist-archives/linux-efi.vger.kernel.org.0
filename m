@@ -2,103 +2,129 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D8735E6DD2
-	for <lists+linux-efi@lfdr.de>; Thu, 22 Sep 2022 23:15:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE3F35E6F64
+	for <lists+linux-efi@lfdr.de>; Fri, 23 Sep 2022 00:09:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230506AbiIVVPw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 22 Sep 2022 17:15:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36900 "EHLO
+        id S230164AbiIVWJP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 22 Sep 2022 18:09:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230457AbiIVVPv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 22 Sep 2022 17:15:51 -0400
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FDC9B516A
-        for <linux-efi@vger.kernel.org>; Thu, 22 Sep 2022 14:15:49 -0700 (PDT)
-Received: by mail-pj1-x1034.google.com with SMTP id q35-20020a17090a752600b002038d8a68fbso3784091pjk.0
-        for <linux-efi@vger.kernel.org>; Thu, 22 Sep 2022 14:15:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gimpelevich-san-francisco-ca-us.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:disposition-notification-to
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date;
-        bh=F/fSD3tiHwAEumeXG+qiH5G3ZfY9Y6LXUkEueVgh6Fk=;
-        b=tGeOq2JWiIBsL3jWhqw00ZY4tOCMc7IQwKuz2NBmLdlz6nI72CPqI5nvU4wYA7wrSK
-         4ZtSaaYV2fWWtkk6v6ylkQsxeFK/GpQhc5Kroq/oD899bc22M7UnBHR9Kf264D7iCyFg
-         NPoBZnxVotT//5zKC5GKwBGbCnKU2NoIe0/OJHqWzMDG0yR4UwOL74fYkFPbPFTM/EZy
-         2FWS/hle0d47gTgQgX7IgjjsLEVfb3z04geb4y98if+3dNiERqjRRvZk0HyzSwRUfTWQ
-         BRQKsTwaWXeqkdmv1qnX1MPytI/80wucocrAmC2XiQFJs11GsU5g6AGI7NkC7/vFD3PI
-         B1fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:disposition-notification-to
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=F/fSD3tiHwAEumeXG+qiH5G3ZfY9Y6LXUkEueVgh6Fk=;
-        b=sTvn3t8ThRgbavSU/4y5Z3dRYkZEOaBkejFKRhBzrlLfjIsz5rb5Teb55C4Fb6GC+y
-         Uirk0OFzhXwgI8iAt6+JDKAJLkv3UTzN2ByMjUCMdM3KETBljF5FnsOChzX/pnPK7xM4
-         uOrzzz2uEB8frZMmtZuQZtj1vHuCiz4YRnQkwPHCU1sb5dVA1YcVMzxTjsLAdPP64OmJ
-         If8Ha7YW0hYtrc760bFmHtKerRaaLRTbOAQNM0glPfk5Mg+P3cOjAYouCU+lDedj4tte
-         kE/y/bmJSKgSubBuvGvlTPoPpOaEH3VeEN23/xyF0/OC9OeBfoOcHkFRj01KR9rqetR5
-         yDlA==
-X-Gm-Message-State: ACrzQf3o3B6OORqojnQVtYjeAMBtEZ51SXZXbPkeoeAdSvwL4FL4VArO
-        3dFSwyrxcbwvtVpzlS9YEXluLQ==
-X-Google-Smtp-Source: AMsMyM5ldt2VrAPEWUNgs13BVkUvJnBv9O5XNfcE5ETCAxNGwR13fNpzdtYlY5dOXChaPEyxe5tV+Q==
-X-Received: by 2002:a17:902:7897:b0:178:9292:57b9 with SMTP id q23-20020a170902789700b00178929257b9mr5370369pll.102.1663881348801;
-        Thu, 22 Sep 2022 14:15:48 -0700 (PDT)
-Received: from [192.168.72.152] (157-131-203-68.fiber.dynamic.sonic.net. [157.131.203.68])
-        by smtp.gmail.com with ESMTPSA id d6-20020a170902b70600b00173368e9dedsm4485709pls.252.2022.09.22.14.15.47
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 22 Sep 2022 14:15:48 -0700 (PDT)
-Message-ID: <1663881344.25129.23.camel@chimera>
-Subject: Re: [PATCH 0/8] generic command line v4
-From:   Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>
-To:     Daniel Walker <danielwa@cisco.com>
-Cc:     Sean Anderson <sean.anderson@seco.com>,
-        Will Deacon <will@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Rob Herring <robh@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-efi@vger.kernel.org
-Date:   Thu, 22 Sep 2022 14:15:44 -0700
-In-Reply-To: <20220922211026.GW4320@zorba>
-References: <20210416040924.2882771-1-danielwa@cisco.com>
-         <b517fac5-2fdc-a8c9-75d0-174c67f5a2de@seco.com>
-         <20220922205334.GV4320@zorba>
-         <dcff9b0f-82c8-5aa7-0fff-b749a05fcb20@seco.com>
-         <20220922211026.GW4320@zorba>
+        with ESMTP id S230352AbiIVWJO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 22 Sep 2022 18:09:14 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6329F1129E8;
+        Thu, 22 Sep 2022 15:09:13 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1693FB80D24;
+        Thu, 22 Sep 2022 22:09:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B121EC43470;
+        Thu, 22 Sep 2022 22:09:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1663884550;
+        bh=yhEq7Kx+9fokf6ojtPysLGhQGDpX6JAwF3tWtnzJsrc=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=gJhX1Hp4djRyMuWxZVf3Acuv01czzmRvSZjFPP8mutU4h/hFPvCVzhvmu245ghps8
+         IAnLwyWX6/E5arGyeeUdB3zQtscl5q/Toi800x7GTIzXhOj0OF8Df/sb4RqrRY8k76
+         Celq2oNXFx1W2YxzLWZAWMp7DSG95EKllQVC3s/HrSqtHBAoGFDY/vMk3HLLpHcfI7
+         6I0UBa110pK04Dp3AfWWICL5/M0rv3QBhsohRv0R6ErClPZPMx5nPm4cbsUuqoFk+o
+         jBVrbS9EnZNlARX1/1m5RTSxjBTIPm/smn6YMJ640wUH3Z2A9X8BO3ECBpSvYX8rnu
+         NJEEjWDX1C9hg==
+Received: by mail-lf1-f52.google.com with SMTP id z25so16954619lfr.2;
+        Thu, 22 Sep 2022 15:09:10 -0700 (PDT)
+X-Gm-Message-State: ACrzQf1aFIzoilw5vkLxjdN+pdF6kHhKX5UKWTvwC1bMAFZuO2E58Et3
+        4ybmTTXPEAgIQBCfiJ0GlzIalqMD5z1w7qh7D/w=
+X-Google-Smtp-Source: AMsMyM6tUfuFClTNZiSF+ApjyX+31uovgZsMWU9ahZv1+27FMrZppnvlxWuJjRopOTeFw/y0iOW+lL+InNHoQjN5RJY=
+X-Received: by 2002:a05:6512:13a1:b0:48d:f14:9059 with SMTP id
+ p33-20020a05651213a100b0048d0f149059mr2263181lfa.110.1663884548707; Thu, 22
+ Sep 2022 15:09:08 -0700 (PDT)
+MIME-Version: 1.0
+References: <08906193-246b-c874-8bac-1d98d2313ac4@roeck-us.net> <20220922193157.1673623-1-dave.hansen@linux.intel.com>
+In-Reply-To: <20220922193157.1673623-1-dave.hansen@linux.intel.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 23 Sep 2022 00:08:57 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHcF_iK_g0OZSkSv56Wmr=eQGQwNstcNjLEfS=mm7a06w@mail.gmail.com>
+Message-ID: <CAMj1kXHcF_iK_g0OZSkSv56Wmr=eQGQwNstcNjLEfS=mm7a06w@mail.gmail.com>
+Subject: Re: [PATCH] x86/mm+efi: Avoid creating W+X mappings
+To:     Dave Hansen <dave.hansen@linux.intel.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, linux-efi@vger.kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu2 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 2022-09-22 at 14:10 -0700, Daniel Walker wrote:
-> On Thu, Sep 22, 2022 at 05:03:46PM -0400, Sean Anderson wrote:
-[snip]
-> > As recently as last month, someone's patch to add such support was
-> > rejected for this reason [1].
-> > 
-> > --Sean
-> > 
-> > [1] https://lore.kernel.org/linux-arm-kernel/20220812084613.GA3107@willie-the-truck/
-> 
-> 
-> I had no idea.. Thanks for pointing that out. I guess I will re-submit in that
-> case.
-> 
-> Daniel
+On Thu, 22 Sept 2022 at 21:32, Dave Hansen <dave.hansen@linux.intel.com> wrote:
+>
+> From: Peter Zijlstra <peterz@infradead.org>
+>
+> I'm planning on sticking this in x86/mm so that it goes upstream
+> along with the W+X detection code.
+>
+> --
+>
+> A recent x86/mm change warns and refuses to create W+X mappings.
+>
+> The 32-bit EFI code tries to create such a mapping and trips over
+> the new W+X refusal.
+>
+> Make the EFI_RUNTIME_SERVICES_CODE mapping read-only to fix it.
+>
 
-This has been happening repeatedly since circa 2014, on multiple
-architectures. It's quite frustrating, really.
+This is not safe. EFI_RUNTIME_SERVICES_CODE covers both .text and
+.data sections of the EFI runtime PE/COFF executables in memory, so
+you are essentially making .data and .bss read-only. (Whether those
+executables actually modify their .data and .bss at runtime is a
+different matter, but the point is that it used to be possible)
 
+More recent firmwares may provide a 'memory attributes table'
+separately which describes the individual sections, but older 32-bit
+firmwares are not even built with 4k section alignment, so code and
+data may share a single page. Note that we haven't wired up this
+memory attributes table on i386 at the moment, and I seriously doubt
+that 32-bit firmware in the field exposes it.
+
+Can we just turn off this feature for 32-bit?
+
+> Reported-by: Guenter Roeck <linux@roeck-us.net>
+> Signed-off-by: Peter Zijlstra <peterz@infradead.org>
+> Tested-by: Guenter Roeck <linux@roeck-us.net>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Darren Hart <dvhart@infradead.org>
+> Cc: Andy Shevchenko <andy@infradead.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: x86@kernel.org
+> Cc: linux-efi@vger.kernel.org
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Link: https://lore.kernel.org/all/d8cd7c7e-24c1-7f70-24a9-91c77aa634af@roeck-us.net/
+> ---
+>  arch/x86/platform/efi/efi_32.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/x86/platform/efi/efi_32.c b/arch/x86/platform/efi/efi_32.c
+> index e06a199423c0..d81e379fcd43 100644
+> --- a/arch/x86/platform/efi/efi_32.c
+> +++ b/arch/x86/platform/efi/efi_32.c
+> @@ -136,6 +136,7 @@ void __init efi_runtime_update_mappings(void)
+>                         if (md->type != EFI_RUNTIME_SERVICES_CODE)
+>                                 continue;
+>
+> +                       set_memory_ro(md->virt_addr, md->num_pages);
+>                         set_memory_x(md->virt_addr, md->num_pages);
+>                 }
+>         }
