@@ -2,73 +2,46 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79E845E6443
-	for <lists+linux-efi@lfdr.de>; Thu, 22 Sep 2022 15:52:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F23C65E6508
+	for <lists+linux-efi@lfdr.de>; Thu, 22 Sep 2022 16:22:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231877AbiIVNwn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 22 Sep 2022 09:52:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42194 "EHLO
+        id S229997AbiIVOWF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 22 Sep 2022 10:22:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230365AbiIVNwh (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 22 Sep 2022 09:52:37 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00899AED97
-        for <linux-efi@vger.kernel.org>; Thu, 22 Sep 2022 06:52:26 -0700 (PDT)
+        with ESMTP id S231803AbiIVOVk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 22 Sep 2022 10:21:40 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3D54FCA7B
+        for <linux-efi@vger.kernel.org>; Thu, 22 Sep 2022 07:21:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BDA23B836FC
-        for <linux-efi@vger.kernel.org>; Thu, 22 Sep 2022 13:52:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B9C4C433C1
-        for <linux-efi@vger.kernel.org>; Thu, 22 Sep 2022 13:52:10 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 64F32CE21CC
+        for <linux-efi@vger.kernel.org>; Thu, 22 Sep 2022 14:21:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD41C433D6;
+        Thu, 22 Sep 2022 14:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663854730;
-        bh=DylnP/hFhxeBs6qUDoDydzo3J9Twm7vxisAEuJAT1ww=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=LqaUKtcb5vm6nLLy9nvINuP9Ort9aOfAsUwK8Xm0ozSKfT4zNqJinhSRHyzcx0CG4
-         qedf/ki0KScTEs4CyKJComwlScROVZRZVYW3uhR7ff1Esb7c2m9FsNzEX7cl8AJm5p
-         vSbyRfSSZ3dBjmPpq9wD3RssQfegNcHyBGf7KBV+2SPnSdX/XgH4uZ1zEj3KR9IhpG
-         ZQ/kW0SzIkZ5QAd8W+KS53dgrqFB7hB1oUaOI9pSaYpZvxdfRx3u1ijxMhA5CRMpd+
-         0M0k+3inQ4EF8Sfeen27YfLd5JUwcguCY8GwZiKtbXYorPqFQH1sMdcDZ5cnM2hOBR
-         l6PRJbXUrUhxg==
-Received: by mail-lf1-f44.google.com with SMTP id m22so94778lfg.0
-        for <linux-efi@vger.kernel.org>; Thu, 22 Sep 2022 06:52:10 -0700 (PDT)
-X-Gm-Message-State: ACrzQf1gHKI7Tjj10cUJTEezhMOyIVNRkkSFkRjSm8Cu+ZufEyA1Y2tX
-        T/LcCXe+PTnBVRB8c3Gr6/tikEMBFvSF2a337WU=
-X-Google-Smtp-Source: AMsMyM4aCsra4SiGbX/8EgKgvq6wlDKlkk8b77+sopPOMh37XWIAmOHjeSXekw3tKNZ7nywQNHLMxTNyCj9CAesqJ9Q=
-X-Received: by 2002:a05:6512:ba1:b0:498:9890:1bb4 with SMTP id
- b33-20020a0565120ba100b0049898901bb4mr1226100lfv.122.1663854728387; Thu, 22
- Sep 2022 06:52:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220920183554.3870247-1-ardb@kernel.org> <20220920183554.3870247-9-ardb@kernel.org>
- <CAAhV-H4+Exqu6Z3G_hYmhz=Ccv_4EKLjQ5GVT8h3YsJy0FSpAg@mail.gmail.com>
- <CAMj1kXG9HRn6iV5x-Q94xdOhNhiKMGiO6SkE3LMwzXPkXxen_Q@mail.gmail.com>
- <CAAhV-H5AjwKd-ydZTA=vKCA+fe_gAVyhCM2s-Wm54AqWqpBF1A@mail.gmail.com>
- <CAMj1kXFKfwvvidNPumQNzhHXSR4kHpTq-j4ygR=Jow7yySc44Q@mail.gmail.com>
- <CAAhV-H6O+a57aZbYH0yiCgNp18=shFvGtAppXFNSWGPRs0Ng2g@mail.gmail.com>
- <CAMj1kXF=ON-7GyHVvW8bMX1-5zreDUr7D_zNUs5PQdRW+uM+JQ@mail.gmail.com>
- <CAAhV-H5LLFyQbzzZLUyY38kYU5LvOacXPfrL6zzbZFDvE7QBhw@mail.gmail.com>
- <CAMj1kXGYFD+_VZ51M4mu1OAjbkPQsPyE-iKviiUbb8ibLrNczQ@mail.gmail.com>
- <CAAhV-H7cp_ip9B4BD65CsCerjKtfaxcQqi1T3QB8VveRXLhY_w@mail.gmail.com>
- <CAMj1kXG0nnB4qOyKp8-=ggxFYC_1ut6oHdkqX_mVqdZMadjb8g@mail.gmail.com>
- <CAAhV-H6botg=dVVQb1YiPnBHwxVuoyDo1CKd-HbrnhCztQiQZA@mail.gmail.com>
- <CAMj1kXHcbtjR=+==eBhxTRN=uUrvfBjYEpoLKkMQpbpqrxdN9A@mail.gmail.com>
- <CAAhV-H439XWK5ZRSw5w2zN-w8sNLMkR7VSFfxp04ud4C-gOLnA@mail.gmail.com>
- <CAMj1kXGoG8XDASsEEn3B8b0DvF37ryY5Do1iRdKHuouohsLN3g@mail.gmail.com> <CAMj1kXH_vWCxr1r1j7kJ43PcmgAUeuf=QdrbXU2fanEgeCTTgQ@mail.gmail.com>
-In-Reply-To: <CAMj1kXH_vWCxr1r1j7kJ43PcmgAUeuf=QdrbXU2fanEgeCTTgQ@mail.gmail.com>
+        s=k20201202; t=1663856491;
+        bh=ANAha4lMJ+VyRFGnKGJixExP5DKPMPZvp9fuAM0nU5Y=;
+        h=From:To:Cc:Subject:Date:From;
+        b=MfKaBcdUG/FE8WeMVL0efWwfbM8I4terbawAe3n4bnqMQ0NG1Gb2GBlZqvEBGAyJO
+         4DHwH0jiYFh+6jqV+7lzcEqwZktWyFscfzzRRNrSP/h16qavSvARr/CxlBaTF4a9IG
+         ZtyvE3q+dA8x+2r5/l+KEK9K/D34vBRoi9KnmOxqhkrcMm/+2aelqiWROH/1KsUq/f
+         /Xr3r6mEOqNGZyIOHkAgVlAvorgSCaxoURDHrYlrl7ECITCI+NdQHrhWm0gi8pR5Pe
+         B/JHK0AVYJsWQr8q9OaQ2gdDvXTL6FEzdHxOl/FKZ4Cxne3zq9zd3gKS1b9iR2+lS9
+         lLv4aluFFpQQA==
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 22 Sep 2022 15:51:56 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXF8JOuTSZONzF20Qz6xhrou7puwjWMK8z7u7aDg1yGBkg@mail.gmail.com>
-Message-ID: <CAMj1kXF8JOuTSZONzF20Qz6xhrou7puwjWMK8z7u7aDg1yGBkg@mail.gmail.com>
-Subject: Re: [PATCH v2 8/8] efi/loongarch: libstub: remove dependency on
- flattened DT
-To:     Huacai Chen <chenhuacai@kernel.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>, loongarch@lists.linux.dev,
-        Arnd Bergmann <arnd@arndb.de>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Xi Ruoyao <xry111@xry111.site>
-Content-Type: text/plain; charset="UTF-8"
+To:     torvalds@linux-foundation.org
+Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Subject: [GIT PULL] EFI fixes for v6.0 (#2)
+Date:   Thu, 22 Sep 2022 16:21:22 +0200
+Message-Id: <20220922142122.1208186-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1196; i=ardb@kernel.org; h=from:subject; bh=ANAha4lMJ+VyRFGnKGJixExP5DKPMPZvp9fuAM0nU5Y=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjLG9hCFeCPujF0PiB/cJ0t6PqaHE+U3WH7kVUn84a hqN9AGqJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYyxvYQAKCRDDTyI5ktmPJCB5C/ 0TnfwBaotcNE02JGlGlyJoG9SN7rnDfDPmTfn6H2TjSZlXiyVhyTCdJqw4hFJP01T07T3slaBlOUOC jd4WWxavdO5AinSiqVczBjtDJAtVWNLAG+urWpb6FnIvbB6fREq99UABfxquaG23xJ+nQ8HiuqQshy /4Ey7pdjzg0HbWVghcgWDbtS2PmtRS0xStVZC1JWO3SxFZ+zzpnYv1IPzEVI4YjtdWDfsktqaph5Rs rx9dYTAkjOhfujcHMhrLO+q6y6FTk9ALKl/CmOlGbcl/GYE2ewg5xVqjWGyNRRevrq9w0COD4YT45M dbBSyYzrQV8XqwwgNaEqx6sQKM2JADf8fMfORliuuVmG3n8q3YcNmGVmeALoRRJLG1MxH0XbnKLIxZ SQepSp1n50YSgtgKUfDyQkgJoc/03ojlvg2Ge99Qsl+0pY4iUWn4sP+Py6u05h3R+Enx3iGGLhqAS1 GrIJoVvmTePWDfe+08F3zbr0J67DQ7cP08pt1Ot2aZ278=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -78,116 +51,34 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 22 Sept 2022 at 15:19, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Thu, 22 Sept 2022 at 15:18, Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > On Thu, 22 Sept 2022 at 15:12, Huacai Chen <chenhuacai@kernel.org> wrote:
-> > >
-> > > On Thu, Sep 22, 2022 at 9:10 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > >
-> > > > On Thu, 22 Sept 2022 at 15:09, Huacai Chen <chenhuacai@kernel.org> wrote:
-> > > > >
-> > > > > On Thu, Sep 22, 2022 at 8:50 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > > > >
-> > > > > > On Thu, 22 Sept 2022 at 14:08, Huacai Chen <chenhuacai@kernel.org> wrote:
-> > > > > > >
-> > > > > > > Hi, Ard,
-> > > > > > >
-> > > > > > > On Thu, Sep 22, 2022 at 4:59 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > > > > > >
-> > > > > > > > On Thu, 22 Sept 2022 at 09:42, Huacai Chen <chenhuacai@kernel.org> wrote:
-> > > > > > > > >
-> > > > > > > > > On Thu, Sep 22, 2022 at 3:25 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > > > > > > > >
-> > > > > > > > > > On Thu, 22 Sept 2022 at 09:22, Huacai Chen <chenhuacai@kernel.org> wrote:
-> > > > > > > > > > >
-> > > > > > > > > > > On Thu, Sep 22, 2022 at 3:13 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > > > > > > > > > >
-> > > > > > > > > > > > On Thu, 22 Sept 2022 at 04:15, Huacai Chen <chenhuacai@kernel.org> wrote:
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > On Wed, Sep 21, 2022 at 4:15 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > On Wed, 21 Sept 2022 at 06:02, Huacai Chen <chenhuacai@kernel.org> wrote:
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > Acked-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > Thank you Huacai
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > I have created a separate tag with these patches applied onto the
-> > > > > > > > > > > > > > first loongarch efi enablement patch (see below)
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > I would prefer to keep the loongarch trees separate for the next merge
-> > > > > > > > > > > > > > window, but if needed to avoid massive conflicts, you could merge the
-> > > > > > > > > > > > > > tag into the loongarch tree and rebase your changes on top. But please
-> > > > > > > > > > > > > > take care not to rebase those patches themselves: the commit SHAs need
-> > > > > > > > > > > > > > to remain the same.
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > However, if the conflicts are only minor, you can just explain in your
-> > > > > > > > > > > > > > PR to Linus what the resolution should look like.
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > The tag can be found here:
-> > > > > > > > > > > > > > https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git/tag/?h=efi-loongarch-for-v6.1-2
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > I have merged this into the EFI tree as well and pushed it out; it
-> > > > > > > > > > > > > > should appear in -next tomorrow.
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > b093dc55ba9a efi/loongarch: libstub: remove dependency on flattened DT
-> > > > > > > > > > > > > > 102faf0747c2 efi: libstub: install boot-time memory map as config table
-> > > > > > > > > > > > > > 7318926e7bc9 efi: libstub: remove DT dependency from generic stub
-> > > > > > > > > > > > > > 7cb6671e3caa efi: libstub: unify initrd loading between architectures
-> > > > > > > > > > > >
-> > > > > > > > > > > > I will have to respin the initrd patch, unfortunately, as it breaks
-> > > > > > > > > > > > x86. So the signed tag will be updated, and the SHAs above will change
-> > > > > > > > > > > > as well.
-> > > > > > > > > > > Emm, initrd is also broken on LoongArch, the core kernel gets an
-> > > > > > > > > > > EFI_INVALID_TABLE_ADDR address.
-> > > > > > > > > > >
-> > > > > > > > > >
-> > > > > > > > > > OK, I will investigate. This was working fine before so I'm not sure
-> > > > > > > > > > what happened there.
-> > > > > > > > > >
-> > > > > > > >
-> > > > > > > > I cannot reproduce this. Can you reproduce it with qemu? If so, can
-> > > > > > > > you share your command line and .config etc?
-> > > > > > > In qemu we also OK, but on a real machine efistub fails at
-> > > > > > > efi_bs_call(locate_device_path, &lf2_proto_guid, &dp, &handle), maybe
-> > > > > > > our UEFI BIOS has some problems? On a real machine we use grub and
-> > > > > > > there is no "initrd" command in UEFI shell.
-> > > > > > >
-> > > > > >
-> > > > > > Ah ok, so i guess your GRUB lacks the LoadFile2 patches?
-> > > > > >
-> > > > > > https://lists.gnu.org/archive/html/grub-devel/2022-09/msg00057.html
-> > > > > Maybe it is a GRUB problem (I'll discuss with GRUB team), but why
-> > > > > without this series the GRUB can load initrd? Because in the old way
-> > > > > UEFI BIOS fill initrd information to FDT?
-> > > > >
-> > > >
-> > > > No GRUB loads the initrd and creates a DT with a /chosen node to
-> > > > record the initrd base and size.
-> > > Without this series, efistub also fails at
-> > > efi_bs_call(locate_device_path, &lf2_proto_guid, &dp, &handle), but
-> > > initrd works well, this makes me puzzled.
-> > >
-> >
-> > That is because you don't have DTB support in the core kernel yet right?
->
-> Never mind - what exact commit are you testing this with?
+The following changes since commit 9cb636b5f6a8cc6d1b50809ec8f8d33ae0c84c95:
 
-OK, so the existing code only does
+  efi: capsule-loader: Fix use-after-free in efi_capsule_write (2022-09-07 18:23:56 +0200)
 
-early_init_dt_scan(fdt_ptr);
-early_init_fdt_reserve_self();
-efi_system_table = efi_get_fdt_params(&data);
+are available in the Git repository at:
 
-so it never parses the /chosen node, and therefore does not discover the initrd.
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-urgent-for-v6.0-2
 
-I suppose you may have been running with the loongson-2k patches?
+for you to fetch changes up to 5f56a74cc0a6d9b9f8ba89cea29cd7c4774cb2b1:
 
-But actually, this describes exactly the problem that I am addressing
-with this series: you have been inadvertently relying on DT hardware
-support for initrd functionality ...
+  efi: libstub: check Shim mode using MokSBStateRT (2022-09-22 10:15:44 +0200)
+
+----------------------------------------------------------------
+EFI fixes (take #2)
+
+- Use the right variable to check for shim insecure mode
+- Wipe setup_data field when booting via EFI
+- Add missing error check to efibc driver
+
+----------------------------------------------------------------
+Ard Biesheuvel (2):
+      efi: x86: Wipe setup_data on pure EFI boot
+      efi: libstub: check Shim mode using MokSBStateRT
+
+Guilherme G. Piccoli (1):
+      efi: efibc: Guard against allocation failure
+
+ drivers/firmware/efi/efibc.c              | 3 +++
+ drivers/firmware/efi/libstub/secureboot.c | 8 ++++----
+ drivers/firmware/efi/libstub/x86-stub.c   | 7 +++++++
+ 3 files changed, 14 insertions(+), 4 deletions(-)
