@@ -2,201 +2,216 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 658265E6624
-	for <lists+linux-efi@lfdr.de>; Thu, 22 Sep 2022 16:48:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 607455E663C
+	for <lists+linux-efi@lfdr.de>; Thu, 22 Sep 2022 16:56:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229649AbiIVOsY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 22 Sep 2022 10:48:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56478 "EHLO
+        id S231352AbiIVO4P (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 22 Sep 2022 10:56:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230073AbiIVOsX (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 22 Sep 2022 10:48:23 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09828F2755
-        for <linux-efi@vger.kernel.org>; Thu, 22 Sep 2022 07:48:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 82CF5B837F8
-        for <linux-efi@vger.kernel.org>; Thu, 22 Sep 2022 14:48:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256B2C43470
-        for <linux-efi@vger.kernel.org>; Thu, 22 Sep 2022 14:48:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663858099;
-        bh=cMel3Eu2KXw20lTWdA6aCEa3jaT7myHDgNc9LdQVwEk=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=jonmxDaXcjAZ++2A/OzrcypmSfrOcelJ9nHLd9Knh70hE6/ZwVuBBrNVFMuZO1k0N
-         Am+jjbJLcUWTncJ3sgdLkgmGotw7x8diiMuLerYx4g82Zq7lgEtDdpQtS5dVLl1dWt
-         YQHfYlj92EDrFt3UlurUPdJqKIaIbjU8Ypt0t9ePd4dGp6M+JeSIEUjwZj8ATKl7ka
-         J1ZBpad1l7DQtQtnOPdfCtoMR70uXsdHkr4L/SjauRCY7f59JMj30yHRisYEMeYaX3
-         OmhVuz8onuo17W0Ps8Bp31ZLdU58z8T1v4Fx+lApwPw/k7xXqfRy1v0+RyYvoEknRB
-         6wOacLv2l4jlQ==
-Received: by mail-vs1-f46.google.com with SMTP id u189so10563940vsb.4
-        for <linux-efi@vger.kernel.org>; Thu, 22 Sep 2022 07:48:19 -0700 (PDT)
-X-Gm-Message-State: ACrzQf3DucU+i5cm3HlDc54k0zPaeMefbZIxhCVUbs0cvbmuFuiMZh+W
-        bqB5Rnr1A7kgARJupGxN4t6+JncTZA0sB+TN49o=
-X-Google-Smtp-Source: AMsMyM6orUn5WJdFVXsvByIj4xy5chSrK9frM43HHauQziF2lM+Ck7tTPZGVc7W2rgJItzUwD34QKyAKWa/JikG3SRg=
-X-Received: by 2002:a67:d59d:0:b0:398:211f:9a45 with SMTP id
- m29-20020a67d59d000000b00398211f9a45mr1660995vsj.78.1663858098049; Thu, 22
- Sep 2022 07:48:18 -0700 (PDT)
+        with ESMTP id S229969AbiIVO4N (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 22 Sep 2022 10:56:13 -0400
+Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1F91DE0C9;
+        Thu, 22 Sep 2022 07:56:11 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.west.internal (Postfix) with ESMTP id B3AB63200124;
+        Thu, 22 Sep 2022 10:56:10 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute5.internal (MEProxy); Thu, 22 Sep 2022 10:56:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        invisiblethingslab.com; h=cc:cc:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm2; t=1663858570; x=
+        1663944970; bh=zkbm06ADn/Z0FztsvCeHV5g6JLx4lp21pgu9fNEq2/I=; b=j
+        ngIEaLE28Aml2WqeTX1u+TmlmoRdpw86O/8Ni4qYngg/B7qzA9y6kryrFgIfBxwu
+        jhLzGTA3vPWOftDXIPXrJuSl6uqgsqOmbmsW44+1MwXqLguumUY+brtCNVtQ5F4W
+        FtLL9GnLknCIxdlWsnMChlGEktvh2Jkcvz5pkF+Ks6uFLaMfLHpRzZz6sTV33h2/
+        v6KFvvB/OHhE6E3yXfIEpRQfozLycwka8rCFDH08pnsbat0bu6qhCUpTHchXt44f
+        RyKP4zqVWrx3PqiIC8y005N85eYb09UQohTS/aABXm2R7eDWsQPPRWhc1Z+Gp49J
+        zxxDVuvvCZl2d32xicFXw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm2; t=1663858570; x=1663944970; bh=zkbm06ADn/Z0FztsvCeHV5g6JLx4
+        lp21pgu9fNEq2/I=; b=tUywip4W7b9b4sYdV6KEMIRYgWGRaUI48i6JEhIEd1kd
+        YawxkarPA67Sbiei4uy6W62UFCiXY33+hjd6xyhK5mANDPHhAgBNVqiE+/p2M3p+
+        cRgcHGB8UEA4itvNHT1/5+vysAaW2RmGvsDqp9U2u5tHDMDUqBvuA1SOnzCOCjhn
+        dfZ4RgnqZF19TU0TwhFROz4aEAB1cFVUUcRzP4DkxRYChadANHt0CoCCmy0fvzq6
+        n/4muytoiycONrnek2CRpgrcehcxv35+C9OnzngM/dDSOM0W/sosWzmfsV36nCZb
+        9g7zgZINwrXAlcjA7qrfeDaHR0KrivMiso6SDFwC7Q==
+X-ME-Sender: <xms:iXcsY-r9jeoDpCEdOsIPfDhqr7MlS-JYI0nxb93LFU-toBYvGx3TUQ>
+    <xme:iXcsY8p0Q7gpYeLhcPerAQVncXJF7NxLBRlQDnV23Mrgr3ZyXhIH2WFfL3IOcEcsJ
+    Fc3yZTW2xR4w9g>
+X-ME-Received: <xmr:iXcsYzOOPt2ZljHb-K8x6scWodysWPTZLih1fVeKGrgGriiBI7hso9bCupRI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeefgedgvddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepffgvmhhi
+    ucforghrihgvucfqsggvnhhouhhruceouggvmhhisehinhhvihhsihgslhgvthhhihhngh
+    hslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepvdejteegkefhteduhffgteffgeff
+    gfduvdfghfffieefieekkedtheegteehffelnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhepuggvmhhisehinhhvihhsihgslhgvthhhihhnghhs
+    lhgrsgdrtghomh
+X-ME-Proxy: <xmx:iXcsY97JS_078ydi37iHEAOdjmf-jJDpnYfnFS3FnvdQqKPXx12N6w>
+    <xmx:iXcsY94rjsmv-5HyBQR6LffE9NCfTT8xd8GMKf4IvzeSnUkUQOWppg>
+    <xmx:iXcsY9i9gAL7gPm2rvF7F-DRBDeWhXzxOengiwK18SGgoWiqeW_9rg>
+    <xmx:incsY6uxfiNKihOd1IWez8jE3VI1OWb5lXRGiXbAemku3xoG_gt8ew>
+Feedback-ID: iac594737:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 22 Sep 2022 10:56:09 -0400 (EDT)
+Date:   Thu, 22 Sep 2022 10:55:40 -0400
+From:   Demi Marie Obenour <demi@invisiblethingslab.com>
+To:     Jan Beulich <jbeulich@suse.com>
+Cc:     Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        xen-devel@lists.xenproject.org,
+        Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
+        <marmarek@invisiblethingslab.com>, Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH v3] Support ESRT in Xen dom0
+Message-ID: <Yyx3hlE/MDBeEdtu@itl-email>
+References: <20220919193257.2031-1-demi@invisiblethingslab.com>
+ <CAMj1kXEBfJUfTQ3THqqKxsU09_S98B_TjTECKwGM0WAv_5tZaA@mail.gmail.com>
+ <7930b617-d473-94dd-c7e4-33ffa19da13e@suse.com>
+ <CAMj1kXEJ9d3-8xa7rkczY7ur2zDm9CjqM7u1eEdHHmPG=Oo=xA@mail.gmail.com>
+ <3671fd52-6034-7149-ebe4-f7560c0dc6b0@suse.com>
+ <Yyu1xC7Tlf9sS7Ro@itl-email>
+ <6f42a382-c5aa-ba16-f330-69a07476e2aa@suse.com>
 MIME-Version: 1.0
-References: <20220920183554.3870247-1-ardb@kernel.org> <20220920183554.3870247-9-ardb@kernel.org>
- <CAAhV-H4+Exqu6Z3G_hYmhz=Ccv_4EKLjQ5GVT8h3YsJy0FSpAg@mail.gmail.com>
- <CAMj1kXG9HRn6iV5x-Q94xdOhNhiKMGiO6SkE3LMwzXPkXxen_Q@mail.gmail.com>
- <CAAhV-H5AjwKd-ydZTA=vKCA+fe_gAVyhCM2s-Wm54AqWqpBF1A@mail.gmail.com>
- <CAMj1kXFKfwvvidNPumQNzhHXSR4kHpTq-j4ygR=Jow7yySc44Q@mail.gmail.com>
- <CAAhV-H6O+a57aZbYH0yiCgNp18=shFvGtAppXFNSWGPRs0Ng2g@mail.gmail.com>
- <CAMj1kXF=ON-7GyHVvW8bMX1-5zreDUr7D_zNUs5PQdRW+uM+JQ@mail.gmail.com>
- <CAAhV-H5LLFyQbzzZLUyY38kYU5LvOacXPfrL6zzbZFDvE7QBhw@mail.gmail.com>
- <CAMj1kXGYFD+_VZ51M4mu1OAjbkPQsPyE-iKviiUbb8ibLrNczQ@mail.gmail.com>
- <CAAhV-H7cp_ip9B4BD65CsCerjKtfaxcQqi1T3QB8VveRXLhY_w@mail.gmail.com>
- <CAMj1kXG0nnB4qOyKp8-=ggxFYC_1ut6oHdkqX_mVqdZMadjb8g@mail.gmail.com>
- <CAAhV-H6botg=dVVQb1YiPnBHwxVuoyDo1CKd-HbrnhCztQiQZA@mail.gmail.com>
- <CAMj1kXHcbtjR=+==eBhxTRN=uUrvfBjYEpoLKkMQpbpqrxdN9A@mail.gmail.com>
- <CAAhV-H439XWK5ZRSw5w2zN-w8sNLMkR7VSFfxp04ud4C-gOLnA@mail.gmail.com>
- <CAMj1kXGoG8XDASsEEn3B8b0DvF37ryY5Do1iRdKHuouohsLN3g@mail.gmail.com>
- <CAMj1kXH_vWCxr1r1j7kJ43PcmgAUeuf=QdrbXU2fanEgeCTTgQ@mail.gmail.com> <CAMj1kXF8JOuTSZONzF20Qz6xhrou7puwjWMK8z7u7aDg1yGBkg@mail.gmail.com>
-In-Reply-To: <CAMj1kXF8JOuTSZONzF20Qz6xhrou7puwjWMK8z7u7aDg1yGBkg@mail.gmail.com>
-From:   Huacai Chen <chenhuacai@kernel.org>
-Date:   Thu, 22 Sep 2022 22:48:05 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4HLz7rjxrBb1QVGKBfVWC7RdmpL8rHdOSU0e2vtmG6BA@mail.gmail.com>
-Message-ID: <CAAhV-H4HLz7rjxrBb1QVGKBfVWC7RdmpL8rHdOSU0e2vtmG6BA@mail.gmail.com>
-Subject: Re: [PATCH v2 8/8] efi/loongarch: libstub: remove dependency on
- flattened DT
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>, loongarch@lists.linux.dev,
-        Arnd Bergmann <arnd@arndb.de>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Xi Ruoyao <xry111@xry111.site>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="GpPEXFLkdw7UWuLD"
+Content-Disposition: inline
+In-Reply-To: <6f42a382-c5aa-ba16-f330-69a07476e2aa@suse.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Sep 22, 2022 at 9:52 PM Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Thu, 22 Sept 2022 at 15:19, Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > On Thu, 22 Sept 2022 at 15:18, Ard Biesheuvel <ardb@kernel.org> wrote:
-> > >
-> > > On Thu, 22 Sept 2022 at 15:12, Huacai Chen <chenhuacai@kernel.org> wrote:
-> > > >
-> > > > On Thu, Sep 22, 2022 at 9:10 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > > >
-> > > > > On Thu, 22 Sept 2022 at 15:09, Huacai Chen <chenhuacai@kernel.org> wrote:
-> > > > > >
-> > > > > > On Thu, Sep 22, 2022 at 8:50 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > > > > >
-> > > > > > > On Thu, 22 Sept 2022 at 14:08, Huacai Chen <chenhuacai@kernel.org> wrote:
-> > > > > > > >
-> > > > > > > > Hi, Ard,
-> > > > > > > >
-> > > > > > > > On Thu, Sep 22, 2022 at 4:59 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > > > > > > >
-> > > > > > > > > On Thu, 22 Sept 2022 at 09:42, Huacai Chen <chenhuacai@kernel.org> wrote:
-> > > > > > > > > >
-> > > > > > > > > > On Thu, Sep 22, 2022 at 3:25 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > > > > > > > > >
-> > > > > > > > > > > On Thu, 22 Sept 2022 at 09:22, Huacai Chen <chenhuacai@kernel.org> wrote:
-> > > > > > > > > > > >
-> > > > > > > > > > > > On Thu, Sep 22, 2022 at 3:13 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > On Thu, 22 Sept 2022 at 04:15, Huacai Chen <chenhuacai@kernel.org> wrote:
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > On Wed, Sep 21, 2022 at 4:15 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > On Wed, 21 Sept 2022 at 06:02, Huacai Chen <chenhuacai@kernel.org> wrote:
-> > > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > > Acked-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > Thank you Huacai
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > I have created a separate tag with these patches applied onto the
-> > > > > > > > > > > > > > > first loongarch efi enablement patch (see below)
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > I would prefer to keep the loongarch trees separate for the next merge
-> > > > > > > > > > > > > > > window, but if needed to avoid massive conflicts, you could merge the
-> > > > > > > > > > > > > > > tag into the loongarch tree and rebase your changes on top. But please
-> > > > > > > > > > > > > > > take care not to rebase those patches themselves: the commit SHAs need
-> > > > > > > > > > > > > > > to remain the same.
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > However, if the conflicts are only minor, you can just explain in your
-> > > > > > > > > > > > > > > PR to Linus what the resolution should look like.
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > The tag can be found here:
-> > > > > > > > > > > > > > > https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git/tag/?h=efi-loongarch-for-v6.1-2
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > I have merged this into the EFI tree as well and pushed it out; it
-> > > > > > > > > > > > > > > should appear in -next tomorrow.
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > b093dc55ba9a efi/loongarch: libstub: remove dependency on flattened DT
-> > > > > > > > > > > > > > > 102faf0747c2 efi: libstub: install boot-time memory map as config table
-> > > > > > > > > > > > > > > 7318926e7bc9 efi: libstub: remove DT dependency from generic stub
-> > > > > > > > > > > > > > > 7cb6671e3caa efi: libstub: unify initrd loading between architectures
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > I will have to respin the initrd patch, unfortunately, as it breaks
-> > > > > > > > > > > > > x86. So the signed tag will be updated, and the SHAs above will change
-> > > > > > > > > > > > > as well.
-> > > > > > > > > > > > Emm, initrd is also broken on LoongArch, the core kernel gets an
-> > > > > > > > > > > > EFI_INVALID_TABLE_ADDR address.
-> > > > > > > > > > > >
-> > > > > > > > > > >
-> > > > > > > > > > > OK, I will investigate. This was working fine before so I'm not sure
-> > > > > > > > > > > what happened there.
-> > > > > > > > > > >
-> > > > > > > > >
-> > > > > > > > > I cannot reproduce this. Can you reproduce it with qemu? If so, can
-> > > > > > > > > you share your command line and .config etc?
-> > > > > > > > In qemu we also OK, but on a real machine efistub fails at
-> > > > > > > > efi_bs_call(locate_device_path, &lf2_proto_guid, &dp, &handle), maybe
-> > > > > > > > our UEFI BIOS has some problems? On a real machine we use grub and
-> > > > > > > > there is no "initrd" command in UEFI shell.
-> > > > > > > >
-> > > > > > >
-> > > > > > > Ah ok, so i guess your GRUB lacks the LoadFile2 patches?
-> > > > > > >
-> > > > > > > https://lists.gnu.org/archive/html/grub-devel/2022-09/msg00057.html
-> > > > > > Maybe it is a GRUB problem (I'll discuss with GRUB team), but why
-> > > > > > without this series the GRUB can load initrd? Because in the old way
-> > > > > > UEFI BIOS fill initrd information to FDT?
-> > > > > >
-> > > > >
-> > > > > No GRUB loads the initrd and creates a DT with a /chosen node to
-> > > > > record the initrd base and size.
-> > > > Without this series, efistub also fails at
-> > > > efi_bs_call(locate_device_path, &lf2_proto_guid, &dp, &handle), but
-> > > > initrd works well, this makes me puzzled.
-> > > >
-> > >
-> > > That is because you don't have DTB support in the core kernel yet right?
-> >
-> > Never mind - what exact commit are you testing this with?
->
-> OK, so the existing code only does
->
-> early_init_dt_scan(fdt_ptr);
-> early_init_fdt_reserve_self();
-> efi_system_table = efi_get_fdt_params(&data);
->
-> so it never parses the /chosen node, and therefore does not discover the initrd.
->
-> I suppose you may have been running with the loongson-2k patches?
->
-> But actually, this describes exactly the problem that I am addressing
-> with this series: you have been inadvertently relying on DT hardware
-> support for initrd functionality ...
-Yes, the correct way is to update our grub. But for kexec, seems
-initrd over cmdline is the only way because we don't know how to
-handle systemtable and don't know how to work together with both
-ACPI/DT systems after efistub refactoring.
 
-Huacai
+--GpPEXFLkdw7UWuLD
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 22 Sep 2022 10:55:40 -0400
+From: Demi Marie Obenour <demi@invisiblethingslab.com>
+To: Jan Beulich <jbeulich@suse.com>
+Cc: Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH v3] Support ESRT in Xen dom0
+
+On Thu, Sep 22, 2022 at 08:12:14AM +0200, Jan Beulich wrote:
+> On 22.09.2022 03:09, Demi Marie Obenour wrote:
+> > On Wed, Sep 21, 2022 at 10:34:04PM +0200, Jan Beulich wrote:
+> >> On 20.09.2022 18:09, Ard Biesheuvel wrote:
+> >>> On Tue, 20 Sept 2022 at 17:54, Jan Beulich <jbeulich@suse.com> wrote:
+> >>>>
+> >>>> On 20.09.2022 17:36, Ard Biesheuvel wrote:
+> >>>>> On Mon, 19 Sept 2022 at 21:33, Demi Marie Obenour
+> >>>>> <demi@invisiblethingslab.com> wrote:
+> >>>>>>
+> >>>>>> fwupd requires access to the EFI System Resource Table (ESRT) to
+> >>>>>> discover which firmware can be updated by the OS.  Currently, Linu=
+x does
+> >>>>>> not expose the ESRT when running as a Xen dom0.  Therefore, it is =
+not
+> >>>>>> possible to use fwupd in a Xen dom0, which is a serious problem fo=
+r e.g.
+> >>>>>> Qubes OS.
+> >>>>>>
+> >>>>>> Before Xen 4.16, this was not fixable due to hypervisor limitation=
+s.
+> >>>>>> The UEFI specification requires the ESRT to be in EfiBootServicesD=
+ata
+> >>>>>> memory, which Xen will use for whatever purposes it likes.  Theref=
+ore,
+> >>>>>> Linux cannot safely access the ESRT, as Xen may have overwritten i=
+t.
+> >>>>>>
+> >>>>>> Starting with Xen 4.17, Xen checks if the ESRT is in EfiBootServic=
+esData
+> >>>>>> or EfiRuntimeServicesData memory.  If the ESRT is in EfiBootServic=
+esData
+> >>>>>> memory, Xen allocates some memory of type EfiRuntimeServicesData, =
+copies
+> >>>>>> the ESRT to it, and finally replaces the ESRT pointer with a point=
+er to
+> >>>>>> the copy.  Since Xen will not clobber EfiRuntimeServicesData memor=
+y,
+> >>>>>> this ensures that the ESRT can safely be accessed by the OS.  It i=
+s safe
+> >>>>>> to access the ESRT under Xen if, and only if, it is in memory of t=
+ype
+> >>>>>> EfiRuntimeServicesData.
+> >>>>>>
+> >>>>>
+> >>>>> Thanks for the elaborate explanation. This is really helpful.
+> >>>>>
+> >>>>> So here, you are explaining that the only way for Xen to prevent
+> >>>>> itself from potentially clobbering the ESRT is by creating a
+> >>>>> completely new allocation?
+> >>>>
+> >>>> There are surely other ways, e.g. preserving BootServices* regions
+> >>>> alongside RuntimeServices* ones. But as the maintainer of the EFI
+> >>>> code in Xen I don't view this as a reasonable approach.
+> >>>
+> >>> Why not?
+> >>
+> >> Because it's against the intentions the EFI has (or at least had)
+> >> for this memory type. Much more than EfiAcpiReclaimMemory this
+> >> type is intended for use as ordinary RAM post-boot.
+> >=20
+> > What about giving that memory to dom0?  dom0=E2=80=99s balloon driver w=
+ill give
+> > anything dom0 doesn=E2=80=99t wind up using back to Xen.
+>=20
+> While perhaps in principle possible, this would require special casing
+> in Xen. Except for the memory the initrd comes in, we don't directly
+> hand memory to Dom0. Instead everything goes through the page allocator
+> first. Plus if we really were convinced boot services memory needed
+> retaining, then it would also need retaining across kexec (and hence
+> shouldn't be left to Dom0 to decide what to do with it).
+
+So how should dom0 handle the various EFI tables other than the ESRT?
+Right now most uses of these tables in Linux are not guarded by any
+checks for efi_enabled(EFI_MEMMAP) or similar.  If some of them are in
+EfiBootServicesData memory, they might be corrupted before Linux gets
+them.
+--=20
+Sincerely,
+Demi Marie Obenour (she/her/hers)
+Invisible Things Lab
+
+--GpPEXFLkdw7UWuLD
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEdodNnxM2uiJZBxxxsoi1X/+cIsEFAmMsd4cACgkQsoi1X/+c
+IsEBoA//b/usaepDm+lyniu3r0moNjjY3zaQmtdSXTMeHqFzBrABiAz5AZyBFCtr
+wzSdmzo4rlrvNR2/et8taDq0qOcjGouCgWLLS4p5pbW+PkV/0RzLPVCQaanRm+g5
+ZKeQbIFHeClEw7c4AWgY1mmlhiSdPYPCpXDdL4NCKeZgSTRykBp4J+Rg6rjwWKHD
+NAcWWs5MP6S4uVPVyZJQW4Blp087xPx3y/dFe5Fj3SeV37FDE9mvALy2+eJkDwnb
+7EPnOmczl7BSHg6L0xxClF1AFedsP7Ao/ANIs+kAR3EhbKnvczvLgANTMBRo+JUk
+Z6JST57bnRNtR4nSs8txTfjA4OqBy6RgJAwzN2lgd9zjZJnUgRVaungMKi0hmanS
+QMDtB6EGnCj8m6TaJiISxNjNeK8TQRh11GyNCcFgsUnfi7KlYbybeMnoOOWg3Hwz
+n5xXPsO9YSplCPsJ+aqfKp5yhUoE7ePskiGzyRThLBzx5HMgM/qFnXvtvi2/cY+G
+XEfQo9fWiss6Or47D3ekcw0FtYrU2EKUVsVEmRR0f8aRSJl4phCSu9mbU6aikQzK
+ADdLyxZ/Cle6oGy44fVcevif3qp/gO5/u3AxegTqBL9Xu9mtz3RyZrDxAaZoLUEh
+b6UgO0JZhueI7F9B48R4cKAfOzJ/+9srYZyIZHLQZYPzMDzOaV4=
+=tj0J
+-----END PGP SIGNATURE-----
+
+--GpPEXFLkdw7UWuLD--
