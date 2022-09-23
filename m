@@ -2,159 +2,100 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4263B5E7CFD
-	for <lists+linux-efi@lfdr.de>; Fri, 23 Sep 2022 16:27:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E18A05E7EC0
+	for <lists+linux-efi@lfdr.de>; Fri, 23 Sep 2022 17:44:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229627AbiIWO1j (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 23 Sep 2022 10:27:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38544 "EHLO
+        id S232000AbiIWPoR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 23 Sep 2022 11:44:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232628AbiIWO1S (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 23 Sep 2022 10:27:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 603FB1438E3;
-        Fri, 23 Sep 2022 07:27:14 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S231846AbiIWPnc (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 23 Sep 2022 11:43:32 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 091C013E7CC;
+        Fri, 23 Sep 2022 08:43:27 -0700 (PDT)
+Received: from zn.tnic (p200300ea9733e795329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e795:329c:23ff:fea6:a903])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CE27160FD6;
-        Fri, 23 Sep 2022 14:27:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E004C433D6;
-        Fri, 23 Sep 2022 14:27:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663943233;
-        bh=2XcBEi6sl5jLoQf2kpZ1tFVwF2yN3kZuQICilWnHJOo=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=XYsZ9J+mR0Zcv10kewzN94+9JE951kQlpB82LXIOrOBrSRJtjtZltwvsUfgRRtV3u
-         c1kildVVsH0i5wA29/UrLv/eabwtolE9QejdMbi/2eYhFoiT1tmyzFOEUx8fE+7RQs
-         Ng7U2UwT81EeMDdzWtpzJtiBEvFN5SvKP80cu3F7hBdwpnf14+l/FDLWSagyPqrFhC
-         NlMo4dN/+P84g3bCMRvvcLih8eZsrbswvunaA7jmJnp5lDusFbY01jk4+Md/PM0zGi
-         NPKhCB3KYMQ9OOgC5aphWJl1y1G8tsmbVSgedWPfoUPdRjRlYMh3cfencYiay2AgNG
-         ze+inArKURvNg==
-Received: by mail-lf1-f53.google.com with SMTP id a8so497307lff.13;
-        Fri, 23 Sep 2022 07:27:13 -0700 (PDT)
-X-Gm-Message-State: ACrzQf01EBk27DGUwajMpzVcriivvZG4cwWjgv5i9J2kv7h28VNd2xfi
-        OYEx0SH4cz3jObn98V+UgmqmLGyPJashU1XsTS8=
-X-Google-Smtp-Source: AMsMyM7E7aByjpZXJMTswU8EnGOXh5IrEyH1tJljrSfMNdGVaHgE3T0bQpcX07+4yO+Hj1gnlBTfZSpfYV0Een+Xu5w=
-X-Received: by 2002:a05:6512:3d09:b0:497:ab35:fd12 with SMTP id
- d9-20020a0565123d0900b00497ab35fd12mr3476720lfv.539.1663943231231; Fri, 23
- Sep 2022 07:27:11 -0700 (PDT)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8FA021EC0628;
+        Fri, 23 Sep 2022 17:43:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1663947802;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=/f25GBB1zWD1jyTjH2zd7owsfk647Q32TDHnzD33NxA=;
+        b=oZYsrJcIvKm9jgHKZDPp/7ACfM7QyDXNJRWZRh8GBGTBGCq7iYGNZVHfrZToyFTxo+ztv8
+        hdD9mP3BzeB2gw9JofroVumUaUSrfwgGsabJEQ0iOctGH/BvGsm2LPMwCVToonY+x+IFxO
+        gxOz0qUyVYULW8a6T+2ZkxR2MCVvn8c=
+Date:   Fri, 23 Sep 2022 17:43:22 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Justin He <Justin.He@arm.com>
+Cc:     Len Brown <lenb@kernel.org>, James Morse <James.Morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+        Yazen Ghannam <yazen.ghannam@amd.com>,
+        Jan Luebbe <jlu@pengutronix.de>,
+        Khuong Dinh <khuong@os.amperecomputing.com>,
+        Kani Toshi <toshi.kani@hpe.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Shuai Xue <xueshuai@linux.alibaba.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        nd <nd@arm.com>
+Subject: Re: [PATCH v6 5/8] EDAC/ghes: Make ghes_edac a proper module to
+ remove the dependency on ghes
+Message-ID: <Yy3UGgW3RWXcxr4w@zn.tnic>
+References: <20220912144005.212624-1-justin.he@arm.com>
+ <20220912144005.212624-6-justin.he@arm.com>
+ <Yyn2zYLP9So0heBW@zn.tnic>
+ <DBBPR08MB4538F21BA01114A0D30485E0F74E9@DBBPR08MB4538.eurprd08.prod.outlook.com>
 MIME-Version: 1.0
-References: <08906193-246b-c874-8bac-1d98d2313ac4@roeck-us.net>
- <20220922193157.1673623-1-dave.hansen@linux.intel.com> <CAMj1kXHcF_iK_g0OZSkSv56Wmr=eQGQwNstcNjLEfS=mm7a06w@mail.gmail.com>
- <Yy1ZadE6Vnnc2dNf@hirez.programming.kicks-ass.net> <CAMj1kXEvt-TQzO5jO6srkC8jW5fbou95VKu=os3gt_y87ZPJWg@mail.gmail.com>
- <5f443915-b38a-c78d-cccd-876501434cef@roeck-us.net>
-In-Reply-To: <5f443915-b38a-c78d-cccd-876501434cef@roeck-us.net>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 23 Sep 2022 16:26:58 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEt1RwYbkBOFa=KsML0KvJ6Zuu9eJ_=jQA7BTW-N2BSeA@mail.gmail.com>
-Message-ID: <CAMj1kXEt1RwYbkBOFa=KsML0KvJ6Zuu9eJ_=jQA7BTW-N2BSeA@mail.gmail.com>
-Subject: Re: [PATCH] x86/mm+efi: Avoid creating W+X mappings
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        linux-kernel@vger.kernel.org, Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, linux-efi@vger.kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Kees Cook <keescook@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <DBBPR08MB4538F21BA01114A0D30485E0F74E9@DBBPR08MB4538.eurprd08.prod.outlook.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 23 Sept 2022 at 15:58, Guenter Roeck <linux@roeck-us.net> wrote:
->
-> On 9/23/22 02:49, Ard Biesheuvel wrote:
-> > (cc Kees)
-> >
-> > On Fri, 23 Sept 2022 at 09:00, Peter Zijlstra <peterz@infradead.org> wrote:
-> >>
-> >> On Fri, Sep 23, 2022 at 12:08:57AM +0200, Ard Biesheuvel wrote:
-> >>> On Thu, 22 Sept 2022 at 21:32, Dave Hansen <dave.hansen@linux.intel.com> wrote:
-> >>>>
-> >>>> From: Peter Zijlstra <peterz@infradead.org>
-> >>>>
-> >>>> I'm planning on sticking this in x86/mm so that it goes upstream
-> >>>> along with the W+X detection code.
-> >>>>
-> >>>> --
-> >>>>
-> >>>> A recent x86/mm change warns and refuses to create W+X mappings.
-> >>>>
-> >>>> The 32-bit EFI code tries to create such a mapping and trips over
-> >>>> the new W+X refusal.
-> >>>>
-> >>>> Make the EFI_RUNTIME_SERVICES_CODE mapping read-only to fix it.
-> >>>>
-> >>>
-> >>> This is not safe. EFI_RUNTIME_SERVICES_CODE covers both .text and
-> >>> .data sections of the EFI runtime PE/COFF executables in memory, so
-> >>> you are essentially making .data and .bss read-only. (Whether those
-> >>> executables actually modify their .data and .bss at runtime is a
-> >>> different matter, but the point is that it used to be possible)
-> >>>
-> >>> More recent firmwares may provide a 'memory attributes table'
-> >>> separately which describes the individual sections, but older 32-bit
-> >>> firmwares are not even built with 4k section alignment, so code and
-> >>> data may share a single page. Note that we haven't wired up this
-> >>> memory attributes table on i386 at the moment, and I seriously doubt
-> >>> that 32-bit firmware in the field exposes it.
-> >>>
-> >>> Can we just turn off this feature for 32-bit?
-> >>
-> >> Goodie; some seriously security minded people who did that EFI turd :/
-> >
-> > To be fair, most people tended to care more about memory footprint
-> > than about security at the time. And I don't recall a lot of
-> > enthusiasm in the Linux community either for rounding up kernel
-> > sections so they could be mapped with W^X permissions. And without
-> > PAE, all memory is executable anyway.
-> >
-> >> Let's just heap it on the pile of 32bit sucks and should not be
-> >> considered a security target anymore and indeed kill this feature.
-> >>
-> >
-> > I take it this issue is triggered by the fact that i386 maps the EFI
-> > runtime regions into the kernel page tables, and are therefore always
-> > mapped, right? If anyone cares enough about this to go and fix it, we
-> > could switch to the approach we use everywhere else, i.e., treat EFI
-> > memory as user space mappings, and activate them only while a runtime
-> > service is in progress.
-> >
-> > But frankly, why would anyone still be running this? With the EFI
-> > mixed mode support, only systems with CPUs that don't actually
-> > implement long mode still need this, and I am skeptical that such
-> > deployments would use recent kernels.
->
-> It is supported, thus I run qemu tests for it. That is the whole point
-> of testing, after all.
+On Thu, Sep 22, 2022 at 08:26:16AM +0000, Justin He wrote:
+> If there is no ghes_present flag.
+> What if ghes.disable is passed to kernel boot parameter and then ghes_edac is
+> loaded by modprobe?
+> Thus, ghes_edac can be loaded even if ghes is disabled. (ghes_dev list is null)
 
-I completely agree with that, and I think all the testing you do is
-extremely valuable.
+Yes, and what happens if ghes_dev is NULL?
 
-> If PAE (assuming that is what you are talking about)
+The other drivers would do in their init function:
 
-Not at all - I was referring to i386 support in general.
+	struct list_head *ghes_devs;
 
-I was basically making the point that we still support i386 without
-PAE (which is a prerequisite for supporting non-executable mappings),
-and if we are going to be pedantic about security on this
-architecture, we should probably make PAE mandatory as well.
+	ghes_devs = ghes_get_devices();
+	if (ghes_devs)
+		return -ENODEV;
 
-If we are ok with the current state, enabling this permission check on
-i386 makes no sense.
+	/* Continue init */
 
-> is no longer supported or supportable, its support should be
-> removed. If so, I'll be very happy to stop testing it.
->
+and then load in that case because user has disabled GHES and thus no
+ghes_edac either. So the platform-specific one loads.
 
-I'd say there are better ways to spend those cycles, but for the time
-being, I think we should continue testing it, as otherwise it will
-just bit rot.
+Right?
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
