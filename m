@@ -2,137 +2,103 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AABED5E745C
-	for <lists+linux-efi@lfdr.de>; Fri, 23 Sep 2022 08:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12CC65E7478
+	for <lists+linux-efi@lfdr.de>; Fri, 23 Sep 2022 09:00:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229995AbiIWGtp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 23 Sep 2022 02:49:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51836 "EHLO
+        id S229866AbiIWHAg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 23 Sep 2022 03:00:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229836AbiIWGto (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 23 Sep 2022 02:49:44 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5273F2B1AC
-        for <linux-efi@vger.kernel.org>; Thu, 22 Sep 2022 23:49:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1663915781; x=1695451781;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=rNkGvfvhTwxelVtUbf8PySKFPQC51T3muWUbKsO6Rck=;
-  b=V6vcLqisVJJjjpfQgbRKCqmKbciE9OVzcjNWPBqeUfdC0rLwrM3L6Rnf
-   XTaVuO+pd6+gvOdGiyXG3aY2wbUFVMNmyv20o4BtvJcyBEkjzyI1jEu38
-   PXC4kjGqC5KDzrx9SJ7q2kBx//6vlvfDatqWOCWddYadU6hMw+bph1Den
-   pIyzC2i1M7Csrv0TRZcMJeYAnE4uTJxiLm4mgtF4guZTfzq+UbGZvICao
-   jgsYJsqMUG8ANIRNYY+qUQG8NYGn/5UFy4vV9XIumQJauFjEEIeyzEoqB
-   1wjxL+iMGc3PErYtHOpZvz3Sebhvv75RBgExophDfzkyFxjYPg+Jes0MB
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10478"; a="299247418"
-X-IronPort-AV: E=Sophos;i="5.93,337,1654585200"; 
-   d="scan'208";a="299247418"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2022 23:49:38 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,337,1654585200"; 
-   d="scan'208";a="597767117"
-Received: from lkp-server01.sh.intel.com (HELO c0a60f19fe7e) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 22 Sep 2022 23:49:37 -0700
-Received: from kbuild by c0a60f19fe7e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1obcVE-0005PA-1J;
-        Fri, 23 Sep 2022 06:49:36 +0000
-Date:   Fri, 23 Sep 2022 14:49:20 +0800
-From:   kernel test robot <lkp@intel.com>
+        with ESMTP id S229437AbiIWHAf (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 23 Sep 2022 03:00:35 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5933F11D0D6;
+        Fri, 23 Sep 2022 00:00:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=o0uHXUsXUhn2jPpNOYhKHOJ7uxQ/113gO2HUCwNQKTA=; b=QXR7MPGYFu5vr5ygV25QiYtD/t
+        NeXXniZZ6l1HVJ10qsWJnkAxn/1HL/vs1y57vKDtzbx4vzVEHnKsl+sDLkILL5GVRnHB1MKMWp3ub
+        d6K8WlLYq2S0qUDv7NeMHpmRv0sDelO47gW90RufMbgwj4Kwg9R5FWHUpo5R7DCI//q2nZ/nyjLVB
+        fxF9788n7NYendBMWpjF2QX2rlS75YqPxGSXVGbYewKJZ1rJA0F7FfxrTW6bkK4m/ACgmIcHTX9M7
+        TggugOPFwcypkAy+rz6IZrbElHgOwxrp9GbdEoUAl+qyZdDYBvO1AXQac/M5eqgHmrEs8Tsv3fTGV
+        uLe0j+SA==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1obcfC-00F9p4-Ij; Fri, 23 Sep 2022 06:59:54 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 3A948300074;
+        Fri, 23 Sep 2022 08:59:53 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 1E7B52BBA9799; Fri, 23 Sep 2022 08:59:53 +0200 (CEST)
+Date:   Fri, 23 Sep 2022 08:59:53 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS d515ed00e9b6f4e41c27ec8a0ccd4e193661a09c
-Message-ID: <632d56f0.z89WZ24sKU8JR/Ey%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
+        linux-kernel@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, linux-efi@vger.kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH] x86/mm+efi: Avoid creating W+X mappings
+Message-ID: <Yy1ZadE6Vnnc2dNf@hirez.programming.kicks-ass.net>
+References: <08906193-246b-c874-8bac-1d98d2313ac4@roeck-us.net>
+ <20220922193157.1673623-1-dave.hansen@linux.intel.com>
+ <CAMj1kXHcF_iK_g0OZSkSv56Wmr=eQGQwNstcNjLEfS=mm7a06w@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXHcF_iK_g0OZSkSv56Wmr=eQGQwNstcNjLEfS=mm7a06w@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: d515ed00e9b6f4e41c27ec8a0ccd4e193661a09c  efi/arm64: libstub: avoid SetVirtualAddressMap() when possible
+On Fri, Sep 23, 2022 at 12:08:57AM +0200, Ard Biesheuvel wrote:
+> On Thu, 22 Sept 2022 at 21:32, Dave Hansen <dave.hansen@linux.intel.com> wrote:
+> >
+> > From: Peter Zijlstra <peterz@infradead.org>
+> >
+> > I'm planning on sticking this in x86/mm so that it goes upstream
+> > along with the W+X detection code.
+> >
+> > --
+> >
+> > A recent x86/mm change warns and refuses to create W+X mappings.
+> >
+> > The 32-bit EFI code tries to create such a mapping and trips over
+> > the new W+X refusal.
+> >
+> > Make the EFI_RUNTIME_SERVICES_CODE mapping read-only to fix it.
+> >
+> 
+> This is not safe. EFI_RUNTIME_SERVICES_CODE covers both .text and
+> .data sections of the EFI runtime PE/COFF executables in memory, so
+> you are essentially making .data and .bss read-only. (Whether those
+> executables actually modify their .data and .bss at runtime is a
+> different matter, but the point is that it used to be possible)
+> 
+> More recent firmwares may provide a 'memory attributes table'
+> separately which describes the individual sections, but older 32-bit
+> firmwares are not even built with 4k section alignment, so code and
+> data may share a single page. Note that we haven't wired up this
+> memory attributes table on i386 at the moment, and I seriously doubt
+> that 32-bit firmware in the field exposes it.
+> 
+> Can we just turn off this feature for 32-bit?
 
-elapsed time: 722m
+Goodie; some seriously security minded people who did that EFI turd :/
+Let's just heap it on the pile of 32bit sucks and should not be
+considered a security target anymore and indeed kill this feature.
 
-configs tested: 58
-configs skipped: 2
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-um                             i386_defconfig
-m68k                             allmodconfig
-um                           x86_64_defconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-m68k                             allyesconfig
-arc                  randconfig-r043-20220922
-arc                                 defconfig
-s390                             allmodconfig
-x86_64                        randconfig-a013
-x86_64                              defconfig
-x86_64                        randconfig-a011
-alpha                               defconfig
-powerpc                           allnoconfig
-x86_64                               rhel-8.3
-s390                                defconfig
-x86_64                        randconfig-a015
-i386                          randconfig-a001
-i386                                defconfig
-arm                                 defconfig
-x86_64                        randconfig-a002
-s390                             allyesconfig
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                           allyesconfig
-x86_64                        randconfig-a006
-arm                              allyesconfig
-arm64                            allyesconfig
-x86_64                        randconfig-a004
-i386                          randconfig-a014
-i386                          randconfig-a012
-i386                             allyesconfig
-i386                          randconfig-a016
-ia64                             allmodconfig
-sh                               allmodconfig
-powerpc                          allmodconfig
-mips                             allyesconfig
-x86_64                           rhel-8.3-kvm
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-syz
-x86_64                    rhel-8.3-kselftests
-
-clang tested configs:
-hexagon              randconfig-r041-20220922
-riscv                randconfig-r042-20220922
-hexagon              randconfig-r045-20220922
-s390                 randconfig-r044-20220922
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-i386                          randconfig-a002
-x86_64                        randconfig-a016
-x86_64                        randconfig-a005
-x86_64                        randconfig-a001
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a003
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
