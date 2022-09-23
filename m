@@ -2,121 +2,113 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ED6F5E85A7
-	for <lists+linux-efi@lfdr.de>; Sat, 24 Sep 2022 00:15:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C5005E85B5
+	for <lists+linux-efi@lfdr.de>; Sat, 24 Sep 2022 00:17:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230089AbiIWWPV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 23 Sep 2022 18:15:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48760 "EHLO
+        id S231315AbiIWWRg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 23 Sep 2022 18:17:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230047AbiIWWPT (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 23 Sep 2022 18:15:19 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C48C8A1D4;
-        Fri, 23 Sep 2022 15:15:18 -0700 (PDT)
+        with ESMTP id S229511AbiIWWRd (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 23 Sep 2022 18:17:33 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC8EC11E97D;
+        Fri, 23 Sep 2022 15:17:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1663971318; x=1695507318;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to;
-  bh=MtBRKKdnqYxxNiz0x4/t45LC5G3Cq5V/UOyckqNmC0g=;
-  b=fXWbMLR4KL+hynQ6GvuE9+tZyEBiJgBrW5WbY3dODWOiGVFByiKUO1rh
-   o/htb5DP4V5pZ3e/GVK+21x0RQxwpBnC68UrFCV6ed88gA4OgkYITkJBd
-   gi1Huy1HYt5ws2sytksur0UkDOrvb0TWDBj5saF9dvr94tAPBzeNUCZZx
-   QFwSQemNxXWpZ8QN/w6fhMLKi8qCVwPZQ4j59BEX9udoWXP4ISv6ReYtC
-   jI4a/zhdtajO7RFPWOJvn30WySKepZMIuTxa9OO/8X1Nu41xekFmyi8Qc
-   RQuBsxr1yFh/VzvMmCTCT60E5EgXqx5LZYI9cI7/rNhBbPaRdbo2L+2O5
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10479"; a="299430832"
+  t=1663971452; x=1695507452;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=8tE/QBR6Q/gediWIXN96SP8n9NX5gdozFhDqCtkEAms=;
+  b=TAAo2GnTWOpEr9PzjxlZtNnsmGcudY2xkDMoZxtefQ23ujLxlN3x6Jlr
+   af8/S2hMWxauyr4lHmCuLxiHwSrLKbc1yZooktCiIxZQF5mvNmROz6SzF
+   qcb6Ufh/ODWl4iuiXd1dUEJvtMsE2yasJlw2VE24d6cv7aUbPN8mngk+8
+   9yl3v/f0fczuQXDYCnZ/bNgv2dr1t8gJqgUg87FUgjJkLyMQxQNWD6isA
+   K70jvoiNq8gooiI/3GE1gB5q+iqrH92VXgb4DPAkfyo6IDCR2mC2tLZkC
+   nSc0IID/lk1V+KIbhsvwsZotb210PnGMihByL8yz4oMmdn71oEUjf+fjA
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10479"; a="301599009"
 X-IronPort-AV: E=Sophos;i="5.93,340,1654585200"; 
-   d="scan'208";a="299430832"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2022 15:15:18 -0700
+   d="scan'208";a="301599009"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2022 15:17:32 -0700
+X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.93,340,1654585200"; 
-   d="scan'208";a="688887052"
-Received: from hanjulee-mobl1.amr.corp.intel.com (HELO [10.252.138.32]) ([10.252.138.32])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2022 15:15:15 -0700
-Content-Type: multipart/mixed; boundary="------------lWLJHMUVkbxe2CYJ8fAKF5Dq"
-Message-ID: <69e00173-087e-6a22-7a02-0c1212f42065@intel.com>
-Date:   Fri, 23 Sep 2022 15:15:15 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH] x86/mm+efi: Avoid creating W+X mappings
-Content-Language: en-US
-To:     Kees Cook <keescook@chromium.org>, Ard Biesheuvel <ardb@kernel.org>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        linux-kernel@vger.kernel.org, Darren Hart <dvhart@infradead.org>,
+   d="scan'208";a="745954546"
+Received: from viggo.jf.intel.com (HELO ray2.amr.corp.intel.com) ([10.54.77.144])
+  by orsmga004.jf.intel.com with ESMTP; 23 Sep 2022 15:17:31 -0700
+From:   Dave Hansen <dave.hansen@linux.intel.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Dave Hansen <dave.hansen@linux.intel.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
         Andy Shevchenko <andy@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         x86@kernel.org, linux-efi@vger.kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>
-References: <08906193-246b-c874-8bac-1d98d2313ac4@roeck-us.net>
- <20220922193157.1673623-1-dave.hansen@linux.intel.com>
- <CAMj1kXHcF_iK_g0OZSkSv56Wmr=eQGQwNstcNjLEfS=mm7a06w@mail.gmail.com>
- <Yy1ZadE6Vnnc2dNf@hirez.programming.kicks-ass.net>
- <CAMj1kXEvt-TQzO5jO6srkC8jW5fbou95VKu=os3gt_y87ZPJWg@mail.gmail.com>
- <5f443915-b38a-c78d-cccd-876501434cef@roeck-us.net>
- <CAMj1kXEt1RwYbkBOFa=KsML0KvJ6Zuu9eJ_=jQA7BTW-N2BSeA@mail.gmail.com>
- <202209231126.6855D54@keescook>
- <CAMj1kXHckEg6rwBSEc6piu=-JZzyDh7j+pvGSFp1OBUQuofrEQ@mail.gmail.com>
- <202209231417.F73F40060@keescook>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <202209231417.F73F40060@keescook>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+        "H. Peter Anvin" <hpa@zytor.com>, Kees Cook <keescook@chromium.org>
+Subject: [PATCH] x86/mm: Disable W^X detection and enforcement on 32-bit
+Date:   Fri, 23 Sep 2022 15:17:30 -0700
+Message-Id: <20220923221730.1860518-1-dave.hansen@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------lWLJHMUVkbxe2CYJ8fAKF5Dq
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+The 32-bit code is in a weird spot.  Some 32-bit builds (non-PAE) do not
+even have NX support.  Even PAE builds that support NX have to contend
+with things like EFI data and code mixed in the same pages where W+X
+is unavoidable.
 
-On 9/23/22 14:19, Kees Cook wrote:
->> But currently, PAE is not even enabled in the i386_defconfig, and
->> defaults to off. This means people that are unaware of this won't
->> enable it, and will be running without NX support.
-> And they all make me cry. ;)
+The folks still running X86_32=y kernels are unlikely to care much about
+NX.  That combined with the fundamental inability fix _all_ of the W+X
+things means this code had little value on X86_32=y.  Disable the checks.
 
-It's been like that for a long time, presumably because the defconfig
-should *boot* in as many cases as possible.  It wouldn't be hard to
-change.  It also wouldn't be hard to default to HIGHMEM4G (non-PAE) on
-targeted builds for CPUs that don't support it.  Patch attached to do
-that, if anyone else has an opinion.
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Darren Hart <dvhart@infradead.org>
+Cc: Andy Shevchenko <andy@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: x86@kernel.org
+Cc: linux-efi@vger.kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/all/CAMj1kXHcF_iK_g0OZSkSv56Wmr=eQGQwNstcNjLEfS=mm7a06w@mail.gmail.com/
+---
+ arch/x86/mm/pat/set_memory.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-We should probably just leave i386 alone, but it breaks my heart to see
-Kees in tears.
---------------lWLJHMUVkbxe2CYJ8fAKF5Dq
-Content-Type: text/x-patch; charset=UTF-8; name="pae.patch"
-Content-Disposition: attachment; filename="pae.patch"
-Content-Transfer-Encoding: base64
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index 20b1e24baa85..efe882c753ca 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -587,6 +587,14 @@ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long star
+ {
+ 	unsigned long end;
+ 
++	/*
++	 * 32-bit has some unfixable W+X issues, like EFI code
++	 * and writeable data being in the same page.  Disable
++	 * detection and enforcement there.
++	 */
++	if (IS_ENABLED(CONFIG_X86_32))
++		return new;
++
+ 	/* Only enforce when NX is supported: */
+ 	if (!(__supported_pte_mask & _PAGE_NX))
+ 		return new;
+-- 
+2.34.1
 
-ZGlmZiAtLWdpdCBhL2FyY2gveDg2L0tjb25maWcgYi9hcmNoL3g4Ni9LY29uZmlnCmluZGV4
-IGY5OTIwZjEzNDFjOC4uZmFkOTc4YzdiN2M1IDEwMDY0NAotLS0gYS9hcmNoL3g4Ni9LY29u
-ZmlnCisrKyBiL2FyY2gveDg2L0tjb25maWcKQEAgLTEzNjMsOSArMTM2MywxNCBAQCBjb25m
-aWcgWDg2X0NQVUlECiAJICB3aXRoIG1ham9yIDIwMyBhbmQgbWlub3JzIDAgdG8gMzEgZm9y
-IC9kZXYvY3B1LzAvY3B1aWQgdG8KIAkgIC9kZXYvY3B1LzMxL2NwdWlkLgogCitjb25maWcg
-Q1BVX0hBU19QQUUKKwlkZWZfYm9vbCB5CisJZGVwZW5kcyBvbiAhTTQ4NlNYICYmICFNNDg2
-ICYmICFNNTg2ICYmICFNNTg2VFNDICYmICFNNTg2TU1YICYmICFNR0VPREVfTFggJiYgIU1H
-RU9ERUdYMSAmJiAhTUNZUklYSUlJICYmICFNRUxBTiAmJiAhTVdJTkNISVBDNiAmJiAhTVdJ
-TkNISVAzRCAmJiAhTUs2CisKIGNob2ljZQogCXByb21wdCAiSGlnaCBNZW1vcnkgU3VwcG9y
-dCIKIAlkZWZhdWx0IEhJR0hNRU00RworCWRlZmF1bHQgSElHSE1FTTY0RyBpZiBDUFVfSEFT
-X1BBRQogCWRlcGVuZHMgb24gWDg2XzMyCiAKIGNvbmZpZyBOT0hJR0hNRU0KQEAgLTE0MTIs
-NyArMTQxNyw3IEBAIGNvbmZpZyBISUdITUVNNEcKIAogY29uZmlnIEhJR0hNRU02NEcKIAli
-b29sICI2NEdCIgotCWRlcGVuZHMgb24gIU00ODZTWCAmJiAhTTQ4NiAmJiAhTTU4NiAmJiAh
-TTU4NlRTQyAmJiAhTTU4Nk1NWCAmJiAhTUdFT0RFX0xYICYmICFNR0VPREVHWDEgJiYgIU1D
-WVJJWElJSSAmJiAhTUVMQU4gJiYgIU1XSU5DSElQQzYgJiYgIU1XSU5DSElQM0QgJiYgIU1L
-NgorCWRlcGVuZHMgb24gQ1BVX0hBU19QQUUKIAlzZWxlY3QgWDg2X1BBRQogCWhlbHAKIAkg
-IFNlbGVjdCB0aGlzIGlmIHlvdSBoYXZlIGEgMzItYml0IHByb2Nlc3NvciBhbmQgbW9yZSB0
-aGFuIDQK
-
---------------lWLJHMUVkbxe2CYJ8fAKF5Dq--
