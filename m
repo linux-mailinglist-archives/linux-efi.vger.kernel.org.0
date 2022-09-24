@@ -2,87 +2,136 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 027A65E8699
-	for <lists+linux-efi@lfdr.de>; Sat, 24 Sep 2022 02:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FE975E86E3
+	for <lists+linux-efi@lfdr.de>; Sat, 24 Sep 2022 03:03:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231239AbiIXAMf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 23 Sep 2022 20:12:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41852 "EHLO
+        id S232791AbiIXBDP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 23 Sep 2022 21:03:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232234AbiIXAMe (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 23 Sep 2022 20:12:34 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8F892495E;
-        Fri, 23 Sep 2022 17:12:33 -0700 (PDT)
+        with ESMTP id S230363AbiIXBDN (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 23 Sep 2022 21:03:13 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C6EA124C0B;
+        Fri, 23 Sep 2022 18:03:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1663978353; x=1695514353;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=G3CI1T3vaiOw+YTGkAQr9PkuUsYAHJ0lByNrxw7Sxsk=;
-  b=gLTFHHMj4zCCLDDJ5KKa4FgY3t54vKBwWy82UrJpQwq6G2+go975EgBd
-   bqnF3G++kV0V8BaLt+pAEijK0Hd0CiJ8ReX7zZyneKPS1YVYWORZxfABu
-   22nIkYeq7DTOqiyzrZlkHoTlSks4JVzgWBstZ0q8s6eOUNmmqZnUoPkoI
-   MofQHlZ2EKYkfwEuoBY8ixPNhuhM06on7hjoZzOWV15j9G2fxWosfEjIY
-   yORi0wjfIt7bzf9HH2dryUXy8K/KUKFmy5Qq5uAXeuaHsBCJAgsPKGCLD
-   Krj50UzO47BfBFRRnTSdfmW4bBioEVvK+rDBIYrzPqdmP6V9C2a1qOzS1
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10479"; a="283834799"
+  t=1663981392; x=1695517392;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=OBLqHu4HrfxZrshSMCaixAcofJF9yzq0ARl2qAoeSc8=;
+  b=IaK6lJuBlyv1yFE6WKSNewwcNklMZOU+dDbn+dyJsIze8u33GW0q3cnt
+   44yGqHSrd2FlotsJ8glsAE1aFPzAmMH7PijkOXC+4VH9EUtiXQe2FHFJi
+   d7NitaJ4nkDzv8yfTQxAOBatp3Ek1oIIJietz8qtIY2tbBS+2arZJM1cB
+   TnNpN9syFusVk9SlZZicvUNU5p5U5DZpr6oHleX6xq23ywyX/P7RjH1q0
+   HeLIOxIqB205ycw4zwYTu/8flQgiN82Y6y8jrlGqMNRT9wIScuARTqBKD
+   A/PFCIGx5XYOI++QxU/sjcdcInC6Ut9IiWmMGLnu8xHhHtCrB8iqsEc7B
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10479"; a="301620728"
 X-IronPort-AV: E=Sophos;i="5.93,340,1654585200"; 
-   d="scan'208";a="283834799"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2022 17:12:33 -0700
+   d="scan'208";a="301620728"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2022 18:03:11 -0700
 X-IronPort-AV: E=Sophos;i="5.93,340,1654585200"; 
-   d="scan'208";a="653600785"
-Received: from hanjulee-mobl1.amr.corp.intel.com (HELO [10.252.138.32]) ([10.252.138.32])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2022 17:12:31 -0700
-Message-ID: <ca72bdfb-9868-162f-63d5-f778dd03db22@intel.com>
-Date:   Fri, 23 Sep 2022 17:12:32 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH] x86/mm: Disable W^X detection and enforcement on 32-bit
-Content-Language: en-US
-To:     "Kirill A. Shutemov" <kirill@shutemov.name>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Cc:     linux-kernel@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
+   d="scan'208";a="724350159"
+Received: from pameiner-mobl2.amr.corp.intel.com (HELO box.shutemov.name) ([10.252.58.236])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2022 18:03:05 -0700
+Received: by box.shutemov.name (Postfix, from userid 1000)
+        id D7FE51028F1; Sat, 24 Sep 2022 04:03:02 +0300 (+03)
+Date:   Sat, 24 Sep 2022 04:03:02 +0300
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     Tom Lendacky <thomas.lendacky@amd.com>
+Cc:     Dionna Amalie Glaze <dionnaglaze@google.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, linux-efi@vger.kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Kees Cook <keescook@chromium.org>
-References: <20220923221730.1860518-1-dave.hansen@linux.intel.com>
- <20220924000954.hhaghgkrb6h33nvq@box.shutemov.name>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <20220924000954.hhaghgkrb6h33nvq@box.shutemov.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        Marcelo Cerri <marcelo.cerri@canonical.com>,
+        tim.gardner@canonical.com,
+        Khalid ElMously <khalid.elmously@canonical.com>,
+        philip.cox@canonical.com,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        linux-coco@lists.linux.dev, linux-efi <linux-efi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
+Message-ID: <20220924010302.bwas4zbro37rrxai@box.shutemov.name>
+References: <20220810141959.ictqchz7josyd7pt@techsingularity.net>
+ <CAAH4kHa6s3sBRySNu-TZG_6vOaN4KheVy4kvxG5s=wOTDGy2=Q@mail.gmail.com>
+ <2981e25e-9cda-518a-9750-b8694f2356b5@amd.com>
+ <CAAH4kHbcfnVWNQHf6Mrg__bSFT6196Sx4kno6o0Zo7hsgOgnNw@mail.gmail.com>
+ <984e07ed-914f-93ca-a141-3fc8677878e0@intel.com>
+ <CAAH4kHawguTEuDVyz1ysSbH0X_mT=SvxLi=UhwEzXM0abbWefg@mail.gmail.com>
+ <YxncAElGrPEGRYg1@linux.ibm.com>
+ <CAAH4kHaP8JUh0Z4rF83=2RZTGMATT5MHot6rAnAwt79PL64mVQ@mail.gmail.com>
+ <YxpCaQARczhZQmq2@linux.ibm.com>
+ <f72f7325-adc6-89d5-7cbc-647442308233@amd.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f72f7325-adc6-89d5-7cbc-647442308233@amd.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 9/23/22 17:09, Kirill A. Shutemov wrote:
-> On Fri, Sep 23, 2022 at 03:17:30PM -0700, Dave Hansen wrote:
->> The 32-bit code is in a weird spot.  Some 32-bit builds (non-PAE) do not
->> even have NX support.  Even PAE builds that support NX have to contend
->> with things like EFI data and code mixed in the same pages where W+X
->> is unavoidable.
->>
->> The folks still running X86_32=y kernels are unlikely to care much about
->> NX.  That combined with the fundamental inability fix _all_ of the W+X
->> things means this code had little value on X86_32=y.  Disable the checks.
-> Maybe downgrade the check to a warning for X86_32=y?
+On Thu, Sep 22, 2022 at 09:31:12AM -0500, Tom Lendacky wrote:
+> On 9/8/22 14:28, Mike Rapoport wrote:
+> > On Thu, Sep 08, 2022 at 09:23:07AM -0700, Dionna Amalie Glaze wrote:
+> > > > 
+> > > > Looks like the first access to the memory map fails, although I think
+> > > > it's not in INIT_LIST_HEAD() but rather in init_page_count().
+> > > > 
+> > > > I'd start with making sure that page_alloc::memmap_alloc() actually returns
+> > > > accepted memory. If you build kernel with CONFIG_DEBUG_VM=y the memory map
+> > > > will poisoned in this function, so my guess is it'd crash there.
+> > > > 
+> > > 
+> > > That's a wonderful hint, thank you! I did not run this test
+> > > CONFIG_DEBUG_VM set, but you think it's possible it could still be
+> > > here?
+> > 
+> > It depends on how you configured your kernel. Say, defconfig does not set
+> > it.
+> > 
+> 
+> I also hit the issue at 256GB. My config is using CONFIG_SPARSEMEM_VMEMMAP
+> and fails in memmap_init_range() when attempting to add the first PFN. It
+> looks like the underlying page that is backing the vmemmap has not been
+> accepted (I receive a #VC 0x404 => page not validated).
+> 
+> Kirill, is this a path that you've looked at? It would appear that somewhere
+> in the vmemmap_populate_hugepages() path, some memory acceptance needs to be
+> done for the pages that are used to back vmemmap. I'm not very familiar with
+> this code, so I'm not sure why everything works for a guest with 255GB of
+> memory, but then fails for a guest with 256GB of memory.
 
-But for this EFI case, we really don't want the warning.  It's unfixable.
+Hm. I don't have machine that large at hands at the moment. And I have not
+looked at the codepath before.
 
-I'm also not sure we want to go to the trouble to properly silence the
-warning in these unfixable cases.  There was an argument elsewhere in
-the thread that we really shouldn't be warning on things that we don't
-have full intentions to fix.  I buy that argument.
+I will try to look into the issue.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
