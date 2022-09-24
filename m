@@ -2,60 +2,84 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47CE95E891F
-	for <lists+linux-efi@lfdr.de>; Sat, 24 Sep 2022 09:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B2685E8AF6
+	for <lists+linux-efi@lfdr.de>; Sat, 24 Sep 2022 11:36:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233501AbiIXH2M (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 24 Sep 2022 03:28:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33194 "EHLO
+        id S233634AbiIXJgj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 24 Sep 2022 05:36:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233446AbiIXH13 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 24 Sep 2022 03:27:29 -0400
+        with ESMTP id S233564AbiIXJgi (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 24 Sep 2022 05:36:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C36EF38A10;
-        Sat, 24 Sep 2022 00:27:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 699119F0E3;
+        Sat, 24 Sep 2022 02:36:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F56460DB7;
-        Sat, 24 Sep 2022 07:27:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04310C4347C;
-        Sat, 24 Sep 2022 07:27:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 69FE6608C3;
+        Sat, 24 Sep 2022 09:36:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCC7C433C1;
+        Sat, 24 Sep 2022 09:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664004422;
-        bh=tt0jOXg97xVp5NYM4iKyzC9fLT2QSJBCxqt4QUSnBRs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=cxu6aV2FnfOTOBFphC5ZhTe811lcPISTQ/85BkdTyf9dCqLA1+JcDRKlXOn5zqjUg
-         cAjuCr1vgSxUem3m1D2lyUjJtIyrYez9+GmdnMeKewSy1i9ElB3HwHQ/TNApi1FYRA
-         4dEQVoLmkxIAHOJDpemMDIjjVj+z8STIXyQ3iKxTjw+VmkLKNPAfCY0o7A9UWt6Usu
-         gWrT+6C5BYxyIgzTzcWNC/w914r2HINcoQmuBsD2JJH3g2bXyvqeImxbJc7M0osTWN
-         7FcS99mWTDdzh5vMgqu9cYt8i+mSgSOftq5xL8vK2aRlDwjHptSKG2fPMUtqWrnm8f
-         yLEWtrRy/1z4w==
-Received: by mail-lj1-f181.google.com with SMTP id j24so2267003lja.4;
-        Sat, 24 Sep 2022 00:27:01 -0700 (PDT)
-X-Gm-Message-State: ACrzQf15tQKyWMWEmzEzThxqMycTChdGnMOI2Fc+gqS+UEW8wz5nRwOB
-        WvNlw4z0PKjy5sDK5e2KlUIffGiJKfbOVlbZ5ww=
-X-Google-Smtp-Source: AMsMyM5i2gOhFswR/JCPJ+TrUVXIaw5UdmgNIjTgrno8/UpIa5Y24MFqIqwkWXPnisG24+Exdk5Dhk4DNzKrBpPsaiE=
-X-Received: by 2002:a2e:8349:0:b0:26c:4311:9b84 with SMTP id
- l9-20020a2e8349000000b0026c43119b84mr4410587ljh.152.1664004419937; Sat, 24
- Sep 2022 00:26:59 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220923221730.1860518-1-dave.hansen@linux.intel.com>
-In-Reply-To: <20220923221730.1860518-1-dave.hansen@linux.intel.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Sat, 24 Sep 2022 09:26:48 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEAneXVTFenwrP5U6-SSO7Hqm07z=1w19PUS4MUHM+BRw@mail.gmail.com>
-Message-ID: <CAMj1kXEAneXVTFenwrP5U6-SSO7Hqm07z=1w19PUS4MUHM+BRw@mail.gmail.com>
-Subject: Re: [PATCH] x86/mm: Disable W^X detection and enforcement on 32-bit
-To:     Dave Hansen <dave.hansen@linux.intel.com>
-Cc:     linux-kernel@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
+        s=k20201202; t=1664012193;
+        bh=OUuAuEMHOOoW2UUphtHEcJFzOd5jzmKbeMgag01UxIA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=MaL/dLau/5/WSqjg4siwpxCmhAP5uMcabVH4UVhiJmA5hJU4pY/EMFC2ZLQOUIYt9
+         nBidURuV0BQ2whZCjUUeB4H3eiNVTkiRLHyBQ66+/vxDre6nLPp3uoDujGWRinvM/t
+         frEK4ii6zJj9MuJEuQkkiW/dKzyIJQIBz/Snf2qSAYQaGq5yAHzEQywEmWBopjDB/+
+         o1wa0++gwS1fdzdSOsttOI+kmDx4Iu3ZMxipqkhUdMrv4X0/7CGjjCh2dXUwKS+S2r
+         Fx15OFTbQtaYDBm4kTqvTA7XPCeNRfv9UPDVtYO50XtQ2KAQCl1YNKBYybg9px/QkP
+         E6nbHXIsB67rw==
+Date:   Sat, 24 Sep 2022 12:36:12 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
+        Dionna Amalie Glaze <dionnaglaze@google.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, linux-efi@vger.kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Kees Cook <keescook@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        David Hildenbrand <david@redhat.com>,
+        Marcelo Cerri <marcelo.cerri@canonical.com>,
+        tim.gardner@canonical.com,
+        Khalid ElMously <khalid.elmously@canonical.com>,
+        philip.cox@canonical.com,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        linux-coco@lists.linux.dev, linux-efi <linux-efi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
+Message-ID: <Yy7PjEXfHoR4PYdC@kernel.org>
+References: <CAAH4kHa6s3sBRySNu-TZG_6vOaN4KheVy4kvxG5s=wOTDGy2=Q@mail.gmail.com>
+ <2981e25e-9cda-518a-9750-b8694f2356b5@amd.com>
+ <CAAH4kHbcfnVWNQHf6Mrg__bSFT6196Sx4kno6o0Zo7hsgOgnNw@mail.gmail.com>
+ <984e07ed-914f-93ca-a141-3fc8677878e0@intel.com>
+ <CAAH4kHawguTEuDVyz1ysSbH0X_mT=SvxLi=UhwEzXM0abbWefg@mail.gmail.com>
+ <YxncAElGrPEGRYg1@linux.ibm.com>
+ <CAAH4kHaP8JUh0Z4rF83=2RZTGMATT5MHot6rAnAwt79PL64mVQ@mail.gmail.com>
+ <YxpCaQARczhZQmq2@linux.ibm.com>
+ <f72f7325-adc6-89d5-7cbc-647442308233@amd.com>
+ <20220924010302.bwas4zbro37rrxai@box.shutemov.name>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220924010302.bwas4zbro37rrxai@box.shutemov.name>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -65,56 +89,87 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, 24 Sept 2022 at 00:17, Dave Hansen <dave.hansen@linux.intel.com> wrote:
->
-> The 32-bit code is in a weird spot.  Some 32-bit builds (non-PAE) do not
-> even have NX support.  Even PAE builds that support NX have to contend
-> with things like EFI data and code mixed in the same pages where W+X
-> is unavoidable.
->
-> The folks still running X86_32=y kernels are unlikely to care much about
-> NX.  That combined with the fundamental inability fix _all_ of the W+X
-> things means this code had little value on X86_32=y.  Disable the checks.
->
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Darren Hart <dvhart@infradead.org>
-> Cc: Andy Shevchenko <andy@infradead.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: x86@kernel.org
-> Cc: linux-efi@vger.kernel.org
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: Kees Cook <keescook@chromium.org>
-> Link: https://lore.kernel.org/all/CAMj1kXHcF_iK_g0OZSkSv56Wmr=eQGQwNstcNjLEfS=mm7a06w@mail.gmail.com/
+On Sat, Sep 24, 2022 at 04:03:02AM +0300, Kirill A. Shutemov wrote:
+> On Thu, Sep 22, 2022 at 09:31:12AM -0500, Tom Lendacky wrote:
+> > On 9/8/22 14:28, Mike Rapoport wrote:
+> > > On Thu, Sep 08, 2022 at 09:23:07AM -0700, Dionna Amalie Glaze wrote:
+> > > > > 
+> > > > > Looks like the first access to the memory map fails, although I think
+> > > > > it's not in INIT_LIST_HEAD() but rather in init_page_count().
+> > > > > 
+> > > > > I'd start with making sure that page_alloc::memmap_alloc() actually returns
+> > > > > accepted memory. If you build kernel with CONFIG_DEBUG_VM=y the memory map
+> > > > > will poisoned in this function, so my guess is it'd crash there.
+> > > > > 
+> > > > 
+> > > > That's a wonderful hint, thank you! I did not run this test
+> > > > CONFIG_DEBUG_VM set, but you think it's possible it could still be
+> > > > here?
+> > > 
+> > > It depends on how you configured your kernel. Say, defconfig does not set
+> > > it.
+> > > 
+> > 
+> > I also hit the issue at 256GB. My config is using CONFIG_SPARSEMEM_VMEMMAP
+> > and fails in memmap_init_range() when attempting to add the first PFN. It
+> > looks like the underlying page that is backing the vmemmap has not been
+> > accepted (I receive a #VC 0x404 => page not validated).
+> > 
+> > Kirill, is this a path that you've looked at? It would appear that somewhere
+> > in the vmemmap_populate_hugepages() path, some memory acceptance needs to be
+> > done for the pages that are used to back vmemmap. I'm not very familiar with
+> > this code, so I'm not sure why everything works for a guest with 255GB of
+> > memory, but then fails for a guest with 256GB of memory.
+> 
+> Hm. I don't have machine that large at hands at the moment. And I have not
+> looked at the codepath before.
+> 
+> I will try to look into the issue.
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+I'd add some printks to verify we actually try to accept the allocated
+memory. E.g. something like the patch below:
 
-> ---
->  arch/x86/mm/pat/set_memory.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->
-> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> index 20b1e24baa85..efe882c753ca 100644
-> --- a/arch/x86/mm/pat/set_memory.c
-> +++ b/arch/x86/mm/pat/set_memory.c
-> @@ -587,6 +587,14 @@ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long star
->  {
->         unsigned long end;
->
-> +       /*
-> +        * 32-bit has some unfixable W+X issues, like EFI code
-> +        * and writeable data being in the same page.  Disable
-> +        * detection and enforcement there.
-> +        */
-> +       if (IS_ENABLED(CONFIG_X86_32))
-> +               return new;
-> +
->         /* Only enforce when NX is supported: */
->         if (!(__supported_pte_mask & _PAGE_NX))
->                 return new;
-> --
-> 2.34.1
->
+diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
+index 9ec2304272dc..8f00639facc4 100644
+--- a/arch/x86/mm/unaccepted_memory.c
++++ b/arch/x86/mm/unaccepted_memory.c
+@@ -22,6 +22,9 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
+ 	if (!boot_params.unaccepted_memory)
+ 		return;
+ 
++	if (system_state == SYSTEM_BOOTING)
++		pr_info("%s: start: %pa end: %pa %pS\n", __func__, &start, &end, (void *)_RET_IP_);
++
+ 	bitmap = __va(boot_params.unaccepted_memory);
+ 	range_start = start / PMD_SIZE;
+ 
+diff --git a/mm/memblock.c b/mm/memblock.c
+index a1f7f8b304d5..029dd520102d 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -1535,7 +1535,7 @@ void * __init memblock_alloc_exact_nid_raw(
+ 			phys_addr_t min_addr, phys_addr_t max_addr,
+ 			int nid)
+ {
+-	memblock_dbg("%s: %llu bytes align=0x%llx nid=%d from=%pa max_addr=%pa %pS\n",
++	pr_info("%s: %llu bytes align=0x%llx nid=%d from=%pa max_addr=%pa %pS\n",
+ 		     __func__, (u64)size, (u64)align, nid, &min_addr,
+ 		     &max_addr, (void *)_RET_IP_);
+ 
+@@ -1567,7 +1567,7 @@ void * __init memblock_alloc_try_nid_raw(
+ 			phys_addr_t min_addr, phys_addr_t max_addr,
+ 			int nid)
+ {
+-	memblock_dbg("%s: %llu bytes align=0x%llx nid=%d from=%pa max_addr=%pa %pS\n",
++	pr_info("%s: %llu bytes align=0x%llx nid=%d from=%pa max_addr=%pa %pS\n",
+ 		     __func__, (u64)size, (u64)align, nid, &min_addr,
+ 		     &max_addr, (void *)_RET_IP_);
+ 
+ 
+> -- 
+>   Kiryl Shutsemau / Kirill A. Shutemov
+> 
+
+-- 
+Sincerely yours,
+Mike.
