@@ -2,147 +2,122 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5ADA5EB50B
-	for <lists+linux-efi@lfdr.de>; Tue, 27 Sep 2022 01:04:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBC705EBDE1
+	for <lists+linux-efi@lfdr.de>; Tue, 27 Sep 2022 10:58:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230391AbiIZXEL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 26 Sep 2022 19:04:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35968 "EHLO
+        id S230422AbiI0I65 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 27 Sep 2022 04:58:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230395AbiIZXEK (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 26 Sep 2022 19:04:10 -0400
-Received: from alln-iport-3.cisco.com (alln-iport-3.cisco.com [173.37.142.90])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30874A8CFA;
-        Mon, 26 Sep 2022 16:04:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=1694; q=dns/txt; s=iport;
-  t=1664233447; x=1665443047;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=UfqbhAK++DNIhImH/1VT+jrMLWJa1wTzmPtEjmwVs+A=;
-  b=KrZ9bMa/yreybfkpXCZL3pwGiKf0MTZsvWFzgIqJzhI21GvNa6nwQwFe
-   klJBeA0q9lIxZmV9AKO8HzcsNmyA/XRUAX9L51YKFKgQl8O66TbpXGQqi
-   jIt6ja1hMiXVqD9CHVoq6G2+Bn2gvaLJZ9IZB2Al/rM2AM2uJ/H9Y/QuE
-   I=;
-X-IPAS-Result: =?us-ascii?q?A0AwAACPLzJj/5hdJa1aHAEBAQEBAQcBARIBAQQEAQFAg?=
- =?us-ascii?q?TsHAQELAYIqelU+RYxthlCCKJFoiyqBfAsBAQENAQE5CQQBAYFTgzIChGwCJ?=
- =?us-ascii?q?TQJDgECBAEBAQEDAgMBAQEBAQEDAQEFAQEBAgEHBIEJE4VoDYZDAQU6PxALG?=
- =?us-ascii?q?C5XBhOCfoMgAxCpd3iBNIEBg1ABGBiEHIFfBiSBGQGQKCccgUlEhD8+iFKCL?=
- =?us-ascii?q?gSZJTgDRB1BAwtCNRgDFAMFJAcDGQ8jDQ0EFgcMAwMFJQMCAhsHAgIDAgYTB?=
- =?us-ascii?q?QICTTYIBAgEKyQPBQIHLwUELwIeBAUGEQgCFgIGBAQEBBUCEAgCCCYXBxMzG?=
- =?us-ascii?q?QEFWRAJIRwOGg0FBhMDIG8FRA8oMWsrHRsKgQwqKBUDBAQDAgYTAwMiAhAqM?=
- =?us-ascii?q?RQEKRMSLQcrcwkCAyJnBQMDBCgsAwkhHwcoJjwHWDoBBAMCECI9BgMJAwIkW?=
- =?us-ascii?q?4EvKAUDDRkmCAUjFx4ECDwCBQZXEwIKEgMTD5hlgguBQXuBQjqSUYJkjT+BM?=
- =?us-ascii?q?J0vg2OBSYlylGJMEahzlwuNPJR0hRACBAYFAhaBYTyBWTMaCBsVgyITPhkPl?=
- =?us-ascii?q?yaFaiQxAjkCBgsBAQMJilABAQ?=
-IronPort-Data: A9a23:kwPseKymHrMObNdZ/xR6t+crxirEfRIJ4+MujC+fZmUNrF6WrkVWn
- WAbWjuAa/3ZYzejfNF0OoTg8ksAupLWydNlGgZopVhgHilAwSbn6Xt1DatR0we6dJCroJdPt
- p1GAjX4BJloCCWa/n9BC5C5xVFkz6aEW7HgP+DNPyF1VGdMRTwo4f5Zs7ZRbrVA3J7oWGthh
- fuo+5eFYA7/hWYuWo4pw/vrRC1H7ayaVAww5jTSVdgT1HfCmn8cCo4oJK3ZBxMUlaENQ4ZW7
- 86apF2I1juxEyUFU7tJoZ6nGqE+eYM+CCDV4pZgtwdOtTAZzsA6+v5T2PPx8i67gR3R9zx64
- I0lWZBd1W7FM4WU8NnxXSW0HAkuIKtWv6PiMEK+tOqz03CfaHrgkvFhWRRe0Y0woo6bAElU/
- vAebTsKdB3G3qS9wamwTa9ngcFLwMvDZdxE/Co/i2CCS697G/gvQI2SjTNc9Ds5gMFDGenXT
- 8EYcjFoKh/HZnWjP39GU8Jkxrvz3CGXnztwg2iro68swXLv61Zyi+SzP//4SN3QfJAA9qqfj
- iecl4jjOTkeNdqC2X+I/HOEmODCh2X4VZgUGbn+8eRl6HWXx2oOGFgVX0a6pfWRlEGzQZRcJ
- lYS9y5oqrI9nGSnQ8f8VBCkunOJlgATVsAWEOAg7gyJjK3O7G6xAmkCUy4Ea9E8ssIybSIl2
- 0XPnN7zAzFr9rqPRhq18raSsCP3MDIQaGwPfykJSSMB4sL/u8cyiBzVR9puGaLzicf6cRnw2
- zmivjkigK9VhskOv42//Fbakyq0rd3FQxAd4gTMQnnj6RF9bYS+IYuy5jDz6fdGMZbcS1iZp
- 1AalMWEquMDF5eAkGqKWuplNKH5ud6GPSfajFopGIMunxyk+GamVYRR5ixuYUluL8AIcCPoZ
- 0mVvhlejLdYPGGrdrNwe4K8TcAn16/xPd/+WerTc8IIb4UZXBCG+CVGZkOK2W3p1k82nskXI
- pqSd4ClC3oXE79gyhKtSuwal7Qsw0gWyWrVRJ3/5xum1KKTYHOLSLwFdkCHaKU39qqCqwTO+
- NEZPMLM1g43ePf5aCn/8oMJK10Oa38hCvjLR9d/bOWPJE9tH3ssTqaXyrI6cIsjlKNQ/gvVw
- kyAtoZj4AKXrRX6xc+iNhiPtJuHsU5DkE8G
-IronPort-HdrOrdr: A9a23:hDjVf602tBeE9/+AL1j+3QqjBLckLtp133Aq2lEZdPWaSKOlfu
- SV7ZEmPH7P+VQssR4b8+xoVJPsfZqYz+8Q3WBzB8bAYOCFggqVxehZhOOI/9SjIU3DH4Vmu5
- uIHZITNDU1ZmIK6/oTJ2KDYrEd/OU=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="5.93,347,1654560000"; 
-   d="scan'208";a="938224320"
-Received: from rcdn-core-1.cisco.com ([173.37.93.152])
-  by alln-iport-3.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 26 Sep 2022 23:03:45 +0000
-Received: from zorba ([10.25.129.98])
-        by rcdn-core-1.cisco.com (8.15.2/8.15.2) with ESMTPS id 28QN3fDH020704
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Mon, 26 Sep 2022 23:03:43 GMT
-Date:   Mon, 26 Sep 2022 16:03:41 -0700
-From:   Daniel Walker <danielwa@cisco.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
-        Sean Anderson <sean.anderson@seco.com>,
-        Will Deacon <will@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-efi@vger.kernel.org
-Subject: Re: [PATCH 0/8] generic command line v4
-Message-ID: <20220926230341.GD4320@zorba>
-References: <20210416040924.2882771-1-danielwa@cisco.com>
- <b517fac5-2fdc-a8c9-75d0-174c67f5a2de@seco.com>
- <20220922205334.GV4320@zorba>
- <dcff9b0f-82c8-5aa7-0fff-b749a05fcb20@seco.com>
- <20220922211026.GW4320@zorba>
- <1663881344.25129.23.camel@chimera>
- <CAL_JsqLibRSi2n389Q7cf+1gQSidvfiZHjHCcGirgi0hgJ53-A@mail.gmail.com>
+        with ESMTP id S229633AbiI0I6z (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 27 Sep 2022 04:58:55 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCADD7D1FB
+        for <linux-efi@vger.kernel.org>; Tue, 27 Sep 2022 01:58:54 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 930C4B81A93
+        for <linux-efi@vger.kernel.org>; Tue, 27 Sep 2022 08:58:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B85C433B5;
+        Tue, 27 Sep 2022 08:58:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1664269132;
+        bh=PVJxLOqpZBxsmMsKxfPCc+uqjaTrlP9wSUJensoC7NA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=EK9AVjpkik4F/GSSVjBOIvfFGB24vWhRlw/mPaJYrEsgvUIr8uciCP4PtYcLujOlH
+         Osd6VchQwXSRzPMNR2Zx8Uf9yCsfPlk2s1H13Qz9QM/BHOp/OE+FpDscLqxZBzyQYK
+         kkOFS9xSQu4y8wVRCQXJ1KDRPJCZod56B/TOJ+nV75Ids7/dsOFloP7jPkJVKLBjdX
+         I+JUBdf22t6uKci5g/6U86nrFnWw4kZRLtjrQKvgxkO6SmhoLHczOQAAPkm9OM1jrN
+         Tlif6rpLcOzzTzWz1sMesrTRbVMODwuCtLw8ocmcf8yheqagsmsOL58IDXzfJAXnvx
+         alcJKZxFwRFfg==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Atish Patra <atishp@atishpatra.org>,
+        Lennart Poettering <lennart@poettering.net>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Subject: [PATCH 0/4] efi: Improve command line initrd loader support
+Date:   Tue, 27 Sep 2022 10:58:38 +0200
+Message-Id: <20220927085842.2860715-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqLibRSi2n389Q7cf+1gQSidvfiZHjHCcGirgi0hgJ53-A@mail.gmail.com>
-X-Outbound-SMTP-Client: 10.25.129.98, [10.25.129.98]
-X-Outbound-Node: rcdn-core-1.cisco.com
-X-Spam-Status: No, score=-12.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIMWL_WL_MED,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_NONE,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3023; i=ardb@kernel.org; h=from:subject; bh=PVJxLOqpZBxsmMsKxfPCc+uqjaTrlP9wSUJensoC7NA=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjMrs86XZw9ZQYOLyTdf8/6dnYLS3nQlhOe2ts8v/1 9XrDlbOJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYzK7PAAKCRDDTyI5ktmPJHe/C/ 0a+9hr7S+OdXxD257eUZl2JtsX5WHKuWy5K4BokpLo6b8WF10M7MBT6MOmCPaXeXvtJI3G2Ehg9ccJ GTsOhX71s33l1dsMaTcAHmB9NnIPBtLZ2T7dG99UA/eTiDDFmpYTpU6P0Xu1bS7O+wg40hY4NnGKt0 E8mS8oGcbypJl9JcxypXh7TwuiumM81oHSVZzduQy8G8Rv/GmEHLGdCY5Ng7AIhQGC8i3zs/c7mu+k 055Rw5FluLzLcePfBWa/VtPE4neb5+gXRO5ndnBmrr3UYp1wLbzBp7OXwNSCA5Cy0iiHop7X/YEdvh RMOi8thzPvzb8iN3a3Y8eEj2E6hSrclnmzNin6nZG0xBXHUAbKoyMPKRP53epbT//vMMLcUrVrNQ3K GN8eOsP9sTUdUfN4AGqmcEv66shqN948pIBfMVWIQjn03Sn3Oikf2HJ0izAwawkaAfaqVhbxmIT8MZ CPgieluMNooA/zZzZ0VoAI0z5MWOnwImUHumO73v4SWUY=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Sep 26, 2022 at 05:52:18PM -0500, Rob Herring wrote:
-> On Thu, Sep 22, 2022 at 4:15 PM Daniel Gimpelevich
-> <daniel@gimpelevich.san-francisco.ca.us> wrote:
-> >
-> > On Thu, 2022-09-22 at 14:10 -0700, Daniel Walker wrote:
-> > > On Thu, Sep 22, 2022 at 05:03:46PM -0400, Sean Anderson wrote:
-> > [snip]
-> > > > As recently as last month, someone's patch to add such support was
-> > > > rejected for this reason [1].
-> > > >
-> > > > --Sean
-> > > >
-> > > > [1] https://lore.kernel.org/linux-arm-kernel/20220812084613.GA3107@willie-the-truck/
-> > >
-> > >
-> > > I had no idea.. Thanks for pointing that out. I guess I will re-submit in that
-> > > case.
-> > >
-> > > Daniel
-> >
-> > This has been happening repeatedly since circa 2014, on multiple
-> > architectures. It's quite frustrating, really.
-> 
-> It must not be that important. From the last time, IMO Christophe's
-> version was much closer to being merged than this series. This is not
-> how you get things upstream:
-> 
-> > * Dropped powerpc changes
-> >   Christophe Leroy has reservations about the features for powerpc. I
-> >   don't think his reservations are founded, and these changes should
-> >   fully work on powerpc. However, I dropped these changes so Christophe
-> >   can have more time to get comfortable with the changes.
-> 
-> Rob
+Given that the command line initrd loader can only load files from the
+same simple FS volume from which the kernel itself was loaded, it was
+not flexible enough for use in loaders such as GRUB that don't even
+implement the FS volume abstraction, and load images as anonymous
+buffers in memory. As x86 mixed mode was based on a GRUB specific EFI
+handover protocol, and the simple FS protocol method prototypes were not
+mixed mode safe, the initrd command line loader did not work for mixed
+mode at all.
 
-I don't submit often enough, that's true. However, I figured maintainers don't
-want the changes. This is a common occurrence in industry, people may submit
-once or twice, no traction and they give up. I suppose it's a combination of
-problems.
+For this reason, we support arch specific methods (bootparam, DT) as
+well, and have added support for a generic method based on the LoadFile2
+protocol, which is much easier to implement and use.
 
-Christophe's don't have the same features, so they are really totally different
-but conflicting.
+However, there are cases where the command line loader is useful,
+especially when using fully generic loaders such as the UEFI shell.
+Here, it is generally not possible to use Linux specific structs or data
+structures, or implement the Linux specific LoadFile2 protocol
+implementation for initrd loading.
 
-Daniel
+So let's fix the issues with the initrd command line loader:
+- add the ability to use fully qualified device paths as the initrd=
+  argument, so that the initrd image can reside on any simple FS volume,
+  even if the kernel itself was not loaded from one;
+- fix the mixed mode issues, by using the mixed mode wrappers for the
+  protocol invocations, and defining some recipes for the prototypes
+  that cannot be marshalled 1:1
+
+The above means that mixed mode loaders that boot via the compat entry
+point (e.g., systemd-boot) can use the initrd= command line option as
+before to pass the initrd, if desired.
+
+With those fixes in place, let's remove the deprecation notice, and
+permit the feature to be enabled on LoongArch and RISC-V as well.
+
+Note that LoadFile2 is still preferred, and will continue to take
+precedence. It is also the only generic method that cannot be compiled
+out.
+
+Cc: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Jeremy Linton <jeremy.linton@arm.com>
+Cc: Atish Patra <atishp@atishpatra.org>
+Cc: Lennart Poettering <lennart@poettering.net>
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+
+Ard Biesheuvel (4):
+  efi: libstub: Implement devicepath support for initrd commandline
+    loader
+  efi: libstub: Permit mixed mode return types other than efi_status_t
+  efi: libstub: Add mixed mode support to command line initrd loader
+  efi: libstub: Undeprecate the command line initrd loader
+
+ arch/x86/boot/compressed/efi_thunk_64.S        |   6 --
+ arch/x86/include/asm/efi.h                     |  49 +++++----
+ drivers/firmware/efi/Kconfig                   |  13 ++-
+ drivers/firmware/efi/libstub/efi-stub-helper.c |   2 +-
+ drivers/firmware/efi/libstub/efistub.h         | 112 ++++++++++++++------
+ drivers/firmware/efi/libstub/file.c            | 105 +++++++++++++-----
+ include/linux/efi.h                            |   6 ++
+ 7 files changed, 202 insertions(+), 91 deletions(-)
+
+-- 
+2.35.1
+
