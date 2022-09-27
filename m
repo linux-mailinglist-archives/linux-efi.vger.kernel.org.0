@@ -2,108 +2,143 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A03295EBDE4
-	for <lists+linux-efi@lfdr.de>; Tue, 27 Sep 2022 10:59:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CE6D5EBF09
+	for <lists+linux-efi@lfdr.de>; Tue, 27 Sep 2022 11:53:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231381AbiI0I7E (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 27 Sep 2022 04:59:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41436 "EHLO
+        id S229698AbiI0Jxl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 27 Sep 2022 05:53:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231149AbiI0I7C (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 27 Sep 2022 04:59:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E84137E814
-        for <linux-efi@vger.kernel.org>; Tue, 27 Sep 2022 01:59:01 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8504561628
-        for <linux-efi@vger.kernel.org>; Tue, 27 Sep 2022 08:59:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3785DC433D7;
-        Tue, 27 Sep 2022 08:58:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664269140;
-        bh=2WDjuWY8H6VhypnxzBZn90dgORVmAVV9szyeN7i9MmA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SAlRbhqH7Ro71yDXynzwyxh3pGkipy+xf6EA5d0ooU6EqQOgh7r7QSwR0P13gjsfN
-         HtUkUJ/J41BO7vkrWEDuQICUdZY1BlvLRFBxSJHI44I8cktBlBh9Vfrofu7Edsmf87
-         1c/S6tt7NOjv6kQ4FfeYBP8rbshIdSONws09NhFlhFM/dkxOSsOcGj0JzwdG3LEysp
-         USLut1QUB+3c+SY59yGYXyTfaEnNs/NVn7XZK9THqD8eAE0dh00GSqTeST9Yl5ZAv/
-         MlGjkCHM1pycW9fFkolLMtwATxuXdq3f/SuqEtKg6+JsUoJdhkEBiC4Qr04aeVzrII
-         fjaI5PFUflIAA==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Atish Patra <atishp@atishpatra.org>,
-        Lennart Poettering <lennart@poettering.net>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: [PATCH 4/4] efi: libstub: Undeprecate the command line initrd loader
-Date:   Tue, 27 Sep 2022 10:58:42 +0200
-Message-Id: <20220927085842.2860715-5-ardb@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220927085842.2860715-1-ardb@kernel.org>
-References: <20220927085842.2860715-1-ardb@kernel.org>
+        with ESMTP id S230338AbiI0Jxg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 27 Sep 2022 05:53:36 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F401195AE6
+        for <linux-efi@vger.kernel.org>; Tue, 27 Sep 2022 02:53:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1664272416; x=1695808416;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=h5pnCEO8jlQPJ0VMsM+Ux7xyOhaGeJk0nZK+aXP/92M=;
+  b=KNq1T7AdzZTsHYQWguJ2HumsSoWaykRS4jD2lcl1Vnq3jwrAVDAZX+9Q
+   ff+amrpcjUKlOr4EhMrZ65eZnlDairMmrReufFsSGoehJR8yOcSAa6EgA
+   Nb6GLpRhCcHHkhfz4ArRPdbcI4L8JpdEslQyElSXez1HncCi+pmMtnKMi
+   vbLk4AAdFZqJk2sZJxEvKg2Nw06xbSvuDxvwOi2yODJJgcILshRwO8o1i
+   wwhFQF5+LhViAOf3ePj9gG+/oTA1KUzaM1aDeJfgZhjdxGAcZ3Oj+Z7Qm
+   CCa8/yaDDtN4QAWp/TM87WBc8n2sGcn9B2HsRP5RfyCk3J2O0SPqDZww/
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10482"; a="302754591"
+X-IronPort-AV: E=Sophos;i="5.93,349,1654585200"; 
+   d="scan'208";a="302754591"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2022 02:53:35 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10482"; a="621462022"
+X-IronPort-AV: E=Sophos;i="5.93,349,1654585200"; 
+   d="scan'208";a="621462022"
+Received: from lkp-server02.sh.intel.com (HELO dfa2c9fcd321) ([10.239.97.151])
+  by orsmga002.jf.intel.com with ESMTP; 27 Sep 2022 02:53:33 -0700
+Received: from kbuild by dfa2c9fcd321 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1od7HQ-0000su-1l;
+        Tue, 27 Sep 2022 09:53:32 +0000
+Date:   Tue, 27 Sep 2022 17:53:19 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS a9f6d5f1a4a88289535e0942b0e600c8e36278ff
+Message-ID: <6332c80f.b+l3Lkb6Go/Y/x6J%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2002; i=ardb@kernel.org; h=from:subject; bh=2WDjuWY8H6VhypnxzBZn90dgORVmAVV9szyeN7i9MmA=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjMrtCjfsTB5WZt0VCWFWtBGI58slNUjv3m1GaeLqb H3OURlmJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYzK7QgAKCRDDTyI5ktmPJFvvDA CQ9lhXJmW/sQit4UtoJcK7L3WXnvlNg1NiaXTmUwO9gE5WeS0qhc1VG0yJ9bL3gIxz6Ef/3aiaA3I7 Hr56A0HapdYFjGA2jPHOsNxmKJjlDeGa+lPf9qn1EfTnA6el8jB9qIodtyAYaWadDLwTD2FdBjl8n/ SoJlGGQFMuZpTJw087qt+s55l/46twcf9VSUl7wbqKmEpsQm02SxAAVsLuPO9LcffU2d9xEHh632GM lVrh9XDHb2uDldC34wBrVe5WmWGsq/SO9cjH7zrMHp2VVUsUW/hi6s9ZKur8TPPXfeNPpUa7Jeg1WE wYWFCjJZGcpcoi5vdOV4ZUicKAU4OHUq41rj9lS5dgU0CNSPptTyLHGO4h7iu9bBT2vYBqfw60Pj7/ O050RJIHak3A5Wb27e/GAqHF+FeO6rrN1biH+zefXx5pkotPU/0VOPHU5TqxZAcQ9Bz7RYOyxnauow U+bFIdMq46xDeJRbausxxNOkmONSYOXtmB/rbgKHBu9yw=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The initrd= command line loader can be useful for development, but it
-was limited to loading files from the same file system as the loaded
-kernel (and it didn't work on x86 mixed mode).
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+branch HEAD: a9f6d5f1a4a88289535e0942b0e600c8e36278ff  arm64: efi/libstub: use EFI_LOADER_CODE region when moving the kernel in memory
 
-As both issues have been fixed, and the initrd= can now be used with
-files residing on any simply file system exposed by the EFI firmware,
-let's permit it to be enabled on RISC-V and LoongArch, which did not
-support it up to this point.
+elapsed time: 720m
 
-Note that LoadFile2 remains the preferred option, as it is much simpler
-to use and implement, but generic loaders (including the UEFI shell) may
-not implement this so there, initrd= can now be used as well (if enabled
-in the build)
+configs tested: 63
+configs skipped: 2
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/Kconfig | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-index 5b79a4a4a88d..4f7e65293297 100644
---- a/drivers/firmware/efi/Kconfig
-+++ b/drivers/firmware/efi/Kconfig
-@@ -165,13 +165,16 @@ config EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER
- 	bool "Enable the command line initrd loader" if !X86
- 	depends on EFI_STUB && (EFI_GENERIC_STUB || X86)
- 	default y if X86
--	depends on !RISCV && !LOONGARCH
- 	help
- 	  Select this config option to add support for the initrd= command
--	  line parameter, allowing an initrd that resides on the same volume
--	  as the kernel image to be loaded into memory.
--
--	  This method is deprecated.
-+	  line parameter, allowing an initrd to be loaded into memory that
-+	  resides on a file system backed by an implementation of
-+	  EFI_SIMPLE_FILE_SYSTEM_PROTOCOL.
-+
-+	  This method has been superseded by the simpler LoadFile2 based
-+	  initrd loading method, but the initrd= loader is retained as it
-+	  can be used from the UEFI Shell or other generic loaders that
-+	  don't implement the Linux specific LoadFile2 method.
- 
- config EFI_BOOTLOADER_CONTROL
- 	tristate "EFI Bootloader Control"
+gcc tested configs:
+arc                                 defconfig
+alpha                               defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+x86_64                              defconfig
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+x86_64                               rhel-8.3
+x86_64                           rhel-8.3-kvm
+s390                             allmodconfig
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+x86_64                           allyesconfig
+s390                                defconfig
+powerpc                          allmodconfig
+i386                                defconfig
+mips                             allyesconfig
+arc                  randconfig-r043-20220925
+powerpc                           allnoconfig
+riscv                randconfig-r042-20220925
+arc                  randconfig-r043-20220926
+arm                                 defconfig
+s390                 randconfig-r044-20220925
+sh                               allmodconfig
+i386                 randconfig-a001-20220926
+x86_64               randconfig-a002-20220926
+i386                 randconfig-a002-20220926
+s390                             allyesconfig
+x86_64               randconfig-a001-20220926
+i386                 randconfig-a003-20220926
+x86_64               randconfig-a003-20220926
+x86_64               randconfig-a004-20220926
+x86_64               randconfig-a006-20220926
+i386                 randconfig-a004-20220926
+x86_64               randconfig-a005-20220926
+i386                 randconfig-a005-20220926
+i386                             allyesconfig
+i386                 randconfig-a006-20220926
+arm64                            allyesconfig
+arm                              allyesconfig
+ia64                             allmodconfig
+
+clang tested configs:
+hexagon              randconfig-r045-20220925
+hexagon              randconfig-r041-20220926
+hexagon              randconfig-r045-20220926
+hexagon              randconfig-r041-20220925
+riscv                randconfig-r042-20220926
+i386                 randconfig-a011-20220926
+s390                 randconfig-r044-20220926
+i386                 randconfig-a014-20220926
+i386                 randconfig-a013-20220926
+i386                 randconfig-a016-20220926
+i386                 randconfig-a012-20220926
+i386                 randconfig-a015-20220926
+x86_64               randconfig-a012-20220926
+x86_64               randconfig-a014-20220926
+x86_64               randconfig-a016-20220926
+x86_64               randconfig-a013-20220926
+x86_64               randconfig-a011-20220926
+x86_64               randconfig-a015-20220926
+
 -- 
-2.35.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
