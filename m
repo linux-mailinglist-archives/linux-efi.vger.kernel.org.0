@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 165C85EBDE3
-	for <lists+linux-efi@lfdr.de>; Tue, 27 Sep 2022 10:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8E295EBDE5
+	for <lists+linux-efi@lfdr.de>; Tue, 27 Sep 2022 10:59:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230347AbiI0I67 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 27 Sep 2022 04:58:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41408 "EHLO
+        id S231149AbiI0I7F (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 27 Sep 2022 04:59:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230168AbiI0I66 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 27 Sep 2022 04:58:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92E847CAA9
-        for <linux-efi@vger.kernel.org>; Tue, 27 Sep 2022 01:58:57 -0700 (PDT)
+        with ESMTP id S231181AbiI0I7C (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 27 Sep 2022 04:59:02 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78ED77E33A
+        for <linux-efi@vger.kernel.org>; Tue, 27 Sep 2022 01:59:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E3EA61628
-        for <linux-efi@vger.kernel.org>; Tue, 27 Sep 2022 08:58:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C96C433B5;
-        Tue, 27 Sep 2022 08:58:54 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0E876B81A9C
+        for <linux-efi@vger.kernel.org>; Tue, 27 Sep 2022 08:59:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D11BC433C1;
+        Tue, 27 Sep 2022 08:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664269136;
-        bh=mGT8IYCiIqJ+xhweRLSyCgqFOtdB7hNQ8qX9oeqmvaM=;
+        s=k20201202; t=1664269138;
+        bh=m+x57A0P1GfwYS7XLRrN6i3hk+eSrpUKLsEtMpPA90s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kRNfD7Ca/q2InMGXBQ5ID1+Bzk0QIMzUneUO2ZdnLF7+RXvvZatW+KrsycE29vq1C
-         RZPMJxZpE1rY025CSq+zPEKo/HS4NCTTlhvWMjPpuuf+yGFXM7cw2qJuzPlVGXhiqd
-         NjtCPYlvpOAFyl56PBgZ5KSKYlYHLza6dPI7AEwzwbTDDuyw5svdev3BpVT6wwFR20
-         wID4QJByROEBcJ0TzWxq+82rXafo9qzjwAcD9jAVIf+eXIe0CXXWNSk7q/fs6adM5z
-         R66a2pfzhq5ITs4VdoMm2RTgts09qOs/7pljqnMLiw8OsY4wlMMtCT/UEAYWgZPHs+
-         CMUE1LFkLXSVg==
+        b=Y4S37wp5iQ6nhNqXy/6RpF+aNV2gdEgiKPOFYVRLcWwT0EiDM++L5KN3RGsI3zfa3
+         +sScj2nsxycN6iOunlhwYhbfW+419y78zgYd6v1yrVmxM8wmlU5Onf8V5/L414LO7P
+         bRiJSyeM2/MZFKM5SUdXeHV2Q1GJBiPOvdNfyBCO/E4Pc3pa3gF7sAAot0MLdf/Eau
+         0EzKtq0Z+BL/9WdOzzfAAy0spZAT2NGhi90A7tEZQEPgQsFMKtrK/170ILxTmd1Orf
+         RnAVo+0+ACqSK+OYd9fWHbC6ELA6qxkuuiKjNk6A3hM0JQrLjjA3qrwmwV0U7MESmD
+         Rfy8OH3XaX1Vg==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
@@ -40,14 +40,14 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Atish Patra <atishp@atishpatra.org>,
         Lennart Poettering <lennart@poettering.net>,
         Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: [PATCH 2/4] efi: libstub: Permit mixed mode return types other than efi_status_t
-Date:   Tue, 27 Sep 2022 10:58:40 +0200
-Message-Id: <20220927085842.2860715-3-ardb@kernel.org>
+Subject: [PATCH 3/4] efi: libstub: Add mixed mode support to command line initrd loader
+Date:   Tue, 27 Sep 2022 10:58:41 +0200
+Message-Id: <20220927085842.2860715-4-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220927085842.2860715-1-ardb@kernel.org>
 References: <20220927085842.2860715-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4690; i=ardb@kernel.org; h=from:subject; bh=mGT8IYCiIqJ+xhweRLSyCgqFOtdB7hNQ8qX9oeqmvaM=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjMrs/srtA86IP6E/BjEJyORs1wz2TGOR/Efs856XT PK77hTSJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYzK7PwAKCRDDTyI5ktmPJOfYDA CqBmIwdRDH8ULp4IMQioXsf+J+8UVdvukYgBgZn/Xh7yTQrPxqmMVazTp7nZ2ISWMoMwngXplWHx6O av9LpUVe4DW2GWpyGEuwVAbrGa5IcM7Rh12SKYgfUq1xsdPiYNmNOdAocjKMDhUij8+mQUXPIh2PTs lKOdOb0oJlNaRSUpsja5Zw1kmpiA+4t7tWHoxaEiQ4zqsCJs9WzaKorzH2JTdIsUs9h84+emvttIwr ya1C3/VdPzFrJcQm96S2H7TXZMn5vZeftIgxvjcqfznE1Hj7A0Ac3dTB37VwM4Cq7F5SHpqMT7O9Rs /t99sYfaBh9uvMI8V2Gs9Uiw5mf6o9Us5lbxHN0VcDr5CfNR1GGsQ8TXpoaVQZ7HvSIMCXaAdEwOoW d0qCxJiJy3KbzoRi1mvFPBntAc8VaeyjgWJmIXp3zO/QkHuK+j8LWnduN2HMjODdNi8kST2ExIFB52 ibA+/sBr7coY0D7DNojRf4DuSsZsFpZY2arCQNd3vTDqw=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9611; i=ardb@kernel.org; h=from:subject; bh=m+x57A0P1GfwYS7XLRrN6i3hk+eSrpUKLsEtMpPA90s=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjMrtALcOPOqpyKufl6npYzc4ubyLBaVrTcPAz5xEe G8t2kVmJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYzK7QAAKCRDDTyI5ktmPJD+XC/ 9m6XSJ1JzWyPJqGE4BaLLILpqjImNksJvFZwH9QoQQfXNIcEVY2AnPW2Y58/5NNglkJVExecZudYcq uY9CXAqufqMjj/DzKxa6j8PLK/5M+gk9P7H40LCrjifeLY1YqUXasRTLa3/e2EoMXV2ny5ImF7+jxy Y4laQyhCKnV6W6WunpCeSxN/toQyCwuUllKg9N8gu9MIRxaBIqWdBqd34PI6qoPNXDuEuMfkvS//GO NnibDqgOZZKOGqbl3yjn3ufiC6E9xL5/DmPEm/wCs+A3vTphD6AOoYlJfLIQng89tMl3AJz1slj466 HyovXy+Vxf/Amd3RlivK/ND/D8WE3s+j3xmgk2NvHsPszw2a7Wya3/Bf9r2FwV4XNihBHqGjRRwSy4 IxN7MxVUDRtc3CRoOPmkojSdNtnXhuq1VH/PGPSUMVw4XjSLnCCd8WPLCCA/CVJk+th+UKQ16HBYe1 tCPYbcpNDKu+Z5gsicyUZF4Ds7XqFJ/ujTyzhBfcy9UIQ=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -59,129 +59,263 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Rework the EFI stub macro wrappers around protocol method calls and
-other indirect calls in order to allow return types other than
-efi_status_t. This means the widening should be conditional on whether
-or not the return type is efi_status_t, and should be omitted otherwise.
-
-Note that this does not take into account that unsigned long types might
-exist that are not efi_status_t, but that can be addressed when it
-becomes an issue.
+Now that we have support for calling protocols that need additional
+marshalling for mixed mode, wire up the initrd command line loader.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/efi_thunk_64.S |  6 ----
- arch/x86/include/asm/efi.h              | 38 ++++++++------------
- drivers/firmware/efi/libstub/efistub.h  | 16 ++++++---
- 3 files changed, 26 insertions(+), 34 deletions(-)
+ arch/x86/include/asm/efi.h                     | 11 +++
+ drivers/firmware/efi/libstub/efi-stub-helper.c |  2 +-
+ drivers/firmware/efi/libstub/efistub.h         | 81 +++++++++++++-------
+ drivers/firmware/efi/libstub/file.c            | 34 ++++----
+ 4 files changed, 84 insertions(+), 44 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/efi_thunk_64.S b/arch/x86/boot/compressed/efi_thunk_64.S
-index 67e7edcdfea8..0c988f2a1243 100644
---- a/arch/x86/boot/compressed/efi_thunk_64.S
-+++ b/arch/x86/boot/compressed/efi_thunk_64.S
-@@ -93,12 +93,6 @@ SYM_FUNC_START(__efi64_thunk)
- 	movl	%ebx, %fs
- 	movl	%ebx, %gs
- 
--	/*
--	 * Convert 32-bit status code into 64-bit.
--	 */
--	roll	$1, %eax
--	rorq	$1, %rax
--
- 	pop	%rbx
- 	pop	%rbp
- 	RET
 diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index 233ae6986d6f..8edead8568ec 100644
+index 8edead8568ec..9e56bd489b29 100644
 --- a/arch/x86/include/asm/efi.h
 +++ b/arch/x86/include/asm/efi.h
-@@ -178,7 +178,7 @@ struct efi_setup_data {
- extern u64 efi_setup;
+@@ -325,6 +325,17 @@ static inline u32 efi64_convert_status(efi_status_t status)
+ #define __efi64_argmap_set_memory_space_attributes(phys, size, flags) \
+ 	(__efi64_split(phys), __efi64_split(size), __efi64_split(flags))
  
- #ifdef CONFIG_EFI
--extern efi_status_t __efi64_thunk(u32, ...);
-+extern u64 __efi64_thunk(u32, ...);
++/* file protocol */
++#define __efi64_argmap_open(prot, newh, fname, mode, attr) \
++	((prot), efi64_zero_upper(newh), (fname), __efi64_split(mode), \
++	 __efi64_split(attr))
++
++#define __efi64_argmap_set_position(pos) (__efi64_split(pos))
++
++/* file system protocol */
++#define __efi64_argmap_open_volume(prot, file) \
++	((prot), efi64_zero_upper(file))
++
+ /*
+  * The macros below handle the plumbing for the argument mapping. To add a
+  * mapping for a specific EFI method, simply define a macro
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index 3249d7927c88..37f42a1d1777 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -682,7 +682,7 @@ efi_status_t efi_load_initrd_cmdline(efi_loaded_image_t *image,
+ 				     unsigned long hard_limit)
+ {
+ 	if (!IS_ENABLED(CONFIG_EFI_GENERIC_STUB_INITRD_CMDLINE_LOADER) ||
+-	    (IS_ENABLED(CONFIG_X86) && (!efi_is_native() || image == NULL)))
++	    (IS_ENABLED(CONFIG_X86) && image == NULL))
+ 		return EFI_UNSUPPORTED;
  
- #define efi64_thunk(...) ({						\
- 	u64 __pad[3]; /* must have space for 3 args on the stack */	\
-@@ -344,31 +344,23 @@ static inline u32 efi64_convert_status(efi_status_t status)
- #define __efi_eat(...)
- #define __efi_eval(...) __VA_ARGS__
- 
--/* The three macros below handle dispatching via the thunk if needed */
--
--#define efi_call_proto(inst, func, ...)					\
--	(efi_is_native()						\
--		? inst->func(inst, ##__VA_ARGS__)			\
--		: __efi64_thunk_map(inst, func, inst, ##__VA_ARGS__))
--
--#define efi_bs_call(func, ...)						\
--	(efi_is_native()						\
--		? efi_system_table->boottime->func(__VA_ARGS__)		\
--		: __efi64_thunk_map(efi_table_attr(efi_system_table,	\
--						   boottime),		\
--				    func, __VA_ARGS__))
-+static inline efi_status_t __efi64_widen_efi_status(u64 status)
-+{
-+	return status ? status ^ 0x8000000080000000ULL : 0;
-+}
- 
--#define efi_rt_call(func, ...)						\
--	(efi_is_native()						\
--		? efi_system_table->runtime->func(__VA_ARGS__)		\
--		: __efi64_thunk_map(efi_table_attr(efi_system_table,	\
--						   runtime),		\
--				    func, __VA_ARGS__))
-+/* The macro below handles dispatching via the thunk if needed */
- 
--#define efi_dxe_call(func, ...)						\
-+#define efi_fn_call(inst, func, ...)					\
- 	(efi_is_native()						\
--		? efi_dxe_table->func(__VA_ARGS__)			\
--		: __efi64_thunk_map(efi_dxe_table, func, __VA_ARGS__))
-+	? inst->func(__VA_ARGS__)					\
-+	: __builtin_choose_expr(					\
-+		__builtin_types_compatible_p(efi_status_t,		\
-+			__typeof__(inst->func(__VA_ARGS__))),		\
-+		__efi64_widen_efi_status(				\
-+			__efi64_thunk_map(inst, func, ##__VA_ARGS__)),	\
-+		(__typeof__(inst->func(__VA_ARGS__)))			\
-+			__efi64_thunk_map(inst, func, ##__VA_ARGS__)))
- 
- #else /* CONFIG_EFI_MIXED */
- 
+ 	return handle_cmdline_files(image, L"initrd=", sizeof(L"initrd=") - 2,
 diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index f403aebf0182..d26d3d7b99c0 100644
+index d26d3d7b99c0..23b7880be11a 100644
 --- a/drivers/firmware/efi/libstub/efistub.h
 +++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -44,15 +44,21 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+@@ -593,36 +593,63 @@ typedef struct {
+ 	efi_char16_t		filename[];
+ } efi_file_info_t;
  
- #ifndef ARCH_HAS_EFISTUB_WRAPPERS
- 
--#define efi_is_native()		(true)
--#define efi_bs_call(func, ...)	efi_system_table->boottime->func(__VA_ARGS__)
--#define efi_rt_call(func, ...)	efi_system_table->runtime->func(__VA_ARGS__)
--#define efi_dxe_call(func, ...)	efi_dxe_table->func(__VA_ARGS__)
-+#define efi_is_native()			(true)
- #define efi_table_attr(inst, attr)	(inst->attr)
--#define efi_call_proto(inst, func, ...) inst->func(inst, ##__VA_ARGS__)
-+#define efi_fn_call(inst, func, ...)	inst->func(__VA_ARGS__)
- 
- #endif
- 
-+#define efi_call_proto(inst, func, ...) \
-+	efi_fn_call(inst, func, inst, ##__VA_ARGS__)
-+#define efi_bs_call(func, ...) \
-+	efi_fn_call(efi_table_attr(efi_system_table, boottime), func, ##__VA_ARGS__)
-+#define efi_rt_call(func, ...) \
-+	efi_fn_call(efi_table_attr(efi_system_table, runtime), func, ##__VA_ARGS__)
-+#define efi_dxe_call(func, ...) \
-+	efi_fn_call(efi_dxe_table, func, ##__VA_ARGS__)
+-typedef struct efi_file_protocol efi_file_protocol_t;
+-
+-struct efi_file_protocol {
+-	u64		revision;
+-	efi_status_t	(__efiapi *open)	(efi_file_protocol_t *,
+-						 efi_file_protocol_t **,
+-						 efi_char16_t *, u64, u64);
+-	efi_status_t	(__efiapi *close)	(efi_file_protocol_t *);
+-	efi_status_t	(__efiapi *delete)	(efi_file_protocol_t *);
+-	efi_status_t	(__efiapi *read)	(efi_file_protocol_t *,
+-						 unsigned long *, void *);
+-	efi_status_t	(__efiapi *write)	(efi_file_protocol_t *,
+-						 unsigned long, void *);
+-	efi_status_t	(__efiapi *get_position)(efi_file_protocol_t *, u64 *);
+-	efi_status_t	(__efiapi *set_position)(efi_file_protocol_t *, u64);
+-	efi_status_t	(__efiapi *get_info)	(efi_file_protocol_t *,
+-						 efi_guid_t *, unsigned long *,
+-						 void *);
+-	efi_status_t	(__efiapi *set_info)	(efi_file_protocol_t *,
+-						 efi_guid_t *, unsigned long,
+-						 void *);
+-	efi_status_t	(__efiapi *flush)	(efi_file_protocol_t *);
++typedef union efi_file_protocol efi_file_protocol_t;
 +
- #define efi_info(fmt, ...) \
- 	efi_printk(KERN_INFO fmt, ##__VA_ARGS__)
- #define efi_warn(fmt, ...) \
++union efi_file_protocol {
++	struct {
++		u64		revision;
++		efi_status_t	(__efiapi *open)	(efi_file_protocol_t *,
++							 efi_file_protocol_t **,
++							 efi_char16_t *, u64,
++							 u64);
++		efi_status_t	(__efiapi *close)	(efi_file_protocol_t *);
++		efi_status_t	(__efiapi *delete)	(efi_file_protocol_t *);
++		efi_status_t	(__efiapi *read)	(efi_file_protocol_t *,
++							 unsigned long *,
++							 void *);
++		efi_status_t	(__efiapi *write)	(efi_file_protocol_t *,
++							 unsigned long, void *);
++		efi_status_t	(__efiapi *get_position)(efi_file_protocol_t *,
++							 u64 *);
++		efi_status_t	(__efiapi *set_position)(efi_file_protocol_t *,
++							 u64);
++		efi_status_t	(__efiapi *get_info)	(efi_file_protocol_t *,
++							 efi_guid_t *,
++							 unsigned long *,
++							 void *);
++		efi_status_t	(__efiapi *set_info)	(efi_file_protocol_t *,
++							 efi_guid_t *,
++							 unsigned long,
++							 void *);
++		efi_status_t	(__efiapi *flush)	(efi_file_protocol_t *);
++	};
++	struct {
++		u64 revision;
++		u32 open;
++		u32 close;
++		u32 delete;
++		u32 read;
++		u32 write;
++		u32 get_position;
++		u32 set_position;
++		u32 get_info;
++		u32 set_info;
++		u32 flush;
++	} mixed_mode;
+ };
+ 
+-typedef struct efi_simple_file_system_protocol efi_simple_file_system_protocol_t;
++typedef union efi_simple_file_system_protocol efi_simple_file_system_protocol_t;
+ 
+-struct efi_simple_file_system_protocol {
+-	u64	revision;
+-	int	(__efiapi *open_volume)(efi_simple_file_system_protocol_t *,
+-					efi_file_protocol_t **);
++union efi_simple_file_system_protocol {
++	struct {
++		u64		revision;
++		efi_status_t	(__efiapi *open_volume)(efi_simple_file_system_protocol_t *,
++							efi_file_protocol_t **);
++	};
++	struct {
++		u64 revision;
++		u32 open_volume;
++	} mixed_mode;
+ };
+ 
+ #define EFI_FILE_MODE_READ	0x0000000000000001
+diff --git a/drivers/firmware/efi/libstub/file.c b/drivers/firmware/efi/libstub/file.c
+index 972ecc97b1d1..b16c6bdc9359 100644
+--- a/drivers/firmware/efi/libstub/file.c
++++ b/drivers/firmware/efi/libstub/file.c
+@@ -51,17 +51,18 @@ static efi_status_t efi_open_file(efi_file_protocol_t *volume,
+ 			*c = L'\\';
+ 	}
+ 
+-	status = volume->open(volume, &fh, fi->filename, EFI_FILE_MODE_READ, 0);
++	status = efi_call_proto(volume, open, &fh, fi->filename,
++				EFI_FILE_MODE_READ, 0);
+ 	if (status != EFI_SUCCESS) {
+ 		efi_err("Failed to open file: %ls\n", fi->filename);
+ 		return status;
+ 	}
+ 
+ 	info_sz = sizeof(struct finfo);
+-	status = fh->get_info(fh, &info_guid, &info_sz, fi);
++	status = efi_call_proto(fh, get_info, &info_guid, &info_sz, fi);
+ 	if (status != EFI_SUCCESS) {
+ 		efi_err("Failed to get file info\n");
+-		fh->close(fh);
++		efi_call_proto(fh, close);
+ 		return status;
+ 	}
+ 
+@@ -73,7 +74,7 @@ static efi_status_t efi_open_file(efi_file_protocol_t *volume,
+ static efi_status_t efi_open_volume(efi_loaded_image_t *image,
+ 				    efi_file_protocol_t **fh)
+ {
+-	struct efi_vendor_dev_path *dp = image->file_path;
++	struct efi_vendor_dev_path *dp = efi_table_attr(image, file_path);
+ 	efi_guid_t li_proto = LOADED_IMAGE_PROTOCOL_GUID;
+ 	efi_guid_t fs_proto = EFI_FILE_SYSTEM_GUID;
+ 	efi_simple_file_system_protocol_t *io;
+@@ -95,14 +96,14 @@ static efi_status_t efi_open_volume(efi_loaded_image_t *image,
+ 		}
+ 	}
+ 
+-	status = efi_bs_call(handle_protocol, image->device_handle, &fs_proto,
+-			     (void **)&io);
++	status = efi_bs_call(handle_protocol, efi_table_attr(image, device_handle),
++			     &fs_proto, (void **)&io);
+ 	if (status != EFI_SUCCESS) {
+ 		efi_err("Failed to handle fs_proto\n");
+ 		return status;
+ 	}
+ 
+-	status = io->open_volume(io, fh);
++	status = efi_call_proto(io, open_volume, fh);
+ 	if (status != EFI_SUCCESS)
+ 		efi_err("Failed to open volume\n");
+ 
+@@ -162,7 +163,8 @@ static efi_status_t efi_open_device_path(efi_file_protocol_t **volume,
+ 
+ 
+ 	/* Convert the filename wide string into a device path */
+-	initrd_dp = text_to_dp->convert_text_to_device_path(fi->filename);
++	initrd_dp = efi_fn_call(text_to_dp, convert_text_to_device_path,
++				fi->filename);
+ 
+ 	/* Check whether the device path in question implements simple FS */
+ 	if ((efi_bs_call(locate_device_path, &fs_proto, &initrd_dp, &handle) ?:
+@@ -184,7 +186,7 @@ static efi_status_t efi_open_device_path(efi_file_protocol_t **volume,
+ 	       min(sizeof(fi->filename),
+ 		   fpath->header.length - sizeof(fpath->header)));
+ 
+-	status = io->open_volume(io, volume);
++	status = efi_call_proto(io, open_volume, volume);
+ 	if (status != EFI_SUCCESS)
+ 		efi_err("Failed to open volume\n");
+ 
+@@ -205,8 +207,8 @@ efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
+ 				  unsigned long *load_addr,
+ 				  unsigned long *load_size)
+ {
+-	const efi_char16_t *cmdline = image->load_options;
+-	u32 cmdline_len = image->load_options_size;
++	const efi_char16_t *cmdline = efi_table_attr(image, load_options);
++	u32 cmdline_len = efi_table_attr(image, load_options_size);
+ 	unsigned long efi_chunk_size = ULONG_MAX;
+ 	efi_file_protocol_t *volume = NULL;
+ 	efi_file_protocol_t *file;
+@@ -294,7 +296,7 @@ efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
+ 		while (size) {
+ 			unsigned long chunksize = min(size, efi_chunk_size);
+ 
+-			status = file->read(file, &chunksize, addr);
++			status = efi_call_proto(file, read, &chunksize, addr);
+ 			if (status != EFI_SUCCESS) {
+ 				efi_err("Failed to read file\n");
+ 				goto err_close_file;
+@@ -302,8 +304,8 @@ efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
+ 			addr += chunksize;
+ 			size -= chunksize;
+ 		}
+-		file->close(file);
+-		volume->close(volume);
++		efi_call_proto(file, close);
++		efi_call_proto(volume, close);
+ 	} while (offset > 0);
+ 
+ 	*load_addr = alloc_addr;
+@@ -312,10 +314,10 @@ efi_status_t handle_cmdline_files(efi_loaded_image_t *image,
+ 	return EFI_SUCCESS;
+ 
+ err_close_file:
+-	file->close(file);
++	efi_call_proto(file, close);
+ 
+ err_close_volume:
+-	volume->close(volume);
++	efi_call_proto(volume, close);
+ 
+ err_free_alloc:
+ 	efi_free(alloc_size, alloc_addr);
 -- 
 2.35.1
 
