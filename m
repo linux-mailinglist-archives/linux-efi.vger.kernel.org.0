@@ -2,50 +2,50 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D9945F0127
-	for <lists+linux-efi@lfdr.de>; Fri, 30 Sep 2022 01:03:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17D515F0128
+	for <lists+linux-efi@lfdr.de>; Fri, 30 Sep 2022 01:03:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230149AbiI2XDB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 29 Sep 2022 19:03:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45500 "EHLO
+        id S229623AbiI2XDD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 29 Sep 2022 19:03:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230058AbiI2XC4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 29 Sep 2022 19:02:56 -0400
+        with ESMTP id S229952AbiI2XC6 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 29 Sep 2022 19:02:58 -0400
 Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF4F912EDBC;
-        Thu, 29 Sep 2022 16:02:49 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id E6E2C5C003D;
-        Thu, 29 Sep 2022 19:02:48 -0400 (EDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E59513570D;
+        Thu, 29 Sep 2022 16:02:52 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.nyi.internal (Postfix) with ESMTP id E78175C00D0;
+        Thu, 29 Sep 2022 19:02:51 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Thu, 29 Sep 2022 19:02:48 -0400
+  by compute5.internal (MEProxy); Thu, 29 Sep 2022 19:02:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         invisiblethingslab.com; h=cc:cc:content-transfer-encoding:date
         :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
         :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-        1664492568; x=1664578968; bh=mbINTmtX+Y203Gs79+//9ThUmGM7WPRVX3Y
-        jlp+Pb+E=; b=vxd3Go1eRAYVPxf7nsO+YRDw1szNfJ8CzuPTeQNfwTfgiJlFIxI
-        VvgDFfpaW5wMgxgS3D83epM+1HAHUJZGhZ9SFUZ6SSMI5p3FME/rjK0D/8IA3fKw
-        0h1itKzOloZ7akksTAd+m2krDesB5O5VqO3fgQScFXQH4fJx9BabnCSoduDqk1Rc
-        wlMwY09jMfwZKKvn9dgSEDWudIqFS95I8JV6F4uUa/Sy+t8Cnwf4/xgHyy5dA9mI
-        SDyG+W+hB5cUxOfHHsUSxmb0ufoDyitGCSejg0L5Ys4fqF+XWfE9gsUKmrjQj4/d
-        lH1KjM+GJAqKXkWfwmN6bMcgnzekVLcfLWw==
+        1664492571; x=1664578971; bh=XZWfM4q7thLJRlIL5LnhobWSY3gDTnmsDKZ
+        GlT+eoxU=; b=CDfcAP8wxrv+yGaGY/hgh8nOq8xIjHWFytgIF58pO3FJayIaXxB
+        WeYKUZGE7d8fQfMSvaZuSFYKQ8fFxC4IdUIxWnKW9O4/ojiXtmTWTqS24+TzP35I
+        ofRbuBpkds4F0EslcpT0IXbD3wHJB7KN5lSGHt3P5/y17f8RKHyJBG8vWt22dlqC
+        FDmjfp6qqgtvBwDItPyFemGkb3w+xJo7DK2lEw444jsbfKaOoDcst8SEeMRg/Zkt
+        gPst1/tk7hVJ4SRB02ktkYfO1Br0ZR+rxwwUhUIHtl9V4mB8Qrsu9rChOcczf3l2
+        JkwrCMD+K2cq8kodNdqjD8BLNkWnbf9Gw+w==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
         :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
         :message-id:mime-version:references:reply-to:sender:subject
         :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1664492568; x=1664578968; bh=mbINTmtX+Y203
-        Gs79+//9ThUmGM7WPRVX3Yjlp+Pb+E=; b=wG00Lo+VdSJSoiPuNxmPp/TGitdWe
-        6j6Ow3nEs7qDSSQ7r7av1J88lp+ABlJIKhc2EnPTKsgZ7fhYyaLqUgChpB4jVSJh
-        KqT5bJSBPUXdJ8OU4mROTF4/R40c6TB+DIurEaTILCPrNi1ml/lfXqa2X0rOGPYT
-        zHWU8M8zbXu6y5Benrbom8ZEEl6EN6nSer8C51hkr4bMuV37ii/QNDF+BJpAXjri
-        yP0qFq3x++pbVvWrG29YYhfD38sqt/j8yNekJY3Gomz0AXCrDLpwPx78RLGatbec
-        2BaXzhOenHhP/Ll7mISZtmKOz2W5kqNqaQlORr/nKD1gZU4M9K64HrlrA==
-X-ME-Sender: <xms:GCQ2Y-2tLyajOv6VpzJYzpDtKT6s8z_cCqQ_SajUEwrnot43rfZRIQ>
-    <xme:GCQ2YxEYAj2WlK-gVbH6UP2mI2RkOvtHpJWCsNXogJa0-K2U1NOwYBcjoa58VGZdx
-    SuPks3r4CmGETs>
-X-ME-Received: <xmr:GCQ2Y27dj8DYJAOVPaSy9tNzIUi9SKXfhzKncZMVxJ9D3Pl4Qqz_iVEx08jHeGFzQ9MNtAvvx92d>
+        :x-sasl-enc; s=fm2; t=1664492571; x=1664578971; bh=XZWfM4q7thLJR
+        lIL5LnhobWSY3gDTnmsDKZGlT+eoxU=; b=Vl6NCdiZc+gz2Ku60HaxtUtPNiwBb
+        URRhV82z1PM/85XgMqFqjDLuGhS0OTCzjlkUzFphL515COHxZNNHMUshccNa3vSb
+        LQ5URwP15JvAS5TzO6MlkIFhncp9hoKnRwy8i6IDrRMpGltkqUbAAqlXNfhy7/5k
+        FccgNXMpJAd1A/fffa6p/pZiS+kh1jGAIINf2Uh+bA9UZYaE/3JbKuvjR6awcKgd
+        g3CLbVNm3IdpMRZ8sV4jdbb9Q/6SiIF/vKWk8sJT4qIFidKm+Grlo2b2wJ3JMYHZ
+        T+eQ5xzVkJSNtEku5+wnExs+PqBcH4fPaNNm5AesR/Y1jMQY1dlK1WdkA==
+X-ME-Sender: <xms:GyQ2Y_Ke_pIX-T7aIMKBcOu-StBD5rSKfDipWIO8b-dHOKKahEXibA>
+    <xme:GyQ2YzI1RQRTa5LJraKX5DLU07zOO766ikoQvdnQlY_WEYslEhq37MCcRKQGE4aid
+    CSNjFJUn-vGLuI>
+X-ME-Received: <xmr:GyQ2Y3vqulyPEulL9T8h2UbeTlj7So_ob4iM3Envh5kI5k0EirHMgJ-pHsv61J77EanrkpkX2bxv>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeehuddgudeiucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
@@ -55,13 +55,13 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeehuddgudeiucetufdoteggod
     gffhhfffjeetkeelueefffetfffhtdduheetnecuvehluhhsthgvrhfuihiivgeptdenuc
     frrghrrghmpehmrghilhhfrhhomhepuggvmhhisehinhhvihhsihgslhgvthhhihhnghhs
     lhgrsgdrtghomh
-X-ME-Proxy: <xmx:GCQ2Y_2HfQg7_eOxp0tSU_zGhJDwSMz0JQtm2yYA9M4mIbxF-_Qshw>
-    <xmx:GCQ2YxH5H2XiEzjpw6QXwPY8iWctDnyPoV_2mNH0q3oim0ZdGa7UiA>
-    <xmx:GCQ2Y4_u9KI85k_f7l4TIy0REYwDNZ-7PocmzE7NQky4pgPwZoEQMA>
-    <xmx:GCQ2Y5_xKrmDFQVlaBs7j1xCaDVpYkJYa0zZNARXeOmUr54H2X_Vgw>
+X-ME-Proxy: <xmx:GyQ2Y4bEh4IuZXk5E0UGCramJdK6sGdCmiW6y0mpX828czs8CY5CsA>
+    <xmx:GyQ2Y2bVKiq1NvDnyhopYp1DiENAuY7eMht2gFns59QjLcBt7XluSg>
+    <xmx:GyQ2Y8Ac5R4rT1-1LV_q1usGjI_YD4qZ-F8R3c5yl8qsWf074iCEAA>
+    <xmx:GyQ2YzSNKY0iWca7g-vLQMcF0au3cyS-Z4UXZAZCECfU0Q7O-vmPwQ>
 Feedback-ID: iac594737:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 29 Sep 2022 19:02:47 -0400 (EDT)
+ 29 Sep 2022 19:02:51 -0400 (EDT)
 From:   Demi Marie Obenour <demi@invisiblethingslab.com>
 To:     Juergen Gross <jgross@suse.com>,
         Stefano Stabellini <sstabellini@kernel.org>,
@@ -76,9 +76,9 @@ To:     Juergen Gross <jgross@suse.com>,
 Cc:     Demi Marie Obenour <demi@invisiblethingslab.com>,
         xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
         linux-efi@vger.kernel.org
-Subject: [PATCH v4 1/2] Avoid using EFI tables Xen may have clobbered
-Date:   Thu, 29 Sep 2022 19:02:03 -0400
-Message-Id: <f3b624e99adfdbbfc1976a60a73a6b5950e1840d.1664298147.git.demi@invisiblethingslab.com>
+Subject: [PATCH v4 2/2] Support ESRT in Xen dom0
+Date:   Thu, 29 Sep 2022 19:02:04 -0400
+Message-Id: <5649176eacda434267f68676f1733d06c572d19e.1664298147.git.demi@invisiblethingslab.com>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <cover.1664298147.git.demi@invisiblethingslab.com>
 References: <cover.1664298147.git.demi@invisiblethingslab.com>
@@ -94,135 +94,105 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Memory of type EFI_CONVENTIONAL_MEMORY, EFI_LOADER_CODE, EFI_LOADER_DATA,
-EFI_BOOT_SERVICES_CODE, and EFI_BOOT_SERVICES_DATA may be clobbered by
-Xen before Linux gets to start using it.  Therefore, Linux under Xen
-must not use EFI tables from such memory.  Most of the remaining EFI
-memory types are not suitable for EFI tables, leaving only
-EFI_ACPI_RECLAIM_MEMORY, EFI_RUNTIME_SERVICES_DATA, and
-EFI_RUNTIME_SERVICES_CODE.  When running under Xen, Linux should only
-use tables that are located in one of these types of memory.
+fwupd requires access to the EFI System Resource Table (ESRT) to
+discover which firmware can be updated by the OS.  Currently, Linux does
+not expose the ESRT when running as a Xen dom0.  Therefore, it is not
+possible to use fwupd in a Xen dom0, which is a serious problem for e.g.
+Qubes OS.
 
-This patch ensures this, and also adds a function
-(xen_config_table_memory_region_max()) that will be used later to
-replace the usage of the EFI memory map in esrt.c when running under
-Xen.  This function can also be used in mokvar-table.c and efi-bgrt.c,
-but I have not implemented this.
+Before Xen 4.17, this was not fixable due to hypervisor limitations.
+The UEFI specification requires the ESRT to be in EfiBootServicesData
+memory, which Xen will use for whatever purposes it likes.  Therefore,
+Linux cannot safely access the ESRT, as Xen may have overwritten it.
+
+Starting with Xen 4.17, Xen checks if the ESRT is in EfiBootServicesData
+or EfiRuntimeServicesData memory.  If the ESRT is in EfiBootServicesData
+memory, Xen replaces the ESRT with a copy in memory that it has
+reserved.  Such memory is currently of type EFI_RUNTIME_SERVICES_DATA,
+but in the future it will be of type EFI_ACPI_RECLAIM_MEMORY.  This
+ensures that the ESRT can safely be accessed by the OS.
+
+When running as a Xen dom0, use the new
+xen_config_table_memory_region_max() function to determine if Xen has
+reserved the ESRT and, if so, find the end of the memory region
+containing it.  This allows programs such as fwupd which require the
+ESRT to run under Xen, and so makes fwupd support in Qubes OS possible.
 
 Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
 ---
- drivers/firmware/efi/efi.c |  8 +++++---
- drivers/xen/efi.c          | 35 +++++++++++++++++++++++++++++++++++
- include/linux/efi.h        |  9 +++++++++
- 3 files changed, 49 insertions(+), 3 deletions(-)
+ drivers/firmware/efi/esrt.c | 43 ++++++++++++++++++++++++++-----------
+ 1 file changed, 30 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index e4080ad96089abd7f84745dd8461c548bcbb7685..d344f3ff73d1c5ed0c67e3251a9502e66719741d 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -574,7 +574,6 @@ int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
- 	unsigned long table;
- 	int i;
+diff --git a/drivers/firmware/efi/esrt.c b/drivers/firmware/efi/esrt.c
+index 2a2f52b017e736dd995c69e8aeb5fbd7761732e5..a0642bc161b4b1f94f818b8c9f46511fe2424bb2 100644
+--- a/drivers/firmware/efi/esrt.c
++++ b/drivers/firmware/efi/esrt.c
+@@ -243,27 +243,44 @@ void __init efi_esrt_init(void)
+ 	void *va;
+ 	struct efi_system_resource_table tmpesrt;
+ 	size_t size, max, entry_size, entries_size;
+-	efi_memory_desc_t md;
+-	int rc;
+ 	phys_addr_t end;
+-
+-	if (!efi_enabled(EFI_MEMMAP))
+-		return;
++	u32 type;
  
--	pr_info("");
- 	for (i = 0; i < count; i++) {
- 		if (!IS_ENABLED(CONFIG_X86)) {
- 			guid = &config_tables[i].guid;
-@@ -585,7 +584,6 @@ int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
+ 	pr_debug("esrt-init: loading.\n");
+ 	if (!esrt_table_exists())
+ 		return;
  
- 			if (IS_ENABLED(CONFIG_X86_32) &&
- 			    tbl64[i].table > U32_MAX) {
--				pr_cont("\n");
- 				pr_err("Table located above 4GB, disabling EFI.\n");
- 				return -EINVAL;
- 			}
-@@ -594,10 +592,14 @@ int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
- 			table = tbl32[i].table;
- 		}
- 
-+#ifdef CONFIG_XEN_EFI
-+		if (efi_enabled(EFI_PARAVIRT) && !xen_config_table_memory_region_max(table))
-+			continue;
-+#endif
+-	rc = efi_mem_desc_lookup(efi.esrt, &md);
+-	if (rc < 0 ||
+-	    (!(md.attribute & EFI_MEMORY_RUNTIME) &&
+-	     md.type != EFI_BOOT_SERVICES_DATA &&
+-	     md.type != EFI_RUNTIME_SERVICES_DATA)) {
+-		pr_warn("ESRT header is not in the memory map.\n");
++	if (efi_enabled(EFI_MEMMAP)) {
++		efi_memory_desc_t md;
 +
- 		if (!match_config_table(guid, table, common_tables) && arch_tables)
- 			match_config_table(guid, table, arch_tables);
- 	}
--	pr_cont("\n");
- 	set_bit(EFI_CONFIG_TABLES, &efi.flags);
- 
- 	if (efi_rng_seed != EFI_INVALID_TABLE_ADDR) {
-diff --git a/drivers/xen/efi.c b/drivers/xen/efi.c
-index d1ff2186ebb48a7c0981ecb6d4afcbbb25ffcea0..c2274ddfcc63304008ef0fd78fd9fa416f75d073 100644
---- a/drivers/xen/efi.c
-+++ b/drivers/xen/efi.c
-@@ -28,6 +28,7 @@
- #include <xen/interface/platform.h>
- #include <xen/xen.h>
- #include <xen/xen-ops.h>
-+#include <xen/page.h>
- 
- #include <asm/page.h>
- 
-@@ -271,6 +272,40 @@ static void xen_efi_reset_system(int reset_type, efi_status_t status,
- 	}
- }
- 
-+__init u64 xen_config_table_memory_region_max(u64 addr)
-+{
-+	static_assert(XEN_PAGE_SHIFT == EFI_PAGE_SHIFT,
-+		      "Mismatch between EFI_PAGE_SHIFT and XEN_PAGE_SHIFT");
-+	struct xen_platform_op op = {
-+		.cmd = XENPF_firmware_info,
-+		.u.firmware_info = {
-+			.type = XEN_FW_EFI_INFO,
-+			.index = XEN_FW_EFI_MEM_INFO,
-+			.u.efi_info.mem.addr = addr,
-+			.u.efi_info.mem.size = U64_MAX - addr,
++		if (efi_mem_desc_lookup(efi.esrt, &md) < 0 ||
++		    (!(md.attribute & EFI_MEMORY_RUNTIME) &&
++		     md.type != EFI_BOOT_SERVICES_DATA &&
++		     md.type != EFI_RUNTIME_SERVICES_DATA)) {
++			pr_warn("ESRT header is not in the memory map.\n");
++			return;
 +		}
-+	};
-+	union xenpf_efi_info *info = &op.u.firmware_info.u.efi_info;
-+	int rc = HYPERVISOR_platform_op(&op);
 +
-+	if (rc) {
-+		pr_warn("Failed to lookup header %llu in Xen memory map: error %d\n",
-+			(unsigned long long)addr, rc);
-+		return 0;
-+	}
-+
-+	switch (info->mem.type) {
-+	case EFI_RUNTIME_SERVICES_CODE:
-+	case EFI_RUNTIME_SERVICES_DATA:
-+	case EFI_ACPI_RECLAIM_MEMORY:
-+		return info->mem.addr + info->mem.size;
-+	default:
-+		pr_warn("Table %llu is in memory of type %d, ignoring it\n",
-+			(unsigned long long)addr, info->mem.type);
-+		return 0;
-+	}
-+}
-+
- /*
-  * Set XEN EFI runtime services function pointers. Other fields of struct efi,
-  * e.g. efi.systab, will be set like normal EFI.
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index d2b84c2fec39f0268324d1a38a73ed67786973c9..fc81e4b984398cdb399e7886b2cae7f33bf91613 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -1324,4 +1324,13 @@ struct linux_efi_coco_secret_area {
- /* Header of a populated EFI secret area */
- #define EFI_SECRET_TABLE_HEADER_GUID	EFI_GUID(0x1e74f542, 0x71dd, 0x4d66,  0x96, 0x3e, 0xef, 0x42, 0x87, 0xff, 0x17, 0x3b)
- 
++		type = md.type;
++		max = efi_mem_desc_end(&md);
 +#ifdef CONFIG_XEN_EFI
-+/*
-+ * Returns the end of the memory region containing the given config table,
-+ * or 0 if the given address does not reside in memory that can validly
-+ * contain EFI configuration tables.
-+ */
-+__init u64 xen_config_table_memory_region_max(u64 addr);
++	} else if (efi_enabled(EFI_PARAVIRT)) {
++		max = xen_config_table_memory_region_max(efi.esrt);
++		/*
++		 * This might be wrong, but it doesn't matter.
++		 * xen_config_table_memory_region_max() checks the type
++		 * of the memory region, and if it returns 0, the code
++		 * below will fail without looking at the type.  Choose
++		 * a value that will not cause * subsequent code to try
++		 * to reserve the memory containing the ESRT, as either
++		 * Xen or the firmware has done so already.
++		 */
++		type = EFI_RUNTIME_SERVICES_DATA;
 +#endif
-+
- #endif /* _LINUX_EFI_H */
++	} else {
+ 		return;
+ 	}
+ 
+-	max = efi_mem_desc_end(&md);
+ 	if (max < efi.esrt) {
+ 		pr_err("EFI memory descriptor is invalid. (esrt: %p max: %p)\n",
+ 		       (void *)efi.esrt, (void *)max);
+@@ -333,7 +350,7 @@ void __init efi_esrt_init(void)
+ 
+ 	end = esrt_data + size;
+ 	pr_info("Reserving ESRT space from %pa to %pa.\n", &esrt_data, &end);
+-	if (md.type == EFI_BOOT_SERVICES_DATA)
++	if (type == EFI_BOOT_SERVICES_DATA)
+ 		efi_mem_reserve(esrt_data, esrt_data_size);
+ 
+ 	pr_debug("esrt-init: loaded.\n");
 -- 
 Sincerely,
 Demi Marie Obenour (she/her/hers)
