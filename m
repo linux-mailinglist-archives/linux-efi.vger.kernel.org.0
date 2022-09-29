@@ -2,143 +2,182 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C80CE5ED2CE
-	for <lists+linux-efi@lfdr.de>; Wed, 28 Sep 2022 03:53:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1E6F5EEBBE
+	for <lists+linux-efi@lfdr.de>; Thu, 29 Sep 2022 04:33:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231502AbiI1BxE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 27 Sep 2022 21:53:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42240 "EHLO
+        id S234151AbiI2CdM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 28 Sep 2022 22:33:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229846AbiI1BxD (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 27 Sep 2022 21:53:03 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0BA01F01B6
-        for <linux-efi@vger.kernel.org>; Tue, 27 Sep 2022 18:53:02 -0700 (PDT)
+        with ESMTP id S229940AbiI2CdL (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 28 Sep 2022 22:33:11 -0400
+Received: from rcdn-iport-7.cisco.com (rcdn-iport-7.cisco.com [173.37.86.78])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFFFF124777;
+        Wed, 28 Sep 2022 19:33:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1664329982; x=1695865982;
-  h=date:from:to:cc:subject:message-id:mime-version:
+  d=cisco.com; i=@cisco.com; l=3959; q=dns/txt; s=iport;
+  t=1664418788; x=1665628388;
+  h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=OaCJPP5MBmgZiiNP5JxiRpG8/wRj03vy2LE2xs8InIM=;
-  b=SEgouRlZ6THAIZ4EPgFrGIhq7i9iJWQhoROZLaloVrnO49kvv5MhEE9H
-   aR2Bya3oIWYKu75tDM/aEKb7YuWscsG0ICeY4V6Z2Ptr/zWU2YR0qg5EH
-   jFiqoYva1KBxCCKGaNPywnr0UWU3xpuCFvAk/2riCTorh2hK6wSh/TO3B
-   k67jhSjI4PpB72Vs53Yh/TH9rs8JGXAZ43AUyEVdPWvf82aiUA9oIu/cY
-   wmAONphPl1vbHPTrTPK7O3kvncpd++PR/lBhp0HcyXXbbWjNX+JHJZrVX
-   tD6HY4bK4pId0tsdw8WEYuZKwqMuhq6BrwvoOSVxQzzdcAEknPmYS9keM
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10483"; a="387762602"
-X-IronPort-AV: E=Sophos;i="5.93,350,1654585200"; 
-   d="scan'208";a="387762602"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2022 18:53:02 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10483"; a="764094836"
-X-IronPort-AV: E=Sophos;i="5.93,350,1654585200"; 
-   d="scan'208";a="764094836"
-Received: from lkp-server02.sh.intel.com (HELO dfa2c9fcd321) ([10.239.97.151])
-  by fmsmga001.fm.intel.com with ESMTP; 27 Sep 2022 18:53:01 -0700
-Received: from kbuild by dfa2c9fcd321 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1odMFw-0001om-3C;
-        Wed, 28 Sep 2022 01:53:00 +0000
-Date:   Wed, 28 Sep 2022 09:52:47 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS d3549a938b73f203ef522562ae9f2d38aa43d234
-Message-ID: <6333a8ef.t9xAybPlzs8fSNOS%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+  bh=sRf5RAG3JLQO5OS02lrZ0M6fRZ+jF+1zY0KlIljIJaA=;
+  b=UHaxnbRU6oQXGvAuG/oAq+HnqrUcKx9H5HjZkUbrosfWK96qekTG49aI
+   O6lBhg6p6JntKVWgKb5DFCq8DINg8XmtTAZ7jakWbwLXMJILdkv6Bugnm
+   zl97PZxJP8DPJ1n7Av8hlhTVQ551RVNEiKlCKpcUyEzjl8udpa1MqYqzw
+   8=;
+IronPort-Data: =?us-ascii?q?A9a23=3As18kNqNnhavSMavvrR1flsFynXyQoLVcMsEvi?=
+ =?us-ascii?q?/4bfWQNrUon1TIGmjMZWG3SOPeDMGekeN13a9vg8h4A7JLRmodlTnM5pCpnJ?=
+ =?us-ascii?q?55oRWUpJjg4wn8dtEp+F+WbJK5cx5hYO4CowPwcFCeG/E/wa+a59BGQ6InRL?=
+ =?us-ascii?q?lbCIL+cUsxObVcMpBcJ0XqPqsZh6mJaqYHR7zCl4bsel/bi1GqNgFaYBI67B?=
+ =?us-ascii?q?5Wr83uDtNyq0N8RU8dXifpj5DcynFFNZH4TyD3YEpf2fmVUNrbSq+fr1rq1+?=
+ =?us-ascii?q?CbS+A0gT4PjmbfgeUpMSbnXVeSMoiMJAO753V4T/WprjvpT2Pk0MS+7jx2Fl?=
+ =?us-ascii?q?tZwxdFSvLS7SBwiOevHn+F1vxxwSnkgZvQep+KZcBBTtuTWlSUqaUDEx/RoE?=
+ =?us-ascii?q?VFzMIMZ0vh4DHsI9vECLj0JKBeZiIqexLO9V/kphc4+Lc3nFJ0Qt2smzjzDC?=
+ =?us-ascii?q?/siB5fZTM3i6dJG3Tw9mtpDEN7AaMcDLzlidhLNZ1tIIFh/IJY/mvq4w3rya?=
+ =?us-ascii?q?TtVrHqLqqctpWve1gp81P7qKtW9UtiLQ9hF20OZvnnu4Wv0GFcZOcaZxD7D9?=
+ =?us-ascii?q?Wij7sfLnCXmSMcbDrj99fNwhlCX7mgSEwENE1q9r+OwhkO3V5RYMUN80iwio?=
+ =?us-ascii?q?LM76UitT9TnRDW3p3mLuhNaUN1Ve8U68Ail2LvI5BzfDW8BJhZaZdUg8sYwS?=
+ =?us-ascii?q?TEwzViPt8jkDjspu7qQIVqU9a+RhTezPzUFaGEFeCkIRBcE5N+lp5s85jrDR?=
+ =?us-ascii?q?9BiHaqdgdzwATz0zi6Lpyh4nLwVyMAR3qOw/EvMhHSnr97UVWYd/ALdXkqm4?=
+ =?us-ascii?q?xl/aYrjYJangXDQ7exBN5qeVlmM+nwJgc+PxOsVAouKiTTLTfhlNK6o4/KtM?=
+ =?us-ascii?q?zDGh1NrWZ47+FyQF9SLFWxLyCt1KEEsOcEedHq5JkTSoghWopRUOROXgWZMS?=
+ =?us-ascii?q?9rZI6wXIWLITLwJjszpU+c=3D?=
+IronPort-HdrOrdr: =?us-ascii?q?A9a23=3AbYRmYKGMxwiFcyQUpLqE58eALOsnbusQ8z?=
+ =?us-ascii?q?AXPo5KJSC9Ffbo9fxG88506faZslwssRIb6LO90de7IE80nKQdieIs1NyZMz?=
+ =?us-ascii?q?UO1lHEEGhK1/qG/9SZIU3DHio379YGT0C4Y+eAaWRHsQ=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0BMAwBDbIJi/5BdJa1aHgEBCxIMggQ?=
+ =?us-ascii?q?LgiuBSz2WHJxngXwLAQEBD0IEAQGFAoVAAiU0CQ4BAgQBAQESAQEFAQEBAgE?=
+ =?us-ascii?q?HBIEJE4V1hnsBRoE+AYMPgxirVoIrgQGIGYFlFIEoiUSBAYRCHIFJRIQIi3Q?=
+ =?us-ascii?q?Elh4DCQYHBYE+EoEhcQEIBgYHCgUyBgIMGBQEAhMSTQYMEgITDAoGFg4ONBI?=
+ =?us-ascii?q?ZDA8DEgMRAQcCCxIIFSwIAwIDCAMCAyMLAgMYCQcKAx0IChwSEBQCBBMfCwg?=
+ =?us-ascii?q?DGh8tCQIEDgNDCAsKAxEEAxMYCxYIEAQGAwkvDSgLAwUPDwEGAwYCBQUBAyA?=
+ =?us-ascii?q?DFAMFJwcDIQcLJg0NBCMdAwMFJgMCAhsHAgIDAgYXBgICGScxCigNCAQIBBg?=
+ =?us-ascii?q?EHiUOBQUCBzEFBC8CHgQFBhEJAhYCBgQFAgQEFgICEggCCCcbBxY2GQEFXQY?=
+ =?us-ascii?q?LCSMWBiwRBQYWAyZSBiIdlm9yAVo1gj6hCoIWnHqBMINWgUOeLRoxg3WkYpZ?=
+ =?us-ascii?q?mIIIqnzWFKIFhPIFZMxoIGxWDJFAZD5wzAVwkbAIGCwEBAwmRGgEB?=
+X-IronPort-AV: E=Sophos;i="5.91,230,1647302400"; 
+   d="scan'208";a="1063107569"
+Received: from rcdn-core-8.cisco.com ([173.37.93.144])
+  by rcdn-iport-7.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 29 Sep 2022 02:33:04 +0000
+Received: from zorba.cisco.com ([10.25.129.98])
+        by rcdn-core-8.cisco.com (8.15.2/8.15.2) with ESMTP id 28T2X1Yp007711;
+        Thu, 29 Sep 2022 02:33:02 GMT
+From:   Daniel Walker <danielwa@cisco.com>
+To:     Will Deacon <will@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Rob Herring <robh@kernel.org>,
+        Daniel Gimpelevich <daniel@gimpelevich.san-francisco.ca.us>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sean Anderson <sean.anderson@seco.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kbuild@vger.kernel.org
+Cc:     xe-linux-external@cisco.com, linux-efi@vger.kernel.org
+Subject: [PATCH 0/8] generic command line v5
+Date:   Wed, 28 Sep 2022 19:32:46 -0700
+Message-Id: <20220929023301.3344694-1-danielwa@cisco.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Auto-Response-Suppress: DR, OOF, AutoReply
+X-Outbound-SMTP-Client: 10.25.129.98, [10.25.129.98]
+X-Outbound-Node: rcdn-core-8.cisco.com
+X-Spam-Status: No, score=-12.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIMWL_WL_MED,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
+        SPF_NONE,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: d3549a938b73f203ef522562ae9f2d38aa43d234  efi/arm64: libstub: avoid SetVirtualAddressMap() when possible
+v5 release changes. Generally a rebase from v4.
 
-elapsed time: 862m
+* Modified OF changes to move the ugly code into the cmdline.h
 
-configs tested: 63
-configs skipped: 2
+* Minor compliation update in arm64. Added ifndef __ASSEMBLY__ in
+  a few places.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+* Worked around arm64 kaslr_early.c.
 
-gcc tested configs:
-um                             i386_defconfig
-arc                                 defconfig
-um                           x86_64_defconfig
-alpha                               defconfig
-s390                                defconfig
-s390                             allmodconfig
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-kvm
-x86_64                           rhel-8.3-syz
-s390                             allyesconfig
-x86_64                              defconfig
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-x86_64                               rhel-8.3
-x86_64               randconfig-a002-20220926
-x86_64               randconfig-a004-20220926
-m68k                             allyesconfig
-x86_64               randconfig-a001-20220926
-arc                  randconfig-r043-20220925
-alpha                            allyesconfig
-x86_64               randconfig-a003-20220926
-arc                              allyesconfig
-x86_64               randconfig-a005-20220926
-riscv                randconfig-r042-20220925
-x86_64               randconfig-a006-20220926
-x86_64                           allyesconfig
-arc                  randconfig-r043-20220926
-s390                 randconfig-r044-20220925
-i386                 randconfig-a001-20220926
-i386                 randconfig-a004-20220926
-i386                 randconfig-a002-20220926
-i386                 randconfig-a003-20220926
-i386                 randconfig-a005-20220926
-i386                 randconfig-a006-20220926
-powerpc                           allnoconfig
-i386                                defconfig
-arm                                 defconfig
-i386                             allyesconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-sh                               allmodconfig
-powerpc                          allmodconfig
-mips                             allyesconfig
-ia64                             allmodconfig
-m68k                             allmodconfig
+	This code needs some additional review and consideration. 
+	It appears this code is missing the opposite option to nokaslr
+	which is kaslr.disabled=1/0 which would allow kaslr to be turn
+	back on later in the command line. For example,
 
-clang tested configs:
-hexagon              randconfig-r045-20220925
-hexagon              randconfig-r041-20220926
-hexagon              randconfig-r045-20220926
-hexagon              randconfig-r041-20220925
-riscv                randconfig-r042-20220926
-s390                 randconfig-r044-20220926
-x86_64               randconfig-a014-20220926
-x86_64               randconfig-a013-20220926
-x86_64               randconfig-a011-20220926
-x86_64               randconfig-a012-20220926
-i386                 randconfig-a011-20220926
-x86_64               randconfig-a016-20220926
-i386                 randconfig-a014-20220926
-i386                 randconfig-a013-20220926
-i386                 randconfig-a012-20220926
-i386                 randconfig-a015-20220926
-x86_64               randconfig-a015-20220926
-i386                 randconfig-a016-20220926
+	console=ttyS0 nokaslr root=/dev/ram0 nosmp kaslr.disabled=0 loglevel=7
+	
+	On arm64 in arch/arm64/kernel/idreg-override.c this is parsed correctly
+	to turn on kaslr, but the kaslr_early.c is missing this logic.
+	Doing this results in kaslr getting disabled with the following message,
+
+	KASLR disabled due to lack of seed
+
+	Even when there is a seed in the device tree.	
+
+	So change to the generic command line would leave built in command
+	lines with nokaslr with no option to re-enable kaslr in in the bootloader
+	arguments.
+
+
+Daniel Walker (8):
+  CMDLINE: add generic builtin command line
+  scripts: insert-sys-cert: add command line insert capability
+  scripts: insert-sys-cert: change name to insert-symbol
+  CMDLINE: mips: convert to generic builtin command line
+  drivers: firmware: efi: libstub: enable generic commandline
+  CMDLINE: x86: convert to generic builtin command line
+  of: replace command line handling
+  CMDLINE: arm64: convert to generic builtin command line
+
+ arch/arm64/Kconfig                            |  33 +--
+ arch/arm64/include/asm/setup.h                |   4 +
+ arch/arm64/include/uapi/asm/setup.h           |   2 +
+ arch/arm64/kernel/idreg-override.c            |   9 +-
+ arch/arm64/kernel/pi/kaslr_early.c            |  14 +-
+ arch/mips/Kconfig                             |   4 +-
+ arch/mips/Kconfig.debug                       |  44 ----
+ arch/mips/configs/ar7_defconfig               |   9 +-
+ arch/mips/configs/bcm47xx_defconfig           |   8 +-
+ arch/mips/configs/bcm63xx_defconfig           |  15 +-
+ arch/mips/configs/bmips_be_defconfig          |  11 +-
+ arch/mips/configs/bmips_stb_defconfig         |   6 +-
+ arch/mips/configs/ci20_defconfig              |   9 +-
+ arch/mips/configs/cu1000-neo_defconfig        |  10 +-
+ arch/mips/configs/cu1830-neo_defconfig        |  10 +-
+ arch/mips/configs/generic_defconfig           |   6 +-
+ arch/mips/configs/gpr_defconfig               |  18 +-
+ arch/mips/configs/loongson3_defconfig         |  12 +-
+ arch/mips/include/asm/setup.h                 |   2 +
+ arch/mips/kernel/relocate.c                   |  17 +-
+ arch/mips/kernel/setup.c                      |  36 +--
+ arch/mips/pic32/pic32mzda/early_console.c     |   2 +-
+ arch/mips/pic32/pic32mzda/init.c              |   3 +-
+ arch/x86/Kconfig                              |  44 +---
+ arch/x86/kernel/setup.c                       |  18 +-
+ .../firmware/efi/libstub/efi-stub-helper.c    |  29 +++
+ drivers/firmware/efi/libstub/efi-stub.c       |   9 +
+ drivers/firmware/efi/libstub/efistub.h        |   1 +
+ drivers/firmware/efi/libstub/x86-stub.c       |  13 +-
+ drivers/of/fdt.c                              |  22 +-
+ include/linux/cmdline.h                       | 137 ++++++++++
+ init/Kconfig                                  |  78 ++++++
+ lib/Kconfig                                   |   4 +
+ lib/Makefile                                  |   3 +
+ lib/generic_cmdline.S                         |  53 ++++
+ lib/test_cmdline1.c                           | 139 ++++++++++
+ scripts/Makefile                              |   2 +-
+ .../{insert-sys-cert.c => insert-symbol.c}    | 243 ++++++++++++------
+ 38 files changed, 724 insertions(+), 355 deletions(-)
+ create mode 100644 include/linux/cmdline.h
+ create mode 100644 lib/generic_cmdline.S
+ create mode 100644 lib/test_cmdline1.c
+ rename scripts/{insert-sys-cert.c => insert-symbol.c} (72%)
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.25.1
+
