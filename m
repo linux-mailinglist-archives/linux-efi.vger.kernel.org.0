@@ -2,182 +2,171 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACC725F1019
-	for <lists+linux-efi@lfdr.de>; Fri, 30 Sep 2022 18:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96EEB5F1026
+	for <lists+linux-efi@lfdr.de>; Fri, 30 Sep 2022 18:39:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232001AbiI3Qg3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 30 Sep 2022 12:36:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56386 "EHLO
+        id S231691AbiI3QjY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 30 Sep 2022 12:39:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230375AbiI3Qg2 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 30 Sep 2022 12:36:28 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 112B715AB5B;
-        Fri, 30 Sep 2022 09:36:27 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B5DE2B8297B;
-        Fri, 30 Sep 2022 16:36:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA94C433D7;
-        Fri, 30 Sep 2022 16:36:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664555784;
-        bh=d5fbtNueKCYf5qrhI39a/V/E1KUCYIuE45yESH9w0fI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=az3Q7K5BivT3YLm8upnn9kAtlBofJ74pM/wDynsT7Tf08HBKpOxjxZTMuDjT/byHI
-         vgYEGtFl4EyOWHbC6OF5AED9AiNnx5OYQ32fmAlRPcOvHH2LFYQxPrkmYQi8Y0UOxz
-         IlmIvN6KetN7b8MkROEShqggJTJX1lSyyIxMqxxlrzgPmuGqtrBFV8LIH6v+Vlj6cv
-         O0Dmro/Vo4PmvaAaLHuR4/JrdnneFXS1J6xAamcxwVN8tfeQwlJQQISi6tCwjzvMZR
-         q2dhPzWG494v9ghKKOwEld9J7UUhOVAcIAGTDect00ZeB1tvr4UxxuFOhfiH7LkWtF
-         a4xFuKbJP6OnA==
-Received: by mail-lf1-f47.google.com with SMTP id z4so7704551lft.2;
-        Fri, 30 Sep 2022 09:36:24 -0700 (PDT)
-X-Gm-Message-State: ACrzQf1bJ1XheTzTlioXR+b75c2CHvOSpwE/lJtsQMfKzLpO1tgFyDaV
-        q1+WtoXCDOzvdq1YVPA3t58WkOmJGAn4N3DlRng=
-X-Google-Smtp-Source: AMsMyM5ve12n8cLZyYpZa8LVcCls8VBD0vJc2Cot7/WlR3erswFDemOYoPS7+eQy3jck7egBvRR0BP8HVox+kYBUJWo=
-X-Received: by 2002:a05:6512:c0f:b0:49b:1e8c:59fd with SMTP id
- z15-20020a0565120c0f00b0049b1e8c59fdmr3421440lfu.426.1664555782378; Fri, 30
- Sep 2022 09:36:22 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1664298147.git.demi@invisiblethingslab.com> <5649176eacda434267f68676f1733d06c572d19e.1664298147.git.demi@invisiblethingslab.com>
-In-Reply-To: <5649176eacda434267f68676f1733d06c572d19e.1664298147.git.demi@invisiblethingslab.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 30 Sep 2022 18:36:11 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEs-o8jvNqRiW+Ue2i52RBgg4iktg8UONCACk8-Gx4XXA@mail.gmail.com>
-Message-ID: <CAMj1kXEs-o8jvNqRiW+Ue2i52RBgg4iktg8UONCACk8-Gx4XXA@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] Support ESRT in Xen dom0
-To:     Demi Marie Obenour <demi@invisiblethingslab.com>
-Cc:     Juergen Gross <jgross@suse.com>,
+        with ESMTP id S231454AbiI3QjX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 30 Sep 2022 12:39:23 -0400
+Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61D7A176AE8;
+        Fri, 30 Sep 2022 09:39:22 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.west.internal (Postfix) with ESMTP id 52D043200A6D;
+        Fri, 30 Sep 2022 12:39:18 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Fri, 30 Sep 2022 12:39:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        invisiblethingslab.com; h=cc:cc:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm2; t=1664555957; x=
+        1664642357; bh=DoeBKhNM231m+VnHzmoAfyLlv634Z/C2yHlE48QGwmE=; b=R
+        AnXKkXOMSU+BfY4Svif+GgKtE3EZZR3FiZYcOA+s2P9XKphqptvxQcDvtBL7PzQP
+        shp5xMoQBmWW7RNxGlVd+Bv6xE3OjATiKgCM5XGEBiwRC8AW7A4F1ux6kk0nCg2L
+        XqhnZ6kb177nOJAU82R92cE+AupGNIelZS/xmvzxPgj2umJEpRHAHVbCrzbZYCbQ
+        roKywPaJxZyfBR66TVyA4HuO1fWoQWza6Y5ASQ66iEVO3Y1+gBPG9ckXc+qR9ScY
+        9QV7w5uWcsqdHoPxO5anCFwFHmfNBQ/2BbrUMvcrcFJbloqMtfwsEUk5+IwwsPGd
+        awuq5w4dEiAtXBAqhPc2w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm2; t=1664555957; x=1664642357; bh=DoeBKhNM231m+VnHzmoAfyLlv634
+        Z/C2yHlE48QGwmE=; b=v6oSJCSW4ufsZYuHvjpdFCKETWg0LBcB5eaRsQ5vdWpt
+        vxPD8C9cZc7gDuOAL2nzs3mEj6S9FW/e5pICSLp+1mnoZgBu4cBtpOhGeeD++oQ7
+        7ZxUDAT511KNqeKQbk3ZgjdUKToYMY4zj2y7lXAIFn0N3kb+Wbg151SA2NqpXwBs
+        srg9BqzDYH+w4tKSBGE5TQlVjS8hEnvnfucrPZoVVL9lYfNbAw1GqBzQVmmxGcxM
+        Km0eT72RYcDN7q5QfGUDuISqLdBHYtnmSMNpsL9/mBmRvcCOFFOQnTf4urccjJtj
+        V/myZcCnbX+TV4MQuV+i5mfsExXXNpEbumvzg9C5Rg==
+X-ME-Sender: <xms:tRs3Y697v69hD6kc4RYG_ZxKzeIBGTJCbmddPgG2MVm6ZbTanhIjOA>
+    <xme:tRs3Y6v_8OzS7k2GNYO-GzVj8ohhOhnI6iMbmMx1DWBBL5-ZpHt27fHyIsWPQ5fXK
+    1K00qEl4WmQXe0>
+X-ME-Received: <xmr:tRs3YwDWVFtdYlcoRdQoWWmN5e8RBmHUPLQrmzmuEYxKu_OI7xhscBi4Bq1x>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeehvddguddtfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehgtderredttddvnecuhfhrohhmpeffvghm
+    ihcuofgrrhhivgcuqfgsvghnohhurhcuoeguvghmihesihhnvhhishhisghlvghthhhinh
+    hgshhlrggsrdgtohhmqeenucggtffrrghtthgvrhhnpeekteegiefhteehffegvdeggeej
+    udelleeltdffveevtdetfeejuefgieeuhfeuleenucffohhmrghinhepkhgvrhhnvghlrd
+    horhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhep
+    uggvmhhisehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
+X-ME-Proxy: <xmx:tRs3YyeKRqjEvl4Ew9XCNU12lyit7CEJIay727nimibkdqX9xiuH_A>
+    <xmx:tRs3Y_OgX3Dr0jONZpwrHdwYTwBd6h9pKcU-ZQowBbC0q_fk_AAsgg>
+    <xmx:tRs3Y8l1PF7af2AT3iKc3Z_58XkvAg3EEHVv6jBB7675EZFoL8bU9Q>
+    <xmx:tRs3YwFWDOb9fh3vAjFVtU0X_5qyl9pHqqJqoxPEbN5ShLCl2Frn7A>
+Feedback-ID: iac594737:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 30 Sep 2022 12:39:16 -0400 (EDT)
+Date:   Fri, 30 Sep 2022 12:38:44 -0400
+From:   Demi Marie Obenour <demi@invisiblethingslab.com>
+To:     Jan Beulich <jbeulich@suse.com>
+Cc:     xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
+        linux-efi@vger.kernel.org, Juergen Gross <jgross@suse.com>,
         Stefano Stabellini <sstabellini@kernel.org>,
         Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
         Kees Cook <keescook@chromium.org>,
         Anton Vorontsov <anton@enomsg.org>,
         Colin Cross <ccross@android.com>,
         Tony Luck <tony.luck@intel.com>,
-        =?UTF-8?Q?Marek_Marczykowski=2DG=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>, xen-devel@lists.xenproject.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
+        <marmarek@invisiblethingslab.com>
+Subject: Re: [PATCH v4 1/2] Avoid using EFI tables Xen may have clobbered
+Message-ID: <Yzcbs6TYsFQU/I4f@itl-email>
+References: <cover.1664298147.git.demi@invisiblethingslab.com>
+ <f3b624e99adfdbbfc1976a60a73a6b5950e1840d.1664298147.git.demi@invisiblethingslab.com>
+ <282a225d-8782-0321-6f0e-19dd4510dc42@suse.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="SGczFINJLmmUm2Ge"
+Content-Disposition: inline
+In-Reply-To: <282a225d-8782-0321-6f0e-19dd4510dc42@suse.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 30 Sept 2022 at 01:02, Demi Marie Obenour
-<demi@invisiblethingslab.com> wrote:
->
-> fwupd requires access to the EFI System Resource Table (ESRT) to
-> discover which firmware can be updated by the OS.  Currently, Linux does
-> not expose the ESRT when running as a Xen dom0.  Therefore, it is not
-> possible to use fwupd in a Xen dom0, which is a serious problem for e.g.
-> Qubes OS.
->
-> Before Xen 4.17, this was not fixable due to hypervisor limitations.
-> The UEFI specification requires the ESRT to be in EfiBootServicesData
-> memory, which Xen will use for whatever purposes it likes.  Therefore,
-> Linux cannot safely access the ESRT, as Xen may have overwritten it.
->
-> Starting with Xen 4.17, Xen checks if the ESRT is in EfiBootServicesData
-> or EfiRuntimeServicesData memory.  If the ESRT is in EfiBootServicesData
-> memory, Xen replaces the ESRT with a copy in memory that it has
-> reserved.  Such memory is currently of type EFI_RUNTIME_SERVICES_DATA,
-> but in the future it will be of type EFI_ACPI_RECLAIM_MEMORY.  This
-> ensures that the ESRT can safely be accessed by the OS.
->
-> When running as a Xen dom0, use the new
-> xen_config_table_memory_region_max() function to determine if Xen has
-> reserved the ESRT and, if so, find the end of the memory region
-> containing it.  This allows programs such as fwupd which require the
-> ESRT to run under Xen, and so makes fwupd support in Qubes OS possible.
->
-> Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
 
-Why do we need this patch? I'd expect esrt_table_exists() to return
-false when patch 1/2 is applied.
+--SGczFINJLmmUm2Ge
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 30 Sep 2022 12:38:44 -0400
+From: Demi Marie Obenour <demi@invisiblethingslab.com>
+To: Jan Beulich <jbeulich@suse.com>
+Cc: xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
+	linux-efi@vger.kernel.org, Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Ard Biesheuvel <ardb@kernel.org>, Kees Cook <keescook@chromium.org>,
+	Anton Vorontsov <anton@enomsg.org>,
+	Colin Cross <ccross@android.com>, Tony Luck <tony.luck@intel.com>,
+	Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+Subject: Re: [PATCH v4 1/2] Avoid using EFI tables Xen may have clobbered
 
+On Fri, Sep 30, 2022 at 08:44:21AM +0200, Jan Beulich wrote:
+> On 30.09.2022 01:02, Demi Marie Obenour wrote:
+> > Memory of type EFI_CONVENTIONAL_MEMORY, EFI_LOADER_CODE, EFI_LOADER_DAT=
+A,
+> > EFI_BOOT_SERVICES_CODE, and EFI_BOOT_SERVICES_DATA may be clobbered by
+> > Xen before Linux gets to start using it.  Therefore, Linux under Xen
+> > must not use EFI tables from such memory.  Most of the remaining EFI
+> > memory types are not suitable for EFI tables, leaving only
+> > EFI_ACPI_RECLAIM_MEMORY, EFI_RUNTIME_SERVICES_DATA, and
+> > EFI_RUNTIME_SERVICES_CODE.  When running under Xen, Linux should only
+> > use tables that are located in one of these types of memory.
+> >=20
+> > This patch ensures this, and also adds a function
+> > (xen_config_table_memory_region_max()) that will be used later to
+> > replace the usage of the EFI memory map in esrt.c when running under
+> > Xen.  This function can also be used in mokvar-table.c and efi-bgrt.c,
+> > but I have not implemented this.
+> >=20
+> > Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
+>=20
+> In Xen we don't clobber EfiBootServices{Code,Data} when xen.efi was passed
+> "-mapbs". Should we perhaps extend the interface such that Dom0 can then
+> also use tables located in such regions, perhaps by faking
+> EFI_MEMORY_RUNTIME in the attributes returned by XEN_FW_EFI_MEM_INFO?
 
+I can add a check for EFI_MEMORY_RUNTIME, but only if I can require a Xen
+version with https://lore.kernel.org/xen-devel/cc0fbcb4-5ea3-178c-e691-9acb=
+7cc9a3a7@suse.com/t/#u.
+This is easy in Qubes OS via RPM dependencies, but I am not sure if it
+is suitable for upstream without a mechanism for dom0 to verify that the
+patch has been included.
+--=20
+Sincerely,
+Demi Marie Obenour (she/her/hers)
+Invisible Things Lab
 
-> ---
->  drivers/firmware/efi/esrt.c | 43 ++++++++++++++++++++++++++-----------
->  1 file changed, 30 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/firmware/efi/esrt.c b/drivers/firmware/efi/esrt.c
-> index 2a2f52b017e736dd995c69e8aeb5fbd7761732e5..a0642bc161b4b1f94f818b8c9f46511fe2424bb2 100644
-> --- a/drivers/firmware/efi/esrt.c
-> +++ b/drivers/firmware/efi/esrt.c
-> @@ -243,27 +243,44 @@ void __init efi_esrt_init(void)
->         void *va;
->         struct efi_system_resource_table tmpesrt;
->         size_t size, max, entry_size, entries_size;
-> -       efi_memory_desc_t md;
-> -       int rc;
->         phys_addr_t end;
-> -
-> -       if (!efi_enabled(EFI_MEMMAP))
-> -               return;
-> +       u32 type;
->
->         pr_debug("esrt-init: loading.\n");
->         if (!esrt_table_exists())
->                 return;
->
-> -       rc = efi_mem_desc_lookup(efi.esrt, &md);
-> -       if (rc < 0 ||
-> -           (!(md.attribute & EFI_MEMORY_RUNTIME) &&
-> -            md.type != EFI_BOOT_SERVICES_DATA &&
-> -            md.type != EFI_RUNTIME_SERVICES_DATA)) {
-> -               pr_warn("ESRT header is not in the memory map.\n");
-> +       if (efi_enabled(EFI_MEMMAP)) {
-> +               efi_memory_desc_t md;
-> +
-> +               if (efi_mem_desc_lookup(efi.esrt, &md) < 0 ||
-> +                   (!(md.attribute & EFI_MEMORY_RUNTIME) &&
-> +                    md.type != EFI_BOOT_SERVICES_DATA &&
-> +                    md.type != EFI_RUNTIME_SERVICES_DATA)) {
-> +                       pr_warn("ESRT header is not in the memory map.\n");
-> +                       return;
-> +               }
-> +
-> +               type = md.type;
-> +               max = efi_mem_desc_end(&md);
-> +#ifdef CONFIG_XEN_EFI
-> +       } else if (efi_enabled(EFI_PARAVIRT)) {
-> +               max = xen_config_table_memory_region_max(efi.esrt);
-> +               /*
-> +                * This might be wrong, but it doesn't matter.
-> +                * xen_config_table_memory_region_max() checks the type
-> +                * of the memory region, and if it returns 0, the code
-> +                * below will fail without looking at the type.  Choose
-> +                * a value that will not cause * subsequent code to try
-> +                * to reserve the memory containing the ESRT, as either
-> +                * Xen or the firmware has done so already.
-> +                */
-> +               type = EFI_RUNTIME_SERVICES_DATA;
-> +#endif
-> +       } else {
->                 return;
->         }
->
-> -       max = efi_mem_desc_end(&md);
->         if (max < efi.esrt) {
->                 pr_err("EFI memory descriptor is invalid. (esrt: %p max: %p)\n",
->                        (void *)efi.esrt, (void *)max);
-> @@ -333,7 +350,7 @@ void __init efi_esrt_init(void)
->
->         end = esrt_data + size;
->         pr_info("Reserving ESRT space from %pa to %pa.\n", &esrt_data, &end);
-> -       if (md.type == EFI_BOOT_SERVICES_DATA)
-> +       if (type == EFI_BOOT_SERVICES_DATA)
->                 efi_mem_reserve(esrt_data, esrt_data_size);
->
->         pr_debug("esrt-init: loaded.\n");
-> --
-> Sincerely,
-> Demi Marie Obenour (she/her/hers)
-> Invisible Things Lab
->
+--SGczFINJLmmUm2Ge
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEdodNnxM2uiJZBxxxsoi1X/+cIsEFAmM3G7MACgkQsoi1X/+c
+IsGoBxAA1qb1ePsiOtinAK894ShZXnVAj3jNHthhWj963jYXw6jD9iX2hYAeRFvw
+ViOU6LodPurxZl4DJpiOW738pLkTYWf6CDfA01oPf2PD9nUA+kdD1doldC3PQ5Pf
+yBpX0cPWDmP7xnNzdHW/ogcBCBVs6RBwiVFJsklGfKtQ9CfxRCW0q9KGL+YJTkL8
+uSNTPe1v+4Q+ZdXs0Qsn/Yj33mOcg7ECO00cT8lgfF4lV/xIvi8jTgWjHVlkK3Qs
+yxhmIiH0tvdegEu4uLcA15EmcFNi+l3Dkx8WU1674wDy/ZG1DdLljbFRSxp3HUjq
+i5G2sixSYHn/PH6f6b8mOJFwHDasyDnV3FZbE9oEXAhz8Qz1zp6BlCQ3g/bFTyhU
+lTVoMNL6AuXFFQ9eRAy5YWcNc/Ypt2eg/IBPXZDBP35Uq/BhYdzVkrlWUvYBhm82
+iPZ7yyUsmjots3iLJkHgmA85ZbSDV1oMallsRmosYgTiam9N4/F7eHM3kIAjmnMD
+yDaD4rQBPYY7a8+GEXfdS1EirIR94Ysb+D6zuMl0f9onBg1eW22955zWYtCgo4pW
+dNE0NoMzSwdwvHi6VIA51K9Qz/LJMtXiin01RSbmk0vVyIuOnmKQElueQmw8S97O
+tcxYwdZ6+4h6CZr3Iez+UXsH1rvB89qlW7bdkS3ETJH2RgGCsOo=
+=pxje
+-----END PGP SIGNATURE-----
+
+--SGczFINJLmmUm2Ge--
