@@ -2,71 +2,40 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D72ED5F1875
-	for <lists+linux-efi@lfdr.de>; Sat,  1 Oct 2022 03:39:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C907D5F2269
+	for <lists+linux-efi@lfdr.de>; Sun,  2 Oct 2022 11:56:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230236AbiJABi7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 30 Sep 2022 21:38:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50552 "EHLO
+        id S229441AbiJBJ4j (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 2 Oct 2022 05:56:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231298AbiJABi6 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 30 Sep 2022 21:38:58 -0400
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C93B2139BF7;
-        Fri, 30 Sep 2022 18:38:57 -0700 (PDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailout.nyi.internal (Postfix) with ESMTP id 6AE6C5C00F0;
-        Fri, 30 Sep 2022 21:38:54 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Fri, 30 Sep 2022 21:38:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        invisiblethingslab.com; h=cc:cc:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm2; t=1664588334; x=
-        1664674734; bh=4Y1yVEfUHPk1tElemZjziRLNumjA2Ps5jgjeAEWF4UE=; b=Q
-        zqH/a/TeYiFYyRaAaD5zCv6ae1HXvh7HG1UV6PaWizMqhVKnqI97PFx38i2ZCEyv
-        geL3ylE9ORr1buGnpy15GRFjNY+ZeIJYVjTUj2Ak8Eo8CA6owzO3+Ke4GTiXX/fC
-        md1XvCKDEcsNL3iNP48LU0IrLcXQYfZqp29K4Hj1+1/LsIQxj5LSJFiJB0DWV4X4
-        yfGQidkKL/2UrZ7EliI3E8vVQxqFOcPYuGwgPr7GM3/GvpQ/N6aBjmM5tEOcK/P8
-        y5YhR0LAV1MePV5SoOh9QY2KqrJEUuH+rvBXi6sne7GfO0DDrq5MbLrFZj7ie8J+
-        JrkMHsqGAxNdbhjvr1iyA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm2; t=1664588334; x=1664674734; bh=4Y1yVEfUHPk1tElemZjziRLNumjA
-        2Ps5jgjeAEWF4UE=; b=nXSuBGaC5K2a0uVtiNzniKoS9tfiTJuXy3UPZSbI2uWf
-        3sPahyNajPXkS+HZMXq3FftaUnPxNYF8jitWSWOvd6nUL7MpZn36lqjYbK081MoA
-        HxioIlmOFz05ECUrz/wIeQ1po3DZ8DsXp7AcOLJ5qHY+WENAHof01zejXFRznCw5
-        qgTRCXzWtiqsmZTWzIWJ1evSBY7sWs/v4seWAdUlXNeGaNZisbTWD7JDQMFt+cRD
-        x93qaadUysAd+j+6cwkKmt6kgz5PhaA6YPq21WTdZ84MwdfMjdzEErcWKGMP2ehO
-        rvgRVBw9rAeD6bHcDBzX0ZMA6Mapjv5NHQZkjryS2g==
-X-ME-Sender: <xms:LZo3Y-0KxuPrZpe2HQQEaqoQp1BgYLejrOGlRHJGP_4Rf1vkYViXyg>
-    <xme:LZo3YxGxlcn_mt2lbtukromnsxtxSslFWB8J7A1UxnKFZleuk4S1lE1NtHjS6Gavm
-    ntIzHhycR6ZDZk>
-X-ME-Received: <xmr:LZo3Y24C3kJeAJXeIh4k22CLtAu49surux5t7XlyDedSaxB_AA39kY1Vs5y0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeehfedghedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepffgvmhhi
-    ucforghrihgvucfqsggvnhhouhhruceouggvmhhisehinhhvihhsihgslhgvthhhihhngh
-    hslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepvdejteegkefhteduhffgteffgeff
-    gfduvdfghfffieefieekkedtheegteehffelnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepuggvmhhisehinhhvihhsihgslhgvthhhihhnghhs
-    lhgrsgdrtghomh
-X-ME-Proxy: <xmx:LZo3Y_1IAdXgv4YYDbOrjjKze3HiE_vbNIcJx50EOgXNsWvzuKbUfg>
-    <xmx:LZo3YxEmn8S7b5mzTbMPZbEPO-BC_iwt2D5oPKiJc5HGUuH31ZTB6g>
-    <xmx:LZo3Y48XiQqlR8rrn9nGSFBUkgrdIjFIxmlqdO8j37jk5ObuidaDMA>
-    <xmx:Lpo3Y59ez1ow0lpmym_wBbXUZ1Vyxh4SAo9Z548i5ec9ryhGJidBSg>
-Feedback-ID: iac594737:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 30 Sep 2022 21:38:53 -0400 (EDT)
-Date:   Fri, 30 Sep 2022 20:30:33 -0400
-From:   Demi Marie Obenour <demi@invisiblethingslab.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Jan Beulich <jbeulich@suse.com>, xen-devel@lists.xenproject.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        with ESMTP id S229517AbiJBJ4i (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 2 Oct 2022 05:56:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D4BE2409F
+        for <linux-efi@vger.kernel.org>; Sun,  2 Oct 2022 02:56:36 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC26360EA4
+        for <linux-efi@vger.kernel.org>; Sun,  2 Oct 2022 09:56:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E61C433D6;
+        Sun,  2 Oct 2022 09:56:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1664704595;
+        bh=7esb6YPYkrd+cv3sS3o+s4EfXDusBD+g0wEqShG+32A=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Ss07N6JmrKfUNdOIENH6an0d3hWbHND736qLLMDXCxQM2oV4U1cDSRv6nJxu2LLEq
+         Mk7qpOotNHug4RUHT4u9kC57w/LglOizLgvaOIUPvnmy477ScfkxZrR0kDD2LAR6cI
+         LtpD0H8D1PQIpzPIMImjJ9t6yR/akd05lY4iDQwZnOVgP8nDkGmeSKX145fcXRZ0gG
+         Zk3cKVHe+uonWMKGYcGLVT43hcoQmc106v+uVRfSods3/DldarES6io6joTfzUI+sq
+         xYpePyNbazkr8V9aN7N6Dq5QUZrwPHIxBVDD0oHx/RY9WE4DV1NCHF2q4RHkmcRFmE
+         QgTGDwUVsCBzg==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     xen-devel@lists.xenproject.org, Ard Biesheuvel <ardb@kernel.org>,
+        Demi Marie Obenour <demi@invisiblethingslab.com>,
+        Peter Jones <pjones@redhat.com>,
         Juergen Gross <jgross@suse.com>,
         Stefano Stabellini <sstabellini@kernel.org>,
         Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
@@ -74,102 +43,105 @@ Cc:     Jan Beulich <jbeulich@suse.com>, xen-devel@lists.xenproject.org,
         Anton Vorontsov <anton@enomsg.org>,
         Colin Cross <ccross@android.com>,
         Tony Luck <tony.luck@intel.com>,
-        Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
+        =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= 
         <marmarek@invisiblethingslab.com>
-Subject: Re: [PATCH v4 1/2] Avoid using EFI tables Xen may have clobbered
-Message-ID: <YzeaKjmls1YI/3ox@itl-email>
-References: <cover.1664298147.git.demi@invisiblethingslab.com>
- <f3b624e99adfdbbfc1976a60a73a6b5950e1840d.1664298147.git.demi@invisiblethingslab.com>
- <282a225d-8782-0321-6f0e-19dd4510dc42@suse.com>
- <CAMj1kXFQNqsW5RfHGac-eGbosJHBybu6+-Fap_bi_kVxWNpGeg@mail.gmail.com>
- <YzcjeiOW8+i2Zxsd@itl-email>
- <CAMj1kXHBBbCNV3CLesqZi7ttmmi8y4tZ1KO5vievy_CJrU2o3Q@mail.gmail.com>
+Subject: [RFC PATCH 0/5] efi/x86: Avoid corrupted config tables under Xen
+Date:   Sun,  2 Oct 2022 11:56:21 +0200
+Message-Id: <20221002095626.484279-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="f1U+J1ZNYcGqSCmT"
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXHBBbCNV3CLesqZi7ttmmi8y4tZ1KO5vievy_CJrU2o3Q@mail.gmail.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4408; i=ardb@kernel.org; h=from:subject; bh=7esb6YPYkrd+cv3sS3o+s4EfXDusBD+g0wEqShG+32A=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjOWA6KKLbNxdyE3WYFUnkIoD4K2KMxMzVqnB/MmcB FkQw2BSJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYzlgOgAKCRDDTyI5ktmPJJY3DA CAD6udbDfm1DhJmdyq4SARqiM82Wf/BNTqMuN4SnN/W8hyK1eNLXIbdtLOGZlIuoRe+ZXTt+DOWT21 T7JZjSQV3RCEayhduxEVc10dD2b4ILPXhBQYZ4Exe38ieW66inG3Ce4WB2w/o5xx6w6GthtAk9ndQu LT7hDZymIoqNDFWxqq6qVfdTSGAgLPF35zZAMYOXT1RJ8RI4o0O9p4SsFBtaLFhunDZSrmmCkGZ5Kj FXwUQET3WbaQLR72VXK3H4izixs9JuWMEg6gi/JppvQvIhTpIjtw6fO1lLJm4LSBzdAEulZePxi1ch sEy9MiI42BFPJ1yphzQGD9OqVQiYck5F5UM3IrTCJFDrvlb8BcWsrbXAipOCZt0SBJkEEF+BzKfqS3 i2WnhhgDt/8MMEURMV2s+F7BzgwFv1ShoUXY03AstIYkIHOt6OTKf1S6GcKMA0dd6GE2WSbaplWkRd tFf+MQOdFpOKBDKn4rHpP2vXo/DsbpuHgD5U+H7xmMOyk=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+This is an alternate approach to addressing the issue that Demi Marie is
+attempting to fix in [0] (i.e., ESRT config table exposed to a x86 dom0
+is corrupted because it resides in boot services memory as per the EFI
+spec, where it gets corrupted by Xen). My main objection to that approach
+is that it needs Xen-specific fixes in multiple different places, but we
+still end up only fixing the ESRT case specifically.
 
---f1U+J1ZNYcGqSCmT
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 30 Sep 2022 20:30:33 -0400
-From: Demi Marie Obenour <demi@invisiblethingslab.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Jan Beulich <jbeulich@suse.com>, xen-devel@lists.xenproject.org,
-	linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Kees Cook <keescook@chromium.org>,
-	Anton Vorontsov <anton@enomsg.org>,
-	Colin Cross <ccross@android.com>, Tony Luck <tony.luck@intel.com>,
-	Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-Subject: Re: [PATCH v4 1/2] Avoid using EFI tables Xen may have clobbered
+So instead, I am proposing this series as a more generic way to handle
+configuration tables that reside in boot services memory, and confining
+the Xen specific logic to the Xen EFI glue code.
 
-On Fri, Sep 30, 2022 at 08:27:09PM +0200, Ard Biesheuvel wrote:
-> On Fri, 30 Sept 2022 at 19:12, Demi Marie Obenour wrote:
-> > On Fri, Sep 30, 2022 at 06:30:57PM +0200, Ard Biesheuvel wrote:
-> > > I know very little about Xen, but based on the context you provided in
-> > > this thread, I'd say that the best approach from the Xen side is to
-> > > convert all EfiBootServicesData regions that have configuration tables
-> > > pointing into them into EfiAcpiReclaimMemory.
-> >
-> > Should Xen convert the entire region, or should it try to reserve only
-> > the memory it needs?  The latter would require it to parse the
-> > configuration tables.  Is there a list of configuration tables that can
-> > legitimately be in EfiBootServicesData regions?
-> >
->=20
-> Not really, no. So you would have to convert the entire region
-> /unless/ Xen knows the GUID, and therefore knows how to derive the
-> size of the table, allowing it to reserve memory more conservatively.
-> However, I doubt whether this is worth it: splitting entries implies
-> rewriting the memory map, which is a thing I'd rather avoid if I were
-> in your shoes.
+Given that EFI boot without a memory map is only permitted on x86 and
+only when doing Xen boot, let's clear up some inconsistencies there
+first so we can set the EFI_PARAVIRT flag on all architectures that do
+pseudo-EFI boot straight into the core kernel (i.e., without going
+through the stub). This moves a good chunk of EFI memory map
+manipulation code into the x86 arch tree, where it arguably belongs as
+no other architectures rely on it. This is implemented in patches 1 - 3.
 
-I actually wonder if Xen needs to reserve *all* of EfiBootServicesData.
-The reason is that some (probably buggy) firmware may store ACPI tables
-there, and Xen does not have an ACPI implementation.  From my
-perspective, a much safer approach would be to pass all of
-EfiBootServicesData memory directly to dom0, and have dom0 give Xen back
-what it doesn=E2=80=99t wind up using.  That allows dom0=E2=80=99s memory r=
-eservation
-code to work properly, which it currently does not.
---=20
-Sincerely,
-Demi Marie Obenour (she/her/hers)
-Invisible Things Lab
+Patch #4 updates the configuration table iteration logic so that only
+ACPI and SMBIOS tables are exposed automatically when EFI_PARAVIRT is
+set, and other config tables only if they reside in a memory region of a
+EFI memory type that is guaranteed to be preserved. This effectively
+hides the ESRT, but also the memory attributes table and the runtime
+properties (and potentially others) when doing Xen dom0 boot unless they
+have been moved out of EFI boot services memory.
 
---f1U+J1ZNYcGqSCmT
-Content-Type: application/pgp-signature; name="signature.asc"
+The final patch relaxes the ESRT sanity check so that the ESRT is parsed
+and exposed even if EFI_MEMMAP is not set, which is the case with Xen
+dom0 on x86. If additional memory map checks are required in this code
+path, the best way to achieve this is for Xen to expose a EFI memory map
+on x86 just like it does on other architectures that support Xen (ARM
+and arm64)
 
------BEGIN PGP SIGNATURE-----
+[0] https://lore.kernel.org/all/cover.1664298147.git.demi@invisiblethingslab.com/
 
-iQIzBAEBCgAdFiEEdodNnxM2uiJZBxxxsoi1X/+cIsEFAmM3misACgkQsoi1X/+c
-IsGokg/7BmeYWsuHyIip8QSpGg0PqxUx5LZTS8crGjyQ76Ielz5tCIMITIEk0ofl
-gjlnPHVH+wY2M2M0i3GWCpgpzkEBCuWkIgujegbXEZ8YVg9K9Sow5dZBwCgP3DdR
-guREHEgIs44F7K3GPle8IePmGH7ZHkele570faQkyPElgZaxxeqrUGVUz7QUN3pz
-7tFOpvY1MVFYLXi9d0V7HbbcFUhXIGWAoi81o8hHiY+t29OTjlVfrPh9ruwXQxA/
-DUYzlDA4aMvJxeSvmqvXbb9ZhN4RmKu/OxKsnph48qCs5QEwbAhWqj40cTtcQdBL
-xcO/BsV2VrekeP5CIT2BlI0RxUZAWtG99YKztzy4n0VMgsS/lT0JSomzND4CgyDx
-sv+freSMGzt6XX8/JvOl8E93TWVG/iorAIWZc1skzaMsX6mmdwhUyhhKNVunn3ZR
-RIkluLvFCroAjGvvCBXLlmNtfT86N0DcOgD5n1lrt3J/sOLF2Dkq6Nmjj90VJYEV
-KM1UZvJU/oKv8I2/2rxWbO/FiqwcGuU50gqQ92HfpJDrQtilUSCSWRje6/Cz4JZP
-ySRaOshV8CICgQ5cQPZavMIVDAFoOh9b0eJ5w4emU/LrnJkY9RaAKA72rsZZTu4A
-lhTBLEj/to92QAmoyX9x/d5tW+f6QQwRM1lW9o7PLBEODo693bo=
-=MD/M
------END PGP SIGNATURE-----
+Cc: Demi Marie Obenour <demi@invisiblethingslab.com>
+Cc: Peter Jones <pjones@redhat.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Cc: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Anton Vorontsov <anton@enomsg.org>
+Cc: Colin Cross <ccross@android.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
 
---f1U+J1ZNYcGqSCmT--
+Ard Biesheuvel (5):
+  efi: Move EFI fake memmap support into x86 arch tree
+  efi: memmap: Move manipulation routines into x86 arch tree
+  efi: xen: Set EFI_PARAVIRT for Xen dom0 boot on all architectures
+  efi: Apply allowlist to EFI configuration tables when running under
+    Xen
+  efi: esrt: Omit region sanity check when no memory map is available
+
+ arch/x86/Kconfig                                       |  20 ++
+ arch/x86/include/asm/efi.h                             |  16 ++
+ arch/x86/kernel/setup.c                                |   1 +
+ arch/x86/platform/efi/Makefile                         |   4 +-
+ arch/x86/platform/efi/efi.c                            |   8 +-
+ {drivers/firmware => arch/x86/platform}/efi/fake_mem.c |  79 ++++++-
+ arch/x86/platform/efi/memmap.c                         | 238 ++++++++++++++++++++
+ arch/x86/platform/efi/quirks.c                         |   3 +
+ drivers/firmware/efi/Kconfig                           |  22 --
+ drivers/firmware/efi/Makefile                          |   4 -
+ drivers/firmware/efi/efi.c                             |   7 +
+ drivers/firmware/efi/esrt.c                            |  61 ++---
+ drivers/firmware/efi/fake_mem.h                        |  10 -
+ drivers/firmware/efi/fdtparams.c                       |   4 +
+ drivers/firmware/efi/memmap.c                          | 224 +-----------------
+ drivers/firmware/efi/x86_fake_mem.c                    |  75 ------
+ drivers/xen/efi.c                                      |  69 ++++++
+ include/linux/efi.h                                    |  18 +-
+ 18 files changed, 481 insertions(+), 382 deletions(-)
+ rename {drivers/firmware => arch/x86/platform}/efi/fake_mem.c (58%)
+ create mode 100644 arch/x86/platform/efi/memmap.c
+ delete mode 100644 drivers/firmware/efi/fake_mem.h
+ delete mode 100644 drivers/firmware/efi/x86_fake_mem.c
+
+-- 
+2.35.1
+
