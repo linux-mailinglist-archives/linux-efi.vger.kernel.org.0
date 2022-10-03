@@ -2,51 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B6925F325F
-	for <lists+linux-efi@lfdr.de>; Mon,  3 Oct 2022 17:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A58D35F327E
+	for <lists+linux-efi@lfdr.de>; Mon,  3 Oct 2022 17:29:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229750AbiJCPSk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 3 Oct 2022 11:18:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41120 "EHLO
+        id S230077AbiJCP3d (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 3 Oct 2022 11:29:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229668AbiJCPSk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 3 Oct 2022 11:18:40 -0400
+        with ESMTP id S229841AbiJCP3c (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 3 Oct 2022 11:29:32 -0400
 Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF78010FA
-        for <linux-efi@vger.kernel.org>; Mon,  3 Oct 2022 08:18:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E93FB6410
+        for <linux-efi@vger.kernel.org>; Mon,  3 Oct 2022 08:29:30 -0700 (PDT)
 Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.west.internal (Postfix) with ESMTP id E34D032003D3;
-        Mon,  3 Oct 2022 11:18:34 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Mon, 03 Oct 2022 11:18:35 -0400
+        by mailout.west.internal (Postfix) with ESMTP id 8F667320093C;
+        Mon,  3 Oct 2022 11:29:29 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Mon, 03 Oct 2022 11:29:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         invisiblethingslab.com; h=cc:cc:content-type:date:date:from:from
         :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm2; t=1664810314; x=
-        1664896714; bh=Py0ty9ifkS6fLvi4hjmq1ycGUuwx6IScsmBddMLzPWU=; b=V
-        rRF51RMI8oANz1XxQNAcGR/QlH50xQL5scFfPG00HlS89olSMC7BQ6Gr3jOlpmKs
-        FT+PS6ompEhwru8DZaWhG3zftnDu7Lref69Ub5aa5BErFy2OtKwC3xbMQewfSTbO
-        puW4WkD7+B3hWl5BphOLcXdz600hdW+leMW54eycyIC307I14IUH4M+bahaImoTy
-        nNUKzvQkj+aLATv7/P5he1KF3JlechvlFqRzhahCZb4CtYdZmWsMhbGnzeHmY2BF
-        27olmYby5sNriGwPdFGDf9SpLZG4UoM31ZVdHqS6o+PYBBYhkmEd90xb0T/e3T8Z
-        pfmrSrpcuqgKa04RkXx7A==
+        :reply-to:sender:subject:subject:to:to; s=fm2; t=1664810969; x=
+        1664897369; bh=wG2UKFKUqQSuw+UKGoNFakaJTVCzILWNxG1VAloni50=; b=R
+        vkhz5Z4OWL2o1RQheGBXMSCgIKsLpV/sIeJE7oVs70pGN7HvbooHhrW76evaeOwm
+        BOBs1S8JwFGhbFDZIUwYgLQ7u1J5+yhva2r0TdzVlXODf4J2NZqd0GQ+YyikEQ4H
+        aZfRjSN+UJvVSdAwDsSYxvlf4oSrf4vMGfRKhTMoRsAGM0wojLqMwlg2pp6p1oZX
+        LRUW5DAqo9rjPvThZuRY4Dyju//fcB5IMYTCqDtGBxlXZfYydt4e7CXxQ19JXmGG
+        XFhNcKzNjIXtrNcYdxdytDRSZQ+257t0nfj8NeE4h4AYZswRtTWfq10XFQ1uEfvd
+        VfWvWC0g+EZlNbpJ45i8A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
         :feedback-id:from:from:in-reply-to:in-reply-to:message-id
         :mime-version:references:reply-to:sender:subject:subject:to:to
         :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm2; t=1664810314; x=1664896714; bh=Py0ty9ifkS6fLvi4hjmq1ycGUuwx
-        6IScsmBddMLzPWU=; b=z2zesEfRcXGt+xEOhQZLsbOeanVP/lIoTLZGeEhTvRWA
-        4d21aV9sgFc44Zni03Il5HQqILUpflH6xlvKoyED9iklewILcn5LWHkJTBpLw0Nz
-        JCoSMKO/KjcJihgT/3Hp1NUFRCjARCM4Qf19T+FT/O8P9vxag+js8YhiPI1St8YH
-        fFhncL8lhD0QZcW6AVWaTrlOwNE/SAXPeCgnBWu1IQLlZ1eOfRK9DiPJgLpxwP5M
-        VjsmiqNcoYSDxY43x8soK4WY6YlF73MFep2WUHvkcRVSKQCYH8SZaO0VJkhnO0eC
-        VGICMBB2SfGfRaVQ7ey07IIsbYO2btgqPYazJU9wXg==
-X-ME-Sender: <xms:Sv06Y1RKu8ncaBd9MazYHjbTM3_DHt_U8gaKAi5ht8luH38eQkUzRw>
-    <xme:Sv06Y-w57M7d-SvXhIZvux0KwVzIFOLXdv9aTJw6sJR5ewOGDbkFS_VTvoHatSEJX
-    mLjww2uq54A8dQ>
-X-ME-Received: <xmr:Sv06Y60Jj1vV7HExBJadrZi3kh0ZtbgRtUi6vG0ZubwcrhxVtYzdxnrP4vtI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeehledgkeeiucetufdoteggodetrfdotf
+        fm2; t=1664810969; x=1664897369; bh=wG2UKFKUqQSuw+UKGoNFakaJTVCz
+        ILWNxG1VAloni50=; b=hCro7hdOVhZFbKkbMuLxf2veLrel6GzkmLgJDtfpnowE
+        Vfq6wpZAvxpC0hGzmnWl33ELsf8/Bsr0J1UnhePN+4GlTlbsIxFYKxrd0Ov1hjCG
+        GlKEd28TZWjnpTer4mJSL0IhKXNrp/+JC73bcPtVBtvsOxJmkzbZFApqHaN790cy
+        k70lbyp/zhO90puuSjkGIeXJsYMf4oh6p1ZeIjhe7qsriThezWR1z8EU/572rbbj
+        +QBUZraJlKelf/AZPLyIK79j35t9zgi1AQ++uuvOqY7WXbKPHsu5u6Vp5wDVtqzk
+        GnJpZrcyj3couu2alRgG3n3HbpyIH0/0LnPLkEjAdQ==
+X-ME-Sender: <xms:2P86Y9mikPGuNdC5YzGQSE0SgnQjW2-JzXiksOpbEQw1SyfBz31ccw>
+    <xme:2P86Y41o5mKQ7aEmD8-0SCI3D6_2x3v61_rt_JXkLQrIoiCqsTiY_iiPAh0b4cqA3
+    icrualvUymqb_k>
+X-ME-Received: <xmr:2P86YzqKZb3wW3PyEgcrDkbRyIZsXJGVo2xud296gByrPTIKDCrIUcLCkVAz>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeehledgkeekucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
     cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtvdenucfhrhhomhepffgvmhhi
@@ -55,16 +55,17 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeehledgkeeiucetufdoteggod
     jeegffekleevueelueekjeejudffteejkeetnecuvehluhhsthgvrhfuihiivgeptdenuc
     frrghrrghmpehmrghilhhfrhhomhepuggvmhhisehinhhvihhsihgslhgvthhhihhnghhs
     lhgrsgdrtghomh
-X-ME-Proxy: <xmx:Sv06Y9D497QzQtkaSCYzou14tIDSRMs2EKDb2guxpBThN1-Rci430w>
-    <xmx:Sv06Y-iUI9PoQkgQsiGM_m6mlbX9q4dcD9pku1YWvAhH9GmbLQFGsg>
-    <xmx:Sv06YxpztdSl9eHfVqYVcZAi42OR3JVdTtBoVbpYMO00YuZKr2mwcw>
-    <xmx:Sv06Y5PtPL4vlffVJ7Z3PHuA0h0lEyvweVheNCyaPCJz0VQlTq9yKQ>
+X-ME-Proxy: <xmx:2P86Y9lix9xFS71wtW7P_Nm9Qk2RgLybs_fkjrtg8BepCrfyLU68jA>
+    <xmx:2P86Y73QA64X64NYjuaRBc_HfzZDz5bA79myIKq4hv64jWaNXZlr1A>
+    <xmx:2P86Y8tKTFrzW7apbeuIrclxjqjvu4pQEeuGzpOmm4gXG3PjttiEYQ>
+    <xmx:2f86Y0sMpDzZVSvj9ZLf2H6wVcnLMO4Z7kESFOjws_Zh9QScMDOllg>
 Feedback-ID: iac594737:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 3 Oct 2022 11:18:33 -0400 (EDT)
-Date:   Mon, 3 Oct 2022 11:18:06 -0400
+ 3 Oct 2022 11:29:28 -0400 (EDT)
+Date:   Mon, 3 Oct 2022 11:29:22 -0400
 From:   Demi Marie Obenour <demi@invisiblethingslab.com>
-To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
+To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+        Xen developer discussion <xen-devel@lists.xenproject.org>
 Cc:     xen-devel@lists.xenproject.org, Peter Jones <pjones@redhat.com>,
         Juergen Gross <jgross@suse.com>,
         Stefano Stabellini <sstabellini@kernel.org>,
@@ -75,16 +76,16 @@ Cc:     xen-devel@lists.xenproject.org, Peter Jones <pjones@redhat.com>,
         Tony Luck <tony.luck@intel.com>,
         Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
         <marmarek@invisiblethingslab.com>
-Subject: Re: [PATCH v2 4/6] efi: memmap: Disregard bogus entries instead of
- returning them
-Message-ID: <Yzr9R2ziBAJgzAqR@itl-email>
+Subject: Re: [PATCH v2 5/6] efi: xen: Implement memory descriptor lookup
+ based on hypercall
+Message-ID: <Yzr/1s9CbA0CClmt@itl-email>
 References: <20221003112625.972646-1-ardb@kernel.org>
- <20221003112625.972646-5-ardb@kernel.org>
+ <20221003112625.972646-6-ardb@kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="M+fOFbwZi3N7oSNW"
+        protocol="application/pgp-signature"; boundary="zLmjlM2QchXxvY8s"
 Content-Disposition: inline
-In-Reply-To: <20221003112625.972646-5-ardb@kernel.org>
+In-Reply-To: <20221003112625.972646-6-ardb@kernel.org>
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
@@ -95,13 +96,14 @@ List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 
---M+fOFbwZi3N7oSNW
+--zLmjlM2QchXxvY8s
 Content-Type: text/plain; protected-headers=v1; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 3 Oct 2022 11:18:06 -0400
+Date: Mon, 3 Oct 2022 11:29:22 -0400
 From: Demi Marie Obenour <demi@invisiblethingslab.com>
-To: Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
+To: Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+	Xen developer discussion <xen-devel@lists.xenproject.org>
 Cc: xen-devel@lists.xenproject.org, Peter Jones <pjones@redhat.com>,
 	Juergen Gross <jgross@suse.com>,
 	Stefano Stabellini <sstabellini@kernel.org>,
@@ -110,129 +112,129 @@ Cc: xen-devel@lists.xenproject.org, Peter Jones <pjones@redhat.com>,
 	Anton Vorontsov <anton@enomsg.org>,
 	Colin Cross <ccross@android.com>, Tony Luck <tony.luck@intel.com>,
 	Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-Subject: Re: [PATCH v2 4/6] efi: memmap: Disregard bogus entries instead of
- returning them
+Subject: Re: [PATCH v2 5/6] efi: xen: Implement memory descriptor lookup
+ based on hypercall
 
-On Mon, Oct 03, 2022 at 01:26:23PM +0200, Ard Biesheuvel wrote:
-> The ESRT code currently contains some sanity checks on the memory
-> descriptor it obtains, but these can only trigger when the descriptor is
-> invalid (if at all).
+On Mon, Oct 03, 2022 at 01:26:24PM +0200, Ard Biesheuvel wrote:
+> Xen on x86 boots dom0 in EFI mode but without providing a memory map.
+> This means that some sanity checks we would like to perform on
+> configuration tables or other data structures in memory are not
+> currently possible. Xen does, however, expose EFI memory descriptor info
+> via a Xen hypercall, so let's wire that up instead.
 >=20
-> So let's drop these checks, and instead, disregard descriptors entirely
-> if the start address is misaligned, or the number of pages reaches
-> beyond the end of the address space. Note that the memory map as a whole
-> could still be inconsistent, i.e., multiple entries might cover the same
-> area, or the address could be outside of the addressable VA space, but
-> validating that goes beyond the scope of these helpers.
->=20
+> Co-developed-by: Demi Marie Obenour <demi@invisiblethingslab.com>
+> Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
 > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 > ---
->  drivers/firmware/efi/efi.c  | 13 +++++++------
->  drivers/firmware/efi/esrt.c | 18 +-----------------
->  2 files changed, 8 insertions(+), 23 deletions(-)
+>  drivers/firmware/efi/efi.c |  5 ++-
+>  drivers/xen/efi.c          | 34 ++++++++++++++++++++
+>  include/linux/efi.h        |  1 +
+>  3 files changed, 39 insertions(+), 1 deletion(-)
 >=20
 > diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index 11857af72859..55bd3f4aab28 100644
+> index 55bd3f4aab28..2c12b1a06481 100644
 > --- a/drivers/firmware/efi/efi.c
 > +++ b/drivers/firmware/efi/efi.c
-> @@ -461,19 +461,20 @@ int efi_mem_desc_lookup(u64 phys_addr, efi_memory_d=
-esc_t *out_md)
+> @@ -456,7 +456,7 @@ void __init efi_find_mirror(void)
+>   * and if so, populate the supplied memory descriptor with the appropria=
+te
+>   * data.
+>   */
+> -int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
+> +int __efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
+>  {
 >  	efi_memory_desc_t *md;
 > =20
->  	if (!efi_enabled(EFI_MEMMAP)) {
-> -		pr_err_once("EFI_MEMMAP is not enabled.\n");
-> +		pr_warn_once("EFI_MEMMAP is not enabled.\n");
->  		return -EINVAL;
->  	}
+> @@ -485,6 +485,9 @@ int efi_mem_desc_lookup(u64 phys_addr, efi_memory_des=
+c_t *out_md)
+>  	return -ENOENT;
+>  }
 > =20
-> -	if (!out_md) {
-> -		pr_err_once("out_md is null.\n");
-> -		return -EINVAL;
-> -        }
-> -
-
-Nit: this seems unrelated.
-
->  	for_each_efi_memory_desc(md) {
->  		u64 size;
->  		u64 end;
-> =20
-> +		/* skip bogus entries */
-> +		if ((md->phys_addr & (EFI_PAGE_SIZE - 1)) ||
-> +		    (md->phys_addr > 0 &&
-> +		     (md->num_pages > (U64_MAX - md->phys_addr + 1) >> EFI_PAGE_SHIFT)=
-))
-> +			continue;
-
-Should this also check if md->num_pages is 0?  Also, should this check
-be part of for_each_efi_memory_desc()?
-
+> +extern int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
+> +	 __weak __alias(__efi_mem_desc_lookup);
 > +
->  		size =3D md->num_pages << EFI_PAGE_SHIFT;
->  		end =3D md->phys_addr + size;
->  		if (phys_addr >=3D md->phys_addr && phys_addr < end) {
-> diff --git a/drivers/firmware/efi/esrt.c b/drivers/firmware/efi/esrt.c
-> index 2a2f52b017e7..8f86f2b0734b 100644
-> --- a/drivers/firmware/efi/esrt.c
-> +++ b/drivers/firmware/efi/esrt.c
-> @@ -247,9 +247,6 @@ void __init efi_esrt_init(void)
->  	int rc;
->  	phys_addr_t end;
+>  /*
+>   * Calculate the highest address of an efi memory descriptor.
+>   */
+> diff --git a/drivers/xen/efi.c b/drivers/xen/efi.c
+> index d1ff2186ebb4..74f3f6d8cdc8 100644
+> --- a/drivers/xen/efi.c
+> +++ b/drivers/xen/efi.c
+> @@ -26,6 +26,7 @@
 > =20
-> -	if (!efi_enabled(EFI_MEMMAP))
-> -		return;
-> -
->  	pr_debug("esrt-init: loading.\n");
->  	if (!esrt_table_exists())
->  		return;
-> @@ -263,21 +260,8 @@ void __init efi_esrt_init(void)
->  		return;
->  	}
+>  #include <xen/interface/xen.h>
+>  #include <xen/interface/platform.h>
+> +#include <xen/page.h>
+>  #include <xen/xen.h>
+>  #include <xen/xen-ops.h>
 > =20
-> -	max =3D efi_mem_desc_end(&md);
-> -	if (max < efi.esrt) {
-> -		pr_err("EFI memory descriptor is invalid. (esrt: %p max: %p)\n",
-> -		       (void *)efi.esrt, (void *)max);
-> -		return;
-> -	}
-> -
-> +	max =3D efi_mem_desc_end(&md) - efi.esrt;
->  	size =3D sizeof(*esrt);
-> -	max -=3D efi.esrt;
-> -
-> -	if (max < size) {
-> -		pr_err("ESRT header doesn't fit on single memory map entry. (size: %zu=
- max: %zu)\n",
-> -		       size, max);
-> -		return;
-> -	}
+> @@ -292,3 +293,36 @@ void __init xen_efi_runtime_setup(void)
+>  	efi.get_next_high_mono_count	=3D xen_efi_get_next_high_mono_count;
+>  	efi.reset_system		=3D xen_efi_reset_system;
+>  }
+> +
+> +int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
+> +{
+> +	static_assert(XEN_PAGE_SHIFT =3D=3D EFI_PAGE_SHIFT,
+> +		      "Mismatch between EFI_PAGE_SHIFT and XEN_PAGE_SHIFT");
+> +	struct xen_platform_op op =3D {
+> +		.cmd =3D XENPF_firmware_info,
+> +		.u.firmware_info =3D {
+> +			.type =3D XEN_FW_EFI_INFO,
+> +			.index =3D XEN_FW_EFI_MEM_INFO,
+> +			.u.efi_info.mem.addr =3D phys_addr,
+> +			.u.efi_info.mem.size =3D U64_MAX - phys_addr,
+> +		}
+> +	};
+> +	union xenpf_efi_info *info =3D &op.u.firmware_info.u.efi_info;
+> +	int rc;
+> +
+> +	if (!efi_enabled(EFI_PARAVIRT) || efi_enabled(EFI_MEMMAP))
+> +		return __efi_mem_desc_lookup(phys_addr, out_md);
+> +
+> +	rc =3D HYPERVISOR_platform_op(&op);
+> +	if (rc) {
+> +		pr_warn("Failed to lookup header 0x%llx in Xen memory map: error %d\n",
+> +			phys_addr, rc);
+> +	}
+> +
+> +	out_md->phys_addr	=3D info->mem.addr;
 
-This can still happen if the ESRT pointer is very very close to the end
-of a memory map entry, unless there is another check that handles
-such cases.
+This will be equal to phys_addr, not the actual start of the memory
+region.
+
+> +	out_md->num_pages	=3D info->mem.size >> EFI_PAGE_SHIFT;
+
+Similarly, this will be the number of bytes in the memory region
+after phys_addr, not the total number of bytes in the region.  These two
+differences mean that this function is not strictly equivalent to the
+original efi_mem_desc_lookup().
+
+I am not sure if this matters in practice, but I thought you would want
+to be aware of it.
 --=20
 Sincerely,
 Demi Marie Obenour (she/her/hers)
 Invisible Things Lab
 
---M+fOFbwZi3N7oSNW
+--zLmjlM2QchXxvY8s
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEdodNnxM2uiJZBxxxsoi1X/+cIsEFAmM6/UcACgkQsoi1X/+c
-IsFK/BAA3eyncFILFOM4XIr//iy+YArKCUuZ1/AgikhNXeDrV/ydg2N3BSdsutHi
-VZDGtuofMKthtmInOu57DQCbb/K+6FT79KVaRLtOdejEr7I77W/XmDe/gf5ijbxe
-y9wTYBGXTBltM4jgd0xPtamE/bRZcK0Jad5h0R7BQOf0mmK7GQRe7Iw+ld8xR5gC
-SHZ+J8D780wwrOXeIcq77IWy/YPelNtzPS23IRn7uSJkoEXFwAoUUH7FFebILE4F
-VOCI3uLLKOUVrMyiRYE9K4F/uJUOt2XXzlX1ppPN+VHxRhveukWr+JfnqdAknwRT
-TaxnlcF9MfeQoxZaAzImTN84z3ooAX2VpG0cNfwmZcvoKcnHFpxNhrWLlmQQXAPh
-FGb/PNrwHrB8uo+AN4zATQOwE+4Hymf5MNGW0+QjXVy5kKSb0/jZ0T3sXYBTyYz9
-2Jw+vw7JHTna+6x26IC6XdOk/n+lfeG/BBYXz5ii2B96DmVN6yoODQzQULMaDn3h
-qjSVVdgd2hwlKylY63ENrpDUOqT1GPfvNkpTj/Knm9pP2G97z30Ru0vkNRgiglsf
-Nq9THQNpxw2X17yckR7c4JQj5Y4IyKCCqYIXjwd7qykdQkPGGDSn2nCytolTU3ya
-+QBQ36Jtk2+pVcQGYoTR8GESXuBWJp6KRf+nOXYTaNHBdvgDQyk=
-=R1Pm
+iQIzBAEBCgAdFiEEdodNnxM2uiJZBxxxsoi1X/+cIsEFAmM6/9UACgkQsoi1X/+c
+IsHMOhAA333zIIHGob9IRTKkPT5IATDtd4wbALXjdQHsN3w7QV6STKKKkFY814ox
+IvP7PMuPnRRZqHryNQLEtEYma41/clUZrBGxBcormyIUe2MJS9ZhZ0CZeUfWIlBA
+V9yoKbmix0lfTxJaVuKtqc7BV20hARD0Uc5kxqZqJJ9WBJKtgxijBuaMkqXXYL1q
+zRKFfyME35rcTYbBrjXFuiyJxfcSIIF9SWusd683vRLyUVaQafs8SpClc7A+zhCW
+tRVnZ8jkPoKYVyBcalq+lxisCQiVuxio5HweNGqpEAM7gfhiqnfUw1orMEGzd1JK
+LAza+q/6RbFL1q10zlvm7aL7xypiRgATef2wKY5jK0MqbYOGCBf2G5g9GDWOWZCL
+a5r3rqmUXNIYaDYFm7myL9L5/+jtaORUDxzTexNa/7T1su9WCoXLe4eHZwl5zuYK
+PTqn2bO5tUrRnCDBNSM2BAFkkUPX/9P3umM/iRauUuRGZER48mmwbImLx4H0lQ3v
+IUARS3Jy8eliuI0fPxAUhY1RguxnhSUgxlAol+hcrE+92fFzKXSFRWb9iBz0xlAk
+nD1uwI+geDIVE2NDm3IO3j4RqOSGl6BZnpmTxQrMBx7Vy9SFCMVYr3c0VU3zlsFw
+/UJnOIEZhGlEdEucnYq8uNZbx8adJxD/9E8s0wLWZaKgRYUt60s=
+=O4Xp
 -----END PGP SIGNATURE-----
 
---M+fOFbwZi3N7oSNW--
+--zLmjlM2QchXxvY8s--
