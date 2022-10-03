@@ -2,55 +2,39 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BABC15F2C8E
-	for <lists+linux-efi@lfdr.de>; Mon,  3 Oct 2022 10:57:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C9575F2F91
+	for <lists+linux-efi@lfdr.de>; Mon,  3 Oct 2022 13:26:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229884AbiJCI51 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 3 Oct 2022 04:57:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39968 "EHLO
+        id S229470AbiJCL0l (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 3 Oct 2022 07:26:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229897AbiJCI45 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 3 Oct 2022 04:56:57 -0400
+        with ESMTP id S229839AbiJCL0f (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 3 Oct 2022 07:26:35 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BFF84BD18
-        for <linux-efi@vger.kernel.org>; Mon,  3 Oct 2022 01:41:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1B622A96C
+        for <linux-efi@vger.kernel.org>; Mon,  3 Oct 2022 04:26:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DBC66B80ED6
-        for <linux-efi@vger.kernel.org>; Mon,  3 Oct 2022 08:41:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C400C433B5
-        for <linux-efi@vger.kernel.org>; Mon,  3 Oct 2022 08:41:37 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9D017B8105A
+        for <linux-efi@vger.kernel.org>; Mon,  3 Oct 2022 11:26:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEFAFC433C1;
+        Mon,  3 Oct 2022 11:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664786497;
-        bh=v2U6BZJDvr14oOCX6NYP8Ep8ieHeh6yTLas8+pjXhtc=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=qr8NU3RbqCczA4aiTujFWiQu5lNkBBvbs53V+ANGqQC5ShzahsUeezBUB+zRCXa6X
-         6F2XDh6e//s+0S/DMOgPhH1HFHuFscLhKUYTubP9tsGlh4gRmhezTCzYxioqZyPOl/
-         AgBxRN4EPBC652os36dxhfjXj2OdLwuktvurCJyojrrR90AZEUQgH5UstIEs1BnkSg
-         DMCgBgTpAfFthYsdU7zfamjlJZvNr1jw+rbI/62kd/bUcJynrXA4L4xnG3CihEcsEe
-         7WKnarjYOSnTOxqx//rskan9L284cwy8X5+yRGnfT9wu+bU2u/eqHIwGyJ9CY/pQE/
-         Wr1ofM9FNa8jg==
-Received: by mail-lj1-f171.google.com with SMTP id d26so2715030ljl.2
-        for <linux-efi@vger.kernel.org>; Mon, 03 Oct 2022 01:41:37 -0700 (PDT)
-X-Gm-Message-State: ACrzQf01yy51iPgbwidSl7GpVFBaPnIHlg6OyZYHFU2FqSsWsnN/DS+9
-        weRHtMf5ur2m88TOVo46X+cxlB0hcZo/9xUzp7Q=
-X-Google-Smtp-Source: AMsMyM54GabGSBFDJa25jVqciI4CR+sj6LpueHp3yBJdL7CAze93ucqNTSKMeYSQpVfVNklAVT53FzRQ6bUCGnHtOJ8=
-X-Received: by 2002:a05:651c:1590:b0:26c:4311:9b84 with SMTP id
- h16-20020a05651c159000b0026c43119b84mr4371997ljq.152.1664786495531; Mon, 03
- Oct 2022 01:41:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <20221002095626.484279-1-ardb@kernel.org> <20221002095626.484279-6-ardb@kernel.org>
- <Yzm8HIccvuxyicYx@itl-email> <CAMj1kXG-0Bpc5B08EAJTGsNKan4S4628Wwz7wPh-EAY9p4zg1Q@mail.gmail.com>
-In-Reply-To: <CAMj1kXG-0Bpc5B08EAJTGsNKan4S4628Wwz7wPh-EAY9p4zg1Q@mail.gmail.com>
+        s=k20201202; t=1664796391;
+        bh=wDKdvPqZk8WFP3BSEQAf+e1kb18kQtYKCBG/O7eLNv0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Ox1XEvSG5hre/gdrN8BcIEz5750FiEiwpqaTtH1yliO3nlxMWBlgLqBEP5e+DE03L
+         v90fR6LmgX3pmCD68wFhPw52XWpwjN7AtUxY/C6T4OhaC8IJ7mueTOxoRBhZV/bjZR
+         sHBJWb+xThSAUWMBUTBo5yCKmmhJVcaj5//6OJTiylgOZijQg6dDnDR870yDZP9vBB
+         EruxTPvCJNuxS6rbfAntaK3i3lBF39S9Os1oFxTvGF5x4pw9HvXPUU3lt21bb+9qTz
+         Qx0AFO/N5h0m9LJK2DUJq00+LzV7T56zwOTzist88UVsTx36ao1RaGFe73f0SaPDPL
+         /6joHonQhT0qA==
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 3 Oct 2022 10:41:24 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXE+64akXeGPopDO+Qg37fhndRbuBCGg2gr7ZSJb0WP2eg@mail.gmail.com>
-Message-ID: <CAMj1kXE+64akXeGPopDO+Qg37fhndRbuBCGg2gr7ZSJb0WP2eg@mail.gmail.com>
-Subject: Re: [RFC PATCH 5/5] efi: esrt: Omit region sanity check when no
- memory map is available
-To:     Demi Marie Obenour <demi@invisiblethingslab.com>
-Cc:     linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org,
+To:     linux-efi@vger.kernel.org
+Cc:     xen-devel@lists.xenproject.org, Ard Biesheuvel <ardb@kernel.org>,
+        Demi Marie Obenour <demi@invisiblethingslab.com>,
         Peter Jones <pjones@redhat.com>,
         Juergen Gross <jgross@suse.com>,
         Stefano Stabellini <sstabellini@kernel.org>,
@@ -59,10 +43,17 @@ Cc:     linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org,
         Anton Vorontsov <anton@enomsg.org>,
         Colin Cross <ccross@android.com>,
         Tony Luck <tony.luck@intel.com>,
-        =?UTF-8?Q?Marek_Marczykowski=2DG=C3=B3recki?= 
+        =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= 
         <marmarek@invisiblethingslab.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: [PATCH v2 0/6] efi/x86: Avoid corrupted config tables under Xen
+Date:   Mon,  3 Oct 2022 13:26:19 +0200
+Message-Id: <20221003112625.972646-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4415; i=ardb@kernel.org; h=from:subject; bh=wDKdvPqZk8WFP3BSEQAf+e1kb18kQtYKCBG/O7eLNv0=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjOsbUkV47vOIBB1yBzipVxR5+t08QxSlOcR7wO8t8 rB2jnJ2JAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYzrG1AAKCRDDTyI5ktmPJKXNC/ 4rqTC55/+RKNpsaZYCqdCfNe63UwVnTnjPbkbRZpnd1HZHDobN5uCK/Scgvs1lJzCwy9sP1/m2E5Yg L3ODc9VWyIAzw+23tHHYjh5y0f0s0uz3ZeKAFvZfijcuVHQxcMRPnyLZ9Rw9swyA7MFn62CZEiPO7n Yzp7ZfSMNgn2C9PbztvXbT8wOVpZTbOqcSpAZ3aEUc4qJmvcAYyAnGGAa11f9lGbyvqWUjXAWPxraA VgHZktlLipkXG/fUbz0pvIKd52bSamLGC781kUr2w6hntbI/gVpr2VUuMYhAkn2gUxMvSYkLEhKSgA Qa1DdsFZiJODc41MuBwKn/oLwWKO4gmpMwdvpFx6Lv5BMTFMa3aYH9aPX9+aWeHrbNCt4RYX8X3mLa lyV4lr0XPQFHKhLvMnq5QO3tLe/y+etF1IsUkc2fA0kk0lfhcnKjB8j3Dhl8pq6vC8DiN/4CwIMeBe T4lYzxP2oKyxRfFUOf9CX/QhXswyXc9139KispRVezaqw=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -72,50 +63,89 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sun, 2 Oct 2022 at 23:43, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Sun, 2 Oct 2022 at 18:28, Demi Marie Obenour
-> <demi@invisiblethingslab.com> wrote:
-> >
-> > On Sun, Oct 02, 2022 at 11:56:26AM +0200, Ard Biesheuvel wrote:
-> > > In order to permit the ESRT to be used when doing pseudo-EFI boot
-> > > without a EFI memory map, e.g., when booting inside a Xen dom0 on x86=
-,
-> > > make the sanity checks optional based on whether the memory map is
-> > > available.
-> > >
-> > > If additional validation is needed, it is up to the Xen EFI glue code=
- to
-> > > implement this in its xen_efi_config_table_is_valid() helper, or prov=
-ide
-> > > a EFI memory map like it does on other architectures.
-> >
-> > I don=E2=80=99t like this.  It is easy to use a hypercall to get the en=
-d of the
-> > memory region containing the config table, which is what my one of my
-> > previous patches actually does.  Skipping all of the validation could
-> > easily lead to a regression.
->
-> I don't like putting Xen specific hacks left and right because Xen on
-> x86 cannot be bothered to provide an EFI memory map. And as for
-> regressions, ESRT does not work at all under Xen (given the lack of a
-> memory map) and so I fail to see how this could break a currently
-> working case.
->
-> >  I understand wanting to get Xen-specific
-> > code out of esrt.c, but this isn=E2=80=99t the answer.  Some sort of ab=
-straction
-> > over both cases would be a much better solution.
-> >
->
-> We have such an abstraction already, it is called the EFI memory map.
->
-> So there are two options here:
-> - expose a EFI memory map
-> - add a ESRT specific check to xen_efi_config_table_is_valid() so that
-> the ESRT is withheld from dom0 if there is something wrong with it.
->
+This is an alternate approach to addressing the issue that Demi Marie is
+attempting to fix in [0] (i.e., ESRT config table exposed to a x86 dom0
+is corrupted because it resides in boot services memory as per the EFI
+spec, where it gets corrupted by Xen). My main objection to that approach
+is that it needs Xen-specific fixes in multiple different places, but we
+still end up only fixing the ESRT case specifically.
 
-Actually, the obvious answer here is to implement
-efi_mem_desc_lookup() for the EFI_PARAVIRT / !EFI_MEMMAP case. I'll
-have a go at that and send a v2 shortly.
+So instead, I am proposing this series as a more generic way to handle
+configuration tables that reside in boot services memory, and confining
+the Xen specific logic to the Xen EFI glue code.
+
+Given that EFI boot without a memory map is only permitted on x86 and
+only when doing Xen boot, let's clear up some inconsistencies there
+first so we can set the EFI_PARAVIRT flag on all architectures that do
+pseudo-EFI boot straight into the core kernel (i.e., without going
+through the stub). This moves a good chunk of EFI memory map
+manipulation code into the x86 arch tree, where it arguably belongs as
+no other architectures rely on it. This is implemented in patches 1 - 3.
+
+Patch #4 refactors the ESRT sanity checks on the memory descriptor, by
+moving them into the efi_mem_desc_lookup() helper, which should not
+return corrupted descriptors in the first place.
+
+Patch #5 adds a Xen hypercall fallback to efi_mem_desc_lookup() when
+running under Xen without a EFI memory map, so that, e.g., the existing
+ESRT code will perform its validation against the Xen provided
+descriptor if no memory map is available.
+
+Patch #6 updates the config table traversal code so that the Xen glue
+code can force them to be disregarded, which happens when the table in
+question points into a memory region that is not of a type that Xen
+automatically reserves. Future changes can refine this logic if needed.
+
+Changes since v1:
+- add patch #4
+- move Xen descriptor lookup into efi_mem_desc_lookup()
+- drop allowlist for ACPI and SMBIOS tables
+
+[0] https://lore.kernel.org/all/cover.1664298147.git.demi@invisiblethingslab.com/
+
+Cc: Demi Marie Obenour <demi@invisiblethingslab.com>
+Cc: Peter Jones <pjones@redhat.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Cc: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Anton Vorontsov <anton@enomsg.org>
+Cc: Colin Cross <ccross@android.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+
+Ard Biesheuvel (6):
+  efi: Move EFI fake memmap support into x86 arch tree
+  efi: memmap: Move manipulation routines into x86 arch tree
+  efi: xen: Set EFI_PARAVIRT for Xen dom0 boot on all architectures
+  efi: memmap: Disregard bogus entries instead of returning them
+  efi: xen: Implement memory descriptor lookup based on hypercall
+  efi: Apply allowlist to EFI configuration tables when running under
+    Xen
+
+ arch/x86/Kconfig                                       |  20 ++
+ arch/x86/include/asm/efi.h                             |  16 ++
+ arch/x86/kernel/setup.c                                |   1 +
+ arch/x86/platform/efi/Makefile                         |   4 +-
+ arch/x86/platform/efi/efi.c                            |   8 +-
+ {drivers/firmware => arch/x86/platform}/efi/fake_mem.c |  79 ++++++-
+ arch/x86/platform/efi/memmap.c                         | 238 ++++++++++++++++++++
+ drivers/firmware/efi/Kconfig                           |  22 --
+ drivers/firmware/efi/Makefile                          |   4 -
+ drivers/firmware/efi/efi.c                             |  25 +-
+ drivers/firmware/efi/esrt.c                            |  18 +-
+ drivers/firmware/efi/fake_mem.h                        |  10 -
+ drivers/firmware/efi/fdtparams.c                       |   4 +
+ drivers/firmware/efi/memmap.c                          | 224 +-----------------
+ drivers/firmware/efi/x86_fake_mem.c                    |  75 ------
+ drivers/xen/efi.c                                      |  58 +++++
+ include/linux/efi.h                                    |  19 +-
+ 17 files changed, 446 insertions(+), 379 deletions(-)
+ rename {drivers/firmware => arch/x86/platform}/efi/fake_mem.c (58%)
+ create mode 100644 arch/x86/platform/efi/memmap.c
+ delete mode 100644 drivers/firmware/efi/fake_mem.h
+ delete mode 100644 drivers/firmware/efi/x86_fake_mem.c
+
+-- 
+2.35.1
+
