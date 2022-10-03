@@ -2,229 +2,237 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2A3B5F2FF3
-	for <lists+linux-efi@lfdr.de>; Mon,  3 Oct 2022 13:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B6925F325F
+	for <lists+linux-efi@lfdr.de>; Mon,  3 Oct 2022 17:18:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229698AbiJCL7Y (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 3 Oct 2022 07:59:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55542 "EHLO
+        id S229750AbiJCPSk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 3 Oct 2022 11:18:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229589AbiJCL7Y (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 3 Oct 2022 07:59:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4F6F4F3B9
-        for <linux-efi@vger.kernel.org>; Mon,  3 Oct 2022 04:59:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7115561043
-        for <linux-efi@vger.kernel.org>; Mon,  3 Oct 2022 11:59:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB489C433C1;
-        Mon,  3 Oct 2022 11:59:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664798361;
-        bh=y/utiBpdVfN9hNJ68N7EFycsItXJcdVtrvr3aoBs6NY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=EJ8lubFI1dI3qikwfhtSb3Jx+/iJWyscBp5ZvKqnIaYWDkIgcjBuN6UgQZ8s3qmBD
-         Sw8fKi8NgxAzzLHMNw6SZMxHF7yZuzmQWBnrbrvKzURjqZ5xOYHTluioz0w0HItZId
-         saS9m2JH+83KMdq5184VvthOBz2ka3cUWAPFT3tEnyvYM7fIQA4Xd9oxR07gZfMAYZ
-         rKcuVbFOmxezHtZlq2uvc3PSpD2VBGdA+RWfqu7YezbEjSpbnI6TKK5qUbh4myaDqI
-         wRqLDFA1ALr2bQZHycf9BpJ0e/gX2sleXpp69sRWNKlV/6HbhD6kk0bBz35w/zHIYb
-         qtoldnxz/0Cyw==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     torvalds@linux-foundation.org
-Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: [GIT PULL] EFI updates for v6.1
-Date:   Mon,  3 Oct 2022 13:59:10 +0200
-Message-Id: <20221003115910.973547-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S229668AbiJCPSk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 3 Oct 2022 11:18:40 -0400
+Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF78010FA
+        for <linux-efi@vger.kernel.org>; Mon,  3 Oct 2022 08:18:38 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.west.internal (Postfix) with ESMTP id E34D032003D3;
+        Mon,  3 Oct 2022 11:18:34 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Mon, 03 Oct 2022 11:18:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        invisiblethingslab.com; h=cc:cc:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm2; t=1664810314; x=
+        1664896714; bh=Py0ty9ifkS6fLvi4hjmq1ycGUuwx6IScsmBddMLzPWU=; b=V
+        rRF51RMI8oANz1XxQNAcGR/QlH50xQL5scFfPG00HlS89olSMC7BQ6Gr3jOlpmKs
+        FT+PS6ompEhwru8DZaWhG3zftnDu7Lref69Ub5aa5BErFy2OtKwC3xbMQewfSTbO
+        puW4WkD7+B3hWl5BphOLcXdz600hdW+leMW54eycyIC307I14IUH4M+bahaImoTy
+        nNUKzvQkj+aLATv7/P5he1KF3JlechvlFqRzhahCZb4CtYdZmWsMhbGnzeHmY2BF
+        27olmYby5sNriGwPdFGDf9SpLZG4UoM31ZVdHqS6o+PYBBYhkmEd90xb0T/e3T8Z
+        pfmrSrpcuqgKa04RkXx7A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm2; t=1664810314; x=1664896714; bh=Py0ty9ifkS6fLvi4hjmq1ycGUuwx
+        6IScsmBddMLzPWU=; b=z2zesEfRcXGt+xEOhQZLsbOeanVP/lIoTLZGeEhTvRWA
+        4d21aV9sgFc44Zni03Il5HQqILUpflH6xlvKoyED9iklewILcn5LWHkJTBpLw0Nz
+        JCoSMKO/KjcJihgT/3Hp1NUFRCjARCM4Qf19T+FT/O8P9vxag+js8YhiPI1St8YH
+        fFhncL8lhD0QZcW6AVWaTrlOwNE/SAXPeCgnBWu1IQLlZ1eOfRK9DiPJgLpxwP5M
+        VjsmiqNcoYSDxY43x8soK4WY6YlF73MFep2WUHvkcRVSKQCYH8SZaO0VJkhnO0eC
+        VGICMBB2SfGfRaVQ7ey07IIsbYO2btgqPYazJU9wXg==
+X-ME-Sender: <xms:Sv06Y1RKu8ncaBd9MazYHjbTM3_DHt_U8gaKAi5ht8luH38eQkUzRw>
+    <xme:Sv06Y-w57M7d-SvXhIZvux0KwVzIFOLXdv9aTJw6sJR5ewOGDbkFS_VTvoHatSEJX
+    mLjww2uq54A8dQ>
+X-ME-Received: <xmr:Sv06Y60Jj1vV7HExBJadrZi3kh0ZtbgRtUi6vG0ZubwcrhxVtYzdxnrP4vtI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeehledgkeeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtvdenucfhrhhomhepffgvmhhi
+    ucforghrihgvucfqsggvnhhouhhruceouggvmhhisehinhhvihhsihgslhgvthhhihhngh
+    hslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepudeileefueetvdelheeuteffjeeg
+    jeegffekleevueelueekjeejudffteejkeetnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhepuggvmhhisehinhhvihhsihgslhgvthhhihhnghhs
+    lhgrsgdrtghomh
+X-ME-Proxy: <xmx:Sv06Y9D497QzQtkaSCYzou14tIDSRMs2EKDb2guxpBThN1-Rci430w>
+    <xmx:Sv06Y-iUI9PoQkgQsiGM_m6mlbX9q4dcD9pku1YWvAhH9GmbLQFGsg>
+    <xmx:Sv06YxpztdSl9eHfVqYVcZAi42OR3JVdTtBoVbpYMO00YuZKr2mwcw>
+    <xmx:Sv06Y5PtPL4vlffVJ7Z3PHuA0h0lEyvweVheNCyaPCJz0VQlTq9yKQ>
+Feedback-ID: iac594737:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 3 Oct 2022 11:18:33 -0400 (EDT)
+Date:   Mon, 3 Oct 2022 11:18:06 -0400
+From:   Demi Marie Obenour <demi@invisiblethingslab.com>
+To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
+Cc:     xen-devel@lists.xenproject.org, Peter Jones <pjones@redhat.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        Kees Cook <keescook@chromium.org>,
+        Anton Vorontsov <anton@enomsg.org>,
+        Colin Cross <ccross@android.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
+        <marmarek@invisiblethingslab.com>
+Subject: Re: [PATCH v2 4/6] efi: memmap: Disregard bogus entries instead of
+ returning them
+Message-ID: <Yzr9R2ziBAJgzAqR@itl-email>
+References: <20221003112625.972646-1-ardb@kernel.org>
+ <20221003112625.972646-5-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9627; i=ardb@kernel.org; h=from:subject; bh=y/utiBpdVfN9hNJ68N7EFycsItXJcdVtrvr3aoBs6NY=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjOs6NdrB+4TY6OdTQRbTU7gXPW1RAYECkGaw8H/3r T7QzKYSJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYzrOjQAKCRDDTyI5ktmPJP+kC/ 9G5GUU0PMfHJ1H07Dku4CMCYLWU6F7Vx1R50yVYEUbOr8oMBcpX/0CiZrWwRf2eJJR6wa/KdbWzAS1 S/0FfeVmpTs+xinPksbZI/Za8Qbd/p8qQtaDGUyVIBTlc/rpcLDHb/U0rvcP3fCe/XKlmQTAzm5nxA wq11OPiOHLvukDLEEO8yA2xuy3X629tnsdjOTvDKOd+0XcZf5S+UdlU10hSbEVccXddlyOgtJotYzr Te7VEIfM0F1Exw2eoAKGwWZVTBvf3WiAn9N8T+nstD3aNnTxtg+nwzzSQ06Uzv0mk0A2h52kjcomoZ E9DYsrqX26/6CN8q5dP6c6/8llO3udXA2XdqeWfrFY9vjak5itMqA/s7COh7yTi0F84SsExmqEwgqm S7Gqq/3w0xwq8pLNZcBpQN2F6ROSRLkhRTtdbfi2Fnfd4ELN3vCaXkkQfma3BUSHAphKslWCwWE5D5 PmeIMD+X6aBsL1dVUjMXWcBdOD2Leouk97tshgupu0FPg=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="M+fOFbwZi3N7oSNW"
+Content-Disposition: inline
+In-Reply-To: <20221003112625.972646-5-ardb@kernel.org>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello Linus,
 
-A bit more going on than usual in the EFI subsystem. The main driver for this
-has been the introduction of the LoonArch architecture last cycle, which
-inspired some cleanup and refactoring of the EFI code. Another driver for EFI
-changes this cycle and in the future is confidential compute.
+--M+fOFbwZi3N7oSNW
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 3 Oct 2022 11:18:06 -0400
+From: Demi Marie Obenour <demi@invisiblethingslab.com>
+To: Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
+Cc: xen-devel@lists.xenproject.org, Peter Jones <pjones@redhat.com>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Kees Cook <keescook@chromium.org>,
+	Anton Vorontsov <anton@enomsg.org>,
+	Colin Cross <ccross@android.com>, Tony Luck <tony.luck@intel.com>,
+	Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+Subject: Re: [PATCH v2 4/6] efi: memmap: Disregard bogus entries instead of
+ returning them
 
-The LoongArch architecture does not use either struct bootparams or DT natively
-[yet], and so passing information between the EFI stub and the core kernel
-using either of those is undesirable. And in general, overloading DT has been a
-source of issues on arm64, so using DT for this on new architectures is a to
-avoid for the time being (even if we might converge on something DT based for
-non-x86 architectures in the future). For this reason, in addition to the patch
-that enables EFI boot for LoongArch, there are a number of refactoring patches
-applied on top of which separate the DT bits from the generic EFI stub bits.
-These changes are on a separate topich branch that has been shared with the
-LoongArch maintainers, who will include it in their pull request as well. This
-is not ideal, but the best way to manage the conflicts without stalling
-LoongArch for another cycle.
+On Mon, Oct 03, 2022 at 01:26:23PM +0200, Ard Biesheuvel wrote:
+> The ESRT code currently contains some sanity checks on the memory
+> descriptor it obtains, but these can only trigger when the descriptor is
+> invalid (if at all).
+>=20
+> So let's drop these checks, and instead, disregard descriptors entirely
+> if the start address is misaligned, or the number of pages reaches
+> beyond the end of the address space. Note that the memory map as a whole
+> could still be inconsistent, i.e., multiple entries might cover the same
+> area, or the address could be outside of the addressable VA space, but
+> validating that goes beyond the scope of these helpers.
+>=20
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  drivers/firmware/efi/efi.c  | 13 +++++++------
+>  drivers/firmware/efi/esrt.c | 18 +-----------------
+>  2 files changed, 8 insertions(+), 23 deletions(-)
+>=20
+> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> index 11857af72859..55bd3f4aab28 100644
+> --- a/drivers/firmware/efi/efi.c
+> +++ b/drivers/firmware/efi/efi.c
+> @@ -461,19 +461,20 @@ int efi_mem_desc_lookup(u64 phys_addr, efi_memory_d=
+esc_t *out_md)
+>  	efi_memory_desc_t *md;
+> =20
+>  	if (!efi_enabled(EFI_MEMMAP)) {
+> -		pr_err_once("EFI_MEMMAP is not enabled.\n");
+> +		pr_warn_once("EFI_MEMMAP is not enabled.\n");
+>  		return -EINVAL;
+>  	}
+> =20
+> -	if (!out_md) {
+> -		pr_err_once("out_md is null.\n");
+> -		return -EINVAL;
+> -        }
+> -
 
-Another development inspired by LoongArch is the newly added support for EFI
-based decompressors. Instead of adding yet another arch-specific incarnation of
-this pattern for LoongArch, we are introducing a EFI app based on the existing
-EFI libstub infrastructure that encapulates the decompression code we use on
-other architectures, but in a way that is fully generic. This has been
-developed and tested in collaboration with distro and systemd folks, who are
-eager to start using this for systemd-boot and also for arm64 secure boot on
-Fedora. Note that the EFI zimage files this introduces can also be decompressed
-by non-EFI bootloaders if needed, as the image header describes the location of
-the payload inside the image, and the type of compression that was used. (Note
-that Fedora's arm64 GRUB is buggy [0] so you'll need a recent version or switch
-to systemd-boot in order to use this.)
+Nit: this seems unrelated.
 
-Finally, we are adding TPM measurement of the kernel command line provided by
-EFI. There is an oversight in the TCG spec which results in a blind spot for
-command line arguments passed to loaded images, which means that either the
-loader or the stub needs to take the measurement. Given the combinatorial
-explosion I am anticipating when it comes to firmware/bootloader stacks and
-firmware based attestation protocols (SEV-SNP, TDX, DICE, DRTM), it is good to
-set a baseline now when it comes to EFI measured boot, which is that the kernel
-measures the initrd and command line. Intermediate loaders can measure
-additional assets if needed, but with the baseline in place, we can deploy
-measured boot in a meaningful way even if you boot into Linux straight from the
-EFI firmware.
+>  	for_each_efi_memory_desc(md) {
+>  		u64 size;
+>  		u64 end;
+> =20
+> +		/* skip bogus entries */
+> +		if ((md->phys_addr & (EFI_PAGE_SIZE - 1)) ||
+> +		    (md->phys_addr > 0 &&
+> +		     (md->num_pages > (U64_MAX - md->phys_addr + 1) >> EFI_PAGE_SHIFT)=
+))
+> +			continue;
 
-Please pull the changes below.
+Should this also check if md->num_pages is 0?  Also, should this check
+be part of for_each_efi_memory_desc()?
 
--- 
-Ard.
+> +
+>  		size =3D md->num_pages << EFI_PAGE_SHIFT;
+>  		end =3D md->phys_addr + size;
+>  		if (phys_addr >=3D md->phys_addr && phys_addr < end) {
+> diff --git a/drivers/firmware/efi/esrt.c b/drivers/firmware/efi/esrt.c
+> index 2a2f52b017e7..8f86f2b0734b 100644
+> --- a/drivers/firmware/efi/esrt.c
+> +++ b/drivers/firmware/efi/esrt.c
+> @@ -247,9 +247,6 @@ void __init efi_esrt_init(void)
+>  	int rc;
+>  	phys_addr_t end;
+> =20
+> -	if (!efi_enabled(EFI_MEMMAP))
+> -		return;
+> -
+>  	pr_debug("esrt-init: loading.\n");
+>  	if (!esrt_table_exists())
+>  		return;
+> @@ -263,21 +260,8 @@ void __init efi_esrt_init(void)
+>  		return;
+>  	}
+> =20
+> -	max =3D efi_mem_desc_end(&md);
+> -	if (max < efi.esrt) {
+> -		pr_err("EFI memory descriptor is invalid. (esrt: %p max: %p)\n",
+> -		       (void *)efi.esrt, (void *)max);
+> -		return;
+> -	}
+> -
+> +	max =3D efi_mem_desc_end(&md) - efi.esrt;
+>  	size =3D sizeof(*esrt);
+> -	max -=3D efi.esrt;
+> -
+> -	if (max < size) {
+> -		pr_err("ESRT header doesn't fit on single memory map entry. (size: %zu=
+ max: %zu)\n",
+> -		       size, max);
+> -		return;
+> -	}
 
-The following changes since commit 568035b01cfb107af8d2e4bd2fb9aea22cf5b868:
+This can still happen if the ESRT pointer is very very close to the end
+of a memory map entry, unless there is another check that handles
+such cases.
+--=20
+Sincerely,
+Demi Marie Obenour (she/her/hers)
+Invisible Things Lab
 
-  Linux 6.0-rc1 (2022-08-14 15:50:18 -0700)
+--M+fOFbwZi3N7oSNW
+Content-Type: application/pgp-signature; name="signature.asc"
 
-are available in the Git repository at:
+-----BEGIN PGP SIGNATURE-----
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next-for-v6.1
+iQIzBAEBCgAdFiEEdodNnxM2uiJZBxxxsoi1X/+cIsEFAmM6/UcACgkQsoi1X/+c
+IsFK/BAA3eyncFILFOM4XIr//iy+YArKCUuZ1/AgikhNXeDrV/ydg2N3BSdsutHi
+VZDGtuofMKthtmInOu57DQCbb/K+6FT79KVaRLtOdejEr7I77W/XmDe/gf5ijbxe
+y9wTYBGXTBltM4jgd0xPtamE/bRZcK0Jad5h0R7BQOf0mmK7GQRe7Iw+ld8xR5gC
+SHZ+J8D780wwrOXeIcq77IWy/YPelNtzPS23IRn7uSJkoEXFwAoUUH7FFebILE4F
+VOCI3uLLKOUVrMyiRYE9K4F/uJUOt2XXzlX1ppPN+VHxRhveukWr+JfnqdAknwRT
+TaxnlcF9MfeQoxZaAzImTN84z3ooAX2VpG0cNfwmZcvoKcnHFpxNhrWLlmQQXAPh
+FGb/PNrwHrB8uo+AN4zATQOwE+4Hymf5MNGW0+QjXVy5kKSb0/jZ0T3sXYBTyYz9
+2Jw+vw7JHTna+6x26IC6XdOk/n+lfeG/BBYXz5ii2B96DmVN6yoODQzQULMaDn3h
+qjSVVdgd2hwlKylY63ENrpDUOqT1GPfvNkpTj/Knm9pP2G97z30Ru0vkNRgiglsf
+Nq9THQNpxw2X17yckR7c4JQj5Y4IyKCCqYIXjwd7qykdQkPGGDSn2nCytolTU3ya
++QBQ36Jtk2+pVcQGYoTR8GESXuBWJp6KRf+nOXYTaNHBdvgDQyk=
+=R1Pm
+-----END PGP SIGNATURE-----
 
-for you to fetch changes up to d3549a938b73f203ef522562ae9f2d38aa43d234:
-
-  efi/arm64: libstub: avoid SetVirtualAddressMap() when possible (2022-09-27 13:26:16 +0200)
-
-Cc: Huacai Chen <chenhuacai@loongson.cn>
-Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-
-[0] https://github.com/rhboot/grub2/commit/7710c05ea38995f558a84a27ae0cb89968383420
-
-----------------------------------------------------------------
-EFI updates for v6.1
-
-- implement EFI boot support for LoongArch
-- implement generic EFI compressed boot support for arm64, RISC-V and
-  LoongArch, none of which implement a decompressor today
-- measure the kernel command line into the TPM if measured boot is in
-  effect
-- refactor the EFI stub code in order to isolate DT dependencies for
-  architectures other than x86
-- avoid calling SetVirtualAddressMap() on arm64 if the configured size
-  of the VA space guarantees that doing so is unnecessary
-- move some ARM specific code out of the generic EFI source files
-- unmap kernel code from the x86 mixed mode 1:1 page tables
-
-----------------------------------------------------------------
-Ard Biesheuvel (23):
-      efi/x86-mixed: move unmitigated RET into .rodata
-      Merge tag 'efi-loongarch-for-v6.1' into efi/next
-      efi/libstub: add some missing EFI prototypes
-      efi/libstub: use EFI provided memcpy/memset routines
-      efi/libstub: move efi_system_table global var into separate object
-      efi/libstub: implement generic EFI zboot
-      riscv: efi: enable generic EFI compressed boot
-      loongarch: efi: enable generic EFI compressed boot
-      arm64: efi: enable generic EFI compressed boot
-      efi: libstub: fix type confusion for load_options_size
-      efi: libstub: drop pointless get_memory_map() call
-      efi: libstub: avoid efi_get_memory_map() for allocating the virt map
-      efi: libstub: simplify efi_get_memory_map() and struct efi_boot_memmap
-      efi: libstub: remove pointless goto kludge
-      efi: libstub: unify initrd loading between architectures
-      efi: libstub: remove DT dependency from generic stub
-      efi: libstub: install boot-time memory map as config table
-      efi/loongarch: libstub: remove dependency on flattened DT
-      Merge tag 'efi-loongarch-for-v6.1-2' into HEAD
-      efi/arm: libstub: move ARM specific code out of generic routines
-      efi: libstub: fix up the last remaining open coded boot service call
-      efi: zboot: create MemoryMapped() device path for the parent if needed
-      efi/arm64: libstub: avoid SetVirtualAddressMap() when possible
-
-Huacai Chen (1):
-      efi/loongarch: Add efistub booting support
-
-Ilias Apalodimas (2):
-      efi/libstub: refactor the initrd measuring functions
-      efi/libstub: measure EFI LoadOptions
-
- Documentation/arm/uefi.rst                     |   4 -
- arch/arm/include/asm/efi.h                     |   3 +-
- arch/arm/kernel/efi.c                          |  79 +++++++
- arch/arm/kernel/setup.c                        |   2 +-
- arch/arm64/Makefile                            |   9 +-
- arch/arm64/boot/.gitignore                     |   1 +
- arch/arm64/boot/Makefile                       |   6 +
- arch/arm64/kernel/image-vars.h                 |  13 --
- arch/loongarch/Kconfig                         |  12 +-
- arch/loongarch/Makefile                        |  18 +-
- arch/loongarch/boot/.gitignore                 |   1 +
- arch/loongarch/boot/Makefile                   |  14 +-
- arch/loongarch/include/asm/bootinfo.h          |   2 +-
- arch/loongarch/include/asm/efi.h               |  11 +-
- arch/loongarch/kernel/efi-header.S             |  99 ++++++++
- arch/loongarch/kernel/efi.c                    |  33 ++-
- arch/loongarch/kernel/env.c                    |  13 +-
- arch/loongarch/kernel/head.S                   |  22 ++
- arch/loongarch/kernel/image-vars.h             |  27 +++
- arch/loongarch/kernel/setup.c                  |  15 +-
- arch/loongarch/kernel/vmlinux.lds.S            |   1 +
- arch/riscv/Makefile                            |   6 +-
- arch/riscv/boot/.gitignore                     |   1 +
- arch/riscv/boot/Makefile                       |   6 +
- arch/riscv/kernel/image-vars.h                 |   9 -
- arch/x86/platform/efi/efi_64.c                 |  18 +-
- arch/x86/platform/efi/efi_thunk_64.S           |  13 +-
- drivers/firmware/efi/Kconfig                   |  45 +++-
- drivers/firmware/efi/efi-init.c                |  61 +----
- drivers/firmware/efi/efi.c                     |  15 ++
- drivers/firmware/efi/libstub/Makefile          |  32 ++-
- drivers/firmware/efi/libstub/Makefile.zboot    |  70 ++++++
- drivers/firmware/efi/libstub/arm64-stub.c      |  27 ++-
- drivers/firmware/efi/libstub/efi-stub-helper.c | 290 ++++++++++++++----------
- drivers/firmware/efi/libstub/efi-stub.c        | 118 ++++------
- drivers/firmware/efi/libstub/efistub.h         |  69 +++---
- drivers/firmware/efi/libstub/fdt.c             | 175 +++++++-------
- drivers/firmware/efi/libstub/file.c            |  23 +-
- drivers/firmware/efi/libstub/intrinsics.c      |  30 +++
- drivers/firmware/efi/libstub/loongarch-stub.c  | 102 +++++++++
- drivers/firmware/efi/libstub/mem.c             |  93 ++++----
- drivers/firmware/efi/libstub/randomalloc.c     |  25 +-
- drivers/firmware/efi/libstub/relocate.c        |  21 +-
- drivers/firmware/efi/libstub/systable.c        |   8 +
- drivers/firmware/efi/libstub/x86-stub.c        |  33 +--
- drivers/firmware/efi/libstub/zboot-header.S    | 143 ++++++++++++
- drivers/firmware/efi/libstub/zboot.c           | 302 +++++++++++++++++++++++++
- drivers/firmware/efi/libstub/zboot.lds         |  44 ++++
- include/linux/efi.h                            |  35 +++
- include/linux/pe.h                             |   2 +
- 50 files changed, 1638 insertions(+), 563 deletions(-)
- create mode 100644 arch/loongarch/kernel/efi-header.S
- create mode 100644 arch/loongarch/kernel/image-vars.h
- create mode 100644 drivers/firmware/efi/libstub/Makefile.zboot
- create mode 100644 drivers/firmware/efi/libstub/intrinsics.c
- create mode 100644 drivers/firmware/efi/libstub/loongarch-stub.c
- create mode 100644 drivers/firmware/efi/libstub/systable.c
- create mode 100644 drivers/firmware/efi/libstub/zboot-header.S
- create mode 100644 drivers/firmware/efi/libstub/zboot.c
- create mode 100644 drivers/firmware/efi/libstub/zboot.lds
+--M+fOFbwZi3N7oSNW--
