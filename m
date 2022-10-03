@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7AF95F2F95
-	for <lists+linux-efi@lfdr.de>; Mon,  3 Oct 2022 13:26:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2723E5F2F96
+	for <lists+linux-efi@lfdr.de>; Mon,  3 Oct 2022 13:26:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229446AbiJCL0q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 3 Oct 2022 07:26:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33236 "EHLO
+        id S229515AbiJCL0s (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 3 Oct 2022 07:26:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbiJCL0o (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 3 Oct 2022 07:26:44 -0400
+        with ESMTP id S229488AbiJCL0r (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 3 Oct 2022 07:26:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F3232A94E
-        for <linux-efi@vger.kernel.org>; Mon,  3 Oct 2022 04:26:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11F4728E13
+        for <linux-efi@vger.kernel.org>; Mon,  3 Oct 2022 04:26:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BDBE46103A
-        for <linux-efi@vger.kernel.org>; Mon,  3 Oct 2022 11:26:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD778C433D6;
-        Mon,  3 Oct 2022 11:26:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A508961035
+        for <linux-efi@vger.kernel.org>; Mon,  3 Oct 2022 11:26:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E0AC4347C;
+        Mon,  3 Oct 2022 11:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664796403;
-        bh=W8obWGwmcyzn5+VXhc6GfBg92Z+wLrsUyqrdMHjxep0=;
+        s=k20201202; t=1664796406;
+        bh=WSRp6bNX/TJAZPmOt6U+CC+sxwlMaJT3eET5g/MHr2M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YTGegz+V40gx32fSy3+ERPuWauQ9SGX/uyZftYxZvb467SzxmwKVEXTMytzhQH7M4
-         1V2VKfiVYH7TcozRWRHaiRvjYuXJnU7IvA2olmMY0WGaftBs2Wudq34NFeznUROMkf
-         eEKT2c2BHrvwIO56Rzxa+c2tXnHsopKi5rFQ8dcQVnCQmh0iLDqkj0BYghKh88t0pV
-         ULDcjx0TaFehBTvC0LpqUhrWXl8AuGFXSEa+GLPK6LQT0oJW1e//vLHd+Ci6+dIj7n
-         xxJvJpZglhpkIcm+iL9P6RnGDwu7fekz6jzPSYG5rUJjgpQsCa8Ggp2E/znkC/Nfmw
-         X2n7ROAkqY1Aw==
+        b=RUvZ35FsjQc9G8ENmYBxfeFUtDDJUFK2UMo+/cHo6gpHbn8ONmbPI3AHn8VN9L1DZ
+         pqxSj1M/59aMOVtdAMqgPSAtTUFJ/omqlMu6l28mUHZuN4iHOB91xUSgZ1iZkJ7amJ
+         JvcMd9Z/AxM/W1cnUQlsNR/RpGOCVARUTY1j5ke0C7GhyUdKb9Ze67VFdsmKgk7LwN
+         Yw6TkFInATddLQqNhcAOsoeUzTuNa0pXPyvkA5KPe+9qbbBmJdMNEQTX9Qfw/tSKXp
+         +CS79iIXCGAbyJC1T4KiK1j1JW8UiGBxSl49JnLPwrBpL7X7n2ejiwIX3WhJ3U510R
+         oDXiacweOf8TA==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     xen-devel@lists.xenproject.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -45,14 +45,14 @@ Cc:     xen-devel@lists.xenproject.org, Ard Biesheuvel <ardb@kernel.org>,
         Tony Luck <tony.luck@intel.com>,
         =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= 
         <marmarek@invisiblethingslab.com>
-Subject: [PATCH v2 4/6] efi: memmap: Disregard bogus entries instead of returning them
-Date:   Mon,  3 Oct 2022 13:26:23 +0200
-Message-Id: <20221003112625.972646-5-ardb@kernel.org>
+Subject: [PATCH v2 5/6] efi: xen: Implement memory descriptor lookup based on hypercall
+Date:   Mon,  3 Oct 2022 13:26:24 +0200
+Message-Id: <20221003112625.972646-6-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221003112625.972646-1-ardb@kernel.org>
 References: <20221003112625.972646-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2717; i=ardb@kernel.org; h=from:subject; bh=W8obWGwmcyzn5+VXhc6GfBg92Z+wLrsUyqrdMHjxep0=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjOsbbl+ejDPGi0x7EecnkWLLI5uBb8hfx+mNuYEHL SGFCPwKJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYzrG2wAKCRDDTyI5ktmPJBDfC/ 9BMiukxbjQZgrq2K+4VvI3jjsxzxCI4AmtyKuHFCUBrg62qhcftHWoNGouY0pXptyDabOuNA8Tczdq x93UinMLN5X0NyKvuGmQty4oFhA8rEpRD6B2KX/VHKtu6kwGFBF8gaXmWeGfFv8ZNaQUzZCW51+Ah6 xt81Vx4p8RGFSrmoIzV6bamToULbrhLug9i/9Jsd6mg7Ggpisdj5E2rLXjTIYgtsnnoEXnwZsp9gXW PeBo+4rcj7CsYM7PfupkE6/uX6qAiYPA3UV2nJ9mBJTahiFmwKA58HVUtsv3j16lIEdROHb/bqPvTY /Iw/rmhC+gDxqBhlWoytmTnJWKB1EZpKPo3WESWHuZFKxwFAoqgMWHTFXe5dTWPeEsDBh6rC4WLY7q ylZMZsE9c0QQw1zdPhqNFcK1cGUaorxsMrxlPNm8LYO+qpRsl4HaWKrvSoGF9BMB8PI9R2X+LmbP2Y lhrKABraz+MgDmjFbkI55I1cVGbvO3j4AVGjPmERfskUM=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3715; i=ardb@kernel.org; h=from:subject; bh=WSRp6bNX/TJAZPmOt6U+CC+sxwlMaJT3eET5g/MHr2M=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjOsbcX3efqx7JPMOFFFmoUJQ0kqs3RTBogBvQjO3M /uoVk6+JAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYzrG3AAKCRDDTyI5ktmPJFNIC/ 4z2IbS7WT9Pkoo7uw6cgC6n6RngdfnXEwUX3q4vv58mt2Q0iHQL4ns7hgXyPfxarD3WIISuJof/j5r cCK5/b6ZdHKAWA7hkitKX0J8CsB/0TZXv45uLpX0mLxVQmYfESgzgkxfBKgrZ+3iMOdxHiEngEMZAv jEkPD4N2LhTlYgqBcxGNnq1dPYhkTqnft5J+Aw3xsM8yj+nLvb5gcD5i+HymlThNZ1tdNIM3OByz9z 5fr/WIcJjzoS7avHP8tPVcEJnVW+rJuWJ9+HuU2QMIp2WCobQHNhvs30Q1YSp4LYFIeF68Oyf5XDG6 AI98jS6cRy055WOW8uchbDKXBvfE9g7oK8DErOjD1BNPhc+ARHEjo4hSGyT1OidxGMUXvwLAPXVxZ7 84ARkFLSx+X8GLpIohsbJODPQrBR9JASQEJpnXhQ14EMiFN10dLoN88rpIyWwHGLFdoKWqwK395xiu /dN2zr1zBiVc7Q/W6DTOo2/W5IYcvjkb7ci8y+KMYpeMI=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -64,91 +64,105 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The ESRT code currently contains some sanity checks on the memory
-descriptor it obtains, but these can only trigger when the descriptor is
-invalid (if at all).
+Xen on x86 boots dom0 in EFI mode but without providing a memory map.
+This means that some sanity checks we would like to perform on
+configuration tables or other data structures in memory are not
+currently possible. Xen does, however, expose EFI memory descriptor info
+via a Xen hypercall, so let's wire that up instead.
 
-So let's drop these checks, and instead, disregard descriptors entirely
-if the start address is misaligned, or the number of pages reaches
-beyond the end of the address space. Note that the memory map as a whole
-could still be inconsistent, i.e., multiple entries might cover the same
-area, or the address could be outside of the addressable VA space, but
-validating that goes beyond the scope of these helpers.
-
+Co-developed-by: Demi Marie Obenour <demi@invisiblethingslab.com>
+Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/efi.c  | 13 +++++++------
- drivers/firmware/efi/esrt.c | 18 +-----------------
- 2 files changed, 8 insertions(+), 23 deletions(-)
+ drivers/firmware/efi/efi.c |  5 ++-
+ drivers/xen/efi.c          | 34 ++++++++++++++++++++
+ include/linux/efi.h        |  1 +
+ 3 files changed, 39 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 11857af72859..55bd3f4aab28 100644
+index 55bd3f4aab28..2c12b1a06481 100644
 --- a/drivers/firmware/efi/efi.c
 +++ b/drivers/firmware/efi/efi.c
-@@ -461,19 +461,20 @@ int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
+@@ -456,7 +456,7 @@ void __init efi_find_mirror(void)
+  * and if so, populate the supplied memory descriptor with the appropriate
+  * data.
+  */
+-int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
++int __efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
+ {
  	efi_memory_desc_t *md;
  
- 	if (!efi_enabled(EFI_MEMMAP)) {
--		pr_err_once("EFI_MEMMAP is not enabled.\n");
-+		pr_warn_once("EFI_MEMMAP is not enabled.\n");
- 		return -EINVAL;
- 	}
+@@ -485,6 +485,9 @@ int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
+ 	return -ENOENT;
+ }
  
--	if (!out_md) {
--		pr_err_once("out_md is null.\n");
--		return -EINVAL;
--        }
--
- 	for_each_efi_memory_desc(md) {
- 		u64 size;
- 		u64 end;
- 
-+		/* skip bogus entries */
-+		if ((md->phys_addr & (EFI_PAGE_SIZE - 1)) ||
-+		    (md->phys_addr > 0 &&
-+		     (md->num_pages > (U64_MAX - md->phys_addr + 1) >> EFI_PAGE_SHIFT)))
-+			continue;
++extern int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
++	 __weak __alias(__efi_mem_desc_lookup);
 +
- 		size = md->num_pages << EFI_PAGE_SHIFT;
- 		end = md->phys_addr + size;
- 		if (phys_addr >= md->phys_addr && phys_addr < end) {
-diff --git a/drivers/firmware/efi/esrt.c b/drivers/firmware/efi/esrt.c
-index 2a2f52b017e7..8f86f2b0734b 100644
---- a/drivers/firmware/efi/esrt.c
-+++ b/drivers/firmware/efi/esrt.c
-@@ -247,9 +247,6 @@ void __init efi_esrt_init(void)
- 	int rc;
- 	phys_addr_t end;
+ /*
+  * Calculate the highest address of an efi memory descriptor.
+  */
+diff --git a/drivers/xen/efi.c b/drivers/xen/efi.c
+index d1ff2186ebb4..74f3f6d8cdc8 100644
+--- a/drivers/xen/efi.c
++++ b/drivers/xen/efi.c
+@@ -26,6 +26,7 @@
  
--	if (!efi_enabled(EFI_MEMMAP))
--		return;
--
- 	pr_debug("esrt-init: loading.\n");
- 	if (!esrt_table_exists())
- 		return;
-@@ -263,21 +260,8 @@ void __init efi_esrt_init(void)
- 		return;
- 	}
+ #include <xen/interface/xen.h>
+ #include <xen/interface/platform.h>
++#include <xen/page.h>
+ #include <xen/xen.h>
+ #include <xen/xen-ops.h>
  
--	max = efi_mem_desc_end(&md);
--	if (max < efi.esrt) {
--		pr_err("EFI memory descriptor is invalid. (esrt: %p max: %p)\n",
--		       (void *)efi.esrt, (void *)max);
--		return;
--	}
--
-+	max = efi_mem_desc_end(&md) - efi.esrt;
- 	size = sizeof(*esrt);
--	max -= efi.esrt;
--
--	if (max < size) {
--		pr_err("ESRT header doesn't fit on single memory map entry. (size: %zu max: %zu)\n",
--		       size, max);
--		return;
--	}
- 
- 	va = early_memremap(efi.esrt, size);
- 	if (!va) {
+@@ -292,3 +293,36 @@ void __init xen_efi_runtime_setup(void)
+ 	efi.get_next_high_mono_count	= xen_efi_get_next_high_mono_count;
+ 	efi.reset_system		= xen_efi_reset_system;
+ }
++
++int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
++{
++	static_assert(XEN_PAGE_SHIFT == EFI_PAGE_SHIFT,
++		      "Mismatch between EFI_PAGE_SHIFT and XEN_PAGE_SHIFT");
++	struct xen_platform_op op = {
++		.cmd = XENPF_firmware_info,
++		.u.firmware_info = {
++			.type = XEN_FW_EFI_INFO,
++			.index = XEN_FW_EFI_MEM_INFO,
++			.u.efi_info.mem.addr = phys_addr,
++			.u.efi_info.mem.size = U64_MAX - phys_addr,
++		}
++	};
++	union xenpf_efi_info *info = &op.u.firmware_info.u.efi_info;
++	int rc;
++
++	if (!efi_enabled(EFI_PARAVIRT) || efi_enabled(EFI_MEMMAP))
++		return __efi_mem_desc_lookup(phys_addr, out_md);
++
++	rc = HYPERVISOR_platform_op(&op);
++	if (rc) {
++		pr_warn("Failed to lookup header 0x%llx in Xen memory map: error %d\n",
++			phys_addr, rc);
++	}
++
++	out_md->phys_addr	= info->mem.addr;
++	out_md->num_pages	= info->mem.size >> EFI_PAGE_SHIFT;
++	out_md->type		= info->mem.type;
++	out_md->attribute	= info->mem.attr;
++
++        return 0;
++}
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 256e70e42114..e0ee6f6da4b4 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -731,6 +731,7 @@ extern u64 efi_mem_attribute (unsigned long phys_addr, unsigned long size);
+ extern int __init efi_uart_console_only (void);
+ extern u64 efi_mem_desc_end(efi_memory_desc_t *md);
+ extern int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md);
++extern int __efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md);
+ extern void efi_mem_reserve(phys_addr_t addr, u64 size);
+ extern int efi_mem_reserve_persistent(phys_addr_t addr, u64 size);
+ extern void efi_initialize_iomem_resources(struct resource *code_resource,
 -- 
 2.35.1
 
