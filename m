@@ -2,307 +2,182 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C29F5F351E
-	for <lists+linux-efi@lfdr.de>; Mon,  3 Oct 2022 20:01:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E0F65F3E2A
+	for <lists+linux-efi@lfdr.de>; Tue,  4 Oct 2022 10:22:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229562AbiJCSBN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 3 Oct 2022 14:01:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35864 "EHLO
+        id S229847AbiJDIWZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 4 Oct 2022 04:22:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229660AbiJCSBL (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 3 Oct 2022 14:01:11 -0400
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E87BC15FDA
-        for <linux-efi@vger.kernel.org>; Mon,  3 Oct 2022 11:01:09 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id 5C0B75C00CC;
-        Mon,  3 Oct 2022 14:01:09 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Mon, 03 Oct 2022 14:01:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        invisiblethingslab.com; h=cc:cc:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm2; t=1664820069; x=
-        1664906469; bh=2VSQgyZMh4OrLebIIZol71KsbLOTruVueA8S4D6AtAM=; b=x
-        ITHDnPmTc3sXy1/YEGBc0/zMMWHkn+C2RfVLlnqBmWieGW3G5ecdHMEp+XKQbeFV
-        ePt3gcKnXLJ4ZfbANYSFgLisrrQB0NETOaV9DkkZ6EhNGj3yuoTmQZ7rit6k4rZy
-        6TRfptJwXO3VuAs8olu2S8im+Y55N9v7TNHxGJsmpz5Fp9tZkGl9OiVvJr0JopkY
-        TRwdsKxV4UAUe3SJ0tO3woADAwsyygMjATKauinIqGHALdsMnAZqVJF37bYXMpx0
-        lg/sUeT+Qg+YVib40Byv1DfjODewcd+tNvkPke7LXBNyIFyjKiW3rwLSdqR/V16K
-        +jjFhIpMpNQB8geWk2zXQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm2; t=1664820069; x=1664906469; bh=2VSQgyZMh4OrLebIIZol71KsbLOT
-        ruVueA8S4D6AtAM=; b=SdsXrNzPkeO1eknmVarRpbhC8j5X7JDsrmu/7W15ARDm
-        Db2vyLq4jN/1SJtjWk6pA3IUAnBTEfqyKS15Qf+g6VyDvJ+fP7EY1iwanbxORGSt
-        JPiAK6tuOlqDhxdRY0577EW149/QMX8aQ3hb/oShIH3GQkTdrh113L1e4gkY2CTX
-        hdvQ346KEbvws5/51NncAVIWc6RGlkhWivv+m5mCPL78fWn5vV+A+ro/lNVAl/64
-        42lOvw3s0kUyt53YmjSDRs0y+zyRl9qtrj1rmEgAIWCxYqoWyD2tOxt9PHy8xby8
-        lWYOtMfuZXdzaXFHeAOqR2h5rOqOtiPCB3mo0I1NGw==
-X-ME-Sender: <xms:ZCM7Y5QFe5xFLeF13L0geUYgNtEc3x6m1BkNghhmwM09luuY5GGshw>
-    <xme:ZCM7Yyx0yutZ05N8-CktogFeRCanL3-UPEHiwlQ25SmlPqz7pPFN4PQJsH7JSwxJw
-    hgBal4pHnam-Q>
-X-ME-Received: <xmr:ZCM7Y-1Wg4HLu-l5bhAZZqjwdtnhXz9J7gGNj5jrVcAOM0nj8_jhzdRkKN6RUw4XWbIgznEcfYpcZBWAkC208Ptwip0IyjPhgFWC>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeehledguddukecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpeforghr
-    vghkucforghrtgiihihkohifshhkihdqifpkrhgvtghkihcuoehmrghrmhgrrhgvkhesih
-    hnvhhishhisghlvghthhhinhhgshhlrggsrdgtohhmqeenucggtffrrghtthgvrhhnpeeu
-    keetteeggffgkeduheetgeeileejjeeiiefhjeegvefhtefggfetueetteeuteenucffoh
-    hmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghr
-    rghmpehmrghilhhfrhhomhepmhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhngh
-    hslhgrsgdrtghomh
-X-ME-Proxy: <xmx:ZCM7YxBdZBIgrfXxapZ1K3ZTr9-ynle6zpQZRHb8SeOR52Awjvx8Sw>
-    <xmx:ZCM7YyjEW-dkd8KkJD8_u5mF1usamyCAQNFVUDaapFAtus3IobuYrQ>
-    <xmx:ZCM7Y1oRFfpCKEyzzfirXGaHhc2UN_7PfIK4S4Ut6Dfv1SKqYnp7YA>
-    <xmx:ZSM7Y9PhirwJuAPtKJPLrIZSk2vN-jZANn0vDbtIFODJ3iFUsXQnHw>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 3 Oct 2022 14:01:07 -0400 (EDT)
-Date:   Mon, 3 Oct 2022 20:01:03 +0200
-From:   Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>
+        with ESMTP id S229703AbiJDIWX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 4 Oct 2022 04:22:23 -0400
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-eopbgr60064.outbound.protection.outlook.com [40.107.6.64])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF9111BE9C;
+        Tue,  4 Oct 2022 01:22:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OXwvcpjo/NjIyMSMmu85wQoh0TLp6gu8j1yRhbJyGqoZZ0Wi0nzNBQv5ixcPO3HsweSnY7N2owI9hKFWnae3bcB3qHrK8FKPYLWaV7RdskYNDdxFctD+Yj0HBDQACYsxOH6XlJa9xD087e66e/8w5NW+uMmnByjm73q4PlaBCUjH0WhY/Nj2OYS1Ns5HvjxYrci3hny8ndKs8nqu4mOS5GAwr63VZA8lq9sDHW6Ze5dUhSrtTjg5hNjdLp3Bs/PMJqwLuDkacdDdWTsWmwytYr0UziQbX+nx6KDLu/dbnzoRWjjbc64dHprkYTaoaKCrvYO3UsXDp7ObhubHNIzpxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zXCEL2OOljVJd5th58mpGBa3qzLxxQW0isLk0zRsQpA=;
+ b=j7sHQqyLGRHfHMMjRvpCz7atVWN66ydeyzqDAfUCNC+B46WxeHuYXwvjKXr9hwzjD63sfjvx/PxFfPBN4Xy9dFOKIvKerwlOdZ6cR/a9mUhw5KKyiActgirIbAezL2I+RQAz/hyrdErXgk0EmP7f8T1qxQBfykVBfbsDJ909a97e+2U8EM45zYWa0jBQec0hJVGk1dX7QpXoSzE9Rf74ogLWrraxr0VtKKkueKK/cI5M8FP8w/fzkXNbdPGiLLMc+9Dkrzc2LMXvBjNRxSUk/vQjo2SOll0JTAwEWMZCy6QRfFbF3vBneMM4LkCfkhNaTeYx3TAGXELuK4BYKixMQA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
+ dkim=pass header.d=suse.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zXCEL2OOljVJd5th58mpGBa3qzLxxQW0isLk0zRsQpA=;
+ b=MAwJw9JzjUsQht4RVlnEK88GA91c1wppYpeocdHoVt9NlW3M9bACL4XFE2170oJ2H2wwTmqwlzAQT3Em7Q+vwq2KcqtfONHKUX5rxHWWSJO+FPSXBLlN/C8HHS3SNsuluvJzngZc3JQ+pRuGOOL0ii8vKdB8kRwMm3i5A2RIKkpQME4Rpm0Js4L+NE3a7WZbNLNNrvnDk9JltGbbFUi98Iy2xz3HGxP/3gtH0zFFoGIk7inpAIYfeaQKrwIQ9bppuYhWAHoCnGivW1fTOxRBUpK+MlDbQ69A+M3GJHi6gIvyNP7qFQ8a9nQk1PZs2+Uc7v0n7BsTI0QEnwcSYRwWKg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=suse.com;
+Received: from VE1PR04MB6560.eurprd04.prod.outlook.com (2603:10a6:803:122::25)
+ by DBBPR04MB8041.eurprd04.prod.outlook.com (2603:10a6:10:1e2::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.19; Tue, 4 Oct
+ 2022 08:22:13 +0000
+Received: from VE1PR04MB6560.eurprd04.prod.outlook.com
+ ([fe80::2459:15ae:e6cb:218a]) by VE1PR04MB6560.eurprd04.prod.outlook.com
+ ([fe80::2459:15ae:e6cb:218a%7]) with mapi id 15.20.5676.031; Tue, 4 Oct 2022
+ 08:22:13 +0000
+Message-ID: <01d22092-8292-8ed7-ece7-9ca32d15bbce@suse.com>
+Date:   Tue, 4 Oct 2022 10:22:13 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Subject: Re: [PATCH v4 1/2] Avoid using EFI tables Xen may have clobbered
+Content-Language: en-US
 To:     Demi Marie Obenour <demi@invisiblethingslab.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-        Xen developer discussion <xen-devel@lists.xenproject.org>,
-        Peter Jones <pjones@redhat.com>,
-        Juergen Gross <jgross@suse.com>,
+Cc:     xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
+        linux-efi@vger.kernel.org, Juergen Gross <jgross@suse.com>,
         Stefano Stabellini <sstabellini@kernel.org>,
         Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
         Kees Cook <keescook@chromium.org>,
         Anton Vorontsov <anton@enomsg.org>,
         Colin Cross <ccross@android.com>,
-        Tony Luck <tony.luck@intel.com>
-Subject: Re: [PATCH v2 5/6] efi: xen: Implement memory descriptor lookup
- based on hypercall
-Message-ID: <YzsjYHirK+SXUjGl@mail-itl>
-References: <20221003112625.972646-1-ardb@kernel.org>
- <20221003112625.972646-6-ardb@kernel.org>
- <Yzr/1s9CbA0CClmt@itl-email>
- <CAMj1kXEXhDXRSnBp8P=urFj8UzzeRtYS9V8Tdt9GSrZTnGRFhA@mail.gmail.com>
- <YzsMYfEwmjHwVheb@itl-email>
- <CAMj1kXHR1FfD+ipG4RtbOezx+s_Jo6JwG4fpT5XUmvoqHTctLA@mail.gmail.com>
- <YzsWAnD7q9qeBoBn@mail-itl>
- <Yzsii72GWWvc5tRD@itl-email>
+        Tony Luck <tony.luck@intel.com>,
+        =?UTF-8?Q?Marek_Marczykowski-G=c3=b3recki?= 
+        <marmarek@invisiblethingslab.com>, Ard Biesheuvel <ardb@kernel.org>
+References: <cover.1664298147.git.demi@invisiblethingslab.com>
+ <f3b624e99adfdbbfc1976a60a73a6b5950e1840d.1664298147.git.demi@invisiblethingslab.com>
+ <282a225d-8782-0321-6f0e-19dd4510dc42@suse.com>
+ <CAMj1kXFQNqsW5RfHGac-eGbosJHBybu6+-Fap_bi_kVxWNpGeg@mail.gmail.com>
+ <YzcjeiOW8+i2Zxsd@itl-email>
+ <CAMj1kXHBBbCNV3CLesqZi7ttmmi8y4tZ1KO5vievy_CJrU2o3Q@mail.gmail.com>
+ <YzeaKjmls1YI/3ox@itl-email>
+From:   Jan Beulich <jbeulich@suse.com>
+In-Reply-To: <YzeaKjmls1YI/3ox@itl-email>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AS9PR06CA0001.eurprd06.prod.outlook.com
+ (2603:10a6:20b:462::31) To VE1PR04MB6560.eurprd04.prod.outlook.com
+ (2603:10a6:803:122::25)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="on5cRYSDowX0FpPJ"
-Content-Disposition: inline
-In-Reply-To: <Yzsii72GWWvc5tRD@itl-email>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR04MB6560:EE_|DBBPR04MB8041:EE_
+X-MS-Office365-Filtering-Correlation-Id: e0471394-7a2e-460a-9192-08daa5e18a1e
+X-LD-Processed: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba,ExtFwd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: qEePcn+wdtoK0UYcVog9PB3sbwkkz6Epw650HHmmvKn9huBwRc2LBNz0c3ScDxzqL8u10OywxsjhssQk/vlOcNxVnA4eJ/Hxx6zz75Fq86Tq8Yu7/YqIsCNihVTlpttt1RZqmpo2KTV8sydbERwEB8/OKrliApqp2w1YsJy02vtIb3BScl8YjcFiRMwKcgzkFiQa1DRanxtsi+T02nruBdCE/12QcqwaPhWvD/83IlIN5MLnVDSOrzwzv4KzlUDUx2N0LBeKNhbMuLkDsyPu4IYBkCLtP5Acvq8kUMSLHJZRMLzvnViTgAoD8jUaXFyE/CyTdlI2OsMqqVURgiIzcwqGdJ0U/61SxjckFHuHnefEzcrg00LxMnRMxyWSVD7/xy5w/UtgAg77uNQVjrT/qLWw10RS4/p2pg8/if7fohoxDKHsRX4kC4NNH9uMWUSNvzd3BPv2dfzKyEHx+agBA2UGTKH/nE/x93pKP0KWPHYT8QOybjIm1PvvxtMdBnOPhL1XDjCwtA/ioM1Iu/DZ4rDXiioG5c3SD4TYqvHplraL5GtrvSxZZZKya2KrpaiXbIneZ6IQYK5kpzs9sUTpEyCS+pc0Mwt0v+ly2PCZF1S7SL2p6OhfGPMxsRCiLZIy08lp96J1maMPdOeNJqTbhlfC+gVcWnMlJS938yTJchzQVEn8k/yn2eEam4aALld4twVFImt99zMfsHFT+sLHIMSI35EGfQzRtKSmZuHBlo4TQPcvS9lCwVlDaKBhXcMthVJINBZcQmco8xen0hsx3LZfH/JioZa96uaH0Y8mwXU=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB6560.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(396003)(346002)(136003)(39860400002)(376002)(366004)(451199015)(186003)(38100700002)(31696002)(86362001)(31686004)(36756003)(26005)(2616005)(7416002)(2906002)(53546011)(6486002)(6512007)(6506007)(478600001)(6916009)(5660300002)(316002)(8676002)(41300700001)(8936002)(66946007)(66476007)(4326008)(66556008)(54906003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UjUzTkxXOUlMcUdtZzdtdHF3a3Y1eTdRR1RHeXRpQ1NWbXNZZXJyY2FmekMy?=
+ =?utf-8?B?S2RSTW0rcnpINzRxR28zRE5LOXBFdG85cXdOaXRoUjl5RUVYYkJjNFZGM3hK?=
+ =?utf-8?B?Tmp3QzZHYkRGdmMrUDlOUnBhaFFXVldGVE85cWhrZXdzb3RkZUhGWG5PU1RJ?=
+ =?utf-8?B?clN5RUlyeElLVFJTYUd5S2ozamJlM3Y1MkZ0OEh2NlV5SzRIVjQ4UnJtV0lH?=
+ =?utf-8?B?SDhYZFRPRUIrVW0wRFFFNVhNQ2NUVUJ1Tk1pSWt3RzlzazFqZ2h4MXVlajRU?=
+ =?utf-8?B?NUxEd3hCMlRFeVFZNldBdVE3K25reXdqUzBFZzQ4eTRYWE9WUWV6R2E2WnB5?=
+ =?utf-8?B?b3NoNlZsSUE4Nmh5S2tCNDZRVVIxWHlnanJ6WUVrak1hMEx6cERBRzU0NTZT?=
+ =?utf-8?B?a0N0cWo2Y1FKaWNCRGlMbncraS9rTFNJS09FUWMyWE9xajA3ODk4aE9ibjl1?=
+ =?utf-8?B?cndtbFhvemtMYVEwQlFPa29UOUQxSUZqcHVIUDRORjBLL1lzdGt1SCs4QStt?=
+ =?utf-8?B?Y2RNejlQWXVFV0pjSmtWamNQc0VXM01tY2pzdHo5aGsxWnl1RFBseHVGVWRy?=
+ =?utf-8?B?ZHBRbExDOTIyNExxeVZjZGUrVUh3Rkd2ZFUxMFdsa1YxTC80LzUzdUdSaEhs?=
+ =?utf-8?B?TGY5YURrODNrZWJ1c0NNWEhhVVhzZmdkaEt6dnI5aHQwUWxQQXBDQnAxVFZy?=
+ =?utf-8?B?Y0pMdWhFVVNEYlJONllRTGFpY0R5WWlpNTQyYmNzeTUrcWpiSm5PYms0QVlC?=
+ =?utf-8?B?bHgxQUo4QmpNL1ZONUl0NHpaRzA0TjBFMCtpVkpVTlRZK3l3bURSNVVoNzhj?=
+ =?utf-8?B?dittbmhxbHJsZnVPaGRGeVF3Sy9IZ0Q4WE5rZHdwMW5mSFNJQk1TYm53WXVy?=
+ =?utf-8?B?MHRzVm9KWWEzYVZsSENJWWcrbitUSkFDQVhtYXA0WHZpZ3NHMjFnaG5RT1RP?=
+ =?utf-8?B?d1k0bGxwTk5DbTlrVUNySS8vRkVvalQwdW5vdzZ0aE9RUHVvS0NoVmVOMmZz?=
+ =?utf-8?B?UzVtYlB5T1ExM1NMSUZpNi9LUXpEQjR6OWxVL20vSkRna3U1SFBINnBwVm1L?=
+ =?utf-8?B?V2kybXlLVi9pNTJRdkYvaFMydDE2dG5CR0VTTlVHblhpbjdqa2VRQmY3MHFk?=
+ =?utf-8?B?QWlpblU1bE1sTkVBekZUM255K0doYlYvejN3M2ZSeEphbjlqYXE0VTVCZ3NI?=
+ =?utf-8?B?THpublIzSW1uQmNZVXlvdUNZUW9scWFKeVp4NHNuVEgzYmpHdlE3VC9OZ2ts?=
+ =?utf-8?B?d1doSDBtejNxZHg1ckdNUkhJekFUanZKRTltaFJqa1VLWUlVbCtwZy9QMTI4?=
+ =?utf-8?B?OVQ2Z0ZNaFUyZkdjTjBiSGQ5T0xRM1AyVnhQUm9kLzZFdkhNSmhuK0xBL25a?=
+ =?utf-8?B?Zkk0UEk4RDdIR1RKRUZLbFFGRHdSbjFlbmhBVkh6L3pHRlNmdnQrRy9ibEUv?=
+ =?utf-8?B?dkhxTzBtQWxYYzc0SXVrbnJnRnZDRGx4OUlaZGw2cTdtWTZxWGZKOEhua2tt?=
+ =?utf-8?B?VnEwSlNibzloQTRMVnJuYVVkUGtDdVkxSGhKaU1MWndaNjRvYmVDeEhmQXpr?=
+ =?utf-8?B?bmhqa1Ztb013VjM0UjVkb1IvQ3k2QnVoTy9tSTErN0NkcXd3YnQwK3pwMTJJ?=
+ =?utf-8?B?T3NZaWtSb1lRV1dCaGVtdVhNUlQyVVY2cG91U1dzWHc5eENJWHk3bi8wQ2xL?=
+ =?utf-8?B?d2g2V1VoZXp4RUVMNVF5MC80aFJHZmlUUkNmdzVzclp6dkhIa0pXekYwZ0Fw?=
+ =?utf-8?B?TTdQZUdFclFhblFZb3dVWFJQajR1bkhmMXlFbHhKZ0pQRjRlcDRLMFNOVytm?=
+ =?utf-8?B?MzMrcDY0WmRVRjYvT3owRGlWZGZoMzFpNUdZM3JqUlpDUHNqSm5wa3daOHFk?=
+ =?utf-8?B?NnhBNnJEdStIR1dOMy9CUGN1blJEakViL3JsVElCRnVkYVpSNFZNajVCWHBs?=
+ =?utf-8?B?TTFIWC9ENFJlNHVBS3JaaE8xSG5zQ0tqVkFPeUpkS1U3d3pSaDN4dzBQaEla?=
+ =?utf-8?B?UzhLNUhSQ1poL3lheEFNamF1K3NHVmszdnprU1IrQnRnaUtOc0Q4by9TTTZp?=
+ =?utf-8?B?TGxlcmVwMEhOc25HOGZtZTIyZ01lZTNmRjI0ay9lVnp0bklVUVZ5bG1HSFhI?=
+ =?utf-8?Q?cSV8KjNPpxbLKjy4eM80r3Mgx?=
+X-OriginatorOrg: suse.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e0471394-7a2e-460a-9192-08daa5e18a1e
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB6560.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2022 08:22:13.1705
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BUay21qJ0+s9DOLP4PFCWY3lK7HuzTPKi0e64xdRlmo77t8C8EGJWuTITIGNB7r/wXN1lraVFNTVT4PU3zERtA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB8041
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On 01.10.2022 02:30, Demi Marie Obenour wrote:
+> On Fri, Sep 30, 2022 at 08:27:09PM +0200, Ard Biesheuvel wrote:
+>> On Fri, 30 Sept 2022 at 19:12, Demi Marie Obenour wrote:
+>>> On Fri, Sep 30, 2022 at 06:30:57PM +0200, Ard Biesheuvel wrote:
+>>>> I know very little about Xen, but based on the context you provided in
+>>>> this thread, I'd say that the best approach from the Xen side is to
+>>>> convert all EfiBootServicesData regions that have configuration tables
+>>>> pointing into them into EfiAcpiReclaimMemory.
+>>>
+>>> Should Xen convert the entire region, or should it try to reserve only
+>>> the memory it needs?  The latter would require it to parse the
+>>> configuration tables.  Is there a list of configuration tables that can
+>>> legitimately be in EfiBootServicesData regions?
+>>>
+>>
+>> Not really, no. So you would have to convert the entire region
+>> /unless/ Xen knows the GUID, and therefore knows how to derive the
+>> size of the table, allowing it to reserve memory more conservatively.
+>> However, I doubt whether this is worth it: splitting entries implies
+>> rewriting the memory map, which is a thing I'd rather avoid if I were
+>> in your shoes.
+> 
+> I actually wonder if Xen needs to reserve *all* of EfiBootServicesData.
+> The reason is that some (probably buggy) firmware may store ACPI tables
+> there, and Xen does not have an ACPI implementation.
 
---on5cRYSDowX0FpPJ
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 3 Oct 2022 20:01:03 +0200
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: Demi Marie Obenour <demi@invisiblethingslab.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-	Xen developer discussion <xen-devel@lists.xenproject.org>,
-	Peter Jones <pjones@redhat.com>, Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Kees Cook <keescook@chromium.org>,
-	Anton Vorontsov <anton@enomsg.org>,
-	Colin Cross <ccross@android.com>, Tony Luck <tony.luck@intel.com>
-Subject: Re: [PATCH v2 5/6] efi: xen: Implement memory descriptor lookup
- based on hypercall
+We already have the -mapbs option as a workaround in such situations.
 
-On Mon, Oct 03, 2022 at 01:57:14PM -0400, Demi Marie Obenour wrote:
-> On Mon, Oct 03, 2022 at 07:04:02PM +0200, Marek Marczykowski-G=C3=B3recki=
- wrote:
-> > On Mon, Oct 03, 2022 at 06:37:19PM +0200, Ard Biesheuvel wrote:
-> > > On Mon, 3 Oct 2022 at 18:23, Demi Marie Obenour
-> > > <demi@invisiblethingslab.com> wrote:
-> > > >
-> > > > On Mon, Oct 03, 2022 at 05:59:52PM +0200, Ard Biesheuvel wrote:
-> > > > > On Mon, 3 Oct 2022 at 17:29, Demi Marie Obenour
-> > > > > <demi@invisiblethingslab.com> wrote:
-> > > > > >
-> > > > > > On Mon, Oct 03, 2022 at 01:26:24PM +0200, Ard Biesheuvel wrote:
-> > > > > > > Xen on x86 boots dom0 in EFI mode but without providing a mem=
-ory map.
-> > > > > > > This means that some sanity checks we would like to perform on
-> > > > > > > configuration tables or other data structures in memory are n=
-ot
-> > > > > > > currently possible. Xen does, however, expose EFI memory desc=
-riptor info
-> > > > > > > via a Xen hypercall, so let's wire that up instead.
-> > > > > > >
-> > > > > > > Co-developed-by: Demi Marie Obenour <demi@invisiblethingslab.=
-com>
-> > > > > > > Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.co=
-m>
-> > > > > > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > > > > > > ---
-> > > > > > >  drivers/firmware/efi/efi.c |  5 ++-
-> > > > > > >  drivers/xen/efi.c          | 34 ++++++++++++++++++++
-> > > > > > >  include/linux/efi.h        |  1 +
-> > > > > > >  3 files changed, 39 insertions(+), 1 deletion(-)
-> > > > > > >
-> > > > > > > diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/ef=
-i/efi.c
-> > > > > > > index 55bd3f4aab28..2c12b1a06481 100644
-> > > > > > > --- a/drivers/firmware/efi/efi.c
-> > > > > > > +++ b/drivers/firmware/efi/efi.c
-> > > > > > > @@ -456,7 +456,7 @@ void __init efi_find_mirror(void)
-> > > > > > >   * and if so, populate the supplied memory descriptor with t=
-he appropriate
-> > > > > > >   * data.
-> > > > > > >   */
-> > > > > > > -int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *ou=
-t_md)
-> > > > > > > +int __efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *=
-out_md)
-> > > > > > >  {
-> > > > > > >       efi_memory_desc_t *md;
-> > > > > > >
-> > > > > > > @@ -485,6 +485,9 @@ int efi_mem_desc_lookup(u64 phys_addr, ef=
-i_memory_desc_t *out_md)
-> > > > > > >       return -ENOENT;
-> > > > > > >  }
-> > > > > > >
-> > > > > > > +extern int efi_mem_desc_lookup(u64 phys_addr, efi_memory_des=
-c_t *out_md)
-> > > > > > > +      __weak __alias(__efi_mem_desc_lookup);
-> > > > > > > +
-> > > > > > >  /*
-> > > > > > >   * Calculate the highest address of an efi memory descriptor.
-> > > > > > >   */
-> > > > > > > diff --git a/drivers/xen/efi.c b/drivers/xen/efi.c
-> > > > > > > index d1ff2186ebb4..74f3f6d8cdc8 100644
-> > > > > > > --- a/drivers/xen/efi.c
-> > > > > > > +++ b/drivers/xen/efi.c
-> > > > > > > @@ -26,6 +26,7 @@
-> > > > > > >
-> > > > > > >  #include <xen/interface/xen.h>
-> > > > > > >  #include <xen/interface/platform.h>
-> > > > > > > +#include <xen/page.h>
-> > > > > > >  #include <xen/xen.h>
-> > > > > > >  #include <xen/xen-ops.h>
-> > > > > > >
-> > > > > > > @@ -292,3 +293,36 @@ void __init xen_efi_runtime_setup(void)
-> > > > > > >       efi.get_next_high_mono_count    =3D xen_efi_get_next_hi=
-gh_mono_count;
-> > > > > > >       efi.reset_system                =3D xen_efi_reset_syste=
-m;
-> > > > > > >  }
-> > > > > > > +
-> > > > > > > +int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *ou=
-t_md)
-> > > > > > > +{
-> > > > > > > +     static_assert(XEN_PAGE_SHIFT =3D=3D EFI_PAGE_SHIFT,
-> > > > > > > +                   "Mismatch between EFI_PAGE_SHIFT and XEN_=
-PAGE_SHIFT");
-> > > > > > > +     struct xen_platform_op op =3D {
-> > > > > > > +             .cmd =3D XENPF_firmware_info,
-> > > > > > > +             .u.firmware_info =3D {
-> > > > > > > +                     .type =3D XEN_FW_EFI_INFO,
-> > > > > > > +                     .index =3D XEN_FW_EFI_MEM_INFO,
-> > > > > > > +                     .u.efi_info.mem.addr =3D phys_addr,
-> > > > > > > +                     .u.efi_info.mem.size =3D U64_MAX - phys=
-_addr,
-> > > > > > > +             }
-> > > > > > > +     };
-> > > > > > > +     union xenpf_efi_info *info =3D &op.u.firmware_info.u.ef=
-i_info;
-> > > > > > > +     int rc;
-> > > > > > > +
-> > > > > > > +     if (!efi_enabled(EFI_PARAVIRT) || efi_enabled(EFI_MEMMA=
-P))
-> > > > > > > +             return __efi_mem_desc_lookup(phys_addr, out_md);
-> > > > > > > +
-> > > > > > > +     rc =3D HYPERVISOR_platform_op(&op);
-> > > > > > > +     if (rc) {
-> > > > > > > +             pr_warn("Failed to lookup header 0x%llx in Xen =
-memory map: error %d\n",
-> > > > > > > +                     phys_addr, rc);
-> > > > > > > +     }
-> > > > > > > +
-> > > > > > > +     out_md->phys_addr       =3D info->mem.addr;
-> > > > > >
-> > > > > > This will be equal to phys_addr, not the actual start of the me=
-mory
-> > > > > > region.
-> > > > > >
-> > > > > > > +     out_md->num_pages       =3D info->mem.size >> EFI_PAGE_=
-SHIFT;
-> > > > > >
-> > > > > > Similarly, this will be the number of bytes in the memory region
-> > > > > > after phys_addr, not the total number of bytes in the region.  =
-These two
-> > > > > > differences mean that this function is not strictly equivalent =
-to the
-> > > > > > original efi_mem_desc_lookup().
-> > > > > >
-> > > > > > I am not sure if this matters in practice, but I thought you wo=
-uld want
-> > > > > > to be aware of it.
-> > > > >
-> > > > > This is a bit disappointing. Is there no way to obtain this
-> > > > > information via a Xen hypercall?
-> > > >
-> > > > It is possible, but doing so is very complex (it essentially requir=
-es a
-> > > > binary search).  This really should be fixed on the Xen side.
-> > > >
-> > > > > In any case, it means we'll need to round down phys_addr to page =
-size
-> > > > > at the very least.
-> > > >
-> > > > That makes sense.  Are there any callers that will be broken even w=
-ith
-> > > > this rounding?
-> > >=20
-> > > As far as I can tell, it should work fine. The only thing to double
-> > > check is whether we are not creating spurious error messages from
-> > > efi_arch_mem_reserve() this way, but as far as I can tell, that should
-> > > be fine too.
-> > >=20
-> > > Is there anyone at your end that can give this a spin on an actual
-> > > Xen/x86 system?
-> >=20
-> > Demi, if you open a PR with this at
-> > https://github.com/QubesOS/qubes-linux-kernel/pulls, I can run it
-> > through our CI - (at least) one of the machines has ESRT table. AFAIR
-> > your test laptop has it too.
->=20
-> Just this patch or the whole series?
+>  From my
+> perspective, a much safer approach would be to pass all of
+> EfiBootServicesData memory directly to dom0, and have dom0 give Xen back
+> what it doesn’t wind up using.  That allows dom0’s memory reservation
+> code to work properly, which it currently does not.
 
-Whole series.
+As said already on a different thread: Giving memory to domains (incl
+Dom0) isn't related to their original memory type (neither EFI's nor
+E820's); the needed memory is taken from the general page allocator
+(with one exception for initrd, to avoid unnecessary copying around of
+data). Hence what you propose would end up as an (imo) awful hack in
+Xen. I also don't see how this relates to "dom0’s memory reservation
+code", but I'm sure you can clarify that for me.
 
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
-
---on5cRYSDowX0FpPJ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmM7I2AACgkQ24/THMrX
-1yzg/wf+LDFTPPUw1J/CQtZxhhVNBN8dSU3exFs5qVg5GCNO4KPA1pyN1SnRbmOY
-ofZvTP4SqCqnS+la1l4Afk4DS1DyV5jxAFbfmhIiSuh8283W3U1yUQ3JvBQVZWAf
-Zj2Rsh8la2rIzx6vg3cMNPp7JgOc7AP0EC9xuU6MWpro20WE1TXgP1NTem2Z5h35
-k4a0YQtiJj5RL0rXfg7Wnh8O1IVdvVwy4iov32zIJpBFeX/2o9YtQyeRY+S5nJwU
-/i84JaQHvgqXXktgkZK/AiJvQ3YooH4oE/rHSL3YNI9TgFRZAQTcG3Zkqh59bj2Q
-EuPbN4UMkuOF29tgFSIGrTEMoKehPA==
-=C5Oy
------END PGP SIGNATURE-----
-
---on5cRYSDowX0FpPJ--
+Jan
