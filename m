@@ -2,53 +2,54 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FCA55F653A
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Oct 2022 13:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E47F5F6607
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Oct 2022 14:28:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231609AbiJFLaN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 6 Oct 2022 07:30:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45970 "EHLO
+        id S231202AbiJFM2S (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 6 Oct 2022 08:28:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230225AbiJFLaM (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 6 Oct 2022 07:30:12 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B66225C75;
-        Thu,  6 Oct 2022 04:30:11 -0700 (PDT)
+        with ESMTP id S231329AbiJFM2M (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 6 Oct 2022 08:28:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C01DA0260;
+        Thu,  6 Oct 2022 05:28:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id F1251B82064;
-        Thu,  6 Oct 2022 11:30:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00F4C433C1;
-        Thu,  6 Oct 2022 11:30:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 88EE461923;
+        Thu,  6 Oct 2022 12:28:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA237C433C1;
+        Thu,  6 Oct 2022 12:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665055808;
-        bh=5LgFNtqy92bY4lq9P95C4sy291naVE3GnG0i/RMkzbQ=;
+        s=k20201202; t=1665059287;
+        bh=urtUav8EHxk8QIZbs99s2vaaP7fgK18dDTxYek/PK/4=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=P6NQcbHXdPZp8W9Pw42UETn4EjjGM5QpEZsRP7CRLrGxZlztZP+2G7F6x0Q28ksl3
-         C1vHQ5+LqNVj1yx+pedKx6UbWMCm0gPos9VnPv63d43XlZY24vcPObo/IMdMB3BDfT
-         uMOyAWtwFzp//ycCsakb80xlgBMHo7nw3yyI5ZGxezfI2XO8pOYj4sin2ylHeXmD/I
-         TFubWaiiKYNWHQ03jfdTNdontrLcESSZJgIE+UPhZGzfbAM3Hr1JAYgLI/XU/GDsMv
-         SMOpmx9utBZsdXSp2gB4g60XI5s0ByfUs5aUVAdYXVcYHrdae94PNjp4SW/ZKiE2dA
-         UpAwNxwY5W/Rw==
-Received: by mail-lf1-f42.google.com with SMTP id y5so2255414lfl.4;
-        Thu, 06 Oct 2022 04:30:08 -0700 (PDT)
-X-Gm-Message-State: ACrzQf0Reskrj73XOjt3KPGoArbBMph/AKxjfV9v4Fk4Sufe/PmjoZxC
-        HugZ7Q/aVONPe9O0L215h7iwLRRetCGbxpD/UMI=
-X-Google-Smtp-Source: AMsMyM66STFwycI1XvAGvGAEuWxPj9W08DY3UOKK0pq6bPj+0Iew3OYSo3gmiYwpiBHSgw/LqoRkYZxrISlEynaahTo=
-X-Received: by 2002:a19:c20b:0:b0:4a2:40e5:78b1 with SMTP id
- l11-20020a19c20b000000b004a240e578b1mr1628632lfc.228.1665055806638; Thu, 06
- Oct 2022 04:30:06 -0700 (PDT)
+        b=MGd/f6SC2hJdz2DUtXTC8bCTjgoDbo1mPp+A+6rv6qTz1pYyBGtslNhLtVkgdjKoB
+         zvA3W/OTOixUb4SZdAE0/lBfXxyG2+JlhBHBqSSPDKQ2wupXyotgDcUAyeiCeyOqpu
+         FRI6VOd5pvGYnjuFE0aLvQaHKSUMyaDgW3cInIzC4voOM2VNOcEPAOgM1Vsp4DSBrz
+         IQoInj4w5HWPwtaiLnJdV9Ibjf5eJh+R77JhQTMzFCsAFmxb7QEmSpmWp7WnZ2YWAC
+         H8+osg39yty0DNTDTX+1Tc6cQ6xwkzEzIH/4AubxGjlfvX5EHvQEkX3FyPU+kdIVQ1
+         /6H/T9jOSsuCA==
+Received: by mail-lf1-f46.google.com with SMTP id s20so2430027lfi.11;
+        Thu, 06 Oct 2022 05:28:07 -0700 (PDT)
+X-Gm-Message-State: ACrzQf0Gi2F9OFMwqFrbvifBQcUWxC3uyMbiamamvuYebLtIh3RfQhRb
+        /8RwBvSIkH2Q6lN2SxVSmVWWwodeIZRjyaEZLIw=
+X-Google-Smtp-Source: AMsMyM7FAlX2JWCm+WLZcvulAY1vV5cAzgFbZmJKJHjIuB1KuNERAiyFQrMP1Y94GY3DmoLHqI+07sMZuC/Q/x9FSPw=
+X-Received: by 2002:a05:6512:2026:b0:4a2:3bb6:302 with SMTP id
+ s6-20020a056512202600b004a23bb60302mr1752074lfs.539.1665059285847; Thu, 06
+ Oct 2022 05:28:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220921145422.437618-1-ardb@kernel.org> <20220921145422.437618-4-ardb@kernel.org>
- <Yz615Qc1K284jlH9@zn.tnic>
-In-Reply-To: <Yz615Qc1K284jlH9@zn.tnic>
+References: <20220921145422.437618-1-ardb@kernel.org> <20220921145422.437618-3-ardb@kernel.org>
+ <Yz6xBROUBPyaUSoB@zn.tnic> <CAMj1kXGCWmay_=cncZpZwXoyLgzt7=2dVuXHaaQU=K6NEXrezQ@mail.gmail.com>
+ <Yz64aMVo4W+D70Fz@zn.tnic> <CAMj1kXHi4TgGd=vicfxVOUnzDrhSfsiR=572L6cEwi47JO17jw@mail.gmail.com>
+In-Reply-To: <CAMj1kXHi4TgGd=vicfxVOUnzDrhSfsiR=572L6cEwi47JO17jw@mail.gmail.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 6 Oct 2022 13:29:55 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGfMp_nquvL2ECchof_BMZ54tZK5JwrXno4VO6nGCJVAA@mail.gmail.com>
-Message-ID: <CAMj1kXGfMp_nquvL2ECchof_BMZ54tZK5JwrXno4VO6nGCJVAA@mail.gmail.com>
-Subject: Re: [PATCH v2 03/16] x86/compressed: efi-mixed: move bootargs parsing
- out of 32-bit startup code
+Date:   Thu, 6 Oct 2022 14:27:54 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEkX=dZ0uUAdXoe5JC_Zv2+ndTMYwDiixYmWT-ip8OOOg@mail.gmail.com>
+Message-ID: <CAMj1kXEkX=dZ0uUAdXoe5JC_Zv2+ndTMYwDiixYmWT-ip8OOOg@mail.gmail.com>
+Subject: Re: [PATCH v2 02/16] x86/compressed: efi-mixed: move 32-bit
+ entrypoint code into .text section
 To:     Borislav Petkov <bp@alien8.de>
 Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -65,92 +66,78 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 6 Oct 2022 at 13:03, Borislav Petkov <bp@alien8.de> wrote:
+On Thu, 6 Oct 2022 at 13:19, Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> On Wed, Sep 21, 2022 at 04:54:09PM +0200, Ard Biesheuvel wrote:
-> > Move the logic that chooses between the different EFI entrypoints out of
-> > the 32-bit boot path, and into a 64-bit helper that can perform the same
-> > task much more cleanly. While at it, document the mixed mode boot flow
-> > in a code comment.
+> On Thu, 6 Oct 2022 at 13:13, Borislav Petkov <bp@alien8.de> wrote:
 > >
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >  arch/x86/boot/compressed/efi_mixed.S | 43 ++++++++++++++++++++
-> >  arch/x86/boot/compressed/head_64.S   | 24 ++---------
-> >  2 files changed, 47 insertions(+), 20 deletions(-)
+> > On Thu, Oct 06, 2022 at 12:56:09PM +0200, Ard Biesheuvel wrote:
+> > > efi32_pe_entry() preserves and restores the caller's value of %ebx,
+> > > because from there, we might actually return control to the firmware.
+> > > The value it keeps in %ebx itself is not live when it jumps to
+> > > efi32_entry - it stores its value into image_offset, which is reloaded
+> > > from memory at a later point.
 > >
-> > diff --git a/arch/x86/boot/compressed/efi_mixed.S b/arch/x86/boot/compressed/efi_mixed.S
-> > index 67e7edcdfea8..77e77c3ea393 100644
-> > --- a/arch/x86/boot/compressed/efi_mixed.S
-> > +++ b/arch/x86/boot/compressed/efi_mixed.S
-> > @@ -22,6 +22,49 @@
+> > Hmm, might be prudent to have a comment there because it is using %ebx a
+> > couple of insns before the JMP:
 > >
-> >       .code64
-> >       .text
-> > +/*
-> > + * When booting in 64-bit mode on 32-bit EFI firmware, startup_64_mixedmode()
-> > + * is the first thing that runs after switching to long mode. Depending on
-> > + * whether the EFI handover protocol or the compat entry point was used to
-> > + * enter the kernel, it will either branch to the 64-bit EFI handover
-> > + * entrypoint at offset 0x390 in the image, or to the 64-bit EFI PE/COFF
-> > + * entrypoint efi_pe_entry(). In the former case, the bootloader must provide a
-> > + * struct bootparams pointer as the third argument, so the presence of such a
-> > + * pointer is used to disambiguate.
-> > + *
-> > + *                                                             +--------------+
-> > + *  +------------------+     +------------+            +------>| efi_pe_entry |
-> > + *  | efi32_pe_entry   |---->|            |            |       +-----------+--+
-> > + *  +------------------+     |            |     +------+---------------+   |
-> > + *                           | startup_32 |---->| startup_64_mixedmode |   |
-> > + *  +------------------+     |            |     +------+---------------+   V
-> > + *  | efi32_stub_entry |---->|            |            |     +------------------+
-> > + *  +------------------+     +------------+            +---->| efi64_stub_entry |
-> > + *                                                           +-------------+----+
-> > + *                           +------------+     +----------+               |
-> > + *                           | startup_64 |<----| efi_main |<--------------+
-> > + *                           +------------+     +----------+
-> > + */
+> >         subl    %esi, %ebx
+> >                       ^^^^
+> >         movl    %ebx, rva(image_offset)(%ebp)   // save image_offset
+> >
+> > <--- I think you mean that after this, %ebx is not needed anymore?
+> >
 >
-> That is much appreciated.
+> Exactly.
 >
-> Questions:
+> >         xorl    %esi, %esi
+> >         jmp     efi32_entry
+> >
+> > 2:      popl    %edi                            // restore callee-save registers
+> >         popl    %ebx
+> >
+> > and this restores its original value ofc.
+> >
+> > > efi32_stub_entry() is the 'EFI handover protocol' entry point, which
+> > > cannot return to the firmware (and we discard the return address
+> > > already) so %ebx can be clobbered.
+> >
+> > That info would be good to have in a comment above it.
+> >
 >
-> - is this whole handover ABI documented somewhere?
->
+> Fair enough.
 
-Documentation/x86/boot.rst has a section on this (at the end), but we
-should really stop using it. It is only implemented by out-of-tree
-GRUB at the moment (last time I checked) and leaking all those struct
-bootparams specific details into every bootloader is not great,
-especially the ones that intend to be generic and boot any EFI OS on
-any EFI arch.
+I'll add the below in the next revision
 
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -307,6 +307,19 @@ SYM_FUNC_START(efi32_stub_entry)
+ SYM_FUNC_END(efi32_stub_entry)
 
-> - efi32_pe_entry() is the 32-bit PE/COFF entry point? I.e., that is
-> called by a 32-bit EFI fw when the kernel is a PE/COFF executable?
->
+        .text
++/*
++ * This is the common EFI stub entry point for mixed mode.
++ *
++ * Arguments:  %ecx    image handle
++ *             %edx    EFI system table pointer
++ *             %esi    struct bootparams pointer (or NULL when not using
++ *                     the EFI handover protocol)
++ *
++ * Since this is the point of no return for ordinary execution, no registers
++ * are considered live except for the function parameters. [Note that the EFI
++ * stub may still exit and return to the firmware using the Exit() EFI boot
++ * service.]
++ */
+ SYM_FUNC_START_LOCAL(efi32_entry)
+        call    1f
+ 1:     pop     %ebx
+@@ -837,7 +850,8 @@ SYM_FUNC_START(efi32_pe_entry)
+        subl    %esi, %ebx
+        movl    %ebx, rva(image_offset)(%ebp)   // save image_offset
+        xorl    %esi, %esi
+-       jmp     efi32_entry
++       jmp     efi32_entry                     // pass %ecx, %edx, %esi
++                                               // no other registers
+remain live
 
-Yes. But I should note that this is actually something that goes
-outside of the EFI spec as well: 32-bit firmware can /load/ 64-bit
-PE/COFF binaries but not *start* them.
-
-Commit 97aa276579b28b86f4a3e235b50762c0191c2ac3 has some more
-background. This is currently implement by 32-bit OVMF, and
-systemd-boot.
-
-> But then Documentation/admin-guide/efi-stub.rst talks about the EFI stub
-> and exactly that. Hmm, so what is efi32_pe_entry() then?
->
-
-That is the same thing. The EFI stub is what enables the kernel (or
-decompressor) to masquerade as a PE/COFF executable.
-
-In short, every EFI stub kernel on every architecture has a native
-PE/COFF entry point that calls the EFI stub, and the EFi stub does the
-arch-specific bootloader work and boots it.
-
-In addition, the x86_64 EFI stub kernel has an extra, non-native
-PE/COFF entry point, which is exposed in a way that is not covered by
-the EFI spec, but which allows Linux specific loaders such as
-systemd-boot to boot such kernels on 32-bit firmware without having to
-do the whole struct bootparams dance in the bootloader.
+ 2:     popl    %edi                            // restore callee-save registers
+        popl    %ebx
