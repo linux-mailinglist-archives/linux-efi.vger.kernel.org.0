@@ -2,83 +2,72 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CED415F757A
-	for <lists+linux-efi@lfdr.de>; Fri,  7 Oct 2022 10:47:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6C755F75AA
+	for <lists+linux-efi@lfdr.de>; Fri,  7 Oct 2022 10:56:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229556AbiJGIru (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 7 Oct 2022 04:47:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46728 "EHLO
+        id S229837AbiJGI4e (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 7 Oct 2022 04:56:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbiJGIrt (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Oct 2022 04:47:49 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AD41B97BC;
-        Fri,  7 Oct 2022 01:47:48 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S229587AbiJGI43 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Oct 2022 04:56:29 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EF12DED1C;
+        Fri,  7 Oct 2022 01:56:26 -0700 (PDT)
+Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 36D24B821FD;
-        Fri,  7 Oct 2022 08:47:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE80AC433B5;
-        Fri,  7 Oct 2022 08:47:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665132466;
-        bh=JvsJAjK2viLhsl8prgm3Okm0KP7YFzOENNR4sX/iqN4=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=nXruCk3dbtw+hIqHFFdug4hTm3jQ1IJdKDoOosX+TkLI9KFp37Pn5lNkLBoG4/mZv
-         gl8zj9kXkl9ng3n0TZ29lUD7WatF1kjrfYtMeA3ARTvmNrZdPOsWL6GrMLc/4icpxf
-         q5JsV5KcM8JKZGjir/Gyg1rDJhs7AzE4ii184f5YvjkbW9exzAppjdu6Bogem83WUr
-         NZ/JfLtJS1ynRk46IEQJD4TxsVIM8p0krK/vy4WqTCyt8IYk5FPPGA8BGnUjEh7vyW
-         VFrQLmHMjlfWV7KAXR4MoHd5T3tAew98vKXRK7Kq+Wf4iAUwXpuIRubwX+pS+vqj6j
-         S9jmbg1qeKJRA==
-Received: by mail-lf1-f44.google.com with SMTP id d6so6284698lfs.10;
-        Fri, 07 Oct 2022 01:47:45 -0700 (PDT)
-X-Gm-Message-State: ACrzQf0LVIalsa6aZMmerNMugKwpfwfgcx1y712KGl2wDvqLPLDVnuHg
-        jUPyaTQP1gMzRferTgArtZIro/CIZH9T08VZ16Q=
-X-Google-Smtp-Source: AMsMyM44yFaEOObizVHcR/26W5DJQcgwhUIpkSjU8hV6Nx+Zcb8O5A+eclJsmCZAfvMMSTvo7bD6iPEYReVnj3we8TA=
-X-Received: by 2002:a05:6512:261b:b0:4a1:abd7:3129 with SMTP id
- bt27-20020a056512261b00b004a1abd73129mr1528800lfb.637.1665132464012; Fri, 07
- Oct 2022 01:47:44 -0700 (PDT)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id EF3711EC0606;
+        Fri,  7 Oct 2022 10:56:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1665132968;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=xxUcAgRRdNH8/ZTTtj8HOcKS5T9SfdNK203wSP8RP04=;
+        b=ht4h39A/HHSsP2HY+YmjEU+S72Ere6qYzgD3rQkxEaYCvNgsHXYBomnjCAAdsxmXNsKtKU
+        hwWfkDev95Zh9I1eOFct5pkIVQ7nDzwp+CB/vOWdR0uFXk1Uxgp2NLhOyQvc2VuNXVnFU9
+        IMHdzNjOWJijYxWRCuLZ+aWM6ecGRGA=
+Date:   Fri, 7 Oct 2022 10:56:02 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Michael Roth <michael.roth@amd.com>
+Subject: Re: [PATCH v2 02/16] x86/compressed: efi-mixed: move 32-bit
+ entrypoint code into .text section
+Message-ID: <Yz/posPv6infDtDU@zn.tnic>
+References: <20220921145422.437618-1-ardb@kernel.org>
+ <20220921145422.437618-3-ardb@kernel.org>
+ <Yz6xBROUBPyaUSoB@zn.tnic>
+ <CAMj1kXGCWmay_=cncZpZwXoyLgzt7=2dVuXHaaQU=K6NEXrezQ@mail.gmail.com>
+ <Yz64aMVo4W+D70Fz@zn.tnic>
+ <CAMj1kXHi4TgGd=vicfxVOUnzDrhSfsiR=572L6cEwi47JO17jw@mail.gmail.com>
+ <CAMj1kXEkX=dZ0uUAdXoe5JC_Zv2+ndTMYwDiixYmWT-ip8OOOg@mail.gmail.com>
 MIME-Version: 1.0
-References: <20221006224212.569555-1-gpiccoli@igalia.com> <20221006224212.569555-8-gpiccoli@igalia.com>
- <202210061616.40497D6C@keescook>
-In-Reply-To: <202210061616.40497D6C@keescook>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 7 Oct 2022 10:47:32 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGg9moz0Fg+wFYg2GjLD2gW1RGmQqT3mu+cNi0KuYyAqA@mail.gmail.com>
-Message-ID: <CAMj1kXGg9moz0Fg+wFYg2GjLD2gW1RGmQqT3mu+cNi0KuYyAqA@mail.gmail.com>
-Subject: Re: [PATCH 7/8] efi: pstore: Follow convention for the efi-pstore
- backend name
-To:     Kees Cook <keescook@chromium.org>
-Cc:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        kernel-dev@igalia.com, kernel@gpiccoli.net, anton@enomsg.org,
-        ccross@android.com, tony.luck@intel.com, linux-efi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXEkX=dZ0uUAdXoe5JC_Zv2+ndTMYwDiixYmWT-ip8OOOg@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 7 Oct 2022 at 01:16, Kees Cook <keescook@chromium.org> wrote:
->
-> On Thu, Oct 06, 2022 at 07:42:11PM -0300, Guilherme G. Piccoli wrote:
-> > For some reason, the efi-pstore backend name (exposed through the
-> > pstore infrastructure) is hardcoded as "efi", whereas all the other
-> > backends follow a kind of convention in using the module name.
-> >
-> > Let's do it here as well, to make user's life easier (they might
-> > use this info for unloading the module backend, for example).
-> >
-> > Cc: Ard Biesheuvel <ardb@kernel.org>
-> > Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
->
-> Looks fine to me. Ard, if you don't object, I can carry this in the
-> pstore tree.
->
+On Thu, Oct 06, 2022 at 02:27:54PM +0200, Ard Biesheuvel wrote:
+> I'll add the below in the next revision
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+LGTM.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
