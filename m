@@ -2,182 +2,189 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08A315F7C40
-	for <lists+linux-efi@lfdr.de>; Fri,  7 Oct 2022 19:29:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 215735F7D26
+	for <lists+linux-efi@lfdr.de>; Fri,  7 Oct 2022 20:09:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229470AbiJGR3m (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 7 Oct 2022 13:29:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54286 "EHLO
+        id S229694AbiJGSJQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 7 Oct 2022 14:09:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229542AbiJGR3Z (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Oct 2022 13:29:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02DD7103270
-        for <linux-efi@vger.kernel.org>; Fri,  7 Oct 2022 10:29:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9CBD2614D2
-        for <linux-efi@vger.kernel.org>; Fri,  7 Oct 2022 17:29:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E533AC433D6;
-        Fri,  7 Oct 2022 17:29:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665163763;
-        bh=N5ltRs5q7X3VPb+lVuSQnQLZpa5WDuDMUJkjuBZI4mg=;
-        h=From:To:Cc:Subject:Date:From;
-        b=qdDOuSVe1PCN32kwEWyMPtEVzyLqD2LcDxhHchEjoDTYE/fUam3QtUAOYnXISHjN4
-         h1hNcVMiwaXK3Wh1NBLePlAXPRW5d/acqU9qa7lPjIYdwDsv6gn8RTqYG4vGucSDax
-         uwMIMKxdOfBPYhXeoszXvmuDtfPlXc95JKHVx6to20a9KEzbeeVBokqOv7IF2lEVQo
-         GdsLuKUqLFovzOdbHqqs06Tfb3cFdApPRYEVnYpDGDbhT/X27m+l3JgSG7pBKb7PUk
-         /sOwRgPugCFKHDBsIA348bnUt/wWwXBPDf0V+rOPnoAIzsDx3+JZbFrH0Kqr+WFmAo
-         pZIvwgfnNtBnA==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     x86@kernel.org, bp@alien8.de, Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH] efi: x86: Make the deprecated EFI handover protocol optional
-Date:   Fri,  7 Oct 2022 19:29:18 +0200
-Message-Id: <20221007172918.3131811-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S229559AbiJGSJP (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Oct 2022 14:09:15 -0400
+Received: from out0.migadu.com (out0.migadu.com [IPv6:2001:41d0:2:267::])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2772633B;
+        Fri,  7 Oct 2022 11:08:57 -0700 (PDT)
+Message-ID: <8a14cdb2-4de3-558f-e637-af80673c4cd9@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1665166018;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=wf3d7elGycEZ3Im/7mAKPHXr8Iq8F86JvYzkavEYM70=;
+        b=aLLFxAIJV42t4d243zaGIAr07Kb+NpU/kGK/mgL4YIRxQVQDkN9h6+xAS1ObQY0xAWrSrh
+        7VN7KcoKlFZmV8pc81er7g65/tCYtr2hz+oTIwMLRPRorh61LI2PuH9Un44fAtSMgtRqgT
+        VgFh/yfG0j4wE78ppQxtK4PYmgXORfM=
+Date:   Fri, 7 Oct 2022 12:06:53 -0600
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5421; i=ardb@kernel.org; h=from:subject; bh=N5ltRs5q7X3VPb+lVuSQnQLZpa5WDuDMUJkjuBZI4mg=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjQGHtHeB29eg1NerPlfqcjAt6zl4JKWqQ0WXx1xCi Ch3to9iJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY0Bh7QAKCRDDTyI5ktmPJOcpC/ 0X+xyvbDnZk9+whwFa32dnurxKowKMe3Fwn/5JM0c+1tpRF+dIpQHqH+Kfi41qYXWvB4di6yKTtA6y dGXCecYHWFqq+FnOQbHfSTwb1Oa0Fyneyjdyxr1sV4z+Y1+VY0S7WydT0uSEe//FM++QX29xPV7fh5 UEY8ohH2z3Vs8TbXL940EQXXybg+91AwpLY66ZrMXatQ5uPghm0y8omPbX60NTwjXjteYRaaDzx9bi wO/eA6T97Z68TJidAMSIo4+1dWcq9nLv05iydu0bOY01t/SIhGakWME76+IBTdKY1CRylZ2TGFLd03 8du4TeAT/4vf27BTg8WCp4R3CC0AHbvpAqFZ8qmgimt6wORXTcROpH9q2oecBzpQ0FsXcINMRCBCdE koEfRBXeMdNZglbwWQxVJZebOVDoFNkvRtjr4ffX4W4TSbkf4GLmCwVfromHcNLMmzJGo8JpXFksIV P1/Rb0VJuvcmji4JNi14LUAQUn/futgtq/94WHwy2M0h8=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v2 1/3 RESEND] block: sed-opal: Implement
+ IOC_OPAL_DISCOVERY
+Content-Language: en-US
+To:     gjoyce@linux.vnet.ibm.com, linux-block@vger.kernel.org
+Cc:     linuxppc-dev@lists.ozlabs.org, brking@linux.vnet.ibm.com,
+        msuchanek@suse.de, mpe@ellerman.id.au, nayna@linux.ibm.com,
+        axboe@kernel.dk, akpm@linux-foundation.org,
+        linux-efi@vger.kernel.org, keyrings@vger.kernel.org
+References: <20220818143045.680972-1-gjoyce@linux.vnet.ibm.com>
+ <20220818143045.680972-2-gjoyce@linux.vnet.ibm.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Jonathan Derrick <jonathan.derrick@linux.dev>
+In-Reply-To: <20220818143045.680972-2-gjoyce@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The EFI handover protocol permits a bootloader to invoke the kernel as a
-EFI PE/COFF application, while passing a bootparams struct as a third
-argument to the entrypoint function call.
+Useful. Thank you
 
-This has no basis in the UEFI specification, and there are better ways
-to pass additional data to a UEFI application (UEFI configuration
-tables, UEFI variables, UEFI protocols) than going around the
-StartImage() boot service and jumping to a fixed offset in the loaded
-image, just to call a different function that takes a third parameter.
+Reviewed-by: Jonathan Derrick <jonathan.derrick@linux.dev>
 
-The reason for handling struct bootparams in the bootloader was that the
-EFI stub could only load initrd images from the EFI system partition,
-and so passing it via struct bootparams was needed for loaders like
-GRUB, which pass the initrd in memory, and may load it from anywhere,
-including from the network. Another motivation was EFI mixed mode, which
-could not use the initrd loader in the EFI stub at all due to 32/64 bit
-incompatibilities (which will be fixed shortly [0]), and could not
-invoke the ordinary PE/COFF entry point either, for the same reasons.
-
-Given that loaders such as GRUB already carried the bootparams handling
-in order to implement non-EFI boot, retaining that code and just passing
-bootparams to the EFI stub was a reasonable choice (although defining an
-alternate entrypoint could have been avoided.) However, the GRUB side
-changes never made it upstream, and are only shipped by some of the
-distros in their downstream versions.
-
-In the meantime, EFI support has been added to other Linux architecture
-ports, as well as to U-boot and systemd, including arch-agnostic methods
-for passing initrd images in memory [1], and for doing mixed mode boot
-[2], none of them requiring anything like the EFI handover protocol. So
-given that only out-of-tree distro GRUB relies on this, let's permit it
-to be omitted from the build, in preparation for retiring it completely
-at a later date. (Note that systemd-boot does have an implementation as
-well, but only uses it as a fallback for booting images that do not
-implement the LoadFile2 based initrd loading method, i.e., v5.8 or older)
-
-[0] https://lore.kernel.org/all/20220927085842.2860715-1-ardb@kernel.org/
-[1] ec93fc371f01 ("efi/libstub: Add support for loading the initrd ...")
-[2] 97aa276579b2 ("efi/x86: Add true mixed mode entry point into ...")
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/x86/Kconfig                   | 12 ++++++++++++
- arch/x86/boot/compressed/head_64.S |  4 +++-
- arch/x86/boot/header.S             |  2 +-
- arch/x86/boot/tools/build.c        |  2 ++
- 4 files changed, 18 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index f9920f1341c8..0c8fcb090232 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1964,6 +1964,18 @@ config EFI_STUB
- 
- 	  See Documentation/admin-guide/efi-stub.rst for more information.
- 
-+config EFI_HANDOVER_PROTOCOL
-+	bool "EFI handover protocol (DEPRECATED)"
-+	depends on EFI_STUB
-+	default y
-+	help
-+	  Whether to include support for the deprecated EFI handover protocol,
-+	  which defines alternative entry points into the EFI stub. This is a
-+	  practice that has no basis in the UEFI specification, and requires
-+	  a priori knowledge on the part of the bootloader about Linux/x86
-+	  specific ways of passing the command line and initrd, and where in
-+	  memory those assets may be loaded.
-+
- config EFI_MIXED
- 	bool "EFI mixed-mode support"
- 	depends on EFI_STUB && X86_64
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index 6ba2c2142c33..7bcc50c6cdcc 100644
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -286,7 +286,7 @@ SYM_FUNC_START(startup_32)
- 	lret
- SYM_FUNC_END(startup_32)
- 
--#ifdef CONFIG_EFI_MIXED
-+#if defined(CONFIG_EFI_MIXED) && defined(CONFIG_EFI_HANDOVER_PROTOCOL)
- 	.org 0x190
- SYM_FUNC_START(efi32_stub_entry)
- 	add	$0x4, %esp		/* Discard return address */
-@@ -516,7 +516,9 @@ trampoline_return:
- SYM_CODE_END(startup_64)
- 
- #ifdef CONFIG_EFI_STUB
-+#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
- 	.org 0x390
-+#endif
- SYM_FUNC_START(efi64_stub_entry)
- 	and	$~0xf, %rsp			/* realign the stack */
- 	movq	%rdx, %rbx			/* save boot_params pointer */
-diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-index f912d7770130..d31982509654 100644
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -406,7 +406,7 @@ xloadflags:
- # define XLF1 0
- #endif
- 
--#ifdef CONFIG_EFI_STUB
-+#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
- # ifdef CONFIG_EFI_MIXED
- #  define XLF23 (XLF_EFI_HANDOVER_32|XLF_EFI_HANDOVER_64)
- # else
-diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-index a3725ad46c5a..bd247692b701 100644
---- a/arch/x86/boot/tools/build.c
-+++ b/arch/x86/boot/tools/build.c
-@@ -290,6 +290,7 @@ static void efi_stub_entry_update(void)
- {
- 	unsigned long addr = efi32_stub_entry;
- 
-+#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
- #ifdef CONFIG_X86_64
- 	/* Yes, this is really how we defined it :( */
- 	addr = efi64_stub_entry - 0x200;
-@@ -298,6 +299,7 @@ static void efi_stub_entry_update(void)
- #ifdef CONFIG_EFI_MIXED
- 	if (efi32_stub_entry != addr)
- 		die("32-bit and 64-bit EFI entry points do not match\n");
-+#endif
- #endif
- 	put_unaligned_le32(addr, &buf[0x264]);
- }
--- 
-2.35.1
-
+On 8/18/2022 8:30 AM, gjoyce@linux.vnet.ibm.com wrote:
+> From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> 
+> Add IOC_OPAL_DISCOVERY ioctl to return raw discovery data to a SED Opal
+> application. This allows the application to display drive capabilities
+> and state.
+> 
+> Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> ---
+>  block/sed-opal.c              | 38 ++++++++++++++++++++++++++++++++---
+>  include/linux/sed-opal.h      |  1 +
+>  include/uapi/linux/sed-opal.h |  6 ++++++
+>  3 files changed, 42 insertions(+), 3 deletions(-)
+> 
+> diff --git a/block/sed-opal.c b/block/sed-opal.c
+> index 9700197000f2..e4d8fbdc9dad 100644
+> --- a/block/sed-opal.c
+> +++ b/block/sed-opal.c
+> @@ -426,8 +426,12 @@ static int execute_steps(struct opal_dev *dev,
+>  	return error;
+>  }
+>  
+> -static int opal_discovery0_end(struct opal_dev *dev)
+> +static int opal_discovery0_end(struct opal_dev *dev, void *data)
+>  {
+> +	struct opal_discovery *discv_out = data; /* may be NULL */
+> +	u8 __user *buf_out;
+> +	u64 len_out;
+> +
+>  	bool found_com_id = false, supported = true, single_user = false;
+>  	const struct d0_header *hdr = (struct d0_header *)dev->resp;
+>  	const u8 *epos = dev->resp, *cpos = dev->resp;
+> @@ -443,6 +447,15 @@ static int opal_discovery0_end(struct opal_dev *dev)
+>  		return -EFAULT;
+>  	}
+>  
+> +	if (discv_out) {
+> +		buf_out = (u8 __user *)(uintptr_t)discv_out->data;
+> +		len_out = min_t(u64, discv_out->size, hlen);
+> +		if (buf_out && copy_to_user(buf_out, dev->resp, len_out))
+> +			return -EFAULT;
+> +
+> +		discv_out->size = hlen; /* actual size of data */
+> +	}
+> +
+>  	epos += hlen; /* end of buffer */
+>  	cpos += sizeof(*hdr); /* current position on buffer */
+>  
+> @@ -517,13 +530,13 @@ static int opal_discovery0(struct opal_dev *dev, void *data)
+>  	if (ret)
+>  		return ret;
+>  
+> -	return opal_discovery0_end(dev);
+> +	return opal_discovery0_end(dev, data);
+>  }
+>  
+>  static int opal_discovery0_step(struct opal_dev *dev)
+>  {
+>  	const struct opal_step discovery0_step = {
+> -		opal_discovery0,
+> +		opal_discovery0, NULL
+>  	};
+>  
+>  	return execute_step(dev, &discovery0_step, 0);
+> @@ -2179,6 +2192,22 @@ static int opal_secure_erase_locking_range(struct opal_dev *dev,
+>  	return ret;
+>  }
+>  
+> +static int opal_get_discv(struct opal_dev *dev, struct opal_discovery *discv)
+> +{
+> +	const struct opal_step discovery0_step = {
+> +		opal_discovery0, discv
+> +	};
+> +	int ret = 0;
+> +
+> +	mutex_lock(&dev->dev_lock);
+> +	setup_opal_dev(dev);
+> +	ret = execute_step(dev, &discovery0_step, 0);
+> +	mutex_unlock(&dev->dev_lock);
+> +	if (ret)
+> +		return ret;
+> +	return discv->size; /* modified to actual length of data */
+> +}
+> +
+>  static int opal_erase_locking_range(struct opal_dev *dev,
+>  				    struct opal_session_info *opal_session)
+>  {
+> @@ -2685,6 +2714,9 @@ int sed_ioctl(struct opal_dev *dev, unsigned int cmd, void __user *arg)
+>  	case IOC_OPAL_GENERIC_TABLE_RW:
+>  		ret = opal_generic_read_write_table(dev, p);
+>  		break;
+> +	case IOC_OPAL_DISCOVERY:
+> +		ret = opal_get_discv(dev, p);
+> +		break;
+>  	default:
+>  		break;
+>  	}
+> diff --git a/include/linux/sed-opal.h b/include/linux/sed-opal.h
+> index 1ac0d712a9c3..9197b7a628f2 100644
+> --- a/include/linux/sed-opal.h
+> +++ b/include/linux/sed-opal.h
+> @@ -43,6 +43,7 @@ static inline bool is_sed_ioctl(unsigned int cmd)
+>  	case IOC_OPAL_MBR_DONE:
+>  	case IOC_OPAL_WRITE_SHADOW_MBR:
+>  	case IOC_OPAL_GENERIC_TABLE_RW:
+> +	case IOC_OPAL_DISCOVERY:
+>  		return true;
+>  	}
+>  	return false;
+> diff --git a/include/uapi/linux/sed-opal.h b/include/uapi/linux/sed-opal.h
+> index 6f5af1a84213..89dd108b426f 100644
+> --- a/include/uapi/linux/sed-opal.h
+> +++ b/include/uapi/linux/sed-opal.h
+> @@ -132,6 +132,11 @@ struct opal_read_write_table {
+>  	__u64 priv;
+>  };
+>  
+> +struct opal_discovery {
+> +	__u64 data;
+> +	__u64 size;
+> +};
+> +
+>  #define IOC_OPAL_SAVE		    _IOW('p', 220, struct opal_lock_unlock)
+>  #define IOC_OPAL_LOCK_UNLOCK	    _IOW('p', 221, struct opal_lock_unlock)
+>  #define IOC_OPAL_TAKE_OWNERSHIP	    _IOW('p', 222, struct opal_key)
+> @@ -148,5 +153,6 @@ struct opal_read_write_table {
+>  #define IOC_OPAL_MBR_DONE           _IOW('p', 233, struct opal_mbr_done)
+>  #define IOC_OPAL_WRITE_SHADOW_MBR   _IOW('p', 234, struct opal_shadow_mbr)
+>  #define IOC_OPAL_GENERIC_TABLE_RW   _IOW('p', 235, struct opal_read_write_table)
+> +#define IOC_OPAL_DISCOVERY          _IOW('p', 236, struct opal_discovery)
+>  
+>  #endif /* _UAPI_SED_OPAL_H */
