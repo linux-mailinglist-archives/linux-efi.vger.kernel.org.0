@@ -2,142 +2,103 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 972C55F776D
-	for <lists+linux-efi@lfdr.de>; Fri,  7 Oct 2022 13:30:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA2015F7889
+	for <lists+linux-efi@lfdr.de>; Fri,  7 Oct 2022 15:01:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229527AbiJGLaJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 7 Oct 2022 07:30:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59258 "EHLO
+        id S229734AbiJGNBt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 7 Oct 2022 09:01:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbiJGLaI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Oct 2022 07:30:08 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9ED8A476F4;
-        Fri,  7 Oct 2022 04:30:04 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 746711063;
-        Fri,  7 Oct 2022 04:30:10 -0700 (PDT)
-Received: from FVFF77S0Q05N (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 695033F792;
-        Fri,  7 Oct 2022 04:30:00 -0700 (PDT)
-Date:   Fri, 7 Oct 2022 12:29:49 +0100
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Palmer Dabbelt <palmer@dabbelt.com>
-Cc:     Conor.Dooley@microchip.com, guoren@kernel.org, oleg@redhat.com,
-        vgupta@kernel.org, linux@armlinux.org.uk, monstr@monstr.eu,
-        dinguyen@kernel.org, davem@davemloft.net,
-        Arnd Bergmann <arnd@arndb.de>, shorne@gmail.com,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        aou@eecs.berkeley.edu, ardb@kernel.org, heiko@sntech.de,
-        daolu@rivosinc.com, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-snps-arc@lists.infradead.org, sparclinux@vger.kernel.org,
-        openrisc@lists.librecores.org, xianting.tian@linux.alibaba.com,
-        linux-efi@vger.kernel.org
-Subject: Re: [PATCH] RISC-V: Add STACKLEAK erasing the kernel stack at the
- end of syscalls
-Message-ID: <Y0ANrYa2IQCg8UTd@FVFF77S0Q05N>
-References: <6c48657c-04df-132d-6167-49ed293dea44@microchip.com>
- <mhng-8c3bb2e7-e84e-4aaa-bce8-3e8054255a2c@palmer-ri-x1c9>
+        with ESMTP id S229925AbiJGNBZ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Oct 2022 09:01:25 -0400
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 364F1D8EE9;
+        Fri,  7 Oct 2022 06:00:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+        s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=Ww71LiFniQjR5k5o8LQpT64qpooOFLpcZ6GdALllUYo=; b=QhF6ALFmPBkkfK6dFkkN1oSJqI
+        uszNgfRnVgnIbozx+cHW+7YAlwnmg4JY9ccZb6r6pv4elr/ccksmt3xqWLEkSx+Elil58cS7l3hfm
+        qsj/bwmM3vrbZ3F3U6Jjo3U8EWQHPTCab+H5cbpieiGb0J7VBFdVXxhVhasLMHop8/OTpb4Iel8vP
+        SQIDTuVq/oDsSFltZ4xjdisFnOPYks7Exn+pdebCExuQxfE4qy98LXWB47JBnYOmm3cIUw9O8oUbS
+        RzZGAnWBo24EMKMiqdR8obYjiYOOuRriCmfNbf7WyPpe0+Upwk92te3qLusIkhSkVbIR30PdfYQMm
+        oLZQCc5g==;
+Received: from 201-43-120-40.dsl.telesp.net.br ([201.43.120.40] helo=[192.168.1.60])
+        by fanzine2.igalia.com with esmtpsa 
+        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+        id 1ogmxe-00D5Pa-8o; Fri, 07 Oct 2022 15:00:18 +0200
+Message-ID: <f857b97c-9fb5-8ef6-d1cb-3b8a02d0e655@igalia.com>
+Date:   Fri, 7 Oct 2022 10:00:02 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <mhng-8c3bb2e7-e84e-4aaa-bce8-3e8054255a2c@palmer-ri-x1c9>
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH 8/8] efi: pstore: Add module parameter for setting the
+ record size
+Content-Language: en-US
+To:     Ard Biesheuvel <ardb@kernel.org>, Kees Cook <keescook@chromium.org>
+Cc:     linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        kernel-dev@igalia.com, kernel@gpiccoli.net, anton@enomsg.org,
+        ccross@android.com, tony.luck@intel.com, linux-efi@vger.kernel.org
+References: <20221006224212.569555-1-gpiccoli@igalia.com>
+ <20221006224212.569555-9-gpiccoli@igalia.com>
+ <202210061614.8AA746094A@keescook>
+ <CAMj1kXF4UyRMh2Y_KakeNBHvkHhTtavASTAxXinDO1rhPe_wYg@mail.gmail.com>
+From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <CAMj1kXF4UyRMh2Y_KakeNBHvkHhTtavASTAxXinDO1rhPe_wYg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Oct 06, 2022 at 07:31:01PM -0700, Palmer Dabbelt wrote:
-> On Tue, 06 Sep 2022 10:35:10 PDT (-0700), Conor.Dooley@microchip.com wrote:
-> > On 03/09/2022 17:23, guoren@kernel.org wrote:
-> > > EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
-> > > 
-> > > From: Xianting Tian <xianting.tian@linux.alibaba.com>
-> > > 
-> > > This adds support for the STACKLEAK gcc plugin to RISC-V and disables
-> > > the plugin in EFI stub code, which is out of scope for the protection.
-> > > 
-> > > For the benefits of STACKLEAK feature, please check the commit
-> > > afaef01c0015 ("x86/entry: Add STACKLEAK erasing the kernel stack at the end of syscalls")
-> > > 
-> > > Performance impact (tested on qemu env with 1 riscv64 hart, 1GB mem)
-> > >     hackbench -s 512 -l 200 -g 15 -f 25 -P
-> > >     2.0% slowdown
-> > > 
-> > > Signed-off-by: Xianting Tian <xianting.tian@linux.alibaba.com>
-> > 
-> > What changed since Xianting posted it himself a week ago:
-> > https://lore.kernel.org/linux-riscv/20220828135407.3897717-1-xianting.tian@linux.alibaba.com/
-> > 
-> > There's an older patch from Du Lao adding STACKLEAK too:
-> > https://lore.kernel.org/linux-riscv/20220615213834.3116135-1-daolu@rivosinc.com/
-> > 
-> > But since there's been no activity there since June...
+First of all, thanks Ard for the historical explanation!
+
+
+On 07/10/2022 06:11, Ard Biesheuvel wrote:
+> [...]
+>> I think it'd be great to make it configurable! Ard, do you have any
+>> sense of what the max/min, etc, should be here?
+>>
 > 
-> Looks like the only issues were some commit log wording stuff, and that
-> there's a test suite that should be run.  It's not clear from the commits
-> that anyone has done that, I'm fine with the patch if it passes the tests
-> but don't really know how to run them.
+> Given that dbx on an arbitrary EFI system with secure boot enabled is
+> already almost 4k, that seems like a reasonable default. As for the
+> upper bound, there is no way to know what weird firmware bugs you
+> might tickle by choosing highly unusual values here.
+> 
+> If you need to store lots of data, you might want to look at [0] for
+> some work done in the past on using capsule update for preserving data
+> across a reboot. In the general case, this is not as useful, as the
+> capsule is only delivered to the firmware after invoking the
+> ResetSystem() EFI runtime service (as opposed to SetVariable() calls
+> taking effect immediately). However, if you need to capture large
+> amounts of data, and can tolerate the uncertainty involved in the
+> capsule approach, it might be a reasonable option.
+> 
+> [0] https://lore.kernel.org/all/20200312011335.70750-1-qiuxu.zhuo@intel.com/
 
-Enable CONFIG_LKDTM, and do:
+So, you mean 4K as the default? I can change, but I would try to not
+mess with the current users, is there a case you can imagine something
+like 4k would fail? Maybe 2K is safer?
 
-  echo STACKLEAK_ERASING > /sys/kernel/debug/provoke-crash/DIRECT
+As for the maximum, I've tested with many values, and when it's larger
+than ~30000 for edk2/ovmf, it fails with EFI_OUT_OF_RESOURCES and
+doesn't collect the log; other than that, no issues observed.
 
-Example GOOD/BAD output below, taken from:
+When set to ~24000, the interesting is that we have fewer big logs in
+/sys/fs/pstore, so it's nice to see compared to the bunch of 1K files heheh
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/misc/lkdtm/stackleak.c?id=72b61896f2b47fa4b98e86184bc0e6ddbd1a8db1
+Anyway, let's agree on the default and then I can resubmit that, I'm
+glad you both consider that it's a good idea =)
 
-GOOD result on x86_64:
+Thanks,
 
-| # echo STACKLEAK_ERASING > /sys/kernel/debug/provoke-crash/DIRECT
-| lkdtm: Performing direct entry STACKLEAK_ERASING
-| lkdtm: stackleak stack usage:
-|   high offset: 168 bytes
-|   current:     336 bytes
-|   lowest:      656 bytes
-|   tracked:     656 bytes
-|   untracked:   400 bytes
-|   poisoned:    15152 bytes
-|   low offset:  8 bytes
-| lkdtm: OK: the rest of the thread stack is properly erased
 
-GOOD result on arm64:
-
-| # echo STACKLEAK_ERASING > /sys/kernel/debug/provoke-crash/DIRECT
-| lkdtm: Performing direct entry STACKLEAK_ERASING
-| lkdtm: stackleak stack usage:
-|   high offset: 336 bytes
-|   current:     656 bytes
-|   lowest:      1232 bytes
-|   tracked:     1232 bytes
-|   untracked:   672 bytes
-|   poisoned:    14136 bytes
-|   low offset:  8 bytes
-| lkdtm: OK: the rest of the thread stack is properly erased
-
-BAD result on arm64:
-
-| # echo STACKLEAK_ERASING > /sys/kernel/debug/provoke-crash/DIRECT
-| lkdtm: Performing direct entry STACKLEAK_ERASING
-| lkdtm: FAIL: non-poison value 24 bytes below poison boundary: 0x0
-| lkdtm: FAIL: non-poison value 32 bytes below poison boundary: 0xffff8000083dbc00
-...
-| lkdtm: FAIL: non-poison value 1912 bytes below poison boundary: 0x78b4b9999e8cb15
-| lkdtm: FAIL: non-poison value 1920 bytes below poison boundary: 0xffff8000083db400
-| lkdtm: stackleak stack usage:
-|   high offset: 336 bytes
-|   current:     688 bytes
-|   lowest:      1232 bytes
-|   tracked:     576 bytes
-|   untracked:   288 bytes
-|   poisoned:    15176 bytes
-|   low offset:  8 bytes
-| lkdtm: FAIL: the thread stack is NOT properly erased!
-| lkdtm: Unexpected! This kernel (5.18.0-rc1-00013-g1f7b1f1e29e0-dirty aarch64) was built with CONFIG_GCC_PLUGIN_STACKLEAK=y
-
-Mark.
+Guilherme
