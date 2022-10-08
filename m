@@ -2,98 +2,121 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BA825F8273
-	for <lists+linux-efi@lfdr.de>; Sat,  8 Oct 2022 04:36:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10ABB5F83DB
+	for <lists+linux-efi@lfdr.de>; Sat,  8 Oct 2022 08:37:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229511AbiJHCg4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 7 Oct 2022 22:36:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47696 "EHLO
+        id S229547AbiJHGhh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 8 Oct 2022 02:37:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbiJHCgz (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Oct 2022 22:36:55 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FFE0127926
-        for <linux-efi@vger.kernel.org>; Fri,  7 Oct 2022 19:36:54 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id i7-20020a17090a65c700b0020ad9666a86so8768882pjs.0
-        for <linux-efi@vger.kernel.org>; Fri, 07 Oct 2022 19:36:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=BhwPrOuYUwoWzRSktEsVhVADMKFqjhqc+NN8M06UFVQ=;
-        b=X2+wqrrC1epfsfjZd6c945cE5qsFPLh2kXOPBFlPs4d+maA1HHm84N4prBkJ+mRwUQ
-         R5U8jBYHa0pzXG3r2xBpIpz8jnWAStmK7d8UAn0nKTje3jtPDAhyBls9fgLb13LQkJtr
-         DaJbiIKTYYtQGpmyRed+VjffyPfBecFwXYU5I=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BhwPrOuYUwoWzRSktEsVhVADMKFqjhqc+NN8M06UFVQ=;
-        b=qcc2HqsdZ05hpjfJp+TDRZCiJyx7cp4MPQbPUbTuWCKHr3Y/n2vI+AI3nnhnQrOt7e
-         jPpJR9CrvT6spW/fdIOwNmuQoqzZ2SCpBK+V1M6PV5l26MyCeJOi71z7siq9i/sIkbrq
-         tcx2iSJgVw9MBybPbYpIX2Ktf7Bu6If9W1FLaixFlxMmENlRREYXfqU4yI4PLjlBlxqa
-         W5aFiMaKka4YywWo7u8rVEphWkidM3kiCWPyVnEFrnnHBrQPRBGg6LCXMEsL3PNa749K
-         XExcRPp0/8VL21Lo97EC7NiM4ooE72TRWRhVMxh/vhQZZgGkJCXk8Fs87cswFZeXMUtx
-         KIWw==
-X-Gm-Message-State: ACrzQf0wKg0eKAZD3axmNDbUFAtvBBnMH0eRLyQRHQFNX0t+0uu7qVT4
-        X7zj2NNvThhFkuPF+RhABbVpbhgElKKCIw==
-X-Google-Smtp-Source: AMsMyM70GenZvtpj/9K5xkd2D0aAutcWDIhWfx1adPycILvsyUBR8+KQtJUnl4JpYz7kYGjr7GL5Ng==
-X-Received: by 2002:a17:90b:1e46:b0:20a:c49f:9929 with SMTP id pi6-20020a17090b1e4600b0020ac49f9929mr8303651pjb.221.1665196613803;
-        Fri, 07 Oct 2022 19:36:53 -0700 (PDT)
-Received: from [127.0.0.1] (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id z11-20020a63190b000000b0042aca53b4cesm2365872pgl.70.2022.10.07.19.36.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Oct 2022 19:36:53 -0700 (PDT)
-Date:   Fri, 07 Oct 2022 19:36:51 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-CC:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, kernel-dev@igalia.com,
-        kernel@gpiccoli.net, anton@enomsg.org, ccross@android.com,
-        tony.luck@intel.com, linux-efi@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_8/8=5D_efi=3A_pstore=3A_Add_modul?= =?US-ASCII?Q?e_parameter_for_setting_the_record_size?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <cc5945c8-3aa6-980d-902f-ac72f1f3902c@igalia.com>
-References: <20221006224212.569555-1-gpiccoli@igalia.com> <20221006224212.569555-9-gpiccoli@igalia.com> <202210061614.8AA746094A@keescook> <CAMj1kXF4UyRMh2Y_KakeNBHvkHhTtavASTAxXinDO1rhPe_wYg@mail.gmail.com> <f857b97c-9fb5-8ef6-d1cb-3b8a02d0e655@igalia.com> <CAMj1kXFy-2KddGu+dgebAdU9v2sindxVoiHLWuVhqYw+R=kqng@mail.gmail.com> <2a341c4d-763e-cfa4-0537-93451d8614fa@igalia.com> <202210071230.63CF832@keescook> <cc5945c8-3aa6-980d-902f-ac72f1f3902c@igalia.com>
-Message-ID: <A9E81CC6-089A-42E4-AFD6-588F2E015946@chromium.org>
+        with ESMTP id S229515AbiJHGhg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 8 Oct 2022 02:37:36 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 567C786F8D;
+        Fri,  7 Oct 2022 23:37:34 -0700 (PDT)
+Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.54])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4MkwQd0X1gzkXvX;
+        Sat,  8 Oct 2022 14:35:05 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Sat, 8 Oct 2022 14:37:32 +0800
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Sat, 8 Oct 2022 14:37:32 +0800
+Message-ID: <28b5713f-6379-ef36-5139-6c3f0cbf27e8@huawei.com>
+Date:   Sat, 8 Oct 2022 14:37:31 +0800
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v2] efi/arm: dump UEFI runtime page tables for ARM
+Content-Language: en-US
+To:     Russell King <linux@armlinux.org.uk>,
+        Ard Biesheuvel <ardb@kernel.org>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>
+References: <20220930101024.118394-1-wangkefeng.wang@huawei.com>
+From:   Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <20220930101024.118394-1-wangkefeng.wang@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+Sorry, forget to Cc Ard and efi maillist, do it now.
 
-
-On October 7, 2022 4:29:55 PM PDT, "Guilherme G=2E Piccoli" <gpiccoli@igal=
-ia=2Ecom> wrote:
->On 07/10/2022 16:32, Kees Cook wrote:
->> [=2E=2E=2E]
->> Given OVMF showing this as a max, it doesn't seem right to also make
->> this a minimum? Perhaps choose a different minimum to be enforced=2E
+On 2022/9/30 18:10, Kefeng Wang wrote:
+> UEFI runtime page tables dump only for ARM64 at present,
+> but ARM support EFI and ARM_PTDUMP_DEBUGFS now. Since
+> ARM could potentially execute with a 1G/3G user/kernel
+> split, choosing 1G as the upper limit for UEFI runtime
+> end, with this, we could enable UEFI runtime page tables.
 >
->Hi Kees! Through my tests, I've noticed low values tend to cause issues
->(didn't go further in the investigation), IIRC even 512 caused problems
->on "deflate" (worked in the others)=2E
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> ---
+> v2: update upper limit for ARM, only build test due to
+>      my qemu without UEFI boot support.
+>   arch/arm/include/asm/ptdump.h      | 1 +
+>   arch/arm64/include/asm/ptdump.h    | 1 +
+>   drivers/firmware/efi/arm-runtime.c | 4 ++--
+>   3 files changed, 4 insertions(+), 2 deletions(-)
 >
->I'll try again 512 to see how it goes, but I'm not so sure what would be
->the use of such low values, it does truncate a lot and "pollute" the
->pstore fs with many small files=2E But I can go with any value you/Ard
->think is appropriate (given it works with all compression algorithms
->heh) - currently the minimum of 1024 is enforced in the patch=2E
-
-Right, but not everyone uses compression=2E On the other hand, this was ne=
-ver configurable before, so, sure, let's do 1k as a minimum=2E (And a comme=
-nt in the source=2E)
-
-
---=20
-Kees Cook
+> diff --git a/arch/arm/include/asm/ptdump.h b/arch/arm/include/asm/ptdump.h
+> index 0c2d3d0d4cc6..aad1d034136c 100644
+> --- a/arch/arm/include/asm/ptdump.h
+> +++ b/arch/arm/include/asm/ptdump.h
+> @@ -21,6 +21,7 @@ struct ptdump_info {
+>   
+>   void ptdump_walk_pgd(struct seq_file *s, struct ptdump_info *info);
+>   #ifdef CONFIG_ARM_PTDUMP_DEBUGFS
+> +#define EFI_RUNTIME_MAP_END	SZ_1G
+>   void ptdump_debugfs_register(struct ptdump_info *info, const char *name);
+>   #else
+>   static inline void ptdump_debugfs_register(struct ptdump_info *info,
+> diff --git a/arch/arm64/include/asm/ptdump.h b/arch/arm64/include/asm/ptdump.h
+> index b1dd7ecff7ef..581caac525b0 100644
+> --- a/arch/arm64/include/asm/ptdump.h
+> +++ b/arch/arm64/include/asm/ptdump.h
+> @@ -23,6 +23,7 @@ struct ptdump_info {
+>   
+>   void ptdump_walk(struct seq_file *s, struct ptdump_info *info);
+>   #ifdef CONFIG_PTDUMP_DEBUGFS
+> +#define EFI_RUNTIME_MAP_END	DEFAULT_MAP_WINDOW_64
+>   void __init ptdump_debugfs_register(struct ptdump_info *info, const char *name);
+>   #else
+>   static inline void ptdump_debugfs_register(struct ptdump_info *info,
+> diff --git a/drivers/firmware/efi/arm-runtime.c b/drivers/firmware/efi/arm-runtime.c
+> index 3359ae2adf24..8f8ae479061b 100644
+> --- a/drivers/firmware/efi/arm-runtime.c
+> +++ b/drivers/firmware/efi/arm-runtime.c
+> @@ -25,14 +25,14 @@
+>   #include <asm/mmu.h>
+>   #include <asm/pgalloc.h>
+>   
+> -#if defined(CONFIG_PTDUMP_DEBUGFS) && defined(CONFIG_ARM64)
+> +#if defined(CONFIG_PTDUMP_DEBUGFS) || defined(CONFIG_ARM_PTDUMP_DEBUGFS)
+>   #include <asm/ptdump.h>
+>   
+>   static struct ptdump_info efi_ptdump_info = {
+>   	.mm		= &efi_mm,
+>   	.markers	= (struct addr_marker[]){
+>   		{ 0,				"UEFI runtime start" },
+> -		{ DEFAULT_MAP_WINDOW_64,	"UEFI runtime end" },
+> +		{ EFI_RUNTIME_MAP_END,		"UEFI runtime end" },
+>   		{ -1,				NULL }
+>   	},
+>   	.base_addr	= 0,
