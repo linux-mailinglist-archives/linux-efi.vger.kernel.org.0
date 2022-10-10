@@ -2,74 +2,127 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F6F45F8EE6
-	for <lists+linux-efi@lfdr.de>; Sun,  9 Oct 2022 23:17:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8BD95F96DA
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Oct 2022 04:36:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231435AbiJIVRv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 9 Oct 2022 17:17:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53950 "EHLO
+        id S230198AbiJJCgR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 9 Oct 2022 22:36:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231806AbiJIVRd (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 9 Oct 2022 17:17:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6C17BE2B
-        for <linux-efi@vger.kernel.org>; Sun,  9 Oct 2022 14:17:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DF5860C6F
-        for <linux-efi@vger.kernel.org>; Sun,  9 Oct 2022 21:17:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B4711C433C1;
-        Sun,  9 Oct 2022 21:17:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665350234;
-        bh=pR/O0dCj7v8fkfKebRyDvYIUcNtdT55p0ZkF4wD09ro=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=p+jedHGxy819G5lCXp+seAIpkQzqtRjtNMBGtxFpdff98YgtTzc6g84uNjtUE/C+5
-         LCvBaSxb5qA5/ZLKLP4JE/S22/6M1Qm6P9gghzY324OTjGmHKio/sxLByHetKB4K5d
-         nF7hS8DXwDyweouDzGnHtBCXbGaPmS9FQmpeAteZyNQ1p+8jEkAhiQSwfOmoArbk6s
-         SoD31C39/Fzmx6ZwT6JJcnVarPyOEClx1c/cvUcaW2IIYPCTws0quS4wvKR67K/Iaa
-         kIAnhgrwScVeR8pcDWieI3wOT4zGTcYd9Jp+2L0muzqgWg4HL4h7lyrshrBKMZtiLB
-         T0ystQ4S6e/uw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 9EC6DE21EC5;
-        Sun,  9 Oct 2022 21:17:14 +0000 (UTC)
-Subject: Re: [GIT PULL] EFI updates for v6.1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20221003115910.973547-1-ardb@kernel.org>
-References: <20221003115910.973547-1-ardb@kernel.org>
-X-PR-Tracked-List-Id: <linux-efi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20221003115910.973547-1-ardb@kernel.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next-for-v6.1
-X-PR-Tracked-Commit-Id: d3549a938b73f203ef522562ae9f2d38aa43d234
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 0e470763d84dcad27284067647dfb4b1a94dfce0
-Message-Id: <166535023464.11566.712449809935957380.pr-tracker-bot@kernel.org>
-Date:   Sun, 09 Oct 2022 21:17:14 +0000
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     torvalds@linux-foundation.org, linux-efi@vger.kernel.org,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230027AbiJJCgQ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 9 Oct 2022 22:36:16 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1343E3ECCB;
+        Sun,  9 Oct 2022 19:36:15 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D00CA1480;
+        Sun,  9 Oct 2022 19:36:20 -0700 (PDT)
+Received: from entos-ampere-02.shanghai.arm.com (entos-ampere-02.shanghai.arm.com [10.169.212.212])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 27EB13F67D;
+        Sun,  9 Oct 2022 19:36:07 -0700 (PDT)
+From:   Jia He <justin.he@arm.com>
+To:     Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+        Yazen Ghannam <yazen.ghannam@amd.com>,
+        Jan Luebbe <jlu@pengutronix.de>,
+        Khuong Dinh <khuong@os.amperecomputing.com>,
+        Kani Toshi <toshi.kani@hpe.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
+        devel@acpica.org, "Rafael J . Wysocki" <rafael@kernel.org>,
+        Shuai Xue <xueshuai@linux.alibaba.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
+        nd@arm.com, Jia He <justin.he@arm.com>
+Subject: [PATCH v8 0/7] Make ghes_edac a proper module
+Date:   Mon, 10 Oct 2022 02:35:52 +0000
+Message-Id: <20221010023559.69655-1-justin.he@arm.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The pull request you sent on Mon,  3 Oct 2022 13:59:10 +0200:
+Commit dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES in
+apci_init()") introduced a bug that ghes_edac_register() would be invoked
+before edac_init(). Because at that time, the bus "edac" hasn't been even
+registered, this created sysfs /devices/mc0 instead of
+/sys/devices/system/edac/mc/mc0 on an Ampere eMag server.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next-for-v6.1
+The solution is to make ghes_edac a proper module.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/0e470763d84dcad27284067647dfb4b1a94dfce0
+Changelog:
+v8:
+ - merge v7 two force_enable and ghes_get_devices() patches into one
+ - make force_enable static
+v7:https://lore.kernel.org/lkml/20220929023726.73727-1-justin.he@arm.com/
+ - remove the ghes_edac_preferred and ghes_present (suggested by Borislav)
+ - adjust the patch splitting, no major functional changes
+ - remove the r-b tag in those changed patches
+v6:https://www.spinics.net/lists/kernel/msg4511453.html
+ - no code changes from v5 patches
+ - add the reviewed and acked by from Toshi
+ - describe the removal of ghes_edac_force_enable checking in Patch 05
+v5: https://www.spinics.net/lists/kernel/msg4502787.html
+ - add the review-by from Toshi for patch 04 and 06
+ - refine the commit msg
+ - remove the unconditional set of ghes_edac_force_enable on Arm
+v4: https://lore.kernel.org/lkml/20220831074027.13849-6-justin.he@arm.com/
+ - move the kernel boot option to ghes module parameter
+ - collapse th ghes_present and ghes_edac_preferred into one patch
+v3: https://lore.kernel.org/lkml/20220822154048.188253-1-justin.he@arm.com/
+ - refine the commit logs
+ - introduce ghes preferred and present flag (by Toshi)
+ - move force_load to setup parameter
+ - add the ghes_edac_preferred() check for x86/Arm edac drivers
+v2: https://lore.kernel.org/lkml/20220817143458.335938-1-justin.he@arm.com/
+ - add acked-by tag of Patch 1 from Ard
+ - split the notifier patch
+ - add 2 patch to get regular drivers selected when ghes edac is not loaded
+ - fix an errno in igen6 driver
+ - add a patch to fix the sparse warning of ghes
+ - refine the commit logs
+v1: https://lore.kernel.org/lkml/20220811091713.10427-1-justin.he@arm.com/
 
-Thank you!
+Jia He (7):
+  efi/cper: export several helpers for ghes_edac to use
+  EDAC/ghes: Add a notifier for reporting memory errors
+  EDAC/ghes: Prepare to make ghes_edac a proper module
+  EDAC/ghes: Make ghes_edac a proper module to remove the dependency on
+    ghes
+  EDAC: Add the ghes_get_devices() check for chipset-specific edac
+    drivers
+  apei/ghes: Use unrcu_pointer for cmpxchg
+  EDAC/igen6: Return consistent errno when another edac driver is
+    enabled
+
+ drivers/acpi/apei/ghes.c       | 69 +++++++++++++++++++++++---
+ drivers/edac/Kconfig           |  4 +-
+ drivers/edac/amd64_edac.c      |  3 ++
+ drivers/edac/armada_xp_edac.c  |  3 ++
+ drivers/edac/edac_module.h     |  1 +
+ drivers/edac/ghes_edac.c       | 90 +++++++++++++++++++++-------------
+ drivers/edac/i10nm_base.c      |  3 ++
+ drivers/edac/igen6_edac.c      |  5 +-
+ drivers/edac/layerscape_edac.c |  3 ++
+ drivers/edac/pnd2_edac.c       |  3 ++
+ drivers/edac/sb_edac.c         |  3 ++
+ drivers/edac/skx_base.c        |  3 ++
+ drivers/edac/thunderx_edac.c   |  3 ++
+ drivers/edac/xgene_edac.c      |  3 ++
+ drivers/firmware/efi/cper.c    |  3 ++
+ include/acpi/ghes.h            | 34 ++++---------
+ 16 files changed, 164 insertions(+), 69 deletions(-)
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.25.1
+
