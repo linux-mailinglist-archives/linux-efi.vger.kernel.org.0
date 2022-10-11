@@ -2,83 +2,132 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32A635FB081
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Oct 2022 12:34:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C32815FB36D
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Oct 2022 15:28:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229749AbiJKKeG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 11 Oct 2022 06:34:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49530 "EHLO
+        id S229543AbiJKN2t (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 11 Oct 2022 09:28:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229560AbiJKKeF (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 11 Oct 2022 06:34:05 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17FF27F0BC;
-        Tue, 11 Oct 2022 03:34:02 -0700 (PDT)
-Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 90A981EC058B;
-        Tue, 11 Oct 2022 12:33:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1665484437;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=MEGhEG08A2CxT7tMyUIVoUadHr6tAgVCQe8u5A1hQr0=;
-        b=Z/M98r/jxCFrLRfrwDFZPVZUbFoMAPE4b74V7KSqmfwU0rOFZY+3TKqnT0qKEPXrEbx4hj
-        KF2fVoSdLJbZdsUqYeF4T/7FtVrqNpK5Qtl2zUwi3eYwMksfA98QrjoviS6XbtlSuuASuL
-        KJTat5juyOomeL6c+2058UvqZZcH748=
-Date:   Tue, 11 Oct 2022 12:33:53 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Jia He <justin.he@arm.com>
-Cc:     Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Jan Luebbe <jlu@pengutronix.de>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Kani Toshi <toshi.kani@hpe.com>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-        devel@acpica.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
-        nd@arm.com, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v8 6/7] apei/ghes: Use unrcu_pointer for cmpxchg
-Message-ID: <Y0VGkUxpqiIzIFzB@zn.tnic>
-References: <20221010023559.69655-1-justin.he@arm.com>
- <20221010023559.69655-7-justin.he@arm.com>
+        with ESMTP id S230050AbiJKN2r (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 11 Oct 2022 09:28:47 -0400
+Received: from mail-vs1-xe31.google.com (mail-vs1-xe31.google.com [IPv6:2607:f8b0:4864:20::e31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CC9C50509
+        for <linux-efi@vger.kernel.org>; Tue, 11 Oct 2022 06:28:45 -0700 (PDT)
+Received: by mail-vs1-xe31.google.com with SMTP id h4so14223588vsr.11
+        for <linux-efi@vger.kernel.org>; Tue, 11 Oct 2022 06:28:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=eclypsium.com; s=google;
+        h=cc:to:subject:message-id:date:from:references:in-reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=raH7WVDSsvCPKQIhYgmZFVAAGSUF5nc09Zedq+rsMAU=;
+        b=RIe4dBR0aMf5OdrqYm/Utd+N0OJj8M7yVRnxQt0SWrAE+Icqli8dm198FiWu1zyE4K
+         ThFkWDgg/9Td5d2IRDtyLEfSPwokGQrcFSl+ZlD2K4af69I3g3EB9B1emQIrMWvScJHw
+         r+I3aZYKyOKoXo9+c2guSFePs38N6mNAHs3VoFJnnpA5I08Jok+DXwlLOgxNK3KgfAUZ
+         XdH4LxlWpNY4uzGhO4Af+xDw0bOM1Vadya5Rtbe4apuRaNOzWyL2aYvjt49BUK4JI6Dw
+         lHsf8fQMu1jQgOb7cxH8q3pAtHNmlqi/rQWzUKfzGN0Ycw4ppIGnoOMf/vkNLy9aLTOC
+         /peA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:references:in-reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=raH7WVDSsvCPKQIhYgmZFVAAGSUF5nc09Zedq+rsMAU=;
+        b=xcGF5688TWU3aZzRCLzD8ogPJOWsx/gtXUv4ZKiIrp9C7XeSGYKipXLzg68FavAwxA
+         bUrMMyAJ1GsItWl16HSyziXxXXaGY96yjsYWEcu8yZEeDWJF135JBGnw18L7Gi7AmjTH
+         NCjl1Hew92YkvfVnRI0QSzBcK9WV8M84UvKOMxQ426l2iVYXthg6FQrX8BsPoqW8pTld
+         1/JJdbdJnAW6g/N4zE9ux7co1PDxLdOeSn2mjGtfbLo2eNePr3IUwQ3IVw2OluK7tQJo
+         84N1ChK63FP5yxO123ta5IHa0SsT3bO2nf37GhPfTFKjC6caIUSgaQ1KB1GHL3foot1+
+         SVGQ==
+X-Gm-Message-State: ACrzQf0l6+6Nmbf9pkIw38fsm5RCdpuQ1fnwptUI/Lua+tquOK2hhhYf
+        xHMmsOiMTaklFMht1D5evmf143y16P9R5FGaRVvLWQ==
+X-Google-Smtp-Source: AMsMyM4RCzDu9DE1SgMdp+TCHAnmXWjm2D/kY89a9RpcBY1OK3SAh2E+19si06YAqT4aoi2eeQCzNy8ngm5l9Ym0oU4=
+X-Received: by 2002:a05:6102:301a:b0:3a7:8755:2b7e with SMTP id
+ s26-20020a056102301a00b003a787552b7emr4741009vsa.32.1665494924704; Tue, 11
+ Oct 2022 06:28:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20221010023559.69655-7-justin.he@arm.com>
+Received: by 2002:ab0:136f:0:b0:3d2:4916:f286 with HTTP; Tue, 11 Oct 2022
+ 06:28:44 -0700 (PDT)
+In-Reply-To: <20221007155323.ue4cdthkilfy4lbd@box.shutemov.name>
+References: <20220704135833.1496303-1-martin.fernandez@eclypsium.com>
+ <20220704135833.1496303-3-martin.fernandez@eclypsium.com> <20221007155323.ue4cdthkilfy4lbd@box.shutemov.name>
+From:   Martin Fernandez <martin.fernandez@eclypsium.com>
+Date:   Tue, 11 Oct 2022 10:28:44 -0300
+Message-ID: <CAKgze5bRKph0SPOerLDLZb5KckPX5+q0y649XCU4J5HehYVu0A@mail.gmail.com>
+Subject: Re: [PATCH v9 2/9] mm/mmzone: Tag pg_data_t with crypto capabilities
+To:     "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
+        kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        ardb@kernel.org, dvhart@infradead.org, andy@infradead.org,
+        gregkh@linuxfoundation.org, rafael@kernel.org, rppt@kernel.org,
+        akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
+        hughsient@gmail.com, alex.bazhaniuk@eclypsium.com,
+        alison.schofield@intel.com, keescook@chromium.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Oct 10, 2022 at 02:35:58AM +0000, Jia He wrote:
-> ghes_estatus_caches should be add rcu annotation to avoid sparse warnings.
->    drivers/acpi/apei/ghes.c:733:25: sparse: sparse: incompatible types in comparison expression (different address spaces):
->    drivers/acpi/apei/ghes.c:733:25: sparse:    struct ghes_estatus_cache [noderef] __rcu *
->    drivers/acpi/apei/ghes.c:733:25: sparse:    struct ghes_estatus_cache *
->    drivers/acpi/apei/ghes.c:813:25: sparse: sparse: incompatible types in comparison expression (different address spaces):
->    drivers/acpi/apei/ghes.c:813:25: sparse:    struct ghes_estatus_cache [noderef] __rcu *
->    drivers/acpi/apei/ghes.c:813:25: sparse:    struct ghes_estatus_cache *
-> 
-> unrcu_pointer is to strip the __rcu in cmpxchg.
+On 10/7/22, Kirill A. Shutemov <kirill@shutemov.name> wrote:
+> On Mon, Jul 04, 2022 at 10:58:26AM -0300, Martin Fernandez wrote:
+>> Add a new member in the pg_data_t struct to tell whether the node
+>> corresponding to that pg_data_t is able to do hardware memory
+>> encryption.
+>>
+>> This will be read from sysfs.
+>>
+>> Signed-off-by: Martin Fernandez <martin.fernandez@eclypsium.com>
+>> ---
+>>  include/linux/mmzone.h | 3 +++
+>>  mm/page_alloc.c        | 1 +
+>>  2 files changed, 4 insertions(+)
+>>
+>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+>> index aab70355d64f..6fd4785f1d05 100644
+>> --- a/include/linux/mmzone.h
+>> +++ b/include/linux/mmzone.h
+>> @@ -883,6 +883,9 @@ typedef struct pglist_data {
+>>  	struct task_struct *kcompactd;
+>>  	bool proactive_compact_trigger;
+>>  #endif
+>> +
+>> +	bool crypto_capable;
+>> +
+>
+> There's already pgdat->flags. Any reason we cannot encode it there?
 
-Is this only to shut up sparse or actually fixing anything?
+Not really a reason, I'll considerate when I send then next version. I
+tried to quickly find for references of what kind of flags does it
+have, I didn't find any. Do you suggest it should work?
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+>>  	/*
+>>  	 * This is a per-node reserve of pages that are not available
+>>  	 * to userspace allocations.
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index e008a3df0485..147437329ac7 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -7729,6 +7729,7 @@ static void __init free_area_init_node(int nid)
+>>  	pgdat->node_id = nid;
+>>  	pgdat->node_start_pfn = start_pfn;
+>>  	pgdat->per_cpu_nodestats = NULL;
+>> +	pgdat->crypto_capable = memblock_node_is_crypto_capable(nid);
+>>
+>>  	if (start_pfn != end_pfn) {
+>>  		pr_info("Initmem setup node %d [mem %#018Lx-%#018Lx]\n", nid,
+>> --
+>> 2.30.2
+>>
+>
+> --
+>   Kiryl Shutsemau / Kirill A. Shutemov
+>
