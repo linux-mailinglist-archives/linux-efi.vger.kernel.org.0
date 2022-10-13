@@ -2,57 +2,59 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 111A75FD813
-	for <lists+linux-efi@lfdr.de>; Thu, 13 Oct 2022 13:05:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E82D95FD82B
+	for <lists+linux-efi@lfdr.de>; Thu, 13 Oct 2022 13:14:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229579AbiJMLFt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 13 Oct 2022 07:05:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45390 "EHLO
+        id S229702AbiJMLOZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 13 Oct 2022 07:14:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbiJMLFr (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 13 Oct 2022 07:05:47 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4D9E105647
-        for <linux-efi@vger.kernel.org>; Thu, 13 Oct 2022 04:05:45 -0700 (PDT)
+        with ESMTP id S229513AbiJMLOY (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 13 Oct 2022 07:14:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F7E011E46B
+        for <linux-efi@vger.kernel.org>; Thu, 13 Oct 2022 04:14:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 89565B81C48
-        for <linux-efi@vger.kernel.org>; Thu, 13 Oct 2022 11:05:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D6AC433C1
-        for <linux-efi@vger.kernel.org>; Thu, 13 Oct 2022 11:05:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 81650616D1
+        for <linux-efi@vger.kernel.org>; Thu, 13 Oct 2022 11:14:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD710C433D6
+        for <linux-efi@vger.kernel.org>; Thu, 13 Oct 2022 11:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665659143;
-        bh=p4cD8OBbLizSs4+VUk4rpzAmtmYyQIuHe25plYpK/yg=;
+        s=k20201202; t=1665659661;
+        bh=xRRVcwiFWV2h6/EhnnM6IlEs/xRpcuulY7ZlhcUT8Uc=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=k3RBDwfXbN+uXTmWPvfwq/gxrxeLz+NB4XmOiknBYiRNxuDaSGBakGIZGBOBmc17Y
-         So462KvbvkE2s3XM6WvhSjLz5shxkHW4a/NR1oPxNtB5w7mF6Ym+xP9ueQ9Ip18nNf
-         zTXOWzlVN+l4yPLXNRi9NnAlsQm5tCSbtiXF9T4GcE5b42nntSnyRLI61E2qj4ldts
-         eJ2LZQ+Q0D0Yy2xTMllONPxBTySEE9m4vdpthgGMhRYmuvgxgin3D36WDQwrgO6kdn
-         BIogfYbvNXm3AOQtBHzFY+cHY4uUNPbYnV0EDq5OJ7UM3817uoNHW9tdUkGcBH4GBH
-         y6GM+ppmNawXA==
-Received: by mail-lj1-f171.google.com with SMTP id f9so1841037ljk.12
-        for <linux-efi@vger.kernel.org>; Thu, 13 Oct 2022 04:05:43 -0700 (PDT)
-X-Gm-Message-State: ACrzQf0lthWSWyuEJuU1kEtJAE5plJNcmie/e9JSDI/Y/oQf0NzRTnBf
-        6ALhpnhqjzrNkl3srzn64WYuKlaDdKjyrtBohOw=
-X-Google-Smtp-Source: AMsMyM5GyK0Ly5bUufhIzQP7PMG7acTe4p8k6O68hZRmrXZ2rn2XQ/xU6SYsUvAzeNuFUl0K6ua9TogWzmaCQ9qG6NU=
+        b=u3zzimkrw7peLCXz7tOD4cwrc3vY4lLdLwO48QVJxB3uZjl8mqN98IrmvCCITB0C4
+         ksYn2YQybWNNvUDYtNQPv5/Zw+UaGpRYlY7evIgR7ci2WMTlnJ4thRN2NvjDhXYoLD
+         xfj8yL27PPr23mUAG9cqYpLxoMwqaLU+3AYMJuOoe+NkZzZziGpoVIi2XxEHhHDBog
+         FHpzVD27PtdkJQdnaTJNK755hi6zOXDKWjZ+DvZPSCGp7NQB0mo6LXbG+l0mpe940R
+         SULe4nD8QUbdEJPCWV7kWt1oglJLzucKqXQFJeMgj5xN6xrkj2mBX2bUFg0fXqRMkN
+         q0WtS5qzr6V7w==
+Received: by mail-lj1-f172.google.com with SMTP id c20so1883748ljj.7
+        for <linux-efi@vger.kernel.org>; Thu, 13 Oct 2022 04:14:21 -0700 (PDT)
+X-Gm-Message-State: ACrzQf31oE9fOGI1SmRD+0CwAWr8tG1C/nuT6Ksysn8nne8PC5opnDgu
+        IlF8MIIulCpL7h8eplmz0uiA60zeEoUNh12h0gU=
+X-Google-Smtp-Source: AMsMyM6VbymVjF5xk0kdpz6YXK8ikCnnWMXKKBK7narTIOFBLK+QTe8cjzIjk/yKhIP1Lm5cpTlIjgtXy0o93tJ7Hc0=
 X-Received: by 2002:a2e:b635:0:b0:26e:989e:438f with SMTP id
- s21-20020a2eb635000000b0026e989e438fmr8222444ljn.189.1665659141066; Thu, 13
- Oct 2022 04:05:41 -0700 (PDT)
+ s21-20020a2eb635000000b0026e989e438fmr8234528ljn.189.1665659659789; Thu, 13
+ Oct 2022 04:14:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <a101a10a-4fbb-5fae-2e3c-76cf96ed8fbd@linux.intel.com>
-In-Reply-To: <a101a10a-4fbb-5fae-2e3c-76cf96ed8fbd@linux.intel.com>
+References: <20221006101617.1137551-1-ardb@kernel.org>
+In-Reply-To: <20221006101617.1137551-1-ardb@kernel.org>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 13 Oct 2022 13:05:29 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGVDEC1rpTBi5YKLA4QeFe7Gps8NScCvUnFmJ2rO3Y0Ow@mail.gmail.com>
-Message-ID: <CAMj1kXGVDEC1rpTBi5YKLA4QeFe7Gps8NScCvUnFmJ2rO3Y0Ow@mail.gmail.com>
-Subject: Re: KASAN on SSDT override
-To:     =?UTF-8?B?QW1hZGV1c3ogU8WCYXdpxYRza2k=?= 
-        <amadeuszx.slawinski@linux.intel.com>
-Cc:     linux-efi@vger.kernel.org,
-        Cezary Rojewski <cezary.rojewski@intel.com>
+Date:   Thu, 13 Oct 2022 13:14:08 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXF98cx52+iuHKHu_x4XxpP4VyqgCjNeJYbRe4X2z9PjZQ@mail.gmail.com>
+Message-ID: <CAMj1kXF98cx52+iuHKHu_x4XxpP4VyqgCjNeJYbRe4X2z9PjZQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] efi: zboot: Expose decompressed image via
+ EFI_FIRMWARE_VOLUME2 protocol
+To:     linux-efi@vger.kernel.org
+Cc:     Peter Jones <pjones@redhat.com>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Lennart Poettering <lennart@poettering.net>,
+        Jeremy Linton <jeremy.linton@arm.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -62,172 +64,403 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 13 Oct 2022 at 12:57, Amadeusz S=C5=82awi=C5=84ski
-<amadeuszx.slawinski@linux.intel.com> wrote:
+On Thu, 6 Oct 2022 at 12:16, Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> Hi Ard,
+> In addition to exposing the decompressed payload to the LoadImage UEFI
+> boot service via the LoadFile2 protocol, which requires that the image
+> is signed if secure boot is enabled, let's expose it via the PI spec
+> protocol EFI_FIRMWARE_VOLUME2_PROTOCOL as well. This protocol is
+> typically exempt from secure boot checks on Tianocore PI/UEFI based
+> firmware implementations, removing the need to sign the inner image or
+> rely on hand-rolled LoadImage() implementations in cases where an
+> intermediate loader such as shim is being used.
 >
-> since v6.0-rc1 we seem to occasionally hit KASAN warning on one of the
-> platforms where we override SSDT.
->
-> I seem to have narrowed it down to merge commit
-> 97a77ab14ffac749ec2419c92ec2954111c22d22, I suspect that it is caused by
-> 3881ee0b1edce0ece72d24b7c74f46b73bd6dcba, but as the issue happens
-> sporadically it is bit hard to narrow it down.
->
-> Do you have any idea for potential fix?
->
+> Cc: Peter Jones <pjones@redhat.com>
+> Cc: Matthew Garrett <mjg59@srcf.ucam.org>
+> Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+> Cc: Lennart Poettering <lennart@poettering.net>
+> Cc: Jeremy Linton <jeremy.linton@arm.com>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 
-Yes, it seems that data should only be kfree()'d if the
-acpi_load_table() call returns an error. I missed that when I did the
-conversion
+OK, I am going to backpedal on this. While having another hack in the
+toolbox may be useful for shim or sd-stub, I still don't think this
+belongs in the kernel.
+
+And actually, given that the EFI zboot decompressor and the EFI stub
+are built from the exact same set of objects, it is relatively
+straight-forward to merge the two. This also means we can decompress
+the image directly into its final location, instead of copying it
+around twice. (Once by LoadImage() internally, and once in the stub
+when it randomizes, relocates etc)
+
+I pushed a PoC here:
+https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efi-zboot-direct
+
+I will send it out after the merge window closes.
 
 
-> Following is KASAN warning that we see:
+> ---
+>  drivers/firmware/efi/libstub/efistub.h |  34 +++-
+>  drivers/firmware/efi/libstub/file.c    |   3 +-
+>  drivers/firmware/efi/libstub/zboot.c   | 209 +++++++++++++++++++-
+>  include/linux/efi.h                    |   4 +
+>  4 files changed, 241 insertions(+), 9 deletions(-)
 >
-> [    6.367849] efi: loading SSDT from variable
-> rt298-feec8565-23da-477c-a92d-9e0d5216fd74
-> [    6.367851] ACPI: Host-directed Dynamic ACPI Table Load:
-> [    6.367851] ACPI: SSDT 0xFFFF88810457F000 000122 (v01 INTEL  ALC298
-> 00000000 INTL 20180105)
-> [    6.584455]
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> [    6.584455] BUG: KASAN: use-after-free in acpi_ns_repair_HID+0x125/0x2=
-42
-> [    6.584455] Read of size 1 at addr ffff88810457f0d3 by task
-> kworker/0:1/18
+> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+> index 313647b1c196..5e8f0d694af9 100644
+> --- a/drivers/firmware/efi/libstub/efistub.h
+> +++ b/drivers/firmware/efi/libstub/efistub.h
+> @@ -286,7 +286,7 @@ union efi_boot_services {
+>                 efi_status_t (__efiapi *install_configuration_table)(efi_guid_t *,
+>                                                                      void *);
+>                 efi_status_t (__efiapi *load_image)(bool, efi_handle_t,
+> -                                                   efi_device_path_protocol_t *,
+> +                                                   const efi_device_path_protocol_t *,
+>                                                     void *, unsigned long,
+>                                                     efi_handle_t *);
+>                 efi_status_t (__efiapi *start_image)(efi_handle_t, unsigned long *,
+> @@ -878,6 +878,38 @@ union efi_load_file_protocol {
+>         } mixed_mode;
+>  };
 >
-> [    6.584551] CPU: 0 PID: 18 Comm: kworker/0:1 Not tainted 5.19.0+ #100
-> [    6.584697] Hardware name: Intel Corporation Kabylake Client
-> platform/Kabylake R DDR4 RVP, BIOS KBLSE2R1.R00.X142.P00.1809060233
-> 09/06/2018
-> [    6.584857] Workqueue: events acpi_table_events_fn
-> [    6.585006] Call Trace:
-> [    6.585023]  <TASK>
-> [    6.585038]  dump_stack_lvl+0x49/0x63
-> [    6.585190]  print_report.cold+0x5e/0x5d3
-> [    6.585338]  ? acpi_ns_repair_HID+0x125/0x242
-> [    6.585482]  kasan_report+0xaa/0x120
-> [    6.585513]  ? acpi_ns_repair_HID+0x125/0x242
-> [    6.585661]  __asan_load1+0x6e/0x80
-> [    6.585805]  acpi_ns_repair_HID+0x125/0x242
-> [    6.585951]  acpi_ns_repair_CID+0x62/0x18e
-> [    6.586099]  acpi_ns_complex_repairs+0xb0/0xec
-> [    6.586129]  ? acpi_ns_repair_HID+0x242/0x242
-> [    6.586278]  acpi_ns_check_return_value+0x16f/0x1bf
-> [    6.586429]  acpi_ns_evaluate+0x69a/0x811
-> [    6.586455]  acpi_ut_evaluate_object+0xe3/0x301
-> [    6.586481]  acpi_ut_execute_CID+0xb1/0x344
-> [    6.586504]  ? acpi_ut_execute_UID+0x1b1/0x1f3
-> [    6.586527]  ? acpi_ut_execute_UID+0x1f3/0x1f3
-> [    6.586549]  ? acpi_os_signal_semaphore+0xa6/0xd0
-> [    6.586574]  ? acpi_ut_release_mutex+0x1cb/0x1e0
-> [    6.586599]  acpi_get_object_info+0x206/0x5cd
-> [    6.586626]  ? acpi_ns_copy_device_id+0x6f/0x6f
-> [    6.586649]  ? up+0x4b/0x70
-> [    6.586671]  ? acpi_os_signal_semaphore+0xa6/0xd0
-> [    6.586702]  acpi_init_device_object+0x5b5/0xd00
-> [    6.586729]  ? acpi_iommu_fwspec_init+0xc0/0xc0
-> [    6.586752]  ? acpi_get_handle+0x103/0x154
-> [    6.586774]  ? acpi_get_data+0x16/0x16
-> [    6.586798]  ? __kasan_kmalloc+0xae/0xe0
-> [    6.586821]  ? kmem_cache_alloc_trace+0x19c/0x340
-> [    6.586847]  acpi_add_single_object+0xe6/0xd20
-> [    6.586871]  ? acpi_scan_check_dep+0xdb/0x380
-> [    6.586895]  ? get_acpi_device+0x30/0x30
-> [    6.586917]  ? acpi_init_device_object+0xd00/0xd00
-> [    6.586940]  ? preempt_count_sub+0x18/0xc0
-> [    6.586964]  ? _raw_spin_unlock_irqrestore+0x27/0x50
-> [    6.586987]  ? up+0x4b/0x70
-> [    6.587008]  ? acpi_os_signal_semaphore+0xa6/0xd0
-> [    6.587033]  ? acpi_ut_release_mutex+0x1cb/0x1e0
-> [    6.587060]  acpi_bus_check_add+0x1aa/0x3c0
-> [    6.587082]  ? __kasan_check_write+0x14/0x20
-> [    6.587106]  ? acpi_add_single_object+0xd20/0xd20
-> [    6.587132]  ? wake_up_process+0x15/0x20
-> [    6.587153]  ? preempt_count_sub+0x18/0xc0
-> [    6.587176]  ? _raw_spin_unlock_irqrestore+0x27/0x50
-> [    6.587199]  ? up+0x4b/0x70
-> [    6.587220]  ? acpi_os_signal_semaphore+0xa6/0xd0
-> [    6.587247]  acpi_bus_check_add_1+0x16/0x20
-> [    6.587269]  acpi_ns_walk_namespace+0x183/0x308
-> [    6.587293]  ? acpi_bus_check_add_2+0x20/0x20
-> [    6.587316]  ? acpi_bus_check_add_2+0x20/0x20
-> [    6.587340]  acpi_walk_namespace+0xfa/0x14b
-> [    6.587366]  acpi_bus_scan+0x13a/0x180
-> [    6.587390]  ? acpi_bus_check_add_1+0x20/0x20
-> [    6.587421]  ? __mutex_lock_slowpath+0x20/0x20
-> [    6.587455]  ? _raw_spin_unlock_bh+0x30/0x30
-> [    6.587487]  acpi_table_events_fn+0x26/0x50
-> [    6.587520]  process_one_work+0x452/0x740
-> [    6.587559]  worker_thread+0x2bb/0x6f0
-> [    6.587597]  ? process_one_work+0x740/0x740
-> [    6.587629]  kthread+0x175/0x1b0
-> [    6.587656]  ? kthread_complete_and_exit+0x30/0x30
-> [    6.587691]  ret_from_fork+0x1f/0x30
-> [    6.587700]  </TASK>
+> +typedef struct efi_firmware_volume2_protocol efi_firmware_volume2_protocol_t;
+> +
+> +struct efi_firmware_volume2_protocol {
+> +       efi_status_t (__efiapi *get_volume_attributes)
+> +                    (efi_firmware_volume2_protocol_t const *, u64 *);
+> +       efi_status_t (__efiapi *set_volume_attributes)
+> +                    (efi_firmware_volume2_protocol_t const *, u64 *);
+> +       efi_status_t (__efiapi *read_file)
+> +                    (efi_firmware_volume2_protocol_t const *,
+> +                     efi_guid_t const *, void **, unsigned long *, u8 *type,
+> +                     u64 *attr, u32 *auth_status);
+> +       efi_status_t (__efiapi *read_section)
+> +                    (efi_firmware_volume2_protocol_t const *,
+> +                     efi_guid_t const *, u8 type, unsigned long instance,
+> +                     void **, unsigned long *, u32 *auth_status);
+> +       efi_status_t (__efiapi *write_file)
+> +                    (efi_firmware_volume2_protocol_t const *, u32, u32, void *);
+> +       efi_status_t (__efiapi *get_next_file)
+> +                    (efi_firmware_volume2_protocol_t const *, void *, u8 *type,
+> +                     efi_guid_t *, u64 *, unsigned long *);
+> +
+> +       u32             keysize;
+> +       efi_handle_t    parent_handle;
+> +
+> +       efi_status_t (__efiapi *get_info)
+> +                    (efi_firmware_volume2_protocol_t const *,
+> +                     efi_guid_t const *, unsigned long *, void *);
+> +       efi_status_t (__efiapi *set_info)
+> +                    (efi_firmware_volume2_protocol_t const *,
+> +                     efi_guid_t const *, unsigned long, void *);
+> +};
+> +
+>  typedef struct {
+>         u32 attributes;
+>         u16 file_path_list_length;
+> diff --git a/drivers/firmware/efi/libstub/file.c b/drivers/firmware/efi/libstub/file.c
+> index 995d9d823519..21c01ab0a328 100644
+> --- a/drivers/firmware/efi/libstub/file.c
+> +++ b/drivers/firmware/efi/libstub/file.c
+> @@ -86,7 +86,8 @@ static efi_status_t efi_open_volume(efi_loaded_image_t *image,
+>             image->parent_handle != NULL &&
+>             dp != NULL &&
+>             dp->header.type == EFI_DEV_MEDIA &&
+> -           dp->header.sub_type == EFI_DEV_MEDIA_VENDOR &&
+> +           (dp->header.sub_type == EFI_DEV_MEDIA_VENDOR ||
+> +            dp->header.sub_type == EFI_DEV_MEDIA_PIWG_FILE) &&
+>             !efi_guidcmp(dp->vendorguid, LINUX_EFI_ZBOOT_MEDIA_GUID)) {
+>                 status = efi_bs_call(handle_protocol, image->parent_handle,
+>                                      &li_proto, (void *)&image);
+> diff --git a/drivers/firmware/efi/libstub/zboot.c b/drivers/firmware/efi/libstub/zboot.c
+> index ea72c8f27da6..4b270546675d 100644
+> --- a/drivers/firmware/efi/libstub/zboot.c
+> +++ b/drivers/firmware/efi/libstub/zboot.c
+> @@ -159,6 +159,166 @@ static void append_end_node(efi_device_path_protocol_t **dp)
+>         ++*dp;
+>  }
 >
-> [    6.587700] Allocated by task 1:
-> [    6.587700]  kasan_save_stack+0x26/0x50
-> [    6.587700]  __kasan_kmalloc+0xae/0xe0
-> [    6.587700]  __kmalloc+0x1cc/0x3c0
-> [    6.587700]  efisubsys_init+0x371/0x778
-> [    6.587700]  do_one_initcall+0x97/0x2d0
-> [    6.587700]  kernel_init_freeable+0x3ca/0x459
-> [    6.587700]  kernel_init+0x1f/0x180
-> [    6.587700]  ret_from_fork+0x1f/0x30
+> +#define FV     EFI_GUID(0x397e3c73, 0x05a5, 0x432f, 0x94, 0x91, 0x6a, 0x2c, 0x0c, 0x3b, 0x5f, 0xa7)
+> +
+> +static const struct {
+> +       struct efi_vendor_dev_path      fv;
+> +       struct efi_generic_dev_path     end;
+> +} __packed fv_dp = {
+> +       {
+> +               {
+> +                       EFI_DEV_MEDIA,
+> +                       EFI_DEV_MEDIA_PIWG_VOLUME,
+> +                       sizeof(struct efi_vendor_dev_path)
+> +               },
+> +               FV
+> +       }, {
+> +               EFI_DEV_END_PATH,
+> +               EFI_DEV_END_ENTIRE,
+> +               sizeof(struct efi_generic_dev_path)
+> +       }
+> +};
+> +
+> +static const struct {
+> +       struct efi_vendor_dev_path      fv;
+> +       struct efi_vendor_dev_path      fvfile;
+> +       struct efi_generic_dev_path     end;
+> +} __packed fvfile_dp = {
+> +       {
+> +               {
+> +                       EFI_DEV_MEDIA,
+> +                       EFI_DEV_MEDIA_PIWG_VOLUME,
+> +                       sizeof(struct efi_vendor_dev_path)
+> +               },
+> +               FV
+> +       }, {
+> +               {
+> +                       EFI_DEV_MEDIA,
+> +                       EFI_DEV_MEDIA_PIWG_FILE,
+> +                       sizeof(struct efi_vendor_dev_path)
+> +               },
+> +               LINUX_EFI_ZBOOT_MEDIA_GUID
+> +       }, {
+> +               EFI_DEV_END_PATH,
+> +               EFI_DEV_END_ENTIRE,
+> +               sizeof(struct efi_generic_dev_path)
+> +       }
+> +};
+> +
+> +/* Assorted PI definitions used below */
+> +#define EFI_SECTION_PE32               0x10
+> +#define EFI_AUTH_STATUS_IMAGE_SIGNED   0x02
+> +#define EFI_WARN_BUFFER_TOO_SMALL      0x04
+> +#define EFI_FV2_READ_STATUS            0x04
+> +#define EFI_FV2_LOCK_CAP               0x40
+> +#define EFI_FV2_LOCK_STATUS            0x80
+> +
+> +static efi_status_t __efiapi
+> +fwvol_get_volume_attributes(efi_firmware_volume2_protocol_t const *this,
+> +                           u64 *attr)
+> +{
+> +       *attr = EFI_FV2_READ_STATUS | EFI_FV2_LOCK_CAP | EFI_FV2_LOCK_STATUS;
+> +       return EFI_SUCCESS;
+> +}
+> +
+> +static efi_status_t __efiapi
+> +fwvol_set_volume_attributes(efi_firmware_volume2_protocol_t const *this,
+> +                           u64 *attr)
+> +{
+> +       return EFI_ACCESS_DENIED;
+> +}
+> +
+> +static efi_status_t __efiapi
+> +fwvol_read_section(efi_firmware_volume2_protocol_t const *this,
+> +                  efi_guid_t const *name, u8 type,
+> +                  unsigned long instance, void **buffer,
+> +                  unsigned long *buffer_size, u32 *auth_status)
+> +{
+> +       unsigned long uncompressed_size = get_unaligned_le32(_gzdata_end - 4);
+> +       unsigned long compressed_size = _gzdata_end - _gzdata_start;
+> +       efi_status_t status;
+> +       void *buf;
+> +       int ret;
+> +
+> +       if (type != EFI_SECTION_PE32 || instance != 0 ||
+> +           !guids_eq(name, &LINUX_EFI_ZBOOT_MEDIA_GUID))
+> +               return EFI_NOT_FOUND;
+> +
+> +       if (!*buffer) {
+> +               status = efi_bs_call(allocate_pool, EFI_BOOT_SERVICES_DATA,
+> +                                    uncompressed_size, &buf);
+> +               if (status != EFI_SUCCESS)
+> +                       return status;
+> +               *buffer_size = uncompressed_size;
+> +       } else {
+> +               buf = *buffer;
+> +               if (*buffer_size < uncompressed_size)
+> +                       status = EFI_WARN_BUFFER_TOO_SMALL;
+> +               else
+> +                       status = EFI_SUCCESS;
+> +       }
+> +
+> +       ret = __decompress(_gzdata_start, compressed_size, NULL, NULL,
+> +                          buf, *buffer_size, NULL, error);
+> +       if (ret < 0 && status == EFI_SUCCESS) {
+> +               log(L"Decompression failed");
+> +               if (!*buffer)
+> +                       efi_bs_call(free_pool, *buffer);
+> +               return EFI_DEVICE_ERROR;
+> +       }
+> +
+> +       *auth_status = EFI_AUTH_STATUS_IMAGE_SIGNED;
+> +       *buffer = buf;
+> +
+> +       return status;
+> +}
+> +
+> +static efi_status_t __efiapi
+> +fwvol_read_file(efi_firmware_volume2_protocol_t const *this,
+> +               efi_guid_t const *name, void **buffer,
+> +               unsigned long *buffer_size, u8 *type,
+> +               u64 *attr, u32 *auth_status)
+> +{
+> +       if (!guids_eq(name, &LINUX_EFI_ZBOOT_MEDIA_GUID))
+> +               return EFI_NOT_FOUND;
+> +
+> +       *type = EFI_SECTION_PE32;
+> +       *attr = 0;
+> +       return fwvol_read_section(this, name, *type, 0, buffer, buffer_size,
+> +                                 auth_status);
+> +}
+> +
+> +static efi_status_t __efiapi
+> +fwvol_write_file(efi_firmware_volume2_protocol_t const *this, u32 num_files,
+> +                u32 write_policy, void *file_data)
+> +{
+> +       return EFI_WRITE_PROTECTED;
+> +}
+> +
+> +static efi_status_t __efiapi
+> +fwvol_get_next_file(efi_firmware_volume2_protocol_t const *this,
+> +                   void *key, u8 *type, efi_guid_t *name_guid,
+> +                   u64 *attributes, unsigned long *size)
+> +{
+> +       return EFI_NOT_FOUND;
+> +}
+> +
+> +static efi_status_t __efiapi
+> +fwvol_get_info(efi_firmware_volume2_protocol_t const *this,
+> +              efi_guid_t const *info_type, unsigned long *buffer_size,
+> +              void *buffer)
+> +{
+> +       return EFI_UNSUPPORTED;
+> +}
+> +
+> +static efi_status_t __efiapi
+> +fwvol_set_info(efi_firmware_volume2_protocol_t const *this,
+> +              efi_guid_t const *info_type, unsigned long buffer_size,
+> +              void *buffer)
+> +{
+> +       return EFI_WRITE_PROTECTED;
+> +}
+> +
+>  asmlinkage efi_status_t __efiapi
+>  efi_zboot_entry(efi_handle_t handle, efi_system_table_t *systab)
+>  {
+> @@ -168,11 +328,13 @@ efi_zboot_entry(efi_handle_t handle, efi_system_table_t *systab)
+>                 .header.length          = sizeof(struct efi_mem_mapped_dev_path)
+>         };
+>         efi_device_path_protocol_t *parent_dp, *dpp, *lf2_dp, *li_dp;
+> +       efi_firmware_volume2_protocol_t zboot_fwvol;
+>         efi_load_file2_protocol_t zboot_load_file2;
+>         efi_loaded_image_t *parent, *child;
+>         unsigned long exit_data_size;
+>         efi_handle_t child_handle;
+> -       efi_handle_t zboot_handle;
+> +       efi_handle_t fwvol_handle;
+> +       efi_handle_t lf2_handle;
+>         efi_char16_t *exit_data;
+>         efi_status_t status;
+>         void *dp_alloc;
+> @@ -237,10 +399,11 @@ efi_zboot_entry(efi_handle_t handle, efi_system_table_t *systab)
+>         append_ven_media_node(&dpp, &LINUX_EFI_ZBOOT_MEDIA_GUID);
+>         append_end_node(&dpp);
 >
-> [    6.587700] Freed by task 1:
-> [    6.587700]  kasan_save_stack+0x26/0x50
-> [    6.587700]  kasan_set_track+0x25/0x40
-> [    6.587700]  kasan_set_free_info+0x24/0x40
-> [    6.587700]  ____kasan_slab_free+0x177/0x1c0
-> [    6.587700]  __kasan_slab_free+0x12/0x20
-> [    6.587700]  slab_free_freelist_hook+0x97/0x1b0
-> [    6.587700]  kfree+0x1a9/0x3d0
-> [    6.587700]  efisubsys_init+0x3c8/0x778
-> [    6.587700]  do_one_initcall+0x97/0x2d0
-> [    6.587700]  kernel_init_freeable+0x3ca/0x459
-> [    6.587700]  kernel_init+0x1f/0x180
-> [    6.587700]  ret_from_fork+0x1f/0x30
+> -       zboot_handle = NULL;
+>         zboot_load_file2.load_file = load_file;
+> +
+> +       lf2_handle = NULL;
+>         status = efi_bs_call(install_multiple_protocol_interfaces,
+> -                            &zboot_handle,
+> +                            &lf2_handle,
+>                              &EFI_DEVICE_PATH_PROTOCOL_GUID, lf2_dp,
+>                              &EFI_LOAD_FILE2_PROTOCOL_GUID, &zboot_load_file2,
+>                              NULL);
+> @@ -249,13 +412,38 @@ efi_zboot_entry(efi_handle_t handle, efi_system_table_t *systab)
+>                 goto free_dpalloc;
+>         }
 >
-> [    6.587700] The buggy address belongs to the object at ffff88810457f00=
-0
->                  which belongs to the cache kmalloc-512 of size 512
-> [    6.587700] The buggy address is located 211 bytes inside of
->                  512-byte region [ffff88810457f000, ffff88810457f200)
+> -       status = efi_bs_call(load_image, false, handle, li_dp, NULL, 0,
+> -                            &child_handle);
+> +       zboot_fwvol.get_volume_attributes       = fwvol_get_volume_attributes;
+> +       zboot_fwvol.set_volume_attributes       = fwvol_set_volume_attributes;
+> +       zboot_fwvol.read_section                = fwvol_read_section;
+> +       zboot_fwvol.read_file                   = fwvol_read_file;
+> +       zboot_fwvol.write_file                  = fwvol_write_file;
+> +       zboot_fwvol.get_next_file               = fwvol_get_next_file;
+> +       zboot_fwvol.keysize                     = 4;
+> +       zboot_fwvol.parent_handle               = NULL;
+> +       zboot_fwvol.get_info                    = fwvol_get_info;
+> +       zboot_fwvol.set_info                    = fwvol_set_info;
+> +
+> +       fwvol_handle = NULL;
+> +       status = efi_bs_call(install_multiple_protocol_interfaces,
+> +                            &fwvol_handle,
+> +                            &EFI_DEVICE_PATH_PROTOCOL_GUID, fv_dp,
+> +                            &EFI_FIRMWARE_VOLUME2_PROTOCOL_GUID, &zboot_fwvol,
+> +                            NULL);
+>         if (status != EFI_SUCCESS) {
+> -               log(L"Failed to load image");
+> +               log(L"Failed to install FirmwareVolume2 protocol and device path");
+>                 goto uninstall_lf2;
+>         }
 >
-> [    6.587700] The buggy address belongs to the physical page:
-> [    6.587700] page:0000000009e09455 refcount:1 mapcount:0
-> mapping:0000000000000000 index:0x0 pfn:0x10457c
-> [    6.587700] head:0000000009e09455 order:2 compound_mapcount:0
-> compound_pincount:0
-> [    6.587700] flags:
-> 0x17ffffc0010200(slab|head|node=3D0|zone=3D2|lastcpupid=3D0x1fffff)
-> [    6.587700] raw: 0017ffffc0010200 0000000000000000 dead000000000122
-> ffff888100042c80
-> [    6.587700] raw: 0000000000000000 0000000080100010 00000001ffffffff
-> 0000000000000000
-> [    6.587700] page dumped because: kasan: bad access detected
+> +       status = efi_bs_call(load_image, false, handle, &fvfile_dp.fv.header,
+> +                            NULL, 0, &child_handle);
+> +       if (status == EFI_NOT_FOUND)
+> +               status = efi_bs_call(load_image, false, handle, li_dp, NULL, 0,
+> +                                    &child_handle);
+> +       if (status != EFI_SUCCESS) {
+> +               log(L"Failed to load image");
+> +               goto uninstall_fwvol;
+> +       }
+> +
+>         status = efi_bs_call(handle_protocol, child_handle,
+>                              &LOADED_IMAGE_PROTOCOL_GUID, (void **)&child);
+>         if (status != EFI_SUCCESS) {
+> @@ -281,9 +469,16 @@ efi_zboot_entry(efi_handle_t handle, efi_system_table_t *systab)
+>                         efi_bs_call(unload_image, child_handle);
+>         }
 >
-> [    6.587700] Memory state around the buggy address:
-> [    6.587700]  ffff88810457ef80: fc fc fc fc fc fc fc fc fc fc fc fc fc
-> fc fc fc
-> [    6.587700]  ffff88810457f000: fa fb fb fb fb fb fb fb fb fb fb fb fb
-> fb fb fb
-> [    6.587700] >ffff88810457f080: fb fb fb fb fb fb fb fb fb fb fb fb fb
-> fb fb fb
-> [    6.587700]                                                  ^
-> [    6.587700]  ffff88810457f100: fb fb fb fb fb fb fb fb fb fb fb fb fb
-> fb fb fb
-> [    6.587700]  ffff88810457f180: fb fb fb fb fb fb fb fb fb fb fb fb fb
-> fb fb fb
-> [    6.587700]
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +uninstall_fwvol:
+> +       efi_bs_call(uninstall_multiple_protocol_interfaces,
+> +                   fwvol_handle,
+> +                   &EFI_DEVICE_PATH_PROTOCOL_GUID, fv_dp,
+> +                   &EFI_FIRMWARE_VOLUME2_PROTOCOL_GUID, &zboot_fwvol,
+> +                   NULL);
+> +
+>  uninstall_lf2:
+>         efi_bs_call(uninstall_multiple_protocol_interfaces,
+> -                   zboot_handle,
+> +                   lf2_handle,
+>                     &EFI_DEVICE_PATH_PROTOCOL_GUID, lf2_dp,
+>                     &EFI_LOAD_FILE2_PROTOCOL_GUID, &zboot_load_file2,
+>                     NULL);
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index be667c0919b2..66132795c87e 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -39,6 +39,7 @@
+>  #define EFI_WRITE_PROTECTED    ( 8 | (1UL << (BITS_PER_LONG-1)))
+>  #define EFI_OUT_OF_RESOURCES   ( 9 | (1UL << (BITS_PER_LONG-1)))
+>  #define EFI_NOT_FOUND          (14 | (1UL << (BITS_PER_LONG-1)))
+> +#define EFI_ACCESS_DENIED      (15 | (1UL << (BITS_PER_LONG-1)))
+>  #define EFI_TIMEOUT            (18 | (1UL << (BITS_PER_LONG-1)))
+>  #define EFI_ABORTED            (21 | (1UL << (BITS_PER_LONG-1)))
+>  #define EFI_SECURITY_VIOLATION (26 | (1UL << (BITS_PER_LONG-1)))
+> @@ -390,6 +391,7 @@ void efi_native_runtime_setup(void);
+>  #define EFI_LOAD_FILE2_PROTOCOL_GUID           EFI_GUID(0x4006c0c1, 0xfcb3, 0x403e,  0x99, 0x6d, 0x4a, 0x6c, 0x87, 0x24, 0xe0, 0x6d)
+>  #define EFI_RT_PROPERTIES_TABLE_GUID           EFI_GUID(0xeb66918a, 0x7eef, 0x402a,  0x84, 0x2e, 0x93, 0x1d, 0x21, 0xc3, 0x8a, 0xe9)
+>  #define EFI_DXE_SERVICES_TABLE_GUID            EFI_GUID(0x05ad34ba, 0x6f02, 0x4214,  0x95, 0x2e, 0x4d, 0xa0, 0x39, 0x8e, 0x2b, 0xb9)
+> +#define EFI_FIRMWARE_VOLUME2_PROTOCOL_GUID     EFI_GUID(0x220e73b6, 0x6bdb, 0x4413,  0x84, 0x05, 0xb9, 0x74, 0xb1, 0x08, 0x61, 0x9a)
 >
-> Thanks,
-> Amadeusz
+>  #define EFI_IMAGE_SECURITY_DATABASE_GUID       EFI_GUID(0xd719b2cb, 0x3d3a, 0x4596,  0xa3, 0xbc, 0xda, 0xd0, 0x0e, 0x67, 0x65, 0x6f)
+>  #define EFI_SHIM_LOCK_GUID                     EFI_GUID(0x605dab50, 0xe046, 0x4300,  0xab, 0xb6, 0x3d, 0xd8, 0x10, 0xdd, 0x8b, 0x23)
+> @@ -950,6 +952,8 @@ extern int efi_status_to_err(efi_status_t status);
+>  #define   EFI_DEV_MEDIA_VENDOR                  3
+>  #define   EFI_DEV_MEDIA_FILE                    4
+>  #define   EFI_DEV_MEDIA_PROTOCOL                5
+> +#define   EFI_DEV_MEDIA_PIWG_FILE               6
+> +#define   EFI_DEV_MEDIA_PIWG_VOLUME             7
+>  #define   EFI_DEV_MEDIA_REL_OFFSET              8
+>  #define EFI_DEV_BIOS_BOOT              0x05
+>  #define EFI_DEV_END_PATH               0x7F
+> --
+> 2.35.1
+>
