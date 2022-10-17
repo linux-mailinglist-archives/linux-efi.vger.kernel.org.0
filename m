@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33BE6601486
-	for <lists+linux-efi@lfdr.de>; Mon, 17 Oct 2022 19:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DA1C601487
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Oct 2022 19:17:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229779AbiJQRRZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 17 Oct 2022 13:17:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36076 "EHLO
+        id S229923AbiJQRR3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 17 Oct 2022 13:17:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229923AbiJQRRY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 17 Oct 2022 13:17:24 -0400
+        with ESMTP id S229452AbiJQRR2 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 17 Oct 2022 13:17:28 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E16656E895
-        for <linux-efi@vger.kernel.org>; Mon, 17 Oct 2022 10:17:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49DB96E2D5
+        for <linux-efi@vger.kernel.org>; Mon, 17 Oct 2022 10:17:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A3F55B819D0
-        for <linux-efi@vger.kernel.org>; Mon, 17 Oct 2022 17:17:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 750B8C43470;
-        Mon, 17 Oct 2022 17:17:18 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 00018B816B3
+        for <linux-efi@vger.kernel.org>; Mon, 17 Oct 2022 17:17:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A1CC433D6;
+        Mon, 17 Oct 2022 17:17:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666027041;
-        bh=Z/U4ee43YwCQtbpS+erJrlD6etCprE4ciwkhw4HluFw=;
+        s=k20201202; t=1666027044;
+        bh=3EA59Qwvhu2UAbj/TE7AFwnJSijZZfQad+VrEt1zgnE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mVH1Tckv0C+BEE7ppJplUt7NERqKhJ6deIuFTbDOYXVBVTKFSyYTHeDWrXOaK+2lC
-         x9BQiyRvwClUljrbM3lX6+s8lk2Piy6QKD6PzPJoPT7E9w4MRTu5bKUcr6zE4G7jos
-         pQOWpGPTgSbk5eqhSoOfBLXghlcoJwN4aFwJMCc0hnnMkRXcF1KWis1/GK36YjJCDB
-         x2+X/WDjqELJNZW5xOBdcFZ9unELhqLmvjAqkDX3D0wSNqN5EAqyv7fIrCMK2KzNLG
-         x3SkLBd2c0CdgxRSkOEE684HFaqQ2jvUuszM3+UfF/ovGaYYy8gP9AccDUN21UQbnw
-         3Zo1Wrdwbpz+A==
+        b=H0rH2sxKrpKwpWUfF1BM0V2kbIzdxLMt+xHMHo3/4E7mogNzBJ1mWQq0eMh3bAbRF
+         gXuF66CXBalnXQzJM5fx9bY4QC+6BGtEVSjr0RxWSvu7R5Sio25eeJMm6UYWS8qw4T
+         +dd8Vl5U9h+nGmk+PbFZGNygpjxRBeIfIwo44QLCMDxasQicYxweZgVgMWaEPasOFm
+         qBpr1uAw3NSTFoTt7l0SJX69f0kIZ3eJTmoOZtHJ4p1+8G4ddXoCrS2PlNWRa9whMS
+         MtT3mQDKeHg1JjM+OaqaGtrJVSNJubGI6DCsrCFdZMvW0ZZrtawj7kifvQCO8WoiUt
+         l99SVeOujF+yw==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     keescook@chromium.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -46,14 +46,14 @@ Cc:     keescook@chromium.org, Ard Biesheuvel <ardb@kernel.org>,
         Jeremy Linton <jeremy.linton@arm.com>,
         Will Deacon <will@kernel.org>,
         Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 01/21] arm64: efi: Move dcache cleaning of loaded image out of efi_enter_kernel()
-Date:   Mon, 17 Oct 2022 19:16:40 +0200
-Message-Id: <20221017171700.3736890-2-ardb@kernel.org>
+Subject: [PATCH 02/21] arm64: efi: Avoid dcache_clean_poc() altogether in efi_enter_kernel()
+Date:   Mon, 17 Oct 2022 19:16:41 +0200
+Message-Id: <20221017171700.3736890-3-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221017171700.3736890-1-ardb@kernel.org>
 References: <20221017171700.3736890-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2693; i=ardb@kernel.org; h=from:subject; bh=Z/U4ee43YwCQtbpS+erJrlD6etCprE4ciwkhw4HluFw=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjTY3quuXELSWwupLiAJd0cFsye30VMCkORloCf6R1 bArAoTGJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY02N6gAKCRDDTyI5ktmPJHvNC/ 9B0DKczV2J9CEhF4XhnK7SF9DX7N08oWSclWY6X4vsKVe9nHAAKHTzEvJFG9pnI6IV788fRBT8axUk E15N7ZKSC5NJiY2mkTEe8SduA8Fv89c8f85pN9dwuJuWOH5aFHT/+xm1iTnDhG0vub8hvw6PGbUHqY 1jIYdRLg0Cdw0AQX7N75P3KjCk7WInXbv5YSV7mZIGmqxgqXS37zBN1gCCOwepA7Nni56fTgwGVydf el5l4x227jFepGbS8OaC2dmPKolDd3JBTKiGNNotQXcqbveAZsUKCNQ547V6A6YpBIfBiSIrHMW0VC zu6d80s6YmGmQQG0oYertGWyVQp/Wy84l54Drxu89s4/OvMAE5xvAbDSJitEODQ+SMS3XUJrf9r7m9 eUEtSCLkon0IKCQQ8pts+xt34bdiATPzAvO5NcWodid5Ss+N74zXGiYha9egDoWBVgf8ZtnHMS+z3e RnIcbW77YvDTEs80WsPR+3BcJL477gGiu2gANYmjehuTQ=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2371; i=ardb@kernel.org; h=from:subject; bh=3EA59Qwvhu2UAbj/TE7AFwnJSijZZfQad+VrEt1zgnE=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjTY3rP+VTVP0N2eQViHHWmRKmoXfdsGCBa94juNjG e9rLZ6OJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY02N6wAKCRDDTyI5ktmPJAbMC/ 4qEWPUP36jZo3Y+P2kUX/csiTcXeDQvxseVPV+SUixmY+0VJGyNvMVvK9Z2DAB/dT/zMAuwguCGtDg Inij69dZewOZ+gqXM2FQ+/qNVz1tY14tSh0NE2TApEA16e3Bzq3QohXZeI6L81qn+nNOg9j2cza9wg qOFon7hWoaY53FCFgjT84/hJzJrvM39Vvx1/zjQtXqDdboFwrRaCiBvChChF+PDHdTcnx7wpMUu9vo RN7gCBOCXv0sQCubwXh9J/tCf3ovXG8/SRPpnaGNo3T4ATXcqY51VgEtiPfi3tEYdRCW6WDMpxeGSM MMuBA6B36BW0ClGIfVd3dC4SZ1R+GNJgcYVSaDkBRbmAuC4SBTZSQvaekXpBQ8UVJFPe++MwanyBvm n+ME/SSQ2rfD/UsWrbTqifUgPN83r1vD2OoZBQQH+XD536Cw/A+5Pj3++4kNNbxiJRvB1FCdqF7dl+ maiGwoo6XKhQlZ4QavgjgrX1bvYx22+QgeWFcZmeHePAE=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -65,80 +65,94 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The efi_enter_kernel() routine will be shared between the existing EFI
-stub and the zboot decompressor, and the version of
-dcache_clean_to_poc() that the core kernel exports to the stub will not
-be available in the latter case.
-
-So move the handling into the .c file which will remain part of the stub
-build that integrates directly with the kernel proper.
+To allow efi_enter_kernel() to be shared with the EFI zboot decompressor
+build, drop another reference to dcache_clean_poc() and replace it with
+a single DC CVAC instruction. To ensure that it covers the remainder of
+efi_enter_kernel() as intended, reorganize the code a bit so it fits in
+a 32-byte cacheline, and align it to 32 bytes. (Even though the
+architecture defines 16 as the minimum D-cache line size, even the
+chosen value of 32 is highly unlikely to ever be encountered on real
+hardware, and this works with any line size >= 32)
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/kernel/efi-entry.S             |  9 ---------
- arch/arm64/kernel/image-vars.h            |  1 -
- drivers/firmware/efi/libstub/arm64-stub.c | 10 +++++++++-
- 3 files changed, 9 insertions(+), 11 deletions(-)
+ arch/arm64/kernel/efi-entry.S | 57 ++++++++++----------
+ 1 file changed, 29 insertions(+), 28 deletions(-)
 
 diff --git a/arch/arm64/kernel/efi-entry.S b/arch/arm64/kernel/efi-entry.S
-index 61a87fa1c305..1c1be004a271 100644
+index 1c1be004a271..8bce13356e29 100644
 --- a/arch/arm64/kernel/efi-entry.S
 +++ b/arch/arm64/kernel/efi-entry.S
-@@ -23,15 +23,6 @@ SYM_CODE_START(efi_enter_kernel)
+@@ -21,40 +21,41 @@ SYM_CODE_START(efi_enter_kernel)
+ 	 */
+ 	ldr	w2, =primary_entry_offset
  	add	x19, x0, x2		// relocated Image entrypoint
- 	mov	x20, x1			// DTB address
+-	mov	x20, x1			// DTB address
++
++	mov	x0, x1			// DTB address
++	mov	x1, xzr
++	mov	x2, xzr
++	mov	x3, xzr
  
--	/*
--	 * Clean the copied Image to the PoC, and ensure it is not shadowed by
--	 * stale icache entries from before relocation.
--	 */
--	ldr	w1, =kernel_size
--	add	x1, x0, x1
--	bl	dcache_clean_poc
--	ic	ialluis
--
  	/*
  	 * Clean the remainder of this routine to the PoC
  	 * so that we can safely disable the MMU and caches.
-diff --git a/arch/arm64/kernel/image-vars.h b/arch/arm64/kernel/image-vars.h
-index 8151412653de..74d20835cf91 100644
---- a/arch/arm64/kernel/image-vars.h
-+++ b/arch/arm64/kernel/image-vars.h
-@@ -10,7 +10,6 @@
- #error This file should only be included in vmlinux.lds.S
- #endif
- 
--PROVIDE(__efistub_kernel_size		= _edata - _text);
- PROVIDE(__efistub_primary_entry_offset	= primary_entry - _text);
- 
- /*
-diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-index 598c76c4bbaa..e767a5ac8c3d 100644
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -157,7 +157,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 			 */
- 			*image_addr = (u64)_text;
- 			*reserve_size = 0;
--			return EFI_SUCCESS;
-+			goto clean_image_to_poc;
- 		}
- 
- 		status = efi_allocate_pages_aligned(*reserve_size, reserve_addr,
-@@ -174,5 +174,13 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 	*image_addr = *reserve_addr;
- 	memcpy((void *)*image_addr, _text, kernel_size);
- 
-+clean_image_to_poc:
-+	/*
-+	 * Clean the copied Image to the PoC, and ensure it is not shadowed by
-+	 * stale icache entries from before relocation.
-+	 */
-+	dcache_clean_poc(*image_addr, *image_addr + kernel_size);
-+	asm("ic ialluis");
+ 	 */
+-	adr	x0, 0f
+-	adr	x1, 3f
+-	bl	dcache_clean_poc
+-0:
++	adr	x4, 1f
++	dc	civac, x4
++	dsb	sy
 +
- 	return EFI_SUCCESS;
- }
+ 	/* Turn off Dcache and MMU */
+-	mrs	x0, CurrentEL
+-	cmp	x0, #CurrentEL_EL2
+-	b.ne	1f
+-	mrs	x0, sctlr_el2
+-	bic	x0, x0, #1 << 0	// clear SCTLR.M
+-	bic	x0, x0, #1 << 2	// clear SCTLR.C
+-	pre_disable_mmu_workaround
+-	msr	sctlr_el2, x0
+-	isb
++	mrs	x4, CurrentEL
++	cmp	x4, #CurrentEL_EL2
++	mrs	x4, sctlr_el1
++	b.ne	0f
++	mrs	x4, sctlr_el2
++0:	bic	x4, x4, #SCTLR_ELx_M
++	bic	x4, x4, #SCTLR_ELx_C
++	b.eq	1f
+ 	b	2f
+-1:
+-	mrs	x0, sctlr_el1
+-	bic	x0, x0, #1 << 0	// clear SCTLR.M
+-	bic	x0, x0, #1 << 2	// clear SCTLR.C
+-	pre_disable_mmu_workaround
+-	msr	sctlr_el1, x0
++
++	.balign	32
++1:	pre_disable_mmu_workaround
++	msr	sctlr_el2, x4
+ 	isb
+-2:
+-	/* Jump to kernel entry point */
+-	mov	x0, x20
+-	mov	x1, xzr
+-	mov	x2, xzr
+-	mov	x3, xzr
+-	br	x19
+-3:
++	br	x19		// jump to kernel entrypoint
++
++2:	pre_disable_mmu_workaround
++	msr	sctlr_el1, x4
++	isb
++	br	x19		// jump to kernel entrypoint
++
++	.org	1b + 32
+ SYM_CODE_END(efi_enter_kernel)
 -- 
 2.35.1
 
