@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46675601488
-	for <lists+linux-efi@lfdr.de>; Mon, 17 Oct 2022 19:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00D4F601489
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Oct 2022 19:17:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229452AbiJQRRc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 17 Oct 2022 13:17:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36122 "EHLO
+        id S230086AbiJQRRh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 17 Oct 2022 13:17:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230086AbiJQRRb (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 17 Oct 2022 13:17:31 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EAD76E895
-        for <linux-efi@vger.kernel.org>; Mon, 17 Oct 2022 10:17:30 -0700 (PDT)
+        with ESMTP id S230089AbiJQRRf (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 17 Oct 2022 13:17:35 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E89206E89D
+        for <linux-efi@vger.kernel.org>; Mon, 17 Oct 2022 10:17:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 52175B816B3
-        for <linux-efi@vger.kernel.org>; Mon, 17 Oct 2022 17:17:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26FAEC433C1;
-        Mon, 17 Oct 2022 17:17:24 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AACFDB816B3
+        for <linux-efi@vger.kernel.org>; Mon, 17 Oct 2022 17:17:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ABA0C43470;
+        Mon, 17 Oct 2022 17:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666027048;
-        bh=yeOhjjQ1LMVagWR+5PnZWjIVmQDU3ZdDYIHuTyFJOZs=;
+        s=k20201202; t=1666027051;
+        bh=MOK53C8vtg8643VO6pTj8ZYvjFm+Js3aEDe/DEn5gnY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bNNUSHuNgfDH0Eqkyu9AxRiJGNnMYDJaXJ368F0AVXQL24QW59F2gFedhHlA0rsRz
-         cGa9AhxDKDGMOP3M/QJD0Sd03PtKEGBl20UsoysE7YzJf5hgEa5aJFTeMrQHZkmhTB
-         /5BlH+h8ny4i1VKcddfAVnhP2SH4i4cpz0CSA117JUB+p0jdSANSHYECOgHvjf+wX4
-         szFFIguPMbgj3oeLIVwLvZb8qafyD+AmP2ghd4jfKQPudguD7t+7+7raEKqQ84lcXb
-         WOxOcgykBqXIJYW5iLky7C7I4cHNCE6m3Wvn4dB3GbcnfhLp/zTxv8Paq8ai2xw2kq
-         wXTknYIY2q3XA==
+        b=tFPslyIv2RiRTkc9+z4P3Htvys5kxgx+VKixQ3rt0GLsme1Io+l0jgg2rEUQKJUxi
+         jEEW8wXZ25bNiFHwoIv9wgBcOWMa/HRRstH0V447LFDRILe1iVhTOwnOWpER87o/dv
+         jL68cwQrTGbdDll0xaBabfnLE3HNpagrhoTWxIHhpGGGIqUXnQLbtwffC4WOK7qXca
+         yHa7oDpfuMxQBRxFu4+dVYldxUXYI7siw05aMhnzq9D4cCSSG0JgaTZjDLwRQTPjSD
+         4KpfcVMj/JIgP9SsU+OSBsY9HoylDYTgio5saUd2cayvJm5pJMjNrPrtjinpPp8091
+         6r3Sdlnjgs8yg==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     keescook@chromium.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -46,14 +46,14 @@ Cc:     keescook@chromium.org, Ard Biesheuvel <ardb@kernel.org>,
         Jeremy Linton <jeremy.linton@arm.com>,
         Will Deacon <will@kernel.org>,
         Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 03/21] arm64: efi: Move efi-entry.S into the libstub source directory
-Date:   Mon, 17 Oct 2022 19:16:42 +0200
-Message-Id: <20221017171700.3736890-4-ardb@kernel.org>
+Subject: [PATCH 04/21] efi: libstub: Remove zboot signing from build options
+Date:   Mon, 17 Oct 2022 19:16:43 +0200
+Message-Id: <20221017171700.3736890-5-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221017171700.3736890-1-ardb@kernel.org>
 References: <20221017171700.3736890-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3293; i=ardb@kernel.org; h=from:subject; bh=yeOhjjQ1LMVagWR+5PnZWjIVmQDU3ZdDYIHuTyFJOZs=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjTY3tELVe+GWCgjpjgNGnqkdigsuCo8DA951wOuuz 9yLzo+WJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY02N7QAKCRDDTyI5ktmPJH93DA C8Wal0LUK7J0jW7ctFbdOAIwAVppH6QK20iBxAkAHsZriqCRgXs1H5bSRrYnETtpSOBcWZwcXdafuR jxuN31k7WHtHst87lHV1nv2ZnzFnYs7/25zBIPUokOTIx2znEtjHm8jPJ5DnW/JbuEuchah2fJvf1e /MM4rTI/+cfjnrqTUtmz5tujo9RusXO8kTXUzbvb+gf1VXrASrilnmSANQcPCaX02bZ4Enwph/LMxU Ul+6IU3wOQFP/bQargnxhE7lILliJLwk8LOTBmk5rTqFTE/tpANRWh1dswkP2G/pwJPsF9oAuESmWs 4BhVnoFcYOmM9QpxIt8vTFemS3sfGpIfIkt/4t/EeIrBQkak3h92wZl3BoxL5RvteJ0ygHPw9GG5ct BmQq7gnmqahB6XU1ihI3rYwj7YvYXYYYSbTUoQmEcyxGQMVqBiYv0Fmjg6vMQ9AlsQN9tTZD9BSiot rOXDmUb1gT9zIICbyF4V+eOjxb/3jpKyfsZWBnsKH967w=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4308; i=ardb@kernel.org; h=from:subject; bh=MOK53C8vtg8643VO6pTj8ZYvjFm+Js3aEDe/DEn5gnY=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjTY3vFAL2phWjlNHu0m1O5v2uBq2d/vqZy9b3knvf W2fst3iJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY02N7wAKCRDDTyI5ktmPJHDaC/ 0UzlEisuhW9ApzE10jCKDshmpEeuzsEwjKOIxJJUFJm2zt9DNEu2JbMlsLx5nL4tzWlk6wfblvRaJY 8IRNXs1gww8ZLUdCbu5JDk17mk1hyG4vTD0+zEZPmgWybxQOggPiU80IX+BHSbc3obbZW+YNhRxsQ3 i/UskpU1+6L9ddf31s7hfqjZL95xe427S5s8hYujc8xIlNpUpnKikvNQOVcY0p+lq/v98xIAJD+6bs j0ifirGVW2RInjI5mEb9bDC4chJDz6PGN3POMQHNYt0liI6JOaIEd28otjZaS8zw1rDnt/3cCnz+xB O3ScnKTEnHZSo8ojf/mBtBUp0/ekheB3VDYpo2zVzXbqxfy/MfABALWzKRdqGDlKQACTE1fqBknS3c pThAtaZ/LsnfxMBEMXCUpluGDNtbUm/AG91R5PmgiU4pAtlMKGu0OPmw/FLeyppQy6l3+nqG7tokpI /tI3mVuX7W/zh6fJxut6ho0A18KcGuV8lo9SWr3HGbJFg=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -65,86 +65,112 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-We will be sharing efi-entry.S with the zboot decompressor build, which
-does not link against vmlinux directly. So move it into the libstub
-source directory so we can include in the libstub static library.
+The zboot decompressor series introduced a feature to sign the PE/COFF
+kernel image for secure boot as part of the kernel build. This was
+necessary because there are actually two images that need to be signed:
+the kernel with the EFI stub attached, and the decompressor application.
+
+This is a bit of a burden, because it means that the images must be
+signed on the the same system that performs the build, and this is not
+realistic for distros.
+
+During the next cycle, we will introduce changes to the zboot code so
+that the inner image no longer needs to be signed. This means that the
+outer PE/COFF image can be handled as usual, and be signed later in the
+release process.
+
+Let's remove the associated Kconfig options now so that they don't end
+up in a LTS release while already being deprecated.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/kernel/Makefile                                                  | 9 +--------
- drivers/firmware/efi/libstub/Makefile                                       | 4 ++--
- arch/arm64/kernel/efi-entry.S => drivers/firmware/efi/libstub/arm64-entry.S | 4 ----
- 3 files changed, 3 insertions(+), 14 deletions(-)
+ drivers/firmware/efi/Kconfig                | 22 ---------------
+ drivers/firmware/efi/libstub/Makefile.zboot | 29 +++-----------------
+ 2 files changed, 4 insertions(+), 47 deletions(-)
 
-diff --git a/arch/arm64/kernel/Makefile b/arch/arm64/kernel/Makefile
-index 2f361a883d8c..2a3b0e4950f2 100644
---- a/arch/arm64/kernel/Makefile
-+++ b/arch/arm64/kernel/Makefile
-@@ -36,12 +36,6 @@ obj-y			:= debug-monitors.o entry.o irq.o fpsimd.o		\
- 			   syscall.o proton-pack.o idreg-override.o idle.o	\
- 			   patching.o
+diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+index fceeea74522e..0d5201e49841 100644
+--- a/drivers/firmware/efi/Kconfig
++++ b/drivers/firmware/efi/Kconfig
+@@ -102,28 +102,6 @@ config EFI_ZBOOT
+ 	  is supported by the encapsulated image. (The compression algorithm
+ 	  used is described in the zboot image header)
  
--targets			+= efi-entry.o
+-config EFI_ZBOOT_SIGNED
+-	def_bool y
+-	depends on EFI_ZBOOT_SIGNING_CERT != ""
+-	depends on EFI_ZBOOT_SIGNING_KEY != ""
 -
--OBJCOPYFLAGS := --prefix-symbols=__efistub_
--$(obj)/%.stub.o: $(obj)/%.o FORCE
--	$(call if_changed,objcopy)
+-config EFI_ZBOOT_SIGNING
+-	bool "Sign the EFI decompressor for UEFI secure boot"
+-	depends on EFI_ZBOOT
+-	help
+-	  Use the 'sbsign' command line tool (which must exist on the host
+-	  path) to sign both the EFI decompressor PE/COFF image, as well as the
+-	  encapsulated PE/COFF image, which is subsequently compressed and
+-	  wrapped by the former image.
 -
- obj-$(CONFIG_COMPAT)			+= sys32.o signal32.o			\
- 					   sys_compat.o
- obj-$(CONFIG_COMPAT)			+= sigreturn32.o
-@@ -57,8 +51,7 @@ obj-$(CONFIG_CPU_PM)			+= sleep.o suspend.o
- obj-$(CONFIG_CPU_IDLE)			+= cpuidle.o
- obj-$(CONFIG_JUMP_LABEL)		+= jump_label.o
- obj-$(CONFIG_KGDB)			+= kgdb.o
--obj-$(CONFIG_EFI)			+= efi.o efi-entry.stub.o		\
--					   efi-rt-wrapper.o
-+obj-$(CONFIG_EFI)			+= efi.o efi-rt-wrapper.o
- obj-$(CONFIG_PCI)			+= pci.o
- obj-$(CONFIG_ARMV8_DEPRECATED)		+= armv8_deprecated.o
- obj-$(CONFIG_ACPI)			+= acpi.o
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index b1601aad7e1a..efc8cefab889 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -82,7 +82,7 @@ $(obj)/lib-%.o: $(srctree)/lib/%.c FORCE
- lib-$(CONFIG_EFI_GENERIC_STUB)	+= efi-stub.o string.o intrinsics.o systable.o
+-config EFI_ZBOOT_SIGNING_CERT
+-	string "Certificate to use for signing the compressed EFI boot image"
+-	depends on EFI_ZBOOT_SIGNING
+-
+-config EFI_ZBOOT_SIGNING_KEY
+-	string "Private key to use for signing the compressed EFI boot image"
+-	depends on EFI_ZBOOT_SIGNING
+-
+ config EFI_ARMSTUB_DTB_LOADER
+ 	bool "Enable the DTB loader"
+ 	depends on EFI_GENERIC_STUB && !RISCV && !LOONGARCH
+diff --git a/drivers/firmware/efi/libstub/Makefile.zboot b/drivers/firmware/efi/libstub/Makefile.zboot
+index 35f234ad8738..3340b385a05b 100644
+--- a/drivers/firmware/efi/libstub/Makefile.zboot
++++ b/drivers/firmware/efi/libstub/Makefile.zboot
+@@ -20,22 +20,11 @@ zboot-size-len-y			:= 4
+ zboot-method-$(CONFIG_KERNEL_GZIP)	:= gzip
+ zboot-size-len-$(CONFIG_KERNEL_GZIP)	:= 0
  
- lib-$(CONFIG_ARM)		+= arm32-stub.o
--lib-$(CONFIG_ARM64)		+= arm64-stub.o
-+lib-$(CONFIG_ARM64)		+= arm64-stub.o arm64-entry.o
- lib-$(CONFIG_X86)		+= x86-stub.o
- lib-$(CONFIG_RISCV)		+= riscv-stub.o
- lib-$(CONFIG_LOONGARCH)		+= loongarch-stub.o
-@@ -136,7 +136,7 @@ STUBCOPY_RELOC-$(CONFIG_ARM)	:= R_ARM_ABS
- #
- STUBCOPY_FLAGS-$(CONFIG_ARM64)	+= --prefix-alloc-sections=.init \
- 				   --prefix-symbols=__efistub_
--STUBCOPY_RELOC-$(CONFIG_ARM64)	:= R_AARCH64_ABS
-+STUBCOPY_RELOC-$(CONFIG_ARM64)	:= R_AARCH64_ABS64
- 
- # For RISC-V, we don't need anything special other than arm64. Keep all the
- # symbols in .init section and make sure that no absolute symbols references
-diff --git a/arch/arm64/kernel/efi-entry.S b/drivers/firmware/efi/libstub/arm64-entry.S
-similarity index 97%
-rename from arch/arm64/kernel/efi-entry.S
-rename to drivers/firmware/efi/libstub/arm64-entry.S
-index 8bce13356e29..87082b222a87 100644
---- a/arch/arm64/kernel/efi-entry.S
-+++ b/drivers/firmware/efi/libstub/arm64-entry.S
-@@ -6,12 +6,8 @@
-  * Author: Mark Salter <msalter@redhat.com>
-  */
- #include <linux/linkage.h>
--#include <linux/init.h>
+-quiet_cmd_sbsign = SBSIGN  $@
+-      cmd_sbsign = sbsign --out $@ $< \
+-		   --key $(CONFIG_EFI_ZBOOT_SIGNING_KEY) \
+-		   --cert $(CONFIG_EFI_ZBOOT_SIGNING_CERT)
 -
- #include <asm/assembler.h>
- 
--	__INIT
+-$(obj)/$(EFI_ZBOOT_PAYLOAD).signed: $(obj)/$(EFI_ZBOOT_PAYLOAD) FORCE
+-	$(call if_changed,sbsign)
 -
- SYM_CODE_START(efi_enter_kernel)
- 	/*
- 	 * efi_pe_entry() will have copied the kernel image if necessary and we
+-ZBOOT_PAYLOAD-y				 := $(EFI_ZBOOT_PAYLOAD)
+-ZBOOT_PAYLOAD-$(CONFIG_EFI_ZBOOT_SIGNED) := $(EFI_ZBOOT_PAYLOAD).signed
+-
+-$(obj)/vmlinuz: $(obj)/$(ZBOOT_PAYLOAD-y) FORCE
++$(obj)/vmlinuz: $(obj)/$(EFI_ZBOOT_PAYLOAD) FORCE
+ 	$(call if_changed,$(zboot-method-y))
+ 
+ OBJCOPYFLAGS_vmlinuz.o := -I binary -O $(EFI_ZBOOT_BFD_TARGET) \
+-			 --rename-section .data=.gzdata,load,alloc,readonly,contents
++			  --rename-section .data=.gzdata,load,alloc,readonly,contents
+ $(obj)/vmlinuz.o: $(obj)/vmlinuz FORCE
+ 	$(call if_changed,objcopy)
+ 
+@@ -53,18 +42,8 @@ LDFLAGS_vmlinuz.efi.elf := -T $(srctree)/drivers/firmware/efi/libstub/zboot.lds
+ $(obj)/vmlinuz.efi.elf: $(obj)/vmlinuz.o $(ZBOOT_DEPS) FORCE
+ 	$(call if_changed,ld)
+ 
+-ZBOOT_EFI-y				:= vmlinuz.efi
+-ZBOOT_EFI-$(CONFIG_EFI_ZBOOT_SIGNED)	:= vmlinuz.efi.unsigned
+-
+-OBJCOPYFLAGS_$(ZBOOT_EFI-y) := -O binary
+-$(obj)/$(ZBOOT_EFI-y): $(obj)/vmlinuz.efi.elf FORCE
++OBJCOPYFLAGS_vmlinuz.efi := -O binary
++$(obj)/vmlinuz.efi: $(obj)/vmlinuz.efi.elf FORCE
+ 	$(call if_changed,objcopy)
+ 
+ targets += zboot-header.o vmlinuz vmlinuz.o vmlinuz.efi.elf vmlinuz.efi
+-
+-ifneq ($(CONFIG_EFI_ZBOOT_SIGNED),)
+-$(obj)/vmlinuz.efi: $(obj)/vmlinuz.efi.unsigned FORCE
+-	$(call if_changed,sbsign)
+-endif
+-
+-targets += $(EFI_ZBOOT_PAYLOAD).signed vmlinuz.efi.unsigned
 -- 
 2.35.1
 
