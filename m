@@ -2,70 +2,58 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5497601148
-	for <lists+linux-efi@lfdr.de>; Mon, 17 Oct 2022 16:39:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FCAB601485
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Oct 2022 19:17:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230434AbiJQOjo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 17 Oct 2022 10:39:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48632 "EHLO
+        id S229577AbiJQRRU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 17 Oct 2022 13:17:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230303AbiJQOjn (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 17 Oct 2022 10:39:43 -0400
+        with ESMTP id S229452AbiJQRRT (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 17 Oct 2022 13:17:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7644DF43;
-        Mon, 17 Oct 2022 07:39:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08EEF6E2D5
+        for <linux-efi@vger.kernel.org>; Mon, 17 Oct 2022 10:17:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F8316117D;
-        Mon, 17 Oct 2022 14:39:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97457C43144;
-        Mon, 17 Oct 2022 14:39:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B5B6611D8
+        for <linux-efi@vger.kernel.org>; Mon, 17 Oct 2022 17:17:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AC47C433D6;
+        Mon, 17 Oct 2022 17:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666017576;
-        bh=S3adBKWWRCbdw9aTgDVjLyyamcpV9tzhi9nN0qio5y8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=bkZec/mpzcK73DGRsO+9WMq/Vf5m3ykC5aBPApPU4IlCMDH/aVBUT6I0Xcr+eR1vi
-         latXBJJn9/vjqk+Cmg3zR8EZ18LjveNkJxgSQHO0b6oqQ6sJKJIbwom6zZh0xOBWSj
-         oHmxLPQjjacMwWcJYTQwvXDUYaKLd7RgFWyrS/gaymZeeCaCBcw04K6kOKaMdH52hC
-         8kuWJnaipTMtjkAqtwXBGuaU5bF3t1m6zpN3iz03ulc7N9sigKx9tZEeE2aeow9XLA
-         V8xWJnLvFkTABpmBnID3kfXpocnADmMUA6jchPTPVMC3emP5huEQdY4kYMT0HLUvXE
-         bV3P5Rn20U/ow==
-Received: by mail-lf1-f49.google.com with SMTP id f37so17819625lfv.8;
-        Mon, 17 Oct 2022 07:39:36 -0700 (PDT)
-X-Gm-Message-State: ACrzQf2pjYg+1o41l68BmIxh8yBnAO5i7KDzKrgd/e+wnqkIykLzGOvU
-        sXRLt4OS1YyVbb2ewwussiAIqtl+5bzRftrNXJ0=
-X-Google-Smtp-Source: AMsMyM55z/nkRG2B+V8V1IwJyHIiMNsM2xHM1VyPrZy9VQr+/mQ4Twt2BgzGR8m3xY0sgjtNJw8gKq0UoiD0ohuDQKQ=
-X-Received: by 2002:ac2:4c47:0:b0:4a2:c07b:4b62 with SMTP id
- o7-20020ac24c47000000b004a2c07b4b62mr3839451lfk.426.1666017574462; Mon, 17
- Oct 2022 07:39:34 -0700 (PDT)
-MIME-Version: 1.0
-References: <20221017130140.420986-1-justin.he@arm.com> <20221017130140.420986-7-justin.he@arm.com>
-In-Reply-To: <20221017130140.420986-7-justin.he@arm.com>
+        s=k20201202; t=1666027038;
+        bh=VONHlqBF6jJ7zbfGqBrKGB+8E0OoP1Lhi/+6ppYG+R4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=L9y99z3MfEiMUBEJauKovdlYoHYMRpTBXQDCAEmoxTruV5ROaUwBXRAADMThKwICQ
+         ZIHsoc+K7xCq0Cfwz/vsQX1bOnmSYJUcqEVbB1k3/6rACpW8tCMb/hJYNL5cZ0a1Yb
+         D9inPkuhTRmMGpc36JAKDrkFkHqfUmYZczilaBnUdZzlnxOAM++F0ZYH328BDeGuOs
+         G5XYkqwS0zk+A37a/XQB4c30FLk7FD9b8rWnZO8IM3jaW3shLCcL97bKyQZ4EzTzSO
+         XtiYWILiFTK9zc1vwfaScOoijJ6/dQeVMv18wV9R4QW+vDa9czVYIH1BNem/Fj0kst
+         Aak8tfh//Gt3A==
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 17 Oct 2022 16:39:22 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEge+PtOHug2FhnbAetDLOTJ4jguC4uwA4oORbu-25YiA@mail.gmail.com>
-Message-ID: <CAMj1kXEge+PtOHug2FhnbAetDLOTJ4jguC4uwA4oORbu-25YiA@mail.gmail.com>
-Subject: Re: [PATCH v9 6/7] apei/ghes: Use xchg_release() for updating new
- cache slot instead of cmpxchg()
-To:     Jia He <justin.he@arm.com>
-Cc:     Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Jan Luebbe <jlu@pengutronix.de>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Kani Toshi <toshi.kani@hpe.com>,
-        James Morse <james.morse@arm.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-        devel@acpica.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
-        nd@arm.com, Peter Zijlstra <peterz@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     linux-efi@vger.kernel.org
+Cc:     keescook@chromium.org, Ard Biesheuvel <ardb@kernel.org>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Peter Jones <pjones@redhat.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Atish Patra <atishp@atishpatra.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Xi Ruoyao <xry111@xry111.site>,
+        Lennart Poettering <lennart@poettering.net>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 00/21] efi: Combine stub functionality with zboot decompressor
+Date:   Mon, 17 Oct 2022 19:16:39 +0200
+Message-Id: <20221017171700.3736890-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6421; i=ardb@kernel.org; h=from:subject; bh=VONHlqBF6jJ7zbfGqBrKGB+8E0OoP1Lhi/+6ppYG+R4=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjTY3o8G4lAfDJzKkYEsnYI1bEzitzTfmJVVF0HHYf wFwtedyJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY02N6AAKCRDDTyI5ktmPJJ6CC/ 9ztk1lY4pDb1cBGORVhukeowIHwU7pMAK7D68OGZnI0C+liV96UaSRdBFn7I3aDPDiE2/tdUh1sUwR E81E0JB/Xj3yTT1za3pzLJN3g29tCbBr/Wp0Dv1DDhxEDT7Gi3WObY/t/Zc/HmIkhQc3oQX2b31tIt mfW10FiCCiwzM9bfTCeRatZvNQW/yKhv5RTP0DOxfvz3kLSxTr7qf8FlZa9klOE4vKIojF6S1w5d7l UrKwM9iHDKaDZVeV9Qu01clyywbOnv/VKeeRHGu7vagd1pv1JlXKcRkmKRkFy20lzkDFap/wbbNs+U FeCIxM/RnepcNX+HmuF1cIKEXmKsXXG+otJ3mRGUID7ONLbyKpzvDr/kT6xrDTIUcvA9LZlMsYu+c4 s+zwseSCkuBTDi8WK2JDaOp5YpdML8f3tiEDfBUyjXzEs8+KMmOhJVrJVLYccyU1dh6RJ/3p77GmPO FhU1CFD8KqnF1dYDJCEGW+jarpPI/NLhbY/frXjpBD7Bw=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -75,144 +63,123 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 17 Oct 2022 at 15:02, Jia He <justin.he@arm.com> wrote:
->
-> From: Ard Biesheuvel <ardb@kernel.org>
->
-> From: Ard Biesheuvel <ardb@kernel.org>
->
-> ghes_estatus_cache_add() selects a slot, and either succeeds in
-> replacing its contents with a pointer to a new cached item, or it just
-> gives up and frees the new item again, without attempting to select
-> another slot even if one might be available.
->
-> Since only inserting new items is needed, the race can only cause a failure
-> if the selected slot was updated with another new item concurrently,
-> which means that it is arbitrary which of those two items gets
-> dropped. This means the cmpxchg() and the special case are not necessary,
-> and hence just drop the existing item unconditionally. Note that this
-> does not result in loss of error events, it simply means we might
-> cause a false cache miss, and report the same event one additional
-> time in quick succession even if the cache should have prevented that.
->
-> Move the xchg_release() and call_rcu out of rcu_read_lock/unlock section
-> since there is no actually dereferencing the pointer at all.
->
-> Co-developed-by: Jia He <justin.he@arm.com>
-> Signed-off-by: Jia He <justin.he@arm.com>
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  drivers/acpi/apei/ghes.c | 47 +++++++++++++++++++++-------------------
->  1 file changed, 25 insertions(+), 22 deletions(-)
->
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 27c72b175e4b..5d7754053ca0 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -150,7 +150,7 @@ struct ghes_vendor_record_entry {
->  static struct gen_pool *ghes_estatus_pool;
->  static unsigned long ghes_estatus_pool_size_request;
->
-> -static struct ghes_estatus_cache *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
-> +static struct ghes_estatus_cache __rcu *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
->  static atomic_t ghes_estatus_cache_alloced;
->
->  static int ghes_panic_timeout __read_mostly = 30;
-> @@ -785,31 +785,26 @@ static struct ghes_estatus_cache *ghes_estatus_cache_alloc(
->         return cache;
->  }
->
-> -static void ghes_estatus_cache_free(struct ghes_estatus_cache *cache)
-> +static void ghes_estatus_cache_rcu_free(struct rcu_head *head)
->  {
-> +       struct ghes_estatus_cache *cache;
->         u32 len;
->
-> +       cache = container_of(head, struct ghes_estatus_cache, rcu);
->         len = cper_estatus_len(GHES_ESTATUS_FROM_CACHE(cache));
->         len = GHES_ESTATUS_CACHE_LEN(len);
->         gen_pool_free(ghes_estatus_pool, (unsigned long)cache, len);
->         atomic_dec(&ghes_estatus_cache_alloced);
->  }
->
-> -static void ghes_estatus_cache_rcu_free(struct rcu_head *head)
-> -{
-> -       struct ghes_estatus_cache *cache;
-> -
-> -       cache = container_of(head, struct ghes_estatus_cache, rcu);
-> -       ghes_estatus_cache_free(cache);
-> -}
-> -
->  static void ghes_estatus_cache_add(
->         struct acpi_hest_generic *generic,
->         struct acpi_hest_generic_status *estatus)
->  {
->         int i, slot = -1, count;
->         unsigned long long now, duration, period, max_period = 0;
-> -       struct ghes_estatus_cache *cache, *slot_cache = NULL, *new_cache;
-> +       struct ghes_estatus_cache *cache, *new_cache;
-> +       struct ghes_estatus_cache __rcu *victim;
->
->         new_cache = ghes_estatus_cache_alloc(generic, estatus);
->         if (new_cache == NULL)
-> @@ -820,13 +815,11 @@ static void ghes_estatus_cache_add(
->                 cache = rcu_dereference(ghes_estatus_caches[i]);
->                 if (cache == NULL) {
->                         slot = i;
-> -                       slot_cache = NULL;
->                         break;
->                 }
->                 duration = now - cache->time_in;
->                 if (duration >= GHES_ESTATUS_IN_CACHE_MAX_NSEC) {
->                         slot = i;
-> -                       slot_cache = cache;
->                         break;
->                 }
->                 count = atomic_read(&cache->count);
-> @@ -835,18 +828,28 @@ static void ghes_estatus_cache_add(
->                 if (period > max_period) {
->                         max_period = period;
->                         slot = i;
-> -                       slot_cache = cache;
->                 }
->         }
-> -       /* new_cache must be put into array after its contents are written */
-> -       smp_wmb();
-> -       if (slot != -1 && cmpxchg(ghes_estatus_caches + slot,
-> -                                 slot_cache, new_cache) == slot_cache) {
-> -               if (slot_cache)
-> -                       call_rcu(&slot_cache->rcu, ghes_estatus_cache_rcu_free);
-> -       } else
-> -               ghes_estatus_cache_free(new_cache);
->         rcu_read_unlock();
-> +
-> +       if (slot != -1) {
-> +               /*
-> +                * Use release semantics to ensure that ghes_estatus_cached()
-> +                * running on another CPU will see the updated cache fields if
-> +                * it can see the new value of the pointer.
-> +                */
-> +               victim = xchg_release(&ghes_estatus_caches[slot], new_cache);
-> +
+The EFI zboot decompression code that has been merged into v6.1-rc1 is
+fully generic, and relies on the EFI stub inside the encapsulated image
+to implement the actual EFI boot sequence. While this works fine, it has
+some drawbacks that we might prefer to fix:
+- executing the EFI stub of the inner image requires that it is signed
+  if secure boot is enabled, which is a bit of a hassle, given that
+  signing the image must occur during the build;
+- decompressing a PE/COFF image and calling LoadImage() on it means that
+  it gets copied again, and potentially yet another time if the
+  placement does not meet per-arch requirements.
 
-This still lacks the RCU_INITIALIZER()
+Given that the zboot decompressor and the EFI stub are built from the
+same set of objects in the libstub static library, we can make things a
+bit simpler, by incorporating everything the stub does into the zboot
+decompressor, and only handing off to the decompressed image after
+ExitBootServices(). This removes the need for signing the inner image,
+and allows us to decompress the image directly into the intended
+location in memory.
 
-> +               /*
-> +                * At this point, victim may point to a cached item different
-> +                * from the one based on which we selected the slot. Instead of
-> +                * going to the loop again to pick another slot, let's just
-> +                * drop the other item anyway: this may cause a false cache
-> +                * miss later on, but that won't cause any problems.
-> +                */
-> +               if (victim)
-> +                       call_rcu(unrcu_pointer(&victim->rcu), ghes_estatus_cache_rcu_free);
+This involves some refactoring, to remove the dependency on symbols that
+are only defined when linking directly to vmlinux, such as string and
+memory compare routines, and section boundaries of the core kernel.
 
-Please use &unrcu_pointer(victim)->rcu here.
+While at it, remove some functionality if it's not worth the effort
+making it work on both code paths, such as the EFI properties table, and
+the randomization of the UEFI runtime regions.
 
-> +       }
->  }
->
->  static void __ghes_panic(struct ghes *ghes,
-> --
-> 2.25.1
->
+Since image signing no longer needs to occur during the build, let's
+also drop the support for invoking sbsign during the build on both the
+inner image and the decompressor. (I intend to send that patch as a fix
+for v6.1 so we don't add zombie Kconfig symbols to a LTS kernel)
+
+Cc: Matthew Garrett <mjg59@srcf.ucam.org>
+Cc: Peter Jones <pjones@redhat.com>
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Atish Patra <atishp@atishpatra.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Xi Ruoyao <xry111@xry111.site>
+Cc: Lennart Poettering <lennart@poettering.net>
+Cc: Jeremy Linton <jeremy.linton@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+
+Ard Biesheuvel (21):
+  arm64: efi: Move dcache cleaning of loaded image out of
+    efi_enter_kernel()
+  arm64: efi: Avoid dcache_clean_poc() altogether in efi_enter_kernel()
+  arm64: efi: Move efi-entry.S into the libstub source directory
+  efi: libstub: Remove zboot signing from build options
+  efi: libstub: Drop randomization of runtime memory map
+  efi: libstub: Drop handling of EFI properties table
+  efi: libstub: Deduplicate ftrace command line argument filtering
+  efi: libstub: Use local strncmp() implementation unconditionally
+  efi: libstub: Clone memcmp() into the stub
+  efi: libstub: Enable efi_printk() in zboot decompressor
+  efi: loongarch: Drop exports of unused string routines
+  efi: libstub: Move screen_info handling to common code
+  efi: libstub: Provide local implementations of strrchr() and memchr()
+  efi: libstub: Factor out EFI stub entrypoint into separate file
+  efi: libstub: Add image code and data size to the zimage metadata
+  efi: libstub: Factor out min alignment and preferred kernel load
+    address
+  efi/riscv: libstub: Split off kernel image relocation for builtin stub
+  efi/arm64: libstub: Split off kernel image relocation for builtin stub
+  efi/loongarch: Don't jump to kernel entry via the old image
+  efi/loongarch: libstub: Split off kernel image relocation for builtin
+    stub
+  efi: libstub: Merge zboot decompressor with the ordinary stub
+
+ arch/arm/include/asm/efi.h                     |   3 -
+ arch/arm/kernel/efi.c                          |  31 +-
+ arch/arm64/include/asm/efi.h                   |  15 +-
+ arch/arm64/kernel/Makefile                     |   9 +-
+ arch/arm64/kernel/efi-entry.S                  |  69 -----
+ arch/arm64/kernel/image-vars.h                 |   8 -
+ arch/loongarch/include/asm/efi.h               |  14 +-
+ arch/loongarch/kernel/efi.c                    |  24 +-
+ arch/loongarch/kernel/image-vars.h             |   8 -
+ arch/riscv/include/asm/efi.h                   |  13 +-
+ arch/riscv/kernel/image-vars.h                 |   6 -
+ drivers/firmware/efi/Kconfig                   |  22 --
+ drivers/firmware/efi/efi-init.c                |  21 +-
+ drivers/firmware/efi/efi.c                     |   5 +
+ drivers/firmware/efi/libstub/Makefile          |  30 +-
+ drivers/firmware/efi/libstub/Makefile.zboot    |  53 +---
+ drivers/firmware/efi/libstub/arm32-stub.c      |  37 ---
+ drivers/firmware/efi/libstub/arm64-entry.S     |  69 +++++
+ drivers/firmware/efi/libstub/arm64-stub.c      |  49 +---
+ drivers/firmware/efi/libstub/arm64.c           |  61 ++++
+ drivers/firmware/efi/libstub/efi-stub-entry.c  |  65 +++++
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 143 ---------
+ drivers/firmware/efi/libstub/efi-stub.c        | 140 +++------
+ drivers/firmware/efi/libstub/efistub.h         |  15 +
+ drivers/firmware/efi/libstub/file.c            |  18 --
+ drivers/firmware/efi/libstub/intrinsics.c      |  18 ++
+ drivers/firmware/efi/libstub/loongarch-stub.c  |  89 ++----
+ drivers/firmware/efi/libstub/loongarch.c       |  80 +++++
+ drivers/firmware/efi/libstub/printk.c          | 154 ++++++++++
+ drivers/firmware/efi/libstub/riscv-stub.c      |  96 +-----
+ drivers/firmware/efi/libstub/riscv.c           |  98 +++++++
+ drivers/firmware/efi/libstub/screen_info.c     |  56 ++++
+ drivers/firmware/efi/libstub/string.c          |  95 +++++-
+ drivers/firmware/efi/libstub/zboot-header.S    |   2 +-
+ drivers/firmware/efi/libstub/zboot.c           | 307 +++++---------------
+ include/linux/efi.h                            |   2 +-
+ 36 files changed, 972 insertions(+), 953 deletions(-)
+ delete mode 100644 arch/arm64/kernel/efi-entry.S
+ create mode 100644 drivers/firmware/efi/libstub/arm64-entry.S
+ create mode 100644 drivers/firmware/efi/libstub/arm64.c
+ create mode 100644 drivers/firmware/efi/libstub/efi-stub-entry.c
+ create mode 100644 drivers/firmware/efi/libstub/loongarch.c
+ create mode 100644 drivers/firmware/efi/libstub/printk.c
+ create mode 100644 drivers/firmware/efi/libstub/riscv.c
+ create mode 100644 drivers/firmware/efi/libstub/screen_info.c
+
+-- 
+2.35.1
+
