@@ -2,66 +2,46 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3B2E602B03
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Oct 2022 14:01:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A45A603261
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Oct 2022 20:26:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229630AbiJRMBk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 18 Oct 2022 08:01:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56870 "EHLO
+        id S229597AbiJRS0G (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 18 Oct 2022 14:26:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230381AbiJRL7v (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 18 Oct 2022 07:59:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFC7412771
-        for <linux-efi@vger.kernel.org>; Tue, 18 Oct 2022 04:59:30 -0700 (PDT)
+        with ESMTP id S229848AbiJRSZ7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 18 Oct 2022 14:25:59 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41C252497A;
+        Tue, 18 Oct 2022 11:25:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 58F5461537
-        for <linux-efi@vger.kernel.org>; Tue, 18 Oct 2022 11:59:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB437C43470
-        for <linux-efi@vger.kernel.org>; Tue, 18 Oct 2022 11:59:29 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id EA66FB820F0;
+        Tue, 18 Oct 2022 18:25:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD99C433D6;
+        Tue, 18 Oct 2022 18:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666094369;
-        bh=U2holwK68YbVkjO+EETOVRlLcxvqnGYot6f6caemQ38=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=mkMd8Ay8k7c7IACh+XhGbSR0cPgVDZQzcwwVY4v+yKBoYJCRNtNfWv6VJ+GVKCbvj
-         vdHY2iFByMa4wvYbBjQQltQ7zxGWGShuKBIezv69ufWC203go6sfP1R4WcbjNILeux
-         GWU13mt9lfcbWBFbGN4lvekJnj+TTsPNzG3OI5/KptceFSrHRu53xK/HZefN7iYlPh
-         sN+LBdzUce2zNyiNY03XFKwOlyWpoWv2+ece0wuNqX4IVZchOb0VFEpRxs3WV/xbba
-         Th87WG6rsm5ds2Hifu+NYaxkmsVcI/2ejscqMIwJNmMYwHC0QvozorUKfElVmRkPRj
-         gxkpUahpIxLYQ==
-Received: by mail-lf1-f44.google.com with SMTP id bu25so22151077lfb.3
-        for <linux-efi@vger.kernel.org>; Tue, 18 Oct 2022 04:59:29 -0700 (PDT)
-X-Gm-Message-State: ACrzQf0h7lzRqETJ4MGKoiYYy0/183JP/UHUF4dT0WHzMbUYfpwo+73/
-        tXNlriZnM5bG1bwTpgZJYmkoBQ/OpC1alIyauXY=
-X-Google-Smtp-Source: AMsMyM439hszskCIt0dLBGbDVvBp4azwBGQoOwawPvzmiZ5t7XFTPILCDa931Ti+kooBtEAyNcNmw/sXFCEYZOLbIns=
-X-Received: by 2002:a05:6512:104a:b0:4a2:9c7b:c9c with SMTP id
- c10-20020a056512104a00b004a29c7b0c9cmr842547lfb.122.1666094367776; Tue, 18
- Oct 2022 04:59:27 -0700 (PDT)
-MIME-Version: 1.0
-References: <20221017171700.3736890-1-ardb@kernel.org> <20221017171700.3736890-3-ardb@kernel.org>
- <Y06UpeYYYm9qSATn@arm.com>
-In-Reply-To: <Y06UpeYYYm9qSATn@arm.com>
+        s=k20201202; t=1666117554;
+        bh=om6zFfaFETCR1xyfskk4mBkA8kFqHujPVwRgrXfGQF4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=JwJ24DFjc91Q9L6ZYZF72y3vHs6Ub/oxpUupIxWSrAmAVT3/jMXG0s7Bvu33bNnWp
+         WrLv4L84Q+J6kJZC4kCMXdmSpqY544gPXceo8BXLidY+bNfgJ5GA+DF/2TEP5SX56d
+         qnOzzswej9NFDh08t+/AEIcJsTFzv9LOW9vKK4dzGjAW5INN1OL7lSiHy/8b788Uuc
+         PsRtTHY9xgGfGpcbe6ntJrb7X3z5vyuplqu913G3GS306tIko2tY2dljspJN2DD1mX
+         QjvBfTqX+coBrB9CQw3sXTPEw0/wh8u5JVDHxvw20ZzckgYDFV+S1ImmfliBpZODfB
+         RS2IEajKEdAFw==
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 18 Oct 2022 13:59:16 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEeq4Ssdw=eY+pvBeuXZMR2NBDGd4+HEwRuhPVjaLjdZw@mail.gmail.com>
-Message-ID: <CAMj1kXEeq4Ssdw=eY+pvBeuXZMR2NBDGd4+HEwRuhPVjaLjdZw@mail.gmail.com>
-Subject: Re: [PATCH 02/21] arm64: efi: Avoid dcache_clean_poc() altogether in efi_enter_kernel()
-To:     Catalin Marinas <catalin.marinas@arm.com>
-Cc:     linux-efi@vger.kernel.org, keescook@chromium.org,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        Peter Jones <pjones@redhat.com>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Atish Patra <atishp@atishpatra.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Xi Ruoyao <xry111@xry111.site>,
-        Lennart Poettering <lennart@poettering.net>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Will Deacon <will@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     linux-efi@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org
+Subject: [PATCH for-stable] efi: libstub: drop pointless get_memory_map() call
+Date:   Tue, 18 Oct 2022 20:25:45 +0200
+Message-Id: <20221018182545.143757-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1352; i=ardb@kernel.org; h=from:subject; bh=om6zFfaFETCR1xyfskk4mBkA8kFqHujPVwRgrXfGQF4=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjTu+oHBZDBr4+fRb+DrsI1FLVPtSHb9P/si31vhNZ MtHylwKJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY07vqAAKCRDDTyI5ktmPJHj6C/ 0ZHMwDnors24aETAKYxdXQ/RTprUyLX33FHBYA0Gd0Hfa1TYcw5HiqieQsP8wPvG3Q4Hz3Dwl3HRoU ggn4FpN5HoIsxLclTN2oE6VutcvC2hUIUJZWHbfeaxO1LcElR/dcxM0yhmIWzUmQZYtGdirKyDD4S2 9Y+I4SmZbc8c/W5pwtFoHcQDg5s5XpD22V1sJu6GnIbCRQY4IcDRnRZnH0UVpzQha/NIi6UAb/swHf qsUaH40yWBlK/2JdTj1z85WSOioIE+Y3fj+W0AX9TzdgXrxPMHr7ynhD0SZ6ngld+1arCmoYyqCPvX Uh42Q7gVIuPqCkiqdSfFNhJKuUeMYdDhXqZOwvTPI/MLyPEGcMqSeqtimXu9Wxdqox++t6g+3O3IFp b8CXKMBb43f1P1fEKSDT/wlEIkz770pC0jSBDpEojA6IuvGt67TSuwUjnrTbYly/u+MVNZKvbyP8xy R+mu/OnGemlP+2xIY1ULimGT7w+lry7mSnjI6vWA7lf8s=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -71,32 +51,40 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 18 Oct 2022 at 13:57, Catalin Marinas <catalin.marinas@arm.com> wrote:
->
-> On Mon, Oct 17, 2022 at 07:16:41PM +0200, Ard Biesheuvel wrote:
-> > To allow efi_enter_kernel() to be shared with the EFI zboot decompressor
-> > build, drop another reference to dcache_clean_poc() and replace it with
-> > a single DC CVAC instruction. To ensure that it covers the remainder of
-> > efi_enter_kernel() as intended, reorganize the code a bit so it fits in
-> > a 32-byte cacheline, and align it to 32 bytes. (Even though the
-> > architecture defines 16 as the minimum D-cache line size, even the
-> > chosen value of 32 is highly unlikely to ever be encountered on real
-> > hardware, and this works with any line size >= 32)
->
-> This should do.
->
-> > -0:
-> > +     adr     x4, 1f
-> > +     dc      civac, x4
->
-> s/civac/cvac/ ?
->
+commit d80ca810f096ff66f451e7a3ed2f0cd9ef1ff519 upstream
 
-Ah yes, I changed that last minute because of
-ARM64_WORKAROUND_CLEAN_CACHE - I'll add a note.
+Currently, the non-x86 stub code calls get_memory_map() redundantly,
+given that the data it returns is never used anywhere. So drop the call.
 
-> Otherwise,
->
-> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: <stable@vger.kernel.org> # v4.14+
+Fixes: 24d7c494ce46 ("efi/arm-stub: Round up FDT allocation to mapping size")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/libstub/fdt.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-Thanks
+This is a backport for v5.4 and older, where the patch in question did
+not apply cleanly on the first attempt. Please apply.
+
+diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
+index dba296a44f4e..2a1a587edef9 100644
+--- a/drivers/firmware/efi/libstub/fdt.c
++++ b/drivers/firmware/efi/libstub/fdt.c
+@@ -301,14 +301,6 @@ efi_status_t allocate_new_fdt_and_exit_boot(efi_system_table_t *sys_table,
+ 		goto fail;
+ 	}
+ 
+-	/*
+-	 * Now that we have done our final memory allocation (and free)
+-	 * we can get the memory map key needed for exit_boot_services().
+-	 */
+-	status = efi_get_memory_map(sys_table, &map);
+-	if (status != EFI_SUCCESS)
+-		goto fail_free_new_fdt;
+-
+ 	status = update_fdt(sys_table, (void *)fdt_addr, fdt_size,
+ 			    (void *)*new_fdt_addr, MAX_FDT_SIZE, cmdline_ptr,
+ 			    initrd_addr, initrd_size);
+-- 
+2.35.1
+
