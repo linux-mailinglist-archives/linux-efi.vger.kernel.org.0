@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19199601F0A
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Oct 2022 02:15:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C947601FF4
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Oct 2022 02:56:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231801AbiJRAP3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 17 Oct 2022 20:15:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55068 "EHLO
+        id S230136AbiJRA4K (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 17 Oct 2022 20:56:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231814AbiJRAOY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 17 Oct 2022 20:14:24 -0400
+        with ESMTP id S229833AbiJRA4J (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 17 Oct 2022 20:56:09 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D9B289AD4;
-        Mon, 17 Oct 2022 17:11:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D53DBBF4E;
+        Mon, 17 Oct 2022 17:56:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7FE57B81BF5;
-        Tue, 18 Oct 2022 00:09:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C26C433D6;
-        Tue, 18 Oct 2022 00:09:18 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id BBA61B81BEF;
+        Tue, 18 Oct 2022 00:10:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E52C433C1;
+        Tue, 18 Oct 2022 00:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666051763;
-        bh=cHaRla534Sb2l4lmAMXft5br2im5WECMK7w83i/o3m4=;
+        s=k20201202; t=1666051816;
+        bh=cck9WSdwrmHiXeaAK8FgRjSB8AlWpfEP361TCYzvRjw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n5az0T8WZ1LXr0ClSOyg78TI3ApuJF0odW0LftyuWQit89tx3hETBOYTqkU1gTEa+
-         qSQrfvDY7LiCjRaplATtG2Plc3DIiK6btO7WuS5jkcBoikxJgONG2beMhswXn7VQZK
-         ucSrgEoijMOctrSBwGAtaUpwkc9wU1qqVX8eQadXG7AGMlFmmOFeZVVy4znQ8AXLCD
-         LdLQDe4rcFpcHxzFFb8Uz5v6EuICpr02CwAef2wTxtZRA5+xz0DiT6qUBOMuSg5Sdn
-         4xKD/3lTrbnPUPrdc3pZwgrSEzzmw5rYtmtzah9rwDNKGzWFuJCaY6TFmZHfoK8/F4
-         WKP4qLU5qCjVA==
+        b=qiZFxClnV3LobPCLLPTdfsgcucSmPWeCwI9e6MSfQg7Bfo23vSrZSZKT5thiKzyqR
+         C41uCS8k+97xPd876mE32Fy67MUcd6lik6oIoSs1qDEZXPmkwyBKzo0uT8xyCxVgb7
+         6vj1iui4FPn5gYnKiB4Nln92ofht0Bl7rTYWY2fD5SPOv7Zp8aNEaptrOAMQP8uutS
+         p5BYUBW1bww19fVFV2PQwh0EfrBMxUJ7n+J3FFqGYqU/Z8Oz0HNkUJJbjC499J9Nq3
+         zDgCXMqC4KWUo1+eR4fhMlrMScZ220pwmFdlsU6NQw7IS4DqcUqLSp9hR7gHEnDfNd
+         /uJ2NaMHJpGrg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Alexander Potapenko <glider@google.com>,
@@ -69,16 +69,16 @@ Cc:     Alexander Potapenko <glider@google.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>, ardb@kernel.org,
         will@kernel.org, jgross@suse.com, christophe.leroy@csgroup.eu,
-        mcgrof@kernel.org, mhiramat@kernel.org, sstabellini@kernel.org,
-        yangtiezhu@loongson.cn, dmitry.torokhov@gmail.com,
-        atomlin@redhat.com, yury.norov@gmail.com, sander@svanheule.net,
-        Jason@zx2c4.com, isabbasso@riseup.net, linux-efi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.19 20/29] kmsan: disable instrumentation of unsupported common kernel code
-Date:   Mon, 17 Oct 2022 20:08:29 -0400
-Message-Id: <20221018000839.2730954-20-sashal@kernel.org>
+        mhiramat@kernel.org, mcgrof@kernel.org, yangtiezhu@loongson.cn,
+        dmitry.torokhov@gmail.com, atomlin@redhat.com,
+        sander@svanheule.net, isabbasso@riseup.net, hare@suse.de,
+        linux-efi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 15/21] kmsan: disable instrumentation of unsupported common kernel code
+Date:   Mon, 17 Oct 2022 20:09:34 -0400
+Message-Id: <20221018000940.2731329-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221018000839.2730954-1-sashal@kernel.org>
-References: <20221018000839.2730954-1-sashal@kernel.org>
+In-Reply-To: <20221018000940.2731329-1-sashal@kernel.org>
+References: <20221018000940.2731329-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -160,10 +160,10 @@ index 2c67f71f2375..2c1eb1fb0f22 100644
  OBJECT_FILES_NON_STANDARD	:= y
  
 diff --git a/kernel/Makefile b/kernel/Makefile
-index a7e1f49ab2b3..e47f0526c987 100644
+index 0e119c52a2cd..3d0ea72e8d5e 100644
 --- a/kernel/Makefile
 +++ b/kernel/Makefile
-@@ -38,6 +38,7 @@ KCOV_INSTRUMENT_kcov.o := n
+@@ -39,6 +39,7 @@ KCOV_INSTRUMENT_kcov.o := n
  KASAN_SANITIZE_kcov.o := n
  KCSAN_SANITIZE_kcov.o := n
  UBSAN_SANITIZE_kcov.o := n
@@ -187,10 +187,10 @@ index d51cabf28f38..ea925731fa40 100644
  ifdef CONFIG_FUNCTION_TRACER
  CFLAGS_REMOVE_lockdep.o = $(CC_FLAGS_FTRACE)
 diff --git a/lib/Makefile b/lib/Makefile
-index f99bf61f8bbc..73fea85b7636 100644
+index 0868cb67e5b0..2aa6e0ad72a7 100644
 --- a/lib/Makefile
 +++ b/lib/Makefile
-@@ -272,6 +272,9 @@ obj-$(CONFIG_POLYNOMIAL) += polynomial.o
+@@ -268,6 +268,9 @@ obj-$(CONFIG_IRQ_POLL) += irq_poll.o
  CFLAGS_stackdepot.o += -fno-builtin
  obj-$(CONFIG_STACKDEPOT) += stackdepot.o
  KASAN_SANITIZE_stackdepot.o := n
@@ -199,7 +199,7 @@ index f99bf61f8bbc..73fea85b7636 100644
 +KMSAN_SANITIZE_stackdepot.o := n
  KCOV_INSTRUMENT_stackdepot.o := n
  
- obj-$(CONFIG_REF_TRACKER) += ref_tracker.o
+ libfdt_files = fdt.o fdt_ro.o fdt_wip.o fdt_rw.o fdt_sw.o fdt_strerror.o \
 -- 
 2.35.1
 
