@@ -2,59 +2,86 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C4176014A1
-	for <lists+linux-efi@lfdr.de>; Mon, 17 Oct 2022 19:18:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 120B1601E6E
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Oct 2022 02:10:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230185AbiJQRSu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 17 Oct 2022 13:18:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37510 "EHLO
+        id S231206AbiJRAK0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 17 Oct 2022 20:10:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230214AbiJQRSf (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 17 Oct 2022 13:18:35 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B27972682
-        for <linux-efi@vger.kernel.org>; Mon, 17 Oct 2022 10:18:31 -0700 (PDT)
+        with ESMTP id S231298AbiJRAJN (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 17 Oct 2022 20:09:13 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5116188A3D;
+        Mon, 17 Oct 2022 17:08:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7DB58B816B3
-        for <linux-efi@vger.kernel.org>; Mon, 17 Oct 2022 17:18:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE30C433C1;
-        Mon, 17 Oct 2022 17:18:25 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AFF68B81BE2;
+        Tue, 18 Oct 2022 00:08:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA90C433D6;
+        Tue, 18 Oct 2022 00:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666027108;
-        bh=cVOgfITgifl6uiubaj82MpNlFcEzkqOyCMw5CiaL4Jw=;
+        s=k20201202; t=1666051700;
+        bh=NqURN77r9MhBGrwVVovenXOafIgRuDAmFLodlWUYiJA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HBvaNb3v6LgHOSkV2zcyS7ThenCRIljghvddEUBLSqb+c57WMTo3xko71miWrlQ1J
-         FKizd5c2swnxPT4LNASpdqQtOBSfQ3DKzFo1j3OE+inB7bmDigUth2cDeZvy+6iL21
-         G7F5QHhypT19o+BoWHfLQGAKww6kmIRHdDyx5iI9iEgaqsb/p62DSG8D0FmwS4PmP/
-         F0YR865uKWFBY4WZHajbaKWjMX+shl7EOMX6/n67sVCY89tKLdiomsJEa2VSOUVqx2
-         JcAiKLJYv2m2QFtc+oiom2JakQaq2bwMAxF6Knvtf2QPeHmTPOd9JzM4Cq8C9byPI8
-         Cnh1NEOfYFEMw==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     keescook@chromium.org, Ard Biesheuvel <ardb@kernel.org>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        Peter Jones <pjones@redhat.com>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Atish Patra <atishp@atishpatra.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Xi Ruoyao <xry111@xry111.site>,
-        Lennart Poettering <lennart@poettering.net>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 21/21] efi: libstub: Merge zboot decompressor with the ordinary stub
-Date:   Mon, 17 Oct 2022 19:17:00 +0200
-Message-Id: <20221017171700.3736890-22-ardb@kernel.org>
+        b=njAzXxbq+YX3MEC7lZe5l8eAN1t/7bhHf0SjL+PcFHI+f0xyrNuhI+ZvP8g1D463k
+         mEL5V+Ss1qDhZ7cuEBBWIOJd/gswVXVlhrtNcIt5Ua4jTnMeys68TQL9mXr+7ctUgk
+         MPMonWO3KspIWVWdxcj0sXHNAmdpWVFtTLLIu4dSJLW58TaL3Ji71hqHg4tvr680BU
+         FnL8Fdi8QPWN0qSBmsljsKIyXmJnS9xGj/X/FI1UI616zrxsM6fA49HNWUBat3rVIA
+         k/mUvvzlSGJjJVvzLMLgOJG9x6Q3nCVrV49kJmUh/QTqTguNhlll2yfh1Kb00iBwue
+         BBkKzMHWPyqlw==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Alexander Potapenko <glider@google.com>,
+        Marco Elver <elver@google.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+        Christoph Hellwig <hch@lst.de>,
+        Christoph Lameter <cl@linux.com>,
+        David Rientjes <rientjes@google.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Eric Biggers <ebiggers@google.com>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Kees Cook <keescook@chromium.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        "Michael S . Tsirkin" <mst@redhat.com>,
+        Pekka Enberg <penberg@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Petr Mladek <pmladek@suse.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Vegard Nossum <vegard.nossum@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>, ardb@kernel.org,
+        will@kernel.org, jgross@suse.com, christophe.leroy@csgroup.eu,
+        mhiramat@kernel.org, mcgrof@kernel.org, dmitry.torokhov@gmail.com,
+        atomlin@redhat.com, yangtiezhu@loongson.cn, davidgow@google.com,
+        sander@svanheule.net, Jason@zx2c4.com, isabbasso@riseup.net,
+        hare@suse.de, linux-efi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.0 22/32] kmsan: disable instrumentation of unsupported common kernel code
+Date:   Mon, 17 Oct 2022 20:07:19 -0400
+Message-Id: <20221018000729.2730519-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221017171700.3736890-1-ardb@kernel.org>
-References: <20221017171700.3736890-1-ardb@kernel.org>
+In-Reply-To: <20221018000729.2730519-1-sashal@kernel.org>
+References: <20221018000729.2730519-1-sashal@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=14544; i=ardb@kernel.org; h=from:subject; bh=cVOgfITgifl6uiubaj82MpNlFcEzkqOyCMw5CiaL4Jw=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjTY4LzFzsunfP1IWtOLdg/jkr7K3yJWUkIWwooFkV L/LFMfCJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY02OCwAKCRDDTyI5ktmPJKpbC/ wLZ934D5yW+15dxp3Hwz6h1bSiSQM3ACYS3CGLATuDpxQjJYbxCzQ6zyvXIWy7UMl91TKoFAkso36S 5S0IpL9lqm3dVetuSLq7Cdz1edlVdP6r7TjBRPHusC0TTl9Wr5oni4dGbhDsTghBcHt7pZ4FPPj4gp R+lvNKmVALt7y5+zCczp6BfuS6P9TgWjf14izGwlrteFqUeVTTSq8fq1cFJMdiAqkcIsLhPT50SOIj RXJrJWxNznqmphpCiZErrfe8pn4BTHR+vGdWNc9DYxnHcZtMljUFKDFAKGOIECVh5yG3fes4IYMwyL RybREfBN25hhNN9OcH5W3nDoXk1Rkjk/6vwUmsnQWxj1Bq719+Y5qNGoZ53hY/rQi/p9eznPBkQWIx sXl7Y7EomZvXZBKYWp2LZ7Q9W4GSd1gEr2XLWBfxpuLTrpUiMBsDuQNePNwFsklK8iR3waUxb0knqp XVClwktN+BqH2HS6yiE68/MJsvhZT+3wu2NAq2lmoYd3E=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -65,405 +92,114 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Even though our EFI zboot decompressor is pedantically spec compliant
-and idiomatic for EFI image loaders, calling LoadImage() and
-StartImage() for the nested image is a bit of a burden. Not only does it
-create workflow issues for the distros (as both the inner and outer
-PE/COFF images need to be signed for secure boot), it also copies the
-image around in memory numerous times:
-- first, the image is decompressed into a buffer;
-- the buffer is consumed by LoadImage(), which copies the sections into
-  a newly allocated memory region to hold the executable image;
-- once the EFI stub is invoked by StartImage(), it will also move the
-  image in memory in case of KASLR, mirrored memory or if the image must
-  execute from a certain a priori defined address.
+From: Alexander Potapenko <glider@google.com>
 
-There are only two EFI spec compliant ways to load code into memory and
-execute it:
-- use LoadImage() and StartImage(),
-- call ExitBootServices() and take ownership of the entire system, after
-  which anything goes.
+[ Upstream commit 79dbd006a6d6f51777ba4948046561b6d9270504 ]
 
-Given that the EFI zboot decompressor always invokes the EFI stub, and
-given that both are built from the same set of objects, let's merge the
-two, so that we can avoid LoadImage()/StartImage but still load our
-image into memory without breaking the above rules.
+EFI stub cannot be linked with KMSAN runtime, so we disable
+instrumentation for it.
 
-This also means we can decompress the image directly into its final
-location, which could be randomized or meet other platform specific
-constraints that LoadImage() does not know how to adhere to. It also
-means that, even if the encapsulated image still has the EFI stub
-incorporated as well, it does not need to be signed for secure boot when
-wrapping it in the EFI zboot decompressor.
+Instrumenting kcov, stackdepot or lockdep leads to infinite recursion
+caused by instrumentation hooks calling instrumented code again.
 
-In the future, we might decide to retire the EFI stub attached to the
-decompressed image, but for the time being, they can happily coexist.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lkml.kernel.org/r/20220915150417.722975-13-glider@google.com
+Signed-off-by: Alexander Potapenko <glider@google.com>
+Reviewed-by: Marco Elver <elver@google.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Konovalov <andreyknvl@google.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Eric Biggers <ebiggers@google.com>
+Cc: Eric Biggers <ebiggers@kernel.org>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Michael S. Tsirkin <mst@redhat.com>
+Cc: Pekka Enberg <penberg@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Vegard Nossum <vegard.nossum@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/file.c  |  18 --
- drivers/firmware/efi/libstub/zboot.c | 284 +++++---------------
- 2 files changed, 74 insertions(+), 228 deletions(-)
+ drivers/firmware/efi/libstub/Makefile | 1 +
+ kernel/Makefile                       | 1 +
+ kernel/locking/Makefile               | 3 ++-
+ lib/Makefile                          | 3 +++
+ 4 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/libstub/file.c b/drivers/firmware/efi/libstub/file.c
-index 995d9d823519..d6a025df07dc 100644
---- a/drivers/firmware/efi/libstub/file.c
-+++ b/drivers/firmware/efi/libstub/file.c
-@@ -74,28 +74,10 @@ static efi_status_t efi_open_file(efi_file_protocol_t *volume,
- static efi_status_t efi_open_volume(efi_loaded_image_t *image,
- 				    efi_file_protocol_t **fh)
- {
--	struct efi_vendor_dev_path *dp = efi_table_attr(image, file_path);
--	efi_guid_t li_proto = LOADED_IMAGE_PROTOCOL_GUID;
- 	efi_guid_t fs_proto = EFI_FILE_SYSTEM_GUID;
- 	efi_simple_file_system_protocol_t *io;
- 	efi_status_t status;
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index 2c67f71f2375..2c1eb1fb0f22 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -53,6 +53,7 @@ GCOV_PROFILE			:= n
+ # Sanitizer runtimes are unavailable and cannot be linked here.
+ KASAN_SANITIZE			:= n
+ KCSAN_SANITIZE			:= n
++KMSAN_SANITIZE			:= n
+ UBSAN_SANITIZE			:= n
+ OBJECT_FILES_NON_STANDARD	:= y
  
--	// If we are using EFI zboot, we should look for the file system
--	// protocol on the parent image's handle instead
--	if (IS_ENABLED(CONFIG_EFI_ZBOOT) &&
--	    image->parent_handle != NULL &&
--	    dp != NULL &&
--	    dp->header.type == EFI_DEV_MEDIA &&
--	    dp->header.sub_type == EFI_DEV_MEDIA_VENDOR &&
--	    !efi_guidcmp(dp->vendorguid, LINUX_EFI_ZBOOT_MEDIA_GUID)) {
--		status = efi_bs_call(handle_protocol, image->parent_handle,
--				     &li_proto, (void *)&image);
--		if (status != EFI_SUCCESS) {
--			efi_err("Failed to locate parent image handle\n");
--			return status;
--		}
--	}
--
- 	status = efi_bs_call(handle_protocol, efi_table_attr(image, device_handle),
- 			     &fs_proto, (void **)&io);
- 	if (status != EFI_SUCCESS) {
-diff --git a/drivers/firmware/efi/libstub/zboot.c b/drivers/firmware/efi/libstub/zboot.c
-index 5f41a5b17d6e..66be5fdc6b58 100644
---- a/drivers/firmware/efi/libstub/zboot.c
-+++ b/drivers/firmware/efi/libstub/zboot.c
-@@ -37,247 +37,111 @@ static void error(char *x)
- 	efi_err("EFI decompressor: %s\n", x);
- }
+diff --git a/kernel/Makefile b/kernel/Makefile
+index 318789c728d3..d754e0be1176 100644
+--- a/kernel/Makefile
++++ b/kernel/Makefile
+@@ -38,6 +38,7 @@ KCOV_INSTRUMENT_kcov.o := n
+ KASAN_SANITIZE_kcov.o := n
+ KCSAN_SANITIZE_kcov.o := n
+ UBSAN_SANITIZE_kcov.o := n
++KMSAN_SANITIZE_kcov.o := n
+ CFLAGS_kcov.o := $(call cc-option, -fno-conserve-stack) -fno-stack-protector
  
--static efi_status_t __efiapi
--load_file(efi_load_file_protocol_t *this, efi_device_path_protocol_t *rem,
--	  bool boot_policy, unsigned long *bufsize, void *buffer)
-+static unsigned long alloc_preferred_address(unsigned long alloc_size)
- {
--	unsigned long compressed_size = _gzdata_end - _gzdata_start;
--	struct efi_vendor_dev_path *vendor_dp;
--	bool decompress = false;
--	unsigned long size;
--	int ret;
--
--	if (rem == NULL || bufsize == NULL)
--		return EFI_INVALID_PARAMETER;
--
--	if (boot_policy)
--		return EFI_UNSUPPORTED;
--
--	// Look for our vendor media device node in the remaining file path
--	if (rem->type == EFI_DEV_MEDIA &&
--	    rem->sub_type == EFI_DEV_MEDIA_VENDOR) {
--		vendor_dp = container_of(rem, struct efi_vendor_dev_path, header);
--		if (efi_guidcmp(vendor_dp->vendorguid, LINUX_EFI_ZBOOT_MEDIA_GUID))
--			return EFI_NOT_FOUND;
--
--		decompress = true;
--		rem = (void *)(vendor_dp + 1);
--	}
--
--	if (rem->type != EFI_DEV_END_PATH ||
--	    rem->sub_type != EFI_DEV_END_ENTIRE)
--		return EFI_NOT_FOUND;
--
--	// The uncompressed size of the payload is appended to the raw bit
--	// stream, and may therefore appear misaligned in memory
--	size = decompress ? get_unaligned_le32(_gzdata_end - 4)
--			  : compressed_size;
--	if (buffer == NULL || *bufsize < size) {
--		*bufsize = size;
--		return EFI_BUFFER_TOO_SMALL;
--	}
--
--	if (decompress) {
--		ret = __decompress(_gzdata_start, compressed_size, NULL, NULL,
--				   buffer, size, NULL, error);
--		if (ret	< 0) {
--			error("Decompression failed");
--			return EFI_DEVICE_ERROR;
--		}
--	} else {
--		memcpy(buffer, _gzdata_start, compressed_size);
--	}
--
--	return EFI_SUCCESS;
--}
--
--// Return the length in bytes of the device path up to the first end node.
--static int device_path_length(const efi_device_path_protocol_t *dp)
--{
--	int len = 0;
--
--	while (dp->type != EFI_DEV_END_PATH) {
--		len += dp->length;
--		dp = (void *)((u8 *)dp + dp->length);
--	}
--	return len;
--}
--
--static void append_rel_offset_node(efi_device_path_protocol_t **dp,
--				   unsigned long start, unsigned long end)
--{
--	struct efi_rel_offset_dev_path *rodp = (void *)*dp;
--
--	rodp->header.type	= EFI_DEV_MEDIA;
--	rodp->header.sub_type	= EFI_DEV_MEDIA_REL_OFFSET;
--	rodp->header.length	= sizeof(struct efi_rel_offset_dev_path);
--	rodp->reserved		= 0;
--	rodp->starting_offset	= start;
--	rodp->ending_offset	= end;
--
--	*dp = (void *)(rodp + 1);
--}
--
--static void append_ven_media_node(efi_device_path_protocol_t **dp,
--				  efi_guid_t *guid)
--{
--	struct efi_vendor_dev_path *vmdp = (void *)*dp;
--
--	vmdp->header.type	= EFI_DEV_MEDIA;
--	vmdp->header.sub_type	= EFI_DEV_MEDIA_VENDOR;
--	vmdp->header.length	= sizeof(struct efi_vendor_dev_path);
--	vmdp->vendorguid	= *guid;
-+#ifdef EFI_KIMG_PREFERRED_ADDRESS
-+	efi_physical_addr_t efi_addr = EFI_KIMG_PREFERRED_ADDRESS;
+ # Don't instrument error handlers
+diff --git a/kernel/locking/Makefile b/kernel/locking/Makefile
+index d51cabf28f38..ea925731fa40 100644
+--- a/kernel/locking/Makefile
++++ b/kernel/locking/Makefile
+@@ -5,8 +5,9 @@ KCOV_INSTRUMENT		:= n
  
--	*dp = (void *)(vmdp + 1);
-+	if (efi_bs_call(allocate_pages, EFI_ALLOCATE_ADDRESS, EFI_LOADER_DATA,
-+			alloc_size / EFI_PAGE_SIZE, &efi_addr) == EFI_SUCCESS)
-+		return efi_addr;
-+#endif
-+	return ULONG_MAX;
- }
+ obj-y += mutex.o semaphore.o rwsem.o percpu-rwsem.o
  
--static void append_end_node(efi_device_path_protocol_t **dp)
-+void __weak efi_cache_sync_image(unsigned long image_base,
-+				 unsigned long alloc_size,
-+				 unsigned long code_size)
- {
--	(*dp)->type		= EFI_DEV_END_PATH;
--	(*dp)->sub_type		= EFI_DEV_END_ENTIRE;
--	(*dp)->length		= sizeof(struct efi_generic_dev_path);
--
--	++*dp;
-+	// Provided by the arch to perform the cache maintenance necessary for
-+	// executable code loaded into memory to be safe for execution.
- }
+-# Avoid recursion lockdep -> KCSAN -> ... -> lockdep.
++# Avoid recursion lockdep -> sanitizer -> ... -> lockdep.
+ KCSAN_SANITIZE_lockdep.o := n
++KMSAN_SANITIZE_lockdep.o := n
  
- asmlinkage efi_status_t __efiapi
- efi_zboot_entry(efi_handle_t handle, efi_system_table_t *systab)
- {
--	struct efi_mem_mapped_dev_path mmdp = {
--		.header.type		= EFI_DEV_HW,
--		.header.sub_type	= EFI_DEV_MEM_MAPPED,
--		.header.length		= sizeof(struct efi_mem_mapped_dev_path)
--	};
--	efi_device_path_protocol_t *parent_dp, *dpp, *lf2_dp, *li_dp;
--	efi_load_file2_protocol_t zboot_load_file2;
--	efi_loaded_image_t *parent, *child;
--	unsigned long exit_data_size;
--	efi_handle_t child_handle;
--	efi_handle_t zboot_handle;
--	efi_char16_t *exit_data;
-+	unsigned long compressed_size = _gzdata_end - _gzdata_start;
-+	unsigned long image_base, alloc_size, code_size;
-+	efi_loaded_image_t *image;
- 	efi_status_t status;
--	void *dp_alloc;
--	int dp_len;
-+	char *cmdline_ptr;
-+	int ret;
+ ifdef CONFIG_FUNCTION_TRACER
+ CFLAGS_REMOVE_lockdep.o = $(CC_FLAGS_FTRACE)
+diff --git a/lib/Makefile b/lib/Makefile
+index ffabc30a27d4..fcebece0f5b6 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -275,6 +275,9 @@ obj-$(CONFIG_POLYNOMIAL) += polynomial.o
+ CFLAGS_stackdepot.o += -fno-builtin
+ obj-$(CONFIG_STACKDEPOT) += stackdepot.o
+ KASAN_SANITIZE_stackdepot.o := n
++# In particular, instrumenting stackdepot.c with KMSAN will result in infinite
++# recursion.
++KMSAN_SANITIZE_stackdepot.o := n
+ KCOV_INSTRUMENT_stackdepot.o := n
  
- 	WRITE_ONCE(efi_system_table, systab);
- 
- 	free_mem_ptr = (unsigned long)&zboot_heap;
- 	free_mem_end_ptr = free_mem_ptr + sizeof(zboot_heap);
- 
--	exit_data = NULL;
--	exit_data_size = 0;
--
- 	status = efi_bs_call(handle_protocol, handle,
--			     &LOADED_IMAGE_PROTOCOL_GUID, (void **)&parent);
-+			     &LOADED_IMAGE_PROTOCOL_GUID, (void **)&image);
- 	if (status != EFI_SUCCESS) {
- 		error("Failed to locate parent's loaded image protocol");
- 		return status;
- 	}
- 
--	status = efi_bs_call(handle_protocol, handle,
--			     &LOADED_IMAGE_DEVICE_PATH_PROTOCOL_GUID,
--			     (void **)&parent_dp);
--	if (status != EFI_SUCCESS || parent_dp == NULL) {
--		// Create a MemoryMapped() device path node to describe
--		// the parent image if no device path was provided.
--		mmdp.memory_type	= parent->image_code_type;
--		mmdp.starting_addr	= (unsigned long)parent->image_base;
--		mmdp.ending_addr	= (unsigned long)parent->image_base +
--					  parent->image_size - 1;
--		parent_dp = &mmdp.header;
--		dp_len = sizeof(mmdp);
--	} else {
--		dp_len = device_path_length(parent_dp);
--	}
--
--	// Allocate some pool memory for device path protocol data
--	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
--			     2 * (dp_len + sizeof(struct efi_rel_offset_dev_path) +
--			          sizeof(struct efi_generic_dev_path)) +
--			     sizeof(struct efi_vendor_dev_path),
--			     (void **)&dp_alloc);
--	if (status != EFI_SUCCESS) {
--		error("Failed to allocate device path pool memory");
-+	status = efi_handle_cmdline(image, &cmdline_ptr);
-+	if (status != EFI_SUCCESS)
- 		return status;
--	}
--
--	// Create a device path describing the compressed payload in this image
--	// <...parent_dp...>/Offset(<start>, <end>)
--	lf2_dp = memcpy(dp_alloc, parent_dp, dp_len);
--	dpp = (void *)((u8 *)lf2_dp + dp_len);
--	append_rel_offset_node(&dpp,
--			       (unsigned long)(_gzdata_start - efi_zboot_header),
--			       (unsigned long)(_gzdata_end - efi_zboot_header - 1));
--	append_end_node(&dpp);
- 
--	// Create a device path describing the decompressed payload in this image
--	// <...parent_dp...>/Offset(<start>, <end>)/VenMedia(ZBOOT_MEDIA_GUID)
--	dp_len += sizeof(struct efi_rel_offset_dev_path);
--	li_dp = memcpy(dpp, lf2_dp, dp_len);
--	dpp = (void *)((u8 *)li_dp + dp_len);
--	append_ven_media_node(&dpp, &LINUX_EFI_ZBOOT_MEDIA_GUID);
--	append_end_node(&dpp);
--
--	zboot_handle = NULL;
--	zboot_load_file2.load_file = load_file;
--	status = efi_bs_call(install_multiple_protocol_interfaces,
--			     &zboot_handle,
--			     &EFI_DEVICE_PATH_PROTOCOL_GUID, lf2_dp,
--			     &EFI_LOAD_FILE2_PROTOCOL_GUID, &zboot_load_file2,
--			     NULL);
--	if (status != EFI_SUCCESS) {
--		error("Failed to install LoadFile2 protocol and device path");
--		goto free_dpalloc;
--	}
--
--	status = efi_bs_call(load_image, false, handle, li_dp, NULL, 0,
--			     &child_handle);
--	if (status != EFI_SUCCESS) {
--		error("Failed to load image");
--		goto uninstall_lf2;
--	}
-+	efi_info("Decompressing Linux Kernel...\n");
-+
-+	// SizeOfImage from the compressee's PE/COFF header
-+	alloc_size = round_up(get_unaligned_le32(_gzdata_end - 4),
-+			      EFI_ALLOC_ALIGN);
-+
-+	// SizeOfHeaders and SizeOfCode from the compressee's PE/COFF header
-+	code_size = get_unaligned_le32(_gzdata_end - 8) +
-+		    get_unaligned_le32(_gzdata_end - 12);
-+
-+	 // If the architecture has a preferred address for the image,
-+	 // try that first.
-+	image_base = alloc_preferred_address(alloc_size);
-+	if (image_base == ULONG_MAX) {
-+		unsigned long min_kimg_align = efi_get_kimg_min_align();
-+		u32 seed = U32_MAX;
-+
-+		if (!IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
-+			// Setting the random seed to 0x0 is the same as
-+			// allocating as low as possible
-+			seed = 0;
-+		} else if (efi_nokaslr) {
-+			efi_info("KASLR disabled on kernel command line\n");
-+		} else {
-+			status = efi_get_random_bytes(sizeof(seed), (u8 *)&seed);
-+			if (status == EFI_NOT_FOUND) {
-+				efi_info("EFI_RNG_PROTOCOL unavailable\n");
-+				efi_nokaslr = true;
-+			} else if (status != EFI_SUCCESS) {
-+				efi_err("efi_get_random_bytes() failed (0x%lx)\n",
-+					status);
-+				efi_nokaslr = true;
-+			}
-+		}
- 
--	status = efi_bs_call(handle_protocol, child_handle,
--			     &LOADED_IMAGE_PROTOCOL_GUID, (void **)&child);
--	if (status != EFI_SUCCESS) {
--		error("Failed to locate child's loaded image protocol");
--		goto unload_image;
-+		status = efi_random_alloc(alloc_size, min_kimg_align, &image_base,
-+					  seed, EFI_LOADER_CODE);
-+		if (status != EFI_SUCCESS) {
-+			efi_err("Failed to allocate memory\n");
-+			goto free_cmdline;
-+		}
- 	}
- 
--	// Copy the kernel command line
--	child->load_options = parent->load_options;
--	child->load_options_size = parent->load_options_size;
--
--	status = efi_bs_call(start_image, child_handle, &exit_data_size,
--			     &exit_data);
--	if (status != EFI_SUCCESS) {
--		error("StartImage() returned with error:");
--		if (exit_data_size > 0)
--			efi_err("%ls\n", exit_data);
--
--		// If StartImage() returns EFI_SECURITY_VIOLATION, the image is
--		// not unloaded so we need to do it by hand.
--		if (status == EFI_SECURITY_VIOLATION)
--unload_image:
--			efi_bs_call(unload_image, child_handle);
-+	// Decompress the payload into the newly allocated buffer.
-+	ret = __decompress(_gzdata_start, compressed_size, NULL, NULL,
-+			   (void *)image_base, alloc_size, NULL, error);
-+	if (ret	< 0) {
-+		error("Decompression failed");
-+		status = EFI_DEVICE_ERROR;
-+		goto free_image;
- 	}
- 
--uninstall_lf2:
--	efi_bs_call(uninstall_multiple_protocol_interfaces,
--		    zboot_handle,
--		    &EFI_DEVICE_PATH_PROTOCOL_GUID, lf2_dp,
--		    &EFI_LOAD_FILE2_PROTOCOL_GUID, &zboot_load_file2,
--		    NULL);
--
--free_dpalloc:
--	efi_bs_call(free_pool, dp_alloc);
-+	efi_cache_sync_image(image_base, alloc_size, code_size);
- 
--	efi_bs_call(exit, handle, status, exit_data_size, exit_data);
-+	status = efi_stub_common(handle, image, image_base, cmdline_ptr);
- 
--	// Free ExitData in case Exit() returned with a failure code,
--	// but return the original status code.
--	error("Exit() returned with failure code");
--	if (exit_data != NULL)
--		efi_bs_call(free_pool, exit_data);
-+free_image:
-+	efi_free(alloc_size, image_base);
-+free_cmdline:
-+	efi_bs_call(free_pool, cmdline_ptr);
- 	return status;
- }
+ obj-$(CONFIG_REF_TRACKER) += ref_tracker.o
 -- 
 2.35.1
 
