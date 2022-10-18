@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C2606029D0
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Oct 2022 13:05:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CEBF6029D1
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Oct 2022 13:05:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229943AbiJRLFG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 18 Oct 2022 07:05:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45292 "EHLO
+        id S230006AbiJRLFJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 18 Oct 2022 07:05:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229717AbiJRLFB (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 18 Oct 2022 07:05:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CF1027B23
-        for <linux-efi@vger.kernel.org>; Tue, 18 Oct 2022 04:04:56 -0700 (PDT)
+        with ESMTP id S229871AbiJRLFF (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 18 Oct 2022 07:05:05 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5A2B3B461
+        for <linux-efi@vger.kernel.org>; Tue, 18 Oct 2022 04:05:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CCEB0614AB
-        for <linux-efi@vger.kernel.org>; Tue, 18 Oct 2022 11:04:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751DBC4347C;
-        Tue, 18 Oct 2022 11:04:53 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9A93AB81D4C
+        for <linux-efi@vger.kernel.org>; Tue, 18 Oct 2022 11:04:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A332CC43150;
+        Tue, 18 Oct 2022 11:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666091095;
-        bh=l+Ib5JlcWADbO+SzTyZ0TnTZ/81bpJ2Jk1D2qiqFglo=;
+        s=k20201202; t=1666091097;
+        bh=1QTkaT4iHMGgddft3nM2F14cfzLMiHsK/itOeD3mJxI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EQ/jw6CZYv+s+QnYSrhQoA0DNCqJ+AaP/d14+Sxt1WAvkjSRU5JyJkWG0XylcPDw4
-         Qk6chAYst49OVVV5kTHeuoWGi8gqjZUE15E/5gqeOPZGB54BWo71XffMxJSBUAo2bJ
-         1rW05umb8xy5VEM2GYEcrmOIbltThOgFWbJ0SUqU44VFzTIRpr1mhWGHi/pC638wN0
-         19UNMewgHfAMyR9ysROLAL1P+a7cKcqpN5RMYXFO034NP7AIQ/iAiOe3tgzUcLjpet
-         86D/qJS5IoR/U8N2WzxWJLrEhx2+ag1HWW5wQ9opAiRutLK2PCsHYbXJ6eOfE9lb56
-         1WlWpBYcEiKIQ==
+        b=JF1jxCToj6+Ejp1PGlriyLvKJ6WX2APs4H1HQ+/CDc59zCq7KrVf90yxVWv9eEjmQ
+         RDM6qnzcBWBXKSO5MIFYnVONwLvFQYKHrb/CpqALJh/8cCkypEujSf+A9rUpyDp8w5
+         3zpjYdeEmm1RKiyGjJQkegOO/UAXMXLiz4yRGhnQt8MiKM1Df26i8kQ42Njl149ZRR
+         irt+LAH0hm1nPbniFX6H26g9l+vNx3OHtBexsLiRIYhR/IaV+1RvyDG9gsukZfVzC4
+         Fxr+F0kpj7/EOmESltIK2sA4ljyDn41yW/yqNf98FFsZO8MyeI6z03kO6pEju6fsBm
+         HYRXufmmXfSLA==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-arm-kernel@lists.infradead.org
 Cc:     linux-efi@vger.kernel.org, keescook@chromium.org,
@@ -39,14 +39,14 @@ Cc:     linux-efi@vger.kernel.org, keescook@chromium.org,
         Catalin Marinas <catalin.marinas@arm.com>,
         Marc Zyngier <maz@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH v4 2/6] arm64: kernel: move identity map out of .text mapping
-Date:   Tue, 18 Oct 2022 13:04:37 +0200
-Message-Id: <20221018110441.3855148-3-ardb@kernel.org>
+Subject: [PATCH v4 3/6] arm64: head: record the MMU state at primary entry
+Date:   Tue, 18 Oct 2022 13:04:38 +0200
+Message-Id: <20221018110441.3855148-4-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221018110441.3855148-1-ardb@kernel.org>
 References: <20221018110441.3855148-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3452; i=ardb@kernel.org; h=from:subject; bh=l+Ib5JlcWADbO+SzTyZ0TnTZ/81bpJ2Jk1D2qiqFglo=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjTohCAxt1u0J8PSJyJC+4Lo0AnHH1KMjtFWBjsIF5 fS3LieCJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY06IQgAKCRDDTyI5ktmPJDF4DA CP/5Lod03+XvYrymRfDaR+IKb3ht94JXA3lDWb9aiVZYRaOd3RAyw22ezpOGsZxNKWcgqavJ0MRxb1 h8u+YuqRL3eIE+h6IVWf+lZpEOtH2GUIYC0uDw12P7EQKP/tp45oNFDPXhvd3ynAkeg3Z9lKGTKvxJ WhOqSKiTjE1PkHvA7vJmJOT292assjIZtJMLA2uMnQ48iW8Amunhaq14M24JXqwfpiyGTDTftmi7KQ x3dkPa4nMWbvA+c5jAyp1RI1CfFz5nL1PObg8mFuDCr9LzwgTRtRKYTpiBSqhlIjkyRLLNLWH4rtZf T5BiYvpTSR1hF9sID5FA+KtWocxK3PV42rkOiVRWLsNL93iYysp0BHD6Rfye07rwnTL54HYsGl3ilc NT8D6POJOxSVHCkE1PpDHa6unuJ1hr42KGBCZ+NtDlSS+CF8lYR6K+/YnFkrdlvjaHICeOUOSZmFKq Az2g02DRPKN8Lr1LpQFmGtBQ0OI/d3VK02mNkZTl+qpws=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2430; i=ardb@kernel.org; h=from:subject; bh=1QTkaT4iHMGgddft3nM2F14cfzLMiHsK/itOeD3mJxI=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjTohDgqXMMD4mKkQSjAgLNYwoP57fkVrc7w4Ft/Gp ZphNEoyJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY06IQwAKCRDDTyI5ktmPJFKTC/ wOWqe/dRAf/kQER4xUM8QKLKEG0aM1mkAslFsVmDxCwJU6xuWIcEagW8STn/2auhyJDTFqxYZEE6QZ AW3WtSKTHqzCNt0+NMoKPEyFRWkbvjvp7almBkmLFWJ2M4KkhRdYZ+fIfIKjWBiOQJygKTc/xMz/FX Z63UcvhuiOQxw/jmd4ohEm+CAiohxDKUIyyOoIsdvbQYjJuQ13KAa0bMTjJOwqtqSRog1bfhnJFCHw ln3rQ6zhDqCnDRHpaairVWBet7/L/t6nU7z5+JyDZLfkIDIo6Rmhht1wBiCbQH4Cp4u28Ms590mBoC RngYas8/PEqwElIvpPrPtSc1kRJTKil+48S+nFv0B798nXUn0LhasEYKOzynuPfbJj+Hmgglplwk0g w/Ko9o7FcK7OOe19LIL/N42BrI9n6l+D0vqz/wek2JljrBOh2lZWdNdCE1P7U+0eti77MXIrikb2uE Alr2sJaZNO3wQPPFfvjm0nOq6D+VcPHUYhcXPxNxUl9qw=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -58,118 +58,81 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Reorganize the ID map slightly so that only code that is executed with
-the MMU off or via the 1:1 mapping remains. This allows us to move the
-identity map out of the .text segment, as it will no longer need
-executable permissions via the kernel mapping.
+Prepare for being able to deal with primary entry with the MMU and
+caches enabled, by recording whether or not we entered with the MMU on
+in register x19.
+
+While at it, add disable_mmu_workaround macro invocations to
+init_kernel_el, as its manipulation of SCTLR_ELx may amount to disabling
+of the MMU after subsequent patches.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/kernel/head.S        | 28 +++++++++++---------
- arch/arm64/kernel/vmlinux.lds.S |  2 +-
- arch/arm64/mm/proc.S            |  2 --
- 3 files changed, 16 insertions(+), 16 deletions(-)
+ arch/arm64/kernel/head.S | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/arch/arm64/kernel/head.S b/arch/arm64/kernel/head.S
-index f168e3309704..25a84ce1700c 100644
+index 25a84ce1700c..643797b21a1c 100644
 --- a/arch/arm64/kernel/head.S
 +++ b/arch/arm64/kernel/head.S
-@@ -543,19 +543,6 @@ SYM_INNER_LABEL(init_el2, SYM_L_LOCAL)
- 	eret
- SYM_FUNC_END(init_kernel_el)
+@@ -77,6 +77,7 @@
+ 	 * primary lowlevel boot path:
+ 	 *
+ 	 *  Register   Scope                      Purpose
++	 *  x19        primary_entry() .. start_kernel()        whether we entered with the MMU on
+ 	 *  x20        primary_entry() .. __primary_switch()    CPU boot mode
+ 	 *  x21        primary_entry() .. start_kernel()        FDT pointer passed at boot in x0
+ 	 *  x22        create_idmap() .. start_kernel()         ID map VA of the DT blob
+@@ -86,6 +87,7 @@
+ 	 *  x28        create_idmap()                           callee preserved temp register
+ 	 */
+ SYM_CODE_START(primary_entry)
++	bl	record_mmu_state
+ 	bl	preserve_boot_args
+ 	bl	init_kernel_el			// w0=cpu_boot_mode
+ 	mov	x20, x0
+@@ -109,6 +111,19 @@ SYM_CODE_START(primary_entry)
+ 	b	__primary_switch
+ SYM_CODE_END(primary_entry)
  
--/*
-- * Sets the __boot_cpu_mode flag depending on the CPU boot mode passed
-- * in w0. See arch/arm64/include/asm/virt.h for more info.
-- */
--SYM_FUNC_START_LOCAL(set_cpu_boot_mode_flag)
--	adr_l	x1, __boot_cpu_mode
--	cmp	w0, #BOOT_CPU_MODE_EL2
--	b.ne	1f
--	add	x1, x1, #4
--1:	str	w0, [x1]			// Save CPU boot mode
--	ret
--SYM_FUNC_END(set_cpu_boot_mode_flag)
--
- 	/*
- 	 * This provides a "holding pen" for platforms to hold all secondary
- 	 * cores are held until we're ready for them to initialise.
-@@ -600,6 +587,7 @@ SYM_FUNC_START_LOCAL(secondary_startup)
- 	br	x8
- SYM_FUNC_END(secondary_startup)
- 
-+	.text
- SYM_FUNC_START_LOCAL(__secondary_switched)
- 	mov	x0, x20
- 	bl	set_cpu_boot_mode_flag
-@@ -628,6 +616,19 @@ SYM_FUNC_START_LOCAL(__secondary_too_slow)
- 	b	__secondary_too_slow
- SYM_FUNC_END(__secondary_too_slow)
- 
-+/*
-+ * Sets the __boot_cpu_mode flag depending on the CPU boot mode passed
-+ * in w0. See arch/arm64/include/asm/virt.h for more info.
-+ */
-+SYM_FUNC_START_LOCAL(set_cpu_boot_mode_flag)
-+	adr_l	x1, __boot_cpu_mode
-+	cmp	w0, #BOOT_CPU_MODE_EL2
-+	b.ne	1f
-+	add	x1, x1, #4
-+1:	str	w0, [x1]			// Save CPU boot mode
++SYM_CODE_START_LOCAL(record_mmu_state)
++	mrs	x19, CurrentEL
++	cmp	x19, #CurrentEL_EL2
++	mrs	x19, sctlr_el1
++	b.ne	0f
++	mrs	x19, sctlr_el2
++0:	tst	x19, #SCTLR_ELx_C		// Z := (C == 0)
++	and	x19, x19, #SCTLR_ELx_M		// isolate M bit
++	ccmp	x19, xzr, #4, ne		// Z |= (M == 0)
++	cset	x19, ne				// set x19 if !Z
 +	ret
-+SYM_FUNC_END(set_cpu_boot_mode_flag)
++SYM_CODE_END(record_mmu_state)
 +
  /*
-  * The booting CPU updates the failed status @__early_cpu_boot_status,
-  * with MMU turned off.
-@@ -659,6 +660,7 @@ SYM_FUNC_END(__secondary_too_slow)
-  * Checks if the selected granule size is supported by the CPU.
-  * If it isn't, park the CPU
+  * Preserve the arguments passed by the bootloader in x0 .. x3
   */
-+	.section ".idmap.text","awx"
- SYM_FUNC_START(__enable_mmu)
- 	mrs	x3, ID_AA64MMFR0_EL1
- 	ubfx	x3, x3, #ID_AA64MMFR0_EL1_TGRAN_SHIFT, 4
-diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
-index 0efccdf52be2..5002d869fa7f 100644
---- a/arch/arm64/kernel/vmlinux.lds.S
-+++ b/arch/arm64/kernel/vmlinux.lds.S
-@@ -168,7 +168,6 @@ SECTIONS
- 			LOCK_TEXT
- 			KPROBES_TEXT
- 			HYPERVISOR_TEXT
--			IDMAP_TEXT
- 			*(.gnu.warning)
- 		. = ALIGN(16);
- 		*(.got)			/* Global offset table		*/
-@@ -195,6 +194,7 @@ SECTIONS
- 		TRAMP_TEXT
- 		HIBERNATE_TEXT
- 		KEXEC_TEXT
-+		IDMAP_TEXT
- 		. = ALIGN(PAGE_SIZE);
- 	}
+@@ -497,6 +512,7 @@ SYM_FUNC_START(init_kernel_el)
  
-diff --git a/arch/arm64/mm/proc.S b/arch/arm64/mm/proc.S
-index b9ecbbae1e1a..d7ca6f23fb0d 100644
---- a/arch/arm64/mm/proc.S
-+++ b/arch/arm64/mm/proc.S
-@@ -110,7 +110,6 @@ SYM_FUNC_END(cpu_do_suspend)
-  *
-  * x0: Address of context pointer
-  */
--	.pushsection ".idmap.text", "awx"
- SYM_FUNC_START(cpu_do_resume)
- 	ldp	x2, x3, [x0]
- 	ldp	x4, x5, [x0, #16]
-@@ -166,7 +165,6 @@ alternative_else_nop_endif
+ SYM_INNER_LABEL(init_el1, SYM_L_LOCAL)
+ 	mov_q	x0, INIT_SCTLR_EL1_MMU_OFF
++	pre_disable_mmu_workaround
+ 	msr	sctlr_el1, x0
  	isb
- 	ret
- SYM_FUNC_END(cpu_do_resume)
--	.popsection
- #endif
+ 	mov_q	x0, INIT_PSTATE_EL1
+@@ -529,11 +545,13 @@ SYM_INNER_LABEL(init_el2, SYM_L_LOCAL)
+ 	cbz	x0, 1f
  
- 	.pushsection ".idmap.text", "awx"
+ 	/* Set a sane SCTLR_EL1, the VHE way */
++	pre_disable_mmu_workaround
+ 	msr_s	SYS_SCTLR_EL12, x1
+ 	mov	x2, #BOOT_CPU_FLAG_E2H
+ 	b	2f
+ 
+ 1:
++	pre_disable_mmu_workaround
+ 	msr	sctlr_el1, x1
+ 	mov	x2, xzr
+ 2:
 -- 
 2.35.1
 
