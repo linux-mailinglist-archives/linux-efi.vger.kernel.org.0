@@ -2,51 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 098E4603A41
-	for <lists+linux-efi@lfdr.de>; Wed, 19 Oct 2022 09:01:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25CCE603A45
+	for <lists+linux-efi@lfdr.de>; Wed, 19 Oct 2022 09:04:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229695AbiJSHBo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 19 Oct 2022 03:01:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44210 "EHLO
+        id S229675AbiJSHE5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 19 Oct 2022 03:04:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229670AbiJSHBn (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 19 Oct 2022 03:01:43 -0400
+        with ESMTP id S229879AbiJSHEy (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 19 Oct 2022 03:04:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70CD375FF1;
-        Wed, 19 Oct 2022 00:01:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3555A27147;
+        Wed, 19 Oct 2022 00:04:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 38BEE6178A;
-        Wed, 19 Oct 2022 07:01:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC0EC43143;
-        Wed, 19 Oct 2022 07:01:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E11661794;
+        Wed, 19 Oct 2022 07:04:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A02E9C43143;
+        Wed, 19 Oct 2022 07:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666162899;
-        bh=TPYrh4CPVfRLN+C3/bGZqWeNBfavnKMli+K2H62eo98=;
+        s=k20201202; t=1666163090;
+        bh=0U2Czy9vqKtxoW5paHTP5l5F49nCScDC5BExyiYKGVU=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=r6mSyjUGVoTdv9Yo6KSTDZ6Oz3pcJmMy0oOJj5rDiey6VaRYCh43jamIxcw0pBmFR
-         VuRv3t57d/u5+68Ftr4A3sbfFuaC31GE7MqxdNy8Y3BmqpLf+wrk92myewdy7WKR2A
-         xpDzvwBk1Vp2XyQ1FS0Yi5zs4VQ1aGrQovdL0ga4ffp0az5tPsGHzB/qRLAn4rNVNC
-         ll8GisAM4s8NFnhlRQHsKegqWZY/dUJj8HccK3KxTO1IWxT5stVNnmQVm+Wz7M06DP
-         R/iMJ8hA9E2pPBlUyFip11luDwcD3ONLZVEdXJke7f21vZYhvEBL/snUAr05exFl82
-         rhntEjOmI96nA==
-Received: by mail-lj1-f170.google.com with SMTP id b18so20923298ljr.13;
-        Wed, 19 Oct 2022 00:01:39 -0700 (PDT)
-X-Gm-Message-State: ACrzQf10zmaCBsIcYH3GOVq3V+sCeSmqdZIyFkBvHXRI2bzV5x2xfoUT
-        6/dwr8+Q+5XfYVVCvqb7V15WiBeMRoasXNWo8RI=
-X-Google-Smtp-Source: AMsMyM506RGH9G3NdyMul3lvhmbWpeKvEwDgRV1WsboI8duToRQWQD7R0E3bo5pfnbDro1GvEkw5HysL/RLMJSCZ+5o=
-X-Received: by 2002:a05:651c:4d0:b0:26f:cd9b:419f with SMTP id
- e16-20020a05651c04d000b0026fcd9b419fmr2225881lji.415.1666162897461; Wed, 19
- Oct 2022 00:01:37 -0700 (PDT)
+        b=OU/VJRNbB3cce5xH+/AKFdwFR5bV29T45n9ZMuSIQW17vk7kHzzgT/EVPYfWtqWuQ
+         o82/0OAXqRr++t29HO8JwTBdeFo6kODhOvMnuYALkNN1rJTtEokmCvr7QZiGyhtxtj
+         HmiSdl0WbD8Na3bya+DKwkx9tHgPvfwOPT0QAMDMMLT0alQZsOndYcAWyPIivXtxCt
+         CAzIYOMyRMLUGSQKYEZCtu0Kb2L9PHXoF44wxWeL0sIVBZW4jRHJLPtZcCiWmr7LI8
+         xHJLC3DxG+zSVuygonSoDXieASwZYSzV40Hs3Rp56OI7dy6TdSlqQMv8cKcFtxF++D
+         CbyjJoPut3Vdw==
+Received: by mail-lf1-f44.google.com with SMTP id d6so26554327lfs.10;
+        Wed, 19 Oct 2022 00:04:50 -0700 (PDT)
+X-Gm-Message-State: ACrzQf3WaZ8h6wYHbxk0t3dmb4Y5QgvQOnio40mvq/0LW+M9TVIISE+D
+        Qa7jgcWNezwX7SbW4fi9NHv2KTRH24C23crkA6M=
+X-Google-Smtp-Source: AMsMyM7b+GH/AJf9YNAtWFU1qzZHNN3D9YTLCcQebHpkyRJp9obtrhBfyz282IOkymEPYXoexJcHDaulMbQcq7Wjzos=
+X-Received: by 2002:a05:6512:c8:b0:4a4:5ef8:953b with SMTP id
+ c8-20020a05651200c800b004a45ef8953bmr2376361lfp.539.1666163088610; Wed, 19
+ Oct 2022 00:04:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1662459668.git.baskov@ispras.ru> <27a078f43742063cc30e706b196fb5fff5d5c37e.1662459668.git.baskov@ispras.ru>
-In-Reply-To: <27a078f43742063cc30e706b196fb5fff5d5c37e.1662459668.git.baskov@ispras.ru>
+References: <cover.1662459668.git.baskov@ispras.ru> <aac3ce7c5aa706269d468fbe16129ee383deac2e.1662459668.git.baskov@ispras.ru>
+In-Reply-To: <aac3ce7c5aa706269d468fbe16129ee383deac2e.1662459668.git.baskov@ispras.ru>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 19 Oct 2022 09:01:26 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGUvUwy__wD-DtHtpVMoCJsc=G2mvWLe2a7ib2ckqzpow@mail.gmail.com>
-Message-ID: <CAMj1kXGUvUwy__wD-DtHtpVMoCJsc=G2mvWLe2a7ib2ckqzpow@mail.gmail.com>
-Subject: Re: [PATCH 01/16] x86/boot: Align vmlinuz sections on page size
+Date:   Wed, 19 Oct 2022 09:04:37 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFyZJD5FnjWDEZbpzZM=T-676Z4q7nzEQAxp=zBAFGktw@mail.gmail.com>
+Message-ID: <CAMj1kXFyZJD5FnjWDEZbpzZM=T-676Z4q7nzEQAxp=zBAFGktw@mail.gmail.com>
+Subject: Re: [PATCH 02/16] x86/build: Remove RWX sections and align on 4KB
 To:     Evgeniy Baskov <baskov@ispras.ru>
 Cc:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
@@ -69,57 +69,66 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 On Tue, 6 Sept 2022 at 12:41, Evgeniy Baskov <baskov@ispras.ru> wrote:
 >
-> To protect sections on page table level each section
-> needs to be aligned on page size (4KB).
+> Avoid creating sections with maximal privileges to prepare for W^X
+
+privileges
+
+> implementation. Align sections on page size (4KB) to allow protecting
+> them in page table.
 >
-> Set sections alignment in linker script.
->
+
+in the page tables.
+
 > Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
 > ---
->  arch/x86/boot/compressed/vmlinux.lds.S | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  arch/x86/kernel/vmlinux.lds.S | 15 ++++++++-------
+>  1 file changed, 8 insertions(+), 7 deletions(-)
 >
-> diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
-> index 112b2375d021..6be90f1a1198 100644
-> --- a/arch/x86/boot/compressed/vmlinux.lds.S
-> +++ b/arch/x86/boot/compressed/vmlinux.lds.S
-> @@ -27,21 +27,27 @@ SECTIONS
->                 HEAD_TEXT
->                 _ehead = . ;
->         }
+> diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+> index 15f29053cec4..6587e0201b50 100644
+> --- a/arch/x86/kernel/vmlinux.lds.S
+> +++ b/arch/x86/kernel/vmlinux.lds.S
+> @@ -102,12 +102,11 @@ jiffies = jiffies_64;
+>  PHDRS {
+>         text PT_LOAD FLAGS(5);          /* R_E */
+>         data PT_LOAD FLAGS(6);          /* RW_ */
+> -#ifdef CONFIG_X86_64
+> -#ifdef CONFIG_SMP
+> +#if defined(CONFIG_X86_64) && defined(CONFIG_SMP)
+>         percpu PT_LOAD FLAGS(6);        /* RW_ */
+>  #endif
+> -       init PT_LOAD FLAGS(7);          /* RWE */
+> -#endif
+> +       inittext PT_LOAD FLAGS(5);      /* R_E */
+> +       init PT_LOAD FLAGS(6);          /* RW_ */
+
+Please explain in the commit log how this change affects X86_32
+
+>         note PT_NOTE FLAGS(0);          /* ___ */
+>  }
+>
+> @@ -226,9 +225,10 @@ SECTIONS
+>  #endif
+>
+>         INIT_TEXT_SECTION(PAGE_SIZE)
+> -#ifdef CONFIG_X86_64
+> -       :init
+> -#endif
+> +       :inittext
+> +
 > +       . = ALIGN(PAGE_SIZE);
->         .rodata..compressed : {
-> +               _compressed = .;
-
-Why are you adding these?
-
->                 *(.rodata..compressed)
-> +               _ecompressed = .;
+> +
+>
+>         /*
+>          * Section for code used exclusively before alternatives are run. All
+> @@ -240,6 +240,7 @@ SECTIONS
+>         .altinstr_aux : AT(ADDR(.altinstr_aux) - LOAD_OFFSET) {
+>                 *(.altinstr_aux)
 >         }
-> +       . = ALIGN(PAGE_SIZE);
-
-On other EFI architectures, we only distinguish between R-X and RW-
-regions, and alignment between .rodata and .text is unnecessary. Do we
-really need to deviate from that here?
-
-
->         .text : {
->                 _text = .;      /* Text */
->                 *(.text)
->                 *(.text.*)
->                 _etext = . ;
->         }
-> +       . = ALIGN(PAGE_SIZE);
->         .rodata : {
->                 _rodata = . ;
->                 *(.rodata)       /* read-only data */
->                 *(.rodata.*)
->                 _erodata = . ;
->         }
-> +       . = ALIGN(PAGE_SIZE);
->         .data : {
->                 _data = . ;
->                 *(.data)
+> +       :init
+>
+>         INIT_DATA_SECTION(16)
+>
 > --
 > 2.35.1
 >
