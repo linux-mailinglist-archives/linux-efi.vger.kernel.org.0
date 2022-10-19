@@ -2,65 +2,48 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F2E5603497
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Oct 2022 23:05:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC810603893
+	for <lists+linux-efi@lfdr.de>; Wed, 19 Oct 2022 05:24:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229742AbiJRVFW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 18 Oct 2022 17:05:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54736 "EHLO
+        id S229612AbiJSDYI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 18 Oct 2022 23:24:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229574AbiJRVFW (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 18 Oct 2022 17:05:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E0B17FF9C
-        for <linux-efi@vger.kernel.org>; Tue, 18 Oct 2022 14:05:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1666127120;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=kUAo3dL9hhBdy5lWB8FHvKsjCOg7DiowFZ/MAPIKBRo=;
-        b=ZClSzD9VsyEfArG8Hmz0cofVXGioM7AywXwG57MNAPIApw9Si+Fva2CKfYRS6+vMtVvBP0
-        cuPFpTv8JWZJuarJ5/K/AaIBP5IxMqHQs4QzOLNFTViTrwwIPWlQSboj2uD8j0bm/HsHc0
-        DT0IBAPZ2E1/SIwOBp2ddszPhPQe31U=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-3-s4HuxjnEOT2bgY5OaJH7oA-1; Tue, 18 Oct 2022 17:04:52 -0400
-X-MC-Unique: s4HuxjnEOT2bgY5OaJH7oA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1D2E93814580;
-        Tue, 18 Oct 2022 21:04:49 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.17.157])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 9095B2166BAD;
-        Tue, 18 Oct 2022 21:04:48 +0000 (UTC)
-Date:   Tue, 18 Oct 2022 17:04:47 -0400
-From:   Peter Jones <pjones@redhat.com>
-To:     Evgeniy Baskov <baskov@ispras.ru>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        lvc-project@linuxtesting.org, x86@kernel.org,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 00/16] x86_64: Improvements at compressed kernel stage
-Message-ID: <20221018210447.sg3tddaujre6orgc@redhat.com>
-References: <cover.1662459668.git.baskov@ispras.ru>
+        with ESMTP id S229554AbiJSDYH (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 18 Oct 2022 23:24:07 -0400
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A9063609E
+        for <linux-efi@vger.kernel.org>; Tue, 18 Oct 2022 20:24:05 -0700 (PDT)
+Received: from canpemm500009.china.huawei.com (unknown [172.30.72.55])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4MsbYh5JFQz1P786;
+        Wed, 19 Oct 2022 11:19:20 +0800 (CST)
+Received: from [10.67.102.169] (10.67.102.169) by
+ canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Wed, 19 Oct 2022 11:24:03 +0800
+CC:     <yangyicong@hisilicon.com>, <linux-arm-kernel@lists.infradead.org>,
+        <mark.rutland@arm.com>, <probinson@gmail.com>,
+        <andersson@kernel.org>, <catalin.marinas@arm.com>,
+        <will@kernel.org>, Linuxarm <linuxarm@huawei.com>
+Subject: Re: [PATCH] efi/libstub: arm64: avoid SetVirtualAddressMap() when
+ possible
+To:     Ard Biesheuvel <ardb@kernel.org>, <linux-efi@vger.kernel.org>
+References: <20220916101843.495879-1-ardb@kernel.org>
+From:   Yicong Yang <yangyicong@huawei.com>
+Message-ID: <56877644-8173-d2ed-ed00-7973734a3698@huawei.com>
+Date:   Wed, 19 Oct 2022 11:24:03 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <cover.1662459668.git.baskov@ispras.ru>
-User-Agent: NeoMutt/20180716
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+In-Reply-To: <20220916101843.495879-1-ardb@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.102.169]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ canpemm500009.china.huawei.com (7.192.105.203)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,26 +51,66 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Sep 06, 2022 at 01:41:04PM +0300, Evgeniy Baskov wrote:
-> This patchset is aimed
-> * to improve UEFI compatibility of compressed kernel code for x86_64
-> * to setup proper memory access attributes for code and rodata sections
-> * to implement W^X protection policy throughout the whole execution 
->   of compressed kernel for EFISTUB code path. 
+Hi Ard,
 
-Hi Evgeniy,
+After entering 6.1-rc1 the efi runtime services is not working on my platform:
 
-I've tested this set of patches with the Mu firmware that supports the W^X
-feature and a modified bootloader to also support it, and also with an
-existing firmware and the grub2 build in fedora 36.  On the firmware
-without W^X support, this all works for me.  With W^X support, it works
-so long as I use CONFIG_EFI_STUB_EXTRACT_DIRECT, though I still need
-some changes in grub's loader.  IMO that's a big step forward.
+[    0.054039] Remapping and enabling EFI services.
+[    0.054043] UEFI virtual mapping missing or invalid -- runtime services will not be available
 
-I can't currently make it work with W^X enabled but without direct
-extraction, and I'm still investigating why not, but I figured I'd give
-you a heads up.
+Not sure this patch is the root cause since I see some refactor of efi codes in 6.1-rc1,
+but simply reverting this make EFI runtime services works again. Tested on HiSilicon's
+Kunpeng 920 arm64 server using 48 bit VA address:
 
--- 
-        Peter
+CONFIG_ARM64_VA_BITS_48=y
+CONFIG_ARM64_VA_BITS=48
 
+Thanks.
+
+On 2022/9/16 18:18, Ard Biesheuvel wrote:
+> EFI's SetVirtualAddressMap() runtime service is a horrid hack that we'd
+> like to avoid using, if possible. For 64-bit architectures such as
+> arm64, the user and kernel mappings are entirely disjoint, and given
+> that we use the user region for mapping the UEFI runtime regions when
+> running under the OS, we don't rely on SetVirtualAddressMap() in the
+> conventional way, i.e., to permit kernel mappings of the OS to coexist
+> with kernel region mappings of the firmware regions. This means that, in
+> principle, we should be able to avoid SetVirtualAddressMap() altogether,
+> and simply use the 1:1 mapping that UEFI uses at boot time. (Note that
+> omitting SetVirtualAddressMap() is explicitly permitted by the UEFI
+> spec).
+> 
+> However, there is a corner case on arm64, which, if configured for
+> 3-level paging (or 2-level paging when using 64k pages), may not be able
+> to cover the entire range of firmware mappings (which might contain both
+> memory and MMIO peripheral mappings).
+> 
+> So let's avoid SetVirtualAddressMap() on arm64, but only if the VA space
+> is guaranteed to be of sufficient size.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  drivers/firmware/efi/libstub/arm64-stub.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
+> index cd3bea25c762..4fff6c32899e 100644
+> --- a/drivers/firmware/efi/libstub/arm64-stub.c
+> +++ b/drivers/firmware/efi/libstub/arm64-stub.c
+> @@ -31,6 +31,15 @@ efi_status_t check_platform_features(void)
+>  			efi_err("This 16 KB granular kernel is not supported by your CPU\n");
+>  		return EFI_UNSUPPORTED;
+>  	}
+> +
+> +	/*
+> +	 * If we have 48 bits of VA space for TTBR0 mappings, we can map the
+> +	 * UEFI runtime regions 1:1 and so calling SetVirtualAddressMap() is
+> +	 * unnecessary.
+> +	 */
+> +	if (VA_BITS_MIN >= 48)
+> +		efi_novamap = true;
+> +
+>  	return EFI_SUCCESS;
+>  }
+>  
+> 
