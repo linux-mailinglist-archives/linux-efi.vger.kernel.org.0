@@ -2,35 +2,34 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A83DE605E6F
-	for <lists+linux-efi@lfdr.de>; Thu, 20 Oct 2022 13:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58044605E83
+	for <lists+linux-efi@lfdr.de>; Thu, 20 Oct 2022 13:13:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231240AbiJTLFo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 20 Oct 2022 07:05:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48558 "EHLO
+        id S230129AbiJTLNI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 20 Oct 2022 07:13:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231233AbiJTLFm (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 20 Oct 2022 07:05:42 -0400
+        with ESMTP id S230368AbiJTLNH (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 20 Oct 2022 07:13:07 -0400
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28ED011F4BC;
-        Thu, 20 Oct 2022 04:05:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64A141E0451;
+        Thu, 20 Oct 2022 04:13:06 -0700 (PDT)
 Received: from mail.ispras.ru (unknown [83.149.199.84])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 0A0B040D403D;
-        Thu, 20 Oct 2022 11:05:28 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 0A0B040D403D
+        by mail.ispras.ru (Postfix) with ESMTPSA id B1913419E9C7;
+        Thu, 20 Oct 2022 11:13:04 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru B1913419E9C7
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1666263928;
-        bh=5nyZu9zbyZQkn1yMUyXsSQkh3IfzDySokwqJAcsKRCg=;
+        s=default; t=1666264384;
+        bh=Vzl/zXUMMGbEKj/S8AF15wH6J143avkWXBRh1JpAXNM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=f3sXzuOR1nPhHEECi3o557B2M3QIspwU3OGXzVqGInFdxo605ltEoce4HANMYSMmM
-         lT8OCKc1DicmXiXZG7CJVTJAJWpuDWPT1WVtw7hEkliT/UEPK07Txy1JzMIKL0Vo7n
-         I/Zow9hRC77Wmwne4UyL4b0oRNg1lInSfI0/5Zqg=
+        b=ttG/TNbPNg+eoZL3NzW76ndIeZcOn0XU6KbIdikucrd+nJs2ItqOTPEQ+C7uydvO7
+         lUCJ46wuMEcWoa0K3Re2N58amW3tSiXT8gRCkybit0LLwmeFnQlPT+mW1KEIzKFJvQ
+         XoIuY50aJ/WBzrstbJL+FczBaPCtHCowbklADM90=
 MIME-Version: 1.0
-Date:   Thu, 20 Oct 2022 14:05:27 +0300
+Date:   Thu, 20 Oct 2022 14:13:04 +0300
 From:   Evgeniy Baskov <baskov@ispras.ru>
-To:     Peter Jones <pjones@redhat.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Ingo Molnar <mingo@redhat.com>,
         Peter Zijlstra <peterz@infradead.org>,
@@ -39,12 +38,13 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>,
         lvc-project@linuxtesting.org, x86@kernel.org,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 00/16] x86_64: Improvements at compressed kernel stage
-In-Reply-To: <20221018210447.sg3tddaujre6orgc@redhat.com>
+Subject: Re: [PATCH 01/16] x86/boot: Align vmlinuz sections on page size
+In-Reply-To: <CAMj1kXGUvUwy__wD-DtHtpVMoCJsc=G2mvWLe2a7ib2ckqzpow@mail.gmail.com>
 References: <cover.1662459668.git.baskov@ispras.ru>
- <20221018210447.sg3tddaujre6orgc@redhat.com>
+ <27a078f43742063cc30e706b196fb5fff5d5c37e.1662459668.git.baskov@ispras.ru>
+ <CAMj1kXGUvUwy__wD-DtHtpVMoCJsc=G2mvWLe2a7ib2ckqzpow@mail.gmail.com>
 User-Agent: Roundcube Webmail/1.4.4
-Message-ID: <a2aa9cf7f04a33080269ad351e81bafa@ispras.ru>
+Message-ID: <be5a5bc936ca62fa0e25781375c8c2ed@ispras.ru>
 X-Sender: baskov@ispras.ru
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
@@ -58,42 +58,77 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2022-10-19 00:04, Peter Jones wrote:
-> On Tue, Sep 06, 2022 at 01:41:04PM +0300, Evgeniy Baskov wrote:
->> This patchset is aimed
->> * to improve UEFI compatibility of compressed kernel code for x86_64
->> * to setup proper memory access attributes for code and rodata 
->> sections
->> * to implement W^X protection policy throughout the whole execution
->>   of compressed kernel for EFISTUB code path.
+On 2022-10-19 10:01, Ard Biesheuvel wrote:
+> On Tue, 6 Sept 2022 at 12:41, Evgeniy Baskov <baskov@ispras.ru> wrote:
+>> 
+>> To protect sections on page table level each section
+>> needs to be aligned on page size (4KB).
+>> 
+>> Set sections alignment in linker script.
+>> 
+>> Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
+>> ---
+>>  arch/x86/boot/compressed/vmlinux.lds.S | 6 ++++++
+>>  1 file changed, 6 insertions(+)
+>> 
+>> diff --git a/arch/x86/boot/compressed/vmlinux.lds.S 
+>> b/arch/x86/boot/compressed/vmlinux.lds.S
+>> index 112b2375d021..6be90f1a1198 100644
+>> --- a/arch/x86/boot/compressed/vmlinux.lds.S
+>> +++ b/arch/x86/boot/compressed/vmlinux.lds.S
+>> @@ -27,21 +27,27 @@ SECTIONS
+>>                 HEAD_TEXT
+>>                 _ehead = . ;
+>>         }
+>> +       . = ALIGN(PAGE_SIZE);
+>>         .rodata..compressed : {
+>> +               _compressed = .;
 > 
-> Hi Evgeniy,
+> Why are you adding these?
+
+It is used for address compressed kernel blob during memory protection 
+setup.
+Although it can be addressed via different symbols, I though that 
+addressing
+sections data in a common way (through linker generated symbols) would 
+be better.
+I can remove or mention the change in commit message (for now I will do 
+the latter).
+
 > 
-> I've tested this set of patches with the Mu firmware that supports the 
-> W^X
-> feature and a modified bootloader to also support it, and also with an
-> existing firmware and the grub2 build in fedora 36.  On the firmware
-> without W^X support, this all works for me.  With W^X support, it works
-> so long as I use CONFIG_EFI_STUB_EXTRACT_DIRECT, though I still need
-> some changes in grub's loader.  IMO that's a big step forward.
+>>                 *(.rodata..compressed)
+>> +               _ecompressed = .;
+>>         }
+>> +       . = ALIGN(PAGE_SIZE);
 > 
-> I can't currently make it work with W^X enabled but without direct
-> extraction, and I'm still investigating why not, but I figured I'd give
-> you a heads up.
+> On other EFI architectures, we only distinguish between R-X and RW-
+> regions, and alignment between .rodata and .text is unnecessary. Do we
+> really need to deviate from that here?
 
-Hi Peter,
+I though that leaving a huge compressed kernel blob executable is
+undesirable, so I decided to split it out. I can make it either RW- or 
+R-X
+if it would be more acceptable.
 
-Thank you for testing!
-
-Without direct extraction enabled this patch set does not implement 
-total W^X
-and needs to allocate RWX memory regions, since it should go through 
-common
-code path that relocates kernel. So if the firmware does not allow 
-allocating
-RWX regions, it might prevent the kernel from booting, I think. I will 
-look
-into that problem soon and let you know it I find anything.
-
-Thanks,
-Evgeniy Baskov
+> 
+> 
+>>         .text : {
+>>                 _text = .;      /* Text */
+>>                 *(.text)
+>>                 *(.text.*)
+>>                 _etext = . ;
+>>         }
+>> +       . = ALIGN(PAGE_SIZE);
+>>         .rodata : {
+>>                 _rodata = . ;
+>>                 *(.rodata)       /* read-only data */
+>>                 *(.rodata.*)
+>>                 _erodata = . ;
+>>         }
+>> +       . = ALIGN(PAGE_SIZE);
+>>         .data : {
+>>                 _data = . ;
+>>                 *(.data)
+>> --
+>> 2.35.1
+>> 
