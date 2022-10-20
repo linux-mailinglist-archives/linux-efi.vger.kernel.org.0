@@ -2,31 +2,31 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EFB0605FBB
-	for <lists+linux-efi@lfdr.de>; Thu, 20 Oct 2022 14:07:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1B74605FC6
+	for <lists+linux-efi@lfdr.de>; Thu, 20 Oct 2022 14:10:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229760AbiJTMHU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 20 Oct 2022 08:07:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46352 "EHLO
+        id S229973AbiJTMKw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 20 Oct 2022 08:10:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229597AbiJTMHT (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 20 Oct 2022 08:07:19 -0400
+        with ESMTP id S229874AbiJTMKu (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 20 Oct 2022 08:10:50 -0400
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6AE018D469;
-        Thu, 20 Oct 2022 05:07:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58CAC114DF5;
+        Thu, 20 Oct 2022 05:10:47 -0700 (PDT)
 Received: from mail.ispras.ru (unknown [83.149.199.84])
-        by mail.ispras.ru (Postfix) with ESMTPSA id AD524419E9CC;
-        Thu, 20 Oct 2022 12:07:16 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru AD524419E9CC
+        by mail.ispras.ru (Postfix) with ESMTPSA id 9E21C419E9CC;
+        Thu, 20 Oct 2022 12:10:45 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 9E21C419E9CC
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1666267636;
-        bh=CLe/bnN98OW5tE8+acaQniHU65a/oz8vjoeS4/v74Gk=;
+        s=default; t=1666267845;
+        bh=qeYD9cbarvWNZmLV47q82H3noKNX8HJcybkzKWDNm5k=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=lmiLgTujqQc2B0kY76LCiMZ/wsq2CuwSVFKokBNsY5RAwEkkN/puW/DKC7ZGX9Ev2
-         GtBOKYRC/+mUjv6HdyK4VwEkpCMg4wqzNTW4DsI70J5xkpYHdtsPu7gQkOu2Mdrbvm
-         OK/nx5m9hEnfQintilxIpwIOuM3LvelHmtSOfa3I=
+        b=plTmaq2eJY8V20R9/dtzGjcnBpOp78CU/1JPlKFv4UDm8EX7JMA5Kjg/MOh8uoO10
+         m7iYJgsdkSo9jzTx8+I7wq1Zk/9lEvMq8ZT5hsBywxnDRrpY9drHm3i3yXkzz8hAQS
+         biHiGqAKVq8xjItOrIMg+KZcFCaWPquPR65hA5pQ=
 MIME-Version: 1.0
-Date:   Thu, 20 Oct 2022 15:07:16 +0300
+Date:   Thu, 20 Oct 2022 15:10:45 +0300
 From:   Evgeniy Baskov <baskov@ispras.ru>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
@@ -38,13 +38,13 @@ Cc:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
         lvc-project@linuxtesting.org, x86@kernel.org,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 06/16] x86/boot: Setup memory protection for bzImage code
-In-Reply-To: <CAMj1kXG59mtzbJoREgr4GA9QJkORcYb-XuDr3VoZ-3XYLy7k2g@mail.gmail.com>
+Subject: Re: [PATCH 10/16] x86/boot: Make console interface more abstract
+In-Reply-To: <CAMj1kXE5g7=CuHvEj0Z4F9Y91W-5K0OzorC_Z1-JL-vvc9kksQ@mail.gmail.com>
 References: <cover.1662459668.git.baskov@ispras.ru>
- <2fd61a79a1e6885dc47ec826b62a936dd88a0a16.1662459668.git.baskov@ispras.ru>
- <CAMj1kXG59mtzbJoREgr4GA9QJkORcYb-XuDr3VoZ-3XYLy7k2g@mail.gmail.com>
+ <7a4b8d6827503ae0e30745014504c72f0c5d6316.1662459668.git.baskov@ispras.ru>
+ <CAMj1kXE5g7=CuHvEj0Z4F9Y91W-5K0OzorC_Z1-JL-vvc9kksQ@mail.gmail.com>
 User-Agent: Roundcube Webmail/1.4.4
-Message-ID: <e4774b9c13a2bbb9f976dd0e00bebd07@ispras.ru>
+Message-ID: <3397e4295c9a1d5ffcd311027dd3b933@ispras.ru>
 X-Sender: baskov@ispras.ru
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
@@ -58,157 +58,32 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2022-10-19 10:17, Ard Biesheuvel wrote:
+On 2022-10-19 10:23, Ard Biesheuvel wrote:
 > On Tue, 6 Sept 2022 at 12:42, Evgeniy Baskov <baskov@ispras.ru> wrote:
 >> 
->> Use previously added code to use 4KB pages for mapping. Map compressed
->> and uncompressed kernel with appropriate memory protection attributes.
->> For compressed kernel set them up manually. For uncompressed kernel
->> used flags specified in ELF header.
+>> To be able to extract kernel from EFI, console output functions
+>> need to be replaceable by alternative implementations.
 >> 
+>> Make all of those functions pointers.
+>> Move serial console code to separate file.
+>> 
+> 
+> What does kernel_add_identity_map() have to do with the above? Should
+> that be a separate patch?
+
+It used to be dependent, but no longer is.
+I'll split making kernel_add_identity_map() a function pointer
+out into separate patch.
+
+> 
 >> Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
+>> ---
+>>  arch/x86/boot/compressed/Makefile       |   2 +-
+>>  arch/x86/boot/compressed/ident_map_64.c |  15 ++-
+>>  arch/x86/boot/compressed/misc.c         | 109 +--------------------
+>>  arch/x86/boot/compressed/misc.h         |  13 ++-
+>>  arch/x86/boot/compressed/putstr.c       | 124 
+>> ++++++++++++++++++++++++
+>>  5 files changed, 146 insertions(+), 117 deletions(-)
+>>  create mode 100644 arch/x86/boot/compressed/putstr.c
 ...
->> 
->>  /*
->>   * Locally defined symbols should be marked hidden:
->> @@ -578,6 +578,7 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
->>         pushq   %rsi
->>         call    load_stage2_idt
->> 
->> +       call    startup32_enable_nx_if_supported
->>         /* Pass boot_params to initialize_identity_maps() */
->>         movq    (%rsp), %rdi
->>         call    initialize_identity_maps
->> @@ -602,6 +603,28 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
->>         jmp     *%rax
->>  SYM_FUNC_END(.Lrelocated)
->> 
->> +SYM_FUNC_START_LOCAL_NOALIGN(startup32_enable_nx_if_supported)
-> 
-> Why the startup32_ prefix for this function name?
-
-Oh, right there is no reasons, I will remove it.
-...
->>  /*
->>   * Adds the specified range to the identity mappings.
->>   */
->> -void kernel_add_identity_map(unsigned long start, unsigned long end)
->> +unsigned long kernel_add_identity_map(unsigned long start,
->> +                                     unsigned long end,
->> +                                     unsigned int flags)
->>  {
->>         int ret;
->> 
->>         /* Align boundary to 2M. */
->> -       start = round_down(start, PMD_SIZE);
->> -       end = round_up(end, PMD_SIZE);
->> +       start = round_down(start, PAGE_SIZE);
->> +       end = round_up(end, PAGE_SIZE);
->>         if (start >= end)
->> -               return;
->> +               return start;
->> +
->> +       /* Enforce W^X -- just stop booting with error on violation. 
->> */
->> +       if (IS_ENABLED(CONFIG_RANDOMIZE_BASE) &&
->> +           (flags & (MAP_EXEC | MAP_WRITE)) == (MAP_EXEC | 
->> MAP_WRITE))
->> +               error("Error: W^X violation\n");
->> +
-> 
-> Do we need to add a new failure mode here?
-
-It seems reasonable to me to leave it here to avoid unintentionally 
-introducing
-RWX mappings. And this function can already fail on OOM situation.
-I can change it to warning if failure is too harsh in this situation.
-> 
->> +       bool nx = !(flags & MAP_EXEC) && has_nx;
->> +       bool ro = !(flags & MAP_WRITE);
->> +
-...
->> -       kernel_add_identity_map((unsigned long)_head, (unsigned 
->> long)_end);
->> -       boot_params = rmode;
->> -       kernel_add_identity_map((unsigned long)boot_params, (unsigned 
->> long)(boot_params + 1));
->> +       extern char _head[], _ehead[];
-> 
-> Please move these extern declarations out of the function scope (at
-> the very least)
-
-I will move it to misc.h then, there are already some of these 
-declarations present.
-
-> 
->> +       kernel_add_identity_map((unsigned long)_head,
->> +                               (unsigned long)_ehead, MAP_EXEC | 
->> MAP_NOFLUSH);
->> +
->> +       extern char _compressed[], _ecompressed[];
->> +       kernel_add_identity_map((unsigned long)_compressed,
->> +                               (unsigned long)_ecompressed, MAP_WRITE 
->> | MAP_NOFLUSH);
->> +
->> +       extern char _text[], _etext[];
->> +       kernel_add_identity_map((unsigned long)_text,
->> +                               (unsigned long)_etext, MAP_EXEC | 
->> MAP_NOFLUSH);
->> +
->> +       extern char _rodata[], _erodata[];
->> +       kernel_add_identity_map((unsigned long)_rodata,
->> +                               (unsigned long)_erodata, MAP_NOFLUSH);
->> +
-> 
-> Same question as before: do we really need three different regions for
-> rodata+text here?
-
-As I already told, I think, its undesirable to leave compressed kernel 
-blob
-(and .rodata) executable, as it it will provide higher attack surface if 
-some
-control flow interception vulnerability in this code would be 
-discovered,
-and though I am not aware of such vulnerabilities to be present 
-currently,
-I think, additional security is not redundant, since it can be provided 
-almost
-for free.
-
-I can merge these regions, if you think it does not worth it.
-
-> 
-...
->> +                       /*
->> +                        * Simultaneously readable and writable 
->> segments are
->> +                        * violating W^X, and should not be present in 
->> vmlinux image.
->> +                        */
->> +                       if ((phdr->p_flags & (PF_X | PF_W)) == (PF_X | 
->> PF_W))
->> +                               error("W^X violation for ELF 
->> segment");
->> +
-> 
-> Can we catch this at build time instead?
-
-Thanks, thats great idea! I will implement that in tools/build.c
-
-> 
-...
->> +#else
->> +static inline unsigned long kernel_add_identity_map(unsigned long 
->> start,
->> +                                                   unsigned long end,
->> +                                                   unsigned int 
->> flags)
->> +{
->> +       (void)flags;
->> +       (void)end;
-> 
-> Why these (void) casts? Can we just drop them?
-> 
-
-Unused parameters used to cause warnings for me here somehow...
-I will drop them.
