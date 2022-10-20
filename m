@@ -2,31 +2,31 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 665AF606193
-	for <lists+linux-efi@lfdr.de>; Thu, 20 Oct 2022 15:26:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 751436061A5
+	for <lists+linux-efi@lfdr.de>; Thu, 20 Oct 2022 15:30:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230313AbiJTN0A (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 20 Oct 2022 09:26:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58510 "EHLO
+        id S229795AbiJTNab (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 20 Oct 2022 09:30:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231138AbiJTNZ5 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 20 Oct 2022 09:25:57 -0400
+        with ESMTP id S229802AbiJTNaa (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 20 Oct 2022 09:30:30 -0400
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A59E12E0CF;
-        Thu, 20 Oct 2022 06:25:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D61C610C4E8;
+        Thu, 20 Oct 2022 06:30:28 -0700 (PDT)
 Received: from mail.ispras.ru (unknown [83.149.199.84])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 34092419E9D1;
-        Thu, 20 Oct 2022 13:25:51 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 34092419E9D1
+        by mail.ispras.ru (Postfix) with ESMTPSA id 05F3040D403D;
+        Thu, 20 Oct 2022 13:30:27 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 05F3040D403D
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1666272351;
-        bh=GYMsH9Ebnzm8SQXW7t4gkTpMsom8GVugJZf/83SavjE=;
+        s=default; t=1666272627;
+        bh=Q/p5Xj04qijnjiyAT2EorH15e9euRvJPoeU/62Hof4c=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=t4pusa818gjPOeCIBizSl2dpha4ZAejZRM/j2KGgrOL928umWHsxYUBhoXN8oCU7b
-         mi5S/8q5L/GeYCtz8JmGORRslfFBIRCcESgWneZb1fHTWrnDB785iUvicIaG2saGZZ
-         xtB9KM3V7w5SORbpCnGm9Ahzi7ZqheoIaSptjNnA=
+        b=V3qx7G4MsUk5AEDScC0Va0ACWUYY7IidTVRrFCETnXOSzapkDAEOB96vGPlybIlUX
+         gfFvijYIcnUhd9Nro6XgQJlwvvtdYSZ4D0if2uR/1ejLx3nCEdGPNf4JfIjPYCEOtb
+         0KS7MGDoiQ0YdNgJOoU6+7YFakblc4Yk6SueJ1cw=
 MIME-Version: 1.0
-Date:   Thu, 20 Oct 2022 16:25:51 +0300
+Date:   Thu, 20 Oct 2022 16:30:26 +0300
 From:   Evgeniy Baskov <baskov@ispras.ru>
 To:     Andrew Cooper <Andrew.Cooper3@citrix.com>
 Cc:     Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>,
@@ -39,17 +39,17 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>,
         lvc-project@linuxtesting.org, x86@kernel.org,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 03/16] x86/boot: Set cr0 to known state in trampoline
-In-Reply-To: <7dce2b16-c652-8b6d-5594-d110c8ac4645@citrix.com>
+Subject: Re: [PATCH 06/16] x86/boot: Setup memory protection for bzImage code
+In-Reply-To: <58b9f97c-36d5-6b9e-5336-14ad3a09ad18@citrix.com>
 References: <cover.1662459668.git.baskov@ispras.ru>
- <a155c20eec6343d34b3bdf40c024ce8b35a90e02.1662459668.git.baskov@ispras.ru>
- <7dce2b16-c652-8b6d-5594-d110c8ac4645@citrix.com>
+ <2fd61a79a1e6885dc47ec826b62a936dd88a0a16.1662459668.git.baskov@ispras.ru>
+ <58b9f97c-36d5-6b9e-5336-14ad3a09ad18@citrix.com>
 User-Agent: Roundcube Webmail/1.4.4
-Message-ID: <e217cff7752088baca2485f691e62d72@ispras.ru>
+Message-ID: <ed8c18e42870da96afc9ce1222816189@ispras.ru>
 X-Sender: baskov@ispras.ru
-Content-Type: text/plain; charset=UTF-8;
+Content-Type: text/plain; charset=US-ASCII;
  format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
@@ -59,33 +59,47 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2022-10-19 10:44, Andrew Cooper wrote:
+On 2022-10-19 10:57, Andrew Cooper wrote:
 > On 06/09/2022 11:41, Evgeniy Baskov wrote:
 >> diff --git a/arch/x86/boot/compressed/head_64.S 
 >> b/arch/x86/boot/compressed/head_64.S
->> index d33f060900d2..5273367283b7 100644
+>> index 5273367283b7..889ca7176aa7 100644
 >> --- a/arch/x86/boot/compressed/head_64.S
 >> +++ b/arch/x86/boot/compressed/head_64.S
->> @@ -619,9 +619,8 @@ SYM_CODE_START(trampoline_32bit_src)
->>  	/* Set up new stack */
->>  	leal	TRAMPOLINE_32BIT_STACK_END(%ecx), %esp
+>> @@ -602,6 +603,28 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
+>>  	jmp	*%rax
+>>  SYM_FUNC_END(.Lrelocated)
 >> 
->> -	/* Disable paging */
->> -	movl	%cr0, %eax
->> -	btrl	$X86_CR0_PG_BIT, %eax
->> +	/* Disable paging and setup CR0 */
->> +	movl	$(CR0_STATE & ~X86_CR0_PG), %eax
+>> +SYM_FUNC_START_LOCAL_NOALIGN(startup32_enable_nx_if_supported)
+>> +	pushq	%rbx
+>> +
+>> +	leaq	has_nx(%rip), %rcx
+>> +
+>> +	mov	$0x80000001, %eax
+>> +	cpuid
+>> +	btl	$20, %edx
 > 
-> Why here?  WP is ignored when PG is disabled.
+> btl $(X86_FEATURE_NX & 31), %edx
+> 
+> But also need to check for the availability of the extended leaf in the
+> first place.
+
+Yes, thank you for suggestion, that looks more readable. I will
+also add the leaf node check. Is there any processor though that
+supports long mode and does not support 0x80000001 leaf node?
+
+> 
+>> +	jnc	.Lnonx
+>> +
+>> +	movl	$1, (%rcx)
+> 
+> Your pointer has been clobbered with some feature flags.
+
+Thanks, I apparently forgot to include fix for this into a patch set...
+
+> 
+> movl $1, has_nx(%rip)
+> 
+> will work fine without needing the intermediary lea.
 > 
 > ~Andrew
-
-PG is enabled lower in this function, so WP can also be set there,
-it should not make any difference. The only important thing is that
-WP supposed to be set in trampoline code.
-
-If you think, that it would be more logical to set PG and WP
-simultaneously, I can change it to be that way.
-
-Thanks,
-Evgeniy Baskov
