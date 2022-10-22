@@ -2,106 +2,93 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEAC3608BD4
-	for <lists+linux-efi@lfdr.de>; Sat, 22 Oct 2022 12:44:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A55A608E12
+	for <lists+linux-efi@lfdr.de>; Sat, 22 Oct 2022 17:24:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230372AbiJVKoe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 22 Oct 2022 06:44:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46834 "EHLO
+        id S229661AbiJVPYD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 22 Oct 2022 11:24:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231178AbiJVKoQ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 22 Oct 2022 06:44:16 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA96631BF6E;
-        Sat, 22 Oct 2022 03:01:54 -0700 (PDT)
-Received: from zn.tnic (p200300ea9733e714329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e714:329c:23ff:fea6:a903])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 752A21EC0629;
-        Sat, 22 Oct 2022 12:00:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1666432836;
+        with ESMTP id S229519AbiJVPYC (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 22 Oct 2022 11:24:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 599BC12767
+        for <linux-efi@vger.kernel.org>; Sat, 22 Oct 2022 08:24:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1666452240;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=8JIbHKcJJ+kMxdbJLrXmFhUHK09tqfA4e7vxfuzOL3s=;
-        b=BJfz4jtTpZ9Fd4zl2nfhPjfuGwymwBFYWxmyqQiqR59npXdqgP1XxhKZEyqsL4qQcdMFod
-        sxt+i/g3gZQBqiqetv9wP6LHjSdq5L6WGr9BGq6iHeq78+eSG1fIN+cgPL6x3AowP1L5Xa
-        K54bH9dY+mAb/8fZoipOD5o+lL0angc=
-Date:   Sat, 22 Oct 2022 12:00:32 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Jia He <justin.he@arm.com>, Len Brown <lenb@kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Jan Luebbe <jlu@pengutronix.de>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Kani Toshi <toshi.kani@hpe.com>,
-        James Morse <james.morse@arm.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-        devel@acpica.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
-        nd@arm.com, Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v10 6/7] apei/ghes: Use xchg_release() for updating new
- cache slot instead of cmpxchg()
-Message-ID: <Y1O/QN32d2AlzEiA@zn.tnic>
-References: <20221018082214.569504-1-justin.he@arm.com>
- <20221018082214.569504-7-justin.he@arm.com>
- <Y1OtRpLRwPPG/4Il@zn.tnic>
- <CAMj1kXFu36faTPoGSGPs9KhcKsoh_DE9X2rmwdenxaJwa3P_yw@mail.gmail.com>
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=UWUkuuCod8l5bJVZ5tTL+4nS+qttcoxn4McrP045ChQ=;
+        b=TJokguSn0Db3cXEbhlwYxS2ygiK9/C6rZNGZUXpuGx6OIc0G/xyRnR4xrM4XyV2bR6LjC5
+        tJYmwQfb2TvLWXOAJjevCLk0sfRNV9oLfGRcPkI9jICPsyhOxU8FPbGJmghQvbtI7TWZf0
+        7QHewkQ8i/QITCSxsPOrvHtmG3J5BHQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-640-ffCSfy1EOGur2LgQwF961Q-1; Sat, 22 Oct 2022 11:23:56 -0400
+X-MC-Unique: ffCSfy1EOGur2LgQwF961Q-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 62CE08027F5;
+        Sat, 22 Oct 2022 15:23:56 +0000 (UTC)
+Received: from cantor.redhat.com (unknown [10.2.16.18])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id A3AE22024CBF;
+        Sat, 22 Oct 2022 15:23:55 +0000 (UTC)
+From:   Jerry Snitselaar <jsnitsel@redhat.com>
+To:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
+Cc:     Matthew Garrett <mjg59@google.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Bartosz Szczepanek <bsz@semihalf.com>,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH] efi/tpm: Pass correct address to memblock_reserve
+Date:   Sat, 22 Oct 2022 08:23:52 -0700
+Message-Id: <20221022152352.1033750-1-jsnitsel@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXFu36faTPoGSGPs9KhcKsoh_DE9X2rmwdenxaJwa3P_yw@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, Oct 22, 2022 at 11:01:01AM +0200, Ard Biesheuvel wrote:
-> But the point is that the new element we are adding has the same
-> properties as the one we want to avoid replacing inadvertently,
+memblock_reserve() expects a physical address, but the address being
+passed for the TPM final events log is what was returned from
+early_memremap(). This results in something like the following:
 
-No, we're removing the oldest element we found. The new one is anything
-but we don't compare it to slot_cache which we're about to remove.
+[    0.000000] memblock_reserve: [0xffffffffff2c0000-0xffffffffff2c00e4] efi_tpm_eventlog_init+0x324/0x370
 
-> and if the cmpxchg() failed, we just drop it on the floor.
+Pass the address from efi like what is done for the TPM events log.
 
-Yeah, I guess the intent here was: oh well, we'll log that thing again
-because our "throttling cache" didn't manage to enter it.
+Fixes: c46f3405692d ("tpm: Reserve the TPM final events table")
+Cc: Matthew Garrett <mjg59@google.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Bartosz Szczepanek <bsz@semihalf.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
+---
+ drivers/firmware/efi/tpm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> So instead of dropping 'our' new element, we now drop 'the other' new
-> element.
-
-Aha, this is what you mean with logging something twice. That other new
-element gets dropped so if it happens again, it'll get logged and if it
-then gets entered in the cache properly, then it gets ignored on the
-next logging run.
-
-Oh well, fine with me.
-
-> The correct approach here would be to rerun the selection loop on
-> failure, but I doubt whether it is worth it. This is just a fancy rate
-> limiter.
-
-Yap, exactly.
-
-Ok, so I'll try to summarize what we talked here in the commit message
-so that it is written down somewhere for later.
-
-Thx.
-
+diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+index 8f665678e9e3..e8d69bd548f3 100644
+--- a/drivers/firmware/efi/tpm.c
++++ b/drivers/firmware/efi/tpm.c
+@@ -97,7 +97,7 @@ int __init efi_tpm_eventlog_init(void)
+ 		goto out_calc;
+ 	}
+ 
+-	memblock_reserve((unsigned long)final_tbl,
++	memblock_reserve(efi.tpm_final_log,
+ 			 tbl_size + sizeof(*final_tbl));
+ 	efi_tpm_final_log_size = tbl_size;
+ 
 -- 
-Regards/Gruss,
-    Boris.
+2.37.2
 
-https://people.kernel.org/tglx/notes-about-netiquette
