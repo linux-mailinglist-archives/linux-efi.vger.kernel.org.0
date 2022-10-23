@@ -2,93 +2,74 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A55A608E12
-	for <lists+linux-efi@lfdr.de>; Sat, 22 Oct 2022 17:24:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB61360942F
+	for <lists+linux-efi@lfdr.de>; Sun, 23 Oct 2022 16:58:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229661AbiJVPYD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 22 Oct 2022 11:24:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55866 "EHLO
+        id S229971AbiJWO6c (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 23 Oct 2022 10:58:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbiJVPYC (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 22 Oct 2022 11:24:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 599BC12767
-        for <linux-efi@vger.kernel.org>; Sat, 22 Oct 2022 08:24:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1666452240;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=UWUkuuCod8l5bJVZ5tTL+4nS+qttcoxn4McrP045ChQ=;
-        b=TJokguSn0Db3cXEbhlwYxS2ygiK9/C6rZNGZUXpuGx6OIc0G/xyRnR4xrM4XyV2bR6LjC5
-        tJYmwQfb2TvLWXOAJjevCLk0sfRNV9oLfGRcPkI9jICPsyhOxU8FPbGJmghQvbtI7TWZf0
-        7QHewkQ8i/QITCSxsPOrvHtmG3J5BHQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-640-ffCSfy1EOGur2LgQwF961Q-1; Sat, 22 Oct 2022 11:23:56 -0400
-X-MC-Unique: ffCSfy1EOGur2LgQwF961Q-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 62CE08027F5;
-        Sat, 22 Oct 2022 15:23:56 +0000 (UTC)
-Received: from cantor.redhat.com (unknown [10.2.16.18])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A3AE22024CBF;
-        Sat, 22 Oct 2022 15:23:55 +0000 (UTC)
-From:   Jerry Snitselaar <jsnitsel@redhat.com>
-To:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-Cc:     Matthew Garrett <mjg59@google.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Bartosz Szczepanek <bsz@semihalf.com>,
-        Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH] efi/tpm: Pass correct address to memblock_reserve
-Date:   Sat, 22 Oct 2022 08:23:52 -0700
-Message-Id: <20221022152352.1033750-1-jsnitsel@redhat.com>
+        with ESMTP id S230291AbiJWO63 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 23 Oct 2022 10:58:29 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14AAF6D871
+        for <linux-efi@vger.kernel.org>; Sun, 23 Oct 2022 07:58:23 -0700 (PDT)
+Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1omcQd-0002qe-Db; Sun, 23 Oct 2022 16:58:19 +0200
+Message-ID: <a7eb41bf-3503-3057-783e-205ec4c2dc96@leemhuis.info>
+Date:   Sun, 23 Oct 2022 16:58:18 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.0
+Subject: Re: [PATCH] efi/libstub: arm64: avoid SetVirtualAddressMap() when
+ possible #forregzbot
+Content-Language: en-US, de-DE
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+To:     linux-efi@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+References: <20220916101843.495879-1-ardb@kernel.org>
+ <56877644-8173-d2ed-ed00-7973734a3698@huawei.com>
+ <9c06c75d-5079-dd27-6533-c053c986083e@leemhuis.info>
+In-Reply-To: <9c06c75d-5079-dd27-6533-c053c986083e@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1666537103;4d5f272e;
+X-HE-SMSGID: 1omcQd-0002qe-Db
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-memblock_reserve() expects a physical address, but the address being
-passed for the TPM final events log is what was returned from
-early_memremap(). This results in something like the following:
+[Note: this mail is primarily send for documentation purposes and/or for
+regzbot, my Linux kernel regression tracking bot. That's why I removed
+most or all folks from the list of recipients, but left any that looked
+like a mailing lists. These mails usually contain '#forregzbot' in the
+subject, to make them easy to spot and filter out.]
+On 20.10.22 14:39, Thorsten Leemhuis wrote:
 
-[    0.000000] memblock_reserve: [0xffffffffff2c0000-0xffffffffff2c00e4] efi_tpm_eventlog_init+0x324/0x370
+>> After entering 6.1-rc1 the efi runtime services is not working on my platform:
+>>
+>> [    0.054039] Remapping and enabling EFI services.
+>> [    0.054043] UEFI virtual mapping missing or invalid -- runtime services will not be available
+>>
+>> Not sure this patch is the root cause since I see some refactor of efi codes in 6.1-rc1,
+>> but simply reverting this make EFI runtime services works again. Tested on HiSilicon's
+>> Kunpeng 920 arm64 server using 48 bit VA address:
+> 
+> #regzbot ^introduced d3549a938b73f203ef522562ae9f2d38aa43d234
+> #regzbot title efi/libstub: arm64: efi runtime services stopped working
+> #regzbot ignore-activity
 
-Pass the address from efi like what is done for the TPM events log.
+#regzbot fixed-by: 37926f96302d8b6
 
-Fixes: c46f3405692d ("tpm: Reserve the TPM final events table")
-Cc: Matthew Garrett <mjg59@google.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Bartosz Szczepanek <bsz@semihalf.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
----
- drivers/firmware/efi/tpm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
 
-diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
-index 8f665678e9e3..e8d69bd548f3 100644
---- a/drivers/firmware/efi/tpm.c
-+++ b/drivers/firmware/efi/tpm.c
-@@ -97,7 +97,7 @@ int __init efi_tpm_eventlog_init(void)
- 		goto out_calc;
- 	}
- 
--	memblock_reserve((unsigned long)final_tbl,
-+	memblock_reserve(efi.tpm_final_log,
- 			 tbl_size + sizeof(*final_tbl));
- 	efi_tpm_final_log_size = tbl_size;
- 
--- 
-2.37.2
-
+P.S.: As the Linux kernel's regression tracker I deal with a lot of
+reports and sometimes miss something important when writing mails like
+this. If that's the case here, don't hesitate to tell me in a public
+reply, it's in everyone's interest to set the public record straight.
