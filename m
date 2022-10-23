@@ -2,42 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB61360942F
-	for <lists+linux-efi@lfdr.de>; Sun, 23 Oct 2022 16:58:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAFD86096A3
+	for <lists+linux-efi@lfdr.de>; Sun, 23 Oct 2022 23:59:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229971AbiJWO6c (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 23 Oct 2022 10:58:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37456 "EHLO
+        id S229664AbiJWV7a (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 23 Oct 2022 17:59:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230291AbiJWO63 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 23 Oct 2022 10:58:29 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14AAF6D871
-        for <linux-efi@vger.kernel.org>; Sun, 23 Oct 2022 07:58:23 -0700 (PDT)
-Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1omcQd-0002qe-Db; Sun, 23 Oct 2022 16:58:19 +0200
-Message-ID: <a7eb41bf-3503-3057-783e-205ec4c2dc96@leemhuis.info>
-Date:   Sun, 23 Oct 2022 16:58:18 +0200
+        with ESMTP id S229613AbiJWV73 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 23 Oct 2022 17:59:29 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9421FE8;
+        Sun, 23 Oct 2022 14:59:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3FD31B80E05;
+        Sun, 23 Oct 2022 21:59:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615B7C433C1;
+        Sun, 23 Oct 2022 21:59:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666562357;
+        bh=QIXS1PuqKiNPYMIPPGfUEe7n27S1FRRrefLl9o0EJmE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=l7HCQIJvdMFoW23Ct31ANSaovIhskNJuNKwCPlk2HlG+te4873uDpdZB5Q1LP7Ayj
+         OQFLjhnRytrnJUgQVdaLcCzPxZ3kS1uQBT8CN7RdDcr3ccNeamp677VVYuAMZGAjQf
+         oiMw4ss9nQS2UYeyojGCaw7kvTYffWyewtc2PJG/Z35ZkKMtyR36TJX/w+/rOSBV6Q
+         RmPtgYjY6RzLBYFr38kAbdmrX/NlEOG7e9sKENJ2Kth0YE45inABGzs3o4BRX08BTm
+         qO0oRKT1/SVx2Ief1qP0J/FZ9WDFqCvmtxtCcq+mOHbnh0qNt2LVnsPLWn8jabOIDt
+         /sUT8EbiycWZQ==
+Date:   Mon, 24 Oct 2022 00:59:10 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Jerry Snitselaar <jsnitsel@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        Matthew Garrett <mjg59@google.com>,
+        Bartosz Szczepanek <bsz@semihalf.com>,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH] efi/tpm: Pass correct address to memblock_reserve
+Message-ID: <Y1W5LlI/fRo6XhU9@kernel.org>
+References: <20221022152352.1033750-1-jsnitsel@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: [PATCH] efi/libstub: arm64: avoid SetVirtualAddressMap() when
- possible #forregzbot
-Content-Language: en-US, de-DE
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-To:     linux-efi@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-References: <20220916101843.495879-1-ardb@kernel.org>
- <56877644-8173-d2ed-ed00-7973734a3698@huawei.com>
- <9c06c75d-5079-dd27-6533-c053c986083e@leemhuis.info>
-In-Reply-To: <9c06c75d-5079-dd27-6533-c053c986083e@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1666537103;4d5f272e;
-X-HE-SMSGID: 1omcQd-0002qe-Db
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221022152352.1033750-1-jsnitsel@redhat.com>
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -45,31 +54,43 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-[Note: this mail is primarily send for documentation purposes and/or for
-regzbot, my Linux kernel regression tracking bot. That's why I removed
-most or all folks from the list of recipients, but left any that looked
-like a mailing lists. These mails usually contain '#forregzbot' in the
-subject, to make them easy to spot and filter out.]
-On 20.10.22 14:39, Thorsten Leemhuis wrote:
-
->> After entering 6.1-rc1 the efi runtime services is not working on my platform:
->>
->> [    0.054039] Remapping and enabling EFI services.
->> [    0.054043] UEFI virtual mapping missing or invalid -- runtime services will not be available
->>
->> Not sure this patch is the root cause since I see some refactor of efi codes in 6.1-rc1,
->> but simply reverting this make EFI runtime services works again. Tested on HiSilicon's
->> Kunpeng 920 arm64 server using 48 bit VA address:
+On Sat, Oct 22, 2022 at 08:23:52AM -0700, Jerry Snitselaar wrote:
+> memblock_reserve() expects a physical address, but the address being
+> passed for the TPM final events log is what was returned from
+> early_memremap(). This results in something like the following:
 > 
-> #regzbot ^introduced d3549a938b73f203ef522562ae9f2d38aa43d234
-> #regzbot title efi/libstub: arm64: efi runtime services stopped working
-> #regzbot ignore-activity
+> [    0.000000] memblock_reserve: [0xffffffffff2c0000-0xffffffffff2c00e4] efi_tpm_eventlog_init+0x324/0x370
+> 
+> Pass the address from efi like what is done for the TPM events log.
+> 
+> Fixes: c46f3405692d ("tpm: Reserve the TPM final events table")
+> Cc: Matthew Garrett <mjg59@google.com>
+> Cc: Jarkko Sakkinen <jarkko@kernel.org>
+> Cc: Bartosz Szczepanek <bsz@semihalf.com>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
+> ---
+>  drivers/firmware/efi/tpm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+> index 8f665678e9e3..e8d69bd548f3 100644
+> --- a/drivers/firmware/efi/tpm.c
+> +++ b/drivers/firmware/efi/tpm.c
+> @@ -97,7 +97,7 @@ int __init efi_tpm_eventlog_init(void)
+>  		goto out_calc;
+>  	}
+>  
+> -	memblock_reserve((unsigned long)final_tbl,
+> +	memblock_reserve(efi.tpm_final_log,
+>  			 tbl_size + sizeof(*final_tbl));
+>  	efi_tpm_final_log_size = tbl_size;
+>  
+> -- 
+> 2.37.2
+> 
 
-#regzbot fixed-by: 37926f96302d8b6
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-P.S.: As the Linux kernel's regression tracker I deal with a lot of
-reports and sometimes miss something important when writing mails like
-this. If that's the case here, don't hesitate to tell me in a public
-reply, it's in everyone's interest to set the public record straight.
+BR, Jarkko
