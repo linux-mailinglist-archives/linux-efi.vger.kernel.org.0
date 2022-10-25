@@ -2,29 +2,29 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 401E460CEB3
-	for <lists+linux-efi@lfdr.de>; Tue, 25 Oct 2022 16:15:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1A8760CEA9
+	for <lists+linux-efi@lfdr.de>; Tue, 25 Oct 2022 16:15:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233162AbiJYOOX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 25 Oct 2022 10:14:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46334 "EHLO
+        id S233017AbiJYOOP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 25 Oct 2022 10:14:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233088AbiJYONw (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 25 Oct 2022 10:13:52 -0400
+        with ESMTP id S233052AbiJYONv (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 25 Oct 2022 10:13:51 -0400
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BBFFA3F59;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2D51A4853;
         Tue, 25 Oct 2022 07:13:49 -0700 (PDT)
 Received: from localhost.localdomain (unknown [83.149.199.65])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 1299040737A9;
+        by mail.ispras.ru (Postfix) with ESMTPSA id 4832640737AC;
         Tue, 25 Oct 2022 14:13:48 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 1299040737A9
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 4832640737AC
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
         s=default; t=1666707228;
-        bh=9Oa8gIXmKLPxydEwpaxKmSLJp4b7h3J3XaTRhGHbQeo=;
+        bh=DZTrbaBaHe77iGD0+HZCDY+dD1tpBzVWypKX0yhMApE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZHia3ZZudhpA78loUcZzJz7uqaw7cROgur2+O23+5nL5KUiFRH013NdgkUEGnWYG/
-         VjtSfUkQzYH3PF8hb6h1ltuwFQGhjTAhxGcNdOgBC+QasyGc0c6mH6SQwvf+cheRhL
-         sNQIxqFqA7mQpz7t95d6SmXYYSCuAIDKIOARGvug=
+        b=hSA4oTacdmboTGxjLXOr5oGkOsiMFnT3xJPfu/VNlPtW7JIOXZMeMgWWHF0EgbLVW
+         D5UuKr7CK2Q4bYnegBpFEjz0ocLVEntGoQSj33IHkzhtpWZxhwb7DWXd69Xz/sPf7t
+         6n8NSPXbDeCVRIXbPDY2qQ2kgLdqTk2er3PdiL3E=
 From:   Evgeniy Baskov <baskov@ispras.ru>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Evgeniy Baskov <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
@@ -37,9 +37,9 @@ Cc:     Evgeniy Baskov <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
         Peter Jones <pjones@redhat.com>, lvc-project@linuxtesting.org,
         x86@kernel.org, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: [PATCH v2 11/23] x86/boot: Make console interface more abstract
-Date:   Tue, 25 Oct 2022 17:12:49 +0300
-Message-Id: <8052eb0bfd066a9d11c7f03f8eb03da0648bb643.1666705333.git.baskov@ispras.ru>
+Subject: [PATCH v2 12/23] x86/boot: Make kernel_add_identity_map() a pointer
+Date:   Tue, 25 Oct 2022 17:12:50 +0300
+Message-Id: <d94c98c0cb8506aae1972e86cb58f70ce6a90e4f.1666705333.git.baskov@ispras.ru>
 X-Mailer: git-send-email 2.37.4
 In-Reply-To: <cover.1666705333.git.baskov@ispras.ru>
 References: <cover.1666705333.git.baskov@ispras.ru>
@@ -54,338 +54,110 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-To be able to extract kernel from EFI, console output functions
-need to be replaceable by alternative implementations.
-
-Make all of those functions pointers.
-Move serial console code to separate file.
+Convert kernel_add_identity_map() into a function pointer to be able
+to provide alternative implementations of this function. Required
+to enable calling the code using this function from EFI environment.
 
 Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
 ---
- arch/x86/boot/compressed/Makefile |   2 +-
- arch/x86/boot/compressed/misc.c   | 109 +------------------------
- arch/x86/boot/compressed/misc.h   |   9 ++-
- arch/x86/boot/compressed/putstr.c | 130 ++++++++++++++++++++++++++++++
- 4 files changed, 139 insertions(+), 111 deletions(-)
- create mode 100644 arch/x86/boot/compressed/putstr.c
+ arch/x86/boot/compressed/ident_map_64.c |  7 ++++---
+ arch/x86/boot/compressed/misc.c         | 24 ++++++++++++++++++++++++
+ arch/x86/boot/compressed/misc.h         | 15 +++------------
+ 3 files changed, 31 insertions(+), 15 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index 64de6c2b1740..f79273f46cc7 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -93,7 +93,7 @@ $(obj)/misc.o: $(obj)/../voffset.h
+diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
+index ba5108c58a4e..1aee524d3c2b 100644
+--- a/arch/x86/boot/compressed/ident_map_64.c
++++ b/arch/x86/boot/compressed/ident_map_64.c
+@@ -92,9 +92,9 @@ bool has_nx; /* set in head_64.S */
+ /*
+  * Adds the specified range to the identity mappings.
+  */
+-unsigned long kernel_add_identity_map(unsigned long start,
+-				      unsigned long end,
+-				      unsigned int flags)
++unsigned long kernel_add_identity_map_(unsigned long start,
++				       unsigned long end,
++				       unsigned int flags)
+ {
+ 	int ret;
  
- vmlinux-objs-y := $(obj)/vmlinux.lds $(obj)/kernel_info.o $(obj)/head_$(BITS).o \
- 	$(obj)/misc.o $(obj)/string.o $(obj)/cmdline.o $(obj)/error.o \
--	$(obj)/piggy.o $(obj)/cpuflags.o
-+	$(obj)/piggy.o $(obj)/cpuflags.o $(obj)/putstr.o
+@@ -142,6 +142,7 @@ void initialize_identity_maps(void *rmode)
+ 	struct setup_data *sd;
  
- vmlinux-objs-$(CONFIG_EARLY_PRINTK) += $(obj)/early_serial_console.o
- vmlinux-objs-$(CONFIG_RANDOMIZE_BASE) += $(obj)/kaslr.o
+ 	boot_params = rmode;
++	kernel_add_identity_map = kernel_add_identity_map_;
+ 
+ 	/* Exclude the encryption mask from __PHYSICAL_MASK */
+ 	physical_mask &= ~sme_me_mask;
 diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
-index 0c7ec290044d..aa4a22bc9cf9 100644
+index aa4a22bc9cf9..c9c235d65d16 100644
 --- a/arch/x86/boot/compressed/misc.c
 +++ b/arch/x86/boot/compressed/misc.c
-@@ -53,13 +53,6 @@ struct port_io_ops pio_ops;
- memptr free_mem_ptr;
- memptr free_mem_end_ptr;
+@@ -275,6 +275,22 @@ static void parse_elf(void *output, unsigned long output_len,
+ 	free(phdrs);
+ }
  
--static char *vidmem;
--static int vidport;
--
--/* These might be accessed before .bss is cleared, so use .data instead. */
--static int lines __section(".data");
--static int cols __section(".data");
--
- #ifdef CONFIG_KERNEL_GZIP
- #include "../../../../lib/decompress_inflate.c"
- #endif
-@@ -92,95 +85,6 @@ static int cols __section(".data");
-  * ../header.S.
-  */
++/*
++ * This points to actual implementation of mapping function
++ * for current environment: either EFI API wrapper,
++ * own implementation or dummy implementation below.
++ */
++unsigned long (*kernel_add_identity_map)(unsigned long start,
++					 unsigned long end,
++					 unsigned int flags);
++
++static inline unsigned long kernel_add_identity_map_dummy(unsigned long start,
++							  unsigned long end,
++							  unsigned int flags)
++{
++	return start;
++}
++
+ /*
+  * The compressed kernel image (ZO), has been moved so that its position
+  * is against the end of the buffer used to hold the uncompressed kernel
+@@ -312,6 +328,14 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
  
--static void scroll(void)
--{
--	int i;
--
--	memmove(vidmem, vidmem + cols * 2, (lines - 1) * cols * 2);
--	for (i = (lines - 1) * cols * 2; i < lines * cols * 2; i += 2)
--		vidmem[i] = ' ';
--}
--
--#define XMTRDY          0x20
--
--#define TXR             0       /*  Transmit register (WRITE) */
--#define LSR             5       /*  Line Status               */
--static void serial_putchar(int ch)
--{
--	unsigned timeout = 0xffff;
--
--	while ((inb(early_serial_base + LSR) & XMTRDY) == 0 && --timeout)
--		cpu_relax();
--
--	outb(ch, early_serial_base + TXR);
--}
--
--void __putstr(const char *s)
--{
--	int x, y, pos;
--	char c;
--
--	if (early_serial_base) {
--		const char *str = s;
--		while (*str) {
--			if (*str == '\n')
--				serial_putchar('\r');
--			serial_putchar(*str++);
--		}
--	}
--
--	if (lines == 0 || cols == 0)
--		return;
--
--	x = boot_params->screen_info.orig_x;
--	y = boot_params->screen_info.orig_y;
--
--	while ((c = *s++) != '\0') {
--		if (c == '\n') {
--			x = 0;
--			if (++y >= lines) {
--				scroll();
--				y--;
--			}
--		} else {
--			vidmem[(x + cols * y) * 2] = c;
--			if (++x >= cols) {
--				x = 0;
--				if (++y >= lines) {
--					scroll();
--					y--;
--				}
--			}
--		}
--	}
--
--	boot_params->screen_info.orig_x = x;
--	boot_params->screen_info.orig_y = y;
--
--	pos = (x + cols * y) * 2;	/* Update cursor position */
--	outb(14, vidport);
--	outb(0xff & (pos >> 9), vidport+1);
--	outb(15, vidport);
--	outb(0xff & (pos >> 1), vidport+1);
--}
--
--void __puthex(unsigned long value)
--{
--	char alpha[2] = "0";
--	int bits;
--
--	for (bits = sizeof(value) * 8 - 4; bits >= 0; bits -= 4) {
--		unsigned long digit = (value >> bits) & 0xf;
--
--		if (digit < 0xA)
--			alpha[0] = '0' + digit;
--		else
--			alpha[0] = 'a' + (digit - 0xA);
--
--		__putstr(alpha);
--	}
--}
--
- #ifdef CONFIG_X86_NEED_RELOCS
- static void handle_relocations(void *output, unsigned long output_len,
- 			       unsigned long virt_addr)
-@@ -406,17 +310,6 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
- 
- 	sanitize_boot_params(boot_params);
- 
--	if (boot_params->screen_info.orig_video_mode == 7) {
--		vidmem = (char *) 0xb0000;
--		vidport = 0x3b4;
--	} else {
--		vidmem = (char *) 0xb8000;
--		vidport = 0x3d4;
--	}
--
--	lines = boot_params->screen_info.orig_video_lines;
--	cols = boot_params->screen_info.orig_video_cols;
--
  	init_default_io_ops();
  
++	/*
++	 * On 64-bit this pointer is set during page table uninitialization,
++	 * but on 32-bit it remains uninitialized, since paging is disabled.
++	 */
++	if (IS_ENABLED(CONFIG_X86_32))
++		kernel_add_identity_map = kernel_add_identity_map_dummy;
++
++
  	/*
-@@ -427,7 +320,7 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
- 	 */
- 	early_tdx_detect();
- 
--	console_init();
-+	init_bare_console();
- 
- 	/*
- 	 * Save RSDP address for later use. Have this after console_init()
+ 	 * Detect TDX guest environment.
+ 	 *
 diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-index 033db9b536e6..38d31bec062d 100644
+index 38d31bec062d..0076b2845b4b 100644
 --- a/arch/x86/boot/compressed/misc.h
 +++ b/arch/x86/boot/compressed/misc.h
-@@ -57,8 +57,8 @@ extern memptr free_mem_end_ptr;
- void *malloc(int size);
- void free(void *where);
- extern struct boot_params *boot_params;
--void __putstr(const char *s);
--void __puthex(unsigned long value);
-+extern void (*__putstr)(const char *s);
-+extern void (*__puthex)(unsigned long value);
- #define error_putstr(__x)  __putstr(__x)
- #define error_puthex(__x)  __puthex(__x)
- 
-@@ -128,6 +128,11 @@ static inline void console_init(void)
- { }
+@@ -180,18 +180,9 @@ static inline int count_immovable_mem_regions(void) { return 0; }
+ #ifdef CONFIG_X86_5LEVEL
+ extern unsigned int __pgtable_l5_enabled, pgdir_shift, ptrs_per_p4d;
  #endif
+-#ifdef CONFIG_X86_64
+-extern unsigned long kernel_add_identity_map(unsigned long start,
+-					     unsigned long end,
+-					     unsigned int flags);
+-#else
+-static inline unsigned long kernel_add_identity_map(unsigned long start,
+-						    unsigned long end,
+-						    unsigned int flags)
+-{
+-	return start;
+-}
+-#endif
++extern unsigned long (*kernel_add_identity_map)(unsigned long start,
++						unsigned long end,
++						unsigned int flags);
+ /* Used by PAGE_KERN* macros: */
+ extern pteval_t __default_kernel_pte_mask;
  
-+/* putstr.c */
-+void init_bare_console(void);
-+void init_console_func(void (*putstr_)(const char *),
-+		       void (*puthex_)(unsigned long));
-+
- #ifdef CONFIG_AMD_MEM_ENCRYPT
- void sev_enable(struct boot_params *bp);
- void sev_es_shutdown_ghcb(void);
-diff --git a/arch/x86/boot/compressed/putstr.c b/arch/x86/boot/compressed/putstr.c
-new file mode 100644
-index 000000000000..44a4c3dacec5
---- /dev/null
-+++ b/arch/x86/boot/compressed/putstr.c
-@@ -0,0 +1,130 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include "misc.h"
-+
-+/* These might be accessed before .bss is cleared, so use .data instead. */
-+static char *vidmem __section(".data");
-+static int vidport __section(".data");
-+static int lines __section(".data");
-+static int cols __section(".data");
-+
-+void (*__putstr)(const char *s);
-+void (*__puthex)(unsigned long value);
-+
-+static void putstr(const char *s);
-+static void puthex(unsigned long value);
-+
-+void init_console_func(void (*putstr_)(const char *),
-+		       void (*puthex_)(unsigned long))
-+{
-+	__putstr = putstr_;
-+	__puthex = puthex_;
-+}
-+
-+void init_bare_console(void)
-+{
-+	init_console_func(putstr, puthex);
-+
-+	if (boot_params->screen_info.orig_video_mode == 7) {
-+		vidmem = (char *) 0xb0000;
-+		vidport = 0x3b4;
-+	} else {
-+		vidmem = (char *) 0xb8000;
-+		vidport = 0x3d4;
-+	}
-+
-+	lines = boot_params->screen_info.orig_video_lines;
-+	cols = boot_params->screen_info.orig_video_cols;
-+
-+	console_init();
-+}
-+
-+static void scroll(void)
-+{
-+	int i;
-+
-+	memmove(vidmem, vidmem + cols * 2, (lines - 1) * cols * 2);
-+	for (i = (lines - 1) * cols * 2; i < lines * cols * 2; i += 2)
-+		vidmem[i] = ' ';
-+}
-+
-+#define XMTRDY          0x20
-+
-+#define TXR             0       /*  Transmit register (WRITE) */
-+#define LSR             5       /*  Line Status               */
-+
-+static void serial_putchar(int ch)
-+{
-+	unsigned int timeout = 0xffff;
-+
-+	while ((inb(early_serial_base + LSR) & XMTRDY) == 0 && --timeout)
-+		cpu_relax();
-+
-+	outb(ch, early_serial_base + TXR);
-+}
-+
-+static void putstr(const char *s)
-+{
-+	int x, y, pos;
-+	char c;
-+
-+	if (early_serial_base) {
-+		const char *str = s;
-+
-+		while (*str) {
-+			if (*str == '\n')
-+				serial_putchar('\r');
-+			serial_putchar(*str++);
-+		}
-+	}
-+
-+	if (lines == 0 || cols == 0)
-+		return;
-+
-+	x = boot_params->screen_info.orig_x;
-+	y = boot_params->screen_info.orig_y;
-+
-+	while ((c = *s++) != '\0') {
-+		if (c == '\n') {
-+			x = 0;
-+			if (++y >= lines) {
-+				scroll();
-+				y--;
-+			}
-+		} else {
-+			vidmem[(x + cols * y) * 2] = c;
-+			if (++x >= cols) {
-+				x = 0;
-+				if (++y >= lines) {
-+					scroll();
-+					y--;
-+				}
-+			}
-+		}
-+	}
-+
-+	boot_params->screen_info.orig_x = x;
-+	boot_params->screen_info.orig_y = y;
-+
-+	pos = (x + cols * y) * 2;	/* Update cursor position */
-+	outb(14, vidport);
-+	outb(0xff & (pos >> 9), vidport+1);
-+	outb(15, vidport);
-+	outb(0xff & (pos >> 1), vidport+1);
-+}
-+
-+static void puthex(unsigned long value)
-+{
-+	char alpha[2] = "0";
-+	int bits;
-+
-+	for (bits = sizeof(value) * 8 - 4; bits >= 0; bits -= 4) {
-+		unsigned long digit = (value >> bits) & 0xf;
-+
-+		if (digit < 0xA)
-+			alpha[0] = '0' + digit;
-+		else
-+			alpha[0] = 'a' + (digit - 0xA);
-+
-+		putstr(alpha);
-+	}
-+}
 -- 
 2.37.4
 
