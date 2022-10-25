@@ -2,29 +2,29 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF8CF60CE97
-	for <lists+linux-efi@lfdr.de>; Tue, 25 Oct 2022 16:13:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 556C760CE98
+	for <lists+linux-efi@lfdr.de>; Tue, 25 Oct 2022 16:13:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233081AbiJYONu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 25 Oct 2022 10:13:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46200 "EHLO
+        id S233049AbiJYONv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 25 Oct 2022 10:13:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233032AbiJYONp (ORCPT
+        with ESMTP id S233041AbiJYONp (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Tue, 25 Oct 2022 10:13:45 -0400
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C713A9248;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A9CA9263;
         Tue, 25 Oct 2022 07:13:33 -0700 (PDT)
 Received: from localhost.localdomain (unknown [83.149.199.65])
-        by mail.ispras.ru (Postfix) with ESMTPSA id C443A419E9F4;
-        Tue, 25 Oct 2022 14:13:31 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru C443A419E9F4
+        by mail.ispras.ru (Postfix) with ESMTPSA id 082AF419E9F7;
+        Tue, 25 Oct 2022 14:13:32 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 082AF419E9F7
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1666707211;
-        bh=HCDH+Dyxwl2opOER2fj3tRFR/GK0Aa8tACTpFrJgl+Q=;
+        s=default; t=1666707212;
+        bh=iZYfPCmOTAylXXleehkgSfIvaA6NC7Ff2AcW+xZ9vRM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OKoHvzwuR98etIuMypvPEgFzcM05e5/0d1I27QjhTO6kkF+DNCORc1o13E2S+ztoQ
-         Y/TjcUYWzRwE8pkeXCjpZR4t7dVAUr/GNvIO6j4BXV/l8I/sXMv1j5yA+QInZPYhKs
-         WARPhKiuekr3ZZMZRg28iWjiaZXj9NovlPI5xlhU=
+        b=KHhszS/LyTv0fygfAVQjRLWgsXd4aAqYt57eu48qIyFN1MYHn2umnf58KM4NSk7k7
+         2dgFITJSrHiYig3SCjp/8dlalqrzLitDBlAJ0D09Xkpfv3636LiKby1yzX30vVHR0e
+         k78O5DFknNThZTYQcMjtxMWZ9N0CHNUe8W5vF3PQ=
 From:   Evgeniy Baskov <baskov@ispras.ru>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Evgeniy Baskov <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
@@ -37,9 +37,9 @@ Cc:     Evgeniy Baskov <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
         Peter Jones <pjones@redhat.com>, lvc-project@linuxtesting.org,
         x86@kernel.org, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: [PATCH v2 05/23] x86/boot: Support 4KB pages for identity mapping
-Date:   Tue, 25 Oct 2022 17:12:43 +0300
-Message-Id: <383998a1c7fca8ba0481cf15ead0c0408b887a48.1666705333.git.baskov@ispras.ru>
+Subject: [PATCH v2 06/23] x86/boot: Setup memory protection for bzImage code
+Date:   Tue, 25 Oct 2022 17:12:44 +0300
+Message-Id: <625dabd4dc71d56db7cfb39950f6aa127c90ce82.1666705333.git.baskov@ispras.ru>
 X-Mailer: git-send-email 2.37.4
 In-Reply-To: <cover.1666705333.git.baskov@ispras.ru>
 References: <cover.1666705333.git.baskov@ispras.ru>
@@ -54,306 +54,518 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Current identity mapping code only supports 2M and 1G pages.
-4KB pages are desirable for better memory protection granularity
-in compressed kernel code.
-
-Change identity mapping code to support 4KB pages and
-memory remapping with different attributes.
+Use previously added code to use 4KB pages for mapping. Map compressed
+and uncompressed kernel with appropriate memory protection attributes.
+For compressed kernel set them up manually. For uncompressed kernel
+used flags specified in ELF header.
 
 Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
----
- arch/x86/include/asm/init.h |   1 +
- arch/x86/mm/ident_map.c     | 185 +++++++++++++++++++++++++++++-------
- 2 files changed, 154 insertions(+), 32 deletions(-)
 
-diff --git a/arch/x86/include/asm/init.h b/arch/x86/include/asm/init.h
-index 5f1d3c421f68..a8277ee82c51 100644
---- a/arch/x86/include/asm/init.h
-+++ b/arch/x86/include/asm/init.h
-@@ -8,6 +8,7 @@ struct x86_mapping_info {
- 	unsigned long page_flag;	 /* page flag for PMD or PUD entry */
- 	unsigned long offset;		 /* ident mapping offset */
- 	bool direct_gbpages;		 /* PUD level 1GB page support */
-+	bool allow_4kpages;		 /* Allow more granular mappings with 4K pages */
- 	unsigned long kernpg_flag;	 /* kernel pagetable flag override */
- };
+ delete mode 100644 arch/x86/boot/compressed/pgtable.h
+ create mode 100644 arch/x86/include/asm/shared/pgtable.h
+---
+ arch/x86/boot/compressed/head_64.S      | 24 +++++-
+ arch/x86/boot/compressed/ident_map_64.c | 97 ++++++++++++++++---------
+ arch/x86/boot/compressed/misc.c         | 63 ++++++++++++++--
+ arch/x86/boot/compressed/misc.h         | 22 +++++-
+ arch/x86/boot/compressed/pgtable.h      | 20 -----
+ arch/x86/boot/compressed/pgtable_64.c   |  2 +-
+ arch/x86/boot/compressed/sev.c          |  6 +-
+ arch/x86/include/asm/shared/pgtable.h   | 29 ++++++++
+ 8 files changed, 197 insertions(+), 66 deletions(-)
+ delete mode 100644 arch/x86/boot/compressed/pgtable.h
+ create mode 100644 arch/x86/include/asm/shared/pgtable.h
+
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index 2a4372b84fc8..73a2ac2b063d 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -29,13 +29,14 @@
+ #include <linux/linkage.h>
+ #include <asm/segment.h>
+ #include <asm/boot.h>
++#include <asm/cpufeatures.h>
+ #include <asm/msr.h>
+ #include <asm/processor-flags.h>
+ #include <asm/asm-offsets.h>
+ #include <asm/bootparam.h>
+ #include <asm/desc_defs.h>
+ #include <asm/trapnr.h>
+-#include "pgtable.h"
++#include <asm/shared/pgtable.h>
  
-diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
-index 968d7005f4a7..662e794a325d 100644
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -4,24 +4,127 @@
-  * included by both the compressed kernel and the regular kernel.
+ /*
+  * Locally defined symbols should be marked hidden:
+@@ -578,6 +579,7 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
+ 	pushq	%rsi
+ 	call	load_stage2_idt
+ 
++	call	enable_nx_if_supported
+ 	/* Pass boot_params to initialize_identity_maps() */
+ 	movq	(%rsp), %rdi
+ 	call	initialize_identity_maps
+@@ -602,6 +604,26 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
+ 	jmp	*%rax
+ SYM_FUNC_END(.Lrelocated)
+ 
++SYM_FUNC_START_LOCAL_NOALIGN(enable_nx_if_supported)
++	pushq	%rbx
++
++	mov	$0x80000001, %eax
++	cpuid
++	btl	$(X86_FEATURE_NX & 31), %edx
++	jnc	.Lnonx
++
++	movl	$MSR_EFER, %ecx
++	rdmsr
++	btsl	$_EFER_NX, %eax
++	wrmsr
++
++	movb	$1, has_nx(%rip)
++
++.Lnonx:
++	popq	%rbx
++	RET
++SYM_FUNC_END(enable_nx_if_supported)
++
+ 	.code32
+ /*
+  * This is the 32-bit trampoline that will be copied over to low memory.
+diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
+index d4a314cc50d6..fec795a4ce23 100644
+--- a/arch/x86/boot/compressed/ident_map_64.c
++++ b/arch/x86/boot/compressed/ident_map_64.c
+@@ -28,6 +28,7 @@
+ #include <asm/trap_pf.h>
+ #include <asm/trapnr.h>
+ #include <asm/init.h>
++#include <asm/shared/pgtable.h>
+ /* Use the static base for this part of the boot process */
+ #undef __PAGE_OFFSET
+ #define __PAGE_OFFSET __PAGE_OFFSET_BASE
+@@ -86,24 +87,52 @@ phys_addr_t physical_mask = (1ULL << __PHYSICAL_MASK_SHIFT) - 1;
+  * Due to relocation, pointers must be assigned at run time not build time.
   */
+ static struct x86_mapping_info mapping_info;
++bool has_nx; /* set in head_64.S */
  
--static void ident_pmd_init(struct x86_mapping_info *info, pmd_t *pmd_page,
--			   unsigned long addr, unsigned long end)
-+static void ident_pte_init(struct x86_mapping_info *info, pte_t *pte_page,
-+			   unsigned long addr, unsigned long end,
-+			   unsigned long flags)
+ /*
+  * Adds the specified range to the identity mappings.
+  */
+-void kernel_add_identity_map(unsigned long start, unsigned long end)
++unsigned long kernel_add_identity_map(unsigned long start,
++				      unsigned long end,
++				      unsigned int flags)
  {
--	addr &= PMD_MASK;
--	for (; addr < end; addr += PMD_SIZE) {
-+	addr &= PAGE_MASK;
-+	for (; addr < end; addr += PAGE_SIZE) {
-+		pte_t *pte = pte_page + pte_index(addr);
+ 	int ret;
+ 
+ 	/* Align boundary to 2M. */
+-	start = round_down(start, PMD_SIZE);
+-	end = round_up(end, PMD_SIZE);
++	start = round_down(start, PAGE_SIZE);
++	end = round_up(end, PAGE_SIZE);
+ 	if (start >= end)
+-		return;
++		return start;
 +
-+		set_pte(pte, __pte((addr - info->offset) | flags));
++	/*
++	 * Warn if W^X is violated.
++	 * Only do that if CONFIG_RANDOMIZE_BASE is set, since otherwise we need
++	 * to create RWX region in case of overlapping memory regions for
++	 * compressed and uncompressed kernel.
++	 */
++
++	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE) &&
++	    (flags & (MAP_EXEC | MAP_WRITE)) == (MAP_EXEC | MAP_WRITE))
++		warn("W^X violation\n");
++
++	bool nx = !(flags & MAP_EXEC) && has_nx;
++	bool ro = !(flags & MAP_WRITE);
++
++	mapping_info.page_flag = sme_me_mask | (nx ?
++		(ro ? __PAGE_KERNEL_RO : __PAGE_KERNEL) :
++		(ro ? __PAGE_KERNEL_ROX : __PAGE_KERNEL_EXEC));
+ 
+ 	/* Build the mapping. */
+-	ret = kernel_ident_mapping_init(&mapping_info, (pgd_t *)top_level_pgt, start, end);
++	ret = kernel_ident_mapping_init(&mapping_info,
++					(pgd_t *)top_level_pgt,
++					start, end);
+ 	if (ret)
+ 		error("Error: kernel_ident_mapping_init() failed\n");
++
++	if (!(flags & MAP_NOFLUSH))
++		write_cr3(top_level_pgt);
++
++	return start;
+ }
+ 
+ /* Locates and clears a region for a new top level page table. */
+@@ -112,14 +141,17 @@ void initialize_identity_maps(void *rmode)
+ 	unsigned long cmdline;
+ 	struct setup_data *sd;
+ 
++	boot_params = rmode;
++
+ 	/* Exclude the encryption mask from __PHYSICAL_MASK */
+ 	physical_mask &= ~sme_me_mask;
+ 
+ 	/* Init mapping_info with run-time function/buffer pointers. */
+ 	mapping_info.alloc_pgt_page = alloc_pgt_page;
+ 	mapping_info.context = &pgt_data;
+-	mapping_info.page_flag = __PAGE_KERNEL_LARGE_EXEC | sme_me_mask;
++	mapping_info.page_flag = __PAGE_KERNEL_EXEC | sme_me_mask;
+ 	mapping_info.kernpg_flag = _KERNPG_TABLE;
++	mapping_info.allow_4kpages = 1;
+ 
+ 	/*
+ 	 * It should be impossible for this not to already be true,
+@@ -154,15 +186,29 @@ void initialize_identity_maps(void *rmode)
+ 	/*
+ 	 * New page-table is set up - map the kernel image, boot_params and the
+ 	 * command line. The uncompressed kernel requires boot_params and the
+-	 * command line to be mapped in the identity mapping. Map them
+-	 * explicitly here in case the compressed kernel does not touch them,
+-	 * or does not touch all the pages covering them.
++	 * command line to be mapped in the identity mapping.
++	 * Every other accessed memory region is mapped later, if required.
+ 	 */
+-	kernel_add_identity_map((unsigned long)_head, (unsigned long)_end);
+-	boot_params = rmode;
+-	kernel_add_identity_map((unsigned long)boot_params, (unsigned long)(boot_params + 1));
++	kernel_add_identity_map((unsigned long)_head,
++				(unsigned long)_ehead, MAP_EXEC | MAP_NOFLUSH);
++
++	kernel_add_identity_map((unsigned long)_compressed,
++				(unsigned long)_ecompressed, MAP_WRITE | MAP_NOFLUSH);
++
++	kernel_add_identity_map((unsigned long)_text,
++				(unsigned long)_etext, MAP_EXEC | MAP_NOFLUSH);
++
++	kernel_add_identity_map((unsigned long)_rodata,
++				(unsigned long)_erodata, MAP_NOFLUSH);
++
++	kernel_add_identity_map((unsigned long)_data,
++				(unsigned long)_end, MAP_WRITE | MAP_NOFLUSH);
++
++	kernel_add_identity_map((unsigned long)boot_params,
++				(unsigned long)(boot_params + 1), MAP_WRITE | MAP_NOFLUSH);
++
+ 	cmdline = get_cmd_line_ptr();
+-	kernel_add_identity_map(cmdline, cmdline + COMMAND_LINE_SIZE);
++	kernel_add_identity_map(cmdline, cmdline + COMMAND_LINE_SIZE, MAP_NOFLUSH);
+ 
+ 	/*
+ 	 * Also map the setup_data entries passed via boot_params in case they
+@@ -172,7 +218,7 @@ void initialize_identity_maps(void *rmode)
+ 	while (sd) {
+ 		unsigned long sd_addr = (unsigned long)sd;
+ 
+-		kernel_add_identity_map(sd_addr, sd_addr + sizeof(*sd) + sd->len);
++		kernel_add_identity_map(sd_addr, sd_addr + sizeof(*sd) + sd->len, MAP_NOFLUSH);
+ 		sd = (struct setup_data *)sd->next;
+ 	}
+ 
+@@ -185,26 +231,11 @@ void initialize_identity_maps(void *rmode)
+ static pte_t *split_large_pmd(struct x86_mapping_info *info,
+ 			      pmd_t *pmdp, unsigned long __address)
+ {
+-	unsigned long page_flags;
+-	unsigned long address;
+-	pte_t *pte;
+-	pmd_t pmd;
+-	int i;
+-
+-	pte = (pte_t *)info->alloc_pgt_page(info->context);
++	unsigned long address = __address & PMD_MASK;
++	pte_t *pte = ident_split_large_pmd(info, pmdp, address);
+ 	if (!pte)
+ 		return NULL;
+ 
+-	address     = __address & PMD_MASK;
+-	/* No large page - clear PSE flag */
+-	page_flags  = info->page_flag & ~_PAGE_PSE;
+-
+-	/* Populate the PTEs */
+-	for (i = 0; i < PTRS_PER_PMD; i++) {
+-		set_pte(&pte[i], __pte(address | page_flags));
+-		address += PAGE_SIZE;
+-	}
+-
+ 	/*
+ 	 * Ideally we need to clear the large PMD first and do a TLB
+ 	 * flush before we write the new PMD. But the 2M range of the
+@@ -214,7 +245,7 @@ static pte_t *split_large_pmd(struct x86_mapping_info *info,
+ 	 * also the only user of the page-table, so there is no chance
+ 	 * of a TLB multihit.
+ 	 */
+-	pmd = __pmd((unsigned long)pte | info->kernpg_flag);
++	pmd_t pmd = __pmd((unsigned long)pte | info->kernpg_flag);
+ 	set_pmd(pmdp, pmd);
+ 	/* Flush TLB to establish the new PMD */
+ 	write_cr3(top_level_pgt);
+@@ -377,5 +408,5 @@ void do_boot_page_fault(struct pt_regs *regs, unsigned long error_code)
+ 	 * Error code is sane - now identity map the 2M region around
+ 	 * the faulting address.
+ 	 */
+-	kernel_add_identity_map(address, end);
++	kernel_add_identity_map(address, end, MAP_WRITE);
+ }
+diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
+index cf690d8712f4..0c7ec290044d 100644
+--- a/arch/x86/boot/compressed/misc.c
++++ b/arch/x86/boot/compressed/misc.c
+@@ -14,10 +14,10 @@
+ 
+ #include "misc.h"
+ #include "error.h"
+-#include "pgtable.h"
+ #include "../string.h"
+ #include "../voffset.h"
+ #include <asm/bootparam_utils.h>
++#include <asm/shared/pgtable.h>
+ 
+ /*
+  * WARNING!!
+@@ -277,7 +277,8 @@ static inline void handle_relocations(void *output, unsigned long output_len,
+ { }
+ #endif
+ 
+-static void parse_elf(void *output)
++static void parse_elf(void *output, unsigned long output_len,
++		      unsigned long virt_addr)
+ {
+ #ifdef CONFIG_X86_64
+ 	Elf64_Ehdr ehdr;
+@@ -287,6 +288,7 @@ static void parse_elf(void *output)
+ 	Elf32_Phdr *phdrs, *phdr;
+ #endif
+ 	void *dest;
++	unsigned long addr;
+ 	int i;
+ 
+ 	memcpy(&ehdr, output, sizeof(ehdr));
+@@ -323,10 +325,49 @@ static void parse_elf(void *output)
+ #endif
+ 			memmove(dest, output + phdr->p_offset, phdr->p_filesz);
+ 			break;
+-		default: /* Ignore other PT_* */ break;
++		default:
++			/* Ignore other PT_* */
++			break;
++		}
 +	}
-+}
 +
-+pte_t *ident_split_large_pmd(struct x86_mapping_info *info,
-+			     pmd_t *pmdp, unsigned long page_addr)
-+{
-+	unsigned long pmd_addr, page_flags;
-+	pte_t *pte;
++	handle_relocations(output, output_len, virt_addr);
 +
-+	pte = (pte_t *)info->alloc_pgt_page(info->context);
-+	if (!pte)
-+		return NULL;
++	if (!IS_ENABLED(CONFIG_RANDOMIZE_BASE))
++		goto skip_protect;
 +
-+	pmd_addr = page_addr & PMD_MASK;
++	for (i = 0; i < ehdr.e_phnum; i++) {
++		phdr = &phdrs[i];
 +
-+	/* Not a large page - clear PSE flag */
-+	page_flags = pmd_flags(*pmdp) & ~_PSE;
-+	ident_pte_init(info, pte, pmd_addr, pmd_addr + PMD_SIZE, page_flags);
++		switch (phdr->p_type) {
++		case PT_LOAD:
++#ifdef CONFIG_RELOCATABLE
++			addr = (unsigned long)output;
++			addr += (phdr->p_paddr - LOAD_PHYSICAL_ADDR);
++#else
++			addr = phdr->p_paddr;
++#endif
++			/*
++			 * Simultaneously readable and writable segments are
++			 * violating W^X, and should not be present in vmlinux image.
++			 * The absence of such segments is checked during build.
++			 */
 +
-+	return pte;
-+}
++			unsigned int flags = MAP_PROTECT;
++			if (phdr->p_flags & PF_X)
++				flags |= MAP_EXEC;
++			if (phdr->p_flags & PF_W)
++				flags |= MAP_WRITE;
 +
-+static int ident_pmd_init(struct x86_mapping_info *info, pmd_t *pmd_page,
-+			  unsigned long addr, unsigned long end,
-+			  unsigned long flags)
-+{
-+	unsigned long next;
-+	bool new_table = 0;
-+
-+	for (; addr < end; addr = next) {
- 		pmd_t *pmd = pmd_page + pmd_index(addr);
-+		pte_t *pte;
- 
--		if (pmd_present(*pmd))
-+		next = (addr & PMD_MASK) + PMD_SIZE;
-+		if (next > end)
-+			next = end;
-+
-+		/*
-+		 * Use 2M pages if 4k pages are not allowed or
-+		 * we are not mapping extra, i.e. address and size are aligned.
-+		 */
-+
-+		if (!info->allow_4kpages ||
-+		    (!(addr & ~PMD_MASK) && next == addr + PMD_SIZE)) {
-+
-+			pmd_t pmdval;
-+
-+			addr &= PMD_MASK;
-+			pmdval = __pmd((addr - info->offset) | flags | _PSE);
-+			set_pmd(pmd, pmdval);
- 			continue;
-+		}
-+
-+		/*
-+		 * If currently mapped page is large, we need to split it.
-+		 * The case when we don't can remap 2M page to 2M page
-+		 * with different flags is already covered above.
-+		 *
-+		 * If there's nothing mapped to desired address,
-+		 * we need to allocate new page table.
-+		 */
- 
--		set_pmd(pmd, __pmd((addr - info->offset) | info->page_flag));
-+		if (pmd_large(*pmd)) {
-+			pte = ident_split_large_pmd(info, pmd, addr);
-+			new_table = 1;
-+		} else if (!pmd_present(*pmd)) {
-+			pte = (pte_t *)info->alloc_pgt_page(info->context);
-+			new_table = 1;
-+		} else {
-+			pte = pte_offset_kernel(pmd, 0);
-+			new_table = 0;
-+		}
-+
-+		if (!pte)
-+			return -ENOMEM;
-+
-+		ident_pte_init(info, pte, addr, next, flags);
-+
-+		if (new_table)
-+			set_pmd(pmd, __pmd(__pa(pte) | info->kernpg_flag));
++			kernel_add_identity_map(addr, addr + phdr->p_memsz, flags);
++			break;
++		default:
++			/* Ignore other PT_* */
++			break;
+ 		}
  	}
-+
-+	return 0;
+ 
++skip_protect:
+ 	free(phdrs);
  }
  
+@@ -434,6 +475,19 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
+ 				needed_size,
+ 				&virt_addr);
+ 
++	unsigned long phys_addr = (unsigned long)output;
 +
-+pmd_t *ident_split_large_pud(struct x86_mapping_info *info,
-+			     pud_t *pudp, unsigned long page_addr)
++	/*
++	 * If KASLR is disabled input and output regions may overlap.
++	 * In this case we need to map region excutable as well.
++	 */
++	unsigned long map_flags = MAP_ALLOC | MAP_WRITE |
++			(IS_ENABLED(CONFIG_RANDOMIZE_BASE) ? 0 : MAP_EXEC);
++	phys_addr = kernel_add_identity_map(phys_addr,
++					    phys_addr + needed_size,
++					    map_flags);
++	output = (unsigned char *)phys_addr;
++
+ 	/* Validate memory location choices. */
+ 	if ((unsigned long)output & (MIN_KERNEL_ALIGN - 1))
+ 		error("Destination physical address inappropriately aligned");
+@@ -456,8 +510,7 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
+ 	debug_putstr("\nDecompressing Linux... ");
+ 	__decompress(input_data, input_len, NULL, NULL, output, output_len,
+ 			NULL, error);
+-	parse_elf(output);
+-	handle_relocations(output, output_len, virt_addr);
++	parse_elf(output, output_len, virt_addr);
+ 	debug_putstr("done.\nBooting the kernel.\n");
+ 
+ 	/* Disable exception handling before booting the kernel */
+diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+index 62208ec04ca4..033db9b536e6 100644
+--- a/arch/x86/boot/compressed/misc.h
++++ b/arch/x86/boot/compressed/misc.h
+@@ -44,8 +44,12 @@
+ #define memptr unsigned
+ #endif
+ 
+-/* boot/compressed/vmlinux start and end markers */
+-extern char _head[], _end[];
++/* Compressed kernel section start/end markers. */
++extern char _head[], _ehead[];
++extern char _compressed[], _ecompressed[];
++extern char _text[], _etext[];
++extern char _rodata[], _erodata[];
++extern char _data[], _end[];
+ 
+ /* misc.c */
+ extern memptr free_mem_ptr;
+@@ -171,8 +175,18 @@ static inline int count_immovable_mem_regions(void) { return 0; }
+ #ifdef CONFIG_X86_5LEVEL
+ extern unsigned int __pgtable_l5_enabled, pgdir_shift, ptrs_per_p4d;
+ #endif
+-extern void kernel_add_identity_map(unsigned long start, unsigned long end);
+-
++#ifdef CONFIG_X86_64
++extern unsigned long kernel_add_identity_map(unsigned long start,
++					     unsigned long end,
++					     unsigned int flags);
++#else
++static inline unsigned long kernel_add_identity_map(unsigned long start,
++						    unsigned long end,
++						    unsigned int flags)
 +{
-+	unsigned long pud_addr, page_flags;
-+	pmd_t *pmd;
-+
-+	pmd = (pmd_t *)info->alloc_pgt_page(info->context);
-+	if (!pmd)
-+		return NULL;
-+
-+	pud_addr = page_addr & PUD_MASK;
-+
-+	/* Not a large page - clear PSE flag */
-+	page_flags = pud_flags(*pudp) & ~_PSE;
-+	ident_pmd_init(info, pmd, pud_addr, pud_addr + PUD_SIZE, page_flags);
-+
-+	return pmd;
++	return start;
 +}
-+
-+
- static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
- 			  unsigned long addr, unsigned long end)
- {
- 	unsigned long next;
-+	bool new_table = 0;
-+	int result;
++#endif
+ /* Used by PAGE_KERN* macros: */
+ extern pteval_t __default_kernel_pte_mask;
  
- 	for (; addr < end; addr = next) {
- 		pud_t *pud = pud_page + pud_index(addr);
-@@ -31,28 +134,39 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
- 		if (next > end)
- 			next = end;
- 
-+		/* Use 1G pages only if forced, even if they are supported. */
- 		if (info->direct_gbpages) {
- 			pud_t pudval;
+diff --git a/arch/x86/boot/compressed/pgtable.h b/arch/x86/boot/compressed/pgtable.h
+deleted file mode 100644
+index cc9b2529a086..000000000000
+--- a/arch/x86/boot/compressed/pgtable.h
++++ /dev/null
+@@ -1,20 +0,0 @@
+-#ifndef BOOT_COMPRESSED_PAGETABLE_H
+-#define BOOT_COMPRESSED_PAGETABLE_H
 -
--			if (pud_present(*pud))
--				continue;
-+			unsigned long flags;
+-#define TRAMPOLINE_32BIT_SIZE		(2 * PAGE_SIZE)
+-
+-#define TRAMPOLINE_32BIT_PGTABLE_OFFSET	0
+-
+-#define TRAMPOLINE_32BIT_CODE_OFFSET	PAGE_SIZE
+-#define TRAMPOLINE_32BIT_CODE_SIZE	0x80
+-
+-#define TRAMPOLINE_32BIT_STACK_END	TRAMPOLINE_32BIT_SIZE
+-
+-#ifndef __ASSEMBLER__
+-
+-extern unsigned long *trampoline_32bit;
+-
+-extern void trampoline_32bit_src(void *return_ptr);
+-
+-#endif /* __ASSEMBLER__ */
+-#endif /* BOOT_COMPRESSED_PAGETABLE_H */
+diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
+index 2ac12ff4111b..c7cf5a1059a8 100644
+--- a/arch/x86/boot/compressed/pgtable_64.c
++++ b/arch/x86/boot/compressed/pgtable_64.c
+@@ -2,7 +2,7 @@
+ #include "misc.h"
+ #include <asm/e820/types.h>
+ #include <asm/processor.h>
+-#include "pgtable.h"
++#include <asm/shared/pgtable.h>
+ #include "../string.h"
+ #include "efi.h"
  
- 			addr &= PUD_MASK;
--			pudval = __pud((addr - info->offset) | info->page_flag);
-+			flags = info->page_flag | _PSE;
-+			pudval = __pud((addr - info->offset) | flags);
-+
- 			set_pud(pud, pudval);
- 			continue;
- 		}
+diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+index c93930d5ccbd..99f3ad0b30f3 100644
+--- a/arch/x86/boot/compressed/sev.c
++++ b/arch/x86/boot/compressed/sev.c
+@@ -13,6 +13,7 @@
+ #include "misc.h"
  
--		if (pud_present(*pud)) {
-+		if (pud_large(*pud)) {
-+			pmd = ident_split_large_pud(info, pud, addr);
-+			new_table = 1;
-+		} else if (!pud_present(*pud)) {
-+			pmd = (pmd_t *)info->alloc_pgt_page(info->context);
-+			new_table = 1;
-+		} else {
- 			pmd = pmd_offset(pud, 0);
--			ident_pmd_init(info, pmd, addr, next);
--			continue;
-+			new_table = 0;
- 		}
--		pmd = (pmd_t *)info->alloc_pgt_page(info->context);
-+
- 		if (!pmd)
- 			return -ENOMEM;
--		ident_pmd_init(info, pmd, addr, next);
--		set_pud(pud, __pud(__pa(pmd) | info->kernpg_flag));
-+
-+		result = ident_pmd_init(info, pmd, addr, next, info->page_flag);
-+		if (result)
-+			return result;
-+
-+		if (new_table)
-+			set_pud(pud, __pud(__pa(pmd) | info->kernpg_flag));
+ #include <asm/pgtable_types.h>
++#include <asm/shared/pgtable.h>
+ #include <asm/sev.h>
+ #include <asm/trapnr.h>
+ #include <asm/trap_pf.h>
+@@ -435,10 +436,11 @@ void sev_prep_identity_maps(unsigned long top_level_pgt)
+ 		unsigned long cc_info_pa = boot_params->cc_blob_address;
+ 		struct cc_blob_sev_info *cc_info;
+ 
+-		kernel_add_identity_map(cc_info_pa, cc_info_pa + sizeof(*cc_info));
++		kernel_add_identity_map(cc_info_pa, cc_info_pa + sizeof(*cc_info), MAP_NOFLUSH);
+ 
+ 		cc_info = (struct cc_blob_sev_info *)cc_info_pa;
+-		kernel_add_identity_map(cc_info->cpuid_phys, cc_info->cpuid_phys + cc_info->cpuid_len);
++		kernel_add_identity_map(cc_info->cpuid_phys,
++					cc_info->cpuid_phys + cc_info->cpuid_len, MAP_NOFLUSH);
  	}
  
- 	return 0;
-@@ -63,6 +177,7 @@ static int ident_p4d_init(struct x86_mapping_info *info, p4d_t *p4d_page,
- {
- 	unsigned long next;
- 	int result;
-+	bool new_table = 0;
- 
- 	for (; addr < end; addr = next) {
- 		p4d_t *p4d = p4d_page + p4d_index(addr);
-@@ -72,15 +187,14 @@ static int ident_p4d_init(struct x86_mapping_info *info, p4d_t *p4d_page,
- 		if (next > end)
- 			next = end;
- 
--		if (p4d_present(*p4d)) {
-+		if (!p4d_present(*p4d)) {
-+			pud = (pud_t *)info->alloc_pgt_page(info->context);
-+			new_table = 1;
-+		} else {
- 			pud = pud_offset(p4d, 0);
--			result = ident_pud_init(info, pud, addr, next);
--			if (result)
--				return result;
--
--			continue;
-+			new_table = 0;
- 		}
--		pud = (pud_t *)info->alloc_pgt_page(info->context);
+ 	sev_verify_cbit(top_level_pgt);
+diff --git a/arch/x86/include/asm/shared/pgtable.h b/arch/x86/include/asm/shared/pgtable.h
+new file mode 100644
+index 000000000000..6527dadf39d6
+--- /dev/null
++++ b/arch/x86/include/asm/shared/pgtable.h
+@@ -0,0 +1,29 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef ASM_SHARED_PAGETABLE_H
++#define ASM_SHARED_PAGETABLE_H
 +
- 		if (!pud)
- 			return -ENOMEM;
- 
-@@ -88,19 +202,22 @@ static int ident_p4d_init(struct x86_mapping_info *info, p4d_t *p4d_page,
- 		if (result)
- 			return result;
- 
--		set_p4d(p4d, __p4d(__pa(pud) | info->kernpg_flag));
-+		if (new_table)
-+			set_p4d(p4d, __p4d(__pa(pud) | info->kernpg_flag));
- 	}
- 
- 	return 0;
- }
- 
--int kernel_ident_mapping_init(struct x86_mapping_info *info, pgd_t *pgd_page,
--			      unsigned long pstart, unsigned long pend)
-+int kernel_ident_mapping_init(struct x86_mapping_info *info,
-+			      pgd_t *pgd_page, unsigned long pstart,
-+			      unsigned long pend)
- {
- 	unsigned long addr = pstart + info->offset;
- 	unsigned long end = pend + info->offset;
- 	unsigned long next;
- 	int result;
-+	bool new_table;
- 
- 	/* Set the default pagetable flags if not supplied */
- 	if (!info->kernpg_flag)
-@@ -117,20 +234,24 @@ int kernel_ident_mapping_init(struct x86_mapping_info *info, pgd_t *pgd_page,
- 		if (next > end)
- 			next = end;
- 
--		if (pgd_present(*pgd)) {
-+		if (!pgd_present(*pgd)) {
-+			p4d = (p4d_t *)info->alloc_pgt_page(info->context);
-+			new_table = 1;
-+		} else {
- 			p4d = p4d_offset(pgd, 0);
--			result = ident_p4d_init(info, p4d, addr, next);
--			if (result)
--				return result;
--			continue;
-+			new_table = 0;
- 		}
- 
--		p4d = (p4d_t *)info->alloc_pgt_page(info->context);
- 		if (!p4d)
- 			return -ENOMEM;
++#define MAP_WRITE	0x02 /* Writable memory */
++#define MAP_EXEC	0x04 /* Executable memory */
++#define MAP_ALLOC	0x10 /* Range needs to be allocated */
++#define MAP_PROTECT	0x20 /* Set exact memory attributes for memory range */
++#define MAP_NOFLUSH	0x40 /* Avoid flushing TLB */
 +
- 		result = ident_p4d_init(info, p4d, addr, next);
- 		if (result)
- 			return result;
++#define TRAMPOLINE_32BIT_SIZE		(3 * PAGE_SIZE)
 +
-+		if (!new_table)
-+			continue;
++#define TRAMPOLINE_32BIT_PLACEMENT_MAX	(0xA0000)
 +
- 		if (pgtable_l5_enabled()) {
- 			set_pgd(pgd, __pgd(__pa(p4d) | info->kernpg_flag));
- 		} else {
++#define TRAMPOLINE_32BIT_PGTABLE_OFFSET	0
++
++#define TRAMPOLINE_32BIT_CODE_OFFSET	PAGE_SIZE
++#define TRAMPOLINE_32BIT_CODE_SIZE	0x80
++
++#define TRAMPOLINE_32BIT_STACK_END	TRAMPOLINE_32BIT_SIZE
++
++#ifndef __ASSEMBLER__
++
++extern unsigned long *trampoline_32bit;
++
++extern void trampoline_32bit_src(void *return_ptr);
++
++#endif /* __ASSEMBLER__ */
++#endif /* ASM_SHARED_PAGETABLE_H */
 -- 
 2.37.4
 
