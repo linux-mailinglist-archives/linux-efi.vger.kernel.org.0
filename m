@@ -2,85 +2,117 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 124A060FC0C
-	for <lists+linux-efi@lfdr.de>; Thu, 27 Oct 2022 17:34:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAA416107DA
+	for <lists+linux-efi@lfdr.de>; Fri, 28 Oct 2022 04:19:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236057AbiJ0PeI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 27 Oct 2022 11:34:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44696 "EHLO
+        id S236085AbiJ1CTB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 27 Oct 2022 22:19:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234879AbiJ0PeG (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 27 Oct 2022 11:34:06 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75DEE188590;
-        Thu, 27 Oct 2022 08:34:05 -0700 (PDT)
-Received: from zn.tnic (p200300ea9733e7cb329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e7cb:329c:23ff:fea6:a903])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9004B1EC02FE;
-        Thu, 27 Oct 2022 17:34:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1666884843;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=o5hkvVaAtguyvk+k1KB1ZUt++tlUO5KVc3yFFqeqwX8=;
-        b=jqoWyf9qttnPb1+ejaXSkAQOCfFzrggbp28/nlN8EkIbUOPw29RsgsiZ/z2ZG3u7VebuUn
-        MU6EhhvMZF3MT30dMrQuwvBB4su92pEFWDht57T07pN0s+yx1x8dRH6ocnyL7EltL/BRbd
-        UR76zX2oet+PZlDCIfKHc5VatyLLel8=
-Date:   Thu, 27 Oct 2022 17:33:59 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Dave Hansen <dave.hansen@intel.com>
-Cc:     Martin Fernandez <martin.fernandez@eclypsium.com>,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
-        kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org,
-        tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
-        x86@kernel.org, hpa@zytor.com, ardb@kernel.org,
-        dvhart@infradead.org, andy@infradead.org,
-        gregkh@linuxfoundation.org, rafael@kernel.org, rppt@kernel.org,
-        akpm@linux-foundation.org, daniel.gutson@eclypsium.com,
-        hughsient@gmail.com, alex.bazhaniuk@eclypsium.com,
-        alison.schofield@intel.com, keescook@chromium.org
-Subject: Re: [PATCH v9 0/9] x86: Show in sysfs if a memory node is able to do
- encryption
-Message-ID: <Y1qk56DGw00IyjU0@zn.tnic>
-References: <20220704135833.1496303-1-martin.fernandez@eclypsium.com>
- <Y0hrhzprPFTK+VWV@zn.tnic>
- <CAKgze5ajp-z0+F+8Qo2z=834=i=HNa5=s54MLyrk16wQVnxCzQ@mail.gmail.com>
- <Y1pH/DuYJeo7Kyo5@zn.tnic>
- <6758af9b-1110-ad5a-3961-e256d5c8d576@intel.com>
+        with ESMTP id S235973AbiJ1CS5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 27 Oct 2022 22:18:57 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E757B879E;
+        Thu, 27 Oct 2022 19:18:56 -0700 (PDT)
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.57])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Mz5jq1J5qzpWFv;
+        Fri, 28 Oct 2022 10:15:27 +0800 (CST)
+Received: from kwepemm600007.china.huawei.com (7.193.23.208) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Fri, 28 Oct 2022 10:18:54 +0800
+Received: from [10.174.185.179] (10.174.185.179) by
+ kwepemm600007.china.huawei.com (7.193.23.208) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Fri, 28 Oct 2022 10:18:53 +0800
+Subject: Re: [PATCH V2] arm64/mm: Fix __enable_mmu() for new TGRAN range
+ values
+To:     Anders Roxell <anders.roxell@linaro.org>
+CC:     Anshuman Khandual <anshuman.khandual@arm.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        James Morse <james.morse@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        "Ard Biesheuvel" <ardb@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        <kvmarm@lists.cs.columbia.edu>, <linux-efi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <alex.bennee@linaro.org>,
+        <arnd@arndb.de>
+References: <1615355590-21102-1-git-send-email-anshuman.khandual@arm.com>
+ <20220826120020.GB520@mutt>
+From:   Zenghui Yu <yuzenghui@huawei.com>
+Message-ID: <84e674ab-3eee-3f2b-28c1-a08ff99d6d3b@huawei.com>
+Date:   Fri, 28 Oct 2022 10:18:41 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <6758af9b-1110-ad5a-3961-e256d5c8d576@intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20220826120020.GB520@mutt>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.185.179]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemm600007.china.huawei.com (7.193.23.208)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Oct 27, 2022 at 08:21:02AM -0700, Dave Hansen wrote:
-> On 10/27/22 01:57, Borislav Petkov wrote:
-> > Well, I still think this is not going to work in all cases. SME/TME can
-> > be enabled but the kernel can go - and for whatever reason - map a bunch
-> > of memory unencrypted.
+On 2022/8/26 20:00, Anders Roxell wrote:
+> On 2021-03-10 11:23, Anshuman Khandual wrote:
+>> From: James Morse <james.morse@arm.com>
+>>
+>> As per ARM ARM DDI 0487G.a, when FEAT_LPA2 is implemented, ID_AA64MMFR0_EL1
+>> might contain a range of values to describe supported translation granules
+>> (4K and 16K pages sizes in particular) instead of just enabled or disabled
+>> values. This changes __enable_mmu() function to handle complete acceptable
+>> range of values (depending on whether the field is signed or unsigned) now
+>> represented with ID_AA64MMFR0_TGRAN_SUPPORTED_[MIN..MAX] pair. While here,
+>> also fix similar situations in EFI stub and KVM as well.
+>>
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: Will Deacon <will@kernel.org>
+>> Cc: Marc Zyngier <maz@kernel.org>
+>> Cc: James Morse <james.morse@arm.com>
+>> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Cc: Ard Biesheuvel <ardb@kernel.org>
+>> Cc: Mark Rutland <mark.rutland@arm.com>
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: kvmarm@lists.cs.columbia.edu
+>> Cc: linux-efi@vger.kernel.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Acked-by: Marc Zyngier <maz@kernel.org>
+>> Signed-off-by: James Morse <james.morse@arm.com>
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > 
-> For TME on Intel systems, there's no way to make it unencrypted.  The
-> memory controller is doing all the encryption behind the back of the OS
-> and even devices that are doing DMA.  Nothing outside of the memory
-> controller really knows or cares that encryption is happening.
+> Hi,
+> 
+> When building an arm64 defconfig kernel from stable/linux-5.10.y and
+> booting that in QEMU (version: 1:7.0+dfsg-2~bpo11+2) with '-cpu max' the
+> kernel doesn't boot. I don't get any output.  The kernel boots fine if I
+> change to '-cpu cortex-a72'.
+> 
+> If I cherry-pick this patch to stable/linux-5.10.y I'm able too boot the
+> kernel with '-cpu max'.
 
-Ok, Tom just confirmed that AMD's TSME thing also encrypts all memory.
+You can workaround the kernel boot failure by specifying
+'-cpu max,lpa2=off' [*] in the QEMU command line.
 
-So I guess the code should check for TME or TSME. If those are set, then
-you can assume that all memory is encrypted.
+> However, I'm not comfortable to backport this patch to older kernels
+> since there are a lot of conflicts.
+> Can someone help out to do the packport?
 
--- 
-Regards/Gruss,
-    Boris.
+Upstream commit 26f55386f964 ("arm64/mm: Fix __enable_mmu() for new
+TGRAN range values") can still be applied cleanly on top of
+linux-5.10.y. I can send it to <stable@vger.kernel.org> if maintainers
+are okay with the stable-5.10 backport.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+[*] https://gitlab.com/qemu-project/qemu/-/commit/69b2265d5fe8
+
+Zenghui
