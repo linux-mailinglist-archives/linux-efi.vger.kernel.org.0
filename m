@@ -2,54 +2,53 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CD726115C1
-	for <lists+linux-efi@lfdr.de>; Fri, 28 Oct 2022 17:24:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCD0B61177D
+	for <lists+linux-efi@lfdr.de>; Fri, 28 Oct 2022 18:26:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229642AbiJ1PX7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 28 Oct 2022 11:23:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52356 "EHLO
+        id S230256AbiJ1Q0d (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 28 Oct 2022 12:26:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229970AbiJ1PX6 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 28 Oct 2022 11:23:58 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAEC51E045B;
-        Fri, 28 Oct 2022 08:23:57 -0700 (PDT)
+        with ESMTP id S230231AbiJ1Q0c (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 28 Oct 2022 12:26:32 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C31C1EEA12
+        for <linux-efi@vger.kernel.org>; Fri, 28 Oct 2022 09:26:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6605BB82A02;
-        Fri, 28 Oct 2022 15:23:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1062DC433D7;
-        Fri, 28 Oct 2022 15:23:55 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id DE8C9B82AF5
+        for <linux-efi@vger.kernel.org>; Fri, 28 Oct 2022 16:26:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922F4C433C1
+        for <linux-efi@vger.kernel.org>; Fri, 28 Oct 2022 16:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666970635;
-        bh=04X5oSr/e+P4vQWL40g+kGvfi5UyRTsR70jTUsAvpYI=;
+        s=k20201202; t=1666974389;
+        bh=radQyyQtgbGcMwGty+11r+nwIhqFzEM4gNZ5fZWBSE4=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=BK5SZmgYmUt2+5rM0ijWkhjYEUY/E36+Cn3G2jT171M7STTQHuowCWP+075GQfqPl
-         mlV0oAur0YlqhxeYbFvfOFv2e4XEeauIDEEMPEN4J3KtQwvxamDWlVMXLKaC/FEadI
-         15QRgtooX2Ii1n8l8RuCpa31KBWJVUioKV0HkEcLjmij9hWTuAY52pyTCpy75TJuXc
-         G5AYMOr/nPRKFAI4oR6JpUtJyd2OwaTdoZPapMYyuuHT7FveNxzgrj43LMRPBrya86
-         QG+nr74THhL+PTAVFStDmYF2H2L4s8Wb+l+22ymA+L3+sAAOlbqyGGbGJs7dkBzTCS
-         SFm2m/ZutDzOA==
-Received: by mail-lf1-f53.google.com with SMTP id j4so8915298lfk.0;
-        Fri, 28 Oct 2022 08:23:54 -0700 (PDT)
-X-Gm-Message-State: ACrzQf3LN904mgU2qwKof3Y0mZJghuLnzQRn5btectTarr5VrNXHnCgc
-        H/YYUR/1pVC24SfA70Ikr0V4c3l76N6cOjoZU4c=
-X-Google-Smtp-Source: AMsMyM5tSkQPhwd0B+zEmIlmCzhEQWN3masodL94g4z+yCmxWymoQo0hhjyEGkLQjY3PSTaAVSvk1VvB8KXDvlTelk0=
-X-Received: by 2002:a19:6512:0:b0:4a9:32dd:39a4 with SMTP id
- z18-20020a196512000000b004a932dd39a4mr13274442lfb.539.1666970633008; Fri, 28
- Oct 2022 08:23:53 -0700 (PDT)
+        b=NSIr/3A1xidCVD9jjF9VXARpW+Swe3rGc+wYpmCuUO3qvsJQ+kBlCSAUyDLkUytQb
+         UvDBAHsm1jN4hEf4ar3HOw7w+u95sgqKauD1kSCcWrUfVgpZGwlKkcBxTVeCxVQ4KM
+         PS9bFF7eRp/zY6Meyh13XKILVpA0bwT4OlJfTgMUcGVTqI6VTkEMZmiGf29aFRxjyz
+         ucKsoppChTiI26yZfawkBfqcPArUSAjV8CYU2jNw1kjiDV/6Bn7HgLKRHkhwD803Rh
+         G4FDCRnO+2+yZSuQzTC1l/ttFVBDQ+8yr32pCbZ6aPCKGMhw+KY4imeeWQ/R8M4tBO
+         a6th3qMptN9lg==
+Received: by mail-lf1-f44.google.com with SMTP id be13so9148630lfb.4
+        for <linux-efi@vger.kernel.org>; Fri, 28 Oct 2022 09:26:29 -0700 (PDT)
+X-Gm-Message-State: ACrzQf3oA28etBy1lxeQuhBP6dJwB9i+DfllGBg9nco6RpA584pDS68d
+        Xhj8qzak2JaiGrsU0MWD3rM/uf/8cIFpm4sixU0=
+X-Google-Smtp-Source: AMsMyM4+sVH6M0pO/WXgEbSlPpt7R5Vh8lxorHVZ8z8dO29fMv6Xu2AW+CTzXDIok6RPqCDfDD8UlZ/LBq/hHJKPt18=
+X-Received: by 2002:a19:c20b:0:b0:4a2:40e5:78b1 with SMTP id
+ l11-20020a19c20b000000b004a240e578b1mr65345lfc.228.1666974387568; Fri, 28 Oct
+ 2022 09:26:27 -0700 (PDT)
 MIME-Version: 1.0
-References: <20221028115619.2814-1-lukas.bulwahn@gmail.com>
-In-Reply-To: <20221028115619.2814-1-lukas.bulwahn@gmail.com>
+References: <20221027135755.1732339-1-ardb@kernel.org> <0DE4AE6B-4437-4D5C-BE0E-3FE732EE8000@live.com>
+In-Reply-To: <0DE4AE6B-4437-4D5C-BE0E-3FE732EE8000@live.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 28 Oct 2022 17:23:41 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXF4JE=MiRwFZE8pr2fUV7MgbtwVOUtg=y7pzX06==N7sg@mail.gmail.com>
-Message-ID: <CAMj1kXF4JE=MiRwFZE8pr2fUV7MgbtwVOUtg=y7pzX06==N7sg@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: adjust entry after arm64 efi-entry.S file movement
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     linux-efi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+Date:   Fri, 28 Oct 2022 18:26:16 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXG8YC2n1by_39fVBGgLV+NvHmS5AqSeLFozS9tpocq9tg@mail.gmail.com>
+Message-ID: <CAMj1kXG8YC2n1by_39fVBGgLV+NvHmS5AqSeLFozS9tpocq9tg@mail.gmail.com>
+Subject: Re: [PATCH] efi: efivars: Fix variable writes with unsupported query_variable_store()
+To:     Aditya Garg <gargaditya08@live.com>
+Cc:     "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -60,42 +59,35 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 28 Oct 2022 at 13:57, Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+On Fri, 28 Oct 2022 at 14:21, Aditya Garg <gargaditya08@live.com> wrote:
 >
-> Commit 6ed27461c9c8 ("arm64: efi: Move efi-entry.S into the libstub source
-> directory") moves arch/arm64/kernel/efi-entry.S to
-> drivers/firmware/efi/libstub/arm64-entry.S, but misses to adjust the
-> MAINTAINERS file.
 >
-> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains about a
-> broken file pattern.
 >
-> Adjust the file entry in EXTENSIBLE FIRMWARE INTERFACE (EFI) to this file
-> movement.
+> Hi Ard
 >
-> As the file drivers/firmware/efi/libstub/arm64-entry.S is already covered
-> by the entry drivers/firmware/efi/, simply remove the arm64 file entry.
+> This patch you sent fixed my issue!
 >
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-Thanks, I'll queue this up along with the patch that moves the file.
+Thanks for testing!
 
-> ---
->  MAINTAINERS | 1 -
->  1 file changed, 1 deletion(-)
+
+> > On 27-Oct-2022, at 7:27 PM, Ard Biesheuvel <ardb@kernel.org> wrote:
+> >
+> > Commit 8a254d90a775 ("efi: efivars: Fix variable writes without
+> > query_variable_store()") addressed an issue that was introduced during
+> > the EFI variable store refactor, where alternative implementations of
+> > the efivars layer that lacked query_variable_store() would no longer
+> > work.
+> >
+> > Unfortunately, there is another case to consider here, which was missed:
+> > if the efivars layer is backed by the EFI runtime services as usual, but
+> > the EFI implementation predates the introduction of QueryVariableInfo(),
+> > we will return EFI_UNSUPPORTED, and this is no longer being dealt with
+> > correctly.
+> >
+> > So let's fix this, and while at it, clean up the code a bit, by merging
+> > the check_var_size() routines as well as their callers.
+> >
 >
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index f4f908c28d7e..194ae5dd952e 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -7806,7 +7806,6 @@ F:        Documentation/admin-guide/efi-stub.rst
->  F:     arch/*/include/asm/efi.h
->  F:     arch/*/kernel/efi.c
->  F:     arch/arm/boot/compressed/efi-header.S
-> -F:     arch/arm64/kernel/efi-entry.S
->  F:     arch/x86/platform/efi/
->  F:     drivers/firmware/efi/
->  F:     include/linux/efi*.h
-> --
-> 2.17.1
->
+> Thanks
+> Aditya
