@@ -2,40 +2,52 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0970612BAD
-	for <lists+linux-efi@lfdr.de>; Sun, 30 Oct 2022 17:49:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2932361346A
+	for <lists+linux-efi@lfdr.de>; Mon, 31 Oct 2022 12:23:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229531AbiJ3Qth (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 30 Oct 2022 12:49:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42140 "EHLO
+        id S230343AbiJaLXF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 31 Oct 2022 07:23:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229494AbiJ3Qtg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 30 Oct 2022 12:49:36 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EDD9AE4C
-        for <linux-efi@vger.kernel.org>; Sun, 30 Oct 2022 09:49:34 -0700 (PDT)
-Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1opBV3-0006eZ-0c; Sun, 30 Oct 2022 17:49:29 +0100
-Message-ID: <84860928-db02-b0f8-d13a-2bb8598d04dd@leemhuis.info>
-Date:   Sun, 30 Oct 2022 17:49:28 +0100
+        with ESMTP id S229716AbiJaLXE (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 31 Oct 2022 07:23:04 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90AD5E090;
+        Mon, 31 Oct 2022 04:23:02 -0700 (PDT)
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4N19cZ0c8LzVj0m;
+        Mon, 31 Oct 2022 19:18:06 +0800 (CST)
+Received: from kwepemm600007.china.huawei.com (7.193.23.208) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Mon, 31 Oct 2022 19:23:00 +0800
+Received: from DESKTOP-8RFUVS3.china.huawei.com (10.174.185.179) by
+ kwepemm600007.china.huawei.com (7.193.23.208) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Mon, 31 Oct 2022 19:22:59 +0800
+From:   Zenghui Yu <yuzenghui@huawei.com>
+To:     <stable@vger.kernel.org>, <gregkh@linuxfoundation.org>,
+        <sashal@kernel.org>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <kvmarm@lists.cs.columbia.edu>, <linux-efi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <james.morse@arm.com>,
+        <anshuman.khandual@arm.com>, <catalin.marinas@arm.com>,
+        <will@kernel.org>, <maz@kernel.org>, <suzuki.poulose@arm.com>,
+        <ardb@kernel.org>, <mark.rutland@arm.com>,
+        <wanghaibin.wang@huawei.com>, <yuzenghui@huawei.com>,
+        <anders.roxell@linaro.org>
+Subject: [PATCH 5.10 0/2] arm64: backport two patches to 5.10-stable
+Date:   Mon, 31 Oct 2022 19:22:44 +0800
+Message-ID: <20221031112246.1588-1-yuzenghui@huawei.com>
+X-Mailer: git-send-email 2.23.0.windows.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: [Issue] EFI runtime-wrapper is broken #forregzbot
-Content-Language: en-US, de-DE
-To:     linux-efi <linux-efi@vger.kernel.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Cc:     linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-References: <d799b60c-ff4e-44ae-84be-d9ade761ec6d@redhat.com>
- <CAMj1kXHDtwkMgqqwePEKdOdO=7-1_TYyuVNPJ7PkyreaMySjCw@mail.gmail.com>
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-In-Reply-To: <CAMj1kXHDtwkMgqqwePEKdOdO=7-1_TYyuVNPJ7PkyreaMySjCw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1667148574;87bcd245;
-X-HE-SMSGID: 1opBV3-0006eZ-0c
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.174.185.179]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemm600007.china.huawei.com (7.193.23.208)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -43,50 +55,25 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-[Note: this mail is primarily send for documentation purposes and/or for
-regzbot, my Linux kernel regression tracking bot. That's why I removed
-most or all folks from the list of recipients, but left any that looked
-like a mailing lists. These mails usually contain '#forregzbot' in the
-subject, to make them easy to spot and filter out.]
+Patch #1 (merged in 5.12-rc3) is required to address the issue
+Anders Roxell reported on the list [1].  Patch #2 (in 5.15-rc1) is
+a follow up.
 
-[TLDR: I'm adding this regression report to the list of tracked
-regressions; all text from me you find below is based on a few templates
-paragraphs you might have encountered already already in similar form.]
+[1] https://lore.kernel.org/lkml/20220826120020.GB520@mutt
 
-Hi, this is your Linux kernel regression tracker.
+Anshuman Khandual (1):
+  arm64/kexec: Test page size support with new TGRAN range values
 
-On 28.10.22 11:21, Ard Biesheuvel wrote:
-> On Fri, 28 Oct 2022 at 11:10, Gavin Shan <gshan@redhat.com> wrote:
->>
->> Hi Ard,
->>
->> I ran into the following crash with v6.1.rc2. I'm not sure if it's known
->> issue. Last good version is v6.0.rc6/rc7. The kernel configuration is attached.
+James Morse (1):
+  arm64/mm: Fix __enable_mmu() for new TGRAN range values
 
-Thanks for the report. To be sure below issue doesn't fall through the
-cracks unnoticed, I'm adding it to regzbot, my Linux kernel regression
-tracking bot:
+ arch/arm64/include/asm/cpufeature.h       |  9 ++++--
+ arch/arm64/include/asm/sysreg.h           | 36 +++++++++++++++--------
+ arch/arm64/kernel/head.S                  |  6 ++--
+ arch/arm64/kvm/reset.c                    | 10 ++++---
+ drivers/firmware/efi/libstub/arm64-stub.c |  2 +-
+ 5 files changed, 41 insertions(+), 22 deletions(-)
 
-#regzbot ^introduced d3549a938b73f203e
-#regzbot title: efi: crashes due to broken runtime-wrapper
-#regzbot from: Gavin Shan <gshan@redhat.com>
-#regzbot ignore-activity
+-- 
+2.33.0
 
-This isn't a regression? This issue or a fix for it are already
-discussed somewhere else? It was fixed already? You want to clarify when
-the regression started to happen? Or point out I got the title or
-something else totally wrong? Then just reply -- ideally with also
-telling regzbot about it, as explained here:
-https://linux-regtracking.leemhuis.info/tracked-regression/
-
-Reminder for developers: When fixing the issue, add 'Link:' tags
-pointing to the report (the mail this one replies to), as explained for
-in the Linux kernel's documentation; above webpage explains why this is
-important for tracked regressions.
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-
-P.S.: As the Linux kernel's regression tracker I deal with a lot of
-reports and sometimes miss something important when writing mails like
-this. If that's the case here, don't hesitate to tell me in a public
-reply, it's in everyone's interest to set the public record straight.
