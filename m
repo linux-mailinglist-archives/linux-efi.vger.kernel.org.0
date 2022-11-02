@@ -2,56 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B37286159DB
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Nov 2022 04:19:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13F5A615EFC
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Nov 2022 10:09:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230123AbiKBDTm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 1 Nov 2022 23:19:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39102 "EHLO
+        id S230087AbiKBJJM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 2 Nov 2022 05:09:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230056AbiKBDTg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Nov 2022 23:19:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16A191AD88;
-        Tue,  1 Nov 2022 20:19:33 -0700 (PDT)
+        with ESMTP id S230232AbiKBJIr (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Nov 2022 05:08:47 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 954F427DFA
+        for <linux-efi@vger.kernel.org>; Wed,  2 Nov 2022 02:08:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A8714617CB;
-        Wed,  2 Nov 2022 03:19:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D10EEC433D6;
-        Wed,  2 Nov 2022 03:19:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1667359172;
-        bh=iynURxrRBYrJ6NojP8lnzNky088vEQ/PHuoP5eoclyM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0Tvsw2SnCiq0L8jRuBBiIRe6tycsh1cSNioNSmeOAnw8MFjpkhJ2dZlmIzCkJUzBU
-         qoMqe4QlzzPvyyUDKX7ZTkgzs7e+8IpXEnnU5nSbj6GT3uebMedMfwff4+F+FvQ2Z0
-         Lb4gccBerrQ5zJ4UHkPuDlg8raQriCxFc8oVxPNE=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-        James Morse <james.morse@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH 5.10 87/91] arm64/mm: Fix __enable_mmu() for new TGRAN range values
-Date:   Wed,  2 Nov 2022 03:34:10 +0100
-Message-Id: <20221102022057.526259928@linuxfoundation.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221102022055.039689234@linuxfoundation.org>
-References: <20221102022055.039689234@linuxfoundation.org>
-User-Agent: quilt/0.67
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2B3FCB8210E
+        for <linux-efi@vger.kernel.org>; Wed,  2 Nov 2022 09:08:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD525C43140
+        for <linux-efi@vger.kernel.org>; Wed,  2 Nov 2022 09:08:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667380121;
+        bh=kyJW6nL+v/PfUt+1TRaD8EkM0qKMaWUV+31OFvNx+tg=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=OQtC6YeQChMUntdFfq803R8Er5qRon05oHfNS+2OmOJK4ChOSqWV+yeo2LLS+FjHI
+         q26YdGLDoceDgrtL6OUqydWdRCQ6PrMP7hh/uOlxJ6p5cjouSj0xOmM9+YJQpoHfGN
+         tO5QjrHfi6cZdqjz4vfHCn52Xry821jm5CYJhVrt6y2UoBNJGcnOur2GczaMhekSxb
+         NlfNgM3nv7xXHNdza7zl1RXJM9pt5EM4B3b3AYwnYAI2lAVN+B3k6idmx2McCTHanz
+         5pX8zy1U9/3rlqlvkRVZVTizIjEsBNnoxItmGItib9vEcS55T4thr35lsglPGr34uj
+         V7Be1B8XkrDYw==
+Received: by mail-lf1-f50.google.com with SMTP id g7so27197975lfv.5
+        for <linux-efi@vger.kernel.org>; Wed, 02 Nov 2022 02:08:41 -0700 (PDT)
+X-Gm-Message-State: ACrzQf2/bWSKajugoRrLaOSGKooWK4VvteWKdTZF1yD08nJnSHmUeaUB
+        +LSHlKLD63rnS+gWtziYjsteOXMplUwFGKF3r1A=
+X-Google-Smtp-Source: AMsMyM6av97egrgB68bUU/eSWtA0YENkjZNpgWGw3MH7twMIAn22iJO1YcTX63rWmGCn3V25UKoxY61zQ9aTDWaaZKE=
+X-Received: by 2002:ac2:4d05:0:b0:4a7:7e1b:1c81 with SMTP id
+ r5-20020ac24d05000000b004a77e1b1c81mr9736632lfi.110.1667380119551; Wed, 02
+ Nov 2022 02:08:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+References: <20221028150112.2883620-1-ardb@kernel.org>
+In-Reply-To: <20221028150112.2883620-1-ardb@kernel.org>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 2 Nov 2022 10:08:28 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFcAFEKTuaF5RfMrktoT0+w_E80tDiFoDWA-7vezCxPdA@mail.gmail.com>
+Message-ID: <CAMj1kXFcAFEKTuaF5RfMrktoT0+w_E80tDiFoDWA-7vezCxPdA@mail.gmail.com>
+Subject: Re: [PATCH] arm64: efi: Recover from synchronous exceptions occurring
+ in firmware
+To:     linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
+        mark.rutland@arm.com, will@kernel.org
+Cc:     linux-efi@vger.kernel.org, maz@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,131 +61,187 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: James Morse <james.morse@arm.com>
+On Fri, 28 Oct 2022 at 17:01, Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> Unlike x86, which has machinery to deal with page faults that occur
+> during the execution of EFI runtime services, arm64 has nothing like
+> that, and a synchronous exception raised by firmware code brings down
+> the whole system.
+>
+> With more EFI based systems appearing that were not built to run Linux
+> (such as the Windows-on-ARM laptops based on Qualcomm SOCs), as well as
+> the introduction of PRM (platform specific firmware routines that are
+> callable just like EFI runtime services), we are more likely to run into
+> issues of this sort, and it is much more likely that we can identify and
+> work around such issues if they don't bring down the system entirely.
+>
+> Since we already use a EFI runtime services call wrapper in assembler,
+> we can quite easily add some code that captures the execution state at
+> the point where the call is made, allowing us to revert to this state
+> and proceed execution if the call triggered a synchronous exception.
+>
+> Given that the kernel and the firmware don't share any data structures
+> that could end up in an indeterminate state, we can happily continue
+> running, as long as we mark the EFI runtime services as unavailable from
+> that point on.
+>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 
-commit 26f55386f964cefa92ab7ccbed68f1a313074215 upstream.
+Does anyone mind if I take this via the EFI tree for v6.1?
 
-As per ARM ARM DDI 0487G.a, when FEAT_LPA2 is implemented, ID_AA64MMFR0_EL1
-might contain a range of values to describe supported translation granules
-(4K and 16K pages sizes in particular) instead of just enabled or disabled
-values. This changes __enable_mmu() function to handle complete acceptable
-range of values (depending on whether the field is signed or unsigned) now
-represented with ID_AA64MMFR0_TGRAN_SUPPORTED_[MIN..MAX] pair. While here,
-also fix similar situations in EFI stub and KVM as well.
-
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: James Morse <james.morse@arm.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: kvmarm@lists.cs.columbia.edu
-Cc: linux-efi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Acked-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: James Morse <james.morse@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/1615355590-21102-1-git-send-email-anshuman.khandual@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/arm64/include/asm/sysreg.h           |   20 ++++++++++++++------
- arch/arm64/kernel/head.S                  |    6 ++++--
- arch/arm64/kvm/reset.c                    |   10 ++++++----
- drivers/firmware/efi/libstub/arm64-stub.c |    2 +-
- 4 files changed, 25 insertions(+), 13 deletions(-)
-
---- a/arch/arm64/include/asm/sysreg.h
-+++ b/arch/arm64/include/asm/sysreg.h
-@@ -795,6 +795,11 @@
- #define ID_AA64MMFR0_PARANGE_48		0x5
- #define ID_AA64MMFR0_PARANGE_52		0x6
- 
-+#define ID_AA64MMFR0_TGRAN_2_SUPPORTED_DEFAULT	0x0
-+#define ID_AA64MMFR0_TGRAN_2_SUPPORTED_NONE	0x1
-+#define ID_AA64MMFR0_TGRAN_2_SUPPORTED_MIN	0x2
-+#define ID_AA64MMFR0_TGRAN_2_SUPPORTED_MAX	0x7
-+
- #ifdef CONFIG_ARM64_PA_BITS_52
- #define ID_AA64MMFR0_PARANGE_MAX	ID_AA64MMFR0_PARANGE_52
- #else
-@@ -955,14 +960,17 @@
- #define ID_PFR1_PROGMOD_SHIFT		0
- 
- #if defined(CONFIG_ARM64_4K_PAGES)
--#define ID_AA64MMFR0_TGRAN_SHIFT	ID_AA64MMFR0_TGRAN4_SHIFT
--#define ID_AA64MMFR0_TGRAN_SUPPORTED	ID_AA64MMFR0_TGRAN4_SUPPORTED
-+#define ID_AA64MMFR0_TGRAN_SHIFT		ID_AA64MMFR0_TGRAN4_SHIFT
-+#define ID_AA64MMFR0_TGRAN_SUPPORTED_MIN	ID_AA64MMFR0_TGRAN4_SUPPORTED
-+#define ID_AA64MMFR0_TGRAN_SUPPORTED_MAX	0x7
- #elif defined(CONFIG_ARM64_16K_PAGES)
--#define ID_AA64MMFR0_TGRAN_SHIFT	ID_AA64MMFR0_TGRAN16_SHIFT
--#define ID_AA64MMFR0_TGRAN_SUPPORTED	ID_AA64MMFR0_TGRAN16_SUPPORTED
-+#define ID_AA64MMFR0_TGRAN_SHIFT		ID_AA64MMFR0_TGRAN16_SHIFT
-+#define ID_AA64MMFR0_TGRAN_SUPPORTED_MIN	ID_AA64MMFR0_TGRAN16_SUPPORTED
-+#define ID_AA64MMFR0_TGRAN_SUPPORTED_MAX	0xF
- #elif defined(CONFIG_ARM64_64K_PAGES)
--#define ID_AA64MMFR0_TGRAN_SHIFT	ID_AA64MMFR0_TGRAN64_SHIFT
--#define ID_AA64MMFR0_TGRAN_SUPPORTED	ID_AA64MMFR0_TGRAN64_SUPPORTED
-+#define ID_AA64MMFR0_TGRAN_SHIFT		ID_AA64MMFR0_TGRAN64_SHIFT
-+#define ID_AA64MMFR0_TGRAN_SUPPORTED_MIN	ID_AA64MMFR0_TGRAN64_SUPPORTED
-+#define ID_AA64MMFR0_TGRAN_SUPPORTED_MAX	0x7
- #endif
- 
- #define MVFR2_FPMISC_SHIFT		4
---- a/arch/arm64/kernel/head.S
-+++ b/arch/arm64/kernel/head.S
-@@ -797,8 +797,10 @@ SYM_FUNC_END(__secondary_too_slow)
- SYM_FUNC_START(__enable_mmu)
- 	mrs	x2, ID_AA64MMFR0_EL1
- 	ubfx	x2, x2, #ID_AA64MMFR0_TGRAN_SHIFT, 4
--	cmp	x2, #ID_AA64MMFR0_TGRAN_SUPPORTED
--	b.ne	__no_granule_support
-+	cmp     x2, #ID_AA64MMFR0_TGRAN_SUPPORTED_MIN
-+	b.lt    __no_granule_support
-+	cmp     x2, #ID_AA64MMFR0_TGRAN_SUPPORTED_MAX
-+	b.gt    __no_granule_support
- 	update_early_cpu_boot_status 0, x2, x3
- 	adrp	x2, idmap_pg_dir
- 	phys_to_ttbr x1, x1
---- a/arch/arm64/kvm/reset.c
-+++ b/arch/arm64/kvm/reset.c
-@@ -397,16 +397,18 @@ int kvm_set_ipa_limit(void)
- 	}
- 
- 	switch (cpuid_feature_extract_unsigned_field(mmfr0, tgran_2)) {
--	default:
--	case 1:
-+	case ID_AA64MMFR0_TGRAN_2_SUPPORTED_NONE:
- 		kvm_err("PAGE_SIZE not supported at Stage-2, giving up\n");
- 		return -EINVAL;
--	case 0:
-+	case ID_AA64MMFR0_TGRAN_2_SUPPORTED_DEFAULT:
- 		kvm_debug("PAGE_SIZE supported at Stage-2 (default)\n");
- 		break;
--	case 2:
-+	case ID_AA64MMFR0_TGRAN_2_SUPPORTED_MIN ... ID_AA64MMFR0_TGRAN_2_SUPPORTED_MAX:
- 		kvm_debug("PAGE_SIZE supported at Stage-2 (advertised)\n");
- 		break;
-+	default:
-+		kvm_err("Unsupported value for TGRAN_2, giving up\n");
-+		return -EINVAL;
- 	}
- 
- 	kvm_ipa_limit = id_aa64mmfr0_parange_to_phys_shift(parange);
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -24,7 +24,7 @@ efi_status_t check_platform_features(voi
- 		return EFI_SUCCESS;
- 
- 	tg = (read_cpuid(ID_AA64MMFR0_EL1) >> ID_AA64MMFR0_TGRAN_SHIFT) & 0xf;
--	if (tg != ID_AA64MMFR0_TGRAN_SUPPORTED) {
-+	if (tg < ID_AA64MMFR0_TGRAN_SUPPORTED_MIN || tg > ID_AA64MMFR0_TGRAN_SUPPORTED_MAX) {
- 		if (IS_ENABLED(CONFIG_ARM64_64K_PAGES))
- 			efi_err("This 64 KB granular kernel is not supported by your CPU\n");
- 		else
-
-
+> ---
+>  arch/arm64/include/asm/efi.h       |  8 ++++++++
+>  arch/arm64/kernel/efi-rt-wrapper.S | 33 ++++++++++++++++++++++++++++--
+>  arch/arm64/kernel/efi.c            | 26 +++++++++++++++++++++++
+>  arch/arm64/mm/fault.c              |  4 ++++
+>  4 files changed, 69 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
+> index 439e2bc5d5d8..d6cf535d8352 100644
+> --- a/arch/arm64/include/asm/efi.h
+> +++ b/arch/arm64/include/asm/efi.h
+> @@ -14,8 +14,16 @@
+>
+>  #ifdef CONFIG_EFI
+>  extern void efi_init(void);
+> +
+> +bool efi_runtime_fixup_exception(struct pt_regs *regs, const char *msg);
+>  #else
+>  #define efi_init()
+> +
+> +static inline
+> +bool efi_runtime_fixup_exception(struct pt_regs *regs, const char *msg)
+> +{
+> +       return false;
+> +}
+>  #endif
+>
+>  int efi_create_mapping(struct mm_struct *mm, efi_memory_desc_t *md);
+> diff --git a/arch/arm64/kernel/efi-rt-wrapper.S b/arch/arm64/kernel/efi-rt-wrapper.S
+> index 75691a2641c1..67babd5f04c2 100644
+> --- a/arch/arm64/kernel/efi-rt-wrapper.S
+> +++ b/arch/arm64/kernel/efi-rt-wrapper.S
+> @@ -6,7 +6,7 @@
+>  #include <linux/linkage.h>
+>
+>  SYM_FUNC_START(__efi_rt_asm_wrapper)
+> -       stp     x29, x30, [sp, #-32]!
+> +       stp     x29, x30, [sp, #-112]!
+>         mov     x29, sp
+>
+>         /*
+> @@ -16,6 +16,20 @@ SYM_FUNC_START(__efi_rt_asm_wrapper)
+>          */
+>         stp     x1, x18, [sp, #16]
+>
+> +       /*
+> +        * Preserve all callee saved registers and record the stack pointer
+> +        * value in a per-CPU variable so we can recover from synchronous
+> +        * exceptions occurring while running the firmware routines.
+> +        */
+> +       stp     x19, x20, [sp, #32]
+> +       stp     x21, x22, [sp, #48]
+> +       stp     x23, x24, [sp, #64]
+> +       stp     x25, x26, [sp, #80]
+> +       stp     x27, x28, [sp, #96]
+> +
+> +       adr_this_cpu    x8, __efi_rt_asm_recover_sp, x9
+> +       str             x29, [x8]
+> +
+>         /*
+>          * We are lucky enough that no EFI runtime services take more than
+>          * 5 arguments, so all are passed in registers rather than via the
+> @@ -31,7 +45,7 @@ SYM_FUNC_START(__efi_rt_asm_wrapper)
+>
+>         ldp     x1, x2, [sp, #16]
+>         cmp     x2, x18
+> -       ldp     x29, x30, [sp], #32
+> +       ldp     x29, x30, [sp], #112
+>         b.ne    0f
+>         ret
+>  0:
+> @@ -45,3 +59,18 @@ SYM_FUNC_START(__efi_rt_asm_wrapper)
+>         mov     x18, x2
+>         b       efi_handle_corrupted_x18        // tail call
+>  SYM_FUNC_END(__efi_rt_asm_wrapper)
+> +
+> +SYM_FUNC_START(__efi_rt_asm_recover)
+> +       ldr_this_cpu    x8, __efi_rt_asm_recover_sp, x9
+> +       mov             sp, x8
+> +
+> +       ldp     x0,  x18, [sp, #16]
+> +       ldp     x19, x20, [sp, #32]
+> +       ldp     x21, x22, [sp, #48]
+> +       ldp     x23, x24, [sp, #64]
+> +       ldp     x25, x26, [sp, #80]
+> +       ldp     x27, x28, [sp, #96]
+> +       ldp     x29, x30, [sp], #112
+> +
+> +       b       efi_handle_runtime_exception
+> +SYM_FUNC_END(__efi_rt_asm_recover)
+> diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
+> index e1be6c429810..7c1e62a20e1e 100644
+> --- a/arch/arm64/kernel/efi.c
+> +++ b/arch/arm64/kernel/efi.c
+> @@ -9,6 +9,7 @@
+>
+>  #include <linux/efi.h>
+>  #include <linux/init.h>
+> +#include <linux/percpu.h>
+>
+>  #include <asm/efi.h>
+>
+> @@ -128,3 +129,28 @@ asmlinkage efi_status_t efi_handle_corrupted_x18(efi_status_t s, const char *f)
+>         pr_err_ratelimited(FW_BUG "register x18 corrupted by EFI %s\n", f);
+>         return s;
+>  }
+> +
+> +asmlinkage DEFINE_PER_CPU(u64, __efi_rt_asm_recover_sp);
+> +
+> +asmlinkage efi_status_t __efi_rt_asm_recover(void);
+> +
+> +asmlinkage efi_status_t efi_handle_runtime_exception(const char *f)
+> +{
+> +       pr_err(FW_BUG "Fault occurred in EFI runtime service %s()\n", f);
+> +       clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
+> +       return EFI_ABORTED;
+> +}
+> +
+> +bool efi_runtime_fixup_exception(struct pt_regs *regs, const char *msg)
+> +{
+> +        /* Check whether the exception occurred while running the firmware */
+> +       if (current_work() != &efi_rts_work.work || regs->pc >= TASK_SIZE_64)
+> +               return false;
+> +
+> +       pr_err(FW_BUG "Unable to handle %s in EFI runtime service\n", msg);
+> +       add_taint(TAINT_FIRMWARE_WORKAROUND, LOCKDEP_STILL_OK);
+> +       dump_stack();
+> +
+> +       regs->pc = (u64)__efi_rt_asm_recover;
+> +       return true;
+> +}
+> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+> index 5b391490e045..3e9cf9826417 100644
+> --- a/arch/arm64/mm/fault.c
+> +++ b/arch/arm64/mm/fault.c
+> @@ -30,6 +30,7 @@
+>  #include <asm/bug.h>
+>  #include <asm/cmpxchg.h>
+>  #include <asm/cpufeature.h>
+> +#include <asm/efi.h>
+>  #include <asm/exception.h>
+>  #include <asm/daifflags.h>
+>  #include <asm/debug-monitors.h>
+> @@ -391,6 +392,9 @@ static void __do_kernel_fault(unsigned long addr, unsigned long esr,
+>                 msg = "paging request";
+>         }
+>
+> +       if (efi_runtime_fixup_exception(regs, msg))
+> +               return;
+> +
+>         die_kernel_fault(msg, addr, esr, regs);
+>  }
+>
+> --
+> 2.35.1
+>
