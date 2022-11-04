@@ -2,160 +2,102 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C05CF618FFE
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Nov 2022 06:28:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74C51619DD6
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Nov 2022 17:53:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229600AbiKDF24 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 4 Nov 2022 01:28:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47892 "EHLO
+        id S232224AbiKDQxM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 4 Nov 2022 12:53:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230139AbiKDF2y (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Nov 2022 01:28:54 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7760205F9
-        for <linux-efi@vger.kernel.org>; Thu,  3 Nov 2022 22:28:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667539733; x=1699075733;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=keU5eXqSltRfy0uD2flDp2lncnxzrdXcvS3az9s72W8=;
-  b=b8uEOTuqFxrPUlT6GSa5723Kdu7jxWXJGjS53PwxMwjeeUHE0bVliPNz
-   oPDuFfOaNkZdCl9qR6ibwW9Mva6PXGYXmtC9HCMGbTI5OLFfzhnIsgLMr
-   Ehx0osZtek8Jzfu5RYyl56x9comryfaanzfy6Uqj4weO7/l0E0xNx7sWl
-   iXaITe8iZv/P9xtZwqGbphKYstJD0bd6PEJaz3rLnbL3wjDk8sQZMCPAR
-   FghNTUcmR8LyiZj/26+vCt4ejCw+3Sq/7y3njB+HTkCcaxwXO+muiIz1K
-   8LHcBXkxrxpospI+iJmfuV229Hls7aifHBdSeSf4L6in0JBWwP8Wl3S62
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10520"; a="289602141"
-X-IronPort-AV: E=Sophos;i="5.96,136,1665471600"; 
-   d="scan'208";a="289602141"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2022 22:28:53 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10520"; a="777593622"
-X-IronPort-AV: E=Sophos;i="5.96,136,1665471600"; 
-   d="scan'208";a="777593622"
-Received: from lkp-server02.sh.intel.com (HELO b6d29c1a0365) ([10.239.97.151])
-  by fmsmga001.fm.intel.com with ESMTP; 03 Nov 2022 22:28:52 -0700
-Received: from kbuild by b6d29c1a0365 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oqpG8-000GeF-04;
-        Fri, 04 Nov 2022 05:28:52 +0000
-Date:   Fri, 04 Nov 2022 13:28:39 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS 1abdc82f0c773bef2f58b9f00b03e75e9d4dd28b
-Message-ID: <6364a307.zaPXEG6asXlYPfQi%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S232208AbiKDQwi (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Nov 2022 12:52:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 052C43E0A9
+        for <linux-efi@vger.kernel.org>; Fri,  4 Nov 2022 09:51:59 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8217762294
+        for <linux-efi@vger.kernel.org>; Fri,  4 Nov 2022 16:51:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00ED4C433C1;
+        Fri,  4 Nov 2022 16:51:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667580718;
+        bh=/OBg7L/gJAEz552y4X96YIrN1O5w8vqBLudo3R2a+GU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=C0m3T0za0+p7EG+/BYQkkxA/gVe5kcrv8Cq3Kbm3ALeflAK+ct0Iof5bdsP5778xh
+         hfdvbMU3e8EGoe6Dg/mVwnOI+2gaDKtwH90jj8b13rAG5R6g1KYGpSvtr/8dThX1zC
+         O0vGvvBWf96pr/0zi5BUT+fLT3U85WM/wY2w6+7mJehfy5lMdmt9b99US9pkuH0pYS
+         TSXT+ZbuIZIFNE4pBhCmG05K9ZDeXcmdGzToz+YHjzIl9f89UpwIdXF8J9L68W24yI
+         Pce0rOpM1nxjr/5Tf6uYcdUei/cg8tNji9SUtCYd3SoHML+Umjjwe2tZyZ1NWUBmy9
+         PTmCphXiOxXXA==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     torvalds@linux-foundation.org
+Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Subject: [GIT PULL] EFI fixes for v6.1 (#2)
+Date:   Fri,  4 Nov 2022 17:51:49 +0100
+Message-Id: <20221104165149.2397431-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2205; i=ardb@kernel.org; h=from:subject; bh=/OBg7L/gJAEz552y4X96YIrN1O5w8vqBLudo3R2a+GU=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjZUMkTxjg16fxh+tTa83/DEcsTztTeZEq9ZVxLj72 EETCcfOJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY2VDJAAKCRDDTyI5ktmPJN3MDA CncYxYMJDeADd8l+bzEEez7CrR4+fhevB1Zr16+7UBv9gW/V9kunscNvF41UZzrpdhC9fS1/dscuBy LnN/3dPJ8gTSwpJqTUIsDQs94H8IMX4JouDpp9i3i08vvZ1NRMwvz6vBUfvdMojtCRoIbpr5DxWnLE 1qVYgqNUmhiX0AQYdmbaAI+1nQ8Gkwp3p/ONe0PuuPMDQTOctAoEQMmB/JlRBHFvd9oYM00a9gBI3j tjqXhklJ+OjWwGO+5gILBco0AXnol7Rr5GSiqv/IyY87CNANyGx2TVStEK0kCe/YbbQhWcjFoN3lGC QkbkNL+AbK9uEwWxgRGyDj/ErnaubRDl99S+IazInfAod4TaDpCceQ4DMNMMHMaD6tU3Fnt+79JsJl PqUtc1R40G9nM+EF5vrNXprHWFY826wmNLCojxSYPmq0J/Wj4auLvughSAq9o6xk+NOB3lR+c5IrkF GwySr1M+/wOpEQKLp+z0KLtbSxb0Q3MHxGskHBsrJiCHY=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: 1abdc82f0c773bef2f58b9f00b03e75e9d4dd28b  efi: pstore: Add module parameter for setting the record size
+Hello Linus,
 
-elapsed time: 722m
+Please pull the EFI fixes below.
 
-configs tested: 80
-configs skipped: 4
+The arm64 exception recovery is not a real fix, but it will be useful to have
+in v6.1 going forward, so I've incorporated it here. I hope that's alright.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
 
-gcc tested configs:
-um                           x86_64_defconfig
-um                             i386_defconfig
-arc                                 defconfig
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-alpha                               defconfig
-ia64                             allmodconfig
-s390                                defconfig
-s390                             allmodconfig
-i386                                defconfig
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-kvm
-x86_64                        randconfig-a002
-s390                             allyesconfig
-x86_64                              defconfig
-x86_64                           rhel-8.3-syz
-x86_64                        randconfig-a006
-arc                              allyesconfig
-x86_64                        randconfig-a004
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-alpha                            allyesconfig
-i386                          randconfig-a001
-mips                             allyesconfig
-i386                          randconfig-a003
-x86_64                               rhel-8.3
-arc                  randconfig-r043-20221102
-m68k                             allyesconfig
-s390                 randconfig-r044-20221102
-i386                          randconfig-a005
-x86_64                           allyesconfig
-riscv                randconfig-r042-20221102
-i386                             allyesconfig
-sh                               allmodconfig
-arm                                 defconfig
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-arm                              allyesconfig
-arm64                            allyesconfig
-x86_64                        randconfig-a015
-i386                          randconfig-a012
-i386                          randconfig-a016
-i386                          randconfig-a014
-i386                          randconfig-c001
-m68k                             allmodconfig
-arm                       imx_v6_v7_defconfig
-arm                        multi_v7_defconfig
-sh                          r7785rp_defconfig
-sh                        sh7763rdp_defconfig
-arm                            lart_defconfig
-nios2                               defconfig
-powerpc                     asp8347_defconfig
-mips                      fuloong2e_defconfig
-mips                            gpr_defconfig
-arm                           u8500_defconfig
-nios2                         10m50_defconfig
-powerpc                   currituck_defconfig
-mips                         cobalt_defconfig
-parisc                           allyesconfig
-powerpc                     rainier_defconfig
-x86_64                           alldefconfig
-powerpc                 mpc837x_mds_defconfig
+The following changes since commit 37926f96302d8b6c2bc97990d33e316a3ed6d67f:
 
-clang tested configs:
-x86_64                        randconfig-a005
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-hexagon              randconfig-r041-20221102
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-hexagon              randconfig-r045-20221102
-x86_64                        randconfig-a012
-x86_64                        randconfig-a016
-x86_64                        randconfig-a014
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-arm                   milbeaut_m10v_defconfig
-riscv                          rv32_defconfig
-arm                         bcm2835_defconfig
-arm                         s3c2410_defconfig
+  efi: runtime: Don't assume virtual mappings are missing if VA == PA == 0 (2022-10-21 11:09:41 +0200)
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.1-2
+
+for you to fetch changes up to 23715a26c8d812912a70c6ac1ce67af649b95914:
+
+  arm64: efi: Recover from synchronous exceptions occurring in firmware (2022-11-03 18:01:15 +0100)
+
+----------------------------------------------------------------
+Second batch of EFI fixes for v6.1
+
+- A pair of tweaks to the EFI random seed code so that externally
+  provided version of this config table are handled more robustly
+- Another fix for the v6.0 EFI variable refactor that turned out to
+  break Apple machines which don't provide QueryVariableInfo()
+- Add some guard rails to the EFI runtime service call wrapper so we can
+  recover from synchronous exceptions caused by firmware
+
+----------------------------------------------------------------
+Ard Biesheuvel (4):
+      efi: random: reduce seed size to 32 bytes
+      efi: random: Use 'ACPI reclaim' memory for random seed
+      efi: efivars: Fix variable writes with unsupported query_variable_store()
+      arm64: efi: Recover from synchronous exceptions occurring in firmware
+
+Jerry Snitselaar (1):
+      efi/tpm: Pass correct address to memblock_reserve
+
+ arch/arm64/include/asm/efi.h          |  8 +++++
+ arch/arm64/kernel/efi-rt-wrapper.S    | 33 +++++++++++++++--
+ arch/arm64/kernel/efi.c               | 26 ++++++++++++++
+ arch/arm64/mm/fault.c                 |  4 +++
+ drivers/firmware/efi/efi.c            |  2 +-
+ drivers/firmware/efi/libstub/random.c |  7 +++-
+ drivers/firmware/efi/tpm.c            |  2 +-
+ drivers/firmware/efi/vars.c           | 68 +++++++++++------------------------
+ include/linux/efi.h                   |  2 +-
+ 9 files changed, 98 insertions(+), 54 deletions(-)
