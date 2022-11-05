@@ -2,83 +2,76 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDD5761DFA0
-	for <lists+linux-efi@lfdr.de>; Sun,  6 Nov 2022 00:11:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C5A8D61DFA4
+	for <lists+linux-efi@lfdr.de>; Sun,  6 Nov 2022 00:24:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229479AbiKEXLQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 5 Nov 2022 19:11:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56170 "EHLO
+        id S230076AbiKEXYl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 5 Nov 2022 19:24:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230074AbiKEXLM (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 5 Nov 2022 19:11:12 -0400
+        with ESMTP id S229533AbiKEXYk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 5 Nov 2022 19:24:40 -0400
 Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDB3ADFA1
-        for <linux-efi@vger.kernel.org>; Sat,  5 Nov 2022 16:11:10 -0700 (PDT)
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE6081056C
+        for <linux-efi@vger.kernel.org>; Sat,  5 Nov 2022 16:24:39 -0700 (PDT)
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 1068A412CA
-        for <linux-efi@vger.kernel.org>; Sat,  5 Nov 2022 23:11:07 +0000 (UTC)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 6A720412C9
+        for <linux-efi@vger.kernel.org>; Sat,  5 Nov 2022 23:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1667689868;
-        bh=CnjNsYUiE3jdMgAhWBEGga3tYdGIV/5rIupuUIZlDLQ=;
+        s=20210705; t=1667690678;
+        bh=P/rgZcAo1+lNmpLkxkcm/ZkBFG4Kx1WV6v8pkRnrGvI=;
         h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
          In-Reply-To:Content-Type;
-        b=pfnlBzFemXF8C+EpXBrtHJq6CY2jnl4RS0l2hAdJ+/MA/xRJe7dIyAoDBmV+zkXbR
-         jmK/Y9LvAW/vBTGaiRtOgNpYxyaDHR2giAP3oTvY8EoOXzmD3V849pW9oNycVgcJTc
-         qAHZmWoGZqo4H+MphtdswN6PLOAX4i2VDqcDzFldWf0uN73Z4SLyfqLMqLwbz5eYdN
-         PsQercZaPk/2mnz7GuEehDcjdijCnZMPc65X4qIhE2DVVI9KZMkCH4YTSbVb4YLMSs
-         p25iOh1zVrgJ7cnMlruvdw+3mehIiCfBl2Xan4KL70HZEfw1dqDVe0HggGCQzTl8gx
-         X/aHYJNaix6NA==
-Received: by mail-wm1-f71.google.com with SMTP id v188-20020a1cacc5000000b003cf76c4ae66so6326031wme.7
-        for <linux-efi@vger.kernel.org>; Sat, 05 Nov 2022 16:11:07 -0700 (PDT)
+        b=aF/H6JC2P1xHBtuEZXh6ih5FUdgHA6uBXkQXOHj0EtUR2NqJJ7MWwyLnpnfW8a8dD
+         U19cYbVr9t5GXPTHnzu/MY2+rN0UY0bAdArcoi5maCVWab5234CYqADHx0xMHmMsk0
+         cVSvs1WvVzcUJaFljaQyttSN2QuiLuIQCYo+X8kYFoyFps18iEXJPRZuQQzoBUj+wE
+         Zh7VN9OV8g6DrvLcm1+bjaF/oJtJNScIbEwiYBHdRCkehskPz5ENt+Ptshh75l3bmS
+         gyXko6gEBQSsCWNTvOk8qqo5Y8LG+IRe3/h2Gcduvc/MDGO45fRr5rzHWcvdLnh4EB
+         vFEaGwEGClKaQ==
+Received: by mail-wr1-f71.google.com with SMTP id o13-20020adfa10d000000b00232c00377a0so1945528wro.13
+        for <linux-efi@vger.kernel.org>; Sat, 05 Nov 2022 16:24:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CnjNsYUiE3jdMgAhWBEGga3tYdGIV/5rIupuUIZlDLQ=;
-        b=q8L9wWZu+MZNnY4T0pqwNxX8M58xPIBHuXXndF7HED9Le9HUPew3aocz43orGqgzT9
-         254O50wdOqjRSPtmHVsH8XuWQqL/T7mIgXXakZVWPTOgAdiNv5PgFH0V4hiL+zMgStw7
-         QpClVQiRyvEoAjPJ+Er6nU0RIjOI/zUOnJm7AtTin0y6DroTQEjfdMDeWU12Chk7Jbkq
-         /oSHjGloJviM4YiciAauSC3fBB+U266rv+ARGVwwTZiLd+BYosjTBn8KWMyY2VCNxPAZ
-         Gxxq+0qyOy6HM4ivO/GZ2S4gBGwhnQIhutahf1sSjiuTSYDRbpHCIu6iAg+oPeIjGH4i
-         EAvQ==
-X-Gm-Message-State: ACrzQf1fXL1wWX92F0k5kz8nmTrXnjuF9HuamlredZIcKMgeUFKgj0q7
-        3MuQAbLS5mCijRjDXKCDyvinXuH/Xf7SirlCIfnzynKEdGEKob+lfCXfCpI/DWnD0USoHIRl1yR
-        nRJ0+E3plkAiltO1zoLuJ3xU70ov35yDs5h0Oxg==
-X-Received: by 2002:a05:600c:1d8f:b0:3cf:54f4:ef4 with SMTP id p15-20020a05600c1d8f00b003cf54f40ef4mr34828283wms.190.1667689866413;
-        Sat, 05 Nov 2022 16:11:06 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM7cGzltDfgIoI4/yQ8PuBWrjNanx0LRt3IW7tF8w3cWqE8twNQahYqe+qDqeLKgPDBenIj2cQ==
-X-Received: by 2002:a05:600c:1d8f:b0:3cf:54f4:ef4 with SMTP id p15-20020a05600c1d8f00b003cf54f40ef4mr34828275wms.190.1667689866119;
-        Sat, 05 Nov 2022 16:11:06 -0700 (PDT)
+        bh=P/rgZcAo1+lNmpLkxkcm/ZkBFG4Kx1WV6v8pkRnrGvI=;
+        b=vECtQR5Kymu/k5LCFtfh9nC/xgccYieSKWUE8ie/g4KJiqcvIg6Mlwy19c2AAS2xkM
+         Hhy8e2UAuWuj8Wgb4WyI0Sc+KVNGAQYTczZCGnVcTeGTYGEl18ETvCA6o6Zj3SFYe7Dx
+         RHA0TjKgLfk+dkB/40Vd47penSCvQV7wIY2YuHO+/q2o5RXUkSi6ee40+ej9NdQHKmAa
+         SJB5tW5WgihXxKoNWAj/tZl3as/7vuMqIpducoeD7lZTpPd+Tsi88U7kJkPCx2JrSj3d
+         BkRgREJeUcpIIAf9qK+yxlM6lPWV7BgsUos2lvfEL+pkkm+Cswp4mlV988DyvyQEa52L
+         4F/Q==
+X-Gm-Message-State: ACrzQf0X69AOcpXuxR/HnVORdYRDZKsIp/hUEDKoX0hHWdxDrA5k9E7F
+        VzKTma4iudyIsqlWlDry5K1UEmgx9/+kxmWooZh3UjSjBxGkQ4OqZKpHGnxC82vunzZsW/6YteE
+        UJhZ0TpSwfaWDP7siU8Ul9IJpoXByd6hB4QY8zQ==
+X-Received: by 2002:a7b:cb81:0:b0:3c0:f8fc:ea23 with SMTP id m1-20020a7bcb81000000b003c0f8fcea23mr38896673wmi.31.1667690676321;
+        Sat, 05 Nov 2022 16:24:36 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM6MARusVTOVCnMBzQtDq+Mp+g/YLs8aPXUEbu+UwwYDX7RiQRyNn5KD012wkkBwSLdI4B/eTA==
+X-Received: by 2002:a7b:cb81:0:b0:3c0:f8fc:ea23 with SMTP id m1-20020a7bcb81000000b003c0f8fcea23mr38896657wmi.31.1667690676003;
+        Sat, 05 Nov 2022 16:24:36 -0700 (PDT)
 Received: from [192.168.123.94] (ip-084-118-157-002.um23.pools.vodafone-ip.de. [84.118.157.2])
-        by smtp.gmail.com with ESMTPSA id t13-20020a5d460d000000b002366f9bd717sm3983173wrq.45.2022.11.05.16.11.05
+        by smtp.gmail.com with ESMTPSA id u13-20020a5d434d000000b0023647841c5bsm3224408wrr.60.2022.11.05.16.24.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 05 Nov 2022 16:11:05 -0700 (PDT)
-Message-ID: <0653f2f4-cde5-40e0-c576-4e7c23dc5d90@canonical.com>
-Date:   Sun, 6 Nov 2022 00:11:04 +0100
+        Sat, 05 Nov 2022 16:24:35 -0700 (PDT)
+Message-ID: <86e2cd39-630a-da76-bbfd-99815a8c2753@canonical.com>
+Date:   Sun, 6 Nov 2022 00:24:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.4.2
-Subject: Re: Remove WARN_ONCE for unaligned UEFI region?
-To:     Ard Biesheuvel <ardb@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        U-Boot Mailing List <u-boot@lists.denx.de>,
-        G Edhaya Chandran <Edhaya.Chandran@arm.com>
-References: <CAHk-=whPRmHQ=KV9B3_jeOG4ydj8gkMwQKnde7BJ4wJjveyMDQ@mail.gmail.com>
- <CAMj1kXFkp_W4P7twyZhM2mrP0PibOdWAwvKg-rb_jvh08RG_sg@mail.gmail.com>
- <CAHk-=wg2j9Fz-QVjmwqs+Uv9K-+rO9cviAokmvbFhwimtOGJpw@mail.gmail.com>
- <CAMj1kXG5q_UZuPUtifSxwstMBf4QD-Q0=gObk1WzLmMMegduqg@mail.gmail.com>
+Subject: Re: [PATCH] arm64: efi: Make runtime region misalignment warning less
+ noisy
 Content-Language: en-US
+To:     Ard Biesheuvel <ardb@kernel.org>, torvalds@linux-foundation.org
+Cc:     linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        catalin.marinas@arm.com, will@kernel.org,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>
+References: <20221105225234.3089177-1-ardb@kernel.org>
 From:   Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-In-Reply-To: <CAMj1kXG5q_UZuPUtifSxwstMBf4QD-Q0=gObk1WzLmMMegduqg@mail.gmail.com>
+In-Reply-To: <20221105225234.3089177-1-ardb@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -91,92 +84,82 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On 11/5/22 23:52, Ard Biesheuvel wrote:
+> The EFI spec requires that on arm64 systems, all runtime code and data
+> regions that share a 64k page can be mapped with the same memory type
+> attributes. Unfortunately, this does not take permission attributes into
+> account, and so the firmware is permitted to expose runtime code and
+> data regions that share 64k pages, and this may prevent the OS from
+> using restricted permissions in such cases, e.g., map data regions with
+> non-exec attributes.
 
-
-On 11/5/22 22:54, Ard Biesheuvel wrote:
-> (cc Heinrich and Ilias)
-> 
-> On Sat, 5 Nov 2022 at 21:27, Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
->>
->> On Sat, Nov 5, 2022 at 1:18 PM Ard Biesheuvel <ardb@kernel.org> wrote:
->>>
->>> Yeah just rip it out. In the beginning, we tended to make these
->>> warnings noisy so people will actually notice.
->>
->> Rip it out entirely, or replace ith pr_warn_once()?
->>
-> 
-> A warning that can only trigger on 16k or 64k page size kernels
-> clearly doesn't have a lot of coverage, so either we just drop it, or
-> we make the warning use SZ_64K and not PAGE_SIZE.
-> 
-> And if we keep the warning, it should be separate from the if(): when
-> the regions are misaligned, we have to use RWX mappings because an
-> adjacent region that gets covered by the same mapping might require
-> it.
-> 
-> Maybe I'll just whip up a patch myself.
-> 
->>> I'd still like to see a memory map (boot with efi=debug) so we can get
->>> this reported and fixed in uboot. We need that so 16k and 64k pages
->>> boot doesn't cause surprises with overlapping mappings.
->>
->> Here's the dmesg attached with efi=debug for your viewing pleasure.
->>
-> 
-> Thanks.
-> 
-> I've cc'ed the u-boot EFI maintainers, who take EFI spec compliance
-> very seriously, so I'm sure we'll get this fixed quickly.
-
-It seems the thread
-https://lore.kernel.org/linux-efi/CAHk-=whPRmHQ=KV9B3_jeOG4ydj8gkMwQKnde7BJ4wJjveyMDQ@mail.gmail.com/
-refers to:
-
-arch/arm64/kernel/efi.c:28:
-if (WARN_ONCE(!PAGE_ALIGNED(md->phys_addr),
-
-Function create_mapping_protection() checks UEFI Permission Attributes 
-of pages.
-
-This is the related requirement in the UEFI 2.9 specification:
+This is the relevant paragraph in the UEFI specification:
 
 <cite>
 The ARM architecture allows mapping pages at a variety of granularities, 
 including 4KiB and 64KiB. If a 64KiB physical page contains any 4KiB 
 page with any of the following types listed below, then all 4KiB pages 
 in the 64KiB page must use identical ARM Memory Page Attributes (as 
-described in Map EFI Cacheability Attributes to AArch64 Memory Types ):
+described in Map EFI Cacheability Attributes to AArch64 Memory Types):
 
 - EfiRuntimeServicesCode
 - EfiRuntimeServicesData
 - EfiReserved
 - EfiACPIMemoryNVS
+
+Mixed attribute mappings within a larger page are not allowed.
 </cite>
 
-The specification only refers to EFI cacheability attributes but not to 
-UEFI Permission Attributes. Should the specification be updated in this 
-regard?
+It remains unclear if only EFI Cacheability of also other page 
+attributes are meant. The UEFI specification should be clarified in this 
+respect.
 
-The next steps to take are:
+> 
+> We currently emit a warning when hitting this at boot, but the warning
+> is problematic for a number of reasons:
+> - it uses WARN() which spews a lot of irrelevant information into the
+>    log about the execution context where the issue was detected;
+> - it only takes the start of the region into account and not the size
 
-1) clarify the ARM hardware requirements for UEFI Permission Attributes
-2) update the UEFI specification to make it clear if UEFI Permission 
-Attributes have to follow the 64 KiB rule.
-3) update the UEFI Self-Certification Test (SCT) to check the rules.
-4) update U-Boot to respect 64 KiB requirements when allocating new pages.
+Is the occurrence of the warning specific to U-Boot or do you see the 
+warning with EDK II too?
 
-We already have commit 7a82c3051c8 ("efi_loader: Align runtime section 
-to 64kb") in U-Boot but that neither covers runtime data nor allocation 
-of memory (AllocatePages(), AllocatedPool()).
+> 
+> Let's just drop the warning, as the condition does not strictly violate
+> the spec (although it only occurs with U-Boot), and fix the check to
+> take both the start and the end addresses into account.
+> 
+> Cc: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+> Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+> Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>   arch/arm64/kernel/efi.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
+> index e1be6c429810d0d5..3dd6f0c66f8aeb78 100644
+> --- a/arch/arm64/kernel/efi.c
+> +++ b/arch/arm64/kernel/efi.c
+> @@ -25,8 +25,8 @@ static __init pteval_t create_mapping_protection(efi_memory_desc_t *md)
+>   	if (type == EFI_MEMORY_MAPPED_IO)
+>   		return PROT_DEVICE_nGnRE;
+>   
+> -	if (WARN_ONCE(!PAGE_ALIGNED(md->phys_addr),
+> -		      "UEFI Runtime regions are not aligned to 64 KB -- buggy firmware?"))
+> +	if (!PAGE_ALIGNED(md->phys_addr) ||
+> +	    !PAGE_ALIGNED(md->num_pages * EFI_PAGE_SIZE))
 
-The warning in question indicates that Linux currently is not able to 
-establish secure page attributes. I see no reason to remove it.
+Enhancing the check is correct.
 
-cc: U-Boot mailing list
-cc: Edhaya Chandran (regarding UEFI SCT)
+The warning tells that Linux cannot establish secure settings for some 
+pages. It would be preferable to keep it and fix the UEFI specification 
+and the firmware instead.
 
 Best regards
 
 Heinrich
+
+>   		/*
+>   		 * If the region is not aligned to the page size of the OS, we
+>   		 * can not use strict permissions, since that would also affect
