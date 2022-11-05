@@ -2,104 +2,114 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAB6561DE01
-	for <lists+linux-efi@lfdr.de>; Sat,  5 Nov 2022 21:27:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F81C61DF01
+	for <lists+linux-efi@lfdr.de>; Sat,  5 Nov 2022 22:54:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229718AbiKEU1g (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 5 Nov 2022 16:27:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46538 "EHLO
+        id S229493AbiKEVyY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 5 Nov 2022 17:54:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229694AbiKEU1f (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 5 Nov 2022 16:27:35 -0400
-Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE863A1BE
-        for <linux-efi@vger.kernel.org>; Sat,  5 Nov 2022 13:27:33 -0700 (PDT)
-Received: by mail-qv1-xf2d.google.com with SMTP id c8so5650187qvn.10
-        for <linux-efi@vger.kernel.org>; Sat, 05 Nov 2022 13:27:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=VePs0JI06770kNaQV4FW/A1jDdBgLXw2+eP1o5u2S3o=;
-        b=THX5rRzw6pnPer/ciXBRKsaRkG/n8lJnC7tSUXwii1S98Qo1Z+FP5Ym2yxUb4EJ7cc
-         30Y7zRO47xv09FpRzDokHoyH9c7r6CslWOtDVMel1aZzmm2NrhVh912FOu39hCNpHi98
-         xaZPZNOkOgqCFPf9wdm1KymdqDHhOFfYsJ3VQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VePs0JI06770kNaQV4FW/A1jDdBgLXw2+eP1o5u2S3o=;
-        b=52EPWyHyggorLUpsjM0SnjrX6sTJqrvj8hDT6WP3c1Hy9mqjV/luEsJiNNge5w2h6C
-         xQEw9ubL3ROmavS7DKEqsHzq1ktWRnM4a8U6vdsvPoVaW75bvriOoEf645ub+YsYUUkk
-         J4bTdgOZPZkBuKGviFAr9h5TVGsbxOz0oIMAae5Xl0DkQD+PxYeQG8s5wq3Pi8qexq2K
-         enGSuNtD6g/SmNBLK6AvDfNgc1oWZeJNa4CDe/XixAMi8/zh3ZD9KYGGHDkmbxsubFuA
-         /bLPkGe8POYKGSrkmjg0JIcegob476jjYWtQ08lt9hM2xeU6B3r2ZzC40UJzzJV+Jg/p
-         QrsA==
-X-Gm-Message-State: ACrzQf3qQNbaSbL+3fc1L6wL05K+geTRirhOQ1is2QBgWPiwOXOHCLRk
-        7IxJj82KGYt0jZDu3u2MtYIquGGGL4Ej5w==
-X-Google-Smtp-Source: AMsMyM4Rgyy6okjIpZKrpXQ0eTPg7WpmXgGzmHvjt4OV01p//skcyAv9QgW3R6jrJkMy0uLk6kQNyw==
-X-Received: by 2002:a05:6214:2261:b0:4b7:77a0:194a with SMTP id gs1-20020a056214226100b004b777a0194amr38567890qvb.115.1667680052857;
-        Sat, 05 Nov 2022 13:27:32 -0700 (PDT)
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com. [209.85.219.181])
-        by smtp.gmail.com with ESMTPSA id y6-20020a05620a0e0600b006eec09eed39sm2547522qkm.40.2022.11.05.13.27.30
-        for <linux-efi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 05 Nov 2022 13:27:31 -0700 (PDT)
-Received: by mail-yb1-f181.google.com with SMTP id g127so9481985ybg.8
-        for <linux-efi@vger.kernel.org>; Sat, 05 Nov 2022 13:27:30 -0700 (PDT)
-X-Received: by 2002:a05:6902:1352:b0:6bb:3f4b:9666 with SMTP id
- g18-20020a056902135200b006bb3f4b9666mr38177653ybu.101.1667680050502; Sat, 05
- Nov 2022 13:27:30 -0700 (PDT)
+        with ESMTP id S229453AbiKEVyX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 5 Nov 2022 17:54:23 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B76A21A1
+        for <linux-efi@vger.kernel.org>; Sat,  5 Nov 2022 14:54:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1EF07B801BE
+        for <linux-efi@vger.kernel.org>; Sat,  5 Nov 2022 21:54:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B062C433D7
+        for <linux-efi@vger.kernel.org>; Sat,  5 Nov 2022 21:54:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667685259;
+        bh=+xYLQXMz1AXG8VSND1MEcLOPIiVyztE9yrlIPrK/PpI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=fMOZVT8Ro7ej7V2y9v0HZ6xN69lIj+HdUI+0aO5rq5muroAMoNQlNXvgVwkQuChCR
+         Ff9rhVBw11ndvRKmI2VkgNzQcAzB4evB6auDAvJ8Jmg1e/HnqHJaE026wBRQuhOj60
+         FaNZxIu4w9wH5Hb+G1EPKDOWmBR/F/pcSVleKKCZbFqOQexvyBjDhk2Q9k2BjaNFCj
+         2T3ybVlWr06zx4JCSdEon4VxiAD59YTVw1iT6d8iS1G0Mp6dpykN1R5v9w50PcCcio
+         0ZF48UmlSZ9ed3eIMng+XNT/+Erxq2NeMmDMTaEHcnN2/Ys8MQnlQERrH62jJUtx+d
+         snlHcHrsEs9Vw==
+Received: by mail-lf1-f46.google.com with SMTP id p8so11900900lfu.11
+        for <linux-efi@vger.kernel.org>; Sat, 05 Nov 2022 14:54:19 -0700 (PDT)
+X-Gm-Message-State: ACrzQf1XPYsvd9anvetW8cEi+OEH3O+tLGApetbW+5+D3gP+6FvJGjlB
+        VA15sDencxy/Kv6XCirMmBirKhweusAfg/7gDjU=
+X-Google-Smtp-Source: AMsMyM6biVGo/sOX9j6RTiZ+Fzt5tVWUaqDZLShDuTOk0FBnGYeXM/oyPAScpAtd95VQ5EDXakZYuqvQ6kPc2q2lfRo=
+X-Received: by 2002:a19:4f53:0:b0:4b1:1f35:279b with SMTP id
+ a19-20020a194f53000000b004b11f35279bmr9082759lfk.637.1667685257171; Sat, 05
+ Nov 2022 14:54:17 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAHk-=whPRmHQ=KV9B3_jeOG4ydj8gkMwQKnde7BJ4wJjveyMDQ@mail.gmail.com>
- <CAMj1kXFkp_W4P7twyZhM2mrP0PibOdWAwvKg-rb_jvh08RG_sg@mail.gmail.com>
-In-Reply-To: <CAMj1kXFkp_W4P7twyZhM2mrP0PibOdWAwvKg-rb_jvh08RG_sg@mail.gmail.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Sat, 5 Nov 2022 13:27:14 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wg2j9Fz-QVjmwqs+Uv9K-+rO9cviAokmvbFhwimtOGJpw@mail.gmail.com>
-Message-ID: <CAHk-=wg2j9Fz-QVjmwqs+Uv9K-+rO9cviAokmvbFhwimtOGJpw@mail.gmail.com>
+ <CAMj1kXFkp_W4P7twyZhM2mrP0PibOdWAwvKg-rb_jvh08RG_sg@mail.gmail.com> <CAHk-=wg2j9Fz-QVjmwqs+Uv9K-+rO9cviAokmvbFhwimtOGJpw@mail.gmail.com>
+In-Reply-To: <CAHk-=wg2j9Fz-QVjmwqs+Uv9K-+rO9cviAokmvbFhwimtOGJpw@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Sat, 5 Nov 2022 22:54:04 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXG5q_UZuPUtifSxwstMBf4QD-Q0=gObk1WzLmMMegduqg@mail.gmail.com>
+Message-ID: <CAMj1kXG5q_UZuPUtifSxwstMBf4QD-Q0=gObk1WzLmMMegduqg@mail.gmail.com>
 Subject: Re: Remove WARN_ONCE for unaligned UEFI region?
-To:     Ard Biesheuvel <ardb@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>,
         linux-efi <linux-efi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: multipart/mixed; boundary="00000000000003a26e05ecbf0585"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Content-Type: multipart/mixed; boundary="0000000000005a06aa05ecc03b9f"
+X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
---00000000000003a26e05ecbf0585
+--0000000000005a06aa05ecc03b9f
 Content-Type: text/plain; charset="UTF-8"
 
-On Sat, Nov 5, 2022 at 1:18 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+(cc Heinrich and Ilias)
+
+On Sat, 5 Nov 2022 at 21:27, Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
 >
-> Yeah just rip it out. In the beginning, we tended to make these
-> warnings noisy so people will actually notice.
+> On Sat, Nov 5, 2022 at 1:18 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+> >
+> > Yeah just rip it out. In the beginning, we tended to make these
+> > warnings noisy so people will actually notice.
+>
+> Rip it out entirely, or replace ith pr_warn_once()?
+>
 
-Rip it out entirely, or replace ith pr_warn_once()?
+A warning that can only trigger on 16k or 64k page size kernels
+clearly doesn't have a lot of coverage, so either we just drop it, or
+we make the warning use SZ_64K and not PAGE_SIZE.
 
-> I'd still like to see a memory map (boot with efi=debug) so we can get
-> this reported and fixed in uboot. We need that so 16k and 64k pages
-> boot doesn't cause surprises with overlapping mappings.
+And if we keep the warning, it should be separate from the if(): when
+the regions are misaligned, we have to use RWX mappings because an
+adjacent region that gets covered by the same mapping might require
+it.
 
-Here's the dmesg attached with efi=debug for your viewing pleasure.
+Maybe I'll just whip up a patch myself.
 
-           Linus
+> > I'd still like to see a memory map (boot with efi=debug) so we can get
+> > this reported and fixed in uboot. We need that so 16k and 64k pages
+> > boot doesn't cause surprises with overlapping mappings.
+>
+> Here's the dmesg attached with efi=debug for your viewing pleasure.
+>
 
---00000000000003a26e05ecbf0585
+Thanks.
+
+I've cc'ed the u-boot EFI maintainers, who take EFI spec compliance
+very seriously, so I'm sure we'll get this fixed quickly.
+
+--0000000000005a06aa05ecc03b9f
 Content-Type: application/octet-stream; name="msg.out"
 Content-Disposition: attachment; filename="msg.out"
 Content-Transfer-Encoding: base64
-Content-ID: <f_la4dlwmg0>
-X-Attachment-Id: f_la4dlwmg0
+Content-ID: <f_la4glqxf0>
+X-Attachment-Id: f_la4glqxf0
 
 WyAgICAwLjAwMDAwMF0gQm9vdGluZyBMaW51eCBvbiBwaHlzaWNhbCBDUFUgMHgwMDAwMDAwMDAw
 IFsweDYxMWYwMzIwXQpbICAgIDAuMDAwMDAwXSBMaW51eCB2ZXJzaW9uIDYuMS4wLXJjMy0wMDQ5
@@ -1020,4 +1030,4 @@ aWxsOiBpbnB1dCBoYW5kbGVyIGVuYWJsZWQKWyAgIDg4Ljc0ODY3OV0gcmZraWxsOiBpbnB1dCBo
 YW5kbGVyIGRpc2FibGVkClsgICA5MC44NTczMzZdIElQdjY6IEFERFJDT05GKE5FVERFVl9DSEFO
 R0UpOiB3bHAxczBmMDogbGluayBiZWNvbWVzIHJlYWR5ClsgICA5Ni4yMjYwMTBdIHN5c3RlbWQt
 am91cm5hbGRbNTg2XTogVGltZSBqdW1wZWQgYmFja3dhcmRzLCByb3RhdGluZy4K
---00000000000003a26e05ecbf0585--
+--0000000000005a06aa05ecc03b9f--
