@@ -2,62 +2,50 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56CC961DF29
-	for <lists+linux-efi@lfdr.de>; Sat,  5 Nov 2022 23:43:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 715C461DF2F
+	for <lists+linux-efi@lfdr.de>; Sat,  5 Nov 2022 23:52:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229542AbiKEWnq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 5 Nov 2022 18:43:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51338 "EHLO
+        id S229533AbiKEWwn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 5 Nov 2022 18:52:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229493AbiKEWnp (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 5 Nov 2022 18:43:45 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B084912A84
-        for <linux-efi@vger.kernel.org>; Sat,  5 Nov 2022 15:43:44 -0700 (PDT)
+        with ESMTP id S229823AbiKEWwn (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 5 Nov 2022 18:52:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54A9812A8C
+        for <linux-efi@vger.kernel.org>; Sat,  5 Nov 2022 15:52:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5F808B808C7
-        for <linux-efi@vger.kernel.org>; Sat,  5 Nov 2022 22:43:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5552C433B5
-        for <linux-efi@vger.kernel.org>; Sat,  5 Nov 2022 22:43:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DBB7B60BC7
+        for <linux-efi@vger.kernel.org>; Sat,  5 Nov 2022 22:52:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B78C433D6;
+        Sat,  5 Nov 2022 22:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667688221;
-        bh=V1njG/Wof8OJSEbtdd3htwP2KmAVsFUvXgwPl1FWBb8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=BlHjifr5Qy9kBQ6aiOXIpO5afrNeIt2QPJbrtHEz/SObUeg+HJv8nGd2G88gqm1zO
-         q6qhn2rGRD74TnILc6vSRT3Qn+0c4NSimvC+8jFZUY4owh/N3ZfwfrFMYSCEjHmnU/
-         SurCCGPPRucEH2DENGjYDpfnryqe/SyxTIrI5+w8vDcG0TnHEQC4UHg1epdNeWLwcJ
-         Anq2ZPFnyDgoqLA3MxsmIkP7d12WR/k0qVWkr5J3vDxvTU+m1siiu9kadm7hXowIGN
-         M461iHTG1VbZ/YJoCQ7ciImhX8XdtfFYFvg8eN0KBD7thBSYX2u83Mv5vV0tLq5K8Q
-         lQqHI/K6S3VUg==
-Received: by mail-lf1-f49.google.com with SMTP id be13so12029290lfb.4
-        for <linux-efi@vger.kernel.org>; Sat, 05 Nov 2022 15:43:41 -0700 (PDT)
-X-Gm-Message-State: ACrzQf16kMjYhAg2kWXm6XuW7y6WuJJTRO3w9mclRbPUg2r4bNfjtvr/
-        Ilohqt5rVT7yYWleEIAkoi46Bhy1fmeYVcBm8H0=
-X-Google-Smtp-Source: AMsMyM4O13IyOofs8qDD+WEXIRKKBvz9pbtxekEIvmxzddmY+DuHBB1vnfxHKosaDL8lMUrakzCDSa9RyIw6RlomJK0=
-X-Received: by 2002:a05:6512:151b:b0:4af:e7d3:4a46 with SMTP id
- bq27-20020a056512151b00b004afe7d34a46mr15011844lfb.583.1667688219955; Sat, 05
- Nov 2022 15:43:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAHk-=whPRmHQ=KV9B3_jeOG4ydj8gkMwQKnde7BJ4wJjveyMDQ@mail.gmail.com>
- <CAMj1kXFkp_W4P7twyZhM2mrP0PibOdWAwvKg-rb_jvh08RG_sg@mail.gmail.com>
- <CAHk-=wg2j9Fz-QVjmwqs+Uv9K-+rO9cviAokmvbFhwimtOGJpw@mail.gmail.com> <CAMj1kXG5q_UZuPUtifSxwstMBf4QD-Q0=gObk1WzLmMMegduqg@mail.gmail.com>
-In-Reply-To: <CAMj1kXG5q_UZuPUtifSxwstMBf4QD-Q0=gObk1WzLmMMegduqg@mail.gmail.com>
+        s=k20201202; t=1667688761;
+        bh=OdC/x6CRP1Q6DzJ2wktgiugPDGhj7AalzRHBSkGJxD0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=LWsGaNyP/mFuyBSDsRu/CQgdNo5jg5uPDtR5AZzVl8HRSKgWJSwdYSE7jzoV8iqfP
+         5dKwfDdjpWB/r4unJzVuU4Y1SbR7rm9Wyu4ao6f2dnVGJk3bwr5V8Sc/TNMtaYIN51
+         hWghRW22JPMOSdOGfWSKf61xvQunzzAOVeQOJgndUzplqrUi8J0INlLIYY7LFwD589
+         rwBwRg6kWJUnhw0Tc4wLm53GUhlVu4FtMxVc/HNm+PTvcGxfOVhrSzfpamWmsi2YlH
+         qdfOcMKy9taU2YWaJYqmxdwRwRgZDNolytVBKGPGf2g9PWoKC28WrkFDewEg3M6CCX
+         XHwWg4GCy/AMQ==
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Sat, 5 Nov 2022 23:43:27 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHau=dVvSCBTDxqPeXiiXEYHTqQ_fBZym3D=4vaB9FMhg@mail.gmail.com>
-Message-ID: <CAMj1kXHau=dVvSCBTDxqPeXiiXEYHTqQ_fBZym3D=4vaB9FMhg@mail.gmail.com>
-Subject: Re: Remove WARN_ONCE for unaligned UEFI region?
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+To:     torvalds@linux-foundation.org
+Cc:     linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        catalin.marinas@arm.com, will@kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>,
         Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
         Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: [PATCH] arm64: efi: Make runtime region misalignment warning less noisy
+Date:   Sat,  5 Nov 2022 23:52:33 +0100
+Message-Id: <20221105225234.3089177-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2001; i=ardb@kernel.org; h=from:subject; bh=OdC/x6CRP1Q6DzJ2wktgiugPDGhj7AalzRHBSkGJxD0=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjZukx6SKgMKw3LlKkQp2pxi87rwuExZ4iSWvVGqHl 0Z0T+3OJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY2bpMQAKCRDDTyI5ktmPJJ8LC/ 9jCy4inYywhm11pl9pnWZlsM6YNwFUKEweZhfKY5B7pLqxCWiuzyx1PNyIk3i8JcAaQsWzGQ/0WAmS WxoGi7V4VBVihq8b+5vipPh12GaM/cDAYFnMm6l0wU4EiHmkRlKnrlFtrTH9BeVmXYRKQUEnroDLRL bmx7x5rmW5Pv4ETJjrlmP7DZjbrCbzeqavKtH1C6Ge0rP0fyWaRnZpCKww2gZfOlTx8L9Xyw4y/mZK pY2IKPSua5RX4LOMPe318hoebBe/WcF1CS3WcwB/4qk7xA+hsuNGDMzum3O9B+mgXSxijBlKzy8/gc irF0aUMxJlOmodRVMP7tXLby9vt3P9WLRYIf9Juqc228LT8jOnHOSe++brsVBPRJq3jSLbz71eHd3u hhzhskPxpTSvXMn7QtPU/spCQK2lhFRnzdqtRKTi9c8pWvDTanE6SFJ++7Qj+JOVKnzL4MCVIKQtiL jpo9KZWMyNs0GbxXIbQaslUFlP/UZPyQpJB+6aNVS2ALk=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -67,63 +55,47 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, 5 Nov 2022 at 22:54, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> (cc Heinrich and Ilias)
->
-> On Sat, 5 Nov 2022 at 21:27, Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
-> >
-> > On Sat, Nov 5, 2022 at 1:18 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > >
-> > > Yeah just rip it out. In the beginning, we tended to make these
-> > > warnings noisy so people will actually notice.
-> >
-> > Rip it out entirely, or replace ith pr_warn_once()?
-> >
->
-> A warning that can only trigger on 16k or 64k page size kernels
-> clearly doesn't have a lot of coverage, so either we just drop it, or
-> we make the warning use SZ_64K and not PAGE_SIZE.
->
-> And if we keep the warning, it should be separate from the if(): when
-> the regions are misaligned, we have to use RWX mappings because an
-> adjacent region that gets covered by the same mapping might require
-> it.
->
-> Maybe I'll just whip up a patch myself.
->
-> > > I'd still like to see a memory map (boot with efi=3Ddebug) so we can =
-get
-> > > this reported and fixed in uboot. We need that so 16k and 64k pages
-> > > boot doesn't cause surprises with overlapping mappings.
-> >
-> > Here's the dmesg attached with efi=3Ddebug for your viewing pleasure.
-> >
->
-> Thanks.
->
-> I've cc'ed the u-boot EFI maintainers, who take EFI spec compliance
-> very seriously, so I'm sure we'll get this fixed quickly.
+The EFI spec requires that on arm64 systems, all runtime code and data
+regions that share a 64k page can be mapped with the same memory type
+attributes. Unfortunately, this does not take permission attributes into
+account, and so the firmware is permitted to expose runtime code and
+data regions that share 64k pages, and this may prevent the OS from
+using restricted permissions in such cases, e.g., map data regions with
+non-exec attributes.
 
-Grrr looking at the spec, it seems the wording we proposed at the time
-never made it in, and at the moment, it just reads:
+We currently emit a warning when hitting this at boot, but the warning
+is problematic for a number of reasons:
+- it uses WARN() which spews a lot of irrelevant information into the
+  log about the execution context where the issue was detected;
+- it only takes the start of the region into account and not the size
 
-"""
-If a 64KiB physical page contains any 4KiB page with any of the
-following types listed below, then all 4KiB pages in the 64KiB page
-must use identical ARM Memory Page Attributes:
-=E2=80=94 EfiRuntimeServicesCode
-=E2=80=94 EfiRuntimeServicesData
-...
-"""
+Let's just drop the warning, as the condition does not strictly violate
+the spec (although it only occurs with U-Boot), and fix the check to
+take both the start and the end addresses into account.
 
-The problem here is that it doesn't take permission attributes into
-account, allowing the firmware to cram code and data regions into the
-same 64k page, and instructing the OS to use R-X for the code and RW-
-for the data, which it cannot do if it uses 16k or 64k pages.
+Cc: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ arch/arm64/kernel/efi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-So let's drop the warning and add it back later once the spec actually
-supports it.
+diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
+index e1be6c429810d0d5..3dd6f0c66f8aeb78 100644
+--- a/arch/arm64/kernel/efi.c
++++ b/arch/arm64/kernel/efi.c
+@@ -25,8 +25,8 @@ static __init pteval_t create_mapping_protection(efi_memory_desc_t *md)
+ 	if (type == EFI_MEMORY_MAPPED_IO)
+ 		return PROT_DEVICE_nGnRE;
+ 
+-	if (WARN_ONCE(!PAGE_ALIGNED(md->phys_addr),
+-		      "UEFI Runtime regions are not aligned to 64 KB -- buggy firmware?"))
++	if (!PAGE_ALIGNED(md->phys_addr) ||
++	    !PAGE_ALIGNED(md->num_pages * EFI_PAGE_SIZE))
+ 		/*
+ 		 * If the region is not aligned to the page size of the OS, we
+ 		 * can not use strict permissions, since that would also affect
+-- 
+2.35.1
 
-Patch on its way ...
