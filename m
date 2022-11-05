@@ -2,167 +2,118 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E61C661DAC6
-	for <lists+linux-efi@lfdr.de>; Sat,  5 Nov 2022 15:16:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB31C61DDDE
+	for <lists+linux-efi@lfdr.de>; Sat,  5 Nov 2022 20:49:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229766AbiKEOQi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 5 Nov 2022 10:16:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35918 "EHLO
+        id S229493AbiKETtd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 5 Nov 2022 15:49:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229614AbiKEOQi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 5 Nov 2022 10:16:38 -0400
-Received: from mail.cock.li (unknown [37.120.193.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1876026AC9;
-        Sat,  5 Nov 2022 07:16:34 -0700 (PDT)
+        with ESMTP id S229479AbiKETtd (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 5 Nov 2022 15:49:33 -0400
+Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DDEC10571
+        for <linux-efi@vger.kernel.org>; Sat,  5 Nov 2022 12:49:29 -0700 (PDT)
+Received: by mail-qv1-xf34.google.com with SMTP id c8so5611949qvn.10
+        for <linux-efi@vger.kernel.org>; Sat, 05 Nov 2022 12:49:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+aQ4KvtSgbziv3y1jOmicvGW9ncWBT5T5hSqEGaM0yw=;
+        b=Zml9TDfR0H9lMMwGa4DOYtFE9OWPCOzqAzU4V1ffeR0asut6c3XLSKmTPQmR11Gq6z
+         yLYWFGqqWOFg3toO+BjwgtdZimjbJF6BAk7j4FGVCJzvVSgKZ4eNcLTrxNSsN+XGJo3S
+         EfLz8e6OGQf6l670eWCulpaF2ckhvTuY18pgY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+aQ4KvtSgbziv3y1jOmicvGW9ncWBT5T5hSqEGaM0yw=;
+        b=pki8SmIsgkS2SeppPC+5AqH1T6FgoN9YDJLhovTeeuD2hkBPoK1JK7/RRbBvLLsZ27
+         8CTdqmxCBqx4nxgyABf+XYMIK7NU/0NOvNJKQrv7zebhouux938alJS/a+dba6YQlQTo
+         pnKG6pPAuiLQoHA64VN3JOaH+1U5em7ONBnr/vBL6Yip0LLDZ6aLcfN/XezaWSPUPGut
+         +KCB46bOQGZne8if6ptvJsWGMZpTXj51Yrqyuv5nZZmGXaYTzArGM62hAfgkXLXukDH6
+         BgTndVFX4jZzI3MUb2WXJqRZXWLQKpMjxx0TzFdfYB0Of5wxbz6/nAFcfT8QyJVnvRx6
+         xquQ==
+X-Gm-Message-State: ACrzQf17gzcgPigZx40k5Z/N2ZiZwYQrR/nl2wMFW5prfqgAVuCehl+k
+        3GE82TeBtcjHY7oki1oHxr9QFyLGc75EPQ==
+X-Google-Smtp-Source: AMsMyM4lakE9WyRu0eil2YZ1ymAne1SPhEQKZCHsykPIpDLvuW4qrwicEMN39UV0fHB9WzZc20Dmvw==
+X-Received: by 2002:a05:6214:e84:b0:4bc:2094:2ef0 with SMTP id hf4-20020a0562140e8400b004bc20942ef0mr18970600qvb.78.1667677768467;
+        Sat, 05 Nov 2022 12:49:28 -0700 (PDT)
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com. [209.85.219.176])
+        by smtp.gmail.com with ESMTPSA id b23-20020ac86797000000b003a526675c07sm2337212qtp.52.2022.11.05.12.49.27
+        for <linux-efi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 05 Nov 2022 12:49:27 -0700 (PDT)
+Received: by mail-yb1-f176.google.com with SMTP id o70so9410031yba.7
+        for <linux-efi@vger.kernel.org>; Sat, 05 Nov 2022 12:49:27 -0700 (PDT)
+X-Received: by 2002:a05:6902:1352:b0:6bb:3f4b:9666 with SMTP id
+ g18-20020a056902135200b006bb3f4b9666mr38056548ybu.101.1667677767216; Sat, 05
+ Nov 2022 12:49:27 -0700 (PDT)
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tfwno.gf; s=mail;
-        t=1667657790; bh=J7AqfEf7LvFDpqBYRlFhO8k4vfiTi6BH8M8TJ5Qv02s=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=KbjOkyroeyovBXygh35SwSIFVx4a8Xt4hpUdDp97q6+8nixOx0RL4hiUij+/vaePB
-         2t4XRTbjU72AtJckqln8KAw7Gq8M7xAGwh8wRnj4Zy8Hk67eCM8ewY41eb5w/gph0+
-         V1nz7lFLcltMnB2qPASazgNWMFpbSZKEoWWWXTxPWedNps1MM17/CrukWl+qquu3yG
-         oyaaW5bvy3r4UZfFujMTt/VeUM+DZRoQigihRWBAbRuXOCQKZt11WaLyOovNeKA8YN
-         QZxKHIUQBZJ8Klzj+4IXMfcHwEADJvCTxze47rpdqMyJX0xxEeIItilpzTyM70OY0a
-         Xz2px1nk9okRQ==
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Sat, 05 Nov 2022 14:16:30 +0000
-From:   ns@tfwno.gf
-To:     Dave Young <dyoung@redhat.com>
-Cc:     Baoquan He <bhe@redhat.com>,
-        Eric Biederman <ebiederm@xmission.com>,
-        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
-Subject: Re: Bug: kexec on Lenovo ThinkPad T480 disables EFI mode
-In-Reply-To: <CALu+AoTVtO=-tzbgjeVRQ3uO0yGUPWKPuAiLn0CpaAq_=xr-sw@mail.gmail.com>
-References: <3acf1cc7a974cb4fb9b77b39311c6714@tfwno.gf>
- <Y2XUNive2KMwTjUF@MiWiFi-R3L-srv>
- <CALu+AoTVtO=-tzbgjeVRQ3uO0yGUPWKPuAiLn0CpaAq_=xr-sw@mail.gmail.com>
-Message-ID: <2f43e1e583a92e1592c48a15a763e1f7@tfwno.gf>
-X-Sender: ns@tfwno.gf
-User-Agent: Roundcube Webmail/1.3.17
-X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_VALIDITY_RPBL,
-        SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sat, 5 Nov 2022 12:49:11 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whPRmHQ=KV9B3_jeOG4ydj8gkMwQKnde7BJ4wJjveyMDQ@mail.gmail.com>
+Message-ID: <CAHk-=whPRmHQ=KV9B3_jeOG4ydj8gkMwQKnde7BJ4wJjveyMDQ@mail.gmail.com>
+Subject: Remove WARN_ONCE for unaligned UEFI region?
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>
+Cc:     linux-efi <linux-efi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2022-11-05 05:49, Dave Young wrote:
-> Baoquan, thanks for cc me.
-> 
-> On Sat, 5 Nov 2022 at 11:10, Baoquan He <bhe@redhat.com> wrote:
->> 
->> Add Dave to CC
->> 
->> On 10/28/22 at 01:02pm, ns@tfwno.gf wrote:
->> > Greetings,
->> >
->> > I've been hitting a bug on my Lenovo ThinkPad T480 where kexecing will
->> > cause EFI mode (if that's the right term for it) to be unconditionally
->> > disabled, even when not using the --noefi option to kexec.
->> >
->> > What I mean by "EFI mode" being disabled, more than just EFI runtime
->> > services, is that basically nothing about the system's EFI is visible
->> > post-kexec. Normally you have a message like this in dmesg when the
->> > system is booted in EFI mode:
->> >
->> > [    0.000000] efi: EFI v2.70 by EDK II
->> > [    0.000000] efi: SMBIOS=0x7f98a000 ACPI=0x7fb7e000 ACPI 2.0=0x7fb7e014
->> > MEMATTR=0x7ec63018
->> > (obviously not the real firmware of the machine I'm talking about, but I
->> > can also send that if it would be of any help)
->> >
->> > No such message pops up in my dmesg as a result of this bug, & this
->> > causes some fallout like being unable to find the system's DMI
->> > information:
->> >
->> > <6>[    0.000000] DMI not present or invalid.
->> >
->> > The efivarfs module also fails to load with -ENODEV.
->> >
->> > I've tried also booting with efi=runtime explicitly but it doesn't
->> > change anything. The kernel still does not print the name of the EFI
->> > firmware, DMI is still missing, & efivarfs still fails to load.
->> >
->> > I've been using the kexec_load syscall for all these tests, if it's
->> > important.
->> >
->> > Also, to make it very clear, all this only ever happens post-kexec. When
->> > booting straight from UEFI (with the EFI stub), all the aforementioned
->> > stuff that fails works perfectly fine (i.e. name of firmware is printed,
->> > DMI is properly found, & efivarfs loads & mounts just fine).
->> >
->> > This is reproducible with a vanilla 6.1-rc2 kernel. I've been trying to
->> > bisect it, but it seems like it goes pretty far back. I've got vanilla
->> > mainline kernel builds dating back to 5.17 that have the exact same
->> > issue. It might be worth noting that during this testing, I made sure
->> > the version of the kernel being kexeced & the kernel kexecing were the
->> > same version. It may not have been a problem in older kernels, but that
->> > would be difficult to test for me (a pretty important driver for this
->> > machine was only merged during v5.17-rc4). So it may not have been a
->> > regression & just a hidden problem since time immemorial.
->> >
->> > I am willing to test any patches I may get to further debug or fix
->> > this issue, preferably based on the current state of torvalds/linux.git.
->> > I can build & test kernels quite a few times per day.
->> >
->> > I can also send any important materials (kernel config, dmesg, firmware
->> > information, so on & so forth) on request. I'll also just mention I'm
->> > using kexec-tools 2.0.24 upfront, if it matters.
-> 
-> Can you check the efi runtime in sysfs:
-> ls /sys/firmware/efi/runtime-map/
-> 
-> If nothing then maybe you did not enable CONFIG_EFI_RUNTIME_MAP=y, it
-> is needed for kexec UEFI boot on x86_64.
+So this has been going on since I got my M2 laptop, but I finally
+decided it's really annoying and would like it removed..
 
-Oh my, it really is that simple.
+The arm64 EFI code does that
 
-Indeed, enabling this in the pre-kexec kernel fixes it all up. I had
-blindly disabled it in my quest to downsize the pre-kexec kernel to
-reduce boot time (it only runs a bootloader). In hindsight, the firmware
-drivers section is not really a good section to tweak on a whim.
+        if (WARN_ONCE(!PAGE_ALIGNED(md->phys_addr),
+                      "UEFI Runtime regions are not aligned to 64 KB
+-- buggy firmware?"))
 
-I'm terribly sorry to have taken your time to "fix" this "bug". But I
-must ask, is there any reason why this is a visible config option, or at
-least not gated behind CONFIG_EXPERT? drivers/firmware/efi/runtime-map.c
-is pretty tiny, & considering it depends on CONFIG_KEXEC_CORE, one
-probably wants to have kexec work properly if they can even enable it.
-I admit the help text for it is arguably pretty good, but I feel like
-the config option is only really useful for embedded, the same
-enviroments where people would disable stuff like CONFIG_DMI -- a config
-option that I would argue is pretty justifiably gated behind
-CONFIG_EXPERT, because far too many systems break without it & it's
-pretty small code, so really not worth it unless you absolutely know
-what you're doing. Similarly, I don't really think there's much value
-in disabling the ability to kexec without the firmware except if you're
-heavily informed & must have the size reduction, especially since in
-EFI land that's where your DMI info comes from, if I were to argue for
-it on the basis of CONFIG_DMI being gated. In summary, it can cause
-quite a bit of unnecessary confusion despite only being useful to a very
-small minority of users.
+for unaligned UEFI data, and that most definitely triggers on the M2.
 
-Thank you!
+Yet I can't really see the point of the stack trace and register dump
+for something like this.
 
-> 
-> Otherwise you can add debug printf in kexec-tools efi error path to
-> see what is wrong.
-> kexec/arch/i386/x86-linux-setup.c : function setup_efi_data
-> 
-> And if it still not work please post your kernel config, I can have a
-> try although I do not have the t480 now.
-> 
-> 
->> >
->> > Regards,
->> >
->> > _______________________________________________
->> > kexec mailing list
->> > kexec@lists.infradead.org
->> > http://lists.infradead.org/mailman/listinfo/kexec
->> >
->> 
+IOW, why isn't it just a
+
+        if (!PAGE_ALIGNED(md->phys_addr)) {
+                pr_warn_once("UEFI Runtime regions are not aligned to
+64 KB -- buggy firmware?");
+                return pgprot_val(PAGE_KERNEL_EXEC);
+        }
+
+instead?
+
+As it is, it's just annoying, and doesn't actually even tell anything
+interesting. The stack trace points to arm_enable_runtime_services(),
+which isn't a surprise, and it's obviously just that
+efi_virtmap_init() got inlined.
+
+Now, if it actually mentioned which mapping it was that was unaligned,
+maybe that would be interesting, but it doesn't even do that. So it's
+just noise with no actual information in it.
+
+I get a number of other warnings on the M2 ("Unable to detect cache
+hierarchy for CPU X"), but hey, that's normal. My regular Threadripper
+workstation also has ACPI warnings ("Failure creating named object")
+due to duplicate objects etc. Firmware is buggy - what else is new?
+That's just how life is.
+
+But using WARN_ON() instead of "pr_warn()" for it seems a bit excessive.
+
+I can do that change myself, or take a patch the usual ways, but let's
+get rid of this annoyance, ok? Just let me know.
+
+               Linus
