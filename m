@@ -2,72 +2,127 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E84961A4D6
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Nov 2022 23:51:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 039AE61A739
+	for <lists+linux-efi@lfdr.de>; Sat,  5 Nov 2022 04:12:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230515AbiKDWvs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 4 Nov 2022 18:51:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57920 "EHLO
+        id S229479AbiKEDMB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 4 Nov 2022 23:12:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230382AbiKDWvg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Nov 2022 18:51:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 758C0554D9
-        for <linux-efi@vger.kernel.org>; Fri,  4 Nov 2022 15:46:36 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S229742AbiKEDL7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Nov 2022 23:11:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73A8E27B14
+        for <linux-efi@vger.kernel.org>; Fri,  4 Nov 2022 20:10:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1667617856;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=BcIXO4xBoz7ofsfZUzi32Ktqyk3fNvPNgMvPPVFXeew=;
+        b=WTrJF3ua1MoJozfmFvBcBPC+GDN27u9FHCnmDbWqvGYeRqDcMppoDJwVC6fYwFlv8xA6qW
+        jbRG7J0NrKGVdzEDGU4pjxmc7Z8+AL178SNZcclnlL32YF7gqjr6WWMm7GfPUcWRKEDziL
+        9ZXMZNmg1PxyFT+CG2eFe6I4a/Hvtog=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-617-I_GDZKzgOcSc_30tL8XqZw-1; Fri, 04 Nov 2022 23:10:53 -0400
+X-MC-Unique: I_GDZKzgOcSc_30tL8XqZw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C43C46236F
-        for <linux-efi@vger.kernel.org>; Fri,  4 Nov 2022 22:46:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 334F6C433D6;
-        Fri,  4 Nov 2022 22:46:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667601996;
-        bh=Ck25/hk4jXhCO+s3VQKD81TyRjyG7/8d5myL6bf4wJo=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=sHZ3S22OWyey8yn7lt5V9tsmvbul3Q7mznDKeOg9ndRktD+1XqLfcKPBgaiisGmiE
-         3LYoBb3EQp3jxte0foKglboAkPFqjFfxFmi++oTOXvKACHnWkdyRPqz8J0E7UZSqOw
-         cRe5h6UP3oNzr+kx/ZYhsRWMQnwxus5RSWbTqDJiig2lwDAki5YHswSvB56DTzlBI5
-         P4R0fpCt0YipaeTD4U+csoEA5tCFo/6PvkVSlwVtNaU0X5YXzi3lnJP5k3ylLkbHrW
-         7Ll3MZVoLxLg/gHBvEcRgnyi+gfG/8pH2jxusjejQUx3effxCeecixZ3bpV1tqyJkm
-         WDks8ecmRYfFg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 11A91E270FB;
-        Fri,  4 Nov 2022 22:46:36 +0000 (UTC)
-Subject: Re: [GIT PULL] EFI fixes for v6.1 (#2)
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20221104165149.2397431-1-ardb@kernel.org>
-References: <20221104165149.2397431-1-ardb@kernel.org>
-X-PR-Tracked-List-Id: <linux-efi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20221104165149.2397431-1-ardb@kernel.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.1-2
-X-PR-Tracked-Commit-Id: 23715a26c8d812912a70c6ac1ce67af649b95914
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 1caa2f182afb59de9d6d5ba64b340df011a0b653
-Message-Id: <166760199606.25569.3238482132922105154.pr-tracker-bot@kernel.org>
-Date:   Fri, 04 Nov 2022 22:46:36 +0000
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     torvalds@linux-foundation.org, linux-efi@vger.kernel.org,
-        Ard Biesheuvel <ardb@kernel.org>
-X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0719B8039A5;
+        Sat,  5 Nov 2022 03:10:53 +0000 (UTC)
+Received: from localhost (ovpn-13-134.pek2.redhat.com [10.72.13.134])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 384342166B26;
+        Sat,  5 Nov 2022 03:10:49 +0000 (UTC)
+Date:   Sat, 5 Nov 2022 11:10:46 +0800
+From:   Baoquan He <bhe@redhat.com>
+To:     ns@tfwno.gf, dyoung@redhat.com
+Cc:     Eric Biederman <ebiederm@xmission.com>, kexec@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        linux-efi@vger.kernel.org
+Subject: Re: Bug: kexec on Lenovo ThinkPad T480 disables EFI mode
+Message-ID: <Y2XUNive2KMwTjUF@MiWiFi-R3L-srv>
+References: <3acf1cc7a974cb4fb9b77b39311c6714@tfwno.gf>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3acf1cc7a974cb4fb9b77b39311c6714@tfwno.gf>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The pull request you sent on Fri,  4 Nov 2022 17:51:49 +0100:
+Add Dave to CC
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.1-2
+On 10/28/22 at 01:02pm, ns@tfwno.gf wrote:
+> Greetings,
+> 
+> I've been hitting a bug on my Lenovo ThinkPad T480 where kexecing will
+> cause EFI mode (if that's the right term for it) to be unconditionally
+> disabled, even when not using the --noefi option to kexec.
+> 
+> What I mean by "EFI mode" being disabled, more than just EFI runtime
+> services, is that basically nothing about the system's EFI is visible
+> post-kexec. Normally you have a message like this in dmesg when the
+> system is booted in EFI mode:
+> 
+> [    0.000000] efi: EFI v2.70 by EDK II
+> [    0.000000] efi: SMBIOS=0x7f98a000 ACPI=0x7fb7e000 ACPI 2.0=0x7fb7e014
+> MEMATTR=0x7ec63018
+> (obviously not the real firmware of the machine I'm talking about, but I
+> can also send that if it would be of any help)
+> 
+> No such message pops up in my dmesg as a result of this bug, & this
+> causes some fallout like being unable to find the system's DMI
+> information:
+> 
+> <6>[    0.000000] DMI not present or invalid.
+> 
+> The efivarfs module also fails to load with -ENODEV.
+> 
+> I've tried also booting with efi=runtime explicitly but it doesn't
+> change anything. The kernel still does not print the name of the EFI
+> firmware, DMI is still missing, & efivarfs still fails to load.
+> 
+> I've been using the kexec_load syscall for all these tests, if it's
+> important.
+> 
+> Also, to make it very clear, all this only ever happens post-kexec. When
+> booting straight from UEFI (with the EFI stub), all the aforementioned
+> stuff that fails works perfectly fine (i.e. name of firmware is printed,
+> DMI is properly found, & efivarfs loads & mounts just fine).
+> 
+> This is reproducible with a vanilla 6.1-rc2 kernel. I've been trying to
+> bisect it, but it seems like it goes pretty far back. I've got vanilla
+> mainline kernel builds dating back to 5.17 that have the exact same
+> issue. It might be worth noting that during this testing, I made sure
+> the version of the kernel being kexeced & the kernel kexecing were the
+> same version. It may not have been a problem in older kernels, but that
+> would be difficult to test for me (a pretty important driver for this
+> machine was only merged during v5.17-rc4). So it may not have been a
+> regression & just a hidden problem since time immemorial.
+> 
+> I am willing to test any patches I may get to further debug or fix
+> this issue, preferably based on the current state of torvalds/linux.git.
+> I can build & test kernels quite a few times per day.
+> 
+> I can also send any important materials (kernel config, dmesg, firmware
+> information, so on & so forth) on request. I'll also just mention I'm
+> using kexec-tools 2.0.24 upfront, if it matters.
+> 
+> Regards,
+> 
+> _______________________________________________
+> kexec mailing list
+> kexec@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/kexec
+> 
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/1caa2f182afb59de9d6d5ba64b340df011a0b653
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
