@@ -2,59 +2,50 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B00A961E1BD
-	for <lists+linux-efi@lfdr.de>; Sun,  6 Nov 2022 11:51:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7A6161E2C9
+	for <lists+linux-efi@lfdr.de>; Sun,  6 Nov 2022 15:54:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229754AbiKFKv1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 6 Nov 2022 05:51:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42154 "EHLO
+        id S229901AbiKFOyH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 6 Nov 2022 09:54:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229581AbiKFKvZ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 6 Nov 2022 05:51:25 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DFE79FE7
-        for <linux-efi@vger.kernel.org>; Sun,  6 Nov 2022 02:51:24 -0800 (PST)
+        with ESMTP id S229835AbiKFOyG (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 6 Nov 2022 09:54:06 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10E1F2ADF
+        for <linux-efi@vger.kernel.org>; Sun,  6 Nov 2022 06:54:05 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D13A960C07
-        for <linux-efi@vger.kernel.org>; Sun,  6 Nov 2022 10:51:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE01C43141
-        for <linux-efi@vger.kernel.org>; Sun,  6 Nov 2022 10:51:23 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 40568CE0C29
+        for <linux-efi@vger.kernel.org>; Sun,  6 Nov 2022 14:54:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 984CAC433D6;
+        Sun,  6 Nov 2022 14:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667731883;
-        bh=DXMCd7iosMKdKvWkFiI5Q17zPtxYXjXyucEr2upsacw=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=FA5chc+WEiZtAx7TbEm355CXpi4n94gF4l9sokf4gBDswDIBoIoS7kv2gIKaVgG2v
-         3epMhEkUgPswiqaOo9osWoTx+aOmip2e699mTFtPogBzUDnriCt7qF4PmuI6kEnaL6
-         eaVFIovG0ZB9TMkfujELagOPRnghc+fO4y7x8ruR5eRfld5YKTTP6C0BEVds1sOc7i
-         i0rGsWQj4/TKexpkAhnK/0dA+Fdk3D7W3A6Z0DVNDRgnY+qp3+Ox+SfSrIelrZYEwE
-         cG4xep3GxPpikQIG3qNuoCv3JLJ43n96hv+whsWHLzNhNvylLEwC1E2qxMvrdI10Re
-         87JsTdXP3wyBQ==
-Received: by mail-lj1-f169.google.com with SMTP id a15so12234420ljb.7
-        for <linux-efi@vger.kernel.org>; Sun, 06 Nov 2022 02:51:23 -0800 (PST)
-X-Gm-Message-State: ACrzQf0r+t4TNqyrN+Dj+Yh49pHns7+0P1/zNVjgPDVoO9Jot+XlgzD7
-        iDasor2pAETFmU5iLn8Im78lqP5adXUcWYm7pfw=
-X-Google-Smtp-Source: AMsMyM4HXlnXrkVKgwjO0fqo+PZZxYznJPNfZdWmYtDUEInXrmTaIx8EER0H74FNkdjS8WBMGyicvTSE+ZyEidoE5NA=
-X-Received: by 2002:a2e:6119:0:b0:277:593e:c2af with SMTP id
- v25-20020a2e6119000000b00277593ec2afmr13226779ljb.516.1667731881078; Sun, 06
- Nov 2022 02:51:21 -0800 (PST)
-MIME-Version: 1.0
-References: <20221105225234.3089177-1-ardb@kernel.org> <86e2cd39-630a-da76-bbfd-99815a8c2753@canonical.com>
- <467c7858-305f-8a98-d974-d5dea8b84101@canonical.com> <CAMj1kXHX3rZ=jEA-AFqSAkVQbmtFkWCPk1XxMaQB7c8xutPVbw@mail.gmail.com>
- <37dfb84c-dcf1-a78e-0895-ab3e8b21f554@canonical.com>
-In-Reply-To: <37dfb84c-dcf1-a78e-0895-ab3e8b21f554@canonical.com>
+        s=k20201202; t=1667746441;
+        bh=jrLSB7umbSJr3MUaPKF5yaDwaY+gSVJWf1bGPxRxxD4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Tm2k1w2tafWKTNuclkjI3CiUYIzX/KXwoeJfEpAXOIWq84Saml7HNZl80oG9P/bya
+         NTJXH5sxYY/7GcZfoyHCNeuQ2/pTodAxQ1HyvTG07/9OcTxalDcTMOJowAlZlsHra2
+         ZMo3TagH0IDflf2NfHkZBefBi1CewuYzxvsvW/2kbNslWXFVxazPkdy5Naak8+0h+W
+         6N3fUUrUpFR6gJY9PSlsXgzlsNXpZW1dpzPIOj3zWkC7rLBK9suKzBewSZfyIjYEMF
+         uGt37lG4VVos9JJK9Si84fun2zB3UBL3nbZsnY3kyXVefu3297j8ZazneAY72b4gmK
+         XTKcoz3jUfwPg==
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Sun, 6 Nov 2022 11:51:09 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHNA_NVoJBt9afBmt6wWS7HPhPfUWwfMScmPKBujTu6ew@mail.gmail.com>
-Message-ID: <CAMj1kXHNA_NVoJBt9afBmt6wWS7HPhPfUWwfMScmPKBujTu6ew@mail.gmail.com>
-Subject: Re: [PATCH] arm64: efi: Make runtime region misalignment warning less noisy
-To:     Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+To:     torvalds@linux-foundation.org
 Cc:     linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         catalin.marinas@arm.com, will@kernel.org,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        torvalds@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
+        Ard Biesheuvel <ardb@kernel.org>,
+        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Subject: [PATCH v2] arm64: efi: Fix handling of misaligned runtime regions and drop warning
+Date:   Sun,  6 Nov 2022 15:53:54 +0100
+Message-Id: <20221106145354.3876410-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9329; i=ardb@kernel.org; h=from:subject; bh=jrLSB7umbSJr3MUaPKF5yaDwaY+gSVJWf1bGPxRxxD4=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjZ8qBXpxntLQ1w+XZ/OV4ke1gL+t8nQezNJ8fYCa2 VpTsuEeJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY2fKgQAKCRDDTyI5ktmPJKjhC/ 0Ycy83Pnqzn+Ieu/k5yXaufwGlvZOb47oPOrCQ4pJqgdoQ7SKnTLm+fK3Bro4n3o5Qj52G6IC0LT7l fX109jzXiejZun3Cmq42pRLDnb5nNT74JIXSkpJV2/iejR1KgBe5zmLqhOIeUQcF7MNMzP3z2TjEND m1V0gdR3avrkUxtDORGTN0iGqCM2xHCTUNLr5Gcr9rDSR7A/+cPhHhNoCX6ETyGbtb4LVk82dONOpQ JPRe05JRQNJg2AqxIA55R6c4nKk7ld8kdFFQO3kFoQrSWJIm8FR21etcpBAP69eyPi5Fg73FSt2lZF Am9TTCzy/oSVEtLI7pd9yksUyEHwsV4vedd4WmFmpXAaM3j7n2LCnIH78xK7mrktTM0BSy9QLr5TsM HDfYZTcjNsBAvkOGEnpAW7EaO5P17PAO14DAzO3MJ+EJpipTNfV0V8qtbB2w5kq1K8eoixtFE75h8/ W6xjocks8tCisvAc+vdeurWGz1OxvuQepvrto05WenKAQ=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -64,164 +55,180 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sun, 6 Nov 2022 at 11:44, Heinrich Schuchardt
-<heinrich.schuchardt@canonical.com> wrote:
->
->
->
-> On 11/6/22 10:48, Ard Biesheuvel wrote:
-> > On Sun, 6 Nov 2022 at 03:27, Heinrich Schuchardt
-> > <heinrich.schuchardt@canonical.com> wrote:
-> >>
-> >>
-> >>
-> >> On 11/6/22 00:24, Heinrich Schuchardt wrote:
-> >>> On 11/5/22 23:52, Ard Biesheuvel wrote:
-> >>>> The EFI spec requires that on arm64 systems, all runtime code and data
-> >>>> regions that share a 64k page can be mapped with the same memory type
-> >>>> attributes. Unfortunately, this does not take permission attributes into
-> >>>> account, and so the firmware is permitted to expose runtime code and
-> >>>> data regions that share 64k pages, and this may prevent the OS from
-> >>>> using restricted permissions in such cases, e.g., map data regions with
-> >>>> non-exec attributes.
-> >>>
-> >>> This is the relevant paragraph in the UEFI specification:
-> >>>
-> >>> <cite>
-> >>> The ARM architecture allows mapping pages at a variety of granularities,
-> >>> including 4KiB and 64KiB. If a 64KiB physical page contains any 4KiB
-> >>> page with any of the following types listed below, then all 4KiB pages
-> >>> in the 64KiB page must use identical ARM Memory Page Attributes (as
-> >>> described in Map EFI Cacheability Attributes to AArch64 Memory Types):
-> >>>
-> >>> - EfiRuntimeServicesCode
-> >>> - EfiRuntimeServicesData
-> >>> - EfiReserved
-> >>> - EfiACPIMemoryNVS
-> >>>
-> >>> Mixed attribute mappings within a larger page are not allowed.
-> >>> </cite>
-> >>>
-> >>> It remains unclear if only EFI Cacheability of also other page
-> >>> attributes are meant. The UEFI specification should be clarified in this
-> >>> respect.
-> >>>
-> >>>>
-> >>>> We currently emit a warning when hitting this at boot, but the warning
-> >>>> is problematic for a number of reasons:
-> >>>> - it uses WARN() which spews a lot of irrelevant information into the
-> >>>>     log about the execution context where the issue was detected;
-> >>>> - it only takes the start of the region into account and not the size
-> >>>
-> >>> Is the occurrence of the warning specific to U-Boot or do you see the
-> >>> warning with EDK II too?
-> >>>
-> >>>>
-> >>>> Let's just drop the warning, as the condition does not strictly violate
-> >>>> the spec (although it only occurs with U-Boot), and fix the check to
-> >>>> take both the start and the end addresses into account.
-> >>>>
-> >>>> Cc: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-> >>>> Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-> >>>> Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
-> >>>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> >>>> ---
-> >>>>    arch/arm64/kernel/efi.c | 4 ++--
-> >>>>    1 file changed, 2 insertions(+), 2 deletions(-)
-> >>>>
-> >>>> diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
-> >>>> index e1be6c429810d0d5..3dd6f0c66f8aeb78 100644
-> >>>> --- a/arch/arm64/kernel/efi.c
-> >>>> +++ b/arch/arm64/kernel/efi.c
-> >>>> @@ -25,8 +25,8 @@ static __init pteval_t
-> >>>> create_mapping_protection(efi_memory_desc_t *md)
-> >>>>        if (type == EFI_MEMORY_MAPPED_IO)
-> >>>>            return PROT_DEVICE_nGnRE;
-> >>>> -    if (WARN_ONCE(!PAGE_ALIGNED(md->phys_addr),
-> >>>> -              "UEFI Runtime regions are not aligned to 64 KB -- buggy
-> >>>> firmware?"))
-> >>>> +    if (!PAGE_ALIGNED(md->phys_addr) ||
-> >>>> +        !PAGE_ALIGNED(md->num_pages * EFI_PAGE_SIZE))
-> >>>
-> >>> Enhancing the check is correct.
-> >>
-> >> The UEFI requirement is that within a 64 KiB page all memory descriptors
-> >> shall use the same page attributes if any 4 KiB sub-page is of one of
-> >> the following types.
-> >>
-> >> - EfiRuntimeServicesCode
-> >> - EfiRuntimeServicesData
-> >> - EfiReserved
-> >> - EfiACPIMemoryNVS
-> >>
-> >> It is not required that memory descriptors shall be aligned to 64 KiB
-> >> boundaries.
-> >>
-> >
-> > Indeed, this is what I misremembered.
-> >
-> >> So the following map should not pose any problem:
-> >>
-> >> 00000-00fff - EfiBootServicesData (not used at runtime)
-> >> 01000-13fff - EfiRuntimeServicesData
-> >> 14000-1ffff - EfiRuntimeServicesData
-> >> 20000-24fff - EfiRuntimeServicesCode
-> >> 25000-27fff - EfiBootServicesCode (not used at runtime)
-> >> 28000-3ffff - EfiRuntimeServicesCode
-> >>
-> >> Evaluating each memory descriptor individually looks wrong. You first
-> >> have to extend each memory descriptor of one of the four aforementioned
-> >> memory types to the next 64 KiB boundary or within a 64 KiB boundary to
-> >> the next descriptor of one of the aforementioned memory types. Next you
-> >> have to merge adjacent descriptors with same attributes within the same
-> >> 64 KiB page.
-> >>
-> >
-> > So now we have to look at adjacent descriptors, which means we have to
-> > sort the memory map, as there is no guarantee that the descriptors
-> > appear in order.
-> >
-> >> So the map for which you set attributes would become
-> >>
-> >> 00000-1ffff - EfiRuntimeServicesData
-> >> 20000-3ffff - EfiRuntimeServicesCode
-> >>
-> >> I guess all that alignment and merging should go into efi_virtmap_init().
-> >>
-> >
-> > U-boot does not provide a memory attributes table either, so we don't
-> > know which parts of the code regions should be mapped R-X and which
-> > parts RW- (Firmware implementations such as EDK2 that are based on
-> > PE/COFF images internally use code descriptors for each executable,
-> > which means they cover both the .text/.rodata and .data/.bss sections
-> > of the image. The data descriptors are used for dynamic allocations).
-> >
-> > This is why we use RWX for RTcode and RW- for RTdata in absence of the
-> > RO/XP attributes (which are passed via the memory attributes table
-> > usually).
-> >
-> > So in summary, I think the patch is fine. The warning is spurious
-> > given that the condition in question is actually permitted by the
-> > spec.
-> >
-> > On the uboot side, which already seems to align and round up RTcode
-> > sections to 64k, we might set the EFI_MEMORY_RO attribute on such
-> > regions if they really only contain .text and .rodata segments, and
-> > can tolerate being mapped without writable permissions. That way, the
-> > kernel will understand that it does not need to provide RWX
-> > permissions, which is really what all this code is trying to prevent.
->
-> Shouldn't EFI_MEMORY_RO only be set if the UEFI firmware actually sets
-> up the MMU to make the corresponding memory read only?
->
+Currently, when mapping the EFI runtime regions in the EFI page tables,
+we complain about misaligned regions in a rather noisy way, using
+WARN().
 
-No. The EFI_MEMORY_RO and XP attributes describe the nature of the
-contents of the regions, i.e., if they support being mapped with
-read-only resp. non-executable permissions. The same applies to the
-memory type attributes, btw: on bare metal, the memory is usually
-described as WC|WT|WB and it is up to the OS to choose between memory
-types when it creates the mapping - how the firmware maps it is
-irrelevant.
+Not only does this produce a lot of irrelevant clutter in the log, it is
+factually incorrect, as misaligned runtime regions are actually allowed
+by the EFI spec as long as they don't require conflicting memory types
+within the same 64k page.
 
-In general, the OS does not care or even tries to determine how the
-firmware has programmed the MMU and the page tables.
+So let's drop the warning, and tweak the code so that we
+- take both the start and end of the region into account when checking
+  for misalignment
+- only revert to RWX mappings for non-code regions if misaligned code
+  regions are also known to exist.
+
+Cc: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+Tested with uboot on QEMU/mach-virt using a 64k pagesize kernel build.
+More details after the patch.
+
+ arch/arm64/kernel/efi.c | 52 +++++++++++++-------
+ 1 file changed, 34 insertions(+), 18 deletions(-)
+
+diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
+index e1be6c429810d0d5..a908a37f03678b6b 100644
+--- a/arch/arm64/kernel/efi.c
++++ b/arch/arm64/kernel/efi.c
+@@ -12,6 +12,14 @@
+ 
+ #include <asm/efi.h>
+ 
++static bool region_is_misaligned(const efi_memory_desc_t *md)
++{
++	if (PAGE_SIZE == EFI_PAGE_SIZE)
++		return false;
++	return !PAGE_ALIGNED(md->phys_addr) ||
++	       !PAGE_ALIGNED(md->num_pages << EFI_PAGE_SHIFT);
++}
++
+ /*
+  * Only regions of type EFI_RUNTIME_SERVICES_CODE need to be
+  * executable, everything else can be mapped with the XN bits
+@@ -25,14 +33,22 @@ static __init pteval_t create_mapping_protection(efi_memory_desc_t *md)
+ 	if (type == EFI_MEMORY_MAPPED_IO)
+ 		return PROT_DEVICE_nGnRE;
+ 
+-	if (WARN_ONCE(!PAGE_ALIGNED(md->phys_addr),
+-		      "UEFI Runtime regions are not aligned to 64 KB -- buggy firmware?"))
++	if (region_is_misaligned(md)) {
++		static bool __initdata code_is_misaligned;
++
+ 		/*
+-		 * If the region is not aligned to the page size of the OS, we
+-		 * can not use strict permissions, since that would also affect
+-		 * the mapping attributes of the adjacent regions.
++		 * Regions that are not aligned to the OS page size cannot be
++		 * mapped with strict permissions, as those might interfere
++		 * with the permissions that are needed by the adjacent
++		 * region's mapping. However, if we haven't encountered any
++		 * misaligned runtime code regions so far, we can safely use
++		 * non-executable permissions for non-code regions.
+ 		 */
+-		return pgprot_val(PAGE_KERNEL_EXEC);
++		code_is_misaligned |= (type == EFI_RUNTIME_SERVICES_CODE);
++
++		return code_is_misaligned ? pgprot_val(PAGE_KERNEL_EXEC)
++					  : pgprot_val(PAGE_KERNEL);
++	}
+ 
+ 	/* R-- */
+ 	if ((attr & (EFI_MEMORY_XP | EFI_MEMORY_RO)) ==
+@@ -63,19 +79,16 @@ int __init efi_create_mapping(struct mm_struct *mm, efi_memory_desc_t *md)
+ 	bool page_mappings_only = (md->type == EFI_RUNTIME_SERVICES_CODE ||
+ 				   md->type == EFI_RUNTIME_SERVICES_DATA);
+ 
+-	if (!PAGE_ALIGNED(md->phys_addr) ||
+-	    !PAGE_ALIGNED(md->num_pages << EFI_PAGE_SHIFT)) {
+-		/*
+-		 * If the end address of this region is not aligned to page
+-		 * size, the mapping is rounded up, and may end up sharing a
+-		 * page frame with the next UEFI memory region. If we create
+-		 * a block entry now, we may need to split it again when mapping
+-		 * the next region, and support for that is going to be removed
+-		 * from the MMU routines. So avoid block mappings altogether in
+-		 * that case.
+-		 */
++	/*
++	 * If this region is not aligned to the page size used by the OS, the
++	 * mapping will be rounded outwards, and may end up sharing a page
++	 * frame with an adjacent runtime memory region. Given that the page
++	 * table descriptor covering the shared page will be rewritten when the
++	 * adjacent region gets mapped, we must avoid block mappings here so we
++	 * don't have to worry about splitting them when that happens.
++	 */
++	if (region_is_misaligned(md))
+ 		page_mappings_only = true;
+-	}
+ 
+ 	create_pgd_mapping(mm, md->phys_addr, md->virt_addr,
+ 			   md->num_pages << EFI_PAGE_SHIFT,
+@@ -102,6 +115,9 @@ int __init efi_set_mapping_permissions(struct mm_struct *mm,
+ 	BUG_ON(md->type != EFI_RUNTIME_SERVICES_CODE &&
+ 	       md->type != EFI_RUNTIME_SERVICES_DATA);
+ 
++	if (region_is_misaligned(md))
++		return 0;
++
+ 	/*
+ 	 * Calling apply_to_page_range() is only safe on regions that are
+ 	 * guaranteed to be mapped down to pages. Since we are only called
+-- 
+2.35.1
+
+Output from a 64k page size kernel build booting via U-boot's EFI
+implementation.
+
+Note that the misaligned data regions are not mapped with executable
+permissions with this patch applied. The code region is mapped with both
+write and execute permissions, but this is unavoidable given that the
+region covers statically allocated read-write data as well.
+
+Note that these mappings are only live on a single CPU while a runtime
+service call is in progress so none of this is critical in any case.
+
+
+# cat /sys/kernel/debug/efi_page_tables 
+---[ UEFI runtime start ]---
+0x0000000000000000-0x00000000e0000000        3584M PMD
+0x00000000e0000000-0x00000000ffff0000      524224K PTE
+0x00000000ffff0000-0x0000000100000000          64K PTE       RW NX SHD AF NG         UXN    MEM/NORMAL
+0x0000000100000000-0x0000000420000000       12800M PMD
+0x0000000420000000-0x000000043dd60000      488832K PTE
+0x000000043dd60000-0x000000043dd70000          64K PTE       RW NX SHD AF NG         UXN    MEM/NORMAL
+0x000000043dd70000-0x000000043ddc0000         320K PTE
+0x000000043ddc0000-0x000000043ddd0000          64K PTE       RW NX SHD AF NG         UXN    MEM/NORMAL
+0x000000043ddd0000-0x000000043ff10000       34048K PTE
+0x000000043ff10000-0x000000043ff20000          64K PTE       RW x  SHD AF NG         UXN    MEM/NORMAL
+0x000000043ff20000-0x0000000440000000         896K PTE
+
+efi: Processing EFI memory map:
+efi:   0x000040000000-0x000047dfcfff [Conventional|   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x000047dfd000-0x000048002fff [ACPI Reclaim|   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x000048003000-0x0000ffffdfff [Conventional|   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x0000ffffe000-0x0000ffffefff [Runtime Data|RUN|  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x0000fffff000-0x0001c389ffff [Conventional|   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x0001c38a0000-0x0001c73affff [Loader Code |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x0001c73b0000-0x0004368effff [Conventional|   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x0004368f0000-0x00043a3fffff [Loader Code |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043a400000-0x00043db4ffff [Conventional|   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043db50000-0x00043dd4ffff [Loader Data |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043dd50000-0x00043dd5bfff [Conventional|   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043dd5c000-0x00043dd5cfff [Loader Data |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043dd5d000-0x00043dd5dfff [Conventional|   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043dd5e000-0x00043dd5efff [ACPI Reclaim|   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043dd5f000-0x00043dd5ffff [Loader Data |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043dd60000-0x00043dd60fff [Runtime Data|RUN|  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043dd61000-0x00043dd61fff [Loader Data |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043dd62000-0x00043dd63fff [Boot Data   |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043dd64000-0x00043dd66fff [Loader Data |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043dd67000-0x00043dd67fff [Boot Data   |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043dd68000-0x00043dd97fff [Loader Data |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043dd98000-0x00043dd98fff [Boot Data   |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043dd99000-0x00043dd9bfff [Loader Data |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043dd9c000-0x00043ddb5fff [Loader Code |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043ddb6000-0x00043ddc0fff [Boot Data   |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043ddc1000-0x00043ddc1fff [Runtime Data|RUN|  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043ddc2000-0x00043ddc2fff [Boot Data   |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043ddc3000-0x00043ddc4fff [Runtime Data|RUN|  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043ddc5000-0x00043ddc5fff [Boot Data   |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043ddc6000-0x00043ddc9fff [Runtime Data|RUN|  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043ddca000-0x00043ddd2fff [Boot Data   |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043ddd3000-0x00043ff0ffff [Loader Data |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043ff10000-0x00043ff1ffff [Runtime Code|RUN|  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+efi:   0x00043ff20000-0x00043fffffff [Loader Data |   |  |  |  |  |  |  |  |  |   |WB|  |  |  ]
+
