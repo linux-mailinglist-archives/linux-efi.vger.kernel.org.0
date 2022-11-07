@@ -2,111 +2,165 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BEF361F9B3
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Nov 2022 17:29:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2CF561FB54
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Nov 2022 18:27:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232466AbiKGQ3X (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Nov 2022 11:29:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51588 "EHLO
+        id S231858AbiKGR1z (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Nov 2022 12:27:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231858AbiKGQ2w (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Nov 2022 11:28:52 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9147A26482
-        for <linux-efi@vger.kernel.org>; Mon,  7 Nov 2022 08:26:32 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2DDF161196
-        for <linux-efi@vger.kernel.org>; Mon,  7 Nov 2022 16:26:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C60C433D7
-        for <linux-efi@vger.kernel.org>; Mon,  7 Nov 2022 16:26:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667838391;
-        bh=7y7VyWtg4M7PIYgvhwlqp8qXJrIhWE2L2TKJY8envvk=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=I9oVwGCAb0M8EPIANCt1dcrYuPfJbM41SvbuHUzljNTsKzxcu35UXgs/YRBvcsHyZ
-         KZQSbBdLRmmwPzqZPM8quTB3CvzA5KNttQOfapZx7xCokcfNPk9xrYav0L9U3vG75r
-         EMpA6QnqATMuQaqJavCCD9B16ulxLuFlmD6a+6Xv1QRdao9Q9vKxA3TuAYTquQJMbH
-         xhuhmrrWsk41XvJ1FKT4gWVUBBAybyBe1RmbZ5Nf/8A9ne5paseOinfLi/4NGtSSAF
-         iKtHEVuGWvbRV1VJQDNepfNMt/t5xCNucpOUXKi4L2+Oh6OmXUIGX/HJYhHKQ20qwn
-         F4W2D55nQ1Kwg==
-Received: by mail-lj1-f180.google.com with SMTP id d20so17066080ljc.12
-        for <linux-efi@vger.kernel.org>; Mon, 07 Nov 2022 08:26:31 -0800 (PST)
-X-Gm-Message-State: ACrzQf0p2dvvv8u/btlrNc0XBPwNjudyCpo3v8VjVRsnVN4wK3KcS5SX
-        svSR8V3VFkano5OKibMCdW2JFZG3c9jGzwhLIhg=
-X-Google-Smtp-Source: AMsMyM43WEp7EqE50MuUDOLJA00VTvmSlEJWGoU2AZIHmmCn9McZGidPoGJEUc3o+8maQjJrFRgMjQl3GjNAm5G72o0=
-X-Received: by 2002:a2e:87cd:0:b0:277:3662:3be4 with SMTP id
- v13-20020a2e87cd000000b0027736623be4mr17245522ljj.415.1667838389591; Mon, 07
- Nov 2022 08:26:29 -0800 (PST)
+        with ESMTP id S232000AbiKGR1s (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Nov 2022 12:27:48 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DCF0723E9C;
+        Mon,  7 Nov 2022 09:27:47 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CA40F1FB;
+        Mon,  7 Nov 2022 09:27:53 -0800 (PST)
+Received: from monolith.localdoman (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 88B7A3F534;
+        Mon,  7 Nov 2022 09:27:46 -0800 (PST)
+Date:   Mon, 7 Nov 2022 17:27:35 +0000
+From:   Alexandru Elisei <alexandru.elisei@arm.com>
+To:     ardb@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: [Possible BUG] arm64: efi: efi_runtime_fixup_exception() and
+ efi_call_virt_check_flags() both taint the kernel
+Message-ID: <Y2lAB508TrrjpDPi@monolith.localdoman>
 MIME-Version: 1.0
-References: <20221018110441.3855148-1-ardb@kernel.org> <20221107161222.GE21157@willie-the-truck>
-In-Reply-To: <20221107161222.GE21157@willie-the-truck>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 7 Nov 2022 17:26:18 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFf4CqRBgSXFcuHF2op+-oDg-DcYvfSMJw7rN-Y7VDU9w@mail.gmail.com>
-Message-ID: <CAMj1kXFf4CqRBgSXFcuHF2op+-oDg-DcYvfSMJw7rN-Y7VDU9w@mail.gmail.com>
-Subject: Re: [PATCH v4 0/6] arm64: efi: leave MMU and caches on at boot
-To:     Will Deacon <will@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
-        keescook@chromium.org, Catalin Marinas <catalin.marinas@arm.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 7 Nov 2022 at 17:12, Will Deacon <will@kernel.org> wrote:
->
-> Hi Ard,
->
-> On Tue, Oct 18, 2022 at 01:04:35PM +0200, Ard Biesheuvel wrote:
-> > The purpose of this series is to remove any explicit cache maintenance
-> > for coherency during early boot that becomes unnecessary if we simply
-> > retain the cacheable 1:1 mapping of all of system RAM provided by EFI,
-> > and use it to populate the ID map page tables. After setting up this
-> > preliminary ID map, we disable the MMU, drop to EL1, reprogram the MAIR,
-> > TCR and SCTLR registers as before, and proceed as usual, avoiding the
-> > need for any manipulations of memory while the MMU and caches are off.
-> >
-> > The only properties of the firmware provided 1:1 map we rely on is that
-> > it does not require any explicit cache maintenance for coherency, and
-> > that it covers the entire memory footprint of the image, including the
-> > BSS and padding at the end - all else is under control of the kernel
-> > itself, as before.
-> >
-> > Changes since v3:
-> > - drop EFI_LOADER_CODE memory type patch that has been queued in the
-> >   mean time
-> > - rebased onto [partial] series that moves efi-entry.S into the libstub/
-> >   source directory [0]
-> > - fixed a correctness issue in patch #2
->
-> I really like this series, but I'm also very nervous about supporting
-> booting the kernel with the MMU enabled outside of EFI. The booting
-> documentation prohibits this, but we don't appear to take any steps to
-> prevent this case with your series. Perhaps we shouldn't, but I do think
-> it would be worth trying to warn+taint if we detect it so that we don't
-> spend too much time debugging strange memory issues on platforms that
-> try to use such a configuration.
->
-> What do you think?
->
+I'm going to preface this by saying that I'm extremely unfamiliar with the
+EFI code.
 
-I share your concern, and capturing the value of SCTLR at boot and
-warning about it later should be trivial to do. In fact, we already do
-something similar for the alignment, where only EFI is permitted to
-deviate from the 2 MiB alignment requirement of the image's placement
-in memory. I'll add something in the same spot.
+Commit d3549a938b73 ("efi/arm64: libstub: avoid SetVirtualAddressMap() when
+possible") skipped the call to SetVirtualAddressMap() for certain
+configurations, and that started causing kernel panics on an Ampere Altra
+machine due to an EFI synchronous exception.
 
-Note that I need to respin this in any case - the EL2 startup code
-needs to be cleaned to the PoC as well, given that it will also
-execute with MMU and caches off at EL2 when finalise_el2() is called.
+Commit 23715a26c8d8 ("arm64: efi: Recover from synchronous exceptions
+occurring in firmware") made the EFI exception non-fatal.
 
-I was about to get back to this so I should have a v5 tomorrow.
+With a kernel built from v6.1-rc4 (which has both patches), I'm now getting
+two splats on the same Altra machine (log below). Looks to me like the
+second splat is caused by efi_call_virt_check_flags() using the
+PSTATE.{I,F} values from when taking the exception. Shouldn't
+efi_runtime_fixup_exception() fix up the exception so the error isn't
+propagated along the call chain?
+
+I'm asking this because efi_runtime_fixup_exception() has this add_taint()
+call:
+
+	pr_err(FW_BUG "Unable to handle %s in EFI runtime service\n", msg);
+	add_taint(TAINT_FIRMWARE_WORKAROUND, LOCKDEP_STILL_OK);
+
+and then efi_call_virt_check_flags() has this call:
+
+        mismatch = flags ^ cur_flags;
+        if (!WARN_ON_ONCE(mismatch & ARCH_EFI_IRQ_FLAGS_MASK))
+                return;
+
+        add_taint(TAINT_FIRMWARE_WORKAROUND, LOCKDEP_NOW_UNRELIABLE);
+
+It looks to me like LOCKDEP_STILL_OK from the first call is at odds with
+LOCKDEP_NOW_UNRELIABLE from the second add_taint() call.
+
+Here is the relevant part of the log (I can send the .config, kernel
+command line and full log, or any other information that might be needed):
+
+[   55.479519] [Firmware Bug]: Unable to handle paging request in EFI runtime service
+[   55.487122] CPU: 62 PID: 9 Comm: kworker/u320:0 Tainted: G          I        6.1.0-rc4 #60
+[   55.487128] Hardware name: WIWYNN Mt.Jade Server System B81.03001.0005/Mt.Jade Motherboard, BIOS 1.08.20220218 (SCP: 1.08.20220218) 2022/02/18
+[   55.487131] Workqueue: efi_rts_wq efi_call_rts
+[   55.487158] Call trace:
+[   55.487161]  dump_backtrace.part.0+0xdc/0xf0
+[   55.487177]  show_stack+0x18/0x40
+[   55.487180]  dump_stack_lvl+0x68/0x84
+[   55.487190]  dump_stack+0x18/0x34
+[   55.487192]  efi_runtime_fixup_exception+0x74/0x88
+[   55.487199]  __do_kernel_fault+0x108/0x1b0
+[   55.487204]  do_page_fault+0xd0/0x400
+[   55.487207]  do_translation_fault+0xac/0xc0
+[   55.487209]  do_mem_abort+0x44/0x94
+[   55.487212]  el1_abort+0x40/0x6c
+[   55.487214]  el1h_64_sync_handler+0xd8/0xe4
+[   55.487218]  el1h_64_sync+0x64/0x68
+[   55.487221]  0xb7eb7ae4
+[   55.487224]  0xb7eb8668
+[   55.487225]  0xb7eb6e08
+[   55.487227]  0xb7eb68ec
+[   55.487228]  0xb7eb3824
+[   55.487230]  0xb7eb05a8
+[   55.487231]  0xb7eb12a0
+[   55.487232]  0xb7e43504
+[   55.487234]  0xb7e43650
+[   55.487235]  0xb7e482d0
+[   55.487237]  0xb7e4907c
+[   55.487238]  0xb7e49ff4
+[   55.487239]  0xb7e40888
+[   55.487241]  0xb7cb3328
+[   55.487242]  0xb7cb0674
+[   55.487243]  __efi_rt_asm_wrapper+0x54/0x70
+[   55.487246]  efi_call_rts+0x28c/0x3d0
+[   55.487249]  process_one_work+0x1d0/0x320
+[   55.487258]  worker_thread+0x14c/0x444
+[   55.487261]  kthread+0x10c/0x110
+[   55.487264]  ret_from_fork+0x10/0x20
+[   55.487268] [Firmware Bug]: Synchronous exception occurred in EFI runtime service set_time()
+[   55.495735] ------------[ cut here ]------------
+[   55.495739] WARNING: CPU: 62 PID: 9 at drivers/firmware/efi/runtime-wrappers.c:111 efi_call_virt_check_flags+0x40/0xac
+[   55.495746] Modules linked in:
+[   55.495749] CPU: 62 PID: 9 Comm: kworker/u320:0 Tainted: G          I        6.1.0-rc4 #60
+[   55.495751] Hardware name: WIWYNN Mt.Jade Server System B81.03001.0005/Mt.Jade Motherboard, BIOS 1.08.20220218 (SCP: 1.08.20220218) 2022/02/18
+[   55.495753] Workqueue: efi_rts_wq efi_call_rts
+[   55.495757] pstate: 004000c9 (nzcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   55.495761] pc : efi_call_virt_check_flags+0x40/0xac
+[   55.495764] lr : efi_call_rts+0x29c/0x3d0
+[   55.495767] sp : ffff80000861bd40
+[   55.495768] x29: ffff80000861bd40 x28: 0000000000000000 x27: 0000000000000000
+[   55.495772] x26: ffffb251470e9e68 x25: ffff3fff89714805 x24: 0000000000000000
+[   55.495775] x23: 0000000000000000 x22: 0000000000000000 x21: 00000000000000c0
+[   55.495778] x20: ffffb25146688de0 x19: 0000000000000000 x18: ffffffffffffffff
+[   55.495780] x17: 657320656d69746e x16: 757220494645206e x15: 6920646572727563
+[   55.495784] x14: 636f206e6f697470 x13: ffff403e40540000 x12: 0000000000001c14
+[   55.495787] x11: 000000000000095c x10: ffff403e40800000 x9 : ffff403e40540000
+[   55.495790] x8 : 00000000ffff7fff x7 : ffff403e40800000 x6 : 0000000000000000
+[   55.495792] x5 : ffff083e7fe9aaa0 x4 : 0000000000000000 x3 : 0000000000000000
+[   55.495796] x2 : 0000000000000000 x1 : ffffb25146688de0 x0 : 00000000000000c0
+[   55.495799] Call trace:
+[   55.495800]  efi_call_virt_check_flags+0x40/0xac
+[   55.495802]  efi_call_rts+0x29c/0x3d0
+[   55.495805]  process_one_work+0x1d0/0x320
+[   55.495808]  worker_thread+0x14c/0x444
+[   55.495811]  kthread+0x10c/0x110
+[   55.495814]  ret_from_fork+0x10/0x20
+[   55.495815] ---[ end trace 0000000000000000 ]---
+[   55.495818] Disabling lock debugging due to kernel taint
+[   55.495822] efi: [Firmware Bug]: IRQ flags corrupted (0x00000000=>0x000000c0) by EFI set_time
+[   55.504434] efi: EFI Runtime Services are disabled!
+[   55.504465] rtc-efi rtc-efi.0: can't read time
+[   56.479370] efi: EFI Runtime Services are disabled!
+[   56.479394] rtc-efi rtc-efi.0: can't read time
+[   57.479574] rtc-efi rtc-efi.0: can't read time
+[   57.484030] rtc-efi rtc-efi.0: can't read time
+[   57.488474] rtc-efi rtc-efi.0: can't read time
+[   58.479692] rtc-efi rtc-efi.0: can't read time
+[   58.484139] rtc-efi rtc-efi.0: can't read time
+
+(rtc-efi error message repeats ad nauseum)
+
+Note: this error message from the EFI rtc driver fires over and over and
+clutters dmesg, will send a different report for this as I don't think it's
+necessarily related to the two functions.
+
+Thanks,
+Alex
