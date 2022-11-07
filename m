@@ -2,178 +2,171 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFAE261EA3E
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Nov 2022 05:46:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EC9761EB3C
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Nov 2022 07:56:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230263AbiKGEqZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 6 Nov 2022 23:46:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44626 "EHLO
+        id S230434AbiKGG4O (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Nov 2022 01:56:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230160AbiKGEqY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 6 Nov 2022 23:46:24 -0500
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20D24CE1D
-        for <linux-efi@vger.kernel.org>; Sun,  6 Nov 2022 20:46:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667796383; x=1699332383;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=DOS2dfBfHR9B2PMJLBCa9M2cavoCEE+jZDNlNszyqFU=;
-  b=QpwrStMev2aTz66WbRT1d3Gl7ps1CMhWvLFWcjSn0YYbrmFq2ZzqsTTo
-   zgWwEdXfxTDiRE6HpT+rgd7wnZjnspaEbv9vAj/Ni/PYDLTPUYpCCwuYt
-   jAvqkkgH0WWq1f6xBlAadWJG5/sIQw/AIwEV+aoA7MUa8r4w6gEopzUhO
-   VCr6Y8CVMj/OducDHKwI2f9Vedton+cl2wZIt1kZpidksUO2cd7PtAM6i
-   AEO34GUPLtRpFj7UqCWb8cDh/iSndsKdPPEJZ/1FoMXA1zqHCVjuJ1fj4
-   h4iTEdP9qK83f/GJuwONwP+nI5Mmp+sU6KB37CZ7qrImaPUCFF45YQ+oy
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10523"; a="293669231"
-X-IronPort-AV: E=Sophos;i="5.96,143,1665471600"; 
-   d="scan'208";a="293669231"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2022 20:46:22 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10523"; a="613732868"
-X-IronPort-AV: E=Sophos;i="5.96,143,1665471600"; 
-   d="scan'208";a="613732868"
-Received: from lkp-server01.sh.intel.com (HELO 462403710aa9) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 06 Nov 2022 20:46:21 -0800
-Received: from kbuild by 462403710aa9 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oru1c-0000Ki-20;
-        Mon, 07 Nov 2022 04:46:20 +0000
-Date:   Mon, 07 Nov 2022 12:45:41 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS 27e80a1f89b1b7f6af2f6a46bcb4a3fd9c2b8a14
-Message-ID: <63688d75.RtMpihoPw1luuQjH%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S230328AbiKGG4N (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Nov 2022 01:56:13 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7147D252
+        for <linux-efi@vger.kernel.org>; Sun,  6 Nov 2022 22:55:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1667804111;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=y18m8azyHOn5Ibl6TKD7X9UraJRtgy45vbRa6wrCY5k=;
+        b=Hurjy+ChXxI+jDxyIlYBjoAJh6tMRs9usPltj+tY5zPUJovDRH9txp0vXMN250UFNcV3Ti
+        RHNWAD+llFig5Oz2fa+XVNjaz7i7QBq7eZCXzTuuSyJNYOTtp4gjEkkNP3muOrWyXr2fg3
+        4FiKB1IQ5UrECnVD42RpsWx9lrAgOdY=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-227-NXP-cXNlOxey5ZywioFhyA-1; Mon, 07 Nov 2022 01:55:10 -0500
+X-MC-Unique: NXP-cXNlOxey5ZywioFhyA-1
+Received: by mail-ej1-f69.google.com with SMTP id sc40-20020a1709078a2800b007ae024e5e82so5724106ejc.13
+        for <linux-efi@vger.kernel.org>; Sun, 06 Nov 2022 22:55:10 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=y18m8azyHOn5Ibl6TKD7X9UraJRtgy45vbRa6wrCY5k=;
+        b=0LkOYurFZ98R5QMM66UT/ODn7aYk4ffllg/5UCqgrh8oT0vM/Ylxq6uvlumiig11fI
+         1HZE+guXcHVRqLNWZzvrtquwTVV4I0q2GJIx5MV08Hgo7suTJMHfjXXLR93XASbKOsCe
+         0djQqFES32OWoawqMyx0PWnqamQYMllFddxUh9cXl1JqaRTDWmkERBD8UtsuLHIj/iLV
+         zvFFdDEIBotbsKGW4e9NQlikaHtzbnbsFxrF2Mo2ClrP6fgvWH6XiEtyywH3v46YiZe5
+         VOWOddIYB5v0QfPsy2j7vZp3+3Dx6JfamvHybvHyHV15Ae+izjRxRVanQbAPMFEzfwu7
+         PeCg==
+X-Gm-Message-State: ANoB5pkUzHwMOmOPgSRf9MuQmV+f4jwWUeWZK5/76QIo56dq+VowfDwX
+        +H6vLz9XYlP6MInXAGfk6a38Vqg4IkwdedbjwSj8gvH0iN0kXoRgo+0vWPjWrhW/wqSDMxHhsVd
+        SDvdqJdv4Xrsv+7h2vrOlU4stqDoTuaDZToQP
+X-Received: by 2002:a17:906:3ada:b0:7ae:566e:3a1c with SMTP id z26-20020a1709063ada00b007ae566e3a1cmr8250024ejd.223.1667804108999;
+        Sun, 06 Nov 2022 22:55:08 -0800 (PST)
+X-Google-Smtp-Source: AA0mqf6uXDuXJgOmXAKWQ2kw35atMalXsKsAYB/O9QnMHiEi9sGLW0X78hBV93ehTpTac+itcHRs4D2V0w/vPKwvWQE=
+X-Received: by 2002:a17:906:3ada:b0:7ae:566e:3a1c with SMTP id
+ z26-20020a1709063ada00b007ae566e3a1cmr8250014ejd.223.1667804108772; Sun, 06
+ Nov 2022 22:55:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <3acf1cc7a974cb4fb9b77b39311c6714@tfwno.gf> <Y2XUNive2KMwTjUF@MiWiFi-R3L-srv>
+ <CALu+AoTVtO=-tzbgjeVRQ3uO0yGUPWKPuAiLn0CpaAq_=xr-sw@mail.gmail.com> <2f43e1e583a92e1592c48a15a763e1f7@tfwno.gf>
+In-Reply-To: <2f43e1e583a92e1592c48a15a763e1f7@tfwno.gf>
+From:   Dave Young <dyoung@redhat.com>
+Date:   Mon, 7 Nov 2022 14:54:31 +0800
+Message-ID: <CALu+AoQqb23tnNS6VY4+Q5Mz85NDFfWOP_aynoz7fcoMvzNeKg@mail.gmail.com>
+Subject: Re: Bug: kexec on Lenovo ThinkPad T480 disables EFI mode
+To:     ns@tfwno.gf
+Cc:     Baoquan He <bhe@redhat.com>,
+        Eric Biederman <ebiederm@xmission.com>,
+        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: 27e80a1f89b1b7f6af2f6a46bcb4a3fd9c2b8a14  efi: libstub: Merge zboot decompressor with the ordinary stub
+Hi,
 
-elapsed time: 724m
+On Sat, 5 Nov 2022 at 22:16, <ns@tfwno.gf> wrote:
+>
+> On 2022-11-05 05:49, Dave Young wrote:
+> > Baoquan, thanks for cc me.
+> >
+> > On Sat, 5 Nov 2022 at 11:10, Baoquan He <bhe@redhat.com> wrote:
+> >>
+> >> Add Dave to CC
+> >>
+> >> On 10/28/22 at 01:02pm, ns@tfwno.gf wrote:
+> >> > Greetings,
+> >> >
+> >> > I've been hitting a bug on my Lenovo ThinkPad T480 where kexecing will
+> >> > cause EFI mode (if that's the right term for it) to be unconditionally
+> >> > disabled, even when not using the --noefi option to kexec.
+> >> >
+> >> > What I mean by "EFI mode" being disabled, more than just EFI runtime
+> >> > services, is that basically nothing about the system's EFI is visible
+> >> > post-kexec. Normally you have a message like this in dmesg when the
+> >> > system is booted in EFI mode:
+> >> >
+> >> > [    0.000000] efi: EFI v2.70 by EDK II
+> >> > [    0.000000] efi: SMBIOS=0x7f98a000 ACPI=0x7fb7e000 ACPI 2.0=0x7fb7e014
+> >> > MEMATTR=0x7ec63018
+> >> > (obviously not the real firmware of the machine I'm talking about, but I
+> >> > can also send that if it would be of any help)
+> >> >
+> >> > No such message pops up in my dmesg as a result of this bug, & this
+> >> > causes some fallout like being unable to find the system's DMI
+> >> > information:
+> >> >
+> >> > <6>[    0.000000] DMI not present or invalid.
+> >> >
+> >> > The efivarfs module also fails to load with -ENODEV.
+> >> >
+> >> > I've tried also booting with efi=runtime explicitly but it doesn't
+> >> > change anything. The kernel still does not print the name of the EFI
+> >> > firmware, DMI is still missing, & efivarfs still fails to load.
+> >> >
+> >> > I've been using the kexec_load syscall for all these tests, if it's
+> >> > important.
+> >> >
+> >> > Also, to make it very clear, all this only ever happens post-kexec. When
+> >> > booting straight from UEFI (with the EFI stub), all the aforementioned
+> >> > stuff that fails works perfectly fine (i.e. name of firmware is printed,
+> >> > DMI is properly found, & efivarfs loads & mounts just fine).
+> >> >
+> >> > This is reproducible with a vanilla 6.1-rc2 kernel. I've been trying to
+> >> > bisect it, but it seems like it goes pretty far back. I've got vanilla
+> >> > mainline kernel builds dating back to 5.17 that have the exact same
+> >> > issue. It might be worth noting that during this testing, I made sure
+> >> > the version of the kernel being kexeced & the kernel kexecing were the
+> >> > same version. It may not have been a problem in older kernels, but that
+> >> > would be difficult to test for me (a pretty important driver for this
+> >> > machine was only merged during v5.17-rc4). So it may not have been a
+> >> > regression & just a hidden problem since time immemorial.
+> >> >
+> >> > I am willing to test any patches I may get to further debug or fix
+> >> > this issue, preferably based on the current state of torvalds/linux.git.
+> >> > I can build & test kernels quite a few times per day.
+> >> >
+> >> > I can also send any important materials (kernel config, dmesg, firmware
+> >> > information, so on & so forth) on request. I'll also just mention I'm
+> >> > using kexec-tools 2.0.24 upfront, if it matters.
+> >
+> > Can you check the efi runtime in sysfs:
+> > ls /sys/firmware/efi/runtime-map/
+> >
+> > If nothing then maybe you did not enable CONFIG_EFI_RUNTIME_MAP=y, it
+> > is needed for kexec UEFI boot on x86_64.
+>
+> Oh my, it really is that simple.
+>
+> Indeed, enabling this in the pre-kexec kernel fixes it all up. I had
+> blindly disabled it in my quest to downsize the pre-kexec kernel to
+> reduce boot time (it only runs a bootloader). In hindsight, the firmware
+> drivers section is not really a good section to tweak on a whim.
+>
+> I'm terribly sorry to have taken your time to "fix" this "bug". But I
+> must ask, is there any reason why this is a visible config option, or at
+> least not gated behind CONFIG_EXPERT? drivers/firmware/efi/runtime-map.c
+> is pretty tiny, & considering it depends on CONFIG_KEXEC_CORE, one
+> probably wants to have kexec work properly if they can even enable it.
 
-configs tested: 98
-configs skipped: 2
+Glad to know it works with the .config tweaking. I can not recall any
+reason for that though.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Since it sits in the efi code path, let's see how Ard thinks about
+your proposal.
 
-gcc tested configs:
-x86_64                           rhel-8.3-kvm
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-syz
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-arc                  randconfig-r043-20221106
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-um                             i386_defconfig
-s390                 randconfig-r044-20221106
-um                           x86_64_defconfig
-riscv                randconfig-r042-20221106
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-i386                          randconfig-a014
-i386                          randconfig-a012
-sh                               allmodconfig
-arc                                 defconfig
-i386                          randconfig-a016
-mips                             allyesconfig
-alpha                               defconfig
-s390                                defconfig
-x86_64                        randconfig-a013
-arm                                 defconfig
-i386                                defconfig
-s390                             allmodconfig
-x86_64                        randconfig-a011
-m68k                             allmodconfig
-x86_64                        randconfig-a015
-arc                              allyesconfig
-arm                              allyesconfig
-alpha                            allyesconfig
-arm64                            allyesconfig
-s390                             allyesconfig
-m68k                             allyesconfig
-ia64                             allmodconfig
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                             allyesconfig
-i386                          randconfig-a005
-arc                  randconfig-r043-20221107
-arc                        nsim_700_defconfig
-sh                           se7206_defconfig
-sh                          r7780mp_defconfig
-sh                           se7722_defconfig
-sparc                            alldefconfig
-powerpc                      pasemi_defconfig
-x86_64               randconfig-a006-20221107
-x86_64               randconfig-a001-20221107
-x86_64               randconfig-a004-20221107
-x86_64               randconfig-a003-20221107
-x86_64               randconfig-a005-20221107
-x86_64               randconfig-a002-20221107
-powerpc                      bamboo_defconfig
-sh                          rsk7269_defconfig
-arm                           h3600_defconfig
-m68k                          amiga_defconfig
-arm                             ezx_defconfig
-sh                           se7780_defconfig
-sh                 kfr2r09-romimage_defconfig
-xtensa                          iss_defconfig
-sh                           se7619_defconfig
-powerpc                       holly_defconfig
-m68k                            mac_defconfig
-m68k                          atari_defconfig
-powerpc                 mpc837x_rdb_defconfig
-arc                         haps_hs_defconfig
-xtensa                generic_kc705_defconfig
-riscv                    nommu_k210_defconfig
-nios2                            alldefconfig
-arm                      jornada720_defconfig
-s390                       zfcpdump_defconfig
-arm                           imxrt_defconfig
-mips                      loongson3_defconfig
-nios2                         10m50_defconfig
-i386                          randconfig-c001
+Thanks
+Dave
 
-clang tested configs:
-hexagon              randconfig-r041-20221106
-hexagon              randconfig-r045-20221106
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-x86_64                        randconfig-a012
-x86_64                        randconfig-a016
-x86_64                        randconfig-a014
-x86_64                        randconfig-a005
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
-x86_64                        randconfig-k001
-i386                 randconfig-a016-20221107
-i386                 randconfig-a014-20221107
-i386                 randconfig-a012-20221107
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
