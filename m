@@ -2,105 +2,95 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB30F620E76
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Nov 2022 12:18:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2782262103B
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Nov 2022 13:20:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233932AbiKHLSv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 8 Nov 2022 06:18:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58788 "EHLO
+        id S234042AbiKHMUF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 8 Nov 2022 07:20:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233763AbiKHLSu (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Nov 2022 06:18:50 -0500
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0150E030
-        for <linux-efi@vger.kernel.org>; Tue,  8 Nov 2022 03:18:49 -0800 (PST)
-Received: by mail-il1-x12d.google.com with SMTP id x16so7305511ilm.5
-        for <linux-efi@vger.kernel.org>; Tue, 08 Nov 2022 03:18:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=o1oIX0Lu3jFWZXVxNPQntM2Fj3qbMNn8z1UsbYrWkRo=;
-        b=TqAJAtnRKoLLqO+UA4agXF2ZpjkGLJQNMh5p7LOvK6RWqq3mdRHYz9dlusjAIOcuJH
-         k7CQ5zSjktT3Lt5wbjaT3xvCmQunW7dq0IrN1vxh0AmU4ExktRz0rv0Ly+WzptL9mcQF
-         unp0lwIWt30r/UNmdNXqxaPwxO5ofAE0YCwahNppZi9NVZ8hv1WX+Ddbnkd4/+B1Walw
-         Lsuu/PZPozZHaKkzXxiPAOnyPSyDlnBz/nZ1gash0XuvZ5X+eOT8hq/0cR1q3piCO25u
-         0VZ18Mj7zjkIZtFWIuBYy0Pg1mP1TpHDE2rWkEW8sUnCrdeNLAbByAEqBQIrQD36fJ7u
-         akWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=o1oIX0Lu3jFWZXVxNPQntM2Fj3qbMNn8z1UsbYrWkRo=;
-        b=A8skr45ioTcbqLTbnsqQkN9WOpT160DWjFX+Ar6Dk+8uJEdzop1ohWsJZBWK13haSj
-         Myl0aSrrH87zWk37CkH9jLaVp/5BjPRvl0tk3F1BQQtjXBDfmJumIkZoMDj34iKl8MSf
-         /UPbA0WgZJ2ZBq7feMhwPYEPbsXaVuM0M5QcgxPu9cZKlUvxZwNqXtDvn37u0ZBBwbsA
-         4nTdSI1i+JHqZODHup1YpYRDx6vslmFPULB4Sl4u638EwKTT4ZICB/JkxrSohCb/+O5x
-         8Uj5ul61nHa+hPPmZrH9lLc7KuFFZPEcObc2g6e/GV6OpxnPzdUHpHOzsLWfVMauvzrH
-         OIkw==
-X-Gm-Message-State: ANoB5pkNYPDGm10jSt/dPfD3BPFPqYzzDT5QmrjZ153WmIr8MB3HyYji
-        IeSFjI0EZhPCYaClrSCvqjfLMOHlohQUy83Zi20=
-X-Google-Smtp-Source: AA0mqf6EWnGgZf4XUdjQjERPqg2+IOmAn/TL1KGLb7B2gYQllwGz3waSmsw6gYQyyb6O5aj455DBRi5NEz+F2SVD1zI=
-X-Received: by 2002:a05:6e02:220e:b0:302:906:8957 with SMTP id
- j14-20020a056e02220e00b0030209068957mr373575ilf.200.1667906329089; Tue, 08
- Nov 2022 03:18:49 -0800 (PST)
+        with ESMTP id S234046AbiKHMUD (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Nov 2022 07:20:03 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 282E313F1A;
+        Tue,  8 Nov 2022 04:20:02 -0800 (PST)
+Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1osNaA-0000q6-9s; Tue, 08 Nov 2022 13:19:58 +0100
+Message-ID: <76b09d3a-fe10-74b3-40a0-1aaa75b70ba6@leemhuis.info>
+Date:   Tue, 8 Nov 2022 13:19:57 +0100
 MIME-Version: 1.0
-Received: by 2002:a05:6638:38a9:b0:375:4a9b:180d with HTTP; Tue, 8 Nov 2022
- 03:18:48 -0800 (PST)
-Reply-To: mrinvest1010@gmail.com
-From:   "K. A. Mr. Kairi" <ctocik1@gmail.com>
-Date:   Tue, 8 Nov 2022 03:18:48 -0800
-Message-ID: <CAKfr4JU1Sr=ZzEzsQr_CDOe86_NkuT6ua_A02_NmJOp9mAXehg@mail.gmail.com>
-Subject: Re: My Response..
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.0
+Subject: Re: [Possible BUG] arm64: efi: efi_runtime_fixup_exception() and
+ efi_call_virt_check_flags() both taint the kernel #forregzbot
+Content-Language: en-US, de-DE
+To:     linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+References: <Y2lAB508TrrjpDPi@monolith.localdoman>
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <Y2lAB508TrrjpDPi@monolith.localdoman>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1667910002;f2c334a3;
+X-HE-SMSGID: 1osNaA-0000q6-9s
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:12d listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5001]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [mrinvest1010[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [ctocik1[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [ctocik1[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
--- 
-Dear
+[Note: this mail is primarily send for documentation purposes and/or for
+regzbot, my Linux kernel regression tracking bot. That's why I removed
+most or all folks from the list of recipients, but left any that looked
+like a mailing lists. These mails usually contain '#forregzbot' in the
+subject, to make them easy to spot and filter out.]
 
-How are you with your family, I have a serious client, whom will be
-interested to invest in your country, I got your Details through the
-Investment Network and world Global Business directory.
+[TLDR: I'm adding this regression report to the list of tracked
+regressions; all text from me you find below is based on a few templates
+paragraphs you might have encountered already already in similar form.]
 
-Let me know, If you are interested for more details.....
+Hi, this is your Linux kernel regression tracker.
 
-Regards,
-Andrew
+On 07.11.22 18:27, Alexandru Elisei wrote:
+> I'm going to preface this by saying that I'm extremely unfamiliar with the
+> EFI code.
+> 
+> Commit d3549a938b73 ("efi/arm64: libstub: avoid SetVirtualAddressMap() when
+> possible") skipped the call to SetVirtualAddressMap() for certain
+> configurations, and that started causing kernel panics on an Ampere Altra
+> machine due to an EFI synchronous exception.
+> 
+> Commit 23715a26c8d8 ("arm64: efi: Recover from synchronous exceptions
+> occurring in firmware") made the EFI exception non-fatal.
+
+Thanks for the report. To be sure below issue doesn't fall through the
+cracks unnoticed, I'm adding it to regzbot, my Linux kernel regression
+tracking bot:
+
+#regzbot ^introduced d3549a938b73
+#regzbot title efi: arm64: updating the firmware is not feasible anymore
+#regzbot ignore-activity
+
+This isn't a regression? This issue or a fix for it are already
+discussed somewhere else? It was fixed already? You want to clarify when
+the regression started to happen? Or point out I got the title or
+something else totally wrong? Then just reply -- ideally with also
+telling regzbot about it, as explained here:
+https://linux-regtracking.leemhuis.info/tracked-regression/
+
+Reminder for developers: When fixing the issue, add 'Link:' tags
+pointing to the report (the mail this one replies to), as explained for
+in the Linux kernel's documentation; above webpage explains why this is
+important for tracked regressions.
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+
+P.S.: As the Linux kernel's regression tracker I deal with a lot of
+reports and sometimes miss something important when writing mails like
+this. If that's the case here, don't hesitate to tell me in a public
+reply, it's in everyone's interest to set the public record straight.
