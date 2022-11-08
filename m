@@ -2,113 +2,97 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADA4F62141E
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Nov 2022 14:57:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 320EC621689
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Nov 2022 15:28:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234853AbiKHN5Y (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 8 Nov 2022 08:57:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59262 "EHLO
+        id S234038AbiKHO2w (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 8 Nov 2022 09:28:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234866AbiKHN5U (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Nov 2022 08:57:20 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32E6E66C98
-        for <linux-efi@vger.kernel.org>; Tue,  8 Nov 2022 05:57:19 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E631DB81AE4
-        for <linux-efi@vger.kernel.org>; Tue,  8 Nov 2022 13:57:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CDD2C43470
-        for <linux-efi@vger.kernel.org>; Tue,  8 Nov 2022 13:57:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667915836;
-        bh=6QgA7zxZr+06ErVA5yLWjruENerkbvVZ8g40ZACW0Qw=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=o5hlcTdSWBRBBBlzBv7mgPeCk2O/1omOozvo/2MmX0KLYUyARlkcxc4XCFScYrrDa
-         W0dG30T7hOq309UWG15pl/aD8Ffe3jDlvCZ7dENRO2k5sPs4XZ6pZLD2N/JcqyyHpy
-         RE6mYTzvSVBwf0AnHKzeMcxs7HVXO6Ch9+C2XfMc3mr6cRLglNWqNOXQfnOTGl7C5r
-         hLqk2Pe2s5wspuHJvRoOIG8Zr8Z9ENgnvldm5Xg72+J8GFesROMfp/NiLiOS5V5lmU
-         NZFAtc+LLNaxLlX/D/YIeEJ0ZVlJeJlYzGr0lWLNkwfB7mQlLIGHgqjX5OL9efo25r
-         DqHkm+TZVCvgg==
-Received: by mail-lj1-f175.google.com with SMTP id b9so21215044ljr.5
-        for <linux-efi@vger.kernel.org>; Tue, 08 Nov 2022 05:57:16 -0800 (PST)
-X-Gm-Message-State: ACrzQf0U2V20Kkr18Qg5ISwligb/SEIR/SpuS3KVPq5wDE953sgiDGa7
-        HeTWpYivfoz2zQM4IQ2xZf3C4OfTfTRKQq7s18U=
-X-Google-Smtp-Source: AMsMyM4DrU6m7IQbAp2gogLHTqpm2L4TWLX3iaTEyeI9HvgJ1PcAZHtzwCl6Cw9AnRk5yppPDMeMk8hgdAW5vt++tHU=
-X-Received: by 2002:a2e:3a1a:0:b0:277:7eef:1d97 with SMTP id
- h26-20020a2e3a1a000000b002777eef1d97mr5895000lja.516.1667915834647; Tue, 08
- Nov 2022 05:57:14 -0800 (PST)
+        with ESMTP id S234014AbiKHO0Y (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Nov 2022 09:26:24 -0500
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10BA51003
+        for <linux-efi@vger.kernel.org>; Tue,  8 Nov 2022 06:25:13 -0800 (PST)
+Received: by mail-pl1-x62e.google.com with SMTP id u6so14295113plq.12
+        for <linux-efi@vger.kernel.org>; Tue, 08 Nov 2022 06:25:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=qJPWO9SMfKs9CV4DzOtfpg0tG5L2kEZQtV/LBBChMrnKplvig/HcfOA36QzOFbaour
+         tgINSm9CFH0IH0weUkbi8oL7C5P0uFU99A+FANpQrOPV/x2at1b6HjUUAphEgu/Nt2rO
+         YdZzEeguInvIt6hR0YTDbuGc0g6QmBH3JOdUVEiMakuZ8pUv0rSqDGDPPz36WP9L+M70
+         Yi8Qvn61/fVJa/s6+O6bNGj9Vrx81J7VmEWQcrrTipgg1zMWjvYHOXsRX3Tp8F7t1isZ
+         URWNY0E6DDGhkUjSdRf6tRRt6Dm01iRomcQNGIBkoA7vu4q8ZFmcmXCe9DgPR3TaW/OT
+         odpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=5fysOydBDNcg8vf+LFmJd32KhtYRo9ArViq8ODa+UJHDLEJfKvFdL0LyVk7i7jzzaF
+         X7xYjx/EBCsfwA3xyYuwVsWsig7r5otPtJBudMomBlvfwhmvDRFu9V66/I5k9Mx1sLGz
+         PTWHTk0eZffOFQHNwTLiJkcubu1YZTtEhgzT3xmowwETionc9Z0juRLYuU6DJrzHAFuE
+         yUGl28fEy2PQw6j0qe2DZIYfsuzn6XccoWgtx5adPA5ZY5guyy9FiQ56Hz0bH6Go+V/I
+         hPyELyLxilHnINDv62+2QDCH2OjJ/3LxgM4EtNoyB1UdNkZAqZef097jZf4NqZO7fyFH
+         6j/g==
+X-Gm-Message-State: ACrzQf0nfTCXM9dCa2DELH3rsy85qf2XvWJz25UEzYm/e9BXvV0BF934
+        3te29h8XF4lgHTgS0tMMaicYGdoZjdl/9/tnBDI=
+X-Google-Smtp-Source: AMsMyM7xjnW3BCIcPmRXceI8CMPrgJsNpwknP0oXmxg9pb3hPM8UnVyASTbWsNqLc31U8nSLRepoWwOH4L/DHUye4LA=
+X-Received: by 2002:a17:90b:1d90:b0:213:c798:86f6 with SMTP id
+ pf16-20020a17090b1d9000b00213c79886f6mr52558648pjb.84.1667917512394; Tue, 08
+ Nov 2022 06:25:12 -0800 (PST)
 MIME-Version: 1.0
-References: <d799b60c-ff4e-44ae-84be-d9ade761ec6d@redhat.com>
- <CAMj1kXHDtwkMgqqwePEKdOdO=7-1_TYyuVNPJ7PkyreaMySjCw@mail.gmail.com>
- <d469f6b9-d23a-abe6-27b7-f58f9de12a45@redhat.com> <CAMj1kXFUfAE6bGTxTFDQe9HxAZAuAOXenU+GC-39QJfaBOt4tA@mail.gmail.com>
- <34d7f903-9d1a-d63b-0d32-b72ae775f26a@leemhuis.info>
-In-Reply-To: <34d7f903-9d1a-d63b-0d32-b72ae775f26a@leemhuis.info>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 8 Nov 2022 14:57:03 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFtitTuxVSBsxX0j_NHxwnX2oVupip4xy7TKqe-rja_Vw@mail.gmail.com>
-Message-ID: <CAMj1kXFtitTuxVSBsxX0j_NHxwnX2oVupip4xy7TKqe-rja_Vw@mail.gmail.com>
-Subject: Re: [Issue] EFI runtime-wrapper is broken
-To:     Thorsten Leemhuis <regressions@leemhuis.info>
-Cc:     Gavin Shan <gshan@redhat.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Received: by 2002:a05:7300:5388:b0:85:81c6:896c with HTTP; Tue, 8 Nov 2022
+ 06:25:11 -0800 (PST)
+Reply-To: mr.abraham022@gmail.com
+From:   "Mr.Abraham" <davidkekeli11@gmail.com>
+Date:   Tue, 8 Nov 2022 14:25:11 +0000
+Message-ID: <CAPBO+FJ3Nhd2ncX9Z_fDUqYStiGQU821nC6EEFSDx5iCTdXkaQ@mail.gmail.com>
+Subject: Greeting
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:62e listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4995]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mr.abraham022[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [davidkekeli11[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [davidkekeli11[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 8 Nov 2022 at 13:26, Thorsten Leemhuis
-<regressions@leemhuis.info> wrote:
->
-> Hi, this is your Linux kernel regression tracker. CCing the regression
-> mailing list, as it should be in the loop for all regressions, as
-> explained here:
-> https://www.kernel.org/doc/html/latest/admin-guide/reporting-issues.html
->
-> On 28.10.22 11:39, Ard Biesheuvel wrote:
-> > On Fri, 28 Oct 2022 at 11:38, Gavin Shan <gshan@redhat.com> wrote:
-> >> On 10/28/22 5:21 PM, Ard Biesheuvel wrote:
-> >>> On Fri, 28 Oct 2022 at 11:10, Gavin Shan <gshan@redhat.com> wrote:
-> >>>> I ran into the following crash with v6.1.rc2. I'm not sure if it's known
-> >>>> issue. Last good version is v6.0.rc6/rc7. The kernel configuration is attached.
-> >>>
-> >>> This is probably related to the patch below. It means the firmware is
-> >>> buggy, and does not work as it should if the firmware never calls
-> >>> SetVirtualAddressMap() [and doing so is explicitly described as
-> >>> OPTIONAL by the EFI specification].
-> >>>
-> >>> The problem here is that other EFI implementations (primarily the
-> >>> Qualcomm ones used on Windows-on-ARM laptops) are buggy too, and don't
-> >>> tolerate SetVirtualAddressMap().
-> >>>
-> >>> Can you try whether reverting the patch below helps?
-> >>
-> >> I ran into the issue on server, equipped with Ampere CPUs. With d3549a938b73
-> >> reverted, the crash disappeared.
-> >
-> > Thanks for confirming
-> >
-> > Can you please share the complete boot log and the DMI/SMBIOS data? Thanks.
->
-> Gavin, did you ever send this?
->
-> Or Ard, was there any progress to get the issue fixed?
->
-> I ask because I have this on the list of tracked regression -- and I
-> noticed there is another report about problems caused by d3549a938b73
-> now from Alexandru Elisei:
-> https://lore.kernel.org/lkml/Y2lAB508TrrjpDPi@monolith.localdoman/
->
-
-Yes, this is essentially the exact same problem, only on a different
-type of Ampere hardware
-
-I have an idea how to fix this more comprehensively - I'll work with
-Alexandru to converge on a fix and get it queued up.
+My Greeting, Did you receive the letter i sent to you. Please answer me.
+Regard, Mr.Abraham
