@@ -2,349 +2,180 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF75C621BCF
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Nov 2022 19:22:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AFF63621EA8
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Nov 2022 22:41:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234755AbiKHSWl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 8 Nov 2022 13:22:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40718 "EHLO
+        id S229556AbiKHVlY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 8 Nov 2022 16:41:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234557AbiKHSWk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Nov 2022 13:22:40 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA1C0C22
-        for <linux-efi@vger.kernel.org>; Tue,  8 Nov 2022 10:22:39 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4566761727
-        for <linux-efi@vger.kernel.org>; Tue,  8 Nov 2022 18:22:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2DEC43470;
-        Tue,  8 Nov 2022 18:22:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667931758;
-        bh=2LT4g6R1nMcPAxzEz9SIz9J/vXCoCtzO6ohXg48lfz8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nftRC+QasozAq1uqe4KN25bXFi/tqyLWUxl/S5dhpDyX+Fb2ULDzKnUiN5dTNRPm0
-         GB3qIfAaCoqW8+A74W53XvPGqtD77/VjZpbifyTZUHxIzal5+v2x4OuFmbKaRezOhS
-         DxfRltz80V9WvXmlptTwF30X1fPqh4tjsQXZQzE1uewjV9RcKmmcTy4VvDxV0uzCGP
-         JbbRv5HXLPwdkE4uQ718a7erSNgLRII70nXRksmF4RuKz1/TrvLoSdGKNsIf6SPkwg
-         t0/QCtBta19JXkm+YA2WS5g2PxFaXuxtMT3kNsgYC6Pk7pSURUGXnDvVN/nRpJNtKF
-         ld2mXY3keSV/A==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     linux-efi@vger.kernel.org, keescook@chromium.org,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH v5 7/7] efi: arm64: enter with MMU and caches enabled
-Date:   Tue,  8 Nov 2022 19:22:04 +0100
-Message-Id: <20221108182204.2447664-8-ardb@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221108182204.2447664-1-ardb@kernel.org>
-References: <20221108182204.2447664-1-ardb@kernel.org>
+        with ESMTP id S229505AbiKHVlX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Nov 2022 16:41:23 -0500
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7644661774;
+        Tue,  8 Nov 2022 13:41:21 -0800 (PST)
+Received: (Authenticated sender: alexandre.belloni@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 06AC4100006;
+        Tue,  8 Nov 2022 21:41:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1667943680;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Wp9pE+3nkJBveNSf36eSd/7sCqaqg6JanvHQUihzxwE=;
+        b=nEix5IqsY7tJRep8lKqMZjetRrBUN5fyI0ogNExit9vRfLq1vMEOHp1AlzEoV6xZzIt7C9
+        nAti3WA7p1B1xzeps0WhhgNE9P82f5nczTt50VdX/beu1K28AXQjqhu4bkmejnlNVS/eAH
+        m7Sx6P0PggVjsyPKHkYemPg57rWD63ylcftsV08CHb3VM1kKQMCHHOAzCWP2AeaF83cobH
+        9jG9md3AGcpIQYc0w66aFU66hjx5xKuY4o04+R5iG5HBFjtpF/KaWZ3gnysluyaZfAyvcJ
+        Op1sKvQNbu+9n7K7dhc7Br/vKvmpfCvz+qD5INanAJ3GGKNrkMkc5kD/sJQ2iQ==
+Date:   Tue, 8 Nov 2022 22:41:18 +0100
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Alexandru Elisei <alexandru.elisei@arm.com>
+Cc:     a.zummo@towertech.it, linux-rtc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ardb@kernel.org,
+        linux-efi@vger.kernel.org, catalin.marinas@arm.com,
+        will@kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [BUG] rtc-efi: Error in efi.get_time() spams dmesg with error
+ message
+Message-ID: <Y2rM/ud0JfX4QXJB@mail.local>
+References: <Y2o1hdZK9GGDVJsS@monolith.localdoman>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10257; i=ardb@kernel.org; h=from:subject; bh=2LT4g6R1nMcPAxzEz9SIz9J/vXCoCtzO6ohXg48lfz8=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjap5LsbQS1qsGAKfMV/J3zbH30Ca+KL5ZNgIEy5K9 2es1fnKJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY2qeSwAKCRDDTyI5ktmPJJlVC/ 9EwYzqD5I3O+Kls7Zze6WX+/P1sWi7aw+tl7mMRZ5387xzNpkt+fTJ9hzqTjhm1WBY+R3DoAx+9MSU H5s9Iqm+nlm76ONiZAUQsJkZGGnv6leAkFZsmDHLGn7fvoEUfzphDsGS5ZsbVbwmOwXe0vYsTHC8Yc zh9l3zNn75l9xaxfS4KyI0iZ8He65YzACGW+0UoWDDzbZNLfMVn1zrBifFZzavoK5d8IWYq1m9SzWo LWlwMF0haSjD/3NY+1kq4qZHT4i+CJHm8lg8TSunUo0j5gamjmYtUgaPSbP3LlpWPhz6bPq0LqJNH9 Jb8/UXtmEZ/fJeJnAJ8OJ2YzEk2Ttd1XN9nZkjOw/j0OY3A03JT8o/52fJCt1xrcYwp2Zxuk6uQKth Her1hXlLDsVaFIoVQOyTEXc3tTz+s4z3sXC9KCbhh/WiT3nxFOkaG8lrrtoQ8LdpfRVADFo2O7RoJM 8Dxpbskb0Iaa7RfyFzusczX528YpEJCjMZuPEWsjYkszE=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y2o1hdZK9GGDVJsS@monolith.localdoman>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Instead of cleaning the entire loaded kernel image to the PoC and
-disabling the MMU and caches before branching to the kernel's bare metal
-entry point, we can leave the MMU and caches enabled, and rely on EFI's
-cacheable 1:1 mapping of all of system RAM (which is mandated by the
-spec) to populate the initial page tables.
+On 08/11/2022 10:55:15+0000, Alexandru Elisei wrote:
+> Hi,
+> 
+> Commit d3549a938b73 ("efi/arm64: libstub: avoid SetVirtualAddressMap() when
+> possible") exposed a firmware error on an Ampere Altra machine that was
+> causing the machine to panic. Then commit 23715a26c8d8 ("arm64: efi:
+> Recover from synchronous exceptions occurring in firmware") made the EFI
+> exception non-fatal, and disabled runtime services when the exception
+> happens. The interaction between those two patches are being discussed in a
+> separate thread [1], but that should be orthogonal to this.
+> 
+> Now efi.get_time() fails and each time an error message is printed to
+> dmesg, which happens several times a second and clutters dmesg
+> unnecessarily, to the point it becomes unusable.
+> 
+> I was wondering if it would be possible to turn dev_err() into a
+> dev_WARN_ONCE() or do something to avoid this issue. Tried to replace
+> dev_err() with dev_err_ratelimited(), and the error message was displayed
+> less often (about once per second), but dmesg was still being cluttered.
+> 
 
-This removes the need for managing coherency in software, which is
-tedious and error prone.
+The question this raise is what is actually trying to read the RTC this
+often?
 
-Note that we still need to clean the executable region of the image to
-the PoU if this is required for I/D coherency, but only if we actually
-decided to move the image in memory, as otherwise, this will have been
-taken care of by the loader.
+This should be read once at boot and maybe every time you wake up from
+suspend but there is no real reason to read it multiple times per
+seconds.
 
-This change affects both the builtin EFI stub as well as the zboot
-decompressor, which now carries the entire EFI stub along with the
-decompression code and the compressed image.
+> Here's a log with what is happening (the boot part of the log has been
+> removed for brevity, I've kept the kernel splats for context, can provide
+> full logs, kernel config, command line, etc, to reproduce it; goes without
+> saying that I am willing to test the fix myself):
+> 
+> [   55.479519] [Firmware Bug]: Unable to handle paging request in EFI runtime service
+> [   55.487122] CPU: 62 PID: 9 Comm: kworker/u320:0 Tainted: G          I        6.1.0-rc4 #60
+> [   55.487128] Hardware name: WIWYNN Mt.Jade Server System B81.03001.0005/Mt.Jade Motherboard, BIOS 1.08.20220218 (SCP: 1.08.20220218) 2022/02/18
+> [   55.487131] Workqueue: efi_rts_wq efi_call_rts
+> [   55.487158] Call trace:
+> [   55.487161]  dump_backtrace.part.0+0xdc/0xf0
+> [   55.487177]  show_stack+0x18/0x40
+> [   55.487180]  dump_stack_lvl+0x68/0x84
+> [   55.487190]  dump_stack+0x18/0x34
+> [   55.487192]  efi_runtime_fixup_exception+0x74/0x88
+> [   55.487199]  __do_kernel_fault+0x108/0x1b0
+> [   55.487204]  do_page_fault+0xd0/0x400
+> [   55.487207]  do_translation_fault+0xac/0xc0
+> [   55.487209]  do_mem_abort+0x44/0x94
+> [   55.487212]  el1_abort+0x40/0x6c
+> [   55.487214]  el1h_64_sync_handler+0xd8/0xe4
+> [   55.487218]  el1h_64_sync+0x64/0x68
+> [   55.487221]  0xb7eb7ae4
+> [   55.487224]  0xb7eb8668
+> [   55.487225]  0xb7eb6e08
+> [   55.487227]  0xb7eb68ec
+> [   55.487228]  0xb7eb3824
+> [   55.487230]  0xb7eb05a8
+> [   55.487231]  0xb7eb12a0
+> [   55.487232]  0xb7e43504
+> [   55.487234]  0xb7e43650
+> [   55.487235]  0xb7e482d0
+> [   55.487237]  0xb7e4907c
+> [   55.487238]  0xb7e49ff4
+> [   55.487239]  0xb7e40888
+> [   55.487241]  0xb7cb3328
+> [   55.487242]  0xb7cb0674
+> [   55.487243]  __efi_rt_asm_wrapper+0x54/0x70
+> [   55.487246]  efi_call_rts+0x28c/0x3d0
+> [   55.487249]  process_one_work+0x1d0/0x320
+> [   55.487258]  worker_thread+0x14c/0x444
+> [   55.487261]  kthread+0x10c/0x110
+> [   55.487264]  ret_from_fork+0x10/0x20
+> [   55.487268] [Firmware Bug]: Synchronous exception occurred in EFI runtime service set_time()
+> [   55.495735] ------------[ cut here ]------------
+> [   55.495739] WARNING: CPU: 62 PID: 9 at drivers/firmware/efi/runtime-wrappers.c:111 efi_call_virt_check_flags+0x40/0xac
+> [   55.495746] Modules linked in:
+> [   55.495749] CPU: 62 PID: 9 Comm: kworker/u320:0 Tainted: G          I        6.1.0-rc4 #60
+> [   55.495751] Hardware name: WIWYNN Mt.Jade Server System B81.03001.0005/Mt.Jade Motherboard, BIOS 1.08.20220218 (SCP: 1.08.20220218) 2022/02/18
+> [   55.495753] Workqueue: efi_rts_wq efi_call_rts
+> [   55.495757] pstate: 004000c9 (nzcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> [   55.495761] pc : efi_call_virt_check_flags+0x40/0xac
+> [   55.495764] lr : efi_call_rts+0x29c/0x3d0
+> [   55.495767] sp : ffff80000861bd40
+> [   55.495768] x29: ffff80000861bd40 x28: 0000000000000000 x27: 0000000000000000
+> [   55.495772] x26: ffffb251470e9e68 x25: ffff3fff89714805 x24: 0000000000000000
+> [   55.495775] x23: 0000000000000000 x22: 0000000000000000 x21: 00000000000000c0
+> [   55.495778] x20: ffffb25146688de0 x19: 0000000000000000 x18: ffffffffffffffff
+> [   55.495780] x17: 657320656d69746e x16: 757220494645206e x15: 6920646572727563
+> [   55.495784] x14: 636f206e6f697470 x13: ffff403e40540000 x12: 0000000000001c14
+> [   55.495787] x11: 000000000000095c x10: ffff403e40800000 x9 : ffff403e40540000
+> [   55.495790] x8 : 00000000ffff7fff x7 : ffff403e40800000 x6 : 0000000000000000
+> [   55.495792] x5 : ffff083e7fe9aaa0 x4 : 0000000000000000 x3 : 0000000000000000
+> [   55.495796] x2 : 0000000000000000 x1 : ffffb25146688de0 x0 : 00000000000000c0
+> [   55.495799] Call trace:
+> [   55.495800]  efi_call_virt_check_flags+0x40/0xac
+> [   55.495802]  efi_call_rts+0x29c/0x3d0
+> [   55.495805]  process_one_work+0x1d0/0x320
+> [   55.495808]  worker_thread+0x14c/0x444
+> [   55.495811]  kthread+0x10c/0x110
+> [   55.495814]  ret_from_fork+0x10/0x20
+> [   55.495815] ---[ end trace 0000000000000000 ]---
+> [   55.495818] Disabling lock debugging due to kernel taint
+> [   55.495822] efi: [Firmware Bug]: IRQ flags corrupted (0x00000000=>0x000000c0) by EFI set_time
+> [   55.504434] efi: EFI Runtime Services are disabled!
+> [   55.504465] rtc-efi rtc-efi.0: can't read time
+> [   56.479370] efi: EFI Runtime Services are disabled!
+> [   56.479394] rtc-efi rtc-efi.0: can't read time
+> [   56.483855] rtc-efi rtc-efi.0: can't read time
+> [   56.488306] rtc-efi rtc-efi.0: can't read time
+> [   57.479574] rtc-efi rtc-efi.0: can't read time
+> [   57.484030] rtc-efi rtc-efi.0: can't read time
+> [   57.488474] rtc-efi rtc-efi.0: can't read time
+> [   58.479692] rtc-efi rtc-efi.0: can't read time
+> [   58.484139] rtc-efi rtc-efi.0: can't read time
+> [   58.488582] rtc-efi rtc-efi.0: can't read time
+> [   59.479691] rtc-efi rtc-efi.0: can't read time
+> ... on, and on, on ...
+> 
+> [1] https://lore.kernel.org/linux-arm-kernel/Y2lAB508TrrjpDPi@monolith.localdoman/
+> 
+> Thanks,
+> Alex
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/arm64/kernel/image-vars.h             |  5 +-
- arch/arm64/mm/cache.S                      |  5 +-
- drivers/firmware/efi/libstub/Makefile      |  4 +-
- drivers/firmware/efi/libstub/arm64-entry.S | 67 --------------------
- drivers/firmware/efi/libstub/arm64-stub.c  | 26 +++++---
- drivers/firmware/efi/libstub/arm64.c       | 41 ++++++++++--
- 6 files changed, 61 insertions(+), 87 deletions(-)
-
-diff --git a/arch/arm64/kernel/image-vars.h b/arch/arm64/kernel/image-vars.h
-index f31130ba02331060..40ebb882d2d8c97b 100644
---- a/arch/arm64/kernel/image-vars.h
-+++ b/arch/arm64/kernel/image-vars.h
-@@ -10,7 +10,7 @@
- #error This file should only be included in vmlinux.lds.S
- #endif
- 
--PROVIDE(__efistub_primary_entry_offset	= primary_entry - _text);
-+PROVIDE(__efistub_primary_entry		= primary_entry);
- 
- /*
-  * The EFI stub has its own symbol namespace prefixed by __efistub_, to
-@@ -21,10 +21,11 @@ PROVIDE(__efistub_primary_entry_offset	= primary_entry - _text);
-  * linked at. The routines below are all implemented in assembler in a
-  * position independent manner
-  */
--PROVIDE(__efistub_dcache_clean_poc	= __pi_dcache_clean_poc);
-+PROVIDE(__efistub_caches_clean_inval_pou = __pi_caches_clean_inval_pou);
- 
- PROVIDE(__efistub__text			= _text);
- PROVIDE(__efistub__end			= _end);
-+PROVIDE(__efistub___inittext_end       	= __inittext_end);
- PROVIDE(__efistub__edata		= _edata);
- PROVIDE(__efistub_screen_info		= screen_info);
- PROVIDE(__efistub__ctype		= _ctype);
-diff --git a/arch/arm64/mm/cache.S b/arch/arm64/mm/cache.S
-index 081058d4e4366edb..8c3b3ee9b1d725c8 100644
---- a/arch/arm64/mm/cache.S
-+++ b/arch/arm64/mm/cache.S
-@@ -52,10 +52,11 @@ alternative_else_nop_endif
-  *	- start   - virtual start address of region
-  *	- end     - virtual end address of region
-  */
--SYM_FUNC_START(caches_clean_inval_pou)
-+SYM_FUNC_START(__pi_caches_clean_inval_pou)
- 	caches_clean_inval_pou_macro
- 	ret
--SYM_FUNC_END(caches_clean_inval_pou)
-+SYM_FUNC_END(__pi_caches_clean_inval_pou)
-+SYM_FUNC_ALIAS(caches_clean_inval_pou, __pi_caches_clean_inval_pou)
- 
- /*
-  *	caches_clean_inval_user_pou(start,end)
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index 402dfb30ddc7a01e..f838ab98978f1038 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -86,7 +86,7 @@ lib-$(CONFIG_EFI_GENERIC_STUB)	+= efi-stub.o string.o intrinsics.o systable.o \
- 				   screen_info.o efi-stub-entry.o
- 
- lib-$(CONFIG_ARM)		+= arm32-stub.o
--lib-$(CONFIG_ARM64)		+= arm64.o arm64-stub.o arm64-entry.o
-+lib-$(CONFIG_ARM64)		+= arm64.o arm64-stub.o
- lib-$(CONFIG_X86)		+= x86-stub.o
- lib-$(CONFIG_RISCV)		+= riscv.o riscv-stub.o
- lib-$(CONFIG_LOONGARCH)		+= loongarch.o loongarch-stub.o
-@@ -140,7 +140,7 @@ STUBCOPY_RELOC-$(CONFIG_ARM)	:= R_ARM_ABS
- #
- STUBCOPY_FLAGS-$(CONFIG_ARM64)	+= --prefix-alloc-sections=.init \
- 				   --prefix-symbols=__efistub_
--STUBCOPY_RELOC-$(CONFIG_ARM64)	:= R_AARCH64_ABS64
-+STUBCOPY_RELOC-$(CONFIG_ARM64)	:= R_AARCH64_ABS
- 
- # For RISC-V, we don't need anything special other than arm64. Keep all the
- # symbols in .init section and make sure that no absolute symbols references
-diff --git a/drivers/firmware/efi/libstub/arm64-entry.S b/drivers/firmware/efi/libstub/arm64-entry.S
-deleted file mode 100644
-index b5c17e89a4fc0c21..0000000000000000
---- a/drivers/firmware/efi/libstub/arm64-entry.S
-+++ /dev/null
-@@ -1,67 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
--/*
-- * EFI entry point.
-- *
-- * Copyright (C) 2013, 2014 Red Hat, Inc.
-- * Author: Mark Salter <msalter@redhat.com>
-- */
--#include <linux/linkage.h>
--#include <asm/assembler.h>
--
--	/*
--	 * The entrypoint of a arm64 bare metal image is at offset #0 of the
--	 * image, so this is a reasonable default for primary_entry_offset.
--	 * Only when the EFI stub is integrated into the core kernel, it is not
--	 * guaranteed that the PE/COFF header has been copied to memory too, so
--	 * in this case, primary_entry_offset should be overridden by the
--	 * linker and point to primary_entry() directly.
--	 */
--	.weak	primary_entry_offset
--
--SYM_CODE_START(efi_enter_kernel)
--	/*
--	 * efi_pe_entry() will have copied the kernel image if necessary and we
--	 * end up here with device tree address in x1 and the kernel entry
--	 * point stored in x0. Save those values in registers which are
--	 * callee preserved.
--	 */
--	ldr	w2, =primary_entry_offset
--	add	x19, x0, x2		// relocated Image entrypoint
--
--	mov	x0, x1			// DTB address
--	mov	x1, xzr
--	mov	x2, xzr
--	mov	x3, xzr
--
--	/*
--	 * Clean the remainder of this routine to the PoC
--	 * so that we can safely disable the MMU and caches.
--	 */
--	adr	x4, 1f
--	dc	civac, x4
--	dsb	sy
--
--	/* Turn off Dcache and MMU */
--	mrs	x4, CurrentEL
--	cmp	x4, #CurrentEL_EL2
--	mrs	x4, sctlr_el1
--	b.ne	0f
--	mrs	x4, sctlr_el2
--0:	bic	x4, x4, #SCTLR_ELx_M
--	bic	x4, x4, #SCTLR_ELx_C
--	b.eq	1f
--	b	2f
--
--	.balign	32
--1:	pre_disable_mmu_workaround
--	msr	sctlr_el2, x4
--	isb
--	br	x19		// jump to kernel entrypoint
--
--2:	pre_disable_mmu_workaround
--	msr	sctlr_el1, x4
--	isb
--	br	x19		// jump to kernel entrypoint
--
--	.org	1b + 32
--SYM_CODE_END(efi_enter_kernel)
-diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-index 7f0aab3a8ab302d6..00fb2eab6d0c74ef 100644
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -58,7 +58,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 				 efi_handle_t image_handle)
- {
- 	efi_status_t status;
--	unsigned long kernel_size, kernel_memsize = 0;
-+	unsigned long kernel_size, kernel_codesize, kernel_memsize;
- 	u32 phys_seed = 0;
- 	u64 min_kimg_align = efi_get_kimg_min_align();
- 
-@@ -93,6 +93,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 			SEGMENT_ALIGN >> 10);
- 
- 	kernel_size = _edata - _text;
-+	kernel_codesize = __inittext_end - _text;
- 	kernel_memsize = kernel_size + (_end - _edata);
- 	*reserve_size = kernel_memsize;
- 
-@@ -120,7 +121,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 			 */
- 			*image_addr = (u64)_text;
- 			*reserve_size = 0;
--			goto clean_image_to_poc;
-+			return EFI_SUCCESS;
- 		}
- 
- 		status = efi_allocate_pages_aligned(*reserve_size, reserve_addr,
-@@ -136,14 +137,21 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 
- 	*image_addr = *reserve_addr;
- 	memcpy((void *)*image_addr, _text, kernel_size);
-+	caches_clean_inval_pou(*image_addr, *image_addr + kernel_codesize);
- 
--clean_image_to_poc:
-+	return EFI_SUCCESS;
-+}
-+
-+asmlinkage void primary_entry(void);
-+
-+unsigned long primary_entry_offset(void)
-+{
- 	/*
--	 * Clean the copied Image to the PoC, and ensure it is not shadowed by
--	 * stale icache entries from before relocation.
-+	 * When built as part of the kernel, the EFI stub cannot branch to the
-+	 * kernel proper via the image header, as the PE/COFF header is
-+	 * strictly not part of the in-memory presentation of the image, only
-+	 * of the file representation. So instead, we need to jump to the
-+	 * actual entrypoint in the .text region of the image.
- 	 */
--	dcache_clean_poc(*image_addr, *image_addr + kernel_size);
--	asm("ic ialluis");
--
--	return EFI_SUCCESS;
-+	return (char *)primary_entry - _text;
- }
-diff --git a/drivers/firmware/efi/libstub/arm64.c b/drivers/firmware/efi/libstub/arm64.c
-index d2e94972c5fad523..99f86ddc91cf10cf 100644
---- a/drivers/firmware/efi/libstub/arm64.c
-+++ b/drivers/firmware/efi/libstub/arm64.c
-@@ -41,6 +41,12 @@ efi_status_t check_platform_features(void)
- 	return EFI_SUCCESS;
- }
- 
-+#ifdef CONFIG_ARM64_WORKAROUND_CLEAN_CACHE
-+#define DCTYPE	"civac"
-+#else
-+#define DCTYPE	"cvau"
-+#endif
-+
- void efi_cache_sync_image(unsigned long image_base,
- 			  unsigned long alloc_size,
- 			  unsigned long code_size)
-@@ -49,13 +55,38 @@ void efi_cache_sync_image(unsigned long image_base,
- 	u64 lsize = 4 << cpuid_feature_extract_unsigned_field(ctr,
- 						CTR_EL0_DminLine_SHIFT);
- 
--	do {
--		asm("dc civac, %0" :: "r"(image_base));
--		image_base += lsize;
--		alloc_size -= lsize;
--	} while (alloc_size >= lsize);
-+	/* only perform the cache maintenance if needed for I/D coherency */
-+	if (!(ctr & BIT(CTR_EL0_IDC_SHIFT))) {
-+		do {
-+			asm("dc " DCTYPE ", %0" :: "r"(image_base));
-+			image_base += lsize;
-+			code_size -= lsize;
-+		} while (code_size >= lsize);
-+	}
- 
- 	asm("ic ialluis");
- 	dsb(ish);
- 	isb();
- }
-+
-+unsigned long __weak primary_entry_offset(void)
-+{
-+	/*
-+	 * By default, we can invoke the kernel via the branch instruction in
-+	 * the image header, so offset #0. This will be overridden by the EFI
-+	 * stub build that is linked into the core kernel, as in that case, the
-+	 * image header may not have been loaded into memory, or may be mapped
-+	 * with non-executable permissions.
-+	 */
-+       return 0;
-+}
-+
-+void __noreturn efi_enter_kernel(unsigned long entrypoint,
-+				 unsigned long fdt_addr,
-+				 unsigned long fdt_size)
-+{
-+	void (* __noreturn enter_kernel)(u64, u64, u64, u64);
-+
-+	enter_kernel = (void *)entrypoint + primary_entry_offset();
-+	enter_kernel(fdt_addr, 0, 0, 0);
-+}
 -- 
-2.35.1
-
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
