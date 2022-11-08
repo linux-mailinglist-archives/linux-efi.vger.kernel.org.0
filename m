@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B8AB621BC8
-	for <lists+linux-efi@lfdr.de>; Tue,  8 Nov 2022 19:22:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C696D621BCD
+	for <lists+linux-efi@lfdr.de>; Tue,  8 Nov 2022 19:22:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234312AbiKHSW1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 8 Nov 2022 13:22:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40574 "EHLO
+        id S234816AbiKHSWh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 8 Nov 2022 13:22:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234769AbiKHSW0 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Nov 2022 13:22:26 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CB68E63
-        for <linux-efi@vger.kernel.org>; Tue,  8 Nov 2022 10:22:24 -0800 (PST)
+        with ESMTP id S234755AbiKHSWg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Nov 2022 13:22:36 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E9AE271E
+        for <linux-efi@vger.kernel.org>; Tue,  8 Nov 2022 10:22:35 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BA1961725
-        for <linux-efi@vger.kernel.org>; Tue,  8 Nov 2022 18:22:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC87DC433D6;
-        Tue,  8 Nov 2022 18:22:21 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 63DCDCE1C42
+        for <linux-efi@vger.kernel.org>; Tue,  8 Nov 2022 18:22:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC1B1C4347C;
+        Tue,  8 Nov 2022 18:22:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667931743;
-        bh=7KTOHQgQNiVS1k9MMhWHllX/ItO65TK+RnTvpa43MpM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=oSjUmhIrBFHzTqCbkle/Uquc/h/HLjugfsMRVIApozVHZAGK45v9VGXWnhck0K0nU
-         b6fyzG6q9mDgLvQuThwQmw3ROO5EbzPxVijtenpHQ+sjgRtSlhOyylQg4Bunkl0HsR
-         rtigwuSmPJR602HhiAXD8VThH49WOPxkzkOecuqedpcosArPTB54k30GmlkUSCDYms
-         nuZ9huMCYDjq14XV2o+FYiYPoo+zf7HI5qPubnbsbTFCMJLwVTlgYg6XZNDaIk44ap
-         TN5QnJL9JPZw28z6YlYj75RgW0PkAuy2ddtMWGZJG3U79lD/sKn94FhzsUW5P+dGOl
-         8ovZ+D4HSc4aA==
+        s=k20201202; t=1667931745;
+        bh=4ivurFOMcnYVOQgldP9y6PNo1y3QrIuNCSXZfDe0wZ0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=HVtw7Hu6DUvbpKOVwV/p+CiSVKwcPVqSVk3gCi1n3Nt3wqlPfHhCVGMUwruGPS6J3
+         pmEm4gikkcFP/soLswtTydF+otSWBMzi3GfXAymKY/1KMFXmuiGMQ3ZtPTWSUHAml2
+         O29Byr2b/la9thOg+uUKOsz16iZSbMPQiTWqtF/Xo4gpuXcNasjgxbKm3z59LyoWIx
+         0RYObraV2IpHeXP7UOB3GHch5yGblV4xRsZ2HeEFDCeAz3lTDg+QghZXR2EAu/lNeK
+         5ouSIRj1wcgVfLfptMgFOOf4WMDpLWO+D3fEUxQrQ+jswYSlPBnKzPZ9wRviOZBV6I
+         5EQAAFFcHNKrw==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-arm-kernel@lists.infradead.org
 Cc:     linux-efi@vger.kernel.org, keescook@chromium.org,
@@ -39,12 +39,14 @@ Cc:     linux-efi@vger.kernel.org, keescook@chromium.org,
         Catalin Marinas <catalin.marinas@arm.com>,
         Marc Zyngier <maz@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH v5 0/7] arm64: efi: leave MMU and caches on at boot
-Date:   Tue,  8 Nov 2022 19:21:57 +0100
-Message-Id: <20221108182204.2447664-1-ardb@kernel.org>
+Subject: [PATCH v5 1/7] arm64: head: Move all finalise_el2 calls to after __enable_mmu
+Date:   Tue,  8 Nov 2022 19:21:58 +0100
+Message-Id: <20221108182204.2447664-2-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20221108182204.2447664-1-ardb@kernel.org>
+References: <20221108182204.2447664-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2957; i=ardb@kernel.org; h=from:subject; bh=7KTOHQgQNiVS1k9MMhWHllX/ItO65TK+RnTvpa43MpM=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjap4/7kf4dTo8ns7jXKIE3a0LqfmKE9PSUIguHZ3Z Mt4G9lyJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY2qePwAKCRDDTyI5ktmPJI/mC/ kBgDNf01cXFP2YZfyCk4pofdb1TfR3yHUrtpC4SAP0D1GFDcC2s7i55wXrIMGd582NGtu2vvRE7vKI u8t/Ac6+5zyP0AbUCTEg7Phz29Ddx7MOC1etbiV+oQhyrzzHYM0hdLBGw3xxeNCjVSw3y662RuBKtV I+gOoFFmWW4MU2L9xPG9YAudRZJDJhVEss+SDAGN723TFmY0OcZPvsI3aO3ERFPXdoyn8R8s25zxPf FZqz3EY1nSuZjBWSd7gBdZQtfqGb7XZ5pa8MRpTG4W1zXpM1m70dYUSbfMV8GzUrGqa2DujNGPPOhz nsOsbioroCwK96ODU173MqvuhX8tcU9n1AlDIGHrKaEJ0QLvv0TwvyKdct/W9wutGHKZG78GRCvVOB VXUgWEjmzZQW5fPYsgzrbEvL+saKMK29RRQbTAtbkDcFMsIHZOfjdNHmn7HuTjYRXs88ekLz7CSixZ OqAQz62ehoPVoNAjP5GYCQMdNTtWlIIIAIrJXOOJNgf3o=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2013; i=ardb@kernel.org; h=from:subject; bh=4ivurFOMcnYVOQgldP9y6PNo1y3QrIuNCSXZfDe0wZ0=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjap5BO3NtnUnMpfrLBi1Z4al4QY8BVK7KA3An1EL2 0mSkueuJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY2qeQQAKCRDDTyI5ktmPJJX2C/ 42SFuWsziw4ywk1XWPY4JihPVVfjieJZmi7x7P/St0q6g22TzuRgPc1HbK5Ee3bnj369AicFRyAq61 IAJWhgphN7cRjqBIlFr+NzqDdILqzAXUrzbU/xm0/Do5JppTZGQJoYGFrm/gfeRr9jiqWKIpF12DQ0 CyxEwEMWkKMIJ4/adII34MENXO2QH37y7rPQdqFYpeoQ2/lflnu/5V+bcya4SjD4W+uTwugIFYvHqc QYbsAfNFu/w1z0ktxWEQgpJLrs7R8UTAVdIrd+yAKPzk50NeoXBqvcm2I2gDNdAqZkmzl879r1DnYi 8hB450QJySYGUQTPzNOLD+GYi0boNFZW1sQxULXSqnbpgWTajPSiFsRuOn3ba1ubY+A4/6D8qI29WC EkhQgdK9n0YPsXwtOJparTrLLv064cG2e4IXOMQGuBiAv7oZ963DgJ29l768/47rn1GLYz4g7Irx/k Vh8a2fwsny9yikkE5+xIVFDTig0Xszprw74DRE6tVZKr4=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -56,66 +58,68 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The purpose of this series is to remove any explicit cache maintenance
-for coherency during early boot that becomes unnecessary if we simply
-retain the cacheable 1:1 mapping of all of system RAM provided by EFI,
-and use it to populate the ID map page tables. After setting up this
-preliminary ID map, we disable the MMU, drop to EL1, reprogram the MAIR,
-TCR and SCTLR registers as before, and proceed as usual, avoiding the
-need for any manipulations of memory while the MMU and caches are off.
+In the primary boot path, finalise_el2() is called much later than on
+the secondary boot or resume-from-suspend paths, and this does not
+appear to be intentional.
 
-The only properties of the firmware provided 1:1 map we rely on is that
-it does not require any explicit cache maintenance for coherency, and
-that it covers the entire memory footprint of the image, including the
-BSS and padding at the end - all else is under control of the kernel
-itself, as before.
+Since we aim to do as little as possible before enabling the MMU and
+caches, align secondary and resume with primary boot, and defer the call
+to after the MMU is turned on. This also removes the need to clean
+finalise_el2() to the PoC once we enable support for booting with the
+MMU on.
 
-Changes since v4:
-- add patch to align the callers of finalise_el2()
-- also clean HYP text to the PoC when booting at EL2 with the MMU on
-- add a warning and a taint when doing non-EFI boot with the MMU and
-  caches enabled
-- rebase onto zboot changes in efi/next - this means that patches #6 and
-  #7 will not apply onto arm64/for-next so a shared stable branch will
-  be needed if we want to queue this up for v6.2
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ arch/arm64/kernel/head.S  | 5 ++++-
+ arch/arm64/kernel/sleep.S | 5 ++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-Changes since v3:
-- drop EFI_LOADER_CODE memory type patch that has been queued in the
-  mean time
-- rebased onto [partial] series that moves efi-entry.S into the libstub/
-  source directory
-- fixed a correctness issue in patch #2
-
-Cc: Will Deacon <will@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-
-Ard Biesheuvel (7):
-  arm64: head: Move all finalise_el2 calls to after __enable_mmu
-  arm64: kernel: move identity map out of .text mapping
-  arm64: head: record the MMU state at primary entry
-  arm64: head: avoid cache invalidation when entering with the MMU on
-  arm64: head: Clean the ID map and the HYP text to the PoC if needed
-  arm64: lds: reduce effective minimum image alignment to 64k
-  efi: arm64: enter with MMU and caches enabled
-
- arch/arm64/include/asm/efi.h               |  9 +-
- arch/arm64/kernel/head.S                   | 93 +++++++++++++++-----
- arch/arm64/kernel/image-vars.h             |  5 +-
- arch/arm64/kernel/setup.c                  |  9 +-
- arch/arm64/kernel/sleep.S                  |  6 +-
- arch/arm64/kernel/vmlinux.lds.S            | 13 ++-
- arch/arm64/mm/cache.S                      |  5 +-
- arch/arm64/mm/proc.S                       |  2 -
- drivers/firmware/efi/libstub/Makefile      |  4 +-
- drivers/firmware/efi/libstub/arm64-entry.S | 67 --------------
- drivers/firmware/efi/libstub/arm64-stub.c  | 26 ++++--
- drivers/firmware/efi/libstub/arm64.c       | 41 +++++++--
- include/linux/efi.h                        |  6 +-
- 13 files changed, 159 insertions(+), 127 deletions(-)
- delete mode 100644 drivers/firmware/efi/libstub/arm64-entry.S
-
+diff --git a/arch/arm64/kernel/head.S b/arch/arm64/kernel/head.S
+index 2196aad7b55bcef0..c59e0d95b44d0901 100644
+--- a/arch/arm64/kernel/head.S
++++ b/arch/arm64/kernel/head.S
+@@ -584,7 +584,6 @@ SYM_FUNC_START_LOCAL(secondary_startup)
+ 	 * Common entry point for secondary CPUs.
+ 	 */
+ 	mov	x20, x0				// preserve boot mode
+-	bl	finalise_el2
+ 	bl	__cpu_secondary_check52bitva
+ #if VA_BITS > 48
+ 	ldr_l	x0, vabits_actual
+@@ -600,6 +599,10 @@ SYM_FUNC_END(secondary_startup)
+ SYM_FUNC_START_LOCAL(__secondary_switched)
+ 	mov	x0, x20
+ 	bl	set_cpu_boot_mode_flag
++
++	mov	x0, x20
++	bl	finalise_el2
++
+ 	str_l	xzr, __early_cpu_boot_status, x3
+ 	adr_l	x5, vectors
+ 	msr	vbar_el1, x5
+diff --git a/arch/arm64/kernel/sleep.S b/arch/arm64/kernel/sleep.S
+index 97c9de57725dfddb..7b7c56e048346e97 100644
+--- a/arch/arm64/kernel/sleep.S
++++ b/arch/arm64/kernel/sleep.S
+@@ -100,7 +100,7 @@ SYM_FUNC_END(__cpu_suspend_enter)
+ 	.pushsection ".idmap.text", "awx"
+ SYM_CODE_START(cpu_resume)
+ 	bl	init_kernel_el
+-	bl	finalise_el2
++	mov	x19, x0			// preserve boot mode
+ #if VA_BITS > 48
+ 	ldr_l	x0, vabits_actual
+ #endif
+@@ -116,6 +116,9 @@ SYM_CODE_END(cpu_resume)
+ 	.popsection
+ 
+ SYM_FUNC_START(_cpu_resume)
++	mov	x0, x19
++	bl	finalise_el2
++
+ 	mrs	x1, mpidr_el1
+ 	adr_l	x8, mpidr_hash		// x8 = struct mpidr_hash virt address
+ 
 -- 
 2.35.1
 
