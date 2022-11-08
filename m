@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FAA8621BCE
+	by mail.lfdr.de (Postfix) with ESMTP id AF75C621BCF
 	for <lists+linux-efi@lfdr.de>; Tue,  8 Nov 2022 19:22:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234531AbiKHSWl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        id S234755AbiKHSWl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
         Tue, 8 Nov 2022 13:22:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40716 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234755AbiKHSWj (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Nov 2022 13:22:39 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12EB82CB
+        with ESMTP id S234557AbiKHSWk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Nov 2022 13:22:40 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA1C0C22
         for <linux-efi@vger.kernel.org>; Tue,  8 Nov 2022 10:22:39 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C6440B81BF6
-        for <linux-efi@vger.kernel.org>; Tue,  8 Nov 2022 18:22:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C38D0C4347C;
-        Tue,  8 Nov 2022 18:22:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4566761727
+        for <linux-efi@vger.kernel.org>; Tue,  8 Nov 2022 18:22:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2DEC43470;
+        Tue,  8 Nov 2022 18:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667931756;
-        bh=MWD3jiDqDGuRLBaHt/HdBEQzHS/nhfIQWq2XlQqRkt4=;
+        s=k20201202; t=1667931758;
+        bh=2LT4g6R1nMcPAxzEz9SIz9J/vXCoCtzO6ohXg48lfz8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DQlbi3wPZJ9XLvE+EpwIE093Ab3zgJ91e1DqN/pHRZuLPYkV47sFa10y1NDg1cz/W
-         zPsLqa3CH/LOPlcMp04cqjSF7hdz9rt9OlNEMtEXUcyggZHSWz1v4PYQsA6P6dDlPw
-         TQzoX1xzmifCRUZWBww+OYpJ8xabFawFEjMPtPKTWw2Kw+YQVJ8OB/um+Znhh6fcBc
-         jrjosSBbXV+GV/xxsHhPcC2yzwAx0BKUs1SOEYKd2geUtU+YGG3+oF1TGYTBq+Ao62
-         OXnoaYt2nyz8uMExRKJ7VLTjBdnceoHZuPIiypvKuMce6SDC7MN3u5Sl3Btm6JxxVr
-         PMfO9LcJyT3Wg==
+        b=nftRC+QasozAq1uqe4KN25bXFi/tqyLWUxl/S5dhpDyX+Fb2ULDzKnUiN5dTNRPm0
+         GB3qIfAaCoqW8+A74W53XvPGqtD77/VjZpbifyTZUHxIzal5+v2x4OuFmbKaRezOhS
+         DxfRltz80V9WvXmlptTwF30X1fPqh4tjsQXZQzE1uewjV9RcKmmcTy4VvDxV0uzCGP
+         JbbRv5HXLPwdkE4uQ718a7erSNgLRII70nXRksmF4RuKz1/TrvLoSdGKNsIf6SPkwg
+         t0/QCtBta19JXkm+YA2WS5g2PxFaXuxtMT3kNsgYC6Pk7pSURUGXnDvVN/nRpJNtKF
+         ld2mXY3keSV/A==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-arm-kernel@lists.infradead.org
 Cc:     linux-efi@vger.kernel.org, keescook@chromium.org,
@@ -39,14 +39,14 @@ Cc:     linux-efi@vger.kernel.org, keescook@chromium.org,
         Catalin Marinas <catalin.marinas@arm.com>,
         Marc Zyngier <maz@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH v5 6/7] arm64: lds: reduce effective minimum image alignment to 64k
-Date:   Tue,  8 Nov 2022 19:22:03 +0100
-Message-Id: <20221108182204.2447664-7-ardb@kernel.org>
+Subject: [PATCH v5 7/7] efi: arm64: enter with MMU and caches enabled
+Date:   Tue,  8 Nov 2022 19:22:04 +0100
+Message-Id: <20221108182204.2447664-8-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221108182204.2447664-1-ardb@kernel.org>
 References: <20221108182204.2447664-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4680; i=ardb@kernel.org; h=from:subject; bh=MWD3jiDqDGuRLBaHt/HdBEQzHS/nhfIQWq2XlQqRkt4=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjap5JWXXKYnowwNzvCLta3MG3V6apoNBwitfw05zf YrDWe/uJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY2qeSQAKCRDDTyI5ktmPJKW2C/ 9S2oyok3Zym96V/+5yk6p0C5BDDM81GC8BWGowTtjp7eBqM4SULE9aAfguRffDVaH+CCfL6g5KhK5y wXgjRaIPuMEewbX6s66L5CCx1I4ZyM7X48jbC+192fX7dEQbObgH5sIuo1WqAVVk0As7QVW6EoK/ZC FTVm/izx+qiMlauOBKBlhkstMogDxH3ccoF10Z3hACAW/cAgTR0BjkhCvhMqkfOrcpmsWPc2ThTOld xkqhPTUbSzbHAmRyfPAoYCCiZ/10RPAm7XePuzfYqdLH2NY0ltxlqZSgvnOa4g8XZ6Ic0uLqu2VcTd /rX+7w6uFORNFNi2LE//O/w8C3OKhk/Zc6BPpyLng7XAvX6K/5SkzhsltOw6cqizqOpWLHY49FCjUV vDLW+B6W9EUC/mwO3hl9eMJ1VS4LtOtcX96I4OySOu7YhK+BFmDZZ7jO4bPyu8FsWtxnOqLphM8vV/ ml+TyY/JrJdJVxYCqFBxp7luHStPjtSTk+7RPdkXjpaBo=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10257; i=ardb@kernel.org; h=from:subject; bh=2LT4g6R1nMcPAxzEz9SIz9J/vXCoCtzO6ohXg48lfz8=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjap5LsbQS1qsGAKfMV/J3zbH30Ca+KL5ZNgIEy5K9 2es1fnKJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY2qeSwAKCRDDTyI5ktmPJJlVC/ 9EwYzqD5I3O+Kls7Zze6WX+/P1sWi7aw+tl7mMRZ5387xzNpkt+fTJ9hzqTjhm1WBY+R3DoAx+9MSU H5s9Iqm+nlm76ONiZAUQsJkZGGnv6leAkFZsmDHLGn7fvoEUfzphDsGS5ZsbVbwmOwXe0vYsTHC8Yc zh9l3zNn75l9xaxfS4KyI0iZ8He65YzACGW+0UoWDDzbZNLfMVn1zrBifFZzavoK5d8IWYq1m9SzWo LWlwMF0haSjD/3NY+1kq4qZHT4i+CJHm8lg8TSunUo0j5gamjmYtUgaPSbP3LlpWPhz6bPq0LqJNH9 Jb8/UXtmEZ/fJeJnAJ8OJ2YzEk2Ttd1XN9nZkjOw/j0OY3A03JT8o/52fJCt1xrcYwp2Zxuk6uQKth Her1hXlLDsVaFIoVQOyTEXc3tTz+s4z3sXC9KCbhh/WiT3nxFOkaG8lrrtoQ8LdpfRVADFo2O7RoJM 8Dxpbskb0Iaa7RfyFzusczX528YpEJCjMZuPEWsjYkszE=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -58,115 +58,293 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Our segment alignment is 64k for all configurations, and coincidentally,
-this is the largest alignment supported by the PE/COFF executable
-format used by EFI. This means that generally, there is no need to move
-the image around in memory after it has been loaded by the firmware,
-which can be advantageous as it also permits us to rely on the memory
-attributes set by the firmware (R-X for [_text, __inittext_end] and RW-
-for [__initdata_begin, _end].
+Instead of cleaning the entire loaded kernel image to the PoC and
+disabling the MMU and caches before branching to the kernel's bare metal
+entry point, we can leave the MMU and caches enabled, and rely on EFI's
+cacheable 1:1 mapping of all of system RAM (which is mandated by the
+spec) to populate the initial page tables.
 
-However, the minimum alignment of the image is actually 128k on 64k
-pages configurations with CONFIG_VMAP_STACK=y, due to the existence of a
-single 128k aligned object in the image, which is the stack of the init
-task.
+This removes the need for managing coherency in software, which is
+tedious and error prone.
 
-Let's work around this by adding some padding before the init stack
-allocation, so we can round down the stack pointer to a suitably aligned
-value if the image is not aligned to 128k in memory.
+Note that we still need to clean the executable region of the image to
+the PoU if this is required for I/D coherency, but only if we actually
+decided to move the image in memory, as otherwise, this will have been
+taken care of by the loader.
 
-Note that this does not affect the boot protocol, which still requires 2
-MiB alignment for bare metal boot, but is only part of the internal
-contract between the EFI stub and the kernel proper.
+This change affects both the builtin EFI stub as well as the zboot
+decompressor, which now carries the entire EFI stub along with the
+decompression code and the compressed image.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/include/asm/efi.h    |  9 +--------
- arch/arm64/kernel/head.S        |  3 +++
- arch/arm64/kernel/vmlinux.lds.S | 11 ++++++++++-
- include/linux/efi.h             |  6 +-----
- 4 files changed, 15 insertions(+), 14 deletions(-)
+ arch/arm64/kernel/image-vars.h             |  5 +-
+ arch/arm64/mm/cache.S                      |  5 +-
+ drivers/firmware/efi/libstub/Makefile      |  4 +-
+ drivers/firmware/efi/libstub/arm64-entry.S | 67 --------------------
+ drivers/firmware/efi/libstub/arm64-stub.c  | 26 +++++---
+ drivers/firmware/efi/libstub/arm64.c       | 41 ++++++++++--
+ 6 files changed, 61 insertions(+), 87 deletions(-)
 
-diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
-index 108b115dbf5b7436..7ed7a0e621a5b0b6 100644
---- a/arch/arm64/include/asm/efi.h
-+++ b/arch/arm64/include/asm/efi.h
-@@ -54,13 +54,6 @@ efi_status_t __efi_rt_asm_wrapper(void *, const char *, ...);
+diff --git a/arch/arm64/kernel/image-vars.h b/arch/arm64/kernel/image-vars.h
+index f31130ba02331060..40ebb882d2d8c97b 100644
+--- a/arch/arm64/kernel/image-vars.h
++++ b/arch/arm64/kernel/image-vars.h
+@@ -10,7 +10,7 @@
+ #error This file should only be included in vmlinux.lds.S
+ #endif
  
- /* arch specific definitions used by the stub code */
+-PROVIDE(__efistub_primary_entry_offset	= primary_entry - _text);
++PROVIDE(__efistub_primary_entry		= primary_entry);
  
--/*
-- * In some configurations (e.g. VMAP_STACK && 64K pages), stacks built into the
-- * kernel need greater alignment than we require the segments to be padded to.
-- */
--#define EFI_KIMG_ALIGN	\
--	(SEGMENT_ALIGN > THREAD_ALIGN ? SEGMENT_ALIGN : THREAD_ALIGN)
--
  /*
-  * On arm64, we have to ensure that the initrd ends up in the linear region,
-  * which is a 1 GB aligned region of size '1UL << (VA_BITS_MIN - 1)' that is
-@@ -88,7 +81,7 @@ static inline unsigned long efi_get_kimg_min_align(void)
- 	 * 2M alignment if KASLR was explicitly disabled, even if it was not
- 	 * going to be activated to begin with.
+  * The EFI stub has its own symbol namespace prefixed by __efistub_, to
+@@ -21,10 +21,11 @@ PROVIDE(__efistub_primary_entry_offset	= primary_entry - _text);
+  * linked at. The routines below are all implemented in assembler in a
+  * position independent manner
+  */
+-PROVIDE(__efistub_dcache_clean_poc	= __pi_dcache_clean_poc);
++PROVIDE(__efistub_caches_clean_inval_pou = __pi_caches_clean_inval_pou);
+ 
+ PROVIDE(__efistub__text			= _text);
+ PROVIDE(__efistub__end			= _end);
++PROVIDE(__efistub___inittext_end       	= __inittext_end);
+ PROVIDE(__efistub__edata		= _edata);
+ PROVIDE(__efistub_screen_info		= screen_info);
+ PROVIDE(__efistub__ctype		= _ctype);
+diff --git a/arch/arm64/mm/cache.S b/arch/arm64/mm/cache.S
+index 081058d4e4366edb..8c3b3ee9b1d725c8 100644
+--- a/arch/arm64/mm/cache.S
++++ b/arch/arm64/mm/cache.S
+@@ -52,10 +52,11 @@ alternative_else_nop_endif
+  *	- start   - virtual start address of region
+  *	- end     - virtual end address of region
+  */
+-SYM_FUNC_START(caches_clean_inval_pou)
++SYM_FUNC_START(__pi_caches_clean_inval_pou)
+ 	caches_clean_inval_pou_macro
+ 	ret
+-SYM_FUNC_END(caches_clean_inval_pou)
++SYM_FUNC_END(__pi_caches_clean_inval_pou)
++SYM_FUNC_ALIAS(caches_clean_inval_pou, __pi_caches_clean_inval_pou)
+ 
+ /*
+  *	caches_clean_inval_user_pou(start,end)
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index 402dfb30ddc7a01e..f838ab98978f1038 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -86,7 +86,7 @@ lib-$(CONFIG_EFI_GENERIC_STUB)	+= efi-stub.o string.o intrinsics.o systable.o \
+ 				   screen_info.o efi-stub-entry.o
+ 
+ lib-$(CONFIG_ARM)		+= arm32-stub.o
+-lib-$(CONFIG_ARM64)		+= arm64.o arm64-stub.o arm64-entry.o
++lib-$(CONFIG_ARM64)		+= arm64.o arm64-stub.o
+ lib-$(CONFIG_X86)		+= x86-stub.o
+ lib-$(CONFIG_RISCV)		+= riscv.o riscv-stub.o
+ lib-$(CONFIG_LOONGARCH)		+= loongarch.o loongarch-stub.o
+@@ -140,7 +140,7 @@ STUBCOPY_RELOC-$(CONFIG_ARM)	:= R_ARM_ABS
+ #
+ STUBCOPY_FLAGS-$(CONFIG_ARM64)	+= --prefix-alloc-sections=.init \
+ 				   --prefix-symbols=__efistub_
+-STUBCOPY_RELOC-$(CONFIG_ARM64)	:= R_AARCH64_ABS64
++STUBCOPY_RELOC-$(CONFIG_ARM64)	:= R_AARCH64_ABS
+ 
+ # For RISC-V, we don't need anything special other than arm64. Keep all the
+ # symbols in .init section and make sure that no absolute symbols references
+diff --git a/drivers/firmware/efi/libstub/arm64-entry.S b/drivers/firmware/efi/libstub/arm64-entry.S
+deleted file mode 100644
+index b5c17e89a4fc0c21..0000000000000000
+--- a/drivers/firmware/efi/libstub/arm64-entry.S
++++ /dev/null
+@@ -1,67 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-/*
+- * EFI entry point.
+- *
+- * Copyright (C) 2013, 2014 Red Hat, Inc.
+- * Author: Mark Salter <msalter@redhat.com>
+- */
+-#include <linux/linkage.h>
+-#include <asm/assembler.h>
+-
+-	/*
+-	 * The entrypoint of a arm64 bare metal image is at offset #0 of the
+-	 * image, so this is a reasonable default for primary_entry_offset.
+-	 * Only when the EFI stub is integrated into the core kernel, it is not
+-	 * guaranteed that the PE/COFF header has been copied to memory too, so
+-	 * in this case, primary_entry_offset should be overridden by the
+-	 * linker and point to primary_entry() directly.
+-	 */
+-	.weak	primary_entry_offset
+-
+-SYM_CODE_START(efi_enter_kernel)
+-	/*
+-	 * efi_pe_entry() will have copied the kernel image if necessary and we
+-	 * end up here with device tree address in x1 and the kernel entry
+-	 * point stored in x0. Save those values in registers which are
+-	 * callee preserved.
+-	 */
+-	ldr	w2, =primary_entry_offset
+-	add	x19, x0, x2		// relocated Image entrypoint
+-
+-	mov	x0, x1			// DTB address
+-	mov	x1, xzr
+-	mov	x2, xzr
+-	mov	x3, xzr
+-
+-	/*
+-	 * Clean the remainder of this routine to the PoC
+-	 * so that we can safely disable the MMU and caches.
+-	 */
+-	adr	x4, 1f
+-	dc	civac, x4
+-	dsb	sy
+-
+-	/* Turn off Dcache and MMU */
+-	mrs	x4, CurrentEL
+-	cmp	x4, #CurrentEL_EL2
+-	mrs	x4, sctlr_el1
+-	b.ne	0f
+-	mrs	x4, sctlr_el2
+-0:	bic	x4, x4, #SCTLR_ELx_M
+-	bic	x4, x4, #SCTLR_ELx_C
+-	b.eq	1f
+-	b	2f
+-
+-	.balign	32
+-1:	pre_disable_mmu_workaround
+-	msr	sctlr_el2, x4
+-	isb
+-	br	x19		// jump to kernel entrypoint
+-
+-2:	pre_disable_mmu_workaround
+-	msr	sctlr_el1, x4
+-	isb
+-	br	x19		// jump to kernel entrypoint
+-
+-	.org	1b + 32
+-SYM_CODE_END(efi_enter_kernel)
+diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
+index 7f0aab3a8ab302d6..00fb2eab6d0c74ef 100644
+--- a/drivers/firmware/efi/libstub/arm64-stub.c
++++ b/drivers/firmware/efi/libstub/arm64-stub.c
+@@ -58,7 +58,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+ 				 efi_handle_t image_handle)
+ {
+ 	efi_status_t status;
+-	unsigned long kernel_size, kernel_memsize = 0;
++	unsigned long kernel_size, kernel_codesize, kernel_memsize;
+ 	u32 phys_seed = 0;
+ 	u64 min_kimg_align = efi_get_kimg_min_align();
+ 
+@@ -93,6 +93,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+ 			SEGMENT_ALIGN >> 10);
+ 
+ 	kernel_size = _edata - _text;
++	kernel_codesize = __inittext_end - _text;
+ 	kernel_memsize = kernel_size + (_end - _edata);
+ 	*reserve_size = kernel_memsize;
+ 
+@@ -120,7 +121,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+ 			 */
+ 			*image_addr = (u64)_text;
+ 			*reserve_size = 0;
+-			goto clean_image_to_poc;
++			return EFI_SUCCESS;
+ 		}
+ 
+ 		status = efi_allocate_pages_aligned(*reserve_size, reserve_addr,
+@@ -136,14 +137,21 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+ 
+ 	*image_addr = *reserve_addr;
+ 	memcpy((void *)*image_addr, _text, kernel_size);
++	caches_clean_inval_pou(*image_addr, *image_addr + kernel_codesize);
+ 
+-clean_image_to_poc:
++	return EFI_SUCCESS;
++}
++
++asmlinkage void primary_entry(void);
++
++unsigned long primary_entry_offset(void)
++{
+ 	/*
+-	 * Clean the copied Image to the PoC, and ensure it is not shadowed by
+-	 * stale icache entries from before relocation.
++	 * When built as part of the kernel, the EFI stub cannot branch to the
++	 * kernel proper via the image header, as the PE/COFF header is
++	 * strictly not part of the in-memory presentation of the image, only
++	 * of the file representation. So instead, we need to jump to the
++	 * actual entrypoint in the .text region of the image.
  	 */
--	return efi_nokaslr ? MIN_KIMG_ALIGN : EFI_KIMG_ALIGN;
-+	return efi_nokaslr ? MIN_KIMG_ALIGN : SEGMENT_ALIGN;
+-	dcache_clean_poc(*image_addr, *image_addr + kernel_size);
+-	asm("ic ialluis");
+-
+-	return EFI_SUCCESS;
++	return (char *)primary_entry - _text;
+ }
+diff --git a/drivers/firmware/efi/libstub/arm64.c b/drivers/firmware/efi/libstub/arm64.c
+index d2e94972c5fad523..99f86ddc91cf10cf 100644
+--- a/drivers/firmware/efi/libstub/arm64.c
++++ b/drivers/firmware/efi/libstub/arm64.c
+@@ -41,6 +41,12 @@ efi_status_t check_platform_features(void)
+ 	return EFI_SUCCESS;
  }
  
- #define EFI_ALLOC_ALIGN		SZ_64K
-diff --git a/arch/arm64/kernel/head.S b/arch/arm64/kernel/head.S
-index 825f1d0549661030..8d7c6155da59e215 100644
---- a/arch/arm64/kernel/head.S
-+++ b/arch/arm64/kernel/head.S
-@@ -429,6 +429,9 @@ SYM_FUNC_END(create_kernel_mapping)
- 	msr	sp_el0, \tsk
- 
- 	ldr	\tmp1, [\tsk, #TSK_STACK]
-+#if THREAD_ALIGN > SEGMENT_ALIGN
-+	bic	\tmp1, \tmp1, #THREAD_ALIGN - 1
++#ifdef CONFIG_ARM64_WORKAROUND_CLEAN_CACHE
++#define DCTYPE	"civac"
++#else
++#define DCTYPE	"cvau"
 +#endif
- 	add	sp, \tmp1, #THREAD_SIZE
- 	sub	sp, sp, #PT_REGS_SIZE
++
+ void efi_cache_sync_image(unsigned long image_base,
+ 			  unsigned long alloc_size,
+ 			  unsigned long code_size)
+@@ -49,13 +55,38 @@ void efi_cache_sync_image(unsigned long image_base,
+ 	u64 lsize = 4 << cpuid_feature_extract_unsigned_field(ctr,
+ 						CTR_EL0_DminLine_SHIFT);
  
-diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
-index c7727a1740ce11f5..5002d869fa7f1767 100644
---- a/arch/arm64/kernel/vmlinux.lds.S
-+++ b/arch/arm64/kernel/vmlinux.lds.S
-@@ -274,7 +274,16 @@ SECTIONS
+-	do {
+-		asm("dc civac, %0" :: "r"(image_base));
+-		image_base += lsize;
+-		alloc_size -= lsize;
+-	} while (alloc_size >= lsize);
++	/* only perform the cache maintenance if needed for I/D coherency */
++	if (!(ctr & BIT(CTR_EL0_IDC_SHIFT))) {
++		do {
++			asm("dc " DCTYPE ", %0" :: "r"(image_base));
++			image_base += lsize;
++			code_size -= lsize;
++		} while (code_size >= lsize);
++	}
  
- 	_data = .;
- 	_sdata = .;
--	RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_ALIGN)
-+#if THREAD_ALIGN > SEGMENT_ALIGN
+ 	asm("ic ialluis");
+ 	dsb(ish);
+ 	isb();
+ }
++
++unsigned long __weak primary_entry_offset(void)
++{
 +	/*
-+	 * Add some padding for the init stack so we can fix up any potential
-+	 * misalignment at runtime. In practice, this can only occur on 64k
-+	 * pages configurations with CONFIG_VMAP_STACK=y.
++	 * By default, we can invoke the kernel via the branch instruction in
++	 * the image header, so offset #0. This will be overridden by the EFI
++	 * stub build that is linked into the core kernel, as in that case, the
++	 * image header may not have been loaded into memory, or may be mapped
++	 * with non-executable permissions.
 +	 */
-+	. += THREAD_ALIGN - SEGMENT_ALIGN;
-+	ASSERT(. == init_stack, "init_stack not at start of RW_DATA as expected")
-+#endif
-+	RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, SEGMENT_ALIGN)
- 
- 	/*
- 	 * Data written with the MMU off but read with the MMU on requires
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 16b7318957b0709f..19eda0bb4617a4cf 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -421,11 +421,7 @@ void efi_native_runtime_setup(void);
- /*
-  * This GUID may be installed onto the kernel image's handle as a NULL protocol
-  * to signal to the stub that the placement of the image should be respected,
-- * and moving the image in physical memory is undesirable. To ensure
-- * compatibility with 64k pages kernels with virtually mapped stacks, and to
-- * avoid defeating physical randomization, this protocol should only be
-- * installed if the image was placed at a randomized 128k aligned address in
-- * memory.
-+ * and moving the image in physical memory is undesirable.
-  */
- #define LINUX_EFI_LOADED_IMAGE_FIXED_GUID	EFI_GUID(0xf5a37b6d, 0x3344, 0x42a5,  0xb6, 0xbb, 0x97, 0x86, 0x48, 0xc1, 0x89, 0x0a)
- 
++       return 0;
++}
++
++void __noreturn efi_enter_kernel(unsigned long entrypoint,
++				 unsigned long fdt_addr,
++				 unsigned long fdt_size)
++{
++	void (* __noreturn enter_kernel)(u64, u64, u64, u64);
++
++	enter_kernel = (void *)entrypoint + primary_entry_offset();
++	enter_kernel(fdt_addr, 0, 0, 0);
++}
 -- 
 2.35.1
 
