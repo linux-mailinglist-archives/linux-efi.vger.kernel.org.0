@@ -2,24 +2,24 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EBA2621FFD
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Nov 2022 00:05:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF197622006
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Nov 2022 00:05:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230015AbiKHXF1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 8 Nov 2022 18:05:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50204 "EHLO
+        id S229644AbiKHXFz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 8 Nov 2022 18:05:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229499AbiKHXFY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Nov 2022 18:05:24 -0500
+        with ESMTP id S230036AbiKHXFs (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 8 Nov 2022 18:05:48 -0500
 Received: from fudo.makrotopia.org (fudo.makrotopia.org [IPv6:2a07:2ec0:3002::71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CD3E63147;
-        Tue,  8 Nov 2022 15:05:23 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 558CF657D9;
+        Tue,  8 Nov 2022 15:05:47 -0800 (PST)
 Received: from local
         by fudo.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
          (Exim 4.94.2)
         (envelope-from <daniel@makrotopia.org>)
-        id 1osXeZ-0005vA-Rm; Wed, 09 Nov 2022 00:05:12 +0100
-Date:   Tue, 8 Nov 2022 23:03:48 +0000
+        id 1osXex-0005vp-Nv; Wed, 09 Nov 2022 00:05:35 +0100
+Date:   Tue, 8 Nov 2022 23:04:13 +0000
 From:   Daniel Golle <daniel@makrotopia.org>
 To:     Jens Axboe <axboe@kernel.dk>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
@@ -33,70 +33,67 @@ To:     Jens Axboe <axboe@kernel.dk>,
         Ming Lei <ming.lei@redhat.com>, linux-block@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-efi@vger.kernel.org
-Subject: [PATCH v4 3/5] partitions/efi: add support for uImage.FIT
- sub-partitions
-Message-ID: <Y2rgVIbtuDsySzBr@makrotopia.org>
+Subject: [PATCH v4 4/5] mtd_blkdevs: add option to enable scanning for
+ partitions
+Message-ID: <Y2rgbfpYfpbLKHaf@makrotopia.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Spam-Status: No, score=0.1 required=5.0 tests=BAYES_00,PDS_OTHER_BAD_TLD,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Add new GUID allowing to parse uImage.FIT stored in a GPT partition
-and map filesystem sub-image as sub-partitions.
+Add Kconfig boolean CONFIG_MTD_BLOCK_PARTITIONS and enable block
+partition parsers on non-NAND mtdblock devices in case it is selected.
 
 Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Acked-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- block/partitions/efi.c | 9 +++++++++
- block/partitions/efi.h | 3 +++
- 2 files changed, 12 insertions(+)
+ drivers/mtd/Kconfig       | 11 +++++++++++
+ drivers/mtd/mtd_blkdevs.c |  4 +++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/block/partitions/efi.c b/block/partitions/efi.c
-index 5e9be13a56a8..bf87893eabe4 100644
---- a/block/partitions/efi.c
-+++ b/block/partitions/efi.c
-@@ -716,6 +716,9 @@ int efi_partition(struct parsed_partitions *state)
- 	gpt_entry *ptes = NULL;
- 	u32 i;
- 	unsigned ssz = queue_logical_block_size(state->disk->queue) / 512;
-+#ifdef CONFIG_FIT_PARTITION
-+	u32 extra_slot = 65;
-+#endif
+diff --git a/drivers/mtd/Kconfig b/drivers/mtd/Kconfig
+index 796a2eccbef0..12874dec1569 100644
+--- a/drivers/mtd/Kconfig
++++ b/drivers/mtd/Kconfig
+@@ -69,6 +69,17 @@ config MTD_BLOCK_RO
+ 	  You do not need this option for use with the DiskOnChip devices. For
+ 	  those, enable NFTL support (CONFIG_NFTL) instead.
  
- 	if (!find_valid_gpt(state, &gpt, &ptes) || !gpt || !ptes) {
- 		kfree(gpt);
-@@ -749,6 +752,12 @@ int efi_partition(struct parsed_partitions *state)
- 				ARRAY_SIZE(ptes[i].partition_name));
- 		utf16_le_to_7bit(ptes[i].partition_name, label_max, info->volname);
- 		state->parts[i + 1].has_info = true;
-+		/* If this is a U-Boot FIT volume it may have subpartitions */
-+#ifdef CONFIG_FIT_PARTITION
-+		if (!efi_guidcmp(ptes[i].partition_type_guid, PARTITION_LINUX_FIT_GUID))
-+			(void) parse_fit_partitions(state, start * ssz, size * ssz,
-+						    &extra_slot, 127, 1);
-+#endif
++config MTD_BLOCK_PARTITIONS
++	bool "Scan for partitions on MTD block devices"
++	depends on MTD_BLOCK || MTD_BLOCK_RO
++	default y if FIT_PARTITION
++	help
++	  Scan MTD block devices for partitions (ie. MBR, GPT, uImage.FIT, ...).
++	  (NAND devices are omitted, ubiblock should be used instead when)
++
++	  Unless your MTD partitions contain sub-partitions mapped using a
++	  partition table, say no.
++
+ comment "Note that in some cases UBI block is preferred. See MTD_UBI_BLOCK."
+ 	depends on MTD_BLOCK || MTD_BLOCK_RO
+ 
+diff --git a/drivers/mtd/mtd_blkdevs.c b/drivers/mtd/mtd_blkdevs.c
+index 60b222799871..e6f2e0888246 100644
+--- a/drivers/mtd/mtd_blkdevs.c
++++ b/drivers/mtd/mtd_blkdevs.c
+@@ -359,7 +359,9 @@ int add_mtd_blktrans_dev(struct mtd_blktrans_dev *new)
+ 	} else {
+ 		snprintf(gd->disk_name, sizeof(gd->disk_name),
+ 			 "%s%d", tr->name, new->devnum);
+-		gd->flags |= GENHD_FL_NO_PART;
++
++		if (!IS_ENABLED(CONFIG_MTD_BLOCK_PARTITIONS) || mtd_type_is_nand(new->mtd))
++			gd->flags |= GENHD_FL_NO_PART;
  	}
- 	kfree(ptes);
- 	kfree(gpt);
-diff --git a/block/partitions/efi.h b/block/partitions/efi.h
-index 84b9f36b9e47..06c11f6ae398 100644
---- a/block/partitions/efi.h
-+++ b/block/partitions/efi.h
-@@ -51,6 +51,9 @@
- #define PARTITION_LINUX_LVM_GUID \
-     EFI_GUID( 0xe6d6d379, 0xf507, 0x44c2, \
-               0xa2, 0x3c, 0x23, 0x8f, 0x2a, 0x3d, 0xf9, 0x28)
-+#define PARTITION_LINUX_FIT_GUID \
-+    EFI_GUID( 0xcae9be83, 0xb15f, 0x49cc, \
-+              0x86, 0x3f, 0x08, 0x1b, 0x74, 0x4a, 0x2d, 0x93)
  
- typedef struct _gpt_header {
- 	__le64 signature;
+ 	set_capacity(gd, ((u64)new->size * tr->blksize) >> 9);
 -- 
 2.38.1
 
