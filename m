@@ -2,53 +2,61 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E37B862269F
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Nov 2022 10:17:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8873C622705
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Nov 2022 10:31:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229567AbiKIJRX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 9 Nov 2022 04:17:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51448 "EHLO
+        id S230214AbiKIJbO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 9 Nov 2022 04:31:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230387AbiKIJRC (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Nov 2022 04:17:02 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 989261FCD8
-        for <linux-efi@vger.kernel.org>; Wed,  9 Nov 2022 01:16:45 -0800 (PST)
+        with ESMTP id S230353AbiKIJbK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Nov 2022 04:31:10 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18ADF222BD;
+        Wed,  9 Nov 2022 01:31:08 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E507AB81D1C
-        for <linux-efi@vger.kernel.org>; Wed,  9 Nov 2022 09:16:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A934C433D7
-        for <linux-efi@vger.kernel.org>; Wed,  9 Nov 2022 09:16:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A97516198B;
+        Wed,  9 Nov 2022 09:31:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11366C43146;
+        Wed,  9 Nov 2022 09:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667985402;
-        bh=zjlG/XncGjQbfw9DcYvxIZBViHo5QQ1DfpR7iccAdGQ=;
+        s=k20201202; t=1667986267;
+        bh=K+1dftlduiW1W4qx5Av6A0p78GIBItL51LGqPvh8qpY=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=XXq/c/3tdmwlxEnQoWTLmiRWUohU5B+twwR4+UPqGIuqJUdlvOaXrSHQrVBXG3Y3b
-         n6nf1GY9+GKnO+h/UJb5XcNu3jM8u7/MuzOTCsoqRFM5AxgIC0gKan3ZpRpTvT+rhW
-         aGZXy3v2yMDTv5AQQq9yCOdStWppvRtgd2D3U/osskGs18PcKud8vvPQix0V9wrgCT
-         vpB7yF7fL7xsurbUJTQA8cL2upOAqBI9Fuj6L/djmoAw8uN7oqV7kYYqWtA5qjiC+U
-         h48HLXBLGSn/SK5hxfTr9oxDKTutLru27LWYLvI3gyOaT5IgOangBqgDT6Zicqt/dl
-         +Flez+xLW1M9Q==
-Received: by mail-lf1-f52.google.com with SMTP id b3so24758660lfv.2
-        for <linux-efi@vger.kernel.org>; Wed, 09 Nov 2022 01:16:42 -0800 (PST)
-X-Gm-Message-State: ACrzQf1A1JXcZhpnZ1KbFn4ydxzKOJOgqoDVzbl4AkDFkuuKDpYsRi8Q
-        eECvl1wEd8tbHr/ICgpAfc/gIbPAEKPGjhj84is=
-X-Google-Smtp-Source: AMsMyM4P2LJAJJFyPxwx751SoE7CVfUX543iwJwThBFwQnOOCZakt52c/eHsSHAixboaVeeu04840wdxAvvsxUR0Noc=
-X-Received: by 2002:ac2:4c47:0:b0:4a2:c07b:4b62 with SMTP id
- o7-20020ac24c47000000b004a2c07b4b62mr19528046lfk.426.1667985400570; Wed, 09
- Nov 2022 01:16:40 -0800 (PST)
+        b=nQeYpWH9ofRyOplyGNNYtl7hiFlW7c09YW8quzsEwWn0C48mrdbqgf8kG7J1rHiYv
+         gFnjH2c3pOHwnyrvqENKkJUc/05xsXG3oaZHA+DvMOj+FAANpVVuLaY097HhHigKBz
+         ZyCdjAG0W1kRdBT9OErKhZDqvDis/moUfI/wjv7tlD2Cit+Vvvxge4QsnaJozzweIh
+         nJYMQI3sRB/YDYAUJraEKziq+KYeaV2WT9E1a9ANoMW+cPIaH+bpziHnUB0v3Ew23o
+         k2pnd2eKGFY7Fg6uGQ5XBGpmBvYx2/r5FcQfFcymMI9FqU1dNUd2s3z/wPiNQncRyh
+         c5Bv6yQr9CwjQ==
+Received: by mail-lj1-f177.google.com with SMTP id u11so24857822ljk.6;
+        Wed, 09 Nov 2022 01:31:06 -0800 (PST)
+X-Gm-Message-State: ACrzQf2910uTwjEGEAN5q42Yw9YE6XjzRaDaXs16e/E7GzpjGG9JnOgp
+        EzjIVMgByIy8hugjqN0hbmTyUiGRhJIpuPu7DGg=
+X-Google-Smtp-Source: AMsMyM7q2WdHrQWcIS0IKO/T2ThqKDp5nMzHb1fOCs2PcB7duk1mEdG8UdWhGr5zoWGfrlQWCC9JY738gn2YOyosfs4=
+X-Received: by 2002:a2e:9a81:0:b0:26c:5b63:7a83 with SMTP id
+ p1-20020a2e9a81000000b0026c5b637a83mr21819820lji.291.1667986265037; Wed, 09
+ Nov 2022 01:31:05 -0800 (PST)
 MIME-Version: 1.0
-References: <20221108025310.1393687-1-zhangjialin11@huawei.com>
-In-Reply-To: <20221108025310.1393687-1-zhangjialin11@huawei.com>
+References: <20221028200950.67505-1-Smita.KoralahalliChannabasappa@amd.com>
+In-Reply-To: <20221028200950.67505-1-Smita.KoralahalliChannabasappa@amd.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 9 Nov 2022 10:16:29 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEgkr-j8UD=o+_CHQQ5XWOECbo+70bsEPx8-_E_6mLRJQ@mail.gmail.com>
-Message-ID: <CAMj1kXEgkr-j8UD=o+_CHQQ5XWOECbo+70bsEPx8-_E_6mLRJQ@mail.gmail.com>
-Subject: Re: [PATCH] efi: libstub: fix efi_load_initrd_dev_path() kernel-doc comment
-To:     Jialin Zhang <zhangjialin11@huawei.com>
-Cc:     ilias.apalodimas@linaro.org, linux-efi@vger.kernel.org
+Date:   Wed, 9 Nov 2022 10:30:53 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXF8vpvM_MysVO7NcWy5YgXQvcYcQmKNh9aV6eyeR8jwKw@mail.gmail.com>
+Message-ID: <CAMj1kXF8vpvM_MysVO7NcWy5YgXQvcYcQmKNh9aV6eyeR8jwKw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] efi/cper, cxl: Decode CXL Protocol Errors CPER
+To:     Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Cc:     linux-efi@vger.kernel.org, linux-cxl@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Alison Schofield <alison.schofield@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Ben Widawsky <bwidawsk@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Yazen Ghannam <yazen.ghannam@amd.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -59,36 +67,30 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 8 Nov 2022 at 03:54, Jialin Zhang <zhangjialin11@huawei.com> wrote:
+On Fri, 28 Oct 2022 at 22:10, Smita Koralahalli
+<Smita.KoralahalliChannabasappa@amd.com> wrote:
 >
-> commit f4dc7fffa987 ("efi: libstub: unify initrd loading between
-> architectures") merge the first and the second parameters into a
-> struct without updating the kernel-doc. Let's fix it.
+> This series adds decoding for the CXL Protocol Errors Common Platform
+> Error Record.
 >
-> Fixes: f4dc7fffa987 ("efi: libstub: unify initrd loading between architectures")
-> Signed-off-by: Jialin Zhang <zhangjialin11@huawei.com>
+> Smita Koralahalli (2):
+>   efi/cper, cxl: Decode CXL Protocol Error Section
+>   efi/cper, cxl: Decode CXL Error Log
+>
 
-Thanks, queued up in efi/next
+I've queued these up now (with Jonathan's ack)
 
-> ---
->  drivers/firmware/efi/libstub/efi-stub-helper.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+
+>  drivers/firmware/efi/Makefile   |   2 +-
+>  drivers/firmware/efi/cper.c     |   9 ++
+>  drivers/firmware/efi/cper_cxl.c | 179 ++++++++++++++++++++++++++++++++
+>  drivers/firmware/efi/cper_cxl.h |  66 ++++++++++++
+>  include/linux/cxl_err.h         |  22 ++++
+>  5 files changed, 277 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/firmware/efi/cper_cxl.c
+>  create mode 100644 drivers/firmware/efi/cper_cxl.h
+>  create mode 100644 include/linux/cxl_err.h
 >
-> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> index 0c493521b25b..1a42dedcce3c 100644
-> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> @@ -626,8 +626,8 @@ static const struct {
->
->  /**
->   * efi_load_initrd_dev_path() - load the initrd from the Linux initrd device path
-> - * @load_addr: pointer to store the address where the initrd was loaded
-> - * @load_size: pointer to store the size of the loaded initrd
-> + * @initrd:    pointer of struct to store the address where the initrd was loaded
-> + *             and the size of the loaded initrd
->   * @max:       upper limit for the initrd memory allocation
->   *
->   * Return:
 > --
-> 2.25.1
+> 2.17.1
 >
