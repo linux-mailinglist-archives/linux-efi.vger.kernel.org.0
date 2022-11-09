@@ -2,206 +2,225 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D142622E61
-	for <lists+linux-efi@lfdr.de>; Wed,  9 Nov 2022 15:51:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A465F622E9D
+	for <lists+linux-efi@lfdr.de>; Wed,  9 Nov 2022 16:01:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229910AbiKIOv1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 9 Nov 2022 09:51:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58176 "EHLO
+        id S230190AbiKIPBg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 9 Nov 2022 10:01:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230398AbiKIOv0 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Nov 2022 09:51:26 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5C4A51260D;
-        Wed,  9 Nov 2022 06:51:24 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4ECFF1FB;
-        Wed,  9 Nov 2022 06:51:30 -0800 (PST)
-Received: from monolith.localdoman (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8EC2F3F73D;
-        Wed,  9 Nov 2022 06:51:22 -0800 (PST)
-Date:   Wed, 9 Nov 2022 14:51:19 +0000
-From:   Alexandru Elisei <alexandru.elisei@arm.com>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     a.zummo@towertech.it, linux-rtc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ardb@kernel.org,
-        linux-efi@vger.kernel.org, catalin.marinas@arm.com,
-        will@kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [BUG] rtc-efi: Error in efi.get_time() spams dmesg with error
- message
-Message-ID: <Y2u+Z7uWfokQYwKt@monolith.localdoman>
-References: <Y2o1hdZK9GGDVJsS@monolith.localdoman>
- <Y2rM/ud0JfX4QXJB@mail.local>
+        with ESMTP id S231760AbiKIPBf (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 9 Nov 2022 10:01:35 -0500
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F0E814099
+        for <linux-efi@vger.kernel.org>; Wed,  9 Nov 2022 07:01:33 -0800 (PST)
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 44A84423E1
+        for <linux-efi@vger.kernel.org>; Wed,  9 Nov 2022 15:01:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1668006091;
+        bh=G4QOG4dtw/tN0B16ymAz7WeEgd16alaEJ9siCOWszCc=;
+        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+         In-Reply-To:Content-Type;
+        b=FA2GhOKR+Ikw8AyWM/9dyU8bWpnbRF2wcBqfu7lXdHvHwA6takOlSU0vjeX51Dmh1
+         NkOK4syV7AE5HVPN09w/bE3EVExa3BmgP4qwH8WOMTFMYfsTbwXvE8xX0op+66JTpU
+         tb7lbXpKjJ+vZCww4RyK51t4ob+kSUHEZ0EVeLMnhcVP4+xoPHnqjiOKJ5M+uLLjIp
+         vbPrYOdocQplmAhCY2VQB7d/wKAVBJ1/brAX9BabsN6aIc/xOgNHMXjg/xpvcskUwA
+         saKD+TcGKiLKmZ/cuPainAEWSrvnGPHcOzeGU8KIJ/tE47hoMITVtAkUglnfpl2VVv
+         VFvQoacslsvzg==
+Received: by mail-ed1-f70.google.com with SMTP id b14-20020a056402278e00b004621a2642d7so12855983ede.1
+        for <linux-efi@vger.kernel.org>; Wed, 09 Nov 2022 07:01:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=G4QOG4dtw/tN0B16ymAz7WeEgd16alaEJ9siCOWszCc=;
+        b=1BstXIBPJL2kMM/U3WtHav4lVA1Dx4syswl8ThiETxwlgvpC15T1AYzGJTLKLmMZEf
+         X4nWojiF7fp14wWCBrwF1DpgbRN60KWYgss3z79w14jVL5r+1LXf4DMLvQ1z/LR46EMw
+         6NukVDRcVWWTPjLAzHNvZulI3aq1cNYlRFBuyYVpPNWVSSw0qsaVOkU+qHMxL4CqTHWt
+         GUjfudYYLXYKgphykPml8mWTaNFPZn3gi0RjEtxfQW5OOjykcspKdVvU4CBM4wbtx0gS
+         r2iWizEtHWhZpD6oIq6LEva0CCgO6NDWQmdhft/Y7lGXZavvbEMvHqWYI/W5n88k4ccr
+         0vZw==
+X-Gm-Message-State: ACrzQf22/0HTOvPqtoARESIV1mAp4RPJb88BewXrig13B1JOcTZd0K/+
+        gbFVZrIdCRBDrsfptWHVgK9QLzBG/u1f/JvhCcCF5uxbmWKPZacauPxmexS1w8YpeM9gUKm0Mco
+        CnMbz8fpBCcIysevQbbDAPDPlXu2LN3uBsVzsPA==
+X-Received: by 2002:a17:906:5d10:b0:7ad:e132:bb85 with SMTP id g16-20020a1709065d1000b007ade132bb85mr46511698ejt.367.1668006090582;
+        Wed, 09 Nov 2022 07:01:30 -0800 (PST)
+X-Google-Smtp-Source: AMsMyM4/SzYPZ7QBe2xV3nP+J0VmrSzi/uUZ+LqNALkI6eoFhNgEfWThdS6I2YoxV84saNb0jLotJQ==
+X-Received: by 2002:a17:906:5d10:b0:7ad:e132:bb85 with SMTP id g16-20020a1709065d1000b007ade132bb85mr46511669ejt.367.1668006090087;
+        Wed, 09 Nov 2022 07:01:30 -0800 (PST)
+Received: from [192.168.123.67] (ip-084-118-157-002.um23.pools.vodafone-ip.de. [84.118.157.2])
+        by smtp.gmail.com with ESMTPSA id qq18-20020a17090720d200b007ad98918743sm5998681ejb.1.2022.11.09.07.01.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Nov 2022 07:01:28 -0800 (PST)
+Message-ID: <594e304d-38f0-ed37-a2a8-7479ff850c8c@canonical.com>
+Date:   Wed, 9 Nov 2022 16:01:27 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y2rM/ud0JfX4QXJB@mail.local>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+Subject: Re: [RFC PATCH] efi: Put Linux specific magic number in the DOS
+ header
+Content-Language: en-US
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     grub-devel@gnu.org, Huacai Chen <chenhuacai@kernel.org>,
+        Atish Patra <atishp@rivosinc.com>,
+        Daniel Kiper <daniel.kiper@oracle.com>,
+        Leif Lindholm <quic_llindhol@quicinc.com>,
+        linux-efi@vger.kernel.org
+References: <20221109141611.2788009-1-ardb@kernel.org>
+From:   Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+In-Reply-To: <20221109141611.2788009-1-ardb@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi,
-
-On Tue, Nov 08, 2022 at 10:41:18PM +0100, Alexandre Belloni wrote:
-> On 08/11/2022 10:55:15+0000, Alexandru Elisei wrote:
-> > Hi,
-> > 
-> > Commit d3549a938b73 ("efi/arm64: libstub: avoid SetVirtualAddressMap() when
-> > possible") exposed a firmware error on an Ampere Altra machine that was
-> > causing the machine to panic. Then commit 23715a26c8d8 ("arm64: efi:
-> > Recover from synchronous exceptions occurring in firmware") made the EFI
-> > exception non-fatal, and disabled runtime services when the exception
-> > happens. The interaction between those two patches are being discussed in a
-> > separate thread [1], but that should be orthogonal to this.
-> > 
-> > Now efi.get_time() fails and each time an error message is printed to
-> > dmesg, which happens several times a second and clutters dmesg
-> > unnecessarily, to the point it becomes unusable.
-> > 
-> > I was wondering if it would be possible to turn dev_err() into a
-> > dev_WARN_ONCE() or do something to avoid this issue. Tried to replace
-> > dev_err() with dev_err_ratelimited(), and the error message was displayed
-> > less often (about once per second), but dmesg was still being cluttered.
-> > 
+On 11/9/22 15:16, Ard Biesheuvel wrote:
+> GRUB currently relies on the magic number in the image header of ARM and
+> arm64 EFI kernel images to decide whether or not the image in question
+> is a bootable kernel.
 > 
-> The question this raise is what is actually trying to read the RTC this
-> often?
+> However, the purpose of the magic number is to identify the image as one
+> that implements the bare metal boot protocol, and so GRUB, which only
+> does EFI boot, can only boot images that could potentially be booted in
+> a non-EFI manner as well.
 > 
-> This should be read once at boot and maybe every time you wake up from
-> suspend but there is no real reason to read it multiple times per
-> seconds.
+> This is problematic for the new zboot decompressor image format, as it
+> can only boot in EFI mode, and must therefore not use the bare metal
+> boot magic number in its header.
+> 
+> For this reason, the strict magic number was dropped from GRUB, to
+> permit essentially any kind of EFI executable to be booted via the
+> 'linux' command, blurring the line between the linux loader and the
+> chainloader.
+> 
+> So let's use the same field in the DOS header that RISC-V and arm64
+> already use for their 'bare metal' magic numbers to store a 'generic
+> Linux kernel' magic number, which can be used to identify bootable
+> kernel images in PE format which don't necessarily implement a bare
+> metal boot protocol in the same binary.
+> 
+> Let's set the generic magic number for x86 images as well: existing
+> bootloaders already have their own methods to identify x86 Linux images
+> that can be booted in a non-EFI manner, and having the magic number in
+> place there will ease any future transitions in loader implementations
+> to merge the x86 and non-x86 EFI boot paths.
+> 
+> Note that 32-bit ARM already uses the same location in the header for a
+> different purpose, but the ARM support is already widely implemented and
+> the EFI zboot decompressor is not available on ARM anyway, so we just
+> disregard it here.
+> 
+> Cc: Huacai Chen <chenhuacai@kernel.org>
+> Cc: Atish Patra <atishp@rivosinc.com>
+> Cc: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+> Cc: Daniel Kiper <daniel.kiper@oracle.com>
+> Cc: Leif Lindholm <quic_llindhol@quicinc.com>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+> The idea is that, with this in place, the existing arm64 support in GRUB
+> can be made generic, with the arm64 variant of the arch image header
+> typedef being made generic as well.
+> 
+> Any code that attempts to identify EFI images as kernel images should
+> check for the arm64, RISC-V and generic values, and if the latter, look
+> at the PE machine type if it wants to know the architecture.
+> 
+>   arch/loongarch/kernel/head.S                | 3 ++-
+>   arch/x86/boot/header.S                      | 3 ++-
+>   drivers/firmware/efi/libstub/zboot-header.S | 3 ++-
+>   include/linux/pe.h                          | 7 +++++++
+>   4 files changed, 13 insertions(+), 3 deletions(-)
 
-Reverted the commit the exposed the firmware bug, which means rtc-efi works as
-it should. Added these debug statements to check how many times efi_read_time()
-is called if there are no errors:
+We need files in Documentation/ that describes the meaning and value of 
+the field per architecture.
 
---- a/drivers/rtc/rtc-efi.c
-+++ b/drivers/rtc/rtc-efi.c
-@@ -154,6 +154,7 @@ static int efi_set_alarm(struct device *dev, struct rtc_wkalrm *wkalrm)
-        return status == EFI_SUCCESS ? 0 : -EINVAL;
- }
+We already have:
 
-+static unsigned long i = 0;
- static int efi_read_time(struct device *dev, struct rtc_time *tm)
- {
-        efi_status_t status;
-@@ -162,6 +163,9 @@ static int efi_read_time(struct device *dev, struct rtc_time *tm)
+riscv: Documentation/riscv/boot-image-header.rst
+arm64: Documentation/arm64/booting.rst
 
-        status = efi.get_time(&eft, &cap);
+But other UEFI architectures are missing.
 
-+       i++;
-+       pr_info("%s: Call number %lu\n", __func__, i);
-+
-        if (status != EFI_SUCCESS) {
-                /* should never happen */
-                dev_err(dev, "can't read time\n");
+Otherwise I am fine with the change.
 
-The function gets called 3 times, twice during boot and once after. I would say
-that efi_read_time() gets called so many times because it fails.
+Best regards
 
-Thanks,
-Alex
+Heinrich
 
 > 
-> > Here's a log with what is happening (the boot part of the log has been
-> > removed for brevity, I've kept the kernel splats for context, can provide
-> > full logs, kernel config, command line, etc, to reproduce it; goes without
-> > saying that I am willing to test the fix myself):
-> > 
-> > [   55.479519] [Firmware Bug]: Unable to handle paging request in EFI runtime service
-> > [   55.487122] CPU: 62 PID: 9 Comm: kworker/u320:0 Tainted: G          I        6.1.0-rc4 #60
-> > [   55.487128] Hardware name: WIWYNN Mt.Jade Server System B81.03001.0005/Mt.Jade Motherboard, BIOS 1.08.20220218 (SCP: 1.08.20220218) 2022/02/18
-> > [   55.487131] Workqueue: efi_rts_wq efi_call_rts
-> > [   55.487158] Call trace:
-> > [   55.487161]  dump_backtrace.part.0+0xdc/0xf0
-> > [   55.487177]  show_stack+0x18/0x40
-> > [   55.487180]  dump_stack_lvl+0x68/0x84
-> > [   55.487190]  dump_stack+0x18/0x34
-> > [   55.487192]  efi_runtime_fixup_exception+0x74/0x88
-> > [   55.487199]  __do_kernel_fault+0x108/0x1b0
-> > [   55.487204]  do_page_fault+0xd0/0x400
-> > [   55.487207]  do_translation_fault+0xac/0xc0
-> > [   55.487209]  do_mem_abort+0x44/0x94
-> > [   55.487212]  el1_abort+0x40/0x6c
-> > [   55.487214]  el1h_64_sync_handler+0xd8/0xe4
-> > [   55.487218]  el1h_64_sync+0x64/0x68
-> > [   55.487221]  0xb7eb7ae4
-> > [   55.487224]  0xb7eb8668
-> > [   55.487225]  0xb7eb6e08
-> > [   55.487227]  0xb7eb68ec
-> > [   55.487228]  0xb7eb3824
-> > [   55.487230]  0xb7eb05a8
-> > [   55.487231]  0xb7eb12a0
-> > [   55.487232]  0xb7e43504
-> > [   55.487234]  0xb7e43650
-> > [   55.487235]  0xb7e482d0
-> > [   55.487237]  0xb7e4907c
-> > [   55.487238]  0xb7e49ff4
-> > [   55.487239]  0xb7e40888
-> > [   55.487241]  0xb7cb3328
-> > [   55.487242]  0xb7cb0674
-> > [   55.487243]  __efi_rt_asm_wrapper+0x54/0x70
-> > [   55.487246]  efi_call_rts+0x28c/0x3d0
-> > [   55.487249]  process_one_work+0x1d0/0x320
-> > [   55.487258]  worker_thread+0x14c/0x444
-> > [   55.487261]  kthread+0x10c/0x110
-> > [   55.487264]  ret_from_fork+0x10/0x20
-> > [   55.487268] [Firmware Bug]: Synchronous exception occurred in EFI runtime service set_time()
-> > [   55.495735] ------------[ cut here ]------------
-> > [   55.495739] WARNING: CPU: 62 PID: 9 at drivers/firmware/efi/runtime-wrappers.c:111 efi_call_virt_check_flags+0x40/0xac
-> > [   55.495746] Modules linked in:
-> > [   55.495749] CPU: 62 PID: 9 Comm: kworker/u320:0 Tainted: G          I        6.1.0-rc4 #60
-> > [   55.495751] Hardware name: WIWYNN Mt.Jade Server System B81.03001.0005/Mt.Jade Motherboard, BIOS 1.08.20220218 (SCP: 1.08.20220218) 2022/02/18
-> > [   55.495753] Workqueue: efi_rts_wq efi_call_rts
-> > [   55.495757] pstate: 004000c9 (nzcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> > [   55.495761] pc : efi_call_virt_check_flags+0x40/0xac
-> > [   55.495764] lr : efi_call_rts+0x29c/0x3d0
-> > [   55.495767] sp : ffff80000861bd40
-> > [   55.495768] x29: ffff80000861bd40 x28: 0000000000000000 x27: 0000000000000000
-> > [   55.495772] x26: ffffb251470e9e68 x25: ffff3fff89714805 x24: 0000000000000000
-> > [   55.495775] x23: 0000000000000000 x22: 0000000000000000 x21: 00000000000000c0
-> > [   55.495778] x20: ffffb25146688de0 x19: 0000000000000000 x18: ffffffffffffffff
-> > [   55.495780] x17: 657320656d69746e x16: 757220494645206e x15: 6920646572727563
-> > [   55.495784] x14: 636f206e6f697470 x13: ffff403e40540000 x12: 0000000000001c14
-> > [   55.495787] x11: 000000000000095c x10: ffff403e40800000 x9 : ffff403e40540000
-> > [   55.495790] x8 : 00000000ffff7fff x7 : ffff403e40800000 x6 : 0000000000000000
-> > [   55.495792] x5 : ffff083e7fe9aaa0 x4 : 0000000000000000 x3 : 0000000000000000
-> > [   55.495796] x2 : 0000000000000000 x1 : ffffb25146688de0 x0 : 00000000000000c0
-> > [   55.495799] Call trace:
-> > [   55.495800]  efi_call_virt_check_flags+0x40/0xac
-> > [   55.495802]  efi_call_rts+0x29c/0x3d0
-> > [   55.495805]  process_one_work+0x1d0/0x320
-> > [   55.495808]  worker_thread+0x14c/0x444
-> > [   55.495811]  kthread+0x10c/0x110
-> > [   55.495814]  ret_from_fork+0x10/0x20
-> > [   55.495815] ---[ end trace 0000000000000000 ]---
-> > [   55.495818] Disabling lock debugging due to kernel taint
-> > [   55.495822] efi: [Firmware Bug]: IRQ flags corrupted (0x00000000=>0x000000c0) by EFI set_time
-> > [   55.504434] efi: EFI Runtime Services are disabled!
-> > [   55.504465] rtc-efi rtc-efi.0: can't read time
-> > [   56.479370] efi: EFI Runtime Services are disabled!
-> > [   56.479394] rtc-efi rtc-efi.0: can't read time
-> > [   56.483855] rtc-efi rtc-efi.0: can't read time
-> > [   56.488306] rtc-efi rtc-efi.0: can't read time
-> > [   57.479574] rtc-efi rtc-efi.0: can't read time
-> > [   57.484030] rtc-efi rtc-efi.0: can't read time
-> > [   57.488474] rtc-efi rtc-efi.0: can't read time
-> > [   58.479692] rtc-efi rtc-efi.0: can't read time
-> > [   58.484139] rtc-efi rtc-efi.0: can't read time
-> > [   58.488582] rtc-efi rtc-efi.0: can't read time
-> > [   59.479691] rtc-efi rtc-efi.0: can't read time
-> > ... on, and on, on ...
-> > 
-> > [1] https://lore.kernel.org/linux-arm-kernel/Y2lAB508TrrjpDPi@monolith.localdoman/
-> > 
-> > Thanks,
-> > Alex
-> 
-> -- 
-> Alexandre Belloni, co-owner and COO, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
+> diff --git a/arch/loongarch/kernel/head.S b/arch/loongarch/kernel/head.S
+> index 97425779ce9f3499..e1deea93aaafa069 100644
+> --- a/arch/loongarch/kernel/head.S
+> +++ b/arch/loongarch/kernel/head.S
+> @@ -25,7 +25,8 @@ _head:
+>   	.dword	kernel_entry		/* Kernel entry point */
+>   	.dword	_end - _text		/* Kernel image effective size */
+>   	.quad	0			/* Kernel image load offset from start of RAM */
+> -	.org	0x3c			/* 0x20 ~ 0x3b reserved */
+> +	.org	0x38			/* 0x20 ~ 0x38 reserved */
+> +	.long	LINUX_PE_MAGIC
+>   	.long	pe_header - _head	/* Offset to the PE header */
+>   
+>   pe_header:
+> diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
+> index d31982509654dcb1..9338c68e7413d6e6 100644
+> --- a/arch/x86/boot/header.S
+> +++ b/arch/x86/boot/header.S
+> @@ -80,10 +80,11 @@ bs_die:
+>   	ljmp	$0xf000,$0xfff0
+>   
+>   #ifdef CONFIG_EFI_STUB
+> -	.org	0x3c
+> +	.org	0x38
+>   	#
+>   	# Offset to the PE header.
+>   	#
+> +	.long	LINUX_PE_MAGIC
+>   	.long	pe_header
+>   #endif /* CONFIG_EFI_STUB */
+>   
+> diff --git a/drivers/firmware/efi/libstub/zboot-header.S b/drivers/firmware/efi/libstub/zboot-header.S
+> index 9e6fe061ab07a008..97c2637337d79913 100644
+> --- a/drivers/firmware/efi/libstub/zboot-header.S
+> +++ b/drivers/firmware/efi/libstub/zboot-header.S
+> @@ -20,7 +20,8 @@ __efistub_efi_zboot_header:
+>   	.long		__efistub__gzdata_size - ZBOOT_SIZE_LEN	// payload size
+>   	.long		0, 0					// reserved
+>   	.asciz		COMP_TYPE				// compression type
+> -	.org		.Ldoshdr + 0x3c
+> +	.org		.Ldoshdr + 0x38
+> +	.long		LINUX_PE_MAGIC
+>   	.long		.Lpehdr - .Ldoshdr			// PE header offset
+>   
+>   .Lpehdr:
+> diff --git a/include/linux/pe.h b/include/linux/pe.h
+> index 1d3836ef9d92dcd8..fa176c24167c301c 100644
+> --- a/include/linux/pe.h
+> +++ b/include/linux/pe.h
+> @@ -31,6 +31,13 @@
+>   #define LINUX_EFISTUB_MAJOR_VERSION		0x1
+>   #define LINUX_EFISTUB_MINOR_VERSION		0x0
+>   
+> +/*
+> + * LINUX_PE_MAGIC appears at offset 0x30 into the MSDOS header of EFI bootable
+> + * Linux kernel images that target the architecture as specified by the PE/COFF
+> + * header machine type field.
+> + */
+> +#define LINUX_PE_MAGIC	0x818223cd
+> +
+>   #define MZ_MAGIC	0x5a4d	/* "MZ" */
+>   
+>   #define PE_MAGIC		0x00004550	/* "PE\0\0" */
+
