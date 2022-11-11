@@ -2,143 +2,260 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31DFE626089
-	for <lists+linux-efi@lfdr.de>; Fri, 11 Nov 2022 18:36:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F5B062612F
+	for <lists+linux-efi@lfdr.de>; Fri, 11 Nov 2022 19:33:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233885AbiKKRg0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 11 Nov 2022 12:36:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38340 "EHLO
+        id S231300AbiKKSdX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 11 Nov 2022 13:33:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233860AbiKKRgZ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 11 Nov 2022 12:36:25 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1002E2E4
-        for <linux-efi@vger.kernel.org>; Fri, 11 Nov 2022 09:36:24 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B47781FB;
-        Fri, 11 Nov 2022 09:36:29 -0800 (PST)
-Received: from FVFF77S0Q05N.cambridge.arm.com (FVFF77S0Q05N.cambridge.arm.com [10.1.25.147])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7AFED3F534;
-        Fri, 11 Nov 2022 09:36:22 -0800 (PST)
-Date:   Fri, 11 Nov 2022 17:36:19 +0000
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
-        keescook@chromium.org, Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Marc Zyngier <maz@kernel.org>
-Subject: Re: [PATCH v5 0/7] arm64: efi: leave MMU and caches on at boot
-Message-ID: <Y26IE5NEVhyId4KH@FVFF77S0Q05N.cambridge.arm.com>
-References: <20221108182204.2447664-1-ardb@kernel.org>
+        with ESMTP id S232979AbiKKSdW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 11 Nov 2022 13:33:22 -0500
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95D3B5CD21
+        for <linux-efi@vger.kernel.org>; Fri, 11 Nov 2022 10:33:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1668191601; x=1699727601;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=DXNsdxx3S3JoDsCj2fv5BJWrHxxNABpYOhoARLR8qoY=;
+  b=lJZGoL8QoXSDsC3vWIO6xYwwW2IJTxdVyEm23UKK+K+zd7NU2EbVXT39
+   bJOYV4UBhrZD68TuE1p/47Sx3HP0r0pmDzu5iR3aSc5aoQVtXXQQhBR+a
+   SNjFTIrce+dKn5pdOqGpI82lueTuveJ9KsPUuubyvHdNKx80xEXFwSHAa
+   mB2ndXGM/Xm0/DPjc3qs9MTvpShZm7/5fYvGg6f5cEahPwghNZHbpzNO4
+   UUM2FC4ph5l51TTeIOhPio6qTQ4JszFMzZKMORyFf3Nvb+lR4mtjO1PGr
+   qniSwMCxVSvhd8RdvLiZV507WAW50nOVPwiVVeZRxZFF7jea23erSoCcV
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10528"; a="295011860"
+X-IronPort-AV: E=Sophos;i="5.96,157,1665471600"; 
+   d="scan'208";a="295011860"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2022 10:33:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10528"; a="668882729"
+X-IronPort-AV: E=Sophos;i="5.96,157,1665471600"; 
+   d="scan'208";a="668882729"
+Received: from lkp-server01.sh.intel.com (HELO e783503266e8) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 11 Nov 2022 10:33:17 -0800
+Received: from kbuild by e783503266e8 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1otYq5-0004C1-0L;
+        Fri, 11 Nov 2022 18:33:17 +0000
+Date:   Sat, 12 Nov 2022 02:32:42 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     nouveau@lists.freedesktop.org, linux-mm@kvack.org,
+        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ f8f60f322f0640c8edda2942ca5f84b7a27c417a
+Message-ID: <636e954a.VkBZfaeGEL+NAnI6%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221108182204.2447664-1-ardb@kernel.org>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Ard,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: f8f60f322f0640c8edda2942ca5f84b7a27c417a  Add linux-next specific files for 20221111
 
-Sorry for the late-in-the-day reply here...
+Error/Warning reports:
 
-On Tue, Nov 08, 2022 at 07:21:57PM +0100, Ard Biesheuvel wrote:
-> The purpose of this series is to remove any explicit cache maintenance
-> for coherency during early boot that becomes unnecessary if we simply
-> retain the cacheable 1:1 mapping of all of system RAM provided by EFI,
-> and use it to populate the ID map page tables. After setting up this
-> preliminary ID map, we disable the MMU, drop to EL1, reprogram the MAIR,
-> TCR and SCTLR registers as before, and proceed as usual, avoiding the
-> need for any manipulations of memory while the MMU and caches are off.
-> 
-> The only properties of the firmware provided 1:1 map we rely on is that
-> it does not require any explicit cache maintenance for coherency, and
-> that it covers the entire memory footprint of the image, including the
-> BSS and padding at the end - all else is under control of the kernel
-> itself, as before.
+https://lore.kernel.org/linux-mm/202210261404.b6UlzG7H-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202210270637.Q5Y7FiKJ-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211090634.RyFKK0WS-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211102047.QP7IThm4-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202211111624.1XZTuzHJ-lkp@intel.com
 
-As a high-level thing, I'm still very much not keen on entering the kernel with
-the MMU on. Given that we have to support booting with the MMU off for !EFI
-boot (including kexec when EFI is in use), I think this makes it harder to
-reason about the boot code overall (e.g. due to the conditional maintenance
-added to head.S), and adds more scope for error, even if it simplifies the EFI
-stub itself.
+Error/Warning: (recently discovered and may have been fixed)
 
-I reckon that (sticking with entering with the MMU off), there's more that we
-can do to split the table creation into more stages, and to minimize the early
-portion of that which has to run with the MMU off. That would benefit non-EFI
-boot and kexec, and retain the single-boot-flow that we currently have.
+arch/arm/mach-s3c/devs.c:32:10: fatal error: linux/platform_data/dma-s3c24xx.h: No such file or directory
+arch/x86/platform/efi/runtime-map.c:138:5: warning: no previous prototype for 'efi_get_runtime_map_size' [-Wmissing-prototypes]
+arch/x86/platform/efi/runtime-map.c:143:5: warning: no previous prototype for 'efi_get_runtime_map_desc_size' [-Wmissing-prototypes]
+arch/x86/platform/efi/runtime-map.c:148:5: warning: no previous prototype for 'efi_runtime_map_copy' [-Wmissing-prototypes]
+csky-linux-ld: local_object.c:(.text+0x84): undefined reference to `ipv6_icmp_error'
+drivers/block/zram/zram_drv.c:1857:7: warning: variable 'err' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+drivers/block/zram/zram_drv.c:1857:7: warning: variable 'err' is used uninitialized whenever '||' condition is true [-Wsometimes-uninitialized]
+drivers/firmware/efi/memmap.c:57:52: warning: suggest braces around empty body in an 'if' statement [-Wempty-body]
+drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc.c:4887: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc_link_dp.c:5073:24: warning: implicit conversion from 'enum <anonymous>' to 'enum dc_status' [-Wenum-conversion]
+drivers/gpu/drm/nouveau/nvkm/engine/fifo/gf100.c:451:1: warning: no previous prototype for 'gf100_fifo_nonstall_block' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/fifo/gf100.c:451:1: warning: no previous prototype for function 'gf100_fifo_nonstall_block' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/fifo/runl.c:34:1: warning: no previous prototype for 'nvkm_engn_cgrp_get' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/fifo/runl.c:34:1: warning: no previous prototype for function 'nvkm_engn_cgrp_get' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/gr/tu102.c:210:1: warning: no previous prototype for 'tu102_gr_load' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/engine/gr/tu102.c:210:1: warning: no previous prototype for function 'tu102_gr_load' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/nvfw/acr.c:49:1: warning: no previous prototype for 'wpr_generic_header_dump' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/nvfw/acr.c:49:1: warning: no previous prototype for function 'wpr_generic_header_dump' [-Wmissing-prototypes]
+drivers/gpu/drm/nouveau/nvkm/subdev/acr/lsfw.c:221:21: warning: variable 'loc' set but not used [-Wunused-but-set-variable]
+local_object.c:(.text+0x60): undefined reference to `ipv6_icmp_error'
+vmlinux.o: warning: objtool: __btrfs_map_block+0x1e22: unreachable instruction
 
-My rough thinking was:
+Unverified Error/Warning (likely false positive, please contact us if interested):
 
-1) Reduce the idmap down to a single page, such that we only need to clear
-   NR_PAGETABLE_LEVELS pages to initialize this.
+drivers/gpu/drm/nouveau/nvkm/subdev/mc/ga100.c:51:1: sparse: sparse: symbol 'ga100_mc_device' was not declared. Should it be static?
+lib/zstd/compress/huf_compress.c:460 HUF_getIndex() warn: the 'RANK_POSITION_LOG_BUCKETS_BEGIN' macro might need parens
+lib/zstd/decompress/zstd_decompress_block.c:1009 ZSTD_execSequence() warn: inconsistent indenting
+lib/zstd/decompress/zstd_decompress_block.c:894 ZSTD_execSequenceEnd() warn: inconsistent indenting
+lib/zstd/decompress/zstd_decompress_block.c:942 ZSTD_execSequenceEndSplitLitBuffer() warn: inconsistent indenting
+lib/zstd/decompress/zstd_decompress_internal.h:206 ZSTD_DCtx_get_bmi2() warn: inconsistent indenting
+mm/khugepaged.c:2038 collapse_file() warn: iterator used outside loop: 'page'
 
-2) Create a small stub at a fixed TTBR1 VA which we use to create a new initial
-   mapping of the kernel image (either in TTBR0 as with the currently idmap, or
-   in TTBR1 directly). The stub logic could be small enough that it could be
-   mapped at page granularity, and we'd only need to initialize
-   NR_PAGETABLE_LEVELS pages before enabling the MMU.
+Error/Warning ids grouped by kconfigs:
 
-   This would then bounce onto the next stage, either in TTBR0 directly, or
-   bouncing through there as with the TTBR1 replacement logic.
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link_dp.c:warning:implicit-conversion-from-enum-anonymous-to-enum-dc_status
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|-- alpha-randconfig-r003-20221111
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link_dp.c:warning:implicit-conversion-from-enum-anonymous-to-enum-dc_status
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|-- arc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link_dp.c:warning:implicit-conversion-from-enum-anonymous-to-enum-dc_status
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|-- arc-randconfig-m041-20221111
+|   |-- lib-zstd-compress-huf_compress.c-HUF_getIndex()-warn:the-RANK_POSITION_LOG_BUCKETS_BEGIN-macro-might-need-parens
+|   |-- lib-zstd-decompress-zstd_decompress_block.c-ZSTD_execSequence()-warn:inconsistent-indenting
+|   |-- lib-zstd-decompress-zstd_decompress_block.c-ZSTD_execSequenceEnd()-warn:inconsistent-indenting
+|   |-- lib-zstd-decompress-zstd_decompress_block.c-ZSTD_execSequenceEndSplitLitBuffer()-warn:inconsistent-indenting
+|   `-- lib-zstd-decompress-zstd_decompress_internal.h-ZSTD_DCtx_get_bmi2()-warn:inconsistent-indenting
+|-- arm-allyesconfig
+|   |-- arch-arm-mach-s3c-devs.c:fatal-error:linux-platform_data-dma-s3c24xx.h:No-such-file-or-directory
+|   |-- drivers-firmware-efi-memmap.c:warning:suggest-braces-around-empty-body-in-an-if-statement
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc_link_dp.c:warning:implicit-conversion-from-enum-anonymous-to-enum-dc_status
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|-- arm-defconfig
+|   |-- drivers-firmware-efi-memmap.c:warning:suggest-braces-around-empty-body-in-an-if-statement
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-gf100_fifo_nonstall_block
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-nvkm_engn_cgrp_get
+|   |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-tu102_gr_load
+|   |-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-wpr_generic_header_dump
+|   `-- drivers-gpu-drm-nouveau-nvkm-subdev-acr-lsfw.c:warning:variable-loc-set-but-not-used
+|-- arm-oxnas_v6_defconfig
+|   `-- drivers-firmware-efi-memmap.c:warning:suggest-braces-around-empty-body-in-an-if-statement
+|-- arm-s3c6400_defconfig
+|   `-- arch-arm-mach-s3c-devs.c:fatal-error:linux-platform_data-dma-s3c24xx.h:No-such-file-or-directory
+|-- arm64-allyesconfig
+|   |-- drivers-firmware-efi-memmap.c:warning:suggest-braces-around-empty-body-in-an-if-statement
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-dc-core-dc.c:warning:This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-Documentation-doc-guide-kernel-doc.rst
+clang_recent_errors
+|-- hexagon-randconfig-r001-20221111
+|   |-- drivers-block-zram-zram_drv.c:warning:variable-err-is-used-uninitialized-whenever-condition-is-true
+|   `-- drivers-block-zram-zram_drv.c:warning:variable-err-is-used-uninitialized-whenever-if-condition-is-true
+`-- riscv-randconfig-r033-20221111
+    |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-gf100.c:warning:no-previous-prototype-for-function-gf100_fifo_nonstall_block
+    |-- drivers-gpu-drm-nouveau-nvkm-engine-fifo-runl.c:warning:no-previous-prototype-for-function-nvkm_engn_cgrp_get
+    |-- drivers-gpu-drm-nouveau-nvkm-engine-gr-tu102.c:warning:no-previous-prototype-for-function-tu102_gr_load
+    `-- drivers-gpu-drm-nouveau-nvkm-nvfw-acr.c:warning:no-previous-prototype-for-function-wpr_generic_header_dump
 
-   We could plausibly write that in C, and the early page table asm logic could
-   be simplified.
+elapsed time: 722m
 
-Thanks,
-Mark.
+configs tested: 74
+configs skipped: 2
 
-> Changes since v4:
-> - add patch to align the callers of finalise_el2()
-> - also clean HYP text to the PoC when booting at EL2 with the MMU on
-> - add a warning and a taint when doing non-EFI boot with the MMU and
->   caches enabled
-> - rebase onto zboot changes in efi/next - this means that patches #6 and
->   #7 will not apply onto arm64/for-next so a shared stable branch will
->   be needed if we want to queue this up for v6.2
-> 
-> Changes since v3:
-> - drop EFI_LOADER_CODE memory type patch that has been queued in the
->   mean time
-> - rebased onto [partial] series that moves efi-entry.S into the libstub/
->   source directory
-> - fixed a correctness issue in patch #2
-> 
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Marc Zyngier <maz@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> 
-> Ard Biesheuvel (7):
->   arm64: head: Move all finalise_el2 calls to after __enable_mmu
->   arm64: kernel: move identity map out of .text mapping
->   arm64: head: record the MMU state at primary entry
->   arm64: head: avoid cache invalidation when entering with the MMU on
->   arm64: head: Clean the ID map and the HYP text to the PoC if needed
->   arm64: lds: reduce effective minimum image alignment to 64k
->   efi: arm64: enter with MMU and caches enabled
-> 
->  arch/arm64/include/asm/efi.h               |  9 +-
->  arch/arm64/kernel/head.S                   | 93 +++++++++++++++-----
->  arch/arm64/kernel/image-vars.h             |  5 +-
->  arch/arm64/kernel/setup.c                  |  9 +-
->  arch/arm64/kernel/sleep.S                  |  6 +-
->  arch/arm64/kernel/vmlinux.lds.S            | 13 ++-
->  arch/arm64/mm/cache.S                      |  5 +-
->  arch/arm64/mm/proc.S                       |  2 -
->  drivers/firmware/efi/libstub/Makefile      |  4 +-
->  drivers/firmware/efi/libstub/arm64-entry.S | 67 --------------
->  drivers/firmware/efi/libstub/arm64-stub.c  | 26 ++++--
->  drivers/firmware/efi/libstub/arm64.c       | 41 +++++++--
->  include/linux/efi.h                        |  6 +-
->  13 files changed, 159 insertions(+), 127 deletions(-)
->  delete mode 100644 drivers/firmware/efi/libstub/arm64-entry.S
-> 
-> -- 
-> 2.35.1
-> 
+gcc tested configs:
+arc                                 defconfig
+alpha                               defconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                        randconfig-a002
+x86_64                        randconfig-a004
+i386                                defconfig
+x86_64                        randconfig-a013
+x86_64                          rhel-8.3-func
+x86_64                        randconfig-a011
+x86_64                              defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                        randconfig-a015
+x86_64                        randconfig-a006
+arc                  randconfig-r043-20221111
+s390                                defconfig
+riscv                randconfig-r042-20221111
+s390                 randconfig-r044-20221111
+x86_64                               rhel-8.3
+x86_64                           allyesconfig
+ia64                             allmodconfig
+powerpc                           allnoconfig
+i386                          randconfig-a014
+i386                          randconfig-a001
+i386                          randconfig-a003
+powerpc                          allmodconfig
+i386                          randconfig-a012
+i386                          randconfig-a005
+mips                             allyesconfig
+i386                          randconfig-a016
+sh                               allmodconfig
+arm                        oxnas_v6_defconfig
+arm                         s3c6400_defconfig
+m68k                          atari_defconfig
+x86_64                            allnoconfig
+xtensa                    xip_kc705_defconfig
+s390                             allmodconfig
+arm                        realview_defconfig
+m68k                            q40_defconfig
+arm                          gemini_defconfig
+arc                              allyesconfig
+s390                             allyesconfig
+arm                                 defconfig
+alpha                            allyesconfig
+m68k                             allmodconfig
+i386                             allyesconfig
+m68k                             allyesconfig
+x86_64                           rhel-8.3-syz
+arm                              allyesconfig
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+arm64                            allyesconfig
+arm                           h5000_defconfig
+csky                                defconfig
+arm                        trizeps4_defconfig
+m68k                       m5275evb_defconfig
+
+clang tested configs:
+x86_64                        randconfig-a005
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+x86_64                        randconfig-a012
+hexagon              randconfig-r041-20221111
+i386                          randconfig-a013
+i386                          randconfig-a015
+i386                          randconfig-a011
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+powerpc                    mvme5100_defconfig
+x86_64                          rhel-8.3-rust
+powerpc                    ge_imp3a_defconfig
+mips                     loongson2k_defconfig
+arm                       aspeed_g4_defconfig
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
