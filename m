@@ -2,182 +2,143 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26D2D625EE2
-	for <lists+linux-efi@lfdr.de>; Fri, 11 Nov 2022 16:59:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31DFE626089
+	for <lists+linux-efi@lfdr.de>; Fri, 11 Nov 2022 18:36:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234298AbiKKP7U (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 11 Nov 2022 10:59:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39592 "EHLO
+        id S233885AbiKKRg0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 11 Nov 2022 12:36:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233842AbiKKP7S (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 11 Nov 2022 10:59:18 -0500
-X-Greylist: delayed 2394 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 11 Nov 2022 07:59:17 PST
-Received: from smtpout.efficios.com (smtpout.efficios.com [IPv6:2607:5300:203:5aae::31e5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB2623C6CE;
-        Fri, 11 Nov 2022 07:59:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=efficios.com;
-        s=smtpout1; t=1668177821;
-        bh=EYvFyeYoIXdpRZUrDIt9Kwnd3gAkvdIgxw1lIXG8SKY=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=l66N3oiBVl0WpLOT0hkLWrSBLQJsJSW4+ouPxFZH5QD5KKmXDB6CMjzwtM8VVLLpX
-         a4mvKpJXJiuV9Qw3ANDqSRII+7K5waLtTRLYZ90oeO3HFXyKJpVusI8jz1TOHWpOiX
-         dJRcqsFN0mN40E/3U0KhejsRReLLA8QsqIZLb9mPKd4oL95EyLfXlhHXXYFtuTieM/
-         mQitMOSC/OQ89QyOELCnHdOHRibH9OXvgNxVpUIxiREjJL0PTMu3jrCYcnxgmXCUU+
-         h1vYvH07RGr00OmtJNBP+zQXctnrrr738WJXcAPDjU36sTOHtCkNno5wnO/vjAKkO+
-         R+/kME1qSOXkw==
-Received: from [172.16.0.153] (192-222-180-24.qc.cable.ebox.net [192.222.180.24])
-        by smtpout.efficios.com (Postfix) with ESMTPSA id 4N81fh5HFrzgt1;
-        Fri, 11 Nov 2022 09:43:40 -0500 (EST)
-Message-ID: <02cdf436-6942-89a7-98b2-bfa75ba5f301@efficios.com>
-Date:   Fri, 11 Nov 2022 09:43:49 -0500
+        with ESMTP id S233860AbiKKRgZ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 11 Nov 2022 12:36:25 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1002E2E4
+        for <linux-efi@vger.kernel.org>; Fri, 11 Nov 2022 09:36:24 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B47781FB;
+        Fri, 11 Nov 2022 09:36:29 -0800 (PST)
+Received: from FVFF77S0Q05N.cambridge.arm.com (FVFF77S0Q05N.cambridge.arm.com [10.1.25.147])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7AFED3F534;
+        Fri, 11 Nov 2022 09:36:22 -0800 (PST)
+Date:   Fri, 11 Nov 2022 17:36:19 +0000
+From:   Mark Rutland <mark.rutland@arm.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
+        keescook@chromium.org, Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Marc Zyngier <maz@kernel.org>
+Subject: Re: [PATCH v5 0/7] arm64: efi: leave MMU and caches on at boot
+Message-ID: <Y26IE5NEVhyId4KH@FVFF77S0Q05N.cambridge.arm.com>
+References: <20221108182204.2447664-1-ardb@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: [PATCH printk v3 00/40] reduce console_lock scope
-Content-Language: en-US
-To:     John Ogness <john.ogness@linutronix.de>,
-        Petr Mladek <pmladek@suse.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Frederic Weisbecker <frederic@kernel.org>
-Cc:     Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org,
-        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Joel Fernandes <joel@joelfernandes.org>, rcu@vger.kernel.org,
-        Jason Wessel <jason.wessel@windriver.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        kgdb-bugreport@lists.sourceforge.net, linux-serial@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Luis Chamberlain <mcgrof@kernel.org>,
-        Aaron Tomlin <atomlin@redhat.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Tony Lindgren <tony@atomide.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-m68k@lists.linux-m68k.org, Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org,
-        Michal Simek <michal.simek@xilinx.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Mathias Nyman <mathias.nyman@linux.intel.com>,
-        linux-usb@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        Helge Deller <deller@gmx.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Tom Rix <trix@redhat.com>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-References: <20221107141638.3790965-1-john.ogness@linutronix.de>
-From:   Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-In-Reply-To: <20221107141638.3790965-1-john.ogness@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221108182204.2447664-1-ardb@kernel.org>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2022-11-07 09:15, John Ogness wrote:
-[...]
+Hi Ard,
+
+Sorry for the late-in-the-day reply here...
+
+On Tue, Nov 08, 2022 at 07:21:57PM +0100, Ard Biesheuvel wrote:
+> The purpose of this series is to remove any explicit cache maintenance
+> for coherency during early boot that becomes unnecessary if we simply
+> retain the cacheable 1:1 mapping of all of system RAM provided by EFI,
+> and use it to populate the ID map page tables. After setting up this
+> preliminary ID map, we disable the MMU, drop to EL1, reprogram the MAIR,
+> TCR and SCTLR registers as before, and proceed as usual, avoiding the
+> need for any manipulations of memory while the MMU and caches are off.
 > 
-> The base commit for this series is from Paul McKenney's RCU tree
-> and provides an NMI-safe SRCU implementation [1]. Without the
-> NMI-safe SRCU implementation, this series is not less safe than
-> mainline. But we will need the NMI-safe SRCU implementation for
-> atomic consoles anyway, so we might as well get it in
-> now. Especially since it _does_ increase the reliability for
-> mainline in the panic path.
+> The only properties of the firmware provided 1:1 map we rely on is that
+> it does not require any explicit cache maintenance for coherency, and
+> that it covers the entire memory footprint of the image, including the
+> BSS and padding at the end - all else is under control of the kernel
+> itself, as before.
 
-So, your email got me to review the SRCU nmi-safe series:
+As a high-level thing, I'm still very much not keen on entering the kernel with
+the MMU on. Given that we have to support booting with the MMU off for !EFI
+boot (including kexec when EFI is in use), I think this makes it harder to
+reason about the boot code overall (e.g. due to the conditional maintenance
+added to head.S), and adds more scope for error, even if it simplifies the EFI
+stub itself.
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu.git/log/?h=srcunmisafe.2022.10.21a
+I reckon that (sticking with entering with the MMU off), there's more that we
+can do to split the table creation into more stages, and to minimize the early
+portion of that which has to run with the MMU off. That would benefit non-EFI
+boot and kexec, and retain the single-boot-flow that we currently have.
 
-Especially this commit:
+My rough thinking was:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu.git/commit/?h=srcunmisafe.2022.10.21a&id=5d0f5953b60f5f7a278085b55ddc73e2932f4c33
+1) Reduce the idmap down to a single page, such that we only need to clear
+   NR_PAGETABLE_LEVELS pages to initialize this.
 
-I disagree with the overall approach taken there, which is to create
-yet another SRCU flavor, this time with explicit "nmi-safe" read-locks.
-This adds complexity to the kernel APIs and I think we can be clever
-about this and make SRCU nmi-safe without requiring a whole new incompatible
-API.
+2) Create a small stub at a fixed TTBR1 VA which we use to create a new initial
+   mapping of the kernel image (either in TTBR0 as with the currently idmap, or
+   in TTBR1 directly). The stub logic could be small enough that it could be
+   mapped at page granularity, and we'd only need to initialize
+   NR_PAGETABLE_LEVELS pages before enabling the MMU.
 
-You can find the basic idea needed to achieve this in the libside RCU
-user-space implementation. I needed to introduce a split-counter concept
-to support rseq vs atomics to keep track of per-cpu grace period counters.
-The "rseq" counter is the fast-path, but if rseq fails, the abort handler
-uses the atomic counter instead.
+   This would then bounce onto the next stage, either in TTBR0 directly, or
+   bouncing through there as with the TTBR1 replacement logic.
 
-https://github.com/compudj/side/blob/main/src/rcu.h#L23
-
-struct side_rcu_percpu_count {
-	uintptr_t begin;
-	uintptr_t rseq_begin;
-	uintptr_t end;
-	uintptr_t rseq_end;
-}  __attribute__((__aligned__(SIDE_CACHE_LINE_SIZE)));
-
-The idea is to "split" each percpu counter into two counters, one for rseq,
-and the other for atomics. When a grace period wants to observe the value of
-a percpu counter, it simply sums the two counters:
-
-https://github.com/compudj/side/blob/main/src/rcu.c#L112
-
-The same idea can be applied to SRCU in the kernel: one counter for percpu ops,
-and the other counter for nmi context, so basically:
-
-srcu_read_lock()
-
-if (likely(!in_nmi()))
-   increment the percpu-ops lock counter
-else
-   increment the atomic lock counter
-
-srcu_read_unlock()
-
-if (likely(!in_nmi()))
-   increment the percpu-ops unlock counter
-else
-   increment the atomic unlock counter
-
-Then in the grace period sum the percpu-ops and the atomic values whenever
-each counter value is read.
-
-This would allow SRCU to be NMI-safe without requiring the callers to
-explicitly state whether they need to be nmi-safe or not, and would only
-take the overhead of the atomics in the NMI handlers rather than for all
-users which happen to use SRCU read locks shared with nmi handlers.
-
-Thoughts ?
+   We could plausibly write that in C, and the early page table asm logic could
+   be simplified.
 
 Thanks,
+Mark.
 
-Mathieu
-
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
-
+> Changes since v4:
+> - add patch to align the callers of finalise_el2()
+> - also clean HYP text to the PoC when booting at EL2 with the MMU on
+> - add a warning and a taint when doing non-EFI boot with the MMU and
+>   caches enabled
+> - rebase onto zboot changes in efi/next - this means that patches #6 and
+>   #7 will not apply onto arm64/for-next so a shared stable branch will
+>   be needed if we want to queue this up for v6.2
+> 
+> Changes since v3:
+> - drop EFI_LOADER_CODE memory type patch that has been queued in the
+>   mean time
+> - rebased onto [partial] series that moves efi-entry.S into the libstub/
+>   source directory
+> - fixed a correctness issue in patch #2
+> 
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> 
+> Ard Biesheuvel (7):
+>   arm64: head: Move all finalise_el2 calls to after __enable_mmu
+>   arm64: kernel: move identity map out of .text mapping
+>   arm64: head: record the MMU state at primary entry
+>   arm64: head: avoid cache invalidation when entering with the MMU on
+>   arm64: head: Clean the ID map and the HYP text to the PoC if needed
+>   arm64: lds: reduce effective minimum image alignment to 64k
+>   efi: arm64: enter with MMU and caches enabled
+> 
+>  arch/arm64/include/asm/efi.h               |  9 +-
+>  arch/arm64/kernel/head.S                   | 93 +++++++++++++++-----
+>  arch/arm64/kernel/image-vars.h             |  5 +-
+>  arch/arm64/kernel/setup.c                  |  9 +-
+>  arch/arm64/kernel/sleep.S                  |  6 +-
+>  arch/arm64/kernel/vmlinux.lds.S            | 13 ++-
+>  arch/arm64/mm/cache.S                      |  5 +-
+>  arch/arm64/mm/proc.S                       |  2 -
+>  drivers/firmware/efi/libstub/Makefile      |  4 +-
+>  drivers/firmware/efi/libstub/arm64-entry.S | 67 --------------
+>  drivers/firmware/efi/libstub/arm64-stub.c  | 26 ++++--
+>  drivers/firmware/efi/libstub/arm64.c       | 41 +++++++--
+>  include/linux/efi.h                        |  6 +-
+>  13 files changed, 159 insertions(+), 127 deletions(-)
+>  delete mode 100644 drivers/firmware/efi/libstub/arm64-entry.S
+> 
+> -- 
+> 2.35.1
+> 
