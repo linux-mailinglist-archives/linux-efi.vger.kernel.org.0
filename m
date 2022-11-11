@@ -2,117 +2,135 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D40662549F
-	for <lists+linux-efi@lfdr.de>; Fri, 11 Nov 2022 08:51:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D1DF62587E
+	for <lists+linux-efi@lfdr.de>; Fri, 11 Nov 2022 11:39:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230232AbiKKHvY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 11 Nov 2022 02:51:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34318 "EHLO
+        id S233096AbiKKKjH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 11 Nov 2022 05:39:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230055AbiKKHvX (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 11 Nov 2022 02:51:23 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03F23DFC5
-        for <linux-efi@vger.kernel.org>; Thu, 10 Nov 2022 23:51:22 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A09261EBF
-        for <linux-efi@vger.kernel.org>; Fri, 11 Nov 2022 07:51:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E722DC433C1
-        for <linux-efi@vger.kernel.org>; Fri, 11 Nov 2022 07:51:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668153080;
-        bh=1vupJla92Iek4cjuGBlj+wrBQ/8U0QUX5YyYtRrB+7w=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=HPSYMOyLvbTwPfaOVN0T7ve1k1tgL57Z127F2pJJYF+Dk1T81Z5rgqyjhNh4olW2z
-         a07tIUO1l5eYDjyGcSxGCDKKpcPIVnu3yPQicMvXddiwdKoS6Ch6a8KyFmKOiNvi9X
-         zd6EENs0nXPO4tg4POgn27J4+pl8onYeGqqi2vJaIKSgg+KjxTQAvf6j7I5gVJ4l58
-         Dp4ptzQXvJzMCXZCp/niUceRtFyuiTP4LVRg2vWJp+ap8a93JAWV5D4xqol08sDC9U
-         bP71N5P31JefoFPY5N9lDfc2avPYSupNUXD0Otx4p4fpEFxXnajbtReCbeGhSsdKkd
-         GXFB1kqH8QDpA==
-Received: by mail-lf1-f44.google.com with SMTP id b3so7209156lfv.2
-        for <linux-efi@vger.kernel.org>; Thu, 10 Nov 2022 23:51:20 -0800 (PST)
-X-Gm-Message-State: ANoB5plOKF8qnAhDY+s0bEce+lYDwx7TXJ2LKg74gJCLsfwfP+3yh0Kw
-        3+mq+mSl7R0PjL1YqFaWYOHuPEj61bAhZ+K3MD0=
-X-Google-Smtp-Source: AA0mqf5QbHABNk6KqrzPuGEK1Ob6Hb5l1CYkgT8+3zdA0ofmSW43DQbD0eA194VWz32XJdwIGhYROiwqcTbF/MbzSMI=
-X-Received: by 2002:ac2:48b0:0:b0:4a2:740b:5b02 with SMTP id
- u16-20020ac248b0000000b004a2740b5b02mr347702lfg.122.1668153078935; Thu, 10
- Nov 2022 23:51:18 -0800 (PST)
+        with ESMTP id S232608AbiKKKjG (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 11 Nov 2022 05:39:06 -0500
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89D13F53
+        for <linux-efi@vger.kernel.org>; Fri, 11 Nov 2022 02:39:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1668163145; x=1699699145;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=DfcEemnvcobm2Q6gOZe/WTuRHJ2bvfYCrqGu6ZTrLfU=;
+  b=YLY6ZNOiIw03M/uVsy7McBFMbf6xed0Bb9mju6VgOlsEoRQoLTo9+qli
+   naW85v+fp5WspXOc5682BZpTYm2fRMHGkKBYhtggLSBvljA8oGbTsO78D
+   g0u2zG4fXZfFAK17XV6zQWYQQAOxBzs2JOwCAFyxmjp6N0ZL4wPh5i9E3
+   PJzGs628c6PZOvRO2xIJKXTmg/pFeEq6G+CIfY/Ly6+l2z1koKgRnDPTh
+   SFS9skQG4UdBLAb657c+k8iDnG2kaAboCMDnJURBjtMbIZC+mk4Supz00
+   8yEbAuZ0MzpFa7Q1PABucv4iw998GN78/FsIoMg2ugHGFxBsK9vWLdk6O
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10527"; a="313362640"
+X-IronPort-AV: E=Sophos;i="5.96,156,1665471600"; 
+   d="scan'208";a="313362640"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2022 02:39:05 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10527"; a="615450312"
+X-IronPort-AV: E=Sophos;i="5.96,156,1665471600"; 
+   d="scan'208";a="615450312"
+Received: from lkp-server01.sh.intel.com (HELO e783503266e8) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 11 Nov 2022 02:39:04 -0800
+Received: from kbuild by e783503266e8 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1otRR9-0003rF-1h;
+        Fri, 11 Nov 2022 10:39:03 +0000
+Date:   Fri, 11 Nov 2022 18:38:31 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ 9b9eaee9828fe98b030cf43ac50065a54a2f5d52
+Message-ID: <636e2627.IhnLJx6M1y2x12iv%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20221109172750.2823891-1-ardb@kernel.org> <Y20MjzkbX+yM/A0G@monolith.localdoman>
-In-Reply-To: <Y20MjzkbX+yM/A0G@monolith.localdoman>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 11 Nov 2022 08:51:07 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXH06=sAx8dSK7qMkvAwuFmJ6n2b92XA6VHfKha7mo6xtA@mail.gmail.com>
-Message-ID: <CAMj1kXH06=sAx8dSK7qMkvAwuFmJ6n2b92XA6VHfKha7mo6xtA@mail.gmail.com>
-Subject: Re: [PATCH] efi: Override runtime supported mask from a EFI variable
- if present
-To:     Alexandru Elisei <alexandru.elisei@arm.com>
-Cc:     linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 10 Nov 2022 at 15:37, Alexandru Elisei <alexandru.elisei@arm.com> wrote:
->
-> Hi,
->
-> On Wed, Nov 09, 2022 at 06:27:50PM +0100, Ard Biesheuvel wrote:
-> > For debugging purposes, allow the runtime override mask to be set from a
-> > EFI variable if one exists. For instance, the RT supported mask can be
-> > set to 0xfffd to disable the SetTime() runtime service, and enable all
-> > others:
-> >
-> >   echo -ne "\x7\0\0\0\xfd\xff" \
-> >     > /sys/firmware/efi/efivars/LinuxRtMaskOverride-eb66918a-7eef-402a-842e-931d21c38ae9
->
-> I'm really sorry, I applied this patch, but I couldn't find the file
-> (LinuxRtMaskOverride*) under efivars, and couldn't find another way of
-> setting the variable.
->
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: 9b9eaee9828fe98b030cf43ac50065a54a2f5d52  arm64: efi: Fix handling of misaligned runtime regions and drop warning
 
-The variable will be created by writing to the file.
+elapsed time: 731m
 
-But no worries, I think we have enough context now. I've queued up the
-patch that checks the SMBIOS record for Altra machines.
+configs tested: 54
+configs skipped: 2
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> >
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >  drivers/firmware/efi/efi.c | 12 +++++++++++-
-> >  1 file changed, 11 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> > index a46df5d1d0942751..faed1ef78c044924 100644
-> > --- a/drivers/firmware/efi/efi.c
-> > +++ b/drivers/firmware/efi/efi.c
-> > @@ -367,7 +367,17 @@ static int __init efisubsys_init(void)
-> >               }
-> >       }
-> >
-> > -     if (efi_rt_services_supported(EFI_RT_SUPPORTED_TIME_SERVICES))
-> > +     if (efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE)) {
-> > +             unsigned long size = sizeof(efi.runtime_supported_mask);
-> > +
-> > +             if (efi.get_variable(L"LinuxRtMaskOverride",
-> > +                                  &EFI_RT_PROPERTIES_TABLE_GUID, NULL, &size,
-> > +                                  &efi.runtime_supported_mask) == EFI_SUCCESS)
-> > +                     pr_info("Overriding runtime_supported_mask to 0x%x\n",
-> > +                             efi.runtime_supported_mask);
-> > +     }
-> > +
-> > +     if (efi_rt_services_supported(EFI_RT_SUPPORTED_GET_TIME))
-> >               platform_device_register_simple("rtc-efi", 0, NULL, 0);
-> >
-> >       /* We register the efi directory at /sys/firmware/efi */
-> > --
-> > 2.35.1
-> >
+gcc tested configs:
+arc                                 defconfig
+s390                             allmodconfig
+alpha                               defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+s390                                defconfig
+s390                             allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                          rhel-8.3-func
+powerpc                           allnoconfig
+alpha                            allyesconfig
+arc                              allyesconfig
+sh                               allmodconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+ia64                             allmodconfig
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a002
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+x86_64                        randconfig-a015
+x86_64                           rhel-8.3-kvm
+x86_64                              defconfig
+i386                          randconfig-a001
+i386                          randconfig-a003
+x86_64                           allyesconfig
+i386                          randconfig-a005
+arc                  randconfig-r043-20221110
+x86_64                               rhel-8.3
+i386                                defconfig
+i386                             allyesconfig
+i386                          randconfig-a016
+arm                                 defconfig
+arm                              allyesconfig
+arm64                            allyesconfig
+
+clang tested configs:
+x86_64                        randconfig-a014
+x86_64                        randconfig-a012
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+x86_64                        randconfig-a016
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+riscv                randconfig-r042-20221110
+hexagon              randconfig-r041-20221110
+s390                 randconfig-r044-20221110
+hexagon              randconfig-r045-20221110
+i386                          randconfig-a015
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
