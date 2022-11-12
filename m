@@ -2,57 +2,46 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94F9A626BFC
-	for <lists+linux-efi@lfdr.de>; Sat, 12 Nov 2022 22:33:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DF16626C85
+	for <lists+linux-efi@lfdr.de>; Sun, 13 Nov 2022 00:00:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235014AbiKLVdJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 12 Nov 2022 16:33:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59812 "EHLO
+        id S234958AbiKLXAs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 12 Nov 2022 18:00:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234928AbiKLVdG (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 12 Nov 2022 16:33:06 -0500
+        with ESMTP id S230147AbiKLXAr (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 12 Nov 2022 18:00:47 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6761E1277D
-        for <linux-efi@vger.kernel.org>; Sat, 12 Nov 2022 13:33:05 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B85CDE89
+        for <linux-efi@vger.kernel.org>; Sat, 12 Nov 2022 15:00:46 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E33DC60917
-        for <linux-efi@vger.kernel.org>; Sat, 12 Nov 2022 21:33:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49669C433C1
-        for <linux-efi@vger.kernel.org>; Sat, 12 Nov 2022 21:33:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 12A63609FB
+        for <linux-efi@vger.kernel.org>; Sat, 12 Nov 2022 23:00:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9147FC433D6;
+        Sat, 12 Nov 2022 23:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668288784;
-        bh=/423Ulup3IHDUKHi+s1GFZ60+coEQ1XwSt0h55FPeSY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=XGCXktijtxzyjq8xSSJ/3w7mp2Ql9hAdpSzRM+7y0dbTbU/5JXWtXudTzOcJcyyAg
-         RXchAX0vuae1JmjYTkGp8LCZwyeOBdjwVuxZRmlilekyz/KDWcIRthDZ/Qg9tdqSHg
-         QcDZDI6m135OWq8zSGFwuv0mMGdMwMAkt1UejMbtAz+zOGHMBN7AIma/oiV0Nz5koM
-         bFO+PPui+kFuIKy/IO94HqxmwbtuOPd3wbRhB+i548H0OmnjAlt1v7/aOqcQirGKiY
-         0gZ0L1KeyCPtGkfYIVliMTCZ1htasIWL4n13gdndfvdvDCRpM0YymOlXRo/cWN2XQb
-         Gsht8UI09PBoQ==
-Received: by mail-lf1-f42.google.com with SMTP id be13so13425492lfb.4
-        for <linux-efi@vger.kernel.org>; Sat, 12 Nov 2022 13:33:04 -0800 (PST)
-X-Gm-Message-State: ANoB5pkczO6QR+nSKFU7XWanRYjXZe57yNoBE5l4cajrnNx6NBXvDMud
-        gbYV5wc/L43LApDDWS4mlZZhQtFBEGLWjkOAf8g=
-X-Google-Smtp-Source: AA0mqf5LGN2lehJ1LqoKqdNmM7IxXT4BZEURfzibFbV1qjOB3DT4OWpWZznouKzBa+FtRe2443yMADGhPVumQtpu0M0=
-X-Received: by 2002:ac2:46cc:0:b0:4a6:3ed2:3717 with SMTP id
- p12-20020ac246cc000000b004a63ed23717mr2615271lfo.637.1668288782301; Sat, 12
- Nov 2022 13:33:02 -0800 (PST)
-MIME-Version: 1.0
-References: <202211121437.39938.ulrich.gemkow@ikr.uni-stuttgart.de>
- <202211121755.13372.ulrich.gemkow@ikr.uni-stuttgart.de> <CAMj1kXGJGW9Bt3MWcxQVsPnWWm2HQRo_T=atjwvt8zoaQfp5fQ@mail.gmail.com>
- <202211122209.54371.ulrich.gemkow@ikr.uni-stuttgart.de>
-In-Reply-To: <202211122209.54371.ulrich.gemkow@ikr.uni-stuttgart.de>
+        s=k20201202; t=1668294045;
+        bh=LgpWSeG9UA3417hE9CZR2D3yGYFqrUM+YwkB5dm/ej8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=JcqpuFijbW7SNPox+2M5T2VSa3x8eTRBas6nVSVnJQZF85o8n9gPX5evFIxfnolbq
+         x33pxg2zRa3WOdpbocS1AMMBNTLIbZGyUetx5/b5nAw96soAlL76aB+RqKnh3WZACm
+         vd8G724d9C1MDyu+jcmAUi/xDQ2ozUwQifdP9i/zmVQWOH2+6N5bTM1oBSwjaeA7s/
+         /5CF7cG7uyr6EEqomA9dDgQkACK0uHWU9s/IAay5s0V9CGq2CzKQZ99VUFmXQxqF43
+         ggWzx0ii8a1gPFI5tUAAcwi4UZn2hTIPZswozD9XqtpCngqKAr4Nx8OPc+DsR4Z4ia
+         +MRdYvCA/8b6w==
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Sat, 12 Nov 2022 22:32:50 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHFs8b9C5P4G1JPKhAaWksEtu9qfLtVFerJM8bDerrr5A@mail.gmail.com>
-Message-ID: <CAMj1kXHFs8b9C5P4G1JPKhAaWksEtu9qfLtVFerJM8bDerrr5A@mail.gmail.com>
-Subject: Re: Regression in Linux 6.0.8 in Lenovo T14 Gen 3 when adding EFI
- boot entries
-To:     Ulrich Gemkow <ulrich.gemkow@ikr.uni-stuttgart.de>
-Cc:     linux-efi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+To:     torvalds@linux-foundation.org
+Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Subject: [GIT PULL] EFI fixes for v6.1 (#3)
+Date:   Sun, 13 Nov 2022 00:00:30 +0100
+Message-Id: <20221112230030.3248-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2016; i=ardb@kernel.org; h=from:subject; bh=LgpWSeG9UA3417hE9CZR2D3yGYFqrUM+YwkB5dm/ej8=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjcCWNTPsY1RipmSiLVpDHiEr6YbNMoBt0vPcJ8x2K KqVSSGWJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY3AljQAKCRDDTyI5ktmPJMXdC/ 9nIEBmMicirdJ7JV/K47qosOFH8iLKQ+aiuJUJYS64xsFOakRt5HLCRUf0wzLGzDp8ucn4H1T7A6S4 v+TXdsEEDvsr7+xw5Yuk9irImo6ku0JT4A2eCwV+2ts6tUteBvKVdZzUCD8sktKZ4kTlLVLCB7n8OS Z1HZKu3W2eu5cfzZYDZcZsRnVDHwBgUq+yHQufylhAKMOXzJwSgm9YsrluFC9leovX94jUAsNUbxNK L6a+XuDSlWKnqzIO89ftPN/MbXWN1wXFUBaBaGmwMwsM83qTVFSzxgxsbKr56WJZil9CTIu3ugvyah +BPxuYAUyEeilklylnNaxeNtnXFiK35GigSi4+/gAvw48hxinb0KmN+cZRews3+aVhZTM6ZqmZhXfp BQy/bWjmvrn3j1zh8gfhaMh9nYeD9B5P6n/psJwAH/ah+gss+WW/ZGjl1ahOVTn9uZlGYy3vpswaxt 3orCAY6Ge/esH7Y0tDZGFTJJLZHG8Udt/vdiCziDVVYMQ=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -62,100 +51,48 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Sat, 12 Nov 2022 at 22:10, Ulrich Gemkow
-<ulrich.gemkow@ikr.uni-stuttgart.de> wrote:
->
-> Hallo Ard,
->
-> On Saturday 12 November 2022, you wrote:
-> > On Sat, 12 Nov 2022 at 17:55, Ulrich Gemkow
-> > <ulrich.gemkow@ikr.uni-stuttgart.de> wrote:
-> > >
-> > > Hello Ard,
-> > >
-> > > On Saturday 12 November 2022, you wrote:
-> > > > On Sat, 12 Nov 2022 at 16:26, Ulrich Gemkow
-> > > > <ulrich.gemkow@ikr.uni-stuttgart.de> wrote:
-> > > > >
-> > > > > Hello Ard,
-> > > > >
-> > > > > thanks for looking into this!
-> > > > >
-> > > > > On Saturday 12 November 2022, you wrote:
-> > > > > > On Sat, 12 Nov 2022 at 14:42, Ulrich Gemkow
-> > > > > > <ulrich.gemkow@ikr.uni-stuttgart.de> wrote:
-> > > > > > >
-> > > > > > > Hello,
-> > > > > > >
-> > > > > > > calling efibootmgr for adding EFI boot entries with Linux 6.0.8 does
-> > > > > > > not work on our Lenovo T14 Gen 3 (intel). The error is "EFI variables
-> > > > > > > are not supported on this system". The directory /sys/firmware/efi/efivars/
-> > > > > > > exists but is empty.
-> > > > > > >
-> > > > > > > This worked fine with the latest 5.19 kernel. The config was transferred
-> > > > > > > from 5.19 to 6.0 with "make oldconfig". All kernels are self-compiled
-> > > > > > > and without changes from the kernel.org downloads.
-> > > > > > >
-> > > > > > > I saw earlier messages about bugs in this area, the fixes applied
-> > > > > > > seem to be not complete.
-> > > > > > >
-> > > > > > > Please let me know when additional information would help to debug.
-> > > > > > >
-> > > > > >
-> > > > > > Hello Ulrich,
-> > > > > >
-> > > > > > Can you please share the complete kernel boot log when booting with
-> > > > > > efi=debug, and the .config used to build the kernel? Thanks.
-> > > > > >
-> > > > >
-> > > > > please find attached the two files. Please do not get confused about
-> > > > > the kernel uname, the used kernel is 6.0.8. I use my own automated
-> > > > > setup and build environment which requires a different naming.
-> > > > >
-> > > >
-> > > > Does it work if you enable CONFIG_EFI_STUB?
-> > > >
-> > >
-> > > Enabling CONFIG_EFI_STUB does not help, the problem remains.
-> > >
-> > > I digged around and found that mounting the efivarfs solves the
-> > > problem. This was not required with 5.19. Is this an expected
-> > > or wanted change of behavior?
-> > >
-> >
-> > That is surprising. It is entirely up to user space whether and when
-> > efivarfs gets mounted - the kernel just provides the facilities but
-> > does not decide if they get used.
-> >
-> > Which distro are you using?
->
-> In principle this is Debian 11 but the whole base (init, kernel, ...)
-> is self-made. So the distro is maybe not really relevant.
->
-> I understand the problem as follows: With 5.19 mounting the efivarfs was
-> not required to change EFI boot entries. In 6.0 it seems to be required
-> for efibootmgr to change boot entries.
->
-> I created a standard Debian 11 install and efivarfs is mounted. So maybe
-> in current distros the efivarfs is normally mounted.
->
-> So while the changed behavior is formally a regression it may not be relevant
-> because most users of todays distros may not notice the change because of
-> the always mounted efivarfs. I cannot judge whether this is relevant.
->
+Hello Linus,
 
-I figured out what is happening.
+Here's the PR with the patch that gets rid of the misalignment WARN().
 
-6.0 removes the ancient efivar sysfs interface for accessing EFI
-variables. This has been replaced by efivarfs ~10 years ago, but has
-only been removed recently. The old sysfs based interface exposes the
-EFI variables under /sys/firmware/efi/vars [not /efivars] and requires
-no explicit mount.
+The other patch adds an SMBIOS based quirk for Ampere Altra machines. This is
+the first time we've added such a quirk on arm64, but fortunately, we can just
+call a EFI protocol to grab the type #1 SMBIOS record when running in the stub,
+so we don't need all the machinery we have in the kernel proper to parse SMBIOS
+data.
 
-efibootmgr will fall back to this legacy method if it cannot find the
-EFI variables under /sys/firmware/efi/efivars, which is the case for
-you because efivarfs is not mounted.
+Please pull.
 
-So the answer is really to add efivarfs to the list of pseudo
-filesystems like proc and sysfs that get mounted automatically at
-boot.
+The following changes since commit 23715a26c8d812912a70c6ac1ce67af649b95914:
+
+  arm64: efi: Recover from synchronous exceptions occurring in firmware (2022-11-03 18:01:15 +0100)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.1-3
+
+for you to fetch changes up to 9b9eaee9828fe98b030cf43ac50065a54a2f5d52:
+
+  arm64: efi: Fix handling of misaligned runtime regions and drop warning (2022-11-10 23:14:15 +0100)
+
+----------------------------------------------------------------
+Third batch of EFI fixes for v6.1
+
+- Force the use of SetVirtualAddressMap() on Ampera Altra arm64
+  machines, which crash in SetTime() if no virtual remapping is used
+- Drop a spurious warning on misaligned runtime regions when using 16k
+  or 64k pages on arm64
+
+----------------------------------------------------------------
+Ard Biesheuvel (2):
+      arm64: efi: Force the use of SetVirtualAddressMap() on Altra machines
+      arm64: efi: Fix handling of misaligned runtime regions and drop warning
+
+ arch/arm64/kernel/efi.c                   | 52 ++++++++++++++++++++-----------
+ drivers/firmware/efi/libstub/Makefile     |  2 +-
+ drivers/firmware/efi/libstub/arm64-stub.c | 17 +++++++++-
+ drivers/firmware/efi/libstub/efistub.h    | 28 +++++++++++++++++
+ drivers/firmware/efi/libstub/smbios.c     | 48 ++++++++++++++++++++++++++++
+ include/linux/efi.h                       |  1 +
+ 6 files changed, 128 insertions(+), 20 deletions(-)
+ create mode 100644 drivers/firmware/efi/libstub/smbios.c
