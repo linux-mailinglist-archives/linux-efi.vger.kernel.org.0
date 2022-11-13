@@ -2,97 +2,174 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DF16626C85
-	for <lists+linux-efi@lfdr.de>; Sun, 13 Nov 2022 00:00:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEB32626F73
+	for <lists+linux-efi@lfdr.de>; Sun, 13 Nov 2022 13:23:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234958AbiKLXAs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 12 Nov 2022 18:00:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47042 "EHLO
+        id S233867AbiKMMXd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 13 Nov 2022 07:23:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230147AbiKLXAr (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 12 Nov 2022 18:00:47 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B85CDE89
-        for <linux-efi@vger.kernel.org>; Sat, 12 Nov 2022 15:00:46 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 12A63609FB
-        for <linux-efi@vger.kernel.org>; Sat, 12 Nov 2022 23:00:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9147FC433D6;
-        Sat, 12 Nov 2022 23:00:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668294045;
-        bh=LgpWSeG9UA3417hE9CZR2D3yGYFqrUM+YwkB5dm/ej8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=JcqpuFijbW7SNPox+2M5T2VSa3x8eTRBas6nVSVnJQZF85o8n9gPX5evFIxfnolbq
-         x33pxg2zRa3WOdpbocS1AMMBNTLIbZGyUetx5/b5nAw96soAlL76aB+RqKnh3WZACm
-         vd8G724d9C1MDyu+jcmAUi/xDQ2ozUwQifdP9i/zmVQWOH2+6N5bTM1oBSwjaeA7s/
-         /5CF7cG7uyr6EEqomA9dDgQkACK0uHWU9s/IAay5s0V9CGq2CzKQZ99VUFmXQxqF43
-         ggWzx0ii8a1gPFI5tUAAcwi4UZn2hTIPZswozD9XqtpCngqKAr4Nx8OPc+DsR4Z4ia
-         +MRdYvCA/8b6w==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     torvalds@linux-foundation.org
-Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
-Subject: [GIT PULL] EFI fixes for v6.1 (#3)
-Date:   Sun, 13 Nov 2022 00:00:30 +0100
-Message-Id: <20221112230030.3248-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S235085AbiKMMXc (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 13 Nov 2022 07:23:32 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27EEA62DD
+        for <linux-efi@vger.kernel.org>; Sun, 13 Nov 2022 04:23:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1668342212; x=1699878212;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=m1YhIzemR5hgoV4xZl7ijeTRiPVh0htmmQfKfKd5+8E=;
+  b=lS3LHorQy9QzFXtpYSPxNusnob275Z7GJSF/Lr34vRTeDM+QQXiaEyZ+
+   T7mQRGJOkA9C8BAu2776aiSuMUz9Mr9uF88iweg4GIkBixZH5FdZh7f/v
+   AKKDK2NH4/Q4tMOmr69fJD4OlZbwPDWhZWCQq+r64k1YpWzKe+S7uVYBA
+   dT/DnYmz0xF9pNfDqOilZnxD6RTTUOUAqXJCUQ04yVblx5o/NULj70XmJ
+   WrfzGT699y2WKvc6sN9EplUAKJ2xCv80u36YyX7o3mjUDxUd89PPflz0c
+   DmOvLDf68Wp6A8x/jedaSOmCVKm2gUxXDmuB/kiYqBsWXlc+Dh0DV1Sv2
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10529"; a="291525310"
+X-IronPort-AV: E=Sophos;i="5.96,161,1665471600"; 
+   d="scan'208";a="291525310"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2022 04:23:31 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10529"; a="638110641"
+X-IronPort-AV: E=Sophos;i="5.96,161,1665471600"; 
+   d="scan'208";a="638110641"
+Received: from lkp-server01.sh.intel.com (HELO e783503266e8) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 13 Nov 2022 04:23:30 -0800
+Received: from kbuild by e783503266e8 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1ouC1J-0005ll-2y;
+        Sun, 13 Nov 2022 12:23:29 +0000
+Date:   Sun, 13 Nov 2022 20:22:35 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS 2b3df554c475872aa1bf9125428a56aaeb7a0aac
+Message-ID: <6370e18b.2qLNQSmeAcDNN+Os%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2016; i=ardb@kernel.org; h=from:subject; bh=LgpWSeG9UA3417hE9CZR2D3yGYFqrUM+YwkB5dm/ej8=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjcCWNTPsY1RipmSiLVpDHiEr6YbNMoBt0vPcJ8x2K KqVSSGWJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY3AljQAKCRDDTyI5ktmPJMXdC/ 9nIEBmMicirdJ7JV/K47qosOFH8iLKQ+aiuJUJYS64xsFOakRt5HLCRUf0wzLGzDp8ucn4H1T7A6S4 v+TXdsEEDvsr7+xw5Yuk9irImo6ku0JT4A2eCwV+2ts6tUteBvKVdZzUCD8sktKZ4kTlLVLCB7n8OS Z1HZKu3W2eu5cfzZYDZcZsRnVDHwBgUq+yHQufylhAKMOXzJwSgm9YsrluFC9leovX94jUAsNUbxNK L6a+XuDSlWKnqzIO89ftPN/MbXWN1wXFUBaBaGmwMwsM83qTVFSzxgxsbKr56WJZil9CTIu3ugvyah +BPxuYAUyEeilklylnNaxeNtnXFiK35GigSi4+/gAvw48hxinb0KmN+cZRews3+aVhZTM6ZqmZhXfp BQy/bWjmvrn3j1zh8gfhaMh9nYeD9B5P6n/psJwAH/ah+gss+WW/ZGjl1ahOVTn9uZlGYy3vpswaxt 3orCAY6Ge/esH7Y0tDZGFTJJLZHG8Udt/vdiCziDVVYMQ=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello Linus,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+branch HEAD: 2b3df554c475872aa1bf9125428a56aaeb7a0aac  efi: random: combine bootloader provided RNG seed with RNG protocol output
 
-Here's the PR with the patch that gets rid of the misalignment WARN().
+elapsed time: 723m
 
-The other patch adds an SMBIOS based quirk for Ampere Altra machines. This is
-the first time we've added such a quirk on arm64, but fortunately, we can just
-call a EFI protocol to grab the type #1 SMBIOS record when running in the stub,
-so we don't need all the machinery we have in the kernel proper to parse SMBIOS
-data.
+configs tested: 94
+configs skipped: 2
 
-Please pull.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-The following changes since commit 23715a26c8d812912a70c6ac1ce67af649b95914:
+gcc tested configs:
+x86_64                    rhel-8.3-kselftests
+i386                                defconfig
+x86_64                          rhel-8.3-func
+arc                                 defconfig
+alpha                               defconfig
+m68k                             allmodconfig
+um                             i386_defconfig
+arc                              allyesconfig
+um                           x86_64_defconfig
+alpha                            allyesconfig
+arc                  randconfig-r043-20221113
+x86_64                              defconfig
+arm                                 defconfig
+m68k                             allyesconfig
+s390                             allmodconfig
+i386                             allyesconfig
+s390                 randconfig-r044-20221113
+s390                                defconfig
+x86_64                        randconfig-a004
+i386                          randconfig-a014
+x86_64                        randconfig-a002
+i386                          randconfig-a001
+ia64                             allmodconfig
+i386                          randconfig-a003
+i386                          randconfig-a012
+i386                          randconfig-a016
+x86_64                           rhel-8.3-kvm
+riscv                randconfig-r042-20221113
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+x86_64                        randconfig-a013
+x86_64                        randconfig-a006
+x86_64                        randconfig-a011
+i386                          randconfig-a005
+s390                             allyesconfig
+x86_64                        randconfig-a015
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+mips                             allyesconfig
+arm                              allyesconfig
+arm64                            allyesconfig
+sh                               allmodconfig
+x86_64                               rhel-8.3
+x86_64                           allyesconfig
+x86_64                            allnoconfig
+sh                           se7724_defconfig
+m68k                           virt_defconfig
+sh                         ecovec24_defconfig
+openrisc                         alldefconfig
+i386                          randconfig-c001
+powerpc                      pcm030_defconfig
+sh                   sh7770_generic_defconfig
+arc                     nsimosci_hs_defconfig
+m68k                          hp300_defconfig
+ia64                             alldefconfig
+m68k                         apollo_defconfig
+m68k                        m5407c3_defconfig
+mips                      loongson3_defconfig
+arm                          iop32x_defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+powerpc                       ppc64_defconfig
+um                               alldefconfig
+mips                           ci20_defconfig
+powerpc                      cm5200_defconfig
+nios2                            allyesconfig
+nios2                               defconfig
+parisc64                            defconfig
+parisc                           allyesconfig
 
-  arm64: efi: Recover from synchronous exceptions occurring in firmware (2022-11-03 18:01:15 +0100)
+clang tested configs:
+hexagon              randconfig-r041-20221113
+hexagon              randconfig-r045-20221113
+i386                          randconfig-a013
+i386                          randconfig-a015
+x86_64                        randconfig-a001
+i386                          randconfig-a011
+x86_64                        randconfig-a003
+x86_64                        randconfig-a014
+i386                          randconfig-a002
+x86_64                        randconfig-a016
+x86_64                        randconfig-a005
+i386                          randconfig-a006
+x86_64                        randconfig-a012
+i386                          randconfig-a004
+powerpc                 mpc8560_ads_defconfig
+x86_64                        randconfig-k001
+powerpc                          allyesconfig
+mips                        qi_lb60_defconfig
+mips                        maltaup_defconfig
+powerpc                          g5_defconfig
+powerpc                      ppc44x_defconfig
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.1-3
-
-for you to fetch changes up to 9b9eaee9828fe98b030cf43ac50065a54a2f5d52:
-
-  arm64: efi: Fix handling of misaligned runtime regions and drop warning (2022-11-10 23:14:15 +0100)
-
-----------------------------------------------------------------
-Third batch of EFI fixes for v6.1
-
-- Force the use of SetVirtualAddressMap() on Ampera Altra arm64
-  machines, which crash in SetTime() if no virtual remapping is used
-- Drop a spurious warning on misaligned runtime regions when using 16k
-  or 64k pages on arm64
-
-----------------------------------------------------------------
-Ard Biesheuvel (2):
-      arm64: efi: Force the use of SetVirtualAddressMap() on Altra machines
-      arm64: efi: Fix handling of misaligned runtime regions and drop warning
-
- arch/arm64/kernel/efi.c                   | 52 ++++++++++++++++++++-----------
- drivers/firmware/efi/libstub/Makefile     |  2 +-
- drivers/firmware/efi/libstub/arm64-stub.c | 17 +++++++++-
- drivers/firmware/efi/libstub/efistub.h    | 28 +++++++++++++++++
- drivers/firmware/efi/libstub/smbios.c     | 48 ++++++++++++++++++++++++++++
- include/linux/efi.h                       |  1 +
- 6 files changed, 128 insertions(+), 20 deletions(-)
- create mode 100644 drivers/firmware/efi/libstub/smbios.c
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
