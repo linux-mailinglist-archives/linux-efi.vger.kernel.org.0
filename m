@@ -2,96 +2,82 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CADD6271A9
-	for <lists+linux-efi@lfdr.de>; Sun, 13 Nov 2022 19:31:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7D91627956
+	for <lists+linux-efi@lfdr.de>; Mon, 14 Nov 2022 10:46:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232799AbiKMSbm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 13 Nov 2022 13:31:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33930 "EHLO
+        id S234411AbiKNJqM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 14 Nov 2022 04:46:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232676AbiKMSbl (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 13 Nov 2022 13:31:41 -0500
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11CE1F594
-        for <linux-efi@vger.kernel.org>; Sun, 13 Nov 2022 10:31:41 -0800 (PST)
-Received: from [2a02:8108:963f:de38:eca4:7d19:f9a2:22c5]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1ouHla-0006Tq-Kg; Sun, 13 Nov 2022 19:31:38 +0100
-Message-ID: <0f936a56-29af-49d8-f291-398e91cce0e2@leemhuis.info>
-Date:   Sun, 13 Nov 2022 19:31:37 +0100
+        with ESMTP id S236091AbiKNJqK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 14 Nov 2022 04:46:10 -0500
+X-Greylist: delayed 507 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 14 Nov 2022 01:46:09 PST
+Received: from relay.mgdcloud.pe (relay.mgdcloud.pe [201.234.116.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D1361B9F3
+        for <linux-efi@vger.kernel.org>; Mon, 14 Nov 2022 01:46:09 -0800 (PST)
+Received: from relay.mgdcloud.pe (localhost.localdomain [127.0.0.1])
+        by relay.mgdcloud.pe (Proxmox) with ESMTP id 0F2AD2297FC;
+        Mon, 14 Nov 2022 04:36:31 -0500 (-05)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cgracephoto.com;
+         h=cc:content-description:content-transfer-encoding:content-type
+        :content-type:date:from:from:message-id:mime-version:reply-to
+        :reply-to:subject:subject:to:to; s=Relay; bh=POmmLhbs6/14Mhmcbsw
+        HpX0H+MIlo+W0e6cG8XDkBG8=; b=OmWIXu8TozzaAbTB1i3JnrHz6DM0Q6mJ1pH
+        c4zToYBhRrBnKr3VDNCmj+0xy7xPwyH33p/xjCBypZyeZjSeP9uiFxNjVY0Fh8Bp
+        D5Ge3gd5NC8yvXbobN/ShIEPiq/rsdwqwi+zoCvMPO0eepTbrYlqpo5rqlV7EunR
+        QisZUjxy3biwSbz+QVCRX2rbUy8iDv5B/aPXTCC7jV+EWOuceglOudK40/HfQJOY
+        7D99HSfc917KeEyDCyCb2/iYvdYoPrpFxvMUqwLBj+LY10vO1+ej0EEYV+9F26eW
+        Rk/3B1GN/4ZZY/C0MZNnVPjNnSTuYNNpK54xup4dlI+0ejeoqUQ==
+Received: from portal.mgd.pe (portal.mgd.pe [107.1.2.10])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by relay.mgdcloud.pe (Proxmox) with ESMTPS id EADC7229446;
+        Mon, 14 Nov 2022 04:36:30 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by portal.mgd.pe (Postfix) with ESMTP id C3F0420187D84;
+        Mon, 14 Nov 2022 04:36:30 -0500 (-05)
+Received: from portal.mgd.pe ([127.0.0.1])
+        by localhost (portal.mgd.pe [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id VC-lhatH9T_q; Mon, 14 Nov 2022 04:36:30 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by portal.mgd.pe (Postfix) with ESMTP id 6591220187D82;
+        Mon, 14 Nov 2022 04:36:30 -0500 (-05)
+X-Virus-Scanned: amavisd-new at mgd.pe
+Received: from portal.mgd.pe ([127.0.0.1])
+        by localhost (portal.mgd.pe [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id N8-Ld5O2e6Wn; Mon, 14 Nov 2022 04:36:30 -0500 (-05)
+Received: from [103.125.190.179] (unknown [103.125.190.179])
+        by portal.mgd.pe (Postfix) with ESMTPSA id DE20520187D83;
+        Mon, 14 Nov 2022 04:36:23 -0500 (-05)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.1
-Subject: Re: [Issue] EFI runtime-wrapper is broken #forregzbot
-Content-Language: en-US, de-DE
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-To:     linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-Cc:     linux-efi <linux-efi@vger.kernel.org>
-References: <d799b60c-ff4e-44ae-84be-d9ade761ec6d@redhat.com>
- <CAMj1kXHDtwkMgqqwePEKdOdO=7-1_TYyuVNPJ7PkyreaMySjCw@mail.gmail.com>
- <d469f6b9-d23a-abe6-27b7-f58f9de12a45@redhat.com>
- <CAMj1kXFUfAE6bGTxTFDQe9HxAZAuAOXenU+GC-39QJfaBOt4tA@mail.gmail.com>
- <34d7f903-9d1a-d63b-0d32-b72ae775f26a@leemhuis.info>
-In-Reply-To: <34d7f903-9d1a-d63b-0d32-b72ae775f26a@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1668364301;2fb03d76;
-X-HE-SMSGID: 1ouHla-0006Tq-Kg
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Strategic plan
+To:     Recipients <cindy@cgracephoto.com>
+From:   "Mr.IgorS. Lvovich" <cindy@cgracephoto.com>
+Date:   Mon, 14 Nov 2022 01:36:22 -0800
+Reply-To: richad.tang@yahoo.com.hk
+Message-Id: <20221114093623.DE20520187D83@portal.mgd.pe>
+X-Spam-Status: No, score=4.2 required=5.0 tests=BAYES_50,DKIM_INVALID,
+        DKIM_SIGNED,FREEMAIL_FORGED_REPLYTO,HK_NAME_MR_MRS,RCVD_IN_SBL,
+        SPF_FAIL,SPF_HELO_PASS,TO_EQ_FM_DOM_SPF_FAIL,TO_EQ_FM_SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-[Note: this mail is primarily send for documentation purposes and/or for
-regzbot, my Linux kernel regression tracking bot. That's why I removed
-most or all folks from the list of recipients, but left any that looked
-like a mailing lists. These mails usually contain '#forregzbot' in the
-subject, to make them easy to spot and filter out.]
+Hello
+I will like to use the liberty of this medium to inform you as a consultant=
+,that my principal is interested in investing his bond/funds as a silent bu=
+siness partner in your company.Taking into proper
+consideration the Return on Investment(ROI) based on a ten (10) year strate=
+gic plan.
+I shall give you details when you reply.
 
-On 08.11.22 13:26, Thorsten Leemhuis wrote:
-> Hi, this is your Linux kernel regression tracker. CCing the regression
-> mailing list, as it should be in the loop for all regressions, as
-> explained here:
-> https://www.kernel.org/doc/html/latest/admin-guide/reporting-issues.html
-> 
-> On 28.10.22 11:39, Ard Biesheuvel wrote:
->> On Fri, 28 Oct 2022 at 11:38, Gavin Shan <gshan@redhat.com> wrote:
->>> On 10/28/22 5:21 PM, Ard Biesheuvel wrote:
->>>> On Fri, 28 Oct 2022 at 11:10, Gavin Shan <gshan@redhat.com> wrote:
->>>>> I ran into the following crash with v6.1.rc2. I'm not sure if it's known
->>>>> issue. Last good version is v6.0.rc6/rc7. The kernel configuration is attached.
->>>>
->>>> This is probably related to the patch below. It means the firmware is
->>>> buggy, and does not work as it should if the firmware never calls
->>>> SetVirtualAddressMap() [and doing so is explicitly described as
->>>> OPTIONAL by the EFI specification].
->>>>
->>>> The problem here is that other EFI implementations (primarily the
->>>> Qualcomm ones used on Windows-on-ARM laptops) are buggy too, and don't
->>>> tolerate SetVirtualAddressMap().
->>>>
->>>> Can you try whether reverting the patch below helps?
->>>
->>> I ran into the issue on server, equipped with Ampere CPUs. With d3549a938b73
->>> reverted, the crash disappeared.
->>
->> Thanks for confirming
->>
->> Can you please share the complete boot log and the DMI/SMBIOS data? Thanks.
-> 
-> Gavin, did you ever send this?
-> 
-> Or Ard, was there any progress to get the issue fixed?
-> 
-> I ask because I have this on the list of tracked regression -- and I
-> noticed there is another report about problems caused by d3549a938b73
-> now from Alexandru Elisei:
-> https://lore.kernel.org/lkml/Y2lAB508TrrjpDPi@monolith.localdoman/
-
-#regzbot fixed-by: 550b33cfd445296
-
+Regards,
 
