@@ -2,112 +2,114 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F013A629782
-	for <lists+linux-efi@lfdr.de>; Tue, 15 Nov 2022 12:32:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6B0662C3CC
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Nov 2022 17:17:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238109AbiKOLcm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 15 Nov 2022 06:32:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37642 "EHLO
+        id S234127AbiKPQRV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 16 Nov 2022 11:17:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238059AbiKOLcA (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 15 Nov 2022 06:32:00 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56AA224948
-        for <linux-efi@vger.kernel.org>; Tue, 15 Nov 2022 03:31:41 -0800 (PST)
+        with ESMTP id S234776AbiKPQRB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 16 Nov 2022 11:17:01 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B303E57B7C;
+        Wed, 16 Nov 2022 08:16:59 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D6740616C5
-        for <linux-efi@vger.kernel.org>; Tue, 15 Nov 2022 11:31:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE9E4C433C1;
-        Tue, 15 Nov 2022 11:31:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668511900;
-        bh=rn62bIUKfNDs4qARPw8jT2XBwnVNQ2diPDoNbFA7xA4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KY29oRW2w4aAlkXurwuEG+jqzSnvtn1NDiyN2U07IkVhG5TYvW4jfOtLuDdhjV5ht
-         A9V4+arFWeqC2y0OEzo2yDiL6Q+c81iqkwj00YwQB8mLoDaydNQJgGkMa2W7YisMJS
-         PI5XLYyzvs17nR+o87VHDt0/t/5495n7eBPuhl5CHC6NjinRzhfC+4OnB79gDZIchQ
-         Jf/Ftw55MxSfynsQTaZmakYOq3KtpLHjsdtfghm26SSmync5JPg+gYzkJMsghXJFYB
-         0Y1rMNIFMvKYNlz6JlWPt+cqwFC4ABNsKalydZtj157OgtNqELlSuga/3yZc4C0c9W
-         9zZj/3kGkPIqA==
-Date:   Tue, 15 Nov 2022 11:31:35 +0000
-From:   Will Deacon <will@kernel.org>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
-        keescook@chromium.org, Catalin Marinas <catalin.marinas@arm.com>,
-        Marc Zyngier <maz@kernel.org>
-Subject: Re: [PATCH v5 0/7] arm64: efi: leave MMU and caches on at boot
-Message-ID: <20221115113134.GC32523@willie-the-truck>
-References: <20221108182204.2447664-1-ardb@kernel.org>
- <Y26IE5NEVhyId4KH@FVFF77S0Q05N.cambridge.arm.com>
- <20221115111658.GA32523@willie-the-truck>
- <CAMj1kXFGakOpTyUqDrFGDRoRsSzG2bYQ=iZA86DahbjL_zvE7w@mail.gmail.com>
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6A3AFB81DE0;
+        Wed, 16 Nov 2022 16:16:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708CFC433C1;
+        Wed, 16 Nov 2022 16:16:56 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="L3qpjO+h"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1668615414;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=7081WT2vIv2P593Em1s6an5/PNnBOO7eRlHKQoDe8bM=;
+        b=L3qpjO+hA//nPICVxX6CEoFke5uoMjJPXe77EoYqr8paiIG2qZARvNIxdH2kXppvCokuzO
+        t3D6umAOT59195cQnZ3y3NYCT5LrvJad7gpDHbq++Zip2Bwpyu57wXsHEEQm0dbhOHsF/4
+        mIOkuGtdbh1b0ZOpC3kGn4b1D8KxeoQ=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id d4ea79a6 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+        Wed, 16 Nov 2022 16:16:53 +0000 (UTC)
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+To:     linux-efi@vger.kernel.org, linux-crypto@vger.kernel.org
+Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Lennart Poettering <lennart@poettering.net>
+Subject: [PATCH RFC v1 0/6] Use EFI variables for random seed
+Date:   Wed, 16 Nov 2022 17:16:36 +0100
+Message-Id: <20221116161642.1670235-1-Jason@zx2c4.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXFGakOpTyUqDrFGDRoRsSzG2bYQ=iZA86DahbjL_zvE7w@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Nov 15, 2022 at 12:21:55PM +0100, Ard Biesheuvel wrote:
-> On Tue, 15 Nov 2022 at 12:17, Will Deacon <will@kernel.org> wrote:
-> >
-> > On Fri, Nov 11, 2022 at 05:36:19PM +0000, Mark Rutland wrote:
-> > > On Tue, Nov 08, 2022 at 07:21:57PM +0100, Ard Biesheuvel wrote:
-> > > > The purpose of this series is to remove any explicit cache maintenance
-> > > > for coherency during early boot that becomes unnecessary if we simply
-> > > > retain the cacheable 1:1 mapping of all of system RAM provided by EFI,
-> > > > and use it to populate the ID map page tables. After setting up this
-> > > > preliminary ID map, we disable the MMU, drop to EL1, reprogram the MAIR,
-> > > > TCR and SCTLR registers as before, and proceed as usual, avoiding the
-> > > > need for any manipulations of memory while the MMU and caches are off.
-> > > >
-> > > > The only properties of the firmware provided 1:1 map we rely on is that
-> > > > it does not require any explicit cache maintenance for coherency, and
-> > > > that it covers the entire memory footprint of the image, including the
-> > > > BSS and padding at the end - all else is under control of the kernel
-> > > > itself, as before.
-> > >
-> > > As a high-level thing, I'm still very much not keen on entering the kernel with
-> > > the MMU on. Given that we have to support booting with the MMU off for !EFI
-> > > boot (including kexec when EFI is in use), I think this makes it harder to
-> > > reason about the boot code overall (e.g. due to the conditional maintenance
-> > > added to head.S), and adds more scope for error, even if it simplifies the EFI
-> > > stub itself.
-> >
-> > As discussed offline, two things that would help the current series are:
-> >
-> >   (1) Some performance numbers comparing MMU off vs MMU on boot
-> >
-> >   (2) Use of a separate entry point for the MMU on case, potentially failing
-> >       the boot if the MMU is on and we're not using EFI
-> >
-> 
-> Ack.
-> 
-> But thinking about (2) again, failing the boot is better done at a
-> time when you can inform the user about it, no?
-> 
-> IOW, just going into a deadloop really early if you enter the bare
-> metal entry point with the MMU on is going to be hard to distinguish
-> from other issues, whereas panicking after the console up is more
-> likely to help getting the actual issue diagnosed.
+This is a rough sketch of a proposal to use non-volatile EFI variables
+as random seeds for EFISTUB to manage.
 
-Agreed.
+Patch 1 adds (back) the random.c async notifier, so we can learn when
+the RNG is initialized.
 
-> So perhaps we should panic() instead of warn+taint when this condition
-> occurs, and do it from an early initcall instead of from setup_arch().
+Patch 2 uses it in vsprintf, because I promised Sebastian we'd do that
+if it ever gets added back for whatever reason.
 
-To be honest, and I appreciate that this is unhelpful, but I'm fine with
-the warn+taint and prefer that to a fatal stop.
+Patch 3 is already in efi.git and isn't new here, but is a pre-req for
+the next patch.
 
-Will
+Patch 4 uses the random seed from an EFI variable to pass to Linux.
+
+Patch 5 prevents the variable from being read by efivarfs. [Note:
+probably the legacy efifs needs updating too? Or has this been removed?]
+
+Patch 6 uses patch 1 to refresh the EFI variable when the RNG is
+initialized.
+
+If folks like this idea and it moves forward, 1,2,6 will be taken into
+my tree, and 3,4,5 will go via Ard's.
+
+Commit messages are rather sparse at the moment. I'll fill those out for
+the next non-RFC patchset if this idea isn't immediately demolished.
+
+The biggest consideration is wear leveling on the EFI variable flash
+chips. However, EFI *already* winds up writing to non-volatile memory on
+every single boot anyway, so maybe it's not actually a big deal?
+
+Thoughts?
+
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Lennart Poettering <lennart@poettering.net>
+
+Ard Biesheuvel (1):
+  efi: random: combine bootloader provided RNG seed with RNG protocol
+    output
+
+Jason A. Donenfeld (5):
+  random: add back async readiness notifier
+  vsprintf: initialize siphash key using notifier
+  efi: stub: use random seed from EFI variable
+  efi: efivarfs: prohibit reading random seed variables
+  efi: refresh non-volatile random seed when RNG is initialized
+
+ drivers/char/random.c                  | 30 +++++++++
+ drivers/firmware/efi/efi.c             | 14 +++++
+ drivers/firmware/efi/libstub/efistub.h |  2 +
+ drivers/firmware/efi/libstub/random.c  | 85 +++++++++++++++++++++++---
+ fs/efivarfs/file.c                     |  3 +
+ include/linux/efi.h                    |  3 +-
+ include/linux/random.h                 |  1 +
+ lib/vsprintf.c                         | 14 ++---
+ 8 files changed, 131 insertions(+), 21 deletions(-)
+
+-- 
+2.38.1
+
