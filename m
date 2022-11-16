@@ -2,46 +2,49 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6B0662C3CC
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Nov 2022 17:17:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91FCC62C3D1
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Nov 2022 17:17:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234127AbiKPQRV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 16 Nov 2022 11:17:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53970 "EHLO
+        id S232671AbiKPQRY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 16 Nov 2022 11:17:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234776AbiKPQRB (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 16 Nov 2022 11:17:01 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B303E57B7C;
-        Wed, 16 Nov 2022 08:16:59 -0800 (PST)
+        with ESMTP id S234848AbiKPQRE (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 16 Nov 2022 11:17:04 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DAD057B4F;
+        Wed, 16 Nov 2022 08:17:02 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6A3AFB81DE0;
-        Wed, 16 Nov 2022 16:16:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708CFC433C1;
-        Wed, 16 Nov 2022 16:16:56 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 507A5B81DD9;
+        Wed, 16 Nov 2022 16:17:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59EDDC433C1;
+        Wed, 16 Nov 2022 16:16:59 +0000 (UTC)
 Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="L3qpjO+h"
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="mHUvawIZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1668615414;
+        t=1668615418;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=7081WT2vIv2P593Em1s6an5/PNnBOO7eRlHKQoDe8bM=;
-        b=L3qpjO+hA//nPICVxX6CEoFke5uoMjJPXe77EoYqr8paiIG2qZARvNIxdH2kXppvCokuzO
-        t3D6umAOT59195cQnZ3y3NYCT5LrvJad7gpDHbq++Zip2Bwpyu57wXsHEEQm0dbhOHsF/4
-        mIOkuGtdbh1b0ZOpC3kGn4b1D8KxeoQ=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id d4ea79a6 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Wed, 16 Nov 2022 16:16:53 +0000 (UTC)
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=W1wAtKaY05W2lIvCkJNGSoOGC/DQ2aQIlUV6cSqpewY=;
+        b=mHUvawIZManIDNWJYkDAZ1LyUU64eJuoithPe85vkWTE8glRz2J/80l6AjIgn+rpBYe/dW
+        VOFfazhVy5argg5xGDFuAYRISePB5qvxVEFpQgS5cmA6mwErH/Jp9kSSlhm8WpsZv8GEC7
+        jesrA94tBbgHa+1qpqrzQ0zEQElW6DM=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id b05e0581 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+        Wed, 16 Nov 2022 16:16:57 +0000 (UTC)
 From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
 To:     linux-efi@vger.kernel.org, linux-crypto@vger.kernel.org
 Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
         Ard Biesheuvel <ardb@kernel.org>,
         Lennart Poettering <lennart@poettering.net>
-Subject: [PATCH RFC v1 0/6] Use EFI variables for random seed
-Date:   Wed, 16 Nov 2022 17:16:36 +0100
-Message-Id: <20221116161642.1670235-1-Jason@zx2c4.com>
+Subject: [PATCH RFC v1 1/6] random: add back async readiness notifier
+Date:   Wed, 16 Nov 2022 17:16:37 +0100
+Message-Id: <20221116161642.1670235-2-Jason@zx2c4.com>
+In-Reply-To: <20221116161642.1670235-1-Jason@zx2c4.com>
+References: <20221116161642.1670235-1-Jason@zx2c4.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -54,62 +57,82 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This is a rough sketch of a proposal to use non-volatile EFI variables
-as random seeds for EFISTUB to manage.
+This is required by vsprint, because it can't do things synchronously
+from hardirq context, and it will be useful for an EFI notifier as well.
 
-Patch 1 adds (back) the random.c async notifier, so we can learn when
-the RNG is initialized.
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+---
+ drivers/char/random.c  | 30 ++++++++++++++++++++++++++++++
+ include/linux/random.h |  1 +
+ 2 files changed, 31 insertions(+)
 
-Patch 2 uses it in vsprintf, because I promised Sebastian we'd do that
-if it ever gets added back for whatever reason.
-
-Patch 3 is already in efi.git and isn't new here, but is a pre-req for
-the next patch.
-
-Patch 4 uses the random seed from an EFI variable to pass to Linux.
-
-Patch 5 prevents the variable from being read by efivarfs. [Note:
-probably the legacy efifs needs updating too? Or has this been removed?]
-
-Patch 6 uses patch 1 to refresh the EFI variable when the RNG is
-initialized.
-
-If folks like this idea and it moves forward, 1,2,6 will be taken into
-my tree, and 3,4,5 will go via Ard's.
-
-Commit messages are rather sparse at the moment. I'll fill those out for
-the next non-RFC patchset if this idea isn't immediately demolished.
-
-The biggest consideration is wear leveling on the EFI variable flash
-chips. However, EFI *already* winds up writing to non-volatile memory on
-every single boot anyway, so maybe it's not actually a big deal?
-
-Thoughts?
-
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Lennart Poettering <lennart@poettering.net>
-
-Ard Biesheuvel (1):
-  efi: random: combine bootloader provided RNG seed with RNG protocol
-    output
-
-Jason A. Donenfeld (5):
-  random: add back async readiness notifier
-  vsprintf: initialize siphash key using notifier
-  efi: stub: use random seed from EFI variable
-  efi: efivarfs: prohibit reading random seed variables
-  efi: refresh non-volatile random seed when RNG is initialized
-
- drivers/char/random.c                  | 30 +++++++++
- drivers/firmware/efi/efi.c             | 14 +++++
- drivers/firmware/efi/libstub/efistub.h |  2 +
- drivers/firmware/efi/libstub/random.c  | 85 +++++++++++++++++++++++---
- fs/efivarfs/file.c                     |  3 +
- include/linux/efi.h                    |  3 +-
- include/linux/random.h                 |  1 +
- lib/vsprintf.c                         | 14 ++---
- 8 files changed, 131 insertions(+), 21 deletions(-)
-
+diff --git a/drivers/char/random.c b/drivers/char/random.c
+index 6b7aca683b81..b3cad16ec567 100644
+--- a/drivers/char/random.c
++++ b/drivers/char/random.c
+@@ -84,6 +84,8 @@ static DEFINE_STATIC_KEY_FALSE(crng_is_ready);
+ /* Various types of waiters for crng_init->CRNG_READY transition. */
+ static DECLARE_WAIT_QUEUE_HEAD(crng_init_wait);
+ static struct fasync_struct *fasync;
++static DEFINE_SPINLOCK(random_ready_chain_lock);
++static RAW_NOTIFIER_HEAD(random_ready_chain);
+ 
+ /* Control how we warn userspace. */
+ static struct ratelimit_state urandom_warning =
+@@ -140,6 +142,33 @@ int wait_for_random_bytes(void)
+ }
+ EXPORT_SYMBOL(wait_for_random_bytes);
+ 
++/*
++ * Add a callback function that will be invoked when the crng is initialised,
++ * or immediately if it already has been.
++ */
++int __cold notify_on_rng_initialized(struct notifier_block *nb)
++{
++	unsigned long flags;
++	int ret = 0;
++
++	spin_lock_irqsave(&random_ready_chain_lock, flags);
++	if (crng_ready())
++		nb->notifier_call(nb, 0, NULL);
++	else
++		ret = raw_notifier_chain_register(&random_ready_chain, nb);
++	spin_unlock_irqrestore(&random_ready_chain_lock, flags);
++	return ret;
++}
++
++static void __cold process_random_ready_list(void)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&random_ready_chain_lock, flags);
++	raw_notifier_call_chain(&random_ready_chain, 0, NULL);
++	spin_unlock_irqrestore(&random_ready_chain_lock, flags);
++}
++
+ #define warn_unseeded_randomness() \
+ 	if (IS_ENABLED(CONFIG_WARN_ALL_UNSEEDED_RANDOM) && !crng_ready()) \
+ 		printk_deferred(KERN_NOTICE "random: %s called from %pS with crng_init=%d\n", \
+@@ -685,6 +714,7 @@ static void __cold _credit_init_bits(size_t bits)
+ 		crng_reseed(); /* Sets crng_init to CRNG_READY under base_crng.lock. */
+ 		if (static_key_initialized)
+ 			execute_in_process_context(crng_set_ready, &set_ready);
++		process_random_ready_list();
+ 		wake_up_interruptible(&crng_init_wait);
+ 		kill_fasync(&fasync, SIGIO, POLL_IN);
+ 		pr_notice("crng init done\n");
+diff --git a/include/linux/random.h b/include/linux/random.h
+index acaa328fb34d..566ffc3ab80d 100644
+--- a/include/linux/random.h
++++ b/include/linux/random.h
+@@ -119,6 +119,7 @@ void __init random_init_early(const char *command_line);
+ void __init random_init(void);
+ bool rng_is_initialized(void);
+ int wait_for_random_bytes(void);
++int notify_on_rng_initialized(struct notifier_block *nb);
+ 
+ /* Calls wait_for_random_bytes() and then calls get_random_bytes(buf, nbytes).
+  * Returns the result of the call to wait_for_random_bytes. */
 -- 
 2.38.1
 
