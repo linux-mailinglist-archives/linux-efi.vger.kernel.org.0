@@ -2,103 +2,88 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9D0962C422
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Nov 2022 17:23:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 418C562C5E3
+	for <lists+linux-efi@lfdr.de>; Wed, 16 Nov 2022 18:06:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238416AbiKPQXK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 16 Nov 2022 11:23:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58686 "EHLO
+        id S234720AbiKPRGZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 16 Nov 2022 12:06:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234873AbiKPQWi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 16 Nov 2022 11:22:38 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A837B4AF0F;
-        Wed, 16 Nov 2022 08:22:09 -0800 (PST)
-From:   John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1668615728;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pnYsucPfrpcazGqKeRJP+E7nPSCgbYv1OZ+fSFJF3FE=;
-        b=Mij3VvRC/6EFTcGjMoRfMHKmgufFADNOVvPxUDDVOOSOrPddxUf/MjL2jIte04n+xoT2hr
-        91sUQeFxNGfr+TLQTWsfBfqspOt9n255fq7uCyNxCtf0H/QmixcO5zuiecKTJ3HQk8EGPB
-        unRmNVM+bEFHt6BoKHxnkKeoU7Etnpubat9VOidw3dLcm2+nPy7+2Cr+fSr0huD9IC4zh+
-        8Otv988TZ1oHvi2a69DyX5RNZMMV2/uuj2Lf0QofQOj5pJKVcTjQOkAZvEIcREllQs2jcf
-        P12Ld2nSBgsjL9MKh+b3ogWx23jDl8wStPXMiAee30DgS5qWmgh+dzU9u8vmjA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1668615728;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pnYsucPfrpcazGqKeRJP+E7nPSCgbYv1OZ+fSFJF3FE=;
-        b=rPN9XGHVg2e7lvGMMTXZazg1MjVG50yjAsBuQPQhCpeWSPiuq/4enuNAqKmPa7UzDRTB0I
-        9YoMKvyB5Px6vWCQ==
-To:     Petr Mladek <pmladek@suse.com>
-Cc:     Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi@vger.kernel.org
-Subject: [PATCH printk v5 24/40] efi: earlycon: use console_is_registered()
-Date:   Wed, 16 Nov 2022 17:27:36 +0106
-Message-Id: <20221116162152.193147-25-john.ogness@linutronix.de>
-In-Reply-To: <20221116162152.193147-1-john.ogness@linutronix.de>
-References: <20221116162152.193147-1-john.ogness@linutronix.de>
+        with ESMTP id S234873AbiKPRGH (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 16 Nov 2022 12:06:07 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49B9B59863;
+        Wed, 16 Nov 2022 09:05:04 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CA7F061EF8;
+        Wed, 16 Nov 2022 17:05:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28720C433C1;
+        Wed, 16 Nov 2022 17:05:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1668618303;
+        bh=H4TU2MseEDfh27pYoEWcB2Ezu9/ASv5smgrOn2XF3tE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=tHv2X2k0ksEuqCRCseCqNMS9aCodgXOr1vTbqO+CqVMA55fypP+SmYdS6fmGYmoB3
+         j+zlsb2ipPAZQ0BZda6RYa5RV/IHaXtBF4/UAF1+lfOnyPcO5MzWV7Dk2YcsNz1LkO
+         tCF6eXwYIWgKBFWU6/9KXKNzCVNUHALGHldgZzSahNByveO5dbIWdTfBM0QJrTH1A6
+         /hNbycj7SWszAYQ1xRq54cOb1nl9qfY36MdTasxqm5yOETtlBjjcBpo8Jv2NGXvay8
+         g8eG5Mk+pBexlIlvMOh8NcY2RHsPiIggRpyH06T00QIZxO9OZE+I1ivhaRnjOf4wpI
+         zfEaUvNYJAiwQ==
+Received: by mail-lj1-f181.google.com with SMTP id k19so22636128lji.2;
+        Wed, 16 Nov 2022 09:05:03 -0800 (PST)
+X-Gm-Message-State: ANoB5plk0lAZrvXbhj+6ukqMbnpqAMOo8qSo3NWK0wpaDnclM4gFN6U7
+        DEOog0Gw6WGvOT34+HsXPQzmglj9N6NG4vfaci0=
+X-Google-Smtp-Source: AA0mqf5xh8m9Bv/UfjWc5X505gLwlkjRl0nVJGvSgZjpMZDbRH3a6iNVW97ddntNp18YVlNk+2SekMyll25U84hqBas=
+X-Received: by 2002:a2e:9593:0:b0:277:2428:3682 with SMTP id
+ w19-20020a2e9593000000b0027724283682mr8713902ljh.291.1668618301194; Wed, 16
+ Nov 2022 09:05:01 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,INVALID_DATE_TZ_ABSURD,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20221116161642.1670235-1-Jason@zx2c4.com> <20221116161642.1670235-6-Jason@zx2c4.com>
+In-Reply-To: <20221116161642.1670235-6-Jason@zx2c4.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 16 Nov 2022 18:04:50 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHZ60DCz6zgOqfQ-jBEuhc3XwvhieNbJUCY40hdEWt9CQ@mail.gmail.com>
+Message-ID: <CAMj1kXHZ60DCz6zgOqfQ-jBEuhc3XwvhieNbJUCY40hdEWt9CQ@mail.gmail.com>
+Subject: Re: [PATCH RFC v1 5/6] efi: efivarfs: prohibit reading random seed variables
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc:     linux-efi@vger.kernel.org, linux-crypto@vger.kernel.org,
+        Lennart Poettering <lennart@poettering.net>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The CON_ENABLED status of a console is a runtime setting that does not
-involve the console driver. Drivers must not assume that if the console
-is disabled then proper hardware management is not needed. For the EFI
-earlycon case, it is about remapping/unmapping memory for the
-framebuffer.
+On Wed, 16 Nov 2022 at 17:17, Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+>
+> Variables in the random seed GUID must remain secret, so deny all reads
+> to them.
+>
+> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+> ---
+>  fs/efivarfs/file.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/fs/efivarfs/file.c b/fs/efivarfs/file.c
+> index d57ee15874f9..08996ba3a373 100644
+> --- a/fs/efivarfs/file.c
+> +++ b/fs/efivarfs/file.c
+> @@ -76,6 +76,9 @@ static ssize_t efivarfs_file_read(struct file *file, char __user *userbuf,
+>         while (!__ratelimit(&file->f_cred->user->ratelimit))
+>                 msleep(50);
+>
+> +       if (guid_equal(&var->var.VendorGuid, &LINUX_EFI_RANDOM_SEED_TABLE_GUID))
+> +               return -EPERM;
+> +
+>         err = efivar_entry_size(var, &datasize);
+>
+>         /*
 
-Use console_is_registered() instead of checking CON_ENABLED.
-
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
----
- drivers/firmware/efi/earlycon.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/firmware/efi/earlycon.c b/drivers/firmware/efi/earlycon.c
-index a52236e11e5f..4d6c5327471a 100644
---- a/drivers/firmware/efi/earlycon.c
-+++ b/drivers/firmware/efi/earlycon.c
-@@ -29,8 +29,8 @@ static void *efi_fb;
-  */
- static int __init efi_earlycon_remap_fb(void)
- {
--	/* bail if there is no bootconsole or it has been disabled already */
--	if (!earlycon_console || !(earlycon_console->flags & CON_ENABLED))
-+	/* bail if there is no bootconsole or it was unregistered already */
-+	if (!earlycon_console || !console_is_registered(earlycon_console))
- 		return 0;
- 
- 	efi_fb = memremap(fb_base, screen_info.lfb_size,
-@@ -42,8 +42,8 @@ early_initcall(efi_earlycon_remap_fb);
- 
- static int __init efi_earlycon_unmap_fb(void)
- {
--	/* unmap the bootconsole fb unless keep_bootcon has left it enabled */
--	if (efi_fb && !(earlycon_console->flags & CON_ENABLED))
-+	/* unmap the bootconsole fb unless keep_bootcon left it registered */
-+	if (efi_fb && !console_is_registered(earlycon_console))
- 		memunmap(efi_fb);
- 	return 0;
- }
--- 
-2.30.2
-
+I'd prefer it if we could just disregard them entirely, i.e., never
+enumerate them so that they don't appear in the file system.
