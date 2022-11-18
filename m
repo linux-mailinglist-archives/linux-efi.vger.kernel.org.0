@@ -2,115 +2,91 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60CF562F87C
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Nov 2022 15:56:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2299862FA9A
+	for <lists+linux-efi@lfdr.de>; Fri, 18 Nov 2022 17:44:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242036AbiKRO4e (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 18 Nov 2022 09:56:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53970 "EHLO
+        id S242225AbiKRQo2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 18 Nov 2022 11:44:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242023AbiKROzz (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Nov 2022 09:55:55 -0500
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CDB390397;
-        Fri, 18 Nov 2022 06:55:31 -0800 (PST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id A1D8221FB8;
-        Fri, 18 Nov 2022 14:55:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1668783329; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=RcWbup5BnnjHzEPpsHQeQ/9zmfC/ktCQBWDNShm4WAU=;
-        b=EDb4yO6yUhovxR1R/uuiYft78ukr2h+oU+IjaIre1crSLD6FqDa7tOBl7T9GdFyjImWzLl
-        fuZVE7BJe7raqlKMXUK6GnRr1NqEKply8FF3aod58x9Whn9xAOWMtUkNgxO/GnqpzSdULK
-        TFzAN6y09Rae96AY+OVlAOuIn3VhXg8=
-Received: from suse.cz (unknown [10.100.201.202])
+        with ESMTP id S241647AbiKRQo2 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Nov 2022 11:44:28 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF5DF14080;
+        Fri, 18 Nov 2022 08:44:25 -0800 (PST)
+Received: from zn.tnic (p200300ea9733e767329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e767:329c:23ff:fea6:a903])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 093D42C141;
-        Fri, 18 Nov 2022 14:55:28 +0000 (UTC)
-Date:   Fri, 18 Nov 2022 15:55:27 +0100
-From:   Petr Mladek <pmladek@suse.com>
-To:     John Ogness <john.ogness@linutronix.de>
-Cc:     Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5DCDF1EC05DD;
+        Fri, 18 Nov 2022 17:44:24 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1668789864;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=vXBGlFZAui3ZpQP37+GpYQWkbrvn/6/DDXXoJBl5Vyw=;
+        b=bDROuXKWw1CYUBGZIYncsZdFd2BmdxgH6bj1Ur1M7aoiPMadLEOtbPmA7aRrvdbp+TyhEa
+        UXJAPn/QPvi5s1bw4irROO49ezs+7PL3KmzLwFFeOuyJJg+xGIMx3RlY0AhCe6IOlCZr2Y
+        a3gjpdpF8P0ijvAernuQICt6qLyP17I=
+Date:   Fri, 18 Nov 2022 17:44:20 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org,
-        Jason Wessel <jason.wessel@windriver.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        kgdb-bugreport@lists.sourceforge.net, linux-serial@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Aaron Tomlin <atomlin@redhat.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-m68k@lists.linux-m68k.org, Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org,
-        Michal Simek <michal.simek@xilinx.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Mathias Nyman <mathias.nyman@linux.intel.com>,
-        linux-usb@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        Helge Deller <deller@gmx.de>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Tom Rix <trix@redhat.com>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH printk v5 00/40] reduce console_lock scope
-Message-ID: <Y3ec3/fpdAQacAOW@alley>
-References: <20221116162152.193147-1-john.ogness@linutronix.de>
- <Y3drEOkD1fuZcvV2@alley>
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Michael Roth <michael.roth@amd.com>
+Subject: Re: [PATCH v2 11/16] x86/compressed: move startup32_load_idt() into
+ .text section
+Message-ID: <Y3e2ZMh5TlfuqreF@zn.tnic>
+References: <20220921145422.437618-1-ardb@kernel.org>
+ <20220921145422.437618-12-ardb@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Y3drEOkD1fuZcvV2@alley>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20220921145422.437618-12-ardb@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri 2022-11-18 12:22:58, Petr Mladek wrote:
-> On Wed 2022-11-16 17:27:12, John Ogness wrote:
-> > This is v5 of a series to prepare for threaded/atomic
-> > printing. v4 is here [0]. This series focuses on reducing the
-> > scope of the BKL console_lock. It achieves this by switching to
-> > SRCU and a dedicated mutex for console list iteration and
-> > modification, respectively. The console_lock will no longer
-> > offer this protection.
+On Wed, Sep 21, 2022 at 04:54:17PM +0200, Ard Biesheuvel wrote:
+> Convert startup32_load_idt() into an ordinary function and move it into
+> the .text section. This involves turning the rva() immediates into ones
+> derived from a local label, and preserving/restoring the %ebp and %ebx
+> as per the calling convention.
 > 
-> The patchset looks ready for linux-next from my POV.
-> 
-> I am going to push it there right now to get as much testing
-> as possible before the merge window.
+> Also move the #ifdef to the only existing call site. This makes it clear
+> that the function call does nothing if support for memory encryption is
+> not compiled in.
 
-JFYI, the patchset is committed in printk/linux.git,
-branch rework/console-list-lock.
+I'm not crazy about all that ifdeffery in there but this will need a
+serious look.
 
-I'll eventually merge it into rework/kthreads. But I wanted to have
-it separated until it gets some more testing in linux-next and
-eventually some more review.
+Btw, you can drop one, diff ontop:
 
-Best Regards,
-Petr
+---
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index bc5bd639217e..a862fd8ac0bd 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -726,9 +726,7 @@ SYM_DATA_START(boot32_idt)
+ 	.quad 0
+ 	.endr
+ SYM_DATA_END_LABEL(boot32_idt, SYM_L_GLOBAL, boot32_idt_end)
+-#endif
+ 
+-#ifdef CONFIG_AMD_MEM_ENCRYPT
+ 	.text
+ 	.code32
+ /*
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
