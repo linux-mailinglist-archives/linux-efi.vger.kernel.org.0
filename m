@@ -2,55 +2,55 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69F8062EFC1
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Nov 2022 09:40:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17BFB62F1D4
+	for <lists+linux-efi@lfdr.de>; Fri, 18 Nov 2022 10:51:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241082AbiKRIk1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 18 Nov 2022 03:40:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60412 "EHLO
+        id S235150AbiKRJvG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 18 Nov 2022 04:51:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241227AbiKRIkH (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Nov 2022 03:40:07 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9102AE0F7;
-        Fri, 18 Nov 2022 00:39:54 -0800 (PST)
+        with ESMTP id S241311AbiKRJvF (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Nov 2022 04:51:05 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86CBF2D7
+        for <linux-efi@vger.kernel.org>; Fri, 18 Nov 2022 01:51:03 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D46C6238C;
-        Fri, 18 Nov 2022 08:39:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D200C433D7;
-        Fri, 18 Nov 2022 08:39:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 20909623DB
+        for <linux-efi@vger.kernel.org>; Fri, 18 Nov 2022 09:51:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A38C43470
+        for <linux-efi@vger.kernel.org>; Fri, 18 Nov 2022 09:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668760793;
-        bh=0ho9HeENCwTxJiNWvhHjQkHcio/HQKeJG5c6zaF4b7o=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=HtsSVVxEs9gUort0xR+4mCc2gQq+L+p18ivRxMcIJIFMQP3E+KcQ8J6LqsdOEN3jZ
-         i3xpYD3eUjauYrDuiVtgOs1MNGpRxe7WbYh20SU/C4ZBMnmz2WeX7on1Z33SOGRbQb
-         qAkdPRXTsZiPOK3zxn8dPmeVluh0zTTjZ5vmOcfn06lfpq0bSlWYz8fDVJn6GyRtAQ
-         mcsZ92CYyCS49O9q1lsWBvfrM3NYMvLA0cEElLHtTMj7OKndzQfbJECUDkmKttGO9n
-         gE9IzSoIEc1ugQnSU7I/B4AQ8sUF1kE3Fx1LXHLbziyvvqVRwPO9e9721NdqKud0lD
-         WLQupgVuOncFQ==
-Received: by mail-ej1-f52.google.com with SMTP id ft34so11223026ejc.12;
-        Fri, 18 Nov 2022 00:39:53 -0800 (PST)
-X-Gm-Message-State: ANoB5pllqy0yBQaJvBPztxlLCL763zun/cachqYK3uaO3BRP9aHZFkEI
-        PTRrkm4iOJfEbmPEUDTRqMo6HLjZtKpxHShKZMA=
-X-Google-Smtp-Source: AA0mqf5sHRaE85vQdNRNsYQf0I8Pa3DUcGnsBj6zsfcQQbTJCxCIhzNYrqerG4UB/xQ/pdqBwSRH93ilA3Ks4sWGDrU=
-X-Received: by 2002:a17:906:8994:b0:7ae:ea4:583c with SMTP id
- gg20-20020a170906899400b007ae0ea4583cmr5048018ejc.587.1668760791747; Fri, 18
- Nov 2022 00:39:51 -0800 (PST)
+        s=k20201202; t=1668765062;
+        bh=n/nGaPUKKquVXIhh+6sLM6/p00iyOlkoI1sNUDeyuQs=;
+        h=References:In-Reply-To:From:Date:Subject:To:From;
+        b=eWjVhcODDTPuCqUr4FXL0uflP6HNju/PjldI9C+IdLbwc/CXY2ylAy0fXIYuAg1Ct
+         oo8sZOsxDDFZQJiwGkFOeLPdq0yGvj8L554GEvi8EfaYX85oSqy8O8HsjsVe9CUpGj
+         iybKQ3K6zyvFofCGCFC6Bsxn2uLSAeaC1lQCee978T7ANtGEfXTBb8sHVqxuvpBrq4
+         PzTWXoSU913KRJqUggTCLmsWyv0OBPaqwWbu8itlDNi8fmuO2d+OWKN831XNMrWbZ5
+         RpTsq7gRblaj95/85q2byWnGbBTrhfF3VxhpGz85k7vrED6lptQRyIFiVGqqAZQKJG
+         +2VO4px5YVKjw==
+Received: by mail-lf1-f53.google.com with SMTP id r12so7395535lfp.1
+        for <linux-efi@vger.kernel.org>; Fri, 18 Nov 2022 01:51:02 -0800 (PST)
+X-Gm-Message-State: ANoB5png3KGxmWQF84G5ijZuCkPRLQAfVaNFhA+eYFCJdFEkVs8Lqujk
+        nWaq3ewmiSr1AVCET57h3gYPoDevxtfCSDLkZcY=
+X-Google-Smtp-Source: AA0mqf7FA/eIi+WI7Ruhu1z19deHn3VaAeNoNpurFgP04V//ggc9kn1AD/GsUQPvHKP+9FfuVxZ0XZIA4pX00CSS6JU=
+X-Received: by 2002:ac2:5ec9:0:b0:4a2:2aad:95c4 with SMTP id
+ d9-20020ac25ec9000000b004a22aad95c4mr2531540lfq.110.1668765060389; Fri, 18
+ Nov 2022 01:51:00 -0800 (PST)
 MIME-Version: 1.0
-References: <Y3WA2BU0vtsOu6pJ@zx2c4.com> <20221117003915.2092851-1-Jason@zx2c4.com>
-In-Reply-To: <20221117003915.2092851-1-Jason@zx2c4.com>
+References: <5877854.lOV4Wx5bFT@big>
+In-Reply-To: <5877854.lOV4Wx5bFT@big>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 18 Nov 2022 09:39:39 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHpOFOu9AywZJXVk-pL_Er7RbB1V2bV2t1dt7oB+iU3=g@mail.gmail.com>
-Message-ID: <CAMj1kXHpOFOu9AywZJXVk-pL_Er7RbB1V2bV2t1dt7oB+iU3=g@mail.gmail.com>
-Subject: Re: [PATCH v2] efi: random: zero out secret after use and do not take minimum
-To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc:     linux-efi@vger.kernel.org, stable@vger.kernel.org,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date:   Fri, 18 Nov 2022 10:50:49 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXG9HRWDoW66rVBCNX_jfu+Od9vQdPxphKh94fWkEfYBdA@mail.gmail.com>
+Message-ID: <CAMj1kXG9HRWDoW66rVBCNX_jfu+Od9vQdPxphKh94fWkEfYBdA@mail.gmail.com>
+Subject: Re: Efi-stub-kernel with embedded initramfs does not boot
+To:     =?UTF-8?Q?Peter_B=C3=B6hm?= <peter.bo@web.de>,
+        linux-efi <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -60,50 +60,79 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 17 Nov 2022 at 01:39, Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+On Tue, 15 Nov 2022 at 15:34, Peter B=C3=B6hm <peter.bo@web.de> wrote:
 >
-> Taking the minimum is wrong, if the bootloader or EFI stub is actually
-> passing on a bunch of bytes that it expects the kernel to hash itself.
-> Ideally, a bootloader will hash it for us, but STUB won't do that, so we
-> should map all the bytes. Also, all those bytes must be zeroed out after
-> use to preserve forward secrecy.
+> Dear Ard Biesheuvel,
 >
-> Fixes: 161a438d730d ("efi: random: reduce seed size to 32 bytes")
-> Cc: stable@vger.kernel.org # v4.14+
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-> ---
-> Changes v1->v2:
-> - Cap size to 1k.
->  drivers/firmware/efi/efi.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> this is my first kernel bug report ever (and I am not a native english
+> speaker), please be patient with me ;-)
 >
 
-Thanks. I'll just incorporate this into the patch that does the
-concatenation of seeds in the stub, which is queued up for v6.2
+Hello Peter,
 
-> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index a46df5d1d094..c7c7178902c2 100644
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
-> @@ -611,7 +611,7 @@ int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
+Thanks for the report.
+
+> I have read
+> https://www.kernel.org/doc/html/latest/admin-guide/reporting-issues.html
+> and found your email address here:
+> https://www.kernel.org/doc/html/latest/process/maintainers.html#maintaine=
+rs
 >
->                 seed = early_memremap(efi_rng_seed, sizeof(*seed));
->                 if (seed != NULL) {
-> -                       size = min(seed->size, EFI_RANDOM_SEED_SIZE);
-> +                       size = min_t(u32, SZ_1K, seed->size);
->                         early_memunmap(seed, sizeof(*seed));
->                 } else {
->                         pr_err("Could not map UEFI random seed!\n");
-> @@ -622,6 +622,7 @@ int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
->                         if (seed != NULL) {
->                                 pr_notice("seeding entropy pool\n");
->                                 add_bootloader_randomness(seed->bits, size);
-> +                               memzero_explicit(seed->bits, size);
->                                 early_memunmap(seed, sizeof(*seed) + size);
->                         } else {
->                                 pr_err("Could not map UEFI random seed!\n");
-> --
-> 2.38.1
+> I configure my kernels since 20 years but I am not a kernel hacker. I hav=
+e a
+> working LTS kernel (5.15.78) in a Gentoo system.
 >
+
+So if I am understanding this correctly, you are reporting that the
+config below simply does not work at all, and this 5.15 kernel does
+not use a built-in initramfs, right? Or did something get broken after
+5.15 was released?
+
+>
+> A) Bug Summary:
+>
+> Kbuild allows me to add an embedded (=3Dbuilt-in) initramfs to my working=
+ efi-
+> stub-kernel (signed because of secureboot). This combination does not boo=
+t:
+> BIOS boot screen starts with: "EFI Stub: UEFI Secure Boot is enabled"; th=
+en
+> blank screen; then two beeps; then trying to boot again; endless loop can=
+ only
+> be stopped by pressing <F12> and entering UEFI BIOS (and selecting a work=
+ing
+> kernel).
+>
+> Note: Kernel builds without any error message (of course I have beside th=
+e
+> initramfs_list also a init in /usr/src/initramfs)
+>
+
+How much does the size of the bzImage increase due to the initramfs
+being incorporated? Given the below, it should be tiny, right?
+
+
+>
+> B) Difference between working kernel and failed:
+>
+> CONFIG_BLK_DEV_INITRD=3Dy
+> CONFIG_INITRAMFS_SOURCE=3D"/usr/src/initramfs/initramfs_list"
+> CONFIG_INITRAMFS_ROOT_UID=3D0
+> CONFIG_INITRAMFS_ROOT_GID=3D0
+> CONFIG_RD_GZIP=3Dy
+> CONFIG_INITRAMFS_COMPRESSION_GZIP=3Dy
+>
+> I also know a solution called "UKI" (unified kernel image) in other
+> distributions; but why building such scrap if my beloved kernel has all
+> necessary pieces also ? Kernel hast efi-stub, built-in kernel command lin=
+e and
+> embedded initramfs ...
+>
+
+Agreed. You shouldn't need UKI for this.
+
+However, I tested this locally with a rootfs.cpio file I use for
+testing, and it happily boots in EFI mode and going through the stub
+etc.
+
+Can you check and see if earlycon=3Defifb produces some more output?
