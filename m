@@ -2,110 +2,83 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C990462F39E
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Nov 2022 12:24:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A091262F636
+	for <lists+linux-efi@lfdr.de>; Fri, 18 Nov 2022 14:33:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241766AbiKRLYT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 18 Nov 2022 06:24:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56540 "EHLO
+        id S242136AbiKRNdw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 18 Nov 2022 08:33:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241749AbiKRLXd (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Nov 2022 06:23:33 -0500
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3CC58C7B5;
-        Fri, 18 Nov 2022 03:22:59 -0800 (PST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 24094224B6;
-        Fri, 18 Nov 2022 11:22:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1668770578; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=8+Mt338auMAPyZ6wHbrxbwJ1oWL2/y5Lq8MjJbkctG8=;
-        b=Mqsids9jdixeoyQ3eEblSjOT6qn2nKBBxnXO4YIV6MczkJIueBfOWf5IH+Qgu5GEThrRT6
-        hSgJwbIBgcAARZnSZqZlRalEkqp3F27xcCibtgAVfz9XkwKNyhdLPpWTxITfMMyrMmaYir
-        bQTfFlUi5/jqo+/cVb1R0youfVPvkVY=
-Received: from suse.cz (unknown [10.100.201.202])
+        with ESMTP id S242089AbiKRNcx (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Nov 2022 08:32:53 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1758D8E096;
+        Fri, 18 Nov 2022 05:32:52 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 871B52C141;
-        Fri, 18 Nov 2022 11:22:56 +0000 (UTC)
-Date:   Fri, 18 Nov 2022 12:22:56 +0100
-From:   Petr Mladek <pmladek@suse.com>
-To:     John Ogness <john.ogness@linutronix.de>
-Cc:     Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org,
-        Jason Wessel <jason.wessel@windriver.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        kgdb-bugreport@lists.sourceforge.net, linux-serial@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Aaron Tomlin <atomlin@redhat.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-m68k@lists.linux-m68k.org, Ard Biesheuvel <ardb@kernel.org>,
-        linux-efi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org,
-        Michal Simek <michal.simek@xilinx.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Mathias Nyman <mathias.nyman@linux.intel.com>,
-        linux-usb@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        Helge Deller <deller@gmx.de>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Tom Rix <trix@redhat.com>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH printk v5 00/40] reduce console_lock scope
-Message-ID: <Y3drEOkD1fuZcvV2@alley>
-References: <20221116162152.193147-1-john.ogness@linutronix.de>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A2FD962523;
+        Fri, 18 Nov 2022 13:32:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544B8C433D6;
+        Fri, 18 Nov 2022 13:32:50 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="ng/ljxGR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1668778367;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=3Ba13+GXNlXQlY1symDczyowf433BVf2HSRAdnZzlc4=;
+        b=ng/ljxGRlpcuw9DqCA97Oz3sebyeBFvUG8S3UKc3PkFP1PzUXoxGvJRo9kaeKK2JhYdjWm
+        IIgbxvs28YuvF+Nn3POdhmOCZH9LJu3skNDIusTVmq/IC6UBU+bFius9IEkVDTkztbFHh2
+        GTP3jTX7HfYUb9mkW3YoddC5xzf0r2o=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id b8685e6e (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+        Fri, 18 Nov 2022 13:32:47 +0000 (UTC)
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+To:     linux-efi@vger.kernel.org, linux-crypto@vger.kernel.org,
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>
+Subject: [PATCH v2 0/5] Use EFI variables for random seed
+Date:   Fri, 18 Nov 2022 14:32:34 +0100
+Message-Id: <20221118133239.2515648-1-Jason@zx2c4.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221116162152.193147-1-john.ogness@linutronix.de>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed 2022-11-16 17:27:12, John Ogness wrote:
-> This is v5 of a series to prepare for threaded/atomic
-> printing. v4 is here [0]. This series focuses on reducing the
-> scope of the BKL console_lock. It achieves this by switching to
-> SRCU and a dedicated mutex for console list iteration and
-> modification, respectively. The console_lock will no longer
-> offer this protection.
+EFI has a rather unique benefit that it has access to some limited
+non-volatile storage, where the kernel can store a random seed. This
+series wires that up, with EFISTUB reading the seed and passing it to
+the kernel, and with the kernel writing a new seed when the RNG is
+initialized.
 
-The patchset looks ready for linux-next from my POV.
+Patches 1 and 2 are to go through Ard's EFI tree, while patches 3, 4,
+and 5 are to go through my RNG tree.
 
-I am going to push it there right now to get as much testing
-as possible before the merge window.
+Jason A. Donenfeld (5):
+  efi: vars: prohibit reading random seed variables
+  efi: stub: use random seed from EFI variable
+  random: add back async readiness notifier
+  vsprintf: initialize siphash key using notifier
+  efi: random: refresh non-volatile random seed when RNG is initialized
 
-Any review and comments are still appreciate. We could always
-take it back if some critical problems are discovered and
-can't be solved easily.
+ drivers/char/random.c                 | 20 +++++++++
+ drivers/firmware/efi/efi.c            | 19 +++++++++
+ drivers/firmware/efi/libstub/random.c | 59 +++++++++++++++++++++------
+ fs/efivarfs/inode.c                   |  4 ++
+ fs/efivarfs/super.c                   |  3 ++
+ include/linux/efi.h                   |  1 +
+ include/linux/random.h                |  1 +
+ lib/vsprintf.c                        | 14 +++----
+ 8 files changed, 100 insertions(+), 21 deletions(-)
 
-Best Regards,
-Petr
+-- 
+2.38.1
+
