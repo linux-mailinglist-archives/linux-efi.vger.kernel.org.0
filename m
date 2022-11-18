@@ -2,90 +2,115 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5160262F71B
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Nov 2022 15:20:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60CF562F87C
+	for <lists+linux-efi@lfdr.de>; Fri, 18 Nov 2022 15:56:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242284AbiKROUX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 18 Nov 2022 09:20:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53882 "EHLO
+        id S242036AbiKRO4e (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 18 Nov 2022 09:56:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242268AbiKROUW (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Nov 2022 09:20:22 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3BB6F35;
-        Fri, 18 Nov 2022 06:20:19 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S242023AbiKROzz (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Nov 2022 09:55:55 -0500
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CDB390397;
+        Fri, 18 Nov 2022 06:55:31 -0800 (PST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out1.suse.de (Postfix) with ESMTP id A1D8221FB8;
+        Fri, 18 Nov 2022 14:55:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1668783329; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=RcWbup5BnnjHzEPpsHQeQ/9zmfC/ktCQBWDNShm4WAU=;
+        b=EDb4yO6yUhovxR1R/uuiYft78ukr2h+oU+IjaIre1crSLD6FqDa7tOBl7T9GdFyjImWzLl
+        fuZVE7BJe7raqlKMXUK6GnRr1NqEKply8FF3aod58x9Whn9xAOWMtUkNgxO/GnqpzSdULK
+        TFzAN6y09Rae96AY+OVlAOuIn3VhXg8=
+Received: from suse.cz (unknown [10.100.201.202])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8CFA5B823FD;
-        Fri, 18 Nov 2022 14:20:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBA2C433D6;
-        Fri, 18 Nov 2022 14:20:16 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="p40NF9Ef"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1668781214;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=VltvVNJPgF0epXga2UaZFcjhpjZH9fZKs1OjGrUkPR8=;
-        b=p40NF9EfwanauT72TJ+4xJBqE4xEdOlqG8AWouq8BIs+HgLR0XCfS/1ezUZCv+RLzrw8lZ
-        g1gGWPFzphMc4I1uW8b6iME97Hdlx1Gx/7aQPMDfvUqCeGecWgudNiK6cksFg81ybThF5E
-        zQkRzdZLKZ/OfCxwhCqKSg80eFsPBi0=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id d18f2dbc (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Fri, 18 Nov 2022 14:20:14 +0000 (UTC)
-Received: by mail-vs1-f42.google.com with SMTP id d185so4881354vsd.0;
-        Fri, 18 Nov 2022 06:20:14 -0800 (PST)
-X-Gm-Message-State: ANoB5pm9xaTPi9ZSP8vVqrMBzUylMi/Mu4qw37I/VWZkVoI6vAEFLm8Z
-        WczvlaSZ8Oj6sV9+KbbG9GZYDL4XPolhyYQlOLQ=
-X-Google-Smtp-Source: AA0mqf6nozL9K1B8kmagvKjPpB4NXAyDNN+NMXMLKL+46fYaNyrnWrU+pFlukaEUfG7iR9Zs6fcaF992xLqMxO92ChA=
-X-Received: by 2002:a67:1d41:0:b0:3aa:3310:174 with SMTP id
- d62-20020a671d41000000b003aa33100174mr4497136vsd.70.1668781213971; Fri, 18
- Nov 2022 06:20:13 -0800 (PST)
+        by relay2.suse.de (Postfix) with ESMTPS id 093D42C141;
+        Fri, 18 Nov 2022 14:55:28 +0000 (UTC)
+Date:   Fri, 18 Nov 2022 15:55:27 +0100
+From:   Petr Mladek <pmladek@suse.com>
+To:     John Ogness <john.ogness@linutronix.de>
+Cc:     Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel@vger.kernel.org,
+        Jason Wessel <jason.wessel@windriver.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        kgdb-bugreport@lists.sourceforge.net, linux-serial@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-um@lists.infradead.org, Aaron Tomlin <atomlin@redhat.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-m68k@lists.linux-m68k.org, Ard Biesheuvel <ardb@kernel.org>,
+        linux-efi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org,
+        Michal Simek <michal.simek@xilinx.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Mathias Nyman <mathias.nyman@linux.intel.com>,
+        linux-usb@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        Helge Deller <deller@gmx.de>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Juergen Gross <jgross@suse.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Tom Rix <trix@redhat.com>, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH printk v5 00/40] reduce console_lock scope
+Message-ID: <Y3ec3/fpdAQacAOW@alley>
+References: <20221116162152.193147-1-john.ogness@linutronix.de>
+ <Y3drEOkD1fuZcvV2@alley>
 MIME-Version: 1.0
-References: <20221116161642.1670235-1-Jason@zx2c4.com> <20221116161642.1670235-3-Jason@zx2c4.com>
- <Y3eT0fd/t270Qeaj@alley>
-In-Reply-To: <Y3eT0fd/t270Qeaj@alley>
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Fri, 18 Nov 2022 15:20:03 +0100
-X-Gmail-Original-Message-ID: <CAHmME9pdPCkk=yiT74QjxkgX7TH24-YVb-0NU-=D7WrP95NcEw@mail.gmail.com>
-Message-ID: <CAHmME9pdPCkk=yiT74QjxkgX7TH24-YVb-0NU-=D7WrP95NcEw@mail.gmail.com>
-Subject: Re: [PATCH RFC v1 2/6] vsprintf: initialize siphash key using notifier
-To:     Petr Mladek <pmladek@suse.com>
-Cc:     linux-efi@vger.kernel.org, linux-crypto@vger.kernel.org,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Lennart Poettering <lennart@poettering.net>,
-        Mike Galbraith <efault@gmx.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y3drEOkD1fuZcvV2@alley>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Nov 18, 2022 at 3:16 PM Petr Mladek <pmladek@suse.com> wrote:
-> > +     return 0;
->
-> I believe that we should rather return NOTIFY_DONE here.
-> It is rather a formal change. The value is 0 as well.
->
-> That said, I have never really understood the difference between
-> NOTIFY_OK and NOTIFY_DONE.
+On Fri 2022-11-18 12:22:58, Petr Mladek wrote:
+> On Wed 2022-11-16 17:27:12, John Ogness wrote:
+> > This is v5 of a series to prepare for threaded/atomic
+> > printing. v4 is here [0]. This series focuses on reducing the
+> > scope of the BKL console_lock. It achieves this by switching to
+> > SRCU and a dedicated mutex for console list iteration and
+> > modification, respectively. The console_lock will no longer
+> > offer this protection.
+> 
+> The patchset looks ready for linux-next from my POV.
+> 
+> I am going to push it there right now to get as much testing
+> as possible before the merge window.
 
-Ah yes, the varying degrees of apathy:
+JFYI, the patchset is committed in printk/linux.git,
+branch rework/console-list-lock.
 
-#define NOTIFY_DONE             0x0000          /* Don't care */
-#define NOTIFY_OK               0x0001          /* Suits me */
+I'll eventually merge it into rework/kthreads. But I wanted to have
+it separated until it gets some more testing in linux-next and
+eventually some more review.
 
-In a sense, the fact that there's this return value at all indicates a
-notifier block isn't *quite* the API we want, since this happens only
-once and it really should never stop. But it's so convenient and small
-to use that I think it's fine. Anyway, I'll use the right constant
-here as you suggested.
-
-Jason
+Best Regards,
+Petr
