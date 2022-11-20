@@ -2,147 +2,173 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88ECA6314F5
-	for <lists+linux-efi@lfdr.de>; Sun, 20 Nov 2022 16:37:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81690631526
+	for <lists+linux-efi@lfdr.de>; Sun, 20 Nov 2022 17:23:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229730AbiKTPhy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 20 Nov 2022 10:37:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49414 "EHLO
+        id S229634AbiKTQXu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 20 Nov 2022 11:23:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229739AbiKTPht (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 20 Nov 2022 10:37:49 -0500
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FF765FD0;
-        Sun, 20 Nov 2022 07:37:46 -0800 (PST)
-Received: from mail.ispras.ru (unknown [83.149.199.84])
-        by mail.ispras.ru (Postfix) with ESMTPSA id A569A419E9E4;
-        Sun, 20 Nov 2022 15:37:40 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru A569A419E9E4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1668958660;
-        bh=CAqPKJIi1yDbm+KHX7GSdiJRmyN/LoZvZ7O2KKu+0oU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BfhnW4Tg18Q2kjMjhrZ+it1vXEv2GKRfsvqlJszTREcnFhOecGwBbIT8E7dM5eGbo
-         GTx5Ui2G91zwVXvQL70WqU7xi1mPQPVBkIE/cHTdLi4CySPCCbKrMz55LgOhf9YWgP
-         wDW36Z90jya5IL/NGmdtvPPIv5eu46RbUnNVUqZw=
+        with ESMTP id S229454AbiKTQXu (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 20 Nov 2022 11:23:50 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEF752DDB;
+        Sun, 20 Nov 2022 08:23:48 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 73C9160C83;
+        Sun, 20 Nov 2022 16:23:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CF3C433D6;
+        Sun, 20 Nov 2022 16:23:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1668961427;
+        bh=VEJFrHA3qn6Rwg4Teu5pGnSV2TQDYMG+LACbP7i1H4U=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=aIVe/EjLxTjJRpEYUbRy4/jlY4n20uQ/Ks7yVzv7byfrCKj1SxALQR5AviL9TGWNM
+         Qs7NhTH5XJ2DOcNN2yPVnkMXYA8Cem1IjKH1LO9B0FogH8mclb99sNBwl9YMjAiikX
+         ZIjmCDCv4H78R91ZVIeWE4TauaBx9CA+FR0cv9jg=
+Date:   Sun, 20 Nov 2022 17:13:11 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Nayna <nayna@linux.vnet.ibm.com>
+Cc:     Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-fsdevel@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        linux-kernel@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, Dov Murik <dovmurik@linux.ibm.com>,
+        George Wilson <gcwilson@linux.ibm.com>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell Currey <ruscur@russell.cc>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Stefan Berger <stefanb@linux.ibm.com>
+Subject: Re: [PATCH 2/4] fs: define a firmware security filesystem named
+ fwsecurityfs
+Message-ID: <Y3pSF2MRIXd6aH14@kroah.com>
+References: <20221106210744.603240-1-nayna@linux.ibm.com>
+ <20221106210744.603240-3-nayna@linux.ibm.com>
+ <Y2uvUFQ9S2oaefSY@kroah.com>
+ <8447a726-c45d-8ebb-2a74-a4d759631e64@linux.vnet.ibm.com>
+ <Y2zLRw/TzV/sWgqO@kroah.com>
+ <44191f02-7360-bca3-be8f-7809c1562e68@linux.vnet.ibm.com>
+ <Y3anQukokMcQr+iE@kroah.com>
+ <d615180d-6fe5-d977-da6a-e88fd8bf5345@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Date:   Sun, 20 Nov 2022 18:37:40 +0300
-From:   Evgeniy Baskov <baskov@ispras.ru>
-To:     joeyli <jlee@suse.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Peter Jones <pjones@redhat.com>, lvc-project@linuxtesting.org,
-        x86@kernel.org, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2 00/23] x86_64: Improvements at compressed kernel stage
-In-Reply-To: <20221120014919.GV3967@linux-l9pv.suse>
-References: <cover.1666705333.git.baskov@ispras.ru>
- <20221120014919.GV3967@linux-l9pv.suse>
-User-Agent: Roundcube Webmail/1.4.4
-Message-ID: <50aa7df3f34f55ec435c4f489d8f3df3@ispras.ru>
-X-Sender: baskov@ispras.ru
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d615180d-6fe5-d977-da6a-e88fd8bf5345@linux.vnet.ibm.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2022-11-20 04:49, joeyli wrote:
-> Hi Evgeniy,
+On Sat, Nov 19, 2022 at 01:20:09AM -0500, Nayna wrote:
 > 
-> Thanks for your effort!
+> On 11/17/22 16:27, Greg Kroah-Hartman wrote:
+> > On Mon, Nov 14, 2022 at 06:03:43PM -0500, Nayna wrote:
+> > > On 11/10/22 04:58, Greg Kroah-Hartman wrote:
+> > > > On Wed, Nov 09, 2022 at 03:10:37PM -0500, Nayna wrote:
+> > > > > On 11/9/22 08:46, Greg Kroah-Hartman wrote:
+> > > > > > On Sun, Nov 06, 2022 at 04:07:42PM -0500, Nayna Jain wrote:
+> > > > > > > securityfs is meant for Linux security subsystems to expose policies/logs
+> > > > > > > or any other information. However, there are various firmware security
+> > > > > > > features which expose their variables for user management via the kernel.
+> > > > > > > There is currently no single place to expose these variables. Different
+> > > > > > > platforms use sysfs/platform specific filesystem(efivarfs)/securityfs
+> > > > > > > interface as they find it appropriate. Thus, there is a gap in kernel
+> > > > > > > interfaces to expose variables for security features.
+> > > > > > > 
+> > > > > > > Define a firmware security filesystem (fwsecurityfs) to be used by
+> > > > > > > security features enabled by the firmware. These variables are platform
+> > > > > > > specific. This filesystem provides platforms a way to implement their
+> > > > > > >     own underlying semantics by defining own inode and file operations.
+> > > > > > > 
+> > > > > > > Similar to securityfs, the firmware security filesystem is recommended
+> > > > > > > to be exposed on a well known mount point /sys/firmware/security.
+> > > > > > > Platforms can define their own directory or file structure under this path.
+> > > > > > > 
+> > > > > > > Example:
+> > > > > > > 
+> > > > > > > # mount -t fwsecurityfs fwsecurityfs /sys/firmware/security
+> > > > > > Why not juset use securityfs in /sys/security/firmware/ instead?  Then
+> > > > > > you don't have to create a new filesystem and convince userspace to
+> > > > > > mount it in a specific location?
+> > > > >   From man 5 sysfs page:
+> > > > > 
+> > > > > /sys/firmware: This subdirectory contains interfaces for viewing and
+> > > > > manipulating firmware-specific objects and attributes.
+> > > > > 
+> > > > > /sys/kernel: This subdirectory contains various files and subdirectories
+> > > > > that provide information about the running kernel.
+> > > > > 
+> > > > > The security variables which are being exposed via fwsecurityfs are managed
+> > > > > by firmware, stored in firmware managed space and also often consumed by
+> > > > > firmware for enabling various security features.
+> > > > Ok, then just use the normal sysfs interface for /sys/firmware, why do
+> > > > you need a whole new filesystem type?
+> > > > 
+> > > > >   From git commit b67dbf9d4c1987c370fd18fdc4cf9d8aaea604c2, the purpose of
+> > > > > securityfs(/sys/kernel/security) is to provide a common place for all kernel
+> > > > > LSMs. The idea of
+> > > > > fwsecurityfs(/sys/firmware/security) is to similarly provide a common place
+> > > > > for all firmware security objects.
+> > > > > 
+> > > > > /sys/firmware already exists. The patch now defines a new /security
+> > > > > directory in it for firmware security features. Using /sys/kernel/security
+> > > > > would mean scattering firmware objects in multiple places and confusing the
+> > > > > purpose of /sys/kernel and /sys/firmware.
+> > > > sysfs is confusing already, no problem with making it more confusing :)
+> > > > 
+> > > > Just document where you add things and all should be fine.
+> > > > 
+> > > > > Even though fwsecurityfs code is based on securityfs, since the two
+> > > > > filesystems expose different types of objects and have different
+> > > > > requirements, there are distinctions:
+> > > > > 
+> > > > > 1. fwsecurityfs lets users create files in userspace, securityfs only allows
+> > > > > kernel subsystems to create files.
+> > > > Wait, why would a user ever create a file in this filesystem?  If you
+> > > > need that, why not use configfs?  That's what that is for, right?
+> > > The purpose of fwsecurityfs is not to expose configuration items but rather
+> > > security objects used for firmware security features. I think these are more
+> > > comparable to EFI variables, which are exposed via an EFI-specific
+> > > filesystem, efivarfs, rather than configfs.
+> > > 
+> > > > > 2. firmware and kernel objects may have different requirements. For example,
+> > > > > consideration of namespacing. As per my understanding, namespacing is
+> > > > > applied to kernel resources and not firmware resources. That's why it makes
+> > > > > sense to add support for namespacing in securityfs, but we concluded that
+> > > > > fwsecurityfs currently doesn't need it. Another but similar example of it
+> > > > > is: TPM space, which is exposed from hardware. For containers, the TPM would
+> > > > > be made as virtual/software TPM. Similarly for firmware space for
+> > > > > containers, it would have to be something virtualized/software version of
+> > > > > it.
+> > > > I do not understand, sorry.  What does namespaces have to do with this?
+> > > > sysfs can already handle namespaces just fine, why not use that?
+> > > Firmware objects are not namespaced. I mentioned it here as an example of
+> > > the difference between firmware and kernel objects. It is also in response
+> > > to the feedback from James Bottomley in RFC v2 [https://lore.kernel.org/linuxppc-dev/41ca51e8db9907d9060cc38adb59a66dcae4c59b.camel@HansenPartnership.com/].
+> > I do not understand, sorry.  Do you want to use a namespace for these or
+> > not?  The code does not seem to be using namespaces.  You can use sysfs
+> > with, or without, a namespace so I don't understand the issue here.
+> > 
+> > With your code, there is no namespace.
 > 
-> On Tue, Oct 25, 2022 at 05:12:38PM +0300, Evgeniy Baskov wrote:
-...
-> 
-> Because Peter Jones point out this patchset to me, so I tried it
-> on OVMF, and I set the EfiLoaderData in DXE memory protection policy:
-> 
-> Index: edk2/MdeModulePkg/MdeModulePkg.dec
-> ===================================================================
-> --- edk2.orig/MdeModulePkg/MdeModulePkg.dec
-> +++ edk2/MdeModulePkg/MdeModulePkg.dec
-> @@ -1392,7 +1392,7 @@
->    # e.g. 0x7BD4 can be used for all memory except Code and
-> ACPINVS/Reserved. <BR>
->    #
->    # @Prompt Set DXE memory protection policy.
-> -
-> gEfiMdeModulePkgTokenSpaceGuid.PcdDxeNxMemoryProtectionPolicy|0x0000000|UINT64|0x00001048^M
-> +
-> gEfiMdeModulePkgTokenSpaceGuid.PcdDxeNxMemoryProtectionPolicy|0x0000004|UINT64|0x00001048^M
-> 
->    ## PCI Serial Device Info. It is an array of Device, Function, and
-> Power Management
->    #  information that describes the path that contains zero or more
-> PCI to PCI bridges
-> 
-> 
-> I applied this v2 patch set on top of v6.1-rc5 kernel, and boot with a
-> shim which
-> set the PE NX-compatibility DLL Characteristic flag. I got a page
-> fault exception:
-> 
-> Loading Linux 6.1.0-rc5-default+ ...
-> Loading initial ramdisk ...
-> !!!! X64 Exception Type - 0E(#PF - Page-Fault)  CPU Apic ID - 00000000 
-> !!!!
-> ExceptionData - 0000000000000011  I:1 R:0 U:0 W:0 P:1 PK:0 SS:0 SGX:0
-> RIP  - 0000000076A3C390, CS  - 0000000000000038, RFLAGS - 
-> 0000000000210202
-> RAX  - 000000007D8CCDF8, RCX - 0000000076A3C390, RDX - 000000007DE86000
-> RBX  - 0000000076A3C000, RSP - 000000007FF0D2C8, RBP - 000000007DE86000
-> RSI  - 000000007F9EE018, RDI - 000000007DFD1C18
-> R8   - 0000000076A3C000, R9  - 0000000000000190, R10 - 000000007FF1D658
-> R11  - 0000000000000004, R12 - 0000000000000190, R13 - 000000007D8CCE00
-> R14  - 000000007D8C76B4, R15 - 000000007BF0CBD5
-> DS   - 0000000000000030, ES  - 0000000000000030, FS  - 0000000000000030
-> GS   - 0000000000000030, SS  - 0000000000000030
-> CR0  - 0000000080010033, CR2 - 0000000076A3C390, CR3 - 000000007FC01000
-> CR4  - 0000000000000668, CR8 - 0000000000000000
-> DR0  - 0000000000000000, DR1 - 0000000000000000, DR2 - 0000000000000000
-> DR3  - 0000000000000000, DR6 - 00000000FFFF0FF0, DR7 - 0000000000000400
-> GDTR - 000000007F9DE000 0000000000000047, LDTR - 0000000000000000
-> IDTR - 000000007F2E9018 0000000000000FFF,   TR - 0000000000000000
-> FXSAVE_STATE - 000000007FF0CF20
-> !!!! Find image based on IP(0x7BF0BAB5)
-> /mnt/working/source_code-git/edk2/Build/OvmfX64/DEBUG_GCC5/X64/MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe/DEBUG/VariableRuntimeDxe.dll
-> (ImageBase=0000000000F40E7C, EntryPoint=0000000000F767B8) !!!!
-> 
-> 
-> My question is: Can I just set EfiLoaderData in DXE memory protection 
-> policy
-> in EDK2/OVMF to test this patchset? Or which platform (virtual or 
-> physical)
-> can we use for testing?
-> 
-> Thanks a lot!
-> Joey Lee
+> You are correct. There's no namespace for these.
 
-Hi,
+So again, I do not understand.  Do you want to use filesystem
+namespaces, or do you not?
 
-Thank you for testing!
+How again can you not use sysfs or securityfs due to namespaces?  What
+is missing?
 
-The EDK2 OVMF with adjusted PcdDxeNxMemoryProtectionPolicy
-should work with the kernel itself.
+confused,
 
-As far as I can see from my testing with EDK2 OVMF, this
-#PF occurred inside GRUB code before the first instruction
-of the kernel. You can try using GRUB master branch, where
-allocations are changed to use EfiLoaderCode type and with
-PcdDxeNxMemoryProtectionPolicy=0x0000004 it will still be
-executable.
-
-Thanks,
-Evgeniy Baskov
+greg k-h
