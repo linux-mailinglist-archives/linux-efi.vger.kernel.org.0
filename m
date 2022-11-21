@@ -2,70 +2,77 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91BCD63277F
-	for <lists+linux-efi@lfdr.de>; Mon, 21 Nov 2022 16:12:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6ECDF63291A
+	for <lists+linux-efi@lfdr.de>; Mon, 21 Nov 2022 17:13:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232140AbiKUPMV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 21 Nov 2022 10:12:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37964 "EHLO
+        id S229962AbiKUQNC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 21 Nov 2022 11:13:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232168AbiKUPL4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 21 Nov 2022 10:11:56 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BB3194A4E;
-        Mon, 21 Nov 2022 07:05:58 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0A6D4B81050;
-        Mon, 21 Nov 2022 15:05:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4A6C433D6;
-        Mon, 21 Nov 2022 15:05:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1669043155;
-        bh=69fnffLkz/ILK6bYr21czslsgeqwii9nzQ1KmDeEAF8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=wgEmmbjYMxg528j5wuwTzPboE9RBUDUwjIV2gNsrOBwiIFh7KjwAVpFzD9dRUycw6
-         LGvn+xCfvrRYuDHNEFnQENBJpbGO6vP97nFlevknNth7LVb7SLaAmUZl7BdwzraGNC
-         hZmKPSHWuadxhFWfGEsvQJpgTCv4levVp/MeYLcA=
-Date:   Mon, 21 Nov 2022 16:05:52 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc:     Nayna <nayna@linux.vnet.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-        linux-efi@vger.kernel.org,
-        linux-security-module <linux-security-module@vger.kernel.org>,
-        linux-kernel@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, Dov Murik <dovmurik@linux.ibm.com>,
-        George Wilson <gcwilson@linux.ibm.com>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
+        with ESMTP id S229593AbiKUQNB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 21 Nov 2022 11:13:01 -0500
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB5BFD2370
+        for <linux-efi@vger.kernel.org>; Mon, 21 Nov 2022 08:12:59 -0800 (PST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-79-JCNmq6zLOMy4J3wKzwty6A-1; Mon, 21 Nov 2022 16:12:56 +0000
+X-MC-Unique: JCNmq6zLOMy4J3wKzwty6A-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Mon, 21 Nov
+ 2022 16:12:53 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.044; Mon, 21 Nov 2022 16:12:53 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'James Bottomley' <James.Bottomley@HansenPartnership.com>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+CC:     Matthew Garrett <mjg59@srcf.ucam.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        Nayna <nayna@linux.vnet.ibm.com>,
+        "Andrew Donnellan" <ajd@linux.ibm.com>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "npiggin@gmail.com" <npiggin@gmail.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
         Dave Hansen <dave.hansen@intel.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linux-security-module <linux-security-module@vger.kernel.org>,
         Paul Mackerras <paulus@samba.org>,
-        Russell Currey <ruscur@russell.cc>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "George Wilson" <gcwilson@linux.ibm.com>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
         Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH 2/4] fs: define a firmware security filesystem named
+Subject: RE: [PATCH 2/4] fs: define a firmware security filesystem named
  fwsecurityfs
-Message-ID: <Y3uT0PJ5g86TAj6t@kroah.com>
-References: <Y2uvUFQ9S2oaefSY@kroah.com>
- <8447a726-c45d-8ebb-2a74-a4d759631e64@linux.vnet.ibm.com>
- <Y2zLRw/TzV/sWgqO@kroah.com>
- <44191f02-7360-bca3-be8f-7809c1562e68@linux.vnet.ibm.com>
- <Y3anQukokMcQr+iE@kroah.com>
- <d615180d-6fe5-d977-da6a-e88fd8bf5345@linux.vnet.ibm.com>
- <Y3pSF2MRIXd6aH14@kroah.com>
- <88111914afc6204b2a3fb82ded5d9bfb6420bca6.camel@HansenPartnership.com>
- <Y3tbhmL4oG1YTyT/@kroah.com>
+Thread-Topic: [PATCH 2/4] fs: define a firmware security filesystem named
+ fwsecurityfs
+Thread-Index: AQHY/bIc6g2ldzgOWEG38iaI8ZLls65JjEcA
+Date:   Mon, 21 Nov 2022 16:12:53 +0000
+Message-ID: <010cbb5d1c7944aba628a15774bef941@AcuMS.aculab.com>
+References: <20221106210744.603240-1-nayna@linux.ibm.com>
+         <20221106210744.603240-3-nayna@linux.ibm.com> <Y2uvUFQ9S2oaefSY@kroah.com>
+         <8447a726-c45d-8ebb-2a74-a4d759631e64@linux.vnet.ibm.com>
+         <Y2zLRw/TzV/sWgqO@kroah.com>
+         <44191f02-7360-bca3-be8f-7809c1562e68@linux.vnet.ibm.com>
+         <Y3anQukokMcQr+iE@kroah.com>
+         <d615180d-6fe5-d977-da6a-e88fd8bf5345@linux.vnet.ibm.com>
+         <Y3pSF2MRIXd6aH14@kroah.com>
+         <88111914afc6204b2a3fb82ded5d9bfb6420bca6.camel@HansenPartnership.com>
+         <Y3tbhmL4oG1YTyT/@kroah.com>
  <10c85b8f4779700b82596c4a968daead65a29801.camel@HansenPartnership.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <10c85b8f4779700b82596c4a968daead65a29801.camel@HansenPartnership.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
+MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,80 +80,22 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Nov 21, 2022 at 09:03:18AM -0500, James Bottomley wrote:
-> On Mon, 2022-11-21 at 12:05 +0100, Greg Kroah-Hartman wrote:
-> > On Sun, Nov 20, 2022 at 10:14:26PM -0500, James Bottomley wrote:
-> > > On Sun, 2022-11-20 at 17:13 +0100, Greg Kroah-Hartman wrote:
-> > > > On Sat, Nov 19, 2022 at 01:20:09AM -0500, Nayna wrote:
-> > > > > 
-> > > > > On 11/17/22 16:27, Greg Kroah-Hartman wrote:
-> > > > > > On Mon, Nov 14, 2022 at 06:03:43PM -0500, Nayna wrote:
-> > > > > > > On 11/10/22 04:58, Greg Kroah-Hartman wrote:
-> > > [...]
-> > > > > > > > I do not understand, sorry.  What does namespaces have to
-> > > > > > > > do
-> > > > > > > > with this?
-> > > > > > > > sysfs can already handle namespaces just fine, why not
-> > > > > > > > use
-> > > > > > > > that?
-> > > > > > > Firmware objects are not namespaced. I mentioned it here as
-> > > > > > > an
-> > > > > > > example of the difference between firmware and kernel
-> > > > > > > objects.
-> > > > > > > It is also in response to the feedback from James Bottomley
-> > > > > > > in
-> > > > > > > RFC v2 [
-> > > > > > > https://lore.kernel.org/linuxppc-dev/41ca51e8db9907d9060cc38ad
-> > > > > > > b59a66dcae4c59b.camel@HansenPartnership.com/].
-> > > > > > I do not understand, sorry.  Do you want to use a namespace
-> > > > > > for
-> > > > > > these or not?  The code does not seem to be using
-> > > > > > namespaces. 
-> > > > > > You can use sysfs with, or without, a namespace so I don't
-> > > > > > understand the issue here.
-> > > > > > 
-> > > > > > With your code, there is no namespace.
-> > > > > 
-> > > > > You are correct. There's no namespace for these.
-> > > > 
-> > > > So again, I do not understand.  Do you want to use filesystem
-> > > > namespaces, or do you not?
-> > > 
-> > > Since this seems to go back to my email quoted again, let me
-> > > repeat: the question isn't if this patch is namespaced; I think
-> > > you've agreed several times it isn't.  The question is if the
-> > > exposed properties would ever need to be namespaced.  This is a
-> > > subtle and complex question which isn't at all explored by the
-> > > above interchange.
-> > > 
-> > > > How again can you not use sysfs or securityfs due to namespaces? 
-> > > > What is missing?
-> > > 
-> > > I already explained in the email that sysfs contains APIs like
-> > > simple_pin_... which are completely inimical to namespacing.
-> > 
-> > Then how does the networking code handle the namespace stuff in
-> > sysfs?
-> > That seems to work today, or am I missing something?
-> 
-> have you actually tried?
-> 
-> jejb@lingrow:~> sudo unshare --net bash
-> lingrow:/home/jejb # ls /sys/class/net/
-> lo  tun0  tun10  wlan0
-> lingrow:/home/jejb # ip link show
-> 1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT group
-> default qlen 1000
->     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-> 
-> So, as you see, I've entered a network namespace and ip link shows me
-> the only interface I can see in that namespace (a down loopback) but
-> sysfs shows me every interface on the system outside the namespace.
+RnJvbTogSmFtZXMgQm90dG9tbGV5DQo+IFNlbnQ6IDIxIE5vdmVtYmVyIDIwMjIgMTQ6MDMNCi4u
+Lg0KPiA+IFRoZW4gaG93IGRvZXMgdGhlIG5ldHdvcmtpbmcgY29kZSBoYW5kbGUgdGhlIG5hbWVz
+cGFjZSBzdHVmZiBpbg0KPiA+IHN5c2ZzPw0KPiA+IFRoYXQgc2VlbXMgdG8gd29yayB0b2RheSwg
+b3IgYW0gSSBtaXNzaW5nIHNvbWV0aGluZz8NCj4gDQo+IGhhdmUgeW91IGFjdHVhbGx5IHRyaWVk
+Pw0KPiANCj4gamVqYkBsaW5ncm93On4+IHN1ZG8gdW5zaGFyZSAtLW5ldCBiYXNoDQo+IGxpbmdy
+b3c6L2hvbWUvamVqYiAjIGxzIC9zeXMvY2xhc3MvbmV0Lw0KPiBsbyAgdHVuMCAgdHVuMTAgIHds
+YW4wDQo+IGxpbmdyb3c6L2hvbWUvamVqYiAjIGlwIGxpbmsgc2hvdw0KPiAxOiBsbzogPExPT1BC
+QUNLPiBtdHUgNjU1MzYgcWRpc2Mgbm9vcCBzdGF0ZSBET1dOIG1vZGUgREVGQVVMVCBncm91cA0K
+PiBkZWZhdWx0IHFsZW4gMTAwMA0KPiAgICAgbGluay9sb29wYmFjayAwMDowMDowMDowMDowMDow
+MCBicmQgMDA6MDA6MDA6MDA6MDA6MDANCj4gDQo+IFNvLCBhcyB5b3Ugc2VlLCBJJ3ZlIGVudGVy
+ZWQgYSBuZXR3b3JrIG5hbWVzcGFjZSBhbmQgaXAgbGluayBzaG93cyBtZQ0KPiB0aGUgb25seSBp
+bnRlcmZhY2UgSSBjYW4gc2VlIGluIHRoYXQgbmFtZXNwYWNlIChhIGRvd24gbG9vcGJhY2spIGJ1
+dA0KPiBzeXNmcyBzaG93cyBtZSBldmVyeSBpbnRlcmZhY2Ugb24gdGhlIHN5c3RlbSBvdXRzaWRl
+IHRoZSBuYW1lc3BhY2UuDQoNCllvdSBoYXZlIHRvIHJlbW91bnQgL3N5cyB0byBnZXQgdGhlIHJl
+c3RyaWN0ZWQgY29weS4NCmVnIGJ5IHJ1bm5pbmcgJ2lwIG5ldG5zIGV4ZWMgbmFtZXNwYWNlIGNv
+bW1hbmQnLg0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFt
+bGV5IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3Ry
+YXRpb24gTm86IDEzOTczODYgKFdhbGVzKQ0K
 
-Then all of the code in include/kobject_ns.h is not being used?  We have
-a whole kobject namespace set up for networking, I just assumed they
-were using it.  If not, I'm all for ripping it out.
-
-thanks,
-
-greg k-h
