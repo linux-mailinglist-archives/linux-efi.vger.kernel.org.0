@@ -2,146 +2,181 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56F846323AB
-	for <lists+linux-efi@lfdr.de>; Mon, 21 Nov 2022 14:33:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAB7F632512
+	for <lists+linux-efi@lfdr.de>; Mon, 21 Nov 2022 15:07:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230264AbiKUNda (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 21 Nov 2022 08:33:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39194 "EHLO
+        id S229530AbiKUOHU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 21 Nov 2022 09:07:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230359AbiKUNdY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 21 Nov 2022 08:33:24 -0500
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7AD1A3403
-        for <linux-efi@vger.kernel.org>; Mon, 21 Nov 2022 05:33:22 -0800 (PST)
-Received: by mail-wr1-x42c.google.com with SMTP id bs21so19885373wrb.4
-        for <linux-efi@vger.kernel.org>; Mon, 21 Nov 2022 05:33:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/AZ4ygC1zrywaVeDravJh+79FfEh+MWc17/2b5dHnFI=;
-        b=HhtboEGdl6Fk3OyjFtdSC0vRkGcOtA6lwHK46rnl7KucXpugcql4jfN/z4U3fxStX5
-         bH2McLqqFK3nsOSLPBvF+vJ3ohKVKs8lNsZH/eCMAFqxFobjfTG4JqClqhFOx4zH4zkf
-         YUieQJu9wr5pqkoiA8EApI62I7leQpVCg3C4ZDAeVktkNG6pyeP1g5XtOtoOuCYvjHoD
-         OS7b6M/xJeh+UC9q6IxqM8+ttR2lSzKHLt1mtpOWTwkX4hxwHUiN0G5+oPbdPwSJYq1j
-         2eAGJs1PBNr+DoWhcmuOy8MuQzq8E1CjjzIvnFmN6mNLdA94eNB2AWory4BsJUyv5Gzp
-         UErQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/AZ4ygC1zrywaVeDravJh+79FfEh+MWc17/2b5dHnFI=;
-        b=nU8+Mu4c+/h6sYp4957o3UHlRdwoX87O49AnU2grmz85OA10gfMAoa3s/MR3QJb9eG
-         KLnwWu8l9AfJzIvOEUdHxVqIQfDgWdopC4Mrj1/UEfkemQHX+XQ2p5VFduNTc/6fAElb
-         SEE7eI6sX6GrEjdDfURelLHtzLITVW5KWNH5P0JjQ3zobUi/KKlIJqf1WcibHT3T5wO2
-         D7XoMLBGQpLF1BYqxZCxvjd0cHj7hX53m71CMDC0EofMXVeiG+B42F7+keeif9hco77O
-         wVLKiPvPop4ZbVgWG/UnUTdMA8ivqfLRJenDMtg4dvl4n7Ts2OAV8cRiMnXb6IfVgStl
-         5Khg==
-X-Gm-Message-State: ANoB5pl3yZYu4I5HS0g6MctAjDCOm2jvUTLgPuw6+GoZ4j+x4oCxSZP+
-        2o7fQaFwqkoIrbSoaIwzh186fw==
-X-Google-Smtp-Source: AA0mqf65U+hVaWTrA35GMU6HsufKw4fwTxCfsQNgEWiSbacZGQ1vytMt5Bep31zS425r88w5qPgkrg==
-X-Received: by 2002:a5d:4577:0:b0:241:c9fc:71bc with SMTP id a23-20020a5d4577000000b00241c9fc71bcmr5324874wrc.317.1669037601244;
-        Mon, 21 Nov 2022 05:33:21 -0800 (PST)
-Received: from localhost.localdomain (lfbn-gre-1-201-46.w90-112.abo.wanadoo.fr. [90.112.163.46])
-        by smtp.gmail.com with ESMTPSA id j18-20020a05600c191200b003c83465ccbfsm20332980wmq.35.2022.11.21.05.33.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Nov 2022 05:33:20 -0800 (PST)
-From:   Alexandre Ghiti <alexghiti@rivosinc.com>
-To:     Ard Biesheuvel <ardb@kernel.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-        Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-        linux-efi@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Cc:     Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: [PATCH] riscv: Sync efi page table's kernel mappings before switching
-Date:   Mon, 21 Nov 2022 14:33:03 +0100
-Message-Id: <20221121133303.1782246-1-alexghiti@rivosinc.com>
-X-Mailer: git-send-email 2.37.2
+        with ESMTP id S229927AbiKUOGp (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 21 Nov 2022 09:06:45 -0500
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 215D5C7207;
+        Mon, 21 Nov 2022 06:03:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1669039402;
+        bh=S0ZSP+LpMvn5EG+QMrGCuiVBzAD0TgzklGkqSoGsMpY=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=LmOnMjf/PWybJ5EX60Fa9yOKxgTbOvaRNaY04/paLbN5uH4o4lPv4ZMxd1OjFSPog
+         Jb7NDJz0ZFryHqV2O6+rSEhBsA6OMwneoaJQKNnz1xxYLQrFIAyv+iok9dE2vugAWJ
+         Tb5oPQaOnH+VFy7FEgUaIo3Nvkw17Gh0THyBTrw0=
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 747E11286581;
+        Mon, 21 Nov 2022 09:03:22 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id AUktWLsrhDZo; Mon, 21 Nov 2022 09:03:22 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1669039402;
+        bh=S0ZSP+LpMvn5EG+QMrGCuiVBzAD0TgzklGkqSoGsMpY=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=LmOnMjf/PWybJ5EX60Fa9yOKxgTbOvaRNaY04/paLbN5uH4o4lPv4ZMxd1OjFSPog
+         Jb7NDJz0ZFryHqV2O6+rSEhBsA6OMwneoaJQKNnz1xxYLQrFIAyv+iok9dE2vugAWJ
+         Tb5oPQaOnH+VFy7FEgUaIo3Nvkw17Gh0THyBTrw0=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::c14])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id A207B1286558;
+        Mon, 21 Nov 2022 09:03:20 -0500 (EST)
+Message-ID: <10c85b8f4779700b82596c4a968daead65a29801.camel@HansenPartnership.com>
+Subject: Re: [PATCH 2/4] fs: define a firmware security filesystem named
+ fwsecurityfs
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Nayna <nayna@linux.vnet.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+        linux-efi@vger.kernel.org,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        linux-kernel@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, Dov Murik <dovmurik@linux.ibm.com>,
+        George Wilson <gcwilson@linux.ibm.com>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell Currey <ruscur@russell.cc>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Stefan Berger <stefanb@linux.ibm.com>
+Date:   Mon, 21 Nov 2022 09:03:18 -0500
+In-Reply-To: <Y3tbhmL4oG1YTyT/@kroah.com>
+References: <20221106210744.603240-1-nayna@linux.ibm.com>
+         <20221106210744.603240-3-nayna@linux.ibm.com> <Y2uvUFQ9S2oaefSY@kroah.com>
+         <8447a726-c45d-8ebb-2a74-a4d759631e64@linux.vnet.ibm.com>
+         <Y2zLRw/TzV/sWgqO@kroah.com>
+         <44191f02-7360-bca3-be8f-7809c1562e68@linux.vnet.ibm.com>
+         <Y3anQukokMcQr+iE@kroah.com>
+         <d615180d-6fe5-d977-da6a-e88fd8bf5345@linux.vnet.ibm.com>
+         <Y3pSF2MRIXd6aH14@kroah.com>
+         <88111914afc6204b2a3fb82ded5d9bfb6420bca6.camel@HansenPartnership.com>
+         <Y3tbhmL4oG1YTyT/@kroah.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The EFI page table is initially created as a copy of the kernel page table.
-With VMAP_STACK enabled, kernel stacks are allocated in the vmalloc area:
-if the stack is allocated in a new PGD (one that was not present at the
-moment of the efi page table creation or not synced in a previous vmalloc
-fault), the kernel will take a trap when switching to the efi page table
-when the vmalloc kernel stack is accessed, resulting in a kernel panic.
+On Mon, 2022-11-21 at 12:05 +0100, Greg Kroah-Hartman wrote:
+> On Sun, Nov 20, 2022 at 10:14:26PM -0500, James Bottomley wrote:
+> > On Sun, 2022-11-20 at 17:13 +0100, Greg Kroah-Hartman wrote:
+> > > On Sat, Nov 19, 2022 at 01:20:09AM -0500, Nayna wrote:
+> > > > 
+> > > > On 11/17/22 16:27, Greg Kroah-Hartman wrote:
+> > > > > On Mon, Nov 14, 2022 at 06:03:43PM -0500, Nayna wrote:
+> > > > > > On 11/10/22 04:58, Greg Kroah-Hartman wrote:
+> > [...]
+> > > > > > > I do not understand, sorry.  What does namespaces have to
+> > > > > > > do
+> > > > > > > with this?
+> > > > > > > sysfs can already handle namespaces just fine, why not
+> > > > > > > use
+> > > > > > > that?
+> > > > > > Firmware objects are not namespaced. I mentioned it here as
+> > > > > > an
+> > > > > > example of the difference between firmware and kernel
+> > > > > > objects.
+> > > > > > It is also in response to the feedback from James Bottomley
+> > > > > > in
+> > > > > > RFC v2 [
+> > > > > > https://lore.kernel.org/linuxppc-dev/41ca51e8db9907d9060cc38ad
+> > > > > > b59a66dcae4c59b.camel@HansenPartnership.com/].
+> > > > > I do not understand, sorry.  Do you want to use a namespace
+> > > > > for
+> > > > > these or not?  The code does not seem to be using
+> > > > > namespaces. 
+> > > > > You can use sysfs with, or without, a namespace so I don't
+> > > > > understand the issue here.
+> > > > > 
+> > > > > With your code, there is no namespace.
+> > > > 
+> > > > You are correct. There's no namespace for these.
+> > > 
+> > > So again, I do not understand.  Do you want to use filesystem
+> > > namespaces, or do you not?
+> > 
+> > Since this seems to go back to my email quoted again, let me
+> > repeat: the question isn't if this patch is namespaced; I think
+> > you've agreed several times it isn't.  The question is if the
+> > exposed properties would ever need to be namespaced.  This is a
+> > subtle and complex question which isn't at all explored by the
+> > above interchange.
+> > 
+> > > How again can you not use sysfs or securityfs due to namespaces? 
+> > > What is missing?
+> > 
+> > I already explained in the email that sysfs contains APIs like
+> > simple_pin_... which are completely inimical to namespacing.
+> 
+> Then how does the networking code handle the namespace stuff in
+> sysfs?
+> That seems to work today, or am I missing something?
 
-Fix that by updating the efi kernel mappings before switching to the efi
-page table.
+have you actually tried?
 
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
----
- arch/riscv/include/asm/efi.h     |  6 +++++-
- arch/riscv/include/asm/pgalloc.h | 11 ++++++++---
- 2 files changed, 13 insertions(+), 4 deletions(-)
+jejb@lingrow:~> sudo unshare --net bash
+lingrow:/home/jejb # ls /sys/class/net/
+lo  tun0  tun10  wlan0
+lingrow:/home/jejb # ip link show
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT group
+default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
 
-diff --git a/arch/riscv/include/asm/efi.h b/arch/riscv/include/asm/efi.h
-index f74879a8f1ea..e229d7be4b66 100644
---- a/arch/riscv/include/asm/efi.h
-+++ b/arch/riscv/include/asm/efi.h
-@@ -10,6 +10,7 @@
- #include <asm/mmu_context.h>
- #include <asm/ptrace.h>
- #include <asm/tlbflush.h>
-+#include <asm/pgalloc.h>
+So, as you see, I've entered a network namespace and ip link shows me
+the only interface I can see in that namespace (a down loopback) but
+sysfs shows me every interface on the system outside the namespace.
+
+This is pretty much the story of containers and sysfs: if you mount it
+inside the container, it leaks information about the host
+configuration.  Since I created a container with full root, I could
+actually fiddle with the host network parameters on interfaces I
+shouldn't be able to see within the container using sysfs ... which is
+one reason we try to persuade people to use a user namespace instead of
+full root.
  
- #ifdef CONFIG_EFI
- extern void efi_init(void);
-@@ -20,7 +21,10 @@ extern void efi_init(void);
- int efi_create_mapping(struct mm_struct *mm, efi_memory_desc_t *md);
- int efi_set_mapping_permissions(struct mm_struct *mm, efi_memory_desc_t *md);
- 
--#define arch_efi_call_virt_setup()      efi_virtmap_load()
-+#define arch_efi_call_virt_setup()      ({		\
-+		sync_kernel_mappings(efi_mm.pgd);	\
-+		efi_virtmap_load();			\
-+	})
- #define arch_efi_call_virt_teardown()   efi_virtmap_unload()
- 
- #define ARCH_EFI_IRQ_FLAGS_MASK (SR_IE | SR_SPIE)
-diff --git a/arch/riscv/include/asm/pgalloc.h b/arch/riscv/include/asm/pgalloc.h
-index 947f23d7b6af..59dc12b5b7e8 100644
---- a/arch/riscv/include/asm/pgalloc.h
-+++ b/arch/riscv/include/asm/pgalloc.h
-@@ -127,6 +127,13 @@ static inline void p4d_free(struct mm_struct *mm, p4d_t *p4d)
- #define __p4d_free_tlb(tlb, p4d, addr)  p4d_free((tlb)->mm, p4d)
- #endif /* __PAGETABLE_PMD_FOLDED */
- 
-+static inline void sync_kernel_mappings(pgd_t *pgd)
-+{
-+	memcpy(pgd + USER_PTRS_PER_PGD,
-+	       init_mm.pgd + USER_PTRS_PER_PGD,
-+	       (PTRS_PER_PGD - USER_PTRS_PER_PGD) * sizeof(pgd_t));
-+}
-+
- static inline pgd_t *pgd_alloc(struct mm_struct *mm)
- {
- 	pgd_t *pgd;
-@@ -135,9 +142,7 @@ static inline pgd_t *pgd_alloc(struct mm_struct *mm)
- 	if (likely(pgd != NULL)) {
- 		memset(pgd, 0, USER_PTRS_PER_PGD * sizeof(pgd_t));
- 		/* Copy kernel mappings */
--		memcpy(pgd + USER_PTRS_PER_PGD,
--			init_mm.pgd + USER_PTRS_PER_PGD,
--			(PTRS_PER_PGD - USER_PTRS_PER_PGD) * sizeof(pgd_t));
-+		sync_kernel_mappings(pgd);
- 	}
- 	return pgd;
- }
--- 
-2.37.2
+> If the namespace support needs to be fixed up in sysfs (or in
+> securityfs), then great, let's do that, and not write a whole new
+> filesystem just because that's not done.
+
+As I said: a fix is proposed for securityfs.  I think everyone in
+containers concluded long ago that sysfs is too big an Augean Stable.
+
+> Also this patch series also doesn't handle namespaces, so again, I am
+> totally confused as to why this is even being discussed...
+
+Well, it's not my patch.  I came into this saying *if* there was ever a
+reason to namespace these parameters then please don't use interfaces
+inimical to namespacing.  My personal view is that this should all just
+go in securityfs because that defers answering the question of whether
+it would eventually be namespaced.
+
+James
 
