@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E20B2634113
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Nov 2022 17:12:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 50B4F634114
+	for <lists+linux-efi@lfdr.de>; Tue, 22 Nov 2022 17:12:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233013AbiKVQMR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        id S229507AbiKVQMR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
         Tue, 22 Nov 2022 11:12:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42974 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232852AbiKVQLh (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 22 Nov 2022 11:11:37 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC30E74AA4;
-        Tue, 22 Nov 2022 08:11:08 -0800 (PST)
+        with ESMTP id S234297AbiKVQLi (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 22 Nov 2022 11:11:38 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66EAB74AA5;
+        Tue, 22 Nov 2022 08:11:09 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 856FEB81C10;
-        Tue, 22 Nov 2022 16:11:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FFEC433D7;
-        Tue, 22 Nov 2022 16:11:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EB0526178F;
+        Tue, 22 Nov 2022 16:11:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F21C433B5;
+        Tue, 22 Nov 2022 16:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669133466;
-        bh=WzgruzR/v1MEVPGvMfLbw7xCwZPOIioiFXKbArp2e20=;
+        s=k20201202; t=1669133468;
+        bh=WhXdkD4dUeFlbCa2uQ7/WXKYDJLeVqOD82K+vPxNRBU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hl5LV4DCJoQbDIyuHOaHIoqt7NLovhtjIM9BVLXENuDhZK8U/Tdr8ErYt6C8UGPRl
-         ekPienlBAffkk4JnJy+2qvhrYbP2gIw03vtJ/qWdIV2T/iw1UNhOZVRrQPaSe7wyec
-         4LIpSpGSaTFELxo/6SZIhqHYvmmy1KgODJ+rldbgCvUzYwbjduhynFHkGRS77txH8l
-         wYS2NP3f0QlY9CY1O6eBScPmzdXJyQIAQiyiePRP3O1lAR57qEdGwM1aFF1ePpD/Tj
-         TvCOZsATwQ9DIE8wMrDmAhJIbOh2MzvAq6axyZy9t39AP7DIpc1Q+bjzdXG3oGKbzE
-         c3FXW9faPaYuw==
+        b=XP2d5Vn5IhYOWUComKlIB6Z9cXXN/cA51C1aeGE9gGN8yeNbmQRq1ICdueb71n0lH
+         obE7QRwE3PL44uUF9iCUvBppYz/p3rsCzWPsPAOnMa/cjNsCIlQwIsrJKVa7mptG6J
+         3K0iR9VKg97H5GHa10EkGRiPp4/jy9qoW+kyovoGqWrewCTfC+PVBlCtoVtrtnNKrF
+         hP46x1yNmA4pxsd08Hlxx0jM1nJ+jpcVyJIImgIdBTbOwnDnBYMj+gMEVXZT646uQI
+         vNWOzqoeSG2rOb2eLvu9krtCbJPnR8tf105bt+sEt9SiYVAD9DOlL3fOZnZ3JYa/ob
+         3Ha6DFMdavgKw==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -38,14 +38,14 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Michael Roth <michael.roth@amd.com>
-Subject: [PATCH v3 15/17] x86/compressed: adhere to calling convention in get_sev_encryption_bit()
-Date:   Tue, 22 Nov 2022 17:10:15 +0100
-Message-Id: <20221122161017.2426828-16-ardb@kernel.org>
+Subject: [PATCH v3 16/17] x86/compressed: only build mem_encrypt.S if AMD_MEM_ENCRYPT=y
+Date:   Tue, 22 Nov 2022 17:10:16 +0100
+Message-Id: <20221122161017.2426828-17-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221122161017.2426828-1-ardb@kernel.org>
 References: <20221122161017.2426828-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1909; i=ardb@kernel.org; h=from:subject; bh=WzgruzR/v1MEVPGvMfLbw7xCwZPOIioiFXKbArp2e20=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjfPRlRjCxfUGcb8bUP8866wWUGhLDdGiyfHOFhXH7 xfd5BRmJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY3z0ZQAKCRDDTyI5ktmPJGPtC/ 91APxkHaUNp4yBkeDxwprSCH28epIzimrD0vGJf9LbPi5dn6uj76y3+T4vrgtHhAYZnNO/Nw4dwzzR 14AJNAGQmmU5stvmBSm9ioWr5fHNym/ks4TYcPtA2EGDDRERG4jMI//3JpMznmg+sAm6qmiG0x6/+R JRgAU2Bu1xVw8qvnfwz722rD9r9E1zo+StiSMIYFtmRwSeVHt0F1/StamR8Ct7NW79oWFfCpi3v8bj V/+VcvkxZDTDtUWsGMVdAjVQvwq/KJqcALXNynkjfkBZEkmdcvOCRYooQ/l8e6nW/3Ih6DAxGC3f7u J+5WZeZKMAUQWsXoLYEKLEIe2bXFRNuPrYIK45sn809agJgilov8zYP/zl70UYYgRHPBFXPBD+6BMB 9Dg9cXWdGNAkUyiqJAxtG4FBqShNzg96C3R1n91sJjUnFrZa6eQ8q5NGOXR21m33tF9+LJcFYqB9Rb +stxkVfyllEXg3zFeg2EuZ9D7WppYsUGfNVjuE6iMDmLY=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1513; i=ardb@kernel.org; h=from:subject; bh=WhXdkD4dUeFlbCa2uQ7/WXKYDJLeVqOD82K+vPxNRBU=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjfPRmkT6ecGA/cAN7llRJkxgNCUnGuU4XlPtqQLSt MJfoSUKJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY3z0ZgAKCRDDTyI5ktmPJIROC/ 47FixYSC5DsCya9EY2tPWjzFOO3btlyqulJ0T+UDx2P378vfkSo7epzYht6hTrbu0eyKl8sbBbOJod HOzI5it103YIBtch6jbzm+ecyPY/6Liuku1ipJgc7uCOmfoHVUWa4/2CUinI0+lPqV2ZQmOlPXw9eS VeowN57ItdpLsaYa4kph88PLKON7dl7eZlIAi/lATz1moiBiuiHHo+HUQBQw+V6NW0feamxq7zD+cS XLotitFVa3AccaAAzAI1Pw960takGXHX7h+fVe60wZVHwI9LedRUcESNqpnjZKqZpPkvdotIQsyHaW 78iubNh1PsE8xpHF1GlcaCqaMg1iXb652wywgjIySJg8lmIAo5dM8hUUPtTRUHb69VOQJnYDiv/O8Q 7WnF4vfyjCRDhMqSy+ofLnqY2SS+flxH/p/8TTX+afsj8e63dc/WmCfIjPqfU955GIg2Flj1oSPi1S DVK98PcqjDCeIfDfwDzWB3sEh/W64p5dt4vTlomv+Qc3Q=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -57,67 +57,45 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Make get_sev_encryption_bit() follow the ordinary i386 calling
-convention, and only call it if CONFIG_AMD_MEM_ENCRYPT is actually
-enabled. This clarifies the calling code, and makes it more
-maintainable.
+Avoid building the mem_encrypt.o object if memory encryption support is
+not enabled to begin with.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/head_64.S     |  5 +++--
- arch/x86/boot/compressed/mem_encrypt.S | 10 ----------
- 2 files changed, 3 insertions(+), 12 deletions(-)
+ arch/x86/boot/compressed/Makefile      | 2 +-
+ arch/x86/boot/compressed/mem_encrypt.S | 2 --
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index 0cfc8ce273a2731c..dd18216cff5c37e0 100644
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -188,12 +188,13 @@ SYM_FUNC_START(startup_32)
-   */
- 	/*
- 	 * If SEV is active then set the encryption mask in the page tables.
--	 * This will insure that when the kernel is copied and decompressed
-+	 * This will ensure that when the kernel is copied and decompressed
- 	 * it will be done so encrypted.
- 	 */
--	call	get_sev_encryption_bit
- 	xorl	%edx, %edx
- #ifdef	CONFIG_AMD_MEM_ENCRYPT
-+	call	get_sev_encryption_bit
-+	xorl	%edx, %edx
- 	testl	%eax, %eax
- 	jz	1f
- 	subl	$32, %eax	/* Encryption bit is always above bit 31 */
+diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+index cd1a6295b957ea1d..3dc5db651dd0a197 100644
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -100,7 +100,7 @@ vmlinux-objs-$(CONFIG_RANDOMIZE_BASE) += $(obj)/kaslr.o
+ ifdef CONFIG_X86_64
+ 	vmlinux-objs-y += $(obj)/ident_map_64.o
+ 	vmlinux-objs-y += $(obj)/idt_64.o $(obj)/idt_handlers_64.o
+-	vmlinux-objs-y += $(obj)/mem_encrypt.o
++	vmlinux-objs-$(CONFIG_AMD_MEM_ENCRYPT) += $(obj)/mem_encrypt.o
+ 	vmlinux-objs-y += $(obj)/pgtable_64.o
+ 	vmlinux-objs-$(CONFIG_AMD_MEM_ENCRYPT) += $(obj)/sev.o
+ endif
 diff --git a/arch/x86/boot/compressed/mem_encrypt.S b/arch/x86/boot/compressed/mem_encrypt.S
-index 14cf04a1ed091655..e69674588a31c81f 100644
+index e69674588a31c81f..32f7cc8a862547e4 100644
 --- a/arch/x86/boot/compressed/mem_encrypt.S
 +++ b/arch/x86/boot/compressed/mem_encrypt.S
-@@ -18,12 +18,7 @@
- 	.text
- 	.code32
- SYM_FUNC_START(get_sev_encryption_bit)
--	xor	%eax, %eax
--
+@@ -307,7 +307,6 @@ SYM_FUNC_END(startup32_check_sev_cbit)
+ 
+ 	.data
+ 
 -#ifdef CONFIG_AMD_MEM_ENCRYPT
- 	push	%ebx
--	push	%ecx
--	push	%edx
- 
- 	movl	$0x80000000, %eax	/* CPUID to check the highest leaf */
- 	cpuid
-@@ -54,12 +49,7 @@ SYM_FUNC_START(get_sev_encryption_bit)
- 	xor	%eax, %eax
- 
- .Lsev_exit:
--	pop	%edx
--	pop	%ecx
- 	pop	%ebx
--
--#endif	/* CONFIG_AMD_MEM_ENCRYPT */
--
- 	RET
- SYM_FUNC_END(get_sev_encryption_bit)
- 
+ 	.balign	8
+ SYM_DATA(sme_me_mask,		.quad 0)
+ SYM_DATA(sev_status,		.quad 0)
+@@ -323,4 +322,3 @@ SYM_DATA_START_LOCAL(boot32_idt_desc)
+ 	.word	. - boot32_idt - 1
+ 	.long	0
+ SYM_DATA_END(boot32_idt_desc)
+-#endif
 -- 
 2.35.1
 
