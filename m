@@ -2,47 +2,47 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA4346332AA
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Nov 2022 03:04:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF1A16332B0
+	for <lists+linux-efi@lfdr.de>; Tue, 22 Nov 2022 03:04:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232482AbiKVCEd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 21 Nov 2022 21:04:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33494 "EHLO
+        id S232500AbiKVCEk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 21 Nov 2022 21:04:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232464AbiKVCEV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 21 Nov 2022 21:04:21 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F3EBDEAE8;
-        Mon, 21 Nov 2022 18:04:20 -0800 (PST)
+        with ESMTP id S232473AbiKVCEb (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 21 Nov 2022 21:04:31 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C8B2E1BCE;
+        Mon, 21 Nov 2022 18:04:23 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4FE38B8136A;
-        Tue, 22 Nov 2022 02:04:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54890C433D6;
-        Tue, 22 Nov 2022 02:04:17 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3C358B818E6;
+        Tue, 22 Nov 2022 02:04:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F00C433C1;
+        Tue, 22 Nov 2022 02:04:20 +0000 (UTC)
 Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="dl6cffAN"
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="qCLPoFdy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1669082656;
+        t=1669082658;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sRRUJbIcSnr8ZTNHq3sI4HzNBqRBBqfcvWMclFygaoU=;
-        b=dl6cffANAexQpw8uQfoTRvNYbcmSWvDo6qlGlaZVWbcJMW4joFsgo1HkW3BKX/Z9uQfEF+
-        sm+cpTuhIfgQtAiv5zJUtt+kTMoFMCkqQ89tknm0VUsPDvtUDWzW/BEwer/jfbbE1UP8Tn
-        lp+6jTFLssgWXDdQA9BBGar4O4XzPmA=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 57080fb0 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Tue, 22 Nov 2022 02:04:16 +0000 (UTC)
+        bh=rLuiywXwOgU0DdSYb71cMF5DgQZCiOi2DUhSONxrrpQ=;
+        b=qCLPoFdyiL30pd5i2LoFPnWyG4IxdR757HLvFRbXRAiy8dJvLUYt2D0ReGS23P1/GCV/M8
+        WltWsnBs3mlvmKCmsFE9+Ivsj9OvD1S/DnJXeK5yU25MzQ4lSOt75rUyUYDS3A8Z+X15Zr
+        VnVJf/4iWsUnDI2eNZsxD9/hf/zKy08=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id c4c33475 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+        Tue, 22 Nov 2022 02:04:18 +0000 (UTC)
 From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
 To:     linux-efi@vger.kernel.org, linux-crypto@vger.kernel.org,
         patches@lists.linux.dev, linux-kernel@vger.kernel.org,
         ardb@kernel.org
 Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: [PATCH v3 2/5] efi: stub: use random seed from EFI variable
-Date:   Tue, 22 Nov 2022 03:04:01 +0100
-Message-Id: <20221122020404.3476063-3-Jason@zx2c4.com>
+Subject: [PATCH v3 3/5] random: add back async readiness notifier
+Date:   Tue, 22 Nov 2022 03:04:02 +0100
+Message-Id: <20221122020404.3476063-4-Jason@zx2c4.com>
 In-Reply-To: <20221122020404.3476063-1-Jason@zx2c4.com>
 References: <20221122020404.3476063-1-Jason@zx2c4.com>
 MIME-Version: 1.0
@@ -57,120 +57,76 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-EFI has a rather unique benefit that it has access to some limited
-non-volatile storage, where the kernel can store a random seed. Read
-that seed in EFISTUB and concatenate it with other seeds we wind up
-passing onward to the kernel in the configuration table. This is
-complementary to the current other two sources - previous bootloaders,
-and the EFI RNG protocol.
+This is required by vsprint, because it can't do things synchronously
+from hardirq context, and it will be useful for an EFI notifier as well.
+I didn't initially want to do this, but with two potential consumers
+now, it seems worth it.
 
 Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 ---
- drivers/firmware/efi/libstub/random.c | 55 +++++++++++++++++++++------
- 1 file changed, 43 insertions(+), 12 deletions(-)
+ drivers/char/random.c  | 22 ++++++++++++++++++++++
+ include/linux/random.h |  1 +
+ 2 files changed, 23 insertions(+)
 
-diff --git a/drivers/firmware/efi/libstub/random.c b/drivers/firmware/efi/libstub/random.c
-index f85d2c066877..64aa6e7f3a17 100644
---- a/drivers/firmware/efi/libstub/random.c
-+++ b/drivers/firmware/efi/libstub/random.c
-@@ -68,13 +68,23 @@ efi_status_t efi_random_get_seed(void)
- 	efi_guid_t rng_algo_raw = EFI_RNG_ALGORITHM_RAW;
- 	efi_guid_t rng_table_guid = LINUX_EFI_RANDOM_SEED_TABLE_GUID;
- 	struct linux_efi_random_seed *prev_seed, *seed = NULL;
--	int prev_seed_size = 0, seed_size = EFI_RANDOM_SEED_SIZE;
-+	u8 nv_seed[EFI_RANDOM_SEED_SIZE];
-+	unsigned long prev_seed_size = 0, nv_seed_size = sizeof(nv_seed), seed_size = 0, offset = 0;
- 	efi_rng_protocol_t *rng = NULL;
- 	efi_status_t status;
+diff --git a/drivers/char/random.c b/drivers/char/random.c
+index 65ee69896967..a2a18bd3d7d7 100644
+--- a/drivers/char/random.c
++++ b/drivers/char/random.c
+@@ -84,6 +84,7 @@ static DEFINE_STATIC_KEY_FALSE(crng_is_ready);
+ /* Various types of waiters for crng_init->CRNG_READY transition. */
+ static DECLARE_WAIT_QUEUE_HEAD(crng_init_wait);
+ static struct fasync_struct *fasync;
++static ATOMIC_NOTIFIER_HEAD(random_ready_notifier);
  
- 	status = efi_bs_call(locate_protocol, &rng_proto, NULL, (void **)&rng);
--	if (status != EFI_SUCCESS)
--		return status;
-+	if (status == EFI_SUCCESS)
-+		seed_size += EFI_RANDOM_SEED_SIZE;
+ /* Control how we warn userspace. */
+ static struct ratelimit_state urandom_warning =
+@@ -140,6 +141,26 @@ int wait_for_random_bytes(void)
+ }
+ EXPORT_SYMBOL(wait_for_random_bytes);
+ 
++/*
++ * Add a callback function that will be invoked when the crng is initialised,
++ * or immediately if it already has been. Only use this is you are absolutely
++ * sure it is required. Most users should instead be able to test
++ * `rng_is_initialized()` on demand, or make use of `get_random_bytes_wait()`.
++ */
++int __cold execute_with_initialized_rng(struct notifier_block *nb)
++{
++	unsigned long flags;
++	int ret = 0;
 +
-+	status = get_efi_var(L"RandomSeed", &rng_table_guid, NULL, &nv_seed_size, nv_seed);
-+	if (status == EFI_SUCCESS)
-+		seed_size += nv_seed_size;
++	spin_lock_irqsave(&random_ready_notifier.lock, flags);
++	if (crng_ready())
++		nb->notifier_call(nb, 0, NULL);
 +	else
-+		nv_seed_size = 0;
++		ret = raw_notifier_chain_register((struct raw_notifier_head *)&random_ready_notifier.head, nb);
++	spin_unlock_irqrestore(&random_ready_notifier.lock, flags);
++	return ret;
++}
 +
-+	if (!seed_size)
-+		return EFI_NOT_FOUND;
+ #define warn_unseeded_randomness() \
+ 	if (IS_ENABLED(CONFIG_WARN_ALL_UNSEEDED_RANDOM) && !crng_ready()) \
+ 		printk_deferred(KERN_NOTICE "random: %s called from %pS with crng_init=%d\n", \
+@@ -697,6 +718,7 @@ static void __cold _credit_init_bits(size_t bits)
+ 		crng_reseed(NULL); /* Sets crng_init to CRNG_READY under base_crng.lock. */
+ 		if (static_key_initialized)
+ 			execute_in_process_context(crng_set_ready, &set_ready);
++		atomic_notifier_call_chain(&random_ready_notifier, 0, NULL);
+ 		wake_up_interruptible(&crng_init_wait);
+ 		kill_fasync(&fasync, SIGIO, POLL_IN);
+ 		pr_notice("crng init done\n");
+diff --git a/include/linux/random.h b/include/linux/random.h
+index 579117d83eb8..b1a34181eed6 100644
+--- a/include/linux/random.h
++++ b/include/linux/random.h
+@@ -120,6 +120,7 @@ void __init random_init_early(const char *command_line);
+ void __init random_init(void);
+ bool rng_is_initialized(void);
+ int wait_for_random_bytes(void);
++int execute_with_initialized_rng(struct notifier_block *nb);
  
- 	/*
- 	 * Check whether a seed was provided by a prior boot stage. In that
-@@ -83,7 +93,7 @@ efi_status_t efi_random_get_seed(void)
- 	 * Note that we should read the seed size with caution, in case the
- 	 * table got corrupted in memory somehow.
- 	 */
--	prev_seed = get_efi_config_table(LINUX_EFI_RANDOM_SEED_TABLE_GUID);
-+	prev_seed = get_efi_config_table(rng_table_guid);
- 	if (prev_seed && prev_seed->size <= 512U) {
- 		prev_seed_size = prev_seed->size;
- 		seed_size += prev_seed_size;
-@@ -103,7 +113,7 @@ efi_status_t efi_random_get_seed(void)
- 	}
- 
- 	status = efi_call_proto(rng, get_rng, &rng_algo_raw,
--				EFI_RANDOM_SEED_SIZE, seed->bits);
-+				EFI_RANDOM_SEED_SIZE, seed->bits + offset);
- 
- 	if (status == EFI_UNSUPPORTED)
- 		/*
-@@ -111,16 +121,37 @@ efi_status_t efi_random_get_seed(void)
- 		 * is not implemented.
- 		 */
- 		status = efi_call_proto(rng, get_rng, NULL,
--					EFI_RANDOM_SEED_SIZE, seed->bits);
-+					EFI_RANDOM_SEED_SIZE, seed->bits + offset);
- 
--	if (status != EFI_SUCCESS)
-+	if (status == EFI_SUCCESS)
-+		offset += EFI_RANDOM_SEED_SIZE;
-+
-+	if (nv_seed_size) {
-+		memcpy(seed->bits + offset, nv_seed, nv_seed_size);
-+		memzero_explicit(nv_seed, nv_seed_size);
-+		/*
-+		 * We delete the seed here, and /hope/ that this causes EFI to
-+		 * also zero out its representation on disk. This is somewhat
-+		 * idealistic, but overwriting the variable with zeros is
-+		 * likely just as fraught too. TODO: in the future, maybe we
-+		 * can hash it forward instead, and write a new seed.
-+		 */
-+		status = set_efi_var(L"RandomSeed", &rng_table_guid, 0, 0, NULL);
-+		if (status == EFI_SUCCESS)
-+			offset += nv_seed_size;
-+		else
-+			memzero_explicit(seed->bits + offset, nv_seed_size);
-+	}
-+
-+	if (!offset)
- 		goto err_freepool;
- 
--	seed->size = seed_size;
--	if (prev_seed_size)
--		memcpy(seed->bits + EFI_RANDOM_SEED_SIZE, prev_seed->bits,
--		       prev_seed_size);
-+	if (prev_seed_size) {
-+		memcpy(seed->bits + offset, prev_seed->bits, prev_seed_size);
-+		offset += prev_seed_size;
-+	}
- 
-+	seed->size = offset;
- 	status = efi_bs_call(install_configuration_table, &rng_table_guid, seed);
- 	if (status != EFI_SUCCESS)
- 		goto err_freepool;
-@@ -135,7 +166,7 @@ efi_status_t efi_random_get_seed(void)
- err_freepool:
- 	memzero_explicit(seed, struct_size(seed, bits, seed_size));
- 	efi_bs_call(free_pool, seed);
--	efi_warn("Failed to obtain seed from EFI_RNG_PROTOCOL\n");
-+	efi_warn("Failed to obtain seed from EFI_RNG_PROTOCOL and EFI variable\n");
- err_warn:
- 	if (prev_seed)
- 		efi_warn("Retaining bootloader-supplied seed only");
+ /* Calls wait_for_random_bytes() and then calls get_random_bytes(buf, nbytes).
+  * Returns the result of the call to wait_for_random_bytes. */
 -- 
 2.38.1
 
