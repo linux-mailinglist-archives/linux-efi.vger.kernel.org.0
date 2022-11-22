@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E3B56340F4
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Nov 2022 17:10:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5383B6340F6
+	for <lists+linux-efi@lfdr.de>; Tue, 22 Nov 2022 17:10:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234173AbiKVQKn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 22 Nov 2022 11:10:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42406 "EHLO
+        id S234185AbiKVQKp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 22 Nov 2022 11:10:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234186AbiKVQKi (ORCPT
+        with ESMTP id S234189AbiKVQKi (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Tue, 22 Nov 2022 11:10:38 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA9AD73421;
-        Tue, 22 Nov 2022 08:10:37 -0800 (PST)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D9187342F;
+        Tue, 22 Nov 2022 08:10:38 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6E2B1B81C12;
-        Tue, 22 Nov 2022 16:10:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF16C433C1;
-        Tue, 22 Nov 2022 16:10:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DE05A61790;
+        Tue, 22 Nov 2022 16:10:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85371C433D6;
+        Tue, 22 Nov 2022 16:10:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669133435;
-        bh=wDRs75zTAHjH3XwxSS7HuA7vyVpCwR1hlLp7hTGnUFQ=;
+        s=k20201202; t=1669133437;
+        bh=sEJvhCQxeDCcI3Wh1P1C49BRYqX5Djj4f/natWFpYe8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Haz5xahkdshlBU/tRr1O4ZnSpYOxX3bxkfza8v1TsQcZ4lMCI9qJ1KM8Lb3FAGcJQ
-         o0RkclgkoVbumV79RLi3iVyHmRbhfQHailej8zQhhfrdqFm1FTmB3o5+kZ51nayvu8
-         n2aqgIzHAtrDbSEOvSAvmBDa369Ctdd9h9inzeP46OsDo3cZYJxiICuXm7uciseWlB
-         /TLgPGpfJdaifs0CXoGJSzaLzIE9UGda4T4dP1+O9DkO9Yk+q60zWOXWrxV6sw8uUg
-         oNz7Nu4bp8Uanr83MiA7vUjNzQe03ZpY6/pDJvzf1SqR0z997M3rPB4KeXaMUfViIm
-         xOBxti+UdhdTQ==
+        b=SV9XRYW0O18IJlBXy7lIv08oVHUL/FtEJw7NFQjMF3iG86/d7BS2ekDBpJ+k461Pl
+         Z6o9EhvO18shfI/TB2tD4Dif54y1lhgvHYk5Jz9rD1+iLjeeeMbfjFcwuc/FPoDb5V
+         hrUPaXGgjgz0gkw0+ru5Ft70d/tfDSZIjr3R7EEpjmaSqoxCtsIPL/YBBVLilc7Wp+
+         WFv7bQ4LD6fXuuIew6uuWW8qF/waWXTCVJ59T4M8CuKrmj2Sk+Fu/4qLb1pWtkGgsg
+         +0lfBmRdrDwd/88Klps0p0EwyVsn0HR/EkAtgtAeWMAq8pZX/ec/MsAQbKuqSdhzc/
+         Nw9HPxP5FBNTw==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -38,14 +38,14 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Michael Roth <michael.roth@amd.com>
-Subject: [PATCH v3 01/17] x86/compressed: efi-mixed: rename efi_thunk_64.S to efi-mixed.S
-Date:   Tue, 22 Nov 2022 17:10:01 +0100
-Message-Id: <20221122161017.2426828-2-ardb@kernel.org>
+Subject: [PATCH v3 02/17] x86/compressed: efi-mixed: move 32-bit entrypoint code into .text section
+Date:   Tue, 22 Nov 2022 17:10:02 +0100
+Message-Id: <20221122161017.2426828-3-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221122161017.2426828-1-ardb@kernel.org>
 References: <20221122161017.2426828-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1576; i=ardb@kernel.org; h=from:subject; bh=wDRs75zTAHjH3XwxSS7HuA7vyVpCwR1hlLp7hTGnUFQ=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjfPRP2cVMH4lvpZYQzGmsO4SCnQ5TYAbG9swSZYuk aYpQndyJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY3z0TwAKCRDDTyI5ktmPJF6UC/ 9BDabprUrkL/8MHA1NYfeEFcxm0F80tRYJR18ArKn7XZL1lIaI7H8gIjlDpkkMwVhnLz6l0H+1cGkl RjuLYE0Mw1g4+mqc+vfhiFxwcR4NxL8KH62C1+MjiF1oe7LoTnDWwB1dB01FA4pwJVfLGbwQ+pm4Rt /XJVU/Y1xczQvY6SjM2B1ZkOA8z8b9G3pwSFiqgKXAdfyX6MJ5A6bdfkhnjJafN74SlbIIYu/DS5LL lIO6xlfBUuz6vmdKgak9m2bN/Z2caFUj2+RtaZepIAEeFbmKgEsEeGfAPpA3J8Gjho+YpmF2Pswyhk i0HlZD9bYErdUa3BP3gbBG0iaDLFq/j1q4zX041vJdzt6eT8OYIlRcYRufTmdzHgNefkNEgV0aT/u4 1vcuyzeh5e5yGxB0h7To97JEJferfJwy1bM54Kh3Vypin+jRc3uqVOaYvLIkuzKPeHjyyJ7TKJhpgO ZXwKwZRWiktn+JJbmig4mlt6PuSmJf5rfEnoWzTo69tU0=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2725; i=ardb@kernel.org; h=from:subject; bh=sEJvhCQxeDCcI3Wh1P1C49BRYqX5Djj4f/natWFpYe8=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjfPRQtQpikiqIcg3GsEynnGIf0E0BXR9vhKHMTNMA ubl/JByJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY3z0UAAKCRDDTyI5ktmPJN81C/ wKlnKRZktDzn6/J/fnPFJYeZqn0QJ5lycWp1uJOecLHgijPegOrMDDmrn8Hp5ZjbUdEY/dImsbyQoT XVAhWCeJux0/0dQRDQ8QisYP2IjPdkMYPtWExtqKNdxmyES89JK4P+HZIhjipRPNCmx/2NMNbNqmlE 5pWqJAU7f0GjzHe8ZCU5C+rplYk5TekvTuYIZihEGsYtEAVkFvhotbHli6ijd12v9/kWqiPL3jOpNc E+KqvOQ6FiFH4VG7E0SpY3kzqdVY//zNtXCR2X5tDbXmYNKLWAYunuHX9/CsUy1rnhPKTwh6Hnv3BU mR4+4otxW7ny2isBdou/WGdplFFx+Yigs8XBfzJo5NNzWdq1RfxIIlPeKmGsfCe+HDrdjxsb0MpnC2 A4pxKHr7KNvXrUtrVkGMfMNSaNJdPacDo4lY2sLYwqqzBua2VAV5CJ8TJvUIvv6ahtE9QPMrGv+MO8 32cS/k7Er70o+lPIMaxl3UTJTvbEd7ZA1Kr+trNWdnkmI=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -57,41 +57,94 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-In preparation for moving the mixed mode specific code out of head_64.S,
-rename the existing file to clarify that it contains more than just the
-mixed mode thunk.
-
-While at it, clean up the Makefile rules that add it to the build.
+Move the code that stores the arguments passed to the EFI entrypoint
+into the .text section, so that it can be moved into a separate
+compilation unit in a subsequent patch.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/Makefile                        | 6 +++---
- arch/x86/boot/compressed/{efi_thunk_64.S => efi_mixed.S} | 0
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/boot/compressed/head_64.S | 48 ++++++++++++++------
+ 1 file changed, 34 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index 3a261abb6d158d62..cd1a6295b957ea1d 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -108,11 +108,11 @@ endif
- vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
- vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index 190b803eb78712e0..74aaffd22b7425f4 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -311,24 +311,41 @@ SYM_FUNC_START(efi32_stub_entry)
+ 	popl	%ecx
+ 	popl	%edx
+ 	popl	%esi
++	jmp	efi32_entry
++SYM_FUNC_END(efi32_stub_entry)
  
--vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_thunk_$(BITS).o
- vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
--efi-obj-$(CONFIG_EFI_STUB) = $(objtree)/drivers/firmware/efi/libstub/lib.a
-+vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_mixed.o
-+vmlinux-objs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
++	.text
++/*
++ * This is the common EFI stub entry point for mixed mode.
++ *
++ * Arguments:	%ecx	image handle
++ * 		%edx	EFI system table pointer
++ *		%esi	struct bootparams pointer (or NULL when not using
++ *			the EFI handover protocol)
++ *
++ * Since this is the point of no return for ordinary execution, no registers
++ * are considered live except for the function parameters. [Note that the EFI
++ * stub may still exit and return to the firmware using the Exit() EFI boot
++ * service.]
++ */
++SYM_FUNC_START_LOCAL(efi32_entry)
+ 	call	1f
+-1:	pop	%ebp
+-	subl	$ rva(1b), %ebp
+-
+-	movl	%esi, rva(efi32_boot_args+8)(%ebp)
+-SYM_INNER_LABEL(efi32_pe_stub_entry, SYM_L_LOCAL)
+-	movl	%ecx, rva(efi32_boot_args)(%ebp)
+-	movl	%edx, rva(efi32_boot_args+4)(%ebp)
+-	movb	$0, rva(efi_is64)(%ebp)
++1:	pop	%ebx
  
--$(obj)/vmlinux: $(vmlinux-objs-y) $(efi-obj-y) FORCE
-+$(obj)/vmlinux: $(vmlinux-objs-y) FORCE
- 	$(call if_changed,ld)
+ 	/* Save firmware GDTR and code/data selectors */
+-	sgdtl	rva(efi32_boot_gdt)(%ebp)
+-	movw	%cs, rva(efi32_boot_cs)(%ebp)
+-	movw	%ds, rva(efi32_boot_ds)(%ebp)
++	sgdtl	(efi32_boot_gdt - 1b)(%ebx)
++	movw	%cs, (efi32_boot_cs - 1b)(%ebx)
++	movw	%ds, (efi32_boot_ds - 1b)(%ebx)
  
- OBJCOPYFLAGS_vmlinux.bin :=  -R .comment -S
-diff --git a/arch/x86/boot/compressed/efi_thunk_64.S b/arch/x86/boot/compressed/efi_mixed.S
-similarity index 100%
-rename from arch/x86/boot/compressed/efi_thunk_64.S
-rename to arch/x86/boot/compressed/efi_mixed.S
+ 	/* Store firmware IDT descriptor */
+-	sidtl	rva(efi32_boot_idt)(%ebp)
++	sidtl	(efi32_boot_idt - 1b)(%ebx)
++
++	/* Store boot arguments */
++	leal	(efi32_boot_args - 1b)(%ebx), %ebx
++	movl	%ecx, 0(%ebx)
++	movl	%edx, 4(%ebx)
++	movl	%esi, 8(%ebx)
++	movb	$0x0, 12(%ebx)          // efi_is64
+ 
+ 	/* Disable paging */
+ 	movl	%cr0, %eax
+@@ -336,7 +353,8 @@ SYM_INNER_LABEL(efi32_pe_stub_entry, SYM_L_LOCAL)
+ 	movl	%eax, %cr0
+ 
+ 	jmp	startup_32
+-SYM_FUNC_END(efi32_stub_entry)
++SYM_FUNC_END(efi32_entry)
++	__HEAD
+ #endif
+ 
+ 	.code64
+@@ -839,7 +857,9 @@ SYM_FUNC_START(efi32_pe_entry)
+ 	 */
+ 	subl	%esi, %ebx
+ 	movl	%ebx, rva(image_offset)(%ebp)	// save image_offset
+-	jmp	efi32_pe_stub_entry
++	xorl	%esi, %esi
++	jmp	efi32_entry			// pass %ecx, %edx, %esi
++						// no other registers remain live
+ 
+ 2:	popl	%edi				// restore callee-save registers
+ 	popl	%ebx
 -- 
 2.35.1
 
