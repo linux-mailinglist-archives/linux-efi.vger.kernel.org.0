@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0090E634101
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Nov 2022 17:11:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B1A7634103
+	for <lists+linux-efi@lfdr.de>; Tue, 22 Nov 2022 17:11:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234235AbiKVQLV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 22 Nov 2022 11:11:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42616 "EHLO
+        id S233058AbiKVQLg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 22 Nov 2022 11:11:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234224AbiKVQLF (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 22 Nov 2022 11:11:05 -0500
+        with ESMTP id S234227AbiKVQLG (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 22 Nov 2022 11:11:06 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AEED742DA;
-        Tue, 22 Nov 2022 08:10:51 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D6A2742F5;
+        Tue, 22 Nov 2022 08:10:53 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 988C5B81C10;
-        Tue, 22 Nov 2022 16:10:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C880C433B5;
-        Tue, 22 Nov 2022 16:10:46 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id CE5E7B81BEE;
+        Tue, 22 Nov 2022 16:10:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F77C433C1;
+        Tue, 22 Nov 2022 16:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669133448;
-        bh=tOdWUuW+7rgqllOBTMdmkxOryu+AGCsLR6dgpWQteso=;
+        s=k20201202; t=1669133450;
+        bh=9jyxmHpzfRCJJf9xQ03iz+bA0Xb5QCrz4P3JHsC5SMM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BiufXI+mj44YUUusTzdntIlg0lRmgwZYJPkPpwLrUsCR8FBC+urQixAow657MZ5QW
-         CefK9ug9CnRFw8SbUFp+/CII3Zge+H426s8CUgwsJoEJ2WDM5xfERDkex3DknWnJXE
-         gcx85eg+sh9YXyyRTcOy+yAf+GjtKhu7kJ1JCe5Bttfb8F18WaSr8nENWtPKqepLLj
-         ykaqG7c8+06m2HVtvxEdHHhKdM3XgitW1YRsswnVjrwHw7n8r6af9kVH3bfkn89KOO
-         TE+3/6tvztwMbs0DycWr500DEizlVVgMpz1rh5csu5nasd2MscRDD/MPeLlbomsj2g
-         /QL8HHe7ziJbg==
+        b=SiQbk7Da54coI7gkcSa+od6Hd1M1+JjCaNn0sFqcdZG0cdtYNtk4vB1aTINWnfSt9
+         8rfTyvgy6vUlGqeeu5V9XjhwRYFk6HMOy3qCTv95SmUw5yT9d2q+aVSqDvls4VeF+X
+         lsf6RLOVRNnFynZZZTkLyDyUO0XyFuDkCkvd8Pph1wBlGyUwdNnYA6Z6TQtrDqCNQw
+         deqfbqofQxcCxHpuCxXeZIaoZ9daJ8BSrPgtgAVDx9kFudVMdf27mkrsWFvKRLD1gy
+         TMFtctu/fcOjmw2cjOIIr+yUMzat1AipaE3kkWTNRTQobTcd8bdfxCZyltHtVEubWI
+         QAjbhcijIwlUw==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -38,14 +38,14 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Michael Roth <michael.roth@amd.com>
-Subject: [PATCH v3 07/17] x86/compressed: efi: merge multiple definitions of image_offset into one
-Date:   Tue, 22 Nov 2022 17:10:07 +0100
-Message-Id: <20221122161017.2426828-8-ardb@kernel.org>
+Subject: [PATCH v3 08/17] x86/compressed: efi-mixed: simplify IDT/GDT preserve/restore
+Date:   Tue, 22 Nov 2022 17:10:08 +0100
+Message-Id: <20221122161017.2426828-9-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221122161017.2426828-1-ardb@kernel.org>
 References: <20221122161017.2426828-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1868; i=ardb@kernel.org; h=from:subject; bh=tOdWUuW+7rgqllOBTMdmkxOryu+AGCsLR6dgpWQteso=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjfPRYC6Q2FjOROO3g/kYMKd+j9GKGxB5vZLG55iXf a8HbgceJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY3z0WAAKCRDDTyI5ktmPJMJoC/ 9tRpz6EuotfivDhIcQDtygpLQicCtE3UjIExGFiK0FyZ9yappBSj+HZXMRE7UK2j9VvkxNB+6fubLx HPXGIWaFPass4WDoo+RPCJjtrMhyQ8o+Tvaf9BglY981Bikni+FdPVomUa2FVTmWeitHLY2EjyldVb HM+gMQFyFwbssI85/Hhm7RiLr6BF6Qo47Dj2rvrOfzVgnMYy4q44RZJ9lGfNIzZhkRB9lndQC7ksb+ 6u5UbObuRQh20g+49oLscw8CybFdLj7T8k1AHX5Wv3W7/rFl5z1qU1hT61bwXglm82elPDhxqvekXM PzK0lnEWOBzXn1jCC6T77I64FUQPiP6DGyaWJ3TJ82VACxjBoBTOK8dw+CeYdA2KGRC6rOkX/SaXaQ pkq9Cg00EY8HinC+0SWf3PJgOnTVEXQ/az5HRkUhbFNhdV/Jx5WxKPOFkHjlk3v0GjGfNS2anD++Rc XukCkruMnp+ffXQlSPydA036uiPwNKmvXkPKMax5kjc7A=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1663; i=ardb@kernel.org; h=from:subject; bh=9jyxmHpzfRCJJf9xQ03iz+bA0Xb5QCrz4P3JHsC5SMM=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjfPRabAmNoz2lPub2d3CamZQemKR8yASDbUtdoT/H Brr43omJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY3z0WgAKCRDDTyI5ktmPJPUKC/ 4t4JhAxm00y83U+Wvv2lAqOINuqkTuhkErVDG15v2jHR+wYw30ix4IghLOwk1iSHqDv0w/bCgPztVD Vw40lqEejjuygLaA/IDUXmKps3vkdJ67GWwpm2mflPDVvXO9gkh9KcU5EmUbPNZIuzO8DBkI45Tfrx wPpTaTILzpbYKv3YH11CzTBHkd8rx8eE+rN4Gd6olfriIBjDReEb6sHyWZKk/kq8iGNDLiPrukp/+s ssN1Upypo9IgxpqwnBR/hAE4BU/uoGabIvrYVpZK7l9J8DiFa82SdRCyIzUcgGBUwkessJq8KMokyT htyKWur2fjznZRSYRAGPsP3xXAbciPsZQFTkTozwyeV3AuFdJldcTsLXLoIez2YElX/Epm0RhwOaUJ Zt5RvDMgD36pIqAN5xYqx/T40dY74SZaG9w4GQGMwUz+AX1gKo9DnYze0fxdNd2ATExubRqB7cv/i/ 2SxSKLq80PD+MvCg8gRWoksHrI7ioxnnKHmJrYSwvEj2c=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -57,60 +57,60 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-There is no need for head_32.S and head_64.S both declaring a copy of
-the globale 'image_offset' variable, so drop those and make the extern C
-declaration the definition.
+Tweak the asm and remove some redundant instructions. While at it,
+fix the associated comment for style and correctness.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/head_32.S      | 4 ----
- arch/x86/boot/compressed/head_64.S      | 4 ----
- drivers/firmware/efi/libstub/x86-stub.c | 2 +-
- 3 files changed, 1 insertion(+), 9 deletions(-)
+ arch/x86/boot/compressed/efi_mixed.S | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/head_32.S b/arch/x86/boot/compressed/head_32.S
-index 3b354eb9516df416..6589ddd4cfaf2cb6 100644
---- a/arch/x86/boot/compressed/head_32.S
-+++ b/arch/x86/boot/compressed/head_32.S
-@@ -208,10 +208,6 @@ SYM_DATA_START_LOCAL(gdt)
- 	.quad	0x00cf92000000ffff	/* __KERNEL_DS */
- SYM_DATA_END_LABEL(gdt, SYM_L_LOCAL, gdt_end)
+diff --git a/arch/x86/boot/compressed/efi_mixed.S b/arch/x86/boot/compressed/efi_mixed.S
+index 8844d8ed4b1c7561..8b02e507d3bb055a 100644
+--- a/arch/x86/boot/compressed/efi_mixed.S
++++ b/arch/x86/boot/compressed/efi_mixed.S
+@@ -96,24 +96,20 @@ SYM_FUNC_START(__efi64_thunk)
  
--#ifdef CONFIG_EFI_STUB
--SYM_DATA(image_offset, .long 0)
--#endif
+ 	leaq	0x20(%rsp), %rbx
+ 	sgdt	(%rbx)
 -
- /*
-  * Stack and heap for uncompression
-  */
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index 987f0a3c284fad43..66ad3ab802ca9d0c 100644
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -726,10 +726,6 @@ SYM_DATA_START(boot32_idt)
- SYM_DATA_END_LABEL(boot32_idt, SYM_L_GLOBAL, boot32_idt_end)
- #endif
+-	addq	$16, %rbx
+-	sidt	(%rbx)
++	sidt	16(%rbx)
  
--#ifdef CONFIG_EFI_STUB
--SYM_DATA(image_offset, .long 0)
--#endif
+ 	leaq	1f(%rip), %rbp
+ 
+ 	/*
+-	 * Switch to IDT and GDT with 32-bit segments. This is the firmware GDT
+-	 * and IDT that was installed when the kernel started executing. The
+-	 * pointers were saved by the efi32_entry() routine below.
++	 * Switch to IDT and GDT with 32-bit segments. These are the firmware
++	 * GDT and IDT that were installed when the kernel started executing.
++	 * The pointers were saved by the efi32_entry() routine below.
+ 	 *
+ 	 * Pass the saved DS selector to the 32-bit code, and use far return to
+ 	 * restore the saved CS selector.
+ 	 */
+-	leaq	efi32_boot_idt(%rip), %rax
+-	lidt	(%rax)
+-	leaq	efi32_boot_gdt(%rip), %rax
+-	lgdt	(%rax)
++	lidt	efi32_boot_idt(%rip)
++	lgdt	efi32_boot_gdt(%rip)
+ 
+ 	movzwl	efi32_boot_ds(%rip), %edx
+ 	movzwq	efi32_boot_cs(%rip), %rax
+@@ -187,9 +183,7 @@ SYM_FUNC_START_LOCAL(efi_enter32)
+ 	 */
+ 	cli
+ 
+-	lidtl	(%ebx)
+-	subl	$16, %ebx
 -
- #ifdef CONFIG_AMD_MEM_ENCRYPT
- 	__HEAD
- 	.code32
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 33a7811e12c65642..cb5f0befee57d2ec 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -23,7 +23,7 @@
++	lidtl	16(%ebx)
+ 	lgdtl	(%ebx)
  
- const efi_system_table_t *efi_system_table;
- const efi_dxe_services_table_t *efi_dxe_table;
--extern u32 image_offset;
-+u32 image_offset;
- static efi_loaded_image_t *image = NULL;
- 
- static efi_status_t
+ 	movl	%cr4, %eax
 -- 
 2.35.1
 
