@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B1A7634103
+	by mail.lfdr.de (Postfix) with ESMTP id ED1A0634105
 	for <lists+linux-efi@lfdr.de>; Tue, 22 Nov 2022 17:11:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233058AbiKVQLg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        id S234253AbiKVQLg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
         Tue, 22 Nov 2022 11:11:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42968 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234227AbiKVQLG (ORCPT
+        with ESMTP id S234252AbiKVQLG (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Tue, 22 Nov 2022 11:11:06 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D6A2742F5;
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0B7A742FA;
         Tue, 22 Nov 2022 08:10:53 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CE5E7B81BEE;
-        Tue, 22 Nov 2022 16:10:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F77C433C1;
-        Tue, 22 Nov 2022 16:10:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 69CDE61740;
+        Tue, 22 Nov 2022 16:10:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13562C4347C;
+        Tue, 22 Nov 2022 16:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669133450;
-        bh=9jyxmHpzfRCJJf9xQ03iz+bA0Xb5QCrz4P3JHsC5SMM=;
+        s=k20201202; t=1669133452;
+        bh=ZQv9+X1iJK9wCaH0UdAvPwmkreYOyHzQ5yoM8JDBf4A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SiQbk7Da54coI7gkcSa+od6Hd1M1+JjCaNn0sFqcdZG0cdtYNtk4vB1aTINWnfSt9
-         8rfTyvgy6vUlGqeeu5V9XjhwRYFk6HMOy3qCTv95SmUw5yT9d2q+aVSqDvls4VeF+X
-         lsf6RLOVRNnFynZZZTkLyDyUO0XyFuDkCkvd8Pph1wBlGyUwdNnYA6Z6TQtrDqCNQw
-         deqfbqofQxcCxHpuCxXeZIaoZ9daJ8BSrPgtgAVDx9kFudVMdf27mkrsWFvKRLD1gy
-         TMFtctu/fcOjmw2cjOIIr+yUMzat1AipaE3kkWTNRTQobTcd8bdfxCZyltHtVEubWI
-         QAjbhcijIwlUw==
+        b=rP8QYEhs/Yv0vTP+DydzJhp++6EoqkR+xXkXY9SUY5zVuPKW1OBmTPtU0HKQx9RfQ
+         l8QCamavVEscgs9v9wyLMTuoMUeqMnoayuFBcYlKI15qaAyZD15DJlYJJxqlTmRr7N
+         1N2iMl0xAskzGmrLhzq7+E3uyNBBy9aP6jve3ps7wf3SB1xOHQDIBLrxAlQ8bKSd9+
+         Ggt/pt5ISA0QROeCTn4ygrZ8dAs1BNJlchPnuhJsFVAPD6fsUSLnpOGBgV5wMT0thI
+         WD/d367a/gVrSUGleowaH3aEm3ohjc2xSP/Hkagm+Fh2D/AR+Obbvtrj9EFve4I9Xv
+         DXcMAPhz2tPiQ==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -38,14 +38,14 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Michael Roth <michael.roth@amd.com>
-Subject: [PATCH v3 08/17] x86/compressed: efi-mixed: simplify IDT/GDT preserve/restore
-Date:   Tue, 22 Nov 2022 17:10:08 +0100
-Message-Id: <20221122161017.2426828-9-ardb@kernel.org>
+Subject: [PATCH v3 09/17] x86/compressed: avoid touching ECX in startup32_set_idt_entry()
+Date:   Tue, 22 Nov 2022 17:10:09 +0100
+Message-Id: <20221122161017.2426828-10-ardb@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20221122161017.2426828-1-ardb@kernel.org>
 References: <20221122161017.2426828-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1663; i=ardb@kernel.org; h=from:subject; bh=9jyxmHpzfRCJJf9xQ03iz+bA0Xb5QCrz4P3JHsC5SMM=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjfPRabAmNoz2lPub2d3CamZQemKR8yASDbUtdoT/H Brr43omJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY3z0WgAKCRDDTyI5ktmPJPUKC/ 4t4JhAxm00y83U+Wvv2lAqOINuqkTuhkErVDG15v2jHR+wYw30ix4IghLOwk1iSHqDv0w/bCgPztVD Vw40lqEejjuygLaA/IDUXmKps3vkdJ67GWwpm2mflPDVvXO9gkh9KcU5EmUbPNZIuzO8DBkI45Tfrx wPpTaTILzpbYKv3YH11CzTBHkd8rx8eE+rN4Gd6olfriIBjDReEb6sHyWZKk/kq8iGNDLiPrukp/+s ssN1Upypo9IgxpqwnBR/hAE4BU/uoGabIvrYVpZK7l9J8DiFa82SdRCyIzUcgGBUwkessJq8KMokyT htyKWur2fjznZRSYRAGPsP3xXAbciPsZQFTkTozwyeV3AuFdJldcTsLXLoIez2YElX/Epm0RhwOaUJ Zt5RvDMgD36pIqAN5xYqx/T40dY74SZaG9w4GQGMwUz+AX1gKo9DnYze0fxdNd2ATExubRqB7cv/i/ 2SxSKLq80PD+MvCg8gRWoksHrI7ioxnnKHmJrYSwvEj2c=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1572; i=ardb@kernel.org; h=from:subject; bh=ZQv9+X1iJK9wCaH0UdAvPwmkreYOyHzQ5yoM8JDBf4A=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjfPRbNOEMtTo47vx2jAN2Z59KRsBmjvCYdb205ac7 Cv/CzdaJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY3z0WwAKCRDDTyI5ktmPJMBhC/ 9YvZjPjTtVifhaj3PVkOErn74GJ54+p0Yk1QiI2OSd+mr6sNcibNqgldEtqhOUXOpWxoNUld2Na7sx TbCsuvenJqmE6G3NX3B/qpnikHYnLm9vjgoZPxIgGFkBA5iIf9WF3wY3kl/31Pw7XkGoFFGyXODjs0 tWeAVgmWJE5S0RQodZ6fQUuESapXpwcobXuJUslwDqhgtUMKm8o9itj+FCEb1XuWU98LzzMJFLa48D Yek7l/df2rVTYUcybGjCVVBqqUMoAeoU6/5oQRTW9k7OmccRfXY1KimPLtujCGYwdD4mVjGHyWxnZP o3szwaE70Fp6vDbxvjLslV4Z0yadrsVJu/O9EdMLpSwuT3AFi3T505Vv0EcN97T59J2rRWDnKUr/AC L9EvMhOsePPNQo7NdixlnvUVCjR1D9gdTQ+tyejktKrDnL2pX41YPpeq6f8Zu7yJ1mX+efsXDluYz8 cbNV+G80miTg9qaZX2m3WE9CTqQsGRBr2xpwCkI0d8Mf0=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -57,60 +57,51 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Tweak the asm and remove some redundant instructions. While at it,
-fix the associated comment for style and correctness.
+Avoid touching register %ecx in startup32_set_idt_entry(), by folding
+the MOV, SHL and ORL instructions into a single ORL which no longer
+requires a temp register.
+
+This permits ECX to be used as a function argument in a subsequent
+patch.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/efi_mixed.S | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+ arch/x86/boot/compressed/head_64.S | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/efi_mixed.S b/arch/x86/boot/compressed/efi_mixed.S
-index 8844d8ed4b1c7561..8b02e507d3bb055a 100644
---- a/arch/x86/boot/compressed/efi_mixed.S
-+++ b/arch/x86/boot/compressed/efi_mixed.S
-@@ -96,24 +96,20 @@ SYM_FUNC_START(__efi64_thunk)
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index 66ad3ab802ca9d0c..f31277f455e63f5f 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -741,7 +741,6 @@ SYM_DATA_END_LABEL(boot32_idt, SYM_L_GLOBAL, boot32_idt_end)
+  */
+ SYM_FUNC_START(startup32_set_idt_entry)
+ 	push    %ebx
+-	push    %ecx
  
- 	leaq	0x20(%rsp), %rbx
- 	sgdt	(%rbx)
--
--	addq	$16, %rbx
--	sidt	(%rbx)
-+	sidt	16(%rbx)
+ 	/* IDT entry address to %ebx */
+ 	leal    rva(boot32_idt)(%ebp), %ebx
+@@ -750,10 +749,8 @@ SYM_FUNC_START(startup32_set_idt_entry)
  
- 	leaq	1f(%rip), %rbp
+ 	/* Build IDT entry, lower 4 bytes */
+ 	movl    %eax, %edx
+-	andl    $0x0000ffff, %edx	# Target code segment offset [15:0]
+-	movl    $__KERNEL32_CS, %ecx	# Target code segment selector
+-	shl     $16, %ecx
+-	orl     %ecx, %edx
++	andl    $0x0000ffff, %edx		# Target code segment offset [15:0]
++	orl	$(__KERNEL32_CS << 16), %edx	# Target code segment selector
  
- 	/*
--	 * Switch to IDT and GDT with 32-bit segments. This is the firmware GDT
--	 * and IDT that was installed when the kernel started executing. The
--	 * pointers were saved by the efi32_entry() routine below.
-+	 * Switch to IDT and GDT with 32-bit segments. These are the firmware
-+	 * GDT and IDT that were installed when the kernel started executing.
-+	 * The pointers were saved by the efi32_entry() routine below.
- 	 *
- 	 * Pass the saved DS selector to the 32-bit code, and use far return to
- 	 * restore the saved CS selector.
- 	 */
--	leaq	efi32_boot_idt(%rip), %rax
--	lidt	(%rax)
--	leaq	efi32_boot_gdt(%rip), %rax
--	lgdt	(%rax)
-+	lidt	efi32_boot_idt(%rip)
-+	lgdt	efi32_boot_gdt(%rip)
+ 	/* Store lower 4 bytes to IDT */
+ 	movl    %edx, (%ebx)
+@@ -766,7 +763,6 @@ SYM_FUNC_START(startup32_set_idt_entry)
+ 	/* Store upper 4 bytes to IDT */
+ 	movl    %edx, 4(%ebx)
  
- 	movzwl	efi32_boot_ds(%rip), %edx
- 	movzwq	efi32_boot_cs(%rip), %rax
-@@ -187,9 +183,7 @@ SYM_FUNC_START_LOCAL(efi_enter32)
- 	 */
- 	cli
- 
--	lidtl	(%ebx)
--	subl	$16, %ebx
--
-+	lidtl	16(%ebx)
- 	lgdtl	(%ebx)
- 
- 	movl	%cr4, %eax
+-	pop     %ecx
+ 	pop     %ebx
+ 	RET
+ SYM_FUNC_END(startup32_set_idt_entry)
 -- 
 2.35.1
 
