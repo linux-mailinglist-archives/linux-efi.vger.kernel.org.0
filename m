@@ -2,95 +2,123 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36F23635B8F
-	for <lists+linux-efi@lfdr.de>; Wed, 23 Nov 2022 12:24:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 092E1635C55
+	for <lists+linux-efi@lfdr.de>; Wed, 23 Nov 2022 13:05:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236661AbiKWLXk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 23 Nov 2022 06:23:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58452 "EHLO
+        id S237326AbiKWMFI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 23 Nov 2022 07:05:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237091AbiKWLXV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 23 Nov 2022 06:23:21 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE67BED5F6;
-        Wed, 23 Nov 2022 03:23:09 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A48561C21;
-        Wed, 23 Nov 2022 11:23:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D159EC43144;
-        Wed, 23 Nov 2022 11:23:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669202588;
-        bh=XKRzTZEWHP1EN1Nejvn+0OZzGhKx7U4U140sQA04rVU=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=b9F53+1W1kELCSLkWE7UxyjE0kyKvKveLb6yRiwPo0cez4f7CwWFzetXgTgwuwqC7
-         2uCkL575Sxo7CtObNKn4o2D7xTzphq90TwT8SiP2//RkxSUMwteTgOxcIazHc7OhpQ
-         +1gjR1qz9FJo+ibJ+3o3rlHCDBExYlAKwl9aKe1jMMAoqAC4vm9AIkHoOeWNgbsB57
-         WzcGGaVlaIbXhMCZmqcQcUZw93/lD8f14VzRGMb0eWiptrjxQK2ShVP/9h2oNAWqbj
-         VM6iIpeAGaiurqzr0uOO2lwlrv4qGAwJoUm6XLIH7QJfjK1ch+t9JmOZTFTzUQ53ij
-         rrefrBuSxZhNw==
-Received: by mail-lf1-f44.google.com with SMTP id b3so27705394lfv.2;
-        Wed, 23 Nov 2022 03:23:08 -0800 (PST)
-X-Gm-Message-State: ANoB5pkPu+hP7PQeOeHxdsAS16KXEN3ouhgPakQ/DrVXWzToAXWDDm5y
-        fkUMxVk1MNzmifEY85PEtT1BfBcvRn1EzShL7hk=
-X-Google-Smtp-Source: AA0mqf7xQPXEKhZUbEG6N9rf61z9C6ox/MXh8L49cyEIG/qq1rOwP2K7b9s22Svaz/OKT6OfyeUtr8LfYTIMYVFKw7w=
-X-Received: by 2002:a05:6512:3c89:b0:4a2:bfd2:b218 with SMTP id
- h9-20020a0565123c8900b004a2bfd2b218mr9251006lfv.228.1669202586752; Wed, 23
- Nov 2022 03:23:06 -0800 (PST)
+        with ESMTP id S237145AbiKWMFI (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 23 Nov 2022 07:05:08 -0500
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 749A215FE2;
+        Wed, 23 Nov 2022 04:05:06 -0800 (PST)
+Received: by mail-ej1-x636.google.com with SMTP id vv4so33002323ejc.2;
+        Wed, 23 Nov 2022 04:05:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MdkN33eqdBW8OFqoAkyIS40FmG3oWWH+dzPo/Vz7+AA=;
+        b=IwVLuZWWCilVb/mBFTdCkpJ/FyKCtl9qhLxekbfU3z6dSIbpf5HaE5M7yhDhpHR+Tl
+         Phudcd9OSkRwijiEw/baWROlfEKW9FdwH6B7Syq014lQMA54GfmjMV+AOXvds7sbuWf3
+         Zuaki/kU7fiFL2Z8Dj36y+wQBuxN/uC80aHsISXdWCzF6DSRxMQsu7sYq/5oM+t+G/Jm
+         p2lfngOI3XWaqkJyzgFvxkiOJxObGbiLTt2UNRqXOV4lL69TuMcSVgmjCqNj1YRFJ6Sa
+         t69NBYYsQdWuLVZhegvYJdSYa8m+8npCWow47ilp0RyKpnlTFmSvCk+iqxGQTxJgCGUy
+         vyWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MdkN33eqdBW8OFqoAkyIS40FmG3oWWH+dzPo/Vz7+AA=;
+        b=M+fKECkUrYo/8u8f8HPu13Yd2vA0bOy2tLPHTonzzvVGJbyqKxNp2Hd1WQnXZG8JF/
+         PZp8xzM7HN9xnHHPRQwq4HVSrT3kpipEH0iBeJvhyQ5DSNy5JhZdQIdkpohjLywMN6pV
+         W3Vv5CBGksQntBoThf8EwktXf+UQXqqUtbWjIInpISHG/zP/3eky9iQb9i/p3vx0DtLZ
+         By/MesNTBg5JSfV52O/6r8AeYnvDQnl1huwcLwnPrnsC9VjA4gsY0ujG22TzGzywm0Vm
+         y+M2niEUfkNCaP5Lmf3Y0/61eO/sSyaC0Ffon2JGrbUlIF7fKNrcuSxG4YqoJPKS+Paj
+         Au5A==
+X-Gm-Message-State: ANoB5plTQ94MhntdzP9aG8gUoBx/hOccYSpVOL7JIWObMTYBpTmpsv0g
+        DiSo9oyXruCaYDekjCu/YdM=
+X-Google-Smtp-Source: AA0mqf52SQi4DYO4SRXhGUeSpqmBH7rHMNwq6edg3z6Jqk+RvDG0nj7w9SzccS7/ZLjWV4Gkkes7sg==
+X-Received: by 2002:a17:907:98ea:b0:7ae:c1af:89af with SMTP id ke10-20020a17090798ea00b007aec1af89afmr7595669ejc.550.1669205104775;
+        Wed, 23 Nov 2022 04:05:04 -0800 (PST)
+Received: from [10.20.0.7] ([37.120.217.162])
+        by smtp.gmail.com with ESMTPSA id b14-20020a17090636ce00b007a8de84ce36sm7166227ejc.206.2022.11.23.04.05.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Nov 2022 04:05:04 -0800 (PST)
+Message-ID: <33348300-b3a7-af67-5729-8d0471aff2dc@gmail.com>
+Date:   Wed, 23 Nov 2022 13:05:02 +0100
 MIME-Version: 1.0
-References: <20221122161017.2426828-1-ardb@kernel.org> <5750d157-43dd-6f3d-1407-f41af3cff207@amd.com>
- <CAMj1kXHUQFAcRKzRkuGG3Rsyrexdi7_NUS1-aXrS36LP4Q=rxw@mail.gmail.com>
- <26c34f9e-3b09-7b10-09a2-993a50790447@amd.com> <Y336yE4P3NjCGavN@zn.tnic>
- <CAMj1kXGnGz+V3tmonitY+3TiWuWJFWj-mQLUbRo+xp8UwZ_SpQ@mail.gmail.com> <Y33/VIsB5HGREY4i@zn.tnic>
-In-Reply-To: <Y33/VIsB5HGREY4i@zn.tnic>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 23 Nov 2022 12:22:55 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFMc_1ZVeiBJmUwPjPh-_LCU8Jqr_iSOEhVHT=PJFstcQ@mail.gmail.com>
-Message-ID: <CAMj1kXFMc_1ZVeiBJmUwPjPh-_LCU8Jqr_iSOEhVHT=PJFstcQ@mail.gmail.com>
-Subject: Re: [PATCH v3 00/17] x86: head_64.S spring cleaning
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Tom Lendacky <thomas.lendacky@amd.com>, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Michael Roth <michael.roth@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH 0/4] firmware: Add support for Qualcomm UEFI Secure
+ Application
+To:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Steev Klimaszewski <steev@kali.org>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-arm-msm@vger.kernel.org, linux-efi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220723224949.1089973-1-luzmaximilian@gmail.com>
+ <dfd07f84-c4bd-a18c-2263-49f999f2934c@linaro.org>
+ <f42539d0-c2a3-a2b2-c35b-b7a5904b376f@gmail.com>
+ <1085c75e-fd12-f432-8893-b58f7c3a7cab@linaro.org>
+Content-Language: en-US
+From:   Maximilian Luz <luzmaximilian@gmail.com>
+In-Reply-To: <1085c75e-fd12-f432-8893-b58f7c3a7cab@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 23 Nov 2022 at 12:09, Borislav Petkov <bp@alien8.de> wrote:
->
-> On Wed, Nov 23, 2022 at 11:52:32AM +0100, Ard Biesheuvel wrote:
-> > The patch moves it from .data to .bss inadvertently, and I am not
-> > convinced Tom's analysis is entirely accurate: we may simply have
-> > garbage in image_offset if we access it before .bss gets cleared.
->
-> That should not be too hard to find out: add an endless loop in asm in
-> the guest right after the first image_offset access:
->
-> 1:
->         jmp 1b
->
-> and then dump its value.
->
-> Or Tom might have an even better solution.
->
-> But looking at the code, BSS clearing happens later, at .Lrelocated and
-> the EFI stub comes before it. AFAICT.
->
+Hi,
 
-Indeed. And moving it back into .data makes the most sense in any case
-- the point of the patch is to drop the duplicate definitions from asm
-code, not to move it into a different section.
+On 11/23/22 12:22, Srinivas Kandagatla wrote:
+> Hi Max,
+> 
+> On 02/08/2022 14:22, Maximilian Luz wrote:
+>>
+>>
+>> On 8/2/22 13:51, Srinivas Kandagatla wrote:
 
-The reason I hadn't spotted this is because my boot chain always sets
-the value of image_offset during the boot, and does not rely on the
-statically initialized value at all.
+[...]
+
+>>> I think its worth exploring if uefisecapp can talk smcinvoke.
+>>> I can ping Qualcomm engineers to see if that is doable.
+>>
+>> I think that would be great! Thanks!
+> Sorry for such a long delay to reply to this,
+> 
+> here is what I have.
+> 
+> Access to TA using SCM calls remain valid and it will continue to work till SM8550 and probably after that if the TA is *NOT* loaded using smcinvoke for some reasons.
+> 
+> But overall by default on all new SoCs after sm8550 all the access to TA is only done via smcinvoke, and the underlying scm call that are used in this patchset will not be supported anymore.
+> 
+>  From SM8550, we will need to move this driver to a proper TEE client kernel driver.
+> 
+> So, with that in mind, I would suggest that we carefully name the compatibles based on SoC rather than generic ones.
+
+Thanks! That makes sense.
+
+Regards,
+Max
