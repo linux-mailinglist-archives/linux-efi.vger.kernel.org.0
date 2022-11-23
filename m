@@ -2,163 +2,168 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D77C6366D8
-	for <lists+linux-efi@lfdr.de>; Wed, 23 Nov 2022 18:19:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13369636961
+	for <lists+linux-efi@lfdr.de>; Wed, 23 Nov 2022 19:59:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237461AbiKWRTw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 23 Nov 2022 12:19:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41616 "EHLO
+        id S239035AbiKWS6u (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 23 Nov 2022 13:58:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236320AbiKWRTv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 23 Nov 2022 12:19:51 -0500
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BF36CC3
-        for <linux-efi@vger.kernel.org>; Wed, 23 Nov 2022 09:19:49 -0800 (PST)
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com [209.85.128.197])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 9E9EC3F480
-        for <linux-efi@vger.kernel.org>; Wed, 23 Nov 2022 17:19:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1669223987;
-        bh=h7C2hHcimmZ7pO9zs58j39X1ZC+4+l5O+MNwfXCa5Gs=;
-        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-         To:Cc:Content-Type;
-        b=m1Jzt3iV7i9ThJbTkTDRpkIMEaZhhvUB1fHh9Ne5v7jxhsHrY1bg8arSC6AenLxP/
-         HBrx16lf9WM5GyUwaT9ZiwLo4+GiDacrcZ3ux19ohqldKmw91/qVcWZCBu2W6bHG9I
-         bMT+cDcUyHJ4jRNqNbnd05J3+EGc4JC90+Dm5+zrYPaR3A8rHYjjLxuO3tYCDLZ/5C
-         rYC9mCY8goWHkH8oiI7LvK0cFFCEuRklt8r2Bwf6ibQUqPTMiKHaVi0rPRryouo6zu
-         y5UU+SU0FpxODp2+aHw6PoRBPMkBKkz+UY1ROd6CR4Sr/O/yFUt/VuQwQhbxPyYvzt
-         xEipl9dOrgwjw==
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-39afd53dcdbso109042887b3.8
-        for <linux-efi@vger.kernel.org>; Wed, 23 Nov 2022 09:19:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=h7C2hHcimmZ7pO9zs58j39X1ZC+4+l5O+MNwfXCa5Gs=;
-        b=NHFMJttWwjwvLwcxkfKVSKAxZ5ozv3gUsz4Emcq4JDF2R8r+OfEVjFdxVP41yGI6SB
-         sJkNJXMSsEt4Kzr+WDrFq7cdkoZOZ6PsFmfnjm+FSIrx8JHfelLmx5eVw8p2O99zkhpi
-         2iVJqo61DEGWc3fbyvKMh2preBD2wGNLtsNwBwOZWdAieDZqzfb1M5nsY/X1B0QXxT2i
-         ap2lyt8hJR5/DWfMQ7gsq60AphTKMJwHeNuEz17zKUSPffOv3sUCLg9Xh3jrn8OYlEa8
-         N+nOmUKB/l3yxgSvn4CbZgYQQTOO0L3VIgthtd9MVX7G0rJ/MGwAP/YhRvc9oayj7Qho
-         vDOg==
-X-Gm-Message-State: ANoB5pkWyQ8/DdMxrAAufyeGkS8AH6dUbao9x0M9R8A/lbXDxLxGMM8y
-        dGjG0Vl6XdSqXNINQQjdI1iVcJza0xpeGDD/8hZDa/cKnSsqEoc6IJccmM527CqNokYEQooUQ0u
-        lrnVYCK0UOaXYknLrX3cx0oqBk+V9VxYf3E/noiPm7iHUDtxhrbcbsA==
-X-Received: by 2002:a0d:e696:0:b0:3b1:23de:2025 with SMTP id p144-20020a0de696000000b003b123de2025mr2631656ywe.230.1669223986618;
-        Wed, 23 Nov 2022 09:19:46 -0800 (PST)
-X-Google-Smtp-Source: AA0mqf6dPqwX2isjpBvx2vvZXYABsXo2bhnTP7AwHMF+2frJwg5uBRpnSXCpfEg3kl7RSJMGPnCo/egG8ZfIflVk1pw=
-X-Received: by 2002:a0d:e696:0:b0:3b1:23de:2025 with SMTP id
- p144-20020a0de696000000b003b123de2025mr2631631ywe.230.1669223986399; Wed, 23
- Nov 2022 09:19:46 -0800 (PST)
+        with ESMTP id S236940AbiKWS6p (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 23 Nov 2022 13:58:45 -0500
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77B0C87543;
+        Wed, 23 Nov 2022 10:58:41 -0800 (PST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2ANI3vju030703;
+        Wed, 23 Nov 2022 18:58:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=OWd1TMAtI9YXm3ugWju/m0erSY+DisOV9bmg4+k/m3k=;
+ b=q4bGZ/SwCdcxMTCDce8bjFBUoDMN0CZ31q6DI7oTd3Lf9e8FOZgCgHZQ48zOuuWvzCUO
+ g65mPRAX6xpkXngwmP/wW2GD7kRr8pBWi2zh25utGJupBCeSK8g2Bmri4qiorULyb0Qb
+ l2lA14Gg2WxhPDnONXZDVVOXVwiFAvhq8uROjB5r8tWrD96R7LXyRZsTdvmb8I76XwXL
+ 7vVlWY8kND9j0qkhpFUgym5pBE3b+hqvo6qmV5+7CivPva8+Xj8Dc4HsLsSzR6hg2QFm
+ 2FGPRDZBXW/QdGmFtJBOtR5PtYtTO6s3vgGSnrKfZyvQ6qG+yzPHRYuSxvw5Tg+dp7lY Wg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m0x813evb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 23 Nov 2022 18:58:04 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2ANIvaif024504;
+        Wed, 23 Nov 2022 18:58:03 GMT
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m0x813ev0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 23 Nov 2022 18:58:03 +0000
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+        by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2ANIpeoh007133;
+        Wed, 23 Nov 2022 18:58:02 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com [9.57.198.28])
+        by ppma03dal.us.ibm.com with ESMTP id 3kxpsakr3n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 23 Nov 2022 18:58:02 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com ([9.208.128.116])
+        by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2ANIw0Ji6030060
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 23 Nov 2022 18:58:01 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C7C4258045;
+        Wed, 23 Nov 2022 18:58:00 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 0A7DC5805F;
+        Wed, 23 Nov 2022 18:57:59 +0000 (GMT)
+Received: from [9.163.61.172] (unknown [9.163.61.172])
+        by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+        Wed, 23 Nov 2022 18:57:58 +0000 (GMT)
+Message-ID: <6f2a4a5f-ab5b-8c1b-47d5-d4e6dca5fc3a@linux.vnet.ibm.com>
+Date:   Wed, 23 Nov 2022 13:57:58 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH 2/4] fs: define a firmware security filesystem named
+ fwsecurityfs
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-fsdevel@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        linux-kernel@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, Dov Murik <dovmurik@linux.ibm.com>,
+        George Wilson <gcwilson@linux.ibm.com>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell Currey <ruscur@russell.cc>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Stefan Berger <stefanb@linux.ibm.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+References: <20221106210744.603240-1-nayna@linux.ibm.com>
+ <20221106210744.603240-3-nayna@linux.ibm.com> <Y2uvUFQ9S2oaefSY@kroah.com>
+ <8447a726-c45d-8ebb-2a74-a4d759631e64@linux.vnet.ibm.com>
+ <20221119114234.nnfxsqx4zxiku2h6@riteshh-domain>
+ <d3e8df29-d9b0-5e8e-4a53-d191762fe7f2@linux.vnet.ibm.com>
+ <a2752fdf-c89f-6f57-956e-ad035d32aec6@linux.vnet.ibm.com>
+ <Y35C9O27J29bUDjA@kroah.com>
+From:   Nayna <nayna@linux.vnet.ibm.com>
+In-Reply-To: <Y35C9O27J29bUDjA@kroah.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 2YrEmH-Vwbi1pRZxNLbmgvdX-b8wwU50
+X-Proofpoint-ORIG-GUID: _wOu0IfhLy4hU6MJ6gGyX-1HjXY9bgsf
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20221121133303.1782246-1-alexghiti@rivosinc.com>
-In-Reply-To: <20221121133303.1782246-1-alexghiti@rivosinc.com>
-From:   Emil Renner Berthing <emil.renner.berthing@canonical.com>
-Date:   Wed, 23 Nov 2022 18:19:29 +0100
-Message-ID: <CAJM55Z8+QyYKEwnMia2wjg+uYYnB=J40oSU8yDxoKm8Se+TnVA@mail.gmail.com>
-Subject: Re: [PATCH] riscv: Sync efi page table's kernel mappings before switching
-To:     Alexandre Ghiti <alexghiti@rivosinc.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-        linux-efi@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-23_10,2022-11-23_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ malwarescore=0 mlxscore=0 mlxlogscore=999 spamscore=0 phishscore=0
+ bulkscore=0 suspectscore=0 priorityscore=1501 clxscore=1015
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211230137
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Alexandre,
 
-On Mon, 21 Nov 2022 at 14:33, Alexandre Ghiti <alexghiti@rivosinc.com> wrote:
->
-> The EFI page table is initially created as a copy of the kernel page table.
-> With VMAP_STACK enabled, kernel stacks are allocated in the vmalloc area:
-> if the stack is allocated in a new PGD (one that was not present at the
-> moment of the efi page table creation or not synced in a previous vmalloc
-> fault), the kernel will take a trap when switching to the efi page table
-> when the vmalloc kernel stack is accessed, resulting in a kernel panic.
->
-> Fix that by updating the efi kernel mappings before switching to the efi
-> page table.
->
-> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+On 11/23/22 10:57, Greg Kroah-Hartman wrote:
+> On Wed, Nov 23, 2022 at 10:05:49AM -0500, Nayna wrote:
+>> On 11/22/22 18:21, Nayna wrote:
+>>>  From the perspective of our use case, we need to expose firmware
+>>> security objects to userspace for management. Not all of the objects
+>>> pre-exist and we would like to allow root to create them from userspace.
+>>>
+>>>  From a unification perspective, I have considered a common location at
+>>> /sys/firmware/security for managing any platform's security objects. And
+>>> I've proposed a generic filesystem, which could be used by any platform
+>>> to represent firmware security objects via /sys/firmware/security.
+>>>
+>>> Here are some alternatives to generic filesystem in discussion:
+>>>
+>>> 1. Start with a platform-specific filesystem. If more platforms would
+>>> like to use the approach, it can be made generic. We would still have a
+>>> common location of /sys/firmware/security and new code would live in
+>>> arch. This is my preference and would be the best fit for our use case.
+>>>
+>>> 2. Use securityfs.  This would mean modifying it to satisfy other use
+>>> cases, including supporting userspace file creation. I don't know if the
+>>> securityfs maintainer would find that acceptable. I would also still
+>>> want some way to expose variables at /sys/firmware/security.
+>>>
+>>> 3. Use a sysfs-based approach. This would be a platform-specific
+>>> implementation. However, sysfs has a similar issue to securityfs for
+>>> file creation. When I tried it in RFC v1[1], I had to implement a
+>>> workaround to achieve that.
+>>>
+>>> [1] https://lore.kernel.org/linuxppc-dev/20220122005637.28199-3-nayna@linux.ibm.com/
+>>>
+>> Hi Greg,
+>>
+>> Based on the discussions so far, is Option 1, described above, an acceptable
+>> next step?
+> No, as I said almost a year ago, I do not want to see platform-only
+> filesystems going and implementing stuff that should be shared by all
+> platforms.
 
-Thanks for the patch! With this applied on the Ubuntu 5.19 kernel I
-can enable CONFIG_VMAP_STACK and cat /sys/firmware/efi/efivars/* on
-the Unmatched without locking up. So
+Given there are no other exploiters for fwsecurityfs and there should be 
+no platform-specific fs, would modifying sysfs now to let userspace 
+create files cleanly be the way forward? Or, if we should strongly 
+consider securityfs, which would result in updating securityfs to allow 
+userspace creation of files and then expose variables via a more 
+platform-specific directory /sys/kernel/security/pks? We want to pick 
+the best available option and would find some hints on direction helpful 
+before we develop the next patch.
 
-Tested-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Thanks & Regards,
 
-> ---
->  arch/riscv/include/asm/efi.h     |  6 +++++-
->  arch/riscv/include/asm/pgalloc.h | 11 ++++++++---
->  2 files changed, 13 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/riscv/include/asm/efi.h b/arch/riscv/include/asm/efi.h
-> index f74879a8f1ea..e229d7be4b66 100644
-> --- a/arch/riscv/include/asm/efi.h
-> +++ b/arch/riscv/include/asm/efi.h
-> @@ -10,6 +10,7 @@
->  #include <asm/mmu_context.h>
->  #include <asm/ptrace.h>
->  #include <asm/tlbflush.h>
-> +#include <asm/pgalloc.h>
->
->  #ifdef CONFIG_EFI
->  extern void efi_init(void);
-> @@ -20,7 +21,10 @@ extern void efi_init(void);
->  int efi_create_mapping(struct mm_struct *mm, efi_memory_desc_t *md);
->  int efi_set_mapping_permissions(struct mm_struct *mm, efi_memory_desc_t *md);
->
-> -#define arch_efi_call_virt_setup()      efi_virtmap_load()
-> +#define arch_efi_call_virt_setup()      ({             \
-> +               sync_kernel_mappings(efi_mm.pgd);       \
-> +               efi_virtmap_load();                     \
-> +       })
->  #define arch_efi_call_virt_teardown()   efi_virtmap_unload()
->
->  #define ARCH_EFI_IRQ_FLAGS_MASK (SR_IE | SR_SPIE)
-> diff --git a/arch/riscv/include/asm/pgalloc.h b/arch/riscv/include/asm/pgalloc.h
-> index 947f23d7b6af..59dc12b5b7e8 100644
-> --- a/arch/riscv/include/asm/pgalloc.h
-> +++ b/arch/riscv/include/asm/pgalloc.h
-> @@ -127,6 +127,13 @@ static inline void p4d_free(struct mm_struct *mm, p4d_t *p4d)
->  #define __p4d_free_tlb(tlb, p4d, addr)  p4d_free((tlb)->mm, p4d)
->  #endif /* __PAGETABLE_PMD_FOLDED */
->
-> +static inline void sync_kernel_mappings(pgd_t *pgd)
-> +{
-> +       memcpy(pgd + USER_PTRS_PER_PGD,
-> +              init_mm.pgd + USER_PTRS_PER_PGD,
-> +              (PTRS_PER_PGD - USER_PTRS_PER_PGD) * sizeof(pgd_t));
-> +}
-> +
->  static inline pgd_t *pgd_alloc(struct mm_struct *mm)
->  {
->         pgd_t *pgd;
-> @@ -135,9 +142,7 @@ static inline pgd_t *pgd_alloc(struct mm_struct *mm)
->         if (likely(pgd != NULL)) {
->                 memset(pgd, 0, USER_PTRS_PER_PGD * sizeof(pgd_t));
->                 /* Copy kernel mappings */
-> -               memcpy(pgd + USER_PTRS_PER_PGD,
-> -                       init_mm.pgd + USER_PTRS_PER_PGD,
-> -                       (PTRS_PER_PGD - USER_PTRS_PER_PGD) * sizeof(pgd_t));
-> +               sync_kernel_mappings(pgd);
->         }
->         return pgd;
->  }
-> --
-> 2.37.2
->
+       - Nayna
+
