@@ -2,86 +2,114 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A98426394B7
-	for <lists+linux-efi@lfdr.de>; Sat, 26 Nov 2022 10:00:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9CD863964E
+	for <lists+linux-efi@lfdr.de>; Sat, 26 Nov 2022 15:16:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229531AbiKZJAK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 26 Nov 2022 04:00:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58310 "EHLO
+        id S229446AbiKZOQZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 26 Nov 2022 09:16:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbiKZJAK (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 26 Nov 2022 04:00:10 -0500
-X-Greylist: delayed 1290 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 26 Nov 2022 01:00:05 PST
-Received: from sp13.canonet.ne.jp (sp13.canonet.ne.jp [210.134.168.90])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BBC802098C;
-        Sat, 26 Nov 2022 01:00:05 -0800 (PST)
-Received: from csp13.canonet.ne.jp (unknown [172.21.160.133])
-        by sp13.canonet.ne.jp (Postfix) with ESMTP id 099161E03D3;
-        Sat, 26 Nov 2022 17:17:37 +0900 (JST)
-Received: from echeck13.canonet.ne.jp ([172.21.160.123])
-        by csp3 with ESMTP
-        id yqNVovGVhxJr5yqNVocUA4; Sat, 26 Nov 2022 17:17:37 +0900
-X-CNT-CMCheck-Reason: "undefined", "v=2.4 cv=S49nfKgP c=1 sm=1 tr=0
- ts=6381cba1 cx=g_jp:t_eml p=JJaDG7uySNsA:10 p=Ik1pXvdftEAPl7FGfynI:22
- a=c8wCX2VJ6RehaN9m5YqYzw==:117 a=yr9NA9NbXb0B05yJHQEWeQ==:17
- a=PlGk70OYzacA:10 a=kj9zAlcOel0A:10 a=9xFQ1JgjjksA:10 a=x7bEGLp0ZPQA:10
- a=JQiPw2jszkcqZPIXoVMA:9 a=CjuIK1q_8ugA:10"
-X-CNT-CMCheck-Score: 100.00
-Received: from echeck13.canonet.ne.jp (localhost [127.0.0.1])
-        by esets.canonet.ne.jp (Postfix) with ESMTP id 9B11A1C0251;
-        Sat, 26 Nov 2022 17:17:37 +0900 (JST)
-X-Virus-Scanner: This message was checked by ESET Mail Security
-        for Linux/BSD. For more information on ESET Mail Security,
-        please, visit our website: http://www.eset.com/.
-Received: from smtp13.canonet.ne.jp (unknown [172.21.160.103])
-        by echeck13.canonet.ne.jp (Postfix) with ESMTP id 6BA4E1C0263;
-        Sat, 26 Nov 2022 17:17:37 +0900 (JST)
-Received: from eikohnet.co.jp (webmail.canonet.ne.jp [210.134.169.250])
-        by smtp13.canonet.ne.jp (Postfix) with ESMTPA id A506115F964;
-        Sat, 26 Nov 2022 17:17:36 +0900 (JST)
+        with ESMTP id S229436AbiKZOQY (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 26 Nov 2022 09:16:24 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8254D1D30B
+        for <linux-efi@vger.kernel.org>; Sat, 26 Nov 2022 06:16:23 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2C11DB811A3
+        for <linux-efi@vger.kernel.org>; Sat, 26 Nov 2022 14:16:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F9CC4347C
+        for <linux-efi@vger.kernel.org>; Sat, 26 Nov 2022 14:16:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1669472180;
+        bh=j2dP27BREILsixgq78ObbeEfjycpQjysrlO+l5htKJU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=VG8vu+rBy2h3qAfYWyvMj+mIcmz7o3wIt8m5UG8xDSsby32wSmKEuJGKSzl0MIvDD
+         12Z250j7QVIyl2b79oQlXLYOyf+QR5xbMdVUjX3jkiFYGjapx7pqpbIC/W71IL84Tp
+         jw75s6zuTPpken1EP7jaBCuVKBIz/KlmC9VfuEL8JpOo1EAawQlLKBg7VaahSAkX6k
+         y8PbpuRISGjlkXvt9tTwzd11kgmTeZXFZmO0A1zbGE1zijYFChLM4YzxDJmM0Pn66G
+         RfS40xO5VGPtSFoZam7i2lUDLXRlQ2SXAp8kKHt1viLt+GN5g48lBvcxSQhuDMWs4u
+         DH4DQfMnwI6Qg==
+Received: by mail-lj1-f173.google.com with SMTP id z4so8149860ljq.6
+        for <linux-efi@vger.kernel.org>; Sat, 26 Nov 2022 06:16:20 -0800 (PST)
+X-Gm-Message-State: ANoB5pkzoU3k3QT/K7sCGpRUXrWvV9WetHpR1PzuwQGh6DSy7MmgG+m2
+        1VAXX+4VLyCrKrN00W85RjIBZsUJ2JwtHGWsK58=
+X-Google-Smtp-Source: AA0mqf6LqTiH2i4NVZ9BOJAR2/NHYkiSyGNLVlOoiOQJUOuncmt1DTcS3Q5u24keG+r6Q3MmIfn44qEIuz169/wVli4=
+X-Received: by 2002:a05:651c:1056:b0:279:96cd:8c66 with SMTP id
+ x22-20020a05651c105600b0027996cd8c66mr1733581ljm.352.1669472178782; Sat, 26
+ Nov 2022 06:16:18 -0800 (PST)
 MIME-Version: 1.0
-Message-ID: <20221126081736.00001C7B.0156@eikohnet.co.jp>
-Date:   Sat, 26 Nov 2022 17:17:36 +0900
-From:   "Mrs Zainab Abbas" <toda@eikohnet.co.jp>
-To:     <Inbox@eikohnet.co.jp>
-Reply-To: <mrs.zainababbas75@gmail.com>
-Subject: Hi
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-ORGANIZATION: Mrs Zainab Abbas
-X-MAILER: Active! mail
-X-EsetResult: clean, %VIRUSNAME%
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1669450657;VERSION=7940;MC=3218539519;TRN=0;CRV=0;IPC=210.134.169.250;SP=4;SIPS=1;PI=5;F=0
-X-I-ESET-AS: RN=0;RNP=
-X-ESET-Antispam: OK
-X-Spam-Status: Yes, score=7.8 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,HK_NAME_MR_MRS,
-        SPF_HELO_NONE,SPF_PASS,UNRESOLVED_TEMPLATE,XPRIO_SHORT_SUBJ
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5018]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  1.3 UNRESOLVED_TEMPLATE Headers contain an unresolved template
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [mrs.zainababbas75[at]gmail.com]
-        *  1.0 HK_NAME_MR_MRS No description available.
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-        *  2.4 XPRIO_SHORT_SUBJ Has X Priority header + short subject
-X-Spam-Level: *******
+References: <20221108182204.2447664-1-ardb@kernel.org> <Y26IE5NEVhyId4KH@FVFF77S0Q05N.cambridge.arm.com>
+ <20221115111658.GA32523@willie-the-truck> <CAMj1kXFGakOpTyUqDrFGDRoRsSzG2bYQ=iZA86DahbjL_zvE7w@mail.gmail.com>
+ <20221115113134.GC32523@willie-the-truck>
+In-Reply-To: <20221115113134.GC32523@willie-the-truck>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Sat, 26 Nov 2022 15:16:07 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFdJHvT-XKaEC0tXpxM_RMfCic_sS-JkMkVYfKZCYkZuA@mail.gmail.com>
+Message-ID: <CAMj1kXFdJHvT-XKaEC0tXpxM_RMfCic_sS-JkMkVYfKZCYkZuA@mail.gmail.com>
+Subject: Re: [PATCH v5 0/7] arm64: efi: leave MMU and caches on at boot
+To:     Will Deacon <will@kernel.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
+        keescook@chromium.org, Catalin Marinas <catalin.marinas@arm.com>,
+        Marc Zyngier <maz@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Tue, 15 Nov 2022 at 12:31, Will Deacon <will@kernel.org> wrote:
+>
+> On Tue, Nov 15, 2022 at 12:21:55PM +0100, Ard Biesheuvel wrote:
+> > On Tue, 15 Nov 2022 at 12:17, Will Deacon <will@kernel.org> wrote:
+> > >
+> > > On Fri, Nov 11, 2022 at 05:36:19PM +0000, Mark Rutland wrote:
+> > > > On Tue, Nov 08, 2022 at 07:21:57PM +0100, Ard Biesheuvel wrote:
+> > > > > The purpose of this series is to remove any explicit cache maintenance
+> > > > > for coherency during early boot that becomes unnecessary if we simply
+> > > > > retain the cacheable 1:1 mapping of all of system RAM provided by EFI,
+> > > > > and use it to populate the ID map page tables. After setting up this
+> > > > > preliminary ID map, we disable the MMU, drop to EL1, reprogram the MAIR,
+> > > > > TCR and SCTLR registers as before, and proceed as usual, avoiding the
+> > > > > need for any manipulations of memory while the MMU and caches are off.
+> > > > >
+> > > > > The only properties of the firmware provided 1:1 map we rely on is that
+> > > > > it does not require any explicit cache maintenance for coherency, and
+> > > > > that it covers the entire memory footprint of the image, including the
+> > > > > BSS and padding at the end - all else is under control of the kernel
+> > > > > itself, as before.
+> > > >
+> > > > As a high-level thing, I'm still very much not keen on entering the kernel with
+> > > > the MMU on. Given that we have to support booting with the MMU off for !EFI
+> > > > boot (including kexec when EFI is in use), I think this makes it harder to
+> > > > reason about the boot code overall (e.g. due to the conditional maintenance
+> > > > added to head.S), and adds more scope for error, even if it simplifies the EFI
+> > > > stub itself.
+> > >
+> > > As discussed offline, two things that would help the current series are:
+> > >
+> > >   (1) Some performance numbers comparing MMU off vs MMU on boot
+> > >
 
-Hello,
-Good day, I am still waiting for your reply to my previous email, hope you see the email?
+Finally got around to measuring this - I lost access to my TX2 machine
+for a couple of days during the past week,
 
-Regards
-Mrs Zainab Abbas
+With the patch below applied to mainline, I measure ~6 ms spent
+cleaning the entire image to the PoC (which is the bulk of it) and
+subsequently populating the initial ID map and activating it.
 
+This drops to about 0.6 ms with my changes applied. This is unlikely
+to ever matter in practice, perhaps, but I will note that booting a VM
+in EFI mode using Tianocore/EDK2 from the point where KVM clears the
+counter to the point where we start user space can be done (on the
+same machine) in 500-700 ms so it is not entirely insignificant
+either.
 
+I could try and measure it on bare metal as well, but I suppose that
+launch times are even less relevant there so I didn't bother.
