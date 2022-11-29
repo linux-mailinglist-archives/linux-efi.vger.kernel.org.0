@@ -2,82 +2,68 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AA2763B6AD
-	for <lists+linux-efi@lfdr.de>; Tue, 29 Nov 2022 01:40:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D7C663B6C3
+	for <lists+linux-efi@lfdr.de>; Tue, 29 Nov 2022 01:50:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234445AbiK2Akn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 28 Nov 2022 19:40:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57486 "EHLO
+        id S234769AbiK2AuS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 28 Nov 2022 19:50:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229565AbiK2Akn (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 28 Nov 2022 19:40:43 -0500
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8C8F303E5
-        for <linux-efi@vger.kernel.org>; Mon, 28 Nov 2022 16:40:41 -0800 (PST)
-Received: by mail-pj1-x1032.google.com with SMTP id v3-20020a17090ac90300b00218441ac0f6so232376pjt.0
-        for <linux-efi@vger.kernel.org>; Mon, 28 Nov 2022 16:40:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20210112.gappssmtp.com; s=20210112;
-        h=to:from:content-transfer-encoding:mime-version:date:message-id
-         :subject:references:in-reply-to:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Tsit4tlwMOX7OLaXEWLPn1yxtLp/SKg+N7GuTQ1fWwA=;
-        b=VmXH+uk31ZdNwX/cNTPka1aAEVDXQNUPZwrVaAEMj3Y6uZep2GmQe2ifDTyyAcTKES
-         u4pLCmzOmdvp7ykaqCNn/q0KFDaTfL8yaPBAfeCHS6DaGLZ7wur36JaO1qPM7W9zX8q1
-         bhCHA23BR/xNdNc1NIaiXxNHJg8L31sMvjYnnjttkNau6Y6aZ3QJF1582mCuyZuKOo++
-         GaCysIPDnJ91QtUdtVuTSPO1drQT0SPN3A81t0W09cwUmQ2ZxvO1bL0/8ht2EVTT0YFH
-         g1k6JZKZEUrsG24X5fjG3MbmjmLRzKjOB/joyQq7DNMAIZBzXMPlnELahd5q8zER7w1Y
-         BQHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:from:content-transfer-encoding:mime-version:date:message-id
-         :subject:references:in-reply-to:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Tsit4tlwMOX7OLaXEWLPn1yxtLp/SKg+N7GuTQ1fWwA=;
-        b=f6Zhbc5AyOIqo1tRF/WdQEjn9ybGIbPUAZuXUF96KvTjqU8BlKl3KO9+bfLaxMW2fB
-         3dQHmsAVOx89lUyG0cMSdIsqsIBhdHB8YUCRGNU5JkASlo/xNua13QPsjZRnn2EVdw7M
-         NASCXnxN9f9ofdau1WFxNnqPhAaGZbLedZwH5ecqAUZjsmZSTQZoOWYopqzZC4uHLB4y
-         bxKzyXWPeqHrUmkoNVa3tsf+9omgINYfTZziI7ZRwRCbUPVgWVLTM6J2RUMv1cyv107E
-         4w/X3eL62auLPvRAIQR3jaBzDfR1Sv6AmPByi+TFMEzuLJhbmE9hlIiv3d1J+A7T0pKf
-         Kq/Q==
-X-Gm-Message-State: ANoB5pntpxkKw2VmhV8oO54n4Yo7uteu+Zb3HXaJzeA6EqWTtGn9KInC
-        4RSaftu8aHct91Fg2mH8/sIUM6WDYEzzow==
-X-Google-Smtp-Source: AA0mqf5quQYZKjwkT4OsKge/2/VlQVCrOwGSdEL14y1KEQ342ret+Y1AyH+R46iv/AysaYS4OUWhvQ==
-X-Received: by 2002:a17:90b:4b4a:b0:214:6fc:31cf with SMTP id mi10-20020a17090b4b4a00b0021406fc31cfmr60966051pjb.21.1669682441361;
-        Mon, 28 Nov 2022 16:40:41 -0800 (PST)
-Received: from localhost ([50.221.140.188])
-        by smtp.gmail.com with ESMTPSA id c2-20020a170903234200b001708c4ebbaesm9337622plh.309.2022.11.28.16.40.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Nov 2022 16:40:40 -0800 (PST)
-In-Reply-To: <20221121133303.1782246-1-alexghiti@rivosinc.com>
-References: <20221121133303.1782246-1-alexghiti@rivosinc.com>
-Subject: Re: [PATCH] riscv: Sync efi page table's kernel mappings before switching
-Message-Id: <166968223551.19322.16657482033494349394.b4-ty@rivosinc.com>
-Date:   Mon, 28 Nov 2022 16:37:15 -0800
-MIME-Version: 1.0
+        with ESMTP id S234652AbiK2AuR (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 28 Nov 2022 19:50:17 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F51010B79;
+        Mon, 28 Nov 2022 16:50:16 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D33BA61356;
+        Tue, 29 Nov 2022 00:50:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 23D32C433D6;
+        Tue, 29 Nov 2022 00:50:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1669683015;
+        bh=gVh2g0Vi1FSHpyi0QX/3SGHx2knvHC+vTGRbDJ9Tg/0=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=A2y0HV0WBuZHEV0GYJ/MZJ3NGO8o6Yo+3jHKTQJduA2LKrukDPICEN/IK/nEtp+E3
+         rQ0LRQ9BRTGh07oqSgpxIyhPOez6/vFgqBWtMz1oZWLbqnqHdOiR0wnNlb8fEZV8YN
+         2sHZrOKhxgO3/tfzRcAcJZz94WssYuB56mO9EL1E0IG0a/OEdGpeHY0ywmi9EG5XwT
+         HYsohvw0FVHddZgPMEu0hcrKIi+uQBvHOJqiTdfjnz/wDvLzsV+lEKkalWZId7PcGx
+         roLKVhT9cvYXs5klK94Quac1gzo1azLgffLlCFtAoT98CyZH0NP3euvHwK1DEqsYsb
+         uHREn/H7qO4zg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 0128AE21EF6;
+        Tue, 29 Nov 2022 00:50:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.11.0-dev-e660e
-From:   Palmer Dabbelt <palmer@rivosinc.com>
-To:     Ard Biesheuvel <ardb@kernel.org>, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Alexandre Ghiti <alexghiti@rivosinc.com>,
-        linux-efi@vger.kernel.org,
-        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Subject: Re: [PATCH] riscv: Sync efi page table's kernel mappings before switching
+From:   patchwork-bot+linux-riscv@kernel.org
+Message-Id: <166968301500.7047.6174959001069239033.git-patchwork-notify@kernel.org>
+Date:   Tue, 29 Nov 2022 00:50:15 +0000
+References: <20221121133303.1782246-1-alexghiti@rivosinc.com>
+In-Reply-To: <20221121133303.1782246-1-alexghiti@rivosinc.com>
+To:     Alexandre Ghiti <alexghiti@rivosinc.com>
+Cc:     linux-riscv@lists.infradead.org, ardb@kernel.org,
+        paul.walmsley@sifive.com, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, heinrich.schuchardt@canonical.com,
+        emil.renner.berthing@canonical.com, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 21 Nov 2022 14:33:03 +0100, Alexandre Ghiti wrote:
+Hello:
+
+This patch was applied to riscv/linux.git (fixes)
+by Palmer Dabbelt <palmer@rivosinc.com>:
+
+On Mon, 21 Nov 2022 14:33:03 +0100 you wrote:
 > The EFI page table is initially created as a copy of the kernel page table.
 > With VMAP_STACK enabled, kernel stacks are allocated in the vmalloc area:
 > if the stack is allocated in a new PGD (one that was not present at the
@@ -87,11 +73,13 @@ On Mon, 21 Nov 2022 14:33:03 +0100, Alexandre Ghiti wrote:
 > 
 > [...]
 
-Applied, thanks!
+Here is the summary with links:
+  - riscv: Sync efi page table's kernel mappings before switching
+    https://git.kernel.org/riscv/c/3f105a742725
 
-[1/1] riscv: Sync efi page table's kernel mappings before switching
-      https://git.kernel.org/palmer/c/3f105a742725
-
-Best regards,
+You are awesome, thank you!
 -- 
-Palmer Dabbelt <palmer@rivosinc.com>
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
