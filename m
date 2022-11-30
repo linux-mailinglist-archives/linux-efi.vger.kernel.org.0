@@ -2,91 +2,138 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43AA363D11E
-	for <lists+linux-efi@lfdr.de>; Wed, 30 Nov 2022 09:52:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31F1663D77A
+	for <lists+linux-efi@lfdr.de>; Wed, 30 Nov 2022 15:04:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236084AbiK3IwQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 30 Nov 2022 03:52:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55692 "EHLO
+        id S229468AbiK3OEC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 30 Nov 2022 09:04:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235584AbiK3IwP (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 30 Nov 2022 03:52:15 -0500
-Received: from mail.ettrick.pl (mail.ettrick.pl [141.94.21.111])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 884152CC83
-        for <linux-efi@vger.kernel.org>; Wed, 30 Nov 2022 00:52:14 -0800 (PST)
-Received: by mail.ettrick.pl (Postfix, from userid 1002)
-        id 53CFBA35F5; Wed, 30 Nov 2022 08:51:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ettrick.pl; s=mail;
-        t=1669798333; bh=ChRcLNpIfKnVgp03/tSyWuRw1tWSTk/OEiEnuZMWs58=;
-        h=Date:From:To:Subject:From;
-        b=WTRldWkD/Vk7TpWQLh0Uw5RG+2RF8QzsXc852p1or3znZLVKUW2zAFNkcnkSdTAAD
-         94PUJBIz55f7v8xlqDgVLtdA15EMhfXKSPJHJd+YC1KC5M7/6Q4p8b62o9+Bek0f+w
-         Fd03AX5kwToh6UNBWkuUq4Z3LyzssBFiSlFX+M9Ul8gUnIIFpyNcSoTcasrSpjpWOz
-         SEXgyt3Wi3saVbQSptmMjiYa/XVPfxnQYZ/CXwTCjn2QG9qTpYwwwg58XScSx460Sd
-         CmIaQsuX22dVqcvq7Wjj6RIqpL0Nx9CT2/p4et29mb0hL0mnVgJGFbEmAd9lKCkmKm
-         +RHx9AOurJebA==
-Received: by mail.ettrick.pl for <linux-efi@vger.kernel.org>; Wed, 30 Nov 2022 08:50:45 GMT
-Message-ID: <20221130074500-0.1.7a.1ymwu.0.5i0cp0hrtd@ettrick.pl>
-Date:   Wed, 30 Nov 2022 08:50:45 GMT
-From:   "Norbert Karecki" <norbert.karecki@ettrick.pl>
-To:     <linux-efi@vger.kernel.org>
-Subject: Wycena paneli fotowoltaicznych
-X-Mailer: mail.ettrick.pl
+        with ESMTP id S229671AbiK3ODc (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 30 Nov 2022 09:03:32 -0500
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5963748F7
+        for <linux-efi@vger.kernel.org>; Wed, 30 Nov 2022 06:03:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669817001; x=1701353001;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tKpOFF3n+WGOz15t3IUx43Yw3sW/SIspXNKVRCVDgUQ=;
+  b=RFa4hydb7oU4FEO2K+XEElqZXuoaWcOKwEU/cPT4QZ9EMbN6kUJNbsrF
+   fqAtOoVto/yZOsf8ymcL4kVIqQRKEF/1NO2m3eTuKKfwEH8ksruxPGaOx
+   mt+UZddpar1Xv6eMc8RJZh/fvJDmgiaUE1hGPuFdBmtM1GLhWjJ5qtoDq
+   nHhKJm0QmxmAVX0jCoj+A/uuhErBlaiYhbaY5VbULfcpUTqPeczsIekLw
+   t4LeaaYfh3Md3ZXmX+lsanQjU/Ij8kWeLzRGd9QL0aewzqD5SRupH155S
+   f7S4sn8+p0HWU26FZ85poXHnoU9yiC6bseGWES7sa6dH4hWse99JU247M
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10547"; a="314093200"
+X-IronPort-AV: E=Sophos;i="5.96,206,1665471600"; 
+   d="scan'208";a="314093200"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2022 06:03:18 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10547"; a="621890677"
+X-IronPort-AV: E=Sophos;i="5.96,206,1665471600"; 
+   d="scan'208";a="621890677"
+Received: from lkp-server01.sh.intel.com (HELO 64a2d449c951) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 30 Nov 2022 06:03:16 -0800
+Received: from kbuild by 64a2d449c951 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1p0NgC-000BF5-0t;
+        Wed, 30 Nov 2022 14:03:16 +0000
+Date:   Wed, 30 Nov 2022 22:03:12 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ be2cf04496bb8a608e54d8259531ccdf72123dbc
+Message-ID: <638762a0.dG6W7AIirc9Skyxh%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL,RCVD_IN_SBL_CSS,
-        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,URIBL_ABUSE_SURBL,
-        URIBL_CSS_A,URIBL_DBL_SPAM,URIBL_SBL_A autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: *  1.2 URIBL_ABUSE_SURBL Contains an URL listed in the ABUSE SURBL
-        *      blocklist
-        *      [URIs: ettrick.pl]
-        *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
-        *      blocklist
-        *      [URIs: ettrick.pl]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *      [141.94.21.111 listed in zen.spamhaus.org]
-        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
-        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
-        *      blocklist
-        *      [URIs: ettrick.pl]
-        *  0.1 URIBL_SBL_A Contains URL's A record listed in the Spamhaus SBL
-        *      blocklist
-        *      [URIs: ettrick.pl]
-        * -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
-        *      [score: 0.0000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [141.94.21.111 listed in bl.score.senderscore.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-X-Spam-Level: ******
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Dzie=C5=84 dobry,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: be2cf04496bb8a608e54d8259531ccdf72123dbc  arm64: efi: Make runtime service wrapper more robust
 
-dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
-irm=C4=85.
+elapsed time: 743m
 
-=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
-ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
+configs tested: 57
+configs skipped: 2
 
-Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
-ropozycji?
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
+gcc tested configs:
+arc                                 defconfig
+alpha                               defconfig
+s390                             allmodconfig
+s390                                defconfig
+s390                             allyesconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+m68k                             allyesconfig
+alpha                            allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+powerpc                           allnoconfig
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+i386                                defconfig
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+i386                             allyesconfig
+x86_64                               rhel-8.3
+x86_64                           allyesconfig
+ia64                             allmodconfig
+sh                               allmodconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+i386                 randconfig-a001-20221128
+i386                 randconfig-a005-20221128
+i386                 randconfig-a006-20221128
+i386                 randconfig-a004-20221128
+i386                 randconfig-a003-20221128
+i386                 randconfig-a002-20221128
+x86_64               randconfig-a002-20221128
+x86_64               randconfig-a001-20221128
+x86_64               randconfig-a004-20221128
+x86_64               randconfig-a006-20221128
+x86_64               randconfig-a005-20221128
+x86_64               randconfig-a003-20221128
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
 
-Pozdrawiam,
-Norbert Karecki
+clang tested configs:
+i386                 randconfig-a012-20221128
+i386                 randconfig-a014-20221128
+i386                 randconfig-a011-20221128
+i386                 randconfig-a013-20221128
+i386                 randconfig-a015-20221128
+i386                 randconfig-a016-20221128
+s390                 randconfig-r044-20221128
+hexagon              randconfig-r041-20221128
+riscv                randconfig-r042-20221128
+hexagon              randconfig-r045-20221128
+x86_64               randconfig-a011-20221128
+x86_64               randconfig-a014-20221128
+x86_64               randconfig-a012-20221128
+x86_64               randconfig-a013-20221128
+x86_64               randconfig-a016-20221128
+x86_64               randconfig-a015-20221128
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
