@@ -2,191 +2,158 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F99463F1CE
-	for <lists+linux-efi@lfdr.de>; Thu,  1 Dec 2022 14:38:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C636463F1F5
+	for <lists+linux-efi@lfdr.de>; Thu,  1 Dec 2022 14:48:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229630AbiLANij (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 1 Dec 2022 08:38:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52524 "EHLO
+        id S231644AbiLANsK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 1 Dec 2022 08:48:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229992AbiLANii (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 1 Dec 2022 08:38:38 -0500
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DAF1AC18B;
-        Thu,  1 Dec 2022 05:38:36 -0800 (PST)
-Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id B988B21BD8;
-        Thu,  1 Dec 2022 13:38:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1669901914; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=EpPEbhYU/ZSzBergbxPG18rF6z3xaGTMJpY/KD4hdN0=;
-        b=NqfMGu7TOFopplQnGWvsL3EJ6f6cvD2+3UqnIH9MgHg26FPG3wmd98hqR7V6xsdZ0c8Vke
-        owU1O7TeMPowfni/Y4/f0++Diu8+bvrgj83AyE4Hl4Mhktx4gC0hH22a1j6phJ4cxlwt0g
-        M51CMPmyt3PVadDP6oU7dmktdW+cvjE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1669901914;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=EpPEbhYU/ZSzBergbxPG18rF6z3xaGTMJpY/KD4hdN0=;
-        b=nw7rEaNxj44kK7pb8ca9iO9xzjrguRhX54wAGxllFfQlwK4FxfX2KJCahutRLs8Vm8Lynh
-        /90IUhYauTmvsgBQ==
-Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap1.suse-dmz.suse.de (Postfix) with ESMTPS id F010C1320E;
-        Thu,  1 Dec 2022 13:38:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap1.suse-dmz.suse.de with ESMTPSA
-        id xfi6OVmuiGPRFwAAGKfGzw
-        (envelope-from <tiwai@suse.de>); Thu, 01 Dec 2022 13:38:33 +0000
-Date:   Thu, 01 Dec 2022 14:38:33 +0100
-Message-ID: <87v8mvmeg6.wl-tiwai@suse.de>
-From:   Takashi Iwai <tiwai@suse.de>
-To:     Oliver Neukum <oneukum@suse.com>
-Cc:     Ricardo Ribalda <ribalda@chromium.org>,
-        Juergen Gross <jgross@suse.com>,
-        Mark Brown <broonie@kernel.org>,
-        Chromeos Kdump <chromeos-kdump@google.com>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Len Brown <len.brown@intel.com>,
+        with ESMTP id S231655AbiLANsA (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 1 Dec 2022 08:48:00 -0500
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57F0A2656F;
+        Thu,  1 Dec 2022 05:47:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669902476; x=1701438476;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mTaZIIv3uUc9JYNMsjX+rfZMzd1G+Dsj8zGp0aHQgQI=;
+  b=EnaOgte25qubhv2XEuGM5FKgJ1yCdOvew2AfNGfNbYv2R5TDYaZdJ5eW
+   cLjpyszi7k+qPIN6/Ke/24WjEwna2zJyxYSy0zIoUFkNSnFQiDnkp5uB6
+   aav2M/Ba0SjIzTozhbo/WBGdYyTgFlWA8xfvM8ORIT8fJWlgmOKEkv9vw
+   dJJhDiSQ/JjmlO3ePR86sYefTKgRog082LAKOkxtgbjB/1m9OKtcxYTUP
+   0dZt865uOrYXtETPEcgCLVP156LxltRN8wNNZg8EFhpobUmqq741/AskC
+   T7ToeuU+TLHPPCo0BZPLf8Srot4CelvouilNvXkKcpmvf9fiiOVRNHkr/
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10548"; a="314385104"
+X-IronPort-AV: E=Sophos;i="5.96,209,1665471600"; 
+   d="scan'208";a="314385104"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2022 05:47:55 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10548"; a="677219981"
+X-IronPort-AV: E=Sophos;i="5.96,209,1665471600"; 
+   d="scan'208";a="677219981"
+Received: from ichepiga-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.55.59])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2022 05:47:47 -0800
+Received: by box.shutemov.name (Postfix, from userid 1000)
+        id CD4AA109781; Thu,  1 Dec 2022 16:47:44 +0300 (+03)
+Date:   Thu, 1 Dec 2022 16:47:44 +0300
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     "Kirill A. Shutemov" <kirill@shutemov.name>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Dexuan Cui <decui@microsoft.com>,
-        Takashi Iwai <tiwai@suse.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        kexec@lists.infradead.org, alsa-devel@alsa-project.org,
-        stable@vger.kernel.org, sound-open-firmware@alsa-project.org,
-        linuxppc-dev@lists.ozlabs.org, linux-hyperv@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v8 3/3] ASoC: SOF: Fix deadlock when shutdown a frozen userspace
-In-Reply-To: <d3730d1d-6f92-700a-06c4-0e0a35e270b0@suse.com>
-References: <20221127-snd-freeze-v8-0-3bc02d09f2ce@chromium.org>
-        <20221127-snd-freeze-v8-3-3bc02d09f2ce@chromium.org>
-        <716e5175-7a44-7ae8-b6bb-10d9807552e6@suse.com>
-        <CANiDSCtwSb50sjn5tM7jJ6W2UpeKzpuzng+RdJuywiC3-j2zdg@mail.gmail.com>
-        <d3730d1d-6f92-700a-06c4-0e0a35e270b0@suse.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Varad Gautam <varad.gautam@suse.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
+        khalid.elmously@canonical.com, philip.cox@canonical.com,
+        x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCHv7 08/14] x86/mm: Reserve unaccepted memory bitmap
+Message-ID: <20221201134744.7p3lgw6buv4oqwyn@box.shutemov.name>
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-9-kirill.shutemov@linux.intel.com>
+ <Yt+uwhfA57WBrozb@zn.tnic>
+ <20221130012840.sf4rvddzc4ev7bj5@box.shutemov.name>
+ <Y4h1xsEr7X221EoE@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y4h1xsEr7X221EoE@kernel.org>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 01 Dec 2022 14:22:12 +0100,
-Oliver Neukum wrote:
-> 
-> On 01.12.22 14:03, Ricardo Ribalda wrote:
-> 
-> Hi,
->  
-> > This patchset does not modify this behaviour. It simply fixes the
-> > stall for kexec().
+On Thu, Dec 01, 2022 at 11:37:10AM +0200, Mike Rapoport wrote:
+> On Wed, Nov 30, 2022 at 04:28:40AM +0300, Kirill A. Shutemov wrote:
+> > On Tue, Jul 26, 2022 at 11:07:14AM +0200, Borislav Petkov wrote:
+> > > On Tue, Jun 14, 2022 at 03:02:25PM +0300, Kirill A. Shutemov wrote:
+> > > > diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+> > > > index f267205f2d5a..22d1fe48dcba 100644
+> > > > --- a/arch/x86/kernel/e820.c
+> > > > +++ b/arch/x86/kernel/e820.c
+> > > > @@ -1316,6 +1316,16 @@ void __init e820__memblock_setup(void)
+> > > >  	int i;
+> > > >  	u64 end;
+> > > >  
+> > > > +	/* Mark unaccepted memory bitmap reserved */
+> > > > +	if (boot_params.unaccepted_memory) {
+> > > > +		unsigned long size;
+> > > > +
+> > > > +		/* One bit per 2MB */
+> > > > +		size = DIV_ROUND_UP(e820__end_of_ram_pfn() * PAGE_SIZE,
+> > > > +				    PMD_SIZE * BITS_PER_BYTE);
+> > > > +		memblock_reserve(boot_params.unaccepted_memory, size);
+> > > > +	}
+> > > > +
+> > > 
+> > > Hmm, I don't like how this is dropped right in the middle of a unrelated
+> > > function.
+> > > 
+> > > You're adding arch/x86/mm/unaccepted_memory.c later. Why don't you put
+> > > that chunk in a function there which is called by early_reserve_memory()
+> > > which does exactly what you want - reserve memory early, before memblock
+> > > allocations?
 > > 
-> > The  patch that introduced the stall:
-> > 83bfc7e793b5 ("ASoC: SOF: core: unregister clients and machine drivers
-> > in .shutdown")
-> 
-> That patch is problematic. I would go as far as saying that
-> it needs to be reverted.
-
-... or fixed.
-
-> > was sent as a generalised version of:
-> > https://github.com/thesofproject/linux/pull/3388
+> > early_reserve_memory() specifically called before e820__memory_setup()
+> > (see comment in setup_arch()), so we don't have e820_table finalized and
+> > we need it to get correct RAM size from e820__end_of_ram_pfn().
 > > 
-> > AFAIK, we would need a similar patch for every single board.... which
-> > I am not sure it is doable in a reasonable timeframe.
+> > I guess we can hide the chunk in a function in unaccepted_memory.c and
+> > call it from here, but it would require #ifdeffery in a header file as the
+> > .c is only compiled for CONFIG_UNACCEPTED_MEMORY=y.
 > > 
-> > On the meantime this seems like a decent compromises. Yes, a
-> > miss-behaving userspace can still stall during suspend, but that was
-> > not introduced in this patch.
+> > Looks like an overkill to me, no?
 > 
-> Well, I mean if you know what wrong then I'd say at least return to
-> a sanely broken state.
-> 
-> The whole approach is wrong. You need to be able to deal with user
-> space talking to removed devices by returning an error and keeping
-> the resources association with the open file allocated until
-> user space calls close()
+> Agree. Can we just extend the comment to explain why we reserve the bitmap
+> at e820__memblock_setup() rather than in early_reserve_memory(), pretty
+> much with the explanation above?
 
-As I already mentioned in another thread, if the user-space action has
-to be cut off, we just need to call snd_card_disconnect() instead
-without sync.  A quick hack would be like below (totally untested and
-might be wrong, though).
+Okay, I will do this:
 
-In anyway, Ricardo, please stop spinning too frequently; v8 in a few 
-days is way too much, and now the recipient list became unmanageable.
-Let's give people some time to review and consider a better solution
-at first.
-
-
-thanks,
-
-Takashi
-
--- 8< --
---- a/sound/soc/sof/core.c
-+++ b/sound/soc/sof/core.c
-@@ -475,7 +475,7 @@ EXPORT_SYMBOL(snd_sof_device_remove);
- int snd_sof_device_shutdown(struct device *dev)
- {
- 	struct snd_sof_dev *sdev = dev_get_drvdata(dev);
--	struct snd_sof_pdata *pdata = sdev->pdata;
-+	struct snd_soc_component *component;
+diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+index 49b5164a4cba..62068956bb76 100644
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -1316,7 +1316,14 @@ void __init e820__memblock_setup(void)
+ 	int i;
+ 	u64 end;
  
- 	if (IS_ENABLED(CONFIG_SND_SOC_SOF_PROBE_WORK_QUEUE))
- 		cancel_work_sync(&sdev->probe_work);
-@@ -484,9 +484,9 @@ int snd_sof_device_shutdown(struct device *dev)
- 	 * make sure clients and machine driver(s) are unregistered to force
- 	 * all userspace devices to be closed prior to the DSP shutdown sequence
- 	 */
--	sof_unregister_clients(sdev);
--
--	snd_sof_machine_unregister(sdev, pdata);
-+	component = snd_soc_lookup_component(sdev->dev, NULL);
-+	if (component && component->card && component->card->snd_card)
-+		snd_card_disconnect(component->card->snd_card);
+-	/* Mark unaccepted memory bitmap reserved */
++	/*
++	 * Mark unaccepted memory bitmap reserved.
++	 *
++	 * This kind of reservation usually done from early_reserve_memory(),
++	 * but early_reserve_memory() called before e820__memory_setup(), so
++	 * e820_table is not finalized and e820__end_of_ram_pfn() cannot be
++	 * used to get correct RAM size.
++	 */
+ 	if (boot_params.unaccepted_memory) {
+ 		unsigned long size;
  
- 	if (sdev->fw_state == SOF_FW_BOOT_COMPLETE)
- 		return snd_sof_shutdown(sdev);
-
-
-
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
