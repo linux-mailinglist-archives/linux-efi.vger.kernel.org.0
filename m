@@ -2,192 +2,156 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93EB763EF28
-	for <lists+linux-efi@lfdr.de>; Thu,  1 Dec 2022 12:16:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB0E063EFB9
+	for <lists+linux-efi@lfdr.de>; Thu,  1 Dec 2022 12:42:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231330AbiLALQE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 1 Dec 2022 06:16:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57692 "EHLO
+        id S230517AbiLALmg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 1 Dec 2022 06:42:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229631AbiLALO6 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 1 Dec 2022 06:14:58 -0500
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C66BBB7D6
-        for <linux-efi@vger.kernel.org>; Thu,  1 Dec 2022 03:08:54 -0800 (PST)
-Received: by mail-ej1-x634.google.com with SMTP id gu23so3309626ejb.10
-        for <linux-efi@vger.kernel.org>; Thu, 01 Dec 2022 03:08:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SFyJfR2WUZBDHeWemxJgoKouNxxtAGHlmHCCEO9QQfg=;
-        b=ihhHeh07lyLQ9+bLJAT02xtbEUUwBhwmY6NbvI/an2JMfUbxhGOKl7udb7lLh5mId9
-         jw5dKTuvmRP+w2K8ZYng51eJLaluDUotqflfy43/10yqWgw/yG+fgTeB0ukeRPMWa9sh
-         dgPYzjd9Y05h6Utm7j5Kxf9v/xCIYLObtVbqg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SFyJfR2WUZBDHeWemxJgoKouNxxtAGHlmHCCEO9QQfg=;
-        b=3PccpX2t+HiXOjrfxJPkQxEVwfHHSC7B4lap7XNubz72GU72b0RgfUjl5TIM7y82l0
-         RPHSMWt4Xh2TaH82oIkUOao7lVY7/6+bEegHJmp+LfF+mKTuU90VJcCH/YXEVzmPHF8c
-         aHVsQjmOcJ/pT7dMkrK6e00lpIm3JswZlxJseq9Bl5JHWTAYK0Rq/RY0z5ZNP28miYzV
-         AAdJBqt9eUEmYxw0A8P50d63stcYf1k5OwoqiQepe69lUoMde20aJccEOB21Gww+wwku
-         3jPSNKzoQQF/9Jh9fyZbywOS31kt3WnTqujd/sy+L72IjNmDfhOfeNwwpe/ml/mkF2x1
-         MEqQ==
-X-Gm-Message-State: ANoB5plJqRznV74FIdnCuFsNvSogjFLtK0z4FBrL9RP7fGeAkwAvl09E
-        aQQr5+GA3NOrk2KGUGSHgzk36w==
-X-Google-Smtp-Source: AA0mqf5n8q8ZMG+bv3DehJEYX5ANkxpTsyIzmCnCUsZmiYp8gdzbFTHhMnsW4dhR0VzoX//sUAQsMg==
-X-Received: by 2002:a17:906:7f09:b0:7c0:b3a8:a5f9 with SMTP id d9-20020a1709067f0900b007c0b3a8a5f9mr1338546ejr.154.1669892932820;
-        Thu, 01 Dec 2022 03:08:52 -0800 (PST)
-Received: from alco.roam.corp.google.com ([2620:0:1059:10:f554:724a:f89a:73db])
-        by smtp.gmail.com with ESMTPSA id v17-20020a170906293100b0078e0973d1f5sm1663824ejd.0.2022.12.01.03.08.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Dec 2022 03:08:52 -0800 (PST)
-From:   Ricardo Ribalda <ribalda@chromium.org>
-Date:   Thu, 01 Dec 2022 12:08:23 +0100
-Subject: [PATCH v8 3/3] ASoC: SOF: Fix deadlock when shutdown a frozen userspace
+        with ESMTP id S230439AbiLALmf (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 1 Dec 2022 06:42:35 -0500
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F28469951B
+        for <linux-efi@vger.kernel.org>; Thu,  1 Dec 2022 03:42:23 -0800 (PST)
+Received: from ip5b412258.dynamic.kabel-deutschland.de ([91.65.34.88] helo=diego.localnet)
+        by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <heiko@sntech.de>)
+        id 1p0hxH-0001D3-Pq; Thu, 01 Dec 2022 12:42:15 +0100
+From:   Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+To:     linux-riscv@lists.infradead.org, palmer@dabbelt.com,
+        Conor Dooley <conor@kernel.org>
+Cc:     christoph.muellner@vrull.eu, prabhakar.csengg@gmail.com,
+        conor@kernel.org, philipp.tomsich@vrull.eu,
+        ajones@ventanamicro.com, emil.renner.berthing@canonical.com,
+        ardb@kernel.org, linux-efi@vger.kernel.org
+Subject: Re: [PATCH v3 0/14] Zbb string optimizations and call support in alternatives
+Date:   Thu, 01 Dec 2022 12:42:15 +0100
+Message-ID: <3828190.OBFZWjSADL@diego>
+In-Reply-To: <81679d42-7800-3f77-eac8-d7d942e3065f@kernel.org>
+References: <20221130225614.1594256-1-heiko@sntech.de> <81679d42-7800-3f77-eac8-d7d942e3065f@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20221127-snd-freeze-v8-3-3bc02d09f2ce@chromium.org>
-References: <20221127-snd-freeze-v8-0-3bc02d09f2ce@chromium.org>
-In-Reply-To: <20221127-snd-freeze-v8-0-3bc02d09f2ce@chromium.org>
-To:     Juergen Gross <jgross@suse.com>, Mark Brown <broonie@kernel.org>,
-        Chromeos Kdump <chromeos-kdump@google.com>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Len Brown <len.brown@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Dexuan Cui <decui@microsoft.com>,
-        Takashi Iwai <tiwai@suse.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org
-Cc:     kexec@lists.infradead.org, alsa-devel@alsa-project.org,
-        Ricardo Ribalda <ribalda@chromium.org>, stable@vger.kernel.org,
-        sound-open-firmware@alsa-project.org,
-        linuxppc-dev@lists.ozlabs.org, linux-hyperv@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-        xen-devel@lists.xenproject.org
-X-Mailer: b4 0.11.0-dev-696ae
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2398; i=ribalda@chromium.org;
- h=from:subject:message-id; bh=GWM+B74HgZm8hg965LkIrG7utJXhrwWC6OA28kyyUjA=;
- b=owEBbQKS/ZANAwAKAdE30T7POsSIAcsmYgBjiIs5X8qunJcdzh4yNadWVeViZgDn3gq/06nr8kdj
- kdUAnBmJAjMEAAEKAB0WIQREDzjr+/4oCDLSsx7RN9E+zzrEiAUCY4iLOQAKCRDRN9E+zzrEiBePD/
- 4n9U/k8s8PcSMHwaDWquOwoHUGMa1OTSXQAeS+zkfPMUpMhgcoTNo49nWa43GN+Y810XaYiML51562
- eLirizXRSalXPpYVLlUge+rUD8YTV54zGi5OoX528K7lwHG8z+THm4BSy0/gmpmwdgB3GttlQH5Xh0
- P4IRFzzQUndzF5+V+rD7ZDsOIqsqHLEl2xVrPlelt3OtQTf7xzm+FTwEgxz8fg42kpdkTUjKNidLBa
- PVVihXzxaPSrNmIcrlXDWrTscOrbX2UGlosoMD4NyfKwacu0juZk+QLlYCoIBu78E/d04Top6bsU/I
- uqQOeIB3UrGvmdWb9fO9H/WX4GIFLG+w7VCfaLbEd22SI+WITCvp/dDA/ZO8fzX1wgQBHvFZRLIuM4
- 0mqtOEszlCVB4pMNrAVJcSULhKWOxrKI7MkUyf/otZRJ67hrWlDDaOmlBsOkJTF1T5obHSRoblMSSE
- UwMVB1vp64JD4LAxJGmFWSPjZ3BMJJK0mblOTi/qOiMm2QR7iraSkhMsUcpx9HI4IeSwbTJszKQ1Hb
- BgqjW0c2l0BpHzIlEvkoUHxIGQdKJLMfmy8GbTMKne5zBzPRx9+b+cGgNvRa/zWp72+v9Fm0r2l8rk
- 2c1+78340GIwSb9Ffj750Evz1ISy6b5FAAiC5q+SWoZEFW2mWMAN+3crcCZw==
-X-Developer-Key: i=ribalda@chromium.org; a=openpgp;
- fpr=9EC3BB66E2FC129A6F90B39556A0D81F9F782DA9
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_PASS,
+        T_SPF_HELO_TEMPERROR autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-If we are shutting down due to kexec and the userspace is frozen, the
-system will stall forever waiting for userspace to complete.
+Am Donnerstag, 1. Dezember 2022, 01:02:08 CET schrieb Conor Dooley:
+> On 30/11/2022 22:56, Heiko Stuebner wrote:
 
-Do not wait for the clients to complete in that case.
+> > changes since v2:
+> > - add patch fixing the c.jalr funct4 value
+> > - reword some commit messages
+> > - fix position of auipc addition patch (earlier)
+> > - fix compile errors from patch-reordering gone wrong
+> >   (worked at the end of v2, but compiling individual patches
+> >    caused issues) - patches are now tested individually
+> > - limit Zbb variants for GNU as for now
+> >   (LLVM support for .option arch is still under review)
+> 
+> Still no good on that front chief:
+> ld.lld: error: undefined symbol: __strlen_generic
+> >>> referenced by ctype.c
+> >>>               arch/riscv/purgatory/purgatory.ro:(strlcpy)
+> >>> referenced by ctype.c
+> >>>               arch/riscv/purgatory/purgatory.ro:(strlcat)
+> >>> referenced by ctype.c
+> >>>               arch/riscv/purgatory/purgatory.ro:(strlcat)
+> >>> referenced 3 more times
+> make[5]: *** [/stuff/linux/arch/riscv/purgatory/Makefile:85: arch/riscv/purgatory/purgatory.chk] Error 1
+> make[5]: Target 'arch/riscv/purgatory/' not remade because of errors.
+> make[4]: *** [/stuff/linux/scripts/Makefile.build:500: arch/riscv/purgatory] Error 2
 
-This fixes:
+Oh interesting, there is another efistub-like thingy hidden in the tree.
+(and CRYPTO_SHA256 needs to be built-in, not a module) to allow the
+kexec-purgatory to be build.
 
-[   84.943749] Freezing user space processes ... (elapsed 0.111 seconds) done.
-[  246.784446] INFO: task kexec-lite:5123 blocked for more than 122 seconds.
-[  246.819035] Call Trace:
-[  246.821782]  <TASK>
-[  246.824186]  __schedule+0x5f9/0x1263
-[  246.828231]  schedule+0x87/0xc5
-[  246.831779]  snd_card_disconnect_sync+0xb5/0x127
-...
-[  246.889249]  snd_sof_device_shutdown+0xb4/0x150
-[  246.899317]  pci_device_shutdown+0x37/0x61
-[  246.903990]  device_shutdown+0x14c/0x1d6
-[  246.908391]  kernel_kexec+0x45/0xb9
+The following should do the trick:
 
-And:
-
-[  246.893222] INFO: task kexec-lite:4891 blocked for more than 122 seconds.
-[  246.927709] Call Trace:
-[  246.930461]  <TASK>
-[  246.932819]  __schedule+0x5f9/0x1263
-[  246.936855]  ? fsnotify_grab_connector+0x5c/0x70
-[  246.942045]  schedule+0x87/0xc5
-[  246.945567]  schedule_timeout+0x49/0xf3
-[  246.949877]  wait_for_completion+0x86/0xe8
-[  246.954463]  snd_card_free+0x68/0x89
-...
-[  247.001080]  platform_device_unregister+0x12/0x35
-
-Cc: stable@vger.kernel.org
-Fixes: 83bfc7e793b5 ("ASoC: SOF: core: unregister clients and machine drivers in .shutdown")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
----
- sound/soc/sof/core.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/sound/soc/sof/core.c b/sound/soc/sof/core.c
-index 3e6141d03770..9587b6a85103 100644
---- a/sound/soc/sof/core.c
-+++ b/sound/soc/sof/core.c
-@@ -9,6 +9,8 @@
- //
+---------------- 8< --------------
+diff --git a/arch/riscv/include/asm/string.h b/arch/riscv/include/asm/string.h
+index 806c402c874e..b99698983045 100644
+--- a/arch/riscv/include/asm/string.h
++++ b/arch/riscv/include/asm/string.h
+@@ -27,7 +27,7 @@ extern asmlinkage int __strcmp_zbb(const char *cs, const char *ct);
  
- #include <linux/firmware.h>
-+#include <linux/kexec.h>
-+#include <linux/freezer.h>
- #include <linux/module.h>
- #include <sound/soc.h>
- #include <sound/sof.h>
-@@ -484,9 +486,10 @@ int snd_sof_device_shutdown(struct device *dev)
- 	 * make sure clients and machine driver(s) are unregistered to force
- 	 * all userspace devices to be closed prior to the DSP shutdown sequence
- 	 */
--	sof_unregister_clients(sdev);
--
--	snd_sof_machine_unregister(sdev, pdata);
-+	if (!(kexec_in_progress() && pm_freezing())) {
-+		sof_unregister_clients(sdev);
-+		snd_sof_machine_unregister(sdev, pdata);
-+	}
+ static inline int strcmp(const char *cs, const char *ct)
+ {
+-#ifdef RISCV_EFISTUB
++#if defined(RISCV_EFISTUB) || defined(RISCV_PURGATORY)
+ 	return __strcmp_generic(cs, ct);
+ #else
+ 	register const char *a0 asm("a0") = cs;
+@@ -55,7 +55,7 @@ extern asmlinkage int __strncmp_zbb(const char *cs,
  
- 	if (sdev->fw_state == SOF_FW_BOOT_COMPLETE)
- 		return snd_sof_shutdown(sdev);
+ static inline int strncmp(const char *cs, const char *ct, size_t count)
+ {
+-#ifdef RISCV_EFISTUB
++#if defined(RISCV_EFISTUB) || defined(RISCV_PURGATORY)
+ 	return __strncmp_generic(cs, ct, count);
+ #else
+ 	register const char *a0 asm("a0") = cs;
+@@ -82,7 +82,7 @@ extern asmlinkage __kernel_size_t __strlen_zbb(const char *);
+ 
+ static inline __kernel_size_t strlen(const char *s)
+ {
+-#ifdef RISCV_EFISTUB
++#if defined(RISCV_EFISTUB) || defined(RISCV_PURGATORY)
+ 	return __strlen_generic(s);
+ #else
+ 	register const char *a0 asm("a0") = s;
+diff --git a/arch/riscv/purgatory/Makefile b/arch/riscv/purgatory/Makefile
+index dd58e1d99397..1d0969722875 100644
+--- a/arch/riscv/purgatory/Makefile
++++ b/arch/riscv/purgatory/Makefile
+@@ -2,6 +2,7 @@
+ OBJECT_FILES_NON_STANDARD := y
+ 
+ purgatory-y := purgatory.o sha256.o entry.o string.o ctype.o memcpy.o memset.o
++purgatory-y += strcmp.o strlen.o strncmp.o
+ 
+ targets += $(purgatory-y)
+ PURGATORY_OBJS = $(addprefix $(obj)/,$(purgatory-y))
+@@ -18,6 +19,15 @@ $(obj)/memcpy.o: $(srctree)/arch/riscv/lib/memcpy.S FORCE
+ $(obj)/memset.o: $(srctree)/arch/riscv/lib/memset.S FORCE
+ 	$(call if_changed_rule,as_o_S)
+ 
++$(obj)/strcmp.o: $(srctree)/arch/riscv/lib/strcmp.S FORCE
++	$(call if_changed_rule,as_o_S)
++
++$(obj)/strlen.o: $(srctree)/arch/riscv/lib/strlen.S FORCE
++	$(call if_changed_rule,as_o_S)
++
++$(obj)/strncmp.o: $(srctree)/arch/riscv/lib/strncmp.S FORCE
++	$(call if_changed_rule,as_o_S)
++
+ $(obj)/sha256.o: $(srctree)/lib/crypto/sha256.c FORCE
+ 	$(call if_changed_rule,cc_o_c)
+ 
+@@ -46,6 +56,7 @@ PURGATORY_CFLAGS_REMOVE := -mcmodel=kernel
+ PURGATORY_CFLAGS := -mcmodel=medany -ffreestanding -fno-zero-initialized-in-bss
+ PURGATORY_CFLAGS += $(DISABLE_STACKLEAK_PLUGIN) -DDISABLE_BRANCH_PROFILING
+ PURGATORY_CFLAGS += -fno-stack-protector -g0
++PURGATORY_CFLAGS += -DRISCV_PURGATORY
+ 
+ # Default KBUILD_CFLAGS can have -pg option set when FTRACE is enabled. That
+ # in turn leaves some undefined symbols like __fentry__ in purgatory and not
+@@ -77,6 +88,9 @@ CFLAGS_ctype.o			+= $(PURGATORY_CFLAGS)
+ AFLAGS_REMOVE_entry.o		+= -Wa,-gdwarf-2
+ AFLAGS_REMOVE_memcpy.o		+= -Wa,-gdwarf-2
+ AFLAGS_REMOVE_memset.o		+= -Wa,-gdwarf-2
++AFLAGS_REMOVE_strcmp.o		+= -Wa,-gdwarf-2
++AFLAGS_REMOVE_strlen.o		+= -Wa,-gdwarf-2
++AFLAGS_REMOVE_strncmp.o		+= -Wa,-gdwarf-2
+ 
+ $(obj)/purgatory.ro: $(PURGATORY_OBJS) FORCE
+ 		$(call if_changed,ld)
 
--- 
-2.39.0.rc0.267.gcb52ba06e7-goog-b4-0.11.0-dev-696ae
+
+
