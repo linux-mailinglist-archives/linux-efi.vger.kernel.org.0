@@ -2,103 +2,216 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71E86640AF2
-	for <lists+linux-efi@lfdr.de>; Fri,  2 Dec 2022 17:37:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C3A99640C83
+	for <lists+linux-efi@lfdr.de>; Fri,  2 Dec 2022 18:48:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234014AbiLBQhh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 2 Dec 2022 11:37:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59862 "EHLO
+        id S234187AbiLBRsN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 2 Dec 2022 12:48:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234053AbiLBQhf (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 2 Dec 2022 11:37:35 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80345BC596
-        for <linux-efi@vger.kernel.org>; Fri,  2 Dec 2022 08:37:30 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1AB3262351
-        for <linux-efi@vger.kernel.org>; Fri,  2 Dec 2022 16:37:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F1B7C4314D
-        for <linux-efi@vger.kernel.org>; Fri,  2 Dec 2022 16:37:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669999049;
-        bh=EvJJMDT2Lq9pPqMsw0zk5dy2vuzQb62lx5KfT70us/0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ZZolye9g9cXNPBfD/6CR7XzvyGpcNzWhbXQTX9PJizhF5AxoqHjtioLxMsY54gcCv
-         D3Fuw2v0UGgWU83YkfOHZapX5zUjPkx5t7YA6jlP86kBkU07BzflPCgi+BP+oaGOAn
-         aJd9CVsRQwxq52T9rJCQiuEtYk6fZsM99T/wLQseCrNoYy6Se7VkCTYLWT5/ilFEF2
-         0PWE8eXKsht3/oaEP/P0sxt6g3RrXP0iPLy/i1ivzQmECuUF5emXZ+swPvsRW9oHub
-         tneS4nxN/zoLHs9kjln/u0sk6UE87e6V8B+Fev8NdxFbEXigjInVy7TlMeFWsscfXU
-         JOZe2YLKAH3Vw==
-Received: by mail-lj1-f182.google.com with SMTP id b9so6000124ljr.5
-        for <linux-efi@vger.kernel.org>; Fri, 02 Dec 2022 08:37:29 -0800 (PST)
-X-Gm-Message-State: ANoB5pkWI0bs2jPkmdthrdPVWVQ3rA3GVlX3Hwv8BxIE9bE0q5Cc8zz+
-        f0PMJ5rl7bTa3yGrqtMjUpXGtAlHPZvVX9qp1PY=
-X-Google-Smtp-Source: AA0mqf4cP5vb+93NiI7bo/ZZvh3IXG/Angm4270zBWJmIi4Rjhoz7ku+a9UJTL6u9/quHp9vK7vWlRhjTjhEhM8Np5E=
-X-Received: by 2002:a05:651c:1603:b0:26d:d603:8df2 with SMTP id
- f3-20020a05651c160300b0026dd6038df2mr21120504ljq.189.1669999047497; Fri, 02
- Dec 2022 08:37:27 -0800 (PST)
+        with ESMTP id S234262AbiLBRsB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 2 Dec 2022 12:48:01 -0500
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 740B27DA74;
+        Fri,  2 Dec 2022 09:47:59 -0800 (PST)
+Received: by mail-qt1-f180.google.com with SMTP id fp23so5913137qtb.0;
+        Fri, 02 Dec 2022 09:47:59 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cZkrcSltncE8/ZuZoYv4b2d7hscDOxyl0JUDZPI6liw=;
+        b=RaGlrd0ba8dYvndE1TLtFoQdEVC7LSet9MIgIcBBC4QOcWYtZn5YZZMX4oVb3ThRUK
+         P7pOUy+ubpMKYXE4xbVbUP3qMGQU63s2QguP8LiQRFvoUIZc3yx5iEEgigxGJ7tvZ6DO
+         /WkvDhcRd2BLd+HQdYgX00yWGKScXs/YEtC1FMFqRymib9P72pBI4NkdCZ26D/RbNdiR
+         kew8s4YydKL7s0NcK3x01xRf5oVT9q4GW5ZToewO5ihFa/BkmTHLcsf2QNeENkhqzHs0
+         Zo1SC5L1St0x0P2F9xBCFl25c+voRlg754QTZylfcFiNot18FmzWtYESxZxH/VkdtRoG
+         gf3A==
+X-Gm-Message-State: ANoB5pmRqeAPQ7my/7gaqlI+AoY1ZzQLgpPjb0m9rURuk11vM3iAs53B
+        X7b43MyNBs6UtZvLGCyWqHb5AijwJondlfQff20=
+X-Google-Smtp-Source: AA0mqf51uIOWkjKSwhAqxTpfKMjsu42I0eiMVKrm0VEx7HQYTsVmieNicP3p40lc7YCyIthr+ry0hUYCl4VWsxspqf0=
+X-Received: by 2002:ac8:7dcb:0:b0:3a6:8dd0:4712 with SMTP id
+ c11-20020ac87dcb000000b003a68dd04712mr11196833qte.411.1670003278849; Fri, 02
+ Dec 2022 09:47:58 -0800 (PST)
 MIME-Version: 1.0
-References: <20221130225614.1594256-1-heiko@sntech.de> <20221201193455.2hr6mwm6sa6vnd3w@kamzik>
- <CAMj1kXG=zM0EFFPn8MBWFurk=oSRPqwdd6CP1dudQC+JXV36Og@mail.gmail.com> <4822525.e9J7NaK4W3@diego>
-In-Reply-To: <4822525.e9J7NaK4W3@diego>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 2 Dec 2022 17:37:16 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGBSLf4ppjA5_F4Ork+ZJ45Sk0w6SnPc3eDcWbTMkj3SQ@mail.gmail.com>
-Message-ID: <CAMj1kXGBSLf4ppjA5_F4Ork+ZJ45Sk0w6SnPc3eDcWbTMkj3SQ@mail.gmail.com>
-Subject: Re: [PATCH v3 12/14] efi/riscv: libstub: mark when compiling libstub
-To:     =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>
-Cc:     Andrew Jones <ajones@ventanamicro.com>,
-        linux-riscv@lists.infradead.org, palmer@dabbelt.com,
-        christoph.muellner@vrull.eu, prabhakar.csengg@gmail.com,
-        conor@kernel.org, philipp.tomsich@vrull.eu,
-        emil.renner.berthing@canonical.com, linux-efi@vger.kernel.org,
-        Conor Dooley <conor.dooley@microchip.com>
+References: <20221127-snd-freeze-v8-0-3bc02d09f2ce@chromium.org> <20221127-snd-freeze-v8-2-3bc02d09f2ce@chromium.org>
+In-Reply-To: <20221127-snd-freeze-v8-2-3bc02d09f2ce@chromium.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 2 Dec 2022 18:47:47 +0100
+Message-ID: <CAJZ5v0jbKSTQopEoXW9FpqDmAqp6Pn=-Om5QP2-7ocuGdq8R9w@mail.gmail.com>
+Subject: Re: [PATCH v8 2/3] freezer: refactor pm_freezing into a function.
+To:     Ricardo Ribalda <ribalda@chromium.org>
+Cc:     Juergen Gross <jgross@suse.com>, Mark Brown <broonie@kernel.org>,
+        Chromeos Kdump <chromeos-kdump@google.com>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Len Brown <len.brown@intel.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Dexuan Cui <decui@microsoft.com>,
+        Takashi Iwai <tiwai@suse.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+        kexec@lists.infradead.org, alsa-devel@alsa-project.org,
+        stable@vger.kernel.org, sound-open-firmware@alsa-project.org,
+        linuxppc-dev@lists.ozlabs.org, linux-hyperv@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        xen-devel@lists.xenproject.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 1 Dec 2022 at 23:39, Heiko St=C3=BCbner <heiko@sntech.de> wrote:
+On Thu, Dec 1, 2022 at 12:08 PM Ricardo Ribalda <ribalda@chromium.org> wrote:
 >
-> Hi Ard,
+> Add a way to let the drivers know if the processes are frozen.
 >
-> Am Donnerstag, 1. Dezember 2022, 21:57:00 CET schrieb Ard Biesheuvel:
-> > On Thu, 1 Dec 2022 at 20:35, Andrew Jones <ajones@ventanamicro.com> wro=
-te:
-> > >
-> > > On Wed, Nov 30, 2022 at 11:56:12PM +0100, Heiko Stuebner wrote:
-> > > > From: Heiko Stuebner <heiko.stuebner@vrull.eu>
-> > > >
-> > > > We may want to runtime-optimize some core functions (str*, mem*),
-> > > > but not have this leak into libstub and cause build issues.
-> > > > Instead libstub, for the short while it's running, should just use
-> > > > the generic implementation.
-> > > >
-> > > > So, to be able to determine whether functions, that are used both i=
-n
-> > > > libstub and the main kernel, are getting compiled as part of libstu=
-b or
-> > > > not, add a compile-flag we can check via #ifdef.
-> > > >
-> > > > Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-> > > > Signed-off-by: Heiko Stuebner <heiko.stuebner@vrull.eu>
-> >
-> > I think it would be better to update arch/riscv/kernel/image-vars.h so
-> > that only these generic implementations are exposed to the stub in the
-> > first place.
+> This is needed by drivers that are waiting for processes to end on their
+> shutdown path.
 >
+> Convert pm_freezing into a function and export it, so it can be used by
+> drivers that are either built-in or modules.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 83bfc7e793b5 ("ASoC: SOF: core: unregister clients and machine drivers in .shutdown")
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 
-Actually, all references to string and memory functions are going away
-from the stub. This is already in -next.
+Why can't you export the original pm_freezing variable and why is this
+fixing anything?
 
-EFI now has zboot support, which means you can create a EFI bootable
-kernel image that carries the actual kernel in compressed form rather
-than as a hybrid EFI/bare metal image.
+> ---
+>  include/linux/freezer.h |  3 ++-
+>  kernel/freezer.c        |  3 +--
+>  kernel/power/process.c  | 24 ++++++++++++++++++++----
+>  3 files changed, 23 insertions(+), 7 deletions(-)
+>
+> diff --git a/include/linux/freezer.h b/include/linux/freezer.h
+> index b303472255be..3413c869d68b 100644
+> --- a/include/linux/freezer.h
+> +++ b/include/linux/freezer.h
+> @@ -13,7 +13,7 @@
+>  #ifdef CONFIG_FREEZER
+>  DECLARE_STATIC_KEY_FALSE(freezer_active);
+>
+> -extern bool pm_freezing;               /* PM freezing in effect */
+> +bool pm_freezing(void);
+>  extern bool pm_nosig_freezing;         /* PM nosig freezing in effect */
+>
+>  /*
+> @@ -80,6 +80,7 @@ static inline int freeze_processes(void) { return -ENOSYS; }
+>  static inline int freeze_kernel_threads(void) { return -ENOSYS; }
+>  static inline void thaw_processes(void) {}
+>  static inline void thaw_kernel_threads(void) {}
+> +static inline bool pm_freezing(void) { return false; }
+>
+>  static inline bool try_to_freeze(void) { return false; }
+>
+> diff --git a/kernel/freezer.c b/kernel/freezer.c
+> index 4fad0e6fca64..2d3530ebdb7e 100644
+> --- a/kernel/freezer.c
+> +++ b/kernel/freezer.c
+> @@ -20,7 +20,6 @@ EXPORT_SYMBOL(freezer_active);
+>   * indicate whether PM freezing is in effect, protected by
+>   * system_transition_mutex
+>   */
+> -bool pm_freezing;
+>  bool pm_nosig_freezing;
+>
+>  /* protects freezing and frozen transitions */
+> @@ -46,7 +45,7 @@ bool freezing_slow_path(struct task_struct *p)
+>         if (pm_nosig_freezing || cgroup_freezing(p))
+>                 return true;
+>
+> -       if (pm_freezing && !(p->flags & PF_KTHREAD))
+> +       if (pm_freezing() && !(p->flags & PF_KTHREAD))
+>                 return true;
+>
+>         return false;
+> diff --git a/kernel/power/process.c b/kernel/power/process.c
+> index ddd9988327fe..8a4d0e2c8c20 100644
+> --- a/kernel/power/process.c
+> +++ b/kernel/power/process.c
+> @@ -108,6 +108,22 @@ static int try_to_freeze_tasks(bool user_only)
+>         return todo ? -EBUSY : 0;
+>  }
+>
+> +/*
+> + * Indicate whether PM freezing is in effect, protected by
+> + * system_transition_mutex.
+> + */
+> +static bool pm_freezing_internal;
+> +
+> +/**
+> + * pm_freezing - indicate whether PM freezing is in effect.
+> + *
+> + */
+> +bool pm_freezing(void)
+> +{
+> +       return pm_freezing_internal;
+> +}
+> +EXPORT_SYMBOL(pm_freezing);
+
+Use EXPORT_SYMBOL_GPL() instead, please.
+
+> +
+>  /**
+>   * freeze_processes - Signal user space processes to enter the refrigerator.
+>   * The current thread will not be frozen.  The same process that calls
+> @@ -126,12 +142,12 @@ int freeze_processes(void)
+>         /* Make sure this task doesn't get frozen */
+>         current->flags |= PF_SUSPEND_TASK;
+>
+> -       if (!pm_freezing)
+> +       if (!pm_freezing())
+>                 static_branch_inc(&freezer_active);
+>
+>         pm_wakeup_clear(0);
+>         pr_info("Freezing user space processes ... ");
+> -       pm_freezing = true;
+> +       pm_freezing_internal = true;
+>         error = try_to_freeze_tasks(true);
+>         if (!error) {
+>                 __usermodehelper_set_disable_depth(UMH_DISABLED);
+> @@ -187,9 +203,9 @@ void thaw_processes(void)
+>         struct task_struct *curr = current;
+>
+>         trace_suspend_resume(TPS("thaw_processes"), 0, true);
+> -       if (pm_freezing)
+> +       if (pm_freezing())
+>                 static_branch_dec(&freezer_active);
+> -       pm_freezing = false;
+> +       pm_freezing_internal = false;
+>         pm_nosig_freezing = false;
+>
+>         oom_killer_enable();
+>
+> --
