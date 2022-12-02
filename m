@@ -2,62 +2,61 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8C2E64020C
-	for <lists+linux-efi@lfdr.de>; Fri,  2 Dec 2022 09:24:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71E86640AF2
+	for <lists+linux-efi@lfdr.de>; Fri,  2 Dec 2022 17:37:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232473AbiLBIY0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 2 Dec 2022 03:24:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44724 "EHLO
+        id S234014AbiLBQhh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 2 Dec 2022 11:37:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232446AbiLBIXk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 2 Dec 2022 03:23:40 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D4FFC4CC1
-        for <linux-efi@vger.kernel.org>; Fri,  2 Dec 2022 00:19:59 -0800 (PST)
+        with ESMTP id S234053AbiLBQhf (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 2 Dec 2022 11:37:35 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80345BC596
+        for <linux-efi@vger.kernel.org>; Fri,  2 Dec 2022 08:37:30 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3DD25B8210D
-        for <linux-efi@vger.kernel.org>; Fri,  2 Dec 2022 08:19:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E6FC433B5
-        for <linux-efi@vger.kernel.org>; Fri,  2 Dec 2022 08:19:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1AB3262351
+        for <linux-efi@vger.kernel.org>; Fri,  2 Dec 2022 16:37:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F1B7C4314D
+        for <linux-efi@vger.kernel.org>; Fri,  2 Dec 2022 16:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669969197;
-        bh=0ZnuSrqRuhjsk8n2SNjuiavyYPMTBT4baAW3idwtSMA=;
+        s=k20201202; t=1669999049;
+        bh=EvJJMDT2Lq9pPqMsw0zk5dy2vuzQb62lx5KfT70us/0=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=PEJWzUXY6QnPddhCAbQA8Ln91+6Q5En2+9t2sVpA4vsVdZe77SuR6aAi/8+gTnUCR
-         FGXnBVhujiFE5Ecac3Q5VKonJpxy0TEepShozzYro8G1s1nSLHatxRrQuwIF44WjxK
-         P1Linb7dP2eP+zcHeHs5oEzMJDEP0FMH/cbn3VinGNrwUd30hHB3a2q3kK33WHePOR
-         VxLQdHy5iBkGnEfnZuebaIPFlPYpoXKE632mnDepqho/B+FJbLwg+KEjt3En0eAC9H
-         Jm8E6sIXamcHVA/XHuoqnm3M9TGSdcTQiAhsoO610SUf/lUpWB/s1K7/SI++D0smW4
-         JI6nJ2bGNJDZQ==
-Received: by mail-lf1-f44.google.com with SMTP id f13so6296195lfa.6
-        for <linux-efi@vger.kernel.org>; Fri, 02 Dec 2022 00:19:56 -0800 (PST)
-X-Gm-Message-State: ANoB5pm4UYAslW5qGfQRcIY1C7WmHqpzbkZHpmMg7v60dy3ZM6/E3/6O
-        QBQwwxxGvlf7jJGoNpO4rV3ZDpL4aFlyQQ7Pgag=
-X-Google-Smtp-Source: AA0mqf5YZdoAmm+Igxnj0lPbYCtmTJqEXXksr0fEhk12uTEra6daOFKOHf35q/qBplj4yWq5qKZdMFxf9LtEh2101pc=
-X-Received: by 2002:a05:6512:3e2a:b0:4ab:534b:1b2c with SMTP id
- i42-20020a0565123e2a00b004ab534b1b2cmr18339569lfv.426.1669969194978; Fri, 02
- Dec 2022 00:19:54 -0800 (PST)
+        b=ZZolye9g9cXNPBfD/6CR7XzvyGpcNzWhbXQTX9PJizhF5AxoqHjtioLxMsY54gcCv
+         D3Fuw2v0UGgWU83YkfOHZapX5zUjPkx5t7YA6jlP86kBkU07BzflPCgi+BP+oaGOAn
+         aJd9CVsRQwxq52T9rJCQiuEtYk6fZsM99T/wLQseCrNoYy6Se7VkCTYLWT5/ilFEF2
+         0PWE8eXKsht3/oaEP/P0sxt6g3RrXP0iPLy/i1ivzQmECuUF5emXZ+swPvsRW9oHub
+         tneS4nxN/zoLHs9kjln/u0sk6UE87e6V8B+Fev8NdxFbEXigjInVy7TlMeFWsscfXU
+         JOZe2YLKAH3Vw==
+Received: by mail-lj1-f182.google.com with SMTP id b9so6000124ljr.5
+        for <linux-efi@vger.kernel.org>; Fri, 02 Dec 2022 08:37:29 -0800 (PST)
+X-Gm-Message-State: ANoB5pkWI0bs2jPkmdthrdPVWVQ3rA3GVlX3Hwv8BxIE9bE0q5Cc8zz+
+        f0PMJ5rl7bTa3yGrqtMjUpXGtAlHPZvVX9qp1PY=
+X-Google-Smtp-Source: AA0mqf4cP5vb+93NiI7bo/ZZvh3IXG/Angm4270zBWJmIi4Rjhoz7ku+a9UJTL6u9/quHp9vK7vWlRhjTjhEhM8Np5E=
+X-Received: by 2002:a05:651c:1603:b0:26d:d603:8df2 with SMTP id
+ f3-20020a05651c160300b0026dd6038df2mr21120504ljq.189.1669999047497; Fri, 02
+ Dec 2022 08:37:27 -0800 (PST)
 MIME-Version: 1.0
-References: <20221130225614.1594256-14-heiko@sntech.de> <mhng-3dd5efb0-e79f-4978-89a8-f9ec02004a7e@palmer-ri-x1c9a>
-In-Reply-To: <mhng-3dd5efb0-e79f-4978-89a8-f9ec02004a7e@palmer-ri-x1c9a>
+References: <20221130225614.1594256-1-heiko@sntech.de> <20221201193455.2hr6mwm6sa6vnd3w@kamzik>
+ <CAMj1kXG=zM0EFFPn8MBWFurk=oSRPqwdd6CP1dudQC+JXV36Og@mail.gmail.com> <4822525.e9J7NaK4W3@diego>
+In-Reply-To: <4822525.e9J7NaK4W3@diego>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 2 Dec 2022 09:19:43 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFHuSzZ2X3+Z0wj6BZ5YrPwaaQrHJWGc48A-C2M8A=5Mw@mail.gmail.com>
-Message-ID: <CAMj1kXFHuSzZ2X3+Z0wj6BZ5YrPwaaQrHJWGc48A-C2M8A=5Mw@mail.gmail.com>
-Subject: Re: [PATCH v3 13/14] RISC-V: add infrastructure to allow different
- str* implementations
-To:     Palmer Dabbelt <palmer@dabbelt.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        clang-built-linux <clang-built-linux@googlegroups.com>
-Cc:     heiko@sntech.de, Ard Biesheuvel <aardb@kernel.org>,
-        linux-riscv@lists.infradead.org, christoph.muellner@vrull.eu,
-        prabhakar.csengg@gmail.com, Conor Dooley <conor@kernel.org>,
-        philipp.tomsich@vrull.eu, ajones@ventanamicro.com,
+Date:   Fri, 2 Dec 2022 17:37:16 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGBSLf4ppjA5_F4Ork+ZJ45Sk0w6SnPc3eDcWbTMkj3SQ@mail.gmail.com>
+Message-ID: <CAMj1kXGBSLf4ppjA5_F4Ork+ZJ45Sk0w6SnPc3eDcWbTMkj3SQ@mail.gmail.com>
+Subject: Re: [PATCH v3 12/14] efi/riscv: libstub: mark when compiling libstub
+To:     =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>
+Cc:     Andrew Jones <ajones@ventanamicro.com>,
+        linux-riscv@lists.infradead.org, palmer@dabbelt.com,
+        christoph.muellner@vrull.eu, prabhakar.csengg@gmail.com,
+        conor@kernel.org, philipp.tomsich@vrull.eu,
         emil.renner.berthing@canonical.com, linux-efi@vger.kernel.org,
-        heiko.stuebner@vrull.eu, Conor Dooley <conor.dooley@microchip.com>
+        Conor Dooley <conor.dooley@microchip.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -67,108 +66,39 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 2 Dec 2022 at 05:08, Palmer Dabbelt <palmer@dabbelt.com> wrote:
+On Thu, 1 Dec 2022 at 23:39, Heiko St=C3=BCbner <heiko@sntech.de> wrote:
 >
-> On Wed, 30 Nov 2022 14:56:13 PST (-0800), heiko@sntech.de wrote:
-> > From: Heiko Stuebner <heiko.stuebner@vrull.eu>
-> >
-> > Depending on supported extensions on specific RISC-V cores,
-> > optimized str* functions might make sense.
-> >
-> > This adds basic infrastructure to allow patching the function calls
-> > via alternatives later on.
-> >
-> > The main idea is to have the core str* functions be inline functions
-> > which then call the most optimized variant and this call then be
-> > replaced via alternatives.
-> >
-> > The big advantage is that we don't need additional calls.
-> > Though we need to duplicate the generic functions as the main code
-> > expects either itself or the architecture to provide the str* functions.
-> >
-> > The added *_generic functions are done in assembler (taken from
-> > disassembling the main-kernel functions for now) to allow us to control
-> > the used registers.
-> >
-> > Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-> > Signed-off-by: Heiko Stuebner <heiko.stuebner@vrull.eu>
-> > ---
-> >  arch/riscv/Makefile             |  3 ++
-> >  arch/riscv/include/asm/string.h | 66 +++++++++++++++++++++++++++++++++
-> >  arch/riscv/kernel/image-vars.h  |  6 +--
-> >  arch/riscv/lib/Makefile         |  3 ++
-> >  arch/riscv/lib/strcmp.S         | 38 +++++++++++++++++++
-> >  arch/riscv/lib/strlen.S         | 29 +++++++++++++++
-> >  arch/riscv/lib/strncmp.S        | 41 ++++++++++++++++++++
-> >  7 files changed, 183 insertions(+), 3 deletions(-)
-> >  create mode 100644 arch/riscv/lib/strcmp.S
-> >  create mode 100644 arch/riscv/lib/strlen.S
-> >  create mode 100644 arch/riscv/lib/strncmp.S
-> >
-> > diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-> > index 0d13b597cb55..581e4370c2a6 100644
-> > --- a/arch/riscv/Makefile
-> > +++ b/arch/riscv/Makefile
-> > @@ -80,6 +80,9 @@ ifeq ($(CONFIG_PERF_EVENTS),y)
-> >          KBUILD_CFLAGS += -fno-omit-frame-pointer
-> >  endif
-> >
-> > +# strchr is special case, as gcc might want to call its own strlen from there
-> > +KBUILD_CFLAGS += -fno-builtin-strlen -fno-builtin-strcmp -fno-builtin-strncmp -fno-builtin-strchr
+> Hi Ard,
 >
-> I was poking around Ard's comment on that -DRISCV_EFI to try and figure
-> out what it was doing, but I think this is the bigger issue.  I haven't
-> benchmarked anything, but my guess is that turning off support for these
-> builtin routines will outweigh the faster outline implementations of
-> these routines.  I don't have any benchmarks to prove that, but in
-> general compilers are pretty smart about handling these builtin routines
-> in the common cases and deferring that to runtime is probably the wrong
-> option.
+> Am Donnerstag, 1. Dezember 2022, 21:57:00 CET schrieb Ard Biesheuvel:
+> > On Thu, 1 Dec 2022 at 20:35, Andrew Jones <ajones@ventanamicro.com> wro=
+te:
+> > >
+> > > On Wed, Nov 30, 2022 at 11:56:12PM +0100, Heiko Stuebner wrote:
+> > > > From: Heiko Stuebner <heiko.stuebner@vrull.eu>
+> > > >
+> > > > We may want to runtime-optimize some core functions (str*, mem*),
+> > > > but not have this leak into libstub and cause build issues.
+> > > > Instead libstub, for the short while it's running, should just use
+> > > > the generic implementation.
+> > > >
+> > > > So, to be able to determine whether functions, that are used both i=
+n
+> > > > libstub and the main kernel, are getting compiled as part of libstu=
+b or
+> > > > not, add a compile-flag we can check via #ifdef.
+> > > >
+> > > > Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> > > > Signed-off-by: Heiko Stuebner <heiko.stuebner@vrull.eu>
+> >
+> > I think it would be better to update arch/riscv/kernel/image-vars.h so
+> > that only these generic implementations are exposed to the stub in the
+> > first place.
 >
 
-Indeed. Case in point:
+Actually, all references to string and memory functions are going away
+from the stub. This is already in -next.
 
-riscv64-linux-gnugcc -O -S -o - -xc - <<<"int foo() { return strlen(\"bar\"); }"
-
-gives me
-
-li a0,3
-ret
-
-whereas this
-
-riscv64-linux-gnu-gcc -fno-builtin-strlen -O -S -o - -xc - <<<"int
-foo() { return strlen(\"bar\"); }"
-
-gives me
-
-.LC0:
-  .string "bar"
-  .text
-  .align 1
-  .globl foo
-  .type foo, @function
-foo:
-  addi sp,sp,-16
-  sd ra,8(sp)
-  lla a0,.LC0
-  call strlen@plt
-  ld ra,8(sp)
-  addi sp,sp,16
-  jr ra
-
-Other str* and mem* routines are optimized in similar ways when
-dealing with small sizes or compile time constants.
-
-Also, I'd recommend avoiding redefining these prototypes to static
-inline as it deviates from the official prototypes in the C library.
-
-> I haven't looked all that closely at this patch set.  Is there some
-> reason it's necessary to disable the builtin handling?  If not then my
-> guess is it's better to leave that enabled unless some benchmarks show
-> otherwise (and I don't know of any Zb* hardware to test against).
->
-
-Why not have a single generic version of each in the binary with a
-patchable NOP at the start, and patch that to an optimized version
-when available? That way. all of the early code can remain as is.
+EFI now has zboot support, which means you can create a EFI bootable
+kernel image that carries the actual kernel in compressed form rather
+than as a hybrid EFI/bare metal image.
