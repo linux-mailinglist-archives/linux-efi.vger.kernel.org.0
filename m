@@ -2,140 +2,173 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 791BD640024
-	for <lists+linux-efi@lfdr.de>; Fri,  2 Dec 2022 07:12:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8C2E64020C
+	for <lists+linux-efi@lfdr.de>; Fri,  2 Dec 2022 09:24:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231562AbiLBGMD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 2 Dec 2022 01:12:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34208 "EHLO
+        id S232473AbiLBIY0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 2 Dec 2022 03:24:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231195AbiLBGMC (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 2 Dec 2022 01:12:02 -0500
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 246AFDC84D
-        for <linux-efi@vger.kernel.org>; Thu,  1 Dec 2022 22:12:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1669961521; x=1701497521;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=DCTuaGhYhWmUFyZZTsbh8iXhGzixW5qSSCgwXITAav8=;
-  b=mnM4DoItYgh4Qfs+m0UIEeoJUxXypsZKCCugVcgmrrFVqt4/Ck/aAAdI
-   NpiWAhRToahvunFIvF7+D+47QLS6v/bjg4UEw96BdHAHY9F28IAFrM4wO
-   hmntvF7m2j4CFaN/DSRZCmwKaDJX9ODWGn+UxIosEgPqDhbgqUmLWyPzE
-   JrIU+lTjHqggMqJF+/yALDqRI3O9x/hEZb0J4Yrc6AutLW3q5PwHSS+4i
-   T7VgEFmd8fBnKqA/GY0Na4cbA6ukUDcCwPubu/x0B6meZ/ltt5jpozHq5
-   nZdmySMOpp6RC2+980K0oU997ZYd1NUccfGIPjHtFN02LYQIaFnZH/EYv
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10548"; a="296235188"
-X-IronPort-AV: E=Sophos;i="5.96,210,1665471600"; 
-   d="scan'208";a="296235188"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2022 22:12:00 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10548"; a="647045692"
-X-IronPort-AV: E=Sophos;i="5.96,210,1665471600"; 
-   d="scan'208";a="647045692"
-Received: from lkp-server01.sh.intel.com (HELO 64a2d449c951) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 01 Dec 2022 22:11:59 -0800
-Received: from kbuild by 64a2d449c951 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1p0zHD-000DKo-1A;
-        Fri, 02 Dec 2022 06:11:59 +0000
-Date:   Fri, 02 Dec 2022 14:11:01 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- 7572ac3c979d4d0fb42d73a72d2608656516ff4f
-Message-ID: <638996f5./ClK2XOBzO3GZ594%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S232446AbiLBIXk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 2 Dec 2022 03:23:40 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D4FFC4CC1
+        for <linux-efi@vger.kernel.org>; Fri,  2 Dec 2022 00:19:59 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3DD25B8210D
+        for <linux-efi@vger.kernel.org>; Fri,  2 Dec 2022 08:19:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E6FC433B5
+        for <linux-efi@vger.kernel.org>; Fri,  2 Dec 2022 08:19:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1669969197;
+        bh=0ZnuSrqRuhjsk8n2SNjuiavyYPMTBT4baAW3idwtSMA=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=PEJWzUXY6QnPddhCAbQA8Ln91+6Q5En2+9t2sVpA4vsVdZe77SuR6aAi/8+gTnUCR
+         FGXnBVhujiFE5Ecac3Q5VKonJpxy0TEepShozzYro8G1s1nSLHatxRrQuwIF44WjxK
+         P1Linb7dP2eP+zcHeHs5oEzMJDEP0FMH/cbn3VinGNrwUd30hHB3a2q3kK33WHePOR
+         VxLQdHy5iBkGnEfnZuebaIPFlPYpoXKE632mnDepqho/B+FJbLwg+KEjt3En0eAC9H
+         Jm8E6sIXamcHVA/XHuoqnm3M9TGSdcTQiAhsoO610SUf/lUpWB/s1K7/SI++D0smW4
+         JI6nJ2bGNJDZQ==
+Received: by mail-lf1-f44.google.com with SMTP id f13so6296195lfa.6
+        for <linux-efi@vger.kernel.org>; Fri, 02 Dec 2022 00:19:56 -0800 (PST)
+X-Gm-Message-State: ANoB5pm4UYAslW5qGfQRcIY1C7WmHqpzbkZHpmMg7v60dy3ZM6/E3/6O
+        QBQwwxxGvlf7jJGoNpO4rV3ZDpL4aFlyQQ7Pgag=
+X-Google-Smtp-Source: AA0mqf5YZdoAmm+Igxnj0lPbYCtmTJqEXXksr0fEhk12uTEra6daOFKOHf35q/qBplj4yWq5qKZdMFxf9LtEh2101pc=
+X-Received: by 2002:a05:6512:3e2a:b0:4ab:534b:1b2c with SMTP id
+ i42-20020a0565123e2a00b004ab534b1b2cmr18339569lfv.426.1669969194978; Fri, 02
+ Dec 2022 00:19:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20221130225614.1594256-14-heiko@sntech.de> <mhng-3dd5efb0-e79f-4978-89a8-f9ec02004a7e@palmer-ri-x1c9a>
+In-Reply-To: <mhng-3dd5efb0-e79f-4978-89a8-f9ec02004a7e@palmer-ri-x1c9a>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 2 Dec 2022 09:19:43 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFHuSzZ2X3+Z0wj6BZ5YrPwaaQrHJWGc48A-C2M8A=5Mw@mail.gmail.com>
+Message-ID: <CAMj1kXFHuSzZ2X3+Z0wj6BZ5YrPwaaQrHJWGc48A-C2M8A=5Mw@mail.gmail.com>
+Subject: Re: [PATCH v3 13/14] RISC-V: add infrastructure to allow different
+ str* implementations
+To:     Palmer Dabbelt <palmer@dabbelt.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        clang-built-linux <clang-built-linux@googlegroups.com>
+Cc:     heiko@sntech.de, Ard Biesheuvel <aardb@kernel.org>,
+        linux-riscv@lists.infradead.org, christoph.muellner@vrull.eu,
+        prabhakar.csengg@gmail.com, Conor Dooley <conor@kernel.org>,
+        philipp.tomsich@vrull.eu, ajones@ventanamicro.com,
+        emil.renner.berthing@canonical.com, linux-efi@vger.kernel.org,
+        heiko.stuebner@vrull.eu, Conor Dooley <conor.dooley@microchip.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
-branch HEAD: 7572ac3c979d4d0fb42d73a72d2608656516ff4f  arm64: efi: Revert "Recover from synchronous exceptions ..."
+On Fri, 2 Dec 2022 at 05:08, Palmer Dabbelt <palmer@dabbelt.com> wrote:
+>
+> On Wed, 30 Nov 2022 14:56:13 PST (-0800), heiko@sntech.de wrote:
+> > From: Heiko Stuebner <heiko.stuebner@vrull.eu>
+> >
+> > Depending on supported extensions on specific RISC-V cores,
+> > optimized str* functions might make sense.
+> >
+> > This adds basic infrastructure to allow patching the function calls
+> > via alternatives later on.
+> >
+> > The main idea is to have the core str* functions be inline functions
+> > which then call the most optimized variant and this call then be
+> > replaced via alternatives.
+> >
+> > The big advantage is that we don't need additional calls.
+> > Though we need to duplicate the generic functions as the main code
+> > expects either itself or the architecture to provide the str* functions.
+> >
+> > The added *_generic functions are done in assembler (taken from
+> > disassembling the main-kernel functions for now) to allow us to control
+> > the used registers.
+> >
+> > Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> > Signed-off-by: Heiko Stuebner <heiko.stuebner@vrull.eu>
+> > ---
+> >  arch/riscv/Makefile             |  3 ++
+> >  arch/riscv/include/asm/string.h | 66 +++++++++++++++++++++++++++++++++
+> >  arch/riscv/kernel/image-vars.h  |  6 +--
+> >  arch/riscv/lib/Makefile         |  3 ++
+> >  arch/riscv/lib/strcmp.S         | 38 +++++++++++++++++++
+> >  arch/riscv/lib/strlen.S         | 29 +++++++++++++++
+> >  arch/riscv/lib/strncmp.S        | 41 ++++++++++++++++++++
+> >  7 files changed, 183 insertions(+), 3 deletions(-)
+> >  create mode 100644 arch/riscv/lib/strcmp.S
+> >  create mode 100644 arch/riscv/lib/strlen.S
+> >  create mode 100644 arch/riscv/lib/strncmp.S
+> >
+> > diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+> > index 0d13b597cb55..581e4370c2a6 100644
+> > --- a/arch/riscv/Makefile
+> > +++ b/arch/riscv/Makefile
+> > @@ -80,6 +80,9 @@ ifeq ($(CONFIG_PERF_EVENTS),y)
+> >          KBUILD_CFLAGS += -fno-omit-frame-pointer
+> >  endif
+> >
+> > +# strchr is special case, as gcc might want to call its own strlen from there
+> > +KBUILD_CFLAGS += -fno-builtin-strlen -fno-builtin-strcmp -fno-builtin-strncmp -fno-builtin-strchr
+>
+> I was poking around Ard's comment on that -DRISCV_EFI to try and figure
+> out what it was doing, but I think this is the bigger issue.  I haven't
+> benchmarked anything, but my guess is that turning off support for these
+> builtin routines will outweigh the faster outline implementations of
+> these routines.  I don't have any benchmarks to prove that, but in
+> general compilers are pretty smart about handling these builtin routines
+> in the common cases and deferring that to runtime is probably the wrong
+> option.
+>
 
-elapsed time: 909m
+Indeed. Case in point:
 
-configs tested: 59
-configs skipped: 2
+riscv64-linux-gnugcc -O -S -o - -xc - <<<"int foo() { return strlen(\"bar\"); }"
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+gives me
 
-gcc tested configs:
-um                             i386_defconfig
-um                           x86_64_defconfig
-arc                                 defconfig
-s390                             allmodconfig
-alpha                               defconfig
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-kvm
-x86_64                           rhel-8.3-syz
-s390                                defconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                          rhel-8.3-func
-s390                             allyesconfig
-ia64                             allmodconfig
-m68k                             allyesconfig
-alpha                            allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-powerpc                           allnoconfig
-sh                               allmodconfig
-mips                             allyesconfig
-x86_64                              defconfig
-arc                  randconfig-r043-20221201
-x86_64                               rhel-8.3
-riscv                randconfig-r042-20221201
-s390                 randconfig-r044-20221201
-i386                          randconfig-a001
-x86_64                           allyesconfig
-i386                          randconfig-a003
-x86_64                        randconfig-a013
-i386                          randconfig-a005
-x86_64                        randconfig-a011
-x86_64                        randconfig-a015
-x86_64                            allnoconfig
-powerpc                          allmodconfig
-i386                             allyesconfig
-i386                                defconfig
-arm64                            allyesconfig
-arm                                 defconfig
-arm                              allyesconfig
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-loongarch                           defconfig
-loongarch                         allnoconfig
-loongarch                        allmodconfig
+li a0,3
+ret
 
-clang tested configs:
-hexagon              randconfig-r041-20221201
-hexagon              randconfig-r045-20221201
-i386                          randconfig-a002
-i386                          randconfig-a004
-x86_64                        randconfig-a014
-x86_64                        randconfig-a012
-x86_64                        randconfig-a016
-i386                          randconfig-a006
-x86_64                        randconfig-a005
-x86_64                        randconfig-a003
-x86_64                        randconfig-a001
+whereas this
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+riscv64-linux-gnu-gcc -fno-builtin-strlen -O -S -o - -xc - <<<"int
+foo() { return strlen(\"bar\"); }"
+
+gives me
+
+.LC0:
+  .string "bar"
+  .text
+  .align 1
+  .globl foo
+  .type foo, @function
+foo:
+  addi sp,sp,-16
+  sd ra,8(sp)
+  lla a0,.LC0
+  call strlen@plt
+  ld ra,8(sp)
+  addi sp,sp,16
+  jr ra
+
+Other str* and mem* routines are optimized in similar ways when
+dealing with small sizes or compile time constants.
+
+Also, I'd recommend avoiding redefining these prototypes to static
+inline as it deviates from the official prototypes in the C library.
+
+> I haven't looked all that closely at this patch set.  Is there some
+> reason it's necessary to disable the builtin handling?  If not then my
+> guess is it's better to leave that enabled unless some benchmarks show
+> otherwise (and I don't know of any Zb* hardware to test against).
+>
+
+Why not have a single generic version of each in the binary with a
+patchable NOP at the start, and patch that to an optimized version
+when available? That way. all of the early code can remain as is.
