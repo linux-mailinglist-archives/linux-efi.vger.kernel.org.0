@@ -2,82 +2,48 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A2CB644873
-	for <lists+linux-efi@lfdr.de>; Tue,  6 Dec 2022 16:56:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4E91644E5D
+	for <lists+linux-efi@lfdr.de>; Tue,  6 Dec 2022 23:10:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233884AbiLFP4T (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 6 Dec 2022 10:56:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43186 "EHLO
+        id S229625AbiLFWKZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 6 Dec 2022 17:10:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232865AbiLFP4S (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Dec 2022 10:56:18 -0500
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD710558C
-        for <linux-efi@vger.kernel.org>; Tue,  6 Dec 2022 07:56:16 -0800 (PST)
-Received: by mail-wr1-x429.google.com with SMTP id bs21so24107951wrb.4
-        for <linux-efi@vger.kernel.org>; Tue, 06 Dec 2022 07:56:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8nBWdtS+DnTMLam0TrL5zY1Eoo867/ZP8j256oJ3aEw=;
-        b=mB0mHV5I3d4NPmesSSGnqLEy7FLnI4TwF+sLwqzWjATL2qlBEQPW2L17NakOujECWu
-         p1zltPuYGJnthMtrCfW56NghooIeRfS6vQe9oLybc0CVe+KDuaDShDlcWrrTC3y3025R
-         t6HBcBpIUoCGdXg7TtXkmp9cvY73M4ri/fdOOT5/hnTcBh8wKqh3qAU3o/qHN+BVXa2Q
-         UnDg+Gu/egMO/1TEO0RB5omsxinHMXqmtRQPN/iC0whjRxEjBNL2l6X2x1mWFGwxi5wY
-         CunRc+mBcwxAJ6lMu3mcNzZi7oBxCrXccr7n9un6fZ0KrLc8RmslB/6H22q+EZcmft9/
-         Vk6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8nBWdtS+DnTMLam0TrL5zY1Eoo867/ZP8j256oJ3aEw=;
-        b=78vEIeZVPy8dqe3jMexT+4JNfOs3y4dn1ypNT4MZsqJnaP1eTyPrCLRuBA4pkcnpPd
-         ZtciD53qDtKMTREzNTxqvRQWxZMYVGZgwA6L6WFJQliD9V2LTVSgU843MHKF6EpBWJgL
-         pdOuZdIEL/zlTmH4Q3zp/4vocW7oWcokUscpiD0HzZVaJMKJcnMdzEZkvLkONR76yUgp
-         03p5jor8b7alyCnix5Cc0Oex7ok4MILLgIBOOOuqJLWV2kDrh3y99UsqFsJh2gsvW7cR
-         SrCkuLAMmYFMY/Qg++Rp03vDkJuizh5WjFQC4tMWjoe6hru2QqumaklPjRDOWqBbh3Yo
-         VWpQ==
-X-Gm-Message-State: ANoB5pn9HZoNrcNNzLvc8dYY1QKsZK33lou9+PDX/4vnF9bFXt5UE2xQ
-        2B3im0fhGFOMxsV8RSrD08MuFA==
-X-Google-Smtp-Source: AA0mqf7NoT9GpdJz7k9zAihHNee3d+mxli8RN1jcxPjJjagpQ33/piamty2bqr0V/fmjaMvk514zZQ==
-X-Received: by 2002:a5d:6a4d:0:b0:242:4b0a:dd52 with SMTP id t13-20020a5d6a4d000000b002424b0add52mr10298242wrw.551.1670342175310;
-        Tue, 06 Dec 2022 07:56:15 -0800 (PST)
-Received: from localhost (2001-1ae9-1c2-4c00-748-2a9a-a2a6-1362.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:748:2a9a:a2a6:1362])
-        by smtp.gmail.com with ESMTPSA id f18-20020a05600c4e9200b003c6c182bef9sm35223777wmq.36.2022.12.06.07.56.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Dec 2022 07:56:14 -0800 (PST)
-Date:   Tue, 6 Dec 2022 16:56:13 +0100
-From:   Andrew Jones <ajones@ventanamicro.com>
-To:     Heiko Stuebner <heiko@sntech.de>
+        with ESMTP id S229571AbiLFWKY (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Dec 2022 17:10:24 -0500
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E49A2F015
+        for <linux-efi@vger.kernel.org>; Tue,  6 Dec 2022 14:10:19 -0800 (PST)
+Received: from ip5b412258.dynamic.kabel-deutschland.de ([91.65.34.88] helo=diego.localnet)
+        by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <heiko@sntech.de>)
+        id 1p2g8Z-0005Rk-J7; Tue, 06 Dec 2022 23:10:03 +0100
+From:   Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+To:     Andrew Jones <ajones@ventanamicro.com>
 Cc:     linux-riscv@lists.infradead.org, palmer@dabbelt.com,
         christoph.muellner@vrull.eu, prabhakar.csengg@gmail.com,
         conor@kernel.org, philipp.tomsich@vrull.eu,
         emil.renner.berthing@canonical.com, ardb@kernel.org,
         linux-efi@vger.kernel.org,
-        Heiko Stuebner <heiko.stuebner@vrull.eu>,
         Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v3 11/14] RISC-V: fix auipc-jalr addresses in patched
- alternatives
-Message-ID: <20221206155613.d7vardgdptbc46uq@kamzik>
-References: <20221130225614.1594256-1-heiko@sntech.de>
- <20221130225614.1594256-12-heiko@sntech.de>
- <20221201193353.7rtpqrkk7ws34e3k@kamzik>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Subject: Re: [PATCH v3 11/14] RISC-V: fix auipc-jalr addresses in patched alternatives
+Date:   Tue, 06 Dec 2022 23:10:01 +0100
+Message-ID: <3628021.R56niFO833@diego>
 In-Reply-To: <20221201193353.7rtpqrkk7ws34e3k@kamzik>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20221130225614.1594256-1-heiko@sntech.de> <20221130225614.1594256-12-heiko@sntech.de> <20221201193353.7rtpqrkk7ws34e3k@kamzik>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_PASS,
+        T_SPF_HELO_TEMPERROR autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Dec 01, 2022 at 08:33:53PM +0100, Andrew Jones wrote:
+Am Donnerstag, 1. Dezember 2022, 20:33:53 CET schrieb Andrew Jones:
 > On Wed, Nov 30, 2022 at 11:56:11PM +0100, Heiko Stuebner wrote:
 > > From: Heiko Stuebner <heiko.stuebner@vrull.eu>
 > > 
@@ -128,7 +94,9 @@ On Thu, Dec 01, 2022 at 08:33:53PM +0100, Andrew Jones wrote:
 > > +static unsigned int riscv_instruction_at(void *p, unsigned int offset)
 > 
 > How about explicitly returning a u32?
-> 
+
+ok
+
 > > +{
 > > +	u16 *parcel = p + (offset * sizeof(u32));
 > 
@@ -137,6 +105,9 @@ On Thu, Dec 01, 2022 at 08:33:53PM +0100, Andrew Jones wrote:
 > scaling, since only the caller knows it's necessary. And, the call to
 > patch_text_nosync() requires all the math, so it'd be consistent for
 > riscv_instruction_at() to only take a pointer too.
+
+ok
+
 > 
 > > +
 > > +	return (unsigned int)parcel[0] | (unsigned int)parcel[1] << 16;
@@ -172,7 +143,16 @@ On Thu, Dec 01, 2022 at 08:33:53PM +0100, Andrew Jones wrote:
 >    offset[31:12] + ((value & BIT(11)) ? (1 << 12) : 0)
 > 
 > but the spec says the auipc part of the 'call' pseudoinstruction should be
-> 
+
+can you point me to that part of the spec?
+
+For educational purposes, because in the main riscv-spec I only found
+the main auipc + jalr descriptions, but nothing about the actual
+"call" pseudoinstruction.
+
+[and I'm probably just looking at the wrong document]
+
+
 >    offset[31:12] + offset[11]
 >  
 > which I think would be written as
@@ -181,13 +161,15 @@ On Thu, Dec 01, 2022 at 08:33:53PM +0100, Andrew Jones wrote:
 > 
 > or what am I missing?
 
-I figured out what I was missing. The way you have it makes sense to me
-now and my way was wrong. But we could simplify it like this
+that whole thing came from the ftrace parts, also doing call fixup voodoo
+And I can't really say that I understand every nook and cranny of it.
 
-#define to_auipc_imm(value) \
- ((value) + BIT(11)) & RV_U_IMM_31_12_MASK
+But for practical purposes, the addresses generated now work,
+and also seem to work for the ftrace counterpart (see include/asm/ftrace.h)
 
-> 
+[another place that will profit from more generalization :-) ]
+
+
 > > +
 > > +void riscv_alternative_fix_auipc_jalr(void *alt_ptr, unsigned int len,
 > > +				      int patch_offset)
@@ -209,7 +191,10 @@ now and my way was wrong. But we could simplify it like this
 > 
 >         uint32_t *p = alt_ptr;
 >         for (i = 0; i < num_instr - 1; i++, p++) {
-> 
+
+Wasn't not using uint32 pointers the whole point of going with the accessor?
+
+
 > > +		u32 inst1 = riscv_instruction_at(alt_ptr, i);
 >                                                  p
 > > +		u32 inst2 = riscv_instruction_at(alt_ptr, i + 1);
@@ -226,7 +211,14 @@ now and my way was wrong. But we could simplify it like this
 > nit: rd1 is only used once, how about
 > 
 >  if (RV_EXTRACT_RD_REG(inst1) != 1)
-> 
+
+ok
+
+
+Need to look at the rest tomorrow
+Heiko
+
+
 > > +
 > > +		/* get and adjust new target address */
 > > +		imm = RV_EXTRACT_UTYPE_IMM(inst1);
@@ -237,12 +229,6 @@ now and my way was wrong. But we could simplify it like this
 > 
 >         imm = (inst2 >> RV_I_IMM_11_0_OPOFF) & RV_I_IMM_11_0_MASK;
 > 	imm += ((inst1 >> RV_U_IMM_31_12_OPOFF) & RV_U_IMM_31_12_MASK) - (imm & BIT(11));
-
-I still think we need a subtraction here, but it should be ' - (imm >> 11)'
-
-Thanks,
-drew
-
 > 
 > > +		imm += RV_EXTRACT_ITYPE_IMM(inst2);
 > > +		imm -= patch_offset;
@@ -303,9 +289,12 @@ drew
 > >  	}
 > >  }
 > >  #endif
-> > -- 
-> > 2.35.1
 > >
 > 
 > Thanks,
 > drew
+> 
+
+
+
+
