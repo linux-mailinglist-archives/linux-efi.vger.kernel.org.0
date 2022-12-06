@@ -2,299 +2,241 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4E91644E5D
-	for <lists+linux-efi@lfdr.de>; Tue,  6 Dec 2022 23:10:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DF7A644F7E
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Dec 2022 00:19:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229625AbiLFWKZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 6 Dec 2022 17:10:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52476 "EHLO
+        id S229496AbiLFXTZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 6 Dec 2022 18:19:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229571AbiLFWKY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Dec 2022 17:10:24 -0500
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E49A2F015
-        for <linux-efi@vger.kernel.org>; Tue,  6 Dec 2022 14:10:19 -0800 (PST)
-Received: from ip5b412258.dynamic.kabel-deutschland.de ([91.65.34.88] helo=diego.localnet)
-        by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <heiko@sntech.de>)
-        id 1p2g8Z-0005Rk-J7; Tue, 06 Dec 2022 23:10:03 +0100
-From:   Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To:     Andrew Jones <ajones@ventanamicro.com>
-Cc:     linux-riscv@lists.infradead.org, palmer@dabbelt.com,
-        christoph.muellner@vrull.eu, prabhakar.csengg@gmail.com,
-        conor@kernel.org, philipp.tomsich@vrull.eu,
-        emil.renner.berthing@canonical.com, ardb@kernel.org,
-        linux-efi@vger.kernel.org,
-        Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v3 11/14] RISC-V: fix auipc-jalr addresses in patched alternatives
-Date:   Tue, 06 Dec 2022 23:10:01 +0100
-Message-ID: <3628021.R56niFO833@diego>
-In-Reply-To: <20221201193353.7rtpqrkk7ws34e3k@kamzik>
-References: <20221130225614.1594256-1-heiko@sntech.de> <20221130225614.1594256-12-heiko@sntech.de> <20221201193353.7rtpqrkk7ws34e3k@kamzik>
+        with ESMTP id S229448AbiLFXTY (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Dec 2022 18:19:24 -0500
+Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79FFAD117
+        for <linux-efi@vger.kernel.org>; Tue,  6 Dec 2022 15:19:23 -0800 (PST)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailout.west.internal (Postfix) with ESMTP id 26F613200951;
+        Tue,  6 Dec 2022 18:19:20 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Tue, 06 Dec 2022 18:19:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        invisiblethingslab.com; h=cc:cc:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm1; t=1670368759; x=
+        1670455159; bh=rkkLUDnPS0FoZRsSkbO54KMARkn+y+gsDF3JLs8f2pM=; b=H
+        zKv5upLZ47GBmhQMTAPZSO1XzChLhWPnqUvDPKqSP7mMErrdGcVs/x4P50rvD3gt
+        R10DJjOLLtQCFHmfV1yfes8m+5WyxY6b1ROr7SmzNkBwE4z2+m6RRpDLPACp4bxs
+        X4h6yzqWs/1T1SXLn1ROnNkqxTWlA1qsekkeoxnGgJ/dJ9tg4pF+myhCKh1JZHZV
+        ouLYm9IYqk3U3iNsXEWC6UTLLvLFMm91CjrtJ6DRWBZGHzEcC8ISwhs+kEG8jQdt
+        +OLkqDzbvLCL4srV37NCAWfgcQ75FCjHIs543VyYf0PtEPxWXNWyq4xhzjZ4tB+g
+        tOODsJXi4nR/FmfwHn2Jw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm1; t=1670368759; x=1670455159; bh=rkkLUDnPS0FoZRsSkbO54KMARkn+
+        y+gsDF3JLs8f2pM=; b=Ar4PeWWgpPIJEiVDNf7mWbNeFN7ViJpSzqO1pmxJ68Ae
+        IPW/Q1VMJHmRw2HtNSStSVsJUKYfpxSY0ofU1G8du0D6ABRyG6ORBMeJzQB65r3p
+        7bb8hx1yWvo5QB21DYzybPdsahqmlNo28OsF+ImxKnbleILwhnE7JSPUEqATFoHw
+        Tur7FR7GU5QON2uXVs9YQmsCsUdh+Plbx/U1sdzVJ4s95H17MDMZSzlbEkjomzLE
+        Ce5AruK8Hjugbx/JV6f0P20qC6EJij3C0KhJeWZnL+MY/ScspvCWXVgWEJS0lqaS
+        boOJWD7fdbBq9gF9bAkSX7hf55t1H7YqMgugXZ4OCA==
+X-ME-Sender: <xms:9s2PY-RPiMt5T69xpRurCAgHys2d-042fHQL8dM1vmyIFhHZevhewQ>
+    <xme:9s2PYzz49sYne5g9HLkc1jTDZ_UgIQS0htzvQR3M5M9mDQSo3OOJefxKt3hVfCn2T
+    PPVK8GGdz5fCR8>
+X-ME-Received: <xmr:9s2PY73x3XAPGcFhueJEurpdAj0EN0c6xIUWfRY_q3sXR2axa42Oonrxc940>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudejgddtlecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehgtderredttddvnecuhfhrohhmpeffvghmihcu
+    ofgrrhhivgcuqfgsvghnohhurhcuoeguvghmihesihhnvhhishhisghlvghthhhinhhgsh
+    hlrggsrdgtohhmqeenucggtffrrghtthgvrhhnpeduieelfeeutedvleehueetffejgeej
+    geffkeelveeuleeukeejjeduffetjeekteenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpeguvghmihesihhnvhhishhisghlvghthhhinhhgshhl
+    rggsrdgtohhm
+X-ME-Proxy: <xmx:9s2PY6Anz3rsRLhI3T_pwP9dNlu0bovHLiu_3UVPY-yCEZnwQTSJHw>
+    <xmx:9s2PY3hjkeuIwgEksYRgD-aFhH4z0eYjjl-9rD-CEVlP1fdm53zdRQ>
+    <xmx:9s2PY2rGyy949l-8dH_tsBlPVQX8s5zs41ddkRmJNhEEd5Rzalc_-Q>
+    <xmx:982PY2Nwfd7hSu1tRpEaRy4dYy0a3mf2X2E0t1HlLoE2d_mfn7U-2w>
+Feedback-ID: iac594737:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 6 Dec 2022 18:19:18 -0500 (EST)
+Date:   Tue, 6 Dec 2022 18:19:15 -0500
+From:   Demi Marie Obenour <demi@invisiblethingslab.com>
+To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
+Cc:     xen-devel@lists.xenproject.org, Peter Jones <pjones@redhat.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        Kees Cook <keescook@chromium.org>,
+        Anton Vorontsov <anton@enomsg.org>,
+        Colin Cross <ccross@android.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
+        <marmarek@invisiblethingslab.com>
+Subject: Re: [PATCH v2 6/6] efi: Apply allowlist to EFI configuration tables
+ when running under Xen
+Message-ID: <Y4/N9N8CrNmZYb/M@itl-email>
+References: <20221003112625.972646-1-ardb@kernel.org>
+ <20221003112625.972646-7-ardb@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_PASS,
-        T_SPF_HELO_TEMPERROR autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="yFL3xKiDvU6MCqho"
+Content-Disposition: inline
+In-Reply-To: <20221003112625.972646-7-ardb@kernel.org>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Am Donnerstag, 1. Dezember 2022, 20:33:53 CET schrieb Andrew Jones:
-> On Wed, Nov 30, 2022 at 11:56:11PM +0100, Heiko Stuebner wrote:
-> > From: Heiko Stuebner <heiko.stuebner@vrull.eu>
-> > 
-> > Alternatives live in a different section, so addresses used by call
-> > functions will point to wrong locations after the patch got applied.
-> > 
-> > Similar to arm64, adjust the location to consider that offset.
-> > 
-> > Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-> > Signed-off-by: Heiko Stuebner <heiko.stuebner@vrull.eu>
-> > ---
-> >  arch/riscv/include/asm/alternative.h |  3 ++
-> >  arch/riscv/kernel/alternative.c      | 72 ++++++++++++++++++++++++++++
-> >  arch/riscv/kernel/cpufeature.c       | 11 ++++-
-> >  3 files changed, 84 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/riscv/include/asm/alternative.h b/arch/riscv/include/asm/alternative.h
-> > index 6511dd73e812..c58ec3cc4bc3 100644
-> > --- a/arch/riscv/include/asm/alternative.h
-> > +++ b/arch/riscv/include/asm/alternative.h
-> > @@ -27,6 +27,9 @@ void __init apply_boot_alternatives(void);
-> >  void __init apply_early_boot_alternatives(void);
-> >  void apply_module_alternatives(void *start, size_t length);
-> >  
-> > +void riscv_alternative_fix_auipc_jalr(void *alt_ptr, unsigned int len,
-> > +				      int patch_offset);
-> > +
-> >  struct alt_entry {
-> >  	void *old_ptr;		 /* address of original instruciton or data  */
-> >  	void *alt_ptr;		 /* address of replacement instruction or data */
-> > diff --git a/arch/riscv/kernel/alternative.c b/arch/riscv/kernel/alternative.c
-> > index a7d26a00beea..292cc42dc3be 100644
-> > --- a/arch/riscv/kernel/alternative.c
-> > +++ b/arch/riscv/kernel/alternative.c
-> > @@ -15,6 +15,8 @@
-> >  #include <asm/vendorid_list.h>
-> >  #include <asm/sbi.h>
-> >  #include <asm/csr.h>
-> > +#include <asm/insn.h>
-> > +#include <asm/patch.h>
-> >  
-> >  struct cpu_manufacturer_info_t {
-> >  	unsigned long vendor_id;
-> > @@ -53,6 +55,76 @@ static void __init_or_module riscv_fill_cpu_mfr_info(struct cpu_manufacturer_inf
-> >  	}
-> >  }
-> >  
-> > +static unsigned int riscv_instruction_at(void *p, unsigned int offset)
-> 
-> How about explicitly returning a u32?
 
-ok
+--yFL3xKiDvU6MCqho
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 6 Dec 2022 18:19:15 -0500
+From: Demi Marie Obenour <demi@invisiblethingslab.com>
+To: Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
+Cc: xen-devel@lists.xenproject.org, Peter Jones <pjones@redhat.com>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Kees Cook <keescook@chromium.org>,
+	Anton Vorontsov <anton@enomsg.org>,
+	Colin Cross <ccross@android.com>, Tony Luck <tony.luck@intel.com>,
+	Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+Subject: Re: [PATCH v2 6/6] efi: Apply allowlist to EFI configuration tables
+ when running under Xen
 
-> > +{
-> > +	u16 *parcel = p + (offset * sizeof(u32));
-> 
-> nit: I realize this is just a helper function, but I think a cleaner
-> interface would require the caller do this math, or at least the offset
-> scaling, since only the caller knows it's necessary. And, the call to
-> patch_text_nosync() requires all the math, so it'd be consistent for
-> riscv_instruction_at() to only take a pointer too.
+On Mon, Oct 03, 2022 at 01:26:25PM +0200, Ard Biesheuvel wrote:
+> As it turns out, Xen does not guarantee that EFI bootservices data
+> regions in memory are preserved, which means that EFI configuration
+> tables pointing into such memory regions may be corrupted before the
+> dom0 OS has had a chance to inspect them.
+>=20
+> Demi Marie reports that this is causing problems for Qubes OS when it
+> attempts to perform system firmware updates, which requires that the
+> contents of the ESRT configuration table are valid when the fwupd user
+> space program runs.
+>=20
+> However, other configuration tables such as the memory attributes
+> table or the runtime properties table are equally affected, and so we
+> need a comprehensive workaround that works for any table type.
+>=20
+> So when running under Xen, check the EFI memory descriptor covering the
+> start of the table, and disregard the table if it does not reside in
+> memory that is preserved by Xen.
+>=20
+> Co-developed-by: Demi Marie Obenour <demi@invisiblethingslab.com>
+> Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  drivers/firmware/efi/efi.c |  7 ++++++
+>  drivers/xen/efi.c          | 24 ++++++++++++++++++++
+>  include/linux/efi.h        |  2 ++
+>  3 files changed, 33 insertions(+)
+>=20
+> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> index 2c12b1a06481..0a4583c13a40 100644
+> --- a/drivers/firmware/efi/efi.c
+> +++ b/drivers/firmware/efi/efi.c
+> @@ -560,6 +560,13 @@ static __init int match_config_table(const efi_guid_=
+t *guid,
+> =20
+>  	for (i =3D 0; efi_guidcmp(table_types[i].guid, NULL_GUID); i++) {
+>  		if (!efi_guidcmp(*guid, table_types[i].guid)) {
+> +			if (IS_ENABLED(CONFIG_XEN_EFI) &&
+> +			    !xen_efi_config_table_is_usable(guid, table)) {
+> +				if (table_types[i].name[0])
+> +					pr_cont("(%s=3D0x%lx) ",
+> +						table_types[i].name, table);
+> +				return 1;
+> +			}
+>  			*(table_types[i].ptr) =3D table;
+>  			if (table_types[i].name[0])
+>  				pr_cont("%s=3D0x%lx ",
+> diff --git a/drivers/xen/efi.c b/drivers/xen/efi.c
+> index 74f3f6d8cdc8..c275a9c377fe 100644
+> --- a/drivers/xen/efi.c
+> +++ b/drivers/xen/efi.c
+> @@ -326,3 +326,27 @@ int efi_mem_desc_lookup(u64 phys_addr, efi_memory_de=
+sc_t *out_md)
+> =20
+>          return 0;
+>  }
+> +
+> +bool __init xen_efi_config_table_is_usable(const efi_guid_t *guid,
+> +					   unsigned long table)
+> +{
+> +	efi_memory_desc_t md;
+> +	int rc;
+> +
+> +	if (!efi_enabled(EFI_PARAVIRT))
+> +		return true;
+> +
+> +	rc =3D efi_mem_desc_lookup(table, &md);
+> +	if (rc)
+> +		return false;
+> +
+> +	switch (md.type) {
+> +	case EFI_RUNTIME_SERVICES_CODE:
+> +	case EFI_RUNTIME_SERVICES_DATA:
+> +	case EFI_ACPI_RECLAIM_MEMORY:
+> +	case EFI_RESERVED_TYPE:
 
-ok
+Some firmware uses EFI_ACPI_MEMORY_NVS to store ACPI tables, so this
+needs to be added to the allowlist.  Otherwise affected systems will not
+boot.  Xen treats EFI_ACPI_MEMORY_NVS the way it treats
+EFI_ACPI_RECLAIM_MEMORY, so this is safe.
 
-> 
-> > +
-> > +	return (unsigned int)parcel[0] | (unsigned int)parcel[1] << 16;
-> > +}
-> > +
-> > +static inline bool riscv_insn_is_auipc_jalr(u32 insn1, u32 insn2)
-> > +{
-> > +	return riscv_insn_is_auipc(insn1) && riscv_insn_is_jalr(insn2);
-> > +}
-> > +
-> > +#define JALR_SIGN_MASK		BIT(RV_I_IMM_SIGN_OPOFF - RV_I_IMM_11_0_OPOFF)
-> 
-> We know I-type IMM is 11 bits, so we could just define this as BIT(11).
-> 
-> > +#define AUIPC_PAD		(0x00001000)
-> > +
-> > +#define to_jalr_imm(value)						\
-> > +	((value & RV_I_IMM_11_0_MASK) << RV_I_IMM_11_0_OPOFF)
-> 
-> Should put () around the macro argument, (value)
-> 
-> > +
-> > +#define to_auipc_imm(value)						\
-> > +	((value & JALR_SIGN_MASK) ?					\
-> > +	((value & RV_U_IMM_31_12_MASK) + AUIPC_PAD) :	\
-> > +	(value & RV_U_IMM_31_12_MASK))
-> 
-> I know RV_U_IMM_31_12_OPOFF is 0, but it looks odd not shifting
-> RV_U_IMM_31_12_MASK when we do shift RV_I_IMM_11_0_MASK.
-> 
-> So, it looks like to_auipc_imm() is doing
-> 
->    offset[31:12] + ((value & BIT(11)) ? (1 << 12) : 0)
-> 
-> but the spec says the auipc part of the 'call' pseudoinstruction should be
+> +		return true;
+> +	}
+> +
+> +	return false;
+> +}
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index e0ee6f6da4b4..b0cba86352ce 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -1352,4 +1352,6 @@ struct linux_efi_initrd {
+>  /* Header of a populated EFI secret area */
+>  #define EFI_SECRET_TABLE_HEADER_GUID	EFI_GUID(0x1e74f542, 0x71dd, 0x4d66=
+,  0x96, 0x3e, 0xef, 0x42, 0x87, 0xff, 0x17, 0x3b)
+> =20
+> +bool xen_efi_config_table_is_usable(const efi_guid_t *, unsigned long ta=
+ble);
+> +
+>  #endif /* _LINUX_EFI_H */
+> --=20
+> 2.35.1
+--=20
+Sincerely,
+Demi Marie Obenour (she/her/hers)
+Invisible Things Lab
 
-can you point me to that part of the spec?
+--yFL3xKiDvU6MCqho
+Content-Type: application/pgp-signature; name="signature.asc"
 
-For educational purposes, because in the main riscv-spec I only found
-the main auipc + jalr descriptions, but nothing about the actual
-"call" pseudoinstruction.
+-----BEGIN PGP SIGNATURE-----
 
-[and I'm probably just looking at the wrong document]
+iQIzBAEBCgAdFiEEdodNnxM2uiJZBxxxsoi1X/+cIsEFAmOPzfQACgkQsoi1X/+c
+IsHZ7Q/+JBs5ynGubAFJvx5kyi83tgpkjIadoLi9c/79upH+rZbuMh9ZGDJI7iT0
+MSnAiR4sq1LiHOdJP7YsgJ38ueXthUNu/dOYqVrxIAIwnT+LwJGX8xBaJYIVeGIX
+qCZlG79QINtMEzjOiDfqX/NBPPt4TebgWFcIEDxP000me1yLFTOjW84sHzt1diAa
+BDGNCdc7Cf/V+keVdqJdN6mGf1b1i64ZHQTD1ImBamLPrXsNWPGJPEDdItb21DSq
+QFSeQSgs50yDWjq+nXj99xutymTAbMM2RvcsgFAXqmfYKpO1bvRFNgLxORBVBJps
+kdRiNBAt88+itifXs2pfdurEFOuWZO0up0YhgeTNgB6TrcLPUPJ8LJHbOrUufZXO
++RXVe4S7VJ7hXRqILlvhG+IpauX44GxKi4Gm0ZQWW7IUD7GuffBkDldwYZseFZwk
+A70ASRFfUKfb9UKCJgRvou8TKCQdAgJpZh0i2GLigZJIgOtQfHKd6OUUv6/Dn5r8
+p00PbOq7mlI15NdYTLE+9ELMkWIaCG6X6o/3THsS1GB+ZwoKFn5GsHSd61zqcld/
+reyu3J8snKDlUZ3azyDVsgLz1vUiJXeeuyobrJEI5b4Fn4KrNZcH+G1bXgxz7RKV
+At5gPBO6x9+fdhlUCVsjfcdmTDqii0gJ+oPHY9Ldguscll+dCTQ=
+=2I76
+-----END PGP SIGNATURE-----
 
-
->    offset[31:12] + offset[11]
->  
-> which I think would be written as
-> 
->  ((((value) & RV_U_IMM_31_12_MASK) << RV_U_IMM_31_12_OPOFF) + ((value) & BIT(11)))
-> 
-> or what am I missing?
-
-that whole thing came from the ftrace parts, also doing call fixup voodoo
-And I can't really say that I understand every nook and cranny of it.
-
-But for practical purposes, the addresses generated now work,
-and also seem to work for the ftrace counterpart (see include/asm/ftrace.h)
-
-[another place that will profit from more generalization :-) ]
-
-
-> > +
-> > +void riscv_alternative_fix_auipc_jalr(void *alt_ptr, unsigned int len,
-> > +				      int patch_offset)
-> > +{
-> > +	int num_instr = len / sizeof(u32);
-> > +	unsigned int call[2];
-> > +	int i;
-> > +	int imm;
-> > +	u32 rd1;
-> > +
-> > +	/*
-> > +	 * stop one instruction before the end, as we're checking
-> > +	 * for auipc + jalr
-> > +	 */
-> > +	for (i = 0; i < num_instr - 1; i++) {
-> 
-> If we change riscv_instruction_at() to just take a pointer then we can do
-> the math in the for() and actually just use pointer arithmetic.
-> 
->         uint32_t *p = alt_ptr;
->         for (i = 0; i < num_instr - 1; i++, p++) {
-
-Wasn't not using uint32 pointers the whole point of going with the accessor?
-
-
-> > +		u32 inst1 = riscv_instruction_at(alt_ptr, i);
->                                                  p
-> > +		u32 inst2 = riscv_instruction_at(alt_ptr, i + 1);
->                                                  p + 1
-> > +
-> > +		if (!riscv_insn_is_auipc_jalr(inst1, inst2))
-> > +			continue;
-> > +
-> > +		/* call will use ra register */
-> > +		rd1 = RV_EXTRACT_RD_REG(inst1);
-> > +		if (rd1 != 1)
-> > +			continue;
-> 
-> nit: rd1 is only used once, how about
-> 
->  if (RV_EXTRACT_RD_REG(inst1) != 1)
-
-ok
-
-
-Need to look at the rest tomorrow
-Heiko
-
-
-> > +
-> > +		/* get and adjust new target address */
-> > +		imm = RV_EXTRACT_UTYPE_IMM(inst1);
-> 
-> Based on my understanding of a auipc part of the 'call', it seems we
-> should be subtracting BIT(11) here. And, since RV_EXTRACT_* does sign-
-> extension for I-type, then I'm not sure we should use it. So,
-> 
->         imm = (inst2 >> RV_I_IMM_11_0_OPOFF) & RV_I_IMM_11_0_MASK;
-> 	imm += ((inst1 >> RV_U_IMM_31_12_OPOFF) & RV_U_IMM_31_12_MASK) - (imm & BIT(11));
-> 
-> > +		imm += RV_EXTRACT_ITYPE_IMM(inst2);
-> > +		imm -= patch_offset;
-> > +
-> > +		/* pick the original auipc + jalr */
-> > +		call[0] = inst1;
-> > +		call[1] = inst2;
-> > +
-> > +		/* drop the old IMMs */
-> > +		call[0] &= ~(RV_U_IMM_31_12_MASK);
-> 
-> Same comment as above about RV_U_IMM_31_12_OPOFF. IMO, this would be more
-> consistent with the shift, even though it's zero.
-> 
->                 call[0] &= ~(RV_U_IMM_31_12_MASK << RV_U_IMM_31_12_OPOFF);
-> 
-> > +		call[1] &= ~(RV_I_IMM_11_0_MASK << RV_I_IMM_11_0_OPOFF);
-> > +
-> > +		/* add the adapted IMMs */
-> > +		call[0] |= to_auipc_imm(imm);
-> 
-> As pointed out above, I'm not sure about to_auipc_imm().
-> 
-> > +		call[1] |= to_jalr_imm(imm);
-> > +
-> > +		/* patch the call place again */
-> > +		patch_text_nosync(alt_ptr + i * sizeof(u32), call, 8);
->                                   ^                                ^
-> 				  p		       sizeof(u32) * 2
-> > +	}
-> > +}
-> > +
-> >  /*
-> >   * This is called very early in the boot process (directly after we run
-> >   * a feature detect on the boot CPU). No need to worry about other CPUs
-> > diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
-> > index 694267d1fe81..ba62a4ff5ccd 100644
-> > --- a/arch/riscv/kernel/cpufeature.c
-> > +++ b/arch/riscv/kernel/cpufeature.c
-> > @@ -316,8 +316,15 @@ void __init_or_module riscv_cpufeature_patch_func(struct alt_entry *begin,
-> >  		}
-> >  
-> >  		tmp = (1U << alt->errata_id);
-> > -		if (cpu_req_feature & tmp)
-> > -			patch_text_nosync(alt->old_ptr, alt->alt_ptr, alt->alt_len);
-> > +		if (cpu_req_feature & tmp) {
-> > +			/* do the basic patching */
-> > +			patch_text_nosync(alt->old_ptr, alt->alt_ptr,
-> > +					  alt->alt_len);
-> 
-> nit: I'd leave this line long and only have one wrap in the line below
-> 
-> > +
-> > +			riscv_alternative_fix_auipc_jalr(alt->old_ptr,
-> > +							 alt->alt_len,
-> > +							 alt->old_ptr - alt->alt_ptr);
-> > +		}
-> >  	}
-> >  }
-> >  #endif
-> >
-> 
-> Thanks,
-> drew
-> 
-
-
-
-
+--yFL3xKiDvU6MCqho--
