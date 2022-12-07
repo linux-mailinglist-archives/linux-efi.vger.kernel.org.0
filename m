@@ -2,283 +2,194 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 348736457F6
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Dec 2022 11:36:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FFAB64581C
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Dec 2022 11:45:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229925AbiLGKgG convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-efi@lfdr.de>); Wed, 7 Dec 2022 05:36:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32986 "EHLO
+        id S229551AbiLGKpA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 7 Dec 2022 05:45:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229715AbiLGKgE (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Dec 2022 05:36:04 -0500
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 550F02C676
-        for <linux-efi@vger.kernel.org>; Wed,  7 Dec 2022 02:35:59 -0800 (PST)
-Received: from loongson.cn (unknown [192.168.200.1])
-        by gateway (Coremail) with SMTP id _____8AxxvCObJBjHswDAA--.8742S3;
-        Wed, 07 Dec 2022 18:35:58 +0800 (CST)
-Received: from [10.40.24.8] (unknown [192.168.200.1])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8AxkOKKbJBjxy4nAA--.17019S2;
-        Wed, 07 Dec 2022 18:35:54 +0800 (CST)
-Message-ID: <235c218774e535a3b620294b7f817ff74a59f39d.camel@loongson.cn>
-Subject: Re: [PATCH v2 2/2] efi: Put Linux specific magic number in the DOS
- header
-From:   Xiaotian Wu <wuxiaotian@loongson.cn>
-To:     The development of GNU GRUB <grub-devel@gnu.org>
-Cc:     linux-efi@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>,
-        Atish Patra <atishp@rivosinc.com>,
-        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-        Daniel Kiper <daniel.kiper@oracle.com>,
-        Leif Lindholm <quic_llindhol@quicinc.com>
-Date:   Wed, 07 Dec 2022 18:35:54 +0800
-In-Reply-To: <CAMj1kXGQdYxAMvDZWMbXzo-yMP_1+0BLZSrVnz3XqMg+hJ_u6g@mail.gmail.com>
-References: <20221129175616.2089294-1-ardb@kernel.org>
-         <20221129175616.2089294-3-ardb@kernel.org>
-         <2c6ef81cda85345585cafbbbf9214e38fd7ca369.camel@loongson.cn>
-         <CAMj1kXGQdYxAMvDZWMbXzo-yMP_1+0BLZSrVnz3XqMg+hJ_u6g@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.46.1 
+        with ESMTP id S229462AbiLGKo7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Dec 2022 05:44:59 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 332002CE13
+        for <linux-efi@vger.kernel.org>; Wed,  7 Dec 2022 02:44:57 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id c66so18000759edf.5
+        for <linux-efi@vger.kernel.org>; Wed, 07 Dec 2022 02:44:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=WIyyFsEDdJszW+QGVtD/j+P/QpHLN0kh1fUvi+pqVbc=;
+        b=I28zWxSyXTcoSYTHDDfPv93ax7S7OjkjD8G+LsBSLP/R975lnprvMKqA4lVMvq9FAc
+         q52dORUYVC6Np2cnUBLJqQ/9koGYZ6xZW36xgGkxLyz45BqPGJv+zy+G/BeF2Vqnc7Ka
+         XNwHywy2U1MC/plRKvWOqQsznQTdIe3I3Jjy+6CzY6MphkSRdgRq+rBu2Is0MKdiG619
+         cZ/1tgObehulegAm40GMo0xhNTjsFLWDfggj+FO1V/7EWpsXj9+eU6ZOtqNqtwpivD34
+         sXlZC7eqeX36OCRiLwzxdB7Kw8zVaEJdUp6zwIB5fa7O57m68Iz3znGW5WTE4Q3tMF9k
+         AS2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WIyyFsEDdJszW+QGVtD/j+P/QpHLN0kh1fUvi+pqVbc=;
+        b=VqdnvRfGFTUb2WoIs1eBMduFr570bCgXBoidXlAnhUiYvvbL208CtGAP84f6LO0Xq2
+         pTbPkgDq9oyC98m6KMIKTkz33efkX0woYSAO93qyVn44P5e+spVhOHcChHvOl88E0Rgl
+         Ez1M7RkmrxGmOo4uywQNi1jDLf3wHdHowX5R0/DINsEbWR4dzRaZ3mWnqi6/Y15FA++q
+         L69eDqp3/6iKCpm5vHLsYRD+cIjynMHVArkFLO+bFYOeAC8dgT5pJapU1kRM33JUEhdn
+         Dm/dhu0G94eqpE407QYu4q72Qr3Te8pxwpUxQA+caAL1eAwsn0Y3exiuMttBcFdG9nmB
+         3EBQ==
+X-Gm-Message-State: ANoB5plbLQ47vpu/Leg0QFANTsb2uIXcc37IvC8a6pfBkm3ni1lNSshX
+        nmolKlH7GfEokJx5c9RntuCl43sv2PM4UFHi
+X-Google-Smtp-Source: AA0mqf6mUjK024A8sixt5aDOMvR7TrM0k1pBECHMFi/ndvD0TyLcxWe4HW70fW8i6r1uI5ACMbfC6Q==
+X-Received: by 2002:a05:6402:5406:b0:467:4b3d:f2ed with SMTP id ev6-20020a056402540600b004674b3df2edmr293577edb.101.1670409895739;
+        Wed, 07 Dec 2022 02:44:55 -0800 (PST)
+Received: from localhost (2001-1ae9-1c2-4c00-748-2a9a-a2a6-1362.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:748:2a9a:a2a6:1362])
+        by smtp.gmail.com with ESMTPSA id 5-20020a170906310500b0073d81b0882asm8284525ejx.7.2022.12.07.02.44.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Dec 2022 02:44:55 -0800 (PST)
+Date:   Wed, 7 Dec 2022 11:44:54 +0100
+From:   Andrew Jones <ajones@ventanamicro.com>
+To:     Heiko =?utf-8?Q?St=C3=BCbner?= <heiko@sntech.de>
+Cc:     linux-riscv@lists.infradead.org, palmer@dabbelt.com,
+        christoph.muellner@vrull.eu, prabhakar.csengg@gmail.com,
+        conor@kernel.org, philipp.tomsich@vrull.eu,
+        emil.renner.berthing@canonical.com, ardb@kernel.org,
+        linux-efi@vger.kernel.org,
+        Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: [PATCH v3 11/14] RISC-V: fix auipc-jalr addresses in patched
+ alternatives
+Message-ID: <20221207104454.7r3sx37mvlfc73jq@kamzik>
+References: <20221130225614.1594256-1-heiko@sntech.de>
+ <20221201193353.7rtpqrkk7ws34e3k@kamzik>
+ <3628021.R56niFO833@diego>
+ <2256630.NgBsaNRSFp@diego>
 MIME-Version: 1.0
-X-CM-TRANSID: AQAAf8AxkOKKbJBjxy4nAA--.17019S2
-X-CM-SenderInfo: 5zx0xtprwlt0o6or00hjvr0hdfq/1tbiAQANCGOPMOcZIwAAsF
-X-Coremail-Antispam: 1Uk129KBjvJXoWxuFWDKry5ZFW5Wr4DZFyrZwb_yoW3CF17pF
-        ykJFyUGryDJr1rJw1Utr1UuFyUZr4UJ3WUXr15JFy8Jryqgr1jqr1UXr1YgFyUJr4rJr1j
-        qr15JFy7ZF1UJrJanT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-        qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
-        b2xFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4
-        AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF
-        7I0E14v26r1j6r4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x
-        0267AKxVWxJr0_GcWln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF
-        6xkI12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv8V
-        WrMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCY1x0262kKe7AKxVWUAVWUtwCF
-        04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26rWl4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
-        1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
-        xVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
-        AFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8I
-        cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r
-        4j6r4UJbIYCTnIWIevJa73UjIFyTuYvj4RKpBTUUUUU
-X-Spam-Status: No, score=1.4 required=5.0 tests=BAYES_00,RCVD_IN_SBL_CSS,
-        SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2256630.NgBsaNRSFp@diego>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-在 2022-12-07星期三的 09:06 +0100，Ard Biesheuvel写道：
-> On Wed, 7 Dec 2022 at 08:51, Xiaotian Wu <wuxiaotian@loongson.cn>
-> wrote:
+On Wed, Dec 07, 2022 at 10:35:50AM +0100, Heiko St�bner wrote:
+> Am Dienstag, 6. Dezember 2022, 23:10:01 CET schrieb Heiko St�bner:
+> > Am Donnerstag, 1. Dezember 2022, 20:33:53 CET schrieb Andrew Jones:
+> > > On Wed, Nov 30, 2022 at 11:56:11PM +0100, Heiko Stuebner wrote:
+> > > > From: Heiko Stuebner <heiko.stuebner@vrull.eu>
+...
+> > > > +#define to_auipc_imm(value)						\
+> > > > +	((value & JALR_SIGN_MASK) ?					\
+> > > > +	((value & RV_U_IMM_31_12_MASK) + AUIPC_PAD) :	\
+> > > > +	(value & RV_U_IMM_31_12_MASK))
+> > > 
+> > > I know RV_U_IMM_31_12_OPOFF is 0, but it looks odd not shifting
+> > > RV_U_IMM_31_12_MASK when we do shift RV_I_IMM_11_0_MASK.
+> > > 
+> > > So, it looks like to_auipc_imm() is doing
+> > > 
+> > >    offset[31:12] + ((value & BIT(11)) ? (1 << 12) : 0)
+> > > 
+> > > but the spec says the auipc part of the 'call' pseudoinstruction should be
 > > 
-> > 在 2022-11-29星期二的 18:56 +0100，Ard Biesheuvel写道：
-> > > GRUB currently relies on the magic number in the image header of
-> > > ARM
-> > > and
-> > > arm64 EFI kernel images to decide whether or not the image in
-> > > question
-> > > is a bootable kernel.
-> > > 
-> > > However, the purpose of the magic number is to identify the image
-> > > as
-> > > one
-> > > that implements the bare metal boot protocol, and so GRUB, which
-> > > only
-> > > does EFI boot, can only boot images that could potentially be
-> > > booted
-> > > in
-> > > a non-EFI manner as well.
-> > > 
-> > > This is problematic for the new zboot decompressor image format,
-> > > as
-> > > it
-> > > can only boot in EFI mode, and must therefore not use the bare
-> > > metal
-> > > boot magic number in its header.
-> > > 
-> > > For this reason, the strict magic number was dropped from GRUB,
-> > > to
-> > > permit essentially any kind of EFI executable to be booted via
-> > > the
-> > > 'linux' command, blurring the line between the linux loader and
-> > > the
-> > > chainloader.
-> > > 
-> > > So let's use the same field in the DOS header that RISC-V and
-> > > arm64
-> > > already use for their 'bare metal' magic numbers to store a
-> > > 'generic
-> > > Linux kernel' magic number, which can be used to identify
-> > > bootable
-> > > kernel images in PE format which don't necessarily implement a
-> > > bare
-> > > metal boot protocol in the same binary. Note that, in the context
-> > > of
-> > > EFI, the MSDOS header is only described in terms of the fields
-> > > that
-> > > it
-> > > shares with the hybrid PE/COFF image format, (i.e., the magic
-> > > number
-> > > at
-> > > offset #0 and the PE header offset at byte offset #0x3c). Since
-> > > we
-> > > aim
-> > > for compatibility with EFI only, and not with MS-DOS or MS-
-> > > Windows,
-> > > we
-> > > can use the remaining space in the MS-DOS header however we want.
-> > > 
-> > > Let's set the generic magic number for x86 images as well:
-> > > existing
-> > > bootloaders already have their own methods to identify x86 Linux
-> > > images
-> > > that can be booted in a non-EFI manner, and having the magic
-> > > number
-> > > in
-> > > place there will ease any future transitions in loader
-> > > implementations
-> > > to merge the x86 and non-x86 EFI boot paths.
-> > > 
-> > > Note that 32-bit ARM already uses the same location in the header
-> > > for
-> > > a
-> > > different purpose, but the ARM support is already widely
-> > > implemented
-> > > and
-> > > the EFI zboot decompressor is not available on ARM anyway, so we
-> > > just
-> > > disregard it here.
-> > > 
-> > > Cc: Huacai Chen <chenhuacai@kernel.org>
-> > > Cc: Atish Patra <atishp@rivosinc.com>
-> > > Cc: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-> > > Cc: Daniel Kiper <daniel.kiper@oracle.com>
-> > > Cc: Leif Lindholm <quic_llindhol@quicinc.com>
-> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > > ---
-> > >  arch/loongarch/kernel/head.S                | 3 ++-
-> > >  arch/x86/boot/header.S                      | 3 ++-
-> > >  drivers/firmware/efi/libstub/zboot-header.S | 3 ++-
-> > >  include/linux/pe.h                          | 7 +++++++
-> > >  4 files changed, 13 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/arch/loongarch/kernel/head.S
-> > > b/arch/loongarch/kernel/head.S
-> > > index 84970e2666588963..caa74439700eee93 100644
-> > > --- a/arch/loongarch/kernel/head.S
-> > > +++ b/arch/loongarch/kernel/head.S
-> > > @@ -25,7 +25,8 @@ _head:
-> > >         .dword  kernel_entry            /* Kernel entry point */
-> > >         .dword  _end - _text            /* Kernel image effective
-> > > size */
-> > >         .quad   0                       /* Kernel image load
-> > > offset
-> > > from start of RAM */
-> > > -       .org    0x3c                    /* 0x20 ~ 0x3b reserved
-> > > */
-> > > +       .org    0x38                    /* 0x20 ~ 0x38 reserved
-> > > */
-> > > +       .long   LINUX_PE_MAGIC
-> > >         .long   pe_header - _head       /* Offset to the PE
-> > > header */
-> > > 
-> > >  pe_header:
-> > > diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-> > > index f912d777013052ea..be8f78a7ee325475 100644
-> > > --- a/arch/x86/boot/header.S
-> > > +++ b/arch/x86/boot/header.S
-> > > @@ -80,10 +80,11 @@ bs_die:
-> > >         ljmp    $0xf000,$0xfff0
-> > > 
-> > >  #ifdef CONFIG_EFI_STUB
-> > > -       .org    0x3c
-> > > +       .org    0x38
-> > >         #
-> > >         # Offset to the PE header.
-> > >         #
-> > > +       .long   LINUX_PE_MAGIC
-> > >         .long   pe_header
-> > >  #endif /* CONFIG_EFI_STUB */
-> > > 
-> > > diff --git a/drivers/firmware/efi/libstub/zboot-header.S
-> > > b/drivers/firmware/efi/libstub/zboot-header.S
-> > > index bc2d7750d7f14174..ec4525d40e0cf6d6 100644
-> > > --- a/drivers/firmware/efi/libstub/zboot-header.S
-> > > +++ b/drivers/firmware/efi/libstub/zboot-header.S
-> > > @@ -20,7 +20,8 @@ __efistub_efi_zboot_header:
-> > >         .long           __efistub__gzdata_size - 12            
-> > > //
-> > > payload size
-> > >         .long           0, 0                                   
-> > > //
-> > > reserved
-> > >         .asciz          COMP_TYPE                              
-> > > //
-> > > compression type
-> > > -       .org            .Ldoshdr + 0x3c
-> > > +       .org            .Ldoshdr + 0x38
-> > > +       .long           LINUX_PE_MAGIC
-> > >         .long           .Lpehdr - .Ldoshdr                     
-> > > // PE
-> > > header offset
-> > > 
-> > >  .Lpehdr:
-> > > diff --git a/include/linux/pe.h b/include/linux/pe.h
-> > > index 056a1762de904fc1..1db4c944efd78f51 100644
-> > > --- a/include/linux/pe.h
-> > > +++ b/include/linux/pe.h
-> > > @@ -31,6 +31,13 @@
-> > >  #define LINUX_EFISTUB_MAJOR_VERSION            0x1
-> > >  #define LINUX_EFISTUB_MINOR_VERSION            0x1
-> > > 
-> > > +/*
-> > > + * LINUX_PE_MAGIC appears at offset 0x38 into the MSDOS header
-> > > of
-> > > EFI bootable
-> > > + * Linux kernel images that target the architecture as specified
-> > > by
-> > > the PE/COFF
-> > > + * header machine type field.
-> > > + */
-> > > +#define LINUX_PE_MAGIC 0x818223cd
-> > > +
-> > >  #define MZ_MAGIC       0x5a4d  /* "MZ" */
-> > > 
-> > >  #define PE_MAGIC               0x00004550      /* "PE\0\0" */
+> > can you point me to that part of the spec?
+> > 
+> > For educational purposes, because in the main riscv-spec I only found
+> > the main auipc + jalr descriptions, but nothing about the actual
+> > "call" pseudoinstruction.
+> > 
+> > [and I'm probably just looking at the wrong document]
 > > 
 > > 
-> > As far as I know, Archlinux automatically generates initramfs
-> > according
-> > to the version number in the kernel file. The latest generic
-> > compressed
-> > EFI designs do not seem to provide kernel version number
-> > information.
+> > >    offset[31:12] + offset[11]
+> > >  
+> > > which I think would be written as
+> > > 
+> > >  ((((value) & RV_U_IMM_31_12_MASK) << RV_U_IMM_31_12_OPOFF) + ((value) & BIT(11)))
+> > > 
+> > > or what am I missing?
 > 
-> No, but nor do the gzip'ed images arm64 uses today, and the script
-> seems take care of that.
+> So far I've found the riscv-asm-manual [0], which only states for call
+> 	auipc x1, offset[31:12]
+> 	jalr x1, x1, offset[11:0]
 > 
-> The EFI zboot image has metadata in the header, so the script can
-> decompress it and grep for the version number it it needs to.
+> and the psABI spec [1], neither mention your "offset[31:12] + offset[11]" ?
+> 
+> But [1] does contain that tiny sentence
+> "The successive instruction has a signed 12-bit immediate so the value
+>  of the preceding high 20-bit relocation may have 1 added to it."
+> 
+> 
+> I.e. the lower 12 bits become themself a signed number [-2048:2047]
+> 
+> Take an example:
+> - address is 1862116 ( 0b 111000110 100111100100 )
+> - address[31:12] becomes 1859584 (as 0b 111000110 000000000000)
+> - while address[11:0] is 2532 as part of the bigger number
+> - as lone 12bit signed IMM it becomes -1564
+> - so you need to add this 4096 to the auipc IMM to compensate
+> 
+> 
+> Heiko
+> 
+> 
+> [0] https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md
+> [1] https://github.com/riscv-non-isa/riscv-elf-psabi-doc/releases/tag/v1.0
 
-I tested it, and the decompression can be completed, thank you.
-> 
-> > This may change the usage habits of Archlinux users. Is it possible
-> > to
-> > add the kernel version number to vmlinuz.efi?
-> > 
-> > https://gitlab.archlinux.org/archlinux/mkinitcpio/mkinitcpio/-/blob/master/functions#L209
-> > 
-> 
-> The current header doesn't have that so I don't think EFI zboot
-> should
-> be adding it either.
-> 
-> _______________________________________________
-> Grub-devel mailing list
-> Grub-devel@gnu.org
-> https://lists.gnu.org/mailman/listinfo/grub-devel
+Yeah, I got this figured out yesterday and sent another mail confirming
+the way you had it was right. Did you receive that mail?
 
--- 
-Best Regards
-Xiaotian Wu
+Where I see 
 
+ call offset     auipc x1, offset[31 : 12] + offset[11]
+                 jalr x1, offset[11:0](x1)
+
+is in chapter 25 of the unprivileged ISA.
+
+> 
+> > 
+> > that whole thing came from the ftrace parts, also doing call fixup voodoo
+> > And I can't really say that I understand every nook and cranny of it.
+> > 
+> > But for practical purposes, the addresses generated now work,
+> > and also seem to work for the ftrace counterpart (see include/asm/ftrace.h)
+> > 
+> > [another place that will profit from more generalization :-) ]
+> > 
+> > 
+> > > > +
+> > > > +void riscv_alternative_fix_auipc_jalr(void *alt_ptr, unsigned int len,
+> > > > +				      int patch_offset)
+> > > > +{
+> > > > +	int num_instr = len / sizeof(u32);
+> > > > +	unsigned int call[2];
+> > > > +	int i;
+> > > > +	int imm;
+> > > > +	u32 rd1;
+> > > > +
+> > > > +	/*
+> > > > +	 * stop one instruction before the end, as we're checking
+> > > > +	 * for auipc + jalr
+> > > > +	 */
+> > > > +	for (i = 0; i < num_instr - 1; i++) {
+> > > 
+> > > If we change riscv_instruction_at() to just take a pointer then we can do
+> > > the math in the for() and actually just use pointer arithmetic.
+> > > 
+> > >         uint32_t *p = alt_ptr;
+> > >         for (i = 0; i < num_instr - 1; i++, p++) {
+> > 
+> > Wasn't not using uint32 pointers the whole point of going with the accessor?
+
+Oh, right. So maybe stick to the offsetting, but still do the math in the
+caller.
+
+Thanks,
+drew
