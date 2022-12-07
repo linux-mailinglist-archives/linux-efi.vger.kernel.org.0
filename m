@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC542645182
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Dec 2022 02:51:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E806864517C
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Dec 2022 02:50:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229726AbiLGBun (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 6 Dec 2022 20:50:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32950 "EHLO
+        id S229991AbiLGBuW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 6 Dec 2022 20:50:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229983AbiLGBuU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Dec 2022 20:50:20 -0500
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57215537D7;
-        Tue,  6 Dec 2022 17:50:02 -0800 (PST)
+        with ESMTP id S229967AbiLGBuS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Dec 2022 20:50:18 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 847B4532C9;
+        Tue,  6 Dec 2022 17:50:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670377803; x=1701913803;
+  t=1670377801; x=1701913801;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=tWBdt2o2/am+QkNoUeL/v5kYgnfgBeMa0WLAghCR9t0=;
-  b=H+8gSLsyYq6uQQIsuLtB+dg3i+JIX5N6kCsdgRNPIkcd1vuosWBBGeor
-   dWIP9yxCa7LEp2hvVqMQ5JZ+5+ZuxNdRYeKnlnN+vYFZ1HeVICrHVha7L
-   jyc15OdYLBGsVlbP84s/IrlkfLVEVWJjdzKAb3xOzWDP0vSsB88ad7wvc
-   ZVASh4+oY2PnKJA15PCmipMw8j2fmv+UhwSClCJrvakTX8Fyqq8Q4ApIN
-   237z5170G62bYlGYQtgehDK54xyTdAoyShGKSIPJS91QCi3EkfvsV6ME2
-   /AsCvwju1cXHvnZFgI/ag5xQE+/CKcSXAO7rjfgBe+opBgxJhBZkPX17e
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="315494551"
+  bh=4ZWHE8KNs9LD2gK29L+GSS8ovmdLBSodlS7K4yGoZwg=;
+  b=b+tzc5iWH+w2K98w/pM61E3YYVoOZb81+1vo73SQNiZ2yMGzTmfuHtd/
+   Pn14Ce8FY1LUUvp8GRDS0BdlZ7pDYz5bnTvb5LQ54kmiowrpC2Zf4seQE
+   jCAFW+E7m44jf3j3ejGHBn1WLC6IsTd8qGHJhUqHUfnB/F/XpjsoaFaZG
+   8f9reMzXbNLKAS5ZxzCI+UPaJMVokJYRQr4GbdSNE7M3poobqJtE14+bv
+   7lQBfa2WwubxGmfH8Uc7aB4JxCJnn2rfdzCHdaf+yqnFv7MyfP/kHEAiP
+   apo2GaSaOhALmu6Ppeud5in7vrCLyHGXK1HSeAfWCb8PtJrijWnYa6U5r
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="316794452"
 X-IronPort-AV: E=Sophos;i="5.96,223,1665471600"; 
-   d="scan'208";a="315494551"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2022 17:50:01 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="646427704"
+   d="scan'208";a="316794452"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2022 17:50:01 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="640082289"
 X-IronPort-AV: E=Sophos;i="5.96,223,1665471600"; 
-   d="scan'208";a="646427704"
+   d="scan'208";a="640082289"
 Received: from puneets1-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.38.123])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2022 17:49:52 -0800
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2022 17:49:53 -0800
 Received: by box.shutemov.name (Postfix, from userid 1000)
-        id 97FD3109C8E; Wed,  7 Dec 2022 04:49:39 +0300 (+03)
+        id A268A109C8F; Wed,  7 Dec 2022 04:49:39 +0300 (+03)
 From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
         Sean Christopherson <seanjc@google.com>,
@@ -65,18 +65,17 @@ Cc:     Andi Kleen <ak@linux.intel.com>,
         aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
         linux-mm@kvack.org, linux-coco@lists.linux.dev,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCHv8 10/14] x86/mm: Avoid load_unaligned_zeropad() stepping into unaccepted memory
-Date:   Wed,  7 Dec 2022 04:49:29 +0300
-Message-Id: <20221207014933.8435-11-kirill.shutemov@linux.intel.com>
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv8 11/14] x86: Disable kexec if system has unaccepted memory
+Date:   Wed,  7 Dec 2022 04:49:30 +0300
+Message-Id: <20221207014933.8435-12-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.38.0
 In-Reply-To: <20221207014933.8435-1-kirill.shutemov@linux.intel.com>
 References: <20221207014933.8435-1-kirill.shutemov@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -84,124 +83,116 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-load_unaligned_zeropad() can lead to unwanted loads across page boundaries.
-The unwanted loads are typically harmless. But, they might be made to
-totally unrelated or even unmapped memory. load_unaligned_zeropad()
-relies on exception fixup (#PF, #GP and now #VE) to recover from these
-unwanted loads.
+On kexec, the target kernel has to know what memory has been accepted.
+Information in EFI map is out of date and cannot be used.
 
-But, this approach does not work for unaccepted memory. For TDX, a load
-from unaccepted memory will not lead to a recoverable exception within
-the guest. The guest will exit to the VMM where the only recourse is to
-terminate the guest.
+boot_params.unaccepted_memory can be used to pass the bitmap between two
+kernels on kexec, but the use-case is not yet implemented.
 
-There are three parts to fix this issue and comprehensively avoid access
-to unaccepted memory. Together these ensure that an extra "guard" page
-is accepted in addition to the memory that needs to be used.
-
-1. Implicitly extend the range_contains_unaccepted_memory(start, end)
-   checks up to end+2M if 'end' is aligned on a 2M boundary. It may
-   require checking 2M chunk beyond end of RAM. The bitmap allocation is
-   modified to accommodate this.
-2. Implicitly extend accept_memory(start, end) to end+2M if 'end' is
-   aligned on a 2M boundary.
-3. Set PageUnaccepted() on both memory that itself needs to be accepted
-   *and* memory where the next page needs to be accepted. Essentially,
-   make PageUnaccepted(page) a marker for whether work needs to be done
-   to make 'page' usable. That work might include accepting pages in
-   addition to 'page' itself.
-
-Side note: This leads to something strange. Pages which were accepted
-	   at boot, marked by the firmware as accepted and will never
-	   _need_ to be accepted might have PageUnaccepted() set on
-	   them. PageUnaccepted(page) is a cue to ensure that the next
-	   page is accepted before 'page' can be used.
-
-This is an actual, real-world problem which was discovered during TDX
-testing.
+Disable kexec on machines with unaccepted memory for now.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 ---
- arch/x86/mm/unaccepted_memory.c         | 39 +++++++++++++++++++++++++
- drivers/firmware/efi/libstub/x86-stub.c |  7 +++++
- 2 files changed, 46 insertions(+)
+ arch/x86/include/asm/kexec.h    |  5 +++++
+ arch/x86/mm/unaccepted_memory.c | 16 ++++++++++++++++
+ include/linux/kexec.h           |  7 +++++++
+ kernel/kexec.c                  |  4 ++++
+ kernel/kexec_file.c             |  4 ++++
+ 5 files changed, 36 insertions(+)
 
+diff --git a/arch/x86/include/asm/kexec.h b/arch/x86/include/asm/kexec.h
+index a3760ca796aa..87abab578154 100644
+--- a/arch/x86/include/asm/kexec.h
++++ b/arch/x86/include/asm/kexec.h
+@@ -189,6 +189,11 @@ extern void arch_kexec_pre_free_pages(void *vaddr, unsigned int pages);
+ void arch_kexec_protect_crashkres(void);
+ #define arch_kexec_protect_crashkres arch_kexec_protect_crashkres
+ 
++#ifdef CONFIG_UNACCEPTED_MEMORY
++int arch_kexec_load(void);
++#define arch_kexec_load arch_kexec_load
++#endif
++
+ void arch_kexec_unprotect_crashkres(void);
+ #define arch_kexec_unprotect_crashkres arch_kexec_unprotect_crashkres
+ 
 diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
-index 1df918b21469..a0a58486eb74 100644
+index a0a58486eb74..1745e6a65024 100644
 --- a/arch/x86/mm/unaccepted_memory.c
 +++ b/arch/x86/mm/unaccepted_memory.c
-@@ -23,6 +23,38 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
- 	bitmap = __va(boot_params.unaccepted_memory);
- 	range_start = start / PMD_SIZE;
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
++#include <linux/kexec.h>
+ #include <linux/memblock.h>
+ #include <linux/mm.h>
+ #include <linux/pfn.h>
+@@ -98,3 +99,18 @@ bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end)
  
-+	/*
-+	 * load_unaligned_zeropad() can lead to unwanted loads across page
-+	 * boundaries. The unwanted loads are typically harmless. But, they
-+	 * might be made to totally unrelated or even unmapped memory.
-+	 * load_unaligned_zeropad() relies on exception fixup (#PF, #GP and now
-+	 * #VE) to recover from these unwanted loads.
-+	 *
-+	 * But, this approach does not work for unaccepted memory. For TDX, a
-+	 * load from unaccepted memory will not lead to a recoverable exception
-+	 * within the guest. The guest will exit to the VMM where the only
-+	 * recourse is to terminate the guest.
-+	 *
-+	 * There are three parts to fix this issue and comprehensively avoid
-+	 * access to unaccepted memory. Together these ensure that an extra
-+	 * "guard" page is accepted in addition to the memory that needs to be
-+	 * used:
-+	 *
-+	 * 1. Implicitly extend the range_contains_unaccepted_memory(start, end)
-+	 *    checks up to end+2M if 'end' is aligned on a 2M boundary.
-+	 *
-+	 * 2. Implicitly extend accept_memory(start, end) to end+2M if 'end' is
-+	 *    aligned on a 2M boundary. (immediately following this comment)
-+	 *
-+	 * 3. Set PageUnaccepted() on both memory that itself needs to be
-+	 *    accepted *and* memory where the next page needs to be accepted.
-+	 *    Essentially, make PageUnaccepted(page) a marker for whether work
-+	 *    needs to be done to make 'page' usable. That work might include
-+	 *    accepting pages in addition to 'page' itself.
-+	 */
-+	if (!(end % PMD_SIZE))
-+		end += PMD_SIZE;
+ 	return ret;
+ }
 +
- 	spin_lock_irqsave(&unaccepted_memory_lock, flags);
- 	for_each_set_bitrange_from(range_start, range_end, bitmap,
- 				   DIV_ROUND_UP(end, PMD_SIZE)) {
-@@ -46,6 +78,13 @@ bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end)
- 
- 	bitmap = __va(boot_params.unaccepted_memory);
- 
-+	/*
-+	 * Also consider the unaccepted state of the *next* page. See fix #1 in
-+	 * the comment on load_unaligned_zeropad() in accept_memory().
-+	 */
-+	if (!(end % PMD_SIZE))
-+		end += PMD_SIZE;
++#ifdef CONFIG_KEXEC_CORE
++int arch_kexec_load(void)
++{
++	if (!boot_params.unaccepted_memory)
++		return 0;
 +
- 	spin_lock_irqsave(&unaccepted_memory_lock, flags);
- 	while (start < end) {
- 		if (test_bit(start / PMD_SIZE, bitmap)) {
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 27b9eed5883b..f375ab784c78 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -715,6 +715,13 @@ static efi_status_t allocate_unaccepted_bitmap(struct boot_params *params,
- 		return EFI_SUCCESS;
- 	}
- 
 +	/*
-+	 * range_contains_unaccepted_memory() may need to check one 2M chunk
-+	 * beyond the end of RAM to deal with load_unaligned_zeropad(). Make
-+	 * sure that the bitmap is large enough handle it.
++	 * TODO: Information on memory acceptance status has to be communicated
++	 * between kernel.
 +	 */
-+	max_addr += PMD_SIZE;
++	pr_warn_once("Disable kexec: not yet supported on systems with unaccepted memory\n");
++	return -EOPNOTSUPP;
++}
++#endif
+diff --git a/include/linux/kexec.h b/include/linux/kexec.h
+index 41a686996aaa..6b75051d5271 100644
+--- a/include/linux/kexec.h
++++ b/include/linux/kexec.h
+@@ -444,6 +444,13 @@ static inline void arch_kexec_protect_crashkres(void) { }
+ static inline void arch_kexec_unprotect_crashkres(void) { }
+ #endif
+ 
++#ifndef arch_kexec_load
++static inline int arch_kexec_load(void)
++{
++	return 0;
++}
++#endif
 +
- 	/*
- 	 * If unaccepted memory is present, allocate a bitmap to track what
- 	 * memory has to be accepted before access.
+ #ifndef page_to_boot_pfn
+ static inline unsigned long page_to_boot_pfn(struct page *page)
+ {
+diff --git a/kernel/kexec.c b/kernel/kexec.c
+index cb8e6e6f983c..65dff44b487f 100644
+--- a/kernel/kexec.c
++++ b/kernel/kexec.c
+@@ -192,6 +192,10 @@ static inline int kexec_load_check(unsigned long nr_segments,
+ {
+ 	int result;
+ 
++	result = arch_kexec_load();
++	if (result)
++		return result;
++
+ 	/* We only trust the superuser with rebooting the system. */
+ 	if (!capable(CAP_SYS_BOOT) || kexec_load_disabled)
+ 		return -EPERM;
+diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+index 45637511e0de..8f1454c3776a 100644
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -329,6 +329,10 @@ SYSCALL_DEFINE5(kexec_file_load, int, kernel_fd, int, initrd_fd,
+ 	int ret = 0, i;
+ 	struct kimage **dest_image, *image;
+ 
++	ret = arch_kexec_load();
++	if (ret)
++		return ret;
++
+ 	/* We only trust the superuser with rebooting the system. */
+ 	if (!capable(CAP_SYS_BOOT) || kexec_load_disabled)
+ 		return -EPERM;
 -- 
 2.38.0
 
