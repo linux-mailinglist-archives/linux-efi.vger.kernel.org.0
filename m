@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60582645171
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Dec 2022 02:49:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FD59645170
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Dec 2022 02:49:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229799AbiLGBtz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 6 Dec 2022 20:49:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60394 "EHLO
+        id S229771AbiLGBty (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 6 Dec 2022 20:49:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229679AbiLGBtx (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Dec 2022 20:49:53 -0500
+        with ESMTP id S229678AbiLGBtw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Dec 2022 20:49:52 -0500
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AD8D528AB;
-        Tue,  6 Dec 2022 17:49:52 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79133528A4;
+        Tue,  6 Dec 2022 17:49:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670377792; x=1701913792;
+  t=1670377791; x=1701913791;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=u+bYwyFm4XjH9XBhSQUvtr3jzM1TLHyKc0CMjo+kLEU=;
-  b=XVQJLrRaUd5neqrX2yVzjILOLK/KWr25vuIzqj6+2JP/dk1dr7loSULx
-   XRo8aK9CwgqRNpdAz0ENxQvc44yvIeWtxlABOJrOXiWnK4Iutm8J7xwoM
-   pFkYe1TwrT9RZ4+CxGfIWF32fmqd/49lFGOQuIn7kFM2SzAaviTcBzQqs
-   MzuhzvUqM2qyvFLSjGNlUwHT2c8ay1WKkDRKXdhV5u87UFbNtytOjIIM9
-   1UminUgMO2lrDiHRUJOhJK9QEYKvMUW6gWnx/rTbT5QjS2ZxQsSEi/rGa
-   yG74sdN2oU4gsSjG2NZNNrwwvUUt81hVgabDOadog6PAfKVPIT5ve08Ce
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="315494434"
+  bh=nVCMUIvJT1/LroShuz37RCPWW1tr+mbN1QZ4d2Ez7Bk=;
+  b=IF5NgYFOEwrYXAsrXQkDrfdek7Krc+gGQTtWj4NN3f+dUGk4eTfndi+d
+   VF4H42xiDAu/pnfwx9drc+f+gYyZTPALFxB33S6OmWo8FuHGvKued4oaq
+   WufT5GPEKVxb/hRLWPS0Qn/hmRHZi1HoF8ULws1iZ2c5Mp7O2qn8S2wRN
+   3Xmg6rurNBPmZEtEdD+c3jO2KnIZQFd0/wP0op7qmNHp44guLN8QQA2ou
+   A0wDtPL5dYNn7IM3bCBdu2/MS+7k1fLjo492+a9zWZzL4ElwCQrq+VEci
+   /YLe2qb5PUQbL84YWfQunDVeyda2X86qgG7ipNpD8f7YKev94GdWtPdgB
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="315494412"
 X-IronPort-AV: E=Sophos;i="5.96,223,1665471600"; 
-   d="scan'208";a="315494434"
+   d="scan'208";a="315494412"
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2022 17:49:50 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="646427593"
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2022 17:49:49 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="646427591"
 X-IronPort-AV: E=Sophos;i="5.96,223,1665471600"; 
-   d="scan'208";a="646427593"
+   d="scan'208";a="646427591"
 Received: from puneets1-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.38.123])
   by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2022 17:49:41 -0800
 Received: by box.shutemov.name (Postfix, from userid 1000)
-        id 4782B109C87; Wed,  7 Dec 2022 04:49:39 +0300 (+03)
+        id 524FF109C88; Wed,  7 Dec 2022 04:49:39 +0300 (+03)
 From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
         Sean Christopherson <seanjc@google.com>,
@@ -65,10 +65,11 @@ Cc:     Andi Kleen <ak@linux.intel.com>,
         aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
         linux-mm@kvack.org, linux-coco@lists.linux.dev,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv8 03/14] mm: Report unaccepted memory in meminfo
-Date:   Wed,  7 Dec 2022 04:49:22 +0300
-Message-Id: <20221207014933.8435-4-kirill.shutemov@linux.intel.com>
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Borislav Petkov <bp@suse.de>
+Subject: [PATCHv8 04/14] efi/x86: Get full memory map in allocate_e820()
+Date:   Wed,  7 Dec 2022 04:49:23 +0300
+Message-Id: <20221207014933.8435-5-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.38.0
 In-Reply-To: <20221207014933.8435-1-kirill.shutemov@linux.intel.com>
 References: <20221207014933.8435-1-kirill.shutemov@linux.intel.com>
@@ -83,105 +84,68 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Track amount of unaccepted memory and report it in /proc/meminfo and in
-node meminfo.
+Currently allocate_e820() is only interested in the size of map and size
+of memory descriptor to determine how many e820 entries the kernel
+needs.
+
+UEFI Specification version 2.9 introduces a new memory type --
+unaccepted memory. To track unaccepted memory kernel needs to allocate
+a bitmap. The size of the bitmap is dependent on the maximum physical
+address present in the system. A full memory map is required to find
+the maximum address.
+
+Modify allocate_e820() to get a full memory map.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Borislav Petkov <bp@suse.de>
 ---
- drivers/base/node.c    | 7 +++++++
- fs/proc/meminfo.c      | 5 +++++
- include/linux/mmzone.h | 3 +++
- mm/page_alloc.c        | 2 ++
- mm/vmstat.c            | 1 +
- 5 files changed, 18 insertions(+)
+ drivers/firmware/efi/libstub/x86-stub.c | 26 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index faf3597a96da..ca6f0590be21 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -448,6 +448,9 @@ static ssize_t node_read_meminfo(struct device *dev,
- 			     "Node %d ShmemPmdMapped: %8lu kB\n"
- 			     "Node %d FileHugePages: %8lu kB\n"
- 			     "Node %d FilePmdMapped: %8lu kB\n"
-+#endif
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+			     "Node %d Unaccepted:     %8lu kB\n"
- #endif
- 			     ,
- 			     nid, K(node_page_state(pgdat, NR_FILE_DIRTY)),
-@@ -477,6 +480,10 @@ static ssize_t node_read_meminfo(struct device *dev,
- 			     nid, K(node_page_state(pgdat, NR_SHMEM_PMDMAPPED)),
- 			     nid, K(node_page_state(pgdat, NR_FILE_THPS)),
- 			     nid, K(node_page_state(pgdat, NR_FILE_PMDMAPPED))
-+#endif
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+			     ,
-+			     nid, K(node_page_state(pgdat, NR_UNACCEPTED))
- #endif
- 			    );
- 	len += hugetlb_report_node_meminfo(buf, len, nid);
-diff --git a/fs/proc/meminfo.c b/fs/proc/meminfo.c
-index 440960110a42..789b77c7b6df 100644
---- a/fs/proc/meminfo.c
-+++ b/fs/proc/meminfo.c
-@@ -155,6 +155,11 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
- 		    global_zone_page_state(NR_FREE_CMA_PAGES));
- #endif
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index a0bfd31358ba..fff81843169c 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -681,28 +681,24 @@ static efi_status_t allocate_e820(struct boot_params *params,
+ 				  struct setup_data **e820ext,
+ 				  u32 *e820ext_size)
+ {
+-	unsigned long map_size, desc_size, map_key;
++	struct efi_boot_memmap *map;
+ 	efi_status_t status;
+-	__u32 nr_desc, desc_version;
++	__u32 nr_desc;
  
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+	show_val_kb(m, "Unaccepted:     ",
-+		    global_node_page_state(NR_UNACCEPTED));
-+#endif
-+
- 	hugetlb_report_meminfo(m);
+-	/* Only need the size of the mem map and size of each mem descriptor */
+-	map_size = 0;
+-	status = efi_bs_call(get_memory_map, &map_size, NULL, &map_key,
+-			     &desc_size, &desc_version);
+-	if (status != EFI_BUFFER_TOO_SMALL)
+-		return (status != EFI_SUCCESS) ? status : EFI_UNSUPPORTED;
+-
+-	nr_desc = map_size / desc_size + EFI_MMAP_NR_SLACK_SLOTS;
++	status = efi_get_memory_map(&map, false);
++	if (status != EFI_SUCCESS)
++		return status;
  
- 	arch_report_meminfo(m);
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index da335381e63f..9c762e8175fc 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -198,6 +198,9 @@ enum node_stat_item {
- 	NR_FOLL_PIN_ACQUIRED,	/* via: pin_user_page(), gup flag: FOLL_PIN */
- 	NR_FOLL_PIN_RELEASED,	/* pages returned via unpin_user_page() */
- 	NR_KERNEL_STACK_KB,	/* measured in KiB */
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+	NR_UNACCEPTED,
-+#endif
- #if IS_ENABLED(CONFIG_SHADOW_CALL_STACK)
- 	NR_KERNEL_SCS_KB,	/* measured in KiB */
- #endif
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 6d597e833a73..e80e8d398863 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1779,6 +1779,7 @@ static bool try_to_accept_memory(struct zone *zone)
+-	if (nr_desc > ARRAY_SIZE(params->e820_table)) {
+-		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table);
++	nr_desc = map->map_size / map->desc_size;
++	if (nr_desc > ARRAY_SIZE(params->e820_table) - EFI_MMAP_NR_SLACK_SLOTS) {
++		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table) +
++			EFI_MMAP_NR_SLACK_SLOTS;
  
- 	migratetype = get_pfnblock_migratetype(page, page_to_pfn(page));
- 	__mod_zone_freepage_state(zone, -1 << order, migratetype);
-+	__mod_node_page_state(page_pgdat(page), NR_UNACCEPTED, -1 << order);
- 	spin_unlock_irqrestore(&zone->lock, flags);
+ 		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
+-		if (status != EFI_SUCCESS)
+-			return status;
+ 	}
  
- 	if (last)
-@@ -1807,6 +1808,7 @@ static void __free_unaccepted(struct page *page, unsigned int order)
- 	migratetype = get_pfnblock_migratetype(page, page_to_pfn(page));
- 	list_add_tail(&page->lru, &zone->unaccepted_pages);
- 	__mod_zone_freepage_state(zone, 1 << order, migratetype);
-+	__mod_node_page_state(page_pgdat(page), NR_UNACCEPTED, 1 << order);
- 	spin_unlock_irqrestore(&zone->lock, flags);
+-	return EFI_SUCCESS;
++	efi_bs_call(free_pool, map);
++	return status;
+ }
  
- 	if (first)
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index b2371d745e00..fb15213be374 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1230,6 +1230,7 @@ const char * const vmstat_text[] = {
- 	"nr_foll_pin_acquired",
- 	"nr_foll_pin_released",
- 	"nr_kernel_stack",
-+	"nr_unaccepted",
- #if IS_ENABLED(CONFIG_SHADOW_CALL_STACK)
- 	"nr_shadow_call_stack",
- #endif
+ struct exit_boot_struct {
 -- 
 2.38.0
 
