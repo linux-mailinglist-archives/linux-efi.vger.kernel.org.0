@@ -2,91 +2,78 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DF7A644F7E
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Dec 2022 00:19:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 53DA864516F
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Dec 2022 02:49:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229496AbiLFXTZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 6 Dec 2022 18:19:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33136 "EHLO
+        id S229681AbiLGBty (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 6 Dec 2022 20:49:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229448AbiLFXTY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Dec 2022 18:19:24 -0500
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79FFAD117
-        for <linux-efi@vger.kernel.org>; Tue,  6 Dec 2022 15:19:23 -0800 (PST)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailout.west.internal (Postfix) with ESMTP id 26F613200951;
-        Tue,  6 Dec 2022 18:19:20 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Tue, 06 Dec 2022 18:19:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        invisiblethingslab.com; h=cc:cc:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm1; t=1670368759; x=
-        1670455159; bh=rkkLUDnPS0FoZRsSkbO54KMARkn+y+gsDF3JLs8f2pM=; b=H
-        zKv5upLZ47GBmhQMTAPZSO1XzChLhWPnqUvDPKqSP7mMErrdGcVs/x4P50rvD3gt
-        R10DJjOLLtQCFHmfV1yfes8m+5WyxY6b1ROr7SmzNkBwE4z2+m6RRpDLPACp4bxs
-        X4h6yzqWs/1T1SXLn1ROnNkqxTWlA1qsekkeoxnGgJ/dJ9tg4pF+myhCKh1JZHZV
-        ouLYm9IYqk3U3iNsXEWC6UTLLvLFMm91CjrtJ6DRWBZGHzEcC8ISwhs+kEG8jQdt
-        +OLkqDzbvLCL4srV37NCAWfgcQ75FCjHIs543VyYf0PtEPxWXNWyq4xhzjZ4tB+g
-        tOODsJXi4nR/FmfwHn2Jw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm1; t=1670368759; x=1670455159; bh=rkkLUDnPS0FoZRsSkbO54KMARkn+
-        y+gsDF3JLs8f2pM=; b=Ar4PeWWgpPIJEiVDNf7mWbNeFN7ViJpSzqO1pmxJ68Ae
-        IPW/Q1VMJHmRw2HtNSStSVsJUKYfpxSY0ofU1G8du0D6ABRyG6ORBMeJzQB65r3p
-        7bb8hx1yWvo5QB21DYzybPdsahqmlNo28OsF+ImxKnbleILwhnE7JSPUEqATFoHw
-        Tur7FR7GU5QON2uXVs9YQmsCsUdh+Plbx/U1sdzVJ4s95H17MDMZSzlbEkjomzLE
-        Ce5AruK8Hjugbx/JV6f0P20qC6EJij3C0KhJeWZnL+MY/ScspvCWXVgWEJS0lqaS
-        boOJWD7fdbBq9gF9bAkSX7hf55t1H7YqMgugXZ4OCA==
-X-ME-Sender: <xms:9s2PY-RPiMt5T69xpRurCAgHys2d-042fHQL8dM1vmyIFhHZevhewQ>
-    <xme:9s2PYzz49sYne5g9HLkc1jTDZ_UgIQS0htzvQR3M5M9mDQSo3OOJefxKt3hVfCn2T
-    PPVK8GGdz5fCR8>
-X-ME-Received: <xmr:9s2PY73x3XAPGcFhueJEurpdAj0EN0c6xIUWfRY_q3sXR2axa42Oonrxc940>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudejgddtlecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehgtderredttddvnecuhfhrohhmpeffvghmihcu
-    ofgrrhhivgcuqfgsvghnohhurhcuoeguvghmihesihhnvhhishhisghlvghthhhinhhgsh
-    hlrggsrdgtohhmqeenucggtffrrghtthgvrhhnpeduieelfeeutedvleehueetffejgeej
-    geffkeelveeuleeukeejjeduffetjeekteenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpeguvghmihesihhnvhhishhisghlvghthhhinhhgshhl
-    rggsrdgtohhm
-X-ME-Proxy: <xmx:9s2PY6Anz3rsRLhI3T_pwP9dNlu0bovHLiu_3UVPY-yCEZnwQTSJHw>
-    <xmx:9s2PY3hjkeuIwgEksYRgD-aFhH4z0eYjjl-9rD-CEVlP1fdm53zdRQ>
-    <xmx:9s2PY2rGyy949l-8dH_tsBlPVQX8s5zs41ddkRmJNhEEd5Rzalc_-Q>
-    <xmx:982PY2Nwfd7hSu1tRpEaRy4dYy0a3mf2X2E0t1HlLoE2d_mfn7U-2w>
-Feedback-ID: iac594737:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 6 Dec 2022 18:19:18 -0500 (EST)
-Date:   Tue, 6 Dec 2022 18:19:15 -0500
-From:   Demi Marie Obenour <demi@invisiblethingslab.com>
-To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
-Cc:     xen-devel@lists.xenproject.org, Peter Jones <pjones@redhat.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Kees Cook <keescook@chromium.org>,
-        Anton Vorontsov <anton@enomsg.org>,
-        Colin Cross <ccross@android.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>
-Subject: Re: [PATCH v2 6/6] efi: Apply allowlist to EFI configuration tables
- when running under Xen
-Message-ID: <Y4/N9N8CrNmZYb/M@itl-email>
-References: <20221003112625.972646-1-ardb@kernel.org>
- <20221003112625.972646-7-ardb@kernel.org>
+        with ESMTP id S229616AbiLGBtw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Dec 2022 20:49:52 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30A455289F;
+        Tue,  6 Dec 2022 17:49:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1670377791; x=1701913791;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=mKZR8pGZr9YedBSYT9wia+N/Q+rEF5aGSppbNIVw7Ug=;
+  b=ehbjZCf4c3OGOR84xoGt514DaicU/OCRKL7xwTH4O/Sl4ZZDpMnngmhd
+   jzwh6QS95SxKIyrRhYn6I8XDASu5CZcim4PmtAuQwJ9htaFqEJhAT64qm
+   PUrtiynlp5IN5oyK87pgPXAIsb0eIMshMtgrMdyspKo/O1kFjuuN54VCr
+   0UgWHCaqCE6myC8dIOvkalDxM5l715GJSN/CCv17tFbt50xTqJFlsxmbH
+   Dk+sBpYHDR61/gG4ZixNeMCIvZsfTOQ7Vmtq+zwrUK1xD/A+/3MoiGSSB
+   PbmIi4PDxf3EPoTf8NsX/ih0IkAAABiqMBAsuQDVlN9eh5h4UtdDWkTMP
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="316794370"
+X-IronPort-AV: E=Sophos;i="5.96,223,1665471600"; 
+   d="scan'208";a="316794370"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2022 17:49:50 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="640082262"
+X-IronPort-AV: E=Sophos;i="5.96,223,1665471600"; 
+   d="scan'208";a="640082262"
+Received: from puneets1-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.38.123])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2022 17:49:42 -0800
+Received: by box.shutemov.name (Postfix, from userid 1000)
+        id 2CF7C109C84; Wed,  7 Dec 2022 04:49:39 +0300 (+03)
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
+        khalid.elmously@canonical.com, philip.cox@canonical.com,
+        aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
+        linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv8 00/14] mm, x86/cc: Implement support for unaccepted memory
+Date:   Wed,  7 Dec 2022 04:49:19 +0300
+Message-Id: <20221207014933.8435-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.38.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="yFL3xKiDvU6MCqho"
-Content-Disposition: inline
-In-Reply-To: <20221003112625.972646-7-ardb@kernel.org>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -94,149 +81,174 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+UEFI Specification version 2.9 introduces the concept of memory
+acceptance: some Virtual Machine platforms, such as Intel TDX or AMD
+SEV-SNP, requiring memory to be accepted before it can be used by the
+guest. Accepting happens via a protocol specific for the Virtual
+Machine platform.
 
---yFL3xKiDvU6MCqho
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 6 Dec 2022 18:19:15 -0500
-From: Demi Marie Obenour <demi@invisiblethingslab.com>
-To: Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
-Cc: xen-devel@lists.xenproject.org, Peter Jones <pjones@redhat.com>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Kees Cook <keescook@chromium.org>,
-	Anton Vorontsov <anton@enomsg.org>,
-	Colin Cross <ccross@android.com>, Tony Luck <tony.luck@intel.com>,
-	Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-Subject: Re: [PATCH v2 6/6] efi: Apply allowlist to EFI configuration tables
- when running under Xen
+Accepting memory is costly and it makes VMM allocate memory for the
+accepted guest physical address range. It's better to postpone memory
+acceptance until memory is needed. It lowers boot time and reduces
+memory overhead.
 
-On Mon, Oct 03, 2022 at 01:26:25PM +0200, Ard Biesheuvel wrote:
-> As it turns out, Xen does not guarantee that EFI bootservices data
-> regions in memory are preserved, which means that EFI configuration
-> tables pointing into such memory regions may be corrupted before the
-> dom0 OS has had a chance to inspect them.
->=20
-> Demi Marie reports that this is causing problems for Qubes OS when it
-> attempts to perform system firmware updates, which requires that the
-> contents of the ESRT configuration table are valid when the fwupd user
-> space program runs.
->=20
-> However, other configuration tables such as the memory attributes
-> table or the runtime properties table are equally affected, and so we
-> need a comprehensive workaround that works for any table type.
->=20
-> So when running under Xen, check the EFI memory descriptor covering the
-> start of the table, and disregard the table if it does not reside in
-> memory that is preserved by Xen.
->=20
-> Co-developed-by: Demi Marie Obenour <demi@invisiblethingslab.com>
-> Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  drivers/firmware/efi/efi.c |  7 ++++++
->  drivers/xen/efi.c          | 24 ++++++++++++++++++++
->  include/linux/efi.h        |  2 ++
->  3 files changed, 33 insertions(+)
->=20
-> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index 2c12b1a06481..0a4583c13a40 100644
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
-> @@ -560,6 +560,13 @@ static __init int match_config_table(const efi_guid_=
-t *guid,
-> =20
->  	for (i =3D 0; efi_guidcmp(table_types[i].guid, NULL_GUID); i++) {
->  		if (!efi_guidcmp(*guid, table_types[i].guid)) {
-> +			if (IS_ENABLED(CONFIG_XEN_EFI) &&
-> +			    !xen_efi_config_table_is_usable(guid, table)) {
-> +				if (table_types[i].name[0])
-> +					pr_cont("(%s=3D0x%lx) ",
-> +						table_types[i].name, table);
-> +				return 1;
-> +			}
->  			*(table_types[i].ptr) =3D table;
->  			if (table_types[i].name[0])
->  				pr_cont("%s=3D0x%lx ",
-> diff --git a/drivers/xen/efi.c b/drivers/xen/efi.c
-> index 74f3f6d8cdc8..c275a9c377fe 100644
-> --- a/drivers/xen/efi.c
-> +++ b/drivers/xen/efi.c
-> @@ -326,3 +326,27 @@ int efi_mem_desc_lookup(u64 phys_addr, efi_memory_de=
-sc_t *out_md)
-> =20
->          return 0;
->  }
-> +
-> +bool __init xen_efi_config_table_is_usable(const efi_guid_t *guid,
-> +					   unsigned long table)
-> +{
-> +	efi_memory_desc_t md;
-> +	int rc;
-> +
-> +	if (!efi_enabled(EFI_PARAVIRT))
-> +		return true;
-> +
-> +	rc =3D efi_mem_desc_lookup(table, &md);
-> +	if (rc)
-> +		return false;
-> +
-> +	switch (md.type) {
-> +	case EFI_RUNTIME_SERVICES_CODE:
-> +	case EFI_RUNTIME_SERVICES_DATA:
-> +	case EFI_ACPI_RECLAIM_MEMORY:
-> +	case EFI_RESERVED_TYPE:
+The kernel needs to know what memory has been accepted. Firmware
+communicates this information via memory map: a new memory type --
+EFI_UNACCEPTED_MEMORY -- indicates such memory.
 
-Some firmware uses EFI_ACPI_MEMORY_NVS to store ACPI tables, so this
-needs to be added to the allowlist.  Otherwise affected systems will not
-boot.  Xen treats EFI_ACPI_MEMORY_NVS the way it treats
-EFI_ACPI_RECLAIM_MEMORY, so this is safe.
+Range-based tracking works fine for firmware, but it gets bulky for
+the kernel: e820 has to be modified on every page acceptance. It leads
+to table fragmentation, but there's a limited number of entries in the
+e820 table
 
-> +		return true;
-> +	}
-> +
-> +	return false;
-> +}
-> diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index e0ee6f6da4b4..b0cba86352ce 100644
-> --- a/include/linux/efi.h
-> +++ b/include/linux/efi.h
-> @@ -1352,4 +1352,6 @@ struct linux_efi_initrd {
->  /* Header of a populated EFI secret area */
->  #define EFI_SECRET_TABLE_HEADER_GUID	EFI_GUID(0x1e74f542, 0x71dd, 0x4d66=
-,  0x96, 0x3e, 0xef, 0x42, 0x87, 0xff, 0x17, 0x3b)
-> =20
-> +bool xen_efi_config_table_is_usable(const efi_guid_t *, unsigned long ta=
-ble);
-> +
->  #endif /* _LINUX_EFI_H */
-> --=20
-> 2.35.1
---=20
-Sincerely,
-Demi Marie Obenour (she/her/hers)
-Invisible Things Lab
+Another option is to mark such memory as usable in e820 and track if the
+range has been accepted in a bitmap. One bit in the bitmap represents
+2MiB in the address space: one 4k page is enough to track 64GiB or
+physical address space.
 
---yFL3xKiDvU6MCqho
-Content-Type: application/pgp-signature; name="signature.asc"
+In the worst-case scenario -- a huge hole in the middle of the
+address space -- It needs 256MiB to handle 4PiB of the address
+space.
 
------BEGIN PGP SIGNATURE-----
+Any unaccepted memory that is not aligned to 2M gets accepted upfront.
 
-iQIzBAEBCgAdFiEEdodNnxM2uiJZBxxxsoi1X/+cIsEFAmOPzfQACgkQsoi1X/+c
-IsHZ7Q/+JBs5ynGubAFJvx5kyi83tgpkjIadoLi9c/79upH+rZbuMh9ZGDJI7iT0
-MSnAiR4sq1LiHOdJP7YsgJ38ueXthUNu/dOYqVrxIAIwnT+LwJGX8xBaJYIVeGIX
-qCZlG79QINtMEzjOiDfqX/NBPPt4TebgWFcIEDxP000me1yLFTOjW84sHzt1diAa
-BDGNCdc7Cf/V+keVdqJdN6mGf1b1i64ZHQTD1ImBamLPrXsNWPGJPEDdItb21DSq
-QFSeQSgs50yDWjq+nXj99xutymTAbMM2RvcsgFAXqmfYKpO1bvRFNgLxORBVBJps
-kdRiNBAt88+itifXs2pfdurEFOuWZO0up0YhgeTNgB6TrcLPUPJ8LJHbOrUufZXO
-+RXVe4S7VJ7hXRqILlvhG+IpauX44GxKi4Gm0ZQWW7IUD7GuffBkDldwYZseFZwk
-A70ASRFfUKfb9UKCJgRvou8TKCQdAgJpZh0i2GLigZJIgOtQfHKd6OUUv6/Dn5r8
-p00PbOq7mlI15NdYTLE+9ELMkWIaCG6X6o/3THsS1GB+ZwoKFn5GsHSd61zqcld/
-reyu3J8snKDlUZ3azyDVsgLz1vUiJXeeuyobrJEI5b4Fn4KrNZcH+G1bXgxz7RKV
-At5gPBO6x9+fdhlUCVsjfcdmTDqii0gJ+oPHY9Ldguscll+dCTQ=
-=2I76
------END PGP SIGNATURE-----
+The approach lowers boot time substantially. Boot to shell is ~2.5x
+faster for 4G TDX VM and ~4x faster for 64G.
 
---yFL3xKiDvU6MCqho--
+TDX-specific code isolated from the core of unaccepted memory support. It
+supposed to help to plug-in different implementation of unaccepted memory
+such as SEV-SNP.
+
+The tree can be found here:
+
+git://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git unaccepted-memory
+
+v8:
+ - Rewrite core-mm support for unaccepted memory (patch 02/14);
+ - s/UnacceptedPages/Unaccepted/ in meminfo;
+ - Drop arch/x86/boot/compressed/compiler.h;
+ - Fix build errors;
+ - Adjust commit messages and comments;
+ - Reviewed-bys from Dave and Borislav;
+ - Rebased to tip/master.
+v7:
+ - Rework meminfo counter to use PageUnaccepted() and move to generic code;
+ - Fix range_contains_unaccepted_memory() on machines without unaccepted memory;
+ - Add Reviewed-by from David;
+v6:
+ - Fix load_unaligned_zeropad() on machine with unaccepted memory;
+ - Clear PageUnaccepted() on merged pages, leaving it only on head;
+ - Clarify error handling in allocate_e820();
+ - Fix build with CONFIG_UNACCEPTED_MEMORY=y, but without TDX;
+ - Disable kexec at boottime instead of build conflict;
+ - Rebased to tip/master;
+ - Spelling fixes;
+ - Add Reviewed-by from Mike and David;
+v5:
+ - Updates comments and commit messages;
+   + Explain options for unaccepted memory handling;
+ - Expose amount of unaccepted memory in /proc/meminfo
+ - Adjust check in page_expected_state();
+ - Fix error code handling in allocate_e820();
+ - Centralize __pa()/__va() definitions in the boot stub;
+ - Avoid includes from the main kernel in the boot stub;
+ - Use an existing hole in boot_param for unaccepted_memory, instead of adding
+   to the end of the structure;
+ - Extract allocate_unaccepted_memory() form allocate_e820();
+ - Complain if there's unaccepted memory, but kernel does not support it;
+ - Fix vmstat counter;
+ - Split up few preparatory patches;
+ - Random readability adjustments;
+v4:
+ - PageBuddyUnaccepted() -> PageUnaccepted;
+ - Use separate page_type, not shared with offline;
+ - Rework interface between core-mm and arch code;
+ - Adjust commit messages;
+ - Ack from Mike;
+Kirill A. Shutemov (14):
+  x86/boot: Centralize __pa()/__va() definitions
+  mm: Add support for unaccepted memory
+  mm: Report unaccepted memory in meminfo
+  efi/x86: Get full memory map in allocate_e820()
+  x86/boot: Add infrastructure required for unaccepted memory support
+  efi/x86: Implement support for unaccepted memory
+  x86/boot/compressed: Handle unaccepted memory
+  x86/mm: Reserve unaccepted memory bitmap
+  x86/mm: Provide helpers for unaccepted memory
+  x86/mm: Avoid load_unaligned_zeropad() stepping into unaccepted memory
+  x86: Disable kexec if system has unaccepted memory
+  x86/tdx: Make _tdx_hypercall() and __tdx_module_call() available in
+    boot stub
+  x86/tdx: Refactor try_accept_one()
+  x86/tdx: Add unaccepted memory support
+
+ Documentation/x86/zero-page.rst          |   1 +
+ arch/x86/Kconfig                         |   2 +
+ arch/x86/boot/bitops.h                   |  40 ++++++++
+ arch/x86/boot/compressed/Makefile        |   3 +-
+ arch/x86/boot/compressed/align.h         |  14 +++
+ arch/x86/boot/compressed/bitmap.c        |  43 ++++++++
+ arch/x86/boot/compressed/bitmap.h        |  49 +++++++++
+ arch/x86/boot/compressed/bits.h          |  36 +++++++
+ arch/x86/boot/compressed/efi.h           |   1 +
+ arch/x86/boot/compressed/error.c         |  19 ++++
+ arch/x86/boot/compressed/error.h         |   1 +
+ arch/x86/boot/compressed/find.c          |  54 ++++++++++
+ arch/x86/boot/compressed/find.h          |  79 +++++++++++++++
+ arch/x86/boot/compressed/ident_map_64.c  |   8 --
+ arch/x86/boot/compressed/kaslr.c         |  35 ++++---
+ arch/x86/boot/compressed/math.h          |  37 +++++++
+ arch/x86/boot/compressed/mem.c           | 122 ++++++++++++++++++++++
+ arch/x86/boot/compressed/minmax.h        |  61 +++++++++++
+ arch/x86/boot/compressed/misc.c          |   6 ++
+ arch/x86/boot/compressed/misc.h          |  15 +++
+ arch/x86/boot/compressed/pgtable_types.h |  25 +++++
+ arch/x86/boot/compressed/sev.c           |   2 -
+ arch/x86/boot/compressed/tdx-shared.c    |   2 +
+ arch/x86/boot/compressed/tdx.c           |  39 +++++++
+ arch/x86/coco/tdx/Makefile               |   2 +-
+ arch/x86/coco/tdx/tdx-shared.c           |  95 +++++++++++++++++
+ arch/x86/coco/tdx/tdx.c                  | 113 +--------------------
+ arch/x86/include/asm/kexec.h             |   5 +
+ arch/x86/include/asm/page.h              |   3 +
+ arch/x86/include/asm/shared/tdx.h        |  48 +++++++++
+ arch/x86/include/asm/tdx.h               |  21 +---
+ arch/x86/include/asm/unaccepted_memory.h |  16 +++
+ arch/x86/include/uapi/asm/bootparam.h    |   2 +-
+ arch/x86/kernel/e820.c                   |  17 ++++
+ arch/x86/mm/Makefile                     |   2 +
+ arch/x86/mm/unaccepted_memory.c          | 123 +++++++++++++++++++++++
+ drivers/base/node.c                      |   7 ++
+ drivers/firmware/efi/Kconfig             |  14 +++
+ drivers/firmware/efi/efi.c               |   1 +
+ drivers/firmware/efi/libstub/x86-stub.c  | 101 ++++++++++++++++---
+ fs/proc/meminfo.c                        |   5 +
+ include/linux/efi.h                      |   3 +-
+ include/linux/kexec.h                    |   7 ++
+ include/linux/mmzone.h                   |   8 ++
+ include/linux/page-flags.h               |  24 +++++
+ kernel/kexec.c                           |   4 +
+ kernel/kexec_file.c                      |   4 +
+ mm/internal.h                            |  12 +++
+ mm/memblock.c                            |   9 ++
+ mm/page_alloc.c                          | 121 ++++++++++++++++++++++
+ mm/vmstat.c                              |   1 +
+ 51 files changed, 1291 insertions(+), 171 deletions(-)
+ create mode 100644 arch/x86/boot/compressed/align.h
+ create mode 100644 arch/x86/boot/compressed/bitmap.c
+ create mode 100644 arch/x86/boot/compressed/bitmap.h
+ create mode 100644 arch/x86/boot/compressed/bits.h
+ create mode 100644 arch/x86/boot/compressed/find.c
+ create mode 100644 arch/x86/boot/compressed/find.h
+ create mode 100644 arch/x86/boot/compressed/math.h
+ create mode 100644 arch/x86/boot/compressed/mem.c
+ create mode 100644 arch/x86/boot/compressed/minmax.h
+ create mode 100644 arch/x86/boot/compressed/pgtable_types.h
+ create mode 100644 arch/x86/boot/compressed/tdx-shared.c
+ create mode 100644 arch/x86/coco/tdx/tdx-shared.c
+ create mode 100644 arch/x86/include/asm/unaccepted_memory.h
+ create mode 100644 arch/x86/mm/unaccepted_memory.c
+
+-- 
+2.38.0
+
