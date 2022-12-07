@@ -2,185 +2,232 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16A7A6454E2
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Dec 2022 08:51:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 122D3645513
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Dec 2022 09:06:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229730AbiLGHvp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 7 Dec 2022 02:51:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42194 "EHLO
+        id S229613AbiLGIGv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 7 Dec 2022 03:06:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229919AbiLGHvj (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Dec 2022 02:51:39 -0500
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2475331EF1
-        for <linux-efi@vger.kernel.org>; Tue,  6 Dec 2022 23:51:31 -0800 (PST)
-Received: from loongson.cn (unknown [192.168.200.1])
-        by gateway (Coremail) with SMTP id _____8CxKekBRpBjWMQDAA--.5533S3;
-        Wed, 07 Dec 2022 15:51:29 +0800 (CST)
-Received: from [10.40.24.8] (unknown [192.168.200.1])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8BxzVT+RZBjFB0nAA--.1070S2;
-        Wed, 07 Dec 2022 15:51:26 +0800 (CST)
-Message-ID: <2c6ef81cda85345585cafbbbf9214e38fd7ca369.camel@loongson.cn>
-Subject: Re: [PATCH v2 2/2] efi: Put Linux specific magic number in the DOS
- header
-From:   Xiaotian Wu <wuxiaotian@loongson.cn>
-To:     The development of GNU GRUB <grub-devel@gnu.org>,
-        linux-efi@vger.kernel.org
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Huacai Chen <chenhuacai@kernel.org>,
+        with ESMTP id S229486AbiLGIGu (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Dec 2022 03:06:50 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A695286D7
+        for <linux-efi@vger.kernel.org>; Wed,  7 Dec 2022 00:06:49 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 281FE60B90
+        for <linux-efi@vger.kernel.org>; Wed,  7 Dec 2022 08:06:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89AF2C43149
+        for <linux-efi@vger.kernel.org>; Wed,  7 Dec 2022 08:06:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1670400408;
+        bh=dKvZhLD0Ds0iSbthLpxzEQsvpQ30YYwlUCgmh1r1Npw=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=dSD3FS8fmRuQkT1npIgiHgTBhw6Nnd229uLvOiAuaDlyy6PdUWnY8jtYMnx7LmWj3
+         XDMfHolp3K9ZOm8XZaHAz5hL1oN6kLyiKlnhgdAXayPIXtV8VgQlrvrjUb2DngbyM3
+         cbHsv4c3Uyn4MsValRSbFiv7mK9EhI7RizQFo39S08yz8YlbiXP0alpJqRwsJiq/yH
+         Yq27QhDKzbpRuQStWd/TGAS4m4XgDnek+c4ESaeZXFMTiJS/Uc8lgDKmbpJ8KXvYnI
+         07rrOmuqSOrJBwLR/GEeKdAcSSlhNFYVlKclw8wRfvbHQzuBdtUGrz79VNkzhtnTXT
+         /E7ctTz1Kk8hA==
+Received: by mail-lj1-f174.google.com with SMTP id q7so19974905ljp.9
+        for <linux-efi@vger.kernel.org>; Wed, 07 Dec 2022 00:06:48 -0800 (PST)
+X-Gm-Message-State: ANoB5plSDvh1d3e8jtlxTI8OiqtKmihxa3xrLszj9iNfrdL6J8y5bDlk
+        nlU6CzbWRSIJl9bJMvM9lLDtajW3GxYinUprElQ=
+X-Google-Smtp-Source: AA0mqf4+7QjabOOjJo9k+o596eBJrJGj6AWAEMbOvLrHZhVDKOAoqaKVQtXW4/rQHjo2cKImxo30aLQnJhpLQLz+TrY=
+X-Received: by 2002:a05:651c:153:b0:279:bbff:a928 with SMTP id
+ c19-20020a05651c015300b00279bbffa928mr9990984ljd.415.1670400406467; Wed, 07
+ Dec 2022 00:06:46 -0800 (PST)
+MIME-Version: 1.0
+References: <20221129175616.2089294-1-ardb@kernel.org> <20221129175616.2089294-3-ardb@kernel.org>
+ <2c6ef81cda85345585cafbbbf9214e38fd7ca369.camel@loongson.cn>
+In-Reply-To: <2c6ef81cda85345585cafbbbf9214e38fd7ca369.camel@loongson.cn>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 7 Dec 2022 09:06:35 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGQdYxAMvDZWMbXzo-yMP_1+0BLZSrVnz3XqMg+hJ_u6g@mail.gmail.com>
+Message-ID: <CAMj1kXGQdYxAMvDZWMbXzo-yMP_1+0BLZSrVnz3XqMg+hJ_u6g@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] efi: Put Linux specific magic number in the DOS header
+To:     Xiaotian Wu <wuxiaotian@loongson.cn>
+Cc:     The development of GNU GRUB <grub-devel@gnu.org>,
+        linux-efi@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>,
         Atish Patra <atishp@rivosinc.com>,
         Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
         Daniel Kiper <daniel.kiper@oracle.com>,
         Leif Lindholm <quic_llindhol@quicinc.com>
-Date:   Wed, 07 Dec 2022 15:51:26 +0800
-In-Reply-To: <20221129175616.2089294-3-ardb@kernel.org>
-References: <20221129175616.2089294-1-ardb@kernel.org>
-         <20221129175616.2089294-3-ardb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.46.1 
-MIME-Version: 1.0
-X-CM-TRANSID: AQAAf8BxzVT+RZBjFB0nAA--.1070S2
-X-CM-SenderInfo: 5zx0xtprwlt0o6or00hjvr0hdfq/1tbiAQANCGOPMOcU0wAAs4
-X-Coremail-Antispam: 1Uk129KBjvJXoWxuw1UZry7Kry7Gw1xCw1kuFg_yoWxZw18pF
-        18Jr4UJryDJr1rJr18Jr1UWryUAr1UJ3WUJr1UJFyUJr1UXr1jqr1UXr1jgr1UJr48Jr1U
-        tr15Jr1UuF1UJr7anT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-        qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
-        bSAFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4
-        AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF
-        7I0E14v26r4j6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x
-        0267AKxVWxJr0_GcWln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF
-        6xkI12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv8V
-        WrMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACY4xI67k04243AVAKzVAKj4xx
-        M4xvF2IEb7IF0Fy26I8I3I1lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l42
-        xK82IY6x8ErcxFaVAv8VWrMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r12
-        6r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7
-        AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0xvE
-        2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcV
-        C2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JwCE64xvF2IEb7IF
-        0Fy7YxBIdaVFxhVjvjDU0xZFpf9x0zRLF4iUUUUU=
-X-Spam-Status: No, score=1.4 required=5.0 tests=BAYES_00,RCVD_IN_SBL_CSS,
-        SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-5ZyoIDIwMjItMTEtMjnmmJ/mnJ/kuoznmoQgMTg6NTYgKzAxMDDvvIxBcmQgQmllc2hldXZlbOWG
-memBk++8mgo+IEdSVUIgY3VycmVudGx5IHJlbGllcyBvbiB0aGUgbWFnaWMgbnVtYmVyIGluIHRo
-ZSBpbWFnZSBoZWFkZXIgb2YgQVJNCj4gYW5kCj4gYXJtNjQgRUZJIGtlcm5lbCBpbWFnZXMgdG8g
-ZGVjaWRlIHdoZXRoZXIgb3Igbm90IHRoZSBpbWFnZSBpbgo+IHF1ZXN0aW9uCj4gaXMgYSBib290
-YWJsZSBrZXJuZWwuCj4gCj4gSG93ZXZlciwgdGhlIHB1cnBvc2Ugb2YgdGhlIG1hZ2ljIG51bWJl
-ciBpcyB0byBpZGVudGlmeSB0aGUgaW1hZ2UgYXMKPiBvbmUKPiB0aGF0IGltcGxlbWVudHMgdGhl
-IGJhcmUgbWV0YWwgYm9vdCBwcm90b2NvbCwgYW5kIHNvIEdSVUIsIHdoaWNoIG9ubHkKPiBkb2Vz
-IEVGSSBib290LCBjYW4gb25seSBib290IGltYWdlcyB0aGF0IGNvdWxkIHBvdGVudGlhbGx5IGJl
-IGJvb3RlZAo+IGluCj4gYSBub24tRUZJIG1hbm5lciBhcyB3ZWxsLgo+IAo+IFRoaXMgaXMgcHJv
-YmxlbWF0aWMgZm9yIHRoZSBuZXcgemJvb3QgZGVjb21wcmVzc29yIGltYWdlIGZvcm1hdCwgYXMK
-PiBpdAo+IGNhbiBvbmx5IGJvb3QgaW4gRUZJIG1vZGUsIGFuZCBtdXN0IHRoZXJlZm9yZSBub3Qg
-dXNlIHRoZSBiYXJlIG1ldGFsCj4gYm9vdCBtYWdpYyBudW1iZXIgaW4gaXRzIGhlYWRlci4KPiAK
-PiBGb3IgdGhpcyByZWFzb24sIHRoZSBzdHJpY3QgbWFnaWMgbnVtYmVyIHdhcyBkcm9wcGVkIGZy
-b20gR1JVQiwgdG8KPiBwZXJtaXQgZXNzZW50aWFsbHkgYW55IGtpbmQgb2YgRUZJIGV4ZWN1dGFi
-bGUgdG8gYmUgYm9vdGVkIHZpYSB0aGUKPiAnbGludXgnIGNvbW1hbmQsIGJsdXJyaW5nIHRoZSBs
-aW5lIGJldHdlZW4gdGhlIGxpbnV4IGxvYWRlciBhbmQgdGhlCj4gY2hhaW5sb2FkZXIuCj4gCj4g
-U28gbGV0J3MgdXNlIHRoZSBzYW1lIGZpZWxkIGluIHRoZSBET1MgaGVhZGVyIHRoYXQgUklTQy1W
-IGFuZCBhcm02NAo+IGFscmVhZHkgdXNlIGZvciB0aGVpciAnYmFyZSBtZXRhbCcgbWFnaWMgbnVt
-YmVycyB0byBzdG9yZSBhICdnZW5lcmljCj4gTGludXgga2VybmVsJyBtYWdpYyBudW1iZXIsIHdo
-aWNoIGNhbiBiZSB1c2VkIHRvIGlkZW50aWZ5IGJvb3RhYmxlCj4ga2VybmVsIGltYWdlcyBpbiBQ
-RSBmb3JtYXQgd2hpY2ggZG9uJ3QgbmVjZXNzYXJpbHkgaW1wbGVtZW50IGEgYmFyZQo+IG1ldGFs
-IGJvb3QgcHJvdG9jb2wgaW4gdGhlIHNhbWUgYmluYXJ5LiBOb3RlIHRoYXQsIGluIHRoZSBjb250
-ZXh0IG9mCj4gRUZJLCB0aGUgTVNET1MgaGVhZGVyIGlzIG9ubHkgZGVzY3JpYmVkIGluIHRlcm1z
-IG9mIHRoZSBmaWVsZHMgdGhhdAo+IGl0Cj4gc2hhcmVzIHdpdGggdGhlIGh5YnJpZCBQRS9DT0ZG
-IGltYWdlIGZvcm1hdCwgKGkuZS4sIHRoZSBtYWdpYyBudW1iZXIKPiBhdAo+IG9mZnNldCAjMCBh
-bmQgdGhlIFBFIGhlYWRlciBvZmZzZXQgYXQgYnl0ZSBvZmZzZXQgIzB4M2MpLiBTaW5jZSB3ZQo+
-IGFpbQo+IGZvciBjb21wYXRpYmlsaXR5IHdpdGggRUZJIG9ubHksIGFuZCBub3Qgd2l0aCBNUy1E
-T1Mgb3IgTVMtV2luZG93cywKPiB3ZQo+IGNhbiB1c2UgdGhlIHJlbWFpbmluZyBzcGFjZSBpbiB0
-aGUgTVMtRE9TIGhlYWRlciBob3dldmVyIHdlIHdhbnQuCj4gCj4gTGV0J3Mgc2V0IHRoZSBnZW5l
-cmljIG1hZ2ljIG51bWJlciBmb3IgeDg2IGltYWdlcyBhcyB3ZWxsOiBleGlzdGluZwo+IGJvb3Rs
-b2FkZXJzIGFscmVhZHkgaGF2ZSB0aGVpciBvd24gbWV0aG9kcyB0byBpZGVudGlmeSB4ODYgTGlu
-dXgKPiBpbWFnZXMKPiB0aGF0IGNhbiBiZSBib290ZWQgaW4gYSBub24tRUZJIG1hbm5lciwgYW5k
-IGhhdmluZyB0aGUgbWFnaWMgbnVtYmVyCj4gaW4KPiBwbGFjZSB0aGVyZSB3aWxsIGVhc2UgYW55
-IGZ1dHVyZSB0cmFuc2l0aW9ucyBpbiBsb2FkZXIKPiBpbXBsZW1lbnRhdGlvbnMKPiB0byBtZXJn
-ZSB0aGUgeDg2IGFuZCBub24teDg2IEVGSSBib290IHBhdGhzLgo+IAo+IE5vdGUgdGhhdCAzMi1i
-aXQgQVJNIGFscmVhZHkgdXNlcyB0aGUgc2FtZSBsb2NhdGlvbiBpbiB0aGUgaGVhZGVyIGZvcgo+
-IGEKPiBkaWZmZXJlbnQgcHVycG9zZSwgYnV0IHRoZSBBUk0gc3VwcG9ydCBpcyBhbHJlYWR5IHdp
-ZGVseSBpbXBsZW1lbnRlZAo+IGFuZAo+IHRoZSBFRkkgemJvb3QgZGVjb21wcmVzc29yIGlzIG5v
-dCBhdmFpbGFibGUgb24gQVJNIGFueXdheSwgc28gd2UganVzdAo+IGRpc3JlZ2FyZCBpdCBoZXJl
-Lgo+IAo+IENjOiBIdWFjYWkgQ2hlbiA8Y2hlbmh1YWNhaUBrZXJuZWwub3JnPgo+IENjOiBBdGlz
-aCBQYXRyYSA8YXRpc2hwQHJpdm9zaW5jLmNvbT4KPiBDYzogSGVpbnJpY2ggU2NodWNoYXJkdCA8
-aGVpbnJpY2guc2NodWNoYXJkdEBjYW5vbmljYWwuY29tPgo+IENjOiBEYW5pZWwgS2lwZXIgPGRh
-bmllbC5raXBlckBvcmFjbGUuY29tPgo+IENjOiBMZWlmIExpbmRob2xtIDxxdWljX2xsaW5kaG9s
-QHF1aWNpbmMuY29tPgo+IFNpZ25lZC1vZmYtYnk6IEFyZCBCaWVzaGV1dmVsIDxhcmRiQGtlcm5l
-bC5vcmc+Cj4gLS0tCj4gwqBhcmNoL2xvb25nYXJjaC9rZXJuZWwvaGVhZC5TwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgIHwgMyArKy0KPiDCoGFyY2gveDg2L2Jvb3QvaGVhZGVyLlPCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfCAzICsrLQo+IMKgZHJpdmVy
-cy9maXJtd2FyZS9lZmkvbGlic3R1Yi96Ym9vdC1oZWFkZXIuUyB8IDMgKystCj4gwqBpbmNsdWRl
-L2xpbnV4L3BlLmjCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoCB8IDcgKysrKysrKwo+IMKgNCBmaWxlcyBjaGFuZ2VkLCAxMyBpbnNlcnRpb25zKCspLCAz
-IGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS9hcmNoL2xvb25nYXJjaC9rZXJuZWwvaGVh
-ZC5TCj4gYi9hcmNoL2xvb25nYXJjaC9rZXJuZWwvaGVhZC5TCj4gaW5kZXggODQ5NzBlMjY2NjU4
-ODk2My4uY2FhNzQ0Mzk3MDBlZWU5MyAxMDA2NDQKPiAtLS0gYS9hcmNoL2xvb25nYXJjaC9rZXJu
-ZWwvaGVhZC5TCj4gKysrIGIvYXJjaC9sb29uZ2FyY2gva2VybmVsL2hlYWQuUwo+IEBAIC0yNSw3
-ICsyNSw4IEBAIF9oZWFkOgo+IMKgwqDCoMKgwqDCoMKgwqAuZHdvcmTCoMKga2VybmVsX2VudHJ5
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLyogS2VybmVsIGVudHJ5IHBvaW50ICovCj4gwqDCoMKg
-wqDCoMKgwqDCoC5kd29yZMKgwqBfZW5kIC0gX3RleHTCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAv
-KiBLZXJuZWwgaW1hZ2UgZWZmZWN0aXZlCj4gc2l6ZSAqLwo+IMKgwqDCoMKgwqDCoMKgwqAucXVh
-ZMKgwqDCoDDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLyog
-S2VybmVsIGltYWdlIGxvYWQgb2Zmc2V0Cj4gZnJvbSBzdGFydCBvZiBSQU0gKi8KPiAtwqDCoMKg
-wqDCoMKgwqAub3JnwqDCoMKgwqAweDNjwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoC8qIDB4MjAgfiAweDNiIHJlc2VydmVkICovCj4gK8KgwqDCoMKgwqDCoMKgLm9yZ8Kg
-wqDCoMKgMHgzOMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKiAweDIw
-IH4gMHgzOCByZXNlcnZlZCAqLwo+ICvCoMKgwqDCoMKgwqDCoC5sb25nwqDCoMKgTElOVVhfUEVf
-TUFHSUMKPiDCoMKgwqDCoMKgwqDCoMKgLmxvbmfCoMKgwqBwZV9oZWFkZXIgLSBfaGVhZMKgwqDC
-oMKgwqDCoMKgLyogT2Zmc2V0IHRvIHRoZSBQRSBoZWFkZXIgKi8KPiDCoAo+IMKgcGVfaGVhZGVy
-Ogo+IGRpZmYgLS1naXQgYS9hcmNoL3g4Ni9ib290L2hlYWRlci5TIGIvYXJjaC94ODYvYm9vdC9o
-ZWFkZXIuUwo+IGluZGV4IGY5MTJkNzc3MDEzMDUyZWEuLmJlOGY3OGE3ZWUzMjU0NzUgMTAwNjQ0
-Cj4gLS0tIGEvYXJjaC94ODYvYm9vdC9oZWFkZXIuUwo+ICsrKyBiL2FyY2gveDg2L2Jvb3QvaGVh
-ZGVyLlMKPiBAQCAtODAsMTAgKzgwLDExIEBAIGJzX2RpZToKPiDCoMKgwqDCoMKgwqDCoMKgbGpt
-cMKgwqDCoMKgJDB4ZjAwMCwkMHhmZmYwCj4gwqAKPiDCoCNpZmRlZiBDT05GSUdfRUZJX1NUVUIK
-PiAtwqDCoMKgwqDCoMKgwqAub3JnwqDCoMKgwqAweDNjCj4gK8KgwqDCoMKgwqDCoMKgLm9yZ8Kg
-wqDCoMKgMHgzOAo+IMKgwqDCoMKgwqDCoMKgwqAjCj4gwqDCoMKgwqDCoMKgwqDCoCMgT2Zmc2V0
-IHRvIHRoZSBQRSBoZWFkZXIuCj4gwqDCoMKgwqDCoMKgwqDCoCMKPiArwqDCoMKgwqDCoMKgwqAu
-bG9uZ8KgwqDCoExJTlVYX1BFX01BR0lDCj4gwqDCoMKgwqDCoMKgwqDCoC5sb25nwqDCoMKgcGVf
-aGVhZGVyCj4gwqAjZW5kaWYgLyogQ09ORklHX0VGSV9TVFVCICovCj4gwqAKPiBkaWZmIC0tZ2l0
-IGEvZHJpdmVycy9maXJtd2FyZS9lZmkvbGlic3R1Yi96Ym9vdC1oZWFkZXIuUwo+IGIvZHJpdmVy
-cy9maXJtd2FyZS9lZmkvbGlic3R1Yi96Ym9vdC1oZWFkZXIuUwo+IGluZGV4IGJjMmQ3NzUwZDdm
-MTQxNzQuLmVjNDUyNWQ0MGUwY2Y2ZDYgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9maXJtd2FyZS9l
-ZmkvbGlic3R1Yi96Ym9vdC1oZWFkZXIuUwo+ICsrKyBiL2RyaXZlcnMvZmlybXdhcmUvZWZpL2xp
-YnN0dWIvemJvb3QtaGVhZGVyLlMKPiBAQCAtMjAsNyArMjAsOCBAQCBfX2VmaXN0dWJfZWZpX3pi
-b290X2hlYWRlcjoKPiDCoMKgwqDCoMKgwqDCoMKgLmxvbmfCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-X19lZmlzdHViX19nemRhdGFfc2l6ZSAtIDEywqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvLwo+
-IHBheWxvYWQgc2l6ZQo+IMKgwqDCoMKgwqDCoMKgwqAubG9uZ8KgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAwLCAwwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgLy8KPiByZXNlcnZlZAo+IMKgwqDCoMKgwqDCoMKgwqAuYXNj
-aXrCoMKgwqDCoMKgwqDCoMKgwqDCoENPTVBfVFlQRcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLy8KPiBjb21wcmVzc2lvbiB0eXBl
-Cj4gLcKgwqDCoMKgwqDCoMKgLm9yZ8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC5MZG9zaGRyICsg
-MHgzYwo+ICvCoMKgwqDCoMKgwqDCoC5vcmfCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAuTGRvc2hk
-ciArIDB4MzgKPiArwqDCoMKgwqDCoMKgwqAubG9uZ8KgwqDCoMKgwqDCoMKgwqDCoMKgwqBMSU5V
-WF9QRV9NQUdJQwo+IMKgwqDCoMKgwqDCoMKgwqAubG9uZ8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAu
-THBlaGRyIC0gLkxkb3NoZHLCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoC8vIFBFCj4gaGVhZGVyIG9mZnNldAo+IMKgCj4gwqAuTHBlaGRyOgo+IGRpZmYgLS1naXQg
-YS9pbmNsdWRlL2xpbnV4L3BlLmggYi9pbmNsdWRlL2xpbnV4L3BlLmgKPiBpbmRleCAwNTZhMTc2
-MmRlOTA0ZmMxLi4xZGI0Yzk0NGVmZDc4ZjUxIDEwMDY0NAo+IC0tLSBhL2luY2x1ZGUvbGludXgv
-cGUuaAo+ICsrKyBiL2luY2x1ZGUvbGludXgvcGUuaAo+IEBAIC0zMSw2ICszMSwxMyBAQAo+IMKg
-I2RlZmluZSBMSU5VWF9FRklTVFVCX01BSk9SX1ZFUlNJT07CoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAweDEKPiDCoCNkZWZpbmUgTElOVVhfRUZJU1RVQl9NSU5PUl9WRVJTSU9OwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgMHgxCj4gwqAKPiArLyoKPiArICogTElOVVhfUEVfTUFHSUMgYXBwZWFycyBh
-dCBvZmZzZXQgMHgzOCBpbnRvIHRoZSBNU0RPUyBoZWFkZXIgb2YKPiBFRkkgYm9vdGFibGUKPiAr
-ICogTGludXgga2VybmVsIGltYWdlcyB0aGF0IHRhcmdldCB0aGUgYXJjaGl0ZWN0dXJlIGFzIHNw
-ZWNpZmllZCBieQo+IHRoZSBQRS9DT0ZGCj4gKyAqIGhlYWRlciBtYWNoaW5lIHR5cGUgZmllbGQu
-Cj4gKyAqLwo+ICsjZGVmaW5lIExJTlVYX1BFX01BR0lDwqAweDgxODIyM2NkCj4gKwo+IMKgI2Rl
-ZmluZSBNWl9NQUdJQ8KgwqDCoMKgwqDCoMKgMHg1YTRkwqDCoC8qICJNWiIgKi8KPiDCoAo+IMKg
-I2RlZmluZSBQRV9NQUdJQ8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoDB4MDAwMDQ1NTDC
-oMKgwqDCoMKgwqAvKiAiUEVcMFwwIiAqLwoKCkFzIGZhciBhcyBJIGtub3csIEFyY2hsaW51eCBh
-dXRvbWF0aWNhbGx5IGdlbmVyYXRlcyBpbml0cmFtZnMgYWNjb3JkaW5nCnRvIHRoZSB2ZXJzaW9u
-IG51bWJlciBpbiB0aGUga2VybmVsIGZpbGUuIFRoZSBsYXRlc3QgZ2VuZXJpYyBjb21wcmVzc2Vk
-CkVGSSBkZXNpZ25zIGRvIG5vdCBzZWVtIHRvIHByb3ZpZGUga2VybmVsIHZlcnNpb24gbnVtYmVy
-IGluZm9ybWF0aW9uLgpUaGlzIG1heSBjaGFuZ2UgdGhlIHVzYWdlIGhhYml0cyBvZiBBcmNobGlu
-dXggdXNlcnMuIElzIGl0IHBvc3NpYmxlIHRvCmFkZCB0aGUga2VybmVsIHZlcnNpb24gbnVtYmVy
-IHRvIHZtbGludXouZWZpPwoKaHR0cHM6Ly9naXRsYWIuYXJjaGxpbnV4Lm9yZy9hcmNobGludXgv
-bWtpbml0Y3Bpby9ta2luaXRjcGlvLy0vYmxvYi9tYXN0ZXIvZnVuY3Rpb25zI0wyMDkKCi0tIApC
-ZXN0IFJlZ2FyZHMKWGlhb3RpYW4gV3UK
+On Wed, 7 Dec 2022 at 08:51, Xiaotian Wu <wuxiaotian@loongson.cn> wrote:
+>
+> =E5=9C=A8 2022-11-29=E6=98=9F=E6=9C=9F=E4=BA=8C=E7=9A=84 18:56 +0100=EF=
+=BC=8CArd Biesheuvel=E5=86=99=E9=81=93=EF=BC=9A
+> > GRUB currently relies on the magic number in the image header of ARM
+> > and
+> > arm64 EFI kernel images to decide whether or not the image in
+> > question
+> > is a bootable kernel.
+> >
+> > However, the purpose of the magic number is to identify the image as
+> > one
+> > that implements the bare metal boot protocol, and so GRUB, which only
+> > does EFI boot, can only boot images that could potentially be booted
+> > in
+> > a non-EFI manner as well.
+> >
+> > This is problematic for the new zboot decompressor image format, as
+> > it
+> > can only boot in EFI mode, and must therefore not use the bare metal
+> > boot magic number in its header.
+> >
+> > For this reason, the strict magic number was dropped from GRUB, to
+> > permit essentially any kind of EFI executable to be booted via the
+> > 'linux' command, blurring the line between the linux loader and the
+> > chainloader.
+> >
+> > So let's use the same field in the DOS header that RISC-V and arm64
+> > already use for their 'bare metal' magic numbers to store a 'generic
+> > Linux kernel' magic number, which can be used to identify bootable
+> > kernel images in PE format which don't necessarily implement a bare
+> > metal boot protocol in the same binary. Note that, in the context of
+> > EFI, the MSDOS header is only described in terms of the fields that
+> > it
+> > shares with the hybrid PE/COFF image format, (i.e., the magic number
+> > at
+> > offset #0 and the PE header offset at byte offset #0x3c). Since we
+> > aim
+> > for compatibility with EFI only, and not with MS-DOS or MS-Windows,
+> > we
+> > can use the remaining space in the MS-DOS header however we want.
+> >
+> > Let's set the generic magic number for x86 images as well: existing
+> > bootloaders already have their own methods to identify x86 Linux
+> > images
+> > that can be booted in a non-EFI manner, and having the magic number
+> > in
+> > place there will ease any future transitions in loader
+> > implementations
+> > to merge the x86 and non-x86 EFI boot paths.
+> >
+> > Note that 32-bit ARM already uses the same location in the header for
+> > a
+> > different purpose, but the ARM support is already widely implemented
+> > and
+> > the EFI zboot decompressor is not available on ARM anyway, so we just
+> > disregard it here.
+> >
+> > Cc: Huacai Chen <chenhuacai@kernel.org>
+> > Cc: Atish Patra <atishp@rivosinc.com>
+> > Cc: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+> > Cc: Daniel Kiper <daniel.kiper@oracle.com>
+> > Cc: Leif Lindholm <quic_llindhol@quicinc.com>
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > ---
+> >  arch/loongarch/kernel/head.S                | 3 ++-
+> >  arch/x86/boot/header.S                      | 3 ++-
+> >  drivers/firmware/efi/libstub/zboot-header.S | 3 ++-
+> >  include/linux/pe.h                          | 7 +++++++
+> >  4 files changed, 13 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/arch/loongarch/kernel/head.S
+> > b/arch/loongarch/kernel/head.S
+> > index 84970e2666588963..caa74439700eee93 100644
+> > --- a/arch/loongarch/kernel/head.S
+> > +++ b/arch/loongarch/kernel/head.S
+> > @@ -25,7 +25,8 @@ _head:
+> >         .dword  kernel_entry            /* Kernel entry point */
+> >         .dword  _end - _text            /* Kernel image effective
+> > size */
+> >         .quad   0                       /* Kernel image load offset
+> > from start of RAM */
+> > -       .org    0x3c                    /* 0x20 ~ 0x3b reserved */
+> > +       .org    0x38                    /* 0x20 ~ 0x38 reserved */
+> > +       .long   LINUX_PE_MAGIC
+> >         .long   pe_header - _head       /* Offset to the PE header */
+> >
+> >  pe_header:
+> > diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
+> > index f912d777013052ea..be8f78a7ee325475 100644
+> > --- a/arch/x86/boot/header.S
+> > +++ b/arch/x86/boot/header.S
+> > @@ -80,10 +80,11 @@ bs_die:
+> >         ljmp    $0xf000,$0xfff0
+> >
+> >  #ifdef CONFIG_EFI_STUB
+> > -       .org    0x3c
+> > +       .org    0x38
+> >         #
+> >         # Offset to the PE header.
+> >         #
+> > +       .long   LINUX_PE_MAGIC
+> >         .long   pe_header
+> >  #endif /* CONFIG_EFI_STUB */
+> >
+> > diff --git a/drivers/firmware/efi/libstub/zboot-header.S
+> > b/drivers/firmware/efi/libstub/zboot-header.S
+> > index bc2d7750d7f14174..ec4525d40e0cf6d6 100644
+> > --- a/drivers/firmware/efi/libstub/zboot-header.S
+> > +++ b/drivers/firmware/efi/libstub/zboot-header.S
+> > @@ -20,7 +20,8 @@ __efistub_efi_zboot_header:
+> >         .long           __efistub__gzdata_size - 12             //
+> > payload size
+> >         .long           0, 0                                    //
+> > reserved
+> >         .asciz          COMP_TYPE                               //
+> > compression type
+> > -       .org            .Ldoshdr + 0x3c
+> > +       .org            .Ldoshdr + 0x38
+> > +       .long           LINUX_PE_MAGIC
+> >         .long           .Lpehdr - .Ldoshdr                      // PE
+> > header offset
+> >
+> >  .Lpehdr:
+> > diff --git a/include/linux/pe.h b/include/linux/pe.h
+> > index 056a1762de904fc1..1db4c944efd78f51 100644
+> > --- a/include/linux/pe.h
+> > +++ b/include/linux/pe.h
+> > @@ -31,6 +31,13 @@
+> >  #define LINUX_EFISTUB_MAJOR_VERSION            0x1
+> >  #define LINUX_EFISTUB_MINOR_VERSION            0x1
+> >
+> > +/*
+> > + * LINUX_PE_MAGIC appears at offset 0x38 into the MSDOS header of
+> > EFI bootable
+> > + * Linux kernel images that target the architecture as specified by
+> > the PE/COFF
+> > + * header machine type field.
+> > + */
+> > +#define LINUX_PE_MAGIC 0x818223cd
+> > +
+> >  #define MZ_MAGIC       0x5a4d  /* "MZ" */
+> >
+> >  #define PE_MAGIC               0x00004550      /* "PE\0\0" */
+>
+>
+> As far as I know, Archlinux automatically generates initramfs according
+> to the version number in the kernel file. The latest generic compressed
+> EFI designs do not seem to provide kernel version number information.
 
+No, but nor do the gzip'ed images arm64 uses today, and the script
+seems take care of that.
+
+The EFI zboot image has metadata in the header, so the script can
+decompress it and grep for the version number it it needs to.
+
+> This may change the usage habits of Archlinux users. Is it possible to
+> add the kernel version number to vmlinuz.efi?
+>
+> https://gitlab.archlinux.org/archlinux/mkinitcpio/mkinitcpio/-/blob/maste=
+r/functions#L209
+>
+
+The current header doesn't have that so I don't think EFI zboot should
+be adding it either.
