@@ -2,60 +2,102 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45BD86478A8
-	for <lists+linux-efi@lfdr.de>; Thu,  8 Dec 2022 23:12:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8A7E647C15
+	for <lists+linux-efi@lfdr.de>; Fri,  9 Dec 2022 03:15:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229699AbiLHWMN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 8 Dec 2022 17:12:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46864 "EHLO
+        id S229572AbiLICPo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 8 Dec 2022 21:15:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230043AbiLHWMD (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 8 Dec 2022 17:12:03 -0500
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E2DB27DE5;
-        Thu,  8 Dec 2022 14:12:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670537522; x=1702073522;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=vvU4PeGKvcYxDi2SGTd4kcVlxgzXOYX6SRbtggkIuPw=;
-  b=ae/SWJ3Y2JnS7cvEQi/jUCcnM9H3ovnCOnSuo5XnjS2ZTOdnis1B91md
-   FMdKCzIpvlogbG/vPfNg+1wHILv+6ct98S+mtFwUrvHYGcpywy0HKsBDa
-   G8aQ9yLza194DmtqYwdWXYURLvxY0xXrx4ot03b9bV83VRHpYRbnzfQzw
-   I3ioZFJwGG81Ku7RtDzuN476HFzBMksfGHNLpTPHMxHAH0ooxZLGlQDux
-   ir7dLf+qXBRcXqzvK/dHNkMzId+VkmuhDcDacfr1oJcymsBg96dJJ4uew
-   dzYVfnSh1XjW8QiOkktGkjbzjzghgOVbKNBQX89S0k10EPu6NLFBJHm11
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10555"; a="300735872"
-X-IronPort-AV: E=Sophos;i="5.96,228,1665471600"; 
-   d="scan'208";a="300735872"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2022 14:11:58 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10555"; a="649335508"
-X-IronPort-AV: E=Sophos;i="5.96,228,1665471600"; 
-   d="scan'208";a="649335508"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga007.fm.intel.com with ESMTP; 08 Dec 2022 14:11:56 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id C3423433; Fri,  9 Dec 2022 00:12:24 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        platform-driver-x86@vger.kernel.org
-Subject: [PATCH v1 2/2] efi/earlycon: Speed up scrolling by skiping moving empty space
-Date:   Fri,  9 Dec 2022 00:12:17 +0200
-Message-Id: <20221208221217.56354-2-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221208221217.56354-1-andriy.shevchenko@linux.intel.com>
-References: <20221208221217.56354-1-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S229469AbiLICPn (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 8 Dec 2022 21:15:43 -0500
+Received: from bee.birch.relay.mailchannels.net (bee.birch.relay.mailchannels.net [23.83.209.14])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E42FE66C84;
+        Thu,  8 Dec 2022 18:15:42 -0800 (PST)
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+        by relay.mailchannels.net (Postfix) with ESMTP id 5A11A5C0787;
+        Fri,  9 Dec 2022 02:09:22 +0000 (UTC)
+Received: from pdx1-sub0-mail-a267.dreamhost.com (unknown [127.0.0.6])
+        (Authenticated sender: dreamhost)
+        by relay.mailchannels.net (Postfix) with ESMTPA id C3CC55C19B2;
+        Fri,  9 Dec 2022 02:09:21 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1670551761; a=rsa-sha256;
+        cv=none;
+        b=DSqcruP0iM4LEk6bxAFfT8cu2PnWwmo9xhZ5igtbj9Vue2iORjFq/yQ3giPe4u5Xxquoo0
+        VK0CT3Uv8Lwu2yPzoqxcfBSeTiaPXMJTx9xcOLWKLhaUryAoKrzV28fY2OPlhoyHI3KzKx
+        62sarE4egV+hipr1wssM6f9dknozrFg9bOOrbuADLw3txzJduLqqlTk4FbejRY0TtyZlLa
+        LY3afqVq29KhZEm1/ysPBA368tdnAeY3WBY/G84F1b3qL7w6BAVypeVZgBHd9vcrMol0zc
+        Ygt4wufOvx3kYGGLe4oMF3NToaiAU0Hz5OCEqe6tTAfH8qH8M6Y/Q/wJFIreRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+        s=arc-2022; t=1670551761;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references:dkim-signature;
+        bh=6noX/pnBcWcHX05sCpu8cyyts9NTKcpFhxpqcG6qCOg=;
+        b=rYapv9ydWUckAPFj4jibFbhRNIfDpea8jArVw3nV7DNHel/7cWrKcy8fOiVgCLKGaDR68/
+        E9b4RRQUyZFa3cH2JoL09XJFz8Xb7H3+1rGH7mw7GRmUuvGsZ0w11fJYOgSPdmXd7ZoxcZ
+        RuBXrEa56+2bJpA9JT6EEzr6LqUC9SaYAgICfSaJlywGLJQykK3yRYeCswGvcIskRdKcud
+        pdPGCD/zXgVV8kgibuv02Tw4WJmx5/g5D4/5Y9RxQQ608synIO32GA6FdwZj3jG+pbE1/c
+        89rnrdwyb09jaw8kNryWh/5U3Pd9ExWwgXc4JDR0hPcJIbQOEpoXN3zMXEVyhg==
+ARC-Authentication-Results: i=1;
+        rspamd-85f95c7974-jbg4j;
+        auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Descriptive-Average: 7cb0e6be76423bd7_1670551762160_2362704701
+X-MC-Loop-Signature: 1670551762160:2444031178
+X-MC-Ingress-Time: 1670551762160
+Received: from pdx1-sub0-mail-a267.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+        by 100.123.200.72 (trex/6.7.1);
+        Fri, 09 Dec 2022 02:09:22 +0000
+Received: from offworld (ip72-199-50-187.sd.sd.cox.net [72.199.50.187])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: dave@stgolabs.net)
+        by pdx1-sub0-mail-a267.dreamhost.com (Postfix) with ESMTPSA id 4NSvbN5Nt6z99;
+        Thu,  8 Dec 2022 18:09:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+        s=dreamhost; t=1670551761;
+        bh=6noX/pnBcWcHX05sCpu8cyyts9NTKcpFhxpqcG6qCOg=;
+        h=Date:From:To:Cc:Subject:Content-Type;
+        b=cjGKxJNqa+x3imp2jpO+DHkU+9YuJJtPJ8T5QpA9kygsk8T7ZD8IFQoQc3LR/QZop
+         P61yve9tdGud1C5NYdH1r3+lC78E5KdC/bxjGplQq4GFpZa7Rcw1xQTOCRoF/KPCYk
+         An3yz3vvAxsUFhgqFWeBhx3Z+9LMUmx7nGCUyzcHvKeBZPH1xERl2mDPrbFJzsq4zX
+         1VpPRB1lNbgOO7iiCS+HdhR/hV+Komko9vtl7E6kue70YqsKaBJrQSe/Lzr2BljyZ2
+         GUBKiRodd1H7ro9cR7XOSwIa5M5j/4hsPRLdb9lv46yc0lkl1rtUiY4S2lu9HAtSIS
+         cmQ+NveY2H0aA==
+Date:   Thu, 8 Dec 2022 17:45:12 -0800
+From:   Davidlohr Bueso <dave@stgolabs.net>
+To:     Daniel Golle <daniel@makrotopia.org>
+Cc:     Jens Axboe <axboe@kernel.dk>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Ming Lei <ming.lei@redhat.com>, linux-block@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-efi@vger.kernel.org
+Subject: Re: [PATCH v4 3/5] partitions/efi: add support for uImage.FIT
+ sub-partitions
+Message-ID: <20221209014512.dos7666lkvmfhahs@offworld>
+References: <Y2rgVIbtuDsySzBr@makrotopia.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <Y2rgVIbtuDsySzBr@makrotopia.org>
+User-Agent: NeoMutt/20220429
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_PDS_OTHER_BAD_TLD
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,116 +105,61 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Currently the scroll copies the full screen which is slow on
-the hi-resolution displays. At the same time most of the screen
-is an empty space which has no need to be copied over and over.
+On Tue, 08 Nov 2022, Daniel Golle wrote:
 
-Optimize the scrolling algorithm by caching the x coordinates
-of the last printed lines and scroll in accordance with the
-maximum x in that cache.
+>Add new GUID allowing to parse uImage.FIT stored in a GPT partition
+>and map filesystem sub-image as sub-partitions.
+>
+>Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+>---
+> block/partitions/efi.c | 9 +++++++++
+> block/partitions/efi.h | 3 +++
+> 2 files changed, 12 insertions(+)
+>
+>diff --git a/block/partitions/efi.c b/block/partitions/efi.c
+>index 5e9be13a56a8..bf87893eabe4 100644
+>--- a/block/partitions/efi.c
+>+++ b/block/partitions/efi.c
+>@@ -716,6 +716,9 @@ int efi_partition(struct parsed_partitions *state)
+>	gpt_entry *ptes = NULL;
+>	u32 i;
+>	unsigned ssz = queue_logical_block_size(state->disk->queue) / 512;
+>+#ifdef CONFIG_FIT_PARTITION
+>+	u32 extra_slot = 65;
+>+#endif
 
-On my Microsoft Surface Book (the first version) this produces
-a significant speedup of the console 90 seconds vs. 168 seconds
-with the kernel command line having
+You can move this in the branch below where you call parse_fit_partitions().
 
-	ignore_loglevel earlycon=efifb keep_bootcon
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/firmware/efi/earlycon.c | 28 ++++++++++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/firmware/efi/earlycon.c b/drivers/firmware/efi/earlycon.c
-index be7c83b6cd10..f54e6fdf08e2 100644
---- a/drivers/firmware/efi/earlycon.c
-+++ b/drivers/firmware/efi/earlycon.c
-@@ -16,6 +16,8 @@
- 
- static const struct console *earlycon_console __initdata;
- static const struct font_desc *font;
-+static u16 cur_line_y, max_line_y;
-+static u32 efi_x_array[1024];
- static u32 efi_x, efi_y;
- static u64 fb_base;
- static bool fb_wb;
-@@ -86,9 +88,17 @@ static void efi_earlycon_clear_scanline(unsigned int y)
- static void efi_earlycon_scroll_up(void)
- {
- 	unsigned long *dst, *src;
-+	u16 maxlen = 0;
- 	u16 len;
- 	u32 i, height;
- 
-+	/* Find the cached maximum x coordinate */
-+	for (i = 0; i < max_line_y; i++) {
-+		if (efi_x_array[i] > maxlen)
-+			maxlen = efi_x_array[i];
-+	}
-+	maxlen *= 4;
-+
- 	len = screen_info.lfb_linelength;
- 	height = screen_info.lfb_height;
- 
-@@ -103,7 +113,7 @@ static void efi_earlycon_scroll_up(void)
- 			return;
- 		}
- 
--		memmove(dst, src, len);
-+		memmove(dst, src, maxlen);
- 
- 		efi_earlycon_unmap(src, len);
- 		efi_earlycon_unmap(dst, len);
-@@ -136,6 +146,7 @@ static void
- efi_earlycon_write(struct console *con, const char *str, unsigned int num)
- {
- 	struct screen_info *si;
-+	u32 cur_efi_x = efi_x;
- 	unsigned int len;
- 	const char *s;
- 	void *dst;
-@@ -176,6 +187,7 @@ efi_earlycon_write(struct console *con, const char *str, unsigned int num)
- 		str += count;
- 
- 		if (num > 0 && *s == '\n') {
-+			cur_efi_x = efi_x;
- 			efi_x = 0;
- 			efi_y += font->height;
- 			str++;
-@@ -183,6 +195,7 @@ efi_earlycon_write(struct console *con, const char *str, unsigned int num)
- 		}
- 
- 		if (efi_x + font->width > si->lfb_width) {
-+			cur_efi_x = efi_x;
- 			efi_x = 0;
- 			efi_y += font->height;
- 		}
-@@ -190,6 +203,9 @@ efi_earlycon_write(struct console *con, const char *str, unsigned int num)
- 		if (efi_y + font->height > si->lfb_height) {
- 			u32 i;
- 
-+			efi_x_array[cur_line_y] = cur_efi_x;
-+			cur_line_y = (cur_line_y + 1) % max_line_y;
-+
- 			efi_y -= font->height;
- 			efi_earlycon_scroll_up();
- 
-@@ -230,7 +246,15 @@ static int __init efi_earlycon_setup(struct earlycon_device *device,
- 	if (!font)
- 		return -ENODEV;
- 
--	efi_y = rounddown(yres, font->height) - font->height;
-+	/* Fill the cache with maximum possible value of x coordinate */
-+	memset32(efi_x_array, rounddown(xres, font->width), ARRAY_SIZE(efi_x_array));
-+	efi_y = rounddown(yres, font->height);
-+
-+	/* Make sure we have cache for the x coordinate for the full screen */
-+	max_line_y = efi_y / font->height + 1;
-+	cur_line_y = 0;
-+
-+	efi_y -= font->height;
- 	for (i = 0; i < (yres - efi_y) / font->height; i++)
- 		efi_earlycon_scroll_up();
- 
--- 
-2.35.1
-
+>
+>	if (!find_valid_gpt(state, &gpt, &ptes) || !gpt || !ptes) {
+>		kfree(gpt);
+>@@ -749,6 +752,12 @@ int efi_partition(struct parsed_partitions *state)
+>				ARRAY_SIZE(ptes[i].partition_name));
+>		utf16_le_to_7bit(ptes[i].partition_name, label_max, info->volname);
+>		state->parts[i + 1].has_info = true;
+>+		/* If this is a U-Boot FIT volume it may have subpartitions */
+>+#ifdef CONFIG_FIT_PARTITION
+>+		if (!efi_guidcmp(ptes[i].partition_type_guid, PARTITION_LINUX_FIT_GUID))
+>+			(void) parse_fit_partitions(state, start * ssz, size * ssz,
+>+						    &extra_slot, 127, 1);
+>+#endif
+>	}
+>	kfree(ptes);
+>	kfree(gpt);
+>diff --git a/block/partitions/efi.h b/block/partitions/efi.h
+>index 84b9f36b9e47..06c11f6ae398 100644
+>--- a/block/partitions/efi.h
+>+++ b/block/partitions/efi.h
+>@@ -51,6 +51,9 @@
+> #define PARTITION_LINUX_LVM_GUID \
+>     EFI_GUID( 0xe6d6d379, 0xf507, 0x44c2, \
+>               0xa2, 0x3c, 0x23, 0x8f, 0x2a, 0x3d, 0xf9, 0x28)
+>+#define PARTITION_LINUX_FIT_GUID \
+>+    EFI_GUID( 0xcae9be83, 0xb15f, 0x49cc, \
+>+              0x86, 0x3f, 0x08, 0x1b, 0x74, 0x4a, 0x2d, 0x93)
+>
+> typedef struct _gpt_header {
+>	__le64 signature;
+>--
+>2.38.1
+>
