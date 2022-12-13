@@ -2,41 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66C4D64BB84
-	for <lists+linux-efi@lfdr.de>; Tue, 13 Dec 2022 19:04:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA92F64BB88
+	for <lists+linux-efi@lfdr.de>; Tue, 13 Dec 2022 19:05:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236230AbiLMSEO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 13 Dec 2022 13:04:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40230 "EHLO
+        id S236311AbiLMSFG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 13 Dec 2022 13:05:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236132AbiLMSEN (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 13 Dec 2022 13:04:13 -0500
+        with ESMTP id S236366AbiLMSFF (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 13 Dec 2022 13:05:05 -0500
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C47611DF3B
-        for <linux-efi@vger.kernel.org>; Tue, 13 Dec 2022 10:03:32 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0729D1DF3B
+        for <linux-efi@vger.kernel.org>; Tue, 13 Dec 2022 10:04:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1670954612;
+        s=mimecast20190719; t=1670954655;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=GLCnXgmwF35Wm3KyYmhhuEDsp+D4TIjtVKBm7qLcnYg=;
-        b=iXNSGdZh/b7eRE2IiQ/0DqK9FaXJad5GzpqNmXnBpad0m7jlsZbHWS4Y29WoqgzDsZHj1o
-        5D2NENPoMGvjmPbIaptIBxsWUgsUd+7EwJRtEJtPmi+vVP4087TbJL4t1Pmm+Cbgke6jRQ
-        j6R0CYNKNFPfM4vGOSpajue3swJA/04=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=JF2s0tm6WDQRqQHFNtrMHbtnveQJl7hXDtEAPn+pSMA=;
+        b=WExQXCoiOPsQA4r18oIk1+CGOYqpJIFeVqqnMGsLIQAPKwg0U8B+sCOnDcXhVex52A3WhV
+        DrGR84le3eGfrbvm7gnu9AqU87RQVMKVk81YEbVri7vhdMq2zL795K4RjUZMMTCr2Z1gky
+        0nGvWDAFLk4SMk0Kf+HvkFq/88x/AQk=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-625-ABHRZTFQOi69NheWEjnaYQ-1; Tue, 13 Dec 2022 13:03:30 -0500
-X-MC-Unique: ABHRZTFQOi69NheWEjnaYQ-1
+ us-mta-97-_ZICaESyNZOLTHro1IRTMg-1; Tue, 13 Dec 2022 13:04:11 -0500
+X-MC-Unique: _ZICaESyNZOLTHro1IRTMg-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 855EB101AA52;
-        Tue, 13 Dec 2022 18:03:21 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.17.61])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id A1290492B00;
-        Tue, 13 Dec 2022 18:03:20 +0000 (UTC)
-Date:   Tue, 13 Dec 2022 13:03:17 -0500
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0A4DA29324AF;
+        Tue, 13 Dec 2022 18:04:11 +0000 (UTC)
+Received: from random.internal.datastacks.com (unknown [10.2.17.61])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6BED3492B02;
+        Tue, 13 Dec 2022 18:04:10 +0000 (UTC)
 From:   Peter Jones <pjones@redhat.com>
 To:     Evgeniy Baskov <baskov@ispras.ru>
 Cc:     Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>,
@@ -46,18 +46,18 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>,
         Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        "Limonciello, Mario" <mario.limonciello@amd.com>,
+        Peter Jones <pjones@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
         joeyli <jlee@suse.com>, lvc-project@linuxtesting.org,
         x86@kernel.org, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v3 00/24] x86_64: Improvements at compressed kernel stage
-Message-ID: <20221213180317.qoy2l3mcpjparocq@redhat.com>
-References: <cover.1668958803.git.baskov@ispras.ru>
+Subject: [PATCH 1/2] efi/x86: don't set unsupported memory attributes
+Date:   Tue, 13 Dec 2022 13:04:02 -0500
+Message-Id: <20221213180403.1308507-1-pjones@redhat.com>
+In-Reply-To: <20221213180317.qoy2l3mcpjparocq@redhat.com>
+References: <20221213180317.qoy2l3mcpjparocq@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <cover.1668958803.git.baskov@ispras.ru>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -69,30 +69,32 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Nov 22, 2022 at 02:12:09PM +0300, Evgeniy Baskov wrote:
-> This patchset is aimed
-> * to improve UEFI compatibility of compressed kernel code for x86_64
-> * to setup proper memory access attributes for code and rodata sections
-> * to implement W^X protection policy throughout the whole execution 
->   of compressed kernel for EFISTUB code path. 
+On platforms where the firmware uses DXE, but which do not implement the
+EFI Memory Attribute Protocol, we implement W^X support using DXE's
+set_memory_attributes() call.  This call will fail without making any
+changes if an attribute is set that isn't supported on the platform.
 
-Hi Evgeniy,
+This patch changes efi_adjust_memory_range_protection() to avoid trying
+to set any attribute bits that aren't set in the memory region's
+capability flags.
 
-I've tested this patch set on hardware and QEMU+MU firmware, and it
-works for me with a couple of minor issues:
+Signed-off-by: Peter Jones <pjones@redhat.com>
+---
+ drivers/firmware/efi/libstub/mem.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-- on one machine that has the DXE protocol but not the EFI one, we get
-  an error because the firmware doesn't support EFI_MEMORY_RP
-- on QEMU I'm seeing the size of "(unsigned long)_head - image_base"
-  wind up as 0, which leads to an EFI_INVALID_PARAMETER on the
-  clear_memory_attributes() call.
-
-In both cases the system winds up working, but with unnecessary console
-output.  I'll send you patches as a follow-up to this mail.  In the mean
-time:
-
-Tested-by: Peter Jones <pjones@redhat.com>
-
+diff --git a/drivers/firmware/efi/libstub/mem.c b/drivers/firmware/efi/libstub/mem.c
+index d10996e4eb0..d52841adcc2 100644
+--- a/drivers/firmware/efi/libstub/mem.c
++++ b/drivers/firmware/efi/libstub/mem.c
+@@ -192,6 +192,7 @@ static efi_status_t adjust_mem_attrib_dxe(efi_physical_addr_t rounded_start,
+ 
+ 		desc.attributes &= ~(EFI_MEMORY_RO | EFI_MEMORY_XP);
+ 		desc.attributes |= attributes;
++		desc.attributes &= desc.capabilities;
+ 
+ 		unprotect_start = max(rounded_start, desc.base_address);
+ 		unprotect_size = min(rounded_end, next) - unprotect_start;
 -- 
-        Peter
+2.38.1
 
