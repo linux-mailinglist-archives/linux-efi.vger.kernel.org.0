@@ -2,216 +2,250 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78CDE64AD22
-	for <lists+linux-efi@lfdr.de>; Tue, 13 Dec 2022 02:36:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A7C164BA1A
+	for <lists+linux-efi@lfdr.de>; Tue, 13 Dec 2022 17:47:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234163AbiLMBgd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 12 Dec 2022 20:36:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52404 "EHLO
+        id S235122AbiLMQrA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 13 Dec 2022 11:47:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233825AbiLMBgc (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 12 Dec 2022 20:36:32 -0500
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7D601D673;
-        Mon, 12 Dec 2022 17:36:30 -0800 (PST)
-Received: by mail-lj1-x22e.google.com with SMTP id z4so1870623ljq.6;
-        Mon, 12 Dec 2022 17:36:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=fvZ9dsbTSO5t0cyccsnnRz540B4PzoHkUUU3iPVGl+U=;
-        b=WgQoeWydkLJHdlGHP6gVQ0NIsZGb+iP903Y9h70Q2Y2zyLPlvkHC23QVprLR0ayRsR
-         hnv2d2eKWl94mrkGGphxPTE/BdzFgZCPLaB/ywq7t6ESd+XGt9ggyRRaypfxw647VOtN
-         ElOJwKa2zTFse1Lqr5jfQ7TBDL0P/aYXIBmoNAbuQaT75UWYAOjZMcLCKYrX9WPjyRbq
-         ikTbp6iwWsdGzWRWtmjWl1elWwF9nZPrswsokChiAYPt6VdUh8A3rzBUI0Rk35ur0Jbn
-         rbQX5Guzkwgjn4D43+XRfXXrqxLwontWolWiiE8BEerqSVM1SR80yBzbvfkDMoLYBWh6
-         DtKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fvZ9dsbTSO5t0cyccsnnRz540B4PzoHkUUU3iPVGl+U=;
-        b=bQtnN/exxrEpQtTTzq0+5HwvFpGj8P6EBK3bmdTtdKgsh6w8f0iGiFfKiEQ11R0uzN
-         i0Bc5pSvhx+lr74Ip3BvfziIxTcaQTuxHYFjJcOPRAgHe391P0tDfeIzNn4H8m84blfa
-         jm9MzsseZyrBoPP7rpUASb6x8XrNz/Ln/UyU1tQQLb9vGeIAHJwjlYmsEwD5G1EMX3AR
-         o50/O360F84cRlnHvdYfNxVPNvOqwbVrcjRnOTnVOX8Aaj7SJxf/j30BqbRYNV9FEFp2
-         dy5FZkWBUhPqlln3VppqqgrRGHbk9djKxOt72n1zP4pxFIuP+aMpHxNZo36UbD39YRIE
-         39NA==
-X-Gm-Message-State: ANoB5pngzfyyaNZWjXrf6klXrShTbEf5o2791cRDoYsxnVF9Fu2smiqm
-        ZKXA8nSIXgkMmdX7vnyOE6xU6xDo8+bPZz+vcQ==
-X-Google-Smtp-Source: AA0mqf5wvwkn6bzo+kHF2Ex75sOLfziqTgDo96h9zXDqPU6XFguoZFVG9koMv9TLZBI5+I3Wc5FTsiJcFynLhHDdlsg=
-X-Received: by 2002:a05:651c:3c9:b0:279:ee82:f30a with SMTP id
- f9-20020a05651c03c900b00279ee82f30amr7180475ljp.397.1670895389018; Mon, 12
- Dec 2022 17:36:29 -0800 (PST)
+        with ESMTP id S235490AbiLMQqd (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 13 Dec 2022 11:46:33 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DDAB62E3
+        for <linux-efi@vger.kernel.org>; Tue, 13 Dec 2022 08:46:31 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 24A2961615
+        for <linux-efi@vger.kernel.org>; Tue, 13 Dec 2022 16:46:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F2EC433D2;
+        Tue, 13 Dec 2022 16:46:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1670949990;
+        bh=zp66oCIIW597tX16kc28dFXtSbYuFy74h45ZpHSxVos=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ede8JKicAeWumGeU03w6dGKtUOp2+/EpdX5w1y35IXmt2oY8I7p8LtLVbhfZkdULW
+         mXJcl4y3QsAP4kYDrbF/M2aYXcisuiiNnfmBrRxUiBwcY8nf8eIzmlCSGa452nyqzk
+         g6BQdxEuqmKCFFFuVc6ZELVDYZhYbCyfGLm5y4x9QEegKzoaZBCKHxqdUDPQqm4mvc
+         zg4/7mYCURKUAYbhhjTQ6wOol8fk9M5JHi51Svn9IDrsNKgnCzkTH2PUDGfej1ZTkT
+         /j1pePZgemWsnogL7P1mQJ2/qirrJZQ/x1l4uF/81cB4u836hw6DxRVja/60LiNQuV
+         VefgRMNFtg3lA==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     torvalds@linux-foundation.org
+Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Subject: [GIT PULL] EFI updates for v6.2
+Date:   Tue, 13 Dec 2022 17:46:22 +0100
+Message-Id: <20221213164622.2213946-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-From:   "Seija K." <doremylover123@gmail.com>
-Date:   Mon, 12 Dec 2022 20:36:18 -0500
-Message-ID: <CAA42iKzuae0PL1qm20sU87D2V-GF8mMFPSjKJu=fB81RrZgZbg@mail.gmail.com>
-Subject: [PATCH] drivers: correct parameters passed to strncmp
-To:     Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Jan Luebbe <jlu@pengutronix.de>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Kani Toshi <toshi.kani@hpe.com>, Jia He <justin.he@arm.com>
-Cc:     James Morse <james.morse@arm.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-        devel@acpica.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-efi@vger.kernel.org,
-        nd@arm.com, Peter Zijlstra <peterz@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11241; i=ardb@kernel.org; h=from:subject; bh=zp66oCIIW597tX16kc28dFXtSbYuFy74h45ZpHSxVos=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjmKxdLoJwF+UhFhw/rKXf8ERJcXCSAasYmzS8h16B KwHaadeJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY5isXQAKCRDDTyI5ktmPJKirDA DDn4uwujgFKrH+AsiJiQpOSRDiXDgOqRSHQxu7jMkKff110IJsM1O7fZkBSBmIxdsnSdW/NmVxggG5 hXrnSxFntLKsK/aeoAwo1AJxRkHPJdOaqHviyZmkNvXUPeR6kq47pofIKKteQ735NCQV4e4U1TauCN +jE9f50x5Z/ioC/RAuoqEp7VK35Z15dFnME/wwwSqoEErX4Kea2KP2Lf+RxUn9NtiAWd3zBPNxR2SZ KJKUQHMhZKI5jJ+1900GD/nOBO4x7auM8NSoSvlK2N2qFzLTmv8SV0OWeIJFiVKs4Aa0dJKqntmBJ3 RA2M/Hkv8IjlZzPk9COXI6dJEmzehKpHStVEDi38Uef32gSnXZvn5+N4/ucojUXY8UElKb67Au7upD WfnjbaVcSGHPO+i/G/MDd8KY1VCaC6LnMinDO6GK7QkEPByDJft/y6qKM0FYonV/4Jd1cfmIh9IDuX PuBRsYjjQfSHox3Of/S9roT2vq82u1pfsVTVn3XdcMfS4=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Many times when strncmp is called with the intent of ignoring the NULL
-terminator, the null terminator is accidentally included in that
-comparison, which in practice is just an strcmp with extra steps.
+Hello Linus,
 
-Subtract from the places where the intent seems to be to do a
-comparison without the NULL terminator.
+Another fairly sizable PR for v6.2 this time, by EFI subsystem standards. Most
+of the work was done by me, some of it in collaboration with the distro and
+bootloader folks (GRUB, systemd-boot), where the main focus has been on
+removing pointless per-arch differences in the way EFI boots a Linux kernel.
 
-Signed-off-by: Seija Kijin <doremylover123@gmail.com>
+There were a few conflicts reported, with the arm64 and tip trees, but nothing
+too hairy. Some of the conflicts were with some of my own work landing via a
+different tree, but in those cases, the changes in question were mostly
+unrelated, had been on the list for a while and simply happened to land now so
+I don't think there is much I could have done about that.
 
-diff --git a/arch/arm/mach-omap2/sr_device.c b/arch/arm/mach-omap2/sr_device.c
-index db672cf19a51..883f3078e233 100644
---- a/arch/arm/mach-omap2/sr_device.c
-+++ b/arch/arm/mach-omap2/sr_device.c
-@@ -94,12 +94,12 @@ static int __init sr_init_by_name(const char
-*name, const char *voltdm)
-struct omap_volt_data *volt_data;
-static int i;
-- if (!strncmp(name, "smartreflex_mpu_iva", 20) ||
-- !strncmp(name, "smartreflex_mpu", 16))
-+ if (!strncmp(name, "smartreflex_mpu_iva", 19) ||
-+ !strncmp(name, "smartreflex_mpu", 15))
-sr_data = &omap_sr_pdata[OMAP_SR_MPU];
-- else if (!strncmp(name, "smartreflex_core", 17))
-+ else if (!strncmp(name, "smartreflex_core", 16))
-sr_data = &omap_sr_pdata[OMAP_SR_CORE];
-- else if (!strncmp(name, "smartreflex_iva", 16))
-+ else if (!strncmp(name, "smartreflex_iva", 15))
-sr_data = &omap_sr_pdata[OMAP_SR_IVA];
-if (!sr_data) {
-diff --git a/drivers/edac/amd64_edac.c b/drivers/edac/amd64_edac.c
-index e3318e5575a3..1d832f484f8d 100644
---- a/drivers/edac/amd64_edac.c
-+++ b/drivers/edac/amd64_edac.c
-@@ -4333,7 +4333,7 @@ static int __init amd64_edac_init(void)
-return -EBUSY;
-owner = edac_get_owner();
-- if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
-+ if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR) - 1))
-return -EBUSY;
-if (!x86_match_cpu(amd64_cpuids))
-diff --git a/drivers/edac/i10nm_base.c b/drivers/edac/i10nm_base.c
-index 65aeea53e2df..546dd9fc5cc5 100644
---- a/drivers/edac/i10nm_base.c
-+++ b/drivers/edac/i10nm_base.c
-@@ -759,7 +759,7 @@ static int __init i10nm_init(void)
-return -EBUSY;
-owner = edac_get_owner();
-- if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
-+ if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR) - 1))
-return -EBUSY;
-if (cpu_feature_enabled(X86_FEATURE_HYPERVISOR))
-diff --git a/drivers/edac/igen6_edac.c b/drivers/edac/igen6_edac.c
-index 544dd19072ea..7df2b3a82221 100644
---- a/drivers/edac/igen6_edac.c
-+++ b/drivers/edac/igen6_edac.c
-@@ -1275,7 +1275,7 @@ static int __init igen6_init(void)
-return -EBUSY;
-owner = edac_get_owner();
-- if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
-+ if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR) - 1))
-return -EBUSY;
-edac_op_state = EDAC_OPSTATE_NMI;
-diff --git a/drivers/edac/pnd2_edac.c b/drivers/edac/pnd2_edac.c
-index 2b306f2cc605..08aeab382cb4 100644
---- a/drivers/edac/pnd2_edac.c
-+++ b/drivers/edac/pnd2_edac.c
-@@ -1532,7 +1532,7 @@ static int __init pnd2_init(void)
-return -EBUSY;
-owner = edac_get_owner();
-- if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
-+ if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR) - 1))
-return -EBUSY;
-if (cpu_feature_enabled(X86_FEATURE_HYPERVISOR))
-diff --git a/drivers/edac/sb_edac.c b/drivers/edac/sb_edac.c
-index 0c779a0326b6..6f8904b55213 100644
---- a/drivers/edac/sb_edac.c
-+++ b/drivers/edac/sb_edac.c
-@@ -3638,7 +3638,7 @@ static int __init sbridge_init(void)
-return -EBUSY;
-owner = edac_get_owner();
-- if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
-+ if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR) - 1))
-return -EBUSY;
-if (cpu_feature_enabled(X86_FEATURE_HYPERVISOR))
-diff --git a/drivers/edac/skx_base.c b/drivers/edac/skx_base.c
-index 9397abb42c49..ea38449710f5 100644
---- a/drivers/edac/skx_base.c
-+++ b/drivers/edac/skx_base.c
-@@ -657,7 +657,7 @@ static int __init skx_init(void)
-return -EBUSY;
-owner = edac_get_owner();
-- if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
-+ if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR) - 1))
-return -EBUSY;
-if (cpu_feature_enabled(X86_FEATURE_HYPERVISOR))
-diff --git a/drivers/media/pci/bt8xx/bttv-cards.c
-b/drivers/media/pci/bt8xx/bttv-cards.c
-index c2b5ab287dd7..c24cc2f46d2f 100644
---- a/drivers/media/pci/bt8xx/bttv-cards.c
-+++ b/drivers/media/pci/bt8xx/bttv-cards.c
-@@ -2968,7 +2968,7 @@ static void identify_by_eeprom(struct bttv *btv,
-unsigned char eeprom_data[256])
-if (0 == strncmp(eeprom_data,"GET MM20xPCTV",13))
-type = BTTV_BOARD_MODTEC_205;
-- else if (0 == strncmp(eeprom_data+20,"Picolo",7))
-+ else if (0 == strncmp(eeprom_data + 20, "Picolo", 6))
-type = BTTV_BOARD_EURESYS_PICOLO;
-else if (eeprom_data[0] == 0x84 && eeprom_data[2]== 0)
-type = BTTV_BOARD_HAUPPAUGE; /* old bt848 */
-diff --git a/drivers/net/ethernet/cavium/liquidio/lio_main.c
-b/drivers/net/ethernet/cavium/liquidio/lio_main.c
-index 98793b2ac2c7..795c44656ab3 100644
---- a/drivers/net/ethernet/cavium/liquidio/lio_main.c
-+++ b/drivers/net/ethernet/cavium/liquidio/lio_main.c
-@@ -912,7 +912,7 @@ liquidio_probe(struct pci_dev *pdev, const struct
-pci_device_id __maybe_unused *
-static bool fw_type_is_auto(void)
-{
-return strncmp(fw_type, LIO_FW_NAME_TYPE_AUTO,
-- sizeof(LIO_FW_NAME_TYPE_AUTO)) == 0;
-+ sizeof(LIO_FW_NAME_TYPE_AUTO) - 1) == 0;
-}
-/**
-diff --git a/drivers/staging/nvec/nvec_power.c
-b/drivers/staging/nvec/nvec_power.c
-index b1ef196e1cfe..3ed9e06e32de 100644
---- a/drivers/staging/nvec/nvec_power.c
-+++ b/drivers/staging/nvec/nvec_power.c
-@@ -207,7 +207,7 @@ static int nvec_power_bat_notifier(struct
-notifier_block *nb,
-* This differs a little from the spec fill in more if you find
-* some.
-*/
-- if (!strncmp(power->bat_type, "Li", 30))
-+ if (!strncmp(power->bat_type, "Li", 2))
-power->bat_type_enum = POWER_SUPPLY_TECHNOLOGY_LION;
-else
-power->bat_type_enum = POWER_SUPPLY_TECHNOLOGY_UNKNOWN;
+Please pull.
+
+
+The following changes since commit 76dcd734eca23168cb008912c0f69ff408905235:
+
+  Linux 6.1-rc8 (2022-12-04 14:48:12 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next-for-v6.2
+
+for you to fetch changes up to e8dfdf3162eb549d064b8c10b1564f7e8ee82591:
+
+  arm64: efi: Recover from synchronous exceptions occurring in firmware (2022-12-08 18:33:34 +0100)
+
+----------------------------------------------------------------
+EFI updates for v6.2:
+
+- Refactor the zboot code so that it incorporates all the EFI stub
+  logic, rather than calling the decompressed kernel as a EFI app.
+- Add support for initrd= command line option to x86 mixed mode.
+- Allow initrd= to be used with arbitrary EFI accessible file systems
+  instead of just the one the kernel itself was loaded from.
+- Move some x86-only handling and manipulation of the EFI memory map
+  into arch/x86, as it is not used anywhere else.
+- More flexible handling of any random seeds provided by the boot
+  environment (i.e., systemd-boot) so that it becomes available much
+  earlier during the boot.
+- Allow improved arch-agnostic EFI support in loaders, by setting a
+  uniform baseline of supported features, and adding a generic magic
+  number to the DOS/PE header. This should allow loaders such as GRUB or
+  systemd-boot to reduce the amount of arch-specific handling
+  substantially.
+- (arm64) Run EFI runtime services from a dedicated stack, and use it to
+  recover from synchronous exceptions that might occur in the firmware
+  code.
+- (arm64) Ensure that we don't allocate memory outside of the 48-bit
+  addressable physical range.
+- Make EFI pstore record size configurable
+- Add support for decoding CXL specific CPER records
+
+----------------------------------------------------------------
+Ard Biesheuvel (38):
+      efi: libstub: Drop randomization of runtime memory map
+      efi: libstub: Drop handling of EFI properties table
+      efi: libstub: Deduplicate ftrace command line argument filtering
+      arm64: efi: Move dcache cleaning of loaded image out of efi_enter_kernel()
+      arm64: efi: Avoid dcache_clean_poc() altogether in efi_enter_kernel()
+      arm64: efi: Move efi-entry.S into the libstub source directory
+      efi: libstub: Use local strncmp() implementation unconditionally
+      efi: libstub: Clone memcmp() into the stub
+      efi: libstub: Enable efi_printk() in zboot decompressor
+      efi: loongarch: Drop exports of unused string routines
+      efi: libstub: Move screen_info handling to common code
+      efi: libstub: Provide local implementations of strrchr() and memchr()
+      efi: libstub: Factor out EFI stub entrypoint into separate file
+      efi: libstub: Add image code and data size to the zimage metadata
+      efi: libstub: Factor out min alignment and preferred kernel load address
+      efi/riscv: libstub: Split off kernel image relocation for builtin stub
+      efi/arm64: libstub: Split off kernel image relocation for builtin stub
+      efi/loongarch: Don't jump to kernel entry via the old image
+      efi/loongarch: libstub: Split off kernel image relocation for builtin stub
+      efi: libstub: Merge zboot decompressor with the ordinary stub
+      Merge tag 'efi-zboot-direct-for-v6.2' into efi/next
+      efi: libstub: use EFI_LOADER_CODE region when moving the kernel in memory
+      efi: libstub: Implement devicepath support for initrd commandline loader
+      efi: libstub: Permit mixed mode return types other than efi_status_t
+      efi: libstub: Add mixed mode support to command line initrd loader
+      efi: libstub: Undeprecate the command line initrd loader
+      efi: memmap: Move EFI fake memmap support into x86 arch tree
+      efi: memmap: Move manipulation routines into x86 arch tree
+      efi: xen: Set EFI_PARAVIRT for Xen dom0 boot on all architectures
+      efi: runtime-maps: Clarify purpose and enable by default for kexec
+      efi: x86: Move EFI runtime map sysfs code to arch/x86
+      efi: random: combine bootloader provided RNG seed with RNG protocol output
+      efi: libstub: Always enable initrd command line loader and bump version
+      efi: Put Linux specific magic number in the DOS header
+      Merge tag 'v6.1-rc8' into efi/next
+      arm64: efi: Limit allocations to 48-bit addressable physical region
+      arm64: efi: Execute runtime services from a dedicated stack
+      arm64: efi: Recover from synchronous exceptions occurring in firmware
+
+Guilherme G. Piccoli (1):
+      efi: pstore: Add module parameter for setting the record size
+
+Jason A. Donenfeld (2):
+      efi: vars: prohibit reading random seed variables
+      efi: stub: use random seed from EFI variable
+
+Jialin Zhang (1):
+      efi: libstub: fix efi_load_initrd_dev_path() kernel-doc comment
+
+Lukas Bulwahn (1):
+      MAINTAINERS: adjust entry after arm64 efi-entry.S file movement
+
+Smita Koralahalli (2):
+      efi/cper, cxl: Decode CXL Protocol Error Section
+      efi/cper, cxl: Decode CXL Error Log
+
+ MAINTAINERS                                        |   1 -
+ arch/arm/include/asm/efi.h                         |   3 -
+ arch/arm/kernel/efi.c                              |  31 +--
+ arch/arm64/include/asm/efi.h                       |  27 +-
+ arch/arm64/kernel/Makefile                         |   9 +-
+ arch/arm64/kernel/efi-entry.S                      |  69 -----
+ arch/arm64/kernel/efi-rt-wrapper.S                 |  39 ++-
+ arch/arm64/kernel/efi.c                            |  49 ++++
+ arch/arm64/kernel/image-vars.h                     |   8 -
+ arch/arm64/mm/fault.c                              |   4 +
+ arch/loongarch/include/asm/efi.h                   |  14 +-
+ arch/loongarch/kernel/efi.c                        |  24 +-
+ arch/loongarch/kernel/head.S                       |   3 +-
+ arch/loongarch/kernel/image-vars.h                 |   8 -
+ arch/riscv/include/asm/efi.h                       |  13 +-
+ arch/riscv/kernel/image-vars.h                     |   6 -
+ arch/x86/Kconfig                                   |  31 +++
+ arch/x86/boot/compressed/efi_thunk_64.S            |   6 -
+ arch/x86/boot/header.S                             |   3 +-
+ arch/x86/include/asm/efi.h                         | 109 +++++---
+ arch/x86/kernel/setup.c                            |   1 +
+ arch/x86/platform/efi/Makefile                     |   5 +-
+ arch/x86/platform/efi/efi.c                        |   8 +-
+ .../firmware => arch/x86/platform}/efi/fake_mem.c  |  79 +++++-
+ arch/x86/platform/efi/memmap.c                     | 239 ++++++++++++++++
+ .../x86/platform}/efi/runtime-map.c                |   7 +-
+ drivers/firmware/efi/Kconfig                       |  45 ---
+ drivers/firmware/efi/Makefile                      |   7 +-
+ drivers/firmware/efi/cper.c                        |   9 +
+ drivers/firmware/efi/cper_cxl.c                    | 179 ++++++++++++
+ drivers/firmware/efi/cper_cxl.h                    |  66 +++++
+ drivers/firmware/efi/efi-init.c                    |  21 +-
+ drivers/firmware/efi/efi-pstore.c                  |  23 +-
+ drivers/firmware/efi/efi.c                         |  14 +-
+ drivers/firmware/efi/fake_mem.h                    |  10 -
+ drivers/firmware/efi/fdtparams.c                   |   4 +
+ drivers/firmware/efi/libstub/Makefile              |  34 ++-
+ drivers/firmware/efi/libstub/Makefile.zboot        |  22 +-
+ drivers/firmware/efi/libstub/alignedmem.c          |   7 +-
+ drivers/firmware/efi/libstub/arm32-stub.c          |  37 ---
+ drivers/firmware/efi/libstub/arm64-entry.S         |  67 +++++
+ drivers/firmware/efi/libstub/arm64-stub.c          |  75 ++---
+ drivers/firmware/efi/libstub/arm64.c               |  76 +++++
+ drivers/firmware/efi/libstub/efi-stub-entry.c      |  65 +++++
+ drivers/firmware/efi/libstub/efi-stub-helper.c     | 150 +---------
+ drivers/firmware/efi/libstub/efi-stub.c            | 140 +++-------
+ drivers/firmware/efi/libstub/efistub.h             | 143 +++++++---
+ drivers/firmware/efi/libstub/file.c                | 122 +++++---
+ drivers/firmware/efi/libstub/intrinsics.c          |  18 ++
+ drivers/firmware/efi/libstub/loongarch-stub.c      |  89 ++----
+ drivers/firmware/efi/libstub/loongarch.c           |  80 ++++++
+ drivers/firmware/efi/libstub/mem.c                 |   5 +-
+ drivers/firmware/efi/libstub/printk.c              | 154 +++++++++++
+ drivers/firmware/efi/libstub/random.c              |  96 ++++++-
+ drivers/firmware/efi/libstub/randomalloc.c         |   7 +-
+ drivers/firmware/efi/libstub/riscv-stub.c          |  96 +------
+ drivers/firmware/efi/libstub/riscv.c               |  98 +++++++
+ drivers/firmware/efi/libstub/screen_info.c         |  56 ++++
+ drivers/firmware/efi/libstub/string.c              |  95 ++++++-
+ drivers/firmware/efi/libstub/zboot-header.S        |   5 +-
+ drivers/firmware/efi/libstub/zboot.c               | 307 +++++----------------
+ drivers/firmware/efi/memmap.c                      | 243 +---------------
+ drivers/firmware/efi/runtime-wrappers.c            |   1 +
+ drivers/firmware/efi/x86_fake_mem.c                |  75 -----
+ fs/efivarfs/inode.c                                |   4 +
+ fs/efivarfs/super.c                                |   3 +
+ include/linux/cxl_err.h                            |  22 ++
+ include/linux/efi.h                                |  55 +---
+ include/linux/pe.h                                 |   9 +-
+ 69 files changed, 2138 insertions(+), 1492 deletions(-)
+ delete mode 100644 arch/arm64/kernel/efi-entry.S
+ rename {drivers/firmware => arch/x86/platform}/efi/fake_mem.c (58%)
+ create mode 100644 arch/x86/platform/efi/memmap.c
+ rename {drivers/firmware => arch/x86/platform}/efi/runtime-map.c (96%)
+ create mode 100644 drivers/firmware/efi/cper_cxl.c
+ create mode 100644 drivers/firmware/efi/cper_cxl.h
+ delete mode 100644 drivers/firmware/efi/fake_mem.h
+ create mode 100644 drivers/firmware/efi/libstub/arm64-entry.S
+ create mode 100644 drivers/firmware/efi/libstub/arm64.c
+ create mode 100644 drivers/firmware/efi/libstub/efi-stub-entry.c
+ create mode 100644 drivers/firmware/efi/libstub/loongarch.c
+ create mode 100644 drivers/firmware/efi/libstub/printk.c
+ create mode 100644 drivers/firmware/efi/libstub/riscv.c
+ create mode 100644 drivers/firmware/efi/libstub/screen_info.c
+ delete mode 100644 drivers/firmware/efi/x86_fake_mem.c
+ create mode 100644 include/linux/cxl_err.h
