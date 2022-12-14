@@ -2,83 +2,86 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BFAC64D1D7
-	for <lists+linux-efi@lfdr.de>; Wed, 14 Dec 2022 22:33:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CBFC64D1EC
+	for <lists+linux-efi@lfdr.de>; Wed, 14 Dec 2022 22:43:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229500AbiLNVds (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 14 Dec 2022 16:33:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34710 "EHLO
+        id S229824AbiLNVnf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 14 Dec 2022 16:43:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229734AbiLNVde (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 14 Dec 2022 16:33:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9BDD389D4
-        for <linux-efi@vger.kernel.org>; Wed, 14 Dec 2022 13:32:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1671053566;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type;
-        bh=FUzpeAfgvzVz/5w9XcHGMTUv81BEJmGgs/I3fDj9iOo=;
-        b=CtMPAOS7scspK8c6i2rfIcMK6chTFT6oYfIc/qq3DrmKszG4ykDhjGCFTH0/yn/ATb5QPY
-        b1SwxR5oCTQfyQ1YmBBGkj4y5eLUcxHlM7RlRZnDF9JzlL1Wrq/IiS/Zf1xMwjyOsvX9PB
-        kmWaLdP/fMtTZujBTMpMH6fK4dWSE/4=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-625-IoSSDzglOjKf0WznFZ0RgQ-1; Wed, 14 Dec 2022 16:32:42 -0500
-X-MC-Unique: IoSSDzglOjKf0WznFZ0RgQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E70C6280BCA2;
-        Wed, 14 Dec 2022 21:32:41 +0000 (UTC)
-Received: from oldenburg.str.redhat.com (unknown [10.2.16.27])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 1F8F940C2064;
-        Wed, 14 Dec 2022 21:32:40 +0000 (UTC)
-From:   Florian Weimer <fweimer@redhat.com>
-To:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] Define _GNU_SOURCE for a declaration of strptime
-Date:   Wed, 14 Dec 2022 22:32:39 +0100
-Message-ID: <87fsdhllhk.fsf@oldenburg.str.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.1 (gnu/linux)
+        with ESMTP id S229737AbiLNVn0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 14 Dec 2022 16:43:26 -0500
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1846C31DE8;
+        Wed, 14 Dec 2022 13:43:24 -0800 (PST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+         client-signature RSA-PSS (4096 bits) client-digest SHA256)
+        (Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
+        by bmailout1.hostsharing.net (Postfix) with ESMTPS id 18C2E300097BD;
+        Wed, 14 Dec 2022 22:43:21 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+        id 0C12910A68; Wed, 14 Dec 2022 22:43:21 +0100 (CET)
+Date:   Wed, 14 Dec 2022 22:43:21 +0100
+From:   Lukas Wunner <lukas@wunner.de>
+To:     Florian Weimer <fweimer@redhat.com>,
+        James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] efitools: Include <strings.h> for the strcasecmp function
+Message-ID: <20221214214321.GA23425@wunner.de>
+References: <87pmcllll9.fsf@oldenburg.str.redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87pmcllll9.fsf@oldenburg.str.redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This is needed for compatibility with future C compilers which reject
-implicit function declarations by default.  Without _GNU_SOURCE (or a
-similar feature test macro), <time.h> does not declare the strptime
-function, and compilation can fail.
+[+cc James]
 
----
- Make.rules | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, Dec 14, 2022 at 10:30:26PM +0100, Florian Weimer wrote:
+> Otherwise, an implicit function declaration is the result, and the
+> code may fail to compile with future compilers.
+> 
+> ---
+>  efi-updatevar.c | 1 +
+>  1 file changed, 1 insertion(+)
 
-diff --git a/Make.rules b/Make.rules
-index 903a5a4..d4de1ef 100644
---- a/Make.rules
-+++ b/Make.rules
-@@ -14,7 +14,7 @@ else
- $(error unknown architecture $(ARCH))
- endif
- INCDIR	   = -I$(TOPDIR)include/ -I/usr/include/efi -I/usr/include/efi/$(ARCH) -I/usr/include/efi/protocol
--CPPFLAGS   = -DCONFIG_$(ARCH)
-+CPPFLAGS   = -DCONFIG_$(ARCH) -D_GNU_SOURCE
- CFLAGS	   = -O2 -g $(ARCH3264) -fpic -Wall -fshort-wchar -fno-strict-aliasing -fno-merge-constants -fno-stack-protector -ffreestanding -fno-stack-check
- LDFLAGS	   = -nostdlib
- CRTOBJ		= crt0-efi-$(ARCH).o
+efitools appears to be maintained by James, so you may want to cc
+your submissions to him.
 
-Related to:
+Your patches are missing a DCO, yet existing commits in the efitools
+repository have one.  You may want to respin with your Signed-off-by
+added.
 
-  <https://fedoraproject.org/wiki/Changes/PortingToModernC>
-  <https://fedoraproject.org/wiki/Toolchain/PortingToModernC>
+Thanks,
 
+Lukas
+
+> 
+> diff --git a/efi-updatevar.c b/efi-updatevar.c
+> index 4247105..033d938 100644
+> --- a/efi-updatevar.c
+> +++ b/efi-updatevar.c
+> @@ -11,6 +11,7 @@
+>  #include <stdio.h>
+>  #include <stdlib.h>
+>  #include <string.h>
+> +#include <strings.h>
+>  #include <sys/stat.h>
+>  #include <fcntl.h>
+>  #include <unistd.h>
+> 
+> Related to:
+> 
+>   <https://fedoraproject.org/wiki/Changes/PortingToModernC>
+>   <https://fedoraproject.org/wiki/Toolchain/PortingToModernC>
+> 
