@@ -2,116 +2,80 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D361364C85D
-	for <lists+linux-efi@lfdr.de>; Wed, 14 Dec 2022 12:49:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 280AD64D1D0
+	for <lists+linux-efi@lfdr.de>; Wed, 14 Dec 2022 22:31:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229993AbiLNLtG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 14 Dec 2022 06:49:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56164 "EHLO
+        id S229769AbiLNVbY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 14 Dec 2022 16:31:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229834AbiLNLtF (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 14 Dec 2022 06:49:05 -0500
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C8D826D;
-        Wed, 14 Dec 2022 03:49:03 -0800 (PST)
-Received: from mail.ispras.ru (unknown [83.149.199.84])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 1A7E4419E9DE;
-        Wed, 14 Dec 2022 11:49:01 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 1A7E4419E9DE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1671018541;
-        bh=bh8Zdc2f3HMlsvorMmpYM+UbWvlZb6yMDnwhRqB5YZ0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JIgI7XPCbzQnmchfdKs0F74i6cRbzRZ9Du10xt1fD8Os9GI7+pw1RtdpdxJUwPW6z
-         dvaOI/+eNaVta8pv2akqBHipPjuggxrdvcjWceGVNoFek5llgH8S2UKNXQvTksOd0H
-         MffLmfwy+PIdoEgcB9CYpwW51vWD0b0XIxCpNaQ0=
+        with ESMTP id S229720AbiLNVbV (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 14 Dec 2022 16:31:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E64E36D76
+        for <linux-efi@vger.kernel.org>; Wed, 14 Dec 2022 13:30:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1671053433;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type;
+        bh=Mdh/7bm9+wtoe4Hd6cIEdts3EB320ZBGLuixnqSySc4=;
+        b=Ux9lPLL2veBPISn6wX+oivS3u0x1uzc7z9M/uhDksglq3uIb3cU1E7J6lWXgaLtmak2eKy
+        leHcfk76+LvetF4s3UXDyf67Ka9fCPJSziF53dXTg11X6JR1sXXnC1Ke0NxLjx4RtkBX5Q
+        YXIBspROBkSnl8j1WL2BTwwC5U000gM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-203-IqaeJKWGP4G4fO6D5GFzqA-1; Wed, 14 Dec 2022 16:30:29 -0500
+X-MC-Unique: IqaeJKWGP4G4fO6D5GFzqA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0733C80D0E5;
+        Wed, 14 Dec 2022 21:30:29 +0000 (UTC)
+Received: from oldenburg.str.redhat.com (unknown [10.2.16.27])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 614D414171BE;
+        Wed, 14 Dec 2022 21:30:28 +0000 (UTC)
+From:   Florian Weimer <fweimer@redhat.com>
+To:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] efitools: Include <strings.h> for the strcasecmp function
+Date:   Wed, 14 Dec 2022 22:30:26 +0100
+Message-ID: <87pmcllll9.fsf@oldenburg.str.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.1 (gnu/linux)
 MIME-Version: 1.0
-Date:   Wed, 14 Dec 2022 14:49:01 +0300
-From:   Evgeniy Baskov <baskov@ispras.ru>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Peter Jones <pjones@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        "Limonciello, Mario" <mario.limonciello@amd.com>,
-        joeyli <jlee@suse.com>, lvc-project@linuxtesting.org,
-        x86@kernel.org, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v3 00/24] x86_64: Improvements at compressed kernel stage
-In-Reply-To: <CAMj1kXEVffE8nm5qP_tGzQ9zGaXP11RtdFQhhwQc_DDyAk6qOw@mail.gmail.com>
-References: <cover.1668958803.git.baskov@ispras.ru>
- <20221213180317.qoy2l3mcpjparocq@redhat.com>
- <20221213181336.fjyxagxkjtq3jchl@redhat.com>
- <e28ce5943937225517d460dabda6f8e5@ispras.ru>
- <CAMj1kXEVffE8nm5qP_tGzQ9zGaXP11RtdFQhhwQc_DDyAk6qOw@mail.gmail.com>
-User-Agent: Roundcube Webmail/1.4.4
-Message-ID: <e2c8e3ce6cb7a1aca156186946b22eb0@ispras.ru>
-X-Sender: baskov@ispras.ru
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2022-12-14 13:09, Ard Biesheuvel wrote:
-> On Tue, 13 Dec 2022 at 23:16, Evgeniy Baskov <baskov@ispras.ru> wrote:
->> 
->> On 2022-12-13 21:13, Peter Jones wrote:
->> > On Tue, Dec 13, 2022 at 01:03:17PM -0500, Peter Jones wrote:
->> >> On Tue, Nov 22, 2022 at 02:12:09PM +0300, Evgeniy Baskov wrote:
->> >> > This patchset is aimed
->> >> > * to improve UEFI compatibility of compressed kernel code for x86_64
->> >> > * to setup proper memory access attributes for code and rodata sections
->> >> > * to implement W^X protection policy throughout the whole execution
->> >> >   of compressed kernel for EFISTUB code path.
->> >>
->> >> Hi Evgeniy,
->> >>
->> >> I've tested this patch set on hardware and QEMU+MU firmware, and it
->> >> works for me with a couple of minor issues:
->> >>
->> >> - on one machine that has the DXE protocol but not the EFI one, we get
->> >>   an error because the firmware doesn't support EFI_MEMORY_RP
->> >> - on QEMU I'm seeing the size of "(unsigned long)_head - image_base"
->> >>   wind up as 0, which leads to an EFI_INVALID_PARAMETER on the
->> >>   clear_memory_attributes() call.
->> >>
->> >> In both cases the system winds up working, but with unnecessary
->> >> console
->> >> output.
->> >
->> > I just realized I've overstated here - I haven't actually hit the first
->> > problem on x86, only on ARM, where we don't currently use this code.  I
->> > discovered it in grub, and checked your patch set to see if you had the
->> > same issue I did.  That said, "in both cases the system winds up
->> > working" is probably still true - in that the edk2 code supports
->> > EFI_MEMORY_RP on x86 but not ARM, so x86 won't hit the issue when using
->> > DXE unless someone cooks up another implementation.  Nevertheless I
->> > believe the patch to fix it is correct and should be applied.
->> >
->> > Thanks!
->> 
->> Hi,
->> 
->> Thank you for testing and fixes!
->> 
->> I have also discovered one issue with v3, that can only be hit when
->> booting with grub -- there's one kernel_add_identity_map() missing in
->> the get_acpi_srat_table() function, before header->length is read.
->> So I'll prepare the v4 soon and include your new patches there.
->> 
-> 
-> Happy to see this is converging. Please rebase onto latest mainline as
-> well - some cleanups to the early boot code have landed there
-> yesterday.
+Otherwise, an implicit function declaration is the result, and the
+code may fail to compile with future compilers.
 
-Will do, thanks!
+---
+ efi-updatevar.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/efi-updatevar.c b/efi-updatevar.c
+index 4247105..033d938 100644
+--- a/efi-updatevar.c
++++ b/efi-updatevar.c
+@@ -11,6 +11,7 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <strings.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ #include <unistd.h>
+
+Related to:
+
+  <https://fedoraproject.org/wiki/Changes/PortingToModernC>
+  <https://fedoraproject.org/wiki/Toolchain/PortingToModernC>
+
