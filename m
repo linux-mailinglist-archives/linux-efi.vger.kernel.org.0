@@ -2,29 +2,29 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD34764DB74
-	for <lists+linux-efi@lfdr.de>; Thu, 15 Dec 2022 13:43:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D1F064DB7B
+	for <lists+linux-efi@lfdr.de>; Thu, 15 Dec 2022 13:43:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229944AbiLOMnD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 15 Dec 2022 07:43:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58184 "EHLO
+        id S229958AbiLOMnI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 15 Dec 2022 07:43:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229806AbiLOMm2 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 15 Dec 2022 07:42:28 -0500
+        with ESMTP id S229913AbiLOMnB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 15 Dec 2022 07:43:01 -0500
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D03DF06;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F427959A;
         Thu, 15 Dec 2022 04:42:28 -0800 (PST)
 Received: from localhost.localdomain (unknown [83.149.199.65])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 365E140737A3;
+        by mail.ispras.ru (Postfix) with ESMTPSA id 6BD6240737A4;
         Thu, 15 Dec 2022 12:42:26 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 365E140737A3
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 6BD6240737A4
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
         s=default; t=1671108146;
-        bh=IpU0tjNymTHz9fJiOLjTQ5CfC4DkOKpdBU+NiXX6lIQ=;
+        bh=VuM+8awEXWYYt0TWfXOB2vBt+Q+Z/GB09vWftRx/e8Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cEKjvhTiUKC/j3Emhuk9OQ4EdoQy7BjYYNtoIQbwX1GYrPCES0YmjcPMs/QlaqLTk
-         yiffNspkkAAfp10zvnOms8EKuT/YwiYDDytk+5TO1hiWIvTjerfrP5EoZM7YMsQmhC
-         Czbs+fvh7m+unlip1AyPmssh7gW2kpmQTdWwvtFU=
+        b=AHvaNj4P5DijLDx4LCR7UQSU9LigQk5KIH3/hj+2ct02cHhUvRBC0+VwO57uvp+gW
+         28I5YcdzSWprXP6vDwN0kZ/KoFt7BMWH5XmTrAvCU3sx3Qq0BuQo1uern5ao4aSGjK
+         cC7TnlQlf49FVrTNYGabQjCPRDelJ4gBaEXa8w64=
 From:   Evgeniy Baskov <baskov@ispras.ru>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Evgeniy Baskov <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
@@ -39,9 +39,9 @@ Cc:     Evgeniy Baskov <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
         joeyli <jlee@suse.com>, lvc-project@linuxtesting.org,
         x86@kernel.org, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: [PATCH v4 21/26] efi/x86: Explicitly set sections memory attributes
-Date:   Thu, 15 Dec 2022 15:38:12 +0300
-Message-Id: <c38ad7a1b89aff743d4a29882a7022d97d4fea58.1671098103.git.baskov@ispras.ru>
+Subject: [PATCH v4 22/26] efi/libstub: Add memory attribute protocol definitions
+Date:   Thu, 15 Dec 2022 15:38:13 +0300
+Message-Id: <7148a780010f9e4a0a62a3bc6d00cfdc13c5d00c.1671098103.git.baskov@ispras.ru>
 X-Mailer: git-send-email 2.37.4
 In-Reply-To: <cover.1671098103.git.baskov@ispras.ru>
 References: <cover.1671098103.git.baskov@ispras.ru>
@@ -56,97 +56,94 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Explicitly change sections memory attributes in efi_pe_entry in case
-of incorrect EFI implementations and to reduce access rights to
-compressed kernel blob. By default it is set executable due to
-restriction in maximum number of sections that can fit before zero
-page.
+EFI_MEMORY_ATTRIBUTE_PROTOCOL servers as a better alternative to
+DXE services for setting memory attributes in EFI Boot Services
+environment. This protocol is better since it is a part of UEFI
+specification itself and not UEFI PI specification like DXE
+services.
 
+Add EFI_MEMORY_ATTRIBUTE_PROTOCOL definitions.
+Support mixed mode properly for its calls.
+
+Tested-by: Mario Limonciello <mario.limonciello@amd.com>
 Tested-by: Peter Jones <pjones@redhat.com>
 Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
 ---
- drivers/firmware/efi/libstub/x86-stub.c | 54 +++++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
+ arch/x86/include/asm/efi.h             |  7 +++++++
+ drivers/firmware/efi/libstub/efistub.h | 22 ++++++++++++++++++++++
+ include/linux/efi.h                    |  1 +
+ 3 files changed, 30 insertions(+)
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 1f0a2e7075c3..60697fcd8950 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -27,6 +27,12 @@ const efi_dxe_services_table_t *efi_dxe_table;
- u32 image_offset __section(".data");
- static efi_loaded_image_t *image __section(".data");
+diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+index a63154e049d7..cd19b9eca3f6 100644
+--- a/arch/x86/include/asm/efi.h
++++ b/arch/x86/include/asm/efi.h
+@@ -335,6 +335,13 @@ static inline u32 efi64_convert_status(efi_status_t status)
+ #define __efi64_argmap_open_volume(prot, file) \
+ 	((prot), efi64_zero_upper(file))
  
-+extern char _head[], _ehead[];
-+extern char _compressed[], _ecompressed[];
-+extern char _text[], _etext[];
-+extern char _rodata[], _erodata[];
-+extern char _data[];
++/* Memory Attribute Protocol */
++#define __efi64_argmap_set_memory_attributes(protocol, phys, size, flags) \
++	((protocol), __efi64_split(phys), __efi64_split(size), __efi64_split(flags))
 +
- static efi_status_t
- preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
- {
-@@ -343,6 +349,52 @@ void __noreturn efi_exit(efi_handle_t handle, efi_status_t status)
- 		asm("hlt");
- }
++#define __efi64_argmap_clear_memory_attributes(protocol, phys, size, flags) \
++	((protocol), __efi64_split(phys), __efi64_split(size), __efi64_split(flags))
++
+ /*
+  * The macros below handle the plumbing for the argument mapping. To add a
+  * mapping for a specific EFI method, simply define a macro
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index c55325f829e7..cd8a7b089b7d 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -43,6 +43,9 @@ extern const efi_system_table_t *efi_system_table;
+ typedef union efi_dxe_services_table efi_dxe_services_table_t;
+ extern const efi_dxe_services_table_t *efi_dxe_table;
  
++typedef union efi_memory_attribute_protocol efi_memory_attribute_protocol_t;
++extern efi_memory_attribute_protocol_t *efi_mem_attrib_proto;
 +
-+/*
-+ * Manually setup memory protection attributes for each ELF section
-+ * since we cannot do it properly by using PE sections.
-+ */
-+static void setup_sections_memory_protection(unsigned long image_base)
-+{
-+#ifdef CONFIG_EFI_DXE_MEM_ATTRIBUTES
-+	efi_dxe_table = get_efi_config_table(EFI_DXE_SERVICES_TABLE_GUID);
-+
-+	if (!efi_dxe_table ||
-+	    efi_dxe_table->hdr.signature != EFI_DXE_SERVICES_TABLE_SIGNATURE) {
-+		efi_warn("Unable to locate EFI DXE services table\n");
-+		efi_dxe_table = NULL;
-+		return;
-+	}
-+
-+	/* .setup [image_base, _head] */
-+	efi_adjust_memory_range_protection(image_base,
-+					   (unsigned long)_head - image_base,
-+					   EFI_MEMORY_RO | EFI_MEMORY_XP);
-+	/* .head.text [_head, _ehead] */
-+	efi_adjust_memory_range_protection((unsigned long)_head,
-+					   (unsigned long)_ehead - (unsigned long)_head,
-+					   EFI_MEMORY_RO);
-+	/* .rodata..compressed [_compressed, _ecompressed] */
-+	efi_adjust_memory_range_protection((unsigned long)_compressed,
-+					   (unsigned long)_ecompressed - (unsigned long)_compressed,
-+					   EFI_MEMORY_RO | EFI_MEMORY_XP);
-+	/* .text [_text, _etext] */
-+	efi_adjust_memory_range_protection((unsigned long)_text,
-+					   (unsigned long)_etext - (unsigned long)_text,
-+					   EFI_MEMORY_RO);
-+	/* .rodata [_rodata, _erodata] */
-+	efi_adjust_memory_range_protection((unsigned long)_rodata,
-+					   (unsigned long)_erodata - (unsigned long)_rodata,
-+					   EFI_MEMORY_RO | EFI_MEMORY_XP);
-+	/* .data, .bss [_data, _end] */
-+	efi_adjust_memory_range_protection((unsigned long)_data,
-+					   (unsigned long)_end - (unsigned long)_data,
-+					   EFI_MEMORY_XP);
-+#else
-+	(void)image_base;
-+#endif
-+}
-+
- void __noreturn efi_stub_entry(efi_handle_t handle,
- 			       efi_system_table_t *sys_table_arg,
- 			       struct boot_params *boot_params);
-@@ -687,6 +739,8 @@ asmlinkage unsigned long efi_main(efi_handle_t handle,
- 		efi_dxe_table = NULL;
- 	}
+ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 				   efi_system_table_t *sys_table_arg);
  
-+	setup_sections_memory_protection(bzimage_addr - image_offset);
+@@ -442,6 +445,25 @@ union efi_dxe_services_table {
+ 	} mixed_mode;
+ };
+ 
++union  efi_memory_attribute_protocol {
++	struct {
++		void *get_memory_attributes;
++		efi_status_t (__efiapi *set_memory_attributes)(efi_memory_attribute_protocol_t *,
++								efi_physical_addr_t,
++								u64,
++								u64);
++		efi_status_t (__efiapi *clear_memory_attributes)(efi_memory_attribute_protocol_t *,
++								  efi_physical_addr_t,
++								  u64,
++								  u64);
++	};
++	struct {
++		u32 get_memory_attributes;
++		u32 set_memory_attributes;
++		u32 clear_memory_attributes;
++	} mixed_mode;
++};
 +
- #ifdef CONFIG_CMDLINE_BOOL
- 	status = efi_parse_options(CONFIG_CMDLINE);
- 	if (status != EFI_SUCCESS) {
+ typedef union efi_uga_draw_protocol efi_uga_draw_protocol_t;
+ 
+ union efi_uga_draw_protocol {
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 4b27519143f5..8a333d993829 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -391,6 +391,7 @@ void efi_native_runtime_setup(void);
+ #define EFI_RT_PROPERTIES_TABLE_GUID		EFI_GUID(0xeb66918a, 0x7eef, 0x402a,  0x84, 0x2e, 0x93, 0x1d, 0x21, 0xc3, 0x8a, 0xe9)
+ #define EFI_DXE_SERVICES_TABLE_GUID		EFI_GUID(0x05ad34ba, 0x6f02, 0x4214,  0x95, 0x2e, 0x4d, 0xa0, 0x39, 0x8e, 0x2b, 0xb9)
+ #define EFI_SMBIOS_PROTOCOL_GUID		EFI_GUID(0x03583ff6, 0xcb36, 0x4940,  0x94, 0x7e, 0xb9, 0xb3, 0x9f, 0x4a, 0xfa, 0xf7)
++#define EFI_MEMORY_ATTRIBUTE_PROTOCOL_GUID	EFI_GUID(0xf4560cf6, 0x40ec, 0x4b4a,  0xa1, 0x92, 0xbf, 0x1d, 0x57, 0xd0, 0xb1, 0x89)
+ 
+ #define EFI_IMAGE_SECURITY_DATABASE_GUID	EFI_GUID(0xd719b2cb, 0x3d3a, 0x4596,  0xa3, 0xbc, 0xda, 0xd0, 0x0e, 0x67, 0x65, 0x6f)
+ #define EFI_SHIM_LOCK_GUID			EFI_GUID(0x605dab50, 0xe046, 0x4300,  0xab, 0xb6, 0x3d, 0xd8, 0x10, 0xdd, 0x8b, 0x23)
 -- 
 2.37.4
 
