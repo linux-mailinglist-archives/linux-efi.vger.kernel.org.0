@@ -2,29 +2,29 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C94664DB6C
-	for <lists+linux-efi@lfdr.de>; Thu, 15 Dec 2022 13:42:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5473A64DB6F
+	for <lists+linux-efi@lfdr.de>; Thu, 15 Dec 2022 13:42:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229983AbiLOMmZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 15 Dec 2022 07:42:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54940 "EHLO
+        id S229727AbiLOMm0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 15 Dec 2022 07:42:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229915AbiLOMl2 (ORCPT
+        with ESMTP id S229918AbiLOMl2 (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Thu, 15 Dec 2022 07:41:28 -0500
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F5532F02C;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FDF12F02E;
         Thu, 15 Dec 2022 04:40:28 -0800 (PST)
 Received: from localhost.localdomain (unknown [83.149.199.65])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 1DFCD400CBDC;
+        by mail.ispras.ru (Postfix) with ESMTPSA id 50B4A40737A4;
         Thu, 15 Dec 2022 12:40:25 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 1DFCD400CBDC
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 50B4A40737A4
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
         s=default; t=1671108025;
-        bh=oJrp1q8lTiiWjPIUAQspoypZPG+SdjrTnu5JNDfc4sk=;
+        bh=qQtYT34Nan6gkSonGyD+MDz80X5GRCr49QTdaEtziC0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qb1Arfhd/4C5zhNb9vvUwaM+UFsgx/jGZ34fdhfGupEJX8YsLQT2QV7uhYo37qP7J
-         NZpY79EHgMeLMqGJmx0GMO7J+9ArdTrJ96ez2lxcEdDqbLJVnNRXU2a3avnZKJSEe+
-         Ha8JxsNsdOlaRM2oKBopyv7u3CLntMhx7lqkmcJw=
+        b=izHOb1pB6ni2VyJVMRfTBCce4P5MOQ6F5K6FKoMkg/PhsZwXw1gEm23Adk0aeQCfu
+         MdBtw9M+EEldUmGHNenxAmItWlGkwnHrHCHlDnASTBXmt4Yljvgg3jMAz45w7/KpBi
+         SewGNmcPEZSIPOSQea3gHks6SIb9i3yQtdsQcXSw=
 From:   Evgeniy Baskov <baskov@ispras.ru>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Evgeniy Baskov <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
@@ -39,9 +39,9 @@ Cc:     Evgeniy Baskov <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
         joeyli <jlee@suse.com>, lvc-project@linuxtesting.org,
         x86@kernel.org, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: [PATCH v4 16/26] x86/boot: Reduce lower limit of physical KASLR
-Date:   Thu, 15 Dec 2022 15:38:07 +0300
-Message-Id: <672320297f9d8860ddafbfa90933f8df7b537a5d.1671098103.git.baskov@ispras.ru>
+Subject: [PATCH v4 17/26] x86/boot: Reduce size of the DOS stub
+Date:   Thu, 15 Dec 2022 15:38:08 +0300
+Message-Id: <cb62472011a0c4151276b6a05b83b60b1bf6f352.1671098103.git.baskov@ispras.ru>
 X-Mailer: git-send-email 2.37.4
 In-Reply-To: <cover.1671098103.git.baskov@ispras.ru>
 References: <cover.1671098103.git.baskov@ispras.ru>
@@ -56,41 +56,56 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Set lower limit of physical KASLR to 64M.
-
-Previously is was set to 512M when kernel is loaded higher than that.
-That prevented physical KASLR from being performed on x86_32, where
-upper limit is also set to 512M. The limit is pretty arbitrary, and the
-most important is to set it above the ISA hole, i.e. higher than 16M.
-
-It was not that important before, but now kernel is not getting
-relocated to the lower address when booting via EFI, exposing the
-KASLR failures.
+This is required to fit more sections in PE section tables,
+since its size is restricted by zero page located at specific offset
+after the PE header.
 
 Tested-by: Mario Limonciello <mario.limonciello@amd.com>
 Tested-by: Peter Jones <pjones@redhat.com>
 Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
 ---
- arch/x86/boot/compressed/kaslr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/boot/header.S | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-index c0ee116c4fa2..74d1327adbba 100644
---- a/arch/x86/boot/compressed/kaslr.c
-+++ b/arch/x86/boot/compressed/kaslr.c
-@@ -852,10 +852,10 @@ void choose_random_location(unsigned long input,
+diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
+index 9338c68e7413..9fec80bc504b 100644
+--- a/arch/x86/boot/header.S
++++ b/arch/x86/boot/header.S
+@@ -59,17 +59,16 @@ start2:
+ 	cld
  
- 	/*
- 	 * Low end of the randomization range should be the
--	 * smaller of 512M or the initial kernel image
-+	 * smaller of 64M or the initial kernel image
- 	 * location:
- 	 */
--	min_addr = min(*output, 512UL << 20);
-+	min_addr = min(*output, 64UL << 20);
- 	/* Make sure minimum is aligned. */
- 	min_addr = ALIGN(min_addr, CONFIG_PHYSICAL_ALIGN);
+ 	movw	$bugger_off_msg, %si
++	movw	$bugger_off_msg_size, %cx
  
+ msg_loop:
+ 	lodsb
+-	andb	%al, %al
+-	jz	bs_die
+ 	movb	$0xe, %ah
+ 	movw	$7, %bx
+ 	int	$0x10
+-	jmp	msg_loop
++	decw	%cx
++	jnz	msg_loop
+ 
+-bs_die:
+ 	# Allow the user to press a key, then reboot
+ 	xorw	%ax, %ax
+ 	int	$0x16
+@@ -90,10 +89,9 @@ bs_die:
+ 
+ 	.section ".bsdata", "a"
+ bugger_off_msg:
+-	.ascii	"Use a boot loader.\r\n"
+-	.ascii	"\n"
+-	.ascii	"Remove disk and press any key to reboot...\r\n"
+-	.byte	0
++	.ascii	"Use a boot loader. "
++	.ascii	"Press a key to reboot"
++	.set	bugger_off_msg_size, . - bugger_off_msg
+ 
+ #ifdef CONFIG_EFI_STUB
+ pe_header:
 -- 
 2.37.4
 
