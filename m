@@ -2,29 +2,29 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C518564DB63
-	for <lists+linux-efi@lfdr.de>; Thu, 15 Dec 2022 13:42:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5648764DB66
+	for <lists+linux-efi@lfdr.de>; Thu, 15 Dec 2022 13:42:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229945AbiLOMlr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 15 Dec 2022 07:41:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54858 "EHLO
+        id S230044AbiLOMls (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 15 Dec 2022 07:41:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229852AbiLOMlZ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 15 Dec 2022 07:41:25 -0500
+        with ESMTP id S229869AbiLOMl0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 15 Dec 2022 07:41:26 -0500
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 722C92F012;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CBC12F013;
         Thu, 15 Dec 2022 04:40:25 -0800 (PST)
 Received: from localhost.localdomain (unknown [83.149.199.65])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 6C47840737B0;
+        by mail.ispras.ru (Postfix) with ESMTPSA id 9F25340737B6;
         Thu, 15 Dec 2022 12:40:23 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 6C47840737B0
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 9F25340737B6
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
         s=default; t=1671108023;
-        bh=Lr7vqi88OzPlVYDVIQBfNNl3J3sAxYJi2taZgNJS0rU=;
+        bh=SXfOuN4XhQqZecp0fAbo/2/1GUdhrCJYeFoo3/yqXus=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H4zCw8oSc5R49z2GYNnAbNbQJuClVbU9t/0oEeu4VyNiB+FEDUYY7ovYtnRUthMDH
-         hpdobOWHGs2aWuInWjQE9HlyTbbDJnEvZCgW/t6pNKkwS7y6weIWfWgRIH+aYvBbB9
-         i1LwxCsbDO38Wnd6dD0OgupSyQHPEtUtwAEfMDyQ=
+        b=g1V5BjU/RdhYXl0WPUCtk9+RvlC1h2yphrk3zLRjpreEEROQoyPuVupJC/D9WZ1OC
+         k7aTmzCBfhDlAUXNZ7V3TbQnS1j3y902gW6/BuG0Y9jief23Yx0syXPQshh4mdK/wg
+         q3Tn84RUxuckMAEKiwneBYNVvtjh3KMmzZoDN9R8=
 From:   Evgeniy Baskov <baskov@ispras.ru>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Evgeniy Baskov <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
@@ -39,9 +39,9 @@ Cc:     Evgeniy Baskov <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
         joeyli <jlee@suse.com>, lvc-project@linuxtesting.org,
         x86@kernel.org, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: [PATCH v4 10/26] efi/libstub: Move helper function to related file
-Date:   Thu, 15 Dec 2022 15:38:01 +0300
-Message-Id: <d656651d1bec03fc527e116bf2a786588fdde16a.1671098103.git.baskov@ispras.ru>
+Subject: [PATCH v4 11/26] x86/boot: Make console interface more abstract
+Date:   Thu, 15 Dec 2022 15:38:02 +0300
+Message-Id: <3827032b3688e111428a9e727782d2b2712c7e34.1671098103.git.baskov@ispras.ru>
 X-Mailer: git-send-email 2.37.4
 In-Reply-To: <cover.1671098103.git.baskov@ispras.ru>
 References: <cover.1671098103.git.baskov@ispras.ru>
@@ -56,243 +56,340 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-efi_adjust_memory_range_protection() can be useful outside x86-stub.c.
+To be able to extract kernel from EFI, console output functions
+need to be replaceable by alternative implementations.
 
-Move it to mem.c, where memory related code resides and make it
-non-static.
-
-Change its behavior to setup exact attributes and disallow making
-memory regions readable and writable simultaneously for supported
-configurations.
+Make all of those functions pointers.
+Move serial console code to separate file.
 
 Tested-by: Mario Limonciello <mario.limonciello@amd.com>
 Tested-by: Peter Jones <pjones@redhat.com>
 Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
 ---
- drivers/firmware/efi/libstub/efistub.h  |   4 +
- drivers/firmware/efi/libstub/mem.c      | 102 ++++++++++++++++++++++++
- drivers/firmware/efi/libstub/x86-stub.c |  66 ++-------------
- 3 files changed, 112 insertions(+), 60 deletions(-)
+ arch/x86/boot/compressed/Makefile |   2 +-
+ arch/x86/boot/compressed/misc.c   | 109 +------------------------
+ arch/x86/boot/compressed/misc.h   |   9 ++-
+ arch/x86/boot/compressed/putstr.c | 130 ++++++++++++++++++++++++++++++
+ 4 files changed, 139 insertions(+), 111 deletions(-)
+ create mode 100644 arch/x86/boot/compressed/putstr.c
 
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index 5b8f2c411ed8..c55325f829e7 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -975,6 +975,10 @@ efi_status_t efi_relocate_kernel(unsigned long *image_addr,
- 				 unsigned long alignment,
- 				 unsigned long min_addr);
+diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+index 4dcab38f5a38..4b1524446875 100644
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -93,7 +93,7 @@ $(obj)/misc.o: $(obj)/../voffset.h
  
-+efi_status_t efi_adjust_memory_range_protection(unsigned long start,
-+						unsigned long size,
-+						unsigned long attributes);
-+
- efi_status_t efi_parse_options(char const *cmdline);
+ vmlinux-objs-y := $(obj)/vmlinux.lds $(obj)/kernel_info.o $(obj)/head_$(BITS).o \
+ 	$(obj)/misc.o $(obj)/string.o $(obj)/cmdline.o $(obj)/error.o \
+-	$(obj)/piggy.o $(obj)/cpuflags.o
++	$(obj)/piggy.o $(obj)/cpuflags.o $(obj)/putstr.o
  
- void efi_parse_option_graphics(char *option);
-diff --git a/drivers/firmware/efi/libstub/mem.c b/drivers/firmware/efi/libstub/mem.c
-index 4f1fa302234d..3e47e5931f04 100644
---- a/drivers/firmware/efi/libstub/mem.c
-+++ b/drivers/firmware/efi/libstub/mem.c
-@@ -128,3 +128,105 @@ void efi_free(unsigned long size, unsigned long addr)
- 	nr_pages = round_up(size, EFI_ALLOC_ALIGN) / EFI_PAGE_SIZE;
- 	efi_bs_call(free_pages, addr, nr_pages);
- }
-+
-+/**
-+ * efi_adjust_memory_range_protection() - change memory range protection attributes
-+ * @start:	memory range start address
-+ * @size:	memory range size
-+ *
-+ * Actual memory range for which memory attributes are modified is
-+ * the smallest ranged with start address and size aligned to EFI_PAGE_SIZE
-+ * that includes [start, start + size].
-+ *
-+ * @return: status code
-+ */
-+efi_status_t efi_adjust_memory_range_protection(unsigned long start,
-+						unsigned long size,
-+						unsigned long attributes)
-+{
-+	efi_status_t status;
-+	efi_gcd_memory_space_desc_t desc;
-+	efi_physical_addr_t end, next;
-+	efi_physical_addr_t rounded_start, rounded_end;
-+	efi_physical_addr_t unprotect_start, unprotect_size;
-+
-+	if (efi_dxe_table == NULL)
-+		return EFI_UNSUPPORTED;
-+
-+	/*
-+	 * This function should not be used to modify attributes
-+	 * other than writable/executable.
-+	 */
-+
-+	if ((attributes & ~(EFI_MEMORY_RO | EFI_MEMORY_XP)) != 0)
-+		return EFI_INVALID_PARAMETER;
-+
-+	/*
-+	 * Disallow simultaniously executable and writable memory
-+	 * to inforce W^X policy if direct extraction code is enabled.
-+	 */
-+
-+	if ((attributes & (EFI_MEMORY_RO | EFI_MEMORY_XP)) == 0) {
-+		efi_warn("W^X violation at [%08lx,%08lx]\n",
-+			 (unsigned long)rounded_start,
-+			 (unsigned long)rounded_end);
-+	}
-+
-+	rounded_start = rounddown(start, EFI_PAGE_SIZE);
-+	rounded_end = roundup(start + size, EFI_PAGE_SIZE);
-+
-+	/*
-+	 * Don't modify memory region attributes, they are
-+	 * already suitable, to lower the possibility to
-+	 * encounter firmware bugs.
-+	 */
-+
-+	for (end = start + size; start < end; start = next) {
-+
-+		status = efi_dxe_call(get_memory_space_descriptor,
-+				      start, &desc);
-+
-+		if (status != EFI_SUCCESS) {
-+			efi_warn("Unable to get memory descriptor at %lx\n",
-+				 start);
-+			return status;
-+		}
-+
-+		next = desc.base_address + desc.length;
-+
-+		/*
-+		 * Only system memory is suitable for trampoline/kernel image
-+		 * placement, so only this type of memory needs its attributes
-+		 * to be modified.
-+		 */
-+
-+		if (desc.gcd_memory_type != EfiGcdMemoryTypeSystemMemory) {
-+			efi_warn("Attempted to change protection of special memory range\n");
-+			return EFI_UNSUPPORTED;
-+		}
-+
-+		if (((desc.attributes ^ attributes) &
-+		     (EFI_MEMORY_RO | EFI_MEMORY_XP)) == 0)
-+			continue;
-+
-+		desc.attributes &= ~(EFI_MEMORY_RO | EFI_MEMORY_XP);
-+		desc.attributes |= attributes;
-+
-+		unprotect_start = max(rounded_start, desc.base_address);
-+		unprotect_size = min(rounded_end, next) - unprotect_start;
-+
-+		status = efi_dxe_call(set_memory_space_attributes,
-+				      unprotect_start, unprotect_size,
-+				      desc.attributes);
-+
-+		if (status != EFI_SUCCESS) {
-+			efi_warn("Unable to unprotect memory range [%08lx,%08lx]: %lx\n",
-+				 (unsigned long)unprotect_start,
-+				 (unsigned long)(unprotect_start + unprotect_size),
-+				 status);
-+			return status;
-+		}
-+	}
-+
-+	return EFI_SUCCESS;
-+}
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index a0bfd31358ba..7fb1eff88a18 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -212,61 +212,6 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
- 	}
- }
+ vmlinux-objs-$(CONFIG_EARLY_PRINTK) += $(obj)/early_serial_console.o
+ vmlinux-objs-$(CONFIG_RANDOMIZE_BASE) += $(obj)/kaslr.o
+diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
+index 0c7ec290044d..aa4a22bc9cf9 100644
+--- a/arch/x86/boot/compressed/misc.c
++++ b/arch/x86/boot/compressed/misc.c
+@@ -53,13 +53,6 @@ struct port_io_ops pio_ops;
+ memptr free_mem_ptr;
+ memptr free_mem_end_ptr;
  
--static void
--adjust_memory_range_protection(unsigned long start, unsigned long size)
--{
--	efi_status_t status;
--	efi_gcd_memory_space_desc_t desc;
--	unsigned long end, next;
--	unsigned long rounded_start, rounded_end;
--	unsigned long unprotect_start, unprotect_size;
+-static char *vidmem;
+-static int vidport;
 -
--	if (efi_dxe_table == NULL)
+-/* These might be accessed before .bss is cleared, so use .data instead. */
+-static int lines __section(".data");
+-static int cols __section(".data");
+-
+ #ifdef CONFIG_KERNEL_GZIP
+ #include "../../../../lib/decompress_inflate.c"
+ #endif
+@@ -92,95 +85,6 @@ static int cols __section(".data");
+  * ../header.S.
+  */
+ 
+-static void scroll(void)
+-{
+-	int i;
+-
+-	memmove(vidmem, vidmem + cols * 2, (lines - 1) * cols * 2);
+-	for (i = (lines - 1) * cols * 2; i < lines * cols * 2; i += 2)
+-		vidmem[i] = ' ';
+-}
+-
+-#define XMTRDY          0x20
+-
+-#define TXR             0       /*  Transmit register (WRITE) */
+-#define LSR             5       /*  Line Status               */
+-static void serial_putchar(int ch)
+-{
+-	unsigned timeout = 0xffff;
+-
+-	while ((inb(early_serial_base + LSR) & XMTRDY) == 0 && --timeout)
+-		cpu_relax();
+-
+-	outb(ch, early_serial_base + TXR);
+-}
+-
+-void __putstr(const char *s)
+-{
+-	int x, y, pos;
+-	char c;
+-
+-	if (early_serial_base) {
+-		const char *str = s;
+-		while (*str) {
+-			if (*str == '\n')
+-				serial_putchar('\r');
+-			serial_putchar(*str++);
+-		}
+-	}
+-
+-	if (lines == 0 || cols == 0)
 -		return;
 -
--	rounded_start = rounddown(start, EFI_PAGE_SIZE);
--	rounded_end = roundup(start + size, EFI_PAGE_SIZE);
+-	x = boot_params->screen_info.orig_x;
+-	y = boot_params->screen_info.orig_y;
 -
--	/*
--	 * Don't modify memory region attributes, they are
--	 * already suitable, to lower the possibility to
--	 * encounter firmware bugs.
--	 */
--
--	for (end = start + size; start < end; start = next) {
--
--		status = efi_dxe_call(get_memory_space_descriptor, start, &desc);
--
--		if (status != EFI_SUCCESS)
--			return;
--
--		next = desc.base_address + desc.length;
--
--		/*
--		 * Only system memory is suitable for trampoline/kernel image placement,
--		 * so only this type of memory needs its attributes to be modified.
--		 */
--
--		if (desc.gcd_memory_type != EfiGcdMemoryTypeSystemMemory ||
--		    (desc.attributes & (EFI_MEMORY_RO | EFI_MEMORY_XP)) == 0)
--			continue;
--
--		unprotect_start = max(rounded_start, (unsigned long)desc.base_address);
--		unprotect_size = min(rounded_end, next) - unprotect_start;
--
--		status = efi_dxe_call(set_memory_space_attributes,
--				      unprotect_start, unprotect_size,
--				      EFI_MEMORY_WB);
--
--		if (status != EFI_SUCCESS) {
--			efi_warn("Unable to unprotect memory range [%08lx,%08lx]: %lx\n",
--				 unprotect_start,
--				 unprotect_start + unprotect_size,
--				 status);
+-	while ((c = *s++) != '\0') {
+-		if (c == '\n') {
+-			x = 0;
+-			if (++y >= lines) {
+-				scroll();
+-				y--;
+-			}
+-		} else {
+-			vidmem[(x + cols * y) * 2] = c;
+-			if (++x >= cols) {
+-				x = 0;
+-				if (++y >= lines) {
+-					scroll();
+-					y--;
+-				}
+-			}
 -		}
+-	}
+-
+-	boot_params->screen_info.orig_x = x;
+-	boot_params->screen_info.orig_y = y;
+-
+-	pos = (x + cols * y) * 2;	/* Update cursor position */
+-	outb(14, vidport);
+-	outb(0xff & (pos >> 9), vidport+1);
+-	outb(15, vidport);
+-	outb(0xff & (pos >> 1), vidport+1);
+-}
+-
+-void __puthex(unsigned long value)
+-{
+-	char alpha[2] = "0";
+-	int bits;
+-
+-	for (bits = sizeof(value) * 8 - 4; bits >= 0; bits -= 4) {
+-		unsigned long digit = (value >> bits) & 0xf;
+-
+-		if (digit < 0xA)
+-			alpha[0] = '0' + digit;
+-		else
+-			alpha[0] = 'a' + (digit - 0xA);
+-
+-		__putstr(alpha);
 -	}
 -}
 -
- /*
-  * Trampoline takes 2 pages and can be loaded in first megabyte of memory
-  * with its end placed between 128k and 640k where BIOS might start.
-@@ -290,12 +235,12 @@ setup_memory_protection(unsigned long image_base, unsigned long image_size)
- 	 * and relocated kernel image.
- 	 */
+ #ifdef CONFIG_X86_NEED_RELOCS
+ static void handle_relocations(void *output, unsigned long output_len,
+ 			       unsigned long virt_addr)
+@@ -406,17 +310,6 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
  
--	adjust_memory_range_protection(TRAMPOLINE_PLACEMENT_BASE,
--				       TRAMPOLINE_PLACEMENT_SIZE);
-+	efi_adjust_memory_range_protection(TRAMPOLINE_PLACEMENT_BASE,
-+					   TRAMPOLINE_PLACEMENT_SIZE, 0);
+ 	sanitize_boot_params(boot_params);
  
- #ifdef CONFIG_64BIT
- 	if (image_base != (unsigned long)startup_32)
--		adjust_memory_range_protection(image_base, image_size);
-+		efi_adjust_memory_range_protection(image_base, image_size, 0);
- #else
+-	if (boot_params->screen_info.orig_video_mode == 7) {
+-		vidmem = (char *) 0xb0000;
+-		vidport = 0x3b4;
+-	} else {
+-		vidmem = (char *) 0xb8000;
+-		vidport = 0x3d4;
+-	}
+-
+-	lines = boot_params->screen_info.orig_video_lines;
+-	cols = boot_params->screen_info.orig_video_cols;
+-
+ 	init_default_io_ops();
+ 
  	/*
- 	 * Clear protection flags on a whole range of possible
-@@ -305,8 +250,9 @@ setup_memory_protection(unsigned long image_base, unsigned long image_size)
- 	 * need to remove possible protection on relocated image
- 	 * itself disregarding further relocations.
+@@ -427,7 +320,7 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
  	 */
--	adjust_memory_range_protection(LOAD_PHYSICAL_ADDR,
--				       KERNEL_IMAGE_SIZE - LOAD_PHYSICAL_ADDR);
-+	efi_adjust_memory_range_protection(LOAD_PHYSICAL_ADDR,
-+					   KERNEL_IMAGE_SIZE - LOAD_PHYSICAL_ADDR,
-+					   0);
- #endif
- }
+ 	early_tdx_detect();
  
+-	console_init();
++	init_bare_console();
+ 
+ 	/*
+ 	 * Save RSDP address for later use. Have this after console_init()
+diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+index 033db9b536e6..38d31bec062d 100644
+--- a/arch/x86/boot/compressed/misc.h
++++ b/arch/x86/boot/compressed/misc.h
+@@ -57,8 +57,8 @@ extern memptr free_mem_end_ptr;
+ void *malloc(int size);
+ void free(void *where);
+ extern struct boot_params *boot_params;
+-void __putstr(const char *s);
+-void __puthex(unsigned long value);
++extern void (*__putstr)(const char *s);
++extern void (*__puthex)(unsigned long value);
+ #define error_putstr(__x)  __putstr(__x)
+ #define error_puthex(__x)  __puthex(__x)
+ 
+@@ -128,6 +128,11 @@ static inline void console_init(void)
+ { }
+ #endif
+ 
++/* putstr.c */
++void init_bare_console(void);
++void init_console_func(void (*putstr_)(const char *),
++		       void (*puthex_)(unsigned long));
++
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+ void sev_enable(struct boot_params *bp);
+ void sev_es_shutdown_ghcb(void);
+diff --git a/arch/x86/boot/compressed/putstr.c b/arch/x86/boot/compressed/putstr.c
+new file mode 100644
+index 000000000000..44a4c3dacec5
+--- /dev/null
++++ b/arch/x86/boot/compressed/putstr.c
+@@ -0,0 +1,130 @@
++// SPDX-License-Identifier: GPL-2.0
++#include "misc.h"
++
++/* These might be accessed before .bss is cleared, so use .data instead. */
++static char *vidmem __section(".data");
++static int vidport __section(".data");
++static int lines __section(".data");
++static int cols __section(".data");
++
++void (*__putstr)(const char *s);
++void (*__puthex)(unsigned long value);
++
++static void putstr(const char *s);
++static void puthex(unsigned long value);
++
++void init_console_func(void (*putstr_)(const char *),
++		       void (*puthex_)(unsigned long))
++{
++	__putstr = putstr_;
++	__puthex = puthex_;
++}
++
++void init_bare_console(void)
++{
++	init_console_func(putstr, puthex);
++
++	if (boot_params->screen_info.orig_video_mode == 7) {
++		vidmem = (char *) 0xb0000;
++		vidport = 0x3b4;
++	} else {
++		vidmem = (char *) 0xb8000;
++		vidport = 0x3d4;
++	}
++
++	lines = boot_params->screen_info.orig_video_lines;
++	cols = boot_params->screen_info.orig_video_cols;
++
++	console_init();
++}
++
++static void scroll(void)
++{
++	int i;
++
++	memmove(vidmem, vidmem + cols * 2, (lines - 1) * cols * 2);
++	for (i = (lines - 1) * cols * 2; i < lines * cols * 2; i += 2)
++		vidmem[i] = ' ';
++}
++
++#define XMTRDY          0x20
++
++#define TXR             0       /*  Transmit register (WRITE) */
++#define LSR             5       /*  Line Status               */
++
++static void serial_putchar(int ch)
++{
++	unsigned int timeout = 0xffff;
++
++	while ((inb(early_serial_base + LSR) & XMTRDY) == 0 && --timeout)
++		cpu_relax();
++
++	outb(ch, early_serial_base + TXR);
++}
++
++static void putstr(const char *s)
++{
++	int x, y, pos;
++	char c;
++
++	if (early_serial_base) {
++		const char *str = s;
++
++		while (*str) {
++			if (*str == '\n')
++				serial_putchar('\r');
++			serial_putchar(*str++);
++		}
++	}
++
++	if (lines == 0 || cols == 0)
++		return;
++
++	x = boot_params->screen_info.orig_x;
++	y = boot_params->screen_info.orig_y;
++
++	while ((c = *s++) != '\0') {
++		if (c == '\n') {
++			x = 0;
++			if (++y >= lines) {
++				scroll();
++				y--;
++			}
++		} else {
++			vidmem[(x + cols * y) * 2] = c;
++			if (++x >= cols) {
++				x = 0;
++				if (++y >= lines) {
++					scroll();
++					y--;
++				}
++			}
++		}
++	}
++
++	boot_params->screen_info.orig_x = x;
++	boot_params->screen_info.orig_y = y;
++
++	pos = (x + cols * y) * 2;	/* Update cursor position */
++	outb(14, vidport);
++	outb(0xff & (pos >> 9), vidport+1);
++	outb(15, vidport);
++	outb(0xff & (pos >> 1), vidport+1);
++}
++
++static void puthex(unsigned long value)
++{
++	char alpha[2] = "0";
++	int bits;
++
++	for (bits = sizeof(value) * 8 - 4; bits >= 0; bits -= 4) {
++		unsigned long digit = (value >> bits) & 0xf;
++
++		if (digit < 0xA)
++			alpha[0] = '0' + digit;
++		else
++			alpha[0] = 'a' + (digit - 0xA);
++
++		putstr(alpha);
++	}
++}
 -- 
 2.37.4
 
