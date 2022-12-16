@@ -2,52 +2,53 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1159364EEEC
-	for <lists+linux-efi@lfdr.de>; Fri, 16 Dec 2022 17:22:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB07B64EEF2
+	for <lists+linux-efi@lfdr.de>; Fri, 16 Dec 2022 17:24:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231848AbiLPQWi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 16 Dec 2022 11:22:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54366 "EHLO
+        id S230402AbiLPQYT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 16 Dec 2022 11:24:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231817AbiLPQVz (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 16 Dec 2022 11:21:55 -0500
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F90B5D694
-        for <linux-efi@vger.kernel.org>; Fri, 16 Dec 2022 08:21:53 -0800 (PST)
-Received: by mail-wm1-x341.google.com with SMTP id v124-20020a1cac82000000b003cf7a4ea2caso4453063wme.5
-        for <linux-efi@vger.kernel.org>; Fri, 16 Dec 2022 08:21:53 -0800 (PST)
+        with ESMTP id S231824AbiLPQXj (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 16 Dec 2022 11:23:39 -0500
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75DFF2FBD7
+        for <linux-efi@vger.kernel.org>; Fri, 16 Dec 2022 08:22:54 -0800 (PST)
+Received: by mail-wm1-x329.google.com with SMTP id bg10so2255130wmb.1
+        for <linux-efi@vger.kernel.org>; Fri, 16 Dec 2022 08:22:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=rivosinc-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=G6XB8sFEdgRyJHccqiCj1UYEgQGTrZTp9EBrE9hoiO8=;
-        b=tMy2czpcjtMBFGplX2Fj7b6/e2vG/fUtkThLYkBLLkPglMspo20XEG9HwQEYmXVsLt
-         eO4VB9DrpQAXgI4uETDdB5L/OKyiOCfwyhrPKjBWG9vZWeSVuhwtQJMlvHU/2IpavWrp
-         X86zGFLZ9TwJ5mquI/XvqoT+hBZxioXiysJ9WYjdGkLQ0A19DgU7N8Uo9ghG0Qd5nVH2
-         avk3pjckQjBuRBCwX+hZYyijMiEK5rNp4CRX+dgJr74DbLMoG9mt5xoCJerRFZgKGCj2
-         DFdtGso5i2tLuoWGzkL+T0dKYB53/BOLKQbuzU66FYjo6xcL9xaZ+SzMMIyRzTiC79xj
-         CTOQ==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bZlFlLyFfvGOX6GgDGk2MQgjTa7NIX6OhSZPRX3tHGU=;
+        b=hzoUHwIPuovEIg56X3mIHKrMAVWbDg4PTj1OawlyJ0rtKp6ujgWep89ao0y+5ke3mh
+         1q7p1+qseox94TLoIgXvk2lPbcLe8X6GjYKBkWkw8wp3tEJUJBrkS/x0tvg2FCUXExNP
+         CUyunn28pIiyM9pLMK9fqxH7NrkwwGcAzqhf9tDrYRIrc244BvaHFtWts6h/mmhf/AB+
+         OxQoDZds3cGUyWYrFryWMhyP7VUzN+BU9fbNV4YOAzoAHQCiNa4HaAY2BrXegUuG5mv+
+         bT2082EZHC/bsqvPriRtqkyxTkGYolAK6zcOqwFSJ5UhLB6ZpJ8nW+tMC9QovY8CRmEA
+         uWdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=G6XB8sFEdgRyJHccqiCj1UYEgQGTrZTp9EBrE9hoiO8=;
-        b=OpIMztaVVs4vDqd9D7yezZokPX+xMpvktnK5/RYgpOTTdvVh2h9dUfsz49GQ7RmHer
-         t4njtYxWH5AW9oOsbDnQ76I0DCfS+pzbyrxzbTz8XcMvP4NJzHQpg1uxp0hJYBdV6IPx
-         uzUmNZ3ikBjeILuTl89/OGJ2obxlH/gf1IgLr1m0l0O4pCuxalc692IkgD4tAeR7Qugc
-         sqTey/2uBG03Sm8Ullrb6NWRcLxZ+JalHHHE14X5K/sLhM2GEJbSj8VZophXexlBSOln
-         fxlInq1/Ku1oaph2thbp5Q6UEyxwsuxBhsTBMJQnBcZWf5X0EGRdPOGaEcVQ/O2L9mM2
-         q1sw==
-X-Gm-Message-State: ANoB5pmU9c+hVAKeR3QJ/VoL+DtIlERmrIdypOCHx0OA4edlIZOcwMVn
-        PgRZVMrXkUuTDhfTxECzPBkIuw==
-X-Google-Smtp-Source: AA0mqf6XX4eU8Q/Q2iGuiyIeR9rQW9MHPz8fX+YXLEsXTUndzUIQSOASBsznrQAqHBCm+nCjyFr86A==
-X-Received: by 2002:a05:600c:1e8a:b0:3d1:bd81:b1b1 with SMTP id be10-20020a05600c1e8a00b003d1bd81b1b1mr24959580wmb.18.1671207712025;
-        Fri, 16 Dec 2022 08:21:52 -0800 (PST)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bZlFlLyFfvGOX6GgDGk2MQgjTa7NIX6OhSZPRX3tHGU=;
+        b=3lAoWUgEhtzYHvxQxvD4wP3VOosMCetPbnn/jlQzep8WOnsWjyMiMW9UwYUc0k8NXT
+         SAzVIatokTPrSx+RD/ses0QVkDpb08jaBvluQU5tQYelpN9Kjqcdm4kqSpVJKrDMzvTQ
+         sJsvDnBwUU/hLImUA6exdqYZc1U2Rbpr6dj8+g7X7E3r4oSmLCrBLdzEqxgV7vemI27F
+         Ojap/AyrNBnx0TgBMVwhpgr3gtB+ohHaB8mktmSUYtpHVpsiu/x0/n7RGx+EIo2/39Ar
+         RtktnkT9kXxBcG8c5foqMMjlpizTGVLu52Oi/YBUKlEJ+NPCcldo5Q2sQLTb1xC6mlbR
+         im3g==
+X-Gm-Message-State: ANoB5pmuOK5eybN3G3tXHJXqDkVVJKW3OV17ntaNqR+N6nisiaRav+GR
+        QOyYygxs404Q1CuI3AGysQH9Mw==
+X-Google-Smtp-Source: AA0mqf7N1fq1MvZ+SGAcW3pfJxsnX1JzX6Mx22O0EaNaaK63KUgw9mwiXLiaX2j7wNfBovkSDAlT1g==
+X-Received: by 2002:a05:600c:4e91:b0:3d1:dc6f:b1a4 with SMTP id f17-20020a05600c4e9100b003d1dc6fb1a4mr36135364wmq.5.1671207773030;
+        Fri, 16 Dec 2022 08:22:53 -0800 (PST)
 Received: from alex-rivos.home (lfbn-lyo-1-450-160.w2-7.abo.wanadoo.fr. [2.7.42.160])
-        by smtp.gmail.com with ESMTPSA id z19-20020a05600c221300b003a3170a7af9sm3027506wml.4.2022.12.16.08.21.51
+        by smtp.gmail.com with ESMTPSA id h16-20020a05600c351000b003d23a3b783bsm3444035wmq.10.2022.12.16.08.22.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Dec 2022 08:21:51 -0800 (PST)
+        Fri, 16 Dec 2022 08:22:52 -0800 (PST)
 From:   Alexandre Ghiti <alexghiti@rivosinc.com>
 To:     Paul Walmsley <paul.walmsley@sifive.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
@@ -61,70 +62,315 @@ To:     Paul Walmsley <paul.walmsley@sifive.com>,
         linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
         kasan-dev@googlegroups.com, linux-efi@vger.kernel.org
 Cc:     Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: [PATCH 0/6] RISC-V kasan rework
-Date:   Fri, 16 Dec 2022 17:21:35 +0100
-Message-Id: <20221216162141.1701255-1-alexghiti@rivosinc.com>
+Subject: [PATCH 1/6] riscv: Split early and final KASAN population functions
+Date:   Fri, 16 Dec 2022 17:21:36 +0100
+Message-Id: <20221216162141.1701255-2-alexghiti@rivosinc.com>
 X-Mailer: git-send-email 2.37.2
+In-Reply-To: <20221216162141.1701255-1-alexghiti@rivosinc.com>
+References: <20221216162141.1701255-1-alexghiti@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-As described in patch 2, our current kasan implementation is intricate,
-so I tried to simplify the implementation and mimic what arm64/x86 are
-doing.
+This is a preliminary work that allows to make the code more
+understandable.
 
-In addition it fixes UEFI bootflow with a kasan kernel and kasan inline
-instrumentation: all kasan configurations were tested on a large ubuntu
-kernel with success with KASAN_KUNIT_TEST and KASAN_MODULE_TEST.
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+---
+ arch/riscv/mm/kasan_init.c | 181 +++++++++++++++++++++++--------------
+ 1 file changed, 114 insertions(+), 67 deletions(-)
 
-inline ubuntu config + uefi:
- sv39: OK
- sv48: OK
- sv57: OK
-
-outline ubuntu config + uefi:
- sv39: OK
- sv48: OK
- sv57: OK
-
-Actually 1 test always fails with KASAN_KUNIT_TEST that I have to check:
-# kasan_bitops_generic: EXPECTATION FAILED at mm/kasan/kasan__test.c:1020
-KASAN failure expected in "set_bit(nr, addr)", but none occurrred
-
-Note that Palmer recently proposed to remove COMMAND_LINE_SIZE from the
-userspace abi
-https://lore.kernel.org/lkml/20221211061358.28035-1-palmer@rivosinc.com/T/
-so that we can finally increase the command line to fit all kasan kernel
-parameters.
-
-All of this should hopefully fix the syzkaller riscv build that has been
-failing for a few months now, any test is appreciated and if I can help
-in any way, please ask.
-
-Alexandre Ghiti (6):
-  riscv: Split early and final KASAN population functions
-  riscv: Rework kasan population functions
-  riscv: Move DTB_EARLY_BASE_VA to the kernel address space
-  riscv: Fix EFI stub usage of KASAN instrumented string functions
-  riscv: Fix ptdump when KASAN is enabled
-  riscv: Unconditionnally select KASAN_VMALLOC if KASAN
-
- arch/riscv/Kconfig                    |   1 +
- arch/riscv/kernel/image-vars.h        |   8 -
- arch/riscv/mm/init.c                  |   2 +-
- arch/riscv/mm/kasan_init.c            | 511 ++++++++++++++------------
- arch/riscv/mm/ptdump.c                |  24 +-
- drivers/firmware/efi/libstub/Makefile |   7 +-
- drivers/firmware/efi/libstub/string.c | 133 +++++++
- 7 files changed, 435 insertions(+), 251 deletions(-)
-
+diff --git a/arch/riscv/mm/kasan_init.c b/arch/riscv/mm/kasan_init.c
+index a22e418dbd82..a7314ffe7d76 100644
+--- a/arch/riscv/mm/kasan_init.c
++++ b/arch/riscv/mm/kasan_init.c
+@@ -95,23 +95,13 @@ static void __init kasan_populate_pmd(pud_t *pud, unsigned long vaddr, unsigned
+ }
+ 
+ static void __init kasan_populate_pud(pgd_t *pgd,
+-				      unsigned long vaddr, unsigned long end,
+-				      bool early)
++				      unsigned long vaddr, unsigned long end)
+ {
+ 	phys_addr_t phys_addr;
+ 	pud_t *pudp, *base_pud;
+ 	unsigned long next;
+ 
+-	if (early) {
+-		/*
+-		 * We can't use pgd_page_vaddr here as it would return a linear
+-		 * mapping address but it is not mapped yet, but when populating
+-		 * early_pg_dir, we need the physical address and when populating
+-		 * swapper_pg_dir, we need the kernel virtual address so use
+-		 * pt_ops facility.
+-		 */
+-		base_pud = pt_ops.get_pud_virt(pfn_to_phys(_pgd_pfn(*pgd)));
+-	} else if (pgd_none(*pgd)) {
++	if (pgd_none(*pgd)) {
+ 		base_pud = memblock_alloc(PTRS_PER_PUD * sizeof(pud_t), PAGE_SIZE);
+ 	} else {
+ 		base_pud = (pud_t *)pgd_page_vaddr(*pgd);
+@@ -128,16 +118,10 @@ static void __init kasan_populate_pud(pgd_t *pgd,
+ 		next = pud_addr_end(vaddr, end);
+ 
+ 		if (pud_none(*pudp) && IS_ALIGNED(vaddr, PUD_SIZE) && (next - vaddr) >= PUD_SIZE) {
+-			if (early) {
+-				phys_addr = __pa(((uintptr_t)kasan_early_shadow_pmd));
+-				set_pud(pudp, pfn_pud(PFN_DOWN(phys_addr), PAGE_TABLE));
++			phys_addr = memblock_phys_alloc(PUD_SIZE, PUD_SIZE);
++			if (phys_addr) {
++				set_pud(pudp, pfn_pud(PFN_DOWN(phys_addr), PAGE_KERNEL));
+ 				continue;
+-			} else {
+-				phys_addr = memblock_phys_alloc(PUD_SIZE, PUD_SIZE);
+-				if (phys_addr) {
+-					set_pud(pudp, pfn_pud(PFN_DOWN(phys_addr), PAGE_KERNEL));
+-					continue;
+-				}
+ 			}
+ 		}
+ 
+@@ -150,32 +134,19 @@ static void __init kasan_populate_pud(pgd_t *pgd,
+ 	 * it entirely, memblock could allocate a page at a physical address
+ 	 * where KASAN is not populated yet and then we'd get a page fault.
+ 	 */
+-	if (!early)
+-		set_pgd(pgd, pfn_pgd(PFN_DOWN(__pa(base_pud)), PAGE_TABLE));
++	set_pgd(pgd, pfn_pgd(PFN_DOWN(__pa(base_pud)), PAGE_TABLE));
+ }
+ 
+ static void __init kasan_populate_p4d(pgd_t *pgd,
+-				      unsigned long vaddr, unsigned long end,
+-				      bool early)
++				      unsigned long vaddr, unsigned long end)
+ {
+ 	phys_addr_t phys_addr;
+ 	p4d_t *p4dp, *base_p4d;
+ 	unsigned long next;
+ 
+-	if (early) {
+-		/*
+-		 * We can't use pgd_page_vaddr here as it would return a linear
+-		 * mapping address but it is not mapped yet, but when populating
+-		 * early_pg_dir, we need the physical address and when populating
+-		 * swapper_pg_dir, we need the kernel virtual address so use
+-		 * pt_ops facility.
+-		 */
+-		base_p4d = pt_ops.get_p4d_virt(pfn_to_phys(_pgd_pfn(*pgd)));
+-	} else {
+-		base_p4d = (p4d_t *)pgd_page_vaddr(*pgd);
+-		if (base_p4d == lm_alias(kasan_early_shadow_p4d))
+-			base_p4d = memblock_alloc(PTRS_PER_PUD * sizeof(p4d_t), PAGE_SIZE);
+-	}
++	base_p4d = (p4d_t *)pgd_page_vaddr(*pgd);
++	if (base_p4d == lm_alias(kasan_early_shadow_p4d))
++		base_p4d = memblock_alloc(PTRS_PER_PUD * sizeof(p4d_t), PAGE_SIZE);
+ 
+ 	p4dp = base_p4d + p4d_index(vaddr);
+ 
+@@ -183,20 +154,14 @@ static void __init kasan_populate_p4d(pgd_t *pgd,
+ 		next = p4d_addr_end(vaddr, end);
+ 
+ 		if (p4d_none(*p4dp) && IS_ALIGNED(vaddr, P4D_SIZE) && (next - vaddr) >= P4D_SIZE) {
+-			if (early) {
+-				phys_addr = __pa(((uintptr_t)kasan_early_shadow_pud));
+-				set_p4d(p4dp, pfn_p4d(PFN_DOWN(phys_addr), PAGE_TABLE));
++			phys_addr = memblock_phys_alloc(P4D_SIZE, P4D_SIZE);
++			if (phys_addr) {
++				set_p4d(p4dp, pfn_p4d(PFN_DOWN(phys_addr), PAGE_KERNEL));
+ 				continue;
+-			} else {
+-				phys_addr = memblock_phys_alloc(P4D_SIZE, P4D_SIZE);
+-				if (phys_addr) {
+-					set_p4d(p4dp, pfn_p4d(PFN_DOWN(phys_addr), PAGE_KERNEL));
+-					continue;
+-				}
+ 			}
+ 		}
+ 
+-		kasan_populate_pud((pgd_t *)p4dp, vaddr, next, early);
++		kasan_populate_pud((pgd_t *)p4dp, vaddr, next);
+ 	} while (p4dp++, vaddr = next, vaddr != end);
+ 
+ 	/*
+@@ -205,8 +170,7 @@ static void __init kasan_populate_p4d(pgd_t *pgd,
+ 	 * it entirely, memblock could allocate a page at a physical address
+ 	 * where KASAN is not populated yet and then we'd get a page fault.
+ 	 */
+-	if (!early)
+-		set_pgd(pgd, pfn_pgd(PFN_DOWN(__pa(base_p4d)), PAGE_TABLE));
++	set_pgd(pgd, pfn_pgd(PFN_DOWN(__pa(base_p4d)), PAGE_TABLE));
+ }
+ 
+ #define kasan_early_shadow_pgd_next			(pgtable_l5_enabled ?	\
+@@ -214,16 +178,15 @@ static void __init kasan_populate_p4d(pgd_t *pgd,
+ 							(pgtable_l4_enabled ?	\
+ 				(uintptr_t)kasan_early_shadow_pud :		\
+ 				(uintptr_t)kasan_early_shadow_pmd))
+-#define kasan_populate_pgd_next(pgdp, vaddr, next, early)			\
++#define kasan_populate_pgd_next(pgdp, vaddr, next)				\
+ 		(pgtable_l5_enabled ?						\
+-		kasan_populate_p4d(pgdp, vaddr, next, early) :			\
++		kasan_populate_p4d(pgdp, vaddr, next) :				\
+ 		(pgtable_l4_enabled ?						\
+-			kasan_populate_pud(pgdp, vaddr, next, early) :		\
++			kasan_populate_pud(pgdp, vaddr, next) :			\
+ 			kasan_populate_pmd((pud_t *)pgdp, vaddr, next)))
+ 
+ static void __init kasan_populate_pgd(pgd_t *pgdp,
+-				      unsigned long vaddr, unsigned long end,
+-				      bool early)
++				      unsigned long vaddr, unsigned long end)
+ {
+ 	phys_addr_t phys_addr;
+ 	unsigned long next;
+@@ -232,11 +195,7 @@ static void __init kasan_populate_pgd(pgd_t *pgdp,
+ 		next = pgd_addr_end(vaddr, end);
+ 
+ 		if (IS_ALIGNED(vaddr, PGDIR_SIZE) && (next - vaddr) >= PGDIR_SIZE) {
+-			if (early) {
+-				phys_addr = __pa((uintptr_t)kasan_early_shadow_pgd_next);
+-				set_pgd(pgdp, pfn_pgd(PFN_DOWN(phys_addr), PAGE_TABLE));
+-				continue;
+-			} else if (pgd_page_vaddr(*pgdp) ==
++			if (pgd_page_vaddr(*pgdp) ==
+ 				   (unsigned long)lm_alias(kasan_early_shadow_pgd_next)) {
+ 				/*
+ 				 * pgdp can't be none since kasan_early_init
+@@ -253,7 +212,95 @@ static void __init kasan_populate_pgd(pgd_t *pgdp,
+ 			}
+ 		}
+ 
+-		kasan_populate_pgd_next(pgdp, vaddr, next, early);
++		kasan_populate_pgd_next(pgdp, vaddr, next);
++	} while (pgdp++, vaddr = next, vaddr != end);
++}
++
++static void __init kasan_early_populate_pud(p4d_t *p4dp,
++					    unsigned long vaddr,
++					    unsigned long end)
++{
++	pud_t *pudp, *base_pud;
++	phys_addr_t phys_addr;
++	unsigned long next;
++
++	if (!pgtable_l4_enabled) {
++		pudp = (pud_t *)p4dp;
++	} else {
++		base_pud = pt_ops.get_pud_virt(pfn_to_phys(_p4d_pfn(*p4dp)));
++		pudp = base_pud + pud_index(vaddr);
++	}
++
++	do {
++		next = pud_addr_end(vaddr, end);
++
++		if (pud_none(*pudp) && IS_ALIGNED(vaddr, PUD_SIZE) &&
++		    (next - vaddr) >= PUD_SIZE) {
++			phys_addr = __pa((uintptr_t)kasan_early_shadow_pmd);
++			set_pud(pudp, pfn_pud(PFN_DOWN(phys_addr), PAGE_TABLE));
++			continue;
++		}
++
++		BUG();
++	} while (pudp++, vaddr = next, vaddr != end);
++}
++
++static void __init kasan_early_populate_p4d(pgd_t *pgdp,
++					    unsigned long vaddr,
++					    unsigned long end)
++{
++	p4d_t *p4dp, *base_p4d;
++	phys_addr_t phys_addr;
++	unsigned long next;
++
++	/*
++	 * We can't use pgd_page_vaddr here as it would return a linear
++	 * mapping address but it is not mapped yet, but when populating
++	 * early_pg_dir, we need the physical address and when populating
++	 * swapper_pg_dir, we need the kernel virtual address so use
++	 * pt_ops facility.
++	 * Note that this test is then completely equivalent to
++	 * p4dp = p4d_offset(pgdp, vaddr)
++	 */
++	if (!pgtable_l5_enabled) {
++		p4dp = (p4d_t *)pgdp;
++	} else {
++		base_p4d = pt_ops.get_p4d_virt(pfn_to_phys(_pgd_pfn(*pgdp)));
++		p4dp = base_p4d + p4d_index(vaddr);
++	}
++
++	do {
++		next = p4d_addr_end(vaddr, end);
++
++		if (p4d_none(*p4dp) && IS_ALIGNED(vaddr, P4D_SIZE) &&
++		    (next - vaddr) >= P4D_SIZE) {
++			phys_addr = __pa((uintptr_t)kasan_early_shadow_pud);
++			set_p4d(p4dp, pfn_p4d(PFN_DOWN(phys_addr), PAGE_TABLE));
++			continue;
++		}
++
++		kasan_early_populate_pud(p4dp, vaddr, next);
++	} while (p4dp++, vaddr = next, vaddr != end);
++}
++
++static void __init kasan_early_populate_pgd(pgd_t *pgdp,
++					    unsigned long vaddr,
++					    unsigned long end)
++{
++	phys_addr_t phys_addr;
++	unsigned long next;
++
++	do {
++		next = pgd_addr_end(vaddr, end);
++
++		if (pgd_none(*pgdp) && IS_ALIGNED(vaddr, PGDIR_SIZE) &&
++		    (next - vaddr) >= PGDIR_SIZE) {
++			phys_addr = __pa((uintptr_t)kasan_early_shadow_p4d);
++			set_pgd(pgdp, pfn_pgd(PFN_DOWN(phys_addr), PAGE_TABLE));
++			continue;
++		}
++
++		kasan_early_populate_p4d(pgdp, vaddr, next);
+ 	} while (pgdp++, vaddr = next, vaddr != end);
+ }
+ 
+@@ -290,16 +337,16 @@ asmlinkage void __init kasan_early_init(void)
+ 					PAGE_TABLE));
+ 	}
+ 
+-	kasan_populate_pgd(early_pg_dir + pgd_index(KASAN_SHADOW_START),
+-			   KASAN_SHADOW_START, KASAN_SHADOW_END, true);
++	kasan_early_populate_pgd(early_pg_dir + pgd_index(KASAN_SHADOW_START),
++				 KASAN_SHADOW_START, KASAN_SHADOW_END);
+ 
+ 	local_flush_tlb_all();
+ }
+ 
+ void __init kasan_swapper_init(void)
+ {
+-	kasan_populate_pgd(pgd_offset_k(KASAN_SHADOW_START),
+-			   KASAN_SHADOW_START, KASAN_SHADOW_END, true);
++	kasan_early_populate_pgd(pgd_offset_k(KASAN_SHADOW_START),
++				 KASAN_SHADOW_START, KASAN_SHADOW_END);
+ 
+ 	local_flush_tlb_all();
+ }
+@@ -309,7 +356,7 @@ static void __init kasan_populate(void *start, void *end)
+ 	unsigned long vaddr = (unsigned long)start & PAGE_MASK;
+ 	unsigned long vend = PAGE_ALIGN((unsigned long)end);
+ 
+-	kasan_populate_pgd(pgd_offset_k(vaddr), vaddr, vend, false);
++	kasan_populate_pgd(pgd_offset_k(vaddr), vaddr, vend);
+ 
+ 	local_flush_tlb_all();
+ 	memset(start, KASAN_SHADOW_INIT, end - start);
 -- 
 2.37.2
 
