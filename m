@@ -2,87 +2,127 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DC116551BB
-	for <lists+linux-efi@lfdr.de>; Fri, 23 Dec 2022 15:58:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3462065526F
+	for <lists+linux-efi@lfdr.de>; Fri, 23 Dec 2022 16:51:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236425AbiLWO6i (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 23 Dec 2022 09:58:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42004 "EHLO
+        id S230388AbiLWPvN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 23 Dec 2022 10:51:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230468AbiLWO6h (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 23 Dec 2022 09:58:37 -0500
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B5A11A049;
-        Fri, 23 Dec 2022 06:58:36 -0800 (PST)
-Received: by mail-wr1-x42d.google.com with SMTP id h7so4799688wrs.6;
-        Fri, 23 Dec 2022 06:58:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TmvBHq2/9NF220RtIhTYhX1TAkXINfaY4qHf9+DiZSU=;
-        b=cftQtPSbMb3WwKxw9PnrrQxoONvByrVntLcAFFx/eodAs43YCS919XO0m6wNvkCcsk
-         h3pa6qid4EGkMCDJakXQNYixl8jrufFqwl/MCoUkW/IHOoBmEGC2+eTn54M6THDDoDe/
-         Glj9Imo1J4OpXPz8Kz53mXkG1nXtySIN25bMK2NiVJ//e8IoTofq2ekQjQakBqrFkmaX
-         twXIVKjk+4NtAHnpRsg6knp7BJE8pNV+nHMvio/1d47YiKkaEWZiyVt/e6vs8URghTE7
-         CHxEv3OCWNwii8NAPQUChs25eTEhqkAWMbbetLL00qyPbcqpbC2lHxqOcCBcB1XvGJCB
-         pvZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TmvBHq2/9NF220RtIhTYhX1TAkXINfaY4qHf9+DiZSU=;
-        b=Y5GZNmRuAYFJd21fsHXinZ4V6NJfFBP3qNZnnsJrt1hcDCN/1n+dcyy/b8uGmL1UTt
-         wjBe9L6MnCww72VMtGFi0HNDRkcZTiZz5zJ9Z/4m1V2NDVqiGfM+VUiwc0srhQXtldUd
-         5sMhm91FhhdhQ/timBWvGGrkyUjravb7h6KIUev0on9Mu2RPH7yjQKUb74vXQAk68tPc
-         gzYdFL2CZwl3TpbYe/dk6/JFMUwo/XOEJCZWmlTf0KFwYqBC68V3g/Yaw9ZNXHXzNdZX
-         Rky7XAq3FdaEUndtWkumpGXhFI7kuOO4PyZCjLxqdQbpxnVFxoBBPCohP6SAN4hQLoKB
-         808Q==
-X-Gm-Message-State: AFqh2kpbEcO+e8wYtqAjsXwljwtfLat16rkMYm4MpwzKVDIsUaTl+dGX
-        l7MfwpN00rKG7dS6IWQR9kU=
-X-Google-Smtp-Source: AMrXdXsyxBxdUeqfa/v6cGXhdhmkoJoLysIKux7E0NzZ4vrTQekRoxK2ddB8vZnleXLB1EmWuFZ07g==
-X-Received: by 2002:a5d:5606:0:b0:242:5ae0:5b38 with SMTP id l6-20020a5d5606000000b002425ae05b38mr5422529wrv.8.1671807514712;
-        Fri, 23 Dec 2022 06:58:34 -0800 (PST)
-Received: from [192.168.1.16] ([37.55.203.63])
-        by smtp.gmail.com with ESMTPSA id u13-20020a5d468d000000b00275970a85f4sm823864wrq.74.2022.12.23.06.58.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Dec 2022 06:58:34 -0800 (PST)
-Message-ID: <97639381-2558-4cf5-75b0-7f80f0393b16@gmail.com>
-Date:   Fri, 23 Dec 2022 16:58:30 +0200
-MIME-Version: 1.0
+        with ESMTP id S231345AbiLWPvK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 23 Dec 2022 10:51:10 -0500
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2058.outbound.protection.outlook.com [40.107.95.58])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92476645B;
+        Fri, 23 Dec 2022 07:51:09 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cquOyDq73HAU46GbCvpjD0/mEjE5VCxanzUr+yHKmJwfRLwVG2SBTR1SE7UJBcFLw1xDm0hAWsvDztFuksYsgsdYzA3MSijIrxw9N7vQLDsQOOULJP405Bk8QE7ltQfkYqKBMZVusTTxuabOUGgxh9XGDWVMkhCBcDuMftnMVEr5/EJjZOWhrbz/V6E7SQV/G1WzgKB5ybIgD+D7PzUcepmHJkMqyqkWVH+K7c2W+H2we2SPwAX+qI+PKLYYqT6ZpJ00hAIdMgFmzAngAxB8BZcEFFgtqbFHKb9UZO1on2h5wJGr8/ea67o7WRUxA0lkE/GsxI26f2Vpoa/2EW/rZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xgbZC9s4vhQ/JVcpGBh901xqUAdYEDy/cKgLK8j9N8o=;
+ b=Zch9OtidAz0OhsLCZCGLW6v5WIzP1KhAL+fgdFfIwPgNGMBio1LARkb+oIv2CcdkgF1Hs/C00Gb/XiL++3LXO57rqjEqnxulO52UO6TgeFCdtOJLjA2iWl+0zPF82EXmBbsXlbZEDGQ0DUDJQt4/PXfrK/WcOqVXgNIobe/bK0HjGcjXoO4hko9dbB0VxCU2ItZeC5k1z6zsj5sCjNHNdRwR4rRPPZp9i50ojvrC5LKvRJ/4JULGq6IulADXhTPFepMKEO6jyq+p/h0fvZxlqPhjqy8Xcdpi9hr/RpYtwy2ovqmN424NO1i70/jmk4Wey4q8dBgVDzo3T78ViBk+Pg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xgbZC9s4vhQ/JVcpGBh901xqUAdYEDy/cKgLK8j9N8o=;
+ b=ddy4jXIbuI8XdZBE7Eo24t8h0cTL8X8C1XR+OVUy6EX6WDygbwThjADDpNasEdLEqXMeekoDZwFf5R9GkljJVJRHlAzu1nC4eWSHKly7ADDH7Pv4KlmFZVvG5A2wwrTwBm0ZwliuDsXjLbwdKAweJiRytXzCR8skcZyLbG8qxFM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by BY5PR12MB4967.namprd12.prod.outlook.com (2603:10b6:a03:1de::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5924.16; Fri, 23 Dec
+ 2022 15:51:07 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::ff3c:2d37:75f3:442a]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::ff3c:2d37:75f3:442a%4]) with mapi id 15.20.5924.016; Fri, 23 Dec 2022
+ 15:51:07 +0000
+Message-ID: <4d4b9767-0c76-7531-2411-1c8baeeac94e@amd.com>
+Date:   Fri, 23 Dec 2022 09:51:05 -0600
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.5.1
-Subject: Re: [PATCH v3 0/3] Add generic framebuffer support to EFI earlycon
- driver
+Subject: Re: [PATCH 0/2] Recover from failure to probe GPU
 Content-Language: en-US
-To:     Ard Biesheuvel <ardb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Jami Kettunen <jami.kettunen@protonmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Helge Deller <deller@gmx.de>, Borislav Petkov <bp@suse.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Will Deacon <will@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Muchun Song <muchun.song@linux.dev>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Kim Phillips <kim.phillips@amd.com>, linux-doc@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-References: <20221221105402.6598-1-markuss.broks@gmail.com>
- <CAMj1kXGUC7dsSwVEUsAMeAoqDYtbqrM7SDOJTXbPfi-LrcSk9g@mail.gmail.com>
-From:   Markuss Broks <markuss.broks@gmail.com>
-In-Reply-To: <CAMj1kXGUC7dsSwVEUsAMeAoqDYtbqrM7SDOJTXbPfi-LrcSk9g@mail.gmail.com>
+To:     Javier Martinez Canillas <javierm@redhat.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        linux-efi@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     Carlos Soriano Sanchez <csoriano@redhat.com>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>, christian.koenig@amd.com,
+        linux-kernel@vger.kernel.org
+References: <20221222183012.1046-1-mario.limonciello@amd.com>
+ <a8a6a28a-2d24-8a85-d87a-1289b9eb26a7@redhat.com>
+From:   Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <a8a6a28a-2d24-8a85-d87a-1289b9eb26a7@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-ClientProxiedBy: SA9PR13CA0158.namprd13.prod.outlook.com
+ (2603:10b6:806:28::13) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|BY5PR12MB4967:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5f5dd366-847f-4cd1-e170-08dae4fd8148
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: +OcqD2IQFrO6ZmlVXcjVF8ndzNwhb1sD4fj1nfzspNS2suPKFff9PLC/AGyxQGc3+tm0CHa86xqBZDlYh5BbWUqrswFQhDmk4JlsN968C2/WLONhk54uZUJVAW+15GfyhVg1VxvSXsq6cK6vYLmrJC6YPiLVZrrD4c/iW4hSF6iWs9l73RJIGHasKINpR0LJmQCSuuViXqC0pf/bRxiG/6/6HH8unRq33dJyoJ2YdvFicuK9vJExXVd34/BvD3JOaXAPugFHk/KoWYs4lNqaAt91DRmcQHb4teQQ3kPkHJIAoMfr1HP3WQPddlRiW0l3Q3JT6ymJq4bOAHchs6XpnpIRc6w9nc40fQHMn/QQ6+PBJ4dw5gqOvw/Kj3+s3c/8L15auRs/Y0luki9LtWCbeUylgR/GxN0QDKMzNtC08944XWZefmBamjChVxhKa+9+tj+htgmWZHQ+5AHmviE0Nvtvn6NS01QQbK7UiulAR7qjuptoiDoaPepz4SzFJR9Y3U6KbRXA4YgDLPRiNp9hE3vi8CV8FG6pr5dGEqOwysL1DsMt5OxR7ny6XsCsApS0Fdis25d/Lt98/i/Hf1yMd51j13gFN3n7CkG3CS5glggufqF3CNWRRwvKEuMa9Th54QcgeI5eBgkvkXLmBlI7oEl6advH3gApN7oU5IpAZpddDC3S94wFTJfj1jYWsjIgHvxj+CKewxDJV47cn/IX1kJSf4/cOOSMXnwGCKT4Css=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(136003)(346002)(396003)(39860400002)(366004)(376002)(451199015)(41300700001)(44832011)(2906002)(5660300002)(8936002)(31696002)(86362001)(38100700002)(36756003)(83380400001)(6486002)(110136005)(54906003)(186003)(316002)(6512007)(478600001)(31686004)(66556008)(53546011)(6506007)(8676002)(4326008)(66946007)(66476007)(2616005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?amhXb0tkbElRZlpLdVk5MFA1LzFHN28wZWQ3L3BlcnozaE9FUTQzRWNKS25K?=
+ =?utf-8?B?ZGdGcDdsS1R5bnRJMDZpOERzMFNzaFM5YUhGRUFza3pKVnBaL0RkNm9HRDhH?=
+ =?utf-8?B?eW9EeWtndHhiODQ3ZElVK21uV2hZL2g0elU0K3hUY0tLQ3BlWE9MWWtxZjZs?=
+ =?utf-8?B?dkxRM0NDQnhCckgrcVJuRU9KdThvcVZ5ekZ0L3dPcDN6djdma2NGbG0vTU5i?=
+ =?utf-8?B?dHQ4VTZmUFlYSlRabkltQ0J5TUMzUFBKWDFIMHJtbkFEd2NnekUxZlhObkcw?=
+ =?utf-8?B?VHMybkJwTERpRUpEbXVCbDRTR3JhZGNYRENDcnFpQVIvV1JnYjMwcGVMNStQ?=
+ =?utf-8?B?OWlmK1NheDU1NHl2RFRZOTM1MTUvUnRVTVlnTmFORGFLSGNnWWNyY3AxN3g2?=
+ =?utf-8?B?blU2RWJuQ095MGRsZU1pRUlHdDRhb1IxMkFsbnprZWkyczhEdjJRRS9rTDky?=
+ =?utf-8?B?d21mQkdJNkQySDU5TTlHT0I5c25meTB5OWdyNDZSVm9KUVZqN2RmbUNyQ21B?=
+ =?utf-8?B?WlFtblR5SFlwRUlxdU1zQmJhNTFVbVpOa1ozKzFlKzI1VTUzL1o2ZWNRV1lQ?=
+ =?utf-8?B?QXMwek9MU1pybWdsWnBObmViMEFPaFgxNDNORHh6byt2QmYvQUpWajEzdlJS?=
+ =?utf-8?B?R0pza043ZEk0U1VZWURpRW5rbkRxTlk1NFZ6SU1XS0F6VVRMb2RJdnlzMTZX?=
+ =?utf-8?B?ZHRkbVNPQmxjZkp0SktXNy9OQ2dMWWFWd0pQdE84dXhvY3I2eGFjZUQvTzFW?=
+ =?utf-8?B?UDFySmh4cjIvNUw4ZnpON0o3a05sWWNKRmtGQ1BtZCtKeTFUTkFUaFBOQnQ2?=
+ =?utf-8?B?R1BiR1FmbjdianZLblhJajZQQ055UHBHaUJCeGxTVmFiemRHYm1TREhsb25p?=
+ =?utf-8?B?enhaYnNqaG1jZEJHODdmZ3dOdEtxQklXUlZvVldNTUdKTlNPNTcxTDB4WVd6?=
+ =?utf-8?B?UlkzYnFWYVdnWHhMem1qU0VqNndTN2VoUzkvc2VRYzArZGFjakU1R3YwVHVY?=
+ =?utf-8?B?a1FKV3lpQ3o4YWd3aVBhNmd4M1Ava2J0Y2JyVGVrVlFXMUZ4MS9TTDIxcEU0?=
+ =?utf-8?B?QWtBV3VzVVZjcGRwajZCcDZaQk1EU3pwc1l3dC80cDBJUXVLSGljT1JwYzBt?=
+ =?utf-8?B?cjU1QXhhYmw4Y2Y3N3pSMTc0TFNtRFhGVkVEUXhPZVNaNHNTTHhLK3pxNnRn?=
+ =?utf-8?B?M1M0bVUrM1ZWcXNsMTgxS3VuR3NtUkFsLzRCbTN5dzdIMlZ0ZWw5RUtZMnU0?=
+ =?utf-8?B?N3VNWUJJNko4MHltOE84VkNZQmdPMm9NVU1LdkJiTUZBdzVENy9HODhLSjR4?=
+ =?utf-8?B?WkQvZXRGRVhWUDNZSGhvcjVPTzAwYVM2U21FYmhUSEdWRFV4TVZPQXl5bS9w?=
+ =?utf-8?B?clNzdURDd2c0cElwczB3TU9PRzQvdFJNeXJhUzR0SENoWnpQdWZLQWFVdUw5?=
+ =?utf-8?B?QW9KbHFzb0VlL1l4MnBWRUc3NnVNR2lrUFB4UjRyRVNtK2xmcmkreHRVc3Ew?=
+ =?utf-8?B?KzdPUGdrM0Z3OWVTMURVMHRWS1NlSXV2Q1V2K3g2dmtWTHpIdDBaY1IwdDE4?=
+ =?utf-8?B?M0g1SU55dE1XeDQraC9Pb1hGL3V0KzlHWXY2N0M3WTFLUjBmSS9kYmJWZkt5?=
+ =?utf-8?B?dDdTMTd1OC82NWxjUUY3WmlKUU1KQmZHWU8rR1h3akFiUG9GK3dHV2Qwb2dF?=
+ =?utf-8?B?UXBuUk1GQzNuQUpLTTBwVEVLT1p2SHJNZHBwZ251MW4yZ1J4SEdGYlZTdjRE?=
+ =?utf-8?B?ZDlFbXNFRDFBMmVsTnZFVkZzVUZUOFEvZ05YRnZ5ay94MmJzbzkrSXNISk5H?=
+ =?utf-8?B?aUhMVEp6UlRMeHplUnpKYTk0WGFQaHFRNGJYU1IrOTJUUmJ2Y1VFWitESGZz?=
+ =?utf-8?B?MkNEYWFmWjAvckVleTdMQ2pubTg1NFpKK0dvS3kzQXJOT20wRjRyT0tYaWFK?=
+ =?utf-8?B?SkhtSkNrYnI4Y3BMbjRKQnJnTVowZkJNclZvd09PSHlFVFNpYng0eVBnTDVM?=
+ =?utf-8?B?bWFNU202MTlwb3FlaDUwUDVmaFgvZm5rOEtnUGJUMHJkYWUwUWlnTUNnQU1x?=
+ =?utf-8?B?aGJYdHUzYldVRVZVU09mMGI1MlcybzUreElyUDZqK0pIVGtlYkQ3NUh1cW82?=
+ =?utf-8?B?U0hINkdLOXMyYWIxdFowWCtBN3E4dkxnS2VPZVlkM1hPQXpjUUVoQTl2U3hH?=
+ =?utf-8?Q?4sXVIE0tX0RrIAgzPguAf+Px3TYj7zirC4a8G4YVVkJs?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5f5dd366-847f-4cd1-e170-08dae4fd8148
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Dec 2022 15:51:07.5428
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Oz58bGX3VMl6aHsH47RsW2aB5G9l/1uYlZ0h+/5Sst7ZqrysPm8ZIZJCo9Igd5LcXZxbsAFbrfyWJe2EAWaIFA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4967
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -90,95 +130,103 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Ard,
+On 12/22/22 13:41, Javier Martinez Canillas wrote:
+> [adding Thomas Zimmermann to CC list]
+> 
+> Hello Mario,
+> 
+> Interesting case.
+> 
+> On 12/22/22 19:30, Mario Limonciello wrote:
+>> One of the first thing that KMS drivers do during initialization is
+>> destroy the system firmware framebuffer by means of
+>> `drm_aperture_remove_conflicting_pci_framebuffers`
+>>
+> 
+> The reason why that's done at the very beginning is that there are no
+> guarantees that the firmware-provided framebuffer would keep working
+> after the real display controller driver re-initializes the IP block.
+> 
+>> This means that if for any reason the GPU failed to probe the user
+>> will be stuck with at best a screen frozen at the last thing that
+>> was shown before the KMS driver continued it's probe.
+>>
+>> The problem is most pronounced when new GPU support is introduced
+>> because users will need to have a recent linux-firmware snapshot
+>> on their system when they boot a kernel with matching support.
+>>
+> 
+> Right. That's a problem indeed but as mentioned there's a gap between
+> the firmware-provided framebuffer is removed and the real driver sets
+> up its framebuffer.
+>   
+>> However the problem is further exaggerated in the case of amdgpu because
+>> it has migrated to "IP discovery" where amdgpu will attempt to load
+>> on "ALL" AMD GPUs even if the driver is missing support for IP blocks
+>> contained in that GPU.
+>>
+>> IP discovery requires some probing and isn't run until after the
+>> framebuffer has been destroyed.
+>>
+>> This means a situation can occur where a user purchases a new GPU not
+>> yet supported by a distribution and when booting the installer it will
+>> "freeze" even if the distribution doesn't have the matching kernel support
+>> for those IP blocks.
+>>
+>> The perfect example of this is Ubuntu 21.10 and the new dGPUs just
+>> launched by AMD.  The installation media ships with kernel 5.19 (which
+>> has IP discovery) but the amdgpu support for those IP blocks landed in
+>> kernel 6.0. The matching linux-firmware was released after 21.10's launch.
+>> The screen will freeze without nomodeset. Even if a user manages to install
+>> and then upgrades to kernel 6.0 after install they'll still have the
+>> problem of missing firmware, and the same experience.
 
-On 12/23/22 16:42, Ard Biesheuvel wrote:
-> (cc Andy)
->
->
-> On Wed, 21 Dec 2022 at 11:54, Markuss Broks <markuss.broks@gmail.com> wrote:
->> Make the EFI earlycon driver be suitable for any linear framebuffers.
->> This should be helpful for early porting of boards with no other means of
->> output, like smartphones/tablets. There seems to be an issue with early_ioremap
->> function on ARM32, but I am unable to find the exact cause. It appears the mappings
->> returned by it are somehow incorrect, thus the driver is disabled on ARM.
-> The reason that this driver is disabled on ARM is because the struct
-> screen_info is not populated early enough, as it is retrieved from a
-> UEFI configuration table.
+s/21.10/22.10/
 
-I believe I must be hitting some other bug then, since my driver should 
-not use `struct screen_info` when the arguments are specified manually 
-(e.g. in device-tree or in kernel command line options), and it still is 
-broken on ARM when they are. I got it to work on ARM when I moved the 
-early console initialization later into the kernel booting process, but 
-that mostly defeats the purpose of early console driver, I believe. I've 
-been thinking that it could be some stuff not getting initialized early 
-enough indeed, but I've got no clue what could it be.
+>>
+>> This is quite jarring for users, particularly if they don't know
+>> that they have to use "nomodeset" to install.
+>>
+> 
+> I'm not familiar with AMD GPUs, but could be possible that this discovery
+> and firmware loading step be done at the beginning before the firmware FB
+> is removed ? That way the FB removal will not happen unless that succeeds.
 
->
-> early_ioremap() works fine on ARM as long as they mapping is torn down
-> before paging_init()
->
->> EFI early
->> console was disabled on IA64 previously because of missing early_memremap_prot,
->> and this is inherited to this driver.
->>
->> This patch also changes
-> "This patch also changes ..." is usually a strong hint to self that
-> the patches need to be split up.
->
->> behavior on EFI systems, by selecting the mapping type
->> based on if the framebuffer region intersects with system RAM. If it does, it's
->> common sense that it should be in RAM as a whole, and so the system RAM mapping is
->> used. It was tested to be working on my PC (Intel Z490 platform), as well as several
->> ARM64 boards (Samsung Galaxy S9 (Exynos), iPad Air 2, Xiaomi Mi Pad 4, ...).
->>
->> Markuss Broks (2):
->>    drivers: serial: earlycon: Pass device-tree node
->>    efi: earlycon: Add support for generic framebuffers and move to fbdev
->>      subsystem
->>
->>
->> v1 -> v2:
->>
->> - a new patch correcting serial/earlycon.c argument name to "offset" instead
->>    of "node"
->> - move IA64 exclusion from EFI earlycon Kconfig to earlycon driver Kconfig
->>    (IA64 has no early_memremap_prot)
->> - move driver from fbdev to console subsystem
->> - select EFI earlycon by default
->> - fetch stride manually from device-tree, as on some devices it seems stride
->>    doesn't match the horizontal resolution * bpp.
->> - use saner format (e.g. 1920x1080x32 instead of 1920,1080,32).
->>
->>
->> Markuss Broks (3):
->>    drivers: serial: earlycon: Pass device-tree node
->>    efi: earlycon: move to video/console to prepare for changes
->>    efi: earlycon: Add support for generic framebuffers
->>
->>   .../admin-guide/kernel-parameters.txt         |  12 +-
->>   MAINTAINERS                                   |   5 +
->>   drivers/firmware/efi/Kconfig                  |   7 +-
->>   drivers/firmware/efi/Makefile                 |   1 -
->>   drivers/firmware/efi/earlycon.c               | 246 --------------
->>   drivers/tty/serial/earlycon.c                 |   3 +
->>   drivers/video/console/Kconfig                 |  11 +
->>   drivers/video/console/Makefile                |   1 +
->>   drivers/video/console/earlycon.c              | 305 ++++++++++++++++++
->>   include/linux/serial_core.h                   |   1 +
->>   10 files changed, 336 insertions(+), 256 deletions(-)
->>   delete mode 100644 drivers/firmware/efi/earlycon.c
->>   create mode 100644 drivers/video/console/earlycon.c
->>
->> --
->> 2.39.0
->>
-- Markuss
+Possible?  I think so, but maybe Alex can comment on this after the 
+holidays as he's more familiar.
 
+It would mean splitting and introducing an entirely new phase to driver 
+initialization.  The information about the discovery table comes from VRAM.
 
-P.S. Just noticed I forgot to Ctrl^S the cover letter before saving... 
-The main change v3 does is separate the moving action and edit action 
-into two separate commits, I don't think there're more major changes. 
-With v4 I'd try to attach the proper version log.
+amdgpu_driver_load_kms -> amdgpu_device_init -> amdgpu_device_ip_early_init
 
+Basically that code specific would have to call earlier and then there 
+would need to be a separate set of code for all the IP blocks to *just* 
+collect what firmware they need.
+
+>   
+>> To help the situation, allow drivers to re-run the init process for the
+>> firmware framebuffer during a failed probe. As this problem is most
+>> pronounced with amdgpu, this is the only driver changed.
+>>
+>> But if this makes sense more generally for other KMS drivers, the call
+>> can be added to the cleanup routine for those too.
+>>
+> 
+> The problem I see is that depending on how far the driver's probe function
+> went, there may not be possible to re-run the init process. Since firmware
+> provided framebuffer may already been destroyed or the IP block just be in
+> a half initialized state.
+> 
+> I'm not against this series if it solves the issue in practice for amdgpu,
+> but don't think is a general solution and would like to know Thomas' opinion
+> on this before as well
+
+Running on this idea I'm pretty sure that request_firmware returns 
+-ENOENT in this case. So another proposal for when to trigger this flow 
+would be to only do it on -ENOENT.  We could then also change 
+amdgpu_discovery.c to return -ENOENT when an IP block isn't supported 
+instead of the current -EINVAL.
+
+Or we could instead co-opt -ENOTSUPP and remap all the cases that we 
+explicitly want the system framebuffer to re-initialize to that.
