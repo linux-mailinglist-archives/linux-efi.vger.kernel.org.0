@@ -2,140 +2,215 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA31E65670E
-	for <lists+linux-efi@lfdr.de>; Tue, 27 Dec 2022 04:19:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66530656738
+	for <lists+linux-efi@lfdr.de>; Tue, 27 Dec 2022 05:09:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229954AbiL0DTD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 26 Dec 2022 22:19:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43630 "EHLO
+        id S229623AbiL0EJr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 26 Dec 2022 23:09:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230044AbiL0DTC (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 26 Dec 2022 22:19:02 -0500
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBEEDEAF;
-        Mon, 26 Dec 2022 19:18:57 -0800 (PST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id 04FA85C017F;
-        Mon, 26 Dec 2022 22:18:55 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Mon, 26 Dec 2022 22:18:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-         h=cc:cc:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1672111135; x=1672197535; bh=ZC
-        YnFXki7u0QnJz1QySGzrUAbqVjjYGpn0e5VSFUlcU=; b=uoG1n4z6ni/BgxxNrY
-        vZzqX3V55aD52nykAF8d0p3Enq5/dJVg51p/NpAKTqaBKcmz3mZepHsD+QN9GJr/
-        eBdTsdHBTXRgxIxuQwKWnoD/nwoVPvGU3nxttCcb/JZqX1R+GlSaCBf8NtBpfh84
-        3RbuD1i/x8nAWDcNeReA6tDh9Fhiu3jz38E/PhQ0GL8FWgTz2F9YEJRE992TF2K8
-        5HmpdIEQf3JFlB8ot9QXLFKZjh6rFPJtlPTQ1Me9HJgWWflUOhOcNrtAym25Ztb7
-        4Bh6o5DnjSrKPM5nYqwod1UgiE5L0t1BTKCU8kNoaExnKbO1kEGz9Tsb1ZCOSVN9
-        zJQw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm2; t=1672111135; x=1672197535; bh=ZCYnFXki7u0QnJz1QySGzrUAbqVj
-        jYGpn0e5VSFUlcU=; b=iGyPAlCnrtxEeKou1rB2cG6xGfK79cbPLTyoyh2tkW0e
-        beE9MwLgIwhpUi+wrfdWTNWObgzJQL2tC7D64Y64EJh2JcOk294pjIJmJjRbqQuT
-        HP2XVI66zbtwq3xGQxu3nb9HyZ5m3mwnQBypyt3w/4i1FJcT9tlvBT3CsuPWFgTw
-        3NT8ogqH6qKqBf1KIpS4IJL9UtPxlM7vcHfPxBatj8XW7kIBHoLqI05lDWYicklJ
-        34YmpapDQOpLQJImPBOLPh+Nde/vnoPQlbMrwNtvOVPwVp5xythCfrBwfJIR+xLd
-        Ag4NK5VITTSJhAzVLKz/6rNMx9NtDRlW4PfHUBXsNA==
-X-ME-Sender: <xms:HWSqY8gEbS5j1_Ef8Yn4642kNODvUBFqk-h2FxS3cvXzwle-4fHy7A>
-    <xme:HWSqY1DVDNeLWEFk1wkY5MXJH5MqU3igmnOwxwJDMYJePgllYLg2AZHuGFv29otbK
-    LTRWb3TofjiR7S2eBc>
-X-ME-Received: <xmr:HWSqY0ELPRVaEmF-ij2C10z2aJERY0imqh2D7pdycqMPZAwCRe4XQhtThKE0Kx2irf2MtA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrheelgdehkecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttddttddttddvnecuhfhrohhmpedfmfhirhhi
-    lhhlucetrdcuufhhuhhtvghmohhvfdcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrg
-    hmvgeqnecuggftrfgrthhtvghrnhephfeigefhtdefhedtfedthefghedutddvueehtedt
-    tdehjeeukeejgeeuiedvkedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgv
-X-ME-Proxy: <xmx:HWSqY9Sc6eWC0iBm_iLRs4qxwmP7KNUOLY08uR0ErXa9VUn_Q3yvdA>
-    <xmx:HWSqY5wCEm9McwFBIYcEmRBzg6-swqKUu25u-L7GjRPZzQjwjk0aTA>
-    <xmx:HWSqY77guamTz8X5UbHfDbV1lAh8-5ZnSXRmOBXzDajZMH-xnMtcsQ>
-    <xmx:H2SqYzfIjMYaB_c9-8zjkEtG3ghF1Zf6uFZaEA9G45eUyIszUdDZCA>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 26 Dec 2022 22:18:53 -0500 (EST)
-Received: by box.shutemov.name (Postfix, from userid 1000)
-        id 79BC7109CB8; Tue, 27 Dec 2022 06:18:49 +0300 (+03)
-Date:   Tue, 27 Dec 2022 06:18:49 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
-        khalid.elmously@canonical.com, philip.cox@canonical.com,
-        aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
-        linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCHv8 02/14] mm: Add support for unaccepted memory
-Message-ID: <20221227031849.7sqnnbnn7umhsa63@box.shutemov.name>
-References: <20221207014933.8435-1-kirill.shutemov@linux.intel.com>
- <20221207014933.8435-3-kirill.shutemov@linux.intel.com>
- <Y6mSNhO3vpuzjr8O@zn.tnic>
+        with ESMTP id S229540AbiL0EJp (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 26 Dec 2022 23:09:45 -0500
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2049.outbound.protection.outlook.com [40.107.237.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34E5818D;
+        Mon, 26 Dec 2022 20:09:43 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BB/7uF8tDIGasnyos2EVv03GLDrE0PMkNV/pxcQ+VPoY6SXR3dILUPBfSlZyQUUvZT6FCiu8+9yY5kM3dySjKTzA01hfr1hcdaFoHEpDflWxj+QNcTR2L4tpP9u1YDBAa2hlbqsNjcqJPbb+4KLaHvvzFNY5VTFa4o11i+Y2TrsvBfKgSKLnXMPMwlQ1y6pk1SrmDkleCLpPW29varz1GUiRq0xzxlgOlKsHgNscxmaCs1aHHu8MI+tQLaaHazb/yne5wonpz0zzxYsbej/bjLSIaI4FaxmDIDReAkZDJjkkZ+qMu6QBkbeh6PePrg6+WdTUF3rXtwnHg235XODJ2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/R01rDToqHiSjSvHPeekiz0B9V1avaMY/0gRM4Yxkr4=;
+ b=d9y2Yui+nSb3Zooi4kzYgDVAGXdsgW+/65Kw6lOeZ0/KJfkxLD8fZOU4GQMof6mVdisFxjNDP5t9NWKhMH0CtboacLQ4TpAJeNRXEkUzh9Wq9fgE2pUrglzw2F39nuipdQXG9lcE1G+Cs7PRMHOwPrTvXCavZKje7MLBMDCRyXoyK2e6DCGv7V9x88IaIJ1Dad1r5SpywrvM5wDV2oarvX034qSpZgIu601wR7gihs0t2rTMxpJ7Z4i02KOdDJA6rMcGaHCoAsbqQD2aJKn7daPIjy/4vj74WFafyE/CxO9whpk5CLSIPTOCsiZ4zn/ZeB97ZBxleo+ooKH+7i6NAQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=towertech.it smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/R01rDToqHiSjSvHPeekiz0B9V1avaMY/0gRM4Yxkr4=;
+ b=Lvwa1yPonZx+udeyCvW3lOtWUN+MrWYlOtB8FucdLrqCqa/9y1nfYIxW0Mtl88xKNxDal1ahxvQoOwD/HWAKtvlS7tcsjn/9FwK1ThoKt1I/BgV/GL09fGO/xFWxKE4kbI/jejPjm4EaAq8aF8ddh+E9Qa02LBj8aXlx9ZmEwhSoPIaMj+klkyQFi5iYAsw6+swWbTFhcc+VZb5kTSa0E7JZxKDdqnvmbnUAggEqy3exKHazUAgJmPtvf4inckUaH6RUsg9mhpPJ6aBM93pUIRKj94rNYQ3E2Us2q1WBQglRD4VqemxznvvAbVu4XG8cdEajU2YymR176H/7fubamw==
+Received: from BN9PR03CA0350.namprd03.prod.outlook.com (2603:10b6:408:f6::25)
+ by BL1PR12MB5378.namprd12.prod.outlook.com (2603:10b6:208:31d::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5944.16; Tue, 27 Dec
+ 2022 04:09:40 +0000
+Received: from BL02EPF0000C408.namprd05.prod.outlook.com
+ (2603:10b6:408:f6:cafe::73) by BN9PR03CA0350.outlook.office365.com
+ (2603:10b6:408:f6::25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5944.17 via Frontend
+ Transport; Tue, 27 Dec 2022 04:09:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BL02EPF0000C408.mail.protection.outlook.com (10.167.241.10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5944.8 via Frontend Transport; Tue, 27 Dec 2022 04:09:40 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Mon, 26 Dec
+ 2022 20:09:29 -0800
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Mon, 26 Dec
+ 2022 20:09:28 -0800
+Received: from SDONTHINENI-DESKTOP.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server id 15.2.986.36 via Frontend
+ Transport; Mon, 26 Dec 2022 20:09:28 -0800
+From:   Shanker Donthineni <sdonthineni@nvidia.com>
+To:     Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ard Biesheuvel <ardb@kernel.org>
+CC:     <linux-rtc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>,
+        Shanker Donthineni <sdonthineni@nvidia.com>
+Subject: [PATCH 1/1] efi: rtc: Enable SET/GET WAKEUP services as optional
+Date:   Mon, 26 Dec 2022 22:09:25 -0600
+Message-ID: <20221227040925.1619833-1-sdonthineni@nvidia.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y6mSNhO3vpuzjr8O@zn.tnic>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-NVConfidentiality: public
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0000C408:EE_|BL1PR12MB5378:EE_
+X-MS-Office365-Filtering-Correlation-Id: eff97f59-a71d-4f77-301a-08dae7c02d19
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: pOe6CznVYOR4J4BdqtWe6V3Ni8TSDh6JFil8pJ5RPpzYvMe2a1MFkRBr9es8NuA8DU6ovBEOBDLCcGi+drCT1j/TIUuCmvhRi3MFDCLEYdtByMml6O5aSCgUZcl7B6vcCvauQiqwKjvpiehCn0aZU6bh2Xo03HxgFqGri0gR9VeAuqSGMIyeWMRV6+jIyVxmx7LlJrCdu4ni0971E3pifTDKImGLksS7qedbzoLp2XdOc8rPxm7qJyrnaVhlpg3F7vBuom2Asv4Xq31tF9CZWjXnPjnHucVO+utgswSsEtdFMJjAUVj58k/rk1+FabFIPUMbcgqecV8iCnEWNFiCIYA6Yp2ppXdZC3X3XmhGg8ZGdBFAOtJ6N96jrH+sScVt+PMwt3wqgGPA6pljtSG8I9tUSQFyQNrjcDUpExfQmyZ4r5bVN3FfLzCWNaRlOk+ol1+H5nfnY0qH1bRqzBQUBr1GKtt6LWakzMbNF1uRFyx29Pf88ikPprNOo41mR/j9rJslp5xDg60taR9uU20l93gMPROlZhGForChJnfV9a9GVs5jdbNLOcdSFc2heoV9vHqT06OvKWck0GXIs49tKx6/2AqYycBLgiLesefwVLnZ8w0Km95tdFoYyIh+GgggZu83q/mVYulav2FcjttD2kDjVgQKnKRL1aum9ZDOV+wlRL2A6FS9WwBnvAQp2q1+p3Vm6s0JnieRBoUXxmzdm/bcRQ5DiNONlgEauKf3K6g=
+X-Forefront-Antispam-Report: CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(376002)(346002)(136003)(396003)(451199015)(40470700004)(46966006)(36840700001)(107886003)(4326008)(478600001)(2906002)(54906003)(36860700001)(316002)(36756003)(6666004)(110136005)(82310400005)(83380400001)(7636003)(82740400003)(356005)(40460700003)(2616005)(336012)(26005)(7696005)(186003)(1076003)(86362001)(40480700001)(47076005)(426003)(8676002)(8936002)(70586007)(70206006)(5660300002)(41300700001)(21314003);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Dec 2022 04:09:40.0677
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: eff97f59-a71d-4f77-301a-08dae7c02d19
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0000C408.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5378
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Dec 26, 2022 at 01:23:18PM +0100, Borislav Petkov wrote:
-> On Wed, Dec 07, 2022 at 04:49:21AM +0300, Kirill A. Shutemov wrote:
-> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > index 6e60657875d3..6d597e833a73 100644
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -450,6 +450,11 @@ EXPORT_SYMBOL(nr_online_nodes);
-> >  
-> >  int page_group_by_mobility_disabled __read_mostly;
-> >  
-> > +#ifdef CONFIG_UNACCEPTED_MEMORY
-> > +/* Counts number of zones with unaccepted pages. */
-> > +static DEFINE_STATIC_KEY_FALSE(unaccepted_pages);
-> 
-> Then call it what it is:
-> 
-> static DEFINE_STATIC_KEY_FALSE(zones_with_unaccepted_pages);
-> 
-> so that when reading the code it is self-describing:
-> 
->         if (!static_branch_unlikely(&zones_with_unaccepted_pages))
->                 return false;
+The current implementation of rtc-efi is expecting all the 4
+time services GET{SET}_TIME{WAKEUP} must be supported by UEFI
+firmware. As per the EFI_RT_PROPERTIES_TABLE, the platform
+specific implementations can choose to enable selective time
+services based on the RTC device capabilities.
 
-Looks good. Will fix for the next version.
+This patch does the following changes to provide GET/SET RTC
+services on platforms that do not support the WAKEUP feature.
 
+1) Relax time services cap check when creating a platform device.
+2) Clear RTC_FEATURE_ALARM bit in the absence of WAKEUP services.
+3) Conditional alarm entries in '/proc/driver/rtc'.
+
+Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
+---
+ drivers/rtc/rtc-efi.c | 48 ++++++++++++++++++++++++-------------------
+ include/linux/efi.h   |  3 ++-
+ 2 files changed, 29 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/rtc/rtc-efi.c b/drivers/rtc/rtc-efi.c
+index e991cccdb6e9c..1e8bc6cc1e12d 100644
+--- a/drivers/rtc/rtc-efi.c
++++ b/drivers/rtc/rtc-efi.c
+@@ -188,9 +188,10 @@ static int efi_set_time(struct device *dev, struct rtc_time *tm)
+ 
+ static int efi_procfs(struct device *dev, struct seq_file *seq)
+ {
+-	efi_time_t      eft, alm;
+-	efi_time_cap_t  cap;
+-	efi_bool_t      enabled, pending;
++	efi_time_t        eft, alm;
++	efi_time_cap_t    cap;
++	efi_bool_t        enabled, pending;
++	struct rtc_device *rtc = dev_get_drvdata(dev);
+ 
+ 	memset(&eft, 0, sizeof(eft));
+ 	memset(&alm, 0, sizeof(alm));
+@@ -213,23 +214,25 @@ static int efi_procfs(struct device *dev, struct seq_file *seq)
+ 		/* XXX fixme: convert to string? */
+ 		seq_printf(seq, "Timezone\t: %u\n", eft.timezone);
+ 
+-	seq_printf(seq,
+-		   "Alarm Time\t: %u:%u:%u.%09u\n"
+-		   "Alarm Date\t: %u-%u-%u\n"
+-		   "Alarm Daylight\t: %u\n"
+-		   "Enabled\t\t: %s\n"
+-		   "Pending\t\t: %s\n",
+-		   alm.hour, alm.minute, alm.second, alm.nanosecond,
+-		   alm.year, alm.month, alm.day,
+-		   alm.daylight,
+-		   enabled == 1 ? "yes" : "no",
+-		   pending == 1 ? "yes" : "no");
+-
+-	if (eft.timezone == EFI_UNSPECIFIED_TIMEZONE)
+-		seq_puts(seq, "Timezone\t: unspecified\n");
+-	else
+-		/* XXX fixme: convert to string? */
+-		seq_printf(seq, "Timezone\t: %u\n", alm.timezone);
++	if (test_bit(RTC_FEATURE_ALARM, rtc->features)) {
++		seq_printf(seq,
++			   "Alarm Time\t: %u:%u:%u.%09u\n"
++			   "Alarm Date\t: %u-%u-%u\n"
++			   "Alarm Daylight\t: %u\n"
++			   "Enabled\t\t: %s\n"
++			   "Pending\t\t: %s\n",
++			   alm.hour, alm.minute, alm.second, alm.nanosecond,
++			   alm.year, alm.month, alm.day,
++			   alm.daylight,
++			   enabled == 1 ? "yes" : "no",
++			   pending == 1 ? "yes" : "no");
++
++		if (eft.timezone == EFI_UNSPECIFIED_TIMEZONE)
++			seq_puts(seq, "Timezone\t: unspecified\n");
++		else
++			/* XXX fixme: convert to string? */
++			seq_printf(seq, "Timezone\t: %u\n", alm.timezone);
++	}
+ 
+ 	/*
+ 	 * now prints the capabilities
+@@ -269,7 +272,10 @@ static int __init efi_rtc_probe(struct platform_device *dev)
+ 
+ 	rtc->ops = &efi_rtc_ops;
+ 	clear_bit(RTC_FEATURE_UPDATE_INTERRUPT, rtc->features);
+-	set_bit(RTC_FEATURE_ALARM_WAKEUP_ONLY, rtc->features);
++	if (efi_rt_services_supported(EFI_RT_SUPPORTED_WAKEUP_SERVICES))
++		set_bit(RTC_FEATURE_ALARM_WAKEUP_ONLY, rtc->features);
++	else
++		clear_bit(RTC_FEATURE_ALARM, rtc->features);
+ 
+ 	device_init_wakeup(&dev->dev, true);
+ 
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 4b27519143f56..98598bd1d2fa5 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -668,7 +668,8 @@ extern struct efi {
+ 
+ #define EFI_RT_SUPPORTED_ALL					0x3fff
+ 
+-#define EFI_RT_SUPPORTED_TIME_SERVICES				0x000f
++#define EFI_RT_SUPPORTED_TIME_SERVICES				0x0003
++#define EFI_RT_SUPPORTED_WAKEUP_SERVICES			0x000c
+ #define EFI_RT_SUPPORTED_VARIABLE_SERVICES			0x0070
+ 
+ extern struct mm_struct efi_mm;
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.25.1
+
