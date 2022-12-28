@@ -2,87 +2,78 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20D20656E49
-	for <lists+linux-efi@lfdr.de>; Tue, 27 Dec 2022 20:24:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6F5D657772
+	for <lists+linux-efi@lfdr.de>; Wed, 28 Dec 2022 15:04:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232130AbiL0TYr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 27 Dec 2022 14:24:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44820 "EHLO
+        id S229740AbiL1OEM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 28 Dec 2022 09:04:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231447AbiL0TY0 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 27 Dec 2022 14:24:26 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0260255BF
-        for <linux-efi@vger.kernel.org>; Tue, 27 Dec 2022 11:23:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1672169017;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Y7dbgHTngiyfazSG5sXwLfx+o+WyMctqSvzgKNLu/LU=;
-        b=IQV9Fuuul5Z8ac5uulmDE7uffz1hNgOi7VQuq+g4+Wh4PKmFTPPy82nVgGmZ0ui8myUbw2
-        21T1WGVJ1QnczchNkKe1tnAXczmA/4ITbZQgPdsMHKhcd/+lirybrI9QVAaFHFPFX4uYwo
-        xuGp/V9mtJKj/fIm8USHpA7CSuhTJD8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-74-TYNzPdi7N4yGTQxInTwJHA-1; Tue, 27 Dec 2022 14:23:35 -0500
-X-MC-Unique: TYNzPdi7N4yGTQxInTwJHA-1
-Received: by mail-wr1-f70.google.com with SMTP id t18-20020adfa2d2000000b00277e6c6f275so779003wra.0
-        for <linux-efi@vger.kernel.org>; Tue, 27 Dec 2022 11:23:35 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y7dbgHTngiyfazSG5sXwLfx+o+WyMctqSvzgKNLu/LU=;
-        b=cHiUAKnX7m1UmbIZ0FHMJVZiQmQrVJ0Dkx0GLhuAf7bBwqu9CjbJUOQ0Cm2s/wwLIq
-         ia/4Ylzr3XQbGZtuV3DeIgxvQZQFGW1NCd6ASdsLpUm2KuWA79i8SpvdGGeWypjAFwVe
-         nkYfcHrRGlTHAryt6XAmVNkfB8LyX4LfBeetaBO3iRIWMvCUgv7BH3V/PiOu95ERLrm+
-         dn1isBrsEvvyukrlnnIPkaVG9vmlOxpDQpSd9JtjmatixVFRq5IdNM/fonzOCD7ayVAo
-         2WcDgFkTSH3Tw5B4XNd8tcbOm88mdPDMab1PEB96DRC1EsNSGxjdfsTmrFftVDTMJAYj
-         lIAA==
-X-Gm-Message-State: AFqh2kr7jTBRqFpoPVsXv+Esm2Ko9JvosqtovG2mD2dYGd6LLktLFl5O
-        DaVgVMx+PXQqHSq0VaGhyHLcV8L5UmezOcLyzMkyK0BTrlr5jTEZHkIhkvWk+HKIKeEmbyP3kNb
-        2/L3qOiH3kx4J03uM4XdO
-X-Received: by 2002:a05:600c:3b90:b0:3d1:f0f1:ceb4 with SMTP id n16-20020a05600c3b9000b003d1f0f1ceb4mr16025409wms.19.1672169014395;
-        Tue, 27 Dec 2022 11:23:34 -0800 (PST)
-X-Google-Smtp-Source: AMrXdXva0B2UHKhAop8zDawG+uzkPkYfVViqdOdvS3DOeaUVR1+zQGk160j5uLhQYZ6Be0X+v85V8g==
-X-Received: by 2002:a05:600c:3b90:b0:3d1:f0f1:ceb4 with SMTP id n16-20020a05600c3b9000b003d1f0f1ceb4mr16025401wms.19.1672169014169;
-        Tue, 27 Dec 2022 11:23:34 -0800 (PST)
-Received: from [192.168.1.130] (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id q20-20020a1ce914000000b003b4935f04a4sm21286147wmc.5.2022.12.27.11.23.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Dec 2022 11:23:33 -0800 (PST)
-Message-ID: <9911d249-ccc0-7724-b0bc-17bcf2a524e8@redhat.com>
-Date:   Tue, 27 Dec 2022 20:23:32 +0100
+        with ESMTP id S229630AbiL1OEL (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 28 Dec 2022 09:04:11 -0500
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC2E11099;
+        Wed, 28 Dec 2022 06:04:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1672236249; x=1703772249;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Lg126dF0ZRB51ZzT/H9t/6uTcxQgkla19QDrEd0Bge0=;
+  b=c2iP/ZA0uWkDdxNpHAOp0YCPyjxlv8h7aQGjKTZMRR6SF9YaM3bfiYBo
+   znnuls8vYhO1gaLI8oWuZ0LS1uu7CDIFWchzA0Bm52jf8k1gXX5ukVRGS
+   yQjFCK/Uyg1WSsPnfwkU1I6ZkA2N0fP+v7wT7LJci5FMbxPvNgbNBQ3Sb
+   trJLLyHX6b08mMxFr3/IEyVreRUFb8JhUOZscI71WMkXsnHO3DCKYLE6h
+   MhiDvWFxat86ZuPres05zdP8WimKmqBfpkojgFFT29JBeuJ4L8HEUyf0f
+   RzMhpsKGuVkrBKvQjXmNvZlxeTh770iy7IgB4+Iowwg9wednRPRO6uk59
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10574"; a="308631762"
+X-IronPort-AV: E=Sophos;i="5.96,280,1665471600"; 
+   d="scan'208";a="308631762"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2022 06:03:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10574"; a="655320885"
+X-IronPort-AV: E=Sophos;i="5.96,280,1665471600"; 
+   d="scan'208";a="655320885"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga007.fm.intel.com with ESMTP; 28 Dec 2022 06:03:13 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1pAX1S-000cPm-1R;
+        Wed, 28 Dec 2022 16:03:10 +0200
+Date:   Wed, 28 Dec 2022 16:03:10 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Markuss Broks <markuss.broks@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        Jami Kettunen <jami.kettunen@protonmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Helge Deller <deller@gmx.de>, Borislav Petkov <bp@suse.de>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Will Deacon <will@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Muchun Song <muchun.song@linux.dev>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Kim Phillips <kim.phillips@amd.com>, linux-doc@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v3 0/3] Add generic framebuffer support to EFI earlycon
+ driver
+Message-ID: <Y6xMnuMqpThmFn1q@smile.fi.intel.com>
+References: <20221221105402.6598-1-markuss.broks@gmail.com>
+ <CAMj1kXGUC7dsSwVEUsAMeAoqDYtbqrM7SDOJTXbPfi-LrcSk9g@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH 0/2] Recover from failure to probe GPU
-Content-Language: en-US
-To:     Alex Deucher <alexdeucher@gmail.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
-Cc:     Thomas Zimmermann <tzimmermann@suse.de>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        linux-efi@vger.kernel.org,
-        Carlos Soriano Sanchez <csoriano@redhat.com>,
-        amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-References: <20221222183012.1046-1-mario.limonciello@amd.com>
- <2761b1e1-508d-2c2c-f2d8-6f1be536723e@suse.de>
- <f9b40837-ee2b-76fb-0ec1-d7dfda4ffb7e@amd.com>
- <CADnq5_M42GQhVquw5BM+P-6NKmdZ6yj8czq=s5iXVAmVOexAkw@mail.gmail.com>
- <CADnq5_OLf3VhFZm7=riDm9ezVT9j9nQ5Fwei3budnqPt5C4t9Q@mail.gmail.com>
-From:   Javier Martinez Canillas <javierm@redhat.com>
-In-Reply-To: <CADnq5_OLf3VhFZm7=riDm9ezVT9j9nQ5Fwei3budnqPt5C4t9Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXGUC7dsSwVEUsAMeAoqDYtbqrM7SDOJTXbPfi-LrcSk9g@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -90,57 +81,57 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello Alex,
+On Fri, Dec 23, 2022 at 03:42:33PM +0100, Ard Biesheuvel wrote:
+> (cc Andy)
 
-On 12/27/22 18:04, Alex Deucher wrote:
+I believe there are two reasons I'm Cc'ed now:
+- the Cc was forgotten. because I remember reviewing some parts
+  of this contribution
+- this conflicts (to some extent) with my patch that speeds up
+  the scrolling
 
-[...]
+For the first it's obvious what to do, I think Markuss can include me
+in his v4.
 
-> 
-> I think something like this would do the trick:
-> 
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> index 2017b3466612..45aee27ab6b1 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> @@ -2141,6 +2141,11 @@ static int amdgpu_device_ip_early_init(struct
-> amdgpu_device *adev)
->                 break;
->         }
-> 
-> +       /* Get rid of things like offb */
-> +       r = drm_aperture_remove_conflicting_pci_framebuffers(pdev,
-> &amdgpu_kms_driver);
-> +       if (r)
-> +               return r;
-> +
->         if (amdgpu_has_atpx() &&
->             (amdgpu_is_atpx_hybrid() ||
->              amdgpu_has_atpx_dgpu_power_cntl()) &&
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-> b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-> index b8cfa48fb296..4e74d7abc3c2 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-> @@ -2123,11 +2123,6 @@ static int amdgpu_pci_probe(struct pci_dev *pdev,
->         }
->  #endif
-> 
-> -       /* Get rid of things like offb */
-> -       ret = drm_aperture_remove_conflicting_pci_framebuffers(pdev,
-> &amdgpu_kms_driver);
-> -       if (ret)
-> -               return ret;
-> -
+For the second I don't see the functional clash. The scrolling in this
+series is not anyhow optimized. I think my patch should go first as
+- it is less intrusive
+- it has been tested, or can be tested easily
 
-I'm not familiar with the amdgpu driver but yes, something like that
-is what I had in mind.
+Tell me if I'm missing something here.
+
+> On Wed, 21 Dec 2022 at 11:54, Markuss Broks <markuss.broks@gmail.com> wrote:
+> >
+> > Make the EFI earlycon driver be suitable for any linear framebuffers.
+> > This should be helpful for early porting of boards with no other means of
+> > output, like smartphones/tablets. There seems to be an issue with early_ioremap
+> > function on ARM32, but I am unable to find the exact cause. It appears the mappings
+> > returned by it are somehow incorrect, thus the driver is disabled on ARM.
+> 
+> The reason that this driver is disabled on ARM is because the struct
+> screen_info is not populated early enough, as it is retrieved from a
+> UEFI configuration table.
+> 
+> early_ioremap() works fine on ARM as long as they mapping is torn down
+> before paging_init()
+> 
+> > EFI early
+> > console was disabled on IA64 previously because of missing early_memremap_prot,
+> > and this is inherited to this driver.
+> >
+> > This patch also changes
+> 
+> "This patch also changes ..." is usually a strong hint to self that
+> the patches need to be split up.
+> 
+> > behavior on EFI systems, by selecting the mapping type
+> > based on if the framebuffer region intersects with system RAM. If it does, it's
+> > common sense that it should be in RAM as a whole, and so the system RAM mapping is
+> > used. It was tested to be working on my PC (Intel Z490 platform), as well as several
+> > ARM64 boards (Samsung Galaxy S9 (Exynos), iPad Air 2, Xiaomi Mi Pad 4, ...).
 
 -- 
-Best regards,
+With Best Regards,
+Andy Shevchenko
 
-Javier Martinez Canillas
-Core Platforms
-Red Hat
 
