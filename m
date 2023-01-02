@@ -2,155 +2,218 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C76F65B7B9
-	for <lists+linux-efi@lfdr.de>; Mon,  2 Jan 2023 23:57:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EE8265B80A
+	for <lists+linux-efi@lfdr.de>; Tue,  3 Jan 2023 00:06:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233202AbjABW5W (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 2 Jan 2023 17:57:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44482 "EHLO
+        id S231186AbjABXGl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 2 Jan 2023 18:06:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233748AbjABW5U (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 2 Jan 2023 17:57:20 -0500
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2063.outbound.protection.outlook.com [40.107.102.63])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73DD9B7E9;
-        Mon,  2 Jan 2023 14:57:16 -0800 (PST)
+        with ESMTP id S229603AbjABXGk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 2 Jan 2023 18:06:40 -0500
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 409D65FBE;
+        Mon,  2 Jan 2023 15:06:39 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=V3DjT2ANJlAXE3wKwjq2DGpYFsCWw5cSEsRb1Z79aRQVm2HkMr4ik2rc44oKUBBp/Rm252QtRGRz4HnLnlRm7r8f3JhuTzw/vFW8hpIgkKLmJGRC8Cq74ms0wrZ7kBEVUin7y3owfLhQEfNND3ICWTsEKFSXr6nodWVt1aOw1mI6PZtmSKJvrk4NVKserC1SaSi9EgLovd6fQJHUi61YHNnURfKXwlwRqX6IU2oALE0rZ+0sEaazBfYhPVtRwDkygFnQqLh71hBSlsOIBFNP2lEmM0z2ibzyk3bUs9dgpSvtaqmtzY94WbMZjBj91IOKk+aRZx4p2+jvF44deFVB9Q==
+ b=BjSBfbrVBT9jtXN5/wCjUXOO9LgWAa6VysXyLDG6d4hVn/gwN2PfnvvEolvVM8d8Q/eC0vlf2n20gBe7m10NWd8FlxGQ8wglKSRQ0Vxte1SM4W5+sZ+XfLLF3S4czLVgcVAHGkLZ+FhDs4eBSEw9sP9NZP3E1vwxw1BAnt6NugtRXAbbbkoVbYTrzyD8rqJVX3lR5DDiuDDXCF+NY40wgPQrp8zOO5xU8TLxHFUJMAcXaqY0wYAJ5wVZMw+evOtkmCi3laYZJLGx+SD9WWDhsF7LR+2COLPuBBsksPsLvFeQ6So1a3Z7sr/vFVyss2sCQei5m6PW9lEgUlVxarjvXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=o6hC27wR3jAULzQRyL3zA/m5mvOPR8yB3WlpZbJW/uQ=;
- b=c/Gtw3xyV7tU0bUa8DY0NT9MggoTZh8ZB5x8p9LVwSx+Qe4Tf9ZCudpMyB1PU7ctCLkll0aVaqFP5EtH5r64r/NRRT8iATkU774wn/swLxo60U0ztEgyKRFWwZXI7QnySHooeIXlyMeKnl4PZ8L/9adzKbGuBGSCqSGkgov11rwEwbFTO29G7DsL7AZRLsCuKjwDyqPEba/flp1d5YZp1Z8wGW8CXNwkCwiJUFe6afMLDhIdhQbwAGOuKkLq0P64K8af5eoQ+KB/63iSjDYaH9Ws7UoWWGwuQ0idWaILGqYErTEi/YFm9wLOzeZkCVlZyNTYch7pmLxbyXLDs3vz3w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
+ bh=RjyIKj0Ksaz3uN346tWqc01sdFOsam1MW2i8ZWqwlMI=;
+ b=MUlBjvEwgLXZQ8c0nZ/JrT/ySZJT2bM9Z4YkxRLnzvf+lxMqJf5IbY2zJ2iZi55NG+2NqN9dYIhtfoqCaA/jnvrRw584rlFRPgZWRpR1QxFFDVRg8rQEgpR1N058VlF3Fm5YMrxigbgkpG5EKYQLxnocEKhBOb981MhZTqKpB5V/BErBEwlViCcqdzfBmXVoxLx2sBtkyqWqnuu5OKVGcxJTq1KAO0VBLBj31jUfmQHgM8+KdE7wYB9b3Y6x9Yyfd5ALs6fbCIa12Ey4S4d8slqQLWAAQFv8Kokm6b9huuffx7UHqOYCXmJKAfmtM7Js3dbUB4jQISwBGBEA5TNW5g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=towertech.it smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o6hC27wR3jAULzQRyL3zA/m5mvOPR8yB3WlpZbJW/uQ=;
- b=B18Df8Ni0Y9arn5VOPFeeHScAFavMqJp4xQW63JRk+eW4akKaRTUyKv5pr+XaW/6NwFlfK0xfBIDX47a8vOl81zIXPh/q8I/QjFpciqJuSh4X4r5rFScLgfnm5SMeiB7RT7MBOnKDdjSxWyP41iL2g+kaLWMkqoypdlUvFeylnjdpqbV7i3cul5txSwXWut5tIIHHwpzsX0oZOVnWPW2df3t3rs7yzTGSkevgL6z0tXxhUXYmc4pN2QnBGrHY3TBGsv05eOu+NwtlHvTMo7f9GNR1I8GX8tfy/jnsC5jMpR8rV82Hx+DoWknvfvTHu4yyfihkMYFvYFY0qkt4hbuoA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MN0PR12MB5762.namprd12.prod.outlook.com (2603:10b6:208:375::12)
- by DS0PR12MB8573.namprd12.prod.outlook.com (2603:10b6:8:162::15) with
+ bh=RjyIKj0Ksaz3uN346tWqc01sdFOsam1MW2i8ZWqwlMI=;
+ b=U8nLsjSMuzIPwQx3oMai7iR0tU9cDqllhOZ8eMwVe4RhbpoVG3mwRHVw6UAXREX9wHry7y9JNQhJQseB2sugSdfOr+AkDmkF2Sxo+QRuULJhy4PAztOx21C6iFBmmJZEchNkCyDZzAzHalwscyJFAX7Dgxv10XoHV0/U6nZ6DIQvboZiH8fcYUjlovcses/TRK5qfb1GTVZ1BUoc9JHO/T5hlpPKywyc5YpK5c6Qx6d9l0vLoy9LyANt9OwVAspHX7GBK1l114s/7MbFyKIxLGFiWRzcElqYFt4YSOotwnzyVPRsgr+EUJZYANhmTDKgET2UjaWnHN42tvLfYTeBaA==
+Received: from DM6PR18CA0012.namprd18.prod.outlook.com (2603:10b6:5:15b::25)
+ by BN9PR12MB5145.namprd12.prod.outlook.com (2603:10b6:408:136::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5944.19; Mon, 2 Jan
- 2023 22:57:14 +0000
-Received: from MN0PR12MB5762.namprd12.prod.outlook.com
- ([fe80::f263:d93d:ba53:25fe]) by MN0PR12MB5762.namprd12.prod.outlook.com
- ([fe80::f263:d93d:ba53:25fe%5]) with mapi id 15.20.5944.019; Mon, 2 Jan 2023
- 22:57:13 +0000
-Message-ID: <a7f6e0ae-3fbc-ccf7-6185-a425ad25e04f@nvidia.com>
-Date:   Mon, 2 Jan 2023 16:57:02 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH 1/1] efi: rtc: Enable SET/GET WAKEUP services as optional
-Content-Language: en-US
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     Alessandro Zummo <a.zummo@towertech.it>, linux-rtc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-References: <20221227040925.1619833-1-sdonthineni@nvidia.com>
- <CAMj1kXG79-MxGJEwvnekqbVyeEMVHBfhNjwZkz91mMwv4-vT3Q@mail.gmail.com>
- <Y7NY+ba2USk7hEAx@mail.local>
+ 2023 23:06:34 +0000
+Received: from DM6NAM11FT017.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:5:15b:cafe::c4) by DM6PR18CA0012.outlook.office365.com
+ (2603:10b6:5:15b::25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5966.19 via Frontend
+ Transport; Mon, 2 Jan 2023 23:06:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ DM6NAM11FT017.mail.protection.outlook.com (10.13.172.145) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5966.18 via Frontend Transport; Mon, 2 Jan 2023 23:06:33 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Mon, 2 Jan 2023
+ 15:06:33 -0800
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Mon, 2 Jan 2023
+ 15:06:32 -0800
+Received: from SDONTHINENI-DESKTOP.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server id 15.2.986.36 via Frontend
+ Transport; Mon, 2 Jan 2023 15:06:32 -0800
 From:   Shanker Donthineni <sdonthineni@nvidia.com>
-In-Reply-To: <Y7NY+ba2USk7hEAx@mail.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN6PR16CA0071.namprd16.prod.outlook.com
- (2603:10b6:805:ca::48) To MN0PR12MB5762.namprd12.prod.outlook.com
- (2603:10b6:208:375::12)
+To:     Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ard Biesheuvel <ardb@kernel.org>
+CC:     <linux-rtc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-efi@vger.kernel.org>,
+        Shanker Donthineni <sdonthineni@nvidia.com>
+Subject: [PATCH v2] rtc: efi: Enable SET/GET WAKEUP services as optional
+Date:   Mon, 2 Jan 2023 17:06:30 -0600
+Message-ID: <20230102230630.192911-1-sdonthineni@nvidia.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+X-NVConfidentiality: public
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB5762:EE_|DS0PR12MB8573:EE_
-X-MS-Office365-Filtering-Correlation-Id: e092196a-a73a-407d-a436-08daed14b016
+X-MS-TrafficTypeDiagnostic: DM6NAM11FT017:EE_|BN9PR12MB5145:EE_
+X-MS-Office365-Filtering-Correlation-Id: f9aa834f-ec46-4d7b-5caf-08daed15fe25
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: qzQvjymIxpo9wASQpRfEe2ba5IwHm3G6Mi3IzLHYbEh5IM/AQY5rxVFBLh2VpLWMrpVJNLuvcmRrWit/tOyemvYx95Eve11zXu2fCs6QxUfab4JYWnge7ISXy64xhKWSTBfYnJeSvtnFx9LlfLQLsYKMrjFwk5Qc0qRk1BnvfkkEd56A4PqgwybxG3TW9JHxR8Jc7VmV5hJRvaWwJg19xQx0/EkdxXE6kFvemNJpASSuFnj/b/Yf+Z16xEQxH2m+3UlNhe6an2/OfsL383FsSD7AqSgdpjon12zhndsCfLcBnvZDlht4b85b6oGztnJ5y0c7GYp1i61hXoPPFLReUYVlqZasPDHTU6Osh3SjTkLqGczRU6g4mwoCMoBz6AbZi7VuE9GR6EDgarGUMGqr0ZfM6Zr9TEzkA9e8Pvpn8OdqZbLCy8xJcR3PqRL4lmtv3d2AUr2bVnB8Ifu02bY0tbImh1Qp0BwdEXVAAcaMYcT5yELH71Qz2empJxmEAOqeXyVDtLCW0HPGS9y8h09p37jS0acTUMEtK3hZCaCHMM10ERK5s8T6fk/KH0HShKrHDK0gFZluk5JJ8CNxLPwcG2K4sBZaiCgodaDqWtohK6owZ0Njpcnhx3DYq3DrXC5ikZw+iGZYCGMX8rmOBQ0FU3uhJNFGeHbBgcizBBcZpeKfNksM1VuVc/L65BZl0xQKg0wDp6ij8ABAmLa4Mg/s/t+8QtoFBycHbqAp5OqlDsMPXUt3nyB+HUFTBkWuvSNDlAkeQKnb11Fx+2OvNRmCmg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB5762.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(39860400002)(346002)(366004)(396003)(136003)(451199015)(2616005)(83380400001)(6512007)(186003)(26005)(31696002)(86362001)(36756003)(38100700002)(2906002)(110136005)(316002)(5660300002)(8936002)(66556008)(8676002)(66476007)(4326008)(66946007)(31686004)(6666004)(53546011)(41300700001)(6506007)(478600001)(6486002)(22166006)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OUFJM1dORkxhM3dsb2Vvb2xEdGZwaDVVNmg5aTZPUmtITjBuSVI5R1pyaDlV?=
- =?utf-8?B?VE5hc3JLOFJiV1A3UmVrOFN0VVh6WkNnaEUvd3I3cUVpazFzcDM4dm9VM0Y5?=
- =?utf-8?B?VW1XTmVUcnhiM0NZL0ZOdXRWZUZtV3ZEYzZ2aXdrM0t1YkFkZlRpWjdGaXVl?=
- =?utf-8?B?TWhPNmVaRlFVQ1BRQ1F0L3RkV3puRVdXdURQMFlLRHIrK2U0MVM4UitlRnpI?=
- =?utf-8?B?VU54ZjBuK3dRRVh0UEo4bWlNcnoweHNWVFB5SkZqSG5HaHRwQ21jZitwVDBy?=
- =?utf-8?B?OHJFc2Q5cmZvVHBkVHljWmJRNWVidFM0OWtvK2cvdkRoaE9ta3JkM0dybitw?=
- =?utf-8?B?anlQNzlHdlRzSjBReTdZK0xvbWFZSkRqSmxGOGhMeW9PZy9DNm5sMTNZaVUv?=
- =?utf-8?B?dHdxWG81eFg3MU9lZ0hPU0hOR0NPd05CS2xnOWlndm5Id1hsZ3pHeGdLUU1h?=
- =?utf-8?B?eVMxbEtSYXA1MHUzQVd1bk5HMkpQaXFuWDlYQ0w1VjBQVlQrWit2anFhSUNj?=
- =?utf-8?B?R0xIYStEbi9BZ0dqQThnU1k2V3JEMWMvd3hVMk1nK2xsMFRPS1p4U1E2cDBs?=
- =?utf-8?B?MVQ0ZnpRUms2NnQ2T3hsVmZkQmZIQkdRdGFRSDNXRVpOS1NIMnp3d1hkNE00?=
- =?utf-8?B?K05nUnEzdTZhNEErejV0TklHTDRJRVZpbWtXaXI5d2djUWl2cDRjelF4L0NY?=
- =?utf-8?B?TGtORVpsa2hyaVBCaHhEbzd6eUg4di9VQ0VxWWIveC92cHdRSmE3b1hmUUJz?=
- =?utf-8?B?MXBKaHh2YWxSZ1N1dHFOL2hWOUk2Zko0aGpvSy9NelFmZDAvd2Vrd1FuSHcw?=
- =?utf-8?B?NU1xOXQ4RFdSaXRLaVZJQVRQdlkrOTRaVXZvYmM1TDJvdDJ6eEFURityWWNN?=
- =?utf-8?B?RGhISnZqU1ZZbVdoVExZa0d5dVlpOXZNdVM5WjViZnNPUkhHQzNEa21iS2F2?=
- =?utf-8?B?TGZOZXIyV0VGQ3lseTU2Y0FNZEpTSDEycjRpNUJqRUIyNHo2clpGN09CbG9y?=
- =?utf-8?B?elFIR0VGRUdLaHR0bmRvaVh5RmRhc1UycE5NbWhSSlRiM0xBdFdZZkFhbDIr?=
- =?utf-8?B?TkI5T25SVmFDMXFWU2VkNUN1bHNsa3MvMGFXVDE2cFRJYzc2UTlhbUovWHBV?=
- =?utf-8?B?SlROSTY0YzJxdkZ5d2dlSlV6TVo3eVVoRlVmRElhU3dydEJNa3NUN0s2c3Az?=
- =?utf-8?B?YVRxUkxoaHBEQk9EbW1uOW1rblBGU05SejBPa1NrZlBoeUZDUHQwRVl6MkxR?=
- =?utf-8?B?dFBNakk4THdERWZPNWd4KzNrUkR0UGpxYngrTWpTMTNxTXlERnlPbWVCMi9C?=
- =?utf-8?B?ZnZGM2pHbjVPcEZKR2V0Qm1SWGVUWXA1YVp5SFhRYmdtK3NIcC9CN2ZibFBo?=
- =?utf-8?B?dWQwSW05R081dUJldVVIOFdZd0NNNnpqa2VrRmFEeVViVXhQYlpOL2pyOHdX?=
- =?utf-8?B?WTJ1S1A1bkJrcXAybVlxRmFsK2hzQ2VyTk95dk1BeEdoaEJocWhWY01FTDlq?=
- =?utf-8?B?czZZR0dCTllSellJekRkT0pKeGFEZFRzMVRrRHRETnJjZE5GV0Zoa3NoY1Zu?=
- =?utf-8?B?dG1SdEIrMkM0UzNabVRDalE3b3hwQkRwZ1J3cDF0R3ptUnU5M0trVDQ4V2lw?=
- =?utf-8?B?cmQ0NVZDR1haZTlJaDVIenZWMTVFTE9DaTl0QjdsKzhuUXVIZTdKcEdHRitQ?=
- =?utf-8?B?NXFNR0NwbExRRHpIN2tJK3ltQWt1T2VzREtEYlgzMEY2dEUxOUNaMm5SanRF?=
- =?utf-8?B?ZnRhUGlVL210eGZOSXhHamYvVFRzS3gwbHRhL3FKR0FHNzBhUHNPc1dBcFdK?=
- =?utf-8?B?L08veVVNWG9GalY3ZjVwVS9QMllKNm16UXVNN3lZbXVia2ZLY2l4azlMVXRU?=
- =?utf-8?B?ZmpNTFZtdStmK0s4ZlpBU282d1l5WjZSRjVlaGs1dGZlblkwV0RLcjNHT21K?=
- =?utf-8?B?UWVQcUZNc1l0OXgyRFdhbmtRN3N0blhCMWF4dEdoL3o5MjFhbXRTODBnZ2pS?=
- =?utf-8?B?cWdkbVlvNjg4SFMxNGxuNnRpbENkN2h4Qnh0bXduOGJXMGZ2MnR3Rlc1Qm9G?=
- =?utf-8?B?Zkg3d1BpclZ5a3VVcnNsK2VrUnB1UlJNVjhUN2p3ZEI1ZnRQR0QwWGxPNnl1?=
- =?utf-8?B?dklsRnRteW9HKzhqM3M1dUp6WUZCUjVybG1PUkphdUEyMXFKM2RGYXVJdFJC?=
- =?utf-8?B?U0E9PQ==?=
+X-Microsoft-Antispam-Message-Info: z3JtICK+LfFBkLfJWGL9M1da3f9ArZWCChDcihRCJx3fydHIsxmI7IYNxOAsOwUzrPxOGNXcpSu5suVGRX9rAe6iLRyJi8m2IOBFyF86uNafruk5isZNyMlPptXrAPv5DcwO+tQ8xH3NmUwzA0dCSqakmeJKsrh2K1k5cheKt+PKlzunJkq2mc64Jn+eAsgwfudYf9vOMOvb3YYs28k2QCrptbAPsDsoHR+0/4ws6ll7++OIdF0RXgsZdC4PgyzJO+LecQOXfGa/njRNVYhPwYasNK1TdTIgvsgixKQ/Vmuj2vi2KvR4gFvcqIXe3jzN+0KdRKD5PRqFL9h5gkB4VvqWbcG/xyalDC5AL07xgRqAV97aAMEu9dSF6ZlSRjRGo18/uwk5pdvxyZs+JrOA3WW7jdv5DKPYxuMPdLwBoOEKz87YeQaPfJgOee8Y7tWh6+URVxGYaC/ozCi6KlDtfoIv/yrI+lJQ/N6866r7HYa8f1l+2jBfZS4EbOzZj6XwMtUJU7PVvLUmOL3fsrHxSYbvfzrXwQWJVXBtAnwCSe+WplryOpJ6uUkgdTmzrL/Rgklyz1RG1U//rgeDlLMw8vvMxBt8GpITqb2N186XWwmbMkFSmOsmRZBb+SEqveLbkzSMkbdhAQHE1lU8T1yr8db4cUCglbBfmDswr3P9zXBrf+mGgQX7Jr+nSt5rO4ycyP6rYmWJ+AiEf8mPK6KlCM83Rn7iV/+v7ER2y8KTJH/M93JLHtyNKwM2u/vXKIMM
+X-Forefront-Antispam-Report: CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230022)(4636009)(376002)(136003)(346002)(39860400002)(396003)(451199015)(36840700001)(46966006)(40470700004)(5660300002)(2906002)(8936002)(4326008)(41300700001)(8676002)(478600001)(316002)(54906003)(70586007)(70206006)(110136005)(1076003)(82310400005)(336012)(26005)(40480700001)(7696005)(107886003)(47076005)(83380400001)(426003)(82740400003)(7636003)(356005)(186003)(2616005)(86362001)(40460700003)(36756003)(36860700001)(22166006)(21314003);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e092196a-a73a-407d-a436-08daed14b016
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB5762.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jan 2023 22:57:13.7623
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jan 2023 23:06:33.8898
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: f9aa834f-ec46-4d7b-5caf-08daed15fe25
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MPSf7U70tSy+bPTJe2X0KYe7QvicS+WLtL8VzTTm+zRVcdOAu7PQXudZZTdrXHd5RAuU5EIA77nDpTTY8jeB8A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8573
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT017.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5145
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Alexandre Belloni,
+The current implementation of rtc-efi is expecting all the 4
+time services GET{SET}_TIME{WAKEUP} must be supported by UEFI
+firmware. As per the EFI_RT_PROPERTIES_TABLE, the platform
+specific implementations can choose to enable selective time
+services based on the RTC device capabilities.
 
-On 1/2/23 16:21, Alexandre Belloni wrote:
-> On 02/01/2023 11:47:11+0100, Ard Biesheuvel wrote:
->> On Tue, 27 Dec 2022 at 05:09, Shanker Donthineni<sdonthineni@nvidia.com>  wrote:
->>> The current implementation of rtc-efi is expecting all the 4
->>> time services GET{SET}_TIME{WAKEUP} must be supported by UEFI
->>> firmware. As per the EFI_RT_PROPERTIES_TABLE, the platform
->>> specific implementations can choose to enable selective time
->>> services based on the RTC device capabilities.
->>>
->>> This patch does the following changes to provide GET/SET RTC
->>> services on platforms that do not support the WAKEUP feature.
->>>
->>> 1) Relax time services cap check when creating a platform device.
->>> 2) Clear RTC_FEATURE_ALARM bit in the absence of WAKEUP services.
->>> 3) Conditional alarm entries in '/proc/driver/rtc'.
->>>
->>> Signed-off-by: Shanker Donthineni<sdonthineni@nvidia.com>
->> Queued as a fix in efi/urgent, thanks.
-> This rather seems like an rtc heavy patch and the subject line is
-> misleading. This should be rtc: efi:
-> Also, I'm pretty sure this doesn't qualify as an urgent fix.
-> 
+This patch does the following changes to provide GET/SET RTC
+services on platforms that do not support the WAKEUP feature.
 
-Thanks, I'll post v2 patch with your suggested subject.
+1) Relax time services cap check when creating a platform device.
+2) Clear RTC_FEATURE_ALARM bit in the absence of WAKEUP services.
+3) Conditional alarm entries in '/proc/driver/rtc'.
+
+Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
+---
+Changes since v1: 
+   -Changed subject from "efi: rtc:" to "rtc: efi:"
+
+ drivers/rtc/rtc-efi.c | 48 ++++++++++++++++++++++++-------------------
+ include/linux/efi.h   |  3 ++-
+ 2 files changed, 29 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/rtc/rtc-efi.c b/drivers/rtc/rtc-efi.c
+index e991cccdb6e9..1e8bc6cc1e12 100644
+--- a/drivers/rtc/rtc-efi.c
++++ b/drivers/rtc/rtc-efi.c
+@@ -188,9 +188,10 @@ static int efi_set_time(struct device *dev, struct rtc_time *tm)
+ 
+ static int efi_procfs(struct device *dev, struct seq_file *seq)
+ {
+-	efi_time_t      eft, alm;
+-	efi_time_cap_t  cap;
+-	efi_bool_t      enabled, pending;
++	efi_time_t        eft, alm;
++	efi_time_cap_t    cap;
++	efi_bool_t        enabled, pending;
++	struct rtc_device *rtc = dev_get_drvdata(dev);
+ 
+ 	memset(&eft, 0, sizeof(eft));
+ 	memset(&alm, 0, sizeof(alm));
+@@ -213,23 +214,25 @@ static int efi_procfs(struct device *dev, struct seq_file *seq)
+ 		/* XXX fixme: convert to string? */
+ 		seq_printf(seq, "Timezone\t: %u\n", eft.timezone);
+ 
+-	seq_printf(seq,
+-		   "Alarm Time\t: %u:%u:%u.%09u\n"
+-		   "Alarm Date\t: %u-%u-%u\n"
+-		   "Alarm Daylight\t: %u\n"
+-		   "Enabled\t\t: %s\n"
+-		   "Pending\t\t: %s\n",
+-		   alm.hour, alm.minute, alm.second, alm.nanosecond,
+-		   alm.year, alm.month, alm.day,
+-		   alm.daylight,
+-		   enabled == 1 ? "yes" : "no",
+-		   pending == 1 ? "yes" : "no");
+-
+-	if (eft.timezone == EFI_UNSPECIFIED_TIMEZONE)
+-		seq_puts(seq, "Timezone\t: unspecified\n");
+-	else
+-		/* XXX fixme: convert to string? */
+-		seq_printf(seq, "Timezone\t: %u\n", alm.timezone);
++	if (test_bit(RTC_FEATURE_ALARM, rtc->features)) {
++		seq_printf(seq,
++			   "Alarm Time\t: %u:%u:%u.%09u\n"
++			   "Alarm Date\t: %u-%u-%u\n"
++			   "Alarm Daylight\t: %u\n"
++			   "Enabled\t\t: %s\n"
++			   "Pending\t\t: %s\n",
++			   alm.hour, alm.minute, alm.second, alm.nanosecond,
++			   alm.year, alm.month, alm.day,
++			   alm.daylight,
++			   enabled == 1 ? "yes" : "no",
++			   pending == 1 ? "yes" : "no");
++
++		if (eft.timezone == EFI_UNSPECIFIED_TIMEZONE)
++			seq_puts(seq, "Timezone\t: unspecified\n");
++		else
++			/* XXX fixme: convert to string? */
++			seq_printf(seq, "Timezone\t: %u\n", alm.timezone);
++	}
+ 
+ 	/*
+ 	 * now prints the capabilities
+@@ -269,7 +272,10 @@ static int __init efi_rtc_probe(struct platform_device *dev)
+ 
+ 	rtc->ops = &efi_rtc_ops;
+ 	clear_bit(RTC_FEATURE_UPDATE_INTERRUPT, rtc->features);
+-	set_bit(RTC_FEATURE_ALARM_WAKEUP_ONLY, rtc->features);
++	if (efi_rt_services_supported(EFI_RT_SUPPORTED_WAKEUP_SERVICES))
++		set_bit(RTC_FEATURE_ALARM_WAKEUP_ONLY, rtc->features);
++	else
++		clear_bit(RTC_FEATURE_ALARM, rtc->features);
+ 
+ 	device_init_wakeup(&dev->dev, true);
+ 
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 4b27519143f5..98598bd1d2fa 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -668,7 +668,8 @@ extern struct efi {
+ 
+ #define EFI_RT_SUPPORTED_ALL					0x3fff
+ 
+-#define EFI_RT_SUPPORTED_TIME_SERVICES				0x000f
++#define EFI_RT_SUPPORTED_TIME_SERVICES				0x0003
++#define EFI_RT_SUPPORTED_WAKEUP_SERVICES			0x000c
+ #define EFI_RT_SUPPORTED_VARIABLE_SERVICES			0x0070
+ 
+ extern struct mm_struct efi_mm;
+-- 
+2.25.1
+
