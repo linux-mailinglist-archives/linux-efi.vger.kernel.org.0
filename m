@@ -2,266 +2,172 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E3A065C1B8
-	for <lists+linux-efi@lfdr.de>; Tue,  3 Jan 2023 15:21:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 045B265C414
+	for <lists+linux-efi@lfdr.de>; Tue,  3 Jan 2023 17:37:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233435AbjACOVJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 3 Jan 2023 09:21:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37998 "EHLO
+        id S233725AbjACQhG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 3 Jan 2023 11:37:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233358AbjACOVI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 3 Jan 2023 09:21:08 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63FBC103E;
-        Tue,  3 Jan 2023 06:21:02 -0800 (PST)
-Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C35001EC050B;
-        Tue,  3 Jan 2023 15:21:00 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1672755660;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=Y2lMNFRbTCBvtpE0tVvmu7BZzOhA8eUbudyQ9zFc2rg=;
-        b=K6+UVr5X3tzkIkUeK2Xva7KYiJtp9twfwujIBube7NjMmd5dtNBxZMM9gtIWVhujHdqzOo
-        QbkxhtVi0qRNa7atPIIA44ov01SyhLrTMEvbipQVa4S5/HMxwOsZAsbB5KufNqx+qS7LeB
-        /zFFULKxRKEjW7PcJmhydT9s8xEP3yQ=
-Date:   Tue, 3 Jan 2023 15:20:55 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
-        khalid.elmously@canonical.com, philip.cox@canonical.com,
-        aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
-        linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv8 06/14] efi/x86: Implement support for unaccepted memory
-Message-ID: <Y7Q5x7qV/Cmc/p8s@zn.tnic>
-References: <20221207014933.8435-1-kirill.shutemov@linux.intel.com>
- <20221207014933.8435-7-kirill.shutemov@linux.intel.com>
+        with ESMTP id S233158AbjACQhF (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 3 Jan 2023 11:37:05 -0500
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2081.outbound.protection.outlook.com [40.107.95.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A69B4E0F0;
+        Tue,  3 Jan 2023 08:37:03 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ci10SfEuMeQfuyeFthaYpp8W2TM2rQdOEKCxqg67y29ct1FqzxufoF36QwWiJTYyCPsrHfgh2KSeu4WqpNFma+L32W6Yn5IzS9WIpTR4FHnfBnYpdEjaR/q8cad0tTCtAx1roAIq50j6Nr2gFUPaFkQnSmOqzLYhDRzJAm+8WddsgWbulBVKLymcacukdBqDubSNXQtRuyPaF5RqNHNLfnIvKRoraT0M+9P+tAfVGj/GE0EYNWLqsPcViIQNRPH4A64CPaqEh1TqNGpJyMfBoEZth4Y+GRA82juYPQhqkLPP7iYWILbZMUZrOVOHiWvc3T1YS4BhsZ9iKJMaglEOag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oXLY8oa0LIwouXw1AeFKOtJvTpE2qkSNEHPRtBACGlY=;
+ b=mORyVO8vqhQYBDf3zBVNOvIRM6b+VUwSYMADtY2Rveo0aj7lwGF2RuRnxhDRzQotmWKk5q3p6fu76ExZlYLyUysSdN6/DdSw3kFTuvMl/ZhU3jiDavX3Np7T4rFnGF93D7nkxzJfONhGrawi129RS2T6bXBnJRfhEOsZTtqflIQiZWmH+nfx048P7XKh45ilJYHPp+itegn4q1QESi7hPHgl4wzzd1WrvSOolR3rcqc+w57mLiseKSbBvU0JW8yKKNA7rR06borxchJhbHiU8CeQKmMINInaEtJoSh3S8vvMzpTJKTwdjv0g6c+XIIhhfodSLfCFvzYxLPrmZWLqFA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oXLY8oa0LIwouXw1AeFKOtJvTpE2qkSNEHPRtBACGlY=;
+ b=D5OY0rY8DPJA1BS9CSl28zs8wpJWI012YWxk8TnEHO4a6RzMgmhNibNb1pyrYagNsOKVzf71fAFSSjwXiyvhutWpt8MC1RTfJSZpLv2ADcgQ4SGxS2buzna1HGSTaTY67n7GM4kxv40gAcgtN9ap0lKEeLQll9/tfcWw30bJzZIg3q1Z8Ec2CG9xjOn08Hh5LKvO1hHiRFAZTRDCOjjETXdqzEmSEUPIKucGXNFoIjXMENtirbxKYb21/Li9m+/aJ7KF5Zwm0DAU97WvknJXeMUZobnHjeVYu2k58C8czR/YYynCCGyX7vo2OsNUrUzharswcgGoCC5kGTfb0tqbZQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MN0PR12MB5762.namprd12.prod.outlook.com (2603:10b6:208:375::12)
+ by DM8PR12MB5446.namprd12.prod.outlook.com (2603:10b6:8:3c::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5944.19; Tue, 3 Jan
+ 2023 16:37:02 +0000
+Received: from MN0PR12MB5762.namprd12.prod.outlook.com
+ ([fe80::f263:d93d:ba53:25fe]) by MN0PR12MB5762.namprd12.prod.outlook.com
+ ([fe80::f263:d93d:ba53:25fe%5]) with mapi id 15.20.5944.019; Tue, 3 Jan 2023
+ 16:37:02 +0000
+Message-ID: <7608579c-6ee5-f576-aa06-a763c3b6108a@nvidia.com>
+Date:   Tue, 3 Jan 2023 10:36:50 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH 1/1] efi: rtc: Enable SET/GET WAKEUP services as optional
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     Alessandro Zummo <a.zummo@towertech.it>, linux-rtc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
+References: <20221227040925.1619833-1-sdonthineni@nvidia.com>
+ <CAMj1kXG79-MxGJEwvnekqbVyeEMVHBfhNjwZkz91mMwv4-vT3Q@mail.gmail.com>
+ <Y7NY+ba2USk7hEAx@mail.local>
+ <CAMj1kXHAYvGdGJN0rfEL2y1jRP8P5YotKMmCmx0h07vJP=YfBA@mail.gmail.com>
+Content-Language: en-US
+From:   Shanker Donthineni <sdonthineni@nvidia.com>
+In-Reply-To: <CAMj1kXHAYvGdGJN0rfEL2y1jRP8P5YotKMmCmx0h07vJP=YfBA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA1PR05CA0007.namprd05.prod.outlook.com
+ (2603:10b6:806:2d2::9) To MN0PR12MB5762.namprd12.prod.outlook.com
+ (2603:10b6:208:375::12)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20221207014933.8435-7-kirill.shutemov@linux.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB5762:EE_|DM8PR12MB5446:EE_
+X-MS-Office365-Filtering-Correlation-Id: 53647136-82c3-4bb4-d559-08daeda8bdb5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ZA2yhxNdRktpnmVWrE0YQe2uhXtgbMQaFlSg32eZdTzZpV0xzdywNXz3zOo32+cpSQjHEV1Uyyg5LLIpezv/GcNQIccCEx3UltfbMCuCKiereksTSREfuj2j0gS6N5iIMjGRl9GWy2dlExFnbEmgkkl2laJfWPxSlHDZC96L/8/iYgygCGpqD305h4Hz3Dm+cfJlrTL6O/8luwEO7SM368kyp6xCoQkc7VjX008dK3jdudcP/vrP8H4QnZgPx95/2R9qZo4EMORZQX0bOftK9ocRDqWNDfn0gj/Psv9Ot3cVCIjB0bmLyRqj2JrVHTScqRU+D31se+uY7lQlNQB0GVLIh8r7D8WmJvFxrWkDviJ8S3LfC95fefugAEmcC38XlVBDEFtPHj0tBI4bx3jy6xNR1Qwy5B+mHFHSJ1BtuuxZxulqt5RTJzIwapoxqqD2WPYNDjEedGKkCYnY6sCAY0dQxFwLN2bXFqYMVw4+TQWUMDKhrAMXxj4JeZ22BQQ+I6EtaFVrwvt1UECh6bLRbwDj1YVhuahlSG547OyjsY+RR38wF5t81inqCtU2N8RiT2qJuOCWhH+P8Tv2UyR9NCLZ7Rbc21m6L8qhGk1PYVmGE1Qo5UMNDIsC2kzxCyvJJllWgy8vpCvBm1ix1Lxm6e4SNZZxymJWAs9N7eoA8oQaXVb48hj40uFe+CdxODXrfNzIcKQeQ3ICvKIB7wRg0hkEG+WtbJHK/XTq8IvR+Im76bHFJG4odvWHhNEoNlVWj/JnOujtSI2t+qC0cWWsUg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB5762.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(366004)(396003)(376002)(136003)(346002)(451199015)(4326008)(8676002)(2616005)(66946007)(66476007)(36756003)(66556008)(41300700001)(316002)(86362001)(2906002)(31696002)(5660300002)(38100700002)(110136005)(83380400001)(8936002)(6506007)(53546011)(478600001)(6666004)(186003)(6512007)(6486002)(26005)(31686004)(22166006)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UC9IOS9CcHhrKy81K2xTSHlydWNHYXllbkpjWkhSZDhHT3hyMmtNMGlzcnFX?=
+ =?utf-8?B?emtnTE5RQjZSaXczdCtoTHlvOFNFQ0xGOU1LWGxKdCtZSEZSd0IzQ2x5OWpt?=
+ =?utf-8?B?dlpmWjZtTEpzSjdKdFdTSHdxaDNScTZhaG5ncHlBb20wQ3VLT00rYXQzZXBX?=
+ =?utf-8?B?RFZXa3VPaVl0NzVRUHZHVUdMNEFoODNzSGFhQXZjRmZ3M0Fndkg0aithY2ZT?=
+ =?utf-8?B?clQ3L2RjVXhPU29DUkRCeHlvaFp4eXdlQnpaenUrTDZER0toQ0EzU1ZaRitK?=
+ =?utf-8?B?TXd3SU1VZndxSWVhNlI3Um9uWmUySWh6MTFzZUxRUThPRCtaOG51TU14M2sv?=
+ =?utf-8?B?bFhtU1E4TkZZUERHcC8xaWJ0NGVKYUdNMVYrUiswM2FPZXJuUjJOWmo1emoy?=
+ =?utf-8?B?WVBDTG5XTFdzTEQ2bnVsREJXUW1xN1JuRTZXd3pJWEFLaWlpR0ExV2I0ZVNo?=
+ =?utf-8?B?d2NGODlxcEdOWnR2WSszL0dqTkNhaEJkS3R5ZUVWUzl6NzNHK2ExV2tMbFQw?=
+ =?utf-8?B?Tm0yTnZmUnkzaE5LbVFSNkVCODRwZHJqVkFXS3p0dzltVktPaUdLUVZwODY2?=
+ =?utf-8?B?aXBMc1YxOWNKWUNSK0VLZnNtVHJ2aFdOUE9Odzc0cmEvamFGOUZpaWY1VWxF?=
+ =?utf-8?B?QnVtQVZUaGQ1bDFySWxZb2ZQTyt4VXFWMTdTVGRhL3FPeDdQRm5uMG4yNmJn?=
+ =?utf-8?B?T2N5NmE3cjFJRksrRHhvWmNIbWtjNG5MU1hLWnN0YjZaRFZEREJGR29wbFFI?=
+ =?utf-8?B?QXpSMC9rVFZJcnY2bVNlUkRxRFVodXFKNXJnMTljK1F6TnVPVGhnNDFKQnVj?=
+ =?utf-8?B?ZWpQckxsTis4dVZuaEFkRWZheVRubURmVE9mOEx0RzhRWFhQNWs1SnhPdlB0?=
+ =?utf-8?B?OHlZcHE2cGRWVzNPeU9Wd1NQVFdFSlJMTGNvZEZxME95MnVCL3ZqYkpyUmZs?=
+ =?utf-8?B?U2lVczYyN2RJMllMRWE3QlJFSS9PQ05nVVc1NFNzMUdNZ21maVVYQW5DQmxG?=
+ =?utf-8?B?ajJVc0hCWmFMNjl6dXJETldMa3NUNUF2emlyRzQ0WEg3UXZCa01ndXVTTlpU?=
+ =?utf-8?B?MWlUT0RVRUVBQ3FDZlFPUU9WNm82RUwyNWtkd2hySlh0N1hxaWpBejEzNjRo?=
+ =?utf-8?B?YmU3S3pyQkZpcStFcSt4ZzIyVkpxWmQ0dnJxSzlXN2U4ZEp5MGVQZG9yZ0Zq?=
+ =?utf-8?B?aDZSdFdTbnhoK0g2RnVOTGg2Rm1lNm5tZWhWUXA0dnd1WUFyYTJDYjhkRFJL?=
+ =?utf-8?B?V2kvcEE5TmtVNzJKL0orVXp1QlhtYW9vdERUQkRRa1NHT0h5dmJCN2J1eFQy?=
+ =?utf-8?B?cFNHa3g1TTh5OU5OdGZkQkxyaGxjSWRBby9LZk5mdnJZZGZoYVpGZTVqTDlj?=
+ =?utf-8?B?S3l3djFIQ0p1SGh4THA0OXFpVDRRSWswbmJwSlRmQko4VVdJV2toWVA1RTZG?=
+ =?utf-8?B?Nkp4VWVabkl3UE5uZGRnVk9WOGM3SzlHUHJRamE0Q3IwYld4NkNxSnA0c0Vj?=
+ =?utf-8?B?bXh1eS9vOXByYUtEb3pkQU40MHZrd0NETXNJcVlyU2hydTZnUXdjemZId1Ft?=
+ =?utf-8?B?UThkZm8rSTNVN0NldEl1RllSYk1SajB5N2FSd3RTRFBrREhrUDFna3lOQWwx?=
+ =?utf-8?B?Zkt5NG9EMzJLenRkeWllbU93UkNFcDUyKzFKQXdubE12QzZhWXQ0Ky9KcVdu?=
+ =?utf-8?B?dzRuNDNQWTdWTGsvTlRGaFVUMkNQMzZzd2U3QkRVS2ZWcXRCMHcrOGRkZGV3?=
+ =?utf-8?B?RUI2eGhjdkcxMVNXRXM3ZnRoTElmUTNQQUVFdWpwbVB2djNTRk9WQi91OEta?=
+ =?utf-8?B?TTMyck1UZzBrU0l1L3BKczFWYXVtTGh4UCthL1ZRQkptWFF3WXRleCtzWlVw?=
+ =?utf-8?B?aHJDemllckNMdFV6QXBma1pwcWhpakJDL0szcmhVMW1OeVN3OGk2emdEN3A2?=
+ =?utf-8?B?OU1yWmx3OTJqckJ3QTFmYkdROFMrQlZjaTVZZUtRUFRqOUdFeFI1UjA2dnNt?=
+ =?utf-8?B?R1JkZ0xaR2hDR29GbHBIazF3Qjc1RllOWWJVcXVPTHpPemY3akRmOUY3R1oz?=
+ =?utf-8?B?STNGVjVQd052Mk0rai9DamxRM044N1MzQm5QcTZvVXNiZFlsMDdMbWV1NXF0?=
+ =?utf-8?B?UGlYY29ucUhZZzdnUFh0ZXY2VTNQQkh2RzVDZkxHdUFWVGhEaDRUSE9VL0Rl?=
+ =?utf-8?B?V2c9PQ==?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 53647136-82c3-4bb4-d559-08daeda8bdb5
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB5762.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jan 2023 16:37:02.1632
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sPGAS3bzUveq9UyiHswxQq/t2MPl81FSlZYymXJ1N4U+IXxnkiqos/SilMvz64vxAdB0f6d3yd/jMDCNG/tdtA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR12MB5446
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Dec 07, 2022 at 04:49:25AM +0300, Kirill A. Shutemov wrote:
-> The implementation requires some basic helpers in boot stub. They
-> provided by linux/ includes in the main kernel image, but is not present
-> in boot stub. Create copy of required functionality in the boot stub.
+Hi Ard Biesheuvel,
 
-Leftover paragraph from a previous version. Can be removed.
+On 1/3/23 03:18, Ard Biesheuvel wrote:
+> External email: Use caution opening links or attachments
+> 
+> 
+> On Mon, 2 Jan 2023 at 23:21, Alexandre Belloni
+> <alexandre.belloni@bootlin.com> wrote:
+>>
+>> On 02/01/2023 11:47:11+0100, Ard Biesheuvel wrote:
+>>> On Tue, 27 Dec 2022 at 05:09, Shanker Donthineni <sdonthineni@nvidia.com> wrote:
+>>>>
+>>>> The current implementation of rtc-efi is expecting all the 4
+>>>> time services GET{SET}_TIME{WAKEUP} must be supported by UEFI
+>>>> firmware. As per the EFI_RT_PROPERTIES_TABLE, the platform
+>>>> specific implementations can choose to enable selective time
+>>>> services based on the RTC device capabilities.
+>>>>
+>>>> This patch does the following changes to provide GET/SET RTC
+>>>> services on platforms that do not support the WAKEUP feature.
+>>>>
+>>>> 1) Relax time services cap check when creating a platform device.
+>>>> 2) Clear RTC_FEATURE_ALARM bit in the absence of WAKEUP services.
+>>>> 3) Conditional alarm entries in '/proc/driver/rtc'.
+>>>>
+>>>> Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
+>>>
+>>> Queued as a fix in efi/urgent, thanks.
+>>
+>> This rather seems like an rtc heavy patch and the subject line is
+>> misleading. This should be rtc: efi:
+>> Also, I'm pretty sure this doesn't qualify as an urgent fix.
+>>
+> 
+> I'm happy to drop it from my tree, but please add a cc:stable so it
+> gets backported to v6.1 at least. Otherwise, EFI compliant systems
+> that implement get/set_time but not get/set_wakeup_time have no RTC at
+> all on any LTS kernel until a year from now, and this was never the
+> intent when we introduced the EFI_RT_PROPERTIES_TABLE.
 
-...
-
-> +/*
-> + * The accepted memory bitmap only works at PMD_SIZE granularity.  This
-> + * function takes unaligned start/end addresses and either:
-
-s/This function takes/Take/
-
-> + *  1. Accepts the memory immediately and in its entirety
-> + *  2. Accepts unaligned parts, and marks *some* aligned part unaccepted
-> + *
-> + * The function will never reach the bitmap_set() with zero bits to set.
-> + */
-> +void process_unaccepted_memory(struct boot_params *params, u64 start, u64 end)
-> +{
-> +	/*
-> +	 * Ensure that at least one bit will be set in the bitmap by
-> +	 * immediately accepting all regions under 2*PMD_SIZE.  This is
-> +	 * imprecise and may immediately accept some areas that could
-> +	 * have been represented in the bitmap.  But, results in simpler
-> +	 * code below
-> +	 *
-> +	 * Consider case like this:
-> +	 *
-> +	 * | 4k | 2044k |    2048k   |
-> +	 * ^ 0x0        ^ 2MB        ^ 4MB
-> +	 *
-> +	 * Only the first 4k has been accepted. The 0MB->2MB region can not be
-> +	 * represented in the bitmap. The 2MB->4MB region can be represented in
-> +	 * the bitmap. But, the 0MB->4MB region is <2*PMD_SIZE and will be
-> +	 * immediately accepted in its entirety.
-> +	 */
-> +	if (end - start < 2 * PMD_SIZE) {
-> +		__accept_memory(start, end);
-> +		return;
-> +	}
-> +
-> +	/*
-> +	 * No matter how the start and end are aligned, at least one unaccepted
-> +	 * PMD_SIZE area will remain to be marked in the bitmap.
-> +	 */
-> +
-> +	/* Immediately accept a <PMD_SIZE piece at the start: */
-> +	if (start & ~PMD_MASK) {
-> +		__accept_memory(start, round_up(start, PMD_SIZE));
-> +		start = round_up(start, PMD_SIZE);
-> +	}
-> +
-> +	/* Immediately accept a <PMD_SIZE piece at the end: */
-> +	if (end & ~PMD_MASK) {
-> +		__accept_memory(round_down(end, PMD_SIZE), end);
-> +		end = round_down(end, PMD_SIZE);
-> +	}
-> +
-> +	/*
-> +	 * 'start' and 'end' are now both PMD-aligned.
-> +	 * Record the range as being unaccepted:
-> +	 */
-> +	bitmap_set((unsigned long *)params->unaccepted_memory,
-> +		   start / PMD_SIZE, (end - start) / PMD_SIZE);
-> +}
-
-...
-
-> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-> index 6787ed8dfacf..8aa8adf0bcb5 100644
-> --- a/drivers/firmware/efi/Kconfig
-> +++ b/drivers/firmware/efi/Kconfig
-> @@ -314,6 +314,20 @@ config EFI_COCO_SECRET
->  	  virt/coco/efi_secret module to access the secrets, which in turn
->  	  allows userspace programs to access the injected secrets.
->  
-> +config UNACCEPTED_MEMORY
-> +	bool
-> +	depends on EFI_STUB
-
-This still doesn't make a whole lotta sense. If I do "make menuconfig" I don't
-see the help text because that bool doesn't have a string prompt. So who is that
-help text for?
-
-Then, in the last patch you have
-
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -888,6 +888,8 @@ config INTEL_TDX_GUEST
-        select ARCH_HAS_CC_PLATFORM
-        select X86_MEM_ENCRYPT
-        select X86_MCE
-+       select UNACCEPTED_MEMORY
-+       select EFI_STUB
-
-I guess you want to select UNACCEPTED_MEMORY only.
-
-And I've already mentioned this whole mess:
-
-https://lore.kernel.org/r/Yt%2BnOeLMqRxjObbx@zn.tnic
-
-Please incorporate all review comments before sending a new version of
-your patch.
-
-Ignoring review feedback is a very unfriendly thing to do:
-
-- if you agree with the feedback, you work it in in the next revision
-
-- if you don't agree, you *say* *why* you don't
-
-> +	help
-> +	   Some Virtual Machine platforms, such as Intel TDX, require
-> +	   some memory to be "accepted" by the guest before it can be used.
-> +	   This mechanism helps prevent malicious hosts from making changes
-> +	   to guest memory.
-> +
-> +	   UEFI specification v2.9 introduced EFI_UNACCEPTED_MEMORY memory type.
-> +
-> +	   This option adds support for unaccepted memory and makes such memory
-> +	   usable by the kernel.
-
-...
-
-> +static efi_status_t allocate_unaccepted_bitmap(struct boot_params *params,
-> +					       __u32 nr_desc,
-> +					       struct efi_boot_memmap *map)
-> +{
-> +	unsigned long *mem = NULL;
-> +	u64 size, max_addr = 0;
-> +	efi_status_t status;
-> +	bool found = false;
-> +	int i;
-> +
-> +	/* Check if there's any unaccepted memory and find the max address */
-> +	for (i = 0; i < nr_desc; i++) {
-> +		efi_memory_desc_t *d;
-> +		unsigned long m = (unsigned long)map->map;
-> +
-> +		d = efi_early_memdesc_ptr(m, map->desc_size, i);
-> +		if (d->type == EFI_UNACCEPTED_MEMORY)
-> +			found = true;
-> +		if (d->phys_addr + d->num_pages * PAGE_SIZE > max_addr)
-> +			max_addr = d->phys_addr + d->num_pages * PAGE_SIZE;
-> +	}
-> +
-> +	if (!found) {
-> +		params->unaccepted_memory = 0;
-> +		return EFI_SUCCESS;
-> +	}
-> +
-> +	/*
-> +	 * If unaccepted memory is present, allocate a bitmap to track what
-> +	 * memory has to be accepted before access.
-> +	 *
-> +	 * One bit in the bitmap represents 2MiB in the address space:
-> +	 * A 4k bitmap can track 64GiB of physical address space.
-> +	 *
-> +	 * In the worst case scenario -- a huge hole in the middle of the
-> +	 * address space -- It needs 256MiB to handle 4PiB of the address
-> +	 * space.
-> +	 *
-> +	 * TODO: handle situation if params->unaccepted_memory is already set.
-> +	 * It's required to deal with kexec.
-
-A TODO in a patch basically says this patch is not ready to go anywhere.
-
-IOW, you need to handle that kexec case here gracefully. Even if you refuse to
-boot a kexec-ed kernel because it cannot support handing in the bitmap from the
-first kernel, yadda yadda...
-
-> +	 *
-> +	 * The bitmap will be populated in setup_e820() according to the memory
-> +	 * map after efi_exit_boot_services().
-> +	 */
-> +	size = DIV_ROUND_UP(max_addr, PMD_SIZE * BITS_PER_BYTE);
-> +	status = efi_allocate_pages(size, (unsigned long *)&mem, ULONG_MAX);
-> +	if (status == EFI_SUCCESS) {
-> +		memset(mem, 0, size);
-> +		params->unaccepted_memory = (unsigned long)mem;
-> +	}
-> +
-> +	return status;
-> +}
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks for considering the fix for stable releases, I'll post v3 patch
+with tag 'CC: <stable@vger.kernel.org> # v6.0+'
