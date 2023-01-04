@@ -2,127 +2,192 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B396665CDD9
-	for <lists+linux-efi@lfdr.de>; Wed,  4 Jan 2023 08:50:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 499B765D0D0
+	for <lists+linux-efi@lfdr.de>; Wed,  4 Jan 2023 11:40:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230487AbjADHuK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 4 Jan 2023 02:50:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45402 "EHLO
+        id S231591AbjADKkM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 4 Jan 2023 05:40:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233760AbjADHuK (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 4 Jan 2023 02:50:10 -0500
-X-Greylist: delayed 390 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 03 Jan 2023 23:50:08 PST
-Received: from a27-57.smtp-out.us-west-2.amazonses.com (a27-57.smtp-out.us-west-2.amazonses.com [54.240.27.57])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E5FC193E9;
-        Tue,  3 Jan 2023 23:50:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=ude52klaz7ukvnrchdbsicqdl2lnui6h; d=aaront.org; t=1672818216;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-        bh=drHjpr0LHopx3HmqATFGIrCQSSTGv27hzya8Ew0g6V0=;
-        b=UE067h7LNAsgokFSAm1nEPCePx7WT8g/3bIOD+y6aOOanycNXzF3g6NhqJ+TdMfu
-        Z0dE+5Jf9HY1gf1C0KaIXCKQQNJiZzp8ivVv76+e9lUkq1AmGCqI7XdTaeQahAvQPju
-        M7QpFzzlH4xGPzUIeTqAW60oWuliPe9JERUaJptc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1672818216;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Feedback-ID;
-        bh=drHjpr0LHopx3HmqATFGIrCQSSTGv27hzya8Ew0g6V0=;
-        b=MPGVIN0AEOZB7CFSj53TUjTMTZg4ynawBP8navibhP2eOfgrQHo4atsokw6fpbCC
-        GgW/16MjUdZi0cWtdJWDhl506FC61j4wNehQP0ThYihw+sPk3Q25fYFet7q0Jb0F8VC
-        MZ9HXdWgTT4yEiRziU6w6idRY0BNZnRlVyeWdmgc=
-From:   Aaron Thompson <dev@aaront.org>
-To:     linux-mm@kvack.org, Mike Rapoport <rppt@kernel.org>
-Cc:     "H. Peter Anvin" <hpa@zytor.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Darren Hart <dvhart@infradead.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Ingo Molnar <mingo@redhat.com>, Marco Elver <elver@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kasan-dev@googlegroups.com, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        x86@kernel.org, Aaron Thompson <dev@aaront.org>
-Subject: [PATCH 1/1] mm: Always release pages to the buddy allocator in memblock_free_late().
-Date:   Wed, 4 Jan 2023 07:43:36 +0000
-Message-ID: <010101857bbc4d26-d9683bb4-c4f0-465b-aea6-5314dbf0aa01-000000@us-west-2.amazonses.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230104074215.2621-1-dev@aaront.org>
-References: <20230104074215.2621-1-dev@aaront.org>
+        with ESMTP id S233387AbjADKkL (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 4 Jan 2023 05:40:11 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C288412D16;
+        Wed,  4 Jan 2023 02:40:09 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 66D58616BC;
+        Wed,  4 Jan 2023 10:40:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76BC1C433D2;
+        Wed,  4 Jan 2023 10:40:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1672828808;
+        bh=6FPalQcepNo+BytQcBdBWjxpEdX/NRvyniuyigHLcxE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=mmEmzDPfxMmSxpPDiRkY/nrdd55CTcgFlLje3h7S1aWx78vpJkREtHfhbxXc81T7Q
+         qMFgGjpIqNSe755Gb1gYu21gADJJqZWcSIH3lMfcz82jyHw7giqOU1xIaPhhrKrBwr
+         FxH18m8dfPhQHz2E70eVL5ogOM1QDy2b5lKfeI+/xqtuig4OPnoUHSg1yqpBgEhHom
+         FQTXcDn8nuyVlgbx9yrJrcIJ6nXVSisum4vbvhoAklLPl3DrfATQI0nOKhHOJpMcFv
+         PiwWMtcwC/NySZWPvd9znWYUYvt9G/RLrz5WYfnTfBXNfJGiesqWlfD0zb2qg6NB3G
+         z35omPmmuzYPg==
+Date:   Wed, 4 Jan 2023 10:40:03 +0000
+From:   Lee Jones <lee@kernel.org>
+To:     Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org
+Cc:     linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH 1/2] arm64: efi: Execute runtime services from a
+ dedicated stack
+Message-ID: <Y7VXg5MCRyAJFmus@google.com>
+References: <20221205201210.463781-1-ardb@kernel.org>
+ <20221205201210.463781-2-ardb@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Feedback-ID: 1.us-west-2.OwdjDcIoZWY+bZWuVZYzryiuW455iyNkDEZFeL97Dng=:AmazonSES
-X-SES-Outgoing: 2023.01.04-54.240.27.57
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20221205201210.463781-2-ardb@kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-If CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, memblock_free_pages()
-only releases pages to the buddy allocator if they are not in the
-deferred range. This is correct for free pages (as defined by
-for_each_free_mem_pfn_range_in_zone()) because free pages in the
-deferred range will be initialized and released as part of the deferred
-init process. memblock_free_pages() is called by memblock_free_late(),
-which is used to free reserved ranges after memblock_free_all() has
-run. memblock_free_all() initializes all pages in reserved ranges, and
-accordingly, those pages are not touched by the deferred init
-process. This means that currently, if the pages that
-memblock_free_late() intends to release are in the deferred range, they
-will never be released to the buddy allocator. They will forever be
-reserved.
+On Mon, 05 Dec 2022, Ard Biesheuvel wrote:
 
-In addition, memblock_free_pages() calls kmsan_memblock_free_pages(),
-which is also correct for free pages but is not correct for reserved
-pages. KMSAN metadata for reserved pages is initialized by
-kmsan_init_shadow(), which runs shortly before memblock_free_all().
+> With the introduction of PRMT in the ACPI subsystem, the EFI rts
+> workqueue is no longer the only caller of efi_call_virt_pointer() in the
+> kernel. This means the EFI runtime services lock is no longer sufficient
+> to manage concurrent calls into firmware, but also that firmware calls
+> may occur that are not marshalled via the workqueue mechanism, but
+> originate directly from the caller context.
+> 
+> For added robustness, and to ensure that the runtime services have 8 KiB
+> of stack space available as per the EFI spec, introduce a spinlock
+> protected EFI runtime stack of 8 KiB, where the spinlock also ensures
+> serialization between the EFI rts workqueue (which itself serializes EFI
+> runtime calls) and other callers of efi_call_virt_pointer().
+> 
+> While at it, use the stack pivot to avoid reloading the shadow call
+> stack pointer from the ordinary stack, as doing so could produce a
+> gadget to defeat it.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  arch/arm64/include/asm/efi.h       |  3 +++
+>  arch/arm64/kernel/efi-rt-wrapper.S | 13 +++++++++-
+>  arch/arm64/kernel/efi.c            | 25 ++++++++++++++++++++
+>  3 files changed, 40 insertions(+), 1 deletion(-)
 
-For both of these reasons, memblock_free_pages() should only be called
-for free pages, and memblock_free_late() should call __free_pages_core()
-directly instead.
+Could we have this in Stable please?
 
-Fixes: 3a80a7fa7989 ("mm: meminit: initialise a subset of struct pages if CONFIG_DEFERRED_STRUCT_PAGE_INIT is set")
-Signed-off-by: Aaron Thompson <dev@aaront.org>
----
- mm/memblock.c                     | 2 +-
- tools/testing/memblock/internal.h | 4 ++++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+Upstream commit: ff7a167961d1b ("arm64: efi: Execute runtime services from a dedicated stack")
 
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 511d4783dcf1..56a5b6086c50 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1640,7 +1640,7 @@ void __init memblock_free_late(phys_addr_t base, phys_addr_t size)
- 	end = PFN_DOWN(base + size);
- 
- 	for (; cursor < end; cursor++) {
--		memblock_free_pages(pfn_to_page(cursor), cursor, 0);
-+		__free_pages_core(pfn_to_page(cursor), 0);
- 		totalram_pages_inc();
- 	}
- }
-diff --git a/tools/testing/memblock/internal.h b/tools/testing/memblock/internal.h
-index fdb7f5db7308..85973e55489e 100644
---- a/tools/testing/memblock/internal.h
-+++ b/tools/testing/memblock/internal.h
-@@ -15,6 +15,10 @@ bool mirrored_kernelcore = false;
- 
- struct page {};
- 
-+void __free_pages_core(struct page *page, unsigned int order)
-+{
-+}
-+
- void memblock_free_pages(struct page *page, unsigned long pfn,
- 			 unsigned int order)
- {
+Ard, do we need Patch 2 as well, or can this be applied on its own?
+
+> diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
+> index 7c12e01c2b312e7b..1c408ec3c8b3a883 100644
+> --- a/arch/arm64/include/asm/efi.h
+> +++ b/arch/arm64/include/asm/efi.h
+> @@ -25,6 +25,7 @@ int efi_set_mapping_permissions(struct mm_struct *mm, efi_memory_desc_t *md);
+>  ({									\
+>  	efi_virtmap_load();						\
+>  	__efi_fpsimd_begin();						\
+> +	spin_lock(&efi_rt_lock);					\
+>  })
+>  
+>  #undef arch_efi_call_virt
+> @@ -33,10 +34,12 @@ int efi_set_mapping_permissions(struct mm_struct *mm, efi_memory_desc_t *md);
+>  
+>  #define arch_efi_call_virt_teardown()					\
+>  ({									\
+> +	spin_unlock(&efi_rt_lock);					\
+>  	__efi_fpsimd_end();						\
+>  	efi_virtmap_unload();						\
+>  })
+>  
+> +extern spinlock_t efi_rt_lock;
+>  efi_status_t __efi_rt_asm_wrapper(void *, const char *, ...);
+>  
+>  #define ARCH_EFI_IRQ_FLAGS_MASK (PSR_D_BIT | PSR_A_BIT | PSR_I_BIT | PSR_F_BIT)
+> diff --git a/arch/arm64/kernel/efi-rt-wrapper.S b/arch/arm64/kernel/efi-rt-wrapper.S
+> index 75691a2641c1c0f8..b2786b968fee68dd 100644
+> --- a/arch/arm64/kernel/efi-rt-wrapper.S
+> +++ b/arch/arm64/kernel/efi-rt-wrapper.S
+> @@ -16,6 +16,12 @@ SYM_FUNC_START(__efi_rt_asm_wrapper)
+>  	 */
+>  	stp	x1, x18, [sp, #16]
+>  
+> +	ldr_l	x16, efi_rt_stack_top
+> +	mov	sp, x16
+> +#ifdef CONFIG_SHADOW_CALL_STACK
+> +	str	x18, [sp, #-16]!
+> +#endif
+> +
+>  	/*
+>  	 * We are lucky enough that no EFI runtime services take more than
+>  	 * 5 arguments, so all are passed in registers rather than via the
+> @@ -29,6 +35,7 @@ SYM_FUNC_START(__efi_rt_asm_wrapper)
+>  	mov	x4, x6
+>  	blr	x8
+>  
+> +	mov	sp, x29
+>  	ldp	x1, x2, [sp, #16]
+>  	cmp	x2, x18
+>  	ldp	x29, x30, [sp], #32
+> @@ -42,6 +49,10 @@ SYM_FUNC_START(__efi_rt_asm_wrapper)
+>  	 * called with preemption disabled and a separate shadow stack is used
+>  	 * for interrupts.
+>  	 */
+> -	mov	x18, x2
+> +#ifdef CONFIG_SHADOW_CALL_STACK
+> +	ldr_l	x18, efi_rt_stack_top
+> +	ldr	x18, [x18, #-16]
+> +#endif
+> +
+>  	b	efi_handle_corrupted_x18	// tail call
+>  SYM_FUNC_END(__efi_rt_asm_wrapper)
+> diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
+> index a908a37f03678b6b..8cb2e005f8aca589 100644
+> --- a/arch/arm64/kernel/efi.c
+> +++ b/arch/arm64/kernel/efi.c
+> @@ -144,3 +144,28 @@ asmlinkage efi_status_t efi_handle_corrupted_x18(efi_status_t s, const char *f)
+>  	pr_err_ratelimited(FW_BUG "register x18 corrupted by EFI %s\n", f);
+>  	return s;
+>  }
+> +
+> +DEFINE_SPINLOCK(efi_rt_lock);
+> +
+> +asmlinkage u64 *efi_rt_stack_top __ro_after_init;
+> +
+> +/* required by the EFI spec */
+> +static_assert(THREAD_SIZE >= SZ_8K);
+> +
+> +int __init arm64_efi_rt_init(void)
+> +{
+> +	void *p = __vmalloc_node_range(THREAD_SIZE, THREAD_ALIGN,
+> +				       VMALLOC_START, VMALLOC_END, GFP_KERNEL,
+> +				       PAGE_KERNEL, 0, NUMA_NO_NODE,
+> +				       __builtin_return_address(0));
+> +
+> +	if (!p) {
+> +		pr_warn("Failed to allocate EFI runtime stack\n");
+> +		clear_bit(EFI_RUNTIME_SERVICES, &efi.flags);
+> +		return -ENOMEM;
+> +	}
+> +
+> +	efi_rt_stack_top = p + THREAD_SIZE;
+> +	return 0;
+> +}
+> +core_initcall(arm64_efi_rt_init);
+> -- 
+> 2.35.1
+> 
+> 
+
 -- 
-2.30.2
-
+Lee Jones [李琼斯]
