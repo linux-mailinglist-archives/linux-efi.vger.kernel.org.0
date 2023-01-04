@@ -2,70 +2,103 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F36D165D337
-	for <lists+linux-efi@lfdr.de>; Wed,  4 Jan 2023 13:54:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FEF765D4C6
+	for <lists+linux-efi@lfdr.de>; Wed,  4 Jan 2023 14:56:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234986AbjADMyp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 4 Jan 2023 07:54:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35494 "EHLO
+        id S236183AbjADN4j (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 4 Jan 2023 08:56:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233900AbjADMye (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 4 Jan 2023 07:54:34 -0500
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88BCC1CFDC
-        for <linux-efi@vger.kernel.org>; Wed,  4 Jan 2023 04:54:32 -0800 (PST)
-Received: by mail-qk1-x72a.google.com with SMTP id c9so16214354qko.6
-        for <linux-efi@vger.kernel.org>; Wed, 04 Jan 2023 04:54:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=g2m/uNsCm/OsAUZxAnJOSdXXDa9Gh4wg88n4VPL2lMU=;
-        b=WgtPiGBL7pKpeGAONT7jyOZBlPA87PF+BcZ0At3DRbjh8r4a90VkFTuegmf7v5I05U
-         8O8yRsMlEC8d3azBuhTVnh5a19IMri1yaM5CNo7nGSQjhbPmAzApkJwS9Ixgc01L8XVA
-         9+oXPryfLJjc92HnUP6sxIyah9VARXZTMfFxXMcqBFJ6snOmablGghR0F2+Y0sgoHgie
-         QmoiaDCXomaXijXUVGiYmzsfSWGfWMMdh1Ev9V0gp78bfPbYO2S9uBzuU4GRDkm7vJO6
-         RsJ5hkLkj5KAchsYozNwRuUxQUGpmscZ9Mbjv/HN5G//qfUumyrbxcj+0dSg+lcPq80U
-         5Wuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g2m/uNsCm/OsAUZxAnJOSdXXDa9Gh4wg88n4VPL2lMU=;
-        b=OIc8T+7FZzSuffyWDksNreiH4eOVxNlnKyFzp6bEPMWQirnhKY8HdYzo3yn/jmqnl6
-         xvfdKrYqAPW15k5gMQUULzpPBup1Ttuf0oTXYrLP8NRZjv+LFcmXfJQ6TVMX7DUAipZ6
-         7jgu3PojySDmINHDqqcDVxyyAwvuUckaRDu6V+0qLlLKEGjnAmSL9csZsDmEqXZNOgIp
-         3Nu7ez87ioX3Nn6w3OvSqgyRQWvyFVvDrRfpvSiLu+NydnnXSbdGFPTWBtoUa1rZ/a7M
-         PdGeA3gnDNAMQv8jVKkYVwgUYpuXgWiG4pdvaGZvznTkNgv63i6XT++xjzE2hjv3hIxi
-         wVSw==
-X-Gm-Message-State: AFqh2krakZi/pWHqxy29+KyOz3A6KA3CcJpXNkFtlETgUn6Mf6bMM4p+
-        /uT6kwutqWoFbCJY0eqvZEpMn8uBd7dfSvaXRUE=
-X-Google-Smtp-Source: AMrXdXulKMdRBV/p4kXNikXMHFtLk5IOIYLDRJA7lpoRUfUF8+2cEqH8pHXLi4qSeE4J34Id+Th3n/mMQjaZgJWZFyc=
-X-Received: by 2002:a05:620a:8502:b0:704:ad9e:ad7 with SMTP id
- pe2-20020a05620a850200b00704ad9e0ad7mr1970941qkn.574.1672836871311; Wed, 04
- Jan 2023 04:54:31 -0800 (PST)
+        with ESMTP id S233197AbjADN4g (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 4 Jan 2023 08:56:36 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0C63191;
+        Wed,  4 Jan 2023 05:56:35 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5BCFDB81642;
+        Wed,  4 Jan 2023 13:56:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19FA5C433F1;
+        Wed,  4 Jan 2023 13:56:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1672840593;
+        bh=TJ+e4Gall+OfjAEWobjyJAQ/OhsfIkjE4GhjmEseUeI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Fax9FRdvGFlUZhzHj6cBWDv4mkvei3CnmHcHELNtTufQ7OQEsaide16JxO05aOjuE
+         aPnHwMcaZ0eloiKm26ble9YVY22Rws+lzHyJgdLyZIIR5qutPgis788Bbp0xP3J1Q7
+         elRTUPlEibnfxJZQ5rdipS55PavSwvGx3ZKSIAcGi++sPTKFlbvYAt6Q/XLTQ3U9J1
+         dlJ9JWNM9dZXEgFL3fL9zl1SYztkvyZ1xInka/uKjnm2Euhy1a5LJ73g+WMnfvXBZY
+         935HmQI9H5Fe5nCuscJLXbtmcfT1j2TqIcUOtjBKySVr/tTlzndZSmzW/DvyrMdqH/
+         pPzLlW7CuCKvw==
+Received: by mail-lf1-f44.google.com with SMTP id j17so41020999lfr.3;
+        Wed, 04 Jan 2023 05:56:32 -0800 (PST)
+X-Gm-Message-State: AFqh2kpMuxnjnG2JhBStYfeyckqv4HOZmdtcZIQChk9SEq1nOOxT7S1N
+        swocIELf6tS+jDze4isi+C0EyDKUwFiUcJ0Q3Zo=
+X-Google-Smtp-Source: AMrXdXvVFqrW0acUSIkT8QZtGF0BnmcDwTgIJClfHI4YJSWaGv6TbJB+7KCX+dTM2tDB3tmqZC7N8il4rrRor5HNahY=
+X-Received: by 2002:ac2:5d4e:0:b0:4b5:964d:49a4 with SMTP id
+ w14-20020ac25d4e000000b004b5964d49a4mr4067272lfd.637.1672840591033; Wed, 04
+ Jan 2023 05:56:31 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a05:6200:5d91:b0:4a5:78e9:2012 with HTTP; Wed, 4 Jan 2023
- 04:54:30 -0800 (PST)
-Reply-To: Gregdenzell9@gmail.com
-From:   Greg Denzell <mzsophie@gmail.com>
-Date:   Wed, 4 Jan 2023 12:54:30 +0000
-Message-ID: <CAEoj5=a-iCsZoe4s4S8=o2P=8nfbDVvG8sm_YZ9wpP37ZOqYKA@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
+References: <20221205201210.463781-1-ardb@kernel.org> <20221205201210.463781-2-ardb@kernel.org>
+ <Y7VXg5MCRyAJFmus@google.com>
+In-Reply-To: <Y7VXg5MCRyAJFmus@google.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 4 Jan 2023 14:56:19 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXEYDHuRmUPvdMVj1H1fLoOKcr+qG6NDpufxwJa57jsWdg@mail.gmail.com>
+Message-ID: <CAMj1kXEYDHuRmUPvdMVj1H1fLoOKcr+qG6NDpufxwJa57jsWdg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] arm64: efi: Execute runtime services from a dedicated stack
+To:     Lee Jones <lee@kernel.org>
+Cc:     stable@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, will@kernel.org,
+        catalin.marinas@arm.com, mark.rutland@arm.com,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Kees Cook <keescook@chromium.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Seasons Greetings!
+On Wed, 4 Jan 2023 at 11:40, Lee Jones <lee@kernel.org> wrote:
+>
+> On Mon, 05 Dec 2022, Ard Biesheuvel wrote:
+>
+> > With the introduction of PRMT in the ACPI subsystem, the EFI rts
+> > workqueue is no longer the only caller of efi_call_virt_pointer() in the
+> > kernel. This means the EFI runtime services lock is no longer sufficient
+> > to manage concurrent calls into firmware, but also that firmware calls
+> > may occur that are not marshalled via the workqueue mechanism, but
+> > originate directly from the caller context.
+> >
+> > For added robustness, and to ensure that the runtime services have 8 KiB
+> > of stack space available as per the EFI spec, introduce a spinlock
+> > protected EFI runtime stack of 8 KiB, where the spinlock also ensures
+> > serialization between the EFI rts workqueue (which itself serializes EFI
+> > runtime calls) and other callers of efi_call_virt_pointer().
+> >
+> > While at it, use the stack pivot to avoid reloading the shadow call
+> > stack pointer from the ordinary stack, as doing so could produce a
+> > gadget to defeat it.
+> >
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > ---
+> >  arch/arm64/include/asm/efi.h       |  3 +++
+> >  arch/arm64/kernel/efi-rt-wrapper.S | 13 +++++++++-
+> >  arch/arm64/kernel/efi.c            | 25 ++++++++++++++++++++
+> >  3 files changed, 40 insertions(+), 1 deletion(-)
+>
+> Could we have this in Stable please?
+>
+> Upstream commit: ff7a167961d1b ("arm64: efi: Execute runtime services from a dedicated stack")
+>
+> Ard, do we need Patch 2 as well, or can this be applied on its own?
+>
 
-This will remind you again that I have not yet received your reply to
-my last message to you.
+Thanks for the reminder.
+
+Only patch #1 is needed. It should be applied to v5.10 and later.
