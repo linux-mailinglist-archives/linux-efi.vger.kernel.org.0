@@ -2,38 +2,47 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03D7E65EAEB
-	for <lists+linux-efi@lfdr.de>; Thu,  5 Jan 2023 13:47:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1381965EB29
+	for <lists+linux-efi@lfdr.de>; Thu,  5 Jan 2023 13:56:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232815AbjAEMrM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 5 Jan 2023 07:47:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38064 "EHLO
+        id S232195AbjAEM4e (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 5 Jan 2023 07:56:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232370AbjAEMrL (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 5 Jan 2023 07:47:11 -0500
+        with ESMTP id S231174AbjAEM4e (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 5 Jan 2023 07:56:34 -0500
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A247B479E8
-        for <linux-efi@vger.kernel.org>; Thu,  5 Jan 2023 04:47:10 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 32C4811178;
+        Thu,  5 Jan 2023 04:56:33 -0800 (PST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 371A115BF;
-        Thu,  5 Jan 2023 04:47:52 -0800 (PST)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B566315BF;
+        Thu,  5 Jan 2023 04:57:14 -0800 (PST)
 Received: from FVFF77S0Q05N (unknown [10.57.45.56])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7427E3F663;
-        Thu,  5 Jan 2023 04:47:09 -0800 (PST)
-Date:   Thu, 5 Jan 2023 12:47:06 +0000
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7BACE3F663;
+        Thu,  5 Jan 2023 04:56:31 -0800 (PST)
+Date:   Thu, 5 Jan 2023 12:56:28 +0000
 From:   Mark Rutland <mark.rutland@arm.com>
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
-        catalin.marinas@arm.com, will@kernel.org
-Subject: Re: [PATCH v2 2/2] arm64: efi: Account for the EFI runtime stack in
- stack unwinder
-Message-ID: <Y7bGytVFvKmkCXBh@FVFF77S0Q05N>
-References: <20230104174433.1259428-1-ardb@kernel.org>
- <20230104174433.1259428-3-ardb@kernel.org>
+Cc:     Lee Jones <lee@kernel.org>, stable@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        will@kernel.org, catalin.marinas@arm.com,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH 1/2] arm64: efi: Execute runtime services from a
+ dedicated stack
+Message-ID: <Y7bI/EN7GfTYkuT+@FVFF77S0Q05N>
+References: <20221205201210.463781-1-ardb@kernel.org>
+ <20221205201210.463781-2-ardb@kernel.org>
+ <Y7VXg5MCRyAJFmus@google.com>
+ <CAMj1kXEYDHuRmUPvdMVj1H1fLoOKcr+qG6NDpufxwJa57jsWdg@mail.gmail.com>
+ <Y7WloqaytMnC8ZIC@FVFF77S0Q05N>
+ <CAMj1kXEaX_3yFT_GFruXbQj9gfDShH4arPjTQBqokKAGusi_Fw@mail.gmail.com>
+ <Y7WpsPDF+7fux8l3@FVFF77S0Q05N>
+ <CAMj1kXGQW5Nj81rjDu_bGM6M3tWUaFwgBSxpCWbgJ+JBUPuJJw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230104174433.1259428-3-ardb@kernel.org>
+In-Reply-To: <CAMj1kXGQW5Nj81rjDu_bGM6M3tWUaFwgBSxpCWbgJ+JBUPuJJw@mail.gmail.com>
 X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -42,91 +51,110 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jan 04, 2023 at 06:44:33PM +0100, Ard Biesheuvel wrote:
-> The EFI runtime services run from a dedicated stack now, and so the
-> stack unwinder needs to be informed about this.
+On Wed, Jan 04, 2023 at 05:32:18PM +0100, Ard Biesheuvel wrote:
+> On Wed, 4 Jan 2023 at 17:30, Mark Rutland <mark.rutland@arm.com> wrote:
+> >
+> > On Wed, Jan 04, 2023 at 05:15:34PM +0100, Ard Biesheuvel wrote:
+> > > On Wed, 4 Jan 2023 at 17:13, Mark Rutland <mark.rutland@arm.com> wrote:
+> > > >
+> > > > On Wed, Jan 04, 2023 at 02:56:19PM +0100, Ard Biesheuvel wrote:
+> > > > > On Wed, 4 Jan 2023 at 11:40, Lee Jones <lee@kernel.org> wrote:
+> > > > > >
+> > > > > > On Mon, 05 Dec 2022, Ard Biesheuvel wrote:
+> > > > > >
+> > > > > > > With the introduction of PRMT in the ACPI subsystem, the EFI rts
+> > > > > > > workqueue is no longer the only caller of efi_call_virt_pointer() in the
+> > > > > > > kernel. This means the EFI runtime services lock is no longer sufficient
+> > > > > > > to manage concurrent calls into firmware, but also that firmware calls
+> > > > > > > may occur that are not marshalled via the workqueue mechanism, but
+> > > > > > > originate directly from the caller context.
+> > > > > > >
+> > > > > > > For added robustness, and to ensure that the runtime services have 8 KiB
+> > > > > > > of stack space available as per the EFI spec, introduce a spinlock
+> > > > > > > protected EFI runtime stack of 8 KiB, where the spinlock also ensures
+> > > > > > > serialization between the EFI rts workqueue (which itself serializes EFI
+> > > > > > > runtime calls) and other callers of efi_call_virt_pointer().
+> > > > > > >
+> > > > > > > While at it, use the stack pivot to avoid reloading the shadow call
+> > > > > > > stack pointer from the ordinary stack, as doing so could produce a
+> > > > > > > gadget to defeat it.
+> > > > > > >
+> > > > > > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > > > > > > ---
+> > > > > > >  arch/arm64/include/asm/efi.h       |  3 +++
+> > > > > > >  arch/arm64/kernel/efi-rt-wrapper.S | 13 +++++++++-
+> > > > > > >  arch/arm64/kernel/efi.c            | 25 ++++++++++++++++++++
+> > > > > > >  3 files changed, 40 insertions(+), 1 deletion(-)
+> > > > > >
+> > > > > > Could we have this in Stable please?
+> > > > > >
+> > > > > > Upstream commit: ff7a167961d1b ("arm64: efi: Execute runtime services from a dedicated stack")
+> > > > > >
+> > > > > > Ard, do we need Patch 2 as well, or can this be applied on its own?
+> > > > > >
+> > > > >
+> > > > > Thanks for the reminder.
+> > > > >
+> > > > > Only patch #1 is needed. It should be applied to v5.10 and later.
+> > > >
+> > > > Hold on, why did this go into mainline when I had an outstanding comment w.r.t.
+> > > > the stack unwinder?
+> > > >
+> > > > From your last reply to me there I was expecting a respin with that fixed.
+> > > >
+> > >
+> > > Apologies for the confusion.
+> > >
+> > > I have a patch for this queued up, but AIUI, that cannot be merged all
+> > > the way back to v5.10, so these need to remain separate changes in any
+> > > case.
+> > >
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=c2530a04a73e6b75ed71ed14d09d7b42d6300013
+> >
+> > Ah, ok, thanks for the pointer!
+> >
+> > I'm a little uneasy here, still.
+> >
+> > By backporting this we're also backporting the new breakage of the stack
+> > unwinder, and the minimal change for backports would be to add the lock and not
+> > the new stack (which was added for additinoal robustness, not to fix the bug
+> > the lock fixes).
+> >
+> > I do appreciate that the additional stack is likely more useful than the
+> > occasional diagnostic output from the kernel, but it does seem like this has
+> > traded off one bug for another, and I'm just a little annoyed because I pointed
+> > that out before the first pull request was made.
+> >
+> > I do know that this isn't malicious, and I'm not trying to start a fight, but
+> > now we have to consider whether we want/need to backport a stack unwinder fix
+> > to account for this, and we hadn't had that discussion before.
 > 
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> In that case, let's drop these backports for the time being, and
+> collaborate on a solution that works for all of us.
 
-Acked-by: Mark Rutland <mark.rutland@arm.com>
+Thanks!
 
-Thanks for this!
+IIUC our options here are:
 
+1) Create a cut-down patch for stable that just adds the new lock but leaves
+   out the new stack.
+
+   I may be missing a reason why that's insufficient or painful.
+
+2) Backport this *but* also backport the follow-up fixes from your other series:
+   https://lore.kernel.org/r/20230104174433.1259428-1-ardb@kernel.org
+
+   Above you mentioned something about v5.10, was that just to say that some
+   manual backporting was required, or that there was a structural problem that
+   would require more invasive changes / prerequisites?
+
+3) Something else?
+
+My preference would be (1), but if we are encountering issue with stack size on
+stable kernels, then I'd be happy to help with manual backporting effort for
+(2), as long as we backported all the relevant bits in one go.
+
+Does that make sense, and does that sound reasonable to you?
+
+Thanks,
 Mark.
-
-> ---
->  arch/arm64/include/asm/stacktrace.h | 15 +++++++++++++++
->  arch/arm64/kernel/stacktrace.c      | 12 ++++++++++++
->  2 files changed, 27 insertions(+)
-> 
-> diff --git a/arch/arm64/include/asm/stacktrace.h b/arch/arm64/include/asm/stacktrace.h
-> index 4e5354beafb01bac..66ec8caa6ac07fa0 100644
-> --- a/arch/arm64/include/asm/stacktrace.h
-> +++ b/arch/arm64/include/asm/stacktrace.h
-> @@ -106,4 +106,19 @@ static inline struct stack_info stackinfo_get_sdei_critical(void)
->  #define stackinfo_get_sdei_critical()	stackinfo_get_unknown()
->  #endif
->  
-> +#ifdef CONFIG_EFI
-> +extern u64 *efi_rt_stack_top;
-> +
-> +static inline struct stack_info stackinfo_get_efi(void)
-> +{
-> +	unsigned long high = (u64)efi_rt_stack_top;
-> +	unsigned long low = high - THREAD_SIZE;
-> +
-> +	return (struct stack_info) {
-> +		.low = low,
-> +		.high = high,
-> +	};
-> +}
-> +#endif
-> +
->  #endif	/* __ASM_STACKTRACE_H */
-> diff --git a/arch/arm64/kernel/stacktrace.c b/arch/arm64/kernel/stacktrace.c
-> index 117e2c180f3c77d8..83154303e682c8b6 100644
-> --- a/arch/arm64/kernel/stacktrace.c
-> +++ b/arch/arm64/kernel/stacktrace.c
-> @@ -5,6 +5,7 @@
->   * Copyright (C) 2012 ARM Ltd.
->   */
->  #include <linux/kernel.h>
-> +#include <linux/efi.h>
->  #include <linux/export.h>
->  #include <linux/ftrace.h>
->  #include <linux/sched.h>
-> @@ -12,6 +13,7 @@
->  #include <linux/sched/task_stack.h>
->  #include <linux/stacktrace.h>
->  
-> +#include <asm/efi.h>
->  #include <asm/irq.h>
->  #include <asm/stack_pointer.h>
->  #include <asm/stacktrace.h>
-> @@ -186,6 +188,13 @@ void show_stack(struct task_struct *tsk, unsigned long *sp, const char *loglvl)
->  			: stackinfo_get_unknown();		\
->  	})
->  
-> +#define STACKINFO_EFI						\
-> +	({							\
-> +		((task == current) && current_in_efi())		\
-> +			? stackinfo_get_efi()			\
-> +			: stackinfo_get_unknown();		\
-> +	})
-> +
->  noinline noinstr void arch_stack_walk(stack_trace_consume_fn consume_entry,
->  			      void *cookie, struct task_struct *task,
->  			      struct pt_regs *regs)
-> @@ -199,6 +208,9 @@ noinline noinstr void arch_stack_walk(stack_trace_consume_fn consume_entry,
->  #if defined(CONFIG_VMAP_STACK) && defined(CONFIG_ARM_SDE_INTERFACE)
->  		STACKINFO_SDEI(normal),
->  		STACKINFO_SDEI(critical),
-> +#endif
-> +#ifdef CONFIG_EFI
-> +		STACKINFO_EFI,
->  #endif
->  	};
->  	struct unwind_state state = {
-> -- 
-> 2.39.0
-> 
