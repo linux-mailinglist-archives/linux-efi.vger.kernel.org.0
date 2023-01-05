@@ -2,125 +2,181 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1953065E944
-	for <lists+linux-efi@lfdr.de>; Thu,  5 Jan 2023 11:48:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8B8A65E996
+	for <lists+linux-efi@lfdr.de>; Thu,  5 Jan 2023 12:13:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231733AbjAEKsi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 5 Jan 2023 05:48:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38756 "EHLO
+        id S231519AbjAELN0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 5 Jan 2023 06:13:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233263AbjAEKsY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 5 Jan 2023 05:48:24 -0500
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EC4A4FD69;
-        Thu,  5 Jan 2023 02:48:18 -0800 (PST)
-Received: by mail-ed1-x52f.google.com with SMTP id c17so52240394edj.13;
-        Thu, 05 Jan 2023 02:48:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6qLrWDP8UxJVLXXHnMyGiQx4P9YZKALZZuu63FSiH6E=;
-        b=E9K3NJxE30vOeMc0DOcQs6pSTojhjB7VLiWumrWgtVBlynfouL2iOIIZjBQlA011se
-         3PvotfAYQx0uvyVsV3uk2OY3h3brtmDIxPl0L48Xy8zFsV6malBcnPUYTgNZrdVinMNX
-         F6nb6b7Kjjw6m4lsrqnpiUNq4ILqGBfJvKObH6L0rUNZm18rkzP4w2xGkHzp1FHa9Rvm
-         BLtL0upydoAO/nkIVsz/9wUmDjnhGBIRLg1YpwRWuJ5aGyCVTrjf2bD6lUHK6fvkyEB+
-         S2B3dOJ/J6rg9ekk6KoVGdA+Qi0yaOxNng0aL9zuTM2bJBEByO6xvhdLSifOUP6wEZKk
-         klYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6qLrWDP8UxJVLXXHnMyGiQx4P9YZKALZZuu63FSiH6E=;
-        b=EHCTtM3BcMG3gt34KEZ8rUD8DMMBgtgohm1NjoYp3tYX3sG0qBfh6d19jdEi4gdSbr
-         Y+1XpesdR+Nr7dW94vji0NjMjpXV85VMNtZUXbbxhDUdX4w0Mq5bjHsmpqAa8IR67jrh
-         RafNEZy6lv3baO0jnQJbu14iRuORLJyotjbh6Kf3pQuZEj1SHOXS9NRk/X0XnkPbqBBo
-         4dz+kI7l7SnnjBLAvr5CXivuVcmVW4Zhl61UU5/9hDL+FmHRUtrvwhn+sZCcjXP4m0uv
-         LbyFSpu3uNXarNn1ku+oKsLYz6j348f1zNsi906SdHOr0Xr4wb4yZ9fjHE9juofhAqgc
-         Eyng==
-X-Gm-Message-State: AFqh2kqCiEdBm8+hvPu8IGQCDTK1UcopyszB0Pb+QaQbsjyvxAnccbNc
-        95nYCsbmw7xaVJEYdULTZSI=
-X-Google-Smtp-Source: AMrXdXuJWhyrmy1YZjk6sB1ll1kMT60CGgwsH2fEDRfVrLmdIwzKXMnsgcamI+al2donwj3dOaq/aw==
-X-Received: by 2002:a05:6402:3784:b0:46d:cead:4eab with SMTP id et4-20020a056402378400b0046dcead4eabmr46314439edb.6.1672915696661;
-        Thu, 05 Jan 2023 02:48:16 -0800 (PST)
-Received: from gmail.com (1F2EF380.nat.pool.telekom.hu. [31.46.243.128])
-        by smtp.gmail.com with ESMTPSA id x11-20020a170906b08b00b007806c1474e1sm16297503ejy.127.2023.01.05.02.48.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Jan 2023 02:48:15 -0800 (PST)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Thu, 5 Jan 2023 11:48:13 +0100
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Aaron Thompson <dev@aaront.org>
-Cc:     Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Darren Hart <dvhart@infradead.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Ingo Molnar <mingo@redhat.com>, Marco Elver <elver@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kasan-dev@googlegroups.com, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        x86@kernel.org
-Subject: Re: [PATCH v2 1/1] mm: Always release pages to the buddy allocator
- in memblock_free_late().
-Message-ID: <Y7aq7fzKZ/EdLVp3@gmail.com>
-References: <010101857bbc3a41-173240b3-9064-42ef-93f3-482081126ec2-000000@us-west-2.amazonses.com>
- <20230105041650.1485-1-dev@aaront.org>
- <010001858025fc22-e619988e-c0a5-4545-bd93-783890b9ad14-000000@email.amazonses.com>
+        with ESMTP id S231496AbjAELNY (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 5 Jan 2023 06:13:24 -0500
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0984FDFB2;
+        Thu,  5 Jan 2023 03:13:21 -0800 (PST)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id 7CAB65C0217;
+        Thu,  5 Jan 2023 06:13:20 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Thu, 05 Jan 2023 06:13:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm2; t=1672917200; x=1673003600; bh=MlE9dXjnxE
+        uaB1SpiJoDafHMm0b0Dvnr1NzJJpalc+A=; b=DS6GAtox3oYuPPb0fM0VAZK5E+
+        qMJhSUZgmOrcvzaTyO9Cvrr5NXgoTqhhm9wVDxDqJAvnOVvnsheqQnLK8M9awhE6
+        qwC3FZJRwkZqMCIQLPr46CDdYlC15uqCjoOqOJcHKcdg3wQinYeHhDB5OLzmllD/
+        RQ6bHIz7qDoMEH7wfPtM2NA+JfLEqq+1H0a3ns0Xq2RSz0nUmtDaWa2j+APKoIrz
+        KAYFOaTXukAXOGbdi9TSGlbV/52gvTlVS6w40BxOZCiIQ3YSsM1NwWBYOjOkjciT
+        wA5kUR9nxNob7WNyVy/JB6Bf8mLvJEor+AzX+4mAFtofote2XjHiPR60Bxkg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm2; t=1672917200; x=1673003600; bh=MlE9dXjnxEuaB1SpiJoDafHMm0b0
+        Dvnr1NzJJpalc+A=; b=k1IqUz3mSg66Q2RSeyGw3slzqtXbeujKO96OFZbHxGdT
+        dx4jvjMl0enM43DWZMBqABabmq4+H1/91HAHDDb/DEgs78z+5om6niRHhE4FAmOQ
+        srakdaZKYJl6NfD6WlI8+EiamDd/acwt67Tpy+xbgUshOIF5CryPV+WeZUGWBfnW
+        3aQ8q98pe5gkSzbSiV2GmbfMQ3XWsS6uUUCxsqd0JhfFP1x+nOicVVnehyE1MiBs
+        xPCaO1wE3H2cnwtRU2O5XuSSphRL0mALnYlGXhI0S/KeLe+KhSj8DPjmWnDb7Qr6
+        Uli/HSduaGlf8uU3VYEVnJkCh9aX+O3MkqbdCyVGSw==
+X-ME-Sender: <xms:0LC2YzAzh0KAuS0oXRyh6IKvMr0lGCAlomzImqUajgF_XoDJAvmT5Q>
+    <xme:0LC2Y5gHxOPEr0BAMFn70AXsgki19h6nJfv79JZW9q58mIUhk3cS25zh8l8q7ACYu
+    0AXtp8gdQMqRQ>
+X-ME-Received: <xmr:0LC2Y-kjyuBq28LrP_aWp5lDtKNGBX89yPsLkn-1k_gW674xzBfeWFV7IoHpL_d5_XI4N3OX3ch1sKrpNK2oNY3mR6Zt7CG1JVojTg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrjeekgddviecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeegheeuhe
+    fgtdeluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhmrghi
+    nhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+X-ME-Proxy: <xmx:0LC2Y1wMBMCWM0g7TCejyh4_E2TNEMckO_t1T4PokK6d0nrY1xpobw>
+    <xmx:0LC2Y4Sv583gAeBvmqEpu7GrvtYccgEhBOLqdC7rMXHxTTxK-xD1Ng>
+    <xmx:0LC2Y4bv7JkeuagZSY2_meViFXWcNI-GFaeqmjwxo7C72TiaZ3JW2Q>
+    <xmx:0LC2Y5LkRe3rMWCHNRS_W_QftJYvBnmcFcoHXiSrfrpDEIHiEthr7A>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 5 Jan 2023 06:13:19 -0500 (EST)
+Date:   Thu, 5 Jan 2023 12:13:16 +0100
+From:   Greg KH <greg@kroah.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>, Lee Jones <lee@kernel.org>,
+        stable@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, will@kernel.org,
+        catalin.marinas@arm.com, Sami Tolvanen <samitolvanen@google.com>,
+        Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH 1/2] arm64: efi: Execute runtime services from a
+ dedicated stack
+Message-ID: <Y7awzMZs51t2/34D@kroah.com>
+References: <20221205201210.463781-1-ardb@kernel.org>
+ <20221205201210.463781-2-ardb@kernel.org>
+ <Y7VXg5MCRyAJFmus@google.com>
+ <CAMj1kXEYDHuRmUPvdMVj1H1fLoOKcr+qG6NDpufxwJa57jsWdg@mail.gmail.com>
+ <Y7WloqaytMnC8ZIC@FVFF77S0Q05N>
+ <CAMj1kXEaX_3yFT_GFruXbQj9gfDShH4arPjTQBqokKAGusi_Fw@mail.gmail.com>
+ <Y7WpsPDF+7fux8l3@FVFF77S0Q05N>
+ <CAMj1kXGQW5Nj81rjDu_bGM6M3tWUaFwgBSxpCWbgJ+JBUPuJJw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <010001858025fc22-e619988e-c0a5-4545-bd93-783890b9ad14-000000@email.amazonses.com>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <CAMj1kXGQW5Nj81rjDu_bGM6M3tWUaFwgBSxpCWbgJ+JBUPuJJw@mail.gmail.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-
-* Aaron Thompson <dev@aaront.org> wrote:
-
-> For example, on an Amazon EC2 t3.micro VM (1 GB) booting via EFI:
+On Wed, Jan 04, 2023 at 05:32:18PM +0100, Ard Biesheuvel wrote:
+> On Wed, 4 Jan 2023 at 17:30, Mark Rutland <mark.rutland@arm.com> wrote:
+> >
+> > On Wed, Jan 04, 2023 at 05:15:34PM +0100, Ard Biesheuvel wrote:
+> > > On Wed, 4 Jan 2023 at 17:13, Mark Rutland <mark.rutland@arm.com> wrote:
+> > > >
+> > > > On Wed, Jan 04, 2023 at 02:56:19PM +0100, Ard Biesheuvel wrote:
+> > > > > On Wed, 4 Jan 2023 at 11:40, Lee Jones <lee@kernel.org> wrote:
+> > > > > >
+> > > > > > On Mon, 05 Dec 2022, Ard Biesheuvel wrote:
+> > > > > >
+> > > > > > > With the introduction of PRMT in the ACPI subsystem, the EFI rts
+> > > > > > > workqueue is no longer the only caller of efi_call_virt_pointer() in the
+> > > > > > > kernel. This means the EFI runtime services lock is no longer sufficient
+> > > > > > > to manage concurrent calls into firmware, but also that firmware calls
+> > > > > > > may occur that are not marshalled via the workqueue mechanism, but
+> > > > > > > originate directly from the caller context.
+> > > > > > >
+> > > > > > > For added robustness, and to ensure that the runtime services have 8 KiB
+> > > > > > > of stack space available as per the EFI spec, introduce a spinlock
+> > > > > > > protected EFI runtime stack of 8 KiB, where the spinlock also ensures
+> > > > > > > serialization between the EFI rts workqueue (which itself serializes EFI
+> > > > > > > runtime calls) and other callers of efi_call_virt_pointer().
+> > > > > > >
+> > > > > > > While at it, use the stack pivot to avoid reloading the shadow call
+> > > > > > > stack pointer from the ordinary stack, as doing so could produce a
+> > > > > > > gadget to defeat it.
+> > > > > > >
+> > > > > > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > > > > > > ---
+> > > > > > >  arch/arm64/include/asm/efi.h       |  3 +++
+> > > > > > >  arch/arm64/kernel/efi-rt-wrapper.S | 13 +++++++++-
+> > > > > > >  arch/arm64/kernel/efi.c            | 25 ++++++++++++++++++++
+> > > > > > >  3 files changed, 40 insertions(+), 1 deletion(-)
+> > > > > >
+> > > > > > Could we have this in Stable please?
+> > > > > >
+> > > > > > Upstream commit: ff7a167961d1b ("arm64: efi: Execute runtime services from a dedicated stack")
+> > > > > >
+> > > > > > Ard, do we need Patch 2 as well, or can this be applied on its own?
+> > > > > >
+> > > > >
+> > > > > Thanks for the reminder.
+> > > > >
+> > > > > Only patch #1 is needed. It should be applied to v5.10 and later.
+> > > >
+> > > > Hold on, why did this go into mainline when I had an outstanding comment w.r.t.
+> > > > the stack unwinder?
+> > > >
+> > > > From your last reply to me there I was expecting a respin with that fixed.
+> > > >
+> > >
+> > > Apologies for the confusion.
+> > >
+> > > I have a patch for this queued up, but AIUI, that cannot be merged all
+> > > the way back to v5.10, so these need to remain separate changes in any
+> > > case.
+> > >
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=c2530a04a73e6b75ed71ed14d09d7b42d6300013
+> >
+> > Ah, ok, thanks for the pointer!
+> >
+> > I'm a little uneasy here, still.
+> >
+> > By backporting this we're also backporting the new breakage of the stack
+> > unwinder, and the minimal change for backports would be to add the lock and not
+> > the new stack (which was added for additinoal robustness, not to fix the bug
+> > the lock fixes).
+> >
+> > I do appreciate that the additional stack is likely more useful than the
+> > occasional diagnostic output from the kernel, but it does seem like this has
+> > traded off one bug for another, and I'm just a little annoyed because I pointed
+> > that out before the first pull request was made.
+> >
+> > I do know that this isn't malicious, and I'm not trying to start a fight, but
+> > now we have to consider whether we want/need to backport a stack unwinder fix
+> > to account for this, and we hadn't had that discussion before.
+> >
 > 
-> v6.2-rc2:
->   # grep -E 'Node|spanned|present|managed' /proc/zoneinfo
->   Node 0, zone      DMA
->           spanned  4095
->           present  3999
->           managed  3840
->   Node 0, zone    DMA32
->           spanned  246652
->           present  245868
->           managed  178867
+> In that case, let's drop these backports for the time being, and
+> collaborate on a solution that works for all of us.
 > 
-> v6.2-rc2 + patch:
->   # grep -E 'Node|spanned|present|managed' /proc/zoneinfo
->   Node 0, zone      DMA
->           spanned  4095
->           present  3999
->           managed  3840
->   Node 0, zone    DMA32
->           spanned  246652
->           present  245868
->           managed  222816   # +43,949 pages
+> Greg, could you please drop these again? Thanks.
 
-[ Note the annotation I added to the output - might be useful in the changelog too. ]
+Dropped now from all queues, thanks.
 
-So this patch adds around +17% of RAM to this 1 GB virtual system? That 
-looks rather significant ...
-
-Thanks,
-
-	Ingo
+greg k-h
