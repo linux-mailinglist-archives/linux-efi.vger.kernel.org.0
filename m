@@ -2,186 +2,114 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B818765E4BD
-	for <lists+linux-efi@lfdr.de>; Thu,  5 Jan 2023 05:41:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5029C65E481
+	for <lists+linux-efi@lfdr.de>; Thu,  5 Jan 2023 05:14:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229682AbjAEEl4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 4 Jan 2023 23:41:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47892 "EHLO
+        id S229494AbjAEEOQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 4 Jan 2023 23:14:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjAEElz (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 4 Jan 2023 23:41:55 -0500
-X-Greylist: delayed 1520 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 04 Jan 2023 20:41:52 PST
-Received: from a27-43.smtp-out.us-west-2.amazonses.com (a27-43.smtp-out.us-west-2.amazonses.com [54.240.27.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FD632035;
-        Wed,  4 Jan 2023 20:41:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=ude52klaz7ukvnrchdbsicqdl2lnui6h; d=aaront.org; t=1672891368;
-        h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID:Content-Type:Content-Transfer-Encoding;
-        bh=UaVZxhaholgYXRv1rnjX2lEzJ1yj5wIkBR8OS8N2qdE=;
-        b=A2eIR5Z+ZuwTZpmlUW6p3X7w1442qVqEfxphxcVa4f8BWgZS0GCAeSQGiy9WoZnw
-        mcQpE4Qu9yWk9uVQ5MWvV4mNWWf+rDULMlHvYdFTRmabXYTd4L0gws9010zGZxX5hin
-        fPHaRGjS4NAX5B1Yl9o/wrTepjvNri3mgKf3dvH0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1672891368;
-        h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID:Content-Type:Content-Transfer-Encoding:Feedback-ID;
-        bh=UaVZxhaholgYXRv1rnjX2lEzJ1yj5wIkBR8OS8N2qdE=;
-        b=BsiWU+dJSpdLMh9mVDhNN5url3xV6w8RpkkvzVRJJjx8wL3BwOJJl5m7wmd1ikJZ
-        zu9baddo9xz4TCGrCiVOvr5I7X9kChQH+9haBjHMpUFWMNW064IG+KHd5YgBxTUfIdJ
-        EO1D4OH5rLYYcS/x4VpkzScGIMFt3SzjPuZFTMRY=
+        with ESMTP id S229664AbjAEEOO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 4 Jan 2023 23:14:14 -0500
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA8DE34765
+        for <linux-efi@vger.kernel.org>; Wed,  4 Jan 2023 20:14:12 -0800 (PST)
+Received: by mail-ej1-x641.google.com with SMTP id kw15so87312710ejc.10
+        for <linux-efi@vger.kernel.org>; Wed, 04 Jan 2023 20:14:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=u3HAQ1iwdSNYG5zv8w9IpRfitR0iS5MN5Wkm6OyHQWY=;
+        b=Um/lJQZf4DlUZDxJYv+vg9xQ432z/eRHqIK8PSuF26/mnG0LmKRhL2bkxCQCmc27vA
+         lqKw3PXsdBIb+fMOe1w/aG290RICnTh1ktSqHaE5d08iaOooxzZ4IjXKbJEzktEyYPgb
+         ituuXMrdnT6o2Ptkj312nDFNsm5shOVV8uSUZ9O3PTT7LFb+xGqzzooXJZkVJyIL2u9j
+         gHDdURb3xofBYHxj9294VxyglvExECkIjIC9/cGnGythooPNEotw39S6ImBNLLDSNBL8
+         V4CtKroe+Lz5nInGcJp3A2Ew+ihuRz6BTE82uGAiimJOczWyuF5y8ZDbWMN/HzltNG/z
+         OhjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=u3HAQ1iwdSNYG5zv8w9IpRfitR0iS5MN5Wkm6OyHQWY=;
+        b=czCh05vC98Gb9GuXAjOPOUoLaWb2yI7FaldpbQynsVmF+KQPW9uuTJjFi4q7D0Sdkf
+         GgL0wMUu2x6jtGcTZmpO2Buhst9Vv3H8p05eFHMzRY82C3+lGlKjhKKq65UpxAIyINyK
+         OXKKrdKVrkUDeiktfb/P9mCczUvakFVGSvrkiWOJNc13JnzYB0CU2Nh+qm+eN4WDVPns
+         DIQyU1YXhqc4C02pQm0d2L4lM5g8ME2uLkMROJchooHmWAX/S09YCaGC/cuqwLrj/h23
+         r7h/5RwKWg+qf+/Ve6S1j3eeAA9kX4ICKhShlbjJJh/f5egtOcfQc5DDzNWyeJJx2dyS
+         9QsQ==
+X-Gm-Message-State: AFqh2kr+Tza+/vfxuQYT2wJQJhH64V9E8EvxGHXqcv9UYuUtXKUyiBk6
+        wgVg/WaV9jQ2el4lPXyPJiwKxsOw0qlyAySV2Xk=
+X-Google-Smtp-Source: AMrXdXuC/QM/0mWseDYli/9IJ30CEtf3el6sUzZ2Qs5VJL1+w0+LlPNG0+VlDoHZbsU1+ifS7mdrYK8Y6Ala66BNqy4=
+X-Received: by 2002:a17:906:1b06:b0:7ae:16a9:e4d7 with SMTP id
+ o6-20020a1709061b0600b007ae16a9e4d7mr4024983ejg.574.1672892050623; Wed, 04
+ Jan 2023 20:14:10 -0800 (PST)
 MIME-Version: 1.0
-Date:   Thu, 5 Jan 2023 04:02:47 +0000
-From:   Aaron Thompson <dev@aaront.org>
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     linux-mm@kvack.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Darren Hart <dvhart@infradead.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Ingo Molnar <mingo@redhat.com>, Marco Elver <elver@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kasan-dev@googlegroups.com, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        x86@kernel.org
-Subject: Re: [PATCH 1/1] mm: Always release pages to the buddy allocator in
- memblock_free_late().
-In-Reply-To: <Y7XU4Wf2ohArLtvs@kernel.org>
-References: <20230104074215.2621-1-dev@aaront.org>
- <010101857bbc4d26-d9683bb4-c4f0-465b-aea6-5314dbf0aa01-000000@us-west-2.amazonses.com>
- <Y7XU4Wf2ohArLtvs@kernel.org>
-User-Agent: Roundcube Webmail/1.4.13
-Message-ID: <01010185801881b4-2dd5c952-d967-414b-9dc6-7edb04436342-000000@us-west-2.amazonses.com>
-X-Sender: dev@aaront.org
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Feedback-ID: 1.us-west-2.OwdjDcIoZWY+bZWuVZYzryiuW455iyNkDEZFeL97Dng=:AmazonSES
-X-SES-Outgoing: 2023.01.05-54.240.27.43
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a98:9d8c:0:b0:1a0:898:2a6 with HTTP; Wed, 4 Jan 2023
+ 20:14:09 -0800 (PST)
+From:   Ainamagara Docus <kawoomadocus@gmail.com>
+Date:   Thu, 5 Jan 2023 09:14:09 +0500
+Message-ID: <CAAmdC=eUMKyOJFjt6=0hhRry+Y2brT8QcLhunOLUYtaKm_gQXw@mail.gmail.com>
+Subject: =?UTF-8?Q?Happy_New_Year_To_Your_Contract=2E_Frohes_neues_Jahr_f?=
+        =?UTF-8?Q?=C3=BCr_Ihren_Vertrag?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLY,
+        LOTS_OF_MONEY,MILLION_USD,MONEY_FRAUD_3,NA_DOLLARS,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,UNDISC_MONEY autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:641 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5880]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [kawoomadocus[at]gmail.com]
+        *  1.5 MILLION_USD BODY: Talks about millions of dollars
+        *  0.0 NA_DOLLARS BODY: Talks about a million North American dollars
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  1.0 FREEMAIL_REPLY From and body contain different freemails
+        *  1.7 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  2.5 MONEY_FRAUD_3 Lots of money and several fraud phrases
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Mike,
+Happy New Year And Congratulations To Your Contract Award.
 
-On 2023-01-04 11:34, Mike Rapoport wrote:
-> Hi,
-> 
-> On Wed, Jan 04, 2023 at 07:43:36AM +0000, Aaron Thompson wrote:
->> If CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, memblock_free_pages()
->> only releases pages to the buddy allocator if they are not in the
->> deferred range. This is correct for free pages (as defined by
->> for_each_free_mem_pfn_range_in_zone()) because free pages in the
->> deferred range will be initialized and released as part of the 
->> deferred
->> init process. memblock_free_pages() is called by memblock_free_late(),
->> which is used to free reserved ranges after memblock_free_all() has
->> run. memblock_free_all() initializes all pages in reserved ranges, and
-> 
-> To be precise, memblock_free_all() frees pages, or releases them to the
-> pages allocator, rather than initializes.
+I am writing to inform you that the Secretary General of the United
+Nations and Board Member has made a provisional decision to award you
+a charitable work contract through the United Nations Data Online New
+Year Selection Program and your name was selected to award you charity
+work AND empowerment contract with the sum of $25. Million USD, to
+serve the communities and neighbourhoods where the United Nation can
+not be able to reach out. The United Nations can not do it alone and
+we need your assistance to make the world a better place and fight
+against poverty.  Contact Mrs. Ebert Achy, for more details and she
+will also direct you to the important areas you are going to work with
+the fund. Below are the details of your awarded contract.  Mrs. Ebert
+Achy, is ( ebertachy@protonmail.com ) contact her now.
 
-As you mentioned in the comment below, whether memblock_free_all() does 
-any
-initializing depends on the particular deferred init situation.
-memblock_free_all() does ultimately call init_reserved_page() for every 
-reserved
-page (via reserve_bootmem_region()), but that only actually initializes 
-the page
-if it's in the deferred range. In either case, all I was trying to say 
-here is
-that we can be certain that all reserved pages have been initialized 
-after
-memblock_free_all() has run, so I'll rephrase that.
+Description Charity Work and Empowerment
+Contract Number UN/00497HN511HRXJ
+Awarded Amount 25 Million US. Dollars
+Amount Code Secret  Number Q2563DK
 
->> accordingly, those pages are not touched by the deferred init
->> process. This means that currently, if the pages that
->> memblock_free_late() intends to release are in the deferred range, 
->> they
->> will never be released to the buddy allocator. They will forever be
->> reserved.
->> 
->> In addition, memblock_free_pages() calls kmsan_memblock_free_pages(),
->> which is also correct for free pages but is not correct for reserved
->> pages. KMSAN metadata for reserved pages is initialized by
->> kmsan_init_shadow(), which runs shortly before memblock_free_all().
->> 
->> For both of these reasons, memblock_free_pages() should only be called
->> for free pages, and memblock_free_late() should call 
->> __free_pages_core()
->> directly instead.
-> 
-> Overall looks fine to me and I couldn't spot potential issues.
-> 
-> I'd appreciate if you add a paragraph about the actual issue with EFI 
-> boot
-> you described in the cover letter to the commit message.
-
-Sure, will do.
-
->> Fixes: 3a80a7fa7989 ("mm: meminit: initialise a subset of struct pages 
->> if CONFIG_DEFERRED_STRUCT_PAGE_INIT is set")
->> Signed-off-by: Aaron Thompson <dev@aaront.org>
->> ---
->>  mm/memblock.c                     | 2 +-
->>  tools/testing/memblock/internal.h | 4 ++++
->>  2 files changed, 5 insertions(+), 1 deletion(-)
->> 
->> diff --git a/mm/memblock.c b/mm/memblock.c
->> index 511d4783dcf1..56a5b6086c50 100644
->> --- a/mm/memblock.c
->> +++ b/mm/memblock.c
->> @@ -1640,7 +1640,7 @@ void __init memblock_free_late(phys_addr_t base, 
->> phys_addr_t size)
->>  	end = PFN_DOWN(base + size);
->> 
->>  	for (; cursor < end; cursor++) {
->> -		memblock_free_pages(pfn_to_page(cursor), cursor, 0);
->> +		__free_pages_core(pfn_to_page(cursor), 0);
-> 
-> Please add a comment that explains why it is safe to call
-> __free_pages_core() here.
-> Something like
-> 
-> 	/*
-> 	 * Reserved pages are always initialized by the end of
-> 	 * memblock_free_all() either during memmap_init() or, with deferred
-> 	 * initialization if struct page in reserve_bootmem_region()
-> 	 */
-
-Will do. Thanks for the review.
-
->>  		totalram_pages_inc();
->>  	}
->>  }
->> diff --git a/tools/testing/memblock/internal.h 
->> b/tools/testing/memblock/internal.h
->> index fdb7f5db7308..85973e55489e 100644
->> --- a/tools/testing/memblock/internal.h
->> +++ b/tools/testing/memblock/internal.h
->> @@ -15,6 +15,10 @@ bool mirrored_kernelcore = false;
->> 
->>  struct page {};
->> 
->> +void __free_pages_core(struct page *page, unsigned int order)
->> +{
->> +}
->> +
->>  void memblock_free_pages(struct page *page, unsigned long pfn,
->>  			 unsigned int order)
->>  {
->> --
->> 2.30.2
->> 
-
-Thanks,
--- Aaron
+United Nations
+Data Online Program Department
+Midtown Manhattan, New York City, USA
