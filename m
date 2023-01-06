@@ -2,143 +2,138 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0AC565F9F9
-	for <lists+linux-efi@lfdr.de>; Fri,  6 Jan 2023 04:12:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11B0166039C
+	for <lists+linux-efi@lfdr.de>; Fri,  6 Jan 2023 16:43:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231477AbjAFDM5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 5 Jan 2023 22:12:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35296 "EHLO
+        id S229701AbjAFPnK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 6 Jan 2023 10:43:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230194AbjAFDMz (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 5 Jan 2023 22:12:55 -0500
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C903A625D5;
-        Thu,  5 Jan 2023 19:12:53 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id m26-20020a05600c3b1a00b003d9811fcaafso269927wms.5;
-        Thu, 05 Jan 2023 19:12:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=21zf54EYWZhDQm73m3HRBf5o2in9eTbBIqduSXeMgk8=;
-        b=aZ44bH1sYnQ5JsJWaicvpGtsRM5DotnzGw9qrWsN9MnkMjhlFHk9hWepiejOwWgRZW
-         I8+mM2CLp5LlUZq6i32263xTMJQTPcu/SgYfC9R9cJDmcdv15YWgzye+5pUh7P3kGzR1
-         smiEj2VLf+hZihLytPT/8uetBwjhUmOMYidBUfo7Tu64fYNKfVPY86KAP/gNW/BxLlwl
-         KhQWSsRSPSOqyhETLgGquudZuGX15ZU4wRo4NRoL15UxxsF6SFkzk4erKklymtLyc11J
-         anAL4L64j3wSDaoWKinZc3dxZnRhWRGMhuIG0pYMQR2OKw13141Wd7SNtBHhJk5aDhEY
-         TTaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=21zf54EYWZhDQm73m3HRBf5o2in9eTbBIqduSXeMgk8=;
-        b=J4YuNaCcH13Ipi77kpmCrckUzRVgqDNrJACULrVcYmp0YhqICBCYzKZwIy+qjuQSdo
-         iE6V7nlppWR1Qfx21gL0JJCRScZ55dkE+6VhgByZkqgqyJllFpvzXRTzEmtn2XZC6wVg
-         KDXMLqN2B0qXvY6b2Upiz/M1RF2CFS1vGM/P+SAOh2DpYzXx/VzSAQu9RVuUMycTL0uM
-         jysxPGznFVANfeq9ugC+Lm2r9UmaUzU7vJT4ZWgj+3++uMewBBCWaDrYroPiGsVK1vVZ
-         UrpIn5F6vpnxOF7GUfHqev7jBd3N/gGpkW1xGMTS+pCZT/SK8/v/VfPoxvm9xD4hF/tG
-         rPSw==
-X-Gm-Message-State: AFqh2kr9S9t9R7zRYEzU16qOC99R/1ceVPu7y53OlDcItrp3aaKWk+n3
-        b7xHRoydvGhoGjvcc4edoGMvydfChW4=
-X-Google-Smtp-Source: AMrXdXtR5P+Ujt2kAioRpWXKR1dGUjAnz9UesBoywCFrbsEvTlyXCnKGra1fH0QuZVVUrzDHHyt8yw==
-X-Received: by 2002:a05:600c:3ca2:b0:3d9:da3a:ef9b with SMTP id bg34-20020a05600c3ca200b003d9da3aef9bmr639110wmb.31.1672974772270;
-        Thu, 05 Jan 2023 19:12:52 -0800 (PST)
-Received: from gmail.com (1F2EF380.nat.pool.telekom.hu. [31.46.243.128])
-        by smtp.gmail.com with ESMTPSA id p1-20020a05600c204100b003d99a39b846sm65434wmg.5.2023.01.05.19.12.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Jan 2023 19:12:51 -0800 (PST)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Fri, 6 Jan 2023 04:12:49 +0100
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Aaron Thompson <dev@aaront.org>
-Cc:     Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Darren Hart <dvhart@infradead.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Ingo Molnar <mingo@redhat.com>, Marco Elver <elver@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kasan-dev@googlegroups.com, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        x86@kernel.org
-Subject: Re: [PATCH v2 1/1] mm: Always release pages to the buddy allocator
- in memblock_free_late().
-Message-ID: <Y7eRsWuu8jZgZtUt@gmail.com>
-References: <010101857bbc3a41-173240b3-9064-42ef-93f3-482081126ec2-000000@us-west-2.amazonses.com>
- <20230105041650.1485-1-dev@aaront.org>
- <010001858025fc22-e619988e-c0a5-4545-bd93-783890b9ad14-000000@email.amazonses.com>
- <Y7aq7fzKZ/EdLVp3@gmail.com>
- <0101018584d0b5a3-ea0e4d67-b00f-4254-8e1c-767fcafbec31-000000@us-west-2.amazonses.com>
+        with ESMTP id S233637AbjAFPmp (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 6 Jan 2023 10:42:45 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6DD57F460
+        for <linux-efi@vger.kernel.org>; Fri,  6 Jan 2023 07:42:44 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 433326191A
+        for <linux-efi@vger.kernel.org>; Fri,  6 Jan 2023 15:42:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D2CC433D2
+        for <linux-efi@vger.kernel.org>; Fri,  6 Jan 2023 15:42:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673019763;
+        bh=h4JivlVuTXlcXG8nkqFBR54VS7VxEmTyI5eksFjShJs=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=aP+J/mCtuDoYDiVDYoiMkhN1VIKl7TxztUWjaCN5qpo2Y8cvIlZUZt3w2Ur2ljiYy
+         NS/a5T1bQ2oODMqlQY/+6JvrRCzB1M8XFvTzFa99ArCMCRFdFjVkexMM58Nww0hj6U
+         uTerhSxTaAH6Z9DZsxZNe/I/UEzAw5g0jb/SL47XmgLssZwpSbTmg6UIIa29mSel3q
+         pKu6ElWdqOX6mwGAb8KflNvvqxTP4eWCnTNPa3GkGJtTy2PmDgYfcIPNIXvOiohQE9
+         P3bO8vxL4f4cDfmOSvGjACr3mNvEtCIZD73bmBC7lE30+JcdCh9P0KGAEvtuXBBmzO
+         xdnHi4NWMk5fw==
+Received: by mail-lf1-f41.google.com with SMTP id bf43so2464943lfb.6
+        for <linux-efi@vger.kernel.org>; Fri, 06 Jan 2023 07:42:43 -0800 (PST)
+X-Gm-Message-State: AFqh2krH67xZHqd+QCfy7ENgC+eCHastHnXiZEmPq+bm0umgAVfHWRVU
+        EOfZo6uNNP2fu+JN1M8zP1N4dX0QdH5GIJ4ivQM=
+X-Google-Smtp-Source: AMrXdXv3VFaMkA7oaIwJ0s9PFXzJF2HmKVf/baPG/lWhKWYZwenwwyYeH1TWvLqtPulucjJW+3ahs/L5y+jeD2ibLM8=
+X-Received: by 2002:a19:ad4b:0:b0:4cb:315d:e9b8 with SMTP id
+ s11-20020a19ad4b000000b004cb315de9b8mr2111113lfd.110.1673019761681; Fri, 06
+ Jan 2023 07:42:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0101018584d0b5a3-ea0e4d67-b00f-4254-8e1c-767fcafbec31-000000@us-west-2.amazonses.com>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+References: <20230104174433.1259428-1-ardb@kernel.org> <20230104174433.1259428-2-ardb@kernel.org>
+ <Y7bGeOZ1+Z2cH9NF@FVFF77S0Q05N>
+In-Reply-To: <Y7bGeOZ1+Z2cH9NF@FVFF77S0Q05N>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 6 Jan 2023 16:42:29 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGp5Ba5M0OLHJVMbkE4Fc93ANiLPoMyzM7Opjegek1dGw@mail.gmail.com>
+Message-ID: <CAMj1kXGp5Ba5M0OLHJVMbkE4Fc93ANiLPoMyzM7Opjegek1dGw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] arm64: efi: Avoid workqueue to check whether EFI
+ runtime is live
+To:     Mark Rutland <mark.rutland@arm.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
+        catalin.marinas@arm.com, will@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Thu, 5 Jan 2023 at 13:46, Mark Rutland <mark.rutland@arm.com> wrote:
+>
+> Hi Ard,
+>
+> On Wed, Jan 04, 2023 at 06:44:32PM +0100, Ard Biesheuvel wrote:
+> > Comparing current_work() against efi_rts_work.work is sufficient to
+> > decide whether current is currently running EFI runtime services code at
+> > any level in its call stack.
+> >
+> > However, there are other potential users of the EFI runtime stack, such
+> > as the ACPI subsystem, which may invoke efi_call_virt_pointer()
+> > directly, and so any sync exceptions occurring in firmware during those
+> > calls are currently misidentified.
+> >
+> > So instead, let's check whether the spinlock is locked, and whether the
+> > stashed value of the thread stack pointer points into current's thread
+> > stack. This can only be the case if current was interrupted while
+> > running EFI runtime code.
+> >
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > ---
+> >  arch/arm64/include/asm/efi.h | 10 ++++++++++
+> >  arch/arm64/kernel/efi.c      |  3 ++-
+> >  2 files changed, 12 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
+> > index 31d13a6001df49c4..aca6dcaa33efbac4 100644
+> > --- a/arch/arm64/include/asm/efi.h
+> > +++ b/arch/arm64/include/asm/efi.h
+> > @@ -42,14 +42,24 @@ int efi_set_mapping_permissions(struct mm_struct *mm, efi_memory_desc_t *md);
+> >
+> >  #define arch_efi_call_virt_teardown()                                        \
+> >  ({                                                                   \
+> > +     efi_rt_stack_top[-1] = 0;                                       \
+>
+> Is there any reason not to do this in the asm, given all the other setting of
+> this occurs there? I know that'd mean duplicating the writ for both the regular
+> case and the exception handler, but then it'd be clearly associated with the
+> instant we move away from the EFI RT stack.
+>
+> That would also hide this write from KCSAN; itherwise this'll need to be a
+> WRITE_ONCE() to pair with the (not necessariyl) locked read in current_in_efi()
+> below.
+>
 
-* Aaron Thompson <dev@aaront.org> wrote:
+Sure.
 
-> 
-> On 2023-01-05 02:48, Ingo Molnar wrote:
-> > * Aaron Thompson <dev@aaront.org> wrote:
-> > 
-> > > For example, on an Amazon EC2 t3.micro VM (1 GB) booting via EFI:
-> > > 
-> > > v6.2-rc2:
-> > >   # grep -E 'Node|spanned|present|managed' /proc/zoneinfo
-> > >   Node 0, zone      DMA
-> > >           spanned  4095
-> > >           present  3999
-> > >           managed  3840
-> > >   Node 0, zone    DMA32
-> > >           spanned  246652
-> > >           present  245868
-> > >           managed  178867
-> > > 
-> > > v6.2-rc2 + patch:
-> > >   # grep -E 'Node|spanned|present|managed' /proc/zoneinfo
-> > >   Node 0, zone      DMA
-> > >           spanned  4095
-> > >           present  3999
-> > >           managed  3840
-> > >   Node 0, zone    DMA32
-> > >           spanned  246652
-> > >           present  245868
-> > >           managed  222816   # +43,949 pages
-> > 
-> > [ Note the annotation I added to the output - might be useful in the
-> > changelog too. ]
-> > 
-> > So this patch adds around +17% of RAM to this 1 GB virtual system? That
-> > looks rather significant ...
-> > 
-> > Thanks,
-> > 
-> > 	Ingo
-> 
-> It is significant, but I wouldn't describe it as being added. I would say
-> that the system is currently losing 17% of RAM due to a bug, and this patch
-> fixes that bug.
+> >       spin_unlock(&efi_rt_lock);                                      \
+> >       __efi_fpsimd_end();                                             \
+> >       efi_virtmap_unload();                                           \
+> >  })
+> >
+> >  extern spinlock_t efi_rt_lock;
+> > +extern u64 *efi_rt_stack_top;
+> >  efi_status_t __efi_rt_asm_wrapper(void *, const char *, ...);
+> >
+> > +/*
+> > + * efi_rt_stack_top[-1] contains the value the stack pointer had before
+> > + * switching to the EFI runtime stack.
+> > + */
+> > +#define current_in_efi()                                             \
+> > +     (!preemptible() && spin_is_locked(&efi_rt_lock) &&              \
+> > +      on_task_stack(current, efi_rt_stack_top[-1], 1))
+>
+> KCSAN is liable to complain about the access to efi_rt_stack_top[-1], since
+> that can race with another thread updating the value, and it's not necessarily
+> single-copy-atomic.
+>
+> It's probably worth making this a READ_ONCE(), even if we move all the writes
+> to asm, to avoid tearing.
+>
+> Aside from those points, this looks good to me.
+>
 
-To the end-user gaining +17% [or +3%] extra usable RAM compared to what 
-they had before is what matters, and it's a big deal. :-)
-
-Thanks,
-
-	Ingo
+ok
