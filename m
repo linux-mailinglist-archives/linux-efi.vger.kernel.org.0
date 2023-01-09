@@ -2,98 +2,76 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EDA6662DBF
-	for <lists+linux-efi@lfdr.de>; Mon,  9 Jan 2023 18:56:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A202663273
+	for <lists+linux-efi@lfdr.de>; Mon,  9 Jan 2023 22:12:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230042AbjAIR4P (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 9 Jan 2023 12:56:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44310 "EHLO
+        id S237761AbjAIVMM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 9 Jan 2023 16:12:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237399AbjAIRzg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 9 Jan 2023 12:55:36 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C2F2395FF;
-        Mon,  9 Jan 2023 09:51:14 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 18F03CE113C;
-        Mon,  9 Jan 2023 17:51:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E546C433EF;
-        Mon,  9 Jan 2023 17:51:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673286669;
-        bh=aLg8ieTOI3iGGwFQIfew1flIZp97QV5PnfMYuEyFUhw=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=FV9jpOyzGZ4/JO/LBn+d7PMjyW1yfrFOgNnPILkCxg32CnKpToOm/3krcZy0ejHex
-         0A+2WhgCmTiV/nNw7OE6Ej/1uPKBzX4vYUZtfVY7jncrpGkddysGNEgZNDn/B4KLpF
-         9Tc8/xJPjUa5M/fC97ovDMVKNdystZsemlXeg1VbVKCPe0c6ivX7wHk1e/Zc2OfbV6
-         ALMDM4bCKj7qyd8Bn1b1qvcm8O0H28t90Nt5fFagGn8wux+1AEFulOd/5x39h9YAHe
-         e8McRiqBXYM/752NePWoN+Q6Uh+5Kks1Kf47S7BQ1FF1no8YAB+ezBL5vuHGeFqM3o
-         FRedd0EeNxKLA==
-Received: by mail-lj1-f173.google.com with SMTP id o7so9324097ljj.8;
-        Mon, 09 Jan 2023 09:51:09 -0800 (PST)
-X-Gm-Message-State: AFqh2krewBIfpMIqMwR9P0xyDOiPvvbWbcBf3jY3QBOnbM2CEmdUqFeq
-        e9hdO5+MnIxRjL/evWGBVsKalhSM9YZlSql3a9k=
-X-Google-Smtp-Source: AMrXdXsTsA5wV3hCGYwy/I2Cd+AeCA/HAHjHSXfz9nUbduxVYXx5G/6Y6/+7EWE30D11/6IvMhy8+jmM4viE8WKIvG4=
-X-Received: by 2002:a2e:96ce:0:b0:283:33fa:ee22 with SMTP id
- d14-20020a2e96ce000000b0028333faee22mr330520ljj.415.1673286667215; Mon, 09
- Jan 2023 09:51:07 -0800 (PST)
+        with ESMTP id S237807AbjAIVLx (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 9 Jan 2023 16:11:53 -0500
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [IPv6:2001:4b98:dc4:8::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5074943D9B;
+        Mon,  9 Jan 2023 13:06:49 -0800 (PST)
+Received: (Authenticated sender: alexandre.belloni@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 6760F240009;
+        Mon,  9 Jan 2023 21:06:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1673298407;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Eh1DAXyvkuVcNioGYKI2acetOk4JaM6UlDTmzMaklNc=;
+        b=e/qv1HqmcBj4tO/BLNvni6pZbMykXUELMAh10I9uUMQI1/9clCgqL2WySKIwFCYZTIsrgf
+        aCJIXPq3URkqh2BD4ZX8L8b0g+tqGB8nmMRvJgQwyLHYH8Q5YF7j55yRnCGXgCJH0105b5
+        s9bLCIHh5ZGgKX2xVLP5ZvQMILeDwVzeC8Uahd64SO9OpGwTA9Ce++ePFryDUCJa0sCm7i
+        1CMRkXJqCrPxftHZE3EMEEMi5NtpstaL99AGvIF4GnFB2hbbVI6UVyZbzKjRb3ZiB7kleR
+        HWATcpniapxWWJHlZOVrpGxMdIyZq3qL0ru0Fx77OQvDjFOoQ42dsknKsHPi0w==
+Date:   Mon, 9 Jan 2023 22:06:47 +0100
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Alessandro Zummo <a.zummo@towertech.it>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Shanker Donthineni <sdonthineni@nvidia.com>
+Cc:     linux-rtc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-efi@vger.kernel.org
+Subject: Re: [PATCH v2] rtc: efi: Enable SET/GET WAKEUP services as optional
+Message-ID: <167329838479.48360.11140441883558842706.b4-ty@bootlin.com>
+References: <20230102230630.192911-1-sdonthineni@nvidia.com>
 MIME-Version: 1.0
-References: <20230109095948.2471205-1-ardb@kernel.org> <Y7xTf1SEPTXiCoPM@dev-arch.thelio-3990X>
-In-Reply-To: <Y7xTf1SEPTXiCoPM@dev-arch.thelio-3990X>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 9 Jan 2023 18:50:56 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFphB3G=5V6sSVvjt2ZpB-mitkoz_vmjBESdCnNwOJe8A@mail.gmail.com>
-Message-ID: <CAMj1kXFphB3G=5V6sSVvjt2ZpB-mitkoz_vmjBESdCnNwOJe8A@mail.gmail.com>
-Subject: Re: [PATCH] efi: tpm: Avoid READ_ONCE() for accessing the event log
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
-        will@kernel.org, catalin.marinas@arm.com, stable@vger.kernel.org,
-        Peter Jones <pjones@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Matthew Garrett <mjg59@srcf.ucam.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230102230630.192911-1-sdonthineni@nvidia.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 9 Jan 2023 at 18:48, Nathan Chancellor <nathan@kernel.org> wrote:
->
-> On Mon, Jan 09, 2023 at 10:59:48AM +0100, Ard Biesheuvel wrote:
-> > Nathan reports that recent kernels built with LTO will crash when doing
-> > EFI boot using Fedora's GRUB and SHIM. The culprit turns out to be a
-> > misaligned load from the TPM event log, which is annotated with
-> > READ_ONCE(), and under LTO, this gets translated into a LDAR instruction
-> > which does not tolerate misaligned accesses.
-> >
-> > Interestingly, this does not happen when booting the same kernel
-> > straight from the UEFI shell, and so the fact that the event log may
-> > appear misaligned in memory may be caused by a bug in GRUB or SHIM.
-> >
-> > However, using READ_ONCE() to access firmware tables is slightly unusual
-> > in any case, and here, we only need to ensure that 'event' is not
-> > dereferenced again after it gets unmapped, so a compiler barrier should
-> > be sufficient, and works around the reported issue.
-> >
-> > Cc: <stable@vger.kernel.org>
-> > Cc: Peter Jones <pjones@redhat.com>
-> > Cc: Jarkko Sakkinen <jarkko@kernel.org>
-> > Cc: Matthew Garrett <mjg59@srcf.ucam.org>
-> > Reported-by: Nathan Chancellor <nathan@kernel.org>
-> > Link: https://github.com/ClangBuiltLinux/linux/issues/1782
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
->
-> Based on the thread, I tested this patch without barrier() and my
-> machine boots up just fine now with an LTO kernel. Thanks a lot for the
-> analysis and fix!
->
-> Tested-by: Nathan Chancellor <nathan@kernel.org>
->
 
-Thanks. I've queued this up as a EFI fix.
+On Mon, 02 Jan 2023 17:06:30 -0600, Shanker Donthineni wrote:
+> The current implementation of rtc-efi is expecting all the 4
+> time services GET{SET}_TIME{WAKEUP} must be supported by UEFI
+> firmware. As per the EFI_RT_PROPERTIES_TABLE, the platform
+> specific implementations can choose to enable selective time
+> services based on the RTC device capabilities.
+> 
+> This patch does the following changes to provide GET/SET RTC
+> services on platforms that do not support the WAKEUP feature.
+> 
+> [...]
+
+Applied, thanks!
+
+[1/1] rtc: efi: Enable SET/GET WAKEUP services as optional
+      commit: 101ca8d05913b7d1e6e8b9dd792193d4082fff86
+
+Best regards,
+
+-- 
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
