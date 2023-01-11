@@ -2,97 +2,117 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 731A16664C7
-	for <lists+linux-efi@lfdr.de>; Wed, 11 Jan 2023 21:23:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB86566656D
+	for <lists+linux-efi@lfdr.de>; Wed, 11 Jan 2023 22:17:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235351AbjAKUXI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 11 Jan 2023 15:23:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44294 "EHLO
+        id S234808AbjAKVRl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 11 Jan 2023 16:17:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231204AbjAKUXD (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 11 Jan 2023 15:23:03 -0500
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A379E0BF;
-        Wed, 11 Jan 2023 12:23:02 -0800 (PST)
-Received: by mail-ed1-f43.google.com with SMTP id m21so24060852edc.3;
-        Wed, 11 Jan 2023 12:23:02 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=c2ew51IPhiFHUgNo3p4kdBu8zvGFD5L/jd43Yv0kTsM=;
-        b=ocI5JOdGj+w7rySrGAEyMrws4teNBl/ShIxd2XVtx9fdF29iaQzBFet8w5C/Fh6fGb
-         ZGTvetiDWQf1sfhdS3PkLnpBOxdmrUbRBrj2A+8s6ouNtt1tBhUHRSw77vrwUUuRZ8tR
-         Xqk5W/2uzQs/+o3Ph2LFJ6J7ClI3mIN0Y2xQsE1fpkrVkj8uxgdkrWnlzhr+mKxBpIOh
-         6b8CODirDW+uBM4fMD21cakX80v1YmfevHYT/uJuPezZXAoq0pVdrO2+8xmIGx2/se9B
-         QrNyWaLqINgyveclc/AmJMm+L5zkSc6UGn3fnVGdnkqyii42DCbdFbRPGoXiRWr6K4DK
-         aMXg==
-X-Gm-Message-State: AFqh2komBGvyuij4OxD2QMaMvKuNhBdVQ8+NAMc/xI9gfBQgu5fZk6wx
-        +9pgJJF2l/RlTM4J8duDAcI55DTLlt/elXN4rieaVlz1c0A=
-X-Google-Smtp-Source: AMrXdXsOVhWulPRERmxtCqcVKdkHww/EqX7DF+zDJI37A8xB1Bmpx6XRsXnCoTzMaeQrNJo6Hp0lGCZeikGzbJov2to=
-X-Received: by 2002:aa7:c853:0:b0:47e:4f0b:7ad9 with SMTP id
- g19-20020aa7c853000000b0047e4f0b7ad9mr5327975edt.239.1673468580768; Wed, 11
- Jan 2023 12:23:00 -0800 (PST)
+        with ESMTP id S232042AbjAKVRU (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 11 Jan 2023 16:17:20 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 445593F461;
+        Wed, 11 Jan 2023 13:17:09 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C95BE61E74;
+        Wed, 11 Jan 2023 21:17:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6C7C433EF;
+        Wed, 11 Jan 2023 21:17:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673471828;
+        bh=QdcJvdniwrZcZmbcSbOer2XLC8w4zwY1Sh2DDpeRZBE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Zg+MIILrTXGW8KxXp2z2qWP5oE2R0DpAQ3jqnA28F/gResrypj/V9XhV0VR9u/b3O
+         Af1MinfQ3x/0cEb549086NlK578BWsjX6RsNqBn6xjopdvLsyYNB+sSPxCmPdkEljT
+         LLj8JHWoYQ0Un2875tkjtOPiwSPwWV2gn+1EJwLEomTCRTSjNTEWhAqJbnON4xjrzw
+         NhdMmO6TJqlAYYngD0bVAMt3mVb5ybVbDT1jAoQba+Lt7uRLDQs9AzHOAv2KqARvtl
+         LIIG/kuN6tQ7kLJ7i67nqstwETWbiUU5cfLpTWUL1vlIdHKls4dMRdbZR5df0dRcjr
+         OPFj0rjs/99Sg==
+Received: by mail-lf1-f50.google.com with SMTP id d30so20576497lfv.8;
+        Wed, 11 Jan 2023 13:17:08 -0800 (PST)
+X-Gm-Message-State: AFqh2koals5/JoF0nM9UJXFhYPW+Pi1gViLwfe5GGMBH1lFlhHbsGIq5
+        z3X6XDgFLGDGIbOUi8xTcJvF3YZhNYi4meZ1aVU=
+X-Google-Smtp-Source: AMrXdXuBBSwcAiqP8KFCO40rWyFMOcfLVKYmvyMB5eDhDtB3rGI2GHTWeHyQTyXlKOPv/utmYODtcMD51fJraDPBYvw=
+X-Received: by 2002:a05:6512:3d93:b0:4b8:9001:a694 with SMTP id
+ k19-20020a0565123d9300b004b89001a694mr3571126lfv.426.1673471826196; Wed, 11
+ Jan 2023 13:17:06 -0800 (PST)
 MIME-Version: 1.0
-References: <20230111132734.1571990-1-ardb@kernel.org>
-In-Reply-To: <20230111132734.1571990-1-ardb@kernel.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 11 Jan 2023 21:22:49 +0100
-Message-ID: <CAJZ5v0hZMGMBnYog1CwUfGe8WU9GHmNgdn3gJdwdpiz-V2J-Ow@mail.gmail.com>
+References: <20230111132734.1571990-1-ardb@kernel.org> <CAJZ5v0hZMGMBnYog1CwUfGe8WU9GHmNgdn3gJdwdpiz-V2J-Ow@mail.gmail.com>
+In-Reply-To: <CAJZ5v0hZMGMBnYog1CwUfGe8WU9GHmNgdn3gJdwdpiz-V2J-Ow@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 11 Jan 2023 22:16:55 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFyba7e3mVeV2F+g85+1coYJotK=PFpvia6gAD8j1=tog@mail.gmail.com>
+Message-ID: <CAMj1kXFyba7e3mVeV2F+g85+1coYJotK=PFpvia6gAD8j1=tog@mail.gmail.com>
 Subject: Re: [PATCH] ACPI: PRM: Check whether EFI runtime is available
-To:     Ard Biesheuvel <ardb@kernel.org>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
 Cc:     linux-efi@vger.kernel.org, stable@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jan 11, 2023 at 2:27 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+On Wed, 11 Jan 2023 at 21:23, Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> The ACPI PRM address space handler calls efi_call_virt_pointer() to
-> execute PRM firmware code, but doing so is only permitted when the EFI
-> runtime environment is available. Otherwise, such calls are guaranteed
-> to result in a crash, and must therefore be avoided.
+> On Wed, Jan 11, 2023 at 2:27 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+> >
+> > The ACPI PRM address space handler calls efi_call_virt_pointer() to
+> > execute PRM firmware code, but doing so is only permitted when the EFI
+> > runtime environment is available. Otherwise, such calls are guaranteed
+> > to result in a crash, and must therefore be avoided.
+> >
+> > Cc: <stable@vger.kernel.org>
+> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> > Cc: Len Brown <lenb@kernel.org>
+> > Cc: linux-acpi@vger.kernel.org
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > ---
+> >  drivers/acpi/prmt.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> >
+> > diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+> > index 998101cf16e47145..74f924077866ae69 100644
+> > --- a/drivers/acpi/prmt.c
+> > +++ b/drivers/acpi/prmt.c
+> > @@ -236,6 +236,11 @@ static acpi_status acpi_platformrt_space_handler(u32 function,
+> >         efi_status_t status;
+> >         struct prm_context_buffer context;
+> >
+> > +       if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
+> > +               pr_err("PRM: EFI runtime services unavailable\n");
+> > +               return AE_NOT_IMPLEMENTED;
+> > +       }
+> > +
 >
-> Cc: <stable@vger.kernel.org>
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: Len Brown <lenb@kernel.org>
-> Cc: linux-acpi@vger.kernel.org
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  drivers/acpi/prmt.c | 5 +++++
->  1 file changed, 5 insertions(+)
+> Does the check need to be made in the address space handler and if so, then why?
 >
-> diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-> index 998101cf16e47145..74f924077866ae69 100644
-> --- a/drivers/acpi/prmt.c
-> +++ b/drivers/acpi/prmt.c
-> @@ -236,6 +236,11 @@ static acpi_status acpi_platformrt_space_handler(u32 function,
->         efi_status_t status;
->         struct prm_context_buffer context;
->
-> +       if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
-> +               pr_err("PRM: EFI runtime services unavailable\n");
-> +               return AE_NOT_IMPLEMENTED;
-> +       }
-> +
 
-Does the check need to be made in the address space handler and if so, then why?
+Yes. efi_enabled(EFI_RUNTIME_SERVICES) will transition from true to
+false if an exception occurs while executing the firmware code.
 
-It looks like it would be better to prevent it from being installed if
-EFI runtime services are not enabled in the first place, in
-init_prmt().
+Unlike the EFI variable runtime services, which are quite uniform,
+this PRM code will be vendor specific, and so the likelihood that it
+is buggy and only tested with Windows is much higher, and so I would
+like us to be more cautious here.
 
->         /*
->          * The returned acpi_status will always be AE_OK. Error values will be
->          * saved in the first byte of the PRM message buffer to be used by ASL.
-> --
+> It looks like it would be better to prevent it from being installed if
+> EFI runtime services are not enabled in the first place, in
+> init_prmt().
+>
+
+We could add another check there as well, yes. And perhaps the one in
+the handler should we pr_warn_once() to prevent it from firing
+repeatedly.
+
+> >         /*
+> >          * The returned acpi_status will always be AE_OK. Error values will be
+> >          * saved in the first byte of the PRM message buffer to be used by ASL.
+> > --
