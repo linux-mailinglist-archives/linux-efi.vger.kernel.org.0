@@ -2,172 +2,192 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3C9F6658FC
-	for <lists+linux-efi@lfdr.de>; Wed, 11 Jan 2023 11:26:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06E26665AEB
+	for <lists+linux-efi@lfdr.de>; Wed, 11 Jan 2023 12:59:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231847AbjAKK0m (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 11 Jan 2023 05:26:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51066 "EHLO
+        id S238670AbjAKL7i (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 11 Jan 2023 06:59:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232762AbjAKK0k (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 11 Jan 2023 05:26:40 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 473C7102D
-        for <linux-efi@vger.kernel.org>; Wed, 11 Jan 2023 02:26:39 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 09EB2B81B8D
-        for <linux-efi@vger.kernel.org>; Wed, 11 Jan 2023 10:26:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3DC9C433F0
-        for <linux-efi@vger.kernel.org>; Wed, 11 Jan 2023 10:26:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673432796;
-        bh=fsbVnXfuGdOu17s2UnD/hsgUTD7us9JYo5HXvUCvqT4=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=T5eY/HqBRWhg8Z9yIimOoH6FmBXs6PAxsrvxQJaEdsl9mz2G5mtWzXTBaJpWFHdmg
-         X9XcQeLCfT+E9sqnwVd3HvT/voK28qi1mArHeCZLvkwjfaatVpRI99Tq6iQHz0FGNF
-         o3WFBuul9mtLri9iEm+2AaFQy6Wmley8U/MKiXi7Zt8aCBpK+64p0Yl2Lrh67GgMto
-         k1mFIEW6lgPxqQGUyoUn8TVPGQq/rbkeUwQNhtewD4oQalS56J2ch/jDTtK/IDoPdW
-         h50YaCm+6Nu5y15wWN8thEr6GBIcKnZbSiGc6eOvGzmK6RqIBS+VzL2avijG8UxKZY
-         pMHSJS/bgavaw==
-Received: by mail-lf1-f45.google.com with SMTP id bq39so22859026lfb.0
-        for <linux-efi@vger.kernel.org>; Wed, 11 Jan 2023 02:26:36 -0800 (PST)
-X-Gm-Message-State: AFqh2kphzMyAfTipw3OPQ3PGhtixqucBU3GrPYTOWoxHX+MR2E/yCP0a
-        zM4ZpBAUSqeVtLbFYIcmooZx9b1XDSI9t5DglOg=
-X-Google-Smtp-Source: AMrXdXsXo+qM+qTkarne7pRx4uyj7K7Dax5V2ZUDCdE2+V2LNSCuOOk0sKa6sFHEJl4oiD6gmeflJTA0ZN56tWYJhdM=
-X-Received: by 2002:a05:6512:3d93:b0:4b8:9001:a694 with SMTP id
- k19-20020a0565123d9300b004b89001a694mr3457923lfv.426.1673432794734; Wed, 11
- Jan 2023 02:26:34 -0800 (PST)
+        with ESMTP id S239085AbjAKL6u (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 11 Jan 2023 06:58:50 -0500
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 832DF2AC6
+        for <linux-efi@vger.kernel.org>; Wed, 11 Jan 2023 03:56:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1673438190; x=1704974190;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Jmt/g1g6i5Jviqjz05C0XYRbzQegf4f09fA1awr1tZw=;
+  b=ZyCyuOcigbL6VHLWBOthOcVqxlmY9Dw0ZRnNYSeh9NgM03lPoKbNF3/v
+   D7vrba93ZaUB0Dn9MtDibSTl9aWYAliA+gJI8X/daiqJPk3WMS3mHQmke
+   G7o5J1LVb54FOW5LmNxCb24xZjRBwOjeRH7h9FoxRIPKVPVPUGmrLlpO2
+   eDfg+a8zp3P0JWICJ5uxILyz71x+cQSVIUKUV9asBwhLOsd0rppGu+YmG
+   3cuCqCLGVt+AZGvN26RNSQKXvzsMVBpGxA4VpJqSOSZKV9O0HicmMdCii
+   8oz3h5amMNxp/oeTxwBb+lpzRwOfLNdzvjLhtu7geYmSO3bKtnw6cQgk0
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="324629587"
+X-IronPort-AV: E=Sophos;i="5.96,315,1665471600"; 
+   d="scan'208";a="324629587"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2023 03:56:30 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="689743359"
+X-IronPort-AV: E=Sophos;i="5.96,315,1665471600"; 
+   d="scan'208";a="689743359"
+Received: from lkp-server02.sh.intel.com (HELO f1920e93ebb5) ([10.239.97.151])
+  by orsmga001.jf.intel.com with ESMTP; 11 Jan 2023 03:56:28 -0800
+Received: from kbuild by f1920e93ebb5 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pFZiV-00096z-3C;
+        Wed, 11 Jan 2023 11:56:27 +0000
+Date:   Wed, 11 Jan 2023 19:56:09 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ 2084037b838d2ab5c97e66704b8cf397c5f43805
+Message-ID: <63bea3d9.gB8edTuzF61blJeW%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20230111102236.1430401-1-ardb@kernel.org>
-In-Reply-To: <20230111102236.1430401-1-ardb@kernel.org>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 11 Jan 2023 11:26:23 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXE=3Osh4YCMVEyaERVVgJBuWCExekRQXi9rxx55294=0w@mail.gmail.com>
-Message-ID: <CAMj1kXE=3Osh4YCMVEyaERVVgJBuWCExekRQXi9rxx55294=0w@mail.gmail.com>
-Subject: Re: [PATCH v7 0/6] arm64: Permit EFI boot with MMU and caches on
-To:     linux-efi@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 11 Jan 2023 at 11:23, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> The purpose of this series is to remove any explicit cache maintenance
-> for coherency during early boot. Software managed coherency is error
-> prone and tedious, and running with the MMU off is generally bad for
-> performance, and it becomes unnecessary if we simply retain the
-> cacheable 1:1 mapping of all of system RAM provided by EFI, and use it
-> to populate the initial ID map page tables. After setting up this
-> preliminary ID map, we disable the MMU, drop to EL1, reprogram the MAIR,
-> TCR and SCTLR registers as before, and proceed as usual, avoiding the
-> need for any manipulations of memory while the MMU and caches are off.
->
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: 2084037b838d2ab5c97e66704b8cf397c5f43805  efi: tpm: Avoid READ_ONCE() for accessing the event log
 
-Forgot to mention: as it happens, patches #1 and #2 in this series
-also work around a problem that was reported the other day, where the
-allyesconfig build fails to link [0]
+elapsed time: 729m
 
-I bisected this to
+configs tested: 110
+configs skipped: 2
 
-commit 5e5ff73c2e5863f93fc5fd78d178cd8f2af12464
-Author: Sai Prakash Ranjan <quic_saipraka@quicinc.com>
-Date:   Mon Oct 17 20:04:50 2022 +0530
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-    asm-generic/io: Add _RET_IP_ to MMIO trace for more accurate debug info
+gcc tested configs:
+arc                                 defconfig
+s390                             allmodconfig
+alpha                               defconfig
+s390                                defconfig
+s390                             allyesconfig
+alpha                            allyesconfig
+powerpc                           allnoconfig
+arc                              allyesconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+x86_64                            allnoconfig
+sh                               allmodconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+ia64                             allmodconfig
+x86_64                           rhel-8.3-bpf
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+i386                             allyesconfig
+i386                                defconfig
+riscv                randconfig-r042-20230110
+s390                 randconfig-r044-20230110
+arc                  randconfig-r043-20230110
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+m68k                          amiga_defconfig
+riscv                            allmodconfig
+sh                   rts7751r2dplus_defconfig
+m68k                                defconfig
+sh                          rsk7201_defconfig
+x86_64                        randconfig-a011
+x86_64                        randconfig-a013
+x86_64                        randconfig-a015
+sparc                               defconfig
+xtensa                           allyesconfig
+csky                                defconfig
+sparc                            allyesconfig
+x86_64                                  kexec
+powerpc                     taishan_defconfig
+arm                         assabet_defconfig
+parisc                generic-64bit_defconfig
+mips                        vocore2_defconfig
+i386                          debian-10.3-kvm
+i386                        debian-10.3-kunit
+i386                         debian-10.3-func
+powerpc                  iss476-smp_defconfig
+sh                          r7780mp_defconfig
+mips                           gcw0_defconfig
+mips                         bigsur_defconfig
+sh                          sdk7786_defconfig
+sh                             espt_defconfig
+openrisc                         alldefconfig
+nios2                            allyesconfig
+nios2                               defconfig
+parisc                              defconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+arc                           tb10x_defconfig
+csky                             alldefconfig
+arm                        keystone_defconfig
+sh                          rsk7264_defconfig
+sh                           se7722_defconfig
+i386                             alldefconfig
+sh                         microdev_defconfig
+sh                          urquell_defconfig
+loongarch                           defconfig
+loongarch                         allnoconfig
+loongarch                        allmodconfig
+s390                       zfcpdump_defconfig
+arm                         lubbock_defconfig
+powerpc                     redwood_defconfig
+sh                          rsk7203_defconfig
+sh                            hp6xx_defconfig
+sh                           se7724_defconfig
+arm                         lpc18xx_defconfig
+powerpc                     pq2fads_defconfig
+arm                          pxa910_defconfig
 
-which seems entirely unrelated, but looks like it may be causing the
-number of direct calls (and therefore the number of trampolines) to
-increase, causing the ID map to blow up like it does.
+clang tested configs:
+x86_64                        randconfig-a005
+x86_64                        randconfig-a003
+x86_64                        randconfig-a001
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+x86_64                          rhel-8.3-rust
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+arm                  randconfig-r046-20230110
+hexagon              randconfig-r041-20230110
+hexagon              randconfig-r045-20230110
+x86_64                        randconfig-k001
+riscv                randconfig-r042-20230111
+s390                 randconfig-r044-20230111
+hexagon              randconfig-r041-20230111
+hexagon              randconfig-r045-20230111
 
-[0] https://lore.kernel.org/all/CAMj1kXGAf7ikEU5jLoik0xrOde0xBg0yJkOo5=PtEtNXoUxMXA@mail.gmail.com/
-
-
-
-> The only properties of the firmware provided 1:1 map we rely on is that
-> it does not require any explicit cache maintenance for coherency, and
-> that it covers the entire memory footprint of the image, including the
-> BSS and padding at the end - all else is under control of the kernel
-> itself, as before.
->
-> The final patch updates the EFI stub code so that it no longer disables
-> the MMU and caches or cleans the entire image to the PoC. Note that
-> some cache maintenace for I/D coherence may still be needed, in the
-> zboot case (which decompresses and boots a compressed kernel image) or
-> in cases where the image is moved in memory.
->
-> Changes since v6:
-> - drop the 64k alignment patch, which is not strictly a prerequisite,
->   and will be revisited later if needed
-> - add back EFI stub changes now that all dependencies are in mainline
-> - panic() the kernel later in the boot if we detected a non-EFI boot
->   occurring with the MMU and caches enabled
->
-> Changes since v5:
-> - add a special entry point into the boot sequence that is to be used by
->   EFI only, and only permit booting with the MMU enabled when using that
->   boot path;
-> - omit the final patch that would need to go via the EFI tree in any
->   case - adding the new entrypoint specific for EFI makes it conflict
->   even more badly, and I'll try to revisit this during the merge window
->   or simply defer the final piece for the next release;
->
-> Changes since v4:
-> - add patch to align the callers of finalise_el2()
-> - also clean HYP text to the PoC when booting at EL2 with the MMU on
-> - add a warning and a taint when doing non-EFI boot with the MMU and
->   caches enabled
-> - rebase onto zboot changes in efi/next - this means that patches #6 and
->   #7 will not apply onto arm64/for-next so a shared stable branch will
->   be needed if we want to queue this up for v6.2
->
-> Changes since v3:
-> - drop EFI_LOADER_CODE memory type patch that has been queued in the
->   mean time
-> - rebased onto [partial] series that moves efi-entry.S into the libstub/
->   source directory
-> - fixed a correctness issue in patch #2
->
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Marc Zyngier <maz@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
->
-> Ard Biesheuvel (6):
->   arm64: head: Move all finalise_el2 calls to after __enable_mmu
->   arm64: kernel: move identity map out of .text mapping
->   arm64: head: record the MMU state at primary entry
->   arm64: head: avoid cache invalidation when entering with the MMU on
->   arm64: head: Clean the ID map and the HYP text to the PoC if needed
->   efi: arm64: enter with MMU and caches enabled
->
->  arch/arm64/include/asm/efi.h               |  2 +
->  arch/arm64/kernel/head.S                   | 89 +++++++++++++++-----
->  arch/arm64/kernel/image-vars.h             |  5 +-
->  arch/arm64/kernel/setup.c                  | 17 +++-
->  arch/arm64/kernel/sleep.S                  |  6 +-
->  arch/arm64/kernel/vmlinux.lds.S            |  2 +-
->  arch/arm64/mm/cache.S                      |  1 +
->  arch/arm64/mm/proc.S                       |  2 -
->  drivers/firmware/efi/libstub/Makefile      |  4 +-
->  drivers/firmware/efi/libstub/arm64-entry.S | 67 ---------------
->  drivers/firmware/efi/libstub/arm64-stub.c  | 26 ++++--
->  drivers/firmware/efi/libstub/arm64.c       | 41 +++++++--
->  12 files changed, 151 insertions(+), 111 deletions(-)
->  delete mode 100644 drivers/firmware/efi/libstub/arm64-entry.S
->
-> --
-> 2.39.0
->
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
