@@ -2,157 +2,90 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 456D8669B57
-	for <lists+linux-efi@lfdr.de>; Fri, 13 Jan 2023 16:04:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35852669D55
+	for <lists+linux-efi@lfdr.de>; Fri, 13 Jan 2023 17:11:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229839AbjAMPEI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 13 Jan 2023 10:04:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52904 "EHLO
+        id S230230AbjAMQL1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 13 Jan 2023 11:11:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230204AbjAMPDo (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 13 Jan 2023 10:03:44 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20FE57ECBB;
-        Fri, 13 Jan 2023 06:54:37 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id c17so31471289edj.13;
-        Fri, 13 Jan 2023 06:54:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ga5oYmInOFxOEz+aesVQq9ac8RCMAFr0TlPHsExHWvg=;
-        b=Id9RsVsNvgffyUdEi4OU+jw02ijTvGRDMsdS/p8pAqNks6VLDAaISB9oW2FSl5eHWv
-         a0zexS/Wz1ZQvgrR1mGNBbTYgCTPte/DQFayJ/8c8vz0PcjOkRuYxR7oS/i6rVRJAfhi
-         sRvSvgjQfA/ze2iUBoIGN52y7OAcpl+M/n4Z0OQ2H0mFdgGswTf2eug8lb9yxE7knLpM
-         W/ADP1KJdqIpU+dST8tf9ffTiE1rB1I74KBwVHFDBcEoEL0IZZjZDJin9bkb9Gy1FzRa
-         Y3vW6lJZ7JWDfqY99MBw7r2DFKxFZlRdBinPL4Kj7zV07JpIfcxijlHxsgPYxHaqUYn8
-         2JQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ga5oYmInOFxOEz+aesVQq9ac8RCMAFr0TlPHsExHWvg=;
-        b=zdi21QSki6Qt55OSEDU2KrqLjAwn+l6CbmvamqvZMv6iAdw71O43ovlplrYP/h+/Wc
-         L3SBkHuYSejgJ2kbcvmff+NsInJN5NiTXNh9bL+2BGquMyY0Lhi0TX+a1wiJJCNSnSYo
-         AopYnJfyTX7zshBmdcHtIUX93znbYi1HeXidtAeI99zHlHuLBC7MihPsGLgpVJY2pUdI
-         WnFPSt5Lqczmj7mjP99Gaju08l1F/rH1Khv1+FG9huDis6Z9t1SV1F7C5IfSaWAp69EB
-         HA0B+sAPqxSD+ZI3+JVvkPN+93EpYlMER0hToypXpEAFVDhxqphLwXAN8w0P9l06JRko
-         Bg+A==
-X-Gm-Message-State: AFqh2kqLY93BAs9dOMtBjKBbee4Dz48Rf4Hv9r9geoipZo47qpL8zsR6
-        ZFPztbuQCCuTF4nHxElI/iP7mZxJQjih0KdgmKMRpz0N
-X-Google-Smtp-Source: AMrXdXt8O1nf9b7H0r4AtIeQyBKjx3U+D3c5sgzuLWCTOvIlmRWwIbExXGsNu1oYXhIAaXHwwg5is2ghNbccPd62m2Y=
-X-Received: by 2002:a05:6402:28c6:b0:485:f888:e1df with SMTP id
- ef6-20020a05640228c600b00485f888e1dfmr7722656edb.337.1673621675529; Fri, 13
- Jan 2023 06:54:35 -0800 (PST)
+        with ESMTP id S229982AbjAMQKi (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 13 Jan 2023 11:10:38 -0500
+Received: from mail.dmbarone.com (mail.dmbarone.com [5.181.144.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6FFA065B1;
+        Fri, 13 Jan 2023 08:04:36 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.dmbarone.com (Postfix) with ESMTP id EFAE82A5751;
+        Fri, 13 Jan 2023 15:25:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dmbarone.com; s=mail;
+        t=1673623557; bh=QIjTgWBPcZMVeqZovj8WAOWgI9bu1lFe9hdim3iQkyQ=;
+        h=Subject:To:From:Date:Reply-To:From;
+        b=UQrQV1mhOCXp8Vdhj5ZMIQ7kECq7tYJuH2AcU2UM1roOkC5jLy5PAkZyiykUCrQDU
+         oYvhKPoWPtMsEkPzXkvZnkX0jaDZs7A8+7AEW1O1JK1NNq/0rVoIjqnUR+Ib40kUKd
+         xAjr4GQW5DjCQ39qCR88WG4hdFzQikQ2LXmUqDaI=
+X-Virus-Scanned: Debian amavisd-new at ispdmbarone.kubeitalia.it
+Received: from mail.dmbarone.com ([127.0.0.1])
+        by localhost (ispdmbarone.kubeitalia.it [127.0.0.1]) (amavisd-new, port 10026)
+        with LMTP id XwzUcDuaoAWq; Fri, 13 Jan 2023 15:25:56 +0000 (UTC)
+Received: from [172.20.10.6] (unknown [129.205.124.225])
+        (Authenticated sender: admin@dmbarone.com)
+        by mail.dmbarone.com (Postfix) with ESMTPSA id 01AED2A56D9;
+        Fri, 13 Jan 2023 15:25:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dmbarone.com; s=mail;
+        t=1673623556; bh=QIjTgWBPcZMVeqZovj8WAOWgI9bu1lFe9hdim3iQkyQ=;
+        h=Subject:To:From:Date:Reply-To:From;
+        b=Xujr+eOxgJe9jczPL1SNkJ6ozzO2KXVAsBjKy56+11usK6bsjT7tnkQBPePEAUELb
+         OnB+7jlvcNoB+WKkJxqizcTmuTa/6eYD1ySJYpPypvocjJeK30xr4n7PEulwjii9u7
+         JG71oAy0mSUhbaYNLedsvYsO1j3iWsgHN/mZq+PI=
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-References: <CAKXUXMxNc4iObjL+8RyJN=Kcy5X1r21ez_05oAuy93J=gQ2gZw@mail.gmail.com>
- <CAMj1kXH3hoGWF=c7UVsWi3xoJsJ1VyFK74CV+L8SO8u2o2xdsQ@mail.gmail.com>
- <CAKXUXMyoUxKqxA3FSwFHitZkahbJqXZk4cb7LL7c9yFddFHw3Q@mail.gmail.com> <CAMj1kXFVv4UWb2NoptHJDNYAURgN2Ox2tQJAa6_ZEPXkboS8ow@mail.gmail.com>
-In-Reply-To: <CAMj1kXFVv4UWb2NoptHJDNYAURgN2Ox2tQJAa6_ZEPXkboS8ow@mail.gmail.com>
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Date:   Fri, 13 Jan 2023 15:54:24 +0100
-Message-ID: <CAKXUXMyvUXfOrqV_MZpmz+5R07q_WZ7yVN1CnaAx13CcuN73yg@mail.gmail.com>
-Subject: Re: linker problem with Ubuntu 18.04 tool chain: unknown architecture
- of input file `arch/arm64/boot/vmlinuz.o' is incompatible with aarch64 output
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Wohlt=C3=A4tigkeit!!?=
+To:     Recipients <admi@dmbarone.com>
+From:   <admi@dmbarone.com>
+Date:   Fri, 13 Jan 2023 16:25:49 +0100
+Reply-To: theresasteven225@gmail.com
+X-Antivirus: Avast (VPS 230113-2, 1/13/2023), Outbound message
+X-Antivirus-Status: Clean
+Message-Id: <20230113152556.EFAE82A5751@mail.dmbarone.com>
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_60,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_SBL,RCVD_IN_VALIDITY_RPBL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
+        *      [score: 0.7971]
+        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
+        *      [129.205.124.225 listed in zen.spamhaus.org]
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [5.181.144.66 listed in bl.score.senderscore.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [theresasteven225[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jan 13, 2023 at 3:30 PM Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Fri, 13 Jan 2023 at 14:25, Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
-> >
-> > On Fri, Jan 13, 2023 at 12:58 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > >
-> > > On Fri, 13 Jan 2023 at 12:50, Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
-> > > >
-> > > > Dear Ard,
-> > > >
-> > > > with my Ubuntu 18.04 arm gcc tool chain, I encounter this linker error
-> > > > in my allyesconfig build:
-> > > >
-> > > >  LD      arch/arm64/boot/vmlinuz.efi.elf
-> > > > aarch64-linux-gnu-ld: unknown architecture of input file
-> > > > `arch/arm64/boot/vmlinuz.o' is incompatible with aarch64 output
-> > > > drivers/firmware/efi/libstub/Makefile.zboot:41: recipe for target
-> > > > 'arch/arm64/boot/vmlinuz.efi.elf' failed
-> > > > make[1]: *** [arch/arm64/boot/vmlinuz.efi.elf] Error 1
-> > > > arch/arm64/Makefile:173: recipe for target 'vmlinuz.efi' failed
-> > > > make: *** [vmlinuz.efi] Error 2
-> > > >
-> > > > I bisected it back to happen since commit c37b830fef13 ("arm64: efi:
-> > > > enable generic EFI compressed boot"), and it still appears with the
-> > > > latest next-20230113 (on linux-next, I have to remove DRM_MSM as it
-> > > > currently comes with a build error).
-> > > >
-> > > > The specific compiler and linker versions on my system are:
-> > > >
-> > > > $ aarch64-linux-gnu-ld --version
-> > > > GNU ld (GNU Binutils for Ubuntu) 2.30
-> > > >
-> > > > $ aarch64-linux-gnu-gcc --version
-> > > > aarch64-linux-gnu-gcc (Ubuntu/Linaro 7.5.0-3ubuntu1~18.04) 7.5.0
-> > > >
-> > > >
-> > > > IMHO, I run pretty standard commands:
-> > > > make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j 32 mrproper
-> > > > make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j 32 allyesconfig
-> > > > make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j 32 all
-> > > >
-> > > > Let me know if you need more information.
-> > > >
-> > >
-> > > Hello Lukas,
-> > >
-> > > This seems to mean that AArch64 ld.bfd 2.30 is not able to combine
-> > > generic ELF objects with AArch64 ELF objects. vmlinuz.o only contains
-> > > a compressed blob in an ELF data section, and more modern toolchains
-> > > have no issue with this at all.
-> > >
-> > > Given that building allyesconfig with fairly outdated toolchains is
-> > > not something anyone is likely to obsess about, I don't have a strong
-> > > preference as to how we work around this, put perhaps the easiest
-> > > approach would be for CONFIG_EFI_ZBOOT to depend on !CONFIG_LD_IS_BFD
-> > > || CONFIG_LD_VERSION >= 23xxx here? (We'll need to check the exact
-> > > version)
-> >
-> > That sounds reasonable to me.
-> >
->
-> This is not reproducible with ld.bfd built from the upstream sources
->
-> $ ~/build/binutils-build-aarch64/ld/ld-new -v
-> GNU ld (GNU Binutils) 2.30
->
-> $ ~/build/binutils-build-aarch64/ld/ld-new -EL  -maarch64elf -z
-> noexecstack -T /usr/local/google/home/ardb/linux/drivers/firmware/efi/libstub/zboot.lds
-> arch/arm64/boot/vmlinuz.o arch/arm64/boot/zboot-header.o
-> drivers/firmware/efi/libstub/lib.a -o arch/arm64/boot/vmlinuz.efi.elf
->
-> $ file arch/arm64/boot/vmlinuz.efi.elf
-> arch/arm64/boot/vmlinuz.efi.elf: ELF 64-bit LSB executable, ARM
-> aarch64, version 1 (SYSV), statically linked, with debug_info, not
-> stripped
->
-> So this could be an issue in Ubuntu's downstream fork, in which case I
-> don't think we should do anything about it.
+Eine Spende wurde an Sie get=E4tigt, antworten Sie f=FCr weitere Einzelheit=
+en.
 
-Thanks, I will follow up and check if this is really something
-specific in the Ubuntu fork or if it appears only with very selected
-binutils versions.
+Gr=FC=DFe
+Theresia Steven
 
-Lukas
+-- 
+This email has been checked for viruses by Avast antivirus software.
+www.avast.com
