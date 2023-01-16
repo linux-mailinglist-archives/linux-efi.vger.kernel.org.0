@@ -2,325 +2,114 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6177266B144
-	for <lists+linux-efi@lfdr.de>; Sun, 15 Jan 2023 14:31:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0D1166BC50
+	for <lists+linux-efi@lfdr.de>; Mon, 16 Jan 2023 11:58:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229907AbjAONbP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 15 Jan 2023 08:31:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58764 "EHLO
+        id S231149AbjAPK6K (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 16 Jan 2023 05:58:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229941AbjAONbO (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 15 Jan 2023 08:31:14 -0500
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFFE246A8
-        for <linux-efi@vger.kernel.org>; Sun, 15 Jan 2023 05:31:11 -0800 (PST)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id 674715C0062;
-        Sun, 15 Jan 2023 08:31:09 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Sun, 15 Jan 2023 08:31:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        invisiblethingslab.com; h=cc:cc:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm3; t=1673789469; x=
-        1673875869; bh=+SXSZ20hXLrjTTJOPMKMT76P9OAHK56Wb+bD0RGRY6A=; b=h
-        Mi5o70zxeg2tr6OK0LM+gvqj2csyZ0UpZ4YHspmyA61iM5VCRwVYXQ3MhktJfNfi
-        wId881BcTaEc8tkHi20OKscHjQHmgKg2CkDR1pM91KzrnF4++CJ1n71T63iYx8T4
-        oFh98DlbpGbuH9rpKFub4nNGCAa37fyUicuywBNWq7YrRsViYPAoro3LKWKMEu7k
-        nu5/+H7mRS/fSDegBG6pKJkzLjS6seXwWAehRFpwLpCxmRjNcz65+fg/Ri7hX5Ub
-        JUtWZ2OonyTs52+fwy3xyLaSK9osMvMoBPZiYZaNTWU7sIK1YrOUTm8F+odKBRz3
-        8muj+LFVBbciYWXneuAXA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm3; t=1673789469; x=1673875869; bh=+SXSZ20hXLrjTTJOPMKMT76P9OAH
-        K56Wb+bD0RGRY6A=; b=Y2MK6Hc2dieOOOMhdkaB7k0XCdOQlVPTn4wjwXtFcauE
-        a9v9fvAiKh9R+nCaY3wxpOm3x/jB7VjXuzBB8KQPfn2OXwAgD5K/d2FiPAwKhfvJ
-        hZEK36sPjIxi0/UIsyQEXaTVzJTXoLac99Krw3aru9ZgTs/gwUm4Gs3YswIoFF/e
-        wnJ128ethOM4Zzd5x+yWzI/CC5XOwgvVAx/vldKD2qOOrQG7msbbrIkE6QrNzDeI
-        3kbwhm+POXrK9Py64JdDDMntq9QpvsNCkdNWIgTlYypk71PXrZ4ranD8R8CvgYHv
-        W3YV3hNrLOcOiZnAUSlrepTAz76QSe1/S48t0bPYHA==
-X-ME-Sender: <xms:HADEYwsPHscSFtDF7wFn29G8FWS5IOKXWc3uyGMBE4S9kT44QeKrSw>
-    <xme:HADEY9dlann9Llf38U-VoGzB8WlxOPj5T8Qx20MBsUJL9JEbeKx1j4W6cBP9zYjix
-    B0QiyBFOnun7w>
-X-ME-Received: <xmr:HADEY7zeYJUulTVSizoYiZQ3U-CMn3ERrUIotLqH67Ps6oWEDlAKVekG3ykMIke8bUgO_SRxHEfZ-JY7_JH3BD59HPhVBg9LMg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedruddtvddgheegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrrhgv
-    khcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinh
-    hvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepueek
-    teetgefggfekudehteegieeljeejieeihfejgeevhfetgffgteeuteetueetnecuffhomh
-    grihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgr
-    mhepmhgrihhlfhhrohhmpehmrghrmhgrrhgvkhesihhnvhhishhisghlvghthhhinhhgsh
-    hlrggsrdgtohhm
-X-ME-Proxy: <xmx:HADEYzMqj0Ty7WfAMcyZ6RROAUQsyoQqnTNFY6C3wyuXytC9h1brVw>
-    <xmx:HADEYw-OJi7H5ZgptihbzRMBEOqpBrxRXkhb-pO3gnxqAnIfSgpREg>
-    <xmx:HADEY7WSxsIrLmfyhp7VTgQ2yIT3STCwcLcHovaL417im0X9QzmnTg>
-    <xmx:HQDEY7Y93-IVKrVse5pErUp4l2AKFjCZ4Bd5Ng5tGX8_Mm6lz3BDzQ>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 15 Jan 2023 08:31:07 -0500 (EST)
-Date:   Sun, 15 Jan 2023 14:31:03 +0100
-From:   Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>
-To:     Demi Marie Obenour <demi@invisiblethingslab.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-        Xen developer discussion <xen-devel@lists.xenproject.org>,
-        Peter Jones <pjones@redhat.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Kees Cook <keescook@chromium.org>,
-        Anton Vorontsov <anton@enomsg.org>,
-        Colin Cross <ccross@android.com>,
-        Tony Luck <tony.luck@intel.com>
-Subject: Re: [PATCH v2 5/6] efi: xen: Implement memory descriptor lookup
- based on hypercall
-Message-ID: <Y8QAF5K4ZLJxzPni@mail-itl>
-References: <20221003112625.972646-1-ardb@kernel.org>
- <20221003112625.972646-6-ardb@kernel.org>
- <Yzr/1s9CbA0CClmt@itl-email>
- <CAMj1kXEXhDXRSnBp8P=urFj8UzzeRtYS9V8Tdt9GSrZTnGRFhA@mail.gmail.com>
- <YzsMYfEwmjHwVheb@itl-email>
- <CAMj1kXHR1FfD+ipG4RtbOezx+s_Jo6JwG4fpT5XUmvoqHTctLA@mail.gmail.com>
- <YzsWAnD7q9qeBoBn@mail-itl>
- <Yzsii72GWWvc5tRD@itl-email>
- <YzsjYHirK+SXUjGl@mail-itl>
+        with ESMTP id S231138AbjAPK5p (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 16 Jan 2023 05:57:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 386E014EBF
+        for <linux-efi@vger.kernel.org>; Mon, 16 Jan 2023 02:56:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1673866617;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=dMSn7PTMEvVVrQFt74Q3u3R9ASe6C2Dbwlt9UzpnyIA=;
+        b=WEfzlfBpqzyiwaWHp8HOtZF7CTKRLSnw5g1D/FeXxmzMY1OvqdA2sNQCuvIdmQJ3iYsnCV
+        w9kAK+AbLQEujxS8k7HSXni6IVf+yrA5N9UkwJmFLQPOrF18SlM1mAUfGAoDreJLc7iVGS
+        FFU5B7vXshkc1aKd+RdD31xczlQnDXI=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-131-Xw_dsNCgOiuaYGOnxBKnEQ-1; Mon, 16 Jan 2023 05:56:51 -0500
+X-MC-Unique: Xw_dsNCgOiuaYGOnxBKnEQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 600553814944;
+        Mon, 16 Jan 2023 10:56:50 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.192.124])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id BEAE651FF;
+        Mon, 16 Jan 2023 10:56:49 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+        id 6ABEB18017F5; Mon, 16 Jan 2023 11:56:48 +0100 (CET)
+Date:   Mon, 16 Jan 2023 11:56:48 +0100
+From:   Gerd Hoffmann <kraxel@redhat.com>
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc:     Dionna Glaze <dionnaglaze@google.com>,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        x86@kernel.org, jiewen.yao@intel.com, devel@edk2.groups.io,
+        Ard Biescheuvel <ardb@kernel.org>,
+        "Min M. Xu" <min.m.xu@intel.org>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Tom Lendacky <Thomas.Lendacky@amd.com>,
+        Erdem Aktas <erdemaktas@google.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH v2] x86/efi: Safely enable unaccepted memory in UEFI
+Message-ID: <20230116105648.63hsxnmj2juwudmu@sirius.home.kraxel.org>
+References: <20230113212926.2904735-1-dionnaglaze@google.com>
+ <20230113222024.rp2erl54vx3grdbd@box.shutemov.name>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Brnh0jZ4ScsEj+y3"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YzsjYHirK+SXUjGl@mail-itl>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230113222024.rp2erl54vx3grdbd@box.shutemov.name>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Sat, Jan 14, 2023 at 01:20:24AM +0300, Kirill A. Shutemov wrote:
+> On Fri, Jan 13, 2023 at 09:29:26PM +0000, Dionna Glaze wrote:
+> > This patch depends on Kirill A. Shutemov's series
+> > 
+> > [PATCHv8 00/14] mm, x86/cc: Implement support for unaccepted memory
+> > 
+> > The UEFI v2.9 specification includes a new memory type to be used in
+> > environments where the OS must accept memory that is provided from its
+> > host. Before the introduction of this memory type, all memory was
+> > accepted eagerly in the firmware. In order for the firmware to safely
+> > stop accepting memory on the OS's behalf, the OS must affirmatively
+> > indicate support to the firmware.
+> 
+> I think it is a bad idea.
+> 
+> This approach breaks use case with a bootloader between BIOS and OS.
+> As the bootloader does ExitBootServices() it has to make the call on
+> behalf of OS when it has no idea if the OS supports unaccepted.
 
---Brnh0jZ4ScsEj+y3
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 15 Jan 2023 14:31:03 +0100
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: Demi Marie Obenour <demi@invisiblethingslab.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-	Xen developer discussion <xen-devel@lists.xenproject.org>,
-	Peter Jones <pjones@redhat.com>, Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Kees Cook <keescook@chromium.org>,
-	Anton Vorontsov <anton@enomsg.org>,
-	Colin Cross <ccross@android.com>, Tony Luck <tony.luck@intel.com>
-Subject: Re: [PATCH v2 5/6] efi: xen: Implement memory descriptor lookup
- based on hypercall
+Nothing breaks, it'll error on the safe side.  If the protocol callback
+is not called the firmware will simply accept all memory.  The guest OS
+will only see unaccepted memory if it explicitly asked for it (assuming
+the firmware wants know to support both cases, of course the firmware
+could also enforce the one or the other and just not offer the
+protocol).
 
-On Mon, Oct 03, 2022 at 08:01:03PM +0200, Marek Marczykowski-G=C3=B3recki w=
-rote:
-> On Mon, Oct 03, 2022 at 01:57:14PM -0400, Demi Marie Obenour wrote:
-> > On Mon, Oct 03, 2022 at 07:04:02PM +0200, Marek Marczykowski-G=C3=B3rec=
-ki wrote:
-> > > On Mon, Oct 03, 2022 at 06:37:19PM +0200, Ard Biesheuvel wrote:
-> > > > On Mon, 3 Oct 2022 at 18:23, Demi Marie Obenour
-> > > > <demi@invisiblethingslab.com> wrote:
-> > > > >
-> > > > > On Mon, Oct 03, 2022 at 05:59:52PM +0200, Ard Biesheuvel wrote:
-> > > > > > On Mon, 3 Oct 2022 at 17:29, Demi Marie Obenour
-> > > > > > <demi@invisiblethingslab.com> wrote:
-> > > > > > >
-> > > > > > > On Mon, Oct 03, 2022 at 01:26:24PM +0200, Ard Biesheuvel wrot=
-e:
-> > > > > > > > Xen on x86 boots dom0 in EFI mode but without providing a m=
-emory map.
-> > > > > > > > This means that some sanity checks we would like to perform=
- on
-> > > > > > > > configuration tables or other data structures in memory are=
- not
-> > > > > > > > currently possible. Xen does, however, expose EFI memory de=
-scriptor info
-> > > > > > > > via a Xen hypercall, so let's wire that up instead.
-> > > > > > > >
-> > > > > > > > Co-developed-by: Demi Marie Obenour <demi@invisiblethingsla=
-b.com>
-> > > > > > > > Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.=
-com>
-> > > > > > > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > > > > > > > ---
-> > > > > > > >  drivers/firmware/efi/efi.c |  5 ++-
-> > > > > > > >  drivers/xen/efi.c          | 34 ++++++++++++++++++++
-> > > > > > > >  include/linux/efi.h        |  1 +
-> > > > > > > >  3 files changed, 39 insertions(+), 1 deletion(-)
-> > > > > > > >
-> > > > > > > > diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/=
-efi/efi.c
-> > > > > > > > index 55bd3f4aab28..2c12b1a06481 100644
-> > > > > > > > --- a/drivers/firmware/efi/efi.c
-> > > > > > > > +++ b/drivers/firmware/efi/efi.c
-> > > > > > > > @@ -456,7 +456,7 @@ void __init efi_find_mirror(void)
-> > > > > > > >   * and if so, populate the supplied memory descriptor with=
- the appropriate
-> > > > > > > >   * data.
-> > > > > > > >   */
-> > > > > > > > -int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *=
-out_md)
-> > > > > > > > +int __efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t=
- *out_md)
-> > > > > > > >  {
-> > > > > > > >       efi_memory_desc_t *md;
-> > > > > > > >
-> > > > > > > > @@ -485,6 +485,9 @@ int efi_mem_desc_lookup(u64 phys_addr, =
-efi_memory_desc_t *out_md)
-> > > > > > > >       return -ENOENT;
-> > > > > > > >  }
-> > > > > > > >
-> > > > > > > > +extern int efi_mem_desc_lookup(u64 phys_addr, efi_memory_d=
-esc_t *out_md)
-> > > > > > > > +      __weak __alias(__efi_mem_desc_lookup);
-> > > > > > > > +
-> > > > > > > >  /*
-> > > > > > > >   * Calculate the highest address of an efi memory descript=
-or.
-> > > > > > > >   */
-> > > > > > > > diff --git a/drivers/xen/efi.c b/drivers/xen/efi.c
-> > > > > > > > index d1ff2186ebb4..74f3f6d8cdc8 100644
-> > > > > > > > --- a/drivers/xen/efi.c
-> > > > > > > > +++ b/drivers/xen/efi.c
-> > > > > > > > @@ -26,6 +26,7 @@
-> > > > > > > >
-> > > > > > > >  #include <xen/interface/xen.h>
-> > > > > > > >  #include <xen/interface/platform.h>
-> > > > > > > > +#include <xen/page.h>
-> > > > > > > >  #include <xen/xen.h>
-> > > > > > > >  #include <xen/xen-ops.h>
-> > > > > > > >
-> > > > > > > > @@ -292,3 +293,36 @@ void __init xen_efi_runtime_setup(void)
-> > > > > > > >       efi.get_next_high_mono_count    =3D xen_efi_get_next_=
-high_mono_count;
-> > > > > > > >       efi.reset_system                =3D xen_efi_reset_sys=
-tem;
-> > > > > > > >  }
-> > > > > > > > +
-> > > > > > > > +int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *=
-out_md)
-> > > > > > > > +{
-> > > > > > > > +     static_assert(XEN_PAGE_SHIFT =3D=3D EFI_PAGE_SHIFT,
-> > > > > > > > +                   "Mismatch between EFI_PAGE_SHIFT and XE=
-N_PAGE_SHIFT");
-> > > > > > > > +     struct xen_platform_op op =3D {
-> > > > > > > > +             .cmd =3D XENPF_firmware_info,
-> > > > > > > > +             .u.firmware_info =3D {
-> > > > > > > > +                     .type =3D XEN_FW_EFI_INFO,
-> > > > > > > > +                     .index =3D XEN_FW_EFI_MEM_INFO,
-> > > > > > > > +                     .u.efi_info.mem.addr =3D phys_addr,
-> > > > > > > > +                     .u.efi_info.mem.size =3D U64_MAX - ph=
-ys_addr,
-> > > > > > > > +             }
-> > > > > > > > +     };
-> > > > > > > > +     union xenpf_efi_info *info =3D &op.u.firmware_info.u.=
-efi_info;
-> > > > > > > > +     int rc;
-> > > > > > > > +
-> > > > > > > > +     if (!efi_enabled(EFI_PARAVIRT) || efi_enabled(EFI_MEM=
-MAP))
-> > > > > > > > +             return __efi_mem_desc_lookup(phys_addr, out_m=
-d);
-> > > > > > > > +
-> > > > > > > > +     rc =3D HYPERVISOR_platform_op(&op);
-> > > > > > > > +     if (rc) {
-> > > > > > > > +             pr_warn("Failed to lookup header 0x%llx in Xe=
-n memory map: error %d\n",
-> > > > > > > > +                     phys_addr, rc);
-> > > > > > > > +     }
-> > > > > > > > +
-> > > > > > > > +     out_md->phys_addr       =3D info->mem.addr;
-> > > > > > >
-> > > > > > > This will be equal to phys_addr, not the actual start of the =
-memory
-> > > > > > > region.
-> > > > > > >
-> > > > > > > > +     out_md->num_pages       =3D info->mem.size >> EFI_PAG=
-E_SHIFT;
-> > > > > > >
-> > > > > > > Similarly, this will be the number of bytes in the memory reg=
-ion
-> > > > > > > after phys_addr, not the total number of bytes in the region.=
-  These two
-> > > > > > > differences mean that this function is not strictly equivalen=
-t to the
-> > > > > > > original efi_mem_desc_lookup().
-> > > > > > >
-> > > > > > > I am not sure if this matters in practice, but I thought you =
-would want
-> > > > > > > to be aware of it.
-> > > > > >
-> > > > > > This is a bit disappointing. Is there no way to obtain this
-> > > > > > information via a Xen hypercall?
-> > > > >
-> > > > > It is possible, but doing so is very complex (it essentially requ=
-ires a
-> > > > > binary search).  This really should be fixed on the Xen side.
-> > > > >
-> > > > > > In any case, it means we'll need to round down phys_addr to pag=
-e size
-> > > > > > at the very least.
-> > > > >
-> > > > > That makes sense.  Are there any callers that will be broken even=
- with
-> > > > > this rounding?
-> > > >=20
-> > > > As far as I can tell, it should work fine. The only thing to double
-> > > > check is whether we are not creating spurious error messages from
-> > > > efi_arch_mem_reserve() this way, but as far as I can tell, that sho=
-uld
-> > > > be fine too.
-> > > >=20
-> > > > Is there anyone at your end that can give this a spin on an actual
-> > > > Xen/x86 system?
-> > >=20
-> > > Demi, if you open a PR with this at
-> > > https://github.com/QubesOS/qubes-linux-kernel/pulls, I can run it
-> > > through our CI - (at least) one of the machines has ESRT table. AFAIR
-> > > your test laptop has it too.
-> >=20
-> > Just this patch or the whole series?
->=20
-> Whole series.
+> Note that kexec is such use-case: original kernel has to make a
+> decision on whether it is okay to leave some memory unaccepted for the
+> new kernel.
 
-I have tested the series as in
-https://github.com/QubesOS/qubes-linux-kernel/pull/681 and it seems to
-work great.
-Note the series there differs from this thread, and is marked as "v3" - I
-assume (but haven't verified) it has changes requested in this thread
-applied. Demi, can you confirm? If so, you can probably send this v3,
-and feel free to include my Tested-by (unless you make significant
-changes, ofc).
+Not sure what you are trying to tell.  The kexec case doesn't go
+through the efi stub anyway.
 
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
+> And we add this protocol to address very temporary problem: once
+> unaccepted memory support get upstream it is just a dead weight.
 
---Brnh0jZ4ScsEj+y3
-Content-Type: application/pgp-signature; name="signature.asc"
+Maybe, maybe not.  unaccepted memory support has a Kconfig switch after
+all.  If we figure in 3-5 years that all distros have enabled it anyway
+we can drop it again.  For the transition period it will surely be
+useful.
 
------BEGIN PGP SIGNATURE-----
+take care,
+  Gerd
 
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmPEABcACgkQ24/THMrX
-1yzidQf/fw6/BjJE0q8FQMmaZtoPGu8ikWosCRW2C8jXxcCr6Mygrhlu7Ddn6RBC
-yBJmyuuvl5xEd3TS5h0Xd6iRE/DEQqIinE+FwLNejsNiQkiGIBDHCEJaFox6B2f4
-NdXMzUYIXdIXarC5rhWIUO75Zbc61+H6MO6iuyEDhHtOlQ7QZTDvBH9/EevPNNeY
-tHQqDhUkz7v9CczneoyqzAFADJXxLueIYD6sBdwEeVlNHMurS41DsLxRNuOV/ADf
-e/3pYFOpvBYBWIj8NXTUoyBrNwU3NtE+Yj6cXbB7UQxSNa6TXc+lmZkntbQawPcQ
-xJKIyGBbO/okzjrADNmJhkggn0OGiA==
-=pAmZ
------END PGP SIGNATURE-----
-
---Brnh0jZ4ScsEj+y3--
