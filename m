@@ -2,142 +2,213 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B077E66E506
-	for <lists+linux-efi@lfdr.de>; Tue, 17 Jan 2023 18:34:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 23F47671339
+	for <lists+linux-efi@lfdr.de>; Wed, 18 Jan 2023 06:28:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234333AbjAQRd1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 17 Jan 2023 12:33:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56008 "EHLO
+        id S229436AbjARF2l (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 18 Jan 2023 00:28:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235801AbjAQRa4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 17 Jan 2023 12:30:56 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B24D03D0AD
-        for <linux-efi@vger.kernel.org>; Tue, 17 Jan 2023 09:30:22 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 39677614EA
-        for <linux-efi@vger.kernel.org>; Tue, 17 Jan 2023 17:30:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B88FC433D2;
-        Tue, 17 Jan 2023 17:30:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673976621;
-        bh=beJ9V6BeAGV4kkOUI+f/aiJagpRj03qFsG6dL1mSE44=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EmF4u8cxwyN/VLCdzaGw6x/hPcPeZCgHo8u362TWYbFNTU7dWvB4M0jbFzyD9RSZT
-         AsZRB9mRoSSNCpHB1L7L1nchqmNRmuK8SZpiLba1XDH7wAM2Z0L2CJMh0SJ4HZl0n9
-         3EP3/SVB5JfRwYZ3aEEE8aE0x97RnNeo4BRC4omHD87wt5hDyTExJcXsxo6/u+DMRX
-         XRDznz0Asill7l4VZMujgfMnfP4nxWGuEjK4LArhu5uRxK5OPxKn2tSPLMhQGqRgBv
-         KfJ+9YzUJKO8M48YHLWodE/fB+Bp5smVB9rQpHWPvsuSxp+3zA+H/Kc6yyRHNj2bnr
-         m7YYuxSk2efFw==
-Date:   Tue, 17 Jan 2023 10:30:19 -0700
-From:   Nathan Chancellor <nathan@kernel.org>
+        with ESMTP id S229724AbjARF2X (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 Jan 2023 00:28:23 -0500
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DACC53B0B
+        for <linux-efi@vger.kernel.org>; Tue, 17 Jan 2023 21:28:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674019699; x=1705555699;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=7y2RdqnEPA3GmPnyri494rKGtNzGINVSSdKCgDbmkso=;
+  b=Pwb9v9EoPqzwvUV/p4p2A/pPdgwzlrCk8QD8vB0X48KtMBYRDhBYlayy
+   Gc/4Yw0kdo6deJGjODtIYkCeF14KUQV0GWN5QbeYipODM7D98irOcUwb7
+   7VerKHD3w0Nwvbg2a9EEBtD+ElFwqbIL93PFjV9maLHNedRdtwfOLjIed
+   05vO/afpug3v1GoITLqEIJMsDKI1bVnoBqX9Rd6lRQAdsds4hkmf6qieX
+   b/nVQ5C9grOWCbJDgVcgpi6E5T/ubwR+x5CZqukGIBIRV2EKsFEULzCXl
+   +4u04sBMu0CMe+68sxOwyk9YYEvYzBMSsKbdCKutrQHqLXSz4FHFpnk9a
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="326977659"
+X-IronPort-AV: E=Sophos;i="5.97,224,1669104000"; 
+   d="scan'208";a="326977659"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2023 21:28:19 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10593"; a="652788206"
+X-IronPort-AV: E=Sophos;i="5.97,224,1669104000"; 
+   d="scan'208";a="652788206"
+Received: from lkp-server02.sh.intel.com (HELO f57cd993bc73) ([10.239.97.151])
+  by orsmga007.jf.intel.com with ESMTP; 17 Jan 2023 21:28:17 -0800
+Received: from kbuild by f57cd993bc73 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pI0zg-0001f6-2F;
+        Wed, 18 Jan 2023 05:28:16 +0000
+Date:   Wed, 18 Jan 2023 13:27:33 +0800
+From:   kernel test robot <lkp@intel.com>
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Steev Klimaszewski <steev@kali.org>,
-        Shawn Guo <shawn.guo@linaro.org>
-Subject: Re: [RFT PATCH 0/2] arm64: efi: Call SetVaMap() with a 1:1 mapping
-Message-ID: <Y8bbK30nptwHKn88@dev-arch.thelio-3990X>
-References: <20230117142718.564299-1-ardb@kernel.org>
- <CAMj1kXHbWwtxb8dL1G8OG4evTg448Xv_DZ_pi8rNF+oVmdtx4g@mail.gmail.com>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS 2cf9e278efeff8f8bbb9580e2d6760e19795e310
+Message-ID: <63c78345.h+26Bq3pmpA0vCdx%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXHbWwtxb8dL1G8OG4evTg448Xv_DZ_pi8rNF+oVmdtx4g@mail.gmail.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Jan 17, 2023 at 04:20:09PM +0100, Ard Biesheuvel wrote:
-> On Tue, 17 Jan 2023 at 15:27, Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > Linux on arm64 is now in the same boat as x86, where supporting laptops
-> > that were built to run Windows and never tested beyond what is required
-> > for the Windows Logo certification need workarounds for all kinds of
-> > bizarre behaviors.
-> >
-> > On Snapdragon laptops, we cannot call SetVirtualAddressMap() from the
-> > stub, because the firmware will crash while trying to access memory via
-> > the virtual addresses being installed, which is explicitly unsupported
-> > by the EFI spec.
-> >
-> > However, not calling SetVirtualAddressMap() results in other problems:
-> > on Ampere Altra, it causes SetTime() to crash. On Surface and Flex5g
-> > Windows-on-ARM laptops, it causes ResetSystem() to crash.
-> >
-> > So let's try to work around this while not making too much of a mess.
-> >
-> > First of all, install a 1:1 mapping instead of avoiding SetVaMap()
-> > altogether - from the EFI spec pov, this should amount to the same
-> > thing.
-> >
-> > Then, given that we already use a SMBIOS based hack for Altra to force
-> > the use of SetVirtualAddressMap(), let's check for Surface systems in
-> > the same way.
-> >
-> > Please test, and please report the SMBIOS type 1 family field for which
-> > this workaround is needed.
-> >
-> > Also, note that these changes will not make a difference if the
-> > EFI_RT_PROPERTIES_TABLE lists SetVirtualAddressMap() as not implemented.
-> >
-> > Nathan, I would appreciate it if you could give this a spin on your
-> > Altra box (only patch #1 should make a difference), and for good
-> > measure, double check that hwclock still works as it should.
-> >
-> > Cc: Johan Hovold <johan+linaro@kernel.org>
-> > Cc: Maximilian Luz <luzmaximilian@gmail.com>
-> > Cc: Nathan Chancellor <nathan@kernel.org>
-> > Cc: Steev Klimaszewski <steev@kali.org>
-> > Cc: Shawn Guo <shawn.guo@linaro.org>
-> >
-> > Ard Biesheuvel (2):
-> >   arm64: efi: Prefer a flat virtual mapping of the runtime services
-> >   arm64: efi: Force use of SetVirtualAddressMap() on MS Surface
-> >
-> 
-> Bah this does not even work on Yoga C630, so this is not going to help us.
-> 
-> If we want ResetSystem() on these machines, we'll have to retain other
-> memory ranges and map the in the EFI runtime map. Yuck.
-> 
-> Nathan - still interested in whether patch #1 works on Altra,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+branch HEAD: 2cf9e278efeff8f8bbb9580e2d6760e19795e310  efi: efivars: make efivar_supports_writes() return bool
 
-I applied patch 1 on top of commit 6e50979a9c87 ("Merge tag
-'mm-hotfixes-stable-2023-01-16-15-23' of
-git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm") in Linus' tree
-and everything still appears to be okay with hwclock. If there is any
-more specific testing that I should do, please let me know. Feel free to
-add
+elapsed time: 725m
 
-    Tested-by: Nathan Chancellor <nathan@kernel.org>
+configs tested: 131
+configs skipped: 3
 
-to patch 1 in future revisions, and I am happy to test anything else
-that you might need in this series or future ones.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Mainline:
+gcc tested configs:
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                            allnoconfig
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+ia64                             allmodconfig
+i386                             allyesconfig
+i386                                defconfig
+x86_64                           rhel-8.3-kvm
+x86_64                           rhel-8.3-syz
+x86_64                           rhel-8.3-bpf
+x86_64                         rhel-8.3-kunit
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+i386                 randconfig-a013-20230116
+i386                 randconfig-a012-20230116
+i386                 randconfig-a016-20230116
+i386                 randconfig-a014-20230116
+i386                 randconfig-a011-20230116
+arm64                            allyesconfig
+arm                                 defconfig
+arm                              allyesconfig
+riscv                randconfig-r042-20230116
+arm                  randconfig-r046-20230117
+s390                 randconfig-r044-20230116
+arc                  randconfig-r043-20230117
+arc                  randconfig-r043-20230116
+s390                                defconfig
+s390                             allmodconfig
+arc                                 defconfig
+alpha                               defconfig
+s390                             allyesconfig
+riscv                randconfig-r042-20230118
+s390                 randconfig-r044-20230118
+arc                  randconfig-r043-20230118
+i386                 randconfig-c001-20230116
+m68k                             allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+x86_64               randconfig-a011-20230116
+x86_64               randconfig-a016-20230116
+x86_64               randconfig-a014-20230116
+x86_64               randconfig-a013-20230116
+x86_64               randconfig-a015-20230116
+x86_64               randconfig-a012-20230116
+i386                 randconfig-a015-20230116
+m68k                            q40_defconfig
+ia64                      gensparse_defconfig
+powerpc                           allnoconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+sh                               allmodconfig
+mips                  decstation_64_defconfig
+m68k                          multi_defconfig
+powerpc                    sam440ep_defconfig
+sh                         ap325rxa_defconfig
+riscv                            allyesconfig
+i386                          randconfig-c001
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+nios2                            allyesconfig
+nios2                               defconfig
+parisc                              defconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+arm                  randconfig-r046-20230115
+arc                  randconfig-r043-20230115
+loongarch                           defconfig
+loongarch                         allnoconfig
+loongarch                        allmodconfig
+m68k                          hp300_defconfig
+arm                            lart_defconfig
+i386                          debian-10.3-kvm
+i386                        debian-10.3-kunit
+i386                         debian-10.3-func
+x86_64                        randconfig-c001
+arm                  randconfig-c002-20230117
+powerpc                      bamboo_defconfig
+arm                           imxrt_defconfig
+powerpc                      makalu_defconfig
+arm                        cerfcube_defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+ia64                        generic_defconfig
+sh                 kfr2r09-romimage_defconfig
+openrisc                         alldefconfig
+arm                     eseries_pxa_defconfig
+powerpc                 linkstation_defconfig
+mips                  maltasmvp_eva_defconfig
+sparc                               defconfig
+xtensa                           allyesconfig
+csky                                defconfig
+sparc                            allyesconfig
+x86_64                                  kexec
 
-# uname -mr
-6.2.0-rc4-00031-g6e50979a9c87 aarch64
+clang tested configs:
+i386                 randconfig-a002-20230116
+i386                 randconfig-a004-20230116
+i386                 randconfig-a001-20230116
+i386                 randconfig-a003-20230116
+i386                 randconfig-a005-20230116
+i386                 randconfig-a006-20230116
+x86_64                        randconfig-k001
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+powerpc                      acadia_defconfig
+arm                        magician_defconfig
+riscv                             allnoconfig
+x86_64               randconfig-a003-20230116
+x86_64               randconfig-a004-20230116
+x86_64               randconfig-a006-20230116
+x86_64               randconfig-a005-20230116
+x86_64               randconfig-a001-20230116
+x86_64               randconfig-a002-20230116
+powerpc                     tqm8560_defconfig
+arm                  colibri_pxa270_defconfig
+powerpc                 xes_mpc85xx_defconfig
+powerpc                     kmeter1_defconfig
+arm                         hackkit_defconfig
+mips                          malta_defconfig
+mips                        qi_lb60_defconfig
+arm                          sp7021_defconfig
+powerpc                     ppa8548_defconfig
+x86_64                          rhel-8.3-rust
+arm                           sama7_defconfig
+riscv                          rv32_defconfig
+powerpc                    mvme5100_defconfig
 
-# hwclock
-2023-01-17 09:04:58.845411-07:00
-
-Patch:
-
-# uname -mr
-6.2.0-rc4-00032-g20165e83052e aarch64
-
-# hwclock
-2023-01-17 10:25:38.843788-07:00
-
-Cheers,
-Nathan
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
