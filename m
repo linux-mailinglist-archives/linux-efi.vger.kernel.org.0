@@ -2,58 +2,67 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D471B671664
-	for <lists+linux-efi@lfdr.de>; Wed, 18 Jan 2023 09:38:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FCAE6720A6
+	for <lists+linux-efi@lfdr.de>; Wed, 18 Jan 2023 16:09:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229583AbjARIiX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 18 Jan 2023 03:38:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51150 "EHLO
+        id S231300AbjARPJm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 18 Jan 2023 10:09:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230186AbjARIhg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 Jan 2023 03:37:36 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78AC37F9AA
-        for <linux-efi@vger.kernel.org>; Tue, 17 Jan 2023 23:57:11 -0800 (PST)
+        with ESMTP id S231517AbjARPJe (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 Jan 2023 10:09:34 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CA9A23C63;
+        Wed, 18 Jan 2023 07:09:33 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id CA005CE1B50
-        for <linux-efi@vger.kernel.org>; Wed, 18 Jan 2023 07:57:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F6CC433EF
-        for <linux-efi@vger.kernel.org>; Wed, 18 Jan 2023 07:57:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 396B861882;
+        Wed, 18 Jan 2023 15:09:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 909BDC4339B;
+        Wed, 18 Jan 2023 15:09:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674028627;
-        bh=6aOhFfRXvspDYgbrclTqSpq6/m0r8QGjLqqiNBOCDpw=;
+        s=k20201202; t=1674054572;
+        bh=TGrJM/Z4UZIYD/nTOz+s34yWyW616YGOhgh+xuBnLNY=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=LNGaRLT17UmJVt8Iq5V1/MCOwjv73KywqFvu8Lgk6UMMOCmve51bY8Kw0aVchkj3B
-         uFqvD93UnKtulobSmK9jKMRvZXSHhJWtNp1irLRGfJVulewWsFV6nAGJGsTim0Px4Z
-         47MJFDghbV2YFQfJmT5UblHeDm75IMjVvVs5r+LoKnbEVYrsQFSlRvUCDDrH/F1bop
-         iC0R2f9Juu9UTODJsjoqLer/uKQHyRzT2AVqz8UOu5K4+pf/o83x8Z9aIbtn2Q3wEM
-         HohDrdz9Ip/Kq0cQ5+dH6pvUlzDkyIEn5O1tLJYpIvEDp2ngEh05cnMeO8Yf32ZvMM
-         vR58g7tYpvWZQ==
-Received: by mail-lj1-f172.google.com with SMTP id z7so71551ljz.4
-        for <linux-efi@vger.kernel.org>; Tue, 17 Jan 2023 23:57:07 -0800 (PST)
-X-Gm-Message-State: AFqh2kq7ndZ9qPMeo+AIeGLK84ihijSSzGs50VxsP7zZFCoegUrcduxi
-        rgTDJUYN4x2dr7wLLjpUz4E1fqB4SDqbY+fxJZA=
-X-Google-Smtp-Source: AMrXdXvm2lielLlFLTQQ1mWncnR8r+2GN03o7/uFp+Vxs0LFS4fO10PxVZolMucI46h0vazWcfxd9m/wIWD8zFtXBKg=
-X-Received: by 2002:a2e:8783:0:b0:289:7fc6:e1d with SMTP id
- n3-20020a2e8783000000b002897fc60e1dmr330679lji.69.1674028625825; Tue, 17 Jan
- 2023 23:57:05 -0800 (PST)
+        b=J61GpLi7jzMgLNpoIHP+duq/KfyDYFuj8uqjuwvViozeraO5UYrhND/YJwJaygn+V
+         vN+YB2AucxojyDBCSyrDuyxQXDBr7h3AKfm8/zf6JRqTIwRFB9eeza43WJtGbrN1Jf
+         9rIKxl20fDjoAPjlDjmZlriI03HxAP18fdIV0Tm0ksv0EPaWrarvPvbq4aauumy2eV
+         bxoHfqhZzxIGU/vvVUAsqCYNEkYIN7ITBuQz2QdhbhI/WszUY5OXkDq1s7aw+s1YER
+         ShlIs56SHZz5Hvz8PnZWFYdUSXP70QgRdUW8WIGRtZhvJYxFa2f10aH8MQSBWP6YRc
+         YZFa/JRRW1dkA==
+Received: by mail-lf1-f41.google.com with SMTP id o20so20136050lfk.5;
+        Wed, 18 Jan 2023 07:09:32 -0800 (PST)
+X-Gm-Message-State: AFqh2kpfbXVn7F8AlXIfpVykcutgeJRiSKXgbrTdBWqzUZXCXed7GwlV
+        NfvgIVFudijgB5svY26GuU9FHt2VXb9Xmudrtm4=
+X-Google-Smtp-Source: AMrXdXuEmpdbM2h2hznzVk51O5SZEGdzUoGrzdEAdYc2vIg2hGVA4VZFyoQzK5oflRTKM2a+w1VCxxrZYTGhwGOB/3o=
+X-Received: by 2002:ac2:4ade:0:b0:4d0:7b7:65dc with SMTP id
+ m30-20020ac24ade000000b004d007b765dcmr323651lfp.122.1674054570399; Wed, 18
+ Jan 2023 07:09:30 -0800 (PST)
 MIME-Version: 1.0
-References: <20230117142718.564299-1-ardb@kernel.org> <CAMj1kXHbWwtxb8dL1G8OG4evTg448Xv_DZ_pi8rNF+oVmdtx4g@mail.gmail.com>
- <Y8bbK30nptwHKn88@dev-arch.thelio-3990X>
-In-Reply-To: <Y8bbK30nptwHKn88@dev-arch.thelio-3990X>
+References: <20230113212926.2904735-1-dionnaglaze@google.com>
+ <20230113222024.rp2erl54vx3grdbd@box.shutemov.name> <20230116105648.63hsxnmj2juwudmu@sirius.home.kraxel.org>
+ <def9b0b5-b880-be99-fa95-b05d76a91824@intel.com> <1818a72f-31ef-07b0-d1b4-6a8904636db2@amd.com>
+In-Reply-To: <1818a72f-31ef-07b0-d1b4-6a8904636db2@amd.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 18 Jan 2023 08:56:54 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFmj9p5xX7bzhatHsj=6JVAtcshN76Dp9Sv8moFBnZc0A@mail.gmail.com>
-Message-ID: <CAMj1kXFmj9p5xX7bzhatHsj=6JVAtcshN76Dp9Sv8moFBnZc0A@mail.gmail.com>
-Subject: Re: [RFT PATCH 0/2] arm64: efi: Call SetVaMap() with a 1:1 mapping
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Steev Klimaszewski <steev@kali.org>,
-        Shawn Guo <shawn.guo@linaro.org>
+Date:   Wed, 18 Jan 2023 16:09:18 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXG7s_B1nyEgsxFRRvUzsWNXcFfTszRA2hKY=_a-L24PZg@mail.gmail.com>
+Message-ID: <CAMj1kXG7s_B1nyEgsxFRRvUzsWNXcFfTszRA2hKY=_a-L24PZg@mail.gmail.com>
+Subject: Re: [PATCH v2] x86/efi: Safely enable unaccepted memory in UEFI
+To:     Tom Lendacky <thomas.lendacky@amd.com>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Borislav Petkov <bp@alien8.de>
+Cc:     Dave Hansen <dave.hansen@intel.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Dionna Glaze <dionnaglaze@google.com>,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+        x86@kernel.org, jiewen.yao@intel.com, devel@edk2.groups.io,
+        "Min M. Xu" <min.m.xu@intel.org>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Erdem Aktas <erdemaktas@google.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -64,94 +73,75 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 17 Jan 2023 at 18:30, Nathan Chancellor <nathan@kernel.org> wrote:
+(cc'ing some folks whom I've discussed this with off-list today)
+
+Full discussion here:
+https://lore.kernel.org/linux-efi/20230113212926.2904735-1-dionnaglaze@google.com/
+
+On Mon, 16 Jan 2023 at 23:46, Tom Lendacky <thomas.lendacky@amd.com> wrote:
 >
-> On Tue, Jan 17, 2023 at 04:20:09PM +0100, Ard Biesheuvel wrote:
-> > On Tue, 17 Jan 2023 at 15:27, Ard Biesheuvel <ardb@kernel.org> wrote:
-> > >
-> > > Linux on arm64 is now in the same boat as x86, where supporting laptops
-> > > that were built to run Windows and never tested beyond what is required
-> > > for the Windows Logo certification need workarounds for all kinds of
-> > > bizarre behaviors.
-> > >
-> > > On Snapdragon laptops, we cannot call SetVirtualAddressMap() from the
-> > > stub, because the firmware will crash while trying to access memory via
-> > > the virtual addresses being installed, which is explicitly unsupported
-> > > by the EFI spec.
-> > >
-> > > However, not calling SetVirtualAddressMap() results in other problems:
-> > > on Ampere Altra, it causes SetTime() to crash. On Surface and Flex5g
-> > > Windows-on-ARM laptops, it causes ResetSystem() to crash.
-> > >
-> > > So let's try to work around this while not making too much of a mess.
-> > >
-> > > First of all, install a 1:1 mapping instead of avoiding SetVaMap()
-> > > altogether - from the EFI spec pov, this should amount to the same
-> > > thing.
-> > >
-> > > Then, given that we already use a SMBIOS based hack for Altra to force
-> > > the use of SetVirtualAddressMap(), let's check for Surface systems in
-> > > the same way.
-> > >
-> > > Please test, and please report the SMBIOS type 1 family field for which
-> > > this workaround is needed.
-> > >
-> > > Also, note that these changes will not make a difference if the
-> > > EFI_RT_PROPERTIES_TABLE lists SetVirtualAddressMap() as not implemented.
-> > >
-> > > Nathan, I would appreciate it if you could give this a spin on your
-> > > Altra box (only patch #1 should make a difference), and for good
-> > > measure, double check that hwclock still works as it should.
-> > >
-> > > Cc: Johan Hovold <johan+linaro@kernel.org>
-> > > Cc: Maximilian Luz <luzmaximilian@gmail.com>
-> > > Cc: Nathan Chancellor <nathan@kernel.org>
-> > > Cc: Steev Klimaszewski <steev@kali.org>
-> > > Cc: Shawn Guo <shawn.guo@linaro.org>
-> > >
-> > > Ard Biesheuvel (2):
-> > >   arm64: efi: Prefer a flat virtual mapping of the runtime services
-> > >   arm64: efi: Force use of SetVirtualAddressMap() on MS Surface
-> > >
+> On 1/16/23 15:22, Dave Hansen wrote:
+> > On 1/16/23 02:56, Gerd Hoffmann wrote:
+> >>> And we add this protocol to address very temporary problem: once
+> >>> unaccepted memory support get upstream it is just a dead weight.
+> >> Maybe, maybe not.  unaccepted memory support has a Kconfig switch after
+> >> all.  If we figure in 3-5 years that all distros have enabled it anyway
+> >> we can drop it again.  For the transition period it will surely be
+> >> useful.
 > >
-> > Bah this does not even work on Yoga C630, so this is not going to help us.
+> > I agree with Kirill here.
 > >
-> > If we want ResetSystem() on these machines, we'll have to retain other
-> > memory ranges and map the in the EFI runtime map. Yuck.
-> >
-> > Nathan - still interested in whether patch #1 works on Altra,
+> > Having unaccepted memory *AND* this firmware-driven feature really is
+> > just implementing the same thing twice.
 >
-> I applied patch 1 on top of commit 6e50979a9c87 ("Merge tag
-> 'mm-hotfixes-stable-2023-01-16-15-23' of
-> git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm") in Linus' tree
-> and everything still appears to be okay with hwclock. If there is any
-> more specific testing that I should do, please let me know. Feel free to
-> add
+> I'm not sure I follow you. This feature merely tells the firmware whether
+> or not the OS supports unaccepted memory, which then tells the firmware
+> whether it needs to accept the memory or whether the kernel can.
 >
->     Tested-by: Nathan Chancellor <nathan@kernel.org>
->
-> to patch 1 in future revisions, and I am happy to test anything else
-> that you might need in this series or future ones.
->
-> Mainline:
->
-> # uname -mr
-> 6.2.0-rc4-00031-g6e50979a9c87 aarch64
->
-> # hwclock
-> 2023-01-17 09:04:58.845411-07:00
->
-> Patch:
->
-> # uname -mr
-> 6.2.0-rc4-00032-g20165e83052e aarch64
->
-> # hwclock
-> 2023-01-17 10:25:38.843788-07:00
+> We have had SNP guest support since 5.19 without support for unaccepted
+> memory. Imagine now using a newer OVMF that can support unaccepted memory.
+> How does the firmware know whether it must accept all the memory or
+> whether it can advertise unaccepted memory. By having the kernel call this
+> boot service protocol once support for unaccepted memory is in place, the
+> firmware now knows that it need not accept all the memory.
 >
 
-Thanks Nathan,
+So if people deploying SEV agree that this is a useful feature to
+have, and people working on TDX saying this protocol must never exist,
+I think the obvious conclusion is that OVMF should only expose it when
+running on SEV.
 
-Forgot to mention, though: it is SetTime() not GetTime() that is
-problematic on this platform. Could you please double check whether
-setting the RTC using hwclock works too?
+However, I am still failing to grasp why there is disagreement here.
+Linux already implements SEV support but unaccepted memory protocol is
+not supported yet, and so it is crystal clear that we need something
+to bridge the compatibility gap. Without this protocol, firmware must
+never accept memory, and the OS must always take charge of this, even
+if it prefers to accept memory eagerly.
+
+With this protocol in place, acceptance becomes a policy decision,
+where the default policy is 'accept' for OS implementations that have
+no understanding of unaccepted memory or the protocol. 'Enlightened'
+OSes can still decide not to call the protocol and therefore not
+having to bother with acceptance at all, given that the firmware will
+take care of it.
+
+As for the 'legacy' boot method: this bootloader can decide for itself
+whether or not it needs to invoke the protocol, and can invent its own
+methods for communicating/inspecting the OS image to obtain the
+information to base this decision on. This is outside of the scope of
+EFI. However, I also disagree with the binary 'no solution shall
+exist' vs 'a solution must cover every imaginable combination of
+bootloader and OS image': it makes sense to be pragmatic here, and
+limit ourselves to what people are actually deploying. And given the
+default behavior fo 'accept everything', the only penalty for ignoring
+the legacy bootloader case is a slower boot.
+
+I have been on the sidelines for most of the OVMF and Linux
+development regarding confidential compute, but where I did get
+involved, it was to try and reach consensus between the different
+technologies (including the ARM one), to avoid ending up with radical
+different approaches for doing the same thing.
+
+However, I guess we're at a point where SEV and TDX really want
+different solutions, so I think divergence might be the way to
+proceed.
