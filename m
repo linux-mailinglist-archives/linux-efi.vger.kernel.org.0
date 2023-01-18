@@ -2,113 +2,215 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 345F3672883
-	for <lists+linux-efi@lfdr.de>; Wed, 18 Jan 2023 20:36:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 031756729A3
+	for <lists+linux-efi@lfdr.de>; Wed, 18 Jan 2023 21:45:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229482AbjARTg0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 18 Jan 2023 14:36:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34952 "EHLO
+        id S229814AbjARUpY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 18 Jan 2023 15:45:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229541AbjARTgZ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 Jan 2023 14:36:25 -0500
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E034B9EFA;
-        Wed, 18 Jan 2023 11:36:20 -0800 (PST)
-Received: by mail-ed1-f47.google.com with SMTP id v30so83410edb.9;
-        Wed, 18 Jan 2023 11:36:20 -0800 (PST)
+        with ESMTP id S229657AbjARUpX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 Jan 2023 15:45:23 -0500
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37A055F3AC;
+        Wed, 18 Jan 2023 12:45:22 -0800 (PST)
+Received: by mail-wr1-x433.google.com with SMTP id bk16so35187427wrb.11;
+        Wed, 18 Jan 2023 12:45:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZgIgSN11rEd8/t7p92lzCdZRCM1txWSCMaslInNbKCo=;
+        b=c0vu0i0WjNE2ZEaE4AK/7wjM7vXc9Hah4fdN6SqEkrSy/kAMPhVrwsffQmrdNGQl5l
+         GFbQW7t0/oXXHXUgeSx6yzAGFXwURiTmJKSnQgCFyygDeXoCOr3eySU+kqhfnwqTrZRE
+         7esI7IfQlxzPF36qE9WGQvM023KOLBSiYG/cCpmCBbBx2ckzjHKP+eE3pBCewXSJv7eP
+         enf3YAfWjozH4Zq4+GZD7RwFvuCJv4C/EQBBUMMDKEX+9R1nPcp3wmMY08yYkWA14XGv
+         eGkJvfDlLlSetrbW4C+Y9oUL3yX9HUnz4ySsHhboWxcLZUV+JmT9cBm3+Ro+s/FlDD8x
+         87CA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TFaCbGRXO/pQ0TUpQ1SBb2CqrXmII77VOVr2Wb3CdJg=;
-        b=2iBDEzcZy6zBBhtMVSZcqajreeIfnJYGhQIAzTVzeRRlshZlkGw37wQwS1l8ENHMxV
-         E1txsgebOh7OovxTn9ESKiK9Ru+xrTZeauLkPhI4HUE6uFoMcopbXEyyJZubbOjnQJzW
-         tHfVlApXIp8pvUVZzUl0722cSNoMvQJS3jf7Z0GzWvgNycOu9E2xiQyQFGBlzXfJHf6/
-         jG10hjfk90Y/aUkHBblLwHziUheEW7LXj3o9cR2L8qqp6GvgEws9h0regTsqMmU7Peo3
-         IrcPfyD9u8OSxH8dm8KvQK9HR1eahJJytsKd7ZQy4s+uh46xfEVA58iyilxx2y+WVGrm
-         Zzxw==
-X-Gm-Message-State: AFqh2kocESlD8BPqSK6vIOKQF46yhdHierPG+1QCsqt/BFe/RU84XU49
-        q07J+osn4bxuqIlET9KFDoiM9bcpWabg9pIYuAY19KOJ
-X-Google-Smtp-Source: AMrXdXtH/J5JYaM2D5yLut+qn0FbDvdIwh4x02bBN0equIIryPDtQQHEE95ojIXGbVyqOTw6IOe98kESuA9eFFjdoik=
-X-Received: by 2002:a05:6402:40d6:b0:46d:53d7:d1f6 with SMTP id
- z22-20020a05640240d600b0046d53d7d1f6mr912154edb.211.1674070579297; Wed, 18
- Jan 2023 11:36:19 -0800 (PST)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZgIgSN11rEd8/t7p92lzCdZRCM1txWSCMaslInNbKCo=;
+        b=iZyjLSZRAYr09/uJ9pdpGrX/mybM7EgW2DxCf+dPrVxO8apcpr3j34w8xshzCqj1UD
+         uWeOyPCLzIOUOkDFEUEYTK0w++cv82HP071g3AFbNBsyQ4j+8AfviRYtlQ4OtSI+pNCK
+         wbxovAlEBHxPcY9pDGTa3A+molZnvGKOfTJsZJZ9ka8wrkuovOavz5sFK7FfQQEAw4e7
+         foVFFZthWVGdfsx/y1lQnjOQdSNkL112f01k7EPKlJb+XMjM6ihS++/PQbO+b7egyQ5b
+         f/kmb3sU9NUYvSMiVig7Tj4/T6opfVDru0KxbNR7NeE8eJbi9wf6t+ao5SwHccS09DWe
+         ml9g==
+X-Gm-Message-State: AFqh2kq8xDwn/IF3PGyTC12M2al6ouPLFwwB2gMdvi+qHwIo51AcOblL
+        3tWtZsRDcaBS9qDZ2ls4pZ4=
+X-Google-Smtp-Source: AMrXdXuhv4CroI7UB3QJWrNv2/LetE7M7cz5upNyBmPvrGLBiJvq45o0CFeb+Rdnys9W28IJQzmXlA==
+X-Received: by 2002:adf:ed0c:0:b0:2be:f21:6b02 with SMTP id a12-20020adfed0c000000b002be0f216b02mr7175864wro.70.1674074720705;
+        Wed, 18 Jan 2023 12:45:20 -0800 (PST)
+Received: from [10.27.0.4] ([217.138.207.228])
+        by smtp.gmail.com with ESMTPSA id by12-20020a056000098c00b002bdd8f12effsm16743332wrb.30.2023.01.18.12.45.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Jan 2023 12:45:20 -0800 (PST)
+Message-ID: <2b0fdc2d-6457-059b-bbdf-27e7de59abeb@gmail.com>
+Date:   Wed, 18 Jan 2023 21:45:18 +0100
 MIME-Version: 1.0
-References: <20230112133319.3615177-1-ardb@kernel.org> <CAJZ5v0iuwwDjDQDsdP3uvAO18EOcWXzCS6Yu0g62q40Em0vSOA@mail.gmail.com>
- <CAMj1kXF1OfDrtWNt1VAE4Z1_bvhUKUUrqie0LroXXxsm3jAM0w@mail.gmail.com>
-In-Reply-To: <CAMj1kXF1OfDrtWNt1VAE4Z1_bvhUKUUrqie0LroXXxsm3jAM0w@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 18 Jan 2023 20:36:07 +0100
-Message-ID: <CAJZ5v0hs-xFdREnhPNqBcHcCh558WvNwmA-1bgQrJwDQd7+Zng@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: PRM: Check whether EFI runtime is available
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>, linux-efi@vger.kernel.org,
-        stable@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH 3/4] firmware: Add support for Qualcomm UEFI Secure
+ Application
+Content-Language: en-US
+To:     Johan Hovold <johan@kernel.org>, Ard Biesheuvel <ardb@kernel.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Steev Klimaszewski <steev@kali.org>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-arm-msm@vger.kernel.org, linux-efi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220723224949.1089973-1-luzmaximilian@gmail.com>
+ <20220723224949.1089973-4-luzmaximilian@gmail.com>
+ <Y8ZbN5LNn2fk0/xi@hovoldconsulting.com>
+From:   Maximilian Luz <luzmaximilian@gmail.com>
+In-Reply-To: <Y8ZbN5LNn2fk0/xi@hovoldconsulting.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Jan 17, 2023 at 4:51 PM Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Tue, 17 Jan 2023 at 13:29, Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> > On Thu, Jan 12, 2023 at 2:33 PM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > >
-> > > The ACPI PRM address space handler calls efi_call_virt_pointer() to
-> > > execute PRM firmware code, but doing so is only permitted when the EFI
-> > > runtime environment is available. Otherwise, such calls are guaranteed
-> > > to result in a crash, and must therefore be avoided.
-> > >
-> > > Given that the EFI runtime services may become unavailable after a crash
-> > > occurring in the firmware, we need to check this each time the PRM
-> > > address space handler is invoked. If the EFI runtime services were not
-> > > available at registration time to being with, don't install the address
-> > > space handler at all.
-> > >
-> > > Cc: <stable@vger.kernel.org>
-> > > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > > Cc: Len Brown <lenb@kernel.org>
-> > > Cc: linux-acpi@vger.kernel.org
-> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > > ---
-> > > v2: check both at registration and at invocation time
-> > >
-> > >  drivers/acpi/prmt.c | 10 ++++++++++
-> > >  1 file changed, 10 insertions(+)
-> > >
-> > > diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-> > > index 998101cf16e47145..3d4c4620f9f95309 100644
-> > > --- a/drivers/acpi/prmt.c
-> > > +++ b/drivers/acpi/prmt.c
-> > > @@ -236,6 +236,11 @@ static acpi_status acpi_platformrt_space_handler(u32 function,
-> > >         efi_status_t status;
-> > >         struct prm_context_buffer context;
-> > >
-> > > +       if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
-> > > +               pr_err_ratelimited("PRM: EFI runtime services no longer available\n");
-> > > +               return AE_NO_HANDLER;
-> >
-> > This error code is only used in GPE handling ATM.
-> >
-> > The one that actually causes ACPICA to log a "no handler" error (in
-> > acpi_ex_access_region()) is AE_NOT_EXIST.  Should it be used here?
-> >
->
-> Not sure. Any error value is returned to the caller, the only
-> difference is that AE_NOT_EXIST and AE_NOT_IMPLEMENTED trigger the
-> non-ratelimited logging machinery.
->
-> Given that neither value seems appropriate (the region is implemented
-> and it has a handler), and we already emit a rate limited error
-> message, I think AE_NOT_EXIST is not the right choice.
+On 1/17/23 09:24, Johan Hovold wrote:
+> On Sun, Jul 24, 2022 at 12:49:48AM +0200, Maximilian Luz wrote:
+>> On platforms using the Qualcomm UEFI Secure Application (uefisecapp),
+>> EFI variables cannot be accessed via the standard interface in EFI
+>> runtime mode. The respective functions return EFI_UNSUPPORTED. On these
+>> platforms, we instead need to talk to uefisecapp. This commit provides
+>> support for this and registers the respective efivars operations to
+>> access EFI variables from the kernel.
+>>
+>> Communication with uefisecapp follows the standard Qualcomm Trusted
+>> Environment (TEE or TrEE) / Secure OS conventions via the respective SCM
+>> call interface. This is also the reason why variable access works
+>> normally while boot services are active. During this time, said SCM
+>> interface is managed by the boot services. When calling
+>> ExitBootServices(), the ownership is transferred to the kernel.
+>> Therefore, UEFI must not use that interface itself (as multiple parties
+>> accessing this interface at the same time may lead to complications) and
+>> cannot access variables for us.
+>>
+>> Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
+>> ---
+> 
+>> +static struct platform_driver qcom_uefisecapp_driver = {
+>> +	.probe = qcom_uefisecapp_probe,
+>> +	.remove = qcom_uefisecapp_remove,
+>> +	.driver = {
+>> +		.name = "qcom_tee_uefisecapp",
+>> +		.of_match_table = qcom_uefisecapp_dt_match,
+>> +		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
+>> +	},
+>> +};
+>> +module_platform_driver(qcom_uefisecapp_driver);
+> 
+> I noticed that for efivarfs to work, you're currently relying on having
+> the firmware still claim that the variable services are supported in the
+> RT_PROP table so that efi core registers the default ops at subsys init
+> time (which are later overridden by this driver).
+> 
+> Otherwise efivarfs may fail to initialise when built in:
+> 
+> 	static __init int efivarfs_init(void)
+> 	{
+> 		if (!efivars_kobject())
+> 			return -ENODEV;
+> 
+> 		return register_filesystem(&efivarfs_type);
+> 	}
+> 
+> 	module_init(efivarfs_init);
+> 
+> With recent X13s firmware the corresponding bit in the RT_PROP table has
+> been cleared so that efivarfs would fail to initialise. Similar problem
+> when booting with 'efi=noruntime'.
+> 
+> One way to handle this is to register also the qcom_uefisecapp_driver at
+> subsys init time and prevent it from being built as a module (e.g. as is
+> done for the SCM driver). I'm using the below patch for this currently.
 
-OK, applied as-is as 6.2-rc material, thanks!
+So I've had another look and I'm not sure this will work reliably:
+
+First, you are correct in case the RT_PROP table is cleared. In that
+case, using subsys_initcall() will move the efivar registration before
+the efivarfs_init() call.
+
+However, in case EFI indicates support for variables, we will then have
+generic_ops_register() and the uefisecapp's driver call running both in
+subsys_initcall(). So if I'm not mistaken, this could cause the generic
+ops to be registered after the uefisecapp ones, which we want to avoid.
+
+One solution is bumping uefisecapp to fs_initcall(). Or do you have any
+other suggestions?
+
+Regards,
+Max
+
+
+>  From 8fecce12d215bd8cab1b8c8f9f0d1e1fe20fe6e7 Mon Sep 17 00:00:00 2001
+> From: Johan Hovold <johan+linaro@kernel.org>
+> Date: Sun, 15 Jan 2023 15:32:34 +0100
+> Subject: [PATCH] firmware: qcom_tee_uefisecapp: register at subsys init
+> 
+> Register efivars at subsys init time so that it is available when
+> efivarfs probes. For the same reason, also prevent building the driver
+> as a module.
+> 
+> This is specifically needed on platforms such as the Lenovo Thinkpad
+> X13s where the firmware has cleared the variable services in the RT_PROP
+> table so that efi core does not register any efivar callbacks at subsys
+> init time (which are later overridden).
+> 
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+>   drivers/firmware/Kconfig               | 2 +-
+>   drivers/firmware/qcom_tee_uefisecapp.c | 7 ++++++-
+>   2 files changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+> index 4e9e2c227899..48e712e363da 100644
+> --- a/drivers/firmware/Kconfig
+> +++ b/drivers/firmware/Kconfig
+> @@ -231,7 +231,7 @@ config QCOM_TEE
+>   	select QCOM_SCM
+>   
+>   config QCOM_TEE_UEFISECAPP
+> -	tristate "Qualcomm TrEE UEFI Secure App client driver"
+> +	bool "Qualcomm TrEE UEFI Secure App client driver"
+>   	select QCOM_TEE
+>   	depends on EFI
+>   	help
+> diff --git a/drivers/firmware/qcom_tee_uefisecapp.c b/drivers/firmware/qcom_tee_uefisecapp.c
+> index 65573e4b815a..e83bce4da70a 100644
+> --- a/drivers/firmware/qcom_tee_uefisecapp.c
+> +++ b/drivers/firmware/qcom_tee_uefisecapp.c
+> @@ -754,7 +754,12 @@ static struct platform_driver qcom_uefisecapp_driver = {
+>   		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
+>   	},
+>   };
+> -module_platform_driver(qcom_uefisecapp_driver);
+> +
+> +static int __init qcom_uefisecapp_init(void)
+> +{
+> +	return platform_driver_register(&qcom_uefisecapp_driver);
+> +}
+> +subsys_initcall(qcom_uefisecapp_init);
+>   
+>   MODULE_AUTHOR("Maximilian Luz <luzmaximilian@gmail.com>");
+>   MODULE_DESCRIPTION("Client driver for Qualcomm TrEE/TZ UEFI Secure App");
