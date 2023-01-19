@@ -2,51 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79368674230
-	for <lists+linux-efi@lfdr.de>; Thu, 19 Jan 2023 20:06:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AABA674229
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Jan 2023 20:06:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229796AbjASTGd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 19 Jan 2023 14:06:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48796 "EHLO
+        id S231310AbjASTGL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 19 Jan 2023 14:06:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231277AbjASTGG (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 19 Jan 2023 14:06:06 -0500
+        with ESMTP id S231241AbjASTGC (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 19 Jan 2023 14:06:02 -0500
 Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80BF194326;
-        Thu, 19 Jan 2023 11:05:27 -0800 (PST)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id B288E5C00D8;
-        Thu, 19 Jan 2023 14:04:26 -0500 (EST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92F4C9AA9C;
+        Thu, 19 Jan 2023 11:05:13 -0800 (PST)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailout.nyi.internal (Postfix) with ESMTP id B0BC15C0113;
+        Thu, 19 Jan 2023 14:04:27 -0500 (EST)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Thu, 19 Jan 2023 14:04:26 -0500
+  by compute1.internal (MEProxy); Thu, 19 Jan 2023 14:04:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         invisiblethingslab.com; h=cc:cc:content-transfer-encoding
         :content-type:date:date:from:from:in-reply-to:in-reply-to
         :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm3; t=1674155066; x=1674241466; bh=JNxIP18FJG
-        MNUYBP65b84d6ync2Tzl5LK9xIO36ews4=; b=V9s7TGR9vSl2qHXadvBQ5jANqT
-        YsH5gcQlEJ4qUFFblcTOwTDCkjYBGMTnhzWrvyP4wUxzF9P6ReX071u7Zb48fNln
-        9F+erC7wwWxgelTnZ45UxgcZXeIT+nRxk0JHttjDPwkpt3l5oqb7nbPi3WYNE/1F
-        yFd76iqa2KtykXVk3IhbB08edyNj7SA1wavzMY3Kwckjvzo+dCdCsMYrcRETWzWE
-        cSw+wqGejNlAcusrsPK1S1xXsN3HhKiXHa7JGxPmHDyruZJibrhV/bXcPk1vUcRe
-        IJcBMsAFnb/w50ABar0rBJv0QFRh4M012F+pACaYSzQi9qNQClxGy7Y0pYFQ==
+        :subject:to:to; s=fm3; t=1674155067; x=1674241467; bh=SFELFhRBDG
+        wxzbzozrOmTJ4SoxpryGpr1CzrXd0rbww=; b=dyikPYdTJzsJDOgvNb4fSLgmtt
+        qnJsfvjF/c45Rr4UTsnxxyzyK69GemoA40vz4QqytzeVPkG9oDYl2du1BGRjmFpc
+        XPEJiivlyIq4zuvnu+kLj+45UtBx6LDaDnk+o7jRjzsmZ2YPp7Eowyxyf1qdLoHC
+        5hEQH164NUO+Yl0ANLWO52jmpC1ohoUtSTH+BSn05+CIhS793scPMOcbzRjS3OS6
+        izj3OSXzEP0uuFdUQzi5fo4c567VcoRvDIb83wjS8Vu9S6drGXgfnhqEECBzEygm
+        GuUPiWn9fB1spgReRKh+X2fTI+9+oEXdzOPREiKxWYQsADbXepd36tdo2T1Q==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         messagingengine.com; h=cc:cc:content-transfer-encoding
         :content-type:date:date:feedback-id:feedback-id:from:from
         :in-reply-to:in-reply-to:message-id:mime-version:references
         :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1674155066; x=
-        1674241466; bh=JNxIP18FJGMNUYBP65b84d6ync2Tzl5LK9xIO36ews4=; b=J
-        yFsovdtn/rPqbJClnCW1NgOy8ebOXt8SCkihjpMPPf9x7G9ZOQk+5xgZw8Ebed32
-        nzn2Izk8PB9HN0hf4zwIiqi3L8W2cRDiYfye1ed8QadLqMbq4eIXkFg+GUJu2DCH
-        Sy9IDdfOM3FgggnNEIOfoe9xdvEEGhcV2ATpZD4y/L/sWF7PYfOeiVohtYaCXR+H
-        Kjm/7xuK3iAe1xGkjKdkqx2O3FkokQw//hA7Q2breO9MP4A8rzxTbopzdY/7GGB2
-        B/WRxIk2PnP2Q6kaDkwhGeeyEfXf0cZAxobx/IfCGbQeZcd4ws8JRirIv8xHkMXi
-        NWWMcKT0h8WiQfokCsQvQ==
-X-ME-Sender: <xms:OpTJYz5DUUpMrz1Dur0MLyDT7uTJawS8WOL6m-vcG-RiIiYAsN-QLg>
-    <xme:OpTJY45xIbDMttCiDuEBGEK2fjnPzOaInVP4TWcbUqxjyJO3-hCa-BzQ40ItovfrP
-    zJUXnLoqKScpqs>
-X-ME-Received: <xmr:OpTJY6dFi9QhhR-44F7nQFulDsjlpbg6vVy7IQNKk9oB4kGJL26iqdEdfLrPPTbwdNOOHIwpG7BX>
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1674155067; x=
+        1674241467; bh=SFELFhRBDGwxzbzozrOmTJ4SoxpryGpr1CzrXd0rbww=; b=a
+        l6RegSqim7BFs3FrE6J+49XSBvpNwX107t4zIBAZYjFzk9u+s67kzoA4Bauuo7Ge
+        IIEK16MmU7GO29hW92WRmVMKMhxJxXR/GN5dUo/lOkKUsqT9fQ0OoUOsOiJPSGpc
+        bJLKg3oogEWdQutNk7u7FBaave353Dxka+9g/rxf23+un0kyLOTFk4qqh61iBh1A
+        hanHl0u1JpY+Pkx6rdE4JW/qPuKX2ws2LfEaquCn95HO0K0W1papQ7uUXMRrkHGP
+        Lyc8TmPo9RqiZumXOldUgbDvwsfqjzcIlKhNHVO4RGTk1+ns/Z7npumPRZCbuXPz
+        8ZdUMHlYEJhttiDx7mFjw==
+X-ME-Sender: <xms:O5TJY1jZ9piu1WNItg0aow2pXfm6utsa6VIHtnhx1YTXflwiqnzVWg>
+    <xme:O5TJY6C2dd1SA5EpGory50TmMuhcX7xqz5EzJiMI3bfRMoOZIphkx50HTSojsM09S
+    Lh1IwCbZi9vvW0>
+X-ME-Received: <xmr:O5TJY1HaEiBDNV1qHQKgCBA8wGc2yUlwS9iTLarOCcvgbj3KMjHbyvMoiSxc04uezUr6pKMUgFWZ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedruddutddguddvudcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
     necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
@@ -56,13 +56,13 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedruddutddguddvudcutefuodetgg
     ffegvdeigeelieegjefffeeiveeivdejgeevteeinecuvehluhhsthgvrhfuihiivgeptd
     enucfrrghrrghmpehmrghilhhfrhhomhepuggvmhhisehinhhvihhsihgslhgvthhhihhn
     ghhslhgrsgdrtghomh
-X-ME-Proxy: <xmx:OpTJY0IeuOz5X_yZJp5w-lcaawIxfTKO7JmMMJmyeR55YjylT27NFQ>
-    <xmx:OpTJY3Lyr5JflduQ8P-HoNIqNk7HEfTG7s9A6i3HPN5wLO3OKCcnGQ>
-    <xmx:OpTJY9xCu2ZAZkumpUAKi3ghISqHIYYf3GLWM6DegJlVrTloAbCyzA>
-    <xmx:OpTJY__zreQyAQfy1-bsR7NGxJqlrTH4k20OEKYvOGQNYBWgRLtcSA>
+X-ME-Proxy: <xmx:O5TJY6Qmu13I_ZwhaTSyhuoejvaSujw2-RuKgJZPR0qbsDuOLCvbsg>
+    <xmx:O5TJYyyQ2iCppONNYFvhvSQA0Dwg9UM9GxhE2yfnydGW9HKakK44sw>
+    <xmx:O5TJYw6HDewiFdSEZxHeB2Vo-52Yy8kD4RoT6GVBR-pFYdkp42tnOg>
+    <xmx:O5TJY5lErevuhruCBDzETh-eOtL7NcHj1DKQseLRP2z-2NWCnKS7rw>
 Feedback-ID: iac594737:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 19 Jan 2023 14:04:25 -0500 (EST)
+ 19 Jan 2023 14:04:26 -0500 (EST)
 From:   Demi Marie Obenour <demi@invisiblethingslab.com>
 To:     Ard Biesheuvel <ardb@kernel.org>, Juergen Gross <jgross@suse.com>,
         Stefano Stabellini <sstabellini@kernel.org>,
@@ -71,9 +71,9 @@ Cc:     Demi Marie Obenour <demi@invisiblethingslab.com>,
         =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= 
         <marmarek@invisiblethingslab.com>, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org
-Subject: [PATCH v3 2/5] efi: xen: Implement memory descriptor lookup based on hypercall
-Date:   Thu, 19 Jan 2023 14:03:57 -0500
-Message-Id: <cca4ad8a7d034e207bf1cb1f0571c6491eae9faf.1669264419.git.demi@invisiblethingslab.com>
+Subject: [PATCH v3 3/5] efi: Apply allowlist to EFI configuration tables when running under Xen
+Date:   Thu, 19 Jan 2023 14:03:58 -0500
+Message-Id: <ae86554a2846cd3732316405f10bce5ea9bf7f3d.1669264419.git.demi@invisiblethingslab.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <b18879e0329c785d35f2aa2164413bb56419c684.1674153153.git.demi@invisiblethingslab.com>
 References: <b18879e0329c785d35f2aa2164413bb56419c684.1674153153.git.demi@invisiblethingslab.com>
@@ -90,115 +90,95 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Xen on x86 boots dom0 in EFI mode but without providing a memory map.
-This means that some consistency checks we would like to perform on
-configuration tables or other data structures in memory are not
-currently possible.  Xen does, however, expose EFI memory descriptor
-info via a Xen hypercall, so let's wire that up instead.  It turns out
-that the returned information is not identical to what Linux's
-efi_mem_desc_lookup would return: the address returned is the address
-passed to the hypercall, and the size returned is the number of bytes
-remaining in the configuration table.  However, none of the callers of
-efi_mem_desc_lookup() currently care about this.  In the future, Xen may
-gain a hypercall that returns the actual start address, which can be
-used instead.
+As it turns out, Xen does not guarantee that EFI boot services data
+regions in memory are preserved, which means that EFI configuration
+tables pointing into such memory regions may be corrupted before the
+dom0 OS has had a chance to inspect them.
+
+This is causing problems for Qubes OS when it attempts to perform system
+firmware updates, which requires that the contents of the EFI System
+Resource Table are valid when the fwupd userspace program runs.
+
+However, other configuration tables such as the memory attributes table
+or the runtime properties table are equally affected, and so we need a
+comprehensive workaround that works for any table type.
+
+So when running under Xen, check the EFI memory descriptor covering the
+start of the table, and disregard the table if it does not reside in
+memory that is preserved by Xen.
 
 Co-developed-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
 Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
 ---
- drivers/firmware/efi/efi.c |  5 ++++-
- drivers/xen/efi.c          | 36 ++++++++++++++++++++++++++++++++++++
- include/linux/efi.h        |  1 +
- 3 files changed, 41 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/efi.c |  7 +++++++
+ drivers/xen/efi.c          | 25 +++++++++++++++++++++++++
+ include/linux/efi.h        |  2 ++
+ 3 files changed, 34 insertions(+)
 
 diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 780caea594e0ffce30abb69bddcccf3bacf25382..bcb848e44e7b1350b10b7c0479c0b38d980fe37d 100644
+index bcb848e44e7b1350b10b7c0479c0b38d980fe37d..b49fcde06ca0ff5347047666f38b9309bd9cfe26 100644
 --- a/drivers/firmware/efi/efi.c
 +++ b/drivers/firmware/efi/efi.c
-@@ -456,7 +456,7 @@ void __init efi_find_mirror(void)
-  * and if so, populate the supplied memory descriptor with the appropriate
-  * data.
-  */
--int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
-+int __efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
- {
- 	efi_memory_desc_t *md;
+@@ -564,6 +564,13 @@ static __init int match_config_table(const efi_guid_t *guid,
  
-@@ -490,6 +490,9 @@ int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
- 	return -ENOENT;
- }
- 
-+extern int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
-+	__weak __alias(__efi_mem_desc_lookup);
-+
- /*
-  * Calculate the highest address of an efi memory descriptor.
-  */
+ 	for (i = 0; efi_guidcmp(table_types[i].guid, NULL_GUID); i++) {
+ 		if (!efi_guidcmp(*guid, table_types[i].guid)) {
++			if (IS_ENABLED(CONFIG_XEN_EFI) &&
++			    !xen_efi_config_table_is_usable(guid, table)) {
++				if (table_types[i].name[0])
++					pr_cont("(%s=0x%lx) may have been clobbered by Xen ",
++					        table_types[i].name, table);
++				return 1;
++			}
+ 			*(table_types[i].ptr) = table;
+ 			if (table_types[i].name[0])
+ 				pr_cont("%s=0x%lx ",
 diff --git a/drivers/xen/efi.c b/drivers/xen/efi.c
-index d1ff2186ebb48a7c0981ecb6d4afcbbb25ffcea0..3c792353b7308f9c2bf0a888eda9f827aa9177f8 100644
+index 3c792353b7308f9c2bf0a888eda9f827aa9177f8..fb321cd6415a40e8c4d0ad940611adcabe20ab97 100644
 --- a/drivers/xen/efi.c
 +++ b/drivers/xen/efi.c
-@@ -26,6 +26,7 @@
+@@ -328,3 +328,28 @@ int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
  
- #include <xen/interface/xen.h>
- #include <xen/interface/platform.h>
-+#include <xen/page.h>
- #include <xen/xen.h>
- #include <xen/xen-ops.h>
- 
-@@ -292,3 +293,38 @@ void __init xen_efi_runtime_setup(void)
- 	efi.get_next_high_mono_count	= xen_efi_get_next_high_mono_count;
- 	efi.reset_system		= xen_efi_reset_system;
+ 	return 0;
  }
 +
-+int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
++bool __init xen_efi_config_table_is_usable(const efi_guid_t *guid,
++                                           unsigned long table)
 +{
-+	static_assert(XEN_PAGE_SHIFT == EFI_PAGE_SHIFT,
-+	              "Mismatch between EFI_PAGE_SHIFT and XEN_PAGE_SHIFT");
-+	struct xen_platform_op op;
-+	union xenpf_efi_info *info = &op.u.firmware_info.u.efi_info;
++	efi_memory_desc_t md;
 +	int rc;
 +
-+	if (!efi_enabled(EFI_PARAVIRT) || efi_enabled(EFI_MEMMAP))
-+		return __efi_mem_desc_lookup(phys_addr, out_md);
-+	phys_addr &= ~(u64)(EFI_PAGE_SIZE - 1);
-+	op = (struct xen_platform_op) {
-+		.cmd = XENPF_firmware_info,
-+		.u.firmware_info = {
-+			.type = XEN_FW_EFI_INFO,
-+			.index = XEN_FW_EFI_MEM_INFO,
-+			.u.efi_info.mem.addr = phys_addr,
-+			.u.efi_info.mem.size = U64_MAX - phys_addr,
-+		},
-+	};
++	if (!efi_enabled(EFI_PARAVIRT))
++		return true;
 +
-+	rc = HYPERVISOR_platform_op(&op);
-+	if (rc) {
-+		pr_warn("Failed to lookup header 0x%llx in Xen memory map: error %d\n",
-+		        phys_addr, rc);
++	rc = efi_mem_desc_lookup(table, &md);
++	if (rc)
++		return false;
++
++	switch (md.type) {
++	case EFI_RUNTIME_SERVICES_CODE:
++	case EFI_RUNTIME_SERVICES_DATA:
++	case EFI_ACPI_RECLAIM_MEMORY:
++	case EFI_ACPI_MEMORY_NVS:
++	case EFI_RESERVED_TYPE:
++		return true;
++	default:
++		return false;
 +	}
-+
-+	out_md->phys_addr	= info->mem.addr;
-+	out_md->num_pages	= info->mem.size >> EFI_PAGE_SHIFT;
-+	out_md->type    	= info->mem.type;
-+	out_md->attribute	= info->mem.attr;
-+
-+	return 0;
 +}
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index f87b2f5db9f83db6f7488648fe99a8f8fc4fdf04..b407a302b730a6cc7481afa0f582360e59faf1e0 100644
+index b407a302b730a6cc7481afa0f582360e59faf1e0..b210b50c4bdedaafcce6f63d44f57ff8329d1cfd 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
-@@ -724,6 +724,7 @@ extern u64 efi_mem_attribute (unsigned long phys_addr, unsigned long size);
- extern int __init efi_uart_console_only (void);
- extern u64 efi_mem_desc_end(efi_memory_desc_t *md);
- extern int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md);
-+extern int __efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md);
- extern void efi_mem_reserve(phys_addr_t addr, u64 size);
- extern int efi_mem_reserve_persistent(phys_addr_t addr, u64 size);
- extern void efi_initialize_iomem_resources(struct resource *code_resource,
+@@ -1322,4 +1322,6 @@ struct linux_efi_coco_secret_area {
+ /* Header of a populated EFI secret area */
+ #define EFI_SECRET_TABLE_HEADER_GUID	EFI_GUID(0x1e74f542, 0x71dd, 0x4d66,  0x96, 0x3e, 0xef, 0x42, 0x87, 0xff, 0x17, 0x3b)
+ 
++bool xen_efi_config_table_is_usable(const efi_guid_t *guid, unsigned long table);
++
+ #endif /* _LINUX_EFI_H */
 -- 
 Sincerely,
 Demi Marie Obenour (she/her/hers)
