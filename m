@@ -2,53 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 013FF675017
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Jan 2023 10:03:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D05226750F9
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Jan 2023 10:26:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229528AbjATJDg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 20 Jan 2023 04:03:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42294 "EHLO
+        id S230131AbjATJZ7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 20 Jan 2023 04:25:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbjATJDf (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 20 Jan 2023 04:03:35 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B865EC4A
-        for <linux-efi@vger.kernel.org>; Fri, 20 Jan 2023 01:03:35 -0800 (PST)
+        with ESMTP id S230297AbjATJZ5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 20 Jan 2023 04:25:57 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8BE79AAB7;
+        Fri, 20 Jan 2023 01:25:29 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DA3161E62
-        for <linux-efi@vger.kernel.org>; Fri, 20 Jan 2023 09:03:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B16DC4339B
-        for <linux-efi@vger.kernel.org>; Fri, 20 Jan 2023 09:03:34 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id DE21FB82070;
+        Fri, 20 Jan 2023 09:23:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FF21C4339B;
+        Fri, 20 Jan 2023 09:23:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674205414;
-        bh=t+lbGoWsZyyDsZZa2kD/4JDQecX9Eztf56PY0wj98Xc=;
+        s=k20201202; t=1674206612;
+        bh=edzJpvbcYJ9/le8XwQiv8Bj5JF2XFVSy342hKsdxn5o=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=X+fY8vfiPg9WcjeG160lUWztS/CVsn61CnXP0kQMRUyE21fFpxLkMNq1YtFjdc07f
-         xGb120UMTp9ck3gzo32MWHTpiWCGVPncgO5wPF5Bzn0fVbPvjHTLwKQLgTaFSLZuPy
-         /1vCay5NbvxM9PQW7CMNna57B8xJNE68aW6RovjQUn2QAkOWCZHs4vLWIhnBxdleMW
-         a1bPHRkzHYAkF83ImENA7NBrb5d15I9aK1yZmmNGiSNJizbeQVkj0A1Wknm5QpKoQM
-         Hg1zbGZWUvSgDoYxdgN4ZK9poO72ejJtvxZ/QuT6jyJC0Lnf7/OKB6Unu28RXu3sAR
-         dVEL7WPcq7ctA==
-Received: by mail-lf1-f52.google.com with SMTP id b3so7140604lfv.2
-        for <linux-efi@vger.kernel.org>; Fri, 20 Jan 2023 01:03:33 -0800 (PST)
-X-Gm-Message-State: AFqh2kp7DPOIR3+HmozI03gQePTB4gzmsgiwX4h2W93qPcqgL+SMdaH+
-        o6KBo7r7R/8DoZ0baWIB2g3M5uckzBlQDyYBqa0=
-X-Google-Smtp-Source: AMrXdXt1bkxpcjNBap06/cJlQkDehki1DqBEepPtiQh7Ee6fCaQmW+lLeByAC85S7nqBRZEDu3z1mxvZzdTvcrZCYXM=
-X-Received: by 2002:a05:6512:118a:b0:4cc:9d69:4703 with SMTP id
- g10-20020a056512118a00b004cc9d694703mr1434821lfr.110.1674205412007; Fri, 20
- Jan 2023 01:03:32 -0800 (PST)
+        b=pQe+04cbCH4NAMc2DnOUbRbeaWSfHfSGFcX+/S5fANGycRC/uyrkJlT7SmWFpBm9O
+         h1NSvR8ldgVSHkIpRHaCVSNEKRh1robNde0lORyw+T7buIVnaHdAah/q71Ls5sR6fl
+         YDuzYdladzWl0EmoIEzCJrUQH7kFSPCZMDKsf8qmIc7d4GbjJ9k8nwUnWw4L4zJYEa
+         7UBcACs+wMzGsoRjbmVoE5vyfsll6aNhAYnJ0Pb7B+3HFWYGnqKE2DDLwx9g6SqEkK
+         e9CaieLAmum4vy6rrpak/+AmCe85nh5MuKjeTa/LGvxWG5fThfMvaJOFC+f1YBnmxB
+         c86XWw9qmA4Ag==
+Received: by mail-lj1-f174.google.com with SMTP id y19so4869415ljq.7;
+        Fri, 20 Jan 2023 01:23:32 -0800 (PST)
+X-Gm-Message-State: AFqh2kpddpUKorvwPiyWcayTcvD6I1sa7czFGdCkHYEq4XU1KenjsRXA
+        mE2SyjeawKXFSWv+xSK84aHbV3u/csvtM7PSe+M=
+X-Google-Smtp-Source: AMrXdXuZbc6TeXg6KE/rlsK6U8mCNclNDOV02Oo0EWJiKbhBYU3KR9hThtdr85AxyiJHOOGysNuBhz0mlFxac+ZUC/I=
+X-Received: by 2002:a2e:a908:0:b0:283:33fa:ee22 with SMTP id
+ j8-20020a2ea908000000b0028333faee22mr656950ljq.415.1674206610604; Fri, 20 Jan
+ 2023 01:23:30 -0800 (PST)
 MIME-Version: 1.0
-References: <f2503170d12dc567c00998d4e72ba806f7677730.camel@HansenPartnership.com>
-In-Reply-To: <f2503170d12dc567c00998d4e72ba806f7677730.camel@HansenPartnership.com>
+References: <20230119164255.28091-1-johan+linaro@kernel.org> <20230119164255.28091-3-johan+linaro@kernel.org>
+In-Reply-To: <20230119164255.28091-3-johan+linaro@kernel.org>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 20 Jan 2023 10:03:20 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFi8xmPo9gaq6ZGm=LpALWu-5=SH-=1eypJ-r51JKE5SQ@mail.gmail.com>
-Message-ID: <CAMj1kXFi8xmPo9gaq6ZGm=LpALWu-5=SH-=1eypJ-r51JKE5SQ@mail.gmail.com>
-Subject: Re: Is there a known boot failure with 6.2-rc and the Intel SDV EFI systems?
-To:     James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc:     linux-efi@vger.kernel.org
+Date:   Fri, 20 Jan 2023 10:23:18 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXEOOh8MrAt=L7aBt9wX5Pcmh4irnDuKqsDF7pB5-xnmog@mail.gmail.com>
+Message-ID: <CAMj1kXEOOh8MrAt=L7aBt9wX5Pcmh4irnDuKqsDF7pB5-xnmog@mail.gmail.com>
+Subject: Re: [PATCH 2/4] efivarfs: always register filesystem
+To:     Johan Hovold <johan+linaro@kernel.org>,
+        Peter Jones <pjones@redhat.com>,
+        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Cc:     Matthew Garrett <mjg59@srcf.ucam.org>, Jeremy Kerr <jk@ozlabs.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -59,19 +63,56 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 20 Jan 2023 at 00:15, James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
->
-> I've got a Rainbow Bridge SDV I mostly use for TPM work, and I haven't
-> updated it in a while.  Today I found that the recent 6.2-rc4 kernel
-> won't boot and won't emit any kernel messages signalling a failure
-> somewhere in the handoff code.  I did put some EFI boot stub prints in
-> and verified it gets all the way to exit_boot_services before the
-> problem, so it smells like it fails initializing the EFI console for
-> runtime.  I've also verified that v6.1 release works just fine, so it
-> looks like something that went into EFI in the recent merge window.
-> I'm starting to bisect now, but thought I'd ask in case anyone else has
-> already debugged this.
->
+(cc Peter, Heinrich)
 
-Nothing in particular comes to mind. Is this a mixed mode system?
+On Thu, 19 Jan 2023 at 17:45, Johan Hovold <johan+linaro@kernel.org> wrote:
+>
+> The efivar ops are typically registered at subsys init time so that
+> they are available when efivarfs is registered at module init time.
+>
+> Other efivars implementations, such as Google SMI, exists and can
+> currently be build as modules which means that efivar may not be
+> available when efivarfs is initialised.
+>
+> Move the efivar availability check from module init to when the
+> filesystem is mounted to allow late registration of efivars.
+>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+
+I think this change is fine in principle, but I 'm not sure if there
+is user space code that the distros are carrying that might get
+confused by this: beforehand, efivarfs would not exist in
+/proc/filesystems and now, it will but trying to mount it might fail.
+
+
+> ---
+>  fs/efivarfs/super.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+> index f72c529c8ec3..b67d431c861a 100644
+> --- a/fs/efivarfs/super.c
+> +++ b/fs/efivarfs/super.c
+> @@ -194,6 +194,9 @@ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
+>         struct dentry *root;
+>         int err;
+>
+> +       if (!efivar_is_available())
+> +               return -EOPNOTSUPP;
+> +
+>         sb->s_maxbytes          = MAX_LFS_FILESIZE;
+>         sb->s_blocksize         = PAGE_SIZE;
+>         sb->s_blocksize_bits    = PAGE_SHIFT;
+> @@ -256,9 +259,6 @@ static struct file_system_type efivarfs_type = {
+>
+>  static __init int efivarfs_init(void)
+>  {
+> -       if (!efivar_is_available())
+> -               return -ENODEV;
+> -
+>         return register_filesystem(&efivarfs_type);
+>  }
+>
+> --
+> 2.38.2
+>
