@@ -2,48 +2,54 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06EDF674F49
-	for <lists+linux-efi@lfdr.de>; Fri, 20 Jan 2023 09:19:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 013FF675017
+	for <lists+linux-efi@lfdr.de>; Fri, 20 Jan 2023 10:03:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229613AbjATITz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 20 Jan 2023 03:19:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44734 "EHLO
+        id S229528AbjATJDg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 20 Jan 2023 04:03:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbjATITy (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 20 Jan 2023 03:19:54 -0500
+        with ESMTP id S229481AbjATJDf (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 20 Jan 2023 04:03:35 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6677778ABD;
-        Fri, 20 Jan 2023 00:19:53 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B865EC4A
+        for <linux-efi@vger.kernel.org>; Fri, 20 Jan 2023 01:03:35 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0346D61E58;
-        Fri, 20 Jan 2023 08:19:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 653D1C433D2;
-        Fri, 20 Jan 2023 08:19:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DA3161E62
+        for <linux-efi@vger.kernel.org>; Fri, 20 Jan 2023 09:03:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B16DC4339B
+        for <linux-efi@vger.kernel.org>; Fri, 20 Jan 2023 09:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674202792;
-        bh=wqlS1SJUUlepuHMf3N2ubc3zP0Vjh0qA869+ERCCBto=;
-        h=From:To:Cc:Subject:Date:From;
-        b=IaaPCKvezrZDaVvtC8oyYhxbjTop/0pLYqePgwAYDu5PnJFDjcbnSHNXfjIyqFG5c
-         dWac5Sx1xfrFv9UOHTgsq0ytxNJGkaKPcuDcKWB8HusEG+65WTrx2bgjBBKf9rJvG8
-         neKyTbyCnBUxUmiz8Pgn3IQdluAhkEejWe+QVr+0/xgaMsM16YclUMdmQWNBxTC/F9
-         9v0pGaZZfAnPl1z8+zDXmZZo6M39AKDgSwDMsyrAP1WYMwuGEfSt6gi1gyUgNytey6
-         7mdSpW1daq+q+O7g/tcoaJ48crkUYy+Belvp/S4u2vjoae9rzvXcWFzQ5uNLvR3ONw
-         uNFQEQP1gwTSg==
-Received: from johan by xi.lan with local (Exim 4.94.2)
-        (envelope-from <johan+linaro@kernel.org>)
-        id 1pImdJ-0007bc-QM; Fri, 20 Jan 2023 09:20:22 +0100
-From:   Johan Hovold <johan+linaro@kernel.org>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH] efi: drop obsolete efivars sysfs documentation
-Date:   Fri, 20 Jan 2023 09:19:33 +0100
-Message-Id: <20230120081933.29142-1-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.38.2
+        s=k20201202; t=1674205414;
+        bh=t+lbGoWsZyyDsZZa2kD/4JDQecX9Eztf56PY0wj98Xc=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=X+fY8vfiPg9WcjeG160lUWztS/CVsn61CnXP0kQMRUyE21fFpxLkMNq1YtFjdc07f
+         xGb120UMTp9ck3gzo32MWHTpiWCGVPncgO5wPF5Bzn0fVbPvjHTLwKQLgTaFSLZuPy
+         /1vCay5NbvxM9PQW7CMNna57B8xJNE68aW6RovjQUn2QAkOWCZHs4vLWIhnBxdleMW
+         a1bPHRkzHYAkF83ImENA7NBrb5d15I9aK1yZmmNGiSNJizbeQVkj0A1Wknm5QpKoQM
+         Hg1zbGZWUvSgDoYxdgN4ZK9poO72ejJtvxZ/QuT6jyJC0Lnf7/OKB6Unu28RXu3sAR
+         dVEL7WPcq7ctA==
+Received: by mail-lf1-f52.google.com with SMTP id b3so7140604lfv.2
+        for <linux-efi@vger.kernel.org>; Fri, 20 Jan 2023 01:03:33 -0800 (PST)
+X-Gm-Message-State: AFqh2kp7DPOIR3+HmozI03gQePTB4gzmsgiwX4h2W93qPcqgL+SMdaH+
+        o6KBo7r7R/8DoZ0baWIB2g3M5uckzBlQDyYBqa0=
+X-Google-Smtp-Source: AMrXdXt1bkxpcjNBap06/cJlQkDehki1DqBEepPtiQh7Ee6fCaQmW+lLeByAC85S7nqBRZEDu3z1mxvZzdTvcrZCYXM=
+X-Received: by 2002:a05:6512:118a:b0:4cc:9d69:4703 with SMTP id
+ g10-20020a056512118a00b004cc9d694703mr1434821lfr.110.1674205412007; Fri, 20
+ Jan 2023 01:03:32 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <f2503170d12dc567c00998d4e72ba806f7677730.camel@HansenPartnership.com>
+In-Reply-To: <f2503170d12dc567c00998d4e72ba806f7677730.camel@HansenPartnership.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 20 Jan 2023 10:03:20 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFi8xmPo9gaq6ZGm=LpALWu-5=SH-=1eypJ-r51JKE5SQ@mail.gmail.com>
+Message-ID: <CAMj1kXFi8xmPo9gaq6ZGm=LpALWu-5=SH-=1eypJ-r51JKE5SQ@mail.gmail.com>
+Subject: Re: Is there a known boot failure with 6.2-rc and the Intel SDV EFI systems?
+To:     James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc:     linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -53,102 +59,19 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The efivars sysfs interface was removed by commit 0f5b2c69a4cb ("efi:
-vars: Remove deprecated 'efivars' sysfs interface").
+On Fri, 20 Jan 2023 at 00:15, James Bottomley
+<James.Bottomley@hansenpartnership.com> wrote:
+>
+> I've got a Rainbow Bridge SDV I mostly use for TPM work, and I haven't
+> updated it in a while.  Today I found that the recent 6.2-rc4 kernel
+> won't boot and won't emit any kernel messages signalling a failure
+> somewhere in the handoff code.  I did put some EFI boot stub prints in
+> and verified it gets all the way to exit_boot_services before the
+> problem, so it smells like it fails initializing the EFI console for
+> runtime.  I've also verified that v6.1 release works just fine, so it
+> looks like something that went into EFI in the recent merge window.
+> I'm starting to bisect now, but thought I'd ask in case anyone else has
+> already debugged this.
+>
 
-Remove also the corresponding sysfs ABI documentation.
-
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- .../ABI/stable/sysfs-firmware-efi-vars        | 79 -------------------
- 1 file changed, 79 deletions(-)
- delete mode 100644 Documentation/ABI/stable/sysfs-firmware-efi-vars
-
-diff --git a/Documentation/ABI/stable/sysfs-firmware-efi-vars b/Documentation/ABI/stable/sysfs-firmware-efi-vars
-deleted file mode 100644
-index 46ccd233e359..000000000000
---- a/Documentation/ABI/stable/sysfs-firmware-efi-vars
-+++ /dev/null
-@@ -1,79 +0,0 @@
--What:		/sys/firmware/efi/vars
--Date:		April 2004
--Contact:	Matt Domsch <Matt_Domsch@dell.com>
--Description:
--		This directory exposes interfaces for interactive with
--		EFI variables.  For more information on EFI variables,
--		see 'Variable Services' in the UEFI specification
--		(section 7.2 in specification version 2.3 Errata D).
--
--		In summary, EFI variables are named, and are classified
--		into separate namespaces through the use of a vendor
--		GUID.  They also have an arbitrary binary value
--		associated with them.
--
--		The efivars module enumerates these variables and
--		creates a separate directory for each one found.  Each
--		directory has a name of the form "<key>-<vendor guid>"
--		and contains the following files:
--
--		=============== ========================================
--		attributes:	A read-only text file enumerating the
--				EFI variable flags.  Potential values
--				include:
--
--				EFI_VARIABLE_NON_VOLATILE
--				EFI_VARIABLE_BOOTSERVICE_ACCESS
--				EFI_VARIABLE_RUNTIME_ACCESS
--				EFI_VARIABLE_HARDWARE_ERROR_RECORD
--				EFI_VARIABLE_AUTHENTICATED_WRITE_ACCESS
--
--				See the EFI documentation for an
--				explanation of each of these variables.
--
--		data:		A read-only binary file that can be read
--				to attain the value of the EFI variable
--
--		guid:		The vendor GUID of the variable.  This
--				should always match the GUID in the
--				variable's name.
--
--		raw_var:	A binary file that can be read to obtain
--				a structure that contains everything
--				there is to know about the variable.
--				For structure definition see "struct
--				efi_variable" in the kernel sources.
--
--				This file can also be written to in
--				order to update the value of a variable.
--				For this to work however, all fields of
--				the "struct efi_variable" passed must
--				match byte for byte with the structure
--				read out of the file, save for the value
--				portion.
--
--				**Note** the efi_variable structure
--				read/written with this file contains a
--				'long' type that may change widths
--				depending on your underlying
--				architecture.
--
--		size:		As ASCII representation of the size of
--				the variable's value.
--		=============== ========================================
--
--
--		In addition, two other magic binary files are provided
--		in the top-level directory and are used for adding and
--		removing variables:
--
--		=============== ========================================
--		new_var:	Takes a "struct efi_variable" and
--				instructs the EFI firmware to create a
--				new variable.
--
--		del_var:	Takes a "struct efi_variable" and
--				instructs the EFI firmware to remove any
--				variable that has a matching vendor GUID
--				and variable key name.
--		=============== ========================================
--- 
-2.38.2
-
+Nothing in particular comes to mind. Is this a mixed mode system?
