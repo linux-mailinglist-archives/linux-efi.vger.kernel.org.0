@@ -2,105 +2,132 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D6D467776B
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Jan 2023 10:29:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2147867788A
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Jan 2023 11:09:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231833AbjAWJ3q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 23 Jan 2023 04:29:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34888 "EHLO
+        id S230352AbjAWKJ5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 23 Jan 2023 05:09:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231846AbjAWJ3o (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 23 Jan 2023 04:29:44 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BE961EFE4;
-        Mon, 23 Jan 2023 01:29:43 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 26FD560DDD;
-        Mon, 23 Jan 2023 09:29:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88067C433D2;
-        Mon, 23 Jan 2023 09:29:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674466182;
-        bh=PrPYdPRy1KNd+wh2VcTPN/iRpEk1FlVdB7KZDlBtuJ8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=i6D45WXeJXaWElvMmFUTe6ke8K/eBRy6252UFha7p1+xA4s8854YR4660NACBwJKt
-         re5pUYApQ0DAJmujikWY/VMdfuiBvtFdfJYKguoRBCpvl42XXJ7ovfVJcjd2SNFemu
-         Ya3AF71Ns3ON3j2BFtLHOXAT/s8iivLurz/KfDYYMP3tP8zb6c9QRbzRUQ02YNVeQv
-         eIqwlqdqbCyhlZtfUxbIIqWpOpmkKdkJWIW+rJ81t84y/yp1oEqKeRuyXrJphQ39xJ
-         QkWGs4YmMg14dG/rmOGySjQCIJM5tZcKpljzF9c3GTEbQNKJj0fox0gki6CnNmEtYl
-         FiGh6sJUwRbIg==
-Received: by mail-lj1-f179.google.com with SMTP id t12so4878978lji.13;
-        Mon, 23 Jan 2023 01:29:42 -0800 (PST)
-X-Gm-Message-State: AFqh2kpLt5UaJ5W2nnd11TDHsKeikzAhW/pUdtjlDrELAaYrsMfkB+4/
-        x+HAvFVz8K/ks/eJkV6JoIqL1qmw3dqHqxTVXL0=
-X-Google-Smtp-Source: AMrXdXvE2wugZMtf5ZFgSut5pSvotlGEF3KkDmuftzbbENeB0PRihTJPLS0LeYEasCiNpfLShzYR+6EqEICmoABXOak=
-X-Received: by 2002:a05:651c:315:b0:27f:ef88:3ecb with SMTP id
- a21-20020a05651c031500b0027fef883ecbmr1096404ljp.189.1674466180602; Mon, 23
- Jan 2023 01:29:40 -0800 (PST)
+        with ESMTP id S230231AbjAWKJ4 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 23 Jan 2023 05:09:56 -0500
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20E80CC21
+        for <linux-efi@vger.kernel.org>; Mon, 23 Jan 2023 02:09:55 -0800 (PST)
+Received: by mail-wm1-x32b.google.com with SMTP id fl11-20020a05600c0b8b00b003daf72fc844so10218662wmb.0
+        for <linux-efi@vger.kernel.org>; Mon, 23 Jan 2023 02:09:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BowUBQydnAafqAai7xO8TqOkM+didbH9IqQu35TSCq4=;
+        b=dOwqxgrVb3ypUy4k4M318f6E0m70qvhPaXk+aDiLRN4MuUpj2iih++Rsv4zeEwZQ/Z
+         gve4hd6zTyG8YvQ8gOY1uzbwnzAsu8I9uZILphr7ks/N2yRFJ1CpIjkgVlnnsXLZ2rUL
+         kv1LZ40Yjom/NcmpJWLKMyTNYHqVb8qelkDTrEkp/Ke1pH/imyoTS902MaR6FW2fQGmX
+         ZOW2vt+6UBqyMc3E+NRg5YaC9YTt3EeMpt35ByUCj8q+2MXSNjSiU/JPVfvxLaocF2FT
+         Lhp0sAkCvc8dDuvPa4LLRyhtveEfzTDWMGuyFcq+DHJVqPUWTkG8iZ6UZJ/wAitUfsV0
+         h2kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BowUBQydnAafqAai7xO8TqOkM+didbH9IqQu35TSCq4=;
+        b=ap2SMuYo2VoZa/fCc/0/NG65H7/B+RWxZovOzZ6mHShYkvqegoyGGo9hM97l9cJRz5
+         q5yfgUICQYOZeqYJKFyIDkGn9w1bl3bL+nz1ScduZWueeW8iH0QcuQo3mDfZFpXC2WGW
+         7UN4VxbAnu2hItm5oKQ2jciY67CM+fNqV0hVy1RW0mhUwSkGVvwGHzzHfahRhmGr1/ox
+         kUo0iUJbcxcSMbc9IZqBPJ9vkA32NGCLFpoljEB7ftCciPMpbHFpRKw5SQGu6YhjNuQg
+         XhdubanQlvVgfKAFRMpRC5C3tGe+q2cCuqlRRywkVWfD3jwp41KW8LNm4i3M2UPHJMfM
+         Joxg==
+X-Gm-Message-State: AFqh2koo3DiDJgZDX9CeYu2IPbM8Sk4H5LqrlxSBZT25CrkFHf+yLPGu
+        OxMVNwrBHVvxAX0zVLai6O0luw==
+X-Google-Smtp-Source: AMrXdXs7SiqkzdfbYCN4klaQirQ4x4dMCIkYAZcYH8jLjpLSn5XUFPnaT0RkC3gKysT8Z1wF4lVK7w==
+X-Received: by 2002:a05:600c:1c01:b0:3c6:e63e:23e9 with SMTP id j1-20020a05600c1c0100b003c6e63e23e9mr23745245wms.24.1674468593747;
+        Mon, 23 Jan 2023 02:09:53 -0800 (PST)
+Received: from alex-rivos.ba.rivosinc.com (lfbn-lyo-1-450-160.w2-7.abo.wanadoo.fr. [2.7.42.160])
+        by smtp.gmail.com with ESMTPSA id bi16-20020a05600c3d9000b003daf89e01d3sm10170407wmb.11.2023.01.23.02.09.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Jan 2023 02:09:53 -0800 (PST)
+From:   Alexandre Ghiti <alexghiti@rivosinc.com>
+To:     Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Alexander Potapenko <glider@google.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kasan-dev@googlegroups.com, linux-efi@vger.kernel.org
+Cc:     Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: [PATCH v2 0/6] RISC-V kasan rework
+Date:   Mon, 23 Jan 2023 11:09:45 +0100
+Message-Id: <20230123100951.810807-1-alexghiti@rivosinc.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-References: <20230123081905.27283-1-johan+linaro@kernel.org>
- <CAMj1kXGPo4-igHOseNhvoBuS0O2YLd+e=cqD8RJJYSgP0zTi0Q@mail.gmail.com> <Y85MYpfHOsFJ8GF6@hovoldconsulting.com>
-In-Reply-To: <Y85MYpfHOsFJ8GF6@hovoldconsulting.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 23 Jan 2023 10:29:29 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXE5O-R3J2+kQcOQ+Tm2xoTPQj3HJ7F31DDLTkjr7=N53w@mail.gmail.com>
-Message-ID: <CAMj1kXE5O-R3J2+kQcOQ+Tm2xoTPQj3HJ7F31DDLTkjr7=N53w@mail.gmail.com>
-Subject: Re: [PATCH v2] efi: drop obsolete efivars sysfs documentation
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Johan Hovold <johan+linaro@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        kernel test robot <lkp@intel.com>, linux-efi@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 23 Jan 2023 at 09:59, Johan Hovold <johan@kernel.org> wrote:
->
-> On Mon, Jan 23, 2023 at 09:39:41AM +0100, Ard Biesheuvel wrote:
-> > On Mon, 23 Jan 2023 at 09:19, Johan Hovold <johan+linaro@kernel.org> wrote:
-> > >
-> > > The efivars sysfs interface was removed by commit 0f5b2c69a4cb ("efi:
-> > > vars: Remove deprecated 'efivars' sysfs interface").
-> > >
-> > > Remove also the corresponding sysfs ABI documentation.
-> > >
-> > > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> > > ---
-> > >
-> > > Changes in v2
-> > >  - drop reference in gsmi sysfs documentation
-> > >  - drop reference in efivarfs.rst (kernel test robot)
-> > >
-> >
-> > Ugh. So there is a remaining implementation of that interface. That is
-> > a bit disappointing, tbh.
->
-> No, you removed the implementation in the commit mentioned above. The
-> Google SMI driver only provides a efivars "backend" but the interface
-> was shared. The driver continues to work with efivarfs.
->
+As described in patch 2, our current kasan implementation is intricate,
+so I tried to simplify the implementation and mimic what arm64/x86 are
+doing.
 
-Ugh. So as far as I can tell, this interface is still being used
-internally at Google.
+In addition it fixes UEFI bootflow with a kasan kernel and kasan inline
+instrumentation: all kasan configurations were tested on a large ubuntu
+kernel with success with KASAN_KUNIT_TEST and KASAN_MODULE_TEST.
 
-> > So for now, let's disregard this patch, and I will check internally
-> > whether or not that sysfs gsmi interface is actually used. If it is,
-> > the docs should be kept but updated to clarify that it only describes
-> > gsmi sysfs. Otherwise, we can drop the whole thing, including the gsmi
-> > sysfs pieces themselves.
->
-> So you'd need to bring back the sysfs implementation and make it Google
-> SMI specific if it's still needed by someone. I don't think we want to
-> do that if it can be avoided.
->
+inline ubuntu config + uefi:
+ sv39: OK
+ sv48: OK
+ sv57: OK
 
-Indeed.
+outline ubuntu config + uefi:
+ sv39: OK
+ sv48: OK
+ sv57: OK
+
+Actually 1 test always fails with KASAN_KUNIT_TEST that I have to check:
+# kasan_bitops_generic: EXPECTATION FAILED at mm/kasan/kasan__test.c:1020
+KASAN failure expected in "set_bit(nr, addr)", but none occurrred
+
+Note that Palmer recently proposed to remove COMMAND_LINE_SIZE from the
+userspace abi
+https://lore.kernel.org/lkml/20221211061358.28035-1-palmer@rivosinc.com/T/
+so that we can finally increase the command line to fit all kasan kernel
+parameters.
+
+All of this should hopefully fix the syzkaller riscv build that has been
+failing for a few months now, any test is appreciated and if I can help
+in any way, please ask.
+
+v2:
+- Rebase on top of v6.2-rc3
+- patch 4 is now way simpler than it used to be since Ard already moved
+  the string functions into the efistub.
+
+Alexandre Ghiti (6):
+  riscv: Split early and final KASAN population functions
+  riscv: Rework kasan population functions
+  riscv: Move DTB_EARLY_BASE_VA to the kernel address space
+  riscv: Fix EFI stub usage of KASAN instrumented strcmp function
+  riscv: Fix ptdump when KASAN is enabled
+  riscv: Unconditionnally select KASAN_VMALLOC if KASAN
+
+ arch/riscv/Kconfig             |   1 +
+ arch/riscv/kernel/image-vars.h |   2 -
+ arch/riscv/mm/init.c           |   2 +-
+ arch/riscv/mm/kasan_init.c     | 516 ++++++++++++++++++---------------
+ arch/riscv/mm/ptdump.c         |  24 +-
+ 5 files changed, 298 insertions(+), 247 deletions(-)
+
+-- 
+2.37.2
+
