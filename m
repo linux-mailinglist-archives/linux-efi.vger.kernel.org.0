@@ -2,56 +2,46 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02AA1677A8B
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Jan 2023 13:06:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DC31678216
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Jan 2023 17:46:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230150AbjAWMGY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 23 Jan 2023 07:06:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52070 "EHLO
+        id S233344AbjAWQqA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 23 Jan 2023 11:46:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjAWMGX (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 23 Jan 2023 07:06:23 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A72539008;
-        Mon, 23 Jan 2023 04:06:22 -0800 (PST)
+        with ESMTP id S233317AbjAWQp7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 23 Jan 2023 11:45:59 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 852412CC5D
+        for <linux-efi@vger.kernel.org>; Mon, 23 Jan 2023 08:45:47 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 24DD4B80CB1;
-        Mon, 23 Jan 2023 12:06:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D49BFC4339C;
-        Mon, 23 Jan 2023 12:06:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C51E460F7C
+        for <linux-efi@vger.kernel.org>; Mon, 23 Jan 2023 16:45:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA1FC433D2;
+        Mon, 23 Jan 2023 16:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674475579;
-        bh=YB38QU59UEOqm7ADbTysVzycOZ08uNvIpt0U3juErFU=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=sIyaIVk/xBEwPCDP/Aq1mufXGJlaMduvBrJjyPWiePqon65h33Hl+lhUihZn7vzbO
-         50JgV5hZhXnne3a+gATjY9clUimNx+fz9K3xoSjXfhVD4Np3ZzQt1n7STjuhSvEdL/
-         +hJqArUyhmxhbGLs3UkFFtqh6I58OYCtkTBJU1hNNzrvQu/yzR0Yb+2NQSKdJHdJ3z
-         A+2tcTZmsHUe21PYnkiCZawGoceIaoSukaJK4ytglsqH3jT9trWO0ltRzA1wMN+LMl
-         1mJAWQqD2T93lsTRzll91A2H7CBSo7UOyDqoD4Ai8CdPb3KY94ZxjizLCY/AVljyZE
-         ZgvnmvCdca6Qw==
-Received: by mail-lf1-f49.google.com with SMTP id g13so17801370lfv.7;
-        Mon, 23 Jan 2023 04:06:19 -0800 (PST)
-X-Gm-Message-State: AFqh2kpGrjI81R6CM/xL4iu4wM7ICnpHw420ZkF/QZ0hNGEMgXZvhTv3
-        KYDcCEMisPJibHNpIUxWidkKyactnxD1AwE1hbg=
-X-Google-Smtp-Source: AMrXdXv4bOFImaFVPX5qGqiZLtY3AlufsTuh/HuMtRDfAfpVxGs2BPHBw9l7n5BJIQc30rkhov5ScxpkqvUIqhDeY/0=
-X-Received: by 2002:ac2:4bd5:0:b0:4d5:76af:f890 with SMTP id
- o21-20020ac24bd5000000b004d576aff890mr1248969lfq.228.1674475577848; Mon, 23
- Jan 2023 04:06:17 -0800 (PST)
-MIME-Version: 1.0
-References: <20230119164255.28091-1-johan+linaro@kernel.org>
-In-Reply-To: <20230119164255.28091-1-johan+linaro@kernel.org>
+        s=k20201202; t=1674492326;
+        bh=iTAqITF5KOrN5ZtC3HlQK8LIXkKrA2VIv/9cP8es4pE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=F0Tv1Uwzk+N1r75yycP4kSGu79upjQCyLMq7bX+D5rCIhr5RPE7GIPhpNiCIyMxjL
+         bmHlYoQvcKssP57Trv4AQfPclh7yyQ26OGrpU36O8CR6YIE5heaYl/M9nTO0V+QpFn
+         xHqFQQipdj2a0GiQjQEjiYJXxeU+XkBebPxUnypbLw3Ug+YVDowkeaUC/5TRl9aZj+
+         C/OB1JlVOB5dPGB8SNv27mR7N7EghlT8lrHsScY271+FGQXgdn438uqrsydrHsmG+m
+         KDMvofvEGir+nvX6T6LpgCPLGb1jonuUK9EdXuijFMizGTR0zR1aSWKea/urmWN6nl
+         8HI/Fs8th8nFw==
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 23 Jan 2023 13:06:06 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGpk9AF42TRPFbCBSWtsVj-0_YTnJiSd_QEpXC0ZDSQQg@mail.gmail.com>
-Message-ID: <CAMj1kXGpk9AF42TRPFbCBSWtsVj-0_YTnJiSd_QEpXC0ZDSQQg@mail.gmail.com>
-Subject: Re: [PATCH 0/4] efi: verify that variable services are supported
-To:     Johan Hovold <johan+linaro@kernel.org>
-Cc:     Matthew Garrett <mjg59@srcf.ucam.org>, Jeremy Kerr <jk@ozlabs.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+To:     torvalds@linux-foundation.org
+Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Subject: [GIT PULL] EFI fixes for v6.2 #2
+Date:   Mon, 23 Jan 2023 17:45:18 +0100
+Message-Id: <20230123164518.557152-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.39.0
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1705; i=ardb@kernel.org; h=from:subject; bh=iTAqITF5KOrN5ZtC3HlQK8LIXkKrA2VIv/9cP8es4pE=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjzrmdJdroHTY9uCLp6QR3sk0QCg2IEWndZfEQDP8M Sq8h89GJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY865nQAKCRDDTyI5ktmPJENbC/ 0XiRpfHDjytgkoXwzDEvsdYpd5Hl8So8vU+fuIin5A4DFQW4eYPlmE01OoC1S0rBfOSW9KFP4ThH6e Mp2j78ixUraks0lm946uHk/Sb/6faG6hbsEXmwmEKv3A6B0jaaPkVIP9PTI9E8VQMKwIA/5AFnYxV+ ePuAkmGfwx1Gnng5a0d/PnZmBAm9fBhSx1s+1fORF4aGtKmjqJHwqt/sAxOPP4SEnj55NPK3ja8Dma wBd85TuT96WWsWzcOt0nDc32XMKXrYioNZ+XBtfXBLoiCZBAHqWWtIFnA9/DtIr4QSd/OrUFvK/iWO 3/bScnUtJRPcVGos37W8Op1q3bW7OPppyr8gzt3wAkuew+kaDxMZr1mFcmOX5Nk7Nj3oEVPmY1OlcU FvUr+18VFLkLEkVz9W2x2Wx7fXy5YcobVrmkX/uH9BtIeG6uZZzO4svd6fVY/cBejFBmyl2yvbzwTO wH+L7T1APLO3qLq2u45FMjo9JaIQEZVx+E/8ipbN1txik=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -61,57 +51,48 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 19 Jan 2023 at 17:45, Johan Hovold <johan+linaro@kernel.org> wrote:
->
-> This series adds a sanity check to make sure that the variable services
-> are actually available before registering the generic efivar ops.
->
-> This is used to address some potential races with custom efivars
-> implementation such as the Google SMI or upcoming Qualcomm SCM ones.
->
-> Specifically, efivarfs currently requires that the efivar ops have been
-> registered before module init time even though the Google driver can be
-> built as a module. Instead, the driver has so far relied on the fact
-> that the generic ops have been registered by efi core only to later be
-> overridden by the custom implementation (or Google doesn't use
-> efivarfs).
->
-> Instead, let's move the efivars sanity check to mount time to allow for
-> late registration of efivars.
->
-> Note that requiring that all efivars implementation to always be
-> built-in and registered before module init time could be an alternative,
-> but we'd still need to make sure that the custom implementation is then
-> not overridden by the default (broken) one. To avoid such init call
-> games, allowing late registration seems preferable.
->
-> This would however require any drivers that use efivars to probe defer
-> until it becomes available, which is also unfortunate, but possibly
-> still better than having generic kernels carry multiple built-in efivars
-> implementations.
->
-> Note that there are currently no such (efivars consumer) drivers in-tree
-> except for the efivars_pstore driver, which currently do rely on
-> efivarfs being available at module init time (and hence may fail to
-> initialise with the custom efivar implementations).
->
-> Johan
->
->
-> Johan Hovold (4):
->   efi: efivars: add efivars printk prefix
->   efivarfs: always register filesystem
->   efi: verify that variable services are supported
->   efi: efivars: prevent double registration
->
+Hello Linus,
 
-Queued up in efi/next - thanks.
+Another couple of EFI fixes, of which the first two were already in -next when
+I sent out the previous PR, but they caused some issues on non-EFI boots so I
+let them simmer for a bit longer.
 
->  drivers/firmware/efi/efi.c  | 22 ++++++++++++++++++++++
->  drivers/firmware/efi/vars.c | 17 ++++++++++++++---
->  fs/efivarfs/super.c         |  6 +++---
->  3 files changed, 39 insertions(+), 6 deletions(-)
->
-> --
-> 2.38.2
->
+Please pull.
+
+
+
+The following changes since commit d3f450533bbcb6dd4d7d59cadc9b61b7321e4ac1:
+
+  efi: tpm: Avoid READ_ONCE() for accessing the event log (2023-01-13 17:15:17 +0100)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.2-2
+
+for you to fetch changes up to e1fabbc83cb1dd4ba63932faa86c9cacb8bf791e:
+
+  efi: Remove Matthew Garrett as efivarfs maintainer (2023-01-18 09:24:48 +0100)
+
+----------------------------------------------------------------
+Some more EFI fixes for v6.2:
+
+- ensure the EFI ResetSystem and ACPI PRM calls are recognized as users
+  of the EFI runtime, and therefore protected against exceptions
+
+- account for the EFI runtime stack in the stacktrace code
+
+- remove Matt Garrett's MAINTAINERS entry for efivarfs
+
+----------------------------------------------------------------
+Ard Biesheuvel (3):
+      arm64: efi: Avoid workqueue to check whether EFI runtime is live
+      arm64: efi: Account for the EFI runtime stack in stack unwinder
+      efi: Remove Matthew Garrett as efivarfs maintainer
+
+ MAINTAINERS                         |  1 -
+ arch/arm64/include/asm/efi.h        |  9 +++++++++
+ arch/arm64/include/asm/stacktrace.h | 15 +++++++++++++++
+ arch/arm64/kernel/efi-rt-wrapper.S  |  6 ++++++
+ arch/arm64/kernel/efi.c             |  3 ++-
+ arch/arm64/kernel/stacktrace.c      | 12 ++++++++++++
+ 6 files changed, 44 insertions(+), 2 deletions(-)
