@@ -2,59 +2,53 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BB5C677A30
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Jan 2023 12:32:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02AA1677A8B
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Jan 2023 13:06:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231147AbjAWLcU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 23 Jan 2023 06:32:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36108 "EHLO
+        id S230150AbjAWMGY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 23 Jan 2023 07:06:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230081AbjAWLcS (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 23 Jan 2023 06:32:18 -0500
+        with ESMTP id S229436AbjAWMGX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 23 Jan 2023 07:06:23 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B77A81117B;
-        Mon, 23 Jan 2023 03:32:17 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A72539008;
+        Mon, 23 Jan 2023 04:06:22 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5F529B80D3C;
-        Mon, 23 Jan 2023 11:32:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15312C4339E;
-        Mon, 23 Jan 2023 11:32:15 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 24DD4B80CB1;
+        Mon, 23 Jan 2023 12:06:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D49BFC4339C;
+        Mon, 23 Jan 2023 12:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674473535;
-        bh=A/UyFADav4a2/VogKdjeDJqleagup09QvBbH3Ovi6zg=;
+        s=k20201202; t=1674475579;
+        bh=YB38QU59UEOqm7ADbTysVzycOZ08uNvIpt0U3juErFU=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=EuLibXdYI6vvoPtSd6SCGvsenAjT4SGb32/miFGZ0+apsX96HupHtXTvGYIEQnuZs
-         6TaZbfHCbHKPncnl+qSYXKIuT/tSd1q2xh0XTElsNeke+E7w10MBNh5KdTsm2BFew5
-         Ik64w4ONbBKz6KIkJ4U15+dDLzVwpOseN9hMBDN6lZ/nEFBLOwlHXLg3mQO3O+8ND0
-         fBIb3BFWKIln8HUlx5RGd18TyTPU7+WmpTgR8xZ05GhBzE0zQf3uSutWnDnWqi4xaO
-         GnvqoC2Z5BVyllD9EDKWLUh6dlBl1NzGpG/83tjPUebPsNalEL3kQ3iRuPTu79Rxxh
-         fKWHQpHaKLOKw==
-Received: by mail-lf1-f48.google.com with SMTP id x40so17657971lfu.12;
-        Mon, 23 Jan 2023 03:32:14 -0800 (PST)
-X-Gm-Message-State: AFqh2kp8h9/PPgs+wZ2ukQbBufrGGKXsRE4KEiB0AWV6xho6EcsNK0Y6
-        yJj3da6tssZvR7zlOLl2u8e45DAD2azjbJpUSd8=
-X-Google-Smtp-Source: AMrXdXsi1IGGW9PSJJNYUVEjRMZ41+dSuiIUe/mOtFY/tKzXm2MPg/Uw+INMIUISejdpNoNRbKrqdInfH3TRto92uOw=
+        b=sIyaIVk/xBEwPCDP/Aq1mufXGJlaMduvBrJjyPWiePqon65h33Hl+lhUihZn7vzbO
+         50JgV5hZhXnne3a+gATjY9clUimNx+fz9K3xoSjXfhVD4Np3ZzQt1n7STjuhSvEdL/
+         +hJqArUyhmxhbGLs3UkFFtqh6I58OYCtkTBJU1hNNzrvQu/yzR0Yb+2NQSKdJHdJ3z
+         A+2tcTZmsHUe21PYnkiCZawGoceIaoSukaJK4ytglsqH3jT9trWO0ltRzA1wMN+LMl
+         1mJAWQqD2T93lsTRzll91A2H7CBSo7UOyDqoD4Ai8CdPb3KY94ZxjizLCY/AVljyZE
+         ZgvnmvCdca6Qw==
+Received: by mail-lf1-f49.google.com with SMTP id g13so17801370lfv.7;
+        Mon, 23 Jan 2023 04:06:19 -0800 (PST)
+X-Gm-Message-State: AFqh2kpGrjI81R6CM/xL4iu4wM7ICnpHw420ZkF/QZ0hNGEMgXZvhTv3
+        KYDcCEMisPJibHNpIUxWidkKyactnxD1AwE1hbg=
+X-Google-Smtp-Source: AMrXdXv4bOFImaFVPX5qGqiZLtY3AlufsTuh/HuMtRDfAfpVxGs2BPHBw9l7n5BJIQc30rkhov5ScxpkqvUIqhDeY/0=
 X-Received: by 2002:ac2:4bd5:0:b0:4d5:76af:f890 with SMTP id
- o21-20020ac24bd5000000b004d576aff890mr1243569lfq.228.1674473533013; Mon, 23
- Jan 2023 03:32:13 -0800 (PST)
+ o21-20020ac24bd5000000b004d576aff890mr1248969lfq.228.1674475577848; Mon, 23
+ Jan 2023 04:06:17 -0800 (PST)
 MIME-Version: 1.0
 References: <20230119164255.28091-1-johan+linaro@kernel.org>
- <20230119164255.28091-3-johan+linaro@kernel.org> <CAMj1kXEOOh8MrAt=L7aBt9wX5Pcmh4irnDuKqsDF7pB5-xnmog@mail.gmail.com>
- <Y8q7qz29QMfeNdMV@hovoldconsulting.com>
-In-Reply-To: <Y8q7qz29QMfeNdMV@hovoldconsulting.com>
+In-Reply-To: <20230119164255.28091-1-johan+linaro@kernel.org>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 23 Jan 2023 12:32:01 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFimwezNAW8VzGboJcBkBWBi8GquvGmfm4h_j7Sz5HyOA@mail.gmail.com>
-Message-ID: <CAMj1kXFimwezNAW8VzGboJcBkBWBi8GquvGmfm4h_j7Sz5HyOA@mail.gmail.com>
-Subject: Re: [PATCH 2/4] efivarfs: always register filesystem
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Johan Hovold <johan+linaro@kernel.org>,
-        Peter Jones <pjones@redhat.com>,
-        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        Jeremy Kerr <jk@ozlabs.org>,
+Date:   Mon, 23 Jan 2023 13:06:06 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGpk9AF42TRPFbCBSWtsVj-0_YTnJiSd_QEpXC0ZDSQQg@mail.gmail.com>
+Message-ID: <CAMj1kXGpk9AF42TRPFbCBSWtsVj-0_YTnJiSd_QEpXC0ZDSQQg@mail.gmail.com>
+Subject: Re: [PATCH 0/4] efi: verify that variable services are supported
+To:     Johan Hovold <johan+linaro@kernel.org>
+Cc:     Matthew Garrett <mjg59@srcf.ucam.org>, Jeremy Kerr <jk@ozlabs.org>,
         Maximilian Luz <luzmaximilian@gmail.com>,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
@@ -67,33 +61,57 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 20 Jan 2023 at 17:04, Johan Hovold <johan@kernel.org> wrote:
+On Thu, 19 Jan 2023 at 17:45, Johan Hovold <johan+linaro@kernel.org> wrote:
 >
-> On Fri, Jan 20, 2023 at 10:23:18AM +0100, Ard Biesheuvel wrote:
-> > (cc Peter, Heinrich)
-> >
-> > On Thu, 19 Jan 2023 at 17:45, Johan Hovold <johan+linaro@kernel.org> wrote:
-> > >
-> > > The efivar ops are typically registered at subsys init time so that
-> > > they are available when efivarfs is registered at module init time.
-> > >
-> > > Other efivars implementations, such as Google SMI, exists and can
-> > > currently be build as modules which means that efivar may not be
-> > > available when efivarfs is initialised.
-> > >
-> > > Move the efivar availability check from module init to when the
-> > > filesystem is mounted to allow late registration of efivars.
-> > >
-> > > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> >
-> > I think this change is fine in principle, but I 'm not sure if there
-> > is user space code that the distros are carrying that might get
-> > confused by this: beforehand, efivarfs would not exist in
-> > /proc/filesystems and now, it will but trying to mount it might fail.
+> This series adds a sanity check to make sure that the variable services
+> are actually available before registering the generic efivar ops.
 >
-> User space must already handle mount failing since commit 483028edacab
-> ("efivars: respect EFI_UNSUPPORTED return from firmware") so that should
-> not be an issue.
+> This is used to address some potential races with custom efivars
+> implementation such as the Google SMI or upcoming Qualcomm SCM ones.
+>
+> Specifically, efivarfs currently requires that the efivar ops have been
+> registered before module init time even though the Google driver can be
+> built as a module. Instead, the driver has so far relied on the fact
+> that the generic ops have been registered by efi core only to later be
+> overridden by the custom implementation (or Google doesn't use
+> efivarfs).
+>
+> Instead, let's move the efivars sanity check to mount time to allow for
+> late registration of efivars.
+>
+> Note that requiring that all efivars implementation to always be
+> built-in and registered before module init time could be an alternative,
+> but we'd still need to make sure that the custom implementation is then
+> not overridden by the default (broken) one. To avoid such init call
+> games, allowing late registration seems preferable.
+>
+> This would however require any drivers that use efivars to probe defer
+> until it becomes available, which is also unfortunate, but possibly
+> still better than having generic kernels carry multiple built-in efivars
+> implementations.
+>
+> Note that there are currently no such (efivars consumer) drivers in-tree
+> except for the efivars_pstore driver, which currently do rely on
+> efivarfs being available at module init time (and hence may fail to
+> initialise with the custom efivar implementations).
+>
+> Johan
+>
+>
+> Johan Hovold (4):
+>   efi: efivars: add efivars printk prefix
+>   efivarfs: always register filesystem
+>   efi: verify that variable services are supported
+>   efi: efivars: prevent double registration
 >
 
-Fair enough
+Queued up in efi/next - thanks.
+
+>  drivers/firmware/efi/efi.c  | 22 ++++++++++++++++++++++
+>  drivers/firmware/efi/vars.c | 17 ++++++++++++++---
+>  fs/efivarfs/super.c         |  6 +++---
+>  3 files changed, 39 insertions(+), 6 deletions(-)
+>
+> --
+> 2.38.2
+>
