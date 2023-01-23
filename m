@@ -2,97 +2,85 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DC31678216
-	for <lists+linux-efi@lfdr.de>; Mon, 23 Jan 2023 17:46:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0F606786E6
+	for <lists+linux-efi@lfdr.de>; Mon, 23 Jan 2023 20:55:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233344AbjAWQqA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 23 Jan 2023 11:46:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51766 "EHLO
+        id S231925AbjAWTzA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 23 Jan 2023 14:55:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233317AbjAWQp7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 23 Jan 2023 11:45:59 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 852412CC5D
-        for <linux-efi@vger.kernel.org>; Mon, 23 Jan 2023 08:45:47 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C51E460F7C
-        for <linux-efi@vger.kernel.org>; Mon, 23 Jan 2023 16:45:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA1FC433D2;
-        Mon, 23 Jan 2023 16:45:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674492326;
-        bh=iTAqITF5KOrN5ZtC3HlQK8LIXkKrA2VIv/9cP8es4pE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=F0Tv1Uwzk+N1r75yycP4kSGu79upjQCyLMq7bX+D5rCIhr5RPE7GIPhpNiCIyMxjL
-         bmHlYoQvcKssP57Trv4AQfPclh7yyQ26OGrpU36O8CR6YIE5heaYl/M9nTO0V+QpFn
-         xHqFQQipdj2a0GiQjQEjiYJXxeU+XkBebPxUnypbLw3Ug+YVDowkeaUC/5TRl9aZj+
-         C/OB1JlVOB5dPGB8SNv27mR7N7EghlT8lrHsScY271+FGQXgdn438uqrsydrHsmG+m
-         KDMvofvEGir+nvX6T6LpgCPLGb1jonuUK9EdXuijFMizGTR0zR1aSWKea/urmWN6nl
-         8HI/Fs8th8nFw==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     torvalds@linux-foundation.org
-Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
-Subject: [GIT PULL] EFI fixes for v6.2 #2
-Date:   Mon, 23 Jan 2023 17:45:18 +0100
-Message-Id: <20230123164518.557152-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.39.0
+        with ESMTP id S231468AbjAWTzA (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 23 Jan 2023 14:55:00 -0500
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D10E26591
+        for <linux-efi@vger.kernel.org>; Mon, 23 Jan 2023 11:54:59 -0800 (PST)
+Received: by mail-qt1-x82d.google.com with SMTP id o5so10906779qtr.11
+        for <linux-efi@vger.kernel.org>; Mon, 23 Jan 2023 11:54:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ghtTK62dcFpd/l1wunnizGLFduGCG/CbyOlXuyRg3Xc=;
+        b=ao3OpElKkNw4KWk0/8snH0/EY7dDMPeq7DCsI+/AP1/yiD7ssoawy2xL2fEo9TeZsh
+         vJM5+ej/hErHf7nWMT+hW7HzOo3q3pyHrJMJvlcL4No2gHGFjLBTbO/HFky4tZFftZrJ
+         XGl0BWmEYKnOT59I5eel2Igzc2PhOGWCxS5RQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ghtTK62dcFpd/l1wunnizGLFduGCG/CbyOlXuyRg3Xc=;
+        b=LFqu06JfrEBSW93/7Jd+i5iHGlgA/o2No5iUkhn8m9wVN0mY6fHAlZF73E9FwSuyDI
+         bACcqERyu1BY+0aRn49jJpKAHM7/eihmSlwt778uw3n4rq6Efy+u3iAXLV3B2ecnVdai
+         or1jLvN7Lyb27VgHD51T4twauH3ejUTncuqYPpkcz1HHYaYrYxEwjU95sRYbpSZCwmZW
+         elY+u5BC2Q2RPpPwP8oy6kq2a7VHVERFBRYbtBeMHswoEjNm39GE1blOwV1vUeIqxhrs
+         MUQeDRFEEmEvJTxPF4t0zm2S9lqyMwMK06oWDKds7fBnh5dezjpV+YowqsEgApeGPfiW
+         jfWg==
+X-Gm-Message-State: AFqh2kqJVnIDHlQch1GoyhW15SDP+IqF2IfjFcGUyQOKcB0OWbaZQtoK
+        IEx1slwVZKg0eRUOq3hDx6W1TvqvFiOwbvDA
+X-Google-Smtp-Source: AMrXdXvIKU7/erP2g++fR/GKb+u6gqcdXVPRe6idQuxGtz14WdG9G4cWkeXhai4A6Tdkn+CmI9fWUg==
+X-Received: by 2002:a05:622a:5c99:b0:3a8:1295:f96a with SMTP id ge25-20020a05622a5c9900b003a81295f96amr37663387qtb.7.1674503698339;
+        Mon, 23 Jan 2023 11:54:58 -0800 (PST)
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com. [209.85.222.179])
+        by smtp.gmail.com with ESMTPSA id r13-20020ac87eed000000b003b6302f2580sm12411169qtc.22.2023.01.23.11.54.57
+        for <linux-efi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Jan 2023 11:54:57 -0800 (PST)
+Received: by mail-qk1-f179.google.com with SMTP id z9so6981870qkl.13
+        for <linux-efi@vger.kernel.org>; Mon, 23 Jan 2023 11:54:57 -0800 (PST)
+X-Received: by 2002:ae9:efd8:0:b0:706:e593:2598 with SMTP id
+ d207-20020ae9efd8000000b00706e5932598mr713853qkg.216.1674503697416; Mon, 23
+ Jan 2023 11:54:57 -0800 (PST)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1705; i=ardb@kernel.org; h=from:subject; bh=iTAqITF5KOrN5ZtC3HlQK8LIXkKrA2VIv/9cP8es4pE=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjzrmdJdroHTY9uCLp6QR3sk0QCg2IEWndZfEQDP8M Sq8h89GJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY865nQAKCRDDTyI5ktmPJENbC/ 0XiRpfHDjytgkoXwzDEvsdYpd5Hl8So8vU+fuIin5A4DFQW4eYPlmE01OoC1S0rBfOSW9KFP4ThH6e Mp2j78ixUraks0lm946uHk/Sb/6faG6hbsEXmwmEKv3A6B0jaaPkVIP9PTI9E8VQMKwIA/5AFnYxV+ ePuAkmGfwx1Gnng5a0d/PnZmBAm9fBhSx1s+1fORF4aGtKmjqJHwqt/sAxOPP4SEnj55NPK3ja8Dma wBd85TuT96WWsWzcOt0nDc32XMKXrYioNZ+XBtfXBLoiCZBAHqWWtIFnA9/DtIr4QSd/OrUFvK/iWO 3/bScnUtJRPcVGos37W8Op1q3bW7OPppyr8gzt3wAkuew+kaDxMZr1mFcmOX5Nk7Nj3oEVPmY1OlcU FvUr+18VFLkLEkVz9W2x2Wx7fXy5YcobVrmkX/uH9BtIeG6uZZzO4svd6fVY/cBejFBmyl2yvbzwTO wH+L7T1APLO3qLq2u45FMjo9JaIQEZVx+E/8ipbN1txik=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230123164518.557152-1-ardb@kernel.org>
+In-Reply-To: <20230123164518.557152-1-ardb@kernel.org>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon, 23 Jan 2023 11:54:41 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wicrdH2+ftvEtNHnNZvBO1bfMVRH10s59ZrWpAnwckJxQ@mail.gmail.com>
+Message-ID: <CAHk-=wicrdH2+ftvEtNHnNZvBO1bfMVRH10s59ZrWpAnwckJxQ@mail.gmail.com>
+Subject: Re: [GIT PULL] EFI fixes for v6.2 #2
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello Linus,
+On Mon, Jan 23, 2023 at 8:45 AM Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> - remove Matt Garrett's MAINTAINERS entry for efivarfs
 
-Another couple of EFI fixes, of which the first two were already in -next when
-I sent out the previous PR, but they caused some issues on non-EFI boots so I
-let them simmer for a bit longer.
+I was all "who?", and had to look, and then went "Oh, you mean _Matthew_".
 
-Please pull.
+I didn't think he's ever gone by Matt, at least in kernel circles -
+either in email or in person. At least not that I can remember.
 
+So I edited it. Apologies to Matthew if he has now started going by Matt.
 
-
-The following changes since commit d3f450533bbcb6dd4d7d59cadc9b61b7321e4ac1:
-
-  efi: tpm: Avoid READ_ONCE() for accessing the event log (2023-01-13 17:15:17 +0100)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.2-2
-
-for you to fetch changes up to e1fabbc83cb1dd4ba63932faa86c9cacb8bf791e:
-
-  efi: Remove Matthew Garrett as efivarfs maintainer (2023-01-18 09:24:48 +0100)
-
-----------------------------------------------------------------
-Some more EFI fixes for v6.2:
-
-- ensure the EFI ResetSystem and ACPI PRM calls are recognized as users
-  of the EFI runtime, and therefore protected against exceptions
-
-- account for the EFI runtime stack in the stacktrace code
-
-- remove Matt Garrett's MAINTAINERS entry for efivarfs
-
-----------------------------------------------------------------
-Ard Biesheuvel (3):
-      arm64: efi: Avoid workqueue to check whether EFI runtime is live
-      arm64: efi: Account for the EFI runtime stack in stack unwinder
-      efi: Remove Matthew Garrett as efivarfs maintainer
-
- MAINTAINERS                         |  1 -
- arch/arm64/include/asm/efi.h        |  9 +++++++++
- arch/arm64/include/asm/stacktrace.h | 15 +++++++++++++++
- arch/arm64/kernel/efi-rt-wrapper.S  |  6 ++++++
- arch/arm64/kernel/efi.c             |  3 ++-
- arch/arm64/kernel/stacktrace.c      | 12 ++++++++++++
- 6 files changed, 44 insertions(+), 2 deletions(-)
+               Linus
