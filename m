@@ -2,130 +2,77 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F157679275
-	for <lists+linux-efi@lfdr.de>; Tue, 24 Jan 2023 09:00:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11666679754
+	for <lists+linux-efi@lfdr.de>; Tue, 24 Jan 2023 13:10:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231791AbjAXIAm (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 24 Jan 2023 03:00:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36350 "EHLO
+        id S233425AbjAXMKn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 24 Jan 2023 07:10:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232758AbjAXIAj (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 24 Jan 2023 03:00:39 -0500
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E6513EFC4
-        for <linux-efi@vger.kernel.org>; Tue, 24 Jan 2023 00:00:38 -0800 (PST)
-Received: by mail-wr1-x42e.google.com with SMTP id q5so8352237wrv.0
-        for <linux-efi@vger.kernel.org>; Tue, 24 Jan 2023 00:00:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20210112.gappssmtp.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=CqSZybdUuskI+UDVH1j93jvIbGoD0+XsFL55JSeaP+k=;
-        b=b6H059p3q9xg6E9c9XQB6jeEpHYZpMtkObtgJ6shIqMFcjqV1MYW7qTz6S2CRHj27i
-         1TKgxE7c8dtixSqWvF98vecR84mlfuZLI60RrLF4f/I406iDTKwZVOnoEw5xAJYTmbXA
-         ngN8ug+S4wFE3dQ0QMTi4BOLCy2P3skctJM4mg9QhlJXWG22To0vkohGxqM4d3MokLSC
-         GVmKpV3HRAOgqv8acmEXkW8AeyvWBiigkNMveO4uFIIHS4gK64om7JLDHTT+MlmIdSFN
-         gaF9FbDAVVpedWKzzz3zdaZcywtPT71D0YdaPgUDV7O90c3s/sU/LQG5tjrC0EH4xyip
-         RREQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CqSZybdUuskI+UDVH1j93jvIbGoD0+XsFL55JSeaP+k=;
-        b=UI86G2aQy7FngpKI/hF+3uKWwx1LR2ryo22Ns02Kab89Ki+4OxFt0JW9x421Q06Gnb
-         bRp8crE/4F1We7mxnP+Whnn+jDSgQEHmGxysi4Xv3g0IKXisVBf8BcMEU4dACSPW3SnK
-         C8R27//umFyp3t3TH0XmLXi6/txGr0fT7pvtJKQvCSrjdcbsA+nIidkAHd/Sl5aqHSxV
-         6BNyv8pcLLcAMnx6Z4FmZSONMUeS7BwtpHTarLv6U4t5VPpL2tbq56lVa2Tluym06sZ+
-         RY6Ng+NlmiBAMj0KNqzPYEHnN2SjSgSQ4CKluua3sZICFRDOvgBfyngJ93i+nP7pt2Fx
-         xkUw==
-X-Gm-Message-State: AFqh2kqOspgZqPcqsmr4Ry9cbYHm/dsiwu9OTuQcHO54By6frPgocT+c
-        624iCaDu1GKuAutgBntOzpFQd8e3/DG6ddCl7CjuRg==
-X-Google-Smtp-Source: AMrXdXvPLscFw4dlQnNZxaTZSeeo5RV7pn56CWqRBz3ECJ7Gfy9qulLKrkg3tXoRsE2OvYfbItKgsSpGdywsTmb1+NA=
-X-Received: by 2002:a5d:5190:0:b0:2bd:d6bc:e35c with SMTP id
- k16-20020a5d5190000000b002bdd6bce35cmr1218375wrv.144.1674547236441; Tue, 24
- Jan 2023 00:00:36 -0800 (PST)
+        with ESMTP id S233405AbjAXMKm (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 24 Jan 2023 07:10:42 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2C4C43926
+        for <linux-efi@vger.kernel.org>; Tue, 24 Jan 2023 04:10:38 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 3A907CE1ADD
+        for <linux-efi@vger.kernel.org>; Tue, 24 Jan 2023 12:10:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A04C433EF;
+        Tue, 24 Jan 2023 12:10:32 +0000 (UTC)
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Cc:     Will Deacon <will@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Marc Zyngier <maz@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH v7 0/6] arm64: Permit EFI boot with MMU and caches on
+Date:   Tue, 24 Jan 2023 12:10:30 +0000
+Message-Id: <167456222617.325679.10076226441218692662.b4-ty@arm.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230111102236.1430401-1-ardb@kernel.org>
+References: <20230111102236.1430401-1-ardb@kernel.org>
 MIME-Version: 1.0
-References: <20230123100951.810807-1-alexghiti@rivosinc.com>
- <20230123100951.810807-2-alexghiti@rivosinc.com> <Y88HD2ocLQilIuDr@spud>
-In-Reply-To: <Y88HD2ocLQilIuDr@spud>
-From:   Alexandre Ghiti <alexghiti@rivosinc.com>
-Date:   Tue, 24 Jan 2023 09:00:25 +0100
-Message-ID: <CAHVXubiSJMyeuy253wyFALQ0DzDn_yuuR4HWKy9rmGYLNeXpKA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/6] riscv: Split early and final KASAN population functions
-To:     Conor Dooley <conor@kernel.org>
-Cc:     Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kasan-dev@googlegroups.com, linux-efi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Conor,
+On Wed, 11 Jan 2023 11:22:30 +0100, Ard Biesheuvel wrote:
+> The purpose of this series is to remove any explicit cache maintenance
+> for coherency during early boot. Software managed coherency is error
+> prone and tedious, and running with the MMU off is generally bad for
+> performance, and it becomes unnecessary if we simply retain the
+> cacheable 1:1 mapping of all of system RAM provided by EFI, and use it
+> to populate the initial ID map page tables. After setting up this
+> preliminary ID map, we disable the MMU, drop to EL1, reprogram the MAIR,
+> TCR and SCTLR registers as before, and proceed as usual, avoiding the
+> need for any manipulations of memory while the MMU and caches are off.
+> 
+> [...]
 
-On Mon, Jan 23, 2023 at 11:15 PM Conor Dooley <conor@kernel.org> wrote:
->
-> Hey Alex,
->
-> FYI this patch has a couple places with spaces used rather than tabs for
-> indent.
+Applied to arm64 (for-next/efi-boot-mmu-on), thanks!
 
-Damn, I forgot to run checkpatch this time...
+[1/6] arm64: head: Move all finalise_el2 calls to after __enable_mmu
+      https://git.kernel.org/arm64/c/82e4958800c0
+[2/6] arm64: kernel: move identity map out of .text mapping
+      https://git.kernel.org/arm64/c/af7249b317e4
+[3/6] arm64: head: record the MMU state at primary entry
+      https://git.kernel.org/arm64/c/9d7c13e5dde3
+[4/6] arm64: head: avoid cache invalidation when entering with the MMU on
+      https://git.kernel.org/arm64/c/32b135a7fafe
+[5/6] arm64: head: Clean the ID map and the HYP text to the PoC if needed
+      https://git.kernel.org/arm64/c/3dcf60bbfd28
+[6/6] efi: arm64: enter with MMU and caches enabled
+      https://git.kernel.org/arm64/c/617861703830
 
-Thanks,
+-- 
+Catalin
 
-Alex
-
->
-> >  static void __init kasan_populate_p4d(pgd_t *pgd,
-> > -                                   unsigned long vaddr, unsigned long end,
-> > -                                   bool early)
-> > +                                   unsigned long vaddr, unsigned long end)
-> >  {
-> >       phys_addr_t phys_addr;
-> >       p4d_t *p4dp, *base_p4d;
-> >       unsigned long next;
-> >
-> > -     if (early) {
-> > -             /*
-> > -              * We can't use pgd_page_vaddr here as it would return a linear
-> > -              * mapping address but it is not mapped yet, but when populating
-> > -              * early_pg_dir, we need the physical address and when populating
-> > -              * swapper_pg_dir, we need the kernel virtual address so use
-> > -              * pt_ops facility.
-> > -              */
-> > -             base_p4d = pt_ops.get_p4d_virt(pfn_to_phys(_pgd_pfn(*pgd)));
-> > -     } else {
-> > -             base_p4d = (p4d_t *)pgd_page_vaddr(*pgd);
-> > -             if (base_p4d == lm_alias(kasan_early_shadow_p4d)) {
-> > -                     base_p4d = memblock_alloc(PTRS_PER_PUD * sizeof(p4d_t), PAGE_SIZE);
-> > -                     memcpy(base_p4d, (void *)kasan_early_shadow_p4d,
-> > -                             sizeof(p4d_t) * PTRS_PER_P4D);
-> > -             }
-> > -     }
-> > +     base_p4d = (p4d_t *)pgd_page_vaddr(*pgd);
-> > +     if (base_p4d == lm_alias(kasan_early_shadow_p4d)) {
-> > +             base_p4d = memblock_alloc(PTRS_PER_PUD * sizeof(p4d_t), PAGE_SIZE);
-> > +        memcpy(base_p4d, (void *)kasan_early_shadow_p4d,
-> > +                sizeof(p4d_t) * PTRS_PER_P4D);
-> > +    }
->
-> ^^  here.
->
-> Thanks,
-> Conor.
->
