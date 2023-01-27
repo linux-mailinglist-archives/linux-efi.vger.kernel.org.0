@@ -2,85 +2,144 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66AB367DF61
-	for <lists+linux-efi@lfdr.de>; Fri, 27 Jan 2023 09:38:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B246B67E96F
+	for <lists+linux-efi@lfdr.de>; Fri, 27 Jan 2023 16:28:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231551AbjA0IiV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 27 Jan 2023 03:38:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43898 "EHLO
+        id S233103AbjA0P2Q (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 27 Jan 2023 10:28:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230510AbjA0IiU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 27 Jan 2023 03:38:20 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72BCE27484;
-        Fri, 27 Jan 2023 00:38:19 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 282ACB81FB5;
-        Fri, 27 Jan 2023 08:38:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E81C4339E;
-        Fri, 27 Jan 2023 08:38:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674808696;
-        bh=6vCyZSA7Qvqq9e4x31KbE2hnDSnSWO3YH3sRuWYvyQE=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=C2ibkqBg3iIUaX3i1FnLdNzR8KHlH5f0cvvoc/JDmINObA2yx6dd8lY7xGynbHkyR
-         6gpTeAWepDcXSTeY86R0rBBQevJcnxRAXXSZo+MgYfGo8ry8hrZGDuiZONN6d6MQIh
-         g0+y8iKjdRXcCO8rtPyPUpNDjuhG0XYVnltYTA1mJhf/BHVgtrPXhGnV8DpUhg8qYZ
-         JzZxCIPwpOf4Yppcmsko4xNkcRfc+D/3XLSa9LF1+iDOojkYW6l2y+89EwErBN7Eio
-         adWBqlTXtvG+jqTC9mLp2suCSnbRxuvFI81KTEBzEIipEdIxWYR2qXdyW8Hv+7axP2
-         uMVgqKilebC+w==
-Received: by mail-lf1-f52.google.com with SMTP id h24so7046994lfv.6;
-        Fri, 27 Jan 2023 00:38:16 -0800 (PST)
-X-Gm-Message-State: AFqh2kpJfqRSAdPR0XLtP0wju4QF0aigipTkev6Cv3hccmbDRL4PWEX/
-        4AepzVUmONxmW+ec6hGwivhGTNQds/DXekJfMp4=
-X-Google-Smtp-Source: AMrXdXvb/7wiJ76VBxdr5Y4yHrzXKHsg78AOjqGskO2tP2ce7Pg73DzmSHaQ9u9SCByMva1jHNhfQaEo6RR82qNbvF0=
-X-Received: by 2002:a19:6511:0:b0:4cb:bea6:dac6 with SMTP id
- z17-20020a196511000000b004cbbea6dac6mr2559234lfb.344.1674808694733; Fri, 27
- Jan 2023 00:38:14 -0800 (PST)
+        with ESMTP id S232281AbjA0P2P (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 27 Jan 2023 10:28:15 -0500
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 380CE21959;
+        Fri, 27 Jan 2023 07:28:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1674833293; x=1706369293;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=CtNAdAonBFHUKepZl7RaqISOJYoGgnfbvYJNH8B3Y0k=;
+  b=odupeIn+e+jVCDRbjIG71Vsh4sZnD9NQT+yErQd0TVfdVxxdpJfM/HOO
+   2YRvWr9arDPL83SMcdSrvyaQ3XGe+/X1e2YuCWIHSbUexWgV6HdaPSjuz
+   qlBDmP3OvUU7yfjD3yXvP69ngfPeWq8QzbUYcwug/AfQKGo0eyN0P9KCQ
+   YYLMdhP2gyxVKFfVxpCsZ07rh/66L6gvAAUGvkM1OdGswXsHNIe5MkM2F
+   En4iPKaWKv2c3HmwiA69Z00FHtkXHx7/hRhOh0j3NiSlVaDSlD96bw7nI
+   0clQev8JkhNTVoBN/d+qJe9My8450sHWgp1ZfwKFaf07mxTRWPY665gNv
+   g==;
+X-IronPort-AV: E=Sophos;i="5.97,251,1669100400"; 
+   d="asc'?scan'208";a="197710525"
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 27 Jan 2023 08:28:11 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16; Fri, 27 Jan 2023 08:28:06 -0700
+Received: from wendy (10.10.115.15) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16 via Frontend
+ Transport; Fri, 27 Jan 2023 08:28:04 -0700
+Date:   Fri, 27 Jan 2023 15:27:40 +0000
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     Alexandre Ghiti <alexghiti@rivosinc.com>
+CC:     Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Alexander Potapenko <glider@google.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Conor Dooley <conor@kernel.org>,
+        <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <kasan-dev@googlegroups.com>, <linux-efi@vger.kernel.org>
+Subject: Re: [PATCH v3 3/6] riscv: Move DTB_EARLY_BASE_VA to the kernel
+ address space
+Message-ID: <Y9PtbMSe9DUk3bCn@wendy>
+References: <20230125082333.1577572-1-alexghiti@rivosinc.com>
+ <20230125082333.1577572-4-alexghiti@rivosinc.com>
 MIME-Version: 1.0
-References: <20230126112129.4602-1-johan+linaro@kernel.org>
- <CAMj1kXEUKChvqA8D_T3Bt-pQhvjBmsGxyy69uqDqyn0EBmQ1pw@mail.gmail.com> <Y9OLG5/yeuG6KT0f@hovoldconsulting.com>
-In-Reply-To: <Y9OLG5/yeuG6KT0f@hovoldconsulting.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 27 Jan 2023 09:38:03 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHiWBA99KG_OXD12rGH3zk84dii3LWZ6OybahudXp3vwA@mail.gmail.com>
-Message-ID: <CAMj1kXHiWBA99KG_OXD12rGH3zk84dii3LWZ6OybahudXp3vwA@mail.gmail.com>
-Subject: Re: [PATCH] efivarfs: fix NULL-deref on mount when no efivars
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Jeremy Kerr <jk@ozlabs.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Steev Klimaszewski <steev@kali.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Z01ixQvrSdrQQAm3"
+Content-Disposition: inline
+In-Reply-To: <20230125082333.1577572-4-alexghiti@rivosinc.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 27 Jan 2023 at 09:28, Johan Hovold <johan@kernel.org> wrote:
->
-> On Thu, Jan 26, 2023 at 09:32:27PM +0100, Ard Biesheuvel wrote:
-> > On Thu, 26 Jan 2023 at 12:23, Johan Hovold <johan+linaro@kernel.org> wrote:
-> > >
-> > > The VFS calls kill_sb() also in case mount fails in get_tree().
-> > >
-> > > Add the missing check to make sure that efivars has been registered also
-> > > to kill_sb() to avoid dereferencing a NULL pointer when trying to remove
-> > > efivar entries.
-> > >
-> > > Fixes: c3fd71b428b8 ("efivarfs: always register filesystem")
-> > > Reported-by: Steev Klimaszewski <steev@kali.org>
-> > > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> >
-> > Thanks - I have squashed this with the original patch.
->
-> Thanks, Ard. And sorry about not catching this before posting.
->
+--Z01ixQvrSdrQQAm3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-No worries.
+Hey Alex,
+
+On Wed, Jan 25, 2023 at 09:23:30AM +0100, Alexandre Ghiti wrote:
+> The early virtual address should lie in the kernel address space for
+> inline kasan instrumentation to succeed, otherwise kasan tries to
+> dereference an address that does not exist in the address space (since
+> kasan only maps *kernel* address space, not the userspace).
+>=20
+> Simply use the very first address of the kernel address space for the
+> early fdt mapping.
+>=20
+> It allowed an Ubuntu kernel to boot successfully with inline
+> instrumentation.
+>=20
+> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+
+Been poking around in this area the last few days trying to hunt down
+some bugs... Things look functionally the same w/ this patch and we do
+get rid of the odd looking pointer which is nice.
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+
+Probably would've made the cause of 50e63dd8ed92 ("riscv: fix reserved
+memory setup") more difficult to find so glad I got that out of the way
+well before this patch!
+
+Thanks,
+Conor.
+
+> ---
+>  arch/riscv/mm/init.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+> index 478d6763a01a..87f6a5d475a6 100644
+> --- a/arch/riscv/mm/init.c
+> +++ b/arch/riscv/mm/init.c
+> @@ -57,7 +57,7 @@ unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsign=
+ed long)]
+>  EXPORT_SYMBOL(empty_zero_page);
+> =20
+>  extern char _start[];
+> -#define DTB_EARLY_BASE_VA      PGDIR_SIZE
+> +#define DTB_EARLY_BASE_VA      (ADDRESS_SPACE_END - (PTRS_PER_PGD / 2 * =
+PGDIR_SIZE) + 1)
+>  void *_dtb_early_va __initdata;
+>  uintptr_t _dtb_early_pa __initdata;
+> =20
+> --=20
+> 2.37.2
+>=20
+>=20
+
+--Z01ixQvrSdrQQAm3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHQEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCY9PtbAAKCRB4tDGHoIJi
+0u7KAPY1hCi3Va5fAfv37uYg8QCBL7X4ZCQl3ls8gDg6rGp9AQDsdy5FKbSVrpX1
+z1qeXbmq0/jC3ZakOc10BTCtvty7Dw==
+=w080
+-----END PGP SIGNATURE-----
+
+--Z01ixQvrSdrQQAm3--
