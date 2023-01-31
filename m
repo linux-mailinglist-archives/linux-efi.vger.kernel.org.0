@@ -2,207 +2,174 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67FD1682101
-	for <lists+linux-efi@lfdr.de>; Tue, 31 Jan 2023 01:49:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E588682161
+	for <lists+linux-efi@lfdr.de>; Tue, 31 Jan 2023 02:28:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229565AbjAaAte (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 30 Jan 2023 19:49:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35136 "EHLO
+        id S229973AbjAaB2a (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 30 Jan 2023 20:28:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229533AbjAaAtd (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 30 Jan 2023 19:49:33 -0500
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E438E206AA
-        for <linux-efi@vger.kernel.org>; Mon, 30 Jan 2023 16:49:31 -0800 (PST)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-4c11ae6ab25so148549187b3.8
-        for <linux-efi@vger.kernel.org>; Mon, 30 Jan 2023 16:49:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=lKUtIBE/ENkRt4RJuzSzMJ8r5Hrq45eiIYmJfbJ+24Y=;
-        b=iFzBlvd9pZBXjS4OcNzdAz9AdDVOyy15+obZD1ypWX3rg7IWVYbVi2OnQRbkvxm5/B
-         XxlbrP1ibtoju5+uHYd+Lq8FfjR+sYL/AG/i+BPNif+PqfY2ggBdcd0fCVUfZ8reMN5w
-         FUy54x8AZiVl4s57JnFcMny0+ZIKvrkUlhKUmEGWuNx/qoAkN1X+0LE5r9OGp/zwHyju
-         7KIfZs6OY+0Bumt/4HYwnfOiPQmbk6AMq+Cc3aEM8Hz14Fx7XRXVxWj5tpw9k0mf+vbv
-         AgM1zPIXKfTsINySjiraqP4NKhPZNXj1O1VZPDzfVmnON8Q7Ve0wfXD4SQXiSxJWptxr
-         6zww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lKUtIBE/ENkRt4RJuzSzMJ8r5Hrq45eiIYmJfbJ+24Y=;
-        b=nrh+svWzNqXYCPRtQwdcTw0J9EfQUqdChxguajD9i2n+EBfrTAya8Nzqxy3ET/PrSN
-         kYs6M5lR9/eOW90aWEphU9SZtL8NAUx6fzZmZFmiDhSTolhQ0oMaMnJP+eOtwboi6cCT
-         aFkeYsQwoxJzWNJJJgNGp3BwpoQdp6rCH2Hs82iLPRAJ1kFjYLei+16rZjElH8VKh8SZ
-         BPhHCEqVCoJ05ziNVXPf6Edu6/jYTySZ1I75nubPRp+PNvxvLxzA3l8uIgoV3lz8zxLg
-         Y345syM9WnNRYYS5LOIG3BFjCLsTN9ODZPPPeLDm1+J+aU5g29wUofoGk9jip5r9kQM7
-         wxBw==
-X-Gm-Message-State: AO0yUKWwLBKIJDV3XPMcsbYdMnz9AcOY5vQQjsvLOppQQhZ9s9wBccth
-        7BZViYOjvm5sFQtFgYLoVV76IfPvi8Kr7HRM4g==
-X-Google-Smtp-Source: AK7set8/3eurtNk8LJ6IMm3gdhP0iBk8Qb5g4dsb354zLcMMibLM090E1s8+aGaCQvxtMjXhnysxxARQRCor9fsIUg==
-X-Received: from dionnaglaze.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:2ee6])
- (user=dionnaglaze job=sendgmr) by 2002:a81:5204:0:b0:507:86ae:c733 with SMTP
- id g4-20020a815204000000b0050786aec733mr3122340ywb.358.1675126171196; Mon, 30
- Jan 2023 16:49:31 -0800 (PST)
-Date:   Tue, 31 Jan 2023 00:49:28 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.39.1.456.gfc5497dd1b-goog
-Message-ID: <20230131004928.153623-1-dionnaglaze@google.com>
-Subject: [PATCH v2, RESEND] x86/efi: Safely enable unaccepted memory in UEFI
-From:   Dionna Glaze <dionnaglaze@google.com>
-To:     linux-kernel@vger.kernel.org, x86@vger.kernel.org,
-        linux-efi@vger.kernel.org
-Cc:     Dionna Glaze <dionnaglaze@google.com>,
-        Ard Biescheuvel <ardb@kernel.org>,
-        "Min M. Xu" <min.m.xu@intel.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Tom Lendacky <Thomas.Lendacky@amd.com>,
-        Jiewen Yao <jiewen.yao@intel.com>,
-        Erdem Aktas <erdemaktas@google.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229490AbjAaB23 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 30 Jan 2023 20:28:29 -0500
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA0682942E
+        for <linux-efi@vger.kernel.org>; Mon, 30 Jan 2023 17:28:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675128508; x=1706664508;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=3amhW1S+lh6sa7y6JWYjCR7FIgZnjlHAPUF8/AibQpk=;
+  b=ip6IGlnLIBwUyVsPWBCwmRDtxoDyaOauGYsdhSdhC1OsxZO9MSi5CD0x
+   b1NKN+P9x7PTfJB1guW5qeBjyj3NOSm6mfhJakbkd3EfyX+Ai4a+ujXEr
+   2zAzzVJFNfnaFTyMToLLHolsY4DUsO73KtGCYC2rPxNMWzHUNEXHnOeZa
+   p0SVecjwiVqrre1bZ3YIwiIfTv6rwtVPlUOyzgTjd2+L6UGVaj/LlC5F5
+   9zNkQz1lwIeHcn0suDhbAxiP3c8l5oiOH4l6e27ApMcNXP4h4yTSHbm9G
+   naUUKRO92ubqYwKujltW3AZ29fZCtSX1L09UUV2y7TevsLjbOeHVeZjUe
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10606"; a="413939944"
+X-IronPort-AV: E=Sophos;i="5.97,259,1669104000"; 
+   d="scan'208";a="413939944"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2023 17:28:28 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10606"; a="806917144"
+X-IronPort-AV: E=Sophos;i="5.97,259,1669104000"; 
+   d="scan'208";a="806917144"
+Received: from lkp-server01.sh.intel.com (HELO ffa7f14d1d0f) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 30 Jan 2023 17:28:27 -0800
+Received: from kbuild by ffa7f14d1d0f with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pMfRi-00042a-2H;
+        Tue, 31 Jan 2023 01:28:26 +0000
+Date:   Tue, 31 Jan 2023 09:27:48 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS 3b7221033c0ed624029157045956a472bb582a44
+Message-ID: <63d86e94.KubJbEwO5Lvkf3qR%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This patch depends on Kirill A. Shutemov's series
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+branch HEAD: 3b7221033c0ed624029157045956a472bb582a44  efi: zboot: Use EFI protocol to remap code/data with the right attributes
 
-[PATCHv8 00/14] mm, x86/cc: Implement support for unaccepted memory
+elapsed time: 726m
 
-The UEFI v2.9 specification includes a new memory type to be used in
-environments where the OS must accept memory that is provided from its
-host. Before the introduction of this memory type, all memory was
-accepted eagerly in the firmware. In order for the firmware to safely
-stop accepting memory on the OS's behalf, the OS must affirmatively
-indicate support to the firmware. This is only a problem for AMD
-SEV-SNP, since Linux has had support for it since 5.19. The other
-technology that can make use of unaccepted memory, Intel TDX, does not
-yet have Linux support, so it can strictly require unaccepted memory
-support as a dependency of CONFIG_TDX and not require communication with
-the firmware.
+configs tested: 94
+configs skipped: 3
 
-Enabling unaccepted memory requires calling a 0-argument enablement
-protocol before ExitBootServices. This call is only made if the kernel
-is compiled with UNACCEPTED_MEMORY=y
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-This protocol will be removed after the end of life of the first LTS
-that includes it, in order to give firmware implementations an
-expiration date for it. When the protocol is removed, firmware will
-strictly infer that a SEV-SNP VM is running an OS that supports the
-unaccepted memory type. At the earliest convenience, when unaccepted
-memory support is added to Linux, SEV-SNP may take strict dependence in
-it. After the firmware removes support for the protocol, this patch
-should be reverted.
+gcc tested configs:
+arc                                 defconfig
+s390                             allmodconfig
+alpha                               defconfig
+s390                                defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+s390                             allyesconfig
+x86_64                            allnoconfig
+i386                 randconfig-a001-20230130
+powerpc                           allnoconfig
+i386                 randconfig-a004-20230130
+i386                 randconfig-a003-20230130
+i386                 randconfig-a002-20230130
+x86_64               randconfig-a001-20230130
+x86_64               randconfig-a003-20230130
+i386                 randconfig-a005-20230130
+x86_64               randconfig-a004-20230130
+i386                 randconfig-a006-20230130
+x86_64               randconfig-a002-20230130
+x86_64               randconfig-a006-20230130
+x86_64               randconfig-a005-20230130
+sh                               allmodconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                          rhel-8.3-func
+ia64                             allmodconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+x86_64                               rhel-8.3
+arc                              allyesconfig
+mips                             allyesconfig
+alpha                            allyesconfig
+powerpc                          allmodconfig
+x86_64                           allyesconfig
+i386                                defconfig
+arm                                 defconfig
+x86_64                           rhel-8.3-syz
+arc                  randconfig-r043-20230129
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+arm                  randconfig-r046-20230129
+x86_64                           rhel-8.3-bpf
+arm                  randconfig-r046-20230130
+arc                  randconfig-r043-20230130
+arm64                            allyesconfig
+arm                              allyesconfig
+i386                             allyesconfig
+sh                          sdk7786_defconfig
+sh                          rsk7269_defconfig
+powerpc                       holly_defconfig
+arm                         nhk8815_defconfig
+arm                         s3c6400_defconfig
+csky                                defconfig
+sh                          r7785rp_defconfig
+m68k                        stmark2_defconfig
+i386                          randconfig-c001
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+arc                        nsim_700_defconfig
+sh                          sdk7780_defconfig
+i386                          debian-10.3-kvm
+i386                        debian-10.3-kunit
+i386                         debian-10.3-func
 
-Change since v1:
-* protocol name, as it is in OVMF
-https://github.com/tianocore/edk2/commit/26847fb6be7fff83a834a3154224588afede0073
-* protocol typedef moved before struct definition.
+clang tested configs:
+x86_64               randconfig-a012-20230130
+x86_64               randconfig-a013-20230130
+x86_64               randconfig-a011-20230130
+x86_64                          rhel-8.3-rust
+x86_64               randconfig-a014-20230130
+x86_64               randconfig-a015-20230130
+x86_64               randconfig-a016-20230130
+hexagon              randconfig-r041-20230129
+riscv                randconfig-r042-20230129
+riscv                randconfig-r042-20230130
+hexagon              randconfig-r045-20230130
+hexagon              randconfig-r041-20230130
+hexagon              randconfig-r045-20230129
+s390                 randconfig-r044-20230129
+s390                 randconfig-r044-20230130
+i386                 randconfig-a013-20230130
+i386                 randconfig-a012-20230130
+i386                 randconfig-a014-20230130
+i386                 randconfig-a015-20230130
+i386                 randconfig-a011-20230130
+i386                 randconfig-a016-20230130
+mips                       lemote2f_defconfig
+powerpc                 xes_mpc85xx_defconfig
+powerpc                    mvme5100_defconfig
+powerpc                      pmac32_defconfig
+arm                         s3c2410_defconfig
+x86_64                        randconfig-k001
 
-Cc: Ard Biescheuvel <ardb@kernel.org>
-Cc: "Min M. Xu" <min.m.xu@intel.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: James Bottomley <jejb@linux.ibm.com>
-Cc: Tom Lendacky <Thomas.Lendacky@amd.com>
-Cc: Jiewen Yao <jiewen.yao@intel.com>
-Cc: Erdem Aktas <erdemaktas@google.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Borislav Petkov <bp@alien8.de>
-
-Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
----
- drivers/firmware/efi/libstub/x86-stub.c | 37 +++++++++++++++++++++++++
- include/linux/efi.h                     |  4 +++
- 2 files changed, 41 insertions(+)
-
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index a0bfd31358ba..e4c04444edab 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -26,6 +26,17 @@ const efi_dxe_services_table_t *efi_dxe_table;
- u32 image_offset __section(".data");
- static efi_loaded_image_t *image = NULL;
- 
-+typedef union sev_memory_acceptance_protocol sev_memory_acceptance_protocol_t;
-+union sev_memory_acceptance_protocol {
-+	struct {
-+		efi_status_t (__efiapi *allow_unaccepted_memory)(
-+			sev_memory_acceptance_protocol_t *);
-+	};
-+	struct {
-+		u32 allow_unaccepted_memory;
-+	} mixed_mode;
-+};
-+
- static efi_status_t
- preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
- {
-@@ -310,6 +321,30 @@ setup_memory_protection(unsigned long image_base, unsigned long image_size)
- #endif
- }
- 
-+
-+static void setup_unaccepted_memory(void)
-+{
-+	efi_guid_t mem_acceptance_proto = OVMF_SEV_MEMORY_ACCEPTANCE_PROTOCOL_GUID;
-+	sev_memory_acceptance_protocol_t *proto;
-+	efi_status_t status;
-+
-+	if (!IS_ENABLED(CONFIG_UNACCEPTED_MEMORY))
-+		return;
-+
-+	/*
-+	 * Enable unaccepted memory before calling exit boot services in order
-+	 * for the UEFI to not accept all memory on EBS.
-+	 */
-+	status = efi_bs_call(locate_protocol, &mem_acceptance_proto, NULL,
-+			     (void **)&proto);
-+	if (status != EFI_SUCCESS)
-+		return;
-+
-+	status = efi_call_proto(proto, allow_unaccepted_memory);
-+	if (status != EFI_SUCCESS)
-+		efi_err("Memory acceptance protocol failed\n");
-+}
-+
- static const efi_char16_t apple[] = L"Apple";
- 
- static void setup_quirks(struct boot_params *boot_params,
-@@ -899,6 +934,8 @@ asmlinkage unsigned long efi_main(efi_handle_t handle,
- 
- 	setup_quirks(boot_params, bzimage_addr, buffer_end - buffer_start);
- 
-+	setup_unaccepted_memory();
-+
- 	status = exit_boot(boot_params, handle);
- 	if (status != EFI_SUCCESS) {
- 		efi_err("exit_boot() failed!\n");
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 4b27519143f5..ac812978a03a 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -434,6 +434,10 @@ void efi_native_runtime_setup(void);
- #define DELLEMC_EFI_RCI2_TABLE_GUID		EFI_GUID(0x2d9f28a2, 0xa886, 0x456a,  0x97, 0xa8, 0xf1, 0x1e, 0xf2, 0x4f, 0xf4, 0x55)
- #define AMD_SEV_MEM_ENCRYPT_GUID		EFI_GUID(0x0cf29b71, 0x9e51, 0x433a,  0xa3, 0xb7, 0x81, 0xf3, 0xab, 0x16, 0xb8, 0x75)
- 
-+/* OVMF protocol GUIDs */
-+#define OVMF_SEV_MEMORY_ACCEPTANCE_PROTOCOL_GUID	EFI_GUID(0xc5a010fe, 0x38a7, 0x4531,  0x8a, 0x4a, 0x05, 0x00, 0xd2, 0xfd, 0x16, 0x49)
-+
-+
- typedef struct {
- 	efi_guid_t guid;
- 	u64 table;
 -- 
-2.39.1.456.gfc5497dd1b-goog
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
