@@ -2,139 +2,207 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48D1C681794
-	for <lists+linux-efi@lfdr.de>; Mon, 30 Jan 2023 18:28:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67FD1682101
+	for <lists+linux-efi@lfdr.de>; Tue, 31 Jan 2023 01:49:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235545AbjA3R2k (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 30 Jan 2023 12:28:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45730 "EHLO
+        id S229565AbjAaAte (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 30 Jan 2023 19:49:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235920AbjA3R2g (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 30 Jan 2023 12:28:36 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 887A727D6A
-        for <linux-efi@vger.kernel.org>; Mon, 30 Jan 2023 09:28:35 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0B044B8159F
-        for <linux-efi@vger.kernel.org>; Mon, 30 Jan 2023 17:28:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3FDC433D2;
-        Mon, 30 Jan 2023 17:28:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675099712;
-        bh=jvOZ8o6utLG1K5vwVeYiPeqS68YTbFUEszi3MQ5cT4U=;
-        h=From:To:Cc:Subject:Date:From;
-        b=VY0i9MdQJsMC4Q4xnr4T2b4PoMpTwxbd23cU0C1D9jKhhyAgjtVWtIITv2wnjBO5P
-         GonUIH05bkEnf34gMIyTcbzqC30mGBFDZ8l8oamxqlPoOzVFLRjQlXVutzGwM4ZXbU
-         Jf/jKG2VgsTJvdBtpN93KfooVGBcajDUJm5suAq3EmLHdWVeOpoTCzBetDs/DSnsH1
-         E2jAeIbayjwiXCdmyt4HFostdMbaQ+1YNpYnoBOZhvCsK5bHeLg6mb17JUg882iwpC
-         z8kg727JQnn+L6D3mRiqYRqj13bm5BJ7lMeISEBHKG9PPKTfN9PoKl8aV12VaZyXk7
-         /e7BYj69lW4vQ==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     Ard Biesheuvel <ardb@kernel.org>, Evgeniy Baskov <baskov@ispras.ru>
-Subject: [PATCH] efi: zboot: Use EFI protocol to remap code/data with the right attributes
-Date:   Mon, 30 Jan 2023 18:28:26 +0100
-Message-Id: <20230130172826.1634412-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.39.0
-MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2985; i=ardb@kernel.org; h=from:subject; bh=jvOZ8o6utLG1K5vwVeYiPeqS68YTbFUEszi3MQ5cT4U=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBj1/45mRKnt2C9S7hQK9spDlO0GgwEKOE6GBXoI rqjD5K+H96JAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY9f+OQAKCRDDTyI5ktmP JD3QC/4senVgDuw7YSk/ukXzGnvTSnrwlS1REXJ6Lu4N+p7fU7b+9J3T5GF6FY5KvR6fJf3hThq WEV5uqev5IWurdJxBixTf2KlNI8uY3h+foFXPVQNiPKo5GeoZO5LFMZacuztF2Mc6hHgPyS1UTZ PtZwU5EgFooU6zo7JOOY5XzMRQTn2swUb+RLj8mQ4k6RGLKocepsTAmAHm2FJmOcTSGK2Y3wDgV +t3jmKK8UfB1IEfxB5GzKGT3CDh5F28WB5GH2qN/Y6PkAaKlXBzlP3tax0OB4OL2cMR3k1TF+OX PzhChgblbFYdPI2syz9TW7ELdYLKoiDTnIN9MRsK05uYnt1PnAN9OgPfM0wrHTdp2nlWssK7/ZQ B1YKH11+xqRUIxOb3yzRaiHGlShqQXcZFLi71+S5K216apgWEA/+5oOucOL175+dyU5d92BQNOu XPBcwkuCrtLBaA97fEttZ7yp2oHwAUz3AjWH0248uwxj8bLbchhxWF9j5EvMIZVUIPciQ=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229533AbjAaAtd (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 30 Jan 2023 19:49:33 -0500
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E438E206AA
+        for <linux-efi@vger.kernel.org>; Mon, 30 Jan 2023 16:49:31 -0800 (PST)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-4c11ae6ab25so148549187b3.8
+        for <linux-efi@vger.kernel.org>; Mon, 30 Jan 2023 16:49:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lKUtIBE/ENkRt4RJuzSzMJ8r5Hrq45eiIYmJfbJ+24Y=;
+        b=iFzBlvd9pZBXjS4OcNzdAz9AdDVOyy15+obZD1ypWX3rg7IWVYbVi2OnQRbkvxm5/B
+         XxlbrP1ibtoju5+uHYd+Lq8FfjR+sYL/AG/i+BPNif+PqfY2ggBdcd0fCVUfZ8reMN5w
+         FUy54x8AZiVl4s57JnFcMny0+ZIKvrkUlhKUmEGWuNx/qoAkN1X+0LE5r9OGp/zwHyju
+         7KIfZs6OY+0Bumt/4HYwnfOiPQmbk6AMq+Cc3aEM8Hz14Fx7XRXVxWj5tpw9k0mf+vbv
+         AgM1zPIXKfTsINySjiraqP4NKhPZNXj1O1VZPDzfVmnON8Q7Ve0wfXD4SQXiSxJWptxr
+         6zww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lKUtIBE/ENkRt4RJuzSzMJ8r5Hrq45eiIYmJfbJ+24Y=;
+        b=nrh+svWzNqXYCPRtQwdcTw0J9EfQUqdChxguajD9i2n+EBfrTAya8Nzqxy3ET/PrSN
+         kYs6M5lR9/eOW90aWEphU9SZtL8NAUx6fzZmZFmiDhSTolhQ0oMaMnJP+eOtwboi6cCT
+         aFkeYsQwoxJzWNJJJgNGp3BwpoQdp6rCH2Hs82iLPRAJ1kFjYLei+16rZjElH8VKh8SZ
+         BPhHCEqVCoJ05ziNVXPf6Edu6/jYTySZ1I75nubPRp+PNvxvLxzA3l8uIgoV3lz8zxLg
+         Y345syM9WnNRYYS5LOIG3BFjCLsTN9ODZPPPeLDm1+J+aU5g29wUofoGk9jip5r9kQM7
+         wxBw==
+X-Gm-Message-State: AO0yUKWwLBKIJDV3XPMcsbYdMnz9AcOY5vQQjsvLOppQQhZ9s9wBccth
+        7BZViYOjvm5sFQtFgYLoVV76IfPvi8Kr7HRM4g==
+X-Google-Smtp-Source: AK7set8/3eurtNk8LJ6IMm3gdhP0iBk8Qb5g4dsb354zLcMMibLM090E1s8+aGaCQvxtMjXhnysxxARQRCor9fsIUg==
+X-Received: from dionnaglaze.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:2ee6])
+ (user=dionnaglaze job=sendgmr) by 2002:a81:5204:0:b0:507:86ae:c733 with SMTP
+ id g4-20020a815204000000b0050786aec733mr3122340ywb.358.1675126171196; Mon, 30
+ Jan 2023 16:49:31 -0800 (PST)
+Date:   Tue, 31 Jan 2023 00:49:28 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.39.1.456.gfc5497dd1b-goog
+Message-ID: <20230131004928.153623-1-dionnaglaze@google.com>
+Subject: [PATCH v2, RESEND] x86/efi: Safely enable unaccepted memory in UEFI
+From:   Dionna Glaze <dionnaglaze@google.com>
+To:     linux-kernel@vger.kernel.org, x86@vger.kernel.org,
+        linux-efi@vger.kernel.org
+Cc:     Dionna Glaze <dionnaglaze@google.com>,
+        Ard Biescheuvel <ardb@kernel.org>,
+        "Min M. Xu" <min.m.xu@intel.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Tom Lendacky <Thomas.Lendacky@amd.com>,
+        Jiewen Yao <jiewen.yao@intel.com>,
+        Erdem Aktas <erdemaktas@google.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Use the recently introduced EFI_MEMORY_ATTRIBUTES_PROTOCOL in the zboot
-implementation to set the right attributes for the code and data
-sections of the decompressed image, i.e., EFI_MEMORY_RO for code and
-EFI_MEMORY_XP for data.
+This patch depends on Kirill A. Shutemov's series
 
-Cc: Evgeniy Baskov <baskov@ispras.ru>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+[PATCHv8 00/14] mm, x86/cc: Implement support for unaccepted memory
+
+The UEFI v2.9 specification includes a new memory type to be used in
+environments where the OS must accept memory that is provided from its
+host. Before the introduction of this memory type, all memory was
+accepted eagerly in the firmware. In order for the firmware to safely
+stop accepting memory on the OS's behalf, the OS must affirmatively
+indicate support to the firmware. This is only a problem for AMD
+SEV-SNP, since Linux has had support for it since 5.19. The other
+technology that can make use of unaccepted memory, Intel TDX, does not
+yet have Linux support, so it can strictly require unaccepted memory
+support as a dependency of CONFIG_TDX and not require communication with
+the firmware.
+
+Enabling unaccepted memory requires calling a 0-argument enablement
+protocol before ExitBootServices. This call is only made if the kernel
+is compiled with UNACCEPTED_MEMORY=y
+
+This protocol will be removed after the end of life of the first LTS
+that includes it, in order to give firmware implementations an
+expiration date for it. When the protocol is removed, firmware will
+strictly infer that a SEV-SNP VM is running an OS that supports the
+unaccepted memory type. At the earliest convenience, when unaccepted
+memory support is added to Linux, SEV-SNP may take strict dependence in
+it. After the firmware removes support for the protocol, this patch
+should be reverted.
+
+Change since v1:
+* protocol name, as it is in OVMF
+https://github.com/tianocore/edk2/commit/26847fb6be7fff83a834a3154224588afede0073
+* protocol typedef moved before struct definition.
+
+Cc: Ard Biescheuvel <ardb@kernel.org>
+Cc: "Min M. Xu" <min.m.xu@intel.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: James Bottomley <jejb@linux.ibm.com>
+Cc: Tom Lendacky <Thomas.Lendacky@amd.com>
+Cc: Jiewen Yao <jiewen.yao@intel.com>
+Cc: Erdem Aktas <erdemaktas@google.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Borislav Petkov <bp@alien8.de>
+
+Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
 ---
- drivers/firmware/efi/libstub/zboot.c | 55 ++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+ drivers/firmware/efi/libstub/x86-stub.c | 37 +++++++++++++++++++++++++
+ include/linux/efi.h                     |  4 +++
+ 2 files changed, 41 insertions(+)
 
-diff --git a/drivers/firmware/efi/libstub/zboot.c b/drivers/firmware/efi/libstub/zboot.c
-index 66be5fdc6b5885b7..89ad9204807b0477 100644
---- a/drivers/firmware/efi/libstub/zboot.c
-+++ b/drivers/firmware/efi/libstub/zboot.c
-@@ -49,6 +49,59 @@ static unsigned long alloc_preferred_address(unsigned long alloc_size)
- 	return ULONG_MAX;
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index a0bfd31358ba..e4c04444edab 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -26,6 +26,17 @@ const efi_dxe_services_table_t *efi_dxe_table;
+ u32 image_offset __section(".data");
+ static efi_loaded_image_t *image = NULL;
+ 
++typedef union sev_memory_acceptance_protocol sev_memory_acceptance_protocol_t;
++union sev_memory_acceptance_protocol {
++	struct {
++		efi_status_t (__efiapi *allow_unaccepted_memory)(
++			sev_memory_acceptance_protocol_t *);
++	};
++	struct {
++		u32 allow_unaccepted_memory;
++	} mixed_mode;
++};
++
+ static efi_status_t
+ preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
+ {
+@@ -310,6 +321,30 @@ setup_memory_protection(unsigned long image_base, unsigned long image_size)
+ #endif
  }
  
-+static void efi_remap_image(unsigned long image_base, unsigned alloc_size,
-+			    unsigned long code_size)
++
++static void setup_unaccepted_memory(void)
 +{
-+	efi_memory_attribute_protocol_t *memattr;
++	efi_guid_t mem_acceptance_proto = OVMF_SEV_MEMORY_ACCEPTANCE_PROTOCOL_GUID;
++	sev_memory_acceptance_protocol_t *proto;
 +	efi_status_t status;
-+	u64 attr;
++
++	if (!IS_ENABLED(CONFIG_UNACCEPTED_MEMORY))
++		return;
 +
 +	/*
-+	 * If the firmware implements the EFI_MEMORY_ATTRIBUTE_PROTOCOL, let's
-+	 * invoke it to remap the text/rodata region of the decompressed image
-+	 * as read-only and the data/bss region as non-executable.
++	 * Enable unaccepted memory before calling exit boot services in order
++	 * for the UEFI to not accept all memory on EBS.
 +	 */
-+	status = efi_bs_call(locate_protocol, &EFI_MEMORY_ATTRIBUTE_PROTOCOL_GUID,
-+			     NULL, (void **)&memattr);
++	status = efi_bs_call(locate_protocol, &mem_acceptance_proto, NULL,
++			     (void **)&proto);
 +	if (status != EFI_SUCCESS)
 +		return;
 +
-+	// Get the current attributes for the entire region
-+	status = memattr->get_memory_attributes(memattr, image_base,
-+						alloc_size, &attr);
-+	if (status != EFI_SUCCESS) {
-+		efi_warn("Failed to retrieve memory attributes for image region: 0x%lx\n",
-+			 status);
-+		return;
-+	}
-+
-+	// Mark the code region as read-only
-+	status = memattr->set_memory_attributes(memattr, image_base, code_size,
-+						EFI_MEMORY_RO);
-+	if (status != EFI_SUCCESS) {
-+		efi_warn("Failed to remap code region read-only\n");
-+		return;
-+	}
-+
-+	// If the entire region was already mapped as non-exec, clear the
-+	// attribute from the code region. Otherwise, set it on the data
-+	// region.
-+	if (attr & EFI_MEMORY_XP) {
-+		status = memattr->clear_memory_attributes(memattr, image_base,
-+							  code_size,
-+							  EFI_MEMORY_XP);
-+		if (status != EFI_SUCCESS)
-+			efi_warn("Failed to remap code region executable\n");
-+	} else {
-+		status = memattr->set_memory_attributes(memattr,
-+							image_base + code_size,
-+							alloc_size - code_size,
-+							EFI_MEMORY_XP);
-+		if (status != EFI_SUCCESS)
-+			efi_warn("Failed to remap data region non-executable\n");
-+	}
++	status = efi_call_proto(proto, allow_unaccepted_memory);
++	if (status != EFI_SUCCESS)
++		efi_err("Memory acceptance protocol failed\n");
 +}
 +
- void __weak efi_cache_sync_image(unsigned long image_base,
- 				 unsigned long alloc_size,
- 				 unsigned long code_size)
-@@ -137,6 +190,8 @@ efi_zboot_entry(efi_handle_t handle, efi_system_table_t *systab)
+ static const efi_char16_t apple[] = L"Apple";
  
- 	efi_cache_sync_image(image_base, alloc_size, code_size);
+ static void setup_quirks(struct boot_params *boot_params,
+@@ -899,6 +934,8 @@ asmlinkage unsigned long efi_main(efi_handle_t handle,
  
-+	efi_remap_image(image_base, alloc_size, code_size);
+ 	setup_quirks(boot_params, bzimage_addr, buffer_end - buffer_start);
+ 
++	setup_unaccepted_memory();
 +
- 	status = efi_stub_common(handle, image, image_base, cmdline_ptr);
+ 	status = exit_boot(boot_params, handle);
+ 	if (status != EFI_SUCCESS) {
+ 		efi_err("exit_boot() failed!\n");
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 4b27519143f5..ac812978a03a 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -434,6 +434,10 @@ void efi_native_runtime_setup(void);
+ #define DELLEMC_EFI_RCI2_TABLE_GUID		EFI_GUID(0x2d9f28a2, 0xa886, 0x456a,  0x97, 0xa8, 0xf1, 0x1e, 0xf2, 0x4f, 0xf4, 0x55)
+ #define AMD_SEV_MEM_ENCRYPT_GUID		EFI_GUID(0x0cf29b71, 0x9e51, 0x433a,  0xa3, 0xb7, 0x81, 0xf3, 0xab, 0x16, 0xb8, 0x75)
  
- free_image:
++/* OVMF protocol GUIDs */
++#define OVMF_SEV_MEMORY_ACCEPTANCE_PROTOCOL_GUID	EFI_GUID(0xc5a010fe, 0x38a7, 0x4531,  0x8a, 0x4a, 0x05, 0x00, 0xd2, 0xfd, 0x16, 0x49)
++
++
+ typedef struct {
+ 	efi_guid_t guid;
+ 	u64 table;
 -- 
-2.39.0
+2.39.1.456.gfc5497dd1b-goog
 
