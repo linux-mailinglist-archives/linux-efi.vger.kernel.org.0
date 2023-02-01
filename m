@@ -2,151 +2,63 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13C6E685C08
-	for <lists+linux-efi@lfdr.de>; Wed,  1 Feb 2023 01:16:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D0426862F9
+	for <lists+linux-efi@lfdr.de>; Wed,  1 Feb 2023 10:41:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230152AbjBAAQj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 31 Jan 2023 19:16:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55350 "EHLO
+        id S231855AbjBAJlB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 1 Feb 2023 04:41:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230011AbjBAAQi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 31 Jan 2023 19:16:38 -0500
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF3344345E;
-        Tue, 31 Jan 2023 16:16:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675210596; x=1706746596;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=oGcc5GCEMxGvL5mm0PL0tfMmHHnzeThTjrhfqHsD/iI=;
-  b=icNvq+hdpgt/QFwpkL6o9p2nr/2MTVQVhjxiZ5TafBAKLPvQN4E+kX4X
-   Kt33AU/mQTWm5xam6xNVzzlha3BkKAJGMIbegPsEPJKBN9sW12ueVy4l0
-   Ts4TvxCDMgpsFjDaSu17Jw0UlW/pOTZcHGOUPT4891h1I6aMPZU9xlP07
-   /O3xJ+EW1GqGah94HygIo31qlMBDn9WzntMdiCb1TiPINrqp58QRoYV4B
-   2kAqZ0oZl7XdTlVGPD6UX2CrXnLSxVFfzOrAdavdvKauTTs7bOk/n/KLK
-   w+BhzC4TjdYCjYLqX0V/43CNyRnM/DwgNdmpBZQ5EtSulMed+BuX/ue/d
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10607"; a="330108531"
-X-IronPort-AV: E=Sophos;i="5.97,261,1669104000"; 
-   d="scan'208";a="330108531"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2023 16:16:36 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10607"; a="838579710"
-X-IronPort-AV: E=Sophos;i="5.97,261,1669104000"; 
-   d="scan'208";a="838579710"
-Received: from lkp-server01.sh.intel.com (HELO ffa7f14d1d0f) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 31 Jan 2023 16:16:32 -0800
-Received: from kbuild by ffa7f14d1d0f with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pN0ne-0004pS-39;
-        Wed, 01 Feb 2023 00:16:30 +0000
-Date:   Wed, 1 Feb 2023 08:15:57 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Alexandre Ghiti <alexghiti@rivosinc.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Conor Dooley <conor@kernel.org>,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kasan-dev@googlegroups.com, linux-efi@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev,
-        Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: Re: [PATCH v3 2/6] riscv: Rework kasan population functions
-Message-ID: <202302010819.RAsjyv6V-lkp@intel.com>
-References: <20230125082333.1577572-3-alexghiti@rivosinc.com>
+        with ESMTP id S231835AbjBAJk5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 1 Feb 2023 04:40:57 -0500
+X-Greylist: delayed 2304 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 01 Feb 2023 01:40:53 PST
+Received: from mail.corrib.pl (mail.corrib.pl [185.58.226.145])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E5FE5D10D
+        for <linux-efi@vger.kernel.org>; Wed,  1 Feb 2023 01:40:53 -0800 (PST)
+Received: by mail.corrib.pl (Postfix, from userid 1001)
+        id 997DBA4180; Wed,  1 Feb 2023 09:02:05 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corrib.pl; s=mail;
+        t=1675242152; bh=X6IEpSISwJiYlJ3uA866lskXve3r+4o2hf4z7VM6m5o=;
+        h=Date:From:To:Subject:From;
+        b=n0Xn2duIwwPztrbT3V9pmVD7fSsi3glEzBnzLh7+uqjek65Ztm3SrRNa9n5xhD+Id
+         vnZZjCQVgxAdvjD3oXcBegC8RxB3T1+7fGsVOCo59DVPTI9zl4buz7wWhqFMLrqAzk
+         02I9sZ27773v15/9ocVVwBnlYaL2DBWPH2YHGq/U2mHo2YG6HRxiqNiXCBvZSfo4Ba
+         xmhsFYb8ICtkBm4lzLPPyZJ4ZSENihLOe0ERoLvww9qeItrAL72i6Vf9sTPVO4nRPe
+         gIDbWZIrt8714gIiUrh4G58uXViF47A4jPNaWvVdJzfRQV8Id29I8flfE5GbGGD6po
+         MU8iCwHBkjYsQ==
+Received: by mail.corrib.pl for <linux-efi@vger.kernel.org>; Wed,  1 Feb 2023 09:01:25 GMT
+Message-ID: <20230201074500-0.1.58.fhms.0.5ha0phxo6v@corrib.pl>
+Date:   Wed,  1 Feb 2023 09:01:25 GMT
+From:   =?UTF-8?Q? "Szczepan_Kie=C5=82basa" ?= 
+        <szczepan.kielbasa@corrib.pl>
+To:     <linux-efi@vger.kernel.org>
+Subject: Faktoring
+X-Mailer: mail.corrib.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230125082333.1577572-3-alexghiti@rivosinc.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_VALIDITY_RPBL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Alexandre,
+Dzie=C5=84 dobry,
 
-Thank you for the patch! Perhaps something to improve:
+rozwa=C5=BCali Pa=C5=84stwo wyb=C3=B3r finansowania, kt=C3=B3re spe=C5=82=
+ni potrzeby firmy, zapewniaj=C4=85c natychmiastowy dost=C4=99p do got=C3=B3=
+wki, bez zb=C4=99dnych przestoj=C3=B3w?=20
 
-[auto build test WARNING on linus/master]
-[also build test WARNING on v6.2-rc6 next-20230131]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Alexandre-Ghiti/riscv-Split-early-and-final-KASAN-population-functions/20230125-163113
-patch link:    https://lore.kernel.org/r/20230125082333.1577572-3-alexghiti%40rivosinc.com
-patch subject: [PATCH v3 2/6] riscv: Rework kasan population functions
-config: riscv-randconfig-r006-20230201 (https://download.01.org/0day-ci/archive/20230201/202302010819.RAsjyv6V-lkp@intel.com/config)
-compiler: riscv64-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/c18726e8d14edbd59ec19854b4eb06d83fff716f
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Alexandre-Ghiti/riscv-Split-early-and-final-KASAN-population-functions/20230125-163113
-        git checkout c18726e8d14edbd59ec19854b4eb06d83fff716f
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=riscv olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=riscv SHELL=/bin/bash arch/riscv/mm/
-
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
->> arch/riscv/mm/kasan_init.c:442:6: warning: no previous prototype for 'create_tmp_mapping' [-Wmissing-prototypes]
-     442 | void create_tmp_mapping(void)
-         |      ^~~~~~~~~~~~~~~~~~
+Przygotowali=C5=9Bmy rozwi=C4=85zania faktoringowe dopasowane do Pa=C5=84=
+stwa bran=C5=BCy i wielko=C5=9Bci firmy, dzi=C4=99ki kt=C3=B3rym, nie mus=
+z=C4=85 Pa=C5=84stwo martwi=C4=87 si=C4=99 o niewyp=C5=82acalno=C5=9B=C4=87=
+ kontrahent=C3=B3w, poniewa=C5=BC transakcje s=C4=85 zabezpieczone i posi=
+adaj=C4=85 gwarancj=C4=99 sp=C5=82aty.=20
+Chc=C4=85 Pa=C5=84stwo przeanalizowa=C4=87 dost=C4=99pne opcje?
 
 
-vim +/create_tmp_mapping +442 arch/riscv/mm/kasan_init.c
-
-   441	
- > 442	void create_tmp_mapping(void)
-   443	{
-   444		void *ptr;
-   445		p4d_t *base_p4d;
-   446	
-   447		/*
-   448		 * We need to clean the early mapping: this is hard to achieve "in-place",
-   449		 * so install a temporary mapping like arm64 and x86 do.
-   450		 */
-   451		memcpy(tmp_pg_dir, swapper_pg_dir, sizeof(pgd_t) * PTRS_PER_PGD);
-   452	
-   453		/* Copy the last p4d since it is shared with the kernel mapping. */
-   454		if (pgtable_l5_enabled) {
-   455			ptr = (p4d_t *)pgd_page_vaddr(*pgd_offset_k(KASAN_SHADOW_END));
-   456			memcpy(tmp_p4d, ptr, sizeof(p4d_t) * PTRS_PER_P4D);
-   457			set_pgd(&tmp_pg_dir[pgd_index(KASAN_SHADOW_END)],
-   458				pfn_pgd(PFN_DOWN(__pa(tmp_p4d)), PAGE_TABLE));
-   459			base_p4d = tmp_p4d;
-   460		} else {
-   461			base_p4d = (p4d_t *)tmp_pg_dir;
-   462		}
-   463	
-   464		/* Copy the last pud since it is shared with the kernel mapping. */
-   465		if (pgtable_l4_enabled) {
-   466			ptr = (pud_t *)p4d_page_vaddr(*(base_p4d + p4d_index(KASAN_SHADOW_END)));
-   467			memcpy(tmp_pud, ptr, sizeof(pud_t) * PTRS_PER_PUD);
-   468			set_p4d(&base_p4d[p4d_index(KASAN_SHADOW_END)],
-   469				pfn_p4d(PFN_DOWN(__pa(tmp_pud)), PAGE_TABLE));
-   470		}
-   471	}
-   472	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+Pozdrawiam
+Szczepan Kie=C5=82basa
