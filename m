@@ -2,156 +2,110 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAE5B68A6B3
-	for <lists+linux-efi@lfdr.de>; Sat,  4 Feb 2023 00:01:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A4D868A8F5
+	for <lists+linux-efi@lfdr.de>; Sat,  4 Feb 2023 09:24:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231176AbjBCXBH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 3 Feb 2023 18:01:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34594 "EHLO
+        id S231247AbjBDIYF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 4 Feb 2023 03:24:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233076AbjBCXBG (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 3 Feb 2023 18:01:06 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81EF88A7DA;
-        Fri,  3 Feb 2023 15:01:00 -0800 (PST)
+        with ESMTP id S230118AbjBDIYE (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 4 Feb 2023 03:24:04 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F0243D91F
+        for <linux-efi@vger.kernel.org>; Sat,  4 Feb 2023 00:24:03 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 49868B82C2A;
-        Fri,  3 Feb 2023 23:00:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B1AC4339B;
-        Fri,  3 Feb 2023 23:00:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 07DC060B01
+        for <linux-efi@vger.kernel.org>; Sat,  4 Feb 2023 08:24:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6698BC433D2
+        for <linux-efi@vger.kernel.org>; Sat,  4 Feb 2023 08:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675465257;
-        bh=xiyk1+P1FTc2Er9/TloFWBOvx0vE6nnxjpmQ3MiK05Q=;
+        s=k20201202; t=1675499042;
+        bh=U40kZM+m/snO/w5YcRipSmI0rxtfeNW5CzUzh8x2FYI=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ZKIGwijlaxfsGHZChWnZCnDXbN2nk5b7fCaoKSNeSs1680QfdheRepCG2HEiU1Ted
-         7DG1JQCOl5BPaHA4cgsYMR4YEaOPIIEGI09vAps35uqWw3mwI26Qxwl4WG17MK7Fn/
-         pwrEimt5h1+cSWEA22wOZAlyVDDff8RxqTgZ2+mwYviCYr+QlGYnHyDteY+oMd/36D
-         YjEodmcI2T15VjOZC7sH7LHfMdk3lxJ0VXFAaHq7lE0dtzGkJldybPtGvg4yrQWmNS
-         4muVFydzaV0LrLmlF9S4UrSqhHAy6Zrp/VqgK0+jLlVhlGtxYaOiz5u9ep7OPEo4aC
-         J0Ghhxi07BzYg==
-Received: by mail-lf1-f51.google.com with SMTP id bp15so9859552lfb.13;
-        Fri, 03 Feb 2023 15:00:57 -0800 (PST)
-X-Gm-Message-State: AO0yUKVX6b24Ig0VF+GXhovwGWgCjAkF/g5dl8V0pACZo7d21me79Mqi
-        oMglRgV9jHPJGVyGES/ODxZ2HsU9rpQjGoeuH1I=
-X-Google-Smtp-Source: AK7set+nm9Pzl/OQSo9eXO+SNOnEcdvwMukTVXzWpui/wfsvjD019+LUExd61ZYx6PODOdqQkmzYEXI9fKoQeOeu/iY=
-X-Received: by 2002:a19:500b:0:b0:4cc:789a:dac8 with SMTP id
- e11-20020a19500b000000b004cc789adac8mr2188309lfb.198.1675465255810; Fri, 03
- Feb 2023 15:00:55 -0800 (PST)
+        b=LgR9zbT2W34PDIgssOtRvgyYOd6mLjUuFTfqqgXt1N/7S0dXS9xsW9VAWaJ3m4gy3
+         a2xy4lcqV8JcZjH6wjwZ0MXraqC9zixdUo/US8Q6OmV0PMNf1WlT+Uy7DjIqzFHHPX
+         ib/JM93uYCaSjXSVsumKsmcz2IzseF+F1s5CewzlO+BDADCUS25AEg1wghHU1IXck9
+         k05CY2zHy3t2jQHj3wz9Oot2ZAHjmmUPqqAn64ym3NbC1V9M6hWlXTzj0C/yjUrt18
+         Xy+PHMBnw+quEKmzuAgeO+fvT8e+kg1MMfNvsJFBMeeyF6NDDJpf/wDZSUNKn7Ntkx
+         n8p8WgGCYakUQ==
+Received: by mail-lj1-f174.google.com with SMTP id h4so7406587lja.2
+        for <linux-efi@vger.kernel.org>; Sat, 04 Feb 2023 00:24:02 -0800 (PST)
+X-Gm-Message-State: AO0yUKVuIjuj+Jsl4EZyaecrcy2IMjzCAQAp0aISTFXWZ1YRB2Ixa/nG
+        B2C5TQyHRiorlhowV/svJcl24czEDkKZJP9mC6k=
+X-Google-Smtp-Source: AK7set/Ko0UArUOdAj4CFUhdyifL2aWojI6sCxoj/E44VW57dbtFqnIGOYHYjo8JypRDmkeuTJ3xLVn0+JPwXnL/cDs=
+X-Received: by 2002:a2e:aaa7:0:b0:28b:9149:6291 with SMTP id
+ bj39-20020a2eaaa7000000b0028b91496291mr1898565ljb.142.1675499040434; Sat, 04
+ Feb 2023 00:24:00 -0800 (PST)
 MIME-Version: 1.0
-References: <167545240944.3932004.13241445887801999410.stgit@dwillia2-xfh.jf.intel.com>
- <63dd81ecfd91_dfba82949f@iweiny-mobl.notmuch>
-In-Reply-To: <63dd81ecfd91_dfba82949f@iweiny-mobl.notmuch>
+References: <20230201132540.2196065-1-ardb@kernel.org> <63dbf4cd.a70a0220.d9b66.920b@mx.google.com>
+In-Reply-To: <63dbf4cd.a70a0220.d9b66.920b@mx.google.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Sat, 4 Feb 2023 00:00:44 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFTgt2AaLao=xHgKgoOW65D0jBL9hvBbSN0wCYrVimp_g@mail.gmail.com>
-Message-ID: <CAMj1kXFTgt2AaLao=xHgKgoOW65D0jBL9hvBbSN0wCYrVimp_g@mail.gmail.com>
-Subject: Re: [PATCH] efi/cper, cxl: Remove cxl_err.h
-To:     Ira Weiny <ira.weiny@intel.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-        linux-cxl@vger.kernel.org, linux-efi@vger.kernel.org
+Date:   Sat, 4 Feb 2023 09:23:49 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXECeHoE3ocxAe4w_WjVyC+=6Ze87x8OtBGw7yidN-8yrA@mail.gmail.com>
+Message-ID: <CAMj1kXECeHoE3ocxAe4w_WjVyC+=6Ze87x8OtBGw7yidN-8yrA@mail.gmail.com>
+Subject: Re: [PATCH 0/2] efi: Enable BTI for EFI runtimes services
+To:     Kees Cook <keescook@chromium.org>
+Cc:     linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 3 Feb 2023 at 22:51, Ira Weiny <ira.weiny@intel.com> wrote:
+On Thu, 2 Feb 2023 at 18:37, Kees Cook <keescook@chromium.org> wrote:
 >
-> Dan Williams wrote:
-> > While going to create include/linux/cxl.h for some cross-subsystem CXL
-> > definitions I noticed that include/linux/cxl_err.h was already present.
-> > That header has no reason to be global, and it duplicates the RAS
-> > Capability Structure definitions in drivers/cxl/cxl.h.
->
-> Change looks fine to me but I'm failing to find these duplicate
-> definitions?  Without any duplication it seems like stronger change to me.
->
-> > A follow-on patch
-> > can consider unifying the CXL native error tracing with the CPER error
-> > printing.
+> On Wed, Feb 01, 2023 at 02:25:38PM +0100, Ard Biesheuvel wrote:
+> > The EFI spec v2.10 introduces a global flag in the memory attributes
+> > table that indicates whether the EFI runtime code regions were emitted
+> > with BTI landing pads, and can therefore tolerate being mapped with BTI
+> > enforcement enabled.
 > >
-> > Also fixed up the spec reference as the latest released spec is v3.0.
-> >
-> > Cc: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+> > Add the generic plumbing for this, and wire it up for arm64.
 >
-> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+> Looks nice! :)
+>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
 >
 
-Thanks. I'll queue this up in efi/next
+Thanks
+
+I've queued these up now in efi/next
 
 
-> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> > ---
-> >  drivers/firmware/efi/cper_cxl.c |   12 +++++++++++-
-> >  include/linux/cxl_err.h         |   22 ----------------------
-> >  2 files changed, 11 insertions(+), 23 deletions(-)
-> >  delete mode 100644 include/linux/cxl_err.h
 > >
-> > diff --git a/drivers/firmware/efi/cper_cxl.c b/drivers/firmware/efi/cper_cxl.c
-> > index 53e435c4f310..a55771b99a97 100644
-> > --- a/drivers/firmware/efi/cper_cxl.c
-> > +++ b/drivers/firmware/efi/cper_cxl.c
-> > @@ -9,7 +9,6 @@
+> > Cc: Catalin Marinas <catalin.marinas@arm.com>
+> > Cc: Will Deacon <will@kernel.org>
+> > Cc: Kees Cook <keescook@chromium.org>
+> > Cc: Mark Rutland <mark.rutland@arm.com>
 > >
-> >  #include <linux/cper.h>
-> >  #include "cper_cxl.h"
-> > -#include <linux/cxl_err.h>
+> > Ard Biesheuvel (2):
+> >   efi: Discover BTI support in runtime services regions
+> >   efi: arm64: Wire up BTI annotation in memory attributes table
 > >
-> >  #define PROT_ERR_VALID_AGENT_TYPE            BIT_ULL(0)
-> >  #define PROT_ERR_VALID_AGENT_ADDRESS         BIT_ULL(1)
-> > @@ -19,6 +18,17 @@
-> >  #define PROT_ERR_VALID_DVSEC                 BIT_ULL(5)
-> >  #define PROT_ERR_VALID_ERROR_LOG             BIT_ULL(6)
+> >  arch/arm/include/asm/efi.h     |  2 +-
+> >  arch/arm/kernel/efi.c          |  5 +++--
+> >  arch/arm64/include/asm/efi.h   |  3 ++-
+> >  arch/arm64/kernel/efi.c        | 18 +++++++++++++++---
+> >  arch/riscv/include/asm/efi.h   |  2 +-
+> >  arch/riscv/kernel/efi.c        |  3 ++-
+> >  arch/x86/platform/efi/efi_64.c |  3 ++-
+> >  drivers/firmware/efi/memattr.c |  9 +++++++--
+> >  include/linux/efi.h            |  8 ++++++--
+> >  9 files changed, 39 insertions(+), 14 deletions(-)
 > >
-> > +/* CXL RAS Capability Structure, CXL v3.0 sec 8.2.4.16 */
-> > +struct cxl_ras_capability_regs {
-> > +     u32 uncor_status;
-> > +     u32 uncor_mask;
-> > +     u32 uncor_severity;
-> > +     u32 cor_status;
-> > +     u32 cor_mask;
-> > +     u32 cap_control;
-> > +     u32 header_log[16];
-> > +};
-> > +
-> >  static const char * const prot_err_agent_type_strs[] = {
-> >       "Restricted CXL Device",
-> >       "Restricted CXL Host Downstream Port",
-> > diff --git a/include/linux/cxl_err.h b/include/linux/cxl_err.h
-> > deleted file mode 100644
-> > index 629e1bdeda44..000000000000
-> > --- a/include/linux/cxl_err.h
-> > +++ /dev/null
-> > @@ -1,22 +0,0 @@
-> > -/* SPDX-License-Identifier: GPL-2.0-only */
-> > -/*
-> > - * Copyright (C) 2022 Advanced Micro Devices, Inc.
-> > - *
-> > - * Author: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
-> > - */
-> > -
-> > -#ifndef LINUX_CXL_ERR_H
-> > -#define LINUX_CXL_ERR_H
-> > -
-> > -/* CXL RAS Capability Structure, CXL v3.1 sec 8.2.4.16 */
-> > -struct cxl_ras_capability_regs {
-> > -     u32 uncor_status;
-> > -     u32 uncor_mask;
-> > -     u32 uncor_severity;
-> > -     u32 cor_status;
-> > -     u32 cor_mask;
-> > -     u32 cap_control;
-> > -     u32 header_log[16];
-> > -};
-> > -
-> > -#endif //__CXL_ERR_
+> > --
+> > 2.39.0
 > >
 >
->
+> --
+> Kees Cook
