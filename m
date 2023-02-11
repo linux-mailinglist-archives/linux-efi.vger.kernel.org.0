@@ -2,85 +2,163 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEA9E6920B7
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Feb 2023 15:21:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E41A693290
+	for <lists+linux-efi@lfdr.de>; Sat, 11 Feb 2023 17:45:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232227AbjBJOVZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Feb 2023 09:21:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57960 "EHLO
+        id S229596AbjBKQpX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 11 Feb 2023 11:45:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231958AbjBJOVY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 10 Feb 2023 09:21:24 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB84C302A1
-        for <linux-efi@vger.kernel.org>; Fri, 10 Feb 2023 06:21:23 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5DF33B823DC
-        for <linux-efi@vger.kernel.org>; Fri, 10 Feb 2023 14:21:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548F4C433D2;
-        Fri, 10 Feb 2023 14:21:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676038881;
-        bh=JJI4P3DYRgztijiKHXZIYUeiWnxf91Ry9oLWBLXXy+M=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Ct3MBh+HKX0Mec2CbnggYlgLyilpcrqXF2vlnyQg+MklE5Jd+c8UIY7rZsiFIWdJG
-         NVf5rK62vKe8WRB/XBQPjyLyQi7z+Hm5ZmWMPg9V7rBZ/gkMgWXaCEQLmk6M/qvfz2
-         wDCIko/KjR4OPjHUnkAqDIQ+jZrY2xVXi0pJTrSiJTQlYaKaQXVi9Z8r7lnV8yK79T
-         +DZj0EAhHy2qDoxdZlc4hWbAItooL4dHubn+Rr+MS0pJTL9oHrXquj82Bpmw+nYlHP
-         trCgW1KFUvDqOw9A0LEg12OATX832Qo3xfrKS7Gw/DIvWkPlWND2dMEqqH62wZP/0l
-         g7sXYa2rR1kCw==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     Ard Biesheuvel <ardb@kernel.org>, Evgeniy Baskov <baskov@ispras.ru>
-Subject: [PATCH] efi: Add mixed-mode thunk recipe for GetMemoryAttributes
-Date:   Fri, 10 Feb 2023 15:21:14 +0100
-Message-Id: <20230210142114.1861621-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.39.1
+        with ESMTP id S229479AbjBKQpW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 11 Feb 2023 11:45:22 -0500
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED0E61E1FA
+        for <linux-efi@vger.kernel.org>; Sat, 11 Feb 2023 08:45:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676133921; x=1707669921;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=l0kYGDLrMGAGYZ+DFBjmPoOTZlnSm7v6yauJnOvp+FI=;
+  b=k9fd/+O3FADskfDUAU5XHY94iguw2QIcyUiq1TQTBK+acWtvV2XkLVB4
+   q6pRfFhuh14p1cASTVUuxXEv6jfbuyCwHAFQYvGQwpq2v2nsj6B3zVtgw
+   tTbLjsVntjFuUeiIKgl0rYjNd9xnvUGJbn3h3mHZ8Jiw1IENUMY5Z81If
+   LS6CVMRhr398+EhkFHHwez8+p4I0zA9N25i3tuegLDT1/clyq/PfhZgg2
+   /gA0ITyjJDqDvWL/y0GaYFzkoE1HSJc5P+yvBKfGw6YluTWLIYHB+PY3k
+   ay4V5H4YhjxUf8vs2KGEKEskEdkZ6OSV/3EJhejpQcJ5r+87zw8GcJyLh
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10618"; a="416852601"
+X-IronPort-AV: E=Sophos;i="5.97,290,1669104000"; 
+   d="scan'208";a="416852601"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2023 08:45:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10618"; a="700781523"
+X-IronPort-AV: E=Sophos;i="5.97,290,1669104000"; 
+   d="scan'208";a="700781523"
+Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 11 Feb 2023 08:45:19 -0800
+Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pQt02-0006gL-32;
+        Sat, 11 Feb 2023 16:45:18 +0000
+Date:   Sun, 12 Feb 2023 00:44:57 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS 45d5165426ae3ceb35e2c35ad675e7dacd2aa59e
+Message-ID: <63e7c609.J5EINu8PALkDGxYT%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1370; i=ardb@kernel.org; h=from:subject; bh=JJI4P3DYRgztijiKHXZIYUeiWnxf91Ry9oLWBLXXy+M=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBj5lLZpLnxh4SkIyNeR7lYedd+eWkQtUBORs8Vg 0KPzl16382JAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY+ZS2QAKCRDDTyI5ktmP JEfUDAC1lxGEgBSi+kXhkkF+BhTI4syfCGWwAlYDELGf4h81bAzDbxaXWSMuYgt/XLutigUuhiF vdvo7/2E0VKG5le6VCPh0/Oy9A5UZqGIOBZwxqNPcEOIhP31eF0N1AkVz0kfK5fNa2CCyNggIYF Dba9W0f2LgdM5vjo23wCq1yEpQ4G5W/h7J2sEkNb5C+hkFtXU9UkSZJSTtbaGuOo6jQJogrgKbo 4A6tWFncuNOoswZ67S7GCy+8uvR7fg6nS2A8dvU/ID9SW76EmH3qAF70IOGIOrtqOIGVy0Wn4DN 9SPSEInbPQ61CAL+QPzd3BcsS+enVQewUrV9j74LD9Me6A+aCMwiHv2mTcIfskPJimGFE1Haisi PNWVf3OlbwqdxY5I5NxMySo8IQN9V0aFKFeyCqImXnEoXfHdx9cn9kKZ0xiPPUv8XQ2bQKUj+fc wb1C40ycYwkBe9QSp4WSEyzI38itXIWZSrguWRx1Ufhdadx5Za2OO355HLCgPygjVZa0Y=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-EFI mixed mode on x86 requires a recipe for each protocol method or
-firmware service that takes u64 arguments by value, or returns pointer
-or 'native int' (UINTN) values by reference (e.g,, through a void ** or
-unsigned long * parameter), due to the fact that these types cannot be
-translated 1:1 between the i386 and MS x64 calling conventions.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+branch HEAD: 45d5165426ae3ceb35e2c35ad675e7dacd2aa59e  efi: Add mixed-mode thunk recipe for GetMemoryAttributes
 
-So add the missing recipe for GetMemoryAttributes, which is not actually
-being used yet on x86, but the code exists and can be built for x86 so
-let's make sure it works as it should.
+elapsed time: 1569m
 
-Cc: Evgeniy Baskov <baskov@ispras.ru>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/x86/include/asm/efi.h | 3 +++
- 1 file changed, 3 insertions(+)
+configs tested: 82
+configs skipped: 3
 
-diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index 9f8ded3de0381973..419280d263d2e3f2 100644
---- a/arch/x86/include/asm/efi.h
-+++ b/arch/x86/include/asm/efi.h
-@@ -338,6 +338,9 @@ static inline u32 efi64_convert_status(efi_status_t status)
- 	((prot), efi64_zero_upper(file))
- 
- /* Memory Attribute Protocol */
-+#define __efi64_argmap_get_memory_attributes(protocol, phys, size, flags) \
-+	((protocol), __efi64_split(phys), __efi64_split(size), (flags))
-+
- #define __efi64_argmap_set_memory_attributes(protocol, phys, size, flags) \
- 	((protocol), __efi64_split(phys), __efi64_split(size), __efi64_split(flags))
- 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+alpha                            allyesconfig
+alpha                               defconfig
+arc                              allyesconfig
+arc                                 defconfig
+arc                  randconfig-r043-20230210
+arm                              allmodconfig
+arm                              allyesconfig
+arm                                 defconfig
+arm                  randconfig-r046-20230210
+arm                         vf610m4_defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+csky                                defconfig
+i386                             allyesconfig
+i386                              debian-10.3
+i386                                defconfig
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+i386                          randconfig-c001
+ia64                             allmodconfig
+ia64                                defconfig
+loongarch                        allmodconfig
+loongarch                         allnoconfig
+loongarch                           defconfig
+m68k                             allmodconfig
+m68k                                defconfig
+mips                             allmodconfig
+mips                             allyesconfig
+mips                       bmips_be_defconfig
+nios2                               defconfig
+parisc                              defconfig
+parisc64                            defconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+powerpc                   motionpro_defconfig
+riscv                            allmodconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+s390                             allmodconfig
+s390                             allyesconfig
+s390                                defconfig
+sh                               allmodconfig
+sh                ecovec24-romimage_defconfig
+sparc                               defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                            allnoconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                                  kexec
+x86_64                        randconfig-a002
+x86_64                        randconfig-a004
+x86_64                        randconfig-a006
+x86_64                        randconfig-a011
+x86_64                        randconfig-a013
+x86_64                        randconfig-a015
+x86_64                               rhel-8.3
+
+clang tested configs:
+arm                       cns3420vb_defconfig
+hexagon              randconfig-r041-20230210
+hexagon              randconfig-r045-20230210
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
+mips                           ip22_defconfig
+powerpc                          allmodconfig
+powerpc                 mpc8272_ads_defconfig
+riscv                randconfig-r042-20230210
+s390                 randconfig-r044-20230210
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+x86_64                        randconfig-k001
+
 -- 
-2.39.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
