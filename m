@@ -2,163 +2,87 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E41A693290
-	for <lists+linux-efi@lfdr.de>; Sat, 11 Feb 2023 17:45:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EB0D693745
+	for <lists+linux-efi@lfdr.de>; Sun, 12 Feb 2023 13:19:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229596AbjBKQpX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 11 Feb 2023 11:45:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46780 "EHLO
+        id S229629AbjBLMTo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 12 Feb 2023 07:19:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbjBKQpW (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 11 Feb 2023 11:45:22 -0500
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED0E61E1FA
-        for <linux-efi@vger.kernel.org>; Sat, 11 Feb 2023 08:45:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676133921; x=1707669921;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=l0kYGDLrMGAGYZ+DFBjmPoOTZlnSm7v6yauJnOvp+FI=;
-  b=k9fd/+O3FADskfDUAU5XHY94iguw2QIcyUiq1TQTBK+acWtvV2XkLVB4
-   q6pRfFhuh14p1cASTVUuxXEv6jfbuyCwHAFQYvGQwpq2v2nsj6B3zVtgw
-   tTbLjsVntjFuUeiIKgl0rYjNd9xnvUGJbn3h3mHZ8Jiw1IENUMY5Z81If
-   LS6CVMRhr398+EhkFHHwez8+p4I0zA9N25i3tuegLDT1/clyq/PfhZgg2
-   /gA0ITyjJDqDvWL/y0GaYFzkoE1HSJc5P+yvBKfGw6YluTWLIYHB+PY3k
-   ay4V5H4YhjxUf8vs2KGEKEskEdkZ6OSV/3EJhejpQcJ5r+87zw8GcJyLh
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10618"; a="416852601"
-X-IronPort-AV: E=Sophos;i="5.97,290,1669104000"; 
-   d="scan'208";a="416852601"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2023 08:45:21 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10618"; a="700781523"
-X-IronPort-AV: E=Sophos;i="5.97,290,1669104000"; 
-   d="scan'208";a="700781523"
-Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 11 Feb 2023 08:45:19 -0800
-Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pQt02-0006gL-32;
-        Sat, 11 Feb 2023 16:45:18 +0000
-Date:   Sun, 12 Feb 2023 00:44:57 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS 45d5165426ae3ceb35e2c35ad675e7dacd2aa59e
-Message-ID: <63e7c609.J5EINu8PALkDGxYT%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S229499AbjBLMTn (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 12 Feb 2023 07:19:43 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FF2F1717
+        for <linux-efi@vger.kernel.org>; Sun, 12 Feb 2023 04:19:42 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C92E60C7E
+        for <linux-efi@vger.kernel.org>; Sun, 12 Feb 2023 12:19:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F762C433D2;
+        Sun, 12 Feb 2023 12:19:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1676204381;
+        bh=d1ZyXh6guM5Vk9gF551+H4W6CD9W8LUVcy3Ej/tJVOM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=dF+CI//tBHx8nPowG95Pm7dJ1T/HHs7wIrRt5H3epe51EjHJhBtd9wnhyrVXYgZCk
+         B/o+UW1iBRqS8m3ZZtQfIlE3DgASLBlTbLtDXM5aCfImaG8M11Ur/9qEG1hRo6ql/6
+         7ZvpNYgrU+3uBcpyA1PdItxoxrqAJQjUSjt414o7ja2UsRcuHzyCfWYT9GlgLCH8Fn
+         IurhrjlM6FgEs3MuJVQ4NSB08kuhoIBFEf9OfbQE9Wws6UOAFLKdpeGMbnsxyB0XG1
+         Vi+PMYz6xMR+16d1lrr2c1mrNQ4cNykeSFfUtAQvpK7IIV7bWOI+8b0oN/uD+YHvFv
+         jH2+E36e0RBlQ==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     torvalds@linux-foundation.org
+Cc:     linux-efi@vger.kernel.org, darren@os.amperecomputing.com,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: [GIT PULL] EFI fixes for v6.2 #4
+Date:   Sun, 12 Feb 2023 13:19:33 +0100
+Message-Id: <20230212121933.2030597-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1311; i=ardb@kernel.org; h=from:subject; bh=d1ZyXh6guM5Vk9gF551+H4W6CD9W8LUVcy3Ej/tJVOM=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBj6NlUVUH9/WLhy2cxvZbleyZSO5oeyoCrT/LT8 bAYX46JL0yJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCY+jZVAAKCRDDTyI5ktmP JOq6C/4mVb0QJ99UaT3qHFV0FgyMiy2zkfIJt9/bTiooV/AKdmWe1LFT2WKGhA2sreY4XBxralo nHu4oRlt8UZf3KlFCLmrHodM/8/F2oJ1NoJltBFjI5diw3TAVCNf5+FRG3CyehK2oVHh9p6VChg S4Ujr3ekT4ReUZ015o6SBdVOwDN3cgKv9+xrsJWOlqw2T/ajJCNUjLdUhsD3aVCZf+He23+9S4G 0zSvp1S843nBZkHk5c1GDc2JsBfriCEG549qtdhd5qMUP+TO9l7HkdIcYON71KACLALtK+C1b2r KrtOiXrT5bzqenOx3VKRI1tlniQtp2+8xyRazaY3vjdTb61HV/jIh0Eh5xyuKp+1hXo+QzJ/wzb fWMGBgPkxy89IX8I4OdHZF5dAogefFJPhANTaOHYOCX24+SZs8dafUUrRyyQFUpks+Ck6iHXJSj OQB+c19RnR/OlJRcsUuXyeEjAEG39Xpvsr/PONo++3VpF+ebcdfgtlcahXnnNDERNQjV4=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: 45d5165426ae3ceb35e2c35ad675e7dacd2aa59e  efi: Add mixed-mode thunk recipe for GetMemoryAttributes
+Hello Linus,
 
-elapsed time: 1569m
+A final fix for Ampere Altra systems which is cc'ed to v6.1 stable. This is
+getting a bit kludgy but we are collaborating with the Ampere firmware
+engineers now to come up with a proper workaround.
 
-configs tested: 82
-configs skipped: 3
+Please pull.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
 
-gcc tested configs:
-alpha                            allyesconfig
-alpha                               defconfig
-arc                              allyesconfig
-arc                                 defconfig
-arc                  randconfig-r043-20230210
-arm                              allmodconfig
-arm                              allyesconfig
-arm                                 defconfig
-arm                  randconfig-r046-20230210
-arm                         vf610m4_defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-csky                                defconfig
-i386                             allyesconfig
-i386                              debian-10.3
-i386                                defconfig
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-i386                          randconfig-c001
-ia64                             allmodconfig
-ia64                                defconfig
-loongarch                        allmodconfig
-loongarch                         allnoconfig
-loongarch                           defconfig
-m68k                             allmodconfig
-m68k                                defconfig
-mips                             allmodconfig
-mips                             allyesconfig
-mips                       bmips_be_defconfig
-nios2                               defconfig
-parisc                              defconfig
-parisc64                            defconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-powerpc                   motionpro_defconfig
-riscv                            allmodconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-s390                             allmodconfig
-s390                             allyesconfig
-s390                                defconfig
-sh                               allmodconfig
-sh                ecovec24-romimage_defconfig
-sparc                               defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                            allnoconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                                  kexec
-x86_64                        randconfig-a002
-x86_64                        randconfig-a004
-x86_64                        randconfig-a006
-x86_64                        randconfig-a011
-x86_64                        randconfig-a013
-x86_64                        randconfig-a015
-x86_64                               rhel-8.3
+The following changes since commit 966d47e1f27c45507c5df82b2a2157e5a4fd3909:
 
-clang tested configs:
-arm                       cns3420vb_defconfig
-hexagon              randconfig-r041-20230210
-hexagon              randconfig-r045-20230210
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
-i386                          randconfig-a011
-i386                          randconfig-a013
-i386                          randconfig-a015
-mips                           ip22_defconfig
-powerpc                          allmodconfig
-powerpc                 mpc8272_ads_defconfig
-riscv                randconfig-r042-20230210
-s390                 randconfig-r044-20230210
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-x86_64                        randconfig-k001
+  efi: fix potential NULL deref in efi_mem_reserve_persistent (2023-02-03 14:52:10 +0100)
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.2-4
+
+for you to fetch changes up to 190233164cd77115f8dea718cbac561f557092c6:
+
+  arm64: efi: Force the use of SetVirtualAddressMap() on eMAG and Altra Max machines (2023-02-09 12:38:35 +0100)
+
+----------------------------------------------------------------
+Final EFI fix for v6.2
+
+A fix from Darren to widen the SMBIOS match for detecting Ampere Altra
+machines with problematic firmware. In the mean time, we are working on
+a more precise check, but this is still work in progress.
+
+----------------------------------------------------------------
+Darren Hart (1):
+      arm64: efi: Force the use of SetVirtualAddressMap() on eMAG and Altra Max machines
+
+ drivers/firmware/efi/libstub/arm64.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
