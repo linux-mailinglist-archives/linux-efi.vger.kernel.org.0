@@ -2,72 +2,66 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AB1D6939AA
-	for <lists+linux-efi@lfdr.de>; Sun, 12 Feb 2023 20:34:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C112694090
+	for <lists+linux-efi@lfdr.de>; Mon, 13 Feb 2023 10:16:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229619AbjBLTeq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 12 Feb 2023 14:34:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51920 "EHLO
+        id S229585AbjBMJQL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 13 Feb 2023 04:16:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjBLTep (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 12 Feb 2023 14:34:45 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62F3DFF24
-        for <linux-efi@vger.kernel.org>; Sun, 12 Feb 2023 11:34:44 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0C4CCB80D3B
-        for <linux-efi@vger.kernel.org>; Sun, 12 Feb 2023 19:34:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CDCA7C433D2;
-        Sun, 12 Feb 2023 19:34:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676230481;
-        bh=nGx2SomgGsvHBT+8PBisgPd3Yn8qev8o/yN55p18LPA=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=oTaY1emIDT24bfOlWTOdJ6Dwfrrx5AYxHdJQYy5Pz+sswDZlY+KDs1MfV1X2IQY5y
-         yGmVMrLVB1LxpOzL5JwPOGb7yyaaUFZORbtqn+ZvOIBKpqeYUAXjcuJqrvsOBF5I3U
-         rIJjPF/SyzYYsUzkzYt29wxWO6FgrxKLRwTmvMyJRdRKe4K0qpIQJNI85s8qd2C+H8
-         seUGsUD5RW3WDIKOu5rypNw2E2uOD+0XADm8eahz2Gba803ae7gBnCpYhJOrFppHeV
-         z88DNEpjsSJoaBfgFthiZtkPSWcUwHwv0UF3dOW6PuXYwnAp5uiRFsLoL08QtYFgb8
-         7E+dILIrKfSug==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id B55A9E21EC5;
-        Sun, 12 Feb 2023 19:34:41 +0000 (UTC)
-Subject: Re: [GIT PULL] EFI fixes for v6.2 #4
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20230212121933.2030597-1-ardb@kernel.org>
-References: <20230212121933.2030597-1-ardb@kernel.org>
-X-PR-Tracked-List-Id: <linux-efi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20230212121933.2030597-1-ardb@kernel.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.2-4
-X-PR-Tracked-Commit-Id: 190233164cd77115f8dea718cbac561f557092c6
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: dd78af9fde7aeae427adf4bac6cf62ed84e8f898
-Message-Id: <167623048173.930.985079784388858660.pr-tracker-bot@kernel.org>
-Date:   Sun, 12 Feb 2023 19:34:41 +0000
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     torvalds@linux-foundation.org, linux-efi@vger.kernel.org,
-        darren@os.amperecomputing.com, Ard Biesheuvel <ardb@kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230018AbjBMJQK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Feb 2023 04:16:10 -0500
+Received: from mail.tryweryn.pl (mail.tryweryn.pl [5.196.29.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 169DE13DC7
+        for <linux-efi@vger.kernel.org>; Mon, 13 Feb 2023 01:16:09 -0800 (PST)
+Received: by mail.tryweryn.pl (Postfix, from userid 1002)
+        id C66CAA2DEE; Mon, 13 Feb 2023 09:16:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tryweryn.pl; s=mail;
+        t=1676279767; bh=Bo+/jg3TCpOeS79PpZREuOWEeqJV//jojylD9dSrSik=;
+        h=Date:From:To:Subject:From;
+        b=eNBNbGs6RY8NlbG4G4FZhswFf79ScgCbz4nuC3aO1462MhNrjtcNOI9QNQ4HOX82e
+         FFtnIJRnOChu0R17I7L7SGlbqgHy151wlvlyo8b36AhjmJ1AequiFEB1WFq9BmabHi
+         6lf1EOq8eKtdNiCwe5q2NlXs/s47MgoETDIpWR7S8UJ9fKAqbh8d2WLE9qvjeX7q6h
+         f3gEyj4hcSj+l4DeQsoO+7DNeylegrbqMfP13OsLwtMGn4RChamCFusFn0oGmKDeZk
+         Cgz04OoogWxPsf4YUC7x+kYPItQLhdSk5X+gGfmCKy9/d8PhzF0uTq3ZjozraiZEQS
+         VvvPMJlklR0MA==
+Received: by mail.tryweryn.pl for <linux-efi@vger.kernel.org>; Mon, 13 Feb 2023 09:15:46 GMT
+Message-ID: <20230213074500-0.1.84.2y8gt.0.d2vf92q64c@tryweryn.pl>
+Date:   Mon, 13 Feb 2023 09:15:46 GMT
+From:   "Karol Michun" <karol.michun@tryweryn.pl>
+To:     <linux-efi@vger.kernel.org>
+Subject: Prezentacja
+X-Mailer: mail.tryweryn.pl
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The pull request you sent on Sun, 12 Feb 2023 13:19:33 +0100:
+Dzie=C5=84 dobry!
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.2-4
+Czy m=C3=B3g=C5=82bym przedstawi=C4=87 rozwi=C4=85zanie, kt=C3=B3re umo=C5=
+=BCliwia monitoring ka=C5=BCdego auta w czasie rzeczywistym w tym jego po=
+zycj=C4=99, zu=C5=BCycie paliwa i przebieg?
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/dd78af9fde7aeae427adf4bac6cf62ed84e8f898
+Dodatkowo nasze narz=C4=99dzie minimalizuje koszty utrzymania samochod=C3=
+=B3w, skraca czas przejazd=C3=B3w, a tak=C5=BCe tworzenie planu tras czy =
+dostaw.
 
-Thank you!
+Z naszej wiedzy i do=C5=9Bwiadczenia korzysta ju=C5=BC ponad 49 tys. Klie=
+nt=C3=B3w. Monitorujemy 809 000 pojazd=C3=B3w na ca=C5=82ym =C5=9Bwiecie,=
+ co jest nasz=C4=85 najlepsz=C4=85 wizyt=C3=B3wk=C4=85.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Bardzo prosz=C4=99 o e-maila zwrotnego, je=C5=9Bli mogliby=C5=9Bmy wsp=C3=
+=B3lnie om=C3=B3wi=C4=87 potencja=C5=82 wykorzystania takiego rozwi=C4=85=
+zania w Pa=C5=84stwa firmie.
+
+
+Pozdrawiam
+Karol Michun
