@@ -2,65 +2,68 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F497697B21
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Feb 2023 12:51:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6526697EBB
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Feb 2023 15:51:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233217AbjBOLvN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 15 Feb 2023 06:51:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49360 "EHLO
+        id S229890AbjBOOvX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 15 Feb 2023 09:51:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233794AbjBOLvM (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Feb 2023 06:51:12 -0500
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 146B52698
-        for <linux-efi@vger.kernel.org>; Wed, 15 Feb 2023 03:51:11 -0800 (PST)
-Received: by mail-ej1-x62e.google.com with SMTP id hx15so47485724ejc.11
-        for <linux-efi@vger.kernel.org>; Wed, 15 Feb 2023 03:51:11 -0800 (PST)
+        with ESMTP id S229516AbjBOOvW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Feb 2023 09:51:22 -0500
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82B0C392AA
+        for <linux-efi@vger.kernel.org>; Wed, 15 Feb 2023 06:51:17 -0800 (PST)
+Received: by mail-wr1-x42b.google.com with SMTP id y1so19433898wru.2
+        for <linux-efi@vger.kernel.org>; Wed, 15 Feb 2023 06:51:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=rivosinc-com.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FtmOLRXgnRB1fQxx3Jha9wPJINvn6jn7vc917nESkKA=;
-        b=YfgQlTD186paEe4pPesKVrbq6XGIwhgsYLDMI0X6kJ+iBpr1/I1M2BnClncHt2pIja
-         qs0+dpLlzJB6JEixcv+ocGc+P5rU2eLl+BEMzn9GxKPnWruyknV8BjJfTPtDF/0EcsPb
-         MASvs9MisN4yhPwJvcqG+wYQeJaY87CROef0I2uvgDuibcC59/oH8YqXMObJ5SSJy/3g
-         f0ZrOB9zM1U8oHTbg29C/CgPzid7Cax2OCwSsoylIW4MHhAeAZcWN3gXQGsKYheyrIQz
-         /a99dbHKCUb+YgJmgyb6lHkd6ZIwxUVWmVNYSvGbB8RtmwEespOFdQCVlPsuokloyq1m
-         x9nQ==
+        bh=ctWJSElYx/FpQ+Il/jr6fw9xbpiBuK2KMIX0fff726o=;
+        b=GLyffEPMYlT/cmqtzo2hfct/e9+r4hBtyDtRC0QOsgxl5uG2zZYS2aCeBLUuFLsLqo
+         8+EWhE3A1okDf4bDVnsCqQh0zxTcTgI3IgDy3ipTGvN5RnxzX5bgBRFJ0Vj5GFgyKzQ+
+         wt8YZ2u0Imx2utyxu9hadRnNSm0/IAzax1OHpC5qcF7/RoD3qznLt+K6ps/tHRTi2Jnb
+         piFePO8J/H/acKIh43ArzCYPygQ9tUbRj7rz3nDujjJEhM2YvC5y3L4VDSAtKs6HERy6
+         X2lnmKW9ak0eHD5b5b+67yNd4M4yCK7/yIO6dLFdEuI00JPlYwg/UgxhH7hOpj+2NrM6
+         aYQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=FtmOLRXgnRB1fQxx3Jha9wPJINvn6jn7vc917nESkKA=;
-        b=1oEwPAZrf9LAAzrEn8HXIZaQf/J/7EVY5ZqqdR50M6DobZ7vqIZEzME5ArJ/zSCndd
-         8C1FbnrkEdIeYmRv7wZVUZYk/6uEv/6CPyG0vN926H7HjlkW3dWfzQ4YoY+pgbSKW6rP
-         nI/5rwXUl8qpcWrwbjAdVh5Mp1V+khIYLjjjyTFzH224YssToNwJZPRxhzeiflAksa6Z
-         XVkgs4t9ayjEywP3bLed1s1DLT/JnFbvACfsuX5Yjo2vKqw3sT9uPa6a8I2Y5J6GnsRh
-         M7WEmQRGmvlEAErAHY+lLPDp6Dmc1kV2vXfhzrPygavE1ZXw4X+bIUU2hMakwu48N2Rg
-         cfzg==
-X-Gm-Message-State: AO0yUKWZItRKfrQpNuNs1Y90il9Ona+Py0uFBg9FBtGy2QI8yKMWdjNM
-        u02JVRltXh4b+MEApSovDSaGoEGBfbVlLQ==
-X-Google-Smtp-Source: AK7set8sBJb4+ULt8wJIlsTP1a5RHd/5WdT8pNJAmOUV6NRi02N0Xdm9XPEMZVrF6uUhqqIGRQ1VjA==
-X-Received: by 2002:a17:906:ce2d:b0:86f:763c:2695 with SMTP id sd13-20020a170906ce2d00b0086f763c2695mr1742554ejb.17.1676461869494;
-        Wed, 15 Feb 2023 03:51:09 -0800 (PST)
-Received: from darrell-Z570.home (dapali.plus.com. [80.229.150.88])
-        by smtp.gmail.com with ESMTPSA id d14-20020a170906344e00b008b13a1abadasm1320250ejb.75.2023.02.15.03.51.08
+        bh=ctWJSElYx/FpQ+Il/jr6fw9xbpiBuK2KMIX0fff726o=;
+        b=TfOWoo3CYWI+kpdk48GSdZfoqkLOu/tQOt0rKGcnpTxnOdzUlcPVaF+lkZkt0iIKno
+         tXRN3P6q4Dre+pyFn06PlbPquYbfUmBCUDZdjKNsu4MWGciVVW1UQTKc5jE/dozOLAWB
+         RQesOFGKtLU7S+Nu6QAWh5OQcT+r70lEcVtBBVOCE1O4CGrYTNyLpq6lfeXCzniy/Lep
+         fHyDa4cjiGaLB+145B3Q6j69rn6Dlw1/Tt9evVpT6JbwEIzZoPwLLFWrvCU5cJxDLX01
+         qApu/1QmqmKYIhci7sRV4svvG0oieXalPPV5nlUWkIINpK/4z5mz/1rTXMEqb2rWlngE
+         mJCQ==
+X-Gm-Message-State: AO0yUKX5rK1LQf9c07qVkIvxNHsbova2wHXxeJxWdmSqt+1INMOkdu9n
+        8ujPVAx7lLWfGxKcROKp7YxrOQ==
+X-Google-Smtp-Source: AK7set+Nq5t/4Q7aVf6eQyb5vxlI9IEku3M0RuLvSxT47U9GMbWRMLO9/X1s/whi16YDzCCafZULdA==
+X-Received: by 2002:adf:ecca:0:b0:2c5:5943:27e5 with SMTP id s10-20020adfecca000000b002c5594327e5mr1877958wro.15.1676472676157;
+        Wed, 15 Feb 2023 06:51:16 -0800 (PST)
+Received: from alex-rivos.home (lfbn-lyo-1-450-160.w2-7.abo.wanadoo.fr. [2.7.42.160])
+        by smtp.gmail.com with ESMTPSA id m20-20020a056000181400b002c54e89fcadsm11022524wrh.55.2023.02.15.06.51.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Feb 2023 03:51:08 -0800 (PST)
-From:   Darrell Kavanagh <darrell.kavanagh@gmail.com>
-To:     hdegoede@redhat.com, ardb@kernel.org, linux-efi@vger.kernel.org,
-        maxime@cerno.tech
-Cc:     Darrell Kavanagh <darrell.kavanagh@gmail.com>
-Subject: [PATCH v2] firmware/efi sysfb_efi: Add quirk for Lenovo IdeaPad Duet 3
-Date:   Wed, 15 Feb 2023 11:50:45 +0000
-Message-Id: <20230215115045.9396-1-darrell.kavanagh@gmail.com>
-X-Mailer: git-send-email 2.39.1
+        Wed, 15 Feb 2023 06:51:15 -0800 (PST)
+From:   Alexandre Ghiti <alexghiti@rivosinc.com>
+To:     Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-efi@vger.kernel.org
+Cc:     Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: [PATCH 0/4] riscv: Introduce KASLR
+Date:   Wed, 15 Feb 2023 15:51:09 +0100
+Message-Id: <20230215145113.465558-1-alexghiti@rivosinc.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,38 +71,56 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Another Lenovo convertable which reports a landscape resolution of
-1920x1200 with a pitch of (1920 * 4) bytes, while the actual framebuffer
-has a resolution of 1200x1920 with a pitch of (1200 * 4) bytes.
+The following KASLR implementation allows to randomize the kernel mapping:
 
-Signed-off-by: Darrell Kavanagh <darrell.kavanagh@gmail.com>
----
-Changes in v2:
-	- Improve commit message
+- virtually: we expect the bootloader to provide a seed in the device-tree
+- physically: only implemented in the EFI stub, it relies on the firmware to
+  provide a seed using EFI_RNG_PROTOCOL. arm64 has a similar implementation
+  hence the patch 3 factorizes KASLR related functions for riscv to take
+  advantage.
 
----
- drivers/firmware/efi/sysfb_efi.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+The new virtual kernel location is limited by the early page table that only
+has one PUD and with the PMD alignment constraint, the kernel can only take
+< 512 positions.
 
-diff --git a/drivers/firmware/efi/sysfb_efi.c b/drivers/firmware/efi/sysfb_efi.c
-index 7882d4b3f2be..f06fdacc9bc8 100644
---- a/drivers/firmware/efi/sysfb_efi.c
-+++ b/drivers/firmware/efi/sysfb_efi.c
-@@ -264,6 +264,14 @@ static const struct dmi_system_id efifb_dmi_swap_width_height[] __initconst = {
- 					"Lenovo ideapad D330-10IGM"),
- 		},
- 	},
-+	{
-+		/* Lenovo IdeaPad Duet 3 10IGL5 with 1200x1920 portrait screen */
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION,
-+					"IdeaPad Duet 3 10IGL5"),
-+		},
-+	},
- 	{},
- };
- 
--- 
-2.39.1
+Note that the patch "riscv: Use PUD/P4D/PGD pages for the linear
+mapping" is necessary to retrieve the memory below the physical kernel
+address, so that the EFI stub does not have to try to relocate the kernel
+as close as possible to the start of dram.
+
+This patchset is rebased on top of:
+
+Introduce 64b relocatable kernel (https://lore.kernel.org/lkml/20230215143626.453491-1-alexghiti@rivosinc.com/)
+RISC-V kasan rework (https://lore.kernel.org/lkml/Y6TTvku%2FyuSjm42j@spud/T/)
+riscv: Use PUD/P4D/PGD pages for the linear mapping (https://lore.kernel.org/lkml/20230125114229.hrhsyw4aegrnmoau@orel/T/)
+riscv: Allow to downgrade paging mode from the command line (https://lore.kernel.org/lkml/CAHVXubjeSMvfTPnvrnYRupOGx6+vUvUGfRS3piTeo=TH2cHKNg@mail.gmail.com/)
+base-commit-tag: v6.2-rc7
+
+This patchset was tested with u-boot boottime service for the seed on:
+- ubuntu defconfig + kasan outline (sv39, sv48, sv57): OK
+- ubuntu defconfig + kasan inline (sv39, sv48, sv57): OK
+- ubuntu defconfg (sv39, sv48, sv57): OK
+
+Alexandre Ghiti (4):
+  riscv: Introduce virtual kernel mapping KASLR
+  riscv: Dump out kernel offset information on panic
+  arm64: libstub: Move KASLR handling functions to efi-stub-helper.c
+  riscv: libstub: Implement KASLR by using generic functions
+
+ arch/riscv/Kconfig                            |  18 +++
+ arch/riscv/include/asm/page.h                 |   1 +
+ arch/riscv/kernel/pi/Makefile                 |   2 +-
+ arch/riscv/kernel/pi/cmdline_early.c          |  12 ++
+ arch/riscv/kernel/pi/fdt_early.c              |  23 +++
+ arch/riscv/kernel/setup.c                     |  25 +++
+ arch/riscv/mm/init.c                          |  31 +++-
+ drivers/firmware/efi/libstub/arm64-stub.c     | 110 +------------
+ .../firmware/efi/libstub/efi-stub-helper.c    | 147 ++++++++++++++++++
+ drivers/firmware/efi/libstub/efistub.h        |   8 +
+ drivers/firmware/efi/libstub/riscv-stub.c     |  27 ++--
+ 11 files changed, 281 insertions(+), 123 deletions(-)
+ create mode 100644 arch/riscv/kernel/pi/fdt_early.c
+
+--
+2.37.2
 
