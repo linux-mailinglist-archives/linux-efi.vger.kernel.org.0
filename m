@@ -2,127 +2,127 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6A97697EFD
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Feb 2023 16:00:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9071A698035
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Feb 2023 17:11:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229992AbjBOPAF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 15 Feb 2023 10:00:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57558 "EHLO
+        id S230019AbjBOQLM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 15 Feb 2023 11:11:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230086AbjBOO77 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Feb 2023 09:59:59 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8D6740F1
-        for <linux-efi@vger.kernel.org>; Wed, 15 Feb 2023 06:58:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1676473136;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=dCH9Ie5efCRLrr5Blktmi2E+S3guM/w0k32BhUsRy+Y=;
-        b=NKpVcv29OZ6AA7+s0gXcz16Gv3NCvVhmkY1k9hgkL+qmaNVa3/hKd70NyV2IvmmAzO4yNw
-        a6rBvmhIPKYZJXr9vBvzWZZ9OWgC9+NYjTUXnsJVhtk9wmyHguzKU9CExwLAgFowQ2zlCw
-        fg+vOvjlI+DqlQ5vN4f03dnAHEOqACA=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-500-b8STnJq_Pqu7cXOMIcu7Bg-1; Wed, 15 Feb 2023 09:58:55 -0500
-X-MC-Unique: b8STnJq_Pqu7cXOMIcu7Bg-1
-Received: by mail-ej1-f70.google.com with SMTP id re5-20020a170906d8c500b0087bd94a505fso4352596ejb.16
-        for <linux-efi@vger.kernel.org>; Wed, 15 Feb 2023 06:58:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dCH9Ie5efCRLrr5Blktmi2E+S3guM/w0k32BhUsRy+Y=;
-        b=Mjls8nHnU+8TOXVR9SqSUGoM468CEnaLLNxasDGs1xxe5FofZxXWbV97RCLFCyHiSj
-         gu3tkDjGLgw6hOMG8Oe01p/9f3G0vftvuv6sjgutmmZ3v0ax6OQXxT8M+E/SCtq+tz8r
-         XGbVqzZVR+0x3s79nafcbtbJxlmYPI2vkNzuBfOcv2eolJl1lUquVmQ66GJH59kgrIdr
-         UZ3D6GvH046swJPLerJGMfr7kfpEGn/a8Wicwd+7gKgO9hTPSZJGYt43mhAh0WerQD2a
-         D07Zpqv3Hlgd0KQ5zS+J2GLKlUR/yDBsI+pFfmbGSymnwBsfpw3YmNcI31/H+sAViFax
-         UZgQ==
-X-Gm-Message-State: AO0yUKWBaefWpc3xznU9ugbLJSawMVK4QjOmE1IEQBsETlibtYxst+5I
-        AipDaBn57hLBEPXoibZkTiDO0/0V0RtKGL8x87sM+IaJ//gwAgEboylpTY+4ZPamGNoGAtD8STq
-        dTKoczLTZzI6anY/EQjN0wlczvQ==
-X-Received: by 2002:aa7:df99:0:b0:4ac:c5c1:e1ed with SMTP id b25-20020aa7df99000000b004acc5c1e1edmr2266488edy.12.1676473133216;
-        Wed, 15 Feb 2023 06:58:53 -0800 (PST)
-X-Google-Smtp-Source: AK7set9cvEwNt3/9YpvXvSuG9+rFV/ErMCKJwaLmjaNLeLFCyLw3vCllWqIS9G65SWj7rBRC9uYUPQ==
-X-Received: by 2002:aa7:df99:0:b0:4ac:c5c1:e1ed with SMTP id b25-20020aa7df99000000b004acc5c1e1edmr2266475edy.12.1676473132969;
-        Wed, 15 Feb 2023 06:58:52 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id s8-20020aa7cb08000000b004acd9a3afb3sm2760690edt.63.2023.02.15.06.58.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Feb 2023 06:58:52 -0800 (PST)
-Message-ID: <fca0366b-fa32-b756-b149-876976f3a5da@redhat.com>
-Date:   Wed, 15 Feb 2023 15:58:51 +0100
+        with ESMTP id S230007AbjBOQLL (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Feb 2023 11:11:11 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5ECC13B0DB;
+        Wed, 15 Feb 2023 08:10:59 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C98571042;
+        Wed, 15 Feb 2023 08:11:41 -0800 (PST)
+Received: from cam-smtp0.cambridge.arm.com (pierre123.nice.arm.com [10.34.100.128])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id EEC963F881;
+        Wed, 15 Feb 2023 08:10:57 -0800 (PST)
+From:   Pierre Gondois <pierre.gondois@arm.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Pierre Gondois <pierre.gondois@arm.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, linux-efi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v1] arm64: efi: Make efi_rt_lock a raw_spinlock
+Date:   Wed, 15 Feb 2023 17:10:47 +0100
+Message-Id: <20230215161047.94803-1-pierre.gondois@arm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v2] firmware/efi sysfb_efi: Add quirk for Lenovo IdeaPad
- Duet 3
-To:     Darrell Kavanagh <darrell.kavanagh@gmail.com>, ardb@kernel.org,
-        linux-efi@vger.kernel.org, maxime@cerno.tech
-References: <20230215115045.9396-1-darrell.kavanagh@gmail.com>
-Content-Language: en-US, nl
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20230215115045.9396-1-darrell.kavanagh@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi,
+Running a rt-kernel base on 6.2.0-rc3-rt1 on an Ampere Altra outputs
+the following:
+  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:46
+  in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 9, name: kworker/u320:0
+  preempt_count: 2, expected: 0
+  RCU nest depth: 0, expected: 0
+  3 locks held by kworker/u320:0/9:
+  #0: ffff3fff8c27d128 ((wq_completion)efi_rts_wq){+.+.}-{0:0}, at: process_one_work (./include/linux/atomic/atomic-long.h:41)
+  #1: ffff80000861bdd0 ((work_completion)(&efi_rts_work.work)){+.+.}-{0:0}, at: process_one_work (./include/linux/atomic/atomic-long.h:41)
+  #2: ffffdf7e1ed3e460 (efi_rt_lock){+.+.}-{3:3}, at: efi_call_rts (drivers/firmware/efi/runtime-wrappers.c:101)
+  Preemption disabled at:
+  efi_virtmap_load (./arch/arm64/include/asm/mmu_context.h:248)
+  CPU: 0 PID: 9 Comm: kworker/u320:0 Tainted: G        W          6.2.0-rc3-rt1
+  Hardware name: WIWYNN Mt.Jade Server System B81.03001.0005/Mt.Jade Motherboard, BIOS 1.08.20220218 (SCP: 1.08.20220218) 2022/02/18
+  Workqueue: efi_rts_wq efi_call_rts
+  Call trace:
+  dump_backtrace (arch/arm64/kernel/stacktrace.c:158)
+  show_stack (arch/arm64/kernel/stacktrace.c:165)
+  dump_stack_lvl (lib/dump_stack.c:107 (discriminator 4))
+  dump_stack (lib/dump_stack.c:114)
+  __might_resched (kernel/sched/core.c:10134)
+  rt_spin_lock (kernel/locking/rtmutex.c:1769 (discriminator 4))
+  efi_call_rts (drivers/firmware/efi/runtime-wrappers.c:101)
+  [...]
 
-On 2/15/23 12:50, Darrell Kavanagh wrote:
-> Another Lenovo convertable which reports a landscape resolution of
-> 1920x1200 with a pitch of (1920 * 4) bytes, while the actual framebuffer
-> has a resolution of 1200x1920 with a pitch of (1200 * 4) bytes.
-> 
-> Signed-off-by: Darrell Kavanagh <darrell.kavanagh@gmail.com>
-> ---
-> Changes in v2:
-> 	- Improve commit message
+This seems to come from commit ff7a167961d1 ("arm64: efi: Execute
+runtime services from a dedicated stack") which adds a spinlock. This
+spinlock is taken through:
+efi_call_rts()
+\-efi_call_virt()
+  \-efi_call_virt_pointer()
+    \-arch_efi_call_virt_setup()
 
-Thanks, patch looks good to me:
+Make 'efi_rt_lock' a raw_spinlock to avoid being preempted.
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
+---
+ arch/arm64/include/asm/efi.h | 6 +++---
+ arch/arm64/kernel/efi.c      | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-Regards,
-
-Hans
-
-
-
-> ---
->  drivers/firmware/efi/sysfb_efi.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/drivers/firmware/efi/sysfb_efi.c b/drivers/firmware/efi/sysfb_efi.c
-> index 7882d4b3f2be..f06fdacc9bc8 100644
-> --- a/drivers/firmware/efi/sysfb_efi.c
-> +++ b/drivers/firmware/efi/sysfb_efi.c
-> @@ -264,6 +264,14 @@ static const struct dmi_system_id efifb_dmi_swap_width_height[] __initconst = {
->  					"Lenovo ideapad D330-10IGM"),
->  		},
->  	},
-> +	{
-> +		/* Lenovo IdeaPad Duet 3 10IGL5 with 1200x1920 portrait screen */
-> +		.matches = {
-> +			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-> +			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION,
-> +					"IdeaPad Duet 3 10IGL5"),
-> +		},
-> +	},
->  	{},
->  };
->  
+diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
+index 31d13a6001df..37dc2e8c3500 100644
+--- a/arch/arm64/include/asm/efi.h
++++ b/arch/arm64/include/asm/efi.h
+@@ -33,7 +33,7 @@ int efi_set_mapping_permissions(struct mm_struct *mm, efi_memory_desc_t *md);
+ ({									\
+ 	efi_virtmap_load();						\
+ 	__efi_fpsimd_begin();						\
+-	spin_lock(&efi_rt_lock);					\
++	raw_spin_lock(&efi_rt_lock);					\
+ })
+ 
+ #undef arch_efi_call_virt
+@@ -42,12 +42,12 @@ int efi_set_mapping_permissions(struct mm_struct *mm, efi_memory_desc_t *md);
+ 
+ #define arch_efi_call_virt_teardown()					\
+ ({									\
+-	spin_unlock(&efi_rt_lock);					\
++	raw_spin_unlock(&efi_rt_lock);					\
+ 	__efi_fpsimd_end();						\
+ 	efi_virtmap_unload();						\
+ })
+ 
+-extern spinlock_t efi_rt_lock;
++extern raw_spinlock_t efi_rt_lock;
+ efi_status_t __efi_rt_asm_wrapper(void *, const char *, ...);
+ 
+ #define ARCH_EFI_IRQ_FLAGS_MASK (PSR_D_BIT | PSR_A_BIT | PSR_I_BIT | PSR_F_BIT)
+diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
+index fab05de2e12d..216933cf47ee 100644
+--- a/arch/arm64/kernel/efi.c
++++ b/arch/arm64/kernel/efi.c
+@@ -145,7 +145,7 @@ asmlinkage efi_status_t efi_handle_corrupted_x18(efi_status_t s, const char *f)
+ 	return s;
+ }
+ 
+-DEFINE_SPINLOCK(efi_rt_lock);
++DEFINE_RAW_SPINLOCK(efi_rt_lock);
+ 
+ asmlinkage u64 *efi_rt_stack_top __ro_after_init;
+ 
+-- 
+2.25.1
 
