@@ -2,62 +2,58 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96F3A69AED0
-	for <lists+linux-efi@lfdr.de>; Fri, 17 Feb 2023 16:00:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2E0B69AF93
+	for <lists+linux-efi@lfdr.de>; Fri, 17 Feb 2023 16:33:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229491AbjBQPAb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 17 Feb 2023 10:00:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57466 "EHLO
+        id S229759AbjBQPdH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 17 Feb 2023 10:33:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229941AbjBQPA3 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 17 Feb 2023 10:00:29 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0BAC7290D;
-        Fri, 17 Feb 2023 07:00:06 -0800 (PST)
+        with ESMTP id S229630AbjBQPdG (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 17 Feb 2023 10:33:06 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3540C6CA1E
+        for <linux-efi@vger.kernel.org>; Fri, 17 Feb 2023 07:33:05 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 84BE9B82A26;
-        Fri, 17 Feb 2023 14:58:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CECF2C433D2;
-        Fri, 17 Feb 2023 14:58:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B19AB61DF1
+        for <linux-efi@vger.kernel.org>; Fri, 17 Feb 2023 15:33:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4B1C4339E
+        for <linux-efi@vger.kernel.org>; Fri, 17 Feb 2023 15:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676645931;
-        bh=MtqNCOwgfK+uXpcr0rZdEnDp31xRiNLfgJsnxPeWYqI=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=Y+nxlJ/gcm1x1jXsY3cF3B2F4DeZFxJ9wZOVnugbYAbAfjCUaUNp6p8wLm6FsPubc
-         y2vH2kqB56EDNmv6n9vtjALmNGH0PYbk1CIRl/oF53U5XcUxCzzv9XtK04QMvq4Qhg
-         n8t43QZ+dFseHw1S4ynHE9XUtR4jMpd2TtHiKWBgTrrnP9fdYcYAmbp4ojbYCkQni9
-         4JWBeXVn+vRxHUTHYiG8pQT89DD73jY/kZVn5jLYwZklPZsb1ujOFPKmcJKTzRnW6X
-         e7Z54JinCqoqpi2P+C/zcmlGwW5QT/aNTofmP7TJgXMt/maIyvhVUGBl4v5sE6sAGU
-         6ClN341Ryg/0A==
-From:   =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To:     Alexandre Ghiti <alexghiti@rivosinc.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Conor Dooley <conor@kernel.org>,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kasan-dev@googlegroups.com, linux-efi@vger.kernel.org
-Cc:     Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: Re: [PATCH v4 3/6] riscv: Move DTB_EARLY_BASE_VA to the kernel
- address space
-In-Reply-To: <20230203075232.274282-4-alexghiti@rivosinc.com>
-References: <20230203075232.274282-1-alexghiti@rivosinc.com>
- <20230203075232.274282-4-alexghiti@rivosinc.com>
-Date:   Fri, 17 Feb 2023 15:58:48 +0100
-Message-ID: <873574uymv.fsf@all.your.base.are.belong.to.us>
+        s=k20201202; t=1676647984;
+        bh=ltzaxKyqVg8EEJP7B7pgXDe2NY3u/1D6sXpu7Q7FoAM=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Xu56h8VtGApfXoFiMQAMZjxwg1Nksr2gm16gUkR6XybTz/wUGY/aQkAHBCOLC8TRy
+         4oRC8v1TMvpDBb4lbEskSQ1gaweRVC5eo+UXwDgbTCjpgauV/HlrWtotXtm+h4KIwf
+         n4LUFYHUo3IzmTjcnFye+6qbRXZfaaA5S+2w/FNP5i09Rctq1HRVyDfgL3yjU47h+R
+         EvU1Emc71e1jj9OJ9lzkp59jvA1INXgCFAW3j4PRVy0o6iBEyf6yMOlVm5MKSj5pJB
+         +fEn0QxN2alnwMsp5coGm7/zt+Ngn2PwEmfLxEYZIyOehIEWwFKs6WjsEI0Sy+wo6J
+         8gkesKRG3v+9g==
+Received: by mail-lf1-f49.google.com with SMTP id o3so2111387lfo.3
+        for <linux-efi@vger.kernel.org>; Fri, 17 Feb 2023 07:33:04 -0800 (PST)
+X-Gm-Message-State: AO0yUKXvkzEIjFRgo0bWFgdOjUS3DAeM4cRwy3spvOMaG/BhG1Dfl9cl
+        VaiQ93IBUNngr3Daw00F5/j4PITw4z1bSnIB0uM=
+X-Google-Smtp-Source: AK7set+81k9MkokWF1c9bWw5Z9xnjiEnJkDpYjXD0udnkfsIc2+e7Hr0xfoVYJ9YbXo7hT9+y/IXtrXvbutGhcnTNFM=
+X-Received: by 2002:a05:6512:4dd:b0:4d5:ca32:68a2 with SMTP id
+ w29-20020a05651204dd00b004d5ca3268a2mr463469lfq.7.1676647982114; Fri, 17 Feb
+ 2023 07:33:02 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+References: <20230215115045.9396-1-darrell.kavanagh@gmail.com> <fca0366b-fa32-b756-b149-876976f3a5da@redhat.com>
+In-Reply-To: <fca0366b-fa32-b756-b149-876976f3a5da@redhat.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 17 Feb 2023 16:32:50 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGP5FkEMeQzhuu=VUyhbW6yhCs8_5AifcwhR8qsbsG08w@mail.gmail.com>
+Message-ID: <CAMj1kXGP5FkEMeQzhuu=VUyhbW6yhCs8_5AifcwhR8qsbsG08w@mail.gmail.com>
+Subject: Re: [PATCH v2] firmware/efi sysfb_efi: Add quirk for Lenovo IdeaPad
+ Duet 3
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Darrell Kavanagh <darrell.kavanagh@gmail.com>,
+        linux-efi@vger.kernel.org, maxime@cerno.tech
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,19 +61,23 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Alexandre Ghiti <alexghiti@rivosinc.com> writes:
+On Wed, 15 Feb 2023 at 15:58, Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Hi,
+>
+> On 2/15/23 12:50, Darrell Kavanagh wrote:
+> > Another Lenovo convertable which reports a landscape resolution of
+> > 1920x1200 with a pitch of (1920 * 4) bytes, while the actual framebuffer
+> > has a resolution of 1200x1920 with a pitch of (1200 * 4) bytes.
+> >
+> > Signed-off-by: Darrell Kavanagh <darrell.kavanagh@gmail.com>
+> > ---
+> > Changes in v2:
+> >       - Improve commit message
+>
+> Thanks, patch looks good to me:
+>
+> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+>
 
-> The early virtual address should lie in the kernel address space for
-> inline kasan instrumentation to succeed, otherwise kasan tries to
-> dereference an address that does not exist in the address space (since
-> kasan only maps *kernel* address space, not the userspace).
->
-> Simply use the very first address of the kernel address space for the
-> early fdt mapping.
->
-> It allowed an Ubuntu kernel to boot successfully with inline
-> instrumentation.
->
-> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-
-Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@rivosinc.com>
+Thanks. I've queued this up in efi/next.
