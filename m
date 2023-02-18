@@ -2,82 +2,160 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2E0B69AF93
-	for <lists+linux-efi@lfdr.de>; Fri, 17 Feb 2023 16:33:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D49969B803
+	for <lists+linux-efi@lfdr.de>; Sat, 18 Feb 2023 05:17:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229759AbjBQPdH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 17 Feb 2023 10:33:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33098 "EHLO
+        id S229520AbjBRERz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 17 Feb 2023 23:17:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229630AbjBQPdG (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 17 Feb 2023 10:33:06 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3540C6CA1E
-        for <linux-efi@vger.kernel.org>; Fri, 17 Feb 2023 07:33:05 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B19AB61DF1
-        for <linux-efi@vger.kernel.org>; Fri, 17 Feb 2023 15:33:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4B1C4339E
-        for <linux-efi@vger.kernel.org>; Fri, 17 Feb 2023 15:33:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676647984;
-        bh=ltzaxKyqVg8EEJP7B7pgXDe2NY3u/1D6sXpu7Q7FoAM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Xu56h8VtGApfXoFiMQAMZjxwg1Nksr2gm16gUkR6XybTz/wUGY/aQkAHBCOLC8TRy
-         4oRC8v1TMvpDBb4lbEskSQ1gaweRVC5eo+UXwDgbTCjpgauV/HlrWtotXtm+h4KIwf
-         n4LUFYHUo3IzmTjcnFye+6qbRXZfaaA5S+2w/FNP5i09Rctq1HRVyDfgL3yjU47h+R
-         EvU1Emc71e1jj9OJ9lzkp59jvA1INXgCFAW3j4PRVy0o6iBEyf6yMOlVm5MKSj5pJB
-         +fEn0QxN2alnwMsp5coGm7/zt+Ngn2PwEmfLxEYZIyOehIEWwFKs6WjsEI0Sy+wo6J
-         8gkesKRG3v+9g==
-Received: by mail-lf1-f49.google.com with SMTP id o3so2111387lfo.3
-        for <linux-efi@vger.kernel.org>; Fri, 17 Feb 2023 07:33:04 -0800 (PST)
-X-Gm-Message-State: AO0yUKXvkzEIjFRgo0bWFgdOjUS3DAeM4cRwy3spvOMaG/BhG1Dfl9cl
-        VaiQ93IBUNngr3Daw00F5/j4PITw4z1bSnIB0uM=
-X-Google-Smtp-Source: AK7set+81k9MkokWF1c9bWw5Z9xnjiEnJkDpYjXD0udnkfsIc2+e7Hr0xfoVYJ9YbXo7hT9+y/IXtrXvbutGhcnTNFM=
-X-Received: by 2002:a05:6512:4dd:b0:4d5:ca32:68a2 with SMTP id
- w29-20020a05651204dd00b004d5ca3268a2mr463469lfq.7.1676647982114; Fri, 17 Feb
- 2023 07:33:02 -0800 (PST)
+        with ESMTP id S229461AbjBRERy (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 17 Feb 2023 23:17:54 -0500
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 993AD4205
+        for <linux-efi@vger.kernel.org>; Fri, 17 Feb 2023 20:17:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676693869; x=1708229869;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=QFCUasc5EX6F9qkNsbYMWwOYlJoZ1b2T/6U37TJg6aM=;
+  b=bDdwGsqWaBsnH4yts/Yk9Xj0ID0Yb74u0ZSZGbnBZMBrGND7tY++S5vt
+   gFBIw0H6ZbDkuZ7pc1k19Q2um+X6Rs7BHjgd5/a1rfoQAgOpP/8GlHUpv
+   njngiBlujyMAR1AcpAJuTQa1pSUtW58llYCbXgnfpzfsZPt/7jFjFq1Ja
+   KSY6ruWrAdwEoNj+8xRbtj+30XMtScY8Zgr7O81QewhlgGQmp9NykItue
+   DuBthhJ+IMMmeuI2PleVG8KmHf9qY7GHBVS51jOtRdQyt8mBVGXFEQ+Q4
+   n9qKXQKvzwk1cX8tqv+sYRNlCPdE0Z9kI0MYfnRsdefYKIoWWh7A3wNh8
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10624"; a="329858145"
+X-IronPort-AV: E=Sophos;i="5.97,306,1669104000"; 
+   d="scan'208";a="329858145"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2023 20:17:49 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10624"; a="620597501"
+X-IronPort-AV: E=Sophos;i="5.97,306,1669104000"; 
+   d="scan'208";a="620597501"
+Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 17 Feb 2023 20:17:47 -0800
+Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pTEfS-000C6r-2R;
+        Sat, 18 Feb 2023 04:17:46 +0000
+Date:   Sat, 18 Feb 2023 12:17:05 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS 685c6689bdf8001cd0261b6210063ee0910bf368
+Message-ID: <63f05141.04hUHzo1y20InEaE%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20230215115045.9396-1-darrell.kavanagh@gmail.com> <fca0366b-fa32-b756-b149-876976f3a5da@redhat.com>
-In-Reply-To: <fca0366b-fa32-b756-b149-876976f3a5da@redhat.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 17 Feb 2023 16:32:50 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGP5FkEMeQzhuu=VUyhbW6yhCs8_5AifcwhR8qsbsG08w@mail.gmail.com>
-Message-ID: <CAMj1kXGP5FkEMeQzhuu=VUyhbW6yhCs8_5AifcwhR8qsbsG08w@mail.gmail.com>
-Subject: Re: [PATCH v2] firmware/efi sysfb_efi: Add quirk for Lenovo IdeaPad
- Duet 3
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Darrell Kavanagh <darrell.kavanagh@gmail.com>,
-        linux-efi@vger.kernel.org, maxime@cerno.tech
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,LONGWORDS,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 15 Feb 2023 at 15:58, Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi,
->
-> On 2/15/23 12:50, Darrell Kavanagh wrote:
-> > Another Lenovo convertable which reports a landscape resolution of
-> > 1920x1200 with a pitch of (1920 * 4) bytes, while the actual framebuffer
-> > has a resolution of 1200x1920 with a pitch of (1200 * 4) bytes.
-> >
-> > Signed-off-by: Darrell Kavanagh <darrell.kavanagh@gmail.com>
-> > ---
-> > Changes in v2:
-> >       - Improve commit message
->
-> Thanks, patch looks good to me:
->
-> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
->
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+branch HEAD: 685c6689bdf8001cd0261b6210063ee0910bf368  firmware/efi sysfb_efi: Add quirk for Lenovo IdeaPad Duet 3
 
-Thanks. I've queued this up in efi/next.
+elapsed time: 729m
+
+configs tested: 78
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+alpha                            allyesconfig
+alpha                               defconfig
+arc                              allyesconfig
+arc                                 defconfig
+arc                  randconfig-r043-20230217
+arm                              allmodconfig
+arm                              allyesconfig
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+csky                                defconfig
+i386                             allyesconfig
+i386                              debian-10.3
+i386                                defconfig
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+ia64                             allmodconfig
+ia64                                defconfig
+loongarch                        allmodconfig
+loongarch                         allnoconfig
+loongarch                           defconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                        m5307c3_defconfig
+mips                             allmodconfig
+mips                             allyesconfig
+mips                           xway_defconfig
+nios2                               defconfig
+parisc                              defconfig
+parisc64                            defconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+riscv                            allmodconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                randconfig-r042-20230217
+riscv                          rv32_defconfig
+s390                             allmodconfig
+s390                             allyesconfig
+s390                                defconfig
+s390                 randconfig-r044-20230217
+sh                               allmodconfig
+sh                            titan_defconfig
+sparc                               defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                            allnoconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                                  kexec
+x86_64                        randconfig-a002
+x86_64                        randconfig-a004
+x86_64                        randconfig-a006
+x86_64                        randconfig-a011
+x86_64                        randconfig-a013
+x86_64                        randconfig-a015
+x86_64                               rhel-8.3
+
+clang tested configs:
+arm                     am200epdkit_defconfig
+arm                  randconfig-r046-20230217
+hexagon              randconfig-r041-20230217
+hexagon              randconfig-r045-20230217
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
+powerpc                  mpc866_ads_defconfig
+riscv                          rv32_defconfig
+x86_64                        randconfig-a001
+x86_64                        randconfig-a003
+x86_64                        randconfig-a005
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
