@@ -2,164 +2,128 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CA8569C400
-	for <lists+linux-efi@lfdr.de>; Mon, 20 Feb 2023 02:46:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DAFF69C4E0
+	for <lists+linux-efi@lfdr.de>; Mon, 20 Feb 2023 06:17:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229884AbjBTBq5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 19 Feb 2023 20:46:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51534 "EHLO
+        id S229921AbjBTFRw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 20 Feb 2023 00:17:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229687AbjBTBq4 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 19 Feb 2023 20:46:56 -0500
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7628DC155
-        for <linux-efi@vger.kernel.org>; Sun, 19 Feb 2023 17:46:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676857615; x=1708393615;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=6+V66ibJse8Rrko9Cj4281E3HKjQzJBKMFFuGB1M09M=;
-  b=iJqmZH/d38uxhcz/OHruxV9OEF9GIeF/gU1dBpX4zNVQSM+OxTRthlNB
-   pkcp0+cVfBOduv07u+tvzJCMhINwH5UqoOpD2CFVI9c3XzX0Y8CdULGkE
-   q/IR7nMJPtfh3851Fej6brNVajCpU8pgnAzcfYFtR+kMOhUfh1f8HLGcx
-   /Rxn6cYkhWoJCUq8SRClNvTQ2ZLOETG2hP880FIJEruXwujQvxlYzgyC2
-   NHK2AloNCSJWU6uiionjqk2gZXo7OfGrzZG1tPG9EHTWf07i+kszC0SFe
-   zNIlD7KskO/bLAVrm4AF8aZS9/pWJKCRufLTjEwXSdFF5NLYZp32IdXJg
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10626"; a="334506338"
-X-IronPort-AV: E=Sophos;i="5.97,311,1669104000"; 
-   d="scan'208";a="334506338"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2023 17:46:54 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10626"; a="620987970"
-X-IronPort-AV: E=Sophos;i="5.97,311,1669104000"; 
-   d="scan'208";a="620987970"
-Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 19 Feb 2023 17:46:53 -0800
-Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pTvGW-000DXx-2Q;
-        Mon, 20 Feb 2023 01:46:52 +0000
-Date:   Mon, 20 Feb 2023 09:46:15 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS e1d447157f232c650e6f32c9fb89ff3d0207c69a
-Message-ID: <63f2d0e7.KK7v5BDkDCok9RF2%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S229591AbjBTFRu (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 20 Feb 2023 00:17:50 -0500
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A33AACDCB
+        for <linux-efi@vger.kernel.org>; Sun, 19 Feb 2023 21:17:47 -0800 (PST)
+Received: by mail-pg1-x533.google.com with SMTP id k29so380657pgm.3
+        for <linux-efi@vger.kernel.org>; Sun, 19 Feb 2023 21:17:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0sLDMeC85ViUoFkMg7Sog4nZA2hj3556Fo2Z4Pqw9Sk=;
+        b=qW4W7ZTKa/M15bHAUtsRRLNES3oXoklpkWjqs5Fx6B9FRjBU1n5KqFhbVvQADxrnKR
+         zlTi4CUlgJRb029/2MBQBpcKr3aHLxtL3RvnmCEjiNHu9ibVu/R4RQb3J/U0dnklmOET
+         LoNnXaxP7mRJWKOWy73OYWkEWfrcxP0MCxpXSd2+dcVJn49NqcDJSgsEerRtdxoiJ1bi
+         mo22cNfkQoqfjVKdxZKueuipxw5Wa+mWgO6UHtewlYgryoDkM0YjeeGHntXepBP3krnj
+         ZEaTYgVReo8X2YkDNCcSy75di28uVLkw/9pHzprG8SZKyALbRt/++CNQUm0c1B06/8jJ
+         UFOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0sLDMeC85ViUoFkMg7Sog4nZA2hj3556Fo2Z4Pqw9Sk=;
+        b=HgAD1+wNBGmMDCKc4ug/7qAc0twNO4L0+3YJlQAFtiBRJPEpP1fQwVaIDya6Qj+Y/G
+         IkC5c54b1ScGGuCH/Int6Zo5BqorLAIrtN8mJPJaS8UggYlI2q7zkhLIe8W3JNeie4QT
+         zPWILeh8Qsa8PqOPtADlIDlfYHmx7aOPhFC1xMdDyvHhR/Y5bB2kK0Bld7OOiLKNsH+Y
+         4j8Zqim+qNVqnlhvPnN6uqnAd6y29ysNEaHbq07Ow0Ws1sG2e7prSKlr+Jkxt+O5Ypqt
+         5Xl3lZziw0WblSrMtGzrugr9c5cr7WD+XE3DuZ3DRINiqXvPo+OB/MgU3hOsj832PBS8
+         Eb0A==
+X-Gm-Message-State: AO0yUKWAAv9qdCYaXYKDKQOZSL/wh73DK9HtczR1duYH6kJmRX4woKTx
+        cyS8v2BgPOld/AijVyqy3Rbaug==
+X-Google-Smtp-Source: AK7set9jfzBy1Ucif/YWh1VbkaJWKNpBKxF0ncP18jRXBZW3PqENp5hXsEe6rOPC6ESvPGkAS/700Q==
+X-Received: by 2002:aa7:8f1d:0:b0:5a9:9ed0:164 with SMTP id x29-20020aa78f1d000000b005a99ed00164mr1261190pfr.32.1676870267106;
+        Sun, 19 Feb 2023 21:17:47 -0800 (PST)
+Received: from localhost.localdomain (fp9875a45d.knge128.ap.nuro.jp. [152.117.164.93])
+        by smtp.gmail.com with ESMTPSA id h5-20020a62b405000000b005ae8e94b0d5sm3192087pfn.107.2023.02.19.21.17.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Feb 2023 21:17:46 -0800 (PST)
+From:   Masahisa Kojima <masahisa.kojima@linaro.org>
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        Jens Wiklander <jens.wiklander@linaro.org>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        linux-kernel@vger.kernel.org, op-tee@lists.trustedfirmware.org
+Cc:     Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Masahisa Kojima <masahisa.kojima@linaro.org>,
+        linux-efi@vger.kernel.org
+Subject: [PATCH v2 1/4] efi: expose efivar generic ops register function
+Date:   Mon, 20 Feb 2023 14:17:19 +0900
+Message-Id: <20230220051723.1257-2-masahisa.kojima@linaro.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230220051723.1257-1-masahisa.kojima@linaro.org>
+References: <20230220051723.1257-1-masahisa.kojima@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: e1d447157f232c650e6f32c9fb89ff3d0207c69a  firmware/efi sysfb_efi: Add quirk for Lenovo IdeaPad Duet 3
+This is a preparation for supporting efivar operations
+provided by other than efi subsystem.
+Both register and unregister functions are exposed
+so that non-efi subsystem can revert the efi generic
+operation.
 
-elapsed time: 722m
+Co-developed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Signed-off-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Signed-off-by: Masahisa Kojima <masahisa.kojima@linaro.org>
+---
+ drivers/firmware/efi/efi.c | 12 ++++++++++++
+ include/linux/efi.h        |  3 +++
+ 2 files changed, 15 insertions(+)
 
-configs tested: 84
-configs skipped: 4
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-alpha                            allyesconfig
-alpha                               defconfig
-arc                              allyesconfig
-arc                                 defconfig
-arc                  randconfig-r043-20230219
-arc                        vdk_hs38_defconfig
-arm                              allmodconfig
-arm                              allyesconfig
-arm                                 defconfig
-arm                      footbridge_defconfig
-arm                            zeus_defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-csky                                defconfig
-i386                             allyesconfig
-i386                              debian-10.3
-i386                                defconfig
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                      gensparse_defconfig
-loongarch                        allmodconfig
-loongarch                         allnoconfig
-loongarch                           defconfig
-m68k                             allmodconfig
-m68k                                defconfig
-mips                             allmodconfig
-mips                             allyesconfig
-nios2                               defconfig
-parisc                              defconfig
-parisc64                            defconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-powerpc                     asp8347_defconfig
-riscv                            allmodconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                    nommu_k210_defconfig
-riscv                randconfig-r042-20230219
-riscv                          rv32_defconfig
-s390                             allmodconfig
-s390                             allyesconfig
-s390                                defconfig
-s390                 randconfig-r044-20230219
-sh                               allmodconfig
-sh                         apsh4a3a_defconfig
-sh                          rsk7203_defconfig
-sparc                               defconfig
-sparc64                             defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                            allnoconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                                  kexec
-x86_64                        randconfig-a002
-x86_64                        randconfig-a004
-x86_64                        randconfig-a006
-x86_64                        randconfig-a011
-x86_64                        randconfig-a013
-x86_64                        randconfig-a015
-x86_64                               rhel-8.3
-
-clang tested configs:
-arm                  randconfig-r046-20230219
-hexagon              randconfig-r041-20230219
-hexagon              randconfig-r045-20230219
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
-i386                          randconfig-a011
-i386                          randconfig-a013
-i386                          randconfig-a015
-mips                        maltaup_defconfig
-powerpc                    gamecube_defconfig
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 4bb30434ee4a..abaf77773bdd 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -227,6 +227,18 @@ static void generic_ops_unregister(void)
+ 	efivars_unregister(&generic_efivars);
+ }
+ 
++void efivars_generic_ops_register(void)
++{
++	generic_ops_register();
++}
++EXPORT_SYMBOL_GPL(efivars_generic_ops_register);
++
++void efivars_generic_ops_unregister(void)
++{
++	generic_ops_unregister();
++}
++EXPORT_SYMBOL_GPL(efivars_generic_ops_unregister);
++
+ #ifdef CONFIG_EFI_CUSTOM_SSDT_OVERLAYS
+ #define EFIVAR_SSDT_NAME_MAX	16UL
+ static char efivar_ssdt[EFIVAR_SSDT_NAME_MAX] __initdata;
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index df88786b5947..7e5239da87bf 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1336,4 +1336,7 @@ bool efi_config_table_is_usable(const efi_guid_t *guid, unsigned long table)
+ 	return xen_efi_config_table_is_usable(guid, table);
+ }
+ 
++void efivars_generic_ops_register(void);
++void efivars_generic_ops_unregister(void);
++
+ #endif /* _LINUX_EFI_H */
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.30.2
+
