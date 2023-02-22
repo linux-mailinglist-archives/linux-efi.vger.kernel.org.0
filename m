@@ -2,54 +2,72 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F25669E3F1
-	for <lists+linux-efi@lfdr.de>; Tue, 21 Feb 2023 16:50:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1B8269EE6F
+	for <lists+linux-efi@lfdr.de>; Wed, 22 Feb 2023 06:39:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234425AbjBUPun (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 21 Feb 2023 10:50:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47284 "EHLO
+        id S230048AbjBVFjV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 22 Feb 2023 00:39:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234246AbjBUPum (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 21 Feb 2023 10:50:42 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96B942684B;
-        Tue, 21 Feb 2023 07:50:41 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 22DCAB80F03;
-        Tue, 21 Feb 2023 15:50:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62303C433D2;
-        Tue, 21 Feb 2023 15:50:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676994638;
-        bh=mz1tP6BevVUDwP7gGFCXZ6st2qmh6ulbhacqzwUvUso=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=GBgce3wlKR5rpfnz/ODQ0zKLchmDKoi2uiK6MkclthkVW7rUR/b0V8MXCYj6wrIiD
-         V/lZbK5MeV07fqkb+EHzIP0wW+rTmvtDsIpbSLtHUf9Tc75UK9YYj7wqCWlyH9u9Fw
-         X7Y0kxQll0sSTor+6HssmDImeEoQXk4RIiIp4cTXOiOfYxIv4TOWCJasfcrGtsZVri
-         6GJl5n+t3WDeVtcz+YqMxWs3Xfzs7QGek1ngsZnUb0Z3QB0gy63MghJFdy66j/6muU
-         r+Q059k6Ov+NN9fgSbCbmkujKargusrMpITLkizyFvGsdsSWu5khC1Qvpn5/Lr1+pM
-         Z4mHNBdvkQhog==
-From:   =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To:     Alexandre Ghiti <alexghiti@rivosinc.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        with ESMTP id S230339AbjBVFjS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 22 Feb 2023 00:39:18 -0500
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA7AB3608C
+        for <linux-efi@vger.kernel.org>; Tue, 21 Feb 2023 21:39:17 -0800 (PST)
+Received: by mail-pf1-x435.google.com with SMTP id u20so1068455pfm.7
+        for <linux-efi@vger.kernel.org>; Tue, 21 Feb 2023 21:39:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0sLDMeC85ViUoFkMg7Sog4nZA2hj3556Fo2Z4Pqw9Sk=;
+        b=BHjb8C4cHgLz1HzRO4VRGO4k2QJsmCcNyEiNkq5lTCjvUq4Di7IseU1UwO7tNyTVdj
+         bNEEKDEY0Aw2GKO6qxiKJKBRbvt/AfOjMdlcHCZzBNPecKAgK66/x/gS1gCDLo0gdd2m
+         e2vUnqYhNa90mSxJwFLv/n7qZmAxRemoxMO/Pl0FzRAEcuStnKQPzJAaYmZjDBAYEEst
+         NpUW0QCDOwGJVOLdDZqQaTFGy7xMhLj2XcUq9rOCqTjYbiQDIKGRNMnWwjnIni0ytVSf
+         TLU+DBGdE1UdYcMyeq+X65AhUJ1LHkRdhexcoI7y4hDd5vx/xiRKEBu9LUbZwQYp89eh
+         fgSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0sLDMeC85ViUoFkMg7Sog4nZA2hj3556Fo2Z4Pqw9Sk=;
+        b=veumyVU3Z4XgPUdvfQvMnf4wZf5c5OldRori9yzu6tm243fwWYJYXr5pgLcvI8UOQq
+         oFty+SYlXtKAAINESjkLHKKMb7qgodV0Xpv/TtcBb9+4l8fMYz7MVtP1Pp/ZJwgXRoxT
+         IWbmFqlgRe6R6QLiD14813kpP/MU/QHD0ajk1bt4YgXyaUOVeszkJWPyAVtfSNSz9Mfl
+         gHNvfmopoLwbYj+hM6X14q9Bog2hfrMsNTS1OFkExxqC5yDzzuQ98FH2fY4wxmbZCons
+         BQofoatrzv+vQFCZ3Uhwr/QQAgqxlFtNUqTM+fng8KNWt6i6uMoCPT5vAEH5RaaKNBZH
+         tGVA==
+X-Gm-Message-State: AO0yUKUEJEUAuVSd4i9fqZx5y1V8TXWhPGIFxCQqoSQ8fDNgw1DhTsnI
+        M9/lPJYbIRIGB/0+2lnrlzI8HQ==
+X-Google-Smtp-Source: AK7set8Is8WfXxn4KLyxy71JFEQc6uUnlBzTLEDzAxwg1ERJzQ9z/z1GHMb0j65/shf8yNvouxYAwQ==
+X-Received: by 2002:a62:52d7:0:b0:5a9:d4fa:d3c7 with SMTP id g206-20020a6252d7000000b005a9d4fad3c7mr6353164pfb.7.1677044357377;
+        Tue, 21 Feb 2023 21:39:17 -0800 (PST)
+Received: from localhost.localdomain (fp9875a45d.knge128.ap.nuro.jp. [152.117.164.93])
+        by smtp.gmail.com with ESMTPSA id 3-20020aa79203000000b005931a44a239sm1107130pfo.112.2023.02.21.21.39.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Feb 2023 21:39:16 -0800 (PST)
+From:   Masahisa Kojima <masahisa.kojima@linaro.org>
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        Jens Wiklander <jens.wiklander@linaro.org>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        linux-kernel@vger.kernel.org, op-tee@lists.trustedfirmware.org
+Cc:     Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Masahisa Kojima <masahisa.kojima@linaro.org>,
         linux-efi@vger.kernel.org
-Cc:     Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: Re: [PATCH 0/4] riscv: Introduce KASLR
-In-Reply-To: <20230215145113.465558-1-alexghiti@rivosinc.com>
-References: <20230215145113.465558-1-alexghiti@rivosinc.com>
-Date:   Tue, 21 Feb 2023 16:50:36 +0100
-Message-ID: <878rgrqapf.fsf@all.your.base.are.belong.to.us>
+Subject: [PATCH v3 1/3] efi: expose efivar generic ops register function
+Date:   Wed, 22 Feb 2023 14:38:22 +0900
+Message-Id: <20230222053825.992-2-masahisa.kojima@linaro.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230222053825.992-1-masahisa.kojima@linaro.org>
+References: <20230222053825.992-1-masahisa.kojima@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,50 +75,55 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Alexandre Ghiti <alexghiti@rivosinc.com> writes:
+This is a preparation for supporting efivar operations
+provided by other than efi subsystem.
+Both register and unregister functions are exposed
+so that non-efi subsystem can revert the efi generic
+operation.
 
-> The following KASLR implementation allows to randomize the kernel mapping:
->
-> - virtually: we expect the bootloader to provide a seed in the device-tree
-> - physically: only implemented in the EFI stub, it relies on the firmware=
- to
->   provide a seed using EFI_RNG_PROTOCOL. arm64 has a similar implementati=
-on
->   hence the patch 3 factorizes KASLR related functions for riscv to take
->   advantage.
->
-> The new virtual kernel location is limited by the early page table that o=
-nly
-> has one PUD and with the PMD alignment constraint, the kernel can only ta=
-ke
-> < 512 positions.
->
-> Note that the patch "riscv: Use PUD/P4D/PGD pages for the linear
-> mapping" is necessary to retrieve the memory below the physical kernel
-> address, so that the EFI stub does not have to try to relocate the kernel
-> as close as possible to the start of dram.
->
-> This patchset is rebased on top of:
->
-> Introduce 64b relocatable kernel (https://lore.kernel.org/lkml/2023021514=
-3626.453491-1-alexghiti@rivosinc.com/)
-> RISC-V kasan rework (https://lore.kernel.org/lkml/Y6TTvku%2FyuSjm42j@spud=
-/T/)
-> riscv: Use PUD/P4D/PGD pages for the linear mapping (https://lore.kernel.=
-org/lkml/20230125114229.hrhsyw4aegrnmoau@orel/T/)
-> riscv: Allow to downgrade paging mode from the command line (https://lore=
-.kernel.org/lkml/CAHVXubjeSMvfTPnvrnYRupOGx6+vUvUGfRS3piTeo=3DTH2cHKNg@mail=
-.gmail.com/)
-> base-commit-tag: v6.2-rc7
->
-> This patchset was tested with u-boot boottime service for the seed on:
-> - ubuntu defconfig + kasan outline (sv39, sv48, sv57): OK
-> - ubuntu defconfig + kasan inline (sv39, sv48, sv57): OK
-> - ubuntu defconfg (sv39, sv48, sv57): OK
+Co-developed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Signed-off-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Signed-off-by: Masahisa Kojima <masahisa.kojima@linaro.org>
+---
+ drivers/firmware/efi/efi.c | 12 ++++++++++++
+ include/linux/efi.h        |  3 +++
+ 2 files changed, 15 insertions(+)
 
-I've taken the series for a spin (qemu u-boot UEFI, and qemu non-UEFI),
-on-top of the patches outline above, but with 6.2 proper.
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 4bb30434ee4a..abaf77773bdd 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -227,6 +227,18 @@ static void generic_ops_unregister(void)
+ 	efivars_unregister(&generic_efivars);
+ }
+ 
++void efivars_generic_ops_register(void)
++{
++	generic_ops_register();
++}
++EXPORT_SYMBOL_GPL(efivars_generic_ops_register);
++
++void efivars_generic_ops_unregister(void)
++{
++	generic_ops_unregister();
++}
++EXPORT_SYMBOL_GPL(efivars_generic_ops_unregister);
++
+ #ifdef CONFIG_EFI_CUSTOM_SSDT_OVERLAYS
+ #define EFIVAR_SSDT_NAME_MAX	16UL
+ static char efivar_ssdt[EFIVAR_SSDT_NAME_MAX] __initdata;
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index df88786b5947..7e5239da87bf 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1336,4 +1336,7 @@ bool efi_config_table_is_usable(const efi_guid_t *guid, unsigned long table)
+ 	return xen_efi_config_table_is_usable(guid, table);
+ }
+ 
++void efivars_generic_ops_register(void);
++void efivars_generic_ops_unregister(void);
++
+ #endif /* _LINUX_EFI_H */
+-- 
+2.30.2
 
-For the series:
-Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@rivosinc.com>
-Tested-by: Bj=C3=B6rn T=C3=B6pel <bjorn@rivosinc.com>
