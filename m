@@ -2,90 +2,77 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BE4F6A1CAB
-	for <lists+linux-efi@lfdr.de>; Fri, 24 Feb 2023 14:06:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A60376A3616
+	for <lists+linux-efi@lfdr.de>; Mon, 27 Feb 2023 02:03:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229456AbjBXNGZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 24 Feb 2023 08:06:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37368 "EHLO
+        id S229720AbjB0BDx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 26 Feb 2023 20:03:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjBXNGZ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 24 Feb 2023 08:06:25 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FB21F959
-        for <linux-efi@vger.kernel.org>; Fri, 24 Feb 2023 05:06:24 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 570DAB81C76
-        for <linux-efi@vger.kernel.org>; Fri, 24 Feb 2023 13:06:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55114C433D2;
-        Fri, 24 Feb 2023 13:06:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677243981;
-        bh=1mGz+w0RjzaG/ZEeVR8AXX1W9VVWkhRGaVyM0jSyMNw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VWZP9WcxaG4nTafTfsWQTl7wNK88LprQhbeokcox21v+J8XEpXXZ7zRhAAAVEUZsi
-         KPcONO0PJrWsELCj4fFC+JGixnka+df1bNaBQaCJ0xo7QwJCcMKKiRdeZzhulWPWbX
-         DAIpRWjP031t3k/LqEwl2rCfDP/x3pKDlu3x0fJnIkCSFFyBK2CpijG3ykrc4RSrND
-         wJurxbApF9ODqqtpFfaEL2kyWqxfUtkv4Tf2Sue6lAplUAD0DBN1wlDfQmu9vzScqm
-         MBdi12E/soWquoA0ARgnwcebUaodg+Qshq5l0abSWpxVNHELWGTwHPDcVkCJ4xz2gT
-         i+0x0BoxPi+8w==
-Date:   Fri, 24 Feb 2023 13:06:16 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
-        will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com,
-        maz@kernel.org
-Subject: Re: [PATCH] arm64: kaslr: don't pretend KASLR is enabled if offset <
- MIN_KIMG_ALIGN
-Message-ID: <Y/i2SH+a7aXZM1pa@sirena.org.uk>
-References: <20230223204101.1500373-1-ardb@kernel.org>
+        with ESMTP id S229507AbjB0BDw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 26 Feb 2023 20:03:52 -0500
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8326B44B
+        for <linux-efi@vger.kernel.org>; Sun, 26 Feb 2023 17:03:47 -0800 (PST)
+Received: by mail-lf1-x135.google.com with SMTP id i9so6473786lfc.6
+        for <linux-efi@vger.kernel.org>; Sun, 26 Feb 2023 17:03:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=weYNpobTz7e34lKnlfhxYchHcnpoQgNkJdKwW1l0gho=;
+        b=Bg075geJRtLuk5nD33/cHYbxzauamLadOVEFdrO289zAmE3h2RG2Jlc10oLzP0aFlv
+         9ULN6HxpTLct7w30955hFlDvGU/53vTcyAoqiegyfxmRdooh57F3JX0uXZLVG52cADDp
+         pbUIOE0nXPd1/JLwzQT4PW8wVHn9a2eQ+7Ntf6BvV2WdAUQSj8/dRyndTpLCo4VEuVgX
+         7KYXFq6IaRK6zXhv1SGp3EnmYQmjr4ezx4PCnwb8O/GpVTYSFK41X9swkjbTcLdT2zEL
+         OFj5vQOMcoj5szGnljIgASkScI/NMp+7GgcBOyAUO+XTz2ljIkt0EZqeC/J8ql4XFfCR
+         B4Gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=weYNpobTz7e34lKnlfhxYchHcnpoQgNkJdKwW1l0gho=;
+        b=OPEyLqG1UE5HFsUF31zL3KgwHYddDQ5dfmJe1c3QZ6hAEXI2l/H8UxJJY91gCzUAuw
+         dsgMQYGF/7xVXqRpyZce0bnFwKP9+Drd20vnDL59wqn/U9QQx/aqyeDjmVGoKyqMCFH3
+         fk6hcLYMz00Zj5QdS3hMkCFHgFvITznX7Q/bVrvSA/tsQ0i4PjXj/J5C1wqK/xCNdaK8
+         DYMXOYPiZwc26+GkT97zC3h53xIFlIstRKTm3QSmBSvR4aJhu5NaNvS3OJRfj2vZtw3X
+         Wgx61D3Rsc5jMEJzHqIs9OkY7UtK9OeXZw3izfU+86wr1nER5ykqd/5o1uHboXjVDJlz
+         zoKw==
+X-Gm-Message-State: AO0yUKW4ODcte3+F2Mw0XEMHByW4BLF2KoRnFvwJURw7j/2r7CXQ0IpL
+        XzLzXlM4CyfdGFIweKB9rmWsMYzZ5fAWk3xHAmo=
+X-Google-Smtp-Source: AK7set+8B2eXY795400Ygu65cTPLrxfKe9xyDBnQCL3BplyEWYhocag/7r+D61SM7SGjuSIaII2D2WAXHIihef4q8m4=
+X-Received: by 2002:a05:6512:73:b0:4d5:ca42:e43a with SMTP id
+ i19-20020a056512007300b004d5ca42e43amr6997518lfo.3.1677459825939; Sun, 26 Feb
+ 2023 17:03:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="186QMZB+iBK+ct7K"
-Content-Disposition: inline
-In-Reply-To: <20230223204101.1500373-1-ardb@kernel.org>
-X-Cookie: The early worm gets the bird.
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a89:b8f:0:b0:187:2c43:10df with HTTP; Sun, 26 Feb 2023
+ 17:03:45 -0800 (PST)
+From:   Adel Aldoseri <adelaldoseri1@gmail.com>
+Date:   Sun, 26 Feb 2023 17:03:45 -0800
+Message-ID: <CAECeVmTV+NDTVNWw8ORBv88TT99RyCvZkwkZbzTFMdcDQ15cQQ@mail.gmail.com>
+Subject: We finance viable projects only
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=3.6 required=5.0 tests=BAYES_99,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+Attention: Sir
 
---186QMZB+iBK+ct7K
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Our Company is willing, ready to help you grow your network and offer
+you Loan funds to complete and fund your existing Projects. We can
+send you our Company Terms and Condition after review of your project
+plan and executive summary of your project, if you are serious and
+Interested contact us for further Information:
 
-On Thu, Feb 23, 2023 at 09:41:01PM +0100, Ard Biesheuvel wrote:
 
-> This means that a KASLR offset of less than 2 MiB is simply the product
-> of this physical displacement, and no randomization has actually taken
-> place. Currently, we use 'kaslr_offset() > 0' to decide whether or not
-> randomization has occurred, and so we misidentify this case.
+Best regards,
 
-Making an explicit function to check if we've enabled KASLR is also a
-nice cleanup in itself.
-
-Reviewed-by: Mark Brown <broonie@kernel.org>
-
---186QMZB+iBK+ct7K
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmP4tkgACgkQJNaLcl1U
-h9BQbwf8DZ42+KG92TbIQZLbQHG59r9vI2kydLs0U+py+/fsaC9uEZamb5jp7uqv
-sQHCUWmd6MFn2Jz5PlwJaszYIkhc7e2aR91IIHH4z7cZzU0L5zpEYH/4I9bcBwpa
-+2LdnWVBwPc1USd3l1oOJeTm5dwZEkKFGMDqMqJ4MPcuV9M3ftq/4UJNh5/XHXeY
-Q006j1Smhf0bVEg7iNxqtsjEW+b6fOPqCQZEfh5RXmxOLxJZ0f+u4f/FKouEWfeu
-PuSs+CNbF6TOLmxpQ034YnQttKvhRc87kJIWXIXS+dxi8HF4s/pBU5UzdrozSHk4
-UFT7sqiPlWF+bls2j79t5lNHlK4E9w==
-=gF8I
------END PGP SIGNATURE-----
-
---186QMZB+iBK+ct7K--
+Adel Aldoseri
