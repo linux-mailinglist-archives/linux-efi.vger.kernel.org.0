@@ -2,43 +2,44 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1214A6A7101
-	for <lists+linux-efi@lfdr.de>; Wed,  1 Mar 2023 17:30:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D8DE6A7108
+	for <lists+linux-efi@lfdr.de>; Wed,  1 Mar 2023 17:30:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229693AbjCAQa0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 1 Mar 2023 11:30:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50554 "EHLO
+        id S229600AbjCAQaf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 1 Mar 2023 11:30:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229876AbjCAQaD (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 1 Mar 2023 11:30:03 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D0EF4393C;
-        Wed,  1 Mar 2023 08:29:53 -0800 (PST)
+        with ESMTP id S229940AbjCAQaR (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 1 Mar 2023 11:30:17 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 699A848E17;
+        Wed,  1 Mar 2023 08:29:57 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E61CA61411;
-        Wed,  1 Mar 2023 16:29:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF484C433A1;
-        Wed,  1 Mar 2023 16:29:51 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0FC84B810BD;
+        Wed,  1 Mar 2023 16:29:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF1AC433A0;
+        Wed,  1 Mar 2023 16:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677688192;
-        bh=G3JfbTsNi23rXEdWg0lTtz3JCcDgM3Hn0d9MSJ5QCvU=;
+        s=k20201202; t=1677688194;
+        bh=C/HEXUwI16DTFmD4rCEdv7dMT3ZhMhXrQLY653A5cCI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y6qYElz35fRFGGg3DJaBB99+XI7DtyrFmLlNFDSHTWmTmCX7V4F6k5c5FwTRNDCGc
-         pLd+ePE5sQCX611v+St1MArhtMbV5ybm5c484nbS311TKRESf7Np7q01fyrNfTLbTW
-         cCZilod3pkCnfKn4Jcv4tKK+HFsTbDRaLnxpjqKKp5Pvl/6n+LPK0w7RmNPUaA3ZNv
-         FOi/nQByz9EKGGCUuQOBlccImU7FDkdfreoV66T/l0nGE6A1ww1zBFtwjAemDC07v3
-         442ysDSrqxGNtAgq3lVLbQy5yas3jeK5kub48lSSWyKiv0CAivLROEWuKa4CT5rAN6
-         Re9GN/Yubzs2A==
+        b=u2lW/KmSE26Pr2y1OhhhJdV5yO0bLOI9MzNLmal9ao/B2ErhCipzvae+I/C9MRuaw
+         TQDBISnYD2b7Fgj6D5Xq0zgOJvEvIkXq9iunmCgymU9FHKgN3UXG7JX4CoxVinZ9fG
+         Xlt8EV3oUxYYGJAv2yqCBh6p2DZot1Ph/ZYjKQzK77KrawE5JU2CfVVO1ozD7TOr5k
+         NiBx4qaChYuVdryXccBBCijIBCaPYnZOSKBI/7JLFeTUCxDVKN6L2NtBN1c9Aw1RX+
+         Br3vA/vIPpmFZvhGkFS4KuVM6BL17LzeWh8iz5QTV97dETEdU+vToBepg5SSeSYS+Q
+         1YNlOgPNAO5uA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johan Hovold <johan+linaro@kernel.org>,
+Cc:     Darrell Kavanagh <darrell.kavanagh@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Ard Biesheuvel <ardb@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-efi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 2/6] efi: efivars: prevent double registration
-Date:   Wed,  1 Mar 2023 11:29:44 -0500
-Message-Id: <20230301162948.1302994-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 4/6] firmware/efi sysfb_efi: Add quirk for Lenovo IdeaPad Duet 3
+Date:   Wed,  1 Mar 2023 11:29:46 -0500
+Message-Id: <20230301162948.1302994-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230301162948.1302994-1-sashal@kernel.org>
 References: <20230301162948.1302994-1-sashal@kernel.org>
@@ -55,58 +56,40 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Darrell Kavanagh <darrell.kavanagh@gmail.com>
 
-[ Upstream commit 0217a40d7ba6e71d7f3422fbe89b436e8ee7ece7 ]
+[ Upstream commit e1d447157f232c650e6f32c9fb89ff3d0207c69a ]
 
-Add the missing sanity check to efivars_register() so that it is no
-longer possible to override an already registered set of efivar ops
-(without first deregistering them).
+Another Lenovo convertable which reports a landscape resolution of
+1920x1200 with a pitch of (1920 * 4) bytes, while the actual framebuffer
+has a resolution of 1200x1920 with a pitch of (1200 * 4) bytes.
 
-This can help debug initialisation ordering issues where drivers have so
-far unknowingly been relying on overriding the generic ops.
-
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Darrell Kavanagh <darrell.kavanagh@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/vars.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/firmware/efi/sysfb_efi.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
-index cae590bd08f27..871dee9343bfb 100644
---- a/drivers/firmware/efi/vars.c
-+++ b/drivers/firmware/efi/vars.c
-@@ -1164,19 +1164,28 @@ int efivars_register(struct efivars *efivars,
- 		     const struct efivar_operations *ops,
- 		     struct kobject *kobject)
- {
-+	int rv;
-+
- 	if (down_interruptible(&efivars_lock))
- 		return -EINTR;
- 
-+	if (__efivars) {
-+		pr_warn("efivars already registered\n");
-+		rv = -EBUSY;
-+		goto out;
-+	}
-+
- 	efivars->ops = ops;
- 	efivars->kobject = kobject;
- 
- 	__efivars = efivars;
- 
- 	pr_info("Registered efivars operations\n");
--
-+	rv = 0;
-+out:
- 	up(&efivars_lock);
- 
--	return 0;
-+	return rv;
- }
- EXPORT_SYMBOL_GPL(efivars_register);
+diff --git a/drivers/firmware/efi/sysfb_efi.c b/drivers/firmware/efi/sysfb_efi.c
+index 4c7c9dd7733f9..6aa2bb5bbd5e4 100644
+--- a/drivers/firmware/efi/sysfb_efi.c
++++ b/drivers/firmware/efi/sysfb_efi.c
+@@ -266,6 +266,14 @@ static const struct dmi_system_id efifb_dmi_swap_width_height[] __initconst = {
+ 					"Lenovo ideapad D330-10IGM"),
+ 		},
+ 	},
++	{
++		/* Lenovo IdeaPad Duet 3 10IGL5 with 1200x1920 portrait screen */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION,
++					"IdeaPad Duet 3 10IGL5"),
++		},
++	},
+ 	{},
+ };
  
 -- 
 2.39.2
