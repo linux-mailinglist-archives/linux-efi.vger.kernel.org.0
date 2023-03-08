@@ -2,81 +2,112 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7013A6AFA32
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Mar 2023 00:21:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3D7B6AFD66
+	for <lists+linux-efi@lfdr.de>; Wed,  8 Mar 2023 04:30:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229525AbjCGXVw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 7 Mar 2023 18:21:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57142 "EHLO
+        id S229685AbjCHDa1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 7 Mar 2023 22:30:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229819AbjCGXVt (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 7 Mar 2023 18:21:49 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 220C1A17DC
-        for <linux-efi@vger.kernel.org>; Tue,  7 Mar 2023 15:21:44 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CDD94B81ADA
-        for <linux-efi@vger.kernel.org>; Tue,  7 Mar 2023 23:21:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F6AC433EF;
-        Tue,  7 Mar 2023 23:21:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678231301;
-        bh=mBqDvTFmUeiIpDBghVPDmYbcyFxUDfJOnz94UYoy/pc=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Q04xB2MOvtt/hMxn7EraHiJXwsSbcJ07pLsAtTBUliTe9b4hImi/lCb/x0taM/8Tp
-         LG7SAAurRU+v2wNK6PRINxNGB2Nj7gxMWrvZdE9n5vCiK38HfUsUfPlB82R6+O4/xw
-         H5iCp1S5DShfpc7TIbamexIT+wk73vbmu9RpFRTutUcLQBJs+Rt6NlA6QhR7fagWws
-         aLZnwAAMTSajGWhmZwzl1SbolHRPv4EwmP7z/a8OeiURW4toseLbdO3eJQo/YD2/7B
-         vUC6kOewahXg102yMHEIaQJOW7dFF7J2VK4aM89rG7xd3ouHfPgxUyo07ir/8unN4E
-         KQ+A5zIqn5qSQ==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH] efi/libstub: randomalloc: Return EFI_OUT_OF_RESOURCES on failure
-Date:   Wed,  8 Mar 2023 00:21:34 +0100
-Message-Id: <20230307232134.2580510-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S229645AbjCHDa0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 7 Mar 2023 22:30:26 -0500
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2EA35B5D5
+        for <linux-efi@vger.kernel.org>; Tue,  7 Mar 2023 19:30:25 -0800 (PST)
+Received: by mail-pg1-x530.google.com with SMTP id 132so8859934pgh.13
+        for <linux-efi@vger.kernel.org>; Tue, 07 Mar 2023 19:30:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1678246225;
+        h=to:from:content-transfer-encoding:mime-version:date:message-id
+         :subject:references:in-reply-to:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IrGumBD3CuL7JhmpbkRoYLuQ9iRztdyj8h7PwNT0G+k=;
+        b=nMEKpiB7FONecJfzkjebJwCPpi28Dj2XGpP4GXKQ26ESvbaACwC342Din9Ax1xxY5L
+         wbOddRCSnmwOYMksQw3Qdu5mRfQureAx5/i/16NCIUODZpYPqRkiko+kmKKPlNGUXiEA
+         aXYE5iDy1t1/dC5gzdd2qFFMC2Lsk2FIHb4DgjPfQlZUyXgTvmE5yxVkScVuFdMXQ8N/
+         9PY7FQJCGGsTo0VGTQrba5VHI8TNPXOxIBhzPzY2mCeDhoalLaOSxSq41Fd1BV+9Keyz
+         gR3qvdUJN5o2gNrh+SlnHyTyO3n8fbOGKSIRdfzol8xhkDct4RQZ0bUznxP61irRCIEl
+         RvdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678246225;
+        h=to:from:content-transfer-encoding:mime-version:date:message-id
+         :subject:references:in-reply-to:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IrGumBD3CuL7JhmpbkRoYLuQ9iRztdyj8h7PwNT0G+k=;
+        b=z+mI3T/UhIlzhGbmKoOnNb8Z/0xrvi+locXEjhoTlGnoBUhJbQtLalwBH2Nh3l4BjG
+         JhJbnvb8mFQzcq0pNyDBal0v2tlC95DxYHRrTK296IXVJ2yaaFFNndII9iAVhmyEKkGV
+         XQ7Vz95Va2/Gof5Rt2Pf0hJUBalcPvoQuW7Uw8SxYwg7Yg7meQXeX5KM1Rg8RZ5Q3ek/
+         0+S+1lynjtPt5Em/APFmCAFLwMOGCP12UTD9BYlIP8sX51l5akcmfR3DSaVXlM87Yqge
+         XlCJny3fTdOTRMJKU+UzGMUyXUO0sccsGDte9mctbr3W5hQIjQTubybF+aXhM7hnXYW5
+         cOiw==
+X-Gm-Message-State: AO0yUKVnT2kNpBX17njpzXsnHskQ25RFZJ1Ir7CaGWkG1tb/Lmn2c8Al
+        LGe27KMan8ijkB7kIkQDgkeMVg==
+X-Google-Smtp-Source: AK7set8hzVBuskesB4GYntZLwYi23Uwo1MfEphVfa6NFwFtmeKv9GeZ8e6GgiHrVvGj/l+Hl+mwyWQ==
+X-Received: by 2002:a62:1758:0:b0:593:d2ab:fdfb with SMTP id 85-20020a621758000000b00593d2abfdfbmr13432662pfx.13.1678246225092;
+        Tue, 07 Mar 2023 19:30:25 -0800 (PST)
+Received: from localhost ([135.180.224.71])
+        by smtp.gmail.com with ESMTPSA id n13-20020aa7904d000000b0058b927b9653sm8771578pfo.92.2023.03.07.19.30.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Mar 2023 19:30:24 -0800 (PST)
+In-Reply-To: <20230203075232.274282-1-alexghiti@rivosinc.com>
+References: <20230203075232.274282-1-alexghiti@rivosinc.com>
+Subject: Re: [PATCH v4 0/6] RISC-V kasan rework
+Message-Id: <167824615129.30763.10646446884793553712.b4-ty@rivosinc.com>
+Date:   Tue, 07 Mar 2023 19:29:11 -0800
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1261; i=ardb@kernel.org; h=from:subject; bh=mBqDvTFmUeiIpDBghVPDmYbcyFxUDfJOnz94UYoy/pc=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIYX92D/zFTMTph5v6PoQP3XB5r218+eIu8769Dam/bhYw w+uj/zqHaUsDGIcDLJiiiwCs/++23l6olSt8yxZmDmsTCBDGLg4BWAiEpMZ/gqftItNXrdMVlQh YZHpz76Z76UrtmzP8vOPnbOsct6X98cYfjF/k/1z3Im/X5TbaHZic+6GXtkTRpMf1M5axupjNoG ljRkA
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-901c5
+From:   Palmer Dabbelt <palmer@rivosinc.com>
+To:     Albert Ou <aou@eecs.berkeley.edu>,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        linux-efi@vger.kernel.org, kasan-dev@googlegroups.com,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Alexander Potapenko <glider@google.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        linux-riscv@lists.infradead.org, Ard Biesheuvel <ardb@kernel.org>,
+        linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Conor Dooley <conor@kernel.org>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The logic in efi_random_alloc() will iterate over the memory map twice,
-once to count the number of candidate slots, and another time to locate
-the chosen slot after randomization.
 
-If there is insufficient memory to do the allocation, the second loop
-will run to completion without actually having located a slot, but we
-currently return EFI_SUCCESS in this case, as we fail to initialize
-status to the appropriate error value of EFI_OUT_OF_RESOURCES.
+On Fri, 3 Feb 2023 08:52:26 +0100, Alexandre Ghiti wrote:
+> As described in patch 2, our current kasan implementation is intricate,
+> so I tried to simplify the implementation and mimic what arm64/x86 are
+> doing.
+> 
+> In addition it fixes UEFI bootflow with a kasan kernel and kasan inline
+> instrumentation: all kasan configurations were tested on a large ubuntu
+> kernel with success with KASAN_KUNIT_TEST and KASAN_MODULE_TEST.
+> 
+> [...]
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/libstub/randomalloc.c | 1 +
- 1 file changed, 1 insertion(+)
+Applied, thanks!
 
-diff --git a/drivers/firmware/efi/libstub/randomalloc.c b/drivers/firmware/efi/libstub/randomalloc.c
-index 1692d19ae80f0065..32c7a54923b4c127 100644
---- a/drivers/firmware/efi/libstub/randomalloc.c
-+++ b/drivers/firmware/efi/libstub/randomalloc.c
-@@ -101,6 +101,7 @@ efi_status_t efi_random_alloc(unsigned long size,
- 	 * to calculate the randomly chosen address, and allocate it directly
- 	 * using EFI_ALLOCATE_ADDRESS.
- 	 */
-+	status = EFI_OUT_OF_RESOURCES;
- 	for (map_offset = 0; map_offset < map->map_size; map_offset += map->desc_size) {
- 		efi_memory_desc_t *md = (void *)map->map + map_offset;
- 		efi_physical_addr_t target;
+[1/6] riscv: Split early and final KASAN population functions
+      https://git.kernel.org/palmer/c/70a3bb1e1fd9
+[2/6] riscv: Rework kasan population functions
+      https://git.kernel.org/palmer/c/fec8e4f66e4d
+[3/6] riscv: Move DTB_EARLY_BASE_VA to the kernel address space
+      https://git.kernel.org/palmer/c/1cdf594686a3
+[4/6] riscv: Fix EFI stub usage of KASAN instrumented strcmp function
+      https://git.kernel.org/palmer/c/415e9a115124
+[5/6] riscv: Fix ptdump when KASAN is enabled
+      https://git.kernel.org/palmer/c/fe0c8624d20d
+[6/6] riscv: Unconditionnally select KASAN_VMALLOC if KASAN
+      https://git.kernel.org/palmer/c/4cdc06c5c741
+
+Best regards,
 -- 
-2.39.2
+Palmer Dabbelt <palmer@rivosinc.com>
 
