@@ -2,155 +2,130 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F34ED6B12F8
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Mar 2023 21:22:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C4896B135D
+	for <lists+linux-efi@lfdr.de>; Wed,  8 Mar 2023 21:51:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230332AbjCHUWy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 8 Mar 2023 15:22:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41080 "EHLO
+        id S230367AbjCHUvH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 8 Mar 2023 15:51:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230300AbjCHUWm (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Mar 2023 15:22:42 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 047F0CB06B
-        for <linux-efi@vger.kernel.org>; Wed,  8 Mar 2023 12:22:28 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E23E6195C
-        for <linux-efi@vger.kernel.org>; Wed,  8 Mar 2023 20:22:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76478C4339B;
-        Wed,  8 Mar 2023 20:22:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678306946;
-        bh=PrVVBT07eZXpClfbYlHd8W1/CUo1d0fwxXxXfwLJDDo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QpUUFLKXf95qkxMfwNgp5ckFjtz2fa5n9cYlVHjm92xdEBGu445NzUy/uGodbeL4N
-         5EIThLWYw03SIW0/coRpAMiZ3J86bGbRsfYCSYRauwoaQUCDGA42pG9Jjx2spjRKS2
-         jciN9deZZ1bF0hePna36nS+cIXRVNnC8uGQBai4ZDfTnv/6YUAs1gPnunOBIOLbz5B
-         XHr7mck5tDUjPlCT1T/FenYavrMyOeNbLfe5limaL2H0P47Z12m2a3Y+gXtcIEgDUd
-         Wp8K++EOPCFZk2kmtL9QBQ7N+8gZU/5qjcyFCnYdPvOGGwoR7t3E7cESeH2Iepz0B3
-         pNMjzIymRsxpw==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Evgeniy Baskov <baskov@ispras.ru>,
-        Borislav Petkov <bp@alien8.de>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Peter Jones <pjones@redhat.com>,
-        "Limonciello, Mario" <mario.limonciello@amd.com>
-Subject: [RFC PATCH 4/4] efi: x86: Split PE/COFF .text section into .text and .data
-Date:   Wed,  8 Mar 2023 21:22:09 +0100
-Message-Id: <20230308202209.2980947-5-ardb@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230308202209.2980947-1-ardb@kernel.org>
-References: <20230308202209.2980947-1-ardb@kernel.org>
+        with ESMTP id S230405AbjCHUvF (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Mar 2023 15:51:05 -0500
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B0EC898D2;
+        Wed,  8 Mar 2023 12:51:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678308664; x=1709844664;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dawFCN46X6uTJdbZMi5dw9X68cMnBDF1sYbDOL4D3x4=;
+  b=NSKa5Ya3AyO2stxmoTXLJgUKseT7wl7lRDC+5CqGIXigcbplEZGYtrSO
+   ZYKI99809uee6AbhBDhsCGwLVk0NwyeXqtmWu/C1SMDDYfiyXyd+6ecKc
+   iB0wiM4tbO9fONcNEuIVm235SaPMAzeSY5eBUC+tQJ0HZ33y+wdxAvrHT
+   30YQn89wXufPWV3YKzlmnubKJup1lRD41+9wGXaIL81Mc2dn7QD3FuSkE
+   XYHzoEqyJHUblIawSFIAF4TH6h8tC9+h7q0qDvguJ8qS29jfE91W/gnUb
+   vXata/rZNUsagfRH3lCg5sdeE9/Pb828gK0ohIeKx5p4Are0YEGoT4fk5
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10643"; a="320103101"
+X-IronPort-AV: E=Sophos;i="5.98,244,1673942400"; 
+   d="scan'208";a="320103101"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2023 12:51:01 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10643"; a="670468950"
+X-IronPort-AV: E=Sophos;i="5.98,244,1673942400"; 
+   d="scan'208";a="670468950"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 08 Mar 2023 12:50:58 -0800
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pa0kT-0002Oc-1p;
+        Wed, 08 Mar 2023 20:50:57 +0000
+Date:   Thu, 9 Mar 2023 04:50:44 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Youling Tang <tangyouling@loongson.cn>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     oe-kbuild-all@lists.linux.dev, Xuerui Wang <kernel@xen0n.name>,
+        linux-efi@vger.kernel.org, loongarch@lists.linux.dev,
+        linux-kernel@vger.kernel.org, loongson-kernel@lists.loongnix.cn
+Subject: Re: [PATCH] efistub: LoongArch: Reimplement kernel_entry_address()
+Message-ID: <202303090430.e6BB0Txr-lkp@intel.com>
+References: <1678186653-27659-1-git-send-email-tangyouling@loongson.cn>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3259; i=ardb@kernel.org; h=from:subject; bh=PrVVBT07eZXpClfbYlHd8W1/CUo1d0fwxXxXfwLJDDo=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIYXjXeFO/nUikmcmOry4eXbLgeNz7nnPWr6Qx6DT4fy69 6JvDvzM6ChlYRDjYJAVU2QRmP333c7TE6VqnWfJwsxhZQIZwsDFKQATubabkWF/pwyfhKN3ntEU 920pKxNeBuXLT+lY9EM0Y0WQ1ifb1nCG/077vZQCZD+0PNwifGOfbkN7EgPvPt5Jt4s+yPQUF// bxAgA
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1678186653-27659-1-git-send-email-tangyouling@loongson.cn>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Modern PE loader implementations used by EFI will honour the PE section
-permission attributes, and so we can use them to avoid mappings that are
-writable and executable at the same time.
+Hi Youling,
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/x86/boot/header.S      | 17 ++++++++++++++++
- arch/x86/boot/tools/build.c | 21 +++++++++++++++-----
- 2 files changed, 33 insertions(+), 5 deletions(-)
+Thank you for the patch! Perhaps something to improve:
 
-diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-index 4f1e1791cda4d316..a8ff8bbb17bca7d7 100644
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -253,6 +253,23 @@ section_table:
- 		IMAGE_SCN_MEM_READ		| \
- 		IMAGE_SCN_MEM_EXECUTE		# Characteristics
- 
-+	.ascii	".data"
-+	.byte	0
-+	.byte	0
-+	.byte	0
-+	.long	0
-+	.long	0x0				# startup_{32,64}
-+	.long	0				# Size of initialized data
-+						# on disk
-+	.long	0x0				# startup_{32,64}
-+	.long	0				# PointerToRelocations
-+	.long	0				# PointerToLineNumbers
-+	.word	0				# NumberOfRelocations
-+	.word	0				# NumberOfLineNumbers
-+	.long	IMAGE_SCN_CNT_INITIALIZED_DATA	| \
-+		IMAGE_SCN_MEM_READ		| \
-+		IMAGE_SCN_MEM_WRITE		# Characteristics
-+
- 	.set	section_count, (. - section_table) / 40
- #endif /* CONFIG_EFI_STUB */
- 
-diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-index 883e6359221cd588..b449c82feaadf2b8 100644
---- a/arch/x86/boot/tools/build.c
-+++ b/arch/x86/boot/tools/build.c
-@@ -119,6 +119,7 @@ static unsigned long efi_boot_params;
- static unsigned long kernel_info;
- static unsigned long startup_64;
- static unsigned long _ehead;
-+static unsigned long _data;
- static unsigned long _end;
- 
- /*----------------------------------------------------------------------*/
-@@ -347,10 +348,15 @@ static unsigned int update_pecoff_sections(unsigned int text_start, unsigned int
- 	init_sz	+= CONFIG_PHYSICAL_ALIGN;
- 
- 	/*
--	 * Size of code: Subtract the size of the first sector (512 bytes)
--	 * which includes the header.
-+	 * Size of code: the size of the combined .text/.rodata section, which
-+	 * ends at the _data marker symbol.
- 	 */
--	put_unaligned_le32(text_sz + bss_sz, &hdr->text_size);
-+	put_unaligned_le32(_data, &hdr->text_size);
-+
-+	/*
-+	 * Size of data: the size of the combined .data/.bss section.
-+	 */
-+	put_unaligned_le32(text_sz - _data + bss_sz, &hdr->data_size);
- 
- 	/* Size of image */
- 	put_unaligned_le32(init_sz, &hdr->image_size);
-@@ -360,9 +366,13 @@ static unsigned int update_pecoff_sections(unsigned int text_start, unsigned int
- 	 */
- 	put_unaligned_le32(text_start + efi_pe_entry, &hdr->entry_point);
- 
--	update_pecoff_section_header_fields(".text", text_start, text_sz + bss_sz,
--					    text_sz, text_start);
-+	update_pecoff_section_header_fields(".text", text_start, _data,
-+					    _data, text_start);
- 
-+	update_pecoff_section_header_fields(".data", text_start + _data,
-+					    text_sz - _data + bss_sz,
-+					    text_sz - _data,
-+					    text_start + _data);
- 	return text_start + file_sz;
- }
- 
-@@ -455,6 +465,7 @@ static void parse_zoffset(char *fname)
- 		PARSE_ZOFS(p, kernel_info);
- 		PARSE_ZOFS(p, startup_64);
- 		PARSE_ZOFS(p, _ehead);
-+		PARSE_ZOFS(p, _data);
- 		PARSE_ZOFS(p, _end);
- 
- 		p = strchr(p, '\n');
+[auto build test WARNING on efi/next]
+[also build test WARNING on linus/master v6.3-rc1 next-20230308]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Youling-Tang/efistub-LoongArch-Reimplement-kernel_entry_address/20230307-190013
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+patch link:    https://lore.kernel.org/r/1678186653-27659-1-git-send-email-tangyouling%40loongson.cn
+patch subject: [PATCH] efistub: LoongArch: Reimplement kernel_entry_address()
+config: loongarch-defconfig (https://download.01.org/0day-ci/archive/20230309/202303090430.e6BB0Txr-lkp@intel.com/config)
+compiler: loongarch64-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/1f509b49ceeeeb3c59483c685592f8d87b70f169
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Youling-Tang/efistub-LoongArch-Reimplement-kernel_entry_address/20230307-190013
+        git checkout 1f509b49ceeeeb3c59483c685592f8d87b70f169
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=loongarch olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=loongarch SHELL=/bin/bash drivers/firmware/efi/libstub/
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202303090430.e6BB0Txr-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/firmware/efi/libstub/loongarch.c: In function 'get_kernel_offset':
+   drivers/firmware/efi/libstub/loongarch.c:46:45: error: 'PHYS_LINK_KADDR' undeclared (first use in this function)
+      46 |         return EFI_KIMG_PREFERRED_ADDRESS - PHYS_LINK_KADDR;
+         |                                             ^~~~~~~~~~~~~~~
+   drivers/firmware/efi/libstub/loongarch.c:46:45: note: each undeclared identifier is reported only once for each function it appears in
+   drivers/firmware/efi/libstub/loongarch.c: At top level:
+>> drivers/firmware/efi/libstub/loongarch.c:49:15: warning: no previous prototype for 'kernel_entry_address' [-Wmissing-prototypes]
+      49 | unsigned long kernel_entry_address(void)
+         |               ^~~~~~~~~~~~~~~~~~~~
+   drivers/firmware/efi/libstub/loongarch.c: In function 'get_kernel_offset':
+   drivers/firmware/efi/libstub/loongarch.c:47:1: error: control reaches end of non-void function [-Werror=return-type]
+      47 | }
+         | ^
+   cc1: some warnings being treated as errors
+
+
+vim +/kernel_entry_address +49 drivers/firmware/efi/libstub/loongarch.c
+
+    48	
+  > 49	unsigned long kernel_entry_address(void)
+    50	{
+    51		return *(unsigned long *)(EFI_KIMG_PREFERRED_ADDRESS + 8) +
+    52			get_kernel_offset();
+    53	}
+    54	
+
 -- 
-2.39.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
