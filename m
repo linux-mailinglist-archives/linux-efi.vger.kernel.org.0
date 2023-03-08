@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D374A6B12F5
-	for <lists+linux-efi@lfdr.de>; Wed,  8 Mar 2023 21:22:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC4406B12F7
+	for <lists+linux-efi@lfdr.de>; Wed,  8 Mar 2023 21:22:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230253AbjCHUWn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 8 Mar 2023 15:22:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41074 "EHLO
+        id S230311AbjCHUWw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 8 Mar 2023 15:22:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229691AbjCHUWf (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Mar 2023 15:22:35 -0500
+        with ESMTP id S230252AbjCHUWg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 8 Mar 2023 15:22:36 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40B8DBAD2E
-        for <linux-efi@vger.kernel.org>; Wed,  8 Mar 2023 12:22:22 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FC8ABA872
+        for <linux-efi@vger.kernel.org>; Wed,  8 Mar 2023 12:22:24 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D146961934
-        for <linux-efi@vger.kernel.org>; Wed,  8 Mar 2023 20:22:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC503C4339B;
-        Wed,  8 Mar 2023 20:22:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BFB7561950
+        for <linux-efi@vger.kernel.org>; Wed,  8 Mar 2023 20:22:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD344C4339C;
+        Wed,  8 Mar 2023 20:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678306941;
-        bh=dCFnCjx8rLSr7OtWUXyw/SvWurTkdS3FNJ7m/wpzFY4=;
+        s=k20201202; t=1678306943;
+        bh=0juUXy0df482JH4lIEAY7gEdDq8jVmiq8d7bK9CqF/A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IHUip3yo34W5K8xpqJbpRsysG/I4J99i8ZfkPVEcsgDvgUEGJdKsOFl7i1yAdgH0g
-         0bI1IcxLRH2DhLMX08gGAENfXSgkreFY5quE+LSPZbt35S08rtOV279BhyWSSJh239
-         rVKXZGdBO+kh3eHApseU6qspOcV+Me0UR8S2u8WPwIfPLKtOYzlV8ndzzIOv0YciP9
-         uNpDU1pD17lEHN1CUhhzBOuijLdlHTL25eNcxgpsJuS+KNy+kmiYklHtr7goOWUoG1
-         u+LuISGjgG15kdCLQh1T2+benexzzWG3AdIv5lDNKjjO9z5ygwlad5Xgse5EpoGET+
-         sWZwE3L3Y3QzA==
+        b=PfHUHuzOWL6lVGf/cAwOnusDACBgDiiiYuhuOPWOJXgtprKiGghQ31wjtKFlEaJqF
+         qUxqC8PclAzsNRpkl31DF8ZxztXlN1/XvIzGP4e02H8dDYOQO2LaJfshEJyhSMhSCb
+         GTdiwVo829PLeGOCTz+WUZJ073UHo63dln8SODkttugEpcTW9ade75fD9Xf/vrTODJ
+         xUzg6ULJL6aG5sXeSa+OFHGGHoa/RpO4rnE4/CcgGCETlNdcEMYuVev/BkkNO8QKcO
+         uNPyb4l1EJJVDQZW0pCJ6LqtNl0vhonBTRAUHVoil2QZ6FMrJ/uD6/PdztUQKGwMpA
+         fjTmAJHn2Y24A==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
@@ -39,14 +39,14 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Alexey Khoroshilov <khoroshilov@ispras.ru>,
         Peter Jones <pjones@redhat.com>,
         "Limonciello, Mario" <mario.limonciello@amd.com>
-Subject: [RFC PATCH 1/4] efi: x86: Use private copy of struct setup_header
-Date:   Wed,  8 Mar 2023 21:22:06 +0100
-Message-Id: <20230308202209.2980947-2-ardb@kernel.org>
+Subject: [RFC PATCH 2/4] efi: x86: Move PE header after setup header
+Date:   Wed,  8 Mar 2023 21:22:07 +0100
+Message-Id: <20230308202209.2980947-3-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230308202209.2980947-1-ardb@kernel.org>
 References: <20230308202209.2980947-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7169; i=ardb@kernel.org; h=from:subject; bh=dCFnCjx8rLSr7OtWUXyw/SvWurTkdS3FNJ7m/wpzFY4=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIYXjXX691Y/dPa8O9qw1lei0+uMvzfI30/LHgnZPoao3V 50dzy3sKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABOp1mVkeB3Qs8bq17prZbNS pibYfVbwvKlUEsC076RY5MzyXFWJOEaGhob1vDmaF9rni1m+jzswVe+wudC9nLe96TfUilUmClm yAgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5016; i=ardb@kernel.org; h=from:subject; bh=0juUXy0df482JH4lIEAY7gEdDq8jVmiq8d7bK9CqF/A=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIYXjXf7vzSwPJcs639hfCBN3lTpzd/kr4+Ms86z+dXneW F99IvxPRykLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZjIJGmG/zVcLyMcD23Yktu4 /Jhlp+akqmerhIumFe2dG+OsVCjxyo+RoS/+9WF3VpV3smZfVnedvxdw7724nYTMN1mrx2KJgjK 3WAA=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -58,172 +58,145 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The native EFI entrypoint does not take a struct boot_params from the
-loader, but instead, it constructs one from scratch, using the setup
-header data from the start of the image.
+We are currently limited in the number of PE/COFF sections we can
+describe in the PE header, due to lack of space. This is caused by the
+presence of the setup header at offset 0x1f1, leaving only the space
+before it for PE metadata.
 
-This setup header is placed in a way that permits legacy loaders to
-manipulate the contents (i.e., to pass the kernel command line or the
-address and size of an initial ramdisk), but EFI boot does not use it in
-that way - it only copies the contents that were placed there at build
-time, but EFI loaders will not (and should not) manipulate the setup
-header to configure the boot. (Commit 63bf28ceb3ebbe76 "efi: x86: Wipe
-setup_data on pure EFI boot" deals with some of the fallout of using
-setup_data in a way that breaks EFI boot.) So having a pristine, private
-copy of the setup header rather than copying the one legacy boot loaders
-use would be an advantage for EFI boot.
-
-As it turns out, there is another reason why copying this header is
-slightly problematic: the fixed offset of 0x1f1 bytes into the image
-makes it difficult to describe all the sections of the image, as we are
-running out of space. We could mitigate this by placing some parts of
-the PE/COFF header after this setup header (which will happen in a
-subsequent patch), but this makes the setup_header fundamentally part of
-the PE header as well, which means that it is no longer part of the
-'in-memory' representation of the PE image, but only part of the
-'on-disk' representation. This means copying the setup header from the
-running image may not work, as the PE loader may not have put it in
-memory to begin with.
-
-So let's work around this, and simplify things at the same time, by just
-copying the setup header into a EFI stub private allocation at build
-time, and use that instead of copying it from the loaded image after it
-has been started.
+However, now that we no longer copy the setup_header from this part of
+the image for use by the EFI stub, we no longer have to describe it as
+part of the loadable image. This means we can put the PE header *after*
+the setup header, and use as much space as we like. It also means we
+don't have to describe this part of the image in PE/COFF, and simply
+treat it as part of the header. This means we can drop the ".setup"
+section as well.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/Makefile                  |  2 +-
- arch/x86/boot/tools/build.c             |  8 ++++
- drivers/firmware/efi/libstub/x86-stub.c | 43 +++-----------------
- 3 files changed, 15 insertions(+), 38 deletions(-)
+ arch/x86/boot/header.S      | 26 +++-----------------
+ arch/x86/boot/setup.ld      |  1 +
+ arch/x86/boot/tools/build.c | 11 +++------
+ 3 files changed, 9 insertions(+), 29 deletions(-)
 
-diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
-index 9e38ffaadb5d972e..8203f1a23f7a1734 100644
---- a/arch/x86/boot/Makefile
-+++ b/arch/x86/boot/Makefile
-@@ -91,7 +91,7 @@ $(obj)/vmlinux.bin: $(obj)/compressed/vmlinux FORCE
+diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
+index 9338c68e7413d6e6..aba499404d8b870e 100644
+--- a/arch/x86/boot/header.S
++++ b/arch/x86/boot/header.S
+@@ -85,7 +85,7 @@ bs_die:
+ 	# Offset to the PE header.
+ 	#
+ 	.long	LINUX_PE_MAGIC
+-	.long	pe_header
++	.long	pe_header - bootsect_start
+ #endif /* CONFIG_EFI_STUB */
  
- SETUP_OBJS = $(addprefix $(obj)/,$(setup-y))
+ 	.section ".bsdata", "a"
+@@ -96,6 +96,8 @@ bugger_off_msg:
+ 	.byte	0
  
--sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|startup_64\|efi32_stub_entry\|efi64_stub_entry\|efi_pe_entry\|efi32_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|z_.*\)$$/\#define ZO_\2 0x\1/p'
-+sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|startup_64\|efi32_stub_entry\|efi64_stub_entry\|efi_pe_entry\|efi32_pe_entry\|efi_boot_params\|input_data\|kernel_info\|_end\|_ehead\|_text\|z_.*\)$$/\#define ZO_\2 0x\1/p'
+ #ifdef CONFIG_EFI_STUB
++	.section ".peheader", "a"
++	.align 8
+ pe_header:
+ 	.long	PE_MAGIC
  
- quiet_cmd_zoffset = ZOFFSET $@
-       cmd_zoffset = $(NM) $< | sed -n $(sed-zoffset) > $@
+@@ -161,7 +163,7 @@ extra_header_fields:
+ 	#
+ 	.long	0				# SizeOfImage
+ 
+-	.long	0x200				# SizeOfHeaders
++	.long	0x800				# SizeOfHeaders
+ 	.long	0				# CheckSum
+ 	.word	IMAGE_SUBSYSTEM_EFI_APPLICATION	# Subsystem (EFI application)
+ #ifdef CONFIG_EFI_DXE_MEM_ATTRIBUTES
+@@ -192,26 +194,6 @@ extra_header_fields:
+ 
+ 	# Section table
+ section_table:
+-	#
+-	# The offset & size fields are filled in by build.c.
+-	#
+-	.ascii	".setup"
+-	.byte	0
+-	.byte	0
+-	.long	0
+-	.long	0x0				# startup_{32,64}
+-	.long	0				# Size of initialized data
+-						# on disk
+-	.long	0x0				# startup_{32,64}
+-	.long	0				# PointerToRelocations
+-	.long	0				# PointerToLineNumbers
+-	.word	0				# NumberOfRelocations
+-	.word	0				# NumberOfLineNumbers
+-	.long	IMAGE_SCN_CNT_CODE		| \
+-		IMAGE_SCN_MEM_READ		| \
+-		IMAGE_SCN_MEM_EXECUTE		| \
+-		IMAGE_SCN_ALIGN_16BYTES		# Characteristics
+-
+ 	#
+ 	# The EFI application loader requires a relocation section
+ 	# because EFI applications must be relocatable. The .reloc
+diff --git a/arch/x86/boot/setup.ld b/arch/x86/boot/setup.ld
+index 49546c247ae25e97..5981287bbcb7f439 100644
+--- a/arch/x86/boot/setup.ld
++++ b/arch/x86/boot/setup.ld
+@@ -16,6 +16,7 @@ SECTIONS
+ 	. = 495;
+ 	.header		: { *(.header) }
+ 	.entrytext	: { *(.entrytext) }
++	.peheader	: { *(.peheader) }
+ 	.inittext	: { *(.inittext) }
+ 	.initdata	: { *(.initdata) }
+ 	__end_init = .;
 diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-index a25c0c5efda95989..e6fd09789482ed04 100644
+index e6fd09789482ed04..883e6359221cd588 100644
 --- a/arch/x86/boot/tools/build.c
 +++ b/arch/x86/boot/tools/build.c
-@@ -115,6 +115,7 @@ static unsigned long efi32_stub_entry;
- static unsigned long efi64_stub_entry;
- static unsigned long efi_pe_entry;
- static unsigned long efi32_pe_entry;
-+static unsigned long efi_boot_params;
- static unsigned long kernel_info;
- static unsigned long startup_64;
- static unsigned long _ehead;
-@@ -453,6 +454,7 @@ static void parse_zoffset(char *fname)
- 		PARSE_ZOFS(p, efi64_stub_entry);
- 		PARSE_ZOFS(p, efi_pe_entry);
- 		PARSE_ZOFS(p, efi32_pe_entry);
-+		PARSE_ZOFS(p, efi_boot_params);
- 		PARSE_ZOFS(p, kernel_info);
- 		PARSE_ZOFS(p, startup_64);
- 		PARSE_ZOFS(p, _ehead);
-@@ -589,6 +591,12 @@ int main(int argc, char **argv)
- 	memcpy(output + setup_size, kernel, kern_file_size);
- 	memset(output + setup_size + kern_file_size, 0, kern_size - kern_file_size);
- 
-+#ifdef CONFIG_EFI_STUB
-+	/* Copy the setup header */
-+	memcpy(output + setup_size + efi_boot_params + 0x1f1, &buf[0x1f1],
-+	       0x290 - 0x1f1 /* == max possible sizeof(struct setup_header) */);
-+#endif
-+
- 	/* Calculate and write kernel checksum. */
- 	crc = partial_crc32(output, total_size - 4, crc);
- 	put_unaligned_le32(crc, &output[total_size - 4]);
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 1d1ab1911fd37767..5dbc9c7a4aa3aee7 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -347,6 +347,8 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
- 			       efi_system_table_t *sys_table_arg,
- 			       struct boot_params *boot_params);
- 
-+struct boot_params efi_boot_params __section(".data") __aligned(SZ_4K);
-+
- /*
-  * Because the x86 boot code expects to be passed a boot_params we
-  * need to create one ourselves (usually the bootloader would create
-@@ -355,7 +357,6 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
- efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 				   efi_system_table_t *sys_table_arg)
- {
--	struct boot_params *boot_params;
- 	struct setup_header *hdr;
- 	void *image_base;
- 	efi_guid_t proto = LOADED_IMAGE_PROTOCOL_GUID;
-@@ -378,55 +379,23 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 	image_base = efi_table_attr(image, image_base);
- 	image_offset = (void *)startup_32 - image_base;
- 
--	status = efi_allocate_pages(sizeof(struct boot_params),
--				    (unsigned long *)&boot_params, ULONG_MAX);
--	if (status != EFI_SUCCESS) {
--		efi_err("Failed to allocate lowmem for boot params\n");
--		efi_exit(handle, status);
--	}
--
--	memset(boot_params, 0x0, sizeof(struct boot_params));
--
--	hdr = &boot_params->hdr;
--
--	/* Copy the setup header from the second sector to boot_params */
--	memcpy(&hdr->jump, image_base + 512,
--	       sizeof(struct setup_header) - offsetof(struct setup_header, jump));
--
--	/*
--	 * Fill out some of the header fields ourselves because the
--	 * EFI firmware loader doesn't load the first sector.
--	 */
--	hdr->root_flags	= 1;
--	hdr->vid_mode	= 0xffff;
--	hdr->boot_flag	= 0xAA55;
--
--	hdr->type_of_loader = 0x21;
-+	hdr = &efi_boot_params.hdr;
- 
- 	/* Convert unicode cmdline to ascii */
- 	cmdline_ptr = efi_convert_cmdline(image, &options_size);
- 	if (!cmdline_ptr)
- 		goto fail;
- 
--	efi_set_u64_split((unsigned long)cmdline_ptr,
--			  &hdr->cmd_line_ptr, &boot_params->ext_cmd_line_ptr);
-+	efi_set_u64_split((unsigned long)cmdline_ptr, &hdr->cmd_line_ptr,
-+			  &efi_boot_params.ext_cmd_line_ptr);
- 
- 	hdr->ramdisk_image = 0;
- 	hdr->ramdisk_size = 0;
- 
--	/*
--	 * Disregard any setup data that was provided by the bootloader:
--	 * setup_data could be pointing anywhere, and we have no way of
--	 * authenticating or validating the payload.
--	 */
--	hdr->setup_data = 0;
--
--	efi_stub_entry(handle, sys_table_arg, boot_params);
-+	efi_stub_entry(handle, sys_table_arg, &efi_boot_params);
- 	/* not reached */
- 
- fail:
--	efi_free(sizeof(struct boot_params), (unsigned long)boot_params);
--
- 	efi_exit(handle, status);
+@@ -296,16 +296,13 @@ static void update_pecoff_section_header(char *section_name, uint32_t offset, ui
+ 	update_pecoff_section_header_fields(section_name, offset, size, size, offset);
  }
  
+-static void update_pecoff_setup_and_reloc(unsigned int size)
++static void update_pecoff_reloc(unsigned int size)
+ {
+-	uint32_t setup_offset = SECTOR_SIZE;
+ 	uint32_t reloc_offset = size - PECOFF_RELOC_RESERVE - PECOFF_COMPAT_RESERVE;
+ #ifdef CONFIG_EFI_MIXED
+ 	uint32_t compat_offset = reloc_offset + PECOFF_RELOC_RESERVE;
+ #endif
+-	uint32_t setup_size = reloc_offset - setup_offset;
+ 
+-	update_pecoff_section_header(".setup", setup_offset, setup_size);
+ 	update_pecoff_section_header(".reloc", reloc_offset, PECOFF_RELOC_RESERVE);
+ 
+ 	/*
+@@ -353,7 +350,7 @@ static unsigned int update_pecoff_sections(unsigned int text_start, unsigned int
+ 	 * Size of code: Subtract the size of the first sector (512 bytes)
+ 	 * which includes the header.
+ 	 */
+-	put_unaligned_le32(file_sz - SECTOR_SIZE + bss_sz, &hdr->text_size);
++	put_unaligned_le32(text_sz + bss_sz, &hdr->text_size);
+ 
+ 	/* Size of image */
+ 	put_unaligned_le32(init_sz, &hdr->image_size);
+@@ -407,7 +404,7 @@ static void efi_stub_entry_update(void)
+ 
+ #else
+ 
+-static inline void update_pecoff_setup_and_reloc(unsigned int size) {}
++static inline void update_pecoff_reloc(unsigned int size) {}
+ static inline void update_pecoff_text(unsigned int text_start,
+ 				      unsigned int file_sz,
+ 				      unsigned int init_sz) {}
+@@ -542,7 +539,7 @@ int main(int argc, char **argv)
+ #ifdef CONFIG_EFI_STUB
+ 	/* PE specification require 512-byte minimum section file alignment */
+ 	kern_size = round_up(kern_file_size + 4, SECTOR_SIZE);
+-	update_pecoff_setup_and_reloc(setup_size);
++	update_pecoff_reloc(setup_size);
+ #else
+ 	/* Number of 16-byte paragraphs, including space for a 4-byte CRC */
+ 	kern_size = round_up(kern_file_size + 4, PARAGRAPH_SIZE);
 -- 
 2.39.2
 
