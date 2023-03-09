@@ -2,53 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B61886B2C92
-	for <lists+linux-efi@lfdr.de>; Thu,  9 Mar 2023 19:03:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A08046B2CA8
+	for <lists+linux-efi@lfdr.de>; Thu,  9 Mar 2023 19:10:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229943AbjCISDg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 9 Mar 2023 13:03:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48684 "EHLO
+        id S229580AbjCISJ6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 9 Mar 2023 13:09:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229706AbjCISDf (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 9 Mar 2023 13:03:35 -0500
+        with ESMTP id S229511AbjCISJ5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 9 Mar 2023 13:09:57 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6482552F7A
-        for <linux-efi@vger.kernel.org>; Thu,  9 Mar 2023 10:03:34 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CD53E8430
+        for <linux-efi@vger.kernel.org>; Thu,  9 Mar 2023 10:09:55 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F269E61B33
-        for <linux-efi@vger.kernel.org>; Thu,  9 Mar 2023 18:03:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DD30C4339B
-        for <linux-efi@vger.kernel.org>; Thu,  9 Mar 2023 18:03:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EEA3B61C83
+        for <linux-efi@vger.kernel.org>; Thu,  9 Mar 2023 18:09:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1CDC433EF
+        for <linux-efi@vger.kernel.org>; Thu,  9 Mar 2023 18:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678385013;
-        bh=USoZWQXX82Lppr6+DEpLafVxGpGdTS7QaX5sRwRzo6s=;
+        s=k20201202; t=1678385394;
+        bh=cAbjhqchPU+2fzN5xWEkMNOGYxmq7E1UjGbmJ5BKaWs=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=bPIOHUeXku9L208PLMQ6Y8k8mVXhMl3cF18YARL7OLwR69JynRKQBSfXyyYqlnDTc
-         8e5LingyRXBQ+sbmPN+5DNhP2/i+5pnSRTODGt4RBNNRm9KOosInuNG6u/ChCYUz6U
-         vSJYKfgSldFbzK6zs5J+EGE0D+ORqNKBzpvcDJa+rMYSgaC34SlWliECXiRAIasi/E
-         1LbfSsalTmCrxTCuuuLhpK8uqe7HEu+3OKn7v7vTWcYieFDtAjlrru6TJw4IqoKmuM
-         aayx+vYMMT8r5WGCfnbHCC1Zo/Wzt7C5lkHZScn/l3KXbUfJMhESSd8ZfdzAHgrRNR
-         QqlCjB63cQ4+Q==
-Received: by mail-lf1-f51.google.com with SMTP id i28so3439919lfv.0
-        for <linux-efi@vger.kernel.org>; Thu, 09 Mar 2023 10:03:33 -0800 (PST)
-X-Gm-Message-State: AO0yUKXQ5LAueel55s0PRVRoqs3fp++17iaorqrsBZM5nFsviFa0ho5Q
-        60mh9gyQGZyKeBUSB14YFnOiIY0Vfg0MSUuXptY=
-X-Google-Smtp-Source: AK7set+zJrYyFbQCH2zwwWHtA9SqtXXdXOMokIbKBAaWnqcUnDNEmb8qCJetyXzoE6CtTsxwAe69v0D7dzrvTQy2fG4=
-X-Received: by 2002:ac2:539c:0:b0:4d5:ca42:e43b with SMTP id
- g28-20020ac2539c000000b004d5ca42e43bmr7249803lfh.4.1678385011384; Thu, 09 Mar
- 2023 10:03:31 -0800 (PST)
+        b=DA3yGVZrc5R4jDcbwk1d0b8AgVFT1G4Mg45hs4b2ANixO3Mpk0cHImD/ozRu3Aga5
+         zuRKYFSJ6MW4+g4g4gv00vhr0u7LvcwEbUNKbfx8mf0JU8BCTmTYHRYJilI8E4Zclg
+         UIU505z1ocyBDLmG/eLFs8evOgHk7X83onoLGlr/IotP9CQyH+Xy4Q5bi2EdImyaws
+         PDUKnfCpU91eUHPHlqZ+GUlfjsmEKWaLlij56964XxT/Jl5/ucQFXfhVe980qls+hz
+         xAw2H42xhGBKoK1oQ+z+jxIU3/AsGzft1mhuWLSH8mCdMft/2vDNdEeTa35LJ6YkOh
+         5jImallO8qPeQ==
+Received: by mail-lf1-f46.google.com with SMTP id t11so3421958lfr.1
+        for <linux-efi@vger.kernel.org>; Thu, 09 Mar 2023 10:09:54 -0800 (PST)
+X-Gm-Message-State: AO0yUKWzxaH8H3a0knUolnJ+zBIF2rJutWpT0VIbZyTA9kFP1B8dCmav
+        f/o+xx3N+bfqjSYIdKfPQIYnKnpp7nhtEqBE9NQ=
+X-Google-Smtp-Source: AK7set/swcw1VvLhcCsae4yMZBCz791OCWLmxqmHwd7Z3UtDmplUYGcD8TNdn2tNTo9/EPOSA/qlXhlwDGq9CVYv7/8=
+X-Received: by 2002:ac2:4c2e:0:b0:4d5:ca32:6ae4 with SMTP id
+ u14-20020ac24c2e000000b004d5ca326ae4mr6992311lfq.4.1678385392447; Thu, 09 Mar
+ 2023 10:09:52 -0800 (PST)
 MIME-Version: 1.0
-References: <20230308202209.2980947-1-ardb@kernel.org> <20230308202209.2980947-5-ardb@kernel.org>
- <7665e476c2e6ba6f89d85ad87735ff38@ispras.ru>
-In-Reply-To: <7665e476c2e6ba6f89d85ad87735ff38@ispras.ru>
+References: <20230308202209.2980947-1-ardb@kernel.org> <29877cfc0be87c081e175608003b709a@ispras.ru>
+In-Reply-To: <29877cfc0be87c081e175608003b709a@ispras.ru>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 9 Mar 2023 19:03:20 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFOgYCtx0C+Xqiv+SaUUrjyjEcYSqAt=1wRWA5m=ZZa-g@mail.gmail.com>
-Message-ID: <CAMj1kXFOgYCtx0C+Xqiv+SaUUrjyjEcYSqAt=1wRWA5m=ZZa-g@mail.gmail.com>
-Subject: Re: [RFC PATCH 4/4] efi: x86: Split PE/COFF .text section into .text
- and .data
+Date:   Thu, 9 Mar 2023 19:09:41 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXEya6xiZiccaEwDKMBhjcTF4f5DU7fA+NZHtrqDZo5_0Q@mail.gmail.com>
+Message-ID: <CAMj1kXEya6xiZiccaEwDKMBhjcTF4f5DU7fA+NZHtrqDZo5_0Q@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/4] efi: x86: Use strict W^X mappings in PE/COFF header
 To:     Evgeniy Baskov <baskov@ispras.ru>
 Cc:     linux-efi@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
         Alexey Khoroshilov <khoroshilov@ispras.ru>,
@@ -64,130 +62,108 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 9 Mar 2023 at 19:02, Evgeniy Baskov <baskov@ispras.ru> wrote:
+On Thu, 9 Mar 2023 at 18:59, Evgeniy Baskov <baskov@ispras.ru> wrote:
 >
 > On 2023-03-08 23:22, Ard Biesheuvel wrote:
-> > Modern PE loader implementations used by EFI will honour the PE section
-> > permission attributes, and so we can use them to avoid mappings that
-> > are
-> > writable and executable at the same time.
+> > This is a follow-up to work proposed by Evgeny to tighten memory
+> > permissions used by the EFI stub and subsequently by the decompressor
+> > on
+> > x86.
 > >
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >  arch/x86/boot/header.S      | 17 ++++++++++++++++
-> >  arch/x86/boot/tools/build.c | 21 +++++++++++++++-----
-> >  2 files changed, 33 insertions(+), 5 deletions(-)
+> > Instead of going out of our way to make more space in the first 500
+> > bytes of the image, and relying on non-1:1 mapped sections (which is
+> > risky in the context of bespoke PE loaders), these patches reorganize
+> > the header so the PE header comes after the x86 setup header, and can
+> > be
+> > extended at will.
 > >
-> > diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-> > index 4f1e1791cda4d316..a8ff8bbb17bca7d7 100644
-> > --- a/arch/x86/boot/header.S
-> > +++ b/arch/x86/boot/header.S
-> > @@ -253,6 +253,23 @@ section_table:
-> >               IMAGE_SCN_MEM_READ              | \
-> >               IMAGE_SCN_MEM_EXECUTE           # Characteristics
+> > I pushed a branch at [1] that combines this with v4 of Evgeny's series
+> > (after some minor surgery, e.g., to reorder the text and rodata
+> > sections
+> > so they are contiguous)
 > >
-> > +     .ascii  ".data"
-> > +     .byte   0
-> > +     .byte   0
-> > +     .byte   0
-> > +     .long   0
-> > +     .long   0x0                             # startup_{32,64}
-> > +     .long   0                               # Size of initialized data
-> > +                                             # on disk
-> > +     .long   0x0                             # startup_{32,64}
-> > +     .long   0                               # PointerToRelocations
-> > +     .long   0                               # PointerToLineNumbers
-> > +     .word   0                               # NumberOfRelocations
-> > +     .word   0                               # NumberOfLineNumbers
-> > +     .long   IMAGE_SCN_CNT_INITIALIZED_DATA  | \
-> > +             IMAGE_SCN_MEM_READ              | \
-> > +             IMAGE_SCN_MEM_WRITE             # Characteristics
-> > +
-> >       .set    section_count, (. - section_table) / 40
-> >  #endif /* CONFIG_EFI_STUB */
+> > We might split off the rodata section as well, and give it
+> > read/non-exec
+> > permissions, but I'd like to discuss the approach first, and perhaps
+> > get
+> > some testing data points.
 > >
-> > diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-> > index 883e6359221cd588..b449c82feaadf2b8 100644
-> > --- a/arch/x86/boot/tools/build.c
-> > +++ b/arch/x86/boot/tools/build.c
-> > @@ -119,6 +119,7 @@ static unsigned long efi_boot_params;
-> >  static unsigned long kernel_info;
-> >  static unsigned long startup_64;
-> >  static unsigned long _ehead;
-> > +static unsigned long _data;
-> >  static unsigned long _end;
+> > Cc: Evgeniy Baskov <baskov@ispras.ru>
+> > Cc: Borislav Petkov <bp@alien8.de>
+> > Cc: Alexey Khoroshilov <khoroshilov@ispras.ru>
+> > Cc: Peter Jones <pjones@redhat.com>
+> > Cc: "Limonciello, Mario" <mario.limonciello@amd.com>
 > >
+> > [0]
+> > https://lore.kernel.org/linux-efi/cover.1671098103.git.baskov@ispras.ru/
+> > [1]
+> > https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efi-x86-nx-v4
 > >
-> > /*----------------------------------------------------------------------*/
-> > @@ -347,10 +348,15 @@ static unsigned int
-> > update_pecoff_sections(unsigned int text_start, unsigned int
-> >       init_sz += CONFIG_PHYSICAL_ALIGN;
+> > Ard Biesheuvel (4):
+> >   efi: x86: Use private copy of struct setup_header
+> >   efi: x86: Move PE header after setup header
+> >   efi: x86: Drop alignment section header flags
+> >   efi: x86: Split PE/COFF .text section into .text and .data
 > >
-> >       /*
-> > -      * Size of code: Subtract the size of the first sector (512 bytes)
-> > -      * which includes the header.
-> > +      * Size of code: the size of the combined .text/.rodata section,
-> > which
-> > +      * ends at the _data marker symbol.
-> >        */
-> > -     put_unaligned_le32(text_sz + bss_sz, &hdr->text_size);
-> > +     put_unaligned_le32(_data, &hdr->text_size);
-> > +
-> > +     /*
-> > +      * Size of data: the size of the combined .data/.bss section.
-> > +      */
-> > +     put_unaligned_le32(text_sz - _data + bss_sz, &hdr->data_size);
-> >
-> >       /* Size of image */
-> >       put_unaligned_le32(init_sz, &hdr->image_size);
-> > @@ -360,9 +366,13 @@ static unsigned int
-> > update_pecoff_sections(unsigned int text_start, unsigned int
-> >        */
-> >       put_unaligned_le32(text_start + efi_pe_entry, &hdr->entry_point);
-> >
-> > -     update_pecoff_section_header_fields(".text", text_start, text_sz +
-> > bss_sz,
-> > -                                         text_sz, text_start);
-> > +     update_pecoff_section_header_fields(".text", text_start, _data,
-> > +                                         _data, text_start);
-> >
-> > +     update_pecoff_section_header_fields(".data", text_start + _data,
-> > +                                         text_sz - _data + bss_sz,
-> > +                                         text_sz - _data,
-> > +                                         text_start + _data);
-> >       return text_start + file_sz;
-> >  }
-> >
-> > @@ -455,6 +465,7 @@ static void parse_zoffset(char *fname)
-> >               PARSE_ZOFS(p, kernel_info);
-> >               PARSE_ZOFS(p, startup_64);
-> >               PARSE_ZOFS(p, _ehead);
-> > +             PARSE_ZOFS(p, _data);
+> >  arch/x86/boot/Makefile                  |  2 +-
+> >  arch/x86/boot/header.S                  | 52 +++++++++-----------
+> >  arch/x86/boot/setup.ld                  |  1 +
+> >  arch/x86/boot/tools/build.c             | 38 +++++++++-----
+> >  drivers/firmware/efi/libstub/x86-stub.c | 43 +++-------------
+> >  5 files changed, 59 insertions(+), 77 deletions(-)
 >
-> This also requires _data to be fetched to zoffset.h:
+> I've quickly looked through these patches but I'll do more testing
+> tomorrow.
+>
+> This approach seems to be better than mine if it will work. I've tried
+> the similar thing but I did not think of creating the local copy of the
+> bootparams and the attempt to map them did not work since the PE loader
+> I am trying to get kernel booting with does not accept sections before
+> the PE header. But since the bootparams is inside the padding and is
+> not used, it should be fine.
+>
+> But this will still need more changes to work properly with stricter PE
+> loaders like the one that I've mentioned in my patch series [1].
+>
+> The image should also have 4K aligned section virtual addresses and
+> sizes
+> (even on .reloc and .compat AFAIK), otherwise UEFI will ignore memory
+> attributes (or refuse to load the kernel).
+
+EDK2 works fine as is, i.e. with only .text and .data aligned to 4k
+virtually, and the data size of .data aligned to 512 bytes.
+
+ProtectUefiImageCommon - 0x3C8600C0
+  - 0x0000000038777000 - 0x0000000002BC6000
+SetUefiImageMemoryAttributes - 0x0000000038777000 - 0x0000000000004000
+(0x0000000000004008)
+SetUefiImageMemoryAttributes - 0x000000003877B000 - 0x0000000000BEE000
+(0x0000000000020008)
+SetUefiImageMemoryAttributes - 0x0000000039369000 - 0x0000000001FD4000
+(0x0000000000004008)
+
+> Another desired thing is
+> having
+> adjacent section with no padding in between them, since [1] does have a
+> mode that requires sections them to be adjacent.
+
+Does that have any basis in the PE/COFF spec?
+
+> (SizeOfHeaders/header_size
+> should also be set to the size of setup since it is also checked to be
+> adjacent to the first section.)
 >
 
-Indeed - I'd fixed that locally but failed to include it in the patch,
-apologies.
+Does that have any basis in the PE/COFF spec?
 
-> diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
-> index 8203f1a23f7a..0e5a18c3c165 100644
-> --- a/arch/x86/boot/Makefile
-> +++ b/arch/x86/boot/Makefile
-> @@ -91,7 +91,7 @@ $(obj)/vmlinux.bin: $(obj)/compressed/vmlinux FORCE
+> I did not do the one-to-one mapping of file and virtual addresses since
+> it
+> would require almost 4K paddings for the auxiliary sections.
 >
->   SETUP_OBJS = $(addprefix $(obj)/,$(setup-y))
+> [1] https://github.com/acidanthera/audk/tree/secure_pe
 >
-> -sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z]
-> \(startup_32\|startup_64\|efi32_stub_entry\|efi64_stub_entry\|efi_pe_entry\|efi32_pe_entry\|efi_boot_params\|input_data\|kernel_info\|_end\|_ehead\|_text\|z_.*\)$$/\#define
-> ZO_\2 0x\1/p'
-> +sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z]
-> \(startup_32\|startup_64\|efi32_stub_entry\|efi64_stub_entry\|efi_pe_entry\|efi32_pe_entry\|efi_boot_params\|input_data\|kernel_info\|_end\|_ehead\|_text\|_data\|z_.*\)$$/\#define
-> ZO_\2 0x\1/p'
->
->   quiet_cmd_zoffset = ZOFFSET $@
->         cmd_zoffset = $(NM) $< | sed -n $(sed-zoffset) > $@
->
-> >               PARSE_ZOFS(p, _end);
-> >
-> >               p = strchr(p, '\n');
+
+I've backpedaled a little bit from this approach (see my other comment).
+
+If we just rip out the real mode stub, we can keep the PE header
+before the setup header, and simply describe whatever comes as .text.
