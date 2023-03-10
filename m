@@ -2,51 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6E5E6B46B7
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Mar 2023 15:46:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 361D86B479B
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Mar 2023 15:52:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232954AbjCJOqG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Mar 2023 09:46:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37592 "EHLO
+        id S233455AbjCJOwR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 10 Mar 2023 09:52:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232968AbjCJOpg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 10 Mar 2023 09:45:36 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CB8E104918;
-        Fri, 10 Mar 2023 06:45:35 -0800 (PST)
+        with ESMTP id S233344AbjCJOvl (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 10 Mar 2023 09:51:41 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A52E911F631;
+        Fri, 10 Mar 2023 06:48:28 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 418F6B822C4;
-        Fri, 10 Mar 2023 14:45:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B7EFC433AA;
-        Fri, 10 Mar 2023 14:45:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 598FD6196F;
+        Fri, 10 Mar 2023 14:48:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF365C433B3;
+        Fri, 10 Mar 2023 14:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678459533;
-        bh=IvPlgC8FNuEawjTiqdqcXG0Vuq2V20WvsE3UoU5IbnM=;
+        s=k20201202; t=1678459702;
+        bh=MZZ+xz3G0vilznbAM1hCF+BZtVWTz2PltybcPZKNnL8=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=B6LwG1EMbghLwWlgi1hcfkojRvbErW0wN95YI1lETMWrP0cXooU9Ji6GM6sUitU7s
-         6KYvzXjJ3nTKJKAkmOulGTr8YzzOf4SUKNMnOtuzNjbVYdFXEzI4Ni7/K8kWYV4AZ4
-         DQBydYDUqVZDZJJf0cuFZJZ7x+fk3PO3R2HalJB4o1x4cQLzz6MdNfTRRWKcuxr2pu
-         lsimvh8C0zdYTFzJcBX6F+5At80QdoQpnnYh3n5wvDHeoXFTTnhlyglF58Q/XwItKE
-         yNpKyeicf8JeB+78R1bZh9x0ECfMvOM4JhJXcwClmoCB6Bx4u0TckCLmdQivonl/+4
-         E5Ywjyk6XcO9A==
-Received: by mail-lj1-f177.google.com with SMTP id by8so5519773ljb.7;
-        Fri, 10 Mar 2023 06:45:32 -0800 (PST)
-X-Gm-Message-State: AO0yUKXlp6lX1eQPyoGGNWHACe7TWY4LSisTBEJcjXFxXQ3WnsPIAAsu
-        9nZDHt8Q2apwfx36Ao4UhdIDm6Gmf7F63qoYlU4=
-X-Google-Smtp-Source: AK7set/dfnjwOSg08q4BbmTlaoIno/ntt6qMLyfs5G2pcn7uWEfEebur3AyHswI1pCKIaNa5c6PrXtvK7tnjuPgZIJI=
+        b=LtvAHCO4o5meyqPkBJtVpvSiemyQ2z8bYClzjwMOCq/5vzcTeCY8oTEGpfo8x9tid
+         nWdLbH6iqLpUA8ExqOON8Vk2/AelJ2AbeoRL8nIFtm+VFzm2St/rFd6Yf4Ubg+2DBV
+         zyirIAGgKjgWTFA8DmM4fvzD4mGYf3niLB4Ab828kbwhuZp2IKp15TYb5O69d+cJrK
+         Hpz2v1Mf8VkVUCOEecNiSBzWEQbBGueKeBJ+uaLAD4hWXqbV6nFkAZkjyIfKXfnt+y
+         2DMMfsMnqW+VE/RGB5PtsfYqx8e0usUdtpN1was4RBvd2s82SwgEGbGR+9Pw0khygF
+         KyMoDQT/9uc2A==
+Received: by mail-lj1-f180.google.com with SMTP id by8so5529218ljb.7;
+        Fri, 10 Mar 2023 06:48:22 -0800 (PST)
+X-Gm-Message-State: AO0yUKWq+STV4wwV3e1OuOOqF5Zrsglq5LgZh9QMHjaEK/h2Yp/OOAAJ
+        yF8+6p/iOL9bZgUp8zm7RZt/pvKVkguPuMb54Ws=
+X-Google-Smtp-Source: AK7set+0BQ0DMOVyXPC1WgLMQEUn+f1e8kQdc94gXG38KqQMt70pg+KRu5rYeqlTUHvA7UYzqFKOy5zXh8GA+CzToc8=
 X-Received: by 2002:a2e:595:0:b0:298:6d17:eaa7 with SMTP id
- 143-20020a2e0595000000b002986d17eaa7mr3307263ljf.2.1678459531122; Fri, 10 Mar
- 2023 06:45:31 -0800 (PST)
+ 143-20020a2e0595000000b002986d17eaa7mr3310478ljf.2.1678459700862; Fri, 10 Mar
+ 2023 06:48:20 -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1671098103.git.baskov@ispras.ru> <721b5c42e0e79d307d5bcb08f9c8402f5067ded0.1671098103.git.baskov@ispras.ru>
-In-Reply-To: <721b5c42e0e79d307d5bcb08f9c8402f5067ded0.1671098103.git.baskov@ispras.ru>
+References: <cover.1671098103.git.baskov@ispras.ru> <c60d49a99889cb81e177ab9e756edcfa23182b3a.1671098103.git.baskov@ispras.ru>
+In-Reply-To: <c60d49a99889cb81e177ab9e756edcfa23182b3a.1671098103.git.baskov@ispras.ru>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 10 Mar 2023 15:45:19 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEdD8UT5SMU+3RH1qoNGcAOSF7fWnJS=Svy0EUB76FYng@mail.gmail.com>
-Message-ID: <CAMj1kXEdD8UT5SMU+3RH1qoNGcAOSF7fWnJS=Svy0EUB76FYng@mail.gmail.com>
-Subject: Re: [PATCH v4 02/26] x86/build: Remove RWX sections and align on 4KB
+Date:   Fri, 10 Mar 2023 15:48:09 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHtgjK8xobe3rbsxdBaGz1xMtXCV=WT7WFbHe9nMOUnww@mail.gmail.com>
+Message-ID: <CAMj1kXHtgjK8xobe3rbsxdBaGz1xMtXCV=WT7WFbHe9nMOUnww@mail.gmail.com>
+Subject: Re: [PATCH v4 03/26] x86/boot: Set cr0 to known state in trampoline
 To:     Evgeniy Baskov <baskov@ispras.ru>
 Cc:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
@@ -71,79 +71,35 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 On Thu, 15 Dec 2022 at 13:38, Evgeniy Baskov <baskov@ispras.ru> wrote:
 >
-> Avoid creating sections simultaneously writable and readable
-> to prepare for W^X implementation. Align sections on page size (4KB) to
-> allow protecting them in the page tables.
->
-> Split init code form ".init" segment into separate R_X ".inittext"
-> segment and make ".init" segment non-executable.
->
-> Also add these segments to x86_32 architecture for consistency.
-> Currently paging is disabled in x86_32 in compressed kernel, so
-> protection is not applied anyways, but .init code was incorrectly
-> placed in non-executable ".data" segment. This should not change
-> anything meaningful in memory layout now, but might be required in case
-> memory protection will also be implemented in compressed kernel for
-> x86_32.
+> Ensure WP bit to be set to prevent boot code from writing to
+> non-writable memory pages.
 >
 > Tested-by: Mario Limonciello <mario.limonciello@amd.com>
 > Tested-by: Peter Jones <pjones@redhat.com>
 > Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
 
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-
-One nit: the series modifies both the decompressor linker script and
-the core kernel one, so please make it very explicit in the commit log
-which one is being modified, and why it matters for this particular
-context.
-
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
 > ---
->  arch/x86/kernel/vmlinux.lds.S | 15 ++++++++-------
->  1 file changed, 8 insertions(+), 7 deletions(-)
+>  arch/x86/boot/compressed/head_64.S | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 >
-> diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
-> index 2e0ee14229bf..2e56d694c491 100644
-> --- a/arch/x86/kernel/vmlinux.lds.S
-> +++ b/arch/x86/kernel/vmlinux.lds.S
-> @@ -102,12 +102,11 @@ jiffies = jiffies_64;
->  PHDRS {
->         text PT_LOAD FLAGS(5);          /* R_E */
->         data PT_LOAD FLAGS(6);          /* RW_ */
-> -#ifdef CONFIG_X86_64
-> -#ifdef CONFIG_SMP
-> +#if defined(CONFIG_X86_64) && defined(CONFIG_SMP)
->         percpu PT_LOAD FLAGS(6);        /* RW_ */
->  #endif
-> -       init PT_LOAD FLAGS(7);          /* RWE */
-> -#endif
-> +       inittext PT_LOAD FLAGS(5);      /* R_E */
-> +       init PT_LOAD FLAGS(6);          /* RW_ */
->         note PT_NOTE FLAGS(0);          /* ___ */
->  }
+> diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+> index a75712991df3..9f2e8f50fc71 100644
+> --- a/arch/x86/boot/compressed/head_64.S
+> +++ b/arch/x86/boot/compressed/head_64.S
+> @@ -660,9 +660,8 @@ SYM_CODE_START(trampoline_32bit_src)
+>         pushl   $__KERNEL_CS
+>         pushl   %eax
 >
-> @@ -227,9 +226,10 @@ SECTIONS
->  #endif
+> -       /* Enable paging again. */
+> -       movl    %cr0, %eax
+> -       btsl    $X86_CR0_PG_BIT, %eax
+> +       /* Enable paging and set CR0 to known state (this also sets WP flag) */
+> +       movl    $CR0_STATE, %eax
+>         movl    %eax, %cr0
 >
->         INIT_TEXT_SECTION(PAGE_SIZE)
-> -#ifdef CONFIG_X86_64
-> -       :init
-> -#endif
-> +       :inittext
-> +
-> +       . = ALIGN(PAGE_SIZE);
-> +
->
->         /*
->          * Section for code used exclusively before alternatives are run. All
-> @@ -241,6 +241,7 @@ SECTIONS
->         .altinstr_aux : AT(ADDR(.altinstr_aux) - LOAD_OFFSET) {
->                 *(.altinstr_aux)
->         }
-> +       :init
->
->         INIT_DATA_SECTION(16)
->
+>         lret
 > --
 > 2.37.4
 >
