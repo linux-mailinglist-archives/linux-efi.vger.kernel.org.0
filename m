@@ -2,51 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB5376B4690
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Mar 2023 15:44:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6E5E6B46B7
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Mar 2023 15:46:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232796AbjCJOoI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Mar 2023 09:44:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60894 "EHLO
+        id S232954AbjCJOqG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 10 Mar 2023 09:46:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232877AbjCJOnt (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 10 Mar 2023 09:43:49 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C564613DDA;
-        Fri, 10 Mar 2023 06:43:48 -0800 (PST)
+        with ESMTP id S232968AbjCJOpg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 10 Mar 2023 09:45:36 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CB8E104918;
+        Fri, 10 Mar 2023 06:45:35 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6408B6187C;
-        Fri, 10 Mar 2023 14:43:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA258C433A1;
-        Fri, 10 Mar 2023 14:43:47 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 418F6B822C4;
+        Fri, 10 Mar 2023 14:45:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B7EFC433AA;
+        Fri, 10 Mar 2023 14:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678459427;
-        bh=GqsR91YC3bbWtfipvQlRA7NKcZfVFD9t3q56gQEEmRw=;
+        s=k20201202; t=1678459533;
+        bh=IvPlgC8FNuEawjTiqdqcXG0Vuq2V20WvsE3UoU5IbnM=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=KMgvEEV7NIJ1P2+CpgUqR23wQmc/mPYCQTX+9ga25/VCW5WXHPJF6bKZHKkYPCHU3
-         XBIlmmOzL3tCLGtjZjwGKSGd1tlKxvxmXCyfoe5lvGk8siwexgVayIvw1x1Mi1ghoM
-         q3VqofA5RgTaLBpe++rwQgRnzYiSWTiyRYtcd5LBZKZnLc5ndF1AJqlNoLizqscdNV
-         HKkW10jmwTPsY2VpxaC1ICzDi5tyC9OAlr3Tjjkv4s7FoAmzv0gBAwuZLT0OlBKRGo
-         tfJZHivJKXaaNwTZ/AU6oczSShxIXKPwDPLT5JjFgGMl5aQpM5ZJsG3c+21j1zbB+l
-         m01LpAYHK5WMA==
-Received: by mail-lf1-f44.google.com with SMTP id t11so6907482lfr.1;
-        Fri, 10 Mar 2023 06:43:47 -0800 (PST)
-X-Gm-Message-State: AO0yUKUev3q3PKV4N75BY9afp/ktR5apTuFvfOdixIbp443h/NDv8/DJ
-        JuPBW8WIUrxeWwkroV2tqZoZFj6Fee8Xcuqw+PU=
-X-Google-Smtp-Source: AK7set+uUPqC+Nc+rUEfRT1ENZI+Cs4fQgKeR+wBglg54jCNNl7i7G36g0VIidxkJdPc0QiGQ3LHh9jjVi35CwG7h1k=
-X-Received: by 2002:ac2:54b9:0:b0:4d8:62e5:4f66 with SMTP id
- w25-20020ac254b9000000b004d862e54f66mr8064335lfk.7.1678459425800; Fri, 10 Mar
- 2023 06:43:45 -0800 (PST)
+        b=B6LwG1EMbghLwWlgi1hcfkojRvbErW0wN95YI1lETMWrP0cXooU9Ji6GM6sUitU7s
+         6KYvzXjJ3nTKJKAkmOulGTr8YzzOf4SUKNMnOtuzNjbVYdFXEzI4Ni7/K8kWYV4AZ4
+         DQBydYDUqVZDZJJf0cuFZJZ7x+fk3PO3R2HalJB4o1x4cQLzz6MdNfTRRWKcuxr2pu
+         lsimvh8C0zdYTFzJcBX6F+5At80QdoQpnnYh3n5wvDHeoXFTTnhlyglF58Q/XwItKE
+         yNpKyeicf8JeB+78R1bZh9x0ECfMvOM4JhJXcwClmoCB6Bx4u0TckCLmdQivonl/+4
+         E5Ywjyk6XcO9A==
+Received: by mail-lj1-f177.google.com with SMTP id by8so5519773ljb.7;
+        Fri, 10 Mar 2023 06:45:32 -0800 (PST)
+X-Gm-Message-State: AO0yUKXlp6lX1eQPyoGGNWHACe7TWY4LSisTBEJcjXFxXQ3WnsPIAAsu
+        9nZDHt8Q2apwfx36Ao4UhdIDm6Gmf7F63qoYlU4=
+X-Google-Smtp-Source: AK7set/dfnjwOSg08q4BbmTlaoIno/ntt6qMLyfs5G2pcn7uWEfEebur3AyHswI1pCKIaNa5c6PrXtvK7tnjuPgZIJI=
+X-Received: by 2002:a2e:595:0:b0:298:6d17:eaa7 with SMTP id
+ 143-20020a2e0595000000b002986d17eaa7mr3307263ljf.2.1678459531122; Fri, 10 Mar
+ 2023 06:45:31 -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1671098103.git.baskov@ispras.ru> <8211c633eb5dceeabee2996a4db91cd971cf7c77.1671098103.git.baskov@ispras.ru>
-In-Reply-To: <8211c633eb5dceeabee2996a4db91cd971cf7c77.1671098103.git.baskov@ispras.ru>
+References: <cover.1671098103.git.baskov@ispras.ru> <721b5c42e0e79d307d5bcb08f9c8402f5067ded0.1671098103.git.baskov@ispras.ru>
+In-Reply-To: <721b5c42e0e79d307d5bcb08f9c8402f5067ded0.1671098103.git.baskov@ispras.ru>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 10 Mar 2023 15:43:34 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFPtA4f3kW1U2-LAQFEuOvLsis=Ursj40xRrg-cvtK=gA@mail.gmail.com>
-Message-ID: <CAMj1kXFPtA4f3kW1U2-LAQFEuOvLsis=Ursj40xRrg-cvtK=gA@mail.gmail.com>
-Subject: Re: [PATCH v4 01/26] x86/boot: Align vmlinuz sections on page size
+Date:   Fri, 10 Mar 2023 15:45:19 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXEdD8UT5SMU+3RH1qoNGcAOSF7fWnJS=Svy0EUB76FYng@mail.gmail.com>
+Message-ID: <CAMj1kXEdD8UT5SMU+3RH1qoNGcAOSF7fWnJS=Svy0EUB76FYng@mail.gmail.com>
+Subject: Re: [PATCH v4 02/26] x86/build: Remove RWX sections and align on 4KB
 To:     Evgeniy Baskov <baskov@ispras.ru>
 Cc:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
@@ -71,61 +71,79 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 On Thu, 15 Dec 2022 at 13:38, Evgeniy Baskov <baskov@ispras.ru> wrote:
 >
-> To protect sections on page table level each section
-> needs to be aligned on page size (4KB).
+> Avoid creating sections simultaneously writable and readable
+> to prepare for W^X implementation. Align sections on page size (4KB) to
+> allow protecting them in the page tables.
 >
-> Set sections alignment in linker script.
+> Split init code form ".init" segment into separate R_X ".inittext"
+> segment and make ".init" segment non-executable.
+>
+> Also add these segments to x86_32 architecture for consistency.
+> Currently paging is disabled in x86_32 in compressed kernel, so
+> protection is not applied anyways, but .init code was incorrectly
+> placed in non-executable ".data" segment. This should not change
+> anything meaningful in memory layout now, but might be required in case
+> memory protection will also be implemented in compressed kernel for
+> x86_32.
 >
 > Tested-by: Mario Limonciello <mario.limonciello@amd.com>
 > Tested-by: Peter Jones <pjones@redhat.com>
 > Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
+
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+
+One nit: the series modifies both the decompressor linker script and
+the core kernel one, so please make it very explicit in the commit log
+which one is being modified, and why it matters for this particular
+context.
+
+
 > ---
->  arch/x86/boot/compressed/vmlinux.lds.S | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  arch/x86/kernel/vmlinux.lds.S | 15 ++++++++-------
+>  1 file changed, 8 insertions(+), 7 deletions(-)
 >
-> diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
-> index 112b2375d021..6be90f1a1198 100644
-> --- a/arch/x86/boot/compressed/vmlinux.lds.S
-> +++ b/arch/x86/boot/compressed/vmlinux.lds.S
-> @@ -27,21 +27,27 @@ SECTIONS
->                 HEAD_TEXT
->                 _ehead = . ;
->         }
+> diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+> index 2e0ee14229bf..2e56d694c491 100644
+> --- a/arch/x86/kernel/vmlinux.lds.S
+> +++ b/arch/x86/kernel/vmlinux.lds.S
+> @@ -102,12 +102,11 @@ jiffies = jiffies_64;
+>  PHDRS {
+>         text PT_LOAD FLAGS(5);          /* R_E */
+>         data PT_LOAD FLAGS(6);          /* RW_ */
+> -#ifdef CONFIG_X86_64
+> -#ifdef CONFIG_SMP
+> +#if defined(CONFIG_X86_64) && defined(CONFIG_SMP)
+>         percpu PT_LOAD FLAGS(6);        /* RW_ */
+>  #endif
+> -       init PT_LOAD FLAGS(7);          /* RWE */
+> -#endif
+> +       inittext PT_LOAD FLAGS(5);      /* R_E */
+> +       init PT_LOAD FLAGS(6);          /* RW_ */
+>         note PT_NOTE FLAGS(0);          /* ___ */
+>  }
+>
+> @@ -227,9 +226,10 @@ SECTIONS
+>  #endif
+>
+>         INIT_TEXT_SECTION(PAGE_SIZE)
+> -#ifdef CONFIG_X86_64
+> -       :init
+> -#endif
+> +       :inittext
+> +
 > +       . = ALIGN(PAGE_SIZE);
->         .rodata..compressed : {
-> +               _compressed = .;
->                 *(.rodata..compressed)
-
-Can you just move this bit into the rodata section below?
-
-> +               _ecompressed = .;
+> +
+>
+>         /*
+>          * Section for code used exclusively before alternatives are run. All
+> @@ -241,6 +241,7 @@ SECTIONS
+>         .altinstr_aux : AT(ADDR(.altinstr_aux) - LOAD_OFFSET) {
+>                 *(.altinstr_aux)
 >         }
-> +       . = ALIGN(PAGE_SIZE);
->         .text : {
-
-Please use
-
-.text : ALIGN(PAGE_SIZE) {
-
-which marks the section as being page aligned, rather than just being
-placed on a 4k boundary.
-
->                 _text = .;      /* Text */
->                 *(.text)
->                 *(.text.*)
->                 _etext = . ;
->         }
-> +       . = ALIGN(PAGE_SIZE);
->         .rodata : {
->                 _rodata = . ;
->                 *(.rodata)       /* read-only data */
->                 *(.rodata.*)
->                 _erodata = . ;
->         }
-> +       . = ALIGN(PAGE_SIZE);
->         .data : {
->                 _data = . ;
->                 *(.data)
+> +       :init
+>
+>         INIT_DATA_SECTION(16)
+>
 > --
 > 2.37.4
 >
