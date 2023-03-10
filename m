@@ -2,51 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46F0D6B488E
-	for <lists+linux-efi@lfdr.de>; Fri, 10 Mar 2023 16:03:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 173DD6B48E8
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Mar 2023 16:08:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233755AbjCJPDv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 10 Mar 2023 10:03:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57720 "EHLO
+        id S233897AbjCJPIB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 10 Mar 2023 10:08:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233763AbjCJPD2 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 10 Mar 2023 10:03:28 -0500
+        with ESMTP id S233589AbjCJPHj (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 10 Mar 2023 10:07:39 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AE88139D2B;
-        Fri, 10 Mar 2023 06:56:42 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A423212C431;
+        Fri, 10 Mar 2023 07:00:28 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7926961AC7;
-        Fri, 10 Mar 2023 14:56:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2941C43332;
-        Fri, 10 Mar 2023 14:56:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C79B61AB3;
+        Fri, 10 Mar 2023 14:59:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802E9C433AC;
+        Fri, 10 Mar 2023 14:59:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678460193;
-        bh=LleL3ZMXiz6vH6iyiFcxIHPqX8IjYxOLu8x8GMkkT7k=;
+        s=k20201202; t=1678460389;
+        bh=1jHWm1hHektupMVfGYAU7Ec/h6Xz3poeeAB0EdUGEqo=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=fuWvsAU+a12lUfhJbnBW+P3PNpOH9VY0rIWEmm5u3aWK4mliuT/TlnGh7ei4DVNIJ
-         TRVb2BstxCKmpcymXYt1pTfSaGNzmqIOebcmvjcRIiT1cRbF8Zf9HoFpHw82wpNCra
-         qfmnBBWvI3IKkueewMBJK8OTs3PGIMQgLOXXc4q+xgpPKl2k568Mm/z+6A6gPtgMti
-         s6UN099qShgREiXrzbwW6fvh91prEw76Igx8rFrbw3cgZuFmtAAAqDP1pYrMRN/AF/
-         KOFDoFd7H62nfzLJu0IjLj0q/LFl4wHrj2Di9d2DbB5yUwCogcCSyEAepNw9l4ph27
-         qBKZr+tG/hIpg==
-Received: by mail-lf1-f47.google.com with SMTP id s22so6928683lfi.9;
-        Fri, 10 Mar 2023 06:56:33 -0800 (PST)
-X-Gm-Message-State: AO0yUKW1Zk0hepVdv4fWpCbMkIoH1/OxLVkqgY+4BaC8YlTtm2+MNnXS
-        2f/dx+LjAzKaxAyjpeZd1hTgzJBy0s8m5DmXLUY=
-X-Google-Smtp-Source: AK7set/c34H7Dc7A+yycPZXF9xoTl+7Ldp/o9O9FJu/BBI76ZVV1kgmUBFPFFsudSyDcbCI+btxbo3AqcAvjcJ9qDsw=
-X-Received: by 2002:ac2:5e99:0:b0:4db:37ff:f5d0 with SMTP id
- b25-20020ac25e99000000b004db37fff5d0mr918242lfq.1.1678460191959; Fri, 10 Mar
- 2023 06:56:31 -0800 (PST)
+        b=uF2BrzmViQWwW1LEQLJXKxB0daFUAomEdstRS+b5em0SwNeqvzUCC33Io6LqCxVCR
+         i1QYaSFF0beb+R0KGs9x2ve6HqvVm5JrdiIsR54eceHdfbDuC+GKoAicbstlOTLock
+         Bs5uanFJ+vh4FLNRiUQXc/AF9e0+nF29h0yNAsSgC0UnJuO1nfvNXSzAwo70Rpoh76
+         U63zqbe0iNTyFW99cL3xWIjuY8fezUvZNREd9HPOYjgY9nGJHSot64soNRk/A908zK
+         5rSuPt9psIt7R28CcHPV0MF3q1jWwBZy5cXzTzDTFQ1FVN8BlAYYAQAfHTNxKofkzg
+         vzVxWokhVu/oQ==
+Received: by mail-lf1-f52.google.com with SMTP id k14so6944333lfj.7;
+        Fri, 10 Mar 2023 06:59:49 -0800 (PST)
+X-Gm-Message-State: AO0yUKXUxrOmnmOxGW4ImTt8/7HV/H80JGF/ANXhX8NTJpkD6e7f8UC7
+        F5evpw3i05WQI4NBqJ09M+F1WPi+iXonJMJ6TS0=
+X-Google-Smtp-Source: AK7set8UE9g4mnJY20spZnNYYYIZuw9ViDA1dtxYc+myhHvwFACvLnYstWrXuWWWcK6KO60dHRDelfdmwz0fTxtS5I8=
+X-Received: by 2002:a19:7517:0:b0:4dd:805b:5b75 with SMTP id
+ y23-20020a197517000000b004dd805b5b75mr8092903lfe.7.1678460387521; Fri, 10 Mar
+ 2023 06:59:47 -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1671098103.git.baskov@ispras.ru> <9f951d6332eea6e46ebd46ca919ed5b1b85c0ba3.1671098103.git.baskov@ispras.ru>
-In-Reply-To: <9f951d6332eea6e46ebd46ca919ed5b1b85c0ba3.1671098103.git.baskov@ispras.ru>
+References: <cover.1671098103.git.baskov@ispras.ru> <cb62472011a0c4151276b6a05b83b60b1bf6f352.1671098103.git.baskov@ispras.ru>
+In-Reply-To: <cb62472011a0c4151276b6a05b83b60b1bf6f352.1671098103.git.baskov@ispras.ru>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 10 Mar 2023 15:56:20 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGwaX8nGJdRM3==thO=KfXb3UwbF2jJhrqiZK-RcM+QLw@mail.gmail.com>
-Message-ID: <CAMj1kXGwaX8nGJdRM3==thO=KfXb3UwbF2jJhrqiZK-RcM+QLw@mail.gmail.com>
-Subject: Re: [PATCH v4 13/26] x86/boot: Split trampoline and pt init code
+Date:   Fri, 10 Mar 2023 15:59:36 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHnQZ2EDg1F_whTPHajYvqox7Ss35aqUyJuC8RLyiuCxg@mail.gmail.com>
+Message-ID: <CAMj1kXHnQZ2EDg1F_whTPHajYvqox7Ss35aqUyJuC8RLyiuCxg@mail.gmail.com>
+Subject: Re: [PATCH v4 17/26] x86/boot: Reduce size of the DOS stub
 To:     Evgeniy Baskov <baskov@ispras.ru>
 Cc:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
@@ -71,138 +71,63 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 On Thu, 15 Dec 2022 at 13:40, Evgeniy Baskov <baskov@ispras.ru> wrote:
 >
-> When allocating trampoline from libstub trampoline allocation is
-> performed separately, so it needs to be skipped.
->
-> Split trampoline initialization and allocation code into two
-> functions to make them invokable separately.
+> This is required to fit more sections in PE section tables,
+> since its size is restricted by zero page located at specific offset
+> after the PE header.
 >
 > Tested-by: Mario Limonciello <mario.limonciello@amd.com>
 > Tested-by: Peter Jones <pjones@redhat.com>
 > Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
+
+I'd prefer to rip this out altogether.
+
+https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/commit/?id=9510f6f04f579b9a3f54ad762c75ab2d905e37d8
+
+(and refer to the other thread in linux-efi@)
+
 > ---
->  arch/x86/boot/compressed/pgtable_64.c | 73 +++++++++++++++++----------
->  1 file changed, 46 insertions(+), 27 deletions(-)
+>  arch/x86/boot/header.S | 14 ++++++--------
+>  1 file changed, 6 insertions(+), 8 deletions(-)
 >
-> diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
-> index c7cf5a1059a8..1f7169248612 100644
-> --- a/arch/x86/boot/compressed/pgtable_64.c
-> +++ b/arch/x86/boot/compressed/pgtable_64.c
-> @@ -106,12 +106,8 @@ static unsigned long find_trampoline_placement(void)
->         return bios_start - TRAMPOLINE_32BIT_SIZE;
->  }
+> diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
+> index 9338c68e7413..9fec80bc504b 100644
+> --- a/arch/x86/boot/header.S
+> +++ b/arch/x86/boot/header.S
+> @@ -59,17 +59,16 @@ start2:
+>         cld
 >
-> -struct paging_config paging_prepare(void *rmode)
-> +bool trampoline_pgtable_init(struct boot_params *boot_params)
->  {
-> -       struct paging_config paging_config = {};
-> -
-> -       /* Initialize boot_params. Required for cmdline_find_option_bool(). */
-> -       boot_params = rmode;
+>         movw    $bugger_off_msg, %si
+> +       movw    $bugger_off_msg_size, %cx
 >
->         /*
->          * Check if LA57 is desired and supported.
-> @@ -125,26 +121,10 @@ struct paging_config paging_prepare(void *rmode)
->          *
->          * That's substitute for boot_cpu_has() in early boot code.
->          */
-> -       if (IS_ENABLED(CONFIG_X86_5LEVEL) &&
-> -                       !cmdline_find_option_bool("no5lvl") &&
-> -                       native_cpuid_eax(0) >= 7 &&
-> -                       (native_cpuid_ecx(7) & (1 << (X86_FEATURE_LA57 & 31)))) {
-> -               paging_config.l5_required = 1;
-> -       }
-> -
-> -       paging_config.trampoline_start = find_trampoline_placement();
-> -
-> -       trampoline_32bit = (unsigned long *)paging_config.trampoline_start;
-> -
-> -       /* Preserve trampoline memory */
-> -       memcpy(trampoline_save, trampoline_32bit, TRAMPOLINE_32BIT_SIZE);
-> -
-> -       /* Clear trampoline memory first */
-> -       memset(trampoline_32bit, 0, TRAMPOLINE_32BIT_SIZE);
-> -
-> -       /* Copy trampoline code in place */
-> -       memcpy(trampoline_32bit + TRAMPOLINE_32BIT_CODE_OFFSET / sizeof(unsigned long),
-> -                       &trampoline_32bit_src, TRAMPOLINE_32BIT_CODE_SIZE);
-> +       bool l5_required = IS_ENABLED(CONFIG_X86_5LEVEL) &&
-> +                          !cmdline_find_option_bool("no5lvl") &&
-> +                          native_cpuid_eax(0) >= 7 &&
-> +                          (native_cpuid_ecx(7) & (1 << (X86_FEATURE_LA57 & 31)));
+>  msg_loop:
+>         lodsb
+> -       andb    %al, %al
+> -       jz      bs_die
+>         movb    $0xe, %ah
+>         movw    $7, %bx
+>         int     $0x10
+> -       jmp     msg_loop
+> +       decw    %cx
+> +       jnz     msg_loop
 >
->         /*
->          * The code below prepares page table in trampoline memory.
-> @@ -160,10 +140,10 @@ struct paging_config paging_prepare(void *rmode)
->          * We are not going to use the page table in trampoline memory if we
->          * are already in the desired paging mode.
->          */
-> -       if (paging_config.l5_required == !!(native_read_cr4() & X86_CR4_LA57))
-> +       if (l5_required == !!(native_read_cr4() & X86_CR4_LA57))
->                 goto out;
+> -bs_die:
+>         # Allow the user to press a key, then reboot
+>         xorw    %ax, %ax
+>         int     $0x16
+> @@ -90,10 +89,9 @@ bs_die:
 >
-> -       if (paging_config.l5_required) {
-> +       if (l5_required) {
->                 /*
->                  * For 4- to 5-level paging transition, set up current CR3 as
->                  * the first and the only entry in a new top-level page table.
-> @@ -185,6 +165,45 @@ struct paging_config paging_prepare(void *rmode)
->                        (void *)src, PAGE_SIZE);
->         }
+>         .section ".bsdata", "a"
+>  bugger_off_msg:
+> -       .ascii  "Use a boot loader.\r\n"
+> -       .ascii  "\n"
+> -       .ascii  "Remove disk and press any key to reboot...\r\n"
+> -       .byte   0
+> +       .ascii  "Use a boot loader. "
+> +       .ascii  "Press a key to reboot"
+> +       .set    bugger_off_msg_size, . - bugger_off_msg
 >
-> +out:
-> +       return l5_required;
-> +}
-> +
-> +struct paging_config paging_prepare(void *rmode)
-> +{
-> +       struct paging_config paging_config = {};
-> +       bool early_trampoline_alloc = 0;
-
-false
-
-> +
-> +       /* Initialize boot_params. Required for cmdline_find_option_bool(). */
-> +       boot_params = rmode;
-> +
-> +       /*
-> +        * We only need to find trampoline placement, if we have
-> +        * not already done it from libstub.
-> +        */
-> +
-> +       paging_config.trampoline_start = find_trampoline_placement();
-> +       trampoline_32bit = (unsigned long *)paging_config.trampoline_start;
-> +       early_trampoline_alloc = 0;
-> +
-
-false again
-
-And it never becomes true, nor is it used anywhere else. Can we get rid of it?
-
-> +       /*
-> +        * Preserve trampoline memory.
-> +        * When trampoline is located in memory
-> +        * owned by us, i.e. allocated in EFISTUB,
-> +        * we don't care about previous contents
-> +        * of this memory so copying can also be skipped.
-
-Can you please reflow comments so they takes up fewer lines?
-
-> +        */
-> +       memcpy(trampoline_save, trampoline_32bit, TRAMPOLINE_32BIT_SIZE);
-> +
-> +       /* Clear trampoline memory first */
-> +       memset(trampoline_32bit, 0, TRAMPOLINE_32BIT_SIZE);
-> +
-> +       /* Copy trampoline code in place */
-> +       memcpy(trampoline_32bit + TRAMPOLINE_32BIT_CODE_OFFSET / sizeof(unsigned long),
-> +                       &trampoline_32bit_src, TRAMPOLINE_32BIT_CODE_SIZE);
-> +
-> +       paging_config.l5_required = trampoline_pgtable_init(boot_params);
-> +
->  out:
->         return paging_config;
->  }
+>  #ifdef CONFIG_EFI_STUB
+>  pe_header:
 > --
 > 2.37.4
 >
