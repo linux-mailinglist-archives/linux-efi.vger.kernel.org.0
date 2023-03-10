@@ -2,138 +2,187 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7401C6B2E06
-	for <lists+linux-efi@lfdr.de>; Thu,  9 Mar 2023 20:59:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A61E26B3427
+	for <lists+linux-efi@lfdr.de>; Fri, 10 Mar 2023 03:18:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230236AbjCIT6r (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 9 Mar 2023 14:58:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46722 "EHLO
+        id S229751AbjCJCSG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 9 Mar 2023 21:18:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230156AbjCIT6q (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 9 Mar 2023 14:58:46 -0500
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6FB8F6B72;
-        Thu,  9 Mar 2023 11:58:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678391922; x=1709927922;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JXAhm1Bty8aLiuxBuZjUESD2QyeRCdf7zzvthkJPxc8=;
-  b=WGpFTUt49h9S5B2ScCLDvP6IHRC0EO7/uoTfE6iJqr0nAm4z+gDmdwBA
-   Pb5dJpeauw+UY+9Rmp0beyclSQJxTEJP9ejWEG4uP+q/LnegmAopG3Xmc
-   xjMWnBi69Mxlhr6JS8pr+S4EUEIRx8dulbr/xGU4HB22VaQqpCUSrDrPb
-   BBcc6ugc1ccaIaMMtA7nVwjvQUbw2fX59xtgI6jBq87Z/QcOFsKNBtfAJ
-   CR0KCxVJoZuCa3xz/u9OQcbSkxRLb95cjN7/xrwkuJEux40CjU6cyqZJR
-   AsHHmtpAyfu/VYRmfCbcASGg1eY0Cys3wbHanqyF/O4sthTX9phYzI/G3
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10644"; a="316950381"
-X-IronPort-AV: E=Sophos;i="5.98,247,1673942400"; 
-   d="scan'208";a="316950381"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2023 11:58:42 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10644"; a="670851192"
-X-IronPort-AV: E=Sophos;i="5.98,247,1673942400"; 
-   d="scan'208";a="670851192"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 09 Mar 2023 11:58:39 -0800
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1paMPO-0003Bd-0m;
-        Thu, 09 Mar 2023 19:58:38 +0000
-Date:   Fri, 10 Mar 2023 03:58:22 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Huacai Chen <chenhuacai@loongson.cn>,
-        Ard Biesheuvel <ardb@kernel.org>,
+        with ESMTP id S229550AbjCJCSF (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 9 Mar 2023 21:18:05 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 176221DBB4;
+        Thu,  9 Mar 2023 18:18:03 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A147B6092E;
+        Fri, 10 Mar 2023 02:18:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC47EC433D2;
+        Fri, 10 Mar 2023 02:17:59 +0000 (UTC)
+From:   Huacai Chen <chenhuacai@loongson.cn>
+To:     Ard Biesheuvel <ardb@kernel.org>,
         Huacai Chen <chenhuacai@kernel.org>
-Cc:     oe-kbuild-all@lists.linux.dev, linux-efi@vger.kernel.org,
-        loongarch@lists.linux.dev, Xuefeng Li <lixuefeng@loongson.cn>,
+Cc:     linux-efi@vger.kernel.org, loongarch@lists.linux.dev,
+        Xuefeng Li <lixuefeng@loongson.cn>,
         Xuerui Wang <kernel@xen0n.name>, linux-kernel@vger.kernel.org,
-        loongson-kernel@lists.loongnix.cn
-Subject: Re: [PATCH] efi/libstub: Call setup_graphics() before
- handle_kernel_image()
-Message-ID: <202303100324.OOW0550T-lkp@intel.com>
-References: <20230309060012.4189412-1-chenhuacai@loongson.cn>
+        loongson-kernel@lists.loongnix.cn,
+        Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH V2] efi/libstub: Call setup_graphics() before handle_kernel_image()
+Date:   Fri, 10 Mar 2023 10:17:49 +0800
+Message-Id: <20230310021749.921041-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230309060012.4189412-1-chenhuacai@loongson.cn>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Huacai,
+Commit 42c8ea3dca094ab8 ("efi: libstub: Factor out EFI stub entrypoint
+into separate file") moves setup_graphics() into efi_stub_common() which
+is after handle_kernel_image(). This causes efifb no longer work because
+handle_kernel_image() may move the core kernel to its preferred address,
+which means the screen_info filled by the efistub will not be the same
+as the one accessed by the core kernel. So let us call setup_graphics()
+before handle_kernel_image() which restores the old behavior.
 
-I love your patch! Perhaps something to improve:
+The side effect is zboot will not call setup_graphics(), but I think
+zboot doesn't need it either.
 
-[auto build test WARNING on efi/next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Fixes: 42c8ea3dca094ab8 ("efi: libstub: Factor out EFI stub entrypoint into separate file")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+V2: Use static declaration for setup_graphics() to avoid build warnings.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Huacai-Chen/efi-libstub-Call-setup_graphics-before-handle_kernel_image/20230309-140124
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-patch link:    https://lore.kernel.org/r/20230309060012.4189412-1-chenhuacai%40loongson.cn
-patch subject: [PATCH] efi/libstub: Call setup_graphics() before handle_kernel_image()
-config: arm-allmodconfig (https://download.01.org/0day-ci/archive/20230310/202303100324.OOW0550T-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/dcee55720c64cc096ee2f52200a6e72c9b968ce1
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Huacai-Chen/efi-libstub-Call-setup_graphics-before-handle_kernel_image/20230309-140124
-        git checkout dcee55720c64cc096ee2f52200a6e72c9b968ce1
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arm olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arm SHELL=/bin/bash drivers/firmware/efi/libstub/
+ drivers/firmware/efi/libstub/efi-stub-entry.c | 29 +++++++++++++++++++
+ drivers/firmware/efi/libstub/efi-stub.c       | 27 -----------------
+ 2 files changed, 29 insertions(+), 27 deletions(-)
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202303100324.OOW0550T-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/firmware/efi/libstub/efi-stub-entry.c:8:21: warning: no previous prototype for 'setup_graphics' [-Wmissing-prototypes]
-       8 | struct screen_info *setup_graphics(void)
-         |                     ^~~~~~~~~~~~~~
-
-
-vim +/setup_graphics +8 drivers/firmware/efi/libstub/efi-stub-entry.c
-
-     7	
-   > 8	struct screen_info *setup_graphics(void)
-     9	{
-    10		unsigned long size;
-    11		efi_status_t status;
-    12		efi_guid_t gop_proto = EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
-    13		void **gop_handle = NULL;
-    14		struct screen_info *si = NULL;
-    15	
-    16		size = 0;
-    17		status = efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
-    18				     &gop_proto, NULL, &size, gop_handle);
-    19		if (status == EFI_BUFFER_TOO_SMALL) {
-    20			si = alloc_screen_info();
-    21			if (!si)
-    22				return NULL;
-    23			status = efi_setup_gop(si, &gop_proto, size);
-    24			if (status != EFI_SUCCESS) {
-    25				free_screen_info(si);
-    26				return NULL;
-    27			}
-    28		}
-    29		return si;
-    30	}
-    31	
-
+diff --git a/drivers/firmware/efi/libstub/efi-stub-entry.c b/drivers/firmware/efi/libstub/efi-stub-entry.c
+index 5245c4f031c0..f971fd25a4eb 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-entry.c
++++ b/drivers/firmware/efi/libstub/efi-stub-entry.c
+@@ -5,6 +5,30 @@
+ 
+ #include "efistub.h"
+ 
++static struct screen_info *setup_graphics(void)
++{
++	unsigned long size;
++	efi_status_t status;
++	efi_guid_t gop_proto = EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
++	void **gop_handle = NULL;
++	struct screen_info *si = NULL;
++
++	size = 0;
++	status = efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
++			     &gop_proto, NULL, &size, gop_handle);
++	if (status == EFI_BUFFER_TOO_SMALL) {
++		si = alloc_screen_info();
++		if (!si)
++			return NULL;
++		status = efi_setup_gop(si, &gop_proto, size);
++		if (status != EFI_SUCCESS) {
++			free_screen_info(si);
++			return NULL;
++		}
++	}
++	return si;
++}
++
+ /*
+  * EFI entry point for the generic EFI stub used by ARM, arm64, RISC-V and
+  * LoongArch. This is the entrypoint that is described in the PE/COFF header
+@@ -22,6 +46,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 	efi_guid_t loaded_image_proto = LOADED_IMAGE_PROTOCOL_GUID;
+ 	unsigned long reserve_addr = 0;
+ 	unsigned long reserve_size = 0;
++	struct screen_info *si;
+ 
+ 	WRITE_ONCE(efi_system_table, systab);
+ 
+@@ -47,6 +72,8 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 
+ 	efi_info("Booting Linux Kernel...\n");
+ 
++	si = setup_graphics();
++
+ 	status = handle_kernel_image(&image_addr, &image_size,
+ 				     &reserve_addr,
+ 				     &reserve_size,
+@@ -58,6 +85,8 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 
+ 	status = efi_stub_common(handle, image, image_addr, cmdline_ptr);
+ 
++	free_screen_info(si);
++
+ 	efi_free(image_size, image_addr);
+ 	efi_free(reserve_size, reserve_addr);
+ 
+diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
+index 2955c1ac6a36..bc67af721412 100644
+--- a/drivers/firmware/efi/libstub/efi-stub.c
++++ b/drivers/firmware/efi/libstub/efi-stub.c
+@@ -56,30 +56,6 @@ void __weak free_screen_info(struct screen_info *si)
+ {
+ }
+ 
+-static struct screen_info *setup_graphics(void)
+-{
+-	efi_guid_t gop_proto = EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
+-	efi_status_t status;
+-	unsigned long size;
+-	void **gop_handle = NULL;
+-	struct screen_info *si = NULL;
+-
+-	size = 0;
+-	status = efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
+-			     &gop_proto, NULL, &size, gop_handle);
+-	if (status == EFI_BUFFER_TOO_SMALL) {
+-		si = alloc_screen_info();
+-		if (!si)
+-			return NULL;
+-		status = efi_setup_gop(si, &gop_proto, size);
+-		if (status != EFI_SUCCESS) {
+-			free_screen_info(si);
+-			return NULL;
+-		}
+-	}
+-	return si;
+-}
+-
+ static void install_memreserve_table(void)
+ {
+ 	struct linux_efi_memreserve *rsv;
+@@ -163,14 +139,12 @@ efi_status_t efi_stub_common(efi_handle_t handle,
+ 			     unsigned long image_addr,
+ 			     char *cmdline_ptr)
+ {
+-	struct screen_info *si;
+ 	efi_status_t status;
+ 
+ 	status = check_platform_features();
+ 	if (status != EFI_SUCCESS)
+ 		return status;
+ 
+-	si = setup_graphics();
+ 
+ 	efi_retrieve_tpm2_eventlog();
+ 
+@@ -190,7 +164,6 @@ efi_status_t efi_stub_common(efi_handle_t handle,
+ 
+ 	status = efi_boot_kernel(handle, image, image_addr, cmdline_ptr);
+ 
+-	free_screen_info(si);
+ 	return status;
+ }
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.39.1
+
