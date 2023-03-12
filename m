@@ -2,31 +2,31 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D88C76B65DA
-	for <lists+linux-efi@lfdr.de>; Sun, 12 Mar 2023 13:10:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 099016B65DD
+	for <lists+linux-efi@lfdr.de>; Sun, 12 Mar 2023 13:11:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229694AbjCLMKI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 12 Mar 2023 08:10:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45960 "EHLO
+        id S229601AbjCLMKz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 12 Mar 2023 08:10:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229601AbjCLMKI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 12 Mar 2023 08:10:08 -0400
+        with ESMTP id S230242AbjCLMKk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 12 Mar 2023 08:10:40 -0400
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80DAE7DBA;
-        Sun, 12 Mar 2023 05:10:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84DE87DBA;
+        Sun, 12 Mar 2023 05:10:39 -0700 (PDT)
 Received: from mail.ispras.ru (unknown [83.149.199.84])
-        by mail.ispras.ru (Postfix) with ESMTPSA id ABC0E44C1011;
-        Sun, 12 Mar 2023 12:10:04 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru ABC0E44C1011
+        by mail.ispras.ru (Postfix) with ESMTPSA id E9C4E44C1026;
+        Sun, 12 Mar 2023 12:10:37 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru E9C4E44C1026
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1678623004;
-        bh=VChUI6KZnJGMnvBF3FzoVnKI9M+mUNERwVFRrmpoIZ0=;
+        s=default; t=1678623038;
+        bh=4qoX9n/L8Phc5k4mKmrmAxLep0XMV0xtLDWTM61Mlqo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Yc8HbzFlfgFbI3nnOXrkNX6AtKvm8VrJzMXgm86+AjDAz9wadxLbDGsOX0WKqLI7m
-         Pr+TSJhDBFlcQv++6bRZ8eo740yorThOsVxxdKHitN8pyZVyYP6rLCf8hxG8pTkz5f
-         DBAld/E9WOO9Zz6VPc+q6tj5pxNXDqEdZsLbSIo0=
+        b=QRHP699+QFrJElbcWoftLhs2cvD23uikMW1UpMIhWYBfmUoIfqZjJhGeuMUOI/mxc
+         6iXcu4YVfVmhpwlNXynLSgJ0RaNXNMGsZ/jM33VhCYSPXMoOYvBlLsZqZb7sOQeqNe
+         XPguW3SFzH7ydZ0xBfTtG7Ys+qdyLTppKBJ1qltw=
 MIME-Version: 1.0
-Date:   Sun, 12 Mar 2023 15:10:04 +0300
+Date:   Sun, 12 Mar 2023 15:10:37 +0300
 From:   Evgeniy Baskov <baskov@ispras.ru>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
@@ -40,16 +40,15 @@ Cc:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
         joeyli <jlee@suse.com>, lvc-project@linuxtesting.org,
         x86@kernel.org, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v4 21/26] efi/x86: Explicitly set sections memory
- attributes
-In-Reply-To: <CAMj1kXHAeddy+6MjwgHLH7J=qAO0SaecB7ZGuHNT+13-r1VcQw@mail.gmail.com>
+Subject: Re: [PATCH v4 17/26] x86/boot: Reduce size of the DOS stub
+In-Reply-To: <CAMj1kXEySE_GuNx+xLPu9pvkZoA6Sph=7BZt-gzVCi4pD1COPA@mail.gmail.com>
 References: <cover.1671098103.git.baskov@ispras.ru>
- <c38ad7a1b89aff743d4a29882a7022d97d4fea58.1671098103.git.baskov@ispras.ru>
- <CAMj1kXGzXLp20nbg-NoToENbDQhn1b0Gpi2s8f9DgSSM28BbeQ@mail.gmail.com>
- <f29b8efc018819cbb8202d13795ba89e@ispras.ru>
- <CAMj1kXHAeddy+6MjwgHLH7J=qAO0SaecB7ZGuHNT+13-r1VcQw@mail.gmail.com>
+ <cb62472011a0c4151276b6a05b83b60b1bf6f352.1671098103.git.baskov@ispras.ru>
+ <CAMj1kXHnQZ2EDg1F_whTPHajYvqox7Ss35aqUyJuC8RLyiuCxg@mail.gmail.com>
+ <ec07e6f7af7b901ad3ff1aa9a8c8fbcb@ispras.ru>
+ <CAMj1kXEySE_GuNx+xLPu9pvkZoA6Sph=7BZt-gzVCi4pD1COPA@mail.gmail.com>
 User-Agent: Roundcube Webmail/1.4.4
-Message-ID: <414e462cf01e4809ba5b4713327803f9@ispras.ru>
+Message-ID: <1df46f0fa7a2643d2d6ecf7262b61eea@ispras.ru>
 X-Sender: baskov@ispras.ru
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
@@ -63,57 +62,38 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 2023-03-11 20:39, Ard Biesheuvel wrote:
-> On Sat, 11 Mar 2023 at 16:09, Evgeniy Baskov <baskov@ispras.ru> wrote:
+On 2023-03-11 20:27, Ard Biesheuvel wrote:
+> On Sat, 11 Mar 2023 at 15:49, Evgeniy Baskov <baskov@ispras.ru> wrote:
 >> 
->> On 2023-03-10 18:20, Ard Biesheuvel wrote:
->> > On Thu, 15 Dec 2022 at 13:42, Evgeniy Baskov <baskov@ispras.ru> wrote:
+>> On 2023-03-10 17:59, Ard Biesheuvel wrote:
+>> > On Thu, 15 Dec 2022 at 13:40, Evgeniy Baskov <baskov@ispras.ru> wrote:
 >> >>
->> >> Explicitly change sections memory attributes in efi_pe_entry in case
->> >> of incorrect EFI implementations and to reduce access rights to
->> >> compressed kernel blob. By default it is set executable due to
->> >> restriction in maximum number of sections that can fit before zero
->> >> page.
+>> >> This is required to fit more sections in PE section tables,
+>> >> since its size is restricted by zero page located at specific offset
+>> >> after the PE header.
 >> >>
+>> >> Tested-by: Mario Limonciello <mario.limonciello@amd.com>
 >> >> Tested-by: Peter Jones <pjones@redhat.com>
 >> >> Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
 >> >
->> > I don't think we need this patch. Firmware that cares about W^X will
->> > map the PE image with R-X for text/rodata and RW- for data/bss, which
->> > is sufficient, and firmware that doesn't is a lost cause anyway.
+>> > I'd prefer to rip this out altogether.
+>> >
+>> > https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/commit/?id=9510f6f04f579b9a3f54ad762c75ab2d905e37d8
 >> 
->> This patch were here mainly here to make .rodata non-executable and 
->> for
->> the UEFI handover protocol, for which attributes are usually not 
->> getting
->> applied.
->> 
->> Since the UEFI handover protocol is deprecated, I'll exclude patches
->> from
->> v5 and maybe submit it separately modified to apply attributes only 
->> when
->> booting via this protocol.
+>> Sounds great! Can I replace this patch with yours in v5?
 >> 
 > 
-> I think the issue here is that loaders that use the UEFI handover
-> protocol use their own implementations of LoadImage/StartImage as
-> well, and some of those tend to do little more than copy the image
-> into memory and jump to the EFI handover protocol entry point, without
-> even accounting for the image size in memory or clearing the bss.
+> Of course.
 > 
-
-AFAIK this patch does not break loaders that load PE image as a flat
-binary, since it only operates on ELF sections that are mapped 1-to-1.
-But that's just the note for a future.
-
-> To be honest, even though I understand the reason these had to be
-> implemented, I'm a bit reluctant to cater for the needs of such
-> loaders, given that these are all downstream distro forks of GRUB
-> (with shim) with varying levels of adherence to the PE/COFF spec.
+>> >
+>> > (and refer to the other thread in linux-efi@)
+>> 
+>> Which thread exactly? The one about the removal of
+>> real-mode code?
+>> 
 > 
-> I'm happy to revisit this later if others feel this is important, but
-> for the moment, I'd prefer it if we could focus on making the x86
-> image work better with compliant loaders, which is what this series is
-> primarily about.
+> Yes, this one
+> 
+> https://lore.kernel.org/linux-efi/20230308202209.2980947-1-ardb@kernel.org/
 
-That's very reasonable. I'll put this patch aside for now then.
+Thanks!
