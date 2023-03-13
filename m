@@ -2,62 +2,67 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EA0F6B70C9
-	for <lists+linux-efi@lfdr.de>; Mon, 13 Mar 2023 09:04:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 741D86B70E2
+	for <lists+linux-efi@lfdr.de>; Mon, 13 Mar 2023 09:11:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229977AbjCMIEO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 13 Mar 2023 04:04:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42172 "EHLO
+        id S229640AbjCMILl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 13 Mar 2023 04:11:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229983AbjCMIDw (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Mar 2023 04:03:52 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D4A75ADD3
-        for <linux-efi@vger.kernel.org>; Mon, 13 Mar 2023 01:00:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 97ED4B80E30
-        for <linux-efi@vger.kernel.org>; Mon, 13 Mar 2023 07:59:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45182C4339B
-        for <linux-efi@vger.kernel.org>; Mon, 13 Mar 2023 07:59:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678694366;
-        bh=f/E1zk/mvL+tY6xYCyUcJFmKEzAoUVLSeHdrOdJ3IFk=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Bs/gWjvYYQZlgy0fERaR5+ddonAG87o1+7U6BOpEhgSu4yXaVBBFmoDClATrZBSI0
-         fFtsIr2o+cXkI5N+z151eid7wjfJN/xazjdN794d17C2dVT6Ip5y9pDQB+Fl9oR8q/
-         ejWZ5nsUj26qqr5GNHE9iNZqQy39R4e9sxijSvKWYT76MbcAhGL3HN4WQ68X88800m
-         01nGyedQ2510LP97opNg8YLB9mdGgVoXNTGDxpGS+pPeCKqVU7vNsesSFD2Ugi1xKJ
-         f894NKb+kfHQZGF/1ZsXNOMnPyukOBCfo394CJ/wYiTvgxfb6mujixbWnd3OO3CbN8
-         KASZULNp5N/kQ==
-Received: by mail-lf1-f47.google.com with SMTP id f18so14541637lfa.3
-        for <linux-efi@vger.kernel.org>; Mon, 13 Mar 2023 00:59:26 -0700 (PDT)
-X-Gm-Message-State: AO0yUKUaVH8sFa8Ji0Kjy9LRAIU1e6cpio+ualIP3r+8zQIqC3OX1s75
-        MGN+s9hSu4SlRusU21jy/PNsKVejU23w+0PI1ZY=
-X-Google-Smtp-Source: AK7set8YW2Uh8srUYc3RGqn0w0OsuKh7Gga22egPs09G79d3N0f0Q44gfpPIpB57dl8wjMRQ9nm5z1neinzf8lBK2oo=
-X-Received: by 2002:a19:f606:0:b0:4e7:ed3c:68ee with SMTP id
- x6-20020a19f606000000b004e7ed3c68eemr9578246lfe.4.1678694364291; Mon, 13 Mar
- 2023 00:59:24 -0700 (PDT)
+        with ESMTP id S229571AbjCMILj (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Mar 2023 04:11:39 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62D6F3C22
+        for <linux-efi@vger.kernel.org>; Mon, 13 Mar 2023 01:11:38 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id bg16-20020a05600c3c9000b003eb34e21bdfso10281731wmb.0
+        for <linux-efi@vger.kernel.org>; Mon, 13 Mar 2023 01:11:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678695097;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hEe2i5Niyz15TyqK5zefORFwtaI/pvogFz7meC3LSjE=;
+        b=GVGvN99LRVt4uSalmlbY4pMSQ0mQrybphOHbuc4VRh1Vyl7pf3PfZQhe1hlxghyt9a
+         n2rRBfPLhnTzOy4DXrD7Sd+XCyQQOiX34Sba8kLKQ7Qr/RiYxyoTbGGDCOX1ObMYJeT/
+         /pc607W7cKDs5L46UIjBG+V8IYVzujQ/aF/1qMNXgqv6PLyRAPWK0vvrBMc0jGCHDloh
+         r+E0DihBijKAtw1AQnODK4RJHovd8aD67VhqlwLH1lCSLBQrbE6nPExLeWGUmhtlfx5W
+         WhQ+zcYbkE4lzKuRI0Vy9mdMuImjWb6ox2y0F4RviJCma+5MaP7DQJ8yAPUnA52SKxYi
+         sV3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678695097;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hEe2i5Niyz15TyqK5zefORFwtaI/pvogFz7meC3LSjE=;
+        b=wkO0nVn49E+AuoBrBITzABSA/q7m51ZCxLAZFXQjElg/b6l/HLwpKYU8AFlxc31/Jt
+         hhc6WaY4wvrxkimEDnZPpZaAxczai8Czxwndp7y63n9RzJCcUKMTlAfmUZDczqCcJe/9
+         cAWH2Mmdo2OT17713e0YnzgXfzYKmyuLR5m8HE220MFmK4dBseiIqenAfsbU8Qmlg693
+         j9yyEo9b9T7QaRlxawGfcyKgNLE/EWQ/51r4jcUV+ZsWMCjuQOGsN5KK7V0hM625pIuN
+         kRfJUU1nggxE53IgoOn9bR2QlVGE5dLVVhTPF1Xa9jv6NQdqa2w47IfdBDfyHs3LJROs
+         3t1Q==
+X-Gm-Message-State: AO0yUKUuApJeTyyeRlpwpaaFRhpLjqpVjluC/gngbYvVQ/qh/CmGqF7x
+        EBxfA2OmflQU99s6rHTmdJkjdT0YzGdJiTZOIxM=
+X-Google-Smtp-Source: AK7set/rZU9sqIJeSVl4RiH5gS0Wn4z64q2vu6AfKRf4Gpqq5YLOfGOksN61dyGhx4Z+dKmoqn0xlQ==
+X-Received: by 2002:a05:600c:19d1:b0:3e2:dba:7155 with SMTP id u17-20020a05600c19d100b003e20dba7155mr9701826wmq.20.1678695096686;
+        Mon, 13 Mar 2023 01:11:36 -0700 (PDT)
+Received: from hera (ppp176092130041.access.hol.gr. [176.92.130.41])
+        by smtp.gmail.com with ESMTPSA id h19-20020a05600c315300b003e7c89b3514sm8829349wmo.23.2023.03.13.01.11.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Mar 2023 01:11:36 -0700 (PDT)
+Date:   Mon, 13 Mar 2023 10:11:34 +0200
+From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, Michael Brown <mcb30@ipxe.org>
+Subject: Re: [PATCH 2/2] efi: libstub: Look for initrd LoadFile2 protocol on
+ image handle
+Message-ID: <ZA7atjWz16jQYr0H@hera>
+References: <20230310084529.3229983-1-ardb@kernel.org>
+ <20230310084529.3229983-3-ardb@kernel.org>
 MIME-Version: 1.0
-References: <20230312225838.3702574-1-ardb@kernel.org> <CAMj1kXGeL8p5Ctg=fsCnJYqmA8NHeN9uMgO1JWVxoiyBdSau4Q@mail.gmail.com>
- <CAAhV-H6LQgEikq+E3_9sRoQzbt8jMC+LtLQ0DmLzy_nnq2jtRQ@mail.gmail.com>
-In-Reply-To: <CAAhV-H6LQgEikq+E3_9sRoQzbt8jMC+LtLQ0DmLzy_nnq2jtRQ@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 13 Mar 2023 08:59:13 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGqQjgOdi1Y2Tdd6sBUFvvP=+ZrQV3PQ9+fBNyuOabZ6g@mail.gmail.com>
-Message-ID: <CAMj1kXGqQjgOdi1Y2Tdd6sBUFvvP=+ZrQV3PQ9+fBNyuOabZ6g@mail.gmail.com>
-Subject: Re: [PATCH] efi: libstub: Always pass screen_info via config table
-To:     Huacai Chen <chenhuacai@kernel.org>
-Cc:     linux-efi@vger.kernel.org, loongarch@lists.linux.dev,
-        Xuefeng Li <lixuefeng@loongson.cn>,
-        Xuerui Wang <kernel@xen0n.name>,
-        loongson-kernel@lists.loongnix.cn,
-        Huacai Chen <chenhuacai@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230310084529.3229983-3-ardb@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,180 +70,144 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 13 Mar 2023 at 08:56, Huacai Chen <chenhuacai@kernel.org> wrote:
+On Fri, Mar 10, 2023 at 09:45:29AM +0100, Ard Biesheuvel wrote:
+> The use of a global singleton device path for describing the initrd to
+> be loaded by the kernel implies that only a single handle can exist that
+> carries the initrd LoadFile2 protocol implementation.
 >
-> Hi, Ard,
+> This avoids the need on the part of the EFI stub to reason about which
+> initrd is the preferred one when several are being provided - we already
+> have initrd loading via the setup header on x86 and via DT on other
+> architectures, in addition to the initrd= command line option, and so
+> having a single loader provided initrd that supersedes all of them was
+> deemed preferable over having multiple sources.
 >
-> I'm a bit confused, It seems this patch cannot solve the problem
-> reported in [1] for LoongArch.
-> [1] https://lore.kernel.org/linux-efi/20230310021749.921041-1-chenhuacai@=
-loongson.cn/
+> However, this means that intermediate loader stages cannot simply
+> install the LoadFile2 initrd device path, and will need to check for
+> failures and deal with them. It also means that such stages will have to
+> reason about whether or not the subsequent stage being loaded is the
+> final one, or whether it may attempt to install the initrd device path
+> itself.
+>
+> We can solve this by associating the initrd LoadFile2 protocol with the
+> loaded image instead of with a global singleton device path. That way,
+> each stage can associate any initrd it provides with the image that it
+> is loading.
+>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  drivers/firmware/efi/libstub/efi-stub-helper.c | 42 ++++++++++++--------
+>  include/linux/efi.h                            |  2 +-
+>  include/linux/pe.h                             |  2 +-
+>  3 files changed, 28 insertions(+), 18 deletions(-)
+>
+> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> index d47aa855398b39a6..a97c95a1d99e0b9d 100644
+> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
+> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> @@ -482,10 +482,11 @@ static const struct {
+>  };
+>
+>  /**
+> - * efi_load_initrd_dev_path() - load the initrd from the Linux initrd device path
+> - * @initrd:	pointer of struct to store the address where the initrd was loaded
+> - *		and the size of the loaded initrd
+> - * @max:	upper limit for the initrd memory allocation
+> + * efi_load_initrd_lf2() - load the initrd from the Linux initrd device path
+> + * @image_handle: EFI handle of the loaded image
+> + * @initrd:	  pointer of struct to store the address where the initrd was
+> + *                loaded and the size of the loaded initrd
+> + * @max:	  upper limit for the initrd memory allocation
+>   *
+>   * Return:
+>   * * %EFI_SUCCESS if the initrd was loaded successfully, in which
+> @@ -495,24 +496,33 @@ static const struct {
+>   * * %EFI_LOAD_ERROR in all other cases
+>   */
+>  static
+> -efi_status_t efi_load_initrd_dev_path(struct linux_efi_initrd *initrd,
+> -				      unsigned long max)
+> +efi_status_t efi_load_initrd_lf2(efi_handle_t image_handle,
+> +				 struct linux_efi_initrd *initrd,
+> +				 unsigned long max)
+>  {
+>  	efi_guid_t lf2_proto_guid = EFI_LOAD_FILE2_PROTOCOL_GUID;
+> +	efi_guid_t initrd_lf2_proto_guid = LINUX_EFI_INITRD_LF2_PROTOCOL_GUID;
+>  	efi_device_path_protocol_t *dp;
+>  	efi_load_file2_protocol_t *lf2;
+>  	efi_handle_t handle;
+>  	efi_status_t status;
+>
+> -	dp = (efi_device_path_protocol_t *)&initrd_dev_path;
+> -	status = efi_bs_call(locate_device_path, &lf2_proto_guid, &dp, &handle);
+> -	if (status != EFI_SUCCESS)
+> -		return status;
+> -
+> -	status = efi_bs_call(handle_protocol, handle, &lf2_proto_guid,
+> +	/* first look for a initrd loading protocol specific to this image */
+> +	status = efi_bs_call(handle_protocol, image_handle, &initrd_lf2_proto_guid,
+>  			     (void **)&lf2);
+> -	if (status != EFI_SUCCESS)
+> -		return status;
+> +	if (status != EFI_SUCCESS) {
+> +		/* look for the global singleton initrd loading protocol */
+> +		dp = (efi_device_path_protocol_t *)&initrd_dev_path;
+> +		status = efi_bs_call(locate_device_path, &lf2_proto_guid, &dp,
+> +				     &handle);
+> +		if (status != EFI_SUCCESS)
+> +			return status;
+> +
+> +		status = efi_bs_call(handle_protocol, handle, &lf2_proto_guid,
+> +				     (void **)&lf2);
+> +		if (status != EFI_SUCCESS)
+> +			return status;
+> +	}
+>
+>  	initrd->size = 0;
+>  	status = efi_call_proto(lf2, load_file, dp, false, &initrd->size, NULL);
+> @@ -567,9 +577,9 @@ efi_status_t efi_load_initrd(efi_handle_t handle,
+>  	if (!IS_ENABLED(CONFIG_BLK_DEV_INITRD) || efi_noinitrd)
+>  		return EFI_SUCCESS;
+>
+> -	status = efi_load_initrd_dev_path(&initrd, hard_limit);
+> +	status = efi_load_initrd_lf2(handle, &initrd, hard_limit);
+>  	if (status == EFI_SUCCESS) {
+> -		efi_info("Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path\n");
+> +		efi_info("Loaded initrd using LoadFile2 protocol\n");
+>  		if (initrd.size > 0 &&
+>  		    efi_measure_tagged_event(initrd.base, initrd.size,
+>  					     EFISTUB_EVT_INITRD) == EFI_SUCCESS)
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index 04a733f0ba956211..83643d6aee755d85 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -417,7 +417,7 @@ void efi_native_runtime_setup(void);
+>  #define LINUX_EFI_MOK_VARIABLE_TABLE_GUID	EFI_GUID(0xc451ed2b, 0x9694, 0x45d3,  0xba, 0xba, 0xed, 0x9f, 0x89, 0x88, 0xa3, 0x89)
+>  #define LINUX_EFI_COCO_SECRET_AREA_GUID		EFI_GUID(0xadf956ad, 0xe98c, 0x484c,  0xae, 0x11, 0xb5, 0x1c, 0x7d, 0x33, 0x64, 0x47)
+>  #define LINUX_EFI_BOOT_MEMMAP_GUID		EFI_GUID(0x800f683f, 0xd08b, 0x423a,  0xa2, 0x93, 0x96, 0x5c, 0x3c, 0x6f, 0xe2, 0xb4)
+> -
+> +#define LINUX_EFI_INITRD_LF2_PROTOCOL_GUID	EFI_GUID(0xf9e3378e, 0xb3b1, 0x423a,  0xbd, 0x9a, 0x2d, 0x08, 0x60, 0x28, 0x7f, 0x72)
+>  #define RISCV_EFI_BOOT_PROTOCOL_GUID		EFI_GUID(0xccd15fec, 0x6f73, 0x4eec,  0x83, 0x95, 0x3e, 0x69, 0xe4, 0xb9, 0x40, 0xbf)
+>
+>  /*
+> diff --git a/include/linux/pe.h b/include/linux/pe.h
+> index 6ffabf1e6d039e67..934e3a15ea7ddc07 100644
+> --- a/include/linux/pe.h
+> +++ b/include/linux/pe.h
+> @@ -29,7 +29,7 @@
+>   * handover_offset and xloadflags fields in the bootparams structure.
+>   */
+>  #define LINUX_EFISTUB_MAJOR_VERSION		0x1
+> -#define LINUX_EFISTUB_MINOR_VERSION		0x1
+> +#define LINUX_EFISTUB_MINOR_VERSION		0x2
+>
+>  /*
+>   * LINUX_PE_MAGIC appears at offset 0x38 into the MS-DOS header of EFI bootable
+> --
+> 2.39.2
 >
 
-The intent was to always pass the screen_info contents via the
-configuration table, so I am surprised that this does not work.
+Tested (with a slightly hacked version of u-boot) both paths.
 
-However, I am preparing a v2 that preserves the old behavior - I'll
-send it out in a minute.
-
->
-> On Mon, Mar 13, 2023 at 3:45=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org> =
-wrote:
-> >
-> > On Sun, 12 Mar 2023 at 23:58, Ard Biesheuvel <ardb@kernel.org> wrote:
-> > >
-> > > In some cases, we expose the kernel's struct screen_info to the EFI s=
-tub
-> > > directly, so it gets populated before even entering the kernel.  This
-> > > means the early console is available as soon as the early param parsi=
-ng
-> > > happens, which is nice. It also means we need two different ways to p=
-ass
-> > > this information, as this trick only works if the EFI stub is baked i=
-nto
-> > > the core kernel image, which is not always the case.
-> > >
-> > > Huacai reports that the preparatory refactoring that was needed to
-> > > implement this alternative method for zboot resulted in a non-functio=
-nal
-> > > efifb earlycon for other cases as well, due to the reordering of the
-> > > kernel image relocation with the population of the screen_info struct=
-,
-> > > and the latter now takes place after copying the image to its new
-> > > location, which means we copy the old, uninitialized state.
-> > >
-> > > To fix this and simplify things at the same time, let's just always u=
-se
-> > > the config table method.
-> > >
-> > > Cc: loongarch@lists.linux.dev
-> > > Cc: Xuefeng Li <lixuefeng@loongson.cn>
-> > > Cc: Xuerui Wang <kernel@xen0n.name>
-> > > Cc: loongson-kernel@lists.loongnix.cn
-> > > Reported-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > Link: https://lore.kernel.org/linux-efi/20230310021749.921041-1-chenh=
-uacai@loongson.cn/
-> > > Fixes: 42c8ea3dca094ab8 ("efi: libstub: Factor out EFI stub entrypoin=
-t into separate file")
-> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> >
-> > Please disregard - I think I can simplify this without losing the very
-> > early earlycon.
-> >
-> >
-> > > ---
-> > >  arch/arm64/kernel/image-vars.h             |  1 -
-> > >  arch/loongarch/kernel/image-vars.h         |  1 -
-> > >  arch/riscv/kernel/image-vars.h             |  1 -
-> > >  drivers/firmware/efi/libstub/efi-stub.c    |  9 ---------
-> > >  drivers/firmware/efi/libstub/screen_info.c | 19 -------------------
-> > >  5 files changed, 31 deletions(-)
-> > >
-> > > diff --git a/arch/arm64/kernel/image-vars.h b/arch/arm64/kernel/image=
--vars.h
-> > > index 8309197c0ebd4a8e..01382bd99d0addea 100644
-> > > --- a/arch/arm64/kernel/image-vars.h
-> > > +++ b/arch/arm64/kernel/image-vars.h
-> > > @@ -27,7 +27,6 @@ PROVIDE(__efistub__text                       =3D _=
-text);
-> > >  PROVIDE(__efistub__end                 =3D _end);
-> > >  PROVIDE(__efistub___inittext_end               =3D __inittext_end);
-> > >  PROVIDE(__efistub__edata               =3D _edata);
-> > > -PROVIDE(__efistub_screen_info          =3D screen_info);
-> > >  PROVIDE(__efistub__ctype               =3D _ctype);
-> > >
-> > >  PROVIDE(__pi___memcpy                  =3D __pi_memcpy);
-> > > diff --git a/arch/loongarch/kernel/image-vars.h b/arch/loongarch/kern=
-el/image-vars.h
-> > > index e561989d02de93c5..110cdc32cba5f28b 100644
-> > > --- a/arch/loongarch/kernel/image-vars.h
-> > > +++ b/arch/loongarch/kernel/image-vars.h
-> > > @@ -12,7 +12,6 @@ __efistub_kernel_entry                =3D kernel_en=
-try;
-> > >  __efistub_kernel_asize         =3D kernel_asize;
-> > >  __efistub_kernel_fsize         =3D kernel_fsize;
-> > >  __efistub_kernel_offset                =3D kernel_offset;
-> > > -__efistub_screen_info          =3D screen_info;
-> > >
-> > >  #endif
-> > >
-> > > diff --git a/arch/riscv/kernel/image-vars.h b/arch/riscv/kernel/image=
--vars.h
-> > > index 7e2962ef73f92e95..5e2515fa013495cb 100644
-> > > --- a/arch/riscv/kernel/image-vars.h
-> > > +++ b/arch/riscv/kernel/image-vars.h
-> > > @@ -29,7 +29,6 @@ __efistub__start              =3D _start;
-> > >  __efistub__start_kernel                =3D _start_kernel;
-> > >  __efistub__end                 =3D _end;
-> > >  __efistub__edata               =3D _edata;
-> > > -__efistub_screen_info          =3D screen_info;
-> > >
-> > >  #endif
-> > >
-> > > diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmwa=
-re/efi/libstub/efi-stub.c
-> > > index 2955c1ac6a36ee00..c4b9eccad0f103dc 100644
-> > > --- a/drivers/firmware/efi/libstub/efi-stub.c
-> > > +++ b/drivers/firmware/efi/libstub/efi-stub.c
-> > > @@ -47,15 +47,6 @@
-> > >  static u64 virtmap_base =3D EFI_RT_VIRTUAL_BASE;
-> > >  static bool flat_va_mapping =3D (EFI_RT_VIRTUAL_OFFSET !=3D 0);
-> > >
-> > > -struct screen_info * __weak alloc_screen_info(void)
-> > > -{
-> > > -       return &screen_info;
-> > > -}
-> > > -
-> > > -void __weak free_screen_info(struct screen_info *si)
-> > > -{
-> > > -}
-> > > -
-> > >  static struct screen_info *setup_graphics(void)
-> > >  {
-> > >         efi_guid_t gop_proto =3D EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
-> > > diff --git a/drivers/firmware/efi/libstub/screen_info.c b/drivers/fir=
-mware/efi/libstub/screen_info.c
-> > > index 8e76a8b384ba142d..7b791541a1ad1b48 100644
-> > > --- a/drivers/firmware/efi/libstub/screen_info.c
-> > > +++ b/drivers/firmware/efi/libstub/screen_info.c
-> > > @@ -5,25 +5,6 @@
-> > >
-> > >  #include "efistub.h"
-> > >
-> > > -/*
-> > > - * There are two ways of populating the core kernel's struct screen_=
-info via the stub:
-> > > - * - using a configuration table, like below, which relies on the EF=
-I init code
-> > > - *   to locate the table and copy the contents;
-> > > - * - by linking directly to the core kernel's copy of the global sym=
-bol.
-> > > - *
-> > > - * The latter is preferred because it makes the EFIFB earlycon avail=
-able very
-> > > - * early, but it only works if the EFI stub is part of the core kern=
-el image
-> > > - * itself. The zboot decompressor can only use the configuration tab=
-le
-> > > - * approach.
-> > > - *
-> > > - * In order to support both methods from the same build of the EFI s=
-tub
-> > > - * library, provide this dummy global definition of struct screen_in=
-fo. If it
-> > > - * is required to satisfy a link dependency, it means we need to ove=
-rride the
-> > > - * __weak alloc and free methods with the ones below, and those will=
- be pulled
-> > > - * in as well.
-> > > - */
-> > > -struct screen_info screen_info;
-> > > -
-> > >  static efi_guid_t screen_info_guid =3D LINUX_EFI_SCREEN_INFO_TABLE_G=
-UID;
-> > >
-> > >  struct screen_info *alloc_screen_info(void)
-> > > --
-> > > 2.39.2
-> > >
-> >
+Tested-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
