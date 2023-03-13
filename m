@@ -2,174 +2,167 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F6036B719C
-	for <lists+linux-efi@lfdr.de>; Mon, 13 Mar 2023 09:51:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEB4B6B723B
+	for <lists+linux-efi@lfdr.de>; Mon, 13 Mar 2023 10:12:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229919AbjCMIvi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 13 Mar 2023 04:51:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52014 "EHLO
+        id S229992AbjCMJMK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 13 Mar 2023 05:12:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230224AbjCMIu6 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Mar 2023 04:50:58 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5CA54FF0A
-        for <linux-efi@vger.kernel.org>; Mon, 13 Mar 2023 01:49:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 72009CE0EC8
-        for <linux-efi@vger.kernel.org>; Mon, 13 Mar 2023 08:48:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955FFC433D2
-        for <linux-efi@vger.kernel.org>; Mon, 13 Mar 2023 08:48:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678697302;
-        bh=+DbQKe7hrt+KUG/wuvemcgzf1ZPH76x53joSbhJsicE=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=obmcX4O00hMQUIaEqZD+KbLtn5eQ5l2NIVMN0Oj4KzHfx2f9v6M35lQN8oB21GM8H
-         m7WWh1YtSvQSFCtAE6J0tsSSVJnROgrOPktXIjBv9NqDrXZB7wChnrbqBfGneOiM6k
-         S9E4lLSH1NpAvlNUu8MxmzXmKC9tVE+vBGYld0o9JFLoOzJwXffymhJXRDvtmyF92A
-         +B7yhjuWvLNoLXj+iQsZMydCsRZI0Q8xyUMUeK6lakqVJ3dXd6enFgcHzXUX6tvYKO
-         9MHOahej8KpXu5aafZvBJNqSpQkxXoawcSozMAOzmScSeaa/zUPxW/ojTADQcWTlyh
-         feFXnsCoBL9HQ==
-Received: by mail-lf1-f52.google.com with SMTP id n2so14626613lfb.12
-        for <linux-efi@vger.kernel.org>; Mon, 13 Mar 2023 01:48:22 -0700 (PDT)
-X-Gm-Message-State: AO0yUKXBNY2CME0ERcG4gL/i7/DuajEUp/cPtmS5H9sxx/+pN4eVst+l
-        5HxqZlflRKhrEadHBEBqk93JIwne0eZsyBSU5pk=
-X-Google-Smtp-Source: AK7set/U0P1/BMANqcZ6utTxAsGL2IA04u0QZRigG2g8xGNiO8rFLoe0oRBFrBYdDCdI20aRFPaRXq2fKSCzXIPdls4=
-X-Received: by 2002:ac2:5dc7:0:b0:4dd:98c6:ee3 with SMTP id
- x7-20020ac25dc7000000b004dd98c60ee3mr10596308lfq.4.1678697300673; Mon, 13 Mar
- 2023 01:48:20 -0700 (PDT)
+        with ESMTP id S231274AbjCMJLq (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 13 Mar 2023 05:11:46 -0400
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06C9D1555A;
+        Mon, 13 Mar 2023 02:11:14 -0700 (PDT)
+Received: from mail.ispras.ru (unknown [83.149.199.84])
+        by mail.ispras.ru (Postfix) with ESMTPSA id 5DE1F44C1006;
+        Mon, 13 Mar 2023 09:11:09 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 5DE1F44C1006
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+        s=default; t=1678698669;
+        bh=icT63P40ly/ybYZrM/KY+THKyNlAaEMSAn7Kz2zSEjE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=hvBIkxiEmg9m+wBzUjVPx47Luv3kc+wlayW1Mr3DglMfF/+khvEnzLzqWptVseD/f
+         LFXFGOjQcoXiXoWmiYOpkulA3JkOw29w27WNVs1IT08sCh8CkxLZd/eWtW7hoZ1Mu4
+         AU8IlxJyz68zoAwDq/FGVDAffxcvRsA6TStIEgdY=
 MIME-Version: 1.0
-References: <20230313081432.3769496-1-ardb@kernel.org>
-In-Reply-To: <20230313081432.3769496-1-ardb@kernel.org>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 13 Mar 2023 09:48:09 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFBB9DK_zNL2h2=5-8P+VzOO=K1SgJ+07C55zbZoMHRLw@mail.gmail.com>
-Message-ID: <CAMj1kXFBB9DK_zNL2h2=5-8P+VzOO=K1SgJ+07C55zbZoMHRLw@mail.gmail.com>
-Subject: Re: [PATCH] efi: libstub: Use relocated version of kernel's struct screen_info
-To:     linux-efi@vger.kernel.org
-Cc:     loongarch@lists.linux.dev, Xuefeng Li <lixuefeng@loongson.cn>,
-        Xuerui Wang <kernel@xen0n.name>,
-        loongson-kernel@lists.loongnix.cn,
-        Huacai Chen <chenhuacai@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Date:   Mon, 13 Mar 2023 12:11:09 +0300
+From:   Evgeniy Baskov <baskov@ispras.ru>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Peter Jones <pjones@redhat.com>,
+        "Limonciello, Mario" <mario.limonciello@amd.com>,
+        joeyli <jlee@suse.com>, lvc-project@linuxtesting.org,
+        x86@kernel.org, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v4 20/26] x86/build: Make generated PE more spec compliant
+In-Reply-To: <CAMj1kXGK=z_taR2__RrCEDTE_F=+dbiXb_9HTCyG9R7iOp+yoA@mail.gmail.com>
+References: <cover.1671098103.git.baskov@ispras.ru>
+ <2dd706f95dd4fbb24de534b5fdedf7b740d1bac0.1671098103.git.baskov@ispras.ru>
+ <CAMj1kXGu0uFynyt=MostXo58A4f4Zu6cFFiSShFZChU5LWt1ZQ@mail.gmail.com>
+ <f5aaddbe13211c3a3d6d879675ebcaf8@ispras.ru>
+ <CAMj1kXFFsxUWRjLzWpz5qWWA4VaVnC0hYodLOxBoR_kDf=x8=Q@mail.gmail.com>
+ <b649071c0a919c284de79b74201e4438@ispras.ru>
+ <CAMj1kXGK=z_taR2__RrCEDTE_F=+dbiXb_9HTCyG9R7iOp+yoA@mail.gmail.com>
+User-Agent: Roundcube Webmail/1.4.4
+Message-ID: <f069d71d9e1f3e7dc253a16386befa5d@ispras.ru>
+X-Sender: baskov@ispras.ru
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 13 Mar 2023 at 09:14, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> In some cases, we expose the kernel's struct screen_info to the EFI stub
-> directly, so it gets populated before even entering the kernel.  This
-> means the early console is available as soon as the early param parsing
-> happens, which is nice. It also means we need two different ways to pass
-> this information, as this trick only works if the EFI stub is baked into
-> the core kernel image, which is not always the case.
->
-> Huacai reports that the preparatory refactoring that was needed to
-> implement this alternative method for zboot resulted in a non-functional
-> efifb earlycon for other cases as well, due to the reordering of the
-> kernel image relocation with the population of the screen_info struct,
-> and the latter now takes place after copying the image to its new
-> location, which means we copy the old, uninitialized state.
->
-> So let's ensure that alloc_screen_info() produces the correct
-> screen_info pointer, by keeping its relocated address in a global
-> variable.
->
-> Cc: loongarch@lists.linux.dev
-> Cc: Xuefeng Li <lixuefeng@loongson.cn>
-> Cc: Xuerui Wang <kernel@xen0n.name>
-> Cc: loongson-kernel@lists.loongnix.cn
-> Reported-by: Huacai Chen <chenhuacai@loongson.cn>
-> Link: https://lore.kernel.org/linux-efi/20230310021749.921041-1-chenhuacai@loongson.cn/
-> Fixes: 42c8ea3dca094ab8 ("efi: libstub: Factor out EFI stub entrypoint into separate file")
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+On 2023-03-12 16:09, Ard Biesheuvel wrote:
+> On Sun, 12 Mar 2023 at 13:02, Evgeniy Baskov <baskov@ispras.ru> wrote:
+>> 
+>> On 2023-03-11 20:31, Ard Biesheuvel wrote:
+>> > On Sat, 11 Mar 2023 at 16:02, Evgeniy Baskov <baskov@ispras.ru> wrote:
+>> >>
+>> >> On 2023-03-10 18:17, Ard Biesheuvel wrote:
+>> >> > On Thu, 15 Dec 2022 at 13:42, Evgeniy Baskov <baskov@ispras.ru> wrote:
+>> >> >>
+>> >> >> Currently kernel image is not fully compliant PE image, so it may
+>> >> >> fail to boot with stricter implementations of UEFI PE loaders.
+>> >> >>
+>> >> >> Set minimal alignments and sizes specified by PE documentation [1]
+>> >> >> referenced by UEFI specification [2]. Align PE header to 8 bytes.
+>> >> >>
+>> >> >> Generate PE sections dynamically. This simplifies code, since with
+>> >> >> current implementation all of the sections needs to be defined in
+>> >> >> header.S, where most section header fields do not hold valid values,
+>> >> >> except for their names. Before the change, it also held flags,
+>> >> >> but now flags depend on kernel configuration and it is simpler
+>> >> >> to set them from build.c too.
+>> >> >>
+>> >> >> Setup sections protection. Since we cannot fit every needed section,
+>> >> >> set a part of protection flags dynamically during initialization.
+>> >> >> This step is omitted if CONFIG_EFI_DXE_MEM_ATTRIBUTES is not set.
+>> >> >>
+>> >> >> [1]
+>> >> >> https://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/pecoff_v83.docx
+>> >> >> [2]
+>> >> >> https://uefi.org/sites/default/files/resources/UEFI_Spec_2_9_2021_03_18.pdf
+>> >> >>
+>> >> >> Tested-by: Peter Jones <pjones@redhat.com>
+>> >> >> Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
+>> >> >
+>> >> > I would prefer it if we didn't rewrite the build tool this way.
+>> >> >
+>> >> > Having the sections in header.S in the order they appear in the binary
+>> >> > is rather useful, and I don't think we should manipulate the section
+>> >> > flags based on whether CONFIG_DXE_MEM_ATTRIBUTES is set. I also don't
+>> >> > think we need more than .text / .,data (as discussed in the other
+>> >> > thread on linux-efi@)
+>> >> >
+>> >> > Furthermore, I had a look at the audk PE loader [0], and I think it is
+>> >> > being overly pedantic.
+>> >> >
+>> >> > The PE/COFF spec does not require that all sections are virtually
+>> >> > contiguous, and it does not require that the file content is
+>> >> > completely covered by either the header or by a section.
+>> >> >
+>> >> > So what I would prefer to do is the following:
+>> >> >
+>> >> > Sections:
+>> >> > Idx Name          Size     VMA              Type
+>> >> >   0 .reloc        00000200 0000000000002000 DATA
+>> >> >   1 .compat       00000200 0000000000003000 DATA
+>> >> >   2 .text         00bee000 0000000000004000 TEXT
+>> >> >   3 .data         00002200 0000000000bf2000 DATA
+>> >> >
+>> >> > using 4k section alignment and 512 byte file alignment, and a header
+>> >> > size of 0x200 as before (This requires my patch that allows the setup
+>> >> > header to remain unmapped when running the stub [1])
+>> >> >
+>> >> > The reloc and compat payloads are placed at the end of the setup data
+>> >> > as before, but increased in size to 512 bytes each, and then mapped
+>> >> > non-1:1 into the RVA space.
+>> >> >
+>> >> > This works happily with both the existing PE loader as well as the
+>> >> > audk one, but with the pedantic flags disabled.
+>> >> >
+>> >>
+>> >> This makes sense. I'll change this patch to use this layout and
+>> >> to keep sections in headers.S before sending v5. (and I guess I'll
+>> >> make the compressed kernel a part of .text). I have a few questions
+>> >> though:
+>> >>
+>> >> This layout assumes having the local copy of the bootparams as
+>> >> in your RFC patches, right?
+>> >>
+>> >
+>> > Indeed. Otherwise, the setup header may not have been copied to memory
+>> > by the loader.
+>> >
+>> >> Can I keep the .rodata -- 5th section fits in the section table
+>> >> without much work?
+>> >>
+>> >
+>> > You could, but at least the current PE/COFF loader in EDK2 will map it
+>> > read/write, as it only distinguishes between executable sections and
+>> > non-executable sections.
+>> >
+>> 
+>> At least it will slightly improve security for some implementations
+>> (e.g. audk, while being overly strict support RO sections)
+>> 
+> 
+> Yeah, but more common loaders will put the compressed data in a
+> writable region. I'd prefer to have a simple and common baseline where
+> we always just use R-X for all text and rodata, and RW- for everything
+> else.
 
-This is still not working :-(
-
-> ---
->  drivers/firmware/efi/libstub/efi-stub-entry.c | 14 ++++++++++++++
->  drivers/firmware/efi/libstub/efi-stub.c       |  9 ---------
->  drivers/firmware/efi/libstub/screen_info.c    |  7 -------
->  3 files changed, 14 insertions(+), 16 deletions(-)
->
-> diff --git a/drivers/firmware/efi/libstub/efi-stub-entry.c b/drivers/firmware/efi/libstub/efi-stub-entry.c
-> index 5245c4f031c0a70a..883ef2c88f522c4b 100644
-> --- a/drivers/firmware/efi/libstub/efi-stub-entry.c
-> +++ b/drivers/firmware/efi/libstub/efi-stub-entry.c
-> @@ -5,6 +5,17 @@
->
->  #include "efistub.h"
->
-> +static struct screen_info *si;
-> +
-> +struct screen_info *alloc_screen_info(void)
-> +{
-> +       return si;
-> +}
-> +
-> +void free_screen_info(struct screen_info *si)
-> +{
-> +}
-> +
->  /*
->   * EFI entry point for the generic EFI stub used by ARM, arm64, RISC-V and
->   * LoongArch. This is the entrypoint that is described in the PE/COFF header
-> @@ -56,6 +67,9 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
->                 return status;
->         }
->
-> +       /* point si to the relocated copy of struct screen_info */
-> +       si = (void *)&screen_info + image_addr - (unsigned long)image->image_base;
-> +
->         status = efi_stub_common(handle, image, image_addr, cmdline_ptr);
->
->         efi_free(image_size, image_addr);
-> diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
-> index 2955c1ac6a36ee00..c4b9eccad0f103dc 100644
-> --- a/drivers/firmware/efi/libstub/efi-stub.c
-> +++ b/drivers/firmware/efi/libstub/efi-stub.c
-> @@ -47,15 +47,6 @@
->  static u64 virtmap_base = EFI_RT_VIRTUAL_BASE;
->  static bool flat_va_mapping = (EFI_RT_VIRTUAL_OFFSET != 0);
->
-> -struct screen_info * __weak alloc_screen_info(void)
-> -{
-> -       return &screen_info;
-> -}
-> -
-> -void __weak free_screen_info(struct screen_info *si)
-> -{
-> -}
-> -
->  static struct screen_info *setup_graphics(void)
->  {
->         efi_guid_t gop_proto = EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
-> diff --git a/drivers/firmware/efi/libstub/screen_info.c b/drivers/firmware/efi/libstub/screen_info.c
-> index 8e76a8b384ba142d..b2637420fe53911e 100644
-> --- a/drivers/firmware/efi/libstub/screen_info.c
-> +++ b/drivers/firmware/efi/libstub/screen_info.c
-> @@ -15,14 +15,7 @@
->   * early, but it only works if the EFI stub is part of the core kernel image
->   * itself. The zboot decompressor can only use the configuration table
->   * approach.
-> - *
-> - * In order to support both methods from the same build of the EFI stub
-> - * library, provide this dummy global definition of struct screen_info. If it
-> - * is required to satisfy a link dependency, it means we need to override the
-> - * __weak alloc and free methods with the ones below, and those will be pulled
-> - * in as well.
->   */
-> -struct screen_info screen_info;
->
->  static efi_guid_t screen_info_guid = LINUX_EFI_SCREEN_INFO_TABLE_GUID;
->
-> --
-> 2.39.2
->
+Hmm... I'll remove the .rodata for now then. If anything changes I can
+always submit it as a separate patch later anyways.
