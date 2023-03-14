@@ -2,93 +2,113 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A97E86B93FB
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Mar 2023 13:37:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4C476B987B
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Mar 2023 16:04:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229865AbjCNMhb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 14 Mar 2023 08:37:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46338 "EHLO
+        id S230224AbjCNPEp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Mar 2023 11:04:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230063AbjCNMh3 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Mar 2023 08:37:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8263353DA7
-        for <linux-efi@vger.kernel.org>; Tue, 14 Mar 2023 05:36:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1678797301;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=LaZViyBTcEd0vXjCFW8utV4q3FTAQStS5kLOwGFHw1U=;
-        b=LXXIv7Rg+RUdPcZqjZ4cEAymzZ4pkNdUBGiaLhqL+QGDiFxoLry7wPgtAfjzPC5XzYE3Jd
-        no11YQfnaZY2KvV2vQ9XyUNMXwYoXDiZT/RoNyUN4LKRAJX7mZ2uD9wnWym0g2x43EwKyy
-        3bywWJw8GHDa5PFM9fcQyqh2lSjdgEU=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-620-uQtxW7hwMcOTgggwOsXEdg-1; Tue, 14 Mar 2023 08:31:14 -0400
-X-MC-Unique: uQtxW7hwMcOTgggwOsXEdg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 05546280A320;
-        Tue, 14 Mar 2023 12:31:14 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.39.195.88])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E3D7AC158C2;
-        Tue, 14 Mar 2023 12:31:12 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Javier Martinez Canillas <javierm@redhat.com>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        dri-devel@lists.freedesktop.org, linux-efi@vger.kernel.org
-Subject: [PATCH 2/2] efi: sysfb_efi: Add quirk for Lenovo Yoga Book X91F/L
-Date:   Tue, 14 Mar 2023 13:31:03 +0100
-Message-Id: <20230314123103.522115-2-hdegoede@redhat.com>
-In-Reply-To: <20230314123103.522115-1-hdegoede@redhat.com>
-References: <20230314123103.522115-1-hdegoede@redhat.com>
+        with ESMTP id S229765AbjCNPEo (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Mar 2023 11:04:44 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 430809E67C
+        for <linux-efi@vger.kernel.org>; Tue, 14 Mar 2023 08:04:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678806283; x=1710342283;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=Mlw612T9hGGqntGhUHC6TGjt4gApqBmaueoej0JH1jE=;
+  b=G298DMG46Q/u6g6j4p7hz98NTAqGeJTmQEpvgdKjy4h0QBkVM4p4TOn7
+   artAdQZeC7C4aQf1i/5uV9BC2910ZqDODCaNnOObQoy6zrzRzifDhi6Bg
+   gCwW0mAatmH6zVZ/dhEa7dPGB+p6qYJkJxNXJAEHOZG50TdUh451fgCOQ
+   hkhzUs8SD3h2omzetjOfppnROP3FU5i5ncBrQEeY5s6pk9V99ngHTiAJQ
+   2mHCcaETj/z69oIoPg3N7n3B+wdB2qqRV9eX0IC2bqWkuMuKOauwsB1fy
+   W4/IThXw6JXNSmkRb29K3O8yRYoAGwh9D+2RZ7hYKMRjMdSpLaJO6VxqI
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="336140590"
+X-IronPort-AV: E=Sophos;i="5.98,260,1673942400"; 
+   d="scan'208";a="336140590"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 08:04:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="629065261"
+X-IronPort-AV: E=Sophos;i="5.98,260,1673942400"; 
+   d="scan'208";a="629065261"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 14 Mar 2023 08:04:40 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pc6Ce-0006zM-0F;
+        Tue, 14 Mar 2023 15:04:40 +0000
+Date:   Tue, 14 Mar 2023 23:03:55 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+        linux-efi@vger.kernel.org
+Subject: [efi:urgent 5/5] ld.lld: error: undefined hidden symbol:
+ __efistub__start
+Message-ID: <202303142336.P1ZcCB9r-lkp@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Another Lenovo convertable which reports a landscape resolution of
-1920x1200 with a pitch of (1920 * 4) bytes, while the actual framebuffer
-has a resolution of 1200x1920 with a pitch of (1200 * 4) bytes.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+head:   ef3efc2af044f6da5bb8c55e99f2398081d99c09
+commit: 7949368e93e48a15ac5976405def16f8c84c837b [5/5] efi: libstub: Use relocated version of kernel's struct screen_info
+config: riscv-randconfig-r026-20230313 (https://download.01.org/0day-ci/archive/20230314/202303142336.P1ZcCB9r-lkp@intel.com/config)
+compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project 67409911353323ca5edf2049ef0df54132fa1ca7)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # install riscv cross compiling tool for clang build
+        # apt-get install binutils-riscv64-linux-gnu
+        # https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git/commit/?id=7949368e93e48a15ac5976405def16f8c84c837b
+        git remote add efi https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git
+        git fetch --no-tags efi urgent
+        git checkout 7949368e93e48a15ac5976405def16f8c84c837b
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=riscv olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=riscv SHELL=/bin/bash
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/firmware/efi/sysfb_efi.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202303142336.P1ZcCB9r-lkp@intel.com/
 
-diff --git a/drivers/firmware/efi/sysfb_efi.c b/drivers/firmware/efi/sysfb_efi.c
-index e76d6803bdd0..456d0e5eaf78 100644
---- a/drivers/firmware/efi/sysfb_efi.c
-+++ b/drivers/firmware/efi/sysfb_efi.c
-@@ -272,6 +272,14 @@ static const struct dmi_system_id efifb_dmi_swap_width_height[] __initconst = {
- 					"IdeaPad Duet 3 10IGL5"),
- 		},
- 	},
-+	{
-+		/* Lenovo Yoga Book X91F / X91L */
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			/* Non exact match to match F + L versions */
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Lenovo YB1-X91"),
-+		},
-+	},
- 	{},
- };
- 
+All errors (new ones prefixed by >>):
+
+>> ld.lld: error: undefined hidden symbol: __efistub__start
+   >>> referenced by riscv-stub.c:23 (drivers/firmware/efi/libstub/riscv-stub.c:23)
+   >>>               riscv-stub.stub.o:(__efistub_stext_offset) in archive drivers/firmware/efi/libstub/lib.a
+   >>> referenced by riscv-stub.c:23 (drivers/firmware/efi/libstub/riscv-stub.c:23)
+   >>>               riscv-stub.stub.o:(__efistub_handle_kernel_image) in archive drivers/firmware/efi/libstub/lib.a
+--
+>> ld.lld: error: undefined hidden symbol: __efistub__start_kernel
+   >>> referenced by riscv-stub.c:23 (drivers/firmware/efi/libstub/riscv-stub.c:23)
+   >>>               riscv-stub.stub.o:(__efistub_stext_offset) in archive drivers/firmware/efi/libstub/lib.a
+--
+>> ld.lld: error: undefined hidden symbol: __efistub__end
+   >>> referenced by riscv-stub.c:23 (drivers/firmware/efi/libstub/riscv-stub.c:23)
+   >>>               riscv-stub.stub.o:(__efistub_handle_kernel_image) in archive drivers/firmware/efi/libstub/lib.a
+--
+>> ld.lld: error: undefined hidden symbol: __efistub__edata
+   >>> referenced by riscv-stub.c:23 (drivers/firmware/efi/libstub/riscv-stub.c:23)
+   >>>               riscv-stub.stub.o:(__efistub_handle_kernel_image) in archive drivers/firmware/efi/libstub/lib.a
+--
+>> ld.lld: error: undefined hidden symbol: __efistub_screen_info
+   >>> referenced by efi-stub-entry.c:27 (drivers/firmware/efi/libstub/efi-stub-entry.c:27)
+   >>>               efi-stub-entry.stub.o:(__efistub_efi_pe_entry) in archive drivers/firmware/efi/libstub/lib.a
+
 -- 
-2.39.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
