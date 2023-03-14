@@ -2,29 +2,29 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 061646B8FB0
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Mar 2023 11:22:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48B6B6B8FAF
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Mar 2023 11:22:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230125AbjCNKWs (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 14 Mar 2023 06:22:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48958 "EHLO
+        id S229621AbjCNKWr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Mar 2023 06:22:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230182AbjCNKW1 (ORCPT
+        with ESMTP id S230164AbjCNKW1 (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Mar 2023 06:22:27 -0400
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 554719BA74;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 520199BA53;
         Tue, 14 Mar 2023 03:22:02 -0700 (PDT)
 Received: from localhost.localdomain (unknown [83.149.199.65])
-        by mail.ispras.ru (Postfix) with ESMTPSA id CDC7B40755D2;
-        Tue, 14 Mar 2023 10:14:00 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru CDC7B40755D2
+        by mail.ispras.ru (Postfix) with ESMTPSA id 0F03D4076277;
+        Tue, 14 Mar 2023 10:14:01 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 0F03D4076277
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1678788840;
-        bh=EFJb9tTw64ENt680pifdKRXpvL7PgePGOnq6mgMilbI=;
+        s=default; t=1678788841;
+        bh=EndKTKsJI/zHF8qKzRpQrYkCJTzowWyDZ0KXjbiBOMU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ggABUxDrzLvNuUbajlU0vfcHk6kjIt3AhOX8yP6tIfcNDRtbNZ0Monp4gLl4Q/x8P
-         pRiB0dAKaypOKO/Ou7Ml1USRjoirdXCWolVA77DP3epJ+4NhlULw+xK0UIT6dbmYxV
-         8Fs5pW69Gi93ZNQSy0CtUwi7bSWHob8SqRPhH6N0=
+        b=S3f9OxdcOZWWxzDL2nQnIrjF78YiYGdsM5K2Y8erPmAWJAcvOCOqv1h3PbK9oIZYe
+         p0pFfQrHtZ+adviTwYKgCthCl2PaXXtDux7UEGqk50kcO/TirDpn52a4ojJ4Yo1NHM
+         yNruEpmr8Dt+0/oaoJlusJmXKkvUkjY2UCuZ0qBA=
 From:   Evgeniy Baskov <baskov@ispras.ru>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Evgeniy Baskov <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
@@ -40,9 +40,9 @@ Cc:     Evgeniy Baskov <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
         joeyli <jlee@suse.com>, lvc-project@linuxtesting.org,
         x86@kernel.org, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: [PATCH v5 02/27] x86/build: Remove RWX sections and align on 4KB
-Date:   Tue, 14 Mar 2023 13:13:29 +0300
-Message-Id: <edf3afbdcd87cb6c61815068084ac6de35be15a2.1678785672.git.baskov@ispras.ru>
+Subject: [PATCH v5 03/27] x86/boot: Set cr0 to known state in trampoline
+Date:   Tue, 14 Mar 2023 13:13:30 +0300
+Message-Id: <63368ff665956a64f07aee9bc863b70c86b8b0c8.1678785672.git.baskov@ispras.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1678785672.git.baskov@ispras.ru>
 References: <cover.1678785672.git.baskov@ispras.ru>
@@ -57,70 +57,31 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Avoid creating sections simultaneously writable and readable to prepare
-for W^X implementation for the kernel itself (not the decompressor).
-Align kernel sections on page size (4KB) to allow protecting them in the
-page tables.
-
-Split init code form ".init" segment into separate R_X ".inittext"
-segment and make ".init" segment non-executable.
-
-Also add these segments to x86_32 architecture for consistency.
-Currently paging is disabled in x86_32 in compressed kernel, so
-protection is not applied anyways, but .init code was incorrectly
-placed in non-executable ".data" segment. This should not change
-anything meaningful in memory layout now, but might be required in case
-memory protection will also be implemented in compressed kernel for
-x86_32.
+Ensure WP bit to be set to prevent boot code from writing to
+non-writable memory pages.
 
 Tested-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
 ---
- arch/x86/kernel/vmlinux.lds.S | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ arch/x86/boot/compressed/head_64.S | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
-index 25f155205770..81ea1236d293 100644
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -102,12 +102,11 @@ jiffies = jiffies_64;
- PHDRS {
- 	text PT_LOAD FLAGS(5);          /* R_E */
- 	data PT_LOAD FLAGS(6);          /* RW_ */
--#ifdef CONFIG_X86_64
--#ifdef CONFIG_SMP
-+#if defined(CONFIG_X86_64) && defined(CONFIG_SMP)
- 	percpu PT_LOAD FLAGS(6);        /* RW_ */
- #endif
--	init PT_LOAD FLAGS(7);          /* RWE */
--#endif
-+	inittext PT_LOAD FLAGS(5);      /* R_E */
-+	init PT_LOAD FLAGS(6);          /* RW_ */
- 	note PT_NOTE FLAGS(0);          /* ___ */
- }
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index 03c4328a88cb..01fa42d31648 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -660,9 +660,8 @@ SYM_CODE_START(trampoline_32bit_src)
+ 	pushl	$__KERNEL_CS
+ 	pushl	%eax
  
-@@ -226,9 +225,10 @@ SECTIONS
- #endif
+-	/* Enable paging again. */
+-	movl	%cr0, %eax
+-	btsl	$X86_CR0_PG_BIT, %eax
++	/* Enable paging and set CR0 to known state (this also sets WP flag) */
++	movl	$CR0_STATE, %eax
+ 	movl	%eax, %cr0
  
- 	INIT_TEXT_SECTION(PAGE_SIZE)
--#ifdef CONFIG_X86_64
--	:init
--#endif
-+	:inittext
-+
-+	. = ALIGN(PAGE_SIZE);
-+
- 
- 	/*
- 	 * Section for code used exclusively before alternatives are run. All
-@@ -240,6 +240,7 @@ SECTIONS
- 	.altinstr_aux : AT(ADDR(.altinstr_aux) - LOAD_OFFSET) {
- 		*(.altinstr_aux)
- 	}
-+	:init
- 
- 	INIT_DATA_SECTION(16)
- 
+ 	lret
 -- 
 2.39.2
 
