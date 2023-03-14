@@ -2,29 +2,29 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DA2E6B8F94
+	by mail.lfdr.de (Postfix) with ESMTP id 5254D6B8F93
 	for <lists+linux-efi@lfdr.de>; Tue, 14 Mar 2023 11:17:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230481AbjCNKRu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 14 Mar 2023 06:17:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39340 "EHLO
+        id S230409AbjCNKRt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Mar 2023 06:17:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230107AbjCNKRe (ORCPT
+        with ESMTP id S230089AbjCNKRe (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Mar 2023 06:17:34 -0400
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B82C99BE01;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C59C9BA74;
         Tue, 14 Mar 2023 03:16:36 -0700 (PDT)
 Received: from localhost.localdomain (unknown [83.149.199.65])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 18BE340770A1;
+        by mail.ispras.ru (Postfix) with ESMTPSA id 4AC7B40770A5;
         Tue, 14 Mar 2023 10:16:03 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 18BE340770A1
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 4AC7B40770A5
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
         s=default; t=1678788963;
-        bh=RI3tsd7FWDEqFja/9FovpdCEr1yXpj8RlCN24KH1JfY=;
+        bh=Ur0w6W+I5f3bUpQ2HkklMI9fjx8VadeZnwDz8ECMaWM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qcpu7NOhu8TX2SOjvX0eoGQeDfw3duxtIRlehiOZ90vaIO/Rn7NAhWHIv7E6rqjBE
-         BGO/zcSJv6XcvP8/N1R0TlphYTmLhlvoQ/pO0PPUDD2FeGIMyTqR0E8vNRsXnkISkD
-         hy1bc7x6Ftll9/k127V8/ki0288OoPyad5U1g0Js=
+        b=JDGCTIncxqx4ZTcEsbpCGWhvBHr/2Zfoa+QIUZLI7TXyu1AleFs2Av2sC8jhgrCVC
+         5AGgAAW7Lme9pZX5ZgbCEuqI9WwbvT12gQGnYVuIPfpH7Tcm09fBECdEfEguWbq0x3
+         /4McGq+kf584r3iHHnYwr+H3ZROA51FbXfYKcx0o=
 From:   Evgeniy Baskov <baskov@ispras.ru>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Evgeniy Baskov <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
@@ -39,11 +39,10 @@ Cc:     Evgeniy Baskov <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
         "Limonciello, Mario" <mario.limonciello@amd.com>,
         joeyli <jlee@suse.com>, lvc-project@linuxtesting.org,
         x86@kernel.org, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
-        kernel test robot <lkp@intel.com>
-Subject: [PATCH v5 12/27] x86/boot: Make kernel_add_identity_map() a pointer
-Date:   Tue, 14 Mar 2023 13:13:39 +0300
-Message-Id: <a12645e74f68b77a8c97015795e71529d8499b3f.1678785672.git.baskov@ispras.ru>
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: [PATCH v5 13/27] x86/boot: Split trampoline and pt init code
+Date:   Tue, 14 Mar 2023 13:13:40 +0300
+Message-Id: <c3ec00c28fcb540124f324d8ba35eb62601655de.1678785672.git.baskov@ispras.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1678785672.git.baskov@ispras.ru>
 References: <cover.1678785672.git.baskov@ispras.ru>
@@ -58,115 +57,122 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Convert kernel_add_identity_map() into a function pointer to be able
-to provide alternative implementations of this function. Required
-to enable calling the code using this function from EFI environment.
+When allocating trampoline from libstub trampoline allocation is
+performed separately, so it needs to be skipped.
+
+Split trampoline initialization and allocation code into two
+functions to make them invokable separately.
 
 Tested-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
-
-Warnings on the previous version were
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/oe-kbuild-all/202303090348.l0pqa8oz-lkp@intel.com/
 ---
- arch/x86/boot/compressed/ident_map_64.c |  7 ++++---
- arch/x86/boot/compressed/misc.c         | 24 ++++++++++++++++++++++++
- arch/x86/boot/compressed/misc.h         | 15 +++------------
- 3 files changed, 31 insertions(+), 15 deletions(-)
+ arch/x86/boot/compressed/pgtable_64.c | 69 ++++++++++++++++-----------
+ 1 file changed, 42 insertions(+), 27 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
-index 378f99b1d7e8..1995560d3b43 100644
---- a/arch/x86/boot/compressed/ident_map_64.c
-+++ b/arch/x86/boot/compressed/ident_map_64.c
-@@ -92,9 +92,9 @@ bool has_nx; /* set in head_64.S */
- /*
-  * Adds the specified range to the identity mappings.
-  */
--unsigned long kernel_add_identity_map(unsigned long start,
--				      unsigned long end,
--				      unsigned int flags)
-+static unsigned long kernel_add_identity_map_impl(unsigned long start,
-+						  unsigned long end,
-+						  unsigned int flags)
- {
- 	int ret;
- 
-@@ -143,6 +143,7 @@ void initialize_identity_maps(void *rmode)
- 	struct setup_data *sd;
- 
- 	boot_params = rmode;
-+	kernel_add_identity_map = kernel_add_identity_map_impl;
- 
- 	/* Exclude the encryption mask from __PHYSICAL_MASK */
- 	physical_mask &= ~sme_me_mask;
-diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
-index 76773a989364..74f028cf2dfd 100644
---- a/arch/x86/boot/compressed/misc.c
-+++ b/arch/x86/boot/compressed/misc.c
-@@ -277,6 +277,22 @@ static size_t parse_elf(void *output, unsigned long output_len,
- 	return ehdr.e_entry - LOAD_PHYSICAL_ADDR;
+diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
+index c7cf5a1059a8..d71a62b7cf06 100644
+--- a/arch/x86/boot/compressed/pgtable_64.c
++++ b/arch/x86/boot/compressed/pgtable_64.c
+@@ -106,12 +106,8 @@ static unsigned long find_trampoline_placement(void)
+ 	return bios_start - TRAMPOLINE_32BIT_SIZE;
  }
  
-+/*
-+ * This points to actual implementation of mapping function
-+ * for current environment: either EFI API wrapper,
-+ * own implementation or dummy implementation below.
-+ */
-+unsigned long (*kernel_add_identity_map)(unsigned long start,
-+					 unsigned long end,
-+					 unsigned int flags);
-+
-+static unsigned long kernel_add_identity_map_dummy(unsigned long start,
-+						   unsigned long end,
-+						   unsigned int flags)
-+{
-+	return start;
+-struct paging_config paging_prepare(void *rmode)
++bool trampoline_pgtable_init(struct boot_params *boot_params)
+ {
+-	struct paging_config paging_config = {};
+-
+-	/* Initialize boot_params. Required for cmdline_find_option_bool(). */
+-	boot_params = rmode;
+ 
+ 	/*
+ 	 * Check if LA57 is desired and supported.
+@@ -125,26 +121,10 @@ struct paging_config paging_prepare(void *rmode)
+ 	 *
+ 	 * That's substitute for boot_cpu_has() in early boot code.
+ 	 */
+-	if (IS_ENABLED(CONFIG_X86_5LEVEL) &&
+-			!cmdline_find_option_bool("no5lvl") &&
+-			native_cpuid_eax(0) >= 7 &&
+-			(native_cpuid_ecx(7) & (1 << (X86_FEATURE_LA57 & 31)))) {
+-		paging_config.l5_required = 1;
+-	}
+-
+-	paging_config.trampoline_start = find_trampoline_placement();
+-
+-	trampoline_32bit = (unsigned long *)paging_config.trampoline_start;
+-
+-	/* Preserve trampoline memory */
+-	memcpy(trampoline_save, trampoline_32bit, TRAMPOLINE_32BIT_SIZE);
+-
+-	/* Clear trampoline memory first */
+-	memset(trampoline_32bit, 0, TRAMPOLINE_32BIT_SIZE);
+-
+-	/* Copy trampoline code in place */
+-	memcpy(trampoline_32bit + TRAMPOLINE_32BIT_CODE_OFFSET / sizeof(unsigned long),
+-			&trampoline_32bit_src, TRAMPOLINE_32BIT_CODE_SIZE);
++	bool l5_required = IS_ENABLED(CONFIG_X86_5LEVEL) &&
++			   !cmdline_find_option_bool("no5lvl") &&
++			   native_cpuid_eax(0) >= 7 &&
++			   (native_cpuid_ecx(7) & (1 << (X86_FEATURE_LA57 & 31)));
+ 
+ 	/*
+ 	 * The code below prepares page table in trampoline memory.
+@@ -160,10 +140,10 @@ struct paging_config paging_prepare(void *rmode)
+ 	 * We are not going to use the page table in trampoline memory if we
+ 	 * are already in the desired paging mode.
+ 	 */
+-	if (paging_config.l5_required == !!(native_read_cr4() & X86_CR4_LA57))
++	if (l5_required == !!(native_read_cr4() & X86_CR4_LA57))
+ 		goto out;
+ 
+-	if (paging_config.l5_required) {
++	if (l5_required) {
+ 		/*
+ 		 * For 4- to 5-level paging transition, set up current CR3 as
+ 		 * the first and the only entry in a new top-level page table.
+@@ -185,6 +165,41 @@ struct paging_config paging_prepare(void *rmode)
+ 		       (void *)src, PAGE_SIZE);
+ 	}
+ 
++out:
++	return l5_required;
 +}
 +
- /*
-  * The compressed kernel image (ZO), has been moved so that its position
-  * is against the end of the buffer used to hold the uncompressed kernel
-@@ -315,6 +331,14 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
- 
- 	init_default_io_ops();
- 
++struct paging_config paging_prepare(void *rmode)
++{
++	struct paging_config paging_config = {};
++
++	/* Initialize boot_params. Required for cmdline_find_option_bool(). */
++	boot_params = rmode;
++
 +	/*
-+	 * On 64-bit this pointer is set during page table uninitialization,
-+	 * but on 32-bit it remains uninitialized, since paging is disabled.
++	 * We only need to find trampoline placement, if we have
++	 * not already done it from libstub.
 +	 */
-+	if (IS_ENABLED(CONFIG_X86_32))
-+		kernel_add_identity_map = kernel_add_identity_map_dummy;
 +
++	paging_config.trampoline_start = find_trampoline_placement();
++	trampoline_32bit = (unsigned long *)paging_config.trampoline_start;
 +
- 	/*
- 	 * Detect TDX guest environment.
- 	 *
-diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-index e20f60bfe91b..fe201b45b038 100644
---- a/arch/x86/boot/compressed/misc.h
-+++ b/arch/x86/boot/compressed/misc.h
-@@ -182,18 +182,9 @@ static inline int count_immovable_mem_regions(void) { return 0; }
- #ifdef CONFIG_X86_5LEVEL
- extern unsigned int __pgtable_l5_enabled, pgdir_shift, ptrs_per_p4d;
- #endif
--#ifdef CONFIG_X86_64
--extern unsigned long kernel_add_identity_map(unsigned long start,
--					     unsigned long end,
--					     unsigned int flags);
--#else
--static inline unsigned long kernel_add_identity_map(unsigned long start,
--						    unsigned long end,
--						    unsigned int flags)
--{
--	return start;
--}
--#endif
-+extern unsigned long (*kernel_add_identity_map)(unsigned long start,
-+						unsigned long end,
-+						unsigned int flags);
- /* Used by PAGE_KERN* macros: */
- extern pteval_t __default_kernel_pte_mask;
- 
++	/*
++	 * Preserve trampoline memory. When trampoline is located in memory
++	 * owned by us, i.e. allocated in EFISTUB, we don't care about previous
++	 * contents of this memory so copying can also be skipped.
++	 */
++	memcpy(trampoline_save, trampoline_32bit, TRAMPOLINE_32BIT_SIZE);
++
++	/* Clear trampoline memory first */
++	memset(trampoline_32bit, 0, TRAMPOLINE_32BIT_SIZE);
++
++	/* Copy trampoline code in place */
++	memcpy(trampoline_32bit + TRAMPOLINE_32BIT_CODE_OFFSET / sizeof(unsigned long),
++			&trampoline_32bit_src, TRAMPOLINE_32BIT_CODE_SIZE);
++
++	paging_config.l5_required = trampoline_pgtable_init(boot_params);
++
+ out:
+ 	return paging_config;
+ }
 -- 
 2.39.2
 
