@@ -2,212 +2,251 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 794516BA283
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Mar 2023 23:32:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DAF36BA2AE
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Mar 2023 23:46:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231256AbjCNWb7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 14 Mar 2023 18:31:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51178 "EHLO
+        id S229932AbjCNWp6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Mar 2023 18:45:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjCNWb6 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Mar 2023 18:31:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAFB8457D9;
-        Tue, 14 Mar 2023 15:31:57 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 774E261A33;
-        Tue, 14 Mar 2023 22:31:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35CCC433A0;
-        Tue, 14 Mar 2023 22:31:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678833116;
-        bh=gk2Tymhp90otil403oGS0ANqZWeCizhGEMkb0lNl/8M=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=mcLhpHQ41+l3ZFkdnFlFNE8w5Oe4LXFS6tcL8bcmYEiTnAg6X0bzqw0gUsfDrA3Q7
-         +7Jl2uudovBM+Ukm1La2txFTa+jfv4/ZklAx4Jy1b2VAqWUh/nRMmO9qr798i1G8UW
-         3fDalxr1MaI12yAt80xTOPWblZFUb6XXR05FhQb6VXktjaTT58Gmn5pAsR7GgufTRu
-         9ewa9pV65lK7lLQG566fB91KrVl95+RCiDp0eSuFcMKfvYUp8nEH/XA/DnluYFVyh8
-         OukGvkkZqQ6LI6Ofro8ayN8If5hZfTMO1/iahgyOOLDJyHelvohP274895H/Kq/2Xh
-         ZoqARQdFChuQw==
-Received: by mail-lf1-f49.google.com with SMTP id o8so2004803lfo.0;
-        Tue, 14 Mar 2023 15:31:56 -0700 (PDT)
-X-Gm-Message-State: AO0yUKUw+XeOcH36zoqgbMBBwK6v+E8rSVqb03Wvdd4W5IIpx931oq9N
-        QG5v8VGUsJIkFjNokX+huKzVQhkeFMBxnBirmCE=
-X-Google-Smtp-Source: AK7set9fvG9iDYqG/ZvBlfEHhTScuhZtnxiap1NyONzoBOYfBmNA4HZWcpy6H3lTt4ZiqCD9p5BTAYNc+41ucBzYWrs=
-X-Received: by 2002:ac2:4203:0:b0:4d5:ca42:e43b with SMTP id
- y3-20020ac24203000000b004d5ca42e43bmr1239812lfh.4.1678833114813; Tue, 14 Mar
- 2023 15:31:54 -0700 (PDT)
+        with ESMTP id S229840AbjCNWp5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Mar 2023 18:45:57 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77DA222CA3
+        for <linux-efi@vger.kernel.org>; Tue, 14 Mar 2023 15:45:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678833956; x=1710369956;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=rmo1VGE76fn8u1d6OB3aJjwhUD7qQvSaLvvN6HuNys8=;
+  b=cag8Cmjh/ibEDek2eMyCBfJxR/koX1wksoMkwFDB7b2nJ6VcoKAZbQ3A
+   fmPjo5qKCqdRrQBNhlo+UmHs1dyT/pmQHdQaUqyKJd389Q+4ZbEZcCDTy
+   FlmG01TIlaW2oDOaiDK5a49z3Ea1rYHxfpTBu11NsBDe00sFdSg2kkoC2
+   dx0g8wi1TQ2D+Sv1Wr5CKh7rDgc/YbCri6w2MUHUbohAESSxspAULtNPm
+   8wEwmJJqhHEz50OR60PywRPiQ8uwHBTUtxlq6tc7C3qbJD2FZ3PLJGiVz
+   e6CR575nNu1lTsfrRuIl3ka6P2/0pzkWS4FyzXueEdJbRTSDS5IjvQOp5
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="339100084"
+X-IronPort-AV: E=Sophos;i="5.98,261,1673942400"; 
+   d="scan'208";a="339100084"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 15:45:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="672514121"
+X-IronPort-AV: E=Sophos;i="5.98,261,1673942400"; 
+   d="scan'208";a="672514121"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 14 Mar 2023 15:45:54 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pcDOz-0007F1-1T;
+        Tue, 14 Mar 2023 22:45:53 +0000
+Date:   Wed, 15 Mar 2023 06:44:56 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD REGRESSION
+ ef3efc2af044f6da5bb8c55e99f2398081d99c09
+Message-ID: <6410f8e8.fyjdHRwDeSkUFLMV%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20230310021749.921041-1-chenhuacai@loongson.cn>
-In-Reply-To: <20230310021749.921041-1-chenhuacai@loongson.cn>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 14 Mar 2023 23:31:43 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHHVxM2YGQ9Ytdf=nEB6CU9GHSDgek+V2SghYh5Aq-uSg@mail.gmail.com>
-Message-ID: <CAMj1kXHHVxM2YGQ9Ytdf=nEB6CU9GHSDgek+V2SghYh5Aq-uSg@mail.gmail.com>
-Subject: Re: [PATCH V2] efi/libstub: Call setup_graphics() before handle_kernel_image()
-To:     Huacai Chen <chenhuacai@loongson.cn>
-Cc:     Huacai Chen <chenhuacai@kernel.org>, linux-efi@vger.kernel.org,
-        loongarch@lists.linux.dev, Xuefeng Li <lixuefeng@loongson.cn>,
-        Xuerui Wang <kernel@xen0n.name>, linux-kernel@vger.kernel.org,
-        loongson-kernel@lists.loongnix.cn
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 10 Mar 2023 at 03:18, Huacai Chen <chenhuacai@loongson.cn> wrote:
->
-> Commit 42c8ea3dca094ab8 ("efi: libstub: Factor out EFI stub entrypoint
-> into separate file") moves setup_graphics() into efi_stub_common() which
-> is after handle_kernel_image(). This causes efifb no longer work because
-> handle_kernel_image() may move the core kernel to its preferred address,
-> which means the screen_info filled by the efistub will not be the same
-> as the one accessed by the core kernel. So let us call setup_graphics()
-> before handle_kernel_image() which restores the old behavior.
->
-> The side effect is zboot will not call setup_graphics(), but I think
-> zboot doesn't need it either.
->
-> Fixes: 42c8ea3dca094ab8 ("efi: libstub: Factor out EFI stub entrypoint into separate file")
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: ef3efc2af044f6da5bb8c55e99f2398081d99c09  efi: libstub: Use relocated version of kernel's struct screen_info
 
-Please drop this patch from the loonarch tree - it is causing a
-conflict in linux-next.
+Error/Warning reports:
 
+https://lore.kernel.org/oe-kbuild-all/202303132020.S9CriCjt-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202303142336.P1ZcCB9r-lkp@intel.com
 
-> ---
-> V2: Use static declaration for setup_graphics() to avoid build warnings.
->
->  drivers/firmware/efi/libstub/efi-stub-entry.c | 29 +++++++++++++++++++
->  drivers/firmware/efi/libstub/efi-stub.c       | 27 -----------------
->  2 files changed, 29 insertions(+), 27 deletions(-)
->
-> diff --git a/drivers/firmware/efi/libstub/efi-stub-entry.c b/drivers/firmware/efi/libstub/efi-stub-entry.c
-> index 5245c4f031c0..f971fd25a4eb 100644
-> --- a/drivers/firmware/efi/libstub/efi-stub-entry.c
-> +++ b/drivers/firmware/efi/libstub/efi-stub-entry.c
-> @@ -5,6 +5,30 @@
->
->  #include "efistub.h"
->
-> +static struct screen_info *setup_graphics(void)
-> +{
-> +       unsigned long size;
-> +       efi_status_t status;
-> +       efi_guid_t gop_proto = EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
-> +       void **gop_handle = NULL;
-> +       struct screen_info *si = NULL;
-> +
-> +       size = 0;
-> +       status = efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
-> +                            &gop_proto, NULL, &size, gop_handle);
-> +       if (status == EFI_BUFFER_TOO_SMALL) {
-> +               si = alloc_screen_info();
-> +               if (!si)
-> +                       return NULL;
-> +               status = efi_setup_gop(si, &gop_proto, size);
-> +               if (status != EFI_SUCCESS) {
-> +                       free_screen_info(si);
-> +                       return NULL;
-> +               }
-> +       }
-> +       return si;
-> +}
-> +
->  /*
->   * EFI entry point for the generic EFI stub used by ARM, arm64, RISC-V and
->   * LoongArch. This is the entrypoint that is described in the PE/COFF header
-> @@ -22,6 +46,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
->         efi_guid_t loaded_image_proto = LOADED_IMAGE_PROTOCOL_GUID;
->         unsigned long reserve_addr = 0;
->         unsigned long reserve_size = 0;
-> +       struct screen_info *si;
->
->         WRITE_ONCE(efi_system_table, systab);
->
-> @@ -47,6 +72,8 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
->
->         efi_info("Booting Linux Kernel...\n");
->
-> +       si = setup_graphics();
-> +
->         status = handle_kernel_image(&image_addr, &image_size,
->                                      &reserve_addr,
->                                      &reserve_size,
-> @@ -58,6 +85,8 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
->
->         status = efi_stub_common(handle, image, image_addr, cmdline_ptr);
->
-> +       free_screen_info(si);
-> +
->         efi_free(image_size, image_addr);
->         efi_free(reserve_size, reserve_addr);
->
-> diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
-> index 2955c1ac6a36..bc67af721412 100644
-> --- a/drivers/firmware/efi/libstub/efi-stub.c
-> +++ b/drivers/firmware/efi/libstub/efi-stub.c
-> @@ -56,30 +56,6 @@ void __weak free_screen_info(struct screen_info *si)
->  {
->  }
->
-> -static struct screen_info *setup_graphics(void)
-> -{
-> -       efi_guid_t gop_proto = EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
-> -       efi_status_t status;
-> -       unsigned long size;
-> -       void **gop_handle = NULL;
-> -       struct screen_info *si = NULL;
-> -
-> -       size = 0;
-> -       status = efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
-> -                            &gop_proto, NULL, &size, gop_handle);
-> -       if (status == EFI_BUFFER_TOO_SMALL) {
-> -               si = alloc_screen_info();
-> -               if (!si)
-> -                       return NULL;
-> -               status = efi_setup_gop(si, &gop_proto, size);
-> -               if (status != EFI_SUCCESS) {
-> -                       free_screen_info(si);
-> -                       return NULL;
-> -               }
-> -       }
-> -       return si;
-> -}
-> -
->  static void install_memreserve_table(void)
->  {
->         struct linux_efi_memreserve *rsv;
-> @@ -163,14 +139,12 @@ efi_status_t efi_stub_common(efi_handle_t handle,
->                              unsigned long image_addr,
->                              char *cmdline_ptr)
->  {
-> -       struct screen_info *si;
->         efi_status_t status;
->
->         status = check_platform_features();
->         if (status != EFI_SUCCESS)
->                 return status;
->
-> -       si = setup_graphics();
->
->         efi_retrieve_tpm2_eventlog();
->
-> @@ -190,7 +164,6 @@ efi_status_t efi_stub_common(efi_handle_t handle,
->
->         status = efi_boot_kernel(handle, image, image_addr, cmdline_ptr);
->
-> -       free_screen_info(si);
->         return status;
->  }
->
-> --
-> 2.39.1
->
+Error/Warning: (recently discovered and may have been fixed)
+
+ld.lld: error: undefined hidden symbol: __efistub__edata
+ld.lld: error: undefined hidden symbol: __efistub__end
+ld.lld: error: undefined hidden symbol: __efistub__start
+ld.lld: error: undefined hidden symbol: __efistub__start_kernel
+ld.lld: error: undefined hidden symbol: __efistub_screen_info
+
+Error/Warning ids grouped by kconfigs:
+
+clang_recent_errors
+|-- riscv-randconfig-r025-20230313
+|   |-- ld.lld:error:undefined-hidden-symbol:__efistub__edata
+|   |-- ld.lld:error:undefined-hidden-symbol:__efistub__end
+|   |-- ld.lld:error:undefined-hidden-symbol:__efistub__start
+|   |-- ld.lld:error:undefined-hidden-symbol:__efistub__start_kernel
+|   `-- ld.lld:error:undefined-hidden-symbol:__efistub_screen_info
+|-- riscv-randconfig-r026-20230313
+|   |-- ld.lld:error:undefined-hidden-symbol:__efistub__edata
+|   |-- ld.lld:error:undefined-hidden-symbol:__efistub__end
+|   |-- ld.lld:error:undefined-hidden-symbol:__efistub__start
+|   |-- ld.lld:error:undefined-hidden-symbol:__efistub__start_kernel
+|   `-- ld.lld:error:undefined-hidden-symbol:__efistub_screen_info
+`-- riscv-randconfig-r042-20230313
+    |-- ld.lld:error:undefined-hidden-symbol:__efistub__edata
+    |-- ld.lld:error:undefined-hidden-symbol:__efistub__end
+    |-- ld.lld:error:undefined-hidden-symbol:__efistub__start
+    |-- ld.lld:error:undefined-hidden-symbol:__efistub__start_kernel
+    `-- ld.lld:error:undefined-hidden-symbol:__efistub_screen_info
+
+elapsed time: 729m
+
+configs tested: 139
+configs skipped: 14
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r004-20230312   gcc  
+arc                  randconfig-r043-20230312   gcc  
+arc                  randconfig-r043-20230313   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r004-20230313   clang
+arm                  randconfig-r006-20230312   gcc  
+arm                  randconfig-r011-20230312   clang
+arm                  randconfig-r026-20230312   clang
+arm                  randconfig-r034-20230313   clang
+arm                  randconfig-r046-20230312   clang
+arm                  randconfig-r046-20230313   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r003-20230312   clang
+arm64                randconfig-r004-20230312   clang
+arm64                randconfig-r005-20230312   clang
+csky                                defconfig   gcc  
+csky                 randconfig-r014-20230313   gcc  
+csky                 randconfig-r036-20230313   gcc  
+hexagon              randconfig-r006-20230313   clang
+hexagon              randconfig-r013-20230312   clang
+hexagon              randconfig-r041-20230312   clang
+hexagon              randconfig-r041-20230313   clang
+hexagon              randconfig-r045-20230312   clang
+hexagon              randconfig-r045-20230313   clang
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-a001-20230313   gcc  
+i386                 randconfig-a002-20230313   gcc  
+i386                 randconfig-a003-20230313   gcc  
+i386                 randconfig-a004-20230313   gcc  
+i386                 randconfig-a005-20230313   gcc  
+i386                 randconfig-a006-20230313   gcc  
+i386                 randconfig-a011-20230313   clang
+i386                 randconfig-a012-20230313   clang
+i386                 randconfig-a013-20230313   clang
+i386                 randconfig-a014-20230313   clang
+i386                 randconfig-a015-20230313   clang
+i386                 randconfig-a016-20230313   clang
+i386                 randconfig-r024-20230313   clang
+ia64                             allmodconfig   gcc  
+ia64         buildonly-randconfig-r006-20230312   gcc  
+ia64                                defconfig   gcc  
+ia64                 randconfig-r014-20230312   gcc  
+ia64                 randconfig-r015-20230313   gcc  
+ia64                 randconfig-r016-20230313   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r001-20230312   gcc  
+m68k                             allmodconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r002-20230312   gcc  
+m68k                 randconfig-r005-20230312   gcc  
+m68k                 randconfig-r032-20230312   gcc  
+microblaze           randconfig-r006-20230312   gcc  
+microblaze           randconfig-r006-20230313   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r001-20230312   gcc  
+mips                 randconfig-r001-20230313   clang
+mips                 randconfig-r003-20230313   clang
+mips                 randconfig-r033-20230312   gcc  
+mips                 randconfig-r035-20230312   gcc  
+nios2        buildonly-randconfig-r001-20230313   gcc  
+nios2        buildonly-randconfig-r006-20230313   gcc  
+nios2                               defconfig   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r021-20230313   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc              randconfig-r002-20230312   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r004-20230313   gcc  
+riscv                randconfig-r012-20230313   clang
+riscv                randconfig-r022-20230313   clang
+riscv                randconfig-r025-20230313   clang
+riscv                randconfig-r032-20230313   gcc  
+riscv                randconfig-r042-20230312   gcc  
+riscv                randconfig-r042-20230313   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390         buildonly-randconfig-r001-20230312   gcc  
+s390         buildonly-randconfig-r002-20230312   gcc  
+s390         buildonly-randconfig-r003-20230312   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r044-20230312   gcc  
+s390                 randconfig-r044-20230313   clang
+sh                               allmodconfig   gcc  
+sh           buildonly-randconfig-r002-20230313   gcc  
+sh           buildonly-randconfig-r003-20230313   gcc  
+sh           buildonly-randconfig-r005-20230313   gcc  
+sh                   randconfig-r022-20230312   gcc  
+sh                   randconfig-r023-20230313   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r011-20230313   gcc  
+sparc                randconfig-r021-20230312   gcc  
+sparc                randconfig-r023-20230312   gcc  
+sparc                randconfig-r034-20230312   gcc  
+sparc64              randconfig-r001-20230313   gcc  
+sparc64              randconfig-r013-20230313   gcc  
+sparc64              randconfig-r015-20230312   gcc  
+sparc64              randconfig-r024-20230312   gcc  
+sparc64              randconfig-r033-20230313   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r004-20230313   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-a001-20230313   gcc  
+x86_64               randconfig-a002-20230313   gcc  
+x86_64               randconfig-a003-20230313   gcc  
+x86_64               randconfig-a004-20230313   gcc  
+x86_64               randconfig-a005-20230313   gcc  
+x86_64               randconfig-a006-20230313   gcc  
+x86_64               randconfig-a011-20230313   clang
+x86_64               randconfig-a012-20230313   clang
+x86_64               randconfig-a013-20230313   clang
+x86_64               randconfig-a014-20230313   clang
+x86_64               randconfig-a015-20230313   clang
+x86_64               randconfig-a016-20230313   clang
+x86_64               randconfig-r002-20230313   gcc  
+x86_64               randconfig-r035-20230313   gcc  
+x86_64                               rhel-8.3   gcc  
+xtensa       buildonly-randconfig-r004-20230312   gcc  
+xtensa               randconfig-r036-20230312   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
