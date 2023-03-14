@@ -2,251 +2,134 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DAF36BA2AE
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Mar 2023 23:46:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0AA16BA37D
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Mar 2023 00:21:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229932AbjCNWp6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 14 Mar 2023 18:45:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41954 "EHLO
+        id S230202AbjCNXV2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Mar 2023 19:21:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229840AbjCNWp5 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Mar 2023 18:45:57 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77DA222CA3
-        for <linux-efi@vger.kernel.org>; Tue, 14 Mar 2023 15:45:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678833956; x=1710369956;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=rmo1VGE76fn8u1d6OB3aJjwhUD7qQvSaLvvN6HuNys8=;
-  b=cag8Cmjh/ibEDek2eMyCBfJxR/koX1wksoMkwFDB7b2nJ6VcoKAZbQ3A
-   fmPjo5qKCqdRrQBNhlo+UmHs1dyT/pmQHdQaUqyKJd389Q+4ZbEZcCDTy
-   FlmG01TIlaW2oDOaiDK5a49z3Ea1rYHxfpTBu11NsBDe00sFdSg2kkoC2
-   dx0g8wi1TQ2D+Sv1Wr5CKh7rDgc/YbCri6w2MUHUbohAESSxspAULtNPm
-   8wEwmJJqhHEz50OR60PywRPiQ8uwHBTUtxlq6tc7C3qbJD2FZ3PLJGiVz
-   e6CR575nNu1lTsfrRuIl3ka6P2/0pzkWS4FyzXueEdJbRTSDS5IjvQOp5
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="339100084"
-X-IronPort-AV: E=Sophos;i="5.98,261,1673942400"; 
-   d="scan'208";a="339100084"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2023 15:45:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10649"; a="672514121"
-X-IronPort-AV: E=Sophos;i="5.98,261,1673942400"; 
-   d="scan'208";a="672514121"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 14 Mar 2023 15:45:54 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pcDOz-0007F1-1T;
-        Tue, 14 Mar 2023 22:45:53 +0000
-Date:   Wed, 15 Mar 2023 06:44:56 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD REGRESSION
- ef3efc2af044f6da5bb8c55e99f2398081d99c09
-Message-ID: <6410f8e8.fyjdHRwDeSkUFLMV%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229850AbjCNXVY (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Mar 2023 19:21:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 056ED30E84;
+        Tue, 14 Mar 2023 16:21:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F6F261A43;
+        Tue, 14 Mar 2023 23:21:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B18C433D2;
+        Tue, 14 Mar 2023 23:21:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678836081;
+        bh=1LpG8Owr5h1Nv/yVkTjkl6nlXkxG8Oan2DRA4buy3zE=;
+        h=In-Reply-To:References:Date:From:To:Cc:Subject:From;
+        b=TlmqXPQ6PCSyTMy7FM1O2V+iWNqVaBb7Iy3h36aSy8QcjtFubzEIPmPYMRvRoX2N5
+         VF7+9EUU7kesqX4EUfyFUKQNcTrnGfCXeAKuE5NKKaqJVBT845IBUpXYN9VoWJrdj5
+         qagmLbTfH4BQ+YD5VPK8IGVlZ/JN/pQyi7QiMkhl7lDxktwTO1WCUOUCsRxGEnWkVV
+         BBvM1o8rTitEkXvsQVf0e4iTN8kJ5IFk689Sf1cu2/ybM2YsOCufAp8HrdXO7SRjuS
+         rhWFiYRg3ct6h3OFgft0C2G7BT2cGjGEMHZgQKmCUIzJe5mxbtjK3FrgVgOpUUudug
+         NjjkyAWthKyJg==
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailauth.nyi.internal (Postfix) with ESMTP id CE3D827C0054;
+        Tue, 14 Mar 2023 19:21:19 -0400 (EDT)
+Received: from imap48 ([10.202.2.98])
+  by compute3.internal (MEProxy); Tue, 14 Mar 2023 19:21:19 -0400
+X-ME-Sender: <xms:bgERZF-R6V2BvHK54N93fzcPxKyYc04MEA6T3NLYUK8L6QQ49J3r3w>
+    <xme:bgERZJtbmILXoH6H7gR_0JSDSFcLwvjYyMgsh2AiO2UDXAHk5U_xnC9E2LI_uUICX
+    tKUHNQv5KRKFB24DQg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvddvjedgtdeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehn
+    ugihucfnuhhtohhmihhrshhkihdfuceolhhuthhosehkvghrnhgvlhdrohhrgheqnecugg
+    ftrfgrthhtvghrnhepgedugedtledtieduteffveevhfefheeuhfegfeduvdeltdeugeet
+    veeliedvfeehnecuffhomhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghruf
+    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrnhguhidomhgvshhmthhprghu
+    thhhphgvrhhsohhnrghlihhthidqudduiedukeehieefvddqvdeifeduieeitdekqdhluh
+    htoheppehkvghrnhgvlhdrohhrgheslhhinhhugidrlhhuthhordhush
+X-ME-Proxy: <xmx:bgERZDCbcFEkx3oeJCN44ysiNNUUI0Fqa289qbZyDAjvNp2swyYjzg>
+    <xmx:bgERZJefgs1xsuybL_QtwGHtzoqyCJtwPMw957We9aZawtPxMqYmgA>
+    <xmx:bgERZKNhdykp_OA2tlYxeiYIR2IuPQbDA-pniq8zlxMl4tvBV3fidw>
+    <xmx:bwERZBkgrohfTVb_w_Y35cX-J-LaoJ_JiG8IBv0Fy0YsgTh6EV7LuQ>
+Feedback-ID: ieff94742:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id C2D3731A0063; Tue, 14 Mar 2023 19:21:18 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-221-gec32977366-fm-20230306.001-gec329773
+Mime-Version: 1.0
+Message-Id: <ea1b6e36-c434-49e9-bede-b4bd2b41868d@app.fastmail.com>
+In-Reply-To: <d575db7f-bad3-477e-a501-19d2d84527cd@app.fastmail.com>
+References: <cover.1678785672.git.baskov@ispras.ru>
+ <d575db7f-bad3-477e-a501-19d2d84527cd@app.fastmail.com>
+Date:   Tue, 14 Mar 2023 16:20:43 -0700
+From:   "Andy Lutomirski" <luto@kernel.org>
+To:     "Evgeniy Baskov" <baskov@ispras.ru>,
+        "Ard Biesheuvel" <ardb@kernel.org>
+Cc:     "Borislav Petkov" <bp@alien8.de>,
+        "Dave Hansen" <dave.hansen@linux.intel.com>,
+        "Ingo Molnar" <mingo@redhat.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Alexey Khoroshilov" <khoroshilov@ispras.ru>,
+        "Peter Jones" <pjones@redhat.com>,
+        "Gerd Hoffmann" <kraxel@redhat.com>,
+        "Limonciello, Mario" <mario.limonciello@amd.com>,
+        joeyli <jlee@suse.com>, lvc-project@linuxtesting.org,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        linux-efi@vger.kernel.org,
+        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v5 00/27] x86_64: Improvements at compressed kernel stage
+Content-Type: text/plain
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
-branch HEAD: ef3efc2af044f6da5bb8c55e99f2398081d99c09  efi: libstub: Use relocated version of kernel's struct screen_info
 
-Error/Warning reports:
 
-https://lore.kernel.org/oe-kbuild-all/202303132020.S9CriCjt-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202303142336.P1ZcCB9r-lkp@intel.com
+On Tue, Mar 14, 2023, at 2:23 PM, Andy Lutomirski wrote:
+> On Tue, Mar 14, 2023, at 3:13 AM, Evgeniy Baskov wrote:
+>>
+>> Kernel is made to be more compatible with PE image specification [3],
+>> allowing it to be successfully loaded by stricter PE loader
+>> implementations like the one from [2]. There is at least one
+>> known implementation that uses that loader in production [4].
+>> There are also ongoing efforts to upstream these changes.
+>
+> Can you clarify 
 
-Error/Warning: (recently discovered and may have been fixed)
+Sorry, lost part of a sentence.  Can you clarify in what respect the loader is stricter?
 
-ld.lld: error: undefined hidden symbol: __efistub__edata
-ld.lld: error: undefined hidden symbol: __efistub__end
-ld.lld: error: undefined hidden symbol: __efistub__start
-ld.lld: error: undefined hidden symbol: __efistub__start_kernel
-ld.lld: error: undefined hidden symbol: __efistub_screen_info
 
-Error/Warning ids grouped by kconfigs:
+Anyway, I did some research.  I found:
 
-clang_recent_errors
-|-- riscv-randconfig-r025-20230313
-|   |-- ld.lld:error:undefined-hidden-symbol:__efistub__edata
-|   |-- ld.lld:error:undefined-hidden-symbol:__efistub__end
-|   |-- ld.lld:error:undefined-hidden-symbol:__efistub__start
-|   |-- ld.lld:error:undefined-hidden-symbol:__efistub__start_kernel
-|   `-- ld.lld:error:undefined-hidden-symbol:__efistub_screen_info
-|-- riscv-randconfig-r026-20230313
-|   |-- ld.lld:error:undefined-hidden-symbol:__efistub__edata
-|   |-- ld.lld:error:undefined-hidden-symbol:__efistub__end
-|   |-- ld.lld:error:undefined-hidden-symbol:__efistub__start
-|   |-- ld.lld:error:undefined-hidden-symbol:__efistub__start_kernel
-|   `-- ld.lld:error:undefined-hidden-symbol:__efistub_screen_info
-`-- riscv-randconfig-r042-20230313
-    |-- ld.lld:error:undefined-hidden-symbol:__efistub__edata
-    |-- ld.lld:error:undefined-hidden-symbol:__efistub__end
-    |-- ld.lld:error:undefined-hidden-symbol:__efistub__start
-    |-- ld.lld:error:undefined-hidden-symbol:__efistub__start_kernel
-    `-- ld.lld:error:undefined-hidden-symbol:__efistub_screen_info
+https://github.com/rhboot/shim/pull/459/commits/99a8d19326f69665e0b86bcfa6a59d554f662fba
 
-elapsed time: 729m
+which gives a somewhat incoherent-sounding description in which setting EFI_IMAGE_DLLCHARACTERISTICS_NX_COMPAT apparently enables allocating memory that isn't RWX.  But this seems odd EFI_IMAGE_DLLCHARACTERISTICS_NX_COMPAT is a property of the EFI *program*, not the boot services implementation.  And I'd be surprised if a flag on the application changes the behavior of boot services, but, OTOH, this is Microsoft.
 
-configs tested: 139
-configs skipped: 14
+And the PE 89 spec does say that EFI_IMAGE_DLLCHARACTERISTICS_NX_COMPAT means "Image is NX compatible" and that is the sole mention of NX in the document.
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r004-20230312   gcc  
-arc                  randconfig-r043-20230312   gcc  
-arc                  randconfig-r043-20230313   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r004-20230313   clang
-arm                  randconfig-r006-20230312   gcc  
-arm                  randconfig-r011-20230312   clang
-arm                  randconfig-r026-20230312   clang
-arm                  randconfig-r034-20230313   clang
-arm                  randconfig-r046-20230312   clang
-arm                  randconfig-r046-20230313   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r003-20230312   clang
-arm64                randconfig-r004-20230312   clang
-arm64                randconfig-r005-20230312   clang
-csky                                defconfig   gcc  
-csky                 randconfig-r014-20230313   gcc  
-csky                 randconfig-r036-20230313   gcc  
-hexagon              randconfig-r006-20230313   clang
-hexagon              randconfig-r013-20230312   clang
-hexagon              randconfig-r041-20230312   clang
-hexagon              randconfig-r041-20230313   clang
-hexagon              randconfig-r045-20230312   clang
-hexagon              randconfig-r045-20230313   clang
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-a001-20230313   gcc  
-i386                 randconfig-a002-20230313   gcc  
-i386                 randconfig-a003-20230313   gcc  
-i386                 randconfig-a004-20230313   gcc  
-i386                 randconfig-a005-20230313   gcc  
-i386                 randconfig-a006-20230313   gcc  
-i386                 randconfig-a011-20230313   clang
-i386                 randconfig-a012-20230313   clang
-i386                 randconfig-a013-20230313   clang
-i386                 randconfig-a014-20230313   clang
-i386                 randconfig-a015-20230313   clang
-i386                 randconfig-a016-20230313   clang
-i386                 randconfig-r024-20230313   clang
-ia64                             allmodconfig   gcc  
-ia64         buildonly-randconfig-r006-20230312   gcc  
-ia64                                defconfig   gcc  
-ia64                 randconfig-r014-20230312   gcc  
-ia64                 randconfig-r015-20230313   gcc  
-ia64                 randconfig-r016-20230313   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r001-20230312   gcc  
-m68k                             allmodconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r002-20230312   gcc  
-m68k                 randconfig-r005-20230312   gcc  
-m68k                 randconfig-r032-20230312   gcc  
-microblaze           randconfig-r006-20230312   gcc  
-microblaze           randconfig-r006-20230313   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                 randconfig-r001-20230312   gcc  
-mips                 randconfig-r001-20230313   clang
-mips                 randconfig-r003-20230313   clang
-mips                 randconfig-r033-20230312   gcc  
-mips                 randconfig-r035-20230312   gcc  
-nios2        buildonly-randconfig-r001-20230313   gcc  
-nios2        buildonly-randconfig-r006-20230313   gcc  
-nios2                               defconfig   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r021-20230313   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc              randconfig-r002-20230312   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r004-20230313   gcc  
-riscv                randconfig-r012-20230313   clang
-riscv                randconfig-r022-20230313   clang
-riscv                randconfig-r025-20230313   clang
-riscv                randconfig-r032-20230313   gcc  
-riscv                randconfig-r042-20230312   gcc  
-riscv                randconfig-r042-20230313   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390         buildonly-randconfig-r001-20230312   gcc  
-s390         buildonly-randconfig-r002-20230312   gcc  
-s390         buildonly-randconfig-r003-20230312   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r044-20230312   gcc  
-s390                 randconfig-r044-20230313   clang
-sh                               allmodconfig   gcc  
-sh           buildonly-randconfig-r002-20230313   gcc  
-sh           buildonly-randconfig-r003-20230313   gcc  
-sh           buildonly-randconfig-r005-20230313   gcc  
-sh                   randconfig-r022-20230312   gcc  
-sh                   randconfig-r023-20230313   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r011-20230313   gcc  
-sparc                randconfig-r021-20230312   gcc  
-sparc                randconfig-r023-20230312   gcc  
-sparc                randconfig-r034-20230312   gcc  
-sparc64              randconfig-r001-20230313   gcc  
-sparc64              randconfig-r013-20230313   gcc  
-sparc64              randconfig-r015-20230312   gcc  
-sparc64              randconfig-r024-20230312   gcc  
-sparc64              randconfig-r033-20230313   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r004-20230313   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-a001-20230313   gcc  
-x86_64               randconfig-a002-20230313   gcc  
-x86_64               randconfig-a003-20230313   gcc  
-x86_64               randconfig-a004-20230313   gcc  
-x86_64               randconfig-a005-20230313   gcc  
-x86_64               randconfig-a006-20230313   gcc  
-x86_64               randconfig-a011-20230313   clang
-x86_64               randconfig-a012-20230313   clang
-x86_64               randconfig-a013-20230313   clang
-x86_64               randconfig-a014-20230313   clang
-x86_64               randconfig-a015-20230313   clang
-x86_64               randconfig-a016-20230313   clang
-x86_64               randconfig-r002-20230313   gcc  
-x86_64               randconfig-r035-20230313   gcc  
-x86_64                               rhel-8.3   gcc  
-xtensa       buildonly-randconfig-r004-20230312   gcc  
-xtensa               randconfig-r036-20230312   gcc  
+And *this* seems to be the actual issue:
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+https://github.com/rhboot/shim/pull/459/commits/825d99361b4aaa16144392dc6cea43e24c8472ae
+
+I assume that MS required this change as a condition for signing, but what do I know?  Anyway, the rules appear to be that the PE sections must not be both W and X at the same size.  (For those who are familiar with the abomination known as ELF but not with the abomination known as PE, a "section" is a range in the file that gets mapped into memory.  Like a PT_LOAD segment in ELF.)
+
+Now I don't know whether anything prevents us from doing something awful like mapping the EFI stuf RX and then immediately *re*mapping everything RWX.  (Not that I'm seriously suggesting that.)  And it's not immediately clear to me how the rest of this series fits in, what this has to do with the identity map, etc.
+
+Anyway, I think the series needs to document what's going on, in the changelog and relevant comments.  And if the demand-population of the identity map is a problem, then there should be a comment like (made up -- don't say this unless it's correct):
+
+A sufficiently paranoid EFI implementation may enforce W^X when mapping memory through the boot services protocols.  And creating identity mappings in the page fault handler needs to use the boot services protocols to do so because [fill this in] [or it would be a bit of an abomination to do an end run around them by modifying the page tables ourselves] [or whatever is actually happening].  While we *could* look at the actual fault type and create an R or RW or RX mapping as appropriate, it's better to figure out what needs to be mapped for real and to map it with the correct permissions before faulting.
+
+But I still think we should keep the demand-faulting code as a fallback, even if it's hardcoded as RW, and just log the fault mode and address.  We certainly shouldn't be *executing* code that wasn't identity mapped.  Unless that code is boot services and we're creating the boot services mappings!
+
+For that matter, how confident are we that there aren't crappy boot services implementations out there that require that we fix up page faults? After all, it's not like EFI implementations, especially early ones, are any good.
+
+--Andy
