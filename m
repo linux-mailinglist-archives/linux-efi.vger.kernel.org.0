@@ -2,29 +2,29 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48B6B6B8FAF
-	for <lists+linux-efi@lfdr.de>; Tue, 14 Mar 2023 11:22:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92E246B8FB7
+	for <lists+linux-efi@lfdr.de>; Tue, 14 Mar 2023 11:23:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229621AbjCNKWr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 14 Mar 2023 06:22:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51580 "EHLO
+        id S230460AbjCNKXQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Mar 2023 06:23:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230164AbjCNKW1 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Mar 2023 06:22:27 -0400
+        with ESMTP id S230396AbjCNKWn (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Mar 2023 06:22:43 -0400
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 520199BA53;
-        Tue, 14 Mar 2023 03:22:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A841B93D7;
+        Tue, 14 Mar 2023 03:22:17 -0700 (PDT)
 Received: from localhost.localdomain (unknown [83.149.199.65])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 0F03D4076277;
+        by mail.ispras.ru (Postfix) with ESMTPSA id 431324076B3C;
         Tue, 14 Mar 2023 10:14:01 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 0F03D4076277
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 431324076B3C
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
         s=default; t=1678788841;
-        bh=EndKTKsJI/zHF8qKzRpQrYkCJTzowWyDZ0KXjbiBOMU=;
+        bh=cFWBUuzFVvbMswZ9kJ4Z4Ih3xSnlu+Hxv2+4lFZbnHc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S3f9OxdcOZWWxzDL2nQnIrjF78YiYGdsM5K2Y8erPmAWJAcvOCOqv1h3PbK9oIZYe
-         p0pFfQrHtZ+adviTwYKgCthCl2PaXXtDux7UEGqk50kcO/TirDpn52a4ojJ4Yo1NHM
-         yNruEpmr8Dt+0/oaoJlusJmXKkvUkjY2UCuZ0qBA=
+        b=n5rFFQU+Q7LukU1VZJbrAiymnkGlmrNvnMb+ciFh+N/qDexZb2DcC1Ldo7d4lQ048
+         g9suTTvlVA9H/oHRN8L/QLkjQsnPM42oafXHw8YLa7QXUWeWZ2lB6WgkhY39S5ARr1
+         0hFa3eTdXJLcB2gJA/jvNPJMgeShOklNZnFU+dNs=
 From:   Evgeniy Baskov <baskov@ispras.ru>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     Evgeniy Baskov <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
@@ -40,9 +40,9 @@ Cc:     Evgeniy Baskov <baskov@ispras.ru>, Borislav Petkov <bp@alien8.de>,
         joeyli <jlee@suse.com>, lvc-project@linuxtesting.org,
         x86@kernel.org, linux-efi@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: [PATCH v5 03/27] x86/boot: Set cr0 to known state in trampoline
-Date:   Tue, 14 Mar 2023 13:13:30 +0300
-Message-Id: <63368ff665956a64f07aee9bc863b70c86b8b0c8.1678785672.git.baskov@ispras.ru>
+Subject: [PATCH v5 04/27] x86/boot: Increase boot page table size
+Date:   Tue, 14 Mar 2023 13:13:31 +0300
+Message-Id: <92dcca146e54c6d2093be399261bb5c38d37c9be.1678785672.git.baskov@ispras.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1678785672.git.baskov@ispras.ru>
 References: <cover.1678785672.git.baskov@ispras.ru>
@@ -57,31 +57,64 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Ensure WP bit to be set to prevent boot code from writing to
-non-writable memory pages.
+Previous upper limit ignored pages implicitly mapped from #PF handler
+by code accessing ACPI tables (boot/compressed/{acpi.c,efi.c}),
+so theoretical upper limit is higher than it was set.
+
+Using 4KB pages is desirable for better memory protection granularity.
+Approximately twice as much memory is required for those.
+
+Increase initial page table size to 64 4KB page tables.
 
 Tested-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
 ---
- arch/x86/boot/compressed/head_64.S | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/boot.h | 28 ++++++++++++++++------------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index 03c4328a88cb..01fa42d31648 100644
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -660,9 +660,8 @@ SYM_CODE_START(trampoline_32bit_src)
- 	pushl	$__KERNEL_CS
- 	pushl	%eax
+diff --git a/arch/x86/include/asm/boot.h b/arch/x86/include/asm/boot.h
+index 9191280d9ea3..88836067f88c 100644
+--- a/arch/x86/include/asm/boot.h
++++ b/arch/x86/include/asm/boot.h
+@@ -41,22 +41,26 @@
+ # define BOOT_STACK_SIZE	0x4000
  
--	/* Enable paging again. */
--	movl	%cr0, %eax
--	btsl	$X86_CR0_PG_BIT, %eax
-+	/* Enable paging and set CR0 to known state (this also sets WP flag) */
-+	movl	$CR0_STATE, %eax
- 	movl	%eax, %cr0
+ # define BOOT_INIT_PGT_SIZE	(6*4096)
+-# ifdef CONFIG_RANDOMIZE_BASE
+ /*
+  * Assuming all cross the 512GB boundary:
+  * 1 page for level4
+- * (2+2)*4 pages for kernel, param, cmd_line, and randomized kernel
+- * 2 pages for first 2M (video RAM: CONFIG_X86_VERBOSE_BOOTUP).
+- * Total is 19 pages.
++ * (3+3)*2 pages for param and cmd_line
++ * (2+2+S)*2 pages for kernel and randomized kernel, where S is total number
++ *     of sections of kernel. Explanation: 2+2 are upper level page tables.
++ *     We can have only S unaligned parts of section: 1 at the end of the kernel
++ *     and (S-1) at the section borders. The start address of the kernel is
++ *     aligned, so an extra page table. There are at most S=6 sections in
++ *     vmlinux ELF image.
++ * 3 pages for first 2M (video RAM: CONFIG_X86_VERBOSE_BOOTUP).
++ * Total is 36 pages.
++ *
++ * Some number of page tables is also required for the ACPI and UEFI table
++ * mappings, so we round up 36 to 64. Since ACPI tables are generally getting
++ * allocated in a few contiguous regions of memory, they are very unlikely to be
++ * spread out enough to require more than 28 extra page tables and this
++ * would work fine in all more or less sane environments.
+  */
+-#  ifdef CONFIG_X86_VERBOSE_BOOTUP
+-#   define BOOT_PGT_SIZE	(19*4096)
+-#  else /* !CONFIG_X86_VERBOSE_BOOTUP */
+-#   define BOOT_PGT_SIZE	(17*4096)
+-#  endif
+-# else /* !CONFIG_RANDOMIZE_BASE */
+-#  define BOOT_PGT_SIZE		BOOT_INIT_PGT_SIZE
+-# endif
++# define BOOT_PGT_SIZE		(64*4096)
  
- 	lret
+ #else /* !CONFIG_X86_64 */
+ # define BOOT_STACK_SIZE	0x1000
 -- 
 2.39.2
 
