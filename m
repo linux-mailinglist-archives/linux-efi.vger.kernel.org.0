@@ -2,87 +2,58 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0AA16BA37D
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Mar 2023 00:21:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DAAA6BA400
+	for <lists+linux-efi@lfdr.de>; Wed, 15 Mar 2023 01:23:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230202AbjCNXV2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 14 Mar 2023 19:21:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33682 "EHLO
+        id S229528AbjCOAXP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 14 Mar 2023 20:23:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229850AbjCNXVY (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Mar 2023 19:21:24 -0400
+        with ESMTP id S230455AbjCOAXN (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 14 Mar 2023 20:23:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 056ED30E84;
-        Tue, 14 Mar 2023 16:21:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E348D7697;
+        Tue, 14 Mar 2023 17:23:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F6F261A43;
-        Tue, 14 Mar 2023 23:21:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B18C433D2;
-        Tue, 14 Mar 2023 23:21:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1DEDC6187A;
+        Wed, 15 Mar 2023 00:23:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E08FC433D2;
+        Wed, 15 Mar 2023 00:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678836081;
-        bh=1LpG8Owr5h1Nv/yVkTjkl6nlXkxG8Oan2DRA4buy3zE=;
-        h=In-Reply-To:References:Date:From:To:Cc:Subject:From;
-        b=TlmqXPQ6PCSyTMy7FM1O2V+iWNqVaBb7Iy3h36aSy8QcjtFubzEIPmPYMRvRoX2N5
-         VF7+9EUU7kesqX4EUfyFUKQNcTrnGfCXeAKuE5NKKaqJVBT845IBUpXYN9VoWJrdj5
-         qagmLbTfH4BQ+YD5VPK8IGVlZ/JN/pQyi7QiMkhl7lDxktwTO1WCUOUCsRxGEnWkVV
-         BBvM1o8rTitEkXvsQVf0e4iTN8kJ5IFk689Sf1cu2/ybM2YsOCufAp8HrdXO7SRjuS
-         rhWFiYRg3ct6h3OFgft0C2G7BT2cGjGEMHZgQKmCUIzJe5mxbtjK3FrgVgOpUUudug
-         NjjkyAWthKyJg==
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailauth.nyi.internal (Postfix) with ESMTP id CE3D827C0054;
-        Tue, 14 Mar 2023 19:21:19 -0400 (EDT)
-Received: from imap48 ([10.202.2.98])
-  by compute3.internal (MEProxy); Tue, 14 Mar 2023 19:21:19 -0400
-X-ME-Sender: <xms:bgERZF-R6V2BvHK54N93fzcPxKyYc04MEA6T3NLYUK8L6QQ49J3r3w>
-    <xme:bgERZJtbmILXoH6H7gR_0JSDSFcLwvjYyMgsh2AiO2UDXAHk5U_xnC9E2LI_uUICX
-    tKUHNQv5KRKFB24DQg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvddvjedgtdeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehn
-    ugihucfnuhhtohhmihhrshhkihdfuceolhhuthhosehkvghrnhgvlhdrohhrgheqnecugg
-    ftrfgrthhtvghrnhepgedugedtledtieduteffveevhfefheeuhfegfeduvdeltdeugeet
-    veeliedvfeehnecuffhomhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghruf
-    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrnhguhidomhgvshhmthhprghu
-    thhhphgvrhhsohhnrghlihhthidqudduiedukeehieefvddqvdeifeduieeitdekqdhluh
-    htoheppehkvghrnhgvlhdrohhrgheslhhinhhugidrlhhuthhordhush
-X-ME-Proxy: <xmx:bgERZDCbcFEkx3oeJCN44ysiNNUUI0Fqa289qbZyDAjvNp2swyYjzg>
-    <xmx:bgERZJefgs1xsuybL_QtwGHtzoqyCJtwPMw957We9aZawtPxMqYmgA>
-    <xmx:bgERZKNhdykp_OA2tlYxeiYIR2IuPQbDA-pniq8zlxMl4tvBV3fidw>
-    <xmx:bwERZBkgrohfTVb_w_Y35cX-J-LaoJ_JiG8IBv0Fy0YsgTh6EV7LuQ>
-Feedback-ID: ieff94742:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id C2D3731A0063; Tue, 14 Mar 2023 19:21:18 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-221-gec32977366-fm-20230306.001-gec329773
-Mime-Version: 1.0
-Message-Id: <ea1b6e36-c434-49e9-bede-b4bd2b41868d@app.fastmail.com>
-In-Reply-To: <d575db7f-bad3-477e-a501-19d2d84527cd@app.fastmail.com>
-References: <cover.1678785672.git.baskov@ispras.ru>
- <d575db7f-bad3-477e-a501-19d2d84527cd@app.fastmail.com>
-Date:   Tue, 14 Mar 2023 16:20:43 -0700
-From:   "Andy Lutomirski" <luto@kernel.org>
-To:     "Evgeniy Baskov" <baskov@ispras.ru>,
-        "Ard Biesheuvel" <ardb@kernel.org>
-Cc:     "Borislav Petkov" <bp@alien8.de>,
-        "Dave Hansen" <dave.hansen@linux.intel.com>,
-        "Ingo Molnar" <mingo@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        "Alexey Khoroshilov" <khoroshilov@ispras.ru>,
-        "Peter Jones" <pjones@redhat.com>,
-        "Gerd Hoffmann" <kraxel@redhat.com>,
-        "Limonciello, Mario" <mario.limonciello@amd.com>,
-        joeyli <jlee@suse.com>, lvc-project@linuxtesting.org,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        linux-efi@vger.kernel.org,
-        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
-        linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v5 00/27] x86_64: Improvements at compressed kernel stage
-Content-Type: text/plain
+        s=k20201202; t=1678839789;
+        bh=2QQtgRrccTkaMZwdVpBo0tfL90iRhmvFQT37IuFiBsQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=ltmCjBMrn1C8dN8MNPeAvRxt3xzd6oXzFu9AbPOEDZcVfV7jeKieCIif1oHdl7vD8
+         sTeXz6pcFHOfc3C2YZhlfjPaMHnfoEiMs/GnTEP10VWvaEuY6E2afIFZEjxW0uD5gi
+         mQI3RPWOh9YuRrW7bIXaPOoVPgW7AnlokSR9MOdQWhHbeaaNppvCAZDOzLPDKUTASO
+         mEOdRhO1Q0sTq+6N+LXXO8btFYY9Vx0HFdZrApHH6C9ahuAIi6AB3utQ7ljcKTHl3j
+         NOD/rryBnZXXAA5w04sumbjJIKFmaqO3+fblU4ThF0EAOOaQ6soiISp/k9xQvy3+0R
+         Cbte/H4aYm4Vw==
+Received: by mail-ed1-f51.google.com with SMTP id x3so69062586edb.10;
+        Tue, 14 Mar 2023 17:23:09 -0700 (PDT)
+X-Gm-Message-State: AO0yUKX5hvF+qX/ijrVB/+0zblRgBH+zXgg0EVQ8S91BINOMTL7V3Bza
+        hSjNLK8ugHlpx1xLAWBpbMddCs4l5hxma2LRoGg=
+X-Google-Smtp-Source: AK7set8CeexM23o3h1SN2bR6jNRNAm0u6quChI4QXKxm0fMZXTsGg6kab1YcgQpmoRtPvQUwhLyDrcuPqQZqcA3cTMI=
+X-Received: by 2002:a17:906:4c9a:b0:8b2:d871:d74a with SMTP id
+ q26-20020a1709064c9a00b008b2d871d74amr2112085eju.10.1678839787663; Tue, 14
+ Mar 2023 17:23:07 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230310021749.921041-1-chenhuacai@loongson.cn> <CAMj1kXHHVxM2YGQ9Ytdf=nEB6CU9GHSDgek+V2SghYh5Aq-uSg@mail.gmail.com>
+In-Reply-To: <CAMj1kXHHVxM2YGQ9Ytdf=nEB6CU9GHSDgek+V2SghYh5Aq-uSg@mail.gmail.com>
+From:   Huacai Chen <chenhuacai@kernel.org>
+Date:   Wed, 15 Mar 2023 08:22:55 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7RmHkN3XYYzKZZa1dm8c6b16XgQGYo5ZQvuZSkGRetKA@mail.gmail.com>
+Message-ID: <CAAhV-H7RmHkN3XYYzKZZa1dm8c6b16XgQGYo5ZQvuZSkGRetKA@mail.gmail.com>
+Subject: Re: [PATCH V2] efi/libstub: Call setup_graphics() before handle_kernel_image()
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Huacai Chen <chenhuacai@loongson.cn>, linux-efi@vger.kernel.org,
+        loongarch@lists.linux.dev, Xuefeng Li <lixuefeng@loongson.cn>,
+        Xuerui Wang <kernel@xen0n.name>, linux-kernel@vger.kernel.org,
+        loongson-kernel@lists.loongnix.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -92,44 +63,172 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-
-
-On Tue, Mar 14, 2023, at 2:23 PM, Andy Lutomirski wrote:
-> On Tue, Mar 14, 2023, at 3:13 AM, Evgeniy Baskov wrote:
->>
->> Kernel is made to be more compatible with PE image specification [3],
->> allowing it to be successfully loaded by stricter PE loader
->> implementations like the one from [2]. There is at least one
->> known implementation that uses that loader in production [4].
->> There are also ongoing efforts to upstream these changes.
+On Wed, Mar 15, 2023 at 6:31=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> wr=
+ote:
 >
-> Can you clarify 
+> On Fri, 10 Mar 2023 at 03:18, Huacai Chen <chenhuacai@loongson.cn> wrote:
+> >
+> > Commit 42c8ea3dca094ab8 ("efi: libstub: Factor out EFI stub entrypoint
+> > into separate file") moves setup_graphics() into efi_stub_common() whic=
+h
+> > is after handle_kernel_image(). This causes efifb no longer work becaus=
+e
+> > handle_kernel_image() may move the core kernel to its preferred address=
+,
+> > which means the screen_info filled by the efistub will not be the same
+> > as the one accessed by the core kernel. So let us call setup_graphics()
+> > before handle_kernel_image() which restores the old behavior.
+> >
+> > The side effect is zboot will not call setup_graphics(), but I think
+> > zboot doesn't need it either.
+> >
+> > Fixes: 42c8ea3dca094ab8 ("efi: libstub: Factor out EFI stub entrypoint =
+into separate file")
+> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+>
+> Please drop this patch from the loonarch tree - it is causing a
+> conflict in linux-next.
+OK, will do.
 
-Sorry, lost part of a sentence.  Can you clarify in what respect the loader is stricter?
-
-
-Anyway, I did some research.  I found:
-
-https://github.com/rhboot/shim/pull/459/commits/99a8d19326f69665e0b86bcfa6a59d554f662fba
-
-which gives a somewhat incoherent-sounding description in which setting EFI_IMAGE_DLLCHARACTERISTICS_NX_COMPAT apparently enables allocating memory that isn't RWX.  But this seems odd EFI_IMAGE_DLLCHARACTERISTICS_NX_COMPAT is a property of the EFI *program*, not the boot services implementation.  And I'd be surprised if a flag on the application changes the behavior of boot services, but, OTOH, this is Microsoft.
-
-And the PE 89 spec does say that EFI_IMAGE_DLLCHARACTERISTICS_NX_COMPAT means "Image is NX compatible" and that is the sole mention of NX in the document.
-
-And *this* seems to be the actual issue:
-
-https://github.com/rhboot/shim/pull/459/commits/825d99361b4aaa16144392dc6cea43e24c8472ae
-
-I assume that MS required this change as a condition for signing, but what do I know?  Anyway, the rules appear to be that the PE sections must not be both W and X at the same size.  (For those who are familiar with the abomination known as ELF but not with the abomination known as PE, a "section" is a range in the file that gets mapped into memory.  Like a PT_LOAD segment in ELF.)
-
-Now I don't know whether anything prevents us from doing something awful like mapping the EFI stuf RX and then immediately *re*mapping everything RWX.  (Not that I'm seriously suggesting that.)  And it's not immediately clear to me how the rest of this series fits in, what this has to do with the identity map, etc.
-
-Anyway, I think the series needs to document what's going on, in the changelog and relevant comments.  And if the demand-population of the identity map is a problem, then there should be a comment like (made up -- don't say this unless it's correct):
-
-A sufficiently paranoid EFI implementation may enforce W^X when mapping memory through the boot services protocols.  And creating identity mappings in the page fault handler needs to use the boot services protocols to do so because [fill this in] [or it would be a bit of an abomination to do an end run around them by modifying the page tables ourselves] [or whatever is actually happening].  While we *could* look at the actual fault type and create an R or RW or RX mapping as appropriate, it's better to figure out what needs to be mapped for real and to map it with the correct permissions before faulting.
-
-But I still think we should keep the demand-faulting code as a fallback, even if it's hardcoded as RW, and just log the fault mode and address.  We certainly shouldn't be *executing* code that wasn't identity mapped.  Unless that code is boot services and we're creating the boot services mappings!
-
-For that matter, how confident are we that there aren't crappy boot services implementations out there that require that we fix up page faults? After all, it's not like EFI implementations, especially early ones, are any good.
-
---Andy
+Huacai
+>
+>
+> > ---
+> > V2: Use static declaration for setup_graphics() to avoid build warnings=
+.
+> >
+> >  drivers/firmware/efi/libstub/efi-stub-entry.c | 29 +++++++++++++++++++
+> >  drivers/firmware/efi/libstub/efi-stub.c       | 27 -----------------
+> >  2 files changed, 29 insertions(+), 27 deletions(-)
+> >
+> > diff --git a/drivers/firmware/efi/libstub/efi-stub-entry.c b/drivers/fi=
+rmware/efi/libstub/efi-stub-entry.c
+> > index 5245c4f031c0..f971fd25a4eb 100644
+> > --- a/drivers/firmware/efi/libstub/efi-stub-entry.c
+> > +++ b/drivers/firmware/efi/libstub/efi-stub-entry.c
+> > @@ -5,6 +5,30 @@
+> >
+> >  #include "efistub.h"
+> >
+> > +static struct screen_info *setup_graphics(void)
+> > +{
+> > +       unsigned long size;
+> > +       efi_status_t status;
+> > +       efi_guid_t gop_proto =3D EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
+> > +       void **gop_handle =3D NULL;
+> > +       struct screen_info *si =3D NULL;
+> > +
+> > +       size =3D 0;
+> > +       status =3D efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
+> > +                            &gop_proto, NULL, &size, gop_handle);
+> > +       if (status =3D=3D EFI_BUFFER_TOO_SMALL) {
+> > +               si =3D alloc_screen_info();
+> > +               if (!si)
+> > +                       return NULL;
+> > +               status =3D efi_setup_gop(si, &gop_proto, size);
+> > +               if (status !=3D EFI_SUCCESS) {
+> > +                       free_screen_info(si);
+> > +                       return NULL;
+> > +               }
+> > +       }
+> > +       return si;
+> > +}
+> > +
+> >  /*
+> >   * EFI entry point for the generic EFI stub used by ARM, arm64, RISC-V=
+ and
+> >   * LoongArch. This is the entrypoint that is described in the PE/COFF =
+header
+> > @@ -22,6 +46,7 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handl=
+e,
+> >         efi_guid_t loaded_image_proto =3D LOADED_IMAGE_PROTOCOL_GUID;
+> >         unsigned long reserve_addr =3D 0;
+> >         unsigned long reserve_size =3D 0;
+> > +       struct screen_info *si;
+> >
+> >         WRITE_ONCE(efi_system_table, systab);
+> >
+> > @@ -47,6 +72,8 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handl=
+e,
+> >
+> >         efi_info("Booting Linux Kernel...\n");
+> >
+> > +       si =3D setup_graphics();
+> > +
+> >         status =3D handle_kernel_image(&image_addr, &image_size,
+> >                                      &reserve_addr,
+> >                                      &reserve_size,
+> > @@ -58,6 +85,8 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handl=
+e,
+> >
+> >         status =3D efi_stub_common(handle, image, image_addr, cmdline_p=
+tr);
+> >
+> > +       free_screen_info(si);
+> > +
+> >         efi_free(image_size, image_addr);
+> >         efi_free(reserve_size, reserve_addr);
+> >
+> > diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware=
+/efi/libstub/efi-stub.c
+> > index 2955c1ac6a36..bc67af721412 100644
+> > --- a/drivers/firmware/efi/libstub/efi-stub.c
+> > +++ b/drivers/firmware/efi/libstub/efi-stub.c
+> > @@ -56,30 +56,6 @@ void __weak free_screen_info(struct screen_info *si)
+> >  {
+> >  }
+> >
+> > -static struct screen_info *setup_graphics(void)
+> > -{
+> > -       efi_guid_t gop_proto =3D EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
+> > -       efi_status_t status;
+> > -       unsigned long size;
+> > -       void **gop_handle =3D NULL;
+> > -       struct screen_info *si =3D NULL;
+> > -
+> > -       size =3D 0;
+> > -       status =3D efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
+> > -                            &gop_proto, NULL, &size, gop_handle);
+> > -       if (status =3D=3D EFI_BUFFER_TOO_SMALL) {
+> > -               si =3D alloc_screen_info();
+> > -               if (!si)
+> > -                       return NULL;
+> > -               status =3D efi_setup_gop(si, &gop_proto, size);
+> > -               if (status !=3D EFI_SUCCESS) {
+> > -                       free_screen_info(si);
+> > -                       return NULL;
+> > -               }
+> > -       }
+> > -       return si;
+> > -}
+> > -
+> >  static void install_memreserve_table(void)
+> >  {
+> >         struct linux_efi_memreserve *rsv;
+> > @@ -163,14 +139,12 @@ efi_status_t efi_stub_common(efi_handle_t handle,
+> >                              unsigned long image_addr,
+> >                              char *cmdline_ptr)
+> >  {
+> > -       struct screen_info *si;
+> >         efi_status_t status;
+> >
+> >         status =3D check_platform_features();
+> >         if (status !=3D EFI_SUCCESS)
+> >                 return status;
+> >
+> > -       si =3D setup_graphics();
+> >
+> >         efi_retrieve_tpm2_eventlog();
+> >
+> > @@ -190,7 +164,6 @@ efi_status_t efi_stub_common(efi_handle_t handle,
+> >
+> >         status =3D efi_boot_kernel(handle, image, image_addr, cmdline_p=
+tr);
+> >
+> > -       free_screen_info(si);
+> >         return status;
+> >  }
+> >
+> > --
+> > 2.39.1
+> >
