@@ -2,173 +2,106 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B82F16BBB8D
-	for <lists+linux-efi@lfdr.de>; Wed, 15 Mar 2023 18:58:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F295B6BC7D4
+	for <lists+linux-efi@lfdr.de>; Thu, 16 Mar 2023 08:55:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232298AbjCOR6b (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 15 Mar 2023 13:58:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51176 "EHLO
+        id S229549AbjCPHzJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 16 Mar 2023 03:55:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232511AbjCOR61 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 15 Mar 2023 13:58:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96B7F3E096
-        for <linux-efi@vger.kernel.org>; Wed, 15 Mar 2023 10:57:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1678903062;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=d+QEuJRmUpE8YOJGSMTzR0yeIC0gMbNde13EIE8mzH8=;
-        b=E+X4PABNTccrqGhtAZWMirPdoGgWnzbWAt5zWHyOzUK8oGM4Ut9jWtuBIzZRuiX12kZFSB
-        HChxdGShi7KR1SMKPxN6MFxIp3+zKVJkJALRWcUC/BWvcwtusrV4M5lpDe44n9ZSUKbzbr
-        GCECIFt0Yh3SFvychxhaaKKVnRM9Q10=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-294-U3aX0hBBN_-pWEgVJFCBfQ-1; Wed, 15 Mar 2023 13:57:39 -0400
-X-MC-Unique: U3aX0hBBN_-pWEgVJFCBfQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S230420AbjCPHzG (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 16 Mar 2023 03:55:06 -0400
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4CCD2D5C
+        for <linux-efi@vger.kernel.org>; Thu, 16 Mar 2023 00:54:53 -0700 (PDT)
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EF1F328043D3;
-        Wed, 15 Mar 2023 17:57:36 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.17.7])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 55F54492B00;
-        Wed, 15 Mar 2023 17:57:35 +0000 (UTC)
-Date:   Wed, 15 Mar 2023 13:57:33 -0400
-From:   Peter Jones <pjones@redhat.com>
-To:     Andy Lutomirski <luto@kernel.org>
-Cc:     Evgeniy Baskov <baskov@ispras.ru>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        "Limonciello, Mario" <mario.limonciello@amd.com>,
-        joeyli <jlee@suse.com>, lvc-project@linuxtesting.org,
-        the arch/x86 maintainers <x86@kernel.org>,
-        linux-efi@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v5 00/27] x86_64: Improvements at compressed kernel stage
-Message-ID: <8493680a-0bad-43de-a7a0-caa48e430139@uncooperative.org>
-References: <cover.1678785672.git.baskov@ispras.ru>
- <d575db7f-bad3-477e-a501-19d2d84527cd@app.fastmail.com>
- <ea1b6e36-c434-49e9-bede-b4bd2b41868d@app.fastmail.com>
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id D42E544604
+        for <linux-efi@vger.kernel.org>; Thu, 16 Mar 2023 07:54:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1678953291;
+        bh=qGt0tprnwW2zEB3q8ctGt6HU/4xBmHY46SHmJifIh80=;
+        h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type;
+        b=h9boqRn1rbMoOC8PGcqwGKIjYLnGw3oVGcZqWHqvS2kKNMdfu7Dt3yuguRICFM8th
+         CYZF6TuFjwIhp0gjq7dL72NaZNjwLUhXMH764f2oUzyuA+QBJ0o30N9EzGZhv/mT4U
+         ONlcjs8jofDUZ0MMZr3yynEe/+FBZEdlv8VoL5T1+42SYIJoH7POXGwm6THXwsVGCC
+         Zfe8SLGCz8wdZOGmGjLfiOjZQb6KlLtv8E6UuwVW4dRHFP8lEX7Ybtnb/UDCLEnGpH
+         JXXPEa8Uuxs9g5fxu+w0DSLvypaGYBhRwkIsNF+6o3nYtekSuQ+G0F1iwcYxGUgzXM
+         71GFVMMoPR/1g==
+Received: by mail-ed1-f70.google.com with SMTP id e18-20020a056402191200b004fa702d64b3so1778848edz.23
+        for <linux-efi@vger.kernel.org>; Thu, 16 Mar 2023 00:54:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678953291;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qGt0tprnwW2zEB3q8ctGt6HU/4xBmHY46SHmJifIh80=;
+        b=22DP7scLPMKJ1kP2pvVOct5UTBK+JQVh0XT1e6Pg/qmafdsAI4d5PZTwBrdbs0gOOY
+         ViFwZh1b+yRpukmP9WnVApfr2u3BLHb72KXXiCbbWfgJmdJ6i9frIIfTPxmQLHpQPwKG
+         F2iddSbNCqJTBZ/JbLZTLtq/pqD+tpWxqouRJ4zO4guwrvnfcOMyC4CByhUAd5bdVDIe
+         bqTzXHx2r7kNmv+6D1/1k56FIqJsn8DgCCNtTzp06Fh2fPq+sxiOxrpM1qjfaSyrpl2M
+         f01AiT0MbIKpqvWNr/QY/BJWv8/az3txm7xBKu8pO2+qEgIqjtjDWIa/piwk7KrmynGR
+         bkMQ==
+X-Gm-Message-State: AO0yUKUBk5QWoEe1QtncaRddnT/qQoK0vvAA9a5Hrb0wUEfOHNsUwsBq
+        fCj+tTuKDrDcP9QHT6rGmCWYfR/S68felMZlPpdvi7hzTL71u7DFpBLLkYNW7w7H2YEycZYT5tm
+        0DSH3MhXz6BfNhr4TLoyQk5zIm18pRsTSF61f/Q==
+X-Received: by 2002:a17:906:7d52:b0:92e:e9c2:7b9e with SMTP id l18-20020a1709067d5200b0092ee9c27b9emr4072726ejp.41.1678953291478;
+        Thu, 16 Mar 2023 00:54:51 -0700 (PDT)
+X-Google-Smtp-Source: AK7set+FETcLexrDXYMvk89c0e7LpTs0E4JC/3xwt/aeNO69wTMJybT7QpGtj8/8qjNoOYM+o7ZtPA==
+X-Received: by 2002:a17:906:7d52:b0:92e:e9c2:7b9e with SMTP id l18-20020a1709067d5200b0092ee9c27b9emr4072712ejp.41.1678953291197;
+        Thu, 16 Mar 2023 00:54:51 -0700 (PDT)
+Received: from localhost (host-79-53-23-214.retail.telecomitalia.it. [79.53.23.214])
+        by smtp.gmail.com with ESMTPSA id e20-20020a50d4d4000000b004fbf6b35a56sm3412754edj.76.2023.03.16.00.54.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Mar 2023 00:54:50 -0700 (PDT)
+Date:   Thu, 16 Mar 2023 08:54:50 +0100
+From:   Andrea Righi <andrea.righi@canonical.com>
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Pisati <paolo.pisati@canonical.com>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: kernel 6.2 stuck at boot (efi_call_rts) on arm64
+Message-ID: <ZBLLSmLbt2P4ZN6O@righiandr-XPS-13-7390>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ea1b6e36-c434-49e9-bede-b4bd2b41868d@app.fastmail.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Mar 14, 2023 at 04:20:43PM -0700, Andy Lutomirski wrote:
-> 
-> 
-> On Tue, Mar 14, 2023, at 2:23 PM, Andy Lutomirski wrote:
-> > On Tue, Mar 14, 2023, at 3:13 AM, Evgeniy Baskov wrote:
-> >>
-> >> Kernel is made to be more compatible with PE image specification [3],
-> >> allowing it to be successfully loaded by stricter PE loader
-> >> implementations like the one from [2]. There is at least one
-> >> known implementation that uses that loader in production [4].
-> >> There are also ongoing efforts to upstream these changes.
-> >
-> > Can you clarify 
-> 
-> Sorry, lost part of a sentence.  Can you clarify in what respect the loader is stricter?
-> 
-> 
-> Anyway, I did some research.  I found:
-> 
-> https://github.com/rhboot/shim/pull/459/commits/99a8d19326f69665e0b86bcfa6a59d554f662fba
-> 
-> which gives a somewhat incoherent-sounding description in which
-> setting EFI_IMAGE_DLLCHARACTERISTICS_NX_COMPAT apparently enables
-> allocating memory that isn't RWX.  But this seems odd
-> EFI_IMAGE_DLLCHARACTERISTICS_NX_COMPAT is a property of the EFI
-> *program*, not the boot services implementation.
+Hello,
 
-Well, "is this binary compatible" is a property of the program, yes.
-It's up to the loader to decide if it *cares*, and the compatibility
-flag allows it to do that.
+the latest v6.2.6 kernel fails to boot on some arm64 systems, the kernel
+gets stuck and never completes the boot. On the console I see this:
 
-> And I'd be surprised if a flag on the application changes the behavior
-> of boot services, but, OTOH, this is Microsoft.
+[   72.043484] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+[   72.049571] rcu:     22-...0: (30 GPs behind) idle=b10c/1/0x4000000000000000 softirq=164/164 fqs=6443
+[   72.058520]     (detected by 28, t=15005 jiffies, g=449, q=174 ncpus=32)
+[   72.064949] Task dump for CPU 22:
+[   72.068251] task:kworker/u64:5   state:R  running task     stack:0     pid:447   ppid:2      flags:0x0000000a
+[   72.078156] Workqueue: efi_rts_wq efi_call_rts
+[   72.082595] Call trace:
+[   72.085029]  __switch_to+0xbc/0x100
+[   72.088508]  0xffff80000fe83d4c
 
-There has been discussion of implementing a compatibility mode that
-allows you to enable NX support by default, but only breaks the old
-assumptions that the stack and memory allocations will be executable if
-the flag is set, so that newer OSes get the mitigations we need, but
-older OSes still work.  I don't think anyone has actually implemented
-this *yet*, but some hardware vendors have made noises that sound like
-they may intend to.  (I realize that sounds cagey as hell.  Sorry.)
+After that, as a consequence, I start to get a lot of hung task timeout traces.
 
-Currently I think the only shipping systems that implement
-NX-requirements are from Microsoft - the Surface product line and
-Windows Dev Kit - and they don't allow you to disable it at all.  Other
-vendors have produced firmware that isn't shipping yet (I *think*) that
-has it as a setting in the firmware menu, and they're looking to move to
-enabling it by default on some product lines.  We'd like to not be left
-behind.
+I tried to bisect the problem and I found that the offending commit is
+this one:
 
-> And the PE 89 spec does say that
-> EFI_IMAGE_DLLCHARACTERISTICS_NX_COMPAT means "Image is NX compatible"
-> and that is the sole mention of NX in the document.
+ e7b813b32a42 ("efi: random: refresh non-volatile random seed when RNG is initialized")
 
-Yeah, the PE spec is not very good in a lot of ways unrelated to how
-abominable the thing it's describing is.
+I've reverted this commit for now and everything works just fine, but I
+was wondering if the problem could be caused by a lack of entropy on
+these arm64 boxes or something else.
 
-> And *this* seems to be the actual issue:
-> 
-> https://github.com/rhboot/shim/pull/459/commits/825d99361b4aaa16144392dc6cea43e24c8472ae
-> 
-> I assume that MS required this change as a condition for signing, but
-> what do I know?
+Any suggestion? Let me know if you want me to do any specific test.
 
-Yes, they have, but it's not as if they did it in a vacuum.  I think the
-idea was originally Kees Cook's actually, and there's been a significant
-effort on the firmware and bootloader side to enable it.  And there's
-good reason to do this, too - more and more of this surface is being
-attacked, and recently we've seen the first "bootkit" that actually
-includes a Secure Boot breakout in the wild: https://www.welivesecurity.com/2023/03/01/blacklotus-uefi-bootkit-myth-confirmed/
-
-While that particular malware (somewhat ironically) only uses code
-developed for linux systems *after* the exploit, it could easily have
-gone the other way, and we're definitely a target here.  We need NX in
-our boot path, and soon.
-
-> Anyway, the rules appear to be that the PE sections
-> must not be both W and X at the same size.  (For those who are
-> familiar with the abomination known as ELF but not with the
-> abomination known as PE, a "section" is a range in the file that gets
-> mapped into memory.  Like a PT_LOAD segment in ELF.)
-> 
-> Now I don't know whether anything prevents us from doing something
-> awful like mapping the EFI stuf RX and then immediately *re*mapping
-> everything RWX.  (Not that I'm seriously suggesting that.)
-
-Once we've taken over paging, nothing stops us at all.  Until then,
-SetMemoryAttributes() (which is more or less mprotect()) might prevent
-it.
-
-> And it's not immediately clear to me how the rest of this series fits
-> in, what this has to do with the identity map, etc.
-
-I'll let Evgeniy address that and the rest of this.
-
--- 
-        Peter
-
+Thanks,
+-Andrea
