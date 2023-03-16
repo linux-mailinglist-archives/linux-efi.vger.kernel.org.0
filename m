@@ -2,62 +2,108 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2DE06BCA2E
-	for <lists+linux-efi@lfdr.de>; Thu, 16 Mar 2023 09:58:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BFCB6BCB47
+	for <lists+linux-efi@lfdr.de>; Thu, 16 Mar 2023 10:45:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230410AbjCPI6T (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 16 Mar 2023 04:58:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55760 "EHLO
+        id S229890AbjCPJpO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 16 Mar 2023 05:45:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229750AbjCPI5z (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 16 Mar 2023 04:57:55 -0400
-Received: from mail.corrib.pl (mail.corrib.pl [185.58.226.145])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F466B9508
-        for <linux-efi@vger.kernel.org>; Thu, 16 Mar 2023 01:56:39 -0700 (PDT)
-Received: by mail.corrib.pl (Postfix, from userid 1001)
-        id 56081A34DE; Thu, 16 Mar 2023 08:56:16 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corrib.pl; s=mail;
-        t=1678956995; bh=X6IEpSISwJiYlJ3uA866lskXve3r+4o2hf4z7VM6m5o=;
-        h=Date:From:To:Subject:From;
-        b=xs02qAwAU+kCZgyeyj8Fgg3OxK8AV99oVT2XNwmOYW5QcNx5OfDiwUQ5gOOt1Psm1
-         L8S1p0jLSnhQ3xgXptNB2T+pzdBNGdgPTet3N0A97sSPGxhNGS+H0Dng1XhnHku4A1
-         GmUNSi/sN5viGcqwMBrGNEdTWl3uIXkrUZfH6aSqOiShe0UylemFONrIr5tDH12lO8
-         aKodI52W/7HjMkvXll+yg+SaK7u8Bh8RHf360HhNZAkjB3g1V2jljAaSukp242kFxW
-         f1UA4OFeyhf8y/ayHB5+8bGUC0xaeKYKFE5u2VupKM66rL+rq3URXqgUOBrvKN9HQa
-         moZMbEZZ3oXXg==
-Received: by mail.corrib.pl for <linux-efi@vger.kernel.org>; Thu, 16 Mar 2023 08:56:02 GMT
-Message-ID: <20230316074501-0.1.63.j07z.0.kfqmhbaokw@corrib.pl>
-Date:   Thu, 16 Mar 2023 08:56:02 GMT
-From:   =?UTF-8?Q? "Szczepan_Kie=C5=82basa" ?= 
-        <szczepan.kielbasa@corrib.pl>
-To:     <linux-efi@vger.kernel.org>
-Subject: Faktoring
-X-Mailer: mail.corrib.pl
+        with ESMTP id S229874AbjCPJpM (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 16 Mar 2023 05:45:12 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEA1D13DEF;
+        Thu, 16 Mar 2023 02:45:07 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1pckAT-0007w6-CW; Thu, 16 Mar 2023 10:45:05 +0100
+Message-ID: <59064730-e731-d137-ae92-e19622a122d0@leemhuis.info>
+Date:   Thu, 16 Mar 2023 10:45:04 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: kernel 6.2 stuck at boot (efi_call_rts) on arm64
+Content-Language: en-US, de-DE
+To:     Andrea Righi <andrea.righi@canonical.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Pisati <paolo.pisati@canonical.com>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Linux kernel regressions list <regressions@lists.linux.dev>
+References: <ZBLLSmLbt2P4ZN6O@righiandr-XPS-13-7390>
+From:   "Linux regression tracking #adding (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <ZBLLSmLbt2P4ZN6O@righiandr-XPS-13-7390>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1678959907;333adce4;
+X-HE-SMSGID: 1pckAT-0007w6-CW
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Dzie=C5=84 dobry,
+[CCing the regression list, as it should be in the loop for regressions:
+https://docs.kernel.org/admin-guide/reporting-regressions.html]
 
-rozwa=C5=BCali Pa=C5=84stwo wyb=C3=B3r finansowania, kt=C3=B3re spe=C5=82=
-ni potrzeby firmy, zapewniaj=C4=85c natychmiastowy dost=C4=99p do got=C3=B3=
-wki, bez zb=C4=99dnych przestoj=C3=B3w?=20
+[TLDR: I'm adding this report to the list of tracked Linux kernel
+regressions; the text you find below is based on a few templates
+paragraphs you might have encountered already in similar form.
+See link in footer if these mails annoy you.]
 
-Przygotowali=C5=9Bmy rozwi=C4=85zania faktoringowe dopasowane do Pa=C5=84=
-stwa bran=C5=BCy i wielko=C5=9Bci firmy, dzi=C4=99ki kt=C3=B3rym, nie mus=
-z=C4=85 Pa=C5=84stwo martwi=C4=87 si=C4=99 o niewyp=C5=82acalno=C5=9B=C4=87=
- kontrahent=C3=B3w, poniewa=C5=BC transakcje s=C4=85 zabezpieczone i posi=
-adaj=C4=85 gwarancj=C4=99 sp=C5=82aty.=20
-Chc=C4=85 Pa=C5=84stwo przeanalizowa=C4=87 dost=C4=99pne opcje?
+On 16.03.23 08:54, Andrea Righi wrote:
+> Hello,
+> 
+> the latest v6.2.6 kernel fails to boot on some arm64 systems, the kernel
+> gets stuck and never completes the boot. On the console I see this:
+> 
+> [   72.043484] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+> [   72.049571] rcu:     22-...0: (30 GPs behind) idle=b10c/1/0x4000000000000000 softirq=164/164 fqs=6443
+> [   72.058520]     (detected by 28, t=15005 jiffies, g=449, q=174 ncpus=32)
+> [   72.064949] Task dump for CPU 22:
+> [   72.068251] task:kworker/u64:5   state:R  running task     stack:0     pid:447   ppid:2      flags:0x0000000a
+> [   72.078156] Workqueue: efi_rts_wq efi_call_rts
+> [   72.082595] Call trace:
+> [   72.085029]  __switch_to+0xbc/0x100
+> [   72.088508]  0xffff80000fe83d4c
+> 
+> After that, as a consequence, I start to get a lot of hung task timeout traces.
+> 
+> I tried to bisect the problem and I found that the offending commit is
+> this one:
+> 
+>  e7b813b32a42 ("efi: random: refresh non-volatile random seed when RNG is initialized")
+> 
+> I've reverted this commit for now and everything works just fine, but I
+> was wondering if the problem could be caused by a lack of entropy on
+> these arm64 boxes or something else.
 
+Thanks for the report. To be sure the issue doesn't fall through the
+cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
+tracking bot:
 
-Pozdrawiam
-Szczepan Kie=C5=82basa
+#regzbot ^introduced e7b813b32a42
+#regzbot title efi: stuck at boot (efi_call_rts) on arm64
+#regzbot ignore-activity
+
+This isn't a regression? This issue or a fix for it are already
+discussed somewhere else? It was fixed already? You want to clarify when
+the regression started to happen? Or point out I got the title or
+something else totally wrong? Then just reply and tell me -- ideally
+while also telling regzbot about it, as explained by the page listed in
+the footer of this mail.
+
+Developers: When fixing the issue, remember to add 'Link:' tags pointing
+to the report (the parent of this mail). See page linked in footer for
+details.
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
