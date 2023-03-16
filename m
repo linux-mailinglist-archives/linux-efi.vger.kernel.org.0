@@ -2,74 +2,95 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E8A86BD13D
-	for <lists+linux-efi@lfdr.de>; Thu, 16 Mar 2023 14:47:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D9356BD15D
+	for <lists+linux-efi@lfdr.de>; Thu, 16 Mar 2023 14:50:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230046AbjCPNrL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 16 Mar 2023 09:47:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48304 "EHLO
+        id S230009AbjCPNuy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 16 Mar 2023 09:50:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230416AbjCPNrK (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 16 Mar 2023 09:47:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB397CA1F4;
-        Thu, 16 Mar 2023 06:46:41 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S230080AbjCPNux (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 16 Mar 2023 09:50:53 -0400
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF32AB0483
+        for <linux-efi@vger.kernel.org>; Thu, 16 Mar 2023 06:50:47 -0700 (PDT)
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC61962035;
-        Thu, 16 Mar 2023 13:46:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3119FC4339E;
-        Thu, 16 Mar 2023 13:46:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678974399;
-        bh=WLQGVeSsMJqOCffJ4f6/HASsdqkUD/9yTlMF0nC5xBc=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=BQUdBvo0oaMrPYuEd53Obfglr0keb+ZeZwknxkBuboT3cSRpGUQUgUb6twleFfApy
-         tLZJ2eBXcVL+1lHZDx/JtHR53vG5fIhzkwpe6ZaeKAAwmmcBn7YfX+QunzgANcIOcq
-         t17iLdqsyJzU/XXbR2CUtOzgPSnA6symUxBypze2fcCP/qOLQzHjv0PJ/hsFHDO8at
-         DSPHupFa4pCNGPF3Quvyw1BT48lOBn7ALguCblWcNbX1ZRVf1A+oTs3wAUVJWTgCL6
-         60AsESOiday+PXWccy26kyusQsRPHUFlSNLc8fZpIjvxhOu2bPliR6NxyYVaYsgRdc
-         itZLiRtNANvNQ==
-Received: by mail-lf1-f50.google.com with SMTP id f18so2459919lfa.3;
-        Thu, 16 Mar 2023 06:46:39 -0700 (PDT)
-X-Gm-Message-State: AO0yUKWSREwtOo6gidftqL3kThiSLHQlo7nwQslE8MdNv+88w+0+K9Br
-        879lJ3hdejXvbPdsRDz+JHUFjVS2VCnOqcwIgFg=
-X-Google-Smtp-Source: AK7set/OutMevGIUG4r9IL+oiX2y3MD0WhNb35A1jzhEwvzX9ojsSg8fGLvHru0Fb3c2RIVVduJwuQBjhWqW2hZOcxc=
-X-Received: by 2002:ac2:48b0:0:b0:4d5:ca32:6ae4 with SMTP id
- u16-20020ac248b0000000b004d5ca326ae4mr3262548lfg.4.1678974397199; Thu, 16 Mar
- 2023 06:46:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAMj1kXHYqMdis99D3OaKf51eoCDW2+5NfcUEbF4Zrau4BcKgsQ@mail.gmail.com>
- <ZBLlLRVVxCbZfEJd@righiandr-XPS-13-7390> <CAMj1kXET+A2rk+WQyebKPNtSvzzS0nJdMbx3uT1JgMxOvqfx4w@mail.gmail.com>
- <ZBLpVDmy8BXQZve9@righiandr-XPS-13-7390> <CAMj1kXF_f4QFtaDYBaSJwO0B97TJHWr6uRQdeYeD=Gv7DrVicg@mail.gmail.com>
- <ZBL+o7ydLk2iBCCr@righiandr-XPS-13-7390> <CAMj1kXEtj_jEZeT6YNh9xB=8o=0LVKiPYucHU08s34xBgy1yDA@mail.gmail.com>
- <CAMj1kXF3pkxvDX6ZMpnRd3wQX2_T6CYmz7ML-h+PXeo+hM_ZdA@mail.gmail.com>
- <ZBMOitWwCDj3XiRw@righiandr-XPS-13-7390> <CAMj1kXF=8KoCnRmUyLCZmbfPTeOFQZBeudZuTeA0uHOv-1drFg@mail.gmail.com>
- <ZBMQdgPepwa+VyAH@righiandr-XPS-13-7390> <CAMj1kXES+FxxbqUPH5TRjHak2MMC2Yksm0_P6wo__LQMH6Emhw@mail.gmail.com>
-In-Reply-To: <CAMj1kXES+FxxbqUPH5TRjHak2MMC2Yksm0_P6wo__LQMH6Emhw@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 16 Mar 2023 14:46:26 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEcxfKHZpjup0Pa-1OE+Xq6+0XuHYoQAj2d_gzCX5wKsA@mail.gmail.com>
-Message-ID: <CAMj1kXEcxfKHZpjup0Pa-1OE+Xq6+0XuHYoQAj2d_gzCX5wKsA@mail.gmail.com>
-Subject: Re: kernel 6.2 stuck at boot (efi_call_rts) on arm64
-To:     Andrea Righi <andrea.righi@canonical.com>
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 881BF3F1F2
+        for <linux-efi@vger.kernel.org>; Thu, 16 Mar 2023 13:50:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1678974645;
+        bh=pGYSqv8yaZjHwdWIWY499NZFPJpTqI2+kvxO3gPkHlQ=;
+        h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+         Content-Type:In-Reply-To;
+        b=BtKq5q3wvvtdF86vyMcEOTFU8J4DPGdstxvWryjI2MzreeuGFP6Id/vHIWD9G732D
+         D14AJufhRbJ5E80IMsh5PFQnDGu43SPE+39Oeg7a3IzPEh1Y6UmzVWH4IFRmla23pM
+         7a3phyAAAvlWvnof6hqo4QixSfQrz+JRTzsewQq0KnQtfRPiZLdI7J/jXGaH+Z7EiJ
+         Je9jjga0VfihQAfCXpSc8npiRZmcWWswJhS0ayNDFlg0QyYtLO/qdU5h4XsWy2VTd/
+         0TN+Dakci9+SYXyMwGG1SH8isKHHIKpE1btvorsFeKA0CXArxqzVZDIb9goYgJhukZ
+         RtOC7jeeMd3aw==
+Received: by mail-ed1-f71.google.com with SMTP id ev6-20020a056402540600b004bc2358ac04so3151107edb.21
+        for <linux-efi@vger.kernel.org>; Thu, 16 Mar 2023 06:50:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678974645;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pGYSqv8yaZjHwdWIWY499NZFPJpTqI2+kvxO3gPkHlQ=;
+        b=uoG9Eig29HrO1UMdJI74Ng5UglQrjjOxDNpMn7bcmRKYZ/ckcxVMu2ET9rRYcfawgY
+         oaG78ax1f6BSONoWOTWLx3xBhDZhKc+xQEZguCrlRdwQfszTCPk6m82No1X1axwUEb5v
+         bVOIj5hCN6d7h3r3oFU3FZ4bHjlJSxeQ8fiQ0pX1LX6gxkDDsDV3sMp9eG/EB7q21fLj
+         SYKliCzWjFCF1KyqPuwoTg48GKmsOLgoSl3o8tyfYrkke3QxHXdyY9+S2AIMWXrZIutj
+         xyk+ixA7QelbwcON4VKqlIVMnoZhUrj3GlOgQDTe22uLcZz1noHEnqTBgmTeKUSdvvV6
+         2ZVA==
+X-Gm-Message-State: AO0yUKVEpRyJMdwqUpemftaCTalGNyi6d8/N2/PGYv0LfX3sy8625lYO
+        MOCAJoK7uy+eHZvua49fpc8CgVAUcM/SxGZboHdZIuMUzM8QeHo65wzWcbz6n1qKguLsTflm+o9
+        qkZCYfPnqlgX1lsmIMXMPVnWfwGEiWEqe3RKgWg==
+X-Received: by 2002:a17:906:1cc9:b0:8b1:78b6:bbd7 with SMTP id i9-20020a1709061cc900b008b178b6bbd7mr10468121ejh.10.1678974645289;
+        Thu, 16 Mar 2023 06:50:45 -0700 (PDT)
+X-Google-Smtp-Source: AK7set8rFj9CLfYMtKX4xu8yZAFbvxkkKoyzadeV3sP5cC/9RNyysGcLx9qP04sgCB1N4DVtpzc+Dw==
+X-Received: by 2002:a17:906:1cc9:b0:8b1:78b6:bbd7 with SMTP id i9-20020a1709061cc900b008b178b6bbd7mr10468099ejh.10.1678974645012;
+        Thu, 16 Mar 2023 06:50:45 -0700 (PDT)
+Received: from localhost (host-79-53-23-214.retail.telecomitalia.it. [79.53.23.214])
+        by smtp.gmail.com with ESMTPSA id lm15-20020a170906980f00b0093034e71b94sm993133ejb.65.2023.03.16.06.50.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Mar 2023 06:50:44 -0700 (PDT)
+Date:   Thu, 16 Mar 2023 14:50:43 +0100
+From:   Andrea Righi <andrea.righi@canonical.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
         Paolo Pisati <paolo.pisati@canonical.com>,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Darren Hart <darren@os.amperecomputing.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: kernel 6.2 stuck at boot (efi_call_rts) on arm64
+Message-ID: <ZBMes6r2FiAyo81F@righiandr-XPS-13-7390>
+References: <CAMj1kXET+A2rk+WQyebKPNtSvzzS0nJdMbx3uT1JgMxOvqfx4w@mail.gmail.com>
+ <ZBLpVDmy8BXQZve9@righiandr-XPS-13-7390>
+ <CAMj1kXF_f4QFtaDYBaSJwO0B97TJHWr6uRQdeYeD=Gv7DrVicg@mail.gmail.com>
+ <ZBL+o7ydLk2iBCCr@righiandr-XPS-13-7390>
+ <CAMj1kXEtj_jEZeT6YNh9xB=8o=0LVKiPYucHU08s34xBgy1yDA@mail.gmail.com>
+ <CAMj1kXF3pkxvDX6ZMpnRd3wQX2_T6CYmz7ML-h+PXeo+hM_ZdA@mail.gmail.com>
+ <ZBMOitWwCDj3XiRw@righiandr-XPS-13-7390>
+ <CAMj1kXF=8KoCnRmUyLCZmbfPTeOFQZBeudZuTeA0uHOv-1drFg@mail.gmail.com>
+ <ZBMQdgPepwa+VyAH@righiandr-XPS-13-7390>
+ <CAMj1kXES+FxxbqUPH5TRjHak2MMC2Yksm0_P6wo__LQMH6Emhw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXES+FxxbqUPH5TRjHak2MMC2Yksm0_P6wo__LQMH6Emhw@mail.gmail.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 16 Mar 2023 at 14:45, Ard Biesheuvel <ardb@kernel.org> wrote:
->
+On Thu, Mar 16, 2023 at 02:45:49PM +0100, Ard Biesheuvel wrote:
 > On Thu, 16 Mar 2023 at 13:50, Andrea Righi <andrea.righi@canonical.com> wrote:
 > >
 > > On Thu, Mar 16, 2023 at 01:43:32PM +0100, Ard Biesheuvel wrote:
@@ -193,12 +214,28 @@ On Thu, 16 Mar 2023 at 14:45, Ard Biesheuvel <ardb@kernel.org> wrote:
 > > Sure, here's the full output of dmidecode:
 > > https://pastebin.ubuntu.com/p/4ZmKmP2xTm/
 > >
->
+> 
 > Thanks. I have updated my SMBIOS patches to take the processor version
 > 'eMAG' into account, which appears to be what these boxes are using.
->
+> 
 > I have updated the efi/urgent branch here with the latest versions.
 > Mind giving them a spin?
->
+> 
+> 
+> In the mean time, just for the record - could you please run this as well?
+> 
+> hexdump -C /sys/firmware/dmi/entries/4-0/raw
+> 
+> (as root)
 
-https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git/log/?h=urgent
+hm.. I don't have that in /sys/firmware/, this is what I have:
+
+# ls -l /sys/firmware/dmi/
+total 0
+drwxr-xr-x 2 root root 0 Mar 16 13:26 tables
+# ls -l /sys/firmware/dmi/tables/
+total 0
+-r-------- 1 root root 5004 Mar 16 13:26 DMI
+-r-------- 1 root root   24 Mar 16 13:26 smbios_entry_point
+
+-Andrea
