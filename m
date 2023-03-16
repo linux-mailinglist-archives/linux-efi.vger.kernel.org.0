@@ -2,62 +2,62 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEE856BD24B
-	for <lists+linux-efi@lfdr.de>; Thu, 16 Mar 2023 15:25:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB13C6BD78A
+	for <lists+linux-efi@lfdr.de>; Thu, 16 Mar 2023 18:52:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230454AbjCPOZ3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 16 Mar 2023 10:25:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56628 "EHLO
+        id S229697AbjCPRwy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 16 Mar 2023 13:52:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230241AbjCPOZ2 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 16 Mar 2023 10:25:28 -0400
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34D69B79E1
-        for <linux-efi@vger.kernel.org>; Thu, 16 Mar 2023 07:25:24 -0700 (PDT)
+        with ESMTP id S230064AbjCPRwx (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 16 Mar 2023 13:52:53 -0400
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E07ED1A957
+        for <linux-efi@vger.kernel.org>; Thu, 16 Mar 2023 10:52:46 -0700 (PDT)
 Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 34CDE445A2
-        for <linux-efi@vger.kernel.org>; Thu, 16 Mar 2023 14:25:22 +0000 (UTC)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id C029C41B67
+        for <linux-efi@vger.kernel.org>; Thu, 16 Mar 2023 17:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1678976722;
-        bh=92i4qrEhaaWULAWrFn5b6EQzymw7+aSf9ULAswrYqXc=;
+        s=20210705; t=1678989164;
+        bh=DQudiDftdDtzoFviyLnAzp+Zw7NspMIV2TtMDSFW0Zk=;
         h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
          Content-Type:In-Reply-To;
-        b=r7r+ganDTv7p0J4zec8GydLYJ1M+QVBdOp2jQykaHXByTG/tP3I2pCuVedAy9xEa9
-         WZPzF+wkv/Qy6I8nuv4P8XSP723gEHDuBtA7hAlS6qvsVMiP2UkgTwqHMRNhMR/QWk
-         aye9D9bKlUqACzPIam74eQiap31LoiWG5B8Tfkgq/xLWzr1LIPVpTJ6vHEKaAZttru
-         UUUXVLu5St02Jmnq8gw7kXEKwD6W2m1O1DzM/NRQ3XSeaMqomOMnpvC+8SlgUaLAME
-         dLoxdk5yNURBieGXewcBTNsx9i8jckMx/j1DF0bPOuRXjXYtDZI+nlxhoGcjM3iiRO
-         3dCDJkhULThKQ==
-Received: by mail-ed1-f71.google.com with SMTP id b1-20020aa7dc01000000b004ad062fee5eso3257408edu.17
-        for <linux-efi@vger.kernel.org>; Thu, 16 Mar 2023 07:25:22 -0700 (PDT)
+        b=dl+4QAkFJIgyyK+FtTgzi1SWI3HXqszrV0Fi8sceu2qm/UDKgDyCnSYIckrypRwvk
+         0YZlSOWr2BX9UH5Ah9K++aRZrQI3YV2/lSLl+bfJGJOjPN4eJJuXe8ydT0oJoCJwbo
+         wJiFPQzS/quNJsg0F0l+tnW7cgzl/NRf3bEsRBxREysI6pVad15AdXvf7fQtFOv3Hw
+         dsCsCyER/DtVer+v6/dmIcD+gE7xbeEGKegpet2Ovjrps2ULfb9h+6cewfOc/wFAvI
+         NsnqpA2c5oZuTWHYWnJH2L0fXnynI2v72TdJIiXEwZa9JxUNU2UT648Jgenk83YW9q
+         JUl3si59VovVw==
+Received: by mail-ed1-f71.google.com with SMTP id fi8-20020a056402550800b004a26cc7f6cbso4139978edb.4
+        for <linux-efi@vger.kernel.org>; Thu, 16 Mar 2023 10:52:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678976722;
+        d=1e100.net; s=20210112; t=1678989164;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=92i4qrEhaaWULAWrFn5b6EQzymw7+aSf9ULAswrYqXc=;
-        b=p5zsfQZUlohvGbnk9lU54c0FX3lcM3GGAKgLuKlvhSoGfYj3P8XdLbEKDxsJZKiO25
-         AQkXpVaAnPBP0Ws91FO/ojleARNedIs3xR+MS/JmqstrGQ285I7wXFF+hgvdMMZgTUZ1
-         486gDrnnCH4gFXe/ty4DEArTx5doMm05PU4TKMVvWpmnsROyyTecx0U5rX7mDz90E7jL
-         bq5YyVgSEe+UpSbaDmCJGGSImEDyqvCby4cz4AYtPvys6RbPIbOYzbL96d/aV2YBYNNk
-         wZhk7x84HowNMY/JdvrJZ4Tv9ed4SX7WGUlOAMlvbTTe6C+dlFLhU7WNolyl8PW4LVPd
-         tNlA==
-X-Gm-Message-State: AO0yUKVlfXD2Wq58uindnKF29P0ipU1ujQDB4rgVG72iNxyP9BszJsMA
-        vhecIz6vOtevZdE1W0FqQ9K6G01Ofrni1DJu7yaS3AX1vc/LcaCljJjBjUMnxUcYNAjFDwBfWbt
-        WvlDbVws+yYy3jPqfj9IAjMt1tKLo+io/WjBMgw==
-X-Received: by 2002:a17:906:a450:b0:88d:9cf8:2dbb with SMTP id cb16-20020a170906a45000b0088d9cf82dbbmr11090870ejb.12.1678976721833;
-        Thu, 16 Mar 2023 07:25:21 -0700 (PDT)
-X-Google-Smtp-Source: AK7set+agi1nKXx1jIWlNITv4H5MH/5KPqUouCuESwMucLcXHcirnZDPgg6dGpBI+OhNPpDle5P0tw==
-X-Received: by 2002:a17:906:a450:b0:88d:9cf8:2dbb with SMTP id cb16-20020a170906a45000b0088d9cf82dbbmr11090849ejb.12.1678976721479;
-        Thu, 16 Mar 2023 07:25:21 -0700 (PDT)
+        bh=DQudiDftdDtzoFviyLnAzp+Zw7NspMIV2TtMDSFW0Zk=;
+        b=IZjF4+8uWUybaIGJ89BCl55JslvvTcKLT066gysfqILFIFklqbEMw8sQN7m6M56v/x
+         zGG+ENTa4pLMDHMjN9DZ6pVjYX0IhBpkgRWPPm2v6bwmd1Y01bws8d/DWgA8oD01Zkhf
+         ofYzzCd0L7lVXt0g+NuAPXf0NmpqMmjP3Ar8li43pvImSLA/PhX5LLtOqcchy5d1S4Xc
+         ajg8SCGop+QArz2kWffRR5Xf1Xnzz9RE/OqWWOxuxDBDOLTEH4DzD0Vd/M/hy1mWd3gu
+         4LucNghBdp+mZOjeh6XpGDQSv8DiGKTxHN5jol3RnhPzvB1EIJEeo2ES/h7b839uaLtc
+         Ut4w==
+X-Gm-Message-State: AO0yUKViH+usAFMsQYtIFaYeziToizUbh/iGk3nOL21LL+u2HN8eDIgK
+        s+XA7NLRPKtamjEKUyHWwBTmsbIjV24jpO6kBhkJ/KP+3MECy1/Gmmux6qhdEefgSltFS1XlvkJ
+        BqNj/RbzxM8E5LN4HtFV9mMwBDpoTiLFtwpAnWA==
+X-Received: by 2002:aa7:cd18:0:b0:4fe:19cb:4788 with SMTP id b24-20020aa7cd18000000b004fe19cb4788mr351321edw.42.1678989164453;
+        Thu, 16 Mar 2023 10:52:44 -0700 (PDT)
+X-Google-Smtp-Source: AK7set/BXYkp4+hbFUITOToUzHnZdXv24308eI9XAp8kr5d2CR5tts4yfuzZUfBMOmSfm0hFBLJP/g==
+X-Received: by 2002:aa7:cd18:0:b0:4fe:19cb:4788 with SMTP id b24-20020aa7cd18000000b004fe19cb4788mr351305edw.42.1678989164145;
+        Thu, 16 Mar 2023 10:52:44 -0700 (PDT)
 Received: from localhost (host-79-53-23-214.retail.telecomitalia.it. [79.53.23.214])
-        by smtp.gmail.com with ESMTPSA id oy12-20020a170907104c00b00931024e96c5sm351777ejb.99.2023.03.16.07.25.21
+        by smtp.gmail.com with ESMTPSA id q16-20020a1709060e5000b008b980c3e013sm4155092eji.179.2023.03.16.10.52.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Mar 2023 07:25:21 -0700 (PDT)
-Date:   Thu, 16 Mar 2023 15:25:20 +0100
+        Thu, 16 Mar 2023 10:52:43 -0700 (PDT)
+Date:   Thu, 16 Mar 2023 18:52:40 +0100
 From:   Andrea Righi <andrea.righi@canonical.com>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
@@ -65,7 +65,7 @@ Cc:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Darren Hart <darren@os.amperecomputing.com>
 Subject: Re: kernel 6.2 stuck at boot (efi_call_rts) on arm64
-Message-ID: <ZBMm0D97gWcxzY3B@righiandr-XPS-13-7390>
+Message-ID: <ZBNXaF32nIh3Ca49@righiandr-XPS-13-7390>
 References: <CAMj1kXF3pkxvDX6ZMpnRd3wQX2_T6CYmz7ML-h+PXeo+hM_ZdA@mail.gmail.com>
  <ZBMOitWwCDj3XiRw@righiandr-XPS-13-7390>
  <CAMj1kXF=8KoCnRmUyLCZmbfPTeOFQZBeudZuTeA0uHOv-1drFg@mail.gmail.com>
@@ -82,8 +82,7 @@ Content-Disposition: inline
 In-Reply-To: <CAMj1kXHKkK+6TDLebZw=H-ZZLVnwPGSRpNNKSbJoPwwA2vhG+w@mail.gmail.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -281,6 +280,8 @@ On Thu, Mar 16, 2023 at 03:08:53PM +0100, Ard Biesheuvel wrote:
 > 
 >                 fallthrough;
 
-OK, I can add that and test it.
+Yay! Success! I just tested your latest efi/urgent (with the fixup) and
+system completed the boot without any soft lockups.
 
+Thanks!
 -Andrea
