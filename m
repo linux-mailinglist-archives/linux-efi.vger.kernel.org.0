@@ -2,184 +2,197 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FD996C89BD
-	for <lists+linux-efi@lfdr.de>; Sat, 25 Mar 2023 01:52:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 676A76CA07E
+	for <lists+linux-efi@lfdr.de>; Mon, 27 Mar 2023 11:51:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229794AbjCYAwG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 24 Mar 2023 20:52:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45940 "EHLO
+        id S232424AbjC0Jvl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 27 Mar 2023 05:51:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbjCYAwF (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 24 Mar 2023 20:52:05 -0400
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B21B15C8C;
-        Fri, 24 Mar 2023 17:52:04 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id AA04D5C00AB;
-        Fri, 24 Mar 2023 20:52:01 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Fri, 24 Mar 2023 20:52:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-         h=cc:cc:content-type:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm3; t=1679705521; x=
-        1679791921; bh=263d8X9NDnlXPj9Gft3I5NwFp7vjifRWFXPErnNXYcg=; b=S
-        Vyu3+WT1SQ/rpL2qc2AVcRZtC1GHV0VANuJwsnb7O6eD3ujY53Zq2C3RNp2VhjD9
-        kSJ1EJ+Zw8yt4dt4g3tdsF1epmgk+Y6dQqQgcvUGi2Qm+ja16GcM4FbDwObo6gtI
-        pi04vLMwFg2BUmjNBkoYk22EYsqJa2AQac4Lu5WU+AHgsM+9gV29MBa4Zfq11uKe
-        Cy80Bewh3fXKQ8hOB5sa9akOYIKgrGYGEpYbUpQDYkJfyKigqbDZuGUUy4PRV3H7
-        g9yEbctH5adS87bZ9xOH2G4HXbXRGkaPvNmwBaRyqIDV/UFqqbPhQNcpOq9xBlCi
-        foSWP7R2Wwlzk7OJDskSg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1679705521; x=1679791921; bh=263d8X9NDnlXP
-        j9Gft3I5NwFp7vjifRWFXPErnNXYcg=; b=Kwa9zywoQPN5tt82AYZ+Wg9Z9klHk
-        7RvusbiekcY51nEhKGK2jcIRMl+Rozu+uM2p5mQEVNXqvrqtsb7ApH7sJyLF7233
-        ZwYOmAPZS0IKtWacHr4094ha8LJn4jQOAu5avofXNR9tl0ewf7J/aZzYgGIXaj1R
-        9UXuVNSMj3xQxAGEAj8lBhd5dYv4CDUFe8xJ+uYDYqZzGUYpnmDz1r5AV26g7BYF
-        IkQozErZ0/l8GfKLgFN/xYXIXSFqiFQO2xAKLcu8EmUpuHK1ssxJ2jiIy2X+eQrR
-        pV1qTU4O1HdJBgP7IwY/9mSxS/LZc8mhtVU/btMEdix83nf6OgAJFqmjw==
-X-ME-Sender: <xms:sEUeZGvItccVD1Qq2oLUDYoR6gIcVER-qXwkLHPowAW8TSWn6XWAUA>
-    <xme:sEUeZLeTEC8HccwXT42QqAny5pR7oxlbFKm8pL72GitCU6GTPbSR1jcnr9y49n2Xy
-    EReWcS6podMPNNwLa0>
-X-ME-Received: <xmr:sEUeZByn2cSPGV14wq43GHsuqardoj3r93lVhd8GpO0CELe6FXgNY0nT5YCgrGlKZ2eG_Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdegjedgvdejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdttddttddtvdenucfhrhhomhepfdfmihhr
-    ihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlsehshhhuthgvmhhovhdrnh
-    grmhgvqeenucggtffrrghtthgvrhhnpeelgffhfeetlefhveffleevfffgtefffeelfedu
-    udfhjeduteeggfeiheefteehjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuve
-    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhl
-    sehshhhuthgvmhhovhdrnhgrmhgv
-X-ME-Proxy: <xmx:sEUeZBO7gvcY9fDy9xCIf_SlQrpdKoZ1F6E45UV-KQ5zGrIT6P4r5Q>
-    <xmx:sEUeZG99hAKAavKAOXXgIoXHpqYDgAk_iSFV0ZjsMSRReZSAMpzFKA>
-    <xmx:sEUeZJW-VYDBbwny3b_XzXVpsLcsBwrMpbXhuTbBKJTkM4W52Doo-g>
-    <xmx:sUUeZLKphPcSWDVtDKrrobSajDCpcz6BVOo8ebcIaUsh46zDTtFpmQ>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 24 Mar 2023 20:52:00 -0400 (EDT)
-Received: by box.shutemov.name (Postfix, from userid 1000)
-        id 0EE5310A607; Sat, 25 Mar 2023 03:51:57 +0300 (+03)
-Date:   Sat, 25 Mar 2023 03:51:57 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
+        with ESMTP id S231893AbjC0Jvk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 27 Mar 2023 05:51:40 -0400
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C3E01984
+        for <linux-efi@vger.kernel.org>; Mon, 27 Mar 2023 02:51:36 -0700 (PDT)
+Received: by mail-pj1-x102f.google.com with SMTP id fy10-20020a17090b020a00b0023b4bcf0727so8202973pjb.0
+        for <linux-efi@vger.kernel.org>; Mon, 27 Mar 2023 02:51:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679910695;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Axuo6xoCs4y+i1WqB0fWak8R/VsZip3pbayocnqRiYc=;
+        b=TnVHtUoPjgPD7TV3OAx4AtsnR74EdlhH2K5/yPskX0i/uJWFgtkaGqkWp1CDyyt2yo
+         5OCEyRfPT4MCloc+gTQSoqcBgoyLaDp7Fq7jleUV1PK0XdA7pvfpOH76Jc+FWoUyM7Su
+         i29X5iXuyuaTuqzX3d8ZaweQ0wKCVggdRiOZqs5Oz3/bPi3b+zYfJA1NWdqhBFQypr35
+         fGN/1XIFhbmug3E1xjCHj/6hg1fmRn1JALqEUI2TanfILW+35W5mk8QRRJegoGOQ32Bx
+         7zntbM3iPsGjveMmclAf3zZBVLtIPTIKBhldV7zYuJQnEGx2Ey/BG1YSieV04lLwB5BW
+         NFEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679910695;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Axuo6xoCs4y+i1WqB0fWak8R/VsZip3pbayocnqRiYc=;
+        b=Oz8WewXcOWAvqNYoUcFwWxKqh08tiWkYhZpOeSc3xhRc3QQRZcRyM4rw7UABpcLiCL
+         vvnncn0zfnyat409d6Olqq5tuzrY6sJkRTO+ERyEXCePkcPRC5rOLiMXXk5IkKuSP0fZ
+         1ilSzDhuONvfgmTu4fP4PNdJihz/thlpLMbn38zcmukqACXQ030pOjkoosusmqc6dY49
+         CQR15qqRunJ6xAYPotr8orYyLLjlTag0wd2t3ydzbvF5QBlYgNh0/kW12U/Qlm3N3c+u
+         y7HEk1bkUt8ICuIxJm8ZmMhErrE23eT8LxiX0cTiFUB7YVvDRi3BQfpUF+nuSvJKRLAQ
+         BkMg==
+X-Gm-Message-State: AAQBX9dCUt/M+elxCQLKpTo+PFwmfRNbNP0l6T/1J53o/nw3Fj4HtgaT
+        qd9ZGwA5X4E5Ku7qhLr6UXLPA7nd5A==
+X-Google-Smtp-Source: AKy350bh0SzTC5Z7PfEeuC+iLQ2C+s3WdMcJ2jhuJHDDsQ0gQa91L2vC+CQaO/EnEnEoEeFEyx/NYg==
+X-Received: by 2002:a17:90b:38c1:b0:23d:3761:6085 with SMTP id nn1-20020a17090b38c100b0023d37616085mr13299790pjb.34.1679910695612;
+        Mon, 27 Mar 2023 02:51:35 -0700 (PDT)
+Received: from piliu.users.ipa.redhat.com ([43.228.180.230])
+        by smtp.gmail.com with ESMTPSA id q18-20020a170902789200b00185402cfedesm18815820pll.246.2023.03.27.02.51.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Mar 2023 02:51:35 -0700 (PDT)
+From:   Pingfan Liu <kernelfans@gmail.com>
+To:     linux-efi@vger.kernel.org
+Cc:     Pingfan Liu <kernelfans@gmail.com>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
-        khalid.elmously@canonical.com, philip.cox@canonical.com,
-        aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
-        linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv8 06/14] efi/x86: Implement support for unaccepted memory
-Message-ID: <20230325005157.37b4alnuf6p6mh66@box.shutemov.name>
-References: <20221207014933.8435-1-kirill.shutemov@linux.intel.com>
- <20221207014933.8435-7-kirill.shutemov@linux.intel.com>
- <Y7Q5x7qV/Cmc/p8s@zn.tnic>
+        Kees Cook <keescook@chromium.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Huacai Chen <chenhuacai@kernel.org>
+Subject: [PATCH] efi: zboot: Ensure zboot PIC
+Date:   Mon, 27 Mar 2023 17:51:22 +0800
+Message-Id: <20230327095123.20023-1-kernelfans@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y7Q5x7qV/Cmc/p8s@zn.tnic>
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Jan 03, 2023 at 03:20:55PM +0100, Borislav Petkov wrote:
-> > diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-> > index 6787ed8dfacf..8aa8adf0bcb5 100644
-> > --- a/drivers/firmware/efi/Kconfig
-> > +++ b/drivers/firmware/efi/Kconfig
-> > @@ -314,6 +314,20 @@ config EFI_COCO_SECRET
-> >  	  virt/coco/efi_secret module to access the secrets, which in turn
-> >  	  allows userspace programs to access the injected secrets.
-> >  
-> > +config UNACCEPTED_MEMORY
-> > +	bool
-> > +	depends on EFI_STUB
-> 
-> This still doesn't make a whole lotta sense. If I do "make menuconfig" I don't
-> see the help text because that bool doesn't have a string prompt. So who is that
-> help text for?
+Using objcopy to reform vmlinuz.efi.elf to vmlinuz.efi will not convey
+any relocation information. That means vmlinuz.efi is expected to be
+PIC.
 
-It is a form of documentation for a developer. The same happens for other
-options. For instance, BOOT_VESA_SUPPORT or ARCH_HAS_CURRENT_STACK_POINTER.
+At present, vmlinuz.efi is PIC. But it is better to adopt the same
+solution used by the kernel to resolve the code relocation issue by
+itself. That is to resolve R_AARCH64_RELATIVE at the runtime.
 
-Yes, it is not visible user, but I still think it is helpful for a
-developer to understand what the option does.
+Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Sami Tolvanen <samitolvanen@google.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+To: linux-efi@vger.kernel.org
+---
+ drivers/firmware/efi/libstub/Makefile       |  2 +-
+ drivers/firmware/efi/libstub/Makefile.zboot |  2 +-
+ drivers/firmware/efi/libstub/zboot-entry.S  | 35 +++++++++++++++++++++
+ drivers/firmware/efi/libstub/zboot.c        |  2 +-
+ drivers/firmware/efi/libstub/zboot.lds      |  6 ++++
+ 5 files changed, 44 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/firmware/efi/libstub/zboot-entry.S
 
-> Then, in the last patch you have
-> 
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -888,6 +888,8 @@ config INTEL_TDX_GUEST
->         select ARCH_HAS_CC_PLATFORM
->         select X86_MEM_ENCRYPT
->         select X86_MCE
-> +       select UNACCEPTED_MEMORY
-> +       select EFI_STUB
-> 
-> I guess you want to select UNACCEPTED_MEMORY only.
-
-I had to rework it as
-
-config INTEL_TDX_GUEST
-	...
-	depends on EFI_STUB
-	select UNACCEPTED_MEMORY
-
-Naked select UNACCEPTED_MEMORY doesn't work if EFI and EFI_STUB is
-disabled:
-
-WARNING: unmet direct dependencies detected for UNACCEPTED_MEMORY
-  Depends on [n]: EFI [=n] && EFI_STUB [=n]
-  Selected by [y]:
-  - INTEL_TDX_GUEST [=y] && HYPERVISOR_GUEST [=y] && X86_64 [=y] && CPU_SUP_INTEL [=y] && X86_X2APIC [=y]
-
-IIUC, the alternative is to have selects all the way down the option tree.
-
-> 
-> And I've already mentioned this whole mess:
-> 
-> https://lore.kernel.org/r/Yt%2BnOeLMqRxjObbx@zn.tnic
-> 
-> Please incorporate all review comments before sending a new version of
-> your patch.
-> 
-> Ignoring review feedback is a very unfriendly thing to do:
-> 
-> - if you agree with the feedback, you work it in in the next revision
-> 
-> - if you don't agree, you *say* *why* you don't
-
-Sorry, it was not my intention. I misread your comment and focused on
-build issues around the option.
-
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index 80d85a5169fb..4447395d7218 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -95,7 +95,7 @@ lib-$(CONFIG_LOONGARCH)		+= loongarch.o loongarch-stub.o
+ CFLAGS_arm32-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
+ 
+ zboot-obj-$(CONFIG_RISCV)	:= lib-clz_ctz.o lib-ashldi3.o
+-lib-$(CONFIG_EFI_ZBOOT)		+= zboot.o $(zboot-obj-y)
++lib-$(CONFIG_EFI_ZBOOT)		+= zboot-entry.o zboot.o $(zboot-obj-y)
+ 
+ extra-y				:= $(lib-y)
+ lib-y				:= $(patsubst %.o,%.stub.o,$(lib-y))
+diff --git a/drivers/firmware/efi/libstub/Makefile.zboot b/drivers/firmware/efi/libstub/Makefile.zboot
+index 43e9a4cab9f5..1ed948cee92f 100644
+--- a/drivers/firmware/efi/libstub/Makefile.zboot
++++ b/drivers/firmware/efi/libstub/Makefile.zboot
+@@ -36,7 +36,7 @@ $(obj)/zboot-header.o: $(srctree)/drivers/firmware/efi/libstub/zboot-header.S FO
+ 
+ ZBOOT_DEPS := $(obj)/zboot-header.o $(objtree)/drivers/firmware/efi/libstub/lib.a
+ 
+-LDFLAGS_vmlinuz.efi.elf := -T $(srctree)/drivers/firmware/efi/libstub/zboot.lds
++LDFLAGS_vmlinuz.efi.elf :=  --no-undefined -X -shared -Bsymbolic -z notext --no-apply-dynamic-relocs -T $(srctree)/drivers/firmware/efi/libstub/zboot.lds
+ $(obj)/vmlinuz.efi.elf: $(obj)/vmlinuz.o $(ZBOOT_DEPS) FORCE
+ 	$(call if_changed,ld)
+ 
+diff --git a/drivers/firmware/efi/libstub/zboot-entry.S b/drivers/firmware/efi/libstub/zboot-entry.S
+new file mode 100644
+index 000000000000..072207f2f6ba
+--- /dev/null
++++ b/drivers/firmware/efi/libstub/zboot-entry.S
+@@ -0,0 +1,35 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#include <asm/elf.h>
++#define ZBOOT_HEADER_BASE 0
++
++	.text
++/*
++ * x0: efi_handle_t
++ * x1: efi_system_table_t *
++ */
++	.global efi_zboot_entry
++efi_zboot_entry:
++	adrp	x2, efi_zboot_header
++	add	x2, x2, :lo12:efi_zboot_header
++	mov	x3, ZBOOT_HEADER_BASE
++	sub	x3, x2, x3		// delta between actual and linked address
++	adrp	x4, _rela_start
++	add	x4, x4, :lo12:_rela_start
++	adrp	x5, _rela_end
++	add	x5, x5, :lo12:_rela_end
++
++0:	cmp	x5, x4
++	b.hs	1f
++	ldp	x6, x7, [x4], #24
++	ldr	x8, [x4, #-8]
++	cmp	w7, #R_AARCH64_RELATIVE
++	b.ne	0b
++	add	x8, x8, x3
++	str	x8, [x6, x3]
++	b	0b
++
++1:
++	dsb	ishst
++	ic	iallu
++	b	efi_zboot_main
+diff --git a/drivers/firmware/efi/libstub/zboot.c b/drivers/firmware/efi/libstub/zboot.c
+index ba234e062a1a..7aa6b2e6d104 100644
+--- a/drivers/firmware/efi/libstub/zboot.c
++++ b/drivers/firmware/efi/libstub/zboot.c
+@@ -58,7 +58,7 @@ void __weak efi_cache_sync_image(unsigned long image_base,
+ }
+ 
+ asmlinkage efi_status_t __efiapi
+-efi_zboot_entry(efi_handle_t handle, efi_system_table_t *systab)
++efi_zboot_main(efi_handle_t handle, efi_system_table_t *systab)
+ {
+ 	unsigned long compressed_size = _gzdata_end - _gzdata_start;
+ 	unsigned long image_base, alloc_size, code_size;
+diff --git a/drivers/firmware/efi/libstub/zboot.lds b/drivers/firmware/efi/libstub/zboot.lds
+index 93d33f68333b..631942604c3f 100644
+--- a/drivers/firmware/efi/libstub/zboot.lds
++++ b/drivers/firmware/efi/libstub/zboot.lds
+@@ -12,6 +12,12 @@ SECTIONS
+ 		*(.text* .init.text*)
+ 	}
+ 
++	.rela.dyn : ALIGN(8) {
++		__efistub__rela_start = .;
++		*(.rela .rela*)
++		__efistub__rela_end = .;
++	}
++
+ 	.rodata : ALIGN(8) {
+ 		__efistub__gzdata_start = .;
+ 		*(.gzdata)
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.31.1
+
