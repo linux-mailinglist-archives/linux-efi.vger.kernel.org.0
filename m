@@ -2,202 +2,170 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 051F56CD1A8
-	for <lists+linux-efi@lfdr.de>; Wed, 29 Mar 2023 07:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC2316CD48A
+	for <lists+linux-efi@lfdr.de>; Wed, 29 Mar 2023 10:25:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229724AbjC2FeT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 29 Mar 2023 01:34:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33468 "EHLO
+        id S231142AbjC2IZl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 29 Mar 2023 04:25:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229750AbjC2FeR (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 29 Mar 2023 01:34:17 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D6CF197
-        for <linux-efi@vger.kernel.org>; Tue, 28 Mar 2023 22:33:37 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id m6-20020a05600c3b0600b003ee6e324b19so8802596wms.1
-        for <linux-efi@vger.kernel.org>; Tue, 28 Mar 2023 22:33:37 -0700 (PDT)
+        with ESMTP id S231150AbjC2IZ1 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 29 Mar 2023 04:25:27 -0400
+Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6B134239
+        for <linux-efi@vger.kernel.org>; Wed, 29 Mar 2023 01:24:54 -0700 (PDT)
+Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-544f7c176easo279431797b3.9
+        for <linux-efi@vger.kernel.org>; Wed, 29 Mar 2023 01:24:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1680068016;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20210112; t=1680078294;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=g9AZET+Y+Ubd7JaCED2QPLhADiInjk5s5J91QKVSZ4k=;
-        b=3zKhJk4p5gD71igAWtDX+1AQYoKoKXyB010oklo5qec7Q7rzwb7Z/8rmApcXytNFkB
-         qwJfaC/1+iSlSoI/1ZIlyNDiFqwLfGihQprXFafbkJ4pmIafAxVK3ClKuEhqHprDkwiX
-         kMcblA0WbF/w2EneXqc1ebhBfXp1cfr1vEo86a94VoR3OH9i7zgOoJQtWeFYZcpbu2Gw
-         ZDcVXp8S1KoCXaKy4A9R5DUYLIbQMbM6O/k3fa2sxPP7di6FcRgUNz9rNAP0TUEEYEz4
-         z0HSE77/jBFKtGbxF1gDvuvWXSKEUJkCwlv9BcWTHxM8NPBntW4/xF5l7xv+kamnA6TW
-         +xXw==
+        bh=njnvUp1zVukTipjucCz0aTrvGmsl6IFrKCMEBeNtAgs=;
+        b=SrcnStE6pOZlEPxu25CEpPqYSu6eZIHaSvH59n9X1cn0P3ji8BO4/6/Y/nyAn5B3sN
+         aIURbkyJfMUKArpKF0yQ/WnXREN2hp3rB0k44f2+1xanZx7f+M9iMo/Q8kjzDK5/zZQz
+         aJdvJBoQIAbPz09cu3H0cj3i4EW4UzWpBf/YxOo0pf6toJE8z9KjJHa17+qxzMMvDNOG
+         1Ke9XgU91YsCxARXSAZAlisab16RWgpp03Ch9JFKyrOZwKGbtEjKJty9jDBFBfgWeqJc
+         iIISVjdoy/5hIv21v8m46/vcE38tOk8fLaJf+lIwJoHazFxoGkVl5/Kt2dwJs/nQoDGP
+         qM3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680068016;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20210112; t=1680078294;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=g9AZET+Y+Ubd7JaCED2QPLhADiInjk5s5J91QKVSZ4k=;
-        b=SdF4xBSoVEM9da7s/HLuu23gTVtgddjbVftS/112hLiThzQ+XlSPR1VrkowLrqUpLC
-         zOcXjY7/Ev/hxWJ1DHQR34d9B4yrDRA1eBm+6JUzQQ+vbRJ5z6OnxjT76EOfll68LF5J
-         StEuzpDGzh5lselNH25uHxq/Gp9ky+7QI/brz8DmRHq4y4wHHSb0TJVBqn9ZTVkLmPKJ
-         OtCTGDnOacP92kR9PKs5D/VRXB2UJzHXWwbVOO03maZAYgzYfZxbxSucro2j0ZsIQw60
-         A00+qiKHPR8vh9qIHEziYuDWRO+ArCs3hYKaVBhuUYW6KJnxq8++tI1nvzhbCXXB5lsD
-         RDqw==
-X-Gm-Message-State: AO0yUKVpUOvz9tzXCq9lruvrskqo6E2JI1MqjI0MO7PhACocZ9DMcBmM
-        EafC4gCedD/ogtVawJc6xhKbdg==
-X-Google-Smtp-Source: AK7set9LKzHC4m9zJD6QlkzNGWUSHa5ooY+SVzmZs/Ul21Y/QbX7qIXjNm1AraEG6VzRdd1yv2suPw==
-X-Received: by 2002:a1c:4b06:0:b0:3ed:316d:668d with SMTP id y6-20020a1c4b06000000b003ed316d668dmr14254078wma.5.1680068015741;
-        Tue, 28 Mar 2023 22:33:35 -0700 (PDT)
-Received: from alex-rivos.ba.rivosinc.com (amontpellier-656-1-456-62.w92-145.abo.wanadoo.fr. [92.145.124.62])
-        by smtp.gmail.com with ESMTPSA id o5-20020a05600c510500b003ef5bb63f13sm915242wms.10.2023.03.28.22.33.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Mar 2023 22:33:35 -0700 (PDT)
-From:   Alexandre Ghiti <alexghiti@rivosinc.com>
-To:     Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Cc:     Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: [PATCH v2 4/4] riscv: libstub: Implement KASLR by using generic functions
-Date:   Wed, 29 Mar 2023 07:29:26 +0200
-Message-Id: <20230329052926.69632-5-alexghiti@rivosinc.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20230329052926.69632-1-alexghiti@rivosinc.com>
-References: <20230329052926.69632-1-alexghiti@rivosinc.com>
+        bh=njnvUp1zVukTipjucCz0aTrvGmsl6IFrKCMEBeNtAgs=;
+        b=ciuE094lcCj7X6EmA72aicE7tSX/W4fIyeQJfv4OgEcy0j7VjAJK/pOubkshhX44Go
+         27h5pqymxdjlGFFvdPXudGpALThvcc5Xl7YEjbmqFwEGWlVxAuokSIBgF/IZTyUG6OF+
+         CMuel5GK2TrQAPwxkAiI3LR9z5pAOVgdxFOdbEPS5cQV2MFK2u2dxa6CYWKPlNwVi0jA
+         ekFOxk1+8hwDBR+J4q85wUzpwxm4WcY6h2V3DqxD1ikSY7AgXaD64athLOQNKXThZUwU
+         wv5kVb68QaJw6mHYmZw/SXn28kXczs3VKXepCAnMh5+PSCxNvqgHD9zPeQqhnm7g7AyH
+         vNZQ==
+X-Gm-Message-State: AAQBX9cSXfD4vs2HBvmeY8v2WUa1ZoESwES3TYsPS86lxHc+ZBjQT242
+        BCFbIUuB2ZTaqlFt6LwR4Wvx/uRse9hUnzRSbw==
+X-Google-Smtp-Source: AKy350YOynZPXiuyWm2VjQetrjkBDID3Ou0r30PZkf55ruN0R1RHfWrT+btrUkU2K+59yWrqyFetGQp93kk2kpraaSs=
+X-Received: by 2002:a81:ad21:0:b0:545:62cb:3bcf with SMTP id
+ l33-20020a81ad21000000b0054562cb3bcfmr9070700ywh.2.1680078294021; Wed, 29 Mar
+ 2023 01:24:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+References: <20230327095123.20023-1-kernelfans@gmail.com> <CAMj1kXG-gz0R2pPcwoxkSBHD596tycucjuAgm4NXS7kwZib71Q@mail.gmail.com>
+ <CAFgQCTuc7yshP8gUJ4XzRR23R5HqoQ02qkA_cvXJM9BXMXLsUw@mail.gmail.com>
+ <CAMj1kXHuc0X2ChArtcecqAma5jZNyFhjpESB6s9c4NmgzE3o9Q@mail.gmail.com>
+ <CAFgQCTt=yatTp9vHQa9wHxGJm-LZZ62acyuSkW+KnhVHAV=jQw@mail.gmail.com> <CAMj1kXFOejD-uP05V0L5u3dUPeZG7OYA89sHrV9XjzwnuZeYmg@mail.gmail.com>
+In-Reply-To: <CAMj1kXFOejD-uP05V0L5u3dUPeZG7OYA89sHrV9XjzwnuZeYmg@mail.gmail.com>
+From:   Pingfan Liu <kernelfans@gmail.com>
+Date:   Wed, 29 Mar 2023 16:24:42 +0800
+Message-ID: <CAFgQCTsCQWbw+ezJTZaHLf93VVTRHt5UXSk7LJXhSVNeMo4zDA@mail.gmail.com>
+Subject: Re: [PATCH] efi: zboot: Ensure zboot PIC
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Huacai Chen <chenhuacai@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-We can now use arm64 functions to handle the move of the kernel physical
-mapping: if KASLR is enabled, we will try to get a random seed from the
-firmware, if not possible, the kernel will be moved to a location that
-suits its alignment constraints.
+On Tue, Mar 28, 2023 at 5:37=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org> wr=
+ote:
+>
+> On Tue, 28 Mar 2023 at 11:32, Pingfan Liu <kernelfans@gmail.com> wrote:
+> >
+> > On Tue, Mar 28, 2023 at 3:58=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org=
+> wrote:
+> > >
+> > > On Tue, 28 Mar 2023 at 09:32, Pingfan Liu <kernelfans@gmail.com> wrot=
+e:
+> > > >
+> > > > On Mon, Mar 27, 2023 at 6:57=E2=80=AFPM Ard Biesheuvel <ardb@kernel=
+.org> wrote:
+> > > > >
+> > > > > On Mon, 27 Mar 2023 at 11:51, Pingfan Liu <kernelfans@gmail.com> =
+wrote:
+> > > > > >
+> > > > > > Using objcopy to reform vmlinuz.efi.elf to vmlinuz.efi will not=
+ convey
+> > > > > > any relocation information. That means vmlinuz.efi is expected =
+to be
+> > > > > > PIC.
+> > > > > >
+> > > > > > At present, vmlinuz.efi is PIC. But it is better to adopt the s=
+ame
+> > > > >
+> > > > > Why is it better?
+> > > > >
+> > > >
+> > > > I think except carefully coded with asm language, there is no
+> > > > guarantee which prevents the compiler from generating position
+> > > > dependent code.  Or is there any presumption here?
+> > > >
+> > >
+> > > All object files built under drivers/firmware/efi/libstub are scanned
+> > > for absolute relocations, and if any exist, the build is aborted.
+> > >
+> >
+> > Oh, I got the code piece now.  Thank you very much for pointing this
+> > out. And only if R_AARCH64_ABS64 is unavoidable, there is no need to
+> > ask the code to fix the relocation by itself.
+> >
+> > But one more question, there are many other "S+A" types of relocation,
+> > let's say R_AARCH64_ABS32 or R_AARCH64_LDST64_ABS_LO12_NC. It is also
+> > sensitive to the delta between loading and linking. Should all of them
+> > be excluded by the Makefile?
+> >
+>
+> None of those can be used to relocate absolute addresses, so these are
+> not the ones we should care about.
+>
+> There are the ones related to the GOT, which could result in GOT
+> entries in the final executable with R_AARCH64_RELATIVE relocations.
+> However, we use 'hidden' visibility for all codegen related to the EFI
+> stub, so the compiler knows all symbol references can be resolved at
+> link time. This means that under -fpic or -fpie, it will always use
+> relative references.
+>
 
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
----
- arch/riscv/kernel/image-vars.h                |  1 +
- drivers/firmware/efi/libstub/arm64.c          |  5 ++++
- .../firmware/efi/libstub/efi-stub-helper.c    |  2 +-
- drivers/firmware/efi/libstub/efistub.h        |  2 ++
- drivers/firmware/efi/libstub/riscv-stub.c     | 28 +++++++------------
- drivers/firmware/efi/libstub/riscv.c          |  5 ++++
- 6 files changed, 24 insertions(+), 19 deletions(-)
+Appreciate for the elaboration. I got the whole story now.
 
-diff --git a/arch/riscv/kernel/image-vars.h b/arch/riscv/kernel/image-vars.h
-index 15616155008c..ea1a10355ce9 100644
---- a/arch/riscv/kernel/image-vars.h
-+++ b/arch/riscv/kernel/image-vars.h
-@@ -27,6 +27,7 @@ __efistub__start		= _start;
- __efistub__start_kernel		= _start_kernel;
- __efistub__end			= _end;
- __efistub__edata		= _edata;
-+__efistub___init_text_end	= __init_text_end;
- __efistub_screen_info		= screen_info;
- 
- #endif
-diff --git a/drivers/firmware/efi/libstub/arm64.c b/drivers/firmware/efi/libstub/arm64.c
-index 399770266372..48bc7428d6df 100644
---- a/drivers/firmware/efi/libstub/arm64.c
-+++ b/drivers/firmware/efi/libstub/arm64.c
-@@ -108,3 +108,8 @@ void __noreturn efi_enter_kernel(unsigned long entrypoint,
- 	enter_kernel = (void *)entrypoint + primary_entry_offset();
- 	enter_kernel(fdt_addr, 0, 0, 0);
- }
-+
-+void efi_icache_sync(unsigned long start, unsigned long end)
-+{
-+	caches_clean_inval_pou(start, end);
-+}
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index 40ac2625949c..63c7275d42e7 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -865,7 +865,7 @@ efi_status_t efi_kaslr_relocate_kernel(unsigned long *image_addr,
- 	memcpy((void *)*reserve_addr, (void *)*image_addr, kernel_size);
- 	*image_addr = *reserve_addr;
- 
--	caches_clean_inval_pou(*image_addr, *image_addr + kernel_codesize);
-+	efi_icache_sync(*image_addr, *image_addr + kernel_codesize);
- 
- 	return status;
- }
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index 64273371ce96..9ce114e04b23 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -1107,4 +1107,6 @@ efi_status_t efi_kaslr_relocate_kernel(unsigned long *image_addr,
- 				       u32 phys_seed);
- u32 efi_kaslr_get_phys_seed(efi_handle_t image_handle);
- 
-+void efi_icache_sync(unsigned long start, unsigned long end);
-+
- #endif
-diff --git a/drivers/firmware/efi/libstub/riscv-stub.c b/drivers/firmware/efi/libstub/riscv-stub.c
-index 145c9f0ba217..7af07b33a993 100644
---- a/drivers/firmware/efi/libstub/riscv-stub.c
-+++ b/drivers/firmware/efi/libstub/riscv-stub.c
-@@ -30,32 +30,24 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 				 efi_loaded_image_t *image,
- 				 efi_handle_t image_handle)
- {
--	unsigned long kernel_size = 0;
--	unsigned long preferred_addr;
-+	unsigned long kernel_size, kernel_codesize, kernel_memsize;
- 	efi_status_t status;
- 
- 	kernel_size = _edata - _start;
-+	kernel_codesize = __init_text_end - _start;
-+	kernel_memsize = kernel_size + (_end - _edata);
- 	*image_addr = (unsigned long)_start;
--	*image_size = kernel_size + (_end - _edata);
--
--	/*
--	 * RISC-V kernel maps PAGE_OFFSET virtual address to the same physical
--	 * address where kernel is booted. That's why kernel should boot from
--	 * as low as possible to avoid wastage of memory. Currently, dram_base
--	 * is occupied by the firmware. So the preferred address for kernel to
--	 * boot is next aligned address. If preferred address is not available,
--	 * relocate_kernel will fall back to efi_low_alloc_above to allocate
--	 * lowest possible memory region as long as the address and size meets
--	 * the alignment constraints.
--	 */
--	preferred_addr = EFI_KIMG_PREFERRED_ADDRESS;
--	status = efi_relocate_kernel(image_addr, kernel_size, *image_size,
--				     preferred_addr, efi_get_kimg_min_align(),
--				     0x0);
-+	*image_size = kernel_memsize;
-+	*reserve_size = *image_size;
- 
-+	status = efi_kaslr_relocate_kernel(image_addr,
-+					   reserve_addr, reserve_size,
-+					   kernel_size, kernel_codesize, kernel_memsize,
-+					   efi_kaslr_get_phys_seed(image_handle));
- 	if (status != EFI_SUCCESS) {
- 		efi_err("Failed to relocate kernel\n");
- 		*image_size = 0;
- 	}
-+
- 	return status;
- }
-diff --git a/drivers/firmware/efi/libstub/riscv.c b/drivers/firmware/efi/libstub/riscv.c
-index 8022b104c3e6..365f891e598f 100644
---- a/drivers/firmware/efi/libstub/riscv.c
-+++ b/drivers/firmware/efi/libstub/riscv.c
-@@ -96,3 +96,8 @@ void __noreturn efi_enter_kernel(unsigned long entrypoint, unsigned long fdt,
- 	csr_write(CSR_SATP, 0);
- 	jump_kernel(hartid, fdt);
- }
-+
-+void efi_icache_sync(unsigned long start, unsigned long end)
-+{
-+	asm volatile ("fence.i" ::: "memory");
-+}
--- 
-2.37.2
+Thanks,
 
+    Pingfan
+
+>
+> > > > > > solution used by the kernel to resolve the code relocation issu=
+e by
+> > > > > > itself. That is to resolve R_AARCH64_RELATIVE at the runtime.
+> > > > > >
+> > > > >
+> > > > > This breaks other architectures.
+> > > > >
+> > > >
+> > > > Oops, could it be done by:
+> > > > #if defined(_aarch64_)
+> > > > #define R_ARCH_RELATIVE R_AARCH64_RELATIVE
+> > > > #else
+> > > > #define R_ARCH_RELATIVE 0
+> > > > #endif
+> > > >
+> > > > Since any r_type equaling 0 can not be ejected into the relocation
+> > > > section, this macro will make the code dummy in essential.
+> > > >
+> > >
+> > > So the assembler instructions you are using are also implemented on
+> > > RISC-V and LoongArch?
+> >
+> > Oops. The whole file should be arch dependent. In those cases, they
+> > should be a single jump instruction.
+> >
+> > Appreciate for your help.
+> >
+> > Thanks,
+> >
+> >     Pingfan
