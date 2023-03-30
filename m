@@ -2,44 +2,44 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 636686D03E8
-	for <lists+linux-efi@lfdr.de>; Thu, 30 Mar 2023 13:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFA1F6D03DC
+	for <lists+linux-efi@lfdr.de>; Thu, 30 Mar 2023 13:50:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231921AbjC3LvC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 30 Mar 2023 07:51:02 -0400
+        id S231782AbjC3Luk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 30 Mar 2023 07:50:40 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231727AbjC3Luk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 30 Mar 2023 07:50:40 -0400
+        with ESMTP id S231565AbjC3Lu2 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 30 Mar 2023 07:50:28 -0400
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB87F8A5B;
-        Thu, 30 Mar 2023 04:50:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACB3155AF;
+        Thu, 30 Mar 2023 04:50:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680177031; x=1711713031;
+  t=1680177026; x=1711713026;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=j9rCoZtseVkMxXJK20bhOG6vjoCUVN6BwYUe9lsjGyo=;
-  b=jJl+1eQBQQejUCWSPKVgpFg5Jv+fiP9ujTka/dwPCrfhnD91l75vC2V8
-   lYfxcAbCGvzB38MWhmthHwv9kTLOW4E3jqrYUwkMOCobSZNZOMLBvGbUC
-   C3PTnNzbh+zxpI2FkevBtvAZUwgHoD/jnoo6Lh6nSqBh3LRU8O/TMQOsB
-   KZB0g/YoOI8GMZMBrY7j32QTX13PuynkQPl7ZFTHRi7nY+5TnkWePUzL7
-   gTeQ8IytE/wF2ZgtFjGm80AIpuo00av31vjZ84psxZaeqNmgAfpfPny0g
-   tCMn6OoqodBOJ6BwqxAWgOkaHisvCpK3HJVZb4hVuzhooVm0I+WHHYzYH
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="342756723"
+  bh=4/nsBozr9Yxm1Svh3lW2TBRBUO1KN1TDzMtK6uriOCA=;
+  b=AzJPoGXX2ZepZVsKvtRD644FyKJ8pUBPSBlhjelq4SlrFY0AupvJIpdK
+   U/qUBk6INCSzYt4LvSobyzVsQ8MFz5M39rODPHFMPyDdTLTI6geQbMbIs
+   GGLZL3w24VzjHCnofqLkFsL1YP0dHuwNCHv0LQwizSrBzNyy1n3sY55Mr
+   UpYVa7ILqOzgUoXRIHmImpkUIKRVDphyvT7GrlvQ3wDrI2CBwq+ZQz/8n
+   NaAkCYCBN97wFv7FXKVdiidqwCmNIvkq9T7K++s41MB9PWOzhRSJ4uWLa
+   VzcDrE603zCiM/DStDeEu7cQTTOsZ2sf/NKIirkWJwhHZ3n5yn12zdmct
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="342756691"
 X-IronPort-AV: E=Sophos;i="5.98,303,1673942400"; 
-   d="scan'208";a="342756723"
+   d="scan'208";a="342756691"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 04:50:30 -0700
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 04:50:25 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="634856482"
+X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="634856368"
 X-IronPort-AV: E=Sophos;i="5.98,303,1673942400"; 
-   d="scan'208";a="634856482"
+   d="scan'208";a="634856368"
 Received: from ngreburx-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.209.91])
   by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 04:50:02 -0700
 Received: by box.shutemov.name (Postfix, from userid 1000)
-        id 0612B10438E; Thu, 30 Mar 2023 14:50:00 +0300 (+03)
+        id 105B310438F; Thu, 30 Mar 2023 14:50:00 +0300 (+03)
 From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
         Sean Christopherson <seanjc@google.com>,
@@ -67,9 +67,9 @@ Cc:     Andi Kleen <ak@linux.intel.com>,
         linux-mm@kvack.org, linux-coco@lists.linux.dev,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv9 03/14] mm/page_alloc: Fake unaccepted memory
-Date:   Thu, 30 Mar 2023 14:49:45 +0300
-Message-Id: <20230330114956.20342-4-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv9 04/14] mm/page_alloc: Add sysfs handle to accept accept_memory
+Date:   Thu, 30 Mar 2023 14:49:46 +0300
+Message-Id: <20230330114956.20342-5-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
 References: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
@@ -85,68 +85,98 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-For testing purposes, it is useful to fake unaccepted memory in the
-system. It helps to understand unaccepted memory overhead to the page
-allocator.
+Write amount of memory to accept into the new sysfs handle
+/sys/kernel/mm/page_alloc/accept_memory.
 
-The patch allows to treat memory above the specified physical memory
-address as unaccepted.
+Write 'all' to the handle to accept all memory in the system.
 
-The change only fakes unaccepted memory for page allocator. Memblock is
-not affected.
-
-It also assumes that arch-provided accept_memory() on already accepted
-memory is a nop.
+It can be used to implement background memory accepting from userspace.
+It is also useful for debugging.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- mm/page_alloc.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ mm/page_alloc.c | 64 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 64 insertions(+)
 
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index d62fcb2f28bd..509a93b7e5af 100644
+index 509a93b7e5af..07e16e9b49c4 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -7213,6 +7213,8 @@ static DEFINE_STATIC_KEY_FALSE(zones_with_unaccepted_pages);
- 
- static bool lazy_accept = true;
- 
-+static unsigned long fake_unaccepted_start = -1UL;
-+
- static int __init accept_memory_parse(char *p)
- {
- 	if (!strcmp(p, "lazy")) {
-@@ -7227,11 +7229,30 @@ static int __init accept_memory_parse(char *p)
+@@ -7343,6 +7343,45 @@ static bool __free_unaccepted(struct page *page)
+ 	return true;
  }
- early_param("accept_memory", accept_memory_parse);
  
-+static int __init fake_unaccepted_start_parse(char *p)
++static ssize_t accept_memory_store(struct kobject *kobj,
++				    struct kobj_attribute *attr,
++				    const char *buf, size_t count)
 +{
-+	if (!p)
-+		return -EINVAL;
++	unsigned long to_accept = 0;
++	struct zone *zone;
++	char *retptr;
 +
-+	fake_unaccepted_start = memparse(p, &p);
++	if (sysfs_streq(buf, "all")) {
++		to_accept = ULONG_MAX;
++	} else {
++		to_accept = memparse(buf, &retptr);
 +
-+	if (*p != '\0') {
-+		fake_unaccepted_start = -1UL;
-+		return -EINVAL;
++		/* Get rid of trailing whitespace, including '\n' */
++		retptr = skip_spaces(retptr);
++
++		if (*retptr != 0 || to_accept == 0)
++			return -EINVAL;
++	}
++
++	for_each_populated_zone(zone) {
++		while (try_to_accept_memory_one(zone)) {
++			if (to_accept <= PAGE_SIZE << MAX_ORDER)
++				return count;
++
++			to_accept -= PAGE_SIZE << MAX_ORDER;
++		}
++	}
++
++	return count;
++}
++
++static struct kobj_attribute accept_memory_attr = __ATTR_WO(accept_memory);
++
++static struct attribute *page_alloc_attr[] = {
++	&accept_memory_attr.attr,
++	NULL
++};
++
+ #else
+ 
+ static bool page_contains_unaccepted(struct page *page, unsigned int order)
+@@ -7366,3 +7405,28 @@ static bool __free_unaccepted(struct page *page)
+ }
+ 
+ #endif /* CONFIG_UNACCEPTED_MEMORY */
++
++static const struct attribute_group page_alloc_attr_group = {
++#ifdef CONFIG_UNACCEPTED_MEMORY
++	.attrs = page_alloc_attr,
++#endif
++};
++
++static int __init page_alloc_init_sysfs(void)
++{
++	struct kobject *page_alloc_kobj;
++	int err;
++
++	page_alloc_kobj = kobject_create_and_add("page_alloc", mm_kobj);
++	if (!page_alloc_kobj)
++		return -ENOMEM;
++
++	err = sysfs_create_group(page_alloc_kobj, &page_alloc_attr_group);
++	if (err) {
++		kobject_put(page_alloc_kobj);
++		return err;
 +	}
 +
 +	return 0;
 +}
-+early_param("fake_unaccepted_start", fake_unaccepted_start_parse);
-+
- static bool page_contains_unaccepted(struct page *page, unsigned int order)
- {
- 	phys_addr_t start = page_to_phys(page);
- 	phys_addr_t end = start + (PAGE_SIZE << order);
- 
-+	if (start >= fake_unaccepted_start)
-+		return true;
-+
- 	return range_contains_unaccepted_memory(start, end);
- }
- 
++late_initcall(page_alloc_init_sysfs);
 -- 
 2.39.2
 
