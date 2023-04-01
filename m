@@ -2,47 +2,47 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 522B46D2CA3
-	for <lists+linux-efi@lfdr.de>; Sat,  1 Apr 2023 03:42:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64D2C6D2D27
+	for <lists+linux-efi@lfdr.de>; Sat,  1 Apr 2023 03:46:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233532AbjDABmM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 31 Mar 2023 21:42:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45796 "EHLO
+        id S233892AbjDABqa (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 31 Mar 2023 21:46:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233534AbjDABmI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 31 Mar 2023 21:42:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1CA321A83;
-        Fri, 31 Mar 2023 18:41:48 -0700 (PDT)
+        with ESMTP id S231213AbjDABp6 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 31 Mar 2023 21:45:58 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CA0F25446;
+        Fri, 31 Mar 2023 18:44:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B07E662CE8;
-        Sat,  1 Apr 2023 01:41:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FF6C433EF;
-        Sat,  1 Apr 2023 01:41:46 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 80849B8330C;
+        Sat,  1 Apr 2023 01:43:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B12C433EF;
+        Sat,  1 Apr 2023 01:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680313307;
+        s=k20201202; t=1680313379;
         bh=x5wyPMzvshtOqGQQDm3KVUPh6zsQSerG4WW+h3kXnMY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MW2N5OH5tlo3WJYFvH1vCbV8QNmWqICG9zZrIj1BViu+ymXIo36a/TmnAMcAtJf3d
-         WQJlm1AT5sc62mQo2IE+zD9XeSA1/K4ZDGK37JPwpmL/vXfWfiDLpCm5lP4gmPjNog
-         Pq4/sIF1I9VHRz3/paZZOSDtKS1VTSxvQIaTgfG2Sn8spYFNAuewzs3/3XqWk941RL
-         7IUt+p3OC1/a7shbiIiZJ0f5ohNAEhk2/J3lfDvlJRJ1H5/dtxPpxuEk2x6xae6FmV
-         xrh4s1fO68mHKRPL7zxFZchxCb2nUnBXu+w+xR67OGK5kr63V+ZXCmuxpCHJFhmlfQ
-         6EUyb7cJp92TQ==
+        b=MHLCcSIkN0lw/WcAabf67cUWUzxP+18mvyiix3TnFqh0abrHy+NvdDBD3sH0SctTA
+         WsWOAWG8mvd6LOGfAmvkpPaw69VX4CWlqlqGzTa34BBff164uppHJmCzQcGilbm/8h
+         TOH/dKkfJdLXGAlhjSYHt1mymYnY/a9e7moi6ifRHQNvdUIYyI31EeZeVEYd4zFzUC
+         etxyn6U+tppbHm6PkGk9j/r3ZfFIErlU6anFmXuKYAS7bYIksolIyZg4zBC8lCpp7Z
+         zRcZEJSQtUiv9ASROFb2wetzb86VQS8TDRXzXxq2s6rTib0lqW4pUYbKzf696tC7r0
+         9x7ErNxK57aTg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Hans de Goede <hdegoede@redhat.com>,
         Javier Martinez Canillas <javierm@redhat.com>,
         Ard Biesheuvel <ardb@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-efi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.2 11/25] efi: sysfb_efi: Add quirk for Lenovo Yoga Book X91F/L
-Date:   Fri, 31 Mar 2023 21:41:09 -0400
-Message-Id: <20230401014126.3356410-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 10/24] efi: sysfb_efi: Add quirk for Lenovo Yoga Book X91F/L
+Date:   Fri, 31 Mar 2023 21:42:26 -0400
+Message-Id: <20230401014242.3356780-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230401014126.3356410-1-sashal@kernel.org>
-References: <20230401014126.3356410-1-sashal@kernel.org>
+In-Reply-To: <20230401014242.3356780-1-sashal@kernel.org>
+References: <20230401014242.3356780-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
