@@ -2,68 +2,68 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B99E06D453E
-	for <lists+linux-efi@lfdr.de>; Mon,  3 Apr 2023 15:07:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 340B76D45CC
+	for <lists+linux-efi@lfdr.de>; Mon,  3 Apr 2023 15:28:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231736AbjDCNHi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 3 Apr 2023 09:07:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32774 "EHLO
+        id S232603AbjDCN2m (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 3 Apr 2023 09:28:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231553AbjDCNHh (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 3 Apr 2023 09:07:37 -0400
+        with ESMTP id S232536AbjDCN2k (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 3 Apr 2023 09:28:40 -0400
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08A2211F;
-        Mon,  3 Apr 2023 06:07:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A080310C8;
+        Mon,  3 Apr 2023 06:28:38 -0700 (PDT)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id AD36E1FF6E;
-        Mon,  3 Apr 2023 13:07:34 +0000 (UTC)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 52D1B1FF8F;
+        Mon,  3 Apr 2023 13:28:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1680527254; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+        t=1680528517; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HSoJPiNm6YLdrvyBCRNcHzBUr7oKAdacKl0GHdUtJXA=;
-        b=VWqebsGWD8RAUsjZeeaP7K5SjdgTlp5fwMlBEgdMdHT4jVR3zeZ2tQhOESTQ3eQ0KKwUfe
-        6LqMQ1DTNheF5SqznhydptvbvXLXMBajFHSA6zry0wxZqbEJ8wjaJCDQTXeVSxmKPTsUSy
-        4nJLJVkcm4u7gVWb/VXyAdsRyAhfv8g=
+        bh=zHqm72f+Z0I2AzfAbhnKdnJNlmuD9/GdE0RimqxF3Bk=;
+        b=XkFA+dPaXYBCtXjZnIh4szDFpQyFAbgURFtWJRBp72ylru+ubP+sTKd0QLfYl8oVc+Ixfs
+        rNSkSh9+aLOTgj2DaZY3hGjW8HHY0YR7nlDZ2/mRsfW0EDTbJnJQ3Zdnx/UNNDLhzOUctg
+        hHAHydkFgXA0q7O3MJB1VHuIQGbrar0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1680527254;
+        s=susede2_ed25519; t=1680528517;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=HSoJPiNm6YLdrvyBCRNcHzBUr7oKAdacKl0GHdUtJXA=;
-        b=h5q3i5np2j574eqECbyNVp3f1IFao5UeZNBpPDfBsYuTt2l+15XRQsVsYhXLolIoF85mlX
-        ouTblE3ueplUupCA==
+        bh=zHqm72f+Z0I2AzfAbhnKdnJNlmuD9/GdE0RimqxF3Bk=;
+        b=asU5R1Qcu5R93vWGXtOCEMuBatUblI6aSIhFT7IZYcZjU9yCRyubBsXf5VUCB/d+SB+pPS
+        5x4XX0DH2gRwmIBQ==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 23B561331A;
-        Mon,  3 Apr 2023 13:07:34 +0000 (UTC)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C19CB1331A;
+        Mon,  3 Apr 2023 13:28:36 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id adnlB5bPKmS5YwAAMHmgww
-        (envelope-from <vbabka@suse.cz>); Mon, 03 Apr 2023 13:07:34 +0000
-Message-ID: <2a8278cf-d282-ada6-0161-3b9c6adcb12e@suse.cz>
-Date:   Mon, 3 Apr 2023 15:07:33 +0200
+        id I7tWLoTUKmTwcAAAMHmgww
+        (envelope-from <vbabka@suse.cz>); Mon, 03 Apr 2023 13:28:36 +0000
+Message-ID: <48567ee3-b482-bafd-bd25-cbb8bf3403b2@suse.cz>
+Date:   Mon, 3 Apr 2023 15:28:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.0
-Subject: Re: [PATCHv9 02/14] mm: Add support for unaccepted memory
+Subject: Re: [PATCHv9 11/14] x86/mm: Avoid load_unaligned_zeropad() stepping
+ into unaccepted memory
 Content-Language: en-US
-To:     "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Borislav Petkov <bp@alien8.de>,
         Andy Lutomirski <luto@kernel.org>,
         Sean Christopherson <seanjc@google.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Andi Kleen <ak@linux.intel.com>,
         Kuppuswamy Sathyanarayanan 
         <sathyanarayanan.kuppuswamy@linux.intel.com>,
         David Rientjes <rientjes@google.com>,
@@ -82,13 +82,11 @@ Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
         linux-mm@kvack.org, linux-coco@lists.linux.dev,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mike Rapoport <rppt@linux.ibm.com>
+        Dave Hansen <dave.hansen@linux.intel.com>
 References: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
- <20230330114956.20342-3-kirill.shutemov@linux.intel.com>
- <43234108-fa4f-7583-e3b4-2daa2de89fb0@suse.cz>
- <20230403100244.4sre7ki4ccusiiul@box>
+ <20230330114956.20342-12-kirill.shutemov@linux.intel.com>
 From:   Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20230403100244.4sre7ki4ccusiiul@box>
+In-Reply-To: <20230330114956.20342-12-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -101,106 +99,128 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 4/3/23 12:02, Kirill A. Shutemov wrote:
-> On Mon, Apr 03, 2023 at 11:26:53AM +0200, Vlastimil Babka wrote:
->> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
->> > Acked-by: Mike Rapoport <rppt@linux.ibm.com>	# memblock
->> 
->> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+On 3/30/23 13:49, Kirill A. Shutemov wrote:
+> load_unaligned_zeropad() can lead to unwanted loads across page boundaries.
+> The unwanted loads are typically harmless. But, they might be made to
+> totally unrelated or even unmapped memory. load_unaligned_zeropad()
+> relies on exception fixup (#PF, #GP and now #VE) to recover from these
+> unwanted loads.
 > 
-> Thanks!
+> But, this approach does not work for unaccepted memory. For TDX, a load
+> from unaccepted memory will not lead to a recoverable exception within
+> the guest. The guest will exit to the VMM where the only recourse is to
+> terminate the guest.
 > 
->> Just a small suggestion below:
->> 
->> > +
->> > +static bool try_to_accept_memory(struct zone *zone, unsigned int order)
->> > +{
->> > +	long to_accept;
->> > +	int ret = false;
->> > +
->> > +	if (!static_branch_unlikely(&zones_with_unaccepted_pages))
->> > +		return false;
->> 
->> 
->> This potentially (depends on what compiler decides) means we'll call this
->> function just to skip the static branch. OTOH forcing it as inline would be
->> wasteful too. So I'd split that away and make the callers do that static
->> branch check inline. Just as deferred_pages_enabled() is used.
+> There are three parts to fix this issue and comprehensively avoid access
+> to unaccepted memory. Together these ensure that an extra "guard" page
+> is accepted in addition to the memory that needs to be used.
 > 
-> Like this?
+> 1. Implicitly extend the range_contains_unaccepted_memory(start, end)
+>    checks up to end+2M if 'end' is aligned on a 2M boundary. It may
+>    require checking 2M chunk beyond end of RAM. The bitmap allocation is
+>    modified to accommodate this.
+> 2. Implicitly extend accept_memory(start, end) to end+2M if 'end' is
+>    aligned on a 2M boundary.
+> 3. Set PageUnaccepted() on both memory that itself needs to be accepted
+>    *and* memory where the next page needs to be accepted. Essentially,
+>    make PageUnaccepted(page) a marker for whether work needs to be done
+>    to make 'page' usable. That work might include accepting pages in
+>    addition to 'page' itself.
+> 
+> Side note: This leads to something strange. Pages which were accepted
+> 	   at boot, marked by the firmware as accepted and will never
+> 	   _need_ to be accepted might have PageUnaccepted() set on
+> 	   them. PageUnaccepted(page) is a cue to ensure that the next
+> 	   page is accepted before 'page' can be used.
 
-Yep.
+At least the part about PageUnaccepted() is obsolete in v9, no?
 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 07e16e9b49c4..80fe5e4b6cca 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -390,6 +390,7 @@ EXPORT_SYMBOL(nr_online_nodes);
->  static bool page_contains_unaccepted(struct page *page, unsigned int order);
->  static void accept_page(struct page *page, unsigned int order);
->  static bool try_to_accept_memory(struct zone *zone, unsigned int order);
-> +static inline bool has_unaccepted_memory(void);
->  static bool __free_unaccepted(struct page *page);
+> This is an actual, real-world problem which was discovered during TDX
+> testing.
+> 
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+> ---
+>  arch/x86/mm/unaccepted_memory.c         | 39 +++++++++++++++++++++++++
+>  drivers/firmware/efi/libstub/x86-stub.c |  7 +++++
+>  2 files changed, 46 insertions(+)
+> 
+> diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
+> index 1df918b21469..a0a58486eb74 100644
+> --- a/arch/x86/mm/unaccepted_memory.c
+> +++ b/arch/x86/mm/unaccepted_memory.c
+> @@ -23,6 +23,38 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
+>  	bitmap = __va(boot_params.unaccepted_memory);
+>  	range_start = start / PMD_SIZE;
 >  
->  int page_group_by_mobility_disabled __read_mostly;
-> @@ -3464,8 +3465,10 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
->  				       gfp_mask)) {
->  			int ret;
->  
-> -			if (try_to_accept_memory(zone, order))
-> -				goto try_this_zone;
-> +			if (has_unaccepted_memory()) {
-> +				if (try_to_accept_memory(zone, order))
-> +					goto try_this_zone;
-> +			}
->  
->  #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
->  			/*
-> @@ -3519,8 +3522,10 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
->  
->  			return page;
->  		} else {
-> -			if (try_to_accept_memory(zone, order))
-> -				goto try_this_zone;
-> +			if (has_unaccepted_memory()) {
-> +				if (try_to_accept_memory(zone, order))
-> +					goto try_this_zone;
-> +			}
->  
->  #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
->  			/* Try again if zone has deferred pages */
-> @@ -7302,9 +7307,6 @@ static bool try_to_accept_memory(struct zone *zone, unsigned int order)
->  	long to_accept;
->  	int ret = false;
->  
-> -	if (!static_branch_unlikely(&zones_with_unaccepted_pages))
-> -		return false;
-> -
->  	/* How much to accept to get to high watermark? */
->  	to_accept = high_wmark_pages(zone) -
->  		    (zone_page_state(zone, NR_FREE_PAGES) -
-> @@ -7321,6 +7323,11 @@ static bool try_to_accept_memory(struct zone *zone, unsigned int order)
->  	return ret;
->  }
->  
-> +static inline bool has_unaccepted_memory(void)
-> +{
-> +	return static_branch_unlikely(&zones_with_unaccepted_pages);
-> +}
+> +	/*
+> +	 * load_unaligned_zeropad() can lead to unwanted loads across page
+> +	 * boundaries. The unwanted loads are typically harmless. But, they
+> +	 * might be made to totally unrelated or even unmapped memory.
+> +	 * load_unaligned_zeropad() relies on exception fixup (#PF, #GP and now
+> +	 * #VE) to recover from these unwanted loads.
+> +	 *
+> +	 * But, this approach does not work for unaccepted memory. For TDX, a
+> +	 * load from unaccepted memory will not lead to a recoverable exception
+> +	 * within the guest. The guest will exit to the VMM where the only
+> +	 * recourse is to terminate the guest.
+> +	 *
+> +	 * There are three parts to fix this issue and comprehensively avoid
+> +	 * access to unaccepted memory. Together these ensure that an extra
+> +	 * "guard" page is accepted in addition to the memory that needs to be
+> +	 * used:
+> +	 *
+> +	 * 1. Implicitly extend the range_contains_unaccepted_memory(start, end)
+> +	 *    checks up to end+2M if 'end' is aligned on a 2M boundary.
+> +	 *
+> +	 * 2. Implicitly extend accept_memory(start, end) to end+2M if 'end' is
+> +	 *    aligned on a 2M boundary. (immediately following this comment)
+> +	 *
+> +	 * 3. Set PageUnaccepted() on both memory that itself needs to be
+> +	 *    accepted *and* memory where the next page needs to be accepted.
+> +	 *    Essentially, make PageUnaccepted(page) a marker for whether work
+> +	 *    needs to be done to make 'page' usable. That work might include
+> +	 *    accepting pages in addition to 'page' itself.
+> +	 */
+
+And here.
+
+> +	if (!(end % PMD_SIZE))
+> +		end += PMD_SIZE;
 > +
->  static bool __free_unaccepted(struct page *page)
->  {
->  	struct zone *zone = page_zone(page);
-> @@ -7398,6 +7405,11 @@ static bool try_to_accept_memory(struct zone *zone, unsigned int order)
->  	return false;
->  }
+>  	spin_lock_irqsave(&unaccepted_memory_lock, flags);
+>  	for_each_set_bitrange_from(range_start, range_end, bitmap,
+>  				   DIV_ROUND_UP(end, PMD_SIZE)) {
+> @@ -46,6 +78,13 @@ bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end)
 >  
-> +static inline bool has_unaccepted_memory(void)
-> +{
-> +	return false;
-> +}
+>  	bitmap = __va(boot_params.unaccepted_memory);
+>  
+> +	/*
+> +	 * Also consider the unaccepted state of the *next* page. See fix #1 in
+> +	 * the comment on load_unaligned_zeropad() in accept_memory().
+> +	 */
+> +	if (!(end % PMD_SIZE))
+> +		end += PMD_SIZE;
 > +
->  static bool __free_unaccepted(struct page *page)
->  {
->  	BUILD_BUG();
+>  	spin_lock_irqsave(&unaccepted_memory_lock, flags);
+>  	while (start < end) {
+>  		if (test_bit(start / PMD_SIZE, bitmap)) {
+> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+> index 1643ddbde249..1afe7b5b02e1 100644
+> --- a/drivers/firmware/efi/libstub/x86-stub.c
+> +++ b/drivers/firmware/efi/libstub/x86-stub.c
+> @@ -715,6 +715,13 @@ static efi_status_t allocate_unaccepted_bitmap(struct boot_params *params,
+>  		return EFI_SUCCESS;
+>  	}
+>  
+> +	/*
+> +	 * range_contains_unaccepted_memory() may need to check one 2M chunk
+> +	 * beyond the end of RAM to deal with load_unaligned_zeropad(). Make
+> +	 * sure that the bitmap is large enough handle it.
+> +	 */
+> +	max_addr += PMD_SIZE;
+> +
+>  	/*
+>  	 * If unaccepted memory is present, allocate a bitmap to track what
+>  	 * memory has to be accepted before access.
 
