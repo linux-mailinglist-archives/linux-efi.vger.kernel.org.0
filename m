@@ -2,59 +2,66 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD2466D4A0E
-	for <lists+linux-efi@lfdr.de>; Mon,  3 Apr 2023 16:43:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 208096D4A35
+	for <lists+linux-efi@lfdr.de>; Mon,  3 Apr 2023 16:45:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233912AbjDCOnr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 3 Apr 2023 10:43:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59032 "EHLO
+        id S233892AbjDCOpE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 3 Apr 2023 10:45:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233920AbjDCOnk (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 3 Apr 2023 10:43:40 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABF6A4EFE;
-        Mon,  3 Apr 2023 07:43:21 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 202C11FFE8;
-        Mon,  3 Apr 2023 14:42:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1680532975; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
+        with ESMTP id S233996AbjDCOos (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 3 Apr 2023 10:44:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FEBF280DA
+        for <linux-efi@vger.kernel.org>; Mon,  3 Apr 2023 07:43:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1680532993;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dnKnaFVBMl4RFHrApzcr6T1rz3wToBUOBi1QUCMpPSw=;
-        b=TtfivlContFjUwQf8U4vV+OPyA70HJxbhvsvWO8DVKhwuR4zrxEDo1sTf+04e0noIfswNJ
-        PXqIICYT7SyegRuLGUYlvBH9Uik5HPNrP3H+XJXRKLLiZY5U4jD+Xr/6gNgM/0AVu+5/xL
-        jyXFQzgASIiyFzOnAn7s4lHtGpNZphc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1680532975;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=dnKnaFVBMl4RFHrApzcr6T1rz3wToBUOBi1QUCMpPSw=;
-        b=9vKruXGoImPZWHFJeGUL37WxfrSoaCtLx5JDTOu6TEZiP//yOIHMmYlB5UhgbysaUMEw8t
-        9nCIBs1Z4zh0+9CA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7EFB41331A;
-        Mon,  3 Apr 2023 14:42:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id gu+OGu7lKmRDIQAAMHmgww
-        (envelope-from <vbabka@suse.cz>); Mon, 03 Apr 2023 14:42:54 +0000
-Message-ID: <2e0da486-71e4-cfeb-1578-68f1c8c43d33@suse.cz>
-Date:   Mon, 3 Apr 2023 16:42:54 +0200
+        bh=/eYb2XMUpR9VXDleQG1dvUeP259a87ERPUWeMJE/H5g=;
+        b=Elevh4Zd3aW7+wpa9VK2FHEI4B1i1v4uVsKQt7PwTv6OJy7yI1x2xZNv8AdRoqhH23ZUfF
+        T5cW4lhrpW7cj//V7iNAoLB7qpzuVT8yIbRq72P3OT4yxmMFm9jMGyTbASAzMS2y/OqQKl
+        j6B9l6Il6kwO2aKB41ZI5heMDF+lc+g=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-195-bTYQZnUnMLyNBehgL1dPzQ-1; Mon, 03 Apr 2023 10:43:12 -0400
+X-MC-Unique: bTYQZnUnMLyNBehgL1dPzQ-1
+Received: by mail-wm1-f70.google.com with SMTP id m7-20020a05600c4f4700b003ee7e120bdfso14659019wmq.6
+        for <linux-efi@vger.kernel.org>; Mon, 03 Apr 2023 07:43:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680532991;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/eYb2XMUpR9VXDleQG1dvUeP259a87ERPUWeMJE/H5g=;
+        b=bGaBw78SKAjqF7zZFHTk+36vG3FBVGz5o6PlhH98MfoGgClsnBFdBYjGHnu0apGfS+
+         ckOb7I2kOxlLLWjpq8RvCQpzSzvmhgq69BzV6CQg8PKLPf6xnhJszturfGC7Id9f1oho
+         MW/ir8r5/jCPurxmhh5B4yGbytUJuk+mgYM1bg8nFCnpSpilaxUrWVeGOPQMtniK/20p
+         ZWVoct36fAGRzfSGSexNd5k80qYUHxOlI0gekUhzZ93srbFE1n81Wy+8F+AD1vAxD2EZ
+         ESyeSgbl77D340f91I8niecw3jyL+Z5TRdY7b8zkAbMiL29wSrZnJD+Bik7sY6b337V3
+         YrkA==
+X-Gm-Message-State: AAQBX9fBGsRIaRb0xJ2KFvpiCW5NAB19HxVSHaSlGbKlVYkrQen1xEKK
+        CE5JcRHtlZdsKzd7qBtOs1e8LxamV7FC+mLdSWCWlLHjtdweCCSfZHTP3nFwHXzoqgISr9jPkp7
+        ph2Mrjx+gQJeNfbnE5+7S
+X-Received: by 2002:adf:fb0d:0:b0:2e5:17a4:7d65 with SMTP id c13-20020adffb0d000000b002e517a47d65mr9852991wrr.39.1680532991155;
+        Mon, 03 Apr 2023 07:43:11 -0700 (PDT)
+X-Google-Smtp-Source: AKy350Y08+lpc/XjAnUg5I1OrKi5tNhWj0ZeUnj6X2UCuKEr2raMcQhFTlwQjTgwu1vHm8iFtim9pA==
+X-Received: by 2002:adf:fb0d:0:b0:2e5:17a4:7d65 with SMTP id c13-20020adffb0d000000b002e517a47d65mr9852963wrr.39.1680532990772;
+        Mon, 03 Apr 2023 07:43:10 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c702:5e00:8e78:71f3:6243:77f0? (p200300cbc7025e008e7871f3624377f0.dip0.t-ipconnect.de. [2003:cb:c702:5e00:8e78:71f3:6243:77f0])
+        by smtp.gmail.com with ESMTPSA id i17-20020a5d5591000000b002eaac3a9beesm169318wrv.8.2023.04.03.07.43.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Apr 2023 07:43:10 -0700 (PDT)
+Message-ID: <053a9ccd-4205-7a76-70c3-c256bd995a1f@redhat.com>
+Date:   Mon, 3 Apr 2023 16:43:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCHv9 00/14] mm, x86/cc: Implement support for unaccepted
- memory
+ Thunderbird/102.9.1
+Subject: Re: [PATCHv9 03/14] mm/page_alloc: Fake unaccepted memory
 Content-Language: en-US
 To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Borislav Petkov <bp@alien8.de>,
@@ -67,6 +74,7 @@ Cc:     Andi Kleen <ak@linux.intel.com>,
         Kuppuswamy Sathyanarayanan 
         <sathyanarayanan.kuppuswamy@linux.intel.com>,
         David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
         Tom Lendacky <thomas.lendacky@amd.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Peter Zijlstra <peterz@infradead.org>,
@@ -75,7 +83,6 @@ Cc:     Andi Kleen <ak@linux.intel.com>,
         Dario Faggioli <dfaggioli@suse.com>,
         Dave Hansen <dave.hansen@intel.com>,
         Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
         Mel Gorman <mgorman@techsingularity.net>,
         marcelo.cerri@canonical.com, tim.gardner@canonical.com,
         khalid.elmously@canonical.com, philip.cox@canonical.com,
@@ -83,241 +90,99 @@ Cc:     Andi Kleen <ak@linux.intel.com>,
         linux-mm@kvack.org, linux-coco@lists.linux.dev,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
-From:   Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
+ <20230330114956.20342-4-kirill.shutemov@linux.intel.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230330114956.20342-4-kirill.shutemov@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.8 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 3/30/23 13:49, Kirill A. Shutemov wrote:
-> UEFI Specification version 2.9 introduces the concept of memory
-> acceptance: some Virtual Machine platforms, such as Intel TDX or AMD
-> SEV-SNP, requiring memory to be accepted before it can be used by the
-> guest. Accepting happens via a protocol specific for the Virtual
-> Machine platform.
+On 30.03.23 13:49, Kirill A. Shutemov wrote:
+> For testing purposes, it is useful to fake unaccepted memory in the
+> system. It helps to understand unaccepted memory overhead to the page
+> allocator.
 > 
-> Accepting memory is costly and it makes VMM allocate memory for the
-> accepted guest physical address range. It's better to postpone memory
-> acceptance until memory is needed. It lowers boot time and reduces
-> memory overhead.
+> The patch allows to treat memory above the specified physical memory
+> address as unaccepted.
 > 
-> The kernel needs to know what memory has been accepted. Firmware
-> communicates this information via memory map: a new memory type --
-> EFI_UNACCEPTED_MEMORY -- indicates such memory.
+> The change only fakes unaccepted memory for page allocator. Memblock is
+> not affected.
 > 
-> Range-based tracking works fine for firmware, but it gets bulky for
-> the kernel: e820 has to be modified on every page acceptance. It leads
-> to table fragmentation, but there's a limited number of entries in the
-> e820 table
+> It also assumes that arch-provided accept_memory() on already accepted
+> memory is a nop.
 > 
-> Another option is to mark such memory as usable in e820 and track if the
-> range has been accepted in a bitmap. One bit in the bitmap represents
-> 2MiB in the address space: one 4k page is enough to track 64GiB or
-> physical address space.
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> ---
+>   mm/page_alloc.c | 21 +++++++++++++++++++++
+>   1 file changed, 21 insertions(+)
 > 
-> In the worst-case scenario -- a huge hole in the middle of the
-> address space -- It needs 256MiB to handle 4PiB of the address
-> space.
-> 
-> Any unaccepted memory that is not aligned to 2M gets accepted upfront.
-> 
-> The approach lowers boot time substantially. Boot to shell is ~2.5x
-> faster for 4G TDX VM and ~4x faster for 64G.
-> 
-> TDX-specific code isolated from the core of unaccepted memory support. It
-> supposed to help to plug-in different implementation of unaccepted memory
-> such as SEV-SNP.
-> 
-> -- Fragmentation study --
-> 
-> Vlastimil and Mel were concern about effect of unaccepted memory on
-> fragmentation prevention measures in page allocator. I tried to evaluate
-> it, but it is tricky. As suggested I tried to run multiple parallel kernel
-> builds and follow how often kmem:mm_page_alloc_extfrag gets hit.
-> 
-> I don't like the results. Not because unaccepted memory is slow, but
-> because the test is way too noisy to produce sensible information.
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index d62fcb2f28bd..509a93b7e5af 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -7213,6 +7213,8 @@ static DEFINE_STATIC_KEY_FALSE(zones_with_unaccepted_pages);
+>   
+>   static bool lazy_accept = true;
+>   
+> +static unsigned long fake_unaccepted_start = -1UL;
+> +
+>   static int __init accept_memory_parse(char *p)
+>   {
+>   	if (!strcmp(p, "lazy")) {
+> @@ -7227,11 +7229,30 @@ static int __init accept_memory_parse(char *p)
+>   }
+>   early_param("accept_memory", accept_memory_parse);
+>   
+> +static int __init fake_unaccepted_start_parse(char *p)
+> +{
+> +	if (!p)
+> +		return -EINVAL;
+> +
+> +	fake_unaccepted_start = memparse(p, &p);
+> +
+> +	if (*p != '\0') {
+> +		fake_unaccepted_start = -1UL;
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +early_param("fake_unaccepted_start", fake_unaccepted_start_parse);
+> +
+>   static bool page_contains_unaccepted(struct page *page, unsigned int order)
+>   {
+>   	phys_addr_t start = page_to_phys(page);
+>   	phys_addr_t end = start + (PAGE_SIZE << order);
+>   
+> +	if (start >= fake_unaccepted_start)
+> +		return true;
+> +
+>   	return range_contains_unaccepted_memory(start, end);
+>   }
+>   
 
-Hmm yeah it can be noisy. Did you try to only count events that have
-fragmenting=1 and/or MIGRATE_MOVABLE as fallback_migratetype? As those are
-the really bad events.
+The "unpleasant" thing about this is, that page_contains_unaccepted() 
+could not be used for sanity checks because the result is static.
 
-> So, I run 8 parallel builds of kernel, 16 jobs each in a VM with 16 CPU
-> and 16G of RAM. I compared unpatched base-line (mm-unstable) with the tree
-> that has patchset applied. For the later case, all memory above 1G was
-> considered unaccepted with fake_unaccepted_start=1G. Around 14G of RAM was
-> accounted as unaccepted after the boot. The test got all memory accepted.
-> 
-> 		kmem:mm_page_alloc_extfrag		Time elapsed
-> Base line:
-> Run 1		837					1803.21s
-> Run 2		3,845					1785.87s
-> Run 3		1,704					1883.59s
-> 
-> Patched:
-> Run 1		905					1876.02s
-> Run 2		845					1758.50s
-> Run 3		1276					1876.13s
-> 
-> As you can see the numbers are all over the place.
-> 
-> The good news is that unaccepted memory doesn't make picture notably worse.
+For example, something like
 
-Yeah that at least somehow confirms no big surprises. I wouldn't expect any
-with the v9 design of watermarks handling.
+if (page_contains_unaccepted(page, 0))
+	accept_memory(page, 0);
+BUG_ON(!page_contains_unaccepted(page, 0));
 
-> I am open to suggestions on how to test it better.
-> 
-> Also, feel free to play with it yourself. fake_unaccepted_start= doesn't
-> require any special setup.
-> 
-> --
-> 
-> The tree can be found here:
-> 
-> https://github.com/intel/tdx.git guest-unaccepted-memory
-> 
-> The patchset depends on MAX_ORDER changes in MM tree.
-> 
-> v9:
->  - Accept memory up to high watermark when kernel runs out of free memory;
->  - Treat unaccepted memory as unusable in __zone_watermark_unusable_free();
->  - Per-zone unaccepted memory accounting;
->  - All pages on unaccepted list are MAX_ORDER now;
->  - accept_memory=eager in cmdline to pre-accept memory during the boot;
->  - Implement fake unaccepted memory;
->  - Sysfs handle to accept memory manually;
->  - Drop PageUnaccepted();
->  - Rename unaccepted_pages static key to zones_with_unaccepted_pages;
-> v8:
->  - Rewrite core-mm support for unaccepted memory (patch 02/14);
->  - s/UnacceptedPages/Unaccepted/ in meminfo;
->  - Drop arch/x86/boot/compressed/compiler.h;
->  - Fix build errors;
->  - Adjust commit messages and comments;
->  - Reviewed-bys from Dave and Borislav;
->  - Rebased to tip/master.
-> v7:
->  - Rework meminfo counter to use PageUnaccepted() and move to generic code;
->  - Fix range_contains_unaccepted_memory() on machines without unaccepted memory;
->  - Add Reviewed-by from David;
-> v6:
->  - Fix load_unaligned_zeropad() on machine with unaccepted memory;
->  - Clear PageUnaccepted() on merged pages, leaving it only on head;
->  - Clarify error handling in allocate_e820();
->  - Fix build with CONFIG_UNACCEPTED_MEMORY=y, but without TDX;
->  - Disable kexec at boottime instead of build conflict;
->  - Rebased to tip/master;
->  - Spelling fixes;
->  - Add Reviewed-by from Mike and David;
-> v5:
->  - Updates comments and commit messages;
->    + Explain options for unaccepted memory handling;
->  - Expose amount of unaccepted memory in /proc/meminfo
->  - Adjust check in page_expected_state();
->  - Fix error code handling in allocate_e820();
->  - Centralize __pa()/__va() definitions in the boot stub;
->  - Avoid includes from the main kernel in the boot stub;
->  - Use an existing hole in boot_param for unaccepted_memory, instead of adding
->    to the end of the structure;
->  - Extract allocate_unaccepted_memory() form allocate_e820();
->  - Complain if there's unaccepted memory, but kernel does not support it;
->  - Fix vmstat counter;
->  - Split up few preparatory patches;
->  - Random readability adjustments;
-> v4:
->  - PageBuddyUnaccepted() -> PageUnaccepted;
->  - Use separate page_type, not shared with offline;
->  - Rework interface between core-mm and arch code;
->  - Adjust commit messages;
->  - Ack from Mike;
-> 
-> Kirill A. Shutemov (14):
->   x86/boot: Centralize __pa()/__va() definitions
->   mm: Add support for unaccepted memory
->   mm/page_alloc: Fake unaccepted memory
->   mm/page_alloc: Add sysfs handle to accept accept_memory
->   efi/x86: Get full memory map in allocate_e820()
->   x86/boot: Add infrastructure required for unaccepted memory support
->   efi/x86: Implement support for unaccepted memory
->   x86/boot/compressed: Handle unaccepted memory
->   x86/mm: Reserve unaccepted memory bitmap
->   x86/mm: Provide helpers for unaccepted memory
->   x86/mm: Avoid load_unaligned_zeropad() stepping into unaccepted memory
->   x86/tdx: Make _tdx_hypercall() and __tdx_module_call() available in
->     boot stub
->   x86/tdx: Refactor try_accept_one()
->   x86/tdx: Add unaccepted memory support
-> 
->  Documentation/x86/zero-page.rst          |   1 +
->  arch/x86/Kconfig                         |   2 +
->  arch/x86/boot/bitops.h                   |  40 ++++
->  arch/x86/boot/compressed/Makefile        |   3 +-
->  arch/x86/boot/compressed/align.h         |  14 ++
->  arch/x86/boot/compressed/bitmap.c        |  43 ++++
->  arch/x86/boot/compressed/bitmap.h        |  49 +++++
->  arch/x86/boot/compressed/bits.h          |  36 ++++
->  arch/x86/boot/compressed/efi.h           |   1 +
->  arch/x86/boot/compressed/error.c         |  19 ++
->  arch/x86/boot/compressed/error.h         |   1 +
->  arch/x86/boot/compressed/find.c          |  54 +++++
->  arch/x86/boot/compressed/find.h          |  79 ++++++++
->  arch/x86/boot/compressed/ident_map_64.c  |   8 -
->  arch/x86/boot/compressed/kaslr.c         |  35 ++--
->  arch/x86/boot/compressed/math.h          |  37 ++++
->  arch/x86/boot/compressed/mem.c           | 122 +++++++++++
->  arch/x86/boot/compressed/minmax.h        |  61 ++++++
->  arch/x86/boot/compressed/misc.c          |   6 +
->  arch/x86/boot/compressed/misc.h          |  15 ++
->  arch/x86/boot/compressed/pgtable_types.h |  25 +++
->  arch/x86/boot/compressed/sev.c           |   2 -
->  arch/x86/boot/compressed/tdx-shared.c    |   2 +
->  arch/x86/boot/compressed/tdx.c           |  39 ++++
->  arch/x86/coco/tdx/Makefile               |   2 +-
->  arch/x86/coco/tdx/tdx-shared.c           |  95 +++++++++
->  arch/x86/coco/tdx/tdx.c                  | 118 +----------
->  arch/x86/include/asm/page.h              |   3 +
->  arch/x86/include/asm/shared/tdx.h        |  53 +++++
->  arch/x86/include/asm/tdx.h               |  21 +-
->  arch/x86/include/asm/unaccepted_memory.h |  16 ++
->  arch/x86/include/uapi/asm/bootparam.h    |   2 +-
->  arch/x86/kernel/e820.c                   |  17 ++
->  arch/x86/mm/Makefile                     |   2 +
->  arch/x86/mm/unaccepted_memory.c          | 107 ++++++++++
->  drivers/base/node.c                      |   7 +
->  drivers/firmware/efi/Kconfig             |  14 ++
->  drivers/firmware/efi/efi.c               |   1 +
->  drivers/firmware/efi/libstub/x86-stub.c  |  98 +++++++--
->  fs/proc/meminfo.c                        |   5 +
->  include/linux/efi.h                      |   3 +-
->  include/linux/mmzone.h                   |   8 +
->  mm/internal.h                            |  13 ++
->  mm/memblock.c                            |   9 +
->  mm/mm_init.c                             |   7 +
->  mm/page_alloc.c                          | 246 +++++++++++++++++++++++
->  mm/vmstat.c                              |   3 +
->  47 files changed, 1368 insertions(+), 176 deletions(-)
->  create mode 100644 arch/x86/boot/compressed/align.h
->  create mode 100644 arch/x86/boot/compressed/bitmap.c
->  create mode 100644 arch/x86/boot/compressed/bitmap.h
->  create mode 100644 arch/x86/boot/compressed/bits.h
->  create mode 100644 arch/x86/boot/compressed/find.c
->  create mode 100644 arch/x86/boot/compressed/find.h
->  create mode 100644 arch/x86/boot/compressed/math.h
->  create mode 100644 arch/x86/boot/compressed/mem.c
->  create mode 100644 arch/x86/boot/compressed/minmax.h
->  create mode 100644 arch/x86/boot/compressed/pgtable_types.h
->  create mode 100644 arch/x86/boot/compressed/tdx-shared.c
->  create mode 100644 arch/x86/coco/tdx/tdx-shared.c
->  create mode 100644 arch/x86/include/asm/unaccepted_memory.h
->  create mode 100644 arch/x86/mm/unaccepted_memory.c
-> 
+Would work on real hardware, however, not for the fake variant.
+
+-- 
+Thanks,
+
+David / dhildenb
 
