@@ -2,95 +2,203 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BA396D2D37
-	for <lists+linux-efi@lfdr.de>; Sat,  1 Apr 2023 03:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D11506D4087
+	for <lists+linux-efi@lfdr.de>; Mon,  3 Apr 2023 11:26:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233678AbjDABrX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 31 Mar 2023 21:47:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48782 "EHLO
+        id S231245AbjDCJ05 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 3 Apr 2023 05:26:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233914AbjDABrA (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 31 Mar 2023 21:47:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 893B922210;
-        Fri, 31 Mar 2023 18:44:57 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S230332AbjDCJ04 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 3 Apr 2023 05:26:56 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8844813D;
+        Mon,  3 Apr 2023 02:26:55 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 16F4862CFE;
-        Sat,  1 Apr 2023 01:44:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2017C4339C;
-        Sat,  1 Apr 2023 01:43:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680313440;
-        bh=r+JRoVbJ6Bq9rX68HDbgD0D7lFjnHmsr6C1152qdGAA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dDk6N8sWQvidjwh4pZIeFTQ6D8V7O2CQWz8abUCOErSeZyCdJ8R7nGnTJFq5UgMq3
-         xsGmr0UoHk6wOdUjFSrawAYx4R7EwCR+vhd8oQZ+jHWhTIhVb8WpGpZhhfDH8UC/Rl
-         fcvrzUEcyS8ymrtR6QdalxiN6BRkg9m08QKhkN6kpbqQYgzskIpCp5drUeutVX20VF
-         2jUyBIoEY4EUdMUkdolHdVm+MVR+m0lski+ycnVQzf/qzWHXu+Ar7mvsRZLUJp2R1P
-         nCNEarQhmsul4EfALV9WcSN/s+uVeOZo0LwiBw/asdV0cL/Sri/SfY8+pLzxTU6aG0
-         BGDXcNXi3vPvA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-efi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 06/11] efi: sysfb_efi: Add quirk for Lenovo Yoga Book X91F/L
-Date:   Fri, 31 Mar 2023 21:43:44 -0400
-Message-Id: <20230401014350.3357107-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230401014350.3357107-1-sashal@kernel.org>
-References: <20230401014350.3357107-1-sashal@kernel.org>
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 386091F8D9;
+        Mon,  3 Apr 2023 09:26:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1680514014; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dD5mb90+GHm9wBE5Mlt3//7atUZgg8lKi994A27Sm5Q=;
+        b=2S4SKiU+vFQ91fvzKCZ6togVsV3AMf8gjnEsEmFgV5+OIrAYALI9m7J4sLWXI84YzHMAHt
+        uD0vbXNmpAZekxEe2CM8bfdTotRG867XyeuglywITPGd4CBg7e0vH/7Vdnu1PTCbdQsXg+
+        4TZI4gHOMi091dpGlfZIs2lIR7n47Co=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1680514014;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dD5mb90+GHm9wBE5Mlt3//7atUZgg8lKi994A27Sm5Q=;
+        b=qg+E357xtXrxgek5i3iRfTZh2Dk/r2o6MikDtk1VGmCFUTOYw0jOHyxSByKtZmlfUqHQbz
+        6ANQNJJ4CgBPjVCA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 80B1A13416;
+        Mon,  3 Apr 2023 09:26:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id lfuoHt2bKmS9YQAAMHmgww
+        (envelope-from <vbabka@suse.cz>); Mon, 03 Apr 2023 09:26:53 +0000
+Message-ID: <43234108-fa4f-7583-e3b4-2daa2de89fb0@suse.cz>
+Date:   Mon, 3 Apr 2023 11:26:53 +0200
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCHv9 02/14] mm: Add support for unaccepted memory
+Content-Language: en-US
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
+        khalid.elmously@canonical.com, philip.cox@canonical.com,
+        aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
+        linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mike Rapoport <rppt@linux.ibm.com>
+References: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
+ <20230330114956.20342-3-kirill.shutemov@linux.intel.com>
+From:   Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20230330114956.20342-3-kirill.shutemov@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.8 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+On 3/30/23 13:49, Kirill A. Shutemov wrote:
+> UEFI Specification version 2.9 introduces the concept of memory
+> acceptance. Some Virtual Machine platforms, such as Intel TDX or AMD
+> SEV-SNP, require memory to be accepted before it can be used by the
+> guest. Accepting happens via a protocol specific to the Virtual Machine
+> platform.
+> 
+> There are several ways kernel can deal with unaccepted memory:
+> 
+>  1. Accept all the memory during the boot. It is easy to implement and
+>     it doesn't have runtime cost once the system is booted. The downside
+>     is very long boot time.
+> 
+>     Accept can be parallelized to multiple CPUs to keep it manageable
+>     (i.e. via DEFERRED_STRUCT_PAGE_INIT), but it tends to saturate
+>     memory bandwidth and does not scale beyond the point.
+> 
+>  2. Accept a block of memory on the first use. It requires more
+>     infrastructure and changes in page allocator to make it work, but
+>     it provides good boot time.
+> 
+>     On-demand memory accept means latency spikes every time kernel steps
+>     onto a new memory block. The spikes will go away once workload data
+>     set size gets stabilized or all memory gets accepted.
+> 
+>  3. Accept all memory in background. Introduce a thread (or multiple)
+>     that gets memory accepted proactively. It will minimize time the
+>     system experience latency spikes on memory allocation while keeping
+>     low boot time.
+> 
+>     This approach cannot function on its own. It is an extension of #2:
+>     background memory acceptance requires functional scheduler, but the
+>     page allocator may need to tap into unaccepted memory before that.
+> 
+>     The downside of the approach is that these threads also steal CPU
+>     cycles and memory bandwidth from the user's workload and may hurt
+>     user experience.
+> 
+> The patch implements #1 and #2 for now. #2 is the default. Some
+> workloads may want to use #1 with accept_memory=eager in kernel
+> command line. #3 can be implemented later based on user's demands.
+> 
+> Support of unaccepted memory requires a few changes in core-mm code:
+> 
+>   - memblock has to accept memory on allocation;
+> 
+>   - page allocator has to accept memory on the first allocation of the
+>     page;
+> 
+> Memblock change is trivial.
+> 
+> The page allocator is modified to accept pages. New memory gets accepted
+> before putting pages on free lists. It is done lazily: only accept new
+> pages when we run out of already accepted memory. The memory gets
+> accepted until the high watermark is reached.
 
-[ Upstream commit 5ed213dd64681f84a01ceaa82fb336cf7d59ddcf ]
+Great.
 
-Another Lenovo convertable which reports a landscape resolution of
-1920x1200 with a pitch of (1920 * 4) bytes, while the actual framebuffer
-has a resolution of 1200x1920 with a pitch of (1200 * 4) bytes.
+> Architecture has to provide two helpers if it wants to support
+> unaccepted memory:
+> 
+>  - accept_memory() makes a range of physical addresses accepted.
+> 
+>  - range_contains_unaccepted_memory() checks anything within the range
+>    of physical addresses requires acceptance.
+> 
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Acked-by: Mike Rapoport <rppt@linux.ibm.com>	# memblock
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/firmware/efi/sysfb_efi.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-diff --git a/drivers/firmware/efi/sysfb_efi.c b/drivers/firmware/efi/sysfb_efi.c
-index 7ac757843dcfe..24d6f6e08df8b 100644
---- a/drivers/firmware/efi/sysfb_efi.c
-+++ b/drivers/firmware/efi/sysfb_efi.c
-@@ -274,6 +274,14 @@ static const struct dmi_system_id efifb_dmi_swap_width_height[] __initconst = {
- 					"IdeaPad Duet 3 10IGL5"),
- 		},
- 	},
-+	{
-+		/* Lenovo Yoga Book X91F / X91L */
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			/* Non exact match to match F + L versions */
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Lenovo YB1-X91"),
-+		},
-+	},
- 	{},
- };
- 
--- 
-2.39.2
+Just a small suggestion below:
+
+> +
+> +static bool try_to_accept_memory(struct zone *zone, unsigned int order)
+> +{
+> +	long to_accept;
+> +	int ret = false;
+> +
+> +	if (!static_branch_unlikely(&zones_with_unaccepted_pages))
+> +		return false;
+
+
+This potentially (depends on what compiler decides) means we'll call this
+function just to skip the static branch. OTOH forcing it as inline would be
+wasteful too. So I'd split that away and make the callers do that static
+branch check inline. Just as deferred_pages_enabled() is used.
+
+> +	/* How much to accept to get to high watermark? */
+> +	to_accept = high_wmark_pages(zone) -
+> +		    (zone_page_state(zone, NR_FREE_PAGES) -
+> +		    __zone_watermark_unusable_free(zone, order, 0));
+> +
+> +	/* Accept at least one page */
+> +	do {
+> +		if (!try_to_accept_memory_one(zone))
+> +			break;
+> +		ret = true;
+> +		to_accept -= MAX_ORDER_NR_PAGES;
+> +	} while (to_accept > 0);
+> +
+> +	return ret;
+> +}
 
