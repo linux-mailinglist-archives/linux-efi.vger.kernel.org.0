@@ -2,50 +2,52 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 693486D6711
+	by mail.lfdr.de (Postfix) with ESMTP id BFFD76D6712
 	for <lists+linux-efi@lfdr.de>; Tue,  4 Apr 2023 17:20:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235583AbjDDPUL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        id S235594AbjDDPUL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
         Tue, 4 Apr 2023 11:20:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36886 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235595AbjDDPUI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 4 Apr 2023 11:20:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B40144488
-        for <linux-efi@vger.kernel.org>; Tue,  4 Apr 2023 08:20:07 -0700 (PDT)
+        with ESMTP id S230491AbjDDPUK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 4 Apr 2023 11:20:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E316446B6
+        for <linux-efi@vger.kernel.org>; Tue,  4 Apr 2023 08:20:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5002A635AD
-        for <linux-efi@vger.kernel.org>; Tue,  4 Apr 2023 15:20:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8DCC433EF;
-        Tue,  4 Apr 2023 15:20:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B931635AD
+        for <linux-efi@vger.kernel.org>; Tue,  4 Apr 2023 15:20:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C191C433D2;
+        Tue,  4 Apr 2023 15:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680621606;
-        bh=bmx05/9L9HmqEuX9FxtcTRzHw8Tj9+xjoqSPcHU9RrE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=gWYnS+BHUWP927mDpZBhn2USrwWBCauWknnLAEc78npzuFfs2L52FOOx7eJlz/WmN
-         xnsv95l1s54ky3JysdOnIADN8Eror4TLgWZ1fNGovoPjFySQHYbRFjrosmKT/zJlpH
-         bd3v6DGyunRpE8Z1nSHYAmmeQ0LaBGdMHOm6vdz+V6MJe6ObL8yxqYaUeEvdAMooq3
-         XUbGRFjgJ6dtMUe1o9yo99CqJMMoF1dA8QjtQ/YXhb1wqn76A+MutsRKCSq6mVSqnW
-         4MOTiCGrYt1qxU1jJxyE4OIZXVPDGDaszPzqgfwVM5hBMAsqo6pqPZ00ZpxA7lVSy5
-         DdcBpxRYM+tcw==
+        s=k20201202; t=1680621608;
+        bh=NN1vX7GS8UcvvMTsQiKYpCnrGd1Eg9mW+O4yymmSSt8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=MeYDBCPmAPj9dc7jnexw4cX8cbFyMj1wHuEfW9YKhA3K+0McpPu32F5m5Athdpd2T
+         aJ1ud/evrdfR1ByV9TbhOiqiQMwGrVpZ0YZ0wk3IoLpPXUcVANvBS6FTUIu69kbtN4
+         xlWqINE1R20TwzN229/yuxgf+4vA1aKNwKwuHI1oLNICv6BMLlm9Mj3Ey/bvf1xrQB
+         9XHJjxK476gK5nnvvKwSc+TlYWGUAAwr3SCEFzQb5yxgosOitXIvJTYTQkRqfUv9zy
+         +3bVCeYOHJ2Z6WjRU2zHU5OZ2fqguMyrX8JaYBeHA1ArNhzof6P4FFiTA1IZKF8piG
+         ULvC9hRMkeOfg==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org, will@kernel.org,
         catalin.marinas@arm.com, mark.rutland@arm.com, broonie@Kernel.org,
         Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 0/6] arm64/efi/zboot: Clean up and enable BTI annotation
-Date:   Tue,  4 Apr 2023 17:19:53 +0200
-Message-Id: <20230404151959.2774612-1-ardb@kernel.org>
+Subject: [PATCH 1/6] efi/pe: Import new BTI/IBT header flags from the spec
+Date:   Tue,  4 Apr 2023 17:19:54 +0200
+Message-Id: <20230404151959.2774612-2-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230404151959.2774612-1-ardb@kernel.org>
+References: <20230404151959.2774612-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1533; i=ardb@kernel.org; h=from:subject; bh=bmx05/9L9HmqEuX9FxtcTRzHw8Tj9+xjoqSPcHU9RrE=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIUXHQWx38d6qeBP1CxE1xWfc1k8pcrnWd+rZ2vrXJr9yp RZz7W3qKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABNZps3wV252uPl20bIrZybJ 7I6y+p+Y+yfsI0d9mP4rJp6lF6/d0mf47xKjf6ru87flMnU6Cl9eFd//0uxp5rjZflsL17at6Z0 2rAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1294; i=ardb@kernel.org; h=from:subject; bh=NN1vX7GS8UcvvMTsQiKYpCnrGd1Eg9mW+O4yymmSSt8=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIUXHQSKJO8n9t8kkj9eO1zZcSvglbSglwHn6mf+tuBOBC S3xkuUdpSwMYhwMsmKKLAKz/77beXqiVK3zLFmYOaxMIEMYuDgFYCKifxkZtpenP3txLsn2T1Ko qf+d09MaDK7Jqrr5ZE2q/m4zs6r1McN/hw5zN7O2ue7F6aaXeY4H/Lv42Ow629qO02cTuSVf8J7 mAQA=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,37 +55,41 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Some tweaks for the arm64 EFI header and the zboot version, to add the
-annotation that informs the loader that the code regions may be mapped
-with BTI enforcement enabled.
+The latest version of your favorite fork of the PE/COFF spec includes a
+new type of header flag that is intended to be used in the context of
+EFI firmware to indicate to the image loader that the executable regions
+of an image can be mapped with BTI/IBT enforcement enabled.
 
-As a related cleanup, add the combined codesize (text+rodata+inittext)
-to the arm64 Image header, so the EFI zboot loader can grab it from the
-image after decompressing it.
+So let's import these definitions so we can use them in subsequent
+patches.
 
-Ard Biesheuvel (6):
-  efi/pe: Import new BTI/IBT header flags from the spec
-  arm64: efi: Enable BTI codegen and add PE/COFF annotation
-  arm64: image: Add code size to the image header
-  efi/zboot: Add BSS padding before compression
-  efi/zboot: Set forward edge CFI compat header flag if supported
-  efi/zboot: arm64: Grab code size from image header
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ include/linux/pe.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
- Documentation/arm64/booting.rst             |  3 +-
- arch/arm64/boot/Makefile                    |  1 +
- arch/arm64/include/asm/image.h              |  3 +-
- arch/arm64/kernel/efi-header.S              | 71 ++++++++++++--------
- arch/arm64/kernel/head.S                    |  3 +-
- arch/arm64/kernel/image.h                   | 10 ++-
- drivers/firmware/efi/libstub/Makefile       |  3 +-
- drivers/firmware/efi/libstub/Makefile.zboot | 41 +++++++----
- drivers/firmware/efi/libstub/arm64.c        | 18 +++--
- drivers/firmware/efi/libstub/efistub.h      |  3 +-
- drivers/firmware/efi/libstub/zboot-header.S | 51 +++++++++-----
- drivers/firmware/efi/libstub/zboot.c        | 13 +---
- include/linux/pe.h                          |  4 ++
- 13 files changed, 139 insertions(+), 85 deletions(-)
-
+diff --git a/include/linux/pe.h b/include/linux/pe.h
+index 6ffabf1e6d039e67..5e1e115408702c77 100644
+--- a/include/linux/pe.h
++++ b/include/linux/pe.h
+@@ -118,6 +118,9 @@
+ #define IMAGE_DLLCHARACTERISTICS_WDM_DRIVER             0x2000
+ #define IMAGE_DLLCHARACTERISTICS_TERMINAL_SERVER_AWARE  0x8000
+ 
++#define IMAGE_DLLCHARACTERISTICS_EX_CET_COMPAT		0x0001
++#define IMAGE_DLLCHARACTERISTICS_EX_FORWARD_CFI_COMPAT	0x0040
++
+ /* they actually defined 0x00000000 as well, but I think we'll skip that one. */
+ #define IMAGE_SCN_RESERVED_0	0x00000001
+ #define IMAGE_SCN_RESERVED_1	0x00000002
+@@ -165,6 +168,7 @@
+ #define IMAGE_SCN_MEM_WRITE	0x80000000 /* writeable */
+ 
+ #define IMAGE_DEBUG_TYPE_CODEVIEW	2
++#define IMAGE_DEBUG_TYPE_EX_DLLCHARACTERISTICS	20
+ 
+ #ifndef __ASSEMBLY__
+ 
 -- 
 2.39.2
 
