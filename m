@@ -2,48 +2,48 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70C876D6715
-	for <lists+linux-efi@lfdr.de>; Tue,  4 Apr 2023 17:20:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB0CB6D6716
+	for <lists+linux-efi@lfdr.de>; Tue,  4 Apr 2023 17:20:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230491AbjDDPUP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 4 Apr 2023 11:20:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37108 "EHLO
+        id S235163AbjDDPUT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 4 Apr 2023 11:20:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235163AbjDDPUP (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 4 Apr 2023 11:20:15 -0400
+        with ESMTP id S235601AbjDDPUS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 4 Apr 2023 11:20:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC5BE4205
-        for <linux-efi@vger.kernel.org>; Tue,  4 Apr 2023 08:20:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D12A4205
+        for <linux-efi@vger.kernel.org>; Tue,  4 Apr 2023 08:20:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C295635CE
-        for <linux-efi@vger.kernel.org>; Tue,  4 Apr 2023 15:20:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A211C433D2;
-        Tue,  4 Apr 2023 15:20:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2CC93635CB
+        for <linux-efi@vger.kernel.org>; Tue,  4 Apr 2023 15:20:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C1CC433EF;
+        Tue,  4 Apr 2023 15:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680621612;
-        bh=3xyHT1OtWiQVUUMET2eYvQyZR3EWBYolFXO32v+waq8=;
+        s=k20201202; t=1680621614;
+        bh=Zod0gLV50Ql+WmIuLOmGh7UoZX0DfCWPHhuwknk4N1E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WhJIUMo9QccUr51qalHsyQ0RRUZluG/7miU9i1tX7u7zJoBfLxESneJbDAgjmM89I
-         zoq8W09uQwrba8X1z1GI0tySj9MzgyjRLpCkY/ANge1JvH7/QSGAigqHc3ShQ3nkDc
-         g2DHCxnv/hCbU+91pvzmYXocGg07/+4/VjM/uZ1N++heRnnjsvaXejN8yA/gQ2Q0BQ
-         Df6SZx6wcUMlzi1M8cdTGGZSpTeBCAUsSzRtFAyhgcnDsogkkzo39L+jqb5z6RbS3Z
-         Y40vbVGQ9B83Gni2Z1EObqJW60tFsZqNiUXZsxgnJVu8JPb8wYhpQTcuRIYbnA/qbx
-         s9BdPlaYAFyGw==
+        b=SnXiglBacTaqBx4Kx+/0h00V7M+hT91ZfknYmjh2WMm9afuri6GCekKeGSnaTvM5o
+         55k8PDszt7f1igsa2wjSMxfDGQcK7D7j72yCx8Ro9CKJcF3/IK3DaLTv8HL3A5ZQTt
+         jEzKrfpATFoALA5t3iQXH/vMrZaw4wN45PAtkEOn3L5gr4j4x1wOOa1ZlDXQwgSSy+
+         u1aS8WXrFTl8vG7fPpN7CFwrn0l71W/DcWJAG0kcpHHw6j39UGodquTdQvLe5HICOq
+         umjWxBALq2nCXIn8anewTRG0XHSi6KLja7vMuqpSiPzF9Lbwl3QwHCo516/vzS0Sxh
+         k+1PxA9/bjBuQ==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org, will@kernel.org,
         catalin.marinas@arm.com, mark.rutland@arm.com, broonie@Kernel.org,
         Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 3/6] arm64: image: Add code size to the image header
-Date:   Tue,  4 Apr 2023 17:19:56 +0200
-Message-Id: <20230404151959.2774612-4-ardb@kernel.org>
+Subject: [PATCH 4/6] efi/zboot: Add BSS padding before compression
+Date:   Tue,  4 Apr 2023 17:19:57 +0200
+Message-Id: <20230404151959.2774612-5-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230404151959.2774612-1-ardb@kernel.org>
 References: <20230404151959.2774612-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3480; i=ardb@kernel.org; h=from:subject; bh=3xyHT1OtWiQVUUMET2eYvQyZR3EWBYolFXO32v+waq8=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIUXHQWpDHVvme7G7Zx5EitjEWIldY5z244m/zuMJO38Er T0hnbulo5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAExEZh4jwxbjAx47uM7OCrFW 45+UvUDWbNnruYU3Flp+yXM7+mWfmzfDHw7rN8t/Hnq99LCFQ+NdEfW6IB5WR83zNhXCqbcD9pb bcAEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5838; i=ardb@kernel.org; h=from:subject; bh=Zod0gLV50Ql+WmIuLOmGh7UoZX0DfCWPHhuwknk4N1E=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIUXHQZrxxmvjYq7gN4wtMaEveEsPip3WD3u2sOtx+vLvM +8mFG7pKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABNZZcTI8LgkSlBywpY+S0c5 o1kvLV3XHrfcNuXyhke8EmzrQ48LhDMyPForPY1n+cX/e/nsEv9rF1pdWGxvdvPJycq+bWEL/5k c4AUA
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -55,90 +55,126 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-In order for loaders to be able to create a preliminary mapping of the
-image without having to rely on mappings that have both write and
-execute permissions, it is necessary to expose the size of the leading
-part of the image consisting of .text, .rodata and .inittext.
+We don't really care about the size of the decompressed image - what
+matters is how much space needs to be allocated for the image to
+execute, and this includes space for BSS that is not part of the
+loadable image and so it is not accounted for in the decompressed size.
 
-So add this information to the arm64 bare metal boot header.
+So let's add some zero padding to the end of the image: this compresses
+well, and it ensures that BSS is accounted for, and as a bonus, it will
+be zeroed before launching the image.
+
+Since all architectures that implement support for EFI zboot carry this
+value in the header in the same location, we can just grab it from the
+binary that is being compressed.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- Documentation/arm64/booting.rst |  3 ++-
- arch/arm64/include/asm/image.h  |  3 ++-
- arch/arm64/kernel/head.S        |  3 ++-
- arch/arm64/kernel/image.h       | 10 +++++++---
- 4 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/firmware/efi/libstub/Makefile.zboot | 36 +++++++++++++++-----
+ drivers/firmware/efi/libstub/zboot-header.S |  2 +-
+ drivers/firmware/efi/libstub/zboot.c        |  6 ++--
+ 3 files changed, 31 insertions(+), 13 deletions(-)
 
-diff --git a/Documentation/arm64/booting.rst b/Documentation/arm64/booting.rst
-index ffeccdd6bdac9442..4d6966833c8c7472 100644
---- a/Documentation/arm64/booting.rst
-+++ b/Documentation/arm64/booting.rst
-@@ -79,7 +79,8 @@ The decompressed kernel image contains a 64-byte header as follows::
-   u64 text_offset;		/* Image load offset, little endian */
-   u64 image_size;		/* Effective Image size, little endian */
-   u64 flags;			/* kernel flags, little endian */
--  u64 res2	= 0;		/* reserved */
-+  u32 code_size;		/* Image code size, little endian */
-+  u32 res2	= 0;		/* reserved */
-   u64 res3	= 0;		/* reserved */
-   u64 res4	= 0;		/* reserved */
-   u32 magic	= 0x644d5241;	/* Magic number, little endian, "ARM\x64" */
-diff --git a/arch/arm64/include/asm/image.h b/arch/arm64/include/asm/image.h
-index c2b13213c7207c02..5361694c5a7b4956 100644
---- a/arch/arm64/include/asm/image.h
-+++ b/arch/arm64/include/asm/image.h
-@@ -47,7 +47,8 @@ struct arm64_image_header {
- 	__le64 text_offset;
- 	__le64 image_size;
- 	__le64 flags;
--	__le64 res2;
-+	__le32 code_size;
-+	__le32 res2;
- 	__le64 res3;
- 	__le64 res4;
- 	__le32 magic;
-diff --git a/arch/arm64/kernel/head.S b/arch/arm64/kernel/head.S
-index b98970907226b36c..8f684a2e8f05ac7e 100644
---- a/arch/arm64/kernel/head.S
-+++ b/arch/arm64/kernel/head.S
-@@ -62,7 +62,8 @@
- 	.quad	0				// Image load offset from start of RAM, little-endian
- 	le64sym	_kernel_size_le			// Effective size of kernel image, little-endian
- 	le64sym	_kernel_flags_le		// Informative flags, little-endian
--	.quad	0				// reserved
-+	.long	_kernel_codesize_le		// Size of leading text/rodata/inittext region, LE
-+	.long	0				// reserved
- 	.quad	0				// reserved
- 	.quad	0				// reserved
- 	.ascii	ARM64_IMAGE_MAGIC		// Magic number
-diff --git a/arch/arm64/kernel/image.h b/arch/arm64/kernel/image.h
-index 7bc3ba8979019182..4c08409b2129d510 100644
---- a/arch/arm64/kernel/image.h
-+++ b/arch/arm64/kernel/image.h
-@@ -34,6 +34,9 @@
- #define DATA_LE32(data) ((data) & 0xffffffff)
- #endif
+diff --git a/drivers/firmware/efi/libstub/Makefile.zboot b/drivers/firmware/efi/libstub/Makefile.zboot
+index ccdd6a130d98618e..2d78770236049b21 100644
+--- a/drivers/firmware/efi/libstub/Makefile.zboot
++++ b/drivers/firmware/efi/libstub/Makefile.zboot
+@@ -3,6 +3,14 @@
+ # to be include'd by arch/$(ARCH)/boot/Makefile after setting
+ # EFI_ZBOOT_PAYLOAD, EFI_ZBOOT_BFD_TARGET and EFI_ZBOOT_MACH_TYPE
  
-+#define DEFINE_IMAGE_LE32(sym, data)				\
-+	sym = DATA_LE32((data) & 0xffffffff)
++quiet_cmd_copy_and_pad = PAD     $@
++      cmd_copy_and_pad = cp $< $@ && \
++			 truncate -s $(shell hexdump -s16 -n4 -e '"%u"' $<) $@
 +
- #define DEFINE_IMAGE_LE64(sym, data)				\
- 	sym##_lo32 = DATA_LE32((data) & 0xffffffff);		\
- 	sym##_hi32 = DATA_LE32((data) >> 32)
-@@ -60,8 +63,9 @@
-  * regardless of the endianness of the kernel. While constant values could be
-  * endian swapped in head.S, all are done here for consistency.
-  */
--#define HEAD_SYMBOLS						\
--	DEFINE_IMAGE_LE64(_kernel_size_le, _end - _text);	\
--	DEFINE_IMAGE_LE64(_kernel_flags_le, __HEAD_FLAGS);
-+#define HEAD_SYMBOLS								\
-+	DEFINE_IMAGE_LE64(_kernel_size_le, _end - _text);			\
-+	DEFINE_IMAGE_LE64(_kernel_flags_le, __HEAD_FLAGS);			\
-+	DEFINE_IMAGE_LE32(_kernel_codesize_le, __initdata_begin - _text);
++# Pad the file to the size of the uncompressed image in memory, including BSS
++$(obj)/vmlinux.bin: $(obj)/$(EFI_ZBOOT_PAYLOAD) FORCE
++	$(call if_changed,copy_and_pad)
++
+ comp-type-$(CONFIG_KERNEL_GZIP)		:= gzip
+ comp-type-$(CONFIG_KERNEL_LZ4)		:= lz4
+ comp-type-$(CONFIG_KERNEL_LZMA)		:= lzma
+@@ -10,16 +18,25 @@ comp-type-$(CONFIG_KERNEL_LZO)		:= lzo
+ comp-type-$(CONFIG_KERNEL_XZ)		:= xzkern
+ comp-type-$(CONFIG_KERNEL_ZSTD)		:= zstd22
  
- #endif /* __ARM64_KERNEL_IMAGE_H */
+-# Copy the SizeOfHeaders, SizeOfCode and SizeOfImage fields from the payload to
+-# the end of the compressed image. Note that this presupposes a PE header
+-# offset of 64 bytes, which is what arm64, RISC-V and LoongArch use.
+-quiet_cmd_compwithsize = $(quiet_cmd_$(comp-type-y))
+-      cmd_compwithsize = $(cmd_$(comp-type-y)) && ( \
++# in GZIP, the appended le32 carrying the uncompressed size is part of the
++# format, but in other cases, we just append it at the end for convenience,
++# causing the original tools to complain when checking image integrity.
++# So disregard it when calculating the payload size in the zimage header.
++zboot-method-y                         := $(comp-type-y)_with_size
++zboot-size-len-y                       := 12
++
++zboot-method-$(CONFIG_KERNEL_GZIP)     := gzip
++zboot-size-len-$(CONFIG_KERNEL_GZIP)   := 8
++
++# Copy the SizeOfHeaders and SizeOfCode fields from the payload to the end of
++# the compressed image. Note that this presupposes a PE header offset of 64
++# bytes, which is what arm64, RISC-V and LoongArch use.
++quiet_cmd_compwithsize = $(quiet_cmd_$(zboot-method-y))
++      cmd_compwithsize = $(cmd_$(zboot-method-y)) && ( \
+ 			   dd status=none if=$< bs=4 count=1 skip=37 ; \
+-			   dd status=none if=$< bs=4 count=1 skip=23 ; \
+-			   dd status=none if=$< bs=4 count=1 skip=36 ) >> $@
++			   dd status=none if=$< bs=4 count=1 skip=23 ) >> $@
+ 
+-$(obj)/vmlinuz: $(obj)/$(EFI_ZBOOT_PAYLOAD) FORCE
++$(obj)/vmlinuz: $(obj)/vmlinux.bin FORCE
+ 	$(call if_changed,compwithsize)
+ 
+ OBJCOPYFLAGS_vmlinuz.o := -I binary -O $(EFI_ZBOOT_BFD_TARGET) \
+@@ -29,6 +46,7 @@ $(obj)/vmlinuz.o: $(obj)/vmlinuz FORCE
+ 
+ AFLAGS_zboot-header.o += -DMACHINE_TYPE=IMAGE_FILE_MACHINE_$(EFI_ZBOOT_MACH_TYPE) \
+ 			 -DZBOOT_EFI_PATH="\"$(realpath $(obj)/vmlinuz.efi.elf)\"" \
++			 -DZBOOT_SIZE_LEN=$(zboot-size-len-y) \
+ 			 -DCOMP_TYPE="\"$(comp-type-y)\""
+ 
+ $(obj)/zboot-header.o: $(srctree)/drivers/firmware/efi/libstub/zboot-header.S FORCE
+@@ -44,4 +62,4 @@ OBJCOPYFLAGS_vmlinuz.efi := -O binary
+ $(obj)/vmlinuz.efi: $(obj)/vmlinuz.efi.elf FORCE
+ 	$(call if_changed,objcopy)
+ 
+-targets += zboot-header.o vmlinuz vmlinuz.o vmlinuz.efi.elf vmlinuz.efi
++targets += zboot-header.o vmlinux.bin vmlinuz vmlinuz.o vmlinuz.efi.elf vmlinuz.efi
+diff --git a/drivers/firmware/efi/libstub/zboot-header.S b/drivers/firmware/efi/libstub/zboot-header.S
+index 445cb646eaaaf1c6..053aba073594936b 100644
+--- a/drivers/firmware/efi/libstub/zboot-header.S
++++ b/drivers/firmware/efi/libstub/zboot-header.S
+@@ -17,7 +17,7 @@ __efistub_efi_zboot_header:
+ 	.long		MZ_MAGIC
+ 	.ascii		"zimg"					// image type
+ 	.long		__efistub__gzdata_start - .Ldoshdr	// payload offset
+-	.long		__efistub__gzdata_size - 12		// payload size
++	.long		__efistub__gzdata_size - ZBOOT_SIZE_LEN	// payload size
+ 	.long		0, 0					// reserved
+ 	.asciz		COMP_TYPE				// compression type
+ 	.org		.Ldoshdr + 0x38
+diff --git a/drivers/firmware/efi/libstub/zboot.c b/drivers/firmware/efi/libstub/zboot.c
+index 6105e5e2eda4612b..63ece480090032c1 100644
+--- a/drivers/firmware/efi/libstub/zboot.c
++++ b/drivers/firmware/efi/libstub/zboot.c
+@@ -91,12 +91,12 @@ efi_zboot_entry(efi_handle_t handle, efi_system_table_t *systab)
+ 	efi_info("Decompressing Linux Kernel...\n");
+ 
+ 	// SizeOfImage from the compressee's PE/COFF header
+-	alloc_size = round_up(get_unaligned_le32(_gzdata_end - 4),
++	alloc_size = round_up(get_unaligned_le32(_gzdata_end - 12),
+ 			      EFI_ALLOC_ALIGN);
+ 
+ 	// SizeOfHeaders and SizeOfCode from the compressee's PE/COFF header
+-	code_size = get_unaligned_le32(_gzdata_end - 8) +
+-		    get_unaligned_le32(_gzdata_end - 12);
++	code_size = get_unaligned_le32(_gzdata_end - 4) +
++		    get_unaligned_le32(_gzdata_end - 8);
+ 
+ 	 // If the architecture has a preferred address for the image,
+ 	 // try that first.
 -- 
 2.39.2
 
