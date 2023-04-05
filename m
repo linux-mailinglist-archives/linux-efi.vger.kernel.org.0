@@ -2,86 +2,88 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6ED56D83C3
-	for <lists+linux-efi@lfdr.de>; Wed,  5 Apr 2023 18:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA6EF6D84A3
+	for <lists+linux-efi@lfdr.de>; Wed,  5 Apr 2023 19:13:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbjDEQdI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 5 Apr 2023 12:33:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40562 "EHLO
+        id S229379AbjDERNn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 5 Apr 2023 13:13:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231444AbjDEQdI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 5 Apr 2023 12:33:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DDCC40C4
-        for <linux-efi@vger.kernel.org>; Wed,  5 Apr 2023 09:33:07 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S231346AbjDERNm (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 5 Apr 2023 13:13:42 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9262B1BEF;
+        Wed,  5 Apr 2023 10:13:39 -0700 (PDT)
+Received: from zn.tnic (p5de8e687.dip0.t-ipconnect.de [93.232.230.135])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 29B6A629CC
-        for <linux-efi@vger.kernel.org>; Wed,  5 Apr 2023 16:33:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E066FC433D2;
-        Wed,  5 Apr 2023 16:33:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680712386;
-        bh=u4ib30Z0EhH1c74Q8RUCT9xZafldihLT8xoVTLu78mw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=E4cWke0G6LVwI6RNzhwZJ8btwn4QUcwzjv0mdfdnLbyabBEoox1UgA9auI8yosNxt
-         c0bv64I9rFTv1hJLMXV7lpLTN6omTWBWxpBnJckOTGqfxO05vVv0PP5PHuUJ0yUweP
-         X+Jav37jELmAKP5XTKV2xZOUFvRNagTgehrQgTqXBiDl0vDZsRPJVm7vwN6BczNiJQ
-         Ox8rTIu3Ql1xlyOW86nM0X7a+5xEEFyfKmG5xDcGNOUwTeeFcimXVoGTkuVrj3hpi9
-         /ERSCWts+JgZkzrUklTBzMvw5jdAjvqqZVfK2QxrifwDmUzA8HNGDsVFz8737RCBqN
-         hfcZz7jlQNBaQ==
-Date:   Wed, 5 Apr 2023 17:33:01 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com
-Subject: Re: [PATCH 2/6] arm64: efi: Enable BTI codegen and add PE/COFF
- annotation
-Message-ID: <9b0f0dfd-0fa0-4791-ae03-bf43157542f2@sirena.org.uk>
-References: <20230404151959.2774612-1-ardb@kernel.org>
- <20230404151959.2774612-3-ardb@kernel.org>
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E9E381EC041F;
+        Wed,  5 Apr 2023 19:13:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1680714818;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=l1yYjOVfDDFDfs+ACNRWWBr1VXqTIVZyacyw+scxJDU=;
+        b=Gmn6hTWrm+VCwVrg4U8luazNYwEGUj0L7/c8GfWaRGh/2QUA59eMWi9NEYt8MRAyVGeyzA
+        qXNifYvSySqG3DJL92TIzWdPoRPuar8waRlL8Tv7rX97R0nZNT6hatwJ6jvmis/4L7nLps
+        mRcXntv6qCLJqe6IowxCItjNC8wChHg=
+Date:   Wed, 5 Apr 2023 19:13:33 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Evgeniy Baskov <baskov@ispras.ru>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Peter Jones <pjones@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        "Limonciello, Mario" <mario.limonciello@amd.com>,
+        joeyli <jlee@suse.com>, lvc-project@linuxtesting.org,
+        x86@kernel.org, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v5 01/27] x86/boot: Align vmlinuz sections on page size
+Message-ID: <20230405171333.GDZC2sPc3D7rDdK6TH@fat_crate.local>
+References: <cover.1678785672.git.baskov@ispras.ru>
+ <159597c484778da5e59c3a5728669f131f800b5a.1678785672.git.baskov@ispras.ru>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="xSLbVpdFyz9QoyD0"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230404151959.2774612-3-ardb@kernel.org>
-X-Cookie: 1 bulls, 3 cows.
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <159597c484778da5e59c3a5728669f131f800b5a.1678785672.git.baskov@ispras.ru>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Tue, Mar 14, 2023 at 01:13:28PM +0300, Evgeniy Baskov wrote:
+> To protect sections on page table level each section needs to be
+> aligned on page size (4KB).
 
---xSLbVpdFyz9QoyD0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Protect against what?
 
-On Tue, Apr 04, 2023 at 05:19:55PM +0200, Ard Biesheuvel wrote:
+> Set sections alignment in linker script for the kernel decompressor
+> (boot/compressed/vmlinux.lds.S).
 
-> So let's no longer disable BTI codegen for the EFI stub, and set the
-> newly introduced PE/COFF header flag when the kernel is built with BTI
-> landing pads.
+Do not talk about *what* the patch is doing in the commit message - that
+should be obvious from the diff itself. Rather, concentrate on the *why*
+it needs to be done.
 
-Reviewed-by: Mark Brown <broonie@kernel.org>
+> Also introduce symbols that can be used to reference compressed
+> kernel blob section later in the later patches.
 
---xSLbVpdFyz9QoyD0
-Content-Type: application/pgp-signature; name="signature.asc"
+Introduce those with the respective patch that uses them. This one is
+adding section alignment only and that's all that it should do.
 
------BEGIN PGP SIGNATURE-----
+Thx.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmQtorwACgkQJNaLcl1U
-h9D/hwf+NnUc/YpqtCDSnIKUJ3ikHdk5CgoQEXxN+BrroG2oLKq+YiwsZMEjiaOF
-KIkS+X6HKGtJyI89vchPXgKzi24QyA0QiAxyaZbROljYMgeH77MguatjLCE/yboQ
-8w0i7yRL0cpS6XVWpKYmQeAgrR3n8U1BAtXrjnk2P+D6VAfZPZrmA2TiOUI5kFP9
-dZ9S0nCug4urWZwdt/lJmvafY/jcs3BFPhK5kHxJwI06rKpdvMacOjaKJsC4loJX
-EWbszhVN9uO+Ho7W25F/+YNRLEDh9WIMHKXJ3au5GADZyOwYPvv0STuNuU/1pkjZ
-s4yNzw+cV6FvBT9zyyZZSavUJnD55w==
-=OA9u
------END PGP SIGNATURE-----
+-- 
+Regards/Gruss,
+    Boris.
 
---xSLbVpdFyz9QoyD0--
+https://people.kernel.org/tglx/notes-about-netiquette
