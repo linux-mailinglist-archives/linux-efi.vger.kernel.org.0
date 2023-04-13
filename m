@@ -2,180 +2,217 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3E1F6E1546
-	for <lists+linux-efi@lfdr.de>; Thu, 13 Apr 2023 21:40:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD83D6E15CD
+	for <lists+linux-efi@lfdr.de>; Thu, 13 Apr 2023 22:24:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229612AbjDMTkQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 13 Apr 2023 15:40:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38024 "EHLO
+        id S230193AbjDMUYw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 13 Apr 2023 16:24:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229493AbjDMTkP (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 13 Apr 2023 15:40:15 -0400
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2042.outbound.protection.outlook.com [40.107.93.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C71B55FFC;
-        Thu, 13 Apr 2023 12:40:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=X3NtqMvnvFg5crjKyt3lbg6pdPjHIZcDTqDSc2bbFhly7h3qkVFgKO7YOszFU6d3MHdXMv6Y8X47J42DMqTn4QipS8SqyNrujYAn+S4o6l7cTyrMj8OaD4XbMwySUmIIC+iMF01I9SxLcXyCe2l5B5nnOSrbTmL3sZcAPqfOUkzf7J4aVcGxExBxCuckQ5JgMKm72RzybnE5Vqoyuaf7LGqzW1ic/LVjMwUY3C61xdWJ9GkWT5jhvP0D7EqV+kHKP1lmmBzlP5ESge07N2a/GiTNFox8eJb4xyn++CQT9AOuP1BvKnorstWPV47nzce2C7FSpcZ/nhgddqp6aVqiug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q6t39aT3mvkoggfkY3A84W+xNdD0GNa/9jSZMc2nMoo=;
- b=RktDzs9/zTR2u+ZpKMKIcsw7y0Vp82U/3kW6H3cZcJdM3iYL/vAIZRYJ6pNeAyw2gBQOPYxwN9fNmTFC1Ee6HY4pYSEXEBZ0yXgp0+NWQe5OmzGKbyxFaGZ0wkGkFy13ueA0BjhVeSnsT1IkU881YS8IWSJ1xj5yfJD9wBsu5cDpjLbqp+oFKB/4QySFeOpxT92BV5dGteFEF6qkvCZwiQ+8hrrvvCBod5dgWZcAHGh8NJqfTiQKLDN8b5fw3LyyQ7BwaBD0EkRir+BjCwFNVgWzwwUOR4ndHUDc1P/2yYsPj1nHHSVMXSDoJzT8v0xhY7uLprVXkfqT8KrZM5+WQg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=q6t39aT3mvkoggfkY3A84W+xNdD0GNa/9jSZMc2nMoo=;
- b=vNIvk4ENupAGyvgcU4T+XENUtU9fC02PjoW9HKG58v8UGZ31gUkJEqoJT8ye4dvayu3Se7kuxPPPKl7ozUKMUQ7isRu43j2L6vcHCx0Y98Hp0pK+8GvJnQWpzhnCUp15tEH7DpumuO/kKzWGVA71dDmZ4NkCzHgxzRmmy287zyI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DS0PR12MB6390.namprd12.prod.outlook.com (2603:10b6:8:ce::7) by
- SA1PR12MB7442.namprd12.prod.outlook.com (2603:10b6:806:2b5::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6298.30; Thu, 13 Apr
- 2023 19:40:12 +0000
-Received: from DS0PR12MB6390.namprd12.prod.outlook.com
- ([fe80::48cb:9d06:e70b:4b42]) by DS0PR12MB6390.namprd12.prod.outlook.com
- ([fe80::48cb:9d06:e70b:4b42%3]) with mapi id 15.20.6298.030; Thu, 13 Apr 2023
- 19:40:12 +0000
-Message-ID: <9d66afdb-40bd-4254-547e-05f6481dd550@amd.com>
-Date:   Thu, 13 Apr 2023 14:40:10 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v3 2/6] efi/cper: Export cper_mem_err_unpack() for use by
- modules
-Content-Language: en-US
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     alison.schofield@intel.com, vishal.l.verma@intel.com,
-        ira.weiny@intel.com, bwidawsk@kernel.org, dan.j.williams@intel.com,
-        dave.jiang@intel.com, linux-cxl@vger.kernel.org, rrichter@amd.com,
-        linux-kernel@vger.kernel.org, bhelgaas@google.com,
-        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
-References: <20230411180302.2678736-1-terry.bowman@amd.com>
- <20230411180302.2678736-3-terry.bowman@amd.com>
- <20230413170816.0000333b@Huawei.com>
-From:   Terry Bowman <Terry.Bowman@amd.com>
-In-Reply-To: <20230413170816.0000333b@Huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH2PR20CA0003.namprd20.prod.outlook.com
- (2603:10b6:610:58::13) To DS0PR12MB6390.namprd12.prod.outlook.com
- (2603:10b6:8:ce::7)
+        with ESMTP id S230192AbjDMUYv (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 13 Apr 2023 16:24:51 -0400
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3E3D9029
+        for <linux-efi@vger.kernel.org>; Thu, 13 Apr 2023 13:24:44 -0700 (PDT)
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 9E2E63F42E
+        for <linux-efi@vger.kernel.org>; Thu, 13 Apr 2023 20:24:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1681417482;
+        bh=PQq+mz7dR9QT7iHE9yvRNq40ih9JKo4aO04MKlknKpw=;
+        h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+         Content-Type:In-Reply-To;
+        b=P9Ib82J0z6py5eCVvNqMUSup26AChJiN7A2A1cTiRVHCQ6KqWmZd42NENZ7UHcl6v
+         2bgX9ixsldO5eb7P6X4A3ABB+mvIeA8+R0vvI85n5Irs9TAzvHJ/HPDSq//eC6jjkb
+         pke9Zsz0RR4+wk0KR6jl4HLQ9HYzF/7izD7t5sAnSE321gUM1UvDVw7hcaflHnassJ
+         4kSo5MsvWfmYbMPDq2Ma61b0iDuvLpFfWduhTG6KCLq1cKQb/GP/mOhECltpWPt73/
+         wTAe9dYVAX4xnak5RY9jJfKV0C/Oa8/ogI8AvyZcpOY+Wt5Uo+8rMyALuAgj3cUL/9
+         8kAcRcE55T4eA==
+Received: by mail-wr1-f70.google.com with SMTP id g23-20020adfa497000000b002f420263923so1635724wrb.21
+        for <linux-efi@vger.kernel.org>; Thu, 13 Apr 2023 13:24:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681417480; x=1684009480;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PQq+mz7dR9QT7iHE9yvRNq40ih9JKo4aO04MKlknKpw=;
+        b=NbbRbXmvHqjfzT8apRb6XdbBGp7bSMMcsE98bX16sMEsR3X/L8peod8VoMB1pnoxip
+         kuHJBtiWsGVrUIzD/R7wFuEdgsbwip2NbO13+YDaSGKlWnA1XuE5btSrtqdLCNmiHdRj
+         5RHQ6+bMmsupHTjV3ZK9kDycYaVQ939b5EHLFkSpzVxHTzS8QQJ3Bgt8u8WiuOWrQPXR
+         QE7JfVlaDd8xqLHzSambZXyHhb+91gudNiRAg1Zq0YlXMbNybqcHMug4LOdXwDW7dDFP
+         k8IiQx7k2VRJfPKJTtoVK53anmNyV6UnY/qIawT9F6vEUKbiWjS0s5qtfR8zAjS+jtRc
+         iiJg==
+X-Gm-Message-State: AAQBX9eDx+Yt/MFy4IvAJenr7g8sa1CLopxLTp1Qb9Kxtc8kgmb3D8G9
+        0yqQR+SA9zt52zLNHDrZEtHwu5h6ql2lBEWBMkb6k///MYumSQ195p8pH+RQid8SbRA18k3gi1j
+        P4fTKRN0oourqmqOPoidZbTEHeECV2kn8u7MsIg==
+X-Received: by 2002:adf:cf08:0:b0:2f5:3dfd:f4d4 with SMTP id o8-20020adfcf08000000b002f53dfdf4d4mr2071346wrj.62.1681417479932;
+        Thu, 13 Apr 2023 13:24:39 -0700 (PDT)
+X-Google-Smtp-Source: AKy350Zdn7VEWjgL3YS9IZneemymvD7mh4MQ2zK5BN0i72TBG1rL1bn4ZXlcA+x4h2NjUz+QY6JLQw==
+X-Received: by 2002:adf:cf08:0:b0:2f5:3dfd:f4d4 with SMTP id o8-20020adfcf08000000b002f53dfdf4d4mr2071338wrj.62.1681417479568;
+        Thu, 13 Apr 2023 13:24:39 -0700 (PDT)
+Received: from localhost (uk.sesame.canonical.com. [185.125.190.60])
+        by smtp.gmail.com with ESMTPSA id u4-20020adfed44000000b002e5f3d81c06sm1971145wro.89.2023.04.13.13.24.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Apr 2023 13:24:39 -0700 (PDT)
+Date:   Thu, 13 Apr 2023 22:24:38 +0200
+From:   Andrea Righi <andrea.righi@canonical.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Darren Hart <darren@os.amperecomputing.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Paolo Pisati <paolo.pisati@canonical.com>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: kernel 6.2 stuck at boot (efi_call_rts) on arm64
+Message-ID: <ZDhlBjbRGufpDm6u@righiandr-XPS-13-7390>
+References: <CAMj1kXES+FxxbqUPH5TRjHak2MMC2Yksm0_P6wo__LQMH6Emhw@mail.gmail.com>
+ <ZBMes6r2FiAyo81F@righiandr-XPS-13-7390>
+ <CAMj1kXG0+NO6HayK2YqSJU0pwj8bn9Un_G-4VJr=hc1ELi-TpQ@mail.gmail.com>
+ <ZBMgy+Yh9fDxt44C@righiandr-XPS-13-7390>
+ <CAMj1kXEWs43NaTegzmGPFD7UGNVw_13hUCuvmwvKNVYPsfh5Vg@mail.gmail.com>
+ <CAMj1kXHKkK+6TDLebZw=H-ZZLVnwPGSRpNNKSbJoPwwA2vhG+w@mail.gmail.com>
+ <ZBNXaF32nIh3Ca49@righiandr-XPS-13-7390>
+ <CAMj1kXFgmPp8TPDWePNN2wU_TQ87dL940SFEaMKAm4oVaB86+g@mail.gmail.com>
+ <ZBOYBdJR00dOKPSx@fedora>
+ <CAMj1kXF8G3G41cPt+5=nB2D_uEaB_iXh6=3ZcTFTHrpsVm5D5g@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6390:EE_|SA1PR12MB7442:EE_
-X-MS-Office365-Filtering-Correlation-Id: f9e65e6b-949d-4483-2f38-08db3c56e5cf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: HzxCnA99jKOjJRPUOWRoqBGgVTVIrCdcgyPNEd1x2jWKr9+Ss6lQF9qXT6WLTMqPWQBnfmC7xgNsTNxi2LjOiLo5XE5w+Hrko4/dK/8Uq+K/cEtnhaZLsht/vStv3DGprUQ/G/NUb5ZQZPptgJx6D8Skr9VyIuDMO5CCEuk+VdBkl+mZlvhwYZp+a6d1JAZArjVtyAi+g0bujtX0wPkSrw7+5m4CBXO9EaeZN2OvhwnKk8CurBxvlBgGj09aNyZzFu3rROlcY4znYcsNT9yl6N0f/jtvqf0CLPRIlCy9THoVcHbde2SKMjueNQmAUkNufiLRk382xC9qvb3JFpnf0Ci5emgLr+8BWzQj6N1PUU5kokuFC5fDhwin37tDVtyhch10S2GkF5Gy6FTrfJ6tiheTk5irnBpar7tcCK4CM1Mv1bHmYTmWdP1NHrKc8lqnMpC5TTkeMZzg4WLkGGtMdO8vopyiUFobSC99undYdnARQlWlC0QyMpQwEd8pOV4MpjlOnmdGhJVSWz+ZReoKy33Pv2jNKNLfTbV3MBbJHfI4pSyLsLveQqRXHbxLjcoh3pnaAAjU5ifElkZ9yz6uW/sWFutKgkmgz4mgGsjd5JVk40WFXCjy8nF5ExKbwKFa0LfrzyAnBzm+i7RFiNxJAg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6390.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(366004)(396003)(39860400002)(376002)(346002)(451199021)(31686004)(31696002)(38100700002)(5660300002)(36756003)(2906002)(7416002)(6916009)(86362001)(316002)(8936002)(8676002)(4326008)(66556008)(66946007)(66476007)(41300700001)(53546011)(2616005)(186003)(6512007)(26005)(6506007)(478600001)(6486002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dWlWb2FNV1YvRnM5Z0N3UyswWHJpd2lQWjR2NDdsSlJlS3ZtWXN3ZXBQU1FH?=
- =?utf-8?B?NUU0V3Y1cmhVZHdHZXpmOHJ5em1qK1RRaXM3RlY0QW5pM0RnU1BnVDdIdXNu?=
- =?utf-8?B?YUxOTUVzcTZYekpTSGxnVGdLTi9zTjl5QS80MEp0bWhnYm1tLzBSZ2hQYmMr?=
- =?utf-8?B?YkxjSkxnWDRLOUF4M050c3M4QmpYYkw5elVOMGd3aFUwUG5nYjRkdnF2Wmsv?=
- =?utf-8?B?VER4dGV3dHFtWFlFcDRYOUdzdWlFRHJmS256b2xZRkMxMEs3V3JEMW9sWWVD?=
- =?utf-8?B?VXBvMGFIQjU5MUYvNjhFQXpPdFkvUGtsQXJaSGlDNUg5ZVBidEg2OTRmdURG?=
- =?utf-8?B?MEZ3TG9CaXBvSzlGQjhjMmVzUUNzYTZkMVVTc1dkNGtHK2pUUVBhZzNiZU1a?=
- =?utf-8?B?Q0dxL3hMeVNiV2lWQndCdzlocmNBMU1halFsWFFlQ21SRE9uM2RTcWtSTVVp?=
- =?utf-8?B?VkJoQ2JmVkxnN2toelNHS3pPRDRaMmJPcjBZK2VCSkJOQzdlaHlhVEtqbDlk?=
- =?utf-8?B?ZEM1cXpjeHdHelFLNUlVMnYvWHNTNXplWDhqSytwRVByY1BwK2doYSs0VUpT?=
- =?utf-8?B?U2RqSWNYM3FlMXFXTTlxU2QrRXFjWGgzeUFra0htUHZYVUpDeUMrS2oweG5p?=
- =?utf-8?B?U1RpWDFueWhDSURFZkdNQ3Z0SnlqOTFhSWNNNUQvTTYzbU9rL2Z5aGZzUVJW?=
- =?utf-8?B?dVFORk1HVFlwa2pzZngreUlYNW1weExNOTN4NERUVkNrdnhySU5uaUVxMzBF?=
- =?utf-8?B?TzRvamxKY3ByN290cDlmclo2d0s3Q2d2WjZqYnZ1TDUrRmZ4K2Jwdjg2V01k?=
- =?utf-8?B?NWxka0ZXejI4ODByTXUzNTM0L2JGV0QvWWs4ZnUxMUk5SHU5K2pIaXp6RmFZ?=
- =?utf-8?B?RFpXbmpaMWthaW02Nlk5UDc0dWl0Z3Nsa3JSK3Y2S1VaaktFdy9TNHBIbXp4?=
- =?utf-8?B?R2ZBQUdQaTM1RTd6U04xTEpjZUpEVFhYN3ZXakgzMEtZM0s2cFNESFZwNlo4?=
- =?utf-8?B?eUxHQkQ1a3BSQlFIK0VBc3EyM3BhNGIrSFMyN1NlMzk4ZEtmNzE1WE5Zd045?=
- =?utf-8?B?bHdhMVBubEEraVdGV3RsQnZCODJhaUt0UmVZWWkyL3FvNG1BNUNQSzdJYXBE?=
- =?utf-8?B?ajdCV2JrZjlZUFpqb29rYmdRMXhoZDJUZ1ZLRTZyRVBIR3owcEhVdnp5RlZh?=
- =?utf-8?B?blIwcDNVN3BXR3FqRVVYVzNiemVZeUQvc0ZuU0dPckQrQlhxM0RvNVF2MDNo?=
- =?utf-8?B?K0tURUxpTjNHc2N1N3ZYb2pZaHI3a09yZENIb0RwY09Ja0JVSWEzalBxMDM2?=
- =?utf-8?B?NFFZRTVhWW1ScU8zQnVNbkZSb05MN2Z6eWtRUUFsWmw1cDA1WDA3MzFwSVNL?=
- =?utf-8?B?dlR1Qkd1Wkd6c2VBMDhYUTRkc3NzSmFxeTJ2ZVhNQ3pjcWVpQ1dWcG9WQkM3?=
- =?utf-8?B?c1ZFRDVEK0J3bzZHKzlYbERZM3BTZlhQME9WeEhXcjNaUzlBSWZ0a2pEbTRS?=
- =?utf-8?B?UWNyU0p2WWNhTWF0SWM1ZFY0MlNCUGhtc0FYK0FXNjV5YkR5OHBhNEEwYjFT?=
- =?utf-8?B?UFk2dUIySndBZWVGVWhNdXN5TFY5aXRVbEF6R01IaEt0MVBYTGszdHYyVldE?=
- =?utf-8?B?MGxML2tyVE9QUTVDS3dBWkg1bjVxRkVxZGtZcktOV2RRZ2tqdHR1NmRuTG00?=
- =?utf-8?B?cVRhbnpwakJTaTc4enpRNnQwaVRlVDEwcWtWRTFvb1FZRk9SQWk5UGd2YzBr?=
- =?utf-8?B?OHB3dEU4RXZJMnlRQ2hia05Ub1Z6bzAveStJaXdHZ3lxTjRTTFlyYUk3d0di?=
- =?utf-8?B?TCttNzdUM2xEV0R1aC9lUGhsNHpkUWM0VHRrV2FrRGxSbkRla1JHM0kzdW9t?=
- =?utf-8?B?UlVDSC9vTU50NUxWVmpTVDlOOEhVL2t2UytrMUpKY29uUG00M05RVXRCVWhD?=
- =?utf-8?B?cEhyNHNjSXdXTjBVcXdpQ3dwSk45dlZ2aXU5aUlPMjRuK3pQZmhISlpFQlNT?=
- =?utf-8?B?aEw5RzJTRzRLeEd5QTUrM3REUGllcjJXWEM1LzFiQ1BpUU5GbE52QTBrbmhC?=
- =?utf-8?B?QmM5WTJpcS9GNW52SnV4dEJTbjBDU05GY2IzZFdBNnhRajhwT1g5Z3ZoWTU5?=
- =?utf-8?Q?4+Oa7xIOnTewV2B0MmNJEnyXg?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f9e65e6b-949d-4483-2f38-08db3c56e5cf
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6390.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Apr 2023 19:40:12.4882
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: N/zmmuHej3mIs+UIXlq0atJ8Zp8uxcq7qiKvOHZL7YgYKqpZfSNF2pHv6d9bTUqDP0Zbqx7r5G7W/2neTK1rxQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7442
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXF8G3G41cPt+5=nB2D_uEaB_iXh6=3ZcTFTHrpsVm5D5g@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Jonathan,
-
-On 4/13/23 11:08, Jonathan Cameron wrote:
-> On Tue, 11 Apr 2023 13:02:58 -0500
-> Terry Bowman <terry.bowman@amd.com> wrote:
+On Sat, Mar 18, 2023 at 11:35:44AM +0100, Ard Biesheuvel wrote:
+> On Thu, 16 Mar 2023 at 23:28, Darren Hart <darren@os.amperecomputing.com> wrote:
+> >
+> > On Thu, Mar 16, 2023 at 07:55:36PM +0100, Ard Biesheuvel wrote:
+> > > On Thu, 16 Mar 2023 at 18:52, Andrea Righi <andrea.righi@canonical.com> wrote:
+> ...
+> > > >
+> > > > Yay! Success! I just tested your latest efi/urgent (with the fixup) and
+> > > > system completed the boot without any soft lockups.
+> > > >
+> > >
+> > > Thanks for confirming. I'll take that as a tested-by
+> >
+> > The solution in the current branch looks like the best approach we have to date
+> > to address the broadest of affected systems. We could switch the eMAG test to an
+> > MIDR test I believe (but this won't work for Altra as that would capture all the
+> > Neoverse v1 cores beyond Altra). I can look into the MIDR test if you think it's
+> > worthwhile - but since I don't think we can eliminate the SMBIOS string test, it
+> > doesn't buy us much since we don't need a greedier eMAG test (there aren't more
+> > of them to match).
+> >
+> > Given that some OEM Altra platforms change the processor ID, I don't see a
+> > better solution currently than adding their the "product name" to the smbios
+> > string tests unfortunately.
+> >
 > 
->> The CXL driver plans to use cper_print_aer() for restricted CXL host (RCH)
->> logging. This is not currently possible if CXL is built as a loadable
->> module because cper_print_aer() depends on cper_mem_err_unpack() which
->> is not exported.
->>
->> Export cper_mem_err_unpack() to enable cper_print_aer() usage in
->> CXL and other loadable modules.
+> Indeed. I spotted a Gigabyte system [0] with a different processor ID,
+> but with a version we can test for.
 > 
-> No problem with the export, but I'm struggling to see the path that needs it.
-> Could you give a little more detail, perhaps a call path?
+> So for now, I'll go with
 > 
-
-The cper_print_aer() is used to log RCH dport AER errors. This is needed 
-because the RCH dport AER errors are not handled directly by the AER port 
-driver. I'll add these details to the patch.
-
-Regards,
-Terry
-
+>         socid = (u32 *)record->processor_id;
+>         switch (*socid & 0xffff000f) {
+>                 static char const altra[] = "Ampere(TM) Altra(TM) Processor";
+>                 static char const emag[] = "eMAG";
+>         default:
+>                 version = efi_get_smbios_string(&record->header, 4,
+>                                                 processor_version);
+>                 if (!version || (strncmp(version, altra, sizeof(altra) - 1) &&
+>                                  strncmp(version, emag, sizeof(emag) - 1)))
+>                         break;
+> 
+>                 fallthrough;
+> 
+>         case 0x0a160001:        // Altra
+>         case 0x0a160002:        // Altra Max
+>                 efi_warn("Working around broken SetVirtualAddressMap()\n");
+> ...
+> 
+> which should cover all the affected systems we encountered so far.
+> 
+> I'll push this to linux-next to let it soak for a little bit, and then
+> send it to Linus somewhere during the week
+> 
 > Thanks,
+> Ard.
 > 
-> Jonathan
 > 
->>
->> Signed-off-by: Terry Bowman <terry.bowman@amd.com>
->> Cc: Ard Biesheuvel <ardb@kernel.org>
->> Cc: linux-efi@vger.kernel.org
->> ---
->>  drivers/firmware/efi/cper.c | 1 +
->>  1 file changed, 1 insertion(+)
->>
->> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
->> index 35c37f667781..ff15e12160ae 100644
->> --- a/drivers/firmware/efi/cper.c
->> +++ b/drivers/firmware/efi/cper.c
->> @@ -350,6 +350,7 @@ const char *cper_mem_err_unpack(struct trace_seq *p,
->>  
->>  	return ret;
->>  }
->> +EXPORT_SYMBOL_GPL(cper_mem_err_unpack);
->>  
->>  static void cper_print_mem(const char *pfx, const struct cper_sec_mem_err *mem,
->>  	int len)
-> 
+> [0] https://pastebin.com/HQLE1yYv
+
+Not sure if it's a similar issue, but I have found another Ampere box
+that is booting fine with your fixes, but the eifvars.sh kselftest is
+failing with some I/O errors, specifically:
+
+$ sudo ./efivarfs.sh
+--------------------
+running test_create
+--------------------
+./efivarfs.sh: line 58: printf: write error: Input/output error
+/sys/firmware/efi/efivars/test_create-210be57c-9849-4fc7-a635-e6382d1aec27 has invalid size
+  [FAIL]
+--------------------
+running test_create_empty
+--------------------
+  [PASS]
+--------------------
+running test_create_read
+--------------------
+  [PASS]
+--------------------
+running test_delete
+--------------------
+./efivarfs.sh: line 103: printf: write error: Input/output error
+  [PASS]
+--------------------
+running test_zero_size_delete
+--------------------
+./efivarfs.sh: line 126: printf: write error: Input/output error
+./efivarfs.sh: line 134: printf: write error: Input/output error
+/sys/firmware/efi/efivars/test_zero_size_delete-210be57c-9849-4fc7-a635-e6382d1aec27 should have been deleted
+  [FAIL]
+--------------------
+running test_open_unlink
+--------------------
+open(O_WRONLY): Operation not permitted
+  [FAIL]
+--------------------
+running test_valid_filenames
+--------------------
+./efivarfs.sh: line 158: printf: write error: Input/output error
+./efivarfs.sh: line 158: printf: write error: Input/output error
+./efivarfs.sh: line 158: printf: write error: Input/output error
+./efivarfs.sh: line 158: printf: write error: Input/output error
+  [PASS]
+--------------------
+running test_invalid_filenames
+--------------------
+  [PASS]
+
+If it helps:
+
+$ sudo hexdump -C /sys/firmware/dmi/entries/4-0/raw
+00000000  04 30 04 00 01 03 fe 02  c1 d0 3f 41 00 00 00 00  |.0........?A....|
+00000010  03 8a 72 06 b8 0b f0 0a  41 06 05 00 06 00 07 00  |..r.....A.......|
+00000020  04 05 06 50 50 50 04 00  01 01 01 00 01 00 01 00  |...PPP..........|
+00000030  43 50 55 20 31 00 41 6d  70 65 72 65 28 52 29 00  |CPU 1.Ampere(R).|
+00000040  41 6d 70 65 72 65 28 52  29 20 41 6c 74 72 61 28  |Ampere(R) Altra(|
+00000050  52 29 20 50 72 6f 63 65  73 73 6f 72 00 30 30 30  |R) Processor.000|
+00000060  30 30 30 30 30 30 30 30  30 30 30 30 30 30 32 35  |0000000000000025|
+00000070  35 30 32 30 39 30 33 33  38 36 35 42 34 00 30 30  |50209033865B4.00|
+00000080  30 30 30 30 30 31 00 51  38 30 2d 33 30 00 00     |000001.Q80-30..|
+0000008f
+
+I guess EFI is not very reliable here...
+
+-Andrea
