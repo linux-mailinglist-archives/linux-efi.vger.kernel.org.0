@@ -2,174 +2,137 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B25DC6E37E5
-	for <lists+linux-efi@lfdr.de>; Sun, 16 Apr 2023 14:08:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FB7E6E3B7C
+	for <lists+linux-efi@lfdr.de>; Sun, 16 Apr 2023 21:19:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230017AbjDPMIX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 16 Apr 2023 08:08:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39006 "EHLO
+        id S229575AbjDPTTx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 16 Apr 2023 15:19:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230142AbjDPMIM (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 16 Apr 2023 08:08:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAD8E4C0F;
-        Sun, 16 Apr 2023 05:08:09 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1DE2861365;
-        Sun, 16 Apr 2023 12:08:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19063C433D2;
-        Sun, 16 Apr 2023 12:08:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681646888;
-        bh=06PSEkpwNBLhUVGwmELjtXXINIi/t/xKb7+PwqjgazA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FttnNmY69tXh3Mi4g57fhgHdU+fN5uUQVWdl/Pe32ipnW+/C9noAtrFCDANd66VEb
-         oxLF2yszcYf9PWxReh6uHGEJzEdUkX9unVCMPgebyXCWmccOASrDNq0euyGd932xhe
-         jd1annFh6yunxE5bkvplAdS1jmE7SLfq1Q17dgkyvEW7x6LleTgpuxn/DwPVLbb/JB
-         JOpMuGXg6qtTSmBTUM+bOTB9Y5WCPbWRykQuDM3ExPj1pXyPI+nezoPoQlxnDt0QuR
-         QUj6cBes4+AzQ1YwskIDiv35xZA/H5Em3hd4F5nKbEbIjx55LxzgN9bcWOJayII96q
-         iPcIGKQna1gFQ==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-        Evgeniy Baskov <baskov@ispras.ru>,
+        with ESMTP id S229747AbjDPTTu (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 16 Apr 2023 15:19:50 -0400
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEDD12123;
+        Sun, 16 Apr 2023 12:19:48 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.nyi.internal (Postfix) with ESMTP id 8C5C05C0039;
+        Sun, 16 Apr 2023 15:19:45 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Sun, 16 Apr 2023 15:19:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+         h=cc:cc:content-type:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm1; t=1681672785; x=
+        1681759185; bh=YGRdIcPItYFcSw7fEDFLZquPj7AtRRDkYXtyuZxJq/U=; b=d
+        cKPlQi01xUEdqakuUy3IFFpBHkHDOpDeTPLZ78GWzQqE/gvsG2Sj9e0OyOzJI1x3
+        HUkEG3YdI4KsSgb6cgETLCUhDlkuOVgmIN23kS5njWdsAiRKWWMLNz54bMhlOHKP
+        1Nb+XSqoZrEMF0I7wdgORuqj1sfKMYPYHKPvT+Xe5uvQe62eIJp+72TBWCkYNqau
+        k5IUHGy16wXxNo6nQ3fxwiRNU9iggNarO6PezzahvI2J5yinnLv5FSkeEDchWpF/
+        pb4xTPq5RSBx8VkM/oFP5oDI3fYkR3ckSEp4Gk2OS1u7wus3bosyIR/DW8mdCTp+
+        pZ3VDIOmcTaF8/voIA7Lw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1681672785; x=1681759185; bh=YGRdIcPItYFcS
+        w7fEDFLZquPj7AtRRDkYXtyuZxJq/U=; b=ZhHDbhA+5anegK7zp66gP1bNpMsiO
+        DwJNW4ZlvCEuB+i/dDTyFod2fR8GNQxRbEa1JHytZ25x5/8iNzEisk9GPXP+2CM1
+        fu8mN7L5mAbgFsuqHGLfaXfhzDmP3NmvCZJ+c1H6WONj/9c40Zny9u2nyjq/o4dA
+        otPOkENiTyDS6386owjy06YAkP+h7RV5WZ8ltg/uDiPi1Cib79GoeeOACXAZflLv
+        9d3pYZltCvv/9E1lrz+MDmM8rj9N+bBwHaNbzxtgTvhtziopYYKgD9Vx6MGrDO9E
+        N1EKft90agA0X58pbTk4Te5DLOJiZvqJBsJOnm1I5SHYNvTZXDqL/2fzg==
+X-ME-Sender: <xms:UEo8ZCgJ2f_PcM4jhh96JFFn6pr379B1cIC0bxXCCOIX2i0gcuTSQA>
+    <xme:UEo8ZDDyeFbm2WjeVbIO0R9GC9GW4sV7A-gQFb0sikYf9f8ltyJvt0XmIs3XZriJc
+    lZ-SzhzKA4PzsqE3b0>
+X-ME-Received: <xmr:UEo8ZKGWtlZFRRuRPrgbp2u9xidH7_1f7bq6nG_aYvSSVq0pQdAIkgyHZ3zz0TE5dHC-oA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdelgedgleegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdttddttddtvdenucfhrhhomhepfdfmihhr
+    ihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlsehshhhuthgvmhhovhdrnh
+    grmhgvqeenucggtffrrghtthgvrhhnpefhieeghfdtfeehtdeftdehgfehuddtvdeuheet
+    tddtheejueekjeegueeivdektdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvg
+X-ME-Proxy: <xmx:UEo8ZLQ0YrZ0SYnvhgfFQXBo4MVahr8E1VYDJWwPPcfyHlaaqbkxIQ>
+    <xmx:UEo8ZPzsXc0J4X_Y1Wg66pwUUZB1zvyMnNicsACP2F_fQakLg8C3wg>
+    <xmx:UEo8ZJ7rHlVXMUN0oaS92Rr8hB2ve3zfdGwBJUyfqqdlAv8SYA_QJA>
+    <xmx:UUo8ZI9XMBpuDpdqcaMQcLMszovDTAUpQTN7s3cct9z3Po2ZFZ1dIA>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 16 Apr 2023 15:19:44 -0400 (EDT)
+Received: by box.shutemov.name (Postfix, from userid 1000)
+        id D06C610B9A3; Sun, 16 Apr 2023 22:19:40 +0300 (+03)
+Date:   Sun, 16 Apr 2023 22:19:40 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Vlastimil Babka <vbabka@suse.cz>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Borislav Petkov <bp@alien8.de>,
         Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Peter Jones <pjones@redhat.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Dave Young <dyoung@redhat.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Kees Cook <keescook@chromium.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
         Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [RFC PATCH 3/3] efi/zboot: x86: Clear NX restrictions on populated code regions
-Date:   Sun, 16 Apr 2023 14:07:29 +0200
-Message-Id: <20230416120729.2470762-4-ardb@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230416120729.2470762-1-ardb@kernel.org>
-References: <20230416120729.2470762-1-ardb@kernel.org>
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
+        khalid.elmously@canonical.com, philip.cox@canonical.com,
+        aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
+        linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv9 00/14] mm, x86/cc: Implement support for unaccepted
+ memory
+Message-ID: <20230416191940.ex7ao43pmrjhru2p@box.shutemov.name>
+References: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
+ <2e0da486-71e4-cfeb-1578-68f1c8c43d33@suse.cz>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3939; i=ardb@kernel.org; h=from:subject; bh=06PSEkpwNBLhUVGwmELjtXXINIi/t/xKb7+PwqjgazA=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIcX6KeOEJ0cntPbpySZ3Pn890bH39HkbA92ULQcZqla53 utdZdzTUcrCIMbBICumyCIw+++7nacnStU6z5KFmcPKBDKEgYtTACbSf5mRYW97cb7o5dszzZgV 7Q48Lo50u3X6vv/jS4GcvBc2/lvIeZDhf9XOy7HZTB4ulQqLQ25d+vA72ftJ34lI/aag3Ysv11s 4sAIA
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2e0da486-71e4-cfeb-1578-68f1c8c43d33@suse.cz>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Future EFI firmware will require the PE/COFF NX_COMPAT header flag to be
-set in order to retain access to all system facilities while features
-such as UEFI secure boot or TCG measured boot are enabled.
+On Mon, Apr 03, 2023 at 04:42:54PM +0200, Vlastimil Babka wrote:
+> Hmm yeah it can be noisy. Did you try to only count events that have
+> fragmenting=1 and/or MIGRATE_MOVABLE as fallback_migratetype? As those are
+> the really bad events.
 
-The consequence of setting this flag is that the EFI firmware image
-loader may configure the page allocator to set the NX attribute on all
-allocations requested by the image. This means we should clear this
-attribute on all regions we allocate and expect to be able to execute
-from.
+I finally got around to retest it.
 
-In the x86 EFI zboot case, the only code we execute under EFI's 1:1
-mapping that was not loaded by the image loader itself is the trampoline
-that effectuates the switch between 4 and 5 level paging, and the part
-of the loaded kernel image that runs before switching to its own page
-tables.  So let's use the EFI memory attributes protocol to clear the NX
-attribute on these regions.
+		total	fragmenting	movable	fragmenting&&movable
+base-1:		957	583		353	0
+base-2:		2715	2343		359	0
+base-3:		2033	1669		353	0
+patched-1:	1325	929		371	0
+patched-2:	2844	2451		371	0
+patched-3:	1304	917		361	0
 
-Whether or not setting the read-only attribute first is required is
-unclear at this point. Given that the kernel startup code uses two
-different executable sections before switching to its own page tables
-(normal text and inittext, with a writable data section in between),
-this would require some minor reorganization of the kernel memory map.
+fragmenting=1 is defined as fallback_order<pageblock_order which is most
+of them.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/x86/kernel/head_64.S                |  4 +++
- drivers/firmware/efi/libstub/x86-zboot.c | 27 ++++++++++++++++++++
- 2 files changed, 31 insertions(+)
+Patched kernel showed slightly elevated movable(fallback_migratetype=1)
+cases. Is it critical?
 
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index 4ae067852fb28663..38897ac51f13bb55 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -74,6 +74,10 @@ SYM_CODE_START_NOALIGN(startup_64)
- 	 */
- 	.org	startup_64 + 0x10 - 3, BYTES_NOP1
- 	nopl	(_end - startup_64)(%rax)
-+
-+	/* put the size of the initial executable mapping at offset 0x20 */
-+	.org	startup_64 + 0x20 - 3, BYTES_NOP1
-+	nopl	(_einittext - startup_64)(%rax)
- #endif
- 	leaq	_text(%rip), %rdi
- 
-diff --git a/drivers/firmware/efi/libstub/x86-zboot.c b/drivers/firmware/efi/libstub/x86-zboot.c
-index 16e8b315892dedda..70668104804fb050 100644
---- a/drivers/firmware/efi/libstub/x86-zboot.c
-+++ b/drivers/firmware/efi/libstub/x86-zboot.c
-@@ -60,10 +60,33 @@ efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
- 	return status;
- }
- 
-+static void efi_remap_exec(unsigned long base, unsigned long size)
-+{
-+	static efi_memory_attribute_protocol_t *memattr = (void *)ULONG_MAX;
-+	efi_guid_t guid = EFI_MEMORY_ATTRIBUTE_PROTOCOL_GUID;
-+	efi_status_t status;
-+
-+	if (memattr == (void *)ULONG_MAX) {
-+		memattr = NULL;
-+		status = efi_bs_call(locate_protocol, &guid, NULL,
-+				     (void **)&memattr);
-+		if (status != EFI_SUCCESS)
-+			return;
-+	} else if (!memattr) {
-+		return;
-+	}
-+
-+	status = memattr->clear_memory_attributes(memattr, base, size,
-+						  EFI_MEMORY_XP);
-+	if (status != EFI_SUCCESS)
-+		efi_warn("Failed to clear NX attribute on code region\n");
-+}
-+
- void efi_cache_sync_image(unsigned long image_base, unsigned long alloc_size)
- {
- 	const u32 payload_size = *(u32 *)(_gzdata_end - 4);
- 	const u32 image_size = *(u32 *)(image_base + 0x10);
-+	const u32 code_size = *(u32 *)(image_base + 0x20);
- 	const s32 *reloc = (s32 *)(image_base + payload_size);
- 	u64 va_offset = __START_KERNEL - image_base;
- 	u64 range, delta;
-@@ -107,6 +130,8 @@ void efi_cache_sync_image(unsigned long image_base, unsigned long alloc_size)
- 		*(u64 *)((s64)*reloc - va_offset) += delta;
- 
- 	efi_free(alloc_size - image_size, image_base + image_size);
-+
-+	efi_remap_exec(image_base, PAGE_ALIGN(code_size));
- }
- 
- static void __naked tmpl_toggle(void *cr3, void *gdt)
-@@ -197,6 +222,8 @@ static efi_status_t efi_setup_5level_paging(void)
- 	 */
- 	*(u32 *)&la57_code[tmpl_size - 6] += (u64)la57_code;
- 
-+	efi_remap_exec((unsigned long)la57_code, PAGE_SIZE);
-+
- 	return EFI_SUCCESS;
- }
- 
+There's no allocations that is fragmenting and movable. Hm.
+
 -- 
-2.39.2
-
+  Kiryl Shutsemau / Kirill A. Shutemov
