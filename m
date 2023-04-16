@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 769B46E37E1
-	for <lists+linux-efi@lfdr.de>; Sun, 16 Apr 2023 14:08:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C2F86E37E2
+	for <lists+linux-efi@lfdr.de>; Sun, 16 Apr 2023 14:08:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230085AbjDPMIH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 16 Apr 2023 08:08:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38818 "EHLO
+        id S229908AbjDPMIK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 16 Apr 2023 08:08:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229991AbjDPMIG (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 16 Apr 2023 08:08:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3B5249C7;
-        Sun, 16 Apr 2023 05:08:01 -0700 (PDT)
+        with ESMTP id S230095AbjDPMIJ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 16 Apr 2023 08:08:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD5D54496;
+        Sun, 16 Apr 2023 05:08:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FF8761365;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3FFA760C35;
+        Sun, 16 Apr 2023 12:08:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3734CC4339E;
         Sun, 16 Apr 2023 12:08:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DF5EC4339B;
-        Sun, 16 Apr 2023 12:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681646880;
-        bh=i/f7yIvqZvWGjHoiWNWJh+xxJ5nECG4JhG0EAlnlRoo=;
+        s=k20201202; t=1681646884;
+        bh=RSLo45meUQV4Fx9mmwipFKFKmHuaB+q2lMVYoJK+JQw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IIkGFhIZko6PNjgbUyhoZhg+TW+kHMm0dowjGHSaCKEXo+3izwQNPM9MkngS53afK
-         eVXMM6NGuo+xdNWeK6YCJmmWitqe0ZqoxnQIa6tA/JpoTO/gsZS+Ip/1FGMGfr2vFQ
-         RmTUt+GkkY+aEJ+Si3pJe7iWHLTF4OwazTcRv1XS97IB7F+SwKClgv2mNAX8/mfUjP
-         4NHuZC9oRQEeEgWw5sk9efn9NQ7KW3wepampUhJV9r/8RWeaIiBChmN9ioBQix1JM+
-         ZBFcxb5yooh1STOo++hO68/S5CaZdbr5p+h+Qo6VezUVIO5pIF1JE8fwEBD6aXJ5Mo
-         6iqUfRH1RCeTA==
+        b=oUdLmVKdjogFq8Io6nTSZSJzUCIHeEAEoVuxHi7kSNmLe2EhxonlJKmLTP5b5+ULO
+         BQx1OfPnyfaVr/KZY+CC7eISnF2/1OtTIRa4j+xTPmjV/Dsc9X8A5RcDycpBWfYzQt
+         DXlJU1+dKZ8ZZm5V2WiWrEV2Pb+gBxfbkomyE3r9Jj7sisG3L0gJNFJq8OQoBRZ5/T
+         Gl58o74Sew3KbR9izCnaYSRyWGWBhgk0rAMiA3AQhRF7JRPAKNeO12PfNlymt7Rei3
+         B/r5pt1fAeKEDYSSttlNuXIB1sFDA00b/8IJLsEMRcrt9cTDvSHPR4okWn6MhGXS7M
+         2xMba6TBHEs6g==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -50,18 +50,18 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Tom Lendacky <thomas.lendacky@amd.com>,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [RFC PATCH 1/3] efi/libstub: x86: Split off pieces shared with zboot
-Date:   Sun, 16 Apr 2023 14:07:27 +0200
-Message-Id: <20230416120729.2470762-2-ardb@kernel.org>
+Subject: [RFC PATCH 2/3] efi/zboot: x86: Implement EFI zboot support
+Date:   Sun, 16 Apr 2023 14:07:28 +0200
+Message-Id: <20230416120729.2470762-3-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230416120729.2470762-1-ardb@kernel.org>
 References: <20230416120729.2470762-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=36623; i=ardb@kernel.org; h=from:subject; bh=i/f7yIvqZvWGjHoiWNWJh+xxJ5nECG4JhG0EAlnlRoo=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIcX6yT82XXG7v4rqKgIpFxsY1dTKrBP5devlA75/WnFGS tBS3rujlIVBjINBVkyRRWD233c7T0+UqnWeJQszh5UJZAgDF6cATKTnKiPD03+6y9bdmeJrlnVa xiqKX0Tf88CrDZUNG3Ytd+3kUjpmxMgw5Y/EaW4+icMRAS4S9qsMqgy2TORLmaeit1q4rV63S5w TAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=21155; i=ardb@kernel.org; h=from:subject; bh=RSLo45meUQV4Fx9mmwipFKFKmHuaB+q2lMVYoJK+JQw=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIcX6yf83Sb8Za+xdHgtzbxHcazuxvbqjYN2a25vz5JZuu JCYJBjdUcrCIMbBICumyCIw+++7nacnStU6z5KFmcPKBDKEgYtTACayt53hf77U9erJus3mf63j sp5zXxAUumAjttvMrip3txqrfHD5N4bfLDsWPDfeuD19ifSshcbR2Rfmnp45rXmfo8lEiZC2fY6 8bAA=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -70,712 +70,273 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-In preparation for implementing generic EFI zboot support also on x86,
-split the X86 pieces into those that can be shared and those that are
-tied to the way the EFI stub is currently embedded in the bare metal x86
-decompressor.
+Wire up the Kbuild rules and implement the missing pieces that permit
+the 64-bit x86 kernel to be built as a EFI zboot image, i.e., the
+generic self-decompressing format that is already supported for arm64,
+RISC-V, LoongArch and [shortly] ARM.
 
-No functional change intended.
+Both physical and virtual KASLR are supported, as well as 5 level
+paging, which are the primary reasons we rely on the bare metal
+decompressor today.
+
+EFI mixed mode (i.e., running the 64-bit kernel on a 64-bit CPU that
+booted using 32-bit firmware) is not supported - 32-bit EFI may not
+enable paging at all, or run with PAE disabled, in which case the long
+mode switch requires setting up new page tables etc. Implementing mixed
+mode in a way that only supports 32-bit firmware that enters with paging
+and PAE enabled should be rather straight-forward, and could be
+considered as a future enhancement.
+
+Another thing that is not supported is the EFI handover protocol, which
+has no basis in the EFI spec, and is only implemented by downstream GRUB
+builds packaged by the distros.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/include/asm/efi.h              |   5 +
- drivers/firmware/efi/libstub/Makefile   |   2 +-
- drivers/firmware/efi/libstub/x86-stub.c | 591 +------------------
- drivers/firmware/efi/libstub/x86.c      | 612 ++++++++++++++++++++
- 4 files changed, 625 insertions(+), 585 deletions(-)
+ arch/x86/Makefile                              |  18 +-
+ arch/x86/include/asm/efi.h                     |   5 +
+ arch/x86/kernel/head_64.S                      |  11 +
+ arch/x86/zboot/Makefile                        |  29 ++
+ drivers/firmware/efi/Kconfig                   |   2 +-
+ drivers/firmware/efi/libstub/Makefile          |  13 +-
+ drivers/firmware/efi/libstub/Makefile.zboot    |   2 +-
+ drivers/firmware/efi/libstub/efi-stub-helper.c |   3 +
+ drivers/firmware/efi/libstub/x86-stub.c        |   1 -
+ drivers/firmware/efi/libstub/x86-zboot.c       | 295 ++++++++++++++++++++
+ drivers/firmware/efi/libstub/zboot.c           |   3 +-
+ drivers/firmware/efi/libstub/zboot.lds         |   5 +
+ 12 files changed, 375 insertions(+), 12 deletions(-)
 
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index b39975977c037c03..a9ef9f6679c8a3ef 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -268,25 +268,33 @@ boot := arch/x86/boot
+ 
+ BOOT_TARGETS = bzdisk fdimage fdimage144 fdimage288 hdimage isoimage
+ 
+-PHONY += bzImage $(BOOT_TARGETS)
+-
+-# Default kernel to build
+-all: bzImage
++PHONY += bzImage vmlinuz.efi $(BOOT_TARGETS)
+ 
+ # KBUILD_IMAGE specify target image being built
++ifeq ($(CONFIG_EFI_ZBOOT),)
+ KBUILD_IMAGE := $(boot)/bzImage
++else
++KBUILD_IMAGE := arch/x86/zboot/vmlinuz.efi
++endif
++
++# Default kernel to build
++all:	$(notdir $(KBUILD_IMAGE))
+ 
+ bzImage: vmlinux
+ ifeq ($(CONFIG_X86_DECODER_SELFTEST),y)
+ 	$(Q)$(MAKE) $(build)=arch/x86/tools posttest
+ endif
+-	$(Q)$(MAKE) $(build)=$(boot) $(KBUILD_IMAGE)
++	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$(@)
+ 	$(Q)mkdir -p $(objtree)/arch/$(UTS_MACHINE)/boot
+ 	$(Q)ln -fsn ../../x86/boot/bzImage $(objtree)/arch/$(UTS_MACHINE)/boot/$@
+ 
+ $(BOOT_TARGETS): vmlinux
+ 	$(Q)$(MAKE) $(build)=$(boot) $@
+ 
++vmlinuz.efi: zboot := arch/x86/zboot
++vmlinuz.efi: vmlinux
++	$(Q)$(MAKE) $(build)=$(zboot) $(zboot)/$@
++
+ PHONY += install
+ install:
+ 	$(call cmd,install)
 diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index 419280d263d2e3f2..dd49cb9b6e3a1f1f 100644
+index dd49cb9b6e3a1f1f..35d49f45260d3c72 100644
 --- a/arch/x86/include/asm/efi.h
 +++ b/arch/x86/include/asm/efi.h
-@@ -214,6 +214,11 @@ efi_status_t efi_set_virtual_address_map(unsigned long memory_map_size,
+@@ -471,4 +471,9 @@ static inline int efi_runtime_map_copy(void *buf, size_t bufsz)
  
- /* arch specific definitions used by the stub code */
+ #endif
  
-+struct boot_params *efi_alloc_boot_params(void);
++static inline unsigned long efi_get_kimg_min_align(void)
++{
++	return SZ_2M;
++}
 +
-+efi_status_t efi_x86_stub_common(struct boot_params *boot_params,
-+				 efi_handle_t handle);
-+
- #ifdef CONFIG_EFI_MIXED
+ #endif /* _ASM_X86_EFI_H */
+diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
+index 222efd4a09bc8861..4ae067852fb28663 100644
+--- a/arch/x86/kernel/head_64.S
++++ b/arch/x86/kernel/head_64.S
+@@ -64,6 +64,17 @@ SYM_CODE_START_NOALIGN(startup_64)
+ 	/* Set up the stack for verify_cpu(), similar to initial_stack below */
+ 	leaq	(__end_init_task - FRAME_SIZE)(%rip), %rsp
  
- #define ARCH_HAS_EFISTUB_WRAPPERS
++#ifdef CONFIG_EFI_ZBOOT
++	/*
++	 * The generic EFI zboot code expects a __le32 at offset 0x10 of the
++	 * decompressed image describing the size in memory of the kernel
++	 * image. This is typically part of the image header, but we don't have
++	 * such a header on x86 so just put the bare number here, encoded in a
++	 * NOP instruction.
++	 */
++	.org	startup_64 + 0x10 - 3, BYTES_NOP1
++	nopl	(_end - startup_64)(%rax)
++#endif
+ 	leaq	_text(%rip), %rdi
+ 
+ 	/*
+diff --git a/arch/x86/zboot/Makefile b/arch/x86/zboot/Makefile
+new file mode 100644
+index 0000000000000000..dce47a01ff482550
+--- /dev/null
++++ b/arch/x86/zboot/Makefile
+@@ -0,0 +1,29 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# Copyright (C) 2023 Google LLC. <ardb@google.com>
++#
++
++$(obj)/Image: OBJCOPYFLAGS := -O binary -S \
++			      -R .note -R .note.gnu.build-id -R .comment
++$(obj)/Image: vmlinux FORCE
++	$(call if_changed,objcopy)
++
++CMD_RELOCS := arch/x86/tools/relocs
++
++quiet_cmd_relocs = RELOCS  $@
++      cmd_relocs = $(CMD_RELOCS) $< > $@
++
++$(obj)/vmlinux.relocs: vmlinux FORCE
++	$(call if_changed,relocs)
++
++efi-zboot-relocs-$(CONFIG_X86_NEED_RELOCS)	:= $(obj)/vmlinux.relocs
++EFI_ZBOOT_PAYLOAD_TRAILER			:= $(efi-zboot-relocs-y)
++
++EFI_ZBOOT_PAYLOAD				:= Image
++EFI_ZBOOT_BFD_TARGET				:= elf64-x86-64
++EFI_ZBOOT_MACH_TYPE				:= AMD64
++EFI_ZBOOT_FORWARD_CFI				:= $(CONFIG_X86_KERNEL_IBT)
++
++targets := Image vmlinux.relocs
++
++include $(srctree)/drivers/firmware/efi/libstub/Makefile.zboot
+diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+index 043ca31c114ebf2a..b959bf41a49a97e1 100644
+--- a/drivers/firmware/efi/Kconfig
++++ b/drivers/firmware/efi/Kconfig
+@@ -74,7 +74,7 @@ config EFI_GENERIC_STUB
+ 
+ config EFI_ZBOOT
+ 	bool "Enable the generic EFI decompressor"
+-	depends on EFI_GENERIC_STUB && !ARM
++	depends on (EFI_GENERIC_STUB && !ARM) || X86_64
+ 	select HAVE_KERNEL_GZIP
+ 	select HAVE_KERNEL_LZ4
+ 	select HAVE_KERNEL_LZMA
 diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index 3abb2b357482a416..4dfbfac254614f18 100644
+index 4dfbfac254614f18..2d733208e1b1efbe 100644
 --- a/drivers/firmware/efi/libstub/Makefile
 +++ b/drivers/firmware/efi/libstub/Makefile
-@@ -87,7 +87,7 @@ lib-$(CONFIG_EFI_GENERIC_STUB)	+= efi-stub.o string.o intrinsics.o systable.o \
+@@ -9,6 +9,9 @@
+ # non-x86 reuses KBUILD_CFLAGS, x86 does not
+ cflags-y			:= $(KBUILD_CFLAGS)
+ 
++cflags-x86-$(CONFIG_X86_KERNEL_IBT) := \
++		$(call cc-option,-fcf-protection=branch -fno-jump-tables)
++
+ cflags-$(CONFIG_X86_32)		:= -march=i386
+ cflags-$(CONFIG_X86_64)		:= -mcmodel=small
+ cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ \
+@@ -18,7 +21,7 @@ cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ \
+ 				   $(call cc-disable-warning, address-of-packed-member) \
+ 				   $(call cc-disable-warning, gnu) \
+ 				   -fno-asynchronous-unwind-tables \
+-				   $(CLANG_FLAGS)
++				   $(CLANG_FLAGS) $(cflags-x86-y)
+ 
+ # arm64 uses the full KBUILD_CFLAGS so it's necessary to explicitly
+ # disable the stackleak plugin
+@@ -82,8 +85,8 @@ lib-$(CONFIG_EFI_PARAMS_FROM_FDT) += fdt.o \
+ $(obj)/lib-%.o: $(srctree)/lib/%.c FORCE
+ 	$(call if_changed_rule,cc_o_c)
+ 
+-lib-$(CONFIG_EFI_GENERIC_STUB)	+= efi-stub.o string.o intrinsics.o systable.o \
+-				   screen_info.o efi-stub-entry.o
++lib-$(CONFIG_EFI_GENERIC_STUB)	+= efi-stub.o efi-stub-entry.o screen_info.o
++lib-y				+= string.o intrinsics.o systable.o
  
  lib-$(CONFIG_ARM)		+= arm32-stub.o
  lib-$(CONFIG_ARM64)		+= arm64.o arm64-stub.o smbios.o
--lib-$(CONFIG_X86)		+= x86-stub.o
-+lib-$(CONFIG_X86)		+= x86.o x86-stub.o
+@@ -91,8 +94,12 @@ lib-$(CONFIG_X86)		+= x86.o x86-stub.o
  lib-$(CONFIG_RISCV)		+= riscv.o riscv-stub.o
  lib-$(CONFIG_LOONGARCH)		+= loongarch.o loongarch-stub.o
  
++cflags-zboot-$(CONFIG_X86)	:= -Defi_zboot_entry=__efistub_efi_zboot_entry
++CFLAGS_zboot.o			:= $(cflags-zboot-y)
++
+ CFLAGS_arm32-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
+ 
++zboot-obj-$(CONFIG_X86_64)	:= x86-zboot.o
+ zboot-obj-$(CONFIG_RISCV)	:= lib-clz_ctz.o lib-ashldi3.o
+ lib-$(CONFIG_EFI_ZBOOT)		+= zboot.o $(zboot-obj-y)
+ 
+diff --git a/drivers/firmware/efi/libstub/Makefile.zboot b/drivers/firmware/efi/libstub/Makefile.zboot
+index d34d4f0ed33349d5..dbf2588ccaa625bd 100644
+--- a/drivers/firmware/efi/libstub/Makefile.zboot
++++ b/drivers/firmware/efi/libstub/Makefile.zboot
+@@ -29,7 +29,7 @@ zboot-size-len-y                       := 4
+ zboot-method-$(CONFIG_KERNEL_GZIP)     := gzip
+ zboot-size-len-$(CONFIG_KERNEL_GZIP)   := 0
+ 
+-$(obj)/vmlinuz: $(obj)/vmlinux.bin FORCE
++$(obj)/vmlinuz: $(obj)/vmlinux.bin $(EFI_ZBOOT_PAYLOAD_TRAILER) FORCE
+ 	$(call if_changed,$(zboot-method-y))
+ 
+ OBJCOPYFLAGS_vmlinuz.o := -I binary -O $(EFI_ZBOOT_BFD_TARGET) \
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index 1e0203d74691ffcc..276d94ed31884308 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -16,6 +16,7 @@
+ 
+ #include "efistub.h"
+ 
++bool efi_no5lvl;
+ bool efi_nochunk;
+ bool efi_nokaslr = !IS_ENABLED(CONFIG_RANDOMIZE_BASE);
+ bool efi_novamap;
+@@ -73,6 +74,8 @@ efi_status_t efi_parse_options(char const *cmdline)
+ 			efi_loglevel = CONSOLE_LOGLEVEL_QUIET;
+ 		} else if (!strcmp(param, "noinitrd")) {
+ 			efi_noinitrd = true;
++		} else if (IS_ENABLED(CONFIG_X86_64) && !strcmp(param, "no5lvl")) {
++			efi_no5lvl = true;
+ 		} else if (!strcmp(param, "efi") && val) {
+ 			efi_nochunk = parse_option_str(val, "nochunk");
+ 			efi_novamap |= parse_option_str(val, "novamap");
 diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index a0bfd31358ba97b1..d2b75025295822c7 100644
+index d2b75025295822c7..d60c3cb8e6cbd0a4 100644
 --- a/drivers/firmware/efi/libstub/x86-stub.c
 +++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -7,11 +7,9 @@
-  * ----------------------------------------------------------------------- */
+@@ -19,7 +19,6 @@
+ /* Maximum physical address for 64-bit kernel with 4-level paging */
+ #define MAXMEM_X86_64_4LEVEL (1ull << 46)
  
- #include <linux/efi.h>
--#include <linux/pci.h>
- #include <linux/stddef.h>
- 
- #include <asm/efi.h>
--#include <asm/e820/types.h>
- #include <asm/setup.h>
- #include <asm/desc.h>
- #include <asm/boot.h>
-@@ -26,192 +24,6 @@ const efi_dxe_services_table_t *efi_dxe_table;
+-const efi_system_table_t *efi_system_table;
+ const efi_dxe_services_table_t *efi_dxe_table;
  u32 image_offset __section(".data");
  static efi_loaded_image_t *image = NULL;
- 
--static efi_status_t
--preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
--{
--	struct pci_setup_rom *rom = NULL;
--	efi_status_t status;
--	unsigned long size;
--	uint64_t romsize;
--	void *romimage;
--
--	/*
--	 * Some firmware images contain EFI function pointers at the place where
--	 * the romimage and romsize fields are supposed to be. Typically the EFI
--	 * code is mapped at high addresses, translating to an unrealistically
--	 * large romsize. The UEFI spec limits the size of option ROMs to 16
--	 * MiB so we reject any ROMs over 16 MiB in size to catch this.
--	 */
--	romimage = efi_table_attr(pci, romimage);
--	romsize = efi_table_attr(pci, romsize);
--	if (!romimage || !romsize || romsize > SZ_16M)
--		return EFI_INVALID_PARAMETER;
--
--	size = romsize + sizeof(*rom);
--
--	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size,
--			     (void **)&rom);
--	if (status != EFI_SUCCESS) {
--		efi_err("Failed to allocate memory for 'rom'\n");
--		return status;
--	}
--
--	memset(rom, 0, sizeof(*rom));
--
--	rom->data.type	= SETUP_PCI;
--	rom->data.len	= size - sizeof(struct setup_data);
--	rom->data.next	= 0;
--	rom->pcilen	= pci->romsize;
--	*__rom = rom;
--
--	status = efi_call_proto(pci, pci.read, EfiPciIoWidthUint16,
--				PCI_VENDOR_ID, 1, &rom->vendor);
--
--	if (status != EFI_SUCCESS) {
--		efi_err("Failed to read rom->vendor\n");
--		goto free_struct;
--	}
--
--	status = efi_call_proto(pci, pci.read, EfiPciIoWidthUint16,
--				PCI_DEVICE_ID, 1, &rom->devid);
--
--	if (status != EFI_SUCCESS) {
--		efi_err("Failed to read rom->devid\n");
--		goto free_struct;
--	}
--
--	status = efi_call_proto(pci, get_location, &rom->segment, &rom->bus,
--				&rom->device, &rom->function);
--
--	if (status != EFI_SUCCESS)
--		goto free_struct;
--
--	memcpy(rom->romdata, romimage, romsize);
--	return status;
--
--free_struct:
--	efi_bs_call(free_pool, rom);
--	return status;
--}
--
--/*
-- * There's no way to return an informative status from this function,
-- * because any analysis (and printing of error messages) needs to be
-- * done directly at the EFI function call-site.
-- *
-- * For example, EFI_INVALID_PARAMETER could indicate a bug or maybe we
-- * just didn't find any PCI devices, but there's no way to tell outside
-- * the context of the call.
-- */
--static void setup_efi_pci(struct boot_params *params)
--{
--	efi_status_t status;
--	void **pci_handle = NULL;
--	efi_guid_t pci_proto = EFI_PCI_IO_PROTOCOL_GUID;
--	unsigned long size = 0;
--	struct setup_data *data;
--	efi_handle_t h;
--	int i;
--
--	status = efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
--			     &pci_proto, NULL, &size, pci_handle);
--
--	if (status == EFI_BUFFER_TOO_SMALL) {
--		status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size,
--				     (void **)&pci_handle);
--
--		if (status != EFI_SUCCESS) {
--			efi_err("Failed to allocate memory for 'pci_handle'\n");
--			return;
--		}
--
--		status = efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
--				     &pci_proto, NULL, &size, pci_handle);
--	}
--
--	if (status != EFI_SUCCESS)
--		goto free_handle;
--
--	data = (struct setup_data *)(unsigned long)params->hdr.setup_data;
--
--	while (data && data->next)
--		data = (struct setup_data *)(unsigned long)data->next;
--
--	for_each_efi_handle(h, pci_handle, size, i) {
--		efi_pci_io_protocol_t *pci = NULL;
--		struct pci_setup_rom *rom;
--
--		status = efi_bs_call(handle_protocol, h, &pci_proto,
--				     (void **)&pci);
--		if (status != EFI_SUCCESS || !pci)
--			continue;
--
--		status = preserve_pci_rom_image(pci, &rom);
--		if (status != EFI_SUCCESS)
--			continue;
--
--		if (data)
--			data->next = (unsigned long)rom;
--		else
--			params->hdr.setup_data = (unsigned long)rom;
--
--		data = (struct setup_data *)rom;
--	}
--
--free_handle:
--	efi_bs_call(free_pool, pci_handle);
--}
--
--static void retrieve_apple_device_properties(struct boot_params *boot_params)
--{
--	efi_guid_t guid = APPLE_PROPERTIES_PROTOCOL_GUID;
--	struct setup_data *data, *new;
--	efi_status_t status;
--	u32 size = 0;
--	apple_properties_protocol_t *p;
--
--	status = efi_bs_call(locate_protocol, &guid, NULL, (void **)&p);
--	if (status != EFI_SUCCESS)
--		return;
--
--	if (efi_table_attr(p, version) != 0x10000) {
--		efi_err("Unsupported properties proto version\n");
--		return;
--	}
--
--	efi_call_proto(p, get_all, NULL, &size);
--	if (!size)
--		return;
--
--	do {
--		status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
--				     size + sizeof(struct setup_data),
--				     (void **)&new);
--		if (status != EFI_SUCCESS) {
--			efi_err("Failed to allocate memory for 'properties'\n");
--			return;
--		}
--
--		status = efi_call_proto(p, get_all, new->data, &size);
--
--		if (status == EFI_BUFFER_TOO_SMALL)
--			efi_bs_call(free_pool, new);
--	} while (status == EFI_BUFFER_TOO_SMALL);
--
--	new->type = SETUP_APPLE_PROPERTIES;
--	new->len  = size;
--	new->next = 0;
--
--	data = (struct setup_data *)(unsigned long)boot_params->hdr.setup_data;
--	if (!data) {
--		boot_params->hdr.setup_data = (unsigned long)new;
--	} else {
--		while (data->next)
--			data = (struct setup_data *)(unsigned long)data->next;
--		data->next = (unsigned long)new;
--	}
--}
--
- static void
- adjust_memory_range_protection(unsigned long start, unsigned long size)
- {
-@@ -310,134 +122,6 @@ setup_memory_protection(unsigned long image_base, unsigned long image_size)
- #endif
- }
- 
--static const efi_char16_t apple[] = L"Apple";
--
--static void setup_quirks(struct boot_params *boot_params,
--			 unsigned long image_base,
--			 unsigned long image_size)
--{
--	efi_char16_t *fw_vendor = (efi_char16_t *)(unsigned long)
--		efi_table_attr(efi_system_table, fw_vendor);
--
--	if (!memcmp(fw_vendor, apple, sizeof(apple))) {
--		if (IS_ENABLED(CONFIG_APPLE_PROPERTIES))
--			retrieve_apple_device_properties(boot_params);
--	}
--
--	if (IS_ENABLED(CONFIG_EFI_DXE_MEM_ATTRIBUTES))
--		setup_memory_protection(image_base, image_size);
--}
--
--/*
-- * See if we have Universal Graphics Adapter (UGA) protocol
-- */
--static efi_status_t
--setup_uga(struct screen_info *si, efi_guid_t *uga_proto, unsigned long size)
--{
--	efi_status_t status;
--	u32 width, height;
--	void **uga_handle = NULL;
--	efi_uga_draw_protocol_t *uga = NULL, *first_uga;
--	efi_handle_t handle;
--	int i;
--
--	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size,
--			     (void **)&uga_handle);
--	if (status != EFI_SUCCESS)
--		return status;
--
--	status = efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
--			     uga_proto, NULL, &size, uga_handle);
--	if (status != EFI_SUCCESS)
--		goto free_handle;
--
--	height = 0;
--	width = 0;
--
--	first_uga = NULL;
--	for_each_efi_handle(handle, uga_handle, size, i) {
--		efi_guid_t pciio_proto = EFI_PCI_IO_PROTOCOL_GUID;
--		u32 w, h, depth, refresh;
--		void *pciio;
--
--		status = efi_bs_call(handle_protocol, handle, uga_proto,
--				     (void **)&uga);
--		if (status != EFI_SUCCESS)
--			continue;
--
--		pciio = NULL;
--		efi_bs_call(handle_protocol, handle, &pciio_proto, &pciio);
--
--		status = efi_call_proto(uga, get_mode, &w, &h, &depth, &refresh);
--		if (status == EFI_SUCCESS && (!first_uga || pciio)) {
--			width = w;
--			height = h;
--
--			/*
--			 * Once we've found a UGA supporting PCIIO,
--			 * don't bother looking any further.
--			 */
--			if (pciio)
--				break;
--
--			first_uga = uga;
--		}
--	}
--
--	if (!width && !height)
--		goto free_handle;
--
--	/* EFI framebuffer */
--	si->orig_video_isVGA	= VIDEO_TYPE_EFI;
--
--	si->lfb_depth		= 32;
--	si->lfb_width		= width;
--	si->lfb_height		= height;
--
--	si->red_size		= 8;
--	si->red_pos		= 16;
--	si->green_size		= 8;
--	si->green_pos		= 8;
--	si->blue_size		= 8;
--	si->blue_pos		= 0;
--	si->rsvd_size		= 8;
--	si->rsvd_pos		= 24;
--
--free_handle:
--	efi_bs_call(free_pool, uga_handle);
--
--	return status;
--}
--
--static void setup_graphics(struct boot_params *boot_params)
--{
--	efi_guid_t graphics_proto = EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
--	struct screen_info *si;
--	efi_guid_t uga_proto = EFI_UGA_PROTOCOL_GUID;
--	efi_status_t status;
--	unsigned long size;
--	void **gop_handle = NULL;
--	void **uga_handle = NULL;
--
--	si = &boot_params->screen_info;
--	memset(si, 0, sizeof(*si));
--
--	size = 0;
--	status = efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
--			     &graphics_proto, NULL, &size, gop_handle);
--	if (status == EFI_BUFFER_TOO_SMALL)
--		status = efi_setup_gop(si, &graphics_proto, size);
--
--	if (status != EFI_SUCCESS) {
--		size = 0;
--		status = efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
--				     &uga_proto, NULL, &size, uga_handle);
--		if (status == EFI_BUFFER_TOO_SMALL)
--			setup_uga(si, &uga_proto, size);
--	}
--}
--
--
- static void __noreturn efi_exit(efi_handle_t handle, efi_status_t status)
- {
- 	efi_bs_call(exit, handle, status, 0, NULL);
-@@ -480,14 +164,9 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 	image_base = efi_table_attr(image, image_base);
- 	image_offset = (void *)startup_32 - image_base;
- 
--	status = efi_allocate_pages(sizeof(struct boot_params),
--				    (unsigned long *)&boot_params, ULONG_MAX);
--	if (status != EFI_SUCCESS) {
--		efi_err("Failed to allocate lowmem for boot params\n");
--		efi_exit(handle, status);
--	}
--
--	memset(boot_params, 0x0, sizeof(struct boot_params));
-+	boot_params = efi_alloc_boot_params();
-+	if (!boot_params)
-+		efi_exit(handle, EFI_OUT_OF_RESOURCES);
- 
- 	hdr = &boot_params->hdr;
- 
-@@ -495,14 +174,6 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 	memcpy(&hdr->jump, image_base + 512,
- 	       sizeof(struct setup_header) - offsetof(struct setup_header, jump));
- 
--	/*
--	 * Fill out some of the header fields ourselves because the
--	 * EFI firmware loader doesn't load the first sector.
--	 */
--	hdr->root_flags	= 1;
--	hdr->vid_mode	= 0xffff;
--	hdr->boot_flag	= 0xAA55;
--
- 	hdr->type_of_loader = 0x21;
- 
- 	/* Convert unicode cmdline to ascii */
-@@ -532,234 +203,6 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 	efi_exit(handle, status);
- }
- 
--static void add_e820ext(struct boot_params *params,
--			struct setup_data *e820ext, u32 nr_entries)
--{
--	struct setup_data *data;
--
--	e820ext->type = SETUP_E820_EXT;
--	e820ext->len  = nr_entries * sizeof(struct boot_e820_entry);
--	e820ext->next = 0;
--
--	data = (struct setup_data *)(unsigned long)params->hdr.setup_data;
--
--	while (data && data->next)
--		data = (struct setup_data *)(unsigned long)data->next;
--
--	if (data)
--		data->next = (unsigned long)e820ext;
--	else
--		params->hdr.setup_data = (unsigned long)e820ext;
--}
--
--static efi_status_t
--setup_e820(struct boot_params *params, struct setup_data *e820ext, u32 e820ext_size)
--{
--	struct boot_e820_entry *entry = params->e820_table;
--	struct efi_info *efi = &params->efi_info;
--	struct boot_e820_entry *prev = NULL;
--	u32 nr_entries;
--	u32 nr_desc;
--	int i;
--
--	nr_entries = 0;
--	nr_desc = efi->efi_memmap_size / efi->efi_memdesc_size;
--
--	for (i = 0; i < nr_desc; i++) {
--		efi_memory_desc_t *d;
--		unsigned int e820_type = 0;
--		unsigned long m = efi->efi_memmap;
--
--#ifdef CONFIG_X86_64
--		m |= (u64)efi->efi_memmap_hi << 32;
--#endif
--
--		d = efi_early_memdesc_ptr(m, efi->efi_memdesc_size, i);
--		switch (d->type) {
--		case EFI_RESERVED_TYPE:
--		case EFI_RUNTIME_SERVICES_CODE:
--		case EFI_RUNTIME_SERVICES_DATA:
--		case EFI_MEMORY_MAPPED_IO:
--		case EFI_MEMORY_MAPPED_IO_PORT_SPACE:
--		case EFI_PAL_CODE:
--			e820_type = E820_TYPE_RESERVED;
--			break;
--
--		case EFI_UNUSABLE_MEMORY:
--			e820_type = E820_TYPE_UNUSABLE;
--			break;
--
--		case EFI_ACPI_RECLAIM_MEMORY:
--			e820_type = E820_TYPE_ACPI;
--			break;
--
--		case EFI_LOADER_CODE:
--		case EFI_LOADER_DATA:
--		case EFI_BOOT_SERVICES_CODE:
--		case EFI_BOOT_SERVICES_DATA:
--		case EFI_CONVENTIONAL_MEMORY:
--			if (efi_soft_reserve_enabled() &&
--			    (d->attribute & EFI_MEMORY_SP))
--				e820_type = E820_TYPE_SOFT_RESERVED;
--			else
--				e820_type = E820_TYPE_RAM;
--			break;
--
--		case EFI_ACPI_MEMORY_NVS:
--			e820_type = E820_TYPE_NVS;
--			break;
--
--		case EFI_PERSISTENT_MEMORY:
--			e820_type = E820_TYPE_PMEM;
--			break;
--
--		default:
--			continue;
--		}
--
--		/* Merge adjacent mappings */
--		if (prev && prev->type == e820_type &&
--		    (prev->addr + prev->size) == d->phys_addr) {
--			prev->size += d->num_pages << 12;
--			continue;
--		}
--
--		if (nr_entries == ARRAY_SIZE(params->e820_table)) {
--			u32 need = (nr_desc - i) * sizeof(struct e820_entry) +
--				   sizeof(struct setup_data);
--
--			if (!e820ext || e820ext_size < need)
--				return EFI_BUFFER_TOO_SMALL;
--
--			/* boot_params map full, switch to e820 extended */
--			entry = (struct boot_e820_entry *)e820ext->data;
--		}
--
--		entry->addr = d->phys_addr;
--		entry->size = d->num_pages << PAGE_SHIFT;
--		entry->type = e820_type;
--		prev = entry++;
--		nr_entries++;
--	}
--
--	if (nr_entries > ARRAY_SIZE(params->e820_table)) {
--		u32 nr_e820ext = nr_entries - ARRAY_SIZE(params->e820_table);
--
--		add_e820ext(params, e820ext, nr_e820ext);
--		nr_entries -= nr_e820ext;
--	}
--
--	params->e820_entries = (u8)nr_entries;
--
--	return EFI_SUCCESS;
--}
--
--static efi_status_t alloc_e820ext(u32 nr_desc, struct setup_data **e820ext,
--				  u32 *e820ext_size)
--{
--	efi_status_t status;
--	unsigned long size;
--
--	size = sizeof(struct setup_data) +
--		sizeof(struct e820_entry) * nr_desc;
--
--	if (*e820ext) {
--		efi_bs_call(free_pool, *e820ext);
--		*e820ext = NULL;
--		*e820ext_size = 0;
--	}
--
--	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size,
--			     (void **)e820ext);
--	if (status == EFI_SUCCESS)
--		*e820ext_size = size;
--
--	return status;
--}
--
--static efi_status_t allocate_e820(struct boot_params *params,
--				  struct setup_data **e820ext,
--				  u32 *e820ext_size)
--{
--	unsigned long map_size, desc_size, map_key;
--	efi_status_t status;
--	__u32 nr_desc, desc_version;
--
--	/* Only need the size of the mem map and size of each mem descriptor */
--	map_size = 0;
--	status = efi_bs_call(get_memory_map, &map_size, NULL, &map_key,
--			     &desc_size, &desc_version);
--	if (status != EFI_BUFFER_TOO_SMALL)
--		return (status != EFI_SUCCESS) ? status : EFI_UNSUPPORTED;
--
--	nr_desc = map_size / desc_size + EFI_MMAP_NR_SLACK_SLOTS;
--
--	if (nr_desc > ARRAY_SIZE(params->e820_table)) {
--		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table);
--
--		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
--		if (status != EFI_SUCCESS)
--			return status;
--	}
--
--	return EFI_SUCCESS;
--}
--
--struct exit_boot_struct {
--	struct boot_params	*boot_params;
--	struct efi_info		*efi;
--};
--
--static efi_status_t exit_boot_func(struct efi_boot_memmap *map,
--				   void *priv)
--{
--	const char *signature;
--	struct exit_boot_struct *p = priv;
--
--	signature = efi_is_64bit() ? EFI64_LOADER_SIGNATURE
--				   : EFI32_LOADER_SIGNATURE;
--	memcpy(&p->efi->efi_loader_signature, signature, sizeof(__u32));
--
--	efi_set_u64_split((unsigned long)efi_system_table,
--			  &p->efi->efi_systab, &p->efi->efi_systab_hi);
--	p->efi->efi_memdesc_size	= map->desc_size;
--	p->efi->efi_memdesc_version	= map->desc_ver;
--	efi_set_u64_split((unsigned long)map->map,
--			  &p->efi->efi_memmap, &p->efi->efi_memmap_hi);
--	p->efi->efi_memmap_size		= map->map_size;
--
--	return EFI_SUCCESS;
--}
--
--static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
--{
--	struct setup_data *e820ext = NULL;
--	__u32 e820ext_size = 0;
--	efi_status_t status;
--	struct exit_boot_struct priv;
--
--	priv.boot_params	= boot_params;
--	priv.efi		= &boot_params->efi_info;
--
--	status = allocate_e820(boot_params, &e820ext, &e820ext_size);
--	if (status != EFI_SUCCESS)
--		return status;
--
--	/* Might as well exit boot services now */
--	status = efi_exit_boot_services(handle, &priv, exit_boot_func);
--	if (status != EFI_SUCCESS)
--		return status;
--
--	/* Historic? */
--	boot_params->alt_mem_k	= 32 * 1024;
--
--	status = setup_e820(boot_params, e820ext, e820ext_size);
--	if (status != EFI_SUCCESS)
--		return status;
--
--	return EFI_SUCCESS;
--}
--
- /*
-  * On success, we return the address of startup_32, which has potentially been
-  * relocated by efi_relocate_kernel.
-@@ -878,32 +321,12 @@ asmlinkage unsigned long efi_main(efi_handle_t handle,
- 				  &boot_params->ext_ramdisk_size);
- 	}
- 
-+	if (IS_ENABLED(CONFIG_EFI_DXE_MEM_ATTRIBUTES))
-+		setup_memory_protection(bzimage_addr, buffer_end - buffer_start);
- 
--	/*
--	 * If the boot loader gave us a value for secure_boot then we use that,
--	 * otherwise we ask the BIOS.
--	 */
--	if (boot_params->secure_boot == efi_secureboot_mode_unset)
--		boot_params->secure_boot = efi_get_secureboot();
--
--	/* Ask the firmware to clear memory on unclean shutdown */
--	efi_enable_reset_attack_mitigation();
--
--	efi_random_get_seed();
--
--	efi_retrieve_tpm2_eventlog();
--
--	setup_graphics(boot_params);
--
--	setup_efi_pci(boot_params);
--
--	setup_quirks(boot_params, bzimage_addr, buffer_end - buffer_start);
--
--	status = exit_boot(boot_params, handle);
--	if (status != EFI_SUCCESS) {
--		efi_err("exit_boot() failed!\n");
-+	status = efi_x86_stub_common(boot_params, handle);
-+	if (status != EFI_SUCCESS)
- 		goto fail;
--	}
- 
- 	return bzimage_addr;
- fail:
-diff --git a/drivers/firmware/efi/libstub/x86.c b/drivers/firmware/efi/libstub/x86.c
+diff --git a/drivers/firmware/efi/libstub/x86-zboot.c b/drivers/firmware/efi/libstub/x86-zboot.c
 new file mode 100644
-index 0000000000000000..fcaf69eace751f17
+index 0000000000000000..16e8b315892dedda
 --- /dev/null
-+++ b/drivers/firmware/efi/libstub/x86.c
-@@ -0,0 +1,612 @@
++++ b/drivers/firmware/efi/libstub/x86-zboot.c
+@@ -0,0 +1,295 @@
 +// SPDX-License-Identifier: GPL-2.0-only
-+
-+/* -----------------------------------------------------------------------
-+ *
-+ *   Copyright 2011 Intel Corporation; author Matt Fleming
-+ *
-+ * ----------------------------------------------------------------------- */
++/*
++ * Copyright (C) 2023 Google LLC. <ardb@google.com>
++ */
 +
 +#include <linux/efi.h>
 +#include <linux/pci.h>
@@ -789,598 +350,335 @@ index 0000000000000000..fcaf69eace751f17
 +
 +#include "efistub.h"
 +
-+static void add_e820ext(struct boot_params *params,
-+			struct setup_data *e820ext, u32 nr_entries)
-+{
-+	struct setup_data *data;
++extern char _gzdata_end[];
++extern bool efi_no5lvl;
 +
-+	e820ext->type = SETUP_E820_EXT;
-+	e820ext->len  = nr_entries * sizeof(struct boot_e820_entry);
-+	e820ext->next = 0;
-+
-+	data = (struct setup_data *)(unsigned long)params->hdr.setup_data;
-+
-+	while (data && data->next)
-+		data = (struct setup_data *)(unsigned long)data->next;
-+
-+	if (data)
-+		data->next = (unsigned long)e820ext;
-+	else
-+		params->hdr.setup_data = (unsigned long)e820ext;
-+}
-+
-+static efi_status_t
-+setup_e820(struct boot_params *params, struct setup_data *e820ext, u32 e820ext_size)
-+{
-+	struct boot_e820_entry *entry = params->e820_table;
-+	struct efi_info *efi = &params->efi_info;
-+	struct boot_e820_entry *prev = NULL;
-+	u32 nr_entries;
-+	u32 nr_desc;
-+	int i;
-+
-+	nr_entries = 0;
-+	nr_desc = efi->efi_memmap_size / efi->efi_memdesc_size;
-+
-+	for (i = 0; i < nr_desc; i++) {
-+		efi_memory_desc_t *d;
-+		unsigned int e820_type = 0;
-+		unsigned long m = efi->efi_memmap;
-+
-+#ifdef CONFIG_X86_64
-+		m |= (u64)efi->efi_memmap_hi << 32;
-+#endif
-+
-+		d = efi_early_memdesc_ptr(m, efi->efi_memdesc_size, i);
-+		switch (d->type) {
-+		case EFI_RESERVED_TYPE:
-+		case EFI_RUNTIME_SERVICES_CODE:
-+		case EFI_RUNTIME_SERVICES_DATA:
-+		case EFI_MEMORY_MAPPED_IO:
-+		case EFI_MEMORY_MAPPED_IO_PORT_SPACE:
-+		case EFI_PAL_CODE:
-+			e820_type = E820_TYPE_RESERVED;
-+			break;
-+
-+		case EFI_UNUSABLE_MEMORY:
-+			e820_type = E820_TYPE_UNUSABLE;
-+			break;
-+
-+		case EFI_ACPI_RECLAIM_MEMORY:
-+			e820_type = E820_TYPE_ACPI;
-+			break;
-+
-+		case EFI_LOADER_CODE:
-+		case EFI_LOADER_DATA:
-+		case EFI_BOOT_SERVICES_CODE:
-+		case EFI_BOOT_SERVICES_DATA:
-+		case EFI_CONVENTIONAL_MEMORY:
-+			if (efi_soft_reserve_enabled() &&
-+			    (d->attribute & EFI_MEMORY_SP))
-+				e820_type = E820_TYPE_SOFT_RESERVED;
-+			else
-+				e820_type = E820_TYPE_RAM;
-+			break;
-+
-+		case EFI_ACPI_MEMORY_NVS:
-+			e820_type = E820_TYPE_NVS;
-+			break;
-+
-+		case EFI_PERSISTENT_MEMORY:
-+			e820_type = E820_TYPE_PMEM;
-+			break;
-+
-+		default:
-+			continue;
-+		}
-+
-+		/* Merge adjacent mappings */
-+		if (prev && prev->type == e820_type &&
-+		    (prev->addr + prev->size) == d->phys_addr) {
-+			prev->size += d->num_pages << 12;
-+			continue;
-+		}
-+
-+		if (nr_entries == ARRAY_SIZE(params->e820_table)) {
-+			u32 need = (nr_desc - i) * sizeof(struct e820_entry) +
-+				   sizeof(struct setup_data);
-+
-+			if (!e820ext || e820ext_size < need)
-+				return EFI_BUFFER_TOO_SMALL;
-+
-+			/* boot_params map full, switch to e820 extended */
-+			entry = (struct boot_e820_entry *)e820ext->data;
-+		}
-+
-+		entry->addr = d->phys_addr;
-+		entry->size = d->num_pages << PAGE_SHIFT;
-+		entry->type = e820_type;
-+		prev = entry++;
-+		nr_entries++;
-+	}
-+
-+	if (nr_entries > ARRAY_SIZE(params->e820_table)) {
-+		u32 nr_e820ext = nr_entries - ARRAY_SIZE(params->e820_table);
-+
-+		add_e820ext(params, e820ext, nr_e820ext);
-+		nr_entries -= nr_e820ext;
-+	}
-+
-+	params->e820_entries = (u8)nr_entries;
-+
-+	return EFI_SUCCESS;
-+}
-+
-+static efi_status_t alloc_e820ext(u32 nr_desc, struct setup_data **e820ext,
-+				  u32 *e820ext_size)
-+{
-+	efi_status_t status;
-+	unsigned long size;
-+
-+	size = sizeof(struct setup_data) +
-+		sizeof(struct e820_entry) * nr_desc;
-+
-+	if (*e820ext) {
-+		efi_bs_call(free_pool, *e820ext);
-+		*e820ext = NULL;
-+		*e820ext_size = 0;
-+	}
-+
-+	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size,
-+			     (void **)e820ext);
-+	if (status == EFI_SUCCESS)
-+		*e820ext_size = size;
-+
-+	return status;
-+}
-+
-+static efi_status_t allocate_e820(struct boot_params *params,
-+				  struct setup_data **e820ext,
-+				  u32 *e820ext_size)
-+{
-+	unsigned long map_size, desc_size, map_key;
-+	efi_status_t status;
-+	__u32 nr_desc, desc_version;
-+
-+	/* Only need the size of the mem map and size of each mem descriptor */
-+	map_size = 0;
-+	status = efi_bs_call(get_memory_map, &map_size, NULL, &map_key,
-+			     &desc_size, &desc_version);
-+	if (status != EFI_BUFFER_TOO_SMALL)
-+		return (status != EFI_SUCCESS) ? status : EFI_UNSUPPORTED;
-+
-+	nr_desc = map_size / desc_size + EFI_MMAP_NR_SLACK_SLOTS;
-+
-+	if (nr_desc > ARRAY_SIZE(params->e820_table)) {
-+		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table);
-+
-+		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
-+		if (status != EFI_SUCCESS)
-+			return status;
-+	}
-+
-+	return EFI_SUCCESS;
-+}
-+
-+struct exit_boot_struct {
-+	struct boot_params	*boot_params;
-+	struct efi_info		*efi;
++static const struct desc_struct gdt[] = {
++	[GDT_ENTRY_KERNEL32_CS]	= GDT_ENTRY_INIT(0xc09b, 0, 0xfffff),
++	[GDT_ENTRY_KERNEL_CS]	= GDT_ENTRY_INIT(0xa09b, 0, 0xfffff),
++	[GDT_ENTRY_KERNEL_DS]	= GDT_ENTRY_INIT(0xc093, 0, 0xfffff),
 +};
 +
-+static efi_status_t exit_boot_func(struct efi_boot_memmap *map,
-+				   void *priv)
++static void (*la57_toggle)(void *cr3, void *gdt);
++
++#ifdef CONFIG_EFI_MIXED
++const bool efi_is64 = true;
++
++u64 __efi64_thunk(u32 func, ...)
 +{
-+	const char *signature;
-+	struct exit_boot_struct *p = priv;
++	return EFI_UNSUPPORTED;
++}
++#endif
 +
-+	signature = efi_is_64bit() ? EFI64_LOADER_SIGNATURE
-+				   : EFI32_LOADER_SIGNATURE;
-+	memcpy(&p->efi->efi_loader_signature, signature, sizeof(__u32));
++efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
++{
++	int options_size = 0;
++	efi_status_t status;
 +
-+	efi_set_u64_split((unsigned long)efi_system_table,
-+			  &p->efi->efi_systab, &p->efi->efi_systab_hi);
-+	p->efi->efi_memdesc_size	= map->desc_size;
-+	p->efi->efi_memdesc_version	= map->desc_ver;
-+	efi_set_u64_split((unsigned long)map->map,
-+			  &p->efi->efi_memmap, &p->efi->efi_memmap_hi);
-+	p->efi->efi_memmap_size		= map->map_size;
++	/* Convert unicode cmdline to ascii */
++	*cmdline_ptr = efi_convert_cmdline(image, &options_size);
++	if (!*cmdline_ptr)
++		return EFI_OUT_OF_RESOURCES;
 +
-+	return EFI_SUCCESS;
++#ifdef CONFIG_CMDLINE_BOOL
++	status = efi_parse_options(CONFIG_CMDLINE);
++	if (status != EFI_SUCCESS) {
++		efi_err("Failed to parse options\n");
++		return status;
++	}
++#endif
++	if (!IS_ENABLED(CONFIG_CMDLINE_OVERRIDE)) {
++		status = efi_parse_options(*cmdline_ptr);
++		if (status != EFI_SUCCESS)
++			efi_err("Failed to parse options\n");
++	}
++	return status;
 +}
 +
-+static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
++void efi_cache_sync_image(unsigned long image_base, unsigned long alloc_size)
 +{
-+	struct setup_data *e820ext = NULL;
-+	__u32 e820ext_size = 0;
-+	efi_status_t status;
-+	struct exit_boot_struct priv;
++	const u32 payload_size = *(u32 *)(_gzdata_end - 4);
++	const u32 image_size = *(u32 *)(image_base + 0x10);
++	const s32 *reloc = (s32 *)(image_base + payload_size);
++	u64 va_offset = __START_KERNEL - image_base;
++	u64 range, delta;
++	u32 seed;
 +
-+	priv.boot_params	= boot_params;
-+	priv.efi		= &boot_params->efi_info;
++	if (!IS_ENABLED(CONFIG_RANDOMIZE_BASE) ||
++	    image_size == payload_size ||
++	    efi_get_random_bytes(sizeof(seed), (u8 *)&seed) != EFI_SUCCESS)
++		return;
 +
-+	status = allocate_e820(boot_params, &e820ext, &e820ext_size);
-+	if (status != EFI_SUCCESS)
-+		return status;
-+
-+	/* Might as well exit boot services now */
-+	status = efi_exit_boot_services(handle, &priv, exit_boot_func);
-+	if (status != EFI_SUCCESS)
-+		return status;
-+
-+	/* Historic? */
-+	boot_params->alt_mem_k	= 32 * 1024;
-+
-+	status = setup_e820(boot_params, e820ext, e820ext_size);
-+	if (status != EFI_SUCCESS)
-+		return status;
-+
-+	return EFI_SUCCESS;
-+}
-+
-+static efi_status_t
-+preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
-+{
-+	struct pci_setup_rom *rom = NULL;
-+	efi_status_t status;
-+	unsigned long size;
-+	uint64_t romsize;
-+	void *romimage;
++	range = KERNEL_IMAGE_SIZE - LOAD_PHYSICAL_ADDR - image_size;
++	delta = LOAD_PHYSICAL_ADDR + ((seed * range) >> 32UL);
++	delta &= ~(CONFIG_PHYSICAL_ALIGN - 1);
 +
 +	/*
-+	 * Some firmware images contain EFI function pointers at the place where
-+	 * the romimage and romsize fields are supposed to be. Typically the EFI
-+	 * code is mapped at high addresses, translating to an unrealistically
-+	 * large romsize. The UEFI spec limits the size of option ROMs to 16
-+	 * MiB so we reject any ROMs over 16 MiB in size to catch this.
++	 * Process relocations: 32 bit relocations first then 64 bit after.
++	 * Three sets of binary relocations are added to the end of the kernel
++	 * before compression. Each relocation table entry is the kernel
++	 * address of the location which needs to be updated stored as a
++	 * 32-bit value which is sign extended to 64 bits.
++	 *
++	 * Format is:
++	 *
++	 * kernel bits...
++	 * 0 - zero terminator for 64 bit relocations
++	 * 64 bit relocation repeated
++	 * 0 - zero terminator for inverse 32 bit relocations
++	 * 32 bit inverse relocation repeated
++	 * 0 - zero terminator for 32 bit relocations
++	 * 32 bit relocation repeated
++	 *
++	 * So we work backwards from the end of the decompressed image.
 +	 */
-+	romimage = efi_table_attr(pci, romimage);
-+	romsize = efi_table_attr(pci, romsize);
-+	if (!romimage || !romsize || romsize > SZ_16M)
-+		return EFI_INVALID_PARAMETER;
++	while (*--reloc)
++		*(u32 *)((s64)*reloc - va_offset) += delta;
 +
-+	size = romsize + sizeof(*rom);
++	while (*--reloc)
++		*(u32 *)((s64)*reloc - va_offset) -= delta;
 +
-+	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size,
-+			     (void **)&rom);
-+	if (status != EFI_SUCCESS) {
-+		efi_err("Failed to allocate memory for 'rom'\n");
-+		return status;
-+	}
++	while (*--reloc)
++		*(u64 *)((s64)*reloc - va_offset) += delta;
 +
-+	memset(rom, 0, sizeof(*rom));
++	efi_free(alloc_size - image_size, image_base + image_size);
++}
 +
-+	rom->data.type	= SETUP_PCI;
-+	rom->data.len	= size - sizeof(struct setup_data);
-+	rom->data.next	= 0;
-+	rom->pcilen	= pci->romsize;
-+	*__rom = rom;
-+
-+	status = efi_call_proto(pci, pci.read, EfiPciIoWidthUint16,
-+				PCI_VENDOR_ID, 1, &rom->vendor);
-+
-+	if (status != EFI_SUCCESS) {
-+		efi_err("Failed to read rom->vendor\n");
-+		goto free_struct;
-+	}
-+
-+	status = efi_call_proto(pci, pci.read, EfiPciIoWidthUint16,
-+				PCI_DEVICE_ID, 1, &rom->devid);
-+
-+	if (status != EFI_SUCCESS) {
-+		efi_err("Failed to read rom->devid\n");
-+		goto free_struct;
-+	}
-+
-+	status = efi_call_proto(pci, get_location, &rom->segment, &rom->bus,
-+				&rom->device, &rom->function);
-+
-+	if (status != EFI_SUCCESS)
-+		goto free_struct;
-+
-+	memcpy(rom->romdata, romimage, romsize);
-+	return status;
-+
-+free_struct:
-+	efi_bs_call(free_pool, rom);
-+	return status;
++static void __naked tmpl_toggle(void *cr3, void *gdt)
++{
++	/*
++	 * This is template code that will be copied into a 32-bit addressable
++	 * buffer, allowing us to drop to 32-bit mode with paging disabled,
++	 * which is required to be able to toggle the CR4.LA57 bit.
++	 *
++	 * The first MOVB instruction is only there to capture the size of the
++	 * sequence, and implicitly, the offset to the LJMP's immediate, which
++	 * will be populated with the correct absolute address after copying.
++	 */
++	asm("0:	movb	$(3f - .), %%al		\n\t"
++	    "	lgdt	(%%rsi)			\n\t"
++	    "	movw	%[ds], %%ax		\n\t"
++	    "	movw	%%ax, %%ds		\n\t"
++	    "	movw	%%ax, %%ss		\n\t"
++	    "	leaq	2f(%%rip), %%rax	\n\t"
++	    "	pushq	%[cs32]			\n\t"
++	    "	pushq	%%rax			\n\t"
++	    "	lretq				\n\t"
++	    "1:	retq				\n\t"
++	    "	.code32				\n\t"
++	    "2:	movl	%%cr0, %%eax		\n\t"
++	    "	btrl	%[pg], %%eax		\n\t"
++	    "	movl	%%eax, %%cr0		\n\t"
++	    "	movl	%%cr4, %%ecx		\n\t"
++	    "	btcl	%[la57], %%ecx		\n\t"
++	    "	movl	%%ecx, %%cr4		\n\t"
++	    "	movl	%%edi, %%cr3		\n\t"
++	    "	btsl	%[pg], %%eax		\n\t"
++	    "	movl	%%eax, %%cr0		\n\t"
++	    "	ljmpl	%[cs], $(1b - 0b) 	\n\t"
++	    "3:	.code64"
++	    :
++	    : [cs32]	"i"(__KERNEL32_CS),
++	      [cs]	"i"(__KERNEL_CS),
++	      [ds]	"i"(__KERNEL_DS),
++	      [pg]	"i"(X86_CR0_PG_BIT),
++	      [la57]	"i"(X86_CR4_LA57_BIT));
 +}
 +
 +/*
-+ * There's no way to return an informative status from this function,
-+ * because any analysis (and printing of error messages) needs to be
-+ * done directly at the EFI function call-site.
-+ *
-+ * For example, EFI_INVALID_PARAMETER could indicate a bug or maybe we
-+ * just didn't find any PCI devices, but there's no way to tell outside
-+ * the context of the call.
++ * Enabling (or disabling) 5 level paging is tricky, because it can only be
++ * done from 32-bit mode with paging disabled. This means not only that the
++ * code itself must be running from 32-bit addressable physical memory, but
++ * also that the root page table must be 32-bit addressable, as we cannot
++ * program a 64-bit value into CR3 when running in 32-bit mode.
 + */
-+static void setup_efi_pci(struct boot_params *params)
++static efi_status_t efi_setup_5level_paging(void)
 +{
++	bool want_la57 = IS_ENABLED(CONFIG_X86_5LEVEL) && !efi_no5lvl;
++	bool have_la57 = native_read_cr4() & X86_CR4_LA57;
++	const u8 tmpl_size = ((u8 *)tmpl_toggle)[1];
 +	efi_status_t status;
-+	void **pci_handle = NULL;
-+	efi_guid_t pci_proto = EFI_PCI_IO_PROTOCOL_GUID;
-+	unsigned long size = 0;
-+	struct setup_data *data;
-+	efi_handle_t h;
-+	int i;
++	u8 *la57_code;
 +
-+	status = efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
-+			     &pci_proto, NULL, &size, pci_handle);
++	/* check for 5 level paging support */
++	if (native_cpuid_eax(0) < 7 ||
++	    !(native_cpuid_ecx(7) & (1 << (X86_FEATURE_LA57 & 31))))
++		return EFI_SUCCESS;
 +
-+	if (status == EFI_BUFFER_TOO_SMALL) {
-+		status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size,
-+				     (void **)&pci_handle);
++	/*
++	 * If LA57 is supported but disabled, and we have no interest in
++	 * enabling it, we can bail here. In all other cases, we need to
++	 * prepare the toggle support routine, even for the case where LA57 is
++	 * currently on and we want to keep it on, as the firmware might return
++	 * from ExitBootServices() with LA57 disabled.
++	 */
++	if (!want_la57 && !have_la57)
++		return EFI_SUCCESS;
 +
-+		if (status != EFI_SUCCESS) {
-+			efi_err("Failed to allocate memory for 'pci_handle'\n");
-+			return;
-+		}
-+
-+		status = efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
-+				     &pci_proto, NULL, &size, pci_handle);
-+	}
-+
-+	if (status != EFI_SUCCESS)
-+		goto free_handle;
-+
-+	data = (struct setup_data *)(unsigned long)params->hdr.setup_data;
-+
-+	while (data && data->next)
-+		data = (struct setup_data *)(unsigned long)data->next;
-+
-+	for_each_efi_handle(h, pci_handle, size, i) {
-+		efi_pci_io_protocol_t *pci = NULL;
-+		struct pci_setup_rom *rom;
-+
-+		status = efi_bs_call(handle_protocol, h, &pci_proto,
-+				     (void **)&pci);
-+		if (status != EFI_SUCCESS || !pci)
-+			continue;
-+
-+		status = preserve_pci_rom_image(pci, &rom);
-+		if (status != EFI_SUCCESS)
-+			continue;
-+
-+		if (data)
-+			data->next = (unsigned long)rom;
-+		else
-+			params->hdr.setup_data = (unsigned long)rom;
-+
-+		data = (struct setup_data *)rom;
-+	}
-+
-+free_handle:
-+	efi_bs_call(free_pool, pci_handle);
-+}
-+
-+/*
-+ * See if we have Universal Graphics Adapter (UGA) protocol
-+ */
-+static efi_status_t
-+setup_uga(struct screen_info *si, efi_guid_t *uga_proto, unsigned long size)
-+{
-+	efi_status_t status;
-+	u32 width, height;
-+	void **uga_handle = NULL;
-+	efi_uga_draw_protocol_t *uga = NULL, *first_uga;
-+	efi_handle_t handle;
-+	int i;
-+
-+	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA, size,
-+			     (void **)&uga_handle);
++	/* allocate some 32-bit addressable memory for code and a page table */
++	status = efi_allocate_pages(2 * PAGE_SIZE, (unsigned long *)&la57_code,
++				    U32_MAX);
 +	if (status != EFI_SUCCESS)
 +		return status;
 +
-+	status = efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
-+			     uga_proto, NULL, &size, uga_handle);
-+	if (status != EFI_SUCCESS)
-+		goto free_handle;
++	la57_toggle = memcpy(la57_code, tmpl_toggle, tmpl_size);
++	memset(la57_code + tmpl_size, 0x0, 2 * PAGE_SIZE - tmpl_size);
 +
-+	height = 0;
-+	width = 0;
++	/*
++	 * To avoid having to allocate a 32-bit addressable stack, we use a
++	 * ljmp to switch back to long mode. However, this takes an absolute
++	 * address, so we have to poke it in at runtime. The dummy MOVB
++	 * instruction at the beginning can be used to locate the immediate.
++	 */
++	*(u32 *)&la57_code[tmpl_size - 6] += (u64)la57_code;
 +
-+	first_uga = NULL;
-+	for_each_efi_handle(handle, uga_handle, size, i) {
-+		efi_guid_t pciio_proto = EFI_PCI_IO_PROTOCOL_GUID;
-+		u32 w, h, depth, refresh;
-+		void *pciio;
-+
-+		status = efi_bs_call(handle_protocol, handle, uga_proto,
-+				     (void **)&uga);
-+		if (status != EFI_SUCCESS)
-+			continue;
-+
-+		pciio = NULL;
-+		efi_bs_call(handle_protocol, handle, &pciio_proto, &pciio);
-+
-+		status = efi_call_proto(uga, get_mode, &w, &h, &depth, &refresh);
-+		if (status == EFI_SUCCESS && (!first_uga || pciio)) {
-+			width = w;
-+			height = h;
-+
-+			/*
-+			 * Once we've found a UGA supporting PCIIO,
-+			 * don't bother looking any further.
-+			 */
-+			if (pciio)
-+				break;
-+
-+			first_uga = uga;
-+		}
-+	}
-+
-+	if (!width && !height)
-+		goto free_handle;
-+
-+	/* EFI framebuffer */
-+	si->orig_video_isVGA	= VIDEO_TYPE_EFI;
-+
-+	si->lfb_depth		= 32;
-+	si->lfb_width		= width;
-+	si->lfb_height		= height;
-+
-+	si->red_size		= 8;
-+	si->red_pos		= 16;
-+	si->green_size		= 8;
-+	si->green_pos		= 8;
-+	si->blue_size		= 8;
-+	si->blue_pos		= 0;
-+	si->rsvd_size		= 8;
-+	si->rsvd_pos		= 24;
-+
-+free_handle:
-+	efi_bs_call(free_pool, uga_handle);
-+
-+	return status;
++	return EFI_SUCCESS;
 +}
 +
-+static void setup_graphics(struct boot_params *boot_params)
++static void efi_5level_switch(void)
 +{
-+	efi_guid_t graphics_proto = EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
-+	struct screen_info *si;
-+	efi_guid_t uga_proto = EFI_UGA_PROTOCOL_GUID;
-+	efi_status_t status;
-+	unsigned long size;
-+	void **gop_handle = NULL;
-+	void **uga_handle = NULL;
++	bool want_la57 = IS_ENABLED(CONFIG_X86_5LEVEL) && !efi_no5lvl;
++	bool have_la57 = native_read_cr4() & X86_CR4_LA57;
++	u64 *pgt = (void *)la57_toggle + PAGE_SIZE;
++	u64 *cr3 = (u64 *)__native_read_cr3();
++	struct desc_ptr desc;
++	u64 *new_cr3;
 +
-+	si = &boot_params->screen_info;
-+	memset(si, 0, sizeof(*si));
-+
-+	size = 0;
-+	status = efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
-+			     &graphics_proto, NULL, &size, gop_handle);
-+	if (status == EFI_BUFFER_TOO_SMALL)
-+		status = efi_setup_gop(si, &graphics_proto, size);
-+
-+	if (status != EFI_SUCCESS) {
-+		size = 0;
-+		status = efi_bs_call(locate_handle, EFI_LOCATE_BY_PROTOCOL,
-+				     &uga_proto, NULL, &size, uga_handle);
-+		if (status == EFI_BUFFER_TOO_SMALL)
-+			setup_uga(si, &uga_proto, size);
-+	}
-+}
-+
-+static void retrieve_apple_device_properties(struct boot_params *boot_params)
-+{
-+	efi_guid_t guid = APPLE_PROPERTIES_PROTOCOL_GUID;
-+	struct setup_data *data, *new;
-+	efi_status_t status;
-+	u32 size = 0;
-+	apple_properties_protocol_t *p;
-+
-+	status = efi_bs_call(locate_protocol, &guid, NULL, (void **)&p);
-+	if (status != EFI_SUCCESS)
++	if (!la57_toggle || (want_la57 && have_la57))
 +		return;
 +
-+	if (efi_table_attr(p, version) != 0x10000) {
-+		efi_err("Unsupported properties proto version\n");
-+		return;
-+	}
-+
-+	efi_call_proto(p, get_all, NULL, &size);
-+	if (!size)
-+		return;
-+
-+	do {
-+		status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
-+				     size + sizeof(struct setup_data),
-+				     (void **)&new);
-+		if (status != EFI_SUCCESS) {
-+			efi_err("Failed to allocate memory for 'properties'\n");
-+			return;
-+		}
-+
-+		status = efi_call_proto(p, get_all, new->data, &size);
-+
-+		if (status == EFI_BUFFER_TOO_SMALL)
-+			efi_bs_call(free_pool, new);
-+	} while (status == EFI_BUFFER_TOO_SMALL);
-+
-+	new->type = SETUP_APPLE_PROPERTIES;
-+	new->len  = size;
-+	new->next = 0;
-+
-+	data = (struct setup_data *)(unsigned long)boot_params->hdr.setup_data;
-+	if (!data) {
-+		boot_params->hdr.setup_data = (unsigned long)new;
++	if (!have_la57) {
++		/*
++		 * We are going to enable 5 level paging, so we need to
++		 * allocate a root level page from the 32-bit addressable
++		 * physical region, and plug the existing hierarchy into it.
++		 */
++		new_cr3 = pgt;
++		new_cr3[0] = (u64)cr3 | _PAGE_TABLE_NOENC;
 +	} else {
-+		while (data->next)
-+			data = (struct setup_data *)(unsigned long)data->next;
-+		data->next = (unsigned long)new;
++		// take the new root table pointer from the current entry #0
++		new_cr3 = (u64 *)(cr3[0] & PAGE_MASK);
++
++		// copy the new root level table if it is not 32-bit addressable
++		if ((u64)new_cr3 > U32_MAX) {
++			for (int i = 0; i < PTRS_PER_PGD; i++)
++				pgt[i] = new_cr3[i];
++			new_cr3 = pgt;
++		}
 +	}
++
++	desc.size	= sizeof(gdt) - 1;
++	desc.address 	= (u64)gdt;
++
++	la57_toggle(new_cr3, &desc);
 +}
 +
-+static const efi_char16_t apple[] = L"Apple";
-+
-+static void setup_quirks(struct boot_params *boot_params)
++efi_status_t efi_stub_common(efi_handle_t handle,
++			     efi_loaded_image_t *image,
++			     unsigned long image_addr,
++			     char *cmdline_ptr)
 +{
-+	efi_char16_t *fw_vendor = (efi_char16_t *)(unsigned long)
-+		efi_table_attr(efi_system_table, fw_vendor);
-+
-+	if (!memcmp(fw_vendor, apple, sizeof(apple))) {
-+		if (IS_ENABLED(CONFIG_APPLE_PROPERTIES))
-+			retrieve_apple_device_properties(boot_params);
-+	}
-+}
-+
-+efi_status_t efi_x86_stub_common(struct boot_params *boot_params,
-+				 efi_handle_t handle)
-+{
++	void __noreturn (*startup_64)(void *, struct boot_params *);
++	const struct linux_efi_initrd *initrd = NULL;
++	struct boot_params *boot_params;
++	struct setup_header *hdr;
 +	efi_status_t status;
 +
-+	/*
-+	 * If the boot loader gave us a value for secure_boot then we use that,
-+	 * otherwise we ask the BIOS.
-+	 */
-+	if (boot_params->secure_boot == efi_secureboot_mode_unset)
-+		boot_params->secure_boot = efi_get_secureboot();
++	status = efi_setup_5level_paging();
++	if (status != EFI_SUCCESS) {
++		efi_err("efi_setup_5level_paging() failed!\n");
++		return status;
++	}
 +
-+	/* Ask the firmware to clear memory on unclean shutdown */
-+	efi_enable_reset_attack_mitigation();
++	boot_params = efi_alloc_boot_params();
++	if (!boot_params)
++		return EFI_OUT_OF_RESOURCES;
 +
-+	efi_random_get_seed();
++	hdr = &boot_params->hdr;
++	hdr->type_of_loader = 0x21;
 +
-+	efi_retrieve_tpm2_eventlog();
++	efi_set_u64_split((unsigned long)cmdline_ptr,
++			  &hdr->cmd_line_ptr, &boot_params->ext_cmd_line_ptr);
 +
-+	setup_graphics(boot_params);
-+
-+	setup_efi_pci(boot_params);
-+
-+	setup_quirks(boot_params);
-+
-+	status = exit_boot(boot_params, handle);
++	status = efi_load_initrd(image, hdr->initrd_addr_max, ULONG_MAX,
++				 &initrd);
 +	if (status != EFI_SUCCESS)
-+		efi_err("exit_boot() failed!\n");
++		goto fail;
++	if (initrd && initrd->size > 0) {
++		efi_set_u64_split(initrd->base, &hdr->ramdisk_image,
++				  &boot_params->ext_ramdisk_image);
++		efi_set_u64_split(initrd->size, &hdr->ramdisk_size,
++				  &boot_params->ext_ramdisk_size);
++	}
 +
++	status = efi_x86_stub_common(boot_params, handle);
++	if (status != EFI_SUCCESS)
++		goto fail;
++
++	efi_5level_switch();
++
++	startup_64 = (void *)image_addr;
++	startup_64(NULL, boot_params);
++fail:
++	efi_free(sizeof(struct boot_params), (unsigned long)boot_params);
 +	return status;
 +}
 +
-+struct boot_params *efi_alloc_boot_params(void)
++struct screen_info *__alloc_screen_info(void)
 +{
-+	struct boot_params *boot_params;
-+	efi_status_t status;
-+
-+	status = efi_allocate_pages(sizeof(struct boot_params),
-+				    (unsigned long *)&boot_params, ULONG_MAX);
-+	if (status != EFI_SUCCESS) {
-+		efi_err("Failed to allocate lowmem for boot params\n");
-+		return NULL;
-+	}
-+
-+	memset(boot_params, 0x0, sizeof(struct boot_params));
-+
-+	/*
-+	 * Fill out some of the header fields ourselves because the
-+	 * EFI firmware loader doesn't load the first sector.
-+	 */
-+	boot_params->hdr.root_flags	= 1;
-+	boot_params->hdr.vid_mode	= 0xffff;
-+	boot_params->hdr.boot_flag	= 0xAA55;
-+
-+	return boot_params;
++	return NULL;
 +}
+diff --git a/drivers/firmware/efi/libstub/zboot.c b/drivers/firmware/efi/libstub/zboot.c
+index e5d7fa1f1d8fd160..7cc78bb1253af675 100644
+--- a/drivers/firmware/efi/libstub/zboot.c
++++ b/drivers/firmware/efi/libstub/zboot.c
+@@ -65,6 +65,7 @@ asmlinkage efi_status_t __efiapi
+ efi_zboot_entry(efi_handle_t handle, efi_system_table_t *systab)
+ {
+ 	unsigned long compressed_size = _gzdata_end - _gzdata_start;
++	efi_guid_t loaded_image = LOADED_IMAGE_PROTOCOL_GUID;
+ 	unsigned long image_base, alloc_size;
+ 	efi_loaded_image_t *image;
+ 	efi_status_t status;
+@@ -77,7 +78,7 @@ efi_zboot_entry(efi_handle_t handle, efi_system_table_t *systab)
+ 	free_mem_end_ptr = free_mem_ptr + sizeof(zboot_heap);
+ 
+ 	status = efi_bs_call(handle_protocol, handle,
+-			     &LOADED_IMAGE_PROTOCOL_GUID, (void **)&image);
++			     &loaded_image, (void **)&image);
+ 	if (status != EFI_SUCCESS) {
+ 		error("Failed to locate parent's loaded image protocol");
+ 		return status;
+diff --git a/drivers/firmware/efi/libstub/zboot.lds b/drivers/firmware/efi/libstub/zboot.lds
+index 93d33f68333b2b68..13a4d3e6b3117910 100644
+--- a/drivers/firmware/efi/libstub/zboot.lds
++++ b/drivers/firmware/efi/libstub/zboot.lds
+@@ -14,8 +14,10 @@ SECTIONS
+ 
+ 	.rodata : ALIGN(8) {
+ 		__efistub__gzdata_start = .;
++		_gzdata_start = .;
+ 		*(.gzdata)
+ 		__efistub__gzdata_end = .;
++		_gzdata_end = .;
+ 		*(.rodata* .init.rodata* .srodata*)
+ 		_etext = ALIGN(4096);
+ 		. = _etext;
+@@ -35,11 +37,14 @@ SECTIONS
+ 
+ 	/DISCARD/ : {
+ 		*(.modinfo .init.modinfo)
++		*(.discard*)
+ 	}
+ }
+ 
+ PROVIDE(__efistub__gzdata_size =
+ 		ABSOLUTE(__efistub__gzdata_end - __efistub__gzdata_start));
+ 
++PROVIDE(_gzdata_size = __efistub__gzdata_size);
++
+ PROVIDE(__data_rawsize = ABSOLUTE(_edata - _etext));
+ PROVIDE(__data_size = ABSOLUTE(_end - _etext));
 -- 
 2.39.2
 
