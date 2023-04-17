@@ -2,70 +2,61 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FB7E6E3B7C
-	for <lists+linux-efi@lfdr.de>; Sun, 16 Apr 2023 21:19:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 621E76E414E
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Apr 2023 09:39:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229575AbjDPTTx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 16 Apr 2023 15:19:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57110 "EHLO
+        id S230375AbjDQHjO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 17 Apr 2023 03:39:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229747AbjDPTTu (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 16 Apr 2023 15:19:50 -0400
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEDD12123;
-        Sun, 16 Apr 2023 12:19:48 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.nyi.internal (Postfix) with ESMTP id 8C5C05C0039;
-        Sun, 16 Apr 2023 15:19:45 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Sun, 16 Apr 2023 15:19:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-         h=cc:cc:content-type:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm1; t=1681672785; x=
-        1681759185; bh=YGRdIcPItYFcSw7fEDFLZquPj7AtRRDkYXtyuZxJq/U=; b=d
-        cKPlQi01xUEdqakuUy3IFFpBHkHDOpDeTPLZ78GWzQqE/gvsG2Sj9e0OyOzJI1x3
-        HUkEG3YdI4KsSgb6cgETLCUhDlkuOVgmIN23kS5njWdsAiRKWWMLNz54bMhlOHKP
-        1Nb+XSqoZrEMF0I7wdgORuqj1sfKMYPYHKPvT+Xe5uvQe62eIJp+72TBWCkYNqau
-        k5IUHGy16wXxNo6nQ3fxwiRNU9iggNarO6PezzahvI2J5yinnLv5FSkeEDchWpF/
-        pb4xTPq5RSBx8VkM/oFP5oDI3fYkR3ckSEp4Gk2OS1u7wus3bosyIR/DW8mdCTp+
-        pZ3VDIOmcTaF8/voIA7Lw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1681672785; x=1681759185; bh=YGRdIcPItYFcS
-        w7fEDFLZquPj7AtRRDkYXtyuZxJq/U=; b=ZhHDbhA+5anegK7zp66gP1bNpMsiO
-        DwJNW4ZlvCEuB+i/dDTyFod2fR8GNQxRbEa1JHytZ25x5/8iNzEisk9GPXP+2CM1
-        fu8mN7L5mAbgFsuqHGLfaXfhzDmP3NmvCZJ+c1H6WONj/9c40Zny9u2nyjq/o4dA
-        otPOkENiTyDS6386owjy06YAkP+h7RV5WZ8ltg/uDiPi1Cib79GoeeOACXAZflLv
-        9d3pYZltCvv/9E1lrz+MDmM8rj9N+bBwHaNbzxtgTvhtziopYYKgD9Vx6MGrDO9E
-        N1EKft90agA0X58pbTk4Te5DLOJiZvqJBsJOnm1I5SHYNvTZXDqL/2fzg==
-X-ME-Sender: <xms:UEo8ZCgJ2f_PcM4jhh96JFFn6pr379B1cIC0bxXCCOIX2i0gcuTSQA>
-    <xme:UEo8ZDDyeFbm2WjeVbIO0R9GC9GW4sV7A-gQFb0sikYf9f8ltyJvt0XmIs3XZriJc
-    lZ-SzhzKA4PzsqE3b0>
-X-ME-Received: <xmr:UEo8ZKGWtlZFRRuRPrgbp2u9xidH7_1f7bq6nG_aYvSSVq0pQdAIkgyHZ3zz0TE5dHC-oA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdelgedgleegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdttddttddtvdenucfhrhhomhepfdfmihhr
-    ihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlsehshhhuthgvmhhovhdrnh
-    grmhgvqeenucggtffrrghtthgvrhhnpefhieeghfdtfeehtdeftdehgfehuddtvdeuheet
-    tddtheejueekjeegueeivdektdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvg
-X-ME-Proxy: <xmx:UEo8ZLQ0YrZ0SYnvhgfFQXBo4MVahr8E1VYDJWwPPcfyHlaaqbkxIQ>
-    <xmx:UEo8ZPzsXc0J4X_Y1Wg66pwUUZB1zvyMnNicsACP2F_fQakLg8C3wg>
-    <xmx:UEo8ZJ7rHlVXMUN0oaS92Rr8hB2ve3zfdGwBJUyfqqdlAv8SYA_QJA>
-    <xmx:UUo8ZI9XMBpuDpdqcaMQcLMszovDTAUpQTN7s3cct9z3Po2ZFZ1dIA>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 16 Apr 2023 15:19:44 -0400 (EDT)
-Received: by box.shutemov.name (Postfix, from userid 1000)
-        id D06C610B9A3; Sun, 16 Apr 2023 22:19:40 +0300 (+03)
-Date:   Sun, 16 Apr 2023 22:19:40 +0300
-From:   "Kirill A. Shutemov" <kirill@shutemov.name>
-To:     Vlastimil Babka <vbabka@suse.cz>
+        with ESMTP id S231214AbjDQHiy (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 17 Apr 2023 03:38:54 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D951B525C;
+        Mon, 17 Apr 2023 00:38:07 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 53B2C21A3D;
+        Mon, 17 Apr 2023 07:37:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1681717063; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=3w8ZyhKSUCHQYqIG32tqYuuJnDNxaXTVQggusp/+GOc=;
+        b=FSNHYP0e1N/1O21SR61SdobJRwQUe/xR/QsGmyhBrzM3xQ9/FqLwkxXkORxQN3bPPepVvC
+        J1AJE4vC95OYz9443C58v7MQnRLUKXQ9f+JVSbGagwIxrFIZl66nsCBIWd0BpRiHdw+A/Z
+        BggQEkAKglbqgPoTFhbrqFUgWHIAdzs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1681717063;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=3w8ZyhKSUCHQYqIG32tqYuuJnDNxaXTVQggusp/+GOc=;
+        b=InpvAvPhIJbDcKWUuYK6TRVNdy9BaqeoAVEyr3zLiU0ZyYIRJ1A/+0gB/YuJNZValGrWhk
+        +iHsclhRxLILHaAA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B5DC61390E;
+        Mon, 17 Apr 2023 07:37:42 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id 5jMCK0b3PGQjJQAAMHmgww
+        (envelope-from <vbabka@suse.cz>); Mon, 17 Apr 2023 07:37:42 +0000
+Message-ID: <e75d5d1d-8c0c-15a5-0030-27c3ed458519@suse.cz>
+Date:   Mon, 17 Apr 2023 09:37:42 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCHv9 00/14] mm, x86/cc: Implement support for unaccepted
+ memory
+Content-Language: en-US
+To:     "Kirill A. Shutemov" <kirill@shutemov.name>
 Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Borislav Petkov <bp@alien8.de>,
         Andy Lutomirski <luto@kernel.org>,
@@ -92,47 +83,53 @@ Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
         linux-mm@kvack.org, linux-coco@lists.linux.dev,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv9 00/14] mm, x86/cc: Implement support for unaccepted
- memory
-Message-ID: <20230416191940.ex7ao43pmrjhru2p@box.shutemov.name>
 References: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
  <2e0da486-71e4-cfeb-1578-68f1c8c43d33@suse.cz>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2e0da486-71e4-cfeb-1578-68f1c8c43d33@suse.cz>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+ <20230416191940.ex7ao43pmrjhru2p@box.shutemov.name>
+From:   Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20230416191940.ex7ao43pmrjhru2p@box.shutemov.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Apr 03, 2023 at 04:42:54PM +0200, Vlastimil Babka wrote:
-> Hmm yeah it can be noisy. Did you try to only count events that have
-> fragmenting=1 and/or MIGRATE_MOVABLE as fallback_migratetype? As those are
-> the really bad events.
+On 4/16/23 21:19, Kirill A. Shutemov wrote:
+> On Mon, Apr 03, 2023 at 04:42:54PM +0200, Vlastimil Babka wrote:
+>> Hmm yeah it can be noisy. Did you try to only count events that have
+>> fragmenting=1 and/or MIGRATE_MOVABLE as fallback_migratetype? As those are
+>> the really bad events.
+> 
+> I finally got around to retest it.
+> 
+> 		total	fragmenting	movable	fragmenting&&movable
+> base-1:		957	583		353	0
+> base-2:		2715	2343		359	0
+> base-3:		2033	1669		353	0
+> patched-1:	1325	929		371	0
+> patched-2:	2844	2451		371	0
+> patched-3:	1304	917		361	0
+> 
+> fragmenting=1 is defined as fallback_order<pageblock_order which is most
+> of them.
+> 
+> Patched kernel showed slightly elevated movable(fallback_migratetype=1)
+> cases. Is it critical?
 
-I finally got around to retest it.
+Maybe it's still not statistically significant anyway, also not as cricical
+as fragmenting&movable.
 
-		total	fragmenting	movable	fragmenting&&movable
-base-1:		957	583		353	0
-base-2:		2715	2343		359	0
-base-3:		2033	1669		353	0
-patched-1:	1325	929		371	0
-patched-2:	2844	2451		371	0
-patched-3:	1304	917		361	0
+> There's no allocations that is fragmenting and movable. Hm.
 
-fragmenting=1 is defined as fallback_order<pageblock_order which is most
-of them.
+It probably means your test wasn't stressfull enough to inflict a mix of
+rapid movable an unmovable allocations when memory is nearly full. But at
+that point the memory is all accepted, so we don't need such scenario. The
+important thing is that this kind of events didn't start happening during
+the gradual memory accepting phase.
 
-Patched kernel showed slightly elevated movable(fallback_migratetype=1)
-cases. Is it critical?
-
-There's no allocations that is fragmenting and movable. Hm.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
