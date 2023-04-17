@@ -2,134 +2,67 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 621E76E414E
-	for <lists+linux-efi@lfdr.de>; Mon, 17 Apr 2023 09:39:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C43D26E41DE
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Apr 2023 10:01:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230375AbjDQHjO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 17 Apr 2023 03:39:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51774 "EHLO
+        id S230327AbjDQIBz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 17 Apr 2023 04:01:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231214AbjDQHiy (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 17 Apr 2023 03:38:54 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D951B525C;
-        Mon, 17 Apr 2023 00:38:07 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 53B2C21A3D;
-        Mon, 17 Apr 2023 07:37:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1681717063; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=3w8ZyhKSUCHQYqIG32tqYuuJnDNxaXTVQggusp/+GOc=;
-        b=FSNHYP0e1N/1O21SR61SdobJRwQUe/xR/QsGmyhBrzM3xQ9/FqLwkxXkORxQN3bPPepVvC
-        J1AJE4vC95OYz9443C58v7MQnRLUKXQ9f+JVSbGagwIxrFIZl66nsCBIWd0BpRiHdw+A/Z
-        BggQEkAKglbqgPoTFhbrqFUgWHIAdzs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1681717063;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=3w8ZyhKSUCHQYqIG32tqYuuJnDNxaXTVQggusp/+GOc=;
-        b=InpvAvPhIJbDcKWUuYK6TRVNdy9BaqeoAVEyr3zLiU0ZyYIRJ1A/+0gB/YuJNZValGrWhk
-        +iHsclhRxLILHaAA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B5DC61390E;
-        Mon, 17 Apr 2023 07:37:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 5jMCK0b3PGQjJQAAMHmgww
-        (envelope-from <vbabka@suse.cz>); Mon, 17 Apr 2023 07:37:42 +0000
-Message-ID: <e75d5d1d-8c0c-15a5-0030-27c3ed458519@suse.cz>
-Date:   Mon, 17 Apr 2023 09:37:42 +0200
+        with ESMTP id S230370AbjDQIBg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 17 Apr 2023 04:01:36 -0400
+X-Greylist: delayed 319 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 17 Apr 2023 01:01:09 PDT
+Received: from mail.mahavavy.com (mail.mahavavy.com [92.222.170.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6620855BF
+        for <linux-efi@vger.kernel.org>; Mon, 17 Apr 2023 01:01:08 -0700 (PDT)
+Received: by mail.mahavavy.com (Postfix, from userid 1002)
+        id BE8DA22238; Mon, 17 Apr 2023 07:55:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mahavavy.com; s=mail;
+        t=1681718148; bh=IfqQW79nVX/qUpmHcJiWDpV9BQnOf/s+Zcq9ON74QJY=;
+        h=Date:From:To:Subject:From;
+        b=AZpFRbHge13WhB512dcPTUaNd//kRHDa/i/cVoTbT6pRQr/+AbMVUg80I1h4jn6Ur
+         n3SHT8+oqjcGRjQPRFeVyQli9pisTE15tCNHhiWtPIxy7KiwtHdx+9CRxC87RZ6pgT
+         cnK11VQbbhlKYCb30FYTakIwy6b//PA5GXgky+KZM0ahxK5TETfMj80fjvtHYO8oTM
+         1sVYB3GihWyMOPw1Rxbhi1bIRHTNAwz2BphZPoEKrIm2YRJiRELZ6ImITrrtRnl3LL
+         Y7au5Y9l4aZm9bXNQcx//PBgjlZ5c5/62ETj/vKK8Chs0jz0D9pSTOAIunXt6VkV4Z
+         ag8C70ZKtB8Sg==
+Received: by mail.mahavavy.com for <linux-efi@vger.kernel.org>; Mon, 17 Apr 2023 07:55:47 GMT
+Message-ID: <20230417064500-0.1.20.30pw.0.6c3o53v2rh@mahavavy.com>
+Date:   Mon, 17 Apr 2023 07:55:47 GMT
+From:   =?UTF-8?Q? "Kristi=C3=A1n_Plet=C3=A1nek" ?= 
+        <kristian.pletanek@mahavavy.com>
+To:     <linux-efi@vger.kernel.org>
+Subject: =?UTF-8?Q?Tlakov=C4=9B_lit=C3=BD?=
+X-Mailer: mail.mahavavy.com
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCHv9 00/14] mm, x86/cc: Implement support for unaccepted
- memory
-Content-Language: en-US
-To:     "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
-        khalid.elmously@canonical.com, philip.cox@canonical.com,
-        aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
-        linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
- <2e0da486-71e4-cfeb-1578-68f1c8c43d33@suse.cz>
- <20230416191940.ex7ao43pmrjhru2p@box.shutemov.name>
-From:   Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20230416191940.ex7ao43pmrjhru2p@box.shutemov.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIXED_ES,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 4/16/23 21:19, Kirill A. Shutemov wrote:
-> On Mon, Apr 03, 2023 at 04:42:54PM +0200, Vlastimil Babka wrote:
->> Hmm yeah it can be noisy. Did you try to only count events that have
->> fragmenting=1 and/or MIGRATE_MOVABLE as fallback_migratetype? As those are
->> the really bad events.
-> 
-> I finally got around to retest it.
-> 
-> 		total	fragmenting	movable	fragmenting&&movable
-> base-1:		957	583		353	0
-> base-2:		2715	2343		359	0
-> base-3:		2033	1669		353	0
-> patched-1:	1325	929		371	0
-> patched-2:	2844	2451		371	0
-> patched-3:	1304	917		361	0
-> 
-> fragmenting=1 is defined as fallback_order<pageblock_order which is most
-> of them.
-> 
-> Patched kernel showed slightly elevated movable(fallback_migratetype=1)
-> cases. Is it critical?
+Dobr=C3=A9 r=C3=A1no,
 
-Maybe it's still not statistically significant anyway, also not as cricical
-as fragmenting&movable.
+zaji=C5=A1=C5=A5ujeme technologii tlakov=C3=A9ho lit=C3=AD hlin=C3=ADku.
 
-> There's no allocations that is fragmenting and movable. Hm.
+M=C3=A1me v=C3=BDrobn=C3=AD z=C3=A1vody v Polsku, =C5=A0v=C3=A9dsku a =C4=
+=8C=C3=ADn=C4=9B se schopnost=C3=AD flexibiln=C4=9B p=C5=99esouvat v=C3=BD=
+robu mezi lokalitami.
 
-It probably means your test wasn't stressfull enough to inflict a mix of
-rapid movable an unmovable allocations when memory is nearly full. But at
-that point the memory is all accepted, so we don't need such scenario. The
-important thing is that this kind of events didn't start happening during
-the gradual memory accepting phase.
+Na=C5=A1e lic=C3=AD bu=C5=88ky jsou v=C4=9Bt=C5=A1inou automatick=C3=A9 n=
+ebo poloautomatick=C3=A9, co=C5=BE umo=C5=BE=C5=88uje v=C3=BDrobu velk=C3=
+=BDch v=C3=BDrobn=C3=ADch s=C3=A9ri=C3=AD s vysokou flexibilitou detail=C5=
+=AF.
+=20
+Poskytujeme podporu v ka=C5=BEd=C3=A9 f=C3=A1zi v=C3=BDvoje projektu, vyv=
+=C3=ADj=C3=ADme strukturu detailu.
 
+Cht=C4=9Bli byste mluvit o spolupr=C3=A1ci v t=C3=A9to oblasti?
+
+Pozdravy
+Kristi=C3=A1n Plet=C3=A1nek
