@@ -2,224 +2,184 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F0466E665C
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Apr 2023 15:50:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE9B86E66C4
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Apr 2023 16:10:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229978AbjDRNuT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 18 Apr 2023 09:50:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36806 "EHLO
+        id S231719AbjDROKo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 18 Apr 2023 10:10:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232343AbjDRNuS (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 18 Apr 2023 09:50:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D761A10DE
-        for <linux-efi@vger.kernel.org>; Tue, 18 Apr 2023 06:50:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5607462898
-        for <linux-efi@vger.kernel.org>; Tue, 18 Apr 2023 13:50:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4950DC4339C;
-        Tue, 18 Apr 2023 13:50:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681825815;
-        bh=WKSi12TPj0ccbN/qjUB9rtwsQfvcIxbjSFCwov90qm0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wxy/Pwfp8p5jz5RS51hOfgacYKLpcPDrojAkm92N7X39c9avpdxqILspCbjctHYG5
-         jSVZSM94thYDke83nHe3XphoZUdzuMkhPxeBiV4q849EfhKmjpnUpva+Tw+3w1hQcJ
-         I+FpVyusd3EuebW5oqsnogbzQz875Ctxf0nxLP8m+RmJgsQRT5SFfa3uQ7BXPf2P/E
-         TCXz50cirIRVVESUIdmp+nPSGSMLcg1Se8IKlANXvPtDWPjqcGV04XQBWD/CXcjFH+
-         TAFaZG55oKK2SdEMTtLYykGvxPGTvdG58x+zmMgHmIr1CLoezONDf9rT3+e7S+9mr7
-         RQN7M5x77XujQ==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org, mark.rutland@arm.com,
-        broonie@kernel.org, will@kernel.org, catalin.marinas@arm.com,
-        Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH v2 6/6] efi/zboot: arm64: Grab code size from image header
-Date:   Tue, 18 Apr 2023 15:49:52 +0200
-Message-Id: <20230418134952.1170141-7-ardb@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230418134952.1170141-1-ardb@kernel.org>
-References: <20230418134952.1170141-1-ardb@kernel.org>
+        with ESMTP id S231215AbjDROKn (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 18 Apr 2023 10:10:43 -0400
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC85813FBB;
+        Tue, 18 Apr 2023 07:10:41 -0700 (PDT)
+Received: from mail.ispras.ru (unknown [83.149.199.84])
+        by mail.ispras.ru (Postfix) with ESMTPSA id 7C13240737BF;
+        Tue, 18 Apr 2023 14:10:37 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 7C13240737BF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+        s=default; t=1681827037;
+        bh=Oivj3VZiDr7OozgU0T+dW3I+LSNU/5BoOrTbq2uN6ZE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=l8S7t/HmJ/KyXMJsDZQGY6jXlmZvDUSTfBhSbH5DCuwCSbbzEd4+Jjj4BwTEFe2iA
+         aU6FHHZKm9yuRxAe+Dg/joDAq9vACj5zJkxyZl4ZXcVQoH6cQXmAfgtH7wEAh+6qIt
+         Cl9ICCkwDhIfCvx1hH9VgAWkQiGgyFpfyRlG7z7g=
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6520; i=ardb@kernel.org; h=from:subject; bh=WKSi12TPj0ccbN/qjUB9rtwsQfvcIxbjSFCwov90qm0=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIcVuAcO7b2F99mHf+0N+T3yx4tS7fbMuGrU6exzInlR/6 N3u738dOkpZGMQ4GGTFFFkEZv99t/P0RKla51myMHNYmUCGMHBxCsBE+qIZ/im0nnwuuYFT8fPz I/9Oefrff5n8SKg67NjEnb+kr9yOf/+RkWHvk58RU1l/azTvfRLezzn54dv/epsnllQKTrzYOsl o9Q82AA==
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Date:   Tue, 18 Apr 2023 17:10:37 +0300
+From:   Evgeniy Baskov <baskov@ispras.ru>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Peter Jones <pjones@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Dave Young <dyoung@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [RFC PATCH 0/3] efi: Implement generic zboot support
+In-Reply-To: <20230416120729.2470762-1-ardb@kernel.org>
+References: <20230416120729.2470762-1-ardb@kernel.org>
+User-Agent: Roundcube Webmail/1.4.4
+Message-ID: <620de8eecdc255f11313bb96e32b5b89@ispras.ru>
+X-Sender: baskov@ispras.ru
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Instead of relying on a dodgy dd hack to copy the image code size from
-the uncompressed image's PE header to the end of the compressed image,
-let's grab the code size from the text_offset field of the arm64 image
-header after decompression, which is where the arm64 specific EFI zboot
-make rules will poke the code size when generating zboot specific
-version of the binary Image payload.
+On 2023-04-16 15:07, Ard Biesheuvel wrote:
+> This series is a proof-of-concept that implements support for the EFI
+> zboot decompressor for x86. It replaces the ordinary decompressor, and
+> instead, performs the decompression, KASLR randomization and the 4/5
+> level paging switch while running in the execution context of EFI.
+> 
+> This simplifies things substantially, and makes it straight-forward to
+> abide by stricter future requirements related to the use of writable 
+> and
+> executable memory under EFI, which will come into effect on x86 systems
+> that are certified as being 'more secure', and ship with an even 
+> shinier
+> Windows sticker.
+> 
+> This is an alternative approach to the work being proposed by Evgeny 
+> [0]
+> that makes rather radical changes to the existing decompressor, which
+> has accumulated too many features already, e.g., related to 
+> confidential
+> compute etc.
+> 
+> EFI zboot images can be booted in two ways:
+> - by EFI firmware, which loads and starts it as an ordinary EFI
+>   application, just like the existing EFI stub (with which it shares
+>   most of its code);
+> - by a non-EFI loader that parses the image header for the compression
+>   metadata, and decompresses the image into memory and boots it.
+> 
+> Realistically, the second option is unlikely to ever be used on x86,
+> given that it already has its existing bzImage, but the first option is
+> a good choice for distros that target EFI boot only (and some distros
+> switched to this format already for arm64). The fact that EFI zboot is
+> implemented in the same way on arm64, RISC-V, LoongArch and [shortly]
+> ARM helps with maintenance, not only of the kernel itself, but also the
+> tooling around it relating to kexec, code signing, deployment, etc.
+> 
+> Series can be pulled from [1], which contains some prerequisite patches
+> that are only tangentially related.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/libstub/Makefile.zboot | 14 +++--------
- drivers/firmware/efi/libstub/arm64.c        | 26 +++++++++++++++-----
- drivers/firmware/efi/libstub/efistub.h      |  3 +--
- drivers/firmware/efi/libstub/zboot.c        | 15 +++--------
- 4 files changed, 28 insertions(+), 30 deletions(-)
+I've considered using similar approach when I was writing my series.
+That looks great if you look at subject without considering backwards
+compatibility, especially due to the increased code sharing and the 
+usage
+of the code path without all the legacy stuff. But, I think, that zboot
+approach have two downsides:
 
-diff --git a/drivers/firmware/efi/libstub/Makefile.zboot b/drivers/firmware/efi/libstub/Makefile.zboot
-index 0a9dcc2b13736519..d34d4f0ed33349d5 100644
---- a/drivers/firmware/efi/libstub/Makefile.zboot
-+++ b/drivers/firmware/efi/libstub/Makefile.zboot
-@@ -24,21 +24,13 @@ comp-type-$(CONFIG_KERNEL_ZSTD)		:= zstd22
- # causing the original tools to complain when checking image integrity.
- # So disregard it when calculating the payload size in the zimage header.
- zboot-method-y                         := $(comp-type-y)_with_size
--zboot-size-len-y                       := 12
-+zboot-size-len-y                       := 4
- 
- zboot-method-$(CONFIG_KERNEL_GZIP)     := gzip
--zboot-size-len-$(CONFIG_KERNEL_GZIP)   := 8
--
--# Copy the SizeOfHeaders and SizeOfCode fields from the payload to the end of
--# the compressed image. Note that this presupposes a PE header offset of 64
--# bytes, which is what arm64, RISC-V and LoongArch use.
--quiet_cmd_compwithsize = $(quiet_cmd_$(zboot-method-y))
--      cmd_compwithsize = $(cmd_$(zboot-method-y)) && ( \
--			   dd status=none if=$< bs=4 count=1 skip=37 ; \
--			   dd status=none if=$< bs=4 count=1 skip=23 ) >> $@
-+zboot-size-len-$(CONFIG_KERNEL_GZIP)   := 0
- 
- $(obj)/vmlinuz: $(obj)/vmlinux.bin FORCE
--	$(call if_changed,compwithsize)
-+	$(call if_changed,$(zboot-method-y))
- 
- OBJCOPYFLAGS_vmlinuz.o := -I binary -O $(EFI_ZBOOT_BFD_TARGET) \
- 			  --rename-section .data=.gzdata,load,alloc,readonly,contents
-diff --git a/drivers/firmware/efi/libstub/arm64.c b/drivers/firmware/efi/libstub/arm64.c
-index 8aad8c49d43f18e0..a75933b3b9f41c38 100644
---- a/drivers/firmware/efi/libstub/arm64.c
-+++ b/drivers/firmware/efi/libstub/arm64.c
-@@ -9,6 +9,7 @@
- 
- #include <linux/efi.h>
- #include <asm/efi.h>
-+#include <asm/image.h>
- #include <asm/memory.h>
- #include <asm/sysreg.h>
- 
-@@ -89,25 +90,38 @@ efi_status_t check_platform_features(void)
- #endif
- 
- void efi_cache_sync_image(unsigned long image_base,
--			  unsigned long alloc_size,
--			  unsigned long code_size)
-+			  unsigned long alloc_size)
- {
-+	struct arm64_image_header *header = (void *)image_base;
-+	/*
-+	 * In the EFI zboot case, the kernel code size lives in the text_offset
-+	 * field of the image header, which is no longer used now that
-+	 * TEXT_OFFSET is always 0x0.
-+	 */
-+	unsigned long code_size = le64_to_cpu(header->text_offset);
- 	u32 ctr = read_cpuid_effective_cachetype();
- 	u64 lsize = 4 << cpuid_feature_extract_unsigned_field(ctr,
- 						CTR_EL0_DminLine_SHIFT);
- 
- 	/* only perform the cache maintenance if needed for I/D coherency */
- 	if (!(ctr & BIT(CTR_EL0_IDC_SHIFT))) {
-+		unsigned long base = image_base;
-+		unsigned long size = code_size;
-+
- 		do {
--			asm("dc " DCTYPE ", %0" :: "r"(image_base));
--			image_base += lsize;
--			code_size -= lsize;
--		} while (code_size >= lsize);
-+			asm("dc " DCTYPE ", %0" :: "r"(base));
-+			base += lsize;
-+			size -= lsize;
-+		} while (size >= lsize);
- 	}
- 
- 	asm("ic ialluis");
- 	dsb(ish);
- 	isb();
-+
-+	header->text_offset = 0x0;
-+
-+	efi_remap_image(image_base, alloc_size, code_size);
- }
- 
- unsigned long __weak primary_entry_offset(void)
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index 148013bcb5f89fdd..67d5a20802e0b7c6 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -1066,8 +1066,7 @@ struct screen_info *__alloc_screen_info(void);
- void free_screen_info(struct screen_info *si);
- 
- void efi_cache_sync_image(unsigned long image_base,
--			  unsigned long alloc_size,
--			  unsigned long code_size);
-+			  unsigned long alloc_size);
- 
- struct efi_smbios_record {
- 	u8	type;
-diff --git a/drivers/firmware/efi/libstub/zboot.c b/drivers/firmware/efi/libstub/zboot.c
-index 63ece480090032c1..e5d7fa1f1d8fd160 100644
---- a/drivers/firmware/efi/libstub/zboot.c
-+++ b/drivers/firmware/efi/libstub/zboot.c
-@@ -50,8 +50,7 @@ static unsigned long alloc_preferred_address(unsigned long alloc_size)
- }
- 
- void __weak efi_cache_sync_image(unsigned long image_base,
--				 unsigned long alloc_size,
--				 unsigned long code_size)
-+				 unsigned long alloc_size)
- {
- 	// Provided by the arch to perform the cache maintenance necessary for
- 	// executable code loaded into memory to be safe for execution.
-@@ -66,7 +65,7 @@ asmlinkage efi_status_t __efiapi
- efi_zboot_entry(efi_handle_t handle, efi_system_table_t *systab)
- {
- 	unsigned long compressed_size = _gzdata_end - _gzdata_start;
--	unsigned long image_base, alloc_size, code_size;
-+	unsigned long image_base, alloc_size;
- 	efi_loaded_image_t *image;
- 	efi_status_t status;
- 	char *cmdline_ptr;
-@@ -91,13 +90,9 @@ efi_zboot_entry(efi_handle_t handle, efi_system_table_t *systab)
- 	efi_info("Decompressing Linux Kernel...\n");
- 
- 	// SizeOfImage from the compressee's PE/COFF header
--	alloc_size = round_up(get_unaligned_le32(_gzdata_end - 12),
-+	alloc_size = round_up(get_unaligned_le32(_gzdata_end - 4),
- 			      EFI_ALLOC_ALIGN);
- 
--	// SizeOfHeaders and SizeOfCode from the compressee's PE/COFF header
--	code_size = get_unaligned_le32(_gzdata_end - 4) +
--		    get_unaligned_le32(_gzdata_end - 8);
--
- 	 // If the architecture has a preferred address for the image,
- 	 // try that first.
- 	image_base = alloc_preferred_address(alloc_size);
-@@ -140,9 +135,7 @@ efi_zboot_entry(efi_handle_t handle, efi_system_table_t *systab)
- 		goto free_image;
- 	}
- 
--	efi_cache_sync_image(image_base, alloc_size, code_size);
--
--	efi_remap_image(image_base, alloc_size, code_size);
-+	efi_cache_sync_image(image_base, alloc_size);
- 
- 	status = efi_stub_common(handle, image, image_base, cmdline_ptr);
- 
--- 
-2.39.2
+* Most distros won't use it, due to backward compatibility, so they 
+won't
+   benefit the improvements.
+* Those distros that would potentially use it, have to be either
+   DIY-ish like Gentoo, or provide both kernels during installation.
+   So it either complicates installation process or installer logic.
 
+It might work for UEFI-only distros, but those won't be a majority for a
+little while for x86, I think. Because it's very likely that a lot of 
+people
+will complain if distro provides zboot-only kernel (considering that the
+same story with the handover protocol). Backward compatibility is evil.
+
+So, I think, at least for now, it would still be better to change 
+existing
+extraction code and stay compatible, despite it being harder and less 
+clean...
+
+(zboot also lacks the support for some kernel options, like ones used 
+for
+tweaking memory map; mixed mode support and probably the handling of
+CONFIG_MEMORY_HOTREMOVE, but that's an RFC, so this comment is largely
+irrelevant for now.)
+
+Thanks,
+Evgeniy Baskov
+
+> 
+> [0] https://lore.kernel.org/all/cover.1678785672.git.baskov@ispras.ru/
+> [1] 
+> https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efi-x86-zboot
+> 
+> Cc: Evgeniy Baskov <baskov@ispras.ru>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Andy Lutomirski <luto@kernel.org>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Alexey Khoroshilov <khoroshilov@ispras.ru>
+> Cc: Peter Jones <pjones@redhat.com>
+> Cc: Gerd Hoffmann <kraxel@redhat.com>
+> Cc: Dave Young <dyoung@redhat.com>
+> Cc: Mario Limonciello <mario.limonciello@amd.com>
+> Cc: Kees Cook <keescook@chromium.org>
+> Cc: Tom Lendacky <thomas.lendacky@amd.com>
+> Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> 
+> Ard Biesheuvel (3):
+>   efi/libstub: x86: Split off pieces shared with zboot
+>   efi/zboot: x86: Implement EFI zboot support
+>   efi/zboot: x86: Clear NX restrictions on populated code regions
+> 
+>  arch/x86/Makefile                              |  18 +-
+>  arch/x86/include/asm/efi.h                     |  10 +
+>  arch/x86/kernel/head_64.S                      |  15 +
+>  arch/x86/zboot/Makefile                        |  29 +
+>  drivers/firmware/efi/Kconfig                   |   2 +-
+>  drivers/firmware/efi/libstub/Makefile          |  15 +-
+>  drivers/firmware/efi/libstub/Makefile.zboot    |   2 +-
+>  drivers/firmware/efi/libstub/efi-stub-helper.c |   3 +
+>  drivers/firmware/efi/libstub/x86-stub.c        | 592 
+> +------------------
+>  drivers/firmware/efi/libstub/x86-zboot.c       | 322 ++++++++++
+>  drivers/firmware/efi/libstub/x86.c             | 612 
+> ++++++++++++++++++++
+>  drivers/firmware/efi/libstub/zboot.c           |   3 +-
+>  drivers/firmware/efi/libstub/zboot.lds         |   5 +
+>  13 files changed, 1031 insertions(+), 597 deletions(-)
+>  create mode 100644 arch/x86/zboot/Makefile
+>  create mode 100644 drivers/firmware/efi/libstub/x86-zboot.c
+>  create mode 100644 drivers/firmware/efi/libstub/x86.c
