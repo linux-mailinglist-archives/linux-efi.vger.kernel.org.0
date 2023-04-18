@@ -2,48 +2,48 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C37C96E6658
-	for <lists+linux-efi@lfdr.de>; Tue, 18 Apr 2023 15:50:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9CE86E6659
+	for <lists+linux-efi@lfdr.de>; Tue, 18 Apr 2023 15:50:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229756AbjDRNuN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 18 Apr 2023 09:50:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36734 "EHLO
+        id S231577AbjDRNuO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 18 Apr 2023 09:50:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232278AbjDRNuL (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 18 Apr 2023 09:50:11 -0400
+        with ESMTP id S232441AbjDRNuM (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 18 Apr 2023 09:50:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22BD1468D
-        for <linux-efi@vger.kernel.org>; Tue, 18 Apr 2023 06:50:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EFF19031
+        for <linux-efi@vger.kernel.org>; Tue, 18 Apr 2023 06:50:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AF6BE62845
-        for <linux-efi@vger.kernel.org>; Tue, 18 Apr 2023 13:50:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3F3C4339B;
-        Tue, 18 Apr 2023 13:50:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 99C0462828
+        for <linux-efi@vger.kernel.org>; Tue, 18 Apr 2023 13:50:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D7DC433A0;
+        Tue, 18 Apr 2023 13:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681825808;
-        bh=vgDh/RZI17YIdpHDLz/KRWWk764g3EIBUUFAxv5YzVY=;
+        s=k20201202; t=1681825810;
+        bh=itkz19a6AQffFf+lI3+0O4zeHpmhbSPDYT1Qi9LQ+Uc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DjaOReOAdZGeGHfxZlUhOHHsPy/K40b0p957rR7qmufsekHIceGm9DiCdFpaDWn3U
-         GyW6eTF9g96Khb8x/X3T45ZO4ODFF48d8io40wRQW7a1mG/58SFcjCWPokvAQjcP4S
-         vAaPmIGX74jX9ROoVi1LdZkinHN3yPi2UAqMgKTH3ly2VXvosz59rmXzE7gfPB4vYe
-         dOA7G+uryhtdbu4psJ1LtX+ScXIWEv4BTHCl7jYR6LdZDs/TtkqJEbHsBIGDyjDUDc
-         JHipOiJR1kSzc9z9r7kiJv/b2HC3L0j/YsvzegayqXk6DORFU7ohIffFYDixTxLnrb
-         tguR221kfyjSQ==
+        b=GNzToNHcnx5kSIlCsDHfu54FmEEnLhiYCsUfjDBzG7wTJAfoQjEkJYnskmy2mC+45
+         qYiS+uAVieJXOXZieIG0GUmzejsS7OsuCVE8CR2C+9VwcoaZkmrn4AQuuWqRMUY5gm
+         BCwiejlkIHkyzVfikjQ3+fqUYM4ruEILCNTLX7kOGjStsQFtsXegB5/IG1xbjLYhXP
+         1HSqDG7kV4mc5k8OrpOhyDgd64UveULYyqdrOFy2cnq/LE6tOO1px3KBoFy2WUpSLR
+         Coz4SU2xdQmBjs6rp6WmxDtG80w8ETmH6F1NJWiUOeNqNJWQtDsn1xJJvGaKRagk4b
+         BybqoKMl/2ymg==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org, mark.rutland@arm.com,
         broonie@kernel.org, will@kernel.org, catalin.marinas@arm.com,
         Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH v2 2/6] arm64: efi: Enable BTI codegen and add PE/COFF annotation
-Date:   Tue, 18 Apr 2023 15:49:48 +0200
-Message-Id: <20230418134952.1170141-3-ardb@kernel.org>
+Subject: [PATCH v2 3/6] efi/zboot: arm64: Poke kernel code size into the zboot payload image header
+Date:   Tue, 18 Apr 2023 15:49:49 +0200
+Message-Id: <20230418134952.1170141-4-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230418134952.1170141-1-ardb@kernel.org>
 References: <20230418134952.1170141-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4886; i=ardb@kernel.org; h=from:subject; bh=vgDh/RZI17YIdpHDLz/KRWWk764g3EIBUUFAxv5YzVY=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIcVu/i+rTjZ2fvm168X+STC+zlI+WBnLU6Yw22vGqSTNZ pE7XEIdpSwMYhwMsmKKLAKz/77beXqiVK3zLFmYOaxMIEMYuDgFYCLxpxn+igc9f/OO023a1yM9 0v/X7DKxZHXpNP33aAF/3cYFk9wrxBkZJrmkcAYpZz9sM/quc4axbUJc/4U1x6tcBNo6Kuf6Fzf wAwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2662; i=ardb@kernel.org; h=from:subject; bh=itkz19a6AQffFf+lI3+0O4zeHpmhbSPDYT1Qi9LQ+Uc=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIcVu/p/KqvcB5RqrlPuCz+atn79g9bTJ0+dPqvc8vSCHV WT6jJhrHaUsDGIcDLJiiiwCs/++23l6olSt8yxZmDmsTCBDGLg4BWAiNQKMDDtPcv0QM98ww2fR GutbX46Y/pt9amr6+3/8TnoSxtt2cxczMpx7Hj0v9EC+hfm/M5U92v7+5nK/ou9VW6/I5phxc/m KQ7wA
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -56,137 +56,70 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-UEFI heavily relies on so-called protocols, which are essentially
-tables populated with pointers to executable code, and these are invoked
-indirectly using BR or BLR instructions.
+The EFI zboot code is not built as part of the kernel proper, like the
+ordinary EFI stub, but still needs access to symbols that are defined
+only internally in the kernel, and are left unexposed deliberately to
+avoid creating ABI inadvertently that we're stuck with later.
 
-This makes the EFI execution context vulnerable to attacks on forward
-edge control flow, and so it would help if we could enable hardware
-enforcement (BTI) on CPUs that implement it.
-
-So let's no longer disable BTI codegen for the EFI stub, and set the
-newly introduced PE/COFF header flag when the kernel is built with BTI
-landing pads.
+So instead of passing the ordinary Image file to the zboot make rules,
+create an alternate version Image.zboot that has the code size copied
+into the header into a field that has meaning in the bare metal boot
+ABI, but is actually not used anymore, and is always set to 0x0.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
 ---
- arch/arm64/kernel/efi-header.S        | 71 ++++++++++++--------
- drivers/firmware/efi/libstub/Makefile |  3 +-
- 2 files changed, 44 insertions(+), 30 deletions(-)
+ arch/arm64/boot/Makefile       | 23 +++++++++++++++++++-
+ arch/arm64/kernel/image-vars.h |  4 ++++
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kernel/efi-header.S b/arch/arm64/kernel/efi-header.S
-index d731b4655df8eb27..11d7f7de202d0ed2 100644
---- a/arch/arm64/kernel/efi-header.S
-+++ b/arch/arm64/kernel/efi-header.S
-@@ -81,9 +81,47 @@
- 	.quad	0					// CertificationTable
- 	.quad	0					// BaseRelocationTable
+diff --git a/arch/arm64/boot/Makefile b/arch/arm64/boot/Makefile
+index c65aee0884103c6f..5d73229604b11061 100644
+--- a/arch/arm64/boot/Makefile
++++ b/arch/arm64/boot/Makefile
+@@ -39,8 +39,29 @@ $(obj)/Image.lzo: $(obj)/Image FORCE
+ $(obj)/Image.zst: $(obj)/Image FORCE
+ 	$(call if_changed,zstd)
  
--#ifdef CONFIG_DEBUG_EFI
-+#if defined(CONFIG_DEBUG_EFI) || defined(CONFIG_ARM64_BTI_KERNEL)
- 	.long	.Lefi_debug_table - .L_head		// DebugTable
- 	.long	.Lefi_debug_table_size
+-EFI_ZBOOT_PAYLOAD	:= Image
++EFI_ZBOOT_PAYLOAD	:= Image.zboot
+ EFI_ZBOOT_BFD_TARGET	:= elf64-littleaarch64
+ EFI_ZBOOT_MACH_TYPE	:= ARM64
+ 
++#
++# The EFI zboot logic needs to know the size of the executable region in the
++# image, so let's poke that into the text_offset field of the image header of
++# the zboot payload, as that field is no longer used and can thus be repurposed
++# for other, purely internal uses.
++#
++quiet_cmd_copy_and_poke = $(quiet_cmd_objcopy)
++      cmd_copy_and_poke = $(cmd_objcopy) && /bin/echo -ne "$(POKE_DATA)" | dd bs=1 \
++				status=none conv=notrunc seek=$(POKE_OFFSET) of=$@
 +
-+	/*
-+	 * The debug table is referenced via its Relative Virtual Address (RVA),
-+	 * which is only defined for those parts of the image that are covered
-+	 * by a section declaration. Since this header is not covered by any
-+	 * section, the debug table must be emitted elsewhere. So stick it in
-+	 * the .init.rodata section instead.
-+	 *
-+	 * Note that the payloads themselves are permitted to have zero RVAs,
-+	 * which means we can simply put those right after the section headers.
-+	 */
-+	__INITRODATA
++# grab the code size and convert it into something we can echo
++$(obj)/$(EFI_ZBOOT_PAYLOAD): POKE_DATA = $(shell $(NM) $<|grep _kernel_codesize|\
++				sed -E 's/0+(..)(..)(..)(..) .+/\\x\4\\x\3\\x\2\\x\1/')
++$(obj)/$(EFI_ZBOOT_PAYLOAD): POKE_OFFSET := 8
++$(obj)/$(EFI_ZBOOT_PAYLOAD): vmlinux FORCE
++	$(call if_changed,copy_and_poke)
 +
-+	.align	2
-+.Lefi_debug_table:
-+#ifdef CONFIG_DEBUG_EFI
-+	// EFI_IMAGE_DEBUG_DIRECTORY_ENTRY
-+	.long	0					// Characteristics
-+	.long	0					// TimeDateStamp
-+	.short	0					// MajorVersion
-+	.short	0					// MinorVersion
-+	.long	IMAGE_DEBUG_TYPE_CODEVIEW		// Type
-+	.long	.Lefi_debug_entry_size			// SizeOfData
-+	.long	0					// RVA
-+	.long	.Lefi_debug_entry - .L_head		// FileOffset
++OBJCOPYFLAGS_$(EFI_ZBOOT_PAYLOAD) := $(OBJCOPYFLAGS_Image)
++
++targets += $(EFI_ZBOOT_PAYLOAD)
++
+ include $(srctree)/drivers/firmware/efi/libstub/Makefile.zboot
+diff --git a/arch/arm64/kernel/image-vars.h b/arch/arm64/kernel/image-vars.h
+index 8309197c0ebd4a8e..35f3c79595137354 100644
+--- a/arch/arm64/kernel/image-vars.h
++++ b/arch/arm64/kernel/image-vars.h
+@@ -108,4 +108,8 @@ KVM_NVHE_ALIAS(kvm_protected_mode_initialized);
+ 
+ #endif /* CONFIG_KVM */
+ 
++#ifdef CONFIG_EFI_ZBOOT
++_kernel_codesize = ABSOLUTE(__inittext_end - _text);
 +#endif
-+#ifdef CONFIG_ARM64_BTI_KERNEL
-+	.long	0					// Characteristics
-+	.long	0					// TimeDateStamp
-+	.short	0					// MajorVersion
-+	.short	0					// MinorVersion
-+	.long	IMAGE_DEBUG_TYPE_EX_DLLCHARACTERISTICS	// Type
-+	.long	4					// SizeOfData
-+	.long	0					// RVA
-+	.long	.Lefi_dll_characteristics_ex - .L_head	// FileOffset
-+#endif
-+	.set	.Lefi_debug_table_size, . - .Lefi_debug_table
-+	.previous
- #endif
- 
- 	// Section table
-@@ -119,33 +157,6 @@
- 	.set	.Lsection_count, (. - .Lsection_table) / 40
- 
- #ifdef CONFIG_DEBUG_EFI
--	/*
--	 * The debug table is referenced via its Relative Virtual Address (RVA),
--	 * which is only defined for those parts of the image that are covered
--	 * by a section declaration. Since this header is not covered by any
--	 * section, the debug table must be emitted elsewhere. So stick it in
--	 * the .init.rodata section instead.
--	 *
--	 * Note that the EFI debug entry itself may legally have a zero RVA,
--	 * which means we can simply put it right after the section headers.
--	 */
--	__INITRODATA
--
--	.align	2
--.Lefi_debug_table:
--	// EFI_IMAGE_DEBUG_DIRECTORY_ENTRY
--	.long	0					// Characteristics
--	.long	0					// TimeDateStamp
--	.short	0					// MajorVersion
--	.short	0					// MinorVersion
--	.long	IMAGE_DEBUG_TYPE_CODEVIEW		// Type
--	.long	.Lefi_debug_entry_size			// SizeOfData
--	.long	0					// RVA
--	.long	.Lefi_debug_entry - .L_head		// FileOffset
--
--	.set	.Lefi_debug_table_size, . - .Lefi_debug_table
--	.previous
--
- .Lefi_debug_entry:
- 	// EFI_IMAGE_DEBUG_CODEVIEW_NB10_ENTRY
- 	.ascii	"NB10"					// Signature
-@@ -157,6 +168,10 @@
- 
- 	.set	.Lefi_debug_entry_size, . - .Lefi_debug_entry
- #endif
-+#ifdef CONFIG_ARM64_BTI_KERNEL
-+.Lefi_dll_characteristics_ex:
-+	.long	IMAGE_DLLCHARACTERISTICS_EX_FORWARD_CFI_COMPAT
-+#endif
- 
- 	.balign	SEGMENT_ALIGN
- .Lefi_header_end:
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index 80d85a5169fb2c72..3abb2b357482a416 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -23,8 +23,7 @@ cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ \
- # arm64 uses the full KBUILD_CFLAGS so it's necessary to explicitly
- # disable the stackleak plugin
- cflags-$(CONFIG_ARM64)		+= -fpie $(DISABLE_STACKLEAK_PLUGIN) \
--				   -fno-unwind-tables -fno-asynchronous-unwind-tables \
--				   $(call cc-option,-mbranch-protection=none)
-+				   -fno-unwind-tables -fno-asynchronous-unwind-tables
- cflags-$(CONFIG_ARM)		+= -DEFI_HAVE_STRLEN -DEFI_HAVE_STRNLEN \
- 				   -DEFI_HAVE_MEMCHR -DEFI_HAVE_STRRCHR \
- 				   -DEFI_HAVE_STRCMP -fno-builtin -fpic \
++
+ #endif /* __ARM64_KERNEL_IMAGE_VARS_H */
 -- 
 2.39.2
 
