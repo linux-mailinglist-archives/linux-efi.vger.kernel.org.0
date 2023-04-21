@@ -2,113 +2,121 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B92F6E9AE5
-	for <lists+linux-efi@lfdr.de>; Thu, 20 Apr 2023 19:37:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67E426EA151
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Apr 2023 03:55:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230432AbjDTRhL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 20 Apr 2023 13:37:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39428 "EHLO
+        id S231660AbjDUBzD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 20 Apr 2023 21:55:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229799AbjDTRhK (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 20 Apr 2023 13:37:10 -0400
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F4414EFE
-        for <linux-efi@vger.kernel.org>; Thu, 20 Apr 2023 10:36:45 -0700 (PDT)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-63b7b54642cso1045893b3a.0
-        for <linux-efi@vger.kernel.org>; Thu, 20 Apr 2023 10:36:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1682012205; x=1684604205;
-        h=to:from:content-transfer-encoding:mime-version:date:message-id
-         :subject:references:in-reply-to:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JnRCEEUMbL4VHxSaKuZGWLgXCAjCR6wrwzaIjE1iCNc=;
-        b=R65bYw0uCjFnuSxJCWbKs3W5rtP8+s5sqP9IWJY2VXqMV3Bw692qEAZMhGcGKa74Dm
-         5sS9JGCcN8YHkjMPD7u4bbM8Jgk10We8g7MAc8i8Vd80uKUDCiqijpr0uc40cTejJZ8y
-         n9L8MmHQPckBEeKfkFxnlulbIhnoV3C2K5N9O53C03m7twso2qJtWJKyfZYyRek7IC63
-         uQluDwqpqgFdhPOt7AUB4P90/PGdC4CfXcW7uZWBeMxOdX4n5p9mrrFXEFq5v3Rfw0GL
-         NCDaAfyuvV+vLOhUXCrrctANTzOux6safOuXraVUlS1J/OweSNg+yuC/czBK/vUct7O8
-         hqVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682012205; x=1684604205;
-        h=to:from:content-transfer-encoding:mime-version:date:message-id
-         :subject:references:in-reply-to:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JnRCEEUMbL4VHxSaKuZGWLgXCAjCR6wrwzaIjE1iCNc=;
-        b=PqKMIOVDA161GNZj4dbJcBLYk9YwMI338tVwsyglji+5GC6ApBpS98oJghdySGW65E
-         sxyY9QhuR2/tU2hNRJG0FWupgP2EYFl4d3m9r0xB/vYrsxI/qORy8DY4cm1NxqrcFsDT
-         ynFs8xXwqWDdLzvwa/Xxvx+1ul8LM6qyN6y1rA6o0k0+kPsIrS2BrsjJyl6NrAkER9yO
-         Q7GYF3YbN/Mm/HdNBylUr0W4Mfv37qr7z/5G21YmV+mP8ue0KUGLSbc24a8BKGwR8wIs
-         iBWFaJDQat95UEz6nGBEE86+m6AOZxKSODlPvKLJAPJMM90xQshKvdMIibgXQyHR/cDb
-         84OQ==
-X-Gm-Message-State: AAQBX9cAZbu12I4G531APNYOVm9OB5IO4kikafjmObyBdwO7+G7Dx2LC
-        CZW07Z5O0nb5jWMKsznXDtSvew==
-X-Google-Smtp-Source: AKy350baT6KGrtGFPNL5kKO3PBM13yh+t73vTItdwumjVN+2TW8bKUrE5c9iopnLCN+wQT6ScUYU2g==
-X-Received: by 2002:a05:6a00:1144:b0:63f:120a:1d96 with SMTP id b4-20020a056a00114400b0063f120a1d96mr1084389pfm.11.1682012205312;
-        Thu, 20 Apr 2023 10:36:45 -0700 (PDT)
-Received: from localhost ([50.221.140.188])
-        by smtp.gmail.com with ESMTPSA id j16-20020aa783d0000000b0063efe2f3ecdsm1489431pfn.204.2023.04.20.10.36.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Apr 2023 10:36:44 -0700 (PDT)
-In-Reply-To: <20230203075232.274282-1-alexghiti@rivosinc.com>
-References: <20230203075232.274282-1-alexghiti@rivosinc.com>
-Subject: Re: [PATCH v4 0/6] RISC-V kasan rework
-Message-Id: <168201218500.13763.4099213624397858271.b4-ty@rivosinc.com>
-Date:   Thu, 20 Apr 2023 10:36:25 -0700
+        with ESMTP id S231287AbjDUBzC (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 20 Apr 2023 21:55:02 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5AE1138
+        for <linux-efi@vger.kernel.org>; Thu, 20 Apr 2023 18:55:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1682042101; x=1713578101;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=d5fp3r2qPSqTAR0gbRdRyJRwtgtJ851/SOoGSD3lfFI=;
+  b=WpF2gKMh1kP2RB0UEoIM4j7u8rMsXKxtST2UPPE/HtC0b0w3ZJjJmKaL
+   m3usq2DUVz6QBh23ST6YZqYWztV+a15kgccDlF+8BRWAkzLw/SlOY+N4L
+   Ix96gJFp63qMiKuLOrtLuVFMJRpHbOPl9qkv07UPjPOErIQnIpLs6GBVx
+   e3RQlVrG+w7uEAAobzkRB6NxOI08umQTgf9A4hozTggsnq5i4gDn8Xz/G
+   RNfdGTzpLLpOuhLSEXg6d7oqog6MRjQd62fh+hsIIKfOl5oXp0VD5A0yg
+   r/11Uk6qGJ7+Hvz+q998EY3XFqH+jvKOsMSf4CkpdyK0VQ/EL14kvIcl7
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10686"; a="344650842"
+X-IronPort-AV: E=Sophos;i="5.99,214,1677571200"; 
+   d="scan'208";a="344650842"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2023 18:55:01 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10686"; a="761403286"
+X-IronPort-AV: E=Sophos;i="5.99,214,1677571200"; 
+   d="scan'208";a="761403286"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 20 Apr 2023 18:55:00 -0700
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1ppfzH-000gEc-2N;
+        Fri, 21 Apr 2023 01:54:59 +0000
+Date:   Fri, 21 Apr 2023 09:54:11 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS 4067a1265c976819d749b61b5406ab6bfacd3a08
+Message-ID: <6441ecc3.BvpmgjFgKyKCcHgw%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-901c5
-From:   Palmer Dabbelt <palmer@rivosinc.com>
-To:     Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Conor Dooley <conor@kernel.org>,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kasan-dev@googlegroups.com, linux-efi@vger.kernel.org,
-        Alexandre Ghiti <alexghiti@rivosinc.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+branch HEAD: 4067a1265c976819d749b61b5406ab6bfacd3a08  efi/zboot: arm64: Grab code size from image header
 
-On Fri, 03 Feb 2023 08:52:26 +0100, Alexandre Ghiti wrote:
-> As described in patch 2, our current kasan implementation is intricate,
-> so I tried to simplify the implementation and mimic what arm64/x86 are
-> doing.
-> 
-> In addition it fixes UEFI bootflow with a kasan kernel and kasan inline
-> instrumentation: all kasan configurations were tested on a large ubuntu
-> kernel with success with KASAN_KUNIT_TEST and KASAN_MODULE_TEST.
-> 
-> [...]
+elapsed time: 720m
 
-Applied, thanks!
+configs tested: 42
+configs skipped: 3
 
-[1/6] riscv: Split early and final KASAN population functions
-      https://git.kernel.org/palmer/c/cd0334e1c091
-[2/6] riscv: Rework kasan population functions
-      https://git.kernel.org/palmer/c/96f9d4daf745
-[3/6] riscv: Move DTB_EARLY_BASE_VA to the kernel address space
-      https://git.kernel.org/palmer/c/401e84488800
-[4/6] riscv: Fix EFI stub usage of KASAN instrumented strcmp function
-      https://git.kernel.org/palmer/c/617955ca6e27
-[5/6] riscv: Fix ptdump when KASAN is enabled
-      https://git.kernel.org/palmer/c/ecd7ebaf0b5a
-[6/6] riscv: Unconditionnally select KASAN_VMALLOC if KASAN
-      https://git.kernel.org/palmer/c/864046c512c2
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Best regards,
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allyesconfig   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+ia64                             allmodconfig   gcc  
+ia64                                defconfig   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                                defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                               defconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+sh                               allmodconfig   gcc  
+sparc                               defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                               rhel-8.3   gcc  
+
 -- 
-Palmer Dabbelt <palmer@rivosinc.com>
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
