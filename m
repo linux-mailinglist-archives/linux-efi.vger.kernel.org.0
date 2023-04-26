@@ -2,37 +2,50 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB2B56EF1C6
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Apr 2023 12:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4F236EF255
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Apr 2023 12:42:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240411AbjDZKSD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 26 Apr 2023 06:18:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52444 "EHLO
+        id S240452AbjDZKmJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 26 Apr 2023 06:42:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229937AbjDZKSB (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Apr 2023 06:18:01 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86ACC35AC;
-        Wed, 26 Apr 2023 03:17:59 -0700 (PDT)
-Received: from zn.tnic (p5de8e8ea.dip0.t-ipconnect.de [93.232.232.234])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0ECD81EC0666;
-        Wed, 26 Apr 2023 12:17:58 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1682504278;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=BzFp9UTkit55n4G1B1tLt+bHSM18YHNZYgQD7TIcCfw=;
-        b=ExC7kmQdSNPRo+YUhZwnm1FfqsRQoNAgdZ1TeOelIKOhMdcLXiua9EYw+HR/gmWQLSjQeW
-        xvZzPs0c+E6SH5MUE7NLn6JpYqGOWRr/NiYzcGUoUAaDpSrlkx0ruabJ7TxWDGpoNRrtFa
-        j/7ufgwq4afdwzHPw016WeO8cMIHvLI=
-Date:   Wed, 26 Apr 2023 12:17:54 +0200
-From:   Borislav Petkov <bp@alien8.de>
+        with ESMTP id S229937AbjDZKmI (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Apr 2023 06:42:08 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16BFF4C33;
+        Wed, 26 Apr 2023 03:42:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1682505728; x=1714041728;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kLwcUviicm5zFgsdk4z3rBcMK/+14kP8fClgG+/9Z2M=;
+  b=dNv7BFAzIKdxgWxVlUhVCM4SfdWM593xamuABXu7lCPUtbzP8FeKiiBP
+   54rcNdPOEJYNTZfNFISXflQoi0reIuo7gwE5X+HnW3e6bv+uQGKJll13p
+   rlmjGV1gHg+i8srQfhdYzQD6VBbCT5k3Ty4pMAPKAkEywvIUe52snJQlb
+   DC1vUGGGSgNfv7OX9Pahv/cs3YI5jEjaHON8lksGn0zUWXo7yw3x0rJZg
+   guY7jGW+HX+HvBvZ+pbNYYmgTV4D9A4MgXvjWKlGdJr5rp6QUXsJ+G/n0
+   W8XDNFBQHScqQeBoPpv7gQttAr35bXTSX8gyLKMdrrfldlyTEqRSE+ixH
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="349873704"
+X-IronPort-AV: E=Sophos;i="5.99,227,1677571200"; 
+   d="scan'208";a="349873704"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2023 03:42:07 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="758563453"
+X-IronPort-AV: E=Sophos;i="5.99,227,1677571200"; 
+   d="scan'208";a="758563453"
+Received: from schoenfm-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.34.172])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2023 03:42:02 -0700
+Received: by box.shutemov.name (Postfix, from userid 1000)
+        id 665AC10CDFB; Wed, 26 Apr 2023 13:42:00 +0300 (+03)
+Date:   Wed, 26 Apr 2023 13:42:00 +0300
+From:   "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Evgeniy Baskov <baskov@ispras.ru>,
+        Borislav Petkov <bp@alien8.de>,
         Andy Lutomirski <luto@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Ingo Molnar <mingo@redhat.com>,
@@ -45,46 +58,68 @@ Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Mario Limonciello <mario.limonciello@amd.com>,
         Kees Cook <keescook@chromium.org>,
         Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH 0/6] efi/x86: Avoid legacy decompressor during EFI boot
-Message-ID: <20230426101754.GBZEj6Un+ahT4iZ9fs@fat_crate.local>
+Subject: Re: [PATCH 4/6] x86: efistub: Perform 4/5 level paging switch from
+ the stub
+Message-ID: <20230426104200.drmuewhwmhh3xljh@box.shutemov.name>
 References: <20230424165726.2245548-1-ardb@kernel.org>
+ <20230424165726.2245548-5-ardb@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230424165726.2245548-1-ardb@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230424165726.2245548-5-ardb@kernel.org>
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Apr 24, 2023 at 06:57:20PM +0200, Ard Biesheuvel wrote:
->  arch/x86/boot/compressed/efi_mixed.S           |  55 ---
->  arch/x86/boot/compressed/head_32.S             |  24 --
->  arch/x86/boot/compressed/head_64.S             |  39 +--
->  arch/x86/boot/compressed/misc.c                |  44 ++-
->  arch/x86/include/asm/efi.h                     |   2 +
->  drivers/firmware/efi/libstub/efi-stub-helper.c |   4 +
->  drivers/firmware/efi/libstub/x86-stub.c        | 360 +++++++++++++-------
->  7 files changed, 279 insertions(+), 249 deletions(-)
+On Mon, Apr 24, 2023 at 06:57:24PM +0200, Ard Biesheuvel wrote:
+> In preparation for updating the EFI stub boot flow to avoid the bare
+> metal decompressor code altogether, implement the support code for
+> switching between 4 and 5 levels of paging before jumping to the kernel
+> proper.
 
-Upon a quick scan, I can't argue with that diffstat and would prefer
-a lot more if we did this instead of Evgeny's pile which touches a lot
-of nasty and hard to debug code which gets executed on *everything*.
+I must admit it is neat. I like it a lot.
 
-So if people agree with that approach, I'd gladly give it a more
-detailed look.
+Any chance we can share the code with the traditional decompressor?
+There's not much that EFI specific here. It should be possible to isolate
+it from the rest, no?
 
-Thx.
+
+> @@ -792,6 +925,14 @@ asmlinkage unsigned long efi_main(efi_handle_t handle,
+>  				(get_efi_config_table(ACPI_20_TABLE_GUID) ?:
+>  				 get_efi_config_table(ACPI_TABLE_GUID));
+>  
+> +#ifdef CONFIG_X86_64
+> +	status = efi_setup_5level_paging();
+> +	if (status != EFI_SUCCESS) {
+> +		efi_err("efi_setup_5level_paging() failed!\n");
+> +		goto fail;
+> +	}
+> +#endif
+> +
+>  	/*
+>  	 * If the kernel isn't already loaded at a suitable address,
+>  	 * relocate it.
+> @@ -910,6 +1051,10 @@ asmlinkage unsigned long efi_main(efi_handle_t handle,
+>  		goto fail;
+>  	}
+>  
+> +#ifdef CONFIG_X86_64
+> +	efi_5level_switch();
+> +#endif
+> +
+>  	return bzimage_addr;
+>  fail:
+>  	efi_err("efi_main() failed!\n");
+
+Maybe use IS_ENABLED() + dummy efi_setup_5level_paging()/efi_5level_switch()
+instead of #ifdefs?
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+  Kiryl Shutsemau / Kirill A. Shutemov
