@@ -2,54 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6A6D6EFC68
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Apr 2023 23:24:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94A9C6EFC7F
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Apr 2023 23:30:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233263AbjDZVYc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 26 Apr 2023 17:24:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49718 "EHLO
+        id S240068AbjDZVaV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 26 Apr 2023 17:30:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229582AbjDZVYb (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Apr 2023 17:24:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6189519B9;
-        Wed, 26 Apr 2023 14:24:30 -0700 (PDT)
+        with ESMTP id S240168AbjDZVaF (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Apr 2023 17:30:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E04E40C8;
+        Wed, 26 Apr 2023 14:29:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0034063225;
-        Wed, 26 Apr 2023 21:24:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BACEC433A1;
-        Wed, 26 Apr 2023 21:24:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8AC386394C;
+        Wed, 26 Apr 2023 21:29:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C62C433A1;
+        Wed, 26 Apr 2023 21:29:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682544269;
-        bh=biqI0SeUg9q52FQjztvIn0amAyd7Lxt2JXIvLvrdumI=;
+        s=k20201202; t=1682544591;
+        bh=yLi2JTeqjSBCZyJRqKGRsMaMom6VAZo/Dwzd3fLD8nk=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=qEzgqyAvtwDG++3UC2vbPhZFJLt2Sj4C8c8d1wbRHjko8arCya1T9MhgDhQm+j2eM
-         OO8vzfjnw6qnlclyI9OP2yryhnieKQXhV8mt8nwH9GHA+fYkyzeThqhZbIGyq1E9C6
-         AqInplz279nGGvW8HpaiADkQwIg2ny2S0ZZzp7/z5FnxJrK1WLz0QoAPgelwAt/k3m
-         9aPbhKFhEFvS65FKVLTKNI5JnF+HIlHapBO8yC+jjUYtF+lkuBzNxrDfG2MaDnP4sA
-         7lZP0l31m6yWoykkakQEVC+Roq7mw1ZeusA02/TipegJy7+/rBIWTNhcNkT4aZqxZ2
-         MCmjeYUf0yrPA==
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-4f00c33c3d6so265621e87.2;
-        Wed, 26 Apr 2023 14:24:29 -0700 (PDT)
-X-Gm-Message-State: AAQBX9c6D1UF8rW7VNjfHqjFBCJrcUAQxR3NOMo3b9UCqBC695gKS6l4
-        BaDVmqrdIhV9S+0sPVW7EbW5lMAiqD6UaZit6hI=
-X-Google-Smtp-Source: AKy350agTzJPprN9JAo42IO2gKeS1BWWZRQaCVcwjO3IGP+vGNWnInyObvwbW7VySrTdsZTcen+bRMhNRb1n/zJiL74=
-X-Received: by 2002:ac2:4e49:0:b0:4ec:9f24:3e5f with SMTP id
- f9-20020ac24e49000000b004ec9f243e5fmr5527381lfr.0.1682544267317; Wed, 26 Apr
- 2023 14:24:27 -0700 (PDT)
+        b=UQMer08dWmP8i4EiUN/cLZ3ZUb7RgcamF/k5bFz6xHSkug0SQZUORXx7VcAoCVk9P
+         qTMKow2h70Pgpy5xsxOL8jjuCVhg8yip10kC9sEQcphp98AHMXp7HEggB07BJl8Gyc
+         Vm5LIGU2qj5GzjOU8WxT1hpjxtoa4icfod1gvgCTFCbEeJIwvdUE+iIU3O48HxJ2Ck
+         VgXOk//PfM/CpARvNR0ZyhGABL82TFAuGuFOEfmK+vNRqCrp9X83BkilCFPIfvP1+v
+         lNHDjt/tnEq/o2MEw5CPFtHxAjJFdLPoDKLgKf/ZJl4wvVq1oGlXFdSjyTbGjyEPyS
+         aJj+vf5/9Uqcw==
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-4ec816c9d03so8460030e87.2;
+        Wed, 26 Apr 2023 14:29:50 -0700 (PDT)
+X-Gm-Message-State: AAQBX9dIOOyMXH3HE0MSznhpNvwUf1M2wiYRYj9KtH9DaoSjHrKG/Q9e
+        PLSXewC8G/GnFReytrF6dQ//aHopr69wXZbMBy0=
+X-Google-Smtp-Source: AKy350YBdfM7Iay7B3diQtQJlXEUS1LpawWoNJtXnV0FykEhmRIC8cQ/rLoQqXAMr4IvgC5U9s1+0wbAFbTk9uevI3g=
+X-Received: by 2002:a19:a40d:0:b0:4ed:cb37:7d95 with SMTP id
+ q13-20020a19a40d000000b004edcb377d95mr5947487lfc.44.1682544589032; Wed, 26
+ Apr 2023 14:29:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230424165726.2245548-1-ardb@kernel.org> <20230426101754.GBZEj6Un+ahT4iZ9fs@fat_crate.local>
-In-Reply-To: <20230426101754.GBZEj6Un+ahT4iZ9fs@fat_crate.local>
+References: <20230424165726.2245548-1-ardb@kernel.org> <20230424165726.2245548-5-ardb@kernel.org>
+ <20230426104200.drmuewhwmhh3xljh@box.shutemov.name>
+In-Reply-To: <20230426104200.drmuewhwmhh3xljh@box.shutemov.name>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 26 Apr 2023 22:24:16 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHM2kpk4CvrkJVW3EHDR9NEth_TzvX7+O+9x=Of8cdA6g@mail.gmail.com>
-Message-ID: <CAMj1kXHM2kpk4CvrkJVW3EHDR9NEth_TzvX7+O+9x=Of8cdA6g@mail.gmail.com>
-Subject: Re: [PATCH 0/6] efi/x86: Avoid legacy decompressor during EFI boot
-To:     Borislav Petkov <bp@alien8.de>
+Date:   Wed, 26 Apr 2023 22:29:38 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXEhZ_R7tvdjKfnt63y41JE98wi3vOpav=a_Hqhnmo0xXw@mail.gmail.com>
+Message-ID: <CAMj1kXEhZ_R7tvdjKfnt63y41JE98wi3vOpav=a_Hqhnmo0xXw@mail.gmail.com>
+Subject: Re: [PATCH 4/6] x86: efistub: Perform 4/5 level paging switch from
+ the stub
+To:     "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
 Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Evgeniy Baskov <baskov@ispras.ru>,
+        Borislav Petkov <bp@alien8.de>,
         Andy Lutomirski <luto@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Ingo Molnar <mingo@redhat.com>,
@@ -62,11 +65,10 @@ Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Mario Limonciello <mario.limonciello@amd.com>,
         Kees Cook <keescook@chromium.org>,
         Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -75,26 +77,62 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 26 Apr 2023 at 11:18, Borislav Petkov <bp@alien8.de> wrote:
+On Wed, 26 Apr 2023 at 11:42, Kirill A . Shutemov
+<kirill.shutemov@linux.intel.com> wrote:
 >
-> On Mon, Apr 24, 2023 at 06:57:20PM +0200, Ard Biesheuvel wrote:
-> >  arch/x86/boot/compressed/efi_mixed.S           |  55 ---
-> >  arch/x86/boot/compressed/head_32.S             |  24 --
-> >  arch/x86/boot/compressed/head_64.S             |  39 +--
-> >  arch/x86/boot/compressed/misc.c                |  44 ++-
-> >  arch/x86/include/asm/efi.h                     |   2 +
-> >  drivers/firmware/efi/libstub/efi-stub-helper.c |   4 +
-> >  drivers/firmware/efi/libstub/x86-stub.c        | 360 +++++++++++++-------
-> >  7 files changed, 279 insertions(+), 249 deletions(-)
+> On Mon, Apr 24, 2023 at 06:57:24PM +0200, Ard Biesheuvel wrote:
+> > In preparation for updating the EFI stub boot flow to avoid the bare
+> > metal decompressor code altogether, implement the support code for
+> > switching between 4 and 5 levels of paging before jumping to the kernel
+> > proper.
 >
-> Upon a quick scan, I can't argue with that diffstat and would prefer
-> a lot more if we did this instead of Evgeny's pile which touches a lot
-> of nasty and hard to debug code which gets executed on *everything*.
->
-> So if people agree with that approach, I'd gladly give it a more
-> detailed look.
+> I must admit it is neat. I like it a lot.
 >
 
-I think the general approach is better, but to be honest, I may have
-missed a thing or two, so it would be good if people more familiar
-with the history could chime in.
+Thanks!
+
+> Any chance we can share the code with the traditional decompressor?
+> There's not much that EFI specific here. It should be possible to isolate
+> it from the rest, no?
+>
+
+I agree. The EFI boot code should still avoid the bare metal
+trampoline allocation/deallocation, but the actual payload could be
+the same - it's just an indirect call with the GDT and page table
+pointers as arguments.
+
+>
+> > @@ -792,6 +925,14 @@ asmlinkage unsigned long efi_main(efi_handle_t handle,
+> >                               (get_efi_config_table(ACPI_20_TABLE_GUID) ?:
+> >                                get_efi_config_table(ACPI_TABLE_GUID));
+> >
+> > +#ifdef CONFIG_X86_64
+> > +     status = efi_setup_5level_paging();
+> > +     if (status != EFI_SUCCESS) {
+> > +             efi_err("efi_setup_5level_paging() failed!\n");
+> > +             goto fail;
+> > +     }
+> > +#endif
+> > +
+> >       /*
+> >        * If the kernel isn't already loaded at a suitable address,
+> >        * relocate it.
+> > @@ -910,6 +1051,10 @@ asmlinkage unsigned long efi_main(efi_handle_t handle,
+> >               goto fail;
+> >       }
+> >
+> > +#ifdef CONFIG_X86_64
+> > +     efi_5level_switch();
+> > +#endif
+> > +
+> >       return bzimage_addr;
+> >  fail:
+> >       efi_err("efi_main() failed!\n");
+>
+> Maybe use IS_ENABLED() + dummy efi_setup_5level_paging()/efi_5level_switch()
+> instead of #ifdefs?
+>
+
+These are functions returning void so I can just move the #ifdef into
+the function implementation. Wo do need #ifdefs at some level, as i386
+does not provide a definition for __KERNEL32_CS
