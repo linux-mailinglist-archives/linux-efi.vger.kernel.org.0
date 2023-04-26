@@ -2,124 +2,82 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4F236EF255
-	for <lists+linux-efi@lfdr.de>; Wed, 26 Apr 2023 12:42:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD0C36EF605
+	for <lists+linux-efi@lfdr.de>; Wed, 26 Apr 2023 16:11:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240452AbjDZKmJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 26 Apr 2023 06:42:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37384 "EHLO
+        id S240010AbjDZOLP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 26 Apr 2023 10:11:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229937AbjDZKmI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Apr 2023 06:42:08 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16BFF4C33;
-        Wed, 26 Apr 2023 03:42:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1682505728; x=1714041728;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kLwcUviicm5zFgsdk4z3rBcMK/+14kP8fClgG+/9Z2M=;
-  b=dNv7BFAzIKdxgWxVlUhVCM4SfdWM593xamuABXu7lCPUtbzP8FeKiiBP
-   54rcNdPOEJYNTZfNFISXflQoi0reIuo7gwE5X+HnW3e6bv+uQGKJll13p
-   rlmjGV1gHg+i8srQfhdYzQD6VBbCT5k3Ty4pMAPKAkEywvIUe52snJQlb
-   DC1vUGGGSgNfv7OX9Pahv/cs3YI5jEjaHON8lksGn0zUWXo7yw3x0rJZg
-   guY7jGW+HX+HvBvZ+pbNYYmgTV4D9A4MgXvjWKlGdJr5rp6QUXsJ+G/n0
-   W8XDNFBQHScqQeBoPpv7gQttAr35bXTSX8gyLKMdrrfldlyTEqRSE+ixH
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="349873704"
-X-IronPort-AV: E=Sophos;i="5.99,227,1677571200"; 
-   d="scan'208";a="349873704"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2023 03:42:07 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="758563453"
-X-IronPort-AV: E=Sophos;i="5.99,227,1677571200"; 
-   d="scan'208";a="758563453"
-Received: from schoenfm-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.34.172])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2023 03:42:02 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-        id 665AC10CDFB; Wed, 26 Apr 2023 13:42:00 +0300 (+03)
-Date:   Wed, 26 Apr 2023 13:42:00 +0300
-From:   "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Evgeniy Baskov <baskov@ispras.ru>,
-        Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Peter Jones <pjones@redhat.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Dave Young <dyoung@redhat.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH 4/6] x86: efistub: Perform 4/5 level paging switch from
- the stub
-Message-ID: <20230426104200.drmuewhwmhh3xljh@box.shutemov.name>
-References: <20230424165726.2245548-1-ardb@kernel.org>
- <20230424165726.2245548-5-ardb@kernel.org>
+        with ESMTP id S229889AbjDZOLO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 26 Apr 2023 10:11:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 125E3659E
+        for <linux-efi@vger.kernel.org>; Wed, 26 Apr 2023 07:11:14 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A30746366F
+        for <linux-efi@vger.kernel.org>; Wed, 26 Apr 2023 14:11:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8949C433D2;
+        Wed, 26 Apr 2023 14:11:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1682518273;
+        bh=kUHvDlh304QREoEAxxQud/4lPKTUAgBP83GHnxSAN9Y=;
+        h=From:To:Cc:Subject:Date:From;
+        b=E85o4l43m/zt8d6Dtw+goxCfOVoATvmnHQj6RAJT+R2Fa6WtdKU3XlaA9aZpm2qxj
+         PYT1TiZT0t7f+m7/R7LVXteYtGMyAowNIWL0384RY8r9i1ZasjIFlrWSGXhKDwxdIK
+         urJ5du+/bAVD5OsMSXIyZ4D3d5Mui/rWnHuukVQRKDi0XgGu8JS9sWPN037IZ8g5OV
+         /t2voSunLhqoFZMzDo0hEEUB7ii8o9lvt+/wwwm3cz6mAb04VZO4z5lwgiR/D79kii
+         yN71RdfgNeWSDZICAwup6blk2x+mwb1InH8jurKaQ1CD9tvREwQd5Y3iCVeaO8VaOK
+         n1c9X2yXHVwTA==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-arm-kernel@lists.infradead.org
+Cc:     linux-efi@vger.kernel.org, mark.rutland@arm.com,
+        catalin.marinas@arm.com, will@kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 0/2] arm64: Expose kernel code size to EFI zboot code
+Date:   Wed, 26 Apr 2023 16:11:01 +0200
+Message-Id: <20230426141103.2464423-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230424165726.2245548-5-ardb@kernel.org>
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1122; i=ardb@kernel.org; h=from:subject; bh=kUHvDlh304QREoEAxxQud/4lPKTUAgBP83GHnxSAN9Y=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIcXT4KvYzD2ZhQ9y7nf8lea/9UKRXcb3tXPdpv06Rzs2B j3U6CzrKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABPpdWP47xEo+Nbmzdl9M6b9 mHaYzd7ISOV531qnSxufx8512ji7czbDPyUuUxW/IzWLLx1j3Z1x99jvnCKlf0rLX0meP5Z29Pa 8Kh4A
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, Apr 24, 2023 at 06:57:24PM +0200, Ard Biesheuvel wrote:
-> In preparation for updating the EFI stub boot flow to avoid the bare
-> metal decompressor code altogether, implement the support code for
-> switching between 4 and 5 levels of paging before jumping to the kernel
-> proper.
+The EFI zboot code needs access to the kernel code size, in order to be
+able to determine which part of the image needs to be cleaned to the
+PoU, and does not tolerate being mapped with non-executable permissions.
 
-I must admit it is neat. I like it a lot.
+Instead of adding [0] this to the kernel image header, which makes it
+ABI, let's use Kbuild rules to inject this quantity into the zboot
+payload ELF object.
 
-Any chance we can share the code with the traditional decompressor?
-There's not much that EFI specific here. It should be possible to isolate
-it from the rest, no?
+[0] https://lore.kernel.org/all/20230418134952.1170141-1-ardb@kernel.org/
 
+Ard Biesheuvel (2):
+  efi/zboot: arm64: Inject kernel code size symbol into the zboot
+    payload
+  efi/zboot: arm64: Grab kernel code size from zboot payload
 
-> @@ -792,6 +925,14 @@ asmlinkage unsigned long efi_main(efi_handle_t handle,
->  				(get_efi_config_table(ACPI_20_TABLE_GUID) ?:
->  				 get_efi_config_table(ACPI_TABLE_GUID));
->  
-> +#ifdef CONFIG_X86_64
-> +	status = efi_setup_5level_paging();
-> +	if (status != EFI_SUCCESS) {
-> +		efi_err("efi_setup_5level_paging() failed!\n");
-> +		goto fail;
-> +	}
-> +#endif
-> +
->  	/*
->  	 * If the kernel isn't already loaded at a suitable address,
->  	 * relocate it.
-> @@ -910,6 +1051,10 @@ asmlinkage unsigned long efi_main(efi_handle_t handle,
->  		goto fail;
->  	}
->  
-> +#ifdef CONFIG_X86_64
-> +	efi_5level_switch();
-> +#endif
-> +
->  	return bzimage_addr;
->  fail:
->  	efi_err("efi_main() failed!\n");
-
-Maybe use IS_ENABLED() + dummy efi_setup_5level_paging()/efi_5level_switch()
-instead of #ifdefs?
+ arch/arm64/boot/Makefile                    |  3 +++
+ arch/arm64/kernel/image-vars.h              |  4 ++++
+ drivers/firmware/efi/libstub/Makefile.zboot | 16 ++++------------
+ drivers/firmware/efi/libstub/arm64.c        | 19 +++++++++++++------
+ drivers/firmware/efi/libstub/efistub.h      |  3 +--
+ drivers/firmware/efi/libstub/zboot.c        | 15 ++++-----------
+ drivers/firmware/efi/libstub/zboot.lds      |  7 +++++++
+ 7 files changed, 36 insertions(+), 31 deletions(-)
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.39.2
+
