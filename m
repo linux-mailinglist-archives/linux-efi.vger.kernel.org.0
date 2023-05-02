@@ -2,41 +2,76 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E260C6F2F45
-	for <lists+linux-efi@lfdr.de>; Mon,  1 May 2023 10:11:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F7456F4232
+	for <lists+linux-efi@lfdr.de>; Tue,  2 May 2023 13:02:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbjEAILw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 1 May 2023 04:11:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43758 "EHLO
+        id S233824AbjEBLCM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 2 May 2023 07:02:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbjEAILv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 1 May 2023 04:11:51 -0400
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECB10A7;
-        Mon,  1 May 2023 01:11:47 -0700 (PDT)
-Received: (Authenticated sender: alex@ghiti.fr)
-        by mail.gandi.net (Postfix) with ESMTPSA id 3E4361BF208;
-        Mon,  1 May 2023 08:11:40 +0000 (UTC)
-Message-ID: <b64914ba-6ff4-fc28-873d-8691f5293e91@ghiti.fr>
-Date:   Mon, 1 May 2023 10:11:39 +0200
+        with ESMTP id S233817AbjEBLCM (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 2 May 2023 07:02:12 -0400
+Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 860E1469B;
+        Tue,  2 May 2023 04:02:09 -0700 (PDT)
+Received: by mail-qv1-xf34.google.com with SMTP id 6a1803df08f44-618a8632655so6987706d6.0;
+        Tue, 02 May 2023 04:02:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683025328; x=1685617328;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=cKLyllcfQGZqzpBxsF4Eqgw2W0l3PU1/BE31uc1EHrI=;
+        b=qrMX4W3z89HP9oASZqDVljhW2/V/AVDopVMvrfNVM9/KnBrHgfbkIu4ZEy0OgbrObE
+         P6cOs9JdCynYWBWeePQi1fAiYpSiUwVIOaiizoEJKmdLNMjn7MsGeDeH83hjmu7aqu0A
+         0aDq7+/xh0lNmu+ByckzHyG4qgpesaBjj3qH6heM7iPeFvh7vh2dxxoX4OLpw4cLySUm
+         eC5iIFRphjU2XBjux8NVWW0v1317ZXv8Au/HdMPhyT3ChJa1kxwfRJAMvjHEww3JiVLa
+         JQsk5g90q9ZrFQfbZRYW1U1rHYx37zVP/ekgswVlPHfyfXyjtpGn0H6r5r8atl+fA6FV
+         VD2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683025328; x=1685617328;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cKLyllcfQGZqzpBxsF4Eqgw2W0l3PU1/BE31uc1EHrI=;
+        b=fzwJdP+D2gmNNXQuNDeD3Wl+gZho4rwXQ5K4WwraXKBE8oeW2IxBkJWZfUfxwx6zGV
+         1OMmUq7ftqFxbIzMaukvj9HUy8KW6F11WvlZYsqPWshLZd3ZiAbsAX8f8ArS6jokmD32
+         YrEJsF3fIZSqr/hMIoIBzHGIBRnTXy6K0J8uU/PGYBOftVS7VzOe8V4gvhFNptYZe6C5
+         6Ku7noImxGxCWpnuBzwRP7Ixl/Mm5cQE3FPE7nkf95q9xMmr9OxxRYeDjTnJdL5ktBpR
+         DXpHsmJyriTBy6pUSObOkRHMI5HVn4KbHYbsUeboq//TWMSntv/oQllSChUM9r4tEE+I
+         SFZQ==
+X-Gm-Message-State: AC+VfDyCdbXLhxQ5/xxoT8pyDaBjRsihnkP8Jdug9oJpy3TH73DDNIQb
+        ttAl+IwGQUNwtPIUGqBIi1CH2P1aYRdxJPShBe8=
+X-Google-Smtp-Source: ACHHUZ7kyo7RMgy6ggiQBDmbJeZWGDjLIWOI34WKy3b3O8xtvEneGSJhKrn3bo9DDEKix9f2V3zPxiEpEG8XxLBYcqg=
+X-Received: by 2002:a05:6214:528f:b0:616:73d9:b9c9 with SMTP id
+ kj15-20020a056214528f00b0061673d9b9c9mr2907496qvb.0.1683025328586; Tue, 02
+ May 2023 04:02:08 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 3/4] arm64: libstub: Move KASLR handling functions to
- efi-stub-helper.c
-Content-Language: en-US
-To:     Palmer Dabbelt <palmer@dabbelt.com>, alexghiti@rivosinc.com
-Cc:     Paul Walmsley <paul.walmsley@sifive.com>, aou@eecs.berkeley.edu,
+References: <20230426195853.633233-1-anisse@astier.eu> <MN0PR12MB6101768A09C5C2C78C2B9B58E2659@MN0PR12MB6101.namprd12.prod.outlook.com>
+In-Reply-To: <MN0PR12MB6101768A09C5C2C78C2B9B58E2659@MN0PR12MB6101.namprd12.prod.outlook.com>
+From:   Richard Hughes <hughsient@gmail.com>
+Date:   Tue, 2 May 2023 12:01:57 +0100
+Message-ID: <CAD2FfiELuWnOCMv8hwHOQase78PpRew7HHW3ATLHrxRxFOj2fw@mail.gmail.com>
+Subject: Re: [PATCH] efivarfs: expose used and total size
+To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
+Cc:     Anisse Astier <anisse@astier.eu>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
         Ard Biesheuvel <ardb@kernel.org>,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <mhng-bde481b8-a88c-4ba4-b410-da80d1947bcf@palmer-ri-x1c9a>
-From:   Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <mhng-bde481b8-a88c-4ba4-b410-da80d1947bcf@palmer-ri-x1c9a>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        Johan Hovold <johan+linaro@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Jeremy Kerr <jk@ozlabs.org>,
+        "platform-driver-x86@vger.kernel.org" 
+        <platform-driver-x86@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Anisse Astier <an.astier@criteo.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -44,383 +79,12 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Wed, 26 Apr 2023 at 22:50, Limonciello, Mario
+<Mario.Limonciello@amd.com> wrote:
+> This can be quite useful for fwupd to be capturing as well with some of the
+> weird issues that look like they're probably related to how much variable
+> space is left.
 
-On 4/29/23 21:50, Palmer Dabbelt wrote:
-> On Tue, 28 Mar 2023 22:29:25 PDT (-0700), alexghiti@rivosinc.com wrote:
->> This prepares for riscv to use the same functions to handle the pĥysical
->> kernel move when KASLR is enabled.
->>
->> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
->> ---
->>  drivers/firmware/efi/libstub/arm64-stub.c     | 111 +------------
->
-> This LGTM, but I'd prefer at least an Ack from either the Arm or EFI 
-> folks.  I think that makes it too late for this merge window.
+Yes, agreed, this will be very useful indeed. Thanks!
 
-
-Note that I have a minor fix (RANDOMIZE_BASE should depend on 64BIT) and 
-kernel test robot reported a few warnings and errors:
-
-ld: efi-stub-helper.c:undefined reference to `efi_icache_sync'
-
-efi-stub-helper.c:undefined reference to `efi_get_kimg_min_align'
-
-drivers/firmware/efi/libstub/efi-stub-helper.c:825:23: warning: implicit 
-declaration of function 'efi_get_kimg_min_align' is invalid in C99
-
-I'll wait for feedbacks and send a v3.
-
-Thanks,
-
-Alex
-
-
->
->>  .../firmware/efi/libstub/efi-stub-helper.c | 151 ++++++++++++++++++
->>  drivers/firmware/efi/libstub/efistub.h        |   8 +
->>  3 files changed, 167 insertions(+), 103 deletions(-)
->>
->> diff --git a/drivers/firmware/efi/libstub/arm64-stub.c 
->> b/drivers/firmware/efi/libstub/arm64-stub.c
->> index d4a6b12a8741..b9e0d2cf09aa 100644
->> --- a/drivers/firmware/efi/libstub/arm64-stub.c
->> +++ b/drivers/firmware/efi/libstub/arm64-stub.c
->> @@ -14,42 +14,6 @@
->>
->>  #include "efistub.h"
->>
->> -/*
->> - * Distro versions of GRUB may ignore the BSS allocation entirely 
->> (i.e., fail
->> - * to provide space, and fail to zero it). Check for this condition 
->> by double
->> - * checking that the first and the last byte of the image are 
->> covered by the
->> - * same EFI memory map entry.
->> - */
->> -static bool check_image_region(u64 base, u64 size)
->> -{
->> -    struct efi_boot_memmap *map;
->> -    efi_status_t status;
->> -    bool ret = false;
->> -    int map_offset;
->> -
->> -    status = efi_get_memory_map(&map, false);
->> -    if (status != EFI_SUCCESS)
->> -        return false;
->> -
->> -    for (map_offset = 0; map_offset < map->map_size; map_offset += 
->> map->desc_size) {
->> -        efi_memory_desc_t *md = (void *)map->map + map_offset;
->> -        u64 end = md->phys_addr + md->num_pages * EFI_PAGE_SIZE;
->> -
->> -        /*
->> -         * Find the region that covers base, and return whether
->> -         * it covers base+size bytes.
->> -         */
->> -        if (base >= md->phys_addr && base < end) {
->> -            ret = (base + size) <= end;
->> -            break;
->> -        }
->> -    }
->> -
->> -    efi_bs_call(free_pool, map);
->> -
->> -    return ret;
->> -}
->> -
->>  efi_status_t handle_kernel_image(unsigned long *image_addr,
->>                   unsigned long *image_size,
->>                   unsigned long *reserve_addr,
->> @@ -59,31 +23,6 @@ efi_status_t handle_kernel_image(unsigned long 
->> *image_addr,
->>  {
->>      efi_status_t status;
->>      unsigned long kernel_size, kernel_codesize, kernel_memsize;
->> -    u32 phys_seed = 0;
->> -    u64 min_kimg_align = efi_get_kimg_min_align();
->> -
->> -    if (IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
->> -        efi_guid_t li_fixed_proto = LINUX_EFI_LOADED_IMAGE_FIXED_GUID;
->> -        void *p;
->> -
->> -        if (efi_nokaslr) {
->> -            efi_info("KASLR disabled on kernel command line\n");
->> -        } else if (efi_bs_call(handle_protocol, image_handle,
->> -                       &li_fixed_proto, &p) == EFI_SUCCESS) {
->> -            efi_info("Image placement fixed by loader\n");
->> -        } else {
->> -            status = efi_get_random_bytes(sizeof(phys_seed),
->> -                              (u8 *)&phys_seed);
->> -            if (status == EFI_NOT_FOUND) {
->> -                efi_info("EFI_RNG_PROTOCOL unavailable\n");
->> -                efi_nokaslr = true;
->> -            } else if (status != EFI_SUCCESS) {
->> -                efi_err("efi_get_random_bytes() failed (0x%lx)\n",
->> -                    status);
->> -                efi_nokaslr = true;
->> -            }
->> -        }
->> -    }
->>
->>      if (image->image_base != _text)
->>          efi_err("FIRMWARE BUG: efi_loaded_image_t::image_base has 
->> bogus value\n");
->> @@ -96,49 +35,15 @@ efi_status_t handle_kernel_image(unsigned long 
->> *image_addr,
->>      kernel_codesize = __inittext_end - _text;
->>      kernel_memsize = kernel_size + (_end - _edata);
->>      *reserve_size = kernel_memsize;
->> +    *image_addr = (unsigned long)_text;
->>
->> -    if (IS_ENABLED(CONFIG_RANDOMIZE_BASE) && phys_seed != 0) {
->> -        /*
->> -         * If KASLR is enabled, and we have some randomness available,
->> -         * locate the kernel at a randomized offset in physical memory.
->> -         */
->> -        status = efi_random_alloc(*reserve_size, min_kimg_align,
->> -                      reserve_addr, phys_seed,
->> -                      EFI_LOADER_CODE);
->> -        if (status != EFI_SUCCESS)
->> -            efi_warn("efi_random_alloc() failed: 0x%lx\n", status);
->> -    } else {
->> -        status = EFI_OUT_OF_RESOURCES;
->> -    }
->> -
->> -    if (status != EFI_SUCCESS) {
->> -        if (!check_image_region((u64)_text, kernel_memsize)) {
->> -            efi_err("FIRMWARE BUG: Image BSS overlaps adjacent EFI 
->> memory region\n");
->> -        } else if (IS_ALIGNED((u64)_text, min_kimg_align) &&
->> -               (u64)_end < EFI_ALLOC_LIMIT) {
->> -            /*
->> -             * Just execute from wherever we were loaded by the
->> -             * UEFI PE/COFF loader if the placement is suitable.
->> -             */
->> -            *image_addr = (u64)_text;
->> -            *reserve_size = 0;
->> -            return EFI_SUCCESS;
->> -        }
->> -
->> -        status = efi_allocate_pages_aligned(*reserve_size, 
->> reserve_addr,
->> -                            ULONG_MAX, min_kimg_align,
->> -                            EFI_LOADER_CODE);
->> -
->> -        if (status != EFI_SUCCESS) {
->> -            efi_err("Failed to relocate kernel\n");
->> -            *reserve_size = 0;
->> -            return status;
->> -        }
->> -    }
->> -
->> -    *image_addr = *reserve_addr;
->> -    memcpy((void *)*image_addr, _text, kernel_size);
->> -    caches_clean_inval_pou(*image_addr, *image_addr + kernel_codesize);
->> +    status = efi_kaslr_relocate_kernel(image_addr,
->> +                       reserve_addr, reserve_size,
->> +                       kernel_size, kernel_codesize,
->> +                       kernel_memsize,
->> +                       efi_kaslr_get_phys_seed(image_handle));
->> +    if (status != EFI_SUCCESS)
->> +        return status;
->>
->>      return EFI_SUCCESS;
->>  }
->> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c 
->> b/drivers/firmware/efi/libstub/efi-stub-helper.c
->> index 1e0203d74691..40ac2625949c 100644
->> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
->> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
->> @@ -718,3 +718,154 @@ void efi_remap_image(unsigned long image_base, 
->> unsigned alloc_size,
->>              efi_warn("Failed to remap data region non-executable\n");
->>      }
->>  }
->> +
->> +/**
->> + * efi_kaslr_get_phys_seed() - Get random seed for physical kernel 
->> KASLR
->> + * @image_handle:    Handle to the image
->> + *
->> + * If KASLR is not disabled, obtain a random seed using 
->> EFI_RNG_PROTOCOL
->> + * that will be used to move the kernel physical mapping.
->> + *
->> + * Return:    the random seed
->> + */
->> +u32 efi_kaslr_get_phys_seed(efi_handle_t image_handle)
->> +{
->> +    efi_status_t status;
->> +    u32 phys_seed;
->> +    efi_guid_t li_fixed_proto = LINUX_EFI_LOADED_IMAGE_FIXED_GUID;
->> +    void *p;
->> +
->> +    if (!IS_ENABLED(CONFIG_RANDOMIZE_BASE))
->> +        return 0;
->> +
->> +    if (efi_nokaslr) {
->> +        efi_info("KASLR disabled on kernel command line\n");
->> +    } else if (efi_bs_call(handle_protocol, image_handle,
->> +                   &li_fixed_proto, &p) == EFI_SUCCESS) {
->> +        efi_info("Image placement fixed by loader\n");
->> +    } else {
->> +        status = efi_get_random_bytes(sizeof(phys_seed),
->> +                          (u8 *)&phys_seed);
->> +        if (status == EFI_SUCCESS) {
->> +            return phys_seed;
->> +        } else if (status == EFI_NOT_FOUND) {
->> +            efi_info("EFI_RNG_PROTOCOL unavailable\n");
->> +            efi_nokaslr = true;
->> +        } else if (status != EFI_SUCCESS) {
->> +            efi_err("efi_get_random_bytes() failed (0x%lx)\n",
->> +                status);
->> +            efi_nokaslr = true;
->> +        }
->> +    }
->> +
->> +    return 0;
->> +}
->> +
->> +/*
->> + * Distro versions of GRUB may ignore the BSS allocation entirely 
->> (i.e., fail
->> + * to provide space, and fail to zero it). Check for this condition 
->> by double
->> + * checking that the first and the last byte of the image are 
->> covered by the
->> + * same EFI memory map entry.
->> + */
->> +static bool check_image_region(u64 base, u64 size)
->> +{
->> +    struct efi_boot_memmap *map;
->> +    efi_status_t status;
->> +    bool ret = false;
->> +    int map_offset;
->> +
->> +    status = efi_get_memory_map(&map, false);
->> +    if (status != EFI_SUCCESS)
->> +        return false;
->> +
->> +    for (map_offset = 0; map_offset < map->map_size; map_offset += 
->> map->desc_size) {
->> +        efi_memory_desc_t *md = (void *)map->map + map_offset;
->> +        u64 end = md->phys_addr + md->num_pages * EFI_PAGE_SIZE;
->> +
->> +        /*
->> +         * Find the region that covers base, and return whether
->> +         * it covers base+size bytes.
->> +         */
->> +        if (base >= md->phys_addr && base < end) {
->> +            ret = (base + size) <= end;
->> +            break;
->> +        }
->> +    }
->> +
->> +    efi_bs_call(free_pool, map);
->> +
->> +    return ret;
->> +}
->> +
->> +/**
->> + * efi_kaslr_relocate_kernel() - Relocate the kernel (random if 
->> KASLR enabled)
->> + * @image_addr:    Pointer to the current kernel location
->> + * @reserve_addr:    Pointer to the relocated kernel location
->> + * @reserve_size:    Size of the relocated kernel
->> + * @kernel_size:    Size of the text + data
->> + * @kernel_codesize:    Size of the text
->> + * @kernel_memsize:    Size of the text + data + bss
->> + * @phys_seed:        Random seed used for the relocation
->> + *
->> + * If KASLR is not enabled, this function relocates the kernel to a 
->> fixed
->> + * address (or leave it as its current location). If KASLR is 
->> enabled, the
->> + * kernel physical location is randomized using the seed in parameter.
->> + *
->> + * Return:    status code, EFI_SUCCESS if relocation is successful
->> + */
->> +efi_status_t efi_kaslr_relocate_kernel(unsigned long *image_addr,
->> +                       unsigned long *reserve_addr,
->> +                       unsigned long *reserve_size,
->> +                       unsigned long kernel_size,
->> +                       unsigned long kernel_codesize,
->> +                       unsigned long kernel_memsize,
->> +                       u32 phys_seed)
->> +{
->> +    efi_status_t status;
->> +    u64 min_kimg_align = efi_get_kimg_min_align();
->> +
->> +    if (IS_ENABLED(CONFIG_RANDOMIZE_BASE) && phys_seed != 0) {
->> +        /*
->> +         * If KASLR is enabled, and we have some randomness available,
->> +         * locate the kernel at a randomized offset in physical memory.
->> +         */
->> +        status = efi_random_alloc(*reserve_size, min_kimg_align,
->> +                      reserve_addr, phys_seed,
->> +                      EFI_LOADER_CODE);
->> +        if (status != EFI_SUCCESS)
->> +            efi_warn("efi_random_alloc() failed: 0x%lx\n", status);
->> +    } else {
->> +        status = EFI_OUT_OF_RESOURCES;
->> +    }
->> +
->> +    if (status != EFI_SUCCESS) {
->> +        if (!check_image_region(*image_addr, kernel_memsize)) {
->> +            efi_err("FIRMWARE BUG: Image BSS overlaps adjacent EFI 
->> memory region\n");
->> +        } else if (IS_ALIGNED(*image_addr, min_kimg_align) &&
->> +               (u64)_end < EFI_ALLOC_LIMIT) {
->> +            /*
->> +             * Just execute from wherever we were loaded by the
->> +             * UEFI PE/COFF loader if the placement is suitable.
->> +             */
->> +            *reserve_size = 0;
->> +            return EFI_SUCCESS;
->> +        }
->> +
->> +        status = efi_allocate_pages_aligned(*reserve_size, 
->> reserve_addr,
->> +                            ULONG_MAX, min_kimg_align,
->> +                            EFI_LOADER_CODE);
->> +
->> +        if (status != EFI_SUCCESS) {
->> +            efi_err("Failed to relocate kernel\n");
->> +            *reserve_size = 0;
->> +            return status;
->> +        }
->> +    }
->> +
->> +    memcpy((void *)*reserve_addr, (void *)*image_addr, kernel_size);
->> +    *image_addr = *reserve_addr;
->> +
->> +    caches_clean_inval_pou(*image_addr, *image_addr + kernel_codesize);
->> +
->> +    return status;
->> +}
->> diff --git a/drivers/firmware/efi/libstub/efistub.h 
->> b/drivers/firmware/efi/libstub/efistub.h
->> index 6bd3bb86d967..64273371ce96 100644
->> --- a/drivers/firmware/efi/libstub/efistub.h
->> +++ b/drivers/firmware/efi/libstub/efistub.h
->> @@ -1098,5 +1098,13 @@ const u8 *__efi_get_smbios_string(u8 type, int 
->> offset, int recsize);
->>
->>  void efi_remap_image(unsigned long image_base, unsigned alloc_size,
->>               unsigned long code_size);
->> +efi_status_t efi_kaslr_relocate_kernel(unsigned long *image_addr,
->> +                       unsigned long *reserve_addr,
->> +                       unsigned long *reserve_size,
->> +                       unsigned long kernel_size,
->> +                       unsigned long kernel_codesize,
->> +                       unsigned long kernel_memsize,
->> +                       u32 phys_seed);
->> +u32 efi_kaslr_get_phys_seed(efi_handle_t image_handle);
->>
->>  #endif
->
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+Richard
