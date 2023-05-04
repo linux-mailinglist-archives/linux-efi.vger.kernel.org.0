@@ -2,266 +2,384 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B31146F6089
-	for <lists+linux-efi@lfdr.de>; Wed,  3 May 2023 23:30:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE5EE6F6E06
+	for <lists+linux-efi@lfdr.de>; Thu,  4 May 2023 16:51:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229660AbjECVal (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 3 May 2023 17:30:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42560 "EHLO
+        id S231146AbjEDOvS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 4 May 2023 10:51:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229610AbjECVak (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 3 May 2023 17:30:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CFB130EF;
-        Wed,  3 May 2023 14:30:38 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 26AE3617CF;
-        Wed,  3 May 2023 21:30:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70362C4339B;
-        Wed,  3 May 2023 21:30:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683149437;
-        bh=YNSCEkyv0tG1Xwdagg3lyYmAeJ90gSqpVdZuG8MnLbE=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=mVS+/YVzUJPtTPppfbGvRwIvDK4mYvgjmaQlx2zH9Wsd9GMcXv73kLxvtyBtnR5p0
-         KGwmEHmtNqBwxyc8ZPCHWsioPsEBwF6Msx3flIQ/Fc2pe4tgyNXb5rApz9gHv0vSPw
-         ECKnaLTPRn2SyC8sadG+TLA5KWgEN7/sSM6q3/2VOEJsOVWU6T1gdb4iqWTwdFXDEs
-         /RyKHiboIX3ebKTymv9KAYpCFOnvhFoBMJEvF0QeJ201E+MGmYS7BkAGw2ElVSiSkI
-         v3HAd4npBxgmO8jSdlFAXtiaFo5VuPdfQfyvGLdxBH4lEzDFdCiliAZJjHGLT4MLu4
-         kBGpUFmfo7crg==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2a8dd1489b0so57068391fa.3;
-        Wed, 03 May 2023 14:30:37 -0700 (PDT)
-X-Gm-Message-State: AC+VfDwJNwXxr/Yijk9QGnZ7eySANxs/DmLDQ9PkdcTOEQTFlFmktFyT
-        E8R7Kh2PtcsFWUKEmcnWmzNJe/ZihUL1hgiz9OQ=
-X-Google-Smtp-Source: ACHHUZ4wDKmJfuiqjyyPaOQfkdEIRPa0XF6ssWVksEqQDSIuoq1Rre+gpLBy7jXFhIDOBQdC184VoJyNRyCRNcmnjRA=
-X-Received: by 2002:a2e:98d0:0:b0:2a8:2122:102f with SMTP id
- s16-20020a2e98d0000000b002a82122102fmr334832ljj.49.1683149435405; Wed, 03 May
- 2023 14:30:35 -0700 (PDT)
+        with ESMTP id S230208AbjEDOvL (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 4 May 2023 10:51:11 -0400
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71AB6D7;
+        Thu,  4 May 2023 07:51:09 -0700 (PDT)
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 344DTVNL023329;
+        Thu, 4 May 2023 14:50:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : content-transfer-encoding : content-type :
+ mime-version; s=corp-2023-03-30;
+ bh=QBU9YNZubc8zqVNWB/PTENoA1AhZaoYQ7Vs7k4/xXEc=;
+ b=hu17v+TFksF9w/TAfsnQept10B8RyD4jwChc76R6vLdi/a+m2cqRWCDjvo0Ebce/Pbor
+ lu1mW1qFttr7PSn8h4LWJ2hCicLdk5nMXTA8xH3lY9VF7pLV6x8IP6P5OFRS8l9HBs2T
+ e9dLiW3KYD0rMzeSJLqhUfLf7Ue1kadyo5qQvlSihP+tARIlu4l8ULr7aqgXYLosgkGD
+ XvSOyUhXxA6utLSYhF7GGOipZrBcyWtbijSy5taM83+v6Wf7AizfM+5HGwWU7+D99IwX
+ MjLOJcgTxR3nyBlYuEKlVr8bd/Um5EG2lbRi8Hc6XNiRux/1QzYUjF9cX9twBgFdw5U7 sQ== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3q8u4aswha-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 04 May 2023 14:50:30 +0000
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 344ECLSI027573;
+        Thu, 4 May 2023 14:50:29 GMT
+Received: from nam02-bn1-obe.outbound.protection.outlook.com (mail-bn1nam02lp2046.outbound.protection.outlook.com [104.47.51.46])
+        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3q8spevry0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 04 May 2023 14:50:28 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hoCIrlGKbWheSVX6QwU1PAwDybZz3e+17zfVKnR/myloptxexRykSvUZtJTBd/cBi85QcvgjJGu04SUqnoXfIFwrkvvCEw/85TemJfuhEemP7+jZqrTUDaxhMJmYwl5u1T9uFMpdx9IChHfFhqzYl4k0cvEpE7n8dd/kaA49JFdJKjbZz730fz21wUsx6Z4sqs+MgjlhApNY2UIugYb0Z+0XSqZkGbivn0Gk1BIvP1vrHSY43Kg+6UjXbCZYgR1nO5VTk+g3kinvGux0WSk4D8d2dcggPf5zyWrwub4ln5BDFvJX7RrjZevtf1y4naBJMbExTtgLma2yRzhWV3D7uA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QBU9YNZubc8zqVNWB/PTENoA1AhZaoYQ7Vs7k4/xXEc=;
+ b=UmT/YPj0DAPVsnOOxBqkJrQDJ1iql8Of5VxUg1Z49Ad006ze6yOw7V/JhuL4vpemr4fkfPW/5fluJXe8qNo9bBSN7oGfEbWxLtmD2E3EhorUIz9CTD0nvs/wuirx/6Ej9E3hONky1GcnO8ewE/heW1nEobEFHWE9y4XjCySrr3tsxzzuXwJJOsu1szkKpcoYlHXTfs2KHogXaAOWMBBtmmPmuxT01R4E8nXFKi5NE4PtsYVDXY+EojEnm65UUDjgI678C3KDCNnZdcQkSiw6u3Qwa1rm69igpX9AeXIavGx5oMw9XPJ8B2X4ZHSCzEw5Bfo5OXzx+Zg3+6KB4w+sZg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QBU9YNZubc8zqVNWB/PTENoA1AhZaoYQ7Vs7k4/xXEc=;
+ b=puw7Ka1cu8Om/dk1/fpEUNzcyZ6z8fRYxPrwmJ/ZgEkilSiVCuASvvnjnbHmzuSkeJJ+2ablPZSCxT7tZefYLuzIwGwB8MShBPd1ocQgPcaX98i0Vnl0ZWsGe6oyjHY+56mtJILipoPwEAXs9uLOqHOPslcHFgn1z9ks2ymf4lc=
+Received: from BY5PR10MB3793.namprd10.prod.outlook.com (2603:10b6:a03:1f6::14)
+ by DM4PR10MB7505.namprd10.prod.outlook.com (2603:10b6:8:18a::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.26; Thu, 4 May
+ 2023 14:50:26 +0000
+Received: from BY5PR10MB3793.namprd10.prod.outlook.com
+ ([fe80::a007:b0c1:5cb:329a]) by BY5PR10MB3793.namprd10.prod.outlook.com
+ ([fe80::a007:b0c1:5cb:329a%5]) with mapi id 15.20.6363.026; Thu, 4 May 2023
+ 14:50:26 +0000
+From:   Ross Philipson <ross.philipson@oracle.com>
+To:     linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-crypto@vger.kernel.org, iommu@lists.linux-foundation.org,
+        kexec@lists.infradead.org, linux-efi@vger.kernel.org
+Cc:     ross.philipson@oracle.com, dpsmith@apertussolutions.com,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
+        ardb@kernel.org, mjg59@srcf.ucam.org,
+        James.Bottomley@hansenpartnership.com, luto@amacapital.net,
+        nivedita@alum.mit.edu, kanth.ghatraju@oracle.com,
+        trenchboot-devel@googlegroups.com
+Subject: [PATCH v6 00/14] x86: Trenchboot secure dynamic launch Linux kernel support
+Date:   Thu,  4 May 2023 14:50:09 +0000
+Message-Id: <20230504145023.835096-1-ross.philipson@oracle.com>
+X-Mailer: git-send-email 2.31.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: DS7PR03CA0270.namprd03.prod.outlook.com
+ (2603:10b6:5:3b3::35) To BY5PR10MB3793.namprd10.prod.outlook.com
+ (2603:10b6:a03:1f6::14)
 MIME-Version: 1.0
-References: <20230424165726.2245548-1-ardb@kernel.org> <ecbcc066-3636-9620-8db9-2c066d16e717@amd.com>
- <CAMj1kXG8ZrdEUNTiSCet+aT+1ZyrbguFsGtNhVV+XgCssZgj9w@mail.gmail.com>
- <a6846282-95c8-274a-accc-ffa54205489c@amd.com> <8f85787a-1fa5-8f59-6047-b3a791291bfd@amd.com>
- <CAMj1kXFfHJDXW2xWTjT5xy_-8MdeS9HhcMh3=DKFZ3+vhaUFcA@mail.gmail.com>
- <d06086cf-3bb7-0ed1-b877-c94b5ef89fc2@amd.com> <CAMj1kXGwF39ZjggsZ+fhac8w-LHaa++YbRT+cQM25QRKurg2Rw@mail.gmail.com>
- <6639dd3c-edf4-c4a0-cfd6-9e0a13c7738b@amd.com>
-In-Reply-To: <6639dd3c-edf4-c4a0-cfd6-9e0a13c7738b@amd.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 3 May 2023 23:30:23 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHCK8vOxoyS42F8-DgZKF=CPGSUjOWViL-J9UwqoMx1yg@mail.gmail.com>
-Message-ID: <CAMj1kXHCK8vOxoyS42F8-DgZKF=CPGSUjOWViL-J9UwqoMx1yg@mail.gmail.com>
-Subject: Re: [PATCH 0/6] efi/x86: Avoid legacy decompressor during EFI boot
-To:     Tom Lendacky <thomas.lendacky@amd.com>
-Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Evgeniy Baskov <baskov@ispras.ru>,
-        Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Peter Jones <pjones@redhat.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Dave Young <dyoung@redhat.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Kees Cook <keescook@chromium.org>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR10MB3793:EE_|DM4PR10MB7505:EE_
+X-MS-Office365-Filtering-Correlation-Id: c817b1f9-a272-4a80-de65-08db4caee575
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: OiARhmCkF+J20V8klbl5xiEs5FcHBfZlHBPFM7+YgTjFp7fC/+dzdpEVe7WbqCG+0wYFImPwWNxn9m95OeqgbkxBlBzIfXb4LvOB48ZQIeqHvUpCSqWED6txB+sVvSAHHtjl72iXSeZFncpF0ysFdf59ZVAbI7nqPliq2EE7BBhELhtbrwKgkSbWsajZtvW/crnTxnXYyBraj6rph6m74eXh7tQusuF95EqBU//7RNRioFEgQlSns9tNiHU9wO90pR61LoLPKt2xYrAJWxod+0TCPv8ac0Qv+IIOcP8NN5bLa+JvI94KHPSxN32z741UltQ4EduH6+vWNmNS4uybYWNj1EiDPVX6pdDoXTfOszac/6yKkhBYEi5aFUhH3+We7lpZ7KM1c9Jm3K0Dc6QCH8PQwCJyI72xMOnYgYyG3Ii3xBVIiu1ku/uBr2psfMA5zqsffgsVZoCERFOnAAU8JbhLKkEf8HZMg7UEFynkoDqvtJYdWn6KBSPl9+9UuML1rGkPkAESAuCeRddGGhX46DX77oxGNjCpWmm8W3heo0bZcwpluvILLNjRoYWJdmpDe4VxiVmfWPKOnxvZ4FNC0A==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR10MB3793.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(366004)(396003)(136003)(39860400002)(376002)(451199021)(83380400001)(6486002)(2906002)(478600001)(316002)(5660300002)(8936002)(41300700001)(8676002)(44832011)(66946007)(66476007)(66556008)(4326008)(38100700002)(7416002)(86362001)(36756003)(6666004)(186003)(1076003)(26005)(6512007)(6506007)(966005)(2616005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?q3cnr7Bsldtxbj1ij2Sjqf41LDA08Q9Gyq64p4t3o+r4MY58xSB+Wca1OgtC?=
+ =?us-ascii?Q?DIyVsAdxGv20k3PscXiry+QgPKVptuLgJtue5zT9O4Y9ejGhF+j/HwsKh/W5?=
+ =?us-ascii?Q?6UB6YhtBkeriVuPzpl9fpPl19O75qGwJednQNRqXbiALNTBGnANjTfJZ8n/P?=
+ =?us-ascii?Q?E15C7emYqVdGOY9zgzTgCEcVOkP8MxJv63wVIInhq7j4GfeJPxjDf5q4qB9D?=
+ =?us-ascii?Q?7XmG4cwtgdi9C+7aFx9srPyzgiHQlveOzPx/1AJRJcWLr+fsjbdZlS4GD83O?=
+ =?us-ascii?Q?goKq78vwe6L0evw/mK7kZmUTGwY75Ggzb8Vp8HW0oRzwBRe8yPpIUzrasPwM?=
+ =?us-ascii?Q?aLKil3Bqks6w1Bp1LnXq9gVUtp8zXslUoI89p6hmRZst/onbFTWAKq6o3wnp?=
+ =?us-ascii?Q?NIrZQb3K6bJ85OVGJxRi0gzVrJwfr/O1JynjaMffxj2AFVvmRMFW/jPE3bgh?=
+ =?us-ascii?Q?I4G0z/XR3D0IDTV/fDAeXdraQSem0ioje4KbCEP1Aipsk16wkJjyHl18GQfA?=
+ =?us-ascii?Q?e1yHx2rQxpI60a+77qVa/6ygs3cmnl7n8TJ0AlstNEoQT+BAK1zifp5wAPEV?=
+ =?us-ascii?Q?CwylIcz2I5gkUU2zdsy3iqwd6HyA6tnlKNUFi3JlA+iWgAP2uApSM4Q3gkvG?=
+ =?us-ascii?Q?xl60anyMPzGKYgCb19/pWLrX7jz796BCv4v6ZC0LfmPOiPR/PHGG9PRgRHsW?=
+ =?us-ascii?Q?ZMMllcaoScFIEgC++OM/ecKDqVT6Wzxfk3NhEE6bWTrLQ/lB5oogWycBvw43?=
+ =?us-ascii?Q?GeoYIYFUesIb1LTm2f1s9V/nCghWljl0vXZndlY6uh1f0Okvf0RfUTBfT4rz?=
+ =?us-ascii?Q?XpGTiBA762t2ARoxU3lis23jtntyMmj86x7w0qPKsopRmS2KS1JkwRRL8VGP?=
+ =?us-ascii?Q?9NIEa+Hmrbl8g5MV4b4WBGdjZhXTxia00PKp9ne7eD7CmDoiNB0HI9dadCgj?=
+ =?us-ascii?Q?vrw2hoJBCAA7QOEUm82S878SEwbO2iOz49qI7cmAsbrmrAA/6UrSYM1FjD8U?=
+ =?us-ascii?Q?FWGkT9EXjN8sKsAm//elOu7jP0xuSVcuIkx5jZRE5fIxI6yyt4sPZr0cuQFv?=
+ =?us-ascii?Q?86dk/byZHprWMZbeziFIxE8JGeWJxaFhZ6NQ7qMQcwNxese+zpULh9EBac38?=
+ =?us-ascii?Q?rlXDvyBC17ju3V5o9lGA4PowzPcBZ4brG5nbjJX6TLvXaQ/Ts4CXTeH4OxBm?=
+ =?us-ascii?Q?E8IM0q+e/Nw2KVBSC2pZehkFgAHM/1PeJseFdHgNIgd/a56nhaadWsCE4hTt?=
+ =?us-ascii?Q?y4loYV/u4tT0MGj2EMsLThBtmwkxJ3aziMBXv6c3heTzKndHxP5UuTnhR4xL?=
+ =?us-ascii?Q?PwME85S1vABl2j6mS35Gt9ZKxr7RloIPBqeGLgHmN1TUSh887HOJ+5dHmafm?=
+ =?us-ascii?Q?691N2m+x5Y4rGNJmpeo7p5s5TUm9mAmzj2j2CpSHI9pz2i09wHkZ2DIBfs46?=
+ =?us-ascii?Q?hlK1LxEzub0mapiWa++QC3qSJHlZPqoGKfN6rHMfT+pFV63Bx1m3bYJOBRbc?=
+ =?us-ascii?Q?uFo28mOytZhJKdZB5uERuYXBYadt7R2kXEImKhYVrL8knJCpTrnPQUnqEBqF?=
+ =?us-ascii?Q?y7mx/xRb++ao+xRvtiQJuLnwq2rTN8lTyzkdwgNt50Z2l0BvrMfRlyz7k3nP?=
+ =?us-ascii?Q?9g=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?us-ascii?Q?K6HYzu1CNM6b+p003/73BhXJ3ogYdjyM/YEm6WTnJvtuXCxMVCYxwMJl1m0P?=
+ =?us-ascii?Q?C1xYg+4FUKRFdArHeX29AqAtJ296us5l6IlBuB4t28oYVbC+nU+cbXOkPOSW?=
+ =?us-ascii?Q?xYK4+tCrijHwDVB31bLBUSuI8sFX4XIXQK7CpUj0lghRHEAlRNGLVjQhE4ld?=
+ =?us-ascii?Q?4wVVM9tAuxtkzsI+utsZx/uEeYjtRt8CqePcx4S+SGaCzMaTfsYZ+0RxoR9F?=
+ =?us-ascii?Q?VqY0qsgDbKu7ivcZfwSSTkzyHzmRolCRZFKB4isfi1fu+tgJt7Bln9+s4enT?=
+ =?us-ascii?Q?i80ifKfoo0D4kJ6oin5qNiSrYN9NMzMn5XClIPpxEW4F3vzLTixsrTCzAjf/?=
+ =?us-ascii?Q?ADke4sbDOjrlCfgk4cR+XqnoP6mDrUrNRsLNsPsjW8WLh5G1qPBncqIPj22K?=
+ =?us-ascii?Q?3t4KaJxaHcnztE7Kbl9kWHdk3bV4z6OzCWrD8m30M+S8MQVF9jf1/aecn8wn?=
+ =?us-ascii?Q?XKy2uI0iy4b9laB3SHU8pKC1ezFn81kHkn1e+hIzcs7ITf0a7NApu7kZHNIB?=
+ =?us-ascii?Q?74Ty2Hvd+s7kDrlppHOgxQHGddadvzfqcHLf6r2mg145Intj7dDEQjibnh4l?=
+ =?us-ascii?Q?vCgkYl0ZZcuKHB9UmudrY7XJR7TgBOrmXGw/fUNOhbs06TY/ybAFNQEx1S7M?=
+ =?us-ascii?Q?FHU/at4TOIoILME2+B6SOjiR9afW0/EcGDTHr6nQ8jZVKAyUt8aUj8k9/Tf0?=
+ =?us-ascii?Q?A6MFWbYy0MUIgQWEOrZtWblZPoHpYTzBlB/FHd0gL318CjSQaBEgMXCZaBlx?=
+ =?us-ascii?Q?heE9GdLRifIREL88O0xUjzS9faYqVr9tZKLlSZenav072Ic2gVXXlQzw8e+T?=
+ =?us-ascii?Q?p3A6rh7F5ENy51idm8j1Okm0MemxuNHlWCKYl0zcBrYDigGLlEe5ooNeXFTI?=
+ =?us-ascii?Q?LT93/LglxGZSjzPLIpBi426dLyAwWphf25cvNHaG7p2lpQ/lTG+g4nq8pTAU?=
+ =?us-ascii?Q?WgmsFUoEJ/l3T0JmuhaonNcJhj54OE7AaWKAWy4Wpk5HvMzfjizEz20hCFeg?=
+ =?us-ascii?Q?EXNklVQOgDmvHtZ5TAt8sD5AtWf7i6RJ2Td2+bNiwwRWn5FKKZdiKpk7Facp?=
+ =?us-ascii?Q?m8kKNL44e9McIBUnZBl41N4P2oXKKy+nCJM9lpKfqG1hM8gFeBPiT2+5pnar?=
+ =?us-ascii?Q?Daz+ASRztjKUXux0Cmtj2UwcLGF6CHrDUkPx1EcrHTS+jfvQsI3OrZeHMN4r?=
+ =?us-ascii?Q?f+HO4qXBdcexZtU0ypvlMBYiMMpTqaxoD0NiLji7ZdCd62Ck7LadvWR0C6jX?=
+ =?us-ascii?Q?SvwXI/lepTz5Mg0JcxnBZNzp4veQHps6mA70WsSWfCBKc9YS54dJ4zq9KWWX?=
+ =?us-ascii?Q?jKE=3D?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c817b1f9-a272-4a80-de65-08db4caee575
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR10MB3793.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 May 2023 14:50:26.2085
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PHQxA+FcIt1F0RPe/1GDR45cSty1Mr3Rlf9UyJ9wQjj2Gg3CWUmjJywJx3B+7AdONaXcw+JUknqeZdh3QemtP3JQoBdTPQVSYsCoc8uHqbs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR10MB7505
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-04_10,2023-05-04_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 adultscore=0
+ suspectscore=0 mlxlogscore=999 phishscore=0 mlxscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303200000
+ definitions=main-2305040122
+X-Proofpoint-GUID: YEDdriiYXV8eUfdAbuX75ZfJF5do7bf5
+X-Proofpoint-ORIG-GUID: YEDdriiYXV8eUfdAbuX75ZfJF5do7bf5
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 3 May 2023 at 23:23, Tom Lendacky <thomas.lendacky@amd.com> wrote:
->
-> On 5/3/23 13:59, Ard Biesheuvel wrote:
-> > On Wed, 3 May 2023 at 20:49, Tom Lendacky <thomas.lendacky@amd.com> wrote:
-> >>
-> >> On 5/3/23 13:17, Ard Biesheuvel wrote:
-> >>> On Wed, 3 May 2023 at 19:58, Tom Lendacky <thomas.lendacky@amd.com> wrote:
-> >>>>
-> >>>> On 5/2/23 11:08, Tom Lendacky wrote:
-> >>>>> On 5/2/23 08:39, Ard Biesheuvel wrote:
-> >>>>>> On Tue, 2 May 2023 at 15:37, Tom Lendacky <thomas.lendacky@amd.com> wrote:
-> >>>>>>>
-> >>>>>>> On 4/24/23 11:57, Ard Biesheuvel wrote:
-> >>>>>>>> This series is conceptually a combination of Evgeny's series [0] and
-> >>>>>>>> mine [1], both of which attempt to make the early decompressor code more
-> >>>>>>>> amenable to executing in the EFI environment with stricter handling of
-> >>>>>>>> memory permissions.
-> >>>>>>>>
-> >>>>>>>> My series [1] implemented zboot for x86, by getting rid of the entire
-> >>>>>>>> x86 decompressor, and replacing it with existing EFI code that does the
-> >>>>>>>> same but in a generic way. The downside of this is that only EFI boot is
-> >>>>>>>> supported, making it unviable for distros, which need to support BIOS
-> >>>>>>>> boot and hybrid EFI boot modes that omit the EFI stub.
-> >>>>>>>>
-> >>>>>>>> Evgeny's series [0] adapted the entire decompressor code flow to allow
-> >>>>>>>> it to execute in the EFI context as well as the bare metal context, and
-> >>>>>>>> this involves changes to the 1:1 mapping code and the page fault
-> >>>>>>>> handlers etc, none of which are really needed when doing EFI boot in the
-> >>>>>>>> first place.
-> >>>>>>>>
-> >>>>>>>> So this series attempts to occupy the middle ground here: it makes
-> >>>>>>>> minimal changes to the existing decompressor so some of it can be called
-> >>>>>>>> from the EFI stub. Then, it reimplements the EFI boot flow to decompress
-> >>>>>>>> the kernel and boot it directly, without relying on the trampoline code,
-> >>>>>>>> page table code or page fault handling code. This allows us to get rid
-> >>>>>>>> of quite a bit of unsavory EFI stub code, and replace it with two clear
-> >>>>>>>> invocations of the EFI firmware APIs to clear NX restrictions from
-> >>>>>>>> allocations that have been populated with executable code.
-> >>>>>>>>
-> >>>>>>>> The only code that is being reused is the decompression library itself,
-> >>>>>>>> along with the minimal ELF parsing that is required to copy the ELF
-> >>>>>>>> segments in place, and the relocation processing that fixes up absolute
-> >>>>>>>> symbol references to refer to the correct virtual addresses.
-> >>>>>>>>
-> >>>>>>>> Note that some of Evgeny's changes to clean up the PE/COFF header
-> >>>>>>>> generation will still be needed, but I've omitted those here for
-> >>>>>>>> brevity.
-> >>>>>>>
-> >>>>>>> I tried booting an SEV and an SEV-ES guest using this and both failed
-> >>>>>>> to boot:
-> >>>>>>>
-> >>>>>>> EFI stub: WARNING: Decompression failed: Out of memory while allocating
-> >>>>>>> z_stream
-> >>>>>>>
-> >>>>>>> I'll have to take a closer look as to why, but it might be a couple of
-> >>>>>>> days before I can get to it.
-> >>>>>>>
-> >>>>>>
-> >>>>>> Thanks Tom.
-> >>>>>>
-> >>>>>> The internal malloc() seems to be failing, which is often caused by
-> >>>>>> BSS clearing problems. Could you elaborate a little bit on the boot
-> >>>>>> environment you are using here?
-> >>>>>
-> >>>>> I'm using Qemu v7.2.1 as my VMM, Linux 6.3 with your series applied for my
-> >>>>> host/hypervisor and guest kernel and the current OVMF tree built using
-> >>>>> OvmfPkgX64.dsc.
-> >>>>>
-> >>>>> I was originally using the current merge window Linux, but moved to the
-> >>>>> release version just to . With the release version SEV and SEV-ES still
-> >>>>> fail to
-> >>>>> boot, but SEV actually #GPs now. And some of the register contents look
-> >>>>> like encrypted data:
-> >>>>>
-> >>>>> ConvertPages: range 1000000 - 4FA1FFF covers multiple entries
-> >>>>> !!!! X64 Exception Type - 0D(#GP - General Protection)  CPU Apic ID -
-> >>>>> 00000000 !!!!
-> >>>>> ExceptionData - 0000000000000000
-> >>>>> RIP  - 00000000597E71C1, CS  - 0000000000000038, RFLAGS - 0000000000210206
-> >>>>> RAX  - 1FBA02A45943B920, RCX - 0000000000AF7009, RDX - A9DAE761B64A1F1B
-> >>>>> RBX  - 1FBA02A45943B8C0, RSP - 000000007FD97320, RBP - 0000000002000000
-> >>>>> RSI  - 0000000001000000, RDI - 1FBA02A45943DE68
-> >>>>> R8   - 0000000003EF3C94, R9  - 0000000000000000, R10 - 000000007D7C6018
-> >>>>> R11  - 0000000000000000, R12 - 0000000001000000, R13 - 00000000597EDD98
-> >>>>> R14  - 0000000001000000, R15 - 000000007E0A5198
-> >>>>> DS   - 0000000000000030, ES  - 0000000000000030, FS  - 0000000000000030
-> >>>>> GS   - 0000000000000030, SS  - 0000000000000030
-> >>>>> CR0  - 0000000080010033, CR2 - 0000000000000000, CR3 - 000000007FA01000
-> >>>>> CR4  - 0000000000000668, CR8 - 0000000000000000
-> >>>>> DR0  - 0000000000000000, DR1 - 0000000000000000, DR2 - 0000000000000000
-> >>>>> DR3  - 0000000000000000, DR6 - 00000000FFFF0FF0, DR7 - 0000000000000400
-> >>>>> GDTR - 000000007F7DC000 0000000000000047, LDTR - 0000000000000000
-> >>>>> IDTR - 000000007F34C018 0000000000000FFF,   TR - 0000000000000000
-> >>>>> FXSAVE_STATE - 000000007FD96F80
-> >>>>> !!!! Find image based on IP(0x597E71C1)
-> >>>>> /root/kernels/ovmf-build-X64/Build/OvmfX64/DEBUG_GCC5/X64/MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe/DEBUG/Variable
-> >>>>> RuntimeDxe.dll (ImageBase=0000000000D4792C, EntryPoint=0000000000D50CC3) !!!!
-> >>>>>
-> >>>>> So, yes, probably an area of memory that was zeroes when mapped
-> >>>>> unencrypted, but wasn't cleared after changing the mapping to
-> >>>>> encrypted.
-> >>>>
-> >>>> Yes, looks like a bss clearing issue. If I add __section(".data") to
-> >>>> free_mem_ptr and free_mem_end_ptr in arch/x86/boot/compressed/misc.c and
-> >>>> to malloc_ptr and malloc_cnt in include/linux/decompress/mm.h, then I can
-> >>>> boot an SEV guest.
-> >>>>
-> >>>> However, an SEV-ES guest is triple faulting. This looks to be because
-> >>>> we're still on the EFI CS of 0x38 after switching GDTs in
-> >>>> arch/x86/kernel/head_64.S by calling startup_64_setup_env(). Before
-> >>>> switching to the kernel CS, we take a #VC (from CPUID calls in sme_enable)
-> >>>> and things blow up on the iretq. Moving the block headed by the comment
-> >>>> "Now switch to __KERNEL_CS so IRET works reliably" to just after calling
-> >>>> startup_64_setup_env() fixes it and an SEV-ES guest can boot.
-> >>>>
-> >>>> This worked before because I believe we switched off the EFI CS as part of
-> >>>> the kernel decompressor support and so this bug wasn't exposed. But this
-> >>>> needs to be fixed regardless of this series.
-> >>>>
-> >>>
-> >>> Very interesting. I was under the assumption that everything that goes
-> >>> on in sev_enable() in the decompressor would be rather indispensable
-> >>> to boot in SEV mode (which I only spotted today) so I am quite
-> >>> surprised that things just appear to work. (There is some 32-bit SEV
-> >>> code in the decompressor as well that obviously never gets called when
-> >>> booting in long mode, but I hadn't quite grasped how much other SEV
-> >>> code there actually is)
-> >>
-> >> The sev_enable() function for SEV and SEV-ES is more for ensuring a proper
-> >> environment (ensuring the proper CPUID bits are present for the guest,
-> >> checking the GHCB protocol level, properly preparing pagetables, etc.).
-> >> Since we're still in EFI and using the EFI #VC handler and pagetables, we
-> >> don't require some of that stuff, but some of the it would need to be
-> >> performed at some point (I wasn't trying to be a malicious hypervisor).
-> >>
-> >
-> > OK, good to know.
-> >
-> >> I haven't tested SEV-SNP yet because the hypervisor support is not
-> >> upstream, yet, and I haven't applied your series to an SNP hypervisor
-> >> tree, yet. There is a lot of support in sev_enable() for SNP that may
-> >> likely cause a problem compared to SEV and SEV-ES.
-> >>
-> >> SEV-SNP has a lot more checking and validation going on and it ensures it
-> >> gets the confidential computing blob from EFI into the boot parameters.
-> >> I'm not sure when I'll be able to test SNP, since I'm off next week and
-> >> trying to wrap up a bunch of stuff before I leave.
-> >>
-> >
-> > Would it make sense, given the apparent direct dependency on EFI, to
-> > move that stuff into the EFI stub instead of doing it from the
-> > decompressor?
->
-> We tried to make the support for SNP not be reliant on EFI. If EFI is
-> present, then get the confidential computing blob from it. Otherwise, the
-> cc blob can be supplied as part of the setup data in the Linux boot
-> protocol (see find_cc_block() in arch/x86/boot/compressed/sev.c).
->
-> So I guess some of it could be moved, but I'm not sure how much.
->
+The larger focus of the TrenchBoot project (https://github.com/TrenchBoot) is to
+enhance the boot security and integrity in a unified manner. The first area of
+focus has been on the Trusted Computing Group's Dynamic Launch for establishing
+a hardware Root of Trust for Measurement, also know as DRTM (Dynamic Root of
+Trust for Measurement). The project has been and continues to work on providing
+a unified means to Dynamic Launch that is a cross-platform (Intel and AMD) and
+cross-architecture (x86 and Arm), with our recent involvment in the upcoming
+Arm DRTM specification. The order of introducing DRTM to the Linux kernel
+follows the maturity of DRTM in the architectures. Intel's Trusted eXecution
+Technology (TXT) is present today and only requires a preamble loader, e.g. a
+boot loader, and an OS kernel that is TXT-aware. AMD DRTM implementation has
+been present since the introduction of AMD-V but requires an additional
+component that is AMD specific and referred to in the specification as the
+Secure Loader, which the TrenchBoot project has an active prototype in
+development. Finally Arm's implementation is in specification development stage
+and the project is looking to support it when it becomes available.
 
-Fair enough.
+This patchset provides detailed documentation of DRTM, the approach used for
+adding the capbility, and relevant API/ABI documentation. In addition to the
+documentation the patch set introduces Intel TXT support as the first platform
+for Linux Secure Launch.
 
-> >
-> > Thanks for giving this a spin - I can wait for more testing until you
-> > get back, and hopefully, we'll have converged a bit more by that time
-> > and there will be a new revision of the series available for testing.
-> >
-> > BTW any clue whether your boot path is relying on the EFI handover
-> > protocol? I.e., QemuStartLegacyImage() in OVMF? Evgeny mentioned that
->
-> I don't believe it is. It's using the Grub EFI bootloader to load and boot
-> Linux.
->
+A quick note on terminology. The larger open source project itself is called
+TrenchBoot, which is hosted on Github (links below). The kernel feature enabling
+the use of Dynamic Launch technology is referred to as "Secure Launch" within
+the kernel code. As such the prefixes sl_/SL_ or slaunch/SLAUNCH will be seen
+in the code. The stub code discussed above is referred to as the SL stub.
 
-Looking at the log you just sent (thanks), it appears you are using
-distro shim+grub, which implement their own rough approximation of PE
-file loading, and typically use the EFI handover protocol. This is
-good news, because we already know how broken shim and GRUB are, and I
-was concerned that there might be another issue to track down here.
+The Secure Launch feature starts with patch #2. Patch #1 was authored by Arvind
+Sankar. There is no further status on this patch at this point but
+Secure Launch depends on it so it is included with the set.
 
-I'll implement Evgeny's suggestion to clear BSS explicitly in the EFI
-handover protocol entrypoints for the next revision of the series.
+Links:
 
-Thanks,
+The TrenchBoot project including documentation:
+
+https://trenchboot.org
+
+The TrenchBoot project on Github:
+
+https://github.com/trenchboot
+
+Intel TXT is documented in its own specification and in the SDM Instruction Set volume:
+
+https://www.intel.com/content/dam/www/public/us/en/documents/guides/intel-txt-software-development-guide.pdf
+https://software.intel.com/en-us/articles/intel-sdm
+
+AMD SKINIT is documented in the System Programming manual:
+
+https://www.amd.com/system/files/TechDocs/24593.pdf
+
+GRUB2 pre-launch support branch (WIP):
+
+https://github.com/TrenchBoot/grub/tree/grub-sl-fc-38-dlstub
+
+Thanks
+Ross Philipson and Daniel P. Smith
+
+Changes in v2:
+
+ - Modified 32b entry code to prevent causing relocations in the compressed
+   kernel.
+ - Dropped patches for compressed kernel TPM PCR extender.
+ - Modified event log code to insert log delimiter events and not rely
+   on TPM access.
+ - Stop extending PCRs in the early Secure Launch stub code.
+ - Removed Kconfig options for hash algorithms and use the algorithms the
+   ACM used.
+ - Match Secure Launch measurement algorithm use to those reported in the
+   TPM 2.0 event log.
+ - Read the TPM events out of the TPM and extend them into the PCRs using
+   the mainline TPM driver. This is done in the late initcall module.
+ - Allow use of alternate PCR 19 and 20 for post ACM measurements.
+ - Add Kconfig constraints needed by Secure Launch (disable KASLR
+   and add x2apic dependency).
+ - Fix testing of SL_FLAGS when determining if Secure Launch is active
+   and the architecture is TXT.
+ - Use SYM_DATA_START_LOCAL macros in early entry point code.
+ - Security audit changes:
+   - Validate buffers passed to MLE do not overlap the MLE and are
+     properly laid out.
+   - Validate buffers and memory regions used by the MLE are
+     protected by IOMMU PMRs.
+ - Force IOMMU to not use passthrough mode during a Secure Launch.
+ - Prevent KASLR use during a Secure Launch.
+
+Changes in v3:
+
+ - Introduce x86 documentation patch to provide background, overview
+   and configuration/ABI information for the Secure Launch kernel
+   feature.
+ - Remove the IOMMU patch with special cases for disabling IOMMU
+   passthrough. Configuring the IOMMU is now a documentation matter
+   in the previously mentioned new patch.
+ - Remove special case KASLR disabling code. Configuring KASLR is now
+   a documentation matter in the previously mentioned new patch.
+ - Fix incorrect panic on TXT public register read.
+ - Properly handle and measure setup_indirect bootparams in the early
+   launch code.
+ - Use correct compressed kernel image base address when testing buffers
+   in the early launch stub code. This bug was introduced by the changes
+   to avoid relocation in the compressed kernel.
+ - Use CPUID feature bits instead of CPUID vendor strings to determine
+   if SMX mode is supported and the system is Intel.
+ - Remove early NMI re-enable on the BSP. This can be safely done later
+   on the BSP after an IDT is setup.
+
+Changes in v4:
+ - Expand the cover letter to provide more context to the order that DRTM
+   support will be added.
+ - Removed debug tracing in TPM request locality funciton and fixed
+   local variable declarations.
+ - Fixed missing break in default case in slmodule.c.
+ - Reworded commit messages in patches 1 and 2 per suggestions.
+
+Changes in v5:
+ - Comprehensive documentation rewrite.
+ - Use boot param loadflags to communicate Secure Launch status to
+   kernel proper.
+ - Fix incorrect check of X86_FEATURE_BIT_SMX bit.
+ - Rename the alternate details and authorities PCR support.
+ - Refactor the securityfs directory and file setup in slmodule.c.
+ - Misc. cleanup from internal code reviews.
+ - Use reverse fir tree format for variables.
+
+Changes in v6:
+ - Support for the new Secure Launch Resourse Table that standardizes
+   the information passed and forms the ABI between the pre and post
+   launch code.
+ - Support for booting Linux through the EFI stub entry point and
+   then being able to do a Secure Launch once EFI stub is done and EBS
+   is called.
+ - Updates to the documentation to reflect the previous two items listed.
+
+Arvind Sankar (1):
+  x86/boot: Place kernel_info at a fixed offset
+
+Daniel P. Smith (2):
+  x86: Add early SHA support for Secure Launch early measurements
+  x86: Secure Launch late initcall platform module
+
+Ross Philipson (11):
+  Documentation/x86: Secure Launch kernel documentation
+  x86: Secure Launch Kconfig
+  x86: Secure Launch Resource Table header file
+  x86: Secure Launch main header file
+  x86: Secure Launch kernel early boot stub
+  x86: Secure Launch kernel late boot stub
+  x86: Secure Launch SMP bringup support
+  kexec: Secure Launch kexec SEXIT support
+  reboot: Secure Launch SEXIT support on reboot paths
+  tpm: Allow locality 2 to be set when initializing the TPM for Secure
+    Launch
+  x86: EFI stub DRTM launch support for Secure Launch
+
+ Documentation/arch/x86/boot.rst                    |  21 +
+ Documentation/security/index.rst                   |   1 +
+ Documentation/security/launch-integrity/index.rst  |  10 +
+ .../security/launch-integrity/principles.rst       | 313 ++++++++++
+ .../launch-integrity/secure_launch_details.rst     | 564 +++++++++++++++++
+ .../launch-integrity/secure_launch_overview.rst    | 220 +++++++
+ arch/x86/Kconfig                                   |  12 +
+ arch/x86/boot/compressed/Makefile                  |   3 +
+ arch/x86/boot/compressed/early_sha1.c              |  97 +++
+ arch/x86/boot/compressed/early_sha1.h              |  17 +
+ arch/x86/boot/compressed/early_sha256.c            |   7 +
+ arch/x86/boot/compressed/head_64.S                 |  37 ++
+ arch/x86/boot/compressed/kernel_info.S             |  53 +-
+ arch/x86/boot/compressed/kernel_info.h             |  12 +
+ arch/x86/boot/compressed/sl_main.c                 | 599 ++++++++++++++++++
+ arch/x86/boot/compressed/sl_stub.S                 | 690 +++++++++++++++++++++
+ arch/x86/boot/compressed/vmlinux.lds.S             |   6 +
+ arch/x86/include/asm/realmode.h                    |   3 +
+ arch/x86/include/uapi/asm/bootparam.h              |   1 +
+ arch/x86/kernel/Makefile                           |   2 +
+ arch/x86/kernel/asm-offsets.c                      |  20 +
+ arch/x86/kernel/reboot.c                           |  10 +
+ arch/x86/kernel/setup.c                            |   3 +
+ arch/x86/kernel/slaunch.c                          | 566 +++++++++++++++++
+ arch/x86/kernel/slmodule.c                         | 520 ++++++++++++++++
+ arch/x86/kernel/smpboot.c                          |  86 +++
+ arch/x86/realmode/rm/header.S                      |   3 +
+ arch/x86/realmode/rm/trampoline_64.S               |  37 ++
+ drivers/char/tpm/tpm-chip.c                        |   9 +-
+ drivers/firmware/efi/libstub/x86-stub.c            |  55 ++
+ drivers/iommu/intel/dmar.c                         |   4 +
+ include/linux/slaunch.h                            | 513 +++++++++++++++
+ include/linux/slr_table.h                          | 270 ++++++++
+ kernel/kexec_core.c                                |   4 +
+ lib/crypto/sha1.c                                  |   4 +
+ lib/crypto/sha256.c                                |   8 +
+ 36 files changed, 4775 insertions(+), 5 deletions(-)
+ create mode 100644 Documentation/security/launch-integrity/index.rst
+ create mode 100644 Documentation/security/launch-integrity/principles.rst
+ create mode 100644 Documentation/security/launch-integrity/secure_launch_details.rst
+ create mode 100644 Documentation/security/launch-integrity/secure_launch_overview.rst
+ create mode 100644 arch/x86/boot/compressed/early_sha1.c
+ create mode 100644 arch/x86/boot/compressed/early_sha1.h
+ create mode 100644 arch/x86/boot/compressed/early_sha256.c
+ create mode 100644 arch/x86/boot/compressed/kernel_info.h
+ create mode 100644 arch/x86/boot/compressed/sl_main.c
+ create mode 100644 arch/x86/boot/compressed/sl_stub.S
+ create mode 100644 arch/x86/kernel/slaunch.c
+ create mode 100644 arch/x86/kernel/slmodule.c
+ create mode 100644 include/linux/slaunch.h
+ create mode 100644 include/linux/slr_table.h
+
+-- 
+1.8.3.1
+
