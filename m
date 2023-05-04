@@ -2,65 +2,65 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43DC06F6E15
-	for <lists+linux-efi@lfdr.de>; Thu,  4 May 2023 16:51:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9AAE6F6E25
+	for <lists+linux-efi@lfdr.de>; Thu,  4 May 2023 16:52:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230481AbjEDOvj (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 4 May 2023 10:51:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45452 "EHLO
+        id S231354AbjEDOwd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 4 May 2023 10:52:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231246AbjEDOve (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 4 May 2023 10:51:34 -0400
+        with ESMTP id S231283AbjEDOvg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 4 May 2023 10:51:36 -0400
 Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07E862D51;
-        Thu,  4 May 2023 07:51:23 -0700 (PDT)
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 344DbOJO012645;
-        Thu, 4 May 2023 14:51:04 GMT
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7651635B8;
+        Thu,  4 May 2023 07:51:26 -0700 (PDT)
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 344Df0RY005132;
+        Thu, 4 May 2023 14:51:05 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=tOrl7bwToPdgkLSml1h7WK2eBjs9z6pHb2lNO+Jym7g=;
- b=Rsk7aoPutY4eoZ5Uhqq/NXNx96a4nuphfnEqEEyJw14ntQwbcQAKSvhvY2rgnVZ79GEa
- RMqL4d7/M0cKBpIpde8W83ar6zDzuoeULkFmnmShmc4YxEyVtae3wtQ6ojGo3DRzUXcm
- nz+1Cay697xGVk64MKD8a8+vw/zRFe6LyjQGOkd3eA2JW3lVzGzHcWlkiRu9AedRLV1f
- O/9erlC5/VjFRqENYOGa1kQyBjNpRlMAaCWWChmMCoVG5e3QC9oOztCEdalf+TaxhF7d
- lpfDDuyy3v8Ye2oG9+ASmrgR5ZGEUwUyT/Jie3eng8Tm95euw03WK51lL5GCs9lU1P3r Pw== 
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3q8usv1ydf-1
+ subject : date : message-id : in-reply-to : references :
+ content-transfer-encoding : content-type : mime-version;
+ s=corp-2023-03-30; bh=8UMPBPTYTbtgzHA5Tae5gHr+dSmZRtU0MoU2SQlgcJ0=;
+ b=SJTFCmO0XzaesNc9oZKCGQ1rtGCHw+/7TnOvaAc/StXghXpzH8vPrjB9dLyyrPwsdUuw
+ W5DfxBk7sDVXDtYuwSGyewHCV9f3K3MntYu1x4/dTI2Uzky6QQSA0ydm7W2Swms0pSy/
+ iHHQEgh9x3hiF4MwaNyciv8DsciYT+5dfsw7bfSs9B6cEAkDUN3viLOnBpBYRvHiRkbt
+ F6WECvjIytBjZhtUYoyqvFxePG5qmU8AY6mTviRxHNp0nBZkWTCv+JpiPWqumZDMb2Bi
+ u2buAK69kPjekqjNqKOo21a8KUBl1V7RgDoZFtUy1JCfz2DCMEUokcpas+EX8nRezZc/ ZQ== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3q8su1t1wy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 04 May 2023 14:51:04 +0000
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 344EnZHr026971;
+        Thu, 4 May 2023 14:51:03 GMT
+Received: from nam02-bn1-obe.outbound.protection.outlook.com (mail-bn1nam02lp2045.outbound.protection.outlook.com [104.47.51.45])
+        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3q8spevpt2-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
         Thu, 04 May 2023 14:51:03 +0000
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 344EFPUo024884;
-        Thu, 4 May 2023 14:51:02 GMT
-Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2168.outbound.protection.outlook.com [104.47.58.168])
-        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3q8sp8tqxu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 04 May 2023 14:51:02 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Mc3c7iG8OnedaS5YEvCoIu4Fjd86xDnFVbx4S427Yni7IS3WwYZiys0I/Td0drmnjGI9Evgf9qECF+VVCGhCBCSCwTuLnyxINdtvuCka2J3UtTkPM3E8dcMRIwikktUhNuQYSDgWvdlj3I64+L+g6WwNAEIS3OGsAN+bCU0Y03kozt+75YB2eO3qNUGRi5XAhicA0JgH53xCImeNi7rbcvEoCrrP3GSv1xuEAJ/3TYlPjAbDPm/o1YFciIZVTBvpXxMsAlW6zukTQJpKCLaeC+eDnxICcdlKXGx2K6WrNyBvzpXfMBjzZ7OAT3BwuxZJrXZJGrwsfAWKoKsuWYmd6w==
+ b=LjhONv976et5t8Ke4CEW00AvSqdk559cUJfwtri4eQpaz/ziKNV7X62QFWbAhpKbB0mprU1dDGYgis2vdSIyCHuF3sjznDt25yIOl1SNMtuEp4hb13xDsrJM+OX3LV4H8ok4SZOHrkMr7xk3Nr7Kg0b69LyWqFGk294cXoggb1geYZqKFm2kqj6gFkoTBya22HNbQtD3NHB3apJsz36rAUasHg0AwrmkmdV+805C85j0Yvr9rXDeJjugC3NulovJlutwhGvGJDUD3QTJBUsjVGsQTxp3cBKpejt5sMSwfwWR0Ko71f0T1EnawGL08GcAWHWv8rWljhgjqWQ61eitrg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tOrl7bwToPdgkLSml1h7WK2eBjs9z6pHb2lNO+Jym7g=;
- b=FCazusbSub3HvCIQ1nD3ZrztxT03yCvX97gO0rQIIf4auyMPiRzQZ7hLhVXIeHictcWXt+YGhWuD+IqjW6twsFr1caeASOpF8NbQU0TjIyFR//JUoIRO2aYgg3UqC80m+zXP3udB8uo+KJV//q9D8PL356Bi7dMgAJ0JMJy9rV0q8PGd9u3M9N10K10WUfLzwS8AYg8FHq2upKN8DYnOKoeVSOSIsRmalK0oPiYvKB/JjQLftZ1ywUT0n5onkr40CXnMdvXJmAGiomymj6oNbxrZHnSd/vldgK05qOBGzaTI/1qXywVFI9e7tJMPtAHm/nvM5lF0YI3STLgjXPUXVg==
+ bh=8UMPBPTYTbtgzHA5Tae5gHr+dSmZRtU0MoU2SQlgcJ0=;
+ b=eQ7BA41mPRrwhk4mcgrF/2vSoYTpsLAi/ndkkO1C8evlhit0H1QlQR6zHQ4EwAmWBPHXalaJG15xlGthiiSI3mGXcf0D9jcRS9S8qrywfg5kERZBy9d78ShFwmxaxb4ik2KLtqR86FiII/jvvNOOSS5mLQ8Ub94mB42KMrmVMdms7HDqnWsGZxuL55Gpk1KJcvZ8lxzhJemDoX+s2IrEFjIjgQuhlfHNZt8VNZxLj/WiGXKn3Vyq+pf+sghe4+rodTVDJTd/U7pb4Z0U1bidQi7stIw2i3Mwy+O8Ls8ZAv5DsI5CsJI8rr/2+7+/GjHKFVzAVAztqaJwcYwxj4OCDw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tOrl7bwToPdgkLSml1h7WK2eBjs9z6pHb2lNO+Jym7g=;
- b=kMiJPFn9H07zMiqsUfmH2TyatXEydMPXbBZy1spt9unZtfOnx/uM9FeKoxWyOfCW0wNMJh1HwzimJAT8da8GhcXfHWMn/AefavXxBxL0y3u9uyjwVKuL7D5HnFsHyQHzzzNylHdSsP4w/xzt6VqQP3AGlw4iu4TZ9MtcNnXILPg=
+ bh=8UMPBPTYTbtgzHA5Tae5gHr+dSmZRtU0MoU2SQlgcJ0=;
+ b=vzIljSVAtmrW4V2kUe3Prd0FTYmx4SRVUUwmGngPW2UoYBFhCw4xBbBCj4t/N1HXFX5VX2Su/TEyFnmkAcaGw1XuatF/WZXJvO2bRyDSUWu1hFWRTNz2vvICAX9A1A8DApEUmJ3OTXkUjk+g79V5kQ4/0jEbLUtImXwAvFlWlZM=
 Received: from BY5PR10MB3793.namprd10.prod.outlook.com (2603:10b6:a03:1f6::14)
- by PH0PR10MB6982.namprd10.prod.outlook.com (2603:10b6:510:287::8) with
+ by DM4PR10MB7505.namprd10.prod.outlook.com (2603:10b6:8:18a::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.26; Thu, 4 May
- 2023 14:50:58 +0000
+ 2023 14:51:01 +0000
 Received: from BY5PR10MB3793.namprd10.prod.outlook.com
  ([fe80::a007:b0c1:5cb:329a]) by BY5PR10MB3793.namprd10.prod.outlook.com
  ([fe80::a007:b0c1:5cb:329a%5]) with mapi id 15.20.6363.026; Thu, 4 May 2023
- 14:50:58 +0000
+ 14:51:01 +0000
 From:   Ross Philipson <ross.philipson@oracle.com>
 To:     linux-kernel@vger.kernel.org, x86@kernel.org,
         linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
@@ -72,115 +72,99 @@ Cc:     ross.philipson@oracle.com, dpsmith@apertussolutions.com,
         James.Bottomley@hansenpartnership.com, luto@amacapital.net,
         nivedita@alum.mit.edu, kanth.ghatraju@oracle.com,
         trenchboot-devel@googlegroups.com
-Subject: [PATCH v6 05/14] x86: Secure Launch main header file
-Date:   Thu,  4 May 2023 14:50:14 +0000
-Message-Id: <20230504145023.835096-6-ross.philipson@oracle.com>
+Subject: [PATCH v6 06/14] x86: Add early SHA support for Secure Launch early measurements
+Date:   Thu,  4 May 2023 14:50:15 +0000
+Message-Id: <20230504145023.835096-7-ross.philipson@oracle.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20230504145023.835096-1-ross.philipson@oracle.com>
 References: <20230504145023.835096-1-ross.philipson@oracle.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO2P265CA0485.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:13a::10) To BY5PR10MB3793.namprd10.prod.outlook.com
+Content-Type: text/plain
+X-ClientProxiedBy: DS7PR03CA0020.namprd03.prod.outlook.com
+ (2603:10b6:5:3b8::25) To BY5PR10MB3793.namprd10.prod.outlook.com
  (2603:10b6:a03:1f6::14)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR10MB3793:EE_|PH0PR10MB6982:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9983a358-5ed3-4961-aff7-08db4caef8c8
+X-MS-TrafficTypeDiagnostic: BY5PR10MB3793:EE_|DM4PR10MB7505:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8cb60c99-24cd-439d-97c7-08db4caefa3c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: AaZjOb97yEXGbHCFb/XKjumlRbRLvoYEmchdtH9bXh8Hxp+pQcFS1ewJOsyNDaL7Lc0DCIqmIvD0evSt+Dh9syLfvBC74xnR6ppS6g1Z9fKrFnQGQ6kyOKX4mM/plSHev7Wny/jtp8lgCwIa5wcJ6bonzEzpWiXt3NlS9yfkCBvlSR9mkjaqAdIzGKW4/10xA+a0KWCjU8tHmoLVcICCswr2F/Xg74XNHiHs1pYtNZnXUADtrL+qqUpbAFi1MXFvKyJljjn9lZXmbEpnJcYOe3E6TI7xUTPOEZjWPGKHkrpM2Sdnw3OJvME4G0ebYd1h8Vb4N9R20OimSIdg2Oe/N/ViiGndeGJlxxOFxoyC022Y1OCabNFgbf/jKLFDouQhmfEIAfqMF8cXSjQNX/IZXab4gwS/wE/dkbiOiJwCZId+4lTiecdTOJxcVMExVS2f811jj2oViyV0fgqObom7G1QYB5akMETwEG4p3WmgfAv++MVMep5IkFhx830T3U017dPOsFsq281cfpDE1Pxykf3QmzwgdC4XEl413FOmif3IccvJW14grM3rrPkGxHgh
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR10MB3793.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(39860400002)(396003)(346002)(136003)(376002)(366004)(451199021)(36756003)(38100700002)(5660300002)(7416002)(2906002)(44832011)(30864003)(8936002)(316002)(86362001)(4326008)(66556008)(66476007)(66946007)(8676002)(41300700001)(83380400001)(186003)(6512007)(6506007)(1076003)(26005)(6486002)(478600001)(2616005)(6666004);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: nsRDFFG0U1FFDHhBUcgJqZtHgPE6SX+KO8Vn5KSjXhK8i4Wik215+d94HBPKm/dMPQbI9eo7C5VMUhD+jfxdlfe7ojMlvdvWyyW3IsHrdobVUgoo/3U2+MwcxuBBlc0YDwhQCZZ3wu1/9q86kcou2C1LgjOUeZTV8P9bu1uysf5tKEy4J6DaFG5TAXDTkccZHUYN4Gip02dGOMez9eof3wBWovlrpMbXDvbVZ85ng9AjZw0R5TZ7HKoo4rTj3GyDFjw7yO9z8T51y52LOfLgziLJgONSzcGGzHYJKxF6SsSjRMXyMCzjd0nyNAcP005iNxMAgHliNYceapdnz4nYe+ti0/I6LhHxAFfdwo6rTJBP04xyYuLdyniRSfBDm1Qbnvn7ChZ0bQlDRnRdkFgBSxZ9IV2ZOOjzLEsU1nDdaqgJbRStO9Ox+4Oh4Lhx8z4fiJqjmLtnSLSnbD/KXnP6Nmtg0V3zmKBocljfArp3/49lZQfnjJOXeMy/dMxB9uwEBEIppY26IPOeLWXzp8Yv5XhzmEDGwNQ72EKqsLszAC+JkIhFSC/IoR7vwUSr02KH
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR10MB3793.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(366004)(396003)(136003)(39860400002)(376002)(451199021)(83380400001)(6486002)(2906002)(478600001)(316002)(5660300002)(8936002)(41300700001)(8676002)(44832011)(66946007)(66476007)(66556008)(4326008)(38100700002)(7416002)(86362001)(36756003)(6666004)(186003)(1076003)(26005)(6512007)(6506007)(2616005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VUl1VDkzLy84SEJhYjZsQnVHdVJVWTRnMmVhdW1LUE1iOWw5akxXcXhaYVB6?=
- =?utf-8?B?K0dCcndRcXVKUFRWUmhXdTFQUVdlWlVFTkN6VHhJeUVYTFlSUUtDbXZIaGRT?=
- =?utf-8?B?MFF4ZVZnQXZoU0ZQRTl3cS8xZXdUUWIxMGVCM29SU2xyNXppMTh6WUdEalhm?=
- =?utf-8?B?alJXd2FoQnpUM3JQUUV4WGhKc292M3h2M09CU09mbkNjbzFEanhOclR2T3o4?=
- =?utf-8?B?WTI1T2ZWU2UxL2tBTStXM3crK09wUHcyaGJiVHZ5NU1NbDNIeU93ZHdyc01S?=
- =?utf-8?B?YkxlaUlGYUtieTVTN2twaXNCL2kzeURnL1oyUmsyZEpxT2xJV0xHMFdRSmxX?=
- =?utf-8?B?anpuZmVTcmdsT2NiaTUzeHltTVlwa3czaVNkSUJGb2NrblBoWTdia1ZFMzAw?=
- =?utf-8?B?dm81RTdxSWQ0dk1ueHpiQ0ZTbHdkTjNGT0ZZQjM5MzRqd3Q0aU5qeHRHeFVQ?=
- =?utf-8?B?Y1NRYXhZNGhHK1d3Qnl6KzFvdktSOTdRUzJHWjQvTXZVMHN1VWJvZStQTGlR?=
- =?utf-8?B?YW8rYVZzSUlvZmpJN1ZIelBGbDZZYnp5MzRtTWtwTWRvdVgyZ21rVVllMlFK?=
- =?utf-8?B?VWsvWEZNQmtKSWhzTmRlMU12N0w2V29HdElKYXlvQXMyU05DQkpOeE1BS2J3?=
- =?utf-8?B?Ti9IZGRLWno1dFVqVzVvckNuTWllVktvYVdBbVpKM3ZKTDBhVEY0NXFPWm1j?=
- =?utf-8?B?c29GalptWTRMY3VzVy9KZFhDUGo1eXFtZ0t6aE8ycE1lVHBWbW1PNW5mVHJE?=
- =?utf-8?B?bGdrOFo0eUdhRy9zZTgwZWp3TnlnbGM1WFNxdE53NEhXTEdoaUpjcGdnN1Nz?=
- =?utf-8?B?dzRJeHlHalNTNTFUOERodkFPcjdIeWFrb1ZMTm5CT0wvS2duN05mWGY5aDhN?=
- =?utf-8?B?S1U5czY5MyttZGswQ3AxNUl2eWQ5QU1nMEpBeFFDTkZ2NTVwMjcvcXluUDd3?=
- =?utf-8?B?ekZib0ltNTlQRkgyaUFOb3NyYlVyb0hhTysyeTNvaWk5cjFmOFVoSFNtZEhL?=
- =?utf-8?B?dHUxb0txU3lwWjB0T3JiZEZWdkQwNk5JYzZSUTEzdFZ6dDIvWVBQamF3TjBI?=
- =?utf-8?B?cWlMRVlORDhzWk81dXdpeTNZMmFOc1BMblNkTXdpeld3NTdOYitLQzNMZ0JU?=
- =?utf-8?B?S3Y2eTl4b1N5OUVMT2xaUmovem92dVE0RzJNc24zODhjTjZOTTBQRXdHT2dz?=
- =?utf-8?B?OUZPTC9XWWdIcTR4QVJOSUp3bzhETSsxWmtiNG43S3dVOFE5NFIySFJvWnJ3?=
- =?utf-8?B?RlJ4R0xUR05wOEpUcTRwaUxyK0FTTmc4OVB5WFNna29OU2MvUmtpMG15L2Vk?=
- =?utf-8?B?WTRrREtMTHZVV0FvVmU2NkgyRlRlOVkzRjFJcEJxbGY4MXdkNTM2ZFlZNU1Q?=
- =?utf-8?B?YWdxT1NUSDRScVpVNXQrU0xqaVRJVThWNE5pb3J4M3ozMGk4dkQ0L1VtQUsv?=
- =?utf-8?B?STJvZGtJcHJPM0VHOEFMTGRYYUFGaC9MZEJuVUpFREVKNGNSUklXNGJjdGhL?=
- =?utf-8?B?OHVIaHZGL002eUJaemU3VkFRdTlhK1ZLS01OVHQ2azRTcE9UVTNKRzNzb0Yy?=
- =?utf-8?B?VHV2UTBtTHArUEhRalZoVTBpRDFOSlJvSWxwTDdiN0VFY25LNlVRWXQxREtF?=
- =?utf-8?B?VUV5clRmZHpHZlFCMDNUSDdyamJTeTkvR1lZREpVSkRmWHI3WEI5RG1XYlk2?=
- =?utf-8?B?ejVBaVNxeWVaRTJBWjJuQlFCMWNNdnpYU2lhQk1VOFNWYjBCbjBvc0UybGoy?=
- =?utf-8?B?WHhSSUJhcG43TnEwdDdEY1RIeFFBVGFjZ2hJQTdydVVjSUZacXdNRVErOTRa?=
- =?utf-8?B?NHBUWWR2N1ptQytnN0lpVWozckttSEZyNnovenMrbC9Qa2VvU21nM0NTeUJa?=
- =?utf-8?B?U2U4aGJReGw1MDJ0MTVETE5QRWhOVkFvaDFpZDZSWXVLbEJteE94bWxBck1p?=
- =?utf-8?B?MGdtOWhaakNBZ2xiSWQ4d29aZ0d2cEdDWnpjS3VGY2lDNXhMMHpVRXhhVXRo?=
- =?utf-8?B?VWNYclNKVW9pVXpQbXFSLzQyeXNycXBRdmgra2ZqYXdpeFhITldEdytXZVJG?=
- =?utf-8?B?cDU4OEdRNFpydFJsRWd5cnY0R28rOFJhejRjTFl2OVErQVJoWkJXZEFRTHJw?=
- =?utf-8?B?QzROL0R3Mlk0UXdlWXg4MzdjVlVYdXRtZUpwVWhic0lzRWw3TnF6T2NOSkhC?=
- =?utf-8?B?REE9PQ==?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?/0i/+sMAO//M4PC3CJE2cr37llUd8+Q90HNSLV+B8oBy9bHuEdCMmy3LhNI0?=
+ =?us-ascii?Q?QeMehV9tFDcA1HOV+ke/VtSJDa43nn2gMwoO5R6gZsC/dUcb51lNjIxfhe1H?=
+ =?us-ascii?Q?VTJmirxFa0MVUfj/fBtWmTMb83qPQnCrmHxwwtd0awEHnenYLiVB2vb8NZwQ?=
+ =?us-ascii?Q?mmdsBXlwqcAf/rAg8HIA92dcfhJ6Xx/D+c6EOHiS8+bT7mer9K/p8wMqtWlQ?=
+ =?us-ascii?Q?Ay8BM/j5dTlY5VUG/bazp1sdtRT22sQ4BmFCMGTNHGbx7UrCWfb6bWOuIJAJ?=
+ =?us-ascii?Q?U2czWpsFKdqp+moYRVL1C1r6SSOCIIHZShr78RjrsYuouOAzlz8Lqe91ycPm?=
+ =?us-ascii?Q?H3BbRXKyKFxHS9WR5lj1CbiWjcEHElnHO46P4gQY0IXeeVGSas1RN/zaSu8w?=
+ =?us-ascii?Q?9m/E41/6maBuM3lNFFd6cuKdMRFABai881sJrRl+U2YrcHcxyUja3SjFXMM9?=
+ =?us-ascii?Q?7zqcDbSZuYhVrGaPMDlbRI+wf3vfhIVfHevLgj3oSlawztW/tyrdGgH8XeBz?=
+ =?us-ascii?Q?dq53Qtw3ef0c5GUJAtRAuccqR3UbwqxzrBKyT8XP0JSR/o29VgVEfa1WDLEG?=
+ =?us-ascii?Q?dnkkW3HYEfSgdhY2o3xi2sbpKKmRDnbRVAZ1Evxfd3oVj5H8wMlL/m8CRDya?=
+ =?us-ascii?Q?Rl6ufReePkIQISxBGe+NlV/6+LGUjwgw11Bdr+4ebmUqDJkJPdnIvtyWhgpu?=
+ =?us-ascii?Q?KTG4uDzME74Mw9N0Z483WZfR/Q0J9l+oA/O5U5xNYk4MzOUNxqO+W4EhPRiV?=
+ =?us-ascii?Q?92/LZyCk5EhAdSwTfn5bvDcVPFL9bLQLe9g1qCP5diGYhoRtOvA2PkhbiS0E?=
+ =?us-ascii?Q?GIxY3tOFldspndrMVL9t96SsagxVuX9yeInlSp3m9qZsKglSgqT4g8d8UO61?=
+ =?us-ascii?Q?oVzbh3V1QUBVb8dFxNpJp5xb1cKLaMTHJNLGyqXGTr+PaWn8RJSyiy+AhQ8/?=
+ =?us-ascii?Q?s0wTsdl/Bc7PIe6cFT4fs1WsYj1RtNLLzFzRWi6njM73Vx9f1jsZeQw7X3/M?=
+ =?us-ascii?Q?AUGNVCvaPE92+jJ0b8A9SP94Xvy08Wb6XZSyDP7kLJ+2zCBjFoFGG5fknVCC?=
+ =?us-ascii?Q?YlUZnUYHBBJ03KvKeeYxxL3isvxJuqQR1HoxTAFHq4wti5fslZrFSjJa8kxO?=
+ =?us-ascii?Q?iKigAJqkq8noPxgd/8egOB0Gy/Tc82TgaGPhuiAnmAHMEK6dirvOnzpx6pEG?=
+ =?us-ascii?Q?Ef5I07JFstZ7g/x5FGbubZ9NewuUJ0j+O+QuE+bBcmN/vBuv069Y+sKyKDaY?=
+ =?us-ascii?Q?YsKkbyo88knsPUdL+Wq3CQyEHOHMUnrnpryr7cTImlPvPQ9xqC3/HcYgjLcH?=
+ =?us-ascii?Q?qxp5uMCSarlhckfXfVLeptHjtYp9w4bywclxXYKwvrlA9aYu9AUb5rmIbSPM?=
+ =?us-ascii?Q?m7WNw77RVqPlmzDhOnBAYCPpixIWRnzgXihE354XrOkDbI4bxCG08/IUDK73?=
+ =?us-ascii?Q?QVy09LQ8ZZCqvYwxu8tyHzVmalAQ5MnvUZ2EqWHoKzQBiOjc244Mb+yJDtN3?=
+ =?us-ascii?Q?CF/rTwyR+3sQb5SSqG5oR9khhHpSxg12uGf0L5ADsXD3UOuLEAA2ISuv//ZO?=
+ =?us-ascii?Q?j9LTgQ4aqq2tq0K4VKDlLEnhvYRRdc4Udcr3Jgmsg8YiMzbJ7iZX1FlDAyv5?=
+ =?us-ascii?Q?wQ=3D=3D?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?utf-8?B?eWZORTZ6YXBpWEtQclhkTDFubGptYkV4MktyajF0UTVqQVZRQTlMUFZZZXNK?=
- =?utf-8?B?T1I5eHZqQVVlN3hhUzYvMG82UlZBNWpiNEtGQzB6cnlVU1phR2ZBNkVoZ3JE?=
- =?utf-8?B?V0ZZeDYxZ1l4VStUS1hva0NxdUt2T0VORmpZaFp0UTEwL29uZitFZ2RIREhB?=
- =?utf-8?B?eXBtZU14a21jM3JyNFBoU2RhTE5yRDRrbEJQcnBObHdRL1l0cVNCejB1cGkr?=
- =?utf-8?B?MWtwUEFUaHdGMmxkVjE1T3JSeC9NbEFvYTdEeE1WbWY1eENST1M3bUowWllJ?=
- =?utf-8?B?R0RXdHVEbG5yaEZhSHJsU0RObmFlYTRrOXdxNityMkRVbXAyNnlLTFdnRXIy?=
- =?utf-8?B?czVBcndtLytYY1hlYVFpMXZhS1ZEMUhFb09HcHNYcThNZ2U1NnBUT2Z5VjNI?=
- =?utf-8?B?NnRFdTZkZHJLYkI4WWNhaG02bmRTbU5Oamg1eVdRR3JWQXZrWSt6Y1A4dmRF?=
- =?utf-8?B?T3cvbWNSRGJjNndZendiL3QvbnpSL05mOEN4UjJFdUhlTDRLS295SUhvbURU?=
- =?utf-8?B?UU9KdWErMURFdDBndWJEcHhzNldENm1VSGF0clVZNGx3TDhSamlzS0NsWHdT?=
- =?utf-8?B?dDRPNUowTG00dG1Zb0xaV2RmdmpYaWQ5ZkUyS3kvelJ1WWlnOVJLL1pDSGxv?=
- =?utf-8?B?dmFPbG4vZi81Zks5aGNETm4xQzhKS0FqV1JvdjdIT0hXNm9ZVzBnMVBDenF1?=
- =?utf-8?B?dTN4YVIvM3psZ3E2bGFYRENnQnBaT3RwL0tKRkJaa3hVV0Niayt6ZW5UUW9r?=
- =?utf-8?B?MmJCb25mNXc2MFMwMW1YaEI1M2hpR2hCUmI3Vm5BUkY0OXdSRnkrazFVVllI?=
- =?utf-8?B?djJqYkg0UVZwSVJxcHdhMXVGcVpLZjcwY3BFVTZyTWxBWjNnVERRQjBQTVk2?=
- =?utf-8?B?cXNnbUJ2cDE0SHVoMkcza0VwVCtZVVoxRWcyQ2JWZVhFckpiRjUvN1lYb3R2?=
- =?utf-8?B?OUpCMWI1RFllelVCU1JXRks1MnE2bnpqL2xIM0NUWEVVa2lrekF3SFFJWEx1?=
- =?utf-8?B?YytRUGgzQnZKV09wbTBEaitpSWJTcmFZSTdjN2NZZ3FrMTVBMUtnN1RrSTRp?=
- =?utf-8?B?Zm1qRis2NWR5UE5yWW1WMGhsdmRkWU9uWGx4NHdIK0hkUEl5N2UwWlNxbU9p?=
- =?utf-8?B?M2o0RE91SE04ZzdjVmdZRWZlcmhKZHdqcXJOS0NRcXpQRGQ0enJseHFjMnAx?=
- =?utf-8?B?UVorS3VncCt1azBZTDkzSE1RMG1DMUNmZ3FlOTBFWGtMaHdDTU1KRk1XVllK?=
- =?utf-8?B?MTB0OHFqMDR6WExqVUszeWRVaTNITU9FSS9UUkN2Wmtoamt5L3pKL3E4VzdU?=
- =?utf-8?B?bFhSb013eDVZMExwQkx4djR1emNGek04dE83UDRabERQVTBTaklvTGFpRVpY?=
- =?utf-8?B?WkRGc1ZPLy9TYXFxQkpTYnhsSU5YT1hqQXUzRmZucndrbHg2WXFBYXozSW8r?=
- =?utf-8?B?bVZtdkhjV2ZES25Wb3Y4a0F2SzVWN1BROEUxekRYSkZrNkRGb0JDSWhWVnVr?=
- =?utf-8?B?ZnlvRDdZZzc5WlpQNEpYOTc2Rmo2Ti9lak9HRXdPa0FNK1ZKN2JldXdxSElo?=
- =?utf-8?B?UkxudDhHblFQM0RldEVJUTJldXc2S1k2akxScVRPQ0xUcDRGMjVodFM4TXUr?=
- =?utf-8?B?RlJxQzNzOGtqSjI3STdSTHZobnBOempmbjdXMHgxREs4Z2RiY1ZxanZkTVNl?=
- =?utf-8?B?WmJMYkhaMkEvQWc1RlF2RTg2ZVZZVDdOWjluTXdOT1NJcWh2NG11Y3RuK0JC?=
- =?utf-8?Q?zOiXMmNO649LtB0DvA=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?us-ascii?Q?hDTcbQHxnQfGHJY65vcIK2Q6Uc9lWrInXOLrGIKwREwRWJ+BIchRJZAWUPXD?=
+ =?us-ascii?Q?87NG2VWXpRs+mnx4T/6LymGjewwXxPrGqH8sMK09DShlV8hmnNzO07HikzCE?=
+ =?us-ascii?Q?Ch9CMWc4Ym94cRFb0IQobGq4G1KMKjU8FND+/hb2z4Lox7CwKYqdQR+mPnaU?=
+ =?us-ascii?Q?OXJQs2s+yGfyPky03jNDphY6bcMJruxWzMsfQbCX8cmUmboMr7EXxt8gaqGk?=
+ =?us-ascii?Q?LjmawNkMhwylQaQVroI4CmkWMoGDd78wO5UWrPzDo98cDVDNATNHPL8FHAAs?=
+ =?us-ascii?Q?11jufxU9xg/94Nh33aZwGndzpPP9OnT028JhDJvgvQReCBEMqvP8xIwUUJv4?=
+ =?us-ascii?Q?zRF9RUarYfDIv5hczZMsjPDCsRpfgrWJIUZv3+ttVXGa/VMpDFODImMG6q2Y?=
+ =?us-ascii?Q?xqOJ1SrwSV+6UCbq4RgXVvIOs5eoSaSaU4oeIbzn0Oyjpox82VsjufcNLQdu?=
+ =?us-ascii?Q?t04mhjyh6th4od4xr5+5afD1rRtv43zTNy1NelrPoFc+ZD1qbxNpOlKCUBHW?=
+ =?us-ascii?Q?+50UbvMd0rOH/hZk/ISSx1wPfx/zsMR1/2vKDXpSqPyBZXhzCgWiGSouEnmS?=
+ =?us-ascii?Q?JMoZvfyFWwq3EnGki6H2x9K6L5wHKZOxx7hqs39OyPjpuEWizRG5R8Xl1RgO?=
+ =?us-ascii?Q?d2Gi3P7HDMc0PTP1f1MdIGNrRTMsvcBwJy5ihk7eWABLMB/aLO5r1qz65x/P?=
+ =?us-ascii?Q?9/a5iRWSaxMdG8pDk8BSHBcC4lvKiq+aXRlJZAxJIGYdSLVFpW8rpg/j4bjW?=
+ =?us-ascii?Q?hPIWB6cKWvOLGySsAN8RHZ0Fib0UVgoa/cYhDY8HAqwU24HDwBuClWLZnNQx?=
+ =?us-ascii?Q?kpEOvC7nGD5YHx8wW++9hExGGmcQzuOX6RjFPpvZ56ixkIHnp+7jK7QZeImv?=
+ =?us-ascii?Q?q3BtnxyFxPJicUPqXvt0RBebUQr+4vHU+EVL0LMbMPJ9qblhamE3qWkQ62j/?=
+ =?us-ascii?Q?P97Hm3lcjX/TQZCdBB65fEe2IwwsPU5k4T0tTx4zV9LiueyhNMDFaopDuxLm?=
+ =?us-ascii?Q?JEW9HtWoJz4PyepOnbfxtPidXX/suI3npSTWADc7ucFoYhhQvVucqlW84Nab?=
+ =?us-ascii?Q?UPLcTFgUdxh4ckIVvX61qFPnVXtbOx3NkM6kkTVUSZa6e7evkVF73YiWEErc?=
+ =?us-ascii?Q?0rMkdaPsQ7uwL8MPAPyXxDIy0apJAlO9xSBFALKvQEDM8Ak0R29ABrqFs7jo?=
+ =?us-ascii?Q?wVDh9i81cbEhL/kHg5582G5w27esVkDc+jIkm+QYFeNzB3+k+/zzDwPCOSHb?=
+ =?us-ascii?Q?G8D4QVUdzsuf9QTmBYENQmYfqShFI9lZLp98lOFLivgCcwxtjQBUkgtlPG/g?=
+ =?us-ascii?Q?EU4=3D?=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9983a358-5ed3-4961-aff7-08db4caef8c8
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8cb60c99-24cd-439d-97c7-08db4caefa3c
 X-MS-Exchange-CrossTenant-AuthSource: BY5PR10MB3793.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 May 2023 14:50:58.6686
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 May 2023 14:51:01.1620
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7KU1E2CqnxNWp+GFKEzJTnJk1lRlc4cIalwZooHNYX9aGbXmcSrbY7wZcF41KXS056X6HVFHozhJDhlr6TVyxI/LKiqnjpyjHLQrKSDcp8g=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB6982
+X-MS-Exchange-CrossTenant-UserPrincipalName: cj/U7r+I5FvHJtd6OgHWIztHlPah0GRYKFOKHHH7MxLrW7SZ5fn4rn3B9sHj8KwhhBgVvFwJZBR5IA7cU6ur8pVb5pid9nGuR7Brs7R5WFE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR10MB7505
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
  definitions=2023-05-04_10,2023-05-04_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- mlxlogscore=999 spamscore=0 phishscore=0 adultscore=0 mlxscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2305040122
-X-Proofpoint-ORIG-GUID: VyBVz23yu0pOw-Rw8_rFwTjqe0zwJKxP
-X-Proofpoint-GUID: VyBVz23yu0pOw-Rw8_rFwTjqe0zwJKxP
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0 spamscore=0
+ mlxlogscore=999 mlxscore=0 adultscore=0 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303200000
+ definitions=main-2305040122
+X-Proofpoint-GUID: t04aoHPAa9C0qiRu-B5n4z5DZ065AEyB
+X-Proofpoint-ORIG-GUID: t04aoHPAa9C0qiRu-B5n4z5DZ065AEyB
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
@@ -191,534 +175,251 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Introduce the main Secure Launch header file used in the early SL stub
-and the early setup code.
+From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
 
+The SHA algorithms are necessary to measure configuration information into
+the TPM as early as possible before using the values. This implementation
+uses the established approach of #including the SHA libraries directly in
+the code since the compressed kernel is not uncompressed at this point.
+
+The SHA code here has its origins in the code from the main kernel:
+
+commit c4d5b9ffa31f ("crypto: sha1 - implement base layer for SHA-1")
+
+That code could not be pulled directly into the setup portion of the
+compressed kernel because of other dependencies it pulls in. The result
+is this is a modified copy of that code that still leverages the core
+SHA algorithms.
+
+Signed-off-by: Daniel P. Smith <dpsmith@apertussolutions.com>
 Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
 ---
- include/linux/slaunch.h | 513 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 513 insertions(+)
- create mode 100644 include/linux/slaunch.h
+ arch/x86/boot/compressed/Makefile       |  2 +
+ arch/x86/boot/compressed/early_sha1.c   | 97 +++++++++++++++++++++++++++++++++
+ arch/x86/boot/compressed/early_sha1.h   | 17 ++++++
+ arch/x86/boot/compressed/early_sha256.c |  7 +++
+ lib/crypto/sha1.c                       |  4 ++
+ lib/crypto/sha256.c                     |  8 +++
+ 6 files changed, 135 insertions(+)
+ create mode 100644 arch/x86/boot/compressed/early_sha1.c
+ create mode 100644 arch/x86/boot/compressed/early_sha1.h
+ create mode 100644 arch/x86/boot/compressed/early_sha256.c
 
-diff --git a/include/linux/slaunch.h b/include/linux/slaunch.h
+diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+index 6b6cfe6..1d327d4 100644
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -112,6 +112,8 @@ vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
+ vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_mixed.o
+ vmlinux-objs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+ 
++vmlinux-objs-$(CONFIG_SECURE_LAUNCH) += $(obj)/early_sha1.o $(obj)/early_sha256.o
++
+ $(obj)/vmlinux: $(vmlinux-objs-y) FORCE
+ 	$(call if_changed,ld)
+ 
+diff --git a/arch/x86/boot/compressed/early_sha1.c b/arch/x86/boot/compressed/early_sha1.c
 new file mode 100644
-index 0000000..a1c3172
+index 0000000..524ec23
 --- /dev/null
-+++ b/include/linux/slaunch.h
-@@ -0,0 +1,513 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
++++ b/arch/x86/boot/compressed/early_sha1.c
+@@ -0,0 +1,97 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Main Secure Launch header file.
-+ *
-+ * Copyright (c) 2022, Oracle and/or its affiliates.
++ * Copyright (c) 2022 Apertus Solutions, LLC.
 + */
 +
-+#ifndef _LINUX_SLAUNCH_H
-+#define _LINUX_SLAUNCH_H
++#include <linux/init.h>
++#include <linux/linkage.h>
++#include <linux/string.h>
++#include <asm/boot.h>
++#include <asm/unaligned.h>
 +
-+/*
-+ * Secure Launch Defined State Flags
++#include "early_sha1.h"
++
++#define SHA1_DISABLE_EXPORT
++#include "../../../../lib/crypto/sha1.c"
++
++/* The SHA1 implementation in lib/sha1.c was written to get the workspace
++ * buffer as a parameter. This wrapper function provides a container
++ * around a temporary workspace that is cleared after the transform completes.
 + */
-+#define SL_FLAG_ACTIVE		0x00000001
-+#define SL_FLAG_ARCH_SKINIT	0x00000002
-+#define SL_FLAG_ARCH_TXT	0x00000004
-+
-+/*
-+ * Secure Launch CPU Type
-+ */
-+#define SL_CPU_AMD	1
-+#define SL_CPU_INTEL	2
-+
-+#if IS_ENABLED(CONFIG_SECURE_LAUNCH)
-+
-+#define __SL32_CS	0x0008
-+#define __SL32_DS	0x0010
-+
-+/*
-+ * Intel Safer Mode Extensions (SMX)
-+ *
-+ * Intel SMX provides a programming interface to establish a Measured Launched
-+ * Environment (MLE). The measurement and protection mechanisms supported by the
-+ * capabilities of an Intel Trusted Execution Technology (TXT) platform. SMX is
-+ * the processor’s programming interface in an Intel TXT platform.
-+ *
-+ * See Intel SDM Volume 2 - 6.1 "Safer Mode Extensions Reference"
-+ */
-+
-+/*
-+ * SMX GETSEC Leaf Functions
-+ */
-+#define SMX_X86_GETSEC_SEXIT	5
-+#define SMX_X86_GETSEC_SMCTRL	7
-+#define SMX_X86_GETSEC_WAKEUP	8
-+
-+/*
-+ * Intel Trusted Execution Technology MMIO Registers Banks
-+ */
-+#define TXT_PUB_CONFIG_REGS_BASE	0xfed30000
-+#define TXT_PRIV_CONFIG_REGS_BASE	0xfed20000
-+#define TXT_NR_CONFIG_PAGES     ((TXT_PUB_CONFIG_REGS_BASE - \
-+				  TXT_PRIV_CONFIG_REGS_BASE) >> PAGE_SHIFT)
-+
-+/*
-+ * Intel Trusted Execution Technology (TXT) Registers
-+ */
-+#define TXT_CR_STS			0x0000
-+#define TXT_CR_ESTS			0x0008
-+#define TXT_CR_ERRORCODE		0x0030
-+#define TXT_CR_CMD_RESET		0x0038
-+#define TXT_CR_CMD_CLOSE_PRIVATE	0x0048
-+#define TXT_CR_DIDVID			0x0110
-+#define TXT_CR_VER_EMIF			0x0200
-+#define TXT_CR_CMD_UNLOCK_MEM_CONFIG	0x0218
-+#define TXT_CR_SINIT_BASE		0x0270
-+#define TXT_CR_SINIT_SIZE		0x0278
-+#define TXT_CR_MLE_JOIN			0x0290
-+#define TXT_CR_HEAP_BASE		0x0300
-+#define TXT_CR_HEAP_SIZE		0x0308
-+#define TXT_CR_SCRATCHPAD		0x0378
-+#define TXT_CR_CMD_OPEN_LOCALITY1	0x0380
-+#define TXT_CR_CMD_CLOSE_LOCALITY1	0x0388
-+#define TXT_CR_CMD_OPEN_LOCALITY2	0x0390
-+#define TXT_CR_CMD_CLOSE_LOCALITY2	0x0398
-+#define TXT_CR_CMD_SECRETS		0x08e0
-+#define TXT_CR_CMD_NO_SECRETS		0x08e8
-+#define TXT_CR_E2STS			0x08f0
-+
-+/* TXT default register value */
-+#define TXT_REGVALUE_ONE		0x1ULL
-+
-+/* TXTCR_STS status bits */
-+#define TXT_SENTER_DONE_STS		(1<<0)
-+#define TXT_SEXIT_DONE_STS		(1<<1)
-+
-+/*
-+ * SINIT/MLE Capabilities Field Bit Definitions
-+ */
-+#define TXT_SINIT_MLE_CAP_WAKE_GETSEC	0
-+#define TXT_SINIT_MLE_CAP_WAKE_MONITOR	1
-+
-+/*
-+ * OS/MLE Secure Launch Specific Definitions
-+ */
-+#define TXT_OS_MLE_STRUCT_VERSION	1
-+#define TXT_OS_MLE_MAX_VARIABLE_MTRRS	32
-+
-+/*
-+ * TXT Heap Table Enumeration
-+ */
-+#define TXT_BIOS_DATA_TABLE		1
-+#define TXT_OS_MLE_DATA_TABLE		2
-+#define TXT_OS_SINIT_DATA_TABLE		3
-+#define TXT_SINIT_MLE_DATA_TABLE	4
-+#define TXT_SINIT_TABLE_MAX		TXT_SINIT_MLE_DATA_TABLE
-+
-+/*
-+ * Secure Launch Defined Error Codes used in MLE-initiated TXT resets.
-+ *
-+ * TXT Specification
-+ * Appendix I ACM Error Codes
-+ */
-+#define SL_ERROR_GENERIC		0xc0008001
-+#define SL_ERROR_TPM_INIT		0xc0008002
-+#define SL_ERROR_TPM_INVALID_LOG20	0xc0008003
-+#define SL_ERROR_TPM_LOGGING_FAILED	0xc0008004
-+#define SL_ERROR_REGION_STRADDLE_4GB	0xc0008005
-+#define SL_ERROR_TPM_EXTEND		0xc0008006
-+#define SL_ERROR_MTRR_INV_VCNT		0xc0008007
-+#define SL_ERROR_MTRR_INV_DEF_TYPE	0xc0008008
-+#define SL_ERROR_MTRR_INV_BASE		0xc0008009
-+#define SL_ERROR_MTRR_INV_MASK		0xc000800a
-+#define SL_ERROR_MSR_INV_MISC_EN	0xc000800b
-+#define SL_ERROR_INV_AP_INTERRUPT	0xc000800c
-+#define SL_ERROR_INTEGER_OVERFLOW	0xc000800d
-+#define SL_ERROR_HEAP_WALK		0xc000800e
-+#define SL_ERROR_HEAP_MAP		0xc000800f
-+#define SL_ERROR_REGION_ABOVE_4GB	0xc0008010
-+#define SL_ERROR_HEAP_INVALID_DMAR	0xc0008011
-+#define SL_ERROR_HEAP_DMAR_SIZE		0xc0008012
-+#define SL_ERROR_HEAP_DMAR_MAP		0xc0008013
-+#define SL_ERROR_HI_PMR_BASE		0xc0008014
-+#define SL_ERROR_HI_PMR_SIZE		0xc0008015
-+#define SL_ERROR_LO_PMR_BASE		0xc0008016
-+#define SL_ERROR_LO_PMR_MLE		0xc0008017
-+#define SL_ERROR_INITRD_TOO_BIG		0xc0008018
-+#define SL_ERROR_HEAP_ZERO_OFFSET	0xc0008019
-+#define SL_ERROR_WAKE_BLOCK_TOO_SMALL	0xc000801a
-+#define SL_ERROR_MLE_BUFFER_OVERLAP	0xc000801b
-+#define SL_ERROR_BUFFER_BEYOND_PMR	0xc000801c
-+#define SL_ERROR_OS_SINIT_BAD_VERSION	0xc000801d
-+#define SL_ERROR_EVENTLOG_MAP		0xc000801e
-+#define SL_ERROR_TPM_NUMBER_ALGS	0xc000801f
-+#define SL_ERROR_TPM_UNKNOWN_DIGEST	0xc0008020
-+#define SL_ERROR_TPM_INVALID_EVENT	0xc0008021
-+#define SL_ERROR_INVALID_SLRT		0xc0008022
-+#define SL_ERROR_SLRT_MISSING_ENTRY	0xc0008023
-+#define SL_ERROR_SLRT_MAP		0xc0008024
-+
-+/*
-+ * Secure Launch Defined Limits
-+ */
-+#define TXT_MAX_CPUS		512
-+#define TXT_BOOT_STACK_SIZE	24
-+
-+/*
-+ * Secure Launch event log entry type. The TXT specification defines the
-+ * base event value as 0x400 for DRTM values.
-+ */
-+#define TXT_EVTYPE_BASE			0x400
-+#define TXT_EVTYPE_SLAUNCH		(TXT_EVTYPE_BASE + 0x102)
-+#define TXT_EVTYPE_SLAUNCH_START	(TXT_EVTYPE_BASE + 0x103)
-+#define TXT_EVTYPE_SLAUNCH_END		(TXT_EVTYPE_BASE + 0x104)
-+
-+/*
-+ * Measured Launch PCRs
-+ */
-+#define SL_DEF_DLME_DETAIL_PCR17	17
-+#define SL_DEF_DLME_AUTHORITY_PCR18	18
-+#define SL_ALT_DLME_AUTHORITY_PCR19	19
-+#define SL_ALT_DLME_DETAIL_PCR20	20
-+
-+/*
-+ * MLE scratch area offsets
-+ */
-+#define SL_SCRATCH_AP_EBX		0
-+#define SL_SCRATCH_AP_JMP_OFFSET	4
-+#define SL_SCRATCH_AP_PAUSE		8
-+
-+#ifndef __ASSEMBLY__
-+
-+#include <linux/io.h>
-+#include <linux/tpm.h>
-+#include <linux/tpm_eventlog.h>
-+
-+/*
-+ * Secure Launch AP wakeup information fetched in SMP boot code.
-+ */
-+struct sl_ap_wake_info {
-+	u32 ap_wake_block;
-+	u32 ap_wake_block_size;
-+	u32 ap_jmp_offset;
-+};
-+
-+/*
-+ * TXT heap extended data elements.
-+ */
-+struct txt_heap_ext_data_element {
-+	u32 type;
-+	u32 size;
-+	/* Data */
-+} __packed;
-+
-+#define TXT_HEAP_EXTDATA_TYPE_END			0
-+
-+struct txt_heap_end_element {
-+	u32 type;
-+	u32 size;
-+} __packed;
-+
-+#define TXT_HEAP_EXTDATA_TYPE_TPM_EVENT_LOG_PTR		5
-+
-+struct txt_heap_event_log_element {
-+	u64 event_log_phys_addr;
-+} __packed;
-+
-+#define TXT_HEAP_EXTDATA_TYPE_EVENT_LOG_POINTER2_1	8
-+
-+struct txt_heap_event_log_pointer2_1_element {
-+	u64 phys_addr;
-+	u32 allocated_event_container_size;
-+	u32 first_record_offset;
-+	u32 next_record_offset;
-+} __packed;
-+
-+/*
-+ * Secure Launch defined OS/MLE TXT Heap table
-+ */
-+struct txt_os_mle_data {
-+	u32 version;
-+	u32 boot_params_addr;
-+	u64 slrt;
-+	u64 txt_info;
-+	u32 ap_wake_block;
-+	u32 ap_wake_block_size;
-+	u8 mle_scratch[64];
-+} __packed;
-+
-+/*
-+ * TXT specification defined BIOS data TXT Heap table
-+ */
-+struct txt_bios_data {
-+	u32 version; /* Currently 5 for TPM 1.2 and 6 for TPM 2.0 */
-+	u32 bios_sinit_size;
-+	u64 reserved1;
-+	u64 reserved2;
-+	u32 num_logical_procs;
-+	/* Versions >= 5 with updates in version 6 */
-+	u32 sinit_flags;
-+	u32 mle_flags;
-+	/* Versions >= 4 */
-+	/* Ext Data Elements */
-+} __packed;
-+
-+/*
-+ * TXT specification defined OS/SINIT TXT Heap table
-+ */
-+struct txt_os_sinit_data {
-+	u32 version; /* Currently 6 for TPM 1.2 and 7 for TPM 2.0 */
-+	u32 flags;
-+	u64 mle_ptab;
-+	u64 mle_size;
-+	u64 mle_hdr_base;
-+	u64 vtd_pmr_lo_base;
-+	u64 vtd_pmr_lo_size;
-+	u64 vtd_pmr_hi_base;
-+	u64 vtd_pmr_hi_size;
-+	u64 lcp_po_base;
-+	u64 lcp_po_size;
-+	u32 capabilities;
-+	/* Version = 5 */
-+	u64 efi_rsdt_ptr;
-+	/* Versions >= 6 */
-+	/* Ext Data Elements */
-+} __packed;
-+
-+/*
-+ * TXT specification defined SINIT/MLE TXT Heap table
-+ */
-+struct txt_sinit_mle_data {
-+	u32 version;             /* Current values are 6 through 9 */
-+	/* Versions <= 8 */
-+	u8 bios_acm_id[20];
-+	u32 edx_senter_flags;
-+	u64 mseg_valid;
-+	u8 sinit_hash[20];
-+	u8 mle_hash[20];
-+	u8 stm_hash[20];
-+	u8 lcp_policy_hash[20];
-+	u32 lcp_policy_control;
-+	/* Versions >= 7 */
-+	u32 rlp_wakeup_addr;
-+	u32 reserved;
-+	u32 num_of_sinit_mdrs;
-+	u32 sinit_mdrs_table_offset;
-+	u32 sinit_vtd_dmar_table_size;
-+	u32 sinit_vtd_dmar_table_offset;
-+	/* Versions >= 8 */
-+	u32 processor_scrtm_status;
-+	/* Versions >= 9 */
-+	/* Ext Data Elements */
-+} __packed;
-+
-+/*
-+ * TXT data reporting structure for memory types
-+ */
-+struct txt_sinit_memory_descriptor_record {
-+	u64 address;
-+	u64 length;
-+	u8 type;
-+	u8 reserved[7];
-+} __packed;
-+
-+/*
-+ * TXT data structure used by a responsive local processor (RLP) to start
-+ * execution in response to a GETSEC[WAKEUP].
-+ */
-+struct smx_rlp_mle_join {
-+	u32 rlp_gdt_limit;
-+	u32 rlp_gdt_base;
-+	u32 rlp_seg_sel;     /* cs (ds, es, ss are seg_sel+8) */
-+	u32 rlp_entry_point; /* phys addr */
-+} __packed;
-+
-+/*
-+ * TPM event log structures defined in both the TXT specification and
-+ * the TCG documentation.
-+ */
-+#define TPM12_EVTLOG_SIGNATURE "TXT Event Container"
-+
-+struct tpm12_event_log_header {
-+	char signature[20];
-+	char reserved[12];
-+	u8 container_ver_major;
-+	u8 container_ver_minor;
-+	u8 pcr_event_ver_major;
-+	u8 pcr_event_ver_minor;
-+	u32 container_size;
-+	u32 pcr_events_offset;
-+	u32 next_event_offset;
-+	/* PCREvents[] */
-+} __packed;
-+
-+/*
-+ * Functions to extract data from the Intel TXT Heap Memory. The layout
-+ * of the heap is as follows:
-+ *  +----------------------------+
-+ *  | Size Bios Data table (u64) |
-+ *  +----------------------------+
-+ *  | Bios Data table            |
-+ *  +----------------------------+
-+ *  | Size OS MLE table (u64)    |
-+ *  +----------------------------+
-+ *  | OS MLE table               |
-+ *  +--------------------------- +
-+ *  | Size OS SINIT table (u64)  |
-+ *  +----------------------------+
-+ *  | OS SINIT table             |
-+ *  +----------------------------+
-+ *  | Size SINIT MLE table (u64) |
-+ *  +----------------------------+
-+ *  | SINIT MLE table            |
-+ *  +----------------------------+
-+ *
-+ *  NOTE: the table size fields include the 8 byte size field itself.
-+ */
-+static inline u64 txt_bios_data_size(void *heap)
++static void __sha_transform(u32 *digest, const char *data)
 +{
-+	return *((u64 *)heap);
++	u32 ws[SHA1_WORKSPACE_WORDS];
++
++	sha1_transform(digest, data, ws);
++
++	memzero_explicit(ws, sizeof(ws));
 +}
 +
-+static inline void *txt_bios_data_start(void *heap)
++void early_sha1_init(struct sha1_state *sctx)
 +{
-+	return heap + sizeof(u64);
++	sha1_init(sctx->state);
++	sctx->count = 0;
 +}
 +
-+static inline u64 txt_os_mle_data_size(void *heap)
++void early_sha1_update(struct sha1_state *sctx,
++		       const u8 *data,
++		       unsigned int len)
 +{
-+	return *((u64 *)(heap + txt_bios_data_size(heap)));
-+}
++	unsigned int partial = sctx->count % SHA1_BLOCK_SIZE;
 +
-+static inline void *txt_os_mle_data_start(void *heap)
-+{
-+	return heap + txt_bios_data_size(heap) + sizeof(u64);
-+}
++	sctx->count += len;
 +
-+static inline u64 txt_os_sinit_data_size(void *heap)
-+{
-+	return *((u64 *)(heap + txt_bios_data_size(heap) +
-+			txt_os_mle_data_size(heap)));
-+}
++	if (likely((partial + len) >= SHA1_BLOCK_SIZE)) {
++		int blocks;
 +
-+static inline void *txt_os_sinit_data_start(void *heap)
-+{
-+	return heap + txt_bios_data_size(heap) +
-+		txt_os_mle_data_size(heap) + sizeof(u64);
-+}
++		if (partial) {
++			int p = SHA1_BLOCK_SIZE - partial;
 +
-+static inline u64 txt_sinit_mle_data_size(void *heap)
-+{
-+	return *((u64 *)(heap + txt_bios_data_size(heap) +
-+			txt_os_mle_data_size(heap) +
-+			txt_os_sinit_data_size(heap)));
-+}
++			memcpy(sctx->buffer + partial, data, p);
++			data += p;
++			len -= p;
 +
-+static inline void *txt_sinit_mle_data_start(void *heap)
-+{
-+	return heap + txt_bios_data_size(heap) +
-+		txt_os_mle_data_size(heap) +
-+		txt_os_sinit_data_size(heap) + sizeof(u64);
-+}
-+
-+/*
-+ * TPM event logging functions.
-+ */
-+static inline struct txt_heap_event_log_pointer2_1_element*
-+tpm20_find_log2_1_element(struct txt_os_sinit_data *os_sinit_data)
-+{
-+	struct txt_heap_ext_data_element *ext_elem;
-+
-+	/* The extended element array as at the end of this table */
-+	ext_elem = (struct txt_heap_ext_data_element *)
-+		((u8 *)os_sinit_data + sizeof(struct txt_os_sinit_data));
-+
-+	while (ext_elem->type != TXT_HEAP_EXTDATA_TYPE_END) {
-+		if (ext_elem->type ==
-+		    TXT_HEAP_EXTDATA_TYPE_EVENT_LOG_POINTER2_1) {
-+			return (struct txt_heap_event_log_pointer2_1_element *)
-+				((u8 *)ext_elem +
-+					sizeof(struct txt_heap_ext_data_element));
++			__sha_transform(sctx->state, sctx->buffer);
 +		}
-+		ext_elem =
-+			(struct txt_heap_ext_data_element *)
-+			((u8 *)ext_elem + ext_elem->size);
++
++		blocks = len / SHA1_BLOCK_SIZE;
++		len %= SHA1_BLOCK_SIZE;
++
++		if (blocks) {
++			while (blocks--) {
++				__sha_transform(sctx->state, data);
++				data += SHA1_BLOCK_SIZE;
++			}
++		}
++		partial = 0;
 +	}
 +
-+	return NULL;
++	if (len)
++		memcpy(sctx->buffer + partial, data, len);
 +}
 +
-+static inline int tpm12_log_event(void *evtlog_base, u32 evtlog_size,
-+				  u32 event_size, void *event)
++void early_sha1_final(struct sha1_state *sctx, u8 *out)
 +{
-+	struct tpm12_event_log_header *evtlog =
-+		(struct tpm12_event_log_header *)evtlog_base;
++	const int bit_offset = SHA1_BLOCK_SIZE - sizeof(__be64);
++	unsigned int partial = sctx->count % SHA1_BLOCK_SIZE;
++	__be64 *bits = (__be64 *)(sctx->buffer + bit_offset);
++	__be32 *digest = (__be32 *)out;
++	int i;
 +
-+	if (memcmp(evtlog->signature, TPM12_EVTLOG_SIGNATURE,
-+		   sizeof(TPM12_EVTLOG_SIGNATURE)))
-+		return -EINVAL;
++	sctx->buffer[partial++] = 0x80;
++	if (partial > bit_offset) {
++		memset(sctx->buffer + partial, 0x0, SHA1_BLOCK_SIZE - partial);
++		partial = 0;
 +
-+	if (evtlog->container_size > evtlog_size)
-+		return -EINVAL;
++		__sha_transform(sctx->state, sctx->buffer);
++	}
 +
-+	if (evtlog->next_event_offset + event_size > evtlog->container_size)
-+		return -E2BIG;
++	memset(sctx->buffer + partial, 0x0, bit_offset - partial);
++	*bits = cpu_to_be64(sctx->count << 3);
++	__sha_transform(sctx->state, sctx->buffer);
 +
-+	memcpy(evtlog_base + evtlog->next_event_offset, event, event_size);
-+	evtlog->next_event_offset += event_size;
++	for (i = 0; i < SHA1_DIGEST_SIZE / sizeof(__be32); i++)
++		put_unaligned_be32(sctx->state[i], digest++);
 +
-+	return 0;
++	*sctx = (struct sha1_state){};
 +}
-+
-+static inline int tpm20_log_event(struct txt_heap_event_log_pointer2_1_element *elem,
-+				  void *evtlog_base, u32 evtlog_size,
-+				  u32 event_size, void *event)
-+{
-+	struct tcg_pcr_event *header =
-+		(struct tcg_pcr_event *)evtlog_base;
-+
-+	/* Has to be at least big enough for the signature */
-+	if (header->event_size < sizeof(TCG_SPECID_SIG))
-+		return -EINVAL;
-+
-+	if (memcmp((u8 *)header + sizeof(struct tcg_pcr_event),
-+		   TCG_SPECID_SIG, sizeof(TCG_SPECID_SIG)))
-+		return -EINVAL;
-+
-+	if (elem->allocated_event_container_size > evtlog_size)
-+		return -EINVAL;
-+
-+	if (elem->next_record_offset + event_size >
-+	    elem->allocated_event_container_size)
-+		return -E2BIG;
-+
-+	memcpy(evtlog_base + elem->next_record_offset, event, event_size);
-+	elem->next_record_offset += event_size;
-+
-+	return 0;
-+}
-+
+diff --git a/arch/x86/boot/compressed/early_sha1.h b/arch/x86/boot/compressed/early_sha1.h
+new file mode 100644
+index 0000000..adcc4a9
+--- /dev/null
++++ b/arch/x86/boot/compressed/early_sha1.h
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: GPL-2.0 */
 +/*
-+ * External functions avalailable in mainline kernel.
++ * Copyright (c) 2022 Apertus Solutions, LLC
 + */
-+extern void slaunch_setup_txt(void);
-+extern u32 slaunch_get_flags(void);
-+extern struct sl_ap_wake_info *slaunch_get_ap_wake_info(void);
-+extern struct acpi_table_header *slaunch_get_dmar_table(struct acpi_table_header *dmar);
-+extern void __noreturn slaunch_txt_reset(void __iomem *txt,
-+					 const char *msg, u64 error);
-+extern void slaunch_finalize(int do_sexit);
 +
-+#endif /* !__ASSEMBLY */
++#ifndef BOOT_COMPRESSED_EARLY_SHA1_H
++#define BOOT_COMPRESSED_EARLY_SHA1_H
 +
-+#else
++#include <crypto/sha1.h>
 +
-+#define slaunch_setup_txt()		do { } while (0)
-+#define slaunch_get_flags()		0
-+#define slaunch_get_dmar_table(d)	(d)
-+#define slaunch_finalize(d)		do { } while (0)
++void early_sha1_init(struct sha1_state *sctx);
++void early_sha1_update(struct sha1_state *sctx,
++		       const u8 *data,
++		       unsigned int len);
++void early_sha1_final(struct sha1_state *sctx, u8 *out);
 +
-+#endif /* !IS_ENABLED(CONFIG_SECURE_LAUNCH) */
++#endif /* BOOT_COMPRESSED_EARLY_SHA1_H */
+diff --git a/arch/x86/boot/compressed/early_sha256.c b/arch/x86/boot/compressed/early_sha256.c
+new file mode 100644
+index 0000000..28a8e32
+--- /dev/null
++++ b/arch/x86/boot/compressed/early_sha256.c
+@@ -0,0 +1,7 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2022 Apertus Solutions, LLC
++ */
 +
-+#endif /* _LINUX_SLAUNCH_H */
++#define SHA256_DISABLE_EXPORT
++#include "../../../../lib/crypto/sha256.c"
+diff --git a/lib/crypto/sha1.c b/lib/crypto/sha1.c
+index 1aebe7b..771ff90 100644
+--- a/lib/crypto/sha1.c
++++ b/lib/crypto/sha1.c
+@@ -121,7 +121,9 @@ void sha1_transform(__u32 *digest, const char *data, __u32 *array)
+ 	digest[3] += D;
+ 	digest[4] += E;
+ }
++#ifndef SHA1_DISABLE_EXPORT
+ EXPORT_SYMBOL(sha1_transform);
++#endif
+ 
+ /**
+  * sha1_init - initialize the vectors for a SHA1 digest
+@@ -135,6 +137,8 @@ void sha1_init(__u32 *buf)
+ 	buf[3] = 0x10325476;
+ 	buf[4] = 0xc3d2e1f0;
+ }
++#ifndef SHA1_DISABLE_EXPORT
+ EXPORT_SYMBOL(sha1_init);
++#endif
+ 
+ MODULE_LICENSE("GPL");
+diff --git a/lib/crypto/sha256.c b/lib/crypto/sha256.c
+index 72a4b0b..e532220 100644
+--- a/lib/crypto/sha256.c
++++ b/lib/crypto/sha256.c
+@@ -149,13 +149,17 @@ void sha256_update(struct sha256_state *sctx, const u8 *data, unsigned int len)
+ 	}
+ 	memcpy(sctx->buf + partial, src, len - done);
+ }
++#ifndef SHA256_DISABLE_EXPORT
+ EXPORT_SYMBOL(sha256_update);
++#endif
+ 
+ void sha224_update(struct sha256_state *sctx, const u8 *data, unsigned int len)
+ {
+ 	sha256_update(sctx, data, len);
+ }
++#ifndef SHA256_DISABLE_EXPORT
+ EXPORT_SYMBOL(sha224_update);
++#endif
+ 
+ static void __sha256_final(struct sha256_state *sctx, u8 *out, int digest_words)
+ {
+@@ -188,13 +192,17 @@ void sha256_final(struct sha256_state *sctx, u8 *out)
+ {
+ 	__sha256_final(sctx, out, 8);
+ }
++#ifndef SHA256_DISABLE_EXPORT
+ EXPORT_SYMBOL(sha256_final);
++#endif
+ 
+ void sha224_final(struct sha256_state *sctx, u8 *out)
+ {
+ 	__sha256_final(sctx, out, 7);
+ }
++#ifndef SHA256_DISABLE_EXPORT
+ EXPORT_SYMBOL(sha224_final);
++#endif
+ 
+ void sha256(const u8 *data, unsigned int len, u8 *out)
+ {
 -- 
 1.8.3.1
 
