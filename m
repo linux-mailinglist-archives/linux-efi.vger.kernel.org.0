@@ -2,36 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD11E6F87F5
-	for <lists+linux-efi@lfdr.de>; Fri,  5 May 2023 19:49:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B21E16F882F
+	for <lists+linux-efi@lfdr.de>; Fri,  5 May 2023 19:54:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233176AbjEERtK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 5 May 2023 13:49:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45924 "EHLO
+        id S233290AbjEERyN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 5 May 2023 13:54:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232539AbjEERtE (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 May 2023 13:49:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBFB120774;
-        Fri,  5 May 2023 10:48:32 -0700 (PDT)
+        with ESMTP id S233255AbjEERx4 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 May 2023 13:53:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1DEA21579;
+        Fri,  5 May 2023 10:53:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 75E8863F8E;
-        Fri,  5 May 2023 17:47:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A1DDC433D2;
-        Fri,  5 May 2023 17:47:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 863A363FAC;
+        Fri,  5 May 2023 17:52:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 335C1C433D2;
+        Fri,  5 May 2023 17:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683308849;
-        bh=NfN0GCjSEdHXPi1ej5pfJOPH9ri0obhBJcndRG6uy2o=;
+        s=k20201202; t=1683309164;
+        bh=l1O/fEDp8bKQ7YzTM3V2usCCVXMJF5+ybe2bbFFtdWg=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=taq7lefDB/OaQxUIqd7oJXE0A89RWT6AEchPfb1S4xfj+rcqHyKyUbLiMx85JD2oL
-         cznusRyRTmaheCfREQHayoYyW3kk7AaJIrmGVDI7ln7Xdm/79y40rJdzIA5IwIbFrN
-         js9eXejGUBpdOxB5ZoX+c9YWw2KzbTqy1Z1jAwbqZqmz5Wj0drzLN6p7W3uPRRH4+P
-         slFtocWBdVT0jBjnCVPPehrdnY47J0zzWXNSLjrZUrRiyWVI4fQxgR6t/Wk0OCFmSj
-         aFWMWZ4Vejhi5pWbJrUKzMUJk8T/yP6f665wfJ6OCxw9RZADU5hngRfeF7K6BBdXBk
-         hlN2cNsl05Zlw==
-Date:   Fri, 5 May 2023 19:47:24 +0200
+        b=eTc/VaTRS80Et2t7DwgDtJ0+Rxj2HvsxpFc2ajdS6vXMHX5WSFhdDHX/o//JhWY48
+         nQ7O+qL8iPAaBsqY4n6Y/k+y+y0tZaYEu9RT0sIwCdD3sw330+3zSmGlWM2dqhcG5X
+         HjY/+37M8v2q23tbTzKqedLkvAWZcqeCvGJCqzJ4akcpTOI+ENSXIwlbHbMOAx2yXB
+         K9mdf3qAm+kVsuuiZRxmaW8Rifz3aahFd+7woHpVikA/6r5aK/q+4uuh/7frEtcy1I
+         y0O078KWJ8NfBYa+dun0Hh63kABUJ2Ucao+KJ8/QnlZrpQSHbhc37cgd4gw3ZJB5xI
+         YNQqxMItT9gHg==
+Date:   Fri, 5 May 2023 19:52:39 +0200
 From:   Simon Horman <horms@kernel.org>
 To:     Ross Philipson <ross.philipson@oracle.com>
 Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
@@ -43,16 +43,16 @@ Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
         James.Bottomley@hansenpartnership.com, luto@amacapital.net,
         nivedita@alum.mit.edu, kanth.ghatraju@oracle.com,
         trenchboot-devel@googlegroups.com
-Subject: Re: [PATCH v6 07/14] x86: Secure Launch kernel early boot stub
-Message-ID: <ZFVBLCLVK7AAStst@kernel.org>
+Subject: Re: [PATCH v6 08/14] x86: Secure Launch kernel late boot stub
+Message-ID: <ZFVCZ1EDxQgdyocc@kernel.org>
 References: <20230504145023.835096-1-ross.philipson@oracle.com>
- <20230504145023.835096-8-ross.philipson@oracle.com>
+ <20230504145023.835096-9-ross.philipson@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230504145023.835096-8-ross.philipson@oracle.com>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+In-Reply-To: <20230504145023.835096-9-ross.philipson@oracle.com>
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,287 +61,271 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, May 04, 2023 at 02:50:16PM +0000, Ross Philipson wrote:
-> The Secure Launch (SL) stub provides the entry point for Intel TXT (and
-> later AMD SKINIT) to vector to during the late launch. The symbol
-> sl_stub_entry is that entry point and its offset into the kernel is
-> conveyed to the launching code using the MLE (Measured Launch
-> Environment) header in the structure named mle_header. The offset of the
-> MLE header is set in the kernel_info. The routine sl_stub contains the
-> very early late launch setup code responsible for setting up the basic
-> environment to allow the normal kernel startup_32 code to proceed. It is
-> also responsible for properly waking and handling the APs on Intel
-> platforms. The routine sl_main which runs after entering 64b mode is
-> responsible for measuring configuration and module information before
-> it is used like the boot params, the kernel command line, the TXT heap,
-> an external initramfs, etc.
+On Thu, May 04, 2023 at 02:50:17PM +0000, Ross Philipson wrote:
+> The routine slaunch_setup is called out of the x86 specific setup_arch
+> routine during early kernel boot. After determining what platform is
+> present, various operations specific to that platform occur. This
+> includes finalizing setting for the platform late launch and verifying
+> that memory protections are in place.
+> 
+> For TXT, this code also reserves the original compressed kernel setup
+> area where the APs were left looping so that this memory cannot be used.
 > 
 > Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
 
-...
+Hi Ross,
 
-> diff --git a/arch/x86/boot/compressed/sl_main.c b/arch/x86/boot/compressed/sl_main.c
+a few nits from my side.
 
-...
-
-> +static void *evtlog_base;
-> +static u32 evtlog_size;
-> +static struct txt_heap_event_log_pointer2_1_element *log20_elem;
-> +static u32 tpm_log_ver = SL_TPM12_LOG;
-> +struct tcg_efi_specid_event_algs tpm_algs[SL_TPM20_MAX_ALGS] = {0};
-
-tpm_algs seems to only be used in this file.
-Should it be static?
-
-> +
-> +extern u32 sl_cpu_type;
-> +extern u32 sl_mle_start;
-> +extern struct boot_params *boot_params;
-> +
-> +static u64 sl_txt_read(u32 reg)
-
-Perhaps reg should have an __iomem annotation.
-
+> +/*
+> + * The TXT heap is too big to map all at once with early_ioremap
+> + * so it is done a table at a time.
+> + */
+> +static void __init *txt_early_get_heap_table(void __iomem *txt, u32 type,
+> +					     u32 bytes)
 > +{
-> +	return readq((void *)(u64)(TXT_PRIV_CONFIG_REGS_BASE + reg));
-> +}
+> +	u64 base, size, offset = 0;
+> +	void *heap;
+> +	int i;
 > +
-> +static void sl_txt_write(u32 reg, u64 val)
+> +	if (type > TXT_SINIT_TABLE_MAX)
+> +		slaunch_txt_reset(txt,
+> +			"Error invalid table type for early heap walk\n",
+> +			SL_ERROR_HEAP_WALK);
 
-Likewise here.
+nit: the indentation should align to the opening '('.
+
+		slaunch_txt_reset(txt,
+				  "Error invalid table type for early heap walk\n",
+				  SL_ERROR_HEAP_WALK);
+
+Likewise in a few other places in this patch.
 
 ...
 
-> +static void sl_check_pmr_coverage(void *base, u32 size, bool allow_hi)
+> +static void __init slaunch_txt_reserve_range(u64 base, u64 size)
 > +{
-> +	struct txt_os_sinit_data *os_sinit_data;
-> +	void *end = base + size;
-> +	void *txt_heap;
+> +	int type;
 > +
-> +	if (!(sl_cpu_type & SL_CPU_INTEL))
-> +		return;
-> +
-> +	txt_heap = (void *)sl_txt_read(TXT_CR_HEAP_BASE);
-> +	os_sinit_data = txt_os_sinit_data_start(txt_heap);
-> +
-> +	if ((end >= (void *)0x100000000ULL) &&
-> +	    (base < (void *)0x100000000ULL))
-> +		sl_txt_reset(SL_ERROR_REGION_STRADDLE_4GB);
-> +
-> +	/*
-> +	 * Note that the late stub code validates that the hi PMR covers
-> +	 * all memory above 4G. At this point the code can only check that
-> +	 * regions are within the hi PMR but that is sufficient.
-> +	 */
-> +	if ((end > (void *)0x100000000ULL) &&
-> +	    (base >= (void *)0x100000000ULL)) {
-> +		if (allow_hi) {
-> +			if (end >= (void *)(os_sinit_data->vtd_pmr_hi_base +
-> +					   os_sinit_data->vtd_pmr_hi_size))
-> +				sl_txt_reset(SL_ERROR_BUFFER_BEYOND_PMR);
-> +		} else
-> +			sl_txt_reset(SL_ERROR_REGION_ABOVE_4GB);
-
-nit: if any arm of a condition has '{}' then all arms should have them.
-     So:
-
-		} else {
-			sl_txt_reset(SL_ERROR_REGION_ABOVE_4GB);
-		}
-
-Also elsewhere in this patch.
-
+> +	type = e820__get_entry_type(base, base + size - 1);
+> +	if (type == E820_TYPE_RAM) {
+> +		pr_info("memblock reserve base: %llx size: %llx\n", base, size);
+> +		memblock_reserve(base, size);
 > +	}
-> +
-> +	if (end >= (void *)os_sinit_data->vtd_pmr_lo_size)
-> +		sl_txt_reset(SL_ERROR_BUFFER_BEYOND_PMR);
 > +}
 > +
 > +/*
-> + * Some MSRs are modified by the pre-launch code including the MTRRs.
-> + * The early MLE code has to restore these values. This code validates
-> + * the values after they are measured.
+> + * For Intel, certain regions of memory must be marked as reserved by putting
+> + * them on the memblock reserved list if they are not already e820 reserved.
+> + * This includes:
+> + *  - The TXT HEAP
+> + *  - The ACM area
+> + *  - The TXT private register bank
+> + *  - The MDR list sent to the MLE by the ACM (see TXT specification)
+> + *  (Normally the above are properly reserved by firmware but if it was not
+> + *  done, reserve them now)
+> + *  - The AP wake block
+> + *  - TPM log external to the TXT heap
+> + *
+> + * Also if the low PMR doesn't cover all memory < 4G, any RAM regions above
+> + * the low PMR must be reservered too.
+
+nit: s/reservered/reserved/
+
 > + */
-> +static void sl_txt_validate_msrs(struct txt_os_mle_data *os_mle_data)
+> +static void __init slaunch_txt_reserve(void __iomem *txt)
 > +{
-> +	struct slr_txt_mtrr_state *saved_bsp_mtrrs;
-> +	u64 mtrr_caps, mtrr_def_type, mtrr_var;
-> +	struct slr_entry_intel_info *txt_info;
-> +	u64 misc_en_msr;
-> +	u32 vcnt, i;
+> +	struct txt_sinit_memory_descriptor_record *mdr;
+> +	struct txt_sinit_mle_data *sinit_mle_data;
+> +	u64 base, size, heap_base, heap_size;
+> +	u32 mdrnum, mdroffset, mdrslen;
+> +	u32 field_offset, i;
+> +	void *mdrs;
 > +
-> +	txt_info = (struct slr_entry_intel_info *)os_mle_data->txt_info;
-> +	saved_bsp_mtrrs = &(txt_info->saved_bsp_mtrrs);
+> +	base = TXT_PRIV_CONFIG_REGS_BASE;
+> +	size = TXT_PUB_CONFIG_REGS_BASE - TXT_PRIV_CONFIG_REGS_BASE;
+> +	slaunch_txt_reserve_range(base, size);
+> +
+> +	memcpy_fromio(&heap_base, txt + TXT_CR_HEAP_BASE, sizeof(heap_base));
+> +	memcpy_fromio(&heap_size, txt + TXT_CR_HEAP_SIZE, sizeof(heap_size));
+> +	slaunch_txt_reserve_range(heap_base, heap_size);
+> +
+> +	memcpy_fromio(&base, txt + TXT_CR_SINIT_BASE, sizeof(base));
+> +	memcpy_fromio(&size, txt + TXT_CR_SINIT_SIZE, sizeof(size));
+> +	slaunch_txt_reserve_range(base, size);
+> +
+> +	field_offset = offsetof(struct txt_sinit_mle_data,
+> +				sinit_vtd_dmar_table_size);
+> +	sinit_mle_data = txt_early_get_heap_table(txt, TXT_SINIT_MLE_DATA_TABLE,
+> +						  field_offset);
+> +
+> +	mdrnum = sinit_mle_data->num_of_sinit_mdrs;
+> +	mdroffset = sinit_mle_data->sinit_mdrs_table_offset;
+> +
+> +	txt_early_put_heap_table(sinit_mle_data, field_offset);
+> +
+> +	if (!mdrnum)
+> +		goto nomdr;
+> +
+> +	mdrslen = mdrnum * sizeof(struct txt_sinit_memory_descriptor_record);
+> +
+> +	mdrs = txt_early_get_heap_table(txt, TXT_SINIT_MLE_DATA_TABLE,
+> +					mdroffset + mdrslen - 8);
+> +
+> +	mdr = mdrs + mdroffset - 8;
+> +
+> +	for (i = 0; i < mdrnum; i++, mdr++) {
+> +		/* Spec says some entries can have length 0, ignore them */
+> +		if (mdr->type > 0 && mdr->length > 0)
+> +			slaunch_txt_reserve_range(mdr->address, mdr->length);
+> +	}
+> +
+> +	txt_early_put_heap_table(mdrs, mdroffset + mdrslen - 8);
+> +
+> +nomdr:
+> +	slaunch_txt_reserve_range(ap_wake_info.ap_wake_block,
+> +				  ap_wake_info.ap_wake_block_size);
+> +
+> +	/*
+> +	 * Earlier checks ensured that the event log was properly situated
+> +	 * either inside the TXT heap or outside. This is a check to see if the
+> +	 * event log needs to be reserved. If it is in the TXT heap, it is
+> +	 * already reserved.
+> +	 */
+> +	if (evtlog_addr < heap_base || evtlog_addr > (heap_base + heap_size))
+> +		slaunch_txt_reserve_range(evtlog_addr, evtlog_size);
+> +
+> +	for (i = 0; i < e820_table->nr_entries; i++) {
+> +		base = e820_table->entries[i].addr;
+> +		size = e820_table->entries[i].size;
+> +		if ((base >= vtd_pmr_lo_size) && (base < 0x100000000ULL))
 
 nit: unnecessary parentheses
 
-...
-
-> +static void sl_validate_event_log_buffer(void)
-> +{
-> +	struct txt_os_sinit_data *os_sinit_data;
-> +	void *txt_heap, *txt_end;
-> +	void *mle_base, *mle_end;
-> +	void *evtlog_end;
-> +
-> +	if ((u64)evtlog_size > (LLONG_MAX - (u64)evtlog_base))
-> +		sl_txt_reset(SL_ERROR_INTEGER_OVERFLOW);
-> +	evtlog_end = evtlog_base + evtlog_size;
-> +
-> +	txt_heap = (void *)sl_txt_read(TXT_CR_HEAP_BASE);
-> +	txt_end = txt_heap + sl_txt_read(TXT_CR_HEAP_SIZE);
-> +	os_sinit_data = txt_os_sinit_data_start(txt_heap);
-> +
-> +	mle_base = (void *)(u64)sl_mle_start;
-> +	mle_end = mle_base + os_sinit_data->mle_size;
-> +
-> +	/*
-> +	 * This check is to ensure the event log buffer does not overlap with
-> +	 * the MLE image.
-> +	 */
-> +	if ((evtlog_base >= mle_end) &&
-> +	    (evtlog_end > mle_end))
-> +		goto pmr_check; /* above */
-
-Ditto.
-Also, the if condition could be one line.
-Also in several other places in this patch.
-
-> +
-> +	if ((evtlog_end <= mle_base) &&
-> +	    (evtlog_base < mle_base))
-> +		goto pmr_check; /* below */
-> +
-> +	sl_txt_reset(SL_ERROR_MLE_BUFFER_OVERLAP);
-> +
-> +pmr_check:
-> +	/*
-> +	 * The TXT heap is protected by the DPR. If the TPM event log is
-> +	 * inside the TXT heap, there is no need for a PMR check.
-> +	 */
-> +	if ((evtlog_base > txt_heap) &&
-> +	    (evtlog_end < txt_end))
-> +		return;
-> +
-> +	sl_check_pmr_coverage(evtlog_base, evtlog_size, true);
-> +}
-
-> +static void sl_process_extend_policy(struct slr_table *slrt)
-> +{
-> +	struct slr_entry_policy *policy;
-> +	struct slr_policy_entry *entry;
-> +	u16 i = 0;
-> +
-> +	policy =(struct slr_entry_policy *)
-
-nit: space after '='
-
-...
-
-> +static void sl_process_extend_uefi_config(struct slr_table *slrt)
-> +{
-> +	struct slr_entry_uefi_config *uefi_config;
-> +	struct slr_uefi_cfg_entry *uefi_entry;
-> +	u64 i;
-> +
-> +	uefi_config =(struct slr_entry_uefi_config *)
-> +		slr_next_entry_by_tag(slrt, NULL, SLR_ENTRY_UEFI_CONFIG);
-> +
-> +	/* Optionally here depending on how SL kernel was booted */
-> +	if (!uefi_config)
-> +		return;
-> +
-> +	uefi_entry = (struct slr_uefi_cfg_entry *)((u8 *)uefi_config + sizeof(*uefi_config));
-> +
-> +	for ( ; i < uefi_config->nr_entries; i++, uefi_entry++) {
-
-nit: i seems to be used without first being initialised.
-
-> +		sl_tpm_extend_evtlog(uefi_entry->pcr, TXT_EVTYPE_SLAUNCH,
-> +				     (void *)uefi_entry->cfg, uefi_entry->size,
-> +				     uefi_entry->evt_info);
+> +			slaunch_txt_reserve_range(base, size);
+> +		else if ((base < vtd_pmr_lo_size) &&
+> +			 (base + size > vtd_pmr_lo_size))
+> +			slaunch_txt_reserve_range(vtd_pmr_lo_size,
+> +						  base + size - vtd_pmr_lo_size);
 > +	}
 > +}
 > +
-> +asmlinkage __visible void sl_check_region(void *base, u32 size)
+> +/*
+> + * TXT stashes a safe copy of the DMAR ACPI table to prevent tampering.
+> + * It is stored in the TXT heap. Fetch it from there and make it available
+> + * to the IOMMU driver.
+> + */
+> +static void __init slaunch_copy_dmar_table(void __iomem *txt)
 > +{
-> +	sl_check_pmr_coverage(base, size, false);
+> +	struct txt_sinit_mle_data *sinit_mle_data;
+> +	u32 field_offset, dmar_size, dmar_offset;
+> +	void *dmar;
+> +
+> +	memset(&txt_dmar, 0, PAGE_SIZE);
+> +
+> +	field_offset = offsetof(struct txt_sinit_mle_data,
+> +				processor_scrtm_status);
+> +	sinit_mle_data = txt_early_get_heap_table(txt, TXT_SINIT_MLE_DATA_TABLE,
+> +						  field_offset);
+> +
+> +	dmar_size = sinit_mle_data->sinit_vtd_dmar_table_size;
+> +	dmar_offset = sinit_mle_data->sinit_vtd_dmar_table_offset;
+> +
+> +	txt_early_put_heap_table(sinit_mle_data, field_offset);
+> +
+> +	if (!dmar_size || !dmar_offset)
+> +		slaunch_txt_reset(txt,
+> +				  "Error invalid DMAR table values\n",
+> +				  SL_ERROR_HEAP_INVALID_DMAR);
+> +
+> +	if (unlikely(dmar_size > PAGE_SIZE))
+> +		slaunch_txt_reset(txt,
+> +				  "Error DMAR too big to store\n",
+> +				  SL_ERROR_HEAP_DMAR_SIZE);
+> +
+> +
+
+nit: one blank line is enough
+
+> +	dmar = txt_early_get_heap_table(txt, TXT_SINIT_MLE_DATA_TABLE,
+> +					dmar_offset + dmar_size - 8);
+> +	if (!dmar)
+> +		slaunch_txt_reset(txt,
+> +				  "Error early_ioremap of DMAR\n",
+> +				  SL_ERROR_HEAP_DMAR_MAP);
+> +
+> +	memcpy(&txt_dmar[0], dmar + dmar_offset - 8, dmar_size);
+> +
+> +	txt_early_put_heap_table(dmar, dmar_offset + dmar_size - 8);
 > +}
 
-I'm a nit unsure, what to do here, but clang-16 with W=1 says the following.
-
-arch/x86/boot/compressed/sl_main.c:533:27: warning: no previous prototype for function 'sl_main' [-Wmissing-prototypes]
-asmlinkage __visible void sl_main(void *bootparams)
-                          ^
-arch/x86/boot/compressed/sl_main.c:533:22: note: declare 'static' if the function is not intended to be used outside of this translation unit
-asmlinkage __visible void sl_main(void *bootparams)
-                     ^
-                     static
-
 ...
 
-> diff --git a/arch/x86/boot/compressed/sl_stub.S b/arch/x86/boot/compressed/sl_stub.S
-> new file mode 100644
-> index 0000000..2d8aa3a
-> --- /dev/null
-> +++ b/arch/x86/boot/compressed/sl_stub.S
-> @@ -0,0 +1,690 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +
 > +/*
-> + * Secure Launch protected mode entry point.
-> + *
-> + * Copyright (c) 2022, Oracle and/or its affiliates.
+> + * Intel TXT specific late stub setup and validation.
 > + */
-> +	.code32
-> +	.text
-> +#include <linux/linkage.h>
-> +#include <asm/segment.h>
-> +#include <asm/msr.h>
-> +#include <asm/processor-flags.h>
-> +#include <asm/asm-offsets.h>
-> +#include <asm/bootparam.h>
-> +#include <asm/page_types.h>
-> +#include <asm/irq_vectors.h>
-> +#include <linux/slr_table.h>
-> +#include <linux/slaunch.h>
+> +void __init slaunch_setup_txt(void)
+> +{
+> +	u64 one = TXT_REGVALUE_ONE, val;
+> +	void __iomem *txt;
 > +
-> +/* CPUID: leaf 1, ECX, SMX feature bit */
-> +#define X86_FEATURE_BIT_SMX	(1 << 6)
+> +	if (!boot_cpu_has(X86_FEATURE_SMX))
+> +		return;
 > +
-> +/* Can't include apiddef.h in asm */
-> +#define XAPIC_ENABLE	(1 << 11)
-> +#define X2APIC_ENABLE	(1 << 10)
+> +	/*
+> +	 * If booted through secure launch entry point, the loadflags
+> +	 * option will be set.
+> +	 */
+> +	if (!(boot_params.hdr.loadflags & SLAUNCH_FLAG))
+> +		return;
 > +
-> +/* Can't include traps.h in asm */
-> +#define X86_TRAP_NMI	2
+> +	/*
+> +	 * See if SENTER was done by reading the status register in the
+> +	 * public space. If the public register space cannot be read, TXT may
+> +	 * be disabled.
+> +	 */
+> +	txt = early_ioremap(TXT_PUB_CONFIG_REGS_BASE,
+> +			    TXT_NR_CONFIG_PAGES * PAGE_SIZE);
+> +	if (!txt)
+> +		return;
 > +
-> +/* Can't include mtrr.h in asm */
-> +#define MTRRphysBase0	0x200
+> +	memcpy_fromio(&val, txt + TXT_CR_STS, sizeof(val));
+> +	early_iounmap(txt, TXT_NR_CONFIG_PAGES * PAGE_SIZE);
 > +
-> +#define IDT_VECTOR_LO_BITS	0
-> +#define IDT_VECTOR_HI_BITS	6
+> +	/* SENTER should have been done */
+> +	if (!(val & TXT_SENTER_DONE_STS))
+> +		panic("Error TXT.STS SENTER_DONE not set\n");
 > +
-> +/*
-> + * See the comment in head_64.S for detailed informatoin on what this macro
+> +	/* SEXIT should have been cleared */
+> +	if (val & TXT_SEXIT_DONE_STS)
+> +		panic("Error TXT.STS SEXIT_DONE set\n");
+> +
+> +	/* Now we want to use the private register space */
+> +	txt = early_ioremap(TXT_PRIV_CONFIG_REGS_BASE,
+> +			    TXT_NR_CONFIG_PAGES * PAGE_SIZE);
+> +	if (!txt) {
+> +		/* This is really bad, no where to go from here */
+> +		panic("Error early_ioremap of TXT priv registers\n");
+> +	}
+> +
+> +	/*
+> +	 * Try to read the Intel VID from the TXT private registers to see if
+> +	 * TXT measured launch happened properly and the private space is
+> +	 * available.
+> +	 */
+> +	memcpy_fromio(&val, txt + TXT_CR_DIDVID, sizeof(val));
+> +	if ((val & 0xffff) != 0x8086) {
+> +		/*
+> +		 * Can't do a proper TXT reset since it appears something is
+> +		 * wrong even though SENTER happened and it should be in SMX
+> +		 * mode.
+> +		 */
+> +		panic("Invalid TXT vendor ID, not in SMX mode\n");
+> +	}
+> +
+> +	/* Set flags so subsequent code knows the status of the launch */
+> +	sl_flags |= (SL_FLAG_ACTIVE|SL_FLAG_ARCH_TXT);
 
-nit: s/informatoin/information/
-
-...
-
-> diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
-> index 01d19fc..74e3e7df 100644
-> --- a/arch/x86/include/uapi/asm/bootparam.h
-> +++ b/arch/x86/include/uapi/asm/bootparam.h
-> @@ -26,6 +26,7 @@
->  /* loadflags */
->  #define LOADED_HIGH	(1<<0)
->  #define KASLR_FLAG	(1<<1)
-> +#define SLAUNCH_FLAG	(1<<2)
->  #define QUIET_FLAG	(1<<5)
->  #define KEEP_SEGMENTS	(1<<6)
->  #define CAN_USE_HEAP	(1<<7)
-
-nit: please consider using BIT()
+nit: spaces around '|'
 
 ...
