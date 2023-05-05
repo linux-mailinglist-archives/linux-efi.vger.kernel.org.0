@@ -2,480 +2,150 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34E596F89A1
-	for <lists+linux-efi@lfdr.de>; Fri,  5 May 2023 21:42:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E3846F89CD
+	for <lists+linux-efi@lfdr.de>; Fri,  5 May 2023 21:49:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233232AbjEETmU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 5 May 2023 15:42:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34600 "EHLO
+        id S233142AbjEETt1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 5 May 2023 15:49:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232989AbjEETmT (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 May 2023 15:42:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C6DF1BE4;
-        Fri,  5 May 2023 12:42:18 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A87B563DFF;
-        Fri,  5 May 2023 19:42:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 211F7C433D2;
-        Fri,  5 May 2023 19:42:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683315737;
-        bh=pPOc9V+teqBWA7vYeoYZqwumUjynrfKxAGM6Xam23IY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=negPFhKEVRUA/oMsrUreOofmvV3zkGIR/U1ZNa2UJtHKYdy6cdODydjA2uifqIRHX
-         Tv5zoYVRbxyMd7kscJ+PRLwOic5RmA6ETS9YQnIc8+5DwSsypf6kn5RGMU2NaPW+vq
-         xAmCEa6pZCvhQvlmTjk6vaxgxAkwjKEcg8pg9znEdqJx9VCXiOxlvWIGq9hPi/XGo4
-         5Anv2iYfNi/SOGgC35vBemHbO19RX/YQ9+60IN6BWvTMMVGWcwchYABlQ5R/xcdLrb
-         LU3bMqH3YMhF/evY2w/RxDDGxQiuGwgQqyyKsQbeq498J3O1+7yMMmJWcnSKPmQDBs
-         6dAkcOCQfZwjA==
-Date:   Fri, 5 May 2023 21:42:08 +0200
-From:   Simon Horman <horms@kernel.org>
-To:     Ross Philipson <ross.philipson@oracle.com>
-Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-crypto@vger.kernel.org, iommu@lists.linux-foundation.org,
-        kexec@lists.infradead.org, linux-efi@vger.kernel.org,
-        dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, hpa@zytor.com, ardb@kernel.org, mjg59@srcf.ucam.org,
-        James.Bottomley@hansenpartnership.com, luto@amacapital.net,
-        nivedita@alum.mit.edu, kanth.ghatraju@oracle.com,
-        trenchboot-devel@googlegroups.com
-Subject: Re: [PATCH v6 12/14] x86: Secure Launch late initcall platform module
-Message-ID: <ZFVcEI0RAS5pvrAc@kernel.org>
-References: <20230504145023.835096-1-ross.philipson@oracle.com>
- <20230504145023.835096-13-ross.philipson@oracle.com>
+        with ESMTP id S232137AbjEETt0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 May 2023 15:49:26 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 912A210C;
+        Fri,  5 May 2023 12:49:25 -0700 (PDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 345JguoK003476;
+        Fri, 5 May 2023 19:44:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=gzm1CwDyIKYU3piQM3kkGq3B9mytpWsfDxW9dYi+7no=;
+ b=KI0D3czRM2SyMifk3CHdthqqPo4AynnfVa+MHziZGkd2O87vpG5Xf++lgGazZwqiGDHs
+ bR7bkwj/x+pdbZtYfoLj6WFJyF95dz9GdNMhvBNdL56uJzey0BnznlzQkdd1Vjyvrklz
+ 1+XII5LgxwA9c3ymRyiivX29JRJy080ChGLM2pP/Gxy2VqppIXQetuwQwXNr3cotO5Qs
+ SFlN/vqbM7TCna/OOqtnRTuKxZRNDoZOQzfHjhUedRW6XbxYIwByQ996qtYfCOUd8pRR
+ Ygyv5eCMEDAkA2EYR3EBz2hgKEPFpR3idkYaMKkyR15AkQXxfyy7/pRD2zAgMTUtmec+ tg== 
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qd86qr0va-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 05 May 2023 19:44:07 +0000
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+        by ppma01wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 345Hef7K011923;
+        Fri, 5 May 2023 19:44:06 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([9.208.129.119])
+        by ppma01wdc.us.ibm.com (PPS) with ESMTPS id 3q8tv8878a-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 05 May 2023 19:44:06 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+        by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 345Ji50635258698
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 5 May 2023 19:44:05 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 509915805D;
+        Fri,  5 May 2023 19:44:05 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id CA0C658043;
+        Fri,  5 May 2023 19:44:03 +0000 (GMT)
+Received: from rhel-laptop.ibm.com.com (unknown [9.160.1.159])
+        by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+        Fri,  5 May 2023 19:44:03 +0000 (GMT)
+From:   gjoyce@linux.vnet.ibm.com
+To:     linux-block@vger.kernel.org
+Cc:     linuxppc-dev@lists.ozlabs.org, jonathan.derrick@linux.dev,
+        brking@linux.vnet.ibm.com, msuchanek@suse.de, mpe@ellerman.id.au,
+        axboe@kernel.dk, akpm@linux-foundation.org,
+        gjoyce@linux.vnet.ibm.com, linux-efi@vger.kernel.org,
+        keyrings@vger.kernel.org, me@benboeckel.net, elliott@hpe.com,
+        andonnel@au1.ibm.com
+Subject: [PATCH v5 0/4] generic and PowerPC SED Opal keystore
+Date:   Fri,  5 May 2023 14:43:58 -0500
+Message-Id: <20230505194402.2079010-1-gjoyce@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: FrMG7DCN-O5YZdGaCf56YF8C-VnelcnQ
+X-Proofpoint-ORIG-GUID: FrMG7DCN-O5YZdGaCf56YF8C-VnelcnQ
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230504145023.835096-13-ross.philipson@oracle.com>
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-05_26,2023-05-05_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 bulkscore=0 phishscore=0 spamscore=0 adultscore=0
+ clxscore=1015 mlxlogscore=917 mlxscore=0 suspectscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2305050160
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, May 04, 2023 at 02:50:21PM +0000, Ross Philipson wrote:
-> From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
-> 
-> The Secure Launch platform module is a late init module. During the
-> init call, the TPM event log is read and measurements taken in the
-> early boot stub code are located. These measurements are extended
-> into the TPM PCRs using the mainline TPM kernel driver.
-> 
-> The platform module also registers the securityfs nodes to allow
-> access to TXT register fields on Intel along with the fetching of
-> and writing events to the late launch TPM log.
-> 
-> Signed-off-by: Daniel P. Smith <dpsmith@apertussolutions.com>
-> Signed-off-by: garnetgrimm <grimmg@ainfosec.com>
-> Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
+From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
 
-Hi Ross,
+Generic functions have been defined for accessing SED Opal keys.
+The generic functions are defined as weak so that they may be superseded
+by keystore specific versions.
 
-a few more items from my side.
+PowerPC/pseries versions of these functions provide read/write access
+to SED Opal keys in the PLPKS keystore.
 
-...
+The SED block driver has been modified to read the SED Opal
+keystore to populate a key in the SED Opal keyring. Changes to the
+SED Opal key will be written to the SED Opal keystore.
 
-> diff --git a/arch/x86/kernel/slmodule.c b/arch/x86/kernel/slmodule.c
+Patch 3 "keystore access for SED Opal keys" is dependent on:
+        https://lore.kernel.org/keyrings/20220818143045.680972-4-gjoyce@linux.vnet.ibm.com/T/#u
 
-...
+Changelog
+v5:	- updated to reflect changes in PLPKS API
 
-> +/*
-> + * Securityfs exposure
-> + */
-> +struct memfile {
-> +	char *name;
-> +	void *addr;
-> +	size_t size;
-> +};
-> +
-> +static struct memfile sl_evtlog = {"eventlog", 0, 0};
+v4:
+        - scope reduced to cover just SED Opal keys
+        - base SED Opal keystore is now in SED block driver
+        - removed use of enum to indicate type
+        - refactored common code into common function that read and
+          write use
+        - removed cast to void
+        - added use of SED Opal keystore functions to SED block driver
 
-I don't think the 0 fields are necessary above, memset will zero
-any fields not explicitly set. But if you want to go that way, then
-I think the first one should be NULL, as the addr field is a pointer.
+v3:
+        - No code changes, but per reviewer requests, adding additional
+          mailing lists(keyring, EFI) for wider review.
 
-> +static void *txt_heap;
-> +static struct txt_heap_event_log_pointer2_1_element __iomem *evtlog20;
-> +static DEFINE_MUTEX(sl_evt_log_mutex);
-
-> +static ssize_t sl_evtlog_read(struct file *file, char __user *buf,
-> +			      size_t count, loff_t *pos)
-> +{
-> +	ssize_t size;
-> +
-> +	if (!sl_evtlog.addr)
-> +		return 0;
-> +
-> +	mutex_lock(&sl_evt_log_mutex);
-> +	size = simple_read_from_buffer(buf, count, pos, sl_evtlog.addr,
-> +				       sl_evtlog.size);
-> +	mutex_unlock(&sl_evt_log_mutex);
-> +
-> +	return size;
-> +}
-> +
-> +static ssize_t sl_evtlog_write(struct file *file, const char __user *buf,
-> +				size_t datalen, loff_t *ppos)
-
-nit: the line above doesn't align to the '(' on the line before that.
-
-> +{
-> +	ssize_t result;
-> +	char *data;
-> +
-> +	if (!sl_evtlog.addr)
-> +		return 0;
-> +
-> +	/* No partial writes. */
-> +	result = -EINVAL;
-> +	if (*ppos != 0)
-> +		goto out;
-> +
-> +	data = memdup_user(buf, datalen);
-> +	if (IS_ERR(data)) {
-> +		result = PTR_ERR(data);
-> +		goto out;
-> +	}
-> +
-> +	mutex_lock(&sl_evt_log_mutex);
-> +	if (evtlog20)
-> +		result = tpm20_log_event(evtlog20, sl_evtlog.addr,
-> +					 sl_evtlog.size, datalen, data);
-
-Sparse says that the type of the first argument of tmp20_log_event is:
-
-	struct txt_heap_event_log_pointer2_1_element *
-
-However, the type of evtlog20 is:
-
-	struct txt_heap_event_log_pointer2_1_element __iomem *
-
-> +	else
-> +		result = tpm12_log_event(sl_evtlog.addr, sl_evtlog.size,
-> +					 datalen, data);
-> +	mutex_unlock(&sl_evt_log_mutex);
-> +
-> +	kfree(data);
-> +out:
-> +	return result;
-> +}
-
-...
-
-> +static long slaunch_expose_securityfs(void)
-> +{
-> +	long ret = 0;
-> +	int i;
-> +
-> +	slaunch_dir = securityfs_create_dir("slaunch", NULL);
-> +	if (IS_ERR(slaunch_dir))
-> +		return PTR_ERR(slaunch_dir);
-> +
-> +	if (slaunch_get_flags() & SL_FLAG_ARCH_TXT) {
-> +		txt_dir = securityfs_create_dir("txt", slaunch_dir);
-> +		if (IS_ERR(txt_dir)) {
-> +			ret = PTR_ERR(txt_dir);
-> +			goto remove_slaunch;
-> +		}
-> +
-> +		for (i = 0; i < ARRAY_SIZE(sl_txt_files); i++) {
-> +			txt_entries[i] = securityfs_create_file(
-> +						sl_txt_files[i].name, 0440,
-> +						txt_dir, NULL,
-> +						sl_txt_files[i].fops);
-> +			if (IS_ERR(txt_entries[i])) {
-> +				ret = PTR_ERR(txt_entries[i]);
-> +				goto remove_files;
-> +			}
-> +		}
-> +
-
-nit: no blank line here.
-
-> +	}
-> +
-> +	if (sl_evtlog.addr > 0) {
-
-addr is a pointer. So perhaps:
-
-	if (sl_evtlog.addr) {
-
-> +		event_file = securityfs_create_file(
-> +					sl_evtlog.name, 0440,
-> +					slaunch_dir, NULL,
-> +					&sl_evtlog_ops);
-> +		if (IS_ERR(event_file)) {
-> +			ret = PTR_ERR(event_file);
-> +			goto remove_files;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +
-> +remove_files:
-> +	if (slaunch_get_flags() & SL_FLAG_ARCH_TXT) {
-> +		while (--i >= 0)
-> +			securityfs_remove(txt_entries[i]);
-> +		securityfs_remove(txt_dir);
-> +	}
-> +remove_slaunch:
-> +	securityfs_remove(slaunch_dir);
-> +
-> +	return ret;
-> +}
-
-...
-
-> +static void slaunch_intel_evtlog(void __iomem *txt)
-> +{
-> +	struct slr_entry_log_info *log_info;
-> +	struct txt_os_mle_data *params;
-> +	struct slr_table *slrt;
-> +	void *os_sinit_data;
-> +	u64 base, size;
-> +
-> +	memcpy_fromio(&base, txt + TXT_CR_HEAP_BASE, sizeof(base));
-> +	memcpy_fromio(&size, txt + TXT_CR_HEAP_SIZE, sizeof(size));
-> +
-> +	/* now map TXT heap */
-> +	txt_heap = memremap(base, size, MEMREMAP_WB);
-> +	if (!txt_heap)
-> +		slaunch_txt_reset(txt,
-> +			"Error failed to memremap TXT heap\n",
-> +			SL_ERROR_HEAP_MAP);
-
-nit: These lines are not aligned to the opening '('
-
-> +
-> +	params = (struct txt_os_mle_data *)txt_os_mle_data_start(txt_heap);
-> +
-> +	/* Get the SLRT and remap it */
-> +	slrt = memremap(params->slrt, sizeof(*slrt), MEMREMAP_WB);
-> +	if (!slrt)
-> +		slaunch_txt_reset(txt,
-> +			"Error failed to memremap SLR Table\n",
-> +			SL_ERROR_SLRT_MAP);
-> +	size = slrt->size;
-> +	memunmap(slrt);
-> +
-> +	slrt = memremap(params->slrt, size, MEMREMAP_WB);
-> +	if (!slrt)
-> +		slaunch_txt_reset(txt,
-> +			"Error failed to memremap SLR Table\n",
-> +			SL_ERROR_SLRT_MAP);
-> +
-> +	log_info = (struct slr_entry_log_info *)
-> +			slr_next_entry_by_tag(slrt, NULL, SLR_ENTRY_LOG_INFO);
-> +	if (!log_info)
-> +		slaunch_txt_reset(txt,
-> +			"Error failed to memremap SLR Table\n",
-> +			SL_ERROR_SLRT_MISSING_ENTRY);
-> +
-> +	sl_evtlog.size = log_info->size;
-> +	sl_evtlog.addr = memremap(log_info->addr, log_info->size,
-> +				  MEMREMAP_WB);
-> +	if (!sl_evtlog.addr)
-> +		slaunch_txt_reset(txt,
-> +			"Error failed to memremap TPM event log\n",
-> +			SL_ERROR_EVENTLOG_MAP);
-> +
-> +	memunmap(slrt);
-> +
-> +	/* Determine if this is TPM 1.2 or 2.0 event log */
-> +	if (memcmp(sl_evtlog.addr + sizeof(struct tcg_pcr_event),
-> +		    TCG_SPECID_SIG, sizeof(TCG_SPECID_SIG)))
-> +		return; /* looks like it is not 2.0 */
-> +
-> +	/* For TPM 2.0 logs, the extended heap element must be located */
-> +	os_sinit_data = txt_os_sinit_data_start(txt_heap);
-> +
-
-The return type of tmp20_find_lot2_1_element() is:
-
-	struct txt_heap_event_log_pointer2_1_element *
-
-However, the type of evtlog20 is:
-
-	struct txt_heap_event_log_pointer2_1_element __iomem *
-
-> +	evtlog20 = tpm20_find_log2_1_element(os_sinit_data);
-> +
-> +	/*
-> +	 * If this fails, things are in really bad shape. Any attempt to write
-> +	 * events to the log will fail.
-> +	 */
-> +	if (!evtlog20)
-> +		slaunch_txt_reset(txt,
-> +			"Error failed to find TPM20 event log element\n",
-> +			SL_ERROR_TPM_INVALID_LOG20);
-> +}
-> +
-> +static void slaunch_tpm20_extend_event(struct tpm_chip *tpm, void __iomem *txt,
-> +				       struct tcg_pcr_event2_head *event)
-> +{
-> +	u16 *alg_id_field = (u16 *)((u8 *)event +
-> +				    sizeof(struct tcg_pcr_event2_head));
-> +	struct tpm_digest *digests;
-> +	u8 *dptr;
-> +	int ret;
-> +	u32 i, j;
-> +
-> +	digests = kcalloc(tpm->nr_allocated_banks, sizeof(*digests),
-> +			  GFP_KERNEL);
-> +	if (!digests)
-> +		slaunch_txt_reset(txt,
-> +			"Failed to allocate array of digests\n",
-> +			SL_ERROR_GENERIC);
-> +
-> +	for (i = 0; i < tpm->nr_allocated_banks; i++)
-> +		digests[i].alg_id = tpm->allocated_banks[i].alg_id;
-> +
-> +
-
-nit: one blank line is enough.
-
-> +	/* Early SL code ensured there was a max count of 2 digests */
-> +	for (i = 0; i < event->count; i++) {
-> +		dptr = (u8 *)alg_id_field + sizeof(u16);
-> +
-> +		for (j = 0; j < tpm->nr_allocated_banks; j++) {
-> +			if (digests[j].alg_id != *alg_id_field)
-> +				continue;
-> +
-> +			switch (digests[j].alg_id) {
-> +			case TPM_ALG_SHA256:
-> +				memcpy(&digests[j].digest[0], dptr,
-> +				       SHA256_DIGEST_SIZE);
-> +				alg_id_field = (u16 *)((u8 *)alg_id_field +
-> +					SHA256_DIGEST_SIZE + sizeof(u16));
-> +				break;
-> +			case TPM_ALG_SHA1:
-> +				memcpy(&digests[j].digest[0], dptr,
-> +				       SHA1_DIGEST_SIZE);
-> +				alg_id_field = (u16 *)((u8 *)alg_id_field +
-> +					SHA1_DIGEST_SIZE + sizeof(u16));
-> +			default:
-> +				break;
-> +			}
-> +		}
-> +	}
-> +
-> +	ret = tpm_pcr_extend(tpm, event->pcr_idx, digests);
-> +	if (ret) {
-> +		pr_err("Error extending TPM20 PCR, result: %d\n", ret);
-> +		slaunch_txt_reset(txt,
-> +			"Failed to extend TPM20 PCR\n",
-> +			SL_ERROR_TPM_EXTEND);
-> +	}
-> +
-> +	kfree(digests);
-> +}
-> +
-> +static void slaunch_tpm20_extend(struct tpm_chip *tpm, void __iomem *txt)
-> +{
-> +	struct tcg_pcr_event *event_header;
-> +	struct tcg_pcr_event2_head *event;
-> +	int start = 0, end = 0, size;
-> +
-> +	event_header = (struct tcg_pcr_event *)(sl_evtlog.addr +
-> +						evtlog20->first_record_offset);
-
-Sparse says that evtlog20 shouldn't be dereferenced because it
-has a __iomem attribute.
-
-> +
-> +	/* Skip first TPM 1.2 event to get to first TPM 2.0 event */
-> +	event = (struct tcg_pcr_event2_head *)((u8 *)event_header +
-> +						sizeof(struct tcg_pcr_event) +
-> +						event_header->event_size);
-> +
-> +	while ((void  *)event < sl_evtlog.addr + evtlog20->next_record_offset) {
-
-Ditto.
-
-> +		size = __calc_tpm2_event_size(event, event_header, false);
-> +		if (!size)
-> +			slaunch_txt_reset(txt,
-> +				"TPM20 invalid event in event log\n",
-> +				SL_ERROR_TPM_INVALID_EVENT);
-> +
-> +		/*
-> +		 * Marker events indicate where the Secure Launch early stub
-> +		 * started and ended adding post launch events.
-> +		 */
-> +		if (event->event_type == TXT_EVTYPE_SLAUNCH_END) {
-> +			end = 1;
-> +			break;
-> +		} else if (event->event_type == TXT_EVTYPE_SLAUNCH_START) {
-> +			start = 1;
-> +			goto next;
-> +		}
-> +
-> +		if (start)
-> +			slaunch_tpm20_extend_event(tpm, txt, event);
-> +
-> +next:
-> +		event = (struct tcg_pcr_event2_head *)((u8 *)event + size);
-> +	}
-> +
-> +	if (!start || !end)
-> +		slaunch_txt_reset(txt,
-> +			"Missing start or end events for extending TPM20 PCRs\n",
-> +			SL_ERROR_TPM_EXTEND);
-> +}
-
-...
-
-> +static void slaunch_pcr_extend(void __iomem *txt)
-> +{
-> +	struct tpm_chip *tpm;
-> +
-> +	tpm = tpm_default_chip();
-> +	if (!tpm)
-> +		slaunch_txt_reset(txt,
-> +			"Could not get default TPM chip\n",
-> +			SL_ERROR_TPM_INIT);
-> +	if (evtlog20)
-> +		slaunch_tpm20_extend(tpm, txt);
-> +	else
-> +		slaunch_tpm12_extend(tpm, txt);
-> +}
-> +
-> +static int __init slaunch_module_init(void)
-> +{
-> +	void __iomem *txt;
-> +
-> +	/* Check to see if Secure Launch happened */
-> +	if ((slaunch_get_flags() & (SL_FLAG_ACTIVE|SL_FLAG_ARCH_TXT)) !=
-> +	    (SL_FLAG_ACTIVE|SL_FLAG_ARCH_TXT))
-
-nit: spaces around '|'
-     Likewise elsewhere in this patch.
+v2:
+        - Include feedback from Gregory Joyce, Eric Richter and
+          Murilo Opsfelder Araujo.
+        - Include suggestions from Michael Ellerman.
+        - Moved a dependency from generic SED code to this patchset.
+          This patchset now builds of its own.
 
 
-> +		return 0;
-> +
-> +	txt = ioremap(TXT_PRIV_CONFIG_REGS_BASE, TXT_NR_CONFIG_PAGES *
-> +		      PAGE_SIZE);
-> +	if (!txt)
-> +		panic("Error ioremap of TXT priv registers\n");
-> +
-> +	/* Only Intel TXT is supported at this point */
-> +	slaunch_intel_evtlog(txt);
-> +
-> +	slaunch_pcr_extend(txt);
-> +
-> +	iounmap(txt);
-> +
-> +	return slaunch_expose_securityfs();
-> +}
 
-...
+Greg Joyce (4):
+  block:sed-opal: SED Opal keystore
+  powerpc/pseries: PLPKS SED Opal keystore support
+  block: sed-opal: keystore access for SED Opal keys
+  powerpc/pseries: update SED for PLPKS api changes
+
+ arch/powerpc/platforms/pseries/Kconfig        |   6 +
+ arch/powerpc/platforms/pseries/Makefile       |   1 +
+ .../powerpc/platforms/pseries/plpks_sed_ops.c | 114 ++++++++++++++++++
+ block/Kconfig                                 |   1 +
+ block/Makefile                                |   2 +-
+ block/sed-opal-key.c                          |  24 ++++
+ block/sed-opal.c                              |  18 ++-
+ include/linux/sed-opal-key.h                  |  15 +++
+ 8 files changed, 178 insertions(+), 3 deletions(-)
+ create mode 100644 arch/powerpc/platforms/pseries/plpks_sed_ops.c
+ create mode 100644 block/sed-opal-key.c
+ create mode 100644 include/linux/sed-opal-key.h
+
+
+base-commit: 6a8f57ae2eb07ab39a6f0ccad60c760743051026
+-- 
+gjoyce@linux.vnet.ibm.com
+
