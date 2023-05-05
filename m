@@ -2,70 +2,70 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 643246F8925
-	for <lists+linux-efi@lfdr.de>; Fri,  5 May 2023 20:59:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C38B16F892E
+	for <lists+linux-efi@lfdr.de>; Fri,  5 May 2023 21:00:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233412AbjEES7H (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 5 May 2023 14:59:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36406 "EHLO
+        id S233290AbjEETAh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 5 May 2023 15:00:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232979AbjEES7F (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 May 2023 14:59:05 -0400
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DBF51A616;
-        Fri,  5 May 2023 11:59:04 -0700 (PDT)
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 345HhKIY031576;
-        Fri, 5 May 2023 18:58:42 GMT
+        with ESMTP id S233040AbjEETAg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 May 2023 15:00:36 -0400
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B31A12154D;
+        Fri,  5 May 2023 12:00:24 -0700 (PDT)
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 345HhQ5G006361;
+        Fri, 5 May 2023 18:59:32 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
  subject : to : cc : references : from : in-reply-to : content-type :
  content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=pry8GVbrG+CEtF4FH9E0CbaI/MzrHh84Qtktw/8/8zw=;
- b=B3HLHFKCgQdIFIF8ycXXJwZobjwEQb3bhs0WMan32yth+CXnSEifVKKAzhPlZNZZJS1Y
- cIHfob1NI03AmuK9jtn7EZ4jLMx5k4fGQal4ck3qte6P43Ia9Ss8HaCmPWjw/yxGCYW0
- 2QTbUwDmQC7+7LYhcIWTy2bWQRu5569bLxEwDJ7fqGvsiVKJcWu4lC6d2HXzuZP21EVE
- 3LOTZDfYDhzLSt6GHvjJc4AuPNh2j5U53lyeDkzxGv8ff8CKUvvx0V7FS1RRvhyoPQvh
- a6k4H8bFU9DPi2Dir2OLJKidbx4EHKCqf1iT0W7wRkeO28OvLUBc2KUnf254ow4T2l3C hQ== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3q8u9d5stg-1
+ bh=hov1Zo1lnPY6atYbUmrFa5EKgki3mIk0ZVqrusDVusk=;
+ b=rs/uDbFYsE/NTeaGMPiiTCv1Xnch/CJ85Z3WW8lJDXmkNeUNPepWwNYTvEf9+lMpKXYJ
+ Gaowi35FG+IWJhwuiMFoL3oSNWLp83W3zlptodOOd/T3kaeGw2nrKYf9FoH0VmLenrYM
+ TfIxCVTzrvP5squahRIEyCblYTFb5gfIaZil96P/GZDe3pXzUhg25hmP62EGyuXTBYjl
+ LpO8AigQnYGkyreJCM/GYOV8pRCRA3M1ARonVjIUzEm/JHHmLOnueLx+6CkJv4VS/t0F
+ xcJtAd/FJ0vCVA7Vnb1RIa7G+tWkrfUynKpKgo/Fp0FG+guaUuxB7QpQbidJqivU8zaa 1g== 
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3q8u4awe51-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 05 May 2023 18:58:42 +0000
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 345IohcY040488;
-        Fri, 5 May 2023 18:58:41 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2109.outbound.protection.outlook.com [104.47.58.109])
-        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3q8spa9jw0-1
+        Fri, 05 May 2023 18:59:32 +0000
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 345HVOkU009977;
+        Fri, 5 May 2023 18:59:31 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2108.outbound.protection.outlook.com [104.47.58.108])
+        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3q8spar1f0-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 05 May 2023 18:58:41 +0000
+        Fri, 05 May 2023 18:59:31 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SLTZYI1Msm8pKZ/30WGgz+TrE8ycQy7kw9loiAhF1i4+ZZNHlW7AMxlPfj0NkvBYuOhgiFgCp7BsqtuAjpDqfzLSwho7NLhj3RGGHx4knv6/OM4Tnla5ckpuDtd98FzfGvJ19UEtKEYjlDhKrkS2hZPYQ/R0Ay1gqhxwDNFv+cQWvHhAYdaPytRx5oTqaOsKo78v80VGJTrtrrx8jdTQuEdmwDsbRc1J+wsNNe99H/hvPrqF4HfJJKOlpR6nRUWuqfXsQuBJkn82djJALG2uCp8qDH91Q44qhhUznZoOQ70YGj3GgkWgg423gTzHDhM2pLsaeoNAKmBPwjYaJ7sGfg==
+ b=oD0ii5d1mxlbvSMLgbG/AM8JvOHwvY5ryPnpMJbJ36TqrAWRHycbOG0CtLTY/rJR9LOuraJ1jzCccmBbD2QV9o7Qg7UILGlZh8xTmIohWq/pbjt83+h+erQKTtBitMTMIK043kgq2r6ZQYKdvSB2EHvqOPeHhS2v3pviIOAHSrshas9UcGPm/Dm3dcm4P6oecGU5rBgrC/xpnuoPCyidzmAiAp5+Ke9wHjRykI2xwhafMwMnnDaJXK9F2O1dIYlPoOT+BKd/PuX7tDWoLpEtBzOqvRpR8uOsmXYymzp5oRF3VI8XmG3Je4Jw1uty38R21yL8GFpYgNFLweqWsbXVkw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pry8GVbrG+CEtF4FH9E0CbaI/MzrHh84Qtktw/8/8zw=;
- b=FRJrCutp7kjF61FDxtxeheUbBVnlmy+tko5Mtjt1WZVxGylDoOxE1eGnv14vNQH2dwEGH2OV+JKyyRsy/7GK0e5bZTaD4krOpa8H57FO/827Fikrh374n5k4Rh9Y3345kj+Rfw9jck9NDe7RA+yhGJuEeKS7nh0HgJjP0J6f2djjbYER9AOP0amVt6nuItKC0TDtTdveu3+p7gRQ7iiRABouui8f0f73XnFVAKKUxKgQLVq0agALJusHB28AOPEHAVJvxER072f78dvOaYyjT3zNFEMWWTzZcUqEqy0fR14eQVNj8q8xKAKr+IOs1CSX3EMxy97WPggioMP5fmxa7Q==
+ bh=hov1Zo1lnPY6atYbUmrFa5EKgki3mIk0ZVqrusDVusk=;
+ b=H8SGsqmI8WhbYy0wrN+kdM+4S8Npw7Qf8yjg/vpkrbTESnY4rDvvtW9sdskrPrJwKhnruXzuLpqkJBMXuvU12Xgacb+TPk0TQ22cJUCEwItYOwAMZCXPhdF9Mnu0FvaZH1fULbfrW8tpkwf53Hb9Op1nXL7fhmiwtzZlDe7gLdGyU3YJuZfPXXjd2iQIhk3mfce2kTahQN+BdlUd09Z5tfIM5ussZCNLk7DEAh7+gKVA96wuUKIz2F2HOl5v2o4nWpV5S9B/PSG700NMv7AOFoaLF/EKduE3m9nrOVwdlSH7xyGsYpVd5hAdMx5dh+4zGDPI8tltMVPTgY/HIgongw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pry8GVbrG+CEtF4FH9E0CbaI/MzrHh84Qtktw/8/8zw=;
- b=jASMhUrXW2n/gtPz5HGmSvt4lb9ivuj5ntCMmZoXuMkdl029cKgSBQ022RQmcRX2N0HzqNJcUI/twu3mllGbsKRPpsSJ69DEn2IqRUZI9RWvL3wJSyVeBJBu1IWJ8EXeUG+s5T57BR2n1RPubNzTKKaHPq0AOvyVRvkUEQ5MOPA=
+ bh=hov1Zo1lnPY6atYbUmrFa5EKgki3mIk0ZVqrusDVusk=;
+ b=jYtgB9SFGbP8H1qr6HAH6RfCEAWJ4210Z1CCHHfeHQ00vc+SffWdvRworEs+41AJBHlhrBbQXTdws24kenbWlC5l98dG2obQUW/dvNB1WT0clBTmM89V+PK5lgG/Sd2UswDjp3SmTQO6x6Tn3N6kGd0KxvSXEjM5HZbPVA6RsvY=
 Received: from BY5PR10MB3793.namprd10.prod.outlook.com (2603:10b6:a03:1f6::14)
  by PH8PR10MB6528.namprd10.prod.outlook.com (2603:10b6:510:228::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.22; Fri, 5 May
- 2023 18:58:33 +0000
+ 2023 18:59:28 +0000
 Received: from BY5PR10MB3793.namprd10.prod.outlook.com
  ([fe80::a007:b0c1:5cb:329a]) by BY5PR10MB3793.namprd10.prod.outlook.com
  ([fe80::a007:b0c1:5cb:329a%5]) with mapi id 15.20.6363.026; Fri, 5 May 2023
- 18:58:33 +0000
-Message-ID: <81ce947c-07a0-0975-1d09-776fb03c64b9@oracle.com>
-Date:   Fri, 5 May 2023 14:58:28 -0400
+ 18:59:28 +0000
+Message-ID: <12e91cad-340c-cf90-ab10-16b099bb254f@oracle.com>
+Date:   Fri, 5 May 2023 14:59:24 -0400
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.7.1
-Subject: Re: [PATCH v6 07/14] x86: Secure Launch kernel early boot stub
+Subject: Re: [PATCH v6 08/14] x86: Secure Launch kernel late boot stub
 Content-Language: en-US
 To:     Simon Horman <horms@kernel.org>
 Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
@@ -78,10 +78,10 @@ Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
         nivedita@alum.mit.edu, kanth.ghatraju@oracle.com,
         trenchboot-devel@googlegroups.com
 References: <20230504145023.835096-1-ross.philipson@oracle.com>
- <20230504145023.835096-8-ross.philipson@oracle.com>
- <ZFVBLCLVK7AAStst@kernel.org>
+ <20230504145023.835096-9-ross.philipson@oracle.com>
+ <ZFVCZ1EDxQgdyocc@kernel.org>
 From:   Ross Philipson <ross.philipson@oracle.com>
-In-Reply-To: <ZFVBLCLVK7AAStst@kernel.org>
+In-Reply-To: <ZFVCZ1EDxQgdyocc@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: CH2PR10CA0007.namprd10.prod.outlook.com
@@ -90,101 +90,101 @@ X-ClientProxiedBy: CH2PR10CA0007.namprd10.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BY5PR10MB3793:EE_|PH8PR10MB6528:EE_
-X-MS-Office365-Filtering-Correlation-Id: d4882146-9ff9-429d-b312-08db4d9ab91a
+X-MS-Office365-Filtering-Correlation-Id: bcf74abc-6207-4cac-c8f3-08db4d9ada22
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: k3m8oRoLXLp5x9ptNFc3Ctd8oImDaa7O1lXeDMGzxytNR1zLR6iftFwlOkaYYj9xhsag31uigQ0ngkyiGPtOCGu7OIffmrReR2C9KeflHZzCCA1TKTy7+C/OPVNk5uUxLJ9U6l7pagmUCMwQfv4YdUWMicg3UDv1Z1IIX5zGx715ljzqGIvfteYkWrT30rbF0oEn3IAnAWTs45U0KBBRBZFNSyLaA5A2P6E6k1uD/GOncEkIIKziNvjC+FerVQilKCKpvly1AZddhnyIGEclH5pGiFO85ldOSjUESaQqor5pdyGYIAL4wFSnHSuhWSzueXD+o13tJoiWnqBAO6p42f9WKveTz+LCcjeZ82dyYsVTA++LgMVOntKvdZ1wyLjRHNR3MHiy1cEO1vnuIDZOQcjjbKqP0bx+KT+kXuwSNnqJNuOhvz0F97aop4kkKOWRgj1HK5EKJxOoKbSmh6hf9PbOKUF2ijoyqNGn9U64j4qAq8esHw06BEJNDeIlACspv9i5UmcEbRkoPmyFfdl25C2VcsfA772OA/BQfpN1mxunxq49omKljCoDlRjW/8z5DMQVRUBp1sPdhlHnRoAumuvZIHLHE6FhXjlEvxeOUfSSw1WpNajEl6a9RMkSdrcQrtX1mgQFqN2235BP51X4wg==
+X-Microsoft-Antispam-Message-Info: gh/KGENgzHzIzimH7KV082qPHdd10GSplup/3iQ/RemcXAqVgpTu/58TyKn3Uj/z25lMjhIP1O6bayvRIoavqmElZCbWm5xEMfD6KFJ8QhRlJ81IfkwCWYLgl0HRNBjzyH35rtqXFFq2qJkz+5JasYEgIHXgrkxjV6MAbe7TU0GM12YZ0H3KVGOoYBkQraKp0q4jdOY3sZOMHVb0t5gNawaiPYZtmjlWXGlI+3VC1dRGxEqkRbSGFiaLsmCbQMISPuL7FyxzUerj7XSF1DcoanVc7zSr/vOMoDPSwUACoNk9jlyVabka2X47g/CCkIxaN4vB4SMvApEGX0xS+kBObjBgchPyu8nd26UkChVm91Rg2T10I3PYlXbFGk0tmenVFsC0MpmDcwVgtW2iFGr7qmSHC9DmNYlE9Ym79m7rk6EuDl4jKqeu9zEpiISYx12G09aKlek67vxWj0rZ9ouJAceY82S4RAROA3bIJqRzB21EAGAHZXmEfJLKQx/o74dpF6Cr2oRLtCGR5C+xf0gp6XWXBvRKFyzPUQEcfJ+GZIg1qXBsMqFRsh+GQwEb/FE9hpXpaLHXtTWlcuALs/I6IJ1UVUBfbjpfpCtyFLD5vYeKOaow0c8iJJpzuw+X8bnH4hulWfvPXk3s34I6WXjA1A==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR10MB3793.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(376002)(136003)(396003)(366004)(39860400002)(451199021)(2906002)(6916009)(8936002)(66556008)(66946007)(8676002)(316002)(4326008)(66476007)(31686004)(41300700001)(478600001)(7416002)(44832011)(6486002)(6666004)(6512007)(83380400001)(5660300002)(53546011)(6506007)(186003)(2616005)(36756003)(86362001)(31696002)(38100700002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cVd2QkR0YWU1cmcxQVpwcjBqSjRyUzIxc0hxTWFwQTREWGVqVDNkNTlzVGZl?=
- =?utf-8?B?eWYwS0YvWnBEaDN6OTJpMVZCWE52OXl0dWJFTUZKQ2dvOW9mb0Izam9zOUJE?=
- =?utf-8?B?TldQNXQ3TXFMbWluZVAvRXFMRzA2TThIRkZqbnFnV0hLNzhZeFpmVkY1dHZq?=
- =?utf-8?B?dG9qdmV1OTE1eC9xL2I5R2pqWTRyWVBpbE5NK3pQZXVGV1JDNlAxSUdJdzlT?=
- =?utf-8?B?UEhJUEo0bzhuZEtCT2tFWm4vUzhYSWtjMW1zQVBOcXdVZHgxZU4xMmdybnpR?=
- =?utf-8?B?cGxlTkJkTUgzczFPdDVLYURsTmxLOEVIbkFEalB1VEhDZEJDWitOcVMvVEJs?=
- =?utf-8?B?QzgxNUZsL25uekdpemNDT0hhREl2ZnFuZnhBSW9TYW5jdmpyVFJsWDJEQzhJ?=
- =?utf-8?B?Q0FZS0ZXdW84cXZ2TDZ0MGZNNU14QXc0SEQvU0NtUGNEb20weVNyYUNKSE9M?=
- =?utf-8?B?anh1cDhPSGNtaTllSm1zYnlnZzBTZTZ2NUUzNWw3RHlqSjgvcGpzdXRERi9F?=
- =?utf-8?B?TDVEWjlFV2d2TjhUMmw3NlhFVytpNU41ZjZFRUd2ZFluOHRUaEJGZmM2TE8z?=
- =?utf-8?B?Nk5XMytqMDhjU2JxWG5JTGdrcmllZjI5dWJnSUhxTVZsemMrcVdxVU5YeWhv?=
- =?utf-8?B?NUhNbmdkS3o4b3Qyam5NVlhIaWhNV2pnWkpwWGc1NlAvRm1zV2kvelJ1aWVN?=
- =?utf-8?B?U3RYNXFQVFl1R3BIQzU1VGZjNFpMc0V5anI0YWk5VlBCSjBlb0M4NHFBREw1?=
- =?utf-8?B?S1MxZ2tIRUpNdHVvUHVMd3BKbVRyQ042N2ZUeG1FMDE4SktpMGZvZk1WSHh3?=
- =?utf-8?B?T2hUY0pscXVLK0M3QlpOVnpwa1owTG9uM0NmSjAzMUxTeCtwSU55d2lKa3pi?=
- =?utf-8?B?UURmdUs4U2UxbHlBejNwWHAzV2hCb2R6dGQ3ZmlIRTFrY0I2QWpMVUtsMFRV?=
- =?utf-8?B?cktBTUpvZ1VDNmk2aFpYUmxuK0NsbExZNVhkMHRZYW1ZOXhUK091dUVKNjQx?=
- =?utf-8?B?MEJNLzJ3OU9IQ1piRkRGbzRiRHFCUXZxTXdvWUo0YnNEN0dpV1NsZXhBeUQ4?=
- =?utf-8?B?VFBSbWlDUzA1SzhYMXB2SC9tN05SOWJDYXNoMllwM0FlcWR5ZjM3SUVYZGpx?=
- =?utf-8?B?ZDBubVpvbUNpOG1yOFVydTArcnVPZnF2eTdENE9DMGdYVXUrb3o5ZzR6dTA0?=
- =?utf-8?B?emM3b1poNVFOc2ZLeUZnRnFkT2ZBYXN2Vkd3T0oyR0xOVWNLVXgvQXZ1TE1o?=
- =?utf-8?B?UnUwMzdkc3FPdC90TkthTk9EMmw2d1JVSk9ocWNxdHVCanhaWldWbzcvSE5z?=
- =?utf-8?B?SEZQeVJmdEFtNzV6a3F1ai9kUkxSVGZzN2pUVTdibWN0UGduemlkcFdTUXVo?=
- =?utf-8?B?aUp0RnArdFpCVFAwakN2MFRkbU9ucThiVXVGRXRTcXRaS0Mybm5Xd04wUVZG?=
- =?utf-8?B?MWlYK09FOGNreDdMR2FFd011cDZrN1BlaVJkb0tBMVhESE1zZHRSSndqTDlm?=
- =?utf-8?B?Nktsd01QUkFkN0Nrc1JGR092WG1rYmR5dUJsSC9TQ1dWQ2RwRTFMMVBMeVo0?=
- =?utf-8?B?SXhkQXoxeEJMZzFxM3dTUDJmU1hnWGJoZUIrUzRIWFhTaEJleEZELzZzYWcr?=
- =?utf-8?B?VDlmNFExTHJGMjB0aWJpTS9KMFpadERvYklnQys0blJhaU10R3ZJckJnSFdm?=
- =?utf-8?B?Y3hBaytxR2Zsejh1OS9IbHQvWTNrSjFKTExWTmtGRFlTTHR3S2ZhNVBnNHUw?=
- =?utf-8?B?L2poMWUxdXliV3llQjNGZmJYVks1b2xoRndxdnZPYUNNd2VzNXl1bnc4K05D?=
- =?utf-8?B?UGhuNC9yaXJGRGMwTVFqRCs3RkhpSGhwbCtUSTZ6M2ZXSUVYTVFpT1ozeEJm?=
- =?utf-8?B?cEJZdnNuK3oxRm1MaERyeDhzUHNlMlNtUmIxb0VMaGJtM0xMNC9GM3ZDMzJF?=
- =?utf-8?B?bU9WTGh5amo0YzNIZmFPOU9TNW0yblJiMDRkRXhjQWxLcnlYRXYrWklkMlV5?=
- =?utf-8?B?WnNhaE5ERHZJb3FyQWZJNHBZWUNhbFQrRS9uaU5oajZTM3QrVEIwd2Z0YzJm?=
- =?utf-8?B?ZnVGSlBObkdTMldVUTRvUVdDZ29sTnA0WGhSQlo0alI5MVpxVW5pc3EzWlBU?=
- =?utf-8?B?L3dwR0VKYUxuWWpLUmRLUlNMWEFlWloyK1JnUVBoV01CY1NnenBTaW92emJz?=
- =?utf-8?Q?nbjjHONHymllOvprN4grRVM=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SVUvcjZnVkxhZ05qR3NUckJjbXBPRmV2WkZRWjU4Mjc5WlZoTWZFVjA1dEhX?=
+ =?utf-8?B?OVlYTGVCbVdMWnovUEVyZ3J5ZzR2TW9ScHBQVTgrc2x5WmFFOERRMy9jaHVr?=
+ =?utf-8?B?WEI5UHl1RnhURXdQQWsvWTladjFsVWRXUHNkKytjZmtIbG4rb0NybEtpN2l0?=
+ =?utf-8?B?V1hubDVkMTB2K2JiSjJ0VUlVSWpwTTVEWlc2V01mMmNRcDdDeWY0Vzd1bDl3?=
+ =?utf-8?B?RC96ckR2d3p4OTludzhtS0FIREFKdmhNM1RFY1JTK2FTTXk5TGlUSU44SGtZ?=
+ =?utf-8?B?TklmN2NHdWFWS296VllqTU5GY251aGVaYWNaY1VWOE8vam5IRXpaemwwM3VK?=
+ =?utf-8?B?VVFPWVNzbE5IM044aWM2N1JxYXdZNGRRdWtmNXNzYk1BOVREbEFpUEs5dG1X?=
+ =?utf-8?B?Um15cFdRS3BISnVSQktnTmhOcW5PQm01Z2ZhVEpUUkVrdTc0eVBrNysxNHJa?=
+ =?utf-8?B?UWl0TU5BTFJPU2NDZGltV2tlbTVicHBJYzFUWjdBTUtRTHR4QTBjZEVaVnZt?=
+ =?utf-8?B?Mm1md3VQbHoxVU9BeXUzUmVDSjJ6YWtUSU5sQ0c2Qi9KUW1naUN5TzhtU3A4?=
+ =?utf-8?B?OFJGRkJJMlFrNnlkVnZmeEsrNGgyRTBaeEt6dFZXUVRUYUszL0xiaEpLbGlW?=
+ =?utf-8?B?NW1pSnE5cEk3MU5ydU5tcmhBaUxPeEFzVnlVdEkxREYyTUxjeFRDUitkSDRv?=
+ =?utf-8?B?K3BEQ1lidThDWExzd0VWeUo1blRtVjBYbUVMR3B5WnlSYmxiNE8rM05pZUx2?=
+ =?utf-8?B?RU5hNHFabGhuRXEzTmNQdzBhai96U2ErdHU4angxSmpGTWl3RmJTanFsY2xO?=
+ =?utf-8?B?b2JxT1E1OHl1REFwcjZ4SGF4N2lRUjl5TnR2UVVqTU5aTThCS25CVzl6QjBP?=
+ =?utf-8?B?eEZLRG95Y004Y0FoQlpEOEJZWGhFcXExWXpYa252YWJyaWdSYnlvV2wzTFY1?=
+ =?utf-8?B?WVVockFLWXRjM1A4WUdackQwL0FlbkNHcEFJU0FZSDJPNmdVeHg3clQrc0l5?=
+ =?utf-8?B?UGJsVVZ0TzFiTGtJWUU0dnZiUXB3YWpNTXJVNnVSTE9PRU1DalNJWlVjYTEy?=
+ =?utf-8?B?dGlMbnQvTU8vK21XUnBGSTN2aFkwTzg4cS94Qm5IbE1LSG8rc0pUc2xuZHhM?=
+ =?utf-8?B?Zk1TMmp6ZW5hU3RhL3FodEFZd3NDTGg4ME9IbFdZWThzdlNsWTAxSkRvOGll?=
+ =?utf-8?B?ay9NTnFyTzdlV2MvY0NGVnlmM015elhOMk9mMEpzWi8wSzZodmlBeEQxZ2dW?=
+ =?utf-8?B?eFFqTThEVVFJbXZuT0VwaU1XRmUzbmZPbmJ5eEhoZnBRcm85T1JxNzEzSVU4?=
+ =?utf-8?B?R3JHTTIzcmNyUDN6QmZsRW5DZy9VWW1iSHdVa3pIOEJCZSt2WlZaWXZGMG1Y?=
+ =?utf-8?B?eWpEQkxhVmZxWTlZWTc0SWx6bC9sYVNmTlNKdTRSalRnV2lsRllGZjFYT0ZO?=
+ =?utf-8?B?R1FUcEZxRlhmYld4b3Q5allxU3I0dVlFb2FZdDlEcGd2alcySmg0V1hkZ0px?=
+ =?utf-8?B?V2FaVEFRMkhlMmI2UGhqL3FkbldEc3MwQVpMZ2RDRndKUTNLd1hINGtRbjJx?=
+ =?utf-8?B?NS9TT1NpV1RsRm9NVGhCRkRLVFZkbTExdjFmSlBqdG44akF6Wm53TDRvcVF4?=
+ =?utf-8?B?VVE3aldJSWVYRmNlOWpkWFptMmRLNVE2M2gwVTVjcnA3d1hjN01rdXBlMkhN?=
+ =?utf-8?B?TklXUnR4eDVxZ21oZ1hSYWdZNVYzV1VoYTdQYVE4RmREcmZodnZkakhUNHZ3?=
+ =?utf-8?B?Z2dwbzVsWUVWbUJsY0FBT2srOTNBWEpzTHB0UGoyU1dYWmNkZGVkaS9DbGtB?=
+ =?utf-8?B?dkxpL3hjUVVnbkhwL2phWm1PSkIwZ05qWGpVcmsxSy9sckZ4TnorTVFvWHls?=
+ =?utf-8?B?K05uMmxlWktZTUtUQmw0NmtjMFVxYWlmeDZDUk54SWo0WFdQaW03MWJjV2p5?=
+ =?utf-8?B?d09ZbG9PSUN3MVVGcm1RME1RYVljdy9qWU5QcnFVOGJyWWJxZ3FpSWVmNVlM?=
+ =?utf-8?B?TzAybER5TG4yQTFZa2V2ZzZRY0FRZGVKbk9QSUY4OThaRUg2aGlNVVNyQld5?=
+ =?utf-8?B?VnFGNG1xbUkvbVk5N2ZGbmVONHFTM213M0s4NzVEVXRVdVVoNjBkY2lPd2g0?=
+ =?utf-8?B?TkdLNGlGbnhhQ2Qxako2KzkxV0NBS2taZWk4NUMvUzFUa1pmbDdTUGlZalhl?=
+ =?utf-8?Q?UbiPCEvKjVkyXW/KY6vcL6U=3D?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?utf-8?B?eENMUTNKWEcyMXh2cCtXYmJrcFdzdTNJTGlOamtjemtISEV1VVZTQmx5aUVW?=
- =?utf-8?B?MU5Fc0FIVnFzUitaODRIa0RjQ3ZUeUtYdjJGOTcvTUVmNmpteklXTmlEaVBY?=
- =?utf-8?B?NjdnR2d1MTZxa0FFeGZvVlEyZXJiUWtJbnhIWGdkQlRUL3p3RnYrSFM1aE1Z?=
- =?utf-8?B?TlJRUUwyRE1rZDQ5VEpCc1JVTEJDUXJpeU9UelNHbWFQbXA1ejlEeG1jS25X?=
- =?utf-8?B?WERnT2xNemt0UGE2a3FscnA2LzNuRHlIWkRTLzNGVHRISTQ5UE9IcnVLSzlr?=
- =?utf-8?B?a1p6Rkp1L05YcVRyb1ZTdkEwUWFjWWpoZFhScWtwWjN3enlkQUx6N3FQdWZK?=
- =?utf-8?B?ZUNOSHNhMDFJT3ZScUZOMzd3RkJ5dVU1ZjFsazNJcXJZMHMxaFl6SDhXSGlH?=
- =?utf-8?B?STZVaFRHblRYaVhDUEp5anBXWWc0d0Jla1lUai9lMmFMOGVpOVh4ZCs4QjRD?=
- =?utf-8?B?SHdSMnMyQlR6QkNWSEFrTXdXL3ZIV0FiTVl0b01TaU5tSkNLVEVtWUVzZ0Vu?=
- =?utf-8?B?dnJkaWNEeXRsUDZ0VmF1MzEzQXVrUXQrZ3pXZE1aZ0szdy80dUtqVVRVeEZt?=
- =?utf-8?B?OWhmVHhmZlNEZ09qdnd2L1RhaTVrMUt0MWhxRXNHamdLSEdDVTd4Tm1UQkF0?=
- =?utf-8?B?VHg1cm8vY1kwd3BXWmpEalo0bllTRGlBL3dCV2F2aWxpdmVzM3Y2ckdsKy9j?=
- =?utf-8?B?eE1pcWhGSjNMaTJvVmJvd2w5ZEp0R255Ujh5eVkrMkF2c0ljZnBUL3BQaENh?=
- =?utf-8?B?QkVIdVJYVUh4MGhxYVhYeEpuMW8ra2VvS3BXQUFkQnNtNzV5UHIwRHFlcDRw?=
- =?utf-8?B?bDVBWTgxS2crajc4RUxrSy8vYlpOMk5tS3prbGlOakhFSi9od2Vjalpyamhp?=
- =?utf-8?B?dzIrOEhNQlB0MmhDVU5Dc0ZvQW1jUTg1U1pMVFlFSHVaZmxMZHNjcFF2SlMr?=
- =?utf-8?B?UmZEbDBjYTIxalNqaGtjVVZwY0g0dms3RThRaVlsU0pKK1VDSzZ4TWxZc3RF?=
- =?utf-8?B?ckJnaVZ6NFhOTHVjV1FJSDQ5REJEMGd0OG1ETUt5VGsxdXUzUjBjRHA1U0dj?=
- =?utf-8?B?QzZ2akRGdWFtTFY4ZDRMVlFFWVVaK2FFRTl5SGdpSDB4RDl0Z29lanQvSVFy?=
- =?utf-8?B?V3JpVGVzQmh2QU02Y3RqQlZFQ3VnaE5sYk5WTjBnUkpXT1NzRm90NUdEZFZU?=
- =?utf-8?B?SHp1UmREWnNaZjVveTJxOGpzTitaV2ZpcExiYW0rU0xmcWNyUnBKRHcvaVVG?=
- =?utf-8?B?QW9vc1p4QXpMTFJHRGUxSnBmZ2xTdkZSc0pGUDg5VU80dGhhNG1HQmhIWUgv?=
- =?utf-8?B?OVNJVGN2eVNWL3N4clA0V2VQalJSVktHUGY1Si9JMkFHMnVQNEVkd3lIN25K?=
- =?utf-8?B?OWliY1pjWG4wdHo4Wk5FZFZBTjgyc1Q3RXg1S0dCdnpLbEUzZWVDTnUyVkwr?=
- =?utf-8?B?eWplSjA0ZXBUdzdITU5adnB6NEE3Z0hqWktVbHpGN2U2cnNXa0RoWW1PRW1Q?=
- =?utf-8?B?L1MyTVF2YVVEbDIyeEFWVVk3d2QxMVQrazRzdW9sRmQ1T0JVeDl3Nk91QnAw?=
- =?utf-8?B?YXg3WmFiY1dEK0NobHRPcFptQW5YU0FmNWYxNHJSM3VzdzNIczdsZDNlbElN?=
- =?utf-8?B?TnlxcUpwaS92dlNzWHJtMmRiWG5OSGtQeUU3UlpmVDE0OE94SExyOXI1Sk04?=
- =?utf-8?B?a2NPSWc4OWovV2RFb0tpOHMrTC9GV01sd0YxSmZZdUxFSVVwNFl6UnVxS1R6?=
- =?utf-8?Q?MYZQabEBeLCJU2ezeU=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?utf-8?B?ZGprb1ZxMzBUcW9NbS9ZbUcxQTVtL3pGSzdjQjFQdXJ4cmY5TG4wSEkxNFBW?=
+ =?utf-8?B?S2dZczJIS0NtZU5Ud2dzemVjTHVBSTNIdmJnVFc4cEFXM0VFUURpa29EWXZY?=
+ =?utf-8?B?cGUxSktNNE9md2RmcWNSemplM0pPSzZRN0F0NVJkTEpHTDA2SDFtSFZ4Z3BU?=
+ =?utf-8?B?SGVJcHVzYnFzZVZZSmRjMGVxUkF2Z0RWbzBmSkVYMk5XUUdmSTVibEt2SmJa?=
+ =?utf-8?B?MWxGMXQxTFc5Q2EvNHRjc3dLb2FjYjgvTnIxbmNycVVkSnd5L3VDaXZJRHVF?=
+ =?utf-8?B?dXduV2JxTzB3VGZzTi8rVlRNM24zM3Q1MDFDQjNmVFpMK3pDTTg5Mlo5WlVk?=
+ =?utf-8?B?L1RWSTNEeUNTRDg1b1FCZ3VLcVlZL3pBdU5pM2RCdURCcEJwazhsK1paTUNJ?=
+ =?utf-8?B?TGszVndPZ0tGM05XWVp3Uzh6b1NkaFllM2d5VHdPOWhmMTZnQWtaTTk2YjF0?=
+ =?utf-8?B?SmRBSzN2MGFyTWlvaCt3VlhlOURVZG5mRWEvb2Z3Zk9zTEU4SVFKZG1nN2t1?=
+ =?utf-8?B?UlNCdWlFM2hzTWZrQXhkWUhBbDZBbzg0VzUwbklWMGJnQkxaWHhweXFtVVNy?=
+ =?utf-8?B?bHV0bDF0dmFrYUU1MFExSFMwMVpjSWhiVzVINVQvNVFCUWlleHpSM08rQkph?=
+ =?utf-8?B?WElGdk13aS81bUJVWmlscE5ZVDdyaDFjMnhFajhseWVpU0dRQjBWNVVocGxE?=
+ =?utf-8?B?a3kvUlRJc0NQay8rWDcrSmtUS25ieHZmWkEwU1dMZjZSR3dRVExiUElsTE5l?=
+ =?utf-8?B?Y0k5RklwbjVuRGpOOE95ZEJkYjJkckh0dXhRNEpnQ0lNMUJ4YzBEWFEzdVhy?=
+ =?utf-8?B?dVNWTGgvb1d4bzNpemk5SlBwN2c4T2tIYUIzcU5BeVVnMExSUzBKNkdEVUhr?=
+ =?utf-8?B?YlZNVTA2K0x4TVF3TWJpRzJJdGQxL0l3SEdabTVMcExWNzI1QTVXdnh1WDBw?=
+ =?utf-8?B?ejlBN2tNMlhkRldOUXB5aWhpcGQ2VWhpanZsM3RENEFIR0F0Y3JrSFBFUnRu?=
+ =?utf-8?B?YStqVW5UT0tRbUpkczl6UEdZYnRRYU1kQ0F5S3V3MmVuOHRZWHBXcjVlOXdp?=
+ =?utf-8?B?dW1ZMy8rbm4wR0UwR05TQmZaLys3MDUrTklpUE01SXVOaE5NS1A0U01ZYkx5?=
+ =?utf-8?B?NE80VGlmeDR0c1JTSE1BWmsxRCtPUmlZMTcwRXdFT1lJdkZMTmcyVDRNNnFR?=
+ =?utf-8?B?N3hXU0ExNlpkVGNvdXJFcVA0anp0VGV1cXNScnlraEVyMEFOdzF3VlhuS25Z?=
+ =?utf-8?B?TWEvM3k5UkNBVTBITVdJWkJ6NXNEam5ISU14V2VBS2FWNG04RzZVcFBnZENx?=
+ =?utf-8?B?cEhuSG1mS0RpODFEK2lnR1R1UmNBTy92UHZSTTJSQWc4eXNQR09BNFdPUTJE?=
+ =?utf-8?B?SVlIRTgvcjh3amJDMFJzVDlxWUZZZDdWdGNJUjJUY1RuRXdMaFNuaUNrakdL?=
+ =?utf-8?B?Q3N4UTdITFNZamRPWk0yeU9hcVRBbWVrWjBJUFFIak8zMGZMTjdtWXdtdS9z?=
+ =?utf-8?B?MXJKZkxXbDl0NjZ0Ump5SytYWDJ2SFZpTmNIRWFLWFp2TFpSWTFqaWdyYWpK?=
+ =?utf-8?B?MGRaeVBLQkNscDJjemkyRVE5R3RHbCtlRXNZOFZ2T3BXUC9RV0ZOeHk4UjY2?=
+ =?utf-8?B?T1FCRVM2dWxXNW1ndFRDV2NJc1VScWFsdkJOMy9tc3JyR1NUZjVXSmVuWkRX?=
+ =?utf-8?B?VHZEc3RtaElRSkF6SUVJKzdSVlg0UE0yNS9udURlOGYvMTJmOHRPNFNqbVp3?=
+ =?utf-8?Q?QnabJinHvUE42HsZAs=3D?=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d4882146-9ff9-429d-b312-08db4d9ab91a
+X-MS-Exchange-CrossTenant-Network-Message-Id: bcf74abc-6207-4cac-c8f3-08db4d9ada22
 X-MS-Exchange-CrossTenant-AuthSource: BY5PR10MB3793.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2023 18:58:33.1885
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2023 18:59:28.5183
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TGi5gCEWbPrPj04izK8AqvlRAHQVFJQGEF7x1XOayJzpuFj4EX4LyXMnQgXRvuS8J4CBw6Xa/ydR4jB2TON/SQ+pWNuZWv0xOjQjxPpST+8=
+X-MS-Exchange-CrossTenant-UserPrincipalName: e1+lRPm9qGjLkF/roGwrBb5REdCK5JC2i7zx6y3oqob0FVU3jCx2/93E3NxlrnZdhcuYYFaoBrGy+d0vYHnYplZVoP3o0zxGXDl7ATXQhuo=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR10MB6528
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
  definitions=2023-05-05_25,2023-05-05_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
- phishscore=0 bulkscore=0 suspectscore=0 mlxscore=0 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2305050156
-X-Proofpoint-GUID: EtA2dQCsd5cc4m3Nr2_BeqEg4pd3hOZC
-X-Proofpoint-ORIG-GUID: EtA2dQCsd5cc4m3Nr2_BeqEg4pd3hOZC
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
+ mlxlogscore=999 bulkscore=0 suspectscore=0 mlxscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303200000
+ definitions=main-2305050156
+X-Proofpoint-GUID: HcDV2fjBMqNXuqLCEyHslCsOUo_qow11
+X-Proofpoint-ORIG-GUID: HcDV2fjBMqNXuqLCEyHslCsOUo_qow11
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
@@ -195,303 +195,280 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 5/5/23 13:47, Simon Horman wrote:
-> On Thu, May 04, 2023 at 02:50:16PM +0000, Ross Philipson wrote:
->> The Secure Launch (SL) stub provides the entry point for Intel TXT (and
->> later AMD SKINIT) to vector to during the late launch. The symbol
->> sl_stub_entry is that entry point and its offset into the kernel is
->> conveyed to the launching code using the MLE (Measured Launch
->> Environment) header in the structure named mle_header. The offset of the
->> MLE header is set in the kernel_info. The routine sl_stub contains the
->> very early late launch setup code responsible for setting up the basic
->> environment to allow the normal kernel startup_32 code to proceed. It is
->> also responsible for properly waking and handling the APs on Intel
->> platforms. The routine sl_main which runs after entering 64b mode is
->> responsible for measuring configuration and module information before
->> it is used like the boot params, the kernel command line, the TXT heap,
->> an external initramfs, etc.
+On 5/5/23 13:52, Simon Horman wrote:
+> On Thu, May 04, 2023 at 02:50:17PM +0000, Ross Philipson wrote:
+>> The routine slaunch_setup is called out of the x86 specific setup_arch
+>> routine during early kernel boot. After determining what platform is
+>> present, various operations specific to that platform occur. This
+>> includes finalizing setting for the platform late launch and verifying
+>> that memory protections are in place.
+>>
+>> For TXT, this code also reserves the original compressed kernel setup
+>> area where the APs were left looping so that this memory cannot be used.
 >>
 >> Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
 > 
-> ...
+> Hi Ross,
 > 
->> diff --git a/arch/x86/boot/compressed/sl_main.c b/arch/x86/boot/compressed/sl_main.c
-> 
-> ...
-> 
->> +static void *evtlog_base;
->> +static u32 evtlog_size;
->> +static struct txt_heap_event_log_pointer2_1_element *log20_elem;
->> +static u32 tpm_log_ver = SL_TPM12_LOG;
->> +struct tcg_efi_specid_event_algs tpm_algs[SL_TPM20_MAX_ALGS] = {0};
-> 
-> tpm_algs seems to only be used in this file.
-> Should it be static?
-> 
->> +
->> +extern u32 sl_cpu_type;
->> +extern u32 sl_mle_start;
->> +extern struct boot_params *boot_params;
->> +
->> +static u64 sl_txt_read(u32 reg)
-> 
-> Perhaps reg should have an __iomem annotation.
-> 
->> +{
->> +	return readq((void *)(u64)(TXT_PRIV_CONFIG_REGS_BASE + reg));
->> +}
->> +
->> +static void sl_txt_write(u32 reg, u64 val)
-> 
-> Likewise here.
-> 
-> ...
-> 
->> +static void sl_check_pmr_coverage(void *base, u32 size, bool allow_hi)
->> +{
->> +	struct txt_os_sinit_data *os_sinit_data;
->> +	void *end = base + size;
->> +	void *txt_heap;
->> +
->> +	if (!(sl_cpu_type & SL_CPU_INTEL))
->> +		return;
->> +
->> +	txt_heap = (void *)sl_txt_read(TXT_CR_HEAP_BASE);
->> +	os_sinit_data = txt_os_sinit_data_start(txt_heap);
->> +
->> +	if ((end >= (void *)0x100000000ULL) &&
->> +	    (base < (void *)0x100000000ULL))
->> +		sl_txt_reset(SL_ERROR_REGION_STRADDLE_4GB);
->> +
->> +	/*
->> +	 * Note that the late stub code validates that the hi PMR covers
->> +	 * all memory above 4G. At this point the code can only check that
->> +	 * regions are within the hi PMR but that is sufficient.
->> +	 */
->> +	if ((end > (void *)0x100000000ULL) &&
->> +	    (base >= (void *)0x100000000ULL)) {
->> +		if (allow_hi) {
->> +			if (end >= (void *)(os_sinit_data->vtd_pmr_hi_base +
->> +					   os_sinit_data->vtd_pmr_hi_size))
->> +				sl_txt_reset(SL_ERROR_BUFFER_BEYOND_PMR);
->> +		} else
->> +			sl_txt_reset(SL_ERROR_REGION_ABOVE_4GB);
-> 
-> nit: if any arm of a condition has '{}' then all arms should have them.
->       So:
-> 
-> 		} else {
-> 			sl_txt_reset(SL_ERROR_REGION_ABOVE_4GB);
-> 		}
-> 
-> Also elsewhere in this patch.
-> 
->> +	}
->> +
->> +	if (end >= (void *)os_sinit_data->vtd_pmr_lo_size)
->> +		sl_txt_reset(SL_ERROR_BUFFER_BEYOND_PMR);
->> +}
->> +
->> +/*
->> + * Some MSRs are modified by the pre-launch code including the MTRRs.
->> + * The early MLE code has to restore these values. This code validates
->> + * the values after they are measured.
->> + */
->> +static void sl_txt_validate_msrs(struct txt_os_mle_data *os_mle_data)
->> +{
->> +	struct slr_txt_mtrr_state *saved_bsp_mtrrs;
->> +	u64 mtrr_caps, mtrr_def_type, mtrr_var;
->> +	struct slr_entry_intel_info *txt_info;
->> +	u64 misc_en_msr;
->> +	u32 vcnt, i;
->> +
->> +	txt_info = (struct slr_entry_intel_info *)os_mle_data->txt_info;
->> +	saved_bsp_mtrrs = &(txt_info->saved_bsp_mtrrs);
-> 
-> nit: unnecessary parentheses
-> 
-> ...
-> 
->> +static void sl_validate_event_log_buffer(void)
->> +{
->> +	struct txt_os_sinit_data *os_sinit_data;
->> +	void *txt_heap, *txt_end;
->> +	void *mle_base, *mle_end;
->> +	void *evtlog_end;
->> +
->> +	if ((u64)evtlog_size > (LLONG_MAX - (u64)evtlog_base))
->> +		sl_txt_reset(SL_ERROR_INTEGER_OVERFLOW);
->> +	evtlog_end = evtlog_base + evtlog_size;
->> +
->> +	txt_heap = (void *)sl_txt_read(TXT_CR_HEAP_BASE);
->> +	txt_end = txt_heap + sl_txt_read(TXT_CR_HEAP_SIZE);
->> +	os_sinit_data = txt_os_sinit_data_start(txt_heap);
->> +
->> +	mle_base = (void *)(u64)sl_mle_start;
->> +	mle_end = mle_base + os_sinit_data->mle_size;
->> +
->> +	/*
->> +	 * This check is to ensure the event log buffer does not overlap with
->> +	 * the MLE image.
->> +	 */
->> +	if ((evtlog_base >= mle_end) &&
->> +	    (evtlog_end > mle_end))
->> +		goto pmr_check; /* above */
-> 
-> Ditto.
-> Also, the if condition could be one line.
-> Also in several other places in this patch.
-> 
->> +
->> +	if ((evtlog_end <= mle_base) &&
->> +	    (evtlog_base < mle_base))
->> +		goto pmr_check; /* below */
->> +
->> +	sl_txt_reset(SL_ERROR_MLE_BUFFER_OVERLAP);
->> +
->> +pmr_check:
->> +	/*
->> +	 * The TXT heap is protected by the DPR. If the TPM event log is
->> +	 * inside the TXT heap, there is no need for a PMR check.
->> +	 */
->> +	if ((evtlog_base > txt_heap) &&
->> +	    (evtlog_end < txt_end))
->> +		return;
->> +
->> +	sl_check_pmr_coverage(evtlog_base, evtlog_size, true);
->> +}
-> 
->> +static void sl_process_extend_policy(struct slr_table *slrt)
->> +{
->> +	struct slr_entry_policy *policy;
->> +	struct slr_policy_entry *entry;
->> +	u16 i = 0;
->> +
->> +	policy =(struct slr_entry_policy *)
-> 
-> nit: space after '='
-> 
-> ...
-> 
->> +static void sl_process_extend_uefi_config(struct slr_table *slrt)
->> +{
->> +	struct slr_entry_uefi_config *uefi_config;
->> +	struct slr_uefi_cfg_entry *uefi_entry;
->> +	u64 i;
->> +
->> +	uefi_config =(struct slr_entry_uefi_config *)
->> +		slr_next_entry_by_tag(slrt, NULL, SLR_ENTRY_UEFI_CONFIG);
->> +
->> +	/* Optionally here depending on how SL kernel was booted */
->> +	if (!uefi_config)
->> +		return;
->> +
->> +	uefi_entry = (struct slr_uefi_cfg_entry *)((u8 *)uefi_config + sizeof(*uefi_config));
->> +
->> +	for ( ; i < uefi_config->nr_entries; i++, uefi_entry++) {
-> 
-> nit: i seems to be used without first being initialised.
+> a few nits from my side.
 
-All the ones prior to this we will fix.
-
-> 
->> +		sl_tpm_extend_evtlog(uefi_entry->pcr, TXT_EVTYPE_SLAUNCH,
->> +				     (void *)uefi_entry->cfg, uefi_entry->size,
->> +				     uefi_entry->evt_info);
->> +	}
->> +}
->> +
->> +asmlinkage __visible void sl_check_region(void *base, u32 size)
->> +{
->> +	sl_check_pmr_coverage(base, size, false);
->> +}
-> 
-> I'm a nit unsure, what to do here, but clang-16 with W=1 says the following.
-> 
-> arch/x86/boot/compressed/sl_main.c:533:27: warning: no previous prototype for function 'sl_main' [-Wmissing-prototypes]
-> asmlinkage __visible void sl_main(void *bootparams)
->                            ^
-> arch/x86/boot/compressed/sl_main.c:533:22: note: declare 'static' if the function is not intended to be used outside of this translation unit
-> asmlinkage __visible void sl_main(void *bootparams)
->                       ^
->                       static
-
-Yea we will have to look into why this is. This function is only ever 
-called from asm code so that might have something to do with this.
-
-> 
-> ...
-> 
->> diff --git a/arch/x86/boot/compressed/sl_stub.S b/arch/x86/boot/compressed/sl_stub.S
->> new file mode 100644
->> index 0000000..2d8aa3a
->> --- /dev/null
->> +++ b/arch/x86/boot/compressed/sl_stub.S
->> @@ -0,0 +1,690 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +
->> +/*
->> + * Secure Launch protected mode entry point.
->> + *
->> + * Copyright (c) 2022, Oracle and/or its affiliates.
->> + */
->> +	.code32
->> +	.text
->> +#include <linux/linkage.h>
->> +#include <asm/segment.h>
->> +#include <asm/msr.h>
->> +#include <asm/processor-flags.h>
->> +#include <asm/asm-offsets.h>
->> +#include <asm/bootparam.h>
->> +#include <asm/page_types.h>
->> +#include <asm/irq_vectors.h>
->> +#include <linux/slr_table.h>
->> +#include <linux/slaunch.h>
->> +
->> +/* CPUID: leaf 1, ECX, SMX feature bit */
->> +#define X86_FEATURE_BIT_SMX	(1 << 6)
->> +
->> +/* Can't include apiddef.h in asm */
->> +#define XAPIC_ENABLE	(1 << 11)
->> +#define X2APIC_ENABLE	(1 << 10)
->> +
->> +/* Can't include traps.h in asm */
->> +#define X86_TRAP_NMI	2
->> +
->> +/* Can't include mtrr.h in asm */
->> +#define MTRRphysBase0	0x200
->> +
->> +#define IDT_VECTOR_LO_BITS	0
->> +#define IDT_VECTOR_HI_BITS	6
->> +
->> +/*
->> + * See the comment in head_64.S for detailed informatoin on what this macro
-> 
-> nit: s/informatoin/information/
-> 
-> ...
-> 
->> diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
->> index 01d19fc..74e3e7df 100644
->> --- a/arch/x86/include/uapi/asm/bootparam.h
->> +++ b/arch/x86/include/uapi/asm/bootparam.h
->> @@ -26,6 +26,7 @@
->>   /* loadflags */
->>   #define LOADED_HIGH	(1<<0)
->>   #define KASLR_FLAG	(1<<1)
->> +#define SLAUNCH_FLAG	(1<<2)
->>   #define QUIET_FLAG	(1<<5)
->>   #define KEEP_SEGMENTS	(1<<6)
->>   #define CAN_USE_HEAP	(1<<7)
-> 
-> nit: please consider using BIT()
-
-I am a little reluctant to change something like this in an existing 
-header. It seems a bit out of scope for the patch set.
+Yup we will fix all of those.
 
 Thanks
 Ross
 
 > 
+>> +/*
+>> + * The TXT heap is too big to map all at once with early_ioremap
+>> + * so it is done a table at a time.
+>> + */
+>> +static void __init *txt_early_get_heap_table(void __iomem *txt, u32 type,
+>> +					     u32 bytes)
+>> +{
+>> +	u64 base, size, offset = 0;
+>> +	void *heap;
+>> +	int i;
+>> +
+>> +	if (type > TXT_SINIT_TABLE_MAX)
+>> +		slaunch_txt_reset(txt,
+>> +			"Error invalid table type for early heap walk\n",
+>> +			SL_ERROR_HEAP_WALK);
+> 
+> nit: the indentation should align to the opening '('.
+> 
+> 		slaunch_txt_reset(txt,
+> 				  "Error invalid table type for early heap walk\n",
+> 				  SL_ERROR_HEAP_WALK);
+> 
+> Likewise in a few other places in this patch.
+> 
 > ...
+> 
+>> +static void __init slaunch_txt_reserve_range(u64 base, u64 size)
+>> +{
+>> +	int type;
+>> +
+>> +	type = e820__get_entry_type(base, base + size - 1);
+>> +	if (type == E820_TYPE_RAM) {
+>> +		pr_info("memblock reserve base: %llx size: %llx\n", base, size);
+>> +		memblock_reserve(base, size);
+>> +	}
+>> +}
+>> +
+>> +/*
+>> + * For Intel, certain regions of memory must be marked as reserved by putting
+>> + * them on the memblock reserved list if they are not already e820 reserved.
+>> + * This includes:
+>> + *  - The TXT HEAP
+>> + *  - The ACM area
+>> + *  - The TXT private register bank
+>> + *  - The MDR list sent to the MLE by the ACM (see TXT specification)
+>> + *  (Normally the above are properly reserved by firmware but if it was not
+>> + *  done, reserve them now)
+>> + *  - The AP wake block
+>> + *  - TPM log external to the TXT heap
+>> + *
+>> + * Also if the low PMR doesn't cover all memory < 4G, any RAM regions above
+>> + * the low PMR must be reservered too.
+> 
+> nit: s/reservered/reserved/
+> 
+>> + */
+>> +static void __init slaunch_txt_reserve(void __iomem *txt)
+>> +{
+>> +	struct txt_sinit_memory_descriptor_record *mdr;
+>> +	struct txt_sinit_mle_data *sinit_mle_data;
+>> +	u64 base, size, heap_base, heap_size;
+>> +	u32 mdrnum, mdroffset, mdrslen;
+>> +	u32 field_offset, i;
+>> +	void *mdrs;
+>> +
+>> +	base = TXT_PRIV_CONFIG_REGS_BASE;
+>> +	size = TXT_PUB_CONFIG_REGS_BASE - TXT_PRIV_CONFIG_REGS_BASE;
+>> +	slaunch_txt_reserve_range(base, size);
+>> +
+>> +	memcpy_fromio(&heap_base, txt + TXT_CR_HEAP_BASE, sizeof(heap_base));
+>> +	memcpy_fromio(&heap_size, txt + TXT_CR_HEAP_SIZE, sizeof(heap_size));
+>> +	slaunch_txt_reserve_range(heap_base, heap_size);
+>> +
+>> +	memcpy_fromio(&base, txt + TXT_CR_SINIT_BASE, sizeof(base));
+>> +	memcpy_fromio(&size, txt + TXT_CR_SINIT_SIZE, sizeof(size));
+>> +	slaunch_txt_reserve_range(base, size);
+>> +
+>> +	field_offset = offsetof(struct txt_sinit_mle_data,
+>> +				sinit_vtd_dmar_table_size);
+>> +	sinit_mle_data = txt_early_get_heap_table(txt, TXT_SINIT_MLE_DATA_TABLE,
+>> +						  field_offset);
+>> +
+>> +	mdrnum = sinit_mle_data->num_of_sinit_mdrs;
+>> +	mdroffset = sinit_mle_data->sinit_mdrs_table_offset;
+>> +
+>> +	txt_early_put_heap_table(sinit_mle_data, field_offset);
+>> +
+>> +	if (!mdrnum)
+>> +		goto nomdr;
+>> +
+>> +	mdrslen = mdrnum * sizeof(struct txt_sinit_memory_descriptor_record);
+>> +
+>> +	mdrs = txt_early_get_heap_table(txt, TXT_SINIT_MLE_DATA_TABLE,
+>> +					mdroffset + mdrslen - 8);
+>> +
+>> +	mdr = mdrs + mdroffset - 8;
+>> +
+>> +	for (i = 0; i < mdrnum; i++, mdr++) {
+>> +		/* Spec says some entries can have length 0, ignore them */
+>> +		if (mdr->type > 0 && mdr->length > 0)
+>> +			slaunch_txt_reserve_range(mdr->address, mdr->length);
+>> +	}
+>> +
+>> +	txt_early_put_heap_table(mdrs, mdroffset + mdrslen - 8);
+>> +
+>> +nomdr:
+>> +	slaunch_txt_reserve_range(ap_wake_info.ap_wake_block,
+>> +				  ap_wake_info.ap_wake_block_size);
+>> +
+>> +	/*
+>> +	 * Earlier checks ensured that the event log was properly situated
+>> +	 * either inside the TXT heap or outside. This is a check to see if the
+>> +	 * event log needs to be reserved. If it is in the TXT heap, it is
+>> +	 * already reserved.
+>> +	 */
+>> +	if (evtlog_addr < heap_base || evtlog_addr > (heap_base + heap_size))
+>> +		slaunch_txt_reserve_range(evtlog_addr, evtlog_size);
+>> +
+>> +	for (i = 0; i < e820_table->nr_entries; i++) {
+>> +		base = e820_table->entries[i].addr;
+>> +		size = e820_table->entries[i].size;
+>> +		if ((base >= vtd_pmr_lo_size) && (base < 0x100000000ULL))
+> 
+> nit: unnecessary parentheses
+> 
+>> +			slaunch_txt_reserve_range(base, size);
+>> +		else if ((base < vtd_pmr_lo_size) &&
+>> +			 (base + size > vtd_pmr_lo_size))
+>> +			slaunch_txt_reserve_range(vtd_pmr_lo_size,
+>> +						  base + size - vtd_pmr_lo_size);
+>> +	}
+>> +}
+>> +
+>> +/*
+>> + * TXT stashes a safe copy of the DMAR ACPI table to prevent tampering.
+>> + * It is stored in the TXT heap. Fetch it from there and make it available
+>> + * to the IOMMU driver.
+>> + */
+>> +static void __init slaunch_copy_dmar_table(void __iomem *txt)
+>> +{
+>> +	struct txt_sinit_mle_data *sinit_mle_data;
+>> +	u32 field_offset, dmar_size, dmar_offset;
+>> +	void *dmar;
+>> +
+>> +	memset(&txt_dmar, 0, PAGE_SIZE);
+>> +
+>> +	field_offset = offsetof(struct txt_sinit_mle_data,
+>> +				processor_scrtm_status);
+>> +	sinit_mle_data = txt_early_get_heap_table(txt, TXT_SINIT_MLE_DATA_TABLE,
+>> +						  field_offset);
+>> +
+>> +	dmar_size = sinit_mle_data->sinit_vtd_dmar_table_size;
+>> +	dmar_offset = sinit_mle_data->sinit_vtd_dmar_table_offset;
+>> +
+>> +	txt_early_put_heap_table(sinit_mle_data, field_offset);
+>> +
+>> +	if (!dmar_size || !dmar_offset)
+>> +		slaunch_txt_reset(txt,
+>> +				  "Error invalid DMAR table values\n",
+>> +				  SL_ERROR_HEAP_INVALID_DMAR);
+>> +
+>> +	if (unlikely(dmar_size > PAGE_SIZE))
+>> +		slaunch_txt_reset(txt,
+>> +				  "Error DMAR too big to store\n",
+>> +				  SL_ERROR_HEAP_DMAR_SIZE);
+>> +
+>> +
+> 
+> nit: one blank line is enough
+> 
+>> +	dmar = txt_early_get_heap_table(txt, TXT_SINIT_MLE_DATA_TABLE,
+>> +					dmar_offset + dmar_size - 8);
+>> +	if (!dmar)
+>> +		slaunch_txt_reset(txt,
+>> +				  "Error early_ioremap of DMAR\n",
+>> +				  SL_ERROR_HEAP_DMAR_MAP);
+>> +
+>> +	memcpy(&txt_dmar[0], dmar + dmar_offset - 8, dmar_size);
+>> +
+>> +	txt_early_put_heap_table(dmar, dmar_offset + dmar_size - 8);
+>> +}
+> 
+> ...
+> 
+>> +/*
+>> + * Intel TXT specific late stub setup and validation.
+>> + */
+>> +void __init slaunch_setup_txt(void)
+>> +{
+>> +	u64 one = TXT_REGVALUE_ONE, val;
+>> +	void __iomem *txt;
+>> +
+>> +	if (!boot_cpu_has(X86_FEATURE_SMX))
+>> +		return;
+>> +
+>> +	/*
+>> +	 * If booted through secure launch entry point, the loadflags
+>> +	 * option will be set.
+>> +	 */
+>> +	if (!(boot_params.hdr.loadflags & SLAUNCH_FLAG))
+>> +		return;
+>> +
+>> +	/*
+>> +	 * See if SENTER was done by reading the status register in the
+>> +	 * public space. If the public register space cannot be read, TXT may
+>> +	 * be disabled.
+>> +	 */
+>> +	txt = early_ioremap(TXT_PUB_CONFIG_REGS_BASE,
+>> +			    TXT_NR_CONFIG_PAGES * PAGE_SIZE);
+>> +	if (!txt)
+>> +		return;
+>> +
+>> +	memcpy_fromio(&val, txt + TXT_CR_STS, sizeof(val));
+>> +	early_iounmap(txt, TXT_NR_CONFIG_PAGES * PAGE_SIZE);
+>> +
+>> +	/* SENTER should have been done */
+>> +	if (!(val & TXT_SENTER_DONE_STS))
+>> +		panic("Error TXT.STS SENTER_DONE not set\n");
+>> +
+>> +	/* SEXIT should have been cleared */
+>> +	if (val & TXT_SEXIT_DONE_STS)
+>> +		panic("Error TXT.STS SEXIT_DONE set\n");
+>> +
+>> +	/* Now we want to use the private register space */
+>> +	txt = early_ioremap(TXT_PRIV_CONFIG_REGS_BASE,
+>> +			    TXT_NR_CONFIG_PAGES * PAGE_SIZE);
+>> +	if (!txt) {
+>> +		/* This is really bad, no where to go from here */
+>> +		panic("Error early_ioremap of TXT priv registers\n");
+>> +	}
+>> +
+>> +	/*
+>> +	 * Try to read the Intel VID from the TXT private registers to see if
+>> +	 * TXT measured launch happened properly and the private space is
+>> +	 * available.
+>> +	 */
+>> +	memcpy_fromio(&val, txt + TXT_CR_DIDVID, sizeof(val));
+>> +	if ((val & 0xffff) != 0x8086) {
+>> +		/*
+>> +		 * Can't do a proper TXT reset since it appears something is
+>> +		 * wrong even though SENTER happened and it should be in SMX
+>> +		 * mode.
+>> +		 */
+>> +		panic("Invalid TXT vendor ID, not in SMX mode\n");
+>> +	}
+>> +
+>> +	/* Set flags so subsequent code knows the status of the launch */
+>> +	sl_flags |= (SL_FLAG_ACTIVE|SL_FLAG_ARCH_TXT);
+> 
+> nit: spaces around '|'
+> 
+> ...
+> 
 
