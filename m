@@ -2,112 +2,96 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F5906F89C2
-	for <lists+linux-efi@lfdr.de>; Fri,  5 May 2023 21:47:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F24DC6F9061
+	for <lists+linux-efi@lfdr.de>; Sat,  6 May 2023 09:56:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233241AbjEETrJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 5 May 2023 15:47:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37688 "EHLO
+        id S229872AbjEFH4s (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 6 May 2023 03:56:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232137AbjEETrI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 5 May 2023 15:47:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0D8DE0;
-        Fri,  5 May 2023 12:47:07 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 40EC160DBE;
-        Fri,  5 May 2023 19:47:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD1EC433EF;
-        Fri,  5 May 2023 19:46:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683316026;
-        bh=Sb2KgQ5DsUgQ8xKWmkYNMl26e38BQYOVMpl/Vac7Mlc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=elsCHSqNwFxUfu6VDPA5BgwMa9uPCAgvGK/9pAW2TU5GB9bI3Ll6zAfgwLZ0x/r5R
-         IluW+zvNltdv9tF/cWmtu/jBRAAqCK5t2m8FHh2N6sAIIyhxca/kBfj26fVEeoWd2L
-         A2r85aEVAIz5tUkrO73+HjZlYFK2Hmh7eFe7uuLwvJg4PXMsc+efjVhtqEnrcUOG3P
-         ULB+CdNJnc7D3UqmB9EY104YZbopRSB4H5PLwfM4gBQWbRTiDjSNdEafQuGCZngOO3
-         ZJ/Sv/PL7t1UG3pd7QfV1iPUyhYqUn3e6R7gLh6KK4sIutQOZ+ihxN1XWeAU8Hc+Y7
-         F5IdlWXYgma6Q==
-Date:   Fri, 5 May 2023 21:46:56 +0200
-From:   Simon Horman <horms@kernel.org>
-To:     Ross Philipson <ross.philipson@oracle.com>
-Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
+        with ESMTP id S229460AbjEFH4i (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 6 May 2023 03:56:38 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 129339ED5;
+        Sat,  6 May 2023 00:56:38 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-6434e65d808so2913123b3a.3;
+        Sat, 06 May 2023 00:56:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683359797; x=1685951797;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aSXqKKL2DM5ohMjcHFVamqTpkCqxvyAHPkfC2Zw2f2Y=;
+        b=ICQZu93FaTdOWK1lWtPwQ6fV3se+udSFcWL+PX02WV5hmUCuWM1vm69LM2Ew0WtkAG
+         AYwB/VBtO9q9nBrGgXxxp/P7t4YJjwxxloHfy+W2rj6QtoooYwfzSw4FG30PhManLORX
+         Dobl3L47/V0W4e3uq5DXNhAonfv5CuHhePYN2W1AWFVaSOSJpcLz0TP09p6VUgCRl5nE
+         WtzDFfac+YTPQ4y17OXd+J/Kv7YF4lyiR+QElUsHM/w6FjjThXGnbkK74JFI9fJtNEfZ
+         KSnk6rzR6p0+/iN64StLdRR4o5D9Z9HMDD4Q9H3y+lIKkXnFm1GJftui1DejIzFwB1OQ
+         A9kA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683359797; x=1685951797;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aSXqKKL2DM5ohMjcHFVamqTpkCqxvyAHPkfC2Zw2f2Y=;
+        b=GN0fS0s9KRfj9T6ECCJHv3qe5tjnM7wK8lGM0BG2Fie2tRoFauOGvxgHGc2Uxw8Gf9
+         Tus5arpXfKpJazGAKceJbRB7x/x0xU7l0pYB/UoCEeSCK8RE4fz3AZpUFzxrPpfthGS/
+         qm+uzXoe59qnrzY+Rkd04UkmaAYpcvsgPB0mN7BR7ygbs41qw02AdnMsCeVnUuVvdz0o
+         jQDkJfGjKdiLzn4GM02e0AkBgULhL6Jx+wpdIEgdhYJs1E02rec/lK9bgDRZwGffNv8I
+         5jpgnZtOGwEgb5S+5P9ZkCP7fhl2szuOZq9haV0URNDqN7xGU3TVhK7WpQPUuw35sXMo
+         Icsw==
+X-Gm-Message-State: AC+VfDwK88u+16Q9HHmwHvJtnV2Favgjag+WriqoQ1MRIjw3epB1fUMQ
+        phke0VXsoYqRGcVtH9B5fdI=
+X-Google-Smtp-Source: ACHHUZ4RWbkiR7mdDfiHmHp/BQEz0RuV+uOOFyLTWkWCNB+y/nFFtdZpPV2V1ex8dOzmoZa/+razmA==
+X-Received: by 2002:a05:6a00:1483:b0:63b:89a9:529f with SMTP id v3-20020a056a00148300b0063b89a9529fmr5038706pfu.14.1683359797435;
+        Sat, 06 May 2023 00:56:37 -0700 (PDT)
+Received: from [192.168.43.80] (subs03-180-214-233-66.three.co.id. [180.214.233.66])
+        by smtp.gmail.com with ESMTPSA id e19-20020aa78253000000b0063b96574b8bsm2648811pfn.220.2023.05.06.00.56.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 06 May 2023 00:56:37 -0700 (PDT)
+Message-ID: <0f62ff02-f601-e629-6524-972441035129@gmail.com>
+Date:   Sat, 6 May 2023 14:56:30 +0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v6 00/14] x86: Trenchboot secure dynamic launch Linux
+ kernel support
+Content-Language: en-US
+To:     Ross Philipson <ross.philipson@oracle.com>,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
         linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
         linux-crypto@vger.kernel.org, iommu@lists.linux-foundation.org,
-        kexec@lists.infradead.org, linux-efi@vger.kernel.org,
-        dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com,
+        kexec@lists.infradead.org, linux-efi@vger.kernel.org
+Cc:     dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com,
         bp@alien8.de, hpa@zytor.com, ardb@kernel.org, mjg59@srcf.ucam.org,
         James.Bottomley@hansenpartnership.com, luto@amacapital.net,
         nivedita@alum.mit.edu, kanth.ghatraju@oracle.com,
         trenchboot-devel@googlegroups.com
-Subject: Re: [PATCH v6 07/14] x86: Secure Launch kernel early boot stub
-Message-ID: <ZFVdMJIQ+4BmXvhN@kernel.org>
 References: <20230504145023.835096-1-ross.philipson@oracle.com>
- <20230504145023.835096-8-ross.philipson@oracle.com>
- <ZFVBLCLVK7AAStst@kernel.org>
- <81ce947c-07a0-0975-1d09-776fb03c64b9@oracle.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <81ce947c-07a0-0975-1d09-776fb03c64b9@oracle.com>
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+ <ZFTA0kg98XxeP2Hh@debian.me>
+ <765a94ac-ed2c-267d-0ee9-be21757ceb16@oracle.com>
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+In-Reply-To: <765a94ac-ed2c-267d-0ee9-be21757ceb16@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, May 05, 2023 at 02:58:28PM -0400, Ross Philipson wrote:
-> On 5/5/23 13:47, Simon Horman wrote:
-> > On Thu, May 04, 2023 at 02:50:16PM +0000, Ross Philipson wrote:
-
-...
-
-> > > +asmlinkage __visible void sl_check_region(void *base, u32 size)
-> > > +{
-> > > +	sl_check_pmr_coverage(base, size, false);
-> > > +}
-> > 
-> > I'm a nit unsure, what to do here, but clang-16 with W=1 says the following.
-> > 
-> > arch/x86/boot/compressed/sl_main.c:533:27: warning: no previous prototype for function 'sl_main' [-Wmissing-prototypes]
-> > asmlinkage __visible void sl_main(void *bootparams)
-> >                            ^
-> > arch/x86/boot/compressed/sl_main.c:533:22: note: declare 'static' if the function is not intended to be used outside of this translation unit
-> > asmlinkage __visible void sl_main(void *bootparams)
-> >                       ^
-> >                       static
+On 5/5/23 22:45, Ross Philipson wrote:
+> Sorry about that. In the future I will include a base-commit field. It is based off of torvolds/master as of 5/1/2023. The branch where the patches came from is now pushed to the TrenchBoot repository here:
 > 
-> Yea we will have to look into why this is. This function is only ever called
-> from asm code so that might have something to do with this.
-
-Thanks.
-
-...
-
-> > > diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
-> > > index 01d19fc..74e3e7df 100644
-> > > --- a/arch/x86/include/uapi/asm/bootparam.h
-> > > +++ b/arch/x86/include/uapi/asm/bootparam.h
-> > > @@ -26,6 +26,7 @@
-> > >   /* loadflags */
-> > >   #define LOADED_HIGH	(1<<0)
-> > >   #define KASLR_FLAG	(1<<1)
-> > > +#define SLAUNCH_FLAG	(1<<2)
-> > >   #define QUIET_FLAG	(1<<5)
-> > >   #define KEEP_SEGMENTS	(1<<6)
-> > >   #define CAN_USE_HEAP	(1<<7)
-> > 
-> > nit: please consider using BIT()
+> https://github.com/TrenchBoot/linux/tree/linux-sl-master-5-1-23-v6
 > 
-> I am a little reluctant to change something like this in an existing header.
-> It seems a bit out of scope for the patch set.
 
-Yes, sorry for the noise on this one.
-I agree that what you have is the best approach here.
+Pulled, thanks!
+
+-- 
+An old man doll... just what I always wanted! - Clara
+
