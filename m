@@ -2,82 +2,65 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AADF16F9CE2
-	for <lists+linux-efi@lfdr.de>; Mon,  8 May 2023 01:47:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C19BF6FA06B
+	for <lists+linux-efi@lfdr.de>; Mon,  8 May 2023 09:03:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232401AbjEGXr0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 7 May 2023 19:47:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53956 "EHLO
+        id S232050AbjEHHDn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 8 May 2023 03:03:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231976AbjEGXqz (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 7 May 2023 19:46:55 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D784CCA;
-        Sun,  7 May 2023 16:46:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683503207; x=1715039207;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=aZopMiOqySx7JndnTrSUPweowgUAMNn3NhckmECikp4=;
-  b=eZRwUJPYk+1Km1lSN6haNvsxiGDGu0ZZglcrJvXLB22n7HnHWM13ErZd
-   dWFC34iTSWCXL1BEFmuuZgFdHIu7hzVYocwrWZipqOkAUuNDA1bv4qrVi
-   6HYmMw+k+jIqg2X4hh9Nks7qpaPG2g8JiAuz3lfonRwKu4Kgfu7jS7a8v
-   Fd/CPrmANtBj5CxwrtNUGzHYz7wzsd3nM81Zp8SVkPwB5GFHeuVYPy0ip
-   iBn8E6TbvH2D544x46v28ZVKkdllYvEBgjrGuBXuFKzRUbOzm3qUzUUIF
-   fjG7hQCTPvFF8TMjzT4ymEjTBlxVO9tUQJTlTVSdLnQG4PKcNFJubRh50
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="349550325"
-X-IronPort-AV: E=Sophos;i="5.99,258,1677571200"; 
-   d="scan'208";a="349550325"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2023 16:46:40 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="701222816"
-X-IronPort-AV: E=Sophos;i="5.99,258,1677571200"; 
-   d="scan'208";a="701222816"
-Received: from dancaspi-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.61.73])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2023 16:46:33 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-        id 833ED10D48E; Mon,  8 May 2023 02:46:20 +0300 (+03)
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
+        with ESMTP id S231882AbjEHHDn (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 8 May 2023 03:03:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53071139;
+        Mon,  8 May 2023 00:03:41 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD39661F86;
+        Mon,  8 May 2023 07:03:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715C0C433D2;
+        Mon,  8 May 2023 07:03:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1683529420;
+        bh=B2H6ikO6eA03jSankn0Mwcxu2D042jtg18LHSELfZS8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=mZAGK2HxsfgEnC2AgZTjACQfusFi7tQ9ZoqkA7SPXvtOTTuolNHuasp7tA7xqVbu5
+         J0VrzszjHzbVSWx8TGyiusGLIhe9D1bBypmurjWdrXeuqa3VpfJYvD10wDALPf/drJ
+         xLK8JHg1dWOfmto37sKXBJCtMdvBg0qf4U4LQUGtVAbugMQXeLAMckOZ37YldimCNl
+         Cidxa8yKZ2xsjcc5pKPnnQugmhJ0NJ1ICwMXgm2+sw9+6taMi96LxCaB6H2nURKnDy
+         MW/N4j+qHm0dVoSj7RmXze4z994AXzWFYz3ufYfdlXHnAW/jAQpm3BqGqhj1PVHlgw
+         lEPfVpod3pjvg==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        Evgeniy Baskov <baskov@ispras.ru>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
         Ingo Molnar <mingo@redhat.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
-        khalid.elmously@canonical.com, philip.cox@canonical.com,
-        aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
-        linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv10 11/11] x86/tdx: Add unaccepted memory support
-Date:   Mon,  8 May 2023 02:46:18 +0300
-Message-Id: <20230507234618.18067-12-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20230507234618.18067-1-kirill.shutemov@linux.intel.com>
-References: <20230507234618.18067-1-kirill.shutemov@linux.intel.com>
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Peter Jones <pjones@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Dave Young <dyoung@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH v2 00/20] efi/x86: Avoid bare metal decompressor during EFI boot
+Date:   Mon,  8 May 2023 09:03:10 +0200
+Message-Id: <20230508070330.582131-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7370; i=ardb@kernel.org; h=from:subject; bh=B2H6ikO6eA03jSankn0Mwcxu2D042jtg18LHSELfZS8=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JISVi3gpflYzXKTVqejHOPguvMO5KthJoZptx5vDr4CAvH RHl00kdpSwMYhwMsmKKLAKz/77beXqiVK3zLFmYOaxMIEMYuDgFYCKKSxj+WWbzFK6caPatprDU LJ95X/alwynxzBNzMs7NYPoW1L7yBiPDrURpg53vr+6qmxtp/MmVfe1uzzU51jX71IQyb0ly58p zAgA=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -85,505 +68,145 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hookup TDX-specific code to accept memory.
+This is v2 of [2], which updates the x86 boot path to avoid the legacy
+decompressor when booting via the EFI stub.
 
-Accepting the memory is the same process as converting memory from
-shared to private: kernel notifies VMM with MAP_GPA hypercall and then
-accept pages with ACCEPT_PAGE module call.
+TL;DR the bare metal decompressor inherits the loader's 1:1 mapping of
+DRAM when entering in 64-bit mode, and assumes that all of it is mapped
+read/write/execute, which will no longer be the case on hardware built
+to comply with recently tightened logo requirements (*).
 
-The implementation in core kernel uses tdx_enc_status_changed(). It
-already used for converting memory to shared and back for I/O
-transactions.
+Changes since v1:
+- streamline existing 4/5 level switching code and call it directly from
+  the EFI stub - this is covered by the first 9 patches, which can be
+  applied in isolation, if desired;
+- deal with SEV/SNP init explicitly;
+- clear BSS when booting via the 'handover protocol'
+- switch to kernel CS before calling SEV init code in kernel proper.
 
-Boot stub provides own implementation of tdx_accept_memory(). It is
-similar in structure to tdx_enc_status_changed(), but only cares about
-converting memory to private.
+Conceptually, this should not conflict with the memory acceptance work
+which is being done by Kirill [3], but some lexical conlicts are not
+unlikely. After applying this series, the allocations done by the EFI
+stub for the trampoline and the decompressed kernel will use the EFI
+page allocation APIs, and will therefore not need explicit acceptance. 
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- arch/x86/Kconfig                      |  2 +
- arch/x86/boot/compressed/Makefile     |  2 +-
- arch/x86/boot/compressed/error.c      | 19 ++++++
- arch/x86/boot/compressed/error.h      |  1 +
- arch/x86/boot/compressed/mem.c        | 33 +++++++++-
- arch/x86/boot/compressed/tdx-shared.c |  2 +
- arch/x86/boot/compressed/tdx.c        | 39 +++++++++++
- arch/x86/coco/tdx/Makefile            |  2 +-
- arch/x86/coco/tdx/tdx-shared.c        | 95 +++++++++++++++++++++++++++
- arch/x86/coco/tdx/tdx.c               | 86 +-----------------------
- arch/x86/include/asm/shared/tdx.h     |  2 +
- arch/x86/include/asm/tdx.h            |  2 +
- arch/x86/mm/unaccepted_memory.c       |  9 ++-
- 13 files changed, 206 insertions(+), 88 deletions(-)
- create mode 100644 arch/x86/boot/compressed/tdx-shared.c
- create mode 100644 arch/x86/coco/tdx/tdx-shared.c
+---- v1 cover letter follows ----
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 53bab123a8ee..5c72067c06d4 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -884,9 +884,11 @@ config INTEL_TDX_GUEST
- 	bool "Intel TDX (Trust Domain Extensions) - Guest Support"
- 	depends on X86_64 && CPU_SUP_INTEL
- 	depends on X86_X2APIC
-+	depends on EFI_STUB
- 	select ARCH_HAS_CC_PLATFORM
- 	select X86_MEM_ENCRYPT
- 	select X86_MCE
-+	select UNACCEPTED_MEMORY
- 	help
- 	  Support running as a guest under Intel TDX.  Without this support,
- 	  the guest kernel can not boot or run under TDX.
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index 74f7adee46ad..71d9f71c13eb 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -106,7 +106,7 @@ ifdef CONFIG_X86_64
- endif
- 
- vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
--vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o
-+vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdx-shared.o $(obj)/tdcall.o
- vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/bitmap.o $(obj)/find.o $(obj)/mem.o
- 
- vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
-diff --git a/arch/x86/boot/compressed/error.c b/arch/x86/boot/compressed/error.c
-index c881878e56d3..5313c5cb2b80 100644
---- a/arch/x86/boot/compressed/error.c
-+++ b/arch/x86/boot/compressed/error.c
-@@ -22,3 +22,22 @@ void error(char *m)
- 	while (1)
- 		asm("hlt");
- }
-+
-+/* EFI libstub  provides vsnprintf() */
-+#ifdef CONFIG_EFI_STUB
-+void panic(const char *fmt, ...)
-+{
-+	static char buf[1024];
-+	va_list args;
-+	int len;
-+
-+	va_start(args, fmt);
-+	len = vsnprintf(buf, sizeof(buf), fmt, args);
-+	va_end(args);
-+
-+	if (len && buf[len - 1] == '\n')
-+		buf[len - 1] = '\0';
-+
-+	error(buf);
-+}
-+#endif
-diff --git a/arch/x86/boot/compressed/error.h b/arch/x86/boot/compressed/error.h
-index 1de5821184f1..86fe33b93715 100644
---- a/arch/x86/boot/compressed/error.h
-+++ b/arch/x86/boot/compressed/error.h
-@@ -6,5 +6,6 @@
- 
- void warn(char *m);
- void error(char *m) __noreturn;
-+void panic(const char *fmt, ...) __noreturn __cold;
- 
- #endif /* BOOT_COMPRESSED_ERROR_H */
-diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
-index de858a5180b6..e6b92e822ddd 100644
---- a/arch/x86/boot/compressed/mem.c
-+++ b/arch/x86/boot/compressed/mem.c
-@@ -5,6 +5,8 @@
- #include "error.h"
- #include "find.h"
- #include "math.h"
-+#include "tdx.h"
-+#include <asm/shared/tdx.h>
- 
- #define PMD_SHIFT	21
- #define PMD_SIZE	(_AC(1, UL) << PMD_SHIFT)
-@@ -12,10 +14,39 @@
- 
- extern struct boot_params *boot_params;
- 
-+/*
-+ * accept_memory() and process_unaccepted_memory() called from EFI stub which
-+ * runs before decompresser and its early_tdx_detect().
-+ *
-+ * Enumerate TDX directly from the early users.
-+ */
-+static bool early_is_tdx_guest(void)
-+{
-+	static bool once;
-+	static bool is_tdx;
-+
-+	if (!IS_ENABLED(CONFIG_INTEL_TDX_GUEST))
-+		return false;
-+
-+	if (!once) {
-+		u32 eax, sig[3];
-+
-+		cpuid_count(TDX_CPUID_LEAF_ID, 0, &eax,
-+			    &sig[0], &sig[2],  &sig[1]);
-+		is_tdx = !memcmp(TDX_IDENT, sig, sizeof(sig));
-+		once = true;
-+	}
-+
-+	return is_tdx;
-+}
-+
- static inline void __accept_memory(phys_addr_t start, phys_addr_t end)
- {
- 	/* Platform-specific memory-acceptance call goes here */
--	error("Cannot accept memory");
-+	if (early_is_tdx_guest())
-+		tdx_accept_memory(start, end);
-+	else
-+		error("Cannot accept memory: unknown platform\n");
- }
- 
- /*
-diff --git a/arch/x86/boot/compressed/tdx-shared.c b/arch/x86/boot/compressed/tdx-shared.c
-new file mode 100644
-index 000000000000..5ac43762fe13
---- /dev/null
-+++ b/arch/x86/boot/compressed/tdx-shared.c
-@@ -0,0 +1,2 @@
-+#include "error.h"
-+#include "../../coco/tdx/tdx-shared.c"
-diff --git a/arch/x86/boot/compressed/tdx.c b/arch/x86/boot/compressed/tdx.c
-index 2d81d3cc72a1..5cc4053f9df5 100644
---- a/arch/x86/boot/compressed/tdx.c
-+++ b/arch/x86/boot/compressed/tdx.c
-@@ -3,12 +3,17 @@
- #include "../cpuflags.h"
- #include "../string.h"
- #include "../io.h"
-+#include "align.h"
- #include "error.h"
-+#include "pgtable_types.h"
- 
- #include <vdso/limits.h>
- #include <uapi/asm/vmx.h>
- 
- #include <asm/shared/tdx.h>
-+#include <asm/page_types.h>
-+
-+static u64 cc_mask;
- 
- /* Called from __tdx_hypercall() for unrecoverable failure */
- void __tdx_hypercall_failed(void)
-@@ -16,6 +21,38 @@ void __tdx_hypercall_failed(void)
- 	error("TDVMCALL failed. TDX module bug?");
- }
- 
-+static u64 get_cc_mask(void)
-+{
-+	struct tdx_module_output out;
-+	unsigned int gpa_width;
-+
-+	/*
-+	 * TDINFO TDX module call is used to get the TD execution environment
-+	 * information like GPA width, number of available vcpus, debug mode
-+	 * information, etc. More details about the ABI can be found in TDX
-+	 * Guest-Host-Communication Interface (GHCI), section 2.4.2 TDCALL
-+	 * [TDG.VP.INFO].
-+	 *
-+	 * The GPA width that comes out of this call is critical. TDX guests
-+	 * can not meaningfully run without it.
-+	 */
-+	if (__tdx_module_call(TDX_GET_INFO, 0, 0, 0, 0, &out))
-+		error("TDCALL GET_INFO failed (Buggy TDX module!)\n");
-+
-+	gpa_width = out.rcx & GENMASK(5, 0);
-+
-+	/*
-+	 * The highest bit of a guest physical address is the "sharing" bit.
-+	 * Set it for shared pages and clear it for private pages.
-+	 */
-+	return BIT_ULL(gpa_width - 1);
-+}
-+
-+u64 cc_mkdec(u64 val)
-+{
-+	return val & ~cc_mask;
-+}
-+
- static inline unsigned int tdx_io_in(int size, u16 port)
- {
- 	struct tdx_hypercall_args args = {
-@@ -70,6 +107,8 @@ void early_tdx_detect(void)
- 	if (memcmp(TDX_IDENT, sig, sizeof(sig)))
- 		return;
- 
-+	cc_mask = get_cc_mask();
-+
- 	/* Use hypercalls instead of I/O instructions */
- 	pio_ops.f_inb  = tdx_inb;
- 	pio_ops.f_outb = tdx_outb;
-diff --git a/arch/x86/coco/tdx/Makefile b/arch/x86/coco/tdx/Makefile
-index 46c55998557d..2c7dcbf1458b 100644
---- a/arch/x86/coco/tdx/Makefile
-+++ b/arch/x86/coco/tdx/Makefile
-@@ -1,3 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0
- 
--obj-y += tdx.o tdcall.o
-+obj-y += tdx.o tdx-shared.o tdcall.o
-diff --git a/arch/x86/coco/tdx/tdx-shared.c b/arch/x86/coco/tdx/tdx-shared.c
-new file mode 100644
-index 000000000000..ee74f7bbe806
---- /dev/null
-+++ b/arch/x86/coco/tdx/tdx-shared.c
-@@ -0,0 +1,95 @@
-+#include <asm/tdx.h>
-+#include <asm/pgtable.h>
-+
-+static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
-+				    enum pg_level pg_level)
-+{
-+	unsigned long accept_size = page_level_size(pg_level);
-+	u64 tdcall_rcx;
-+	u8 page_size;
-+
-+	if (!IS_ALIGNED(start, accept_size))
-+		return 0;
-+
-+	if (len < accept_size)
-+		return 0;
-+
-+	/*
-+	 * Pass the page physical address to the TDX module to accept the
-+	 * pending, private page.
-+	 *
-+	 * Bits 2:0 of RCX encode page size: 0 - 4K, 1 - 2M, 2 - 1G.
-+	 */
-+	switch (pg_level) {
-+	case PG_LEVEL_4K:
-+		page_size = 0;
-+		break;
-+	case PG_LEVEL_2M:
-+		page_size = 1;
-+		break;
-+	case PG_LEVEL_1G:
-+		page_size = 2;
-+		break;
-+	default:
-+		return 0;
-+	}
-+
-+	tdcall_rcx = start | page_size;
-+	if (__tdx_module_call(TDX_ACCEPT_PAGE, tdcall_rcx, 0, 0, 0, NULL))
-+		return 0;
-+
-+	return accept_size;
-+}
-+
-+bool tdx_enc_status_changed_phys(phys_addr_t start, phys_addr_t end, bool enc)
-+{
-+	if (!enc) {
-+		/* Set the shared (decrypted) bits: */
-+		start |= cc_mkdec(0);
-+		end   |= cc_mkdec(0);
-+	}
-+
-+	/*
-+	 * Notify the VMM about page mapping conversion. More info about ABI
-+	 * can be found in TDX Guest-Host-Communication Interface (GHCI),
-+	 * section "TDG.VP.VMCALL<MapGPA>"
-+	 */
-+	if (_tdx_hypercall(TDVMCALL_MAP_GPA, start, end - start, 0, 0))
-+		return false;
-+
-+	/* private->shared conversion  requires only MapGPA call */
-+	if (!enc)
-+		return true;
-+
-+	/*
-+	 * For shared->private conversion, accept the page using
-+	 * TDX_ACCEPT_PAGE TDX module call.
-+	 */
-+	while (start < end) {
-+		unsigned long len = end - start;
-+		unsigned long accept_size;
-+
-+		/*
-+		 * Try larger accepts first. It gives chance to VMM to keep
-+		 * 1G/2M Secure EPT entries where possible and speeds up
-+		 * process by cutting number of hypercalls (if successful).
-+		 */
-+
-+		accept_size = try_accept_one(start, len, PG_LEVEL_1G);
-+		if (!accept_size)
-+			accept_size = try_accept_one(start, len, PG_LEVEL_2M);
-+		if (!accept_size)
-+			accept_size = try_accept_one(start, len, PG_LEVEL_4K);
-+		if (!accept_size)
-+			return false;
-+		start += accept_size;
-+	}
-+
-+	return true;
-+}
-+
-+void tdx_accept_memory(phys_addr_t start, phys_addr_t end)
-+{
-+	if (!tdx_enc_status_changed_phys(start, end, true))
-+		panic("Accepting memory failed: %#llx-%#llx\n",  start, end);
-+}
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 0d5fe6e24e45..32501277ef84 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -713,46 +713,6 @@ static bool tdx_cache_flush_required(void)
- 	return true;
- }
- 
--static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
--				    enum pg_level pg_level)
--{
--	unsigned long accept_size = page_level_size(pg_level);
--	u64 tdcall_rcx;
--	u8 page_size;
--
--	if (!IS_ALIGNED(start, accept_size))
--		return 0;
--
--	if (len < accept_size)
--		return 0;
--
--	/*
--	 * Pass the page physical address to the TDX module to accept the
--	 * pending, private page.
--	 *
--	 * Bits 2:0 of RCX encode page size: 0 - 4K, 1 - 2M, 2 - 1G.
--	 */
--	switch (pg_level) {
--	case PG_LEVEL_4K:
--		page_size = 0;
--		break;
--	case PG_LEVEL_2M:
--		page_size = 1;
--		break;
--	case PG_LEVEL_1G:
--		page_size = 2;
--		break;
--	default:
--		return 0;
--	}
--
--	tdcall_rcx = start | page_size;
--	if (__tdx_module_call(TDX_ACCEPT_PAGE, tdcall_rcx, 0, 0, 0, NULL))
--		return 0;
--
--	return accept_size;
--}
--
- /*
-  * Inform the VMM of the guest's intent for this physical page: shared with
-  * the VMM or private to the guest.  The VMM is expected to change its mapping
-@@ -761,51 +721,9 @@ static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
- static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
- {
- 	phys_addr_t start = __pa(vaddr);
--	phys_addr_t end   = __pa(vaddr + numpages * PAGE_SIZE);
-+	phys_addr_t end = __pa(vaddr + numpages * PAGE_SIZE);
- 
--	if (!enc) {
--		/* Set the shared (decrypted) bits: */
--		start |= cc_mkdec(0);
--		end   |= cc_mkdec(0);
--	}
--
--	/*
--	 * Notify the VMM about page mapping conversion. More info about ABI
--	 * can be found in TDX Guest-Host-Communication Interface (GHCI),
--	 * section "TDG.VP.VMCALL<MapGPA>"
--	 */
--	if (_tdx_hypercall(TDVMCALL_MAP_GPA, start, end - start, 0, 0))
--		return false;
--
--	/* private->shared conversion  requires only MapGPA call */
--	if (!enc)
--		return true;
--
--	/*
--	 * For shared->private conversion, accept the page using
--	 * TDX_ACCEPT_PAGE TDX module call.
--	 */
--	while (start < end) {
--		unsigned long len = end - start;
--		unsigned long accept_size;
--
--		/*
--		 * Try larger accepts first. It gives chance to VMM to keep
--		 * 1G/2M Secure EPT entries where possible and speeds up
--		 * process by cutting number of hypercalls (if successful).
--		 */
--
--		accept_size = try_accept_one(start, len, PG_LEVEL_1G);
--		if (!accept_size)
--			accept_size = try_accept_one(start, len, PG_LEVEL_2M);
--		if (!accept_size)
--			accept_size = try_accept_one(start, len, PG_LEVEL_4K);
--		if (!accept_size)
--			return false;
--		start += accept_size;
--	}
--
--	return true;
-+	return tdx_enc_status_changed_phys(start, end, enc);
- }
- 
- void __init tdx_early_init(void)
-diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-index 1ff0ee822961..95fbe7376694 100644
---- a/arch/x86/include/asm/shared/tdx.h
-+++ b/arch/x86/include/asm/shared/tdx.h
-@@ -91,5 +91,7 @@ struct tdx_module_output {
- u64 __tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
- 		      struct tdx_module_output *out);
- 
-+void tdx_accept_memory(phys_addr_t start, phys_addr_t end);
-+
- #endif /* !__ASSEMBLY__ */
- #endif /* _ASM_X86_SHARED_TDX_H */
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 234197ec17e4..3a7340ad9a4b 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -50,6 +50,8 @@ bool tdx_early_handle_ve(struct pt_regs *regs);
- 
- int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport);
- 
-+bool tdx_enc_status_changed_phys(phys_addr_t start, phys_addr_t end, bool enc);
-+
- #else
- 
- static inline void tdx_early_init(void) { };
-diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
-index 2f38059e5b08..f61174d4c3cb 100644
---- a/arch/x86/mm/unaccepted_memory.c
-+++ b/arch/x86/mm/unaccepted_memory.c
-@@ -6,6 +6,7 @@
- 
- #include <asm/io.h>
- #include <asm/setup.h>
-+#include <asm/shared/tdx.h>
- #include <asm/unaccepted_memory.h>
- 
- /* Protects unaccepted memory bitmap */
-@@ -55,7 +56,13 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
- 		unsigned long len = range_end - range_start;
- 
- 		/* Platform-specific memory-acceptance call goes here */
--		panic("Cannot accept memory: unknown platform\n");
-+		if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
-+			tdx_accept_memory(range_start * PMD_SIZE,
-+					  range_end * PMD_SIZE);
-+		} else {
-+			panic("Cannot accept memory: unknown platform\n");
-+		}
-+
- 		bitmap_clear(bitmap, range_start, len);
- 	}
- 	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
+This series is conceptually a combination of Evgeny's series [0] and
+mine [1], both of which attempt to make the early decompressor code more
+amenable to executing in the EFI environment with stricter handling of
+memory permissions.
+
+My series [1] implemented zboot for x86, by getting rid of the entire
+x86 decompressor, and replacing it with existing EFI code that does the
+same but in a generic way. The downside of this is that only EFI boot is
+supported, making it unviable for distros, which need to support BIOS
+boot and hybrid EFI boot modes that omit the EFI stub.
+
+Evgeny's series [0] adapted the entire decompressor code flow to allow
+it to execute in the EFI context as well as the bare metal context, and
+this involves changes to the 1:1 mapping code and the page fault
+handlers etc, none of which are really needed when doing EFI boot in the
+first place.
+
+So this series attempts to occupy the middle ground here: it makes
+minimal changes to the existing decompressor so some of it can be called
+from the EFI stub. Then, it reimplements the EFI boot flow to decompress
+the kernel and boot it directly, without relying on the trampoline
+allocation code, page table code or page fault handling code. This
+allows us to get rid of quite a bit of unsavory EFI stub code, and
+replace it with two clear invocations of the EFI firmware APIs to clear
+NX restrictions from allocations that have been populated with
+executable code.
+
+The only code that is being reused is the decompression library itself,
+along with the minimal ELF parsing that is required to copy the ELF
+segments in place, and the relocation processing that fixes up absolute
+symbol references to refer to the correct virtual addresses.
+
+Note that some of Evgeny's changes to clean up the PE/COFF header
+generation will still be needed, but I've omitted those here for
+brevity.
+
+(*) IMHO the following developments are likely to occur:
+- the Windows boot chain (along with 3rd party drivers) is cleaned up so
+  that it never relies on memory being writable and executable at the
+  same time when running under the EFI boot services;
+- the EFI reference implementation gets updated to map all memory NX by
+  default, and to require read-only permissions for executable mappings;
+- BIOS vendors incorporate these changes into their codebases, and
+  deploy it more widely than just the 'secure' SKUs;
+- OEMs only care about the Windows sticker, so they only boot test
+  Windows, which works fine in this more restricted context;
+- Linux boot no longer works reliably on new hardware built for Windows
+  unless we clean up our boot chain as well.
+
+Cc: Evgeniy Baskov <baskov@ispras.ru>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Cc: Peter Jones <pjones@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+
+[0] https://lore.kernel.org/all/cover.1678785672.git.baskov@ispras.ru/
+[1] https://lore.kernel.org/all/20230416120729.2470762-1-ardb@kernel.org/
+[2] https://lore.kernel.org/all/20230424165726.2245548-1-ardb@kernel.org/
+[3] https://lore.kernel.org/all/20230507234618.18067-1-kirill.shutemov@linux.intel.com/
+
+Ard Biesheuvel (20):
+  x86: decompressor: Use proper sequence to take the address of the GOT
+  x86: decompressor: Store boot_params pointer in callee save register
+  x86: decompressor: Call trampoline as a normal function
+  x86: decompressor: Use standard calling convention for trampoline
+  x86: decompressor: Avoid the need for a stack in the 32-bit trampoline
+  x86: decompressor: Call trampoline directly from C code
+  x86: decompressor: Only call the trampoline when changing paging
+    levels
+  x86: decompressor: Merge trampoline cleanup with switching code
+  x86: efistub: Perform 4/5 level paging switch from the stub
+  x86: efistub: Prefer EFI memory attributes protocol over DXE services
+  decompress: Use 8 byte alignment
+  x86: decompressor: Move global symbol references to C code
+  x86: decompressor: Factor out kernel decompression and relocation
+  x86: head_64: Store boot_params pointer in callee-preserved register
+  x86: head_64: Switch to kernel CS before enabling memory encryption
+  efi: libstub: Add limit argument to efi_random_alloc()
+  x86: efistub: Check SEV/SNP support while running in the firmware
+  x86: efistub: Avoid legacy decompressor when doing EFI boot
+  x86: efistub: Clear BSS in EFI handover protocol entrypoint
+  x86: decompressor: Avoid magic offsets for EFI handover entrypoint
+
+ arch/x86/boot/compressed/Makefile              |   5 +
+ arch/x86/boot/compressed/efi_mixed.S           |  58 +---
+ arch/x86/boot/compressed/head_32.S             |  34 +-
+ arch/x86/boot/compressed/head_64.S             | 196 +++--------
+ arch/x86/boot/compressed/misc.c                |  44 ++-
+ arch/x86/boot/compressed/pgtable.h             |   6 +-
+ arch/x86/boot/compressed/pgtable_64.c          |  72 ++--
+ arch/x86/boot/compressed/sev.c                 |  12 +-
+ arch/x86/include/asm/boot.h                    |   8 +
+ arch/x86/include/asm/efi.h                     |   7 +-
+ arch/x86/include/asm/sev.h                     |   4 +
+ arch/x86/kernel/head_64.S                      |  33 +-
+ drivers/firmware/efi/libstub/arm64-stub.c      |   2 +-
+ drivers/firmware/efi/libstub/efi-stub-helper.c |   4 +
+ drivers/firmware/efi/libstub/efistub.h         |   2 +-
+ drivers/firmware/efi/libstub/randomalloc.c     |  10 +-
+ drivers/firmware/efi/libstub/x86-stub.c        | 353 +++++++++++++-------
+ drivers/firmware/efi/libstub/zboot.c           |   2 +-
+ include/linux/decompress/mm.h                  |   2 +-
+ 19 files changed, 400 insertions(+), 454 deletions(-)
+
 -- 
-2.39.3
+2.39.2
 
