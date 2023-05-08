@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06BA56FA06E
-	for <lists+linux-efi@lfdr.de>; Mon,  8 May 2023 09:03:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B5BF6FA06F
+	for <lists+linux-efi@lfdr.de>; Mon,  8 May 2023 09:03:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232542AbjEHHD4 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 8 May 2023 03:03:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45644 "EHLO
+        id S232580AbjEHHD5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 8 May 2023 03:03:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232525AbjEHHDs (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 8 May 2023 03:03:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E4951729;
-        Mon,  8 May 2023 00:03:45 -0700 (PDT)
+        with ESMTP id S232603AbjEHHDz (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 8 May 2023 03:03:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C734C19D64;
+        Mon,  8 May 2023 00:03:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BDF361F85;
-        Mon,  8 May 2023 07:03:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD105C4339B;
-        Mon,  8 May 2023 07:03:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4312B61F85;
+        Mon,  8 May 2023 07:03:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1456C433A4;
+        Mon,  8 May 2023 07:03:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683529424;
-        bh=9BDwSgqeJ0SjBYTlcw8Hj/TbZ+wo730AVxbO98qoyM4=;
+        s=k20201202; t=1683529428;
+        bh=4E1YJRld28apgAdM8nPpbwbWdnTo7VrUtFu79939OCI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ly4rZSXwCDf9rrQihuUSa1Bj+hNk31Ta6bmJEg9Dszga718CieEWys2FjTBX2HtCr
-         eip1iHqzg4eIKgESfYPGUt6hwVSWYDcccrdfhzwGFZJdncOskRK5UUovPkJA6U8gEe
-         iFWOqIMLkQw3cUKrioQwkDgWo5hdn56voCqLeLbHGMRjfHpwDq1BwneqrtQKpDNTJQ
-         WHiP9meopiMUy6pVeDRppdn+xSHQ3/Sci9cKRXHfqr2/dREbsDXZT+Wa5aK0P5/7TP
-         fYdmI/Ri0RgjKlWwRoW+HQDqbfaTIxrVVL8LzZZPPehTgXzCUx6a+Fpafi2q//a8Xz
-         Dl+HriO/cuepg==
+        b=OC7T2hmD4SUQJNpGLRKFJBTqnKj5rSfg3QDg5/J2QH9xMXddP8M7Z32tCnLfimKwi
+         +DjrOxfVKTNTyCv6sxHCo/dDXd/YznpsfaAjg4Rpn803lZXmOH2s+mpZte2crJjlzz
+         qeYo92gLnYySd4YkcMSXutGtfoaeoPE89M0y1n0CPqvlPxd2eHlCWTWi4wCpW/38il
+         3F3S81nfSnvEgmrxwzFYb4K4HpW0YmMBlonuxs8Vb77lfCOuGSJK1SJAwEP/1FluxL
+         o4mwf6wBzLS8mntwNf6WzNEO+slC0LMPN6v7YA6JZWUeSBh2LzCzr480E5+6Oc9DO3
+         Ksi+ntgRPRaHg==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -50,18 +50,18 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Tom Lendacky <thomas.lendacky@amd.com>,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH v2 01/20] x86: decompressor: Use proper sequence to take the address of the GOT
-Date:   Mon,  8 May 2023 09:03:11 +0200
-Message-Id: <20230508070330.582131-2-ardb@kernel.org>
+Subject: [PATCH v2 02/20] x86: decompressor: Store boot_params pointer in callee save register
+Date:   Mon,  8 May 2023 09:03:12 +0200
+Message-Id: <20230508070330.582131-3-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230508070330.582131-1-ardb@kernel.org>
 References: <20230508070330.582131-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1829; i=ardb@kernel.org; h=from:subject; bh=9BDwSgqeJ0SjBYTlcw8Hj/TbZ+wo730AVxbO98qoyM4=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JISVi3qrPbM1OE/6eqf17dOH1jBe/cuIE1l3daLzc0URiV +nDcw43O0pZGMQ4GGTFFFkEZv99t/P0RKla51myMHNYmUCGMHBxCsBEzC8y/NNiPTxr97RTmUdL Li+ayXv/2YMQ7/25cXN3eX1hqst3upHHyDBBRu/AHOUzyWsT3zHyTti1p+fNDd/rzgefpjW+z2z /HM4LAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3624; i=ardb@kernel.org; h=from:subject; bh=4E1YJRld28apgAdM8nPpbwbWdnTo7VrUtFu79939OCI=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JISVi3uorpjprWVU+T3hw/XlLROxeqbsLJJ29rs+7/OOnw 012Tb91HaUsDGIcDLJiiiwCs/++23l6olSt8yxZmDmsTCBDGLg4BWAiS5IZ/umrP+i8OFH9zZoU RcmtNnYbXuaduOvewFCr8fnsna2mF1cw/E+7+eeO4NMKp0M2enocN/nF63wOzWBjTjjiu37G4eo 9OxgA
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -70,45 +70,129 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-We don't actually use a global offset table (GOT) in the 32-bit
-decompressor, but as is common for 32-bit position independent code, we
-use the magic symbol _GLOBAL_OFFSET_TABLE_ as an anchor from which to
-derive the actual runtime addresses of other symbols, using special
-@GOTOFF symbol references that are resolved at link time, and populated
-with the distance between the address of the magic _GLOBAL_OFFSET_TABLE_
-anchor and the address of the symbol in question.
-
-This means _GLOBAL_OFFSET_TABLE_ is the only symbol whose actual runtime
-address we have to determine explicitly, which is one of the first
-things we do in startup_32. However, we do so by taking the absolute
-address via the immediate field of an ADD instruction (plus a small
-offset), and taking absolute addresses that need to be resolved at link
-time is what we are trying to avoid.
-
-Fortunately, the assembler knows that _GLOBAL_OFFSET_TABLE_ is magic,
-and emits a special relative relocation instead, and so the resulting
-code works as expected. However, this is not obvious for someone reading
-the code, and the use of LEA with an explicit relative addend is more
-idiomatic so use that instead.
+Instead of pushing and popping %RSI umpteen times to preserve the struct
+boot_params pointer across the execution of the startup code, just move
+it into a callee save register before the first call into C, and copy it
+back when needed.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/head_32.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/boot/compressed/head_64.S | 34 +++++++-------------
+ 1 file changed, 11 insertions(+), 23 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/head_32.S b/arch/x86/boot/compressed/head_32.S
-index 987ae727cf9f0d04..53cbee1e2a93efce 100644
---- a/arch/x86/boot/compressed/head_32.S
-+++ b/arch/x86/boot/compressed/head_32.S
-@@ -58,7 +58,7 @@ SYM_FUNC_START(startup_32)
- 	leal	(BP_scratch+4)(%esi), %esp
- 	call	1f
- 1:	popl	%edx
--	addl	$_GLOBAL_OFFSET_TABLE_+(.-1b), %edx
-+	leal	(_GLOBAL_OFFSET_TABLE_ - 1b)(%edx), %edx
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index 03c4328a88cbd5d0..59340e533dff8369 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -416,10 +416,14 @@ SYM_CODE_START(startup_64)
+ 	lretq
  
- 	/* Load new GDT */
- 	leal	gdt@GOTOFF(%edx), %eax
+ .Lon_kernel_cs:
++	/*
++	 * RSI holds a pointer to a boot_params structure provided by the
++	 * loader, and this needs to be preserved across C function calls. So
++	 * move it into a callee saved register.
++	 */
++	movq	%rsi, %r15
+ 
+-	pushq	%rsi
+ 	call	load_stage1_idt
+-	popq	%rsi
+ 
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+ 	/*
+@@ -432,10 +436,8 @@ SYM_CODE_START(startup_64)
+ 	 * detection/setup to ensure that has been done in advance of any dependent
+ 	 * code.
+ 	 */
+-	pushq	%rsi
+-	movq	%rsi, %rdi		/* real mode address */
++	movq	%r15, %rdi		/* pass struct boot_params pointer */
+ 	call	sev_enable
+-	popq	%rsi
+ #endif
+ 
+ 	/*
+@@ -448,13 +450,9 @@ SYM_CODE_START(startup_64)
+ 	 *   - Non zero RDX means trampoline needs to enable 5-level
+ 	 *     paging.
+ 	 *
+-	 * RSI holds real mode data and needs to be preserved across
+-	 * this function call.
+ 	 */
+-	pushq	%rsi
+-	movq	%rsi, %rdi		/* real mode address */
++	movq	%r15, %rdi		/* pass struct boot_params pointer */
+ 	call	paging_prepare
+-	popq	%rsi
+ 
+ 	/* Save the trampoline address in RCX */
+ 	movq	%rax, %rcx
+@@ -479,14 +477,9 @@ trampoline_return:
+ 	 *
+ 	 * RDI is address of the page table to use instead of page table
+ 	 * in trampoline memory (if required).
+-	 *
+-	 * RSI holds real mode data and needs to be preserved across
+-	 * this function call.
+ 	 */
+-	pushq	%rsi
+ 	leaq	rva(top_pgtable)(%rbx), %rdi
+ 	call	cleanup_trampoline
+-	popq	%rsi
+ 
+ 	/* Zero EFLAGS */
+ 	pushq	$0
+@@ -496,7 +489,6 @@ trampoline_return:
+  * Copy the compressed kernel to the end of our buffer
+  * where decompression in place becomes safe.
+  */
+-	pushq	%rsi
+ 	leaq	(_bss-8)(%rip), %rsi
+ 	leaq	rva(_bss-8)(%rbx), %rdi
+ 	movl	$(_bss - startup_32), %ecx
+@@ -504,7 +496,6 @@ trampoline_return:
+ 	std
+ 	rep	movsq
+ 	cld
+-	popq	%rsi
+ 
+ 	/*
+ 	 * The GDT may get overwritten either during the copy we just did or
+@@ -551,30 +542,27 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
+ 	shrq	$3, %rcx
+ 	rep	stosq
+ 
+-	pushq	%rsi
+ 	call	load_stage2_idt
+ 
+ 	/* Pass boot_params to initialize_identity_maps() */
+-	movq	(%rsp), %rdi
++	movq	%r15, %rdi		/* pass struct boot_params pointer */
+ 	call	initialize_identity_maps
+-	popq	%rsi
+ 
+ /*
+  * Do the extraction, and jump to the new kernel..
+  */
+-	pushq	%rsi			/* Save the real mode argument */
+-	movq	%rsi, %rdi		/* real mode address */
++	movq	%r15, %rdi		/* pass struct boot_params pointer */
+ 	leaq	boot_heap(%rip), %rsi	/* malloc area for uncompression */
+ 	leaq	input_data(%rip), %rdx  /* input_data */
+ 	movl	input_len(%rip), %ecx	/* input_len */
+ 	movq	%rbp, %r8		/* output target address */
+ 	movl	output_len(%rip), %r9d	/* decompressed length, end of relocs */
+ 	call	extract_kernel		/* returns kernel entry point in %rax */
+-	popq	%rsi
+ 
+ /*
+  * Jump to the decompressed kernel.
+  */
++	movq	%r15, %rsi
+ 	jmp	*%rax
+ SYM_FUNC_END(.Lrelocated)
+ 
 -- 
 2.39.2
 
