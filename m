@@ -2,191 +2,108 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCDAA6FB36E
-	for <lists+linux-efi@lfdr.de>; Mon,  8 May 2023 17:08:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5038B6FB693
+	for <lists+linux-efi@lfdr.de>; Mon,  8 May 2023 21:00:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234371AbjEHPIP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 8 May 2023 11:08:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36294 "EHLO
+        id S229794AbjEHTA5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 8 May 2023 15:00:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234345AbjEHPIO (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 8 May 2023 11:08:14 -0400
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CF881B6;
-        Mon,  8 May 2023 08:08:11 -0700 (PDT)
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 348BIhgs030652;
-        Mon, 8 May 2023 15:07:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=LofoAiu2lmmrmefC56neeLrMFWUMWU3DfoPME6EYRKw=;
- b=owK7yBCpitTaSwGIK/8bK9OuZAmF6Hqu3QVlssWEson2tqkwhZ2mvcgzIusjri+1nVGU
- 7IgfpIj0MKrBB0TQsOK9g6rAEqWVcjN4SpNAz4/JxBM5Oc6jIIG8oOOfvNECjUpSaL+W
- ZgWkL5mR/DqxSUokbEuruig59gdtV/M33mGke2qSfXpdJvrVMfglB/W6S8I/YPi++af8
- F4vVTDIrvLtaxOLSXXeGPLnmiYjuC45TWVnbRXZR+NeZy41tLfmo0+NUtLZM4p8DjRfi
- vTtLpL9zVcoQS6xPy5P91lOZU7jDnNenMMsqTQr0DHl7rfCr8plyigj01ghkG1ORSlo6 Vw== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3qdegubm8g-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 08 May 2023 15:07:30 +0000
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 348DsieN023387;
-        Mon, 8 May 2023 15:07:29 GMT
-Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2169.outbound.protection.outlook.com [104.47.59.169])
-        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3qddb4uxem-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 08 May 2023 15:07:29 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GlNyMZknutd5hkPxDJ7GsVK8uL5kaKA+jMJmzhjTe5kp7MXe3l5deC1iKYIHOKXuR+rJGRXrX8PUcb273jjKggxOvLEWk0yNjWQb8ldKqoR4H5DkK57xvcQQJr0txl+t93UqDuIait8krCeLDrmffxColwYKeFVGz1vRwB2jJzL90MH3GaDI2DAdTtyaTr2v+Lif3PCIreHZQPTMgi0wz5C/M8lgNBkRMQc7wrb8wZxt9wrHtwbJyQXh2DPISSyOoX0DOEarvh3mTuU8OGyG+Z5DctajLuXUnTLoRQW4Vnl2O7EHjaUfLMJOhrwB0cNk6mQPQHykuArMY4YXH12sEA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LofoAiu2lmmrmefC56neeLrMFWUMWU3DfoPME6EYRKw=;
- b=FGzKM3AgCmOhCDYOdzrTktnaB3cvtGo8wco7CyoEwvvx5FBAoY+hq51oW2M9t73z3DNPBLZwNH4uKXfUjo7EldBwUv896udKOjXOcXwmTlCZhHZ/HMMyw5AimNM/9Mbo+xWsiuDe++BDkLHa/J8+QGw5b06hPvnnjMXuwXE6YmyfWy8RabxIbsegy4aKD5jUFnbLNjHKb65M6lc+RcJjYlE3UaDpXrlR9JOt7nrqVHM24J9/gTA0zmRIO2+lO5IVWBgA6Nf5EHutr4ne4kQ4Q97qp2yv6sBgu7Og7YEiLSeeG9YeXSwSENwGP5kjlXp293SfuKv4pFZxMmB1tnyKhA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LofoAiu2lmmrmefC56neeLrMFWUMWU3DfoPME6EYRKw=;
- b=AKofL3USTELLBOgu4bb3sO2g4TKMYV8cGTN6HWop2w3ab2xLfTKsZala5rGaLY1drSfcyGYwYtehRvGWAtZEyjHLr0U3KGO1fQP74cl0BVM6BgM1Jg10xvFNEzsoYBIjHKVrIY6dsa7F+Jq8jSffnvG1lpc4g19/Kz0dwlWIOd4=
-Received: from BY5PR10MB3793.namprd10.prod.outlook.com (2603:10b6:a03:1f6::14)
- by DM4PR10MB6039.namprd10.prod.outlook.com (2603:10b6:8:b7::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6363.32; Mon, 8 May 2023 15:07:27 +0000
-Received: from BY5PR10MB3793.namprd10.prod.outlook.com
- ([fe80::a007:b0c1:5cb:329a]) by BY5PR10MB3793.namprd10.prod.outlook.com
- ([fe80::a007:b0c1:5cb:329a%5]) with mapi id 15.20.6363.032; Mon, 8 May 2023
- 15:07:27 +0000
-Message-ID: <305fcc15-0aec-8f9d-f98a-1e8966418543@oracle.com>
-Date:   Mon, 8 May 2023 11:07:21 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v6 12/14] x86: Secure Launch late initcall platform module
-Content-Language: en-US
-To:     Simon Horman <horms@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-crypto@vger.kernel.org, iommu@lists.linux-foundation.org,
-        kexec@lists.infradead.org, linux-efi@vger.kernel.org,
-        dpsmith@apertussolutions.com, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, hpa@zytor.com, ardb@kernel.org, mjg59@srcf.ucam.org,
-        James.Bottomley@hansenpartnership.com, luto@amacapital.net,
-        nivedita@alum.mit.edu, kanth.ghatraju@oracle.com,
-        trenchboot-devel@googlegroups.com
-References: <20230504145023.835096-1-ross.philipson@oracle.com>
- <20230504145023.835096-13-ross.philipson@oracle.com>
- <ZFVcEI0RAS5pvrAc@kernel.org>
-From:   Ross Philipson <ross.philipson@oracle.com>
-In-Reply-To: <ZFVcEI0RAS5pvrAc@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH2PR14CA0047.namprd14.prod.outlook.com
- (2603:10b6:610:56::27) To BY5PR10MB3793.namprd10.prod.outlook.com
- (2603:10b6:a03:1f6::14)
+        with ESMTP id S229452AbjEHTA5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 8 May 2023 15:00:57 -0400
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77D0F5FF0;
+        Mon,  8 May 2023 12:00:54 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.west.internal (Postfix) with ESMTP id EA18132009AD;
+        Mon,  8 May 2023 15:00:49 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Mon, 08 May 2023 15:00:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+         h=cc:cc:content-type:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm2; t=1683572449; x=
+        1683658849; bh=URO9+J5oSsm+RSUnh14u/dfGB5Ga3FUAok9tY/J4WxA=; b=H
+        X+BWoxJcm+Q/jjDj6mrT/6sYnj160CqCEAfYucYTnWyUuz05t5PdKUVXHhr/8lBd
+        18oTffkfYvLvvF8YzqN0v0FWt6KWnYfdCegMiXlwplRzTElX1iPO1Hz90qbR+bNg
+        mC2DFOBOVt+A1bbYrWdxln2uXQCowpXEzhjJFlwdQMbuJIlAk+fjAwhDgX/U6OpM
+        XyFf+Oy7mefmarkh0XgzYbWGdgCmKdPrcAfEecsXi1ZVlcRDT8i8xPwipwCwtBtU
+        QOTHHt0vZPfhA5Cu92hoWdgEhlVeLFlG4kBx6Q55JBEC8JmmFaqW8sTLe5UHL9Fs
+        xBf6pgrxZPj3LDwrf5FrA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1683572449; x=1683658849; bh=URO9+J5oSsm+R
+        SUnh14u/dfGB5Ga3FUAok9tY/J4WxA=; b=M2TsQQEsw/rY91BZp4E0nLO6ssRE1
+        JqeRSUbsMa5QQMIUd5onFMEeVDdmMISWY5uInH//R4SwyTxR4nQv5PgNWOCt3QMU
+        dymnIcA7s5AVCM6laeeCqm81r78eQZ6XueXHK53vCYyjK855twCc/y6M7QJDZ8/Q
+        Xla+RtkrGXLeBnLDsGVWQUrqkGgAkDSU2DT5SvSf9FE+HFYptO7YWsAm/JnAvwye
+        +H5MHnvM1hxlbVzZSyWEQeOwJAhAlXb5qUoAU1WFlvkGYrwMTPNOx1IAsAW0Yfbv
+        oPew/+NNmSr3sNSUmL2LHpFGYI5t3fQ4rcgu/xvbsQpU8D+ljOksseWzA==
+X-ME-Sender: <xms:30ZZZJNlEx9koOnHA6G3DxXp7o1oq_rURX-5bzxUblU-iMSBrIS3eg>
+    <xme:30ZZZL9t_g0b-9Nrf2o1NsEn_WvEK76qEvZdNGeuDr0MI7oNeZbhmWuVwhmLlT1qz
+    i80CoLWF9hqnDdvKiY>
+X-ME-Received: <xmr:30ZZZISsYlG7oHIkxQzhQrfnnhYubF3JDDOmS6yjgNQffmCK9_MnV3fJrrER0kKSpZY7rA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeefkedgudefvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttddttddttddvnecuhfhrohhmpedfmfhi
+    rhhilhhlucetrdcuufhhuhhtvghmohhvfdcuoehkihhrihhllhesshhhuhhtvghmohhvrd
+    hnrghmvgeqnecuggftrfgrthhtvghrnhephfeigefhtdefhedtfedthefghedutddvueeh
+    tedttdehjeeukeejgeeuiedvkedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgv
+X-ME-Proxy: <xmx:30ZZZFt4lRRG87t961rV-5OiDwGvYxqNRNgp7PM-WKtC8P7OT9CxFw>
+    <xmx:30ZZZBfF7SdS47FMsi3nGnxwP-Rv4yQwv4sHx_t4N2L5gjUUnDQUYQ>
+    <xmx:30ZZZB0xasN5Jwn2IGeApNlL1ZEdGhAIQQKQMT8g7UGB56SO7-5zQg>
+    <xmx:4UZZZNr3mRWuUUZY3mSUyB9VN8Kp7VQ08xiz-H_xiyZefPTdC0HEwA>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 8 May 2023 15:00:47 -0400 (EDT)
+Received: by box.shutemov.name (Postfix, from userid 1000)
+        id A706A10C38B; Mon,  8 May 2023 22:00:43 +0300 (+03)
+Date:   Mon, 8 May 2023 22:00:43 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
+        khalid.elmously@canonical.com, philip.cox@canonical.com,
+        aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
+        linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv10 04/11] efi/x86: Implement support for unaccepted memory
+Message-ID: <20230508190043.ouauzbghn27khdy4@box.shutemov.name>
+References: <20230507234618.18067-1-kirill.shutemov@linux.intel.com>
+ <20230507234618.18067-5-kirill.shutemov@linux.intel.com>
+ <CAMj1kXE26G=HgqBHoJOWF+FyXs7Ryj7VFFY9A+xG7HmUXnb5bg@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR10MB3793:EE_|DM4PR10MB6039:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7acd44eb-498d-4cfd-c275-08db4fd5eeea
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Lfmwn+mfToQUdzrxqfLjBAXvhBC6KjIWNOiMxb54YbSjEg/LJ4SiV5Ibmrmz2Neu8XghUw/TLiCuKLjMtx8UJv1UN14Tw4A/K6giHfHzNyT2+cHpw72Kn2hTec1W+7YyyC1r+UMjYDoHUp9hRcpGSpEibiewKouAsgCG4tYxpzaaldt3v4rXf7tqSusGS4d0yuRbF7D6bxJkBCNMK2eC2QARJwnup62Umo00kmwwXpeBF0NZvSBhqI1bcW5Bztv+fnf0gLqO+qAssXhoFqSZ8GNk1MSpKhmsJGZ1YTIXxgU9kKCm6PLad0VjL3/focFLsK4QrITPkmtperyZhlmRvub7NiKshvof24Y2L8hJogfmqQDZ5Ppg/QE7Rdm/4U1YoV7fhwJq668neZxKGCD8g7KGc/15EA6ekg1tZ6LMJ4fRnOcoeGhes0VMFJr7mgbo3/74PVwNBSplkzAb3hmvkPYT1cqjMEoNuMkPAadzDHrQYWVVA/8TgNCI4m7g2MoLMgV7qmzB0060flG9t8VC2cbHKz9qLy86oeoe+7janhkLC6mA4SpoxlBNfffFTW93MQjMdf4qNJW9razsnvWBpxQu3xVjKw+WOlpCh0l9fJWq2p/2cr6xaxMlZ2XJfhA2bpxpIXLYopU6CtvYBydmyw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR10MB3793.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(136003)(346002)(376002)(366004)(396003)(39860400002)(451199021)(83380400001)(6486002)(478600001)(6666004)(2616005)(6512007)(6506007)(186003)(53546011)(44832011)(30864003)(2906002)(7416002)(38100700002)(36756003)(6916009)(66946007)(66476007)(8936002)(4326008)(41300700001)(66556008)(31696002)(8676002)(86362001)(316002)(5660300002)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?KzNVTUk4ZzNoUk96MHV0STY5TVlGZXBuOGZxWkZ4MWUzMkNwVzhyMkZFLzQ4?=
- =?utf-8?B?ZEdZNEFzWFJQb2NlWE5FVm4wZ21PL0ZUOEtjd3BaRENOSlRJdmdxN2RDZWpi?=
- =?utf-8?B?ZU1MbVJqcUw1VXdkbUFPNGhoL05kNWtrc1RpMVh1Zlh6WWJMaGdTU2p5MVI5?=
- =?utf-8?B?SVZtMGtydjQzMUFOMWxvRExjYWpHNnBKSlBTNTlMeTFnUTdGVjZPSnZpdkdJ?=
- =?utf-8?B?MEhKQXJHQ2dEeU5ya1NRTXdlVDNOcmZPamphb3Z5Yk1SMFI1aTI2dnczSW84?=
- =?utf-8?B?L1gvUnZEUHBLUEJacy96WGxtQTV4QU1FMHNaazNhazRKMTV0N0ExMG1KTFhq?=
- =?utf-8?B?SnkzZlBLSmxJcFl5c2kvN091d1kwSDJMcGUrWmp3dlF1RlR4V3hRTDlYemRv?=
- =?utf-8?B?aXBiQWZLU2VWK3JoZEZLYjhWQy9ncmV1WDRGeW9BWjJRaHF6aEs1ank2NnJH?=
- =?utf-8?B?d1VuVUdZSjZoNmt2SWlKZWpmYWpHdng1T01VTE1wTlU2OFRTNjF0cGkxRCs3?=
- =?utf-8?B?OVNJZXNIcGFTOFYxWDhOYVJJZDg0THo1b2ZmVHVLWFVPeG45OXRqSHZHMTlL?=
- =?utf-8?B?SENoVWJxOHdpMDRKcHpXaUk5MmRqNHAwVXlXcHM4WWNpbm5yck13RjhMMmV6?=
- =?utf-8?B?VFplb2FrSDRKaS9admVxNDRac011MllGSVpEVG8yV2V5U2dYd3E0Skx3MTN5?=
- =?utf-8?B?UXhyaHBTQW5DcmZmMXpkOEdaYksydWtlVjM4emlidFhMaEU0bHVNYTRwSTVy?=
- =?utf-8?B?cDhhdnBFb0NkNWVXRUl3aFBEam44dlZGalo1aWtlVUZHdHBkZkNXUEUrejF3?=
- =?utf-8?B?YkN5QUFqdW1xVUZvK015Uy8wdTAwTVRZNE5RMTcvSkY3MzRLSHlKUXNPTVBH?=
- =?utf-8?B?NFEydC9tWDNnakNnZmVlUi9CU3dCcHJ4eU5YSHJ1UVVHNnhqVlJ3a2NYZ3Iz?=
- =?utf-8?B?d0ZsditWZURjMlRGU21RNVdYaDhPYlNLQWh2NUpGclUrQUJFbk9KWWRWVWkr?=
- =?utf-8?B?UTBsWXgwckVJd3NPRTc0RFMvbm5lcXNBdnMvSUt6bDlKVk1SV0t3SC9zYkRN?=
- =?utf-8?B?TDZWYWJzeTcveVlFbkNVS04yd2l0MEJHMmI2RmtaM3RTUml1aFRob3lzdkx6?=
- =?utf-8?B?NXd1eFBmVXhlUlQyVUFEWU1TOTVuRmpLUUpmeENJenFvcmVjT1RIVXowM1BI?=
- =?utf-8?B?UGlseVA1UC9ZM0JlYTE5R0U2OHhTM1IwNUdjRjhRODZsU2RwNjdtRFJ5Nm5q?=
- =?utf-8?B?cmdycFBaU1crNEVXVW1FaEJNSHBmK2Y5ZmJURXZpNklUK3RDdFNwc05NaVBN?=
- =?utf-8?B?WEZUeGdTOXJqL1RwN25ScXVLQlROZFZ2K3Nia1hoaE8rekhFb0RzMmlvOFhJ?=
- =?utf-8?B?cmMxNU52QTZDNjRqNk9IaGd2T0o1ODZQdjhjc21VVkZHdTJxMU1KSmxTRk9r?=
- =?utf-8?B?OUlZYktGVVhVcUV4dkZPNUNPT1VaVEkxUTlZQkk5UGhCK2NLRktPUXp2SWht?=
- =?utf-8?B?ZFNBalA3MkpaTGREREQrYzRxR1NmQm4rbHlFK2pXUElKWTR3VC96UldxTCtl?=
- =?utf-8?B?Y1I0bnRNUG4rTVlJZ2tsS2QrV1RJaVYrbDRlcHdqNEJGMS94S3NudmlveGFU?=
- =?utf-8?B?YjJndGJtUnVVNisxbXIzR0pOVlNyK1cxQnpNRVJ3Z1hjUEVFSCtEeUpDdGxS?=
- =?utf-8?B?V25MM09OcFpEb0Z1NTk5N1ZuUUp3R0c2d3Q2OTJXTExTK0ZzakUxUkVFMXRB?=
- =?utf-8?B?aFFzb3ozdFQ0NjNIWVcrWk0vTU1KTUczM1BZeTduS1BvRU9mRHlGdkx3b2tC?=
- =?utf-8?B?MVNRcW5EcFU0dHFyWEdvUG9zZUp3TVMxcnVqZEI0ZXpHMFljZ0MzUTNVVk5M?=
- =?utf-8?B?OEYwb2lKVUQrUHd4STM4cFVhdWxpdUV0b1BoeXVyN3RGaFgybmkzcWxWOU1w?=
- =?utf-8?B?MGQ1ZHFKNEdwY0pkN2VZNy81VWdMdUZpak14ZlNMMlpWT2gyTEFIN2o3U1Zu?=
- =?utf-8?B?RGR6cURORnY4KzR5dVJGT0RNNGZzTEdsOHYydWxJSzJlL0oyYXhGWmdkVzd4?=
- =?utf-8?B?NzhwZFJmc0VPN1lUU1RCWlNMT1hqaERQTFN1NldRNlJ2SXZVUUxCQ0p6RzBn?=
- =?utf-8?B?c094NTk4Z0M4djBGZ3FKMXNzWjB0cjhuVHNWMTZZS0c3eUdLcDRQS1hRVTkr?=
- =?utf-8?Q?+GsAOXPgUaVVYUYf5CRipBg=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?utf-8?B?YUlBUHZNVFlEbWdIT1JoVE9GRXdBS09GaDFmejBPWmVLVmExNHZFZEhkTjFR?=
- =?utf-8?B?K0hkY09pWnZja21Kc3dRbW85cVowMmNHZW5DdWxZcUd2bTg0NmtqWmdnbE9I?=
- =?utf-8?B?c21XWFVHaUxnNkZ3cU90SUdXUzZERTZ6ZndsVFFHaWFVU1dCS0pmcHFnYlBW?=
- =?utf-8?B?WGNhZlFjZktnNDR6SnR3aVNPWWdpUitVUTNNaTNGSHhNMVFFVVQ5WlArLzVh?=
- =?utf-8?B?eThtU0JtdDVsWkRVZ29SMGcwZ0ZkVFQ5czNuRDJnL1ErVzNwUUlYN2Y0ZWND?=
- =?utf-8?B?b1lCYit3MmovUVRwZDNNTWI0NkJTZ21YT0VwQjRmRXZkQVJaU0pvUzFKR2Jw?=
- =?utf-8?B?eVZ3cSt3dVlDUW11cGVVMnd1cnlTbTBIMUMzYVVRcjJMSTY1SFIwa2FDamdp?=
- =?utf-8?B?aEw5SXI3dDdQZFhTTmRCYTZPS1pjM2lzMGxhY3VJM3ZsOWc4aHJtbHRZTkRL?=
- =?utf-8?B?MlNRZmhWc05LT1g4V2pQWEJ3MVh4aVp1amNMNHBYdzQ0VkwwUVpTNnFUUVpM?=
- =?utf-8?B?ZU1nYktQY0VFNVEySGNHQkVqS3lDbTBvTTlLT2ZhNExKMTQzZnkrT2VYclY2?=
- =?utf-8?B?V3RBQ0tSOFQyV2FxYXYrZDNZdnJ5WlpiWDYxRXZnWVBGSkN4WEtucld6S1Av?=
- =?utf-8?B?K0l3RnNJYzJUVThWQzJwVHhFQ0d5b2JOV0VpUUJNNUNVM3Y5YStLT1ZuZlZ2?=
- =?utf-8?B?Wm5JT0h1MDdZWUVFRlBtb1FLMERGaVk3dzd1OGhPNzNWdGxqb1hGKzdtM2Nr?=
- =?utf-8?B?QUJPUkpNT09xTlN5OGVMbEtCbHhuMkZTRDBVeStiL3dWZFFUZEZsQUhrRzBK?=
- =?utf-8?B?QU1HNlNPczZNZHJTU0RHUEc4bDFSYTVZNHI4QmRseHpvMHFGNWRuNTQvM2RO?=
- =?utf-8?B?UjFjNjlWR3V3ZlhCTVBaSHpPTzl4Znp3KzRCalZjM2p6em83YXNHY01OOS96?=
- =?utf-8?B?dTdlL0t3Yjh1ekxxMTBtb29qSnRDUlc0dUw1ckxBaE1OUUJTRU5NRkVyZXFD?=
- =?utf-8?B?SVVHOE9kdmptMitFRWVuSnhLengyT001MXNRRzdTVEcvVjhoU05CaXJteU4v?=
- =?utf-8?B?ZXpERXB1SmRyNTZlNGUvSzBLRU5xNlFTYURjVG9uQkFtaGFIeVJVVmlNcktm?=
- =?utf-8?B?Q3l2Njh4SUwrRHNTNktWZEJXeld0T3daMEh3cnBCY2lObkZ0SnB6NVlXZDlL?=
- =?utf-8?B?V1FlY1ZzL0xLY0REaDA3RFM0bmVhY2J1ZnlQMVNWbXNEME1LMUNUTVdEWHVu?=
- =?utf-8?B?eCt6ZDA5RUhBVmR6SHlZUkJadEYyYS9GWGU1YUUrT0s2WWpQL2dXS2V5ZlBz?=
- =?utf-8?B?Z21BUVB0M00vUzJPbERiMXpqSHpBZGViR2svbnZCdzBpclhQZ3FscDV5RjZO?=
- =?utf-8?B?STJrc2JtR2V0YUU3WnlWb1hnMEVyQjkvSHNvNy9xYVJ6QUZicU1IekZDQWYv?=
- =?utf-8?B?Y3pjNlN0NHpyanVtUm82V0h6VXI5QUo3SUY1UC9PMmQwclJ6VGRLMVJtSVU5?=
- =?utf-8?B?Q2t2OHZSTm9nMFZHZVFFMXV5NUlKMlZHcFB2NVY5UkExWE95WFJxQ1VVYSs0?=
- =?utf-8?B?TDNCUVYrK0V0YUdabDhqTnBXQWVXSHJjalF1NGtSZjVPdTE0QVM0WlpUWVJl?=
- =?utf-8?B?NHlwSm8zV20xTjM3bDJQbG5ROUIwVm0xVkdOY3FDMzc1b0NOT21oRFo3MjNZ?=
- =?utf-8?B?bWdYOGhxQXZsMXhWeDRoSUlGcW0ydGg4aE5lY3pRVFROTFh6U3NpWVpkc3hG?=
- =?utf-8?Q?jjD5g2rnPTztf6/yu0=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7acd44eb-498d-4cfd-c275-08db4fd5eeea
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR10MB3793.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2023 15:07:27.0654
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iH+h3VyfyvXsXlCLHwb3jz1NEHN3ryZGaU8rx83c37Eedqq4TgM4SIP3HZp/+Ogp3eoreJMTJaQ4e3dTsAhkvbuAuWUZxDJt8SRaB3/5wYA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR10MB6039
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-08_11,2023-05-05_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
- phishscore=0 suspectscore=0 mlxscore=0 spamscore=0 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2305080099
-X-Proofpoint-GUID: 1P33aFUkMhhIRxDkUW0ynbwtkIfaf6xY
-X-Proofpoint-ORIG-GUID: 1P33aFUkMhhIRxDkUW0ynbwtkIfaf6xY
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXE26G=HgqBHoJOWF+FyXs7Ryj7VFFY9A+xG7HmUXnb5bg@mail.gmail.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -194,432 +111,578 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 5/5/23 15:42, Simon Horman wrote:
-> On Thu, May 04, 2023 at 02:50:21PM +0000, Ross Philipson wrote:
->> From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
->>
->> The Secure Launch platform module is a late init module. During the
->> init call, the TPM event log is read and measurements taken in the
->> early boot stub code are located. These measurements are extended
->> into the TPM PCRs using the mainline TPM kernel driver.
->>
->> The platform module also registers the securityfs nodes to allow
->> access to TXT register fields on Intel along with the fetching of
->> and writing events to the late launch TPM log.
->>
->> Signed-off-by: Daniel P. Smith <dpsmith@apertussolutions.com>
->> Signed-off-by: garnetgrimm <grimmg@ainfosec.com>
->> Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
+On Mon, May 08, 2023 at 09:30:22AM +0200, Ard Biesheuvel wrote:
+> Hello Kirill,
 > 
-> Hi Ross,
+> On Mon, 8 May 2023 at 01:46, Kirill A. Shutemov
+> <kirill.shutemov@linux.intel.com> wrote:
+> >
+> > UEFI Specification version 2.9 introduces the concept of memory
+> > acceptance: Some Virtual Machine platforms, such as Intel TDX or AMD
+> > SEV-SNP, requiring memory to be accepted before it can be used by the
+> > guest. Accepting happens via a protocol specific for the Virtual
+> > Machine platform.
+> >
+> > Accepting memory is costly and it makes VMM allocate memory for the
+> > accepted guest physical address range. It's better to postpone memory
+> > acceptance until memory is needed. It lowers boot time and reduces
+> > memory overhead.
+> >
+> > The kernel needs to know what memory has been accepted. Firmware
+> > communicates this information via memory map: a new memory type --
+> > EFI_UNACCEPTED_MEMORY -- indicates such memory.
+> >
+> > Range-based tracking works fine for firmware, but it gets bulky for
+> > the kernel: e820 has to be modified on every page acceptance. It leads
+> > to table fragmentation, but there's a limited number of entries in the
+> > e820 table
+> >
+> > Another option is to mark such memory as usable in e820 and track if the
+> > range has been accepted in a bitmap. One bit in the bitmap represents
+> > 2MiB in the address space: one 4k page is enough to track 64GiB or
+> > physical address space.
+> >
+> > In the worst-case scenario -- a huge hole in the middle of the
+> > address space -- It needs 256MiB to handle 4PiB of the address
+> > space.
+> >
+> > Any unaccepted memory that is not aligned to 2M gets accepted upfront.
+> >
+> > The bitmap is allocated and constructed in the EFI stub and passed down
+> > to the kernel via boot_params. allocate_e820() allocates the bitmap if
+> > unaccepted memory is present, according to the maximum address in the
+> > memory map.
+> >
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > ---
+> >  Documentation/arch/x86/zero-page.rst     |  1 +
+> >  arch/x86/boot/compressed/Makefile        |  1 +
+> >  arch/x86/boot/compressed/mem.c           | 73 ++++++++++++++++++++++++
+> >  arch/x86/include/asm/unaccepted_memory.h | 10 ++++
+> >  arch/x86/include/uapi/asm/bootparam.h    |  2 +-
+> >  drivers/firmware/efi/Kconfig             | 14 +++++
+> >  drivers/firmware/efi/efi.c               |  1 +
+> >  drivers/firmware/efi/libstub/x86-stub.c  | 65 +++++++++++++++++++++
+> >  include/linux/efi.h                      |  3 +-
+> >  9 files changed, 168 insertions(+), 2 deletions(-)
+> >  create mode 100644 arch/x86/boot/compressed/mem.c
+> >  create mode 100644 arch/x86/include/asm/unaccepted_memory.h
+> >
+> > diff --git a/Documentation/arch/x86/zero-page.rst b/Documentation/arch/x86/zero-page.rst
+> > index 45aa9cceb4f1..f21905e61ade 100644
+> > --- a/Documentation/arch/x86/zero-page.rst
+> > +++ b/Documentation/arch/x86/zero-page.rst
+> > @@ -20,6 +20,7 @@ Offset/Size   Proto   Name                    Meaning
+> >  060/010                ALL     ist_info                Intel SpeedStep (IST) BIOS support information
+> >                                                 (struct ist_info)
+> >  070/008                ALL     acpi_rsdp_addr          Physical address of ACPI RSDP table
+> > +078/008                ALL     unaccepted_memory       Bitmap of unaccepted memory (1bit == 2M)
 > 
-> a few more items from my side.
+> Unaccepted memory is a generic EFI feature, and will need to be
+> supported on other architectures as well.
 > 
-> ...
-> 
->> diff --git a/arch/x86/kernel/slmodule.c b/arch/x86/kernel/slmodule.c
-> 
-> ...
-> 
->> +/*
->> + * Securityfs exposure
->> + */
->> +struct memfile {
->> +	char *name;
->> +	void *addr;
->> +	size_t size;
->> +};
->> +
->> +static struct memfile sl_evtlog = {"eventlog", 0, 0};
-> 
-> I don't think the 0 fields are necessary above, memset will zero
-> any fields not explicitly set. But if you want to go that way, then
-> I think the first one should be NULL, as the addr field is a pointer.
-> 
->> +static void *txt_heap;
->> +static struct txt_heap_event_log_pointer2_1_element __iomem *evtlog20;
->> +static DEFINE_MUTEX(sl_evt_log_mutex);
-> 
->> +static ssize_t sl_evtlog_read(struct file *file, char __user *buf,
->> +			      size_t count, loff_t *pos)
->> +{
->> +	ssize_t size;
->> +
->> +	if (!sl_evtlog.addr)
->> +		return 0;
->> +
->> +	mutex_lock(&sl_evt_log_mutex);
->> +	size = simple_read_from_buffer(buf, count, pos, sl_evtlog.addr,
->> +				       sl_evtlog.size);
->> +	mutex_unlock(&sl_evt_log_mutex);
->> +
->> +	return size;
->> +}
->> +
->> +static ssize_t sl_evtlog_write(struct file *file, const char __user *buf,
->> +				size_t datalen, loff_t *ppos)
-> 
-> nit: the line above doesn't align to the '(' on the line before that.
-> 
->> +{
->> +	ssize_t result;
->> +	char *data;
->> +
->> +	if (!sl_evtlog.addr)
->> +		return 0;
->> +
->> +	/* No partial writes. */
->> +	result = -EINVAL;
->> +	if (*ppos != 0)
->> +		goto out;
->> +
->> +	data = memdup_user(buf, datalen);
->> +	if (IS_ERR(data)) {
->> +		result = PTR_ERR(data);
->> +		goto out;
->> +	}
->> +
->> +	mutex_lock(&sl_evt_log_mutex);
->> +	if (evtlog20)
->> +		result = tpm20_log_event(evtlog20, sl_evtlog.addr,
->> +					 sl_evtlog.size, datalen, data);
-> 
-> Sparse says that the type of the first argument of tmp20_log_event is:
-> 
-> 	struct txt_heap_event_log_pointer2_1_element *
-> 
-> However, the type of evtlog20 is:
-> 
-> 	struct txt_heap_event_log_pointer2_1_element __iomem *
+> Could we perhaps use a EFI configuration table to pass the bitmap to
+> the core kernel, instead of adding more cruft to this archaic header?
+> That could be implemented in a arch-agnostic manner, even in cases
+> where the bootloader is the agent that calls ExitBootServices(), as it
+> would be the loader that allocates and populates the bitmap in that
+> case.
 
-I have to look into what is going on here. The TXT heap is just a memory 
-range not IO space. I will track this down.
+Okay, that's a fair point.
 
-As to all the rest of your comments here, I will fix them.
+Below is my take on this. It is on top of whole patchset. It seems to be
+functional, but more testing is required.
 
-Thanks
-Ross
+While there I also removed hardcoded 1b == 2MB.
 
-> 
->> +	else
->> +		result = tpm12_log_event(sl_evtlog.addr, sl_evtlog.size,
->> +					 datalen, data);
->> +	mutex_unlock(&sl_evt_log_mutex);
->> +
->> +	kfree(data);
->> +out:
->> +	return result;
->> +}
-> 
-> ...
-> 
->> +static long slaunch_expose_securityfs(void)
->> +{
->> +	long ret = 0;
->> +	int i;
->> +
->> +	slaunch_dir = securityfs_create_dir("slaunch", NULL);
->> +	if (IS_ERR(slaunch_dir))
->> +		return PTR_ERR(slaunch_dir);
->> +
->> +	if (slaunch_get_flags() & SL_FLAG_ARCH_TXT) {
->> +		txt_dir = securityfs_create_dir("txt", slaunch_dir);
->> +		if (IS_ERR(txt_dir)) {
->> +			ret = PTR_ERR(txt_dir);
->> +			goto remove_slaunch;
->> +		}
->> +
->> +		for (i = 0; i < ARRAY_SIZE(sl_txt_files); i++) {
->> +			txt_entries[i] = securityfs_create_file(
->> +						sl_txt_files[i].name, 0440,
->> +						txt_dir, NULL,
->> +						sl_txt_files[i].fops);
->> +			if (IS_ERR(txt_entries[i])) {
->> +				ret = PTR_ERR(txt_entries[i]);
->> +				goto remove_files;
->> +			}
->> +		}
->> +
-> 
-> nit: no blank line here.
-> 
->> +	}
->> +
->> +	if (sl_evtlog.addr > 0) {
-> 
-> addr is a pointer. So perhaps:
-> 
-> 	if (sl_evtlog.addr) {
-> 
->> +		event_file = securityfs_create_file(
->> +					sl_evtlog.name, 0440,
->> +					slaunch_dir, NULL,
->> +					&sl_evtlog_ops);
->> +		if (IS_ERR(event_file)) {
->> +			ret = PTR_ERR(event_file);
->> +			goto remove_files;
->> +		}
->> +	}
->> +
->> +	return 0;
->> +
->> +remove_files:
->> +	if (slaunch_get_flags() & SL_FLAG_ARCH_TXT) {
->> +		while (--i >= 0)
->> +			securityfs_remove(txt_entries[i]);
->> +		securityfs_remove(txt_dir);
->> +	}
->> +remove_slaunch:
->> +	securityfs_remove(slaunch_dir);
->> +
->> +	return ret;
->> +}
-> 
-> ...
-> 
->> +static void slaunch_intel_evtlog(void __iomem *txt)
->> +{
->> +	struct slr_entry_log_info *log_info;
->> +	struct txt_os_mle_data *params;
->> +	struct slr_table *slrt;
->> +	void *os_sinit_data;
->> +	u64 base, size;
->> +
->> +	memcpy_fromio(&base, txt + TXT_CR_HEAP_BASE, sizeof(base));
->> +	memcpy_fromio(&size, txt + TXT_CR_HEAP_SIZE, sizeof(size));
->> +
->> +	/* now map TXT heap */
->> +	txt_heap = memremap(base, size, MEMREMAP_WB);
->> +	if (!txt_heap)
->> +		slaunch_txt_reset(txt,
->> +			"Error failed to memremap TXT heap\n",
->> +			SL_ERROR_HEAP_MAP);
-> 
-> nit: These lines are not aligned to the opening '('
-> 
->> +
->> +	params = (struct txt_os_mle_data *)txt_os_mle_data_start(txt_heap);
->> +
->> +	/* Get the SLRT and remap it */
->> +	slrt = memremap(params->slrt, sizeof(*slrt), MEMREMAP_WB);
->> +	if (!slrt)
->> +		slaunch_txt_reset(txt,
->> +			"Error failed to memremap SLR Table\n",
->> +			SL_ERROR_SLRT_MAP);
->> +	size = slrt->size;
->> +	memunmap(slrt);
->> +
->> +	slrt = memremap(params->slrt, size, MEMREMAP_WB);
->> +	if (!slrt)
->> +		slaunch_txt_reset(txt,
->> +			"Error failed to memremap SLR Table\n",
->> +			SL_ERROR_SLRT_MAP);
->> +
->> +	log_info = (struct slr_entry_log_info *)
->> +			slr_next_entry_by_tag(slrt, NULL, SLR_ENTRY_LOG_INFO);
->> +	if (!log_info)
->> +		slaunch_txt_reset(txt,
->> +			"Error failed to memremap SLR Table\n",
->> +			SL_ERROR_SLRT_MISSING_ENTRY);
->> +
->> +	sl_evtlog.size = log_info->size;
->> +	sl_evtlog.addr = memremap(log_info->addr, log_info->size,
->> +				  MEMREMAP_WB);
->> +	if (!sl_evtlog.addr)
->> +		slaunch_txt_reset(txt,
->> +			"Error failed to memremap TPM event log\n",
->> +			SL_ERROR_EVENTLOG_MAP);
->> +
->> +	memunmap(slrt);
->> +
->> +	/* Determine if this is TPM 1.2 or 2.0 event log */
->> +	if (memcmp(sl_evtlog.addr + sizeof(struct tcg_pcr_event),
->> +		    TCG_SPECID_SIG, sizeof(TCG_SPECID_SIG)))
->> +		return; /* looks like it is not 2.0 */
->> +
->> +	/* For TPM 2.0 logs, the extended heap element must be located */
->> +	os_sinit_data = txt_os_sinit_data_start(txt_heap);
->> +
-> 
-> The return type of tmp20_find_lot2_1_element() is:
-> 
-> 	struct txt_heap_event_log_pointer2_1_element *
-> 
-> However, the type of evtlog20 is:
-> 
-> 	struct txt_heap_event_log_pointer2_1_element __iomem *
-> 
->> +	evtlog20 = tpm20_find_log2_1_element(os_sinit_data);
->> +
->> +	/*
->> +	 * If this fails, things are in really bad shape. Any attempt to write
->> +	 * events to the log will fail.
->> +	 */
->> +	if (!evtlog20)
->> +		slaunch_txt_reset(txt,
->> +			"Error failed to find TPM20 event log element\n",
->> +			SL_ERROR_TPM_INVALID_LOG20);
->> +}
->> +
->> +static void slaunch_tpm20_extend_event(struct tpm_chip *tpm, void __iomem *txt,
->> +				       struct tcg_pcr_event2_head *event)
->> +{
->> +	u16 *alg_id_field = (u16 *)((u8 *)event +
->> +				    sizeof(struct tcg_pcr_event2_head));
->> +	struct tpm_digest *digests;
->> +	u8 *dptr;
->> +	int ret;
->> +	u32 i, j;
->> +
->> +	digests = kcalloc(tpm->nr_allocated_banks, sizeof(*digests),
->> +			  GFP_KERNEL);
->> +	if (!digests)
->> +		slaunch_txt_reset(txt,
->> +			"Failed to allocate array of digests\n",
->> +			SL_ERROR_GENERIC);
->> +
->> +	for (i = 0; i < tpm->nr_allocated_banks; i++)
->> +		digests[i].alg_id = tpm->allocated_banks[i].alg_id;
->> +
->> +
-> 
-> nit: one blank line is enough.
-> 
->> +	/* Early SL code ensured there was a max count of 2 digests */
->> +	for (i = 0; i < event->count; i++) {
->> +		dptr = (u8 *)alg_id_field + sizeof(u16);
->> +
->> +		for (j = 0; j < tpm->nr_allocated_banks; j++) {
->> +			if (digests[j].alg_id != *alg_id_field)
->> +				continue;
->> +
->> +			switch (digests[j].alg_id) {
->> +			case TPM_ALG_SHA256:
->> +				memcpy(&digests[j].digest[0], dptr,
->> +				       SHA256_DIGEST_SIZE);
->> +				alg_id_field = (u16 *)((u8 *)alg_id_field +
->> +					SHA256_DIGEST_SIZE + sizeof(u16));
->> +				break;
->> +			case TPM_ALG_SHA1:
->> +				memcpy(&digests[j].digest[0], dptr,
->> +				       SHA1_DIGEST_SIZE);
->> +				alg_id_field = (u16 *)((u8 *)alg_id_field +
->> +					SHA1_DIGEST_SIZE + sizeof(u16));
->> +			default:
->> +				break;
->> +			}
->> +		}
->> +	}
->> +
->> +	ret = tpm_pcr_extend(tpm, event->pcr_idx, digests);
->> +	if (ret) {
->> +		pr_err("Error extending TPM20 PCR, result: %d\n", ret);
->> +		slaunch_txt_reset(txt,
->> +			"Failed to extend TPM20 PCR\n",
->> +			SL_ERROR_TPM_EXTEND);
->> +	}
->> +
->> +	kfree(digests);
->> +}
->> +
->> +static void slaunch_tpm20_extend(struct tpm_chip *tpm, void __iomem *txt)
->> +{
->> +	struct tcg_pcr_event *event_header;
->> +	struct tcg_pcr_event2_head *event;
->> +	int start = 0, end = 0, size;
->> +
->> +	event_header = (struct tcg_pcr_event *)(sl_evtlog.addr +
->> +						evtlog20->first_record_offset);
-> 
-> Sparse says that evtlog20 shouldn't be dereferenced because it
-> has a __iomem attribute.
-> 
->> +
->> +	/* Skip first TPM 1.2 event to get to first TPM 2.0 event */
->> +	event = (struct tcg_pcr_event2_head *)((u8 *)event_header +
->> +						sizeof(struct tcg_pcr_event) +
->> +						event_header->event_size);
->> +
->> +	while ((void  *)event < sl_evtlog.addr + evtlog20->next_record_offset) {
-> 
-> Ditto.
-> 
->> +		size = __calc_tpm2_event_size(event, event_header, false);
->> +		if (!size)
->> +			slaunch_txt_reset(txt,
->> +				"TPM20 invalid event in event log\n",
->> +				SL_ERROR_TPM_INVALID_EVENT);
->> +
->> +		/*
->> +		 * Marker events indicate where the Secure Launch early stub
->> +		 * started and ended adding post launch events.
->> +		 */
->> +		if (event->event_type == TXT_EVTYPE_SLAUNCH_END) {
->> +			end = 1;
->> +			break;
->> +		} else if (event->event_type == TXT_EVTYPE_SLAUNCH_START) {
->> +			start = 1;
->> +			goto next;
->> +		}
->> +
->> +		if (start)
->> +			slaunch_tpm20_extend_event(tpm, txt, event);
->> +
->> +next:
->> +		event = (struct tcg_pcr_event2_head *)((u8 *)event + size);
->> +	}
->> +
->> +	if (!start || !end)
->> +		slaunch_txt_reset(txt,
->> +			"Missing start or end events for extending TPM20 PCRs\n",
->> +			SL_ERROR_TPM_EXTEND);
->> +}
-> 
-> ...
-> 
->> +static void slaunch_pcr_extend(void __iomem *txt)
->> +{
->> +	struct tpm_chip *tpm;
->> +
->> +	tpm = tpm_default_chip();
->> +	if (!tpm)
->> +		slaunch_txt_reset(txt,
->> +			"Could not get default TPM chip\n",
->> +			SL_ERROR_TPM_INIT);
->> +	if (evtlog20)
->> +		slaunch_tpm20_extend(tpm, txt);
->> +	else
->> +		slaunch_tpm12_extend(tpm, txt);
->> +}
->> +
->> +static int __init slaunch_module_init(void)
->> +{
->> +	void __iomem *txt;
->> +
->> +	/* Check to see if Secure Launch happened */
->> +	if ((slaunch_get_flags() & (SL_FLAG_ACTIVE|SL_FLAG_ARCH_TXT)) !=
->> +	    (SL_FLAG_ACTIVE|SL_FLAG_ARCH_TXT))
-> 
-> nit: spaces around '|'
->       Likewise elsewhere in this patch.
-> 
-> 
->> +		return 0;
->> +
->> +	txt = ioremap(TXT_PRIV_CONFIG_REGS_BASE, TXT_NR_CONFIG_PAGES *
->> +		      PAGE_SIZE);
->> +	if (!txt)
->> +		panic("Error ioremap of TXT priv registers\n");
->> +
->> +	/* Only Intel TXT is supported at this point */
->> +	slaunch_intel_evtlog(txt);
->> +
->> +	slaunch_pcr_extend(txt);
->> +
->> +	iounmap(txt);
->> +
->> +	return slaunch_expose_securityfs();
->> +}
-> 
-> ...
+My EFI knowledge is rather superficial. I would be glad for feedback.
 
+diff --git a/Documentation/arch/x86/zero-page.rst b/Documentation/arch/x86/zero-page.rst
+index f21905e61ade..45aa9cceb4f1 100644
+--- a/Documentation/arch/x86/zero-page.rst
++++ b/Documentation/arch/x86/zero-page.rst
+@@ -20,7 +20,6 @@ Offset/Size	Proto	Name			Meaning
+ 060/010		ALL	ist_info		Intel SpeedStep (IST) BIOS support information
+ 						(struct ist_info)
+ 070/008		ALL	acpi_rsdp_addr		Physical address of ACPI RSDP table
+-078/008		ALL	unaccepted_memory	Bitmap of unaccepted memory (1bit == 2M)
+ 080/010		ALL	hd0_info		hd0 disk parameter, OBSOLETE!!
+ 090/010		ALL	hd1_info		hd1 disk parameter, OBSOLETE!!
+ 0A0/010		ALL	sys_desc_table		System description table (struct sys_desc_table),
+diff --git a/arch/x86/boot/compressed/efi.h b/arch/x86/boot/compressed/efi.h
+index cf475243b6d5..5b63628912da 100644
+--- a/arch/x86/boot/compressed/efi.h
++++ b/arch/x86/boot/compressed/efi.h
+@@ -105,6 +105,15 @@ struct efi_setup_data {
+ 	u64 reserved[8];
+ };
+ 
++struct efi_unaccepted_memory {
++	u32 version;
++	u32 unit_size;
++	u64 size;
++	u64 bitmap[];
++};
++
++extern struct efi_unaccepted_memory *unaccepted_table;
++
+ static inline int efi_guidcmp (efi_guid_t left, efi_guid_t right)
+ {
+ 	return memcmp(&left, &right, sizeof (efi_guid_t));
+diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
+index e6b92e822ddd..7d50aea0d6b1 100644
+--- a/arch/x86/boot/compressed/mem.c
++++ b/arch/x86/boot/compressed/mem.c
+@@ -1,7 +1,9 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ 
++#include <linux/uuid.h>
+ #include "../cpuflags.h"
+ #include "bitmap.h"
++#include "efi.h"
+ #include "error.h"
+ #include "find.h"
+ #include "math.h"
+@@ -12,8 +14,6 @@
+ #define PMD_SIZE	(_AC(1, UL) << PMD_SHIFT)
+ #define PMD_MASK	(~(PMD_SIZE - 1))
+ 
+-extern struct boot_params *boot_params;
+-
+ /*
+  * accept_memory() and process_unaccepted_memory() called from EFI stub which
+  * runs before decompresser and its early_tdx_detect().
+@@ -57,66 +57,77 @@ static inline void __accept_memory(phys_addr_t start, phys_addr_t end)
+  *
+  * The function will never reach the bitmap_set() with zero bits to set.
+  */
+-void process_unaccepted_memory(struct boot_params *params, u64 start, u64 end)
++void process_unaccepted_memory(u64 start, u64 end)
+ {
++	u64 unit_size = unaccepted_table->unit_size;
++	u64 unit_mask = unaccepted_table->unit_size - 1;
++	u64 bitmap_size = unaccepted_table->size;
++
+ 	/*
+ 	 * Ensure that at least one bit will be set in the bitmap by
+-	 * immediately accepting all regions under 2*PMD_SIZE.  This is
++	 * immediately accepting all regions under 2*unit_size.  This is
+ 	 * imprecise and may immediately accept some areas that could
+ 	 * have been represented in the bitmap.  But, results in simpler
+ 	 * code below
+ 	 *
+-	 * Consider case like this:
++	 * Consider case like this (assuming unit_size == 2MB):
+ 	 *
+ 	 * | 4k | 2044k |    2048k   |
+ 	 * ^ 0x0        ^ 2MB        ^ 4MB
+ 	 *
+ 	 * Only the first 4k has been accepted. The 0MB->2MB region can not be
+ 	 * represented in the bitmap. The 2MB->4MB region can be represented in
+-	 * the bitmap. But, the 0MB->4MB region is <2*PMD_SIZE and will be
++	 * the bitmap. But, the 0MB->4MB region is <2*unit_size and will be
+ 	 * immediately accepted in its entirety.
+ 	 */
+-	if (end - start < 2 * PMD_SIZE) {
++	if (end - start < 2 * unit_size) {
+ 		__accept_memory(start, end);
+ 		return;
+ 	}
+ 
+ 	/*
+ 	 * No matter how the start and end are aligned, at least one unaccepted
+-	 * PMD_SIZE area will remain to be marked in the bitmap.
++	 * unit_size area will remain to be marked in the bitmap.
+ 	 */
+ 
+-	/* Immediately accept a <PMD_SIZE piece at the start: */
+-	if (start & ~PMD_MASK) {
+-		__accept_memory(start, round_up(start, PMD_SIZE));
+-		start = round_up(start, PMD_SIZE);
++	/* Immediately accept a <unit_size piece at the start: */
++	if (start & unit_mask) {
++		__accept_memory(start, round_up(start, unit_size));
++		start = round_up(start, unit_size);
+ 	}
+ 
+-	/* Immediately accept a <PMD_SIZE piece at the end: */
+-	if (end & ~PMD_MASK) {
+-		__accept_memory(round_down(end, PMD_SIZE), end);
+-		end = round_down(end, PMD_SIZE);
++	/* Immediately accept a <unit_size piece at the end: */
++	if (end & unit_mask) {
++		__accept_memory(round_down(end, unit_size), end);
++		end = round_down(end, unit_size);
++	}
++
++	/* Accept everything that cannot be recorded into the bitmap */
++	if (end > bitmap_size * unit_size * BITS_PER_BYTE) {
++		__accept_memory(bitmap_size * unit_size * BITS_PER_BYTE, end);
++		end = bitmap_size * unit_size * BITS_PER_BYTE;
+ 	}
+ 
+ 	/*
+-	 * 'start' and 'end' are now both PMD-aligned.
++	 * 'start' and 'end' are now both unit_size-aligned.
+ 	 * Record the range as being unaccepted:
+ 	 */
+-	bitmap_set((unsigned long *)params->unaccepted_memory,
+-		   start / PMD_SIZE, (end - start) / PMD_SIZE);
++	bitmap_set((unsigned long *)unaccepted_table->bitmap,
++		   start / unit_size, (end - start) / unit_size);
+ }
+ 
+ void accept_memory(phys_addr_t start, phys_addr_t end)
+ {
+ 	unsigned long range_start, range_end;
+ 	unsigned long *bitmap, bitmap_size;
++	u64 unit_size = unaccepted_table->unit_size;
+ 
+-	bitmap = (unsigned long *)boot_params->unaccepted_memory;
+-	range_start = start / PMD_SIZE;
+-	bitmap_size = DIV_ROUND_UP(end, PMD_SIZE);
++	bitmap = (unsigned long *)unaccepted_table->bitmap;
++	range_start = start / unit_size;
++	bitmap_size = DIV_ROUND_UP(end, unit_size);
+ 
+ 	for_each_set_bitrange_from(range_start, range_end, bitmap, bitmap_size) {
+-		__accept_memory(range_start * PMD_SIZE, range_end * PMD_SIZE);
++		__accept_memory(range_start * unit_size, range_end * unit_size);
+ 		bitmap_clear(bitmap, range_start, range_end - range_start);
+ 	}
+ }
+diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
+index 186bfd53e042..f481f0b30873 100644
+--- a/arch/x86/boot/compressed/misc.c
++++ b/arch/x86/boot/compressed/misc.c
+@@ -456,7 +456,7 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
+ 
+ 	debug_putstr("\nDecompressing Linux... ");
+ 
+-	if (boot_params->unaccepted_memory) {
++	if (unaccepted_table) {
+ 		debug_putstr("Accepting memory... ");
+ 		accept_memory(__pa(output), __pa(output) + needed_size);
+ 	}
+diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
+index 89fc91c61560..9f695bdde01c 100644
+--- a/arch/x86/include/asm/unaccepted_memory.h
++++ b/arch/x86/include/asm/unaccepted_memory.h
+@@ -3,9 +3,7 @@
+ #ifndef _ASM_X86_UNACCEPTED_MEMORY_H
+ #define _ASM_X86_UNACCEPTED_MEMORY_H
+ 
+-struct boot_params;
+-
+-void process_unaccepted_memory(struct boot_params *params, u64 start, u64 num);
++void process_unaccepted_memory(u64 start, u64 num);
+ 
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ 
+diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
+index 630a54046af0..01d19fc22346 100644
+--- a/arch/x86/include/uapi/asm/bootparam.h
++++ b/arch/x86/include/uapi/asm/bootparam.h
+@@ -189,7 +189,7 @@ struct boot_params {
+ 	__u64  tboot_addr;				/* 0x058 */
+ 	struct ist_info ist_info;			/* 0x060 */
+ 	__u64 acpi_rsdp_addr;				/* 0x070 */
+-	__u64 unaccepted_memory;			/* 0x078 */
++	__u8  _pad3[8];					/* 0x078 */
+ 	__u8  hd0_info[16];	/* obsolete! */		/* 0x080 */
+ 	__u8  hd1_info[16];	/* obsolete! */		/* 0x090 */
+ 	struct sys_desc_table sys_desc_table; /* obsolete! */	/* 0x0a0 */
+diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+index 483c36a28d2e..8ee6b756712f 100644
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -16,6 +16,7 @@
+ #include <linux/firmware-map.h>
+ #include <linux/sort.h>
+ #include <linux/memory_hotplug.h>
++#include <linux/efi.h>
+ 
+ #include <asm/e820/api.h>
+ #include <asm/setup.h>
+@@ -1324,13 +1325,15 @@ void __init e820__memblock_setup(void)
+ 	 * e820_table is not finalized and e820__end_of_ram_pfn() cannot be
+ 	 * used to get correct RAM size.
+ 	 */
+-	if (boot_params.unaccepted_memory) {
++	if (efi.unaccepted != EFI_INVALID_TABLE_ADDR) {
++		struct efi_unaccepted_memory *unaccepted;
+ 		unsigned long size;
+ 
+-		/* One bit per 2MB */
+-		size = DIV_ROUND_UP(e820__end_of_ram_pfn() * PAGE_SIZE,
+-				    PMD_SIZE * BITS_PER_BYTE);
+-		memblock_reserve(boot_params.unaccepted_memory, size);
++		unaccepted = __va(efi.unaccepted);
++
++		size = sizeof(struct efi_unaccepted_memory);
++		size += unaccepted->size;
++		memblock_reserve(efi.unaccepted, size);
+ 	}
+ 
+ 	/*
+diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
+index f61174d4c3cb..ec2b616ef32e 100644
+--- a/arch/x86/mm/unaccepted_memory.c
++++ b/arch/x86/mm/unaccepted_memory.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
++#include <linux/efi.h>
+ #include <linux/memblock.h>
+ #include <linux/mm.h>
+ #include <linux/pfn.h>
+@@ -14,15 +15,19 @@ static DEFINE_SPINLOCK(unaccepted_memory_lock);
+ 
+ void accept_memory(phys_addr_t start, phys_addr_t end)
+ {
++	struct efi_unaccepted_memory *unaccepted;
+ 	unsigned long range_start, range_end;
+-	unsigned long *bitmap;
+-	unsigned long flags;
++	unsigned long flags, *bitmap;
++	u64 unit_size;
+ 
+-	if (!boot_params.unaccepted_memory)
++	if (efi.unaccepted == EFI_INVALID_TABLE_ADDR)
+ 		return;
+ 
+-	bitmap = __va(boot_params.unaccepted_memory);
+-	range_start = start / PMD_SIZE;
++	unaccepted = __va(efi.unaccepted);
++	unit_size = unaccepted->unit_size;
++	bitmap = (unsigned long *)unaccepted->bitmap;
++
++	range_start = start / unit_size;
+ 
+ 	/*
+ 	 * load_unaligned_zeropad() can lead to unwanted loads across page
+@@ -42,23 +47,25 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
+ 	 * used:
+ 	 *
+ 	 * 1. Implicitly extend the range_contains_unaccepted_memory(start, end)
+-	 *    checks up to end+2M if 'end' is aligned on a 2M boundary.
++	 *    checks up to end+unit_size if 'end' is aligned on a unit_size
++	 *    boundary.
+ 	 *
+-	 * 2. Implicitly extend accept_memory(start, end) to end+2M if 'end' is
+-	 *    aligned on a 2M boundary. (immediately following this comment)
++	 * 2. Implicitly extend accept_memory(start, end) to end+unit_size if
++	 *    'end' is aligned on a unit_size boundary. (immediately following
++	 *    this comment)
+ 	 */
+-	if (!(end % PMD_SIZE))
+-		end += PMD_SIZE;
++	if (!(end % unit_size))
++		end += unit_size;
+ 
+ 	spin_lock_irqsave(&unaccepted_memory_lock, flags);
+ 	for_each_set_bitrange_from(range_start, range_end, bitmap,
+-				   DIV_ROUND_UP(end, PMD_SIZE)) {
++				   DIV_ROUND_UP(end, unit_size)) {
+ 		unsigned long len = range_end - range_start;
+ 
+ 		/* Platform-specific memory-acceptance call goes here */
+ 		if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
+-			tdx_accept_memory(range_start * PMD_SIZE,
+-					  range_end * PMD_SIZE);
++			tdx_accept_memory(range_start * unit_size,
++					  range_end * unit_size);
+ 		} else {
+ 			panic("Cannot accept memory: unknown platform\n");
+ 		}
+@@ -70,30 +77,33 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
+ 
+ bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end)
+ {
+-	unsigned long *bitmap;
+-	unsigned long flags;
++	struct efi_unaccepted_memory *unaccepted;
++	unsigned long flags, *bitmap;
+ 	bool ret = false;
++	u64 unit_size;
+ 
+-	if (!boot_params.unaccepted_memory)
++	if (efi.unaccepted == EFI_INVALID_TABLE_ADDR)
+ 		return 0;
+ 
+-	bitmap = __va(boot_params.unaccepted_memory);
++	unaccepted = __va(efi.unaccepted);
++	unit_size = unaccepted->unit_size;
++	bitmap = (unsigned long *)unaccepted->bitmap;
+ 
+ 	/*
+ 	 * Also consider the unaccepted state of the *next* page. See fix #1 in
+ 	 * the comment on load_unaligned_zeropad() in accept_memory().
+ 	 */
+-	if (!(end % PMD_SIZE))
+-		end += PMD_SIZE;
++	if (!(end % unit_size))
++		end += unit_size;
+ 
+ 	spin_lock_irqsave(&unaccepted_memory_lock, flags);
+ 	while (start < end) {
+-		if (test_bit(start / PMD_SIZE, bitmap)) {
++		if (test_bit(start / unit_size, bitmap)) {
+ 			ret = true;
+ 			break;
+ 		}
+ 
+-		start += PMD_SIZE;
++		start += unit_size;
+ 	}
+ 	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
+ 
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 7dce06e419c5..e15a2005ed93 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -50,6 +50,9 @@ struct efi __read_mostly efi = {
+ #ifdef CONFIG_EFI_COCO_SECRET
+ 	.coco_secret		= EFI_INVALID_TABLE_ADDR,
+ #endif
++#ifdef CONFIG_UNACCEPTED_MEMORY
++	.unaccepted		= EFI_INVALID_TABLE_ADDR,
++#endif
+ };
+ EXPORT_SYMBOL(efi);
+ 
+@@ -605,6 +608,9 @@ static const efi_config_table_type_t common_tables[] __initconst = {
+ #ifdef CONFIG_EFI_COCO_SECRET
+ 	{LINUX_EFI_COCO_SECRET_AREA_GUID,	&efi.coco_secret,	"CocoSecret"	},
+ #endif
++#ifdef CONFIG_UNACCEPTED_MEMORY
++	{LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID,	&efi.unaccepted,	"Unaccepted"	},
++#endif
+ #ifdef CONFIG_EFI_GENERIC_STUB
+ 	{LINUX_EFI_SCREEN_INFO_TABLE_GUID,	&screen_info_table			},
+ #endif
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 1afe7b5b02e1..4953b40f30c3 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -26,6 +26,7 @@ const efi_system_table_t *efi_system_table;
+ const efi_dxe_services_table_t *efi_dxe_table;
+ u32 image_offset __section(".data");
+ static efi_loaded_image_t *image = NULL;
++struct efi_unaccepted_memory *unaccepted_table;
+ 
+ static efi_status_t
+ preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
+@@ -621,7 +622,7 @@ setup_e820(struct boot_params *params, struct setup_data *e820ext, u32 e820ext_s
+ 				continue;
+ 			}
+ 			e820_type = E820_TYPE_RAM;
+-			process_unaccepted_memory(params, d->phys_addr,
++			process_unaccepted_memory(d->phys_addr,
+ 						  d->phys_addr + PAGE_SIZE * d->num_pages);
+ 			break;
+ 		default:
+@@ -692,12 +693,22 @@ static efi_status_t allocate_unaccepted_bitmap(struct boot_params *params,
+ 					       __u32 nr_desc,
+ 					       struct efi_boot_memmap *map)
+ {
+-	unsigned long *mem = NULL;
+-	u64 size, max_addr = 0;
++	efi_guid_t unaccepted_table_guid = LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID;
++	u64 bitmap_size, max_addr = 0;
+ 	efi_status_t status;
+ 	bool found = false;
+ 	int i;
+ 
++	/* Check if the table is already installed */
++	unaccepted_table = get_efi_config_table(unaccepted_table_guid);
++	if (unaccepted_table) {
++		if (unaccepted_table->version != 0) {
++			efi_err("Unknown version of unaccepted memory tatble\n");
++			return EFI_UNSUPPORTED;
++		}
++		return EFI_SUCCESS;
++	}
++
+ 	/* Check if there's any unaccepted memory and find the max address */
+ 	for (i = 0; i < nr_desc; i++) {
+ 		efi_memory_desc_t *d;
+@@ -710,11 +721,6 @@ static efi_status_t allocate_unaccepted_bitmap(struct boot_params *params,
+ 			max_addr = d->phys_addr + d->num_pages * PAGE_SIZE;
+ 	}
+ 
+-	if (!found) {
+-		params->unaccepted_memory = 0;
+-		return EFI_SUCCESS;
+-	}
+-
+ 	/*
+ 	 * range_contains_unaccepted_memory() may need to check one 2M chunk
+ 	 * beyond the end of RAM to deal with load_unaligned_zeropad(). Make
+@@ -736,11 +742,26 @@ static efi_status_t allocate_unaccepted_bitmap(struct boot_params *params,
+ 	 * The bitmap will be populated in setup_e820() according to the memory
+ 	 * map after efi_exit_boot_services().
+ 	 */
+-	size = DIV_ROUND_UP(max_addr, PMD_SIZE * BITS_PER_BYTE);
+-	status = efi_allocate_pages(size, (unsigned long *)&mem, ULONG_MAX);
+-	if (status == EFI_SUCCESS) {
+-		memset(mem, 0, size);
+-		params->unaccepted_memory = (unsigned long)mem;
++	bitmap_size = DIV_ROUND_UP(max_addr, PMD_SIZE * BITS_PER_BYTE);
++
++	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
++			     sizeof(*unaccepted_table) + bitmap_size,
++			     (void **)&unaccepted_table);
++	if (status != EFI_SUCCESS) {
++		efi_err("Failed to allocate unaccepted memory config table\n");
++		return status;
++	}
++
++	unaccepted_table->version = 0;
++	unaccepted_table->unit_size = PMD_SIZE;
++	unaccepted_table->size = bitmap_size;
++	memset(unaccepted_table->bitmap, 0, bitmap_size);
++
++	status = efi_bs_call(install_configuration_table,
++			     &unaccepted_table_guid, unaccepted_table);
++	if (status != EFI_SUCCESS) {
++		efi_bs_call(free_pool, unaccepted_table);
++		efi_err("Failed to install unaccepted memory config table!\n");
+ 	}
+ 
+ 	return status;
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index efbe14641638..f765266a81b3 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -418,6 +418,7 @@ void efi_native_runtime_setup(void);
+ #define LINUX_EFI_MOK_VARIABLE_TABLE_GUID	EFI_GUID(0xc451ed2b, 0x9694, 0x45d3,  0xba, 0xba, 0xed, 0x9f, 0x89, 0x88, 0xa3, 0x89)
+ #define LINUX_EFI_COCO_SECRET_AREA_GUID		EFI_GUID(0xadf956ad, 0xe98c, 0x484c,  0xae, 0x11, 0xb5, 0x1c, 0x7d, 0x33, 0x64, 0x47)
+ #define LINUX_EFI_BOOT_MEMMAP_GUID		EFI_GUID(0x800f683f, 0xd08b, 0x423a,  0xa2, 0x93, 0x96, 0x5c, 0x3c, 0x6f, 0xe2, 0xb4)
++#define LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID	EFI_GUID(0xd5d1de3c, 0x105c, 0x44f9,  0x9e, 0xa9, 0xbc, 0xef, 0x98, 0x12, 0x00, 0x31)
+ 
+ #define RISCV_EFI_BOOT_PROTOCOL_GUID		EFI_GUID(0xccd15fec, 0x6f73, 0x4eec,  0x83, 0x95, 0x3e, 0x69, 0xe4, 0xb9, 0x40, 0xbf)
+ 
+@@ -535,6 +536,13 @@ struct efi_boot_memmap {
+ 	efi_memory_desc_t	map[];
+ };
+ 
++struct efi_unaccepted_memory {
++	u32 version;
++	u32 unit_size;
++	u64 size;
++	u64 bitmap[];
++};
++
+ /*
+  * Architecture independent structure for describing a memory map for the
+  * benefit of efi_memmap_init_early(), and for passing context between
+@@ -637,6 +645,7 @@ extern struct efi {
+ 	unsigned long			tpm_final_log;		/* TPM2 Final Events Log table */
+ 	unsigned long			mokvar_table;		/* MOK variable config table */
+ 	unsigned long			coco_secret;		/* Confidential computing secret table */
++	unsigned long			unaccepted;
+ 
+ 	efi_get_time_t			*get_time;
+ 	efi_set_time_t			*set_time;
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
