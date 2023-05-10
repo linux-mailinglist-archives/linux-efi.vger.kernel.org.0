@@ -2,47 +2,47 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00B606FE7B8
-	for <lists+linux-efi@lfdr.de>; Thu, 11 May 2023 00:55:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0328C6FE7DD
+	for <lists+linux-efi@lfdr.de>; Thu, 11 May 2023 01:02:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236017AbjEJWzq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 10 May 2023 18:55:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52752 "EHLO
+        id S236813AbjEJXCv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 10 May 2023 19:02:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233875AbjEJWzp (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 10 May 2023 18:55:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13B2535AE;
-        Wed, 10 May 2023 15:55:37 -0700 (PDT)
+        with ESMTP id S236782AbjEJXCr (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 10 May 2023 19:02:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 800C461A4;
+        Wed, 10 May 2023 16:02:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D10760F72;
-        Wed, 10 May 2023 22:55:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB92C4339B;
-        Wed, 10 May 2023 22:55:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D19A64140;
+        Wed, 10 May 2023 23:02:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77195C4339E;
+        Wed, 10 May 2023 23:02:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683759336;
-        bh=CDgu2O3o+dnDHiRpEYgrb9cYoQ7pkoAOCNXyrg0YN3I=;
+        s=k20201202; t=1683759760;
+        bh=jedv7Fd/XF9+jK05ERRrGGBgCnDUUTKCg1r+DklZla0=;
         h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=FMTBOrto5u3AWnFPfw1R6nHm9n9/GmNSTY5pLBbQjqlk5MXbsAOGW/oGg73tW6oGG
-         0h957BmY+LIaeAtLSqt/FgB57lK++Zgr+4667E+3uyJlDkHI7RxQh/W6b8CEbTfIta
-         i7JCar9lXqm34XeShwjD1FQDInsIMD9TsMTMfbGoSwSUqkSiw9qfYBka0M0khMVK0I
-         pBJAn82liuqoq/qlUM///LxM8ty2bXz/+DsW/hMFJIxff9Hq26DuvBqRhEJHTWpbEe
-         WlrqnRy7JAvmUcwK+u9oWHGklsv6k880xmwY7e4cxZRHy9rPXdR9rL2PIEM02vCujG
-         Tva+QA/llFzFA==
+        b=C8nLteRXznUXzstZBnON2felh1TrJr1qzXS9uY7pWj/SJyP/o3NMNuPDObmmBffpd
+         nX5wDYQ3aY2SVKZb0lEG9A8xuUV1iackXMa211TlNtFlt9QNLjY0+gxzggBD8AmoDx
+         cV5M73NOV2TD803D/efyQYoqmJPHbbuhRHbfPO4roE+0ttvPIpibxu543UV+EzHC/a
+         0H/1tKHrC4QpteeUhKNnI/sNNY+KwFLrqhpvqP8U5GX6ybfRQoZkZrbbnaXblpYXls
+         Vnk87ZFYzQGGs8MfIailajOJYC/s8ZrjMC64x1DIZU5Q9sni278NaBAcbW/50BROyx
+         MJ26kddeSuQfQ==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date:   Thu, 11 May 2023 01:55:30 +0300
-Message-Id: <CSIYV9UAFYWZ.3KMD32LKER5NS@suppilovahvero>
+Date:   Thu, 11 May 2023 02:02:34 +0300
+Message-Id: <CSIZ0OTO074D.1LV8KCZM306II@suppilovahvero>
 Cc:     <dpsmith@apertussolutions.com>, <tglx@linutronix.de>,
         <mingo@redhat.com>, <bp@alien8.de>, <hpa@zytor.com>,
         <ardb@kernel.org>, <mjg59@srcf.ucam.org>,
         <James.Bottomley@hansenpartnership.com>, <luto@amacapital.net>,
         <nivedita@alum.mit.edu>, <kanth.ghatraju@oracle.com>,
         <trenchboot-devel@googlegroups.com>
-Subject: Re: [PATCH v6 09/14] x86: Secure Launch SMP bringup support
+Subject: Re: [PATCH v6 08/14] x86: Secure Launch kernel late boot stub
 From:   "Jarkko Sakkinen" <jarkko@kernel.org>
 To:     "Ross Philipson" <ross.philipson@oracle.com>,
         <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
@@ -51,10 +51,10 @@ To:     "Ross Philipson" <ross.philipson@oracle.com>,
         <kexec@lists.infradead.org>, <linux-efi@vger.kernel.org>
 X-Mailer: aerc 0.14.0
 References: <20230504145023.835096-1-ross.philipson@oracle.com>
- <20230504145023.835096-10-ross.philipson@oracle.com>
-In-Reply-To: <20230504145023.835096-10-ross.philipson@oracle.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+ <20230504145023.835096-9-ross.philipson@oracle.com>
+In-Reply-To: <20230504145023.835096-9-ross.philipson@oracle.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -64,255 +64,612 @@ List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
 On Thu May 4, 2023 at 5:50 PM EEST, Ross Philipson wrote:
-> On Intel, the APs are left in a well documented state after TXT performs
-> the late launch. Specifically they cannot have #INIT asserted on them so
-> a standard startup via INIT/SIPI/SIPI cannot be performed. Instead the
-> early SL stub code parked the APs in a pause/jmp loop waiting for an NMI.
-> The modified SMP boot code is called for the Secure Launch case. The
-> jump address for the RM piggy entry point is fixed up in the jump where
-> the APs are waiting and an NMI IPI is sent to the AP. The AP vectors to
-> the Secure Launch entry point in the RM piggy which mimics what the real
-> mode code would do then jumps to the standard RM piggy protected mode
-> entry point.
+> The routine slaunch_setup is called out of the x86 specific setup_arch
+> routine during early kernel boot. After determining what platform is
+> present, various operations specific to that platform occur. This
+> includes finalizing setting for the platform late launch and verifying
+> that memory protections are in place.
+>
+> For TXT, this code also reserves the original compressed kernel setup
+> area where the APs were left looping so that this memory cannot be used.
 >
 > Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
 > ---
->  arch/x86/include/asm/realmode.h      |  3 ++
->  arch/x86/kernel/smpboot.c            | 86 ++++++++++++++++++++++++++++++=
+>  arch/x86/kernel/Makefile   |   1 +
+>  arch/x86/kernel/setup.c    |   3 +
+>  arch/x86/kernel/slaunch.c  | 497 +++++++++++++++++++++++++++++++++++++++=
 ++++++
->  arch/x86/realmode/rm/header.S        |  3 ++
->  arch/x86/realmode/rm/trampoline_64.S | 37 ++++++++++++++++
->  4 files changed, 129 insertions(+)
+>  drivers/iommu/intel/dmar.c |   4 +
+>  4 files changed, 505 insertions(+)
+>  create mode 100644 arch/x86/kernel/slaunch.c
 >
-> diff --git a/arch/x86/include/asm/realmode.h b/arch/x86/include/asm/realm=
-ode.h
-> index f6a1737..576fe62 100644
-> --- a/arch/x86/include/asm/realmode.h
-> +++ b/arch/x86/include/asm/realmode.h
-> @@ -38,6 +38,9 @@ struct real_mode_header {
->  #ifdef CONFIG_X86_64
->  	u32	machine_real_restart_seg;
->  #endif
-> +#ifdef CONFIG_SECURE_LAUNCH
-> +	u32	sl_trampoline_start32;
-> +#endif
-
-Cool I was implementing this relocatable realmode blob back in 2012 :-)
-
->  };
-> =20
->  /* This must match data at realmode/rm/trampoline_{32,64}.S */
-> diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-> index 352f0ce..07d740be 100644
-> --- a/arch/x86/kernel/smpboot.c
-> +++ b/arch/x86/kernel/smpboot.c
-> @@ -57,6 +57,7 @@
->  #include <linux/pgtable.h>
->  #include <linux/overflow.h>
->  #include <linux/stackprotector.h>
+> diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+> index dd61752..3d2a33e 100644
+> --- a/arch/x86/kernel/Makefile
+> +++ b/arch/x86/kernel/Makefile
+> @@ -72,6 +72,7 @@ obj-$(CONFIG_X86_32)		+=3D tls.o
+>  obj-$(CONFIG_IA32_EMULATION)	+=3D tls.o
+>  obj-y				+=3D step.o
+>  obj-$(CONFIG_INTEL_TXT)		+=3D tboot.o
+> +obj-$(CONFIG_SECURE_LAUNCH)	+=3D slaunch.o
+>  obj-$(CONFIG_ISA_DMA_API)	+=3D i8237.o
+>  obj-y				+=3D stacktrace.o
+>  obj-y				+=3D cpu/
+> diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+> index 16babff..592c09e 100644
+> --- a/arch/x86/kernel/setup.c
+> +++ b/arch/x86/kernel/setup.c
+> @@ -21,6 +21,7 @@
+>  #include <linux/root_dev.h>
+>  #include <linux/hugetlb.h>
+>  #include <linux/tboot.h>
 > +#include <linux/slaunch.h>
+
+Only because of pure curiosity: what made you choose this location in
+the middle for the new include? :-)
+
+>  #include <linux/usb/xhci-dbgp.h>
+>  #include <linux/static_call.h>
+>  #include <linux/swiotlb.h>
+> @@ -1063,6 +1064,8 @@ void __init setup_arch(char **cmdline_p)
+>  	early_gart_iommu_check();
+>  #endif
 > =20
->  #include <asm/acpi.h>
->  #include <asm/cacheinfo.h>
-> @@ -1068,6 +1069,83 @@ int common_cpu_up(unsigned int cpu, struct task_st=
-ruct *idle)
->  	return 0;
->  }
-> =20
-> +#ifdef CONFIG_SECURE_LAUNCH
-> +
-> +static atomic_t first_ap_only =3D {1};
-
-This should be documented.
-
-> +
-> +/*
-> + * Called to fix the long jump address for the waiting APs to vector to
-> + * the correct startup location in the Secure Launch stub in the rmpiggy=
-.
-> + */
-> +static int
-> +slaunch_fixup_jump_vector(void)
-
-Please put the same line.
-
-> +{
-> +	struct sl_ap_wake_info *ap_wake_info;
-> +	u32 *ap_jmp_ptr =3D NULL;
-> +
-> +	if (!atomic_dec_and_test(&first_ap_only))
-> +		return 0;
-> +
-> +	ap_wake_info =3D slaunch_get_ap_wake_info();
-> +
-> +	ap_jmp_ptr =3D (u32 *)__va(ap_wake_info->ap_wake_block +
-> +				 ap_wake_info->ap_jmp_offset);
-> +
-> +	*ap_jmp_ptr =3D real_mode_header->sl_trampoline_start32;
-> +
-> +	pr_debug("TXT AP long jump address updated\n");
-> +
-> +	return 0;
-> +}
-> +
-> +/*
-> + * TXT AP startup is quite different than normal. The APs cannot have #I=
-NIT
-> + * asserted on them or receive SIPIs. The early Secure Launch code has p=
-arked
-> + * the APs in a pause loop waiting to receive an NMI. This will wake the=
- APs
-> + * and have them jump to the protected mode code in the rmpiggy where th=
-e rest
-> + * of the SMP boot of the AP will proceed normally.
-> + */
-> +static int
-> +slaunch_wakeup_cpu_from_txt(int cpu, int apicid)
-
-Ditto.
-
-
-> +{
-> +	unsigned long send_status =3D 0, accept_status =3D 0;
-
-I would put these to separate lines. Maybe a matter of taste but
-it is easier to spot initializations.
-
-> +
-> +	/* Only done once */
-> +	if (slaunch_fixup_jump_vector())
-> +		return -1;
-> +
-> +	/* Send NMI IPI to idling AP and wake it up */
-> +	apic_icr_write(APIC_DM_NMI, apicid);
-> +
-> +	if (init_udelay =3D=3D 0)
-> +		udelay(10);
-> +	else
-> +		udelay(300);
-> +
-> +	send_status =3D safe_apic_wait_icr_idle();
-> +
-> +	if (init_udelay =3D=3D 0)
-> +		udelay(10);
-> +	else
-> +		udelay(300);
-
-Magic numbers and no inline comment.
-
-> +
-> +	accept_status =3D (apic_read(APIC_ESR) & 0xEF);
-> +
-> +	if (send_status)
-> +		pr_err("Secure Launch IPI never delivered???\n");
-> +	if (accept_status)
-> +		pr_err("Secure Launch IPI delivery error (%lx)\n",
-> +			accept_status);
-> +
-> +	return (send_status | accept_status);
-> +}
-> +
-> +#else
-> +
-> +#define slaunch_wakeup_cpu_from_txt(cpu, apicid)	0
-> +
-> +#endif  /* !CONFIG_SECURE_LAUNCH */
-> +
->  /*
->   * NOTE - on most systems this is a PHYSICAL apic ID, but on multiquad
->   * (ie clustered apic addressing mode), this is a LOGICAL apic ID.
-> @@ -1132,6 +1210,13 @@ static int do_boot_cpu(int apicid, int cpu, struct=
- task_struct *idle,
->  	cpumask_clear_cpu(cpu, cpu_initialized_mask);
->  	smp_mb();
-> =20
-> +	/* With Intel TXT, the AP startup is totally different */
-> +	if ((slaunch_get_flags() & (SL_FLAG_ACTIVE|SL_FLAG_ARCH_TXT)) =3D=3D
-> +	   (SL_FLAG_ACTIVE|SL_FLAG_ARCH_TXT)) {
-> +		boot_error =3D slaunch_wakeup_cpu_from_txt(cpu, apicid);
-> +		goto txt_wake;
-> +	}
+> +	slaunch_setup_txt();
 > +
 >  	/*
->  	 * Wake up a CPU in difference cases:
->  	 * - Use a method from the APIC driver if one defined, with wakeup
-> @@ -1147,6 +1232,7 @@ static int do_boot_cpu(int apicid, int cpu, struct =
-task_struct *idle,
->  		boot_error =3D wakeup_cpu_via_init_nmi(cpu, start_ip, apicid,
->  						     cpu0_nmi_registered);
-> =20
-> +txt_wake:
->  	if (!boot_error) {
->  		/*
->  		 * Wait 10s total for first sign of life from AP
-> diff --git a/arch/x86/realmode/rm/header.S b/arch/x86/realmode/rm/header.=
-S
-> index 2eb62be..3b5cbcb 100644
-> --- a/arch/x86/realmode/rm/header.S
-> +++ b/arch/x86/realmode/rm/header.S
-> @@ -37,6 +37,9 @@ SYM_DATA_START(real_mode_header)
->  #ifdef CONFIG_X86_64
->  	.long	__KERNEL32_CS
->  #endif
-> +#ifdef CONFIG_SECURE_LAUNCH
-> +	.long	pa_sl_trampoline_start32
-> +#endif
->  SYM_DATA_END(real_mode_header)
-> =20
->  	/* End signature, used to verify integrity */
-> diff --git a/arch/x86/realmode/rm/trampoline_64.S b/arch/x86/realmode/rm/=
-trampoline_64.S
-> index e38d61d..8bb4b0d 100644
-> --- a/arch/x86/realmode/rm/trampoline_64.S
-> +++ b/arch/x86/realmode/rm/trampoline_64.S
-> @@ -104,6 +104,43 @@ SYM_CODE_END(sev_es_trampoline_start)
-> =20
->  	.section ".text32","ax"
->  	.code32
-> +#ifdef CONFIG_SECURE_LAUNCH
-> +	.balign 4
-> +SYM_CODE_START(sl_trampoline_start32)
-> +	/*
-> +	 * The early secure launch stub AP wakeup code has taken care of all
-> +	 * the vagaries of launching out of TXT. This bit just mimics what the
-> +	 * 16b entry code does and jumps off to the real startup_32.
-> +	 */
-> +	cli
-> +	wbinvd
+>  	 * partially used pages are not usable - thus
+>  	 * we are rounding upwards:
+> diff --git a/arch/x86/kernel/slaunch.c b/arch/x86/kernel/slaunch.c
+> new file mode 100644
+> index 0000000..7dba088
+> --- /dev/null
+> +++ b/arch/x86/kernel/slaunch.c
+> @@ -0,0 +1,497 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Secure Launch late validation/setup and finalization support.
+> + *
+> + * Copyright (c) 2022, Oracle and/or its affiliates.
+> + */
+> +
+> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> +
+> +#include <linux/linkage.h>
+> +#include <linux/mm.h>
+> +#include <linux/io.h>
+> +#include <linux/uaccess.h>
+> +#include <linux/security.h>
+> +#include <linux/memblock.h>
+> +#include <asm/segment.h>
+> +#include <asm/sections.h>
+> +#include <asm/tlbflush.h>
+> +#include <asm/e820/api.h>
+> +#include <asm/setup.h>
+> +#include <linux/slr_table.h>
+> +#include <linux/slaunch.h>
+> +
+> +static u32 sl_flags;
+> +static struct sl_ap_wake_info ap_wake_info;
+> +static u64 evtlog_addr;
+> +static u32 evtlog_size;
+> +static u64 vtd_pmr_lo_size;
+> +
+> +/* This should be plenty of room */
+> +static u8 txt_dmar[PAGE_SIZE] __aligned(16);
+> +
+> +u32 slaunch_get_flags(void)
+> +{
+> +	return sl_flags;
+> +}
+> +EXPORT_SYMBOL(slaunch_get_flags);
+> +
+> +struct sl_ap_wake_info *slaunch_get_ap_wake_info(void)
+> +{
+> +	return &ap_wake_info;
+> +}
+> +
+> +struct acpi_table_header *slaunch_get_dmar_table(struct acpi_table_heade=
+r *dmar)
+> +{
+> +	/* The DMAR is only stashed and provided via TXT on Intel systems */
+> +	if (memcmp(txt_dmar, "DMAR", 4))
+> +		return dmar;
+> +
+> +	return (struct acpi_table_header *)(&txt_dmar[0]);
+> +}
+> +
+> +void __noreturn slaunch_txt_reset(void __iomem *txt,
+> +				  const char *msg, u64 error)
+> +{
+> +	u64 one =3D 1, val;
+> +
+> +	pr_err("%s", msg);
 > +
 > +	/*
-> +	 * The %ebx provided is not terribly useful since it is the physical
-> +	 * address of tb_trampoline_start and not the base of the image.
-> +	 * Use pa_real_mode_base, which is fixed up, to get a run time
-> +	 * base register to use for offsets to location that do not have
-> +	 * pa_ symbols.
+> +	 * This performs a TXT reset with a sticky error code. The reads of
+> +	 * TXT_CR_E2STS act as barriers.
 > +	 */
-> +	movl    $pa_real_mode_base, %ebx
+> +	memcpy_toio(txt + TXT_CR_ERRORCODE, &error, sizeof(error));
+> +	memcpy_fromio(&val, txt + TXT_CR_E2STS, sizeof(val));
+> +	memcpy_toio(txt + TXT_CR_CMD_NO_SECRETS, &one, sizeof(one));
+> +	memcpy_fromio(&val, txt + TXT_CR_E2STS, sizeof(val));
+> +	memcpy_toio(txt + TXT_CR_CMD_UNLOCK_MEM_CONFIG, &one, sizeof(one));
+> +	memcpy_fromio(&val, txt + TXT_CR_E2STS, sizeof(val));
+> +	memcpy_toio(txt + TXT_CR_CMD_RESET, &one, sizeof(one));
+> +
+> +	for ( ; ; )
+> +		asm volatile ("hlt");
+> +
+> +	unreachable();
+> +}
+> +
+> +/*
+> + * The TXT heap is too big to map all at once with early_ioremap
+> + * so it is done a table at a time.
+> + */
+> +static void __init *txt_early_get_heap_table(void __iomem *txt, u32 type=
+,
+> +					     u32 bytes)
+> +{
+> +	u64 base, size, offset =3D 0;
+> +	void *heap;
+> +	int i;
+> +
+> +	if (type > TXT_SINIT_TABLE_MAX)
+> +		slaunch_txt_reset(txt,
+> +			"Error invalid table type for early heap walk\n",
+> +			SL_ERROR_HEAP_WALK);
+
+Align with 'txt'.
+
+> +
+> +	memcpy_fromio(&base, txt + TXT_CR_HEAP_BASE, sizeof(base));
+> +	memcpy_fromio(&size, txt + TXT_CR_HEAP_SIZE, sizeof(size));
+> +
+> +	/* Iterate over heap tables looking for table of "type" */
+> +	for (i =3D 0; i < type; i++) {
+> +		base +=3D offset;
+> +		heap =3D early_memremap(base, sizeof(u64));
+> +		if (!heap)
+> +			slaunch_txt_reset(txt,
+> +				"Error early_memremap of heap for heap walk\n",
+> +				SL_ERROR_HEAP_MAP);
+> +
+> +		offset =3D *((u64 *)heap);
+> +
+> +		/*
+> +		 * After the first iteration, any offset of zero is invalid and
+> +		 * implies the TXT heap is corrupted.
+> +		 */
+> +		if (!offset)
+> +			slaunch_txt_reset(txt,
+> +				"Error invalid 0 offset in heap walk\n",
+> +				SL_ERROR_HEAP_ZERO_OFFSET);
+> +
+> +		early_memunmap(heap, sizeof(u64));
+> +	}
+> +
+> +	/* Skip the size field at the head of each table */
+> +	base +=3D sizeof(u64);
+> +	heap =3D early_memremap(base, bytes);
+> +	if (!heap)
+> +		slaunch_txt_reset(txt,
+> +				  "Error early_memremap of heap section\n",
+> +				  SL_ERROR_HEAP_MAP);
+> +
+> +	return heap;
+> +}
+> +
+> +static void __init txt_early_put_heap_table(void *addr, unsigned long si=
+ze)
+> +{
+> +	early_memunmap(addr, size);
+> +}
+> +
+> +/*
+> + * TXT uses a special set of VTd registers to protect all of memory from=
+ DMA
+> + * until the IOMMU can be programmed to protect memory. There is the low
+> + * memory PMR that can protect all memory up to 4G. The high memory PRM =
+can
+> + * be setup to protect all memory beyond 4Gb. Validate that these values=
+ cover
+> + * what is expected.
+> + */
+> +static void __init slaunch_verify_pmrs(void __iomem *txt)
+> +{
+> +	struct txt_os_sinit_data *os_sinit_data;
+> +	u32 field_offset, err =3D 0;
+> +	const char *errmsg =3D "";
+> +	unsigned long last_pfn;
+> +
+> +	field_offset =3D offsetof(struct txt_os_sinit_data, lcp_po_base);
+> +	os_sinit_data =3D txt_early_get_heap_table(txt, TXT_OS_SINIT_DATA_TABLE=
+,
+> +						 field_offset);
+> +
+> +	/* Save a copy */
+> +	vtd_pmr_lo_size =3D os_sinit_data->vtd_pmr_lo_size;
+> +
+> +	last_pfn =3D e820__end_of_ram_pfn();
 > +
 > +	/*
-> +	 * This may seem a little odd but this is what %esp would have had in
-> +	 * it on the jmp from real mode because all real mode fixups were done
-> +	 * via the code segment. The base is added at the 32b entry.
+> +	 * First make sure the hi PMR covers all memory above 4G. In the
+> +	 * unlikely case where there is < 4G on the system, the hi PMR will
+> +	 * not be set.
 > +	 */
-> +	movl	rm_stack_end, %esp
+> +	if (os_sinit_data->vtd_pmr_hi_base !=3D 0x0ULL) {
+> +		if (os_sinit_data->vtd_pmr_hi_base !=3D 0x100000000ULL) {
+> +			err =3D SL_ERROR_HI_PMR_BASE;
+> +			errmsg =3D  "Error hi PMR base\n";
+> +			goto out;
+> +		}
 > +
-> +	lgdt    tr_gdt(%ebx)
-> +	lidt    tr_idt(%ebx)
+> +		if (PFN_PHYS(last_pfn) > os_sinit_data->vtd_pmr_hi_base +
+> +		    os_sinit_data->vtd_pmr_hi_size) {
+> +			err =3D SL_ERROR_HI_PMR_SIZE;
+> +			errmsg =3D "Error hi PMR size\n";
+> +			goto out;
+> +		}
+> +	}
 > +
-> +	movw	$__KERNEL_DS, %dx	# Data segment descriptor
+> +	/*
+> +	 * Lo PMR base should always be 0. This was already checked in
+> +	 * early stub.
+> +	 */
 > +
-> +	/* Jump to where the 16b code would have jumped */
-> +	ljmpl	$__KERNEL32_CS, $pa_startup_32
-> +SYM_CODE_END(sl_trampoline_start32)
-> +#endif
+> +	/*
+> +	 * Check that if the kernel was loaded below 4G, that it is protected
+> +	 * by the lo PMR. Note this is the decompressed kernel. The ACM would
+> +	 * have ensured the compressed kernel (the MLE image) was protected.
+> +	 */
+> +	if ((__pa_symbol(_end) < 0x100000000ULL) &&
+> +	    (__pa_symbol(_end) > os_sinit_data->vtd_pmr_lo_size)) {
+> +		err =3D SL_ERROR_LO_PMR_MLE;
+> +		errmsg =3D "Error lo PMR does not cover MLE kernel\n";
+> +	}
 > +
->  	.balign 4
->  SYM_CODE_START(startup_32)
->  	movl	%edx, %ss
+> +	/*
+> +	 * Other regions of interest like boot param, AP wake block, cmdline
+> +	 * already checked for PMR coverage in the early stub code.
+> +	 */
+> +
+> +out:
+> +	txt_early_put_heap_table(os_sinit_data, field_offset);
+> +
+> +	if (err)
+> +		slaunch_txt_reset(txt, errmsg, err);
+> +}
+> +
+> +static void __init slaunch_txt_reserve_range(u64 base, u64 size)
+> +{
+> +	int type;
+> +
+> +	type =3D e820__get_entry_type(base, base + size - 1);
+> +	if (type =3D=3D E820_TYPE_RAM) {
+> +		pr_info("memblock reserve base: %llx size: %llx\n", base, size);
+> +		memblock_reserve(base, size);
+> +	}
+> +}
+> +
+> +/*
+> + * For Intel, certain regions of memory must be marked as reserved by pu=
+tting
+> + * them on the memblock reserved list if they are not already e820 reser=
+ved.
+> + * This includes:
+> + *  - The TXT HEAP
+> + *  - The ACM area
+> + *  - The TXT private register bank
+> + *  - The MDR list sent to the MLE by the ACM (see TXT specification)
+> + *  (Normally the above are properly reserved by firmware but if it was =
+not
+> + *  done, reserve them now)
+> + *  - The AP wake block
+> + *  - TPM log external to the TXT heap
+> + *
+> + * Also if the low PMR doesn't cover all memory < 4G, any RAM regions ab=
+ove
+> + * the low PMR must be reservered too.
+> + */
+> +static void __init slaunch_txt_reserve(void __iomem *txt)
+> +{
+> +	struct txt_sinit_memory_descriptor_record *mdr;
+> +	struct txt_sinit_mle_data *sinit_mle_data;
+> +	u64 base, size, heap_base, heap_size;
+> +	u32 mdrnum, mdroffset, mdrslen;
+> +	u32 field_offset, i;
+> +	void *mdrs;
+> +
+> +	base =3D TXT_PRIV_CONFIG_REGS_BASE;
+> +	size =3D TXT_PUB_CONFIG_REGS_BASE - TXT_PRIV_CONFIG_REGS_BASE;
+> +	slaunch_txt_reserve_range(base, size);
+> +
+> +	memcpy_fromio(&heap_base, txt + TXT_CR_HEAP_BASE, sizeof(heap_base));
+> +	memcpy_fromio(&heap_size, txt + TXT_CR_HEAP_SIZE, sizeof(heap_size));
+> +	slaunch_txt_reserve_range(heap_base, heap_size);
+> +
+> +	memcpy_fromio(&base, txt + TXT_CR_SINIT_BASE, sizeof(base));
+> +	memcpy_fromio(&size, txt + TXT_CR_SINIT_SIZE, sizeof(size));
+> +	slaunch_txt_reserve_range(base, size);
+> +
+> +	field_offset =3D offsetof(struct txt_sinit_mle_data,
+> +				sinit_vtd_dmar_table_size);
+> +	sinit_mle_data =3D txt_early_get_heap_table(txt, TXT_SINIT_MLE_DATA_TAB=
+LE,
+> +						  field_offset);
+> +
+> +	mdrnum =3D sinit_mle_data->num_of_sinit_mdrs;
+> +	mdroffset =3D sinit_mle_data->sinit_mdrs_table_offset;
+> +
+> +	txt_early_put_heap_table(sinit_mle_data, field_offset);
+> +
+> +	if (!mdrnum)
+> +		goto nomdr;
+> +
+> +	mdrslen =3D mdrnum * sizeof(struct txt_sinit_memory_descriptor_record);
+> +
+> +	mdrs =3D txt_early_get_heap_table(txt, TXT_SINIT_MLE_DATA_TABLE,
+> +					mdroffset + mdrslen - 8);
+> +
+> +	mdr =3D mdrs + mdroffset - 8;
+> +
+> +	for (i =3D 0; i < mdrnum; i++, mdr++) {
+> +		/* Spec says some entries can have length 0, ignore them */
+> +		if (mdr->type > 0 && mdr->length > 0)
+> +			slaunch_txt_reserve_range(mdr->address, mdr->length);
+> +	}
+> +
+> +	txt_early_put_heap_table(mdrs, mdroffset + mdrslen - 8);
+> +
+> +nomdr:
+> +	slaunch_txt_reserve_range(ap_wake_info.ap_wake_block,
+> +				  ap_wake_info.ap_wake_block_size);
+> +
+> +	/*
+> +	 * Earlier checks ensured that the event log was properly situated
+> +	 * either inside the TXT heap or outside. This is a check to see if the
+> +	 * event log needs to be reserved. If it is in the TXT heap, it is
+> +	 * already reserved.
+> +	 */
+> +	if (evtlog_addr < heap_base || evtlog_addr > (heap_base + heap_size))
+> +		slaunch_txt_reserve_range(evtlog_addr, evtlog_size);
+> +
+> +	for (i =3D 0; i < e820_table->nr_entries; i++) {
+> +		base =3D e820_table->entries[i].addr;
+> +		size =3D e820_table->entries[i].size;
+> +		if ((base >=3D vtd_pmr_lo_size) && (base < 0x100000000ULL))
+> +			slaunch_txt_reserve_range(base, size);
+> +		else if ((base < vtd_pmr_lo_size) &&
+> +			 (base + size > vtd_pmr_lo_size))
+> +			slaunch_txt_reserve_range(vtd_pmr_lo_size,
+> +						  base + size - vtd_pmr_lo_size);
+> +	}
+> +}
+> +
+> +/*
+> + * TXT stashes a safe copy of the DMAR ACPI table to prevent tampering.
+> + * It is stored in the TXT heap. Fetch it from there and make it availab=
+le
+> + * to the IOMMU driver.
+> + */
+> +static void __init slaunch_copy_dmar_table(void __iomem *txt)
+> +{
+> +	struct txt_sinit_mle_data *sinit_mle_data;
+> +	u32 field_offset, dmar_size, dmar_offset;
+> +	void *dmar;
+> +
+> +	memset(&txt_dmar, 0, PAGE_SIZE);
+> +
+> +	field_offset =3D offsetof(struct txt_sinit_mle_data,
+> +				processor_scrtm_status);
+> +	sinit_mle_data =3D txt_early_get_heap_table(txt, TXT_SINIT_MLE_DATA_TAB=
+LE,
+> +						  field_offset);
+> +
+> +	dmar_size =3D sinit_mle_data->sinit_vtd_dmar_table_size;
+> +	dmar_offset =3D sinit_mle_data->sinit_vtd_dmar_table_offset;
+> +
+> +	txt_early_put_heap_table(sinit_mle_data, field_offset);
+> +
+> +	if (!dmar_size || !dmar_offset)
+> +		slaunch_txt_reset(txt,
+> +				  "Error invalid DMAR table values\n",
+> +				  SL_ERROR_HEAP_INVALID_DMAR);
+> +
+> +	if (unlikely(dmar_size > PAGE_SIZE))
+> +		slaunch_txt_reset(txt,
+> +				  "Error DMAR too big to store\n",
+> +				  SL_ERROR_HEAP_DMAR_SIZE);
+> +
+> +
+> +	dmar =3D txt_early_get_heap_table(txt, TXT_SINIT_MLE_DATA_TABLE,
+> +					dmar_offset + dmar_size - 8);
+> +	if (!dmar)
+> +		slaunch_txt_reset(txt,
+> +				  "Error early_ioremap of DMAR\n",
+> +				  SL_ERROR_HEAP_DMAR_MAP);
+> +
+> +	memcpy(&txt_dmar[0], dmar + dmar_offset - 8, dmar_size);
+> +
+> +	txt_early_put_heap_table(dmar, dmar_offset + dmar_size - 8);
+> +}
+> +
+> +/*
+> + * The location of the safe AP wake code block is stored in the TXT heap=
+.
+> + * Fetch needed values here in the early init code for later use in SMP
+> + * startup.
+> + *
+> + * Also get the TPM event log values are in the SLRT and have to be fetc=
+hed.
+> + * They will be put on the memblock reserve list later.
+> + */
+> +static void __init slaunch_fetch_values(void __iomem *txt)
+> +{
+> +	struct txt_os_mle_data *os_mle_data;
+> +	struct slr_entry_log_info *log_info;
+> +	struct slr_table *slrt;
+> +	u8 *jmp_offset;
+> +	u32 size;
+> +
+> +	os_mle_data =3D txt_early_get_heap_table(txt, TXT_OS_MLE_DATA_TABLE,
+> +					       sizeof(*os_mle_data));
+> +
+> +	ap_wake_info.ap_wake_block =3D os_mle_data->ap_wake_block;
+> +	ap_wake_info.ap_wake_block_size =3D os_mle_data->ap_wake_block_size;
+> +
+> +	jmp_offset =3D os_mle_data->mle_scratch + SL_SCRATCH_AP_JMP_OFFSET;
+> +	ap_wake_info.ap_jmp_offset =3D *((u32 *)jmp_offset);
+> +
+> +	slrt =3D (struct slr_table *)early_memremap(os_mle_data->slrt, sizeof(*=
+slrt));
+> +	if (!slrt)
+> +		slaunch_txt_reset(txt,
+> +			"Error early_memremap of SLRT failed\n",
+> +			SL_ERROR_SLRT_MAP);
+> +
+> +	size =3D slrt->size;
+> +	early_memunmap(slrt, sizeof(*slrt));
+> +
+> +	slrt =3D (struct slr_table *)early_memremap(os_mle_data->slrt, size);
+> +	if (!slrt)
+> +		slaunch_txt_reset(txt,
+> +			"Error early_memremap of SLRT failed\n",
+> +			SL_ERROR_SLRT_MAP);
+> +
+> +	log_info =3D (struct slr_entry_log_info *)
+> +		slr_next_entry_by_tag(slrt, NULL, SLR_ENTRY_LOG_INFO);
+> +
+> +	if (!log_info)
+> +		slaunch_txt_reset(txt,
+> +				  "SLRT missing logging info entry\n",
+> +				  SL_ERROR_SLRT_MISSING_ENTRY);
+> +
+> +	evtlog_addr =3D log_info->addr;
+> +	evtlog_size =3D log_info->size;
+> +
+> +	early_memunmap(slrt, size);
+> +
+> +	txt_early_put_heap_table(os_mle_data, sizeof(*os_mle_data));
+> +}
+> +
+> +/*
+> + * Intel TXT specific late stub setup and validation.
+> + */
+> +void __init slaunch_setup_txt(void)
+> +{
+> +	u64 one =3D TXT_REGVALUE_ONE, val;
+> +	void __iomem *txt;
+> +
+> +	if (!boot_cpu_has(X86_FEATURE_SMX))
+> +		return;
+> +
+> +	/*
+> +	 * If booted through secure launch entry point, the loadflags
+> +	 * option will be set.
+> +	 */
+> +	if (!(boot_params.hdr.loadflags & SLAUNCH_FLAG))
+> +		return;
+> +
+> +	/*
+> +	 * See if SENTER was done by reading the status register in the
+> +	 * public space. If the public register space cannot be read, TXT may
+> +	 * be disabled.
+> +	 */
+> +	txt =3D early_ioremap(TXT_PUB_CONFIG_REGS_BASE,
+> +			    TXT_NR_CONFIG_PAGES * PAGE_SIZE);
+> +	if (!txt)
+> +		return;
+> +
+> +	memcpy_fromio(&val, txt + TXT_CR_STS, sizeof(val));
+> +	early_iounmap(txt, TXT_NR_CONFIG_PAGES * PAGE_SIZE);
+> +
+> +	/* SENTER should have been done */
+> +	if (!(val & TXT_SENTER_DONE_STS))
+> +		panic("Error TXT.STS SENTER_DONE not set\n");
+> +
+> +	/* SEXIT should have been cleared */
+> +	if (val & TXT_SEXIT_DONE_STS)
+> +		panic("Error TXT.STS SEXIT_DONE set\n");
+> +
+> +	/* Now we want to use the private register space */
+> +	txt =3D early_ioremap(TXT_PRIV_CONFIG_REGS_BASE,
+> +			    TXT_NR_CONFIG_PAGES * PAGE_SIZE);
+> +	if (!txt) {
+> +		/* This is really bad, no where to go from here */
+> +		panic("Error early_ioremap of TXT priv registers\n");
+> +	}
+> +
+> +	/*
+> +	 * Try to read the Intel VID from the TXT private registers to see if
+> +	 * TXT measured launch happened properly and the private space is
+> +	 * available.
+> +	 */
+> +	memcpy_fromio(&val, txt + TXT_CR_DIDVID, sizeof(val));
+> +	if ((val & 0xffff) !=3D 0x8086) {
+> +		/*
+> +		 * Can't do a proper TXT reset since it appears something is
+> +		 * wrong even though SENTER happened and it should be in SMX
+> +		 * mode.
+> +		 */
+> +		panic("Invalid TXT vendor ID, not in SMX mode\n");
+> +	}
+> +
+> +	/* Set flags so subsequent code knows the status of the launch */
+> +	sl_flags |=3D (SL_FLAG_ACTIVE|SL_FLAG_ARCH_TXT);
+> +
+> +	/*
+> +	 * Reading the proper DIDVID from the private register space means we
+> +	 * are in SMX mode and private registers are open for read/write.
+> +	 */
+> +
+> +	/* On Intel, have to handle TPM localities via TXT */
+> +	memcpy_toio(txt + TXT_CR_CMD_SECRETS, &one, sizeof(one));
+> +	memcpy_fromio(&val, txt + TXT_CR_E2STS, sizeof(val));
+> +	memcpy_toio(txt + TXT_CR_CMD_OPEN_LOCALITY1, &one, sizeof(one));
+> +	memcpy_fromio(&val, txt + TXT_CR_E2STS, sizeof(val));
+> +
+> +	slaunch_fetch_values(txt);
+> +
+> +	slaunch_verify_pmrs(txt);
+> +
+> +	slaunch_txt_reserve(txt);
+> +
+> +	slaunch_copy_dmar_table(txt);
+> +
+> +	early_iounmap(txt, TXT_NR_CONFIG_PAGES * PAGE_SIZE);
+> +
+> +	pr_info("Intel TXT setup complete\n");
+> +}
+> diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
+> index a3414af..5d1ac8d 100644
+> --- a/drivers/iommu/intel/dmar.c
+> +++ b/drivers/iommu/intel/dmar.c
+> @@ -28,6 +28,7 @@
+>  #include <linux/iommu.h>
+>  #include <linux/numa.h>
+>  #include <linux/limits.h>
+> +#include <linux/slaunch.h>
+>  #include <asm/irq_remapping.h>
+> =20
+>  #include "iommu.h"
+> @@ -660,6 +661,9 @@ static inline int dmar_walk_dmar_table(struct acpi_ta=
+ble_dmar *dmar,
+>  	 */
+>  	dmar_tbl =3D tboot_get_dmar_table(dmar_tbl);
+> =20
+> +	/* If Secure Launch is active, it has similar logic */
+> +	dmar_tbl =3D slaunch_get_dmar_table(dmar_tbl);
+> +
+>  	dmar =3D (struct acpi_table_dmar *)dmar_tbl;
+>  	if (!dmar)
+>  		return -ENODEV;
 > --=20
 > 1.8.3.1
 
-
-The trampoline_64.S changes look reasonable to me (with a quick look).
+Is it possible to test TXT in QEMU? Never done it so that's why I'm
+asking.
 
 BR, Jarkko
