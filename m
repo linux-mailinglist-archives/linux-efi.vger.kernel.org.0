@@ -2,207 +2,303 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E94A6FEB63
-	for <lists+linux-efi@lfdr.de>; Thu, 11 May 2023 07:49:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94CDC6FF2A2
+	for <lists+linux-efi@lfdr.de>; Thu, 11 May 2023 15:23:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236672AbjEKFtE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 11 May 2023 01:49:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57268 "EHLO
+        id S238146AbjEKNXf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 11 May 2023 09:23:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236901AbjEKFs5 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 11 May 2023 01:48:57 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A78F4487
-        for <linux-efi@vger.kernel.org>; Wed, 10 May 2023 22:48:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1683784135; x=1715320135;
-  h=date:from:to:cc:subject:message-id;
-  bh=OWLl8+3z0g2M3Df3WvYzQeyCpibjZqA6BBH11wuKVpI=;
-  b=JG6x9auwQGGjvFdaLytCVey2+MJyQKd9OsJFIWVQbsCZvgekUopaUt9w
-   6iMRkdNVkOKRWb7MRz3fJN3YBWcB3hs4nku9Z77c4tDAlspadP2AUtg/C
-   Dm6adje9HIaxQZcXIs5KWhzvNsTPogHVnCp9FBAOOBI+nLibBpXrCgQvQ
-   1mMdLiuKUgPQqVYOQBouCa8FAWfLF1jemGkGxg7F71vhAjs9Tdn55lGIQ
-   wfE8hLA/00uPlWy3EZ+WeM/KQq5aO4RkyfbtyWnY4vUI4CWFAIeOXT4KP
-   dS7wroUvJ5SM5mHKijcSJ6/igcmLNQg1vCZmeoogZBOlJn/PhdzSWVIQn
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10706"; a="347871731"
-X-IronPort-AV: E=Sophos;i="5.99,266,1677571200"; 
-   d="scan'208";a="347871731"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2023 22:48:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10706"; a="946002366"
-X-IronPort-AV: E=Sophos;i="5.99,266,1677571200"; 
-   d="scan'208";a="946002366"
-Received: from lkp-server01.sh.intel.com (HELO dea6d5a4f140) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 10 May 2023 22:48:54 -0700
-Received: from kbuild by dea6d5a4f140 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pwzAb-0003nS-1w;
-        Thu, 11 May 2023 05:48:53 +0000
-Date:   Thu, 11 May 2023 13:48:23 +0800
-From:   kernel test robot <lkp@intel.com>
+        with ESMTP id S238151AbjEKNXS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 11 May 2023 09:23:18 -0400
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E1201155C;
+        Thu, 11 May 2023 06:21:39 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.west.internal (Postfix) with ESMTP id C098E320083A;
+        Thu, 11 May 2023 09:21:20 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Thu, 11 May 2023 09:21:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=astier.eu; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm3; t=1683811280; x=1683897680; bh=jv
+        OklUpmzSY8qaY1xynV5bsmPspeHy7w+6eOx8p4X8w=; b=M73MQWS3GO3JygbJal
+        sHzuLI+KVsi7ycupl++RI6zA7+Pl/Z1F9YDUhyc68NWZWeK8D8RzvPIambfK4XnT
+        6WPvtKoT7tFrbXcz/LKcBEUm8jmguviVp4RZyo2COy7RQaCZAqwtLaDXq60pJajp
+        AXiWkn7H4IqRcgOanhFA17ke0E3bXYDBivCX/M7VFffknWwrsmvf2nGp7iKs1CKB
+        15wKFEBE8IwXfnq4gfaBmDQnf0UQngU1MYhsIeyMgy78/ntub+ah6MPc7HDhvtc2
+        ARLZPEQ4SpbvvU6aTYMIGzKeJF+/7vVbYcBBLSZTRg3GbLMzGeCpFn18vCW7j7vg
+        BEcQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1683811280; x=1683897680; bh=jvOklUpmzSY8q
+        aY1xynV5bsmPspeHy7w+6eOx8p4X8w=; b=IuAWbfwhg3RE8hnRna4C9AojS8Wkw
+        h+/hKWuXITyAvCzMqXwyOR/Fup3ptEFxN/zCPSUOgDT9a79d+TucD/Fyk7AzebsB
+        YIwwb/yL985FLYHDWFcaVSVFLqznd7BJ72+JHzSiJxEXW+9A88epbIJH84infNoR
+        8E9/xjIrIvjqhdMYk6triaFiBBcZzkzxQP+RJfcxVSKM4KsmVhwRE1F6rpw2tSRx
+        cHIOX+0GnXg8xwPH5G2AsAQI1PfE5KWQOYfTphcNErWtIs6Mh9EyLfx/ka3rHEwI
+        Qft0Rqq1y8PEFn1ZHMN4+RDVblOfwdMyv7v7C5D0Wn19YFGkn/CxwnPtA==
+X-ME-Sender: <xms:z-tcZBSIg4rj3sYHnf5IyV6OkTM5fq-ulwOi9_3GHC9-VbOMheI-Zw>
+    <xme:z-tcZKwEqThfU4--zRnk4ZQEE1o-EOBDO9WMzsrBkG9S9kiG7MCLovCza65BmbwNU
+    vHX0ntsaFKlTzUQnsU>
+X-ME-Received: <xmr:z-tcZG3dGWgBGPu6j7EhHJcu_0QgQWHMeZ-kGBwjm49eBOs7OFVk_IDrO3cZMQPoQOa134kHSba1_55aFg8ua0qzCAQbqQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeegkedgieefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomheptehnihhs
+    shgvucetshhtihgvrhcuoegrnhhishhsvgesrghsthhivghrrdgvuheqnecuggftrfgrth
+    htvghrnheplefhjefhvdelueekheeftefghfejfffguedvgffgueehiefggeevjeekieet
+    jeelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hnihhsshgvsegrshhtihgvrhdrvghu
+X-ME-Proxy: <xmx:z-tcZJChUntGfFpovDk1w9Ubb6KHKOvvSC_whzhQbk2F6i376r6J8w>
+    <xmx:z-tcZKjuWcxbQL7T_ZROb86oXZIWWNI89Q1-WUSI1mNSjkLyB6Dgtg>
+    <xmx:z-tcZNopfAJltjC-MW7QuMzajiuvn4zLoMnJgdUhwFpkMgpHyPkbrA>
+    <xmx:0OtcZDaVGlZjWm-cOYGdOITSjvYoNRstKpnW6XsOv8f1s8OTsaIX_w>
+Feedback-ID: iccec46d4:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 11 May 2023 09:21:16 -0400 (EDT)
+Date:   Thu, 11 May 2023 15:21:13 +0200
+From:   Anisse Astier <anisse@astier.eu>
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS
- 0153431c85af3d4470ac8c59a3f854a3926dff86
-Message-ID: <20230511054823.JzQZJ%lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Cc:     Anisse Astier <an.astier@criteo.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Christian Brauner <brauner@kernel.org>,
+        linux-efi@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, Jeremy Kerr <jk@ozlabs.org>,
+        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Richard Hughes <hughsient@gmail.com>,
+        "Limonciello, Mario" <Mario.Limonciello@amd.com>
+Subject: Re: [PATCH] efivarfs: expose used and total size
+Message-ID: <ZFzouh4AJemaJAah@anisse-laptop>
+References: <20230426195853.633233-1-anisse@astier.eu>
+ <CAMj1kXE2-76KZDxpHBPcZgbB8vGDmLEbiRGmw_5o-rsNzT9oQw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXE2-76KZDxpHBPcZgbB8vGDmLEbiRGmw_5o-rsNzT9oQw@mail.gmail.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: 0153431c85af3d4470ac8c59a3f854a3926dff86  efi: make kobj_type structure constant
+Hi,
 
-elapsed time: 725m
+On Wed, May 10, 2023 at 05:13:36PM +0200, Ard Biesheuvel wrote:
+> On Wed, 26 Apr 2023 at 21:59, Anisse Astier <anisse@astier.eu> wrote:
+> >
+> > From: Anisse Astier <an.astier@criteo.com>
+> >
+> > When writing variables, one might get errors with no other message on
+> > why it fails.
+> >
+> > Being able to see how much is used by EFI variables helps analyzing such
+> > issues.
+> >
+> > Since this is not a conventionnal filesystem, block size is
+> > intentionnally set to 1 instead of PAGE_SIZE.
+> >
+> > x86 quirks of reserved size are taken into account and available and
+> > free size can be different, further helping debugging space issues.
+> >
+> 
+> I have no objections to this, but I'm not much of a user space/ VFS
+> person, so adding some other folks that can chime in if they want.
 
-configs tested: 130
-configs skipped: 10
+Thanks !
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+> 
+> The point of this patch is that user space can query this information
+> using statvfs(), right?
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r015-20230509   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                     nsimosci_hs_defconfig   gcc  
-arc                  randconfig-r043-20230509   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r002-20230509   clang
-arm                  randconfig-r046-20230509   gcc  
-arm                             rpc_defconfig   gcc  
-arm                         s3c6400_defconfig   gcc  
-arm                       spear13xx_defconfig   clang
-arm                         wpcm450_defconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r003-20230509   gcc  
-arm64                randconfig-r004-20230509   gcc  
-arm64                randconfig-r026-20230509   clang
-csky                                defconfig   gcc  
-csky                 randconfig-r011-20230509   gcc  
-csky                 randconfig-r036-20230509   gcc  
-hexagon              randconfig-r041-20230509   clang
-hexagon              randconfig-r045-20230509   clang
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                          randconfig-a001   gcc  
-i386                          randconfig-a002   clang
-i386                          randconfig-a003   gcc  
-i386                          randconfig-a004   clang
-i386                          randconfig-a005   gcc  
-i386                          randconfig-a006   clang
-i386                          randconfig-a011   clang
-i386                          randconfig-a012   gcc  
-i386                          randconfig-a013   clang
-i386                          randconfig-a014   gcc  
-i386                          randconfig-a015   clang
-i386                          randconfig-a016   gcc  
-ia64                             allmodconfig   gcc  
-ia64                                defconfig   gcc  
-ia64                        generic_defconfig   gcc  
-ia64                 randconfig-r014-20230509   gcc  
-ia64                 randconfig-r023-20230509   gcc  
-ia64                 randconfig-r025-20230509   gcc  
-ia64                 randconfig-r033-20230509   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k         buildonly-randconfig-r003-20230510   gcc  
-m68k                                defconfig   gcc  
-m68k                       m5275evb_defconfig   gcc  
-m68k                 randconfig-r032-20230509   gcc  
-microblaze           randconfig-r001-20230509   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips         buildonly-randconfig-r002-20230510   clang
-mips         buildonly-randconfig-r006-20230510   clang
-mips                         db1xxx_defconfig   gcc  
-mips                      maltasmvp_defconfig   gcc  
-mips                    maltaup_xpa_defconfig   gcc  
-mips                 randconfig-r015-20230509   gcc  
-mips                 randconfig-r016-20230509   gcc  
-nios2                            alldefconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r012-20230509   gcc  
-openrisc                         alldefconfig   gcc  
-openrisc     buildonly-randconfig-r005-20230510   gcc  
-openrisc                    or1ksim_defconfig   gcc  
-openrisc             randconfig-r011-20230509   gcc  
-openrisc             randconfig-r022-20230509   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r024-20230509   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                 mpc8313_rdb_defconfig   clang
-powerpc                     mpc83xx_defconfig   gcc  
-powerpc              randconfig-r005-20230509   gcc  
-powerpc                     sequoia_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                    nommu_virt_defconfig   clang
-riscv                randconfig-r042-20230509   clang
-riscv                          rv32_defconfig   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r021-20230509   clang
-s390                 randconfig-r044-20230509   clang
-sh                               allmodconfig   gcc  
-sh                        edosk7705_defconfig   gcc  
-sh                   randconfig-r012-20230509   gcc  
-sh                   randconfig-r016-20230509   gcc  
-sh                          sdk7786_defconfig   gcc  
-sh                           se7724_defconfig   gcc  
-sh                           se7750_defconfig   gcc  
-sh                           se7780_defconfig   gcc  
-sh                            titan_defconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64      buildonly-randconfig-r001-20230510   gcc  
-sparc64              randconfig-r006-20230509   gcc  
-sparc64              randconfig-r035-20230509   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64                        randconfig-a001   clang
-x86_64                        randconfig-a002   gcc  
-x86_64                        randconfig-a003   clang
-x86_64                        randconfig-a004   gcc  
-x86_64                        randconfig-a005   clang
-x86_64                        randconfig-a006   gcc  
-x86_64                        randconfig-a012   clang
-x86_64                        randconfig-a014   clang
-x86_64                        randconfig-a016   clang
-x86_64                        randconfig-k001   clang
-x86_64                           rhel-8.3-bpf   gcc  
-x86_64                         rhel-8.3-kunit   gcc  
-x86_64                           rhel-8.3-kvm   gcc  
-x86_64                           rhel-8.3-syz   gcc  
-x86_64                               rhel-8.3   gcc  
-xtensa                  nommu_kc705_defconfig   gcc  
-xtensa                         virt_defconfig   gcc  
+Yes, which means that a simple df command will show the used and free
+space remaining in the EFI variable storage area:
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+   $ df -h /sys/firmware/efi/efivars/
+   Filesystem      Size  Used Avail Use% Mounted on
+   efivarfs        176K  106K   66K  62% /sys/firmware/efi/efivars
+
+Regards,
+
+Anisse
+
+> 
+> 
+> 
+> > Signed-off-by: Anisse Astier <an.astier@criteo.com>
+> > ---
+> > Notes:
+> > Patch isn't split per subsystem intentionally, for better understanding
+> > of intent; split could be trivial in a later version.
+> >
+> > I'm not sure whether statfs(2) should return an error if the efi request
+> > fails; I think it could be ignored with maybe a WARN_ONCE; which would
+> > be close to the current behaviour.
+> >
+> > Regards,
+> >
+> > Anisse
+> >
+> > ---
+> >  arch/x86/platform/efi/quirks.c |  8 ++++++++
+> >  drivers/firmware/efi/efi.c     |  1 +
+> >  drivers/firmware/efi/vars.c    | 12 ++++++++++++
+> >  fs/efivarfs/super.c            | 26 +++++++++++++++++++++++++-
+> >  include/linux/efi.h            | 10 ++++++++++
+> >  5 files changed, 56 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+> > index b0b848d6933a..587fa51230e2 100644
+> > --- a/arch/x86/platform/efi/quirks.c
+> > +++ b/arch/x86/platform/efi/quirks.c
+> > @@ -114,6 +114,14 @@ void efi_delete_dummy_variable(void)
+> >                                      EFI_VARIABLE_RUNTIME_ACCESS, 0, NULL);
+> >  }
+> >
+> > +u64 efi_reserved_space(void)
+> > +{
+> > +       if (efi_no_storage_paranoia)
+> > +               return 0;
+> > +       return EFI_MIN_RESERVE;
+> > +}
+> > +EXPORT_SYMBOL_GPL(efi_reserved_space);
+> > +
+> >  /*
+> >   * In the nonblocking case we do not attempt to perform garbage
+> >   * collection if we do not have enough free space. Rather, we do the
+> > diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> > index abeff7dc0b58..d0dfa007bffc 100644
+> > --- a/drivers/firmware/efi/efi.c
+> > +++ b/drivers/firmware/efi/efi.c
+> > @@ -211,6 +211,7 @@ static int generic_ops_register(void)
+> >         generic_ops.get_variable = efi.get_variable;
+> >         generic_ops.get_next_variable = efi.get_next_variable;
+> >         generic_ops.query_variable_store = efi_query_variable_store;
+> > +       generic_ops.query_variable_info = efi.query_variable_info;
+> >
+> >         if (efi_rt_services_supported(EFI_RT_SUPPORTED_SET_VARIABLE)) {
+> >                 generic_ops.set_variable = efi.set_variable;
+> > diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
+> > index bd75b87f5fc1..c5382d5c3073 100644
+> > --- a/drivers/firmware/efi/vars.c
+> > +++ b/drivers/firmware/efi/vars.c
+> > @@ -245,3 +245,15 @@ efi_status_t efivar_set_variable(efi_char16_t *name, efi_guid_t *vendor,
+> >         return status;
+> >  }
+> >  EXPORT_SYMBOL_NS_GPL(efivar_set_variable, EFIVAR);
+> > +
+> > +efi_status_t efivar_query_variable_info(u32 attr,
+> > +                                       u64 *storage_space,
+> > +                                       u64 *remaining_space,
+> > +                                       u64 *max_variable_size)
+> > +{
+> > +       if (!__efivars->ops->query_variable_info)
+> > +               return EFI_UNSUPPORTED;
+> > +       return __efivars->ops->query_variable_info(attr, storage_space,
+> > +                       remaining_space, max_variable_size);
+> > +}
+> > +EXPORT_SYMBOL_NS_GPL(efivar_query_variable_info, EFIVAR);
+> > diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+> > index 482d612b716b..064bfc0243c9 100644
+> > --- a/fs/efivarfs/super.c
+> > +++ b/fs/efivarfs/super.c
+> > @@ -13,6 +13,7 @@
+> >  #include <linux/ucs2_string.h>
+> >  #include <linux/slab.h>
+> >  #include <linux/magic.h>
+> > +#include <linux/statfs.h>
+> >
+> >  #include "internal.h"
+> >
+> > @@ -23,8 +24,31 @@ static void efivarfs_evict_inode(struct inode *inode)
+> >         clear_inode(inode);
+> >  }
+> >
+> > +static int efivarfs_statfs(struct dentry *dentry, struct kstatfs *buf)
+> > +{
+> > +       u64 storage_space, remaining_space, max_variable_size;
+> > +       efi_status_t status;
+> > +       const u32 attr = (EFI_VARIABLE_NON_VOLATILE | EFI_VARIABLE_BOOTSERVICE_ACCESS |
+> > +        EFI_VARIABLE_RUNTIME_ACCESS);
+> > +
+> > +       buf->f_type = dentry->d_sb->s_magic;
+> > +       buf->f_bsize = 1;
+> > +       buf->f_namelen = NAME_MAX;
+> > +
+> > +       status = efivar_query_variable_info(attr, &storage_space, &remaining_space,
+> > +                                           &max_variable_size);
+> > +       if (status != EFI_SUCCESS)
+> > +               return efi_status_to_err(status);
+> > +       buf->f_blocks = storage_space;
+> > +       buf->f_bfree = remaining_space;
+> > +       if (remaining_space > efi_reserved_space())
+> > +               buf->f_bavail = remaining_space - efi_reserved_space();
+> > +       else
+> > +               buf->f_bavail = 0;
+> > +       return 0;
+> > +}
+> >  static const struct super_operations efivarfs_ops = {
+> > -       .statfs = simple_statfs,
+> > +       .statfs = efivarfs_statfs,
+> >         .drop_inode = generic_delete_inode,
+> >         .evict_inode = efivarfs_evict_inode,
+> >  };
+> > diff --git a/include/linux/efi.h b/include/linux/efi.h
+> > index 7aa62c92185f..d2b686191870 100644
+> > --- a/include/linux/efi.h
+> > +++ b/include/linux/efi.h
+> > @@ -703,6 +703,7 @@ static inline void efi_enter_virtual_mode (void) {}
+> >  extern efi_status_t efi_query_variable_store(u32 attributes,
+> >                                              unsigned long size,
+> >                                              bool nonblocking);
+> > +extern u64 efi_reserved_space(void);
+> >  #else
+> >
+> >  static inline efi_status_t efi_query_variable_store(u32 attributes,
+> > @@ -711,6 +712,10 @@ static inline efi_status_t efi_query_variable_store(u32 attributes,
+> >  {
+> >         return EFI_SUCCESS;
+> >  }
+> > +static inline u64 efi_reserved_space(void)
+> > +{
+> > +       return 0;
+> > +}
+> >  #endif
+> >  extern void __iomem *efi_lookup_mapped_addr(u64 phys_addr);
+> >
+> > @@ -1042,6 +1047,7 @@ struct efivar_operations {
+> >         efi_set_variable_t *set_variable;
+> >         efi_set_variable_t *set_variable_nonblocking;
+> >         efi_query_variable_store_t *query_variable_store;
+> > +       efi_query_variable_info_t *query_variable_info;
+> >  };
+> >
+> >  struct efivars {
+> > @@ -1087,6 +1093,10 @@ efi_status_t efivar_set_variable_locked(efi_char16_t *name, efi_guid_t *vendor,
+> >  efi_status_t efivar_set_variable(efi_char16_t *name, efi_guid_t *vendor,
+> >                                  u32 attr, unsigned long data_size, void *data);
+> >
+> > +efi_status_t efivar_query_variable_info(u32 attr, u64 *storage_space,
+> > +                                       u64 *remaining_space,
+> > +                                       u64 *max_variable_size);
+> > +
+> >  #if IS_ENABLED(CONFIG_EFI_CAPSULE_LOADER)
+> >  extern bool efi_capsule_pending(int *reset_type);
+> >
+> > --
+> > 2.34.1
+> >
