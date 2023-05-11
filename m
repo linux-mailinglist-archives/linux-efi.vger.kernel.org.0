@@ -2,143 +2,138 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD7196FE7EA
-	for <lists+linux-efi@lfdr.de>; Thu, 11 May 2023 01:05:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DC6B6FEA3B
+	for <lists+linux-efi@lfdr.de>; Thu, 11 May 2023 05:34:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235624AbjEJXFE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 10 May 2023 19:05:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34922 "EHLO
+        id S230004AbjEKDed (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 10 May 2023 23:34:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236829AbjEJXFC (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 10 May 2023 19:05:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7D5E524C;
-        Wed, 10 May 2023 16:04:53 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DF0E636E4;
-        Wed, 10 May 2023 23:04:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8E5C433D2;
-        Wed, 10 May 2023 23:04:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1683759892;
-        bh=QxtvXxDtUmO2zciTU9oZisOXrc+rH38HVyRqoKkNSF0=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=jxqufG+qooH4aJVMNjh2O09Sd+b03vlSqSVZwvPJFqf855TFAXGtc/cXNknIFIma3
-         JsMe4/YBqLkuayBZN6xHYBuiil2dRiQfdRci+VO2FEFdWkzbyOCIckowL3kcVuH5XU
-         pGPZCpMVQeUJki4RoervOwfbZQYT3ku4mLwdrHgPg4QmMrGxUz/kYOlutbENNgnwjN
-         K8I+BVuw2hezglvSVaOw5VJ18WpelPJEsc/fARh+V+dDVZTkPIJug7p2mObnNO6bAI
-         49j9mDbx/JKn0sV1f2vXuwlJqtdewvUC0e72YsmRP6QxItVW+hDJW/3XT5rjTID3wj
-         DV7Vsm5t7ac6A==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Thu, 11 May 2023 02:04:47 +0300
-Message-Id: <CSIZ2DT5C4WQ.19ZUUIWKNAJY9@suppilovahvero>
-Cc:     <dpsmith@apertussolutions.com>, <tglx@linutronix.de>,
-        <mingo@redhat.com>, <bp@alien8.de>, <hpa@zytor.com>,
-        <ardb@kernel.org>, <mjg59@srcf.ucam.org>,
-        <James.Bottomley@hansenpartnership.com>, <luto@amacapital.net>,
-        <nivedita@alum.mit.edu>, <kanth.ghatraju@oracle.com>,
-        <trenchboot-devel@googlegroups.com>
-Subject: Re: [PATCH v6 04/14] x86: Secure Launch Resource Table header file
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Ross Philipson" <ross.philipson@oracle.com>,
-        <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
-        <linux-integrity@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <linux-crypto@vger.kernel.org>, <iommu@lists.linux-foundation.org>,
-        <kexec@lists.infradead.org>, <linux-efi@vger.kernel.org>
-X-Mailer: aerc 0.14.0
-References: <20230504145023.835096-1-ross.philipson@oracle.com>
- <20230504145023.835096-5-ross.philipson@oracle.com>
-In-Reply-To: <20230504145023.835096-5-ross.philipson@oracle.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229461AbjEKDec (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 10 May 2023 23:34:32 -0400
+Received: from 167-179-156-38.a7b39c.syd.nbn.aussiebb.net (167-179-156-38.a7b39c.syd.nbn.aussiebb.net [167.179.156.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0A682D64;
+        Wed, 10 May 2023 20:34:28 -0700 (PDT)
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+        by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+        id 1pwx3z-007Ytd-Ii; Thu, 11 May 2023 11:33:57 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 11 May 2023 11:33:56 +0800
+Date:   Thu, 11 May 2023 11:33:56 +0800
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Ross Philipson <ross.philipson@oracle.com>
+Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
+        linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-crypto@vger.kernel.org, iommu@lists.linux-foundation.org,
+        kexec@lists.infradead.org, linux-efi@vger.kernel.org,
+        ross.philipson@oracle.com, dpsmith@apertussolutions.com,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
+        ardb@kernel.org, mjg59@srcf.ucam.org,
+        James.Bottomley@hansenpartnership.com, luto@amacapital.net,
+        nivedita@alum.mit.edu, kanth.ghatraju@oracle.com,
+        trenchboot-devel@googlegroups.com
+Subject: Re: [PATCH v6 06/14] x86: Add early SHA support for Secure Launch
+ early measurements
+Message-ID: <ZFxiJF373HCwZLKE@gondor.apana.org.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230504145023.835096-7-ross.philipson@oracle.com>
+X-Newsgroups: apana.lists.os.linux.cryptoapi,apana.lists.os.linux.doc,apana.lists.os.linux.kernel
+X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_00,HELO_DYNAMIC_IPADDR2,
+        RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS,TVD_RCVD_IP,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu May 4, 2023 at 5:50 PM EEST, Ross Philipson wrote:
-> Introduce the Secure Launch Resource Table which forms the formal
-> interface between the pre and post launch code.
+Ross Philipson <ross.philipson@oracle.com> wrote:
 >
-> Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
-> ---
->  include/linux/slr_table.h | 270 ++++++++++++++++++++++++++++++++++++++++=
-++++++
->  1 file changed, 270 insertions(+)
->  create mode 100644 include/linux/slr_table.h
->
-> diff --git a/include/linux/slr_table.h b/include/linux/slr_table.h
-> new file mode 100644
-> index 0000000..d4b76e5
-> --- /dev/null
-> +++ b/include/linux/slr_table.h
-> @@ -0,0 +1,270 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Secure Launch Resource Table
-> + *
-> + * Copyright (c) 2023, Oracle and/or its affiliates.
-> + */
+> +static void __sha_transform(u32 *digest, const char *data)
+> +{
+> +       u32 ws[SHA1_WORKSPACE_WORDS];
 > +
-> +#ifndef _LINUX_SLR_TABLE_H
-> +#define _LINUX_SLR_TABLE_H
+> +       sha1_transform(digest, data, ws);
 > +
-> +/* Put this in efi.h if it becomes a standard */
-> +#define SLR_TABLE_GUID				EFI_GUID(0x877a9b2a, 0x0385, 0x45d1, 0xa0, 0x3=
-4, 0x9d, 0xac, 0x9c, 0x9e, 0x56, 0x5f)
+> +       memzero_explicit(ws, sizeof(ws));
+> +}
 > +
-> +/* SLR table header values */
-> +#define SLR_TABLE_MAGIC		0x4452544d
-> +#define SLR_TABLE_REVISION	1
+> +void early_sha1_init(struct sha1_state *sctx)
+> +{
+> +       sha1_init(sctx->state);
+> +       sctx->count = 0;
+> +}
 > +
-> +/* Current revisions for the policy and UEFI config */
-> +#define SLR_POLICY_REVISION		1
-> +#define SLR_UEFI_CONFIG_REVISION	1
+> +void early_sha1_update(struct sha1_state *sctx,
+> +                      const u8 *data,
+> +                      unsigned int len)
+> +{
+> +       unsigned int partial = sctx->count % SHA1_BLOCK_SIZE;
 > +
-> +/* SLR defined architectures */
-> +#define SLR_INTEL_TXT		1
-> +#define SLR_AMD_SKINIT		2
+> +       sctx->count += len;
 > +
-> +/* SLR defined bootloaders */
-> +#define SLR_BOOTLOADER_INVALID	0
-> +#define SLR_BOOTLOADER_GRUB	1
+> +       if (likely((partial + len) >= SHA1_BLOCK_SIZE)) {
+> +               int blocks;
 > +
-> +/* Log formats */
-> +#define SLR_DRTM_TPM12_LOG	1
-> +#define SLR_DRTM_TPM20_LOG	2
+> +               if (partial) {
+> +                       int p = SHA1_BLOCK_SIZE - partial;
 > +
-> +/* DRTM Policy Entry Flags */
-> +#define SLR_POLICY_FLAG_MEASURED	0x1
-> +#define SLR_POLICY_IMPLICIT_SIZE	0x2
+> +                       memcpy(sctx->buffer + partial, data, p);
+> +                       data += p;
+> +                       len -= p;
 > +
-> +/* Array Lengths */
-> +#define TPM_EVENT_INFO_LENGTH		32
-> +#define TXT_VARIABLE_MTRRS_LENGTH	32
+> +                       __sha_transform(sctx->state, sctx->buffer);
+> +               }
 > +
-> +/* Tags */
-> +#define SLR_ENTRY_INVALID	0x0000
-> +#define SLR_ENTRY_DL_INFO	0x0001
-> +#define SLR_ENTRY_LOG_INFO	0x0002
-> +#define SLR_ENTRY_ENTRY_POLICY	0x0003
-> +#define SLR_ENTRY_INTEL_INFO	0x0004
-> +#define SLR_ENTRY_AMD_INFO	0x0005
-> +#define SLR_ENTRY_ARM_INFO	0x0006
-> +#define SLR_ENTRY_UEFI_INFO	0x0007
-> +#define SLR_ENTRY_UEFI_CONFIG	0x0008
-> +#define SLR_ENTRY_END		0xffff
+> +               blocks = len / SHA1_BLOCK_SIZE;
+> +               len %= SHA1_BLOCK_SIZE;
+> +
+> +               if (blocks) {
+> +                       while (blocks--) {
+> +                               __sha_transform(sctx->state, data);
+> +                               data += SHA1_BLOCK_SIZE;
+> +                       }
+> +               }
+> +               partial = 0;
+> +       }
+> +
+> +       if (len)
+> +               memcpy(sctx->buffer + partial, data, len);
+> +}
+> +
+> +void early_sha1_final(struct sha1_state *sctx, u8 *out)
+> +{
+> +       const int bit_offset = SHA1_BLOCK_SIZE - sizeof(__be64);
+> +       unsigned int partial = sctx->count % SHA1_BLOCK_SIZE;
+> +       __be64 *bits = (__be64 *)(sctx->buffer + bit_offset);
+> +       __be32 *digest = (__be32 *)out;
+> +       int i;
+> +
+> +       sctx->buffer[partial++] = 0x80;
+> +       if (partial > bit_offset) {
+> +               memset(sctx->buffer + partial, 0x0, SHA1_BLOCK_SIZE - partial);
+> +               partial = 0;
+> +
+> +               __sha_transform(sctx->state, sctx->buffer);
+> +       }
+> +
+> +       memset(sctx->buffer + partial, 0x0, bit_offset - partial);
+> +       *bits = cpu_to_be64(sctx->count << 3);
+> +       __sha_transform(sctx->state, sctx->buffer);
+> +
+> +       for (i = 0; i < SHA1_DIGEST_SIZE / sizeof(__be32); i++)
+> +               put_unaligned_be32(sctx->state[i], digest++);
+> +
+> +       *sctx = (struct sha1_state){};
+> +}
 
-"Enums are preferred when defining several related constants."
+If we're going to add SHA1 then this should go into lib/crypto
+just like SHA2.
 
-See:
-
-https://www.kernel.org/doc/html/latest/process/coding-style.html#macros-enu=
-ms-and-rtl
-
-BR, Jarkko
+Thanks,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
