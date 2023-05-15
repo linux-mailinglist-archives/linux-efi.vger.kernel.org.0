@@ -2,68 +2,68 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2715702F2B
-	for <lists+linux-efi@lfdr.de>; Mon, 15 May 2023 16:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 575E7702F32
+	for <lists+linux-efi@lfdr.de>; Mon, 15 May 2023 16:05:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238846AbjEOOEU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 15 May 2023 10:04:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39310 "EHLO
+        id S239677AbjEOOFd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 15 May 2023 10:05:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238764AbjEOOET (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 15 May 2023 10:04:19 -0400
+        with ESMTP id S239956AbjEOOFa (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 15 May 2023 10:05:30 -0400
 Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83DEA213E;
-        Mon, 15 May 2023 07:03:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E8AD268A;
+        Mon, 15 May 2023 07:05:15 -0700 (PDT)
 Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id 8E1685C01B1;
-        Mon, 15 May 2023 10:03:05 -0400 (EDT)
+        by mailout.nyi.internal (Postfix) with ESMTP id 8CC9C5C01B0;
+        Mon, 15 May 2023 10:05:14 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Mon, 15 May 2023 10:03:05 -0400
+  by compute4.internal (MEProxy); Mon, 15 May 2023 10:05:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
          h=cc:cc:content-type:content-type:date:date:from:from
         :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm2; t=1684159385; x=
-        1684245785; bh=CTwZDV1W0gau6t111FgqYOUN7M1N250LK2GljieQw/4=; b=s
-        w42rnJulm/LjZtkKWWEwPzcFE7SjjwrGVI2fz6IonFax57d9zbQehczGvVJA01Ci
-        DgPeH08At8IxbdziSMWwAWDbtBkOElanxADJgjs02aBJ6xmR73QV56CXZQIV0vl/
-        YHbaAbZRtj3VE0uDU85ivgCjVuf09tdAP7kwLQOrJ6ohCoTi+EbSLMMkHvaAg1sH
-        Imt9dOKNB8dtdIdvVEDWIvYHu00q1lS6YGkzx694/9HVxLWFpZ9Yxlxb7OTNCkxh
-        SmhEXI+3fCGJX4fIISEEHUDwJhYhYJvY/P6+ZnL6V+BekCyRWev4FjgQQaLxveGX
-        pdFR2O34ku9uFE1so5RTw==
+        :reply-to:sender:subject:subject:to:to; s=fm2; t=1684159514; x=
+        1684245914; bh=wNoygY88afCZk+rYSwxBYyhC2OwuB/Ta5vKCxI/HOkg=; b=o
+        LHJzTtle/7GDwWpas+OOsATuoQ1nsSWhQ089NXzAIwrib5JlWsx0Km/AxUyEJl+C
+        za0wg64+u4AwWguq4dVSwjXnwrYLn2m1oOL5X31KbO5yttZZFi4pcKlTrtLqG6Qy
+        Iez7xAleEZ/w2db58UcCR7Y1IkLa5/Gdj9N3FzK715kqHok0BKYKjZyFDO/D4X5p
+        tGarviqOaDAkTXZ4X6UCDEowTa09HE2iIbAn1q6F4dSrgW49NcF4j10Ukm+zNcKE
+        pRA+aDDwABiKK0JU4yh1lK6f0gZnzPrlMc+UelKz96nVRxa3sHGpKaNYcdrysJkW
+        IO/K1K5UdlgHZJ9jHzTpA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         messagingengine.com; h=cc:cc:content-type:content-type:date:date
         :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
         :message-id:mime-version:references:reply-to:sender:subject
         :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1684159385; x=1684245785; bh=CTwZDV1W0gau6
-        t111FgqYOUN7M1N250LK2GljieQw/4=; b=Lk6XUCbj+tlorOWcvmImstYvtxt+W
-        XX4NxVIZdNoto19dqCIpV8bS4suk3A4Tnm3nZUGHBF7/IBafuTOUcPIWr1Ej+h0t
-        zEbLMmSOJL/d5NFUU/WicxAfGJfCh4v6NbylwWdVL9qolJlg5ABwt0LtE+NyuG58
-        WQbUVKWB4QH8oP54zG4USpf3FN+P0D/EBmBtb3dtkehiefrAQ9+Ua6yas4+p3EA+
-        QKS5Bhg/8DpwB0F/RKX5axnB9cTq5kd4pV7W/E2s4aKgYqXjeR+a84zL3bRHSiXj
-        q0rLLK/CihqwBAYrJlJ38xG8eJB8T/L4y1yacsjcfP41GUhzd6+V9hWUA==
-X-ME-Sender: <xms:mTtiZDD6xFgVRUWmmpkBNQOx7VahXUEw0EHlYu9UbjGDRnPWqvYE-Q>
-    <xme:mTtiZJjC21D2zqNzcGB67ovmjoed1znWTjSKTHf7w7dIkrApwDyUtrD7Z9ndQXZjS
-    xUdDaRUJsPQcB1R4nY>
-X-ME-Received: <xmr:mTtiZOnC5gmmXFIMfz01E-_NT-NijX0gZl4AP35A4kWhcyh6jw7spAM7QLjoGoz9fkmcZA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeehjedgjedvucetufdoteggodetrfdotf
+        :x-sasl-enc; s=fm1; t=1684159514; x=1684245914; bh=wNoygY88afCZk
+        +rYSwxBYyhC2OwuB/Ta5vKCxI/HOkg=; b=gJOaqsgODjlwSnjVashQdA4IBnCHO
+        NVGn+IcJa4/osYWpe06Hc8+TSSSjU/MM4XFer+WU8PaRo9OLrAViv/kBbUZ8oBS3
+        sO40qb+MLnuu8lYc1mVVbqyEk4trCgJosQMwy1uAHe58XtZBoC+SP9TsKNReaKhK
+        QfVUab3oi6o8TvkYw8gy3JogpnG8ENPJB79/7hJ2dHqvTdH+/ebRKv0S+hcxxHhp
+        yKOq2T8bIbPNwoEbEKBzwZhQdGiGWHeKc6cA9IuBq8/RLkgk3uwZ5MkhRa7EM+nR
+        iSBl1jBdbW3UNC3fIL5M0JGBxh2c5zb30iuPxvNtvm8HL+052JvMGLqHg==
+X-ME-Sender: <xms:GjxiZIEJ7VEucMB6Wl99U873CbaA-xxDJ-F_XHfRPVnNyLIf2SnzHg>
+    <xme:GjxiZBUOWcH0NWMt0Rasrq1QCoopWV339zVU4QbeuVr_YOKYsi7pEKNsvS5OsSFQt
+    ppD5CTFLWjrI1_9l38>
+X-ME-Received: <xmr:GjxiZCI1Tn5lT3UzFTD_or7AQQOTPLC5cU28BSCUSJP9528tEb_H44jxxj-TcB7FFb5yBg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeehjedgjeefucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
     cujfgurhepfffhvfevuffkfhggtggujgesthdttddttddtvdenucfhrhhomhepfdfmihhr
     ihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlsehshhhuthgvmhhovhdrnh
     grmhgvqeenucggtffrrghtthgvrhhnpefhieeghfdtfeehtdeftdehgfehuddtvdeuheet
-    tddtheejueekjeegueeivdektdenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmh
+    tddtheejueekjeegueeivdektdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
     epmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvg
-X-ME-Proxy: <xmx:mTtiZFy_DYxpnbpAyyJyJK_K85xVsrs0ZaAWaXFXpSAbQJLpbhrZqg>
-    <xmx:mTtiZITm2mjZpCHjHqDnJWVXpLOUp6mdPGl_Nq7bkWQRn3DQN4XvzQ>
-    <xmx:mTtiZIZa5cr6pYCJSGYSDDsMpqfetS1ynII5-2rIHgKt1tWLYouDXA>
-    <xmx:mTtiZKHvgEZjwjtrTwjGlr_NY55--5rdfra3xAkQcJMOqhYh_5y6aA>
+X-ME-Proxy: <xmx:GjxiZKGXRMdh0OonpOeyJVnnforiWll3om2-Sg0e08oV0DxEcvouyQ>
+    <xmx:GjxiZOX5HhtW2Z_gwwiOEc2yAtk4rp2RZj1-cnACs_I88siEmHUTwg>
+    <xmx:GjxiZNPAttaxz3EjeET8Ttq3wwXZMeu8aVOyIJ6oQTP6BLbDjhpaNA>
+    <xmx:GjxiZMZuiayhPQGYdZZApda1ftRrE-oOXk2-RSvPsnFkAVxg3F-s0w>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 15 May 2023 10:03:04 -0400 (EDT)
+ 15 May 2023 10:05:13 -0400 (EDT)
 Received: by box.shutemov.name (Postfix, from userid 1000)
-        id 0E71310D1DE; Mon, 15 May 2023 17:03:03 +0300 (+03)
-Date:   Mon, 15 May 2023 17:03:03 +0300
+        id 0E02410D1DE; Mon, 15 May 2023 17:05:12 +0300 (+03)
+Date:   Mon, 15 May 2023 17:05:12 +0300
 From:   "Kirill A. Shutemov" <kirill@shutemov.name>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -83,15 +83,15 @@ Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Tom Lendacky <thomas.lendacky@amd.com>,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH v2 05/20] x86: decompressor: Avoid the need for a stack
- in the 32-bit trampoline
-Message-ID: <20230515140303.34lba7rl4onrltdu@box.shutemov.name>
+Subject: Re: [PATCH v2 06/20] x86: decompressor: Call trampoline directly
+ from C code
+Message-ID: <20230515140512.pokuznjp257pkhy4@box.shutemov.name>
 References: <20230508070330.582131-1-ardb@kernel.org>
- <20230508070330.582131-6-ardb@kernel.org>
+ <20230508070330.582131-7-ardb@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230508070330.582131-6-ardb@kernel.org>
+In-Reply-To: <20230508070330.582131-7-ardb@kernel.org>
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
@@ -102,20 +102,11 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, May 08, 2023 at 09:03:15AM +0200, Ard Biesheuvel wrote:
-> The 32-bit trampoline no longer uses the stack for anything except
-> performing a long return back to long mode. Currently, this stack is
-> allocated in the same page that carries the trampoline code, which means
-> this page must be mapped writable and executable, and the stack is
-> therefore executable as well.
-> 
-> So let's do a long jump instead: that way, we can pre-calculate the
-> return address and poke it into the code before we call it. In a later
-> patch, we will take advantage of this by removing writable permissions
-> (and adding executable ones) explicitly when booting via the EFI stub.
-> 
-> Not playing with the stack pointer also makes it more straight-forward
-> to call the trampoline code as an ordinary 64-bit function from C code.
+On Mon, May 08, 2023 at 09:03:16AM +0200, Ard Biesheuvel wrote:
+> Instead of returning to the asm calling code to invoke the trampoline,
+> call it straight from the C code that sets the scene. That way, we don't
+> need the struct return type for returning two values, and we can make
+> the call conditional more cleanly in a subsequent patch.
 > 
 > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 
