@@ -2,257 +2,286 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F2DE702F44
-	for <lists+linux-efi@lfdr.de>; Mon, 15 May 2023 16:08:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19CF9702F55
+	for <lists+linux-efi@lfdr.de>; Mon, 15 May 2023 16:14:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239146AbjEOOIl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 15 May 2023 10:08:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43014 "EHLO
+        id S229568AbjEOOON (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 15 May 2023 10:14:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240156AbjEOOIe (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 15 May 2023 10:08:34 -0400
-Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6007210D;
-        Mon, 15 May 2023 07:08:30 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.west.internal (Postfix) with ESMTP id E1120320094E;
-        Mon, 15 May 2023 10:08:28 -0400 (EDT)
+        with ESMTP id S237139AbjEOOOM (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 15 May 2023 10:14:12 -0400
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 905AB1BC6;
+        Mon, 15 May 2023 07:14:11 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id 0685A5C0195;
+        Mon, 15 May 2023 10:14:11 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Mon, 15 May 2023 10:08:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=astier.eu; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1684159708; x=1684246108; bh=xv
-        DWu8rswdlHC9tunZQlzYt+uj6XYdRxiwrOmBMzAAk=; b=kLdAG2spfJKVgbQBr0
-        Iwp10RAH+rXzkUN+kc9UEfZQdGv6rgMNsPtJ/0uBCTPX1aNH0xsYJOt2FofTdLZw
-        L42db56ns9/u3LsHjFU68O2w/1hT9rXTR34nBfYy+9x4D54d2XtGSR7GsnB+ClzD
-        c0/a0reOoIlAic791zIMjbhBXQfzXVUY34x26nMpRiFfrXFgj+muFwByL1aqUNlq
-        tiAijpXs8fcDG5JEemeTOFLPJmhr6cZchYDKYh5fQl2fi0OvE8EBA1pcSaZja+eI
-        lz/do/b6iOQa7+wr8dqAdJlNSSu52v449W7w+XpBsq/TxQx0kui3/UhTqED97Vpx
-        HLjA==
+  by compute4.internal (MEProxy); Mon, 15 May 2023 10:14:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+         h=cc:cc:content-type:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm2; t=1684160051; x=
+        1684246451; bh=8NJYIEmbiIkpWsu+/ofSKGEy0pPwTx2rBL3P2/pMpTo=; b=Q
+        EJT7kK3SHAjLT3qjXYjWH1VDIAYNnsdCYVrOvC5QsyPBNxbQJfyfr+3G7Je1ro5/
+        f2MbLZ07yj+B8Z76l918KNzgEK3Uz0yy+ClnN44SfrQHdnrk6mlOzwnhdAXYc7BS
+        1tVS1doK829JwQL0HeFCwWbdMMVbR+7v0yKedAMoy5eLal12yajct1w2r/O9OdnW
+        iJr8ET36v7YU72fyRMDbre39KE04VTe51P9PKUW/ZFWIx6O+W1MCwNqPJR37miQl
+        UsO4qlsKZ3oviidexWAYEYEu1TBq/jqur+/QvAbOC0lcQ3dj+D7Naf9QFZyFtzNR
+        sGTWvehN2OL6xlA5AQvjw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         messagingengine.com; h=cc:cc:content-type:content-type:date:date
         :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
         :message-id:mime-version:references:reply-to:sender:subject
         :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1684159708; x=1684246108; bh=xvDWu8rswdlHC
-        9tunZQlzYt+uj6XYdRxiwrOmBMzAAk=; b=ELnpHSnDuqahGMLpwzdlcjqLv91PX
-        /hfqsSN8sgXFlMsbVOEc0SdpODcALY04yY5P7/Ckr83995rnrnXKw301SWbF1Hj5
-        jrUxt+aiVQ92R4EpozpdZulZb7sCu3VWQnmprWBLn266hXYLQeZgXnx4nRnuNtOq
-        +LCLSh5ME3OJZad0CcsIyhitJD/BeMsdxsSqXtPTwM5PajkrS1XaxzwIviAa8kVB
-        2GWhzmToVHRu1sxdctK9lJlf5z7Ytx4bNtbhsTXtPsqZbiMbZbGEvWuEtg6ISrsp
-        abN+BJmcIGn5XBUyKUqTmZmpmTm1EYtP0R5wuFqWJiFdqVLkjA7XQ1dug==
-X-ME-Sender: <xms:2zxiZLk0cr8FT1uc_u7iNtuXP1aH_iRhPllQqWu50bfG2cxnm886Gw>
-    <xme:2zxiZO3EgG-84iEo0MuKFi9KWTQFdO0LLMYnfit3ROVQ8q4HEMQJOhgXz61KDThAO
-    SSDKZSdkXO4Ww9UBQg>
-X-ME-Received: <xmr:2zxiZBofnTJBHBbfx6RuU1QbRROeCJsSMp9IX4KUECJS9b6T-KRpAVItyt3IW-s1luoaO67BqbKQL2xtahL7zeOmUPnx2A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeehjedgjeegucetufdoteggodetrfdotf
+        :x-sasl-enc; s=fm1; t=1684160051; x=1684246451; bh=8NJYIEmbiIkpW
+        su+/ofSKGEy0pPwTx2rBL3P2/pMpTo=; b=pNj8ohMjr5vfiyyDV5hr0NEDMPVUU
+        04yTQmYOuEIEPWLt3XU9yfxeNIFTDeIYKXTGXFEEIvNJ9O7dV/++cegpVkVvQGP3
+        Ys9PnpG0+CioNt4NeJUN2/GgtP0GzbRs1IokAPt2yY7/FmF1ayqHi4F6XSiCWS/S
+        wv9pl/xFZGDpdsbozdRuAwniPmjguY017hhVh+zkdnne0HAnGeqHYomc1bZdXngR
+        nBDYbnpqOdiN3lOYy54Dx6w6k05z/56x7nVaZUmFDkdAvAzTi5ev5PDT9pWgPCO+
+        8KjOcbqNsZqjyrBDwut58uP71FzaqqSRJGXNipybSDN0XajLZE82LQ+yA==
+X-ME-Sender: <xms:Mj5iZBP4c6PhuLXJWmsk6uIpPAUgOn1dsV_IFHpNgyf8HxJQIb7OKw>
+    <xme:Mj5iZD_OuzzIeIsxxvodmiYwE4htvZ6-P3K65OYezaVNjdfW0CN7B5ouexVspyUbE
+    pOisOZJ_-mN6AaoHSc>
+X-ME-Received: <xmr:Mj5iZATDt1LLzwYgJcvWrYbQ5Kzt4X2FsoNXQ3sUpQQWK0oj1gbxEsb-pVqTkLmby0moAw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeehjedgjeehucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomheptehnihhs
-    shgvucetshhtihgvrhcuoegrnhhishhsvgesrghsthhivghrrdgvuheqnecuggftrfgrth
-    htvghrnheplefhjefhvdelueekheeftefghfejfffguedvgffgueehiefggeevjeekieet
-    jeelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hnihhsshgvsegrshhtihgvrhdrvghu
-X-ME-Proxy: <xmx:2zxiZDkGszOAX2kxu6_DD0qk7700iDcbo6M56wy6D_1N-fJlUiJEYQ>
-    <xmx:2zxiZJ2goEGJnnRMuPSoG4dRhcGV1viY3UKxf2qiG5KTdp-ymPjicQ>
-    <xmx:2zxiZCsNVPmNleDsdeifcYLrVcj9P6ILRUHPozbS6F_HPGWvYhY3hg>
-    <xmx:3DxiZF6uy3zBmiFbsRCGmsUW1FdVVKr2g2KB0YTz3jcPUyStDyMOsA>
-Feedback-ID: iccec46d4:Fastmail
+    cujfgurhepfffhvfevuffkfhggtggujgesthdttddttddtvdenucfhrhhomhepfdfmihhr
+    ihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlsehshhhuthgvmhhovhdrnh
+    grmhgvqeenucggtffrrghtthgvrhhnpefhieeghfdtfeehtdeftdehgfehuddtvdeuheet
+    tddtheejueekjeegueeivdektdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvg
+X-ME-Proxy: <xmx:Mj5iZNsMB9ZnYTROf8BvRtzY9FU__X55xSrlTBoXiIigtXyK4BuQbw>
+    <xmx:Mj5iZJf_tHYYUVJIc53uvXREYTkoRJ6_eVfdIJGVjm0P3pht7zI6Ow>
+    <xmx:Mj5iZJ0ZzToGS79JVNxJiCK_r9G7ywjdgCPBcLV246-eWdhxVEsY1g>
+    <xmx:Mz5iZMAj4YUc2HrT0DGOhO7TGm8CnGLZeHEKwoKzbRiIQ71nxfAh3Q>
+Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 15 May 2023 10:08:25 -0400 (EDT)
-Date:   Mon, 15 May 2023 16:08:22 +0200
-From:   Anisse Astier <anisse@astier.eu>
-To:     Christian Brauner <brauner@kernel.org>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Anisse Astier <an.astier@criteo.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-efi@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
+ 15 May 2023 10:14:10 -0400 (EDT)
+Received: by box.shutemov.name (Postfix, from userid 1000)
+        id 9FE6310D1DE; Mon, 15 May 2023 17:14:08 +0300 (+03)
+Date:   Mon, 15 May 2023 17:14:08 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Evgeniy Baskov <baskov@ispras.ru>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Jeremy Kerr <jk@ozlabs.org>,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
-        lennart@poettering.net
-Subject: Re: [PATCH] efivarfs: expose used and total size
-Message-ID: <ZGI81p+2SNjI4VOb@anisse-laptop>
-References: <20230426195853.633233-1-anisse@astier.eu>
- <CAMj1kXE2-76KZDxpHBPcZgbB8vGDmLEbiRGmw_5o-rsNzT9oQw@mail.gmail.com>
- <20230515-vorgaben-portrait-bb1b4255d31a@brauner>
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Peter Jones <pjones@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Dave Young <dyoung@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH v2 09/20] x86: efistub: Perform 4/5 level paging switch
+ from the stub
+Message-ID: <20230515141408.37aoipn4jfu5qcdd@box.shutemov.name>
+References: <20230508070330.582131-1-ardb@kernel.org>
+ <20230508070330.582131-10-ardb@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230515-vorgaben-portrait-bb1b4255d31a@brauner>
+In-Reply-To: <20230508070330.582131-10-ardb@kernel.org>
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Christian,
-
-On Mon, May 15, 2023 at 10:59:49AM +0200, Christian Brauner wrote:
-> On Wed, May 10, 2023 at 05:13:36PM +0200, Ard Biesheuvel wrote:
-> > On Wed, 26 Apr 2023 at 21:59, Anisse Astier <anisse@astier.eu> wrote:
-> > >
-> > > From: Anisse Astier <an.astier@criteo.com>
-> > >
-> > > When writing variables, one might get errors with no other message on
-> > > why it fails.
-> > >
-> > > Being able to see how much is used by EFI variables helps analyzing such
-> > > issues.
-> > >
-> > > Since this is not a conventionnal filesystem, block size is
-> > > intentionnally set to 1 instead of PAGE_SIZE.
-> > >
-> > > x86 quirks of reserved size are taken into account and available and
-> > > free size can be different, further helping debugging space issues.
-> > >
-> > 
-> > I have no objections to this, but I'm not much of a user space/ VFS
-> > person, so adding some other folks that can chime in if they want.
-> > 
-> > The point of this patch is that user space can query this information
-> > using statvfs(), right?
+On Mon, May 08, 2023 at 09:03:19AM +0200, Ard Biesheuvel wrote:
+> In preparation for updating the EFI stub boot flow to avoid the bare
+> metal decompressor code altogether, implement the support code for
+> switching between 4 and 5 levels of paging before jumping to the kernel
+> proper.
 > 
-> Seems ok to me.
+> This reuses the newly refactored trampoline that the bare metal
+> decompressor uses, but relies on EFI APIs to allocate 32-bit addressable
+> memory and remap it with the appropriate permissions. Given that the
+> bare metal decompressor will no longer call into the trampoline if the
+> number of paging levels is already set correctly, we no longer need to
+> remove NX restrictions from the memory range where this trampoline may
+> end up.
 > 
-> > 
-> > 
-> > 
-> > > Signed-off-by: Anisse Astier <an.astier@criteo.com>
-> > > ---
-> > > Notes:
-> > > Patch isn't split per subsystem intentionally, for better understanding
-> > > of intent; split could be trivial in a later version.
-> > >
-> > > I'm not sure whether statfs(2) should return an error if the efi request
-> > > fails; I think it could be ignored with maybe a WARN_ONCE; which would
-> > > be close to the current behaviour.
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  drivers/firmware/efi/libstub/efi-stub-helper.c |   4 +
+>  drivers/firmware/efi/libstub/x86-stub.c        | 119 ++++++++++++++++----
+>  2 files changed, 102 insertions(+), 21 deletions(-)
 > 
-> Not sure. If you're not returning an error you would have to report made
-> up/magic values that could end up confusing userspace. So better to be
-> honest and report an error.
+> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> index 1e0203d74691ffcc..fc5f3b4c45e91401 100644
+> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
+> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> @@ -16,6 +16,8 @@
+>  
+>  #include "efistub.h"
+>  
+> +extern bool efi_no5lvl;
+> +
+>  bool efi_nochunk;
+>  bool efi_nokaslr = !IS_ENABLED(CONFIG_RANDOMIZE_BASE);
+>  bool efi_novamap;
+> @@ -73,6 +75,8 @@ efi_status_t efi_parse_options(char const *cmdline)
+>  			efi_loglevel = CONSOLE_LOGLEVEL_QUIET;
+>  		} else if (!strcmp(param, "noinitrd")) {
+>  			efi_noinitrd = true;
+> +		} else if (IS_ENABLED(CONFIG_X86_64) && !strcmp(param, "no5lvl")) {
+> +			efi_no5lvl = true;
+>  		} else if (!strcmp(param, "efi") && val) {
+>  			efi_nochunk = parse_option_str(val, "nochunk");
+>  			efi_novamap |= parse_option_str(val, "novamap");
+> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+> index a0bfd31358ba97b1..fb83a72ad905ad6e 100644
+> --- a/drivers/firmware/efi/libstub/x86-stub.c
+> +++ b/drivers/firmware/efi/libstub/x86-stub.c
+> @@ -267,32 +267,11 @@ adjust_memory_range_protection(unsigned long start, unsigned long size)
+>  	}
+>  }
+>  
+> -/*
+> - * Trampoline takes 2 pages and can be loaded in first megabyte of memory
+> - * with its end placed between 128k and 640k where BIOS might start.
+> - * (see arch/x86/boot/compressed/pgtable_64.c)
+> - *
+> - * We cannot find exact trampoline placement since memory map
+> - * can be modified by UEFI, and it can alter the computed address.
+> - */
+> -
+> -#define TRAMPOLINE_PLACEMENT_BASE ((128 - 8)*1024)
+> -#define TRAMPOLINE_PLACEMENT_SIZE (640*1024 - (128 - 8)*1024)
+> -
+>  void startup_32(struct boot_params *boot_params);
+>  
+>  static void
+>  setup_memory_protection(unsigned long image_base, unsigned long image_size)
+>  {
+> -	/*
+> -	 * Allow execution of possible trampoline used
+> -	 * for switching between 4- and 5-level page tables
+> -	 * and relocated kernel image.
+> -	 */
+> -
+> -	adjust_memory_range_protection(TRAMPOLINE_PLACEMENT_BASE,
+> -				       TRAMPOLINE_PLACEMENT_SIZE);
+> -
+>  #ifdef CONFIG_64BIT
+>  	if (image_base != (unsigned long)startup_32)
+>  		adjust_memory_range_protection(image_base, image_size);
+> @@ -760,6 +739,96 @@ static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
+>  	return EFI_SUCCESS;
+>  }
+>  
+> +bool efi_no5lvl;
+> +
+> +static void (*la57_toggle)(void *trampoline, bool enable_5lvl);
+> +
+> +extern void trampoline_32bit_src(void *, bool);
+> +extern const u16 trampoline_ljmp_imm_offset;
+> +
+> +/*
+> + * Enabling (or disabling) 5 level paging is tricky, because it can only be
+> + * done from 32-bit mode with paging disabled. This means not only that the
+> + * code itself must be running from 32-bit addressable physical memory, but
+> + * also that the root page table must be 32-bit addressable, as we cannot
+> + * program a 64-bit value into CR3 when running in 32-bit mode.
+> + */
+> +static efi_status_t efi_setup_5level_paging(void)
+> +{
+> +	u8 tmpl_size = (u8 *)&trampoline_ljmp_imm_offset - (u8 *)&trampoline_32bit_src;
+> +	efi_status_t status;
+> +	u8 *la57_code;
+> +
+> +	if (!efi_is_64bit())
+> +		return EFI_SUCCESS;
+> +
+> +	/* check for 5 level paging support */
+> +	if (native_cpuid_eax(0) < 7 ||
+> +	    !(native_cpuid_ecx(7) & (1 << (X86_FEATURE_LA57 & 31))))
+> +		return EFI_SUCCESS;
+> +
+> +	/* allocate some 32-bit addressable memory for code and a page table */
+> +	status = efi_allocate_pages(2 * PAGE_SIZE, (unsigned long *)&la57_code,
+> +				    U32_MAX);
+> +	if (status != EFI_SUCCESS)
+> +		return status;
+> +
+> +	la57_toggle = memcpy(la57_code, trampoline_32bit_src, tmpl_size);
+> +	memset(la57_code + tmpl_size, 0x90, PAGE_SIZE - tmpl_size);
+> +
+> +	/*
+> +	 * To avoid having to allocate a 32-bit addressable stack, we use a
+> +	 * ljmp to switch back to long mode. However, this takes an absolute
+> +	 * address, so we have to poke it in at runtime.
+> +	 */
+> +	*(u32 *)&la57_code[trampoline_ljmp_imm_offset] += (unsigned long)la57_code;
+> +
+> +	adjust_memory_range_protection((unsigned long)la57_toggle, PAGE_SIZE);
+> +
+> +	return EFI_SUCCESS;
+> +}
+> +
+> +static void efi_5level_switch(void)
+> +{
+> +#ifdef CONFIG_X86_64
+> +	static const struct desc_struct gdt[] = {
+> +		[GDT_ENTRY_KERNEL32_CS] = GDT_ENTRY_INIT(0xc09b, 0, 0xfffff),
+> +		[GDT_ENTRY_KERNEL_CS]   = GDT_ENTRY_INIT(0xa09b, 0, 0xfffff),
+> +	};
+> +
+> +	bool want_la57 = IS_ENABLED(CONFIG_X86_5LEVEL) && !efi_no5lvl;
+> +	bool have_la57 = native_read_cr4() & X86_CR4_LA57;
+> +	bool need_toggle = want_la57 ^ have_la57;
+> +	u64 *pgt = (void *)la57_toggle + PAGE_SIZE;
+> +	u64 *cr3 = (u64 *)__native_read_cr3();
+> +	u64 *new_cr3;
+> +
+> +	if (!la57_toggle || !need_toggle)
+> +		return;
+> +
+> +	if (!have_la57) {
+> +		/*
+> +		 * We are going to enable 5 level paging, so we need to
+> +		 * allocate a root level page from the 32-bit addressable
+> +		 * physical region, and plug the existing hierarchy into it.
+> +		 */
+> +		new_cr3 = memset(pgt, 0, PAGE_SIZE);
+> +		new_cr3[0] = (u64)cr3 | _PAGE_TABLE_NOENC;
+> +	} else {
+> +		// take the new root table pointer from the current entry #0
+> +		new_cr3 = (u64 *)(cr3[0] & PAGE_MASK);
+> +
+> +		// copy the new root level table if it is not 32-bit addressable
+> +		if ((u64)new_cr3 > U32_MAX)
+> +			new_cr3 = memcpy(pgt, new_cr3, PAGE_SIZE);
+> +	}
+> +
+> +	native_load_gdt(&(struct desc_ptr){ sizeof(gdt) - 1, (u64)gdt });
+> +
+> +	la57_toggle(new_cr3, want_la57);
+> +#endif
+> +}
+> +
 
-Ack.
+Nit: I would prefer to have the #ifdef around whole function with dummy
+function for !CONFIG_X86_64 case, if IS_ENABLED(CONFIG_X86_64) is not an
+option.
 
-> 
-> > >
-> > > Regards,
-> > >
-> > > Anisse
-> > >
-> > > ---
-> > >  arch/x86/platform/efi/quirks.c |  8 ++++++++
-> > >  drivers/firmware/efi/efi.c     |  1 +
-> > >  drivers/firmware/efi/vars.c    | 12 ++++++++++++
-> > >  fs/efivarfs/super.c            | 26 +++++++++++++++++++++++++-
-> > >  include/linux/efi.h            | 10 ++++++++++
-> > >  5 files changed, 56 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-> > > index b0b848d6933a..587fa51230e2 100644
-> > > --- a/arch/x86/platform/efi/quirks.c
-> > > +++ b/arch/x86/platform/efi/quirks.c
-> > > @@ -114,6 +114,14 @@ void efi_delete_dummy_variable(void)
-> > >                                      EFI_VARIABLE_RUNTIME_ACCESS, 0, NULL);
-> > >  }
-> > >
-> > > +u64 efi_reserved_space(void)
-> > > +{
-> > > +       if (efi_no_storage_paranoia)
-> > > +               return 0;
-> > > +       return EFI_MIN_RESERVE;
-> > > +}
-> > > +EXPORT_SYMBOL_GPL(efi_reserved_space);
-> > > +
-> > >  /*
-> > >   * In the nonblocking case we do not attempt to perform garbage
-> > >   * collection if we do not have enough free space. Rather, we do the
-> > > diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> > > index abeff7dc0b58..d0dfa007bffc 100644
-> > > --- a/drivers/firmware/efi/efi.c
-> > > +++ b/drivers/firmware/efi/efi.c
-> > > @@ -211,6 +211,7 @@ static int generic_ops_register(void)
-> > >         generic_ops.get_variable = efi.get_variable;
-> > >         generic_ops.get_next_variable = efi.get_next_variable;
-> > >         generic_ops.query_variable_store = efi_query_variable_store;
-> > > +       generic_ops.query_variable_info = efi.query_variable_info;
-> > >
-> > >         if (efi_rt_services_supported(EFI_RT_SUPPORTED_SET_VARIABLE)) {
-> > >                 generic_ops.set_variable = efi.set_variable;
-> > > diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
-> > > index bd75b87f5fc1..c5382d5c3073 100644
-> > > --- a/drivers/firmware/efi/vars.c
-> > > +++ b/drivers/firmware/efi/vars.c
-> > > @@ -245,3 +245,15 @@ efi_status_t efivar_set_variable(efi_char16_t *name, efi_guid_t *vendor,
-> > >         return status;
-> > >  }
-> > >  EXPORT_SYMBOL_NS_GPL(efivar_set_variable, EFIVAR);
-> > > +
-> > > +efi_status_t efivar_query_variable_info(u32 attr,
-> > > +                                       u64 *storage_space,
-> > > +                                       u64 *remaining_space,
-> > > +                                       u64 *max_variable_size)
-> > > +{
-> > > +       if (!__efivars->ops->query_variable_info)
-> > > +               return EFI_UNSUPPORTED;
-> > > +       return __efivars->ops->query_variable_info(attr, storage_space,
-> > > +                       remaining_space, max_variable_size);
-> > > +}
-> > > +EXPORT_SYMBOL_NS_GPL(efivar_query_variable_info, EFIVAR);
-> > > diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-> > > index 482d612b716b..064bfc0243c9 100644
-> > > --- a/fs/efivarfs/super.c
-> > > +++ b/fs/efivarfs/super.c
-> > > @@ -13,6 +13,7 @@
-> > >  #include <linux/ucs2_string.h>
-> > >  #include <linux/slab.h>
-> > >  #include <linux/magic.h>
-> > > +#include <linux/statfs.h>
-> > >
-> > >  #include "internal.h"
-> > >
-> > > @@ -23,8 +24,31 @@ static void efivarfs_evict_inode(struct inode *inode)
-> > >         clear_inode(inode);
-> > >  }
-> > >
-> > > +static int efivarfs_statfs(struct dentry *dentry, struct kstatfs *buf)
-> > > +{
-> > > +       u64 storage_space, remaining_space, max_variable_size;
-> > > +       efi_status_t status;
-> > > +       const u32 attr = (EFI_VARIABLE_NON_VOLATILE | EFI_VARIABLE_BOOTSERVICE_ACCESS |
-> > > +        EFI_VARIABLE_RUNTIME_ACCESS);
-> > > +
-> > > +       buf->f_type = dentry->d_sb->s_magic;
-> > > +       buf->f_bsize = 1;
-> > > +       buf->f_namelen = NAME_MAX;
-> > > +
-> > > +       status = efivar_query_variable_info(attr, &storage_space, &remaining_space,
-> > > +                                           &max_variable_size);
-> > > +       if (status != EFI_SUCCESS)
-> > > +               return efi_status_to_err(status);
-> > > +       buf->f_blocks = storage_space;
-> 
-> I have no idea about efivarfs specifically but I would add comments
-> why f_bsize is set to what it is and clarify the relationship between
-> f_bsize and f_blocks. Even if just for the sake of userspace to be able
-> to interpret this.
+Otherwise:
 
-Ack.
-
-Thanks for taking the time to review this patch, I'll send a new version
-soon.
-
-Regards,
-
-Anisse
-
+	Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
