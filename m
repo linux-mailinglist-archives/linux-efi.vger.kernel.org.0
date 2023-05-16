@@ -2,114 +2,135 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7240703F9D
-	for <lists+linux-efi@lfdr.de>; Mon, 15 May 2023 23:25:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 194AA70425D
+	for <lists+linux-efi@lfdr.de>; Tue, 16 May 2023 02:41:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245501AbjEOVYu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 15 May 2023 17:24:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50988 "EHLO
+        id S245652AbjEPAly (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 15 May 2023 20:41:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242936AbjEOVYs (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 15 May 2023 17:24:48 -0400
+        with ESMTP id S230343AbjEPAlx (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 15 May 2023 20:41:53 -0400
 Received: from sender3-of-o57.zoho.com (sender3-of-o57.zoho.com [136.143.184.57])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9BEB93
-        for <linux-efi@vger.kernel.org>; Mon, 15 May 2023 14:24:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1684185838; cv=none; 
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CE8430FD;
+        Mon, 15 May 2023 17:41:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1684197665; cv=none; 
         d=zohomail.com; s=zohoarc; 
-        b=ZIiZUK8CbsCjiTqifI36HGbNwdFEP03mJGK5C8Kha6tVgBHP7kTeDgac2+tm/3XKsbDwlkOFJ/4w8cRPeVL3VnzwjCti5eH0DCyA7nRLJ2JNfQf3waGrN8Im9OQOKRHiOK1HYANwB1hR+/nL++Mh9g4UH04TowwykuQggdzSLmU=
+        b=XqR1E9WYKCH5zE0xzfY8q4o8hGEYSOcK4tGK8Q2iZaxhLN15Hn9ctmHY8DtzrsYk2A5JcUeaikJSlwkgyABpztvRWjet1OYjyGyL7URMv+qwqpyjSYxr5HsuEOVzD0Xal0X8RUmyepOxiwtPHvYTxubO8ftpTOFqd94yQnxZSGQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-        t=1684185838; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=J3jOAuTNmPzCg2cyhMylK3GtU6TzEwrGngq9Y/KQJiQ=; 
-        b=cnbHjhH3F53ydRLRJExkPQrkix1xEpSDV/QLM4ZhENvB8JWNC30Qi41n8QwfXr1lfHGN/YmMLLMNwyQsTv98sg/0V4f3O+tHQDqhjAIoHYJZ/thkTLADCVHMRTTvyki4fJ4V30mYXdS1uR0cpUEo47jhgIfqJnxd1do0v+cYM9w=
+        t=1684197665; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=x9E1sPNjs8TnJyDDWuPW+7RruRAouFKTsWP7ZU6lxAw=; 
+        b=edBBMwqoIA3px3KRjoqOeVRGIRAKy1Ii6k5VvgFlZblTWvXISxJ1iWXnImdMo8Z/jsjvfy/JPv/0fwx9Up2i0+vuBxSIPlzcAfciWFQyaK2FjPCqIwH/tjXIHcBVW1csLV8OOcA9IABP7hzKJhzpdhsMssnbz7X4BgC83UfqkGQ=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
         dkim=pass  header.i=apertussolutions.com;
         spf=pass  smtp.mailfrom=dpsmith@apertussolutions.com;
         dmarc=pass header.from=<dpsmith@apertussolutions.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1684185838;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1684197665;
         s=zoho; d=apertussolutions.com; i=dpsmith@apertussolutions.com;
         h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-        bh=J3jOAuTNmPzCg2cyhMylK3GtU6TzEwrGngq9Y/KQJiQ=;
-        b=XF+jDcK+OfGZgLIcK5u+YeWep9XEHHVW3HEudShXbrPiGjD416u8N3ktwtum2gO8
-        xSPKV0oxzwGtK22V0BdbpwSgPx1tr1Qoh2O3kC8eLgIaZyoZg/aGR/nx+B+DzAORE+R
-        bVNcnaWzhPNJytg3mqqDi8s/XkcQS8WIaNwB+E+c=
+        bh=x9E1sPNjs8TnJyDDWuPW+7RruRAouFKTsWP7ZU6lxAw=;
+        b=KkBrhxus1IChftrmWFiE0iWqNP8pwvcEA93j1NsBljZB12Dwn/pFRs9ba7CJ9Wc7
+        edP2pGXBARtnJM2FPzweZ/GrpdlaMrUSCdjtpbMPbNg2rK5PpKzF9po1PYMenL2dJZy
+        M3Z+MoI/+mmQL2JgJ9L9p3qb/TwugPj5kW90GVqc=
 Received: from [10.10.1.128] (static-72-81-132-2.bltmmd.fios.verizon.net [72.81.132.2]) by mx.zohomail.com
-        with SMTPS id 1684185838046320.453113662738; Mon, 15 May 2023 14:23:58 -0700 (PDT)
-Message-ID: <9f0db589-e7b4-09c0-aed2-588b2a2e1bf5@apertussolutions.com>
-Date:   Mon, 15 May 2023 17:23:55 -0400
+        with SMTPS id 1684197664523566.236879037264; Mon, 15 May 2023 17:41:04 -0700 (PDT)
+Message-ID: <df9d1260-41dd-034b-9dc6-14173c6c0d25@apertussolutions.com>
+Date:   Mon, 15 May 2023 20:41:00 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v6 06/14] x86: Add early SHA support for Secure Launch
- early measurements
+Subject: Re: [PATCH v6 04/14] x86: Secure Launch Resource Table header file
 Content-Language: en-US
-To:     Eric Biggers <ebiggers@kernel.org>,
-        Ross Philipson <ross.philipson@oracle.com>
-Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
+To:     Matthew Garrett <mjg59@srcf.ucam.org>
+Cc:     Ross Philipson <ross.philipson@oracle.com>,
+        linux-kernel@vger.kernel.org, x86@kernel.org,
         linux-integrity@vger.kernel.org, linux-doc@vger.kernel.org,
         linux-crypto@vger.kernel.org, iommu@lists.linux-foundation.org,
         kexec@lists.infradead.org, linux-efi@vger.kernel.org,
         tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
-        ardb@kernel.org, mjg59@srcf.ucam.org,
-        James.Bottomley@hansenpartnership.com, luto@amacapital.net,
-        nivedita@alum.mit.edu, kanth.ghatraju@oracle.com,
-        trenchboot-devel@googlegroups.com
+        ardb@kernel.org, James.Bottomley@hansenpartnership.com,
+        luto@amacapital.net, nivedita@alum.mit.edu,
+        kanth.ghatraju@oracle.com, trenchboot-devel@googlegroups.com
 References: <20230504145023.835096-1-ross.philipson@oracle.com>
- <20230504145023.835096-7-ross.philipson@oracle.com>
- <20230510012144.GA1851@quark.localdomain>
+ <20230504145023.835096-5-ross.philipson@oracle.com>
+ <20230512105554.GB14461@srcf.ucam.org>
+ <30d5891d-4747-8d67-2667-ff07628740bd@apertussolutions.com>
+ <20230515212206.GA2162@srcf.ucam.org>
 From:   "Daniel P. Smith" <dpsmith@apertussolutions.com>
-In-Reply-To: <20230510012144.GA1851@quark.localdomain>
+In-Reply-To: <20230515212206.GA2162@srcf.ucam.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-ZohoMailClient: External
 X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 5/9/23 21:21, Eric Biggers wrote:
-> On Thu, May 04, 2023 at 02:50:15PM +0000, Ross Philipson wrote:
->> From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
+On 5/15/23 17:22, Matthew Garrett wrote:
+> On Mon, May 15, 2023 at 05:15:15PM -0400, Daniel P. Smith wrote:
+>> On 5/12/23 06:55, Matthew Garrett wrote:
+>>> On Thu, May 04, 2023 at 02:50:13PM +0000, Ross Philipson wrote:
+>>>
+>>>> +#define SLR_TABLE_MAGIC		0x4452544d
+>>>
+>>>   From convention I'd expect this to be 0x534c5254, but not really an
+>>> issue.
 >>
->> The SHA algorithms are necessary to measure configuration information into
->> the TPM as early as possible before using the values. This implementation
->> uses the established approach of #including the SHA libraries directly in
->> the code since the compressed kernel is not uncompressed at this point.
->>
->> The SHA code here has its origins in the code from the main kernel:
->>
->> commit c4d5b9ffa31f ("crypto: sha1 - implement base layer for SHA-1")
->>
->> That code could not be pulled directly into the setup portion of the
->> compressed kernel because of other dependencies it pulls in. The result
->> is this is a modified copy of that code that still leverages the core
->> SHA algorithms.
->>
->> Signed-off-by: Daniel P. Smith <dpsmith@apertussolutions.com>
->> Signed-off-by: Ross Philipson <ross.philipson@oracle.com>
+>> Apologies, but which convention?
 > 
-> SHA-1 is insecure.  Why are you still using SHA-1?  Don't TPMs support SHA-2
-> now?
+> Tables in ACPI and UEFI tend to have magic that corresponds to their
+> name, so a table called SLRT would tend to have magic that matches the
+> ASCII values for that. In this case the SLRT has DRTM as its magic,
+> which is a touch unexpected.
 
-I think others have commented as to why SHA-1 is provided.
+While the SLRT is meant for UEFI and non-UEFI environments, DRTM is 
+definitely a hold over when we started this and you are correct, 
+probably not the best choice. In fact, I agree that SLRT is a far better 
+magic. We will update the spec and fix it in the series.
 
-> And if you absolutely MUST use SHA-1 despite it being insecure, please at least
-> don't obfuscate it by calling it simply "SHA".
+>>> Oof. Having the kernel know about bootloaders has not worked out super
+>>> well for us in the past. If someone writes a new bootloader, are they
+>>> unable to Secure Launch any existing kernels? The pragmatic thing for
+>>> them to do would be to just pretend they're grub, which kind of defeats
+>>> the point of having this definition...
+>>
+>> Actually, this is not for making the kernel know about bootloaders. This is
+>> dealing with the challenge created when the preamble was split for efi-stub,
+>> and similar use cases, where what sets up the preamble, ie. the bootloader,
+>> is separate from what invokes the dynamic launch, ie. the DLE handler. The
+>> reality is that even in the simplest implementation of the DLE handler, a
+>> remnant of GRUB for call back from efi-stub, there is information that is
+>> needed to cross the gap.
+> 
+> What if I don't use grub, but use something that behaves equivalently?
+> Which value should be used here?
 
-Apologies that it appears that way to you. Typically when referring to 
-the family or a subset of the SHA algorithms, SHA-0, SHA-1, SHA-2, and 
-SHA-3, it is generally accepted to refer to them as the "SHA 
-algorithms". And this is contrasted to the SM algorithms which the TCG 
-spec provides for which we have no intentions to support ourselves, 
-though others are welcome to contribute.
+Generally we would request that the bootloader submit a request to 
+register for a value to be reserved in the spec. That aside, the intent 
+here is to allow for the possibility for the DLE handler to be 
+independent from the bootloader, but this does not have to be this way. 
+If a non-open entity decides to produce their own implementation, they 
+can freely use a unallocated value at their own risk that it could be 
+allocated to another bootloader in the future. Though in this scenario 
+it likely would not matter as the non-open DLE handler would only be 
+present when the non-open bootloader was present.
 
-Again, apologies for misunderstanding and thank you for taking the time 
-to review the series.
+>> We wrote the TrenchBoot Secure Launch general spec [1] with as much
+>> forethought as possible for the target environments. Specifically, the
+>> desire is to have a common approach for x86 (Intel and AMD), Arm, and
+>> perhaps down the road the POWER arch. In particular, I do not believe there
+>> is anything in the Arm DRTM beta spec that prohibits a mixed 32/64 bit
+>> environment. In the end it is better to for the spec to be safe for those
+>> environments then having to make changes to the spec later down the road.
+> 
+> Ok.
+
+Thank you for the review!
 
 v/r,
 dps
-
