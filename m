@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EDE3705335
-	for <lists+linux-efi@lfdr.de>; Tue, 16 May 2023 18:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DE78705334
+	for <lists+linux-efi@lfdr.de>; Tue, 16 May 2023 18:08:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233489AbjEPQIf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 16 May 2023 12:08:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60538 "EHLO
+        id S234528AbjEPQIc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 16 May 2023 12:08:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234462AbjEPQIL (ORCPT
+        with ESMTP id S234447AbjEPQIL (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Tue, 16 May 2023 12:08:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70712869A;
-        Tue, 16 May 2023 09:07:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C873155A6;
+        Tue, 16 May 2023 09:07:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9466D632E4;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A7F6F63BE7;
+        Tue, 16 May 2023 16:07:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D877C433A0;
         Tue, 16 May 2023 16:07:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B98AC4339E;
-        Tue, 16 May 2023 16:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684253265;
-        bh=UcWVdIx6eUNRqB58lvyqa00FuN14YMlQl7kvQIYp62I=;
+        s=k20201202; t=1684253269;
+        bh=Y/kX7yQ/rkwRjov2P3rhuT9nIb3QQo194N1K1FzHQ6o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uwck9pxebUmJ5elwV8JbBowvzYFpqDcwvO+VjLC6ovtT5Zh8jbQn59jRACTo+f4Y/
-         7l0M8zxg2Np+BaiSbNSH14j2nYQP/XRbMAn93yj7xQ3SkvKIuntJt8KoZfrVTT9IU/
-         MrUn/2xa8+GbgCJmL4EeOBlFYppKePkdIq+DGQVbhNF9sV3i3DvsgPCXWTSQ3132uP
-         U9qPFdkImKIqjVSrHZY9q2gitN64HJoDSwj18p/c6zu6y7Xt91mTG1f26mBIVvC4MW
-         BwCIVuj2VVBxhDnJK+je2EjtBEQR6sCFizppprMVkDM36HeKFb3xDDRpH89RmhM2hJ
-         Ps4L3KXuhyDNw==
+        b=kedr1NLZ1ZCY3DnJ3dxsFdY2+W0MGAEccULvE8FY4jEGNx4HDKeKuxc30G+7uwvGG
+         wnR08MvLRzsPA6WRL6GJ0wMktvpTzlCKA5U8saVsLDduqGtGn73O8BGC6cCL7cTtAK
+         y2nSsbvJ0q3eApquSZ48lZ1cFWbf+9f6yoU3LdVg5SGh/i69qU6ERcAkYREvNBs+UM
+         7FTNfy+nxps2IK2AiA9mOB7PmxIURaByQc/jRTu6mObtnO/GmCxIHXJSN5QwQm1UYw
+         0rMj30nsVdVXqSMEGdSfgXQ+LpxWk1ELY65Z/C5yKtHpe4zdTtoW/uFhpscPMo7Kwk
+         QU7MnvrwgYS6A==
 From:   Arnd Bergmann <arnd@kernel.org>
 To:     Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>
@@ -46,9 +46,9 @@ Cc:     Arnd Bergmann <arnd@arndb.de>, Ard Biesheuvel <ardb@kernel.org>,
         Suren Baghdasaryan <surenb@google.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-efi@vger.kernel.org, kvmarm@lists.linux.dev
-Subject: [PATCH 12/15] arm64: kaslr: add kaslr_early_init() declaration
-Date:   Tue, 16 May 2023 18:06:39 +0200
-Message-Id: <20230516160642.523862-13-arnd@kernel.org>
+Subject: [PATCH 13/15] arm64: signal: include asm/exception.h
+Date:   Tue, 16 May 2023 18:06:40 +0200
+Message-Id: <20230516160642.523862-14-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230516160642.523862-1-arnd@kernel.org>
 References: <20230516160642.523862-1-arnd@kernel.org>
@@ -66,28 +66,28 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-kaslr_early_init() is called from assembler code and does not
-need a declaration to work, but adding one anyway shuts up
-this W=1 warning:
+The do_notify_resume() is in a header that is not included
+for the definition, which causes a W=1 warning:
 
-arch/arm64/kernel/pi/kaslr_early.c:88:16: error: no previous prototype for 'kaslr_early_init' [-Werror=missing-prototypes]
+arch/arm64/kernel/signal.c:1280:6: error: no previous prototype for 'do_notify_resume' [-Werror=missing-prototypes]
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/arm64/include/asm/archrandom.h | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/kernel/signal.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/include/asm/archrandom.h b/arch/arm64/include/asm/archrandom.h
-index 2f5f3da34782..b0abc64f86b0 100644
---- a/arch/arm64/include/asm/archrandom.h
-+++ b/arch/arm64/include/asm/archrandom.h
-@@ -129,4 +129,6 @@ static inline bool __init __early_cpu_has_rndr(void)
- 	return (ftr >> ID_AA64ISAR0_EL1_RNDR_SHIFT) & 0xf;
- }
- 
-+u64 kaslr_early_init(void *fdt);
-+
- #endif /* _ASM_ARCHRANDOM_H */
+diff --git a/arch/arm64/kernel/signal.c b/arch/arm64/kernel/signal.c
+index 2cfc810d0a5b..3457906ba117 100644
+--- a/arch/arm64/kernel/signal.c
++++ b/arch/arm64/kernel/signal.c
+@@ -23,6 +23,7 @@
+ #include <asm/daifflags.h>
+ #include <asm/debug-monitors.h>
+ #include <asm/elf.h>
++#include <asm/exception.h>
+ #include <asm/cacheflush.h>
+ #include <asm/ucontext.h>
+ #include <asm/unistd.h>
 -- 
 2.39.2
 
