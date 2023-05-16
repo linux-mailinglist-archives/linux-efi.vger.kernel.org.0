@@ -2,65 +2,64 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1ACB97054D1
-	for <lists+linux-efi@lfdr.de>; Tue, 16 May 2023 19:17:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A71267054F4
+	for <lists+linux-efi@lfdr.de>; Tue, 16 May 2023 19:26:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229653AbjEPRRX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 16 May 2023 13:17:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47254 "EHLO
+        id S231783AbjEPR0O (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 16 May 2023 13:26:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229551AbjEPRRW (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 16 May 2023 13:17:22 -0400
+        with ESMTP id S231789AbjEPR0N (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 16 May 2023 13:26:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C2D8FC;
-        Tue, 16 May 2023 10:17:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6671FD052;
+        Tue, 16 May 2023 10:26:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D75F63D09;
-        Tue, 16 May 2023 17:17:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 695A0C433A8;
-        Tue, 16 May 2023 17:17:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9958C63D23;
+        Tue, 16 May 2023 17:26:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 043B9C433A8;
+        Tue, 16 May 2023 17:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684257440;
-        bh=WElwajV57R1ZF+d3DvmtrkbIt4Bk9tb18ajBvlQX0oQ=;
+        s=k20201202; t=1684257965;
+        bh=vhh5+rlNKvpvY+IhdH8zTHvseXPWY4NQ5GWC/3H1Ha8=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=GmVJv/QRb6t7cFLx7+N00ZvbnoIHiXNmN/tOo0s7PCbTU9QPqYTS/8eTyZOGVoj/E
-         rD9sLojkUUHKGso1uxKjepTnvgrevfCdJm7IMTmOp/wGIIcPeHN8OLHWrTnNINtbiK
-         u3N3WaIiX2G8ZjkiD8GqAaJeh98dFFpZKS0ij/ig41IY9jbk/eEZarHO0eopMZB9nX
-         2wadUj4Q2HOqXZ8lA/uzmN1YBjAETaGy8hoyiP/xeWGv9+WxGDMXE/WbOrh/oGr3oy
-         Gk6hisncCPi+yD4LI1Zrfk8qza6qjaN229bTLbsmVKIG/yJqm4wJKUiYUv4xD+zIzV
-         q0CUtjsFlzYbw==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-4eed764a10cso16462018e87.0;
-        Tue, 16 May 2023 10:17:20 -0700 (PDT)
-X-Gm-Message-State: AC+VfDywOI302zEQotX5DNmTOXoB83AiGITALWEc2/XBe6/29w5vDjC+
-        DntdIZo1oQSwKeK3aBTTea29BUUbIh626z/BVsY=
-X-Google-Smtp-Source: ACHHUZ4VMVquCoFbXiDWYhR8Guy+zOWzA/fxaWPI3piMmQSNzbFag9YgignmrUhRLyODzAtSO/Hosm6vdBHv78s5Fw0=
-X-Received: by 2002:a19:ad45:0:b0:4f2:7b64:f16f with SMTP id
- s5-20020a19ad45000000b004f27b64f16fmr3971449lfd.52.1684257438252; Tue, 16 May
- 2023 10:17:18 -0700 (PDT)
+        b=V+LbGn4//M8ZY7FQfVgEWR/RrWpvjJHCyUQ8N1CSkblyO3OHUzL7ySMjqXkT54ZtS
+         nA2RhSFMmQc74B3l7jwJkrRjF3IHnA+OGSpBebntP+cnZn8Ad4opWArFDnyEhXxfxE
+         EAAo2GuS6VskfmVrV44sH7wOixCVhcaQhUo1/Qtdke3Yzpf+g+cRaby/IrmpJkuvCu
+         oGH4Axji6wJSujuY59rV66LGZT5HZgHig7PLcXD7NChUkkv+oVNTQ6iOFb0qf++QlP
+         x/Zoel3jg9bfnPxvMn2iklpWIeSH8HpnmHJdD19GPzWHWauPksoEeKl0jzz0nCmOZK
+         2uCpdgPBH0gOw==
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-4ec8eca56cfso16617132e87.0;
+        Tue, 16 May 2023 10:26:04 -0700 (PDT)
+X-Gm-Message-State: AC+VfDxcvAvwKTGqxMc47tDhCTbaJis0hh3puXO9phbAJ6fs/3G5P70v
+        bdABubuOvYVPER7pdXuW7xMEwuhps7q3p1F/iZs=
+X-Google-Smtp-Source: ACHHUZ68392EzdrHBxMjGqK9AsHaMDbtCxkMHH0Nv2HSFYBZ6ovtUSvAqldIOG0F59AqXA8iH4TPr7YpO19SRqXCsuA=
+X-Received: by 2002:a19:7008:0:b0:4f2:7a54:346e with SMTP id
+ h8-20020a197008000000b004f27a54346emr4509573lfc.44.1684257962958; Tue, 16 May
+ 2023 10:26:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230516160642.523862-1-arnd@kernel.org>
-In-Reply-To: <20230516160642.523862-1-arnd@kernel.org>
+References: <20230513220418.19357-6-kirill.shutemov@linux.intel.com> <20230516120646.31195-1-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20230516120646.31195-1-kirill.shutemov@linux.intel.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 16 May 2023 19:17:07 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFTYo0HvP3izv2tgewCBT37LG0hgXKvn8zSmNfB0kUFHQ@mail.gmail.com>
-Message-ID: <CAMj1kXFTYo0HvP3izv2tgewCBT37LG0hgXKvn8zSmNfB0kUFHQ@mail.gmail.com>
-Subject: Re: [PATCH 00/15] arm64: address -Wmissing-prototype warnings
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Oliver Upton <oliver.upton@linux.dev>,
-        James Morse <james.morse@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Zenghui Yu <yuzenghui@huawei.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Kees Cook <keescook@chromium.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, kvmarm@lists.linux.dev
+Date:   Tue, 16 May 2023 19:25:51 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFoNTe3bPg6XHydJk8izcTrofEhH7Wpar1VwgpboEobmw@mail.gmail.com>
+Message-ID: <CAMj1kXFoNTe3bPg6XHydJk8izcTrofEhH7Wpar1VwgpboEobmw@mail.gmail.com>
+Subject: Re: [PATCHv11.1 5/9] efi: Add unaccepted memory support
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc:     aarcange@redhat.com, ak@linux.intel.com, akpm@linux-foundation.org,
+        bp@alien8.de, dave.hansen@intel.com, david@redhat.com,
+        dfaggioli@suse.com, jroedel@suse.de, khalid.elmously@canonical.com,
+        linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org, luto@kernel.org,
+        marcelo.cerri@canonical.com, mgorman@techsingularity.net,
+        mingo@redhat.com, pbonzini@redhat.com, peterx@redhat.com,
+        peterz@infradead.org, philip.cox@canonical.com,
+        rientjes@google.com, rppt@kernel.org,
+        sathyanarayanan.kuppuswamy@linux.intel.com, seanjc@google.com,
+        tglx@linutronix.de, thomas.lendacky@amd.com,
+        tim.gardner@canonical.com, vbabka@suse.cz, x86@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -72,93 +71,222 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 16 May 2023 at 18:06, Arnd Bergmann <arnd@kernel.org> wrote:
+On Tue, 16 May 2023 at 14:07, Kirill A. Shutemov
+<kirill.shutemov@linux.intel.com> wrote:
 >
-> From: Arnd Bergmann <arnd@arndb.de>
+> efi_config_parse_tables() reserves memory that holds unaccepted memory
+> configuration table so it won't be reused by page allocator.
 >
-> This addresses all arm64 specific protype warnings. As with the arm32
-> patches, the majority of them  should be straightforward, either adding
-> an #include statement to get the right header, or ensuring that an unused
-> global function is left out of the build when the prototype is hidden.
+> Core-mm requires few helpers to support unaccepted memory:
 >
-> The ones that are a bit awkward are those that just add a prototype to
-> shut up the warning, but the prototypes are never used for calling the
-> function because the only caller is in assembler code. I tried to come
-> up with other ways to shut up the compiler, and ideally this would be
-> triggered by the 'asmlinkage' keyword as Ard suggested in the past, but
-> I could not come up with a way to do this.
+>  - accept_memory() checks the range of addresses against the bitmap and
+>    accept memory if needed.
 >
-> All of the warnings have to be addressed in some form before the
-> warning can be enabled by default.
+>  - range_contains_unaccepted_memory() checks if anything within the
+>    range requires acceptance.
 >
->     Arnd
+> Architectural code has to provide efi_get_unaccepted_table() that
+> returns pointer to the unaccepted memory configuration table.
 >
-> Link: https://people.kernel.org/arnd/missing-prototype-warnings-in-the-kernel
+> arch_accept_memory() handles arch-specific part of memory acceptance.
+>
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 >
 
-For the record, as I mentioned a while ago, I think it is a bit
-disappointing that we cannot teach the compiler that 'asmlinkage'
-functions don't need a prototype. But I don't have any objections to
-these changes, so
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-
+> v11.1:
+>  - Add missing memblock_reserve() for the unaccepted memory
+>    configuration table.
 >
-> Arnd Bergmann (15):
->   arm64: xor-neon: mark xor_arm64_neon_*() static
->   arm64: add scs_patch_vmlinux prototype
->   arm64: avoid prototype warnings for syscalls
->   arm64: move cpu_suspend_set_dbg_restorer() prototype to header
->   arm64: spectre: provide prototypes for internal functions
->   arm64: kvm: add prototypes for functions called in asm
->   arm64: cpuidle: fix #ifdef for acpi functions
->   arm64: efi: add efi_handle_corrupted_x18 prototype
->   arm64: hide unused is_valid_bugaddr()
->   arm64: module-plts: inline linux/moduleloader.h
->   arm64: flush: include linux/libnvdimm.h
->   arm64: kaslr: add kaslr_early_init() declaration
->   arm64: signal: include asm/exception.h
->   arm64: move early_brk64 prototype to header
->   arm64: add alt_cb_patch_nops prototype
+> ---
+>  drivers/firmware/efi/Makefile            |   1 +
+>  drivers/firmware/efi/efi.c               |  25 ++++++
+>  drivers/firmware/efi/unaccepted_memory.c | 103 +++++++++++++++++++++++
+>  include/linux/efi.h                      |   1 +
+>  4 files changed, 130 insertions(+)
+>  create mode 100644 drivers/firmware/efi/unaccepted_memory.c
 >
->  arch/arm64/include/asm/alternative.h     |  3 +++
->  arch/arm64/include/asm/archrandom.h      |  2 ++
->  arch/arm64/include/asm/compat.h          |  2 ++
->  arch/arm64/include/asm/efi.h             |  2 ++
->  arch/arm64/include/asm/hw_breakpoint.h   |  8 ++++++++
->  arch/arm64/include/asm/kvm_asm.h         | 18 ++++++++++++++++++
->  arch/arm64/include/asm/scs.h             |  1 +
->  arch/arm64/include/asm/spectre.h         | 16 ++++++++++++++++
->  arch/arm64/include/asm/syscall_wrapper.h |  4 ++++
->  arch/arm64/include/asm/traps.h           |  2 ++
->  arch/arm64/kernel/cpuidle.c              |  2 +-
->  arch/arm64/kernel/hw_breakpoint.c        |  8 --------
->  arch/arm64/kernel/module-plts.c          |  1 +
->  arch/arm64/kernel/signal.c               |  1 +
->  arch/arm64/kernel/traps.c                |  3 ++-
->  arch/arm64/lib/xor-neon.c                |  8 ++++----
->  arch/arm64/mm/fault.c                    |  3 ---
->  arch/arm64/mm/flush.c                    |  1 +
->  18 files changed, 68 insertions(+), 17 deletions(-)
+> diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
+> index b51f2a4c821e..e489fefd23da 100644
+> --- a/drivers/firmware/efi/Makefile
+> +++ b/drivers/firmware/efi/Makefile
+> @@ -41,3 +41,4 @@ obj-$(CONFIG_EFI_CAPSULE_LOADER)      += capsule-loader.o
+>  obj-$(CONFIG_EFI_EARLYCON)             += earlycon.o
+>  obj-$(CONFIG_UEFI_CPER_ARM)            += cper-arm.o
+>  obj-$(CONFIG_UEFI_CPER_X86)            += cper-x86.o
+> +obj-$(CONFIG_UNACCEPTED_MEMORY)                += unaccepted_memory.o
+> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> index 7dce06e419c5..d817e7afd266 100644
+> --- a/drivers/firmware/efi/efi.c
+> +++ b/drivers/firmware/efi/efi.c
+> @@ -50,6 +50,9 @@ struct efi __read_mostly efi = {
+>  #ifdef CONFIG_EFI_COCO_SECRET
+>         .coco_secret            = EFI_INVALID_TABLE_ADDR,
+>  #endif
+> +#ifdef CONFIG_UNACCEPTED_MEMORY
+> +       .unaccepted             = EFI_INVALID_TABLE_ADDR,
+> +#endif
+>  };
+>  EXPORT_SYMBOL(efi);
 >
+> @@ -605,6 +608,9 @@ static const efi_config_table_type_t common_tables[] __initconst = {
+>  #ifdef CONFIG_EFI_COCO_SECRET
+>         {LINUX_EFI_COCO_SECRET_AREA_GUID,       &efi.coco_secret,       "CocoSecret"    },
+>  #endif
+> +#ifdef CONFIG_UNACCEPTED_MEMORY
+> +       {LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID,   &efi.unaccepted,        "Unaccepted"    },
+> +#endif
+>  #ifdef CONFIG_EFI_GENERIC_STUB
+>         {LINUX_EFI_SCREEN_INFO_TABLE_GUID,      &screen_info_table                      },
+>  #endif
+> @@ -759,6 +765,25 @@ int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
+>                 }
+>         }
+>
+> +       if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY) &&
+> +           efi.unaccepted != EFI_INVALID_TABLE_ADDR) {
+> +               struct efi_unaccepted_memory *unaccepted;
+> +
+> +               unaccepted = early_memremap(efi.unaccepted, sizeof(*unaccepted));
+> +               if (unaccepted) {
+> +                       unsigned long size;
+> +
+> +                       if (unaccepted->version == 1) {
+> +                               size = sizeof(*unaccepted) + unaccepted->size;
+> +                               memblock_reserve(efi.unaccepted, size);
+> +                       } else {
+> +                               efi.unaccepted = EFI_INVALID_TABLE_ADDR;
+> +                       }
+> +
+> +                       early_memunmap(unaccepted, sizeof(*unaccepted));
+> +               }
+> +       }
+> +
+>         return 0;
+>  }
+>
+> diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
+> new file mode 100644
+> index 000000000000..bb91c41f76fb
+> --- /dev/null
+> +++ b/drivers/firmware/efi/unaccepted_memory.c
+> @@ -0,0 +1,103 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +#include <linux/efi.h>
+> +#include <linux/memblock.h>
+> +#include <linux/spinlock.h>
+> +#include <asm/unaccepted_memory.h>
+> +
+> +/* Protects unaccepted memory bitmap */
+> +static DEFINE_SPINLOCK(unaccepted_memory_lock);
+> +
+> +void accept_memory(phys_addr_t start, phys_addr_t end)
+> +{
+> +       struct efi_unaccepted_memory *unaccepted;
+> +       unsigned long range_start, range_end;
+> +       unsigned long flags;
+> +       u64 unit_size;
+> +
+> +       if (efi.unaccepted == EFI_INVALID_TABLE_ADDR)
+> +               return;
+> +
+> +       unaccepted = efi_get_unaccepted_table();
+> +       if (!unaccepted)
+> +               return;
+> +
+> +       unit_size = unaccepted->unit_size;
+> +
+> +       /*
+> +        * Only care for the part of the range that is represented
+> +        * in the bitmap.
+> +        */
+> +       if (start < unaccepted->phys_base)
+> +               start = unaccepted->phys_base;
+> +       if (end < unaccepted->phys_base)
+> +               return;
+> +
+> +       /* Translate to offsets from the beginning of the bitmap */
+> +       start -= unaccepted->phys_base;
+> +       end -= unaccepted->phys_base;
+> +
+> +       /* Make sure not to overrun the bitmap */
+> +       if (end > unaccepted->size * unit_size * BITS_PER_BYTE)
+> +               end = unaccepted->size * unit_size * BITS_PER_BYTE;
+> +
+> +       range_start = start / unit_size;
+> +
+> +       spin_lock_irqsave(&unaccepted_memory_lock, flags);
+> +       for_each_set_bitrange_from(range_start, range_end, unaccepted->bitmap,
+> +                                  DIV_ROUND_UP(end, unit_size)) {
+> +               unsigned long phys_start, phys_end;
+> +               unsigned long len = range_end - range_start;
+> +
+> +               phys_start = range_start * unit_size + unaccepted->phys_base;
+> +               phys_end = range_end * unit_size + unaccepted->phys_base;
+> +
+> +               arch_accept_memory(phys_start, phys_end);
+> +               bitmap_clear(unaccepted->bitmap, range_start, len);
+> +       }
+> +       spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
+> +}
+> +
+> +bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end)
+> +{
+> +       struct efi_unaccepted_memory *unaccepted;
+> +       unsigned long flags;
+> +       bool ret = false;
+> +       u64 unit_size;
+> +
+> +       unaccepted = efi_get_unaccepted_table();
+> +       if (!unaccepted)
+> +               return false;
+> +
+> +       unit_size = unaccepted->unit_size;
+> +
+> +       /*
+> +        * Only care for the part of the range that is represented
+> +        * in the bitmap.
+> +        */
+> +       if (start < unaccepted->phys_base)
+> +               start = unaccepted->phys_base;
+> +       if (end < unaccepted->phys_base)
+> +               return false;
+> +
+> +       /* Translate to offsets from the beginning of the bitmap */
+> +       start -= unaccepted->phys_base;
+> +       end -= unaccepted->phys_base;
+> +
+> +       /* Make sure not to overrun the bitmap */
+> +       if (end > unaccepted->size * unit_size * BITS_PER_BYTE)
+> +               end = unaccepted->size * unit_size * BITS_PER_BYTE;
+> +
+> +       spin_lock_irqsave(&unaccepted_memory_lock, flags);
+> +       while (start < end) {
+> +               if (test_bit(start / unit_size, unaccepted->bitmap)) {
+> +                       ret = true;
+> +                       break;
+> +               }
+> +
+> +               start += unit_size;
+> +       }
+> +       spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
+> +
+> +       return ret;
+> +}
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index 29cc622910da..9864f9c00da2 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -646,6 +646,7 @@ extern struct efi {
+>         unsigned long                   tpm_final_log;          /* TPM2 Final Events Log table */
+>         unsigned long                   mokvar_table;           /* MOK variable config table */
+>         unsigned long                   coco_secret;            /* Confidential computing secret table */
+> +       unsigned long                   unaccepted;             /* Unaccepted memory table */
+>
+>         efi_get_time_t                  *get_time;
+>         efi_set_time_t                  *set_time;
 > --
-> 2.39.2
->
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Marc Zyngier <maz@kernel.org>
-> Cc: Oliver Upton <oliver.upton@linux.dev>
-> Cc: James Morse <james.morse@arm.com>
-> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Cc: Zenghui Yu <yuzenghui@huawei.com>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-> Cc: Kees Cook <keescook@chromium.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-efi@vger.kernel.org
-> Cc: kvmarm@lists.linux.dev
+> 2.39.3
 >
