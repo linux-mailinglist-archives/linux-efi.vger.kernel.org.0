@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2953C70531F
-	for <lists+linux-efi@lfdr.de>; Tue, 16 May 2023 18:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 586A6705321
+	for <lists+linux-efi@lfdr.de>; Tue, 16 May 2023 18:07:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234407AbjEPQHX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 16 May 2023 12:07:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59214 "EHLO
+        id S234448AbjEPQHe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 16 May 2023 12:07:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234424AbjEPQHU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 16 May 2023 12:07:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D56E170D;
-        Tue, 16 May 2023 09:07:13 -0700 (PDT)
+        with ESMTP id S234422AbjEPQHb (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 16 May 2023 12:07:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D660D1BF2;
+        Tue, 16 May 2023 09:07:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2684263470;
-        Tue, 16 May 2023 16:07:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E11C433EF;
-        Tue, 16 May 2023 16:07:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E6F3633A4;
+        Tue, 16 May 2023 16:07:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D293C433A0;
+        Tue, 16 May 2023 16:07:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684253232;
-        bh=fXtE24B37oT73M/ze3nTFy1TG8QoQelzkE1vViT4cgE=;
+        s=k20201202; t=1684253236;
+        bh=EHdgQS3JVDabaHQOJdS0gJKrLl6Cs3hgsTqLxLbiG+w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fysph3xUJar0DV/xTyHCioP0PMFBMbAMikkh0glldN8Qzm+GWY6I6mgrsIV9mryVY
-         J1ZTD346FQuvxFmSpdz6k5HM2HwVhd7cHSbqNqHgO97F4Gn40nsGAGs6Bf0Tc4udyB
-         xR3/AsvfQF7tz0ci19Su0ltRaUlss/PnQSkiXlnzD6UiVBNuZO53cDVcWiCJhJkJkh
-         LROOG4uzSg8sXOVQ6Z741sr76ZFkzLoSDPrC+svlEVx+97F/9lTbAD4YMUuu3b1Ac4
-         GCEGXT9R7wl4owm/NwKDzfwIP1DZ5MHnCAbuS9K2X4K11N/FgPy0TG5R9aHDkv2B9D
-         KZV0MUDcEaYjQ==
+        b=oo9iUFG8feFpl5pKA57H04XS7oaoARqG7b5QnuM5PK3LjaDltlbCaFGctTg81C1a8
+         ae5CCSt2RyeXYIHarFcUaPzVzc3ursJ85yCMZig+JC5wUXhs1ZI5+QJbUpvyk5Vcgr
+         H6KoGu8XZAXrBmcO4T2+U3WglszuFpKfRp/GLOO6C0V8wg+rbZbhf8W2b84UngLIHI
+         Hb2OQJ2+1gIeRDvw7cFwYBm8Q7OH/Jv/U6HF4Yr3og3O8Vi8RLj//f5KEBGOQegLQG
+         5iC4CsVI/8lBKbMPJato932wBhCHlHjXynWxW1jIfoQr++1cD1PeMPj6zDcicuEPeX
+         c49NXLQd5lv5Q==
 From:   Arnd Bergmann <arnd@kernel.org>
 To:     Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>
@@ -46,16 +46,16 @@ Cc:     Arnd Bergmann <arnd@arndb.de>, Ard Biesheuvel <ardb@kernel.org>,
         Suren Baghdasaryan <surenb@google.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-efi@vger.kernel.org, kvmarm@lists.linux.dev
-Subject: [PATCH 04/15] arm64: move cpu_suspend_set_dbg_restorer() prototype to header
-Date:   Tue, 16 May 2023 18:06:31 +0200
-Message-Id: <20230516160642.523862-5-arnd@kernel.org>
+Subject: [PATCH 05/15] arm64: spectre: provide prototypes for internal functions
+Date:   Tue, 16 May 2023 18:06:32 +0200
+Message-Id: <20230516160642.523862-6-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230516160642.523862-1-arnd@kernel.org>
 References: <20230516160642.523862-1-arnd@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -66,57 +66,48 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-The cpu_suspend_set_dbg_restorer() function is called by the hw_breakpoint
-code but defined in another file. Since the declaration is in the
-same file as the caller, the compiler warns about the definition
-without a prior prototype:
+The helpers in proton-pack.c are called from assembler and have
+no prototype in a header, which causes a W=1 warning:
 
-arch/arm64/kernel/suspend.c:35:13: error: no previous prototype for 'cpu_suspend_set_dbg_restorer' [-Werror=missing-prototypes]
+arch/arm64/kernel/proton-pack.c:568:13: error: no previous prototype for 'spectre_v4_patch_fw_mitigation_enable' [-Werror=missing-prototypes]
+arch/arm64/kernel/proton-pack.c:588:13: error: no previous prototype for 'smccc_patch_fw_mitigation_conduit' [-Werror=missing-prototypes]
+arch/arm64/kernel/proton-pack.c:1064:14: error: no previous prototype for 'spectre_bhb_patch_loop_mitigation_enable' [-Werror=missing-prototypes]
+arch/arm64/kernel/proton-pack.c:1075:14: error: no previous prototype for 'spectre_bhb_patch_fw_mitigation_enabled' [-Werror=missing-prototypes]
 
-Move it into the corresponding header instead to avoid the warning.
+Add these to asm/spectre.h, which contains related declarations
+already.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/arm64/include/asm/hw_breakpoint.h | 8 ++++++++
- arch/arm64/kernel/hw_breakpoint.c      | 8 --------
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ arch/arm64/include/asm/spectre.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/arch/arm64/include/asm/hw_breakpoint.h b/arch/arm64/include/asm/hw_breakpoint.h
-index fa4c6ff3aa9b..84055329cd8b 100644
---- a/arch/arm64/include/asm/hw_breakpoint.h
-+++ b/arch/arm64/include/asm/hw_breakpoint.h
-@@ -154,4 +154,12 @@ static inline int get_num_wrps(void)
- 						ID_AA64DFR0_EL1_WRPs_SHIFT);
- }
- 
-+#ifdef CONFIG_CPU_PM
-+extern void cpu_suspend_set_dbg_restorer(int (*hw_bp_restore)(unsigned int));
-+#else
-+static inline void cpu_suspend_set_dbg_restorer(int (*hw_bp_restore)(unsigned int))
-+{
-+}
-+#endif
+diff --git a/arch/arm64/include/asm/spectre.h b/arch/arm64/include/asm/spectre.h
+index db7b371b367c..9cc501450486 100644
+--- a/arch/arm64/include/asm/spectre.h
++++ b/arch/arm64/include/asm/spectre.h
+@@ -100,5 +100,21 @@ bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry, int sco
+ u8 spectre_bhb_loop_affected(int scope);
+ void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
+ bool try_emulate_el1_ssbs(struct pt_regs *regs, u32 instr);
 +
- #endif	/* __ASM_BREAKPOINT_H */
-diff --git a/arch/arm64/kernel/hw_breakpoint.c b/arch/arm64/kernel/hw_breakpoint.c
-index b29a311bb055..db2a1861bb97 100644
---- a/arch/arm64/kernel/hw_breakpoint.c
-+++ b/arch/arm64/kernel/hw_breakpoint.c
-@@ -973,14 +973,6 @@ static int hw_breakpoint_reset(unsigned int cpu)
- 	return 0;
- }
- 
--#ifdef CONFIG_CPU_PM
--extern void cpu_suspend_set_dbg_restorer(int (*hw_bp_restore)(unsigned int));
--#else
--static inline void cpu_suspend_set_dbg_restorer(int (*hw_bp_restore)(unsigned int))
--{
--}
--#endif
--
- /*
-  * One-time initialisation.
-  */
++void spectre_v4_patch_fw_mitigation_enable(struct alt_instr *alt, __le32 *origptr,
++					   __le32 *updptr, int nr_inst);
++void smccc_patch_fw_mitigation_conduit(struct alt_instr *alt, __le32 *origptr,
++				       __le32 *updptr, int nr_inst);
++void spectre_bhb_patch_loop_mitigation_enable(struct alt_instr *alt, __le32 *origptr,
++					      __le32 *updptr, int nr_inst);
++void spectre_bhb_patch_fw_mitigation_enabled(struct alt_instr *alt, __le32 *origptr,
++					     __le32 *updptr, int nr_inst);
++void spectre_bhb_patch_loop_iter(struct alt_instr *alt,
++				 __le32 *origptr, __le32 *updptr, int nr_inst);
++void spectre_bhb_patch_wa3(struct alt_instr *alt,
++			   __le32 *origptr, __le32 *updptr, int nr_inst);
++void spectre_bhb_patch_clearbhb(struct alt_instr *alt,
++				__le32 *origptr, __le32 *updptr, int nr_inst);
++
+ #endif	/* __ASSEMBLY__ */
+ #endif	/* __ASM_SPECTRE_H */
 -- 
 2.39.2
 
