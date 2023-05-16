@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DE78705334
-	for <lists+linux-efi@lfdr.de>; Tue, 16 May 2023 18:08:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 400DB70533A
+	for <lists+linux-efi@lfdr.de>; Tue, 16 May 2023 18:09:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234528AbjEPQIc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 16 May 2023 12:08:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60534 "EHLO
+        id S234265AbjEPQJP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 16 May 2023 12:09:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234447AbjEPQIL (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 16 May 2023 12:08:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C873155A6;
-        Tue, 16 May 2023 09:07:49 -0700 (PDT)
+        with ESMTP id S234418AbjEPQIk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 16 May 2023 12:08:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E64411BF2;
+        Tue, 16 May 2023 09:08:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A7F6F63BE7;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B70A763BEB;
+        Tue, 16 May 2023 16:07:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C92CC433D2;
         Tue, 16 May 2023 16:07:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D877C433A0;
-        Tue, 16 May 2023 16:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684253269;
-        bh=Y/kX7yQ/rkwRjov2P3rhuT9nIb3QQo194N1K1FzHQ6o=;
+        s=k20201202; t=1684253273;
+        bh=h0fpkbLAOr0hALEk6kCEy5MAyU8tR08UpwZWaWzGWr8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kedr1NLZ1ZCY3DnJ3dxsFdY2+W0MGAEccULvE8FY4jEGNx4HDKeKuxc30G+7uwvGG
-         wnR08MvLRzsPA6WRL6GJ0wMktvpTzlCKA5U8saVsLDduqGtGn73O8BGC6cCL7cTtAK
-         y2nSsbvJ0q3eApquSZ48lZ1cFWbf+9f6yoU3LdVg5SGh/i69qU6ERcAkYREvNBs+UM
-         7FTNfy+nxps2IK2AiA9mOB7PmxIURaByQc/jRTu6mObtnO/GmCxIHXJSN5QwQm1UYw
-         0rMj30nsVdVXqSMEGdSfgXQ+LpxWk1ELY65Z/C5yKtHpe4zdTtoW/uFhpscPMo7Kwk
-         QU7MnvrwgYS6A==
+        b=G2YspC5jTHUuOJUI4EhhBUyFCOOKFZLkbqD8w9Riw21cTSw3fKo729EaQIG7drJkp
+         s7H4r1X18FAn3mK3PbP6eGqd4lmiZwH8emoPTvUbYIZ2yHGKzhg02SuTVrMl6NxFDu
+         Qw5IHyESKe0mBsXwq4sFHGZpnlkrHlm99GnnwZa5monJzLE/ojsflhI390GG4PsKWP
+         aYtkKc/WJRhJc101pMIaAlg60JJ3KO2ri2eJNR19r0Ynt/YelPVvaVbL6CM4fGm1Gn
+         g+KT47Tvzsd/OhDaHS3u7Ruhw4FIwYik84yYUKg/MixP7GzLkx60SAFQuHfrUiphCG
+         DHPcVcgCM29iA==
 From:   Arnd Bergmann <arnd@kernel.org>
 To:     Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>
@@ -46,16 +46,16 @@ Cc:     Arnd Bergmann <arnd@arndb.de>, Ard Biesheuvel <ardb@kernel.org>,
         Suren Baghdasaryan <surenb@google.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-efi@vger.kernel.org, kvmarm@lists.linux.dev
-Subject: [PATCH 13/15] arm64: signal: include asm/exception.h
-Date:   Tue, 16 May 2023 18:06:40 +0200
-Message-Id: <20230516160642.523862-14-arnd@kernel.org>
+Subject: [PATCH 14/15] arm64: move early_brk64 prototype to header
+Date:   Tue, 16 May 2023 18:06:41 +0200
+Message-Id: <20230516160642.523862-15-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230516160642.523862-1-arnd@kernel.org>
 References: <20230516160642.523862-1-arnd@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -66,28 +66,46 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-The do_notify_resume() is in a header that is not included
-for the definition, which causes a W=1 warning:
+The prototype used for calling early_brk64() is in the file that calls
+it, which is the wrong place, as it is not included for the definition:
 
-arch/arm64/kernel/signal.c:1280:6: error: no previous prototype for 'do_notify_resume' [-Werror=missing-prototypes]
+arch/arm64/kernel/traps.c:1100:12: error: no previous prototype for 'early_brk64' [-Werror=missing-prototypes]
+
+Move it to an appropriate header instead.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/arm64/kernel/signal.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/include/asm/traps.h | 2 ++
+ arch/arm64/mm/fault.c          | 3 ---
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/kernel/signal.c b/arch/arm64/kernel/signal.c
-index 2cfc810d0a5b..3457906ba117 100644
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -23,6 +23,7 @@
- #include <asm/daifflags.h>
- #include <asm/debug-monitors.h>
- #include <asm/elf.h>
-+#include <asm/exception.h>
- #include <asm/cacheflush.h>
- #include <asm/ucontext.h>
- #include <asm/unistd.h>
+diff --git a/arch/arm64/include/asm/traps.h b/arch/arm64/include/asm/traps.h
+index 1f361e2da516..d66dfb3a72dd 100644
+--- a/arch/arm64/include/asm/traps.h
++++ b/arch/arm64/include/asm/traps.h
+@@ -29,6 +29,8 @@ void arm64_force_sig_fault(int signo, int code, unsigned long far, const char *s
+ void arm64_force_sig_mceerr(int code, unsigned long far, short lsb, const char *str);
+ void arm64_force_sig_ptrace_errno_trap(int errno, unsigned long far, const char *str);
+ 
++int early_brk64(unsigned long addr, unsigned long esr, struct pt_regs *regs);
++
+ /*
+  * Move regs->pc to next instruction and do necessary setup before it
+  * is executed.
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 5ccdba7132ca..940391ec5e1e 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -886,9 +886,6 @@ void do_sp_pc_abort(unsigned long addr, unsigned long esr, struct pt_regs *regs)
+ }
+ NOKPROBE_SYMBOL(do_sp_pc_abort);
+ 
+-int __init early_brk64(unsigned long addr, unsigned long esr,
+-		       struct pt_regs *regs);
+-
+ /*
+  * __refdata because early_brk64 is __init, but the reference to it is
+  * clobbered at arch_initcall time.
 -- 
 2.39.2
 
