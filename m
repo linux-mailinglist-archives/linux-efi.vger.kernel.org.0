@@ -2,302 +2,292 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F329706B27
-	for <lists+linux-efi@lfdr.de>; Wed, 17 May 2023 16:32:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D332706D02
+	for <lists+linux-efi@lfdr.de>; Wed, 17 May 2023 17:38:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231932AbjEQOch (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 17 May 2023 10:32:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55078 "EHLO
+        id S230039AbjEQPiv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 17 May 2023 11:38:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231891AbjEQOcg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 17 May 2023 10:32:36 -0400
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB9157293;
-        Wed, 17 May 2023 07:32:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RvZP6LgLisrMPRqA3j1Rvf+DGfmUUXjo4xilAcUohRQjlGf9XrOSj/eUgela9abf9jjW8DIcrthsLqQCWuaYnRf5X0hx5+auvVqJ8wlzVImD6sFfyS4kLR2ldVwQI8SyzEzk79r8K7aZS4mGiQnEKKflAuFOdOSL1GeZincSYC+QcadVDHwDPAEx/7He6rIxyvlmsJR3yQfxAyW7qz3RcwPm90/plV8IgjJ4BxG+pVBtY7W1vwQNi50I1U2XHvfq8fyFHzVOWlgzVA52Qz7yvdU809HTTUaTuEmjiCGmMyTBxNDrN/0vKcFOgXEJ/WE2X4QA4E2NPz07wvqsw+Llvg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oGH9/afE197hpRD9BqpOJMbtxYlyPKJe89JDipVHiOM=;
- b=CdxdG5Trg2esH2op3+OpJD5xoDyVErU+FJ9YcjRAq638lTIvzT3t+hsKJNjCF5I3dV+xaRpaEVOjoZ3nHyT3A0tw6oiJcYRoSV98XW/QTNPCvexEHBartFs4dxqQJaY7BaYLApFkbRdFDGBHqSOsO7Wwc1QFETxb+3wJwzQFZ9PLHnSW0BMcvRI0qH8/gRelbjFYHgy5FleVcgs2u6jCv/PJAedKZATVfXsX1RKZXlC50Ig8UNYbKuEnCsw0t+2opgfkaRyKSVowJjZlGKIbswYHzNVv54rSJfevr4DzfFu1sAjaCpwwYU6DkfrW6r4d/XB56wjucZIQDL6NK55Nzg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oGH9/afE197hpRD9BqpOJMbtxYlyPKJe89JDipVHiOM=;
- b=JU7ZvpFyJzLUvvsPyZWfeCYqD+zxOCvma87uDojUePQYVHAVNR14k+y71YoqtZ6YLEPx678mSPQFwuPGNlvpwOYxCk9K/D3PN8gVUnwnSyd3YfMGMtppV/C9p1pr2vn6azTdJWdAroUIUMrcCW306sX5+++d6if/I8EcgvQXL1c=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
- by SJ0PR12MB7473.namprd12.prod.outlook.com (2603:10b6:a03:48d::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.17; Wed, 17 May
- 2023 14:32:31 +0000
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::ea32:baf8:cc85:9648]) by DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::ea32:baf8:cc85:9648%7]) with mapi id 15.20.6411.017; Wed, 17 May 2023
- 14:32:31 +0000
-Message-ID: <fe62b3a6-2c28-a069-d880-772fe6c13125@amd.com>
-Date:   Wed, 17 May 2023 09:32:27 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCHv11 0/9] mm, x86/cc, efi: Implement support for unaccepted
- memory
-Content-Language: en-US
-To:     "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
+        with ESMTP id S229983AbjEQPiu (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 17 May 2023 11:38:50 -0400
+Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6EF2E42;
+        Wed, 17 May 2023 08:38:48 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.west.internal (Postfix) with ESMTP id BAD683200979;
+        Wed, 17 May 2023 11:38:46 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Wed, 17 May 2023 11:38:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=astier.eu; h=cc
+        :cc:content-transfer-encoding:content-type:date:date:from:from
+        :in-reply-to:message-id:mime-version:reply-to:sender:subject
+        :subject:to:to; s=fm3; t=1684337926; x=1684424326; bh=8tUkqu4Snx
+        JslSlwewBUm38PcMeP/YT6yZUNpdaIIDU=; b=DyYZzMJMGFjD7wnpL6j6isdox4
+        aOFJUSvvkY5rs7ZKwt2JtSGtImbrII0Ah+DPSe2KvIsJwC9cPniQ3kjbDsYe9pXf
+        PSVIc276h2rJ0WzgkyTmpfguxiiBhWckxx7/j4RDpkWfsC4w74NI0FWSkuT/k62P
+        Jm4tLvIqDYiicyqSFjE3hio5ymWlnn/mN8WnGqg5RCoflFLe7X4nbQbE0lGn7aAV
+        7B7iFeMZUv3+8jC1iIf3XvdRPtn0zJBH2UR2KWH53aYnXPoqKFIrZraXdqz/C4nm
+        /HJSBBBEPh1KOZIWvaQlrvQSacSH+xldDJDTzE/STppeB1a2koy/agnAeO3w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:feedback-id:feedback-id:from:from
+        :in-reply-to:message-id:mime-version:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1684337926; x=1684424326; bh=8tUkqu4SnxJsl
+        SlwewBUm38PcMeP/YT6yZUNpdaIIDU=; b=TENbR30rVUVF4k3ujylMj5bzlx+pZ
+        ZZ+bc0+YgT9EEdAZFktuvKjL7mhOAt+HtPspZIdAkVatid9M6UGkp7TrzjAtYS4N
+        Yc+mWZ/6GTZmVQq2iEWpETW/EF5ff0GRC6vIU0yYM8V60O9fwNNsI1RzfqQx6SzB
+        sNcyYTDVISYX5cIV4ax/DCHjbIhbIcCnJu0+YGLLtYL7/AlGI8QByTss8vfddWF0
+        XWr+sUo7Ni5eVTTrpW7FA6GYm9N/WGLVFyp8r+gRdvdePGb7oB+C5jooTTlPyn/F
+        VcURvFsjFSpQqofwjiu7TiWCaURfzp2pYYjnU1bDYbiFvErksMTyE31iw==
+X-ME-Sender: <xms:BfVkZIehF5y55-piwtquWCZPkImNXgRvgcNWQZgoze_CsZmFdsGaFg>
+    <xme:BfVkZKMsmfNYEFA_iAfRmgRvfHQ_iwibvCcklJn5Qn6W_2eDgysCAanMJ4Wu62NMp
+    ZCvDs1EbXxqqLtAfmU>
+X-ME-Received: <xmr:BfVkZJjL9s28rAB-13cPtYLrKxcgiuC_lDkGh35aF5TBMci5nKVkO9zie1e_ioUssUuhynT3thCzdHHWCyuwG2dTMEWmSbivSO5Vwd3Bb3xL>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeiuddgleduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomheptehnihhsshgv
+    ucetshhtihgvrhcuoegrnhhishhsvgesrghsthhivghrrdgvuheqnecuggftrfgrthhtvg
+    hrnheptdffhfelkeehhfehfeettdfhjefgffdvtdelhefftdejffdtheekteeffeeileek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghnih
+    hsshgvsegrshhtihgvrhdrvghu
+X-ME-Proxy: <xmx:BfVkZN-rAjLqVn3RKYAcQ0owthRHK3y1q7KPPHiwGgK5J-w-AHyhYw>
+    <xmx:BfVkZEtMZcEoKYZ0RYDCbzNjuzxpm-nfjn0LeiQlB0e3G_jOk67O1w>
+    <xmx:BfVkZEF6tzreWaP2VieF_ihIHFDF0l8-hCCf8hW0Yc6AlXg5mZbdjA>
+    <xmx:BvVkZFOk0Ykz4lJXKa8uH2ChXnoL6dZTqPUDc0FJ1p6bvU4oYDNlsQ>
+Feedback-ID: iccec46d4:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 17 May 2023 11:38:42 -0400 (EDT)
+From:   Anisse Astier <anisse@astier.eu>
+To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+        Christian Brauner <brauner@kernel.org>
+Cc:     Johan Hovold <johan+linaro@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
-        khalid.elmously@canonical.com, philip.cox@canonical.com,
-        aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
-        linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230513220418.19357-1-kirill.shutemov@linux.intel.com>
- <aa35a445-f410-b11f-bf21-3e482647faae@amd.com>
- <20230516232204.3k53vh6pdnimdrhi@box.shutemov.name>
-From:   Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <20230516232204.3k53vh6pdnimdrhi@box.shutemov.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA0PR13CA0002.namprd13.prod.outlook.com
- (2603:10b6:806:130::7) To DM4PR12MB5229.namprd12.prod.outlook.com
- (2603:10b6:5:398::12)
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, Jeremy Kerr <jk@ozlabs.org>,
+        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Anisse Astier <an.astier@criteo.com>, lennart@poettering.net,
+        Richard Hughes <hughsient@gmail.com>,
+        "Limonciello, Mario" <Mario.Limonciello@amd.com>,
+        Anisse Astier <anisse@astier.eu>
+Subject: [PATCH v2] efivarfs: expose used and total size
+Date:   Wed, 17 May 2023 17:38:12 +0200
+Message-Id: <20230517153812.2010174-1-anisse@astier.eu>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5229:EE_|SJ0PR12MB7473:EE_
-X-MS-Office365-Filtering-Correlation-Id: 567dd25e-6994-4bbf-f912-08db56e38c3b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: asQ3vAS5j+jc0aY+C84cFgE/lEWN246cEBY3sKDyFYZ2ndr5QMWHAulXnliwMGJ8HLEuQ3C9Ze9Z7o57v2RS4sKvb7TG4geRopQI/FvC+h4UuLVodcC8INaBhAeVLMRfL2HimzNdl2u3Eieo4lsO49riPA2n4Mkrx5bWxb2r3pc94Y/6daG/GEJui0md6v/6lloBUw8jsJTpPCq0Q/8qf3KZ/IXDyUZvXmaju87wCieJxkXhgD87ncNiGjCnfpW9FUULDkyHxbmq1hnS9NsfsVwpona6hrk2sJX1CHRsNPnX7UjxJ/3ypSZIn30LpgSEM8K6P7Q9/2JPq3YdWiR6pKPlzNEiSHzFQrYdupHX7Q9OFd0h3Awer5ktjgLH6w6fTzEgvwexUoZbyeDez1834XqEDk28wOU22OnYAD8gvBKnwoDD773CF7l9e1P1vjPEZYxn7g8+GrUdr4sbp/fT55EJ5u+2G3zkVxy4IAK3tsNAEvij9YspEIvT1HSWQ/XAobdrvLGXTTGmV+0BQYGXVtX5W3yVBr6noXr6KCyRJXkD1tEOiFCOvmCOqXJNIgw7TABBN6q1B8t/2gyvO1I8M7xlBrPyTXLnYGXveYtCKwZWo4K4e6sk0qxupvQ5feL+vV9gxO4LpRK2Rw/wWY9SkmJNK0kbg64br1IT4BntwApFpthPpFjMgFTlGYZ7qUr3
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(136003)(39860400002)(376002)(396003)(366004)(451199021)(31686004)(83380400001)(6916009)(41300700001)(8676002)(7416002)(7406005)(2906002)(8936002)(5660300002)(36756003)(31696002)(86362001)(316002)(38100700002)(4326008)(66476007)(66556008)(66946007)(966005)(53546011)(6512007)(6506007)(26005)(186003)(478600001)(6486002)(2616005)(6666004)(54906003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d0p0emxvb1ZCRDg0cWh0V1NhRDRFQWt0QlptbmVSaldzNnBHNEZEbDRjNnkw?=
- =?utf-8?B?ejVabmZPQndWWEJGSDUwYlZmamo0aGJRRjdKZEpJekg3VXZJbWVzbmJhazB2?=
- =?utf-8?B?dUZJdVppdjJEN1ZwSFlhWFhGOWlRY2VKSmxhM1VhYURnNTg3dklBekJEdWJH?=
- =?utf-8?B?UEZhbFZKYWkwZ0pBdnFnQWNISjJ3RiszNUNzTTQvdEs3R2hlcjhMQXhzTGZh?=
- =?utf-8?B?Rm1hWnkvNDI0LzVhdWFkRitRUHlINzBmMFVvS2U3YStvYzI3OUZBb3Urekxw?=
- =?utf-8?B?bSt3cGdpNUVvdTYyRDVUdUtaNDhkMHJ1RXhxYVFBK0NjZ0RIS21aUGFCaHJn?=
- =?utf-8?B?YlF2TXEwZi9DeEZhUUppeVpwYnJ1OHN1Q2VXak1ZNjhMOWFGV2t4TXdJNkZU?=
- =?utf-8?B?YVFncjQyelZIZFFGSEJjc0liTDNWOVg0UGtOQ3FUd0p6bER2Z2llR2t1WmhC?=
- =?utf-8?B?eHo0VEJvamEralZrbVFnRmEvMkhDa2l3S3NxbkZDdTd1aFZFMjBHNHpiOE8y?=
- =?utf-8?B?MXAwczIrRDBqWGFMWnB2NUp5MVZ2RTNoU3ZBM2piM1dBVFh5dEZJNzNQSnh3?=
- =?utf-8?B?M1k3ZTI1OGJnK1V1NUdVUEVDbkVHMjl6amJ4aFJhTWFkNDFTMDdKbGpXSEdC?=
- =?utf-8?B?emttNzFoTXlpd0diakIxL2FXK2xlOFRFTjF1M0o2aFZlbWUwUzMxN2ZYbGxu?=
- =?utf-8?B?OEFMcmNwZHZJWmd6eGRtRXpyZStucEpjNS8zYWxJb3pFY2Uzd0VwV1lPbnFn?=
- =?utf-8?B?UGRyZW1MaUhRd0w3dkhzMkRWcWE3NXVOOEVscmU1NGdidW5FUkVVa0FNYlJS?=
- =?utf-8?B?c2FCaUllbjhrLzREbGtNcHp0bzN3QUhTNGFmeUZNcWovREhhSG8yRWJqQWNj?=
- =?utf-8?B?U0UwUCtFVEpTbjU0djRuR2ZTaGZlU1hnT0VtbldPVFhUanBtWmh6V0hZU0sz?=
- =?utf-8?B?dnJOUTJDR0JkRzZKU3NLQkdvT2V2U0phOFZEWDF2ckJPU2J4K2dvbzhZT0gx?=
- =?utf-8?B?b2IzM3duNmVva2FoNTZ5SVpkN3RpWmI5N3NvNC8wVWdqUHR3ek8yb2x2OVN1?=
- =?utf-8?B?TzZwR3dvQkg4UUdKTzh6SktNRTlHczVQUFI4dzA4NDArRU5qUlZZaERxTUF2?=
- =?utf-8?B?bTU1QS9leVRpR2dmY1QrVGU1SnJsbGp1dGt4NkJRa0VWY2d3SERobDhwcHlx?=
- =?utf-8?B?NUxTNmFqdWJlcDY0ZWN2b0NMbVZIVGJVajlxOUhwaEFJcG42MU5SbDFtbnNW?=
- =?utf-8?B?S0VVSENGVVFxRDdaTW81UXRwcHV4SzJ1SFdYTUs1ZGI5Ny9YRTBEUXU1bG93?=
- =?utf-8?B?QmNSeWRWbm1xaVhVa2hTVFFsWjZkNzgrbjIyNHJJa2JTZHhraWZwSU51SXVC?=
- =?utf-8?B?VlVzRFFhYW9IcDBXTW1HTEFrTUd6L0UzbXN4akFuUUIybGhjVllkYTBYaTh6?=
- =?utf-8?B?cVVJYWdIRmV2LzdtNHRWdlJSeEc5MW43aVY2ODBsU2wvdHFVL3ZUNnpJUU1w?=
- =?utf-8?B?VGRYbUZTQkFFZjVjbnhCZHVOQ2FMV0lRenFXNEFhM0xpVTNoRElNRFhna2JF?=
- =?utf-8?B?empvSGFrR0pzd25DcENlTWtXK2w1VnVadGk5SS9GNFZSMFhaWElEQkVRbHFa?=
- =?utf-8?B?a09IK1M4c3hpbFAvMkkycWkvNFdtbmNUTlZtUnlNSXZpVlROZW5IZ3l5S1d2?=
- =?utf-8?B?UW5Jd1NrRzN0OTd4RzJNL0xjQWp1V3lRWHVwS1dlem5MbEU1ZmgzRkcyVWR5?=
- =?utf-8?B?d0FnaDVkSVNidVk5RnUzVTZ0M3hnSmdUSnFleGdGaGhySlkxRUhHRWFDaHNn?=
- =?utf-8?B?cThhZWIraWx2TktpZzlvOWFhYitNTk50SDFaNGY4SFVOVklpUFY5bmU3UGtM?=
- =?utf-8?B?ZSs0b1FYaG04NUpYdmtZZkUvNStWL3JzSG9MREpRTUMyWUR4TlhnVWZ4aGkv?=
- =?utf-8?B?UUVBWnA0aHIrSWU2dUo5QmFPVU0wcXQ1ZlRSWkFpTnZjQWpQTzNld3h4eDIw?=
- =?utf-8?B?cjRkK3hLa014dkhodkhiNE45Y0gyRHZjVHVSN0xOY2gyb2tIQklzZ29aQlJr?=
- =?utf-8?B?Z1pKOHpjb0g1aHVmS0xtMjNLNUdlVEkyZkxkaEw5eTlxc3dKc0dkdlg5Y0xr?=
- =?utf-8?Q?krMM3S8p09f82rzmULnWCVaVq?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 567dd25e-6994-4bbf-f912-08db56e38c3b
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2023 14:32:31.5360
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ECSwRAcLCwmGUng8Dl0sc5L4Esww1BbZCfO2d4gieQlLiPrBuXI6ipu8GwZZbay4F6e4tExPh1iJm7e5Zr4HHw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7473
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 5/16/23 18:22, Kirill A. Shutemov wrote:
-> On Tue, May 16, 2023 at 05:41:55PM -0500, Tom Lendacky wrote:
->> On 5/13/23 17:04, Kirill A. Shutemov wrote:
->>> UEFI Specification version 2.9 introduces the concept of memory
->>> acceptance: some Virtual Machine platforms, such as Intel TDX or AMD
->>> SEV-SNP, requiring memory to be accepted before it can be used by the
->>> guest. Accepting happens via a protocol specific for the Virtual
->>> Machine platform.
->>>
->>> Accepting memory is costly and it makes VMM allocate memory for the
->>> accepted guest physical address range. It's better to postpone memory
->>> acceptance until memory is needed. It lowers boot time and reduces
->>> memory overhead.
->>>
->>> The kernel needs to know what memory has been accepted. Firmware
->>> communicates this information via memory map: a new memory type --
->>> EFI_UNACCEPTED_MEMORY -- indicates such memory.
->>>
->>> Range-based tracking works fine for firmware, but it gets bulky for
->>> the kernel: e820 has to be modified on every page acceptance. It leads
->>> to table fragmentation, but there's a limited number of entries in the
->>> e820 table
->>>
->>> Another option is to mark such memory as usable in e820 and track if the
->>> range has been accepted in a bitmap. One bit in the bitmap represents
->>> 2MiB in the address space: one 4k page is enough to track 64GiB or
->>> physical address space.
->>>
->>> In the worst-case scenario -- a huge hole in the middle of the
->>> address space -- It needs 256MiB to handle 4PiB of the address
->>> space.
->>>
->>> Any unaccepted memory that is not aligned to 2M gets accepted upfront.
->>>
->>> The approach lowers boot time substantially. Boot to shell is ~2.5x
->>> faster for 4G TDX VM and ~4x faster for 64G.
->>>
->>> TDX-specific code isolated from the core of unaccepted memory support. It
->>> supposed to help to plug-in different implementation of unaccepted memory
->>> such as SEV-SNP.
->>>
->>> -- Fragmentation study --
->>>
->>> Vlastimil and Mel were concern about effect of unaccepted memory on
->>> fragmentation prevention measures in page allocator. I tried to evaluate
->>> it, but it is tricky. As suggested I tried to run multiple parallel kernel
->>> builds and follow how often kmem:mm_page_alloc_extfrag gets hit.
->>>
->>> See results in the v9 of the patchset[1][2]
->>>
->>> [1] https://lore.kernel.org/all/20230330114956.20342-1-kirill.shutemov@linux.intel.com
->>> [2] https://lore.kernel.org/all/20230416191940.ex7ao43pmrjhru2p@box.shutemov.name
->>>
->>> --
->>>
->>> The tree can be found here:
->>>
->>> https://github.com/intel/tdx.git guest-unaccepted-memory
->>
->> I get some failures when building without TDX support selected in my
->> kernel config after adding unaccepted memory support for SNP:
->>
->>    In file included from arch/x86/boot/compressed/../../coco/tdx/tdx-shared.c:1,
->>                     from arch/x86/boot/compressed/tdx-shared.c:2:
->>    ./arch/x86/include/asm/tdx.h: In function ?tdx_kvm_hypercall?:
->>    ./arch/x86/include/asm/tdx.h:72:17: error: ?ENODEV? undeclared (first use in this function)
->>       72 |         return -ENODEV;
->>          |                 ^~~~~~
->>    ./arch/x86/include/asm/tdx.h:72:17: note: each undeclared identifier is reported only once for each function it appears in
->>
->> Adding an include for linux/errno.h gets past that error, but then
->> I get the following:
->>
->>    ld: arch/x86/boot/compressed/tdx-shared.o: in function `tdx_enc_status_changed_phys':
->>    tdx-shared.c:(.text+0x42): undefined reference to `__tdx_hypercall'
->>    ld: tdx-shared.c:(.text+0x7f): undefined reference to `__tdx_module_call'
->>    ld: tdx-shared.c:(.text+0xce): undefined reference to `__tdx_module_call'
->>    ld: tdx-shared.c:(.text+0x13b): undefined reference to `__tdx_module_call'
->>    ld: tdx-shared.c:(.text+0x153): undefined reference to `cc_mkdec'
->>    ld: tdx-shared.c:(.text+0x15d): undefined reference to `cc_mkdec'
->>    ld: tdx-shared.c:(.text+0x18e): undefined reference to `__tdx_hypercall'
->>    ld: arch/x86/boot/compressed/vmlinux: hidden symbol `__tdx_hypercall' isn't defined
->>    ld: final link failed: bad value
->>
->> So it looks like arch/x86/boot/compressed/tdx-shared.c is being
->> built, while arch/x86/boot/compressed/tdx.c isn't.
-> 
-> Right. I think this should help:
-> 
-> diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-> index 78f67e0a2666..b13a58021086 100644
-> --- a/arch/x86/boot/compressed/Makefile
-> +++ b/arch/x86/boot/compressed/Makefile
-> @@ -106,8 +106,8 @@ ifdef CONFIG_X86_64
->   endif
-> 
->   vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
-> -vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o
-> -vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/mem.o $(obj)/tdx-shared.o
-> +vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o $(obj)/tdx-shared.o
-> +vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/mem.o
-> 
->   vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
->   vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_mixed.o
-> 
->> After setting TDX in the kernel config, I can build successfully, but
->> I'm running into an error when trying to accept memory during
->> decompression.
->>
->> In drivers/firmware/efi/libstub/unaccepted_memory.c, I can see that the
->> unaccepted_table is allocated, but when accept_memory() is invoked the
->> table address is now zero. I thought maybe it had to do with bss, but even
->> putting it in the .data section didn't help. I'll keep digging, but if you
->> have any ideas, that would be great.
-> 
-> Not right away. But maybe seeing your side of enabling would help.
+From: Anisse Astier <an.astier@criteo.com>
 
-Let me get something pushed up where you can access it and I'll also send
-you my kernel config.
+When writing EFI variables, one might get errors with no other message
+on why it fails. Being able to see how much is used by EFI variables
+helps analyzing such issues.
 
-In the mean time I added the following and everything worked. But I'm not
-sure how acceptable it is to always be checking for the table when the
-value is zero is.
+Since this is not a conventionnal filesystem, block size is
+intentionnally set to 1 instead of PAGE_SIZE.
 
+x86 quirks of reserved size are taken into account; so that available
+and free size can be different, further helping debugging space issues.
 
-diff --git a/drivers/firmware/efi/libstub/unaccepted_memory.c b/drivers/firmware/efi/libstub/unaccepted_memory.c
-index f4642c4f25dd..8c5632ab1208 100644
---- a/drivers/firmware/efi/libstub/unaccepted_memory.c
-+++ b/drivers/firmware/efi/libstub/unaccepted_memory.c
-@@ -183,8 +183,13 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
-  	unsigned long bitmap_size;
-  	u64 unit_size;
-  
--	if (!unaccepted_table)
--		return;
-+	if (!unaccepted_table) {
-+		efi_guid_t unaccepted_table_guid = LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID;
+With this patch, one can see the remaining space in EFI variable storage
+via efivarfs, like this:
+
+   $ df -h /sys/firmware/efi/efivars/
+   Filesystem      Size  Used Avail Use% Mounted on
+   efivarfs        176K  106K   66K  62% /sys/firmware/efi/efivars
+
+Signed-off-by: Anisse Astier <an.astier@criteo.com>
+---
+Notes:
+
+Patch isn't split per subsystem intentionally, for better understanding
+of intent; I don't think it's necessary, but split could be trivial in
+an another version.
+
+Changes since v1:
+ - update commit message to show how it can be used in userspace
+ - add comments to explain the values put in f_bsize, f_blocks, f_bfree
+   and f_bavail
+ - rebase on top v6.4-rc2
+
+Thanks to Christan Brauner for the review.
+
+Regards,
+
+Anisse
+
+---
+ arch/x86/platform/efi/quirks.c |  8 ++++++++
+ drivers/firmware/efi/efi.c     |  1 +
+ drivers/firmware/efi/vars.c    | 12 ++++++++++++
+ fs/efivarfs/super.c            | 36 +++++++++++++++++++++++++++++++++-
+ include/linux/efi.h            | 10 ++++++++++
+ 5 files changed, 66 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+index b0b848d6933a..587fa51230e2 100644
+--- a/arch/x86/platform/efi/quirks.c
++++ b/arch/x86/platform/efi/quirks.c
+@@ -114,6 +114,14 @@ void efi_delete_dummy_variable(void)
+ 				     EFI_VARIABLE_RUNTIME_ACCESS, 0, NULL);
+ }
+ 
++u64 efi_reserved_space(void)
++{
++	if (efi_no_storage_paranoia)
++		return 0;
++	return EFI_MIN_RESERVE;
++}
++EXPORT_SYMBOL_GPL(efi_reserved_space);
 +
-+		unaccepted_table = get_efi_config_table(unaccepted_table_guid);
-+		if (!unaccepted_table)
-+			return;
-+	}
-  
-  	unit_size = unaccepted_table->unit_size;
-  
+ /*
+  * In the nonblocking case we do not attempt to perform garbage
+  * collection if we do not have enough free space. Rather, we do the
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index abeff7dc0b58..d0dfa007bffc 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -211,6 +211,7 @@ static int generic_ops_register(void)
+ 	generic_ops.get_variable = efi.get_variable;
+ 	generic_ops.get_next_variable = efi.get_next_variable;
+ 	generic_ops.query_variable_store = efi_query_variable_store;
++	generic_ops.query_variable_info = efi.query_variable_info;
+ 
+ 	if (efi_rt_services_supported(EFI_RT_SUPPORTED_SET_VARIABLE)) {
+ 		generic_ops.set_variable = efi.set_variable;
+diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
+index bfc5fa6aa47b..e9dc7116daf1 100644
+--- a/drivers/firmware/efi/vars.c
++++ b/drivers/firmware/efi/vars.c
+@@ -245,3 +245,15 @@ efi_status_t efivar_set_variable(efi_char16_t *name, efi_guid_t *vendor,
+ 	return status;
+ }
+ EXPORT_SYMBOL_NS_GPL(efivar_set_variable, EFIVAR);
++
++efi_status_t efivar_query_variable_info(u32 attr,
++					u64 *storage_space,
++					u64 *remaining_space,
++					u64 *max_variable_size)
++{
++	if (!__efivars->ops->query_variable_info)
++		return EFI_UNSUPPORTED;
++	return __efivars->ops->query_variable_info(attr, storage_space,
++			remaining_space, max_variable_size);
++}
++EXPORT_SYMBOL_NS_GPL(efivar_query_variable_info, EFIVAR);
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index 482d612b716b..c27de959cb5b 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -13,6 +13,7 @@
+ #include <linux/ucs2_string.h>
+ #include <linux/slab.h>
+ #include <linux/magic.h>
++#include <linux/statfs.h>
+ 
+ #include "internal.h"
+ 
+@@ -23,8 +24,41 @@ static void efivarfs_evict_inode(struct inode *inode)
+ 	clear_inode(inode);
+ }
+ 
++static int efivarfs_statfs(struct dentry *dentry, struct kstatfs *buf)
++{
++	u64 storage_space, remaining_space, max_variable_size;
++	efi_status_t status;
++	const u32 attr = (EFI_VARIABLE_NON_VOLATILE | EFI_VARIABLE_BOOTSERVICE_ACCESS |
++	 EFI_VARIABLE_RUNTIME_ACCESS);
++
++	buf->f_type = dentry->d_sb->s_magic;
++	/*
++	 * This is not a normal filesystem, so no point in pretending it has a block
++	 * size; we declare f_bsize to 1, so that we can then report the exact value
++	 * sent by EFI QueryVariableInfo in f_blocks and f_bfree
++	 */
++	buf->f_bsize = 1;
++	buf->f_namelen = NAME_MAX;
++
++	status = efivar_query_variable_info(attr, &storage_space, &remaining_space,
++					    &max_variable_size);
++	if (status != EFI_SUCCESS)
++		return efi_status_to_err(status);
++	buf->f_blocks = storage_space;
++	buf->f_bfree = remaining_space;
++	/*
++	 * In f_bavail we declare the free space that the kernel will allow writing
++	 * when the storage_paranoia x86 quirk is active. To use more, users
++	 * should boot the kernel with efi_no_storage_paranoia.
++	 */
++	if (remaining_space > efi_reserved_space())
++		buf->f_bavail = remaining_space - efi_reserved_space();
++	else
++		buf->f_bavail = 0;
++	return 0;
++}
+ static const struct super_operations efivarfs_ops = {
+-	.statfs = simple_statfs,
++	.statfs = efivarfs_statfs,
+ 	.drop_inode = generic_delete_inode,
+ 	.evict_inode = efivarfs_evict_inode,
+ };
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 7aa62c92185f..d2b686191870 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -703,6 +703,7 @@ static inline void efi_enter_virtual_mode (void) {}
+ extern efi_status_t efi_query_variable_store(u32 attributes,
+ 					     unsigned long size,
+ 					     bool nonblocking);
++extern u64 efi_reserved_space(void);
+ #else
+ 
+ static inline efi_status_t efi_query_variable_store(u32 attributes,
+@@ -711,6 +712,10 @@ static inline efi_status_t efi_query_variable_store(u32 attributes,
+ {
+ 	return EFI_SUCCESS;
+ }
++static inline u64 efi_reserved_space(void)
++{
++	return 0;
++}
+ #endif
+ extern void __iomem *efi_lookup_mapped_addr(u64 phys_addr);
+ 
+@@ -1042,6 +1047,7 @@ struct efivar_operations {
+ 	efi_set_variable_t *set_variable;
+ 	efi_set_variable_t *set_variable_nonblocking;
+ 	efi_query_variable_store_t *query_variable_store;
++	efi_query_variable_info_t *query_variable_info;
+ };
+ 
+ struct efivars {
+@@ -1087,6 +1093,10 @@ efi_status_t efivar_set_variable_locked(efi_char16_t *name, efi_guid_t *vendor,
+ efi_status_t efivar_set_variable(efi_char16_t *name, efi_guid_t *vendor,
+ 				 u32 attr, unsigned long data_size, void *data);
+ 
++efi_status_t efivar_query_variable_info(u32 attr, u64 *storage_space,
++					u64 *remaining_space,
++					u64 *max_variable_size);
++
+ #if IS_ENABLED(CONFIG_EFI_CAPSULE_LOADER)
+ extern bool efi_capsule_pending(int *reset_type);
+ 
+-- 
+2.34.1
 
-Thanks,
-Tom
-
-> 
