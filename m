@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDAD270B64D
-	for <lists+linux-efi@lfdr.de>; Mon, 22 May 2023 09:17:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECB1370B64F
+	for <lists+linux-efi@lfdr.de>; Mon, 22 May 2023 09:17:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232589AbjEVHRr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 22 May 2023 03:17:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45858 "EHLO
+        id S232464AbjEVHRz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 22 May 2023 03:17:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232331AbjEVHRN (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 22 May 2023 03:17:13 -0400
+        with ESMTP id S232444AbjEVHRY (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 22 May 2023 03:17:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAA35C1;
-        Mon, 22 May 2023 00:16:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E7BE188;
+        Mon, 22 May 2023 00:16:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B99CC61DD4;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E484D61DF9;
+        Mon, 22 May 2023 07:16:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AAD7C433EF;
         Mon, 22 May 2023 07:15:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732C5C4339E;
-        Mon, 22 May 2023 07:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684739757;
-        bh=6oUMrt+Q90a10bD/8IHJeLA9pGO90K+akqZ6KAUmlwE=;
+        s=k20201202; t=1684739761;
+        bh=sEiDYrSPmg5nu7FmQd1VG/Fm5X7VeJdlmDiqajke56Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lXnVT3BBGvOGBrGEKonh+CX6QVme5/hVLSlw2yXeQXl2TLB09u+M3bh0UJGbN7e3F
-         o8U8YhxkGjydM1bYGVigVs/MF0KAzwZLi5LYKcr1o5XY3UnGB2ww+7hjypc/bpEeqe
-         izLcMA6n31A6gToJtRiUFZxrk7VJg7Odjtp+/9+fJg4kty9m2+PsdXmxw6vFWcLZOF
-         rfl2lBhzbnM5V5Bo83XyeOR7f/BzdTfoI96wdGn21m6cXrIBFlVv1FQn8pL5cV1VOt
-         RUKgSvqCDSyo3ss+WbaGlRvPs8PxDlIvcldFKFzdCDOWAcLG76Dktm2+sb9RtS0tvi
-         Pydsneaa0xVqw==
+        b=GecyYXSGZ78jK8QjPxxK0Y1d50Z6domMuX4wVdV1/MEP8TYfOC3yKXiy7f9M1HrHJ
+         9FO7X6zBGHIBRoyl9DI7GLmE9t3OduMh02T/479r6Prcs1jb7eLDY5n4JiX2g7pYiA
+         RpBlfscCYZkh5gMuKvgDQcWV73xGQFQL69LwidMl835/pcn/NhIhk9SPteIlAuDYj6
+         at/KLa2fvsSrH/jDu27wTksNQzWrhRyZRjc66SdwPWd59EhmTTAPfXoSpshu6by2es
+         fpLeOO+psdObhF+S5Eni98nVTjIGaDTKvbr/WRmIVbp+BUKw6N/zivyHNxAAzVJ00W
+         GfB92Zm8sTo9Q==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -50,14 +50,14 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Tom Lendacky <thomas.lendacky@amd.com>,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH v3 20/21] x86/efistub: Check SEV/SNP support while running in the firmware
-Date:   Mon, 22 May 2023 09:14:14 +0200
-Message-Id: <20230522071415.501717-21-ardb@kernel.org>
+Subject: [PATCH v3 21/21] x86/efistub: Avoid legacy decompressor when doing EFI boot
+Date:   Mon, 22 May 2023 09:14:15 +0200
+Message-Id: <20230522071415.501717-22-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230522071415.501717-1-ardb@kernel.org>
 References: <20230522071415.501717-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5088; i=ardb@kernel.org; h=from:subject; bh=6oUMrt+Q90a10bD/8IHJeLA9pGO90K+akqZ6KAUmlwE=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JISVbzNXusDBrtcaNl5M7/t9ojDjNn1TBPrvD9+Knc1r97 rd8nz7oKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABOJaGf4nzbt4eUn1RdK08// X7SmYN975qIrAQVKX1i/8k/dHaCXuIHhf8TFRb+qSy8cfizF/+dYeVBLi8XlrmdXvFfZ/fsur5j 3lgkA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=17149; i=ardb@kernel.org; h=from:subject; bh=sEiDYrSPmg5nu7FmQd1VG/Fm5X7VeJdlmDiqajke56Q=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JISVbzO2k3P/7C8xDj99auMlXuFSCUzlSaW78ZB5OhdcZ2 r/XfGjvKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABNRt2X4p1x3cJpJlVNqzfr2 2Xx691pzF1ucV9RUOx9ftPpPczSXCSPDLnWrL5X1cXanHzke0N4TdTWH9Ym2BO+E9TLXLzy2Fez iAQA=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -70,137 +70,497 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Before refactoring the EFI stub boot flow to avoid the legacy bare metal
-decompressor, duplicate the SEV initialization and SNP feature check in
-the EFI stub before handing over to the kernel proper.
+The bare metal decompressor code was never really intended to run in a
+hosted environment such as the EFI boot services, and does a few things
+that are problematic in the context of EFI boot now that the logo
+requirements are getting tighter.
 
-This must be done after calling ExitBootServices(), to ensure that the
-SEV initialization does not corrupt any state that the firmware itself
-still relies on. This means that, unfortunately, the only recourse
-available when the SNP feature mask contains unsupported features is to
-terminate the virtual machine, which is what the bare metal decompressor
-does as well.
+In particular, the decompressor moves its own executable image around in
+memory, and relies on demand paging to populate the identity mappings,
+and these things are difficult to support in a context where memory is
+not permitted to be mapped writable and executable at the same time or,
+at the very least, is mapped non-executable by default, and needs
+special treatment for this restriction to be lifted.
+
+Since EFI already maps all of memory 1:1, it is unnecessary to create
+new page tables or handle page faults when decompressing the kernel.
+That means there is also no need to replace the special exception
+handlers for SEV. Generally, there is little need to do anything that
+the decompressor does beyond
+
+- initialize SEV encryption, if needed,
+- perform the 4/5 level paging switch, if needed,
+- decompress the kernel
+- relocate the kernel
+
+So do all of this from the EFI stub code, and avoid the bare metal
+decompressor altogether.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/sev.c          | 19 ++++++++++++++-----
- arch/x86/include/asm/sev.h              |  6 ++++++
- drivers/firmware/efi/libstub/x86-stub.c | 17 +++++++++++++++++
- 3 files changed, 37 insertions(+), 5 deletions(-)
+ arch/x86/boot/compressed/Makefile       |   5 +
+ arch/x86/boot/compressed/efi_mixed.S    |  55 -------
+ arch/x86/boot/compressed/head_32.S      |  13 --
+ arch/x86/boot/compressed/head_64.S      |  27 ----
+ arch/x86/include/asm/efi.h              |   7 +-
+ drivers/firmware/efi/libstub/x86-stub.c | 163 ++++++++------------
+ 6 files changed, 77 insertions(+), 193 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 014b89c890887b9a..d33d48359d09bfb5 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -315,23 +315,32 @@ static void enforce_vmpl0(void)
-  */
- #define SNP_FEATURES_PRESENT (0)
+diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+index b13a580210867ffb..535608fe72e11265 100644
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -74,6 +74,11 @@ LDFLAGS_vmlinux += -z noexecstack
+ ifeq ($(CONFIG_LD_IS_BFD),y)
+ LDFLAGS_vmlinux += $(call ld-option,--no-warn-rwx-segments)
+ endif
++ifeq ($(CONFIG_EFI_STUB),y)
++# ensure that the static EFI stub library will be pulled in, even if it is
++# never referenced explicitly from the startup code
++LDFLAGS_vmlinux += -u efi_pe_entry
++endif
+ LDFLAGS_vmlinux += -T
  
-+u64 snp_get_unsupported_features(void)
-+{
-+	if (!(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
-+		return 0;
-+	return sev_status & SNP_FEATURES_IMPL_REQ & ~SNP_FEATURES_PRESENT;
-+}
-+
-+void sev_es_terminate_snp_unsupported(void)
-+{
-+	sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
-+}
-+
- void snp_check_features(void)
- {
- 	u64 unsupported;
+ hostprogs	:= mkpiggy
+diff --git a/arch/x86/boot/compressed/efi_mixed.S b/arch/x86/boot/compressed/efi_mixed.S
+index 8a02a151806df14c..f4e22ef774ab6b4a 100644
+--- a/arch/x86/boot/compressed/efi_mixed.S
++++ b/arch/x86/boot/compressed/efi_mixed.S
+@@ -269,10 +269,6 @@ SYM_FUNC_START_LOCAL(efi32_entry)
+ 	jmp	startup_32
+ SYM_FUNC_END(efi32_entry)
  
--	if (!(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
--		return;
+-#define ST32_boottime		60 // offsetof(efi_system_table_32_t, boottime)
+-#define BS32_handle_protocol	88 // offsetof(efi_boot_services_32_t, handle_protocol)
+-#define LI32_image_base		32 // offsetof(efi_loaded_image_32_t, image_base)
 -
- 	/*
- 	 * Terminate the boot if hypervisor has enabled any feature lacking
- 	 * guest side implementation. Pass on the unsupported features mask through
- 	 * EXIT_INFO_2 of the GHCB protocol so that those features can be reported
- 	 * as part of the guest boot failure.
- 	 */
--	unsupported = sev_status & SNP_FEATURES_IMPL_REQ & ~SNP_FEATURES_PRESENT;
-+	unsupported = snp_get_unsupported_features();
- 	if (unsupported) {
- 		if (ghcb_version < 2 || (!boot_ghcb && !early_setup_ghcb()))
--			sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
-+			sev_es_terminate_snp_unsupported();
+ /*
+  * efi_status_t efi32_pe_entry(efi_handle_t image_handle,
+  *			       efi_system_table_32_t *sys_table)
+@@ -280,8 +276,6 @@ SYM_FUNC_END(efi32_entry)
+ SYM_FUNC_START(efi32_pe_entry)
+ 	pushl	%ebp
+ 	movl	%esp, %ebp
+-	pushl	%eax				// dummy push to allocate loaded_image
+-
+ 	pushl	%ebx				// save callee-save registers
+ 	pushl	%edi
  
- 		sev_es_ghcb_terminate(boot_ghcb, SEV_TERM_SET_GEN,
- 				      GHCB_SNP_UNSUPPORTED, unsupported);
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 13dc2a9d23c1eb25..084a91aa5a6c708f 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -157,6 +157,7 @@ static __always_inline void sev_es_nmi_complete(void)
- 		__sev_es_nmi_complete();
- }
- extern int __init sev_es_efi_map_ghcbs(pgd_t *pgd);
-+extern void sev_enable(struct boot_params *bp);
+@@ -290,48 +284,8 @@ SYM_FUNC_START(efi32_pe_entry)
+ 	movl	$0x80000003, %eax		// EFI_UNSUPPORTED
+ 	jnz	2f
  
- static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigned long attrs)
- {
-@@ -202,12 +203,15 @@ void snp_set_wakeup_secondary_cpu(void);
- bool snp_init(struct boot_params *bp);
- void __init __noreturn snp_abort(void);
- int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, struct snp_guest_request_ioctl *rio);
-+u64 snp_get_unsupported_features(void);
-+void sev_es_terminate_snp_unsupported(void);
- #else
- static inline void sev_es_ist_enter(struct pt_regs *regs) { }
- static inline void sev_es_ist_exit(void) { }
- static inline int sev_es_setup_ap_jump_table(struct real_mode_header *rmh) { return 0; }
- static inline void sev_es_nmi_complete(void) { }
- static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
-+static inline void sev_enable(struct boot_params *bp) { }
- static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate) { return 0; }
- static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigned long attrs) { return 0; }
- static inline void setup_ghcb(void) { }
-@@ -225,6 +229,8 @@ static inline int snp_issue_guest_request(u64 exit_code, struct snp_req_data *in
- {
- 	return -ENOTTY;
- }
-+static inline u64 snp_get_unsupported_features(void) { return 0; }
-+static inline void sev_es_terminate_snp_unsupported(void) {}
+-	call	1f
+-1:	pop	%ebx
+-
+-	/* Get the loaded image protocol pointer from the image handle */
+-	leal	-4(%ebp), %eax
+-	pushl	%eax				// &loaded_image
+-	leal	(loaded_image_proto - 1b)(%ebx), %eax
+-	pushl	%eax				// pass the GUID address
+-	pushl	8(%ebp)				// pass the image handle
+-
+-	/*
+-	 * Note the alignment of the stack frame.
+-	 *   sys_table
+-	 *   handle             <-- 16-byte aligned on entry by ABI
+-	 *   return address
+-	 *   frame pointer
+-	 *   loaded_image       <-- local variable
+-	 *   saved %ebx		<-- 16-byte aligned here
+-	 *   saved %edi
+-	 *   &loaded_image
+-	 *   &loaded_image_proto
+-	 *   handle             <-- 16-byte aligned for call to handle_protocol
+-	 */
+-
+-	movl	12(%ebp), %eax			// sys_table
+-	movl	ST32_boottime(%eax), %eax	// sys_table->boottime
+-	call	*BS32_handle_protocol(%eax)	// sys_table->boottime->handle_protocol
+-	addl	$12, %esp			// restore argument space
+-	testl	%eax, %eax
+-	jnz	2f
+-
+ 	movl	8(%ebp), %ecx			// image_handle
+ 	movl	12(%ebp), %edx			// sys_table
+-	movl	-4(%ebp), %esi			// loaded_image
+-	movl	LI32_image_base(%esi), %esi	// loaded_image->image_base
+-	leal	(startup_32 - 1b)(%ebx), %ebp	// runtime address of startup_32
+-	/*
+-	 * We need to set the image_offset variable here since startup_32() will
+-	 * use it before we get to the 64-bit efi_pe_entry() in C code.
+-	 */
+-	subl	%esi, %ebp			// calculate image_offset
+-	movl	%ebp, (image_offset - 1b)(%ebx)	// save image_offset
+ 	xorl	%esi, %esi
+ 	jmp	efi32_entry			// pass %ecx, %edx, %esi
+ 						// no other registers remain live
+@@ -350,15 +304,6 @@ SYM_FUNC_START_NOALIGN(efi64_stub_entry)
+ SYM_FUNC_END(efi64_stub_entry)
  #endif
  
- #endif
+-	.section ".rodata"
+-	/* EFI loaded image protocol GUID */
+-	.balign 4
+-SYM_DATA_START_LOCAL(loaded_image_proto)
+-	.long	0x5b1b31a1
+-	.word	0x9562, 0x11d2
+-	.byte	0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b
+-SYM_DATA_END(loaded_image_proto)
+-
+ 	.data
+ 	.balign	8
+ SYM_DATA_START_LOCAL(efi32_boot_gdt)
+diff --git a/arch/x86/boot/compressed/head_32.S b/arch/x86/boot/compressed/head_32.S
+index beee858058df4403..cd9587fcd5084f22 100644
+--- a/arch/x86/boot/compressed/head_32.S
++++ b/arch/x86/boot/compressed/head_32.S
+@@ -84,19 +84,6 @@ SYM_FUNC_START(startup_32)
+ 
+ #ifdef CONFIG_RELOCATABLE
+ 	leal	startup_32@GOTOFF(%edx), %ebx
+-
+-#ifdef CONFIG_EFI_STUB
+-/*
+- * If we were loaded via the EFI LoadImage service, startup_32() will be at an
+- * offset to the start of the space allocated for the image. efi_pe_entry() will
+- * set up image_offset to tell us where the image actually starts, so that we
+- * can use the full available buffer.
+- *	image_offset = startup_32 - image_base
+- * Otherwise image_offset will be zero and has no effect on the calculations.
+- */
+-	subl    image_offset@GOTOFF(%edx), %ebx
+-#endif
+-
+ 	movl	BP_kernel_alignment(%esi), %eax
+ 	decl	%eax
+ 	addl    %eax, %ebx
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index 3074d278c7e665d8..aee518e71cdb7e75 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -146,19 +146,6 @@ SYM_FUNC_START(startup_32)
+ 
+ #ifdef CONFIG_RELOCATABLE
+ 	movl	%ebp, %ebx
+-
+-#ifdef CONFIG_EFI_STUB
+-/*
+- * If we were loaded via the EFI LoadImage service, startup_32 will be at an
+- * offset to the start of the space allocated for the image. efi_pe_entry will
+- * set up image_offset to tell us where the image actually starts, so that we
+- * can use the full available buffer.
+- *	image_offset = startup_32 - image_base
+- * Otherwise image_offset will be zero and has no effect on the calculations.
+- */
+-	subl    rva(image_offset)(%ebp), %ebx
+-#endif
+-
+ 	movl	BP_kernel_alignment(%esi), %eax
+ 	decl	%eax
+ 	addl	%eax, %ebx
+@@ -335,20 +322,6 @@ SYM_CODE_START(startup_64)
+ 	/* Start with the delta to where the kernel will run at. */
+ #ifdef CONFIG_RELOCATABLE
+ 	leaq	startup_32(%rip) /* - $startup_32 */, %rbp
+-
+-#ifdef CONFIG_EFI_STUB
+-/*
+- * If we were loaded via the EFI LoadImage service, startup_32 will be at an
+- * offset to the start of the space allocated for the image. efi_pe_entry will
+- * set up image_offset to tell us where the image actually starts, so that we
+- * can use the full available buffer.
+- *	image_offset = startup_32 - image_base
+- * Otherwise image_offset will be zero and has no effect on the calculations.
+- */
+-	movl    image_offset(%rip), %eax
+-	subq	%rax, %rbp
+-#endif
+-
+ 	movl	BP_kernel_alignment(%rsi), %eax
+ 	decl	%eax
+ 	addq	%rax, %rbp
+diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+index 8b4be7cecdb8eb73..b0994ae3bc23f84d 100644
+--- a/arch/x86/include/asm/efi.h
++++ b/arch/x86/include/asm/efi.h
+@@ -90,6 +90,8 @@ static inline void efi_fpu_end(void)
+ }
+ 
+ #ifdef CONFIG_X86_32
++#define EFI_X86_KERNEL_ALLOC_LIMIT		(SZ_512M - 1)
++
+ #define arch_efi_call_virt_setup()					\
+ ({									\
+ 	efi_fpu_begin();						\
+@@ -103,8 +105,7 @@ static inline void efi_fpu_end(void)
+ })
+ 
+ #else /* !CONFIG_X86_32 */
+-
+-#define EFI_LOADER_SIGNATURE	"EL64"
++#define EFI_X86_KERNEL_ALLOC_LIMIT		EFI_ALLOC_LIMIT
+ 
+ extern asmlinkage u64 __efi_call(void *fp, ...);
+ 
+@@ -218,6 +219,8 @@ efi_status_t efi_set_virtual_address_map(unsigned long memory_map_size,
+ 
+ #ifdef CONFIG_EFI_MIXED
+ 
++#define EFI_ALLOC_LIMIT		(efi_is_64bit() ? ULONG_MAX : U32_MAX)
++
+ #define ARCH_HAS_EFISTUB_WRAPPERS
+ 
+ static inline bool efi_is_64bit(void)
 diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index fcdae5db0c63c7e5..02633199a8502b71 100644
+index 02633199a8502b71..9c280d9e6e9ef58f 100644
 --- a/drivers/firmware/efi/libstub/x86-stub.c
 +++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -15,6 +15,7 @@
+@@ -15,17 +15,14 @@
  #include <asm/setup.h>
  #include <asm/desc.h>
  #include <asm/boot.h>
-+#include <asm/sev.h>
++#include <asm/kaslr.h>
+ #include <asm/sev.h>
  
  #include "efistub.h"
  #include "x86-stub.h"
-@@ -923,6 +924,22 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
- 		goto fail;
+ 
+-/* Maximum physical address for 64-bit kernel with 4-level paging */
+-#define MAXMEM_X86_64_4LEVEL (1ull << 46)
+-
+ const efi_system_table_t *efi_system_table;
+ const efi_dxe_services_table_t *efi_dxe_table;
+-u32 image_offset __section(".data");
+ static efi_loaded_image_t *image = NULL;
+ static efi_memory_attribute_protocol_t *memattr;
+ 
+@@ -276,33 +273,9 @@ void efi_adjust_memory_range_protection(unsigned long start,
+ 	}
+ }
+ 
+-void startup_32(struct boot_params *boot_params);
+-
+-static void
+-setup_memory_protection(unsigned long image_base, unsigned long image_size)
+-{
+-#ifdef CONFIG_64BIT
+-	if (image_base != (unsigned long)startup_32)
+-		efi_adjust_memory_range_protection(image_base, image_size);
+-#else
+-	/*
+-	 * Clear protection flags on a whole range of possible
+-	 * addresses used for KASLR. We don't need to do that
+-	 * on x86_64, since KASLR/extraction is performed after
+-	 * dedicated identity page tables are built and we only
+-	 * need to remove possible protection on relocated image
+-	 * itself disregarding further relocations.
+-	 */
+-	efi_adjust_memory_range_protection(LOAD_PHYSICAL_ADDR,
+-					   KERNEL_IMAGE_SIZE - LOAD_PHYSICAL_ADDR);
+-#endif
+-}
+-
+ static const efi_char16_t apple[] = L"Apple";
+ 
+-static void setup_quirks(struct boot_params *boot_params,
+-			 unsigned long image_base,
+-			 unsigned long image_size)
++static void setup_quirks(struct boot_params *boot_params)
+ {
+ 	efi_char16_t *fw_vendor = (efi_char16_t *)(unsigned long)
+ 		efi_table_attr(efi_system_table, fw_vendor);
+@@ -311,9 +284,6 @@ static void setup_quirks(struct boot_params *boot_params,
+ 		if (IS_ENABLED(CONFIG_APPLE_PROPERTIES))
+ 			retrieve_apple_device_properties(boot_params);
+ 	}
+-
+-	if (IS_ENABLED(CONFIG_EFI_DXE_MEM_ATTRIBUTES))
+-		setup_memory_protection(image_base, image_size);
+ }
+ 
+ /*
+@@ -466,7 +436,6 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
  	}
  
-+	/*
-+	 * Call the SEV init code while still running with the firmware's
-+	 * GDT/IDT, so #VC exceptions will be handled by EFI.
-+	 */
-+	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT)) {
-+		u64 unsupported;
+ 	image_base = efi_table_attr(image, image_base);
+-	image_offset = (void *)startup_32 - image_base;
+ 
+ 	status = efi_allocate_pages(sizeof(struct boot_params),
+ 				    (unsigned long *)&boot_params, ULONG_MAX);
+@@ -757,6 +726,61 @@ static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
+ 	return EFI_SUCCESS;
+ }
+ 
++static void efi_get_seed(void *seed, int size)
++{
++	efi_get_random_bytes(size, seed);
 +
-+		sev_enable(boot_params);
-+		unsupported = snp_get_unsupported_features();
-+		if (unsupported) {
-+			efi_err("Unsupported SEV-SNP features detected: 0x%llx\n",
-+				unsupported);
-+			sev_es_terminate_snp_unsupported();
-+		}
++	/*
++	 * This only updates seed[0] when running on 32-bit, but in that case,
++	 * we don't use seed[1] anyway, as there is no virtual KASLR on 32-bit.
++	 */
++	*(unsigned long *)seed ^= kaslr_get_random_long("EFI");
++}
++
++static void error(char *str)
++{
++	efi_warn("Decompression failed: %s\n", str);
++}
++
++static efi_status_t efi_decompress_kernel(unsigned long *kernel_entry)
++{
++	unsigned long virt_addr = LOAD_PHYSICAL_ADDR;
++	unsigned long addr, alloc_size, entry;
++	efi_status_t status;
++	u32 seed[2] = {};
++
++	/* determine the required size of the allocation */
++	alloc_size = ALIGN(max((unsigned long)output_len, kernel_total_size),
++			   MIN_KERNEL_ALIGN);
++
++	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE) && !efi_nokaslr) {
++		u64 range = KERNEL_IMAGE_SIZE - LOAD_PHYSICAL_ADDR - kernel_total_size;
++
++		efi_get_seed(seed, sizeof(seed));
++
++		virt_addr += (range * seed[1]) >> 32;
++		virt_addr &= ~(CONFIG_PHYSICAL_ALIGN - 1);
 +	}
 +
- 	if (IS_ENABLED(CONFIG_X86_64)) {
++	status = efi_random_alloc(alloc_size, CONFIG_PHYSICAL_ALIGN, &addr,
++				  seed[0], EFI_LOADER_CODE,
++				  EFI_X86_KERNEL_ALLOC_LIMIT);
++	if (status != EFI_SUCCESS)
++		return status;
++
++	entry = decompress_kernel((void *)addr, virt_addr, error);
++	if (entry == ULONG_MAX) {
++		efi_free(alloc_size, addr);
++		return EFI_LOAD_ERROR;
++	}
++
++	*kernel_entry = addr + entry;
++
++	efi_adjust_memory_range_protection(addr, kernel_total_size);
++
++	return EFI_SUCCESS;
++}
++
+ static void __noreturn enter_kernel(unsigned long kernel_addr,
+ 				    struct boot_params *boot_params)
+ {
+@@ -775,10 +799,9 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+ 			       struct boot_params *boot_params)
+ {
+ 	efi_guid_t guid = EFI_MEMORY_ATTRIBUTE_PROTOCOL_GUID;
+-	unsigned long bzimage_addr = (unsigned long)startup_32;
+-	unsigned long buffer_start, buffer_end;
+ 	struct setup_header *hdr = &boot_params->hdr;
+ 	const struct linux_efi_initrd *initrd = NULL;
++	unsigned long kernel_entry;
+ 	efi_status_t status;
+ 
+ 	efi_system_table = sys_table_arg;
+@@ -806,60 +829,6 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+ 		}
+ 	}
+ 
+-	/*
+-	 * If the kernel isn't already loaded at a suitable address,
+-	 * relocate it.
+-	 *
+-	 * It must be loaded above LOAD_PHYSICAL_ADDR.
+-	 *
+-	 * The maximum address for 64-bit is 1 << 46 for 4-level paging. This
+-	 * is defined as the macro MAXMEM, but unfortunately that is not a
+-	 * compile-time constant if 5-level paging is configured, so we instead
+-	 * define our own macro for use here.
+-	 *
+-	 * For 32-bit, the maximum address is complicated to figure out, for
+-	 * now use KERNEL_IMAGE_SIZE, which will be 512MiB, the same as what
+-	 * KASLR uses.
+-	 *
+-	 * Also relocate it if image_offset is zero, i.e. the kernel wasn't
+-	 * loaded by LoadImage, but rather by a bootloader that called the
+-	 * handover entry. The reason we must always relocate in this case is
+-	 * to handle the case of systemd-boot booting a unified kernel image,
+-	 * which is a PE executable that contains the bzImage and an initrd as
+-	 * COFF sections. The initrd section is placed after the bzImage
+-	 * without ensuring that there are at least init_size bytes available
+-	 * for the bzImage, and thus the compressed kernel's startup code may
+-	 * overwrite the initrd unless it is moved out of the way.
+-	 */
+-
+-	buffer_start = ALIGN(bzimage_addr - image_offset,
+-			     hdr->kernel_alignment);
+-	buffer_end = buffer_start + hdr->init_size;
+-
+-	if ((buffer_start < LOAD_PHYSICAL_ADDR)				     ||
+-	    (IS_ENABLED(CONFIG_X86_32) && buffer_end > KERNEL_IMAGE_SIZE)    ||
+-	    (IS_ENABLED(CONFIG_X86_64) && buffer_end > MAXMEM_X86_64_4LEVEL) ||
+-	    (image_offset == 0)) {
+-		extern char _bss[];
+-
+-		status = efi_relocate_kernel(&bzimage_addr,
+-					     (unsigned long)_bss - bzimage_addr,
+-					     hdr->init_size,
+-					     hdr->pref_address,
+-					     hdr->kernel_alignment,
+-					     LOAD_PHYSICAL_ADDR);
+-		if (status != EFI_SUCCESS) {
+-			efi_err("efi_relocate_kernel() failed!\n");
+-			goto fail;
+-		}
+-		/*
+-		 * Now that we've copied the kernel elsewhere, we no longer
+-		 * have a set up block before startup_32(), so reset image_offset
+-		 * to zero in case it was set earlier.
+-		 */
+-		image_offset = 0;
+-	}
+-
+ #ifdef CONFIG_CMDLINE_BOOL
+ 	status = efi_parse_options(CONFIG_CMDLINE);
+ 	if (status != EFI_SUCCESS) {
+@@ -877,6 +846,12 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+ 		}
+ 	}
+ 
++	status = efi_decompress_kernel(&kernel_entry);
++	if (status != EFI_SUCCESS) {
++		efi_err("Failed to decompress kernel\n");
++		goto fail;
++	}
++
+ 	/*
+ 	 * At this point, an initrd may already have been loaded by the
+ 	 * bootloader and passed via bootparams. We permit an initrd loaded
+@@ -916,7 +891,7 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+ 
+ 	setup_efi_pci(boot_params);
+ 
+-	setup_quirks(boot_params, bzimage_addr, buffer_end - buffer_start);
++	setup_quirks(boot_params);
+ 
+ 	status = exit_boot(boot_params, handle);
+ 	if (status != EFI_SUCCESS) {
+@@ -940,14 +915,10 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+ 		}
+ 	}
+ 
+-	if (IS_ENABLED(CONFIG_X86_64)) {
++	if (IS_ENABLED(CONFIG_X86_64))
  		efi_5level_switch();
+ 
+-		/* add offset of startup_64() */
+-		bzimage_addr += 0x200;
+-	}
+-
+-	enter_kernel(bzimage_addr, boot_params);
++	enter_kernel(kernel_entry, boot_params);
+ fail:
+ 	efi_err("efi_stub_entry() failed!\n");
  
 -- 
 2.39.2
