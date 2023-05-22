@@ -2,169 +2,126 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C349770BB50
-	for <lists+linux-efi@lfdr.de>; Mon, 22 May 2023 13:14:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E24070BEB5
+	for <lists+linux-efi@lfdr.de>; Mon, 22 May 2023 14:49:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230284AbjEVLOC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 22 May 2023 07:14:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58064 "EHLO
+        id S233114AbjEVMtA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 22 May 2023 08:49:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232821AbjEVLNd (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 22 May 2023 07:13:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCEE119BD;
-        Mon, 22 May 2023 04:08:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S231547AbjEVMs7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 22 May 2023 08:48:59 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B5DFAA;
+        Mon, 22 May 2023 05:48:47 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 67EA8614C6;
-        Mon, 22 May 2023 11:08:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47E7C43329;
-        Mon, 22 May 2023 11:08:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684753721;
-        bh=dZzOa+0jKFOy2FXi+DrUaKGjHvbyRLYaSwG19Q0u4E0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=GJD6jDN8N1fH8Sk1+KZCuXl3R0FNqMWXA5rHFwAwOa3B/Q9xfgsF1UeqY4zMbF87f
-         A7dQB5Sj/pzo/ViW4bdXtBoHFIk28+YJIIf78BJ6rYoRR81UkTP/Y21elu87Z8AKSV
-         Nd0jXFnBNo9Kvu+TpAN3l4C+15+ONqQkRT3KjB1BodGx/qmg7lXZmd6wEi3x4XmVw5
-         lpvGOOcYZC1Xr9Gg7d7OLx2ndfwzfOD8lGMzjE7qyBUOh2RiO2zycUcGt3tJFOdxlT
-         e/PrvebA7SBHmiRm7PxdHUC52vP2hka4ThQKuwKDdZ1Fc4wCM27eolycrdAUv8kRz1
-         +ZQsvz7c31Atg==
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-4f3bb61f860so1826570e87.3;
-        Mon, 22 May 2023 04:08:41 -0700 (PDT)
-X-Gm-Message-State: AC+VfDxo3jxqZ/Nz2yGmL/wi88r+Ph/adWlgl00yrnO8HmJBYk5lBPlh
-        6eZrxrPL/iH2HFV34W9pCVgYeq7eviHGEWkzg88=
-X-Google-Smtp-Source: ACHHUZ7D/8RmGeXbWZYE5PXfgu2Db2fE1tbZ/Ty+qOnQj3Ao3ximTAhEb612qg9Af/a0JF3TKL3wl1dNXZZ8F20Vq10=
-X-Received: by 2002:ac2:47ee:0:b0:4f3:ab4b:9015 with SMTP id
- b14-20020ac247ee000000b004f3ab4b9015mr3442452lfp.18.1684753719455; Mon, 22
- May 2023 04:08:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230518231434.26080-1-kirill.shutemov@linux.intel.com>
- <20230518231434.26080-5-kirill.shutemov@linux.intel.com> <20230519101641.nka7ty3fttntymci@box.shutemov.name>
- <20230522110116.675nqxrztxbtmdl7@box.shutemov.name>
-In-Reply-To: <20230522110116.675nqxrztxbtmdl7@box.shutemov.name>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 22 May 2023 13:08:28 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXF1ugZ9fZaLccvi86jnJFM6OSiYrc1_6d6LP=ApcBr7Gg@mail.gmail.com>
-Message-ID: <CAMj1kXF1ugZ9fZaLccvi86jnJFM6OSiYrc1_6d6LP=ApcBr7Gg@mail.gmail.com>
-Subject: Re: [PATCHv12 4/9] x86/boot/compressed: Handle unaccepted memory
-To:     "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 392E31FEE4;
+        Mon, 22 May 2023 12:48:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1684759726; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=lEvi79Gxxvx/sIBVBrhlm6IyM6SGPlhsdaMWWu+eBGw=;
+        b=j5n2JGLl2PokKhR7aCRJKHIjtIlTZ2AExnbbXGFj6BAI7B2aJa2Pwd9TYM5znONq5vf7Y8
+        YJKv+8P3luHLpKEQigD/Pk4oS/zNRmO8syCZwUcbfxtoPBARcNFrsFd2noo/0jX4M3fpse
+        XywmrAl58ETlkzBpDeo902xCLk2fggw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1684759726;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=lEvi79Gxxvx/sIBVBrhlm6IyM6SGPlhsdaMWWu+eBGw=;
+        b=2zvpZoK09aSf2WjE+Bxc8gE4PdywUgtYSUO+KYGuOBjxI2EZGVjWKCKVOoIJacsCFyGcji
+        jROBhmgFLOx7fUDA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A315D13776;
+        Mon, 22 May 2023 12:48:45 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id 2vlZJq1ka2QJZAAAMHmgww
+        (envelope-from <jroedel@suse.de>); Mon, 22 May 2023 12:48:45 +0000
+Date:   Mon, 22 May 2023 14:48:44 +0200
+From:   Joerg Roedel <jroedel@suse.de>
+To:     Tom Lendacky <thomas.lendacky@amd.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Evgeniy Baskov <baskov@ispras.ru>,
         Borislav Petkov <bp@alien8.de>,
         Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
         Ingo Molnar <mingo@redhat.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
-        khalid.elmously@canonical.com, philip.cox@canonical.com,
-        aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
-        linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Liam Merwick <liam.merwick@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Peter Jones <pjones@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Dave Young <dyoung@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Kees Cook <keescook@chromium.org>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH v2 17/20] x86: efistub: Check SEV/SNP support while
+ running in the firmware
+Message-ID: <ZGtkrKhxqUiTlXY0@suse.de>
+References: <20230508070330.582131-1-ardb@kernel.org>
+ <20230508070330.582131-18-ardb@kernel.org>
+ <ca76ed3b-5835-9f1b-7e10-dd417249b7bd@amd.com>
+ <CAMj1kXE+7SKVZN3p2_NXg5VeH+hbwnqwaGTj6HLE1a89QGtraw@mail.gmail.com>
+ <b6192de1-26a4-a7a7-63bf-76c36f55a8ff@amd.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b6192de1-26a4-a7a7-63bf-76c36f55a8ff@amd.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 22 May 2023 at 13:01, Kirill A. Shutemov <kirill@shutemov.name> wrote:
->
-> On Fri, May 19, 2023 at 01:16:41PM +0300, Kirill A. Shutemov wrote:
-> > On Fri, May 19, 2023 at 02:14:29AM +0300, Kirill A. Shutemov wrote:
-> > > diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
-> > > index 67594fcb11d9..87372b96d613 100644
-> > > --- a/arch/x86/boot/compressed/mem.c
-> > > +++ b/arch/x86/boot/compressed/mem.c
-> > > @@ -1,9 +1,32 @@
-> > >  // SPDX-License-Identifier: GPL-2.0-only
-> > >
-> > >  #include "error.h"
-> > > +#include "misc.h"
-> > >
-> > >  void arch_accept_memory(phys_addr_t start, phys_addr_t end)
-> > >  {
-> > >     /* Platform-specific memory-acceptance call goes here */
-> > >     error("Cannot accept memory");
-> > >  }
-> > > +
-> > > +void init_unaccepted_memory(void)
-> > > +{
-> > > +   guid_t guid =  LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID;
-> > > +   struct efi_unaccepted_memory *unaccepted_table;
-> > > +   unsigned long cfg_table_pa;
-> > > +   unsigned int cfg_table_len;
-> > > +   int ret;
-> > > +
-> > > +   ret = efi_get_conf_table(boot_params, &cfg_table_pa, &cfg_table_len);
-> > > +   if (ret)
-> > > +           error("EFI config table not found.");
-> > > +
-> > > +   unaccepted_table = (void *)efi_find_vendor_table(boot_params,
-> > > +                                                    cfg_table_pa,
-> > > +                                                    cfg_table_len,
-> > > +                                                    guid);
-> > > +   if (unaccepted_table->version != 1)
-> > > +           error("Unknown version of unaccepted memory table\n");
-> > > +
-> > > +   set_unaccepted_table(unaccepted_table);
-> > > +}
-> >
-> > 0-day reported boot failure outdise TDX guest with CONFIG_INTEL_TDX_GUEST=y.
->
-> 0-day folks reported one more issue: booting on non-EFI system fail.
->
-> Updated fixup:
->
-> diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
-> index 0108c97399a5..e7f7ef31e581 100644
-> --- a/arch/x86/boot/compressed/mem.c
-> +++ b/arch/x86/boot/compressed/mem.c
-> @@ -46,8 +46,13 @@ void init_unaccepted_memory(void)
->         struct efi_unaccepted_memory *unaccepted_table;
->         unsigned long cfg_table_pa;
->         unsigned int cfg_table_len;
-> +       enum efi_type et;
->         int ret;
->
-> +       et = efi_get_type(boot_params);
-> +       if (et == EFI_TYPE_NONE)
-> +               return;
-> +
->         ret = efi_get_conf_table(boot_params, &cfg_table_pa, &cfg_table_len);
->         if (ret)
->                 error("EFI config table not found.");
-> @@ -56,6 +61,9 @@ void init_unaccepted_memory(void)
->                                                          cfg_table_pa,
->                                                          cfg_table_len,
->                                                          guid);
-> +       if (!unaccepted_table)
-> +               return;
-> +
->         if (unaccepted_table->version != 1)
->                 error("Unknown version of unaccepted memory table\n");
->
+On Fri, May 19, 2023 at 09:04:46AM -0500, Tom Lendacky wrote:
+> Deferring the checks is probably the safest thing to do, since that would
+> match the way things are done today and known to work. I'm not sure what
+> other things might pop up if we stay with this approach, for example, page
+> state change calls using the GHCB MSR protocol that also don't save/restore
+> the MSR value.
+> 
+> It is possible to audit these areas and stay with this approach, but I'm
+> wondering if that wouldn't be better done as a separate patch series.
+> 
+> Adding @Joerg for any additional thoughts he might have around this area, too.
 
-With these changes applied,
+If I got it correctly the patch actually moves two things before
+ExitBootServices:
 
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+	1) SEV features check
+
+	2) SEV initialization
+
+I think it makes a lot of sense to have 1) before ExitBootServices. It
+allows to soft-fail in case the kernel does not support all required
+SEV-SNP features and move on to a kernel which does. This check also only
+needs the SEV_STATUS MSR and not any GHCB calls.
+
+The problem is the GHCB protocol negotiation with the HV, but the GHCB
+protocol is downward-compatible, so an older kernel can work with a
+newer HV.
+
+But 2) needs to stay after ExitBootServices, as it needs resources owned
+by UEFI, e.g. the GHCB MSR and potentially the configured GHCB itself.
+Fiddling around with the GHCB MSR while it is still owned by UEFI will
+bite us in one or the other way (e.g. UEFI, before ExitBootServices, is
+free to take IRQs with handlers that rely on the GHCB MSR content).
+
+Regards,
+
+	Joerg
+
