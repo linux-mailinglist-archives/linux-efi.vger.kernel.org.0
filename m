@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 859CE70B646
-	for <lists+linux-efi@lfdr.de>; Mon, 22 May 2023 09:17:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC75D70B648
+	for <lists+linux-efi@lfdr.de>; Mon, 22 May 2023 09:17:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232548AbjEVHRX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 22 May 2023 03:17:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45460 "EHLO
+        id S232553AbjEVHR0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 22 May 2023 03:17:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232500AbjEVHQy (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 22 May 2023 03:16:54 -0400
+        with ESMTP id S232554AbjEVHQ7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 22 May 2023 03:16:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84C62DB;
-        Mon, 22 May 2023 00:15:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA313198E;
+        Mon, 22 May 2023 00:15:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4293261DD9;
-        Mon, 22 May 2023 07:15:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AA3C433D2;
-        Mon, 22 May 2023 07:15:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 66F3F61DFD;
+        Mon, 22 May 2023 07:15:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 219F7C433A1;
+        Mon, 22 May 2023 07:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684739744;
-        bh=U1WWTB8Ed6jF5PagzQzhXVR5oyHC5bjwVmmRHfA2IP0=;
+        s=k20201202; t=1684739748;
+        bh=XRnDiVEqXvkUypxOdLrzhfuiI1tjnMjnlxv76SViP7E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rr136Js0c7uMMk3uXQJZmoR+32dVkdLQdERBEOeclNrZle0SdfRIkLTAsRQdO77OR
-         Ssee8IShaZWdYn3ltkiVok+AZkNQOFffZDPdO/WoMgLPJd5X1jmTygJgjNnIoSMDlw
-         a938/yTL505LpkDrgCrhmTZvwidrQ27HKpIcXyWJ/mPtvQWfa8Tv/nfk9+ohhlwbCh
-         Ox0Q2wYUfBL9gmwcNmAeeAbXfAW83O9H8eah3uMh9ywfT3FtxRL+dzCiJCfBXEaJrr
-         flnvFdWOkh9mDJ5L5+m51UyipTj/owTVQQw/OURG9K5yog28dyhUW1cnLwDwh+S29T
-         W8bd/ajAXFM7Q==
+        b=MeHO95+fyW7ojbM1paHarGzzSqOBIfjxJ+yuheV73DAwvKeV08JYidpNzHaWZwuEg
+         JsSeNEaKKmsXAw4HKwtOf5/AbOoeBxeRgkYcrkagdrmYxA8BFQyONaXX9ccphwv/s+
+         6Ve8Wrvb5VjOKUh854UpOzm3GlqZavvhxINXZek4X+Aj6O2fKo05MXnihbwHMp/LDW
+         8EzhuHUU3XFVvk8yDQ6eMa12fYUToQbz9Xy3WDR+7Su3ITXzfPxAwR0DtgBKBA4gxP
+         nJakjQDwZPHQ2RGHwTQvUGfTuf83W4djYeQkiSVqFtAeuDruz1hRuiwhE7+TkmIn47
+         MLycnjwgkG3Pg==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -50,14 +50,14 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Tom Lendacky <thomas.lendacky@amd.com>,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH v3 17/21] x86/decompressor: Factor out kernel decompression and relocation
-Date:   Mon, 22 May 2023 09:14:11 +0200
-Message-Id: <20230522071415.501717-18-ardb@kernel.org>
+Subject: [PATCH v3 18/21] x86/head_64: Store boot_params pointer in callee-preserved register
+Date:   Mon, 22 May 2023 09:14:12 +0200
+Message-Id: <20230522071415.501717-19-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230522071415.501717-1-ardb@kernel.org>
 References: <20230522071415.501717-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2968; i=ardb@kernel.org; h=from:subject; bh=U1WWTB8Ed6jF5PagzQzhXVR5oyHC5bjwVmmRHfA2IP0=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JISVbzInp2qXX4X8a2I+/eyMtFH7p1BEGxr2LvH6UaC27O y/lfuHXjlIWBjEOBlkxRRaB2X/f7Tw9UarWeZYszBxWJpAhDFycAjCRtOkM/+s0DRi736y1lWna uO3hvhy7XN5lpWtPqb3582tOtcwBoxcM/2v/zm2ZMdt7s6f9XN93Af9dVy39UvvofmyPo2eSzcL wFHYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2440; i=ardb@kernel.org; h=from:subject; bh=XRnDiVEqXvkUypxOdLrzhfuiI1tjnMjnlxv76SViP7E=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JISVbzLlJ7ljnYiGh8BOsHcWd/55eUpsgaWUqviFc6vzTO wrbz1/oKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABNpYmb4p5rbsdXfZndEyfJ/ kzQzpFoTKtpDvRQETDetu66UVX7lPMM/g/ezCpJcgz48fdXGI9W4aKn/5k1HdnQf6T4nrar5ZY4 FMwA=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -70,91 +70,89 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Factor out the decompressor sequence that invokes the decompressor,
-parses the ELF and applies the relocations so that it can be called
-directly from the EFI stub.
+Instead of pushing/popping %RSI to/from the stack every time a function
+is called from startup_64(), store it in a callee preserved register
+and grab it from there when its value is actualled needed.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/misc.c | 28 ++++++++++++++++----
- arch/x86/include/asm/boot.h     |  8 ++++++
- 2 files changed, 31 insertions(+), 5 deletions(-)
+ arch/x86/kernel/head_64.S | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
-index ad7a2297c9e186df..831485a66300319e 100644
---- a/arch/x86/boot/compressed/misc.c
-+++ b/arch/x86/boot/compressed/misc.c
-@@ -330,11 +330,33 @@ static size_t parse_elf(void *output)
- 	return ehdr.e_entry - LOAD_PHYSICAL_ADDR;
- }
+diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
+index a5df3e994f04f10f..95b12fdae10e1dc9 100644
+--- a/arch/x86/kernel/head_64.S
++++ b/arch/x86/kernel/head_64.S
+@@ -60,6 +60,7 @@ SYM_CODE_START_NOALIGN(startup_64)
+ 	 * compiled to run at we first fixup the physical addresses in our page
+ 	 * tables and then reload them.
+ 	 */
++	mov	%rsi, %r15		/* Preserve boot_params pointer */
  
-+const unsigned long kernel_total_size = VO__end - VO__text;
-+
- static u8 boot_heap[BOOT_HEAP_SIZE] __aligned(4);
+ 	/* Set up the stack for verify_cpu() */
+ 	leaq	(__end_init_task - PTREGS_SIZE)(%rip), %rsp
+@@ -73,9 +74,7 @@ SYM_CODE_START_NOALIGN(startup_64)
+ 	shrq	$32,  %rdx
+ 	wrmsr
  
- extern unsigned char input_data[];
- extern unsigned int input_len, output_len;
+-	pushq	%rsi
+ 	call	startup_64_setup_env
+-	popq	%rsi
  
-+unsigned long decompress_kernel(unsigned char *outbuf, unsigned long virt_addr,
-+				void (*error)(char *x))
-+{
-+	unsigned long entry;
-+
-+	if (!free_mem_ptr) {
-+		free_mem_ptr     = (unsigned long)boot_heap;
-+		free_mem_end_ptr = (unsigned long)boot_heap + sizeof(boot_heap);
-+	}
-+
-+	if (__decompress(input_data, input_len, NULL, NULL, outbuf, output_len,
-+			 NULL, error) < 0)
-+		return ULONG_MAX;
-+
-+	entry = parse_elf(outbuf);
-+	handle_relocations(outbuf, output_len, virt_addr);
-+
-+	return entry;
-+}
-+
- /*
-  * The compressed kernel image (ZO), has been moved so that its position
-  * is against the end of the buffer used to hold the uncompressed kernel
-@@ -354,7 +376,6 @@ extern unsigned int input_len, output_len;
-  */
- asmlinkage __visible void *extract_kernel(void *rmode, unsigned char *output)
- {
--	const unsigned long kernel_total_size = VO__end - VO__text;
- 	unsigned long virt_addr = LOAD_PHYSICAL_ADDR;
- 	memptr heap = (memptr)boot_heap;
- 	unsigned long needed_size;
-@@ -464,10 +485,7 @@ asmlinkage __visible void *extract_kernel(void *rmode, unsigned char *output)
- 		accept_memory(__pa(output), __pa(output) + needed_size);
- 	}
- 
--	__decompress(input_data, input_len, NULL, NULL, output, output_len,
--			NULL, error);
--	entry_offset = parse_elf(output);
--	handle_relocations(output, output_len, virt_addr);
-+	entry_offset = decompress_kernel(output, virt_addr, error);
- 
- 	debug_putstr("done.\nBooting the kernel (entry_offset: 0x");
- 	debug_puthex(entry_offset);
-diff --git a/arch/x86/include/asm/boot.h b/arch/x86/include/asm/boot.h
-index 9191280d9ea3160d..4ae14339cb8cc72d 100644
---- a/arch/x86/include/asm/boot.h
-+++ b/arch/x86/include/asm/boot.h
-@@ -62,4 +62,12 @@
- # define BOOT_STACK_SIZE	0x1000
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+ 	/*
+@@ -84,10 +83,8 @@ SYM_CODE_START_NOALIGN(startup_64)
+ 	 * which needs to be done before any CPUID instructions are executed in
+ 	 * subsequent code.
+ 	 */
+-	movq	%rsi, %rdi
+-	pushq	%rsi
++	movq	%r15, %rdi
+ 	call	sme_enable
+-	popq	%rsi
  #endif
  
-+#ifndef __ASSEMBLY__
-+extern unsigned int output_len;
-+extern const unsigned long kernel_total_size;
-+
-+unsigned long decompress_kernel(unsigned char *outbuf, unsigned long virt_addr,
-+				void (*error)(char *x));
-+#endif
-+
- #endif /* _ASM_X86_BOOT_H */
+ 	/* Now switch to __KERNEL_CS so IRET works reliably */
+@@ -109,9 +106,7 @@ SYM_CODE_START_NOALIGN(startup_64)
+ 	 * programmed into CR3.
+ 	 */
+ 	leaq	_text(%rip), %rdi
+-	pushq	%rsi
+ 	call	__startup_64
+-	popq	%rsi
+ 
+ 	/* Form the CR3 value being sure to include the CR3 modifier */
+ 	addq	$(early_top_pgt - __START_KERNEL_map), %rax
+@@ -200,10 +195,8 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
+ 	 * %rsi carries pointer to realmode data and is callee-clobbered. Save
+ 	 * and restore it.
+ 	 */
+-	pushq	%rsi
+ 	movq	%rax, %rdi
+ 	call	sev_verify_cbit
+-	popq	%rsi
+ 
+ 	/*
+ 	 * Switch to new page-table
+@@ -294,9 +287,7 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
+ 	wrmsr
+ 
+ 	/* Setup and Load IDT */
+-	pushq	%rsi
+ 	call	early_setup_idt
+-	popq	%rsi
+ 
+ 	/* Check if nx is implemented */
+ 	movl	$0x80000001, %eax
+@@ -334,7 +325,7 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
+ 
+ 	/* rsi is pointer to real mode structure with interesting info.
+ 	   pass it to C */
+-	movq	%rsi, %rdi
++	movq	%r15, %rdi
+ 
+ .Ljump_to_C_code:
+ 	/*
 -- 
 2.39.2
 
