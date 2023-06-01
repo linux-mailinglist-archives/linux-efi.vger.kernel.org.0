@@ -2,44 +2,44 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BB1A71F1D2
-	for <lists+linux-efi@lfdr.de>; Thu,  1 Jun 2023 20:28:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DB4271F1CE
+	for <lists+linux-efi@lfdr.de>; Thu,  1 Jun 2023 20:28:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232344AbjFAS03 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 1 Jun 2023 14:26:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59858 "EHLO
+        id S232222AbjFAS0f (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 1 Jun 2023 14:26:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232246AbjFAS02 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 1 Jun 2023 14:26:28 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42591199;
-        Thu,  1 Jun 2023 11:26:13 -0700 (PDT)
+        with ESMTP id S232496AbjFAS0a (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 1 Jun 2023 14:26:30 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36921E40;
+        Thu,  1 Jun 2023 11:26:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685643973; x=1717179973;
+  t=1685643981; x=1717179981;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Eu57mUO9ct2ICW4Etq/GrS2vGWKQMEDS8IVWtzUCpBo=;
-  b=YVXRAcuECYlvqki/VzdWIDzjOma4qIkG+jG2zKclXZ1QGuiRQsGh+PCG
-   q98kZEIfrW0eBbiwmYqdQGok6yR4E35PTxPITtjepHMTNKKvqYb6D0G3+
-   8dX9tU5vt9wM8GOXw/2JCKt9ELV5Va7ISo69TRY6k4oV3ezLuAHIuS5r7
-   smCqctD0ilVcDnMVHzxjxtMjQDx0YgInnQyq9cT4qDYn+DhmuRMqQtho3
-   haYwkO5FSgXE3AnmSvSsUdoePLmnrhsuRC0XVB1u/muvTCwj7YPOgDIb3
-   iMsFepTYCcEXVRYTZ3yeOfrRuMtqd7038JG8jcDwwQrCGUUMEuPH3sV8I
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="383920584"
+  bh=ZRWbbgKJS3P7pe8ruC5AYEzSpFJMHJrlR+e2/skszlg=;
+  b=ViqbFaTqk69w6fwdLIvIUaQsoutSpujAdAf5MRMjlW9DkxbzJPeRcFqn
+   dTRG+AUr8booV/46nk/3Op2keKWHa/h8xzFD5UpJI/JnGPbghnFa2fY8A
+   cYV1lUE1IgS+X+cDkqJtGkdAm/x9nQj2gneEh96ikdbrCHTGyIGlU36yq
+   Y7IwiEKUm2umu++x+mo8JnO2tppJ2XXNY7Zdj/zWCW7xKHsoFPv3kk9bn
+   2WHYrPQuHvPdbIfjQepBT9UbGDu/5Opstw3VOYOH9M6bLvU+41iGodpPx
+   WyCQxSdVOhAgrmJDwxtTtc4kb/xDz+VnjVYU1RAVH0JZ4vIIrzAZUrPa/
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="335266306"
 X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="383920584"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 11:26:12 -0700
+   d="scan'208";a="335266306"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 11:26:11 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="772539956"
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="777329805"
 X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="772539956"
+   d="scan'208";a="777329805"
 Received: from fmaislin-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.47.213])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 11:26:04 -0700
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 11:26:04 -0700
 Received: by box.shutemov.name (Postfix, from userid 1000)
-        id 9740810B6AE; Thu,  1 Jun 2023 21:25:52 +0300 (+03)
+        id A336F10B6AF; Thu,  1 Jun 2023 21:25:52 +0300 (+03)
 From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
         Dave Hansen <dave.hansen@intel.com>,
@@ -68,195 +68,115 @@ Cc:     Andi Kleen <ak@linux.intel.com>,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCHv13 7/9] x86/tdx: Make _tdx_hypercall() and __tdx_module_call() available in boot stub
-Date:   Thu,  1 Jun 2023 21:25:41 +0300
-Message-Id: <20230601182543.19036-8-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv13 8/9] x86/tdx: Refactor try_accept_one()
+Date:   Thu,  1 Jun 2023 21:25:42 +0300
+Message-Id: <20230601182543.19036-9-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20230601182543.19036-1-kirill.shutemov@linux.intel.com>
 References: <20230601182543.19036-1-kirill.shutemov@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Memory acceptance requires a hypercall and one or multiple module calls.
-
-Make helpers for the calls available in boot stub. It has to accept
-memory where kernel image and initrd are placed.
+Rework try_accept_one() to return accepted size instead of modifying
+'start' inside the helper. It makes 'start' in-only argument and
+streamlines code on the caller side.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Suggested-by: Borislav Petkov <bp@alien8.de>
 Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 ---
- arch/x86/coco/tdx/tdx.c           | 32 -------------------
- arch/x86/include/asm/shared/tdx.h | 51 +++++++++++++++++++++++++++++++
- arch/x86/include/asm/tdx.h        | 19 ------------
- 3 files changed, 51 insertions(+), 51 deletions(-)
+ arch/x86/coco/tdx/tdx.c | 38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
 diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index e146b599260f..e6f4c2758a68 100644
+index e6f4c2758a68..0d5fe6e24e45 100644
 --- a/arch/x86/coco/tdx/tdx.c
 +++ b/arch/x86/coco/tdx/tdx.c
-@@ -14,20 +14,6 @@
- #include <asm/insn-eval.h>
- #include <asm/pgtable.h>
+@@ -713,18 +713,18 @@ static bool tdx_cache_flush_required(void)
+ 	return true;
+ }
  
--/* TDX module Call Leaf IDs */
--#define TDX_GET_INFO			1
--#define TDX_GET_VEINFO			3
--#define TDX_GET_REPORT			4
--#define TDX_ACCEPT_PAGE			6
--#define TDX_WR				8
--
--/* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
--#define TDCS_NOTIFY_ENABLES		0x9100000000000010
--
--/* TDX hypercall Leaf IDs */
--#define TDVMCALL_MAP_GPA		0x10001
--#define TDVMCALL_REPORT_FATAL_ERROR	0x10003
--
- /* MMIO direction */
- #define EPT_READ	0
- #define EPT_WRITE	1
-@@ -51,24 +37,6 @@
- 
- #define TDREPORT_SUBTYPE_0	0
- 
--/*
-- * Wrapper for standard use of __tdx_hypercall with no output aside from
-- * return code.
-- */
--static inline u64 _tdx_hypercall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15)
--{
--	struct tdx_hypercall_args args = {
--		.r10 = TDX_HYPERCALL_STANDARD,
--		.r11 = fn,
--		.r12 = r12,
--		.r13 = r13,
--		.r14 = r14,
--		.r15 = r15,
--	};
--
--	return __tdx_hypercall(&args);
--}
--
- /* Called from __tdx_hypercall() for unrecoverable failure */
- noinstr void __tdx_hypercall_failed(void)
+-static bool try_accept_one(phys_addr_t *start, unsigned long len,
+-			  enum pg_level pg_level)
++static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
++				    enum pg_level pg_level)
  {
-diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-index 2631e01f6e0f..1ff0ee822961 100644
---- a/arch/x86/include/asm/shared/tdx.h
-+++ b/arch/x86/include/asm/shared/tdx.h
-@@ -10,6 +10,20 @@
- #define TDX_CPUID_LEAF_ID	0x21
- #define TDX_IDENT		"IntelTDX    "
+ 	unsigned long accept_size = page_level_size(pg_level);
+ 	u64 tdcall_rcx;
+ 	u8 page_size;
  
-+/* TDX module Call Leaf IDs */
-+#define TDX_GET_INFO			1
-+#define TDX_GET_VEINFO			3
-+#define TDX_GET_REPORT			4
-+#define TDX_ACCEPT_PAGE			6
-+#define TDX_WR				8
-+
-+/* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
-+#define TDCS_NOTIFY_ENABLES		0x9100000000000010
-+
-+/* TDX hypercall Leaf IDs */
-+#define TDVMCALL_MAP_GPA		0x10001
-+#define TDVMCALL_REPORT_FATAL_ERROR	0x10003
-+
- #ifndef __ASSEMBLY__
+-	if (!IS_ALIGNED(*start, accept_size))
+-		return false;
++	if (!IS_ALIGNED(start, accept_size))
++		return 0;
+ 
+ 	if (len < accept_size)
+-		return false;
++		return 0;
+ 
+ 	/*
+ 	 * Pass the page physical address to the TDX module to accept the
+@@ -743,15 +743,14 @@ static bool try_accept_one(phys_addr_t *start, unsigned long len,
+ 		page_size = 2;
+ 		break;
+ 	default:
+-		return false;
++		return 0;
+ 	}
+ 
+-	tdcall_rcx = *start | page_size;
++	tdcall_rcx = start | page_size;
+ 	if (__tdx_module_call(TDX_ACCEPT_PAGE, tdcall_rcx, 0, 0, 0, NULL))
+-		return false;
++		return 0;
+ 
+-	*start += accept_size;
+-	return true;
++	return accept_size;
+ }
  
  /*
-@@ -37,8 +51,45 @@ struct tdx_hypercall_args {
- u64 __tdx_hypercall(struct tdx_hypercall_args *args);
- u64 __tdx_hypercall_ret(struct tdx_hypercall_args *args);
+@@ -788,21 +787,22 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+ 	 */
+ 	while (start < end) {
+ 		unsigned long len = end - start;
++		unsigned long accept_size;
  
-+/*
-+ * Wrapper for standard use of __tdx_hypercall with no output aside from
-+ * return code.
-+ */
-+static inline u64 _tdx_hypercall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15)
-+{
-+	struct tdx_hypercall_args args = {
-+		.r10 = TDX_HYPERCALL_STANDARD,
-+		.r11 = fn,
-+		.r12 = r12,
-+		.r13 = r13,
-+		.r14 = r14,
-+		.r15 = r15,
-+	};
-+
-+	return __tdx_hypercall(&args);
-+}
-+
-+
- /* Called from __tdx_hypercall() for unrecoverable failure */
- void __tdx_hypercall_failed(void);
+ 		/*
+ 		 * Try larger accepts first. It gives chance to VMM to keep
+-		 * 1G/2M SEPT entries where possible and speeds up process by
+-		 * cutting number of hypercalls (if successful).
++		 * 1G/2M Secure EPT entries where possible and speeds up
++		 * process by cutting number of hypercalls (if successful).
+ 		 */
  
-+/*
-+ * Used in __tdx_module_call() to gather the output registers' values of the
-+ * TDCALL instruction when requesting services from the TDX module. This is a
-+ * software only structure and not part of the TDX module/VMM ABI
-+ */
-+struct tdx_module_output {
-+	u64 rcx;
-+	u64 rdx;
-+	u64 r8;
-+	u64 r9;
-+	u64 r10;
-+	u64 r11;
-+};
-+
-+/* Used to communicate with the TDX module */
-+u64 __tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
-+		      struct tdx_module_output *out);
-+
- #endif /* !__ASSEMBLY__ */
- #endif /* _ASM_X86_SHARED_TDX_H */
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 28d889c9aa16..234197ec17e4 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -20,21 +20,6 @@
- 
- #ifndef __ASSEMBLY__
- 
--/*
-- * Used to gather the output registers values of the TDCALL and SEAMCALL
-- * instructions when requesting services from the TDX module.
-- *
-- * This is a software only structure and not part of the TDX module/VMM ABI.
-- */
--struct tdx_module_output {
--	u64 rcx;
--	u64 rdx;
--	u64 r8;
--	u64 r9;
--	u64 r10;
--	u64 r11;
--};
+-		if (try_accept_one(&start, len, PG_LEVEL_1G))
+-			continue;
 -
- /*
-  * Used by the #VE exception handler to gather the #VE exception
-  * info from the TDX module. This is a software only structure
-@@ -55,10 +40,6 @@ struct ve_info {
- 
- void __init tdx_early_init(void);
- 
--/* Used to communicate with the TDX module */
--u64 __tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
--		      struct tdx_module_output *out);
+-		if (try_accept_one(&start, len, PG_LEVEL_2M))
+-			continue;
 -
- void tdx_get_ve_info(struct ve_info *ve);
+-		if (!try_accept_one(&start, len, PG_LEVEL_4K))
++		accept_size = try_accept_one(start, len, PG_LEVEL_1G);
++		if (!accept_size)
++			accept_size = try_accept_one(start, len, PG_LEVEL_2M);
++		if (!accept_size)
++			accept_size = try_accept_one(start, len, PG_LEVEL_4K);
++		if (!accept_size)
+ 			return false;
++		start += accept_size;
+ 	}
  
- bool tdx_handle_virt_exception(struct pt_regs *regs, struct ve_info *ve);
+ 	return true;
 -- 
 2.39.3
 
