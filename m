@@ -2,49 +2,44 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AE1471F422
-	for <lists+linux-efi@lfdr.de>; Thu,  1 Jun 2023 22:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFD4A720F72
+	for <lists+linux-efi@lfdr.de>; Sat,  3 Jun 2023 12:41:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229884AbjFAUrp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 1 Jun 2023 16:47:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34390 "EHLO
+        id S235612AbjFCKk6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 3 Jun 2023 06:40:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231710AbjFAUro (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 1 Jun 2023 16:47:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DBA91A2
-        for <linux-efi@vger.kernel.org>; Thu,  1 Jun 2023 13:47:36 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B785A649B0
-        for <linux-efi@vger.kernel.org>; Thu,  1 Jun 2023 20:47:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D6AC433D2;
-        Thu,  1 Jun 2023 20:47:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685652455;
-        bh=y4fG1Fq12ofevVd8ulrOJv3XYMKXMliRAsK+yTjrx1I=;
-        h=From:To:Cc:Subject:Date:From;
-        b=HL1hDtFLurTtaSlQjAociYEyKMB2KRXNtU9Vee+4Q9NoHnS/9adBgZk/HpU3jpoCQ
-         asxvaV/wGAH8CzmQaUHlGCRYrXrTBHe1RJZmKVM5xl6SRqrU7Wh8d1VQyESGFkXQSW
-         AJMvek+tFdvErPLrUnZE7zF3sNV4g+rU/JrHqFgCen1jKZrloAw1BD1cJcj6OqNGZc
-         8Liaho87Yzt+V2ilfzpaC9yjzBWNOC9eLhogQTGL4YV3mb9dnMM+i0h/kwkrEuLhdv
-         wyFgQORt7LXW6loALy5i0UPJJV6BcvaXIae93972YiG0/p1WMC91ndIIf9YVu0oLsN
-         uZJNxT+BHt88w==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     torvalds@linux-foundation.org
-Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
-Subject: [GIT PULL] EFI fixes for v6.4 #1
-Date:   Thu,  1 Jun 2023 22:47:15 +0200
-Message-Id: <20230601204715.3368380-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S235667AbjFCKkz (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 3 Jun 2023 06:40:55 -0400
+X-Greylist: delayed 4233 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 03 Jun 2023 03:40:27 PDT
+Received: from mail.webtopbits.pl (mail.webtopbits.pl [195.231.64.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6995310DE
+        for <linux-efi@vger.kernel.org>; Sat,  3 Jun 2023 03:40:26 -0700 (PDT)
+Received: by mail.webtopbits.pl (Postfix, from userid 1001)
+        id B5D0CA396C; Fri,  2 Jun 2023 09:51:00 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=webtopbits.pl;
+        s=mail; t=1685695863;
+        bh=Eh8ECMiYd4baGAwPAzhz8mhJACXX7NSRkYjh+plaY18=;
+        h=Date:From:To:Subject:From;
+        b=MhjfnuChNyBAgYHexeE6sV/fADlFo9XN4J8I1ogQjNGCM3V4jhk0n8q2/oUxT40w1
+         yxk0iiEbf0iM5CpweGlwl8f+EUCoC6gSS+XzL7Y27h7h9SDv7sUJtlCvUeSAFImxQC
+         zv1CVJhnJiniayL5Np2xoWa8gQ1kHb8eXzVnHCiYkckMkZZL9YOD/H7jAyc9VSj9KK
+         HPVIrNGQ3P8200MUiRln5q0pfauVqcKDv4dTyXMiVTL9VCKkt6thCeSVbsz/+mpbLZ
+         HLGQ/TqzfR5lRanesjdFEJRQfX4qP26HesvB+Y0FOintJe3ysFpNatoOFGU+iirSA3
+         sjBPZAt6MnOyw==
+Received: by mail.webtopbits.pl for <linux-efi@vger.kernel.org>; Fri,  2 Jun 2023 08:50:56 GMT
+Message-ID: <20230602085530-0.1.8w.5krb.0.gd4e0xqhlh@webtopbits.pl>
+Date:   Fri,  2 Jun 2023 08:50:56 GMT
+From:   "Kamil Durjasz" <kamil.durjasz@webtopbits.pl>
+To:     <linux-efi@vger.kernel.org>
+Subject: =?UTF-8?Q?Wy=C5=BCsza_konwersja_w_e-sklepie_?=
+X-Mailer: mail.webtopbits.pl
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1678; i=ardb@kernel.org; h=from:subject; bh=y4fG1Fq12ofevVd8ulrOJv3XYMKXMliRAsK+yTjrx1I=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIaWS+dLr7WEXt/LHhOaxhng/bL5p8+lUDdeet48u3K3eY fZ9/TnWjlIWBjEOBlkxRRaB2X/f7Tw9UarWeZYszBxWJpAhDFycAjCRVTwM/1TYWmdwKE+5EuKU dTPB9qTkzIlGdl1KcxJdFZJ7th/3WMTw3yt+y+bo9MLX99/NNNRT2MGevzZ1ufKLaZdPuCRF+85 gZwIA
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,50 +47,24 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello Linus,
+Dzie=C5=84 dobry,
 
-A few minor fixes for EFI, one of which fixes the reported boot regression when
-booting x86 kernels using the BIOS based loader built into the hypervisor
-framework on macOS.
+w jaki spos=C3=B3b docieraj=C4=85 Pa=C5=84stwo do odbiorc=C3=B3w?
 
-Please pull.
+Tworzymy pot=C4=99=C5=BCne narz=C4=99dzia sprzeda=C5=BCy, kt=C3=B3re pozw=
+alaj=C4=85 kompleksowo rozwi=C4=85za=C4=87 problemy potencjalnych klient=C3=
+=B3w i skutecznie wp=C5=82yn=C4=85=C4=87 na ich decyzje zakupowe.=20
+
+Skupiamy si=C4=99 na Pa=C5=84stwa potrzebach zwi=C4=85zanych z obs=C5=82u=
+g=C4=85 sklepu, oczekiwaniach i planach sprzeda=C5=BCowych. Szczeg=C3=B3=C5=
+=82owo dopasowujemy grafik=C4=99, funkcjonalno=C5=9Bci, struktur=C4=99 i =
+mikrointerakcje do Pa=C5=84stwa grupy docelowej, co przek=C5=82ada si=C4=99=
+ na oczekiwane rezultaty.
+
+Ch=C4=99tnie przedstawi=C4=99 dotychczasowe realizacje, aby mogli Pa=C5=84=
+stwo przekona=C4=87 si=C4=99 o naszych mo=C5=BCliwo=C5=9Bciach. Mog=C4=99=
+ si=C4=99 skontaktowa=C4=87?
 
 
-The following changes since commit ac9a78681b921877518763ba0e89202254349d1b:
-
-  Linux 6.4-rc1 (2023-05-07 13:34:35 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.4-1
-
-for you to fetch changes up to 36e4fc57fc1619f462e669e939209c45763bc8f5:
-
-  efi: Bump stub image version for macOS HVF compatibility (2023-05-28 20:45:46 +0200)
-
-----------------------------------------------------------------
-First batch of EFI fixes for v6.4:
-
-- fix harmless warning in zboot code on 'make clean'
-- add some missing prototypes
-- fix boot regressions triggered by PE/COFF header image minor version
-  bump
-
-----------------------------------------------------------------
-Akihiro Suda (1):
-      efi: Bump stub image version for macOS HVF compatibility
-
-Ard Biesheuvel (1):
-      efi/libstub: zboot: Avoid eager evaluation of objcopy flags
-
-Arnd Bergmann (1):
-      efi: fix missing prototype warnings
-
- drivers/acpi/apei/apei-internal.h           |  6 ------
- drivers/acpi/apei/bert.c                    |  1 +
- drivers/firmware/efi/libstub/Makefile.zboot |  3 ++-
- drivers/firmware/efi/libstub/efistub.h      |  3 +++
- include/linux/cper.h                        |  6 ++++++
- include/linux/efi.h                         |  2 ++
- include/linux/pe.h                          | 25 +++++++++++++------------
- 7 files changed, 27 insertions(+), 19 deletions(-)
+Pozdrawiam
+Kamil Durjasz
