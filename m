@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9BC571FF19
-	for <lists+linux-efi@lfdr.de>; Fri,  2 Jun 2023 12:24:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C74D071FF1A
+	for <lists+linux-efi@lfdr.de>; Fri,  2 Jun 2023 12:24:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235481AbjFBKYG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 2 Jun 2023 06:24:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46778 "EHLO
+        id S235043AbjFBKYI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 2 Jun 2023 06:24:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235470AbjFBKXU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 2 Jun 2023 06:23:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55397E62;
-        Fri,  2 Jun 2023 03:22:52 -0700 (PDT)
+        with ESMTP id S235404AbjFBKXd (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 2 Jun 2023 06:23:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F94AE49;
+        Fri,  2 Jun 2023 03:22:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A6F5164E4E;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C21461626;
+        Fri,  2 Jun 2023 10:22:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888DCC4339C;
         Fri,  2 Jun 2023 10:22:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29891C433A1;
-        Fri,  2 Jun 2023 10:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685701371;
-        bh=hFZ/SCviIEc1YZbiLBLlEDyweQ6PGSxYwFHksamIzHs=;
+        s=k20201202; t=1685701375;
+        bh=u+mBV9LASMmynY9CQFGbcEYb3DED+j3/4fMymyiLQXA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Nfff8boM+8RvgzsdhvHcWIJlC+g8g4Wq7plDTW+pSwMYIQ+FA/pQdAwR9wmQEH9Hu
-         tozvIv+dHkPk86T9EBsrWvOOuGTPKW7gZ1ZHFUVu2k6Ovt3PHh+gxoR8+qQPsVhlDW
-         I6Y/rXYNtS0G3JWI7pYAWi7AWH91sSo+67RvGTNLsw5fRCo9oURHj2UeXSnUhWALgD
-         JPnuP1Y3H72MpzNEBpqLfzxVt5VauFyizJ1+959HL6IdT4uP5VmAQ8c1oz24VJVXBI
-         nCzjaghvF4ZqJNjwJRi87HnpiVPxe0xMZ/kWrnWUBOv80HiGGxF9Se1bYlP7zMhhrY
-         WEN/khJAwidrA==
+        b=SEw5WzIvMZEi1C6SDbCrEwfXPL4dMy5g6DuXLSNjQTOMLr0LYqwl/gLdfVE9oiTHy
+         7ltF6fpA+ViZ/h0E8bHq15dKnJ18g3g/rHoUg7S1SbJnvickMwjo817z920zium54A
+         kD/JWQlvWMUaF7WZgle0hq4hOiP2sG4IIfykhRW0pjDZfte5cvwyxDgVX6pGDlnGmy
+         J4fxmv1zG7qKIjIHsaOnj52gk6ooneg0CKvDs3lfMhz3bqRor8LkSPejWrs1Sgl/7h
+         d5o9rJ3Ccogv/VuqybG+UHOzdwgp9mWJ71aBhNRHdTBnZ1OWbajAr3NDBYbXgOY6fe
+         FBGb0E60gLGEA==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -51,18 +51,18 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH v4 10/21] x86/decompressor: Call trampoline directly from C code
-Date:   Fri,  2 Jun 2023 12:13:02 +0200
-Message-Id: <20230602101313.3557775-11-ardb@kernel.org>
+Subject: [PATCH v4 11/21] x86/decompressor: Only call the trampoline when changing paging levels
+Date:   Fri,  2 Jun 2023 12:13:03 +0200
+Message-Id: <20230602101313.3557775-12-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230602101313.3557775-1-ardb@kernel.org>
 References: <20230602101313.3557775-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4966; i=ardb@kernel.org; h=from:subject; bh=hFZ/SCviIEc1YZbiLBLlEDyweQ6PGSxYwFHksamIzHs=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIaXywJrzy7b+fukf7pKxUXarwbGeLatCFi5a9qu7hWG6Y BHjqmPzO0pZGMQ4GGTFFFkEZv99t/P0RKla51myMHNYmUCGMHBxCsBE2NYwMvQlzjl3wOv7IbPb G1zn37z3xyPONlq48lbd/YbFa+5dmvWK4X+69v0z8yrf/xZ/78K/z/ENe0idEl+Imabpz9+VvoJ OAewA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3739; i=ardb@kernel.org; h=from:subject; bh=u+mBV9LASMmynY9CQFGbcEYb3DED+j3/4fMymyiLQXA=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIaXywFoL2/M9ifYK4fo86pwGr3K0tW+xTTjFrfHV0uPNx kvdj107SlkYxDgYZMUUWQRm/3238/REqVrnWbIwc1iZQIYwcHEKwEQijjD8d9htIMtz8Mu1JUxd 29Qqlx6LNWJvMz0mffD/nMA53B95ZzIytFsYxCXG37x4Zrqd8waB/1r+f1q5VC/cDpGv2fbaW2A 1JwA=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -71,137 +71,109 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Instead of returning to the asm calling code to invoke the trampoline,
-call it straight from the C code that sets the scene. That way, the
-struct return type is no longer needed for returning two values, and the
-call can be made conditional more cleanly in a subsequent patch.
+Since the current and desired number of paging levels are known when the
+trampoline is being prepared, avoid calling the trampoline at all if it
+is clear that calling it is not going to result in a change to the
+number of paging levels. Given that the CPU is already running in long
+mode, the PAE and LA57 settings are necessarily consistent with the
+currently active page tables - the only difference is that CR4.MCE will
+always be preserved in this case, but it will be cleared by the real
+kernel startup code if CONFIG_X86_MCE is not enabled.
 
 Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/head_64.S    | 20 +++-----------
- arch/x86/boot/compressed/pgtable_64.c | 28 ++++++++------------
- 2 files changed, 15 insertions(+), 33 deletions(-)
+ arch/x86/boot/compressed/head_64.S    | 21 +-------------------
+ arch/x86/boot/compressed/pgtable_64.c | 18 +++++++----------
+ 2 files changed, 8 insertions(+), 31 deletions(-)
 
 diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index 741b4e8fefc915ea..a60ec9283bd760e3 100644
+index a60ec9283bd760e3..403c96dae34d9c6d 100644
 --- a/arch/x86/boot/compressed/head_64.S
 +++ b/arch/x86/boot/compressed/head_64.S
-@@ -430,24 +430,12 @@ SYM_CODE_START(startup_64)
- #endif
- 
- 	/*
--	 * paging_prepare() sets up the trampoline and checks if we need to
--	 * enable 5-level paging.
+@@ -387,10 +387,6 @@ SYM_CODE_START(startup_64)
+ 	 * For the trampoline, we need the top page table to reside in lower
+ 	 * memory as we don't have a way to load 64-bit values into CR3 in
+ 	 * 32-bit mode.
 -	 *
--	 * paging_prepare() returns a two-quadword structure which lands
--	 * into RDX:RAX:
--	 *   - Address of the trampoline is returned in RAX.
--	 *   - Non zero RDX means trampoline needs to enable 5-level
--	 *     paging.
--	 *
-+	 * set_paging_levels() updates the number of paging levels using a
-+	 * trampoline in 32-bit addressable memory if the current number does
-+	 * not match the desired number.
+-	 * We go though the trampoline even if we don't have to: if we're
+-	 * already in a desired paging mode. This way the trampoline code gets
+-	 * tested on every boot.
  	 */
- 	movq	%r15, %rdi		/* pass struct boot_params pointer */
--	call	paging_prepare
--
--	/* Pass the trampoline address and boolean flag as args #1 and #2 */
--	movq	%rax, %rdi
--	movq	%rdx, %rsi
--	leaq	TRAMPOLINE_32BIT_CODE_OFFSET(%rax), %rax
--	call	*%rax
-+	call	set_paging_levels
  
- 	/*
- 	 * cleanup_trampoline() would restore trampoline memory.
+ 	/* Make sure we have GDT with 32-bit code segment */
+@@ -542,25 +538,10 @@ SYM_CODE_START(trampoline_32bit_src)
+ 	btrl	$X86_CR0_PG_BIT, %eax
+ 	movl	%eax, %cr0
+ 
+-	/* Check what paging mode we want to be in after the trampoline */
+-	testl	%esi, %esi
+-	jz	1f
+-
+-	/* We want 5-level paging: don't touch CR3 if it already points to 5-level page tables */
+-	movl	%cr4, %eax
+-	testl	$X86_CR4_LA57, %eax
+-	jnz	3f
+-	jmp	2f
+-1:
+-	/* We want 4-level paging: don't touch CR3 if it already points to 4-level page tables */
+-	movl	%cr4, %eax
+-	testl	$X86_CR4_LA57, %eax
+-	jz	3f
+-2:
+ 	/* Point CR3 to the trampoline's new top level page table */
+ 	leal	TRAMPOLINE_32BIT_PGTABLE_OFFSET(%edi), %eax
+ 	movl	%eax, %cr3
+-3:
++
+ 	/* Set EFER.LME=1 as a precaution in case hypervsior pulls the rug */
+ 	movl	$MSR_EFER, %ecx
+ 	rdmsr
 diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
-index 09fc18180929fab3..b62b6819dcdd01be 100644
+index b62b6819dcdd01be..b92cf1d6e156d5f6 100644
 --- a/arch/x86/boot/compressed/pgtable_64.c
 +++ b/arch/x86/boot/compressed/pgtable_64.c
-@@ -16,11 +16,6 @@ unsigned int __section(".data") pgdir_shift = 39;
- unsigned int __section(".data") ptrs_per_p4d = 1;
- #endif
- 
--struct paging_config {
--	unsigned long trampoline_start;
--	unsigned long l5_required;
--};
--
- /* Buffer to preserve trampoline memory */
- static char trampoline_save[TRAMPOLINE_32BIT_SIZE];
- 
-@@ -106,10 +101,10 @@ static unsigned long find_trampoline_placement(void)
- 	return bios_start - TRAMPOLINE_32BIT_SIZE;
- }
- 
--struct paging_config paging_prepare(void *rmode)
-+asmlinkage void set_paging_levels(void *rmode)
- {
--	struct paging_config paging_config = {};
--	void *tramp_code;
-+	void (*toggle_la57)(void *trampoline, bool enable_5lvl);
-+	bool l5_required = false;
- 
- 	/* Initialize boot_params. Required for cmdline_find_option_bool(). */
- 	boot_params = rmode;
-@@ -130,12 +125,10 @@ struct paging_config paging_prepare(void *rmode)
- 			!cmdline_find_option_bool("no5lvl") &&
- 			native_cpuid_eax(0) >= 7 &&
- 			(native_cpuid_ecx(7) & (1 << (X86_FEATURE_LA57 & 31)))) {
--		paging_config.l5_required = 1;
-+		l5_required = true;
+@@ -128,6 +128,13 @@ asmlinkage void set_paging_levels(void *rmode)
+ 		l5_required = true;
  	}
  
--	paging_config.trampoline_start = find_trampoline_placement();
--
--	trampoline_32bit = (unsigned long *)paging_config.trampoline_start;
-+	trampoline_32bit = (unsigned long *)find_trampoline_placement();
++	/*
++	 * We are not going to use the trampoline if we
++	 * are already in the desired paging mode.
++	 */
++	if (l5_required == !!(native_read_cr4() & X86_CR4_LA57))
++		return;
++
+ 	trampoline_32bit = (unsigned long *)find_trampoline_placement();
  
  	/* Preserve trampoline memory */
- 	memcpy(trampoline_save, trampoline_32bit, TRAMPOLINE_32BIT_SIZE);
-@@ -144,7 +137,7 @@ struct paging_config paging_prepare(void *rmode)
- 	memset(trampoline_32bit, 0, TRAMPOLINE_32BIT_SIZE);
- 
- 	/* Copy trampoline code in place */
--	tramp_code = memcpy(trampoline_32bit +
-+	toggle_la57 = memcpy(trampoline_32bit +
- 			TRAMPOLINE_32BIT_CODE_OFFSET / sizeof(unsigned long),
- 			&trampoline_32bit_src, TRAMPOLINE_32BIT_CODE_SIZE);
- 
-@@ -154,7 +147,8 @@ struct paging_config paging_prepare(void *rmode)
- 	 * immediate absolute address, so we have to adjust that based on the
- 	 * placement of the trampoline.
+@@ -155,18 +162,8 @@ asmlinkage void set_paging_levels(void *rmode)
+ 	 *
+ 	 * The new page table will be used by trampoline code for switching
+ 	 * from 4- to 5-level paging or vice versa.
+-	 *
+-	 * If switching is not required, the page table is unused: trampoline
+-	 * code wouldn't touch CR3.
  	 */
--	*(u32 *)(tramp_code + trampoline_ljmp_imm_offset) += (unsigned long)tramp_code;
-+	*(u32 *)((u8 *)toggle_la57 + trampoline_ljmp_imm_offset) +=
-+						(unsigned long)toggle_la57;
  
- 	/*
- 	 * The code below prepares page table in trampoline memory.
-@@ -170,10 +164,10 @@ struct paging_config paging_prepare(void *rmode)
- 	 * We are not going to use the page table in trampoline memory if we
- 	 * are already in the desired paging mode.
- 	 */
--	if (paging_config.l5_required == !!(native_read_cr4() & X86_CR4_LA57))
-+	if (l5_required == !!(native_read_cr4() & X86_CR4_LA57))
- 		goto out;
- 
--	if (paging_config.l5_required) {
-+	if (l5_required) {
+-	/*
+-	 * We are not going to use the page table in trampoline memory if we
+-	 * are already in the desired paging mode.
+-	 */
+-	if (l5_required == !!(native_read_cr4() & X86_CR4_LA57))
+-		goto out;
+-
+ 	if (l5_required) {
  		/*
  		 * For 4- to 5-level paging transition, set up current CR3 as
- 		 * the first and the only entry in a new top-level page table.
-@@ -196,7 +190,7 @@ struct paging_config paging_prepare(void *rmode)
+@@ -189,7 +186,6 @@ asmlinkage void set_paging_levels(void *rmode)
+ 		       (void *)src, PAGE_SIZE);
  	}
  
- out:
--	return paging_config;
-+	toggle_la57(trampoline_32bit, l5_required);
+-out:
+ 	toggle_la57(trampoline_32bit, l5_required);
  }
  
- void cleanup_trampoline(void *pgtable)
 -- 
 2.39.2
 
