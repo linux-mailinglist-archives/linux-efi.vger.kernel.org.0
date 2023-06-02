@@ -2,36 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38A5A7206DA
-	for <lists+linux-efi@lfdr.de>; Fri,  2 Jun 2023 18:09:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16F6A72072A
+	for <lists+linux-efi@lfdr.de>; Fri,  2 Jun 2023 18:13:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236416AbjFBQJE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 2 Jun 2023 12:09:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34634 "EHLO
+        id S236757AbjFBQM5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 2 Jun 2023 12:12:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236410AbjFBQJE (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 2 Jun 2023 12:09:04 -0400
+        with ESMTP id S236842AbjFBQMh (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 2 Jun 2023 12:12:37 -0400
 Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09127BC;
-        Fri,  2 Jun 2023 09:09:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72573E5B;
+        Fri,  2 Jun 2023 09:11:56 -0700 (PDT)
 Received: from zn.tnic (pd9530d32.dip0.t-ipconnect.de [217.83.13.50])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 092F01EC0333;
-        Fri,  2 Jun 2023 18:09:01 +0200 (CEST)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2FA171EC0333;
+        Fri,  2 Jun 2023 18:10:32 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1685722141;
+        t=1685722232;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=Xu4XCvM1sAiwB/WfAq5MbMKHo8Vx2G01mpn67g5+mLc=;
-        b=XNFq0zyeMW0Rzi8qdgeGXSA3AM7MDd19unhJsTI0DQezaVNRgx0+TUvw6/qhFDedLPY4XM
-        wkZnKYWcXoIP+yql921r/5tJ9amPai4rDZiK02xaMyVnjo9hXgW4Dzh/X07T0kNLWVBzXq
-        dH1lwHdt6qW1gzCnVhUSoieE8MKsZ4A=
-Date:   Fri, 2 Jun 2023 18:09:00 +0200
+        bh=eE2uQGqPGpuKbamI8enlt7v5GbxB8kYffAGXDWpEyes=;
+        b=Rq/hMqByw649WSqiBvHpZIOpoM+dTMMsZLQ3HqEnMsszV4zGGBIqbJn0hfttibA2vSNB5q
+        Du73ZbTLCXoIi2Sklvw/wXFZArPCuVLZI1ALxp3aZm2rATShj6gswT2iVTzLEeQ3K3RY/+
+        EUQUxW+WzmjfM1W36ZdvHEUOr41oqRQ=
+Date:   Fri, 2 Jun 2023 18:10:31 +0200
 From:   Borislav Petkov <bp@alien8.de>
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Andy Lutomirski <luto@kernel.org>,
         Dave Hansen <dave.hansen@intel.com>,
         Sean Christopherson <seanjc@google.com>,
@@ -58,15 +58,16 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Liam Merwick <liam.merwick@oracle.com>
 Subject: Re: [PATCHv13 4/9] x86/boot/compressed: Handle unaccepted memory
-Message-ID: <20230602160900.GEZHoUHHpPKMnzV3bs@fat_crate.local>
+Message-ID: <20230602161031.GFZHoUd4R9JEQjOrAK@fat_crate.local>
 References: <20230601182543.19036-1-kirill.shutemov@linux.intel.com>
  <20230601182543.19036-5-kirill.shutemov@linux.intel.com>
  <20230602140641.GKZHn3caQpYveKxFgU@fat_crate.local>
  <20230602153644.cbdicj2cc6p6goh3@box.shutemov.name>
+ <CAMj1kXGXoMPMF_Xv6Lk-sMx2Bp6aa2gTgit5o7OeZU1UsNMqyA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230602153644.cbdicj2cc6p6goh3@box.shutemov.name>
+In-Reply-To: <CAMj1kXGXoMPMF_Xv6Lk-sMx2Bp6aa2gTgit5o7OeZU1UsNMqyA@mail.gmail.com>
 X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
         DKIM_SIGNED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=no autolearn_force=no version=3.4.6
@@ -76,54 +77,23 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jun 02, 2023 at 06:36:44PM +0300, Kirill A. Shutemov wrote:
-> I don't see why it is simpler. It looks unnecessary noisy to me.
-
-Noisy?
-
-I have no clue what you mean.
-
-It is regular:
-
-	if (bla && flu)
-
-vs
-
-	if (bla)
-		return flu();
-
-It is about having regular patterns which can be recognized at a quick
-glance by those who get to stare at that code constantly.
-
-> Configuration table suppose to be present, even if unaccepted memory is
-> not supported. Something is very wrong if it is missing.
-
-I am not sure if it is the decompressor's job to do such validation
-- I guess this is something the EFI code should do.
-
-> I will downgrade it warn().
-
-Yes, or simply return here without accepting memory - plain and simple.
-
-> I wanted to keep unaccepted_table private to the libstub/unaccepted_memory.c.
-> The setter provides a good spot for documentation to guide unaccepted
-> memory enablers for other archs.
+On Fri, Jun 02, 2023 at 05:59:16PM +0200, Ard Biesheuvel wrote:
+> The problem is that on x86, there is buggy vendor/OEM EFI code that
+> registers for internal events that trigger when SetVirtualAddressMap()
+> is called, and assume that at that point, EfiBootServicesData memory
+> regions have not been touched by the loader yet, which is probably
+> true if you are booting Windows.
 > 
-> Still want replace it with direct assignment?
-
-No clue. Why would you want to keep a variable in the libstub private
-which is not even in kernel proper, AFAICT?
-
-> Okay, I will make init_unaccepted_memory() return true if unaccepted
-> memory is present and hide defined it always-false for !UNACCEPTED_MEMORY.
-> So this hunk will look this way:
+> So on x86, the kernel proper also preserves these regions until after
+> it calls SetVirtualAddressMap() (efi_free_boot_services() in
+> arch/x86/platform/efi/quirks.c)
 > 
-> 	if (init_unaccepted_memory()) {
-> 		debug_putstr("Accepting memory... ");
-> 		accept_memory(__pa(output), __pa(output) + needed_size);
-> 	}
+> So for the same reason, this code needs to disregard those regions as well.
 
-Yap, thanks.
+I'd like for us to have this explanation in the comment since it is
+being touched anyway.
+
+Thx.
 
 -- 
 Regards/Gruss,
