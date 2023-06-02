@@ -2,73 +2,96 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16640720068
-	for <lists+linux-efi@lfdr.de>; Fri,  2 Jun 2023 13:29:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B240E72012D
+	for <lists+linux-efi@lfdr.de>; Fri,  2 Jun 2023 14:11:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235266AbjFBL3f (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 2 Jun 2023 07:29:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59156 "EHLO
+        id S234988AbjFBMK2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 2 Jun 2023 08:10:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235242AbjFBL3e (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 2 Jun 2023 07:29:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1651E196
-        for <linux-efi@vger.kernel.org>; Fri,  2 Jun 2023 04:29:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S235748AbjFBMKQ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 2 Jun 2023 08:10:16 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEF091A7;
+        Fri,  2 Jun 2023 05:10:11 -0700 (PDT)
+Received: from zn.tnic (pd9530d32.dip0.t-ipconnect.de [217.83.13.50])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F84664F20
-        for <linux-efi@vger.kernel.org>; Fri,  2 Jun 2023 11:29:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0D665C4339B;
-        Fri,  2 Jun 2023 11:29:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685705373;
-        bh=CwBwJz1D6c7nPrezI9RBq/bJPztBvQbst6B2ckebbw8=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=Ysn2H7GydLWPhM+pif8pbTXJUaVKNEfgB1qbP5L3a+zQMkscPcTqvlRwwmHCHEV+0
-         otGskMKAbK3RlqvISi/Sq/u81XXE0cRXYy9k2Q7HkxiOazyZPH7fSqM/amwbwvL6X3
-         UjYQrawl2QqKqWuFWBeP7JR8yGIqWJUBWEp1qVQQAZxTP/axxuCLQKmbvaCkRxNo/l
-         EbnGVDE0N6bbaib0GK/ekMMywUicFFjDaSC2q/bMcqaL39QrndeO+c+J4eGGim2lk/
-         W4HQag/L9lKHk6UUxP1pfQVrsuYgcyDlxMdNnalWwggeJIHu6oPDPfWL+dTlB3OqKL
-         PeYNr9nw5R/GA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id DECEAC395E0;
-        Fri,  2 Jun 2023 11:29:32 +0000 (UTC)
-Subject: Re: [GIT PULL] EFI fixes for v6.4 #1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20230601204715.3368380-1-ardb@kernel.org>
-References: <20230601204715.3368380-1-ardb@kernel.org>
-X-PR-Tracked-List-Id: <linux-efi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20230601204715.3368380-1-ardb@kernel.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.4-1
-X-PR-Tracked-Commit-Id: 36e4fc57fc1619f462e669e939209c45763bc8f5
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 792fc9214036633f2c26fe551cd26d5d7abdecfb
-Message-Id: <168570537290.30896.11480605852205677257.pr-tracker-bot@kernel.org>
-Date:   Fri, 02 Jun 2023 11:29:32 +0000
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     torvalds@linux-foundation.org, linux-efi@vger.kernel.org,
-        Ard Biesheuvel <ardb@kernel.org>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0FD5F1EC05F5;
+        Fri,  2 Jun 2023 14:10:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1685707810;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=RFec5A8cOwf50eZs3MQmGBX0boiqb0DNa5BsG23qvns=;
+        b=qhmf2bAITL3XqN1Z6VqEk/3FpYCEsYjf9ORIhJlhNSTqMN14ne1srRNLoFyRRqUCDdD2L5
+        BYJ/LKWMp36+yawEILT3XhWSCBQftSFfIC0TRaYFnHpt97TRg31/2CMA1TdXOuMD4W7F2Z
+        J3bDkHM2RVtne4yvLpeJ/9lklNKPWGE=
+Date:   Fri, 2 Jun 2023 14:10:05 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc:     Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
+        khalid.elmously@canonical.com, philip.cox@canonical.com,
+        aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
+        linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv13 3/9] efi/libstub: Implement support for unaccepted
+ memory
+Message-ID: <20230602121005.GJZHncHTryexRFihZj@fat_crate.local>
+References: <20230601182543.19036-1-kirill.shutemov@linux.intel.com>
+ <20230601182543.19036-4-kirill.shutemov@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230601182543.19036-4-kirill.shutemov@linux.intel.com>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The pull request you sent on Thu,  1 Jun 2023 22:47:15 +0200:
+On Thu, Jun 01, 2023 at 09:25:37PM +0300, Kirill A. Shutemov wrote:
+> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+> index 043ca31c114e..231f1c70d1db 100644
+> --- a/drivers/firmware/efi/Kconfig
+> +++ b/drivers/firmware/efi/Kconfig
+> @@ -269,6 +269,20 @@ config EFI_COCO_SECRET
+>  	  virt/coco/efi_secret module to access the secrets, which in turn
+>  	  allows userspace programs to access the injected secrets.
+>  
+> +config UNACCEPTED_MEMORY
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.4-1
+Why is this Kconfig symbol in this file?
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/792fc9214036633f2c26fe551cd26d5d7abdecfb
-
-Thank you!
+I'm thinking this needs to be somewhere generic, like in mm/Kconfig or
+so...
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
