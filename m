@@ -2,62 +2,83 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1A5C722F9D
-	for <lists+linux-efi@lfdr.de>; Mon,  5 Jun 2023 21:19:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3AEF72325B
+	for <lists+linux-efi@lfdr.de>; Mon,  5 Jun 2023 23:37:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235559AbjFETTi (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 5 Jun 2023 15:19:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40528 "EHLO
+        id S230380AbjFEVhw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 5 Jun 2023 17:37:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235672AbjFETTZ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 5 Jun 2023 15:19:25 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70A411AD;
-        Mon,  5 Jun 2023 12:18:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685992723; x=1717528723;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Kt8UwcbAWIHbjuRkCIkoTQ1Kj/ybAb+bYpOZY2j+aQA=;
-  b=Sr9XK2l6EeD6MuNr2ZQRiR151Rg0jugohDppNKl3CQ65CBHdzpiwgjgG
-   n5K7WiJ/ERg5p1Ug0oZKT3mlSOubjloTa5/puepjXHSDy+odxltzroH5z
-   PyZ1lkE6LCQAWHKmdTWBSVybk/aKk1hbpslSRrYcIBX4j31AuMhtGZYkB
-   KBZIPe6qU+W9+yOjXk0hX+Q9VFD7Vn5gW7hGDmn9113qK+nkRNm+YmCQ/
-   yKmIrrSdYEe0CSkZ95Dz9solGqTkhFnPp3VCeEi6OtDeizNEAYQjMNsl2
-   afk+vHUHTAZ3SyhQUVKnJXMTmtnDvn7d09xRQPQyNn8744dho2smsKq+u
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="422284836"
-X-IronPort-AV: E=Sophos;i="6.00,218,1681196400"; 
-   d="scan'208";a="422284836"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2023 12:18:24 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="711919843"
-X-IronPort-AV: E=Sophos;i="6.00,218,1681196400"; 
-   d="scan'208";a="711919843"
-Received: from pmudgal-mobl1.amr.corp.intel.com (HELO [10.209.41.254]) ([10.209.41.254])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2023 12:18:22 -0700
-Message-ID: <5bce4a75-d4bb-74c2-1feb-e988841d5465@intel.com>
-Date:   Mon, 5 Jun 2023 12:18:21 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCHv13 9/9] x86/tdx: Add unaccepted memory support
-Content-Language: en-US
-To:     Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
+        with ESMTP id S229893AbjFEVhv (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 5 Jun 2023 17:37:51 -0400
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FD4EE9;
+        Mon,  5 Jun 2023 14:37:50 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id 0C8655C0209;
+        Mon,  5 Jun 2023 17:37:48 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Mon, 05 Jun 2023 17:37:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+         h=cc:cc:content-type:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm3; t=1686001068; x=
+        1686087468; bh=f4bf2dR163Qx2yNartmgMG05SAZML/ESa+Dp7tZQMo8=; b=D
+        YtcLQyFjvkDFHlnn8EqjhcjMdl67btMsHfd8/vnIhC/NRDlcGBzBSQS1z8A72loS
+        LhTnhNK3TiHh8Orm/3GTfFnV52tVqzNw9EiKV/K2FHebC2L5z9wnPvvX942SA/Ox
+        3J+FVUTgqT4gYD8Iw/518FeiruxzrqcEe5I17x1w1jklPJP/NfSgsvlhxPOYFb3q
+        pEWbW6cZf7ajGo1aTOZ7gj8H5hqStiC+AkHi/2lKP2px4WImyMGFPt01jfvGNLHH
+        I+vyG3Aemz8OnvhqxgWH1OToc+HZCVvu5/v0rjMPvgeNvcuMCitOLMZrKtCe/2dY
+        iieT9a/xzoHvwGK+BaBOw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1686001068; x=1686087468; bh=f4bf2dR163Qx2
+        yNartmgMG05SAZML/ESa+Dp7tZQMo8=; b=UTsU21LOXj30c2WJM/T+sl3eG3vkr
+        BaR49tJGyeIolx2nkFrF19Vsojz9i6Mzw+wNEWSkIxLyohYWgf3TLfwhnhEEeRRd
+        sJhFGfvycjH9pmw9YSS8L69jgo7ajs5bISs9vPvZKU9gY24Bjq7SxcIrLobS/u+D
+        e+PNJKpSRMU1sFEdVd6Aicl/MRS2K940mFXh5CG8QTWwfWD/EK41GIY504rQsZBy
+        ZsXTZQ64ipIAE/JCdbFBM1kojOMF1j31l+k4uCYVcDFCv7+DK76RJspLqONu1ZEG
+        v34Ug8hIT8qhQl7rceW+uA9333qsTyKKOPzzUwu3VMWLQ5LPGT/ef4Otg==
+X-ME-Sender: <xms:qlV-ZAiERHLrYZgthWH5r9e3-G6lvreCiKc0EwIilYOAZkWwRamuEg>
+    <xme:qlV-ZJCDISWTYvoEaw7VKZgn0BuOg8I_djQ9jOAAyVI8j_6c7o94qLzVMrHHh7Ou4
+    ZGctarSyeZ9HEnau4I>
+X-ME-Received: <xmr:qlV-ZIG8mAuo6r0qwhMRHdOleFwxxjEhAmsQBLsfz7F0wdc4L5jo3tkifNMRiLNUPbUJEw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgedttdcutefuodetggdotefrodftvfcurf
+    hrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttddttddttddvnecuhfhrohhmpedfmfhirhhilhhl
+    ucetrdcuufhhuhhtvghmohhvfdcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvg
+    eqnecuggftrfgrthhtvghrnhephfeigefhtdefhedtfedthefghedutddvueehtedttdeh
+    jeeukeejgeeuiedvkedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
+    hilhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgv
+X-ME-Proxy: <xmx:qlV-ZBSVMxNrkMhG79QfZIZkrSgVrMPShD522ouYkFfjf0Yidkpumw>
+    <xmx:qlV-ZNw1mocVgVaKbmPujF12Uf8al4xNcYpEJmF0zoPwdsBLM1PDqg>
+    <xmx:qlV-ZP4ywzi1-DMnwMyQS2xnYUSAAFiLmvWKe1qSlb3g_7VmsKqamg>
+    <xmx:rFV-ZG8-YYDpytdRf9Dusr2YRwb9W523rrNRY_JbCVJTw6y44ZX9xw>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 5 Jun 2023 17:37:45 -0400 (EDT)
+Received: by box.shutemov.name (Postfix, from userid 1000)
+        id C975810A631; Tue,  6 Jun 2023 00:37:42 +0300 (+03)
+Date:   Tue, 6 Jun 2023 00:37:42 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@intel.com>,
         Sean Christopherson <seanjc@google.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     Andi Kleen <ak@linux.intel.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
         Kuppuswamy Sathyanarayanan 
         <sathyanarayanan.kuppuswamy@linux.intel.com>,
         David Rientjes <rientjes@google.com>,
         Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Peter Zijlstra <peterz@infradead.org>,
         Paolo Bonzini <pbonzini@redhat.com>,
@@ -71,41 +92,50 @@ Cc:     Andi Kleen <ak@linux.intel.com>,
         aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
         linux-mm@kvack.org, linux-coco@lists.linux.dev,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv13 5/9] efi: Add unaccepted memory support
+Message-ID: <20230605213742.chojqyrz5dtyo3mn@box.shutemov.name>
 References: <20230601182543.19036-1-kirill.shutemov@linux.intel.com>
- <20230601182543.19036-10-kirill.shutemov@linux.intel.com>
- <4d8d6fc4-99b5-29ba-7f81-12e7d57907ea@amd.com>
- <1d24355c-3922-d5c7-4c05-f5ef0adaf5d2@amd.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <1d24355c-3922-d5c7-4c05-f5ef0adaf5d2@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+ <20230601182543.19036-6-kirill.shutemov@linux.intel.com>
+ <20230605154333.GLZH4CpV3eXCCWCGxi@fat_crate.local>
+ <20230605173303.k5yt535snxyk4ez3@box.shutemov.name>
+ <20230605191225.GCZH4zmbtkWWRG4lzf@fat_crate.local>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230605191225.GCZH4zmbtkWWRG4lzf@fat_crate.local>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 6/2/23 07:26, Tom Lendacky wrote:
->> So this is a change in this version. If tdx_accept_memory() fails,
->> you'll report unknown platform. Wouldn't it be better to have an error
->> message that indicates a failure in the accept path?
->>
+On Mon, Jun 05, 2023 at 09:12:25PM +0200, Borislav Petkov wrote:
+> On Mon, Jun 05, 2023 at 08:33:03PM +0300, Kirill A. Shutemov wrote:
+> > There's nothing to warn about. The range (or part of it) is not
+> > represented in the bitmap because it is not unaccepted.
 > 
-> Maybe you can keep it similar to the v12 version with just a new error
-> message, something like:
+> Sorry but how am I supposed to know that?!
 > 
->     if (early_is_tdx_guest()) {
->         if (!tdx_accept_memory(start, end))
->             error("TDX error accepting memory\n");
->     } else {
->         error("Cannot accept memory: unknown platform\n");
->     }
+> I've read the whole patchset up until now and all text talks like *all*
+> *memory* needs to be accepted and before that has happeend, it is
+> unaccepted.
+> 
+> So how about you explain that explicitly somewhere, perhaps in a comment
+> above accept_memory(), that the unaccepted range is not the whole memory
+> but only, well, what is unaccepted and the rest is implicitly accepted?
 
-In the end, these errors aren't plumbed out to the page allocator.  They
-*need* to succeed or we are dead anyway.  Should we just send a fatal
-error up to the TDX module when we fail to accept memory?  It's
-_slightly_ less opaque than plowing into an unaccepted page.
+Okay, will do.
+
+> And I went and looked at the final result - we error() if we fail
+> accepting.
+> 
+> I guess that's the only action we can do anyway...
+
+Right, there's no recovery from the error.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
