@@ -2,110 +2,130 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA9AD72421C
-	for <lists+linux-efi@lfdr.de>; Tue,  6 Jun 2023 14:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79D80724232
+	for <lists+linux-efi@lfdr.de>; Tue,  6 Jun 2023 14:32:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229835AbjFFMaD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 6 Jun 2023 08:30:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60418 "EHLO
+        id S232229AbjFFMct (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 6 Jun 2023 08:32:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237218AbjFFM3w (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Jun 2023 08:29:52 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2370610C7;
-        Tue,  6 Jun 2023 05:29:51 -0700 (PDT)
-Received: from zn.tnic (pd9530d32.dip0.t-ipconnect.de [217.83.13.50])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8E2331EC04CC;
-        Tue,  6 Jun 2023 14:29:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1686054589;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=aSEF9pu9eNB9dGCe3DY/ck8Uewf1oGAg3uGTYX+RT/A=;
-        b=NkSSaqfTgWrrj8pthl93Mugw+kUo4rN1wCyKaCq8onem9KR+Bd0W6NdxITU8MJoBeejEWz
-        IZndqnOBdGLfUwyfSyo8dK4xmQM1T/RvzHZHrxrA61LGEPphGeWVJrLdDucj3LXNL0vvI9
-        WaVN5lanR4+Rdl5GmHD6qvznR9XcjtA=
-Date:   Tue, 6 Jun 2023 14:29:45 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
+        with ESMTP id S236845AbjFFMct (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Jun 2023 08:32:49 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B74B10C6
+        for <linux-efi@vger.kernel.org>; Tue,  6 Jun 2023 05:32:48 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-3f7378a74faso22795605e9.0
+        for <linux-efi@vger.kernel.org>; Tue, 06 Jun 2023 05:32:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1686054766; x=1688646766;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9VkYPmR4uwo3dQGo/xrqreqAL15LP1pmyYPpri/bVQI=;
+        b=A/uKqwtEcKgcSPKr31oKfGQWzCDK+I5uwySB1amNGpoL/G+Ux4zhDv4E04xf3WVRFq
+         S3iIfxO9PFeO56O3e5MIYfHsA2DkNv/h2mpJ8q7CverBninN0QglliYDjavjhaLO5oRg
+         ZNIGSfjRLaJTQgVlSntipLaPFHWACUdYlBqRztLu4IemmeohNlFkUwVUXgVC1nb2AA4k
+         iF9QKa6vzSO1S+ywsL4MbD83dwt1gV9WdnaILv3UHceuQbzhnrBhfIxqS2+pL5bEcoxZ
+         EkoymbRON3DS498HuawQ6nGqW5lNlVpo7gKBu1bvy3YyTFGkRjDcMmmPf/gQ6P0B13tu
+         Gy4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686054766; x=1688646766;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9VkYPmR4uwo3dQGo/xrqreqAL15LP1pmyYPpri/bVQI=;
+        b=ApW/nFBY925ihDdOPkwqJeWC7d2UTCN7uqoAYG+5qSfHudzROJ1NCBor68tCe69HnS
+         36Dm4ZsO3H0kN2oQeuAvyc9zc9H9TZiHmWhpr2GT5N1IBM5Jfgn/UUCFu9GqmgBDD5tC
+         TqZ2UJbLGWqJThPAsjjw5xTkOfSRq3PEc50EZn2lgB8cP6Lnvjh9qH/CmM9XjDC4Zdl+
+         9bLoN1FmeG98vhZ+7ADFUciiwJcuQpQdhSGZMYEJk836YSDsruft1eKd+LVjLxepd6kz
+         FNcd/6ziLkBHsmdLz8iUPzazI2j+Juha+XpK3xtw2VEJkDLSiuCh/El5Tndy+kFnLrpB
+         J3Ew==
+X-Gm-Message-State: AC+VfDz9ZMM4nt0/+enZUhDErops0W7FbTL06480Ok8lZSmGNVOnoymk
+        6V3VQSswKxCJxKJKMGs7P7Q+ZA==
+X-Google-Smtp-Source: ACHHUZ7QqLlFe/7LiprVf2Cv/Aho0tMb/8DFVwnFC5vQGWT2ZIdvz9X7gsH2OjgJ5MSVW8x5dpZadA==
+X-Received: by 2002:a1c:4c15:0:b0:3f6:688:f658 with SMTP id z21-20020a1c4c15000000b003f60688f658mr1733922wmf.20.1686054766516;
+        Tue, 06 Jun 2023 05:32:46 -0700 (PDT)
+Received: from localhost.localdomain (amontpellier-656-1-456-62.w92-145.abo.wanadoo.fr. [92.145.124.62])
+        by smtp.gmail.com with ESMTPSA id m9-20020a7bce09000000b003f7e6d7f71esm4761868wmc.36.2023.06.06.05.32.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jun 2023 05:32:46 -0700 (PDT)
+From:   Alexandre Ghiti <alexghiti@rivosinc.com>
+To:     Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
-        khalid.elmously@canonical.com, philip.cox@canonical.com,
-        aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
-        linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv13 5/9] efi: Add unaccepted memory support
-Message-ID: <20230606122945.GBZH8mue040bYCZu2Y@fat_crate.local>
-References: <20230601182543.19036-1-kirill.shutemov@linux.intel.com>
- <20230601182543.19036-6-kirill.shutemov@linux.intel.com>
- <20230605154333.GLZH4CpV3eXCCWCGxi@fat_crate.local>
- <20230605173303.k5yt535snxyk4ez3@box.shutemov.name>
- <20230605191225.GCZH4zmbtkWWRG4lzf@fat_crate.local>
- <20230606121924.wcjezcppuiofvnk6@box.shutemov.name>
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc:     Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: [PATCH v3 0/5] riscv: Introduce KASLR
+Date:   Tue,  6 Jun 2023 14:32:37 +0200
+Message-Id: <20230606123242.20804-1-alexghiti@rivosinc.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230606121924.wcjezcppuiofvnk6@box.shutemov.name>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, Jun 06, 2023 at 03:19:24PM +0300, Kirill A. Shutemov wrote:
-> Does it look okay to you?
-> 
-> /*
->  * accept_memory() -- Consult bitmap and accept the memory if needed.
->  *
->  * Only memory that explicitly marked as unaccepted in the bitmap requires
+The following KASLR implementation allows to randomize the kernel mapping:
 
-		... that is ...
+- virtually: we expect the bootloader to provide a seed in the device-tree
+- physically: only implemented in the EFI stub, it relies on the firmware to
+  provide a seed using EFI_RNG_PROTOCOL. arm64 has a similar implementation
+  hence the patch 3 factorizes KASLR related functions for riscv to take
+  advantage.
 
->  * an action.
+The new virtual kernel location is limited by the early page table that only
+has one PUD and with the PMD alignment constraint, the kernel can only take
+< 512 positions.
 
-And let's add an additional sentence stating it all clearly:
+base-commit-tag: v6.4-rc2
 
-"All the remaining memory is implicitly accepted and doesn't need acceptance."
+Changes in v3:
+  * Rebase on top of 6.4-rc2
+  * Make RANDOMIZE_BASE depend on 64bit
+  * Fix efi_icache_sync and efi_get_kimg_min_align which were undefined
+    in x86 (and certainly other archs)
+  * Add patch 4 to fix warning on rv32
 
->  *
->  * No need to accept:
->  *  - anything if the system has no unaccepted table;
->  *  - memory that is below phys_base;
->  *  - memory that is above the memory that addressable by the bitmap;
+Changes in v2:
+  * Rebase on top of 6.3-rc1
+  * Add a riscv cache sync after memcpying the kernel
+  * Add kaslr_offset implementation for KCOV
+  * Add forward declaration to quiet LLVM
 
-And this is an additional clarification.
+Alexandre Ghiti (5):
+  riscv: Introduce virtual kernel mapping KASLR
+  riscv: Dump out kernel offset information on panic
+  arm64: libstub: Move KASLR handling functions to efi-stub-helper.c
+  libstub: Fix compilation warning for rv32
+  riscv: libstub: Implement KASLR by using generic functions
 
-Good, thanks.
+ arch/arm64/include/asm/efi.h                  |   4 +
+ arch/riscv/Kconfig                            |  19 +++
+ arch/riscv/include/asm/efi.h                  |   4 +
+ arch/riscv/include/asm/page.h                 |   3 +
+ arch/riscv/kernel/image-vars.h                |   1 +
+ arch/riscv/kernel/pi/Makefile                 |   2 +-
+ arch/riscv/kernel/pi/cmdline_early.c          |  13 ++
+ arch/riscv/kernel/pi/fdt_early.c              |  30 ++++
+ arch/riscv/kernel/setup.c                     |  25 +++
+ arch/riscv/mm/init.c                          |  36 ++++-
+ drivers/firmware/efi/libstub/arm64-stub.c     | 112 +------------
+ drivers/firmware/efi/libstub/arm64.c          |   5 +
+ .../firmware/efi/libstub/efi-stub-helper.c    | 151 ++++++++++++++++++
+ drivers/firmware/efi/libstub/efistub.h        |  18 +++
+ drivers/firmware/efi/libstub/riscv-stub.c     |  28 ++--
+ drivers/firmware/efi/libstub/riscv.c          |   5 +
+ 16 files changed, 332 insertions(+), 124 deletions(-)
+ create mode 100644 arch/riscv/kernel/pi/fdt_early.c
 
 -- 
-Regards/Gruss,
-    Boris.
+2.39.2
 
-https://people.kernel.org/tglx/notes-about-netiquette
