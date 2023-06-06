@@ -2,101 +2,158 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05684724A7F
-	for <lists+linux-efi@lfdr.de>; Tue,  6 Jun 2023 19:46:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED76D724B01
+	for <lists+linux-efi@lfdr.de>; Tue,  6 Jun 2023 20:15:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238798AbjFFRp7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 6 Jun 2023 13:45:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47264 "EHLO
+        id S233483AbjFFSP1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 6 Jun 2023 14:15:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233430AbjFFRp7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Jun 2023 13:45:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF5AB1715
-        for <linux-efi@vger.kernel.org>; Tue,  6 Jun 2023 10:45:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686073513;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=nLE2a9m2X7ys1i2tOPH+yWFEAQ0wlkVtQl8hZ5lZPhc=;
-        b=RS681NVj2YiiMPHFR1cnPOcB5IW3ZBiWMfUxAKIwm3wT6NlrXJNWi8JrjPcPzTuAspBruH
-        RRpoLF3ehKbtqOI6eytyh0xLq1gzRs8APPUICLk6VUz07fl/pVFR7GEJFWM3XXvY4GGPgz
-        UG0Z/zyNJgZJsI75tzgu/p02beBBdVo=
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
- [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-556-75ZPBB1JPS2vZebS8qZLug-1; Tue, 06 Jun 2023 13:45:12 -0400
-X-MC-Unique: 75ZPBB1JPS2vZebS8qZLug-1
-Received: by mail-ua1-f69.google.com with SMTP id a1e0cc1a2514c-78a259edb5aso1085106241.2
-        for <linux-efi@vger.kernel.org>; Tue, 06 Jun 2023 10:45:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686073512; x=1688665512;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nLE2a9m2X7ys1i2tOPH+yWFEAQ0wlkVtQl8hZ5lZPhc=;
-        b=WsSKzzTY/0HJBIdgob0fu6CaGJbcN3a1uz5GZlZeKlVqaF9mYWkiAYwT9RgnGVabu+
-         kiEjKSsAWDLOXT0eGdSBbQDJ0c8plt03/q+8FCAl3EgGmndGGEXY9vCDGmquOpGR0nvK
-         +9KYq3vEYEtpbDWLX+xD4vn/WdsCdYvnK9yLFb/aXs0c1oKV5sJYiT65ixS1NKYvJTno
-         xY+OFiS40woHL8MS8NfXGttfqu2H6taz7m2UQiM6ADjo9vr2Kfty9NAWcnRTlZfB8axx
-         rGzl7ZeOhDA238nlRRj2U/zFP+ekotoUg/1jND61kJUaymU3XDXcftC2t+PhOZ0tlkHO
-         x65w==
-X-Gm-Message-State: AC+VfDySVe4b51ZrQ0wqst2ZJDn4AsVQ5bFQtvhqVfsJzx7pgZ4avEF+
-        tR3gUhcQd0fwUMLRCym85hzUt5DMOk7WsUjBGUXAzZCVIiaB8Xz5vUlszGf4f9yc72ur09HP0Hk
-        jnRPmjRdVfM4MvYzGfDVLoWqOJZZJnglXA6fkZaIkxTOoEn0=
-X-Received: by 2002:a67:cd1a:0:b0:437:e5ce:7e8f with SMTP id u26-20020a67cd1a000000b00437e5ce7e8fmr264395vsl.4.1686073511871;
-        Tue, 06 Jun 2023 10:45:11 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ510EGPnb1pvusV1Awai+/0gM7p797ZiE7obJT6qHBhuOLM8zytgZq1baKHREg+V5zuAqlHw8q/hrA9acpoTRw=
-X-Received: by 2002:a67:cd1a:0:b0:437:e5ce:7e8f with SMTP id
- u26-20020a67cd1a000000b00437e5ce7e8fmr264386vsl.4.1686073511556; Tue, 06 Jun
- 2023 10:45:11 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230512194302.1662230-1-nicholasbishop@google.com> <CAMj1kXERDgT1cM-2P4M=DBGU0Wzbc-zewGsJjLQoQHpC3ds-4g@mail.gmail.com>
-In-Reply-To: <CAMj1kXERDgT1cM-2P4M=DBGU0Wzbc-zewGsJjLQoQHpC3ds-4g@mail.gmail.com>
-From:   Peter Jones <pjones@redhat.com>
-Date:   Tue, 6 Jun 2023 13:45:00 -0400
-Message-ID: <CA+g+hrjBhOeAHiLU9i=hpfp-0S2wCr9VyNQRKSxMGrv+9GR=oQ@mail.gmail.com>
-Subject: Re: [PATCH] efi/esrt: Allow ESRT access without CAP_SYS_ADMIN
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Nicholas Bishop <nicholasbishop@google.com>,
+        with ESMTP id S238939AbjFFSO5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Jun 2023 14:14:57 -0400
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFF421981;
+        Tue,  6 Jun 2023 11:14:51 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.nyi.internal (Postfix) with ESMTP id 9A9015C013C;
+        Tue,  6 Jun 2023 14:14:49 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Tue, 06 Jun 2023 14:14:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+         h=cc:cc:content-transfer-encoding:content-type:content-type
+        :date:date:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to;
+         s=fm3; t=1686075289; x=1686161689; bh=hPyHPz1cEzFaFzAfFQsbhREfE
+        QLxVSzdwxLuf3WmlCE=; b=lh5DWpHxDd9X6FAW4ow+Ir/EA5g1xtObhqmHTg38L
+        yz9KreysaW6DxZwF4EfoEdOiKAPXcFQ5/b2x3yZEamg7kCwU4cnG3LQ0GCKyPHX1
+        jiMfSlRNpAP35bIqq6m4Fo7aLzUmnSUnZyxI/7AWx5AWiQXhId4UeMA2V/YyNW8X
+        IeleujKYyBs0VmEgF3Fn2dUWDuXWxzoT1eunEci9BmkpRRiJ2b2dBUVDeP4jrFUU
+        h1vy+k9nRoztCSa1c5Izwegt1R2tIUQh3BSLJkPzFx1EyjYr4p4viIeR8tmN6UKt
+        J+eeYJB4c6rjQT2ATmOZXfnVUn1CrPGmc7Zi6PnZDFKSA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+        1686075289; x=1686161689; bh=hPyHPz1cEzFaFzAfFQsbhREfEQLxVSzdwxL
+        uf3WmlCE=; b=e5D47AQ9v2sUHMq/yFuIXeXuG2fFGcxTLxASN5v9rpiikOQH2AX
+        JeoeyHiLzG/qVelvp3Cs/vnDgKDjEiqbNOpCDxjGIvumZGJtsW7pZGqtjXS+JiEy
+        NqFHKh294Xt+dpskYiarbDZYzYuIAucr6qDI8m3JyiC9gQCBp4nTMvbFDBQs1TlJ
+        gc/ColaWEkNEsji6Lp7ueBRoLAKi1gn2JIx64hXz15yYTubzSns/r4ztjeni2D1D
+        bNBF0/+K/xhi1rTtJKOP7HEv5KFeQ5DeTVZeWwMHePYXynUDal0q1wr9j6V839G2
+        4UG/zoaBfznDtyww8+OuHSqh27j6XweBaqA==
+X-ME-Sender: <xms:mHd_ZHnu3Fo1x5XmG3RU2b1R4YG_rlDYo-YqYfEiybWJo0HI7nDqyw>
+    <xme:mHd_ZK1b1Dvh3pdnKPyS3S8scwsftZupJFET5nhtoCbe5eN3tF4ZGzNKqkW7vIZgA
+    MPrODNV7tbyhh4AwTc>
+X-ME-Received: <xmr:mHd_ZNrOpMSL6fpg0Js0c5AWxntaK10eHIV7xhaTaofGJXfyxWFsS4YEjEOIp1Wy8OzleA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgedtuddguddvhecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtugfgjgesthektddttddtjeenucfhrhhomhepfdfm
+    ihhrihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlsehshhhuthgvmhhovh
+    drnhgrmhgvqeenucggtffrrghtthgvrhhnpeelteeftdeggefgtddttedtgfehveeitdfg
+    heeuieefveffkeeiueeuueegvdffveenucffohhmrghinhepkhgvrhhnvghlrdhorhhgne
+    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhi
+    lhhlsehshhhuthgvmhhovhdrnhgrmhgv
+X-ME-Proxy: <xmx:mHd_ZPla381_ATPL6zAQK2BZDoAkSud4-bdz1M3ULW5KLCXaoHXeGQ>
+    <xmx:mHd_ZF02pVuxXVjS6c-9ThGN6vaIjXHFN9pJ2Eac-OK8QLBMTAAbiw>
+    <xmx:mHd_ZOtP0rh1J4g0Rpb7UdD_VUnnZppbqAFILj3mE5Dx3hMftJQxDA>
+    <xmx:mXd_ZIBCQNju7qkcD7otPDbqXBqaliTvsxTMMDw9GSJ213DxgfcsDA>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 6 Jun 2023 14:14:48 -0400 (EDT)
+Received: by box.shutemov.name (Postfix, from userid 1000)
+        id 8A4F110CFD2; Tue,  6 Jun 2023 21:14:44 +0300 (+03)
+Date:   Tue, 6 Jun 2023 21:14:44 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
+        khalid.elmously@canonical.com, philip.cox@canonical.com,
+        aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
+        linux-mm@kvack.org, linux-coco@lists.linux.dev,
         linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Subject: Re: [PATCHv14 0/9] mm, x86/cc, efi: Implement support for unaccepted
+ memory
+Message-ID: <20230606181444.2rxorg6gaeasgugx@box.shutemov.name>
+References: <20230606142637.5171-1-kirill.shutemov@linux.intel.com>
+ <20230606161606.GDZH9bxhrGnFkaLl2A@fat_crate.local>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230606161606.GDZH9bxhrGnFkaLl2A@fat_crate.local>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, May 22, 2023 at 4:11=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> wr=
-ote:
->
-> On Fri, 12 May 2023 at 21:43, Nicholas Bishop <nicholasbishop@google.com>=
- wrote:
-> >
-> > Access to the files in /sys/firmware/efi/esrt has been restricted to
-> > CAP_SYS_ADMIN since support for ESRT was added, but this seems overly
-> > restrictive given that the files are read-only and just provide
-> > information about UEFI firmware updates.
-> >
-> > Remove the CAP_SYS_ADMIN restriction so that a non-root process can rea=
-d
-> > the files, provided a suitably-privileged process changes the file
-> > ownership first. The files are still read-only and still owned by root =
-by
-> > default.
-> >
-> > Signed-off-by: Nicholas Bishop <nicholasbishop@google.com>
->
-> Seems reasonable to me. Peter?
+On Tue, Jun 06, 2023 at 06:16:06PM +0200, Borislav Petkov wrote:
+> On Tue, Jun 06, 2023 at 05:26:28PM +0300, Kirill A. Shutemov wrote:
+> > v14:
+> >  - Fix error handling in arch_accept_memory() (Tom);
+> >  - Address Borislav's feedback:
+> >    + code restructure;
+> >    + added/adjusted comments;
+> 
+> In file included from arch/x86/coco/tdx/tdx-shared.c:1:
+> ./arch/x86/include/asm/tdx.h: In function ‘tdx_kvm_hypercall’:
+> ./arch/x86/include/asm/tdx.h:70:17: error: ‘ENODEV’ undeclared (first use in this function)
+>    70 |         return -ENODEV;
+>       |                 ^~~~~~
+> ./arch/x86/include/asm/tdx.h:70:17: note: each undeclared identifier is reported only once for each function it appears in
+> make[4]: *** [scripts/Makefile.build:252: arch/x86/coco/tdx/tdx-shared.o] Error 1
+> make[3]: *** [scripts/Makefile.build:494: arch/x86/coco/tdx] Error 2
+> make[2]: *** [scripts/Makefile.build:494: arch/x86/coco] Error 2
+> make[2]: *** Waiting for unfinished jobs....
+> make[1]: *** [scripts/Makefile.build:494: arch/x86] Error 2
+> make[1]: *** Waiting for unfinished jobs....
+> make: *** [Makefile:2026: .] Error 2
+> 
+> Not enough build tests ran?
 
-Yeah, I don't think we had any specific reason to limit it.
+Hm. I've got a lot of reports from 0day, but never this one.
 
--- Peter
+Kai has posted patch that fixes it already:
 
+https://lore.kernel.org/all/20230606034000.380270-1-kai.huang@intel.com/
+
+> $ grep INTEL_TDX_GUEST .config
+> CONFIG_INTEL_TDX_GUEST=y
+> $ grep KVM_GUEST .config
+> $
+> 
+> Why does that tdx_kvm_hypercall() thing even depend on CONFIG_KVM_GUEST?
+
+Because nobody uses it otherwise. For instance, Hyper-V guest will no need
+this KVM glue.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
