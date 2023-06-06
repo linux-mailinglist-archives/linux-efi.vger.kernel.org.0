@@ -2,72 +2,81 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41B1172424F
-	for <lists+linux-efi@lfdr.de>; Tue,  6 Jun 2023 14:37:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 877017245DD
+	for <lists+linux-efi@lfdr.de>; Tue,  6 Jun 2023 16:26:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232229AbjFFMhy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 6 Jun 2023 08:37:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37706 "EHLO
+        id S233065AbjFFO04 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 6 Jun 2023 10:26:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237486AbjFFMhx (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Jun 2023 08:37:53 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28D4A10C6
-        for <linux-efi@vger.kernel.org>; Tue,  6 Jun 2023 05:37:52 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3f6da07ff00so61450925e9.3
-        for <linux-efi@vger.kernel.org>; Tue, 06 Jun 2023 05:37:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1686055070; x=1688647070;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oM8+qImkZOK2K/lpYo6kR0/Sc4TGqvzUi2et0+LIzuI=;
-        b=huVcB5kHcjEqaRoYXfSebsrkybDCAKN/IPvdnOWv5uaTVQzq802YQrF6AFLsksgGYg
-         IzbrO8gCTPzYX8XwQ36KpODUDIvXhDJauocWaugR9hybIi6fWQ/DqGozW3tLSckpg2PW
-         YOZM9UJvyCLjYJ0XmxHSle9qLY57DNDuMweEZ+ZXakLPefX3YG/88xVzzd2fjv2jeeJ9
-         ZAp5V8PV2qB9ln5IqdM4p6Vfg6VuozlCU774/iFfmN6vIULwuCXROWBLlDerHHPK+gW7
-         aoEJ/WJw7MseUoHQt2balT88i2W5+0fTAINZSg8G9UvKNoZM3D7b6jysh4ny+5jbRx80
-         Zcqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686055070; x=1688647070;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oM8+qImkZOK2K/lpYo6kR0/Sc4TGqvzUi2et0+LIzuI=;
-        b=KYDa/XwsOlnZlQbAi8jaIvcQfcrM7dzszbr9FHBEwVIVxla+Kb9Ykm9lxGMLQcciok
-         qzkLPahKhTR5OjSfv+6jol+2+9KND3LMvYh+YoWE5HPvQIuuYQu7nQyr2CoParJok01R
-         m0PI/yU7SqeoSPRw4FG5d07Q+wcRlsNkral6/R+s1H4YnCwucPPlWVDoE4lSexiYCIAo
-         BgwBOHlvTLFxBy9Y4036dtNWWW/50EDA9oNkrwXYI3EdIrrA3dJyTZ7mu+YhK+2MuL8O
-         YlSsaLDd/9pW+50C0g3jw1bUAN9dDUN7edhzKgdL68MApiGZZoXS1J3BgLt06fp/GfR+
-         wbjw==
-X-Gm-Message-State: AC+VfDxg6++C93YVHI7vrQ7ILwZKK+l+ehUsS5o0VtaosfthyraVm4g/
-        607aApKZwpM/GebnTGWX/aVAuA==
-X-Google-Smtp-Source: ACHHUZ7nc3AXEebjJExIy8WcfHRc9oXQzPGd6PNSMcTA5E4oqTueSlDrHWPJ9w4skwm2wu5hvgbUxg==
-X-Received: by 2002:a1c:741a:0:b0:3f1:789d:ad32 with SMTP id p26-20020a1c741a000000b003f1789dad32mr2412546wmc.11.1686055070621;
-        Tue, 06 Jun 2023 05:37:50 -0700 (PDT)
-Received: from localhost.localdomain (amontpellier-656-1-456-62.w92-145.abo.wanadoo.fr. [92.145.124.62])
-        by smtp.gmail.com with ESMTPSA id i10-20020a05600c290a00b003f7e34c5219sm5876027wmd.42.2023.06.06.05.37.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jun 2023 05:37:50 -0700 (PDT)
-From:   Alexandre Ghiti <alexghiti@rivosinc.com>
-To:     Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Cc:     Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: [PATCH v3 5/5] riscv: libstub: Implement KASLR by using generic functions
-Date:   Tue,  6 Jun 2023 14:32:42 +0200
-Message-Id: <20230606123242.20804-6-alexghiti@rivosinc.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230606123242.20804-1-alexghiti@rivosinc.com>
-References: <20230606123242.20804-1-alexghiti@rivosinc.com>
+        with ESMTP id S231883AbjFFO0z (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 6 Jun 2023 10:26:55 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFF5E186;
+        Tue,  6 Jun 2023 07:26:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686061613; x=1717597613;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=yCyeevrAPGrKs0IeczleoTFmMXXlre9n39I0RmirbKA=;
+  b=n8TV7mvLfWwDsUyzd33YsdkWPY/J7BpPxKaSOipq8Zs54SJFg9H5JOzx
+   ZHC+RioWPkzfh+qUJbnPasETLVwD0rUw9X1x9dOI2ejIeHMhw/olsLfl/
+   3iUNT6byCaqvU00kKz9gbRaQAZCPU6B8us5z8olan7x63c0Sa8QJRngEb
+   rFITWhDonZQ1xN6mzdgyeIXnY7N6ibzHBLEio+o/RHFXh3ZWUOQ+f5MoO
+   E7DZN4du+5gj4X6XEBdrKPRP0Ca/7N+SnuMU3ka2zJ7qop2Wa2pNS3mdJ
+   EzKg2zHlBYxdU3G0SowmiT26rTZith3BO3oRqtCKrnzWSWZYxFFiPbeDB
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="359147067"
+X-IronPort-AV: E=Sophos;i="6.00,221,1681196400"; 
+   d="scan'208";a="359147067"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2023 07:26:52 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="659543339"
+X-IronPort-AV: E=Sophos;i="6.00,221,1681196400"; 
+   d="scan'208";a="659543339"
+Received: from rgraefe-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.58.173])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2023 07:26:44 -0700
+Received: by box.shutemov.name (Postfix, from userid 1000)
+        id 1FB4510CFD2; Tue,  6 Jun 2023 17:26:42 +0300 (+03)
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
+        khalid.elmously@canonical.com, philip.cox@canonical.com,
+        aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
+        linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv14 0/9] mm, x86/cc, efi: Implement support for unaccepted memory
+Date:   Tue,  6 Jun 2023 17:26:28 +0300
+Message-Id: <20230606142637.5171-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,159 +84,209 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-We can now use arm64 functions to handle the move of the kernel physical
-mapping: if KASLR is enabled, we will try to get a random seed from the
-firmware, if not possible, the kernel will be moved to a location that
-suits its alignment constraints.
+UEFI Specification version 2.9 introduces the concept of memory
+acceptance: some Virtual Machine platforms, such as Intel TDX or AMD
+SEV-SNP, requiring memory to be accepted before it can be used by the
+guest. Accepting happens via a protocol specific for the Virtual
+Machine platform.
 
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
----
- arch/arm64/include/asm/efi.h                  |  3 ++
- arch/riscv/include/asm/efi.h                  |  3 ++
- arch/riscv/kernel/image-vars.h                |  1 +
- drivers/firmware/efi/libstub/arm64.c          |  5 ++++
- .../firmware/efi/libstub/efi-stub-helper.c    |  2 +-
- drivers/firmware/efi/libstub/efistub.h        |  5 ++++
- drivers/firmware/efi/libstub/riscv-stub.c     | 28 +++++++------------
- drivers/firmware/efi/libstub/riscv.c          |  5 ++++
- 8 files changed, 33 insertions(+), 19 deletions(-)
+Accepting memory is costly and it makes VMM allocate memory for the
+accepted guest physical address range. It's better to postpone memory
+acceptance until memory is needed. It lowers boot time and reduces
+memory overhead.
 
-diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
-index 1870af1bc42e..796ac51d1f27 100644
---- a/arch/arm64/include/asm/efi.h
-+++ b/arch/arm64/include/asm/efi.h
-@@ -167,4 +167,7 @@ static inline void efi_capsule_flush_cache_range(void *addr, int size)
- 	dcache_clean_inval_poc((unsigned long)addr, (unsigned long)addr + size);
- }
- 
-+void efi_icache_sync(unsigned long start, unsigned long end);
-+#define efi_icache_sync	efi_icache_sync
-+
- #endif /* _ASM_EFI_H */
-diff --git a/arch/riscv/include/asm/efi.h b/arch/riscv/include/asm/efi.h
-index c3dafaab36a2..6f99e8812dfd 100644
---- a/arch/riscv/include/asm/efi.h
-+++ b/arch/riscv/include/asm/efi.h
-@@ -52,4 +52,7 @@ void efi_virtmap_unload(void);
- 
- unsigned long stext_offset(void);
- 
-+void efi_icache_sync(unsigned long start, unsigned long end);
-+#define efi_icache_sync	efi_icache_sync
-+
- #endif /* _ASM_EFI_H */
-diff --git a/arch/riscv/kernel/image-vars.h b/arch/riscv/kernel/image-vars.h
-index 15616155008c..ea1a10355ce9 100644
---- a/arch/riscv/kernel/image-vars.h
-+++ b/arch/riscv/kernel/image-vars.h
-@@ -27,6 +27,7 @@ __efistub__start		= _start;
- __efistub__start_kernel		= _start_kernel;
- __efistub__end			= _end;
- __efistub__edata		= _edata;
-+__efistub___init_text_end	= __init_text_end;
- __efistub_screen_info		= screen_info;
- 
- #endif
-diff --git a/drivers/firmware/efi/libstub/arm64.c b/drivers/firmware/efi/libstub/arm64.c
-index 446e35eaf3d9..88c2fd092951 100644
---- a/drivers/firmware/efi/libstub/arm64.c
-+++ b/drivers/firmware/efi/libstub/arm64.c
-@@ -138,3 +138,8 @@ void __noreturn efi_enter_kernel(unsigned long entrypoint,
- 	enter_kernel = (void *)entrypoint + primary_entry_offset();
- 	enter_kernel(fdt_addr, 0, 0, 0);
- }
-+
-+void efi_icache_sync(unsigned long start, unsigned long end)
-+{
-+	caches_clean_inval_pou(start, end);
-+}
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index 029d1581db72..812ac2111786 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -864,7 +864,7 @@ efi_status_t efi_kaslr_relocate_kernel(unsigned long *image_addr,
- 
- 	memcpy((void *)*reserve_addr, (void *)*image_addr, kernel_size);
- 	*image_addr = *reserve_addr;
--	caches_clean_inval_pou(*image_addr, *image_addr + kernel_codesize);
-+	efi_icache_sync(*image_addr, *image_addr + kernel_codesize);
- 	efi_remap_image(*image_addr, *reserve_size, kernel_codesize);
- 
- 	return status;
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index 502f53100453..89c08d3e94b2 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -1146,4 +1146,9 @@ static inline unsigned long efi_get_kimg_min_align(void) {}
- #define efi_get_kimg_min_align efi_get_kimg_min_align
- #endif
- 
-+#ifndef efi_icache_sync
-+static inline void efi_icache_sync(unsigned long start, unsigned long end) {}
-+#define efi_icache_sync efi_icache_sync
-+#endif
-+
- #endif
-diff --git a/drivers/firmware/efi/libstub/riscv-stub.c b/drivers/firmware/efi/libstub/riscv-stub.c
-index 145c9f0ba217..7af07b33a993 100644
---- a/drivers/firmware/efi/libstub/riscv-stub.c
-+++ b/drivers/firmware/efi/libstub/riscv-stub.c
-@@ -30,32 +30,24 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 				 efi_loaded_image_t *image,
- 				 efi_handle_t image_handle)
- {
--	unsigned long kernel_size = 0;
--	unsigned long preferred_addr;
-+	unsigned long kernel_size, kernel_codesize, kernel_memsize;
- 	efi_status_t status;
- 
- 	kernel_size = _edata - _start;
-+	kernel_codesize = __init_text_end - _start;
-+	kernel_memsize = kernel_size + (_end - _edata);
- 	*image_addr = (unsigned long)_start;
--	*image_size = kernel_size + (_end - _edata);
--
--	/*
--	 * RISC-V kernel maps PAGE_OFFSET virtual address to the same physical
--	 * address where kernel is booted. That's why kernel should boot from
--	 * as low as possible to avoid wastage of memory. Currently, dram_base
--	 * is occupied by the firmware. So the preferred address for kernel to
--	 * boot is next aligned address. If preferred address is not available,
--	 * relocate_kernel will fall back to efi_low_alloc_above to allocate
--	 * lowest possible memory region as long as the address and size meets
--	 * the alignment constraints.
--	 */
--	preferred_addr = EFI_KIMG_PREFERRED_ADDRESS;
--	status = efi_relocate_kernel(image_addr, kernel_size, *image_size,
--				     preferred_addr, efi_get_kimg_min_align(),
--				     0x0);
-+	*image_size = kernel_memsize;
-+	*reserve_size = *image_size;
- 
-+	status = efi_kaslr_relocate_kernel(image_addr,
-+					   reserve_addr, reserve_size,
-+					   kernel_size, kernel_codesize, kernel_memsize,
-+					   efi_kaslr_get_phys_seed(image_handle));
- 	if (status != EFI_SUCCESS) {
- 		efi_err("Failed to relocate kernel\n");
- 		*image_size = 0;
- 	}
-+
- 	return status;
- }
-diff --git a/drivers/firmware/efi/libstub/riscv.c b/drivers/firmware/efi/libstub/riscv.c
-index 8022b104c3e6..365f891e598f 100644
---- a/drivers/firmware/efi/libstub/riscv.c
-+++ b/drivers/firmware/efi/libstub/riscv.c
-@@ -96,3 +96,8 @@ void __noreturn efi_enter_kernel(unsigned long entrypoint, unsigned long fdt,
- 	csr_write(CSR_SATP, 0);
- 	jump_kernel(hartid, fdt);
- }
-+
-+void efi_icache_sync(unsigned long start, unsigned long end)
-+{
-+	asm volatile ("fence.i" ::: "memory");
-+}
+The kernel needs to know what memory has been accepted. Firmware
+communicates this information via memory map: a new memory type --
+EFI_UNACCEPTED_MEMORY -- indicates such memory.
+
+Range-based tracking works fine for firmware, but it gets bulky for
+the kernel: e820 has to be modified on every page acceptance. It leads
+to table fragmentation, but there's a limited number of entries in the
+e820 table
+
+Another option is to mark such memory as usable in e820 and track if the
+range has been accepted in a bitmap. One bit in the bitmap represents
+2MiB in the address space: one 4k page is enough to track 64GiB or
+physical address space.
+
+In the worst-case scenario -- a huge hole in the middle of the
+address space -- It needs 256MiB to handle 4PiB of the address
+space.
+
+Any unaccepted memory that is not aligned to 2M gets accepted upfront.
+
+The approach lowers boot time substantially. Boot to shell is ~2.5x
+faster for 4G TDX VM and ~4x faster for 64G.
+
+TDX-specific code isolated from the core of unaccepted memory support. It
+supposed to help to plug-in different implementation of unaccepted memory
+such as SEV-SNP.
+
+-- Fragmentation study --
+
+Vlastimil and Mel were concern about effect of unaccepted memory on
+fragmentation prevention measures in page allocator. I tried to evaluate
+it, but it is tricky. As suggested I tried to run multiple parallel kernel
+builds and follow how often kmem:mm_page_alloc_extfrag gets hit.
+
+See results in the v9 of the patchset[1][2]
+
+[1] https://lore.kernel.org/all/20230330114956.20342-1-kirill.shutemov@linux.intel.com
+[2] https://lore.kernel.org/all/20230416191940.ex7ao43pmrjhru2p@box.shutemov.name
+
+--
+
+The tree can be found here:
+
+https://github.com/intel/tdx.git guest-unaccepted-memory
+
+v14:
+ - Fix error handling in arch_accept_memory() (Tom);
+ - Address Borislav's feedback:
+   + code restructure;
+   + added/adjusted comments;
+v13:
+ - Fix few boot issues discovered by 0day;
+ - Simplify tdx_accept_memory(): no need in MAP_GPA hypercall;
+ - Update commit message for the first patch;
+ - Add Reviewed-bys from Tom and Ard;
+v12:
+ - Re-initialize 'unaccepted_table' variable from decompressor to cover some
+   boot scenarios;
+ - Add missing memblock_reserve() for the unaccepted memory configuration
+   table (Mika);
+ - Add efi.unaccepted into efi_tables (Tom);
+ - Do not build tdx-shared.o for !TDX (Tom);
+ - Typo fix (Liam)
+ - Whitespace fix;
+ - Reviewed-bys from Liam, Tom and Ard;
+v11:
+ - Restructure the code to make it less x86-specific (suggested by Ard):
+   + use EFI configuration table instead of zero-page to pass down bitmap;
+   + do not imply 1bit == 2M in bitmap;
+   + move bulk of the code under driver/firmware/efi;
+ - The bitmap only covers unaccpeted memory now. All memory that is not covered
+   by the bitmap assumed accepted;
+ - Reviewed-by from Ard;
+v10:
+ - Restructure code around zones_with_unaccepted_pages static brach to avoid
+   unnecessary function calls (Suggested by Vlastimil);
+ - Drop mentions of PageUnaccepted();
+ - Drop patches that add fake unaccepted memory support and sysfs handle to
+   accept memory manually;
+ - Add Reviewed-by from Vlastimil;
+v9:
+ - Accept memory up to high watermark when kernel runs out of free memory;
+ - Treat unaccepted memory as unusable in __zone_watermark_unusable_free();
+ - Per-zone unaccepted memory accounting;
+ - All pages on unaccepted list are MAX_ORDER now;
+ - accept_memory=eager in cmdline to pre-accept memory during the boot;
+ - Implement fake unaccepted memory;
+ - Sysfs handle to accept memory manually;
+ - Drop PageUnaccepted();
+ - Rename unaccepted_pages static key to zones_with_unaccepted_pages;
+v8:
+ - Rewrite core-mm support for unaccepted memory (patch 02/14);
+ - s/UnacceptedPages/Unaccepted/ in meminfo;
+ - Drop arch/x86/boot/compressed/compiler.h;
+ - Fix build errors;
+ - Adjust commit messages and comments;
+ - Reviewed-bys from Dave and Borislav;
+ - Rebased to tip/master.
+v7:
+ - Rework meminfo counter to use PageUnaccepted() and move to generic code;
+ - Fix range_contains_unaccepted_memory() on machines without unaccepted memory;
+ - Add Reviewed-by from David;
+v6:
+ - Fix load_unaligned_zeropad() on machine with unaccepted memory;
+ - Clear PageUnaccepted() on merged pages, leaving it only on head;
+ - Clarify error handling in allocate_e820();
+ - Fix build with CONFIG_UNACCEPTED_MEMORY=y, but without TDX;
+ - Disable kexec at boottime instead of build conflict;
+ - Rebased to tip/master;
+ - Spelling fixes;
+ - Add Reviewed-by from Mike and David;
+v5:
+ - Updates comments and commit messages;
+   + Explain options for unaccepted memory handling;
+ - Expose amount of unaccepted memory in /proc/meminfo
+ - Adjust check in page_expected_state();
+ - Fix error code handling in allocate_e820();
+ - Centralize __pa()/__va() definitions in the boot stub;
+ - Avoid includes from the main kernel in the boot stub;
+ - Use an existing hole in boot_param for unaccepted_memory, instead of adding
+   to the end of the structure;
+ - Extract allocate_unaccepted_memory() form allocate_e820();
+ - Complain if there's unaccepted memory, but kernel does not support it;
+ - Fix vmstat counter;
+ - Split up few preparatory patches;
+ - Random readability adjustments;
+v4:
+ - PageBuddyUnaccepted() -> PageUnaccepted;
+ - Use separate page_type, not shared with offline;
+ - Rework interface between core-mm and arch code;
+ - Adjust commit messages;
+ - Ack from Mike;
+Kirill A. Shutemov (9):
+  mm: Add support for unaccepted memory
+  efi/x86: Get full memory map in allocate_e820()
+  efi/libstub: Implement support for unaccepted memory
+  x86/boot/compressed: Handle unaccepted memory
+  efi: Add unaccepted memory support
+  efi/unaccepted: Avoid load_unaligned_zeropad() stepping into
+    unaccepted memory
+  x86/tdx: Make _tdx_hypercall() and __tdx_module_call() available in
+    boot stub
+  x86/tdx: Refactor try_accept_one()
+  x86/tdx: Add unaccepted memory support
+
+ arch/x86/Kconfig                              |   2 +
+ arch/x86/boot/compressed/Makefile             |   3 +-
+ arch/x86/boot/compressed/efi.h                |  10 +
+ arch/x86/boot/compressed/error.c              |  19 ++
+ arch/x86/boot/compressed/error.h              |   1 +
+ arch/x86/boot/compressed/kaslr.c              |  40 +++-
+ arch/x86/boot/compressed/mem.c                |  83 +++++++
+ arch/x86/boot/compressed/misc.c               |   6 +
+ arch/x86/boot/compressed/misc.h               |  10 +
+ arch/x86/boot/compressed/tdx-shared.c         |   2 +
+ arch/x86/coco/tdx/Makefile                    |   2 +-
+ arch/x86/coco/tdx/tdx-shared.c                |  71 ++++++
+ arch/x86/coco/tdx/tdx.c                       | 102 +-------
+ arch/x86/include/asm/efi.h                    |   2 +
+ arch/x86/include/asm/shared/tdx.h             |  53 +++++
+ arch/x86/include/asm/tdx.h                    |  19 --
+ arch/x86/include/asm/unaccepted_memory.h      |  24 ++
+ arch/x86/platform/efi/efi.c                   |   3 +
+ drivers/base/node.c                           |   7 +
+ drivers/firmware/efi/Kconfig                  |  14 ++
+ drivers/firmware/efi/Makefile                 |   1 +
+ drivers/firmware/efi/efi.c                    |  26 ++
+ drivers/firmware/efi/libstub/Makefile         |   2 +
+ drivers/firmware/efi/libstub/bitmap.c         |  41 ++++
+ drivers/firmware/efi/libstub/efistub.h        |   6 +
+ drivers/firmware/efi/libstub/find.c           |  43 ++++
+ .../firmware/efi/libstub/unaccepted_memory.c  | 222 ++++++++++++++++++
+ drivers/firmware/efi/libstub/x86-stub.c       |  39 +--
+ drivers/firmware/efi/unaccepted_memory.c      | 147 ++++++++++++
+ fs/proc/meminfo.c                             |   5 +
+ include/linux/efi.h                           |  13 +-
+ include/linux/mm.h                            |  19 ++
+ include/linux/mmzone.h                        |   8 +
+ mm/memblock.c                                 |   9 +
+ mm/mm_init.c                                  |   7 +
+ mm/page_alloc.c                               | 173 ++++++++++++++
+ mm/vmstat.c                                   |   3 +
+ 37 files changed, 1089 insertions(+), 148 deletions(-)
+ create mode 100644 arch/x86/boot/compressed/mem.c
+ create mode 100644 arch/x86/boot/compressed/tdx-shared.c
+ create mode 100644 arch/x86/coco/tdx/tdx-shared.c
+ create mode 100644 arch/x86/include/asm/unaccepted_memory.h
+ create mode 100644 drivers/firmware/efi/libstub/bitmap.c
+ create mode 100644 drivers/firmware/efi/libstub/find.c
+ create mode 100644 drivers/firmware/efi/libstub/unaccepted_memory.c
+ create mode 100644 drivers/firmware/efi/unaccepted_memory.c
+
 -- 
-2.39.2
+2.39.3
 
