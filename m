@@ -2,597 +2,156 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 383407255AD
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Jun 2023 09:28:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 947337255B1
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Jun 2023 09:29:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239267AbjFGH24 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 7 Jun 2023 03:28:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53062 "EHLO
+        id S239293AbjFGH3V (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 7 Jun 2023 03:29:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239203AbjFGH1d (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Jun 2023 03:27:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6111C2682;
-        Wed,  7 Jun 2023 00:25:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BFDD0636A4;
-        Wed,  7 Jun 2023 07:25:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66350C4339E;
-        Wed,  7 Jun 2023 07:25:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686122721;
-        bh=bDY2BJK5KLpNF4F9VGbdSrBwRx/fvDJnvG5G13zYe18=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jRhL5iPmu0lkVmVRlWhI01NHkfO7/YEeU3evpu66AuxODbwuH+sLbg8LlmSr53TNz
-         7qVb3ZJhFHUFzCSFZzAxvjDZLv/Wj6LEpDp/AHia6V7Ft6lw1/AntUl9Lf6LymGxn9
-         Ky333JYuM29mcm6XTmkRedBO52yK6Pjs8CDgzUCD3nQfvlJYwh+owKIKeNhQVQqxkr
-         S3Va4IDWjhA9BFFzF3rEdqwc0WH5vo7VDhI4uXvWWpPexbMy/eouGqgPbCo0o3Kzrh
-         pll7Mca0br46hLC53zuKu2GGligbIuGy8NaF2ek3rwq2FSE044uPDmjfuuot3VpQ9j
-         G7BfP2PX7nxIA==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-        Evgeniy Baskov <baskov@ispras.ru>,
-        Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Peter Jones <pjones@redhat.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Dave Young <dyoung@redhat.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH v5 20/20] x86/efistub: Avoid legacy decompressor when doing EFI boot
-Date:   Wed,  7 Jun 2023 09:23:42 +0200
-Message-Id: <20230607072342.4054036-21-ardb@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230607072342.4054036-1-ardb@kernel.org>
-References: <20230607072342.4054036-1-ardb@kernel.org>
+        with ESMTP id S238932AbjFGH2V (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Jun 2023 03:28:21 -0400
+Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EB3730DD
+        for <linux-efi@vger.kernel.org>; Wed,  7 Jun 2023 00:25:31 -0700 (PDT)
+Received: by mail-vs1-xe36.google.com with SMTP id ada2fe7eead31-43b3b30bd55so849546137.3
+        for <linux-efi@vger.kernel.org>; Wed, 07 Jun 2023 00:25:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686122730; x=1688714730;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZbZsMTtgivDoJEuH3IaNChHHrvk2Q0PtcwAfQDF1PA8=;
+        b=P+xL9+U37Z+N4Mg9/jK1h93OPPuF7gNd5e682jUXmulyGnYN7E2Lt1E0pV3vImjW6i
+         E+JGjPeeSkHP8lHcNLCr8FpcXhdFn63NHO3RRD9Uw58Rm8TX3nWeC0ypMRI7EQkHmcKg
+         kskP06M+dRD2l41gqVSq+ToUSy/qs/4jcme5Kw6bZbXm4ViBSiUP7+mcI667Q7ddZ3GF
+         h8Www7jgcJBNIIFrnpj8wOAzwHTqfKbAT+KMDzQjHnmfEzFOHVwF/QwwEjPzhHBoskeW
+         sshaKLWse0H+qPYbgIuRvS35+lpdvSzaAvxWmeStc+QJFjSiUQE8AViznEohsbl1zNBc
+         Tlxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686122730; x=1688714730;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZbZsMTtgivDoJEuH3IaNChHHrvk2Q0PtcwAfQDF1PA8=;
+        b=GPF3umicpD+7g33g/IUZ5corJvYmERawm++4Im+rUgSGT8Li1FhC6t1OuFlhDz0MGn
+         2KTrnuBSwQGIA8JbiP4a5xPJVeCNY1EOck5VpAp/208+/2exHEWqPwYU9QNLBNB9BiZe
+         I5J+Utv9sErNa1sxoeSYjr83ygAS0TiyUh3plG4Lr2AYGr/CkE4mDXOLpibutk1fmEdF
+         iAGQWaL78gXX8MHQHzMiXwUCDhV4v9MxSBQpLcfPNC1vSDFGN2q6I803DgLCov12Ehvb
+         /sCq0U8Xz+hkd3QPloCGtexY7FIkQSKHGCe35DXrOMCNGWrcvedUSPIT93o+W05MI3eT
+         kpqg==
+X-Gm-Message-State: AC+VfDzXj74w75bhyvIiFlzIkKr4dMJT1T/pzupLQqYveIBxAutLuxQD
+        6l6kdpUeW1LM6qo16vLqyv2IiNjcPAtCFmEtiDo0Vg==
+X-Google-Smtp-Source: ACHHUZ7lv+GHV6l5ITHPctjVPOJkZIdheJ4gOyp3YHUlRvjuZo0mxUxrjHyb3hadANufXU4xhlBUxp357jZhrj1AJB0=
+X-Received: by 2002:a67:bd09:0:b0:426:b2d8:17e9 with SMTP id
+ y9-20020a67bd09000000b00426b2d817e9mr634816vsq.20.1686122730438; Wed, 07 Jun
+ 2023 00:25:30 -0700 (PDT)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=18528; i=ardb@kernel.org; h=from:subject; bh=bDY2BJK5KLpNF4F9VGbdSrBwRx/fvDJnvG5G13zYe18=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIaXBoLbl2avzbWvP8PZ94bww3X1D1Nx9kSe93gpILvpez vQx2curo5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAExEv5KR4eCjZVeUHm9b0Mdf O0EnZr0YU7HVPr68O7+jprI+/KV1fDEjw8SNR83avZazPt16WzpX5uqRcyoFEZN+V/O6LdZn5Hn LzgcA
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230526010748.1222-1-masahisa.kojima@linaro.org>
+ <20230526010748.1222-4-masahisa.kojima@linaro.org> <0d3e0370-eb76-010f-3d30-9acc9b59645c@siemens.com>
+ <CAFA6WYPnWJNPvhT2JDkO-qXRUaJoxBGZEvSfhxcRynV7=VSdQA@mail.gmail.com>
+ <CAMj1kXFM45PCTU--+CCed6Cq_N5XqDG6tTu6fnQTSCpW2BWA5A@mail.gmail.com>
+ <4ff09002-e871-38b9-43ec-227a64bac731@siemens.com> <CAC_iWjJJ5E9Q1or5yTiDynzv_WAYH-g+N24aRdu9rvcsbWqnrg@mail.gmail.com>
+In-Reply-To: <CAC_iWjJJ5E9Q1or5yTiDynzv_WAYH-g+N24aRdu9rvcsbWqnrg@mail.gmail.com>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Wed, 7 Jun 2023 12:55:19 +0530
+Message-ID: <CAFA6WYNFYB1LiOFB_iwTsdD5PmnDdSbtDSH2J4FVFPx3uik8rQ@mail.gmail.com>
+Subject: Re: [PATCH v5 3/3] efi: Add tee-based EFI variable driver
+To:     Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc:     Jan Kiszka <jan.kiszka@siemens.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Masahisa Kojima <masahisa.kojima@linaro.org>,
+        Jens Wiklander <jens.wiklander@linaro.org>,
+        linux-kernel@vger.kernel.org, op-tee@lists.trustedfirmware.org,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        linux-efi@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        "Su, Bao Cheng (RC-CN DF FA R&D)" <baocheng.su@siemens.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The bare metal decompressor code was never really intended to run in a
-hosted environment such as the EFI boot services, and does a few things
-that are problematic in the context of EFI boot now that the logo
-requirements are getting tighter.
+Hi Ilias,
 
-In particular, the decompressor moves its own executable image around in
-memory, and relies on demand paging to populate the identity mappings,
-and these things are difficult to support in a context where memory is
-not permitted to be mapped writable and executable at the same time or,
-at the very least, is mapped non-executable by default, and needs
-special treatment for this restriction to be lifted.
+On Wed, 7 Jun 2023 at 12:05, Ilias Apalodimas
+<ilias.apalodimas@linaro.org> wrote:
+>
+> Hi Jan,
+>
+> [...]
+>
+> > >>>>
+> > > ...
+> > >>>
+> > >>> I think we have a probe ordering issue with this driver:
+> > >>> efivarfs_fill_super() may be called before the TEE bus was probed, thus
+> > >>> with the default efivar ops still registered. And that means
+> > >>> efivar_supports_writes() will return false, and the fs declares itself
+> > >>> as readonly. I've seen systemd mounting it r/o initialling, and you need
+> > >>> to remount the fs to enable writability.
+> > >>>
+> > >>> Is there anything that could be done to re-order things reliably, probe
+> > >>> the tee bus earlier etc.?
+> > >>
+> > >> This driver has a dependency on user-space daemon: tee-supplicant to
+> > >> be running for RPMB access. So once you start that daemon the
+> > >> corresponding device will be enumerated on the TEE bus and this driver
+> > >> probe will be invoked. So I would suggest you to load this daemon very
+> > >> early in the boot process or better to make it a part of initramfs.
+> > >>
+> > >
+> > > That is not the point, really.
+> > >
+> > > If this dependency exists, the code should be aware of that, and made
+> > > to work correctly in spite of it. Requiring a module to be part of
+> > > initramfs is not a reasonable fix.
+> >
+> > In fact, I've tested a non-modularized build as well, just to exclude
+> > that issue. The daemon dependency is more likely the problem here.
+> >
+> > >
+> > > IIUC, this also means that the efivar ops are updated while there is
+> > > already a client. This seems less than ideal as well
+>
+> As Sumit pointed out, the 'device' won't be available from OP-TEE
+> until the supplicant is up and running and as a result, the module
+> _probe() function won't run.  Unfortunately, this isn't something we
+> can avoid since the supplicant is responsible for the RPMB writes.
+> The only thing I can think of is moving parts of the supplicant to the
+> kernel and wiring up the RPC calls for reading/writing data to the
+> eMMC subsystem.  There was another discussion here [0] requesting the
+> same thing for different reasons. But unless I am missing something
+> this won't solve the problem completely either.  You still have a
+> timing dependency of "when did the RT callbacks change" -- "when was
+> my efivarfs mounted".
 
-Since EFI already maps all of memory 1:1, it is unnecessary to create
-new page tables or handle page faults when decompressing the kernel.
-That means there is also no need to replace the special exception
-handlers for SEV. Generally, there is little need to do anything that
-the decompressor does beyond
+With the RPMB writes wired through the kernel [1], the only dependency
+left is when do you load the tee-stmm-efi driver to have real EFI
+runtime variables support. IMO, tee-stmm-efi driver should be built-in
+to support systems without initramfs. The distro installers may choose
+to bundle it in initramfs. Do you still see a timing dependency with
+this approach?
 
-- initialize SEV encryption, if needed,
-- perform the 4/5 level paging switch, if needed,
-- decompress the kernel
-- relocate the kernel
+[1] Of Course here we need the eMMC and TEE/OPTEE drivers to be built-in too.
 
-So do all of this from the EFI stub code, and avoid the bare metal
-decompressor altogether.
+-Sumit
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/x86/boot/compressed/Makefile       |   5 +
- arch/x86/boot/compressed/efi_mixed.S    |  55 -------
- arch/x86/boot/compressed/head_32.S      |  13 --
- arch/x86/boot/compressed/head_64.S      |  27 ----
- arch/x86/include/asm/efi.h              |   7 +-
- arch/x86/include/asm/sev.h              |   2 +
- drivers/firmware/efi/libstub/x86-stub.c | 167 +++++++++-----------
- 7 files changed, 84 insertions(+), 192 deletions(-)
-
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index b13a580210867ffb..535608fe72e11265 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -74,6 +74,11 @@ LDFLAGS_vmlinux += -z noexecstack
- ifeq ($(CONFIG_LD_IS_BFD),y)
- LDFLAGS_vmlinux += $(call ld-option,--no-warn-rwx-segments)
- endif
-+ifeq ($(CONFIG_EFI_STUB),y)
-+# ensure that the static EFI stub library will be pulled in, even if it is
-+# never referenced explicitly from the startup code
-+LDFLAGS_vmlinux += -u efi_pe_entry
-+endif
- LDFLAGS_vmlinux += -T
- 
- hostprogs	:= mkpiggy
-diff --git a/arch/x86/boot/compressed/efi_mixed.S b/arch/x86/boot/compressed/efi_mixed.S
-index 8a02a151806df14c..f4e22ef774ab6b4a 100644
---- a/arch/x86/boot/compressed/efi_mixed.S
-+++ b/arch/x86/boot/compressed/efi_mixed.S
-@@ -269,10 +269,6 @@ SYM_FUNC_START_LOCAL(efi32_entry)
- 	jmp	startup_32
- SYM_FUNC_END(efi32_entry)
- 
--#define ST32_boottime		60 // offsetof(efi_system_table_32_t, boottime)
--#define BS32_handle_protocol	88 // offsetof(efi_boot_services_32_t, handle_protocol)
--#define LI32_image_base		32 // offsetof(efi_loaded_image_32_t, image_base)
--
- /*
-  * efi_status_t efi32_pe_entry(efi_handle_t image_handle,
-  *			       efi_system_table_32_t *sys_table)
-@@ -280,8 +276,6 @@ SYM_FUNC_END(efi32_entry)
- SYM_FUNC_START(efi32_pe_entry)
- 	pushl	%ebp
- 	movl	%esp, %ebp
--	pushl	%eax				// dummy push to allocate loaded_image
--
- 	pushl	%ebx				// save callee-save registers
- 	pushl	%edi
- 
-@@ -290,48 +284,8 @@ SYM_FUNC_START(efi32_pe_entry)
- 	movl	$0x80000003, %eax		// EFI_UNSUPPORTED
- 	jnz	2f
- 
--	call	1f
--1:	pop	%ebx
--
--	/* Get the loaded image protocol pointer from the image handle */
--	leal	-4(%ebp), %eax
--	pushl	%eax				// &loaded_image
--	leal	(loaded_image_proto - 1b)(%ebx), %eax
--	pushl	%eax				// pass the GUID address
--	pushl	8(%ebp)				// pass the image handle
--
--	/*
--	 * Note the alignment of the stack frame.
--	 *   sys_table
--	 *   handle             <-- 16-byte aligned on entry by ABI
--	 *   return address
--	 *   frame pointer
--	 *   loaded_image       <-- local variable
--	 *   saved %ebx		<-- 16-byte aligned here
--	 *   saved %edi
--	 *   &loaded_image
--	 *   &loaded_image_proto
--	 *   handle             <-- 16-byte aligned for call to handle_protocol
--	 */
--
--	movl	12(%ebp), %eax			// sys_table
--	movl	ST32_boottime(%eax), %eax	// sys_table->boottime
--	call	*BS32_handle_protocol(%eax)	// sys_table->boottime->handle_protocol
--	addl	$12, %esp			// restore argument space
--	testl	%eax, %eax
--	jnz	2f
--
- 	movl	8(%ebp), %ecx			// image_handle
- 	movl	12(%ebp), %edx			// sys_table
--	movl	-4(%ebp), %esi			// loaded_image
--	movl	LI32_image_base(%esi), %esi	// loaded_image->image_base
--	leal	(startup_32 - 1b)(%ebx), %ebp	// runtime address of startup_32
--	/*
--	 * We need to set the image_offset variable here since startup_32() will
--	 * use it before we get to the 64-bit efi_pe_entry() in C code.
--	 */
--	subl	%esi, %ebp			// calculate image_offset
--	movl	%ebp, (image_offset - 1b)(%ebx)	// save image_offset
- 	xorl	%esi, %esi
- 	jmp	efi32_entry			// pass %ecx, %edx, %esi
- 						// no other registers remain live
-@@ -350,15 +304,6 @@ SYM_FUNC_START_NOALIGN(efi64_stub_entry)
- SYM_FUNC_END(efi64_stub_entry)
- #endif
- 
--	.section ".rodata"
--	/* EFI loaded image protocol GUID */
--	.balign 4
--SYM_DATA_START_LOCAL(loaded_image_proto)
--	.long	0x5b1b31a1
--	.word	0x9562, 0x11d2
--	.byte	0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b
--SYM_DATA_END(loaded_image_proto)
--
- 	.data
- 	.balign	8
- SYM_DATA_START_LOCAL(efi32_boot_gdt)
-diff --git a/arch/x86/boot/compressed/head_32.S b/arch/x86/boot/compressed/head_32.S
-index beee858058df4403..cd9587fcd5084f22 100644
---- a/arch/x86/boot/compressed/head_32.S
-+++ b/arch/x86/boot/compressed/head_32.S
-@@ -84,19 +84,6 @@ SYM_FUNC_START(startup_32)
- 
- #ifdef CONFIG_RELOCATABLE
- 	leal	startup_32@GOTOFF(%edx), %ebx
--
--#ifdef CONFIG_EFI_STUB
--/*
-- * If we were loaded via the EFI LoadImage service, startup_32() will be at an
-- * offset to the start of the space allocated for the image. efi_pe_entry() will
-- * set up image_offset to tell us where the image actually starts, so that we
-- * can use the full available buffer.
-- *	image_offset = startup_32 - image_base
-- * Otherwise image_offset will be zero and has no effect on the calculations.
-- */
--	subl    image_offset@GOTOFF(%edx), %ebx
--#endif
--
- 	movl	BP_kernel_alignment(%esi), %eax
- 	decl	%eax
- 	addl    %eax, %ebx
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index 556ee504325ae50e..1027e28ced8f2d52 100644
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -146,19 +146,6 @@ SYM_FUNC_START(startup_32)
- 
- #ifdef CONFIG_RELOCATABLE
- 	movl	%ebp, %ebx
--
--#ifdef CONFIG_EFI_STUB
--/*
-- * If we were loaded via the EFI LoadImage service, startup_32 will be at an
-- * offset to the start of the space allocated for the image. efi_pe_entry will
-- * set up image_offset to tell us where the image actually starts, so that we
-- * can use the full available buffer.
-- *	image_offset = startup_32 - image_base
-- * Otherwise image_offset will be zero and has no effect on the calculations.
-- */
--	subl    rva(image_offset)(%ebp), %ebx
--#endif
--
- 	movl	BP_kernel_alignment(%esi), %eax
- 	decl	%eax
- 	addl	%eax, %ebx
-@@ -335,20 +322,6 @@ SYM_CODE_START(startup_64)
- 	/* Start with the delta to where the kernel will run at. */
- #ifdef CONFIG_RELOCATABLE
- 	leaq	startup_32(%rip) /* - $startup_32 */, %rbp
--
--#ifdef CONFIG_EFI_STUB
--/*
-- * If we were loaded via the EFI LoadImage service, startup_32 will be at an
-- * offset to the start of the space allocated for the image. efi_pe_entry will
-- * set up image_offset to tell us where the image actually starts, so that we
-- * can use the full available buffer.
-- *	image_offset = startup_32 - image_base
-- * Otherwise image_offset will be zero and has no effect on the calculations.
-- */
--	movl    image_offset(%rip), %eax
--	subq	%rax, %rbp
--#endif
--
- 	movl	BP_kernel_alignment(%rsi), %eax
- 	decl	%eax
- 	addq	%rax, %rbp
-diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index 8b4be7cecdb8eb73..b0994ae3bc23f84d 100644
---- a/arch/x86/include/asm/efi.h
-+++ b/arch/x86/include/asm/efi.h
-@@ -90,6 +90,8 @@ static inline void efi_fpu_end(void)
- }
- 
- #ifdef CONFIG_X86_32
-+#define EFI_X86_KERNEL_ALLOC_LIMIT		(SZ_512M - 1)
-+
- #define arch_efi_call_virt_setup()					\
- ({									\
- 	efi_fpu_begin();						\
-@@ -103,8 +105,7 @@ static inline void efi_fpu_end(void)
- })
- 
- #else /* !CONFIG_X86_32 */
--
--#define EFI_LOADER_SIGNATURE	"EL64"
-+#define EFI_X86_KERNEL_ALLOC_LIMIT		EFI_ALLOC_LIMIT
- 
- extern asmlinkage u64 __efi_call(void *fp, ...);
- 
-@@ -218,6 +219,8 @@ efi_status_t efi_set_virtual_address_map(unsigned long memory_map_size,
- 
- #ifdef CONFIG_EFI_MIXED
- 
-+#define EFI_ALLOC_LIMIT		(efi_is_64bit() ? ULONG_MAX : U32_MAX)
-+
- #define ARCH_HAS_EFISTUB_WRAPPERS
- 
- static inline bool efi_is_64bit(void)
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 081c39b0e8d0d208..2cc2ef57e1241a87 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -161,6 +161,7 @@ static __always_inline void sev_es_nmi_complete(void)
- 		__sev_es_nmi_complete();
- }
- extern int __init sev_es_efi_map_ghcbs(pgd_t *pgd);
-+extern void sev_enable(struct boot_params *bp);
- 
- static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigned long attrs)
- {
-@@ -215,6 +216,7 @@ static inline void sev_es_ist_exit(void) { }
- static inline int sev_es_setup_ap_jump_table(struct real_mode_header *rmh) { return 0; }
- static inline void sev_es_nmi_complete(void) { }
- static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
-+static inline void sev_enable(struct boot_params *bp) { }
- static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate) { return 0; }
- static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigned long attrs) { return 0; }
- static inline void setup_ghcb(void) { }
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 1015ef883f5850a4..ae1a9b4c1af6191f 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -15,17 +15,14 @@
- #include <asm/setup.h>
- #include <asm/desc.h>
- #include <asm/boot.h>
-+#include <asm/kaslr.h>
- #include <asm/sev.h>
- 
- #include "efistub.h"
- #include "x86-stub.h"
- 
--/* Maximum physical address for 64-bit kernel with 4-level paging */
--#define MAXMEM_X86_64_4LEVEL (1ull << 46)
--
- const efi_system_table_t *efi_system_table;
- const efi_dxe_services_table_t *efi_dxe_table;
--u32 image_offset __section(".data");
- static efi_loaded_image_t *image = NULL;
- static efi_memory_attribute_protocol_t *memattr;
- 
-@@ -287,28 +284,6 @@ void efi_adjust_memory_range_protection(unsigned long start,
- 	}
- }
- 
--void startup_32(struct boot_params *boot_params);
--
--static void
--setup_memory_protection(unsigned long image_base, unsigned long image_size)
--{
--#ifdef CONFIG_64BIT
--	if (image_base != (unsigned long)startup_32)
--		efi_adjust_memory_range_protection(image_base, image_size);
--#else
--	/*
--	 * Clear protection flags on a whole range of possible
--	 * addresses used for KASLR. We don't need to do that
--	 * on x86_64, since KASLR/extraction is performed after
--	 * dedicated identity page tables are built and we only
--	 * need to remove possible protection on relocated image
--	 * itself disregarding further relocations.
--	 */
--	efi_adjust_memory_range_protection(LOAD_PHYSICAL_ADDR,
--					   KERNEL_IMAGE_SIZE - LOAD_PHYSICAL_ADDR);
--#endif
--}
--
- static void setup_unaccepted_memory(void)
- {
- 	efi_guid_t mem_acceptance_proto = OVMF_SEV_MEMORY_ACCEPTANCE_PROTOCOL_GUID;
-@@ -334,9 +309,7 @@ static void setup_unaccepted_memory(void)
- 
- static const efi_char16_t apple[] = L"Apple";
- 
--static void setup_quirks(struct boot_params *boot_params,
--			 unsigned long image_base,
--			 unsigned long image_size)
-+static void setup_quirks(struct boot_params *boot_params)
- {
- 	efi_char16_t *fw_vendor = (efi_char16_t *)(unsigned long)
- 		efi_table_attr(efi_system_table, fw_vendor);
-@@ -345,9 +318,6 @@ static void setup_quirks(struct boot_params *boot_params,
- 		if (IS_ENABLED(CONFIG_APPLE_PROPERTIES))
- 			retrieve_apple_device_properties(boot_params);
- 	}
--
--	if (IS_ENABLED(CONFIG_EFI_DXE_MEM_ATTRIBUTES))
--		setup_memory_protection(image_base, image_size);
- }
- 
- /*
-@@ -500,7 +470,6 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 	}
- 
- 	image_base = efi_table_attr(image, image_base);
--	image_offset = (void *)startup_32 - image_base;
- 
- 	status = efi_allocate_pages(sizeof(struct boot_params),
- 				    (unsigned long *)&boot_params, ULONG_MAX);
-@@ -804,6 +773,61 @@ static bool have_unsupported_snp_features(void)
- 	return false;
- }
- 
-+static void efi_get_seed(void *seed, int size)
-+{
-+	efi_get_random_bytes(size, seed);
-+
-+	/*
-+	 * This only updates seed[0] when running on 32-bit, but in that case,
-+	 * seed[1] is not used anyway, as there is no virtual KASLR on 32-bit.
-+	 */
-+	*(unsigned long *)seed ^= kaslr_get_random_long("EFI");
-+}
-+
-+static void error(char *str)
-+{
-+	efi_warn("Decompression failed: %s\n", str);
-+}
-+
-+static efi_status_t efi_decompress_kernel(unsigned long *kernel_entry)
-+{
-+	unsigned long virt_addr = LOAD_PHYSICAL_ADDR;
-+	unsigned long addr, alloc_size, entry;
-+	efi_status_t status;
-+	u32 seed[2] = {};
-+
-+	/* determine the required size of the allocation */
-+	alloc_size = ALIGN(max((unsigned long)output_len, kernel_total_size),
-+			   MIN_KERNEL_ALIGN);
-+
-+	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE) && !efi_nokaslr) {
-+		u64 range = KERNEL_IMAGE_SIZE - LOAD_PHYSICAL_ADDR - kernel_total_size;
-+
-+		efi_get_seed(seed, sizeof(seed));
-+
-+		virt_addr += (range * seed[1]) >> 32;
-+		virt_addr &= ~(CONFIG_PHYSICAL_ALIGN - 1);
-+	}
-+
-+	status = efi_random_alloc(alloc_size, CONFIG_PHYSICAL_ALIGN, &addr,
-+				  seed[0], EFI_LOADER_CODE,
-+				  EFI_X86_KERNEL_ALLOC_LIMIT);
-+	if (status != EFI_SUCCESS)
-+		return status;
-+
-+	entry = decompress_kernel((void *)addr, virt_addr, error);
-+	if (entry == ULONG_MAX) {
-+		efi_free(alloc_size, addr);
-+		return EFI_LOAD_ERROR;
-+	}
-+
-+	*kernel_entry = addr + entry;
-+
-+	efi_adjust_memory_range_protection(addr, kernel_total_size);
-+
-+	return EFI_SUCCESS;
-+}
-+
- static void __noreturn enter_kernel(unsigned long kernel_addr,
- 				    struct boot_params *boot_params)
- {
-@@ -823,10 +847,9 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
- 			       struct boot_params *boot_params)
- {
- 	efi_guid_t guid = EFI_MEMORY_ATTRIBUTE_PROTOCOL_GUID;
--	unsigned long bzimage_addr = (unsigned long)startup_32;
--	unsigned long buffer_start, buffer_end;
- 	struct setup_header *hdr = &boot_params->hdr;
- 	const struct linux_efi_initrd *initrd = NULL;
-+	unsigned long kernel_entry;
- 	efi_status_t status;
- 
- 	efi_system_table = sys_table_arg;
-@@ -855,60 +878,6 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
- 		goto fail;
- 	}
- 
--	/*
--	 * If the kernel isn't already loaded at a suitable address,
--	 * relocate it.
--	 *
--	 * It must be loaded above LOAD_PHYSICAL_ADDR.
--	 *
--	 * The maximum address for 64-bit is 1 << 46 for 4-level paging. This
--	 * is defined as the macro MAXMEM, but unfortunately that is not a
--	 * compile-time constant if 5-level paging is configured, so we instead
--	 * define our own macro for use here.
--	 *
--	 * For 32-bit, the maximum address is complicated to figure out, for
--	 * now use KERNEL_IMAGE_SIZE, which will be 512MiB, the same as what
--	 * KASLR uses.
--	 *
--	 * Also relocate it if image_offset is zero, i.e. the kernel wasn't
--	 * loaded by LoadImage, but rather by a bootloader that called the
--	 * handover entry. The reason we must always relocate in this case is
--	 * to handle the case of systemd-boot booting a unified kernel image,
--	 * which is a PE executable that contains the bzImage and an initrd as
--	 * COFF sections. The initrd section is placed after the bzImage
--	 * without ensuring that there are at least init_size bytes available
--	 * for the bzImage, and thus the compressed kernel's startup code may
--	 * overwrite the initrd unless it is moved out of the way.
--	 */
--
--	buffer_start = ALIGN(bzimage_addr - image_offset,
--			     hdr->kernel_alignment);
--	buffer_end = buffer_start + hdr->init_size;
--
--	if ((buffer_start < LOAD_PHYSICAL_ADDR)				     ||
--	    (IS_ENABLED(CONFIG_X86_32) && buffer_end > KERNEL_IMAGE_SIZE)    ||
--	    (IS_ENABLED(CONFIG_X86_64) && buffer_end > MAXMEM_X86_64_4LEVEL) ||
--	    (image_offset == 0)) {
--		extern char _bss[];
--
--		status = efi_relocate_kernel(&bzimage_addr,
--					     (unsigned long)_bss - bzimage_addr,
--					     hdr->init_size,
--					     hdr->pref_address,
--					     hdr->kernel_alignment,
--					     LOAD_PHYSICAL_ADDR);
--		if (status != EFI_SUCCESS) {
--			efi_err("efi_relocate_kernel() failed!\n");
--			goto fail;
--		}
--		/*
--		 * Now that we've copied the kernel elsewhere, we no longer
--		 * have a set up block before startup_32(), so reset image_offset
--		 * to zero in case it was set earlier.
--		 */
--		image_offset = 0;
--	}
--
- #ifdef CONFIG_CMDLINE_BOOL
- 	status = efi_parse_options(CONFIG_CMDLINE);
- 	if (status != EFI_SUCCESS) {
-@@ -926,6 +895,12 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
- 		}
- 	}
- 
-+	status = efi_decompress_kernel(&kernel_entry);
-+	if (status != EFI_SUCCESS) {
-+		efi_err("Failed to decompress kernel\n");
-+		goto fail;
-+	}
-+
- 	/*
- 	 * At this point, an initrd may already have been loaded by the
- 	 * bootloader and passed via bootparams. We permit an initrd loaded
-@@ -965,7 +940,7 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
- 
- 	setup_efi_pci(boot_params);
- 
--	setup_quirks(boot_params, bzimage_addr, buffer_end - buffer_start);
-+	setup_quirks(boot_params);
- 
- 	setup_unaccepted_memory();
- 
-@@ -975,13 +950,15 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
- 		goto fail;
- 	}
- 
-+	/*
-+	 * Call the SEV init code while still running with the firmware's
-+	 * GDT/IDT, so #VC exceptions will be handled by EFI.
-+	 */
-+	sev_enable(boot_params);
-+
- 	efi_5level_switch();
- 
--	if (IS_ENABLED(CONFIG_X86_64))
--		/* add offset of startup_64() */
--		bzimage_addr += 0x200;
--
--	enter_kernel(bzimage_addr, boot_params);
-+	enter_kernel(kernel_entry, boot_params);
- fail:
- 	efi_err("efi_stub_entry() failed!\n");
- 
--- 
-2.39.2
-
+>
+> Thanks
+> /Ilias
+> >
+> > Jan
+> >
+> > --
+> > Siemens AG, Technology
+> > Competence Center Embedded Linux
+> >
