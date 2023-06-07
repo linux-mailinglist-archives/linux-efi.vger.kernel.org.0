@@ -2,66 +2,51 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FBE27266A4
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Jun 2023 18:59:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7D927266E8
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Jun 2023 19:14:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231370AbjFGQ74 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 7 Jun 2023 12:59:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43312 "EHLO
+        id S229543AbjFGROg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 7 Jun 2023 13:14:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231540AbjFGQ7z (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Jun 2023 12:59:55 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4752F1FC2
-        for <linux-efi@vger.kernel.org>; Wed,  7 Jun 2023 09:59:53 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-4f61d79b0f2so5786805e87.3
-        for <linux-efi@vger.kernel.org>; Wed, 07 Jun 2023 09:59:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686157191; x=1688749191;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LLY9pthUsOsEPzKKvqRJ7kCrdTYXZkQOTiug7HLE8p8=;
-        b=I+gOd0gPwWKhTLbTjPB76SWjzahTOupD/P8w/mO66MVdVZAZ+JOn/p3nxPag3vtUcU
-         pATMJJEi2Uy+kecJJAGfD1IJPejO4yBvaB3JTuf1E6RMHClZLEE+OT7Nv5WvDunQnafg
-         Wy1UhhRPvjavJ+Wnjtc++7IOmk+jG0uKHFonkjSvIp4QgO+ULZsgSobhZcFyLoDctWSd
-         RD1ssRKEbzMt9Z0DjALp0evngZ99GNVBiUxecsz75Gtt8hbNdS40VHcq9kUJDPnuUIEw
-         4+tGnHw4iA8xX83FBZmV7l0JM51q9hnxHDL6vd6elYqnbdM1hl00PepY5Xmm30mqJrPT
-         e2xQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686157191; x=1688749191;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LLY9pthUsOsEPzKKvqRJ7kCrdTYXZkQOTiug7HLE8p8=;
-        b=CuDNTIXv8ftv194aYCXPxdIm+6hOE73J0P9ydzQgE105Qn7fdxNhbMQdyjESpoXUK7
-         Om/fFurt4Ch6lLt35cc5bz52DdjeHuqiaJRBTZHlMIzN+pNBVv6+ybZpVO3pvDTFcWDI
-         8fj43BGtAXNVplkyI3lj/+VlbrCKd0KVxjeRdL37XrZbq1gr/vr4AqDhrVsNF0BwZFWx
-         9LdOoMfHX/XEFICy+MLQdXR7fvJL3NMDBnRXPs0m6kIO3m9E2+ZD2cifRjFHRGpbbQ2n
-         K6RJ6tyzpSKxOFLxjKzptOv7w4qc941wZQHryZdPrq6z0N3P1xLAo5LpMpiJyll7mXBr
-         Rb7A==
-X-Gm-Message-State: AC+VfDwLLfmFMk40jnv+OaMcj4PJHNkUpzv81/aCQGbEAOKpWtABRiP4
-        CQk2Xm0RS/xNPlJ08AX0MuCOQWtgHoA6rwalNjxGFQ==
-X-Google-Smtp-Source: ACHHUZ4Rc5Rsr6k6Ls3OGtxDM47v2hGd94D892+CN1XUSJGij41Iyu5wXDLsaSU9jL9ClaRH+hc3TkWl6EanS8jb2mA=
-X-Received: by 2002:a05:651c:1059:b0:2b1:a3ce:b709 with SMTP id
- x25-20020a05651c105900b002b1a3ceb709mr2582005ljm.39.1686157191438; Wed, 07
- Jun 2023 09:59:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230526010748.1222-1-masahisa.kojima@linaro.org>
- <20230526010748.1222-4-masahisa.kojima@linaro.org> <0d3e0370-eb76-010f-3d30-9acc9b59645c@siemens.com>
- <CAFA6WYPnWJNPvhT2JDkO-qXRUaJoxBGZEvSfhxcRynV7=VSdQA@mail.gmail.com>
- <CAMj1kXFM45PCTU--+CCed6Cq_N5XqDG6tTu6fnQTSCpW2BWA5A@mail.gmail.com>
- <4ff09002-e871-38b9-43ec-227a64bac731@siemens.com> <CAC_iWjJJ5E9Q1or5yTiDynzv_WAYH-g+N24aRdu9rvcsbWqnrg@mail.gmail.com>
- <CAFA6WYNFYB1LiOFB_iwTsdD5PmnDdSbtDSH2J4FVFPx3uik8rQ@mail.gmail.com>
- <CAC_iWj+E7-XK6dCeSn4205K0O3EZCLxCaC+adu-14ST6sdudfA@mail.gmail.com>
- <76da826f-b608-6add-5401-6de818b180e3@siemens.com> <CAFA6WYPCDRjFzsUMU=SNzEt88nT7Fcm1eOFL8z4HiQO+=2JeVA@mail.gmail.com>
- <cc6bd203-83ea-c247-0986-7fec6f327ee8@siemens.com> <CAC_iWjKZNHJxq4VMFnV7oQngwBBCQveh=s34u1LZ59YUqViPbw@mail.gmail.com>
-In-Reply-To: <CAC_iWjKZNHJxq4VMFnV7oQngwBBCQveh=s34u1LZ59YUqViPbw@mail.gmail.com>
-From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date:   Wed, 7 Jun 2023 19:59:15 +0300
-Message-ID: <CAC_iWjJMv68yLC606SBhMmBYkR4wVC8SvUcPvNM=RX_qL=9Bvw@mail.gmail.com>
+        with ESMTP id S229514AbjFGROf (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Jun 2023 13:14:35 -0400
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2066.outbound.protection.outlook.com [40.107.22.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 183E8192;
+        Wed,  7 Jun 2023 10:14:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kG1TYsNyYJKFDm+FKP41Ig1GIh18TCFDYcIqzwxzFpRTNpVzdeQsw5/RR9h/fw5GZCyLbozoV5CWsmcAGZpMEmLUN/j+yvw1ruj5LtJnXyF7BwdoOoGTaOCx03xZpEytSavGj4DfbHamhG3wTLqloG5D4y0tGNm+xInX9CcymILlz0Nrxjl9wwzPJjSn4mUwRSGFqIImAtMC2l9bk7aPdGZw3Wn7Bw9wgr9kyoBmP5+MObxtJhFZhnBmEoi42997I71BbAQZgnVK7K0+y3LpjZSSM0psMDJiO1MUW4itXKc+2LT0UMIRg+kjIg6JfpZiUFE3GtaA3TdzVFu+2gJ8ZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vwizh+0ZHSZc1pqwnxtdUtOpHtwHULwh5M2qCmXOQFk=;
+ b=RGcaE26ZZRsJK97VtTqe4Jx6xUS1edHvpEoWi7tnrwHBZQunwp9rvCY8+dhLcNVBn9kfWDnPXeL5uQdNx0kmXYEpQjDwQapH2K63hQFBeICuQeaiaaLrwOFy46EfewxiYBLpSh9ZhP72doLNvfB/+nol5s0UNAXA+TCy391FgMLU7EDiRqAI1EzKtXmg/Vnjw8Rg4lVjXtZr1vjFqC0mzrRsW/ss4T20j+bjo07elph7WIHD7TTuXsWR0uhlKlAc6tOjqoyAO42DRRLG1b8Qu1aIxs8V1FT1mJ42f34cUBtjX4Of68FSLyS5N+127MkqKdhRFwa/MtZXa5vFDdV4KA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=siemens.com; dmarc=pass action=none header.from=siemens.com;
+ dkim=pass header.d=siemens.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=siemens.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vwizh+0ZHSZc1pqwnxtdUtOpHtwHULwh5M2qCmXOQFk=;
+ b=csGg/IPB5TGThuAqLVltlBDTq9OfDO3HGFQIyURyjzqHAemA+lQBq53m2uWO5QT3qaziRCBZGTLTZD05Ve85RO/8/vM45GllMh8ovkyp3vLSRpbSTt7tLHIlCFdMmAdd9dQfzrUGBmWuFGg1qI6K3kpSEKkBeieM9V5c+XQTf8BJ+l1hr37IZpOcmddLrxZoFK9yTdRUwwe2wonrCT4Ip9GgyVXaNp4x3vdrwt8+pIQMJAFBkOr7rr0Dx5xxH3kH0E/3PWrQm0gb04X/pvP4BsmqOx/BfEZ21tibclpDwGEqaAx8nb0AZzNNv2U3+bgjhkurkZiFN7NJm2QRZMlEZw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=siemens.com;
+Received: from GV2PR10MB6186.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:150:76::15)
+ by VI1PR10MB3485.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:800:13f::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.32; Wed, 7 Jun
+ 2023 17:14:31 +0000
+Received: from GV2PR10MB6186.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::2d4a:d8d:d625:952c]) by GV2PR10MB6186.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::2d4a:d8d:d625:952c%3]) with mapi id 15.20.6455.030; Wed, 7 Jun 2023
+ 17:14:31 +0000
+Message-ID: <b9b8c1d3-fc8e-df94-d12b-a9e3debf3418@siemens.com>
+Date:   Wed, 7 Jun 2023 19:14:27 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
 Subject: Re: [PATCH v5 3/3] efi: Add tee-based EFI variable driver
-To:     Jan Kiszka <jan.kiszka@siemens.com>
+Content-Language: en-US
+To:     Ilias Apalodimas <ilias.apalodimas@linaro.org>
 Cc:     Sumit Garg <sumit.garg@linaro.org>,
         Ard Biesheuvel <ardb@kernel.org>,
         Masahisa Kojima <masahisa.kojima@linaro.org>,
@@ -74,131 +59,151 @@ Cc:     Sumit Garg <sumit.garg@linaro.org>,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org,
         "Su, Bao Cheng (RC-CN DF FA R&D)" <baocheng.su@siemens.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230526010748.1222-1-masahisa.kojima@linaro.org>
+ <20230526010748.1222-4-masahisa.kojima@linaro.org>
+ <0d3e0370-eb76-010f-3d30-9acc9b59645c@siemens.com>
+ <CAFA6WYPnWJNPvhT2JDkO-qXRUaJoxBGZEvSfhxcRynV7=VSdQA@mail.gmail.com>
+ <CAMj1kXFM45PCTU--+CCed6Cq_N5XqDG6tTu6fnQTSCpW2BWA5A@mail.gmail.com>
+ <4ff09002-e871-38b9-43ec-227a64bac731@siemens.com>
+ <CAC_iWjJJ5E9Q1or5yTiDynzv_WAYH-g+N24aRdu9rvcsbWqnrg@mail.gmail.com>
+ <CAFA6WYNFYB1LiOFB_iwTsdD5PmnDdSbtDSH2J4FVFPx3uik8rQ@mail.gmail.com>
+ <CAC_iWj+E7-XK6dCeSn4205K0O3EZCLxCaC+adu-14ST6sdudfA@mail.gmail.com>
+ <76da826f-b608-6add-5401-6de818b180e3@siemens.com>
+ <CAFA6WYPCDRjFzsUMU=SNzEt88nT7Fcm1eOFL8z4HiQO+=2JeVA@mail.gmail.com>
+ <cc6bd203-83ea-c247-0986-7fec6f327ee8@siemens.com>
+ <CAC_iWjKZNHJxq4VMFnV7oQngwBBCQveh=s34u1LZ59YUqViPbw@mail.gmail.com>
+ <CAC_iWjJMv68yLC606SBhMmBYkR4wVC8SvUcPvNM=RX_qL=9Bvw@mail.gmail.com>
+From:   Jan Kiszka <jan.kiszka@siemens.com>
+In-Reply-To: <CAC_iWjJMv68yLC606SBhMmBYkR4wVC8SvUcPvNM=RX_qL=9Bvw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR3P281CA0070.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:4b::22) To GV2PR10MB6186.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:150:76::15)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR10MB6186:EE_|VI1PR10MB3485:EE_
+X-MS-Office365-Filtering-Correlation-Id: c9d58ab4-a036-4f14-6243-08db677aa86c
+X-LD-Processed: 38ae3bcd-9579-4fd4-adda-b42e1495d55a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: uQetXZ/XKeVgWZc0QhJY38XRvLNL7yDh1EyM+xCuDveAPhPbcX9ZAGtEwDqQcNfcx5/Mjrf2oBXdSIf39lNqvXrynfvwEEqEakmhyTGcyzuWsECFlgyPcYKn0fXi3i8/17p4c6nNdr7HbmbnIGJfQyCY3u/hJEt6STVpR9E2qPy+qHIRoOU8TNYl7UX5Rz5z0HJc2SfN/rdzMajpdKKvHRvThmxj2Y5+0lvfdnyCsLq4RJoqa9Jc590YSFn1oF/fFLTKnJHXAGSEJbZ2VJvvrI+qxHyKPaUt+IUOefSd0Io/eV8bm5wFk68hvJLF9OEUv5a6a/BmByDapvwdmGi2sL5osTLNxkU449Kqq5qBFs7rh/GcRV7j7h3gqPNdY8scYciu/diLdnN7rL9UIBELyvXeqVh0+BKvQsC+9SbBu+uUQDB7Qi4DNJpXXGmX962O6dV1f3jOMFKSHfsYP1RUwkOIfR/x0wPZIpVvGAA3pBFgTI8/P9Vj4G52N7z7TPRhFPXLg5MGmuEXyEjsf80nCFzlJyEKkeW6FxKf1rPILyMczesSkEHi559sT9Lq0IhEkOfIOieFP7eXelun6C600K2REumZn5lHpkLdpLWDckAoPe6Q23b8jKnVRMt331/Cwb1R/0NZ/x4QSCboB88HbQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR10MB6186.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(376002)(346002)(136003)(396003)(39860400002)(451199021)(107886003)(53546011)(6512007)(6506007)(38100700002)(41300700001)(2616005)(31686004)(186003)(6486002)(6666004)(26005)(966005)(478600001)(82960400001)(66556008)(66476007)(6916009)(66946007)(4326008)(316002)(7416002)(5660300002)(54906003)(8676002)(8936002)(44832011)(31696002)(2906002)(86362001)(36756003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aS92akc3a0RobS95ejJlRlhwdGl1VDRsK21ONlFrMStkQTN0VmpGak9nNVZw?=
+ =?utf-8?B?MS9EZkxYeTc4YWtNY1BzR1NDekpmSFpEV3UxVDh3dTJRRlFPUFFqV1lBNVlY?=
+ =?utf-8?B?Tnl3R2phSlBINjhsZDZSN0pCZzdIL3Z1ZTgwNDBhdFJtamZpOEhsTU94Lzdz?=
+ =?utf-8?B?T240Vm43NEtXV0Vwc2xSZVQxelB2Q3lJWm5tQmVXM00yRm9RNEx3YTNETjlz?=
+ =?utf-8?B?enJyMjVKbjJFMHNjZ1pOQVFCVU9uSWNlWC9kZWpFNGorVEViakVKNEJuZlpT?=
+ =?utf-8?B?YWNwSFBLMVg2NUNqZHpDZmpyNnp5L29Bc1lMdWZrMmVLL2VJenhseWtISFE5?=
+ =?utf-8?B?M0NFK3l2U2JvaWVFdytaNlRoSzFJQ01rNzFQZysrLzR3elhZRXJrVnhRNndz?=
+ =?utf-8?B?SS9rRHpkUEpleTVrVjdmYTFFRG8zb3ExR28xVTBsMEl4YlZ1NnBxQjF2aVlW?=
+ =?utf-8?B?eFRhZ25ROEZRODk1dk1Ra0FQeis4cEJnN3NnUDl4N0RhdzlTck9ySmoxZVpw?=
+ =?utf-8?B?Zk1aOFVteEhvTlZnUzJCOXZhUDFrQW9iUDF2UnF6aTRnTnJSRnVEMG1SaWNF?=
+ =?utf-8?B?WEVwMXZ6SXFPdlVLc1Zsa0liZlpCay9zbFFocUZNRE1sVFNFejhObU5PMTNC?=
+ =?utf-8?B?STFSR0I4b2NCZ2xGYk9qVmlnRmE3VXVLb0hXSFlRUlNna3QyTFo1bFBzM0pW?=
+ =?utf-8?B?RkMwK1ZEczRSdHRTUTFFeGFDM1JWOWoxaGVoenRxTzdwSWpTYjFSa3hIUDkx?=
+ =?utf-8?B?VFc0STBTbWFKN3Z4MDMrN2x4M1E4WjJlMmhXakQyTUd0UDE2enBhWVplQjdF?=
+ =?utf-8?B?akVoV3Z6SlUxT0s2bE92bWt6Unc2OUlsWVlVcUUwN1c5N3R6ODNWZFJWeFUy?=
+ =?utf-8?B?aEVoL0Z1RHhOY2Q0WjM1Uy9yOURLUjhZdm05TEEvcmVLYllMTUJ0L0doK3JQ?=
+ =?utf-8?B?cXVkV1B4SmZYRS85c0FtQk9BWlZ5UzNJQkpReXJpUkdtWHB6QldvQTFlRTAw?=
+ =?utf-8?B?S2JQQ3krRjVUdmtXL3NUbVZidExhaHN2S2tlUytXVUZKZElUL1d6aGtkS0Zw?=
+ =?utf-8?B?ekdGbXUzcEJIQ0dTZGxCV1ZGcUo3bHlOR3BjKzJpdUhPRTNndHM2N2wzZ2hp?=
+ =?utf-8?B?djBsMTQ5WG9CY2tVSjZVbU5QQkJIOGNlSnQ4NXZlOWdDZ1VkbGZjRnlESWJw?=
+ =?utf-8?B?enIzSGw0SHozUUh6MFZOLzlaSVR2NHpiNFdYT3hjSXFFRGIzbE8veGV2MFJJ?=
+ =?utf-8?B?Z0FmeHFCQ1Zma1hLUVJVbW5qNXdtajMyQ1U5aTVLcWdleHh3WDhsS3E5cHZK?=
+ =?utf-8?B?NDlnODRQVEJYaXJpa2tlVkxZaDFHTEVzQ1NMbVo5aFIxQWYrVEFNa3FVYTdB?=
+ =?utf-8?B?c2l2UkNHZ1ZkKzJTWXR4OUxEUm9XOXFGMWFMRkoxY3JUSWZ0TDFqQmptWFk1?=
+ =?utf-8?B?cFB4djVka2Zmc1RRT3NBbEQybzdyeDIrYXZZeExRQ0wvQWc1R1QwblM2eWdV?=
+ =?utf-8?B?QUpPTDVyeDhaajlCc0hQWlU3YVdtU0VHTGFOaWI5cUlVMTV0MHQrNUlxcDA5?=
+ =?utf-8?B?YU9ic3MrRWhjR041Z2o0YlpzWFhOYkZrMXdKYVZmaFBRd1MzbmlFMkltWm9j?=
+ =?utf-8?B?WHMxVU9xZElMdXVhRFFPSDNyVnltSkVObFM5OWo3VUNqU1Z3SHAyUWw2bUpW?=
+ =?utf-8?B?ZkZaYllUN0I4TGU5QktJMDd0T2MwMzFFVzJhRHd0YU0yUFUzcS8wdEJnck9F?=
+ =?utf-8?B?MGZRU2ZRcnR4VVkyeWMwWGxnOTJNUFQvRldUbzg2MGIrUUVTUE83Qk1yeVY1?=
+ =?utf-8?B?aDNGbEdVMVdEUlFKNnBOdWpzdmo5a3pTZmtOZ2M5VEI2VTkxQjVua3ZZejRk?=
+ =?utf-8?B?SERoVm9zZ0lmV0NBZWlhbk9HVzlzbEkwUFdhZ0pqU2J6N3RpdTlkZHpYaWo0?=
+ =?utf-8?B?T0NzVEVmNDJRSEJSYzVSN3JvVC81SUdYdmo2ZzRCcHRsRXRBS28xQVR3b1o2?=
+ =?utf-8?B?S1NHZWhzLzV3R2kvbm0vU05OMTdzVUhOK1F3VU9nL0FzaWthQ2RqaGtyWjhn?=
+ =?utf-8?B?ZGFlcEtEdm44M2cvbHBvT0lybk56V2lmZGxtTy8rMUd4T2VaSzdzaUNHcld3?=
+ =?utf-8?B?c3BsU2QreFhESGhyMUtNV044Y3hyU29SNVNkWGdzN2R4SG1HWXV0YlA4UkNz?=
+ =?utf-8?B?MUE9PQ==?=
+X-OriginatorOrg: siemens.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9d58ab4-a036-4f14-6243-08db677aa86c
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR10MB6186.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2023 17:14:31.4221
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Je/KTWAJjJM3JwES65FeEPqbN7Q3sCSwjGJ/LTLYSXqDV7HrgZc71YYONI4SYfnEc+I58QxjFgRqqZNHpQOrtw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR10MB3485
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 7 Jun 2023 at 19:09, Ilias Apalodimas
-<ilias.apalodimas@linaro.org> wrote:
->
-> Hi Jan,
->
-> [...]
-> > >>> No I don't, this will work reliably without the need to remount the=
- efivarfs.
-> > >>> As you point out you will still have this dependency if you end up
-> > >>> building them as modules and you manage to mount the efivarfs befor=
-e
-> > >>> those get inserted.  Does anyone see a reasonable workaround?
-> > >>> Deceiving the kernel and making the bootloader set the RT property =
-bit
-> > >>> to force the filesystem being mounted as rw is a nasty hack that we
-> > >>> should avoid.  Maybe adding a kernel command line parameter that sa=
-ys
-> > >>> "Ignore the RTPROP I know what I am doing"?  I don't particularly l=
-ove
-> > >>> this either, but it's not unreasonable.
-> > >>
-> > >> In the context of https://github.com/OP-TEE/optee_os/issues/6094,
-> > >> basically this issue mapped on reboot/shutdown, I would really love =
-to
-> > >> see the unhandy tee-supplicant daemon to be overcome.
-> > >
-> > > I have seen this error before and it has been on my todo list. So I
-> > > have tried to fix it here [1]. Feel free to test it and let me know i=
-f
-> > > you see any further issues.
-> > >
-> > > [1] https://lkml.org/lkml/2023/6/7/927
-> > >
-> >
-> > Ah, nice, will test ASAP!
-> >
-> > Meanwhile more food: I managed to build a firmware that was missing
-> > STMM. But the driver loaded, and I got this:
->
-> Thanks for the testing. I'll try to reproduce it locally and get back to =
-you
+On 07.06.23 18:59, Ilias Apalodimas wrote:
+> On Wed, 7 Jun 2023 at 19:09, Ilias Apalodimas
+> <ilias.apalodimas@linaro.org> wrote:
+>>
+>> Hi Jan,
+>>
+>> [...]
+>>>>>> No I don't, this will work reliably without the need to remount the efivarfs.
+>>>>>> As you point out you will still have this dependency if you end up
+>>>>>> building them as modules and you manage to mount the efivarfs before
+>>>>>> those get inserted.  Does anyone see a reasonable workaround?
+>>>>>> Deceiving the kernel and making the bootloader set the RT property bit
+>>>>>> to force the filesystem being mounted as rw is a nasty hack that we
+>>>>>> should avoid.  Maybe adding a kernel command line parameter that says
+>>>>>> "Ignore the RTPROP I know what I am doing"?  I don't particularly love
+>>>>>> this either, but it's not unreasonable.
+>>>>>
+>>>>> In the context of https://github.com/OP-TEE/optee_os/issues/6094,
+>>>>> basically this issue mapped on reboot/shutdown, I would really love to
+>>>>> see the unhandy tee-supplicant daemon to be overcome.
+>>>>
+>>>> I have seen this error before and it has been on my todo list. So I
+>>>> have tried to fix it here [1]. Feel free to test it and let me know if
+>>>> you see any further issues.
+>>>>
+>>>> [1] https://lkml.org/lkml/2023/6/7/927
+>>>>
+>>>
+>>> Ah, nice, will test ASAP!
+>>>
+>>> Meanwhile more food: I managed to build a firmware that was missing
+>>> STMM. But the driver loaded, and I got this:
+>>
+>> Thanks for the testing. I'll try to reproduce it locally and get back to you
+> 
+> Can you provide a bit more info on how that was triggered btw? I would
+> be helpful to know
+> 
+> - OP-TEE version
 
-Can you provide a bit more info on how that was triggered btw? I would
-be helpful to know
+Today's master, 145953d55.
 
-- OP-TEE version
-- was it compiled as a module or built-in?
-- was the supplicant running?
+> - was it compiled as a module or built-in?
 
-Thanks
-/Ilias
->
-> /Ilias
-> >
-> > root@iot2050-debian:~# efi-updatevar -f PK.auth PK
-> > [  243.407097] Unable to handle kernel NULL pointer dereference at virt=
-ual address 0000000000000000
-> > [  243.415959] Mem abort info:
-> > [  243.418801]   ESR =3D 0x86000004
-> > [  243.422099]   EC =3D 0x21: IABT (current EL), IL =3D 32 bits
-> > [  243.427529]   SET =3D 0, FnV =3D 0
-> > [  243.430755]   EA =3D 0, S1PTW =3D 0
-> > [  243.433931] user pgtable: 4k pages, 48-bit VAs, pgdp=3D000000008b74e=
-000
-> > [  243.440438] [0000000000000000] pgd=3D0000000000000000, p4d=3D0000000=
-000000000
-> > [  243.447274] Internal error: Oops: 86000004 [#1] PREEMPT SMP
-> > [  243.452835] Modules linked in: ctr ccm mt7601u mac80211 cfg80211 rfk=
-ill libarc4 cp210x usbserial pci_endpoint_test ti_k3_r5_remoteproc optee_rn=
-g rng_core ti_cal ti_am335x_adc videobuf2_dma_contig kfifo_buf v4l2_fwnode =
-videobuf2_memops videobuf2_v4l2 videobuf2_common irq_pruss_intc at24 fuse i=
-p_tables x_tables ipv6 tpm_ftpm_tee icssg_prueth pru_rproc icss_iep ptp pps=
-_core ti_am335x_tscadc pruss
-> > [  243.487733] CPU: 0 PID: 875 Comm: efi-updatevar Not tainted 5.10.162=
--cip24 #1
-> > [  243.494851] Hardware name: Unknown Unknown Product/Unknown Product, =
-BIOS 2023.07-rc3-00018-g0afdaac6505 07/01/2023
-> > [  243.505180] pstate: 00000005 (nzcv daif -PAN -UAO -TCO BTYPE=3D--)
-> > [  243.511179] pc : 0x0
-> > [  243.513366] lr : efivar_entry_set_get_size+0xd4/0x1e0
-> > [  243.518404] sp : ffff8000127a3d00
-> > [  243.521708] x29: ffff8000127a3d00 x28: 0000000000000f87
-> > [  243.527012] x27: ffff000005bae400 x26: ffff800011254000
-> > [  243.532315] x25: ffff000005baf000 x24: ffff800011254aa0
-> > [  243.537618] x23: ffff8000127a3dab x22: ffff8000111d0268
-> > [  243.542921] x21: ffff8000127a3db0 x20: 0000000000000000
-> > [  243.548224] x19: ffff000005bae000 x18: 0000000000000000
-> > [  243.553527] x17: 0000000000000000 x16: 0000000000000000
-> > [  243.558829] x15: 0000aaab0876f264 x14: 35cd6a1025d11a20
-> > [  243.564132] x13: ac6f8dda3945638d x12: fb482642e3487f2d
-> > [  243.569435] x11: 0000000000000003 x10: ffff00000b792a80
-> > [  243.574738] x9 : a098e2bf989ff097 x8 : 0000000000000010
-> > [  243.580041] x7 : ffff800010e35c00 x6 : 4ddcbe2ecfc8fc79
-> > [  243.585345] x5 : 0000000000000000 x4 : ffff000005baf000
-> > [  243.590647] x3 : 0000000000000f87 x2 : 0000000000000027
-> > [  243.595950] x1 : ffff000005bae400 x0 : ffff000005bae000
-> > [  243.601254] Call trace:
-> > [  243.603695]  0x0
-> > [  243.605531]  efivarfs_file_write+0xa4/0x170
-> > [  243.609709]  vfs_write+0xf0/0x2a4
-> > [  243.613016]  ksys_write+0x68/0xf4
-> > [  243.616323]  __arm64_sys_write+0x1c/0x2c
-> > [  243.620241]  el0_svc_common.constprop.0+0x78/0x1c4
-> > [  243.625022]  do_el0_svc+0x24/0x8c
-> > [  243.628331]  el0_svc+0x14/0x20
-> > [  243.631378]  el0_sync_handler+0xb0/0xb4
-> > [  243.635206]  el0_sync+0x180/0x1c0
-> > [  243.638523] Code: bad PC value
-> > [  243.641573] ---[ end trace 369e4632cb003adc ]---
-> >
-> > Jan
-> >
-> > --
-> > Siemens AG, Technology
-> > Competence Center Embedded Linux
-> >
+Sorry, not sure anymore, switching back and forth right now. I think it
+was built-in.
+
+> - was the supplicant running?
+
+Yes.
+
+Jan
+
+-- 
+Siemens AG, Technology
+Competence Center Embedded Linux
+
