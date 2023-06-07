@@ -2,154 +2,116 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE38E72684B
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Jun 2023 20:18:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF670726937
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Jun 2023 20:53:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230459AbjFGSSo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 7 Jun 2023 14:18:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36024 "EHLO
+        id S230447AbjFGSxP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 7 Jun 2023 14:53:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231991AbjFGSSm (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Jun 2023 14:18:42 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF25F1FE2
-        for <linux-efi@vger.kernel.org>; Wed,  7 Jun 2023 11:18:30 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2af2db78b38so90742201fa.3
-        for <linux-efi@vger.kernel.org>; Wed, 07 Jun 2023 11:18:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686161909; x=1688753909;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZZ/p0iLnlO9hRGL6F3e88TDXKCDJ3Ln5sjh3/Y6FySE=;
-        b=zDSxFnUbIcCjqY5ly3/D4UTfuVwXpVyLZrw7RvR1qPR5BIGmN9aat/Y68xabimzaUY
-         3M7aOc5RUo5y8Jorgp9FtZqmAtFvfWhXe2Q9IJjp6+zyUVw1/P4SNfGWSp6YcY2v+Gly
-         ymQRaIWlAjqyFEWHYtETDUE9a6OIjVSvcK1cHjd+B1qDDYmCL4R6qUDjysbpZ20d6g2U
-         latCjJ4S/Dfy2SaE1Zc3YjHUkDC+TXDYzJSYiBMDCqdCcxY2xYnnWQF0oIdl38qA5YLT
-         U6By/Jq4Dny7Zfxr8PSW958EUNkW3uxA3U8YKQ6SGY+lA5T9LjuA7zJ+2qYCsWSHx6cb
-         jfvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686161909; x=1688753909;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZZ/p0iLnlO9hRGL6F3e88TDXKCDJ3Ln5sjh3/Y6FySE=;
-        b=f2YK89jaidCaw/rDe2ssOo+VM6jqCBTffWeNOeIo8GwosA1wNnqO/d/IfrfBDPGVE6
-         76eNTiVnof18n6Sf0wO2o1Z1f40kixdmxCP0yD0OGVSTUbRzwucNRZ7J6brgNz6FqUYL
-         CxhN6uKs2n4p17u6/uMIHxjnvsbbCLGdrZzbbKCjHFdFwhwhrzbx7GFcO855Pmc5hdNT
-         RPayCVEaeloif9DsEX6U8K73XzcR5OhWcWc3+B8/CHM5wQHU0hxrMBCGjwICFnud6DWu
-         k22BxLsnfmoY09IFPZ445/X9L4BA+SsENOia7tcWmojnrCtLDHnQ6Or04pvmUZreZZI7
-         /+wg==
-X-Gm-Message-State: AC+VfDxxKKdJhCCD7EmvD4kGoibHAeCeQQzs+va8GNEY9Nfn2OrejP0u
-        89KNxKPHO/xat+LUrJQ7HlEC3cEZoSCGwLtPyYMxHQ==
-X-Google-Smtp-Source: ACHHUZ7O/DzwvluFFUAPOsziiJROquhW9PuTOb0JgHUU4X3wehygZbwll0mktA0KGDG2rx48BQYxIaF9Qy7l5t/4fx4=
-X-Received: by 2002:a2e:730c:0:b0:2b1:ed29:7c47 with SMTP id
- o12-20020a2e730c000000b002b1ed297c47mr2455880ljc.8.1686161909028; Wed, 07 Jun
- 2023 11:18:29 -0700 (PDT)
+        with ESMTP id S229642AbjFGSxO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Jun 2023 14:53:14 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 699301BD0;
+        Wed,  7 Jun 2023 11:53:07 -0700 (PDT)
+Received: from zn.tnic (pd9530d32.dip0.t-ipconnect.de [217.83.13.50])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id EFB331EC0644;
+        Wed,  7 Jun 2023 20:53:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1686163986;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=87vpP2FfhEOM4xjMq++nbMOrXdUL3e/0f37LDZIuVR8=;
+        b=ERwufKKmWtcbgPK1Xk07JYe/m8a54Yi61aPOobv8YI2WI6erMC+W/mB4yjq9xGDlaFkEtr
+        QP6C48I4kAyDr9Lvo30Aq1fmXW68M1RTjRhOuIdEwLywjpvV8XCpfkGB13OfigR37LZGk1
+        XenyO7Z2aMC3GVrT4lcPP1rTNkDG4FI=
+Date:   Wed, 7 Jun 2023 20:53:01 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Evgeniy Baskov <baskov@ispras.ru>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Peter Jones <pjones@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Dave Young <dyoung@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>
+Subject: Re: [PATCH v5 01/20] x86/efistub: Branch straight to kernel entry
+ point from C code
+Message-ID: <20230607185301.GNZIDSDWX8xnTaeENe@fat_crate.local>
+References: <20230607072342.4054036-1-ardb@kernel.org>
+ <20230607072342.4054036-2-ardb@kernel.org>
 MIME-Version: 1.0
-References: <20230526010748.1222-1-masahisa.kojima@linaro.org>
- <20230526010748.1222-4-masahisa.kojima@linaro.org> <0d3e0370-eb76-010f-3d30-9acc9b59645c@siemens.com>
- <CAFA6WYPnWJNPvhT2JDkO-qXRUaJoxBGZEvSfhxcRynV7=VSdQA@mail.gmail.com>
- <CAMj1kXFM45PCTU--+CCed6Cq_N5XqDG6tTu6fnQTSCpW2BWA5A@mail.gmail.com>
- <4ff09002-e871-38b9-43ec-227a64bac731@siemens.com> <CAC_iWjJJ5E9Q1or5yTiDynzv_WAYH-g+N24aRdu9rvcsbWqnrg@mail.gmail.com>
- <CAFA6WYNFYB1LiOFB_iwTsdD5PmnDdSbtDSH2J4FVFPx3uik8rQ@mail.gmail.com>
- <CAC_iWj+E7-XK6dCeSn4205K0O3EZCLxCaC+adu-14ST6sdudfA@mail.gmail.com>
- <76da826f-b608-6add-5401-6de818b180e3@siemens.com> <CAFA6WYPCDRjFzsUMU=SNzEt88nT7Fcm1eOFL8z4HiQO+=2JeVA@mail.gmail.com>
- <cc6bd203-83ea-c247-0986-7fec6f327ee8@siemens.com> <CAC_iWjKZNHJxq4VMFnV7oQngwBBCQveh=s34u1LZ59YUqViPbw@mail.gmail.com>
- <CAC_iWjJMv68yLC606SBhMmBYkR4wVC8SvUcPvNM=RX_qL=9Bvw@mail.gmail.com> <b9b8c1d3-fc8e-df94-d12b-a9e3debf3418@siemens.com>
-In-Reply-To: <b9b8c1d3-fc8e-df94-d12b-a9e3debf3418@siemens.com>
-From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date:   Wed, 7 Jun 2023 21:17:52 +0300
-Message-ID: <CAC_iWj+cP4RfDNu_n-ZOp7A62W34drLpPszN_hrkqF_aPTLtMg@mail.gmail.com>
-Subject: Re: [PATCH v5 3/3] efi: Add tee-based EFI variable driver
-To:     Jan Kiszka <jan.kiszka@siemens.com>
-Cc:     Sumit Garg <sumit.garg@linaro.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Masahisa Kojima <masahisa.kojima@linaro.org>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        linux-kernel@vger.kernel.org, op-tee@lists.trustedfirmware.org,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        linux-efi@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        "Su, Bao Cheng (RC-CN DF FA R&D)" <baocheng.su@siemens.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230607072342.4054036-2-ardb@kernel.org>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 7 Jun 2023 at 20:14, Jan Kiszka <jan.kiszka@siemens.com> wrote:
->
-> On 07.06.23 18:59, Ilias Apalodimas wrote:
-> > On Wed, 7 Jun 2023 at 19:09, Ilias Apalodimas
-> > <ilias.apalodimas@linaro.org> wrote:
-> >>
-> >> Hi Jan,
-> >>
-> >> [...]
-> >>>>>> No I don't, this will work reliably without the need to remount the efivarfs.
-> >>>>>> As you point out you will still have this dependency if you end up
-> >>>>>> building them as modules and you manage to mount the efivarfs before
-> >>>>>> those get inserted.  Does anyone see a reasonable workaround?
-> >>>>>> Deceiving the kernel and making the bootloader set the RT property bit
-> >>>>>> to force the filesystem being mounted as rw is a nasty hack that we
-> >>>>>> should avoid.  Maybe adding a kernel command line parameter that says
-> >>>>>> "Ignore the RTPROP I know what I am doing"?  I don't particularly love
-> >>>>>> this either, but it's not unreasonable.
-> >>>>>
-> >>>>> In the context of https://github.com/OP-TEE/optee_os/issues/6094,
-> >>>>> basically this issue mapped on reboot/shutdown, I would really love to
-> >>>>> see the unhandy tee-supplicant daemon to be overcome.
-> >>>>
-> >>>> I have seen this error before and it has been on my todo list. So I
-> >>>> have tried to fix it here [1]. Feel free to test it and let me know if
-> >>>> you see any further issues.
-> >>>>
-> >>>> [1] https://lkml.org/lkml/2023/6/7/927
-> >>>>
-> >>>
-> >>> Ah, nice, will test ASAP!
-> >>>
-> >>> Meanwhile more food: I managed to build a firmware that was missing
-> >>> STMM. But the driver loaded, and I got this:
-> >>
-> >> Thanks for the testing. I'll try to reproduce it locally and get back to you
-> >
-> > Can you provide a bit more info on how that was triggered btw? I would
-> > be helpful to know
-> >
-> > - OP-TEE version
->
-> Today's master, 145953d55.
->
-> > - was it compiled as a module or built-in?
->
-> Sorry, not sure anymore, switching back and forth right now. I think it
-> was built-in.
->
-> > - was the supplicant running?
->
-> Yes.
->
+On Wed, Jun 07, 2023 at 09:23:23AM +0200, Ard Biesheuvel wrote:
+> -	return bzimage_addr;
+> +	if (IS_ENABLED(CONFIG_X86_64))
+> +		/* add offset of startup_64() */
+> +		bzimage_addr += 0x200;
 
-Ok thanks, that helps.  I guess this also means U-Boot was compiled to
-store the variables in a file in the ESP instead of the RPMB right?
-Otherwise, I can't see how the device booted in the first place.
+Uh, magic.
 
-Thanks
-/Ilias
+Well, there's this:
+
+arch/x86/boot/compressed/head_64.S:
+
+        .code64
+        .org 0x200
+SYM_CODE_START(startup_64)
+        /*
+         * 64bit entry is 0x200 and it is ABI so immutable!
+         * We come here either from startup_32 or directly from a
+         * 64bit bootloader.
 
 
-> Jan
->
-> --
-> Siemens AG, Technology
-> Competence Center Embedded Linux
->
+Looking at Documentation/arch/x86/boot.rst, we actually say in the
+xloadflags section:
+
+  Bit 0 (read): XLF_KERNEL_64
+
+        - If 1, this kernel has the legacy 64-bit entry point at 0x200.
+
+and header.S sets that:
+
+xloadflags:
+#ifdef CONFIG_X86_64
+# define XLF0 XLF_KERNEL_64                     /* 64-bit kernel */
+
+so you checking CONFIG_X86_64 is probably ok.
+
+It might be cleaner, though, if you test XLF_KERNEL_64 directly and act
+accordingly, although, do I understand it correctly, that the EFI
+libstub goes together with the kernel it was built for so the checks
+would be doing the same thing...? I.e., the libstub cannot be somehow
+"glued" with another kernel or so, which doesn't set CONFIG_X86_64.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
