@@ -2,251 +2,173 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AC3F726C43
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Jun 2023 22:32:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8BD872727B
+	for <lists+linux-efi@lfdr.de>; Thu,  8 Jun 2023 00:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233638AbjFGUcA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 7 Jun 2023 16:32:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58160 "EHLO
+        id S233426AbjFGW4o (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 7 Jun 2023 18:56:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233641AbjFGUb7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Jun 2023 16:31:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E2111706;
-        Wed,  7 Jun 2023 13:31:58 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C3CA56450D;
-        Wed,  7 Jun 2023 20:31:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA0FC4339B;
-        Wed,  7 Jun 2023 20:31:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686169917;
-        bh=V1aa2H8w+HJV2LSCLkUf9d6kb2Ty8YF4gh6DobY2/Ho=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ArTu7ZavYgIZLWLfMGVwXoVrH/wGfNW4c5x+u0UPiNeSRxxxjWBtJcVftIgWbif63
-         oUaeMC+3kf6Yz3QV82On2FxWCXMx0a4UEKZWKGco7lTuwPyrt17lnkUpKfhr6ejGA8
-         6tt3LKYLf1HxATxjxFSWl7lWwRAcWwU+RlAgP0a44RuyXRhenQMeZOIE320nMdT1/U
-         ShEgnZFwihqWLCqcUVcqmWNmyRABljVnsG9RSrlMN+lCfzY5Gtl7mQXGKtV8FTS1hh
-         O7EvkodFc82zicGkX/UsaJhCZyGwcAFk8No0wSudPmdaqK31ubn+oBnOqTNpQ1fw82
-         cfiZTR3Xi+CTQ==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-4f6195d2b3fso6488475e87.1;
-        Wed, 07 Jun 2023 13:31:57 -0700 (PDT)
-X-Gm-Message-State: AC+VfDzH+8eGgkMO0z73xLVUFo6dPo1X74BXiMh62i5T1VqWlzik7pZf
-        8XZccT7kbAh9iKV1lShgSga9LRNaFj1vmVfJGI4=
-X-Google-Smtp-Source: ACHHUZ4BmYBjs8365EOXcoaugcuYxL/tyss2WSnddVJe57h91sAhv26UdujgebZuvPdHgiW93pyVCvicVMII0lBEtd8=
-X-Received: by 2002:a2e:9c86:0:b0:2af:23c2:5dce with SMTP id
- x6-20020a2e9c86000000b002af23c25dcemr2716523lji.25.1686169915169; Wed, 07 Jun
- 2023 13:31:55 -0700 (PDT)
+        with ESMTP id S233131AbjFGW4R (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Jun 2023 18:56:17 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A62092137
+        for <linux-efi@vger.kernel.org>; Wed,  7 Jun 2023 15:56:14 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-510d6b939bfso2581987a12.0
+        for <linux-efi@vger.kernel.org>; Wed, 07 Jun 2023 15:56:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686178573; x=1688770573;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
+        b=Vs2O3FJiGjOSsYkVdVVwQ8usUW0Na2c1JkRxzODLflg+DQkLHMSvDUTON1eOgoDd5p
+         icZX7jz85gtt675JIQoCg2qYDeGvdgrlIlnYsBqJCXY6A+wwUH4Pzx63GHJ70nVIOHpq
+         q8q4NwQWw9O7Ka1WcBWhtc95lIatv8n89RH1nSmTaJwpto6eirRVCg2zeJDk+R5CA+KG
+         ThXmo+FVEx7rMo/R9HxHw2025VcLT8t8EGl5ZKxML6giyeJpWVWuCmdmhwVTBmwvl+lO
+         4Pyzwb5XpDz845p07KZNMlaubUmeRc4L02Q7u93h4SKEXfacqvhkSvKzrJS0PjXfy7pG
+         yWrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686178573; x=1688770573;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
+        b=X4Kf1BsrZK+zN0TEQOMS63xQNM/XfREIMP68dlumw05cBXLve5I/mdK8LmDNBV/yze
+         JRcaSxPPlTACdtW4LrdlHBIS31XhuYQvDzfYxAwBfE1HiKEB66QaL/oKdbCEHz72nvhL
+         ghoe652oZBfAtTU05E8b7dvAUDjbMsCgYCcSP9Levrr+FJwQqpWbSG/TQz+EF3gTfoae
+         hVh+PsTOx0466R6Pmvb+YJ7VXMnzfMW6/7zOhd6ciSxuUzIQDeH40Yn2uCH4csJvx+YW
+         jR2EeF83RR8imyS3E1uyxn6dR3ssCOT2eeB1HKCoMzQbFi48UDVzUP24FKDv/6lKX+gB
+         giDw==
+X-Gm-Message-State: AC+VfDzmHWU6YkH65R0qFBD9cO7qbjCsxIQyYVEIhuqA0zncdYOLwR3w
+        h+EBqjtDGynDb+R7qV6S1XPzrfrQSwfGxYlu1O696Zs1z4Gghw==
+X-Google-Smtp-Source: ACHHUZ5lc5uNG0II8N/7owu97MNYayebO2FU5BOHITGRdvZTCXANx0Yi1fv5Th/dfzvi0zTuZAaSCLE67mXxoPl8ud4=
+X-Received: by 2002:a17:907:8a08:b0:973:ad8f:ef9b with SMTP id
+ sc8-20020a1709078a0800b00973ad8fef9bmr8009971ejc.5.1686178552696; Wed, 07 Jun
+ 2023 15:55:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230607072342.4054036-1-ardb@kernel.org> <20230607072342.4054036-14-ardb@kernel.org>
- <20230607201924.GD3110@yjiang5-mobl.amr.corp.intel.com>
-In-Reply-To: <20230607201924.GD3110@yjiang5-mobl.amr.corp.intel.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 7 Jun 2023 22:31:43 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXE7nW6ED1CmCd-by5HC7oqFAZd4=-ky_Kx_g6Br28PNhQ@mail.gmail.com>
-Message-ID: <CAMj1kXE7nW6ED1CmCd-by5HC7oqFAZd4=-ky_Kx_g6Br28PNhQ@mail.gmail.com>
-Subject: Re: [PATCH v5 13/20] x86/efistub: Perform 4/5 level paging switch
- from the stub
-To:     Yunhong Jiang <yunhong.jiang@linux.intel.com>
-Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Evgeniy Baskov <baskov@ispras.ru>,
-        Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Peter Jones <pjones@redhat.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Dave Young <dyoung@redhat.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>
+Received: by 2002:a54:2409:0:b0:217:72a9:f646 with HTTP; Wed, 7 Jun 2023
+ 15:55:52 -0700 (PDT)
+Reply-To: unitednationcompensationcoordinatortreasury@hotmail.com
+From:   "UNITED NATION DEPUTY SECRETARY-GENERAL (U.N)" 
+        <successikolo@gmail.com>
+Date:   Wed, 7 Jun 2023 15:55:52 -0700
+Message-ID: <CADFNGJ8EwbrtVXBod+yuxOPvcNStu1uNZVywED0Ra-jpG92ATw@mail.gmail.com>
+Subject: CONTACT DHL OFFICE IMMEDIATELY FOR YOUR ATM MASTER CARD 1.5 MILLION,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=6.6 required=5.0 tests=ADVANCE_FEE_3_NEW_FRM_MNY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FILL_THIS_FORM,FORM_FRAUD_5,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        LOTS_OF_MONEY,MONEY_FORM,MONEY_FRAUD_5,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+        T_FILL_THIS_FORM_LOAN,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:52c listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [successikolo[at]gmail.com]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  0.2 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.0 FILL_THIS_FORM Fill in a form with personal information
+        *  0.0 T_FILL_THIS_FORM_LOAN Answer loan question(s)
+        *  0.0 MONEY_FORM Lots of money if you fill out a form
+        *  1.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  0.0 ADVANCE_FEE_3_NEW_FRM_MNY Advance Fee fraud form and lots of
+        *      money
+        *  0.2 MONEY_FRAUD_5 Lots of money and many fraud phrases
+        *  0.0 FORM_FRAUD_5 Fill a form and many fraud phrases
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 7 Jun 2023 at 22:19, Yunhong Jiang
-<yunhong.jiang@linux.intel.com> wrote:
->
-> On Wed, Jun 07, 2023 at 09:23:35AM +0200, Ard Biesheuvel wrote:
-> > In preparation for updating the EFI stub boot flow to avoid the bare
-> > metal decompressor code altogether, implement the support code for
-> > switching between 4 and 5 levels of paging before jumping to the kernel
-> > proper.
-> >
-> > This reuses the newly refactored trampoline that the bare metal
-> > decompressor uses, but relies on EFI APIs to allocate 32-bit addressable
-> > memory and remap it with the appropriate permissions. Given that the
-> > bare metal decompressor will no longer call into the trampoline if the
-> > number of paging levels is already set correctly, it is no longer needed
-> > to remove NX restrictions from the memory range where this trampoline
-> > may end up.
-> >
-> > Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >  drivers/firmware/efi/libstub/Makefile          |  1 +
-> >  drivers/firmware/efi/libstub/efi-stub-helper.c |  2 +
-> >  drivers/firmware/efi/libstub/efistub.h         |  1 +
-> >  drivers/firmware/efi/libstub/x86-5lvl.c        | 95 ++++++++++++++++++++
-> >  drivers/firmware/efi/libstub/x86-stub.c        | 40 +++------
-> >  drivers/firmware/efi/libstub/x86-stub.h        | 17 ++++
-> >  6 files changed, 130 insertions(+), 26 deletions(-)
-> >
-> > diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-> > index 16d64a34d1e19465..ae8874401a9f1490 100644
-> > --- a/drivers/firmware/efi/libstub/Makefile
-> > +++ b/drivers/firmware/efi/libstub/Makefile
-> > @@ -88,6 +88,7 @@ lib-$(CONFIG_EFI_GENERIC_STUB)      += efi-stub.o string.o intrinsics.o systable.o \
-> >  lib-$(CONFIG_ARM)            += arm32-stub.o
-> >  lib-$(CONFIG_ARM64)          += arm64.o arm64-stub.o smbios.o
-> >  lib-$(CONFIG_X86)            += x86-stub.o
-> > +lib-$(CONFIG_X86_64)         += x86-5lvl.o
-> >  lib-$(CONFIG_RISCV)          += riscv.o riscv-stub.o
-> >  lib-$(CONFIG_LOONGARCH)              += loongarch.o loongarch-stub.o
-> >
-> > diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> > index 1e0203d74691ffcc..51779279fbff21b5 100644
-> > --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-> > +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> > @@ -73,6 +73,8 @@ efi_status_t efi_parse_options(char const *cmdline)
-> >                       efi_loglevel = CONSOLE_LOGLEVEL_QUIET;
-> >               } else if (!strcmp(param, "noinitrd")) {
-> >                       efi_noinitrd = true;
-> > +             } else if (IS_ENABLED(CONFIG_X86_64) && !strcmp(param, "no5lvl")) {
-> > +                     efi_no5lvl = true;
-> >               } else if (!strcmp(param, "efi") && val) {
-> >                       efi_nochunk = parse_option_str(val, "nochunk");
-> >                       efi_novamap |= parse_option_str(val, "novamap");
-> > diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-> > index 6aa38a1bf1265d83..06b7abc92ced9e18 100644
-> > --- a/drivers/firmware/efi/libstub/efistub.h
-> > +++ b/drivers/firmware/efi/libstub/efistub.h
-> > @@ -33,6 +33,7 @@
-> >  #define EFI_ALLOC_LIMIT              ULONG_MAX
-> >  #endif
-> >
-> > +extern bool efi_no5lvl;
-> >  extern bool efi_nochunk;
-> >  extern bool efi_nokaslr;
-> >  extern int efi_loglevel;
-> > diff --git a/drivers/firmware/efi/libstub/x86-5lvl.c b/drivers/firmware/efi/libstub/x86-5lvl.c
-> > new file mode 100644
-> > index 0000000000000000..2428578a3ae08be7
-> > --- /dev/null
-> > +++ b/drivers/firmware/efi/libstub/x86-5lvl.c
-> > @@ -0,0 +1,95 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +#include <linux/efi.h>
-> > +
-> > +#include <asm/boot.h>
-> > +#include <asm/desc.h>
-> > +#include <asm/efi.h>
-> > +
-> > +#include "efistub.h"
-> > +#include "x86-stub.h"
-> > +
-> > +bool efi_no5lvl;
-> > +
-> > +static void (*la57_toggle)(void *trampoline, bool enable_5lvl);
->
-> As an ack to my comments to another patch, would it makes more sense to rename
-> the trampoline parameter to newcr3 and pass the address of the new page table,
-> instead of the trampoline start address?
->
+UNITED NATION DEPUTY SECRETARY-GENERAL.
 
-Perhaps, but please realise that my goal here was not to invent an API
-from scratch. There was existing code that I made minimal changes to
-in order to be able to reuse it.
+This is to official inform you that we have been having meetings for
+the past three (3) weeks which ended two days ago with MR. JIM YONG
+KIM the world bank president and other seven continent presidents on
+the congress we treated on solution to scam victim problems.
 
-If this needs further changes, you can always send follow-up patches.
+ Note: we have decided to contact you following the reports we
+received from anti-fraud international monitoring group your
+name/email has been submitted to us therefore the united nations have
+agreed to compensate you with the sum of (USD$ 1.5 Million) this
+compensation is also including international business that failed you
+in the past due to government problems etc.
 
-> > +
-> > +static const struct desc_struct gdt[] = {
-> > +     [GDT_ENTRY_KERNEL32_CS] = GDT_ENTRY_INIT(0xc09b, 0, 0xfffff),
-> > +     [GDT_ENTRY_KERNEL_CS]   = GDT_ENTRY_INIT(0xa09b, 0, 0xfffff),
-> > +};
-> > +
-> > +/*
-> > + * Enabling (or disabling) 5 level paging is tricky, because it can only be
-> > + * done from 32-bit mode with paging disabled. This means not only that the
-> > + * code itself must be running from 32-bit addressable physical memory, but
-> > + * also that the root page table must be 32-bit addressable, as programming
-> > + * a 64-bit value into CR3 when running in 32-bit mode is not supported.
-> > + */
-> > +efi_status_t efi_setup_5level_paging(void)
-> > +{
-> > +     u8 tmpl_size = (u8 *)&trampoline_ljmp_imm_offset - (u8 *)&trampoline_32bit_src;
-> > +     efi_status_t status;
-> > +     u8 *la57_code;
-> > +
-> > +     if (!efi_is_64bit())
-> > +             return EFI_SUCCESS;
-> > +
-> > +     /* check for 5 level paging support */
-> > +     if (native_cpuid_eax(0) < 7 ||
-> > +         !(native_cpuid_ecx(7) & (1 << (X86_FEATURE_LA57 & 31))))
-> > +             return EFI_SUCCESS;
-> > +
-> Do we need to check the need_toggle here instead of at efi_5level_switch and
-> skip the whole setup if no need to switch the paging level? Sorry if I missed
-> any point.
->
+ We have arranged your payment through our ATM Master Card and
+deposited it in DHL Office to deliver it to you which is the latest
+instruction from the World Bank president MR. JIM YONG KIM, For your
+information=E2=80=99s, the delivery charges already paid by U.N treasury, t=
+he
+only money you will send to DHL office south Korea is
+($500). for security keeping fee, U.N coordinator already paid for
+others charges fees for delivery except the security keeping fee, the
+director of DHL refused to collect the security keeping fee from U.N
+coordinator, the Director of DHL office said that they don=E2=80=99t know
+exactly time you will contact them to reconfirm your details to avoid
+counting demur-rage that is why they refused collecting the ($500) .
+for security keeping fee.
 
-No. There are reasons why firmware might run with 5 levels, and switch
-to 4 levels at ExitBootServices() time.
+ Therefore be advice to contact DHL Office agent south Korea. Rev:John
+Lee Tae-seok
+who is in position to deliver your ATM
+Master Card to your location address, contact DHL Office immediately
+with the bellow email & phone number as listed below.
 
-> > +     /* allocate some 32-bit addressable memory for code and a page table */
-> > +     status = efi_allocate_pages(2 * PAGE_SIZE, (unsigned long *)&la57_code,
-> > +                                 U32_MAX);
-> > +     if (status != EFI_SUCCESS)
-> > +             return status;
-> > +
-> > +     la57_toggle = memcpy(la57_code, trampoline_32bit_src, tmpl_size);
-> > +     memset(la57_code + tmpl_size, 0x90, PAGE_SIZE - tmpl_size);
-> > +
-> > +     /*
-> > +      * To avoid the need to allocate a 32-bit addressable stack, the
-> > +      * trampoline uses a LJMP instruction to switch back to long mode.
-> > +      * LJMP takes an absolute destination address, which needs to be
-> > +      * fixed up at runtime.
-> > +      */
-> > +     *(u32 *)&la57_code[trampoline_ljmp_imm_offset] += (unsigned long)la57_code;
-> > +
-> > +     efi_adjust_memory_range_protection((unsigned long)la57_toggle, PAGE_SIZE);
-> > +
-> > +     return EFI_SUCCESS;
-> > +}
-> > +
-> > +void efi_5level_switch(void)
-> > +{
-> > +     bool want_la57 = IS_ENABLED(CONFIG_X86_5LEVEL) && !efi_no5lvl;
-> > +     bool have_la57 = native_read_cr4() & X86_CR4_LA57;
-> > +     bool need_toggle = want_la57 ^ have_la57;
-> > +     u64 *pgt = (void *)la57_toggle + PAGE_SIZE;
->
-> Not sure if we can decouple this address assumption of the pgt and la57_toggle,
-> and keep the pgt as a variable, like la57_toggle, setup by
-> efi_setup_5level_paging() too.
-> Asking because with the Intel X86-S
-> (https://cdrdv2-public.intel.com/776648/x86s-EAS-v1-4-17-23-1.pdf), no
-> tramopline code is needed since the 4/5 level paging switch does not require
-> paging disabling. Of course, it's ok to keep this as is, and we can change
-> late when we begin working on X86-S support.
+ Contact name: John Lee Tae-seok
 
-We can make further changes as needed. The current interface is based
-on the existing code.
+ Email:( dhlgeneralheadquartersrepublic@gmail.com )
+
+ Do not hesitate to Contact Rev: John Lee Tae-seok, as soon as you
+
+ read this message. Email:( dhlgeneralheadquartersrepublic@gmail.com )
+
+ Make sure you reconfirmed DHL Office your details ASAP as stated
+below to avoid wrong delivery.
+
+ Your full name..........
+
+ Home address:.........
+
+ Your country...........
+
+ Your city..............
+
+ Telephone......
+
+ Occupation:.......
+
+ Age:=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6..
+
+ Let us know as soon as possible you receive your ATM MasterCard
+for proper verification.
+
+ Regards,
+
+ Mrs Vivian kakadu.
+
+ DEPUTY SECRETARY-GENERAL (U.N)
