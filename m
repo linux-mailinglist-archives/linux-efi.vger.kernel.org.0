@@ -2,35 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36A56725590
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Jun 2023 09:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACDE5725583
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Jun 2023 09:25:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235440AbjFGH0P (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 7 Jun 2023 03:26:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53026 "EHLO
+        id S239184AbjFGHZV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 7 Jun 2023 03:25:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237868AbjFGHZs (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Jun 2023 03:25:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 307D926B8;
-        Wed,  7 Jun 2023 00:24:48 -0700 (PDT)
+        with ESMTP id S239302AbjFGHYz (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Jun 2023 03:24:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52C691BD3;
+        Wed,  7 Jun 2023 00:24:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 65A5F61158;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FB4461587;
+        Wed,  7 Jun 2023 07:24:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452C9C4339E;
         Wed,  7 Jun 2023 07:24:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BD3C433D2;
-        Wed,  7 Jun 2023 07:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686122644;
-        bh=CkxTuOnRk4Y7C4ZgcPNao1u1GfsuntANuWAV4i13qLA=;
+        s=k20201202; t=1686122649;
+        bh=+pOeFG4I2M0NxWTqt2DlFeFWBXmc5I0TflwHlC5RHXA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PMy25v4GG9+Ja9Bb96Nluii5OIwk55WuuQX7qDg7t5jFS0Hx5+OX7Jw4xm+TFgG0/
-         EK5cbd5c5sNCpSKZ8ThwMv9L53yizemFCeFm8x9yLPLeG8b/D8zOMqdLySdclP2Ya4
-         5OERtCbemLyLAy6CxaB608eNBsFazsyIQIz8i3kfeMalc70ufng3srHT/gyvLyNsCV
-         w0FVKboMBo6uWFt/klHQGLGZgrlF7Dw2mmTQeag1uUAhb9Yk1FB5XXD+Weowj7HmhX
-         TrjTY503vQrUytexJAArVadYvR3eZjMeFrrppDqhjoz32ETsi1dH/yzz7sSc+Pd0qc
-         9wd11LoAP8ZFQ==
+        b=gbNyxJgII6oV/sDxiUDD0sac72ZQt7Kqef0c8ooJ39V/oNSjBboXYXF87mt1XogBA
+         3aYvQb5VFCxGO4V9J0wWkrODPVWbopBNPshHQTM3//VL6nujl4Kvs0u6GGIGI4qyzJ
+         sOjHHn4ew8IDefnhTKurOw8PWdmLyc1UsDbyhEd2Xg559ai570tqnugXvhEtv3wIu+
+         fpnmfncUc/E85AGpC1A9c5CvjQVD/PkhrAdW5yxLJX0zWuWYlKlo6TCz5k25m2jJdt
+         xEDfvp5LqEKkr91a0Ss+cOE50yYh9oT1XUjV8TDWe+D6tPu7VgJYcVVNKvwT3uW3mP
+         l72G78g+Shq+g==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -51,188 +51,131 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH v5 02/20] x86/efistub: Simplify and clean up handover entry code
-Date:   Wed,  7 Jun 2023 09:23:24 +0200
-Message-Id: <20230607072342.4054036-3-ardb@kernel.org>
+Subject: [PATCH v5 03/20] x86/decompressor: Avoid magic offsets for EFI handover entrypoint
+Date:   Wed,  7 Jun 2023 09:23:25 +0200
+Message-Id: <20230607072342.4054036-4-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230607072342.4054036-1-ardb@kernel.org>
 References: <20230607072342.4054036-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7453; i=ardb@kernel.org; h=from:subject; bh=CkxTuOnRk4Y7C4ZgcPNao1u1GfsuntANuWAV4i13qLA=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIaXBIG1xdWG85es/hlI6M/Z1RGYpx0vedDecdulYdWP4r YN3zr/uKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABP5eIqRodP0FQNjOP9v89I0 zdSmhrNcL2/Z7dj8mfcI+88dT+cxnGZk2HlIO35xrvZZq7Wn/+rc6/ql/9B+n7TI0hJ3j9naHp/ reAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3376; i=ardb@kernel.org; h=from:subject; bh=+pOeFG4I2M0NxWTqt2DlFeFWBXmc5I0TflwHlC5RHXA=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIaXBIP1Nh4/k5gqHKBtjoxNfX9xeE5N2szXBxHFW0OH12 3TCd2h2lLIwiHEwyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgIkU8TIybJ51tOW7kaxFx04D fyutr04uNQo9m7s6JFwFVD/OWddzguG/n3pLnLdO4jHXpLUCZ1h23HtwSFl75opVnK7LZ8499E+ EFQA=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Now that the EFI entry code in assembler is only used by the optional
-and deprecated EFI handover protocol, and given that the EFI stub C code
-no longer returns to it, most of it can simply be dropped.
+The native 32-bit or 64-bit EFI handover protocol entrypoint offset
+relative to the respective startup_32/64 address is described in
+boot_params as handover_offset, so that the special Linux/x86 aware EFI
+loader can find it there.
 
-While at it, clarify the symbol naming, by merging efi_main() and
-efi_stub_entry(), making the latter the shared entry point for all
-different boot modes that enter via the EFI stub.
+When mixed mode is enabled, this single field has to describe this
+offset for both the 32-bit and 64-bit entrypoints, so their respective
+relative offsets have to be identical. Given that startup_32 and
+startup_64 are 0x200 bytes apart, and the EFI handover entrypoint
+resides at a fixed offset, the 32-bit and 64-bit versions of those
+entrypoints must be exactly 0x200 bytes apart as well.
 
-The efi32_stub_entry() and efi64_stub_entry() names are referenced
-explicitly by the tooling that populates the setup header, so these must
-be retained, but can be emitted as aliases of efi_stub_entry() where
-appropriate.
+Currently, hard-coded fixed offsets are used to ensure this, but it is
+sufficient to emit the 64-bit entrypoint 0x200 bytes after the 32-bit
+one, wherever it happens to reside. This allows this code (which is now
+EFI mixed mode specific) to be moved into efi_mixed.S and out of the
+startup code in head_64.S.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- Documentation/arch/x86/boot.rst         |  2 +-
- arch/x86/boot/compressed/efi_mixed.S    | 22 +++++++++++---------
- arch/x86/boot/compressed/head_32.S      | 11 ----------
- arch/x86/boot/compressed/head_64.S      | 12 ++---------
- drivers/firmware/efi/libstub/x86-stub.c | 20 ++++++++++++++----
- 5 files changed, 31 insertions(+), 36 deletions(-)
+ arch/x86/boot/compressed/efi_mixed.S | 20 +++++++++++++++++++-
+ arch/x86/boot/compressed/head_64.S   | 18 ------------------
+ 2 files changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/Documentation/arch/x86/boot.rst b/Documentation/arch/x86/boot.rst
-index 33520ecdb37abfda..cdbca15a4fc23833 100644
---- a/Documentation/arch/x86/boot.rst
-+++ b/Documentation/arch/x86/boot.rst
-@@ -1417,7 +1417,7 @@ execution context provided by the EFI firmware.
- 
- The function prototype for the handover entry point looks like this::
- 
--    efi_main(void *handle, efi_system_table_t *table, struct boot_params *bp)
-+    efi_stub_entry(void *handle, efi_system_table_t *table, struct boot_params *bp)
- 
- 'handle' is the EFI image handle passed to the boot loader by the EFI
- firmware, 'table' is the EFI system table - these are the first two
 diff --git a/arch/x86/boot/compressed/efi_mixed.S b/arch/x86/boot/compressed/efi_mixed.S
-index 4ca70bf93dc0bdcd..dcc562c8f7f35162 100644
+index dcc562c8f7f35162..9308b595f6f0a5de 100644
 --- a/arch/x86/boot/compressed/efi_mixed.S
 +++ b/arch/x86/boot/compressed/efi_mixed.S
-@@ -26,8 +26,8 @@
-  * When booting in 64-bit mode on 32-bit EFI firmware, startup_64_mixed_mode()
-  * is the first thing that runs after switching to long mode. Depending on
-  * whether the EFI handover protocol or the compat entry point was used to
-- * enter the kernel, it will either branch to the 64-bit EFI handover
-- * entrypoint at offset 0x390 in the image, or to the 64-bit EFI PE/COFF
-+ * enter the kernel, it will either branch to the common 64-bit EFI stub
-+ * entrypoint efi_stub_entry() directly, or via the 64-bit EFI PE/COFF
-  * entrypoint efi_pe_entry(). In the former case, the bootloader must provide a
-  * struct bootparams pointer as the third argument, so the presence of such a
-  * pointer is used to disambiguate.
-@@ -37,21 +37,23 @@
-  *  | efi32_pe_entry   |---->|            |            |       +-----------+--+
-  *  +------------------+     |            |     +------+----------------+  |
-  *                           | startup_32 |---->| startup_64_mixed_mode |  |
-- *  +------------------+     |            |     +------+----------------+  V
-- *  | efi32_stub_entry |---->|            |            |     +------------------+
-- *  +------------------+     +------------+            +---->| efi64_stub_entry |
-- *                                                           +-------------+----+
-- *                           +------------+     +----------+               |
-- *                           | startup_64 |<----| efi_main |<--------------+
-- *                           +------------+     +----------+
-+ *  +------------------+     |            |     +------+----------------+  |
-+ *  | efi32_stub_entry |---->|            |            |                   |
-+ *  +------------------+     +------------+            |                   |
-+ *                                                     V                   |
-+ *                           +------------+     +----------------+         |
-+ *                           | startup_64 |<----| efi_stub_entry |<--------+
-+ *                           +------------+     +----------------+
-  */
- SYM_FUNC_START(startup_64_mixed_mode)
- 	lea	efi32_boot_args(%rip), %rdx
- 	mov	0(%rdx), %edi
- 	mov	4(%rdx), %esi
+@@ -140,6 +140,16 @@ SYM_FUNC_START(__efi64_thunk)
+ SYM_FUNC_END(__efi64_thunk)
+ 
+ 	.code32
 +#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
- 	mov	8(%rdx), %edx		// saved bootparams pointer
- 	test	%edx, %edx
--	jnz	efi64_stub_entry
-+	jnz	efi_stub_entry
++SYM_FUNC_START(efi32_stub_entry)
++	add	$0x4, %esp		/* Discard return address */
++	popl	%ecx
++	popl	%edx
++	popl	%esi
++	jmp	efi32_entry
++SYM_FUNC_END(efi32_stub_entry)
 +#endif
- 	/*
- 	 * efi_pe_entry uses MS calling convention, which requires 32 bytes of
- 	 * shadow space on the stack even if all arguments are passed in
-diff --git a/arch/x86/boot/compressed/head_32.S b/arch/x86/boot/compressed/head_32.S
-index 987ae727cf9f0d04..8876ffe30e9a4819 100644
---- a/arch/x86/boot/compressed/head_32.S
-+++ b/arch/x86/boot/compressed/head_32.S
-@@ -150,17 +150,6 @@ SYM_FUNC_START(startup_32)
- 	jmp	*%eax
++
+ /*
+  * EFI service pointer must be in %edi.
+  *
+@@ -220,7 +230,7 @@ SYM_FUNC_END(efi_enter32)
+  * stub may still exit and return to the firmware using the Exit() EFI boot
+  * service.]
+  */
+-SYM_FUNC_START(efi32_entry)
++SYM_FUNC_START_LOCAL(efi32_entry)
+ 	call	1f
+ 1:	pop	%ebx
+ 
+@@ -320,6 +330,14 @@ SYM_FUNC_START(efi32_pe_entry)
+ 	RET
+ SYM_FUNC_END(efi32_pe_entry)
+ 
++#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
++	.org	efi32_stub_entry + 0x200
++	.code64
++SYM_FUNC_START_NOALIGN(efi64_stub_entry)
++	jmp	efi_stub_entry
++SYM_FUNC_END(efi64_stub_entry)
++#endif
++
+ 	.section ".rodata"
+ 	/* EFI loaded image protocol GUID */
+ 	.balign 4
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index 71c1f40a7ac067b9..9f90661744741210 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -294,17 +294,6 @@ SYM_FUNC_START(startup_32)
+ 	lret
  SYM_FUNC_END(startup_32)
  
--#ifdef CONFIG_EFI_STUB
+-#if IS_ENABLED(CONFIG_EFI_MIXED) && IS_ENABLED(CONFIG_EFI_HANDOVER_PROTOCOL)
+-	.org 0x190
 -SYM_FUNC_START(efi32_stub_entry)
--	add	$0x4, %esp
--	movl	8(%esp), %esi	/* save boot_params pointer */
--	call	efi_main
--	/* efi_main returns the possibly relocated address of startup_32 */
--	jmp	*%eax
+-	add	$0x4, %esp		/* Discard return address */
+-	popl	%ecx
+-	popl	%edx
+-	popl	%esi
+-	jmp	efi32_entry
 -SYM_FUNC_END(efi32_stub_entry)
--SYM_FUNC_ALIAS(efi_stub_entry, efi32_stub_entry)
+-#endif
+-
+ 	.code64
+ 	.org 0x200
+ SYM_CODE_START(startup_64)
+@@ -523,13 +512,6 @@ trampoline_return:
+ 	jmp	*%rax
+ SYM_CODE_END(startup_64)
+ 
+-#if IS_ENABLED(CONFIG_EFI_MIXED) && IS_ENABLED(CONFIG_EFI_HANDOVER_PROTOCOL)
+-	.org 0x390
+-SYM_FUNC_START(efi64_stub_entry)
+-	jmp	efi_stub_entry
+-SYM_FUNC_END(efi64_stub_entry)
 -#endif
 -
  	.text
  SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
  
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index 03c4328a88cbd5d0..71c1f40a7ac067b9 100644
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -523,19 +523,11 @@ trampoline_return:
- 	jmp	*%rax
- SYM_CODE_END(startup_64)
- 
--#ifdef CONFIG_EFI_STUB
--#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
-+#if IS_ENABLED(CONFIG_EFI_MIXED) && IS_ENABLED(CONFIG_EFI_HANDOVER_PROTOCOL)
- 	.org 0x390
--#endif
- SYM_FUNC_START(efi64_stub_entry)
--	and	$~0xf, %rsp			/* realign the stack */
--	movq	%rdx, %rbx			/* save boot_params pointer */
--	call	efi_main
--	movq	%rbx,%rsi
--	leaq	rva(startup_64)(%rax), %rax
--	jmp	*%rax
-+	jmp	efi_stub_entry
- SYM_FUNC_END(efi64_stub_entry)
--SYM_FUNC_ALIAS(efi_stub_entry, efi64_stub_entry)
- #endif
- 
- 	.text
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index d4a730f053bdcbfa..4e01278c3f3d55f3 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -817,9 +817,9 @@ static void __noreturn enter_kernel(unsigned long kernel_addr,
-  * return.  On failure, it will exit to the firmware via efi_exit() instead of
-  * returning.
-  */
--asmlinkage unsigned long efi_main(efi_handle_t handle,
--				  efi_system_table_t *sys_table_arg,
--				  struct boot_params *boot_params)
-+void __noreturn efi_stub_entry(efi_handle_t handle,
-+			       efi_system_table_t *sys_table_arg,
-+			       struct boot_params *boot_params)
- {
- 	unsigned long bzimage_addr = (unsigned long)startup_32;
- 	unsigned long buffer_start, buffer_end;
-@@ -965,7 +965,19 @@ asmlinkage unsigned long efi_main(efi_handle_t handle,
- 
- 	enter_kernel(bzimage_addr, boot_params);
- fail:
--	efi_err("efi_main() failed!\n");
-+	efi_err("efi_stub_entry() failed!\n");
- 
- 	efi_exit(handle, status);
- }
-+
-+#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
-+#ifndef CONFIG_EFI_MIXED
-+extern __alias(efi_stub_entry)
-+void efi32_stub_entry(efi_handle_t handle, efi_system_table_t *sys_table_arg,
-+		      struct boot_params *boot_params);
-+
-+extern __alias(efi_stub_entry)
-+void efi64_stub_entry(efi_handle_t handle, efi_system_table_t *sys_table_arg,
-+		      struct boot_params *boot_params);
-+#endif
-+#endif
 -- 
 2.39.2
 
