@@ -2,146 +2,242 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4034A725464
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Jun 2023 08:36:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAAA2725580
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Jun 2023 09:25:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237786AbjFGGgq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 7 Jun 2023 02:36:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54404 "EHLO
+        id S239125AbjFGHZK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 7 Jun 2023 03:25:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234162AbjFGGgV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Jun 2023 02:36:21 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BF9D1BCB
-        for <linux-efi@vger.kernel.org>; Tue,  6 Jun 2023 23:35:59 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2b1b30445cfso63341821fa.1
-        for <linux-efi@vger.kernel.org>; Tue, 06 Jun 2023 23:35:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686119758; x=1688711758;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=6EFrOABaDLpt7VYlTUqL5NsJz5X4d5SpsRmR/+h4/eU=;
-        b=zrmWamvQ3NIx3kxQvmqEpNBeEnJAHQDUu/bZmuRldmyopAs7kcnSeLHNBrfMgs/DUf
-         LwvpEhjtVbMAC914DwVypWF0zQRTS61IThhfy5X5jdVAR2RW0hofwanKWuI4YB/WS70x
-         qkcxSl/G/TwpnvHZOaZEUFwk57mkb6YyQoykP59tiGCLEh8FW67mwzCe1ObItq9Old0O
-         vOp30KmxVKJWFt0vEU4bFHcomlqfau0R2V4/WkKEpRJT2gSyEZqPrwhU0q9GDHTbUAsh
-         8khzqmfVHqMz8EuRkkVIrwmMYYQs3vppRPChSv7KPSGfKu9HjpOFFHwXhL03K0AavwJe
-         y+ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686119758; x=1688711758;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6EFrOABaDLpt7VYlTUqL5NsJz5X4d5SpsRmR/+h4/eU=;
-        b=ZC2SknB5o/aalZo4wYdAT7GYkmOzsiCmWAL2Pqr7sD0L2qmiMiYjLjg4/oZqpIFLQV
-         c9/n4NnyK9RAYrFiKmS11b1iIhsB0hYSrkdKBCV2s/3UZ0+OW9vv6zJLq36287FkE7CD
-         oGLiUs22ZpJRZ8S1vRRwXKa3tB/dy+esGZsp/J8hw5TAkTXtS8t7cFaEerG1mqnnyoU2
-         MS4GPtUwj21B8o5K7sgPKdpgnZQeiEmbVctjVJHzeGDiAGDYdfk2AFnNh2nYLG5obNia
-         y5CHsrhdAzOCC7S0Dh803XAgXCiUwIO4hLbgPdRHPkspSSQi9oWiyJhezMOp8+WTxnjV
-         ypsw==
-X-Gm-Message-State: AC+VfDxP6M8A9wUUecSKH69IPvtWwmP+3m31cL5PDemfvlnBtDBW0weF
-        dgW1DrJ+m7rMmNwHw9yzKp7QQZazgjHyMfdwjO2Z9w==
-X-Google-Smtp-Source: ACHHUZ50P4GwMwpVy/3E1kfflfT7/u++IWVGt8rvCPVQv9ibu4LaVmw1D0lXhPSu99Kuo+IyTcRTb+mYR4WbUz61hcE=
-X-Received: by 2002:a2e:9096:0:b0:2ad:dd7e:6651 with SMTP id
- l22-20020a2e9096000000b002addd7e6651mr2194957ljg.43.1686119757684; Tue, 06
- Jun 2023 23:35:57 -0700 (PDT)
+        with ESMTP id S239243AbjFGHYu (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Jun 2023 03:24:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D54DC2135;
+        Wed,  7 Jun 2023 00:24:08 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E2DCD63A8C;
+        Wed,  7 Jun 2023 07:23:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D0C3C4339E;
+        Wed,  7 Jun 2023 07:23:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686122636;
+        bh=nlSioxLKvYtxG58AZrqg1SN+bQHxAawSMLAdg4nXDv8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Rf9pnZZMA9WM8z0/f2M8OtDPKk8qaf9yHkFi7nV0NSMuHbhiX4ci3YQQlsyNJC9Lv
+         xyzfwMM/XF53ipKxUSUJQq41oGGPbEzPft1PhJ3RX7rvpdE/mJUHklleDBhK5b6pJt
+         FGL3FrAX3gaIO83/lCaZkXKTCb8DYiJjpvCYGV82vieOa+Hz/uJUEZt9KsayVCPFqA
+         n6eXYjQt9Yj1ouZDyeV5LtvABx/ebPcWiGaCUz91NebTBC5d2m2X1jPW27UlGml0Dr
+         CmmSmjwx4mdlSbqB+oFve2MrC7+cv319dXp/USRgHR5YujNMXIG70YZ8Z8fpjTXU/L
+         2vLTiebMJivQw==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        Evgeniy Baskov <baskov@ispras.ru>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Peter Jones <pjones@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Dave Young <dyoung@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH v5 00/20] efi/x86: Avoid bare metal decompressor during EFI boot
+Date:   Wed,  7 Jun 2023 09:23:22 +0200
+Message-Id: <20230607072342.4054036-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20230526010748.1222-1-masahisa.kojima@linaro.org>
- <20230526010748.1222-4-masahisa.kojima@linaro.org> <0d3e0370-eb76-010f-3d30-9acc9b59645c@siemens.com>
- <CAFA6WYPnWJNPvhT2JDkO-qXRUaJoxBGZEvSfhxcRynV7=VSdQA@mail.gmail.com>
- <CAMj1kXFM45PCTU--+CCed6Cq_N5XqDG6tTu6fnQTSCpW2BWA5A@mail.gmail.com>
- <4ff09002-e871-38b9-43ec-227a64bac731@siemens.com> <CAC_iWjJJ5E9Q1or5yTiDynzv_WAYH-g+N24aRdu9rvcsbWqnrg@mail.gmail.com>
-In-Reply-To: <CAC_iWjJJ5E9Q1or5yTiDynzv_WAYH-g+N24aRdu9rvcsbWqnrg@mail.gmail.com>
-From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date:   Wed, 7 Jun 2023 09:35:21 +0300
-Message-ID: <CAC_iWjLm-2GVOn4QpoLBiCYLM1+zuQHttzEvrpNo1qt9AqXaUQ@mail.gmail.com>
-Subject: Re: [PATCH v5 3/3] efi: Add tee-based EFI variable driver
-To:     Jan Kiszka <jan.kiszka@siemens.com>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        Masahisa Kojima <masahisa.kojima@linaro.org>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        linux-kernel@vger.kernel.org, op-tee@lists.trustedfirmware.org,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        linux-efi@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        "Su, Bao Cheng (RC-CN DF FA R&D)" <baocheng.su@siemens.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8927; i=ardb@kernel.org; h=from:subject; bh=nlSioxLKvYtxG58AZrqg1SN+bQHxAawSMLAdg4nXDv8=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIaXBIPm8sNCWaxN+XfDLvX6t9Jd+VeiZfvYJqicfSXTn8 QZzMfR1lLIwiHEwyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgIkcd2FkWKGu9UnQY1fjhus3 TPhaTaYpTH6eJPP38uvOCXYiDtNzlRkZ7vFdtN6X+Obal4nG7POKPv7tPrz6crIKc9/LrR71ISY 2HAA=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 7 Jun 2023 at 09:34, Ilias Apalodimas
-<ilias.apalodimas@linaro.org> wrote:
->
-> Hi Jan,
->
-> [...]
->
-> > >>>>
-> > > ...
-> > >>>
-> > >>> I think we have a probe ordering issue with this driver:
-> > >>> efivarfs_fill_super() may be called before the TEE bus was probed, thus
-> > >>> with the default efivar ops still registered. And that means
-> > >>> efivar_supports_writes() will return false, and the fs declares itself
-> > >>> as readonly. I've seen systemd mounting it r/o initialling, and you need
-> > >>> to remount the fs to enable writability.
-> > >>>
-> > >>> Is there anything that could be done to re-order things reliably, probe
-> > >>> the tee bus earlier etc.?
-> > >>
-> > >> This driver has a dependency on user-space daemon: tee-supplicant to
-> > >> be running for RPMB access. So once you start that daemon the
-> > >> corresponding device will be enumerated on the TEE bus and this driver
-> > >> probe will be invoked. So I would suggest you to load this daemon very
-> > >> early in the boot process or better to make it a part of initramfs.
-> > >>
-> > >
-> > > That is not the point, really.
-> > >
-> > > If this dependency exists, the code should be aware of that, and made
-> > > to work correctly in spite of it. Requiring a module to be part of
-> > > initramfs is not a reasonable fix.
-> >
-> > In fact, I've tested a non-modularized build as well, just to exclude
-> > that issue. The daemon dependency is more likely the problem here.
-> >
-> > >
-> > > IIUC, this also means that the efivar ops are updated while there is
-> > > already a client. This seems less than ideal as well
->
-> As Sumit pointed out, the 'device' won't be available from OP-TEE
-> until the supplicant is up and running and as a result, the module
-> _probe() function won't run.  Unfortunately, this isn't something we
-> can avoid since the supplicant is responsible for the RPMB writes.
-> The only thing I can think of is moving parts of the supplicant to the
-> kernel and wiring up the RPC calls for reading/writing data to the
-> eMMC subsystem.  There was another discussion here [0] requesting the
-> same thing for different reasons. But unless I am missing something
-> this won't solve the problem completely either.  You still have a
-> timing dependency of "when did the RT callbacks change" -- "when was
-> my efivarfs mounted".
->
+Update the x86 boot path to avoid the bare metal decompressor when
+booting via the EFI stub. The bare metal decompressor inherits the
+loader's 1:1 mapping of DRAM when entering in 64-bit mode, and assumes
+that all of it is mapped read/write/execute, which will no longer be the
+case on systems built to comply with recently tightened logo
+requirements (*).
 
-Forgot to attach the link... apologies for the noise.
-[0] https://lore.kernel.org/all/CAC_iWjLOhUvp5ggCCkHN5MRNfB_h6FZ2Z14yrtR3aqGn0Ovxig@mail.gmail.com/
+NOTE: this series depends on Thomas's __KERNEL_CS switch fix [8], which
+is already queued in -tip as a fix.
 
-> Thanks
-> /Ilias
-> >
-> > Jan
-> >
-> > --
-> > Siemens AG, Technology
-> > Competence Center Embedded Linux
-> >
+Changes since v4 [7]:
+- avoid CPUID calls after protocol negotiation but before configuring
+  exception handling;
+- drop patch removing redundant RSI pushes and pops from
+  arch/x86/kernel/head_64.S
+- rebase onto -tip x86/cc - the conflicts are mostly trivial and
+  restricted to the last 4 patches in the series, so applying this onto
+  a separate topic branch should be straight-forward as well.
+
+Changes since v3 [6]:
+- trivial rebase onto Kirill's unaccepted memory series v13
+- test SNP feature mask while running in the EFI boot services, and fail
+  gracefully on a mismatch
+- perform only the SEV init after ExitBootServices()
+
+Changes since v2 [4]:
+- update prose style to comply with -tip guidelines
+- rebased onto Kirill's unaccepted memory series [3]
+- add Kirill's ack to 4/5-level paging changes
+- perform SEV init and SNP feature check after ExitBootServices(), to
+  avoid corrupting the firmware's own SEV state
+- split out preparatory refactor of handover entry code and BSS clearing
+  (patches #1 to #4)
+
+Changes since v1 [2]:
+- streamline existing 4/5 level switching code and call it directly from
+  the EFI stub - this is covered by the first 9 patches, which can be
+  applied in isolation, if desired;
+- deal with SEV/SNP init explicitly;
+- clear BSS when booting via the 'handover protocol'
+- switch to kernel CS before calling SEV init code in kernel proper.
+
+---- v1 cover letter follows ----
+
+This series is conceptually a combination of Evgeny's series [0] and
+mine [1], both of which attempt to make the early decompressor code more
+amenable to executing in the EFI environment with stricter handling of
+memory permissions.
+
+My series [1] implemented zboot for x86, by getting rid of the entire
+x86 decompressor, and replacing it with existing EFI code that does the
+same but in a generic way. The downside of this is that only EFI boot is
+supported, making it unviable for distros, which need to support BIOS
+boot and hybrid EFI boot modes that omit the EFI stub.
+
+Evgeny's series [0] adapted the entire decompressor code flow to allow
+it to execute in the EFI context as well as the bare metal context, and
+this involves changes to the 1:1 mapping code and the page fault
+handlers etc, none of which are really needed when doing EFI boot in the
+first place.
+
+So this series attempts to occupy the middle ground here: it makes
+minimal changes to the existing decompressor so some of it can be called
+from the EFI stub. Then, it reimplements the EFI boot flow to decompress
+the kernel and boot it directly, without relying on the trampoline
+allocation code, page table code or page fault handling code. This
+allows us to get rid of quite a bit of unsavory EFI stub code, and
+replace it with two clear invocations of the EFI firmware APIs to clear
+NX restrictions from allocations that have been populated with
+executable code.
+
+The only code that is being reused is the decompression library itself,
+along with the minimal ELF parsing that is required to copy the ELF
+segments in place, and the relocation processing that fixes up absolute
+symbol references to refer to the correct virtual addresses.
+
+Note that some of Evgeny's changes to clean up the PE/COFF header
+generation will still be needed, but I've omitted those here for
+brevity.
+
+(*) IMHO the following developments are likely to occur:
+- the Windows boot chain (along with 3rd party drivers) is cleaned up so
+  that it never relies on memory being writable and executable at the
+  same time when running under the EFI boot services;
+- the EFI reference implementation gets updated to map all memory NX by
+  default, and to require read-only permissions for executable mappings;
+- BIOS vendors incorporate these changes into their codebases, and
+  deploy it more widely than just the 'secure' SKUs;
+- OEMs only care about the Windows sticker [5], so they only boot test
+  Windows, which works fine in this more restricted context;
+- Linux boot no longer works reliably on new hardware built for Windows
+  unless we clean up our boot chain as well.
+
+Cc: Evgeniy Baskov <baskov@ispras.ru>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Cc: Peter Jones <pjones@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Joerg Roedel <jroedel@suse.de>
+
+[0] https://lore.kernel.org/all/cover.1678785672.git.baskov@ispras.ru/
+[1] https://lore.kernel.org/all/20230416120729.2470762-1-ardb@kernel.org/
+[2] https://lore.kernel.org/all/20230424165726.2245548-1-ardb@kernel.org/
+[3] https://lore.kernel.org/all/20230518231434.26080-1-kirill.shutemov@linux.intel.com/
+[4] https://lore.kernel.org/all/20230508070330.582131-1-ardb@kernel.org/
+[5] https://techcommunity.microsoft.com/t5/hardware-dev-center/new-uefi-ca-memory-mitigation-requirements-for-signing/ba-p/3608714
+[6] https://lore.kernel.org/all/20230522071415.501717-1-ardb@kernel.org/
+[7] https://lore.kernel.org/all/20230602101313.3557775-1-ardb@kernel.org/
+[8] https://lore.kernel.org/all/6ff1f28af2829cc9aea357ebee285825f90a431f.1684340801.git.thomas.lendacky@amd.com/
+
+Ard Biesheuvel (20):
+  x86/efistub: Branch straight to kernel entry point from C code
+  x86/efistub: Simplify and clean up handover entry code
+  x86/decompressor: Avoid magic offsets for EFI handover entrypoint
+  x86/efistub: Clear BSS in EFI handover protocol entrypoint
+  x86/decompressor: Use proper sequence to take the address of the GOT
+  x86/decompressor: Store boot_params pointer in callee save register
+  x86/decompressor: Call trampoline as a normal function
+  x86/decompressor: Use standard calling convention for trampoline
+  x86/decompressor: Avoid the need for a stack in the 32-bit trampoline
+  x86/decompressor: Call trampoline directly from C code
+  x86/decompressor: Only call the trampoline when changing paging levels
+  x86/decompressor: Merge trampoline cleanup with switching code
+  x86/efistub: Perform 4/5 level paging switch from the stub
+  x86/efistub: Prefer EFI memory attributes protocol over DXE services
+  decompress: Use 8 byte alignment
+  x86/decompressor: Move global symbol references to C code
+  x86/decompressor: Factor out kernel decompression and relocation
+  efi/libstub: Add limit argument to efi_random_alloc()
+  x86/efistub: Perform SNP feature test while running in the firmware
+  x86/efistub: Avoid legacy decompressor when doing EFI boot
+
+ Documentation/arch/x86/boot.rst                |   2 +-
+ arch/x86/boot/compressed/Makefile              |   5 +
+ arch/x86/boot/compressed/efi_mixed.S           | 107 +++-----
+ arch/x86/boot/compressed/head_32.S             |  34 +--
+ arch/x86/boot/compressed/head_64.S             | 222 ++++-----------
+ arch/x86/boot/compressed/misc.c                |  44 ++-
+ arch/x86/boot/compressed/pgtable.h             |   6 +-
+ arch/x86/boot/compressed/pgtable_64.c          |  72 +++--
+ arch/x86/boot/compressed/sev.c                 |  71 ++---
+ arch/x86/include/asm/boot.h                    |   8 +
+ arch/x86/include/asm/efi.h                     |   7 +-
+ arch/x86/include/asm/sev.h                     |   6 +
+ drivers/firmware/efi/libstub/Makefile          |   1 +
+ drivers/firmware/efi/libstub/arm64-stub.c      |   2 +-
+ drivers/firmware/efi/libstub/efi-stub-helper.c |   2 +
+ drivers/firmware/efi/libstub/efistub.h         |   3 +-
+ drivers/firmware/efi/libstub/randomalloc.c     |  10 +-
+ drivers/firmware/efi/libstub/x86-5lvl.c        |  95 +++++++
+ drivers/firmware/efi/libstub/x86-stub.c        | 285 +++++++++++---------
+ drivers/firmware/efi/libstub/x86-stub.h        |  17 ++
+ drivers/firmware/efi/libstub/zboot.c           |   2 +-
+ include/linux/decompress/mm.h                  |   2 +-
+ 22 files changed, 511 insertions(+), 492 deletions(-)
+ create mode 100644 drivers/firmware/efi/libstub/x86-5lvl.c
+ create mode 100644 drivers/firmware/efi/libstub/x86-stub.h
+
+-- 
+2.39.2
+
