@@ -2,294 +2,337 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E47C726563
-	for <lists+linux-efi@lfdr.de>; Wed,  7 Jun 2023 18:04:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81ACB726577
+	for <lists+linux-efi@lfdr.de>; Wed,  7 Jun 2023 18:08:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234989AbjFGQE0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 7 Jun 2023 12:04:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34998 "EHLO
+        id S241510AbjFGQIE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 7 Jun 2023 12:08:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235931AbjFGQEZ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Jun 2023 12:04:25 -0400
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2068.outbound.protection.outlook.com [40.107.21.68])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63A281BD0;
-        Wed,  7 Jun 2023 09:04:23 -0700 (PDT)
+        with ESMTP id S241433AbjFGQID (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 7 Jun 2023 12:08:03 -0400
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2041.outbound.protection.outlook.com [40.107.244.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B4571BE8;
+        Wed,  7 Jun 2023 09:08:00 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MTItc/aIgt3Rry9eZLPKzBLMmQdhHNSd8LTGYURpgtyCERhCkm3z6apkJ3YudWshn4GlAIwq8ATpLbZY7XQGWFKVxfv2P+iy+yHjEiHFWB4AWwzyKKn5zUeutjR4KJA3VXlSfgwA8WwTqrD9gn1fM3l+mstK1InNsCQugX/PXwkdmrAQ1kxqHflj0qR2sZtGL1LxryUz4q+4C1L13wCGdLCwAbYanR1S25cQEroNl+OIYgi71CcBpkOuAFJdmHVsPLQIskBN4Sv6sD1YlPXtSlX4SWYn2q2OQo3oG5kVuMXhQ2hVfD+uC05ZckkA2uvCxT8mPSpUDPcx5YOWwaF/Bg==
+ b=ifj9B+5LAOmSFTdSbXwgNKlT2EFSAzmTzJ0P8xgcyRJBTXjBu9lsnStRy68r0tOMkhi769z1HyZ8+jyKbEwDfRvPhUDwC2H2JDygnhIsH29KCuV7OBrMoWCKeaj6R6LHZdnceeOpW4Lzs4Bv87KJXYbRCbZIvpkuDUHmAxNTtqsM6lqJH0a+ff0nZlnppeWMICpiL0wpkywEs/HtyILuETKpIrjhQ5X0Unv4JRV0XZMVKqDXINovPuma1JllUF22iI1MGcQ9fdG2y4Xiv/bdTNyf2oDmrRuAefc4rh9P4zVC3r38pVyCi+0wbJVuH1uWIuZMcoHqb4KLzvcfP8l1sA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TC/jjeTOavOGgcqWeNVxaHD96z4PISG4fuSfWqT/uL4=;
- b=N9FxSiqB1n3czVMfVJbamY0yTTPITV995lMcVbv6jczD5vwmT5LJiYP8FGFVszE/kgKXg18jemtg8SbgCRNm/vv0mfk0yqocVPqkJEfkNLTq0uWwl3MWFNka6sqrM41E/sawpVJZeHHE09Z9FAAh+D/W+mHgPa1/X7ac1QBNtgvFBt2iQu5Iu4d+K+NSpwK3uWLPBs20Qov3UGEOClEbxY0MgN+k9aAyzOVBr/aPC3Ze/mKFRqJo7Zq5UHyQuQL+hmaU22/jkzHa0pTACUPYfMHkJynjSHVQwXB4Nwj3bWj6ha90QFQ2uvWcrmH5urq6R9gAggptvncg+BtnD9nu7g==
+ bh=NkNxMqzOzQQHjfcx+Za2pPwIXpIXTiVwwRNnDFclpkM=;
+ b=QwHKulHO33E/ByNNKq8B1EnlDjFoOf+52c7nkR6NqmqHXyRHY5QdgxtL98baPLGTQ/2bm1X1B1BeqCz8PE7zpThjDWREsRtcDXQPrWoKl5krjrr8+Crl/qKtqVMpGXsQAaQqC8baCPQ8Iy6fZxALfzcifMex0Ze3QeCV6ttH8EHVqxf+pyBX0vtAYJMfIxTMB0g1oihDpBEG/Zx2OF0peYh5ZO3ucjJIx81GbRJf4kr8C9UK+Lq/4UHnrlaZ1GHuwu5LINjDpF4GJX9vTGdOO7Vomui8fFmY0CC2V416brVY1wlT3uuZcNIiOjLFPSZ06t5WuhQkv8HuAfZFXw6D+A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siemens.com; dmarc=pass action=none header.from=siemens.com;
- dkim=pass header.d=siemens.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=siemens.com;
- s=selector2;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TC/jjeTOavOGgcqWeNVxaHD96z4PISG4fuSfWqT/uL4=;
- b=byYTLCa4ROjy8X5pdJRdKci2k4UPaA+3uThbikjeDkbE3zcc7Z1Re5LEJrnY900IG7I7wkL+zKHbgfnWdS5ydxp7StwKlU8NJPpFdC+fC2PC/rNkCzE7q4sd39LIcQE2AN/ZrgQIXrj9X8vTvPBo7PySL0uqA/iissCUnpTGmKzb025Q41fwVoRryccHxukjYJtCcfL/+undEH6UeJQR4/O0Y0SLZoRCFSS7UIjaIA/bGZEWVApNek2StPHky5+kCL0EDn5PR5Db2Bl31zMG2upuq9anFK0haD6bGvuErg4oIe2SXHEt6KGPDCkycBLEJ4C1/41MHSfKwV6qU5I7ag==
+ bh=NkNxMqzOzQQHjfcx+Za2pPwIXpIXTiVwwRNnDFclpkM=;
+ b=1wd9ExsjTu/52349kL8yhXdcpqahWYnFUKfISjEpZrB4S+SFI1CdCBwaO4W20CwGaVoMpJsyigH/juA0sbW5l64Th8h1dFCscHyXETu9lVV5pcb3s8TAhXgKy33I1v/f0Mpt87CjFqmEqsIvvLqGq1mLvOawyAyNvGrQI9DR8Do=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siemens.com;
-Received: from AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:588::19)
- by AS4PR10MB6013.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:51c::22) with
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
+ by BL3PR12MB6641.namprd12.prod.outlook.com (2603:10b6:208:38d::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.33; Wed, 7 Jun
- 2023 16:04:20 +0000
-Received: from AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::2ecd:9a8a:5601:47e4]) by AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::2ecd:9a8a:5601:47e4%6]) with mapi id 15.20.6455.030; Wed, 7 Jun 2023
- 16:04:20 +0000
-Message-ID: <cc6bd203-83ea-c247-0986-7fec6f327ee8@siemens.com>
-Date:   Wed, 7 Jun 2023 18:04:17 +0200
+ 2023 16:07:56 +0000
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::1629:622f:93d0:f72f]) by DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::1629:622f:93d0:f72f%6]) with mapi id 15.20.6455.030; Wed, 7 Jun 2023
+ 16:07:56 +0000
+Message-ID: <46f93827-630a-32f0-555d-aa51a2fd2a60@amd.com>
+Date:   Wed, 7 Jun 2023 11:07:53 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v5 3/3] efi: Add tee-based EFI variable driver
+Subject: Re: [PATCH v5 19/20] x86/efistub: Perform SNP feature test while
+ running in the firmware
 Content-Language: en-US
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Masahisa Kojima <masahisa.kojima@linaro.org>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        linux-kernel@vger.kernel.org, op-tee@lists.trustedfirmware.org,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        linux-efi@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        "Su, Bao Cheng (RC-CN DF FA R&D)" <baocheng.su@siemens.com>
-References: <20230526010748.1222-1-masahisa.kojima@linaro.org>
- <20230526010748.1222-4-masahisa.kojima@linaro.org>
- <0d3e0370-eb76-010f-3d30-9acc9b59645c@siemens.com>
- <CAFA6WYPnWJNPvhT2JDkO-qXRUaJoxBGZEvSfhxcRynV7=VSdQA@mail.gmail.com>
- <CAMj1kXFM45PCTU--+CCed6Cq_N5XqDG6tTu6fnQTSCpW2BWA5A@mail.gmail.com>
- <4ff09002-e871-38b9-43ec-227a64bac731@siemens.com>
- <CAC_iWjJJ5E9Q1or5yTiDynzv_WAYH-g+N24aRdu9rvcsbWqnrg@mail.gmail.com>
- <CAFA6WYNFYB1LiOFB_iwTsdD5PmnDdSbtDSH2J4FVFPx3uik8rQ@mail.gmail.com>
- <CAC_iWj+E7-XK6dCeSn4205K0O3EZCLxCaC+adu-14ST6sdudfA@mail.gmail.com>
- <76da826f-b608-6add-5401-6de818b180e3@siemens.com>
- <CAFA6WYPCDRjFzsUMU=SNzEt88nT7Fcm1eOFL8z4HiQO+=2JeVA@mail.gmail.com>
-From:   Jan Kiszka <jan.kiszka@siemens.com>
-In-Reply-To: <CAFA6WYPCDRjFzsUMU=SNzEt88nT7Fcm1eOFL8z4HiQO+=2JeVA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Evgeniy Baskov <baskov@ispras.ru>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Peter Jones <pjones@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Dave Young <dyoung@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Kees Cook <keescook@chromium.org>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>
+References: <20230607072342.4054036-1-ardb@kernel.org>
+ <20230607072342.4054036-20-ardb@kernel.org>
+From:   Tom Lendacky <thomas.lendacky@amd.com>
+In-Reply-To: <20230607072342.4054036-20-ardb@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FRYP281CA0006.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10::16)
- To AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:588::19)
+X-ClientProxiedBy: SN6PR05CA0010.namprd05.prod.outlook.com
+ (2603:10b6:805:de::23) To DM4PR12MB5229.namprd12.prod.outlook.com
+ (2603:10b6:5:398::12)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR10MB6181:EE_|AS4PR10MB6013:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3ca8af85-cd47-4214-493d-08db6770daa1
-X-LD-Processed: 38ae3bcd-9579-4fd4-adda-b42e1495d55a,ExtAddr
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5229:EE_|BL3PR12MB6641:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4a2fa6f2-441a-4c0c-c16d-08db67715b2e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: +YhYYClrrMrudUKTBcs2TVRxwI69mz85LSuYXJ8RpqS58v5Qn8wkDDaiM/68LYGATMhiVz7tcVieOSIY2zIf1NVVNNYutPxzlbokdlgsC+tOK9Oyn5GcMNKGEj2cDPS+1IH2lFpf7wt260aHbzC7dVCXMRjLSZPhA+v9gsq8RZYWafo1JtgPlTBZ965NZLNEL5Q9F6mUuuti01PO34JzQDgLx8hFwsIbJNZQFHhE5BI4Wlr2cTquFfmiUqnHTIl6qIsVNXTuzPZCYjd9Ayx3Fb6ygNOsKTFm1Ylg5G3UkBxoT7S2b+iwukLtETYzB9vWP8p8ktEBROziA0YQtP5PCxCNyr15TXDt7j6fm7VznwCt+oxoaxthHUtE5Wpte9DxGGyC5AsId6aeUkPH6E9ORt8FMFsbEXjkneXAVIeY3L0a/GrHpt39TqSF+aaYHhdlDY3YSOdRBuJlBnq8/tyRy5ExpdUtUFwqbxkHoGGMLJTA49zqAo4Anqc9HmSJdwsyb+5sNpdFbP7G3NGbtKVRtJUnjfrEc4V/W9yalaXXEfX88wvSeJwolOWFIumVFoxhOae1tyqcNbDUNzZfThztdgwkrstSaMgkSMVg5A1A1GrTD5oER5VBp/q+yDZtCL4gwnuhYIc1cIhZJ6oDMQYgaQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(346002)(136003)(39860400002)(366004)(396003)(451199021)(8676002)(4326008)(66556008)(6916009)(66476007)(7416002)(8936002)(66946007)(316002)(5660300002)(31686004)(41300700001)(54906003)(44832011)(66899021)(45080400002)(2906002)(478600001)(26005)(82960400001)(38100700002)(31696002)(6512007)(86362001)(6506007)(53546011)(186003)(36756003)(107886003)(6486002)(966005)(2616005)(83380400001)(6666004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: ZfYnM4d/KFjaatt+LC0kn9E3l9F0umugWRWW+ai3Zy8sgkKFmoa1qpUvwWM6CvvxidBL7Huch5v+9gWPDMMXfRlQ1v0G2wb+MP7HwK59jx7oqZFkbX/KJ1Pa6lu0DTFHTXKuUzhGr0nO/Hddu+4GDilGjJTqHbyRsbtFb6t5PifipTWFVVCHGkBhPWw+ugYhug5Gb0XCjoD7AaZnl+nLn5Z4RJZJTbbgYTso9XwRxAN3tWT0zD7+M55Gsgh9bnfU8+Vbaqcq5tLcsqYIro4LoQeh1449fiKxWIjkAhNv5TY3v5aRjBMR2bXxVOuRci5Vt2kAAr/5eu+zU+map9HvD/Luf7h+sXCh8V1c8Mwk+xxqhst+03nGMZNlrPH6cd/BRoJh9s/9UDx3vCvVn0DwN6X+onwyfRZbxICXRwo9xwmHHrV7ALjRg2Hur9yp04DHJNtIBd7QTWu/wV+r8UKqblvnH6ivbXKmEoHlTsgC8dpUsGAhegvzu8AaZk7NXwMJ3lbw6WfQ9tbvMSl2hUJ2JvIxbrGtNL3QvDdzF95tFAdnFDs4VGgSpyXd8PZpz4mXIa/gfgMZ6hqCkCkMDVZ1aKPCOoMznrryeQTWZ+van8f0nk493caT7keedI21iRFyTInohGOSKHc2JgHyGAfmCw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(346002)(376002)(136003)(39860400002)(396003)(451199021)(54906003)(478600001)(316002)(8676002)(8936002)(41300700001)(38100700002)(66946007)(4326008)(66476007)(66556008)(2616005)(186003)(6486002)(6666004)(83380400001)(26005)(6512007)(6506007)(53546011)(31696002)(86362001)(5660300002)(7416002)(2906002)(36756003)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eWlRa3pOSytpQ01VaHVIVGNrbXlPYlBWVXE0L21qaisvZW5hTWhEMjhGZnpE?=
- =?utf-8?B?NFl6Yk1WaGIwd1VST3VibW5jdGpKMnpBSXlXdGh1Tk1kSElTRTZKSTRxSjVV?=
- =?utf-8?B?TVlPREkvcjVQK1cvZ0hXbWRFcjRSWnR0L2F1dWxqUG9JalFnSkR5NEJNSEsv?=
- =?utf-8?B?ZVhmWmFGOGcwdjBWcXphWGRFOVEwVFUrVGczSzRKRklWSWlzTDFQUFArVkx5?=
- =?utf-8?B?OG1OWTJQTlBxM3BLeEw1clNPUUxWNEVMb3NhNUN0NkxlUklZaW1xYjgxOXJP?=
- =?utf-8?B?V1JRZk92L1BvQmJFUVc5UjlYVWRGeU9kQjB6YkpQR2h4ZnNFSlZPVnBCYUYr?=
- =?utf-8?B?ektXWEQyalpRV2RsNEc0TUhhRmxqak1ydnJaV3RQUXFBZjZPNUVEcmpuWFNh?=
- =?utf-8?B?Q0pHTGVxcnlpanlLSnExZ2hCWmo5cytlWThZYlVIc05kRHpnTUo0SXVqTE9Y?=
- =?utf-8?B?bEdCNFF6RUV4bEtwN1NueVF3Sy9vRXFlNWlqd1NKZXhNZ3hNZllGVEJia1cv?=
- =?utf-8?B?SHdmQUsrYmt4S0l2Y3prdkxKOUtETldaWFVQZlpOanMrZFFVWDIva1BDQmtm?=
- =?utf-8?B?Ungybnp1Zm42Y0loRVBxVWtjLzE2RkhRTWt2ZVVVNkFpVjRuOHpuWkgyMmUw?=
- =?utf-8?B?VFd3NGZEclozN1FBNFptcVBFTDlRMDhQU3loMFdSazdTYWM3VTU5azcxY29Y?=
- =?utf-8?B?V0FpWHVmUTgyYUxKZklndUdSdXpSamE3TDRlOXZBUnJXTlNzbmFQajhLSUJJ?=
- =?utf-8?B?NW5MaitPTFhGWGpSamJtamdFbUpCR1JzYTdkY0xUekFwRjYvWERWR3h4b1ho?=
- =?utf-8?B?dXJ3czRqVTY4czBzVEpSRGZFMXlpZnd6TzAvRmZxRmwyL3dmT05hMzYyQnlr?=
- =?utf-8?B?NjR5eloveG8vVllCZzlOWXJnNzl3cXV2L1J5YzNNTDNLNWlETStsVEd6UUp1?=
- =?utf-8?B?MEJhbC9EM3prNVJlZHhwVGx5SzFGUFAxc2dvTEQ3Nnc2WHRiODdXUFV2cDht?=
- =?utf-8?B?Y1ZVeHlONUdkb1YxTVBTZHhQS0IzNzdBd1dzc0ludGcxUVFEQ2VWQU9hc3Yx?=
- =?utf-8?B?QVJyVjVZc0VOc1dHdTNPZTdOcXBSM1ZGSXREbDZyRWI3dXMyVkNndStaWlNj?=
- =?utf-8?B?azdXRGZ6blMxdVk0a2d0Uk5iVTFNc1FlaDQ1MSt1MStFNUdOWStTUFBwcVlq?=
- =?utf-8?B?N3l5R2ZNWnp1YkNWZUpLV2dveHl5cjlXSmgyNC9nMHFvMFllL3A3V2pva0h3?=
- =?utf-8?B?NmhhL3RMQUpUaDBBM1REZEpSeHM5V1JoeVFlY2pVREFCSXh6bVNkNC9OVTBH?=
- =?utf-8?B?SU1OYWc1M0F4MDRmM1E5bm41bktvelpVWExnUWxNbE5CSk52bzZIK2Y4clZP?=
- =?utf-8?B?YnI5MjFOcEU4QWF6QWFlL25GMFdZdHNlZ25pQmZqeVVmVXZmQmVhdzljOEsz?=
- =?utf-8?B?c2x4MEgvVXVoZFZTTEF1ejNVbks0SkhzWkpyaVFiNGJnWjZoVnhHcEgvaThJ?=
- =?utf-8?B?YjNBdVZWeCtFUzUyUHhSUmpRNGRxcFFvUDVtYkMrdm0yNlNYVnA5NC9iNUoz?=
- =?utf-8?B?cFllRHdUZlNlSnNxZmtzaWExUlRaanFocHRwbXZBemQvQm9Kc1lLS2VibURo?=
- =?utf-8?B?RzJrNEY2a0RWSUhWbzl3SDhvOURJNExlTU5PNjRudmhkbWJHSkxFNTFQVDdn?=
- =?utf-8?B?QlhHNVhSLzByV3lKUUJucjN6YUV1Mmx4cEpvK280RHFRTmNISnlkY1V5L0ph?=
- =?utf-8?B?S0h5MlpYSzRzMTRHc21QeVhUdDM1b2NoOW52blJreDl2T2luakZvUExSSzAz?=
- =?utf-8?B?Nm9NYVlPYjZyalpubEZoTVpsR3hlbkdIeHFiV0FWYTJNQS9uQ2hVOG8wa3My?=
- =?utf-8?B?NDZSbzZsWXBEb3BlUmRVcU9pQWt1aTVlWStGaEpUL2c3WTYzRXMwU1RENnAr?=
- =?utf-8?B?aSswMEdHdGxnMzcreUtkc0NQaGFZdkE4a1JyT2FnT3UrTENRNGVqY2MrZmNq?=
- =?utf-8?B?YTRCTHZBQm1sL25YZjZoM1RqUDR5N0dZLy9JbHczS2NUK3NTeGZ5OTl6NXdV?=
- =?utf-8?B?WkRhY0YxQWZjUFI2YnpFTDlsQlNQRnlpS1JZUDFVQ3VFdjFBTnRBM3ZtN0Jx?=
- =?utf-8?B?NnZqeWkyU0RTbVFBZG9RWXYvMm8xdjMyZlhZUFZKY3ZGOGczaTdHU0Iwb0Vu?=
- =?utf-8?B?cVE9PQ==?=
-X-OriginatorOrg: siemens.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3ca8af85-cd47-4214-493d-08db6770daa1
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WXdVZ1p3RXk2VWdoQm4vYzBRSFRGUlBUQnVXR3lGQzNKUm1JUUJhOEV3NU9m?=
+ =?utf-8?B?MVFzUXE5RURrNVFaWlZyKy9DWGQwdURXcEpzTG85L3VlWndHUW5rcmJwZHVS?=
+ =?utf-8?B?NHBxd3pEK2Y5N2FuYlI5bElYdGdJR1A1VWpuQUdzWERKeXpKbk52K00yTElS?=
+ =?utf-8?B?dXdOSW1sTmw3a2g3RlZaT1M5ZkZqb2F2UFE1aUVpSXp0UFVpVXNmYVBTK2w1?=
+ =?utf-8?B?RmJBTk9vVk4xOCtEQVVmMkRaeDdHUi9YUzZuQXBlKzAvR3lIc1M0WFFGNmJS?=
+ =?utf-8?B?VHpYWGZOengxMytnV1gyT3c3SUYxWnAxOERDVlVpUXE0MjlBUGFSaHkxaWZx?=
+ =?utf-8?B?VU5tMU84dzdoNVJuZFJkdFlaTGc4Q0swN3FJN3NDS0VaeHRUbzYvVHlud0lX?=
+ =?utf-8?B?RkN5MnFQSTBYR29DY1c5RXZGaHgyV3FINDF0M0wrWHlNejhwMytEekJlVEU2?=
+ =?utf-8?B?aTJZMEdTSEZ6RlV3VkxjTDVYbzFRVnFadDduWjVoK3lkZVhjaldFclJPUUJU?=
+ =?utf-8?B?Yjh4cG1GN0dUNHdFcVgrNE5nVDNkWGhhczhDTmpmZG1lakVKcHJOU05NeExM?=
+ =?utf-8?B?aGpLeHFaeFVPVDZZV2wyZm9nVFFQTk9JSkplVVQ1WkhNWmNFSGxKTEdSa29J?=
+ =?utf-8?B?ZVBuVDFjU0pYcjljUCtBcmU1V1VWUzNjWWxkeTMzYi9zTkxxL2NFVUVqRFlB?=
+ =?utf-8?B?aklocWkyaVJ3SmRVUlJMRjU4QkRwMUdvUVhsR0xueG5hczczcDBVS1B3UWtU?=
+ =?utf-8?B?WDAwU0dwdVE2a01VbEZIdDUwMjR6WXdFMkU4U2Qzc2JrcHlqd29ZQldEUUFM?=
+ =?utf-8?B?R3BJZmd4clo3WVBzZU5hcjVKWjFSeXFLaEFsL1FVNDFrbEp6NUl1RnNoNXNw?=
+ =?utf-8?B?S2FBM1hWcmgxVGQ3aXo1elQ2N1pjR2pEclN5OVJDWjhxaUZsVWxla0pReGJQ?=
+ =?utf-8?B?MXVQOHJpeTVaTU12TFpzNVd6NnJoZmgwVW5wOGIrQXJoV3c5ekZmeFViTlVX?=
+ =?utf-8?B?QlFpem1OL0xJYVJOdWpLOFh3QUlvVmFxeC9qREowRndvVFFLSzI1dUprWXdO?=
+ =?utf-8?B?dEM4bkdybjlXZVU3Q3grWmlya05PeWI1U09xdHl2OUE4Z1VyUElHL2pINmM5?=
+ =?utf-8?B?UU5DYkpuajkrWWJTNGN3dktxMTN5SFN5YTc1azR4eGZEcks2Z2NNMFozT1pk?=
+ =?utf-8?B?UjluUVJHKzVaK3BOaUpqanB4ZUpYK3VjOVdWT0dMZnhjWCszQ0NteEh6NWNP?=
+ =?utf-8?B?bE96d2RYd1V0NnUvSWwwdnBSckNNdUxwVGFJUGlCUnR1VUFaZU5Qbm0xNklP?=
+ =?utf-8?B?TSthUnZyZEEyUFZuMFB5VXJhV2JMM3NuNFZZcktScENsZUdDdmVvbUVTdWc3?=
+ =?utf-8?B?akMzUnREMmllaTN3aEFFa25ndlNIckFpN1VOd0tXSXVnNksxQkpXbFFGanlk?=
+ =?utf-8?B?V3pZa2tnRHdQaHZFQUpkZ05MbGlEaG5hVC9rdnBXdEg4d3JhK3FlbTRiSmtj?=
+ =?utf-8?B?S3JURExZR0ZNZWthMWFTMjUvTjdIeGJvNGdhYXlUWit1d2VGOFlkQ0hDbUhI?=
+ =?utf-8?B?NDloOXdMa1Vma3BRcVM2Tmd2RjBtQ1U1enZNNWFPRitHOER5Yk5CQkxWTEo4?=
+ =?utf-8?B?YmVkMzlSU2NSMkFOQkhnOG05MTQxK3hQSDB1UXRIb0FFNlppTTdWcWRGL2JG?=
+ =?utf-8?B?MG41QzFLdi9FOW1KcEdmc216Z0RMdzVITUt2d1dUdU1jdzU4YjFxZ2lGd1FT?=
+ =?utf-8?B?MEpTdzJoN0lJc3ZvalM1bFRCeUx0eG1QTFdtY2pwOThnSW9uajgweE9ZeWtR?=
+ =?utf-8?B?QmY4T012M01IVElsNVA3eHFFNmp4U3RmYVcrNldrc1hpNXp4SXczSlRXTHJy?=
+ =?utf-8?B?SHgvNjBiYlpKSmV5K3hsM0J5cnBkQ0NUVjFIVzBxN2hsYmZIODkwUGpNK1pz?=
+ =?utf-8?B?WHFKbEhLcFkwWGllYmFRbE5oS1BtZC9ERXJ3Vy9yMmFqdy93M041UjJJTWlt?=
+ =?utf-8?B?RG5QOHNZQmU2R0ZMeVc4ajlNdHVMMTBTOGZlYVhQVDRmc3djRFYybkc2VlIz?=
+ =?utf-8?B?bmZzeDZxL0FWR24rekhja1FoaE5vOFF6OTQ3elpYTm95Nk1Kcmxxenh2bW1q?=
+ =?utf-8?Q?66/sKanQ4KR+F/8x5e0K8rcsj?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4a2fa6f2-441a-4c0c-c16d-08db67715b2e
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2023 16:04:20.6658
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2023 16:07:56.3647
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yzw7dtGujrlRQf8VKjuL/+DDMf5k+XTSsBc9u04YyI9t99xkvY5dqz3QQ4RTArA5jrFx+vrYRuwGGj5egWyFQg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR10MB6013
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-UserPrincipalName: ClXHN1GGaYsJ3jfdhEy4gY0v+FHsVFs/Orys9bvaebkAc8tIJfn5KZ78Usf+NNgCc3YliIXBHkloHHsXzrLAwA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6641
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 07.06.23 17:18, Sumit Garg wrote:
-> On Wed, 7 Jun 2023 at 18:10, Jan Kiszka <jan.kiszka@siemens.com> wrote:
->>
->> On 07.06.23 10:25, Ilias Apalodimas wrote:
->>> Hi Sumit,
->>>
->>> On Wed, 7 Jun 2023 at 10:25, Sumit Garg <sumit.garg@linaro.org> wrote:
->>>>
->>>> Hi Ilias,
->>>>
->>>> On Wed, 7 Jun 2023 at 12:05, Ilias Apalodimas
->>>> <ilias.apalodimas@linaro.org> wrote:
->>>>>
->>>>> Hi Jan,
->>>>>
->>>>> [...]
->>>>>
->>>>>>>>>>
->>>>>>> ...
->>>>>>>>>
->>>>>>>>> I think we have a probe ordering issue with this driver:
->>>>>>>>> efivarfs_fill_super() may be called before the TEE bus was probed, thus
->>>>>>>>> with the default efivar ops still registered. And that means
->>>>>>>>> efivar_supports_writes() will return false, and the fs declares itself
->>>>>>>>> as readonly. I've seen systemd mounting it r/o initialling, and you need
->>>>>>>>> to remount the fs to enable writability.
->>>>>>>>>
->>>>>>>>> Is there anything that could be done to re-order things reliably, probe
->>>>>>>>> the tee bus earlier etc.?
->>>>>>>>
->>>>>>>> This driver has a dependency on user-space daemon: tee-supplicant to
->>>>>>>> be running for RPMB access. So once you start that daemon the
->>>>>>>> corresponding device will be enumerated on the TEE bus and this driver
->>>>>>>> probe will be invoked. So I would suggest you to load this daemon very
->>>>>>>> early in the boot process or better to make it a part of initramfs.
->>>>>>>>
->>>>>>>
->>>>>>> That is not the point, really.
->>>>>>>
->>>>>>> If this dependency exists, the code should be aware of that, and made
->>>>>>> to work correctly in spite of it. Requiring a module to be part of
->>>>>>> initramfs is not a reasonable fix.
->>>>>>
->>>>>> In fact, I've tested a non-modularized build as well, just to exclude
->>>>>> that issue. The daemon dependency is more likely the problem here.
->>>>>>
->>>>>>>
->>>>>>> IIUC, this also means that the efivar ops are updated while there is
->>>>>>> already a client. This seems less than ideal as well
->>>>>
->>>>> As Sumit pointed out, the 'device' won't be available from OP-TEE
->>>>> until the supplicant is up and running and as a result, the module
->>>>> _probe() function won't run.  Unfortunately, this isn't something we
->>>>> can avoid since the supplicant is responsible for the RPMB writes.
->>>>> The only thing I can think of is moving parts of the supplicant to the
->>>>> kernel and wiring up the RPC calls for reading/writing data to the
->>>>> eMMC subsystem.  There was another discussion here [0] requesting the
->>>>> same thing for different reasons. But unless I am missing something
->>>>> this won't solve the problem completely either.  You still have a
->>>>> timing dependency of "when did the RT callbacks change" -- "when was
->>>>> my efivarfs mounted".
->>>>
->>>> With the RPMB writes wired through the kernel [1], the only dependency
->>>> left is when do you load the tee-stmm-efi driver to have real EFI
->>>> runtime variables support. IMO, tee-stmm-efi driver should be built-in
->>>> to support systems without initramfs. The distro installers may choose
->>>> to bundle it in initramfs. Do you still see a timing dependency with
->>>> this approach?
->>>
->>> No I don't, this will work reliably without the need to remount the efivarfs.
->>> As you point out you will still have this dependency if you end up
->>> building them as modules and you manage to mount the efivarfs before
->>> those get inserted.  Does anyone see a reasonable workaround?
->>> Deceiving the kernel and making the bootloader set the RT property bit
->>> to force the filesystem being mounted as rw is a nasty hack that we
->>> should avoid.  Maybe adding a kernel command line parameter that says
->>> "Ignore the RTPROP I know what I am doing"?  I don't particularly love
->>> this either, but it's not unreasonable.
->>
->> In the context of https://github.com/OP-TEE/optee_os/issues/6094,
->> basically this issue mapped on reboot/shutdown, I would really love to
->> see the unhandy tee-supplicant daemon to be overcome.
+On 6/7/23 02:23, Ard Biesheuvel wrote:
+> Before refactoring the EFI stub boot flow to avoid the legacy bare metal
+> decompressor, duplicate the SNP feature check in the EFI stub before
+> handing over to the kernel proper.
 > 
-> I have seen this error before and it has been on my todo list. So I
-> have tried to fix it here [1]. Feel free to test it and let me know if
-> you see any further issues.
+> The SNP feature check can be performed while running under the EFI boot
+> services, which means we can fail gracefully and return an error to the
+> bootloader if the loaded kernel does not implement support for all the
+> features that the hypervisor enabled.
 > 
-> [1] https://lkml.org/lkml/2023/6/7/927
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>   arch/x86/boot/compressed/sev.c          | 71 +++++++++++---------
+>   arch/x86/include/asm/sev.h              |  4 ++
+>   drivers/firmware/efi/libstub/x86-stub.c | 17 +++++
+>   3 files changed, 62 insertions(+), 30 deletions(-)
 > 
+> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+> index 09dc8c187b3cc752..9593bc80c9c6b89d 100644
+> --- a/arch/x86/boot/compressed/sev.c
+> +++ b/arch/x86/boot/compressed/sev.c
 
-Ah, nice, will test ASAP!
+...
 
-Meanwhile more food: I managed to build a firmware that was missing 
-STMM. But the driver loaded, and I got this:
+> -void sev_enable(struct boot_params *bp)
+> +u64 sev_get_status(void)
+>   {
+>   	unsigned int eax, ebx, ecx, edx;
+>   	struct msr m;
+> +
+> +	/* Check for the SME/SEV support leaf */
+> +	eax = 0x80000000;
+> +	ecx = 0;
+> +	native_cpuid(&eax, &ebx, &ecx, &edx);
+> +	if (eax < 0x8000001f)
+> +		return 0;
+> +
+> +	/*
+> +	 * Check for the SME/SEV feature:
+> +	 *   CPUID Fn8000_001F[EAX]
+> +	 *   - Bit 0 - Secure Memory Encryption support
+> +	 *   - Bit 1 - Secure Encrypted Virtualization support
+> +	 *   CPUID Fn8000_001F[EBX]
+> +	 *   - Bits 5:0 - Pagetable bit position used to indicate encryption
+> +	 */
+> +	eax = 0x8000001f;
+> +	ecx = 0;
+> +	native_cpuid(&eax, &ebx, &ecx, &edx);
+> +	/* Check whether SEV is supported */
+> +	if (!(eax & BIT(1)))
+> +		return 0;
+> +
+> +	/* Set the SME mask if this is an SEV guest. */
+> +	sme_me_mask = BIT_ULL(ebx & 0x3f);
+> +
+> +	boot_rdmsr(MSR_AMD64_SEV, &m);
+> +	return m.q;
+> +}
+> +
+> +void sev_enable(struct boot_params *bp)
+> +{
+>   	bool snp;
+>   
+>   	/*
+> @@ -410,37 +447,13 @@ void sev_enable(struct boot_params *bp)
+>   	 */
+>   	snp = snp_init(bp);
+>   
+> -	/* Check for the SME/SEV support leaf */
+> -	eax = 0x80000000;
+> -	ecx = 0;
+> -	native_cpuid(&eax, &ebx, &ecx, &edx);
+> -	if (eax < 0x8000001f)
+> -		return;
+> -
+> -	/*
+> -	 * Check for the SME/SEV feature:
+> -	 *   CPUID Fn8000_001F[EAX]
+> -	 *   - Bit 0 - Secure Memory Encryption support
+> -	 *   - Bit 1 - Secure Encrypted Virtualization support
+> -	 *   CPUID Fn8000_001F[EBX]
+> -	 *   - Bits 5:0 - Pagetable bit position used to indicate encryption
+> -	 */
+> -	eax = 0x8000001f;
+> -	ecx = 0;
+> -	native_cpuid(&eax, &ebx, &ecx, &edx);
+> -	/* Check whether SEV is supported */
+> -	if (!(eax & BIT(1))) {
+> +	sev_status = sev_get_status();
+> +	if (!(sev_status & MSR_AMD64_SEV_ENABLED)) {
+>   		if (snp)
+>   			error("SEV-SNP support indicated by CC blob, but not CPUID.");
 
-root@iot2050-debian:~# efi-updatevar -f PK.auth PK
-[  243.407097] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[  243.415959] Mem abort info:
-[  243.418801]   ESR = 0x86000004
-[  243.422099]   EC = 0x21: IABT (current EL), IL = 32 bits
-[  243.427529]   SET = 0, FnV = 0
-[  243.430755]   EA = 0, S1PTW = 0
-[  243.433931] user pgtable: 4k pages, 48-bit VAs, pgdp=000000008b74e000
-[  243.440438] [0000000000000000] pgd=0000000000000000, p4d=0000000000000000
-[  243.447274] Internal error: Oops: 86000004 [#1] PREEMPT SMP
-[  243.452835] Modules linked in: ctr ccm mt7601u mac80211 cfg80211 rfkill libarc4 cp210x usbserial pci_endpoint_test ti_k3_r5_remoteproc optee_rng rng_core ti_cal ti_am335x_adc videobuf2_dma_contig kfifo_buf v4l2_fwnode videobuf2_memops videobuf2_v4l2 videobuf2_common irq_pruss_intc at24 fuse ip_tables x_tables ipv6 tpm_ftpm_tee icssg_prueth pru_rproc icss_iep ptp pps_core ti_am335x_tscadc pruss
-[  243.487733] CPU: 0 PID: 875 Comm: efi-updatevar Not tainted 5.10.162-cip24 #1
-[  243.494851] Hardware name: Unknown Unknown Product/Unknown Product, BIOS 2023.07-rc3-00018-g0afdaac6505 07/01/2023
-[  243.505180] pstate: 00000005 (nzcv daif -PAN -UAO -TCO BTYPE=--)
-[  243.511179] pc : 0x0
-[  243.513366] lr : efivar_entry_set_get_size+0xd4/0x1e0
-[  243.518404] sp : ffff8000127a3d00
-[  243.521708] x29: ffff8000127a3d00 x28: 0000000000000f87 
-[  243.527012] x27: ffff000005bae400 x26: ffff800011254000 
-[  243.532315] x25: ffff000005baf000 x24: ffff800011254aa0 
-[  243.537618] x23: ffff8000127a3dab x22: ffff8000111d0268 
-[  243.542921] x21: ffff8000127a3db0 x20: 0000000000000000 
-[  243.548224] x19: ffff000005bae000 x18: 0000000000000000 
-[  243.553527] x17: 0000000000000000 x16: 0000000000000000 
-[  243.558829] x15: 0000aaab0876f264 x14: 35cd6a1025d11a20 
-[  243.564132] x13: ac6f8dda3945638d x12: fb482642e3487f2d 
-[  243.569435] x11: 0000000000000003 x10: ffff00000b792a80 
-[  243.574738] x9 : a098e2bf989ff097 x8 : 0000000000000010 
-[  243.580041] x7 : ffff800010e35c00 x6 : 4ddcbe2ecfc8fc79 
-[  243.585345] x5 : 0000000000000000 x4 : ffff000005baf000 
-[  243.590647] x3 : 0000000000000f87 x2 : 0000000000000027 
-[  243.595950] x1 : ffff000005bae400 x0 : ffff000005bae000 
-[  243.601254] Call trace:
-[  243.603695]  0x0
-[  243.605531]  efivarfs_file_write+0xa4/0x170
-[  243.609709]  vfs_write+0xf0/0x2a4
-[  243.613016]  ksys_write+0x68/0xf4
-[  243.616323]  __arm64_sys_write+0x1c/0x2c
-[  243.620241]  el0_svc_common.constprop.0+0x78/0x1c4
-[  243.625022]  do_el0_svc+0x24/0x8c
-[  243.628331]  el0_svc+0x14/0x20
-[  243.631378]  el0_sync_handler+0xb0/0xb4
-[  243.635206]  el0_sync+0x180/0x1c0
-[  243.638523] Code: bad PC value
-[  243.641573] ---[ end trace 369e4632cb003adc ]---
+This ends up checking the CPUID path because if SEV isn't advertised in 
+CPUID the returned status value is 0. But it also checks the SEV_STATUS 
+MSR as well. So I think you can remove the SNP / SEV_STATUS check at the 
+end of this function (since that check is identical to this now) and just 
+update the message to indicate not CPUID or SEV status MSR.
 
-Jan
+The sme_me_mask should probably be cleared at this point before returning, 
+too. Or, alternately, in sev_get_status(), you can update the setting of 
+sme_me_mask to based on MSR_AMD64_SEV_ENABLED being set in the SEV_STATUS MSR.
 
--- 
-Siemens AG, Technology
-Competence Center Embedded Linux
+>   		return;
+>   	}
+>   
+> -	/* Set the SME mask if this is an SEV guest. */
+> -	boot_rdmsr(MSR_AMD64_SEV, &m);
+> -	sev_status = m.q;
+> -	if (!(sev_status & MSR_AMD64_SEV_ENABLED))
+> -		return;
+> -
+>   	/* Negotiate the GHCB protocol version. */
+>   	if (sev_status & MSR_AMD64_SEV_ES_ENABLED) {
+>   		if (!sev_es_negotiate_protocol())
+> @@ -460,8 +473,6 @@ void sev_enable(struct boot_params *bp)
+>   
+>   	if (snp && !(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
+>   		error("SEV-SNP supported indicated by CC blob, but not SEV status MSR.");
+> -
+> -	sme_me_mask = BIT_ULL(ebx & 0x3f);
+>   }
+>   
+>   /* Search for Confidential Computing blob in the EFI config table. */
+> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+> index 86e1296e87f513b7..081c39b0e8d0d208 100644
+> --- a/arch/x86/include/asm/sev.h
+> +++ b/arch/x86/include/asm/sev.h
+> @@ -207,6 +207,8 @@ bool snp_init(struct boot_params *bp);
+>   void __init __noreturn snp_abort(void);
+>   int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, struct snp_guest_request_ioctl *rio);
+>   void snp_accept_memory(phys_addr_t start, phys_addr_t end);
+> +u64 snp_get_unsupported_features(u64 status);
+> +u64 sev_get_status(void);
+>   #else
+>   static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+>   static inline void sev_es_ist_exit(void) { }
+> @@ -232,6 +234,8 @@ static inline int snp_issue_guest_request(u64 exit_code, struct snp_req_data *in
+>   }
+>   
+>   static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
+> +static inline u64 snp_get_unsupported_features(u64 status) { return 0; }
+> +static inline u64 sev_get_status(void) { return 0; }
+>   #endif
+>   
+>   #endif
+> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+> index abcd5703e9f3f980..1015ef883f5850a4 100644
+> --- a/drivers/firmware/efi/libstub/x86-stub.c
+> +++ b/drivers/firmware/efi/libstub/x86-stub.c
+> @@ -15,6 +15,7 @@
+>   #include <asm/setup.h>
+>   #include <asm/desc.h>
+>   #include <asm/boot.h>
+> +#include <asm/sev.h>
+>   
+>   #include "efistub.h"
+>   #include "x86-stub.h"
+> @@ -790,6 +791,19 @@ static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
+>   	return EFI_SUCCESS;
+>   }
+>   
+> +static bool have_unsupported_snp_features(void)
+> +{
+> +	u64 unsupported;
+> +
+> +	unsupported = snp_get_unsupported_features(sev_get_status());
 
+This will also set sme_me_mask, but I think that is ok, since on error 
+things will terminate, otherwise sev_enable() should update appropriately 
+later.
+
+Thanks,
+Tom
+
+> +	if (unsupported) {
+> +		efi_err("Unsupported SEV-SNP features detected: 0x%llx\n",
+> +			unsupported);
+> +		return true;
+> +	}
+> +	return false;
+> +}
+> +
+>   static void __noreturn enter_kernel(unsigned long kernel_addr,
+>   				    struct boot_params *boot_params)
+>   {
+> @@ -820,6 +834,9 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+>   	if (efi_system_table->hdr.signature != EFI_SYSTEM_TABLE_SIGNATURE)
+>   		efi_exit(handle, EFI_INVALID_PARAMETER);
+>   
+> +	if (have_unsupported_snp_features())
+> +		efi_exit(handle, EFI_UNSUPPORTED);
+> +
+>   	if (IS_ENABLED(CONFIG_EFI_DXE_MEM_ATTRIBUTES)) {
+>   		efi_dxe_table = get_efi_config_table(EFI_DXE_SERVICES_TABLE_GUID);
+>   		if (efi_dxe_table &&
