@@ -2,43 +2,43 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A60937284A1
-	for <lists+linux-efi@lfdr.de>; Thu,  8 Jun 2023 18:10:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21EF07286FF
+	for <lists+linux-efi@lfdr.de>; Thu,  8 Jun 2023 20:16:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233027AbjFHQKZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 8 Jun 2023 12:10:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56046 "EHLO
+        id S235116AbjFHSQJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 8 Jun 2023 14:16:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233051AbjFHQKX (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 8 Jun 2023 12:10:23 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8A2F1FDF;
-        Thu,  8 Jun 2023 09:10:22 -0700 (PDT)
+        with ESMTP id S233419AbjFHSQI (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 8 Jun 2023 14:16:08 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7A5E1FFA;
+        Thu,  8 Jun 2023 11:16:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686240622; x=1717776622;
+  t=1686248164; x=1717784164;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=6pjyKOoy7arAWPVn5V85eq2ZYV5aLec/VZcsAEX55EQ=;
-  b=E7GSQKukzRQSc0VAfT3HLLEMufdEcHsc8GLKjty0OYayld4Fjp4BHRgg
-   QWmtdRTlkYcIiIn6ZdObgsoyfrJPXM3Rn5UX+06aHJTZ+G8tC5B7Y7XbP
-   VkPwV/zcng++y6xTQQaxhRPxZkhOhi3jMQFn1zPPoRhffnIZyeTnHmcss
-   6CMzdJ7vZVggYo0/18aDcvg6kwZS0578tFS/sEc6kLIs+llnytxY+5zeh
-   uvfAyYllHwnvcZsKo7yUaiMlP2zuK/wLiU3DPgYD93Rg4qUL3qqLxWXt7
-   uOkrx2nOlklzYgXLN9CRLSedQrXs9B0YJjqikELHHJpWFW+xsLrjBi/lx
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10735"; a="336986136"
+  bh=DdflwQpDpA1mOVcKDeGYRGkKlW7HBM0/W9LRuBMTa7w=;
+  b=T6xFiluV045sUDw/YQ8YuL0YXkjFj6CtksAgxH2clCJzxuP+KjxYkpAG
+   XUPp2TO5q+cIl+HCg8nOxVMG38jRhkM8dagn3cJcGK8WzCyi6X//5VfeK
+   4ut84BB2XWQx1SInQEtdJBy5/kO9TjI2SFenOf9Si1S6Oda9kcjxuWrlF
+   ZQTj6i/JrPjLPDfMao/UX1rjoC4DNkQI+ELvcw5m4/xd5TO5zWUo/A85I
+   mUThj6fNQe0Ec8mkXVIO8TmIMdyVm1S+nEiJDhllQ7/dxmZwyRaNDEz24
+   PRuHOS/MDVzAjKSru2XAvVVCg0CEHFtpc9YWbauNEl/ubEZUeKR8ezJid
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10735"; a="356261389"
 X-IronPort-AV: E=Sophos;i="6.00,227,1681196400"; 
-   d="scan'208";a="336986136"
+   d="scan'208";a="356261389"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2023 09:10:21 -0700
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2023 11:15:41 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10735"; a="884249892"
+X-IronPort-AV: E=McAfee;i="6600,9927,10735"; a="884289643"
 X-IronPort-AV: E=Sophos;i="6.00,227,1681196400"; 
-   d="scan'208";a="884249892"
+   d="scan'208";a="884289643"
 Received: from yjiang5-mobl.amr.corp.intel.com (HELO localhost) ([10.144.161.97])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2023 09:10:22 -0700
-Date:   Thu, 8 Jun 2023 09:10:20 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2023 11:15:40 -0700
+Date:   Thu, 8 Jun 2023 11:15:40 -0700
 From:   Yunhong Jiang <yunhong.jiang@linux.intel.com>
 To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -59,21 +59,19 @@ Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Joerg Roedel <jroedel@suse.de>
-Subject: Re: [PATCH v5 13/20] x86/efistub: Perform 4/5 level paging switch
- from the stub
-Message-ID: <20230608161020.GA69@yjiang5-mobl.amr.corp.intel.com>
+Subject: Re: [PATCH v5 10/20] x86/decompressor: Call trampoline directly from
+ C code
+Message-ID: <20230608181540.GA2469@yjiang5-mobl.amr.corp.intel.com>
 References: <20230607072342.4054036-1-ardb@kernel.org>
- <20230607072342.4054036-14-ardb@kernel.org>
- <20230607201924.GD3110@yjiang5-mobl.amr.corp.intel.com>
- <CAMj1kXE7nW6ED1CmCd-by5HC7oqFAZd4=-ky_Kx_g6Br28PNhQ@mail.gmail.com>
- <20230608004342.GA4340@yjiang5-mobl.amr.corp.intel.com>
- <CAMj1kXHCAnNDFt+Ksex24PJj_rx5GcUsiS=S3OSZ6dw1HNOH3w@mail.gmail.com>
+ <20230607072342.4054036-11-ardb@kernel.org>
+ <20230607180920.GA3110@yjiang5-mobl.amr.corp.intel.com>
+ <CAMj1kXHZx5Qb-XCxNsTV1jh7CSj6aEg8xEhPU6yvFbhYqhzcEA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXHCAnNDFt+Ksex24PJj_rx5GcUsiS=S3OSZ6dw1HNOH3w@mail.gmail.com>
+In-Reply-To: <CAMj1kXHZx5Qb-XCxNsTV1jh7CSj6aEg8xEhPU6yvFbhYqhzcEA@mail.gmail.com>
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -82,53 +80,60 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Jun 08, 2023 at 08:34:38AM +0200, Ard Biesheuvel wrote:
-> On Thu, 8 Jun 2023 at 02:43, Yunhong Jiang
+On Thu, Jun 08, 2023 at 10:04:43AM +0200, Ard Biesheuvel wrote:
+> On Wed, 7 Jun 2023 at 20:09, Yunhong Jiang
 > <yunhong.jiang@linux.intel.com> wrote:
 > >
-> > On Wed, Jun 07, 2023 at 10:31:43PM +0200, Ard Biesheuvel wrote:
-> > > On Wed, 7 Jun 2023 at 22:19, Yunhong Jiang
-> > > <yunhong.jiang@linux.intel.com> wrote:
-> > > >
-> > > > On Wed, Jun 07, 2023 at 09:23:35AM +0200, Ard Biesheuvel wrote:
-> ...
-> > > > > +efi_status_t efi_setup_5level_paging(void)
-> > > > > +{
-> > > > > +     u8 tmpl_size = (u8 *)&trampoline_ljmp_imm_offset - (u8 *)&trampoline_32bit_src;
-> > > > > +     efi_status_t status;
-> > > > > +     u8 *la57_code;
-> > > > > +
-> > > > > +     if (!efi_is_64bit())
-> > > > > +             return EFI_SUCCESS;
-> > > > > +
-> > > > > +     /* check for 5 level paging support */
-> > > > > +     if (native_cpuid_eax(0) < 7 ||
-> > > > > +         !(native_cpuid_ecx(7) & (1 << (X86_FEATURE_LA57 & 31))))
-> > > > > +             return EFI_SUCCESS;
-> > > > > +
-> > > > Do we need to check the need_toggle here instead of at efi_5level_switch and
-> > > > skip the whole setup if no need to switch the paging level? Sorry if I missed
-> > > > any point.
-> > > >
+> > On Wed, Jun 07, 2023 at 09:23:32AM +0200, Ard Biesheuvel wrote:
+> > > Instead of returning to the asm calling code to invoke the trampoline,
+> > > call it straight from the C code that sets the scene. That way, the
+> > > struct return type is no longer needed for returning two values, and the
+> > > call can be made conditional more cleanly in a subsequent patch.
 > > >
-> > > No. There are reasons why firmware might run with 5 levels, and switch
-> > > to 4 levels at ExitBootServices() time.
+> > > Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > > ---
+> > >  arch/x86/boot/compressed/head_64.S    | 20 +++-----------
+> > >  arch/x86/boot/compressed/pgtable_64.c | 28 ++++++++------------
+> > >  2 files changed, 15 insertions(+), 33 deletions(-)
+> > >
+> ...
+> > > diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
+> > > index d66639c961b8eeda..1d28ad95ea839531 100644
+> > > --- a/arch/x86/boot/compressed/pgtable_64.c
+> > > +++ b/arch/x86/boot/compressed/pgtable_64.c
+> > > @@ -16,11 +16,6 @@ unsigned int __section(".data") pgdir_shift = 39;
+> > >  unsigned int __section(".data") ptrs_per_p4d = 1;
+> > >  #endif
+> > >
+> > > -struct paging_config {
+> > > -     unsigned long trampoline_start;
+> > > -     unsigned long l5_required;
+> > > -};
+> > > -
+> > >  /* Buffer to preserve trampoline memory */
+> > >  static char trampoline_save[TRAMPOLINE_32BIT_SIZE];
+> > >
+> > > @@ -106,10 +101,10 @@ static unsigned long find_trampoline_placement(void)
+> > >       return bios_start - TRAMPOLINE_32BIT_SIZE;
+> > >  }
+> > >
+> > > -struct paging_config paging_prepare(void *rmode)
+> > > +asmlinkage void set_paging_levels(void *rmode)
 > >
-> > The need_toggle check at efi_5level_switch(), "need_toggle = want_la57 ^
-> > have_la57", should cover this scenario, right? If we check need_toggle on
-> > efi_setup_5level_paging() and it's false, then we don't need the setup in
-> > efi_setup_5level_paging(), right? I don't see the  la57_toggle() called on other
-> > places.
-> >
-> > Or I misunderstand your response?
-> >
+> > Can you please change the refer to paging_prepare() in the comments above also?
 > 
-> The actual, current number of paging levels could be 5 during
-> efi_setup_5level_paging() and 4 during efi_5level_switch(). So whether
-> we need to toggle can only be decided at switch time, at which point
-> we can no longer allocate memory. So the allocation logic in
-> efi_setup_5level_paging() cannot depend on the actual number of
-> levels, only on whether or not 5 level paging is supported at all (in
-> which case a switch is never needed)
+> You mean the below, right?
+> 
+> --- a/arch/x86/boot/compressed/pgtable_64.c
+> +++ b/arch/x86/boot/compressed/pgtable_64.c
+> @@ -24,7 +24,7 @@ static char trampoline_save[TRAMPOLINE_32BIT_SIZE];
+>   * purposes.
+>   *
+>   * Avoid putting the pointer into .bss as it will be cleared between
+> - * paging_prepare() and extract_kernel().
+> + * set_paging_levels() and extract_kernel().
+>   */
+>  unsigned long *trampoline_32bit __section(".data");
 
-Oh, I didn't realize that. Thank you for the clarification.
+Yes.
