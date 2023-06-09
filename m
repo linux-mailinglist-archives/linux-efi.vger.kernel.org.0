@@ -2,43 +2,40 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E10AB729AA9
-	for <lists+linux-efi@lfdr.de>; Fri,  9 Jun 2023 14:52:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20D2F729B19
+	for <lists+linux-efi@lfdr.de>; Fri,  9 Jun 2023 15:10:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241128AbjFIMvP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 9 Jun 2023 08:51:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52604 "EHLO
+        id S239800AbjFINKa (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 9 Jun 2023 09:10:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240938AbjFIMu7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 9 Jun 2023 08:50:59 -0400
+        with ESMTP id S239341AbjFINK3 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 9 Jun 2023 09:10:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB851210A;
-        Fri,  9 Jun 2023 05:50:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48DBE2D74;
+        Fri,  9 Jun 2023 06:10:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 88EAB657CE;
-        Fri,  9 Jun 2023 12:50:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30E6C433EF;
-        Fri,  9 Jun 2023 12:50:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686315058;
-        bh=eQm6Y+zTu/uz0gwuTj+8cXTLw76brE6hz27OGkmXwSQ=;
-        h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=pL17Ys+xev2bf3DDW+7xcYfJAWx7z6K4f31/nAb0ZLsLdhs2bbtFi6cMZVPnRkQKB
-         DzV0rko+fDQw+TcIOqaFCZkOCSjdfNJ41ZsqHDE0BrCOrVG1Isuy0TO32aszsuIwLr
-         0RSGldhjy7+CGAZxopzTDZn9gyBdZ1CPs4ydVMZ+x6xnu8w7EeGL/YEVW9x/oCeesT
-         FgJEpqx3Z1RswS8CDghuaD3WXy+canYVY3bCj3Zf0moLeHj7fdPbrXxOpjxvxIC/mR
-         QBcmiIhDE+t/j1iYfJTgMz2pte5jTLIS91rLs7dN00EDoGYcrW8MlgX3v/52Y/jPo7
-         ds+6I+rxYQ9rg==
-From:   Jeff Layton <jlayton@kernel.org>
-To:     Christian Brauner <brauner@kernel.org>,
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D9A0B657D3;
+        Fri,  9 Jun 2023 13:10:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B81ABC433D2;
+        Fri,  9 Jun 2023 13:10:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1686316227;
+        bh=UDgymT2rhCU6DESF/YCiKaWmfZRHvZQoUcAfEB8ZmWI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=zGZH+ZOjneapjQSK1IqmZBDuE4mFnyhlsRpqtjmsPzrNsJ4zy4akL4P0yciY2B45W
+         5dUQzaTZDowoyRRkGVZBciT1Tf/1Vmlevn5D0LUceNtbonLCs5Xx++ggHHUerxifsG
+         xjcNDDMMZzk3H58c+hjy6yFDwcg70muWawDFZ1nE=
+Date:   Fri, 9 Jun 2023 15:10:24 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Jeff Layton <jlayton@kernel.org>
+Cc:     Christian Brauner <brauner@kernel.org>,
         Al Viro <viro@zeniv.linux.org.uk>,
         Brad Warrum <bwarrum@linux.ibm.com>,
         Ritu Agarwal <rituagar@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ian Kent <raven@themaw.net>,
+        Arnd Bergmann <arnd@arndb.de>, Ian Kent <raven@themaw.net>,
         "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
         Jeremy Kerr <jk@ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>,
         Namjae Jeon <linkinjeon@kernel.org>,
@@ -63,42 +60,31 @@ To:     Christian Brauner <brauner@kernel.org>,
         linux-fsdevel@vger.kernel.org, cluster-devel@redhat.com,
         linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
         apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org
-Subject: [PATCH 9/9] cifs: update the ctime on a partial page write
-Date:   Fri,  9 Jun 2023 08:50:23 -0400
-Message-Id: <20230609125023.399942-10-jlayton@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230609125023.399942-1-jlayton@kernel.org>
+Subject: Re: [PATCH 2/9] usb: update the ctime as well when updating mtime
+ after an ioctl
+Message-ID: <2023060903-headache-very-c029@gregkh>
 References: <20230609125023.399942-1-jlayton@kernel.org>
+ <20230609125023.399942-3-jlayton@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230609125023.399942-3-jlayton@kernel.org>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
----
- fs/smb/client/file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Fri, Jun 09, 2023 at 08:50:16AM -0400, Jeff Layton wrote:
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index df88b8c04d03..a00038a326cf 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -2596,7 +2596,7 @@ static int cifs_partialpagewrite(struct page *page, unsigned from, unsigned to)
- 					   write_data, to - from, &offset);
- 		cifsFileInfo_put(open_file);
- 		/* Does mm or vfs already set times? */
--		inode->i_atime = inode->i_mtime = current_time(inode);
-+		inode->i_atime = inode->i_mtime = inode->i_ctime = current_time(inode);
- 		if ((bytes_written > 0) && (offset))
- 			rc = 0;
- 		else if (bytes_written < 0)
--- 
-2.40.1
+Sorry, but I can't take commits without any changelog text at all (nor
+would you want me to...)
 
+thanks,
+
+greg k-h
