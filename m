@@ -2,54 +2,54 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAC13728FB8
-	for <lists+linux-efi@lfdr.de>; Fri,  9 Jun 2023 08:16:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AED39728FC5
+	for <lists+linux-efi@lfdr.de>; Fri,  9 Jun 2023 08:18:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237322AbjFIGQx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 9 Jun 2023 02:16:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39666 "EHLO
+        id S229811AbjFIGSp (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 9 Jun 2023 02:18:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237178AbjFIGQv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 9 Jun 2023 02:16:51 -0400
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2055.outbound.protection.outlook.com [40.107.8.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0951271D;
-        Thu,  8 Jun 2023 23:16:49 -0700 (PDT)
+        with ESMTP id S230272AbjFIGSl (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 9 Jun 2023 02:18:41 -0400
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2048.outbound.protection.outlook.com [40.107.247.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D2D92119;
+        Thu,  8 Jun 2023 23:18:39 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PXrnCPyxhjsg6QCHw4CxodfR9xuO2XxYOxCnO3MD5uNmVVWkMlgMKeXtR7wX3DmJBY8AMeY/1a1h8/4tC4Sg+zvu6MRvZmgO8/fmMrRkl6+qsWhXmONqfHTD8dsOz1dpZIXzEsUoiUv9kC2iHZUHM9qPW1ZRCyr5dRboOD7uWHviZSZWyzjtSSj6jLrrM8nqZjZygwVLAXui5VL+AYCSjbTlOuZWDwgBHpHTMU3o3er68w9PduEGAaWTFyhETYwz2jXLRJ/EW81sMrdqwGa5uGM4g7uyYq9t5AXN2TK984I5pPsVvoEPYIq8JSh8+goyEVu81iW1KFTaklaNIXB3uQ==
+ b=SNAzJSrNZnTaGC58kOR8aU2qdnLmlUp6gsPhbrpPxqPNJv9bCFI9gmHAFiQZkzU0wqK/5u60B4+ZIDKUgJrhMtnh0AfvwOnUkYb8Kj7uOVQ9RHNdRjIb/cfq5m0NY5xTWa5yfudUxV/5fIaJkgeKocVLlLvtwIKvAdrc1zzYNWNDGJQEsbb+jTzdJngz+yf3WFYVrPuUwTM+nh9/7jnSk4UKr1gY75DUBbPgNRmc3PNuNOo6o/7u3gV3DdWVbLTQTNLp7zY8cs1ksR3qNYcqz9I5Le5SM5WHsD9eAUpGzhpNDc49ZZ2UEvGNsy5WZkpCY3BODfA3Dw69znN8gjV/cQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Vu5kWVu0m71eAaMKCew9N9NIcU5qnLXhkupy375q7W0=;
- b=NFoUpTlmO5ZWvMPbrn7GQr+tNGObWXFjMh//WEq7amiGIMYCOg4pVYdKB3ZcNy5YzqRb6ATZjesMQ5qR82RJt5LEPmCKdLgZFnfQAPM8j0AImXv/AGartynQ+oJRUrOsvweGBluvtBXlI/8u/Y8u/sDLQCgxXdCvkphxX/44U8AX1Q6fqBgpHMV1k0IukKLl8C5VPs1m2lIl9z5DD5cJC0QpwVOgmpOzfvBNtD0bFwrvRwxFiu5Wc/tKCOo0eCcEaPJUUQTF5N4m4dMhkWPKfA/PIJJ/28gHzFDH6rrzGJAS3+1yt0P0+xThrUefyljXCnAlp2HFHPM5eWVEhQDM8g==
+ bh=+8Dxv3MlJC2/xOHTZsehKp4hect5502q/c8yLrUy0ww=;
+ b=MNx7qbHgk1prwW/huRQnd4JEh54bd0bRVVTjiVER+P3jxWNrMIqrwcifJVsdpPFRmpq+X89tDZ33tVMmXDUDSLbiN/7Nb95yfruY2aFLeffCi1rZIil6in+zdjrhFXo94dgtGXE0a4ksYLSvFylWQTMI3OjYLpUK/EJIGMxJqLihLAn64VOxBo1WzsIpX4N1sA5vxGyA4B/oaMyuzltxvKoFXna5LCeffCQlaLrU7dQnoWugRUKOQWU73SVoS8pHkXvk0iyTGatMvybEFsRTiKjmoF6uhU8hLkPgR+HXisKk38FWN9TKhuYrCAGz8eGMUcrpwAoeaEj+RJuHdVGbxA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=siemens.com; dmarc=pass action=none header.from=siemens.com;
  dkim=pass header.d=siemens.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=siemens.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Vu5kWVu0m71eAaMKCew9N9NIcU5qnLXhkupy375q7W0=;
- b=ciSjqnXHlkaeWyUXfAwNq39jBPZyJ7gXaA+1VX3s1/aV5jt7jMhMWWp46JZ/pzHb3Mu0GfwNcmo07R8Pzv/SJgqGPNeU64WaLwJxyzKehkChFakQD5vSr4HzzaOsqCtXejo/ksjni43TMZOX30ZZ/TbB5XkBiichjb8P4XEusR4EGaVateXiPiPfNURpt12L8NzRs3N2LrUxjQkK+BXAEKlm13K8vyuCK3a9tq2izkPBFKr+gA0fBQYXQ9zQka98kzpI4dhyfvlMc12aMSb44MhT0zvIKtjdtvbvodPvRuMgQqDznTmkZvR8D9gDbPXeazpKzt4skPVM5bbyLcCIMw==
+ bh=+8Dxv3MlJC2/xOHTZsehKp4hect5502q/c8yLrUy0ww=;
+ b=ncEzoWPyBLGZR3y3aHImuPnuhhqgYpW5Ohm/h9QsmJ8ujND/vRC105TVo5vT86+efBWxcx/6WSno/qElPhBSRNp5Hopo1ptU+IDraSXofFYOKmkGB0HJr7Vj/yBYcynRkl8t0U4ZyMUSZZAPXIf4Y0BK20PTeOooMGjsm8puujV1lnMY0MvdlVDbz++VkKW7lp2RoZDlypwxRn9w7yc2BkDw+HoHAGnz8YioCaARqjWhwQnYzF76UAf/VaLayMQsgjIWMWvPEF2F+w17Lrz1AUaN7dVXv6wTiLFvUXk1FnRfL+kqF43nJhayVesiA3I+P/jTQgw2iJiQWhymUZZPPg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=siemens.com;
 Received: from AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:588::19)
- by AS2PR10MB7456.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:593::6) with
+ by GV2PR10MB6236.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:150:7c::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.41; Fri, 9 Jun
- 2023 06:16:47 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.32; Fri, 9 Jun
+ 2023 06:18:36 +0000
 Received: from AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
  ([fe80::53c2:174a:8b13:ce94]) by AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
  ([fe80::53c2:174a:8b13:ce94%3]) with mapi id 15.20.6455.037; Fri, 9 Jun 2023
- 06:16:46 +0000
-Message-ID: <e0c71d88-ec5d-a348-0a53-ec6cea298b60@siemens.com>
-Date:   Fri, 9 Jun 2023 08:16:43 +0200
+ 06:18:36 +0000
+Message-ID: <3eb9bf84-4cf0-6cfe-9ad3-f7eef7d775fb@siemens.com>
+Date:   Fri, 9 Jun 2023 08:18:32 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
 Subject: Re: [PATCH v5 3/3] efi: Add tee-based EFI variable driver
 Content-Language: en-US
-To:     Ard Biesheuvel <ardb@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Sumit Garg <sumit.garg@linaro.org>
-Cc:     Masahisa Kojima <masahisa.kojima@linaro.org>,
+To:     Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Sumit Garg <sumit.garg@linaro.org>,
+        Masahisa Kojima <masahisa.kojima@linaro.org>,
         Jens Wiklander <jens.wiklander@linaro.org>,
         linux-kernel@vger.kernel.org, op-tee@lists.trustedfirmware.org,
         Johan Hovold <johan+linaro@kernel.org>,
@@ -60,7 +60,6 @@ Cc:     Masahisa Kojima <masahisa.kojima@linaro.org>,
         linux-arm-kernel@lists.infradead.org,
         "Su, Bao Cheng (RC-CN DF FA R&D)" <baocheng.su@siemens.com>
 References: <20230526010748.1222-1-masahisa.kojima@linaro.org>
- <4ff09002-e871-38b9-43ec-227a64bac731@siemens.com>
  <CAC_iWjJJ5E9Q1or5yTiDynzv_WAYH-g+N24aRdu9rvcsbWqnrg@mail.gmail.com>
  <CAFA6WYNFYB1LiOFB_iwTsdD5PmnDdSbtDSH2J4FVFPx3uik8rQ@mail.gmail.com>
  <CAC_iWj+E7-XK6dCeSn4205K0O3EZCLxCaC+adu-14ST6sdudfA@mail.gmail.com>
@@ -74,71 +73,73 @@ References: <20230526010748.1222-1-masahisa.kojima@linaro.org>
  <871ece13-7d6e-44d4-3bda-317658202f6f@siemens.com>
  <CAC_iWjKgCJWgKU8tC3Nfn-0CgwGhw89B3JpTgsjkjDDOcWZEdw@mail.gmail.com>
  <CAMj1kXGbXdbDr6DbyuziSFuxMgAimjNnkhqy8C-S5AbxdnixuQ@mail.gmail.com>
+ <CAC_iWjJ0uw_p9=6C+U+q8BNQgnDBgbDpcu8s8c80oB25i9y77w@mail.gmail.com>
 From:   Jan Kiszka <jan.kiszka@siemens.com>
-In-Reply-To: <CAMj1kXGbXdbDr6DbyuziSFuxMgAimjNnkhqy8C-S5AbxdnixuQ@mail.gmail.com>
+In-Reply-To: <CAC_iWjJ0uw_p9=6C+U+q8BNQgnDBgbDpcu8s8c80oB25i9y77w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR3P281CA0112.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a3::15) To AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
+X-ClientProxiedBy: FR3P281CA0118.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a3::13) To AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
  (2603:10a6:20b:588::19)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR10MB6181:EE_|AS2PR10MB7456:EE_
-X-MS-Office365-Filtering-Correlation-Id: 077a2c87-b50a-4b26-df80-08db68b11a58
+X-MS-TrafficTypeDiagnostic: AS4PR10MB6181:EE_|GV2PR10MB6236:EE_
+X-MS-Office365-Filtering-Correlation-Id: 110b7d9b-b0b5-4db8-eded-08db68b15ba3
 X-LD-Processed: 38ae3bcd-9579-4fd4-adda-b42e1495d55a,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: RCzX8Dp+bO3hncRIreMY0lupMSFeKQufwgjzpvo5V63ISSoEpr1D2YgmAr5SYPuzzC2+EDakvN9BR2pHp6fkyipoOdemvyP01OG5eGw23/exAP4JNguh34J05U+lbSBrQXWvTocdXtZ2RkuR7IpQffqzDdfwUDkfRY1qDrG/sP8Yvf2wmTsdAeZvWx3loXFWryUXbxKWdKQfPeg4TdJV6jkWPjIzFY51OrPc53rqDInqIW/9LswUH7XE3UgCg7dfXUzJgU4bITMv93cWjhYkU++B+rzHhtt4UKtV6/eksiNKwqhuLVbAaKn2aCLMMz7N3I7kQCqu/rafF5wpqvb+8Dnm7TRJs1vtCSV4OrIQDgc/IUVg2sibz0TqyLVYKXxxlDYqNiGc70SlUmzhj+PFTtjo9l6zDJxFVvfTxFFUbrTFWai4a+OGsl6GRIX1afh4wDXgWPGv/fSpSwvVLS8Vm7kSVukUijw9M2gzef6qMDxuZAddKdzp1b47npbeeQLukHD7Mi+yjrYaHvUIn92o4UcSSuF6tsxlHSw0AOg9AWb/vbdJAqlRdiVEuvM8fXRH/zTMUADhnZV+Bcapz0Ovw9ZF24oLWa+lVXkfkyD37NmgSMRlB4WUVNCLKBNNc7LldySoBCMvZj1lfieYxveYug==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(136003)(346002)(39860400002)(366004)(451199021)(66556008)(8936002)(8676002)(7416002)(44832011)(5660300002)(83380400001)(6512007)(6506007)(26005)(53546011)(107886003)(86362001)(2616005)(31696002)(186003)(82960400001)(38100700002)(478600001)(110136005)(966005)(6486002)(6666004)(54906003)(316002)(36756003)(4326008)(41300700001)(66946007)(66476007)(2906002)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 0GEcL2qzXIlfqjd1h5Xpadz2vwk0bOmY15fsvWRAJBRt3qUUqxIhU4twY+4ViEbBVR180gj1DvEaO3kQ8+G4xCxzvtykSQ6J+j9eslD0MTh+Jw/zyNcY9XDVF8PHxfEvaNp3DyJFzkSuaELKOOhZYHilx7H2RlqcBOpwxlrnR60jHQ/rqOrJIygj6n3FNOD9WN6LCqkHhys9BkTvHkzYC6DG5pd6iyiAZnsUs88z1tT+QSTMQfZtM3c1xqhIp/wPA35JY9d1otMN/xOySWAW3e3cv2CNDj0owONeEYlDRWXKEkZGFGk5nJTWjNMuyQFEUal49yjqGcSt4qYrvOzFuFfAU74TKR/NMa7+LKFyfu8JaWMIF8UdXQYOiHxOG23OHF+hhV/sfSdVV5bQnnBb6wU7pqs8gSYPfwroBEUiDc5QU8Ou3HoqhzzZuAxmsjjNy9wzekH4Ac4bX1SBaNOv8GPs340iAu+lT7rFgzhbPc5ka8JL4OkJ04jLp8kHj8sPEJWMytKT29zmJY2kxRs50dmt6AvUtC3SGhjQxxYW94LVX+MwiUu5fiXLDzG78WK2CulpLP3IdI3MZFLkixS1y8gtu5kT8asP1xmgTcvPiCyGY+aHWzHGC1N6ZdU/WCnERggfYaJzts5g0ZskuS2PSA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(346002)(136003)(366004)(39860400002)(376002)(451199021)(6512007)(107886003)(26005)(6506007)(966005)(53546011)(36756003)(83380400001)(31696002)(86362001)(186003)(82960400001)(38100700002)(2616005)(44832011)(41300700001)(110136005)(316002)(2906002)(30864003)(54906003)(4326008)(478600001)(66476007)(66946007)(8936002)(8676002)(31686004)(7416002)(66899021)(6486002)(5660300002)(66556008)(6666004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dit1aUVaUE52aVEzbEc1cFhMMTBVVTJWeFF4Zm1NUG00VUFUQmdMcFR5ZHI1?=
- =?utf-8?B?VU1FMDVjbVVJWjR5em1oVHUveWZsS0R5MVhMOWtUTE92eGhnUmp1eU1HWVhN?=
- =?utf-8?B?R1hkTVVUOFdGS1FsSHdRWlo2SnYyc2FicGtPTG1JVGR1VFptQStNclgzSi9B?=
- =?utf-8?B?T0hqZHc4N09KVm5nQjkvN2dZcG1MOUlPQndEVTdhdjBkRG52WXY1SWM0Wjhn?=
- =?utf-8?B?MzMxUllTaCtWWC9xc1h2S1FlQWRYditJUmd2Q3h1NGhUWEdPTjVVa0N1Q0JR?=
- =?utf-8?B?UERvcGZxVHpNbTVXMnZ2c1dFMVphSTR2bkowU2tsdWhZczZxTThwTVdjUEth?=
- =?utf-8?B?RFg2UTFTZURZcmt3Ny9keVpoUnJoKytzdG1LMGdsOFg3dzhaVGdRbkhOcXhF?=
- =?utf-8?B?ZHpqdUZJQlRGamlMaFdIcUFWa21QWEtDR3hZbWxwaEQvanQ1SjVySXRrQTcy?=
- =?utf-8?B?cUZWTFRkQUQ3bUUzZE5mOUNINGRUd3d0Q3pZRWJ5dXZUb3lrYVlFbHhqakZJ?=
- =?utf-8?B?d0EyRGFISVEwUEhaeFkrcnJBNmszZldjQ2RuSGxVazZaZTFmaEN4QXVKaXdp?=
- =?utf-8?B?TUwwMW1ZUTEvRUplcnpPYk42ZDhPYzZLM1dRazl2TWRhY0c2aWo1Y2dtY1Q5?=
- =?utf-8?B?SVFLbndPaFY4QXg2cWpwSU0vc0FPRFJmTC9RQ1hxWlF5SnQzM1RXcm9TbGRS?=
- =?utf-8?B?QjVBeGlUTmJVaTNGRnlZUytoeE9oajZObWM3MlhCb1FOZXgrbW9XSVZ0ZkRT?=
- =?utf-8?B?YVVuaTYxZkRtUlRJd1lhT2piL1J1MktLWU5NU2ZrTkJYdFN6UUJVcFkxKzRU?=
- =?utf-8?B?Y0tWTllKZDNaSm5KT1U3SUpScCtBQVJ6b29ETVFqK3kvNUFLTWRGZm02QW5O?=
- =?utf-8?B?NHBpWGs2Sk1sZ09hbnZDUEdOMnFDQU12dE1CVlBJbHpaM3ZNVzNvTHZ1U09M?=
- =?utf-8?B?WGhvcEtHbXFtckNxeExOUzlwMGVlWGNFanFKWVNqU2E0YmdDZmYyT1U1M2lv?=
- =?utf-8?B?MHJhcmlOdDB1RmxzdFVZeExjSUNYdzRTWVcyVDRZWENyQTVJSnczcDl0TmNG?=
- =?utf-8?B?QmN4UEh0T282djZBRGVueW1MQ3lpVm9VN3RnSU9uM2JWaDh3MTRCaDd1blZV?=
- =?utf-8?B?Q2xGSGx4VUlFbHNXSlRPYlZOOUNXSGFMaXlTeDlyaXBEVXZFR21UajN3Z0Ew?=
- =?utf-8?B?WFVnOUtsSFJXbXVtVDQ0OEZLSHVZc2ZweGJDaU90V0U1Ry9HaDdUM2FyRTBY?=
- =?utf-8?B?SjhKTTJNZ3hJMXNHZkxlT1JacHJ2NElTWEFsYVBmbzVhVzFZamQwdXBxTXpR?=
- =?utf-8?B?LzlheDBXV2pnMlpJZ3ZPTSt6SXdZY256WElaQVlZQ2pWOXZpVnlDbC9PclJu?=
- =?utf-8?B?aUJnRU04OFlQVG5XMGxFcFpxSFRTSEtrUHlJSklSNVB3dXZLMk9NUGw5Qmw1?=
- =?utf-8?B?SGtjVVdyVDY4Y3BML1d3U2xsNVQ5SE9seFEyUHB1eGptZThWM1lRZko0TUFq?=
- =?utf-8?B?ZjhoTlNLdm9HTGU0aytOdzlmUVJPWTZiZWtlUGRlL2crYVlhdVJkYjJnWVBB?=
- =?utf-8?B?c0h5SldyNm9DMndDQVBvYStsOXNMeXZsT0MvVk1iYUVuSjNrUzRsSnQrakZQ?=
- =?utf-8?B?ZGZ6UUd2N1pxeFlEWENVMDZsdWMwZXNsaWV3UDJzakJmTFpZYVBXYkplUjdx?=
- =?utf-8?B?VTFGTWQrdW5Zd2FsWUN6N0Jabm1SWldkU002V3dEd3FSMEV4UEs4MDlTU2Rz?=
- =?utf-8?B?SWI2ODZYUDlBYlBPckpwZ1ltSGlTZDJsYzRqbFA1THRtMVpKQzhTQXVzc2J4?=
- =?utf-8?B?SnEyVktzUVZiVlVEUWJKbFA5ak9UdzNPRGc2UHhiQTRJcTlTQlkveVpUeHQx?=
- =?utf-8?B?amN4Tk1OWjgyWWRpcWJ1U3Bzcms4YTFNQncyZVMweFpIWGsxSjV1Zi9EUVpn?=
- =?utf-8?B?K3hkSElndnlNU0xFTVJ5Yyt3TkkvWjNGNjMvbEY4RTduRzNQRElVV3VvcTIw?=
- =?utf-8?B?aHpHUWNPWG5kYnc4WnpFaDEvRWtjNEhFY2IzRFY1cG5vZ01WeTVNQzlPSHNV?=
- =?utf-8?B?bzNQZFhmQnhOTXdVSzBPMzFlYkQ3OEt4SHYzMC8yRHZLWWZta0V1VGUxK2R1?=
- =?utf-8?Q?8Z6jEAEA1WiHG794KVXPtCi0n?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZGFsWUNCY0xYK2FmNi95emZXMHo4NFJONFJscTJXaC9EeGdkRXVEc2Y1MHN6?=
+ =?utf-8?B?RXJXQW5HTSs3NG1pOTg2ZTNJek5mZ0V3N1lrQnFlNnl4dnhGOUZ5ZVhGS2dp?=
+ =?utf-8?B?QldIM1VwUllRTmZON3pOOG9uV0JwZ0pwWnIxVDhOL1VNb2ZSU2dxR2gxU0sr?=
+ =?utf-8?B?Q0RjU2tyWUx0UHQvWGFrUTROQUU2dmRUUE5ZbnBJL2tCOEdqUklwdlE2aFBL?=
+ =?utf-8?B?cFd1QjhKSHZrVXN0ZXdmU2wrRFpOckVIRXNhQXVITDlRRytQSUFranFJSDZX?=
+ =?utf-8?B?VkNnckpkaGtseU56blVCa04vdVZGb0J6emliTzJEczhvVFhSVUsvVzBxN01C?=
+ =?utf-8?B?SEd0eTJkdTZKZXhiQ1c0R0w1eEE3MEllWHhndEx6MkYyTlkvVWxwY1g1ci9X?=
+ =?utf-8?B?YzBQaHRybEZVZlVQMkpEcnVtTDlGZCsrTFI2UElJdERZOVNaSWlxcENyL3FP?=
+ =?utf-8?B?cmFpUTJON1JRNzYvMEh0VnpHVjV3YkYwZ2I4UDkrWU93MmloNkJWTEUzaEor?=
+ =?utf-8?B?SkRRQkNxWExSUnkyWWRhaS9Za0tVbkF1Y1JkWVZpMDJlektpSEI3WDMrSWsr?=
+ =?utf-8?B?WSs2ZDByYlY4WWh2SENtSFhBdFVSaklJSzFZVFlOWGpwak9ONWE3eHJIQnBj?=
+ =?utf-8?B?RldmZU5vV3JvYkFBeklJQ21vaFg3NktPd0tqbWgvNmgzZ2FHazhFOHREc3dI?=
+ =?utf-8?B?TWQ3U01xbU1taEJoNTU2VDh4WW5NMUIyMS9DejJkcWlNVmxTcXlCQ2psek5k?=
+ =?utf-8?B?UStMblFVbXdqSnFoZUpuR0pQand2UnhFbGxhVTJ3cFlLUXQ4ZFA5V21CaEhE?=
+ =?utf-8?B?UEo4L3VsRXdxdnhveWd0WEhiQ2FzeVVyZWtLSTU2eWZCUVNEK0FDdC9zT003?=
+ =?utf-8?B?T29ndFZpQ3VHVTVNNTRVZzZoTGJidnlmVnYwMS9WelpGeFBYbEpjc3Q1OGZn?=
+ =?utf-8?B?T2xkcTFEeEkvT1lYbWRBc3E3cGtpQjlqWmdRaHU1T2dDaXRXZHJFWlJ1bVdn?=
+ =?utf-8?B?ZHpDU0hkeStqTG9TYUU2ZGwwZWs1WDYreEtxWjNVQlRqRjJJYTFkdWJFSVR1?=
+ =?utf-8?B?RTIrQnlWbW5RRXREbGFQamVUNlhzdTloRTA1NWdhK20yTy9GQzZpZ291UWdH?=
+ =?utf-8?B?cWlqSWhkUFYzR2pibXhkS1NBOUk1ME9kOUJnTUdhZEJ0VDdKQkpWMTN4N2Vv?=
+ =?utf-8?B?dVdSM1FxY0pLR0d5L0VpNkJNSXVvMkl2V3lzN0xTTVpHZHRJR2RGdUxCdzBv?=
+ =?utf-8?B?OU5yaUpWY3paaVNaVHNZazVkdE5weTJxdmNoM2dOSENNeThpbC95SEdodjdV?=
+ =?utf-8?B?bEhjbFdwZ2lpcUs2aURPNm5tWkJhM2tKOWNuaTR2UmVBZFhTdXFkNUprajVq?=
+ =?utf-8?B?S1Badk9hMkV1a0F1N2VrdU9RTG1YMUx3T3VIb0pyVWl3NXc5TnhtcjdJL1BZ?=
+ =?utf-8?B?ZGFUandWYk9HYzVyVUlsbTBFZ2pZNXZaeEZnMlI0MkZvUWg4NmlnY0k3VTd4?=
+ =?utf-8?B?YmdTRjdER0l3S0gzclNEQVIvbzlvREp6aDRnNmlFbGRzT3hnTGFxM2tFUWdw?=
+ =?utf-8?B?dTVpQU1NSzJVY2hsNHdqSXpJbTQxaDYyN3h5dzZBNUdUd1Zibk1vTVQzMFFm?=
+ =?utf-8?B?aFJ6SE9zVSs3T2xTNjZRMnBwN2RGWFVGVHh0eXhhemFURnd4Wi9FY3A4ODI3?=
+ =?utf-8?B?VkZaSktKSFlJQ2tpRzRjcVVpQ3FqSkZ2RC9iZUpWMnNUQTM4YkdUM1FRajZz?=
+ =?utf-8?B?bFk0Qys5TkJFeUVuNHdkdEFNOHdaeFFTR0owUktXcFlDL2FBb0hCOUtORkRw?=
+ =?utf-8?B?T0hiQW1NOVBsbUVWa3NPcStYQ0NBcDE0OExKeHNXWkQ2OGlHTzRMbTkzelky?=
+ =?utf-8?B?L1k3L25FbHNNd25yRHU2L010c0Y2MjM4dWZWZk9meDRoMWhxSVJLaUVPemRC?=
+ =?utf-8?B?NzNjT0ptU0k0OE9Jb3pYTXA1aVV0Y2MvWldhTGUvMGU0RHVkVnN2NFgzVGg1?=
+ =?utf-8?B?RC9JMnlyTVRlOFp4bjFEQ2dZOTRKYXV0MytUclF5THlsWjlpcUxBZENrMjRo?=
+ =?utf-8?B?bjJHRm9JQzgzRktISWZDQzFMSVpBMkw4ZGRhSnlwVzJtcHN3Um5FQ1FDMVhU?=
+ =?utf-8?B?RFZjaEg2V1MwYWJRWnhWRklxa2Exak1kT0JkVUc3Nm5YUXJwbTNCQlVrY0ow?=
+ =?utf-8?B?Q0E9PQ==?=
 X-OriginatorOrg: siemens.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 077a2c87-b50a-4b26-df80-08db68b11a58
+X-MS-Exchange-CrossTenant-Network-Message-Id: 110b7d9b-b0b5-4db8-eded-08db68b15ba3
 X-MS-Exchange-CrossTenant-AuthSource: AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2023 06:16:46.5289
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2023 06:18:36.0932
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cMLETqft0XpVGfPs2XQyW5SzXR3058jvkfJOl3YWF4s3scHrDeSY25Hue89TOP/RO72fqXN1TA8D4n27g9x0kA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR10MB7456
+X-MS-Exchange-CrossTenant-UserPrincipalName: ttfAUhEqTWDzFfigCkZc5pb9zaEnQkHeBoTROfXZr97ocu3GO4xOxE7cI7EFh0iimAxbSAV54m7XsvDJ8tuuVw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR10MB6236
 X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
         NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
@@ -150,106 +151,270 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 08.06.23 15:52, Ard Biesheuvel wrote:
-> On Thu, 8 Jun 2023 at 08:22, Ilias Apalodimas
-> <ilias.apalodimas@linaro.org> wrote:
+On 08.06.23 21:38, Ilias Apalodimas wrote:
+> On Thu, 8 Jun 2023 at 16:52, Ard Biesheuvel <ardb@kernel.org> wrote:
 >>
->> Hi Jan
->>
->>
->> On Wed, 7 Jun 2023 at 22:46, Jan Kiszka <jan.kiszka@siemens.com> wrote:
+>> On Thu, 8 Jun 2023 at 08:22, Ilias Apalodimas
+>> <ilias.apalodimas@linaro.org> wrote:
 >>>
->>> On 07.06.23 20:17, Ilias Apalodimas wrote:
->>>> On Wed, 7 Jun 2023 at 20:14, Jan Kiszka <jan.kiszka@siemens.com> wrote:
->>>>>
->>>>> On 07.06.23 18:59, Ilias Apalodimas wrote:
->>>>>> On Wed, 7 Jun 2023 at 19:09, Ilias Apalodimas
->>>>>> <ilias.apalodimas@linaro.org> wrote:
->>>>>>>
->>>>>>> Hi Jan,
->>>>>>>
->>>>>>> [...]
->>>>>>>>>>> No I don't, this will work reliably without the need to remount the efivarfs.
->>>>>>>>>>> As you point out you will still have this dependency if you end up
->>>>>>>>>>> building them as modules and you manage to mount the efivarfs before
->>>>>>>>>>> those get inserted.  Does anyone see a reasonable workaround?
->>>>>>>>>>> Deceiving the kernel and making the bootloader set the RT property bit
->>>>>>>>>>> to force the filesystem being mounted as rw is a nasty hack that we
->>>>>>>>>>> should avoid.  Maybe adding a kernel command line parameter that says
->>>>>>>>>>> "Ignore the RTPROP I know what I am doing"?  I don't particularly love
->>>>>>>>>>> this either, but it's not unreasonable.
->>>>>>>>>>
->>>>>>>>>> In the context of https://github.com/OP-TEE/optee_os/issues/6094,
->>>>>>>>>> basically this issue mapped on reboot/shutdown, I would really love to
->>>>>>>>>> see the unhandy tee-supplicant daemon to be overcome.
->>>>>>>>>
->>>>>>>>> I have seen this error before and it has been on my todo list. So I
->>>>>>>>> have tried to fix it here [1]. Feel free to test it and let me know if
->>>>>>>>> you see any further issues.
->>>>>>>>>
->>>>>>>>> [1] https://lkml.org/lkml/2023/6/7/927
->>>>>>>>>
->>>>>>>>
->>>>>>>> Ah, nice, will test ASAP!
->>>>>>>>
->>>>>>>> Meanwhile more food: I managed to build a firmware that was missing
->>>>>>>> STMM. But the driver loaded, and I got this:
->>>>>>>
->>>>>>> Thanks for the testing. I'll try to reproduce it locally and get back to you
->>>>>>
->>>>>> Can you provide a bit more info on how that was triggered btw? I would
->>>>>> be helpful to know
->>>>>>
->>>>>> - OP-TEE version
->>>>>
->>>>> Today's master, 145953d55.
->>>>>
->>>>>> - was it compiled as a module or built-in?
->>>>>
->>>>> Sorry, not sure anymore, switching back and forth right now. I think it
->>>>> was built-in.
->>>>>
->>>>>> - was the supplicant running?
->>>>>
->>>>> Yes.
->>>>>
+>>> Hi Jan
+>>>
+>>>
+>>> On Wed, 7 Jun 2023 at 22:46, Jan Kiszka <jan.kiszka@siemens.com> wrote:
 >>>>
->>>> Ok thanks, that helps.  I guess this also means U-Boot was compiled to
->>>> store the variables in a file in the ESP instead of the RPMB right?
->>>> Otherwise, I can't see how the device booted in the first place.
+>>>> On 07.06.23 20:17, Ilias Apalodimas wrote:
+>>>>> On Wed, 7 Jun 2023 at 20:14, Jan Kiszka <jan.kiszka@siemens.com> wrote:
+>>>>>>
+>>>>>> On 07.06.23 18:59, Ilias Apalodimas wrote:
+>>>>>>> On Wed, 7 Jun 2023 at 19:09, Ilias Apalodimas
+>>>>>>> <ilias.apalodimas@linaro.org> wrote:
+>>>>>>>>
+>>>>>>>> Hi Jan,
+>>>>>>>>
+>>>>>>>> [...]
+>>>>>>>>>>>> No I don't, this will work reliably without the need to remount the efivarfs.
+>>>>>>>>>>>> As you point out you will still have this dependency if you end up
+>>>>>>>>>>>> building them as modules and you manage to mount the efivarfs before
+>>>>>>>>>>>> those get inserted.  Does anyone see a reasonable workaround?
+>>>>>>>>>>>> Deceiving the kernel and making the bootloader set the RT property bit
+>>>>>>>>>>>> to force the filesystem being mounted as rw is a nasty hack that we
+>>>>>>>>>>>> should avoid.  Maybe adding a kernel command line parameter that says
+>>>>>>>>>>>> "Ignore the RTPROP I know what I am doing"?  I don't particularly love
+>>>>>>>>>>>> this either, but it's not unreasonable.
+>>>>>>>>>>>
+>>>>>>>>>>> In the context of https://github.com/OP-TEE/optee_os/issues/6094,
+>>>>>>>>>>> basically this issue mapped on reboot/shutdown, I would really love to
+>>>>>>>>>>> see the unhandy tee-supplicant daemon to be overcome.
+>>>>>>>>>>
+>>>>>>>>>> I have seen this error before and it has been on my todo list. So I
+>>>>>>>>>> have tried to fix it here [1]. Feel free to test it and let me know if
+>>>>>>>>>> you see any further issues.
+>>>>>>>>>>
+>>>>>>>>>> [1] https://lkml.org/lkml/2023/6/7/927
+>>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> Ah, nice, will test ASAP!
+>>>>>>>>>
+>>>>>>>>> Meanwhile more food: I managed to build a firmware that was missing
+>>>>>>>>> STMM. But the driver loaded, and I got this:
+>>>>>>>>
+>>>>>>>> Thanks for the testing. I'll try to reproduce it locally and get back to you
+>>>>>>>
+>>>>>>> Can you provide a bit more info on how that was triggered btw? I would
+>>>>>>> be helpful to know
+>>>>>>>
+>>>>>>> - OP-TEE version
+>>>>>>
+>>>>>> Today's master, 145953d55.
+>>>>>>
+>>>>>>> - was it compiled as a module or built-in?
+>>>>>>
+>>>>>> Sorry, not sure anymore, switching back and forth right now. I think it
+>>>>>> was built-in.
+>>>>>>
+>>>>>>> - was the supplicant running?
+>>>>>>
+>>>>>> Yes.
+>>>>>>
+>>>>>
+>>>>> Ok thanks, that helps.  I guess this also means U-Boot was compiled to
+>>>>> store the variables in a file in the ESP instead of the RPMB right?
+>>>>> Otherwise, I can't see how the device booted in the first place.
+>>>>
+>>>> U-Boot was not configured to perform secure booting in this case. It had
+>>>> RPMB support enabled, just didn't have to use it.
 >>>
->>> U-Boot was not configured to perform secure booting in this case. It had
->>> RPMB support enabled, just didn't have to use it.
+>>> In your initial mail you said you managed to build a firmware without
+>>> StMM.  If U-boot isn't reconfigured accordingly -- iow skip the EFI
+>>> variable storage in an RPMB, the EFI subsystem will fail to start.
+>>>
+>>> In any case, I don't think the ooops you are seeing is not connected
+>>> to this patchset.  Looking at the kernel EFI stub we only set the
+>>> SetVariableRT if the RTPROP table is set accordingly by the firmware.
+>>> U-Boot never sets the EFI_RT_SUPPORTED_SET_VARIABLE property since it
+>>> can't support it.  What you are doing is remount the efivarfs as rw
+>>> and then trying to set a variable, but the callback for it is  NULL.
+>>> I think you'll be able to replicate the same behavior on the kernel
+>>> without even inserting the new module.
+>>>
 >>
->> In your initial mail you said you managed to build a firmware without
->> StMM.  If U-boot isn't reconfigured accordingly -- iow skip the EFI
->> variable storage in an RPMB, the EFI subsystem will fail to start.
+>> I have dropped this series from efi/next for now, given that it
+>> obviously has problems in its current state.
 >>
->> In any case, I don't think the ooops you are seeing is not connected
->> to this patchset.  Looking at the kernel EFI stub we only set the
->> SetVariableRT if the RTPROP table is set accordingly by the firmware.
->> U-Boot never sets the EFI_RT_SUPPORTED_SET_VARIABLE property since it
->> can't support it.  What you are doing is remount the efivarfs as rw
->> and then trying to set a variable, but the callback for it is  NULL.
->> I think you'll be able to replicate the same behavior on the kernel
->> without even inserting the new module.
-
-Might be true. I'll try to look into that again when the other dust settled.
-
+>> The risk of merging this now and fixing it later is that it may cause
+>> regressions for early adopters that rely on the behavior we are
+>> introducing here. Better to get this in shape first.
 > 
-> I have dropped this series from efi/next for now, given that it
-> obviously has problems in its current state.
+> The ooops Jan was seeing is reproducible in the current code with
+> $ sudo mount -o remount,rw /sys/firmware/efi/efivars
+> $ sudo efi-updatevar -f PK.auth PK
 > 
-> The risk of merging this now and fixing it later is that it may cause
-> regressions for early adopters that rely on the behavior we are
-> introducing here. Better to get this in shape first.
+> So the only real problem we are discussing here is users having to
+> remount the efivarfs once the module is inserted and the supplicant is
+> running right?  We could do something along the lines of the patch
+> below. That would solve both of the problems.
+> 
+> However, the patch changes the way efivarfs is mounted -- it's now
+> always mounted as RW.  What I am worried about is userspace tools that
+> rely on this.  I know fwupd uses it and looks for a RO mounted
+> efivarfs on it's initial checking, but since userspace apps are
+> already dealing with firmware that exposes SetVariableRT but always
+> returns EFI_UNSUPPORTED this should be safe ?(famous last words)
+> 
+> Jan can you please apply this and see if it solves your problem?
+> 
+> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> index 4cc8d0e7d0fd..37accd9e885c 100644
+> --- a/drivers/firmware/efi/efi.c
+> +++ b/drivers/firmware/efi/efi.c
+> @@ -206,6 +206,13 @@ static bool generic_ops_supported(void)
+>         return true;
+>  }
+> 
+> +efi_status_t set_variable_int(efi_char16_t *name, efi_guid_t *vendor,
+> +                             u32 attributes, unsigned long data_size,
+> +                             void *data)
+> +{
+> +       return EFI_UNSUPPORTED;
+> +}
+> +
+>  static int generic_ops_register(void)
+>  {
+>         if (!generic_ops_supported())
+> @@ -219,6 +226,9 @@ static int generic_ops_register(void)
+>         if (efi_rt_services_supported(EFI_RT_SUPPORTED_SET_VARIABLE)) {
+>                 generic_ops.set_variable = efi.set_variable;
+>                 generic_ops.set_variable_nonblocking =
+> efi.set_variable_nonblocking;
+> +       } else {
+> +               generic_ops.set_variable = set_variable_int;
+> +               generic_ops.set_variable_nonblocking = set_variable_int;
+>         }
+>         return efivars_register(&generic_efivars, &generic_ops);
+>  }
+> diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
+> index e9dc7116daf1..c75eff3f409d 100644
+> --- a/drivers/firmware/efi/vars.c
+> +++ b/drivers/firmware/efi/vars.c
+> @@ -123,7 +123,7 @@ EXPORT_SYMBOL_GPL(efivars_unregister);
+> 
+>  bool efivar_supports_writes(void)
+>  {
+> -       return __efivars && __efivars->ops->set_variable;
+> +       return __efivars && __efivars->ops->set_variable != set_variable_int;
+>  }
+>  EXPORT_SYMBOL_GPL(efivar_supports_writes);
+> 
+> diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+> index e028fafa04f3..e40b5c4c5106 100644
+> --- a/fs/efivarfs/super.c
+> +++ b/fs/efivarfs/super.c
+> @@ -242,9 +242,6 @@ static int efivarfs_fill_super(struct super_block
+> *sb, struct fs_context *fc)
+>         sb->s_d_op              = &efivarfs_d_ops;
+>         sb->s_time_gran         = 1;
+> 
+> -       if (!efivar_supports_writes())
+> -               sb->s_flags |= SB_RDONLY;
+> -
+>         inode = efivarfs_get_inode(sb, NULL, S_IFDIR | 0755, 0, true);
+>         if (!inode)
+>                 return -ENOMEM;
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index 58d1c271d3b0..ec0ac6ef50a3 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -1084,6 +1084,10 @@ int efivars_register(struct efivars *efivars,
+>                      const struct efivar_operations *ops);
+>  int efivars_unregister(struct efivars *efivars);
+> 
+> +efi_status_t set_variable_int(efi_char16_t *name, efi_guid_t *vendor,
+> +                             u32 attributes, unsigned long data_size,
+> +                             void *data);
+> +
+>  void efivars_generic_ops_register(void);
+>  void efivars_generic_ops_unregister(void);
+> 
+> apalos@hades:~/work/linux-next>;
+> apalos@hades:~/work/linux-next>git diff
+> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> index 4cc8d0e7d0fd..37accd9e885c 100644
+> --- a/drivers/firmware/efi/efi.c
+> +++ b/drivers/firmware/efi/efi.c
+> @@ -206,6 +206,13 @@ static bool generic_ops_supported(void)
+>         return true;
+>  }
+> 
+> +efi_status_t set_variable_int(efi_char16_t *name, efi_guid_t *vendor,
+> +                             u32 attributes, unsigned long data_size,
+> +                             void *data)
+> +{
+> +       return EFI_UNSUPPORTED;
+> +}
+> +
+>  static int generic_ops_register(void)
+>  {
+>         if (!generic_ops_supported())
+> @@ -219,6 +226,9 @@ static int generic_ops_register(void)
+>         if (efi_rt_services_supported(EFI_RT_SUPPORTED_SET_VARIABLE)) {
+>                 generic_ops.set_variable = efi.set_variable;
+>                 generic_ops.set_variable_nonblocking =
+> efi.set_variable_nonblocking;
+> +       } else {
+> +               generic_ops.set_variable = set_variable_int;
+> +               generic_ops.set_variable_nonblocking = set_variable_int;
+>         }
+>         return efivars_register(&generic_efivars, &generic_ops);
+>  }
+> diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
+> index e9dc7116daf1..c75eff3f409d 100644
+> --- a/drivers/firmware/efi/vars.c
+> +++ b/drivers/firmware/efi/vars.c
+> @@ -123,7 +123,7 @@ EXPORT_SYMBOL_GPL(efivars_unregister);
+> 
+>  bool efivar_supports_writes(void)
+>  {
+> -       return __efivars && __efivars->ops->set_variable;
+> +       return __efivars && __efivars->ops->set_variable != set_variable_int;
+>  }
+>  EXPORT_SYMBOL_GPL(efivar_supports_writes);
+> 
+> diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+> index e028fafa04f3..e40b5c4c5106 100644
+> --- a/fs/efivarfs/super.c
+> +++ b/fs/efivarfs/super.c
+> @@ -242,9 +242,6 @@ static int efivarfs_fill_super(struct super_block
+> *sb, struct fs_context *fc)
+>         sb->s_d_op              = &efivarfs_d_ops;
+>         sb->s_time_gran         = 1;
+> 
+> -       if (!efivar_supports_writes())
+> -               sb->s_flags |= SB_RDONLY;
+> -
+>         inode = efivarfs_get_inode(sb, NULL, S_IFDIR | 0755, 0, true);
+>         if (!inode)
+>                 return -ENOMEM;
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index 58d1c271d3b0..ec0ac6ef50a3 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -1084,6 +1084,10 @@ int efivars_register(struct efivars *efivars,
+>                      const struct efivar_operations *ops);
+>  int efivars_unregister(struct efivars *efivars);
+> 
+> +efi_status_t set_variable_int(efi_char16_t *name, efi_guid_t *vendor,
+> +                             u32 attributes, unsigned long data_size,
+> +                             void *data);
+> +
+>  void efivars_generic_ops_register(void);
+>  void efivars_generic_ops_unregister(void);
+> 
+> Thanks
+> /Ilias
 
-On the one side, I'm sorry having ruined the merge, but my gut feeling
-is as well that this really needs to be reworked to get rid of the
-unfortunate tee-supplicant daemon. So far, we have to start the daemon
-from initrd, write a systemd service to adopt that instance, and make
-ftpm modular to remove it before terminating tee-supplicant (e.g. on
-system shutdown) - Sumit's patch didn't help there.
+As just written in my other reply: The root cause is the dependency on
+tee-supplicant daemon. That needs to be resolved, and then also r/w
+mounting will just work.
 
 Jan
 
