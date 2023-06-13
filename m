@@ -2,46 +2,80 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 576CC72C670
-	for <lists+linux-efi@lfdr.de>; Mon, 12 Jun 2023 15:52:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD27872DA95
+	for <lists+linux-efi@lfdr.de>; Tue, 13 Jun 2023 09:16:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236158AbjFLNwD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 12 Jun 2023 09:52:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40048 "EHLO
+        id S238669AbjFMHQa (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 13 Jun 2023 03:16:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236666AbjFLNwA (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 12 Jun 2023 09:52:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91A64E6F;
-        Mon, 12 Jun 2023 06:51:56 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E84C62976;
-        Mon, 12 Jun 2023 13:51:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EC5C433A1;
-        Mon, 12 Jun 2023 13:51:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686577915;
-        bh=N35u9HNcA2GE6O0RLNmO/H/bI7DFCPIb/J9WbCfp+7I=;
-        h=Subject:From:To:Date:In-Reply-To:References:From;
-        b=ObL7C8SEHs/LzGPrSxC74RrT9T2yAr7+1XglnX3EW1FZM90y7O6ormobkdpAWuZ0e
-         RdLzx900Hqpy9HE3EfCtu+74BEGhE/aZtEqml+3NJgQSzQx53YAlTOFBgpsZKSbcTh
-         +zXor8GIZ20+va1qDjHAfR3RyRUEaBOMhmjJ7l5g2lpz8/OpJX+h5I3T6nxDG8Q0Ct
-         vPS6mDUmgWbpb1+t3cmEUqFflpPCwKrf9+eWZ+e4rjAuOfKobUeruOpGBYBZ90Wbpa
-         C9ELvqhW19k3IAANYXAYjz0pZ8SMZZaeiSfoRUPDrDPMlZiF0tSo1r2eVMBMPNiBkq
-         +CwHQ9soLqvPA==
-Message-ID: <a6ca6c14a6b3727b7416198824b37bd7bd386180.camel@kernel.org>
-Subject: Re: [PATCH v2 8/8] cifs: update the ctime on a partial page write
-From:   Jeff Layton <jlayton@kernel.org>
-To:     Tom Talpey <tom@talpey.com>,
+        with ESMTP id S235104AbjFMHQ3 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 13 Jun 2023 03:16:29 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50723C9;
+        Tue, 13 Jun 2023 00:16:28 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.nyi.internal (Postfix) with ESMTP id 4775F5C0135;
+        Tue, 13 Jun 2023 03:16:24 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Tue, 13 Jun 2023 03:16:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=themaw.net; h=cc
+        :content-transfer-encoding:content-type:content-type:date:date
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm1; t=
+        1686640584; x=1686726984; bh=Xbb7CLBvZ6siXm88yNIRYyGzYbHYnhDGDiI
+        37u5+Umo=; b=RlDU6F7+WrhdYoA3gxHLlCuZ31yYmxwJnu7MTKItIZWB19HB6JQ
+        WzbTK8EKa8nXC7sBc8FJQG74GYdIUBZcb8Yf1NNt7SAEeSyJDPqy4SWzdTbKxM4G
+        exq2+ZwVu8U+oCiQz4D9dg2BMdvNtuCi2D1XLx4o/JTcVAZ7rWat7k1Q2gWJ9fuN
+        7hiu3W6CCFgw0BiR95DK5tMK1UcFOcoAJLPJoUF3/ZV4s/SziWcjjUmGtG8EDMlF
+        ISxQpckAXm/g8m1g4WvTa8Ri08MzbdMIbBsr008U0B7c/f/BsmPwIA/0hzxjCk1Q
+        HqZMJ90M55Ez5D3mEfZdbs4r/8dcoQV5rXg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:content-type
+        :content-type:date:date:feedback-id:feedback-id:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1686640584; x=
+        1686726984; bh=Xbb7CLBvZ6siXm88yNIRYyGzYbHYnhDGDiI37u5+Umo=; b=c
+        mIin3900ja0o0CtgLBQj5Cib36Z+3F9x1jce9eo1ESy/sMIIckCIitDYZZ+Fwyy7
+        v1gHy2Aw3ygRkw9YJD+9EGkiEx+lwr8JpV9FgSCqQgJbP7vLT8UIggJyHhO+AAyF
+        noBiWxEXUV52IdpSUzaLuFNvcXvVe5q/Yw+MgvHmwq1vyBkRNMIG0XQ3XaLmYYZW
+        b3Ixm40jiWw5EbOYRbvlViCzu4wI1DF25hMmxisoQNfTX3Rb2If7GnPTW41XZ7cF
+        s8+AIRa9ybodH82hUbWoaPjCfpuTFiwpLl1TgSspH6MtvfND64gWe1OjlkCPgcCW
+        1oAku0Ebc/KGiiC21iaXA==
+X-ME-Sender: <xms:xheIZFiASBjgY5T_FcBZQIfLm21S0oV8ogxDgNOinPVPa3xu0DYrTA>
+    <xme:xheIZKDRQ2OVQG8rrApi0o-lHbOpNPPjcepEty5gvdakYAulrq3gz_J1sx0KIwWaP
+    o0L5McJNFNS>
+X-ME-Received: <xmr:xheIZFFZFik2fNGf1anmMQhYBkq6QvsmuhJa1d6AIUGZeOiBAO1MHEl9E9HKNrAKpKtRrMyB3_4oK7LdIAVKaN5IaWlp4FdfLegjVyug8rQWDqenuas>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgeduiedguddvudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefkffggfgfuvfhfhfgjtgfgsehtjeertddtfeejnecuhfhrohhmpefkrghn
+    ucfmvghnthcuoehrrghvvghnsehthhgvmhgrfidrnhgvtheqnecuggftrfgrthhtvghrnh
+    epgfegkedtvddtgeeilefhteffffeukeeggeehvdduleegvdeiieeihfetudehjeelnecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprhgrvhgvnh
+    esthhhvghmrgifrdhnvght
+X-ME-Proxy: <xmx:xheIZKQ5UmzKP-60hg5BNqniVrO_VLASRzgKop3PzyNEH89vvPjQcQ>
+    <xmx:xheIZCynP5awa7k9st6eGP_1lZ8TeFJxtAP8UmojP-NOODCOEfcu0A>
+    <xmx:xheIZA5Swu7xBajj0x8mBkN04LtGBap39euCg-q2Ms6cidoeHczYtQ>
+    <xmx:yBeIZFIQ19quJM_9_o4ZdNDXIQGOQkNWf2KvJ9YrUPYoEm71M3y4Qw>
+Feedback-ID: i31e841b0:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 13 Jun 2023 03:16:08 -0400 (EDT)
+Message-ID: <39c762dd-37a9-8ef8-9002-c1eb367946d3@themaw.net>
+Date:   Tue, 13 Jun 2023 15:16:04 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 3/8] autofs: set ctime as well when mtime changes on a
+ dir
+To:     Jeff Layton <jlayton@kernel.org>,
         Christian Brauner <brauner@kernel.org>,
         Al Viro <viro@zeniv.linux.org.uk>,
         Brad Warrum <bwarrum@linux.ibm.com>,
         Ritu Agarwal <rituagar@linux.ibm.com>,
         Arnd Bergmann <arnd@arndb.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ian Kent <raven@themaw.net>,
         "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
         Jeremy Kerr <jk@ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>,
         Namjae Jeon <linkinjeon@kernel.org>,
@@ -50,6 +84,7 @@ To:     Tom Talpey <tom@talpey.com>,
         Paulo Alcantara <pc@manguebit.com>,
         Ronnie Sahlberg <lsahlber@redhat.com>,
         Shyam Prasad N <sprasad@microsoft.com>,
+        Tom Talpey <tom@talpey.com>,
         John Johansen <john.johansen@canonical.com>,
         Paul Moore <paul@paul-moore.com>,
         James Morris <jmorris@namei.org>,
@@ -64,73 +99,65 @@ To:     Tom Talpey <tom@talpey.com>,
         linux-fsdevel@vger.kernel.org, linux-cifs@vger.kernel.org,
         samba-technical@lists.samba.org, apparmor@lists.ubuntu.com,
         linux-security-module@vger.kernel.org
-Date:   Mon, 12 Jun 2023 09:51:50 -0400
-In-Reply-To: <a34b598a-374b-5dbf-dd36-4b62e52fe36c@talpey.com>
 References: <20230612104524.17058-1-jlayton@kernel.org>
-         <20230612104524.17058-9-jlayton@kernel.org>
-         <a34b598a-374b-5dbf-dd36-4b62e52fe36c@talpey.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
-MIME-Version: 1.0
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+ <20230612104524.17058-4-jlayton@kernel.org>
+Content-Language: en-US
+From:   Ian Kent <raven@themaw.net>
+In-Reply-To: <20230612104524.17058-4-jlayton@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 2023-06-12 at 09:41 -0400, Tom Talpey wrote:
-> On 6/12/2023 6:45 AM, Jeff Layton wrote:
-> > POSIX says:
-> >=20
-> >      "Upon successful completion, where nbyte is greater than 0, write(=
-)
-> >       shall mark for update the last data modification and last file st=
-atus
-> >       change timestamps of the file..."
-> >=20
-> > Add the missing ctime update.
-> >=20
-> > Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> > ---
-> >   fs/smb/client/file.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-> > index df88b8c04d03..a00038a326cf 100644
-> > --- a/fs/smb/client/file.c
-> > +++ b/fs/smb/client/file.c
-> > @@ -2596,7 +2596,7 @@ static int cifs_partialpagewrite(struct page *pag=
-e, unsigned from, unsigned to)
-> >   					   write_data, to - from, &offset);
-> >   		cifsFileInfo_put(open_file);
-> >   		/* Does mm or vfs already set times? */
-> > -		inode->i_atime =3D inode->i_mtime =3D current_time(inode);
-> > +		inode->i_atime =3D inode->i_mtime =3D inode->i_ctime =3D current_tim=
-e(inode);
->=20
-> Question. It appears that roughly half the filesystems in this series
-> don't touch the i_atime in this case. And the other half do. Which is
-> correct? Did they incorrectly set i_atime instead of i_ctime?
->=20
+On 12/6/23 18:45, Jeff Layton wrote:
+> When adding entries to a directory, POSIX generally requires that the
+> ctime also be updated alongside the mtime.
+>
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
-I noticed that too, and with this set, I decided to not make any atime
-changes since I wasn't sure.
+Acked-by: Ian Kent <raven@themaw.net>
 
-I think the answer to your question is "it depends". atime is supposed
-to be updated on reads, not writes, but sometimes a write requires a RMW
-cycle of some flavor so one can imagine that in some cases we'd need to
-update all three.
 
-In this case, I'm not sure that updating any of these times is the right
-thing to do. This is called from ->launder_folio, so the syscall that
-issued the write is long gone and we're in writeback here.
-
-With NFS, we generally leave timestamp updates to the server. Should any
-of these timestamps be updated by the (SMB1) client here?
---=20
-Jeff Layton <jlayton@kernel.org>
+> ---
+>   fs/autofs/root.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/fs/autofs/root.c b/fs/autofs/root.c
+> index 6baf90b08e0e..93046c9dc461 100644
+> --- a/fs/autofs/root.c
+> +++ b/fs/autofs/root.c
+> @@ -600,7 +600,7 @@ static int autofs_dir_symlink(struct mnt_idmap *idmap,
+>   	p_ino = autofs_dentry_ino(dentry->d_parent);
+>   	p_ino->count++;
+>   
+> -	dir->i_mtime = current_time(dir);
+> +	dir->i_mtime = dir->i_ctime = current_time(dir);
+>   
+>   	return 0;
+>   }
+> @@ -633,7 +633,7 @@ static int autofs_dir_unlink(struct inode *dir, struct dentry *dentry)
+>   	d_inode(dentry)->i_size = 0;
+>   	clear_nlink(d_inode(dentry));
+>   
+> -	dir->i_mtime = current_time(dir);
+> +	dir->i_mtime = dir->i_ctime = current_time(dir);
+>   
+>   	spin_lock(&sbi->lookup_lock);
+>   	__autofs_add_expiring(dentry);
+> @@ -749,7 +749,7 @@ static int autofs_dir_mkdir(struct mnt_idmap *idmap,
+>   	p_ino = autofs_dentry_ino(dentry->d_parent);
+>   	p_ino->count++;
+>   	inc_nlink(dir);
+> -	dir->i_mtime = current_time(dir);
+> +	dir->i_mtime = dir->i_ctime = current_time(dir);
+>   
+>   	return 0;
+>   }
