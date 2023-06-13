@@ -2,113 +2,50 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD27872DA95
-	for <lists+linux-efi@lfdr.de>; Tue, 13 Jun 2023 09:16:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7517872DE29
+	for <lists+linux-efi@lfdr.de>; Tue, 13 Jun 2023 11:47:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238669AbjFMHQa (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 13 Jun 2023 03:16:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56372 "EHLO
+        id S241794AbjFMJrN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 13 Jun 2023 05:47:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235104AbjFMHQ3 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 13 Jun 2023 03:16:29 -0400
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50723C9;
-        Tue, 13 Jun 2023 00:16:28 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.nyi.internal (Postfix) with ESMTP id 4775F5C0135;
-        Tue, 13 Jun 2023 03:16:24 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Tue, 13 Jun 2023 03:16:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=themaw.net; h=cc
-        :content-transfer-encoding:content-type:content-type:date:date
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm1; t=
-        1686640584; x=1686726984; bh=Xbb7CLBvZ6siXm88yNIRYyGzYbHYnhDGDiI
-        37u5+Umo=; b=RlDU6F7+WrhdYoA3gxHLlCuZ31yYmxwJnu7MTKItIZWB19HB6JQ
-        WzbTK8EKa8nXC7sBc8FJQG74GYdIUBZcb8Yf1NNt7SAEeSyJDPqy4SWzdTbKxM4G
-        exq2+ZwVu8U+oCiQz4D9dg2BMdvNtuCi2D1XLx4o/JTcVAZ7rWat7k1Q2gWJ9fuN
-        7hiu3W6CCFgw0BiR95DK5tMK1UcFOcoAJLPJoUF3/ZV4s/SziWcjjUmGtG8EDMlF
-        ISxQpckAXm/g8m1g4WvTa8Ri08MzbdMIbBsr008U0B7c/f/BsmPwIA/0hzxjCk1Q
-        HqZMJ90M55Ez5D3mEfZdbs4r/8dcoQV5rXg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:content-type
-        :content-type:date:date:feedback-id:feedback-id:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1686640584; x=
-        1686726984; bh=Xbb7CLBvZ6siXm88yNIRYyGzYbHYnhDGDiI37u5+Umo=; b=c
-        mIin3900ja0o0CtgLBQj5Cib36Z+3F9x1jce9eo1ESy/sMIIckCIitDYZZ+Fwyy7
-        v1gHy2Aw3ygRkw9YJD+9EGkiEx+lwr8JpV9FgSCqQgJbP7vLT8UIggJyHhO+AAyF
-        noBiWxEXUV52IdpSUzaLuFNvcXvVe5q/Yw+MgvHmwq1vyBkRNMIG0XQ3XaLmYYZW
-        b3Ixm40jiWw5EbOYRbvlViCzu4wI1DF25hMmxisoQNfTX3Rb2If7GnPTW41XZ7cF
-        s8+AIRa9ybodH82hUbWoaPjCfpuTFiwpLl1TgSspH6MtvfND64gWe1OjlkCPgcCW
-        1oAku0Ebc/KGiiC21iaXA==
-X-ME-Sender: <xms:xheIZFiASBjgY5T_FcBZQIfLm21S0oV8ogxDgNOinPVPa3xu0DYrTA>
-    <xme:xheIZKDRQ2OVQG8rrApi0o-lHbOpNPPjcepEty5gvdakYAulrq3gz_J1sx0KIwWaP
-    o0L5McJNFNS>
-X-ME-Received: <xmr:xheIZFFZFik2fNGf1anmMQhYBkq6QvsmuhJa1d6AIUGZeOiBAO1MHEl9E9HKNrAKpKtRrMyB3_4oK7LdIAVKaN5IaWlp4FdfLegjVyug8rQWDqenuas>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgeduiedguddvudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefkffggfgfuvfhfhfgjtgfgsehtjeertddtfeejnecuhfhrohhmpefkrghn
-    ucfmvghnthcuoehrrghvvghnsehthhgvmhgrfidrnhgvtheqnecuggftrfgrthhtvghrnh
-    epgfegkedtvddtgeeilefhteffffeukeeggeehvdduleegvdeiieeihfetudehjeelnecu
-    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprhgrvhgvnh
-    esthhhvghmrgifrdhnvght
-X-ME-Proxy: <xmx:xheIZKQ5UmzKP-60hg5BNqniVrO_VLASRzgKop3PzyNEH89vvPjQcQ>
-    <xmx:xheIZCynP5awa7k9st6eGP_1lZ8TeFJxtAP8UmojP-NOODCOEfcu0A>
-    <xmx:xheIZA5Swu7xBajj0x8mBkN04LtGBap39euCg-q2Ms6cidoeHczYtQ>
-    <xmx:yBeIZFIQ19quJM_9_o4ZdNDXIQGOQkNWf2KvJ9YrUPYoEm71M3y4Qw>
-Feedback-ID: i31e841b0:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 13 Jun 2023 03:16:08 -0400 (EDT)
-Message-ID: <39c762dd-37a9-8ef8-9002-c1eb367946d3@themaw.net>
-Date:   Tue, 13 Jun 2023 15:16:04 +0800
+        with ESMTP id S240185AbjFMJrB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 13 Jun 2023 05:47:01 -0400
+Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1387010F9;
+        Tue, 13 Jun 2023 02:46:40 -0700 (PDT)
+Received: from tp8.. (mdns.lwn.net [45.79.72.68])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ms.lwn.net (Postfix) with ESMTPSA id 1FD9A6A2;
+        Tue, 13 Jun 2023 09:46:29 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 1FD9A6A2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+        t=1686649592; bh=SIo3Mnk6Ywbt2c5vULeGDpc0VLDRElbeGEbpt5REm0M=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=MYSICFIDkLND6EiVNDVOqwDb0Ai5y17oxI8ZflQBZdQ7r15NwpBGXY2l0KLRPsiIF
+         /FBCbEZYkD9GJTWlV8XrqufGS8LS0IH75DQ5zmHRv9/2ET3Ak1AqQBpy22sxDT19m+
+         NlpXLApGJNpN7U0MpQ6/xNpWDyECTx9SrLFFuNhY7tREQAigINbXA8ixpMjuguYfVB
+         fxWZzAJMKVJCZ5v2ZbK3SfH+1+8g0XtxJi0BCojf3bM+/9HlQHfnghsyV/2BSKDAIr
+         spPzBGPVjTut9fVPa6/dIdjX6e4EWhkq/3dV7slwft/kz/MR3mhXx0KlV9plCTF0pf
+         K3tct3DON0nLw==
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     linux-doc@vger.kernel.org
+Cc:     linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
+Subject: [PATCH 3/5] arm64: Fix dangling references to Documentation/arm64
+Date:   Tue, 13 Jun 2023 03:46:04 -0600
+Message-Id: <20230613094606.334687-4-corbet@lwn.net>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230613094606.334687-1-corbet@lwn.net>
+References: <20230613094606.334687-1-corbet@lwn.net>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 3/8] autofs: set ctime as well when mtime changes on a
- dir
-To:     Jeff Layton <jlayton@kernel.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Brad Warrum <bwarrum@linux.ibm.com>,
-        Ritu Agarwal <rituagar@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-        Jeremy Kerr <jk@ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Sungjong Seo <sj1557.seo@samsung.com>,
-        Steve French <sfrench@samba.org>,
-        Paulo Alcantara <pc@manguebit.com>,
-        Ronnie Sahlberg <lsahlber@redhat.com>,
-        Shyam Prasad N <sprasad@microsoft.com>,
-        Tom Talpey <tom@talpey.com>,
-        John Johansen <john.johansen@canonical.com>,
-        Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Ruihan Li <lrh2000@pku.edu.cn>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        autofs@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-cifs@vger.kernel.org,
-        samba-technical@lists.samba.org, apparmor@lists.ubuntu.com,
-        linux-security-module@vger.kernel.org
-References: <20230612104524.17058-1-jlayton@kernel.org>
- <20230612104524.17058-4-jlayton@kernel.org>
-Content-Language: en-US
-From:   Ian Kent <raven@themaw.net>
-In-Reply-To: <20230612104524.17058-4-jlayton@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -117,47 +54,96 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 12/6/23 18:45, Jeff Layton wrote:
-> When adding entries to a directory, POSIX generally requires that the
-> ctime also be updated alongside the mtime.
->
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+The arm64 documentation has moved under Documentation/arch/; fix up
+references in the arm64 subtree to match.
 
-Acked-by: Ian Kent <raven@themaw.net>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+---
+ arch/arm64/Kconfig                       | 4 ++--
+ arch/arm64/include/asm/efi.h             | 2 +-
+ arch/arm64/include/asm/image.h           | 2 +-
+ arch/arm64/include/uapi/asm/sigcontext.h | 2 +-
+ arch/arm64/kernel/kexec_image.c          | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
 
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 343e1e1cae10..1746ac824b91 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1585,7 +1585,7 @@ config ARM64_TAGGED_ADDR_ABI
+ 	  When this option is enabled, user applications can opt in to a
+ 	  relaxed ABI via prctl() allowing tagged addresses to be passed
+ 	  to system calls as pointer arguments. For details, see
+-	  Documentation/arm64/tagged-address-abi.rst.
++	  Documentation/arch/arm64/tagged-address-abi.rst.
+ 
+ menuconfig COMPAT
+ 	bool "Kernel support for 32-bit EL0"
+@@ -2047,7 +2047,7 @@ config ARM64_MTE
+ 	  explicitly opt in. The mechanism for the userspace is
+ 	  described in:
+ 
+-	  Documentation/arm64/memory-tagging-extension.rst.
++	  Documentation/arch/arm64/memory-tagging-extension.rst.
+ 
+ endmenu # "ARMv8.5 architectural features"
+ 
+diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
+index f86b157a5da3..ca3f72476c29 100644
+--- a/arch/arm64/include/asm/efi.h
++++ b/arch/arm64/include/asm/efi.h
+@@ -88,7 +88,7 @@ efi_status_t __efi_rt_asm_wrapper(void *, const char *, ...);
+  * guaranteed to cover the kernel Image.
+  *
+  * Since the EFI stub is part of the kernel Image, we can relax the
+- * usual requirements in Documentation/arm64/booting.rst, which still
++ * usual requirements in Documentation/arch/arm64/booting.rst, which still
+  * apply to other bootloaders, and are required for some kernel
+  * configurations.
+  */
+diff --git a/arch/arm64/include/asm/image.h b/arch/arm64/include/asm/image.h
+index c2b13213c720..c09cf942dc92 100644
+--- a/arch/arm64/include/asm/image.h
++++ b/arch/arm64/include/asm/image.h
+@@ -27,7 +27,7 @@
+ 
+ /*
+  * struct arm64_image_header - arm64 kernel image header
+- * See Documentation/arm64/booting.rst for details
++ * See Documentation/arch/arm64/booting.rst for details
+  *
+  * @code0:		Executable code, or
+  *   @mz_header		  alternatively used for part of MZ header
+diff --git a/arch/arm64/include/uapi/asm/sigcontext.h b/arch/arm64/include/uapi/asm/sigcontext.h
+index 656a10ea6c67..f23c1dc3f002 100644
+--- a/arch/arm64/include/uapi/asm/sigcontext.h
++++ b/arch/arm64/include/uapi/asm/sigcontext.h
+@@ -177,7 +177,7 @@ struct zt_context {
+  * vector length beyond its initial architectural limit of 2048 bits
+  * (16 quadwords).
+  *
+- * See linux/Documentation/arm64/sve.rst for a description of the VL/VQ
++ * See linux/Documentation/arch/arm64/sve.rst for a description of the VL/VQ
+  * terminology.
+  */
+ #define SVE_VQ_BYTES		__SVE_VQ_BYTES	/* bytes per quadword */
+diff --git a/arch/arm64/kernel/kexec_image.c b/arch/arm64/kernel/kexec_image.c
+index 5ed6a585f21f..636be6715155 100644
+--- a/arch/arm64/kernel/kexec_image.c
++++ b/arch/arm64/kernel/kexec_image.c
+@@ -48,7 +48,7 @@ static void *image_load(struct kimage *image,
+ 
+ 	/*
+ 	 * We require a kernel with an unambiguous Image header. Per
+-	 * Documentation/arm64/booting.rst, this is the case when image_size
++	 * Documentation/arch/arm64/booting.rst, this is the case when image_size
+ 	 * is non-zero (practically speaking, since v3.17).
+ 	 */
+ 	h = (struct arm64_image_header *)kernel;
+-- 
+2.40.1
 
-> ---
->   fs/autofs/root.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/fs/autofs/root.c b/fs/autofs/root.c
-> index 6baf90b08e0e..93046c9dc461 100644
-> --- a/fs/autofs/root.c
-> +++ b/fs/autofs/root.c
-> @@ -600,7 +600,7 @@ static int autofs_dir_symlink(struct mnt_idmap *idmap,
->   	p_ino = autofs_dentry_ino(dentry->d_parent);
->   	p_ino->count++;
->   
-> -	dir->i_mtime = current_time(dir);
-> +	dir->i_mtime = dir->i_ctime = current_time(dir);
->   
->   	return 0;
->   }
-> @@ -633,7 +633,7 @@ static int autofs_dir_unlink(struct inode *dir, struct dentry *dentry)
->   	d_inode(dentry)->i_size = 0;
->   	clear_nlink(d_inode(dentry));
->   
-> -	dir->i_mtime = current_time(dir);
-> +	dir->i_mtime = dir->i_ctime = current_time(dir);
->   
->   	spin_lock(&sbi->lookup_lock);
->   	__autofs_add_expiring(dentry);
-> @@ -749,7 +749,7 @@ static int autofs_dir_mkdir(struct mnt_idmap *idmap,
->   	p_ino = autofs_dentry_ino(dentry->d_parent);
->   	p_ino->count++;
->   	inc_nlink(dir);
-> -	dir->i_mtime = current_time(dir);
-> +	dir->i_mtime = dir->i_ctime = current_time(dir);
->   
->   	return 0;
->   }
