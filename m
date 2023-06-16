@@ -2,40 +2,40 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF82C73380B
-	for <lists+linux-efi@lfdr.de>; Fri, 16 Jun 2023 20:22:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC1FD733A4A
+	for <lists+linux-efi@lfdr.de>; Fri, 16 Jun 2023 22:02:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232512AbjFPSWN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 16 Jun 2023 14:22:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50488 "EHLO
+        id S231390AbjFPUCU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 16 Jun 2023 16:02:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229521AbjFPSWM (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 16 Jun 2023 14:22:12 -0400
-Received: from sender4-of-o50.zoho.com (sender4-of-o50.zoho.com [136.143.188.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27ABDCD;
-        Fri, 16 Jun 2023 11:22:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1686939697; cv=none; 
+        with ESMTP id S1344428AbjFPUB6 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 16 Jun 2023 16:01:58 -0400
+Received: from sender3-of-o58.zoho.com (sender3-of-o58.zoho.com [136.143.184.58])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B31B1FF9;
+        Fri, 16 Jun 2023 13:01:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1686945673; cv=none; 
         d=zohomail.com; s=zohoarc; 
-        b=ffvSiDruYhLVJJGBcz4tQWNlfs6d5bauH+Ej2CpFSmpsU2USUfadAkTf61XiTUkuV/fwd6T4eN044PQ+mqv+bW8oGdYrENxv9+ZNEy4ZAHVgoGs/St8s/04QrDjVsEqiXT6OBT+HVzn9m0ylLfxZvopPb0cDCH30F5iNu5Ks9Tk=
+        b=Aed/zMdm/a0Ego3xS007SykTRZ1uBPGmfiR7ovHozkZZfpquuf+SBMRqy0CxSSJHOQEfehym8UJ2ullyI82ueLw/Oh4CR256DpM6aq0wCm1WwUcsDwqox2LG0Gllruhumjw/bJxYWWjHOFjFCLWcqqdLw9C3jY7RCO8+wOD+TMo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-        t=1686939697; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=8enOf0amLtvBhNkLA/XPa3bwYhCfY01qhBgRzZsYp4k=; 
-        b=iWf2gamft5I1tQafDe+wzLXebNQzYgTsFca9wWHDHLlU6KpTO1qpzty8hZCqVyulR8PbWnlFxsQR8fJqa+E4Y+zRng39F8z0DpD35pHI66jgZ80xzygN7M8x2Pkuv75gqryEQ5wEkTUJy0yFlI6jKwZWMqj/W73Q/cmZIzFzfuo=
+        t=1686945673; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=d4POYnDYEYq4KXRMXuAAYuuj2EQrVKJPKhALdERs4yU=; 
+        b=NHlsO1vZcYl3mvWCl4Pyt9EfBxVkHNq0gAhH0L1VTcpCDMNuF+WJgaY2UKhzh/8OjM+cnTJzqt80HBwlOv4Y/SzCYMeRcKdGcHHP6CRRaE52mQK7/K115rZlNgfhGMyS7s0QaVcAAHarZFvBrrVXSwyHlE9vs1btcT9/JlvIDis=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
         dkim=pass  header.i=apertussolutions.com;
         spf=pass  smtp.mailfrom=dpsmith@apertussolutions.com;
         dmarc=pass header.from=<dpsmith@apertussolutions.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1686939697;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1686945673;
         s=zoho; d=apertussolutions.com; i=dpsmith@apertussolutions.com;
         h=Message-ID:Date:Date:MIME-Version:To:To:Cc:Cc:References:From:From:Subject:Subject:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-        bh=8enOf0amLtvBhNkLA/XPa3bwYhCfY01qhBgRzZsYp4k=;
-        b=qHykneBd3W/uQb3DdBB6UMoKU5vU2hAHAgTWfpyu0VTnkeKUnav9pYS2Lv2cPAAr
-        bEdoQSblbIGf34Wi35ucomsH+lyGq/exEwlUfLIru8FCcg0jLUx552Uf3IYYQESeI0f
-        rstR4wkctcFvn8BMkk0jayWtDQUD04axkQJGtfZA=
+        bh=d4POYnDYEYq4KXRMXuAAYuuj2EQrVKJPKhALdERs4yU=;
+        b=sZPVrW+DORFJNiWvzg6tCQUEvK3+up5RgGCEt9nURrHbNLlrQiX+pUzJYY4ks5pX
+        ZYV9s/f5b3ylUKE3Iv/VyAP444QANslTUmNgrdHR1il51QR6H3AncpxviBh0b40wTGP
+        WGIy1byLFzuekBVvpFoLZM8TVOS4aUfW7Cfbz+a8=
 Received: from [10.10.1.138] (static-72-81-132-2.bltmmd.fios.verizon.net [72.81.132.2]) by mx.zohomail.com
-        with SMTPS id 1686939696166530.3719741366886; Fri, 16 Jun 2023 11:21:36 -0700 (PDT)
-Message-ID: <81a0a2f3-e7b2-23e8-5c95-91c9a52df18a@apertussolutions.com>
-Date:   Fri, 16 Jun 2023 14:21:33 -0400
+        with SMTPS id 1686945672512692.7552950489951; Fri, 16 Jun 2023 13:01:12 -0700 (PDT)
+Message-ID: <eda6da3a-00fe-21c5-5a3d-3e06d21179f4@apertussolutions.com>
+Date:   Fri, 16 Jun 2023 16:01:09 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
@@ -51,14 +51,15 @@ Cc:     Ross Philipson <ross.philipson@oracle.com>,
         luto@amacapital.net, nivedita@alum.mit.edu,
         kanth.ghatraju@oracle.com, trenchboot-devel@googlegroups.com
 References: <20230504145023.835096-1-ross.philipson@oracle.com>
- <20230504145023.835096-3-ross.philipson@oracle.com>
- <20230512104753.GA14461@srcf.ucam.org>
- <e7dcb85b-25bb-8d5a-3758-e4243bc6ffec@apertussolutions.com>
- <20230616165415.GA28537@srcf.ucam.org>
+ <20230504145023.835096-5-ross.philipson@oracle.com>
+ <20230512105554.GB14461@srcf.ucam.org>
+ <30d5891d-4747-8d67-2667-ff07628740bd@apertussolutions.com>
+ <20230515212206.GA2162@srcf.ucam.org>
+ <df9d1260-41dd-034b-9dc6-14173c6c0d25@apertussolutions.com>
+ <20230516014310.GA5403@srcf.ucam.org>
 From:   "Daniel P. Smith" <dpsmith@apertussolutions.com>
-Subject: Re: [PATCH v6 02/14] Documentation/x86: Secure Launch kernel
- documentation
-In-Reply-To: <20230616165415.GA28537@srcf.ucam.org>
+Subject: Re: [PATCH v6 04/14] x86: Secure Launch Resource Table header file
+In-Reply-To: <20230516014310.GA5403@srcf.ucam.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-ZohoMailClient: External
@@ -73,65 +74,27 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 6/16/23 12:54, Matthew Garrett wrote:
-> On Fri, Jun 16, 2023 at 12:44:27PM -0400, Daniel P. Smith wrote:
+On 5/15/23 21:43, Matthew Garrett wrote:
+> On Mon, May 15, 2023 at 08:41:00PM -0400, Daniel P. Smith wrote:
+>> On 5/15/23 17:22, Matthew Garrett wrote:
+>>> What if I don't use grub, but use something that behaves equivalently?
+>>> Which value should be used here?
 >>
->> On 5/12/23 06:47, Matthew Garrett wrote:
->>> On Thu, May 04, 2023 at 02:50:11PM +0000, Ross Philipson wrote:
->>>> +Secure Launch does not interoperate with KASLR. If possible, the MLE should be
->>>> +built with KASLR disabled::
->>>
->>> Why does Secure Launch not interoperate with KASLR?
->>>
->>> Re: IOMMUs
->>
->> Until the IOMMU driver comes online, memory is protected by the PMRs regions
->> requested by the Preamble (pre-launch code) in accordance with Intel TXT
->> specifications and configured by the ACM. The KASLR randomizer will run
->> before the IOMMU driver is able to come online and ensure frames used by the
->> kernel are protected as well as frames that a driver may registered in a BAR
->> are not blocked.
+>> Generally we would request that the bootloader submit a request to register
+>> for a value to be reserved in the spec. That aside, the intent here is to
+>> allow for the possibility for the DLE handler to be independent from the
+>> bootloader, but this does not have to be this way. If a non-open entity
+>> decides to produce their own implementation, they can freely use a
+>> unallocated value at their own risk that it could be allocated to another
+>> bootloader in the future. Though in this scenario it likely would not matter
+>> as the non-open DLE handler would only be present when the non-open
+>> bootloader was present.
 > 
-> This seems unfortunate. Presumably we're not able to modify the PMRs at
-> this point? This also seems like a potential issue for IOMMU config in
-> general - the presumption is that the firmware should be configuring the
-> IOMMU in such a way that DMA-capable devices can't attack the firmware
-> while we're in the boot environment, and if KASLR is leaving a window
-> there then it seems like we'd need to fix that?
-
-While unfortunate, it is a bit of the nature of the problem KASLR is 
-attempting to address. If you know in advance where kernel pages are 
-going to live and the frames that will be used for DMA, then have you 
-not defeated the purpose of the randomization? As for the firmware use 
-of the IOMMU, I am fairly certain those tables will get invalidated by 
-the ACM when it is setting up the PMRs.
-
->>>> +It is recommended that no other command line options should be set to override
->>>> +the defaults above.
->>>
->>> What happens if they are? Does doing so change the security posture of
->>> the system? If so, will the measurements be different in a way that
->>> demonstrates the system is in an insecure state?
->>>
->>
->> In an early version of the patch series this was enforced when turning on
->> Secure Launch, but concerns were raised over this approach and was asked to
->> allow the user to be able to shoot themselves in the foot. Overriding these
->> values could render either an insecure state and/or an unstable system.
+> Is the expectation that the DLE will always be shipped with the
+> bootloader? I think I'm not entirely clear on what's consuming this and
+> why.
 > 
-> If we're in an insecure state, is that something that would show up in
-> the form of different measurements?
 
-Yes, you would get a different measurement for the commandline. If you 
-are thinking in terms of attestation, I would expect that the 
-attestation measurement db would have a record for an acceptable 
-commandline and would determine the system to be in an unknown state if 
-it did not match.
-
-While the idea could be explored to create measurements based on 
-configurations of kernel subsystems, this would likely entail 
-instrumentation in those subsystems to assert a measurement to their 
-configuration. Maybe IMA could cover something like this? It would 
-definitely enable the ability to make deeper assessments about the state 
-of a system, but I think this is out of the scope of what Secure Launch 
-is attempting to do.
+No, in fact, an early idea proposed by a pair of us in the TrenchBoot 
+community was to have it live either as a Runtime Service that was 
+loaded by a UEFI app or in the coreboot UEFI payload.
