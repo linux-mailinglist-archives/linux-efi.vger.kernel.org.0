@@ -2,73 +2,232 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D526739AD8
-	for <lists+linux-efi@lfdr.de>; Thu, 22 Jun 2023 10:54:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67628739E24
+	for <lists+linux-efi@lfdr.de>; Thu, 22 Jun 2023 12:14:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229881AbjFVIx6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 22 Jun 2023 04:53:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37794 "EHLO
+        id S230013AbjFVKOy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 22 Jun 2023 06:14:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231321AbjFVIxF (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 22 Jun 2023 04:53:05 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0EDA210A
-        for <linux-efi@vger.kernel.org>; Thu, 22 Jun 2023 01:53:03 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1b516978829so53897675ad.1
-        for <linux-efi@vger.kernel.org>; Thu, 22 Jun 2023 01:53:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1687423983; x=1690015983;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=liuthB6FVlJk3VZZwK7QDBE7dTzWXLlSNT3A/53JsYo=;
-        b=hdLTNgmfUDlss+P4w085KQ7k0O7v872Qg7Cn0d6e6Ki1cMORUSj2TVgAFl7zVj4aQS
-         GDdIrAfDtraZX9vWlp+SMagNbJ7psVGsdp4kHBIw8Ie1cMdU6Obts67bKslvcN2dbHI7
-         VjQz6r8I+CI3413S5nS3oq/aWhQb2eBaihaKJXRs1Q//4wSq8yfBc2MvHVsUhHm/yb2A
-         iWveiOmB6hXJR7xdPkBVDsDqnDz42fuLzs8o5OsTCnGUwMlACHIfwK1K0GUQIL7FOHiS
-         oXxzt+p2/WpMcB4jSfaGpHxVklaLBGw2QSnJQBGHYtdWT8M0izbiqzPyrNykQqBeoVKa
-         Cy6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687423983; x=1690015983;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=liuthB6FVlJk3VZZwK7QDBE7dTzWXLlSNT3A/53JsYo=;
-        b=PLY0N0vXATvuTLqQcnn3jV4S9QeOHUiAIco5vcwGXQWsV0H5KvdJuDDGtZAbdQR7i5
-         BSLhe3OW9HPZ2xq4XydInauz5xReUHUPphpM79K62gJhm3Z/2rCHO23MuIsnyWcyv7YQ
-         Ycuy1G0/IqkpREp30EdXJUS139G6ayEXBcqRVCvz3hA8TW1Ge7lFD4IXAbYpDAX+iMH/
-         jOP/0/2wKzjay6il0M7bnFgTqa/JKy9soFMIeMdXyIebW9MKHozy9fyXFukrhC8w0Obg
-         heOOpGqKAgqX0YsSZ7c3hcw7qfA9D8Q6w/P7yCB3YEUEWLyrt1+38kwcl0VzPt6BAw8E
-         KGeQ==
-X-Gm-Message-State: AC+VfDztySU5UDSMJTA4I0ENZXiL/xA5elqILBfVm7YmiESCeWpitVm0
-        ATEGbLYM0isStRD3rj/qZXMphw==
-X-Google-Smtp-Source: ACHHUZ4tUbop3jil87fbhuyep6GDmdUxsTLvachCXXgEIYu3z6jYZBBrFotbtYuzT3Bhw4WH/4kRGQ==
-X-Received: by 2002:a17:902:e843:b0:1ac:7405:d3ba with SMTP id t3-20020a170902e84300b001ac7405d3bamr22554283plg.40.1687423983333;
-        Thu, 22 Jun 2023 01:53:03 -0700 (PDT)
-Received: from localhost.localdomain (fp9875a45d.knge128.ap.nuro.jp. [152.117.164.93])
-        by smtp.gmail.com with ESMTPSA id z6-20020a170903018600b001b02bd00c61sm4820154plg.237.2023.06.22.01.53.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jun 2023 01:53:02 -0700 (PDT)
-From:   Masahisa Kojima <masahisa.kojima@linaro.org>
-To:     Ard Biesheuvel <ardb@kernel.org>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        linux-kernel@vger.kernel.org, op-tee@lists.trustedfirmware.org
-Cc:     Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Masahisa Kojima <masahisa.kojima@linaro.org>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Jeremy Kerr <jk@ozlabs.org>, linux-efi@vger.kernel.org
-Subject: [PATCH v6 4/4] efivarfs: automatically update super block flag
-Date:   Thu, 22 Jun 2023 17:51:11 +0900
-Message-Id: <20230622085112.1521-5-masahisa.kojima@linaro.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230622085112.1521-1-masahisa.kojima@linaro.org>
-References: <20230622085112.1521-1-masahisa.kojima@linaro.org>
+        with ESMTP id S230009AbjFVKOw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 22 Jun 2023 06:14:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73FA2DD;
+        Thu, 22 Jun 2023 03:14:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F2EBF617C7;
+        Thu, 22 Jun 2023 10:14:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2888C433C9;
+        Thu, 22 Jun 2023 10:14:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687428888;
+        bh=7+cabg86v1cYpPv8vDJOW5RfunjhlSEWXfJLwIkmtqs=;
+        h=Subject:From:To:Date:In-Reply-To:References:From;
+        b=bash4qEoN8ysoF4HTnLUBoIb4R/VvEf+WW/D9VIwZ7IkIbfsRZHAuo5DrHgU3mESQ
+         YV3L6vJlJ5RLoTi5/71VkN5rQAydrP7yy38zcSGGfwasNdQxjqfQEDJO2KhRfaS72P
+         L3pOkZCMNStmacczTh8Bxts4KstAt3iUVQoAzfNq5O0qEkTp/AQ/ZxnvFiOtuM8Rrh
+         hGFigQvIDdzAyY8j4H2gTF58blmQ8XCJxFBrtJ8bp21DHjiO/HINP7f4QOOgCaaZnm
+         wPOh/3PFD9MITyv48Pm3mcErp57QuFgfhsUJhmJROqlUtadgwIZDzlw31/avwVXFpE
+         VwFt0TPP5toFA==
+Message-ID: <ad4bfb630128709588164db6f1fd2ef39c31d2a5.camel@kernel.org>
+Subject: Re: [PATCH 01/79] fs: add ctime accessors infrastructure
+From:   Jeff Layton <jlayton@kernel.org>
+To:     Damien Le Moal <dlemoal@kernel.org>, Jeremy Kerr <jk@ozlabs.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Arve =?ISO-8859-1?Q?Hj=F8nnev=E5g?= <arve@android.com>,
+        Todd Kjos <tkjos@android.com>,
+        Martijn Coenen <maco@android.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Christian Brauner <brauner@kernel.org>,
+        Carlos Llamas <cmllamas@google.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>,
+        Brad Warrum <bwarrum@linux.ibm.com>,
+        Ritu Agarwal <rituagar@linux.ibm.com>,
+        Eric Van Hensbergen <ericvh@kernel.org>,
+        Latchesar Ionkov <lucho@ionkov.net>,
+        Dominique Martinet <asmadeus@codewreck.org>,
+        Christian Schoenebeck <linux_oss@crudebyte.com>,
+        David Sterba <dsterba@suse.com>,
+        David Howells <dhowells@redhat.com>,
+        Marc Dionne <marc.dionne@auristor.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Ian Kent <raven@themaw.net>,
+        Luis de Bethencourt <luisbg@kernel.org>,
+        Salah Triki <salah.triki@gmail.com>,
+        "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Kees Cook <keescook@chromium.org>, Chris Mason <clm@fb.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        Xiubo Li <xiubli@redhat.com>,
+        Ilya Dryomov <idryomov@gmail.com>,
+        Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
+        Joel Becker <jlbec@evilplan.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Nicolas Pitre <nico@fluxnic.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Tyler Hicks <code@tyhicks.com>,
+        Ard Biesheuvel <ardb@kernel.org>, Gao Xiang <xiang@kernel.org>,
+        Chao Yu <chao@kernel.org>, Yue Hu <huyue2@coolpad.com>,
+        Jeffle Xu <jefflexu@linux.alibaba.com>,
+        Namjae Jeon <linkinjeon@kernel.org>,
+        Sungjong Seo <sj1557.seo@samsung.com>,
+        Jan Kara <jack@suse.com>, Theodore Ts'o <tytso@mit.edu>,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        Bob Peterson <rpeterso@redhat.com>,
+        Andreas Gruenbacher <agruenba@redhat.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Muchun Song <muchun.song@linux.dev>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Dave Kleikamp <shaggy@kernel.org>, Tejun Heo <tj@kernel.org>,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <anna@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        Anton Altaparmakov <anton@tuxera.com>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        Mark Fasheh <mark@fasheh.com>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        Bob Copeland <me@bobcopeland.com>,
+        Mike Marshall <hubcap@omnibond.com>,
+        Martin Brandenburg <martin@omnibond.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Iurii Zaikin <yzaikin@google.com>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Anders Larsen <al@alarsen.net>,
+        Steve French <sfrench@samba.org>,
+        Paulo Alcantara <pc@manguebit.com>,
+        Ronnie Sahlberg <lsahlber@redhat.com>,
+        Shyam Prasad N <sprasad@microsoft.com>,
+        Tom Talpey <tom@talpey.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Phillip Lougher <phillip@squashfs.org.uk>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Evgeniy Dushistov <dushistov@mail.ru>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Naohiro Aota <naohiro.aota@wdc.com>,
+        Johannes Thumshirn <jth@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Song Liu <song@kernel.org>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@kernel.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Hugh Dickins <hughd@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        John Johansen <john.johansen@canonical.com>,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>,
+        Juergen Gross <jgross@suse.com>,
+        Ruihan Li <lrh2000@pku.edu.cn>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Udipto Goswami <quic_ugoswami@quicinc.com>,
+        Linyu Yuan <quic_linyyuan@quicinc.com>,
+        John Keeping <john@keeping.me.uk>,
+        Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+        Dan Carpenter <error27@gmail.com>,
+        Yuta Hayama <hayama@lineo.co.jp>,
+        Jozef Martiniak <jomajm@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Sandeep Dhavale <dhavale@google.com>,
+        Dave Chinner <dchinner@redhat.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        ZhangPeng <zhangpeng362@huawei.com>,
+        Viacheslav Dubeyko <slava@dubeyko.com>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Aditya Garg <gargaditya08@live.com>,
+        Erez Zadok <ezk@cs.stonybrook.edu>,
+        Yifei Liu <yifeliu@cs.stonybrook.edu>,
+        Yu Zhe <yuzhe@nfschina.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Oleg Kanatov <okanatov@gmail.com>,
+        "Dr. David Alan Gilbert" <linux@treblig.org>,
+        Jiangshan Yi <yijiangshan@kylinos.cn>,
+        xu xin <cgel.zte@gmail.com>, Stefan Roesch <shr@devkernel.io>,
+        Zhihao Cheng <chengzhihao1@huawei.com>,
+        "Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+        Alexey Dobriyan <adobriyan@gmail.com>,
+        Minghao Chi <chi.minghao@zte.com.cn>,
+        Seth Forshee <sforshee@digitalocean.com>,
+        Zeng Jingxiang <linuszeng@tencent.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Zhang Yi <yi.zhang@huawei.com>, Tom Rix <trix@redhat.com>,
+        "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
+        Chen Zhongjin <chenzhongjin@huawei.com>,
+        Zhengchao Shao <shaozhengchao@huawei.com>,
+        Rik van Riel <riel@surriel.com>,
+        Jingyu Wang <jingyuwang_vip@163.com>,
+        Hangyu Hua <hbh25y@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-usb@vger.kernel.org,
+        v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+        linux-afs@lists.infradead.org, autofs@vger.kernel.org,
+        linux-mm@kvack.org, linux-btrfs@vger.kernel.org,
+        ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu,
+        ecryptfs@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net, cluster-devel@redhat.com,
+        linux-um@lists.infradead.org, linux-mtd@lists.infradead.org,
+        jfs-discussion@lists.sourceforge.net, linux-nfs@vger.kernel.org,
+        linux-nilfs@vger.kernel.org, linux-ntfs-dev@lists.sourceforge.net,
+        ntfs3@lists.linux.dev, ocfs2-devel@oss.oracle.com,
+        linux-karma-devel@lists.sourceforge.net, devel@lists.orangefs.org,
+        linux-unionfs@vger.kernel.org, linux-hardening@vger.kernel.org,
+        reiserfs-devel@vger.kernel.org, linux-cifs@vger.kernel.org,
+        samba-technical@lists.samba.org,
+        linux-trace-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
+        bpf@vger.kernel.org, netdev@vger.kernel.org,
+        apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
+        selinux@vger.kernel.org
+Date:   Thu, 22 Jun 2023 06:14:30 -0400
+In-Reply-To: <99b3c749-23d9-6f09-fb75-6a84f3d1b066@kernel.org>
+References: <20230621144507.55591-1-jlayton@kernel.org>
+         <20230621144507.55591-2-jlayton@kernel.org>
+         <99b3c749-23d9-6f09-fb75-6a84f3d1b066@kernel.org>
+Content-Type: text/plain; charset="ISO-8859-15"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -77,163 +236,47 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-efivar operation is updated when the tee_stmm_efi module is probed.
-tee_stmm_efi module supports SetVariable runtime service,
-but user needs to manually remount the efivarfs as RW to enable
-the write access if the previous efivar operation does not support
-SerVariable and efivarfs is mounted as read-only.
+On Thu, 2023-06-22 at 09:46 +0900, Damien Le Moal wrote:
+> On 6/21/23 23:45, Jeff Layton wrote:
+> > struct timespec64 has unused bits in the tv_nsec field that can be used
+> > for other purposes. In future patches, we're going to change how the
+> > inode->i_ctime is accessed in certain inodes in order to make use of
+> > them. In order to do that safely though, we'll need to eradicate raw
+> > accesses of the inode->i_ctime field from the kernel.
+> >=20
+> > Add new accessor functions for the ctime that we can use to replace the=
+m.
+> >=20
+> > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+>=20
+> [...]
+>=20
+> > +/**
+> > + * inode_ctime_peek - fetch the current ctime from the inode
+> > + * @inode: inode from which to fetch ctime
+> > + *
+> > + * Grab the current ctime from the inode and return it.
+> > + */
+> > +static inline struct timespec64 inode_ctime_peek(const struct inode *i=
+node)
+>=20
+> To be consistent with inode_ctime_set(), why not call this one inode_ctim=
+e_get()
 
-This commit notifies the update of efivar operation to
-efivarfs subsystem, then drops SB_RDONLY flag if the efivar
-operation supports SetVariable.
+In later patches fetching the ctime for presentation may have side
+effects on certain filesystems. Using "peek" here is a hint that we want
+to avoid those side effects in these calls.
 
-Signed-off-by: Masahisa Kojima <masahisa.kojima@linaro.org>
----
- drivers/firmware/efi/efi.c  |  6 ++++++
- drivers/firmware/efi/vars.c |  8 ++++++++
- fs/efivarfs/super.c         | 33 +++++++++++++++++++++++++++++++++
- include/linux/efi.h         |  8 ++++++++
- 4 files changed, 55 insertions(+)
+> ? Also, inode_set_ctime() & inode_get_ctime() may be a little more natura=
+l. But
+> no strong opinion about that though.
+>=20
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index d108cf03e19d..00494fcf16ba 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -32,6 +32,7 @@
- #include <linux/ucs2_string.h>
- #include <linux/memblock.h>
- #include <linux/security.h>
-+#include <linux/notifier.h>
- 
- #include <asm/early_ioremap.h>
- 
-@@ -184,6 +185,9 @@ static const struct attribute_group efi_subsys_attr_group = {
- 	.is_visible = efi_attr_is_visible,
- };
- 
-+struct blocking_notifier_head efivar_ops_nh;
-+EXPORT_SYMBOL_GPL(efivar_ops_nh);
-+
- static struct efivars generic_efivars;
- static struct efivar_operations generic_ops;
- 
-@@ -442,6 +446,8 @@ static int __init efisubsys_init(void)
- 		platform_device_register_simple("efivars", 0, NULL, 0);
- 	}
- 
-+	BLOCKING_INIT_NOTIFIER_HEAD(&efivar_ops_nh);
-+
- 	error = sysfs_create_group(efi_kobj, &efi_subsys_attr_group);
- 	if (error) {
- 		pr_err("efi: Sysfs attribute export failed with error %d.\n",
-diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
-index e9dc7116daf1..f654e6f6af87 100644
---- a/drivers/firmware/efi/vars.c
-+++ b/drivers/firmware/efi/vars.c
-@@ -63,6 +63,7 @@ int efivars_register(struct efivars *efivars,
- 		     const struct efivar_operations *ops)
- {
- 	int rv;
-+	int event;
- 
- 	if (down_interruptible(&efivars_lock))
- 		return -EINTR;
-@@ -77,6 +78,13 @@ int efivars_register(struct efivars *efivars,
- 
- 	__efivars = efivars;
- 
-+	if (efivar_supports_writes())
-+		event = EFIVAR_OPS_RDWR;
-+	else
-+		event = EFIVAR_OPS_RDONLY;
-+
-+	blocking_notifier_call_chain(&efivar_ops_nh, event, NULL);
-+
- 	pr_info("Registered efivars operations\n");
- 	rv = 0;
- out:
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index e028fafa04f3..0f6e4d223aea 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -14,11 +14,36 @@
- #include <linux/slab.h>
- #include <linux/magic.h>
- #include <linux/statfs.h>
-+#include <linux/notifier.h>
- 
- #include "internal.h"
- 
- LIST_HEAD(efivarfs_list);
- 
-+struct efivarfs_info {
-+	struct super_block *sb;
-+	struct notifier_block nb;
-+};
-+
-+static struct efivarfs_info info;
-+
-+static int efivarfs_ops_notifier(struct notifier_block *nb, unsigned long event,
-+				 void *data)
-+{
-+	switch (event) {
-+	case EFIVAR_OPS_RDONLY:
-+		info.sb->s_flags |= SB_RDONLY;
-+		break;
-+	case EFIVAR_OPS_RDWR:
-+		info.sb->s_flags &= ~SB_RDONLY;
-+		break;
-+	default:
-+		return NOTIFY_DONE;
-+	}
-+
-+	return NOTIFY_OK;
-+}
-+
- static void efivarfs_evict_inode(struct inode *inode)
- {
- 	clear_inode(inode);
-@@ -255,6 +280,12 @@ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 	if (!root)
- 		return -ENOMEM;
- 
-+	info.sb = sb;
-+	info.nb.notifier_call = efivarfs_ops_notifier;
-+	err = blocking_notifier_chain_register(&efivar_ops_nh, &info.nb);
-+	if (err)
-+		return err;
-+
- 	INIT_LIST_HEAD(&efivarfs_list);
- 
- 	err = efivar_init(efivarfs_callback, (void *)sb, true, &efivarfs_list);
-@@ -281,6 +312,8 @@ static int efivarfs_init_fs_context(struct fs_context *fc)
- 
- static void efivarfs_kill_sb(struct super_block *sb)
- {
-+	blocking_notifier_chain_unregister(&efivar_ops_nh, &info.nb);
-+	info.sb = NULL;
- 	kill_litter_super(sb);
- 
- 	if (!efivar_is_available())
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 657f7e203374..2533e4f2547f 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -1350,6 +1350,14 @@ bool efi_config_table_is_usable(const efi_guid_t *guid, unsigned long table)
- 	return xen_efi_config_table_is_usable(guid, table);
- }
- 
-+/*
-+ * efivar ops event type
-+ */
-+#define EFIVAR_OPS_RDONLY 0
-+#define EFIVAR_OPS_RDWR 1
-+
-+extern struct blocking_notifier_head efivar_ops_nh;
-+
- void efivars_generic_ops_register(void);
- void efivars_generic_ops_unregister(void);
- 
--- 
-2.30.2
+I like the consistency of the inode_ctime_* prefix. It makes it simpler
+to find these calls when grepping, etc.
 
+That said, my opinions on naming are pretty loosely-held, so if the
+consensus is that the names should as you suggest, I'll go along with
+it.
+--=20
+Jeff Layton <jlayton@kernel.org>
