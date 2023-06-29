@@ -2,72 +2,73 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66D63742852
-	for <lists+linux-efi@lfdr.de>; Thu, 29 Jun 2023 16:29:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEEB27428B4
+	for <lists+linux-efi@lfdr.de>; Thu, 29 Jun 2023 16:43:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232338AbjF2O3v (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 29 Jun 2023 10:29:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60654 "EHLO
+        id S232236AbjF2OnS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 29 Jun 2023 10:43:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231823AbjF2O3o (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 29 Jun 2023 10:29:44 -0400
+        with ESMTP id S232132AbjF2OnH (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 29 Jun 2023 10:43:07 -0400
 Received: from wnew4-smtp.messagingengine.com (wnew4-smtp.messagingengine.com [64.147.123.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 817B03596;
-        Thu, 29 Jun 2023 07:29:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 293EA2D4A;
+        Thu, 29 Jun 2023 07:43:06 -0700 (PDT)
 Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailnew.west.internal (Postfix) with ESMTP id 9B6A02B000A4;
-        Thu, 29 Jun 2023 10:29:38 -0400 (EDT)
+        by mailnew.west.internal (Postfix) with ESMTP id 2C0362B000BB;
+        Thu, 29 Jun 2023 10:43:04 -0400 (EDT)
 Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Thu, 29 Jun 2023 10:29:40 -0400
+  by compute6.internal (MEProxy); Thu, 29 Jun 2023 10:43:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
         :cc:content-type:content-type:date:date:from:from:in-reply-to
         :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm1; t=1688048978; x=1688056178; bh=nG
-        nJsyAJyrvJkwnkSe1+RvyafOFNiNiqyHMsPO1u6Xk=; b=2EcylAr+2IQK5P7b6p
-        /vjLbGIHf8i+8rzMt8chAuFq+c5T2nXA6rNsTNzOdtksQ6e0sAw9/eRHtOar+WHl
-        hAsaWivSScicHRc+IOwIVIkXzMKCHS/A9Ffztx8GB0RJptxk+yUbu3OXBw/f3KTQ
-        oPUWqOApNqupZeOxA1+KamV7Y1R9j5wdLjjMttKjfSUmTUPTzRkr/PbCf7BFCJf4
-        mDKkwIwEguDSpZs+nb5nQ5ZSuOg9qrQBVpn/A0WtJOxqM4NA4/h3SXbcRbNONYzA
-        I5y/p+xe7tbFRUhSHoYPvHtNe3/fi0gTCERIIZJ9/fLQnFzpbVcymrZbyXkaYBBK
-        ODIg==
+        :subject:subject:to:to; s=fm1; t=1688049783; x=1688056983; bh=tH
+        SCuJbmuJlT+unyX4wdwm35F06LE8SCy+Og6X/m9DI=; b=FV9nO/j/Xdm5cnG6UB
+        sO9u8qjWkG4zOqKUhXnhJ2RYfN1MZ3Kurqn85lEsJl7vkP5a/wdBWaFdfq4uSulg
+        eD/TXf6t4GqPVAoNus5HnjtbA1vX8VrBrjgri2vE0OiP2BSb5Sz/Pa2C0OcILLNa
+        uvFS7KDmA3Z+PSTaIcpOvOnZyAi2yVT1FzCqp7iRvA0LJt1+wRraHFLOR3jih5Cs
+        jATcgblkM7OGPteVBvXmW3paY0tjSC/B5Xw7fxmwX1f73RjswI9pT+zjkQRu+TqM
+        Zsrmd0IqOKzH2xm5FLjlXxLg/SYtjqX8WBuItuEotXdBlqMlSIKnBw9uSc0kSFc4
+        WB+Q==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         messagingengine.com; h=cc:cc:content-type:content-type:date:date
         :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
         :message-id:mime-version:references:reply-to:sender:subject
         :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1688048978; x=1688056178; bh=nGnJsyAJyrvJk
-        wnkSe1+RvyafOFNiNiqyHMsPO1u6Xk=; b=qcZu2F7J3I03fwrcSPg8dsLuhFIrS
-        ucycm657dud2E6uYWskFVqcIfgSe/dBt8fFB6+XQTy/fANN6a1BuztN45oTSanNT
-        XxVMQih8LW415rbF6tRZPCXSpwn+ekET+YIRIH1036pYAwUd1Fb1ijQRv3N+j2GN
-        AxU6byz7HLauD8dLGeOrAT3BJrYb8oPjklQK9FEAS/EPJOPUSZb+pzy/zrsduOA2
-        IVQQiY6wMEEkf+oC5juPiNw0sDEEHj+C7FUzhU16m7yof5koi7/AUsQnx7vi7hIE
-        YvfD9R33aPOCag5rTXjki4uvznKy226FqetZdturkKSXU4rXB99QQtsyg==
-X-ME-Sender: <xms:UZWdZPQFtBYsPdlXlUSdNixOakdgSk0rQ0sJEW2WMk3NI57JBkFXZA>
-    <xme:UZWdZAzd5cSzTnb4-3WR64AVGeqojUQ8_r8RCWCNfeGwQuSKyph38WHIvHfKtGQ9D
-    iuBERCaWpz0v8yUOfI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtdeggdejjecutefuodetggdotefrodftvf
+        :x-sasl-enc; s=fm2; t=1688049783; x=1688056983; bh=tHSCuJbmuJlT+
+        unyX4wdwm35F06LE8SCy+Og6X/m9DI=; b=IEg6bOdqZ2fgoUmwXVc8pb/uyJ2CC
+        MOuLn/CZcijB/QkegFpO4zpbp2YYMXm7i7Fu54Datj1E0vkDR3DKgAUxo6z+GWk3
+        vXwluBuok2nikCjYscmpRjVF9aIs6Z3Xj7fdUsirXf+m9AdUwVoMNKOO0MYZ2R8w
+        hgGHbzL0Ar9zadbigZQorDDjOWkOiah/gEi8RJBLof77Nwpm9iJ+r3Tp7gQ7XU3u
+        cozoUBEjOyE8ENgbEKdyPutCHcAWlVtfgQdZBYVqqbmbh2K14vwZE6PMJ4Kx6p2+
+        /+OkyxEaQgOqymqPNrwdxRUuj9S7LqeMaozoifwtEIa8O5rZRMCvumLJw==
+X-ME-Sender: <xms:d5idZJS-d-u9H6tAL4MVNUn3dLrNSbL4IruMnHIE3CpKi0-H693WSQ>
+    <xme:d5idZCw5mye3ObeRK8d2o0AvifT1I5cjzGyLezIYCpTQRj35g9ypte7NqWzs7GoN6
+    8Sm_DjOg0zV1YdZSVw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtdeggdektdcutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
     uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
     fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
     ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
-    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
-    hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:UZWdZE0-6IC7fBNDeGBvpnGm2Zr-dhEGRLTF93khPbJEJ5EkVp6Jfw>
-    <xmx:UZWdZPAguwQt8yn2qe__L5Yzs-USfTNjeEYazXWLDNvlZmzvvwKQYg>
-    <xmx:UZWdZIhqyNx_om12J_mIvSUHmK-q2dXchnc5mILhG3AL8P9Et1GMBA>
-    <xmx:UpWdZB0EDG72hkx-t3BFD4YV93ZdrsN0Q1V64IlAbDxvxvOYULKpsP-j2j8>
+    gvrhhnpeevveeggeffjeeuieduheefhfehgfdujeetjeelueejjeffueeiudefveffhffh
+    ffenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:d5idZO03ZSZrR92W5cJwJ7vDJs6WpKIlFRy9Xhuyzbi0CT-ygNCtuw>
+    <xmx:d5idZBAqt6Jponm39fmOqP5dZQFGbDIwwMJa-8NcLHlCdZdcXxv0nw>
+    <xmx:d5idZCgNy7rtA7-MCt1uXVV-VTEogehRKv7jDtzZjAfQWu979t5spw>
+    <xmx:d5idZD1uiRApbuVHCCuiXmm0gt_m0UjKra-phrbnLG5pdPkdVgK1VG-MnKk>
 Feedback-ID: i56a14606:Fastmail
 Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id C13A1B60089; Thu, 29 Jun 2023 10:29:37 -0400 (EDT)
+        id 44DBDB60086; Thu, 29 Jun 2023 10:43:03 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 User-Agent: Cyrus-JMAP/3.9.0-alpha0-499-gf27bbf33e2-fm-20230619.001-gf27bbf33
 Mime-Version: 1.0
-Message-Id: <0783a7ec-b779-4033-9877-f6eacc65c575@app.fastmail.com>
-In-Reply-To: <4d711508-c299-49f2-8691-e75d68f2485e@app.fastmail.com>
+Message-Id: <ce4ddce0-ceea-426c-b348-d22468d7c402@app.fastmail.com>
+In-Reply-To: <f9185435-74bb-a325-8fe6-3beb51a66e0a@suse.de>
 References: <20230629121952.10559-1-tzimmermann@suse.de>
  <4d711508-c299-49f2-8691-e75d68f2485e@app.fastmail.com>
-Date:   Thu, 29 Jun 2023 16:29:17 +0200
+ <f9185435-74bb-a325-8fe6-3beb51a66e0a@suse.de>
+Date:   Thu, 29 Jun 2023 16:42:42 +0200
 From:   "Arnd Bergmann" <arnd@arndb.de>
 To:     "Thomas Zimmermann" <tzimmermann@suse.de>,
         "Helge Deller" <deller@gmx.de>, "Daniel Vetter" <daniel@ffwll.ch>,
@@ -95,59 +96,44 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Jun 29, 2023, at 15:31, Arnd Bergmann wrote:
-> On Thu, Jun 29, 2023, at 13:45, Thomas Zimmermann wrote:
->>
->> Future directions: with the patchset in place, it will become possible
->> to provide screen_info and edid_info only if there are users. Some
->> architectures do this by testing for CONFIG_VT, CONFIG_DUMMY_CONSOLE,
->> etc. A more uniform approach would be nice. We should also attempt
->> to minimize access to the global screen_info as much as possible. To
->> do so, some drivers, such as efifb and vesafb, would require an update.
->> The firmware's EDID data could possibly made available outside of fbdev.
->> For example, the simpledrm and ofdrm drivers could provide such data
->> to userspace compositors.
+On Thu, Jun 29, 2023, at 16:15, Thomas Zimmermann wrote:
+> Am 29.06.23 um 15:31 schrieb Arnd Bergmann:
+>> On Thu, Jun 29, 2023, at 13:45, Thomas Zimmermann wrote:
+>>> Future directions: with the patchset in place, it will become possible
+>>> to provide screen_info and edid_info only if there are users. Some
+>>> architectures do this by testing for CONFIG_VT, CONFIG_DUMMY_CONSOLE,
+>>> etc. A more uniform approach would be nice. We should also attempt
+>>> to minimize access to the global screen_info as much as possible. To
+>>> do so, some drivers, such as efifb and vesafb, would require an update.
+>>> The firmware's EDID data could possibly made available outside of fbdev.
+>>> For example, the simpledrm and ofdrm drivers could provide such data
+>>> to userspace compositors.
+>> 
+>> I suspect that most architectures that provide a screen_info only
+>> have this in order to compile the framebuffer drivers, and provide
+>> hardcoded data that does not even reflect any real hardware.
 >
-> I suspect that most architectures that provide a screen_info only
-> have this in order to compile the framebuffer drivers, and provide
-> hardcoded data that does not even reflect any real hardware.
+> That's quite possible. Only x86's bootparam and EFI code sets 
+> screen_info from external data. The rest is hardcoded. A number of 
+> architectures protect screen_info with CONFIG_VT, CONFIG_DUMMY_CONSOLE, 
+> etc. In a later patchset, I wanted to change this such that these users 
+> of screen_info would enable the feature via select in their Kconfig.
 >
-> We can probably reduce the number of architectures that do this
-> a lot, especially if we get EFI out of the picture.
+> Do you know the reason for this branch in dummycon:
+>
+> https://elixir.bootlin.com/linux/v6.4/source/drivers/video/console/dummycon.c#L21
+>
+> What is special about arm that dummycon uses the screeninfo?
 
-I tried to have another look at who uses what, and here are
-some observations:
+I can only guess myself, but I see that the values are only ever
+set from the old ATAGS data, and not from DT on any of the
+modern ones, and my interpretation is that this is meant to
+match whatever the vga console was set to on the three
+platforms that support vgacon.
+ 
+I see this was added in linux-2.1.111, just before the
+corresponding sparc specific hack was removed, but I don't have
+patch descriptions from that era. Russell might remember, or know
+if that is actually still needed.
 
-- EFIFB and hyperv are the only ones that are relevant on modern
-  systmes, and they are only used on systems using EFI, so they
-  could use a separate data structure that is defined as part of
-  drivers/firmware/efi. This would likely mean we don't have to
-  define a separate screen_info for arm64, loongarch, ia64 and
-  riscv, and could separate the legacy vgacon/vesafb stuff on
-  arm32 from the efi side.
-
-- FB_SIS can likely be marked 'depends on X86' like FB_INTEL,
-  it seems to depend on x86 BOOT_VESA_SUPPORT.
-
-- FB_VGA16 is currently support on powerpc and enabled on
-  one defconfig (pasemi), which I'm fairly sure is a mistake,
-  so this could be made x86 specific as well.
-
-- VGA_CONSOLE has a complicated Kconfig dependency list that
-  lists platforms without VGA support but I think this is better
-  expressed with a positive list. It looks like csky, hexagon,
-  nios2 and xtensa should be excluded here and not provide
-  screen_info.
-
-- arm and mips only need to provide screen_info on machines
-  with VGA_CONSOLE. On Arm we have a dependency on
-  footbridge/integrator/netwinder, while on mips the
-  dependency can be added to the platforms that fill
-  the info (mips, malta, sibyte, sni).
-
-- DUMMY_CONSOLE only uses screen_info on arm, and this should
-  likely be limited to the three obsolete machines that
-  support VGACON. Almost all Arm machines use DT these days
-  and won't ever fill the screen info dynamically.
-
-      Arnd
+   Arnd
