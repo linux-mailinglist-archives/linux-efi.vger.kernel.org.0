@@ -2,42 +2,46 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 991A974905E
-	for <lists+linux-efi@lfdr.de>; Wed,  5 Jul 2023 23:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9397E749165
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Jul 2023 01:13:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232542AbjGEV6O (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 5 Jul 2023 17:58:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47810 "EHLO
+        id S232178AbjGEXNW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 5 Jul 2023 19:13:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232760AbjGEV6H (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 5 Jul 2023 17:58:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AEE0199E;
-        Wed,  5 Jul 2023 14:58:06 -0700 (PDT)
+        with ESMTP id S230383AbjGEXNU (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 5 Jul 2023 19:13:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68C94E57;
+        Wed,  5 Jul 2023 16:13:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F327161778;
-        Wed,  5 Jul 2023 21:58:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE02C433C7;
-        Wed,  5 Jul 2023 21:57:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D317361840;
+        Wed,  5 Jul 2023 23:13:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9B7C433C7;
+        Wed,  5 Jul 2023 23:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688594285;
-        bh=JlErKO6ytzrETfJF10RJ07fFyXoxaUt5+ApLH28Eksk=;
-        h=Subject:From:To:Date:In-Reply-To:References:From;
-        b=ox9UCUOCrMoArAN2UWINeG7QvaXvn/rW6VX3bNg/iJYSvDmftw/A4NpK1NYTdX1NF
-         gVgMoqKe4Wy+YcaUy/Dyaq00MJKT04z3nDqfKuQM4SFZsRbASIDWrt/F1bfZ/Sk9IA
-         IlCUdLT6kxy2jL8SF3nViHjnNHXzs55XV4F3VEYsgVxzqxUcCiE9JSR2Z8IfDFpjTE
-         aAs5GOvVMsx8Eye0YwI4OGGuVtit0IDRpyx+/wLT78cg1mMMLjGSPd8pWmdQxt1+Az
-         UpvwRSPwHQIIqvl4d9BIKKNlv96fZDtb/zFnJIHpMrXV8Xk+YsvNrTXbO+lqW0MMpc
-         fXzU6mvU9YhKA==
-Message-ID: <a4e6cfec345487fc9ac8ab814a817c79a61b123a.camel@kernel.org>
-Subject: Re: [PATCH v2 00/89] fs: new accessors for inode->i_ctime
-From:   Jeff Layton <jlayton@kernel.org>
-To:     jk@ozlabs.org, arnd@arndb.de, mpe@ellerman.id.au,
-        npiggin@gmail.com, christophe.leroy@csgroup.eu, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com,
+        s=k20201202; t=1688598798;
+        bh=dbVAcwdmAronKN2/exh+7rTyLVmJxnKKBZZH/rfELec=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=di4vANHGk01g6BG5D+kP8/xay3uXUiIBLtBnwrNkmTzBqnQe5y4Yy3r3sKprZdrZU
+         hLYRxm6m/yexaa2MvMrDAkxslOrCPsdA+8QIJT4XlTSOO9bW5v7MHkxYlPIViPfKeF
+         fRn/+0zT6OSrjtw22jXVBH/ovhdvc9vkFCNM1EBs2VjepM0ULrtRhvag5CPbr192w0
+         cRcfbru+GTcRyXj7Wbzq75c7s6EGwzFcQQiKkr0Wkg0zmTaRA5F4rovPj6XXBdkkmN
+         kDb1CQGmDyQbWx+r141kxp0SAX3Yzem7fUjViBscjxeGvouGbK76BC9mhrZWRfN3n1
+         Ec6Ry2aMc3ZpQ==
+Message-ID: <96225b66-61df-ce60-4581-d34f345210a1@kernel.org>
+Date:   Thu, 6 Jul 2023 08:12:54 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 07/92] fs: add ctime accessors infrastructure
+Content-Language: en-US
+To:     Jeff Layton <jlayton@kernel.org>, jk@ozlabs.org, arnd@arndb.de,
+        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
         borntraeger@linux.ibm.com, svens@linux.ibm.com,
         gregkh@linuxfoundation.org, arve@android.com, tkjos@android.com,
         maco@android.com, joel@joelfernandes.org, brauner@kernel.org,
@@ -73,15 +77,15 @@ To:     jk@ozlabs.org, arnd@arndb.de, mpe@ellerman.id.au,
         pc@manguebit.com, lsahlber@redhat.com, sprasad@microsoft.com,
         senozhatsky@chromium.org, phillip@squashfs.org.uk,
         rostedt@goodmis.org, mhiramat@kernel.org, dushistov@mail.ru,
-        hdegoede@redhat.com, djwong@kernel.org, dlemoal@kernel.org,
-        naohiro.aota@wdc.com, jth@kernel.org, ast@kernel.org,
-        daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev,
-        song@kernel.org, yhs@fb.com, john.fastabend@gmail.com,
-        kpsingh@kernel.org, sdf@google.com, haoluo@google.com,
-        jolsa@kernel.org, hughd@google.com, akpm@linux-foundation.org,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, john.johansen@canonical.com,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        hdegoede@redhat.com, djwong@kernel.org, naohiro.aota@wdc.com,
+        jth@kernel.org, ast@kernel.org, daniel@iogearbox.net,
+        andrii@kernel.org, martin.lau@linux.dev, song@kernel.org,
+        yhs@fb.com, john.fastabend@gmail.com, kpsingh@kernel.org,
+        sdf@google.com, haoluo@google.com, jolsa@kernel.org,
+        hughd@google.com, akpm@linux-foundation.org, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        john.johansen@canonical.com, paul@paul-moore.com,
+        jmorris@namei.org, serge@hallyn.com,
         stephen.smalley.work@gmail.com, eparis@parisplace.org,
         jgross@suse.com, stern@rowland.harvard.edu, lrh2000@pku.edu.cn,
         sebastian.reichel@collabora.com, wsa+renesas@sang-engineering.com,
@@ -125,67 +129,42 @@ To:     jk@ozlabs.org, arnd@arndb.de, mpe@ellerman.id.au,
         bpf@vger.kernel.org, netdev@vger.kernel.org,
         apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
         selinux@vger.kernel.org
-Date:   Wed, 05 Jul 2023 17:57:46 -0400
-In-Reply-To: <20230705185812.579118-1-jlayton@kernel.org>
+Cc:     Jan Kara <jack@suse.cz>
 References: <20230705185812.579118-1-jlayton@kernel.org>
-Content-Type: text/plain; charset="ISO-8859-15"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
-MIME-Version: 1.0
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+ <20230705185812.579118-2-jlayton@kernel.org>
+From:   Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20230705185812.579118-2-jlayton@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 2023-07-05 at 14:58 -0400, Jeff Layton wrote:
-> v2:
-> - prepend patches to add missing ctime updates
-> - add simple_rename_timestamp helper function
-> - rename ctime accessor functions as inode_get_ctime/inode_set_ctime_*
-> - drop individual inode_ctime_set_{sec,nsec} helpers
->=20
-> I've been working on a patchset to change how the inode->i_ctime is
-> accessed in order to give us conditional, high-res timestamps for the
-> ctime and mtime. struct timespec64 has unused bits in it that we can use
-> to implement this. In order to do that however, we need to wrap all
-> accesses of inode->i_ctime to ensure that bits used as flags are
-> appropriately handled.
->=20
-> The patchset starts with reposts of some missing ctime updates that I
-> spotted in the tree. It then adds a new helper function for updating the
-> timestamp after a successful rename, and new ctime accessor
-> infrastructure.
->=20
-> The bulk of the patchset is individual conversions of different
-> subsysteme to use the new infrastructure. Finally, the patchset renames
-> the i_ctime field to __i_ctime to help ensure that I didn't miss
-> anything.
->=20
-> This should apply cleanly to linux-next as of this morning.
->=20
-> Most of this conversion was done via 5 different coccinelle scripts, run
-> in succession, with a large swath of by-hand conversions to clean up the
-> remainder.
->=20
+On 7/6/23 03:58, Jeff Layton wrote:
+> struct timespec64 has unused bits in the tv_nsec field that can be used
+> for other purposes. In future patches, we're going to change how the
+> inode->i_ctime is accessed in certain inodes in order to make use of
+> them. In order to do that safely though, we'll need to eradicate raw
+> accesses of the inode->i_ctime field from the kernel.
+> 
+> Add new accessor functions for the ctime that we use to replace them.
+> 
+> Reviewed-by: Jan Kara <jack@suse.cz>
+> Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
-A couple of other things I should note:
+Looks OK to me.
 
-If you sent me an Acked-by or Reviewed-by in the previous set, then I
-tried to keep it on the patch here, since the respun patches are mostly
-just renaming stuff from v1. Let me know if I've missed any.
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 
-I've also pushed the pile to my tree as this tag:
+-- 
+Damien Le Moal
+Western Digital Research
 
-    https://git.kernel.org/pub/scm/linux/kernel/git/jlayton/linux.git/tag/?=
-h=3Dctime.20230705
-
-In case that's easier to work with.
-
-Cheers,
---=20
-Jeff Layton <jlayton@kernel.org>
