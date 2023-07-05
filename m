@@ -2,249 +2,200 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1890A747F59
-	for <lists+linux-efi@lfdr.de>; Wed,  5 Jul 2023 10:19:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10C7B748AAB
+	for <lists+linux-efi@lfdr.de>; Wed,  5 Jul 2023 19:35:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232562AbjGEIT0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 5 Jul 2023 04:19:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43992 "EHLO
+        id S231211AbjGERfe (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 5 Jul 2023 13:35:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232442AbjGEITI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 5 Jul 2023 04:19:08 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 281931FCA;
-        Wed,  5 Jul 2023 01:18:21 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        with ESMTP id S232394AbjGERfc (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 5 Jul 2023 13:35:32 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB5EB1BDC;
+        Wed,  5 Jul 2023 10:34:59 -0700 (PDT)
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 210151F889;
-        Wed,  5 Jul 2023 08:18:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1688545100; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=W4UNbanusOFxqm7hkNbMAuWfI8njzbZ+1xH+95ErApk=;
-        b=f1m05wOooggnusYApEllJA4DHXKKKu62i1rkKSNolG6RSiDRMKyS6d2VnsKHmZ8xzEctgP
-        2uFR9SUawf/L7AX58ys1K0ADYPqUxnoHpg1XHgDcVjhPphPABiv3BNAKFSe9wj6pbNGgEY
-        29iqc7Q/KqHfbr7HBz8cCkvPeICaCO8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1688545100;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=W4UNbanusOFxqm7hkNbMAuWfI8njzbZ+1xH+95ErApk=;
-        b=gtb/O4Zal0aHIFkUGIjHzs3Xs2V7RNCILA5sbQaaw7ZE4XgZbEe5tDa00OtkRXs35FPUwp
-        QCeM4ulI7ec97LAw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1E2251EC059E;
+        Wed,  5 Jul 2023 19:34:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1688578461;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=MEGOnUUJklrhitbV4ruvcKvARnIEQPaD/80tSn75pgY=;
+        b=DfAWS0S8ha7gru/HpM2t1Jhwl9N1jSdZb6qL4M8Poc7Viil3gU0jDY/y4tia9rSI3KGD/7
+        riBZWamT+cCQom+CFOIal5mxycuotfBzcdlnRr81kP8U3QGYXoSUmRZ2aUUQYhm4yWkxFs
+        6VGqFtzoFsoRa1VN6Lbb1aat0GJw/M8=
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+        header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id O2FxcyoDZwkQ; Wed,  5 Jul 2023 17:34:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+        t=1688578456; bh=MEGOnUUJklrhitbV4ruvcKvARnIEQPaD/80tSn75pgY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=IC9K9a/L4pfqPiVykF+jA8SdbsCF3hdLrmsA+YP0Ewc94yDOk+O+JWhOijaXDiYY6
+         aT6HVMh8DlOVWXNneGj7PeSxseBFc8t04yE4T629V5ksuEVhksc1twpneKhNpGva6u
+         MBRNmlh+vqnH0lTELQmjfdNbMO+eyXr6Ck7zrJztIpS+BhbYmsjEdUycg3Fm1UB9ZN
+         dcm/9xvTlPF43QDL85v6NDrp/brCYopWXGLtnT+hjD2kLAIlpP/xL0W7a97PmdcPyD
+         dP50292ZFcdkUfngK/8F6cgfYdmsp16noYN81GRK7oVXKkfTLwl70e+GEPWI5PcuRh
+         59GpzilrVN8Qe/CQDuloXstmx9yij9ZJXy/nXD4Jnvcl4jBfQWAZtRYe+wymirWSnT
+         eAMpfKCzFpD2G0mb3vIK9l5H5WUYAYypCrOz2Ox0oXKRXaHmRZnxw6KHl10JR1YVzn
+         buhfzky46506lOt2mrCAHQ9r1xpZovpUxZ2ttYkG9aqCs5jO44rdCK5CfQBv1ze9Nc
+         vCbXsOh5kH4Mal6k9lr8ThYItcO06lFTf6cuYl+L6MSreIwMftWa6AT7MJy8gqPcrn
+         eb+GyIlQg2lGB6krdtNm9uiPwWFY61neTH2OfZYwSgWGpLdQZQlMvl1V7HN9nHvtnT
+         BJudhAcMzqcGAiGg4PnuN24Q=
+Received: from zn.tnic (pd9530d32.dip0.t-ipconnect.de [217.83.13.50])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7965C13460;
-        Wed,  5 Jul 2023 08:18:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id +47LHEsnpWRgSAAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Wed, 05 Jul 2023 08:18:19 +0000
-Message-ID: <150c0fa2-bff2-0644-d6e5-c4dab7f79048@suse.de>
-Date:   Wed, 5 Jul 2023 10:18:18 +0200
+        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A7A9040E0191;
+        Wed,  5 Jul 2023 17:34:04 +0000 (UTC)
+Date:   Wed, 5 Jul 2023 19:33:59 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Tao Liu <ltao@redhat.com>
+Cc:     tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
+        x86@kernel.org, hpa@zytor.com, ardb@kernel.org,
+        linux-kernel@vger.kernel.org, bhe@redhat.com, dyoung@redhat.com,
+        kexec@lists.infradead.org, linux-efi@vger.kernel.org
+Subject: Re: [PATCH v2] x86/kexec: Add EFI config table identity mapping for
+ kexec kernel
+Message-ID: <20230705173359.GDZKWphyFbNE8id6Jm@fat_crate.local>
+References: <20230601072043.24439-1-ltao@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 07/12] arch/x86: Declare edid_info in <asm/screen_info.h>
-Content-Language: en-US
-To:     Arnd Bergmann <arnd@arndb.de>, Helge Deller <deller@gmx.de>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dave Airlie <airlied@gmail.com>
-Cc:     linux-hyperv@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-mips@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        linux-hexagon@vger.kernel.org, linux-staging@lists.linux.dev,
-        "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org,
-        Juerg Haefliger <juerg.haefliger@canonical.com>,
-        linux-alpha@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org
-References: <20230629121952.10559-1-tzimmermann@suse.de>
- <20230629121952.10559-8-tzimmermann@suse.de>
- <80e3a583-805e-4e8f-a67b-ebe2e4b9a7e5@app.fastmail.com>
- <d3de124c-6aa8-e930-e238-7bd6dd7929a6@suse.de>
- <0dbbdfc4-0e91-4be4-9ca0-d8ba6f18453d@app.fastmail.com>
- <ef7b3899-7d18-8018-47fa-aac0efaa61f4@suse.de>
- <dd5aa01e-afad-48d2-bf4c-4a58b74f1644@app.fastmail.com>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <dd5aa01e-afad-48d2-bf4c-4a58b74f1644@app.fastmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------2k3MbKSxf2z9hgV165j2f9MP"
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230601072043.24439-1-ltao@redhat.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------2k3MbKSxf2z9hgV165j2f9MP
-Content-Type: multipart/mixed; boundary="------------9nOsvmrIChEQyu9JM4jWfbbm";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Arnd Bergmann <arnd@arndb.de>, Helge Deller <deller@gmx.de>,
- Daniel Vetter <daniel@ffwll.ch>, Dave Airlie <airlied@gmail.com>
-Cc: linux-hyperv@vger.kernel.org, linux-efi@vger.kernel.org,
- linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-fbdev@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- linux-riscv@lists.infradead.org, Ard Biesheuvel <ardb@kernel.org>,
- Linux-Arch <linux-arch@vger.kernel.org>, linux-hexagon@vger.kernel.org,
- linux-staging@lists.linux.dev,
- "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Sami Tolvanen <samitolvanen@google.com>,
- Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>,
- loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel@lists.infradead.org, x86@kernel.org,
- linux-kernel@vger.kernel.org, Juerg Haefliger
- <juerg.haefliger@canonical.com>, linux-alpha@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
-Message-ID: <150c0fa2-bff2-0644-d6e5-c4dab7f79048@suse.de>
-Subject: Re: [PATCH 07/12] arch/x86: Declare edid_info in <asm/screen_info.h>
-References: <20230629121952.10559-1-tzimmermann@suse.de>
- <20230629121952.10559-8-tzimmermann@suse.de>
- <80e3a583-805e-4e8f-a67b-ebe2e4b9a7e5@app.fastmail.com>
- <d3de124c-6aa8-e930-e238-7bd6dd7929a6@suse.de>
- <0dbbdfc4-0e91-4be4-9ca0-d8ba6f18453d@app.fastmail.com>
- <ef7b3899-7d18-8018-47fa-aac0efaa61f4@suse.de>
- <dd5aa01e-afad-48d2-bf4c-4a58b74f1644@app.fastmail.com>
-In-Reply-To: <dd5aa01e-afad-48d2-bf4c-4a58b74f1644@app.fastmail.com>
+On Thu, Jun 01, 2023 at 03:20:44PM +0800, Tao Liu wrote:
+> A kexec kernel bootup hang is observed on Intel Atom cpu due to unmapped
 
---------------9nOsvmrIChEQyu9JM4jWfbbm
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+s/cpu/CPU/g
 
-SGkgQXJuZA0KDQpBbSAzMC4wNi4yMyB1bSAxMzo1MyBzY2hyaWViIEFybmQgQmVyZ21hbm46
-DQo+IE9uIEZyaSwgSnVuIDMwLCAyMDIzLCBhdCAwOTo0NiwgVGhvbWFzIFppbW1lcm1hbm4g
-d3JvdGU6DQo+PiBBbSAyOS4wNi4yMyB1bSAxNToyMSBzY2hyaWViIEFybmQgQmVyZ21hbm46
-DQo+Pj4gT24gVGh1LCBKdW4gMjksIDIwMjMsIGF0IDE1OjAxLCBUaG9tYXMgWmltbWVybWFu
-biB3cm90ZToNCj4+Pj4gQW0gMjkuMDYuMjMgdW0gMTQ6MzUgc2NocmllYiBBcm5kIEJlcmdt
-YW5uOg0KPj4+Pj4gT24gVGh1LCBKdW4gMjksIDIwMjMsIGF0IDEzOjQ1LCBUaG9tYXMgWmlt
-bWVybWFubiB3cm90ZToNCj4+DQo+Pj4+DQo+Pj4+IEZJUk1XQVJFX0VESUQgaXMgYSB1c2Vy
-LXNlbGVjdGFibGUgZmVhdHVyZSwgd2hpbGUgQVJDSF9IQVNfRURJRF9JTkZPDQo+Pj4+IGFu
-bm91bmNlcyBhbiBhcmNoaXRlY3R1cmUgZmVhdHVyZS4gVGhleSBkbyBkaWZmZXJlbnQgdGhp
-bmdzLg0KPj4+DQo+Pj4gSSBzdGlsbCBoYXZlIHRyb3VibGUgc2VlaW5nIHRoZSBkaWZmZXJl
-bmNlLg0KPj4NCj4+IFRoZSBpZGVhIGhlcmUgaXMgdGhhdCBBUkNIX0hBU18gc2lnbmFscyB0
-aGUgYXJjaGl0ZWN0dXJlJ3Mgc3VwcG9ydCBmb3INCj4+IHRoZSBmZWF0dXJlLiAgRHJpdmVy
-cyBzZXQgJ2RlcGVuZHMgb24nIGluIHRoZWlyIEtjb25maWcuDQo+Pg0KPj4gQW5vdGhlciBL
-Y29uZmlnIHRva2VuLCBWSURFT19TQ1JFRU5fSU5GTyBvciBGSVJNV0FSRV9FRElELCB3b3Vs
-ZCB0aGVuDQo+PiBhY3R1YWxseSBlbmFibGUgdGhlIGZlYXR1cmUuICBEcml2ZXJzIHNlbGVj
-dCBWSURFT19TQ1JFRU5fSU5GTyBvcg0KPj4gRklSTVdBUkVfRURJRCBhbmQgdGhlIGFyY2hp
-dGVjdHVyZXMgY29udGFpbnMgY29kZSBsaWtlDQo+IA0KPiBGYWlyIGVub3VnaC4gSW4gdGhh
-dCBjYXNlLCBJIGd1ZXNzIEZJUk1XQVJFX0VESUQgd2lsbCBqdXN0IGRlcGVuZCBvbg0KPiBB
-UkNIX0hBU19FRElEX0lORk8sIG9yIHBvc3NpYmx5ICJkZXBlbmRzIG9uIEZJUk1XQVJFX0VE
-SUQgfHwgRUZJIg0KPiBhZnRlciBpdCBzdGFydHMgY2FsbGluZyBpbnRvIGFuIEVGSSBzcGVj
-aWZpYyBmdW5jdGlvbiwgcmlnaHQ/DQo+IA0KPj4gI2lmZGVmIFZJREVPX1NDUkVFTl9JTkZP
-DQo+PiBzdHJ1Y3Qgc2NyZWVuX2luZm8gc2NyZWVuX2luZm8gPSB7DQo+PiAJLyogc2V0IHZh
-bHVlcyBoZXJlICovDQo+PiB9DQo+PiAjZW5kaWYNCj4+DQo+PiBUaGlzIGFsbG93cyB1cyB0
-byBkaXNhYmxlIGNvZGUgdGhhdCByZXF1aXJlcyBzY3JlZW5faW5mby9lZGlkX2luZm8sIGJ1
-dA0KPj4gYWxzbyBkaXNhYmxlIHNjcmVlbl9pbmZvL2VkaWRfaW5mbyB1bmxlc3Mgc3VjaCBj
-b2RlIGhhcyBiZWVuIGVuYWJsZWQgaW4NCj4+IHRoZSBrZXJuZWwgY29uZmlnLg0KPj4NCj4+
-IFNvbWUgYXJjaGl0ZWN0dXJlcyBjdXJyZW50bHkgbWltaWMgdGhpcyBieSBndWFyZGluZyBz
-Y3JlZW5faW5mbyB3aXRoDQo+PiBpZmRlZiBDT05GSUdfVlQgb3Igc2ltaWxhci4gSSdkIGxp
-a2UgdG8gbWFrZSB0aGlzIG1vcmUgZmxleGlibGUuIFRoZQ0KPj4gY29zdCBvZiBhIGZldyBt
-b3JlIGludGVybmFsIEtjb25maWcgdG9rZW5zIHNlZW1zIG5lZ2xpZ2libGUuDQo+IA0KPiBJ
-IGRlZmluaXRlbHkgZ2V0IGl0IGZvciB0aGUgc2NyZWVuX2luZm8sIHdoaWNoIG5lZWRzIHRo
-ZSBjb21wbGV4aXR5Lg0KPiBGb3IgQVJDSEFSQ0hfSEFTX0VESURfSU5GTyBJIHdvdWxkIGhv
-cGUgdGhhdCBpdCdzIG5ldmVyIHNlbGVjdGVkIGJ5DQo+IGFueXRoaW5nIG90aGVyIHRoYW4g
-eDg2LCBzbyBJIHdvdWxkIHN0aWxsIGdvIHdpdGgganVzdCBhIGRlcGVuZGVuY3kNCj4gb24g
-eDg2IGZvciBzaW1wbGljaXR5LCBidXQgSSBkb24ndCBtaW5kIGhhdmluZyB0aGUgZXh0cmEg
-c3ltYm9sIGlmIHRoYXQNCj4ga2VlcHMgaXQgbW9yZSBjb25zaXN0ZW50IHdpdGggaG93IHRo
-ZSBzY3JlZW5faW5mbyBpcyBoYW5kbGVkLg0KDQpXZWxsLCBJJ2QgbGlrZSB0byBhZGQgZWRp
-ZF9pbmZvIHRvIHBsYXRmb3JtcyB3aXRoIEVGSS4gV2hhdCB3b3VsZCBiZSANCmFybS9hcm02
-NCBhbmQgbG9vbmdhcmNoLCBJIGd1ZXNzLiBTZWUgYmVsb3cgZm9yIHRoZSBmdXR1cmUgcGxh
-bnMuDQoNCj4gDQo+Pj4gSSBzdXBwb3NlIHlvdSBjb3VsZCB1c2UgRklSTVdBUkVfRURJRCBv
-biBFRkkgb3IgT0Ygc3lzdGVtcyB3aXRob3V0DQo+Pj4gdGhlIG5lZWQgZm9yIGEgZ2xvYmFs
-IGVkaWRfaW5mbyBzdHJ1Y3R1cmUsIGJ1dCB0aGF0IHdvdWxkIG5vdA0KPj4+IHNoYXJlIGFu
-eSBjb2RlIHdpdGggdGhlIGN1cnJlbnQgZmJfZmlybXdhcmVfZWRpZCgpIGZ1bmN0aW9uLg0K
-Pj4NCj4+IFRoZSBjdXJyZW50IGNvZGUgaXMgYnVpbGQgb24gdG9wIG9mIHNjcmVlbl9pbmZv
-IGFuZCBlZGlkX2luZm8uIEknZA0KPj4gcHJlZmVyYWJseSBub3QgcmVwbGFjZSB0aGF0LCBp
-ZiBwb3NzaWJsZS4NCj4gDQo+IE9uZSB3YXkgSSBjb3VsZCBpbWFnaW5lIHRoaXMgbG9va2lu
-ZyBpbiB0aGUgZW5kIHdvdWxkIGJlDQo+IHNvbWV0aGluZyBsaWtlDQo+IA0KPiBzdHJ1Y3Qg
-c2NyZWVuX2luZm8gKmZiX3NjcmVlbl9pbmZvKHN0cnVjdCBkZXZpY2UgKmRldikNCj4gew0K
-PiAgICAgICAgc3RydWN0IHNjcmVlbl9pbmZvICpzaSA9IE5VTEw7DQo+IA0KPiAgICAgICAg
-aWYgKElTX0VOQUJMRUQoQ09ORklHX0VGSSkpDQo+ICAgICAgICAgICAgICBzaSA9IGVmaV9n
-ZXRfc2NyZWVuX2luZm8oZGV2KTsNCj4gDQo+ICAgICAgICBpZiAoSVNfRU5BQkxFRChDT05G
-SUdfQVJDSF9IQVNfU0NSRUVOX0lORk8pICYmICFzaSkNCj4gICAgICAgICAgICAgIHNpID0g
-c2NyZWVuX2luZm87DQo+IA0KPiAgICAgICAgcmV0dXJuIHNpOw0KPiB9DQo+IA0KPiBjb3Jy
-ZXNwb25kaW5nIHRvIGZiX2Zpcm13YXJlX2VkaWQoKS4gV2l0aCB0aGlzLCBhbnkgZHJpdmVy
-DQo+IHRoYXQgd2FudHMgdG8gYWNjZXNzIHNjcmVlbl9pbmZvIHdvdWxkIGNhbGwgdGhpcyBm
-dW5jdGlvbg0KPiBpbnN0ZWFkIG9mIHVzaW5nIHRoZSBnbG9iYWwgcG9pbnRlciwgcGx1cyBl
-aXRoZXIgTlVMTCBwb2ludGVyDQo+IGNoZWNrIG9yIGEgQ09ORklHX0FSQ0hfSEFTX1NDUkVF
-Tl9JTkZPIGRlcGVuZGVuY3kuDQo+IA0KPiBUaGlzIHdheSB3ZSBjb3VsZCBjb21wbGV0ZWx5
-IGVsaW1pbmF0ZSB0aGUgZ2xvYmFsIHNjcmVlbl9pbmZvDQo+IG9uIGFybTY0LCByaXNjdiwg
-YW5kIGxvb25nYXJjaCBidXQgc3RpbGwgdXNlIHRoZSBlZmkgYW5kDQo+IGh5cGVydiBmcmFt
-ZWJ1ZmZlci9kcm0gZHJpdmVycy4NCg0KSWYgcG9zc2libGUsIEknZCBsaWtlIHRvIHJlbW92
-ZSBnbG9iYWwgc2NyZWVuX2luZm8gYW5kIGVkaWRfaW5mbyANCmVudGlyZWx5IGZyb20gZmJk
-ZXYgYW5kIHRoZSB2YXJpb3VzIGNvbnNvbGVzLg0KDQpXZSBjdXJyZW50bHkgdXNlIHNjcmVl
-bl9pbmZvIHRvIHNldCB1cCB0aGUgZ2VuZXJpYyBmcmFtZWJ1ZmZlciBkZXZpY2UgaW4gDQpk
-cml2ZXJzL2Zpcm13YXJlL3N5c2ZiLmMuIEknZCBsaWtlIHRvIHVzZSBlZGlkX2luZm8gaGVy
-ZSBhcyB3ZWxsLCBzbyANCnRoYXQgdGhlIGdlbmVyaWMgZ3JhcGhpY3MgZHJpdmVycyBjYW4g
-Z2V0IEVESUQgaW5mb3JtYXRpb24uDQoNCkZvciB0aGUgZmV3IGZiZGV2IGRyaXZlcnMgYW5k
-IGNvbnNvbGVzIHRoYXQgcmVxdWlyZSB0aGUgZ2xvYmFsIA0Kc2NyZWVuX2luZm8vZWRpZF9p
-bmZvLCBJJ2QgcmF0aGVyIHByb3ZpZGUgbG9va3VwIGZ1bmN0aW9ucyBpbiBzeXNmYiANCihl
-LmcuLCBzeXNmYl9nZXRfc2NyZWVuX2luZm8oKSwgc3lzZmJfZ2V0X2VkaWRfaW5mbygpKS4g
-VGhlIGdsb2JhbCANCnNjcmVlbl9pbmZvL2VkaWRfaW5mbyBzdGF0ZSB3b3VsZCB0aGVuIGJl
-Y29tZSBhbiBpbnRlcm5hbCBhcnRpZmFjdCBvZiANCnRoZSBzeXNmYiBjb2RlLg0KDQpIb3Bl
-ZnVsbHkgdGhhdCBleHBsYWlucyBzb21lIG9mIHRoZSBkZWNpc2lvbnMgbWFkZSBpbiB0aGlz
-IHBhdGNoc2V0Lg0KDQpCZXN0IHJlZ2FyZHMNClRob21hcw0KDQo+IA0KPiAgICAgIEFybmQN
-Cg0KLS0gDQpUaG9tYXMgWmltbWVybWFubg0KR3JhcGhpY3MgRHJpdmVyIERldmVsb3Blcg0K
-U1VTRSBTb2Z0d2FyZSBTb2x1dGlvbnMgR2VybWFueSBHbWJIDQpGcmFua2Vuc3RyYXNzZSAx
-NDYsIDkwNDYxIE51ZXJuYmVyZywgR2VybWFueQ0KR0Y6IEl2byBUb3RldiwgQW5kcmV3IE15
-ZXJzLCBBbmRyZXcgTWNEb25hbGQsIEJvdWRpZW4gTW9lcm1hbg0KSFJCIDM2ODA5IChBRyBO
-dWVybmJlcmcpDQo=
+> EFI config table.
+> 
+> Currently EFI system table is identity-mapped for the kexec kernel, but EFI
+> config table is not mapped explicitly:
 
---------------9nOsvmrIChEQyu9JM4jWfbbm--
+Why does the EFI config table *need* to be mapped explicitly?
 
---------------2k3MbKSxf2z9hgV165j2f9MP
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+>     commit 6bbeb276b71f ("x86/kexec: Add the EFI system tables and ACPI
+>                           tables to the ident map")
+> 
+> Later in the following 2 commits, EFI config table will be accessed when
+> enabling sev at kernel startup.
 
------BEGIN PGP SIGNATURE-----
+What does SEV have to do with an Intel problem?
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSlJ0oFAwAAAAAACgkQlh/E3EQov+Ar
-GBAAo4esabhlv1pv1eUJEjgRW+ns5YBTZSxnTNM1zBWU8t6X1q991ybNmrQv/epD+zuQeRoa97MN
-l1HgNdpESzfLQk9/SjPewRDC6ITHHLR2uBCxbrmdLnsMYYJ43lUFSFsusi1FLyQJV9RvIl7BlRYj
-S679/kx2vxzLto8BoxEU+AB1/zdCvICRrITF/2cflnGB0LPhKVU1QmpMEsvOCO2nnlkGZxWl1pIr
-NP0h5xgG+8DFgyWonyPJ93PMYja7LMpoPjTd9K2ErHriOEmFk++HFJTjIswsQz73XpaJBUqaJjjj
-i1WduG2dQFEWI0fOtDA/O0fV4AcZgGOpv6bk2G7/E1rRZtqPdq5DpNU/ep2+GesFjOy3f0voheUI
-I42NvvEBLh4PcIn2ScZTH8+O0KnIgRTgDgHH8J2rMcYqCIWJ1vi/gIK/DWc91nOyurlQ82ChZtcg
-Ps4ryHUs4XcXxARdFg+dbGtAEJX9w4WK+EpdwxXqCttR5AXouPgCC4ndmaJP9xOpOTBEz/llBrrd
-dR43H4TayV0zDNaWhCANKXA5yl14eFj0D7eursCdXweahKOEuAAfYKMxDLjXIV9aOy435JsF/3OG
-FeYNx3StYvNqRpP9PV0q3WENW7amHTXQ9yElDbo6j22jThA7DlmTln/RUQnSkN4zcrwG/w4mP1Yl
-ZK4=
-=mbrs
------END PGP SIGNATURE-----
+> This may result in a page fault due to EFI
+> config table's unmapped address. Since the page fault occurs at an early
+> stage, it is unrecoverable and kernel hangs.
+> 
+>     commit ec1c66af3a30 ("x86/compressed/64: Detect/setup SEV/SME features
+>                           earlier during boot")
+>     commit c01fce9cef84 ("x86/compressed: Add SEV-SNP feature
+>                           detection/setup")
+> 
+> In addition, the issue doesn't appear on all systems, because the kexec
+> kernel uses Page Size Extension (PSE) for identity mapping. In most cases,
+> EFI config table can end up to be mapped into due to 1 GB page size.
+> However if nogbpages is set, or cpu doesn't support pdpe1gb feature
+> (e.g Intel Atom x6425RE cpu), EFI config table may not be mapped into
+> due to 2 MB page size, thus a page fault hang is more likely to happen.
 
---------------2k3MbKSxf2z9hgV165j2f9MP--
+This doesn't answer my question above.
+
+> This patch will make sure the EFI config table is always mapped.
+
+Avoid having "This patch" or "This commit" in the commit message. It is
+tautologically useless.
+
+Also, do
+
+$ git grep 'This patch' Documentation/process
+
+for more details.
+
+
+> 
+> Signed-off-by: Tao Liu <ltao@redhat.com>
+> ---
+> Changes in v2:
+> - Rephrase the change log based on Baoquan's suggestion.
+> - Rename map_efi_sys_cfg_tab() to map_efi_tables().
+> - Link to v1: https://lore.kernel.org/kexec/20230525094914.23420-1-ltao@redhat.com/
+> ---
+>  arch/x86/kernel/machine_kexec_64.c | 35 ++++++++++++++++++++++++++----
+>  1 file changed, 31 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+> index 1a3e2c05a8a5..664aefa6e896 100644
+> --- a/arch/x86/kernel/machine_kexec_64.c
+> +++ b/arch/x86/kernel/machine_kexec_64.c
+> @@ -28,6 +28,7 @@
+>  #include <asm/setup.h>
+>  #include <asm/set_memory.h>
+>  #include <asm/cpu.h>
+> +#include <asm/efi.h>
+>  
+>  #ifdef CONFIG_ACPI
+>  /*
+> @@ -86,10 +87,12 @@ const struct kexec_file_ops * const kexec_file_loaders[] = {
+>  #endif
+>  
+>  static int
+> -map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
+> +map_efi_tables(struct x86_mapping_info *info, pgd_t *level4p)
+>  {
+>  #ifdef CONFIG_EFI
+>  	unsigned long mstart, mend;
+> +	void *kaddr;
+> +	int ret;
+>  
+>  	if (!efi_enabled(EFI_BOOT))
+>  		return 0;
+> @@ -105,6 +108,30 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
+>  	if (!mstart)
+>  		return 0;
+>  
+> +	ret = kernel_ident_mapping_init(info, level4p, mstart, mend);
+> +	if (ret)
+> +		return ret;
+> +
+> +	kaddr = memremap(mstart, mend - mstart, MEMREMAP_WB);
+> +	if (!kaddr) {
+> +		pr_err("Could not map UEFI system table\n");
+> +		return -ENOMEM;
+> +	}
+> +
+> +	mstart = efi_config_table;
+
+Yeah, about this, did you see efi_reuse_config() and the comment above
+it especially?
+
+Or is it that the EFI in that box wants the config table mapped 1:1 and
+accesses it during boot/kexec?
+
+In any case, this is all cloudy without a proper root cause.
+
+Also, I'd like for Ard to have a look at this too.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
