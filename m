@@ -2,40 +2,31 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 391D174A20D
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Jul 2023 18:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D39674A428
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Jul 2023 21:06:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231909AbjGFQPX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 6 Jul 2023 12:15:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32916 "EHLO
+        id S232314AbjGFTGR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 6 Jul 2023 15:06:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229693AbjGFQPU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 6 Jul 2023 12:15:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79750DC;
-        Thu,  6 Jul 2023 09:15:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EBCAB602F1;
-        Thu,  6 Jul 2023 16:15:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AD63C433C7;
-        Thu,  6 Jul 2023 16:15:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688660118;
-        bh=r5Eqjb/koo4X65bgDBYxDesIkgsRAdhnfATQ4gt2Esk=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=uOgU9evq5o16T6L6tpJH1n8YSQl4p50BjR5wiJPLoKkMzHgO7DWjFII6ePLp5KpdE
-         3SlBOVBQ0Ayb1Ck5njyhQkfK/lBmsjOnzq7A/dE1stN3VqJX7pH6IQsgFKtN1DalJo
-         E+zh6oq4S0OPw7rIh8zXpFwi+8/fexgoqLXDvhFUUOG0TWnPj5LM1mmg7dIC7PaCB3
-         IOEyQDVn/tGwcs+s3mZaJELn1kEqbOemjyG66rmihhs9u/EaGnd4WvmH/942idbgOQ
-         fgiPtHR0C+lrv0o8CzKEzOTX/CaJMpmdnCKaL0ZpaSmvJsFgbp9PEliTkXRbGZddzd
-         Fm4yxVau37qTQ==
-Message-ID: <3948ae7653d1cb7c51febcca26a35775e71a53b4.camel@kernel.org>
-Subject: Re: [PATCH v2 00/89] fs: new accessors for inode->i_ctime
-From:   Jeff Layton <jlayton@kernel.org>
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
+        with ESMTP id S231213AbjGFTGO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 6 Jul 2023 15:06:14 -0400
+X-Greylist: delayed 5284 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 06 Jul 2023 12:06:12 PDT
+Received: from out02.mta.xmission.com (out02.mta.xmission.com [166.70.13.232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69E491BDB;
+        Thu,  6 Jul 2023 12:06:12 -0700 (PDT)
+Received: from in01.mta.xmission.com ([166.70.13.51]:40568)
+        by out02.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1qHQio-00FMgf-7e; Thu, 06 Jul 2023 09:16:42 -0600
+Received: from ip68-110-29-46.om.om.cox.net ([68.110.29.46]:55228 helo=email.froward.int.ebiederm.org.xmission.com)
+        by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1qHQim-00AsXt-Fk; Thu, 06 Jul 2023 09:16:41 -0600
+From:   "Eric W. Biederman" <ebiederm@xmission.com>
+To:     Jeff Layton <jlayton@kernel.org>
 Cc:     jk@ozlabs.org, arnd@arndb.de, mpe@ellerman.id.au,
         npiggin@gmail.com, christophe.leroy@csgroup.eu, hca@linux.ibm.com,
         gor@linux.ibm.com, agordeev@linux.ibm.com,
@@ -125,96 +116,96 @@ Cc:     jk@ozlabs.org, arnd@arndb.de, mpe@ellerman.id.au,
         bpf@vger.kernel.org, netdev@vger.kernel.org,
         apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
         selinux@vger.kernel.org
-Date:   Thu, 06 Jul 2023 12:14:58 -0400
-In-Reply-To: <87ilaxgjek.fsf@email.froward.int.ebiederm.org>
 References: <20230705185812.579118-1-jlayton@kernel.org>
-         <a4e6cfec345487fc9ac8ab814a817c79a61b123a.camel@kernel.org>
-         <87ilaxgjek.fsf@email.froward.int.ebiederm.org>
-Content-Type: text/plain; charset="ISO-8859-15"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        <a4e6cfec345487fc9ac8ab814a817c79a61b123a.camel@kernel.org>
+Date:   Thu, 06 Jul 2023 10:16:19 -0500
+In-Reply-To: <a4e6cfec345487fc9ac8ab814a817c79a61b123a.camel@kernel.org> (Jeff
+        Layton's message of "Wed, 05 Jul 2023 17:57:46 -0400")
+Message-ID: <87ilaxgjek.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-XM-SPF: eid=1qHQim-00AsXt-Fk;;;mid=<87ilaxgjek.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.110.29.46;;;frm=ebiederm@xmission.com;;;spf=pass
+X-XM-AID: U2FsdGVkX19hfnilZzLMqG1RlF+DuMto1+nqSkCNAbk=
+X-SA-Exim-Connect-IP: 68.110.29.46
+X-SA-Exim-Mail-From: ebiederm@xmission.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
+X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: ;Jeff Layton <jlayton@kernel.org>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 959 ms - load_scoreonly_sql: 0.04 (0.0%),
+        signal_user_changed: 12 (1.2%), b_tie_ro: 10 (1.1%), parse: 1.62
+        (0.2%), extract_message_metadata: 4.3 (0.4%), get_uri_detail_list:
+        1.88 (0.2%), tests_pri_-2000: 2.4 (0.3%), tests_pri_-1000: 10 (1.1%),
+        tests_pri_-950: 1.27 (0.1%), tests_pri_-900: 1.56 (0.2%),
+        tests_pri_-200: 0.85 (0.1%), tests_pri_-100: 4.3 (0.4%),
+        tests_pri_-90: 283 (29.5%), check_bayes: 278 (29.0%), b_tokenize: 27
+        (2.9%), b_tok_get_all: 20 (2.1%), b_comp_prob: 4.6 (0.5%),
+        b_tok_touch_all: 220 (23.0%), b_finish: 0.94 (0.1%), tests_pri_0: 616
+        (64.3%), check_dkim_signature: 0.56 (0.1%), check_dkim_adsp: 2.8
+        (0.3%), poll_dns_idle: 0.55 (0.1%), tests_pri_10: 2.2 (0.2%),
+        tests_pri_500: 9 (0.9%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH v2 00/89] fs: new accessors for inode->i_ctime
+X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
+X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 2023-07-06 at 10:16 -0500, Eric W. Biederman wrote:
-> Jeff Layton <jlayton@kernel.org> writes:
->=20
-> > On Wed, 2023-07-05 at 14:58 -0400, Jeff Layton wrote:
-> > > v2:
-> > > - prepend patches to add missing ctime updates
-> > > - add simple_rename_timestamp helper function
-> > > - rename ctime accessor functions as inode_get_ctime/inode_set_ctime_=
-*
-> > > - drop individual inode_ctime_set_{sec,nsec} helpers
-> > >=20
-> > > I've been working on a patchset to change how the inode->i_ctime is
-> > > accessed in order to give us conditional, high-res timestamps for the
-> > > ctime and mtime. struct timespec64 has unused bits in it that we can =
-use
-> > > to implement this. In order to do that however, we need to wrap all
-> > > accesses of inode->i_ctime to ensure that bits used as flags are
-> > > appropriately handled.
-> > >=20
-> > > The patchset starts with reposts of some missing ctime updates that I
-> > > spotted in the tree. It then adds a new helper function for updating =
-the
-> > > timestamp after a successful rename, and new ctime accessor
-> > > infrastructure.
-> > >=20
-> > > The bulk of the patchset is individual conversions of different
-> > > subsysteme to use the new infrastructure. Finally, the patchset renam=
-es
-> > > the i_ctime field to __i_ctime to help ensure that I didn't miss
-> > > anything.
-> > >=20
-> > > This should apply cleanly to linux-next as of this morning.
-> > >=20
-> > > Most of this conversion was done via 5 different coccinelle scripts, =
-run
-> > > in succession, with a large swath of by-hand conversions to clean up =
-the
-> > > remainder.
-> > >=20
-> >=20
-> > A couple of other things I should note:
-> >=20
-> > If you sent me an Acked-by or Reviewed-by in the previous set, then I
-> > tried to keep it on the patch here, since the respun patches are mostly
-> > just renaming stuff from v1. Let me know if I've missed any.
-> >=20
-> > I've also pushed the pile to my tree as this tag:
-> >=20
-> >     https://git.kernel.org/pub/scm/linux/kernel/git/jlayton/linux.git/t=
-ag/?h=3Dctime.20230705
-> >=20
-> > In case that's easier to work with.
->=20
-> Are there any preliminary patches showing what you want your introduced
-> accessors to turn into?  It is hard to judge the sanity of the
-> introduction of wrappers without seeing what the wrappers are ultimately
-> going to do.
->=20
-> Eric
+Jeff Layton <jlayton@kernel.org> writes:
 
-I have a draft version of the multigrain patches on top of the wrapper
-conversion I've already posted in my "mgctime-experimental" branch:
+> On Wed, 2023-07-05 at 14:58 -0400, Jeff Layton wrote:
+>> v2:
+>> - prepend patches to add missing ctime updates
+>> - add simple_rename_timestamp helper function
+>> - rename ctime accessor functions as inode_get_ctime/inode_set_ctime_*
+>> - drop individual inode_ctime_set_{sec,nsec} helpers
+>> 
+>> I've been working on a patchset to change how the inode->i_ctime is
+>> accessed in order to give us conditional, high-res timestamps for the
+>> ctime and mtime. struct timespec64 has unused bits in it that we can use
+>> to implement this. In order to do that however, we need to wrap all
+>> accesses of inode->i_ctime to ensure that bits used as flags are
+>> appropriately handled.
+>> 
+>> The patchset starts with reposts of some missing ctime updates that I
+>> spotted in the tree. It then adds a new helper function for updating the
+>> timestamp after a successful rename, and new ctime accessor
+>> infrastructure.
+>> 
+>> The bulk of the patchset is individual conversions of different
+>> subsysteme to use the new infrastructure. Finally, the patchset renames
+>> the i_ctime field to __i_ctime to help ensure that I didn't miss
+>> anything.
+>> 
+>> This should apply cleanly to linux-next as of this morning.
+>> 
+>> Most of this conversion was done via 5 different coccinelle scripts, run
+>> in succession, with a large swath of by-hand conversions to clean up the
+>> remainder.
+>> 
+>
+> A couple of other things I should note:
+>
+> If you sent me an Acked-by or Reviewed-by in the previous set, then I
+> tried to keep it on the patch here, since the respun patches are mostly
+> just renaming stuff from v1. Let me know if I've missed any.
+>
+> I've also pushed the pile to my tree as this tag:
+>
+>     https://git.kernel.org/pub/scm/linux/kernel/git/jlayton/linux.git/tag/?h=ctime.20230705
+>
+> In case that's easier to work with.
 
-    https://git.kernel.org/pub/scm/linux/kernel/git/jlayton/linux.git/log/?=
-h=3Dmgctime-experimental
+Are there any preliminary patches showing what you want your introduced
+accessors to turn into?  It is hard to judge the sanity of the
+introduction of wrappers without seeing what the wrappers are ultimately
+going to do.
 
-The rationale is best explained in this changelog:
-
-    https://git.kernel.org/pub/scm/linux/kernel/git/jlayton/linux.git/commi=
-t/?h=3Dmgctime-experimental&id=3Dface437a144d3375afb7f70c233b0644b4edccba
-
-The idea will be to enable this on a per-fs basis.
---=20
-Jeff Layton <jlayton@kernel.org>
+Eric
