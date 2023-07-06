@@ -2,126 +2,105 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 501D7749A12
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Jul 2023 12:58:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ABC0749AC4
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Jul 2023 13:36:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232491AbjGFK6i (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 6 Jul 2023 06:58:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48758 "EHLO
+        id S230466AbjGFLg2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 6 Jul 2023 07:36:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232783AbjGFK6K (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 6 Jul 2023 06:58:10 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39F842716;
-        Thu,  6 Jul 2023 03:57:15 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id E35B920536;
-        Thu,  6 Jul 2023 10:57:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1688641033; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=qU+KQtOfxXd2y/X5GZ0jdnumA5TIjpP1KtqeVSydWJw=;
-        b=RKQGLC57VkNV2X1z0s7MYmOMEsEvfMK4LKdwUikn2AkD+14Ax5rn1ahAdgTbsvVO4cZu7G
-        hdDCL8nZ+emJIEl7YAxTY0LZMTb5PoDE55oT2nnHlfPXYFKUWCcQgzHmxbHADT5vkeAT4j
-        b8+cfP+W017z/1QZaYSU74IkhgjU85I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1688641033;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=qU+KQtOfxXd2y/X5GZ0jdnumA5TIjpP1KtqeVSydWJw=;
-        b=GWmJcBIciv1pZ2NzY8rN0YZopk2igWa8Tp4h/I3kSQw2rMsAp1jxW5FiO3bOV/b8zEL5i3
-        WL6wfAqobrGOqtCw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D6EB4138EE;
-        Thu,  6 Jul 2023 10:57:13 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id rIhrNAmepmRTBgAAMHmgww
-        (envelope-from <jack@suse.cz>); Thu, 06 Jul 2023 10:57:13 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-        id 74E8AA0707; Thu,  6 Jul 2023 12:57:13 +0200 (CEST)
-Date:   Thu, 6 Jul 2023 12:57:13 +0200
-From:   Jan Kara <jack@suse.cz>
-To:     Jeff Layton <jlayton@kernel.org>
-Cc:     Christian Brauner <brauner@kernel.org>,
-        Jeremy Kerr <jk@ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org
-Subject: Re: [PATCH v2 37/92] efivarfs: convert to ctime accessor functions
-Message-ID: <20230706105713.7drqohk4by4b5qmu@quack3>
-References: <20230705185755.579053-1-jlayton@kernel.org>
- <20230705190309.579783-1-jlayton@kernel.org>
- <20230705190309.579783-35-jlayton@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230705190309.579783-35-jlayton@kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229774AbjGFLg1 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 6 Jul 2023 07:36:27 -0400
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF8E0AA;
+        Thu,  6 Jul 2023 04:36:26 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id 6973E5C00CF;
+        Thu,  6 Jul 2023 07:36:26 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Thu, 06 Jul 2023 07:36:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm2; t=1688643386; x=1688729786; bh=C6
+        FVmoTeWIWnJ398pRC/XE6TyNj7Ymf62dAsmaGtmb0=; b=BGdluiom3ggcRnDdxp
+        oee0FvzfxpIvCY638tQFktcGhwOwhI/XrlJsyp2RiY/jp66a0kp0i4kzB50Nqzj+
+        m/GNGAiPe1F+41dKNx0j9TXocBWXc2ufXklfxDDTcKLAr8QK90fpbFQYooSOvxNY
+        squbxC2U9VEEYoab/tsz66VHwP4qpRaAybj3RyetmVcABnDy35/H4PhNI537HMMl
+        Alp905FYz+MUPF+uTBorshIxPxn5GXogQUBG7RsNU+9iKDeCBgTAeOPPsIdsHR+A
+        iqE5oUzoC6eNOhKT+ggsZELNRm9QR+bdKDO4Z1RA640NTcaNlR2u6h+PPS/STnPy
+        6fvA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1688643386; x=1688729786; bh=C6FVmoTeWIWnJ
+        398pRC/XE6TyNj7Ymf62dAsmaGtmb0=; b=HgJL/+GrbgeA+YFm5wY12KsV+XMlf
+        I27AR7t2G64hgj9h3LHJ9JHL/p0fuYvHGoBUFQmnExZEw15FQu3X5vrkOiZITQfT
+        aAR4LFGeGQWIFunHDDZSbhA/B79sOx1cKVUBvih/BhOyCK0kKIW1E+lKx03BWFK+
+        9hHhJrL2sNGDfTWAuQIO8zbQkPeKCZmCNsmUCEz9HHfVM9gOkUMVo8hf+hS0kFxx
+        Kxo7Nt2rTl+DdncvRl3sbXo18vOFay3Y9mwGu8/xBannx8AdWSuUTc6aikJwg8oY
+        UtMXxykZEzyYo1vLbYLvGIemQHhNvC9ILdHpvLo72fsANwPNPbyi9birw==
+X-ME-Sender: <xms:OaemZOVlx0154p7bocZZlUeBHpdW82c0XY_NdXki0MG0Ou92E5XCjg>
+    <xme:OaemZKk8hBBmwpHJ3NcYpX4zrZ9G4zOa33jY7F_gmcq-MWcaY1DeaKYxVIJVkEIns
+    rNPrzavq1Io0MH0aFk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudelgdegvdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
+    hnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:OaemZCYC-kcNVGyv9tbkCRAZgzbXAnZNjIdYX4lmWN2MRrQEyK-GoQ>
+    <xmx:OaemZFV6THc4JH7aD5rBuPCk8TpjQpy6zynjY4ckYHEcPWFLG86o2A>
+    <xmx:OaemZIk4GDpiUC1IRM-thG41fdAQ8w_42nIr51vo8Fq_AXoedROxQg>
+    <xmx:OqemZBf_EX86cWlRl9fbPwVaJYQVWvnoMpDF7tXummLoJFIh-O-IMg>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 8E56CB60089; Thu,  6 Jul 2023 07:36:25 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-531-gfdfa13a06d-fm-20230703.001-gfdfa13a0
+Mime-Version: 1.0
+Message-Id: <97ae7c3d-3eeb-4bd5-bac3-64a1605d48e2@app.fastmail.com>
+In-Reply-To: <20230706104852.27451-3-tzimmermann@suse.de>
+References: <20230706104852.27451-1-tzimmermann@suse.de>
+ <20230706104852.27451-3-tzimmermann@suse.de>
+Date:   Thu, 06 Jul 2023 13:36:05 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Thomas Zimmermann" <tzimmermann@suse.de>,
+        "Javier Martinez Canillas" <javierm@redhat.com>,
+        "Sui Jingfeng" <suijingfeng@loongson.cn>
+Cc:     linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+        linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
+        dri-devel@lists.freedesktop.org,
+        "Sudip Mukherjee" <sudipm.mukherjee@gmail.com>,
+        "Teddy Wang" <teddy.wang@siliconmotion.com>,
+        "Helge Deller" <deller@gmx.de>
+Subject: Re: [PATCH v2 2/4] fbdev/sm712fb: Do not include <linux/screen_info.h>
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed 05-07-23 15:01:02, Jeff Layton wrote:
-> In later patches, we're going to change how the inode's ctime field is
-> used. Switch to using accessor functions instead of raw accesses of
-> inode->i_ctime.
-> 
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+On Thu, Jul 6, 2023, at 12:42, Thomas Zimmermann wrote:
+> Sm712fb's dependency on <linux/screen_info.h> is artificial in that
+> it only uses struct screen_info for its internals. Replace the use of
+> struct screen_info with a custom data structure and remove the include
+> of <linux/screen_info.h>.
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+> Cc: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+> Cc: Teddy Wang <teddy.wang@siliconmotion.com>
+> Cc: Helge Deller <deller@gmx.de>
 
-Looks good. Feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  fs/efivarfs/file.c  | 2 +-
->  fs/efivarfs/inode.c | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/efivarfs/file.c b/fs/efivarfs/file.c
-> index 375576111dc3..59b52718a3a2 100644
-> --- a/fs/efivarfs/file.c
-> +++ b/fs/efivarfs/file.c
-> @@ -51,7 +51,7 @@ static ssize_t efivarfs_file_write(struct file *file,
->  	} else {
->  		inode_lock(inode);
->  		i_size_write(inode, datasize + sizeof(attributes));
-> -		inode->i_mtime = inode->i_ctime = current_time(inode);
-> +		inode->i_mtime = inode_set_ctime_current(inode);
->  		inode_unlock(inode);
->  	}
->  
-> diff --git a/fs/efivarfs/inode.c b/fs/efivarfs/inode.c
-> index b973a2c03dde..db9231f0e77b 100644
-> --- a/fs/efivarfs/inode.c
-> +++ b/fs/efivarfs/inode.c
-> @@ -25,7 +25,7 @@ struct inode *efivarfs_get_inode(struct super_block *sb,
->  	if (inode) {
->  		inode->i_ino = get_next_ino();
->  		inode->i_mode = mode;
-> -		inode->i_atime = inode->i_mtime = inode->i_ctime = current_time(inode);
-> +		inode->i_atime = inode->i_mtime = inode_set_ctime_current(inode);
->  		inode->i_flags = is_removable ? 0 : S_IMMUTABLE;
->  		switch (mode & S_IFMT) {
->  		case S_IFREG:
-> -- 
-> 2.41.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
