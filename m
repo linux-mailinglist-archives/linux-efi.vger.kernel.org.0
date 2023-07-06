@@ -2,34 +2,41 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D39674A428
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Jul 2023 21:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C21D774A574
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Jul 2023 23:03:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232314AbjGFTGR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 6 Jul 2023 15:06:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39668 "EHLO
+        id S232664AbjGFVDF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 6 Jul 2023 17:03:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231213AbjGFTGO (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 6 Jul 2023 15:06:14 -0400
-X-Greylist: delayed 5284 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 06 Jul 2023 12:06:12 PDT
-Received: from out02.mta.xmission.com (out02.mta.xmission.com [166.70.13.232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69E491BDB;
-        Thu,  6 Jul 2023 12:06:12 -0700 (PDT)
-Received: from in01.mta.xmission.com ([166.70.13.51]:40568)
-        by out02.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1qHQio-00FMgf-7e; Thu, 06 Jul 2023 09:16:42 -0600
-Received: from ip68-110-29-46.om.om.cox.net ([68.110.29.46]:55228 helo=email.froward.int.ebiederm.org.xmission.com)
-        by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1qHQim-00AsXt-Fk; Thu, 06 Jul 2023 09:16:41 -0600
-From:   "Eric W. Biederman" <ebiederm@xmission.com>
+        with ESMTP id S229510AbjGFVC5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 6 Jul 2023 17:02:57 -0400
+Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3A8619A7;
+        Thu,  6 Jul 2023 14:02:55 -0700 (PDT)
+Received: from localhost (2.general.sarnold.us.vpn [10.172.64.71])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id EC65D3F31B;
+        Thu,  6 Jul 2023 21:02:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1688677359;
+        bh=wL7I+1AkkXlsdAXc0IgIVs00VMlkDlPzLoO7HtCH8Yo=;
+        h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+         Content-Type:In-Reply-To;
+        b=UigHgg1tEN+F2JYmBK+lUOcRBpRtdrNgGbqup1NnaXOwyODWf/TTOdnjSM3EJKV2r
+         nSVjFudDceCGObMlTU+uma1muY2uaIkS7sazvVomlUh2z4Cx6T6ypWSOKoKTLr1e7n
+         Ld2z62ONf1z9dg8T10Z72Jl2h0B3vIxrVCycmYrM1jOwV4H0NyvFgu4GNfgDT4ln1d
+         cD6OBnHOJHdcMdNwqptcYXDLv4IErHsYENHamhLEH+hxLeB02yXRDCQTTC0JuBjK6l
+         ZNgX1V/W8Fy+2Orhx/aZTqqWjx/zv/bYCRboXEZa1I0V5mrDoaohFkaxDrb57pylVz
+         OTISOPjT4Hs9A==
+Date:   Thu, 6 Jul 2023 21:02:36 +0000
+From:   Seth Arnold <seth.arnold@canonical.com>
 To:     Jeff Layton <jlayton@kernel.org>
-Cc:     jk@ozlabs.org, arnd@arndb.de, mpe@ellerman.id.au,
-        npiggin@gmail.com, christophe.leroy@csgroup.eu, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com,
+Cc:     Damien Le Moal <dlemoal@kernel.org>, jk@ozlabs.org, arnd@arndb.de,
+        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
         borntraeger@linux.ibm.com, svens@linux.ibm.com,
         gregkh@linuxfoundation.org, arve@android.com, tkjos@android.com,
         maco@android.com, joel@joelfernandes.org, brauner@kernel.org,
@@ -40,14 +47,15 @@ Cc:     jk@ozlabs.org, arnd@arndb.de, mpe@ellerman.id.au,
         linux_oss@crudebyte.com, dsterba@suse.com, dhowells@redhat.com,
         marc.dionne@auristor.com, viro@zeniv.linux.org.uk,
         raven@themaw.net, luisbg@kernel.org, salah.triki@gmail.com,
-        aivazian.tigran@gmail.com, keescook@chromium.org, clm@fb.com,
-        josef@toxicpanda.com, xiubli@redhat.com, idryomov@gmail.com,
-        jaharkes@cs.cmu.edu, coda@cs.cmu.edu, jlbec@evilplan.org,
-        hch@lst.de, nico@fluxnic.net, rafael@kernel.org, code@tyhicks.com,
-        ardb@kernel.org, xiang@kernel.org, chao@kernel.org,
-        huyue2@coolpad.com, jefflexu@linux.alibaba.com,
-        linkinjeon@kernel.org, sj1557.seo@samsung.com, jack@suse.com,
-        tytso@mit.edu, adilger.kernel@dilger.ca, jaegeuk@kernel.org,
+        aivazian.tigran@gmail.com, ebiederm@xmission.com,
+        keescook@chromium.org, clm@fb.com, josef@toxicpanda.com,
+        xiubli@redhat.com, idryomov@gmail.com, jaharkes@cs.cmu.edu,
+        coda@cs.cmu.edu, jlbec@evilplan.org, hch@lst.de, nico@fluxnic.net,
+        rafael@kernel.org, code@tyhicks.com, ardb@kernel.org,
+        xiang@kernel.org, chao@kernel.org, huyue2@coolpad.com,
+        jefflexu@linux.alibaba.com, linkinjeon@kernel.org,
+        sj1557.seo@samsung.com, jack@suse.com, tytso@mit.edu,
+        adilger.kernel@dilger.ca, jaegeuk@kernel.org,
         hirofumi@mail.parknet.co.jp, miklos@szeredi.hu,
         rpeterso@redhat.com, agruenba@redhat.com, richard@nod.at,
         anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
@@ -64,15 +72,15 @@ Cc:     jk@ozlabs.org, arnd@arndb.de, mpe@ellerman.id.au,
         pc@manguebit.com, lsahlber@redhat.com, sprasad@microsoft.com,
         senozhatsky@chromium.org, phillip@squashfs.org.uk,
         rostedt@goodmis.org, mhiramat@kernel.org, dushistov@mail.ru,
-        hdegoede@redhat.com, djwong@kernel.org, dlemoal@kernel.org,
-        naohiro.aota@wdc.com, jth@kernel.org, ast@kernel.org,
-        daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev,
-        song@kernel.org, yhs@fb.com, john.fastabend@gmail.com,
-        kpsingh@kernel.org, sdf@google.com, haoluo@google.com,
-        jolsa@kernel.org, hughd@google.com, akpm@linux-foundation.org,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, john.johansen@canonical.com,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        hdegoede@redhat.com, djwong@kernel.org, naohiro.aota@wdc.com,
+        jth@kernel.org, ast@kernel.org, daniel@iogearbox.net,
+        andrii@kernel.org, martin.lau@linux.dev, song@kernel.org,
+        yhs@fb.com, john.fastabend@gmail.com, kpsingh@kernel.org,
+        sdf@google.com, haoluo@google.com, jolsa@kernel.org,
+        hughd@google.com, akpm@linux-foundation.org, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        john.johansen@canonical.com, paul@paul-moore.com,
+        jmorris@namei.org, serge@hallyn.com,
         stephen.smalley.work@gmail.com, eparis@parisplace.org,
         jgross@suse.com, stern@rowland.harvard.edu, lrh2000@pku.edu.cn,
         sebastian.reichel@collabora.com, wsa+renesas@sang-engineering.com,
@@ -116,96 +124,116 @@ Cc:     jk@ozlabs.org, arnd@arndb.de, mpe@ellerman.id.au,
         bpf@vger.kernel.org, netdev@vger.kernel.org,
         apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
         selinux@vger.kernel.org
+Subject: Re: [apparmor] [PATCH v2 08/92] fs: new helper:
+ simple_rename_timestamp
+Message-ID: <20230706210236.GB3244704@millbarge>
 References: <20230705185812.579118-1-jlayton@kernel.org>
-        <a4e6cfec345487fc9ac8ab814a817c79a61b123a.camel@kernel.org>
-Date:   Thu, 06 Jul 2023 10:16:19 -0500
-In-Reply-To: <a4e6cfec345487fc9ac8ab814a817c79a61b123a.camel@kernel.org> (Jeff
-        Layton's message of "Wed, 05 Jul 2023 17:57:46 -0400")
-Message-ID: <87ilaxgjek.fsf@email.froward.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+ <20230705185812.579118-3-jlayton@kernel.org>
+ <3b403ef1-22e6-0220-6c9c-435e3444b4d3@kernel.org>
+ <7c783969641b67d6ffdfb10e509f382d083c5291.camel@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1qHQim-00AsXt-Fk;;;mid=<87ilaxgjek.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.110.29.46;;;frm=ebiederm@xmission.com;;;spf=pass
-X-XM-AID: U2FsdGVkX19hfnilZzLMqG1RlF+DuMto1+nqSkCNAbk=
-X-SA-Exim-Connect-IP: 68.110.29.46
-X-SA-Exim-Mail-From: ebiederm@xmission.com
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="E39vaYmALEf/7YXx"
+Content-Disposition: inline
+In-Reply-To: <7c783969641b67d6ffdfb10e509f382d083c5291.camel@kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
-X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ;Jeff Layton <jlayton@kernel.org>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 959 ms - load_scoreonly_sql: 0.04 (0.0%),
-        signal_user_changed: 12 (1.2%), b_tie_ro: 10 (1.1%), parse: 1.62
-        (0.2%), extract_message_metadata: 4.3 (0.4%), get_uri_detail_list:
-        1.88 (0.2%), tests_pri_-2000: 2.4 (0.3%), tests_pri_-1000: 10 (1.1%),
-        tests_pri_-950: 1.27 (0.1%), tests_pri_-900: 1.56 (0.2%),
-        tests_pri_-200: 0.85 (0.1%), tests_pri_-100: 4.3 (0.4%),
-        tests_pri_-90: 283 (29.5%), check_bayes: 278 (29.0%), b_tokenize: 27
-        (2.9%), b_tok_get_all: 20 (2.1%), b_comp_prob: 4.6 (0.5%),
-        b_tok_touch_all: 220 (23.0%), b_finish: 0.94 (0.1%), tests_pri_0: 616
-        (64.3%), check_dkim_signature: 0.56 (0.1%), check_dkim_adsp: 2.8
-        (0.3%), poll_dns_idle: 0.55 (0.1%), tests_pri_10: 2.2 (0.2%),
-        tests_pri_500: 9 (0.9%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH v2 00/89] fs: new accessors for inode->i_ctime
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Jeff Layton <jlayton@kernel.org> writes:
 
-> On Wed, 2023-07-05 at 14:58 -0400, Jeff Layton wrote:
->> v2:
->> - prepend patches to add missing ctime updates
->> - add simple_rename_timestamp helper function
->> - rename ctime accessor functions as inode_get_ctime/inode_set_ctime_*
->> - drop individual inode_ctime_set_{sec,nsec} helpers
->> 
->> I've been working on a patchset to change how the inode->i_ctime is
->> accessed in order to give us conditional, high-res timestamps for the
->> ctime and mtime. struct timespec64 has unused bits in it that we can use
->> to implement this. In order to do that however, we need to wrap all
->> accesses of inode->i_ctime to ensure that bits used as flags are
->> appropriately handled.
->> 
->> The patchset starts with reposts of some missing ctime updates that I
->> spotted in the tree. It then adds a new helper function for updating the
->> timestamp after a successful rename, and new ctime accessor
->> infrastructure.
->> 
->> The bulk of the patchset is individual conversions of different
->> subsysteme to use the new infrastructure. Finally, the patchset renames
->> the i_ctime field to __i_ctime to help ensure that I didn't miss
->> anything.
->> 
->> This should apply cleanly to linux-next as of this morning.
->> 
->> Most of this conversion was done via 5 different coccinelle scripts, run
->> in succession, with a large swath of by-hand conversions to clean up the
->> remainder.
->> 
->
-> A couple of other things I should note:
->
-> If you sent me an Acked-by or Reviewed-by in the previous set, then I
-> tried to keep it on the patch here, since the respun patches are mostly
-> just renaming stuff from v1. Let me know if I've missed any.
->
-> I've also pushed the pile to my tree as this tag:
->
->     https://git.kernel.org/pub/scm/linux/kernel/git/jlayton/linux.git/tag/?h=ctime.20230705
->
-> In case that's easier to work with.
+--E39vaYmALEf/7YXx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Are there any preliminary patches showing what you want your introduced
-accessors to turn into?  It is hard to judge the sanity of the
-introduction of wrappers without seeing what the wrappers are ultimately
-going to do.
+On Wed, Jul 05, 2023 at 08:04:41PM -0400, Jeff Layton wrote:
+>=20
+> I don't believe it's an issue. I've seen nothing in the POSIX spec that
+> mandates that timestamp updates to different inodes involved in an
+> operation be set to the _same_ value. It just says they must be updated.
+>=20
+> It's also hard to believe that any software would depend on this either,
+> given that it's very inconsistent across filesystems today. AFAICT, this
+> was mostly done in the past just as a matter of convenience.
 
-Eric
+I've seen this assumption in several programs:
+
+mutt buffy.c
+https://sources.debian.org/src/mutt/2.2.9-1/buffy.c/?hl=3D625#L625
+
+  if (mailbox->newly_created &&
+      (sb->st_ctime !=3D sb->st_mtime || sb->st_ctime !=3D sb->st_atime))
+    mailbox->newly_created =3D 0;
+
+
+neomutt mbox/mbox.c
+https://sources.debian.org/src/neomutt/20220429+dfsg1-4.1/mbox/mbox.c/?hl=
+=3D1820#L1820
+
+  if (m->newly_created && ((st.st_ctime !=3D st.st_mtime) || (st.st_ctime !=
+=3D st.st_atime)))
+    m->newly_created =3D false;
+
+
+screen logfile.c
+https://sources.debian.org/src/screen/4.9.0-4/logfile.c/?hl=3D130#L130
+
+  if ((!s->st_dev && !s->st_ino) ||             /* stat failed, that's new!=
+ */
+      !s->st_nlink ||                           /* red alert: file unlinked=
+ */
+      (s->st_size < o.st_size) ||               /*           file truncated=
+ */
+      (s->st_mtime !=3D o.st_mtime) ||            /*            file modifi=
+ed */
+      ((s->st_ctime !=3D o.st_ctime) &&           /*     file changed (move=
+d) */
+       !(s->st_mtime =3D=3D s->st_ctime &&          /*  and it was not a ch=
+ange */
+         o.st_ctime < s->st_ctime)))            /* due to delayed nfs write=
+ */
+  {
+
+nemo libnemo-private/nemo-vfs-file.c
+https://sources.debian.org/src/nemo/5.6.5-1/libnemo-private/nemo-vfs-file.c=
+/?hl=3D344#L344
+
+		/* mtime is when the contents changed; ctime is when the
+		 * contents or the permissions (inc. owner/group) changed.
+		 * So we can only know when the permissions changed if mtime
+		 * and ctime are different.
+		 */
+		if (file->details->mtime =3D=3D file->details->ctime) {
+			return FALSE;
+		}
+
+
+While looking for more examples, I found a perl test that seems to suggest
+that at least Solaris, AFS, AmigaOS, DragonFly BSD do as you suggest:
+https://sources.debian.org/src/perl/5.36.0-7/t/op/stat.t/?hl=3D158#L140
+
+
+Thanks
+
+--E39vaYmALEf/7YXx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEQVAQ8bojyMcg37H18yFyWZ2NLpcFAmSnK+gACgkQ8yFyWZ2N
+Lpd3gQf6AtE8sBL09BSTvT1P5I8tCXnJ4U7VbzQxWTcKAQHRpyZn8IRSdWuxiPEU
+soaBmSx6jov+kkZYX5uP1LSM1INMYpJTJELGas9A7wenNppBGS07LjwAL40wouPm
+UfcVWQqOgM8eoseMKBKePv5TkTJFn/M3cPK9Wy31E+qF1IPMNtxz9JKz109YlDOO
+FxVTwBGGxxKvx3SsUl6hdaqBCK3omZlbWCzqSyqBzzvjgZ01VC5ktw5FuuTABbu8
+TScNnT5GtO5AE8RV0T3TKISm19xD69JHQt/etFeU2yKwiBsn89pY4Xut3CrxbSQm
+prQ7ssP3/fi41WxFFDQzO/oQok/b+A==
+=/KNl
+-----END PGP SIGNATURE-----
+
+--E39vaYmALEf/7YXx--
