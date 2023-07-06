@@ -2,42 +2,58 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8021F749226
-	for <lists+linux-efi@lfdr.de>; Thu,  6 Jul 2023 02:05:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2657B749974
+	for <lists+linux-efi@lfdr.de>; Thu,  6 Jul 2023 12:27:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232208AbjGFAFF (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 5 Jul 2023 20:05:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53178 "EHLO
+        id S231675AbjGFK13 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 6 Jul 2023 06:27:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229793AbjGFAFD (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 5 Jul 2023 20:05:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EC06199E;
-        Wed,  5 Jul 2023 17:05:01 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S229768AbjGFK1V (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 6 Jul 2023 06:27:21 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D1611BFE;
+        Thu,  6 Jul 2023 03:27:09 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C927961780;
-        Thu,  6 Jul 2023 00:05:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F7BC433C8;
-        Thu,  6 Jul 2023 00:04:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688601900;
-        bh=GKAf3Connag2H1A96+MWJO2m2+AGoi4e2L0TCmV0twI=;
-        h=Subject:From:To:Date:In-Reply-To:References:From;
-        b=nET3i8K9cAN9JzAYu5D5DtIfnZyBNqxFT5kCHd94dYOZfZeH8zavR0WF9u4ITY0NE
-         D66ZLzqp4+stDYQ/wxgM6SsxM/mS2+y3IUBNv7xe18KIH1uVzQrdLce3r3dWIKwzol
-         tzsq2RPKrA+bg24p5zLD3xKS/7A/1zvUDDnXMEpHEaKwvlUXOn9bI/FS6RRj0UTu+c
-         vTGpq6dtXG1Xauh+ol1hFuB35FDh/rjrnsJWBkr2MVf6wx5gZoGZefJEl0qBVioA6j
-         WnKwlad8ofPwwEPXaYXs/neOdGw/YH9YOfEVdEl8lvP9rCQ6lvqx2NeiiLr9bjccc4
-         eOxUKsWaspoTQ==
-Message-ID: <7c783969641b67d6ffdfb10e509f382d083c5291.camel@kernel.org>
-Subject: Re: [PATCH v2 08/92] fs: new helper: simple_rename_timestamp
-From:   Jeff Layton <jlayton@kernel.org>
-To:     Damien Le Moal <dlemoal@kernel.org>, jk@ozlabs.org, arnd@arndb.de,
-        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        by smtp-out2.suse.de (Postfix) with ESMTPS id EA73A20314;
+        Thu,  6 Jul 2023 10:27:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1688639226; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=bA8lspzVCI0QkBBZSOZ2NaXyU+WIcRfNoOGE3kPhpJ0=;
+        b=cwJXVYMxjabgJAc1WiPXwEoX0OTfi47rAf4OBX1TAQ+OGmO9dcjviKfq9JaMZbP2e77Zft
+        ZFGj4L7K2Mk/xcezt5kjd+qP2pHojrW25RMENmZ0z2yxrjNTco/s31l/aUs5F51DaCvlcK
+        y6kdxWpKryRTZKsAyjQoNnmkqAh2mzg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1688639226;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=bA8lspzVCI0QkBBZSOZ2NaXyU+WIcRfNoOGE3kPhpJ0=;
+        b=NZCT2CDl1JUNY6ijIJLjHssrtsmLEPFUK3ppAhWe46d1TfukNG5xi7VbWtXEv0lhKCq/xt
+        xNVG4YexDp28AbCA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B165913A26;
+        Thu,  6 Jul 2023 10:27:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id wFw7KvqWpmTRdAAAMHmgww
+        (envelope-from <jack@suse.cz>); Thu, 06 Jul 2023 10:27:06 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+        id 1CB0FA0707; Thu,  6 Jul 2023 12:27:06 +0200 (CEST)
+Date:   Thu, 6 Jul 2023 12:27:06 +0200
+From:   Jan Kara <jack@suse.cz>
+To:     Jeff Layton <jlayton@kernel.org>
+Cc:     jk@ozlabs.org, arnd@arndb.de, mpe@ellerman.id.au,
+        npiggin@gmail.com, christophe.leroy@csgroup.eu, hca@linux.ibm.com,
+        gor@linux.ibm.com, agordeev@linux.ibm.com,
         borntraeger@linux.ibm.com, svens@linux.ibm.com,
         gregkh@linuxfoundation.org, arve@android.com, tkjos@android.com,
         maco@android.com, joel@joelfernandes.org, brauner@kernel.org,
@@ -73,15 +89,15 @@ To:     Damien Le Moal <dlemoal@kernel.org>, jk@ozlabs.org, arnd@arndb.de,
         pc@manguebit.com, lsahlber@redhat.com, sprasad@microsoft.com,
         senozhatsky@chromium.org, phillip@squashfs.org.uk,
         rostedt@goodmis.org, mhiramat@kernel.org, dushistov@mail.ru,
-        hdegoede@redhat.com, djwong@kernel.org, naohiro.aota@wdc.com,
-        jth@kernel.org, ast@kernel.org, daniel@iogearbox.net,
-        andrii@kernel.org, martin.lau@linux.dev, song@kernel.org,
-        yhs@fb.com, john.fastabend@gmail.com, kpsingh@kernel.org,
-        sdf@google.com, haoluo@google.com, jolsa@kernel.org,
-        hughd@google.com, akpm@linux-foundation.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        john.johansen@canonical.com, paul@paul-moore.com,
-        jmorris@namei.org, serge@hallyn.com,
+        hdegoede@redhat.com, djwong@kernel.org, dlemoal@kernel.org,
+        naohiro.aota@wdc.com, jth@kernel.org, ast@kernel.org,
+        daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev,
+        song@kernel.org, yhs@fb.com, john.fastabend@gmail.com,
+        kpsingh@kernel.org, sdf@google.com, haoluo@google.com,
+        jolsa@kernel.org, hughd@google.com, akpm@linux-foundation.org,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, john.johansen@canonical.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
         stephen.smalley.work@gmail.com, eparis@parisplace.org,
         jgross@suse.com, stern@rowland.harvard.edu, lrh2000@pku.edu.cn,
         sebastian.reichel@collabora.com, wsa+renesas@sang-engineering.com,
@@ -125,18 +141,17 @@ To:     Damien Le Moal <dlemoal@kernel.org>, jk@ozlabs.org, arnd@arndb.de,
         bpf@vger.kernel.org, netdev@vger.kernel.org,
         apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
         selinux@vger.kernel.org
-Date:   Wed, 05 Jul 2023 20:04:41 -0400
-In-Reply-To: <3b403ef1-22e6-0220-6c9c-435e3444b4d3@kernel.org>
+Subject: Re: [PATCH v2 08/92] fs: new helper: simple_rename_timestamp
+Message-ID: <20230706102706.w7udmbmuwp7hhcry@quack3>
 References: <20230705185812.579118-1-jlayton@kernel.org>
-         <20230705185812.579118-3-jlayton@kernel.org>
-         <3b403ef1-22e6-0220-6c9c-435e3444b4d3@kernel.org>
-Content-Type: text/plain; charset="ISO-8859-15"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ <20230705185812.579118-3-jlayton@kernel.org>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230705185812.579118-3-jlayton@kernel.org>
+X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -144,155 +159,108 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 2023-07-06 at 08:19 +0900, Damien Le Moal wrote:
-> On 7/6/23 03:58, Jeff Layton wrote:
-> > A rename potentially involves updating 4 different inode timestamps. Ad=
-d
-> > a function that handles the details sanely, and convert the libfs.c
-> > callers to use it.
-> >=20
-> > Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> > ---
-> >  fs/libfs.c         | 36 +++++++++++++++++++++++++++---------
-> >  include/linux/fs.h |  2 ++
-> >  2 files changed, 29 insertions(+), 9 deletions(-)
-> >=20
-> > diff --git a/fs/libfs.c b/fs/libfs.c
-> > index a7e56baf8bbd..9ee79668c909 100644
-> > --- a/fs/libfs.c
-> > +++ b/fs/libfs.c
-> > @@ -692,6 +692,31 @@ int simple_rmdir(struct inode *dir, struct dentry =
-*dentry)
-> >  }
-> >  EXPORT_SYMBOL(simple_rmdir);
-> > =20
-> > +/**
-> > + * simple_rename_timestamp - update the various inode timestamps for r=
-ename
-> > + * @old_dir: old parent directory
-> > + * @old_dentry: dentry that is being renamed
-> > + * @new_dir: new parent directory
-> > + * @new_dentry: target for rename
-> > + *
-> > + * POSIX mandates that the old and new parent directories have their c=
-time and
-> > + * mtime updated, and that inodes of @old_dentry and @new_dentry (if a=
-ny), have
-> > + * their ctime updated.
-> > + */
-> > +void simple_rename_timestamp(struct inode *old_dir, struct dentry *old=
-_dentry,
-> > +			     struct inode *new_dir, struct dentry *new_dentry)
-> > +{
-> > +	struct inode *newino =3D d_inode(new_dentry);
-> > +
-> > +	old_dir->i_mtime =3D inode_set_ctime_current(old_dir);
-> > +	if (new_dir !=3D old_dir)
-> > +		new_dir->i_mtime =3D inode_set_ctime_current(new_dir);
-> > +	inode_set_ctime_current(d_inode(old_dentry));
-> > +	if (newino)
-> > +		inode_set_ctime_current(newino);
-> > +}
-> > +EXPORT_SYMBOL_GPL(simple_rename_timestamp);
-> > +
-> >  int simple_rename_exchange(struct inode *old_dir, struct dentry *old_d=
-entry,
-> >  			   struct inode *new_dir, struct dentry *new_dentry)
-> >  {
-> > @@ -707,11 +732,7 @@ int simple_rename_exchange(struct inode *old_dir, =
-struct dentry *old_dentry,
-> >  			inc_nlink(old_dir);
-> >  		}
-> >  	}
-> > -	old_dir->i_ctime =3D old_dir->i_mtime =3D
-> > -	new_dir->i_ctime =3D new_dir->i_mtime =3D
-> > -	d_inode(old_dentry)->i_ctime =3D
-> > -	d_inode(new_dentry)->i_ctime =3D current_time(old_dir);
-> > -
-> > +	simple_rename_timestamp(old_dir, old_dentry, new_dir, new_dentry);
->=20
-> This is somewhat changing the current behavior: before the patch, the mti=
-me and
-> ctime of old_dir, new_dir and the inodes associated with the dentries are=
- always
-> equal. But given that simple_rename_timestamp() calls inode_set_ctime_cur=
-rent()
-> 4 times, the times could potentially be different.
->=20
-> I am not sure if that is an issue, but it seems that calling
-> inode_set_ctime_current() once, recording the "now" time it sets and usin=
-g that
-> value to set all times may be more efficient and preserve the existing be=
-havior.
->=20
+On Wed 05-07-23 14:58:11, Jeff Layton wrote:
+> A rename potentially involves updating 4 different inode timestamps. Add
+> a function that handles the details sanely, and convert the libfs.c
+> callers to use it.
+> 
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
-I don't believe it's an issue. I've seen nothing in the POSIX spec that
-mandates that timestamp updates to different inodes involved in an
-operation be set to the _same_ value. It just says they must be updated.
+Looks good to me. Feel free to add:
 
-It's also hard to believe that any software would depend on this either,
-given that it's very inconsistent across filesystems today. AFAICT, this
-was mostly done in the past just as a matter of convenience.
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-The other problem with doing it that way is that it assumes that
-current_time(inode) should always return the same value when given
-different inodes. Is it really correct to do this?
+								Honza
 
-	inode_set_ctime(dir, inode_set_ctime_current(inode));
-
-"dir" and "inode" are different inodes, after all, and you're setting
-dir's timestamp to "inode"'s value. It's not a big deal today since
-they're always on the same sb, but the ultimate goal of these changes is
-to implement multigrain timestamps. That will mean that fetching a fine-
-grained timestamp for an update when the existing mtime or ctime value
-has been queried via getattr.
-
-With that change, I think it's best that we treat updates to different
-inodes individually, as some of them may require updating with a fine-
-grained timestamp and some may not.
-
-> >  	return 0;
-> >  }
-> >  EXPORT_SYMBOL_GPL(simple_rename_exchange);
-> > @@ -720,7 +741,6 @@ int simple_rename(struct mnt_idmap *idmap, struct i=
-node *old_dir,
-> >  		  struct dentry *old_dentry, struct inode *new_dir,
-> >  		  struct dentry *new_dentry, unsigned int flags)
-> >  {
-> > -	struct inode *inode =3D d_inode(old_dentry);
-> >  	int they_are_dirs =3D d_is_dir(old_dentry);
-> > =20
-> >  	if (flags & ~(RENAME_NOREPLACE | RENAME_EXCHANGE))
-> > @@ -743,9 +763,7 @@ int simple_rename(struct mnt_idmap *idmap, struct i=
-node *old_dir,
-> >  		inc_nlink(new_dir);
-> >  	}
-> > =20
-> > -	old_dir->i_ctime =3D old_dir->i_mtime =3D new_dir->i_ctime =3D
-> > -		new_dir->i_mtime =3D inode->i_ctime =3D current_time(old_dir);
-> > -
-> > +	simple_rename_timestamp(old_dir, old_dentry, new_dir, new_dentry);
-> >  	return 0;
-> >  }
-> >  EXPORT_SYMBOL(simple_rename);
-> > diff --git a/include/linux/fs.h b/include/linux/fs.h
-> > index bdfbd11a5811..14e38bd900f1 100644
-> > --- a/include/linux/fs.h
-> > +++ b/include/linux/fs.h
-> > @@ -2979,6 +2979,8 @@ extern int simple_open(struct inode *inode, struc=
-t file *file);
-> >  extern int simple_link(struct dentry *, struct inode *, struct dentry =
-*);
-> >  extern int simple_unlink(struct inode *, struct dentry *);
-> >  extern int simple_rmdir(struct inode *, struct dentry *);
-> > +void simple_rename_timestamp(struct inode *old_dir, struct dentry *old=
-_dentry,
-> > +			     struct inode *new_dir, struct dentry *new_dentry);
-> >  extern int simple_rename_exchange(struct inode *old_dir, struct dentry=
- *old_dentry,
-> >  				  struct inode *new_dir, struct dentry *new_dentry);
-> >  extern int simple_rename(struct mnt_idmap *, struct inode *,
->=20
-
---=20
-Jeff Layton <jlayton@kernel.org>
+> ---
+>  fs/libfs.c         | 36 +++++++++++++++++++++++++++---------
+>  include/linux/fs.h |  2 ++
+>  2 files changed, 29 insertions(+), 9 deletions(-)
+> 
+> diff --git a/fs/libfs.c b/fs/libfs.c
+> index a7e56baf8bbd..9ee79668c909 100644
+> --- a/fs/libfs.c
+> +++ b/fs/libfs.c
+> @@ -692,6 +692,31 @@ int simple_rmdir(struct inode *dir, struct dentry *dentry)
+>  }
+>  EXPORT_SYMBOL(simple_rmdir);
+>  
+> +/**
+> + * simple_rename_timestamp - update the various inode timestamps for rename
+> + * @old_dir: old parent directory
+> + * @old_dentry: dentry that is being renamed
+> + * @new_dir: new parent directory
+> + * @new_dentry: target for rename
+> + *
+> + * POSIX mandates that the old and new parent directories have their ctime and
+> + * mtime updated, and that inodes of @old_dentry and @new_dentry (if any), have
+> + * their ctime updated.
+> + */
+> +void simple_rename_timestamp(struct inode *old_dir, struct dentry *old_dentry,
+> +			     struct inode *new_dir, struct dentry *new_dentry)
+> +{
+> +	struct inode *newino = d_inode(new_dentry);
+> +
+> +	old_dir->i_mtime = inode_set_ctime_current(old_dir);
+> +	if (new_dir != old_dir)
+> +		new_dir->i_mtime = inode_set_ctime_current(new_dir);
+> +	inode_set_ctime_current(d_inode(old_dentry));
+> +	if (newino)
+> +		inode_set_ctime_current(newino);
+> +}
+> +EXPORT_SYMBOL_GPL(simple_rename_timestamp);
+> +
+>  int simple_rename_exchange(struct inode *old_dir, struct dentry *old_dentry,
+>  			   struct inode *new_dir, struct dentry *new_dentry)
+>  {
+> @@ -707,11 +732,7 @@ int simple_rename_exchange(struct inode *old_dir, struct dentry *old_dentry,
+>  			inc_nlink(old_dir);
+>  		}
+>  	}
+> -	old_dir->i_ctime = old_dir->i_mtime =
+> -	new_dir->i_ctime = new_dir->i_mtime =
+> -	d_inode(old_dentry)->i_ctime =
+> -	d_inode(new_dentry)->i_ctime = current_time(old_dir);
+> -
+> +	simple_rename_timestamp(old_dir, old_dentry, new_dir, new_dentry);
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(simple_rename_exchange);
+> @@ -720,7 +741,6 @@ int simple_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+>  		  struct dentry *old_dentry, struct inode *new_dir,
+>  		  struct dentry *new_dentry, unsigned int flags)
+>  {
+> -	struct inode *inode = d_inode(old_dentry);
+>  	int they_are_dirs = d_is_dir(old_dentry);
+>  
+>  	if (flags & ~(RENAME_NOREPLACE | RENAME_EXCHANGE))
+> @@ -743,9 +763,7 @@ int simple_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+>  		inc_nlink(new_dir);
+>  	}
+>  
+> -	old_dir->i_ctime = old_dir->i_mtime = new_dir->i_ctime =
+> -		new_dir->i_mtime = inode->i_ctime = current_time(old_dir);
+> -
+> +	simple_rename_timestamp(old_dir, old_dentry, new_dir, new_dentry);
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL(simple_rename);
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index bdfbd11a5811..14e38bd900f1 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -2979,6 +2979,8 @@ extern int simple_open(struct inode *inode, struct file *file);
+>  extern int simple_link(struct dentry *, struct inode *, struct dentry *);
+>  extern int simple_unlink(struct inode *, struct dentry *);
+>  extern int simple_rmdir(struct inode *, struct dentry *);
+> +void simple_rename_timestamp(struct inode *old_dir, struct dentry *old_dentry,
+> +			     struct inode *new_dir, struct dentry *new_dentry);
+>  extern int simple_rename_exchange(struct inode *old_dir, struct dentry *old_dentry,
+>  				  struct inode *new_dir, struct dentry *new_dentry);
+>  extern int simple_rename(struct mnt_idmap *, struct inode *,
+> -- 
+> 2.41.0
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
