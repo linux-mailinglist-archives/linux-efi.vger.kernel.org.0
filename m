@@ -2,103 +2,127 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F57174B41A
-	for <lists+linux-efi@lfdr.de>; Fri,  7 Jul 2023 17:25:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4403C74B494
+	for <lists+linux-efi@lfdr.de>; Fri,  7 Jul 2023 17:47:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232741AbjGGPZy (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 7 Jul 2023 11:25:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57972 "EHLO
+        id S232848AbjGGPrI (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 7 Jul 2023 11:47:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229502AbjGGPZx (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Jul 2023 11:25:53 -0400
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2045.outbound.protection.outlook.com [40.107.244.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96424AF;
-        Fri,  7 Jul 2023 08:25:51 -0700 (PDT)
+        with ESMTP id S229480AbjGGPrH (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 7 Jul 2023 11:47:07 -0400
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2085.outbound.protection.outlook.com [40.107.243.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0031213B;
+        Fri,  7 Jul 2023 08:47:05 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aR4i8G3fted6QbGmPn4qcd3DP/SOTDI41MtOBn3BmPrXf2s4cDK61wV7abC6fZRg5kthyQkBpEqmWC9VVqE77TR2MqDAasnKkSwOXa8rRHo0z6AWpmSM+0l2f9lAWCf25eQFygYJpFaXaOaY3LHiSzW6RenWnh+6lnBcVWlwLxoUNyv9WF1aEM58jMsEEUw53+glIwq1gJBBIdu9rVQBq5tSn8o62S77m3C6+wnpNOA2Kf+cnNo5hhMR7cQCBmxg/VfbNt/gWqByEET/lPWcry/3+9WrtLsvmU/7wQPMbIrJPWMPZf4xS+NHZL9ksYyGksWOqU/8FjJXM8lRk6YTxQ==
+ b=IANjMsmcpYxFTevLE5RPZx9/JRYwETqFHb7iOyLRQCsbmMK+TLTRu+Sd+hCv8sRnVd4lzMMzRkr5H8BY6j8j2l5ycPIcb6+P2Xi/ijyWX8wssT6m/miKsVZnv8xSswplT6Al/IjRtE8J5ot2opurUu18cYv1YsgRWWJSglaMkTjw0wneRUOjT+kXlmWDLb858auy9xaYolnWy8pCDkEu1oEldDnuGIoZ+UapdJwryNi0JidvniAxDux+EW+8HlJ0SlzWKYuYNyqdt6fTQ5LC39ivf9LskS8MMbQK5aJ39l+yl8xmOy7b9aA1j3jqnM45YmkI/kgDTh9OHPeOcyRdZg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KoOBaBpcAOqicUy4XZCAnIxuY1RTs1oIPZtqOkW1qPs=;
- b=mrBuYq6UnFO0HE91V2IJnjLWPvzWt3tkdqcgwigLIPcrNQNt0PHWtaIb0vWDU0IpHBfgzt3M1njVlWuuV/UyyEYhmGCczrniXj4oP8XMKV13ZzYpu6xlWVDjgL8eI6tQraTtsftE/n9sFwznKmOU4BxOSBMV0FK2CRzs/rZFNFhOQfWGgYLkfBd5yRtazdnaorfr5yyPOSJBK59E5+CVxmazlrme2B3+HnHMqVyIwND5ZLRzjRqROsyr9EqjgXYbyK/OAchC/vR880N6R0AeUmm6AyIJXPUKjxIFx35qrIr63u9rxftE2CrEioy7+jpLuxwhcF9oVe6yzeau5C2tAg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
+ bh=jZ8Z6dZ1pk5mUN1/IqFlNH9X+2Vbbg8DmVUvwh7woE0=;
+ b=ZxhQD/irF35EjV+u1kr/AEA8fQqmplGbyuoSb+QsHhRPOShLh0xlVzocrM/S6RxCwGBVxW/BHOLpG9/3YdKnGUl5kvd+m+RMTfRt93XhpPyr6MzUdvXHXOfEMdaymktJ+p1HklZ18WandCzZJqUU64y0hx1OxZhBzX/6pdTiWAq6dnJsY/oRBO7jlI25oSTR7akpwJAvKyJsMTj9WbUQj2RGffH80IaVfgY5QMWBjEUyc20cxs9uzc3EOyuqo8xs2Z27wal2x1ZGOp+WWvNqKrqjXdZtpzvx3C+dcV0RH8V81PXSKz6vG5VEHTJWhDXjTpeXTVuhbbbpuq5QaLJlQA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KoOBaBpcAOqicUy4XZCAnIxuY1RTs1oIPZtqOkW1qPs=;
- b=IXt+M2/xbh/I0RhJc3/4A7CYSTU6adp93GDWACtiZjxALPkIZVyUKzZCjX9k+IsYyjNuRjLC1oHjPCoKa/pTMs6IIkh29BnXl5SBkQ4zhdFQWX0pylWiohcMZ/284l6kug/XSvnpOHzbQ1QfVIxkqrvxW90nPAa0jNaq0SjrEfM=
-Received: from DM5PR07CA0114.namprd07.prod.outlook.com (2603:10b6:4:ae::43) by
- SN7PR12MB6982.namprd12.prod.outlook.com (2603:10b6:806:262::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6565.24; Fri, 7 Jul 2023 15:25:49 +0000
-Received: from DM6NAM11FT089.eop-nam11.prod.protection.outlook.com
- (2603:10b6:4:ae:cafe::f5) by DM5PR07CA0114.outlook.office365.com
- (2603:10b6:4:ae::43) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.24 via Frontend
- Transport; Fri, 7 Jul 2023 15:25:49 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DM6NAM11FT089.mail.protection.outlook.com (10.13.173.82) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6521.45 via Frontend Transport; Fri, 7 Jul 2023 15:25:48 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Fri, 7 Jul
- 2023 10:25:47 -0500
-Date:   Fri, 7 Jul 2023 10:25:15 -0500
-From:   Michael Roth <michael.roth@amd.com>
-To:     Borislav Petkov <bp@alien8.de>
-CC:     Joerg Roedel <jroedel@suse.de>, Baoquan He <bhe@redhat.com>,
-        Tao Liu <ltao@redhat.com>, <thomas.lendacky@amd.com>,
-        <tglx@linutronix.de>, <mingo@redhat.com>,
-        <dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
-        <ardb@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <dyoung@redhat.com>, <kexec@lists.infradead.org>,
-        <linux-efi@vger.kernel.org>
+ bh=jZ8Z6dZ1pk5mUN1/IqFlNH9X+2Vbbg8DmVUvwh7woE0=;
+ b=osLFHAtuO4yIEi2cLgTW5sjID+t3kJ1Ep5e8zQiKReGPTvUuosbC+nAxt8Spsy2nwDJl4UV4uPYW/QlAcfJysNyQSAc0386cSzpkkylqp85C4pMQA8WoxCXkTL48S8gNimUJCpK1a/spKNQ6k5vX/fv/ZFKw69hMfahnwq8n0YA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
+ by SJ0PR12MB5456.namprd12.prod.outlook.com (2603:10b6:a03:3ae::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.25; Fri, 7 Jul
+ 2023 15:47:02 +0000
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::1629:622f:93d0:f72f]) by DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::1629:622f:93d0:f72f%7]) with mapi id 15.20.6565.025; Fri, 7 Jul 2023
+ 15:47:02 +0000
+Message-ID: <3c7bc679-6366-ab7f-7001-7b5ab71fa364@amd.com>
+Date:   Fri, 7 Jul 2023 10:46:59 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
 Subject: Re: [PATCH v2] x86/kexec: Add EFI config table identity mapping for
  kexec kernel
-Message-ID: <20230707152515.42gpfzjgvfwe6rf7@amd.com>
+Content-Language: en-US
+To:     Joerg Roedel <jroedel@suse.de>, Baoquan He <bhe@redhat.com>
+Cc:     Tao Liu <ltao@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
+        x86@kernel.org, hpa@zytor.com, ardb@kernel.org,
+        linux-kernel@vger.kernel.org, dyoung@redhat.com,
+        kexec@lists.infradead.org, linux-efi@vger.kernel.org,
+        michael.roth@amd.com
 References: <20230601072043.24439-1-ltao@redhat.com>
  <20230705173359.GDZKWphyFbNE8id6Jm@fat_crate.local>
  <CAO7dBbXdJgpO4Ym=4WME3OOrUhq2MNKpNZmhpsC7pOSugHiKDg@mail.gmail.com>
- <ZKeTX2aemPbsMiVr@MiWiFi-R3L-srv>
- <ZKfLYG_4DANc_i5r@suse.de>
- <20230707085712.GBZKfTaGJXnzhEenxj@fat_crate.local>
+ <ZKeTX2aemPbsMiVr@MiWiFi-R3L-srv> <ZKfLYG_4DANc_i5r@suse.de>
+From:   Tom Lendacky <thomas.lendacky@amd.com>
+In-Reply-To: <ZKfLYG_4DANc_i5r@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN4PR0501CA0111.namprd05.prod.outlook.com
+ (2603:10b6:803:42::28) To DM4PR12MB5229.namprd12.prod.outlook.com
+ (2603:10b6:5:398::12)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20230707085712.GBZKfTaGJXnzhEenxj@fat_crate.local>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6NAM11FT089:EE_|SN7PR12MB6982:EE_
-X-MS-Office365-Filtering-Correlation-Id: 65f04d7a-3288-4868-83f9-08db7efe70f5
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5229:EE_|SJ0PR12MB5456:EE_
+X-MS-Office365-Filtering-Correlation-Id: 15995680-c66d-4ffc-3eea-08db7f01681e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Y1iJfuNRwHClusZmEQwNk8eImRmKsWPAUQneRgq2gnpF8kb04POXebFJJtsjK1gaeG/xXRWEPVJY/368LR97cn42Z7xVs9IrlnOz7bURH2LUhoLr4vJYpDAJ0cBcWDn8Y/OwI86hbP7LZFIge+WZW1c9BkDkyYMBA9fQr2Sj9XwuTRHmI2+V+JcsbMccmkysVYBJ6cwHbCMVljpkXodIJMTij2uLIb6vn8v7y4HHvPsNnbjY+3tfi6FKMYcpr4KDfnduBeQL5gQvGjSyGCwCqZgt1Mu7HOL+Hpku7c/13DY29ppPR8Hsz+tfHlHEg4pswPYvoEX7e40JemTUMZnNGRygZ5XgX3r19mX+DTm2nrp3qOOG2eLicGrGAHd3jGIZ/LMrttRJQJMDbFpe9CsQs3aSk/UOUuEyKxWNAucXpczHSyB97hWvGcNW74i6TqLUKIbZD2SaB7tJAyVVR/8JgEkZdX00GbuFBLKyGoU977eM2gSlHS6hRpCeAzokyaWiBOx5IYb2/gi0MJ0bYohKk37jFbB3ErosjnQZeokkJRvnSO5m/uOyBAUZttBHENzNbtd/qdXRjQ7RlA+jMdgmy53t00fpgf0EfHFL5LXxz+bI24OszRvIsgoO0L54rK2et0IM+oB+GdW1rd5WeQQM9C+m/XCTfcRJt3oxQg+YFtevB/dTPYx0mOshUMC/YKwZXakAyKn+8DMafNv+7UQOrCYTjciSZQ0dmt9pZVwZDHu6nQaP8NFMSq8uEvVwI45AZWRPHEXiN0/ghmV12c/XMg==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(376002)(396003)(346002)(39860400002)(136003)(451199021)(46966006)(40470700004)(36840700001)(336012)(83380400001)(1076003)(186003)(26005)(16526019)(426003)(6666004)(47076005)(54906003)(356005)(82740400003)(81166007)(36860700001)(478600001)(2616005)(966005)(8936002)(316002)(8676002)(41300700001)(40460700003)(5660300002)(7416002)(70206006)(44832011)(70586007)(4326008)(6916009)(40480700001)(2906002)(86362001)(82310400005)(36756003)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: u/ikJ0Mi32AlgDOLx1tSILVAWJsc/RFILYEx8ZhOs1u6TqshdRmPWVVZhMdu+s8lQDOj9mErmopuu72G5nlZQVAaOnL6X0hdTIyuC9NM4zO3ynXotguqRLT2cu1Ym5sqP8NNxxsqI6G77N1kHfQ8Y1su7JcgtevoNdRkm8mr0z5VEi1SK8Li8Y4eTPOgp+lETZjP17Li/9XEzl0u/RViGuq0tP+OtAClUWN0B4W6SXgHQYyDlDSC9Sy8N1AgMNb99Xie5Gv1+XyPWIubwxev9HaTDEplFUFuk+uDMRyJ7/XB7KCGtS//OYqXcwvyGa67Z7pfi0ktNKvsY5ghn71hSQ5VmboDKH82P6eejJs+uXv7Ex2iuWUZmk607yIJYIlYBiFIAfrrXJVOIwEpY+d7tvCsWm+HwbVGqS+rgGdfYjOy0Y+hCnpGknJGaHQEywRpLuUPzFt7WYX4Xpm/XSbG/5yJRVf8Ss0cQN/UiiPdLt6CXaN5tnxKeA4u+vuQJJMdrLdo1K/9/1ypyS1o/CatM7x9aFQLpZbhCzfgCEVhp1DCCl3tneZUtgEa/LvRQ62fFW6Whi3yu0n3k2OFOgybfmpjYgCLGQUyNwYpsoOkOfx4p9MIr2Al3p2pTNM7nGEM3+jwhXiDGS6qgpZIYgPn9g==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(396003)(136003)(39860400002)(366004)(376002)(451199021)(6666004)(478600001)(6486002)(110136005)(54906003)(53546011)(6506007)(26005)(186003)(6512007)(2906002)(41300700001)(316002)(4326008)(66556008)(66946007)(5660300002)(7416002)(8936002)(8676002)(66476007)(38100700002)(86362001)(31696002)(36756003)(83380400001)(2616005)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NzNMNGNmci9YMjU2ODU2QnlGcTZkUU9abXd2TGcyRVhPNXorN2JndnM5NGlt?=
+ =?utf-8?B?Vy9FMlVCUGJSMU9QNGRzR3BsQXpmd09KbFVxMXhaMG1QcFlQdS8zT0crYlI0?=
+ =?utf-8?B?Q2dWRWU4aGpUY1pWQXBFZ1crQmpSdmRYVlZFM3JsOUtsNkg2MzdNVmdpNHRh?=
+ =?utf-8?B?NGlvZSt2S2UwQmhRZHdseDZCb3BOaGQ1TkczTy8wa25uSytOY3gycGdJQ2tT?=
+ =?utf-8?B?RVBnamxQUTJmZ1J0ek00cndjNnVxbnMwd2dWQ3dZNVYyUENUeDNKUDZ3aTJo?=
+ =?utf-8?B?N1RTNjI5Wk9YYVZ3U3BFa0s5Y1VucDVPNDdwcUNxYXB4R3FIaEFocXZpY1I4?=
+ =?utf-8?B?KzkveUpUZ2FSdHIzZnRkdTNNMG1vUUpXZk1uQnpKdy9rV2hxdHJsYmhEa0Jj?=
+ =?utf-8?B?eHhRd0hXY2FyQnVTVFlVNGZZNGVOM092QlhBZFdzVjZrTGdPenI3TFE2ZHV1?=
+ =?utf-8?B?aUpuaDBBVnhzMGZWY1pObGp1RUVZYnhKaHNzdmt2L0dkcitRL0R6U3QvOUtr?=
+ =?utf-8?B?cll2WDI2QVUzVThTdkZIN1RReWxMYW5HMFNmSlo0MytRQ2ZxYTZTbE9hVG8r?=
+ =?utf-8?B?N0ptSmMrRjY3cit1SHJFOHMrWlE1S01KZUNHVWZVZ3pJeE4yd0VlTkZzcFFq?=
+ =?utf-8?B?blRORDdvcDN1ekdtRXI5bkdHNEpFaGk1QnNCdVl5djY2N1hBTVUvVjF6cEp1?=
+ =?utf-8?B?RE9ndnlHYVNMeTgzK1NMdmRKUjhKdHdLcnp2VXVQZG50MzJyOGxMc1FFKzFM?=
+ =?utf-8?B?ZXJWYTJjZVlRSWxZUnloWUpSU0hhMjdDUmpFZzk1VnpubWdhVEc2N0pDQmpn?=
+ =?utf-8?B?R3BISHIyR2V2cERCV3ZPOXMraTB6VXFPUGlJQlRVdzJnVGZESUZGSFBNc2J0?=
+ =?utf-8?B?cGdIVUdzVXNnZ3d5MFhsVE9xVnB5MG1CN1o0azczTkdwRGhHclQ3YkpCYTFa?=
+ =?utf-8?B?RzArMThnMktxMWZHaDRTemlUVE5EWlN5ZTdVc0lKZnFJRXgyaGp1emhsbXZz?=
+ =?utf-8?B?N1E2SGFEbUs3N0VnMndVOVpJQy9MRXYyMnhsL3ZVV1hRRHF3OWh1TUVGUDlj?=
+ =?utf-8?B?eVpxZE0rVS9tUjRnOEt0VmtoWE0wSEZvSUUxb3U5dmRUMkwvSk1rK3R2ZWFo?=
+ =?utf-8?B?ZHJkWFBGWjRDb2lSNXd4OU1WelhKcldSTUFTRmxyaW9uYjBzcDFxSUJRSHVH?=
+ =?utf-8?B?cFhGNjRRY1FxL1pucVdOSnl2TE9qZTB3S0lhUWk4bmM2QmxtNDFNT1NNSjZI?=
+ =?utf-8?B?dng4VTZqQmhjVDR1V05sK09PUXYvSERYZ1FhZFB4enQxR2FMWE55UjY3R0M4?=
+ =?utf-8?B?M1lrL3czZVFYZlFFR09od1RkOEplOWpidG0yNGNTMU4yYWFSeVUyTlgwam95?=
+ =?utf-8?B?dGtRMEwvbmNNcy9NL2EwNTE5LzhrNWdwMDZoYk5ZaXp6Y254MktxdzdSYlpK?=
+ =?utf-8?B?elZsTnA1aEJFQ2pTTTdjdXhzUGFkM0JIb2JKZUJsS3ZsaXBHbHVHOVNHOVVl?=
+ =?utf-8?B?K0VMdmp2ME94bGM0cjRVeTJzL2UwaERGNi9vRFd3OHZ6NkE0ZnNtdXJ6SXFp?=
+ =?utf-8?B?azJmZWJFeWNuVXdDdWpDb0YyQ1EydFVwOUh6L1RvQ1RRbnBqSXZiOHdCZ2h3?=
+ =?utf-8?B?T0Zxd2lQS1FTY1ZaaGs2dDY5MVNGMjBHMHl3K3JSNDQvbW1HT0VMb1g2bTdv?=
+ =?utf-8?B?d2l0ZitUdnBxQ3NWdGQvVXJaZ0VGWVdWUjFha20vZy9hUDFkTUtPZExrbktt?=
+ =?utf-8?B?S01aQWY1cnJQNFU0NWZ5bHl1NFhzbE5MQzBsMDc5VnpjOHlFdk1LbHAvZmt5?=
+ =?utf-8?B?R1RGRm5qei9pblV4WW1oUlNxYXh6MVcvRUROSzBTS3lab016SXV4RU9PQUxM?=
+ =?utf-8?B?VFVKYU9aOTY0NWRWUVpjNjdmanR1Q1ZyRUU3NUNqZGFZanhkdnhuMDVHRFly?=
+ =?utf-8?B?bXB4ZjNiYnZobGlVM05iYk0vTEcxVEo4eDBMTitUekdWV2hQQTJxVzE2cTIw?=
+ =?utf-8?B?SkNsY01IVVVYeWI4K2Z1RUI5TmxHWlE2aHk0Tk9QSzZVMnhGQTY2QUhvSmFJ?=
+ =?utf-8?B?LzArT0U4eXpTOG5yRWN0NTBJanF3SlBidG9yWkdrWVcwNjNFL1Fra0svMVlC?=
+ =?utf-8?Q?r8WXiNHM8xiPgjbukn74wvvKX?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2023 15:25:48.3269
+X-MS-Exchange-CrossTenant-Network-Message-Id: 15995680-c66d-4ffc-3eea-08db7f01681e
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2023 15:47:02.3536
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 65f04d7a-3288-4868-83f9-08db7efe70f5
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT089.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6982
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7Bg+O/jamDU1hP0RXv9/fOCGWGGNJz6FsTZak4V4ytuzUvU0Dd137IFN62F12OGlOVCdVJdsyYUNY5Y/cEa/PA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5456
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
         T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
         version=3.4.6
@@ -108,111 +132,34 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jul 07, 2023 at 10:57:12AM +0200, Borislav Petkov wrote:
-> On Fri, Jul 07, 2023 at 10:22:56AM +0200, Joerg Roedel wrote:
-> > On Fri, Jul 07, 2023 at 12:23:59PM +0800, Baoquan He wrote:
-> > > I am wondering why we don't detect the cpu type and return early inside
-> > > sev_enable() if it's Intel cpu.
-> > > 
-> > > We can't rely on CONFIG_AMD_MEM_ENCRYPT to decide if the code need be
-> > > executed or not because we usually enable them all in distros.
+On 7/7/23 03:22, Joerg Roedel wrote:
+> On Fri, Jul 07, 2023 at 12:23:59PM +0800, Baoquan He wrote:
+>> I am wondering why we don't detect the cpu type and return early inside
+>> sev_enable() if it's Intel cpu.
+>>
+>> We can't rely on CONFIG_AMD_MEM_ENCRYPT to decide if the code need be
+>> executed or not because we usually enable them all in distros.
+> 
+> Looking at the code in head_64.S, by the time sev_enable() runs the SEV
+> bit should already be set in sev_status. Maybe use that to detect
+> whether SEV is enabled and bail out early?
 
-If the SETUP_CC_BLOB config table entry isn't present, then none of that
-code will run. I think the patch here addresses the main issue: kexec
-has handed us a SETUP_EFI setup_data entry, with a pointer to a valid
-config table, but we don't map it before accessing it. I should have
-done a better job of checking for this, since there has been similar
-cases exposed by the SEV checks, e.g.:
+I think that is only if you enter on the 32-bit path. If invoked from EFI 
+in 64-bit, efi64_stub_entry(), then I don't believe that sev_status will 
+be set yet.
 
-  commit b57feed2cc2622ae14b2fa62f19e973e5e0a60cf
-  Author: Michael Roth <michael.roth@amd.com>
-  Date:   Tue Jul 5 21:53:15 2022 -0500
+Before it can be determined if it is a non-AMD platform, the EFI config 
+table has to be searched in order to find the CC blob table. Once that is 
+found (or not found), then the checks for the platform are performed and 
+sev_enable() will exit if not on an AMD platform.
 
-      x86/compressed/64: Add identity mappings for setup_data entries
+I think it was an oversight to not add support for identity mapping the 
+EFI config tables for kexec. Any features in the future that need to 
+search for an EFI config table early like this will need the same.
 
-but I don't think there's anything inherently wrong with accessing the
-EFI config table in early boot. SEV is earliest user now, but something
-else can come along. We certainly have early access to EFI system table
-and other bootparams fields like ACPI RDSP in this neck of the woods.
-
-So regardless of how we decide to handle sev_enable(), I think this patch
-should be applied, rather than allowing this to lurk in the shadows until
-it claims its next victim.
-
-> > 
-> > Looking at the code in head_64.S, by the time sev_enable() runs the SEV
-> > bit should already be set in sev_status. Maybe use that to detect
-> > whether SEV is enabled and bail out early?
-
-sev_enabled() is actually what sets sev_status global, but for startup32
-path, the SEV_ENABLED bit is artificially set earlier to force the C-bit
-check in startup32_check_sev_cbit():
-
-  fef81c8626: x86/boot/compressed/64: Check SEV encryption in the 32-bit boot-path
+Thanks,
+Tom
 
 > 
-> There was something about getting the CPUID page on SNP *before*
-> actually calling CPUID but this is not the first time we had trouble in
-> this area. This needs to be done differently.
+> Regards,
 > 
-> Michael?
-
-The main issue is we don't know when it is safe to access the SEV_STATUS
-MSR until we've checked for the CPUID bit that advertises SEV
-capability, otherwise we can generate a #GP on machines that don't
-support it.
-
-With SNP, the most reliable way to access this CPUID bit is via the SNP
-CPUID table entry corresponding to 0x8000001F, rather than the emulated
-values provided by hypervisor, like we do with SEV-ES. So that's how
-things are implemented currently.
-
-We *could* instead revert back to using the hypervisor-provided CPUID
-values for 0x8000001F, as with SEV-ES, which would allow us to check
-SEV_STATUS MSR *prior* to SNP CPUID table setup, instead of afterward...
-
-What's awkward about that approach is that we'd effectively be bypassing
-all the validation that the SNP firmware does on the 0x8000001F leaf. In
-general this seems backwards, however:
-
-  a) we still have the option of re-checking the 0x8000001F leaf once
-     the SNP CPUID table is setup to see if the hypervisor presented
-     something different to the guest than what we were expecting
-  b) in this *specific* case, we only need to check for SEV CPUID bit
-     so we know it is safe to check SEV_STATUS MSR. A malicious
-     hypervisor can:
-
-       i) trick us into causing a crash via the MSR access: but that's okay,
-          security isn't compromised. hypervisor's fault, not ours.
-      ii) trick us into thinking SEV is enabled so hypervisor can
-          intercept/emulated the MSR access: but that's okay, because
-          when SEV is enabled the SEV_STATUS MSR can't be intercepted,
-          and if SEV isn't actually enabled, the guest wouldn't get past
-          attestation.
-     iii) trick us into thinking SEV isn't enabled, which should be fine
-          if we leave sev_status unset.
-
-So, yes, we can avoid checking for CC blob by relying on the above
-details and reversing the ordering of CPUID table setup and initial
-SEV_STATUS MSR checks. But we'd want to similarly audit any changes to these
-paths so that an eventual case doesn't pop up where a malicious hypervisor
-can cause a certain check/configuration to be bypassed by toying with CPUID
-values at this stage of boot, which is why we've so far tried to maintain
-the current handling.
-
-It would be unfortunate if we finally abandoned this path because of the
-issue being hit here though. I think the patch posted here is the proper
-resolution to the issue being hit, and I'm hoping at this point we've
-identified all the similar cases where EFI/setup_data-related structures
-were missing explicit mappings. But if we still think it's too much of a
-liability to access the EFI config table outside of SEV-enabled guests,
-then I can work on re-implementing things based on the above logic.
-
--Mike
-
-> 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> https://people.kernel.org/tglx/notes-about-netiquette
