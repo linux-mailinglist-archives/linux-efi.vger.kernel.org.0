@@ -2,66 +2,75 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A53574DEF3
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Jul 2023 22:15:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30CF974E07C
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Jul 2023 23:56:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229921AbjGJUPZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 10 Jul 2023 16:15:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35602 "EHLO
+        id S229670AbjGJV4G (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 10 Jul 2023 17:56:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229469AbjGJUPZ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 10 Jul 2023 16:15:25 -0400
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 03547BB;
-        Mon, 10 Jul 2023 13:15:22 -0700 (PDT)
-Received: from loongson.cn (unknown [10.20.42.43])
-        by gateway (Coremail) with SMTP id _____8AxV_HZZqxkZ0YDAA--.9710S3;
-        Tue, 11 Jul 2023 04:15:21 +0800 (CST)
-Received: from [10.20.42.43] (unknown [10.20.42.43])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8CxbSPDZqxkILcnAA--.63575S3;
-        Tue, 11 Jul 2023 04:15:17 +0800 (CST)
-Message-ID: <e7e87325-0b95-2b1c-5652-7f119948b4bd@loongson.cn>
-Date:   Tue, 11 Jul 2023 04:14:59 +0800
+        with ESMTP id S229669AbjGJV4F (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 10 Jul 2023 17:56:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFDFCD2;
+        Mon, 10 Jul 2023 14:56:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 41C2761219;
+        Mon, 10 Jul 2023 21:56:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81ACC433C8;
+        Mon, 10 Jul 2023 21:56:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689026163;
+        bh=urUMvcqIHSx44e1CLXIt+y4lPoaxzNCVYEBO64LKrtI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=CDThmcbcHASAfk2VyXGM5XYnw6xuTJhgaGL9h53i/ZaKq/TKcX3ai1c3/20QBzUA4
+         7A2Ozb5nBEeK1H/mzH27jKpoywTSLx/H8/KNZDoItdXaZjmWBKLSIxn8uZeH4Y/NQd
+         YzCH7yo5B91USbLjNXlJkDp6HJDzSL7Al8v1WN2+2SY6/rzWjQ2JDCtqCLvi0LSS5q
+         6hppfuUaEuyb4mjNk4lBO5V+b8cU20Ho/IxyblOLHhT/XxO3N0+X2L/1dy6kFHSNd2
+         LUJXp3JiBAkGiZ1qxsfhbhLdBLJTtrDI2AISaswHte9wSVs7qo7zPgSdI3cfGcoMCo
+         ClZSpuF4N0VWQ==
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-4faaaa476a9so7980189e87.2;
+        Mon, 10 Jul 2023 14:56:03 -0700 (PDT)
+X-Gm-Message-State: ABy/qLbyp7TjrPOhVhwqTA6leuLtrRWncm9Iv6IUAaziEWF1dsLZbttR
+        kQBv/WSB76WiauP2Sk2POQ5CpOo+6W4D85OVp0o=
+X-Google-Smtp-Source: APBJJlEz2AlQPaxY8fa7D8go97IXDSjkxf0l3ev+QQpgPy724kTPemHsnt7WgY8N+2M65jKY0OOXyX9aqIBrk7urOc0=
+X-Received: by 2002:a05:6512:3a96:b0:4f8:554f:36aa with SMTP id
+ q22-20020a0565123a9600b004f8554f36aamr12455800lfu.29.1689026161679; Mon, 10
+ Jul 2023 14:56:01 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] fbdev/hyperv_fb: Include <linux/screen_info.h>
-To:     Thomas Zimmermann <tzimmermann@suse.de>, deller@gmx.de,
-        javierm@redhat.com, decui@microsoft.com, wei.liu@kernel.org,
-        haiyangz@microsoft.com, kys@microsoft.com
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        kernel test robot <lkp@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        linux-efi@vger.kernel.org, linux-hyperv@vger.kernel.org
-References: <20230710075848.23087-1-tzimmermann@suse.de>
-Content-Language: en-US
-From:   suijingfeng <suijingfeng@loongson.cn>
-In-Reply-To: <20230710075848.23087-1-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: AQAAf8CxbSPDZqxkILcnAA--.63575S3
-X-CM-SenderInfo: xvxlyxpqjiv03j6o00pqjv00gofq/
-X-Coremail-Antispam: 1Uk129KBj93XoWxCr1rJw1kKFWUuF13Kw43XFc_yoW5urWxpF
-        48AFy3CrWrAr1xGa17G342kF90gw15Cryj9F9rKw1YyryYyr1q9r47uFsxW398Jr45GF13
-        tFy3Ww1jka4DuagCm3ZEXasCq-sJn29KB7ZKAUJUUUUP529EdanIXcx71UUUUU7KY7ZEXa
-        sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-        0xBIdaVrnRJUUUPFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-        IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-        e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-        0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-        Gr0_Gr1UM2kKe7AKxVWUtVW8ZwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-        kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
-        XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
-        k0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l
-        4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jw0_GFylx2IqxVAqx4xG67AKxV
-        WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI
-        7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
-        4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
-        42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUstxhDUUUU
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+References: <20230607072342.4054036-1-ardb@kernel.org> <20230607072342.4054036-7-ardb@kernel.org>
+ <20230710090654.GCZKvKLh44tzlNzPcq@fat_crate.local>
+In-Reply-To: <20230710090654.GCZKvKLh44tzlNzPcq@fat_crate.local>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Mon, 10 Jul 2023 23:55:49 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGUtm2unrpwLWCXQhoE1wEYuFgvz3u_SXDFE=SJHJdYmQ@mail.gmail.com>
+Message-ID: <CAMj1kXGUtm2unrpwLWCXQhoE1wEYuFgvz3u_SXDFE=SJHJdYmQ@mail.gmail.com>
+Subject: Re: [PATCH v5 06/20] x86/decompressor: Store boot_params pointer in
+ callee save register
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Evgeniy Baskov <baskov@ispras.ru>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Peter Jones <pjones@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Dave Young <dyoung@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -70,83 +79,27 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi,
-
-On 2023/7/10 15:58, Thomas Zimmermann wrote:
-> Include <linux/screen_info.h> to get the global screen_info state.
-> Fixes the following errors:
+On Mon, 10 Jul 2023 at 11:07, Borislav Petkov <bp@alien8.de> wrote:
 >
->>> drivers/video/fbdev/hyperv_fb.c:1033:10: error: use of undeclared identifier 'screen_info'
->      1033 |                 base = screen_info.lfb_base;
->           |                        ^
->     drivers/video/fbdev/hyperv_fb.c:1034:10: error: use of undeclared identifier 'screen_info'
->      1034 |                 size = screen_info.lfb_size;
-> 	 |                        ^
->>> drivers/video/fbdev/hyperv_fb.c:1080:3: error: must use 'struct' tag to refer to type 'screen_info'
->      1080 |                 screen_info.lfb_size = 0;
-> 	 |                 ^
-> 	 |                 struct
->>> drivers/video/fbdev/hyperv_fb.c:1080:14: error: expected identifier or '('
->      1080 |                 screen_info.lfb_size = 0;
-> 	 |                            ^
->     drivers/video/fbdev/hyperv_fb.c:1081:3: error: must use 'struct' tag to refer to type 'screen_info'
->      1081 |                 screen_info.lfb_base = 0;
-> 	 |                 ^
-> 	 |                 struct
->     drivers/video/fbdev/hyperv_fb.c:1081:14: error: expected identifier or '('
->      1081 |                 screen_info.lfb_base = 0;
-> 	 |                            ^
->     drivers/video/fbdev/hyperv_fb.c:1082:3: error: must use 'struct' tag to refer to type 'screen_info'
->      1082 |                 screen_info.orig_video_isVGA = 0;
-> 	 |                 ^
-> 	 |                 struct
->      drivers/video/fbdev/hyperv_fb.c:1082:14: error: expected identifier or '('
->      1082 |                 screen_info.orig_video_isVGA = 0;
-> 	 |                            ^
->      8 errors generated.
+> On Wed, Jun 07, 2023 at 09:23:28AM +0200, Ard Biesheuvel wrote:
+> > Instead of pushing and popping %RSI several times to preserve the struct
+> > boot_params pointer across the execution of the startup code, move it
+> > into a callee save register before the first call into C, and copy it
+> > back when needed.
+> >
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > ---
+> >  arch/x86/boot/compressed/head_64.S | 34 +++++++-------------
+> >  1 file changed, 11 insertions(+), 23 deletions(-)
 >
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202307101042.rqehuauj-lkp@intel.com/
-> Fixes: 8b0d13545b09 ("efi: Do not include <linux/screen_info.h> from EFI header")
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-
-
-Reviewed-by: Sui Jingfeng <suijingfeng@loongson.cn>
-
-
-> Cc: "K. Y. Srinivasan" <kys@microsoft.com> (supporter:Hyper-V/Azure CORE AND DRIVERS)
-> Cc: Haiyang Zhang <haiyangz@microsoft.com> (supporter:Hyper-V/Azure CORE AND DRIVERS)
-> Cc: Wei Liu <wei.liu@kernel.org> (supporter:Hyper-V/Azure CORE AND DRIVERS)
-> Cc: Dexuan Cui <decui@microsoft.com> (supporter:Hyper-V/Azure CORE AND DRIVERS)
-> Cc: Helge Deller <deller@gmx.de> (maintainer:FRAMEBUFFER LAYER)
-> Cc: Javier Martinez Canillas <javierm@redhat.com>
-> Cc: Sui Jingfeng <suijingfeng@loongson.cn>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: linux-efi@vger.kernel.org
-> Cc: linux-hyperv@vger.kernel.org (open list:Hyper-V/Azure CORE AND DRIVERS)
-> Cc: linux-fbdev@vger.kernel.org (open list:FRAMEBUFFER LAYER)
-> Cc: dri-devel@lists.freedesktop.org (open list:FRAMEBUFFER LAYER)
-> ---
->   drivers/video/fbdev/hyperv_fb.c | 1 +
->   1 file changed, 1 insertion(+)
+> I like that.
 >
-> diff --git a/drivers/video/fbdev/hyperv_fb.c b/drivers/video/fbdev/hyperv_fb.c
-> index 1ae35ab62b29..b331452aab4f 100644
-> --- a/drivers/video/fbdev/hyperv_fb.c
-> +++ b/drivers/video/fbdev/hyperv_fb.c
-> @@ -48,6 +48,7 @@
->   #include <linux/aperture.h>
->   #include <linux/module.h>
->   #include <linux/kernel.h>
-> +#include <linux/screen_info.h>
->   #include <linux/vmalloc.h>
->   #include <linux/init.h>
->   #include <linux/completion.h>
+> We do a similar dance in arch/x86/kernel/head_64.S. Care to fix that
+> too, in a separate patch?
+>
 
+I already did, actually, but I dropped it from this series because it
+was getting too long, and not essential for the overall goal of the
+changes.
 
-Ah, I also overlook this one. :-)
-
+https://lore.kernel.org/all/20230602101313.3557775-19-ardb@kernel.org/
