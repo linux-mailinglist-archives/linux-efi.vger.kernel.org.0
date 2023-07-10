@@ -2,150 +2,117 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71EF274D089
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Jul 2023 10:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A6F574D101
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Jul 2023 11:07:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229683AbjGJIq7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 10 Jul 2023 04:46:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56994 "EHLO
+        id S230120AbjGJJHZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 10 Jul 2023 05:07:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbjGJIqx (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 10 Jul 2023 04:46:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 047C81704
-        for <linux-efi@vger.kernel.org>; Mon, 10 Jul 2023 01:45:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1688978718;
+        with ESMTP id S229608AbjGJJHY (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 10 Jul 2023 05:07:24 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DBE0C3;
+        Mon, 10 Jul 2023 02:07:22 -0700 (PDT)
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4355B1EC0683;
+        Mon, 10 Jul 2023 11:07:20 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1688980040;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=z8Md5DxJ/DXNzZNPaIMm/A+OyRkUpEJ0KHRBY8+I9Hg=;
-        b=OwQ4pYi99w5JfrwFE0h2/5w69EaH1n3mfB/fHgnzS2y1LfMo8+fUgm4ZljKhWAdQzqZMBI
-        dFCTTu2X9AUSBxkOFAt9xXkVtRfqNGYFHXvi5eJ2inDyQDOit7x//tLaY4uKbjnuOgpcut
-        TTLdz7+gpW4Wf16eB39sD24tJ3Ev76U=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-546-1qhflYJkM16EN5HCgYJLvg-1; Mon, 10 Jul 2023 04:45:17 -0400
-X-MC-Unique: 1qhflYJkM16EN5HCgYJLvg-1
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2b710c5677eso20676591fa.0
-        for <linux-efi@vger.kernel.org>; Mon, 10 Jul 2023 01:45:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688978716; x=1691570716;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=z8Md5DxJ/DXNzZNPaIMm/A+OyRkUpEJ0KHRBY8+I9Hg=;
-        b=YMji8u79eP0+mHA062WrosYBgMtmqDoP5eBp4aG7Esm+v9Ny7hT+nyRythpd0OBWS8
-         ZGqXNsnemJ+l+NkxgF2Z98ez/tTV7qbP2d1Br3E83rWC5fk3TVcMGGgIaUOl1rld4Ctq
-         EgvCk75C0kqjwTPQZ5VznA1009mI3N2QHrq1P4pYP1MlkjwRW4XHGH4xgqZg/hr34JiL
-         P6MRJTKR65OnPpRnZYGk+om5I+/Ye4Y6gwfBLrM/15c4Yc+HfG9z4zrKMb0q5zPXZQQA
-         o4tOc+9uotS08/vbHzrDiFPQY6bQrQJxq4naqzMwKQv7GakIeN/tW/v6H8HrAyNXbmc1
-         XcSQ==
-X-Gm-Message-State: ABy/qLZFmoGi53Cs1cg3qIlUge30HRu55HZlPOZC3FYI0neIRlMhVGv0
-        nhCK3fHYLKJ51G18CYO5pM/wtFlWK1/0+jwLhFgxLJRTI/BnALaqHhhlMJTz4l9MmM8zyjIjOBv
-        tji5+GaoIbwOh4B5Qp9sL
-X-Received: by 2002:a2e:9d45:0:b0:2b4:6ca3:7747 with SMTP id y5-20020a2e9d45000000b002b46ca37747mr8749621ljj.28.1688978716102;
-        Mon, 10 Jul 2023 01:45:16 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHBycuiZhcq3PBfEMMSqEg7n8D8wH0mWIJ/M8B+HzpOeS4E5z8EOtnuZXMLz/KbMGsmr/2rOw==
-X-Received: by 2002:a2e:9d45:0:b0:2b4:6ca3:7747 with SMTP id y5-20020a2e9d45000000b002b46ca37747mr8749594ljj.28.1688978715728;
-        Mon, 10 Jul 2023 01:45:15 -0700 (PDT)
-Received: from localhost ([62.15.161.174])
-        by smtp.gmail.com with ESMTPSA id c16-20020a7bc850000000b003fbb06af219sm9780811wml.32.2023.07.10.01.45.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Jul 2023 01:45:15 -0700 (PDT)
-From:   Javier Martinez Canillas <javierm@redhat.com>
-To:     Thomas Zimmermann <tzimmermann@suse.de>, deller@gmx.de,
-        suijingfeng@loongson.cn, decui@microsoft.com, wei.liu@kernel.org,
-        haiyangz@microsoft.com, kys@microsoft.com
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        kernel test robot <lkp@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        linux-efi@vger.kernel.org, linux-hyperv@vger.kernel.org
-Subject: Re: [PATCH] fbdev/hyperv_fb: Include <linux/screen_info.h>
-In-Reply-To: <20230710075848.23087-1-tzimmermann@suse.de>
-References: <20230710075848.23087-1-tzimmermann@suse.de>
-Date:   Mon, 10 Jul 2023 10:45:14 +0200
-Message-ID: <87lefoi291.fsf@minerva.mail-host-address-is-not-set>
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=3jCwGy7jvYI7e3jAtfhAlnYpY7F4wTZormRBRvMX+HY=;
+        b=J/gwSWOD1O8UaT2hv+12DqthGXDk2Rl0HtTdAumDGa72TEAPx/kJOlddS1dwnpK0uy8XnZ
+        cfBnO9DZFjK7GUfU1wUEGR5U8pYuzUjJW7mVEgCmwuMAlqFnbHKaiKlEnAETx/9aUyk553
+        y/oxFrFknCevHOFCysUEdr/ZW4EoN4c=
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+        header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 8m8axYnXC3ej; Mon, 10 Jul 2023 09:07:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+        t=1688980034; bh=3jCwGy7jvYI7e3jAtfhAlnYpY7F4wTZormRBRvMX+HY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=YvtUfGFpu8Mk88jkAHUpDcTJeCLALS9COTUtah9DyxCRlef+AaBdyF8iP9Y4fHfVH
+         3+xrYmooltK48i4lzEwn0bW9biDLHgilDGRP6vYxirhAruhO6L0wdsKw3zs8LaJQma
+         xdvWbhNTpJwkP76wQhLgBmiNX93hAwtKmfbsvGWRhKVQNJUEcjhVDfiY9jwK+No0o5
+         ya4OQOh09t+DLYqk19164KmxLKGevbOa/COIsmkRs+p4WeifO1d3oOm90gSxd0HcQY
+         ND2c3u4jDV2QS/ycc/5wR3QgtlvyHUYdPwxBLhkXZfAa30D4IDrbeQvtCWKple2Fhq
+         /h2id0hCMgP+fqu6zS0kwc+D/VJwmfUJEYD41JlXk4whB4nMrdoTKiyRGwmBBTcIPy
+         TolEcTQHWI/QEKcqQJxRQ72ppeLgtgjpOu/EsdmLxtPOvL+7NMqROKTOX7D5JdmrQp
+         9S9VO6+C0KpX/sUBjYbDQI3YVeL+HD3ydgC/NpE4m5thGssOpQ3bzdD0twJH4nROtU
+         OFDuuPGhlaKZoqCbiOh4/69eHnAMxelAEiAAU8wJxEXw30O/hSz4ymlIaGG3nLH2FQ
+         Ke2kGOlah1v+Ei3VjzU7EoZ1ijytMptPXCnskoVDCWK+I4tfe7HXvzPTnRJatbMdtq
+         GPneOW8PlUJQxiF+upEL4N9o=
+Received: from zn.tnic (pd9530d32.dip0.t-ipconnect.de [217.83.13.50])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+        (No client certificate requested)
+        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C62E440E01A4;
+        Mon, 10 Jul 2023 09:06:54 +0000 (UTC)
+Date:   Mon, 10 Jul 2023 11:06:54 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Evgeniy Baskov <baskov@ispras.ru>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Peter Jones <pjones@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Dave Young <dyoung@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>
+Subject: Re: [PATCH v5 06/20] x86/decompressor: Store boot_params pointer in
+ callee save register
+Message-ID: <20230710090654.GCZKvKLh44tzlNzPcq@fat_crate.local>
+References: <20230607072342.4054036-1-ardb@kernel.org>
+ <20230607072342.4054036-7-ardb@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230607072342.4054036-7-ardb@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Thomas Zimmermann <tzimmermann@suse.de> writes:
-
-> Include <linux/screen_info.h> to get the global screen_info state.
-> Fixes the following errors:
->
->>> drivers/video/fbdev/hyperv_fb.c:1033:10: error: use of undeclared identifier 'screen_info'
->     1033 |                 base = screen_info.lfb_base;
->          |                        ^
->    drivers/video/fbdev/hyperv_fb.c:1034:10: error: use of undeclared identifier 'screen_info'
->     1034 |                 size = screen_info.lfb_size;
-> 	 |                        ^
->>> drivers/video/fbdev/hyperv_fb.c:1080:3: error: must use 'struct' tag to refer to type 'screen_info'
->     1080 |                 screen_info.lfb_size = 0;
-> 	 |                 ^
-> 	 |                 struct
->>> drivers/video/fbdev/hyperv_fb.c:1080:14: error: expected identifier or '('
->     1080 |                 screen_info.lfb_size = 0;
-> 	 |                            ^
->    drivers/video/fbdev/hyperv_fb.c:1081:3: error: must use 'struct' tag to refer to type 'screen_info'
->     1081 |                 screen_info.lfb_base = 0;
-> 	 |                 ^
-> 	 |                 struct
->    drivers/video/fbdev/hyperv_fb.c:1081:14: error: expected identifier or '('
->     1081 |                 screen_info.lfb_base = 0;
-> 	 |                            ^
->    drivers/video/fbdev/hyperv_fb.c:1082:3: error: must use 'struct' tag to refer to type 'screen_info'
->     1082 |                 screen_info.orig_video_isVGA = 0;
-> 	 |                 ^
-> 	 |                 struct
->     drivers/video/fbdev/hyperv_fb.c:1082:14: error: expected identifier or '('
->     1082 |                 screen_info.orig_video_isVGA = 0;
-> 	 |                            ^
->     8 errors generated.
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202307101042.rqehuauj-lkp@intel.com/
-> Fixes: 8b0d13545b09 ("efi: Do not include <linux/screen_info.h> from EFI header")
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: "K. Y. Srinivasan" <kys@microsoft.com> (supporter:Hyper-V/Azure CORE AND DRIVERS)
-> Cc: Haiyang Zhang <haiyangz@microsoft.com> (supporter:Hyper-V/Azure CORE AND DRIVERS)
-> Cc: Wei Liu <wei.liu@kernel.org> (supporter:Hyper-V/Azure CORE AND DRIVERS)
-> Cc: Dexuan Cui <decui@microsoft.com> (supporter:Hyper-V/Azure CORE AND DRIVERS)
-> Cc: Helge Deller <deller@gmx.de> (maintainer:FRAMEBUFFER LAYER)
-> Cc: Javier Martinez Canillas <javierm@redhat.com>
-> Cc: Sui Jingfeng <suijingfeng@loongson.cn>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: linux-efi@vger.kernel.org
-> Cc: linux-hyperv@vger.kernel.org (open list:Hyper-V/Azure CORE AND DRIVERS)
-> Cc: linux-fbdev@vger.kernel.org (open list:FRAMEBUFFER LAYER)
-> Cc: dri-devel@lists.freedesktop.org (open list:FRAMEBUFFER LAYER)
+On Wed, Jun 07, 2023 at 09:23:28AM +0200, Ard Biesheuvel wrote:
+> Instead of pushing and popping %RSI several times to preserve the struct
+> boot_params pointer across the execution of the startup code, move it
+> into a callee save register before the first call into C, and copy it
+> back when needed.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 > ---
->  drivers/video/fbdev/hyperv_fb.c | 1 +
->  1 file changed, 1 insertion(+)
+>  arch/x86/boot/compressed/head_64.S | 34 +++++++-------------
+>  1 file changed, 11 insertions(+), 23 deletions(-)
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+I like that.
+
+We do a similar dance in arch/x86/kernel/head_64.S. Care to fix that
+too, in a separate patch?
+
+Thx.
 
 -- 
-Best regards,
+Regards/Gruss,
+    Boris.
 
-Javier Martinez Canillas
-Core Platforms
-Red Hat
-
+https://people.kernel.org/tglx/notes-about-netiquette
