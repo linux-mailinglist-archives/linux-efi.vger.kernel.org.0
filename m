@@ -2,39 +2,40 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72B6174D5A0
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Jul 2023 14:36:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B240E74D7B0
+	for <lists+linux-efi@lfdr.de>; Mon, 10 Jul 2023 15:33:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231920AbjGJMgO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 10 Jul 2023 08:36:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38428 "EHLO
+        id S232478AbjGJNdL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 10 Jul 2023 09:33:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229774AbjGJMgN (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 10 Jul 2023 08:36:13 -0400
+        with ESMTP id S232944AbjGJNdF (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 10 Jul 2023 09:33:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFD37DB;
-        Mon, 10 Jul 2023 05:36:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B68019F;
+        Mon, 10 Jul 2023 06:32:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 52A8360FE9;
-        Mon, 10 Jul 2023 12:36:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A3A7C433CB;
-        Mon, 10 Jul 2023 12:35:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5933560FE9;
+        Mon, 10 Jul 2023 13:32:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E3BC433C9;
+        Mon, 10 Jul 2023 13:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688992570;
-        bh=H2xgbjqXpjCIL1YrRX5e2Lm0dCE6nhNpxkhLzNT5ua0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GYBFwi445q0lt0ZphYZpLmOt5wR+meJbqPSRhxet7P0iiPRYgnHSi9LobGg38wRHk
-         YRw3H+QXcyvvByqsJ+4wCmkCN6cf2UfzMYa1sqxLulNzp2UeGTyc0ij28Jne5oQ1T1
-         3RwWXPXG0ww5I/wkFqIbXj1fKOk/tlA6pnousvcLf4fNGPnso9ohJABAD43u0T4XNZ
-         4qx5bhLf1Dg7cYvF3ikt77ixrICUwaQpwn/PA/WiTF+kWZvjsjd1ey6AFXxc5U5x4u
-         9w1gOuNArxobHqFss0Ukd6pKRPqY5GTMTdaOCIUwXl2G+JmZTqpL3AJhz3XT+Fb/gm
-         tN6yuNjSBVu7g==
-Date:   Mon, 10 Jul 2023 14:35:28 +0200
-From:   Christian Brauner <brauner@kernel.org>
-To:     Jeff Layton <jlayton@kernel.org>
+        s=k20201202; t=1688995962;
+        bh=ypo6EEC/a10vTp0LME1omXwBE1UiKK/mReyAl6l5UHQ=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=J7Z7W1QfjLNRfgVQcSdKnYFRxtD+3fk+fVeHY9xuci1TKV61DCMVSYVvDG9kwuCBX
+         g+QpzC0XDkSjeL9nV9+lGdPbp68Q96EXBiPlDNXBynN9HrAz4Y+E89ZYAnFm4gMFob
+         SGwQAd+JWX6wsLqjr9V4UXCKsBkrO6/s1MT1FJcjDjR0RhV1HnH8M/padgIYfYI3iT
+         50AKfuQ1Ba3eH+A3TeCdkft2SWR53hIVATzxttJnSld1dtaOLY6XNcMPkiIrdtp3w+
+         UMgZy7XJf81pa8iQgs3v7vGfymFo80jGgmK2T6kIjmEHcqRaAvCUmLi8QnIHmVmDpT
+         pZFJemBst7t+w==
+Message-ID: <c4eaff9389fe63ec4e29404ec0d1181b74935426.camel@kernel.org>
+Subject: Re: [PATCH v2 00/89] fs: new accessors for inode->i_ctime
+From:   Jeff Layton <jlayton@kernel.org>
+To:     Christian Brauner <brauner@kernel.org>
 Cc:     jk@ozlabs.org, arnd@arndb.de, mpe@ellerman.id.au,
         npiggin@gmail.com, christophe.leroy@csgroup.eu, hca@linux.ibm.com,
         gor@linux.ibm.com, agordeev@linux.ibm.com,
@@ -124,14 +125,15 @@ Cc:     jk@ozlabs.org, arnd@arndb.de, mpe@ellerman.id.au,
         bpf@vger.kernel.org, netdev@vger.kernel.org,
         apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
         selinux@vger.kernel.org
-Subject: Re: [PATCH v2 00/89] fs: new accessors for inode->i_ctime
-Message-ID: <20230710-zudem-entkam-bb508cbd8c78@brauner>
+Date:   Mon, 10 Jul 2023 09:32:23 -0400
+In-Reply-To: <20230710-zudem-entkam-bb508cbd8c78@brauner>
 References: <20230705185812.579118-1-jlayton@kernel.org>
- <5e40891f6423feb5b68f025e31f26e9a50ae9390.camel@kernel.org>
+         <5e40891f6423feb5b68f025e31f26e9a50ae9390.camel@kernel.org>
+         <20230710-zudem-entkam-bb508cbd8c78@brauner>
+Content-Type: text/plain; charset="ISO-8859-15"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <5e40891f6423feb5b68f025e31f26e9a50ae9390.camel@kernel.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -142,44 +144,67 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jul 07, 2023 at 08:42:31AM -0400, Jeff Layton wrote:
-> On Wed, 2023-07-05 at 14:58 -0400, Jeff Layton wrote:
-> > v2:
-> > - prepend patches to add missing ctime updates
-> > - add simple_rename_timestamp helper function
-> > - rename ctime accessor functions as inode_get_ctime/inode_set_ctime_*
-> > - drop individual inode_ctime_set_{sec,nsec} helpers
-> > 
-> 
-> After review by Jan and others, and Jan's ext4 rework, the diff on top
-> of the series I posted a couple of days ago is below. I don't really
-> want to spam everyone with another ~100 patch v3 series, but I can if
-> you think that's best.
-> 
-> Christian, what would you like me to do here?
+On Mon, 2023-07-10 at 14:35 +0200, Christian Brauner wrote:
+> On Fri, Jul 07, 2023 at 08:42:31AM -0400, Jeff Layton wrote:
+> > On Wed, 2023-07-05 at 14:58 -0400, Jeff Layton wrote:
+> > > v2:
+> > > - prepend patches to add missing ctime updates
+> > > - add simple_rename_timestamp helper function
+> > > - rename ctime accessor functions as inode_get_ctime/inode_set_ctime_=
+*
+> > > - drop individual inode_ctime_set_{sec,nsec} helpers
+> > >=20
+> >=20
+> > After review by Jan and others, and Jan's ext4 rework, the diff on top
+> > of the series I posted a couple of days ago is below. I don't really
+> > want to spam everyone with another ~100 patch v3 series, but I can if
+> > you think that's best.
+> >=20
+> > Christian, what would you like me to do here?
+>=20
+> I picked up the series from the list and folded the fixups you posted
+> here into the respective fs conversion patches. I hope that helps you
+> avoid a resend. You should have received a separate "thank you" mail for
+> all of this.
+>=20
+> To each patch that I folded one of the fixlets from below into I added a
+> git note that records a link to your mail here and the respective patch
+> hunk from this mail that I folded into the patch. git.kernel.org will
+> show notes by default. For example,
+> https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git/commit/?h=3Dv=
+fs.ctime&id=3D8b0e3c2e99004609a16ba145bcbdfdddb78e220e
+> should show you the note I added. You can also fetch them via
+> git fetch $remote refs/notes/*:refs/notes/*
+> (You probably know that ofc but jic.) if you're interested.
+>=20
+> Based on v6.5-rc1 as of today.
+>=20
 
-I picked up the series from the list and folded the fixups you posted
-here into the respective fs conversion patches. I hope that helps you
-avoid a resend. You should have received a separate "thank you" mail for
-all of this.
+Many thanks!!! I'll get to work rebasing the multigrain timestamp series
+on top of that.
 
-To each patch that I folded one of the fixlets from below into I added a
-git note that records a link to your mail here and the respective patch
-hunk from this mail that I folded into the patch. git.kernel.org will
-show notes by default. For example,
-https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git/commit/?h=vfs.ctime&id=8b0e3c2e99004609a16ba145bcbdfdddb78e220e
-should show you the note I added. You can also fetch them via
-git fetch $remote refs/notes/*:refs/notes/*
-(You probably know that ofc but jic.) if you're interested.
+> Btw, both b4 and patchwork somehow treat the series in weird was.
+> IOW, based on the message id of the cover letter I was able to pull most
+> messages except for:
+>=20
+> [07/92] fs: add ctime accessors infrastructure
+> [08/92] fs: new helper: simple_rename_timestamp
+> [92/92] fs: rename i_ctime field to __i_ctime
+>=20
+> which I pulled in separately. Not sure what the cause of=A0
+>=20
+> this is.
 
-Based on v6.5-rc1 as of today.
+Good to know.
 
-Btw, both b4 and patchwork somehow treat the series in weird was.
-IOW, based on the message id of the cover letter I was able to pull most
-messages except for:
+I ended up doing the send in two phases: one for the cover letter and
+infrastructure patches that went to everyone, and one for the per-
+subsystem patches that went do individual maintainers and lists.
 
-[07/92] fs: add ctime accessors infrastructure
-[08/92] fs: new helper: simple_rename_timestamp
-[92/92] fs: rename i_ctime field to __i_ctime
+I suspect that screwed up the message IDs somehow. Hopefully I won't
+need to do a posting like that again soon, but I'll pay closer attention
+to the message id handling next time.
 
-which I pulled in separately. Not sure what the cause of this is.
+Thanks again!
+--=20
+Jeff Layton <jlayton@kernel.org>
