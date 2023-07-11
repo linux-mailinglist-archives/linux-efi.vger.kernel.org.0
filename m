@@ -2,36 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6A5774EA06
-	for <lists+linux-efi@lfdr.de>; Tue, 11 Jul 2023 11:16:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB1E374EA08
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Jul 2023 11:16:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232026AbjGKJQE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 11 Jul 2023 05:16:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43534 "EHLO
+        id S232046AbjGKJQP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 11 Jul 2023 05:16:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232025AbjGKJPi (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 11 Jul 2023 05:15:38 -0400
+        with ESMTP id S231855AbjGKJPt (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 11 Jul 2023 05:15:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D6781724;
-        Tue, 11 Jul 2023 02:15:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0087A173D;
+        Tue, 11 Jul 2023 02:15:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 279046142F;
-        Tue, 11 Jul 2023 09:15:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD977C433C8;
-        Tue, 11 Jul 2023 09:15:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6BC4B60EE6;
+        Tue, 11 Jul 2023 09:15:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0460AC433CA;
+        Tue, 11 Jul 2023 09:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689066924;
-        bh=1uUURGYHh6gp1uj1SgOD55SOPPzPsQeMQl9hTqhNVG8=;
+        s=k20201202; t=1689066928;
+        bh=zBQnolwjGWOFrzM6wjiy++8kSbbyRGDO2Rsd3pLzB7M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cSYasv6iUpezIDK1jpK4/5jDKxqU4m6t6ZCC4BXaRh56rAessJ44VEHMZnl47Sx81
-         FIOIsZg+sUtgHMBeUzpNG2e53qSXX0AQ3SxgOfbPr9+tEnaXhl0/3JdqY9vdwAdhvJ
-         wQEsoim0KXxz3JYjsrUKhHv1S+5Fbmv9wMb7xvIblLRLWmlq+JGaGR2c7ueC9uObpW
-         GLVvVpkV/fkO6OQehrT6q5uIaCaYz9aIROYq2oVfs9J/uZ9AbNJf33yZ7yHKVR/y1S
-         r7zjlG1uCK2KctDyJEICZJnKD+vZEb0IrrP5DlzQtB/JUwPsuae9GgmL5tpqo1Phjb
-         DiM8GpfWitvkg==
+        b=nka0rUU9uZfRQ+I50FIv8wQRML4h5P/hu9ckqumQq60jMtb7DScxPaLD/cl0AOhi5
+         BoFLB015lxLROZpXdrxw7nleBaEJJB7zzIBRx82hJ00rHcuQUuluySxv2GJ5PsTIH/
+         Q6zBYo8M+Vn/es/goqUlIkaY8CEQWbHZTqdVDsXtY35tBdc+flvBruknk5hjvrG7N+
+         /E3p5DbgmeiVuYsOqQ6HHvWDZr6ufQISUShk2w/ctB3eQ7nHa41x8Vf5YFpMIf0y6N
+         yKfoRiqYvh09pg0L2e8v8jgLm4VGhff/LYwiXvc5K96iWHX9betL98K+2e2O08aqUI
+         OJIWFaAAej0hQ==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -52,14 +52,14 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH v6 05/21] x86/efistub: Clear BSS in EFI handover protocol entrypoint
-Date:   Tue, 11 Jul 2023 11:14:37 +0200
-Message-Id: <20230711091453.2543622-6-ardb@kernel.org>
+Subject: [PATCH v6 06/21] x86/decompressor: Use proper sequence to take the address of the GOT
+Date:   Tue, 11 Jul 2023 11:14:38 +0200
+Message-Id: <20230711091453.2543622-7-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230711091453.2543622-1-ardb@kernel.org>
 References: <20230711091453.2543622-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2971; i=ardb@kernel.org; h=from:subject; bh=1uUURGYHh6gp1uj1SgOD55SOPPzPsQeMQl9hTqhNVG8=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIWWtbLWtfPizFecn1P77pt9uKcQZtNbiQEiBUjcHl1Dws SDR5fc6SlkYxDgYZMUUWQRm/3238/REqVrnWbIwc1iZQIYwcHEKwET6TzP8d/DLVNcuPSO9pDSs 9u7N9l3fr83Oijmz/Yeqy82sGjaudIb/RSeSzz5Z/WeuxGSnJC5lzcps1zT+CZ6bXri+bjoyqfU jNwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1782; i=ardb@kernel.org; h=from:subject; bh=zBQnolwjGWOFrzM6wjiy++8kSbbyRGDO2Rsd3pLzB7M=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIWWtbM21JzOOKO50n/zsy1Oj5mNhpmVXW8vNDn+X7N7C/ D3B4+WijlIWBjEOBlkxRRaB2X/f7Tw9UarWeZYszBxWJpAhDFycAjCR3HcMf4UMfO1iAxXklk8/ bM4SJ7Rw7RKTNK7fjra2uis/6wr9TWRkmFpzPN/9Z5F1YRrPnRiXN54ezUdlp7QmKx3++nCWmbg sBwA=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -72,89 +72,44 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The so-called EFI handover protocol is value-add from the distros that
-permits a loader to simply copy a PE kernel image into memory and call
-an alternative entrypoint that is described by an embedded boot_params
-structure.
+The 32-bit decompressor does not actually use a global offset table
+(GOT), but as is common for 32-bit position independent code, it uses
+the magic symbol _GLOBAL_OFFSET_TABLE_ as an anchor from which to derive
+the actual runtime addresses of other symbols, using special @GOTOFF
+symbol references that are resolved at link time, and populated with the
+distance between the address of the magic _GLOBAL_OFFSET_TABLE_ anchor
+and the address of the symbol in question.
 
-Most implementations of this protocol do not bother to check the PE
-header for minimum alignment, section placement, etc, and therefore also
-don't clear the image's BSS, or even allocate enough memory for it.
+This means _GLOBAL_OFFSET_TABLE_ is the only symbol whose actual runtime
+address needs to be determined explicitly, which is one of the first
+things that happens in startup_32. However, it does so by taking the
+absolute address via the immediate field of an ADD instruction (plus a
+small offset), which seems to defeat the point.
 
-Allocating more memory on the fly is rather difficult, but at least
-clear the BSS region explicitly when entering in this manner, so that
-the EFI stub code does not get confused by global variables that were
-not zero-initialized correctly.
-
-When booting in mixed mode, this BSS clearing must occur before any
-global state is created, so clear it in the 32-bit asm entry point.
+Fortunately, the assembler knows that _GLOBAL_OFFSET_TABLE_ is magic,
+and emits a special relative R_386_GOTPC relocation instead, and so the
+resulting code works as expected. However, this is not obvious for
+someone reading the code, and the use of LEA with an explicit relative
+addend is more idiomatic so use that instead.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/efi_mixed.S    | 14 +++++++++++++-
- drivers/firmware/efi/libstub/x86-stub.c | 13 +++++++++++--
- 2 files changed, 24 insertions(+), 3 deletions(-)
+ arch/x86/boot/compressed/head_32.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/boot/compressed/efi_mixed.S b/arch/x86/boot/compressed/efi_mixed.S
-index 9308b595f6f0a5de..8a02a151806df14c 100644
---- a/arch/x86/boot/compressed/efi_mixed.S
-+++ b/arch/x86/boot/compressed/efi_mixed.S
-@@ -142,6 +142,18 @@ SYM_FUNC_END(__efi64_thunk)
- 	.code32
- #ifdef CONFIG_EFI_HANDOVER_PROTOCOL
- SYM_FUNC_START(efi32_stub_entry)
-+	call	1f
-+1:	popl	%ecx
-+
-+	/* Clear BSS */
-+	xorl	%eax, %eax
-+	leal	(_bss - 1b)(%ecx), %edi
-+	leal	(_ebss - 1b)(%ecx), %ecx
-+	subl	%edi, %ecx
-+	shrl	$2, %ecx
-+	cld
-+	rep	stosl
-+
- 	add	$0x4, %esp		/* Discard return address */
- 	popl	%ecx
- 	popl	%edx
-@@ -334,7 +346,7 @@ SYM_FUNC_END(efi32_pe_entry)
- 	.org	efi32_stub_entry + 0x200
- 	.code64
- SYM_FUNC_START_NOALIGN(efi64_stub_entry)
--	jmp	efi_stub_entry
-+	jmp	efi_handover_entry
- SYM_FUNC_END(efi64_stub_entry)
- #endif
+diff --git a/arch/x86/boot/compressed/head_32.S b/arch/x86/boot/compressed/head_32.S
+index 8876ffe30e9a4819..3530465b5b85ccf3 100644
+--- a/arch/x86/boot/compressed/head_32.S
++++ b/arch/x86/boot/compressed/head_32.S
+@@ -58,7 +58,7 @@ SYM_FUNC_START(startup_32)
+ 	leal	(BP_scratch+4)(%esi), %esp
+ 	call	1f
+ 1:	popl	%edx
+-	addl	$_GLOBAL_OFFSET_TABLE_+(.-1b), %edx
++	leal	(_GLOBAL_OFFSET_TABLE_ - 1b)(%edx), %edx
  
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 1180ccd3cd426918..9e1994c6afc672ca 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -970,12 +970,21 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
- }
- 
- #ifdef CONFIG_EFI_HANDOVER_PROTOCOL
-+void efi_handover_entry(efi_handle_t handle, efi_system_table_t *sys_table_arg,
-+			struct boot_params *boot_params)
-+{
-+	extern char _bss[], _ebss[];
-+
-+	memset(_bss, 0, _ebss - _bss);
-+	efi_stub_entry(handle, sys_table_arg, boot_params);
-+}
-+
- #ifndef CONFIG_EFI_MIXED
--extern __alias(efi_stub_entry)
-+extern __alias(efi_handover_entry)
- void efi32_stub_entry(efi_handle_t handle, efi_system_table_t *sys_table_arg,
- 		      struct boot_params *boot_params);
- 
--extern __alias(efi_stub_entry)
-+extern __alias(efi_handover_entry)
- void efi64_stub_entry(efi_handle_t handle, efi_system_table_t *sys_table_arg,
- 		      struct boot_params *boot_params);
- #endif
+ 	/* Load new GDT */
+ 	leal	gdt@GOTOFF(%edx), %eax
 -- 
 2.39.2
 
