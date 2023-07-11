@@ -2,55 +2,61 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30CF974E07C
-	for <lists+linux-efi@lfdr.de>; Mon, 10 Jul 2023 23:56:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83B3274E875
+	for <lists+linux-efi@lfdr.de>; Tue, 11 Jul 2023 09:58:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229670AbjGJV4G (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 10 Jul 2023 17:56:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48646 "EHLO
+        id S229864AbjGKH6D (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 11 Jul 2023 03:58:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229669AbjGJV4F (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 10 Jul 2023 17:56:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFDFCD2;
-        Mon, 10 Jul 2023 14:56:04 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        with ESMTP id S231537AbjGKH6C (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 11 Jul 2023 03:58:02 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64294E55;
+        Tue, 11 Jul 2023 00:57:58 -0700 (PDT)
+Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 41C2761219;
-        Mon, 10 Jul 2023 21:56:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81ACC433C8;
-        Mon, 10 Jul 2023 21:56:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689026163;
-        bh=urUMvcqIHSx44e1CLXIt+y4lPoaxzNCVYEBO64LKrtI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=CDThmcbcHASAfk2VyXGM5XYnw6xuTJhgaGL9h53i/ZaKq/TKcX3ai1c3/20QBzUA4
-         7A2Ozb5nBEeK1H/mzH27jKpoywTSLx/H8/KNZDoItdXaZjmWBKLSIxn8uZeH4Y/NQd
-         YzCH7yo5B91USbLjNXlJkDp6HJDzSL7Al8v1WN2+2SY6/rzWjQ2JDCtqCLvi0LSS5q
-         6hppfuUaEuyb4mjNk4lBO5V+b8cU20Ho/IxyblOLHhT/XxO3N0+X2L/1dy6kFHSNd2
-         LUJXp3JiBAkGiZ1qxsfhbhLdBLJTtrDI2AISaswHte9wSVs7qo7zPgSdI3cfGcoMCo
-         ClZSpuF4N0VWQ==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-4faaaa476a9so7980189e87.2;
-        Mon, 10 Jul 2023 14:56:03 -0700 (PDT)
-X-Gm-Message-State: ABy/qLbyp7TjrPOhVhwqTA6leuLtrRWncm9Iv6IUAaziEWF1dsLZbttR
-        kQBv/WSB76WiauP2Sk2POQ5CpOo+6W4D85OVp0o=
-X-Google-Smtp-Source: APBJJlEz2AlQPaxY8fa7D8go97IXDSjkxf0l3ev+QQpgPy724kTPemHsnt7WgY8N+2M65jKY0OOXyX9aqIBrk7urOc0=
-X-Received: by 2002:a05:6512:3a96:b0:4f8:554f:36aa with SMTP id
- q22-20020a0565123a9600b004f8554f36aamr12455800lfu.29.1689026161679; Mon, 10
- Jul 2023 14:56:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230607072342.4054036-1-ardb@kernel.org> <20230607072342.4054036-7-ardb@kernel.org>
- <20230710090654.GCZKvKLh44tzlNzPcq@fat_crate.local>
-In-Reply-To: <20230710090654.GCZKvKLh44tzlNzPcq@fat_crate.local>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 10 Jul 2023 23:55:49 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGUtm2unrpwLWCXQhoE1wEYuFgvz3u_SXDFE=SJHJdYmQ@mail.gmail.com>
-Message-ID: <CAMj1kXGUtm2unrpwLWCXQhoE1wEYuFgvz3u_SXDFE=SJHJdYmQ@mail.gmail.com>
-Subject: Re: [PATCH v5 06/20] x86/decompressor: Store boot_params pointer in
- callee save register
-To:     Borislav Petkov <bp@alien8.de>
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1A0681EC0B91;
+        Tue, 11 Jul 2023 09:57:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1689062276;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=8hrjuer04YxWdK/duzpqjijBu0TXE/n4lWk/TaUwmGM=;
+        b=hXuL0QTbszg3ObEo6Xyaa/DT1AqcjObCWQv8ENFezAjfOBxKkRgYNzU6jl7S8DCZd/pv11
+        yNlzF9Frh7espl74sXSO3PFYyvxfnU693acxVoSFRHlWxDHbfW6cTP5wtjvOP5Ka2h8E0R
+        gVOYYcN/b24Ahn3lMCnNvstLmKP3WsI=
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+        header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id AZk1ot6LUQwt; Tue, 11 Jul 2023 07:57:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+        t=1689062273; bh=8hrjuer04YxWdK/duzpqjijBu0TXE/n4lWk/TaUwmGM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=IoSgZ/suG8Jah1i8/uHBBRC/TyBkuHHP0SuNCfbtnKNrV6slL1LnkqtlfLGJf3Epp
+         nJlf7ShrCEsviiB5R4azEAFOT2wFhm63oFW+GHnvh+2F2SvaakEkXKmZVmOs+5wn6D
+         y4p9Ow2XzF4cydJoDucL7Z4+rvtjJqV/Nrlt1eii+a4a6rXLg7sGfP7bOIyP3k1Og4
+         FN0Ff9gh5VIxppdeEXXGARYMHsp2r+PlzUBAq37vUHmffG1P2E9gatlZ/66heHwdYB
+         AdccJKi7FrQ2nEaNBrBIFzfwqMcpMof11q8onWgWcxY7ZVbMPq9dEx2OhT34KsuuDj
+         AwszkzLYrDSa1d6ErZ6YdmeAfzeaFTaD+flXlyaoCkiiRh8Xvl7mU/3ypZ1FIfhoTn
+         UOlKPrDScpGdireBFLkIvlXV+QJXlGCajOZkfic2ScouwzoQheV8jq72qIQer3RgEM
+         sGknuGKBBDalpLLDguPYNgfhkLFEHYY2OUVJTzWgJ33qbHJwKxvNZWWagdLlnUffrN
+         W3hkcV8P6g8IWU6CDRR3gCN16bBDRs+RttyAnvQulwyfJ964+n2181N/gjsOlBCD8h
+         +vj3slfwcK2Glgz/+rweGoXjCraV97kXYGQuTUu1GlhZY2qd7depIOfz2B/DaFS8xc
+         a+MC+7tdiGzfMmKDLeXqKfUo=
+Received: from zn.tnic (pd9530d32.dip0.t-ipconnect.de [217.83.13.50])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+        (No client certificate requested)
+        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1F58940E00F4;
+        Tue, 11 Jul 2023 07:57:34 +0000 (UTC)
+Date:   Tue, 11 Jul 2023 09:57:33 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Evgeniy Baskov <baskov@ispras.ru>,
         Andy Lutomirski <luto@kernel.org>,
@@ -68,10 +74,20 @@ Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Joerg Roedel <jroedel@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Subject: Re: [PATCH v5 06/20] x86/decompressor: Store boot_params pointer in
+ callee save register
+Message-ID: <20230711075733.GFZK0LbaVA/cHUbChN@fat_crate.local>
+References: <20230607072342.4054036-1-ardb@kernel.org>
+ <20230607072342.4054036-7-ardb@kernel.org>
+ <20230710090654.GCZKvKLh44tzlNzPcq@fat_crate.local>
+ <CAMj1kXGUtm2unrpwLWCXQhoE1wEYuFgvz3u_SXDFE=SJHJdYmQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXGUtm2unrpwLWCXQhoE1wEYuFgvz3u_SXDFE=SJHJdYmQ@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,27 +95,19 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 10 Jul 2023 at 11:07, Borislav Petkov <bp@alien8.de> wrote:
->
-> On Wed, Jun 07, 2023 at 09:23:28AM +0200, Ard Biesheuvel wrote:
-> > Instead of pushing and popping %RSI several times to preserve the struct
-> > boot_params pointer across the execution of the startup code, move it
-> > into a callee save register before the first call into C, and copy it
-> > back when needed.
-> >
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >  arch/x86/boot/compressed/head_64.S | 34 +++++++-------------
-> >  1 file changed, 11 insertions(+), 23 deletions(-)
->
-> I like that.
->
-> We do a similar dance in arch/x86/kernel/head_64.S. Care to fix that
-> too, in a separate patch?
->
+On Mon, Jul 10, 2023 at 11:55:49PM +0200, Ard Biesheuvel wrote:
+> I already did, actually, but I dropped it from this series because it
+> was getting too long, and not essential for the overall goal of the
+> changes.
 
-I already did, actually, but I dropped it from this series because it
-was getting too long, and not essential for the overall goal of the
-changes.
+Yeah, might wanna add it, though, for the simple reason that
+compressed/head_64.S and kernel/head_64.S will otherwise differ in the
+%rsi handling unnecessarily and people might wonder why.
 
-https://lore.kernel.org/all/20230602101313.3557775-19-ardb@kernel.org/
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
