@@ -2,62 +2,156 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F392F7500C3
-	for <lists+linux-efi@lfdr.de>; Wed, 12 Jul 2023 10:09:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABF137502B4
+	for <lists+linux-efi@lfdr.de>; Wed, 12 Jul 2023 11:19:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231367AbjGLIJQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 12 Jul 2023 04:09:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43674 "EHLO
+        id S230196AbjGLJTD (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 12 Jul 2023 05:19:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbjGLIJP (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 12 Jul 2023 04:09:15 -0400
-Received: from mail.lokoho.com (mail.lokoho.com [217.61.105.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9540D10E5
-        for <linux-efi@vger.kernel.org>; Wed, 12 Jul 2023 01:09:14 -0700 (PDT)
-Received: by mail.lokoho.com (Postfix, from userid 1002)
-        id E43DB8734B; Wed, 12 Jul 2023 10:05:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lokoho.com; s=mail;
-        t=1689149142; bh=Z0N5VlX9/JlryGOL5I747Le9USomZJCRNNGRT3LbbKc=;
-        h=Date:From:To:Subject:From;
-        b=PanG+zccKrOoCQ9TM3tjLX2tNg2oYGTw8tI3puRlBNUJQEa6wnsk/0AEtFu0QpMiX
-         Ul1h6YfO+8Z0+eZ4I/jc5THkceR7MsPI2wYhvga7TdmN6TkHxvsEA5J7hdhYvO4A6i
-         1Sd6ZsbO8DskzEb6AaZGm2nY0FHexIirrbKqG/RizJCzVW8ae6ubCL1/YAB3gXm2XU
-         FBR1VHjF9Vv/J9vcUSPWzVnaB4eQNQswQ+oicWy8uw+o+E+4FlxaVGFVGJcXuk+dH6
-         hf3wXBVV22OWt9car1eryb/t70wqK5mpyqHyiNPXl9PBNmynfcc28bhmeWsZrLij/T
-         U3W5AERhgGgkg==
-Received: by mail.lokoho.com for <linux-efi@vger.kernel.org>; Wed, 12 Jul 2023 08:05:10 GMT
-Message-ID: <20230712084501-0.1.9.2iuf.0.nm11gz7730@lokoho.com>
-Date:   Wed, 12 Jul 2023 08:05:10 GMT
-From:   "Adam Charachuta" <adam.charachuta@lokoho.com>
-To:     <linux-efi@vger.kernel.org>
-Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
-X-Mailer: mail.lokoho.com
+        with ESMTP id S232292AbjGLJS7 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 12 Jul 2023 05:18:59 -0400
+Received: from outbound-smtp43.blacknight.com (outbound-smtp43.blacknight.com [46.22.139.229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45D8E1981
+        for <linux-efi@vger.kernel.org>; Wed, 12 Jul 2023 02:18:49 -0700 (PDT)
+Received: from mail.blacknight.com (pemlinmail01.blacknight.ie [81.17.254.10])
+        by outbound-smtp43.blacknight.com (Postfix) with ESMTPS id BB4551B31
+        for <linux-efi@vger.kernel.org>; Wed, 12 Jul 2023 10:18:47 +0100 (IST)
+Received: (qmail 30399 invoked from network); 12 Jul 2023 09:18:47 -0000
+Received: from unknown (HELO techsingularity.net) (mgorman@techsingularity.net@[84.203.21.103])
+  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 12 Jul 2023 09:18:47 -0000
+Date:   Wed, 12 Jul 2023 10:18:45 +0100
+From:   Mel Gorman <mgorman@techsingularity.net>
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc:     Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dario Faggioli <dfaggioli@suse.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
+        khalid.elmously@canonical.com, philip.cox@canonical.com,
+        aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
+        linux-mm@kvack.org, linux-coco@lists.linux.dev,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv14 5/9] efi: Add unaccepted memory support
+Message-ID: <20230712091845.hahda3xgvegv5hgf@techsingularity.net>
+References: <20230606142637.5171-1-kirill.shutemov@linux.intel.com>
+ <20230606142637.5171-6-kirill.shutemov@linux.intel.com>
+ <20230703132518.3ukqyolnes47i5r3@techsingularity.net>
+ <20230704143740.bgimyg3bqsgxbm47@box.shutemov.name>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <20230704143740.bgimyg3bqsgxbm47@box.shutemov.name>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Tue, Jul 04, 2023 at 05:37:40PM +0300, Kirill A. Shutemov wrote:
+> On Mon, Jul 03, 2023 at 02:25:18PM +0100, Mel Gorman wrote:
+> > On Tue, Jun 06, 2023 at 05:26:33PM +0300, Kirill A. Shutemov wrote:
+> > > efi_config_parse_tables() reserves memory that holds unaccepted memory
+> > > configuration table so it won't be reused by page allocator.
+> > > 
+> > > Core-mm requires few helpers to support unaccepted memory:
+> > > 
+> > >  - accept_memory() checks the range of addresses against the bitmap and
+> > >    accept memory if needed.
+> > > 
+> > >  - range_contains_unaccepted_memory() checks if anything within the
+> > >    range requires acceptance.
+> > > 
+> > > Architectural code has to provide efi_get_unaccepted_table() that
+> > > returns pointer to the unaccepted memory configuration table.
+> > > 
+> > > arch_accept_memory() handles arch-specific part of memory acceptance.
+> > > 
+> > > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > > Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+> > > Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+> > 
+> > By and large, this looks ok from the page allocator perspective as the
+> > checks for unaccepted are mostly after watermark checks. However, if you
+> > look in the initial fast path, you'll see this
+> > 
+> >         /* 
+> >          * Forbid the first pass from falling back to types that fragment
+> >          * memory until all local zones are considered.
+> >          */     
+> >         alloc_flags |= alloc_flags_nofragment(ac.preferred_zoneref->zone, gfp);
+> > 
+> > While checking watermarks should be fine from a functional perspective and
+> > the fast paths are unaffected, there is a risk of premature fragmentation
+> > until all memory has been accepted. Meeting watermarks does not necessarily
+> > mean that fragmentation is avoided as pageblocks can get mixed while still
+> > meeting watermarks.
+> 
+> Could you elaborate on this scenario?
+> 
+> Current code checks the watermark, if it is met, try rmqueue().
+> 
+> If rmqueue() fails anyway, try to accept more pages and retry the zone if
+> it is successful.
+> 
+> I'm not sure how we can get to the 'if (no_fallback) {' case with any
+> unaccepted memory in the allowed zones.
+> 
 
-zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
-=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
-o dalszych rozm=C3=B3w.=20
+Lets take an extreme example and assume that the low watermark is lower
+than 2MB (one pageblock). Just before the watermark is reached (free
+count between 1MB and 2MB), it is unlikely that all free pages are within
+pageblocks of the same migratetype (e.g. MIGRATE_MOVABLE). If there is an
+allocation near the watermark of a different type (e.g. MIGRATE_UNMOVABLE)
+then the page allocation could fallback to a different pageblock and now
+it is mixed.  It's a condition that is only obvious if you are explicitly
+checking for it via tracepoints.  This can happen in the normal case, but
+unaccepted memory makes it worse because the "pageblock mixing" could have
+been avoided if the "no_fallback" case accepted at least one new pageblock
+instead of mixing pageblocks.
 
-Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
-=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
-=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
-strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
+That is an extreme example but the same logic applies when the free
+count is at or near MIGRATE_TYPES*pageblock_nr_pages as it is not
+guaranteed that the pageblocks with free pages are a migratetype that
+matches the allocation request.
 
-Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+Hence, it may be more robust from a fragmentation perspective if
+ALLOC_NOFRAGMENT requests accept memory if it is available and retries
+before clearing ALLOC_NOFRAGMENT and mixing pageblocks before the watermarks
+are reached.
 
+> I see that there's preferred_zoneref and spread_dirty_pages cases, but
+> unaccepted memory seems change nothing for them.
+> 
 
-Pozdrawiam
-Adam Charachuta
+preferred_zoneref is about premature zone exhaustion and
+spread_dirty_pages is about avoiding premature stalls on a node/zone due
+to an imbalance in the number of pages waiting for writeback to
+complete. There is an arguement to be made that they also should accept
+memory but it's less clear how much of a problem this is. Both are very
+obvious when they "fail" and likely are covered by the existing
+watermark checks. Premature pageblock mixing is more subtle as the final
+impact (root cause of a premature THP allocation failure) is harder to
+detect.
+
+-- 
+Mel Gorman
+SUSE Labs
