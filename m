@@ -2,126 +2,135 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29645751EB2
-	for <lists+linux-efi@lfdr.de>; Thu, 13 Jul 2023 12:18:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 118427523DF
+	for <lists+linux-efi@lfdr.de>; Thu, 13 Jul 2023 15:34:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232596AbjGMKSP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 13 Jul 2023 06:18:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59168 "EHLO
+        id S234813AbjGMNeK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 13 Jul 2023 09:34:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232144AbjGMKSO (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 13 Jul 2023 06:18:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6573E1724;
-        Thu, 13 Jul 2023 03:18:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F3B0C60C00;
-        Thu, 13 Jul 2023 10:18:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A1E9C433CD;
-        Thu, 13 Jul 2023 10:18:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689243491;
-        bh=ET0PIk/EJwOtrnFetQCgnV0IGpMF5SKCWlqW+zEctgk=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=YMlAn0FKUIcij8cMaBk1sFjGdlftqb544w6tk1470W3FP8qhFxn+egxqkXA5LavAS
-         esTIPGnjOKs03CHA1k5fK0BcLZG62Fd+YJjjeUX9Jx/+xTrTWAxHKlJCXj/+I0fcf6
-         tgt9Hl+9GgifspdfdEgIMhgHCX9v0289T95tYeQ7gFQeNRPmW8uUyl6JLAr/+vh+sU
-         EArTQBAxwB/G70oaog4LkVrUoXGF7PalknTC3Qf4N+/v/qvWOAIvAtxUG8G1VdKaZC
-         SiS90semh7lh/XT8ETTWgIFpxHQAzLQ8xhYpCzly4tEAIDqDQZ178VA/ugu6IOY3u9
-         uYQDvUzquX5OQ==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-4f122ff663eso927751e87.2;
-        Thu, 13 Jul 2023 03:18:11 -0700 (PDT)
-X-Gm-Message-State: ABy/qLagSoMP+j+D3AolVsy2Lq2p5ZXHYn0FXKC7gGLd5huehqVITJ8i
-        m363FG3oXb6HSwnlDFOh77jGFNVRVq+0GlSBe8Y=
-X-Google-Smtp-Source: APBJJlFBQWCejzkySepLV/mSpZDO69J/ce++jVUzK0IbQmheOsTIP22zHMFDXog7ITY4n68UbN14AQPbrEm/zMas0Pg=
-X-Received: by 2002:a05:6512:3984:b0:4f8:7513:8cb0 with SMTP id
- j4-20020a056512398400b004f875138cb0mr1040508lfu.2.1689243489214; Thu, 13 Jul
- 2023 03:18:09 -0700 (PDT)
+        with ESMTP id S234650AbjGMNeK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 13 Jul 2023 09:34:10 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E2061FEA
+        for <linux-efi@vger.kernel.org>; Thu, 13 Jul 2023 06:34:06 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-991fe70f21bso117700266b.3
+        for <linux-efi@vger.kernel.org>; Thu, 13 Jul 2023 06:34:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1689255244; x=1691847244;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Lni4UWIKw2Lp7DjCo96CHQnoSYyoodWrf2lKDIVVpbc=;
+        b=BcfyuInp5jBxZzTvOSoWtOTxgq4kzMeUaI/Vi3ghXwRdt6V7XMYOeMvXYPrMT9YvpI
+         wtpSuYNpSjbpK8KC8M+N8XpCKV1KC4XbB9FkTa4vZE6VbRQtGHzZjviZG43Lj9wCCpkZ
+         J1HyRhUQU9dd9GeN50S3jHRYETSB8CavwaQuYkvTL4j+TXu9fqX0n6eoLpRFlrMWGcka
+         3FkxTV6FIJDOzP8WqiFhgb6rguKq7veV5jLgnmAMOxaPMfeeTSbzQVlAy9jVNSBsfbiW
+         bG3uLd7oErowpMqS69XE+Hd5ZYS+WcCsjr3P6wFlfFkg7s25zKhLVTg1RG5lf9VnjH5C
+         S8Xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689255244; x=1691847244;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Lni4UWIKw2Lp7DjCo96CHQnoSYyoodWrf2lKDIVVpbc=;
+        b=kWrTnWi5u3mY4KZtOr1CGUT5BogejgD5QYPtSIvQ3q32/lJ0pvXcDuo6k7bbMJ2nLx
+         d4E/bYuLdRR+8HGdHa3ZPnrZcbDgwd5g5ui69pItvt11N5Lfj3k0keBGCq5GIHBwa0/K
+         MsoY93mtM5ewWu66ojpCG0lNvKmyNXW712ms5SJRxsdns7NRCwGEG10+hGH7rTqfeduG
+         Gi8tGiCCZ+irTUwJh0FqKBhLCVHteK1HLV+AvVMejT5jn5tmkB4gfCPdK3mu+f4vuMwP
+         o4+viRo2mYcAHIcGa+qiBUR/MlIZLejnms9zp8r5iqE/5t6++gRHuirtL/MgsC6QVJ01
+         Nejg==
+X-Gm-Message-State: ABy/qLbqx3BFD+Sn08z36QfhkoB71zYr6LP+6D9bxceYfXAsVnX2X0qO
+        bHrLoGQSJPp9rmwZNm1gCh5unFoL1HWlApaKzQM=
+X-Google-Smtp-Source: APBJJlGvrRWNt/FFlKe8uKPn1T37JqQamvuvd1xh9hAZXGrxTN6z2+pvgee7FNyh0NbM/6xJ+VJhvQ==
+X-Received: by 2002:a17:906:20a:b0:982:487c:7508 with SMTP id 10-20020a170906020a00b00982487c7508mr1634168ejd.38.1689255244554;
+        Thu, 13 Jul 2023 06:34:04 -0700 (PDT)
+Received: from alex-rivos.ba.rivosinc.com ([93.23.19.53])
+        by smtp.gmail.com with ESMTPSA id d15-20020a170906c20f00b00993017b64a8sm3982733ejz.224.2023.07.13.06.34.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Jul 2023 06:34:04 -0700 (PDT)
+From:   Alexandre Ghiti <alexghiti@rivosinc.com>
+To:     Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc:     Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: [PATCH v4 0/5] riscv: Introduce KASLR
+Date:   Thu, 13 Jul 2023 15:33:56 +0200
+Message-Id: <20230713133401.116506-1-alexghiti@rivosinc.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20230601072043.24439-1-ltao@redhat.com> <20230705173359.GDZKWphyFbNE8id6Jm@fat_crate.local>
- <CAO7dBbXdJgpO4Ym=4WME3OOrUhq2MNKpNZmhpsC7pOSugHiKDg@mail.gmail.com>
- <ZKeTX2aemPbsMiVr@MiWiFi-R3L-srv> <ZKfLYG_4DANc_i5r@suse.de>
- <20230707085712.GBZKfTaGJXnzhEenxj@fat_crate.local> <20230707152515.42gpfzjgvfwe6rf7@amd.com>
- <20230707171217.GHZKhHcffp4nn6RgR/@fat_crate.local>
-In-Reply-To: <20230707171217.GHZKhHcffp4nn6RgR/@fat_crate.local>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 13 Jul 2023 12:17:57 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFBtd6DRzwNbuY5_zc4DThjQWs9itN=qYkED-+6nkoGcw@mail.gmail.com>
-Message-ID: <CAMj1kXFBtd6DRzwNbuY5_zc4DThjQWs9itN=qYkED-+6nkoGcw@mail.gmail.com>
-Subject: Re: [PATCH v2] x86/kexec: Add EFI config table identity mapping for
- kexec kernel
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Michael Roth <michael.roth@amd.com>,
-        Joerg Roedel <jroedel@suse.de>, Baoquan He <bhe@redhat.com>,
-        Tao Liu <ltao@redhat.com>, thomas.lendacky@amd.com,
-        tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
-        x86@kernel.org, hpa@zytor.com, linux-kernel@vger.kernel.org,
-        dyoung@redhat.com, kexec@lists.infradead.org,
-        linux-efi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, 7 Jul 2023 at 19:12, Borislav Petkov <bp@alien8.de> wrote:
->
-> On Fri, Jul 07, 2023 at 10:25:15AM -0500, Michael Roth wrote:
-> > ...
-> > It would be unfortunate if we finally abandoned this path because of the
-> > issue being hit here though. I think the patch posted here is the proper
-> > resolution to the issue being hit, and I'm hoping at this point we've
-> > identified all the similar cases where EFI/setup_data-related structures
-> > were missing explicit mappings. But if we still think it's too much of a
-> > liability to access the EFI config table outside of SEV-enabled guests,
-> > then I can work on re-implementing things based on the above logic.
->
-> Replying here to Tom's note too...
->
-> So, I like the idea of rechecking CPUID. Yes, let's do the sev_status
-> check. As a result, we either fail the guest - no problem - or we boot
-> and we recheck. Thus, we don't run AMD code on !AMD machines, if the HV
-> is not a lying bastard.
->
-> Now, if we've gotten a valid setup_data SETUP_EFI entry with a valid
-> pointer to an EFI config table, then that should happen in the generic
-> path - initialize_identity_maps(), for example - like you've done in
-> b57feed2cc26 - not in the kexec code because kexec *happens* to need it.
->
-> We want to access the EFI config table? Sure, by all means, but make
-> that generic for all code.
->
+The following KASLR implementation allows to randomize the kernel mapping:
 
-OK, so in summary, what seems to be happening here is that the SEV
-init code in the decompressor looks for the cc blob table before the
-on-demand mapping code is up, which normally ensures that any RAM
-address is accessible even if it hasn't been mapped explicitly.
+- virtually: we expect the bootloader to provide a seed in the device-tree
+- physically: only implemented in the EFI stub, it relies on the firmware to
+  provide a seed using EFI_RNG_PROTOCOL. arm64 has a similar implementation
+  hence the patch 3 factorizes KASLR related functions for riscv to take
+  advantage.
 
-This is why the fix happens to work: the code only maps the array of
-(guid, phys_addr) tuples that describes the list of configuration
-tables that have been provided by the firmware. The actual
-configuration tables themselves could be anywhere in physical memory,
-and without prior knowledge of a particular GUID value, there is no
-way to know the size of the table, and so they cannot be mapped
-upfront like this. However, the cc blob table does not exist on this
-machine, and so whether the EFI config tables themselves are mapped or
-not is irrelevant.
+The new virtual kernel location is limited by the early page table that only
+has one PUD and with the PMD alignment constraint, the kernel can only take
+< 512 positions.
 
-But it does mean the fix is incomplete, and certainly does not belong
-in generic kexec code. If anything, we should be fixing the
-decompressor code to defer the cc blob table check until after the
-demand mapping code is up.
+base-commit-tag: v6.5-rc1
 
-If this is problematic, we might instead disable SEV for kexec, and
-rely on the fact that SEV firmware enters with a complete 1:1 map (as
-we seem to be doing currently). If kexec for SEV is needed at some
-point, we can re-enable it by having it provide a mapping for the
-config table array and the cc blob table explicitly.
+Changes in v4:
+  * Fix efi_get_kimg macro that returned nothing
+  * Moved new kaslr functions into their own files to avoid zboot link
+    failures, as suggested by Ard
+
+Changes in v3:
+  * Rebase on top of 6.4-rc2
+  * Make RANDOMIZE_BASE depend on 64bit
+  * Fix efi_icache_sync and efi_get_kimg_min_align which were undefined
+    in x86 (and certainly other archs)
+  * Add patch 4 to fix warning on rv32
+
+Changes in v2:
+  * Rebase on top of 6.3-rc1
+  * Add a riscv cache sync after memcpying the kernel
+  * Add kaslr_offset implementation for KCOV
+  * Add forward declaration to quiet LLVM
+
+Alexandre Ghiti (5):
+  riscv: Introduce virtual kernel mapping KASLR
+  riscv: Dump out kernel offset information on panic
+  arm64: libstub: Move KASLR handling functions to efi-stub-helper.c
+  libstub: Fix compilation warning for rv32
+  riscv: libstub: Implement KASLR by using generic functions
+
+ arch/arm64/include/asm/efi.h                  |   4 +
+ arch/riscv/Kconfig                            |  19 +++
+ arch/riscv/include/asm/efi.h                  |   4 +
+ arch/riscv/include/asm/page.h                 |   3 +
+ arch/riscv/kernel/image-vars.h                |   1 +
+ arch/riscv/kernel/pi/Makefile                 |   2 +-
+ arch/riscv/kernel/pi/cmdline_early.c          |  13 ++
+ arch/riscv/kernel/pi/fdt_early.c              |  30 ++++
+ arch/riscv/kernel/setup.c                     |  25 +++
+ arch/riscv/mm/init.c                          |  36 +++-
+ drivers/firmware/efi/libstub/Makefile         |   3 +-
+ drivers/firmware/efi/libstub/arm64-stub.c     | 117 ++-----------
+ drivers/firmware/efi/libstub/efi-stub-kaslr.c | 159 ++++++++++++++++++
+ drivers/firmware/efi/libstub/efistub.h        |  18 ++
+ drivers/firmware/efi/libstub/riscv-stub.c     |  33 ++--
+ 15 files changed, 342 insertions(+), 125 deletions(-)
+ create mode 100644 arch/riscv/kernel/pi/fdt_early.c
+ create mode 100644 drivers/firmware/efi/libstub/efi-stub-kaslr.c
+
+-- 
+2.39.2
+
