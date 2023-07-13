@@ -2,53 +2,53 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD9FA75264A
-	for <lists+linux-efi@lfdr.de>; Thu, 13 Jul 2023 17:12:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AA9675264F
+	for <lists+linux-efi@lfdr.de>; Thu, 13 Jul 2023 17:13:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233126AbjGMPMM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 13 Jul 2023 11:12:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47026 "EHLO
+        id S233302AbjGMPNL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 13 Jul 2023 11:13:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233335AbjGMPMK (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 13 Jul 2023 11:12:10 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 671CA26BA
-        for <linux-efi@vger.kernel.org>; Thu, 13 Jul 2023 08:12:08 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-31297125334so551288f8f.0
-        for <linux-efi@vger.kernel.org>; Thu, 13 Jul 2023 08:12:08 -0700 (PDT)
+        with ESMTP id S232955AbjGMPNK (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 13 Jul 2023 11:13:10 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47A63C1
+        for <linux-efi@vger.kernel.org>; Thu, 13 Jul 2023 08:13:09 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-3142a9ff6d8so848837f8f.3
+        for <linux-efi@vger.kernel.org>; Thu, 13 Jul 2023 08:13:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1689261127; x=1691853127;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1689261188; x=1691853188;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GZf0qeWm+WX+bv1IFZf8K1PwMyRHAPQhF5RBE2OKQPA=;
-        b=ZM5qANd6WeLcZwwFyXrmgXdeZPNHygoE7OaWvEWRKzI6UtObzCbxmP3zfVqwTLzgAp
-         keJuo6AS8TIX1aCmgkYH+hkVg9JP4/xN+jttfihreMuN52dV92KDQmnS8kU3iRTU7rdy
-         2e6GVnlzyUsnuTl4jVke9Nwyp0wBlzEhYAdgATXfHP5f/4PpjQ1ZxOAg1WZvp9E3EP5T
-         DEtvRG8vuWwwh7fsE7Uki2T1eHqRl5vzuvYyrhQf7VtOOB7p5qWWkhRFFRp7gfQXG8DY
-         9/s77o7lGA6InfdsnqviK2iU70I6ww9NBY0DBqJYBvoilr+Z0ei7BaGkP5wughoExpr5
-         +cxg==
+        bh=nLw9kTvaEkAjy+qjwvRpscnMKlwPFJS0kuzz8CxiZVE=;
+        b=gmqrfMFLOBX25S3+JUn/UZ07X4KBYapInPrcBiBweYAsrSJp787PLElVaURtOVqked
+         xXaN4wQIr9V1r5Hq+V/ONFLo6QZ5lBYJw+F+sR96caaiPXAlMwopiAY4+CZEb3Aw2Gjo
+         OQcl2JHm5ow8OTDTNrM0cTUVZSVCAbLqdrZO8/EHwUQtonSa0wMPv+VcTZJ1WuyaF8Lz
+         uCyrQeG4b2F04KtbUNt8Tjg+aKQBtyMooZqFFtJs++Dji0NROoIG27/O9gggaOXssvlD
+         xiO8UnfX1ebjVdaXxWVM3Hk/ajBO0+Ucl+9Qo4BCAaFmeO9xGdeCIHGJoVXl8uhNfcwn
+         AAZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689261127; x=1691853127;
+        d=1e100.net; s=20221208; t=1689261188; x=1691853188;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GZf0qeWm+WX+bv1IFZf8K1PwMyRHAPQhF5RBE2OKQPA=;
-        b=hLmnGOuHTrz8NoSv+YXT6ngTNu07lYOHQd7MtHPis1KWqXGZo3G5jOnTeQMJaxGSpK
-         LRXNyjUxXjLqWvSJ29NZM7JIVRyrRvx42ICZ8sb20e4UW37c7b+Te6ubY84sQV3Wntpf
-         gk0DvW8DIsRMnccM7mA6gvbSCKVAsWqPlk1+F+7BKpdf+wSayh962Qij3+81PTXavEuc
-         L9lznlnSxjDCnRI9MUBlf/2I73w37osm+LcMvJCiF+wMR4Ki7Q7h/Rr87rcDftwkv8E2
-         eW6J387iCJNIZu5h81tGDOuBMtccak4VWA+kXgbV9ANPOgTJgDDoqB1cF84SCeWk5kjz
-         +Izw==
-X-Gm-Message-State: ABy/qLZH1TsFGtTNfvqX7XzqevTBFP4jQNu32szy6Uvvh3JS5whCykks
-        4jZWDAGjfFGXbA/RNUyjvxDZAg==
-X-Google-Smtp-Source: APBJJlFkFNYrMUFbwh2cf53W6lfedDnWlkmEMnNDIb2MSpNlVfunzKxcD+6qsHxJqfHT2NQg1TXzlA==
-X-Received: by 2002:a05:6000:104d:b0:314:2d59:c6d5 with SMTP id c13-20020a056000104d00b003142d59c6d5mr4451359wrx.15.1689261126945;
-        Thu, 13 Jul 2023 08:12:06 -0700 (PDT)
+        bh=nLw9kTvaEkAjy+qjwvRpscnMKlwPFJS0kuzz8CxiZVE=;
+        b=l7fhw46AbeKNohpJJrbT9/rsHuRaPWNaneN3V9/zdsJ2gliRO2zU+1V/C4E5EyU5Xx
+         VRNJcelTPV5Pabnw+09utAv/0Ljc7cMiB1FC2lFx7UAamVca4LkVhskMrMqUnNOkGCbV
+         IN0lV690R1b/rxGpit2oO5R6kJ6m4c1QJpHImfp6kmSYaUsThhfYsJXCskpwzYlzj2zu
+         zLIBmlTWVAit6DFTknxCgS4ep79vAFbHiogw2p8C6y0cYolAT12BUsq/nThXG4Lf60Uq
+         f3CkI5p5ZN7ScqDeEW1f9qzpKfJzOWjkeX7v1vOCTzwhS4nUQ1BJVfP69yfwbceVc4SL
+         OPPg==
+X-Gm-Message-State: ABy/qLZIaccH7qm+hFLdHobGYHPNFHIK2jyGo2KyMia6BBKyWACQANGk
+        u+DrQs9FwMEMY5PWA3Sotwc/Ig==
+X-Google-Smtp-Source: APBJJlGs36PgSwm46u3XZJ4EUOUmqIiNs5C73pLmPTFSWMqj0iA0kL/WuS2IjEk/CnWvfdtlsVEuBA==
+X-Received: by 2002:adf:ef07:0:b0:313:ee4b:b58f with SMTP id e7-20020adfef07000000b00313ee4bb58fmr1967432wro.31.1689261187786;
+        Thu, 13 Jul 2023 08:13:07 -0700 (PDT)
 Received: from alex-rivos.home (amontpellier-656-1-456-62.w92-145.abo.wanadoo.fr. [92.145.124.62])
-        by smtp.gmail.com with ESMTPSA id q10-20020adfdfca000000b003144b95e1ecsm8137817wrn.93.2023.07.13.08.12.06
+        by smtp.gmail.com with ESMTPSA id p7-20020a5d6387000000b003143801f8d8sm8236839wru.103.2023.07.13.08.13.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Jul 2023 08:12:06 -0700 (PDT)
+        Thu, 13 Jul 2023 08:13:07 -0700 (PDT)
 From:   Alexandre Ghiti <alexghiti@rivosinc.com>
 To:     Paul Walmsley <paul.walmsley@sifive.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
@@ -57,9 +57,9 @@ To:     Paul Walmsley <paul.walmsley@sifive.com>,
         linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Cc:     Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: [PATCH RESEND v4 4/5] libstub: Fix compilation warning for rv32
-Date:   Thu, 13 Jul 2023 17:07:59 +0200
-Message-Id: <20230713150800.120821-5-alexghiti@rivosinc.com>
+Subject: [PATCH RESEND v4 5/5] riscv: libstub: Implement KASLR by using generic functions
+Date:   Thu, 13 Jul 2023 17:08:00 +0200
+Message-Id: <20230713150800.120821-6-alexghiti@rivosinc.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230713150800.120821-1-alexghiti@rivosinc.com>
 References: <20230713150800.120821-1-alexghiti@rivosinc.com>
@@ -74,31 +74,94 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Fix the following warning which appears when compiled for rv32 by using
-unsigned long type instead of u64.
-
-../drivers/firmware/efi/libstub/efi-stub-helper.c: In function 'efi_kaslr_relocate_kernel':
-../drivers/firmware/efi/libstub/efi-stub-helper.c:846:28: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
-  846 |                            (u64)_end < EFI_ALLOC_LIMIT) {
+We can now use arm64 functions to handle the move of the kernel physical
+mapping: if KASLR is enabled, we will try to get a random seed from the
+firmware, if not possible, the kernel will be moved to a location that
+suits its alignment constraints.
 
 Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 ---
- drivers/firmware/efi/libstub/efi-stub-kaslr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/include/asm/efi.h              |  3 +++
+ arch/riscv/kernel/image-vars.h            |  1 +
+ drivers/firmware/efi/libstub/riscv-stub.c | 33 +++++++++++------------
+ 3 files changed, 19 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/efi-stub-kaslr.c b/drivers/firmware/efi/libstub/efi-stub-kaslr.c
-index be0c8ab0982a..afb857329799 100644
---- a/drivers/firmware/efi/libstub/efi-stub-kaslr.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-kaslr.c
-@@ -130,7 +130,7 @@ efi_status_t efi_kaslr_relocate_kernel(unsigned long *image_addr,
- 		if (!check_image_region(*image_addr, kernel_memsize)) {
- 			efi_err("FIRMWARE BUG: Image BSS overlaps adjacent EFI memory region\n");
- 		} else if (IS_ALIGNED(*image_addr, min_kimg_align) &&
--			   (u64)_end < EFI_ALLOC_LIMIT) {
-+			   (unsigned long)_end < EFI_ALLOC_LIMIT) {
- 			/*
- 			 * Just execute from wherever we were loaded by the
- 			 * UEFI PE/COFF loader if the placement is suitable.
+diff --git a/arch/riscv/include/asm/efi.h b/arch/riscv/include/asm/efi.h
+index c3dafaab36a2..6f99e8812dfd 100644
+--- a/arch/riscv/include/asm/efi.h
++++ b/arch/riscv/include/asm/efi.h
+@@ -52,4 +52,7 @@ void efi_virtmap_unload(void);
+ 
+ unsigned long stext_offset(void);
+ 
++void efi_icache_sync(unsigned long start, unsigned long end);
++#define efi_icache_sync	efi_icache_sync
++
+ #endif /* _ASM_EFI_H */
+diff --git a/arch/riscv/kernel/image-vars.h b/arch/riscv/kernel/image-vars.h
+index 15616155008c..ea1a10355ce9 100644
+--- a/arch/riscv/kernel/image-vars.h
++++ b/arch/riscv/kernel/image-vars.h
+@@ -27,6 +27,7 @@ __efistub__start		= _start;
+ __efistub__start_kernel		= _start_kernel;
+ __efistub__end			= _end;
+ __efistub__edata		= _edata;
++__efistub___init_text_end	= __init_text_end;
+ __efistub_screen_info		= screen_info;
+ 
+ #endif
+diff --git a/drivers/firmware/efi/libstub/riscv-stub.c b/drivers/firmware/efi/libstub/riscv-stub.c
+index 145c9f0ba217..c96d6dcee86c 100644
+--- a/drivers/firmware/efi/libstub/riscv-stub.c
++++ b/drivers/firmware/efi/libstub/riscv-stub.c
+@@ -30,32 +30,29 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+ 				 efi_loaded_image_t *image,
+ 				 efi_handle_t image_handle)
+ {
+-	unsigned long kernel_size = 0;
+-	unsigned long preferred_addr;
++	unsigned long kernel_size, kernel_codesize, kernel_memsize;
+ 	efi_status_t status;
+ 
+ 	kernel_size = _edata - _start;
++	kernel_codesize = __init_text_end - _start;
++	kernel_memsize = kernel_size + (_end - _edata);
+ 	*image_addr = (unsigned long)_start;
+-	*image_size = kernel_size + (_end - _edata);
+-
+-	/*
+-	 * RISC-V kernel maps PAGE_OFFSET virtual address to the same physical
+-	 * address where kernel is booted. That's why kernel should boot from
+-	 * as low as possible to avoid wastage of memory. Currently, dram_base
+-	 * is occupied by the firmware. So the preferred address for kernel to
+-	 * boot is next aligned address. If preferred address is not available,
+-	 * relocate_kernel will fall back to efi_low_alloc_above to allocate
+-	 * lowest possible memory region as long as the address and size meets
+-	 * the alignment constraints.
+-	 */
+-	preferred_addr = EFI_KIMG_PREFERRED_ADDRESS;
+-	status = efi_relocate_kernel(image_addr, kernel_size, *image_size,
+-				     preferred_addr, efi_get_kimg_min_align(),
+-				     0x0);
++	*image_size = kernel_memsize;
++	*reserve_size = *image_size;
+ 
++	status = efi_kaslr_relocate_kernel(image_addr,
++					   reserve_addr, reserve_size,
++					   kernel_size, kernel_codesize, kernel_memsize,
++					   efi_kaslr_get_phys_seed(image_handle));
+ 	if (status != EFI_SUCCESS) {
+ 		efi_err("Failed to relocate kernel\n");
+ 		*image_size = 0;
+ 	}
++
+ 	return status;
+ }
++
++void efi_icache_sync(unsigned long start, unsigned long end)
++{
++	asm volatile ("fence.i" ::: "memory");
++}
 -- 
 2.39.2
 
