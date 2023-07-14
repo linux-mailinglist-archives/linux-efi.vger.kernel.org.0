@@ -2,56 +2,55 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16A1C752D0A
-	for <lists+linux-efi@lfdr.de>; Fri, 14 Jul 2023 00:32:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E9467535B4
+	for <lists+linux-efi@lfdr.de>; Fri, 14 Jul 2023 10:52:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229953AbjGMWcS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 13 Jul 2023 18:32:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33472 "EHLO
+        id S235654AbjGNIwh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 14 Jul 2023 04:52:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229715AbjGMWcQ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 13 Jul 2023 18:32:16 -0400
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B42D41BF4;
-        Thu, 13 Jul 2023 15:32:14 -0700 (PDT)
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-57045429f76so11257417b3.0;
-        Thu, 13 Jul 2023 15:32:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689287534; x=1691879534;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=j4pFHcAmk3Q1iQB/Gu74tpxcYopN6NbzrtwMYxLVtjk=;
-        b=GxgxqyFoeVMPukKMlCOYNOd3Q3ZykRSxpaz1HGiVD/QmAeJfVJ3U5v2Aam2aDUhji8
-         E7x8h6dgaW4zEERl8eYSkVURZVdVHbMkPkqCNGtZHkOt9G3NIWd2PGoRkwbym5jIFaaa
-         VbWY4wE3VxZ2Kt6JCccF+Iu2ROawhzonoASCCa7DU5BujBKK4phopBul2JQmzOer+eQ+
-         0PTPoyj72qBQn2PSlTzddZMOSlec1rOXyS3Zas7WgDt+k7jY5q03A3YWdnSVmRNI15sZ
-         ujbWBXoHi4Cw6i+tJOGsmjDJS/0Tqax8xjty7RKsN94zkyu+HAV/YY11mSHTbbWp4zxb
-         5awQ==
-X-Gm-Message-State: ABy/qLY9sJBwQHe9/NjUdjbGHMmNuHv7ti3qQvXKoI56zueZ4/uXNYqR
-        wE++7cVD/0crkZPBNb7+bhPai7naRGhUlg==
-X-Google-Smtp-Source: APBJJlE7nUKiH2iKpr9aw4qrJ3In7/9iBkjTKwsYu42iSr6JBinp7Kst6hJ2+YVy/Gjnpq46ap+xlw==
-X-Received: by 2002:a0d:c986:0:b0:561:d1ef:3723 with SMTP id l128-20020a0dc986000000b00561d1ef3723mr3219403ywd.38.1689287533596;
-        Thu, 13 Jul 2023 15:32:13 -0700 (PDT)
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com. [209.85.128.170])
-        by smtp.gmail.com with ESMTPSA id r186-20020a8181c3000000b0056d3d7a59cesm1998668ywf.12.2023.07.13.15.32.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Jul 2023 15:32:12 -0700 (PDT)
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-57045429f76so11257237b3.0;
-        Thu, 13 Jul 2023 15:32:11 -0700 (PDT)
-X-Received: by 2002:a81:6908:0:b0:56c:fce5:ac2d with SMTP id
- e8-20020a816908000000b0056cfce5ac2dmr3235554ywc.39.1689287531751; Thu, 13 Jul
- 2023 15:32:11 -0700 (PDT)
+        with ESMTP id S235672AbjGNIwg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 14 Jul 2023 04:52:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40BD31FFC;
+        Fri, 14 Jul 2023 01:52:35 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B618D61CAA;
+        Fri, 14 Jul 2023 08:52:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D9BC43397;
+        Fri, 14 Jul 2023 08:52:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689324754;
+        bh=zSjLJFb39FNBSOh5wQyvDIfWzbGx5usUOhILzUK9hgs=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=tz23xm0/NIzfbUxiApNIthA8Rcr9DIQ7TVF9IxLipiJb1+QiOh44dsMidIFkgDXCh
+         kImpco0A227V59OzDVFOdwXayLJdMO6NXLzQgLlQBnVuGifGD4jw1aos2xA0dDJfaq
+         HmSiivVZMfjF3usBlAhLVOrLyBSd/OB9tDpz8W5jIfVDqZVKMVS9fKPC9w7BwoVwdV
+         qM8UY/UylCxQMn+Ub+gcRaxaDXpOLzqvUcMgdgQ/M0c1PZ5QtWZQnsoDlivt6JRZ93
+         sDYgc3xVodvHfYigw/pspBEL87/l4GaNFWH8jU62bjZc+vDlCNLZISO31x7GFxOrpL
+         HXwZCANd3xlKA==
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2b703c900e3so24858461fa.1;
+        Fri, 14 Jul 2023 01:52:34 -0700 (PDT)
+X-Gm-Message-State: ABy/qLa85wLjV0CXrk1LHbeKgCXwIsrTKxtgdlaFLePJRUwczF6ecGOB
+        Iwt2vrgl0PKmbzQjtx70UFibor90Qi1CgYQqj+E=
+X-Google-Smtp-Source: APBJJlFEqHPtKKojrVgR815jlkZl11nKWRhLDK1jKEM81agbwtKiMMPmhZ5Nb8C6x/joRm/aVgcl/ga8lRPud1iVfdg=
+X-Received: by 2002:a2e:9b15:0:b0:2b6:ec2b:659 with SMTP id
+ u21-20020a2e9b15000000b002b6ec2b0659mr3473777lji.17.1689324752099; Fri, 14
+ Jul 2023 01:52:32 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230711154449.1378385-1-eesposit@redhat.com> <ZK/9MlTh435FP5Ji@gambale.home>
- <ZLABozIRVGmwuIBf@gambale.home>
-In-Reply-To: <ZLABozIRVGmwuIBf@gambale.home>
-From:   Luca Boccassi <bluca@debian.org>
-Date:   Thu, 13 Jul 2023 23:31:59 +0100
-X-Gmail-Original-Message-ID: <CAMw=ZnSF_s-+74gURPpXCU+YSTeXDAYfVp_A9DOFoW7oL2T_Hw@mail.gmail.com>
-Message-ID: <CAMw=ZnSF_s-+74gURPpXCU+YSTeXDAYfVp_A9DOFoW7oL2T_Hw@mail.gmail.com>
+ <ZLABozIRVGmwuIBf@gambale.home> <CAMw=ZnSF_s-+74gURPpXCU+YSTeXDAYfVp_A9DOFoW7oL2T_Hw@mail.gmail.com>
+In-Reply-To: <CAMw=ZnSF_s-+74gURPpXCU+YSTeXDAYfVp_A9DOFoW7oL2T_Hw@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 14 Jul 2023 10:52:20 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXG1Sk1G=3PCRmiHZ24qPdUYiGRkSbq57u1-KUbyorX8Lg@mail.gmail.com>
+Message-ID: <CAMj1kXG1Sk1G=3PCRmiHZ24qPdUYiGRkSbq57u1-KUbyorX8Lg@mail.gmail.com>
 Subject: Re: [RFC PATCH v2] x86/boot: add .sbat section to the bzImage
-To:     Ard Biesheuvel <ardb@kernel.org>
+To:     Luca Boccassi <bluca@debian.org>, Peter Jones <pjones@redhat.com>,
+        Matthew Garrett <mjg59@srcf.ucam.org>
 Cc:     Emanuele Giuseppe Esposito <eesposit@redhat.com>, x86@kernel.org,
         Thomas Gleixner <tglx@linutronix.de>, lennart@poettering.net,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
@@ -65,73 +64,37 @@ Cc:     Emanuele Giuseppe Esposito <eesposit@redhat.com>, x86@kernel.org,
         =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
         linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 13 Jul 2023 at 14:52, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> (add linux-efi@ cc)
->
-> On Thu, Jul 13, 2023 at 03:33:38PM +0200, Ard Biesheuvel wrote:
-> > Hello Emanuele,
-> >
-> > Please cc the linux-efi@ mailing list and myself on EFI related patches.
-> >
-> > First of all, I think the tone of the discussion is way out of hand on
-> > both sides of the debate. Please keep it civil and courteous.
-> >
-> > On Tue, Jul 11, 2023 at 11:44:49AM -0400, Emanuele Giuseppe Esposito wrote:
-> > > *Important*: this is just an RFC, as I am not expert in this area and
-> > > I don't know what's the best way to achieve this.
-> > >
-> > > v2:
-> > > * add standard "sbat,1,SBAT Version,..." header string
-> > >
-> > > The aim of this patch is to add a .sbat section to the linux binary
-> > > (https://github.com/rhboot/shim/blob/main/SBAT.md).
-> > > We mainly need SBAT in UKIs (Unified Kernel Images), as we might want
-> > > to revoke authorizations to specific signed PEs that were initially
-> > > considered as trusted. The reason might be for example a security issue
-> > > related to a specific linux release.
-> > >
-> > > A .sbat is simply a section containing a string with the component name
-> > > and a version number. This version number is compared with the value in
-> > > OVMF_VARS, and if it's less than the variable, the binary is not trusted,
-> > > even if it is correctly signed.
-> > >
-> >
-> > Most people will not known what OVMF_VARS is or a PE.
-> >
-> > Also, 'version number' is a bit vague, better to stick with existing
-> > terminology that makes this more self explanatory: the component that
-> > authenticates the kernel image keeps a revocation counter, and refuses
-> > to load authentic images whose revocation index is lower than the
-> > revocation counter. This approach removes the need for revoking
-> > individual image hashes or having to rotate the signing keys when a
-> > vulnerability is discovered.
-> >
-> > The argument that we need this in the upstream kernel seems to be
-> > predicated on the assumption that there is one universal signing
-> > authority and revocation domain, but this is not necessarily true. Even
-> > if the distros appear to have decided that it is a reasonable choice to
-> > deploy the MicroSoft signed shim and the associated components on other
-> > systems than Windows-crippled x86 PCs, this is not universally true, and
-> > UEFI secure boot can be (and is) deployed in sane ways as well.
-> >
->
-> Note that by Windows-crippled, I mean x86 PCs built by OEMs who care
-> about nothing other than the Windows logo sticker. These PCs often don't
-> allow secure boot keys to be modified by the owner of the machine, or
-> secure boot to be disabled at all. This is why shim exists, not because
-> UEFI secure boot is broken by design.
+(cc Peter and Matthew)
 
-AFAIK that's not only against the spec but also the logo
-certification, which x86 OEMs are doing that and in which models?
-Happy to flag that and inquire.
+On Fri, 14 Jul 2023 at 00:32, Luca Boccassi <bluca@debian.org> wrote:
+>
+> On Thu, 13 Jul 2023 at 14:52, Ard Biesheuvel <ardb@kernel.org> wrote:
+> >
+> >
+> > Note that by Windows-crippled, I mean x86 PCs built by OEMs who care
+> > about nothing other than the Windows logo sticker. These PCs often don't
+> > allow secure boot keys to be modified by the owner of the machine, or
+> > secure boot to be disabled at all. This is why shim exists, not because
+> > UEFI secure boot is broken by design.
+>
+> AFAIK that's not only against the spec but also the logo
+> certification, which x86 OEMs are doing that and in which models?
+> Happy to flag that and inquire.
+
+Thanks. My Yoga C630 Snapdragon laptop definitely does not allow me to
+update the keys from the UI, but it does allow me to disable secure
+boot. It might work with SetVariable() directly but I've never tried.
+
+Maybe the OEMs have gotten better at this over the years, but it is
+definitely not possible for the distros to rely on being able to get
+their own cert into KEK and sign their builds directly.
