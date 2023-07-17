@@ -2,50 +2,46 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 376517568B8
-	for <lists+linux-efi@lfdr.de>; Mon, 17 Jul 2023 18:09:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCBE97569BA
+	for <lists+linux-efi@lfdr.de>; Mon, 17 Jul 2023 18:57:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229637AbjGQQJ6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 17 Jul 2023 12:09:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57172 "EHLO
+        id S230058AbjGQQ51 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 17 Jul 2023 12:57:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229793AbjGQQJ5 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 17 Jul 2023 12:09:57 -0400
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8486A1AC;
-        Mon, 17 Jul 2023 09:09:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1689610195;
-        bh=Bv+pwpJ+oI9bej7GzVoTr/6OprE/oRwJNiev2GZLjnI=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=tmsko/nGLSiPzr6oksVrKNsNFAt4ckj/jU+kt3+3wXx9+i8cUE7Vk1U1Qo1/QQWhl
-         FPQEVdBqRb+vNIyW18n28xH9mrp4ojgbeSJmh9olz9xMCZWcLi7CxSv+5MCNW1+Q5s
-         +gRbadHnpqZoi+mLdp8U55cARFsLzNZLeXTgxuHk=
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 01FBB12816B5;
-        Mon, 17 Jul 2023 12:09:55 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id UuxOTA0-6V0a; Mon, 17 Jul 2023 12:09:54 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1689610194;
-        bh=Bv+pwpJ+oI9bej7GzVoTr/6OprE/oRwJNiev2GZLjnI=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=JNt6QNxEoRGBW/6Az8Geptwotr4p1NXnQ3RXdfIsJMS2EMmxLugQDVtSaZ0tb5Aty
-         9CQNMxavTOwNbdK7v8eSDP7Wrw85yLb+stzr/u0duqLwlsyLx09WWMfuYAUYJf5pAp
-         O3d3omMY4MJGWmAGAEXbIP8OheYugeM0U7Tsv/0c=
-Received: from [IPv6:2601:5c4:4302:c21::a774] (unknown [IPv6:2601:5c4:4302:c21::a774])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id B09D612810B3;
-        Mon, 17 Jul 2023 12:08:29 -0400 (EDT)
-Message-ID: <ba2354dc63fd741d2d351b18d4312d0771c0935d.camel@HansenPartnership.com>
-Subject: Re: [RFC PATCH v2] x86/boot: add .sbat section to the bzImage
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Ard Biesheuvel <ardb@kernel.org>,
-        Emanuele Giuseppe Esposito <eesposit@redhat.com>
-Cc:     x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        with ESMTP id S229993AbjGQQ5Z (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 17 Jul 2023 12:57:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30705F7
+        for <linux-efi@vger.kernel.org>; Mon, 17 Jul 2023 09:56:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1689612997;
+        h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:in-reply-to:in-reply-to:  references:references;
+        bh=AMmCJfIuZBK8TOlrXcnRNW71QMAvrCE4A3yY2m0hwhE=;
+        b=DKIE3dv6Kt7AjQT0RAs5vJYl0UtbhkhMxknKjeQC4zE3Lwkdtb5iWm2YUPp4M33zYs3hh7
+        mG/jf1qbWZL5KK+m5IzNhwevhblqfg11k56Stm7zu5VOqlrSrZfQnGP/RE7S+0ZW1y1MVZ
+        LVLR/Kx633cctJ5Ii+VoWYFqmtMewCs=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-468-WBCtU6FiNPKTnL0Eemngyw-1; Mon, 17 Jul 2023 12:56:34 -0400
+X-MC-Unique: WBCtU6FiNPKTnL0Eemngyw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4B9EA3C19340;
+        Mon, 17 Jul 2023 16:56:33 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.62])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id E9D104CD0F1;
+        Mon, 17 Jul 2023 16:56:30 +0000 (UTC)
+Date:   Mon, 17 Jul 2023 17:56:28 +0100
+From:   Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To:     James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Emanuele Giuseppe Esposito <eesposit@redhat.com>,
+        x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
         bluca@debian.org, lennart@poettering.net,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
@@ -55,19 +51,24 @@ Cc:     x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
         Alexander Potapenko <glider@google.com>,
         Nick Desaulniers <ndesaulniers@google.com>,
         Vitaly Kuznetsov <vkuznets@redhat.com>,
-        "Daniel P ." =?ISO-8859-1?Q?Berrang=E9?= <berrange@redhat.com>,
         linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-Date:   Mon, 17 Jul 2023 12:08:26 -0400
-In-Reply-To: <ZLABozIRVGmwuIBf@gambale.home>
+Subject: Re: [RFC PATCH v2] x86/boot: add .sbat section to the bzImage
+Message-ID: <ZLVyvAXwtemx1I6p@redhat.com>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 References: <20230711154449.1378385-1-eesposit@redhat.com>
-         <ZK/9MlTh435FP5Ji@gambale.home> <ZLABozIRVGmwuIBf@gambale.home>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+ <ZK/9MlTh435FP5Ji@gambale.home>
+ <ZLABozIRVGmwuIBf@gambale.home>
+ <ba2354dc63fd741d2d351b18d4312d0771c0935d.camel@HansenPartnership.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ba2354dc63fd741d2d351b18d4312d0771c0935d.camel@HansenPartnership.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,86 +76,56 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 2023-07-13 at 15:52 +0200, Ard Biesheuvel wrote:
-> (add linux-efi@ cc)
+On Mon, Jul 17, 2023 at 12:08:26PM -0400, James Bottomley wrote:
+> On Thu, 2023-07-13 at 15:52 +0200, Ard Biesheuvel wrote:
+> > (add linux-efi@ cc)
+>
+> Thanks for that, since this is really EFI related rather than x86.
 
-Thanks for that, since this is really EFI related rather than x86.
+snip
 
-> On Thu, Jul 13, 2023 at 03:33:38PM +0200, Ard Biesheuvel wrote:
-> > Hello Emanuele,
-> > 
-> > Please cc the linux-efi@ mailing list and myself on EFI related
-> > patches.
-> > 
-> > First of all, I think the tone of the discussion is way out of hand
-> > on both sides of the debate. Please keep it civil and courteous.
-> > 
-> > On Tue, Jul 11, 2023 at 11:44:49AM -0400, Emanuele Giuseppe
-> > Esposito wrote:
-> > > *Important*: this is just an RFC, as I am not expert in this area
-> > > and I don't know what's the best way to achieve this.
-> > > 
-> > > v2:
-> > > * add standard "sbat,1,SBAT Version,..." header string
-> > > 
-> > > The aim of this patch is to add a .sbat section to the linux
-> > > binary
-> > > (https://github.com/rhboot/shim/blob/main/SBAT.md).
-> > > We mainly need SBAT in UKIs (Unified Kernel Images), as we might
-> > > want to revoke authorizations to specific signed PEs that were
-> > > initially considered as trusted. The reason might be for example
-> > > a security issue related to a specific linux release.
-> > > 
-> > > A .sbat is simply a section containing a string with the
-> > > component name and a version number. This version number is
-> > > compared with the value in OVMF_VARS, and if it's less than the
-> > > variable, the binary is not trusted, even if it is correctly
-> > > signed.
-> > > 
-> > 
-> > Most people will not known what OVMF_VARS is or a PE.
-> > 
-> > Also, 'version number' is a bit vague, better to stick with
-> > existing terminology that makes this more self explanatory: the
-> > component that authenticates the kernel image keeps a revocation
-> > counter, and refuses to load authentic images whose revocation
-> > index is lower than the revocation counter. This approach removes
-> > the need for revoking individual image hashes or having to rotate
-> > the signing keys when a vulnerability is discovered.
-> > 
-> > The argument that we need this in the upstream kernel seems to be
-> > predicated on the assumption that there is one universal signing
-> > authority and revocation domain, but this is not necessarily true.
-> > Even if the distros appear to have decided that it is a reasonable
-> > choice to deploy the MicroSoft signed shim and the associated
-> > components on other systems than Windows-crippled x86 PCs, this is
-> > not universally true, and UEFI secure boot can be (and is) deployed
-> > in sane ways as well.
+> The problem, as I see it, is if the distros give the kernel an .sbat
+> section, that means any vanilla kernel that's built by a user and
+> signed by their key now won't work (even if their key is in MoK)
+> because it won't have an sbat section ... and the sbat mechanism is
+> component specific, not key specific, so the signer has no choice but
+> to adopt it.
 
-Well, yes, but just because sanity exists, doesn't mean we can ignore
-the current insanity in the Laptop/desktop x86 space.
+AFAICT, that problem only exists for binaries directly invoked
+from shim. So that would be a problem for the boot loader (grub),
+or a kernel image being booted directly without a bootloader
+present.
 
-The problem, as I see it, is if the distros give the kernel an .sbat
-section, that means any vanilla kernel that's built by a user and
-signed by their key now won't work (even if their key is in MoK)
-because it won't have an sbat section ... and the sbat mechanism is
-component specific, not key specific, so the signer has no choice but
-to adopt it.
+For kernel binaries invoked indirectly by the boot loader, the
+use of SBAT is currently optional. ie missing SBAT record would
+be treated as success.
 
-There are two ways out of this: give the kernel an sbat section that's
-always current, which is what the proposed patch does (but rather falls
-down on the who keeps it current and how part) or actually add sbat
-addition to the signing tools, so people who sign their own kernels can
-simply go on doing that and no-one else need worry.
+This was a pragmatic way to introduce SBAT support as it only
+impacted grub at that time.
 
-I rather incline to the latter, but as a maintainer of a secure boot
-signing tool I would say that.  I could easily add tools that tell
-someone what the current SBAT level is on the machine they're using, or
-in any given boot component, which will make it very easy to add the
-correct one.  If it becomes the responsibility of the signer, they're
-the ones who decide whether what they've signed revokes everything else
-(which they'd never realistically do if they want to keep booting
-distro kernels in addition to their own).
+Once a distro starts adding SBAT to their kenrels too though, we
+can forsee that they would like to enforce SBAT for the whole
+boot chain, to prevent rollback to previously signed binaries
+that lacked SBAT info.
 
-James
+This policy could be enforced per key though. eg require SBAT
+for anything verified against the vendor key that's compiled into
+shim, but not require SBAT for binaries verified with the MoK
+entries.
+
+The user specific MoK entries don't have such a compelling use
+case for SBAT, since if they need to revoke old binaries, the
+end users always have the easy fallback option of just rotating
+their signing keys and switching out the enrolled key in MoK.
+
+The choice of whether to mandate SBAT for binaries signed with
+a MoK entry, could be set by the end user themselves at the time
+their enroll their signing cert in the MoK DB.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
