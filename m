@@ -2,532 +2,195 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B57B75B7A8
-	for <lists+linux-efi@lfdr.de>; Thu, 20 Jul 2023 21:14:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F03B875B7C1
+	for <lists+linux-efi@lfdr.de>; Thu, 20 Jul 2023 21:17:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229684AbjGTTON (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 20 Jul 2023 15:14:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59164 "EHLO
+        id S230230AbjGTTRC convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-efi@lfdr.de>); Thu, 20 Jul 2023 15:17:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229994AbjGTTOM (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 20 Jul 2023 15:14:12 -0400
-Received: from mailout.easymail.ca (mailout.easymail.ca [64.68.200.34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ECEA1724;
-        Thu, 20 Jul 2023 12:14:09 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by mailout.easymail.ca (Postfix) with ESMTP id AECD5E05FF;
-        Thu, 20 Jul 2023 18:57:31 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at emo08-pco.easydns.vpn
-Received: from mailout.easymail.ca ([127.0.0.1])
-        by localhost (emo08-pco.easydns.vpn [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id cOAlh0lVAvdJ; Thu, 20 Jul 2023 18:57:30 +0000 (UTC)
-Received: from mail.gonehiking.org (unknown [38.15.45.1])
-        by mailout.easymail.ca (Postfix) with ESMTPA id A0337E1F54;
-        Thu, 20 Jul 2023 18:53:29 +0000 (UTC)
-Received: from [192.168.1.4] (internal [192.168.1.4])
-        by mail.gonehiking.org (Postfix) with ESMTP id B01BD3EED6;
-        Thu, 20 Jul 2023 12:53:28 -0600 (MDT)
-Message-ID: <8c506bc0-69b2-3660-59f2-36ff23b08c1e@gonehiking.org>
-Date:   Thu, 20 Jul 2023 12:53:28 -0600
+        with ESMTP id S230071AbjGTTRC (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 20 Jul 2023 15:17:02 -0400
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 596971724;
+        Thu, 20 Jul 2023 12:16:58 -0700 (PDT)
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-57722942374so12517787b3.1;
+        Thu, 20 Jul 2023 12:16:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689880617; x=1690485417;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y+bHV3WlEcZ75hM1I+DnSWXsr4f2F1LThXJkmj5KdE4=;
+        b=kmGG7BPMfb5whwIGaZybAMyVRAQ3yhnvxqLoeHIaZKMzRbnO001RP5P0hWEHhI66hR
+         kqRuDLtSYWMXayTFSidhTogC09v+Orw5+C4yTC3Ld/p/eyLkA6Vgqll1DmntGo2kmimN
+         YhxwWhFiMj8iVT6YeBIkHTcrVioREwWnGt/h3937ejZ3qtwYrOFX3eO9/hMPFJp/PTm3
+         BHSBafSKZQ0PRlDX+IYri4vYrLWY2LxvAsvq7Mo2mw24ZZyrech42A5t9Zwo2wn8T7Mc
+         DereuH9i3p+zwqqAAvD+a4w8KonwRShVouZ5b/US+2X8c7M/kxnKmOVZCgqAEbDz50sZ
+         b6CA==
+X-Gm-Message-State: ABy/qLZlp73IgHshR3roknQwpSrfZGpcZEISUqWXJ2HXLVcztlHpdAak
+        mgUpgL3Z2EytHA3Pn40oN7KpPhQaAqbxzd1v
+X-Google-Smtp-Source: APBJJlGX2O0p91uEFy8Zeyzq+lRhpwzOQotn4tjf/GzeqjA+uIKptl+oJD1gdUArSm8PoAEQ/KRPjg==
+X-Received: by 2002:a81:7dd7:0:b0:576:896a:dbc5 with SMTP id y206-20020a817dd7000000b00576896adbc5mr6845084ywc.48.1689880617299;
+        Thu, 20 Jul 2023 12:16:57 -0700 (PDT)
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com. [209.85.128.178])
+        by smtp.gmail.com with ESMTPSA id n71-20020a0dcb4a000000b0057716dd93b7sm397094ywd.13.2023.07.20.12.16.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Jul 2023 12:16:55 -0700 (PDT)
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-5774098f16eso12523877b3.0;
+        Thu, 20 Jul 2023 12:16:55 -0700 (PDT)
+X-Received: by 2002:a25:ada7:0:b0:cf0:3633:6c77 with SMTP id
+ z39-20020a25ada7000000b00cf036336c77mr5672353ybi.63.1689880615375; Thu, 20
+ Jul 2023 12:16:55 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Reply-To: khalid@gonehiking.org
-Subject: Re: [PATCH v2 6/9] vgacon: clean up global screen_info instances
-Content-Language: en-US
-To:     Arnd Bergmann <arnd@kernel.org>, linux-fbdev@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Helge Deller <deller@gmx.de>,
-        Javier Martinez Canillas <javierm@redhat.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
+References: <20230711154449.1378385-1-eesposit@redhat.com> <ZK/9MlTh435FP5Ji@gambale.home>
+ <ZLABozIRVGmwuIBf@gambale.home> <ba2354dc63fd741d2d351b18d4312d0771c0935d.camel@HansenPartnership.com>
+ <ZLVyvAXwtemx1I6p@redhat.com> <0aa647f719103e8620d7209cbde40f04a7334749.camel@HansenPartnership.com>
+ <FBDC67DD-856F-429B-8E91-B0CA8B0F24B9@oracle.com>
+In-Reply-To: <FBDC67DD-856F-429B-8E91-B0CA8B0F24B9@oracle.com>
+From:   Luca Boccassi <bluca@debian.org>
+Date:   Thu, 20 Jul 2023 20:16:43 +0100
+X-Gmail-Original-Message-ID: <CAMw=ZnQ5pjwJZdX9kyib=vFd_c5_5_eUhV_mT5OcRPt693m=Yg@mail.gmail.com>
+Message-ID: <CAMw=ZnQ5pjwJZdX9kyib=vFd_c5_5_eUhV_mT5OcRPt693m=Yg@mail.gmail.com>
+Subject: Re: [RFC PATCH v2] x86/boot: add .sbat section to the bzImage
+To:     Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@quicinc.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Airlie <airlied@gmail.com>,
-        Deepak Rawat <drawat.floss@gmail.com>,
-        Dexuan Cui <decui@microsoft.com>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guo Ren <guoren@kernel.org>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Matt Turner <mattst88@gmail.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+        Emanuele Giuseppe Esposito <eesposit@redhat.com>,
+        "x86@kernel.org" <x86@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        WANG Xuerui <kernel@xen0n.name>, Wei Liu <wei.liu@kernel.org>,
-        Will Deacon <will@kernel.org>, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-References: <20230719123944.3438363-1-arnd@kernel.org>
- <20230719123944.3438363-7-arnd@kernel.org>
-From:   Khalid Aziz <khalid@gonehiking.org>
-In-Reply-To: <20230719123944.3438363-7-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        "lennart@poettering.net" <lennart@poettering.net>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Alexander Potapenko <glider@google.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        open list <linux-kernel@vger.kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
         RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 7/19/23 6:39 AM, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> To prepare for completely separating the VGA console screen_info from
-> the one used in EFI/sysfb, rename the vgacon instances and make them
-> local as much as possible.
-> 
-> ia64 and arm both have confurations with vgacon and efi, but the contents
-> never overlaps because ia64 has no EFI framebuffer, and arm only has
-> vga console on legacy platforms without EFI. Renaming these is required
-> before the EFI screen_info can be moved into drivers/firmware.
-> 
-> The ia64 vga console is actually registered in two places from
-> setup_arch(), but one of them is wrong, so drop the one in pcdp.c and
-> the fix the one in setup.c to use the correct conditional.
-> 
-> x86 has to keep them together, as the boot protocol is used to switch
-> between VGA text console and framebuffer through the screen_info data.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+On Thu, 20 Jul 2023 at 18:11, Eric Snowberg <eric.snowberg@oracle.com> wrote:
+>
+> (add keyrings@ cc)
+>
+> > On Jul 17, 2023, at 11:15 AM, James Bottomley <James.Bottomley@hansenpartnership.com> wrote:
+> >
+> > On Mon, 2023-07-17 at 17:56 +0100, Daniel P. Berrangé wrote:
+> >> On Mon, Jul 17, 2023 at 12:08:26PM -0400, James Bottomley wrote:
+> >>> On Thu, 2023-07-13 at 15:52 +0200, Ard Biesheuvel wrote:
+> >>>> (add linux-efi@ cc)
+> >>>
+> >>> Thanks for that, since this is really EFI related rather than x86.
+> >>
+> >> snip
+> >>
+> >>> The problem, as I see it, is if the distros give the kernel an
+> >>> .sbat section, that means any vanilla kernel that's built by a user
+> >>> and signed by their key now won't work (even if their key is in
+> >>> MoK) because it won't have an sbat section ... and the sbat
+> >>> mechanism is component specific, not key specific, so the signer
+> >>> has no choice but to adopt it.
+> >>
+> >> AFAICT, that problem only exists for binaries directly invoked
+> >> from shim. So that would be a problem for the boot loader (grub),
+> >> or a kernel image being booted directly without a bootloader
+> >> present.
+> >
+> > Well, currently, yes; that's the in_protocol check in
+> > shim.c:verify_sbat_section().  However, I was assuming based on this
+> > thread, that that was being tightened up (either because people are
+> > moving away from grub or because the shim verifier protocol would
+> > enforce it) as you imply below.
+> >
+> >> For kernel binaries invoked indirectly by the boot loader, the
+> >> use of SBAT is currently optional. ie missing SBAT record would
+> >> be treated as success.
+> >>
+> >> This was a pragmatic way to introduce SBAT support as it only
+> >> impacted grub at that time.
+> >>
+> >> Once a distro starts adding SBAT to their kenrels too though, we
+> >> can forsee that they would like to enforce SBAT for the whole
+> >> boot chain, to prevent rollback to previously signed binaries
+> >> that lacked SBAT info.
+> >>
+> >> This policy could be enforced per key though. eg require SBAT
+> >> for anything verified against the vendor key that's compiled into
+> >> shim, but not require SBAT for binaries verified with the MoK
+> >> entries.
+> >
+> > That might work, but it's not currently in the shim code base.  It also
+> > wouldn't work for SUSE I suspect: they actually put all of their distro
+> > keys into MokList (so the machine owner has to approve any SUSE key
+> > update), so how can shim tell the difference between my key and their
+> > key?
+> >
+> >> The user specific MoK entries don't have such a compelling use
+> >> case for SBAT, since if they need to revoke old binaries, the
+> >> end users always have the easy fallback option of just rotating
+> >> their signing keys and switching out the enrolled key in MoK.
+> >>
+> >> The choice of whether to mandate SBAT for binaries signed with
+> >> a MoK entry, could be set by the end user themselves at the time
+> >> their enroll their signing cert in the MoK DB.
+> >
+> > Well, I agree with this, since it was my original point.  However, a
+> > key observation still seems to be that none of this exception proposal
+> > is actually coded anywhere, so if shim does tighten up sbat
+> > verification, everyone currently gets caught by it (and if it doesn't
+> > then the kernel doesn't need an sbat section).
+> >
+> > I really think if this exception proposal is what everyone is planning,
+> > then you can simply leave the upstream kernel alone, since it won't
+> > require sbat information unless incorporated into a distro.
+> >
+> > So the direction forward seems to be to get this exception proposal
+> > coded up and agreed and then we can decide based on that whether the
+> > upstream kernel needs to care.
+>
+> I agree with James in the previous thread;  adding the SBAT section to
+> the kernel should be handled by the signing tools. It really doesn't need to
+> be included in the mainline kernel code. I also agree with the sentiment that
+> mainline and the stable branches should not have SBAT versions attached
+> to them. These are things distros should be responsible for including in their
+> kernel if they want to have SBAT support.
 
+Why would 'signing tools' handle that? It's just a text-based PE
+section, it doesn't require access to private key materials to be
+handled, nor it has any relationship with signing. Why should all the
+(numerous) signing tools be extended to do also add arbitrary PE
+sections? And again, the point is that it's not something you might or
+might not want to have - if you are getting your Shim signed by the
+3rd party CA, you need it, full stop, end of story. Without it, you
+don't boot. So it needs to be easy to find and consume for all the
+distributions/groups/projects that participate in the Shim + 3rd party
+CA workflow, that's the main goal. Mistakes are going to be expensive.
 
-PCDP and ia64 changes are reasonable.
+> If a distro adds a SBAT section to either their UKI, or if kernel SBAT enforcement
+> is turned on from GRUB2 by default, there is one piece missing that would need
+> to be handled by the mainline kernel which is SBAT enforcement for kexec. This
+> would mean the revocations SBAT protect against would need to be referenced
+> before doing the signature validation in kexec. If this is not added, any distro that
+> allows kexec really doesn’t have a SBAT protected kernel.
 
-Acked-by: Khalid Aziz <khalid@gonehiking.org>
-
-> ---
->   arch/alpha/kernel/proto.h         |  2 ++
->   arch/alpha/kernel/setup.c         |  6 ++--
->   arch/alpha/kernel/sys_sio.c       |  6 ++--
->   arch/arm/include/asm/setup.h      |  5 ++++
->   arch/arm/kernel/atags_parse.c     | 18 ++++++------
->   arch/arm/kernel/efi.c             |  6 ----
->   arch/arm/kernel/setup.c           | 10 +++++--
->   arch/ia64/kernel/setup.c          | 49 +++++++++++++++----------------
->   arch/mips/kernel/setup.c          | 11 -------
->   arch/mips/mti-malta/malta-setup.c |  4 ++-
->   arch/mips/sibyte/swarm/setup.c    | 24 ++++++++-------
->   arch/mips/sni/setup.c             | 16 +++++-----
->   drivers/firmware/pcdp.c           |  1 -
->   13 files changed, 78 insertions(+), 80 deletions(-)
-> 
-> diff --git a/arch/alpha/kernel/proto.h b/arch/alpha/kernel/proto.h
-> index 5816a31c1b386..2c89c1c557129 100644
-> --- a/arch/alpha/kernel/proto.h
-> +++ b/arch/alpha/kernel/proto.h
-> @@ -1,5 +1,6 @@
->   /* SPDX-License-Identifier: GPL-2.0 */
->   #include <linux/interrupt.h>
-> +#include <linux/screen_info.h>
->   #include <linux/io.h>
->   
->   /* Prototypes of functions used across modules here in this directory.  */
-> @@ -113,6 +114,7 @@ extern int boot_cpuid;
->   #ifdef CONFIG_VERBOSE_MCHECK
->   extern unsigned long alpha_verbose_mcheck;
->   #endif
-> +extern struct screen_info vgacon_screen_info;
->   
->   /* srmcons.c */
->   #if defined(CONFIG_ALPHA_GENERIC) || defined(CONFIG_ALPHA_SRM)
-> diff --git a/arch/alpha/kernel/setup.c b/arch/alpha/kernel/setup.c
-> index d73b685fe9852..7b35af2ed2787 100644
-> --- a/arch/alpha/kernel/setup.c
-> +++ b/arch/alpha/kernel/setup.c
-> @@ -138,7 +138,7 @@ static char __initdata command_line[COMMAND_LINE_SIZE];
->    * code think we're on a VGA color display.
->    */
->   
-> -struct screen_info screen_info = {
-> +struct screen_info vgacon_screen_info = {
->   	.orig_x = 0,
->   	.orig_y = 25,
->   	.orig_video_cols = 80,
-> @@ -146,8 +146,6 @@ struct screen_info screen_info = {
->   	.orig_video_isVGA = 1,
->   	.orig_video_points = 16
->   };
-> -
-> -EXPORT_SYMBOL(screen_info);
->   #endif
->   
->   /*
-> @@ -655,7 +653,7 @@ setup_arch(char **cmdline_p)
->   
->   #ifdef CONFIG_VT
->   #if defined(CONFIG_VGA_CONSOLE)
-> -	vgacon_register_screen(&screen_info);
-> +	vgacon_register_screen(&vgacon_screen_info);
->   #endif
->   #endif
->   
-> diff --git a/arch/alpha/kernel/sys_sio.c b/arch/alpha/kernel/sys_sio.c
-> index 7de8a5d2d2066..086488ed83a7f 100644
-> --- a/arch/alpha/kernel/sys_sio.c
-> +++ b/arch/alpha/kernel/sys_sio.c
-> @@ -60,9 +60,9 @@ alphabook1_init_arch(void)
->   #ifdef CONFIG_VGA_CONSOLE
->   	/* The AlphaBook1 has LCD video fixed at 800x600,
->   	   37 rows and 100 cols. */
-> -	screen_info.orig_y = 37;
-> -	screen_info.orig_video_cols = 100;
-> -	screen_info.orig_video_lines = 37;
-> +	vgacon_screen_info.orig_y = 37;
-> +	vgacon_screen_info.orig_video_cols = 100;
-> +	vgacon_screen_info.orig_video_lines = 37;
->   #endif
->   
->   	lca_init_arch();
-> diff --git a/arch/arm/include/asm/setup.h b/arch/arm/include/asm/setup.h
-> index 546af8b1e3f65..cc106f946c691 100644
-> --- a/arch/arm/include/asm/setup.h
-> +++ b/arch/arm/include/asm/setup.h
-> @@ -11,6 +11,7 @@
->   #ifndef __ASMARM_SETUP_H
->   #define __ASMARM_SETUP_H
->   
-> +#include <linux/screen_info.h>
->   #include <uapi/asm/setup.h>
->   
->   
-> @@ -35,4 +36,8 @@ void early_mm_init(const struct machine_desc *);
->   void adjust_lowmem_bounds(void);
->   void setup_dma_zone(const struct machine_desc *desc);
->   
-> +#ifdef CONFIG_VGA_CONSOLE
-> +extern struct screen_info vgacon_screen_info;
-> +#endif
-> +
->   #endif
-> diff --git a/arch/arm/kernel/atags_parse.c b/arch/arm/kernel/atags_parse.c
-> index 4c815da3b77b0..4ec591bde3dfa 100644
-> --- a/arch/arm/kernel/atags_parse.c
-> +++ b/arch/arm/kernel/atags_parse.c
-> @@ -72,15 +72,15 @@ __tagtable(ATAG_MEM, parse_tag_mem32);
->   #if defined(CONFIG_ARCH_FOOTBRIDGE) && defined(CONFIG_VGA_CONSOLE)
->   static int __init parse_tag_videotext(const struct tag *tag)
->   {
-> -	screen_info.orig_x            = tag->u.videotext.x;
-> -	screen_info.orig_y            = tag->u.videotext.y;
-> -	screen_info.orig_video_page   = tag->u.videotext.video_page;
-> -	screen_info.orig_video_mode   = tag->u.videotext.video_mode;
-> -	screen_info.orig_video_cols   = tag->u.videotext.video_cols;
-> -	screen_info.orig_video_ega_bx = tag->u.videotext.video_ega_bx;
-> -	screen_info.orig_video_lines  = tag->u.videotext.video_lines;
-> -	screen_info.orig_video_isVGA  = tag->u.videotext.video_isvga;
-> -	screen_info.orig_video_points = tag->u.videotext.video_points;
-> +	vgacon_screen_info.orig_x            = tag->u.videotext.x;
-> +	vgacon_screen_info.orig_y            = tag->u.videotext.y;
-> +	vgacon_screen_info.orig_video_page   = tag->u.videotext.video_page;
-> +	vgacon_screen_info.orig_video_mode   = tag->u.videotext.video_mode;
-> +	vgacon_screen_info.orig_video_cols   = tag->u.videotext.video_cols;
-> +	vgacon_screen_info.orig_video_ega_bx = tag->u.videotext.video_ega_bx;
-> +	vgacon_screen_info.orig_video_lines  = tag->u.videotext.video_lines;
-> +	vgacon_screen_info.orig_video_isVGA  = tag->u.videotext.video_isvga;
-> +	vgacon_screen_info.orig_video_points = tag->u.videotext.video_points;
->   	return 0;
->   }
->   
-> diff --git a/arch/arm/kernel/efi.c b/arch/arm/kernel/efi.c
-> index e94655ef16bb3..6f9ec7d28a710 100644
-> --- a/arch/arm/kernel/efi.c
-> +++ b/arch/arm/kernel/efi.c
-> @@ -123,12 +123,6 @@ void __init arm_efi_init(void)
->   {
->   	efi_init();
->   
-> -	if (screen_info.orig_video_isVGA == VIDEO_TYPE_EFI) {
-> -		/* dummycon on ARM needs non-zero values for columns/lines */
-> -		screen_info.orig_video_cols = 80;
-> -		screen_info.orig_video_lines = 25;
-> -	}
-> -
->   	/* ARM does not permit early mappings to persist across paging_init() */
->   	efi_memmap_unmap();
->   
-> diff --git a/arch/arm/kernel/setup.c b/arch/arm/kernel/setup.c
-> index 5d8a7fb3eba45..86c2751f56dcf 100644
-> --- a/arch/arm/kernel/setup.c
-> +++ b/arch/arm/kernel/setup.c
-> @@ -928,8 +928,8 @@ static void __init request_standard_resources(const struct machine_desc *mdesc)
->   		request_resource(&ioport_resource, &lp2);
->   }
->   
-> -#if defined(CONFIG_VGA_CONSOLE) || defined(CONFIG_EFI)
-> -struct screen_info screen_info = {
-> +#if defined(CONFIG_VGA_CONSOLE)
-> +static struct screen_info vgacon_screen_info = {
->    .orig_video_lines	= 30,
->    .orig_video_cols	= 80,
->    .orig_video_mode	= 0,
-> @@ -939,6 +939,10 @@ struct screen_info screen_info = {
->   };
->   #endif
->   
-> +#if defined(CONFIG_EFI)
-> +struct screen_info screen_info;
-> +#endif
-> +
->   static int __init customize_machine(void)
->   {
->   	/*
-> @@ -1192,7 +1196,7 @@ void __init setup_arch(char **cmdline_p)
->   
->   #ifdef CONFIG_VT
->   #if defined(CONFIG_VGA_CONSOLE)
-> -	vgacon_register_screen(&screen_info);
-> +	vgacon_register_screen(&vgacon_screen_info);
->   #endif
->   #endif
->   
-> diff --git a/arch/ia64/kernel/setup.c b/arch/ia64/kernel/setup.c
-> index 2c9283fcd3759..82feae1323f40 100644
-> --- a/arch/ia64/kernel/setup.c
-> +++ b/arch/ia64/kernel/setup.c
-> @@ -86,7 +86,8 @@ EXPORT_SYMBOL(local_per_cpu_offset);
->   #endif
->   unsigned long ia64_cycles_per_usec;
->   struct ia64_boot_param *ia64_boot_param;
-> -#if defined(CONFIG_VGA_CONSOLE) || defined(CONFIG_EFI)
-> +#if defined(CONFIG_EFI)
-> +/* No longer used on ia64, but needed for linking */
->   struct screen_info screen_info;
->   #endif
->   #ifdef CONFIG_VGA_CONSOLE
-> @@ -503,8 +504,9 @@ screen_info_setup(void)
->   {
->   #ifdef CONFIG_VGA_CONSOLE
->   	unsigned int orig_x, orig_y, num_cols, num_rows, font_height;
-> +	static struct screen_info si;
->   
-> -	memset(&screen_info, 0, sizeof(screen_info));
-> +	memset(&si, 0, sizeof(si));
->   
->   	if (!ia64_boot_param->console_info.num_rows ||
->   	    !ia64_boot_param->console_info.num_cols) {
-> @@ -522,14 +524,26 @@ screen_info_setup(void)
->   		font_height = 400 / num_rows;
->   	}
->   
-> -	screen_info.orig_x = orig_x;
-> -	screen_info.orig_y = orig_y;
-> -	screen_info.orig_video_cols  = num_cols;
-> -	screen_info.orig_video_lines = num_rows;
-> -	screen_info.orig_video_points = font_height;
-> -	screen_info.orig_video_mode = 3;	/* XXX fake */
-> -	screen_info.orig_video_isVGA = 1;	/* XXX fake */
-> -	screen_info.orig_video_ega_bx = 3;	/* XXX fake */
-> +	si.orig_x = orig_x;
-> +	si.orig_y = orig_y;
-> +	si.orig_video_cols  = num_cols;
-> +	si.orig_video_lines = num_rows;
-> +	si.orig_video_points = font_height;
-> +	si.orig_video_mode = 3;	/* XXX fake */
-> +	si.orig_video_isVGA = 1;	/* XXX fake */
-> +	si.orig_video_ega_bx = 3;	/* XXX fake */
-> +
-> +	if (!conswitchp) {
-> +		/*
-> +		 * Non-legacy systems may route legacy VGA MMIO range to system
-> +		 * memory.  vga_con probes the MMIO hole, so memory looks like
-> +		 * a VGA device to it.  The EFI memory map can tell us if it's
-> +		 * memory so we can avoid this problem.
-> +		 */
-> +		if (efi_mem_type(vga_console_membase + 0xA0000) !=
-> +		    EFI_CONVENTIONAL_MEMORY) {
-> +			vgacon_register_screen(&si);
-> +	}
->   #endif
->   }
->   
-> @@ -609,21 +623,6 @@ setup_arch (char **cmdline_p)
->   	cpu_init();	/* initialize the bootstrap CPU */
->   	mmu_context_init();	/* initialize context_id bitmap */
->   
-> -#ifdef CONFIG_VT
-> -	if (!conswitchp) {
-> -# if defined(CONFIG_VGA_CONSOLE)
-> -		/*
-> -		 * Non-legacy systems may route legacy VGA MMIO range to system
-> -		 * memory.  vga_con probes the MMIO hole, so memory looks like
-> -		 * a VGA device to it.  The EFI memory map can tell us if it's
-> -		 * memory so we can avoid this problem.
-> -		 */
-> -		if (efi_mem_type(0xA0000) != EFI_CONVENTIONAL_MEMORY)
-> -			vgacon_register_screen(&screen_info);
-> -# endif
-> -	}
-> -#endif
-> -
->   	/* enable IA-64 Machine Check Abort Handling unless disabled */
->   	if (!nomca)
->   		ia64_mca_init();
-> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> index 6c3fae62a9f6b..cae181bbfee10 100644
-> --- a/arch/mips/kernel/setup.c
-> +++ b/arch/mips/kernel/setup.c
-> @@ -15,7 +15,6 @@
->   #include <linux/delay.h>
->   #include <linux/ioport.h>
->   #include <linux/export.h>
-> -#include <linux/screen_info.h>
->   #include <linux/memblock.h>
->   #include <linux/initrd.h>
->   #include <linux/root_dev.h>
-> @@ -54,10 +53,6 @@ struct cpuinfo_mips cpu_data[NR_CPUS] __read_mostly;
->   
->   EXPORT_SYMBOL(cpu_data);
->   
-> -#ifdef CONFIG_VGA_CONSOLE
-> -struct screen_info screen_info;
-> -#endif
-> -
->   /*
->    * Setup information
->    *
-> @@ -792,12 +787,6 @@ void __init setup_arch(char **cmdline_p)
->   	if (IS_ENABLED(CONFIG_CPU_R4X00_BUGS64))
->   		check_bugs64_early();
->   
-> -#if defined(CONFIG_VT)
-> -#if defined(CONFIG_VGA_CONSOLE)
-> -	vgacon_register_screen(&screen_info);
-> -#endif
-> -#endif
-> -
->   	arch_mem_init(cmdline_p);
->   	dmi_setup();
->   
-> diff --git a/arch/mips/mti-malta/malta-setup.c b/arch/mips/mti-malta/malta-setup.c
-> index 21cb3ac1237b7..3a2836e9d8566 100644
-> --- a/arch/mips/mti-malta/malta-setup.c
-> +++ b/arch/mips/mti-malta/malta-setup.c
-> @@ -161,7 +161,7 @@ static void __init pci_clock_check(void)
->   #if defined(CONFIG_VT) && defined(CONFIG_VGA_CONSOLE)
->   static void __init screen_info_setup(void)
->   {
-> -	screen_info = (struct screen_info) {
-> +	static struct screen_info si = {
->   		.orig_x = 0,
->   		.orig_y = 25,
->   		.ext_mem_k = 0,
-> @@ -175,6 +175,8 @@ static void __init screen_info_setup(void)
->   		.orig_video_isVGA = VIDEO_TYPE_VGAC,
->   		.orig_video_points = 16
->   	};
-> +
-> +	vgacon_register_screen(&si);
->   }
->   #endif
->   
-> diff --git a/arch/mips/sibyte/swarm/setup.c b/arch/mips/sibyte/swarm/setup.c
-> index 37df504d3ecbb..74e7c242b6902 100644
-> --- a/arch/mips/sibyte/swarm/setup.c
-> +++ b/arch/mips/sibyte/swarm/setup.c
-> @@ -112,6 +112,19 @@ int update_persistent_clock64(struct timespec64 now)
->   	}
->   }
->   
-> +#ifdef CONFIG_VGA_CONSOLE
-> +static struct screen_info vgacon_screen_info = {
-> +	.orig_video_page	= 52,
-> +	.orig_video_mode	= 3,
-> +	.orig_video_cols	= 80,
-> +	.flags			= 12,
-> +	.orig_video_ega_bx	= 3,
-> +	.orig_video_lines	= 25,
-> +	.orig_video_isVGA	= 0x22,
-> +	.orig_video_points	= 16,
-> +};
-> +#endif
-> +
->   void __init plat_mem_setup(void)
->   {
->   #ifdef CONFIG_SIBYTE_BCM1x80
-> @@ -130,16 +143,7 @@ void __init plat_mem_setup(void)
->   		swarm_rtc_type = RTC_M41T81;
->   
->   #ifdef CONFIG_VGA_CONSOLE
-> -	screen_info = (struct screen_info) {
-> -		.orig_video_page	= 52,
-> -		.orig_video_mode	= 3,
-> -		.orig_video_cols	= 80,
-> -		.flags			= 12,
-> -		.orig_video_ega_bx	= 3,
-> -		.orig_video_lines	= 25,
-> -		.orig_video_isVGA	= 0x22,
-> -		.orig_video_points	= 16,
-> -       };
-> +	vgacon_register_screen(&vgacon_screen_info);
->          /* XXXKW for CFE, get lines/cols from environment */
->   #endif
->   }
-> diff --git a/arch/mips/sni/setup.c b/arch/mips/sni/setup.c
-> index 9984cf91be7d0..42fdb939c88d8 100644
-> --- a/arch/mips/sni/setup.c
-> +++ b/arch/mips/sni/setup.c
-> @@ -39,18 +39,20 @@ extern void sni_machine_power_off(void);
->   static void __init sni_display_setup(void)
->   {
->   #if defined(CONFIG_VGA_CONSOLE) && defined(CONFIG_FW_ARC)
-> -	struct screen_info *si = &screen_info;
-> +	static struct screen_info si;
->   	DISPLAY_STATUS *di;
->   
->   	di = ArcGetDisplayStatus(1);
->   
->   	if (di) {
-> -		si->orig_x		= di->CursorXPosition;
-> -		si->orig_y		= di->CursorYPosition;
-> -		si->orig_video_cols	= di->CursorMaxXPosition;
-> -		si->orig_video_lines	= di->CursorMaxYPosition;
-> -		si->orig_video_isVGA	= VIDEO_TYPE_VGAC;
-> -		si->orig_video_points	= 16;
-> +		si.orig_x		= di->CursorXPosition;
-> +		si.orig_y		= di->CursorYPosition;
-> +		si.orig_video_cols	= di->CursorMaxXPosition;
-> +		si.orig_video_lines	= di->CursorMaxYPosition;
-> +		si.orig_video_isVGA	= VIDEO_TYPE_VGAC;
-> +		si.orig_video_points	= 16;
-> +
-> +		vgacon_register_screen(&si);
->   	}
->   #endif
->   }
-> diff --git a/drivers/firmware/pcdp.c b/drivers/firmware/pcdp.c
-> index 667a595373b2d..876b3e9b37e25 100644
-> --- a/drivers/firmware/pcdp.c
-> +++ b/drivers/firmware/pcdp.c
-> @@ -72,7 +72,6 @@ setup_vga_console(struct pcdp_device *dev)
->   		return -ENODEV;
->   	}
->   
-> -	vgacon_register_screen(&screen_info);
->   	printk(KERN_INFO "PCDP: VGA console\n");
->   	return 0;
->   #else
-
+The kexec question is indeed interesting, but a bit further down the
+road. As James said, initially protecting the stub is probably more
+interesting and urgent, as the system before ExitBootServices is much
+more "valuable" to protect. For the future, IIRC a few ideas were
+floated, to avoid downgrades, but nothing concrete as far as I know.
