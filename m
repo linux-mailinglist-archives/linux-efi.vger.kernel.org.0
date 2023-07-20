@@ -2,38 +2,39 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9839875B7AA
-	for <lists+linux-efi@lfdr.de>; Thu, 20 Jul 2023 21:14:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF31675B782
+	for <lists+linux-efi@lfdr.de>; Thu, 20 Jul 2023 21:09:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230263AbjGTTON (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 20 Jul 2023 15:14:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59166 "EHLO
+        id S230143AbjGTTJN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 20 Jul 2023 15:09:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230252AbjGTTOM (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 20 Jul 2023 15:14:12 -0400
+        with ESMTP id S230140AbjGTTJM (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 20 Jul 2023 15:09:12 -0400
+X-Greylist: delayed 300 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 20 Jul 2023 12:09:10 PDT
 Received: from mailout.easymail.ca (mailout.easymail.ca [64.68.200.34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00729171D;
-        Thu, 20 Jul 2023 12:14:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3C2810E5;
+        Thu, 20 Jul 2023 12:09:09 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by mailout.easymail.ca (Postfix) with ESMTP id C37EA61FBF;
-        Thu, 20 Jul 2023 18:49:45 +0000 (UTC)
+        by mailout.easymail.ca (Postfix) with ESMTP id C590A620B6;
+        Thu, 20 Jul 2023 18:51:38 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at emo09-pco.easydns.vpn
 Received: from mailout.easymail.ca ([127.0.0.1])
         by localhost (emo09-pco.easydns.vpn [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id EgNO-Y6m_DM9; Thu, 20 Jul 2023 18:49:45 +0000 (UTC)
+        with ESMTP id xdAW74Bt-UdA; Thu, 20 Jul 2023 18:51:38 +0000 (UTC)
 Received: from mail.gonehiking.org (unknown [38.15.45.1])
-        by mailout.easymail.ca (Postfix) with ESMTPA id 03D9261DE6;
-        Thu, 20 Jul 2023 18:49:45 +0000 (UTC)
+        by mailout.easymail.ca (Postfix) with ESMTPA id F357A61E5F;
+        Thu, 20 Jul 2023 18:51:37 +0000 (UTC)
 Received: from [192.168.1.4] (internal [192.168.1.4])
-        by mail.gonehiking.org (Postfix) with ESMTP id 960493EED6;
-        Thu, 20 Jul 2023 12:49:43 -0600 (MDT)
-Message-ID: <392b33e3-18b2-73b6-f804-7a7ec1de0b99@gonehiking.org>
-Date:   Thu, 20 Jul 2023 12:49:43 -0600
+        by mail.gonehiking.org (Postfix) with ESMTP id D5A1F3EED6;
+        Thu, 20 Jul 2023 12:51:35 -0600 (MDT)
+Message-ID: <2517a38e-9a3b-07b1-85ff-270601d52c45@gonehiking.org>
+Date:   Thu, 20 Jul 2023 12:51:35 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
 Reply-To: khalid@gonehiking.org
-Subject: Re: [PATCH v2 2/9] vgacon: rework screen_info #ifdef checks
+Subject: Re: [PATCH v2 5/9] vgacon: remove screen_info dependency
 Content-Language: en-US
 To:     Arnd Bergmann <arnd@kernel.org>, linux-fbdev@vger.kernel.org,
         Thomas Zimmermann <tzimmermann@suse.de>,
@@ -78,9 +79,9 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         sparclinux@vger.kernel.org, linux-hyperv@vger.kernel.org,
         dri-devel@lists.freedesktop.org
 References: <20230719123944.3438363-1-arnd@kernel.org>
- <20230719123944.3438363-3-arnd@kernel.org>
+ <20230719123944.3438363-6-arnd@kernel.org>
 From:   Khalid Aziz <khalid@gonehiking.org>
-In-Reply-To: <20230719123944.3438363-3-arnd@kernel.org>
+In-Reply-To: <20230719123944.3438363-6-arnd@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
@@ -96,187 +97,294 @@ X-Mailing-List: linux-efi@vger.kernel.org
 On 7/19/23 6:39 AM, Arnd Bergmann wrote:
 > From: Arnd Bergmann <arnd@arndb.de>
 > 
-> On non-x86 architectures, the screen_info variable is generally only
-> used for the VGA console where supported, and in some cases the EFI
-> framebuffer or vga16fb.
+> The vga console driver is fairly self-contained, and only used by
+> architectures that explicitly initialize the screen_info settings.
 > 
-> Now that we have a definite list of which architectures actually use it
-> for what, use consistent #ifdef checks so the global variable is only
-> defined when it is actually used on those architectures.
+> Chance every instance that picks the vga console by setting conswitchp
+> to call a function instead, and pass a reference to the screen_info
+> there.
 > 
-> Loongarch and riscv have no support for vgacon or vga16fb, but
-> they support EFI firmware, so only that needs to be checked, and the
-> initialization can be removed because that is handled by EFI.
-> IA64 has both vgacon and EFI, though EFI apparently never uses
-> a framebuffer here.
-> 
-> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
+PCDP and ia64 changes look good to me.
 
-Reviewed-by: Khalid Aziz <khalid@gonehiking.org>
+Acked-by: Khalid Azzi <khalid@gonehiking.org>
 
 > ---
-> v2 changes:
->   - split out mips/jazz change
->   - improve ia64 #ifdef changes
-> ---
->   arch/alpha/kernel/setup.c      |  2 ++
->   arch/alpha/kernel/sys_sio.c    |  2 ++
->   arch/ia64/kernel/setup.c       |  6 ++++++
->   arch/loongarch/kernel/setup.c  |  2 ++
+>   arch/alpha/kernel/setup.c      |  2 +-
+>   arch/arm/kernel/setup.c        |  2 +-
+>   arch/ia64/kernel/setup.c       |  2 +-
 >   arch/mips/kernel/setup.c       |  2 +-
->   arch/mips/sibyte/swarm/setup.c |  2 +-
->   arch/mips/sni/setup.c          |  2 +-
->   arch/riscv/kernel/setup.c      | 11 ++---------
->   8 files changed, 17 insertions(+), 12 deletions(-)
+>   arch/x86/kernel/setup.c        |  2 +-
+>   drivers/firmware/pcdp.c        |  2 +-
+>   drivers/video/console/vgacon.c | 68 ++++++++++++++++++++--------------
+>   include/linux/console.h        |  7 ++++
+>   8 files changed, 53 insertions(+), 34 deletions(-)
 > 
 > diff --git a/arch/alpha/kernel/setup.c b/arch/alpha/kernel/setup.c
-> index b650ff1cb022e..b4d2297765c02 100644
+> index b4d2297765c02..d73b685fe9852 100644
 > --- a/arch/alpha/kernel/setup.c
 > +++ b/arch/alpha/kernel/setup.c
-> @@ -131,6 +131,7 @@ static void determine_cpu_caches (unsigned int);
+> @@ -655,7 +655,7 @@ setup_arch(char **cmdline_p)
 >   
->   static char __initdata command_line[COMMAND_LINE_SIZE];
+>   #ifdef CONFIG_VT
+>   #if defined(CONFIG_VGA_CONSOLE)
+> -	conswitchp = &vga_con;
+> +	vgacon_register_screen(&screen_info);
+>   #endif
+>   #endif
 >   
-> +#ifdef CONFIG_VGA_CONSOLE
->   /*
->    * The format of "screen_info" is strange, and due to early
->    * i386-setup code. This is just enough to make the console
-> @@ -147,6 +148,7 @@ struct screen_info screen_info = {
->   };
+> diff --git a/arch/arm/kernel/setup.c b/arch/arm/kernel/setup.c
+> index 40326a35a179b..5d8a7fb3eba45 100644
+> --- a/arch/arm/kernel/setup.c
+> +++ b/arch/arm/kernel/setup.c
+> @@ -1192,7 +1192,7 @@ void __init setup_arch(char **cmdline_p)
 >   
->   EXPORT_SYMBOL(screen_info);
-> +#endif
+>   #ifdef CONFIG_VT
+>   #if defined(CONFIG_VGA_CONSOLE)
+> -	conswitchp = &vga_con;
+> +	vgacon_register_screen(&screen_info);
+>   #endif
+>   #endif
 >   
->   /*
->    * The direct map I/O window, if any.  This should be the same
-> diff --git a/arch/alpha/kernel/sys_sio.c b/arch/alpha/kernel/sys_sio.c
-> index 7c420d8dac53d..7de8a5d2d2066 100644
-> --- a/arch/alpha/kernel/sys_sio.c
-> +++ b/arch/alpha/kernel/sys_sio.c
-> @@ -57,11 +57,13 @@ sio_init_irq(void)
->   static inline void __init
->   alphabook1_init_arch(void)
->   {
-> +#ifdef CONFIG_VGA_CONSOLE
->   	/* The AlphaBook1 has LCD video fixed at 800x600,
->   	   37 rows and 100 cols. */
->   	screen_info.orig_y = 37;
->   	screen_info.orig_video_cols = 100;
->   	screen_info.orig_video_lines = 37;
-> +#endif
->   
->   	lca_init_arch();
->   }
 > diff --git a/arch/ia64/kernel/setup.c b/arch/ia64/kernel/setup.c
-> index 5a55ac82c13a4..d2c66efdde560 100644
+> index d2c66efdde560..2c9283fcd3759 100644
 > --- a/arch/ia64/kernel/setup.c
 > +++ b/arch/ia64/kernel/setup.c
-> @@ -86,9 +86,13 @@ EXPORT_SYMBOL(local_per_cpu_offset);
+> @@ -619,7 +619,7 @@ setup_arch (char **cmdline_p)
+>   		 * memory so we can avoid this problem.
+>   		 */
+>   		if (efi_mem_type(0xA0000) != EFI_CONVENTIONAL_MEMORY)
+> -			conswitchp = &vga_con;
+> +			vgacon_register_screen(&screen_info);
+>   # endif
+>   	}
 >   #endif
->   unsigned long ia64_cycles_per_usec;
->   struct ia64_boot_param *ia64_boot_param;
-> +#if defined(CONFIG_VGA_CONSOLE) || defined(CONFIG_EFI)
->   struct screen_info screen_info;
-> +#endif
-> +#ifdef CONFIG_VGA_CONSOLE
->   unsigned long vga_console_iobase;
->   unsigned long vga_console_membase;
-> +#endif
->   
->   static struct resource data_resource = {
->   	.name	= "Kernel data",
-> @@ -497,6 +501,7 @@ early_console_setup (char *cmdline)
->   static void __init
->   screen_info_setup(void)
->   {
-> +#ifdef CONFIG_VGA_CONSOLE
->   	unsigned int orig_x, orig_y, num_cols, num_rows, font_height;
->   
->   	memset(&screen_info, 0, sizeof(screen_info));
-> @@ -525,6 +530,7 @@ screen_info_setup(void)
->   	screen_info.orig_video_mode = 3;	/* XXX fake */
->   	screen_info.orig_video_isVGA = 1;	/* XXX fake */
->   	screen_info.orig_video_ega_bx = 3;	/* XXX fake */
-> +#endif
->   }
->   
->   static inline void
-> diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
-> index 95e6b579dfdd1..77e7a3722caa6 100644
-> --- a/arch/loongarch/kernel/setup.c
-> +++ b/arch/loongarch/kernel/setup.c
-> @@ -57,7 +57,9 @@
->   #define SMBIOS_CORE_PACKAGE_OFFSET	0x23
->   #define LOONGSON_EFI_ENABLE		(1 << 3)
->   
-> +#ifdef CONFIG_EFI
->   struct screen_info screen_info __section(".data");
-> +#endif
->   
->   unsigned long fw_arg0, fw_arg1, fw_arg2;
->   DEFINE_PER_CPU(unsigned long, kernelsp);
 > diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> index cb871eb784a7c..1aba7dc95132c 100644
+> index 1aba7dc95132c..6c3fae62a9f6b 100644
 > --- a/arch/mips/kernel/setup.c
 > +++ b/arch/mips/kernel/setup.c
-> @@ -54,7 +54,7 @@ struct cpuinfo_mips cpu_data[NR_CPUS] __read_mostly;
+> @@ -794,7 +794,7 @@ void __init setup_arch(char **cmdline_p)
 >   
->   EXPORT_SYMBOL(cpu_data);
->   
-> -#ifdef CONFIG_VT
-> +#ifdef CONFIG_VGA_CONSOLE
->   struct screen_info screen_info;
+>   #if defined(CONFIG_VT)
+>   #if defined(CONFIG_VGA_CONSOLE)
+> -	conswitchp = &vga_con;
+> +	vgacon_register_screen(&screen_info);
+>   #endif
 >   #endif
 >   
-> diff --git a/arch/mips/sibyte/swarm/setup.c b/arch/mips/sibyte/swarm/setup.c
-> index 76683993cdd3a..37df504d3ecbb 100644
-> --- a/arch/mips/sibyte/swarm/setup.c
-> +++ b/arch/mips/sibyte/swarm/setup.c
-> @@ -129,7 +129,7 @@ void __init plat_mem_setup(void)
->   	if (m41t81_probe())
->   		swarm_rtc_type = RTC_M41T81;
+> diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+> index fd975a4a52006..b1ea77d504615 100644
+> --- a/arch/x86/kernel/setup.c
+> +++ b/arch/x86/kernel/setup.c
+> @@ -1293,7 +1293,7 @@ void __init setup_arch(char **cmdline_p)
+>   #ifdef CONFIG_VT
+>   #if defined(CONFIG_VGA_CONSOLE)
+>   	if (!efi_enabled(EFI_BOOT) || (efi_mem_type(0xa0000) != EFI_CONVENTIONAL_MEMORY))
+> -		conswitchp = &vga_con;
+> +		vgacon_register_screen(&screen_info);
+>   #endif
+>   #endif
+>   	x86_init.oem.banner();
+> diff --git a/drivers/firmware/pcdp.c b/drivers/firmware/pcdp.c
+> index 715a45442d1cf..667a595373b2d 100644
+> --- a/drivers/firmware/pcdp.c
+> +++ b/drivers/firmware/pcdp.c
+> @@ -72,7 +72,7 @@ setup_vga_console(struct pcdp_device *dev)
+>   		return -ENODEV;
+>   	}
 >   
-> -#ifdef CONFIG_VT
-> +#ifdef CONFIG_VGA_CONSOLE
->   	screen_info = (struct screen_info) {
->   		.orig_video_page	= 52,
->   		.orig_video_mode	= 3,
-> diff --git a/arch/mips/sni/setup.c b/arch/mips/sni/setup.c
-> index efad85c8c823b..9984cf91be7d0 100644
-> --- a/arch/mips/sni/setup.c
-> +++ b/arch/mips/sni/setup.c
-> @@ -38,7 +38,7 @@ extern void sni_machine_power_off(void);
+> -	conswitchp = &vga_con;
+> +	vgacon_register_screen(&screen_info);
+>   	printk(KERN_INFO "PCDP: VGA console\n");
+>   	return 0;
+>   #else
+> diff --git a/drivers/video/console/vgacon.c b/drivers/video/console/vgacon.c
+> index e25ba523892e5..3d7fedf27ffc1 100644
+> --- a/drivers/video/console/vgacon.c
+> +++ b/drivers/video/console/vgacon.c
+> @@ -97,6 +97,8 @@ static int 		vga_video_font_height;
+>   static int 		vga_scan_lines		__read_mostly;
+>   static unsigned int 	vga_rolled_over; /* last vc_origin offset before wrap */
 >   
->   static void __init sni_display_setup(void)
+> +static struct screen_info *vga_si;
+> +
+>   static bool vga_hardscroll_enabled;
+>   static bool vga_hardscroll_user_enable = true;
+>   
+> @@ -161,8 +163,9 @@ static const char *vgacon_startup(void)
+>   	u16 saved1, saved2;
+>   	volatile u16 *p;
+>   
+> -	if (screen_info.orig_video_isVGA == VIDEO_TYPE_VLFB ||
+> -	    screen_info.orig_video_isVGA == VIDEO_TYPE_EFI) {
+> +	if (!vga_si ||
+> +	    vga_si->orig_video_isVGA == VIDEO_TYPE_VLFB ||
+> +	    vga_si->orig_video_isVGA == VIDEO_TYPE_EFI) {
+>   	      no_vga:
+>   #ifdef CONFIG_DUMMY_CONSOLE
+>   		conswitchp = &dummy_con;
+> @@ -172,29 +175,29 @@ static const char *vgacon_startup(void)
+>   #endif
+>   	}
+>   
+> -	/* boot_params.screen_info reasonably initialized? */
+> -	if ((screen_info.orig_video_lines == 0) ||
+> -	    (screen_info.orig_video_cols  == 0))
+> +	/* vga_si reasonably initialized? */
+> +	if ((vga_si->orig_video_lines == 0) ||
+> +	    (vga_si->orig_video_cols  == 0))
+>   		goto no_vga;
+>   
+>   	/* VGA16 modes are not handled by VGACON */
+> -	if ((screen_info.orig_video_mode == 0x0D) ||	/* 320x200/4 */
+> -	    (screen_info.orig_video_mode == 0x0E) ||	/* 640x200/4 */
+> -	    (screen_info.orig_video_mode == 0x10) ||	/* 640x350/4 */
+> -	    (screen_info.orig_video_mode == 0x12) ||	/* 640x480/4 */
+> -	    (screen_info.orig_video_mode == 0x6A))	/* 800x600/4 (VESA) */
+> +	if ((vga_si->orig_video_mode == 0x0D) ||	/* 320x200/4 */
+> +	    (vga_si->orig_video_mode == 0x0E) ||	/* 640x200/4 */
+> +	    (vga_si->orig_video_mode == 0x10) ||	/* 640x350/4 */
+> +	    (vga_si->orig_video_mode == 0x12) ||	/* 640x480/4 */
+> +	    (vga_si->orig_video_mode == 0x6A))	/* 800x600/4 (VESA) */
+>   		goto no_vga;
+>   
+> -	vga_video_num_lines = screen_info.orig_video_lines;
+> -	vga_video_num_columns = screen_info.orig_video_cols;
+> +	vga_video_num_lines = vga_si->orig_video_lines;
+> +	vga_video_num_columns = vga_si->orig_video_cols;
+>   	vgastate.vgabase = NULL;
+>   
+> -	if (screen_info.orig_video_mode == 7) {
+> +	if (vga_si->orig_video_mode == 7) {
+>   		/* Monochrome display */
+>   		vga_vram_base = 0xb0000;
+>   		vga_video_port_reg = VGA_CRT_IM;
+>   		vga_video_port_val = VGA_CRT_DM;
+> -		if ((screen_info.orig_video_ega_bx & 0xff) != 0x10) {
+> +		if ((vga_si->orig_video_ega_bx & 0xff) != 0x10) {
+>   			static struct resource ega_console_resource =
+>   			    { .name	= "ega",
+>   			      .flags	= IORESOURCE_IO,
+> @@ -231,12 +234,12 @@ static const char *vgacon_startup(void)
+>   		vga_vram_base = 0xb8000;
+>   		vga_video_port_reg = VGA_CRT_IC;
+>   		vga_video_port_val = VGA_CRT_DC;
+> -		if ((screen_info.orig_video_ega_bx & 0xff) != 0x10) {
+> +		if ((vga_si->orig_video_ega_bx & 0xff) != 0x10) {
+>   			int i;
+>   
+>   			vga_vram_size = 0x8000;
+>   
+> -			if (!screen_info.orig_video_isVGA) {
+> +			if (!vga_si->orig_video_isVGA) {
+>   				static struct resource ega_console_resource =
+>   				    { .name	= "ega",
+>   				      .flags	= IORESOURCE_IO,
+> @@ -327,14 +330,14 @@ static const char *vgacon_startup(void)
+>   	    || vga_video_type == VIDEO_TYPE_VGAC
+>   	    || vga_video_type == VIDEO_TYPE_EGAM) {
+>   		vga_hardscroll_enabled = vga_hardscroll_user_enable;
+> -		vga_default_font_height = screen_info.orig_video_points;
+> -		vga_video_font_height = screen_info.orig_video_points;
+> +		vga_default_font_height = vga_si->orig_video_points;
+> +		vga_video_font_height = vga_si->orig_video_points;
+>   		/* This may be suboptimal but is a safe bet - go with it */
+>   		vga_scan_lines =
+>   		    vga_video_font_height * vga_video_num_lines;
+>   	}
+>   
+> -	vgacon_xres = screen_info.orig_video_cols * VGA_FONTWIDTH;
+> +	vgacon_xres = vga_si->orig_video_cols * VGA_FONTWIDTH;
+>   	vgacon_yres = vga_scan_lines;
+>   
+>   	return display_desc;
+> @@ -379,7 +382,7 @@ static void vgacon_init(struct vc_data *c, int init)
+>   	/* Only set the default if the user didn't deliberately override it */
+>   	if (global_cursor_default == -1)
+>   		global_cursor_default =
+> -			!(screen_info.flags & VIDEO_FLAGS_NOCURSOR);
+> +			!(vga_si->flags & VIDEO_FLAGS_NOCURSOR);
+>   }
+>   
+>   static void vgacon_deinit(struct vc_data *c)
+> @@ -607,7 +610,7 @@ static int vgacon_switch(struct vc_data *c)
 >   {
-> -#if defined(CONFIG_VT) && defined(CONFIG_VGA_CONSOLE) && defined(CONFIG_FW_ARC)
-> +#if defined(CONFIG_VGA_CONSOLE) && defined(CONFIG_FW_ARC)
->   	struct screen_info *si = &screen_info;
->   	DISPLAY_STATUS *di;
+>   	int x = c->vc_cols * VGA_FONTWIDTH;
+>   	int y = c->vc_rows * c->vc_cell_height;
+> -	int rows = screen_info.orig_video_lines * vga_default_font_height/
+> +	int rows = vga_si->orig_video_lines * vga_default_font_height/
+>   		c->vc_cell_height;
+>   	/*
+>   	 * We need to save screen size here as it's the only way
+> @@ -627,7 +630,7 @@ static int vgacon_switch(struct vc_data *c)
 >   
-> diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-> index 971fe776e2f8b..a3dbe13f45fb3 100644
-> --- a/arch/riscv/kernel/setup.c
-> +++ b/arch/riscv/kernel/setup.c
-> @@ -39,15 +39,8 @@
+>   		if ((vgacon_xres != x || vgacon_yres != y) &&
+>   		    (!(vga_video_num_columns % 2) &&
+> -		     vga_video_num_columns <= screen_info.orig_video_cols &&
+> +		     vga_video_num_columns <= vga_si->orig_video_cols &&
+>   		     vga_video_num_lines <= rows))
+>   			vgacon_doresize(c, c->vc_cols, c->vc_rows);
+>   	}
+> @@ -1074,13 +1077,13 @@ static int vgacon_resize(struct vc_data *c, unsigned int width,
+>   		 * Ho ho!  Someone (svgatextmode, eh?) may have reprogrammed
+>   		 * the video mode!  Set the new defaults then and go away.
+>   		 */
+> -		screen_info.orig_video_cols = width;
+> -		screen_info.orig_video_lines = height;
+> +		vga_si->orig_video_cols = width;
+> +		vga_si->orig_video_lines = height;
+>   		vga_default_font_height = c->vc_cell_height;
+>   		return 0;
+>   	}
+> -	if (width % 2 || width > screen_info.orig_video_cols ||
+> -	    height > (screen_info.orig_video_lines * vga_default_font_height)/
+> +	if (width % 2 || width > vga_si->orig_video_cols ||
+> +	    height > (vga_si->orig_video_lines * vga_default_font_height)/
+>   	    c->vc_cell_height)
+>   		return -EINVAL;
 >   
->   #include "head.h"
+> @@ -1110,8 +1113,8 @@ static void vgacon_save_screen(struct vc_data *c)
+>   		 * console initialization routines.
+>   		 */
+>   		vga_bootup_console = 1;
+> -		c->state.x = screen_info.orig_x;
+> -		c->state.y = screen_info.orig_y;
+> +		c->state.x = vga_si->orig_x;
+> +		c->state.y = vga_si->orig_y;
+>   	}
 >   
-> -#if defined(CONFIG_DUMMY_CONSOLE) || defined(CONFIG_EFI)
-> -struct screen_info screen_info __section(".data") = {
-> -	.orig_video_lines	= 30,
-> -	.orig_video_cols	= 80,
-> -	.orig_video_mode	= 0,
-> -	.orig_video_ega_bx	= 0,
-> -	.orig_video_isVGA	= 1,
-> -	.orig_video_points	= 8
-> -};
-> +#if defined(CONFIG_EFI)
-> +struct screen_info screen_info __section(".data");
->   #endif
+>   	/* We can't copy in more than the size of the video buffer,
+> @@ -1204,4 +1207,13 @@ const struct consw vga_con = {
+>   };
+>   EXPORT_SYMBOL(vga_con);
 >   
->   /*
+> +void vgacon_register_screen(struct screen_info *si)
+> +{
+> +	if (!si || vga_si)
+> +		return;
+> +
+> +	conswitchp = &vga_con;
+> +	vga_si = si;
+> +}
+> +
+>   MODULE_LICENSE("GPL");
+> diff --git a/include/linux/console.h b/include/linux/console.h
+> index d3195664baa5a..5f900210e689e 100644
+> --- a/include/linux/console.h
+> +++ b/include/linux/console.h
+> @@ -101,6 +101,13 @@ extern const struct consw dummy_con;	/* dummy console buffer */
+>   extern const struct consw vga_con;	/* VGA text console */
+>   extern const struct consw newport_con;	/* SGI Newport console  */
+>   
+> +struct screen_info;
+> +#ifdef CONFIG_VGA_CONSOLE
+> +void vgacon_register_screen(struct screen_info *si);
+> +#else
+> +static inline void vgacon_register_screen(struct screen_info *si) { }
+> +#endif
+> +
+>   int con_is_bound(const struct consw *csw);
+>   int do_unregister_con_driver(const struct consw *csw);
+>   int do_take_over_console(const struct consw *sw, int first, int last, int deflt);
 
