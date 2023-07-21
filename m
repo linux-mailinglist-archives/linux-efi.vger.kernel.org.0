@@ -2,167 +2,180 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C5D375C079
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Jul 2023 09:54:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB1BA75C189
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Jul 2023 10:27:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231241AbjGUHyL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 21 Jul 2023 03:54:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44086 "EHLO
+        id S229493AbjGUI1Z (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 21 Jul 2023 04:27:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231235AbjGUHyJ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 21 Jul 2023 03:54:09 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A1B430C0
-        for <linux-efi@vger.kernel.org>; Fri, 21 Jul 2023 00:53:58 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3fc0aecf107so13188455e9.2
-        for <linux-efi@vger.kernel.org>; Fri, 21 Jul 2023 00:53:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1689926037; x=1690530837;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uTCLx/Z9PJYFq6Pk7xMLXjel9CDG1RIukbxZ6yTca28=;
-        b=J/iWEZAAnGscNPHr9bcJKT6sQV3lA1cAElt66GYks+N721W2ngt1KUuDO/4JJOAol4
-         hAsDPLzv+vfyE3Ii2Ed3lamxdG4pGqWBx5FEhGtvqefQ0fW0dxKEBDnuALpuQylRaT8i
-         O9eIWEVC2kqcw53z/RL5ILtx1Gr35jSnwwPClrLWiKLHtAwEzGmi2ryH8IDkR8JiYns9
-         8ao6NY1I+YhsFAe4ovw0uj4RnzVkaK6q99UjCCvsyfeVwXYryOKvCej8hN1xMVF/3laF
-         bv/I3sh2MdvGY9jkTcVlvHm580DtNZjZe7HLLMQayAej8h0LH/8Yxq6RLN676OsIwEej
-         clAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689926037; x=1690530837;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uTCLx/Z9PJYFq6Pk7xMLXjel9CDG1RIukbxZ6yTca28=;
-        b=jCD7T1bG2R2Z6DV8EoLENCfjZg8anDG6+FTUKMPuHT0stDADM+znKXG7xy+QD/RaSC
-         wCA5srnjtaGmB3TnrZbroRE13mIfyo1pEii4AgPQhWiQncaiQq74MqOTkPkhJvLoV4fi
-         /LU3iS1JC4wF6LTnYvHFvKatfJ9QouSSrHwHNw496vYSuR8p49tBBo8fFmtn79TQhP51
-         ZRhnOHgWsTnzRE9PtJWPbMsE9A4l8ugJckdDdy2j18bwBRubWezfV5PC1GIq6Id4kREN
-         dMMVhQfNm/p1UhEanQ7jiRPB4mwK5h7NY74yqfNXcpLqztEBoQKFCOp1VQ9ZcVpTMNFC
-         smTw==
-X-Gm-Message-State: ABy/qLZpQDYT6pyvqR936DhfFG7RG5moZHCe3KhJbIrSw8wLixMiXiJK
-        +S4FDS3R8DXqsTVSuMUQIKhPBg==
-X-Google-Smtp-Source: APBJJlFLnJTaXTTskNiyakPpL3YLbA+OfGjHB9N3lPuS4SI171RVD04EGAih2bgloP1Jhme0UbwDJA==
-X-Received: by 2002:a1c:ed0f:0:b0:3fb:a506:5656 with SMTP id l15-20020a1ced0f000000b003fba5065656mr740023wmh.32.1689926036800;
-        Fri, 21 Jul 2023 00:53:56 -0700 (PDT)
-Received: from alex-rivos.ba.rivosinc.com (amontpellier-656-1-456-62.w92-145.abo.wanadoo.fr. [92.145.124.62])
-        by smtp.gmail.com with ESMTPSA id n23-20020a7bc5d7000000b003fc06169abdsm2892519wmk.2.2023.07.21.00.53.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jul 2023 00:53:56 -0700 (PDT)
-From:   Alexandre Ghiti <alexghiti@rivosinc.com>
-To:     Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Cc:     Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: [PATCH v5 5/5] riscv: libstub: Implement KASLR by using generic functions
-Date:   Fri, 21 Jul 2023 09:48:50 +0200
-Message-Id: <20230721074850.310644-6-alexghiti@rivosinc.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230721074850.310644-1-alexghiti@rivosinc.com>
-References: <20230721074850.310644-1-alexghiti@rivosinc.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        with ESMTP id S230062AbjGUI1Y (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 21 Jul 2023 04:27:24 -0400
+Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB5E1F0;
+        Fri, 21 Jul 2023 01:27:22 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailnew.nyi.internal (Postfix) with ESMTP id CDE4D58026A;
+        Fri, 21 Jul 2023 04:27:21 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Fri, 21 Jul 2023 04:27:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm2; t=1689928041; x=1689935241; bh=V8
+        kkxioRFPjR/pcGqI7bYcicee1af9QaKC3pDwPABSg=; b=b9mWPVKTa+C0qxGJVm
+        gVTKr5SnuCufxByEgtuEiTC/HjonV9yPvhgncSRQ0wUrLNE7orD78Rw7ohjT0q3C
+        c0X7wLA5W1uO4gHBmiwybGJLQQ7SrEMtBGvFZKQaT/Y0wzIbtxoIfYUgm9pO+XSJ
+        6I08Fx8oDJAOPBCXHuGFZFeWb1RYZSXq09xFAfH85OnLe5l+htjQL+F/B4Y6gUvs
+        ut/AOfdKRpwcHg/s2ox2GO/l5Ce/RBfBcnmaRO/F69sTDvSKTTvAQwHRFh24O6bw
+        V6xDq+6cg4uZot5gbimNNmCu9SHpdf5MFTDtGh/g5OFBKMn02cs7TznQk+C9/i4Y
+        dRwg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1689928041; x=1689935241; bh=V8kkxioRFPjR/
+        pcGqI7bYcicee1af9QaKC3pDwPABSg=; b=unYn7VUfp/o2gT07nbqvQ5lIW9kBd
+        mBnKota720DDPc/oG1aRttW/D+crNdOAUEl9St9nonOTjtR5EHZ/ERbVU6RS/8a9
+        h60zyLUrHFHJTeNLWeadDvND/TVlwE64W4ER4jaFI7yfcqQcM9JFFXLEQa8gKTAm
+        2NneyWtfI14HUK6C7gElYEN39Z+C3ZEMkQn2ZM6gax2xS8UlImkh100FKtZaGPhv
+        lQk5OR6Mr17MQHWJ9UIPy7fklXcZo7AkC1hU9D8FRcT0DoHGZ1ht5evHlxZxLnfx
+        AEw3wiOX0qizHBpHqwTM2HVi93NRv6iA2yioBToovm3YnDAmy38mo5uCg==
+X-ME-Sender: <xms:Z0G6ZPfhyAhlj173FbFhonwA5KlUmCGO5J9kcywp3cozm27OsbAtLw>
+    <xme:Z0G6ZFM8NgJAA5o18IVcSBdDXzUfupTyVLyoGRWKf5AMnD9G8DAPvvhIosyFM_Fej
+    ixYPDY94XlYrOC-EQE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrhedvgddtudcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
+    hnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:Z0G6ZIiZLjl3BUt93nzxV1cAQo4CS1KP6FaAGJXgj4g5DNvVpNZydQ>
+    <xmx:Z0G6ZA_7CvV2s3gdLefuPIP0mdWvT9_hDkmlpVhsn9Y5247aBbErLw>
+    <xmx:Z0G6ZLsjVOM0mZftdLzFVNIO9YmEUfPLUQYjwEJhvs0yikPIce9HbQ>
+    <xmx:aUG6ZDnhPzImHPxpYpY9KW7ioRMX4qP1VaFRlm_1LSESQRplTz4wfQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id AB365B60089; Fri, 21 Jul 2023 04:27:19 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-531-gfdfa13a06d-fm-20230703.001-gfdfa13a0
+Mime-Version: 1.0
+Message-Id: <19631e74-415e-4dcb-b79d-33dcf03d2dfc@app.fastmail.com>
+In-Reply-To: <87pm4lj1w3.fsf@mail.lhotse>
+References: <20230719123944.3438363-1-arnd@kernel.org>
+ <20230719123944.3438363-2-arnd@kernel.org> <87pm4lj1w3.fsf@mail.lhotse>
+Date:   Fri, 21 Jul 2023 10:26:30 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Michael Ellerman" <mpe@ellerman.id.au>,
+        "Arnd Bergmann" <arnd@kernel.org>, linux-fbdev@vger.kernel.org,
+        "Thomas Zimmermann" <tzimmermann@suse.de>,
+        "Helge Deller" <deller@gmx.de>,
+        "Javier Martinez Canillas" <javierm@redhat.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        "Ard Biesheuvel" <ardb@kernel.org>,
+        "Borislav Petkov" <bp@alien8.de>, "Brian Cain" <bcain@quicinc.com>,
+        "Catalin Marinas" <catalin.marinas@arm.com>,
+        "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+        "Daniel Vetter" <daniel@ffwll.ch>,
+        "Dave Hansen" <dave.hansen@linux.intel.com>,
+        "Dave Airlie" <airlied@gmail.com>,
+        "Deepak Rawat" <drawat.floss@gmail.com>,
+        "Dexuan Cui" <decui@microsoft.com>,
+        "Dinh Nguyen" <dinguyen@kernel.org>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        guoren <guoren@kernel.org>,
+        "Haiyang Zhang" <haiyangz@microsoft.com>,
+        "Huacai Chen" <chenhuacai@kernel.org>,
+        "Ingo Molnar" <mingo@redhat.com>,
+        "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
+        "Khalid Aziz" <khalid@gonehiking.org>,
+        "Linus Walleij" <linus.walleij@linaro.org>,
+        "Matt Turner" <mattst88@gmail.com>,
+        "Max Filippov" <jcmvbkbc@gmail.com>,
+        "Nicholas Piggin" <npiggin@gmail.com>,
+        "Palmer Dabbelt" <palmer@dabbelt.com>,
+        "Russell King" <linux@armlinux.org.uk>,
+        "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "WANG Xuerui" <kernel@xen0n.name>, "Wei Liu" <wei.liu@kernel.org>,
+        "Will Deacon" <will@kernel.org>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
+        "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v2 1/9] vgacon: rework Kconfig dependencies
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-We can now use arm64 functions to handle the move of the kernel physical
-mapping: if KASLR is enabled, we will try to get a random seed from the
-firmware, if not possible, the kernel will be moved to a location that
-suits its alignment constraints.
+On Fri, Jul 21, 2023, at 06:59, Michael Ellerman wrote:
+> Arnd Bergmann <arnd@kernel.org> writes:
+>> From: Arnd Bergmann <arnd@arndb.de>
+>>
+>> The list of dependencies here is phrased as an opt-out, but this is missing
+>> a lot of architectures that don't actually support VGA consoles, and some
+>> of the entries are stale:
+>>
+>>  - powerpc used to support VGA consoles in the old arch/ppc codebase, but
+>>    the merged arch/powerpc never did
+>
+> Not disputing this, but how did you come to that conclusion? I grepped
+> around and couldn't convince myself whether it can work on powerpc or
+> not. ie. currently it's possible to enable CONFIG_VGA_CONSOLE and
+> powerpc does have a struct screen_info defined which seems like it would
+> allow vgacon_startup() to complete.
 
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
----
- arch/riscv/include/asm/efi.h              |  2 ++
- arch/riscv/kernel/image-vars.h            |  1 +
- drivers/firmware/efi/libstub/riscv-stub.c | 33 +++++++++++------------
- 3 files changed, 18 insertions(+), 18 deletions(-)
+The VGA console needs both screen_info and vga_con to work. In arch/ppc
+we had both, but in arch/powerpc we only retained the screen_info:
 
-diff --git a/arch/riscv/include/asm/efi.h b/arch/riscv/include/asm/efi.h
-index 29e9a0d84b16..00b24ba55035 100644
---- a/arch/riscv/include/asm/efi.h
-+++ b/arch/riscv/include/asm/efi.h
-@@ -51,4 +51,6 @@ void efi_virtmap_unload(void);
- 
- unsigned long stext_offset(void);
- 
-+void efi_icache_sync(unsigned long start, unsigned long end);
-+
- #endif /* _ASM_EFI_H */
-diff --git a/arch/riscv/kernel/image-vars.h b/arch/riscv/kernel/image-vars.h
-index 15616155008c..ea1a10355ce9 100644
---- a/arch/riscv/kernel/image-vars.h
-+++ b/arch/riscv/kernel/image-vars.h
-@@ -27,6 +27,7 @@ __efistub__start		= _start;
- __efistub__start_kernel		= _start_kernel;
- __efistub__end			= _end;
- __efistub__edata		= _edata;
-+__efistub___init_text_end	= __init_text_end;
- __efistub_screen_info		= screen_info;
- 
- #endif
-diff --git a/drivers/firmware/efi/libstub/riscv-stub.c b/drivers/firmware/efi/libstub/riscv-stub.c
-index 145c9f0ba217..c96d6dcee86c 100644
---- a/drivers/firmware/efi/libstub/riscv-stub.c
-+++ b/drivers/firmware/efi/libstub/riscv-stub.c
-@@ -30,32 +30,29 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 				 efi_loaded_image_t *image,
- 				 efi_handle_t image_handle)
- {
--	unsigned long kernel_size = 0;
--	unsigned long preferred_addr;
-+	unsigned long kernel_size, kernel_codesize, kernel_memsize;
- 	efi_status_t status;
- 
- 	kernel_size = _edata - _start;
-+	kernel_codesize = __init_text_end - _start;
-+	kernel_memsize = kernel_size + (_end - _edata);
- 	*image_addr = (unsigned long)_start;
--	*image_size = kernel_size + (_end - _edata);
--
--	/*
--	 * RISC-V kernel maps PAGE_OFFSET virtual address to the same physical
--	 * address where kernel is booted. That's why kernel should boot from
--	 * as low as possible to avoid wastage of memory. Currently, dram_base
--	 * is occupied by the firmware. So the preferred address for kernel to
--	 * boot is next aligned address. If preferred address is not available,
--	 * relocate_kernel will fall back to efi_low_alloc_above to allocate
--	 * lowest possible memory region as long as the address and size meets
--	 * the alignment constraints.
--	 */
--	preferred_addr = EFI_KIMG_PREFERRED_ADDRESS;
--	status = efi_relocate_kernel(image_addr, kernel_size, *image_size,
--				     preferred_addr, efi_get_kimg_min_align(),
--				     0x0);
-+	*image_size = kernel_memsize;
-+	*reserve_size = *image_size;
- 
-+	status = efi_kaslr_relocate_kernel(image_addr,
-+					   reserve_addr, reserve_size,
-+					   kernel_size, kernel_codesize, kernel_memsize,
-+					   efi_kaslr_get_phys_seed(image_handle));
- 	if (status != EFI_SUCCESS) {
- 		efi_err("Failed to relocate kernel\n");
- 		*image_size = 0;
- 	}
-+
- 	return status;
- }
-+
-+void efi_icache_sync(unsigned long start, unsigned long end)
-+{
-+	asm volatile ("fence.i" ::: "memory");
-+}
--- 
-2.39.2
+$ git grep vga_con v2.6.26 -- arch/ppc arch/ppc64 arch/powerpc
+v2.6.26:arch/ppc/platforms/pplus.c:     conswitchp = &vga_con;
+v2.6.26:arch/ppc/platforms/prep_setup.c:        conswitchp = &vga_con;
 
+so after arch/ppc was removed, this became impossible to use on both
+pplus and prep. These two platforms were also (as far as I can tell)
+the only ones to support vga16fb as an alternative to vgacon, but
+both platforms were removed later on.
+
+> My only concern is that someone could be using it with Qemu?
+
+I have not yet ruled out anyone using vga16fb on qemu before
+commit 0db5b61e0dc07 ("fbdev/vga16fb: Create EGA/VGA devices
+in sysfb code"), but I can see that this has been broken for
+12 months without anyone complaining about it, since vga16fb
+no longer works with the "orig_video_isVGA == 1" setting
+in arch/powerpc (the device is not created).
+
+In the qemu sources, I see five powerpc machines that intialize
+VGA support: mac_newworld, mac_oldworld, pegasos2, prep, and spapr.
+I think we can exclude prep (which was removed from the kernel)
+and spapr (64-bit VGA_MAP_MEM() looks broken). I think the
+macs always come up in graphical mode and only use
+offb/atifb/rivafb/matroxfb but not vga16fb that would require
+running the x86 VGA BIOS initialization.
+
+I suppose it's possible to use vga16fb (not vgacon) with
+"qemu-system-ppc -M pegasos2 -vga std" if that still boots
+at all. Support for pegasos2 hardware appears to have been
+removed with commit 04debf21fa174 ("powerpc: Remove core
+support for Marvell mv64x60 hostbridges"), but it's possible
+that this did not break qemu support if that only uses
+devices under arch/powerpc/platforms/chrp/pci.c. I could
+not get it to boot, but did not try very hard.
+
+      Arnd
