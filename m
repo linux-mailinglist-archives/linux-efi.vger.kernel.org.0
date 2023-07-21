@@ -2,47 +2,47 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92ED375D549
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Jul 2023 22:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E76F775D5C9
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Jul 2023 22:31:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230118AbjGUUA1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 21 Jul 2023 16:00:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60458 "EHLO
+        id S229642AbjGUUbv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 21 Jul 2023 16:31:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229907AbjGUUA1 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 21 Jul 2023 16:00:27 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E5092D7F;
-        Fri, 21 Jul 2023 13:00:25 -0700 (PDT)
+        with ESMTP id S229920AbjGUUbt (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 21 Jul 2023 16:31:49 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C51B7359C;
+        Fri, 21 Jul 2023 13:31:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689969625; x=1721505625;
+  t=1689971502; x=1721507502;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=UTAejJQPSuliS6ZdTpleNGEHMmmHZFob/eKQc45LiNc=;
-  b=RjhsabJzD76jvmxBDkMhLolZCk/mpPBhwAZvSBjPTq7zVeZcF2u6siMk
-   lTaL2JM45dXe/UHwwzjj8MIF2FdNMqMRk7aEM1o0DDe4dz8FeDeTb3f6N
-   KSusooy6yiUQTexTD9kMontdrvCl7KtDWsz6CgaSqeo/sAoAjKHyWGhXC
-   w8BFIaV1vhf/0vWE/Phe0tMCHQ4PQo5/atEgjTBYCHTJyq+K++IfJAoB1
-   +YWpgOLp0ZYXJYM8zrUHI5SOEgypsSbtkZ2h6DwjVYg3lLHSQVzFLQue3
-   NIhaT99DhB6eoBdeL9BSjUDNk2nRRUkN98G0r74tbxzapwcN4T1fSgHKP
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10778"; a="347400020"
+  bh=mU9iYrn6U9qmHj4FH3IrpTOXdH2NS6POHFhpT/W/4mc=;
+  b=a8drznb6ozMgF0ncaFs8dFRoSdIwwRo2ysYdY52r5k2gwl+smv7BNjvw
+   4yPxYwso0ND2dllL96p98IjMCzdWAGcJDue5JWysAB4fl8tArFTRfd6nh
+   diH6+InlkJxHioiJQon9XQrdeKVAs98Jr7eDhvFQYoTxKApFe6g9P7qC1
+   Z9ywtuAdxLV6DYx98268kQZYnDZoJ35rDfBUKhxXfzJzD9NDPjE/u8kmh
+   BT9fxXxmjQiDQK9mguhfUTa5LYtrkE1BElH6l2agNbGNUQAQf53EhWOvi
+   Xl8ExjvjC+dO6ayKs19bIG3vZyV4oODeKFs18ewAqiwXpat3r7uCPqyHI
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10778"; a="351998384"
 X-IronPort-AV: E=Sophos;i="6.01,222,1684825200"; 
-   d="scan'208";a="347400020"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 13:00:18 -0700
+   d="scan'208";a="351998384"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 13:31:24 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10778"; a="795071770"
+X-IronPort-AV: E=McAfee;i="6600,9927,10778"; a="898823817"
 X-IronPort-AV: E=Sophos;i="6.01,222,1684825200"; 
-   d="scan'208";a="795071770"
+   d="scan'208";a="898823817"
 Received: from lkp-server02.sh.intel.com (HELO 36946fcf73d7) ([10.239.97.151])
-  by fmsmga004.fm.intel.com with ESMTP; 21 Jul 2023 13:00:15 -0700
+  by orsmga005.jf.intel.com with ESMTP; 21 Jul 2023 13:31:21 -0700
 Received: from kbuild by 36946fcf73d7 with local (Exim 4.96)
         (envelope-from <lkp@intel.com>)
-        id 1qMwIQ-0007bh-3D;
-        Fri, 21 Jul 2023 20:00:14 +0000
-Date:   Sat, 22 Jul 2023 03:59:50 +0800
+        id 1qMwmW-0007dv-0l;
+        Fri, 21 Jul 2023 20:31:20 +0000
+Date:   Sat, 22 Jul 2023 04:31:18 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Alexandre Ghiti <alexghiti@rivosinc.com>,
         Paul Walmsley <paul.walmsley@sifive.com>,
@@ -56,16 +56,16 @@ Cc:     oe-kbuild-all@lists.linux.dev,
         Alexandre Ghiti <alexghiti@rivosinc.com>
 Subject: Re: [PATCH v5 3/5] arm64: libstub: Move KASLR handling functions to
  kaslr.c
-Message-ID: <202307220314.ZZIxEjW2-lkp@intel.com>
+Message-ID: <202307220429.jaPTVAph-lkp@intel.com>
 References: <20230721074850.310644-4-alexghiti@rivosinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20230721074850.310644-4-alexghiti@rivosinc.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -74,10 +74,10 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 Hi Alexandre,
 
-kernel test robot noticed the following build errors:
+kernel test robot noticed the following build warnings:
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v6.5-rc2 next-20230721]
+[auto build test WARNING on linus/master]
+[also build test WARNING on v6.5-rc2 next-20230721]
 [cannot apply to efi/next]
 [If your patch is applied to the wrong git tree, kindly drop us a note.
 And when submitting patch, we suggest to use '--base' as documented in
@@ -87,26 +87,28 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Alexandre-Ghiti/riscv-Int
 base:   linus/master
 patch link:    https://lore.kernel.org/r/20230721074850.310644-4-alexghiti%40rivosinc.com
 patch subject: [PATCH v5 3/5] arm64: libstub: Move KASLR handling functions to kaslr.c
-config: loongarch-defconfig (https://download.01.org/0day-ci/archive/20230722/202307220314.ZZIxEjW2-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 12.3.0
-reproduce: (https://download.01.org/0day-ci/archive/20230722/202307220314.ZZIxEjW2-lkp@intel.com/reproduce)
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20230722/202307220429.jaPTVAph-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce: (https://download.01.org/0day-ci/archive/20230722/202307220429.jaPTVAph-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202307220314.ZZIxEjW2-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202307220429.jaPTVAph-lkp@intel.com/
 
-All errors (new ones prefixed by >>):
+All warnings (new ones prefixed by >>):
 
    drivers/firmware/efi/libstub/kaslr.c: In function 'efi_kaslr_relocate_kernel':
->> drivers/firmware/efi/libstub/kaslr.c:155:9: error: implicit declaration of function 'efi_icache_sync'; did you mean 'efi_cache_sync_image'? [-Werror=implicit-function-declaration]
+>> drivers/firmware/efi/libstub/kaslr.c:113:30: warning: implicit declaration of function 'efi_get_kimg_min_align' [-Wimplicit-function-declaration]
+     113 |         u64 min_kimg_align = efi_get_kimg_min_align();
+         |                              ^~~~~~~~~~~~~~~~~~~~~~
+>> drivers/firmware/efi/libstub/kaslr.c:155:9: warning: implicit declaration of function 'efi_icache_sync'; did you mean 'efi_cache_sync_image'? [-Wimplicit-function-declaration]
      155 |         efi_icache_sync(*image_addr, *image_addr + kernel_codesize);
          |         ^~~~~~~~~~~~~~~
          |         efi_cache_sync_image
-   cc1: some warnings being treated as errors
 
 
-vim +155 drivers/firmware/efi/libstub/kaslr.c
+vim +/efi_get_kimg_min_align +113 drivers/firmware/efi/libstub/kaslr.c
 
     87	
     88	/**
@@ -134,7 +136,7 @@ vim +155 drivers/firmware/efi/libstub/kaslr.c
    110					       u32 phys_seed)
    111	{
    112		efi_status_t status;
-   113		u64 min_kimg_align = efi_get_kimg_min_align();
+ > 113		u64 min_kimg_align = efi_get_kimg_min_align();
    114	
    115		if (IS_ENABLED(CONFIG_RANDOMIZE_BASE) && phys_seed != 0) {
    116			/*
