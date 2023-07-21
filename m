@@ -2,180 +2,219 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB1BA75C189
-	for <lists+linux-efi@lfdr.de>; Fri, 21 Jul 2023 10:27:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B812E75C22E
+	for <lists+linux-efi@lfdr.de>; Fri, 21 Jul 2023 10:56:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229493AbjGUI1Z (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 21 Jul 2023 04:27:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38666 "EHLO
+        id S229572AbjGUI4A convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-efi@lfdr.de>); Fri, 21 Jul 2023 04:56:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230062AbjGUI1Y (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 21 Jul 2023 04:27:24 -0400
-Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB5E1F0;
-        Fri, 21 Jul 2023 01:27:22 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailnew.nyi.internal (Postfix) with ESMTP id CDE4D58026A;
-        Fri, 21 Jul 2023 04:27:21 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Fri, 21 Jul 2023 04:27:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm2; t=1689928041; x=1689935241; bh=V8
-        kkxioRFPjR/pcGqI7bYcicee1af9QaKC3pDwPABSg=; b=b9mWPVKTa+C0qxGJVm
-        gVTKr5SnuCufxByEgtuEiTC/HjonV9yPvhgncSRQ0wUrLNE7orD78Rw7ohjT0q3C
-        c0X7wLA5W1uO4gHBmiwybGJLQQ7SrEMtBGvFZKQaT/Y0wzIbtxoIfYUgm9pO+XSJ
-        6I08Fx8oDJAOPBCXHuGFZFeWb1RYZSXq09xFAfH85OnLe5l+htjQL+F/B4Y6gUvs
-        ut/AOfdKRpwcHg/s2ox2GO/l5Ce/RBfBcnmaRO/F69sTDvSKTTvAQwHRFh24O6bw
-        V6xDq+6cg4uZot5gbimNNmCu9SHpdf5MFTDtGh/g5OFBKMn02cs7TznQk+C9/i4Y
-        dRwg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1689928041; x=1689935241; bh=V8kkxioRFPjR/
-        pcGqI7bYcicee1af9QaKC3pDwPABSg=; b=unYn7VUfp/o2gT07nbqvQ5lIW9kBd
-        mBnKota720DDPc/oG1aRttW/D+crNdOAUEl9St9nonOTjtR5EHZ/ERbVU6RS/8a9
-        h60zyLUrHFHJTeNLWeadDvND/TVlwE64W4ER4jaFI7yfcqQcM9JFFXLEQa8gKTAm
-        2NneyWtfI14HUK6C7gElYEN39Z+C3ZEMkQn2ZM6gax2xS8UlImkh100FKtZaGPhv
-        lQk5OR6Mr17MQHWJ9UIPy7fklXcZo7AkC1hU9D8FRcT0DoHGZ1ht5evHlxZxLnfx
-        AEw3wiOX0qizHBpHqwTM2HVi93NRv6iA2yioBToovm3YnDAmy38mo5uCg==
-X-ME-Sender: <xms:Z0G6ZPfhyAhlj173FbFhonwA5KlUmCGO5J9kcywp3cozm27OsbAtLw>
-    <xme:Z0G6ZFM8NgJAA5o18IVcSBdDXzUfupTyVLyoGRWKf5AMnD9G8DAPvvhIosyFM_Fej
-    ixYPDY94XlYrOC-EQE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrhedvgddtudcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
-    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
-    hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:Z0G6ZIiZLjl3BUt93nzxV1cAQo4CS1KP6FaAGJXgj4g5DNvVpNZydQ>
-    <xmx:Z0G6ZA_7CvV2s3gdLefuPIP0mdWvT9_hDkmlpVhsn9Y5247aBbErLw>
-    <xmx:Z0G6ZLsjVOM0mZftdLzFVNIO9YmEUfPLUQYjwEJhvs0yikPIce9HbQ>
-    <xmx:aUG6ZDnhPzImHPxpYpY9KW7ioRMX4qP1VaFRlm_1LSESQRplTz4wfQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id AB365B60089; Fri, 21 Jul 2023 04:27:19 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-531-gfdfa13a06d-fm-20230703.001-gfdfa13a0
-Mime-Version: 1.0
-Message-Id: <19631e74-415e-4dcb-b79d-33dcf03d2dfc@app.fastmail.com>
-In-Reply-To: <87pm4lj1w3.fsf@mail.lhotse>
-References: <20230719123944.3438363-1-arnd@kernel.org>
- <20230719123944.3438363-2-arnd@kernel.org> <87pm4lj1w3.fsf@mail.lhotse>
-Date:   Fri, 21 Jul 2023 10:26:30 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Michael Ellerman" <mpe@ellerman.id.au>,
-        "Arnd Bergmann" <arnd@kernel.org>, linux-fbdev@vger.kernel.org,
-        "Thomas Zimmermann" <tzimmermann@suse.de>,
-        "Helge Deller" <deller@gmx.de>,
-        "Javier Martinez Canillas" <javierm@redhat.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        "Ard Biesheuvel" <ardb@kernel.org>,
-        "Borislav Petkov" <bp@alien8.de>, "Brian Cain" <bcain@quicinc.com>,
-        "Catalin Marinas" <catalin.marinas@arm.com>,
-        "Christophe Leroy" <christophe.leroy@csgroup.eu>,
-        "Daniel Vetter" <daniel@ffwll.ch>,
-        "Dave Hansen" <dave.hansen@linux.intel.com>,
-        "Dave Airlie" <airlied@gmail.com>,
-        "Deepak Rawat" <drawat.floss@gmail.com>,
-        "Dexuan Cui" <decui@microsoft.com>,
-        "Dinh Nguyen" <dinguyen@kernel.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        guoren <guoren@kernel.org>,
-        "Haiyang Zhang" <haiyangz@microsoft.com>,
-        "Huacai Chen" <chenhuacai@kernel.org>,
-        "Ingo Molnar" <mingo@redhat.com>,
-        "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
-        "Khalid Aziz" <khalid@gonehiking.org>,
-        "Linus Walleij" <linus.walleij@linaro.org>,
-        "Matt Turner" <mattst88@gmail.com>,
-        "Max Filippov" <jcmvbkbc@gmail.com>,
-        "Nicholas Piggin" <npiggin@gmail.com>,
-        "Palmer Dabbelt" <palmer@dabbelt.com>,
-        "Russell King" <linux@armlinux.org.uk>,
-        "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        "WANG Xuerui" <kernel@xen0n.name>, "Wei Liu" <wei.liu@kernel.org>,
-        "Will Deacon" <will@kernel.org>, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
-        "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v2 1/9] vgacon: rework Kconfig dependencies
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S229451AbjGUIz6 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 21 Jul 2023 04:55:58 -0400
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7462B2D71;
+        Fri, 21 Jul 2023 01:55:56 -0700 (PDT)
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-5704fce0f23so18214747b3.3;
+        Fri, 21 Jul 2023 01:55:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689929755; x=1690534555;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dse7od/G5Z7cPPLFT9TMDMB90ZkP6Ozs7OE/Onew+wA=;
+        b=CJyfmT9bGhEyS0uBF+lzyQAC0jVrwOpQ5bXjsbPoXpp3kEgxZCYNctkuNzylFwEqq1
+         CelKq4DVLIsjNcEAg4nFHRvm6YHNABdLSgTI8e8ptZVmxT0nsKy5VEUCffPfYMby5OvB
+         EkfwTB1lGdrs/gHe/NyO8U7ySSlECEdpXeXBSKi/jYZCWVzX7aeqMG/PvhMrOOxndeec
+         ihwB1V63lNXTKhJ+PsqhL4JE8RfR+6Z/fzuI77FfPQSBhg3IYh0ZztEz00wgRzdUICDo
+         FruYYxYQ0Qf/PFc4O9lUhS3Do9iVXRya8xpkq0/qg2BSYeMYElrdv8cIVvDUvD/r7zqT
+         UJ2Q==
+X-Gm-Message-State: ABy/qLavmIxrUo37m/L/Nd44WvCs8j5gBdiu/yDcTu8g0487kG6edjGw
+        gdzzMGB+mEiiREugs2KkYPEfP9Bqme8zjVns
+X-Google-Smtp-Source: APBJJlEeKO7rTRIjmImc4kTgcciiOwZwVTVJP5CGHi8+TryjXsS2u5iIvx1bqQ0yaGzlEULmZKlSdg==
+X-Received: by 2002:a0d:ce02:0:b0:583:1f86:8f9a with SMTP id q2-20020a0dce02000000b005831f868f9amr1404582ywd.37.1689929755394;
+        Fri, 21 Jul 2023 01:55:55 -0700 (PDT)
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com. [209.85.128.172])
+        by smtp.gmail.com with ESMTPSA id z17-20020a81c211000000b00573898fb12bsm749648ywc.82.2023.07.21.01.55.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Jul 2023 01:55:54 -0700 (PDT)
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-5774098f16eso18366987b3.0;
+        Fri, 21 Jul 2023 01:55:53 -0700 (PDT)
+X-Received: by 2002:a81:49d4:0:b0:57a:8906:4192 with SMTP id
+ w203-20020a8149d4000000b0057a89064192mr1409466ywa.36.1689929753318; Fri, 21
+ Jul 2023 01:55:53 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230711154449.1378385-1-eesposit@redhat.com> <ZK/9MlTh435FP5Ji@gambale.home>
+ <ZLABozIRVGmwuIBf@gambale.home> <ba2354dc63fd741d2d351b18d4312d0771c0935d.camel@HansenPartnership.com>
+ <ZLVyvAXwtemx1I6p@redhat.com> <0aa647f719103e8620d7209cbde40f04a7334749.camel@HansenPartnership.com>
+ <FBDC67DD-856F-429B-8E91-B0CA8B0F24B9@oracle.com> <CAMw=ZnQ5pjwJZdX9kyib=vFd_c5_5_eUhV_mT5OcRPt693m=Yg@mail.gmail.com>
+ <635B383C-38A5-479E-80A6-358D5F90988B@oracle.com>
+In-Reply-To: <635B383C-38A5-479E-80A6-358D5F90988B@oracle.com>
+From:   Luca Boccassi <bluca@debian.org>
+Date:   Fri, 21 Jul 2023 09:55:41 +0100
+X-Gmail-Original-Message-ID: <CAMw=ZnQtEwNFyZ-Gt6ODb9gp22KY1GimaSfW46N7o-S1Hkfp4A@mail.gmail.com>
+Message-ID: <CAMw=ZnQtEwNFyZ-Gt6ODb9gp22KY1GimaSfW46N7o-S1Hkfp4A@mail.gmail.com>
+Subject: Re: [RFC PATCH v2] x86/boot: add .sbat section to the bzImage
+To:     Eric Snowberg <eric.snowberg@oracle.com>
+Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+        Emanuele Giuseppe Esposito <eesposit@redhat.com>,
+        "x86@kernel.org" <x86@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "lennart@poettering.net" <lennart@poettering.net>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Alexander Potapenko <glider@google.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        open list <linux-kernel@vger.kernel.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Jul 21, 2023, at 06:59, Michael Ellerman wrote:
-> Arnd Bergmann <arnd@kernel.org> writes:
->> From: Arnd Bergmann <arnd@arndb.de>
->>
->> The list of dependencies here is phrased as an opt-out, but this is missing
->> a lot of architectures that don't actually support VGA consoles, and some
->> of the entries are stale:
->>
->>  - powerpc used to support VGA consoles in the old arch/ppc codebase, but
->>    the merged arch/powerpc never did
+On Fri, 21 Jul 2023 at 02:49, Eric Snowberg <eric.snowberg@oracle.com> wrote:
 >
-> Not disputing this, but how did you come to that conclusion? I grepped
-> around and couldn't convince myself whether it can work on powerpc or
-> not. ie. currently it's possible to enable CONFIG_VGA_CONSOLE and
-> powerpc does have a struct screen_info defined which seems like it would
-> allow vgacon_startup() to complete.
+>
+>
+> > On Jul 20, 2023, at 1:16 PM, Luca Boccassi <bluca@debian.org> wrote:
+> >
+> > On Thu, 20 Jul 2023 at 18:11, Eric Snowberg <eric.snowberg@oracle.com> wrote:
+> >>
+> >> (add keyrings@ cc)
+> >>
+> >>> On Jul 17, 2023, at 11:15 AM, James Bottomley <James.Bottomley@hansenpartnership.com> wrote:
+> >>>
+> >>> On Mon, 2023-07-17 at 17:56 +0100, Daniel P. Berrangé wrote:
+> >>>> On Mon, Jul 17, 2023 at 12:08:26PM -0400, James Bottomley wrote:
+> >>>>> On Thu, 2023-07-13 at 15:52 +0200, Ard Biesheuvel wrote:
+> >>>>>> (add linux-efi@ cc)
+> >>>>>
+> >>>>> Thanks for that, since this is really EFI related rather than x86.
+> >>>>
+> >>>> snip
+> >>>>
+> >>>>> The problem, as I see it, is if the distros give the kernel an
+> >>>>> .sbat section, that means any vanilla kernel that's built by a user
+> >>>>> and signed by their key now won't work (even if their key is in
+> >>>>> MoK) because it won't have an sbat section ... and the sbat
+> >>>>> mechanism is component specific, not key specific, so the signer
+> >>>>> has no choice but to adopt it.
+> >>>>
+> >>>> AFAICT, that problem only exists for binaries directly invoked
+> >>>> from shim. So that would be a problem for the boot loader (grub),
+> >>>> or a kernel image being booted directly without a bootloader
+> >>>> present.
+> >>>
+> >>> Well, currently, yes; that's the in_protocol check in
+> >>> shim.c:verify_sbat_section().  However, I was assuming based on this
+> >>> thread, that that was being tightened up (either because people are
+> >>> moving away from grub or because the shim verifier protocol would
+> >>> enforce it) as you imply below.
+> >>>
+> >>>> For kernel binaries invoked indirectly by the boot loader, the
+> >>>> use of SBAT is currently optional. ie missing SBAT record would
+> >>>> be treated as success.
+> >>>>
+> >>>> This was a pragmatic way to introduce SBAT support as it only
+> >>>> impacted grub at that time.
+> >>>>
+> >>>> Once a distro starts adding SBAT to their kenrels too though, we
+> >>>> can forsee that they would like to enforce SBAT for the whole
+> >>>> boot chain, to prevent rollback to previously signed binaries
+> >>>> that lacked SBAT info.
+> >>>>
+> >>>> This policy could be enforced per key though. eg require SBAT
+> >>>> for anything verified against the vendor key that's compiled into
+> >>>> shim, but not require SBAT for binaries verified with the MoK
+> >>>> entries.
+> >>>
+> >>> That might work, but it's not currently in the shim code base.  It also
+> >>> wouldn't work for SUSE I suspect: they actually put all of their distro
+> >>> keys into MokList (so the machine owner has to approve any SUSE key
+> >>> update), so how can shim tell the difference between my key and their
+> >>> key?
+> >>>
+> >>>> The user specific MoK entries don't have such a compelling use
+> >>>> case for SBAT, since if they need to revoke old binaries, the
+> >>>> end users always have the easy fallback option of just rotating
+> >>>> their signing keys and switching out the enrolled key in MoK.
+> >>>>
+> >>>> The choice of whether to mandate SBAT for binaries signed with
+> >>>> a MoK entry, could be set by the end user themselves at the time
+> >>>> their enroll their signing cert in the MoK DB.
+> >>>
+> >>> Well, I agree with this, since it was my original point.  However, a
+> >>> key observation still seems to be that none of this exception proposal
+> >>> is actually coded anywhere, so if shim does tighten up sbat
+> >>> verification, everyone currently gets caught by it (and if it doesn't
+> >>> then the kernel doesn't need an sbat section).
+> >>>
+> >>> I really think if this exception proposal is what everyone is planning,
+> >>> then you can simply leave the upstream kernel alone, since it won't
+> >>> require sbat information unless incorporated into a distro.
+> >>>
+> >>> So the direction forward seems to be to get this exception proposal
+> >>> coded up and agreed and then we can decide based on that whether the
+> >>> upstream kernel needs to care.
+> >>
+> >> I agree with James in the previous thread;  adding the SBAT section to
+> >> the kernel should be handled by the signing tools. It really doesn't need to
+> >> be included in the mainline kernel code. I also agree with the sentiment that
+> >> mainline and the stable branches should not have SBAT versions attached
+> >> to them. These are things distros should be responsible for including in their
+> >> kernel if they want to have SBAT support.
+> >
+> > Why would 'signing tools' handle that? It's just a text-based PE
+> > section, it doesn't require access to private key materials to be
+> > handled, nor it has any relationship with signing.
+>
+> There is a relationship, the sbat information within the signed file
+> can be used for revocation in lieu of revoking the hash or signing
+> certificate at a later time.
 
-The VGA console needs both screen_info and vga_con to work. In arch/ppc
-we had both, but in arch/powerpc we only retained the screen_info:
+No, it is completely disjoint. In fact, the kernel doesn't even have
+to be signed at all, but it still _must_ have a .sbat section when it
+is used in a UKI. The UKI build tool (which is not a signing tool)
+will merge the .sbat sections from the various PEs that it assemble,
+currently kernel and stub, to create the final 'outer' .sbat in the
+UKI PE. It's not expected for the kernel PE binary that gets merged in
+the UKI to be signed. It is expected that it has a valid .sbat
+section.
 
-$ git grep vga_con v2.6.26 -- arch/ppc arch/ppc64 arch/powerpc
-v2.6.26:arch/ppc/platforms/pplus.c:     conswitchp = &vga_con;
-v2.6.26:arch/ppc/platforms/prep_setup.c:        conswitchp = &vga_con;
+> > And again, the point is that it's not something you might or
+> > might not want to have - if you are getting your Shim signed by the
+> > 3rd party CA, you need it, full stop, end of story. Without it, you
+> > don't boot. So it needs to be easy to find and consume for all the
+> > distributions/groups/projects that participate in the Shim + 3rd party
+> > CA workflow, that's the main goal. Mistakes are going to be expensive.
+>
+> I thought this discussion was around adding a sbat section to a signed
+> kernel. When signing a kernel, there must be some type of assurance
+> done immediately prior to code signing.  Currently following the assurance
+> step the appropriate public and private keys are supplied to either pesign
+> or sbsign.  If the signing tools were modified  to optionally accept sbat
+> information through a new command line arg, the new section could be
+> added immediately before signing.
 
-so after arch/ppc was removed, this became impossible to use on both
-pplus and prep. These two platforms were also (as far as I can tell)
-the only ones to support vga16fb as an alternative to vgacon, but
-both platforms were removed later on.
+No, as mentioned above, the kernel doesn't even have to be signed. It
+needs to carry .sbat data though, if it will be part of a signed UKI
+that is loaded via the 3rd party CA flow.
 
-> My only concern is that someone could be using it with Qemu?
+> Unlike shim, every kernel will be different and have different vulnerabilities
+> that individuals or distros may want to protect against.
 
-I have not yet ruled out anyone using vga16fb on qemu before
-commit 0db5b61e0dc07 ("fbdev/vga16fb: Create EGA/VGA devices
-in sysfb code"), but I can see that this has been broken for
-12 months without anyone complaining about it, since vga16fb
-no longer works with the "orig_video_isVGA == 1" setting
-in arch/powerpc (the device is not created).
-
-In the qemu sources, I see five powerpc machines that intialize
-VGA support: mac_newworld, mac_oldworld, pegasos2, prep, and spapr.
-I think we can exclude prep (which was removed from the kernel)
-and spapr (64-bit VGA_MAP_MEM() looks broken). I think the
-macs always come up in graphical mode and only use
-offb/atifb/rivafb/matroxfb but not vga16fb that would require
-running the x86 VGA BIOS initialization.
-
-I suppose it's possible to use vga16fb (not vgacon) with
-"qemu-system-ppc -M pegasos2 -vga std" if that still boots
-at all. Support for pegasos2 hardware appears to have been
-removed with commit 04debf21fa174 ("powerpc: Remove core
-support for Marvell mv64x60 hostbridges"), but it's possible
-that this did not break qemu support if that only uses
-devices under arch/powerpc/platforms/chrp/pci.c. I could
-not get it to boot, but did not try very hard.
-
-      Arnd
+That's not any different than grub.
