@@ -2,46 +2,46 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B697D75F9A5
-	for <lists+linux-efi@lfdr.de>; Mon, 24 Jul 2023 16:20:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5A0F75F9EC
+	for <lists+linux-efi@lfdr.de>; Mon, 24 Jul 2023 16:32:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230190AbjGXOUb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 24 Jul 2023 10:20:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47882 "EHLO
+        id S229522AbjGXOcQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 24 Jul 2023 10:32:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231236AbjGXOUa (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 24 Jul 2023 10:20:30 -0400
+        with ESMTP id S230223AbjGXOcQ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 24 Jul 2023 10:32:16 -0400
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8B54E64;
-        Mon, 24 Jul 2023 07:20:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8232D10F0;
+        Mon, 24 Jul 2023 07:32:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1690208429; x=1721744429;
+  t=1690209129; x=1721745129;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=jpqAetm4pZsB5/kXbjlZnlIftjDXYhKEa2j6e0p9oaw=;
-  b=Eiy1HBKTYWI4BrqhjiO+kTBNEVt8pOSY5sw1IzEDFw/MJQNAFhpKGmvT
-   vM5WnkfEHmarq85GaG/BHUs0VV1wn2VH/2t+VtkcMP/23q6SfxOEvYkdj
-   YuU2fjgDbYa7PyNvOyHXX7HGLgT3DbJB5LIc8mEUSmqmG8MNJJokiM5Tu
-   af9IPKexfl5fqsXHNAdwAF+VcrcfCVJdZ9RMpmHj7ipUKF4iSz8X/RHr0
-   ivAGb5GusydIdmXThbGpzqooRDheIFvZQM/QLjty0Ooaf2iRUkrbF3PrT
-   hy0PkkqfHTeTQw5EKx+TEWPrLkq4CyOQS160EA4TRmIE48I2/xPF5tvbE
+  bh=8lSqctVplAIarKGMJtl03N2iVLoJAxL48zKohtkfpEY=;
+  b=I7sLOnHoVcjr7fkPhbt4R3jva+sRv+KDKhbSdKC/+F2pAIao7UFmLPTt
+   f15XhJGXpUw0WYm0qhc1tsBRXtcQ2LHDdgvqNGPLOcxEotDjyDc1SAUnr
+   YzgVOLUFOj/1kQyLRXJDGn+gxgCM/zDlSGoE8PUA5GVBzeDN6IaiiXRqK
+   q+v8Z9iyllFOogEsH+1wLIRKEuOlq+N9qzTRpJivp2kR/GZW4xSwrpBWP
+   Uy8L1ivBhYCt0QyKnwkrQVDXGxbsMydVOMYoHF9Rb+dpEGCT29GIY38dE
+   qBA8JBpIAs5AQBvSvhQYXonjQyuHBYawQH9fF4wXHSE/0YlGIvE1a439x
    g==;
 X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
-   d="asc'?scan'208";a="221901442"
+   d="asc'?scan'208";a="162903015"
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 24 Jul 2023 07:20:28 -0700
+  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 24 Jul 2023 07:32:08 -0700
 Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
  chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Mon, 24 Jul 2023 07:20:24 -0700
+ 15.1.2507.21; Mon, 24 Jul 2023 07:31:37 -0700
 Received: from wendy (10.10.115.15) by chn-vm-ex04.mchp-main.com
  (10.10.85.152) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Mon, 24 Jul 2023 07:20:22 -0700
-Date:   Mon, 24 Jul 2023 15:19:49 +0100
+ Transport; Mon, 24 Jul 2023 07:31:35 -0700
+Date:   Mon, 24 Jul 2023 15:31:01 +0100
 From:   Conor Dooley <conor.dooley@microchip.com>
 To:     Alexandre Ghiti <alexghiti@rivosinc.com>
 CC:     Paul Walmsley <paul.walmsley@sifive.com>,
@@ -50,18 +50,15 @@ CC:     Paul Walmsley <paul.walmsley@sifive.com>,
         Ard Biesheuvel <ardb@kernel.org>,
         Kees Cook <keescook@chromium.org>,
         <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <linux-efi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Zong Li <zong.li@sifive.com>
-Subject: Re: [PATCH v6 2/5] riscv: Dump out kernel offset information on panic
-Message-ID: <20230724-fineness-sectional-8cdd1e4bbff2@wendy>
+        <linux-efi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v6 0/5] riscv: Introduce KASLR
+Message-ID: <20230724-sanded-dental-c9125c76ad74@wendy>
 References: <20230722123850.634544-1-alexghiti@rivosinc.com>
- <20230722123850.634544-3-alexghiti@rivosinc.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="aMNb8/bsNIfqV7pO"
+        protocol="application/pgp-signature"; boundary="xtSbObKEFv5fOwOJ"
 Content-Disposition: inline
-In-Reply-To: <20230722123850.634544-3-alexghiti@rivosinc.com>
+In-Reply-To: <20230722123850.634544-1-alexghiti@rivosinc.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
@@ -72,32 +69,50 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
---aMNb8/bsNIfqV7pO
+--xtSbObKEFv5fOwOJ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hey Alex,
 
-On Sat, Jul 22, 2023 at 02:38:47PM +0200, Alexandre Ghiti wrote:
-> Dump out the KASLR virtual kernel offset when panic to help debug kernel.
+On Sat, Jul 22, 2023 at 02:38:45PM +0200, Alexandre Ghiti wrote:
+> The following KASLR implementation allows to randomize the kernel mapping:
 >=20
-> Signed-off-by: Zong Li <zong.li@sifive.com>
+> - virtually: we expect the bootloader to provide a seed in the device-tree
+> - physically: only implemented in the EFI stub, it relies on the firmware=
+ to
+>   provide a seed using EFI_RNG_PROTOCOL. arm64 has a similar implementati=
+on
+>   hence the patch 3 factorizes KASLR related functions for riscv to take
+>   advantage.
+>=20
+> The new virtual kernel location is limited by the early page table that o=
+nly
+> has one PUD and with the PMD alignment constraint, the kernel can only ta=
+ke
+> < 512 positions.
 
-Either you're missing a Co-developed-by: or the author of this patch is
-incorrect.
+I gave this all a go today, it seems to do what it it says on the tin,
+and crashing my kernel does dump out an offset etc.
 
-> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
 
---aMNb8/bsNIfqV7pO
+I'll hopefully get some time later in the week to go through the code.
+
+Cheers,
+Conor.
+
+
+--xtSbObKEFv5fOwOJ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZL6IhAAKCRB4tDGHoIJi
-0uMUAP9RhMxzS+06VHvIGGfhOAXni5ygCNraqDKLEstEuQWfDQEAlV63sF94gRq7
-ibFLhTzDBOjVznhq0Br9EjnHLbwKzAE=
-=G/wQ
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZL6LJQAKCRB4tDGHoIJi
+0rUmAP434IQTNV26JB6nzkQMeniT7xYLVBw5Vtp0L980VphnTAD/UnQM8ZUEwq2o
+p+omBnMci+/NF3PBemZTOQee5NYREwg=
+=PcHz
 -----END PGP SIGNATURE-----
 
---aMNb8/bsNIfqV7pO--
+--xtSbObKEFv5fOwOJ--
