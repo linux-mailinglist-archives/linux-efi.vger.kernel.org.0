@@ -2,55 +2,69 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BB5375E7E2
-	for <lists+linux-efi@lfdr.de>; Mon, 24 Jul 2023 03:36:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A86A75E9E8
+	for <lists+linux-efi@lfdr.de>; Mon, 24 Jul 2023 04:53:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230298AbjGXBgP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 23 Jul 2023 21:36:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37444 "EHLO
+        id S229655AbjGXCxK (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 23 Jul 2023 22:53:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231806AbjGXBfv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 23 Jul 2023 21:35:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7822D49DC;
-        Sun, 23 Jul 2023 18:32:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B2C960FA3;
-        Mon, 24 Jul 2023 01:31:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59EE7C433C9;
-        Mon, 24 Jul 2023 01:31:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690162282;
-        bh=ODNt56JiN6gRK2N6uBDKwB1dCXrkmW14yZe2M7cBT7o=;
-        h=From:To:Cc:Subject:Date:From;
-        b=GcnPq9XQAb5KuHmcaec6Dr0DOWueCR5+SePsfrRjnB/LJJ0QhvCoA9V6p6rO3FN1o
-         vfUPX8gKgKQ4ZcvVHtERnngruNCL+YWD8lL0SvA/0pwmflXNw6wpka9l9uoEiIwCFK
-         LQEHkCAuE9r22VhlEBNxOm7uUugqpWpeTA7mtesLSU4ui/0/XExUVRogxDj3H1Nu9d
-         nJJkMcIZDMg5O7+UK7jsycgzwQV5ele3jH6/cCk+iaC4aGJ2VCcjtLUg/FH1MDPEFe
-         YTD4Yi3h2H/gsGSJ6j12nYGhjBYOfSR6CAEhtIOljaL+yfAuxuS2qBDzo4J+2KhRUb
-         mQLmFfTAOIeNQ==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Anisse Astier <an.astier@criteo.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, matt@codeblueprint.co.uk,
-        ard.biesheuvel@linaro.org, tglx@linutronix.de, mingo@redhat.com,
-        hpa@zytor.com, x86@kernel.org, matthew.garrett@nebula.com,
-        jk@ozlabs.org, linux-efi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 1/3] efivarfs: expose used and total size
-Date:   Sun, 23 Jul 2023 21:31:17 -0400
-Message-Id: <20230724013119.2327427-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S229545AbjGXCxJ (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 23 Jul 2023 22:53:09 -0400
+Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B0FCE6
+        for <linux-efi@vger.kernel.org>; Sun, 23 Jul 2023 19:53:08 -0700 (PDT)
+Received: by mail-ot1-x32f.google.com with SMTP id 46e09a7af769-6b9defb366eso2992202a34.2
+        for <linux-efi@vger.kernel.org>; Sun, 23 Jul 2023 19:53:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690167187; x=1690771987;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=i3Ul/yib6AVpUBR82WT2XWQzdvG86SoceqyAVEO8xa4=;
+        b=hobKpHD4tELSbF98E97BcgxRKfDSmmNBdxraOcygmOsuhC6MzBr601WutWaCExDpDK
+         VKqSOIVPehUE39YZ392arCdQdSuyn4imYSFe+OG9rb/qLcsxQMKhoy9aLxzqV/OedpH+
+         IYqKAtR7FBD0NozRn7hDC/sx1NTYA3eZqmPJ/4rBrRR/U8u/K6tQlX+K4SojM4wGX4qf
+         euO9NLQWlADfXWptlmq0E2rCHHvO8Ct8RUKdJAtfE0Xq/oJIGjbIhuhncs2cVUCi+Wf/
+         //argLKKwMOcaTOyFzlBXWgmbHyDMZjitmsKauhKid7YC7nDHUzqvDftyu8DluApK0cR
+         gA/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690167187; x=1690771987;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=i3Ul/yib6AVpUBR82WT2XWQzdvG86SoceqyAVEO8xa4=;
+        b=XxYKFJ6mMvP1YiDLBoIL2qlJbqCjtyc27ESQcuu+invlhL/3iX8+f01CpsfzCCF91c
+         OwsIx9hr/KWtAfCglXFeP9UR45W2g5FTGJ44vRWx6l2126cpxbi5lyEB3wSk0l+OvvQU
+         7QVPzp6IUymVSYerQ3QarQh56WHhaxfJJkA97osdil+O7HCnq8U0t+uOI6oA3GZdgIBr
+         bV5PjYSudDARXWdB6hm5i4mrg3sqmEk9N+u7Bldarapn/g9cy9qoG4kWxSBDy9if2TVN
+         vLZ1PxS3n68XRJYDVlHA+LZ/6za4rwYByAqPCO5ALAF3Sj2B03KklSrqVfwLr6qN5VZA
+         mRzg==
+X-Gm-Message-State: ABy/qLaX8RjsOWcSkX+vGNehCGdo2p9mm89MoouE6OyubJoY46Kk6Mms
+        gOd2YbhDD1Bw6DkCOk+XXhe/9RAPRNzc8ri3L+qlPBv9zeGAsUvILZk=
+X-Google-Smtp-Source: APBJJlHjEvy+T8pOFNfKrTVuyZ5HTLua+jMjPTZushYXl9MtOL4QdLkQ5rghLIqMY+Gi/ilPvhQ+yEaiITWuAag+lz4=
+X-Received: by 2002:a05:6808:ecc:b0:3a4:3a71:14dc with SMTP id
+ q12-20020a0568080ecc00b003a43a7114dcmr10027133oiv.1.1690167187779; Sun, 23
+ Jul 2023 19:53:07 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.40
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+References: <20230622085112.1521-1-masahisa.kojima@linaro.org>
+ <20230622085112.1521-5-masahisa.kojima@linaro.org> <5fe03be6-8c95-0bfa-687d-68e7ddffd97c@siemens.com>
+ <ZJSZbmUz583pszny@hera>
+In-Reply-To: <ZJSZbmUz583pszny@hera>
+From:   Masahisa Kojima <masahisa.kojima@linaro.org>
+Date:   Mon, 24 Jul 2023 11:52:56 +0900
+Message-ID: <CADQ0-X8TMQoViFW_zFCrOK6yjOqp-X8zQc6c2qsUcWZ5=Suugg@mail.gmail.com>
+Subject: Re: [PATCH v6 4/4] efivarfs: automatically update super block flag
+To:     Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc:     Jan Kiszka <jan.kiszka@siemens.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Jens Wiklander <jens.wiklander@linaro.org>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        linux-kernel@vger.kernel.org, op-tee@lists.trustedfirmware.org,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Jeremy Kerr <jk@ozlabs.org>, linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,185 +73,75 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Anisse Astier <an.astier@criteo.com>
+Hi Ilias, Jan,
 
-[ Upstream commit d86ff3333cb1d5f42d8898fb5fdb304e143c0237 ]
+On Fri, 23 Jun 2023 at 03:56, Ilias Apalodimas
+<ilias.apalodimas@linaro.org> wrote:
+>
+> Hi Kojima-san, Jan
+>
+> On Thu, Jun 22, 2023 at 04:58:50PM +0200, Jan Kiszka wrote:
+> > On 22.06.23 10:51, Masahisa Kojima wrote:
+> > > efivar operation is updated when the tee_stmm_efi module is probed.
+> > > tee_stmm_efi module supports SetVariable runtime service,
+> > > but user needs to manually remount the efivarfs as RW to enable
+> > > the write access if the previous efivar operation does not support
+> > > SerVariable and efivarfs is mounted as read-only.
+> > >
+> > > This commit notifies the update of efivar operation to
+> > > efivarfs subsystem, then drops SB_RDONLY flag if the efivar
+> > > operation supports SetVariable.
+> >
+> > But it does not re-add it and prevents further requests to the TA (that
+> > will only cause panics there) when the daemon terminates, does it?
+>
+> It doesn't, but I think I got a better way out.  Even what you suggest won't
+> solve the problem entirely.  For the sake of context
+> - The kernel decides between the RO/RW depending on the SetVariable ptr
+> - The stmm *module* registers and swaps the RT calls -- and the ptr is now
+> valid.  Note here that the module probe function will run only if the
+> supplicant is running
+> - Once the module is inserted the filesystem will be remounted even without
+> the supplicant running, which would not trigger an oops, but an hard to
+> decipher error message from OP-TEE.
+>
+> So even if we switch the permissions back to RO when the supplicant dies,
+> someone can still remount it as RW and trigger the same error.
+>
+> Which got me thinking and staring the TEE subsystem a bit more.  The
+> supplicant is backed by a /dev file, which naturally has .open() and
+> .release() callbacks.  Why don't we leave the module perform the initial
+> setup -- e.g talk to StMM and make sure it's there, setup the necessary
+> buffers etc and defer the actual swapping of the efivar ops and the
+> filesystem permissions there?  I might 'feel' a bit weird, but as I
+> mentioned the module probe function only runs if the supplicant is running
+> anyway
 
-When writing EFI variables, one might get errors with no other message
-on why it fails. Being able to see how much is used by EFI variables
-helps analyzing such issues.
+I think we are discussing two issues.
 
-Since this is not a conventional filesystem, block size is intentionally
-set to 1 instead of PAGE_SIZE.
+1) efivar ops is not restored when the tee-supplicant daemon terminates.
 
-x86 quirks of reserved size are taken into account; so that available
-and free size can be different, further helping debugging space issues.
+The patch[1] sent by Sumit addresses this issue.
+Thanks to this patch, 'remove' callback of tee_stmm_efi_driver is called
+when the tee-supplicant daemon terminates, then restore the previous efivar ops
+and SB_RDONLY flag if necessary.
 
-With this patch, one can see the remaining space in EFI variable storage
-via efivarfs, like this:
+2) cause panic when someone remounts the efivarfs as RW even if
+SetVariable is not supported.
 
-   $ df -h /sys/firmware/efi/efivars/
-   Filesystem      Size  Used Avail Use% Mounted on
-   efivarfs        176K  106K   66K  62% /sys/firmware/efi/efivars
+[1] https://lore.kernel.org/all/20230607151435.92654-1-sumit.garg@linaro.org/
 
-Signed-off-by: Anisse Astier <an.astier@criteo.com>
-[ardb: - rename efi_reserved_space() to efivar_reserved_space()
-       - whitespace/coding style tweaks]
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/x86/platform/efi/quirks.c |  8 +++++++
- drivers/firmware/efi/efi.c     |  1 +
- drivers/firmware/efi/vars.c    | 12 +++++++++++
- fs/efivarfs/super.c            | 39 +++++++++++++++++++++++++++++++++-
- include/linux/efi.h            | 11 ++++++++++
- 5 files changed, 70 insertions(+), 1 deletion(-)
+Thanks,
+Masahisa Kojima
 
-diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-index b0b848d6933af..f0cc00032751d 100644
---- a/arch/x86/platform/efi/quirks.c
-+++ b/arch/x86/platform/efi/quirks.c
-@@ -114,6 +114,14 @@ void efi_delete_dummy_variable(void)
- 				     EFI_VARIABLE_RUNTIME_ACCESS, 0, NULL);
- }
- 
-+u64 efivar_reserved_space(void)
-+{
-+	if (efi_no_storage_paranoia)
-+		return 0;
-+	return EFI_MIN_RESERVE;
-+}
-+EXPORT_SYMBOL_GPL(efivar_reserved_space);
-+
- /*
-  * In the nonblocking case we do not attempt to perform garbage
-  * collection if we do not have enough free space. Rather, we do the
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index b43e5e6ddaf6e..db3c0ce08e441 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -190,6 +190,7 @@ static int generic_ops_register(void)
- 	generic_ops.get_variable = efi.get_variable;
- 	generic_ops.get_next_variable = efi.get_next_variable;
- 	generic_ops.query_variable_store = efi_query_variable_store;
-+	generic_ops.query_variable_info = efi.query_variable_info;
- 
- 	if (efi_rt_services_supported(EFI_RT_SUPPORTED_SET_VARIABLE)) {
- 		generic_ops.set_variable = efi.set_variable;
-diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
-index 0ba9f18312f5b..de36d4e4bd95c 100644
---- a/drivers/firmware/efi/vars.c
-+++ b/drivers/firmware/efi/vars.c
-@@ -241,3 +241,15 @@ efi_status_t efivar_set_variable(efi_char16_t *name, efi_guid_t *vendor,
- 	return status;
- }
- EXPORT_SYMBOL_NS_GPL(efivar_set_variable, EFIVAR);
-+
-+efi_status_t efivar_query_variable_info(u32 attr,
-+					u64 *storage_space,
-+					u64 *remaining_space,
-+					u64 *max_variable_size)
-+{
-+	if (!__efivars->ops->query_variable_info)
-+		return EFI_UNSUPPORTED;
-+	return __efivars->ops->query_variable_info(attr, storage_space,
-+			remaining_space, max_variable_size);
-+}
-+EXPORT_SYMBOL_NS_GPL(efivar_query_variable_info, EFIVAR);
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 6780fc81cc11f..0994446a35442 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -13,6 +13,7 @@
- #include <linux/ucs2_string.h>
- #include <linux/slab.h>
- #include <linux/magic.h>
-+#include <linux/statfs.h>
- 
- #include "internal.h"
- 
-@@ -23,8 +24,44 @@ static void efivarfs_evict_inode(struct inode *inode)
- 	clear_inode(inode);
- }
- 
-+static int efivarfs_statfs(struct dentry *dentry, struct kstatfs *buf)
-+{
-+	const u32 attr = EFI_VARIABLE_NON_VOLATILE |
-+			 EFI_VARIABLE_BOOTSERVICE_ACCESS |
-+			 EFI_VARIABLE_RUNTIME_ACCESS;
-+	u64 storage_space, remaining_space, max_variable_size;
-+	efi_status_t status;
-+
-+	status = efivar_query_variable_info(attr, &storage_space, &remaining_space,
-+					    &max_variable_size);
-+	if (status != EFI_SUCCESS)
-+		return efi_status_to_err(status);
-+
-+	/*
-+	 * This is not a normal filesystem, so no point in pretending it has a block
-+	 * size; we declare f_bsize to 1, so that we can then report the exact value
-+	 * sent by EFI QueryVariableInfo in f_blocks and f_bfree
-+	 */
-+	buf->f_bsize	= 1;
-+	buf->f_namelen	= NAME_MAX;
-+	buf->f_blocks	= storage_space;
-+	buf->f_bfree	= remaining_space;
-+	buf->f_type	= dentry->d_sb->s_magic;
-+
-+	/*
-+	 * In f_bavail we declare the free space that the kernel will allow writing
-+	 * when the storage_paranoia x86 quirk is active. To use more, users
-+	 * should boot the kernel with efi_no_storage_paranoia.
-+	 */
-+	if (remaining_space > efivar_reserved_space())
-+		buf->f_bavail = remaining_space - efivar_reserved_space();
-+	else
-+		buf->f_bavail = 0;
-+
-+	return 0;
-+}
- static const struct super_operations efivarfs_ops = {
--	.statfs = simple_statfs,
-+	.statfs = efivarfs_statfs,
- 	.drop_inode = generic_delete_inode,
- 	.evict_inode = efivarfs_evict_inode,
- };
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 4e1bfee9675d2..b8cd4db7a1bfc 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -1045,6 +1045,7 @@ struct efivar_operations {
- 	efi_set_variable_t *set_variable;
- 	efi_set_variable_t *set_variable_nonblocking;
- 	efi_query_variable_store_t *query_variable_store;
-+	efi_query_variable_info_t *query_variable_info;
- };
- 
- struct efivars {
-@@ -1053,6 +1054,12 @@ struct efivars {
- 	const struct efivar_operations *ops;
- };
- 
-+#ifdef CONFIG_X86
-+u64 __attribute_const__ efivar_reserved_space(void);
-+#else
-+static inline u64 efivar_reserved_space(void) { return 0; }
-+#endif
-+
- /*
-  * The maximum size of VariableName + Data = 1024
-  * Therefore, it's reasonable to save that much
-@@ -1087,6 +1094,10 @@ efi_status_t efivar_set_variable_locked(efi_char16_t *name, efi_guid_t *vendor,
- efi_status_t efivar_set_variable(efi_char16_t *name, efi_guid_t *vendor,
- 				 u32 attr, unsigned long data_size, void *data);
- 
-+efi_status_t efivar_query_variable_info(u32 attr, u64 *storage_space,
-+					u64 *remaining_space,
-+					u64 *max_variable_size);
-+
- #if IS_ENABLED(CONFIG_EFI_CAPSULE_LOADER)
- extern bool efi_capsule_pending(int *reset_type);
- 
--- 
-2.39.2
-
+>
+> Cheers
+> /Ilias
+>
+> >
+> > Jan
+> >
+> > --
+> > Siemens AG, Technology
+> > Competence Center Embedded Linux
+> >
