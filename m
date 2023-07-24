@@ -2,36 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C640F75E7D7
-	for <lists+linux-efi@lfdr.de>; Mon, 24 Jul 2023 03:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BB5375E7E2
+	for <lists+linux-efi@lfdr.de>; Mon, 24 Jul 2023 03:36:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231839AbjGXBfz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 23 Jul 2023 21:35:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37504 "EHLO
+        id S230298AbjGXBgP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 23 Jul 2023 21:36:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231825AbjGXBfn (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 23 Jul 2023 21:35:43 -0400
+        with ESMTP id S231806AbjGXBfv (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 23 Jul 2023 21:35:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A8C046A8;
-        Sun, 23 Jul 2023 18:32:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7822D49DC;
+        Sun, 23 Jul 2023 18:32:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E93660F6D;
-        Mon, 24 Jul 2023 01:31:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F91C433C8;
-        Mon, 24 Jul 2023 01:31:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B2C960FA3;
+        Mon, 24 Jul 2023 01:31:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59EE7C433C9;
+        Mon, 24 Jul 2023 01:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690162274;
-        bh=Cwf9nx8+KvKrxKToNudI0zZPDzMtyKP9SFlfTc0URjM=;
+        s=k20201202; t=1690162282;
+        bh=ODNt56JiN6gRK2N6uBDKwB1dCXrkmW14yZe2M7cBT7o=;
         h=From:To:Cc:Subject:Date:From;
-        b=ndnnWGZX80RmOV82w53f21JSPsY22fyWR2xrvq0CJz8Tfg8VoGvAWOxDeqtl+iunB
-         oisrnoSTtEFuOvJY+VndMI53D+QsxVCV1GW0iIv/5IAyzATu4OExG5SALEh20rEMei
-         hCJ9xIo5iOZ5Ol4FDKIV4jPdjxcwbxT4LCwA1+Hy0BTXBd5JrxUvAnGdbvp7+SDGw6
-         gBs07+stilE1LaymfDHyNlgOJDxu25+aZR5LzCjYeGOto18GtdFpQuItZlf9MSl8LM
-         dlVygXuckoRJ+oaSBYxgdS19wi9VxuXUZc0M5B7AroMdX4b2Z+ZQgl1iVc//iF5EsI
-         xYJ/FuGpVKLDA==
+        b=GcnPq9XQAb5KuHmcaec6Dr0DOWueCR5+SePsfrRjnB/LJJ0QhvCoA9V6p6rO3FN1o
+         vfUPX8gKgKQ4ZcvVHtERnngruNCL+YWD8lL0SvA/0pwmflXNw6wpka9l9uoEiIwCFK
+         LQEHkCAuE9r22VhlEBNxOm7uUugqpWpeTA7mtesLSU4ui/0/XExUVRogxDj3H1Nu9d
+         nJJkMcIZDMg5O7+UK7jsycgzwQV5ele3jH6/cCk+iaC4aGJ2VCcjtLUg/FH1MDPEFe
+         YTD4Yi3h2H/gsGSJ6j12nYGhjBYOfSR6CAEhtIOljaL+yfAuxuS2qBDzo4J+2KhRUb
+         mQLmFfTAOIeNQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Anisse Astier <an.astier@criteo.com>,
@@ -40,14 +40,14 @@ Cc:     Anisse Astier <an.astier@criteo.com>,
         ard.biesheuvel@linaro.org, tglx@linutronix.de, mingo@redhat.com,
         hpa@zytor.com, x86@kernel.org, matthew.garrett@nebula.com,
         jk@ozlabs.org, linux-efi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.4 1/4] efivarfs: expose used and total size
-Date:   Sun, 23 Jul 2023 21:31:08 -0400
-Message-Id: <20230724013111.2327251-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 1/3] efivarfs: expose used and total size
+Date:   Sun, 23 Jul 2023 21:31:17 -0400
+Message-Id: <20230724013119.2327427-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.4.5
+X-stable-base: Linux 6.1.40
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -113,10 +113,10 @@ index b0b848d6933af..f0cc00032751d 100644
   * In the nonblocking case we do not attempt to perform garbage
   * collection if we do not have enough free space. Rather, we do the
 diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 34b9e78765386..91d986a741dad 100644
+index b43e5e6ddaf6e..db3c0ce08e441 100644
 --- a/drivers/firmware/efi/efi.c
 +++ b/drivers/firmware/efi/efi.c
-@@ -211,6 +211,7 @@ static int generic_ops_register(void)
+@@ -190,6 +190,7 @@ static int generic_ops_register(void)
  	generic_ops.get_variable = efi.get_variable;
  	generic_ops.get_next_variable = efi.get_next_variable;
  	generic_ops.query_variable_store = efi_query_variable_store;
@@ -125,10 +125,10 @@ index 34b9e78765386..91d986a741dad 100644
  	if (efi_rt_services_supported(EFI_RT_SUPPORTED_SET_VARIABLE)) {
  		generic_ops.set_variable = efi.set_variable;
 diff --git a/drivers/firmware/efi/vars.c b/drivers/firmware/efi/vars.c
-index bfc5fa6aa47b6..e9dc7116daf13 100644
+index 0ba9f18312f5b..de36d4e4bd95c 100644
 --- a/drivers/firmware/efi/vars.c
 +++ b/drivers/firmware/efi/vars.c
-@@ -245,3 +245,15 @@ efi_status_t efivar_set_variable(efi_char16_t *name, efi_guid_t *vendor,
+@@ -241,3 +241,15 @@ efi_status_t efivar_set_variable(efi_char16_t *name, efi_guid_t *vendor,
  	return status;
  }
  EXPORT_SYMBOL_NS_GPL(efivar_set_variable, EFIVAR);
@@ -145,7 +145,7 @@ index bfc5fa6aa47b6..e9dc7116daf13 100644
 +}
 +EXPORT_SYMBOL_NS_GPL(efivar_query_variable_info, EFIVAR);
 diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 482d612b716bb..e028fafa04f38 100644
+index 6780fc81cc11f..0994446a35442 100644
 --- a/fs/efivarfs/super.c
 +++ b/fs/efivarfs/super.c
 @@ -13,6 +13,7 @@
@@ -203,10 +203,10 @@ index 482d612b716bb..e028fafa04f38 100644
  	.evict_inode = efivarfs_evict_inode,
  };
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 571d1a6e1b744..120af31a5136f 100644
+index 4e1bfee9675d2..b8cd4db7a1bfc 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
-@@ -1042,6 +1042,7 @@ struct efivar_operations {
+@@ -1045,6 +1045,7 @@ struct efivar_operations {
  	efi_set_variable_t *set_variable;
  	efi_set_variable_t *set_variable_nonblocking;
  	efi_query_variable_store_t *query_variable_store;
@@ -214,7 +214,7 @@ index 571d1a6e1b744..120af31a5136f 100644
  };
  
  struct efivars {
-@@ -1049,6 +1050,12 @@ struct efivars {
+@@ -1053,6 +1054,12 @@ struct efivars {
  	const struct efivar_operations *ops;
  };
  
