@@ -2,103 +2,119 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9443B760B22
-	for <lists+linux-efi@lfdr.de>; Tue, 25 Jul 2023 09:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87BFA760B2D
+	for <lists+linux-efi@lfdr.de>; Tue, 25 Jul 2023 09:08:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231320AbjGYHGN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 25 Jul 2023 03:06:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35354 "EHLO
+        id S231646AbjGYHIQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 25 Jul 2023 03:08:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231175AbjGYHFw (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 25 Jul 2023 03:05:52 -0400
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6516E1BD2
-        for <linux-efi@vger.kernel.org>; Tue, 25 Jul 2023 00:05:50 -0700 (PDT)
-Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-3172144c084so4776360f8f.1
-        for <linux-efi@vger.kernel.org>; Tue, 25 Jul 2023 00:05:50 -0700 (PDT)
+        with ESMTP id S231514AbjGYHIP (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 25 Jul 2023 03:08:15 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A818BE0
+        for <linux-efi@vger.kernel.org>; Tue, 25 Jul 2023 00:08:14 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-3142a9ff6d8so4693902f8f.3
+        for <linux-efi@vger.kernel.org>; Tue, 25 Jul 2023 00:08:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1690268749; x=1690873549;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1690268893; x=1690873693;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BCISgvcHkLE+IYvaLKjaAqSLgVkajEMYvriq0KgJeCs=;
-        b=0HrQ3XBYZYdQcpqn/WILlevCOv0Bed+FdoMxOX6PFlSRZn2EEExBoyX+tV5PzdSsDH
-         T4bBkG2MctRNxqI0VKGmx2AP9nq8LV1LUD954cloloOgmY9bkCcOiRmci+4li2ptKFRS
-         dZ9LSG+zpvba62+Wz4a2CCjysdfTiWpkBYpfwyF37ncG6HSFKG161nZPu6x+B9JBdYuy
-         lAuGeQCLugERaSurpdpOpHj2CSCUscIjju/abM6zecQAZaQvGp4XxA1OfDB92BX5GitP
-         7iXoVDSHMaKMJH+rcxDgjQaXqs7QScLW54a7Htx0jqIzjVkOJ/ZAZRFvcWr21JUlVbkV
-         m0ug==
+        bh=Nemwt6odA/W6LAzXazKdN7X8FI/tGQtoSYxpSs1lg8c=;
+        b=zWJ7gNOev2UK2JbtjZgRfPfqW0WArnCMDMvfXl8Yonl2R6MPL5/7DFkC3BGCcw82W2
+         mGd/ShG6plEokjzXzt0/QOJoQIFzFH1z0dKLOgoWmY7IhSZTFc17xbJlvxGT0JbgFFTW
+         r3wE232x+WJwcKlBZQ0GCrV1aj18OwIdCqeqOAnmEScGNlaU6viHri7P+FFW/cF0JE8Y
+         l0N8flrR7Ko4pQzV1VwUlD4Ba2S5wBckSGhOTyrZ69xiBIUcMQPnBt3A2ATtNV+IMoa0
+         SBveIjNOrybY5vtXxx9R3+VLB0d8GC4UdmjVuQfL0/4mO+KnApIPbMDDgBozjHcBX5uE
+         wrxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690268749; x=1690873549;
+        d=1e100.net; s=20221208; t=1690268893; x=1690873693;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BCISgvcHkLE+IYvaLKjaAqSLgVkajEMYvriq0KgJeCs=;
-        b=QuDV6CBGbRxfOChGlvKaal0Y1lL9dTb9vUO2APDLq/sJ9e8xW4+GYRVA39mwRJ5XCh
-         tBGOU64+EC66KpraxxyCGtU2K8Y3zYbM7keDikZiOKXVlFESp4kFL0cGT8AXankCFERk
-         huOL7Q/J7Vljc/PUpEdjDpySmf9WnRkSHi4uwBerJWr/O+Fga3gYo8neeYGhYr53o+CD
-         KMURkeeJr6JyADJb8sTvjZgTEhMrv2QLLqvrgd1Pxt3zbaCMJTKRZHD0d2408n+L5XvA
-         pnke2cDRWYsT4JRzdYWmPwasHG+0NwHolbHczUTb1Lc3YFFpImGma6QwndM1/BVBAZvj
-         +myg==
-X-Gm-Message-State: ABy/qLb0nB7tDTh8JmZLf6r+LWpBt9xWw956b57qQW6C/HcMiTRT6g0m
-        sOPQGh3Fxdh+dADfoAx4SfO65gb4Wt4jESbuDfmaxQ==
-X-Google-Smtp-Source: APBJJlHW5uTkeyUukPBI67eBenwUVtqS23RaHFSnsmXqJ6eKmnPPYkuP9xkRhbcOO0uBVEGmXWnjsnoOmWsrsJiIoxg=
-X-Received: by 2002:adf:f251:0:b0:314:1249:d5d7 with SMTP id
- b17-20020adff251000000b003141249d5d7mr10276585wrp.16.1690268748838; Tue, 25
- Jul 2023 00:05:48 -0700 (PDT)
+        bh=Nemwt6odA/W6LAzXazKdN7X8FI/tGQtoSYxpSs1lg8c=;
+        b=XPub1RHj6Xb5m49BzTeMb1fyQefFrJMBstapewx2lJutSZIipGAmesKWclj3rY6B0d
+         9OEsFynEfXFdWbregeDQGTS09e+dOWjPeKaBzurG8AyUGzh1+qn5e2TZfCv2BbDge2pc
+         ALKIb0r3hlqKR825WGgE+oAkdh/qab4n5eC0hQOo187DP9TgJXduueSNgE1RhRX0n6D2
+         927YUK+KemX15LyBmKcB0XvtA1/lMYJw8v8hHHilWYmjwrSv1EpDGXoBQop6swbrsF9J
+         oSVeSsL/jSSb2aW1yGV/xp6wTHJSANx5zdUS0GKbXDqVnEdrXE0jp7V80pkm8BDatzpz
+         NwVQ==
+X-Gm-Message-State: ABy/qLa/8NeSK/xFe2/O0+GzfUmAr0YD2MPDRpOrFhVBz8o/ND6OHxgW
+        dhcAupaBiMvMZXzsIa5T6QOtprFW68jhyDgnyp+IQg==
+X-Google-Smtp-Source: APBJJlHOWVgAfvIWE3SwJNOHRN5kzve0ponjdSKN9AOGetzWhgHdBcNHiCtvHHaLdos5NlKV+C9CkHsTD+IMBIjKLQ8=
+X-Received: by 2002:adf:ce8a:0:b0:317:5c18:f31d with SMTP id
+ r10-20020adfce8a000000b003175c18f31dmr5125722wrn.35.1690268893182; Tue, 25
+ Jul 2023 00:08:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230722123850.634544-1-alexghiti@rivosinc.com>
- <20230722123850.634544-3-alexghiti@rivosinc.com> <20230724-fineness-sectional-8cdd1e4bbff2@wendy>
-In-Reply-To: <20230724-fineness-sectional-8cdd1e4bbff2@wendy>
+References: <20230722123850.634544-1-alexghiti@rivosinc.com> <20230724-sanded-dental-c9125c76ad74@wendy>
+In-Reply-To: <20230724-sanded-dental-c9125c76ad74@wendy>
 From:   Alexandre Ghiti <alexghiti@rivosinc.com>
-Date:   Tue, 25 Jul 2023 09:05:37 +0200
-Message-ID: <CAHVXubhVOpdZhmENkNbavAYGVZB47K9Q_4GN6RZ+rCex4uBb5g@mail.gmail.com>
-Subject: Re: [PATCH v6 2/5] riscv: Dump out kernel offset information on panic
-To:     Conor Dooley <conor.dooley@microchip.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>
+Date:   Tue, 25 Jul 2023 09:08:01 +0200
+Message-ID: <CAHVXubhiYT07L2ve2iEB5AZZdOgA0Sux8vDP4tMfdR6UTWuMgg@mail.gmail.com>
+Subject: Re: [PATCH v6 0/5] riscv: Introduce KASLR
+To:     Conor Dooley <conor.dooley@microchip.com>
 Cc:     Paul Walmsley <paul.walmsley@sifive.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
         Albert Ou <aou@eecs.berkeley.edu>,
         Ard Biesheuvel <ardb@kernel.org>,
         Kees Cook <keescook@chromium.org>,
         linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Zong Li <zong.li@sifive.com>
+        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Conor,
-
-On Mon, Jul 24, 2023 at 4:20=E2=80=AFPM Conor Dooley <conor.dooley@microchi=
+On Mon, Jul 24, 2023 at 4:32=E2=80=AFPM Conor Dooley <conor.dooley@microchi=
 p.com> wrote:
 >
 > Hey Alex,
 >
-> On Sat, Jul 22, 2023 at 02:38:47PM +0200, Alexandre Ghiti wrote:
-> > Dump out the KASLR virtual kernel offset when panic to help debug kerne=
-l.
+> On Sat, Jul 22, 2023 at 02:38:45PM +0200, Alexandre Ghiti wrote:
+> > The following KASLR implementation allows to randomize the kernel mappi=
+ng:
 > >
-> > Signed-off-by: Zong Li <zong.li@sifive.com>
+> > - virtually: we expect the bootloader to provide a seed in the device-t=
+ree
+> > - physically: only implemented in the EFI stub, it relies on the firmwa=
+re to
+> >   provide a seed using EFI_RNG_PROTOCOL. arm64 has a similar implementa=
+tion
+> >   hence the patch 3 factorizes KASLR related functions for riscv to tak=
+e
+> >   advantage.
+> >
+> > The new virtual kernel location is limited by the early page table that=
+ only
+> > has one PUD and with the PMD alignment constraint, the kernel can only =
+take
+> > < 512 positions.
 >
-> Either you're missing a Co-developed-by: or the author of this patch is
-> incorrect.
+> I gave this all a go today, it seems to do what it it says on the tin,
+> and crashing my kernel does dump out an offset etc.
+>
+> Tested-by: Conor Dooley <conor.dooley@microchip.com>
 
-Ok, I thought it would work this way, Zong first did something similar
-a few years ago, so we need his name here. @Palmer Dabbelt if no other
-changes are needed, do you mind replacing the SoB with a
-Co-developed-by?
+Great, thanks for testing!
 
-Thanks,
+>
+> I'll hopefully get some time later in the week to go through the code.
+
+I will be on holiday in 3 weeks, you have some time, no worries :)
+
+Thanks again,
 
 Alex
 
 >
-> > Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+> Cheers,
+> Conor.
+>
