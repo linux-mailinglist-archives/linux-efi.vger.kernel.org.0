@@ -2,196 +2,264 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18775765201
-	for <lists+linux-efi@lfdr.de>; Thu, 27 Jul 2023 13:13:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ACC076687A
+	for <lists+linux-efi@lfdr.de>; Fri, 28 Jul 2023 11:13:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233296AbjG0LN1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 27 Jul 2023 07:13:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48010 "EHLO
+        id S235272AbjG1JNf (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 28 Jul 2023 05:13:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232913AbjG0LNL (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 27 Jul 2023 07:13:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 664C7A2
-        for <linux-efi@vger.kernel.org>; Thu, 27 Jul 2023 04:12:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1690456331;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=KzR/29ssKHTlIDAdd/Fjb9KFzV0w37Bkt3676oqfegA=;
-        b=ZSDfOrWg9b1QZgSlDgFtaaciqYKFEeBWV7QQb96r287hm38qws1KxldBPswz3U8ch1IzM7
-        eZYK5l6CZGE5C4W4wWKYUfz3HNRtF5oo/WfD7b5UDc1takYmPok08H0Ie8zWaer1DH8EHd
-        G2EATmBdRpBGhzKP8ggm2uvRMelVxK0=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-317-9TR7fiOaPwygUZ1Iyw9U-Q-1; Thu, 27 Jul 2023 07:12:07 -0400
-X-MC-Unique: 9TR7fiOaPwygUZ1Iyw9U-Q-1
-Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-4fdde274729so770434e87.3
-        for <linux-efi@vger.kernel.org>; Thu, 27 Jul 2023 04:12:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690456326; x=1691061126;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KzR/29ssKHTlIDAdd/Fjb9KFzV0w37Bkt3676oqfegA=;
-        b=GWndE7+eOrNXINHZ26Rlh2XapdnjUwpl/kD2g2K4BIfNgB/o74mrln4Q1aJnq0sv6u
-         yKbufrYx+tPrk2dC3aj3DHjBLbs9+TWeqoJdrNnVi6HzAhxzftuN/KSfqF+JKgHATfr1
-         4D9z70vH0ocSrYLMCTNdweyRPlltze61q6aSFSgU6zbCzn2I97z+B4VgcSxTdQXRUgZe
-         uUJKW3IcxG/PUpUTyadjpeL6eupBGLNL6JPihBoU96LQ0bnBLtNgZKTrTezd312q7hkw
-         FolAgZqi1VJooGk7Q+VYOM5MCJZnvfmZsZwZPE3jwDccvMFVZn4lLoMBE+YJFCPhhXX3
-         eqKQ==
-X-Gm-Message-State: ABy/qLYT1K0wWsomj0RCCOq9zjQ/4Tf6/VWYK8ZbweMsPYFK/K2dlYfS
-        g3DrJ4OU2uczh2rZme0F9ErDVUMi77nhbEkRoe+opMMdKiqWQz2ioCZeOsNC/YdfLSlaa/FuNP/
-        8PMj5qbNYp4g8Z1C0f8z7l75o+d/qTwRsqx79
-X-Received: by 2002:a05:6512:2386:b0:4fb:821e:2241 with SMTP id c6-20020a056512238600b004fb821e2241mr2053304lfv.23.1690456325978;
-        Thu, 27 Jul 2023 04:12:05 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHVcSXFbTNHvChrljnKmKfUt/IbSL9KtTtcftDFpfX3hleE49JbqtNOhURn54n+68XPYFw909b0goEvLHGOH5s=
-X-Received: by 2002:a05:6512:2386:b0:4fb:821e:2241 with SMTP id
- c6-20020a056512238600b004fb821e2241mr2053291lfv.23.1690456325651; Thu, 27 Jul
- 2023 04:12:05 -0700 (PDT)
+        with ESMTP id S233737AbjG1JMm (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 28 Jul 2023 05:12:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 035F53A9A;
+        Fri, 28 Jul 2023 02:10:44 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 93CD362062;
+        Fri, 28 Jul 2023 09:10:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E69C433C8;
+        Fri, 28 Jul 2023 09:10:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690535443;
+        bh=gOneEiml3JYSDivLGLgEkDNi3z+lvMe1HNWCNa1UBAg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=CLIoNmWL2qT3fWXuL8ca5ZJts4519nWes6r4+gh2pX6v/Bj/26layfjsFQbnhFUsL
+         uoNNYsRA9FbjKJ8EbZ4i1k7KZIijlzydz/ZkIuh+P0IbcDAlKWv0HcQZZg5BDEIiir
+         0wlkroNrTs0+qJuraxvlRkvKrOHSvYh9mIBTbkHW4Ctri+dOlnoLxFIUHHUDVPwT2a
+         p1Rl7pOI0P2EDP2Kj2QwJMp1j5EJNvmbzkVO4NzIVArz/kW+hlCziQHIUTjTNvDSbM
+         kPZD2yV8xUt0p0Svke5ljiPivBQs3aK9huw/hqxKdWI9SmWIxA1WLmKpHmHV0okdXy
+         AP+Gn7ncDPUPw==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        Evgeniy Baskov <baskov@ispras.ru>,
+        Borislav Petkov <bp@alien8.de>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Peter Jones <pjones@redhat.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Dave Young <dyoung@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH v7 00/22] efi/x86: Avoid bare metal decompressor during EFI boot
+Date:   Fri, 28 Jul 2023 11:08:54 +0200
+Message-Id: <20230728090916.1538550-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20230601072043.24439-1-ltao@redhat.com> <20230713100459.GEZK/MS69XbphJa+tN@fat_crate.local>
- <CAO7dBbVMNKTSDi5eP4BseEUexsk0Mo0GWJpyHfOcp+tHs6cSUw@mail.gmail.com>
- <CAMj1kXGEFr+E3pKLrJJq=FXv9ZhDg0zSEw7sewumPZkwtd3P5Q@mail.gmail.com> <CAO7dBbXhF36vCgVMOM2H83H34OqsA6J3KmsBMvYcs_p9_5pa4Q@mail.gmail.com>
-In-Reply-To: <CAO7dBbXhF36vCgVMOM2H83H34OqsA6J3KmsBMvYcs_p9_5pa4Q@mail.gmail.com>
-From:   Tao Liu <ltao@redhat.com>
-Date:   Thu, 27 Jul 2023 19:11:29 +0800
-Message-ID: <CAO7dBbXN6hTbJVH8V5UCAxcOM4+-f0qACbd9n9HaP19F4mPEqw@mail.gmail.com>
-Subject: Re: [PATCH v2] x86/kexec: Add EFI config table identity mapping for
- kexec kernel
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Borislav Petkov <bp@alien8.de>, tglx@linutronix.de,
-        mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, linux-kernel@vger.kernel.org, bhe@redhat.com,
-        dyoung@redhat.com, kexec@lists.infradead.org,
-        linux-efi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9907; i=ardb@kernel.org; h=from:subject; bh=gOneEiml3JYSDivLGLgEkDNi3z+lvMe1HNWCNa1UBAg=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeVw68KUxe/3mXPISzqsfLn1SQ3Pr1vbw44vurqZpSgz6 PFkd/vJHaUsDGIcDLJiiiwCs/++23l6olSt8yxZmDmsTCBDGLg4BWAiam0M/wxX3k+aXBObvH9F /q+7pnWXo2PuzvleYR+zbd6Z2KnyhfEM/4yOsWzfs/PT+ZQ7ASK2yisWKHTs25Wu6rpzomRQ+ob ra9kB
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Ard,
+Update the x86 boot path to avoid the bare metal decompressor when
+booting via the EFI stub. The bare metal decompressor inherits the
+loader's 1:1 mapping of DRAM when entering in 64-bit mode, and assumes
+that all of it is mapped read/write/execute, which will no longer be the
+case on systems built to comply with recently tightened logo
+requirements (*).
 
-On Mon, Jul 17, 2023 at 11:11=E2=80=AFPM Tao Liu <ltao@redhat.com> wrote:
->
-> On Mon, Jul 17, 2023 at 10:57=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org>=
- wrote:
-> >
-> > On Mon, 17 Jul 2023 at 15:53, Tao Liu <ltao@redhat.com> wrote:
-> > >
-> > > Hi Borislav,
-> > >
-> > > On Thu, Jul 13, 2023 at 6:05=E2=80=AFPM Borislav Petkov <bp@alien8.de=
-> wrote:
-> > > >
-> > > > On Thu, Jun 01, 2023 at 03:20:44PM +0800, Tao Liu wrote:
-> > > > >  arch/x86/kernel/machine_kexec_64.c | 35 ++++++++++++++++++++++++=
-++----
-> > > > >  1 file changed, 31 insertions(+), 4 deletions(-)
-> > > >
-> > > > Ok, pls try this totally untested thing.
-> > > >
-> > > > Thx.
-> > > >
-> > > > ---
-> > > > diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compres=
-sed/sev.c
-> > > > index 09dc8c187b3c..fefe27b2af85 100644
-> > > > --- a/arch/x86/boot/compressed/sev.c
-> > > > +++ b/arch/x86/boot/compressed/sev.c
-> > > > @@ -404,13 +404,20 @@ void sev_enable(struct boot_params *bp)
-> > > >         if (bp)
-> > > >                 bp->cc_blob_address =3D 0;
-> > > >
-> > > > +       /* Check for the SME/SEV support leaf */
-> > > > +       eax =3D 0x80000000;
-> > > > +       ecx =3D 0;
-> > > > +       native_cpuid(&eax, &ebx, &ecx, &edx);
-> > > > +       if (eax < 0x8000001f)
-> > > > +               return;
-> > > > +
-> > > >         /*
-> > > >          * Setup/preliminary detection of SNP. This will be sanity-=
-checked
-> > > >          * against CPUID/MSR values later.
-> > > >          */
-> > > >         snp =3D snp_init(bp);
-> > > >
-> > > > -       /* Check for the SME/SEV support leaf */
-> > > > +       /* Recheck the SME/SEV support leaf */
-> > > >         eax =3D 0x80000000;
-> > > >         ecx =3D 0;
-> > > >         native_cpuid(&eax, &ebx, &ecx, &edx);
-> > > >
-> > > Thanks a lot for the patch above! Sorry for the late response. I have
-> > > compiled and tested it locally against 6.5.0-rc1, though it can pass
-> > > the early stage of kexec kernel bootup,
-> >
-> > OK, so that proves that the cc_blob table access is the culprit here.
-> > That still means that kexec on SEV is likely to explode in the exact
-> > same way should anyone attempt that.
-> >
-> >
-> > > however the kernel will panic
-> > > occasionally later. The test machine is the one with Intel Atom
-> > > x6425RE cpu which encountered the page fault issue of missing efi
-> > > config table.
-> > >
-> >
-> > Agree with Boris that this seems entirely unrelated.
->
-> Agree, I will have a retest based on Boris's suggestions.
->
-> >
-> > > ...snip...
-> > > [   21.360763]  nvme0n1: p1 p2 p3
-> > > [   21.364207] igc 0000:03:00.0: PTM enabled, 4ns granularity
-> > > [   21.421097] pps pps1: new PPS source ptp1
-> > > [   21.425396] igc 0000:03:00.0 (unnamed net_device) (uninitialized):=
- PHC added
-> > > [   21.457005] igc 0000:03:00.0: 4.000 Gb/s available PCIe bandwidth
-> > > (5.0 GT/s PCIe x1 link)
-> > > [   21.465210] igc 0000:03:00.0 eth1: MAC: ...snip...
-> > > [   21.473424] igc 0000:03:00.0 enp3s0: renamed from eth1
-> > > [   21.479446] BUG: kernel NULL pointer dereference, address: 0000000=
-000000008
-> > > [   21.486405] #PF: supervisor read access in kernel mode
-> > > [   21.491519] mmc1: Failed to initialize a non-removable card
-> > > [   21.491538] #PF: error_code(0x0000) - not-present page
-> > > [   21.502229] PGD 0 P4D 0
-> > > [   21.504773] Oops: 0000 [#1] PREEMPT SMP NOPTI
-> > > [   21.509133] CPU: 3 PID: 402 Comm: systemd-udevd Not tainted 6.5.0-=
-rc1+ #1
-> > > [   21.515905] Hardware name: ...snip...
-> >
-> >
-> > Why are you snipping the hardware name?
->
+Changes since v6 [9]:
+- add new patch to fix our current reliance on 64-bit GPRs retaining
+  their full width contents across the switch into 32-bit protected
+  mode (with fixes: tag, may need to go to -stable);
+- preserve the top half of RSP explicitly, and preserve all callee save
+  registers on the stack across the mode switch; this fixes a reported
+  issue on Ice Lake with kexec (which loads the kernel above 4G)
 
-Our partner said it is OK to discuss in public, so the hardware is:
-Hardware name: LENOVO 11KL0FVT06/3334, BIOS M4XKT14A 05/17/2023
+Changes since v5 [8]:
+- reintroduce patch removing redundant RSI pushes and pops from
+  arch/x86/kernel/head_64.S
+- avoid bare constant 0x200 for the offset of startup_64() in the
+  decompressor
+- rejig SEV/SNP logic in patch #20 once again, to ensure that CPUID
+  calls and VM exits only occur when the active configuration permits
+  it
+- improve/clarify some code comments and commit logs
+- rebase onto v6.5-rc1
 
-The machine is Lenovo ThinkEdge SE10.
+Changes since v4 [7]:
+- avoid CPUID calls after protocol negotiation but before configuring
+  exception handling;
+- drop patch removing redundant RSI pushes and pops from
+  arch/x86/kernel/head_64.S
+- rebase onto -tip x86/cc - the conflicts are mostly trivial and
+  restricted to the last 4 patches in the series, so applying this onto
+  a separate topic branch should be straight-forward as well.
 
-Thanks,
-Tao Liu
+Changes since v3 [6]:
+- trivial rebase onto Kirill's unaccepted memory series v13
+- test SNP feature mask while running in the EFI boot services, and fail
+  gracefully on a mismatch
+- perform only the SEV init after ExitBootServices()
 
-> Sorry for the inconvenience here... The machine is borrowed from our
-> partner, which may not be officially released to the market. I haven't
-> discussed the legal issue with them. In addition, I think the stack
-> trace is more useful, so I snipped the hardware name. Sorry about
-> that...
->
-> >
+Changes since v2 [4]:
+- update prose style to comply with -tip guidelines
+- rebased onto Kirill's unaccepted memory series [3]
+- add Kirill's ack to 4/5-level paging changes
+- perform SEV init and SNP feature check after ExitBootServices(), to
+  avoid corrupting the firmware's own SEV state
+- split out preparatory refactor of handover entry code and BSS clearing
+  (patches #1 to #4)
+
+Changes since v1 [2]:
+- streamline existing 4/5 level switching code and call it directly from
+  the EFI stub - this is covered by the first 9 patches, which can be
+  applied in isolation, if desired;
+- deal with SEV/SNP init explicitly;
+- clear BSS when booting via the 'handover protocol'
+- switch to kernel CS before calling SEV init code in kernel proper.
+
+---- v1 cover letter follows ----
+
+This series is conceptually a combination of Evgeny's series [0] and
+mine [1], both of which attempt to make the early decompressor code more
+amenable to executing in the EFI environment with stricter handling of
+memory permissions.
+
+My series [1] implemented zboot for x86, by getting rid of the entire
+x86 decompressor, and replacing it with existing EFI code that does the
+same but in a generic way. The downside of this is that only EFI boot is
+supported, making it unviable for distros, which need to support BIOS
+boot and hybrid EFI boot modes that omit the EFI stub.
+
+Evgeny's series [0] adapted the entire decompressor code flow to allow
+it to execute in the EFI context as well as the bare metal context, and
+this involves changes to the 1:1 mapping code and the page fault
+handlers etc, none of which are really needed when doing EFI boot in the
+first place.
+
+So this series attempts to occupy the middle ground here: it makes
+minimal changes to the existing decompressor so some of it can be called
+from the EFI stub. Then, it reimplements the EFI boot flow to decompress
+the kernel and boot it directly, without relying on the trampoline
+allocation code, page table code or page fault handling code. This
+allows us to get rid of quite a bit of unsavory EFI stub code, and
+replace it with two clear invocations of the EFI firmware APIs to clear
+NX restrictions from allocations that have been populated with
+executable code.
+
+The only code that is being reused is the decompression library itself,
+along with the minimal ELF parsing that is required to copy the ELF
+segments in place, and the relocation processing that fixes up absolute
+symbol references to refer to the correct virtual addresses.
+
+Note that some of Evgeny's changes to clean up the PE/COFF header
+generation will still be needed, but I've omitted those here for
+brevity.
+
+(*) IMHO the following developments are likely to occur:
+- the Windows boot chain (along with 3rd party drivers) is cleaned up so
+  that it never relies on memory being writable and executable at the
+  same time when running under the EFI boot services;
+- the EFI reference implementation gets updated to map all memory NX by
+  default, and to require read-only permissions for executable mappings;
+- BIOS vendors incorporate these changes into their codebases, and
+  deploy it more widely than just the 'secure' SKUs;
+- OEMs only care about the Windows sticker [5], so they only boot test
+  Windows, which works fine in this more restricted context;
+- Linux boot no longer works reliably on new hardware built for Windows
+  unless we clean up our boot chain as well.
+
+Cc: Evgeniy Baskov <baskov@ispras.ru>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Cc: Peter Jones <pjones@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Joerg Roedel <jroedel@suse.de>
+
+[0] https://lore.kernel.org/all/cover.1678785672.git.baskov@ispras.ru/
+[1] https://lore.kernel.org/all/20230416120729.2470762-1-ardb@kernel.org/
+[2] https://lore.kernel.org/all/20230424165726.2245548-1-ardb@kernel.org/
+[3] https://lore.kernel.org/all/20230518231434.26080-1-kirill.shutemov@linux.intel.com/
+[4] https://lore.kernel.org/all/20230508070330.582131-1-ardb@kernel.org/
+[5] https://techcommunity.microsoft.com/t5/hardware-dev-center/new-uefi-ca-memory-mitigation-requirements-for-signing/ba-p/3608714
+[6] https://lore.kernel.org/all/20230522071415.501717-1-ardb@kernel.org/
+[7] https://lore.kernel.org/all/20230602101313.3557775-1-ardb@kernel.org/
+[8] https://lore.kernel.org/all/20230607072342.4054036-1-ardb@kernel.org/
+[9] https://lore.kernel.org/all/20230711091453.2543622-1-ardb@kernel.org/
+
+Ard Biesheuvel (22):
+  x86/decompressor: Don't rely on upper 32 bits of GPRs being preserved
+  x86/head_64: Store boot_params pointer in callee save register
+  x86/efistub: Branch straight to kernel entry point from C code
+  x86/efistub: Simplify and clean up handover entry code
+  x86/decompressor: Avoid magic offsets for EFI handover entrypoint
+  x86/efistub: Clear BSS in EFI handover protocol entrypoint
+  x86/decompressor: Use proper sequence to take the address of the GOT
+  x86/decompressor: Store boot_params pointer in callee save register
+  x86/decompressor: Call trampoline as a normal function
+  x86/decompressor: Use standard calling convention for trampoline
+  x86/decompressor: Avoid the need for a stack in the 32-bit trampoline
+  x86/decompressor: Call trampoline directly from C code
+  x86/decompressor: Only call the trampoline when changing paging levels
+  x86/decompressor: Merge trampoline cleanup with switching code
+  x86/efistub: Perform 4/5 level paging switch from the stub
+  x86/efistub: Prefer EFI memory attributes protocol over DXE services
+  decompress: Use 8 byte alignment
+  x86/decompressor: Move global symbol references to C code
+  x86/decompressor: Factor out kernel decompression and relocation
+  efi/libstub: Add limit argument to efi_random_alloc()
+  x86/efistub: Perform SNP feature test while running in the firmware
+  x86/efistub: Avoid legacy decompressor when doing EFI boot
+
+ Documentation/arch/x86/boot.rst                |   2 +-
+ arch/x86/boot/compressed/Makefile              |   5 +
+ arch/x86/boot/compressed/efi_mixed.S           | 107 +++-----
+ arch/x86/boot/compressed/head_32.S             |  34 +--
+ arch/x86/boot/compressed/head_64.S             | 242 +++++------------
+ arch/x86/boot/compressed/misc.c                |  44 ++-
+ arch/x86/boot/compressed/pgtable.h             |   8 +-
+ arch/x86/boot/compressed/pgtable_64.c          |  74 +++--
+ arch/x86/boot/compressed/sev.c                 |  91 +++++--
+ arch/x86/include/asm/boot.h                    |   8 +
+ arch/x86/include/asm/efi.h                     |   7 +-
+ arch/x86/include/asm/sev.h                     |   6 +
+ arch/x86/kernel/head_64.S                      |  23 +-
+ drivers/firmware/efi/libstub/Makefile          |   1 +
+ drivers/firmware/efi/libstub/arm64-stub.c      |   2 +-
+ drivers/firmware/efi/libstub/efi-stub-helper.c |   2 +
+ drivers/firmware/efi/libstub/efistub.h         |   3 +-
+ drivers/firmware/efi/libstub/randomalloc.c     |  10 +-
+ drivers/firmware/efi/libstub/x86-5lvl.c        |  95 +++++++
+ drivers/firmware/efi/libstub/x86-stub.c        | 285 +++++++++++---------
+ drivers/firmware/efi/libstub/x86-stub.h        |  17 ++
+ drivers/firmware/efi/libstub/zboot.c           |   2 +-
+ include/linux/decompress/mm.h                  |   2 +-
+ 23 files changed, 563 insertions(+), 507 deletions(-)
+ create mode 100644 drivers/firmware/efi/libstub/x86-5lvl.c
+ create mode 100644 drivers/firmware/efi/libstub/x86-stub.h
+
+-- 
+2.39.2
 
