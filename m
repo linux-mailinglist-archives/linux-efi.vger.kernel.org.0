@@ -2,55 +2,61 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8A3576B3C7
-	for <lists+linux-efi@lfdr.de>; Tue,  1 Aug 2023 13:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1964D76B3D8
+	for <lists+linux-efi@lfdr.de>; Tue,  1 Aug 2023 13:52:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231883AbjHALtU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 1 Aug 2023 07:49:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45058 "EHLO
+        id S233250AbjHALwV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 1 Aug 2023 07:52:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234421AbjHALtI (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Aug 2023 07:49:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AE3F11A;
-        Tue,  1 Aug 2023 04:49:07 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        with ESMTP id S234098AbjHALwT (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 1 Aug 2023 07:52:19 -0400
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D15C184;
+        Tue,  1 Aug 2023 04:52:18 -0700 (PDT)
+Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CD2876155E;
-        Tue,  1 Aug 2023 11:49:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 360F9C433CA;
-        Tue,  1 Aug 2023 11:49:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690890546;
-        bh=/EnFpJVOirRUmcSdhYmxqYtzYmk23apw6/a4SFiS2B8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=QN99XNTwVXKMQRuZ0FeeyhHWtFRAWS0RLGxnj1uc1q6n6uH3I/oKlEmczVjdVrseS
-         hrqlgiX6IwdlNpQ7XTGDy3ZpUm+3oxrlRV/OlE+ZRCvecShoLp+gH0QrOGkfgxmgE5
-         gEOtAT51yDZf4yWVaAewvxNIuW+X69OvB4xvrReXmGTcEPtaO54JGH8IU6N2tV4BD7
-         k8GPk3OJYVH6YLG7gT0yqFv/m7b94sjk861na3qK3k17x5qATLT4ruF4njOB6c/xwR
-         BDrKMvWn2L/W0l24N9pIfMgR9lqtcsS8kJC8hhThGL8jmor91tUvYFbVVbftKyuv2U
-         wc4K2gwcbJ0bQ==
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-4fe44955decso779608e87.1;
-        Tue, 01 Aug 2023 04:49:06 -0700 (PDT)
-X-Gm-Message-State: ABy/qLbf/NZlToRrc5FtRsJU7h8JiVOGF6KIyzzxUxaG4D5bCmaivy9d
-        Qx797jpZd6uTkBNPftbPVkUSeghePH2NkFtB/Gk=
-X-Google-Smtp-Source: APBJJlFrmZ8SVcqn3722N1Kq1jCOKWo0UUmwcxCKUeU+/3sKTSh5IyJMn9eA0ql2w0oTbGcJ1aSnShBGUlz+tSPH0nY=
-X-Received: by 2002:a05:6512:1196:b0:4fd:fac4:2137 with SMTP id
- g22-20020a056512119600b004fdfac42137mr941579lfr.30.1690890544195; Tue, 01 Aug
- 2023 04:49:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230728090916.1538550-1-ardb@kernel.org> <20230728090916.1538550-13-ardb@kernel.org>
- <20230801114542.GEZMjwZne986ZxI6eG@fat_crate.local>
-In-Reply-To: <20230801114542.GEZMjwZne986ZxI6eG@fat_crate.local>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 1 Aug 2023 13:48:52 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEyApdRYNmn7Px=faANXv6JXXTAvdPUToy3-H1UZg6-eQ@mail.gmail.com>
-Message-ID: <CAMj1kXEyApdRYNmn7Px=faANXv6JXXTAvdPUToy3-H1UZg6-eQ@mail.gmail.com>
-Subject: Re: [PATCH v7 12/22] x86/decompressor: Call trampoline directly from
- C code
-To:     Borislav Petkov <bp@alien8.de>
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E19E91EC04C0;
+        Tue,  1 Aug 2023 13:52:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1690890736;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=9UpLvNUXcMFhIy3aYZgRAudsyr5ZvCGx753qbrrnVHw=;
+        b=UqC+I6E2aLUVvEem3eOwrNtrraSK1fyQ7gAZzW573qigvXSqXh56Yiynbhe/vAh2k6sAXC
+        5sRZqs6aQ6U+ruF6gy5THehTfTnNZqr5e1RExLuxYQ8aUqARIgpgNjjBomBo38MFwMzJbv
+        Aj1Ml62hJfrAUv+NJuw6u44cUfE3fUU=
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+        header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id hl2nKTKgNP8z; Tue,  1 Aug 2023 11:52:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+        t=1690890734; bh=9UpLvNUXcMFhIy3aYZgRAudsyr5ZvCGx753qbrrnVHw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=YyU9E4dem72Z409Oyy2mVJ0cCAYIr9RwenpG0YtqbEQRCzc4vbzO1ggS18FTu57nI
+         9QWYB9SvlgCf/MZrK5nOaqHW+Y4qeGtLpNgNEfkREHvq70NsvPNKkTANt0zEJ++mNo
+         fr6mnnw+1qpT02LwJedFSaeWUyhphCK0mqMWibW5Ca73CWpVsH9CkfzH9GKEWjQ5Yi
+         6Ghh8wciuNM7MuG7neG/8d0ualehzXxtxs3L5inAvu2dq/jKC4ZhGuwlXm5DOo6QXr
+         SbFLolm2uXfVO1AxD9NIc0/FBy+FexWjvl0JMlL5rJscldoPKscM6uokq4Q9zTqYyD
+         q9JGX7b7qITKeI1uqXS8Hd18wTtR3pT6I3AZNLuY2sUUs6x/hZxUFGCsgxBQab5vbV
+         5TodOpjsA4t8XfM029ncNNIdSUmLsttQ2PyrLXhixiyTVlydlt4GWhrum2ra06LaQE
+         kyTsX7vUihA4qrYfs96tx4J/neG2I24Hn5jaPnp1yNOvXqhx5GLbnhMhBM4OBoD65H
+         2tuxHKmxXV5aPLgInWaCsvphabVEKxizi93xqQGzT2zzKndFZsZNIifZaj8bZFmt1m
+         /6QkExqXTbP0tHNFV6kfnb3UnIH6s94XrP0AwUSMWjXsZ9joWX3zckTynhymiRj+I/
+         T2mBix7p3HId2DJWzt+NWEO8=
+Received: from zn.tnic (pd9530d32.dip0.t-ipconnect.de [217.83.13.50])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+        (No client certificate requested)
+        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 53BFA40E0184;
+        Tue,  1 Aug 2023 11:51:55 +0000 (UTC)
+Date:   Tue, 1 Aug 2023 13:51:54 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
 Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Evgeniy Baskov <baskov@ispras.ru>,
         Andy Lutomirski <luto@kernel.org>,
@@ -68,10 +74,20 @@ Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Joerg Roedel <jroedel@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Subject: Re: [PATCH v7 12/22] x86/decompressor: Call trampoline directly from
+ C code
+Message-ID: <20230801115154.GFZMjx2gx6+Pgoe1XT@fat_crate.local>
+References: <20230728090916.1538550-1-ardb@kernel.org>
+ <20230728090916.1538550-13-ardb@kernel.org>
+ <20230801114542.GEZMjwZne986ZxI6eG@fat_crate.local>
+ <CAMj1kXEyApdRYNmn7Px=faANXv6JXXTAvdPUToy3-H1UZg6-eQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXEyApdRYNmn7Px=faANXv6JXXTAvdPUToy3-H1UZg6-eQ@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,82 +95,16 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 1 Aug 2023 at 13:46, Borislav Petkov <bp@alien8.de> wrote:
->
-> On Fri, Jul 28, 2023 at 11:09:06AM +0200, Ard Biesheuvel wrote:
-> > Instead of returning to the asm calling code to invoke the trampoline,
-> > call it straight from the C code that sets the scene. That way, the
-> > struct return type is no longer needed for returning two values, and the
-> > call can be made conditional more cleanly in a subsequent patch.
-> >
-> > This means that all callee save 64-bit registers need to be preserved
-> > and restored, as their contents may not survive the legacy mode switch.
-> >
-> > Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >  arch/x86/boot/compressed/head_64.S    | 28 +++++++-----------
-> >  arch/x86/boot/compressed/pgtable_64.c | 30 ++++++++------------
-> >  2 files changed, 23 insertions(+), 35 deletions(-)
-> >
-> > diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-> > index 1b0c61d1b389fd37..3f38db557112c155 100644
-> > --- a/arch/x86/boot/compressed/head_64.S
-> > +++ b/arch/x86/boot/compressed/head_64.S
-> > @@ -430,24 +430,12 @@ SYM_CODE_START(startup_64)
-> >  #endif
-> >
-> >       /*
-> > -      * paging_prepare() sets up the trampoline and checks if we need to
-> > -      * enable 5-level paging.
-> > -      *
-> > -      * paging_prepare() returns a two-quadword structure which lands
-> > -      * into RDX:RAX:
-> > -      *   - Address of the trampoline is returned in RAX.
-> > -      *   - Non zero RDX means trampoline needs to enable 5-level
-> > -      *     paging.
-> > -      *
-> > +      * set_paging_levels() updates the number of paging levels using a
->
-> I'd say here "configure paging" or so.
->
-> > diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
-> > index d66639c961b8eeda..649c51935fdec7ef 100644
-> > --- a/arch/x86/boot/compressed/pgtable_64.c
-> > +++ b/arch/x86/boot/compressed/pgtable_64.c
-> > @@ -16,11 +16,6 @@ unsigned int __section(".data") pgdir_shift = 39;
-> >  unsigned int __section(".data") ptrs_per_p4d = 1;
-> >  #endif
-> >
-> > -struct paging_config {
-> > -     unsigned long trampoline_start;
-> > -     unsigned long l5_required;
-> > -};
-> > -
-> >  /* Buffer to preserve trampoline memory */
-> >  static char trampoline_save[TRAMPOLINE_32BIT_SIZE];
-> >
-> > @@ -29,7 +24,7 @@ static char trampoline_save[TRAMPOLINE_32BIT_SIZE];
-> >   * purposes.
-> >   *
-> >   * Avoid putting the pointer into .bss as it will be cleared between
-> > - * paging_prepare() and extract_kernel().
-> > + * set_paging_levels() and extract_kernel().
-> >   */
-> >  unsigned long *trampoline_32bit __section(".data");
-> >
-> > @@ -106,10 +101,10 @@ static unsigned long find_trampoline_placement(void)
-> >       return bios_start - TRAMPOLINE_32BIT_SIZE;
-> >  }
-> >
-> > -struct paging_config paging_prepare(void *rmode)
-> > +asmlinkage void set_paging_levels(void *rmode)
->
-> So actually "paging_prepare" or "configure_paging" is more to the point
-> than setting paging levels. When I see set_paging_levels() I wonder what
-> levels are those and I have to look at the code and go, aaah, 5-level vs
-> 4-level.
->
+On Tue, Aug 01, 2023 at 01:48:52PM +0200, Ard Biesheuvel wrote:
+> configure_5level_paging()? At least, that conveys to some extent that
+> nothing will happen unless the hardware supports it to begin with.
 
-configure_5level_paging()? At least, that conveys to some extent that
-nothing will happen unless the hardware supports it to begin with.
+Yap, and it says what it does exactly.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
