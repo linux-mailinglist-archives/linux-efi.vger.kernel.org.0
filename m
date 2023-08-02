@@ -2,36 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EFBD76D2EF
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Aug 2023 17:51:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E397E76D2F2
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Aug 2023 17:51:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234918AbjHBPvk (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 2 Aug 2023 11:51:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38992 "EHLO
+        id S235446AbjHBPvt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 2 Aug 2023 11:51:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235426AbjHBPvR (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Aug 2023 11:51:17 -0400
+        with ESMTP id S235401AbjHBPvT (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Aug 2023 11:51:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DC9B4207;
-        Wed,  2 Aug 2023 08:50:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1263421A;
+        Wed,  2 Aug 2023 08:50:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1ED9661A18;
-        Wed,  2 Aug 2023 15:50:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C42C433CA;
-        Wed,  2 Aug 2023 15:50:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B4D3619CB;
+        Wed,  2 Aug 2023 15:50:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02953C433C8;
+        Wed,  2 Aug 2023 15:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690991423;
-        bh=Os+OvcWXVTEgn4GvlOd4rs76sb2kuX0zlm0OhlZtKNw=;
+        s=k20201202; t=1690991427;
+        bh=Yft7wHndNsfc52pD9ceXPfBqRxkOxgMgHrWle8cF1T8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sAs6SRu/TNvJL4EO9uyc/WpW7JuTdt1Ia6COwpkhvVNjXhHEd+5EVNGnz+BFQnz/I
-         KiFIm86Z7w754SE7vK60lBenjCd+oesO+vfgJ8Ncr6kSulkTzJb2QoqH5DojicuAma
-         BCHiVT76aeaBP+Ri04o+a15jFNsip54ODjn4Cu/bQlFkYxiI0NiSaSBk/tb9zs4DG8
-         DDweenUKyM50asC1tYJ/3YzNlIZsaLeoky/sZxEpOZLh8O25BQTTTG5euGDrApx1OL
-         r5Hf4QaPXQ7QVQWqAE+tkdcjAIHtC/7Hw2zs16E/SJVVqAqSnMxCRt0SU4WK+loLvk
-         MoSowHSr+oxtA==
+        b=cp5KO99MUtPVMrkVdsw/gRBhXEFQIqQzEzk2xbZi8p1MS6flaVrcRPu3uWP8J5k9d
+         LWdmbsYxzPOg086SIZvJGxqMeEX76VwJkAYz4OtmJmhL1gChLg+4qleeo0JKnlJXeh
+         qll3eF541P4GexA5yl0AF/CRW3VaUr5KVysbW4meXi0DXPWDWsqMwYKae5mw99rm4u
+         q2weMvyxMhfn7NkY69K2cajj7ObEkDqH5idXgRE7HWxb418OQDbwepn8MMUkK5jock
+         OdH7yRLM10GD2/cuEXswyOowCW/h+Xp9qpr01cBVw2xH9SsqTQRxuMZA0k/Dxblrf8
+         XkboC0J1Trpkw==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -52,14 +52,14 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH v8 21/23] efi/libstub: Add limit argument to efi_random_alloc()
-Date:   Wed,  2 Aug 2023 17:48:29 +0200
-Message-Id: <20230802154831.2147855-22-ardb@kernel.org>
+Subject: [PATCH v8 22/23] x86/efistub: Perform SNP feature test while running in the firmware
+Date:   Wed,  2 Aug 2023 17:48:30 +0200
+Message-Id: <20230802154831.2147855-23-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230802154831.2147855-1-ardb@kernel.org>
 References: <20230802154831.2147855-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3943; i=ardb@kernel.org; h=from:subject; bh=Os+OvcWXVTEgn4GvlOd4rs76sb2kuX0zlm0OhlZtKNw=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeVU1ZklyrV3QnWsznK9Pn7/xDe36p+TGW8zqwoK8YltK 951Xtqoo5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEzEZicjQ/+uT7NqJ53SLC6O vdDdesmoZFHXCSOn92JqH8qn1ggsvcnwP+lxcQ8Ht5yx7U6uvdm/wmNu/5tYGb9pygHbe97Pyt/ cZAIA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7725; i=ardb@kernel.org; h=from:subject; bh=Yft7wHndNsfc52pD9ceXPfBqRxkOxgMgHrWle8cF1T8=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeVU1dnHC+Lu/zZVm3SdbcLPO88PrdRg4uHkkp3rbpRXy +I7vfdhRykLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZjI9XuMDL17J0Vsk+tcIcN9 9esObUVFhTdcM5m5Zqmd+M0ju3OLgCPDP535uuc/7T/q9PbRvG8ebLOUmJccF968Ovqupkyzmtw 3Qx4A
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -72,100 +72,250 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-x86 will need to limit the kernel memory allocation to the lowest 512
-MiB of memory, to match the behavior of the existing bare metal KASLR
-physical randomization logic. So in preparation for that, add a limit
-parameter to efi_random_alloc() and wire it up.
+Before refactoring the EFI stub boot flow to avoid the legacy bare metal
+decompressor, duplicate the SNP feature check in the EFI stub before
+handing over to the kernel proper.
+
+The SNP feature check can be performed while running under the EFI boot
+services, which means it can force the boot to fail gracefully and
+return an error to the bootloader if the loaded kernel does not
+implement support for all the features that the hypervisor enabled.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/libstub/arm64-stub.c  |  2 +-
- drivers/firmware/efi/libstub/efistub.h     |  2 +-
- drivers/firmware/efi/libstub/randomalloc.c | 10 ++++++----
- drivers/firmware/efi/libstub/zboot.c       |  2 +-
- 4 files changed, 9 insertions(+), 7 deletions(-)
+ arch/x86/boot/compressed/sev.c          | 112 ++++++++++++--------
+ arch/x86/include/asm/sev.h              |   4 +
+ drivers/firmware/efi/libstub/x86-stub.c |  17 +++
+ 3 files changed, 87 insertions(+), 46 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-index 770b8ecb73984c61..8c40fc89f5f99209 100644
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -106,7 +106,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
- 		 */
- 		status = efi_random_alloc(*reserve_size, min_kimg_align,
- 					  reserve_addr, phys_seed,
--					  EFI_LOADER_CODE);
-+					  EFI_LOADER_CODE, EFI_ALLOC_LIMIT);
- 		if (status != EFI_SUCCESS)
- 			efi_warn("efi_random_alloc() failed: 0x%lx\n", status);
- 	} else {
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index 06b7abc92ced9e18..9823f6fb3e01f718 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -956,7 +956,7 @@ efi_status_t efi_get_random_bytes(unsigned long size, u8 *out);
- 
- efi_status_t efi_random_alloc(unsigned long size, unsigned long align,
- 			      unsigned long *addr, unsigned long random_seed,
--			      int memory_type);
-+			      int memory_type, unsigned long alloc_limit);
- 
- efi_status_t efi_random_get_seed(void);
- 
-diff --git a/drivers/firmware/efi/libstub/randomalloc.c b/drivers/firmware/efi/libstub/randomalloc.c
-index 32c7a54923b4c127..674a064b8f7adc68 100644
---- a/drivers/firmware/efi/libstub/randomalloc.c
-+++ b/drivers/firmware/efi/libstub/randomalloc.c
-@@ -16,7 +16,8 @@
+diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+index c3e343bd4760e0ab..199155b8af3bc535 100644
+--- a/arch/x86/boot/compressed/sev.c
++++ b/arch/x86/boot/compressed/sev.c
+@@ -367,20 +367,25 @@ static void enforce_vmpl0(void)
   */
- static unsigned long get_entry_num_slots(efi_memory_desc_t *md,
- 					 unsigned long size,
--					 unsigned long align_shift)
-+					 unsigned long align_shift,
-+					 u64 alloc_limit)
+ #define SNP_FEATURES_PRESENT (0)
+ 
++u64 snp_get_unsupported_features(u64 status)
++{
++	if (!(status & MSR_AMD64_SEV_SNP_ENABLED))
++		return 0;
++
++	return status & SNP_FEATURES_IMPL_REQ & ~SNP_FEATURES_PRESENT;
++}
++
+ void snp_check_features(void)
  {
- 	unsigned long align = 1UL << align_shift;
- 	u64 first_slot, last_slot, region_end;
-@@ -29,7 +30,7 @@ static unsigned long get_entry_num_slots(efi_memory_desc_t *md,
- 		return 0;
+ 	u64 unsupported;
  
- 	region_end = min(md->phys_addr + md->num_pages * EFI_PAGE_SIZE - 1,
--			 (u64)EFI_ALLOC_LIMIT);
-+			 alloc_limit);
- 	if (region_end < size)
- 		return 0;
+-	if (!(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
+-		return;
+-
+ 	/*
+ 	 * Terminate the boot if hypervisor has enabled any feature lacking
+ 	 * guest side implementation. Pass on the unsupported features mask through
+ 	 * EXIT_INFO_2 of the GHCB protocol so that those features can be reported
+ 	 * as part of the guest boot failure.
+ 	 */
+-	unsupported = sev_status & SNP_FEATURES_IMPL_REQ & ~SNP_FEATURES_PRESENT;
++	unsupported = snp_get_unsupported_features(sev_status);
+ 	if (unsupported) {
+ 		if (ghcb_version < 2 || (!boot_ghcb && !early_setup_ghcb()))
+ 			sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
+@@ -390,10 +395,45 @@ void snp_check_features(void)
+ 	}
+ }
  
-@@ -54,7 +55,8 @@ efi_status_t efi_random_alloc(unsigned long size,
- 			      unsigned long align,
- 			      unsigned long *addr,
- 			      unsigned long random_seed,
--			      int memory_type)
-+			      int memory_type,
-+			      unsigned long alloc_limit)
+-void sev_enable(struct boot_params *bp)
++/*
++ * sev_check_cpu_support - Check for SEV support in the CPU capabilities
++ *
++ * Returns < 0 if SEV is not supported, otherwise the position of the
++ * encryption bit in the page table descriptors.
++ */
++static int sev_check_cpu_support(void)
  {
- 	unsigned long total_slots = 0, target_slot;
- 	unsigned long total_mirrored_slots = 0;
-@@ -76,7 +78,7 @@ efi_status_t efi_random_alloc(unsigned long size,
- 		efi_memory_desc_t *md = (void *)map->map + map_offset;
- 		unsigned long slots;
+ 	unsigned int eax, ebx, ecx, edx;
++
++	/* Check for the SME/SEV support leaf */
++	eax = 0x80000000;
++	ecx = 0;
++	native_cpuid(&eax, &ebx, &ecx, &edx);
++	if (eax < 0x8000001f)
++		return -ENODEV;
++
++	/*
++	 * Check for the SME/SEV feature:
++	 *   CPUID Fn8000_001F[EAX]
++	 *   - Bit 0 - Secure Memory Encryption support
++	 *   - Bit 1 - Secure Encrypted Virtualization support
++	 *   CPUID Fn8000_001F[EBX]
++	 *   - Bits 5:0 - Pagetable bit position used to indicate encryption
++	 */
++	eax = 0x8000001f;
++	ecx = 0;
++	native_cpuid(&eax, &ebx, &ecx, &edx);
++	/* Check whether SEV is supported */
++	if (!(eax & BIT(1)))
++		return -ENODEV;
++
++	return ebx & 0x3f;
++}
++
++void sev_enable(struct boot_params *bp)
++{
+ 	struct msr m;
++	int bitpos;
+ 	bool snp;
  
--		slots = get_entry_num_slots(md, size, ilog2(align));
-+		slots = get_entry_num_slots(md, size, ilog2(align), alloc_limit);
- 		MD_NUM_SLOTS(md) = slots;
- 		total_slots += slots;
- 		if (md->attribute & EFI_MEMORY_MORE_RELIABLE)
-diff --git a/drivers/firmware/efi/libstub/zboot.c b/drivers/firmware/efi/libstub/zboot.c
-index e5d7fa1f1d8fd160..bdb17eac0cb401be 100644
---- a/drivers/firmware/efi/libstub/zboot.c
-+++ b/drivers/firmware/efi/libstub/zboot.c
-@@ -119,7 +119,7 @@ efi_zboot_entry(efi_handle_t handle, efi_system_table_t *systab)
- 		}
+ 	/*
+@@ -413,26 +453,7 @@ void sev_enable(struct boot_params *bp)
+ 	 * which is good enough.
+ 	 */
  
- 		status = efi_random_alloc(alloc_size, min_kimg_align, &image_base,
--					  seed, EFI_LOADER_CODE);
-+					  seed, EFI_LOADER_CODE, EFI_ALLOC_LIMIT);
- 		if (status != EFI_SUCCESS) {
- 			efi_err("Failed to allocate memory\n");
- 			goto free_cmdline;
+-	/* Check for the SME/SEV support leaf */
+-	eax = 0x80000000;
+-	ecx = 0;
+-	native_cpuid(&eax, &ebx, &ecx, &edx);
+-	if (eax < 0x8000001f)
+-		return;
+-
+-	/*
+-	 * Check for the SME/SEV feature:
+-	 *   CPUID Fn8000_001F[EAX]
+-	 *   - Bit 0 - Secure Memory Encryption support
+-	 *   - Bit 1 - Secure Encrypted Virtualization support
+-	 *   CPUID Fn8000_001F[EBX]
+-	 *   - Bits 5:0 - Pagetable bit position used to indicate encryption
+-	 */
+-	eax = 0x8000001f;
+-	ecx = 0;
+-	native_cpuid(&eax, &ebx, &ecx, &edx);
+-	/* Check whether SEV is supported */
+-	if (!(eax & BIT(1)))
++	if (sev_check_cpu_support() < 0)
+ 		return;
+ 
+ 	/*
+@@ -443,26 +464,8 @@ void sev_enable(struct boot_params *bp)
+ 
+ 	/* Now repeat the checks with the SNP CPUID table. */
+ 
+-	/* Recheck the SME/SEV support leaf */
+-	eax = 0x80000000;
+-	ecx = 0;
+-	native_cpuid(&eax, &ebx, &ecx, &edx);
+-	if (eax < 0x8000001f)
+-		return;
+-
+-	/*
+-	 * Recheck for the SME/SEV feature:
+-	 *   CPUID Fn8000_001F[EAX]
+-	 *   - Bit 0 - Secure Memory Encryption support
+-	 *   - Bit 1 - Secure Encrypted Virtualization support
+-	 *   CPUID Fn8000_001F[EBX]
+-	 *   - Bits 5:0 - Pagetable bit position used to indicate encryption
+-	 */
+-	eax = 0x8000001f;
+-	ecx = 0;
+-	native_cpuid(&eax, &ebx, &ecx, &edx);
+-	/* Check whether SEV is supported */
+-	if (!(eax & BIT(1))) {
++	bitpos = sev_check_cpu_support();
++	if (bitpos < 0) {
+ 		if (snp)
+ 			error("SEV-SNP support indicated by CC blob, but not CPUID.");
+ 		return;
+@@ -494,7 +497,24 @@ void sev_enable(struct boot_params *bp)
+ 	if (snp && !(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
+ 		error("SEV-SNP supported indicated by CC blob, but not SEV status MSR.");
+ 
+-	sme_me_mask = BIT_ULL(ebx & 0x3f);
++	sme_me_mask = BIT_ULL(bitpos);
++}
++
++/*
++ * sev_get_status - Retrieve the SEV status mask
++ *
++ * Returns 0 if the CPU is not SEV capable, otherwise the value of the
++ * AMD64_SEV MSR.
++ */
++u64 sev_get_status(void)
++{
++	struct msr m;
++
++	if (sev_check_cpu_support() < 0)
++		return 0;
++
++	boot_rdmsr(MSR_AMD64_SEV, &m);
++	return m.q;
+ }
+ 
+ /* Search for Confidential Computing blob in the EFI config table. */
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 66c806784c5256bd..b97d239e18ea25fc 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -210,6 +210,8 @@ bool snp_init(struct boot_params *bp);
+ void __init __noreturn snp_abort(void);
+ int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, struct snp_guest_request_ioctl *rio);
+ void snp_accept_memory(phys_addr_t start, phys_addr_t end);
++u64 snp_get_unsupported_features(u64 status);
++u64 sev_get_status(void);
+ #else
+ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+ static inline void sev_es_ist_exit(void) { }
+@@ -235,6 +237,8 @@ static inline int snp_issue_guest_request(u64 exit_code, struct snp_req_data *in
+ }
+ 
+ static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
++static inline u64 snp_get_unsupported_features(u64 status) { return 0; }
++static inline u64 sev_get_status(void) { return 0; }
+ #endif
+ 
+ #endif
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index acb1c65bf8ac6fb3..b4685da2b8d5c243 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -15,6 +15,7 @@
+ #include <asm/setup.h>
+ #include <asm/desc.h>
+ #include <asm/boot.h>
++#include <asm/sev.h>
+ 
+ #include "efistub.h"
+ #include "x86-stub.h"
+@@ -790,6 +791,19 @@ static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
+ 	return EFI_SUCCESS;
+ }
+ 
++static bool have_unsupported_snp_features(void)
++{
++	u64 unsupported;
++
++	unsupported = snp_get_unsupported_features(sev_get_status());
++	if (unsupported) {
++		efi_err("Unsupported SEV-SNP features detected: 0x%llx\n",
++			unsupported);
++		return true;
++	}
++	return false;
++}
++
+ static void __noreturn enter_kernel(unsigned long kernel_addr,
+ 				    struct boot_params *boot_params)
+ {
+@@ -820,6 +834,9 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+ 	if (efi_system_table->hdr.signature != EFI_SYSTEM_TABLE_SIGNATURE)
+ 		efi_exit(handle, EFI_INVALID_PARAMETER);
+ 
++	if (have_unsupported_snp_features())
++		efi_exit(handle, EFI_UNSUPPORTED);
++
+ 	if (IS_ENABLED(CONFIG_EFI_DXE_MEM_ATTRIBUTES)) {
+ 		efi_dxe_table = get_efi_config_table(EFI_DXE_SERVICES_TABLE_GUID);
+ 		if (efi_dxe_table &&
 -- 
 2.39.2
 
