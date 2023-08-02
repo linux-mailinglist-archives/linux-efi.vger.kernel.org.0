@@ -2,134 +2,98 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBF5276CB39
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Aug 2023 12:47:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DCB076CEE7
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Aug 2023 15:37:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232319AbjHBKro (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 2 Aug 2023 06:47:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33296 "EHLO
+        id S232569AbjHBNhO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 2 Aug 2023 09:37:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232449AbjHBKrm (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Aug 2023 06:47:42 -0400
+        with ESMTP id S232456AbjHBNhN (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Aug 2023 09:37:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBF18103;
-        Wed,  2 Aug 2023 03:47:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 562FD1BFD;
+        Wed,  2 Aug 2023 06:37:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5AAC161910;
-        Wed,  2 Aug 2023 10:47:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD478C433CD;
-        Wed,  2 Aug 2023 10:47:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E37A0619A0;
+        Wed,  2 Aug 2023 13:37:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1794AC433C7;
+        Wed,  2 Aug 2023 13:37:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690973257;
-        bh=A6vuhSEghmX/9x0Jw6AbTwio7Sk496g+SSjoZqziaRM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=MbpBG6oS8ognEtAvko3wYiZciDFdMkO+bhmQ+q7W3xGtNZ2oL3hdB68wUYyCrdIeP
-         QT3Jh4MAJPM7sdZ18Rby4F2IBCV+IjS4hJbbTazOU3vboA4a6D70ssXIk/Q64CAVV/
-         tdO0XtL5FJeWpS6iF1ZsK2bvEjHfwoC0MDvtkjW/KQxUGGvH3fM+SF+wK6qGkiIKlp
-         r2d5js5jM9L50olEVxXiFuHVDmPus/g/dO4yYZre+iz4xA7x7ArSh237CQYHG6CvpX
-         cKqHB1ryry7F4eIU5WFu1umc2ZIj0Z3bf8ACbMUBNjwY6V2upZx1uZVtMl11hFt7wd
-         z6lE0XV6AhoXg==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-4fe0e201f87so1021204e87.0;
-        Wed, 02 Aug 2023 03:47:37 -0700 (PDT)
-X-Gm-Message-State: ABy/qLZXuL0DYKcuuALvkC209KI6RyNrERNBJ1VUviH049pqzw2A3I47
-        OgHx56s0btHAmE3iuhu2gguhXWSmQDanw07aJLs=
-X-Google-Smtp-Source: APBJJlG/L1ZeTXYXTUdvTu3JwLhDDxBKCQuHkBfDIbbthjCvbmYZwfRlEgbHYd3/8qTMAfJN/PFPbVqD+vflkvn/8pI=
-X-Received: by 2002:ac2:465e:0:b0:4f9:5693:3d2c with SMTP id
- s30-20020ac2465e000000b004f956933d2cmr1766319lfo.34.1690973255688; Wed, 02
- Aug 2023 03:47:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230728090916.1538550-1-ardb@kernel.org> <20230728090916.1538550-23-ardb@kernel.org>
- <20230802102600.GIZMovOIUDAJAXu0F5@fat_crate.local>
-In-Reply-To: <20230802102600.GIZMovOIUDAJAXu0F5@fat_crate.local>
+        s=k20201202; t=1690983431;
+        bh=G9zmLiFSpecw8ctEO3ge2OHHsPe2CBUCD36nteV4xlE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ldNed6p9PZXcShVntQ9qGUYOGnYzh+o+lNION7A/J72hDBB0p8scBj6omuez8vk4v
+         ZrQzaBaGLNB7VPOSE1kheenUne2WdErK5o3xa2SyxNlKhD1sHCQwcnDWnkSGcx1QNI
+         cqw1PMnTkAMfFE23ILr6m1SdJEASKYGi9C8frVeh+AANq/h6fP66hBFV4HuKyur6E2
+         JWjX+iHzvmtsBHrGA3FzM1pejYOH1xX5UOI/NNK2oovt3OoG6qkJ+VLKEvLPHhZd16
+         eMKkuQ0rd2GcBNZ/qIVjLp/Wt+BihDn7bDaPbQylBhnmTO+4XO3b1PJqWkghaUys9P
+         DHFXN5QNR++Fg==
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 2 Aug 2023 12:47:24 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXH9f+xXe3j3Bx-tku8k9eiWO_BVw70ePbfEft4stxjjgw@mail.gmail.com>
-Message-ID: <CAMj1kXH9f+xXe3j3Bx-tku8k9eiWO_BVw70ePbfEft4stxjjgw@mail.gmail.com>
-Subject: Re: [PATCH v7 22/22] x86/efistub: Avoid legacy decompressor when
- doing EFI boot
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Evgeniy Baskov <baskov@ispras.ru>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Peter Jones <pjones@redhat.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Dave Young <dyoung@redhat.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+To:     linux-efi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCH] efi/x86: Ensure that EFI_RUNTIME_MAP is enabled for kexec
+Date:   Wed,  2 Aug 2023 15:37:04 +0200
+Message-Id: <20230802133704.2146580-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1515; i=ardb@kernel.org; h=from:subject; bh=G9zmLiFSpecw8ctEO3ge2OHHsPe2CBUCD36nteV4xlE=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeVUDEPVBeFlV7V66tJy+/k3mk9bvWCjYPKeG/9NZKfHy 8uUP1XrKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABOp5GJk2Gm1ffYB9iyP30n7 pqS3ty87rlqu6T1pr/NeE5/QX7NYXjIyXO/XXji1+H7drbKDJYrv/YvKvKduT3JOW8n499mGa/c UeAE=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 2 Aug 2023 at 12:26, Borislav Petkov <bp@alien8.de> wrote:
->
-> On Fri, Jul 28, 2023 at 11:09:16AM +0200, Ard Biesheuvel wrote:
-> > The bare metal decompressor code was never really intended to run in a
-> > hosted environment such as the EFI boot services, and does a few things
-> > that are problematic in the context of EFI boot now that the logo
-> > requirements are getting tighter.
->
-> Please spend a sentence or two explaining those. After some time has
-> passed, no one will remember what that tightening of the requirements
-> was.
->
+CONFIG_EFI_RUNTIME_MAP needs to be enabled in order for kexec to be able
+to provide the required information about the EFI runtime mappings to
+the incoming kernel, regardless of whether kexec_load() or
+kexec_file_load() is being used. Without this information, kexec boot in
+EFI mode is not possible.
 
-OK. The next paragraph already covers this to some extent, but i'll
-add some more prose here to clarify it further.
+The CONFIG_EFI_RUNTIME_MAP option is currently directly configurable if
+CONFIG_EXPERT is enabled, so that it can be turned on for debugging
+purposes even if KEXEC is. However, the upshot of this is that it can
+also be disabled even when it shouldn't.
 
-> So yeah, other than those minor nitpicks, I like the thing, all in all.
->
+So tweak the Kconfig declarations to avoid this situation.
 
-Good.
+Reported-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ arch/x86/Kconfig | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-> Pls send v8 so that I can run it here on my machines. A git branch would
-> be cool too.
->
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 7422db4097701c96..616498cdc91e8f01 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2027,10 +2027,14 @@ config EFI_MAX_FAKE_MEM
+ 	  Ranges can be set up to this value using comma-separated list.
+ 	  The default value is 8.
+ 
++config EFI_NEED_RUNTIME_MAP
++	def_bool y
++	depends on EFI && KEXEC_CORE
++	select EFI_RUNTIME_MAP
++
+ config EFI_RUNTIME_MAP
+ 	bool "Export EFI runtime maps to sysfs" if EXPERT
+ 	depends on EFI
+-	default KEXEC_CORE
+ 	help
+ 	  Export EFI runtime memory regions to /sys/firmware/efi/runtime-map.
+ 	  That memory map is required by the 2nd kernel to set up EFI virtual
+-- 
+2.39.2
 
-OK
-
-https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=x86-efistub-cleanup-v8
-
-I'll prepare the v8 based on this branch after doing some more tests
-on bare metal. I'll probably send it out later today.
-
-> As to merging this, I presume you want it to go through tip?
->
-
-It depends on the timing. If we take the whole thing now, it should
-ideally go through -tip.
-
-There is a conflict with the kexec sev patch you just suggested on the
-list, though. I'll rebase onto that in any case, but if that causes
-any problems, we might decide to take everything except the last two
-(or three *) patches now, and defer those for later.
-
-* 'efi/libstub: Add limit argument to efi_random_alloc()' may conflict
-with some changes that may arrive via the RISC-V tree. That patch is
-completely independent, so perhaps I should put it on a shared stable
-branch in the EFI tree. Or alternatively, depending on how you decide
-to organize the branches, you could put it at the beginning of the
-topic branch where the RISC-V tree can merge it in.
-
-Or we might just ignore the conflict - it just adds a function
-argument to a function call that gets moved from one source file to
-the another in the conflicting branch, so it should be rather
-straight-forward to resolve.
