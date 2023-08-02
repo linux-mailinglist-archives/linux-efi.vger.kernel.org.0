@@ -2,36 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F60476D2E9
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Aug 2023 17:51:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 750DB76D2E2
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Aug 2023 17:51:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235352AbjHBPvS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 2 Aug 2023 11:51:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39278 "EHLO
+        id S235381AbjHBPu7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 2 Aug 2023 11:50:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235281AbjHBPuo (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Aug 2023 11:50:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECA4F2D5F;
-        Wed,  2 Aug 2023 08:50:06 -0700 (PDT)
+        with ESMTP id S234597AbjHBPue (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Aug 2023 11:50:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 004A4358B;
+        Wed,  2 Aug 2023 08:49:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B865E619CB;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C64861A33;
+        Wed,  2 Aug 2023 15:49:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F0FC433CB;
         Wed,  2 Aug 2023 15:49:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443C3C433C8;
-        Wed,  2 Aug 2023 15:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690991393;
-        bh=cXimVZzbiEeKDzOb+3rdwKc74jiS3qDnOSBCjuTw9HY=;
+        s=k20201202; t=1690991397;
+        bh=sWc7DHFUuLP6QmqVwRrlrkEzojfIVsiaqVuAFFfb3sc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t6yNvnZMK2O11mTQy/73zdpQa4C+85lGVxLY6RXd99+J2Bf53xMMt1d7VE3uyxUMx
-         ttcM21gQs/k432aXy4HZ55nBlonEU4VAgpRk4Fmu7oELCvnUbV+unnNoMvDiwhVTmI
-         7IMnJMTTBCm2SntOXxhzNugDbEt4W4b8P9eBdEOQC9eR7qO0Ec7hEFMNaIO/Z80g27
-         v/kX9xVwbUEYFDc67EKQu/Dg2hJOORnXxIYk0kfKPWB+hkJ0jFkjiQbAqe+DIzHdXI
-         8LCyL1FP4g3a541Oqe4mhgdmk77IVMOhB0qCB+QyTsDKvf2zVZ04CBByhaYQiMQ/Fz
-         5kwukpVodT0MA==
+        b=o7VhZMvpXJVr0lWkD7rVFabDLKjK+1hiqk9of5OUQDMJj3ZNqf5wn1YcF7XJ8mghA
+         8g3wqjTq+Cu3Z3aI+EUAwPEHpRGLh5xSMVBX6FTMGmZUT42LBftH8QbrcqtnxBS676
+         1YujWLn9kyftTW5v+AOjgIsdS2nx34b5kKpqEnPmOro7fhpZNcDOlhmFxEOrNZWuPX
+         ggRno/k78dWtqzgnkQWP5GRGfl0/O4OGYrsZ2bnfsN6tfD34RlpNCXnfhoFIHGpNM6
+         Dnv1Fhd6S5Csh4xSy+zfpwTJsdVA4QTnu/2eKyLTaMxbcrH/Fw9Zxk6Bblx1yag7S9
+         HPTDwFWtUwuDw==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -52,121 +52,105 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH v8 14/23] x86/decompressor: Pass pgtable address to trampoline directly
-Date:   Wed,  2 Aug 2023 17:48:22 +0200
-Message-Id: <20230802154831.2147855-15-ardb@kernel.org>
+Subject: [PATCH v8 15/23] x86/decompressor: Merge trampoline cleanup with switching code
+Date:   Wed,  2 Aug 2023 17:48:23 +0200
+Message-Id: <20230802154831.2147855-16-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230802154831.2147855-1-ardb@kernel.org>
 References: <20230802154831.2147855-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3817; i=ardb@kernel.org; h=from:subject; bh=cXimVZzbiEeKDzOb+3rdwKc74jiS3qDnOSBCjuTw9HY=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeVU1eFjzKxMYqdZFm1f+k4i+fIkiy1s0Z3tXw5fjzgzx ZTtxeY5HaUsDGIcDLJiiiwCs/++23l6olSt8yxZmDmsTCBDGLg4BWAinusYGVY0r9/N//z7j8/K t+w3KKtLax5Xj+hbEtjhZ3niX6aNnRAjw9V/19PZr9c9KjIUu/Z4t6zD8vf+a7/6SVz3VFu3zFi skgEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2924; i=ardb@kernel.org; h=from:subject; bh=sWc7DHFUuLP6QmqVwRrlrkEzojfIVsiaqVuAFFfb3sc=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeVU1RGXx5JLztRVf1lavKLkpM79w9Xzz5adtHrDtKLbp TlswaIdHaUsDGIcDLJiiiwCs/++23l6olSt8yxZmDmsTCBDGLg4BWAiUzQYGT4ckTtl8fRtbh// vv8TPEtbeq58unxvOY/L/EUspWv4HWYy/E88kFNqPln9pYLhW25B9y8SFlO2lxUXFqtIS9gs/6Z xhRsA
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The only remaining use of the trampoline address by the trampoline
-itself is deriving the page table address from it, and this involves
-adding an offset of 0x0. So simplify this, and pass the new CR3 value
-directly.
+Now that the trampoline setup code and the actual invocation of it are
+all done from the C routine, the trampoline cleanup can be merged into
+it as well, instead of returning to asm just to call another C function.
 
-This makes the fact that the page table happens to be at the start of
-the trampoline allocation an implementation detail of the caller.
-
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/head_64.S    | 8 ++++----
- arch/x86/boot/compressed/pgtable.h    | 2 --
- arch/x86/boot/compressed/pgtable_64.c | 9 ++++-----
- 3 files changed, 8 insertions(+), 11 deletions(-)
+ arch/x86/boot/compressed/head_64.S    | 14 ++++----------
+ arch/x86/boot/compressed/pgtable_64.c | 18 ++++--------------
+ 2 files changed, 8 insertions(+), 24 deletions(-)
 
 diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index 8730b1d58e2b0825..afdaf8cb8bb98694 100644
+index afdaf8cb8bb98694..fb0e562c26f64c9c 100644
 --- a/arch/x86/boot/compressed/head_64.S
 +++ b/arch/x86/boot/compressed/head_64.S
-@@ -521,8 +521,9 @@ SYM_FUNC_END(.Lrelocated)
-  * running in 64-bit mode.
-  *
-  * Return address is at the top of the stack (might be above 4G).
-- * The first argument (EDI) contains the 32-bit addressable base of the
-- * trampoline memory.
-+ * The first argument (EDI) contains the address of the temporary PGD level
-+ * page table in 32-bit addressable memory which will be programmed into
-+ * register CR3.
-  */
- 	.section ".rodata", "a", @progbits
- SYM_CODE_START(trampoline_32bit_src)
-@@ -575,8 +576,7 @@ SYM_CODE_START(trampoline_32bit_src)
- 	movl	%eax, %cr0
+@@ -430,20 +430,14 @@ SYM_CODE_START(startup_64)
+ 	 * a trampoline in 32-bit addressable memory if the current number does
+ 	 * not match the desired number.
+ 	 *
+-	 * Pass the boot_params pointer as the first argument.
++	 * Pass the boot_params pointer as the first argument. The second
++	 * argument is the relocated address of the page table to use instead
++	 * of the page table in trampoline memory (if required).
+ 	 */
+ 	movq	%r15, %rdi
++	leaq	rva(top_pgtable)(%rbx), %rsi
+ 	call	configure_5level_paging
  
- 	/* Point CR3 to the trampoline's new top level page table */
--	leal	TRAMPOLINE_32BIT_PGTABLE_OFFSET(%edi), %eax
--	movl	%eax, %cr3
-+	movl	%edi, %cr3
- 
- 	/* Set EFER.LME=1 as a precaution in case hypervsior pulls the rug */
- 	movl	$MSR_EFER, %ecx
-diff --git a/arch/x86/boot/compressed/pgtable.h b/arch/x86/boot/compressed/pgtable.h
-index c6b0903aded05a07..6d595abe06b34d63 100644
---- a/arch/x86/boot/compressed/pgtable.h
-+++ b/arch/x86/boot/compressed/pgtable.h
-@@ -3,8 +3,6 @@
- 
- #define TRAMPOLINE_32BIT_SIZE		(2 * PAGE_SIZE)
- 
--#define TRAMPOLINE_32BIT_PGTABLE_OFFSET	0
+-	/*
+-	 * cleanup_trampoline() would restore trampoline memory.
+-	 *
+-	 * RDI is address of the page table to use instead of page table
+-	 * in trampoline memory (if required).
+-	 */
+-	leaq	rva(top_pgtable)(%rbx), %rdi
+-	call	cleanup_trampoline
 -
- #define TRAMPOLINE_32BIT_CODE_OFFSET	PAGE_SIZE
- #define TRAMPOLINE_32BIT_CODE_SIZE	0xA0
- 
+ 	/* Zero EFLAGS */
+ 	pushq	$0
+ 	popfq
 diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
-index 4213473ae54883c8..eab4e6b568ae05c4 100644
+index eab4e6b568ae05c4..7939eb6e6ce9bb01 100644
 --- a/arch/x86/boot/compressed/pgtable_64.c
 +++ b/arch/x86/boot/compressed/pgtable_64.c
-@@ -103,7 +103,7 @@ static unsigned long find_trampoline_placement(void)
+@@ -101,7 +101,7 @@ static unsigned long find_trampoline_placement(void)
+ 	return bios_start - TRAMPOLINE_32BIT_SIZE;
+ }
  
- asmlinkage void configure_5level_paging(struct boot_params *bp)
+-asmlinkage void configure_5level_paging(struct boot_params *bp)
++asmlinkage void configure_5level_paging(struct boot_params *bp, void *pgtable)
  {
--	void (*toggle_la57)(void *trampoline);
-+	void (*toggle_la57)(void *cr3);
+ 	void (*toggle_la57)(void *cr3);
  	bool l5_required = false;
- 
- 	/* Initialize boot_params. Required for cmdline_find_option_bool(). */
-@@ -174,7 +174,7 @@ asmlinkage void configure_5level_paging(struct boot_params *bp)
- 		 * For 4- to 5-level paging transition, set up current CR3 as
- 		 * the first and the only entry in a new top-level page table.
- 		 */
--		trampoline_32bit[TRAMPOLINE_32BIT_PGTABLE_OFFSET] = __native_read_cr3() | _PAGE_TABLE_NOENC;
-+		*trampoline_32bit = __native_read_cr3() | _PAGE_TABLE_NOENC;
- 	} else {
- 		unsigned long src;
- 
-@@ -187,8 +187,7 @@ asmlinkage void configure_5level_paging(struct boot_params *bp)
- 		 * may be above 4G.
- 		 */
- 		src = *(unsigned long *)__native_read_cr3() & PAGE_MASK;
--		memcpy(trampoline_32bit + TRAMPOLINE_32BIT_PGTABLE_OFFSET / sizeof(unsigned long),
--		       (void *)src, PAGE_SIZE);
-+		memcpy(trampoline_32bit, (void *)src, PAGE_SIZE);
+@@ -191,22 +191,12 @@ asmlinkage void configure_5level_paging(struct boot_params *bp)
  	}
  
  	toggle_la57(trampoline_32bit);
-@@ -198,7 +197,7 @@ void cleanup_trampoline(void *pgtable)
- {
- 	void *trampoline_pgtable;
- 
--	trampoline_pgtable = trampoline_32bit + TRAMPOLINE_32BIT_PGTABLE_OFFSET / sizeof(unsigned long);
-+	trampoline_pgtable = trampoline_32bit;
+-}
+-
+-void cleanup_trampoline(void *pgtable)
+-{
+-	void *trampoline_pgtable;
+-
+-	trampoline_pgtable = trampoline_32bit;
  
  	/*
- 	 * Move the top level page table out of trampoline memory,
+-	 * Move the top level page table out of trampoline memory,
+-	 * if it's there.
++	 * Move the top level page table out of trampoline memory.
+ 	 */
+-	if ((void *)__native_read_cr3() == trampoline_pgtable) {
+-		memcpy(pgtable, trampoline_pgtable, PAGE_SIZE);
+-		native_write_cr3((unsigned long)pgtable);
+-	}
++	memcpy(pgtable, trampoline_32bit, PAGE_SIZE);
++	native_write_cr3((unsigned long)pgtable);
+ 
+ 	/* Restore trampoline memory */
+ 	memcpy(trampoline_32bit, trampoline_save, TRAMPOLINE_32BIT_SIZE);
 -- 
 2.39.2
 
