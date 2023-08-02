@@ -2,147 +2,210 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44C9C76C614
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Aug 2023 09:04:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1283C76C84D
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Aug 2023 10:24:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232664AbjHBHEt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 2 Aug 2023 03:04:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53410 "EHLO
+        id S233918AbjHBIYW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 2 Aug 2023 04:24:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232657AbjHBHEs (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Aug 2023 03:04:48 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1A021FFA
-        for <linux-efi@vger.kernel.org>; Wed,  2 Aug 2023 00:04:46 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-4fe0e201f87so752505e87.0
-        for <linux-efi@vger.kernel.org>; Wed, 02 Aug 2023 00:04:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690959885; x=1691564685;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=l2sfaru8OmVAEwVJ+R5RxlQAJhktlVz8IstV6follvw=;
-        b=t0vr7GihQGBrwc1YJ3g1AAGYXD1jGvcpgN6iJPKD5xMRd3D2qdP95+65hD6xjI47pn
-         kIWOuYLdSGmHKai2A5knurHHQEORLXj75JtpwB1ZU7vS0VgUmxbknWAUZzsgFblUWzKS
-         aT3HYRNov0I3Xr8f/zcWSnH16/BsAG/VDPYFRoR32RQ3fnySxvEHSNKU+QtkRn/zH/fX
-         rPieoZuPJ/0ljTNhj5e+j/+RkSTyoU3yUcSDFPpsQZ/DeflKsTO+UNjJq1RcLE1by5FN
-         AOIfoco74tbL3wVNC8VSOvlFVPcpWoj3KViiZNjNaHsDEryuy7dEmJ2awpyYFK0tXAJf
-         Xj3A==
+        with ESMTP id S233890AbjHBIYV (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Aug 2023 04:24:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D69481704
+        for <linux-efi@vger.kernel.org>; Wed,  2 Aug 2023 01:23:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1690964614;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=J6xA1F/tQvnceD1AFJdAnCO4v6zT18KFQE0US8wehYA=;
+        b=OqkPaNTUQG9J8JRZNgOOzP0OCUsPPFYyi6/yIfJXV6+ozvFj6uvneSo+CGDb/wGNnhMhd3
+        I9bWb/WkrXvRs6RQjeZ3KAzyceKWlSFPQ5sDf1h7soxaHz/HS3i/3OoRMDD70bCs5BVqC4
+        poPjbA+zWtY2S5MG9/vinfxVe+3cDfU=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-662-a-n_X1tPN8OJU3SmPTs1Lw-1; Wed, 02 Aug 2023 04:23:32 -0400
+X-MC-Unique: a-n_X1tPN8OJU3SmPTs1Lw-1
+Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2b9ba3d6191so61259301fa.2
+        for <linux-efi@vger.kernel.org>; Wed, 02 Aug 2023 01:23:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690959885; x=1691564685;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=l2sfaru8OmVAEwVJ+R5RxlQAJhktlVz8IstV6follvw=;
-        b=WoOz9MAXrXv5lripULRL12AKZkj6zP9HjTWGAWToQrHLB59xfvCsC0tYRl8zrGVipJ
-         iZsiAtK9FGeiKJ76n0+sK1njOPSyoHA7PE/dP/y2Fv/tKYBSrAD3J2kba2StP8FSSEBi
-         q0bLnETjp9o616M1U3arian0iXWAhQiEn+XfrCUG9dcP1giM5UKM6crgJSD7u0C3WcL6
-         4sLhhmydfJ+MXIfBhwgOQrdfe32QAbs+cQiNYy3oueOlUnliV/J4E3aRY1dc3PfjGDal
-         A0DRrEX4PapsNze5BRDGCfQYLp8BVuRCvsUZ94Z4nTeFf4udiKwBi6/JT+lQtqEdmMVR
-         APtg==
-X-Gm-Message-State: ABy/qLZ9HBzWKggRad/f10POggGc4jndq0rUPeMnQ/gvVjwoRCh11wHM
-        wydtNQ6TANWFIPpt48yJVA49GKIjr9YAMqgYYOGkCQ==
-X-Google-Smtp-Source: APBJJlEFs33+TYBvFeAhLwS/9cMe6ZvbN5xrDHcMO8IGg8h5hW0KncTIehYj+kKXFczrThbpIoNGezoyA4hMlAxDpQA=
-X-Received: by 2002:a19:2d5b:0:b0:4f9:dac6:2f3d with SMTP id
- t27-20020a192d5b000000b004f9dac62f3dmr1638816lft.13.1690959885075; Wed, 02
- Aug 2023 00:04:45 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1690964611; x=1691569411;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=J6xA1F/tQvnceD1AFJdAnCO4v6zT18KFQE0US8wehYA=;
+        b=LnurIabu5S+kvccchHDZaxk4KnRmXrBAFIl6GUFU1rGTC4zbXU8/wj2kTgr/0C6WtM
+         wPwXtjK13zwWaYbqZn2CJtBhdgPoEBuGW33H5Jd3M8EJcCB65/uEeayuc6YMGMPm57QJ
+         Ha9zzIaJFNN/8rB9YKsWCb4jXaVZOmyC6SD89oXMnOyhD/XzpJEptdnjGUIHRB4E4itl
+         Oo1fSrZQZe4lWtWqV2LwZHbxBw+y4IS/uBCLE1WSC7meQ/E0euGCilAvDngsSLqdO3pw
+         ixRF7gvw4AxEuEXjsbJGpF4qd2GpVs9ApghR2afDN9Oh0n81RLsO92jt7Jut9Dyn+drX
+         SIMA==
+X-Gm-Message-State: ABy/qLaXR0LXwfWie89HJsHKpR7v3He4byMlE+UxpJ9kzizuBv/BHlvx
+        LP7j2Gwu5MSQZD4/ARSLEAodtSbck9eSTLUeCrxRAHtBo5LTTCZ8HKpSc07mxHSc+khcn/H6956
+        MvQf5/s4X2acwl/029BPhCxKKGYEeH7KdmGeD
+X-Received: by 2002:a05:6512:3c9d:b0:4fd:d016:c2e8 with SMTP id h29-20020a0565123c9d00b004fdd016c2e8mr5267057lfv.43.1690964611479;
+        Wed, 02 Aug 2023 01:23:31 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEJNKHF2p2CytRgIKLCKCUGGjT7LyJXykVvMQOxHkWM+4I6/V0yxuRpiIuVaotJpuNHCW0V42NQ2DovrfXG528=
+X-Received: by 2002:a05:6512:3c9d:b0:4fd:d016:c2e8 with SMTP id
+ h29-20020a0565123c9d00b004fdd016c2e8mr5267031lfv.43.1690964611133; Wed, 02
+ Aug 2023 01:23:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230731065041.1447-1-masahisa.kojima@linaro.org>
- <20230731065041.1447-4-masahisa.kojima@linaro.org> <e1e9a9c1-db6f-c2f6-1ac0-fd368f79aec6@canonical.com>
-In-Reply-To: <e1e9a9c1-db6f-c2f6-1ac0-fd368f79aec6@canonical.com>
-From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date:   Wed, 2 Aug 2023 10:04:08 +0300
-Message-ID: <CAC_iWjLo=RbFCs5i1jdMXRbx0r-ximrSb5fWFad+98R5r_gpXQ@mail.gmail.com>
-Subject: Re: [PATCH v7 3/5] efi: Add tee-based EFI variable driver
-To:     Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Cc:     Masahisa Kojima <masahisa.kojima@linaro.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        linux-kernel@vger.kernel.org, op-tee@lists.trustedfirmware.org,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        linux-efi@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
+References: <20230601072043.24439-1-ltao@redhat.com> <20230713100459.GEZK/MS69XbphJa+tN@fat_crate.local>
+ <CAO7dBbVMNKTSDi5eP4BseEUexsk0Mo0GWJpyHfOcp+tHs6cSUw@mail.gmail.com>
+ <20230717141409.GGZLVMsU6d/9mpJvMO@fat_crate.local> <CAO7dBbXJv9JzDbSa-DLT03+osYCQXNUXFwz63gbq=NGDxEVyEA@mail.gmail.com>
+ <20230728165535.GDZMPzB/ek5QM+xJqA@fat_crate.local>
+In-Reply-To: <20230728165535.GDZMPzB/ek5QM+xJqA@fat_crate.local>
+From:   Tao Liu <ltao@redhat.com>
+Date:   Wed, 2 Aug 2023 16:22:54 +0800
+Message-ID: <CAO7dBbVyuLHH6RfdVQkU5ThXaJ-F4yvFAYD1PDNGkOpph9xvnA@mail.gmail.com>
+Subject: Re: [PATCH v2] x86/kexec: Add EFI config table identity mapping for
+ kexec kernel
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
+        x86@kernel.org, hpa@zytor.com, ardb@kernel.org,
+        linux-kernel@vger.kernel.org, bhe@redhat.com, dyoung@redhat.com,
+        kexec@lists.infradead.org, linux-efi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi Heinrich
+Hi Borislav,
 
-[...]
+On Sat, Jul 29, 2023 at 12:56=E2=80=AFAM Borislav Petkov <bp@alien8.de> wro=
+te:
+>
+> On Thu, Jul 27, 2023 at 07:03:26PM +0800, Tao Liu wrote:
+> > Hi Borislav,
+> >
+> > Sorry for the late response. I spent some time retesting your patch
+> > against 6.5.0-rc1 and 6.5.0-rc3, and it is OK. So
+> >
+> > Reported-and-tested-by: Tao Liu <ltao@redhat.com>
+> >
+> > And will we use this patch as a workaround or will we wait for a
+> > better solution as proposed by Michael?
+>
+> First of all, please do not top-post.
+>
 
-> > +static struct tee_client_driver tee_stmm_efi_driver = {
-> > +     .id_table       = tee_stmm_efi_id_table,
-> > +     .driver         = {
-> > +             .name           = "tee-stmm-efi",
-> > +             .bus            = &tee_bus_type,
-> > +             .probe          = tee_stmm_efi_probe,
-> > +             .remove         = tee_stmm_efi_remove,
-> > +     },
-> > +};
-> > +
-> > +static int __init tee_stmm_efi_mod_init(void)
-> > +{
-> > +     return driver_register(&tee_stmm_efi_driver.driver);
->
-> Assuming that multiple drivers supplying EFI runtime services may be
-> available in future, e.g.
->
-> * generic, using EFI runtime function supplied by UEFI firmware
-> * TEE-STMM
-> * Qualcomm driver as needed for Lenovo X13s
-> * ubootefi.var file in ESP
->
-> further assuming that multiple driver probe functions succeed:
->
-> How do you identify which driver to activate?
+OK, thanks for the reminder.
 
-This is really a firmware issue.  Whoever assembles that needs to make
-sure there's a single entity that should manage the EFI variables.
-
-As far as the current situation
-- Qualcomm doesn't run OP-TEE and IIRC uses a DT-entry to enable that code
-- OP-TEE will swap the runtime variables calls if StMM is compiled
-along and the userspace supplicant is running
-- We got no support for ubootefi.var.  If we ever add that the only
-clash I can see is u-boot compiled with StMM support and someone
-touches the ubootefi.var on ESP.
-
-I'd really prefer to have the feature be autodetected, but if we can't
-do that, perhaps we could agree on an EFI config table that the kernel
-could read and interpret on what to activate on priority, or
-alternatively re-purpose Qualcomms DT entry?
-
-Regards
-/Ilias
-
+> And yes, here's a better one. I'd appreciate it you testing it.
 >
-> Best regards
+
+Thanks for the patch! I have tested it on the lenovo machine in the
+past few days, no issue found, so the patch tests OK.
+
+Thanks,
+Tao Liu
+
+> Thx.
 >
-> Heinrich
+> ---
+>  arch/x86/boot/compressed/idt_64.c |  5 ++++-
+>  arch/x86/boot/compressed/sev.c    | 37 +++++++++++++++++++++++++++++--
+>  2 files changed, 39 insertions(+), 3 deletions(-)
 >
-> > +}
-> > +
-> > +static void __exit tee_stmm_efi_mod_exit(void)
-> > +{
-> > +     driver_unregister(&tee_stmm_efi_driver.driver);
-> > +}
-> > +
-> > +module_init(tee_stmm_efi_mod_init);
-> > +module_exit(tee_stmm_efi_mod_exit);
-> > +
-> > +MODULE_LICENSE("GPL");
-> > +MODULE_AUTHOR("Ilias Apalodimas <ilias.apalodimas@linaro.org>");
-> > +MODULE_AUTHOR("Masahisa Kojima <masahisa.kojima@linaro.org>");
-> > +MODULE_DESCRIPTION("TEE based EFI runtime variable service driver");
+> diff --git a/arch/x86/boot/compressed/idt_64.c b/arch/x86/boot/compressed=
+/idt_64.c
+> index 6debb816e83d..0f03ac12e2a6 100644
+> --- a/arch/x86/boot/compressed/idt_64.c
+> +++ b/arch/x86/boot/compressed/idt_64.c
+> @@ -63,7 +63,10 @@ void load_stage2_idt(void)
+>         set_idt_entry(X86_TRAP_PF, boot_page_fault);
 >
+>  #ifdef CONFIG_AMD_MEM_ENCRYPT
+> -       set_idt_entry(X86_TRAP_VC, boot_stage2_vc);
+> +       if (sev_status & BIT(1))
+> +               set_idt_entry(X86_TRAP_VC, boot_stage2_vc);
+> +       else
+> +               set_idt_entry(X86_TRAP_VC, NULL);
+>  #endif
+>
+>         load_boot_idt(&boot_idt_desc);
+> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/se=
+v.c
+> index 09dc8c187b3c..c3e343bd4760 100644
+> --- a/arch/x86/boot/compressed/sev.c
+> +++ b/arch/x86/boot/compressed/sev.c
+> @@ -404,13 +404,46 @@ void sev_enable(struct boot_params *bp)
+>         if (bp)
+>                 bp->cc_blob_address =3D 0;
+>
+> +       /*
+> +        * Do an initial SEV capability check before snp_init() which
+> +        * loads the CPUID page and the same checks afterwards are done
+> +        * without the hypervisor and are trustworthy.
+> +        *
+> +        * If the HV fakes SEV support, the guest will crash'n'burn
+> +        * which is good enough.
+> +        */
+> +
+> +       /* Check for the SME/SEV support leaf */
+> +       eax =3D 0x80000000;
+> +       ecx =3D 0;
+> +       native_cpuid(&eax, &ebx, &ecx, &edx);
+> +       if (eax < 0x8000001f)
+> +               return;
+> +
+> +       /*
+> +        * Check for the SME/SEV feature:
+> +        *   CPUID Fn8000_001F[EAX]
+> +        *   - Bit 0 - Secure Memory Encryption support
+> +        *   - Bit 1 - Secure Encrypted Virtualization support
+> +        *   CPUID Fn8000_001F[EBX]
+> +        *   - Bits 5:0 - Pagetable bit position used to indicate encrypt=
+ion
+> +        */
+> +       eax =3D 0x8000001f;
+> +       ecx =3D 0;
+> +       native_cpuid(&eax, &ebx, &ecx, &edx);
+> +       /* Check whether SEV is supported */
+> +       if (!(eax & BIT(1)))
+> +               return;
+> +
+>         /*
+>          * Setup/preliminary detection of SNP. This will be sanity-checke=
+d
+>          * against CPUID/MSR values later.
+>          */
+>         snp =3D snp_init(bp);
+>
+> -       /* Check for the SME/SEV support leaf */
+> +       /* Now repeat the checks with the SNP CPUID table. */
+> +
+> +       /* Recheck the SME/SEV support leaf */
+>         eax =3D 0x80000000;
+>         ecx =3D 0;
+>         native_cpuid(&eax, &ebx, &ecx, &edx);
+> @@ -418,7 +451,7 @@ void sev_enable(struct boot_params *bp)
+>                 return;
+>
+>         /*
+> -        * Check for the SME/SEV feature:
+> +        * Recheck for the SME/SEV feature:
+>          *   CPUID Fn8000_001F[EAX]
+>          *   - Bit 0 - Secure Memory Encryption support
+>          *   - Bit 1 - Secure Encrypted Virtualization support
+> --
+> 2.41.0
+>
+> --
+> Regards/Gruss,
+>     Boris.
+>
+> https://people.kernel.org/tglx/notes-about-netiquette
+>
+
