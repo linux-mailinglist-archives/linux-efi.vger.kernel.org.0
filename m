@@ -2,36 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D056476D2D4
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Aug 2023 17:49:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 471E276D2D6
+	for <lists+linux-efi@lfdr.de>; Wed,  2 Aug 2023 17:50:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235311AbjHBPt5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 2 Aug 2023 11:49:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38756 "EHLO
+        id S234543AbjHBPuJ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 2 Aug 2023 11:50:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235057AbjHBPtl (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Aug 2023 11:49:41 -0400
+        with ESMTP id S234918AbjHBPtr (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Aug 2023 11:49:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F41D73582;
-        Wed,  2 Aug 2023 08:49:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98C4A2115;
+        Wed,  2 Aug 2023 08:49:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 55D9E61A17;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AB5E561A22;
+        Wed,  2 Aug 2023 15:49:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3565DC433CA;
         Wed,  2 Aug 2023 15:49:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D10C433C8;
-        Wed,  2 Aug 2023 15:49:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690991362;
-        bh=7D4HdiWvB51jf9PtMrHNY1LkXYyyjvNVJhuX8x8xGjA=;
+        s=k20201202; t=1690991367;
+        bh=wLkaloJHosR7G8O4hExvKacWkVrWZEAmjuPTLPD83HU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZfszIB0vikmV5dUDm5A07JTJtNSWqyl6BhVhfyblluuk4AdP0uHAN+/BTNZWuoEYv
-         o/qpSvuPrSp8QnBrLDtb25ycWfaclwOVlC0+5hwDC/RgdluaVxenrbsU8qLWf1nqiG
-         9KCBjrW2tCGRSX5Hw8q+zaoxwjEI8gEnvoVOpehTzNJ+qBqyrMcAG1DwRS7KFMKbA5
-         p+3CjyOmes9pf+8Ca1lueFxEKQ2jytBbN63bZGDXORNkHG1K/qR06uLNDW3J5BlTcA
-         VHLK9w/jsH6o3tY65TesgRB5YCAY4dGswGqMAoGnnDLY7igegj0PeMm1FOTHMSRFT3
-         82YMXna+3A0ig==
+        b=Z0jbRDxOadnHFmUlfOB+RPWvI0hs1uNcNcfp1ibBm8GunBz62YVbcJnOxKIjBWBhV
+         g2mFqj2qoy4+7H9HXZ2SishX+VdRgSLDouR4C1Mcu823yAO+v4iYAaQO/P+zU5s2HE
+         +CHi48+wwja0V7UKXCgSoMA8GD3h6Jbkj/fCJTnYO6PEiybmPREaBDWoVZBZoks+9z
+         2XIK3HraGn9QoP08ezXrovI3oeRjYMBfBkXiJ0m6TW507DcyJkyWTuLCl2poYjm7YF
+         A6oSZjq/hmIn1QLB2fhWK/JJb2ekEl6UWCTvHk5K8t6Ftss8/rzvxXZU6za75ePWjX
+         6FhsxNb1LDYbg==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -52,14 +52,14 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH v8 07/23] x86/decompressor: Store boot_params pointer in callee save register
-Date:   Wed,  2 Aug 2023 17:48:15 +0200
-Message-Id: <20230802154831.2147855-8-ardb@kernel.org>
+Subject: [PATCH v8 08/23] x86/decompressor: Assign paging related global variables earlier
+Date:   Wed,  2 Aug 2023 17:48:16 +0200
+Message-Id: <20230802154831.2147855-9-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230802154831.2147855-1-ardb@kernel.org>
 References: <20230802154831.2147855-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4376; i=ardb@kernel.org; h=from:subject; bh=7D4HdiWvB51jf9PtMrHNY1LkXYyyjvNVJhuX8x8xGjA=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeVU1a4b6lEz705PuOiQleLra/F5etHHoDMbLqb5X5r+X ery8imPOkpZGMQ4GGTFFFkEZv99t/P0RKla51myMHNYmUCGMHBxCsBEplQx/NN/phJy7Pp5Qf90 vym/OK8Eb6i6Y+nDLFmWmn57ae/dI1MZ/rvLtBxbM2ul/XrvA1HNJjOzFPfY6v2RnNzSH9F+14f hExsA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2032; i=ardb@kernel.org; h=from:subject; bh=wLkaloJHosR7G8O4hExvKacWkVrWZEAmjuPTLPD83HU=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeVU1e78+sOqB57z8yv/Y/183KDh7VRmrkuMG7uyXz14t 7s77IlYRykLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZjIvhWMDJ1Z6r+qdslerPrr 93nD2wQ3jdpAj4O38uXWzzUqPsj9+R0jwzopDUP23kqVHIHDZ+7MMlwh9TqswOH6ceEPTm7G3Tw vGQA=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -72,156 +72,61 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Instead of pushing and popping %RSI several times to preserve the struct
-boot_params pointer across the execution of the startup code, move it
-into a callee save register before the first call into C, and copy it
-back when needed.
+There is no need to defer the assignment of the paging related global
+variabled 'pgdir_shift' and 'ptrs_per_p4d' until after the trampoline is
+cleaned up, so assign them as soon as it is clear that 5-level paging
+will be enabled.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/head_64.S | 42 ++++++++------------
- 1 file changed, 16 insertions(+), 26 deletions(-)
+ arch/x86/boot/compressed/misc.h       |  2 --
+ arch/x86/boot/compressed/pgtable_64.c | 14 +++++---------
+ 2 files changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index a3f764daf3a3adbc..19bf810409e2aa62 100644
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -405,10 +405,14 @@ SYM_CODE_START(startup_64)
- 	lretq
- 
- .Lon_kernel_cs:
-+	/*
-+	 * RSI holds a pointer to a boot_params structure provided by the
-+	 * loader, and this needs to be preserved across C function calls. So
-+	 * move it into a callee saved register.
-+	 */
-+	movq	%rsi, %r15
- 
--	pushq	%rsi
- 	call	load_stage1_idt
--	popq	%rsi
- 
- #ifdef CONFIG_AMD_MEM_ENCRYPT
- 	/*
-@@ -419,12 +423,10 @@ SYM_CODE_START(startup_64)
- 	 * CPUID instructions being issued, so go ahead and do that now via
- 	 * sev_enable(), which will also handle the rest of the SEV-related
- 	 * detection/setup to ensure that has been done in advance of any dependent
--	 * code.
-+	 * code. Pass the boot_params pointer as the first argument.
- 	 */
--	pushq	%rsi
--	movq	%rsi, %rdi		/* real mode address */
-+	movq	%r15, %rdi
- 	call	sev_enable
--	popq	%rsi
+diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+index 964fe903a1cdccdc..cc70d3fb90497ed8 100644
+--- a/arch/x86/boot/compressed/misc.h
++++ b/arch/x86/boot/compressed/misc.h
+@@ -179,9 +179,7 @@ static inline int count_immovable_mem_regions(void) { return 0; }
  #endif
  
- 	/*
-@@ -437,13 +439,10 @@ SYM_CODE_START(startup_64)
- 	 *   - Non zero RDX means trampoline needs to enable 5-level
- 	 *     paging.
- 	 *
--	 * RSI holds real mode data and needs to be preserved across
--	 * this function call.
-+	 * Pass the boot_params pointer as the first argument.
- 	 */
--	pushq	%rsi
--	movq	%rsi, %rdi		/* real mode address */
-+	movq	%r15, %rdi
- 	call	paging_prepare
--	popq	%rsi
+ /* ident_map_64.c */
+-#ifdef CONFIG_X86_5LEVEL
+ extern unsigned int __pgtable_l5_enabled, pgdir_shift, ptrs_per_p4d;
+-#endif
+ extern void kernel_add_identity_map(unsigned long start, unsigned long end);
  
- 	/* Save the trampoline address in RCX */
- 	movq	%rax, %rcx
-@@ -456,9 +455,9 @@ SYM_CODE_START(startup_64)
- 	 * because the architecture does not guarantee that GPRs will retain
- 	 * their full 64-bit values across a 32-bit mode switch.
- 	 */
-+	pushq	%r15
- 	pushq	%rbp
- 	pushq	%rbx
--	pushq	%rsi
+ /* Used by PAGE_KERN* macros: */
+diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
+index 2ac12ff4111bf8c0..f8092d3244c9559b 100644
+--- a/arch/x86/boot/compressed/pgtable_64.c
++++ b/arch/x86/boot/compressed/pgtable_64.c
+@@ -130,6 +130,11 @@ struct paging_config paging_prepare(void *rmode)
+ 			native_cpuid_eax(0) >= 7 &&
+ 			(native_cpuid_ecx(7) & (1 << (X86_FEATURE_LA57 & 31)))) {
+ 		paging_config.l5_required = 1;
++
++		/* Initialize variables for 5-level paging */
++		__pgtable_l5_enabled = 1;
++		pgdir_shift = 48;
++		ptrs_per_p4d = 512;
+ 	}
  
- 	/*
- 	 * Push the 64-bit address of trampoline_return() onto the new stack.
-@@ -475,9 +474,9 @@ SYM_CODE_START(startup_64)
- 	lretq
- trampoline_return:
- 	/* Restore live 64-bit registers */
--	popq	%rsi
- 	popq	%rbx
- 	popq	%rbp
-+	popq	%r15
+ 	paging_config.trampoline_start = find_trampoline_placement();
+@@ -206,13 +211,4 @@ void cleanup_trampoline(void *pgtable)
  
- 	/* Restore the stack, the 32-bit trampoline uses its own stack */
- 	leaq	rva(boot_stack_end)(%rbx), %rsp
-@@ -487,14 +486,9 @@ trampoline_return:
- 	 *
- 	 * RDI is address of the page table to use instead of page table
- 	 * in trampoline memory (if required).
--	 *
--	 * RSI holds real mode data and needs to be preserved across
--	 * this function call.
- 	 */
--	pushq	%rsi
- 	leaq	rva(top_pgtable)(%rbx), %rdi
- 	call	cleanup_trampoline
--	popq	%rsi
- 
- 	/* Zero EFLAGS */
- 	pushq	$0
-@@ -504,7 +498,6 @@ trampoline_return:
-  * Copy the compressed kernel to the end of our buffer
-  * where decompression in place becomes safe.
-  */
--	pushq	%rsi
- 	leaq	(_bss-8)(%rip), %rsi
- 	leaq	rva(_bss-8)(%rbx), %rdi
- 	movl	$(_bss - startup_32), %ecx
-@@ -512,7 +505,6 @@ trampoline_return:
- 	std
- 	rep	movsq
- 	cld
--	popq	%rsi
- 
- 	/*
- 	 * The GDT may get overwritten either during the copy we just did or
-@@ -544,30 +536,28 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated)
- 	shrq	$3, %rcx
- 	rep	stosq
- 
--	pushq	%rsi
- 	call	load_stage2_idt
- 
- 	/* Pass boot_params to initialize_identity_maps() */
--	movq	(%rsp), %rdi
-+	movq	%r15, %rdi
- 	call	initialize_identity_maps
--	popq	%rsi
- 
- /*
-  * Do the extraction, and jump to the new kernel..
-  */
--	pushq	%rsi			/* Save the real mode argument */
--	movq	%rsi, %rdi		/* real mode address */
-+	/* pass struct boot_params pointer */
-+	movq	%r15, %rdi
- 	leaq	boot_heap(%rip), %rsi	/* malloc area for uncompression */
- 	leaq	input_data(%rip), %rdx  /* input_data */
- 	movl	input_len(%rip), %ecx	/* input_len */
- 	movq	%rbp, %r8		/* output target address */
- 	movl	output_len(%rip), %r9d	/* decompressed length, end of relocs */
- 	call	extract_kernel		/* returns kernel entry point in %rax */
--	popq	%rsi
- 
- /*
-  * Jump to the decompressed kernel.
-  */
-+	movq	%r15, %rsi
- 	jmp	*%rax
- SYM_FUNC_END(.Lrelocated)
- 
+ 	/* Restore trampoline memory */
+ 	memcpy(trampoline_32bit, trampoline_save, TRAMPOLINE_32BIT_SIZE);
+-
+-	/* Initialize variables for 5-level paging */
+-#ifdef CONFIG_X86_5LEVEL
+-	if (__read_cr4() & X86_CR4_LA57) {
+-		__pgtable_l5_enabled = 1;
+-		pgdir_shift = 48;
+-		ptrs_per_p4d = 512;
+-	}
+-#endif
+ }
 -- 
 2.39.2
 
