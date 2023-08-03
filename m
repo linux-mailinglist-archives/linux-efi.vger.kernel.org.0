@@ -2,59 +2,57 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFA0776D4AC
-	for <lists+linux-efi@lfdr.de>; Wed,  2 Aug 2023 19:06:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E516E76DFDE
+	for <lists+linux-efi@lfdr.de>; Thu,  3 Aug 2023 07:48:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229909AbjHBRGY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 2 Aug 2023 13:06:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33112 "EHLO
+        id S231322AbjHCFsc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 3 Aug 2023 01:48:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbjHBRGW (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 2 Aug 2023 13:06:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22BCAE57;
-        Wed,  2 Aug 2023 10:06:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A89BF61A4F;
-        Wed,  2 Aug 2023 17:06:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C88C433D9;
-        Wed,  2 Aug 2023 17:06:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690995979;
-        bh=skWUi5PcvVm7aAMMh7p/LFLr6m46fzBWFlwr2mR+KqQ=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=t8q5cK8/F3VUNLPrZvxOWjfUw38QnpP2qxI4w1cVIAj64yQx0v1jm90/IIAvi9FAC
-         hQ76tJw4gTPD+8fUVgVgamRQqmEOKPqIOTvZf3hc75Bkrwa4/RHs/bFQTNnGi9M2vA
-         9tOC4Co75ohZk2g56b/xDj07zqhLumhox99xFLfCQX6kyju5XTJNpgTCppvOumZDMJ
-         gO2XqQCH6eb+jlvXXZzTl53eQFXEwRYUy79+D0Ue9uo7UfVZXI1RnjgU6kqaI9DHq/
-         2oWcZIqHjKvvv6uMiz7Dy/IiLcL1OTe57bA5EmyaDeblI/opln3F/VPuhShpuM2L8g
-         18w9S7D1WQ/5A==
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-4fe457ec6e7so62836e87.3;
-        Wed, 02 Aug 2023 10:06:18 -0700 (PDT)
-X-Gm-Message-State: ABy/qLapVkcbfcuJXwHFloqAvEgBH12O1Mbtiu4FXOOjkVXzq0D9TSQV
-        QKKeB9yVGgexMBG40MOEDPbhuGRXmw+8GYxNs/w=
-X-Google-Smtp-Source: APBJJlH8aHl8Ev+dsn2WRGd0DFDDeHJfddSlwE3ce49skr8nvJR+ykykzAuC1gEm+0c6TMr5KHuo6lrxbhdnErNWIzc=
-X-Received: by 2002:a19:ca0b:0:b0:4f6:2b25:194e with SMTP id
- a11-20020a19ca0b000000b004f62b25194emr4208508lfg.58.1690995977047; Wed, 02
- Aug 2023 10:06:17 -0700 (PDT)
+        with ESMTP id S230058AbjHCFsb (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 3 Aug 2023 01:48:31 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D6A82D43;
+        Wed,  2 Aug 2023 22:48:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691041710; x=1722577710;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=fuHR5vlg0Pj/rQJGG+2yi4N34sEiicrfjR7PExpvW5w=;
+  b=J9jsMy5OLyztTj41clc5neL0vtASw1NM5UePWSe6785DAMQJWyHuLbEb
+   wTKp0YTVH0/nXdAMpdsPo+jum6nWvn1YgcwQz8FdCph8F1OfLwKHVofZn
+   mquKS6QQPuKJZtXkg6EWBd3peXBnW6WTb75/PUquHFVyfH3gd0oHXIm6b
+   sypy9EYzdj5eZD+lhjSXA4hdiJ3eK6oFPDD4NzYfHYsDJdlEQ3HesFvbz
+   TVJZOpAw+eiGjz8gaJKZYACyHEO0PEMzHqrzGbngesu1UJzEcEXnJ+kYw
+   xerAo6G9zeQ5SjbYFUFdYndtLuZI3glNn6wRLKxzxrQVUZ/jfwhKBfQB+
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10790"; a="372510831"
+X-IronPort-AV: E=Sophos;i="6.01,251,1684825200"; 
+   d="scan'208";a="372510831"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2023 22:48:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10790"; a="732629455"
+X-IronPort-AV: E=Sophos;i="6.01,251,1684825200"; 
+   d="scan'208";a="732629455"
+Received: from xiao-desktop.sh.intel.com ([10.239.46.158])
+  by fmsmga007.fm.intel.com with ESMTP; 02 Aug 2023 22:48:25 -0700
+From:   Xiao Wang <xiao.w.wang@intel.com>
+To:     ardb@kernel.org
+Cc:     linux-riscv@lists.infradead.org, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Xiao Wang <xiao.w.wang@intel.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] efi/riscv: libstub: Fix comment about absolute relocation
+Date:   Thu,  3 Aug 2023 13:56:11 +0800
+Message-Id: <20230803055611.2343011-1-xiao.w.wang@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20230802151704.2147028-1-ardb@kernel.org> <20230802164603.fzy2lmflp4iann5c@box>
-In-Reply-To: <20230802164603.fzy2lmflp4iann5c@box>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 2 Aug 2023 19:06:05 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGThVygFZNry+tBGdzw0XrFhOiWL_RFYRBy7p1oyT4LOQ@mail.gmail.com>
-Message-ID: <CAMj1kXGThVygFZNry+tBGdzw0XrFhOiWL_RFYRBy7p1oyT4LOQ@mail.gmail.com>
-Subject: Re: [PATCH v2] efi/x86: Ensure that EFI_RUNTIME_MAP is enabled for kexec
-To:     "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,21 +60,29 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, 2 Aug 2023 at 18:46, Kirill A . Shutemov
-<kirill.shutemov@linux.intel.com> wrote:
->
-> On Wed, Aug 02, 2023 at 05:17:04PM +0200, Ard Biesheuvel wrote:
-> > CONFIG_EFI_RUNTIME_MAP needs to be enabled in order for kexec to be able
-> > to provide the required information about the EFI runtime mappings to
-> > the incoming kernel, regardless of whether kexec_load() or
-> > kexec_file_load() is being used. Without this information, kexec boot in
-> > EFI mode is not possible.
-> >
-> > The CONFIG_EFI_RUNTIME_MAP option is currently directly configurable if
-> > CONFIG_EXPERT is enabled, so that it can be turned on for debugging
-> > purposes even if KEXEC is. However, the upshot of this is that it can
->
-> s/is/isn't/ ?
->
+We don't want absolute symbols references in the stub, so fix the double
+negation in the comment.
 
-indeed, will fix.
+Fixes: d7071743db31 ("RISC-V: Add EFI stub support.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xiao Wang <xiao.w.wang@intel.com>
+---
+ drivers/firmware/efi/libstub/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index b0f8c495c10f..ed6e8ebd89b4 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -146,7 +146,7 @@ STUBCOPY_RELOC-$(CONFIG_ARM64)	:= R_AARCH64_ABS
+ 
+ # For RISC-V, we don't need anything special other than arm64. Keep all the
+ # symbols in .init section and make sure that no absolute symbols references
+-# doesn't exist.
++# exist.
+ STUBCOPY_FLAGS-$(CONFIG_RISCV)	+= --prefix-alloc-sections=.init \
+ 				   --prefix-symbols=__efistub_
+ STUBCOPY_RELOC-$(CONFIG_RISCV)	:= R_RISCV_HI20
+-- 
+2.25.1
+
