@@ -2,57 +2,70 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8313676EB07
-	for <lists+linux-efi@lfdr.de>; Thu,  3 Aug 2023 15:45:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D77376EC7D
+	for <lists+linux-efi@lfdr.de>; Thu,  3 Aug 2023 16:28:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236506AbjHCNpP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 3 Aug 2023 09:45:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34222 "EHLO
+        id S235646AbjHCO2O (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 3 Aug 2023 10:28:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236520AbjHCNoj (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 3 Aug 2023 09:44:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1927D128;
-        Thu,  3 Aug 2023 06:42:42 -0700 (PDT)
+        with ESMTP id S236598AbjHCO16 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 3 Aug 2023 10:27:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67CE4DA;
+        Thu,  3 Aug 2023 07:27:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 74D4761D99;
-        Thu,  3 Aug 2023 13:42:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D66C4C433C8;
-        Thu,  3 Aug 2023 13:42:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EDD0161DD1;
+        Thu,  3 Aug 2023 14:27:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BC9C433CB;
+        Thu,  3 Aug 2023 14:27:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691070160;
-        bh=11fG7eUZQr+FKpPCRHbyy5SmxNH/PAwqQ9O1e9CkHjo=;
+        s=k20201202; t=1691072875;
+        bh=SYezfMKoOwd06i4EdWxJdHq56YPVKCiPJTP05WrmoRw=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=uMFLVHxodr5jw4a7bzf2JflvW5MB77yPHl5aFunE75z/cVQiwSDKPMRxbU8goR9If
-         ZC29FX5TL5Qe5QjBrLMW2gViVfGtiTJBQEXlJvJ+KhUbpYl2UdmP0IBHIwED938K82
-         8YQhyF9l5i+w48YNDkOXr1EysaE5/igx+H4y1fr6Jjhn55QobfkU3T8PWj6ZwfzWqI
-         rkorOfCOgJLfVrWdKXf+7OkrhE8nCsDqEvGnfo5sB4ubNncr9nWctDvvA0xyGd034O
-         7mIzYsdlupJNwGm272IqhVtSPNTZgTUEcGP+eHOld6ixMyVnGL+CjF9gExGpKeswbf
-         SLAGhFy4UBZFQ==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2b9c55e0fbeso14220141fa.2;
-        Thu, 03 Aug 2023 06:42:40 -0700 (PDT)
-X-Gm-Message-State: ABy/qLbt0yeuUWzPJKgCdzSDMRpmUo8UOikNEDCw+Gproj3O7hCKr42Q
-        koUGkAgnAj12+GtMWXuumBOK/0ta55wMaP2Yi4I=
-X-Google-Smtp-Source: APBJJlEfkX1QHAgiwOCLTcrNDCPEIydp4nEzJYE9kjfd2zsHOsBYvElcdFGRw2KqHZwlUl630rMN1nuUF8JXkF/r9Sw=
-X-Received: by 2002:a2e:6e15:0:b0:2b9:f007:9908 with SMTP id
- j21-20020a2e6e15000000b002b9f0079908mr8548347ljc.41.1691070158878; Thu, 03
- Aug 2023 06:42:38 -0700 (PDT)
+        b=Ce/zqNjzKTx1w0oEMvSeHRwJFaXj5t64SjzqGMBvSrjuRDlSertEXIyMH6eFgCiR4
+         0FzZRKjTZD7J/dSdi3DqzfDqUSH5JWTYDeC7sHxKW4qQJwJ3oazo6As/lYfBHcvIam
+         Mbs7Z/NZEL9fhlCxBOL3BKW5YjA0/A0OEBkMg+2GsezEALvkmp1KnuODa5JlbpkvFI
+         fk5ESeBlo7N+WiTKKW6BVICyWEOv4X9Ptqfydi8AwZrBxqgiNINnejLfVTzLAVC2ec
+         O3FSVvpxkKWNzF/SoCH30FUCBkcIAdzeJyTkkO9plQNPKcBtdtkj5cuEJPIlb8EK+b
+         BHWoMImDB56OA==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2b9fa64db41so16109831fa.1;
+        Thu, 03 Aug 2023 07:27:55 -0700 (PDT)
+X-Gm-Message-State: ABy/qLYaZoXJigmzolcLIScSNkVaBf4AMyJ+Ag43KUBMLTX6BdDBpkFa
+        iy5ae16oRhxCqsniY7aT5jC674kNq4qLW/3wCcw=
+X-Google-Smtp-Source: APBJJlE2li6enqKdhY/67+FOLHVsKLoDwihFl4Guijp3+nlazzgS5h35KJKK4NMvZ4fFFAlcETvzQ20xCTP2P0SmadQ=
+X-Received: by 2002:a2e:870a:0:b0:2b9:4821:22b6 with SMTP id
+ m10-20020a2e870a000000b002b9482122b6mr8216088lji.10.1691072873230; Thu, 03
+ Aug 2023 07:27:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230725140327.24960-1-yuehaibing@huawei.com>
-In-Reply-To: <20230725140327.24960-1-yuehaibing@huawei.com>
+References: <20230713100459.GEZK/MS69XbphJa+tN@fat_crate.local>
+ <CAO7dBbVMNKTSDi5eP4BseEUexsk0Mo0GWJpyHfOcp+tHs6cSUw@mail.gmail.com>
+ <20230717141409.GGZLVMsU6d/9mpJvMO@fat_crate.local> <CAO7dBbXJv9JzDbSa-DLT03+osYCQXNUXFwz63gbq=NGDxEVyEA@mail.gmail.com>
+ <20230728165535.GDZMPzB/ek5QM+xJqA@fat_crate.local> <CAO7dBbVyuLHH6RfdVQkU5ThXaJ-F4yvFAYD1PDNGkOpph9xvnA@mail.gmail.com>
+ <20230802093927.GAZMokT57anC5jBISK@fat_crate.local> <99cb3813-1737-9d10-1f24-77565e460c55@amd.com>
+ <20230802135856.GBZMphIHHLa3dXRRVe@fat_crate.local> <CAMj1kXEM5hGknVGwHh_w99D4L8yrYrTFycwGHZ0CQun70CLipw@mail.gmail.com>
+ <20230802155146.GCZMp7ksDdN2ETVzKV@fat_crate.local> <CAMj1kXHnSzdQw5CMAVXU7EzpnrdRvAqKZVgA+EV35kHmwVULgQ@mail.gmail.com>
+In-Reply-To: <CAMj1kXHnSzdQw5CMAVXU7EzpnrdRvAqKZVgA+EV35kHmwVULgQ@mail.gmail.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 3 Aug 2023 15:42:27 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXF2edHZ65OXRWpS0mrvAW9JH5DpV0oN3En+TAnUQqNX=g@mail.gmail.com>
-Message-ID: <CAMj1kXF2edHZ65OXRWpS0mrvAW9JH5DpV0oN3En+TAnUQqNX=g@mail.gmail.com>
-Subject: Re: [PATCH -next] efi: Remove unused extern declaration efi_lookup_mapped_addr()
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Thu, 3 Aug 2023 16:27:41 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXESuCScMLLAS4tSDcYxA3JTb24RuF7ipcKGd65tBvOBWQ@mail.gmail.com>
+Message-ID: <CAMj1kXESuCScMLLAS4tSDcYxA3JTb24RuF7ipcKGd65tBvOBWQ@mail.gmail.com>
+Subject: Re: [PATCH v2] x86/kexec: Add EFI config table identity mapping for
+ kexec kernel
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Tao Liu <ltao@redhat.com>, Michael Roth <michael.roth@amd.com>,
+        tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
+        x86@kernel.org, hpa@zytor.com, linux-kernel@vger.kernel.org,
+        bhe@redhat.com, dyoung@redhat.com, kexec@lists.infradead.org,
+        linux-efi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,32 +74,56 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 25 Jul 2023 at 16:04, YueHaibing <yuehaibing@huawei.com> wrote:
+On Thu, 3 Aug 2023 at 13:11, Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> Since commit 50a0cb565246 ("x86/efi-bgrt: Fix kernel panic when mapping BGRT data")
-> this extern declaration is not used anymore.
+> On Wed, 2 Aug 2023 at 17:52, Borislav Petkov <bp@alien8.de> wrote:
+> >
+> > On Wed, Aug 02, 2023 at 04:55:27PM +0200, Ard Biesheuvel wrote:
+> > > ... because now, entering via startup_32 is broken, given that it only
+> > > maps the kernel image itself and relies on the #PF handling for
+> > > everything else it accesses, including firmware tables.
+> > >
+> > > AFAICT this also means that entering via startup_32 is broken entirely
+> > > for any configuration that enables the cc blob config table check,
+> > > regardless of the platform.
+> >
+> > Lemme brain-dump what Tom and I just talked on IRC.
+> >
+> > That startup_32 entry path for SNP guests was used with old grubs which
+> > used to enter through there and not anymore, reportedly. Which means,
+> > that must've worked at some point but Joerg would know. CCed.
+> >
 >
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> Sadly, not only 'old' grubs - GRUB mainline only recently added
+> support for booting Linux/x86 via the EFI stub (because I wrote the
+> code for them), but it will still fall back to the previous mode for
+> kernels that are built without EFI stub support, or which are older
+> than ~v5.8 (because their EFI stub does not implement the generic EFI
+> initrd loading mechanism)
+>
+> This fallback still appears to enter via startup_32, even when GRUB
+> itself runs in long mode in the context of EFI.
+>
+> > Newer grubs enter through the 64-bit entry point and thus are fine
+> > - otherwise we would be seeing explosions left and right.
+> >
+>
+> Yeah. what seems to be saving our ass here is that startup_32 maps the
+> first 1G of physical address space 4 times, and x86_64 EFI usually
+> puts firmware tables below 4G. This means the cc blob check doesn't
+> fault, but it may dereference bogus memory traversing the config table
+> array looking for the cc blob GUID. However, the system table field
+> holding the size of the array may also appear as bogus so this may
+> still break in weird ways.
+>
+> > So dependent on what we wanna do, if we kill the 32-bit path, we can
+> > kill the 32-bit C-bit verif code. But that's for later and an item on my
+> > TODO list.
+> >
+>
+> I don't think we can kill it yet, but it would be nice if we could
+> avoid the need to support SNP boot when entering that way.
 
-Queued up in efi/next - thanks,
+https://lists.gnu.org/archive/html/grub-devel/2023-08/msg00005.html
 
-
-> ---
->  include/linux/efi.h | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index c31a9895ecb8..d4ec0d9c896f 100644
-> --- a/include/linux/efi.h
-> +++ b/include/linux/efi.h
-> @@ -727,7 +727,6 @@ static inline efi_status_t efi_query_variable_store(u32 attributes,
->         return EFI_SUCCESS;
->  }
->  #endif
-> -extern void __iomem *efi_lookup_mapped_addr(u64 phys_addr);
->
->  extern int __init __efi_memmap_init(struct efi_memory_map_data *data);
->  extern int __init efi_memmap_init_early(struct efi_memory_map_data *data);
-> --
-> 2.34.1
->
+Coming to your distro any decade now!
