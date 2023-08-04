@@ -2,182 +2,89 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2449376F856
-	for <lists+linux-efi@lfdr.de>; Fri,  4 Aug 2023 05:20:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90C85770588
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Aug 2023 18:04:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229527AbjHDDUl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 3 Aug 2023 23:20:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43540 "EHLO
+        id S230393AbjHDQEV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 4 Aug 2023 12:04:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232037AbjHDDUg (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 3 Aug 2023 23:20:36 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 051453AB2
-        for <linux-efi@vger.kernel.org>; Thu,  3 Aug 2023 20:20:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691119228; x=1722655228;
-  h=date:from:to:cc:subject:message-id;
-  bh=DpnA0IIVh0g7l66YBiPMcrUhHzeKarfA4/vLGH2xTwA=;
-  b=PsP34xmht9RNjj/nZbFGkBJ4sm/nN+h5o7Sq9OQKbisw+QGV0I0hyajN
-   Ks7tnJzgs8dr6+dl/sn3Al7Kg2VKf5qetrvi7IkSi5LNiiO+kNRKOO43Z
-   jpacpH4nRPllzMPEYufBaYRukBMnTymQ9rS78jUEKD1t9HVGCGUErqNrd
-   EQYnr8A4aDQGyAAWHA6vWL/RFveild0tAxvv95UamcqToAt9t4Y0rzpit
-   4eko/o4ij0RbsXBQQh4oLj/IESZBofz6EwpsF52ies2Z8kUIoz3YWgwg4
-   HJwkR/TH8rKR3SbmEMh/ezvDHgeGgf0tQlOEMtatwpDCNf5OY+iuMCdU8
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="349646038"
-X-IronPort-AV: E=Sophos;i="6.01,253,1684825200"; 
-   d="scan'208";a="349646038"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2023 20:20:02 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="1060551583"
-X-IronPort-AV: E=Sophos;i="6.01,253,1684825200"; 
-   d="scan'208";a="1060551583"
-Received: from lkp-server01.sh.intel.com (HELO d1ccc7e87e8f) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 03 Aug 2023 20:20:02 -0700
-Received: from kbuild by d1ccc7e87e8f with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qRlM9-0002a1-1E;
-        Fri, 04 Aug 2023 03:20:01 +0000
-Date:   Fri, 04 Aug 2023 11:19:58 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS
- f6e6e95ce16205025b7b8680a66c30a0c4ec2270
-Message-ID: <202308041156.RN9ArISv-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+        with ESMTP id S232292AbjHDQET (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 4 Aug 2023 12:04:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 311DEB2;
+        Fri,  4 Aug 2023 09:04:12 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7670962094;
+        Fri,  4 Aug 2023 16:04:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F36C433C7;
+        Fri,  4 Aug 2023 16:04:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691165050;
+        bh=Ps+d066ShaMnLNUT+HgxeSOlR8GwrqJ6PE4HjhQvyfA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=iDnmB9L4XGERLKjX8G42r1+ADP/WphJnR3IUvL7ohuaqw/HeesebohFAMxSLsrCcQ
+         ogS4urOYT7k2FRebpp742eBWibqp3WEGtrG3BoGN8g484uLO1C9MY3bMBsOJBRDLEc
+         HVg3nA6mpL+vqzBEDjmEIeaNEN7MlIqEJPu1hS6vDAQzyIYeiXjqwFrWkPuGMN/FcX
+         a+hLCab5otBRfmHmLeXz27FbbMOv3UFQZ5Dh4F4dd1RWXi1Srlvy7zoopoPmWvNNnp
+         eHi0YNOFmM5xG18n9IrcFdTldTymTG+4uhR8qiRc+JvlmlotWoqYUUldJwwGfBZ5v8
+         O5OO6G1P9aihA==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-efi@vger.kernel.org
+Cc:     linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 0/4] efi: Clean up runtime wrapper and wire it up for PRM
+Date:   Fri,  4 Aug 2023 18:03:55 +0200
+Message-Id: <20230804160359.228901-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1478; i=ardb@kernel.org; h=from:subject; bh=Ps+d066ShaMnLNUT+HgxeSOlR8GwrqJ6PE4HjhQvyfA=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeWsYmaSqh9L7eG5iUxzNQ0cAjXu7OAM8OZ+KnY6JjrrS 5aE2v+OUhYGMQ4GWTFFFoHZf9/tPD1RqtZ5lizMHFYmkCEMXJwCMJGsJIb/cTe/Wzvd33XwJ8tm ho1akplLilMu+yz+fNrKujxqjxL/E0aG/ZtZNthduvO5O2ml+wYrDdv327sOcsj+3r3uhurajcL 7OAA=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: f6e6e95ce16205025b7b8680a66c30a0c4ec2270  efi/riscv: libstub: Fix comment about absolute relocation
+ACPI PRM uses the EFI runtime services infrastructure, but currently, it
+issues the firmware calls directly, instead of going through the
+wrappers and handing off the call to the EFI workqueue.
 
-elapsed time: 727m
+Given that ACPI PRM is used for vendor code rather than core EFI runtime
+services, it would be nice if these calls get sandboxed in the same way
+as EFI runtime services calls are. This ensures that any faults
+occurring in the firmware are handled gracefully and don't bring down
+the kernel.
 
-configs tested: 106
-configs skipped: 5
+Another reason for using the work queue is the fact that on some
+platforms, the EFI memory regions are remapping into the lower address
+space, and this means that sampling the instruction pointer in a perf
+interrupt may cause confusion about whether the task is running in user
+space or in the firmware.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+So let's move the ACPI PRM calls into the EFI runtime wrapper
+infrastructure. Before that, let's clean it up a bit.
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r015-20230731   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r033-20230731   gcc  
-arc                  randconfig-r043-20230731   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r004-20230801   clang
-arm                  randconfig-r046-20230731   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                                defconfig   gcc  
-hexagon              randconfig-r041-20230731   clang
-hexagon              randconfig-r045-20230731   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230731   gcc  
-i386         buildonly-randconfig-r005-20230731   gcc  
-i386         buildonly-randconfig-r006-20230731   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230801   gcc  
-i386                 randconfig-i002-20230801   gcc  
-i386                 randconfig-i003-20230801   gcc  
-i386                 randconfig-i004-20230801   gcc  
-i386                 randconfig-i005-20230801   gcc  
-i386                 randconfig-i006-20230801   gcc  
-i386                 randconfig-i011-20230731   clang
-i386                 randconfig-i012-20230731   clang
-i386                 randconfig-i013-20230731   clang
-i386                 randconfig-i014-20230731   clang
-i386                 randconfig-i015-20230731   clang
-i386                 randconfig-i016-20230731   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r012-20230731   gcc  
-m68k                 randconfig-r013-20230731   gcc  
-microblaze           randconfig-r005-20230801   gcc  
-microblaze           randconfig-r011-20230731   gcc  
-microblaze           randconfig-r014-20230731   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                 randconfig-r026-20230801   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r001-20230801   gcc  
-nios2                randconfig-r022-20230801   gcc  
-nios2                randconfig-r035-20230731   gcc  
-nios2                randconfig-r036-20230731   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r021-20230801   gcc  
-parisc               randconfig-r031-20230731   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r016-20230731   clang
-riscv                randconfig-r042-20230731   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r034-20230731   gcc  
-s390                 randconfig-r044-20230731   clang
-sh                               allmodconfig   gcc  
-sh                   randconfig-r006-20230801   gcc  
-sh                   randconfig-r023-20230801   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r003-20230801   gcc  
-sparc64              randconfig-r025-20230801   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230731   gcc  
-x86_64       buildonly-randconfig-r002-20230731   gcc  
-x86_64       buildonly-randconfig-r003-20230731   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-x001-20230731   clang
-x86_64               randconfig-x002-20230731   clang
-x86_64               randconfig-x003-20230731   clang
-x86_64               randconfig-x004-20230731   clang
-x86_64               randconfig-x005-20230731   clang
-x86_64               randconfig-x006-20230731   clang
-x86_64               randconfig-x011-20230731   gcc  
-x86_64               randconfig-x012-20230731   gcc  
-x86_64               randconfig-x013-20230731   gcc  
-x86_64               randconfig-x014-20230731   gcc  
-x86_64               randconfig-x015-20230731   gcc  
-x86_64               randconfig-x016-20230731   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
+Ard Biesheuvel (4):
+  efi/runtime-wrappers: Use type safe encapsulation of call arguments
+  efi/runtime-wrapper: Move workqueue manipulation out of line
+  efi/runtime-wrappers: Remove duplicated macro for service returning
+    void
+  acpi/prmt: Use EFI runtime sandbox to invoke PRM handlers
+
+ drivers/acpi/prmt.c                     |   8 +-
+ drivers/firmware/efi/runtime-wrappers.c | 201 +++++++++++---------
+ include/linux/efi.h                     | 110 ++++++++---
+ 3 files changed, 198 insertions(+), 121 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.39.2
+
