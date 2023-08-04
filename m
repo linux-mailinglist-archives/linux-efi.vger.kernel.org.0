@@ -2,128 +2,182 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D77376EC7D
-	for <lists+linux-efi@lfdr.de>; Thu,  3 Aug 2023 16:28:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2449376F856
+	for <lists+linux-efi@lfdr.de>; Fri,  4 Aug 2023 05:20:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235646AbjHCO2O (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 3 Aug 2023 10:28:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41668 "EHLO
+        id S229527AbjHDDUl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 3 Aug 2023 23:20:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236598AbjHCO16 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 3 Aug 2023 10:27:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67CE4DA;
-        Thu,  3 Aug 2023 07:27:56 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EDD0161DD1;
-        Thu,  3 Aug 2023 14:27:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BC9C433CB;
-        Thu,  3 Aug 2023 14:27:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691072875;
-        bh=SYezfMKoOwd06i4EdWxJdHq56YPVKCiPJTP05WrmoRw=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Ce/zqNjzKTx1w0oEMvSeHRwJFaXj5t64SjzqGMBvSrjuRDlSertEXIyMH6eFgCiR4
-         0FzZRKjTZD7J/dSdi3DqzfDqUSH5JWTYDeC7sHxKW4qQJwJ3oazo6As/lYfBHcvIam
-         Mbs7Z/NZEL9fhlCxBOL3BKW5YjA0/A0OEBkMg+2GsezEALvkmp1KnuODa5JlbpkvFI
-         fk5ESeBlo7N+WiTKKW6BVICyWEOv4X9Ptqfydi8AwZrBxqgiNINnejLfVTzLAVC2ec
-         O3FSVvpxkKWNzF/SoCH30FUCBkcIAdzeJyTkkO9plQNPKcBtdtkj5cuEJPIlb8EK+b
-         BHWoMImDB56OA==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2b9fa64db41so16109831fa.1;
-        Thu, 03 Aug 2023 07:27:55 -0700 (PDT)
-X-Gm-Message-State: ABy/qLYaZoXJigmzolcLIScSNkVaBf4AMyJ+Ag43KUBMLTX6BdDBpkFa
-        iy5ae16oRhxCqsniY7aT5jC674kNq4qLW/3wCcw=
-X-Google-Smtp-Source: APBJJlE2li6enqKdhY/67+FOLHVsKLoDwihFl4Guijp3+nlazzgS5h35KJKK4NMvZ4fFFAlcETvzQ20xCTP2P0SmadQ=
-X-Received: by 2002:a2e:870a:0:b0:2b9:4821:22b6 with SMTP id
- m10-20020a2e870a000000b002b9482122b6mr8216088lji.10.1691072873230; Thu, 03
- Aug 2023 07:27:53 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230713100459.GEZK/MS69XbphJa+tN@fat_crate.local>
- <CAO7dBbVMNKTSDi5eP4BseEUexsk0Mo0GWJpyHfOcp+tHs6cSUw@mail.gmail.com>
- <20230717141409.GGZLVMsU6d/9mpJvMO@fat_crate.local> <CAO7dBbXJv9JzDbSa-DLT03+osYCQXNUXFwz63gbq=NGDxEVyEA@mail.gmail.com>
- <20230728165535.GDZMPzB/ek5QM+xJqA@fat_crate.local> <CAO7dBbVyuLHH6RfdVQkU5ThXaJ-F4yvFAYD1PDNGkOpph9xvnA@mail.gmail.com>
- <20230802093927.GAZMokT57anC5jBISK@fat_crate.local> <99cb3813-1737-9d10-1f24-77565e460c55@amd.com>
- <20230802135856.GBZMphIHHLa3dXRRVe@fat_crate.local> <CAMj1kXEM5hGknVGwHh_w99D4L8yrYrTFycwGHZ0CQun70CLipw@mail.gmail.com>
- <20230802155146.GCZMp7ksDdN2ETVzKV@fat_crate.local> <CAMj1kXHnSzdQw5CMAVXU7EzpnrdRvAqKZVgA+EV35kHmwVULgQ@mail.gmail.com>
-In-Reply-To: <CAMj1kXHnSzdQw5CMAVXU7EzpnrdRvAqKZVgA+EV35kHmwVULgQ@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 3 Aug 2023 16:27:41 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXESuCScMLLAS4tSDcYxA3JTb24RuF7ipcKGd65tBvOBWQ@mail.gmail.com>
-Message-ID: <CAMj1kXESuCScMLLAS4tSDcYxA3JTb24RuF7ipcKGd65tBvOBWQ@mail.gmail.com>
-Subject: Re: [PATCH v2] x86/kexec: Add EFI config table identity mapping for
- kexec kernel
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Tao Liu <ltao@redhat.com>, Michael Roth <michael.roth@amd.com>,
-        tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
-        x86@kernel.org, hpa@zytor.com, linux-kernel@vger.kernel.org,
-        bhe@redhat.com, dyoung@redhat.com, kexec@lists.infradead.org,
-        linux-efi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S232037AbjHDDUg (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 3 Aug 2023 23:20:36 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 051453AB2
+        for <linux-efi@vger.kernel.org>; Thu,  3 Aug 2023 20:20:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691119228; x=1722655228;
+  h=date:from:to:cc:subject:message-id;
+  bh=DpnA0IIVh0g7l66YBiPMcrUhHzeKarfA4/vLGH2xTwA=;
+  b=PsP34xmht9RNjj/nZbFGkBJ4sm/nN+h5o7Sq9OQKbisw+QGV0I0hyajN
+   Ks7tnJzgs8dr6+dl/sn3Al7Kg2VKf5qetrvi7IkSi5LNiiO+kNRKOO43Z
+   jpacpH4nRPllzMPEYufBaYRukBMnTymQ9rS78jUEKD1t9HVGCGUErqNrd
+   EQYnr8A4aDQGyAAWHA6vWL/RFveild0tAxvv95UamcqToAt9t4Y0rzpit
+   4eko/o4ij0RbsXBQQh4oLj/IESZBofz6EwpsF52ies2Z8kUIoz3YWgwg4
+   HJwkR/TH8rKR3SbmEMh/ezvDHgeGgf0tQlOEMtatwpDCNf5OY+iuMCdU8
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="349646038"
+X-IronPort-AV: E=Sophos;i="6.01,253,1684825200"; 
+   d="scan'208";a="349646038"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2023 20:20:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="1060551583"
+X-IronPort-AV: E=Sophos;i="6.01,253,1684825200"; 
+   d="scan'208";a="1060551583"
+Received: from lkp-server01.sh.intel.com (HELO d1ccc7e87e8f) ([10.239.97.150])
+  by fmsmga005.fm.intel.com with ESMTP; 03 Aug 2023 20:20:02 -0700
+Received: from kbuild by d1ccc7e87e8f with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qRlM9-0002a1-1E;
+        Fri, 04 Aug 2023 03:20:01 +0000
+Date:   Fri, 04 Aug 2023 11:19:58 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:next] BUILD SUCCESS
+ f6e6e95ce16205025b7b8680a66c30a0c4ec2270
+Message-ID: <202308041156.RN9ArISv-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 3 Aug 2023 at 13:11, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Wed, 2 Aug 2023 at 17:52, Borislav Petkov <bp@alien8.de> wrote:
-> >
-> > On Wed, Aug 02, 2023 at 04:55:27PM +0200, Ard Biesheuvel wrote:
-> > > ... because now, entering via startup_32 is broken, given that it only
-> > > maps the kernel image itself and relies on the #PF handling for
-> > > everything else it accesses, including firmware tables.
-> > >
-> > > AFAICT this also means that entering via startup_32 is broken entirely
-> > > for any configuration that enables the cc blob config table check,
-> > > regardless of the platform.
-> >
-> > Lemme brain-dump what Tom and I just talked on IRC.
-> >
-> > That startup_32 entry path for SNP guests was used with old grubs which
-> > used to enter through there and not anymore, reportedly. Which means,
-> > that must've worked at some point but Joerg would know. CCed.
-> >
->
-> Sadly, not only 'old' grubs - GRUB mainline only recently added
-> support for booting Linux/x86 via the EFI stub (because I wrote the
-> code for them), but it will still fall back to the previous mode for
-> kernels that are built without EFI stub support, or which are older
-> than ~v5.8 (because their EFI stub does not implement the generic EFI
-> initrd loading mechanism)
->
-> This fallback still appears to enter via startup_32, even when GRUB
-> itself runs in long mode in the context of EFI.
->
-> > Newer grubs enter through the 64-bit entry point and thus are fine
-> > - otherwise we would be seeing explosions left and right.
-> >
->
-> Yeah. what seems to be saving our ass here is that startup_32 maps the
-> first 1G of physical address space 4 times, and x86_64 EFI usually
-> puts firmware tables below 4G. This means the cc blob check doesn't
-> fault, but it may dereference bogus memory traversing the config table
-> array looking for the cc blob GUID. However, the system table field
-> holding the size of the array may also appear as bogus so this may
-> still break in weird ways.
->
-> > So dependent on what we wanna do, if we kill the 32-bit path, we can
-> > kill the 32-bit C-bit verif code. But that's for later and an item on my
-> > TODO list.
-> >
->
-> I don't think we can kill it yet, but it would be nice if we could
-> avoid the need to support SNP boot when entering that way.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+branch HEAD: f6e6e95ce16205025b7b8680a66c30a0c4ec2270  efi/riscv: libstub: Fix comment about absolute relocation
 
-https://lists.gnu.org/archive/html/grub-devel/2023-08/msg00005.html
+elapsed time: 727m
 
-Coming to your distro any decade now!
+configs tested: 106
+configs skipped: 5
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r015-20230731   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r033-20230731   gcc  
+arc                  randconfig-r043-20230731   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r004-20230801   clang
+arm                  randconfig-r046-20230731   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                                defconfig   gcc  
+hexagon              randconfig-r041-20230731   clang
+hexagon              randconfig-r045-20230731   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r004-20230731   gcc  
+i386         buildonly-randconfig-r005-20230731   gcc  
+i386         buildonly-randconfig-r006-20230731   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230801   gcc  
+i386                 randconfig-i002-20230801   gcc  
+i386                 randconfig-i003-20230801   gcc  
+i386                 randconfig-i004-20230801   gcc  
+i386                 randconfig-i005-20230801   gcc  
+i386                 randconfig-i006-20230801   gcc  
+i386                 randconfig-i011-20230731   clang
+i386                 randconfig-i012-20230731   clang
+i386                 randconfig-i013-20230731   clang
+i386                 randconfig-i014-20230731   clang
+i386                 randconfig-i015-20230731   clang
+i386                 randconfig-i016-20230731   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r012-20230731   gcc  
+m68k                 randconfig-r013-20230731   gcc  
+microblaze           randconfig-r005-20230801   gcc  
+microblaze           randconfig-r011-20230731   gcc  
+microblaze           randconfig-r014-20230731   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r026-20230801   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r001-20230801   gcc  
+nios2                randconfig-r022-20230801   gcc  
+nios2                randconfig-r035-20230731   gcc  
+nios2                randconfig-r036-20230731   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r021-20230801   gcc  
+parisc               randconfig-r031-20230731   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r016-20230731   clang
+riscv                randconfig-r042-20230731   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r034-20230731   gcc  
+s390                 randconfig-r044-20230731   clang
+sh                               allmodconfig   gcc  
+sh                   randconfig-r006-20230801   gcc  
+sh                   randconfig-r023-20230801   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r003-20230801   gcc  
+sparc64              randconfig-r025-20230801   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r001-20230731   gcc  
+x86_64       buildonly-randconfig-r002-20230731   gcc  
+x86_64       buildonly-randconfig-r003-20230731   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-x001-20230731   clang
+x86_64               randconfig-x002-20230731   clang
+x86_64               randconfig-x003-20230731   clang
+x86_64               randconfig-x004-20230731   clang
+x86_64               randconfig-x005-20230731   clang
+x86_64               randconfig-x006-20230731   clang
+x86_64               randconfig-x011-20230731   gcc  
+x86_64               randconfig-x012-20230731   gcc  
+x86_64               randconfig-x013-20230731   gcc  
+x86_64               randconfig-x014-20230731   gcc  
+x86_64               randconfig-x015-20230731   gcc  
+x86_64               randconfig-x016-20230731   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
