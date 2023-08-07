@@ -2,36 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DF54772AD7
-	for <lists+linux-efi@lfdr.de>; Mon,  7 Aug 2023 18:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4187772AD9
+	for <lists+linux-efi@lfdr.de>; Mon,  7 Aug 2023 18:29:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231605AbjHGQ3V (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 7 Aug 2023 12:29:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35590 "EHLO
+        id S231679AbjHGQ3e (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 7 Aug 2023 12:29:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231728AbjHGQ3C (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Aug 2023 12:29:02 -0400
+        with ESMTP id S231817AbjHGQ3D (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 7 Aug 2023 12:29:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2C411BF3;
-        Mon,  7 Aug 2023 09:28:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3D0E1FCE;
+        Mon,  7 Aug 2023 09:28:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 989D561F1C;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 957B561F33;
+        Mon,  7 Aug 2023 16:28:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F88C433C7;
         Mon,  7 Aug 2023 16:28:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8036BC433BB;
-        Mon,  7 Aug 2023 16:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691425703;
-        bh=35ydgYIIKoLxZL2vz2F8XVJhO0j9D3mjWHEuMrtQ7Ck=;
+        s=k20201202; t=1691425705;
+        bh=Os+OvcWXVTEgn4GvlOd4rs76sb2kuX0zlm0OhlZtKNw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ssqE4t2IQ41OEktqZdVAF4gYDntvq/TfpZG5+4tT+PJasiKss/fje4B5BgpfsYF7n
-         MaFyt4IqJr+ZxsWT6iSGlV17EZnLlhs3dsdIVfrHWTT1CNcy67APEFTMnbSq+Sizel
-         XuSK6ZIytlOqjmyxGkNGFOPTYPQUMLOZGv1/yc+quuuc15EtrxgI0l8HUZGa+kwYH0
-         2DTkMi7EqFWOdL9iycADY2XsLvvRZBMuhnQP9M7UnLFgrl4sTyH9z1Y0sWunkL+I5x
-         OqAtt2s6eygHtBSQ6JrrKZqUe3AkbPoWYKyMhB4553DzBU5aGjHVmUgu2HIPe3LRsn
-         0FGB7kJMfqHtQ==
+        b=CBjDo05gh+QlQNGFhuBllM6lpSIft4iqt/Qg8EYCO4EhvuHgIjTz6lhqLgN+00+Jq
+         TxQSdDQGejmUKhXNCA/s0/X8VRUUmD3jJ6b+PUoqHg/UE85lfyyuZ10SlacCMn0YAa
+         vSrgByXq+nzhDhovAq4KXqFcNe18kmM+OLlLZ7AEq40FhmhUJlx9MBNLUJ/MisQQTP
+         zmDsMXqAgOJVPRQZs6kDaPt6IRxiHv5tJJYLebPwLbmOr1AhVuaAZ9gkpvXeQ5p34c
+         CywdeJ1KUBBAmAYo0SJrB7H415S7djl//aELo+Nm/3rE71aLQtAVS03ZP3EJbnFqTg
+         63OczHKWL29/Q==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -39,14 +39,14 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Ingo Molnar <mingo@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH v9 20/23] x86/decompressor: Factor out kernel decompression and relocation
-Date:   Mon,  7 Aug 2023 18:27:17 +0200
-Message-Id: <20230807162720.545787-21-ardb@kernel.org>
+Subject: [PATCH v9 21/23] efi/libstub: Add limit argument to efi_random_alloc()
+Date:   Mon,  7 Aug 2023 18:27:18 +0200
+Message-Id: <20230807162720.545787-22-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230807162720.545787-1-ardb@kernel.org>
 References: <20230807162720.545787-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2968; i=ardb@kernel.org; h=from:subject; bh=35ydgYIIKoLxZL2vz2F8XVJhO0j9D3mjWHEuMrtQ7Ck=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeWidMqCOW4KNUnqByqPOCZ13eQrkfQ6c6z99LL6qz3rP l+M8PzUUcrCIMbBICumyCIw+++7nacnStU6z5KFmcPKBDKEgYtTACZyOIKR4cihX7sM/n+x1dhr 5FEZpFN5teWZrnqXveXiD4VrSl3iFzMyTL4/M9NERzP14xXZa7uYbwZsM17Yufj6dfsPvkkm/7v iGAE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3943; i=ardb@kernel.org; h=from:subject; bh=Os+OvcWXVTEgn4GvlOd4rs76sb2kuX0zlm0OhlZtKNw=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeWidOoS5do7oTpWZ7leH79/4ptb9c/JjLeZVQWF+MS2F e86L23UUcrCIMbBICumyCIw+++7nacnStU6z5KFmcPKBDKEgYtTACZSGMbwz+wu9+FTaz+8e3ne 7ZaRUG7hlj0neM+e2SPS9bFkQfCHD62MDE2TTt7u57mW0WcR6Tjv2pwZvX3vfZ7nzHeb2n10r6j vExYA
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -58,91 +58,100 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Factor out the decompressor sequence that invokes the decompressor,
-parses the ELF and applies the relocations so that it can be called
-directly from the EFI stub.
+x86 will need to limit the kernel memory allocation to the lowest 512
+MiB of memory, to match the behavior of the existing bare metal KASLR
+physical randomization logic. So in preparation for that, add a limit
+parameter to efi_random_alloc() and wire it up.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/misc.c | 28 ++++++++++++++++----
- arch/x86/include/asm/boot.h     |  8 ++++++
- 2 files changed, 31 insertions(+), 5 deletions(-)
+ drivers/firmware/efi/libstub/arm64-stub.c  |  2 +-
+ drivers/firmware/efi/libstub/efistub.h     |  2 +-
+ drivers/firmware/efi/libstub/randomalloc.c | 10 ++++++----
+ drivers/firmware/efi/libstub/zboot.c       |  2 +-
+ 4 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
-index 2d91d56b59e1af93..f711f2a85862e9ef 100644
---- a/arch/x86/boot/compressed/misc.c
-+++ b/arch/x86/boot/compressed/misc.c
-@@ -330,11 +330,33 @@ static size_t parse_elf(void *output)
- 	return ehdr.e_entry - LOAD_PHYSICAL_ADDR;
- }
+diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
+index 770b8ecb73984c61..8c40fc89f5f99209 100644
+--- a/drivers/firmware/efi/libstub/arm64-stub.c
++++ b/drivers/firmware/efi/libstub/arm64-stub.c
+@@ -106,7 +106,7 @@ efi_status_t handle_kernel_image(unsigned long *image_addr,
+ 		 */
+ 		status = efi_random_alloc(*reserve_size, min_kimg_align,
+ 					  reserve_addr, phys_seed,
+-					  EFI_LOADER_CODE);
++					  EFI_LOADER_CODE, EFI_ALLOC_LIMIT);
+ 		if (status != EFI_SUCCESS)
+ 			efi_warn("efi_random_alloc() failed: 0x%lx\n", status);
+ 	} else {
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index 06b7abc92ced9e18..9823f6fb3e01f718 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -956,7 +956,7 @@ efi_status_t efi_get_random_bytes(unsigned long size, u8 *out);
  
-+const unsigned long kernel_total_size = VO__end - VO__text;
-+
- static u8 boot_heap[BOOT_HEAP_SIZE] __aligned(4);
+ efi_status_t efi_random_alloc(unsigned long size, unsigned long align,
+ 			      unsigned long *addr, unsigned long random_seed,
+-			      int memory_type);
++			      int memory_type, unsigned long alloc_limit);
  
- extern unsigned char input_data[];
- extern unsigned int input_len, output_len;
+ efi_status_t efi_random_get_seed(void);
  
-+unsigned long decompress_kernel(unsigned char *outbuf, unsigned long virt_addr,
-+				void (*error)(char *x))
-+{
-+	unsigned long entry;
-+
-+	if (!free_mem_ptr) {
-+		free_mem_ptr     = (unsigned long)boot_heap;
-+		free_mem_end_ptr = (unsigned long)boot_heap + sizeof(boot_heap);
-+	}
-+
-+	if (__decompress(input_data, input_len, NULL, NULL, outbuf, output_len,
-+			 NULL, error) < 0)
-+		return ULONG_MAX;
-+
-+	entry = parse_elf(outbuf);
-+	handle_relocations(outbuf, output_len, virt_addr);
-+
-+	return entry;
-+}
-+
- /*
-  * The compressed kernel image (ZO), has been moved so that its position
-  * is against the end of the buffer used to hold the uncompressed kernel
-@@ -354,7 +376,6 @@ extern unsigned int input_len, output_len;
+diff --git a/drivers/firmware/efi/libstub/randomalloc.c b/drivers/firmware/efi/libstub/randomalloc.c
+index 32c7a54923b4c127..674a064b8f7adc68 100644
+--- a/drivers/firmware/efi/libstub/randomalloc.c
++++ b/drivers/firmware/efi/libstub/randomalloc.c
+@@ -16,7 +16,8 @@
   */
- asmlinkage __visible void *extract_kernel(void *rmode, unsigned char *output)
+ static unsigned long get_entry_num_slots(efi_memory_desc_t *md,
+ 					 unsigned long size,
+-					 unsigned long align_shift)
++					 unsigned long align_shift,
++					 u64 alloc_limit)
  {
--	const unsigned long kernel_total_size = VO__end - VO__text;
- 	unsigned long virt_addr = LOAD_PHYSICAL_ADDR;
- 	memptr heap = (memptr)boot_heap;
- 	unsigned long needed_size;
-@@ -463,10 +484,7 @@ asmlinkage __visible void *extract_kernel(void *rmode, unsigned char *output)
- 		accept_memory(__pa(output), __pa(output) + needed_size);
- 	}
+ 	unsigned long align = 1UL << align_shift;
+ 	u64 first_slot, last_slot, region_end;
+@@ -29,7 +30,7 @@ static unsigned long get_entry_num_slots(efi_memory_desc_t *md,
+ 		return 0;
  
--	__decompress(input_data, input_len, NULL, NULL, output, output_len,
--			NULL, error);
--	entry_offset = parse_elf(output);
--	handle_relocations(output, output_len, virt_addr);
-+	entry_offset = decompress_kernel(output, virt_addr, error);
+ 	region_end = min(md->phys_addr + md->num_pages * EFI_PAGE_SIZE - 1,
+-			 (u64)EFI_ALLOC_LIMIT);
++			 alloc_limit);
+ 	if (region_end < size)
+ 		return 0;
  
- 	debug_putstr("done.\nBooting the kernel (entry_offset: 0x");
- 	debug_puthex(entry_offset);
-diff --git a/arch/x86/include/asm/boot.h b/arch/x86/include/asm/boot.h
-index 9191280d9ea3160d..4ae14339cb8cc72d 100644
---- a/arch/x86/include/asm/boot.h
-+++ b/arch/x86/include/asm/boot.h
-@@ -62,4 +62,12 @@
- # define BOOT_STACK_SIZE	0x1000
- #endif
+@@ -54,7 +55,8 @@ efi_status_t efi_random_alloc(unsigned long size,
+ 			      unsigned long align,
+ 			      unsigned long *addr,
+ 			      unsigned long random_seed,
+-			      int memory_type)
++			      int memory_type,
++			      unsigned long alloc_limit)
+ {
+ 	unsigned long total_slots = 0, target_slot;
+ 	unsigned long total_mirrored_slots = 0;
+@@ -76,7 +78,7 @@ efi_status_t efi_random_alloc(unsigned long size,
+ 		efi_memory_desc_t *md = (void *)map->map + map_offset;
+ 		unsigned long slots;
  
-+#ifndef __ASSEMBLY__
-+extern unsigned int output_len;
-+extern const unsigned long kernel_total_size;
-+
-+unsigned long decompress_kernel(unsigned char *outbuf, unsigned long virt_addr,
-+				void (*error)(char *x));
-+#endif
-+
- #endif /* _ASM_X86_BOOT_H */
+-		slots = get_entry_num_slots(md, size, ilog2(align));
++		slots = get_entry_num_slots(md, size, ilog2(align), alloc_limit);
+ 		MD_NUM_SLOTS(md) = slots;
+ 		total_slots += slots;
+ 		if (md->attribute & EFI_MEMORY_MORE_RELIABLE)
+diff --git a/drivers/firmware/efi/libstub/zboot.c b/drivers/firmware/efi/libstub/zboot.c
+index e5d7fa1f1d8fd160..bdb17eac0cb401be 100644
+--- a/drivers/firmware/efi/libstub/zboot.c
++++ b/drivers/firmware/efi/libstub/zboot.c
+@@ -119,7 +119,7 @@ efi_zboot_entry(efi_handle_t handle, efi_system_table_t *systab)
+ 		}
+ 
+ 		status = efi_random_alloc(alloc_size, min_kimg_align, &image_base,
+-					  seed, EFI_LOADER_CODE);
++					  seed, EFI_LOADER_CODE, EFI_ALLOC_LIMIT);
+ 		if (status != EFI_SUCCESS) {
+ 			efi_err("Failed to allocate memory\n");
+ 			goto free_cmdline;
 -- 
 2.39.2
 
