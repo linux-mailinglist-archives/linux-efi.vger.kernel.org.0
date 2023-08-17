@@ -2,189 +2,180 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F39C77F7B8
-	for <lists+linux-efi@lfdr.de>; Thu, 17 Aug 2023 15:29:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C541D77FD58
+	for <lists+linux-efi@lfdr.de>; Thu, 17 Aug 2023 19:56:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234374AbjHQN26 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 17 Aug 2023 09:28:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43874 "EHLO
+        id S244294AbjHQRzf convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-efi@lfdr.de>); Thu, 17 Aug 2023 13:55:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351504AbjHQN2q (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 17 Aug 2023 09:28:46 -0400
-Received: from bg4.exmail.qq.com (bg4.exmail.qq.com [43.154.54.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79F703AB5;
-        Thu, 17 Aug 2023 06:28:00 -0700 (PDT)
-X-QQ-mid: bizesmtp90t1692278826t9cqshyj
-Received: from [10.20.8.85] ( [61.183.83.60])
-        by bizesmtp.qq.com (ESMTP) with 
-        id ; Thu, 17 Aug 2023 21:27:02 +0800 (CST)
-X-QQ-SSF: 00200000000000B0B000000A0000000
-X-QQ-FEAT: uGhnJwy6xZLAahZlTopxqtR/Hd/ad1fA+6D6LUyZg6uSwgWzCyYXN2+qE91yG
-        d2/G80ssVD5gvAxN4q1iHKG8u6qiveMy7Xl09gneHMfNXC6x3Nk/wlpH7e+w97DCNiFluZu
-        F+Wr+cqnPp1/RWhx1V/WKDg6fjW7++o2KCQTwV91vORmlMLfRyTLQgnnCrXCfvt3SHZmKAR
-        AH/TSikX5zynNeZE2XM2WMj0Oy3XPjBjgUqSe1Virm3DrqNEATnWHWZz4CzQiypJIo7cBYN
-        O2PGYCIyZJP1EJ6err0pLIbll4qTWh47b+PgW2dOmtG66aFkMtZL/s9qSo3x1Wb7WYgUlIy
-        8lLVQ3ySe7cK+23D0tLMLZ7BJDsNCBFw4DNlFNm
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 16211832311926624224
-Message-ID: <93D8412E2714688D+f87fdf42-4c77-ec81-c46f-30eda8ec44ee@tinylab.org>
-Date:   Thu, 17 Aug 2023 21:27:01 +0800
+        with ESMTP id S1354176AbjHQRzU (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 17 Aug 2023 13:55:20 -0400
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B15E19A1;
+        Thu, 17 Aug 2023 10:55:18 -0700 (PDT)
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-56d75fb64a6so23225eaf.0;
+        Thu, 17 Aug 2023 10:55:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692294918; x=1692899718;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gkeXSFZ/OrSsfFrmnxtdMYT0Ke6K2z+mrhEthcE11s0=;
+        b=AOkDmJ/rJXAfiCqAox7kQvivv/Od5z3t93aTMtlXGTJWoMKCfM8B6w2b0T42vvE6P/
+         tLfU2MhCngeUlobsjjns75uRtYnBz9F7/dtERN6Z0jAXWIvOvH4gtf7Cn9n+C1JNCyze
+         5D0HQBFBorNjyJoWs1ZZp6e2tjzTdNOzLyusOpEjgWzWsuDWcflbbQymyr7pMyxbatSy
+         DXsrQ/xBB9QDYDRKZDMIAecJq5ZPgHn/HFvn5+/uqg00xY2Awo42pXoiEQOrXF+2lFYs
+         lHIJFzjSvb8G6djUmkf7QTOO32zQ+VWIPwmB9VU+jS7vugT0J3FP5Q0WUVVgczKlv75B
+         hNCA==
+X-Gm-Message-State: AOJu0YwzFL1tNHenfUPxSRAgqZBvaUuYr+IQBypkBPTej306V3oyDlad
+        CY+LspEJvl0S9jIjN+bsRCPT235wU7KVMw+xZsq9Gb8d
+X-Google-Smtp-Source: AGHT+IEe4KFtf4SD0b0JnBWjy7imQS8O1fvEl7d8K1Jy69Vav7C3PGzDsQc/T2kpFV2V7wf2AN8QzRJ33gqF4S2fPxU=
+X-Received: by 2002:a4a:eb1a:0:b0:560:b01a:653d with SMTP id
+ f26-20020a4aeb1a000000b00560b01a653dmr554749ooj.0.1692294917755; Thu, 17 Aug
+ 2023 10:55:17 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH v6 0/5] riscv: Introduce KASLR
-To:     Alexandre Ghiti <alexghiti@rivosinc.com>
-Cc:     Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Albert Ou <aou@eecs.berkeley.edu>, zong.li@sifive.com,
-        conor.dooley@microchip.com
-References: <20230722123850.634544-1-alexghiti@rivosinc.com>
- <C172F31D25F5ED6E+034cc389-f02c-b681-a989-8592c5dac35e@tinylab.org>
- <CAHVXubhD2r2OYQKRcBUfA+3h4SdejkUhVDD2Gx6WJ6pqBzSKpw@mail.gmail.com>
-From:   Song Shuai <songshuaishuai@tinylab.org>
-In-Reply-To: <CAHVXubhD2r2OYQKRcBUfA+3h4SdejkUhVDD2Gx6WJ6pqBzSKpw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:tinylab.org:qybglogicsvrsz:qybglogicsvrsz4a-0
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,FORGED_MUA_MOZILLA,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
-        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230804160359.228901-1-ardb@kernel.org> <20230804160359.228901-5-ardb@kernel.org>
+In-Reply-To: <20230804160359.228901-5-ardb@kernel.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 17 Aug 2023 19:55:06 +0200
+Message-ID: <CAJZ5v0go8BOLQSsb6G-yybsxt9Siq2D2wbOrhvdmU_TvaG0VhA@mail.gmail.com>
+Subject: Re: [PATCH 4/4] acpi/prmt: Use EFI runtime sandbox to invoke PRM handlers
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org,
+        rafael@kernel.org, lenb@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+On Fri, Aug 4, 2023 at 6:04 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> Instead of bypassing the kernel's adaptation layer for performing EFI
+> runtime calls, wire up ACPI PRM handling into it. This means these calls
+> can no longer occur concurrently with EFI runtime calls, and will be
+> made from the EFI runtime workqueue. It also means any page faults
+> occurring during PRM handling will be identified correctly as
+> originating in firmware code.
+>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-在 2023/8/17 21:10, Alexandre Ghiti 写道:
-> Hi Song,
-> 
-> On Tue, Aug 15, 2023 at 1:24 PM Song Shuai <songshuaishuai@tinylab.org> wrote:
->>
->>
->> Hi, Alex:
->>
->> 在 2023/7/22 20:38, Alexandre Ghiti 写道:
->>> The following KASLR implementation allows to randomize the kernel mapping:
->>>
->>> - virtually: we expect the bootloader to provide a seed in the device-tree
->>> - physically: only implemented in the EFI stub, it relies on the firmware to
->>>     provide a seed using EFI_RNG_PROTOCOL. arm64 has a similar implementation
->>>     hence the patch 3 factorizes KASLR related functions for riscv to take
->>>     advantage.
->>>
->>> The new virtual kernel location is limited by the early page table that only
->>> has one PUD and with the PMD alignment constraint, the kernel can only take
->>> < 512 positions.
->>>
->>
->> I have gone through the code and tested this series with RiscVVirt edk2.
->> All seems good to me, you can add :
->>
->> Tested-by: Song Shuai <songshuaishuai@tinylab.org>
->>
->> And a few questions about patch 2 ("riscv: Dump out kernel offset
->> information on panic"):
->>
->> 1. The dump_kernel_offset() function would output "Kernel Offset: 0x0
->> from 0xffffffff80000000" when booting with "nokaslr" option.
->>
->> How about disabling the registration of "kernel_offset_notifier" with
->> "nokaslr" option?
-> 
-> I'd rather keep it as it shows the "nokaslr" flag was taken into account.
-> 
->>
->> 2. Inspired by patch 2, I added the Crash KASLR support based on this
->> series [1].
->> So is it necessary to keep this patch if we have Crash KASLR support?
-> 
-> I don't understand your question here
+Thanks!
 
-Crash can automatically calculate virt_offset by comparing the vmlinux 
-and vmcore. If this patch is just intended to assist Crash in setting 
-the "--kaslr offset," it might be deleted; if not just keep it. 	
-
-> 
->>
->>
->> [1]:
->> https://lore.kernel.org/linux-riscv/20230815104800.705753-1-songshuaishuai@tinylab.org/T/#u
->>
->>> base-commit-tag: v6.5-rc1
->>>
->>> Changes in v6:
->>>     * Fix reintroduced build failures by compiling kaslr.c only for arm64
->>>       and riscv, as suggested by Ard
->>>
->>> Changes in v5:
->>>     * Renamed efi-stub-kaslr.c into kaslr.c and fix commit log of patch 3,
->>>       as suggested by Ard
->>>     * Removed stubs since the kaslr functions were moved to their own file
->>>       (and then does not trigger any build failure for architectures that do
->>>       not call those functions since they are in their own compilation unit)
->>>
->>> Changes in v4:
->>>     * Fix efi_get_kimg macro that returned nothing
->>>     * Moved new kaslr functions into their own files to avoid zboot link
->>>       failures, as suggested by Ard
->>>
->>> Changes in v3:
->>>     * Rebase on top of 6.4-rc2
->>>     * Make RANDOMIZE_BASE depend on 64bit
->>>     * Fix efi_icache_sync and efi_get_kimg_min_align which were undefined
->>>       in x86 (and certainly other archs)
->>>     * Add patch 4 to fix warning on rv32
->>>
->>> Changes in v2:
->>>     * Rebase on top of 6.3-rc1
->>>     * Add a riscv cache sync after memcpying the kernel
->>>     * Add kaslr_offset implementation for KCOV
->>>     * Add forward declaration to quiet LLVM
->>>
->>> Alexandre Ghiti (5):
->>>     riscv: Introduce virtual kernel mapping KASLR
->>>     riscv: Dump out kernel offset information on panic
->>>     arm64: libstub: Move KASLR handling functions to kaslr.c
->>>     libstub: Fix compilation warning for rv32
->>>     riscv: libstub: Implement KASLR by using generic functions
->>>
->>>    arch/arm64/include/asm/efi.h              |   2 +
->>>    arch/riscv/Kconfig                        |  19 +++
->>>    arch/riscv/include/asm/efi.h              |   2 +
->>>    arch/riscv/include/asm/page.h             |   3 +
->>>    arch/riscv/kernel/image-vars.h            |   1 +
->>>    arch/riscv/kernel/pi/Makefile             |   2 +-
->>>    arch/riscv/kernel/pi/cmdline_early.c      |  13 ++
->>>    arch/riscv/kernel/pi/fdt_early.c          |  30 ++++
->>>    arch/riscv/kernel/setup.c                 |  25 ++++
->>>    arch/riscv/mm/init.c                      |  36 ++++-
->>>    drivers/firmware/efi/libstub/Makefile     |   4 +-
->>>    drivers/firmware/efi/libstub/arm64-stub.c | 117 ++--------------
->>>    drivers/firmware/efi/libstub/efistub.h    |   8 ++
->>>    drivers/firmware/efi/libstub/kaslr.c      | 159 ++++++++++++++++++++++
->>>    drivers/firmware/efi/libstub/riscv-stub.c |  33 ++---
->>>    15 files changed, 328 insertions(+), 126 deletions(-)
->>>    create mode 100644 arch/riscv/kernel/pi/fdt_early.c
->>>    create mode 100644 drivers/firmware/efi/libstub/kaslr.c
->>>
->>
->> --
->> Thanks
->> Song Shuai
-> 
-> Thanks for testing this and your suggestions!
-> 
-> Alex
-> 
-
--- 
-Thanks
-Song Shuai
+> ---
+>  drivers/acpi/prmt.c                     |  8 ++++----
+>  drivers/firmware/efi/runtime-wrappers.c | 20 ++++++++++++++++++++
+>  include/linux/efi.h                     | 13 +++++++++++++
+>  3 files changed, 37 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+> index 3d4c4620f9f95309..95be1c80db387faa 100644
+> --- a/drivers/acpi/prmt.c
+> +++ b/drivers/acpi/prmt.c
+> @@ -53,7 +53,7 @@ static LIST_HEAD(prm_module_list);
+>
+>  struct prm_handler_info {
+>         guid_t guid;
+> -       void *handler_addr;
+> +       efi_acpi_prm_handler_t *handler_addr;
+>         u64 static_data_buffer_addr;
+>         u64 acpi_param_buffer_addr;
+>
+> @@ -260,9 +260,9 @@ static acpi_status acpi_platformrt_space_handler(u32 function,
+>                 context.static_data_buffer = handler->static_data_buffer_addr;
+>                 context.mmio_ranges = module->mmio_info;
+>
+> -               status = efi_call_virt_pointer(handler, handler_addr,
+> -                                              handler->acpi_param_buffer_addr,
+> -                                              &context);
+> +               status = efi_call_acpi_prm_handler(handler->handler_addr,
+> +                                                  handler->acpi_param_buffer_addr,
+> +                                                  &context);
+>                 if (status == EFI_SUCCESS) {
+>                         buffer->prm_status = PRM_HANDLER_SUCCESS;
+>                 } else {
+> diff --git a/drivers/firmware/efi/runtime-wrappers.c b/drivers/firmware/efi/runtime-wrappers.c
+> index b3ef208299ae591e..ce306cd1efdfda21 100644
+> --- a/drivers/firmware/efi/runtime-wrappers.c
+> +++ b/drivers/firmware/efi/runtime-wrappers.c
+> @@ -212,6 +212,12 @@ static void efi_call_rts(struct work_struct *work)
+>                                        efi_rts_work.QUERY_CAPSULE_CAPS.max_size,
+>                                        efi_rts_work.QUERY_CAPSULE_CAPS.reset_type);
+>                 break;
+> +       case EFI_ACPI_PRM_HANDLER:
+> +               status = efi_call_virt_pointer(&efi_rts_work.ACPI_PRM_HANDLER,
+> +                                              handler_addr,
+> +                                              efi_rts_work.ACPI_PRM_HANDLER.param_buffer_addr,
+> +                                              efi_rts_work.ACPI_PRM_HANDLER.context);
+> +               break;
+>         default:
+>                 /*
+>                  * Ideally, we should never reach here because a caller of this
+> @@ -475,3 +481,17 @@ void __init efi_native_runtime_setup(void)
+>         efi.update_capsule = virt_efi_update_capsule;
+>         efi.query_capsule_caps = virt_efi_query_capsule_caps;
+>  }
+> +
+> +efi_status_t efi_call_acpi_prm_handler(efi_acpi_prm_handler_t *handler_addr,
+> +                                      efi_physical_addr_t param_buffer_addr,
+> +                                      void *context)
+> +{
+> +       efi_status_t status;
+> +
+> +       if (down_interruptible(&efi_runtime_lock))
+> +               return EFI_ABORTED;
+> +       status = efi_queue_work(ACPI_PRM_HANDLER, handler_addr,
+> +                               param_buffer_addr, context);
+> +       up(&efi_runtime_lock);
+> +       return status;
+> +}
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index c72715821016851b..065af735d90a411c 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -1230,6 +1230,12 @@ extern int efi_tpm_final_log_size;
+>
+>  extern unsigned long rci2_table_phys;
+>
+> +typedef efi_status_t (__efiapi efi_acpi_prm_handler_t)(efi_physical_addr_t, void *);
+> +
+> +efi_status_t efi_call_acpi_prm_handler(efi_acpi_prm_handler_t *handler_addr,
+> +                                      efi_physical_addr_t param_buffer_addr,
+> +                                      void *context);
+> +
+>  /*
+>   * efi_runtime_service() function identifiers.
+>   * "NONE" is used by efi_recover_from_page_fault() to check if the page
+> @@ -1249,6 +1255,7 @@ enum efi_rts_ids {
+>         EFI_RESET_SYSTEM,
+>         EFI_UPDATE_CAPSULE,
+>         EFI_QUERY_CAPSULE_CAPS,
+> +       EFI_ACPI_PRM_HANDLER,
+>  };
+>
+>  /*
+> @@ -1324,6 +1331,12 @@ struct efi_runtime_work {
+>                         u64             *max_size;
+>                         int             *reset_type;
+>                 } QUERY_CAPSULE_CAPS;
+> +
+> +               struct {
+> +                       efi_acpi_prm_handler_t  *handler_addr;
+> +                       efi_physical_addr_t     param_buffer_addr;
+> +                       void                    *context;
+> +               } ACPI_PRM_HANDLER;
+>         };
+>         efi_status_t status;
+>         struct work_struct work;
+> --
+> 2.39.2
+>
