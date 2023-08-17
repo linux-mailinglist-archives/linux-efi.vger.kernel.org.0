@@ -2,180 +2,142 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C541D77FD58
-	for <lists+linux-efi@lfdr.de>; Thu, 17 Aug 2023 19:56:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58F1477FEFC
+	for <lists+linux-efi@lfdr.de>; Thu, 17 Aug 2023 22:27:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244294AbjHQRzf convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-efi@lfdr.de>); Thu, 17 Aug 2023 13:55:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49006 "EHLO
+        id S1352902AbjHQU0j (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 17 Aug 2023 16:26:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354176AbjHQRzU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 17 Aug 2023 13:55:20 -0400
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B15E19A1;
-        Thu, 17 Aug 2023 10:55:18 -0700 (PDT)
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-56d75fb64a6so23225eaf.0;
-        Thu, 17 Aug 2023 10:55:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692294918; x=1692899718;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gkeXSFZ/OrSsfFrmnxtdMYT0Ke6K2z+mrhEthcE11s0=;
-        b=AOkDmJ/rJXAfiCqAox7kQvivv/Od5z3t93aTMtlXGTJWoMKCfM8B6w2b0T42vvE6P/
-         tLfU2MhCngeUlobsjjns75uRtYnBz9F7/dtERN6Z0jAXWIvOvH4gtf7Cn9n+C1JNCyze
-         5D0HQBFBorNjyJoWs1ZZp6e2tjzTdNOzLyusOpEjgWzWsuDWcflbbQymyr7pMyxbatSy
-         DXsrQ/xBB9QDYDRKZDMIAecJq5ZPgHn/HFvn5+/uqg00xY2Awo42pXoiEQOrXF+2lFYs
-         lHIJFzjSvb8G6djUmkf7QTOO32zQ+VWIPwmB9VU+jS7vugT0J3FP5Q0WUVVgczKlv75B
-         hNCA==
-X-Gm-Message-State: AOJu0YwzFL1tNHenfUPxSRAgqZBvaUuYr+IQBypkBPTej306V3oyDlad
-        CY+LspEJvl0S9jIjN+bsRCPT235wU7KVMw+xZsq9Gb8d
-X-Google-Smtp-Source: AGHT+IEe4KFtf4SD0b0JnBWjy7imQS8O1fvEl7d8K1Jy69Vav7C3PGzDsQc/T2kpFV2V7wf2AN8QzRJ33gqF4S2fPxU=
-X-Received: by 2002:a4a:eb1a:0:b0:560:b01a:653d with SMTP id
- f26-20020a4aeb1a000000b00560b01a653dmr554749ooj.0.1692294917755; Thu, 17 Aug
- 2023 10:55:17 -0700 (PDT)
+        with ESMTP id S1354875AbjHQU0L (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 17 Aug 2023 16:26:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AF6B35A6
+        for <linux-efi@vger.kernel.org>; Thu, 17 Aug 2023 13:26:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C96160B82
+        for <linux-efi@vger.kernel.org>; Thu, 17 Aug 2023 20:26:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD58C433C8
+        for <linux-efi@vger.kernel.org>; Thu, 17 Aug 2023 20:26:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692303969;
+        bh=CB5O5P14QpxGS1mIm6pZ/Je2n3KuS72yRqN7u/EX7mU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=B+WbcjxkGfOfq3Z52tmSr+3BcE4aiKFRRl2bdfXWKepg8laLqtsGbJGhzYMQwZDhH
+         +5UrkhOdF/TXIR4QgvepUoY18MLnxfJ475HaXVYeMGGjlwWs5JI4Rx/qSy+/xNmEj7
+         2e3c+HskT0mnGfAH8saqHgS9s2mo2n2fQ6UYExa+XXhD5n+ZnZ7cma75c+jnndvz2E
+         lYxaSwB13Te8uuZTl9s8TytWO2HdFo16eygz6hf93FaP0TvyrzHuFfNNvVl3Lj0ocv
+         /Aljs12spYpy9iV7RhxNYUG4wwj2VrEgpu/MbCkDiVx3QczZ8Ow9KGnYFXUmEy+IyL
+         KAOGsGdKaqjcw==
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-4fe3b86cec1so184526e87.2
+        for <linux-efi@vger.kernel.org>; Thu, 17 Aug 2023 13:26:09 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yw130lJ9EFtPbcpDA4NqSEACETqLjHUVIZtWknKnHyB4SWDDAXX
+        1I4d0QPZfc4LX9S6Qq6FZjBZKAWonTr4cZtJzF4=
+X-Google-Smtp-Source: AGHT+IGmo65ldvaxOuKOqZxlDv0lUcBKcIA3Q/+OzcYJ/wD7I5NYiTCahKikBvJ0dtA9c/KrRXQZu3at0ygLbITI1/8=
+X-Received: by 2002:ac2:4425:0:b0:4ff:80d4:e12f with SMTP id
+ w5-20020ac24425000000b004ff80d4e12fmr222303lfl.60.1692303967414; Thu, 17 Aug
+ 2023 13:26:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230804160359.228901-1-ardb@kernel.org> <20230804160359.228901-5-ardb@kernel.org>
-In-Reply-To: <20230804160359.228901-5-ardb@kernel.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 17 Aug 2023 19:55:06 +0200
-Message-ID: <CAJZ5v0go8BOLQSsb6G-yybsxt9Siq2D2wbOrhvdmU_TvaG0VhA@mail.gmail.com>
-Subject: Re: [PATCH 4/4] acpi/prmt: Use EFI runtime sandbox to invoke PRM handlers
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org,
-        rafael@kernel.org, lenb@kernel.org
+References: <20230816190557.3738-1-ardb@kernel.org> <20230816212418.25069-1-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20230816212418.25069-1-kirill.shutemov@linux.intel.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Thu, 17 Aug 2023 22:25:56 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHQh7HEuZMiJ5zQtVre1vY+Q1xAHfQSDh1-WibAL02mXA@mail.gmail.com>
+Message-ID: <CAMj1kXHQh7HEuZMiJ5zQtVre1vY+Q1xAHfQSDh1-WibAL02mXA@mail.gmail.com>
+Subject: Re: [PATCH] x86/mm: Make e820_end_ram_pfn() cover E820_TYPE_ACPI ranges
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc:     dave.hansen@linux.intel.com, linux-efi@vger.kernel.org,
+        x86@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Aug 4, 2023 at 6:04 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+On Wed, 16 Aug 2023 at 23:24, Kirill A. Shutemov
+<kirill.shutemov@linux.intel.com> wrote:
 >
-> Instead of bypassing the kernel's adaptation layer for performing EFI
-> runtime calls, wire up ACPI PRM handling into it. This means these calls
-> can no longer occur concurrently with EFI runtime calls, and will be
-> made from the EFI runtime workqueue. It also means any page faults
-> occurring during PRM handling will be identified correctly as
-> originating in firmware code.
+> e820__end_of_ram_pfn() is used to calculate max_pfn which, among other
+> things, guides where direct mapping ends. Any memory above max_pfn is
+> not going to be present in the direct mapping.
 >
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> e820__end_of_ram_pfn() finds the end of the ram based on the highest
+> E820_TYPE_RAM range. But it doesn't includes E820_TYPE_ACPI ranges into
+> calculation.
+>
+> Despite the name, E820_TYPE_ACPI covers not only ACPI data, but also EFI
+> tables and might be required by kernel to function properly.
+>
+> Usually the problem is hidden because there is some E820_TYPE_RAM memory
+> above E820_TYPE_ACPI. But crashkernel only presents pre-allocated crash
+> memory as E820_TYPE_RAM on boot. If the preallocated range is small, it
+> can fit under the last E820_TYPE_ACPI range.
+>
+> Modify e820__end_of_ram_pfn() and e820__end_of_low_ram_pfn() to cover
+> E820_TYPE_ACPI memory.
+>
+> The problem was discovered during debugging kexec for TDX guest. TDX
+> guest uses E820_TYPE_ACPI to store the unaccepted memory bitmap and pass
+> it between the kernels on kexec.
+>
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-Thanks!
+No objections to this, but we might also simply drop E820_TYPE_ACPI
+altogether: it is only used for EFI_ACPI_RECLAIM_MEMORY, which is
+memory that can be used by the OS as ordinary RAM if it is not
+interested in the contents (or has already consumed them). So this
+could arguably be classified as E820_TYPE_RAM too.
 
 > ---
->  drivers/acpi/prmt.c                     |  8 ++++----
->  drivers/firmware/efi/runtime-wrappers.c | 20 ++++++++++++++++++++
->  include/linux/efi.h                     | 13 +++++++++++++
->  3 files changed, 37 insertions(+), 4 deletions(-)
+>  arch/x86/kernel/e820.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
 >
-> diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-> index 3d4c4620f9f95309..95be1c80db387faa 100644
-> --- a/drivers/acpi/prmt.c
-> +++ b/drivers/acpi/prmt.c
-> @@ -53,7 +53,7 @@ static LIST_HEAD(prm_module_list);
+> diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+> index fb8cf953380d..99c80680dc9e 100644
+> --- a/arch/x86/kernel/e820.c
+> +++ b/arch/x86/kernel/e820.c
+> @@ -827,7 +827,7 @@ u64 __init e820__memblock_alloc_reserved(u64 size, u64 align)
+>  /*
+>   * Find the highest page frame number we have available
+>   */
+> -static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type type)
+> +static unsigned long __init e820_end_ram_pfn(unsigned long limit_pfn)
+>  {
+>         int i;
+>         unsigned long last_pfn = 0;
+> @@ -838,7 +838,8 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
+>                 unsigned long start_pfn;
+>                 unsigned long end_pfn;
 >
->  struct prm_handler_info {
->         guid_t guid;
-> -       void *handler_addr;
-> +       efi_acpi_prm_handler_t *handler_addr;
->         u64 static_data_buffer_addr;
->         u64 acpi_param_buffer_addr;
+> -               if (entry->type != type)
+> +               if (entry->type != E820_TYPE_RAM &&
+> +                   entry->type != E820_TYPE_ACPI)
+>                         continue;
 >
-> @@ -260,9 +260,9 @@ static acpi_status acpi_platformrt_space_handler(u32 function,
->                 context.static_data_buffer = handler->static_data_buffer_addr;
->                 context.mmio_ranges = module->mmio_info;
+>                 start_pfn = entry->addr >> PAGE_SHIFT;
+> @@ -864,12 +865,12 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
 >
-> -               status = efi_call_virt_pointer(handler, handler_addr,
-> -                                              handler->acpi_param_buffer_addr,
-> -                                              &context);
-> +               status = efi_call_acpi_prm_handler(handler->handler_addr,
-> +                                                  handler->acpi_param_buffer_addr,
-> +                                                  &context);
->                 if (status == EFI_SUCCESS) {
->                         buffer->prm_status = PRM_HANDLER_SUCCESS;
->                 } else {
-> diff --git a/drivers/firmware/efi/runtime-wrappers.c b/drivers/firmware/efi/runtime-wrappers.c
-> index b3ef208299ae591e..ce306cd1efdfda21 100644
-> --- a/drivers/firmware/efi/runtime-wrappers.c
-> +++ b/drivers/firmware/efi/runtime-wrappers.c
-> @@ -212,6 +212,12 @@ static void efi_call_rts(struct work_struct *work)
->                                        efi_rts_work.QUERY_CAPSULE_CAPS.max_size,
->                                        efi_rts_work.QUERY_CAPSULE_CAPS.reset_type);
->                 break;
-> +       case EFI_ACPI_PRM_HANDLER:
-> +               status = efi_call_virt_pointer(&efi_rts_work.ACPI_PRM_HANDLER,
-> +                                              handler_addr,
-> +                                              efi_rts_work.ACPI_PRM_HANDLER.param_buffer_addr,
-> +                                              efi_rts_work.ACPI_PRM_HANDLER.context);
-> +               break;
->         default:
->                 /*
->                  * Ideally, we should never reach here because a caller of this
-> @@ -475,3 +481,17 @@ void __init efi_native_runtime_setup(void)
->         efi.update_capsule = virt_efi_update_capsule;
->         efi.query_capsule_caps = virt_efi_query_capsule_caps;
+>  unsigned long __init e820__end_of_ram_pfn(void)
+>  {
+> -       return e820_end_pfn(MAX_ARCH_PFN, E820_TYPE_RAM);
+> +       return e820_end_ram_pfn(MAX_ARCH_PFN);
 >  }
-> +
-> +efi_status_t efi_call_acpi_prm_handler(efi_acpi_prm_handler_t *handler_addr,
-> +                                      efi_physical_addr_t param_buffer_addr,
-> +                                      void *context)
-> +{
-> +       efi_status_t status;
-> +
-> +       if (down_interruptible(&efi_runtime_lock))
-> +               return EFI_ABORTED;
-> +       status = efi_queue_work(ACPI_PRM_HANDLER, handler_addr,
-> +                               param_buffer_addr, context);
-> +       up(&efi_runtime_lock);
-> +       return status;
-> +}
-> diff --git a/include/linux/efi.h b/include/linux/efi.h
-> index c72715821016851b..065af735d90a411c 100644
-> --- a/include/linux/efi.h
-> +++ b/include/linux/efi.h
-> @@ -1230,6 +1230,12 @@ extern int efi_tpm_final_log_size;
 >
->  extern unsigned long rci2_table_phys;
+>  unsigned long __init e820__end_of_low_ram_pfn(void)
+>  {
+> -       return e820_end_pfn(1UL << (32 - PAGE_SHIFT), E820_TYPE_RAM);
+> +       return e820_end_ram_pfn(1UL << (32 - PAGE_SHIFT));
+>  }
 >
-> +typedef efi_status_t (__efiapi efi_acpi_prm_handler_t)(efi_physical_addr_t, void *);
-> +
-> +efi_status_t efi_call_acpi_prm_handler(efi_acpi_prm_handler_t *handler_addr,
-> +                                      efi_physical_addr_t param_buffer_addr,
-> +                                      void *context);
-> +
->  /*
->   * efi_runtime_service() function identifiers.
->   * "NONE" is used by efi_recover_from_page_fault() to check if the page
-> @@ -1249,6 +1255,7 @@ enum efi_rts_ids {
->         EFI_RESET_SYSTEM,
->         EFI_UPDATE_CAPSULE,
->         EFI_QUERY_CAPSULE_CAPS,
-> +       EFI_ACPI_PRM_HANDLER,
->  };
->
->  /*
-> @@ -1324,6 +1331,12 @@ struct efi_runtime_work {
->                         u64             *max_size;
->                         int             *reset_type;
->                 } QUERY_CAPSULE_CAPS;
-> +
-> +               struct {
-> +                       efi_acpi_prm_handler_t  *handler_addr;
-> +                       efi_physical_addr_t     param_buffer_addr;
-> +                       void                    *context;
-> +               } ACPI_PRM_HANDLER;
->         };
->         efi_status_t status;
->         struct work_struct work;
+>  static void __init early_panic(char *msg)
 > --
-> 2.39.2
+> 2.41.0
 >
