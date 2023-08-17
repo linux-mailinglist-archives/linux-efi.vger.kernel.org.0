@@ -2,131 +2,78 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E28277EBB4
-	for <lists+linux-efi@lfdr.de>; Wed, 16 Aug 2023 23:25:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13E4677EFC0
+	for <lists+linux-efi@lfdr.de>; Thu, 17 Aug 2023 06:11:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346455AbjHPVYr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 16 Aug 2023 17:24:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60780 "EHLO
+        id S1347982AbjHQELA (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 17 Aug 2023 00:11:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346494AbjHPVYc (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 16 Aug 2023 17:24:32 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4DA61BE8
-        for <linux-efi@vger.kernel.org>; Wed, 16 Aug 2023 14:24:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692221071; x=1723757071;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=YaJcwdfsbT/u6tJs5uRbj4NUFmy4HkVgm/EwY5jjC6U=;
-  b=VZ5ru0HFMbxZYJC5EjK0ukNJC9k5IBiXwxXRvRdRHdKIySSaxJf5U50E
-   +K3oPQevAtGYZCsFZBzvXD2dDaFqJFfizOrYSCk8ur1vVlunLmn4Ovli+
-   /ucmWAYgRGSfJcmm2nI+N2MUsMTJM0UaZ3/kthPpkES8+ljLPa0FSF583
-   RTNaQq9Ul6ybOu0Q7oRFe9vbhUtzNeMqB5hZKopEOLIN8E78utifIkLl9
-   InNcckzFVnUX7ZzZrgQfQcc9QLhx1g7dzGtvy8uUPRsLDDdMTkJcmpCaD
-   wTTA30lEjp+owXR077J974/QmmKHAgL9VPSTCoxYwiEFiyN/1jyKeg6UY
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="438996880"
-X-IronPort-AV: E=Sophos;i="6.01,178,1684825200"; 
-   d="scan'208";a="438996880"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2023 14:24:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="908144440"
-X-IronPort-AV: E=Sophos;i="6.01,178,1684825200"; 
-   d="scan'208";a="908144440"
-Received: from vmusin-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.42.205])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2023 14:24:29 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-        id F2B8810A348; Thu, 17 Aug 2023 00:24:26 +0300 (+03)
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To:     ardb@kernel.org, dave.hansen@linux.intel.com
-Cc:     kirill.shutemov@linux.intel.com, linux-efi@vger.kernel.org,
-        x86@kernel.org
-Subject: [PATCH] x86/mm: Make e820_end_ram_pfn() cover E820_TYPE_ACPI ranges
-Date:   Thu, 17 Aug 2023 00:24:18 +0300
-Message-ID: <20230816212418.25069-1-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230816190557.3738-1-ardb@kernel.org>
-References: <20230816190557.3738-1-ardb@kernel.org>
+        with ESMTP id S1347976AbjHQEKd (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 17 Aug 2023 00:10:33 -0400
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B24EF272B
+        for <linux-efi@vger.kernel.org>; Wed, 16 Aug 2023 21:10:31 -0700 (PDT)
+Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-3a7d7df4e67so5150854b6e.1
+        for <linux-efi@vger.kernel.org>; Wed, 16 Aug 2023 21:10:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692245431; x=1692850231;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gb4qAVlMN/V48c3tDnit9Qdh+68rSKImmu7s/ky4OWc=;
+        b=QZVr/KEqicRI/6SEayyUCINnGyTCaHQNpUidP/rTVfZpzY4WuOMnHGcHVPKXN4Avtd
+         v2Heqe2gzJDKdah5q8+CrUXrM0gbgquO1BMb3sXLowyrDdQb9bNyqDLhualr7G4ZOsjc
+         6dUMsjpMSnM3V0bOiyUgHeHbgMhaGR1qwXpEmWCTeVOu5foSWdJkBMiICSSlknsgKzjT
+         i11BLhBsjTOusIbMPFfUUNx099LKBDik3WnhGcmkMQAQmXKOjBWOmvzPmwLBcnW2Z4pK
+         qSIRe1U1PMqbITVS5d7PRt3HFk6Ih8+6SeqgL9N+S7PfD0F8hRDBVXMKeDOVoJMboMd2
+         Seug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692245431; x=1692850231;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gb4qAVlMN/V48c3tDnit9Qdh+68rSKImmu7s/ky4OWc=;
+        b=f+GnNgsTjIXAXa+O7oSzfLZT+E0C2gNGVMXYIWRZ2BdeDVLWA/WxMS6mg08pnniPLt
+         xVMlt7Z6q7veSW0uEKVFI+S9K76WNfPMECaIwLx0gauudXZk9tOIc6uaxDFhGP1gORbM
+         LBH+4hjQGx8vtgjyJMIj9KCDcPfza/AobafinxFQBqkIJD9mmUo+7z4dQfmJ69R3zI5p
+         1Hei+95w6JS07+lf7YfB2wFKxtyWWVEnOcOzmKBK+aWgIka+Mbwh+TGumPXEap92aKUg
+         E1KuDuWvtJYknlVbrCk01eA0HcZBG7fEH/1il3/AaXR6SlDlOBo4zDrg3mD78uyWnf5a
+         0CLg==
+X-Gm-Message-State: AOJu0YxrmgEX4vEB3X63pAUeHNDnhtUEnmndGM+Cu++XZuIkwviN/bFO
+        0lbo/dPs2gWIQddJV5/Y1QXFwJbDV7iA45IE+W8=
+X-Google-Smtp-Source: AGHT+IE+EUtZMOEKAqBMqqYWqu/RGZn+LQHYrEoeh4RZ4kAZ5+7Cge6AatfGuElbDFAwVCFeG3d4+yjCF93CGJg6ub4=
+X-Received: by 2002:a05:6808:211d:b0:3a7:500a:a481 with SMTP id
+ r29-20020a056808211d00b003a7500aa481mr5048636oiw.3.1692245430889; Wed, 16 Aug
+ 2023 21:10:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6358:d099:b0:133:91d:bed5 with HTTP; Wed, 16 Aug 2023
+ 21:10:30 -0700 (PDT)
+Reply-To: privateemail01112@gmail.com
+From:   KEIN BRIGGS <privateemailjsuee@gmail.com>
+Date:   Wed, 16 Aug 2023 21:10:30 -0700
+Message-ID: <CAGgyiOpF7Zv46NvVHY4rvTo1qBA_8ijKgS9y7fMp4AZEZxHXwQ@mail.gmail.com>
+Subject: Your attention please!!
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-e820__end_of_ram_pfn() is used to calculate max_pfn which, among other
-things, guides where direct mapping ends. Any memory above max_pfn is
-not going to be present in the direct mapping.
+Your attention please!
 
-e820__end_of_ram_pfn() finds the end of the ram based on the highest
-E820_TYPE_RAM range. But it doesn't includes E820_TYPE_ACPI ranges into
-calculation.
+My efforts to reaching you many times always not through.
 
-Despite the name, E820_TYPE_ACPI covers not only ACPI data, but also EFI
-tables and might be required by kernel to function properly.
+Please may you kindly let me know if you are still using this email
+address as my previous messages to you were not responded to.
 
-Usually the problem is hidden because there is some E820_TYPE_RAM memory
-above E820_TYPE_ACPI. But crashkernel only presents pre-allocated crash
-memory as E820_TYPE_RAM on boot. If the preallocated range is small, it
-can fit under the last E820_TYPE_ACPI range.
+I await hearing from you once more if my previous messages were not received.
+Reach me via my email: privateemail01112@gmail.com
 
-Modify e820__end_of_ram_pfn() and e820__end_of_low_ram_pfn() to cover
-E820_TYPE_ACPI memory.
-
-The problem was discovered during debugging kexec for TDX guest. TDX
-guest uses E820_TYPE_ACPI to store the unaccepted memory bitmap and pass
-it between the kernels on kexec.
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- arch/x86/kernel/e820.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
-index fb8cf953380d..99c80680dc9e 100644
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -827,7 +827,7 @@ u64 __init e820__memblock_alloc_reserved(u64 size, u64 align)
- /*
-  * Find the highest page frame number we have available
-  */
--static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type type)
-+static unsigned long __init e820_end_ram_pfn(unsigned long limit_pfn)
- {
- 	int i;
- 	unsigned long last_pfn = 0;
-@@ -838,7 +838,8 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
- 		unsigned long start_pfn;
- 		unsigned long end_pfn;
- 
--		if (entry->type != type)
-+		if (entry->type != E820_TYPE_RAM &&
-+		    entry->type != E820_TYPE_ACPI)
- 			continue;
- 
- 		start_pfn = entry->addr >> PAGE_SHIFT;
-@@ -864,12 +865,12 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
- 
- unsigned long __init e820__end_of_ram_pfn(void)
- {
--	return e820_end_pfn(MAX_ARCH_PFN, E820_TYPE_RAM);
-+	return e820_end_ram_pfn(MAX_ARCH_PFN);
- }
- 
- unsigned long __init e820__end_of_low_ram_pfn(void)
- {
--	return e820_end_pfn(1UL << (32 - PAGE_SHIFT), E820_TYPE_RAM);
-+	return e820_end_ram_pfn(1UL << (32 - PAGE_SHIFT));
- }
- 
- static void __init early_panic(char *msg)
--- 
-2.41.0
-
+My regards,
+Kein Briggs.
