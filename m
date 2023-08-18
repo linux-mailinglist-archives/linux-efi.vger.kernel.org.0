@@ -2,36 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCA59780B3B
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Aug 2023 13:38:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CDA4780B3F
+	for <lists+linux-efi@lfdr.de>; Fri, 18 Aug 2023 13:38:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376705AbjHRLiT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 18 Aug 2023 07:38:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48310 "EHLO
+        id S1376706AbjHRLiU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 18 Aug 2023 07:38:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376706AbjHRLh7 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Aug 2023 07:37:59 -0400
+        with ESMTP id S1376707AbjHRLiD (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Aug 2023 07:38:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E6AF2112
-        for <linux-efi@vger.kernel.org>; Fri, 18 Aug 2023 04:37:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 173BF2112
+        for <linux-efi@vger.kernel.org>; Fri, 18 Aug 2023 04:38:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D45361DD9
-        for <linux-efi@vger.kernel.org>; Fri, 18 Aug 2023 11:37:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6AFCC433C7;
-        Fri, 18 Aug 2023 11:37:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D0C1611F0
+        for <linux-efi@vger.kernel.org>; Fri, 18 Aug 2023 11:38:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BBCFC433CD;
+        Fri, 18 Aug 2023 11:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692358677;
-        bh=gupJBs1lJenWEdQdfCpvOfI2K/VV4o0bjxCM20K6qUY=;
+        s=k20201202; t=1692358681;
+        bh=h29N0feBCav5r5bx0a4iK0yWxYcrWfDbXT4psaOKqR8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OJkOj5K/UbTDWb+vX79Qbk0rA0RdXRE61Sw14IUSg/YX4nZwz9sn5agwCAadr4voY
-         k/c10UqHjMxVCRHrrcNxrlFQswE0sALDHXb2Liecfs4Zvs/Y8Eh+/CRtKFUGLG/7qO
-         P2/UfwglOlm0T098bQx08FJKx/jYXgGSJSLZzf6HXgZ3+lhnm1mXAv9ONza5ylU3uy
-         uk4nSWgGncoV+fiwlZvwrclJpFM9CmEvKl42f2Q4Z2edao65lTQmXDMR2g40tlpDoC
-         whlp0sFpfVRSBazcZNxJY5hUoNk+54imDull+kJS/RDkXCzN5z9DwE2k9pDJhc+0+H
-         gYKazAcwMfLDA==
+        b=NbkpZNYei9X+OpHern2zrvsSUsfRucH3f1ylsg07jLvAVE0koW2TOHXEkB7BcdCqX
+         luNxc3/mfZv4tHLuQgwEAkK3cfsgfB9mL1xvB+suvYyQKjeBeNDCDa7XR49XzeVLMn
+         yQE6lSwbgRzf9y5L1whs8fLzECjlnM1JDg63Zfq2IBKuy1cXmCqfrDgjAH5ERpna6p
+         7lKkSB1PVGkiTQ91HQ5uvl27Q+mJvWa5tFHrkLvi2C7Zy9u/S2vh0AMKwJMEhLbmRJ
+         OIL+O5qn7bwIbrc1LjohkFjnj28Cr+59lfeekAZIj9ATYLbFbMOTCwBY/JtRelewTS
+         D0iUxiJSXh23A==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
@@ -45,15 +45,16 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>
-Subject: [PATCH v2 07/11] efi/runtime-wrappers: Don't duplicate setup/teardown code
-Date:   Fri, 18 Aug 2023 13:37:20 +0200
-Message-Id: <20230818113724.368492-8-ardb@kernel.org>
+        Nick Desaulniers <ndesaulniers@google.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH v2 08/11] acpi/prmt: Use EFI runtime sandbox to invoke PRM handlers
+Date:   Fri, 18 Aug 2023 13:37:21 +0200
+Message-Id: <20230818113724.368492-9-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230818113724.368492-1-ardb@kernel.org>
 References: <20230818113724.368492-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4983; i=ardb@kernel.org; h=from:subject; bh=gupJBs1lJenWEdQdfCpvOfI2K/VV4o0bjxCM20K6qUY=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeV++Iec064Z5ff2LBHO3T3LKuoNZ/JR/zWTjzjmcOSXs xw0CmLvKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABPJNGD4Z/6ytuBQWkBP0qE7 6z1+2713FRNW8T9693tn7PYtz91/ZzP84Uy3nSju3f3KVOlMp/8LvSslE50+rGC15/dyWiB+xnE WOwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4465; i=ardb@kernel.org; h=from:subject; bh=h29N0feBCav5r5bx0a4iK0yWxYcrWfDbXT4psaOKqR8=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeV++MevzoGn1iSu2tCTdqFzi9XRJz8mveVPr1yQ6a44O 45n2cwlHaUsDGIcDLJiiiwCs/++23l6olSt8yxZmDmsTCBDGLg4BWAic2wZ/ul6Z8WeN7n00ycy duPO3j9Bm5qy1nr8PfHCrueG+dr3ezYzMvxT+evL8XzxoU/1foJ3L6hXGjwsW6y3NmRWiUFW/Rl LUyYA
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -66,141 +67,132 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Avoid duplicating the EFI arch setup and teardown routine calls numerous
-times in efi_call_rts(). Instead, expand the efi_call_virt_pointer()
-macro into efi_call_rts(), taking the pre and post parts out of the
-switch.
+Instead of bypassing the kernel's adaptation layer for performing EFI
+runtime calls, wire up ACPI PRM handling into it. This means these calls
+can no longer occur concurrently with EFI runtime calls, and will be
+made from the EFI runtime workqueue. It also means any page faults
+occurring during PRM handling will be identified correctly as
+originating in firmware code.
 
+While at it, give the function pointer struct member a more descriptive
+name so it will stand out in diagnostic messages if any issues do occur.
+
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/firmware/efi/runtime-wrappers.c | 26 ++++++++++++++------
- include/linux/efi.h                     |  6 +++--
- 2 files changed, 22 insertions(+), 10 deletions(-)
+ drivers/acpi/Kconfig                    |  2 +-
+ drivers/acpi/prmt.c                     |  6 ++--
+ drivers/firmware/efi/runtime-wrappers.c | 32 ++++++++++++++++++++
+ include/linux/efi.h                     |  5 +++
+ 4 files changed, 41 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index 00dd309b66828182..cee82b473dc50921 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -581,7 +581,7 @@ config ACPI_VIOT
+ 
+ config ACPI_PRMT
+ 	bool "Platform Runtime Mechanism Support"
+-	depends on EFI && (X86_64 || ARM64)
++	depends on EFI_RUNTIME_WRAPPERS && (X86_64 || ARM64)
+ 	default y
+ 	help
+ 	  Platform Runtime Mechanism (PRM) is a firmware interface exposing a
+diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+index 71b9adaaf33b93cf..7020584096bfaaaf 100644
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -260,9 +260,9 @@ static acpi_status acpi_platformrt_space_handler(u32 function,
+ 		context.static_data_buffer = handler->static_data_buffer_addr;
+ 		context.mmio_ranges = module->mmio_info;
+ 
+-		status = efi_call_virt_pointer(handler, handler_addr,
+-					       handler->acpi_param_buffer_addr,
+-					       &context);
++		status = efi_call_acpi_prm_handler(handler->handler_addr,
++						   handler->acpi_param_buffer_addr,
++						   &context);
+ 		if (status == EFI_SUCCESS) {
+ 			buffer->prm_status = PRM_HANDLER_SUCCESS;
+ 		} else {
 diff --git a/drivers/firmware/efi/runtime-wrappers.c b/drivers/firmware/efi/runtime-wrappers.c
-index c5e0c73cc000ed25..afe9248cc5bc61ba 100644
+index afe9248cc5bc61ba..71d3c70f0705e1b9 100644
 --- a/drivers/firmware/efi/runtime-wrappers.c
 +++ b/drivers/firmware/efi/runtime-wrappers.c
-@@ -40,7 +40,7 @@
-  * code doesn't get too cluttered:
-  */
- #define efi_call_virt(f, args...)   \
--	efi_call_virt_pointer(efi.runtime, f, args)
-+	arch_efi_call_virt(efi.runtime, f, args)
- 
- union efi_rts_args {
- 	struct {
-@@ -139,7 +139,7 @@ unsigned long efi_call_virt_save_flags(void)
- 	return flags;
- }
- 
--void efi_call_virt_check_flags(unsigned long flags, const char *call)
-+void efi_call_virt_check_flags(unsigned long flags, const void *caller)
- {
- 	unsigned long cur_flags, mismatch;
- 
-@@ -150,8 +150,8 @@ void efi_call_virt_check_flags(unsigned long flags, const char *call)
- 		return;
- 
- 	add_taint(TAINT_FIRMWARE_WORKAROUND, LOCKDEP_NOW_UNRELIABLE);
--	pr_err_ratelimited(FW_BUG "IRQ flags corrupted (0x%08lx=>0x%08lx) by EFI %s\n",
--			   flags, cur_flags, call);
-+	pr_err_ratelimited(FW_BUG "IRQ flags corrupted (0x%08lx=>0x%08lx) by EFI call from %pS\n",
-+			   flags, cur_flags, caller ?: __builtin_return_address(0));
- 	arch_efi_restore_flags(flags);
- }
- 
-@@ -211,6 +211,10 @@ static void efi_call_rts(struct work_struct *work)
- {
- 	const union efi_rts_args *args = efi_rts_work.args;
- 	efi_status_t status = EFI_NOT_FOUND;
-+	unsigned long flags;
+@@ -108,6 +108,12 @@ union efi_rts_args {
+ 		u64		*max_size;
+ 		int		*reset_type;
+ 	} QUERY_CAPSULE_CAPS;
 +
-+	arch_efi_call_virt_setup();
-+	flags = efi_call_virt_save_flags();
- 
- 	switch (efi_rts_work.efi_rts_id) {
- 	case EFI_GET_TIME:
-@@ -287,6 +291,10 @@ static void efi_call_rts(struct work_struct *work)
- 		 */
- 		pr_err("Requested executing invalid EFI Runtime Service.\n");
- 	}
-+
-+	efi_call_virt_check_flags(flags, efi_rts_work.caller);
-+	arch_efi_call_virt_teardown();
-+
- 	efi_rts_work.status = status;
- 	complete(&efi_rts_work.efi_rts_comp);
- }
-@@ -296,6 +304,7 @@ static efi_status_t __efi_queue_work(enum efi_rts_ids id,
- {
- 	efi_rts_work.efi_rts_id = id;
- 	efi_rts_work.args = args;
-+	efi_rts_work.caller = __builtin_return_address(0);
- 	efi_rts_work.status = EFI_ABORTED;
- 
- 	if (!efi_enabled(EFI_RUNTIME_SERVICES)) {
-@@ -423,8 +432,8 @@ virt_efi_set_variable_nonblocking(efi_char16_t *name, efi_guid_t *vendor,
- 	if (down_trylock(&efi_runtime_lock))
- 		return EFI_NOT_READY;
- 
--	status = efi_call_virt(set_variable, name, vendor, attr, data_size,
--			       data);
-+	status = efi_call_virt_pointer(efi.runtime, set_variable, name, vendor,
-+				       attr, data_size, data);
- 	up(&efi_runtime_lock);
- 	return status;
- }
-@@ -462,8 +471,9 @@ virt_efi_query_variable_info_nonblocking(u32 attr,
- 	if (down_trylock(&efi_runtime_lock))
- 		return EFI_NOT_READY;
- 
--	status = efi_call_virt(query_variable_info, attr, storage_space,
--			       remaining_space, max_variable_size);
-+	status = efi_call_virt_pointer(efi.runtime, query_variable_info, attr,
-+				       storage_space, remaining_space,
-+				       max_variable_size);
- 	up(&efi_runtime_lock);
- 	return status;
- }
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index ebb9671ed15ee3cb..cf450b6fbfd20aa5 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -1130,7 +1130,7 @@ extern bool efi_runtime_disabled(void);
- static inline bool efi_runtime_disabled(void) { return true; }
- #endif
- 
--extern void efi_call_virt_check_flags(unsigned long flags, const char *call);
-+extern void efi_call_virt_check_flags(unsigned long flags, const void *caller);
- extern unsigned long efi_call_virt_save_flags(void);
- 
- enum efi_secureboot_mode {
-@@ -1197,7 +1197,7 @@ static inline void efi_check_for_embedded_firmwares(void) { }
- 									\
- 	__flags = efi_call_virt_save_flags();				\
- 	__s = arch_efi_call_virt(p, f, args);				\
--	efi_call_virt_check_flags(__flags, __stringify(f));		\
-+	efi_call_virt_check_flags(__flags, NULL);			\
- 									\
- 	arch_efi_call_virt_teardown();					\
- 									\
-@@ -1258,6 +1258,7 @@ union efi_rts_args;
-  * @status:		Status of executing EFI Runtime Service
-  * @efi_rts_id:		EFI Runtime Service function identifier
-  * @efi_rts_comp:	Struct used for handling completions
-+ * @caller:		The caller of the runtime service
-  */
- struct efi_runtime_work {
- 	union efi_rts_args	*args;
-@@ -1265,6 +1266,7 @@ struct efi_runtime_work {
- 	struct work_struct	work;
- 	enum efi_rts_ids	efi_rts_id;
- 	struct completion	efi_rts_comp;
-+	const void		*caller;
++	struct {
++		efi_status_t	(__efiapi *acpi_prm_handler)(u64, void *);
++		u64		param_buffer_addr;
++		void		*context;
++	} ACPI_PRM_HANDLER;
  };
  
- extern struct efi_runtime_work efi_rts_work;
+ struct efi_runtime_work efi_rts_work;
+@@ -283,6 +289,14 @@ static void efi_call_rts(struct work_struct *work)
+ 				       args->QUERY_CAPSULE_CAPS.max_size,
+ 				       args->QUERY_CAPSULE_CAPS.reset_type);
+ 		break;
++	case EFI_ACPI_PRM_HANDLER:
++#ifdef CONFIG_ACPI_PRMT
++		status = arch_efi_call_virt(&args->ACPI_PRM_HANDLER,
++					    acpi_prm_handler,
++					    args->ACPI_PRM_HANDLER.param_buffer_addr,
++					    args->ACPI_PRM_HANDLER.context);
++		break;
++#endif
+ 	default:
+ 		/*
+ 		 * Ideally, we should never reach here because a caller of this
+@@ -560,3 +574,21 @@ void efi_native_runtime_setup(void)
+ 	efi.update_capsule = virt_efi_update_capsule;
+ 	efi.query_capsule_caps = virt_efi_query_capsule_caps;
+ }
++
++#ifdef CONFIG_ACPI_PRMT
++
++efi_status_t
++efi_call_acpi_prm_handler(efi_status_t (__efiapi *handler_addr)(u64, void *),
++			  u64 param_buffer_addr, void *context)
++{
++	efi_status_t status;
++
++	if (down_interruptible(&efi_runtime_lock))
++		return EFI_ABORTED;
++	status = efi_queue_work(ACPI_PRM_HANDLER, handler_addr,
++				param_buffer_addr, context);
++	up(&efi_runtime_lock);
++	return status;
++}
++
++#endif
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index cf450b6fbfd20aa5..15b94dad5091b406 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -1229,6 +1229,10 @@ extern int efi_tpm_final_log_size;
+ 
+ extern unsigned long rci2_table_phys;
+ 
++efi_status_t
++efi_call_acpi_prm_handler(efi_status_t (__efiapi *handler_addr)(u64, void *),
++			  u64 param_buffer_addr, void *context);
++
+ /*
+  * efi_runtime_service() function identifiers.
+  * "NONE" is used by efi_recover_from_page_fault() to check if the page
+@@ -1248,6 +1252,7 @@ enum efi_rts_ids {
+ 	EFI_RESET_SYSTEM,
+ 	EFI_UPDATE_CAPSULE,
+ 	EFI_QUERY_CAPSULE_CAPS,
++	EFI_ACPI_PRM_HANDLER,
+ };
+ 
+ union efi_rts_args;
 -- 
 2.39.2
 
