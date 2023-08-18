@@ -2,36 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C5FA780CDC
+	by mail.lfdr.de (Postfix) with ESMTP id 55C36780CDD
 	for <lists+linux-efi@lfdr.de>; Fri, 18 Aug 2023 15:46:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377306AbjHRNp5 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 18 Aug 2023 09:45:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49232 "EHLO
+        id S1377310AbjHRNp6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 18 Aug 2023 09:45:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377311AbjHRNpc (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Aug 2023 09:45:32 -0400
+        with ESMTP id S1377326AbjHRNpd (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Aug 2023 09:45:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4B723590;
-        Fri, 18 Aug 2023 06:45:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B50B4206;
+        Fri, 18 Aug 2023 06:45:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 62B5D61977;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DBE461D29;
+        Fri, 18 Aug 2023 13:45:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6FAC433CA;
         Fri, 18 Aug 2023 13:45:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0744C433C8;
-        Fri, 18 Aug 2023 13:45:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692366317;
-        bh=U1EXI1fzEpmikIDVB6kaNJZr9EWOdxZEAwrcc4mhTpc=;
+        s=k20201202; t=1692366321;
+        bh=SudZY6dM7iSHDEmunRbCEUlfeF/tUhKpZ/EYxjc0s/s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B9CXjW7xm4GPt9Z3Gjyswa+vSpbINSA+YIBP+6fV8XFe4YJgPRZ7v02fpm8NmHszg
-         ACubY0UzAHAtakw/q7oDtjMA7WIkKgiDxySMIjsURvXVUYYQAwFsIP1/H5HezByta0
-         pmJpYv+QM7CCAACATMJTk9BnCMLI/hO5LGLhuWigMr3tdg80SevEtmmKLpDmkQfGpW
-         aV99/eZiHpcT4C4/B/tvjswSu0hB09SXHJZoSDRn2jSUA6w8PBOmJ/SG6TJBxTsdbq
-         QELtduhjdeo6kUBtS7qHpnPer2QB0SGje39saNCmOD4Z+u5iv3YF8YEZ2yT73k/+vs
-         g7JN/g51Df/Tw==
+        b=cimQY2u8Md+cTQUQKq3hu/hZRzXj0O6p0yrhV/8Pm0Zdz/d6lG6895KnN5VDtiJLH
+         vl+FnH2uwaHkjq70KugigaTZfboNBBTe+EsXezVPhrdtYCDhv9lYdHDmY8Z4l5f3HK
+         AH3MhsySmoeXYzaEuPEn/qXK2boU9+1HG4c724fWK5HRSpSjTUfUKpXlsoy3xqMBvI
+         i9ZZV1DLk4mfPF4vDUv5/txT41rPx8LACuiBOO/J9ns9eqcKBpdp8JVZf3W6ITKsXk
+         +GLvdTt7EQFOI8gyG/6zazpasv10HbpeIlao/afdMrCVlq2l/s4+7yFQaMVSqSqq8I
+         E8MFhNE3MmaWw==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -46,14 +46,14 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Kees Cook <keescook@chromium.org>,
         "H. Peter Anvin" <hpa@zytor.com>,
         =?UTF-8?q?Marvin=20H=C3=A4user?= <mhaeuser@posteo.de>
-Subject: [PATCH 11/17] x86/boot: Use fixed size of 16k for setup block
-Date:   Fri, 18 Aug 2023 15:44:16 +0200
-Message-Id: <20230818134422.380032-12-ardb@kernel.org>
+Subject: [PATCH 12/17] x86/boot: Derive file size from _edata symbol
+Date:   Fri, 18 Aug 2023 15:44:17 +0200
+Message-Id: <20230818134422.380032-13-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230818134422.380032-1-ardb@kernel.org>
 References: <20230818134422.380032-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4435; i=ardb@kernel.org; h=from:subject; bh=U1EXI1fzEpmikIDVB6kaNJZr9EWOdxZEAwrcc4mhTpc=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeV+6cqOpIkaCi5H2BZMWCXEI5SrEOvosyOk5oXnmvX2q dwa9sUdpSwMYhwMsmKKLAKz/77beXqiVK3zLFmYOaxMIEMYuDgFYCIGNgz/VDKV1yxKvnzrUOVX gaB1If/fmS5PF6mdfcB/7q5HbqKX3zMy7Fm2cMJe45szvNbINRV+WiFhaiTg2Vkz4dTZFYuju3N WcAAA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5014; i=ardb@kernel.org; h=from:subject; bh=SudZY6dM7iSHDEmunRbCEUlfeF/tUhKpZ/EYxjc0s/s=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeV+6aob+1L9p4UdjnJby7qOWeLKN9V7gXq7Dyb/sbJ2f dr6IXd5RykLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZhIbz/DfxcX75tSH9IvXeBb cPSnvdD25w27fdju7K3SXlw+oXLmjBCG//5370y5IxObq753knMgz/ct9VXsaxacZ9QuUlvBulK inxsA
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -65,124 +65,138 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The setup block contains the real mode startup code that is used when
-booting from a legacy BIOS, along with the boot_params/setup_data that
-is used by legacy x86 bootloaders to pass the command line and initial
-ramdisk parameters, among other things.
+Tweak the linker script so that the value of _edata represents the
+decompressor binary's file size rounded up to the appropriate alignment.
+This removes the need to calculate it in the build tool, and will make
+it easier to refer to the file size from the header directly in
+subsequent changes to the PE header layout.
 
-The setup block also contains the PE/COFF header of the entire combined
-image, which includes the compressed kernel image, the decompressor and
-the EFI stub.
+While adding _edata to the sed regex that parses the compressed
+vmlinux's symbol list, tweak the regex a bit for conciseness.
 
-This PE header describes the layout of the executable image in memory,
-and currently, the fact that the setup block precedes it makes it rather
-fiddly to get the right values into the right place in the final image.
-
-One complicating factor here is the variable setup block size, and given
-that we will need to round up the setup block size to page size anyway
-in a subsequent patch (in order to be able to use different permissions
-for .text and .data), let's round it up to a fixed size of 16 KiB and be
-done with it.
-
-Note that Clang does not optimize for size as aggressively as GCC when
-using the -Os option, but it supports -Oz for this purpose, so pass that
-if the compiler supports it.
+Note that the resulting binary is identical (for CONFIG_EFI_STUB=y
+builds)
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/Makefile      |  1 +
- arch/x86/boot/header.S      |  6 +++++-
- arch/x86/boot/setup.ld      |  1 +
- arch/x86/boot/tools/build.c | 12 +++++-------
- 4 files changed, 12 insertions(+), 8 deletions(-)
+ arch/x86/boot/Makefile                 |  2 +-
+ arch/x86/boot/compressed/vmlinux.lds.S |  3 ++
+ arch/x86/boot/header.S                 |  2 +-
+ arch/x86/boot/tools/build.c            | 30 +++++---------------
+ 4 files changed, 12 insertions(+), 25 deletions(-)
 
 diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
-index 0e98bc5036994715..be1e8b94c93afa4a 100644
+index be1e8b94c93afa4a..b26e30a2d865f72d 100644
 --- a/arch/x86/boot/Makefile
 +++ b/arch/x86/boot/Makefile
-@@ -69,6 +69,7 @@ KBUILD_CFLAGS	:= $(REALMODE_CFLAGS) -D_SETUP
- KBUILD_AFLAGS	:= $(KBUILD_CFLAGS) -D__ASSEMBLY__
- KBUILD_CFLAGS	+= $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
- KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables
-+KBUILD_CFLAGS	+= $(call cc-option,-Oz)
- GCOV_PROFILE := n
- UBSAN_SANITIZE := n
+@@ -90,7 +90,7 @@ $(obj)/vmlinux.bin: $(obj)/compressed/vmlinux FORCE
  
+ SETUP_OBJS = $(addprefix $(obj)/,$(setup-y))
+ 
+-sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|efi32_stub_entry\|efi64_stub_entry\|efi_pe_entry\|efi32_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|z_.*\)$$/\#define ZO_\2 0x\1/p'
++sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|efi.._stub_entry\|efi\(32\)\?_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|_edata\|z_.*\)$$/\#define ZO_\2 0x\1/p'
+ 
+ quiet_cmd_zoffset = ZOFFSET $@
+       cmd_zoffset = $(NM) $< | sed -n $(sed-zoffset) > $@
+diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
+index 4ff6ab1b67d9b336..5326f3b441948c5d 100644
+--- a/arch/x86/boot/compressed/vmlinux.lds.S
++++ b/arch/x86/boot/compressed/vmlinux.lds.S
+@@ -47,6 +47,9 @@ SECTIONS
+ 		_data = . ;
+ 		*(.data)
+ 		*(.data.*)
++
++		/* add 4 bytes of extra space for a CRC-32 checksum */
++		. = ALIGN(. + 4, 0x20);
+ 		_edata = . ;
+ 	}
+ 	. = ALIGN(L1_CACHE_BYTES);
 diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-index 72744ba440f6ea09..bef9265173757a5a 100644
+index bef9265173757a5a..f1fdffc9d2ca984b 100644
 --- a/arch/x86/boot/header.S
 +++ b/arch/x86/boot/header.S
-@@ -36,6 +36,10 @@ SYSSEG		= 0x1000		/* historical load address >> 4 */
- #define ROOT_RDONLY 1
- #endif
- 
-+	/* The setup block has a fixed size: 32 * 512 == 16k */
-+	.globl	setup_size
-+	.set	setup_size, 0x4000
-+
- 	.code16
- 	.section ".bstext", "ax"
- #ifdef CONFIG_EFI_STUB
-@@ -231,7 +235,7 @@ sentinel:	.byte 0xff, 0xff        /* Used to detect broken loaders */
- 
- 	.globl	hdr
+@@ -237,7 +237,7 @@ sentinel:	.byte 0xff, 0xff        /* Used to detect broken loaders */
  hdr:
--setup_sects:	.byte 0			/* Filled in by build.c */
-+setup_sects:	.byte (setup_size / 512) - 1
+ setup_sects:	.byte (setup_size / 512) - 1
  root_flags:	.word ROOT_RDONLY
- syssize:	.long 0			/* Filled in by build.c */
+-syssize:	.long 0			/* Filled in by build.c */
++syssize:	.long ZO__edata / 16
  ram_size:	.word 0			/* Obsolete */
-diff --git a/arch/x86/boot/setup.ld b/arch/x86/boot/setup.ld
-index a05dcaa4b74cd9f8..f1c14616cd80390d 100644
---- a/arch/x86/boot/setup.ld
-+++ b/arch/x86/boot/setup.ld
-@@ -57,6 +57,7 @@ SECTIONS
- 	}
- 
- 	ASSERT(_end <= 0x8000, "Setup too big!")
-+	ASSERT(__bss_start <= setup_size, "Setup image size too big!")
- 	ASSERT(hdr == 0x1f1, "The setup header has the wrong offset!")
- 	/* Necessary for the very-old-loader check to work... */
- 	ASSERT(__end_init <= 5*512, "init sections too big!")
+ vid_mode:	.word SVGA_MODE
+ root_dev:	.word 0			/* Default to major/minor 0/0 */
 diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-index 06949754316458ce..665ce7241542e475 100644
+index 665ce7241542e475..082c38a097713a2d 100644
 --- a/arch/x86/boot/tools/build.c
 +++ b/arch/x86/boot/tools/build.c
-@@ -40,12 +40,10 @@ typedef unsigned char  u8;
- typedef unsigned short u16;
- typedef unsigned int   u32;
+@@ -55,6 +55,7 @@ u8 buf[(SETUP_SECT_NUM+1)*512];
  
--/* Minimal number of setup sectors */
--#define SETUP_SECT_MIN 5
--#define SETUP_SECT_MAX 64
-+#define SETUP_SECT_NUM 32
+ static unsigned long efi_pe_entry;
+ static unsigned long efi32_pe_entry;
++static unsigned long _edata;
+ static unsigned long _end;
  
- /* This must be large enough to hold the entire setup */
--u8 buf[SETUP_SECT_MAX*512];
-+u8 buf[(SETUP_SECT_NUM+1)*512];
+ /*----------------------------------------------------------------------*/
+@@ -311,6 +312,7 @@ static void parse_zoffset(char *fname)
+ 	while (p && *p) {
+ 		PARSE_ZOFS(p, efi_pe_entry);
+ 		PARSE_ZOFS(p, efi32_pe_entry);
++		PARSE_ZOFS(p, _edata);
+ 		PARSE_ZOFS(p, _end);
  
- #define PECOFF_RELOC_RESERVE 0x20
+ 		p = strchr(p, '\n');
+@@ -323,7 +325,6 @@ int main(int argc, char ** argv)
+ {
+ 	unsigned int i, sz, setup_sectors;
+ 	int c;
+-	u32 sys_size;
+ 	struct stat sb;
+ 	FILE *file, *dest;
+ 	int fd;
+@@ -372,24 +373,14 @@ int main(int argc, char ** argv)
+ 		die("Unable to open `%s': %m", argv[2]);
+ 	if (fstat(fd, &sb))
+ 		die("Unable to stat `%s': %m", argv[2]);
+-	sz = sb.st_size;
++	if (_edata != sb.st_size)
++		die("Unexpected file size `%s': %u != %u", argv[2], _edata,
++		    sb.st_size);
++	sz = _edata - 4;
+ 	kernel = mmap(NULL, sz, PROT_READ, MAP_SHARED, fd, 0);
+ 	if (kernel == MAP_FAILED)
+ 		die("Unable to mmap '%s': %m", argv[2]);
+-	/* Number of 16-byte paragraphs, including space for a 4-byte CRC */
+-	sys_size = (sz + 15 + 4) / 16;
+-#ifdef CONFIG_EFI_STUB
+-	/*
+-	 * COFF requires minimum 32-byte alignment of sections, and
+-	 * adding a signature is problematic without that alignment.
+-	 */
+-	sys_size = (sys_size + 1) & ~1;
+-#endif
+-
+-	/* Patch the setup code with the appropriate size parameters */
+-	put_unaligned_le32(sys_size, &buf[0x1f4]);
+-
+-	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16));
++	update_pecoff_text(setup_sectors * 512, i + _edata);
  
-@@ -360,8 +358,9 @@ int main(int argc, char ** argv)
  
- 	/* Pad unused space with zeros */
- 	setup_sectors = (c + 511) / 512;
--	if (setup_sectors < SETUP_SECT_MIN)
--		setup_sectors = SETUP_SECT_MIN;
-+	if (setup_sectors > SETUP_SECT_NUM)
-+		die("setup size exceeds maximum");
-+	setup_sectors = SETUP_SECT_NUM;
- 	i = setup_sectors*512;
- 	memset(buf+c, 0, i-c);
+ 	crc = partial_crc32(buf, i, crc);
+@@ -401,13 +392,6 @@ int main(int argc, char ** argv)
+ 	if (fwrite(kernel, 1, sz, dest) != sz)
+ 		die("Writing kernel failed");
  
-@@ -388,7 +387,6 @@ int main(int argc, char ** argv)
- #endif
- 
- 	/* Patch the setup code with the appropriate size parameters */
--	buf[0x1f1] = setup_sectors-1;
- 	put_unaligned_le32(sys_size, &buf[0x1f4]);
- 
- 	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16));
+-	/* Add padding leaving 4 bytes for the checksum */
+-	while (sz++ < (sys_size*16) - 4) {
+-		crc = partial_crc32_one('\0', crc);
+-		if (fwrite("\0", 1, 1, dest) != 1)
+-			die("Writing padding failed");
+-	}
+-
+ 	/* Write the CRC */
+ 	put_unaligned_le32(crc, buf);
+ 	if (fwrite(buf, 1, 4, dest) != 4)
 -- 
 2.39.2
 
