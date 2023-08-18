@@ -2,36 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1818E780D55
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Aug 2023 16:02:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83550780CD1
+	for <lists+linux-efi@lfdr.de>; Fri, 18 Aug 2023 15:46:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377742AbjHROB2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 18 Aug 2023 10:01:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59374 "EHLO
+        id S243693AbjHRNpx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 18 Aug 2023 09:45:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377364AbjHRNpQ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Aug 2023 09:45:16 -0400
+        with ESMTP id S1377274AbjHRNpX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Aug 2023 09:45:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEFEB4204;
-        Fri, 18 Aug 2023 06:45:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 415C93C2F;
+        Fri, 18 Aug 2023 06:45:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A28666A97;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CFA1666DF3;
+        Fri, 18 Aug 2023 13:45:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A6ABC433C9;
         Fri, 18 Aug 2023 13:45:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C2DC433C8;
-        Fri, 18 Aug 2023 13:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692366308;
-        bh=RctLeH91sUvM0RywhiGBIOdDJRjXojQ3lHnfxJM0QOk=;
+        s=k20201202; t=1692366311;
+        bh=7IcFenlYVGAMFMpSXq5CG+YnsHh0HQ4d1FXSlrsrYKU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ItSRvMFooE//MKYJe2iZoiC6PNRAGDcz+ItiweHZApzUHXhcvKFvZkvSkUn0VauYI
-         PTwyG/lHGEX/I6rmBPeoC3gEkRqRvqj6/DZpsa2UYio3R+LFZSL+c/DEGMdruGnhlK
-         zhXQ0fFhlRPUm+FTCEy/qTHRW0FY4WkkB6ZdKw88wP+V1yjSYW2fGVj6pcijCoZPCP
-         9zbrdPvuWJIofQH+WwWLd7Pp6qFZVyQikdJ3uzAX7ZZrrjORPABa/yz/w47hjEKjug
-         QG2KHwCzNdT6VE/4E+QwMhI6HtNlE/1KciOFZG87NFZHQsh0DYfjniE7i9Fal65EZR
-         KSUj3h8VIjADQ==
+        b=EXcjGDYgaKCgo5SWQiGZLD9qyb8AmfkxHy14VQKc+OcCdHtYDMcKlB9hFsMRI32vd
+         cSrzgfWrauShBUASjt6hVP2HCEZAAsWFdTW+CW53dmBqcLdKOBi7Bwtqgo6SMD82Ds
+         6/t88t+HnfB4HHXmIntOfjMlwcZgWubpbcu+/mnwZIImm4lb3tjdAOC1Ulu3h1HAqk
+         VRQo0qGt7YhWlC8/xjy5uJvBfPr9R9Eo3SFLsqY1VPw+/GOJ/15NNoEEVLMBZOFTYV
+         7ChO8MfK5q9glgmRjLct+BZbS3whsPCfoJHe49n6HcbShP+1+rBHCZE8Tvs8Q5BW2P
+         Cd6heUAGZ8b7w==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -46,14 +46,14 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Kees Cook <keescook@chromium.org>,
         "H. Peter Anvin" <hpa@zytor.com>,
         =?UTF-8?q?Marvin=20H=C3=A4user?= <mhaeuser@posteo.de>
-Subject: [PATCH 08/17] x86/boot: Drop references to startup_64
-Date:   Fri, 18 Aug 2023 15:44:13 +0200
-Message-Id: <20230818134422.380032-9-ardb@kernel.org>
+Subject: [PATCH 09/17] x86/boot: Set EFI handover offset directly in header asm
+Date:   Fri, 18 Aug 2023 15:44:14 +0200
+Message-Id: <20230818134422.380032-10-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230818134422.380032-1-ardb@kernel.org>
 References: <20230818134422.380032-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2126; i=ardb@kernel.org; h=from:subject; bh=RctLeH91sUvM0RywhiGBIOdDJRjXojQ3lHnfxJM0QOk=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeV+6VLNjxZB+748FP8dIed4Xatw//3Yn5NTXgnJ5a7sv FZvcVujo5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEzk6TJGhpXuX4K0/wqXzPx2 8aTzY5MjkzfsfdX4JCG3+YLszH0yElsYGd5lbnly7O0Po51l1w0EIlouHTaf9TCP9cxWhbVGb/f IezICAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3237; i=ardb@kernel.org; h=from:subject; bh=7IcFenlYVGAMFMpSXq5CG+YnsHh0HQ4d1FXSlrsrYKU=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeV+6bKJXtFVTB4nHper/+d1zFza8XDPvJWu4rvm6GeKf dCdc96ho5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEyk9y8jw82XWmfXnlulXdKm KPl3x+N57LbppitWLP3klVfS/K3fwoSRYfmSE5HVFfK7ks54sxzedy5bnn/VpupzNWa59twN31J vsgEA
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -65,57 +65,108 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The x86 boot image generation tool assign a default value to startup_64
-and subsequently parses the actual value from zoffset.h but it never
-actually uses the value anywhere. So remove this code.
+The offsets of the EFI handover entrypoints are available to the
+assembler when constructing the header, so there is no need to set them
+from the build tool afterwards.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/Makefile      | 2 +-
- arch/x86/boot/tools/build.c | 3 ---
- 2 files changed, 1 insertion(+), 4 deletions(-)
+ arch/x86/boot/header.S      | 18 ++++++++++++++-
+ arch/x86/boot/tools/build.c | 24 --------------------
+ 2 files changed, 17 insertions(+), 25 deletions(-)
 
-diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
-index f33e45ed143765f9..0e98bc5036994715 100644
---- a/arch/x86/boot/Makefile
-+++ b/arch/x86/boot/Makefile
-@@ -89,7 +89,7 @@ $(obj)/vmlinux.bin: $(obj)/compressed/vmlinux FORCE
+diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
+index 5575d0f06bab1918..72744ba440f6ea09 100644
+--- a/arch/x86/boot/header.S
++++ b/arch/x86/boot/header.S
+@@ -524,8 +524,24 @@ pref_address:		.quad LOAD_PHYSICAL_ADDR	# preferred load addr
+ # define INIT_SIZE VO_INIT_SIZE
+ #endif
  
- SETUP_OBJS = $(addprefix $(obj)/,$(setup-y))
++	.macro		__handover_offset
++#ifndef CONFIG_EFI_HANDOVER_PROTOCOL
++	.long		0
++#elif !defined(CONFIG_X86_64)
++	.long		ZO_efi32_stub_entry
++#else
++	/* Yes, this is really how we defined it :( */
++	.long		ZO_efi64_stub_entry - 0x200
++#ifdef CONFIG_EFI_MIXED
++	.if		ZO_efi32_stub_entry != ZO_efi64_stub_entry - 0x200
++	.error		"32-bit and 64-bit EFI entry points do not match"
++	.endif
++#endif
++#endif
++	.endm
++
+ init_size:		.long INIT_SIZE		# kernel initialization size
+-handover_offset:	.long 0			# Filled in by build.c
++handover_offset:	__handover_offset
+ kernel_info_offset:	.long ZO_kernel_info
  
--sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|startup_64\|efi32_stub_entry\|efi64_stub_entry\|efi_pe_entry\|efi32_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|z_.*\)$$/\#define ZO_\2 0x\1/p'
-+sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|efi32_stub_entry\|efi64_stub_entry\|efi_pe_entry\|efi32_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|z_.*\)$$/\#define ZO_\2 0x\1/p'
- 
- quiet_cmd_zoffset = ZOFFSET $@
-       cmd_zoffset = $(NM) $< | sed -n $(sed-zoffset) > $@
+ # End of setup header #####################################################
 diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-index 660627ea6cbb46f5..14ef13fe7ab021e7 100644
+index 14ef13fe7ab021e7..06949754316458ce 100644
 --- a/arch/x86/boot/tools/build.c
 +++ b/arch/x86/boot/tools/build.c
-@@ -59,7 +59,6 @@ static unsigned long efi32_stub_entry;
- static unsigned long efi64_stub_entry;
+@@ -55,8 +55,6 @@ u8 buf[SETUP_SECT_MAX*512];
+ #define PECOFF_COMPAT_RESERVE 0x0
+ #endif
+ 
+-static unsigned long efi32_stub_entry;
+-static unsigned long efi64_stub_entry;
  static unsigned long efi_pe_entry;
  static unsigned long efi32_pe_entry;
--static unsigned long startup_64;
  static unsigned long _end;
- 
- /*----------------------------------------------------------------------*/
-@@ -263,7 +262,6 @@ static void efi_stub_defaults(void)
- 	efi_pe_entry = 0x10;
- #else
- 	efi_pe_entry = 0x210;
--	startup_64 = 0x200;
+@@ -265,31 +263,12 @@ static void efi_stub_defaults(void)
  #endif
  }
  
-@@ -338,7 +336,6 @@ static void parse_zoffset(char *fname)
- 		PARSE_ZOFS(p, efi64_stub_entry);
+-static void efi_stub_entry_update(void)
+-{
+-	unsigned long addr = efi32_stub_entry;
+-
+-#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
+-#ifdef CONFIG_X86_64
+-	/* Yes, this is really how we defined it :( */
+-	addr = efi64_stub_entry - 0x200;
+-#endif
+-
+-#ifdef CONFIG_EFI_MIXED
+-	if (efi32_stub_entry != addr)
+-		die("32-bit and 64-bit EFI entry points do not match\n");
+-#endif
+-#endif
+-	put_unaligned_le32(addr, &buf[0x264]);
+-}
+-
+ #else
+ 
+ static inline void update_pecoff_setup_and_reloc(unsigned int size) {}
+ static inline void update_pecoff_text(unsigned int text_start,
+ 				      unsigned int file_sz) {}
+ static inline void efi_stub_defaults(void) {}
+-static inline void efi_stub_entry_update(void) {}
+ 
+ static inline int reserve_pecoff_reloc_section(int c)
+ {
+@@ -332,8 +311,6 @@ static void parse_zoffset(char *fname)
+ 	p = (char *)buf;
+ 
+ 	while (p && *p) {
+-		PARSE_ZOFS(p, efi32_stub_entry);
+-		PARSE_ZOFS(p, efi64_stub_entry);
  		PARSE_ZOFS(p, efi_pe_entry);
  		PARSE_ZOFS(p, efi32_pe_entry);
--		PARSE_ZOFS(p, startup_64);
  		PARSE_ZOFS(p, _end);
+@@ -416,7 +393,6 @@ int main(int argc, char ** argv)
  
- 		p = strchr(p, '\n');
+ 	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16));
+ 
+-	efi_stub_entry_update();
+ 
+ 	crc = partial_crc32(buf, i, crc);
+ 	if (fwrite(buf, 1, i, dest) != i)
 -- 
 2.39.2
 
