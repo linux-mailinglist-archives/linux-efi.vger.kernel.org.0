@@ -2,36 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55C36780CDD
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Aug 2023 15:46:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FEA9780CD0
+	for <lists+linux-efi@lfdr.de>; Fri, 18 Aug 2023 15:46:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377310AbjHRNp6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 18 Aug 2023 09:45:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49202 "EHLO
+        id S1348447AbjHRNp7 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 18 Aug 2023 09:45:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377326AbjHRNpd (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Aug 2023 09:45:33 -0400
+        with ESMTP id S1377337AbjHRNpe (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Aug 2023 09:45:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B50B4206;
-        Fri, 18 Aug 2023 06:45:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51B404220;
+        Fri, 18 Aug 2023 06:45:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DBE461D29;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E3C9A61B66;
+        Fri, 18 Aug 2023 13:45:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A1FC433CB;
         Fri, 18 Aug 2023 13:45:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6FAC433CA;
-        Fri, 18 Aug 2023 13:45:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692366321;
-        bh=SudZY6dM7iSHDEmunRbCEUlfeF/tUhKpZ/EYxjc0s/s=;
+        s=k20201202; t=1692366324;
+        bh=2tNYvCTQETnYKJxzTWyBNXcGaf0lQQ9jGnUVDVr3vNI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cimQY2u8Md+cTQUQKq3hu/hZRzXj0O6p0yrhV/8Pm0Zdz/d6lG6895KnN5VDtiJLH
-         vl+FnH2uwaHkjq70KugigaTZfboNBBTe+EsXezVPhrdtYCDhv9lYdHDmY8Z4l5f3HK
-         AH3MhsySmoeXYzaEuPEn/qXK2boU9+1HG4c724fWK5HRSpSjTUfUKpXlsoy3xqMBvI
-         i9ZZV1DLk4mfPF4vDUv5/txT41rPx8LACuiBOO/J9ns9eqcKBpdp8JVZf3W6ITKsXk
-         +GLvdTt7EQFOI8gyG/6zazpasv10HbpeIlao/afdMrCVlq2l/s4+7yFQaMVSqSqq8I
-         E8MFhNE3MmaWw==
+        b=f+aJPIvqFwCwaewVyyYQRfsdJYX4ak8lcaMhVlpT35Xer857YFF4dsXSH57MS+kje
+         nt7umP7spkcxjXMyggtRV3HCV+grUyogv3D+rEJRA65Wmixyc6RfE0b9EPcA9pjLZE
+         yGZ0/u2mk6zvFF28oNpyxDF98A5V221w4wRFOBnCSUX+JsKHtIrwcEYqKrA1Sh2QHB
+         ImvGma7PDDOAERURNTcSnke+HRgn82bQDmNhgh2vhP+lxhc8bvzKLjteXJyk4xiY5T
+         B8Yw/qwFCSU1X/SZVfQY3VJpcsfvKUStluPvDKJ4qPjsiWvgFYASX0H94B7NL9JSl5
+         vMBXUqNsbMQ5A==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -46,14 +46,14 @@ Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Kees Cook <keescook@chromium.org>,
         "H. Peter Anvin" <hpa@zytor.com>,
         =?UTF-8?q?Marvin=20H=C3=A4user?= <mhaeuser@posteo.de>
-Subject: [PATCH 12/17] x86/boot: Derive file size from _edata symbol
-Date:   Fri, 18 Aug 2023 15:44:17 +0200
-Message-Id: <20230818134422.380032-13-ardb@kernel.org>
+Subject: [PATCH 13/17] x86/boot: Construct PE/COFF .text section from assembler
+Date:   Fri, 18 Aug 2023 15:44:18 +0200
+Message-Id: <20230818134422.380032-14-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230818134422.380032-1-ardb@kernel.org>
 References: <20230818134422.380032-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5014; i=ardb@kernel.org; h=from:subject; bh=SudZY6dM7iSHDEmunRbCEUlfeF/tUhKpZ/EYxjc0s/s=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeV+6aob+1L9p4UdjnJby7qOWeLKN9V7gXq7Dyb/sbJ2f dr6IXd5RykLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZhIbz/DfxcX75tSH9IvXeBb cPSnvdD25w27fdju7K3SXlw+oXLmjBCG//5370y5IxObq753knMgz/ct9VXsaxacZ9QuUlvBulK inxsA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5082; i=ardb@kernel.org; h=from:subject; bh=2tNYvCTQETnYKJxzTWyBNXcGaf0lQQ9jGnUVDVr3vNI=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeV+6RqH2xp9W+Z3zdk8uVjXpV4z84p8intW/Ovje/suT fP9J3Oyo5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEyk+jjDf/8DhTOTX1mWr1m/ ulr6YPtUH4l1diY94TdVznnOLH0R+oORYdUOxV1/T/++cUBZpPTDGuuUi0krVv5e7vvfWGXhlY+ TD3IAAA==
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -65,138 +65,177 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Tweak the linker script so that the value of _edata represents the
-decompressor binary's file size rounded up to the appropriate alignment.
-This removes the need to calculate it in the build tool, and will make
-it easier to refer to the file size from the header directly in
-subsequent changes to the PE header layout.
+Now that the size of the setup block is fixed and visible to the
+assembler, it is possible to populate the PE/COFF header fields from the
+asm code directly, instead of poking the values into the binary using
+the build tool. This will make it easier to reorganize the section
+layout without having to tweak the build tool in lockstep.
 
-While adding _edata to the sed regex that parses the compressed
-vmlinux's symbol list, tweak the regex a bit for conciseness.
-
-Note that the resulting binary is identical (for CONFIG_EFI_STUB=y
-builds)
+Note that this change results in no differences in the resulting bzImage
+binary.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/Makefile                 |  2 +-
- arch/x86/boot/compressed/vmlinux.lds.S |  3 ++
- arch/x86/boot/header.S                 |  2 +-
- arch/x86/boot/tools/build.c            | 30 +++++---------------
- 4 files changed, 12 insertions(+), 25 deletions(-)
+ arch/x86/boot/header.S      | 22 +++------
+ arch/x86/boot/tools/build.c | 47 --------------------
+ 2 files changed, 7 insertions(+), 62 deletions(-)
 
-diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
-index be1e8b94c93afa4a..b26e30a2d865f72d 100644
---- a/arch/x86/boot/Makefile
-+++ b/arch/x86/boot/Makefile
-@@ -90,7 +90,7 @@ $(obj)/vmlinux.bin: $(obj)/compressed/vmlinux FORCE
- 
- SETUP_OBJS = $(addprefix $(obj)/,$(setup-y))
- 
--sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|efi32_stub_entry\|efi64_stub_entry\|efi_pe_entry\|efi32_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|z_.*\)$$/\#define ZO_\2 0x\1/p'
-+sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|efi.._stub_entry\|efi\(32\)\?_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|_edata\|z_.*\)$$/\#define ZO_\2 0x\1/p'
- 
- quiet_cmd_zoffset = ZOFFSET $@
-       cmd_zoffset = $(NM) $< | sed -n $(sed-zoffset) > $@
-diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
-index 4ff6ab1b67d9b336..5326f3b441948c5d 100644
---- a/arch/x86/boot/compressed/vmlinux.lds.S
-+++ b/arch/x86/boot/compressed/vmlinux.lds.S
-@@ -47,6 +47,9 @@ SECTIONS
- 		_data = . ;
- 		*(.data)
- 		*(.data.*)
-+
-+		/* add 4 bytes of extra space for a CRC-32 checksum */
-+		. = ALIGN(. + 4, 0x20);
- 		_edata = . ;
- 	}
- 	. = ALIGN(L1_CACHE_BYTES);
 diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-index bef9265173757a5a..f1fdffc9d2ca984b 100644
+index f1fdffc9d2ca984b..c23c5feef37e55ed 100644
 --- a/arch/x86/boot/header.S
 +++ b/arch/x86/boot/header.S
-@@ -237,7 +237,7 @@ sentinel:	.byte 0xff, 0xff        /* Used to detect broken loaders */
- hdr:
- setup_sects:	.byte (setup_size / 512) - 1
- root_flags:	.word ROOT_RDONLY
--syssize:	.long 0			/* Filled in by build.c */
-+syssize:	.long ZO__edata / 16
- ram_size:	.word 0			/* Obsolete */
- vid_mode:	.word SVGA_MODE
- root_dev:	.word 0			/* Default to major/minor 0/0 */
+@@ -79,14 +79,12 @@ optional_header:
+ 	.byte	0x02				# MajorLinkerVersion
+ 	.byte	0x14				# MinorLinkerVersion
+ 
+-	# Filled in by build.c
+-	.long	0				# SizeOfCode
++	.long	setup_size + ZO__end - 0x200	# SizeOfCode
+ 
+ 	.long	0				# SizeOfInitializedData
+ 	.long	0				# SizeOfUninitializedData
+ 
+-	# Filled in by build.c
+-	.long	0x0000				# AddressOfEntryPoint
++	.long	setup_size + ZO_efi_pe_entry	# AddressOfEntryPoint
+ 
+ 	.long	0x0200				# BaseOfCode
+ #ifdef CONFIG_X86_32
+@@ -109,10 +107,7 @@ extra_header_fields:
+ 	.word	0				# MinorSubsystemVersion
+ 	.long	0				# Win32VersionValue
+ 
+-	#
+-	# The size of the bzImage is written in tools/build.c
+-	#
+-	.long	0				# SizeOfImage
++	.long	setup_size + ZO__end 		# SizeOfImage
+ 
+ 	.long	0x200				# SizeOfHeaders
+ 	.long	0				# CheckSum
+@@ -203,18 +198,15 @@ section_table:
+ 		IMAGE_SCN_MEM_DISCARDABLE	# Characteristics
+ #endif
+ 
+-	#
+-	# The offset & size fields are filled in by build.c.
+-	#
+ 	.ascii	".text"
+ 	.byte	0
+ 	.byte	0
+ 	.byte	0
+-	.long	0
+-	.long	0x0				# startup_{32,64}
+-	.long	0				# Size of initialized data
++	.long	ZO__end
++	.long	setup_size
++	.long	ZO__edata			# Size of initialized data
+ 						# on disk
+-	.long	0x0				# startup_{32,64}
++	.long	setup_size
+ 	.long	0				# PointerToRelocations
+ 	.long	0				# PointerToLineNumbers
+ 	.word	0				# NumberOfRelocations
 diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-index 665ce7241542e475..082c38a097713a2d 100644
+index 082c38a097713a2d..6b6282a96c6ab24d 100644
 --- a/arch/x86/boot/tools/build.c
 +++ b/arch/x86/boot/tools/build.c
-@@ -55,6 +55,7 @@ u8 buf[(SETUP_SECT_NUM+1)*512];
+@@ -53,10 +53,8 @@ u8 buf[(SETUP_SECT_NUM+1)*512];
+ #define PECOFF_COMPAT_RESERVE 0x0
+ #endif
  
- static unsigned long efi_pe_entry;
+-static unsigned long efi_pe_entry;
  static unsigned long efi32_pe_entry;
-+static unsigned long _edata;
- static unsigned long _end;
+ static unsigned long _edata;
+-static unsigned long _end;
  
  /*----------------------------------------------------------------------*/
-@@ -311,6 +312,7 @@ static void parse_zoffset(char *fname)
+ 
+@@ -219,32 +217,6 @@ static void update_pecoff_setup_and_reloc(unsigned int size)
+ #endif
+ }
+ 
+-static void update_pecoff_text(unsigned int text_start, unsigned int file_sz)
+-{
+-	unsigned int pe_header;
+-	unsigned int text_sz = file_sz - text_start;
+-	unsigned int bss_sz = _end - text_sz;
+-
+-	pe_header = get_unaligned_le32(&buf[0x3c]);
+-
+-	/*
+-	 * Size of code: Subtract the size of the first sector (512 bytes)
+-	 * which includes the header.
+-	 */
+-	put_unaligned_le32(file_sz - 512 + bss_sz, &buf[pe_header + 0x1c]);
+-
+-	/* Size of image */
+-	put_unaligned_le32(file_sz + bss_sz, &buf[pe_header + 0x50]);
+-
+-	/*
+-	 * Address of entry point for PE/COFF executable
+-	 */
+-	put_unaligned_le32(text_start + efi_pe_entry, &buf[pe_header + 0x28]);
+-
+-	update_pecoff_section_header_fields(".text", text_start, text_sz + bss_sz,
+-					    text_sz, text_start);
+-}
+-
+ static int reserve_pecoff_reloc_section(int c)
+ {
+ 	/* Reserve 0x20 bytes for .reloc section */
+@@ -252,22 +224,9 @@ static int reserve_pecoff_reloc_section(int c)
+ 	return PECOFF_RELOC_RESERVE;
+ }
+ 
+-static void efi_stub_defaults(void)
+-{
+-	/* Defaults for old kernel */
+-#ifdef CONFIG_X86_32
+-	efi_pe_entry = 0x10;
+-#else
+-	efi_pe_entry = 0x210;
+-#endif
+-}
+-
+ #else
+ 
+ static inline void update_pecoff_setup_and_reloc(unsigned int size) {}
+-static inline void update_pecoff_text(unsigned int text_start,
+-				      unsigned int file_sz) {}
+-static inline void efi_stub_defaults(void) {}
+ 
+ static inline int reserve_pecoff_reloc_section(int c)
+ {
+@@ -310,10 +269,8 @@ static void parse_zoffset(char *fname)
+ 	p = (char *)buf;
+ 
  	while (p && *p) {
- 		PARSE_ZOFS(p, efi_pe_entry);
+-		PARSE_ZOFS(p, efi_pe_entry);
  		PARSE_ZOFS(p, efi32_pe_entry);
-+		PARSE_ZOFS(p, _edata);
- 		PARSE_ZOFS(p, _end);
+ 		PARSE_ZOFS(p, _edata);
+-		PARSE_ZOFS(p, _end);
  
  		p = strchr(p, '\n');
-@@ -323,7 +325,6 @@ int main(int argc, char ** argv)
- {
- 	unsigned int i, sz, setup_sectors;
- 	int c;
--	u32 sys_size;
- 	struct stat sb;
- 	FILE *file, *dest;
- 	int fd;
-@@ -372,24 +373,14 @@ int main(int argc, char ** argv)
- 		die("Unable to open `%s': %m", argv[2]);
- 	if (fstat(fd, &sb))
- 		die("Unable to stat `%s': %m", argv[2]);
--	sz = sb.st_size;
-+	if (_edata != sb.st_size)
-+		die("Unexpected file size `%s': %u != %u", argv[2], _edata,
-+		    sb.st_size);
-+	sz = _edata - 4;
+ 		while (p && (*p == '\r' || *p == '\n'))
+@@ -331,8 +288,6 @@ int main(int argc, char ** argv)
+ 	void *kernel;
+ 	u32 crc = 0xffffffffUL;
+ 
+-	efi_stub_defaults();
+-
+ 	if (argc != 5)
+ 		usage();
+ 	parse_zoffset(argv[3]);
+@@ -380,8 +335,6 @@ int main(int argc, char ** argv)
  	kernel = mmap(NULL, sz, PROT_READ, MAP_SHARED, fd, 0);
  	if (kernel == MAP_FAILED)
  		die("Unable to mmap '%s': %m", argv[2]);
--	/* Number of 16-byte paragraphs, including space for a 4-byte CRC */
--	sys_size = (sz + 15 + 4) / 16;
--#ifdef CONFIG_EFI_STUB
--	/*
--	 * COFF requires minimum 32-byte alignment of sections, and
--	 * adding a signature is problematic without that alignment.
--	 */
--	sys_size = (sys_size + 1) & ~1;
--#endif
+-	update_pecoff_text(setup_sectors * 512, i + _edata);
 -
--	/* Patch the setup code with the appropriate size parameters */
--	put_unaligned_le32(sys_size, &buf[0x1f4]);
--
--	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16));
-+	update_pecoff_text(setup_sectors * 512, i + _edata);
- 
  
  	crc = partial_crc32(buf, i, crc);
-@@ -401,13 +392,6 @@ int main(int argc, char ** argv)
- 	if (fwrite(kernel, 1, sz, dest) != sz)
- 		die("Writing kernel failed");
- 
--	/* Add padding leaving 4 bytes for the checksum */
--	while (sz++ < (sys_size*16) - 4) {
--		crc = partial_crc32_one('\0', crc);
--		if (fwrite("\0", 1, 1, dest) != 1)
--			die("Writing padding failed");
--	}
--
- 	/* Write the CRC */
- 	put_unaligned_le32(crc, buf);
- 	if (fwrite(buf, 1, 4, dest) != 4)
+ 	if (fwrite(buf, 1, i, dest) != i)
 -- 
 2.39.2
 
