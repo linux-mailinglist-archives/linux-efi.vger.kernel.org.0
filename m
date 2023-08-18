@@ -2,416 +2,468 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAB4B780CCF
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Aug 2023 15:46:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 443CF780D85
+	for <lists+linux-efi@lfdr.de>; Fri, 18 Aug 2023 16:07:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377327AbjHRNqH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 18 Aug 2023 09:46:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49380 "EHLO
+        id S1377611AbjHROGc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 18 Aug 2023 10:06:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377418AbjHRNps (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Aug 2023 09:45:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8956444B3;
-        Fri, 18 Aug 2023 06:45:38 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 16C2061977;
-        Fri, 18 Aug 2023 13:45:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2AEBC433C9;
-        Fri, 18 Aug 2023 13:45:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692366337;
-        bh=INeT2bz+nsdJxKnWRpvYL1tZqsSn+67UUbdpodL5gq0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Df1bGc7/pEqADP1AFPZV2kyi2uNH1D2ddiCKnOvfHxC3cyy1tModjJ69e0cDCVLyz
-         FB6kxPOwvGdngHUpPa6XEMwFC3lQgnJZGFqV/fifVb1MpK/xqGz1AVYXtDIrnC95EC
-         KdSSj7vv7l6qdvINo5b7IzlWF9ZoC3VXd1qJCVFGGTpQ02pQBOjZPvDAF8dhMz5El0
-         xWpfzJG70ySDS7a4rWuStsDQR32Qxxyq1ZTdzucXhqnIAINF6q9DecnGnVpVx0Nb7C
-         qXfo7Zop8CAOHupJurBXpAFj9/5/CH7p7RsNt/6+EI+NOWY5BdSlZI3XyobV1qs1gU
-         M5Q7b06xEOU+Q==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     linux-efi@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-        Evgeniy Baskov <baskov@ispras.ru>,
-        Borislav Petkov <bp@alien8.de>,
+        with ESMTP id S1377618AbjHROGG (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Aug 2023 10:06:06 -0400
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E92453C31;
+        Fri, 18 Aug 2023 07:05:58 -0700 (PDT)
+Received: from loongson.cn (unknown [10.20.42.43])
+        by gateway (Coremail) with SMTP id _____8AxDOvAet9kieIZAA--.47825S3;
+        Fri, 18 Aug 2023 22:05:52 +0800 (CST)
+Received: from [10.20.42.43] (unknown [10.20.42.43])
+        by localhost.localdomain (Coremail) with SMTP id AQAAf8AxjiN2et9ky6ddAA--.58163S3;
+        Fri, 18 Aug 2023 22:04:48 +0800 (CST)
+Message-ID: <924934b8-d2ca-c1ea-b357-202c2f995adc@loongson.cn>
+Date:   Fri, 18 Aug 2023 22:04:38 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [06/12] arch: Declare screen_info in <asm/screen_info.h>
+To:     Thomas Zimmermann <tzimmermann@suse.de>, arnd@arndb.de,
+        deller@gmx.de, daniel@ffwll.ch, airlied@gmail.com
+Cc:     linux-hyperv@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-ia64@vger.kernel.org,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>,
+        Rich Felker <dalias@libc.org>, Guo Ren <guoren@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+        linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>, linux-arch@vger.kernel.org,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-hexagon@vger.kernel.org, linux-staging@lists.linux.dev,
+        Russell King <linux@armlinux.org.uk>,
+        linux-csky@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Dave Hansen <dave.hansen@linux.intel.com>,
         Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Jones <pjones@redhat.com>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        Gerd Hoffmann <kraxel@redhat.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Juerg Haefliger <juerg.haefliger@canonical.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Albert Ou <aou@eecs.berkeley.edu>,
         Kees Cook <keescook@chromium.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        =?UTF-8?q?Marvin=20H=C3=A4user?= <mhaeuser@posteo.de>
-Subject: [PATCH 17/17] x86/boot: Drop CRC-32 checksum and the build tool that generates it
-Date:   Fri, 18 Aug 2023 15:44:22 +0200
-Message-Id: <20230818134422.380032-18-ardb@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230818134422.380032-1-ardb@kernel.org>
-References: <20230818134422.380032-1-ardb@kernel.org>
-MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12032; i=ardb@kernel.org; h=from:subject; bh=INeT2bz+nsdJxKnWRpvYL1tZqsSn+67UUbdpodL5gq0=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeV+6WbOHvm1rbETljfdXsEZVndNozHuYsCDlX6ntPO13 12cefhzRykLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZhIzm5Ghp+FwkXzYnZsq81Y X8fI2R6oVLl44q2+4ysXZFckMOu9aGdk+J6gcVKlziDdbGWJ9fWQL1lHBafx1+7zq207J6HWutm fAQA=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Chris Zankel <chris@zankel.net>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        loongarch@lists.linux.dev,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Zi Yan <ziy@nvidia.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Brian Cain <bcain@quicinc.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        "Mike Rapoport (IBM)" <rppt@kernel.org>,
+        linux-alpha@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linuxppc-dev@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>, x86@kernel.org
+References: <20230629121952.10559-7-tzimmermann@suse.de>
+Content-Language: en-US
+From:   suijingfeng <suijingfeng@loongson.cn>
+In-Reply-To: <20230629121952.10559-7-tzimmermann@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: AQAAf8AxjiN2et9ky6ddAA--.58163S3
+X-CM-SenderInfo: xvxlyxpqjiv03j6o00pqjv00gofq/
+X-Coremail-Antispam: 1Uk129KBj9fXoWfJr4UJFyruFW8Zr13CFyfAFc_yoW8GryUCo
+        WUK3Wj9w48ArWIqr4fGws5CFW5Jryqkr4rZF4xKwsrXF1avF45tFW5Ka42y3yayry8Krn8
+        CFWa9FZxJw48Grn3l-sFpf9Il3svdjkaLaAFLSUrUUUUvb8apTn2vfkv8UJUUUU8wcxFpf
+        9Il3svdxBIdaVrn0xqx4xG64xvF2IEw4CE5I8CrVC2j2Jv73VFW2AGmfu7bjvjm3AaLaJ3
+        UjIYCTnIWjp_UUUOh7kC6x804xWl14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI
+        8IcIk0rVWrJVCq3wAFIxvE14AKwVWUXVWUAwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xG
+        Y2AK021l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14
+        v26F4j6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E
+        14v26r4UJVWxJr1ln4kS14v26rWY6Fy7M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6x
+        kI12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v2
+        6rWY6Fy7McIj6I8E87Iv67AKxVWxJVW8Jr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcV
+        AKI48JM4IIrI8v6xkF7I0E4cxCY480cwCYjI0SjxkI62AI1cAE67vIY487MxkF7I0En4kS
+        14v26rWY6Fy7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I
+        0E14v26rWY6Fy7MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
+        x4CE17CEb7AF67AKxVWrXVW8Jr1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW5JV
+        W7JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWU
+        JVWUCwCI42IY6I8E87Iv67AKxVWxJVW8Jr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8Jr
+        UvcSsGvfC2KfnxnUUI43ZEXa7IU5jjg7UUUUU==
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The only remaining task carried out by the boot/tools/build.c build tool
-is generating the CRC-32 checksum of the bzImage. This feature was added
-in commit
+Hi,
 
-  7d6e737c8d2698b6 ("x86: add a crc32 checksum to the kernel image.")
 
-without any motivation (or any commit log text, for that matter). This
-checksum is not verified by any known bootloader, and given that
+Why this patch get dropped in the end?
 
-a) the checksum of the entire bzImage is reported by most tools (zlib,
-   rhash) as 0xffffffff and not 0x0 as documented,
-b) the checksum is corrupted when the image is signed for secure boot,
-   which means that no distro ships x86 images with valid CRCs,
+Since the global screen_info is an arch-specific thing,
+Whenever an arch-neutral module or subsystem references the global screen_info,
+There are some complaints from either compile testing robot.
+Well, a programmer may handle it by using the CONFIG_SYSFB guard,
+but it is not as precise as what this patch provided.
 
-it seems quite unlikely that this checksum is being used, so let's just
-drop it, along with the tool that generates it.
+Personally, I think this patch is still valuable.
+I suggest either forcing all other architectures to export screen_info,
+like the X86 and IA64 arch does, after all the screen_info is a good thing.
+or provide the fine-control version like this patch does.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- Documentation/arch/x86/boot.rst        |  10 -
- arch/x86/boot/Makefile                 |   8 +-
- arch/x86/boot/compressed/vmlinux.lds.S |   3 +-
- arch/x86/boot/tools/.gitignore         |   2 -
- arch/x86/boot/tools/build.c            | 245 --------------------
- 5 files changed, 4 insertions(+), 264 deletions(-)
 
-diff --git a/Documentation/arch/x86/boot.rst b/Documentation/arch/x86/boot.rst
-index cdbca15a4fc23833..bdcd2bebb2fe10be 100644
---- a/Documentation/arch/x86/boot.rst
-+++ b/Documentation/arch/x86/boot.rst
-@@ -1028,16 +1028,6 @@ Offset/size:	0x000c/4
-   This field contains maximal allowed type for setup_data and setup_indirect structs.
- 
- 
--The Image Checksum
--==================
--
--From boot protocol version 2.08 onwards the CRC-32 is calculated over
--the entire file using the characteristic polynomial 0x04C11DB7 and an
--initial remainder of 0xffffffff.  The checksum is appended to the
--file; therefore the CRC of the file up to the limit specified in the
--syssize field of the header is always 0.
--
--
- The Kernel Command Line
- =======================
- 
-diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
-index 18548e351ffb4867..51f70500d38a10ae 100644
---- a/arch/x86/boot/Makefile
-+++ b/arch/x86/boot/Makefile
-@@ -48,7 +48,6 @@ setup-y		+= video-vesa.o
- setup-y		+= video-bios.o
- 
- targets		+= $(setup-y)
--hostprogs	:= tools/build
- hostprogs	+= mkcpustr
- 
- HOST_EXTRACFLAGS += -I$(srctree)/tools/include \
-@@ -77,11 +76,10 @@ UBSAN_SANITIZE := n
- $(obj)/bzImage: asflags-y  := $(SVGA_MODE)
- 
- quiet_cmd_image = BUILD   $@
--silent_redirect_image = >/dev/null
--cmd_image = $(obj)/tools/build $(obj)/setup.bin $(obj)/vmlinux.bin \
--			       $(obj)/zoffset.h $@ $($(quiet)redirect_image)
-+      cmd_image = truncate -s %4K $(obj)/setup.bin; \
-+		  cat $(obj)/setup.bin $(obj)/vmlinux.bin >$@
- 
--$(obj)/bzImage: $(obj)/setup.bin $(obj)/vmlinux.bin $(obj)/tools/build FORCE
-+$(obj)/bzImage: $(obj)/setup.bin $(obj)/vmlinux.bin FORCE
- 	$(call if_changed,image)
- 	@$(kecho) 'Kernel: $@ is ready' ' (#'$(or $(KBUILD_BUILD_VERSION),`cat .version`)')'
- 
-diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
-index 3df57cdf500375f2..48d0b51845571e7e 100644
---- a/arch/x86/boot/compressed/vmlinux.lds.S
-+++ b/arch/x86/boot/compressed/vmlinux.lds.S
-@@ -48,8 +48,7 @@ SECTIONS
- 		*(.data)
- 		*(.data.*)
- 
--		/* add 4 bytes of extra space for a CRC-32 checksum */
--		. = ALIGN(. + 4, 0x200);
-+		. = ALIGN(0x200);
- 		_edata = . ;
- 	}
- 	. = ALIGN(L1_CACHE_BYTES);
-diff --git a/arch/x86/boot/tools/.gitignore b/arch/x86/boot/tools/.gitignore
-deleted file mode 100644
-index ae91f4d0d78b56af..0000000000000000
---- a/arch/x86/boot/tools/.gitignore
-+++ /dev/null
-@@ -1,2 +0,0 @@
--# SPDX-License-Identifier: GPL-2.0-only
--build
-diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-deleted file mode 100644
-index bc2585df100572bc..0000000000000000
---- a/arch/x86/boot/tools/build.c
-+++ /dev/null
-@@ -1,245 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- *  Copyright (C) 1991, 1992  Linus Torvalds
-- *  Copyright (C) 1997 Martin Mares
-- *  Copyright (C) 2007 H. Peter Anvin
-- */
--
--/*
-- * This file builds a disk-image from three different files:
-- *
-- * - setup: 8086 machine code, sets up system parm
-- * - system: 80386 code for actual system
-- * - zoffset.h: header with ZO_* defines
-- *
-- * It does some checking that all files are of the correct type, and writes
-- * the result to the specified destination, removing headers and padding to
-- * the right amount. It also writes some system data to stdout.
-- */
--
--/*
-- * Changes by tytso to allow root device specification
-- * High loaded stuff by Hans Lermen & Werner Almesberger, Feb. 1996
-- * Cross compiling fixes by Gertjan van Wingerde, July 1996
-- * Rewritten by Martin Mares, April 1997
-- * Substantially overhauled by H. Peter Anvin, April 2007
-- */
--
--#include <stdio.h>
--#include <string.h>
--#include <stdlib.h>
--#include <stdarg.h>
--#include <sys/types.h>
--#include <sys/stat.h>
--#include <unistd.h>
--#include <fcntl.h>
--#include <sys/mman.h>
--#include <tools/le_byteshift.h>
--
--typedef unsigned char  u8;
--typedef unsigned short u16;
--typedef unsigned int   u32;
--
--#define SETUP_SECT_NUM 32
--
--/* This must be large enough to hold the entire setup */
--u8 buf[(SETUP_SECT_NUM+1)*512];
--
--static unsigned long _edata;
--
--/*----------------------------------------------------------------------*/
--
--static const u32 crctab32[] = {
--	0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419,
--	0x706af48f, 0xe963a535, 0x9e6495a3, 0x0edb8832, 0x79dcb8a4,
--	0xe0d5e91e, 0x97d2d988, 0x09b64c2b, 0x7eb17cbd, 0xe7b82d07,
--	0x90bf1d91, 0x1db71064, 0x6ab020f2, 0xf3b97148, 0x84be41de,
--	0x1adad47d, 0x6ddde4eb, 0xf4d4b551, 0x83d385c7, 0x136c9856,
--	0x646ba8c0, 0xfd62f97a, 0x8a65c9ec, 0x14015c4f, 0x63066cd9,
--	0xfa0f3d63, 0x8d080df5, 0x3b6e20c8, 0x4c69105e, 0xd56041e4,
--	0xa2677172, 0x3c03e4d1, 0x4b04d447, 0xd20d85fd, 0xa50ab56b,
--	0x35b5a8fa, 0x42b2986c, 0xdbbbc9d6, 0xacbcf940, 0x32d86ce3,
--	0x45df5c75, 0xdcd60dcf, 0xabd13d59, 0x26d930ac, 0x51de003a,
--	0xc8d75180, 0xbfd06116, 0x21b4f4b5, 0x56b3c423, 0xcfba9599,
--	0xb8bda50f, 0x2802b89e, 0x5f058808, 0xc60cd9b2, 0xb10be924,
--	0x2f6f7c87, 0x58684c11, 0xc1611dab, 0xb6662d3d, 0x76dc4190,
--	0x01db7106, 0x98d220bc, 0xefd5102a, 0x71b18589, 0x06b6b51f,
--	0x9fbfe4a5, 0xe8b8d433, 0x7807c9a2, 0x0f00f934, 0x9609a88e,
--	0xe10e9818, 0x7f6a0dbb, 0x086d3d2d, 0x91646c97, 0xe6635c01,
--	0x6b6b51f4, 0x1c6c6162, 0x856530d8, 0xf262004e, 0x6c0695ed,
--	0x1b01a57b, 0x8208f4c1, 0xf50fc457, 0x65b0d9c6, 0x12b7e950,
--	0x8bbeb8ea, 0xfcb9887c, 0x62dd1ddf, 0x15da2d49, 0x8cd37cf3,
--	0xfbd44c65, 0x4db26158, 0x3ab551ce, 0xa3bc0074, 0xd4bb30e2,
--	0x4adfa541, 0x3dd895d7, 0xa4d1c46d, 0xd3d6f4fb, 0x4369e96a,
--	0x346ed9fc, 0xad678846, 0xda60b8d0, 0x44042d73, 0x33031de5,
--	0xaa0a4c5f, 0xdd0d7cc9, 0x5005713c, 0x270241aa, 0xbe0b1010,
--	0xc90c2086, 0x5768b525, 0x206f85b3, 0xb966d409, 0xce61e49f,
--	0x5edef90e, 0x29d9c998, 0xb0d09822, 0xc7d7a8b4, 0x59b33d17,
--	0x2eb40d81, 0xb7bd5c3b, 0xc0ba6cad, 0xedb88320, 0x9abfb3b6,
--	0x03b6e20c, 0x74b1d29a, 0xead54739, 0x9dd277af, 0x04db2615,
--	0x73dc1683, 0xe3630b12, 0x94643b84, 0x0d6d6a3e, 0x7a6a5aa8,
--	0xe40ecf0b, 0x9309ff9d, 0x0a00ae27, 0x7d079eb1, 0xf00f9344,
--	0x8708a3d2, 0x1e01f268, 0x6906c2fe, 0xf762575d, 0x806567cb,
--	0x196c3671, 0x6e6b06e7, 0xfed41b76, 0x89d32be0, 0x10da7a5a,
--	0x67dd4acc, 0xf9b9df6f, 0x8ebeeff9, 0x17b7be43, 0x60b08ed5,
--	0xd6d6a3e8, 0xa1d1937e, 0x38d8c2c4, 0x4fdff252, 0xd1bb67f1,
--	0xa6bc5767, 0x3fb506dd, 0x48b2364b, 0xd80d2bda, 0xaf0a1b4c,
--	0x36034af6, 0x41047a60, 0xdf60efc3, 0xa867df55, 0x316e8eef,
--	0x4669be79, 0xcb61b38c, 0xbc66831a, 0x256fd2a0, 0x5268e236,
--	0xcc0c7795, 0xbb0b4703, 0x220216b9, 0x5505262f, 0xc5ba3bbe,
--	0xb2bd0b28, 0x2bb45a92, 0x5cb36a04, 0xc2d7ffa7, 0xb5d0cf31,
--	0x2cd99e8b, 0x5bdeae1d, 0x9b64c2b0, 0xec63f226, 0x756aa39c,
--	0x026d930a, 0x9c0906a9, 0xeb0e363f, 0x72076785, 0x05005713,
--	0x95bf4a82, 0xe2b87a14, 0x7bb12bae, 0x0cb61b38, 0x92d28e9b,
--	0xe5d5be0d, 0x7cdcefb7, 0x0bdbdf21, 0x86d3d2d4, 0xf1d4e242,
--	0x68ddb3f8, 0x1fda836e, 0x81be16cd, 0xf6b9265b, 0x6fb077e1,
--	0x18b74777, 0x88085ae6, 0xff0f6a70, 0x66063bca, 0x11010b5c,
--	0x8f659eff, 0xf862ae69, 0x616bffd3, 0x166ccf45, 0xa00ae278,
--	0xd70dd2ee, 0x4e048354, 0x3903b3c2, 0xa7672661, 0xd06016f7,
--	0x4969474d, 0x3e6e77db, 0xaed16a4a, 0xd9d65adc, 0x40df0b66,
--	0x37d83bf0, 0xa9bcae53, 0xdebb9ec5, 0x47b2cf7f, 0x30b5ffe9,
--	0xbdbdf21c, 0xcabac28a, 0x53b39330, 0x24b4a3a6, 0xbad03605,
--	0xcdd70693, 0x54de5729, 0x23d967bf, 0xb3667a2e, 0xc4614ab8,
--	0x5d681b02, 0x2a6f2b94, 0xb40bbe37, 0xc30c8ea1, 0x5a05df1b,
--	0x2d02ef8d
--};
--
--static u32 partial_crc32_one(u8 c, u32 crc)
--{
--	return crctab32[(crc ^ c) & 0xff] ^ (crc >> 8);
--}
--
--static u32 partial_crc32(const u8 *s, int len, u32 crc)
--{
--	while (len--)
--		crc = partial_crc32_one(*s++, crc);
--	return crc;
--}
--
--static void die(const char * str, ...)
--{
--	va_list args;
--	va_start(args, str);
--	vfprintf(stderr, str, args);
--	va_end(args);
--	fputc('\n', stderr);
--	exit(1);
--}
--
--static void usage(void)
--{
--	die("Usage: build setup system zoffset.h image");
--}
--
--/*
-- * Parse zoffset.h and find the entry points. We could just #include zoffset.h
-- * but that would mean tools/build would have to be rebuilt every time. It's
-- * not as if parsing it is hard...
-- */
--#define PARSE_ZOFS(p, sym) do { \
--	if (!strncmp(p, "#define ZO_" #sym " ", 11+sizeof(#sym)))	\
--		sym = strtoul(p + 11 + sizeof(#sym), NULL, 16);		\
--} while (0)
--
--static void parse_zoffset(char *fname)
--{
--	FILE *file;
--	char *p;
--	int c;
--
--	file = fopen(fname, "r");
--	if (!file)
--		die("Unable to open `%s': %m", fname);
--	c = fread(buf, 1, sizeof(buf) - 1, file);
--	if (ferror(file))
--		die("read-error on `zoffset.h'");
--	fclose(file);
--	buf[c] = 0;
--
--	p = (char *)buf;
--
--	while (p && *p) {
--		PARSE_ZOFS(p, _edata);
--
--		p = strchr(p, '\n');
--		while (p && (*p == '\r' || *p == '\n'))
--			p++;
--	}
--}
--
--int main(int argc, char ** argv)
--{
--	unsigned int i, sz, setup_sectors;
--	int c;
--	struct stat sb;
--	FILE *file, *dest;
--	int fd;
--	void *kernel;
--	u32 crc = 0xffffffffUL;
--
--	if (argc != 5)
--		usage();
--	parse_zoffset(argv[3]);
--
--	dest = fopen(argv[4], "w");
--	if (!dest)
--		die("Unable to write `%s': %m", argv[4]);
--
--	/* Copy the setup code */
--	file = fopen(argv[1], "r");
--	if (!file)
--		die("Unable to open `%s': %m", argv[1]);
--	c = fread(buf, 1, sizeof(buf), file);
--	if (ferror(file))
--		die("read-error on `setup'");
--	if (c < 1024)
--		die("The setup must be at least 1024 bytes");
--	if (get_unaligned_le16(&buf[510]) != 0xAA55)
--		die("Boot block hasn't got boot flag (0xAA55)");
--	fclose(file);
--
--	/* Pad unused space with zeros */
--	setup_sectors = (c + 511) / 512;
--	if (setup_sectors > SETUP_SECT_NUM)
--		die("setup size exceeds maximum");
--	setup_sectors = SETUP_SECT_NUM;
--	i = setup_sectors*512;
--	memset(buf+c, 0, i-c);
--
--	/* Open and stat the kernel file */
--	fd = open(argv[2], O_RDONLY);
--	if (fd < 0)
--		die("Unable to open `%s': %m", argv[2]);
--	if (fstat(fd, &sb))
--		die("Unable to stat `%s': %m", argv[2]);
--	if (_edata != sb.st_size)
--		die("Unexpected file size `%s': %u != %u", argv[2], _edata,
--		    sb.st_size);
--	sz = _edata - 4;
--	kernel = mmap(NULL, sz, PROT_READ, MAP_SHARED, fd, 0);
--	if (kernel == MAP_FAILED)
--		die("Unable to mmap '%s': %m", argv[2]);
--
--	crc = partial_crc32(buf, i, crc);
--	if (fwrite(buf, 1, i, dest) != i)
--		die("Writing setup failed");
--
--	/* Copy the kernel code */
--	crc = partial_crc32(kernel, sz, crc);
--	if (fwrite(kernel, 1, sz, dest) != sz)
--		die("Writing kernel failed");
--
--	/* Write the CRC */
--	put_unaligned_le32(crc, buf);
--	if (fwrite(buf, 1, 4, dest) != 4)
--		die("Writing CRC failed");
--
--	/* Catch any delayed write failures */
--	if (fclose(dest))
--		die("Writing image failed");
--
--	close(fd);
--
--	/* Everything is OK */
--	return 0;
--}
--- 
-2.39.2
+On 2023/6/29 19:45, Thomas Zimmermann wrote:
+> The variable screen_info does not exist on all architectures. Declare
+> it in <asm-generic/screen_info.h>. All architectures that do declare it
+> will provide it via <asm/screen_info.h>.
+>
+> Add the Kconfig token ARCH_HAS_SCREEN_INFO to guard against access on
+> architectures that don't provide screen_info.
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Richard Henderson <richard.henderson@linaro.org>
+> Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
+> Cc: Matt Turner <mattst88@gmail.com>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Guo Ren <guoren@kernel.org>
+> Cc: Brian Cain <bcain@quicinc.com>
+> Cc: Huacai Chen <chenhuacai@kernel.org>
+> Cc: WANG Xuerui <kernel@xen0n.name>
+> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> Cc: Dinh Nguyen <dinguyen@kernel.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> Cc: Albert Ou <aou@eecs.berkeley.edu>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: x86@kernel.org
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: Chris Zankel <chris@zankel.net>
+> Cc: Max Filippov <jcmvbkbc@gmail.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Kees Cook <keescook@chromium.org>
+> Cc: "Paul E. McKenney" <paulmck@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Frederic Weisbecker <frederic@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Sami Tolvanen <samitolvanen@google.com>
+> Cc: Juerg Haefliger <juerg.haefliger@canonical.com>
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+> Cc: Niklas Schnelle <schnelle@linux.ibm.com>
+> Cc: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Sebastian Reichel <sebastian.reichel@collabora.com>
+> Cc: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Acked-by: WANG Xuerui <git@xen0n.name> # loongarch
+> ---
+>   arch/Kconfig                      |  6 ++++++
+>   arch/alpha/Kconfig                |  1 +
+>   arch/arm/Kconfig                  |  1 +
+>   arch/arm64/Kconfig                |  1 +
+>   arch/csky/Kconfig                 |  1 +
+>   arch/hexagon/Kconfig              |  1 +
+>   arch/ia64/Kconfig                 |  1 +
+>   arch/loongarch/Kconfig            |  1 +
+>   arch/mips/Kconfig                 |  1 +
+>   arch/nios2/Kconfig                |  1 +
+>   arch/powerpc/Kconfig              |  1 +
+>   arch/riscv/Kconfig                |  1 +
+>   arch/sh/Kconfig                   |  1 +
+>   arch/sparc/Kconfig                |  1 +
+>   arch/x86/Kconfig                  |  1 +
+>   arch/xtensa/Kconfig               |  1 +
+>   drivers/video/Kconfig             |  3 +++
+>   include/asm-generic/Kbuild        |  1 +
+>   include/asm-generic/screen_info.h | 12 ++++++++++++
+>   include/linux/screen_info.h       |  2 +-
+>   20 files changed, 38 insertions(+), 1 deletion(-)
+>   create mode 100644 include/asm-generic/screen_info.h
+>
+> diff --git a/arch/Kconfig b/arch/Kconfig
+> index 205fd23e0cada..2f58293fd7bcb 100644
+> --- a/arch/Kconfig
+> +++ b/arch/Kconfig
+> @@ -1466,6 +1466,12 @@ config ARCH_HAS_NONLEAF_PMD_YOUNG
+>   	  address translations. Page table walkers that clear the accessed bit
+>   	  may use this capability to reduce their search space.
+>   
+> +config ARCH_HAS_SCREEN_INFO
+> +	bool
+> +	help
+> +	  Selected by architectures that provide a global instance of
+> +	  screen_info.
+> +
+>   source "kernel/gcov/Kconfig"
+>   
+>   source "scripts/gcc-plugins/Kconfig"
+> diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
+> index a5c2b1aa46b02..d749011d88b14 100644
+> --- a/arch/alpha/Kconfig
+> +++ b/arch/alpha/Kconfig
+> @@ -4,6 +4,7 @@ config ALPHA
+>   	default y
+>   	select ARCH_32BIT_USTAT_F_TINODE
+>   	select ARCH_HAS_CURRENT_STACK_POINTER
+> +	select ARCH_HAS_SCREEN_INFO
+>   	select ARCH_MIGHT_HAVE_PC_PARPORT
+>   	select ARCH_MIGHT_HAVE_PC_SERIO
+>   	select ARCH_NO_PREEMPT
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 0fb4b218f6658..a9d01ee67a90e 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -15,6 +15,7 @@ config ARM
+>   	select ARCH_HAS_MEMBARRIER_SYNC_CORE
+>   	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+>   	select ARCH_HAS_PTE_SPECIAL if ARM_LPAE
+> +	select ARCH_HAS_SCREEN_INFO
+>   	select ARCH_HAS_SETUP_DMA_OPS
+>   	select ARCH_HAS_SET_MEMORY
+>   	select ARCH_STACKWALK
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 343e1e1cae10a..21addc4715bb3 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -36,6 +36,7 @@ config ARM64
+>   	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+>   	select ARCH_HAS_PTE_DEVMAP
+>   	select ARCH_HAS_PTE_SPECIAL
+> +	select ARCH_HAS_SCREEN_INFO
+>   	select ARCH_HAS_SETUP_DMA_OPS
+>   	select ARCH_HAS_SET_DIRECT_MAP
+>   	select ARCH_HAS_SET_MEMORY
+> diff --git a/arch/csky/Kconfig b/arch/csky/Kconfig
+> index 4df1f8c9d170b..28444e581fc1f 100644
+> --- a/arch/csky/Kconfig
+> +++ b/arch/csky/Kconfig
+> @@ -10,6 +10,7 @@ config CSKY
+>   	select ARCH_USE_QUEUED_RWLOCKS
+>   	select ARCH_USE_QUEUED_SPINLOCKS
+>   	select ARCH_HAS_CURRENT_STACK_POINTER
+> +	select ARCH_HAS_SCREEN_INFO
+>   	select ARCH_INLINE_READ_LOCK if !PREEMPTION
+>   	select ARCH_INLINE_READ_LOCK_BH if !PREEMPTION
+>   	select ARCH_INLINE_READ_LOCK_IRQ if !PREEMPTION
+> diff --git a/arch/hexagon/Kconfig b/arch/hexagon/Kconfig
+> index 54eadf2651786..cc683c0a43d34 100644
+> --- a/arch/hexagon/Kconfig
+> +++ b/arch/hexagon/Kconfig
+> @@ -5,6 +5,7 @@ comment "Linux Kernel Configuration for Hexagon"
+>   config HEXAGON
+>   	def_bool y
+>   	select ARCH_32BIT_OFF_T
+> +	select ARCH_HAS_SCREEN_INFO
+>   	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
+>   	select ARCH_NO_PREEMPT
+>   	select DMA_GLOBAL_POOL
+> diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+> index e79f15e32a451..8b1e785e6d53d 100644
+> --- a/arch/ia64/Kconfig
+> +++ b/arch/ia64/Kconfig
+> @@ -10,6 +10,7 @@ config IA64
+>   	bool
+>   	select ARCH_BINFMT_ELF_EXTRA_PHDRS
+>   	select ARCH_HAS_DMA_MARK_CLEAN
+> +	select ARCH_HAS_SCREEN_INFO
+>   	select ARCH_HAS_STRNCPY_FROM_USER
+>   	select ARCH_HAS_STRNLEN_USER
+>   	select ARCH_MIGHT_HAVE_PC_PARPORT
+> diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+> index d38b066fc931b..6aab2fb7753da 100644
+> --- a/arch/loongarch/Kconfig
+> +++ b/arch/loongarch/Kconfig
+> @@ -13,6 +13,7 @@ config LOONGARCH
+>   	select ARCH_HAS_FORTIFY_SOURCE
+>   	select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
+>   	select ARCH_HAS_PTE_SPECIAL
+> +	select ARCH_HAS_SCREEN_INFO
+>   	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
+>   	select ARCH_INLINE_READ_LOCK if !PREEMPTION
+>   	select ARCH_INLINE_READ_LOCK_BH if !PREEMPTION
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 675a8660cb85a..c0ae09789cb6d 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -10,6 +10,7 @@ config MIPS
+>   	select ARCH_HAS_KCOV
+>   	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE if !EVA
+>   	select ARCH_HAS_PTE_SPECIAL if !(32BIT && CPU_HAS_RIXI)
+> +	select ARCH_HAS_SCREEN_INFO
+>   	select ARCH_HAS_STRNCPY_FROM_USER
+>   	select ARCH_HAS_STRNLEN_USER
+>   	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
+> diff --git a/arch/nios2/Kconfig b/arch/nios2/Kconfig
+> index e5936417d3cd3..7183eea282212 100644
+> --- a/arch/nios2/Kconfig
+> +++ b/arch/nios2/Kconfig
+> @@ -3,6 +3,7 @@ config NIOS2
+>   	def_bool y
+>   	select ARCH_32BIT_OFF_T
+>   	select ARCH_HAS_DMA_PREP_COHERENT
+> +	select ARCH_HAS_SCREEN_INFO
+>   	select ARCH_HAS_SYNC_DMA_FOR_CPU
+>   	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
+>   	select ARCH_HAS_DMA_SET_UNCACHED
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index bff5820b7cda1..b1acad3076180 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -148,6 +148,7 @@ config PPC
+>   	select ARCH_HAS_PTE_DEVMAP		if PPC_BOOK3S_64
+>   	select ARCH_HAS_PTE_SPECIAL
+>   	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
+> +	select ARCH_HAS_SCREEN_INFO
+>   	select ARCH_HAS_SET_MEMORY
+>   	select ARCH_HAS_STRICT_KERNEL_RWX	if (PPC_BOOK3S || PPC_8xx || 40x) && !HIBERNATION
+>   	select ARCH_HAS_STRICT_KERNEL_RWX	if PPC_85xx && !HIBERNATION && !RANDOMIZE_BASE
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index 5966ad97c30c3..b5a48f8424af9 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -29,6 +29,7 @@ config RISCV
+>   	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+>   	select ARCH_HAS_PMEM_API
+>   	select ARCH_HAS_PTE_SPECIAL
+> +	select ARCH_HAS_SCREEN_INFO
+>   	select ARCH_HAS_SET_DIRECT_MAP if MMU
+>   	select ARCH_HAS_SET_MEMORY if MMU
+>   	select ARCH_HAS_STRICT_KERNEL_RWX if MMU && !XIP_KERNEL
+> diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+> index 04b9550cf0070..001f5149952b4 100644
+> --- a/arch/sh/Kconfig
+> +++ b/arch/sh/Kconfig
+> @@ -10,6 +10,7 @@ config SUPERH
+>   	select ARCH_HAS_GIGANTIC_PAGE
+>   	select ARCH_HAS_GCOV_PROFILE_ALL
+>   	select ARCH_HAS_PTE_SPECIAL
+> +	select ARCH_HAS_SCREEN_INFO
+>   	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
+>   	select ARCH_HIBERNATION_POSSIBLE if MMU
+>   	select ARCH_MIGHT_HAVE_PC_PARPORT
+> diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+> index 8535e19062f65..e4bfb80b48cfe 100644
+> --- a/arch/sparc/Kconfig
+> +++ b/arch/sparc/Kconfig
+> @@ -13,6 +13,7 @@ config 64BIT
+>   config SPARC
+>   	bool
+>   	default y
+> +	select ARCH_HAS_SCREEN_INFO
+>   	select ARCH_MIGHT_HAVE_PC_PARPORT if SPARC64 && PCI
+>   	select ARCH_MIGHT_HAVE_PC_SERIO
+>   	select DMA_OPS
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 53bab123a8ee4..d7c2bf4ee403d 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -91,6 +91,7 @@ config X86
+>   	select ARCH_HAS_NONLEAF_PMD_YOUNG	if PGTABLE_LEVELS > 2
+>   	select ARCH_HAS_UACCESS_FLUSHCACHE	if X86_64
+>   	select ARCH_HAS_COPY_MC			if X86_64
+> +	select ARCH_HAS_SCREEN_INFO
+>   	select ARCH_HAS_SET_MEMORY
+>   	select ARCH_HAS_SET_DIRECT_MAP
+>   	select ARCH_HAS_STRICT_KERNEL_RWX
+> diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
+> index 3c6e5471f025b..c6cbd7459939c 100644
+> --- a/arch/xtensa/Kconfig
+> +++ b/arch/xtensa/Kconfig
+> @@ -8,6 +8,7 @@ config XTENSA
+>   	select ARCH_HAS_DMA_PREP_COHERENT if MMU
+>   	select ARCH_HAS_GCOV_PROFILE_ALL
+>   	select ARCH_HAS_KCOV
+> +	select ARCH_HAS_SCREEN_INFO
+>   	select ARCH_HAS_SYNC_DMA_FOR_CPU if MMU
+>   	select ARCH_HAS_SYNC_DMA_FOR_DEVICE if MMU
+>   	select ARCH_HAS_DMA_SET_UNCACHED if MMU
+> diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+> index 8b2b9ac37c3df..d4a72bea56be0 100644
+> --- a/drivers/video/Kconfig
+> +++ b/drivers/video/Kconfig
+> @@ -21,6 +21,9 @@ config STI_CORE
+>   config VIDEO_CMDLINE
+>   	bool
+>   
+> +config ARCH_HAS_SCREEN_INFO
+> +	bool
+> +
+>   config VIDEO_NOMODESET
+>   	bool
+>   	default n
+> diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
+> index 941be574bbe00..5e5d4158a4b4b 100644
+> --- a/include/asm-generic/Kbuild
+> +++ b/include/asm-generic/Kbuild
+> @@ -47,6 +47,7 @@ mandatory-y += percpu.h
+>   mandatory-y += pgalloc.h
+>   mandatory-y += preempt.h
+>   mandatory-y += rwonce.h
+> +mandatory-y += screen_info.h
+>   mandatory-y += sections.h
+>   mandatory-y += serial.h
+>   mandatory-y += shmparam.h
+> diff --git a/include/asm-generic/screen_info.h b/include/asm-generic/screen_info.h
+> new file mode 100644
+> index 0000000000000..6fd0e50fabfcd
+> --- /dev/null
+> +++ b/include/asm-generic/screen_info.h
+> @@ -0,0 +1,12 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +#ifndef _ASM_GENERIC_SCREEN_INFO_H
+> +#define _ASM_GENERIC_SCREEN_INFO_H
+> +
+> +#include <uapi/linux/screen_info.h>
+> +
+> +#if defined(CONFIG_ARCH_HAS_SCREEN_INFO)
+> +extern struct screen_info screen_info;
+> +#endif
+> +
+> +#endif /* _ASM_GENERIC_SCREEN_INFO_H */
+> diff --git a/include/linux/screen_info.h b/include/linux/screen_info.h
+> index eab7081392d50..c764b9a51c24b 100644
+> --- a/include/linux/screen_info.h
+> +++ b/include/linux/screen_info.h
+> @@ -4,6 +4,6 @@
+>   
+>   #include <uapi/linux/screen_info.h>
+>   
+> -extern struct screen_info screen_info;
+> +#include <asm/screen_info.h>
+>   
+>   #endif /* _SCREEN_INFO_H */
 
