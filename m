@@ -2,36 +2,36 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50DAF780B32
-	for <lists+linux-efi@lfdr.de>; Fri, 18 Aug 2023 13:38:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAC2C780B38
+	for <lists+linux-efi@lfdr.de>; Fri, 18 Aug 2023 13:38:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376691AbjHRLhq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 18 Aug 2023 07:37:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35494 "EHLO
+        id S1376703AbjHRLiR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 18 Aug 2023 07:38:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376692AbjHRLhn (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Aug 2023 07:37:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81E6C30F6
-        for <linux-efi@vger.kernel.org>; Fri, 18 Aug 2023 04:37:42 -0700 (PDT)
+        with ESMTP id S1376695AbjHRLhq (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 18 Aug 2023 07:37:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A76F92112
+        for <linux-efi@vger.kernel.org>; Fri, 18 Aug 2023 04:37:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1784863FB9
-        for <linux-efi@vger.kernel.org>; Fri, 18 Aug 2023 11:37:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9DBFC433CC;
-        Fri, 18 Aug 2023 11:37:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 46E2861182
+        for <linux-efi@vger.kernel.org>; Fri, 18 Aug 2023 11:37:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4AEFC433CB;
+        Fri, 18 Aug 2023 11:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692358661;
-        bh=Iq7X6ZDY43lbw90pcqL5PNnyIedzbRO+mGLLwYciL/g=;
+        s=k20201202; t=1692358664;
+        bh=AlXtUSfmgQDJEeIgIXVb9iOmWqjJa0RzB4mpyp7T7lM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LVQKNaz12Bb3UlujJs7Zs4EsR/FaEbKNcVdrau4dtvj8MSQKw3aq7Q/5NKRJiS/cs
-         qzm0EBpHozey3YU6O95V0STSTxBAexm0Ok9CuiPww/lf3Xb4X6hcbVunAhiyB84gCn
-         2eS4RgyIuzXfOpMzjuUPwZkQs7hH8K2F3N5cl4poymB+D+Lm1WEALTCk8hs1KODddG
-         72G+BZyryuVk61f8E86Ztk10+KHsp5AEaVuTr7zFLEkyVWZ7DLIBnKDYyToOrCToPc
-         whnpB9KyvBH76JA3u979th8C6jLbDLJvqBr0EctJ0XvErubtLvOLeH+KCPpXsVq9Oz
-         +o9ZwHQjI5nPg==
+        b=FrGmOczGoissiN/pI1DaGIsRVgfXqWev0Y+jtQ4l9nsIx3ad2Pka3iS9FQkAw64Ar
+         VmqUhvc8NOcbnGe4tkvSOUjDgDSA8pjbRn1r1NW58CY2AgrEgiIcE5iIk6Fe/j00eC
+         7f5o0F+d2UOHuEeDSse0xmyOBIb7b2pQYOU3CsDtD0fs1lbkF0oXV/W+uQ3E3MzFy3
+         IR5uwwskiNWP0I+NlHkoEGivE8TTPE3EtSNNEnyD1iFX+wlMc1ILIh5pSjyGNsdHJU
+         ZsBJZhi44FLaKb97hg2P9UrDXfMqlMsSlp7b/glSLtEhTYO+uq76y1G55L/QEs3v41
+         cUg8Jcbgi2IUg==
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-efi@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
@@ -46,14 +46,14 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>
-Subject: [PATCH v2 02/11] efi/arm64: Move EFI runtime call setup/teardown helpers out of line
-Date:   Fri, 18 Aug 2023 13:37:15 +0200
-Message-Id: <20230818113724.368492-3-ardb@kernel.org>
+Subject: [PATCH v2 03/11] efi/riscv: Move EFI runtime call setup/teardown helpers out of line
+Date:   Fri, 18 Aug 2023 13:37:16 +0200
+Message-Id: <20230818113724.368492-4-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230818113724.368492-1-ardb@kernel.org>
 References: <20230818113724.368492-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2507; i=ardb@kernel.org; h=from:subject; bh=Iq7X6ZDY43lbw90pcqL5PNnyIedzbRO+mGLLwYciL/g=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeV++BuniLQvC1eta5jN/qbXPfnucbGbHJ13NTbph0988 vf+EauOjlIWBjEOBlkxRRaB2X/f7Tw9UarWeZYszBxWJpAhDFycAjAR9mSG//FR2z5HWf44Pkc3 gVs94NlqG/1stQozQx6DWJ/e2KcrHjIyNBr8N9l05+aMQ1otMp82dNo8+qMVeeB+VFqxfMx9qdP 7uAE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2494; i=ardb@kernel.org; h=from:subject; bh=AlXtUSfmgQDJEeIgIXVb9iOmWqjJa0RzB4mpyp7T7lM=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeV++NsN17ikehRWH1t32K3rpZOlx/pVgpaui5oi/26Re 6uU9pG5o5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEzk+15GhlW/VOM/sQk/jtr7 8ej02PIQx+rCU+opJuWLo/+c0lXgSmNkeHZojekzZUlrl9l746V6PBgqXzKdXh/9vofR/DdnrvY cNgA=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -76,73 +76,70 @@ ordinary C functions and move them out of line.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/include/asm/efi.h | 18 +++---------------
- arch/arm64/kernel/efi.c      | 16 +++++++++++++++-
- 2 files changed, 18 insertions(+), 16 deletions(-)
+ arch/riscv/include/asm/efi.h         | 10 ++--------
+ drivers/firmware/efi/riscv-runtime.c | 15 +++++++++++++--
+ 2 files changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm64/include/asm/efi.h b/arch/arm64/include/asm/efi.h
-index 4cf2cb053bc8df95..f482b994c608ccf3 100644
---- a/arch/arm64/include/asm/efi.h
-+++ b/arch/arm64/include/asm/efi.h
-@@ -30,28 +30,16 @@ int efi_create_mapping(struct mm_struct *mm, efi_memory_desc_t *md);
- int efi_set_mapping_permissions(struct mm_struct *mm, efi_memory_desc_t *md,
- 				bool has_bti);
+diff --git a/arch/riscv/include/asm/efi.h b/arch/riscv/include/asm/efi.h
+index 29e9a0d84b16682f..8a6a128ec57fc02b 100644
+--- a/arch/riscv/include/asm/efi.h
++++ b/arch/riscv/include/asm/efi.h
+@@ -21,12 +21,6 @@ extern void efi_init(void);
+ int efi_create_mapping(struct mm_struct *mm, efi_memory_desc_t *md);
+ int efi_set_mapping_permissions(struct mm_struct *mm, efi_memory_desc_t *md, bool);
  
--#define arch_efi_call_virt_setup()					\
--({									\
--	efi_virtmap_load();						\
--	__efi_fpsimd_begin();						\
--	raw_spin_lock(&efi_rt_lock);					\
--})
+-#define arch_efi_call_virt_setup()      ({		\
+-		sync_kernel_mappings(efi_mm.pgd);	\
+-		efi_virtmap_load();			\
+-	})
+-#define arch_efi_call_virt_teardown()   efi_virtmap_unload()
 -
- #undef arch_efi_call_virt
- #define arch_efi_call_virt(p, f, args...)				\
- 	__efi_rt_asm_wrapper((p)->f, #f, args)
+ #define ARCH_EFI_IRQ_FLAGS_MASK (SR_IE | SR_SPIE)
  
--#define arch_efi_call_virt_teardown()					\
--({									\
--	raw_spin_unlock(&efi_rt_lock);					\
--	__efi_fpsimd_end();						\
--	efi_virtmap_unload();						\
--})
--
--extern raw_spinlock_t efi_rt_lock;
- extern u64 *efi_rt_stack_top;
- efi_status_t __efi_rt_asm_wrapper(void *, const char *, ...);
+ /* Load initrd anywhere in system RAM */
+@@ -46,8 +40,8 @@ static inline unsigned long efi_get_kimg_min_align(void)
  
+ #define EFI_KIMG_PREFERRED_ADDRESS	efi_get_kimg_min_align()
+ 
+-void efi_virtmap_load(void);
+-void efi_virtmap_unload(void);
 +void arch_efi_call_virt_setup(void);
 +void arch_efi_call_virt_teardown(void);
-+
- /*
-  * efi_rt_stack_top[-1] contains the value the stack pointer had before
-  * switching to the EFI runtime stack.
-diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
-index baab8dd3ead3c27a..49efbdbd6f7ae766 100644
---- a/arch/arm64/kernel/efi.c
-+++ b/arch/arm64/kernel/efi.c
-@@ -158,7 +158,21 @@ asmlinkage efi_status_t efi_handle_corrupted_x18(efi_status_t s, const char *f)
- 	return s;
+ 
+ unsigned long stext_offset(void);
+ 
+diff --git a/drivers/firmware/efi/riscv-runtime.c b/drivers/firmware/efi/riscv-runtime.c
+index d0daacd2c903f182..09525fb5c240e668 100644
+--- a/drivers/firmware/efi/riscv-runtime.c
++++ b/drivers/firmware/efi/riscv-runtime.c
+@@ -130,14 +130,25 @@ static int __init riscv_enable_runtime_services(void)
+ }
+ early_initcall(riscv_enable_runtime_services);
+ 
+-void efi_virtmap_load(void)
++static void efi_virtmap_load(void)
+ {
+ 	preempt_disable();
+ 	switch_mm(current->active_mm, &efi_mm, NULL);
  }
  
--DEFINE_RAW_SPINLOCK(efi_rt_lock);
-+static DEFINE_RAW_SPINLOCK(efi_rt_lock);
+-void efi_virtmap_unload(void)
++static void efi_virtmap_unload(void)
+ {
+ 	switch_mm(&efi_mm, current->active_mm, NULL);
+ 	preempt_enable();
+ }
 +
 +void arch_efi_call_virt_setup(void)
 +{
++	sync_kernel_mappings(efi_mm.pgd);
 +	efi_virtmap_load();
-+	__efi_fpsimd_begin();
-+	raw_spin_lock(&efi_rt_lock);
 +}
 +
 +void arch_efi_call_virt_teardown(void)
 +{
-+	raw_spin_unlock(&efi_rt_lock);
-+	__efi_fpsimd_end();
 +	efi_virtmap_unload();
 +}
- 
- asmlinkage u64 *efi_rt_stack_top __ro_after_init;
- 
 -- 
 2.39.2
 
