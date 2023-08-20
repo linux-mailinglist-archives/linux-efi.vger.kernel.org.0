@@ -2,40 +2,42 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0990781C1A
-	for <lists+linux-efi@lfdr.de>; Sun, 20 Aug 2023 04:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55CE1781C1C
+	for <lists+linux-efi@lfdr.de>; Sun, 20 Aug 2023 04:40:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229853AbjHTCkG (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 19 Aug 2023 22:40:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38082 "EHLO
+        id S229617AbjHTCkL (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 19 Aug 2023 22:40:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229878AbjHTCjz (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 19 Aug 2023 22:39:55 -0400
+        with ESMTP id S229815AbjHTCj5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 19 Aug 2023 22:39:57 -0400
 Received: from mail.zytor.com (unknown [IPv6:2607:7c80:54:3::138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36F32381EF;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36D44381EB;
         Sat, 19 Aug 2023 18:04:01 -0700 (PDT)
 Received: from [172.27.2.41] ([73.231.166.163])
         (authenticated bits=0)
-        by mail.zytor.com (8.17.1/8.17.1) with ESMTPSA id 37K12dkW2217952
+        by mail.zytor.com (8.17.1/8.17.1) with ESMTPSA id 37K13SJJ2218312
         (version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-        Sat, 19 Aug 2023 18:02:39 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 37K12dkW2217952
+        Sat, 19 Aug 2023 18:03:29 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 37K13SJJ2218312
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-        s=2023081101; t=1692493374;
-        bh=Kn+YwMsGGBaii7cfbRQ8m922QywiwBH4TdkaZAGSsBg=;
+        s=2023081101; t=1692493410;
+        bh=qfXMJSMvd16f6xy9L3N9tjGXeYmkKh8AHAqkwUQ6BYE=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=aK/Qcy8rxC1aMdVJ8Tqc7ChMDPhvWFI/YXESanf2dYPfJCObTwI76kfavi1IpsVdO
-         QXqhG4vZjz0pPud3UqGeZbY8+7NPQNijzbEk7dtq9lpbxgyH12/cuSc/MVR5EeAOoP
-         eJ42lifPHCSKiU5eGtT8/mnMO5FP5pdRFq9xO6XQcbSeCJBTKfVBB++crbMh4I85sZ
-         OMnbUYPh+NLiuPHEl++1+cYBWphslfcWKN5Q13td1miMt2Vmjayk6TYifUP/oeODt0
-         j2W0vTP3DvOKtXe1+n4DQZOibqPWsNFKoUdSdiqKIvv1KcDd0vlPa+jf3d2A7oSx8K
-         7GtP8HhRluZxA==
-Message-ID: <583bf766-5351-24b6-dbd6-fc5db6a7b2f8@zytor.com>
-Date:   Sat, 19 Aug 2023 18:02:40 -0700
+        b=qyfuGRvd9Si3Fv5j+GpJXDkN5ciaFrjw8F5/1rC55743XVDP/CUTOf9XCTTlyN3bK
+         lsPZe+tLinrisrwHOgDax4S1Doy03IUOhu5vgZjF0ydMNUi+ju9RhQ4kjyXca17wA4
+         I1PzvlYGkBnYZLPHneZ2+RuQC8OVSanKcbXXQ19CipRPabQ33DiC8VsKz5Aso6fo4f
+         7MMLqqG43J+Sjd0U3uHOJrLFLHc54wngMjiHe5zhK91HKEcCmVIWJlQEFlPCF6f7Pr
+         dWq+uM6lLzcbTBoTHT0ml3+ZJEj0kzlgr7g+OKi8EefWWayWxvX430u5jh/zw9m6tc
+         SCPhxwUQ7K89Q==
+Message-ID: <46832047-567e-5699-fbec-8c3e991cfe0a@zytor.com>
+Date:   Sat, 19 Aug 2023 18:03:31 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 04/17] x86/boot: Remove the 'bugger off' message
+Subject: Re: [PATCH 17/17] x86/boot: Drop CRC-32 checksum and the build tool
+ that generates it
+Content-Language: en-US
 To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Evgeniy Baskov <baskov@ispras.ru>,
         Borislav Petkov <bp@alien8.de>,
@@ -48,10 +50,9 @@ Cc:     linux-kernel@vger.kernel.org, Evgeniy Baskov <baskov@ispras.ru>,
         Kees Cook <keescook@chromium.org>,
         =?UTF-8?Q?Marvin_H=c3=a4user?= <mhaeuser@posteo.de>
 References: <20230818134422.380032-1-ardb@kernel.org>
- <20230818134422.380032-5-ardb@kernel.org>
-Content-Language: en-US
+ <20230818134422.380032-18-ardb@kernel.org>
 From:   "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <20230818134422.380032-5-ardb@kernel.org>
+In-Reply-To: <20230818134422.380032-18-ardb@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -64,30 +65,28 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+
+
 On 8/18/23 06:44, Ard Biesheuvel wrote:
-> Ancient (pre-2003) x86 kernels could boot from a floppy disk straight from
-> the BIOS, using a small real mode boot stub at the start of the image
-> where the BIOS would expect the boot record (or boot block) to appear.
+> The only remaining task carried out by the boot/tools/build.c build tool
+> is generating the CRC-32 checksum of the bzImage. This feature was added
+> in commit
 > 
-> Due to its limitations (kernel size < 1 MiB, no support for IDE, USB or
-> El Torito floppy emulation), this support was dropped, and a Linux aware
-> bootloader is now always required to boot the kernel from a legacy BIOS.
+>    7d6e737c8d2698b6 ("x86: add a crc32 checksum to the kernel image.")
 > 
-> To smoothen this transition, the boot stub was not removed entirely, but
-> replaced with one that just prints an error message telling the user to
-> install a bootloader.
+> without any motivation (or any commit log text, for that matter). This
+> checksum is not verified by any known bootloader, and given that
 > 
-> As it is unlikely that anyone doing direct floppy boot with such an
-> ancient kernel is going to upgrade to v6.5+ and expect that this boot
-> method still works, printing this message is kind of pointless, and so
-> it should be possible to remove the logic that emits it.
+> a) the checksum of the entire bzImage is reported by most tools (zlib,
+>     rhash) as 0xffffffff and not 0x0 as documented,
+> b) the checksum is corrupted when the image is signed for secure boot,
+>     which means that no distro ships x86 images with valid CRCs,
 > 
-> Let's free up this space so it can be used to expand the PE header in a
-> subsequent patch.
+> it seems quite unlikely that this checksum is being used, so let's just
+> drop it, along with the tool that generates it.
 > 
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org
->
 
-Good riddance.
+This one I have concerns with.
 
-Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+	-hpa
+
