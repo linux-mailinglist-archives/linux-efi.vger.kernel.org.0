@@ -2,69 +2,63 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A40D783D73
-	for <lists+linux-efi@lfdr.de>; Tue, 22 Aug 2023 12:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E697F784707
+	for <lists+linux-efi@lfdr.de>; Tue, 22 Aug 2023 18:24:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234554AbjHVKA0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 22 Aug 2023 06:00:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51650 "EHLO
+        id S233332AbjHVQYB (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 22 Aug 2023 12:24:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234549AbjHVKA0 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 22 Aug 2023 06:00:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C3F51B2
-        for <linux-efi@vger.kernel.org>; Tue, 22 Aug 2023 03:00:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B4F464112
-        for <linux-efi@vger.kernel.org>; Tue, 22 Aug 2023 10:00:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A20C433D9
-        for <linux-efi@vger.kernel.org>; Tue, 22 Aug 2023 10:00:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692698423;
-        bh=9GARsK5qa8TdRG3H2o8UuS5MKJUgo+pxbOOPw0cMGeA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=IDMkk47V8ZXAWxhSOLri4NOdiMt2MlxuxRNURXGkCRqxhmvB82nETfhcDHsDIJHrU
-         2OXzz3Dxcc3xwtByJTFT59hiLITufTNoyimS99UN4v+W6YzfA5yHVXDUooev2h16g/
-         7lWtzaqVhfZXhjC1qCDL0r8gd9YKIKqEVu9weRNRF+TL8OOGa1PcUo/tqXQqicElZ5
-         1eJtvHVgsCO525CqUiydI8a+gk9vwvFxf8heGuS0lHf+mL3LfxsMv2MZGZI2bpO6Fy
-         uhTNXVe0vnG+m4xUfMFeS1u7sm2EmVZ5aREyEulObpNMliR85mEwNicTamzsGm6Edn
-         AtqpKv0T9HeaQ==
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-4ffa6e25ebbso4298046e87.0
-        for <linux-efi@vger.kernel.org>; Tue, 22 Aug 2023 03:00:23 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yy5qPU1A9sfcPA0ZFzkpN/HwQCsfMsYvpl9TueMX6qdry1/S07K
-        6MCuKy6qx3uh3snO8HJC0LO8I2hJy1k/E0BAYr0=
-X-Google-Smtp-Source: AGHT+IF/wbvYAXXp7f76cY67rBM2JQorxHfAjTSok3kTXWvpkPCcxbwElbocpqNe887QImljrmmkAKGAUBTHGitl+vA=
-X-Received: by 2002:a05:6512:1587:b0:4fe:27a0:68bc with SMTP id
- bp7-20020a056512158700b004fe27a068bcmr3090263lfb.27.1692698421282; Tue, 22
- Aug 2023 03:00:21 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230818113724.368492-1-ardb@kernel.org> <20230822020138.GA2027761@dev-arch.thelio-3990X>
- <CAMj1kXGy7E9+EUMgm9Fe5SdSsPf6EOX42=DG2RsNMDekhg3_sQ@mail.gmail.com>
-In-Reply-To: <CAMj1kXGy7E9+EUMgm9Fe5SdSsPf6EOX42=DG2RsNMDekhg3_sQ@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 22 Aug 2023 12:00:10 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHztqo1dpBf4arSOi3-4d_hi2s39gXEiQCmgS6jb1WRnA@mail.gmail.com>
-Message-ID: <CAMj1kXHztqo1dpBf4arSOi3-4d_hi2s39gXEiQCmgS6jb1WRnA@mail.gmail.com>
-Subject: Re: [PATCH v2 00/11] efi: Clean up runtime wrapper and wire it up for PRM
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     linux-efi@vger.kernel.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>
+        with ESMTP id S232138AbjHVQYB (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 22 Aug 2023 12:24:01 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE566137
+        for <linux-efi@vger.kernel.org>; Tue, 22 Aug 2023 09:23:59 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d630af4038fso6050160276.0
+        for <linux-efi@vger.kernel.org>; Tue, 22 Aug 2023 09:23:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1692721439; x=1693326239;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8xEC9yUWCvrWy7dpPlll9qDlrXhi9P3J8UvpO4H/sSs=;
+        b=Y2l5OwPUUXMZ0rAFThJ82imqz8h0f/7mBGDmgm259Y+TUBEx020D8R3N0MG7sa6z+J
+         ApLbQJXR9hTDrk4VopRBI56nWcYnbKz/SQxKYlu1uZM6YVh12QAe1Ku3v39fkTHPxgDV
+         KszNIhwVVhJMbs5rr+amnEtRRlewKc0nwArchdj+Zap5qKOgt66et6DRhyo/zyee1T8a
+         Aby6F9ONJ35sl641XVGJamYXdYw/pcZ8PZbgLRXgG2dYmnOcCHO8ozg/omVSF7ZHQ4WA
+         7uby84nh6BmyfMKbfv6O5qRGBt8tcusOy0eZiy4onAxLzPWRRkblnkwuD8lmHe6zkItj
+         3dsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692721439; x=1693326239;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8xEC9yUWCvrWy7dpPlll9qDlrXhi9P3J8UvpO4H/sSs=;
+        b=Gh5ZPvhEWHdQj9IhTLslhabsHuxiYroQFMlNLsyGlkVMbWkX0HbS2HfMD5u2MzWBhC
+         ol/Kdkzx1pvTw/fdBeaycSZX4m6ZktS//RVodo3z2z6aiTiqnupgFBo2B5Broa5yZWi5
+         lPHE2Bp01hrWB4OLKDAvO4AI0uJEoPz2ks3V9Ta3Gf+IqkCXXdCaHT9KSpASKMklC4aA
+         OygABHaAUrW4dexzDZ1FFVRS0fAYmPc1JTv2SUxMUWPkcYXtWk9MozRDtaXlrT/t/bE8
+         3NQ8HqVFouRmQ6CRiaAuUamP1SQICTnPSiH5gUH2ctg2VPiDcDOwOoptWCahUxt8ofzt
+         G2sw==
+X-Gm-Message-State: AOJu0Yy7UDyrCeer6W5pxgR9tfE8POVnAZCXInxwNlg2k7rfuzNeHD6I
+        VHxbMYKddW5wlsSOmX6zS/JvaZDaaSsvPw==
+X-Google-Smtp-Source: AGHT+IHy/nN53EgB0o6VeR3Zy+39h+G0YuRd6bkfF1CXZvIwrp27z1ToLWQEFEjH6NdCKm5me3wJVJo+HfVxGg==
+X-Received: from jiao.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:10f3])
+ (user=jiaozhou job=sendgmr) by 2002:a25:4057:0:b0:d71:9aa2:d953 with SMTP id
+ n84-20020a254057000000b00d719aa2d953mr102219yba.5.1692721439047; Tue, 22 Aug
+ 2023 09:23:59 -0700 (PDT)
+Date:   Tue, 22 Aug 2023 16:23:51 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.42.0.rc1.204.g551eb34607-goog
+Message-ID: <20230822162350.1.I96423a31e88428004c2f4a28ccad13828adf433e@changeid>
+Subject: [PATCH] kernel: Add Mount Option For Efivarfs
+From:   Jiao Zhou <jiaozhou@google.com>
+To:     linux-fsdevel@vger.kernel.org
+Cc:     Jiao Zhou <jiaozhou@google.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Jeremy Kerr <jk@ozlabs.org>, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,62 +66,154 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 22 Aug 2023 at 09:53, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Tue, 22 Aug 2023 at 04:01, Nathan Chancellor <nathan@kernel.org> wrote:
-> >
-> > Hi Ard,
-> >
-> > On Fri, Aug 18, 2023 at 01:37:13PM +0200, Ard Biesheuvel wrote:
-> >
-> > <snip>
-> >
-> > > Ard Biesheuvel (11):
-> > >   efi/x86: Move EFI runtime call setup/teardown helpers out of line
-> > >   efi/arm64: Move EFI runtime call setup/teardown helpers out of line
-> > >   efi/riscv: Move EFI runtime call setup/teardown helpers out of line
-> > >   efi/runtime-wrappers: Use type safe encapsulation of call arguments
-> > >   efi/runtime-wrapper: Move workqueue manipulation out of line
-> > >   efi/runtime-wrappers: Remove duplicated macro for service returning
-> > >     void
-> > >   efi/runtime-wrappers: Don't duplicate setup/teardown code
-> > >   acpi/prmt: Use EFI runtime sandbox to invoke PRM handlers
-> > >   efi/runtime-wrappers: Clean up white space and add __init annotation
-> > >   efi/x86: Realign EFI runtime stack
-> > >   efi/x86: Rely on compiler to emit MS ABI calls
-> >
-> > I took this series for a spin on my arm64 and x86_64 systems that boot
-> > under EFI. I noticed two issues for x86_64, none for arm64. I was hoping
-> > to have a little more information by this point but I had some personal
-> > stuff to deal with today but I figured I would report this initially
-> > and if you want to continue on the ClangBuiltLinux issue tracker, we
-> > certainly can.
-> >
-> > 1. I see some kCFI failures with this series on x86_64. The fact that
-> > the target is not a symbol makes me think that a function defined in a
-> > .S file is being called indirectly? The following stacktrace is repeated
-> > over and over on all my machines.
-> >
->
-> This has to do with the indirect calls being made by the EFI code to
-> the firmware services, which are not part of the kernel build.
->
-> Before, those indirect calls were hidden from the compiler, as they
-> were made from assembler, but now they are generated by the compiler,
-> and so we have to inform it that those functions do not have kCFI
-> metadata.
->
-> The below should have fixed it, but I am getting lots of build errors
-> along the lines of
->
-> error: '__no_sanitize__' attribute only applies to functions,
-> Objective-C methods, and global variables
->
-> when I add this. Suggestions welcome on how to inform the compiler
-> that calls via those function pointers should have __nocfi semantics.
->
+Add uid and gid in efivarfs's mount option, so that
+we can mount the file system with ownership. This approach
+is used by a number of other filesystems that don't have
+native support for ownership
 
-OK, so it is a property of the caller, not the callee. So it is simply
-a matter of marking every user of the EFI runtime services with
-__nocfi. So basically, every routine marked __efi_realign_stack should
-be marked __nocfi as well.
+Signed-off-by: Jiao Zhou <jiaozhou@google.com>
+---
+
+ fs/efivarfs/inode.c    |  4 ++++
+ fs/efivarfs/internal.h |  9 +++++++
+ fs/efivarfs/super.c    | 54 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 67 insertions(+)
+
+diff --git a/fs/efivarfs/inode.c b/fs/efivarfs/inode.c
+index b973a2c03dde..86175e229b0f 100644
+--- a/fs/efivarfs/inode.c
++++ b/fs/efivarfs/inode.c
+@@ -20,9 +20,13 @@ struct inode *efivarfs_get_inode(struct super_block *sb,
+ 				const struct inode *dir, int mode,
+ 				dev_t dev, bool is_removable)
+ {
++	struct efivarfs_fs_info *fsi = sb->s_fs_info;
+ 	struct inode *inode = new_inode(sb);
++	struct efivarfs_mount_opts *opts = &fsi->mount_opts;
+ 
+ 	if (inode) {
++		inode->i_uid = opts->uid;
++		inode->i_gid = opts->gid;
+ 		inode->i_ino = get_next_ino();
+ 		inode->i_mode = mode;
+ 		inode->i_atime = inode->i_mtime = inode->i_ctime = current_time(inode);
+diff --git a/fs/efivarfs/internal.h b/fs/efivarfs/internal.h
+index 8ebf3a6a8aa2..2c7b6b24df19 100644
+--- a/fs/efivarfs/internal.h
++++ b/fs/efivarfs/internal.h
+@@ -48,6 +48,15 @@ bool efivar_validate(efi_guid_t vendor, efi_char16_t *var_name, u8 *data,
+ bool efivar_variable_is_removable(efi_guid_t vendor, const char *name,
+ 				  size_t len);
+ 
++struct efivarfs_mount_opts {
++	kuid_t uid;
++	kgid_t gid;
++};
++
++struct efivarfs_fs_info {
++	struct efivarfs_mount_opts mount_opts;
++};
++
+ extern const struct file_operations efivarfs_file_operations;
+ extern const struct inode_operations efivarfs_dir_inode_operations;
+ extern bool efivarfs_valid_name(const char *str, int len);
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index e028fafa04f3..e3c81fac8208 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -8,6 +8,7 @@
+ #include <linux/efi.h>
+ #include <linux/fs.h>
+ #include <linux/fs_context.h>
++#include <linux/fs_parser.h>
+ #include <linux/module.h>
+ #include <linux/pagemap.h>
+ #include <linux/ucs2_string.h>
+@@ -60,10 +61,27 @@ static int efivarfs_statfs(struct dentry *dentry, struct kstatfs *buf)
+ 
+ 	return 0;
+ }
++static int efivarfs_show_options(struct seq_file *m, struct dentry *root)
++{
++	struct super_block *sb = root->d_sb;
++	struct efivarfs_fs_info *sbi = sb->s_fs_info;
++	struct efivarfs_mount_opts *opts = &sbi->mount_opts;
++
++	/* Show partition info */
++	if (!uid_eq(opts->uid, GLOBAL_ROOT_UID))
++		seq_printf(m, ",uid=%u",
++				from_kuid_munged(&init_user_ns, opts->uid));
++	if (!gid_eq(opts->gid, GLOBAL_ROOT_GID))
++		seq_printf(m, ",gid=%u",
++				from_kgid_munged(&init_user_ns, opts->gid));
++	return 0;
++}
++
+ static const struct super_operations efivarfs_ops = {
+ 	.statfs = efivarfs_statfs,
+ 	.drop_inode = generic_delete_inode,
+ 	.evict_inode = efivarfs_evict_inode,
++	.show_options	= efivarfs_show_options,
+ };
+ 
+ /*
+@@ -225,6 +243,40 @@ static int efivarfs_destroy(struct efivar_entry *entry, void *data)
+ 	return 0;
+ }
+ 
++enum {
++	Opt_uid, Opt_gid,
++};
++
++static const struct fs_parameter_spec efivarfs_parameters[] = {
++	fsparam_u32("uid",			Opt_uid),
++	fsparam_u32("gid",			Opt_gid),
++};
++
++static int efivarfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
++{
++	struct efivarfs_fs_info *sbi = fc->s_fs_info;
++	struct efivarfs_mount_opts *opts = &sbi->mount_opts;
++	struct fs_parse_result result;
++	int opt;
++
++	opt = fs_parse(fc, efivarfs_parameters, param, &result);
++	if (opt < 0)
++		return opt;
++
++	switch (opt) {
++	case Opt_uid:
++		opts->uid = make_kuid(current_user_ns(), result.uint_32);
++		break;
++	case Opt_gid:
++		opts->gid = make_kgid(current_user_ns(), result.uint_32);
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ {
+ 	struct inode *inode = NULL;
+@@ -271,6 +323,7 @@ static int efivarfs_get_tree(struct fs_context *fc)
+ 
+ static const struct fs_context_operations efivarfs_context_ops = {
+ 	.get_tree	= efivarfs_get_tree,
++	.parse_param	= efivarfs_parse_param,
+ };
+ 
+ static int efivarfs_init_fs_context(struct fs_context *fc)
+@@ -295,6 +348,7 @@ static struct file_system_type efivarfs_type = {
+ 	.name    = "efivarfs",
+ 	.init_fs_context = efivarfs_init_fs_context,
+ 	.kill_sb = efivarfs_kill_sb,
++	.parameters		= efivarfs_parameters,
+ };
+ 
+ static __init int efivarfs_init(void)
+-- 
+2.42.0.rc1.204.g551eb34607-goog
+
