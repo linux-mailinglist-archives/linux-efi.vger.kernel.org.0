@@ -2,125 +2,128 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D76A78AE86
-	for <lists+linux-efi@lfdr.de>; Mon, 28 Aug 2023 13:13:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CD6D78BA5E
+	for <lists+linux-efi@lfdr.de>; Mon, 28 Aug 2023 23:35:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232086AbjH1LMz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 28 Aug 2023 07:12:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56108 "EHLO
+        id S233732AbjH1VfX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 28 Aug 2023 17:35:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232443AbjH1LMj (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 28 Aug 2023 07:12:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08A3AB0
-        for <linux-efi@vger.kernel.org>; Mon, 28 Aug 2023 04:12:37 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BD0F6118F
-        for <linux-efi@vger.kernel.org>; Mon, 28 Aug 2023 11:12:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A9CC433C7;
-        Mon, 28 Aug 2023 11:12:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693221156;
-        bh=LxY+jFnL+dqeUUoOxCSW0bAmgoq9YmhSBnju7998mVA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Q5ciJmB7GtxYaJA+wuieEf6y9ydKAzdbsJxt651SD3PuQZCBGSBqKs9O09T3khPae
-         p7cXzyTWjj8de3UEa88vnseSl8sWuT52Pvkrd/Wn1nkT5oX3nJFL4sKJXx/G8Cjz5W
-         WY7zqMYanU7sQOfU/9swA4b0rgBzO42wmzMJqqlksP52YZnLnrG9ouNJ82qAdg4ELL
-         LHYTD9xFKcnBmu3C948GRTBbYRT43vbtbQeFb4I35rec6EhBpGeYIBSYkAT5j0SOGK
-         Bil53mYNtk2QHb4qg2U+4H6zsoCilDNIKaLzFnISoIbZrLS1+PoKqGMnlRILfODuDv
-         94B6j4LA2+VFw==
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     torvalds@linux-foundation.org
-Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
-Subject: [GIT PULL] EFI updates for v6.6
-Date:   Mon, 28 Aug 2023 13:12:29 +0200
-Message-Id: <20230828111229.107143-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S233783AbjH1VfO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 28 Aug 2023 17:35:14 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8110B186
+        for <linux-efi@vger.kernel.org>; Mon, 28 Aug 2023 14:35:11 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id ffacd0b85a97d-31c479ede21so3109817f8f.2
+        for <linux-efi@vger.kernel.org>; Mon, 28 Aug 2023 14:35:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693258510; x=1693863310;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wh77ELpaghlUL85iKQZLobA572ak3oWVH+NHgjHqWqs=;
+        b=FWJmCb4CXuXddvxtUHmcNO51BFbDxYHjoJAO7kojFOD11tIlxu/hociWjJaAvJKbIF
+         8oGkIbBA1qqUQ/SEVPIy3u4Lu9i4WGmCCTbErx7flWGZ87DuzActLwk4xP7kAA/VgTnV
+         N8oK1hUe461Cgd9utTF13Iih/4Oqi2S5DyRGVTdhVGit3KdyRflSXC63kmQ/scAj001p
+         b9BqvCdfpDTzq4JeJtu6xXhCOjRceOlcran96KQZSvrViizpOxEHR1CT+Ae/OBpHXyrh
+         QTt/X6QEUHo6GEoVewIX4BscS7rxTdcJiUiArbamfp8yz4dcOquoTY8Jg8LBeAFV40b6
+         Sbbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693258510; x=1693863310;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wh77ELpaghlUL85iKQZLobA572ak3oWVH+NHgjHqWqs=;
+        b=DnBlRcMhz4V0cMjPRIcAFNJWq7jDsylH2fdAgpY2N7O9Viap2BBEUqbqo5AGvhgOqz
+         PTpdGlOGDSrPACHiFSMUt5+DwR3HBNTVeVsm6+san/lwsdLTgYjOcuGt9/1AhY/Po5sE
+         cFYJHHcHq9nKRFwdGyI0936dnG0dkrAJrY/DVAC1V7x9CKVK8dXLhW9JBDQZGYuEZqT2
+         VC8XUXS5rczqW6Ox/t70vKIQCw3XuOA+XNLj16MQ1XR0zvnmf7TVXMPkLQVpM7qxDnca
+         9CMWzqQiqE+XNfMw2XbpBdq79XaUPDE/c8mVJUkBtwt1IrLcI3+LXthvHGMhm1ZvQBIq
+         091w==
+X-Gm-Message-State: AOJu0YxEa5IaqjzmQmZVFL6W0jloGookS33uaoJgonErT8fRAcFDPESd
+        hZQVi5aYw7tACjoyZikMI/WArIxOVMdDGQJPklo=
+X-Google-Smtp-Source: AGHT+IG1z2Z9KmHRHKVW554gFmbcclR4Bb13KuSQWGIKUrS0MSizBXjRnQ1L9LISXTFCkxBggudwKxtMCLNLylwez+M=
+X-Received: by 2002:a5d:684b:0:b0:317:6310:a616 with SMTP id
+ o11-20020a5d684b000000b003176310a616mr19566115wrw.36.1693258509680; Mon, 28
+ Aug 2023 14:35:09 -0700 (PDT)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3005; i=ardb@kernel.org; h=from:subject; bh=LxY+jFnL+dqeUUoOxCSW0bAmgoq9YmhSBnju7998mVA=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeVNo4xYieGxa83PYg1Marf5zIn4O4O9MMrz6yseI+dTm T6WS4w7SlkYxDgYZMUUWQRm/3238/REqVrnWbIwc1iZQIYwcHEKwERCaxgZHrx+KKrCb2SXdv5n 2pHiXS3hEx4uClL5tOIcOxvr4sg6G4Z/6nuOxNtOneGiGfjbab4ZY52unzSH7NNM796zT8OO2bv wAwA=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:7412:461d:b0:df:4ad0:893d with HTTP; Mon, 28 Aug 2023
+ 14:35:09 -0700 (PDT)
+Reply-To: chrislucas@skiff.com
+From:   Chris Lucas <dr.filipemart@gmail.com>
+Date:   Mon, 28 Aug 2023 23:35:09 +0200
+Message-ID: <CA+L9BwxcJuvwZ4aSyv7ksvkBohCJrBBOe1vmcackQ6Qks4nSGg@mail.gmail.com>
+Subject: Greetings to you
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.0 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FROM,LOTS_OF_MONEY,MONEY_FRAUD_8,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_MONEY_PERCENT,T_SHARE_50_50,UNDISC_MONEY,
+        URG_BIZ autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
+        *      DNSWL was blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [2a00:1450:4864:20:0:0:0:42f listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5918]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [dr.filipemart[at]gmail.com]
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.6 URG_BIZ Contains urgent matter
+        *  0.0 T_SHARE_50_50 Share the money 50/50
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  0.0 T_MONEY_PERCENT X% of a lot of money for you
+        *  0.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
+        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
+        *  2.8 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hello Linus,
+-- 
+Compliments of the day,
 
-Most of the EFI work this cycle will be arriving via the -tip tree, given that
-it is closely tied to the x86 decompressor.
+How are you today? My name is Mr. Chris Lucas-, I am a Branch Manager
+with Lloyds Bank here United Kingdom. I need your urgent assistance in
+transferring the sum of (US$800,000) (Eight Hundred Thousand United
+State Dollars). This funds is the profit I made personally after I
+approving loans for 2 offshore companies in January, by passing
+banking standards. I took the risk because the two companies agreed to
+pay back the loan with high interest rate which is the profit I made.
+I have since then deposited the fund on a suspense account without a
+beneficiary.
 
-This PR primarily covers some cleanup work on the EFI runtime wrappers, which
-are shared between all EFI architectures except Itanium, and which provide some
-level of isolation to prevent faults occurring in the firmware code (which
-runs at the same privilege level as the kernel) from bringing down the system.
+I contacted you for this opportunity, because I cannot connect to the
+funds which will raise an eyebrow with my bank, hence I seek your
+parnership, to enable me present you to the bank as the beneficiary of
+the fund which will be for contract payment. I want to assure you that
+this is ABOVE BOARD as my bank does not know about this profit I made.
 
-Beyond that, there is a fix that did not make it into v6.5, and some doc fixes
-and dead code cleanup.
+I intend to part with 50% of this fund to you while 50% shall be for
+me and I will also like to invest in your country. I know I took the
+whole risk to make this funds but I choose to share the funds equally
+because I know it takes courage for anyone to partner with me
+considering the magnitude of funds involved-
 
-Please pull.
+I will appreciate your timely response.
 
+Please kindly provide me with your personal mobile number for more
+conversation to enable us reach a consensus before I introduce the way
+forward.
 
-The following changes since commit 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5:
+Best Regards,
 
-  Linux 6.5-rc1 (2023-07-09 13:53:13 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-next-for-v6.6
-
-for you to fetch changes up to b691118f2c44d16b84fc65b8147b33620eb18cac:
-
-  Merge remote-tracking branch 'linux-efi/urgent' into efi/next (2023-08-28 12:57:05 +0200)
-
-----------------------------------------------------------------
-EFI updates for v6.6
-
-- one bugfix for x86 mixed mode that did not make it into v6.5
-- first pass of cleanup for the EFI runtime wrappers
-- some cosmetic touchups
-
-----------------------------------------------------------------
-Ard Biesheuvel (9):
-      efi/arm64: Move EFI runtime call setup/teardown helpers out of line
-      efi/riscv: Move EFI runtime call setup/teardown helpers out of line
-      efi/runtime-wrappers: Use type safe encapsulation of call arguments
-      efi/runtime-wrapper: Move workqueue manipulation out of line
-      efi/runtime-wrappers: Remove duplicated macro for service returning void
-      efi/runtime-wrappers: Don't duplicate setup/teardown code
-      acpi/prmt: Use EFI runtime sandbox to invoke PRM handlers
-      efi/runtime-wrappers: Clean up white space and add __init annotation
-      Merge remote-tracking branch 'linux-efi/urgent' into efi/next
-
-Mikel Rychliski (1):
-      x86/efistub: Fix PCI ROM preservation in mixed mode
-
-Xiao Wang (1):
-      efi/riscv: libstub: Fix comment about absolute relocation
-
-YueHaibing (1):
-      efi: Remove unused extern declaration efi_lookup_mapped_addr()
-
-Zhu Wang (1):
-      efi: memmap: Remove kernel-doc warnings
-
- arch/arm64/include/asm/efi.h            |  18 +-
- arch/arm64/kernel/efi.c                 |  16 +-
- arch/riscv/include/asm/efi.h            |  10 +-
- arch/x86/include/asm/uv/bios.h          |   4 +-
- arch/x86/platform/efi/memmap.c          |   2 +-
- drivers/acpi/Kconfig                    |   2 +-
- drivers/acpi/prmt.c                     |   8 +-
- drivers/firmware/efi/libstub/Makefile   |   2 +-
- drivers/firmware/efi/libstub/x86-stub.c |   2 +-
- drivers/firmware/efi/riscv-runtime.c    |  15 +-
- drivers/firmware/efi/runtime-wrappers.c | 358 +++++++++++++++++++++-----------
- include/linux/efi.h                     |  53 ++---
- 12 files changed, 299 insertions(+), 191 deletions(-)
+Chris Lucas-
