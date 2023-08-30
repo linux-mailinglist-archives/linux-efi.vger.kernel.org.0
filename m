@@ -2,34 +2,40 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6975B78D114
-	for <lists+linux-efi@lfdr.de>; Wed, 30 Aug 2023 02:24:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18A4578D154
+	for <lists+linux-efi@lfdr.de>; Wed, 30 Aug 2023 02:50:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241401AbjH3AXl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 29 Aug 2023 20:23:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59070 "EHLO
+        id S241460AbjH3Atb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 29 Aug 2023 20:49:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239507AbjH3AX0 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 29 Aug 2023 20:23:26 -0400
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 496C7EA;
-        Tue, 29 Aug 2023 17:23:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=zZxZUyqerb7julFXQ03Jti/01WDk420m8vSi4C3S7Zg=; b=C+B8K/E0jwmlP3x0ynEg/wW0oT
-        8W+g7CEhf7EdCVJx+aCWMaLZ8rDm21ORLwQNEzBBlnKI8nSnQEIfBUqrKOBnjUNllXW768GzG3qB7
-        +cpJ/jhntfWbFQ/3QFzCMkG1sg2st+PpzLnPrKtYydQR6EDaMR8Bc+aEbQhcPGU53TF4NXxBCLwrJ
-        Y+Cse/dfbORxx77QJVsCQ4BCKysmxvXtFDzxb882a/rtaocFDwQw24nZDPRB3CytP/MOuWTM+mTfa
-        +8MJ/m4rwupUEXN1Mh5oBPLgZehFHGmgz56mU9Gh95pn90zVDOFdIxrpzwqUqcKtUFnurzTC7a4a3
-        phr8qPBQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
-        id 1qb8vV-001xXV-0L;
-        Wed, 30 Aug 2023 00:19:17 +0000
-Date:   Wed, 30 Aug 2023 01:19:17 +0100
-From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     Jeff Layton <jlayton@kernel.org>
+        with ESMTP id S241521AbjH3AtX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 29 Aug 2023 20:49:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E47B2CD9;
+        Tue, 29 Aug 2023 17:49:08 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D63D638C5;
+        Wed, 30 Aug 2023 00:49:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15649C433C8;
+        Wed, 30 Aug 2023 00:48:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693356547;
+        bh=Y6mimTT4f5bHTNOgMAPJs7UzoDd9JcRrnEgta8s7/7g=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=R2eMjMGcVP6twJXzPd3GjCC/QAkoBXyIXwyF0PetiX1VDQJtkSU/FrVUdLPhlHeJk
+         dBHqNW4EShjtZaWh7sFQvaiUl3mq77UH9KDN3DI2snJ6o1c+81N9JuEjNxovdv+bSx
+         sgcIB4JoE+RW7C4bNpHemTP/NmKBpTL7+v/S4iHTHVlduZjb2wd1jti+ZtvOSZrtwV
+         l+HJJMf2BwuQ5fHlwOGaHAX0BTHl6xVSRaJy3EeRODk9yD0xK9grM4eFB73+9nNR6U
+         SUPRRhBT9hKA3cHo92ct+4AiPcoeZ/GYLow2fGYu2g/oM5lHg/5skk6mbUINrwlVsy
+         FRJBQs41w8qcA==
+Message-ID: <d73e7de5056a34578a193185770e46584450d8b7.camel@kernel.org>
+Subject: Re: [PATCH v2 08/92] fs: new helper: simple_rename_timestamp
+From:   Jeff Layton <jlayton@kernel.org>
+To:     Al Viro <viro@zeniv.linux.org.uk>
 Cc:     jk@ozlabs.org, arnd@arndb.de, mpe@ellerman.id.au,
         npiggin@gmail.com, christophe.leroy@csgroup.eu, hca@linux.ibm.com,
         gor@linux.ibm.com, agordeev@linux.ibm.com,
@@ -119,36 +125,49 @@ Cc:     jk@ozlabs.org, arnd@arndb.de, mpe@ellerman.id.au,
         bpf@vger.kernel.org, netdev@vger.kernel.org,
         apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
         selinux@vger.kernel.org
-Subject: Re: [PATCH v2 08/92] fs: new helper: simple_rename_timestamp
-Message-ID: <20230830001917.GC461907@ZenIV>
+Date:   Tue, 29 Aug 2023 20:48:48 -0400
+In-Reply-To: <20230830001917.GC461907@ZenIV>
 References: <20230705185812.579118-1-jlayton@kernel.org>
- <20230705185812.579118-3-jlayton@kernel.org>
+         <20230705185812.579118-3-jlayton@kernel.org>
+         <20230830001917.GC461907@ZenIV>
+Content-Type: text/plain; charset="ISO-8859-15"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230705185812.579118-3-jlayton@kernel.org>
-Sender: Al Viro <viro@ftp.linux.org.uk>
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Wed, Jul 05, 2023 at 02:58:11PM -0400, Jeff Layton wrote:
+On Wed, 2023-08-30 at 01:19 +0100, Al Viro wrote:
+> On Wed, Jul 05, 2023 at 02:58:11PM -0400, Jeff Layton wrote:
+>=20
+> > + * POSIX mandates that the old and new parent directories have their c=
+time and
+> > + * mtime updated, and that inodes of @old_dentry and @new_dentry (if a=
+ny), have
+> > + * their ctime updated.
+>=20
+> APPLICATION USAGE
+> Some implementations mark for update the last file status change timestam=
+p
+> of renamed files and some do not. Applications which make use of the
+> last file status change timestamp may behave differently with respect
+> to renamed files unless they are designed to allow for either behavior.
+>
+> So for children POSIX permits rather than mandates.  Doesn't really matte=
+r;
+> Linux behaviour had been to touch ctime on children since way back, if
+> not since the very beginning.
 
-> + * POSIX mandates that the old and new parent directories have their ctime and
-> + * mtime updated, and that inodes of @old_dentry and @new_dentry (if any), have
-> + * their ctime updated.
+Mea culpa. You're quite correct. I'll plan to roll a small patch to
+update the comment over this function.
 
-APPLICATION USAGE
-Some implementations mark for update the last file status change timestamp
-of renamed files and some do not. Applications which make use of the
-last file status change timestamp may behave differently with respect
-to renamed files unless they are designed to allow for either behavior.
-
-So for children POSIX permits rather than mandates.  Doesn't really matter;
-Linux behaviour had been to touch ctime on children since way back, if
-not since the very beginning.
+Thanks!
+--=20
+Jeff Layton <jlayton@kernel.org>
