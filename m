@@ -2,111 +2,107 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF38C791610
-	for <lists+linux-efi@lfdr.de>; Mon,  4 Sep 2023 13:09:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFBC7791651
+	for <lists+linux-efi@lfdr.de>; Mon,  4 Sep 2023 13:42:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232563AbjIDLJc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 4 Sep 2023 07:09:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42482 "EHLO
+        id S232903AbjIDLm2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 4 Sep 2023 07:42:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229980AbjIDLJc (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 4 Sep 2023 07:09:32 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 322E2CC6
-        for <linux-efi@vger.kernel.org>; Mon,  4 Sep 2023 04:09:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1693825769; x=1725361769;
-  h=date:from:to:cc:subject:message-id;
-  bh=TgFAPh1g9AfYKH+gu3g4s0P9gFQRp9pdoECW6XxKDYM=;
-  b=OJTadTH9Ijv3PqHozdk04iRdJicZnIFkyJbFYLAjguCyC/zBWpnpcn2q
-   Rnxc2NTvypJ2LZ1YLjqOgoOaG6bD2G+3nlSlHqRIUuBctaT4KZ2qPfw7l
-   e3ATCNWpQ+g+Pfz5+bcWz0iu7hZItA2D0JPki4XuHtsOz6NJiAQ3kVnup
-   q5Ykytzc18wbQp3zzEuN7cdBfuRlxCimcMDQq1cNoMqWkzBky+o4igLJC
-   4tJzeMVshsMid0ZA3xqpl78d/DQQ2bnEoleccdVgrSdC5VYyYYPEbaVRV
-   ctK7u+uN7RkzMqHN9R6fGYV7S3THFdUycYx9ffm9teVS9KOnEze/HsxBI
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10822"; a="373964752"
-X-IronPort-AV: E=Sophos;i="6.02,226,1688454000"; 
-   d="scan'208";a="373964752"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2023 04:09:28 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10822"; a="914475725"
-X-IronPort-AV: E=Sophos;i="6.02,226,1688454000"; 
-   d="scan'208";a="914475725"
-Received: from lkp-server02.sh.intel.com (HELO e0b2ea88afd5) ([10.239.97.151])
-  by orsmga005.jf.intel.com with ESMTP; 04 Sep 2023 04:09:27 -0700
-Received: from kbuild by e0b2ea88afd5 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qd7SJ-0000QX-0U;
-        Mon, 04 Sep 2023 11:09:22 +0000
-Date:   Mon, 04 Sep 2023 19:08:54 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:next] BUILD SUCCESS
- fa0aa919ef448fe4995fe4144c59aee0dce3e9e4
-Message-ID: <202309041952.YYU7fM7i-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229551AbjIDLm0 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 4 Sep 2023 07:42:26 -0400
+Received: from mail.kapsi.fi (mail.kapsi.fi [IPv6:2001:67c:1be8::25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B68A218C;
+        Mon,  4 Sep 2023 04:42:22 -0700 (PDT)
+Received: from kapsi.fi ([91.232.154.11] helo=lakka.kapsi.fi)
+        by mail.kapsi.fi with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.96)
+        (envelope-from <mcfrisk@lakka.kapsi.fi>)
+        id 1qd7yC-000GpZ-1s;
+        Mon, 04 Sep 2023 14:42:16 +0300
+Received: from mcfrisk by lakka.kapsi.fi with local (Exim 4.94.2)
+        (envelope-from <mcfrisk@lakka.kapsi.fi>)
+        id 1qd7om-00HPf9-IM; Mon, 04 Sep 2023 14:32:32 +0300
+From:   mikko.rapeli@linaro.org
+To:     linux-doc@vger.kernel.org
+Cc:     Mikko Rapeli <mikko.rapeli@linaro.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>, linux-efi@vger.kernel.org,
+        stable@kernel.org
+Subject: [PATCH] Documentation efi-stub.rst: fix arm64 EFI source location
+Date:   Mon,  4 Sep 2023 14:32:14 +0300
+Message-Id: <20230904113214.4147021-1-mikko.rapeli@linaro.org>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspam-Score: -1.4 (-)
+X-Rspam-Report: Action: no action
+ Symbol: ARC_NA(0.00)
+ Symbol: DMARC_POLICY_SOFTFAIL(0.10)
+ Symbol: RCVD_TLS_LAST(0.00)
+ Symbol: TO_DN_SOME(0.00)
+ Symbol: R_MISSING_CHARSET(0.50)
+ Symbol: R_SPF_ALLOW(-0.20)
+ Symbol: MIME_GOOD(-0.10)
+ Symbol: TO_MATCH_ENVRCPT_ALL(0.00)
+ Symbol: RCPT_COUNT_FIVE(0.00)
+ Symbol: BLOCKLISTDE_FAIL(0.00)
+ Symbol: FROM_NO_DN(0.00)
+ Symbol: MID_CONTAINS_FROM(1.00)
+ Symbol: NEURAL_HAM(0.00)
+ Symbol: FORGED_SENDER(0.30)
+ Symbol: R_DKIM_NA(0.00)
+ Symbol: MIME_TRACE(0.00)
+ Symbol: ASN(0.00)
+ Symbol: FROM_NEQ_ENVFROM(0.00)
+ Symbol: BAYES_HAM(-3.00)
+ Symbol: RCVD_COUNT_TWO(0.00)
+ Message-ID: 20230904113214.4147021-1-mikko.rapeli@linaro.org
+X-SA-Exim-Connect-IP: 91.232.154.11
+X-SA-Exim-Mail-From: mcfrisk@lakka.kapsi.fi
+X-SA-Exim-Scanned: No (on mail.kapsi.fi); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
-branch HEAD: fa0aa919ef448fe4995fe4144c59aee0dce3e9e4  efi/x86: Move EFI runtime call setup/teardown helpers out of line
+From: Mikko Rapeli <mikko.rapeli@linaro.org>
 
-elapsed time: 728m
+arch/arm64/kernel/efi-entry.S has been moved to
+drivers/firmware/efi/libstub/arm64-entry.S by commit
+v6.1-rc4-6-g4ef806096bdb and to
+drivers/firmware/efi/libstub/arm64.c by commit
+v6.2-rc3-6-g617861703830
 
-configs tested: 36
-configs skipped: 141
+Fixes: 4ef806096bdb (arm64: efi: Move efi-entry.S into the libstub source directory)
+Fixes: 617861703830 (efi: arm64: enter with MMU and caches enabled)
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: linux-efi@vger.kernel.org
+Cc: stable@kernel.org
+Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+---
+ Documentation/admin-guide/efi-stub.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-tested configs:
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20230904   gcc  
-i386         buildonly-randconfig-002-20230904   gcc  
-i386         buildonly-randconfig-003-20230904   gcc  
-i386         buildonly-randconfig-004-20230904   gcc  
-i386         buildonly-randconfig-005-20230904   gcc  
-i386         buildonly-randconfig-006-20230904   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-011-20230904   clang
-i386                  randconfig-012-20230904   clang
-i386                  randconfig-013-20230904   clang
-i386                  randconfig-014-20230904   clang
-i386                  randconfig-015-20230904   clang
-i386                  randconfig-016-20230904   clang
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-001-20230904   gcc  
-x86_64       buildonly-randconfig-002-20230904   gcc  
-x86_64       buildonly-randconfig-003-20230904   gcc  
-x86_64       buildonly-randconfig-004-20230904   gcc  
-x86_64       buildonly-randconfig-005-20230904   gcc  
-x86_64       buildonly-randconfig-006-20230904   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20230904   clang
-x86_64                randconfig-002-20230904   clang
-x86_64                randconfig-003-20230904   clang
-x86_64                randconfig-004-20230904   clang
-x86_64                randconfig-005-20230904   clang
-x86_64                randconfig-006-20230904   clang
-x86_64               randconfig-r016-20230904   clang
-x86_64               randconfig-r025-20230904   clang
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-
+diff --git a/Documentation/admin-guide/efi-stub.rst b/Documentation/admin-guide/efi-stub.rst
+index b24e7c40d832..090f3a185e18 100644
+--- a/Documentation/admin-guide/efi-stub.rst
++++ b/Documentation/admin-guide/efi-stub.rst
+@@ -15,7 +15,7 @@ between architectures is in drivers/firmware/efi/libstub.
+ 
+ For arm64, there is no compressed kernel support, so the Image itself
+ masquerades as a PE/COFF image and the EFI stub is linked into the
+-kernel. The arm64 EFI stub lives in arch/arm64/kernel/efi-entry.S
++kernel. The arm64 EFI stub lives in drivers/firmware/efi/libstub/arm64.c
+ and drivers/firmware/efi/libstub/arm64-stub.c.
+ 
+ By using the EFI boot stub it's possible to boot a Linux kernel
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
