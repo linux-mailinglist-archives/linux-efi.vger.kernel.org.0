@@ -2,102 +2,261 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 677A07976F6
-	for <lists+linux-efi@lfdr.de>; Thu,  7 Sep 2023 18:18:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35CA6797844
+	for <lists+linux-efi@lfdr.de>; Thu,  7 Sep 2023 18:45:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239083AbjIGQSz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 7 Sep 2023 12:18:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52090 "EHLO
+        id S232548AbjIGQpW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 7 Sep 2023 12:45:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243249AbjIGQSV (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 7 Sep 2023 12:18:21 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B60B37A89;
-        Thu,  7 Sep 2023 08:54:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694102077; x=1725638077;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=6EsGUJGhX1zT+Uyl+vPXWvJ0hitAvo76hypLco20y4Y=;
-  b=QAVH/3JsotwOgGZF9bAzPXDf12AHmfMFwMmPk+104kEl7ohFKdMdpjaF
-   Zsw0D3ZSNVOscn9h6giEbwnbsztAAecKcrNWUrNwHovBt413ss0DUA9uy
-   Ngwn7ztm1dO2W8UmY5peCg2BCfjCdNp+iEE7+aNk2OyjRnN9pYprAqsjh
-   F0TMB+gK1sS82REhttldmKTHIFZJgr8IbFtR7mCBSv3MPcLzzM+8dlQSU
-   w9XnFEtGssVVImkXVapKO/5HF2wsl4PsslwiDNAJH1E++s93vGqmSy6/y
-   Z5ufdmP0JtX613TLqB1eTnd1plcdXGnewI/LOS9teGC+nFFjEeTFRp0li
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="408388049"
-X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
-   d="scan'208";a="408388049"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 08:51:07 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="915793424"
-X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
-   d="scan'208";a="915793424"
-Received: from ningle-mobl2.amr.corp.intel.com (HELO [10.209.13.77]) ([10.209.13.77])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 08:51:06 -0700
-Message-ID: <5a188bb6-add4-0522-069f-18fbd34aff16@intel.com>
-Date:   Thu, 7 Sep 2023 08:51:06 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH 1/3] proc/vmcore: Do not map unaccepted memory
-Content-Language: en-US
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Vlastimil Babka <vbabka@suse.cz>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Lorenzo Stoakes <lstoakes@gmail.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
-        Dave Young <dyoung@redhat.com>, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
-        kexec@lists.infradead.org
-References: <20230906073902.4229-1-adrian.hunter@intel.com>
- <20230906073902.4229-2-adrian.hunter@intel.com>
- <21bf2e44-3316-2372-44cb-1488f88650f5@intel.com>
- <30d0cebb-13f9-572e-9baa-b7450fec9108@intel.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <30d0cebb-13f9-572e-9baa-b7450fec9108@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S232090AbjIGQpV (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 7 Sep 2023 12:45:21 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A8B81BF9
+        for <linux-efi@vger.kernel.org>; Thu,  7 Sep 2023 09:44:49 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-594e1154756so12453397b3.2
+        for <linux-efi@vger.kernel.org>; Thu, 07 Sep 2023 09:44:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1694105027; x=1694709827; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=dUxh38L3ayN3NN/LJvYi1H0xhcT6Df4QILSfV/pw6ZE=;
+        b=JWzY8KHa4FYnYYKu2BE/wSTG6k6HBkTZREOJ7XAPx8epBIKwU/CzUDij+5LdIxNgZ/
+         M62IzIzUFUHsipwDfI9PG9bYbJpLI3ESl/6V+BsDJQn/r27ABnZdhqhZmBVPniUGCIy5
+         CR1q6S/SI+/COSGifJGUqgwuLGk02QaWsPK9dr0eXCmZoc/8D5nB/ln8vtvvp0E9UPn5
+         D+24XKoU+bjk1cQ1GthQM3Rk7vV7TdUcqvzzc/og5hGrtrotdxcS6V09JxA4KqyFcHC5
+         JCzRpRqUr8gF7Yn4P3vUlPQtPqDQ+VxRukFQJ0z2gffEbgJxhDELgYkQrKD/hGk8cKoA
+         COcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694105027; x=1694709827;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dUxh38L3ayN3NN/LJvYi1H0xhcT6Df4QILSfV/pw6ZE=;
+        b=oJENb5DLKhudh1MFW3H9q6jhS+8ojXOoWnhQuym75dfHF2mJwgPiC361/oYgY1h/Vf
+         4uI6pg2NYQ91KN+qz9x11pZxuOZ3KdSZ61qOINkmZdaNXDVqsaGPQ0r9PE9iIiTwi0XZ
+         y5JLmmozrANREyf9fRL/hSG2RAPZHYsLrG3DLWYKa+MvHzBagKqintGie9YTY/ye2tIc
+         ZfHFND0BXHGfc95Z3XGkG85ptiotZ2AfOI48gJJI3zCqMtI43R9S5iScwgMY8AYNvsuz
+         HHxZnCAPBcD+uwYWN9GtkVorz50uqsetXopbxFVTxrTz2xaaaY2HWnKN0Os6GUZ4GF+z
+         UDYw==
+X-Gm-Message-State: AOJu0YxcmFiacsfjl4ISUU7KVpc/PRrESmC5Fm6K5TXJuYhzVYwi34rM
+        XHdM863QBJSczpDas15XYsYywwIeFDwNpw==
+X-Google-Smtp-Source: AGHT+IFcp+tGWlVPIKf8K18rRH9EtPFpnkl5HnM0JLtjKuzxX6WRGnUfrh6BQq0EpOEUnXJYCYRHnfDsKqDEyg==
+X-Received: from jiao.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:10f3])
+ (user=jiaozhou job=sendgmr) by 2002:a81:ac02:0:b0:589:a644:d328 with SMTP id
+ k2-20020a81ac02000000b00589a644d328mr2946ywh.9.1694105027126; Thu, 07 Sep
+ 2023 09:43:47 -0700 (PDT)
+Date:   Thu,  7 Sep 2023 16:43:41 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.42.0.283.g2d96d420d3-goog
+Message-ID: <20230907164341.1051637-1-jiaozhou@google.com>
+Subject: [PATCH v4] efivarfs: Add uid/gid mount options
+From:   Jiao Zhou <jiaozhou@google.com>
+To:     Linux FS Development <linux-fsdevel@vger.kernel.org>
+Cc:     Jiao Zhou <jiaozhou@google.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Jeremy Kerr <jk@ozlabs.org>, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, mjg59@srcf.ucam.org,
+        Matthew Garrett <mgarrett@aurora.tech>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 9/7/23 08:44, Adrian Hunter wrote:
-> On 7/09/23 18:39, Dave Hansen wrote:
->> On 9/6/23 00:39, Adrian Hunter wrote:
->>> @@ -559,7 +567,8 @@ static int vmcore_remap_oldmem_pfn(struct vm_area_struct *vma,
->>>  	 * pages without a reason.
->>>  	 */
->>>  	idx = srcu_read_lock(&vmcore_cb_srcu);
->>> -	if (!list_empty(&vmcore_cb_list))
->>> +	if (!list_empty(&vmcore_cb_list) ||
->>> +	    range_contains_unaccepted_memory(paddr, paddr + size))
->>>  		ret = remap_oldmem_pfn_checked(vma, from, pfn, size, prot);
->>>  	else
->>>  		ret = remap_oldmem_pfn_range(vma, from, pfn, size, prot);
->> The whole callback mechanism which fs/proc/vmcore.c::pfn_is_ram()
->> implements seems to be in place to ensure that there aren't a billion
->> different "ram" checks in here.
->>
->> Is there a reason you can't register_vmcore_cb() a callback to check for
->> unaccepted memory?
-> Someone asked for the change to be in arch-independent code... 😉
+Allow UEFI variables to be modified by non-root processes
+in order to run sandboxed code. This doesn't change the behavior 
+of mounting efivarfs unless uid/gid are specified; 
+by default both are set to root.
 
-That doesn't really answer my question.  virtio_mem_init_kdump(), for
-instance, is in arch-independent code.
+Signed-off-by: Jiao Zhou <jiaozhou@google.com>
+Acked-by: Matthew Garrett <mgarrett@aurora.tech>
+---
+Changelog since v1:
+- Add missing sentinel entry in fs_parameter_spec[] array.
+- Fix a NULL pointer dereference.
 
+Changelog since v2:
+- Format the patch description.
+
+Changelog since v3:
+- Use sizeof(*sfi) to allocate memory to avoids future problems if sfi ever changes type.
+- Add gid and uid check to make sure that ids are valid.
+- Drop the indentation for one block.
+
+ fs/efivarfs/inode.c    |  4 +++
+ fs/efivarfs/internal.h |  9 +++++
+ fs/efivarfs/super.c    | 75 ++++++++++++++++++++++++++++++++++++++++--
+ 3 files changed, 85 insertions(+), 3 deletions(-)
+
+diff --git a/fs/efivarfs/inode.c b/fs/efivarfs/inode.c
+index db9231f0e77b..06dfc73fda04 100644
+--- a/fs/efivarfs/inode.c
++++ b/fs/efivarfs/inode.c
+@@ -20,9 +20,13 @@ struct inode *efivarfs_get_inode(struct super_block *sb,
+ 				const struct inode *dir, int mode,
+ 				dev_t dev, bool is_removable)
+ {
++	struct efivarfs_fs_info *fsi = sb->s_fs_info;
+ 	struct inode *inode = new_inode(sb);
++	struct efivarfs_mount_opts *opts = &fsi->mount_opts;
+ 
+ 	if (inode) {
++		inode->i_uid = opts->uid;
++		inode->i_gid = opts->gid;
+ 		inode->i_ino = get_next_ino();
+ 		inode->i_mode = mode;
+ 		inode->i_atime = inode->i_mtime = inode_set_ctime_current(inode);
+diff --git a/fs/efivarfs/internal.h b/fs/efivarfs/internal.h
+index 8ebf3a6a8aa2..c66647f5c0bd 100644
+--- a/fs/efivarfs/internal.h
++++ b/fs/efivarfs/internal.h
+@@ -9,6 +9,15 @@
+ #include <linux/list.h>
+ #include <linux/efi.h>
+ 
++struct efivarfs_mount_opts {
++	kuid_t uid;
++	kgid_t gid;
++};
++
++struct efivarfs_fs_info {
++	struct efivarfs_mount_opts mount_opts;
++};
++
+ struct efi_variable {
+ 	efi_char16_t  VariableName[EFI_VAR_NAME_LEN/sizeof(efi_char16_t)];
+ 	efi_guid_t    VendorGuid;
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index e028fafa04f3..c53cebf45ac5 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -8,6 +8,7 @@
+ #include <linux/efi.h>
+ #include <linux/fs.h>
+ #include <linux/fs_context.h>
++#include <linux/fs_parser.h>
+ #include <linux/module.h>
+ #include <linux/pagemap.h>
+ #include <linux/ucs2_string.h>
+@@ -24,6 +25,22 @@ static void efivarfs_evict_inode(struct inode *inode)
+ 	clear_inode(inode);
+ }
+ 
++static int efivarfs_show_options(struct seq_file *m, struct dentry *root)
++{
++	struct super_block *sb = root->d_sb;
++	struct efivarfs_fs_info *sbi = sb->s_fs_info;
++	struct efivarfs_mount_opts *opts = &sbi->mount_opts;
++
++	/* Show partition info */
++	if (!uid_eq(opts->uid, GLOBAL_ROOT_UID))
++		seq_printf(m, ",uid=%u",
++				from_kuid_munged(&init_user_ns, opts->uid));
++	if (!gid_eq(opts->gid, GLOBAL_ROOT_GID))
++		seq_printf(m, ",gid=%u",
++				from_kgid_munged(&init_user_ns, opts->gid));
++	return 0;
++}
++
+ static int efivarfs_statfs(struct dentry *dentry, struct kstatfs *buf)
+ {
+ 	const u32 attr = EFI_VARIABLE_NON_VOLATILE |
+@@ -64,6 +81,7 @@ static const struct super_operations efivarfs_ops = {
+ 	.statfs = efivarfs_statfs,
+ 	.drop_inode = generic_delete_inode,
+ 	.evict_inode = efivarfs_evict_inode,
++	.show_options = efivarfs_show_options,
+ };
+ 
+ /*
+@@ -225,6 +243,45 @@ static int efivarfs_destroy(struct efivar_entry *entry, void *data)
+ 	return 0;
+ }
+ 
++enum {
++	Opt_uid, Opt_gid,
++};
++
++static const struct fs_parameter_spec efivarfs_parameters[] = {
++	fsparam_u32("uid",			Opt_uid),
++	fsparam_u32("gid",			Opt_gid),
++	{},
++};
++
++static int efivarfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
++{
++	struct efivarfs_fs_info *sbi = fc->s_fs_info;
++	struct efivarfs_mount_opts *opts = &sbi->mount_opts;
++	struct fs_parse_result result;
++	int opt;
++
++	opt = fs_parse(fc, efivarfs_parameters, param, &result);
++	if (opt < 0)
++		return opt;
++
++	switch (opt) {
++	case Opt_uid:
++		opts->uid = make_kuid(current_user_ns(), result.uint_32);
++		if (!uid_valid(opts->uid))
++			return -EINVAL;
++		break;
++	case Opt_gid:
++		opts->gid = make_kgid(current_user_ns(), result.uint_32);
++		if (!gid_valid(opts->gid))
++			return -EINVAL;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ {
+ 	struct inode *inode = NULL;
+@@ -270,11 +327,22 @@ static int efivarfs_get_tree(struct fs_context *fc)
+ }
+ 
+ static const struct fs_context_operations efivarfs_context_ops = {
+-	.get_tree	= efivarfs_get_tree,
++	.get_tree = efivarfs_get_tree,
++	.parse_param = efivarfs_parse_param,
+ };
+ 
+ static int efivarfs_init_fs_context(struct fs_context *fc)
+ {
++	struct efivarfs_fs_info *sfi;
++
++	sfi = kzalloc(sizeof(struct efivarfs_fs_info), GFP_KERNEL);
++	if (!sizeof(*sfi))
++		return -ENOMEM;
++
++	sfi->mount_opts.uid = GLOBAL_ROOT_UID;
++	sfi->mount_opts.gid = GLOBAL_ROOT_GID;
++
++	fc->s_fs_info = sfi;
+ 	fc->ops = &efivarfs_context_ops;
+ 	return 0;
+ }
+@@ -291,10 +359,11 @@ static void efivarfs_kill_sb(struct super_block *sb)
+ }
+ 
+ static struct file_system_type efivarfs_type = {
+-	.owner   = THIS_MODULE,
+-	.name    = "efivarfs",
++	.owner = THIS_MODULE,
++	.name = "efivarfs",
+ 	.init_fs_context = efivarfs_init_fs_context,
+ 	.kill_sb = efivarfs_kill_sb,
++	.parameters	= efivarfs_parameters,
+ };
+ 
+ static __init int efivarfs_init(void)
+-- 
+2.42.0.283.g2d96d420d3-goog
 
