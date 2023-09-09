@@ -2,240 +2,111 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7576279967B
-	for <lists+linux-efi@lfdr.de>; Sat,  9 Sep 2023 07:46:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAEE7799A57
+	for <lists+linux-efi@lfdr.de>; Sat,  9 Sep 2023 20:07:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234244AbjIIFqw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 9 Sep 2023 01:46:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36730 "EHLO
+        id S233093AbjIISHW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 9 Sep 2023 14:07:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229704AbjIIFqv (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 9 Sep 2023 01:46:51 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A578FE6B
-        for <linux-efi@vger.kernel.org>; Fri,  8 Sep 2023 22:46:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694238407; x=1725774407;
-  h=date:from:to:cc:subject:message-id;
-  bh=625nRL2rbFOI2siQUYNFU2gtnGibkKYtjnCuvfmGoa4=;
-  b=gDFYcxtpCuMlMnWDMyCuKt3atT2mXr3/EEC+3JROMqVmzk8P/9Vr5ar0
-   mZCMxu2AevGVWezgQlsJBlwXyTwpoV/FfXMkeOjPvUCTRvS+cqq/QDsDB
-   QfaEPlHL0wsJ+a2PDUN8JgOkUAt7174UiM9CHDLvba0gkz9DAIs6CyRzM
-   6hrh3IHRKg+bvu79v285EtRiP6s9QGHfjhoq03HywNTNiXyavlvUHWTLZ
-   PhDY4ge0awwF2bqkWVdy/pvvmytD96X8/0mbkN+cJBtVEcf3cMSF5FYqZ
-   aIWntAdSkz5BQ2MusvlJFBQCld0jqnVkZif1HUDlSsDzDRNGL0p11h1RE
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10827"; a="377706488"
-X-IronPort-AV: E=Sophos;i="6.02,239,1688454000"; 
-   d="scan'208";a="377706488"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2023 22:46:47 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10827"; a="736181147"
-X-IronPort-AV: E=Sophos;i="6.02,239,1688454000"; 
-   d="scan'208";a="736181147"
-Received: from lkp-server01.sh.intel.com (HELO 59b3c6e06877) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 08 Sep 2023 22:46:45 -0700
-Received: from kbuild by 59b3c6e06877 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qeqnr-0002xv-1v;
-        Sat, 09 Sep 2023 05:46:43 +0000
-Date:   Sat, 09 Sep 2023 13:45:48 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-efi@vger.kernel.org
-Subject: [efi:urgent] BUILD SUCCESS
- d6c221df1e32abdb0dffb36d82c8bfa5024d8b7f
-Message-ID: <202309091347.orZdpr6Q-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S232831AbjIISHW (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 9 Sep 2023 14:07:22 -0400
+Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA3381B0;
+        Sat,  9 Sep 2023 11:07:17 -0700 (PDT)
+Received: from LT2ubnt.fritz.box (ip-178-202-040-247.um47.pools.vodafone-ip.de [178.202.40.247])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id D083D3F1FC;
+        Sat,  9 Sep 2023 18:07:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1694282833;
+        bh=fWTy72WTsQkOBNAqUW3iczBOxfyhkjYvdgghJ2pL+w4=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+        b=V4RsD28+14GvCxryAv6TsOX9Vskos1gdUycALMT1qzXsN8r2BuFUf2EDe3l0mDUCZ
+         ky6DQam3FAbMJDzso52PDRp4+tVU3E4QMWFdJ+nj6H5+gbFhalbZCSE6bup/BCg9n6
+         MBtiXOixlul1SR1VOAx8Pu+FNsURzI+/VfxM/RNAeB4TSny1jNNySnHv9HXlvRAVN3
+         xiRGPoX3R+6MApMacNEr5B37wtYjK31OEr2VEDAs9uRd5fsoGw3Db1VrAToTt8VYLy
+         iiFQ19vt7uXLejf91kJ+CdfcYXeu9iO/d425v0BnUkV6z9YootgTpfm/KGZedxo/7a
+         a1ANPQknkNIaA==
+From:   Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+To:     Matthew Garrett <matthew.garrett@nebula.com>,
+        Jeremy Kerr <jk@ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>
+Cc:     Anisse Astier <an.astier@criteo.com>, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Subject: [PATCH 1/1] efivarfs: fix statfs() on efivarfs
+Date:   Sat,  9 Sep 2023 20:08:12 +0200
+Message-Id: <20230909180812.10904-1-heinrich.schuchardt@canonical.com>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
-branch HEAD: d6c221df1e32abdb0dffb36d82c8bfa5024d8b7f  efi/unaccepted: Use ACPI reclaim memory for unaccepted memory table
+Some firmware (notably U-Boot) provides GetVariable() and
+GetNextVariableName() but not QueryVariableInfo().
 
-elapsed time: 727m
+With commit d86ff3333cb1 ("efivarfs: expose used and total size") the
+statfs syscall was broken for such firmware.
 
-configs tested: 163
-configs skipped: 2
+If QueryVariableInfo() does not exist or returns an error, just report the
+file-system size as 0 as statfs_simple() previously did.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Fixes: d86ff3333cb1 ("efivarfs: expose used and total size")
+Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+---
+Tested on riscv64 StarFive VisionFive 2 with
+Linux 6.5 and U-Boot v2023.10-rc4.
+---
+ fs/efivarfs/super.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                        nsim_700_defconfig   gcc  
-arc                   randconfig-001-20230909   gcc  
-arc                  randconfig-r024-20230909   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                          exynos_defconfig   gcc  
-arm                   milbeaut_m10v_defconfig   clang
-arm                            mmp2_defconfig   clang
-arm                         mv78xx0_defconfig   clang
-arm                   randconfig-001-20230909   clang
-arm                  randconfig-r023-20230909   clang
-arm                        shmobile_defconfig   gcc  
-arm                         vf610m4_defconfig   gcc  
-arm64                            allmodconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r026-20230909   gcc  
-arm64                randconfig-r035-20230909   clang
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r012-20230909   gcc  
-csky                 randconfig-r016-20230909   gcc  
-hexagon               randconfig-001-20230909   clang
-hexagon               randconfig-002-20230909   clang
-hexagon              randconfig-r022-20230909   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20230909   clang
-i386         buildonly-randconfig-002-20230909   clang
-i386         buildonly-randconfig-003-20230909   clang
-i386         buildonly-randconfig-004-20230909   clang
-i386         buildonly-randconfig-005-20230909   clang
-i386         buildonly-randconfig-006-20230909   clang
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-001-20230909   clang
-i386                  randconfig-002-20230909   clang
-i386                  randconfig-003-20230909   clang
-i386                  randconfig-004-20230909   clang
-i386                  randconfig-005-20230909   clang
-i386                  randconfig-006-20230909   clang
-i386                  randconfig-011-20230909   gcc  
-i386                  randconfig-012-20230909   gcc  
-i386                  randconfig-013-20230909   gcc  
-i386                  randconfig-014-20230909   gcc  
-i386                  randconfig-015-20230909   gcc  
-i386                  randconfig-016-20230909   gcc  
-i386                 randconfig-r025-20230909   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20230909   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r032-20230909   gcc  
-m68k                 randconfig-r033-20230909   gcc  
-m68k                 randconfig-r036-20230909   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-microblaze           randconfig-r013-20230909   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                 randconfig-r003-20230909   gcc  
-mips                 randconfig-r011-20230909   clang
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r001-20230909   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-powerpc                 mpc8313_rdb_defconfig   clang
-powerpc                    mvme5100_defconfig   clang
-powerpc64            randconfig-r034-20230909   clang
-riscv                            alldefconfig   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                 randconfig-001-20230909   clang
-riscv                randconfig-r004-20230909   clang
-riscv                randconfig-r015-20230909   gcc  
-riscv                          rv32_defconfig   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20230909   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64              randconfig-r002-20230909   gcc  
-sparc64              randconfig-r031-20230909   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r006-20230909   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-006-20230909   clang
-x86_64                              defconfig   gcc  
-x86_64                randconfig-006-20230909   gcc  
-x86_64                randconfig-011-20230909   clang
-x86_64                randconfig-012-20230909   clang
-x86_64                randconfig-013-20230909   clang
-x86_64                randconfig-014-20230909   clang
-x86_64                randconfig-015-20230909   clang
-x86_64                randconfig-016-20230909   clang
-x86_64                randconfig-071-20230909   clang
-x86_64                randconfig-072-20230909   clang
-x86_64                randconfig-073-20230909   clang
-x86_64                randconfig-074-20230909   clang
-x86_64                randconfig-075-20230909   clang
-x86_64                randconfig-076-20230909   clang
-x86_64               randconfig-r005-20230909   clang
-x86_64               randconfig-r014-20230909   gcc  
-x86_64               randconfig-r021-20230909   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                           alldefconfig   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                           allyesconfig   gcc  
-xtensa                  cadence_csp_defconfig   gcc  
-
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index e028fafa04f3..7f3064b948ab 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -32,11 +32,6 @@ static int efivarfs_statfs(struct dentry *dentry, struct kstatfs *buf)
+ 	u64 storage_space, remaining_space, max_variable_size;
+ 	efi_status_t status;
+ 
+-	status = efivar_query_variable_info(attr, &storage_space, &remaining_space,
+-					    &max_variable_size);
+-	if (status != EFI_SUCCESS)
+-		return efi_status_to_err(status);
+-
+ 	/*
+ 	 * This is not a normal filesystem, so no point in pretending it has a block
+ 	 * size; we declare f_bsize to 1, so that we can then report the exact value
+@@ -44,10 +39,19 @@ static int efivarfs_statfs(struct dentry *dentry, struct kstatfs *buf)
+ 	 */
+ 	buf->f_bsize	= 1;
+ 	buf->f_namelen	= NAME_MAX;
+-	buf->f_blocks	= storage_space;
+-	buf->f_bfree	= remaining_space;
+ 	buf->f_type	= dentry->d_sb->s_magic;
+ 
++	/* Some UEFI firmware does not implement QueryVariable() */
++	if (efi_rt_services_supported(EFI_RT_SUPPORTED_QUERY_VARIABLE_INFO)) {
++		status = efivar_query_variable_info(attr, &storage_space,
++						    &remaining_space,
++						    &max_variable_size);
++		if (status == EFI_SUCCESS) {
++			buf->f_blocks	= storage_space;
++			buf->f_bfree	= remaining_space;
++		}
++	}
++
+ 	/*
+ 	 * In f_bavail we declare the free space that the kernel will allow writing
+ 	 * when the storage_paranoia x86 quirk is active. To use more, users
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.40.1
+
