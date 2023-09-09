@@ -2,56 +2,56 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7FC0797B56
-	for <lists+linux-efi@lfdr.de>; Thu,  7 Sep 2023 20:12:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7576279967B
+	for <lists+linux-efi@lfdr.de>; Sat,  9 Sep 2023 07:46:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343656AbjIGSMd (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 7 Sep 2023 14:12:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44594 "EHLO
+        id S234244AbjIIFqw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 9 Sep 2023 01:46:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240530AbjIGSMa (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 7 Sep 2023 14:12:30 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44664E57;
-        Thu,  7 Sep 2023 11:12:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6100CC4AF1E;
-        Thu,  7 Sep 2023 16:55:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694105745;
-        bh=otjLzPS6OdYIAAXvkB5yaashitUxiajsQdkwSAtN6t4=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=PIa8yCNoCOEXDYywjCytcOpNsamNg8kipPXxhINQtaLx3Oj7XvaofQsYE7njU1HnE
-         RErGp2KFkf/ViYgnYePngIcBtd9lJnq4PKuADsKqeT1k3SBgZ2/IXr+f+6ddGznpJ2
-         Tf/jxHIkxrq11xtnQHwiDtimvHVmzpH1xpNuZ8xvyjSR3219ki2lhkcW2GrAbVw870
-         w6Z12PN8cVU/C8cJcPGHFy8rWe46KkmqedCkSNSRKI9Ybi8ZKU/QcvxeQKiN8YLznU
-         QqAgWPrQbPJQb/USTP2LZV9w2UPEAz6tqBPH1ND8ZCEFogVIqHkWEIkzPf5SrHj8Qn
-         1MH8HKsm+mGJg==
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-500760b296aso1414187e87.0;
-        Thu, 07 Sep 2023 09:55:45 -0700 (PDT)
-X-Gm-Message-State: AOJu0YwHayib5q81n5Hq4TtGkssl3bSnSf3xEznR/7+1DwOGC9vn/s3/
-        zJjaj1rCrD/k6S5gUgPkmy+/Y5R3rznbtd6ncr4=
-X-Google-Smtp-Source: AGHT+IFXU7YT9c586a+MNvCwcDGKovS/Im1kIv7Xrv7B8U5nC4X1RMSMNKvUQJG00FQWf0/W8tIkzKVUEft+IkrsFws=
-X-Received: by 2002:a05:6512:3d8e:b0:4fe:8be:6065 with SMTP id
- k14-20020a0565123d8e00b004fe08be6065mr3623lfv.5.1694105743323; Thu, 07 Sep
- 2023 09:55:43 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230907164341.1051637-1-jiaozhou@google.com>
-In-Reply-To: <20230907164341.1051637-1-jiaozhou@google.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 7 Sep 2023 18:55:32 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHC9PR1EhPYnYqqvh0TLY56NK-vhHeJKjLNGoKi-AZyXw@mail.gmail.com>
-Message-ID: <CAMj1kXHC9PR1EhPYnYqqvh0TLY56NK-vhHeJKjLNGoKi-AZyXw@mail.gmail.com>
-Subject: Re: [PATCH v4] efivarfs: Add uid/gid mount options
-To:     Jiao Zhou <jiaozhou@google.com>
-Cc:     Linux FS Development <linux-fsdevel@vger.kernel.org>,
-        Jeremy Kerr <jk@ozlabs.org>, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, mjg59@srcf.ucam.org,
-        Matthew Garrett <mgarrett@aurora.tech>,
-        Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        with ESMTP id S229704AbjIIFqv (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 9 Sep 2023 01:46:51 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A578FE6B
+        for <linux-efi@vger.kernel.org>; Fri,  8 Sep 2023 22:46:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694238407; x=1725774407;
+  h=date:from:to:cc:subject:message-id;
+  bh=625nRL2rbFOI2siQUYNFU2gtnGibkKYtjnCuvfmGoa4=;
+  b=gDFYcxtpCuMlMnWDMyCuKt3atT2mXr3/EEC+3JROMqVmzk8P/9Vr5ar0
+   mZCMxu2AevGVWezgQlsJBlwXyTwpoV/FfXMkeOjPvUCTRvS+cqq/QDsDB
+   QfaEPlHL0wsJ+a2PDUN8JgOkUAt7174UiM9CHDLvba0gkz9DAIs6CyRzM
+   6hrh3IHRKg+bvu79v285EtRiP6s9QGHfjhoq03HywNTNiXyavlvUHWTLZ
+   PhDY4ge0awwF2bqkWVdy/pvvmytD96X8/0mbkN+cJBtVEcf3cMSF5FYqZ
+   aIWntAdSkz5BQ2MusvlJFBQCld0jqnVkZif1HUDlSsDzDRNGL0p11h1RE
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10827"; a="377706488"
+X-IronPort-AV: E=Sophos;i="6.02,239,1688454000"; 
+   d="scan'208";a="377706488"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2023 22:46:47 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10827"; a="736181147"
+X-IronPort-AV: E=Sophos;i="6.02,239,1688454000"; 
+   d="scan'208";a="736181147"
+Received: from lkp-server01.sh.intel.com (HELO 59b3c6e06877) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 08 Sep 2023 22:46:45 -0700
+Received: from kbuild by 59b3c6e06877 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qeqnr-0002xv-1v;
+        Sat, 09 Sep 2023 05:46:43 +0000
+Date:   Sat, 09 Sep 2023 13:45:48 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ d6c221df1e32abdb0dffb36d82c8bfa5024d8b7f
+Message-ID: <202309091347.orZdpr6Q-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,211 +59,183 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-(cc Christian)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: d6c221df1e32abdb0dffb36d82c8bfa5024d8b7f  efi/unaccepted: Use ACPI reclaim memory for unaccepted memory table
 
-Hi,
+elapsed time: 727m
 
-On Thu, 7 Sept 2023 at 18:43, Jiao Zhou <jiaozhou@google.com> wrote:
->
-> Allow UEFI variables to be modified by non-root processes
-> in order to run sandboxed code. This doesn't change the behavior
-> of mounting efivarfs unless uid/gid are specified;
-> by default both are set to root.
->
-> Signed-off-by: Jiao Zhou <jiaozhou@google.com>
-> Acked-by: Matthew Garrett <mgarrett@aurora.tech>
-> ---
-> Changelog since v1:
-> - Add missing sentinel entry in fs_parameter_spec[] array.
-> - Fix a NULL pointer dereference.
->
-> Changelog since v2:
-> - Format the patch description.
->
-> Changelog since v3:
-> - Use sizeof(*sfi) to allocate memory to avoids future problems if sfi ever changes type.
-> - Add gid and uid check to make sure that ids are valid.
-> - Drop the indentation for one block.
->
->  fs/efivarfs/inode.c    |  4 +++
->  fs/efivarfs/internal.h |  9 +++++
->  fs/efivarfs/super.c    | 75 ++++++++++++++++++++++++++++++++++++++++--
->  3 files changed, 85 insertions(+), 3 deletions(-)
->
+configs tested: 163
+configs skipped: 2
 
-The commit log looks fine now - thanks for taking the time to dive
-into the docs.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                        nsim_700_defconfig   gcc  
+arc                   randconfig-001-20230909   gcc  
+arc                  randconfig-r024-20230909   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                          exynos_defconfig   gcc  
+arm                   milbeaut_m10v_defconfig   clang
+arm                            mmp2_defconfig   clang
+arm                         mv78xx0_defconfig   clang
+arm                   randconfig-001-20230909   clang
+arm                  randconfig-r023-20230909   clang
+arm                        shmobile_defconfig   gcc  
+arm                         vf610m4_defconfig   gcc  
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r026-20230909   gcc  
+arm64                randconfig-r035-20230909   clang
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r012-20230909   gcc  
+csky                 randconfig-r016-20230909   gcc  
+hexagon               randconfig-001-20230909   clang
+hexagon               randconfig-002-20230909   clang
+hexagon              randconfig-r022-20230909   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20230909   clang
+i386         buildonly-randconfig-002-20230909   clang
+i386         buildonly-randconfig-003-20230909   clang
+i386         buildonly-randconfig-004-20230909   clang
+i386         buildonly-randconfig-005-20230909   clang
+i386         buildonly-randconfig-006-20230909   clang
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20230909   clang
+i386                  randconfig-002-20230909   clang
+i386                  randconfig-003-20230909   clang
+i386                  randconfig-004-20230909   clang
+i386                  randconfig-005-20230909   clang
+i386                  randconfig-006-20230909   clang
+i386                  randconfig-011-20230909   gcc  
+i386                  randconfig-012-20230909   gcc  
+i386                  randconfig-013-20230909   gcc  
+i386                  randconfig-014-20230909   gcc  
+i386                  randconfig-015-20230909   gcc  
+i386                  randconfig-016-20230909   gcc  
+i386                 randconfig-r025-20230909   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20230909   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r032-20230909   gcc  
+m68k                 randconfig-r033-20230909   gcc  
+m68k                 randconfig-r036-20230909   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+microblaze           randconfig-r013-20230909   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r003-20230909   gcc  
+mips                 randconfig-r011-20230909   clang
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r001-20230909   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+powerpc                 mpc8313_rdb_defconfig   clang
+powerpc                    mvme5100_defconfig   clang
+powerpc64            randconfig-r034-20230909   clang
+riscv                            alldefconfig   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                 randconfig-001-20230909   clang
+riscv                randconfig-r004-20230909   clang
+riscv                randconfig-r015-20230909   gcc  
+riscv                          rv32_defconfig   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20230909   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64              randconfig-r002-20230909   gcc  
+sparc64              randconfig-r031-20230909   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                   randconfig-r006-20230909   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-006-20230909   clang
+x86_64                              defconfig   gcc  
+x86_64                randconfig-006-20230909   gcc  
+x86_64                randconfig-011-20230909   clang
+x86_64                randconfig-012-20230909   clang
+x86_64                randconfig-013-20230909   clang
+x86_64                randconfig-014-20230909   clang
+x86_64                randconfig-015-20230909   clang
+x86_64                randconfig-016-20230909   clang
+x86_64                randconfig-071-20230909   clang
+x86_64                randconfig-072-20230909   clang
+x86_64                randconfig-073-20230909   clang
+x86_64                randconfig-074-20230909   clang
+x86_64                randconfig-075-20230909   clang
+x86_64                randconfig-076-20230909   clang
+x86_64               randconfig-r005-20230909   clang
+x86_64               randconfig-r014-20230909   gcc  
+x86_64               randconfig-r021-20230909   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                           alldefconfig   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                           allyesconfig   gcc  
+xtensa                  cadence_csp_defconfig   gcc  
 
-> diff --git a/fs/efivarfs/inode.c b/fs/efivarfs/inode.c
-> index db9231f0e77b..06dfc73fda04 100644
-> --- a/fs/efivarfs/inode.c
-> +++ b/fs/efivarfs/inode.c
-> @@ -20,9 +20,13 @@ struct inode *efivarfs_get_inode(struct super_block *sb,
->                                 const struct inode *dir, int mode,
->                                 dev_t dev, bool is_removable)
->  {
-> +       struct efivarfs_fs_info *fsi = sb->s_fs_info;
->         struct inode *inode = new_inode(sb);
-> +       struct efivarfs_mount_opts *opts = &fsi->mount_opts;
->
->         if (inode) {
-> +               inode->i_uid = opts->uid;
-> +               inode->i_gid = opts->gid;
->                 inode->i_ino = get_next_ino();
->                 inode->i_mode = mode;
->                 inode->i_atime = inode->i_mtime = inode_set_ctime_current(inode);
-> diff --git a/fs/efivarfs/internal.h b/fs/efivarfs/internal.h
-> index 8ebf3a6a8aa2..c66647f5c0bd 100644
-> --- a/fs/efivarfs/internal.h
-> +++ b/fs/efivarfs/internal.h
-> @@ -9,6 +9,15 @@
->  #include <linux/list.h>
->  #include <linux/efi.h>
->
-> +struct efivarfs_mount_opts {
-> +       kuid_t uid;
-> +       kgid_t gid;
-> +};
-> +
-> +struct efivarfs_fs_info {
-> +       struct efivarfs_mount_opts mount_opts;
-> +};
-> +
->  struct efi_variable {
->         efi_char16_t  VariableName[EFI_VAR_NAME_LEN/sizeof(efi_char16_t)];
->         efi_guid_t    VendorGuid;
-> diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-> index e028fafa04f3..c53cebf45ac5 100644
-> --- a/fs/efivarfs/super.c
-> +++ b/fs/efivarfs/super.c
-> @@ -8,6 +8,7 @@
->  #include <linux/efi.h>
->  #include <linux/fs.h>
->  #include <linux/fs_context.h>
-> +#include <linux/fs_parser.h>
->  #include <linux/module.h>
->  #include <linux/pagemap.h>
->  #include <linux/ucs2_string.h>
-> @@ -24,6 +25,22 @@ static void efivarfs_evict_inode(struct inode *inode)
->         clear_inode(inode);
->  }
->
-> +static int efivarfs_show_options(struct seq_file *m, struct dentry *root)
-> +{
-> +       struct super_block *sb = root->d_sb;
-> +       struct efivarfs_fs_info *sbi = sb->s_fs_info;
-> +       struct efivarfs_mount_opts *opts = &sbi->mount_opts;
-> +
-> +       /* Show partition info */
-> +       if (!uid_eq(opts->uid, GLOBAL_ROOT_UID))
-> +               seq_printf(m, ",uid=%u",
-> +                               from_kuid_munged(&init_user_ns, opts->uid));
-> +       if (!gid_eq(opts->gid, GLOBAL_ROOT_GID))
-> +               seq_printf(m, ",gid=%u",
-> +                               from_kgid_munged(&init_user_ns, opts->gid));
-> +       return 0;
-> +}
-> +
->  static int efivarfs_statfs(struct dentry *dentry, struct kstatfs *buf)
->  {
->         const u32 attr = EFI_VARIABLE_NON_VOLATILE |
-> @@ -64,6 +81,7 @@ static const struct super_operations efivarfs_ops = {
->         .statfs = efivarfs_statfs,
->         .drop_inode = generic_delete_inode,
->         .evict_inode = efivarfs_evict_inode,
-> +       .show_options = efivarfs_show_options,
->  };
->
->  /*
-> @@ -225,6 +243,45 @@ static int efivarfs_destroy(struct efivar_entry *entry, void *data)
->         return 0;
->  }
->
-> +enum {
-> +       Opt_uid, Opt_gid,
-> +};
-> +
-> +static const struct fs_parameter_spec efivarfs_parameters[] = {
-> +       fsparam_u32("uid",                      Opt_uid),
-> +       fsparam_u32("gid",                      Opt_gid),
-> +       {},
-> +};
-> +
-> +static int efivarfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
-> +{
-> +       struct efivarfs_fs_info *sbi = fc->s_fs_info;
-> +       struct efivarfs_mount_opts *opts = &sbi->mount_opts;
-> +       struct fs_parse_result result;
-> +       int opt;
-> +
-> +       opt = fs_parse(fc, efivarfs_parameters, param, &result);
-> +       if (opt < 0)
-> +               return opt;
-> +
-> +       switch (opt) {
-> +       case Opt_uid:
-> +               opts->uid = make_kuid(current_user_ns(), result.uint_32);
-> +               if (!uid_valid(opts->uid))
-> +                       return -EINVAL;
-> +               break;
-> +       case Opt_gid:
-> +               opts->gid = make_kgid(current_user_ns(), result.uint_32);
-> +               if (!gid_valid(opts->gid))
-> +                       return -EINVAL;
-> +               break;
-> +       default:
-> +               return -EINVAL;
-> +       }
-> +
-> +       return 0;
-> +}
-> +
->  static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
->  {
->         struct inode *inode = NULL;
-> @@ -270,11 +327,22 @@ static int efivarfs_get_tree(struct fs_context *fc)
->  }
->
->  static const struct fs_context_operations efivarfs_context_ops = {
-> -       .get_tree       = efivarfs_get_tree,
-> +       .get_tree = efivarfs_get_tree,
-> +       .parse_param = efivarfs_parse_param,
->  };
->
->  static int efivarfs_init_fs_context(struct fs_context *fc)
->  {
-> +       struct efivarfs_fs_info *sfi;
-> +
-> +       sfi = kzalloc(sizeof(struct efivarfs_fs_info), GFP_KERNEL);
-> +       if (!sizeof(*sfi))
-
-Something went wrong here
-
-
-> +               return -ENOMEM;
-> +
-> +       sfi->mount_opts.uid = GLOBAL_ROOT_UID;
-> +       sfi->mount_opts.gid = GLOBAL_ROOT_GID;
-> +
-> +       fc->s_fs_info = sfi;
->         fc->ops = &efivarfs_context_ops;
->         return 0;
->  }
-> @@ -291,10 +359,11 @@ static void efivarfs_kill_sb(struct super_block *sb)
->  }
->
->  static struct file_system_type efivarfs_type = {
-> -       .owner   = THIS_MODULE,
-> -       .name    = "efivarfs",
-> +       .owner = THIS_MODULE,
-> +       .name = "efivarfs",
->         .init_fs_context = efivarfs_init_fs_context,
->         .kill_sb = efivarfs_kill_sb,
-> +       .parameters     = efivarfs_parameters,
->  };
->
->  static __init int efivarfs_init(void)
-> --
-> 2.42.0.283.g2d96d420d3-goog
->
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
