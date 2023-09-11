@@ -2,172 +2,139 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4641779A56C
-	for <lists+linux-efi@lfdr.de>; Mon, 11 Sep 2023 10:06:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3CC979A5AA
+	for <lists+linux-efi@lfdr.de>; Mon, 11 Sep 2023 10:11:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231378AbjIKIGX (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 11 Sep 2023 04:06:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52728 "EHLO
+        id S234970AbjIKILE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 11 Sep 2023 04:11:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229664AbjIKIGW (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 11 Sep 2023 04:06:22 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A5AB10EC;
-        Mon, 11 Sep 2023 01:06:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96FAC433D9;
-        Mon, 11 Sep 2023 08:06:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694419566;
-        bh=C3HANPEA0oPlsXbkxdOqCrVjOsxTYDiwfaNTmrGAXE8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=P2HnkPOyj8b8g9Em2d3SW7/lKJPXEY/QxVg/MwG+Pk0SbaNTroVO7ahKzGPoV4YPS
-         wO1mM/t8fq8/4Zg4DuRX7cNp1akf1lYM+zH9OU0cyuECM9qHynMQJl52GMpGs3gnCJ
-         Re9nuUNIxPVWRmwYlcC5CSneqKXxP0jEbdRp3Ma8d6G39Rlpu8HkUhW5ja78xB5v8l
-         MmaGKXsPmJvXEKqX4ATjaTY7BEcfCm+XKB8U8J+1N98LepGOMSiFkzx3KvXzbDZKuN
-         6OBTsvhCA8m6YGbslGXTiSDRHOl0Vol4OV+AJ/IbJGxV7rOWJkHISTleOVucrbAPsA
-         +r/6VgKZBZXUQ==
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-501bef6e0d3so6806829e87.1;
-        Mon, 11 Sep 2023 01:06:06 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxPpXz6LGXk1lN7xD3ZvZEWLPbFoD7oCIrv/mdzVYBfZn85dGVP
-        ej9wbbFbt1ydTNFOPZhWR85p2KQLWS/epyOZK8s=
-X-Google-Smtp-Source: AGHT+IF8RWksOlAMrqAb/QcG5zRMLzpuca2AHOYVUsaHES5VQgJe4ZCIAJF32HcwJaAIQ9knrKRjl12bBBdLGA3DIqE=
-X-Received: by 2002:a2e:9e87:0:b0:2bc:ffe5:54a1 with SMTP id
- f7-20020a2e9e87000000b002bcffe554a1mr6615361ljk.32.1694419565076; Mon, 11 Sep
- 2023 01:06:05 -0700 (PDT)
+        with ESMTP id S230335AbjIKILD (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 11 Sep 2023 04:11:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 756D4CF2
+        for <linux-efi@vger.kernel.org>; Mon, 11 Sep 2023 01:09:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1694419789;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=OE5jHWIoTi0oDDOVSbCQAUkm2GG93rVvkvjC/9s+zDo=;
+        b=KWIIgAC1S2/3x63tiausX3L2lAowr/B/rsJgovCKBRAFS2tz59MwWN+p0IBM2cE0LKXu4l
+        0LDUjPJTgpJts/czq4frOiwBT6NnluTk/RFXskktkK+swd9jgI8UYlCnN/LvaDOVnfRbao
+        fmZNKyGWxYGBbTHFZENOCU6roE+s1eM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-231-4tphpZjpMG2ddJr8rsgRjg-1; Mon, 11 Sep 2023 04:09:48 -0400
+X-MC-Unique: 4tphpZjpMG2ddJr8rsgRjg-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-402ccac9b1eso30432595e9.0
+        for <linux-efi@vger.kernel.org>; Mon, 11 Sep 2023 01:09:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694419787; x=1695024587;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OE5jHWIoTi0oDDOVSbCQAUkm2GG93rVvkvjC/9s+zDo=;
+        b=GoHHUpDiFXtltct0kxEDLvdwiEO3TCtsGNwiAu6L12MIUU/xSHkAixgHlNClBhs5Eo
+         eQYwFTWTKoAuvQxNkePqBE7mpWrH1Xtv2MErZkAAfYGLvA0aXyxtc8fuOnWRgWDgeA7E
+         iGM2NypXcrR7YS1UW52M5wTxnKgPr8t8T0b/zSFrF/ig+lrFF5OM96uiDhm7R2R8NeAs
+         QsxkatpCJ5mR8UuoHxA5VesX8eDDXGjG5boooPS5sunD+nASOnhqdVrPVgnHLpRlLHKp
+         TrA7m2xcrXPPLqfMQ7glMO0R8MO4HGsCEhI9wNiaAsWW0KYXnHwrRVuVyzal5XQZYeFb
+         0TXA==
+X-Gm-Message-State: AOJu0YxHu2FFiWSUdY7jJT3OACaZhfyfS05GwHtaNOyZX5I9RON5MR2c
+        8Xlo8XtdcorBuSDOJxwqiGVibcl6YBXRZPZ6P4yfiQbzDc0H1OzxOzG6jeOQMoG9qFBC+6G/Hg0
+        JCFnX5qZMAA2wSQno20Xy
+X-Received: by 2002:a7b:cd97:0:b0:3f6:9634:c8d6 with SMTP id y23-20020a7bcd97000000b003f69634c8d6mr7756896wmj.18.1694419786957;
+        Mon, 11 Sep 2023 01:09:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEP/fXfkIDU6FsZ0+ujLPL6eiYP/U8dRfUXceL70QbvmQvHtk7DVWUJv4/1OPaMnnx/ifbxFQ==
+X-Received: by 2002:a7b:cd97:0:b0:3f6:9634:c8d6 with SMTP id y23-20020a7bcd97000000b003f69634c8d6mr7756871wmj.18.1694419786499;
+        Mon, 11 Sep 2023 01:09:46 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c743:5500:a9bd:94ab:74e9:782f? (p200300cbc7435500a9bd94ab74e9782f.dip0.t-ipconnect.de. [2003:cb:c743:5500:a9bd:94ab:74e9:782f])
+        by smtp.gmail.com with ESMTPSA id gw18-20020a05600c851200b004030c778396sm3452549wmb.4.2023.09.11.01.09.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Sep 2023 01:09:46 -0700 (PDT)
+Message-ID: <c60df0e4-4214-bbd0-7fc6-8f04e5888f53@redhat.com>
+Date:   Mon, 11 Sep 2023 10:09:44 +0200
 MIME-Version: 1.0
-References: <20230910045445.41632-1-heinrich.schuchardt@canonical.com>
- <ZP4QEvhzO5cOt6lT@gpdmax> <1bc137b6-6006-42cd-9f6d-c523fc753d63@canonical.com>
- <CAMj1kXGChp5TOk5h1EC9R7TBn=QDVo_FU5VhHjp8nSz2GJ6wtA@mail.gmail.com> <CAC_iWjLdA=gFkdB2LhOe9J-d_G=estenCWgYyCenqOYfZSFd+A@mail.gmail.com>
-In-Reply-To: <CAC_iWjLdA=gFkdB2LhOe9J-d_G=estenCWgYyCenqOYfZSFd+A@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 11 Sep 2023 10:05:53 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEdb-76+ywfHK2zvchQqwMFi8HvG0O33A73d6-9AH=wDA@mail.gmail.com>
-Message-ID: <CAMj1kXEdb-76+ywfHK2zvchQqwMFi8HvG0O33A73d6-9AH=wDA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] efivarfs: fix statfs() on efivarfs
-To:     Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Cc:     Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-        Anisse Astier <anisse@astier.eu>, Jeremy Kerr <jk@ozlabs.org>,
-        Anisse Astier <an.astier@criteo.com>,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 3/3] /dev/mem: Do not map unaccepted memory
+Content-Language: en-US
+To:     Dave Hansen <dave.hansen@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Lorenzo Stoakes <lstoakes@gmail.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
+        Dave Young <dyoung@redhat.com>, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
+        kexec@lists.infradead.org
+References: <20230906073902.4229-1-adrian.hunter@intel.com>
+ <20230906073902.4229-4-adrian.hunter@intel.com>
+ <9ffb7a3b-cf20-617a-e4f1-8a6a8a2c5972@intel.com>
+ <20230907142510.vcj57cvnewqt4m37@box.shutemov.name>
+ <7a50d04f-63ee-a901-6f39-7d341e423a77@intel.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <7a50d04f-63ee-a901-6f39-7d341e423a77@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 11 Sept 2023 at 10:04, Ilias Apalodimas
-<ilias.apalodimas@linaro.org> wrote:
->
-> Hi Ard,
->
-> On Mon, 11 Sept 2023 at 09:45, Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > On Sun, 10 Sept 2023 at 22:42, Heinrich Schuchardt
-> > <heinrich.schuchardt@canonical.com> wrote:
-> > >
-> > > On 9/10/23 20:53, Anisse Astier wrote:
-> > > > Hi Heinrich,
-> > > >
-> > > > On Sun, Sep 10, 2023 at 06:54:45AM +0200, Heinrich Schuchardt wrote:
-> > > >> Some firmware (notably U-Boot) provides GetVariable() and
-> > > >> GetNextVariableName() but not QueryVariableInfo().
-> > > >
-> > > >  From a quick search, it seems u-boot, does support QueryVariableInfo, is
-> > > > it on a given version ?
-> > > >
-> > > > https://elixir.bootlin.com/u-boot/v2023.07.02/source/lib/efi_loader/efi_variable.c#L391
-> > >
-> > > QueryVariableInfo() and SetVariable() are available before
-> > > ExitBootServices(), i.e. in Linux' EFI stub.
-> > >
-> > > ExitBootServices() results in calling efi_variables_boot_exit_notify()
-> > > which disables these services during the UEFI runtime.
-> > >
-> > > >
-> > > >>
-> > > >> With commit d86ff3333cb1 ("efivarfs: expose used and total size") the
-> > > >> statfs syscall was broken for such firmware.
-> > > >
-> > > > Could you be more specific ? What breaks, and what regressed ? I imagine
-> > > > it could be some scripts running df, but maybe you had something else in
-> > > > mind ?
-> > >
-> > > Some more details can be found in
-> > > https://bugs.launchpad.net/ubuntu/+source/linux-meta-riscv/+bug/2034705.
-> > >
-> > > Though EFI variables are exposed via GetVariable() and
-> > > GetNextVariableName() the efivar command refuses to display variables
-> > > when statfs() reports an error.
-> > >
-> > > >
-> > > >>
-> > > >> If QueryVariableInfo() does not exist or returns an error, just report the
-> > > >> file-system size as 0 as statfs_simple() previously did.
-> > > >
-> > > > I considered doing this [2] , but we settled on returning an error
-> > > > instead for clarity:
-> > > > https://lore.kernel.org/linux-efi/20230515-vorgaben-portrait-bb1b4255d31a@brauner/
-> > > >
-> > > > I still think it would be a good idea if necessary.
-> > >
-> > > We should never break user APIs.
-> > >
-> >
-> > Indeed.
-> >
-> > > >
-> > > > On the approach, I prefer what Ard proposed, to fall back to the old
-> > > > approach. I think the difference in block size could also be a good
-> > > > marker that something wrong is happening:
-> > > > https://lore.kernel.org/linux-efi/CAMj1kXEkNSoqG4zWfCZ8Ytte5b2SzwXggZp21Xt17Pszd-q0dg@mail.gmail.com/
-> > >
-> > > This will allow user code making assumptions based on block size:
-> > > If block size > 1, assume setting variables is possible.
-> > >
-> > > We should really avoid this.
-> > >
-> >
-> > I agree that having different block sizes depending on which code path
-> > is taken is not great. But that is the situation we are already in,
-> > given that older kernels will always report PAGE_SIZE. And actually,
-> > PAGE_SIZE does not make sense either - PAGE_SIZE could be larger than
-> > 4k on ARM for instance, so the efivarfs block size will be dependent
-> > on the page size of the kernel you happened to boot.
-> >
-> > So I think we should go with the below:
-> >
-> > --- a/fs/efivarfs/super.c
-> > +++ b/fs/efivarfs/super.c
-> > @@ -32,10 +32,16 @@ static int efivarfs_statfs(struct dentry *dentry,
-> > struct kstatfs *buf)
-> >         u64 storage_space, remaining_space, max_variable_size;
-> >         efi_status_t status;
-> >
-> > -       status = efivar_query_variable_info(attr, &storage_space,
-> > &remaining_space,
-> > -                                           &max_variable_size);
-> > -       if (status != EFI_SUCCESS)
-> > -               return efi_status_to_err(status);
-> > +       /* Some UEFI firmware does not implement QueryVariableInfo() */
-> > +       storage_space = remaining_space = 0;
-> > +       if (efi_rt_services_supported(EFI_RT_SUPPORTED_QUERY_VARIABLE_INFO)) {
-> > +               status = efivar_query_variable_info(attr, &storage_space,
-> > +                                                   &remaining_space,
-> > +                                                   &max_variable_size);
-> > +               if (status != EFI_SUCCESS && status != EFI_UNSUPPORTED)
-> > +                       pr_warn_ratelimited("query_variable_info()
-> > failed: 0x%lx\n",
-> > +                                           status);
-> > +       }
->
-> I think this is better, but shouldn't we initialize the status
-> variable now? Or is there more code following that I am missing?
->
+On 07.09.23 16:46, Dave Hansen wrote:
+> On 9/7/23 07:25, Kirill A. Shutemov wrote:
+>> On Thu, Sep 07, 2023 at 07:15:21AM -0700, Dave Hansen wrote:
+>>> On 9/6/23 00:39, Adrian Hunter wrote:
+>>>> Support for unaccepted memory was added recently, refer commit
+>>>> dcdfdd40fa82 ("mm: Add support for unaccepted memory"), whereby
+>>>> a virtual machine may need to accept memory before it can be used.
+>>>>
+>>>> Do not map unaccepted memory because it can cause the guest to fail.
+>>> Doesn't /dev/mem already provide a billion ways for someone to shoot
+>>> themselves in the foot?  TDX seems to have added the 1,000,000,001st.
+>>> Is this really worth patching?
+>> Is it better to let TD die silently? I don't think so.
+> 
+> First, let's take a look at all of the distro kernels that folks will
+> run under TDX.  Do they have STRICT_DEVMEM set?
 
-status is not referenced again after this.
+For virtio-mem, we do
+
+	config VIRTIO_MEM
+		...
+		depends on EXCLUSIVE_SYSTEM_RAM
+
+Which in turn:
+
+	config EXCLUSIVE_SYSTEM_RAM
+		...
+		depends on !DEVMEM || STRICT_DEVMEM
+
+
+Not supported on all archs, but at least on RHEL9 on x86_64 and aarch64.
+
+So, making unaccepted memory similarly depend on "!DEVMEM || 
+STRICT_DEVMEM" does not sound too far off ...
+
+
+-- 
+Cheers,
+
+David / dhildenb
+
