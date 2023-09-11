@@ -2,42 +2,42 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C0F779AFDF
-	for <lists+linux-efi@lfdr.de>; Tue, 12 Sep 2023 01:48:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F3B079B3F0
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Sep 2023 02:01:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242065AbjIKVRw (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 11 Sep 2023 17:17:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37560 "EHLO
+        id S241643AbjIKVRq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 11 Sep 2023 17:17:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236757AbjIKLVh (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 11 Sep 2023 07:21:37 -0400
+        with ESMTP id S236758AbjIKLVj (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 11 Sep 2023 07:21:39 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AB8FCDD;
-        Mon, 11 Sep 2023 04:21:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EE45CDD;
+        Mon, 11 Sep 2023 04:21:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694431293; x=1725967293;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=+I5yoxhnq9XTmgsh71v3IPq8MLK5vdTB+aRt5bb4Pkw=;
-  b=QqY0VN/S6CTEv6tVzjUPZulxbUU3fG5uGri+OPzmCq00G7I2t8JOC81R
-   HFja1Cv6FauQO0osZdnmOx1UHdkvM59HuHAmxBM0j7N09aCbdyR4wcIMV
-   I9Pf78D9/sdWEdWkqVPtQCKiTSo6ApN++QTxtaYuc1u8LTu9rFBtTPkhb
-   4wkz4ePZx2EMpjVIWdTLmZjRai7YEOFmvztnqlQ4rT1G6EHTvkLPa1TiQ
-   smIp08T63btG2b8/866lOmLzFhTHYM2kszuJiqoLbbhR270oG4ySXV7BD
-   3EOB2ZXskyNs4KldOwtEgsFxGVZ/5v2gMC5c98QkbJPtppDGqHF1hYPpZ
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10829"; a="358358396"
+  t=1694431295; x=1725967295;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Zw3TazwdjRU8wNvK9+zXRRn6LyFt0jKcjaf9En8Up90=;
+  b=DuBiQy9DYCe4DWIdG2Lq52ezZL8iy+a50JRM43SHBwqKCiSjPS1vkmNG
+   px4jq/V36rnvtz4kE2f/iLmxaBpyz728tH9SFRSOvh7dmm1KaX72jRDbJ
+   c6rjuB/jy2LiA6CbqyLEi29Y6Qkn9989LFgWr5hSI/kEAsVGffpx20fn5
+   yD+m8p86AnRtGhIJU6GtT3IeOxm86q/XdrBhhz/+wcrGk/3l6rHCJkE9f
+   QSt32wZkZ2gOqrCXaiHjTRm9EwsQCC2eaCmQE5/9ZPsNYphU8zbn+taUL
+   Y4CvRBthIYVG1teV41WtazKXKdcOSGwtSfZ+NEpUwQUBH2gUJ7h/xmQ12
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10829"; a="358358414"
 X-IronPort-AV: E=Sophos;i="6.02,243,1688454000"; 
-   d="scan'208";a="358358396"
+   d="scan'208";a="358358414"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 04:21:31 -0700
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 04:21:35 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10829"; a="778356390"
+X-IronPort-AV: E=McAfee;i="6600,9927,10829"; a="778356397"
 X-IronPort-AV: E=Sophos;i="6.02,243,1688454000"; 
-   d="scan'208";a="778356390"
+   d="scan'208";a="778356397"
 Received: from ahunter6-mobl1.ger.corp.intel.com (HELO ahunter-VirtualBox.home\044ger.corp.intel.com) ([10.251.216.218])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 04:21:25 -0700
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 04:21:30 -0700
 From:   Adrian Hunter <adrian.hunter@intel.com>
 To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Borislav Petkov <bp@alien8.de>,
@@ -53,10 +53,12 @@ Cc:     Dave Hansen <dave.hansen@intel.com>,
         linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
         linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
         kexec@lists.infradead.org
-Subject: [PATCH V2 0/2] Do not try to access unaccepted memory
-Date:   Mon, 11 Sep 2023 14:21:12 +0300
-Message-Id: <20230911112114.91323-1-adrian.hunter@intel.com>
+Subject: [PATCH V2 1/2] efi/unaccepted: Do not let /proc/vmcore try to access unaccepted memory
+Date:   Mon, 11 Sep 2023 14:21:13 +0300
+Message-Id: <20230911112114.91323-2-adrian.hunter@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230911112114.91323-1-adrian.hunter@intel.com>
+References: <20230911112114.91323-1-adrian.hunter@intel.com>
 MIME-Version: 1.0
 Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki, Business Identity Code: 0357606 - 4, Domiciled in Helsinki
 Content-Transfer-Encoding: 8bit
@@ -69,39 +71,80 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Hi
+Support for unaccepted memory was added recently, refer commit dcdfdd40fa82
+("mm: Add support for unaccepted memory"), whereby a virtual machine may
+need to accept memory before it can be used.
 
-Support for unaccepted memory was added recently, refer commit
-dcdfdd40fa82 ("mm: Add support for unaccepted memory"), whereby
-a virtual machine may need to accept memory before it can be used.
+Do not let /proc/vmcore try to access unaccepted memory because it can
+cause the guest to fail.
 
-Plug a few gaps where RAM is exposed without checking if it is
-unaccepted memory.
+For /proc/vmcore, which is read-only, this means a read or mmap of
+unaccepted memory will return zeros.
+
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+---
+ drivers/firmware/efi/unaccepted_memory.c | 20 ++++++++++++++++++++
+ include/linux/mm.h                       |  7 +++++++
+ 2 files changed, 27 insertions(+)
 
 
 Changes in V2:
 
-      efi/unaccepted: Do not let /proc/vmcore try to access unaccepted memory
           Change patch subject and commit message
           Use vmcore_cb->.pfn_is_ram() instead of changing vmcore.c
 
-      proc/kcore: Do not try to access unaccepted memory
-          Change patch subject and commit message
-          Do not open code pfn_is_unaccepted_memory()
 
-      /dev/mem: Do not map unaccepted memory
-          Patch dropped because it is not required
+diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
+index 853f7dc3c21d..79ba576b22e3 100644
+--- a/drivers/firmware/efi/unaccepted_memory.c
++++ b/drivers/firmware/efi/unaccepted_memory.c
+@@ -3,6 +3,7 @@
+ #include <linux/efi.h>
+ #include <linux/memblock.h>
+ #include <linux/spinlock.h>
++#include <linux/crash_dump.h>
+ #include <asm/unaccepted_memory.h>
+ 
+ /* Protects unaccepted memory bitmap */
+@@ -145,3 +146,22 @@ bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end)
+ 
+ 	return ret;
+ }
++
++#ifdef CONFIG_PROC_VMCORE
++static bool unaccepted_memory_vmcore_pfn_is_ram(struct vmcore_cb *cb,
++						unsigned long pfn)
++{
++	return !pfn_is_unaccepted_memory(pfn);
++}
++
++static struct vmcore_cb vmcore_cb = {
++	.pfn_is_ram = unaccepted_memory_vmcore_pfn_is_ram,
++};
++
++static int __init unaccepted_memory_init_kdump(void)
++{
++	register_vmcore_cb(&vmcore_cb);
++	return 0;
++}
++core_initcall(unaccepted_memory_init_kdump);
++#endif /* CONFIG_PROC_VMCORE */
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index bf5d0b1b16f4..86511150f1d4 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4062,4 +4062,11 @@ static inline void accept_memory(phys_addr_t start, phys_addr_t end)
+ 
+ #endif
+ 
++static inline bool pfn_is_unaccepted_memory(unsigned long pfn)
++{
++	phys_addr_t paddr = pfn << PAGE_SHIFT;
++
++	return range_contains_unaccepted_memory(paddr, paddr + PAGE_SIZE);
++}
++
+ #endif /* _LINUX_MM_H */
+-- 
+2.34.1
 
-
-Adrian Hunter (2):
-      efi/unaccepted: Do not let /proc/vmcore try to access unaccepted memory
-      proc/kcore: Do not try to access unaccepted memory
-
- drivers/firmware/efi/unaccepted_memory.c | 20 ++++++++++++++++++++
- fs/proc/kcore.c                          |  3 ++-
- include/linux/mm.h                       |  7 +++++++
- 3 files changed, 29 insertions(+), 1 deletion(-)
-
-
-Regards
-Adrian
