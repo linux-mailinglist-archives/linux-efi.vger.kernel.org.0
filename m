@@ -2,48 +2,54 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D5D479B6EB
-	for <lists+linux-efi@lfdr.de>; Tue, 12 Sep 2023 02:06:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6160079B9E7
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Sep 2023 02:10:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241318AbjIKVSC (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 11 Sep 2023 17:18:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55176 "EHLO
+        id S242290AbjIKVSN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 11 Sep 2023 17:18:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236761AbjIKLVt (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 11 Sep 2023 07:21:49 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D72BECDD;
-        Mon, 11 Sep 2023 04:21:45 -0700 (PDT)
+        with ESMTP id S239970AbjIKOcw (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 11 Sep 2023 10:32:52 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 346F7CF0;
+        Mon, 11 Sep 2023 07:32:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694431305; x=1725967305;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=M9e2eeN/kfGtE3gA5n3bGk//DgEyKzp702J0NcFnLyE=;
-  b=NKfOwgfGSd6WrjeU3QDdKYQhFHVc+GWTzubfzrKE2Q/PGHaATxUev7vj
-   qBXZPntQ6En3mGr5uzb1O9J5e1h+uTIrq4JMvThMoE1T0U9vHE/oyTGw0
-   QT92dbYgGxd/1+Zjrb79ABRUdIyHyPw60S33f5GaZwLRQHnvuh9AdY5Gf
-   aUVNU0o5HlPv/7O1ArrBouGe0TB7sIdH128/9bmaaDWDfNv/SIASu42Yt
-   VVN3J3ecPzsc4QRuitNMa/RyRCtZzM5D0rQyiNAf4ryDXe9TtH5Y+P+NQ
-   UnAbdZOs8nK1gU17Tayk2m0CzanGy3uulgm0hlKcMqiQGT6zJuoovHiql
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10829"; a="358358431"
-X-IronPort-AV: E=Sophos;i="6.02,243,1688454000"; 
-   d="scan'208";a="358358431"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 04:21:44 -0700
+  t=1694442768; x=1725978768;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=GBvaxapfraK64H6oc4OtRUMWrhE97kyIgzhCWgEuG4k=;
+  b=RgS6YBbsEeF6GNpDm2PyTwljgQNqnzwsZiU2SoQX07jlfB7zATrMUh+e
+   AaIhd2tqwZ8ZRUdVJ4bD6uq0d6uhsAZNm2LDDCFUn38AjsoKSCIrI0E8N
+   LQNaciK9omXUm+ZNHgX4IXOKmjRdO41kA3OMEEVNWd0iQMLEePK4tyPov
+   0APX1YwEI+y47U1JBKLmLxM9/7ZIk2YhWE2qfESbUdcgQHy2wTG7bPf1t
+   jsJdYdy4p9odRM/r7joCAM68761hJ9jlW8banBiwD/e8yHBktZgDlfr1W
+   BBXdmx6glZdg1dWD6ButI6gCcHCSajlETsvCzgblzIXH/15u0++DWD8dR
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="378012085"
+X-IronPort-AV: E=Sophos;i="6.02,244,1688454000"; 
+   d="scan'208";a="378012085"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 07:32:47 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10829"; a="778356406"
-X-IronPort-AV: E=Sophos;i="6.02,243,1688454000"; 
-   d="scan'208";a="778356406"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO ahunter-VirtualBox.home\044ger.corp.intel.com) ([10.251.216.218])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 04:21:35 -0700
-From:   Adrian Hunter <adrian.hunter@intel.com>
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="720000764"
+X-IronPort-AV: E=Sophos;i="6.02,244,1688454000"; 
+   d="scan'208";a="720000764"
+Received: from cdaubert-mobl13.amr.corp.intel.com (HELO [10.212.203.41]) ([10.212.203.41])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 07:32:46 -0700
+Message-ID: <40a363b1-80be-89ce-6527-ac2a4c04917f@intel.com>
+Date:   Mon, 11 Sep 2023 07:32:46 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH 3/3] /dev/mem: Do not map unaccepted memory
+Content-Language: en-US
+To:     David Hildenbrand <david@redhat.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Borislav Petkov <bp@alien8.de>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     Dave Hansen <dave.hansen@intel.com>,
         Vlastimil Babka <vbabka@suse.cz>,
         Mike Rapoport <rppt@linux.ibm.com>,
         Lorenzo Stoakes <lstoakes@gmail.com>,
@@ -53,60 +59,30 @@ Cc:     Dave Hansen <dave.hansen@intel.com>,
         linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
         linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
         kexec@lists.infradead.org
-Subject: [PATCH V2 2/2] proc/kcore: Do not try to access unaccepted memory
-Date:   Mon, 11 Sep 2023 14:21:14 +0300
-Message-Id: <20230911112114.91323-3-adrian.hunter@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230911112114.91323-1-adrian.hunter@intel.com>
-References: <20230911112114.91323-1-adrian.hunter@intel.com>
-MIME-Version: 1.0
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki, Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230906073902.4229-1-adrian.hunter@intel.com>
+ <20230906073902.4229-4-adrian.hunter@intel.com>
+ <9ffb7a3b-cf20-617a-e4f1-8a6a8a2c5972@intel.com>
+ <20230907142510.vcj57cvnewqt4m37@box.shutemov.name>
+ <7a50d04f-63ee-a901-6f39-7d341e423a77@intel.com>
+ <c60df0e4-4214-bbd0-7fc6-8f04e5888f53@redhat.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <c60df0e4-4214-bbd0-7fc6-8f04e5888f53@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Support for unaccepted memory was added recently, refer commit
-dcdfdd40fa82 ("mm: Add support for unaccepted memory"), whereby a virtual
-machine may need to accept memory before it can be used.
+On 9/11/23 01:09, David Hildenbrand wrote:
+> So, making unaccepted memory similarly depend on "!DEVMEM ||
+> STRICT_DEVMEM" does not sound too far off ...
 
-Do not try to access unaccepted memory because it can cause the guest to
-fail.
-
-For /proc/kcore, which is read-only and does not support mmap, this means a
-read of unaccepted memory will return zeros.
-
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
----
- fs/proc/kcore.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-
-Changes in V2:
-
-          Change patch subject and commit message
-          Do not open code pfn_is_unaccepted_memory()
-
-
-diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
-index 23fc24d16b31..6422e569b080 100644
---- a/fs/proc/kcore.c
-+++ b/fs/proc/kcore.c
-@@ -546,7 +546,8 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
- 			 * and explicitly excluded physical ranges.
- 			 */
- 			if (!page || PageOffline(page) ||
--			    is_page_hwpoison(page) || !pfn_is_ram(pfn)) {
-+			    is_page_hwpoison(page) || !pfn_is_ram(pfn) ||
-+			    pfn_is_unaccepted_memory(pfn)) {
- 				if (iov_iter_zero(tsz, iter) != tsz) {
- 					ret = -EFAULT;
- 					goto out;
--- 
-2.34.1
-
+Yeah, considering all of the invasive work folks want to do to "harden"
+the kernel for TDX, doing that ^ is just about the best
+bang-for-your-buck "hardening" that you can get.
