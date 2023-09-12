@@ -2,69 +2,52 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82A6B79C813
-	for <lists+linux-efi@lfdr.de>; Tue, 12 Sep 2023 09:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CE6C79C881
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Sep 2023 09:48:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229556AbjILHU2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 12 Sep 2023 03:20:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44908 "EHLO
+        id S231769AbjILHsE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 12 Sep 2023 03:48:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230239AbjILHU1 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 12 Sep 2023 03:20:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C3929E78
-        for <linux-efi@vger.kernel.org>; Tue, 12 Sep 2023 00:19:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1694503182;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UcEya9HqsW3o+5ldQKv7HTPg9J+Z7fGPS0QxHHzAjY0=;
-        b=EInQwufjK6X2hqSzpyD8lfb5B2tmW/zoFx+AlU0aAHMZEvvGmd1QCfuwH588gEdIqojYi9
-        BaSbNH/5nNf02s5wkBEpdPlmUrVQzEqFDBjuy4glPqUTmj8JGN/mYDlVlovLni7m35fQiI
-        6cRWXcnqWmbYsOOgySLJjDvPjX7+A+Q=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-685-NyNakQmhOHeUOrHf9wZLIg-1; Tue, 12 Sep 2023 03:19:41 -0400
-X-MC-Unique: NyNakQmhOHeUOrHf9wZLIg-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-402cba95486so41753305e9.0
-        for <linux-efi@vger.kernel.org>; Tue, 12 Sep 2023 00:19:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694503180; x=1695107980;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UcEya9HqsW3o+5ldQKv7HTPg9J+Z7fGPS0QxHHzAjY0=;
-        b=cp+Kveed8y9qlPwrGwc7/Re865amAQ28jOe5DZgrjSESePDHJWytt6VFLBb9kktsEb
-         S6/Pup6q2SFdgqpYnukAQ/TFvTCKDV1QMcTM1sT1VzAe6mPjx02+ryYgP8bdIb3O0LJS
-         knv6tdAW3jQygmyZNC0fuYh99b2xyC2Fy+NhYIxNyeItt8D9gWypWjxcgbnOjD8bIh8B
-         PkpwQve00rMUhuMLAYgTKKbO1+VrLxukTyipKM7tlS1ERKIrg15zr8AYaz5qh+WIK4YK
-         pZL8X0ErfX8jipryWQq/RwuHv+wCBp6vape7dZ7qhkoTSGstyq7U2GIC7riSjM5CkmXQ
-         v8hg==
-X-Gm-Message-State: AOJu0Ywo3AcI8FGSL0B72M0/4TB66kBlVOGMWNL15FaYgq44j6591oRg
-        C35DBg883PPaDSec+fKa1mCFteVQc+Mpg7c6gXnvgKOF4iMPeNDpvIsLrC4ajZ7xvbMzP8WCrEz
-        NgrZ79tI/oo4ZSr7slt8O
-X-Received: by 2002:a1c:7c0e:0:b0:401:6800:703c with SMTP id x14-20020a1c7c0e000000b004016800703cmr11272015wmc.21.1694503180596;
-        Tue, 12 Sep 2023 00:19:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFBHMbRtiRZlVheP6qVSb8MqZ6oMl+4dwmRZR30fLEhp0pib6sKRWhTtFCZOTZU2I6KyZfYPg==
-X-Received: by 2002:a1c:7c0e:0:b0:401:6800:703c with SMTP id x14-20020a1c7c0e000000b004016800703cmr11271987wmc.21.1694503180236;
-        Tue, 12 Sep 2023 00:19:40 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c74f:d600:c705:bc25:17b2:71c9? (p200300cbc74fd600c705bc2517b271c9.dip0.t-ipconnect.de. [2003:cb:c74f:d600:c705:bc25:17b2:71c9])
-        by smtp.gmail.com with ESMTPSA id g17-20020a7bc4d1000000b003fc02e8ea68sm15188204wmk.13.2023.09.12.00.19.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Sep 2023 00:19:39 -0700 (PDT)
-Message-ID: <96f124d6-c1f2-adb3-1d3b-8329e85ff099@redhat.com>
-Date:   Tue, 12 Sep 2023 09:19:38 +0200
+        with ESMTP id S231222AbjILHsD (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 12 Sep 2023 03:48:03 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5122E73;
+        Tue, 12 Sep 2023 00:47:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694504879; x=1726040879;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=myILytDdutAkJHoVsjGJrHjJI0XRaM5nA9tqDHz8FOQ=;
+  b=BRsrZzgwiMKZTkvrgrCGhPincsWUsGdarkRTiUcBK2aExbWudOuW8yrc
+   SWYr2RstRa/XyLcivhmZe30gUWfauyFIF6oUPWdyqoX71tzahL7eUdgd6
+   iny/Rjssqlf3KO6RAZKvq2LCIxZV0kGtIjf0NyqxPDo+PpAjRvale1vyP
+   64NDT+WQ4RNvAK/4aGY7vDlSYYbIcKyR74pbl/fQKPIbgBeXnKuLHBguU
+   M6y7SjkXQCNxVkuvcZu0C9E9EzPGz/9IH3EVdRw1GoOOb0K1UGuXcGEAL
+   GtT1RZ/jbsgqHmgyPZBBqRtwBuTUQmZSkZsWv/2rUXM0r0x55aWgfFRgT
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="444742371"
+X-IronPort-AV: E=Sophos;i="6.02,245,1688454000"; 
+   d="scan'208";a="444742371"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 00:47:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10830"; a="867283368"
+X-IronPort-AV: E=Sophos;i="6.02,245,1688454000"; 
+   d="scan'208";a="867283368"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.249.45.152])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 00:47:53 -0700
+Message-ID: <1c736ca3-36e2-3225-2f98-e51149c468ef@intel.com>
+Date:   Tue, 12 Sep 2023 10:47:49 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
+ Firefox/102.0 Thunderbird/102.15.0
 Subject: Re: [PATCH V2 1/2] efi/unaccepted: Do not let /proc/vmcore try to
  access unaccepted memory
 Content-Language: en-US
-To:     Adrian Hunter <adrian.hunter@intel.com>,
+To:     David Hildenbrand <david@redhat.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Borislav Petkov <bp@alien8.de>,
         Andrew Morton <akpm@linux-foundation.org>,
@@ -81,30 +64,31 @@ Cc:     Dave Hansen <dave.hansen@intel.com>,
         kexec@lists.infradead.org
 References: <20230911112114.91323-1-adrian.hunter@intel.com>
  <20230911112114.91323-2-adrian.hunter@intel.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230911112114.91323-2-adrian.hunter@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <96f124d6-c1f2-adb3-1d3b-8329e85ff099@redhat.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <96f124d6-c1f2-adb3-1d3b-8329e85ff099@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 11.09.23 13:21, Adrian Hunter wrote:
-> Support for unaccepted memory was added recently, refer commit dcdfdd40fa82
-> ("mm: Add support for unaccepted memory"), whereby a virtual machine may
-> need to accept memory before it can be used.
+On 12/09/23 10:19, David Hildenbrand wrote:
+> On 11.09.23 13:21, Adrian Hunter wrote:
+>> Support for unaccepted memory was added recently, refer commit dcdfdd40fa82
+>> ("mm: Add support for unaccepted memory"), whereby a virtual machine may
+>> need to accept memory before it can be used.
+>>
+>> Do not let /proc/vmcore try to access unaccepted memory because it can
+>> cause the guest to fail.
 > 
-> Do not let /proc/vmcore try to access unaccepted memory because it can
-> cause the guest to fail.
-
-Oh, hold on. What are the actual side effects of this?
-
-Once we're in the kdump kernel, any guest is already dead. So failing a 
-guest doesn't apply, no?
-
--- 
-Cheers,
-
-David / dhildenb
+> Oh, hold on. What are the actual side effects of this?
+> 
+> Once we're in the kdump kernel, any guest is already dead. So failing a guest doesn't apply, no?
+> 
+Unaccepted Memory is used by virtual machines.  In this case the guest
+has kexec'ed to a dump-capture kernel, so the virtual machine is still
+alive and running the dump-capture kernel.
 
