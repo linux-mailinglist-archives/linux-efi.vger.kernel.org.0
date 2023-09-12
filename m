@@ -2,63 +2,63 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC5CB79CAE0
-	for <lists+linux-efi@lfdr.de>; Tue, 12 Sep 2023 11:02:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA71B79CAE1
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Sep 2023 11:02:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233409AbjILJCN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 12 Sep 2023 05:02:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50616 "EHLO
+        id S233425AbjILJCO (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 12 Sep 2023 05:02:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233561AbjILJBe (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 12 Sep 2023 05:01:34 -0400
-Received: from mail-wm1-x349.google.com (mail-wm1-x349.google.com [IPv6:2a00:1450:4864:20::349])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42FEA10DF
-        for <linux-efi@vger.kernel.org>; Tue, 12 Sep 2023 02:01:28 -0700 (PDT)
-Received: by mail-wm1-x349.google.com with SMTP id 5b1f17b1804b1-3f41a04a297so44161485e9.3
-        for <linux-efi@vger.kernel.org>; Tue, 12 Sep 2023 02:01:28 -0700 (PDT)
+        with ESMTP id S233570AbjILJBf (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 12 Sep 2023 05:01:35 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4E7810E3
+        for <linux-efi@vger.kernel.org>; Tue, 12 Sep 2023 02:01:30 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-59222a14ee1so63987167b3.1
+        for <linux-efi@vger.kernel.org>; Tue, 12 Sep 2023 02:01:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1694509286; x=1695114086; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1694509290; x=1695114090; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nleEiUxtWQK05LpNdDZIQqSdfG3IcCEvn9DBHrWFfWI=;
-        b=saKcnHbFY9shMLG65l6MVR8jcL7FYnrbiIJ2xDQUR+msXSk3EGjcDabbucnlwtR8nX
-         N/m0QWQZnukfrxl7/h9LmR30P1YYX8SblnyzuRMtcsiCqfD8H5eqP85sJEOmyO7MjYWG
-         oqOADQ2T87Z5KQTRmBVIDsjRSQv3wYYrlt5+s8PQ1gFAYbjMmIbRsueS4dQ7yZ9MShWS
-         bhA7lk6O1m5l0HrbEmLoXtyTbkwDNAGTwWf7DWAIJ4drR5CFLRsf37GBBKY3wvAbq3s7
-         RX96wHBQeBo+cP4xdg3GyXUHq51nihyODFtTmeurKgeVoSUU/2isyIqGXn+BqVkxGdz4
-         LthQ==
+        bh=2tvI11no6ZvQpwOGtD7SmPhcRm3cJFuX6Xc9ZqA56hw=;
+        b=gTDubkF5H/h5ak1H3XgaTAbulD+vMiPFy7dbaZbexBG4VO3/79ADpeRlf81Pixzc6y
+         L/87n2atBYV1YNjIM6X9t5e9j01N1ZFNnYOjxkUK4kNpBhV6Jm3O3GlF3ffrHNFbl3TK
+         WbUZpB2e+eZ9Gikx+U0rwLc7dxVc/9CjivUXJXfUnL7zRE5sZuL2WAdbtvFiQbHWJDyL
+         sBNO/tbpR3DvBrTh+m0J8DB+9E2RnOTYpaqAEnEJL7Rd1i9hazZw4JNxkco66hHnsO/x
+         ae34QAdSRpZIx6VCmd/F7UxH1AK4S3sCctk9wPZUCXsZwe80frzpeOVHl0mKzEoTKDip
+         krJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694509286; x=1695114086;
+        d=1e100.net; s=20230601; t=1694509290; x=1695114090;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nleEiUxtWQK05LpNdDZIQqSdfG3IcCEvn9DBHrWFfWI=;
-        b=GRKE76pDqq67nf6yr2LTDRLBzM9tERHwi8wyibHbaLap02ouMFnU5iKjqzNZZWwjjK
-         7csK9OsxHVw88RnYNrWJF14tex+ppYxKmovh3EsRwGhATAcaa5sbAWI6ltEoS4UUUqEv
-         yhXKnshicAt6UA3bnpGd1K4EMvHuMCLUh8jMzWtjrre3hqpEseemmBBuXaVVDmJmDpaZ
-         U1w29onLhQ37Pf994yP0wlXfCW7lN9T9vr2tU6pzg7JO6d3/KDIfRvb/4n4lTPhN3YRn
-         6GWC0XSSfoiWuVCvoTRyEz3eC9NUNn0zx7OnLEr5GUePwAi8KdshoGbBCM0zYGlO6Y1W
-         OQNg==
-X-Gm-Message-State: AOJu0YxB1xZOpVRDmicxX3yYh+tD+51/baZKuASllePqZoaCddcdmkuR
-        q86Fig3+CKz8zNNGlx8homadM0qj2DdvG2kpCLCr9gkbbtaDpxQ0n//RQp5Z3XaQ5VejmW8w124
-        53a250H2X7kf4OUuE70E1mSXtzrXgbwsIC9NGzvBZXgFdPvfMT0gHc/WMHx6b
-X-Google-Smtp-Source: AGHT+IFvOelpLd+x36Cli/GAQtzEJhHtlopkn1hBzlB+JfAAdxI79BgDIoLsCn+1lAhp/JziSq19ahct
+        bh=2tvI11no6ZvQpwOGtD7SmPhcRm3cJFuX6Xc9ZqA56hw=;
+        b=AGD0Fja4wHeaaAGUtRzatPe3pJXxYmOthYRh3NucAmzEAqHA4qq8pUPYEgUwVImweL
+         mBHwrlT8I/Ln0Ohy5mtQK5YkbQZBPqXuz4c4cyqnFQmaVvQ/839dIgZZyjI+jV7xEI78
+         QpARTz2njd83MQBXe78YsPD7HQ5b+6ZJZw0qqmA9lI1aZP/3I+ZNFLu6p02NgELcl1iL
+         74iNsabjAjTx0vfQLBLDG7dJ9ZnOXDLZz39tpLLJZI64gWQoTNC12VL5VdOXv+lZo93J
+         8oXTKa1z5sYbL9KwjfaAfNTj2C3cEUX/UkCx2TfNag3yVAjD4ReoNQSQckKJfM3C/pZO
+         P3sA==
+X-Gm-Message-State: AOJu0YwyKmT3zDXj18/b2buFouUlf/uHMDijqOHMVPv4ctkAgftST2Ug
+        HrpVK9VY3pBv0CDAY9tDw07Y2lGwJ80CnSGiyy2cEP6wc/Nj+WHRy8O1eZnyiii543v9FgmLAkq
+        PBotdc7PzNsXLEXBuL1Y7XhYz8U1nugKRghO4lIfiHHVn1shjzn0SGONOSiHC
+X-Google-Smtp-Source: AGHT+IGFlBfEsGa7oWurzDLl/SbOLYcvdinALugrqVeiiQbXKMzAzAWym2jp1tk5FdY/S7niWkYNKUl9
 X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:adf:e74c:0:b0:31d:da34:ab29 with SMTP id
- c12-20020adfe74c000000b0031dda34ab29mr126792wrn.4.1694509286433; Tue, 12 Sep
- 2023 02:01:26 -0700 (PDT)
-Date:   Tue, 12 Sep 2023 09:00:52 +0000
+ (user=ardb job=sendgmr) by 2002:a05:6902:1707:b0:d7b:9830:c172 with SMTP id
+ by7-20020a056902170700b00d7b9830c172mr288041ybb.0.1694509289690; Tue, 12 Sep
+ 2023 02:01:29 -0700 (PDT)
+Date:   Tue, 12 Sep 2023 09:00:53 +0000
 In-Reply-To: <20230912090051.4014114-17-ardb@google.com>
 Mime-Version: 1.0
 References: <20230912090051.4014114-17-ardb@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1663; i=ardb@kernel.org;
- h=from:subject; bh=gNIz7ZxXkHY+pNuQ2qtskD6P4vNCT8lDOlsSsxZxFs4=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIZVB46juNIefTPeTHzgGbf7VcjRyRvYHm+b9MWWN1mFTn
- EwmNzV1lLIwiHEwyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgIlIqTAyPOW9vPOO65q+vgTm
- DcuVBE+fDOE8xVp9/fW3w5de2jOt/cDwP5HxU/uPY7IzzyX1yJ2Z2JnvlFy8urro8MuAKyvmtj4 sZgUA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3785; i=ardb@kernel.org;
+ h=from:subject; bh=nvt548TxMzPAfrcolR6Dxu6IZrj/XUbhhxX9pY3970g=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIZVB49j5KR1frtj1n1wYllN3piW9b0/FzQSf7qBt+x9ly
+ ixa9P5ERykLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZhIdAYjw4XPli+nl82Vb1n5
+ //HJSUe0l0ue+sazYl15m7Ojx56gb0wM/ytbVl75yJ9y/9vtur971Kx5c5QqAjaoVRxvMppfG2a gyAQA
 X-Mailer: git-send-email 2.42.0.283.g2d96d420d3-goog
-Message-ID: <20230912090051.4014114-18-ardb@google.com>
-Subject: [PATCH v2 01/15] x86/efi: Drop EFI stub .bss from .data section
+Message-ID: <20230912090051.4014114-19-ardb@google.com>
+Subject: [PATCH v2 02/15] x86/efi: Disregard setup header of loaded image
 From:   Ard Biesheuvel <ardb@google.com>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -79,45 +79,105 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Now that the EFI stub always zero inits its BSS section upon entry,
-there is no longer a need to place the BSS symbols carried by the stub
-into the .data section.
+The native EFI entrypoint does not take a struct boot_params from the
+loader, but instead, it constructs one from scratch, using the setup
+header data placed at the start of the image.
+
+This setup header is placed in a way that permits legacy loaders to
+manipulate the contents (i.e., to pass the kernel command line or the
+address and size of an initial ramdisk), but EFI boot does not use it in
+that way - it only copies the contents that were placed there at build
+time, but EFI loaders will not (and should not) manipulate the setup
+header to configure the boot. (Commit 63bf28ceb3ebbe76 "efi: x86: Wipe
+setup_data on pure EFI boot" deals with some of the fallout of using
+setup_data in a way that breaks EFI boot.)
+
+Given that none of the non-zero values that are copied from the setup
+header into the EFI stub's struct boot_params are relevant to the boot
+now that the EFI stub no longer enters via the legacy decompressor, the
+copy can be omitted altogether.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/vmlinux.lds.S | 1 -
- drivers/firmware/efi/libstub/Makefile  | 7 -------
- 2 files changed, 8 deletions(-)
+ drivers/firmware/efi/libstub/x86-stub.c | 46 +++-----------------
+ 1 file changed, 6 insertions(+), 40 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
-index b22f34b8684a..4ff6ab1b67d9 100644
---- a/arch/x86/boot/compressed/vmlinux.lds.S
-+++ b/arch/x86/boot/compressed/vmlinux.lds.S
-@@ -47,7 +47,6 @@ SECTIONS
- 		_data = . ;
- 		*(.data)
- 		*(.data.*)
--		*(.bss.efistub)
- 		_edata = . ;
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 2fee52ed335d..d76a9f7c35d0 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -449,9 +449,8 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 				   efi_system_table_t *sys_table_arg)
+ {
+-	struct boot_params *boot_params;
+-	struct setup_header *hdr;
+-	void *image_base;
++	static struct boot_params boot_params __page_aligned_bss;
++	struct setup_header *hdr = &boot_params.hdr;
+ 	efi_guid_t proto = LOADED_IMAGE_PROTOCOL_GUID;
+ 	int options_size = 0;
+ 	efi_status_t status;
+@@ -469,30 +468,9 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 		efi_exit(handle, status);
  	}
- 	. = ALIGN(L1_CACHE_BYTES);
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index a1157c2a7170..ef4c12f0877b 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -108,13 +108,6 @@ lib-y				:= $(patsubst %.o,%.stub.o,$(lib-y))
- # https://bugs.llvm.org/show_bug.cgi?id=46480
- STUBCOPY_FLAGS-y		+= --remove-section=.note.gnu.property
  
--#
--# For x86, bootloaders like systemd-boot or grub-efi do not zero-initialize the
--# .bss section, so the .bss section of the EFI stub needs to be included in the
--# .data section of the compressed kernel to ensure initialization. Rename the
--# .bss section here so it's easy to pick out in the linker script.
--#
--STUBCOPY_FLAGS-$(CONFIG_X86)	+= --rename-section .bss=.bss.efistub,load,alloc
- STUBCOPY_RELOC-$(CONFIG_X86_32)	:= R_386_32
- STUBCOPY_RELOC-$(CONFIG_X86_64)	:= R_X86_64_64
+-	image_base = efi_table_attr(image, image_base);
+-
+-	status = efi_allocate_pages(sizeof(struct boot_params),
+-				    (unsigned long *)&boot_params, ULONG_MAX);
+-	if (status != EFI_SUCCESS) {
+-		efi_err("Failed to allocate lowmem for boot params\n");
+-		efi_exit(handle, status);
+-	}
+-
+-	memset(boot_params, 0x0, sizeof(struct boot_params));
+-
+-	hdr = &boot_params->hdr;
+-
+-	/* Copy the setup header from the second sector to boot_params */
+-	memcpy(&hdr->jump, image_base + 512,
+-	       sizeof(struct setup_header) - offsetof(struct setup_header, jump));
+-
+-	/*
+-	 * Fill out some of the header fields ourselves because the
+-	 * EFI firmware loader doesn't load the first sector.
+-	 */
++	/* assign the setup_header fields that the kernel actually cares about */
+ 	hdr->root_flags	= 1;
+ 	hdr->vid_mode	= 0xffff;
+-	hdr->boot_flag	= 0xAA55;
+ 
+ 	hdr->type_of_loader = 0x21;
+ 
+@@ -501,25 +479,13 @@ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 	if (!cmdline_ptr)
+ 		goto fail;
+ 
+-	efi_set_u64_split((unsigned long)cmdline_ptr,
+-			  &hdr->cmd_line_ptr, &boot_params->ext_cmd_line_ptr);
+-
+-	hdr->ramdisk_image = 0;
+-	hdr->ramdisk_size = 0;
+-
+-	/*
+-	 * Disregard any setup data that was provided by the bootloader:
+-	 * setup_data could be pointing anywhere, and we have no way of
+-	 * authenticating or validating the payload.
+-	 */
+-	hdr->setup_data = 0;
++	efi_set_u64_split((unsigned long)cmdline_ptr, &hdr->cmd_line_ptr,
++			  &boot_params.ext_cmd_line_ptr);
+ 
+-	efi_stub_entry(handle, sys_table_arg, boot_params);
++	efi_stub_entry(handle, sys_table_arg, &boot_params);
+ 	/* not reached */
+ 
+ fail:
+-	efi_free(sizeof(struct boot_params), (unsigned long)boot_params);
+-
+ 	efi_exit(handle, status);
+ }
  
 -- 
 2.42.0.283.g2d96d420d3-goog
