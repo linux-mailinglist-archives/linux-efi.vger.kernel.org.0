@@ -2,119 +2,156 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97E0079C8D1
-	for <lists+linux-efi@lfdr.de>; Tue, 12 Sep 2023 09:57:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C01E479CADF
+	for <lists+linux-efi@lfdr.de>; Tue, 12 Sep 2023 11:02:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230006AbjILH5v (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 12 Sep 2023 03:57:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50352 "EHLO
+        id S233401AbjILJCM (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 12 Sep 2023 05:02:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231845AbjILHvM (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 12 Sep 2023 03:51:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BEB8C10D7
-        for <linux-efi@vger.kernel.org>; Tue, 12 Sep 2023 00:50:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1694505022;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=/mzVy3Mc/7bAQAhf4c1iHjdctfZReLCkKlOdBdE9Gi0=;
-        b=h47eXwVyN8fbHGwediTQ4qIEfH+JkLYcV+JdZOKVuo/M/Nh/381PLkXHmEqQEIKYLYb03R
-        NhDBETi0McjyB1+UfDYYaF+EGvrggH1ZE27IHVFS1f9a0M+vlbxCrr8YtlIri7mVRLeqQm
-        BIvVy8xLxhUcEAh5uegvKRhMvRn37n8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-LB97EvGPNKCTWmpS1DKuRQ-1; Tue, 12 Sep 2023 03:50:21 -0400
-X-MC-Unique: LB97EvGPNKCTWmpS1DKuRQ-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-401db25510fso40629135e9.1
-        for <linux-efi@vger.kernel.org>; Tue, 12 Sep 2023 00:50:20 -0700 (PDT)
+        with ESMTP id S233560AbjILJBe (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 12 Sep 2023 05:01:34 -0400
+Received: from mail-wr1-x44a.google.com (mail-wr1-x44a.google.com [IPv6:2a00:1450:4864:20::44a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73B8110DD
+        for <linux-efi@vger.kernel.org>; Tue, 12 Sep 2023 02:01:25 -0700 (PDT)
+Received: by mail-wr1-x44a.google.com with SMTP id ffacd0b85a97d-31f87a56b46so1915268f8f.2
+        for <linux-efi@vger.kernel.org>; Tue, 12 Sep 2023 02:01:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1694509284; x=1695114084; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Om2Cn3Wg3jEi2eBnUxXdkE+0SAAFjVcdTV6CXbynWjo=;
+        b=Oa376M75+hHQU3oSNPE6L/2+bNsIpDizK7qC/Q/co3h1w13CBUoTkFxyndACWnCT+m
+         vriPifSPlg5iR77YLWiDNrzojTopfuU99o3/whbj4WTimNhJ5gClLGpp8bPAeWxG20lB
+         RNbYPWr9g+9tWzrb0fg5iQfsqusrCdN1Cb6thC0qDuPXA5lF5uQQ86Q3KOjdLQK9jpxf
+         O3MpFEDM4+g3eYEYbnsW+wli/16nbFIQ845Yd+IAGm70Tnqy8IM7EByV8PvSLeJqg4pO
+         zDojjudD3iOrpzYsy0aG/HqKyp8L6yS4VM/KHyiVCSLmrYcSyThjP748niZOPOtoN57a
+         vgjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694505020; x=1695109820;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/mzVy3Mc/7bAQAhf4c1iHjdctfZReLCkKlOdBdE9Gi0=;
-        b=u5kC0nhcl2FDS3AYvm0or1dLOC/3d2UIqprwaYqXDOYQccmMfFZxhvNcx8bSw6SuJ6
-         JI0E5FJF8on5xfRpNaYjdUeT8hfD4E9gS8MvHzGPJBbXjyScGbJ1mhcdozgLcXI29eLT
-         jMkwHFTEhgfasseEBLcdGtIohX9h61ptQEtrOUGQIpWCDkCNjrdGfnHwIVEfNfOn9inG
-         Dl2biJAPQBgaLDTKQEmWOE9CXKtFaYe8/0eYsE/KYFi3IDEfTxEmQLChdP5CynUGR+LL
-         z2MEKch8cBnygvHJllKBkhArrjdD99KlUL0lAS3FdhPdJFHAFCMDDHMFKMrVvj4lfjGa
-         Fljg==
-X-Gm-Message-State: AOJu0YxcCHO9Z5x09bFI1bU2jTlqXxGJKsQgKpG8ci660Um3gaCvF5wg
-        wk02LdffO8js0j5NT+5PvD/3fpolg73YUk46ZkKhkKG8JsTMg5de1w7o56rtR1loRi3sTJ+YQH5
-        gQZ5ByNgwXeD3Jb1CuE19
-X-Received: by 2002:a05:600c:b59:b0:402:8896:bb7b with SMTP id k25-20020a05600c0b5900b004028896bb7bmr10597651wmr.6.1694505020028;
-        Tue, 12 Sep 2023 00:50:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEWb5KPPue011J3X0eD1sW7gLSQXGBULtIBQ0OCAIfXnbwUsDGLY2yVip/HeBg+JEeYAy53ww==
-X-Received: by 2002:a05:600c:b59:b0:402:8896:bb7b with SMTP id k25-20020a05600c0b5900b004028896bb7bmr10597627wmr.6.1694505019623;
-        Tue, 12 Sep 2023 00:50:19 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c74f:d600:c705:bc25:17b2:71c9? (p200300cbc74fd600c705bc2517b271c9.dip0.t-ipconnect.de. [2003:cb:c74f:d600:c705:bc25:17b2:71c9])
-        by smtp.gmail.com with ESMTPSA id ay7-20020a05600c1e0700b0040303a9965asm9212894wmb.40.2023.09.12.00.50.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Sep 2023 00:50:19 -0700 (PDT)
-Message-ID: <ea1bc666-69ca-9ae4-36cf-cb3d852a0558@redhat.com>
-Date:   Tue, 12 Sep 2023 09:50:18 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH V2 1/2] efi/unaccepted: Do not let /proc/vmcore try to
- access unaccepted memory
-Content-Language: en-US
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        d=1e100.net; s=20230601; t=1694509284; x=1695114084;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Om2Cn3Wg3jEi2eBnUxXdkE+0SAAFjVcdTV6CXbynWjo=;
+        b=lJ0WP94NDuRMgz14e1R4qySQm4VWVItoojH+UHgV2RWiAr7sf5r60tNXTIhxjupAK3
+         9xtEC57FX2g5BuL3uM/r5ZgQ8mzAn142jNLFpdv3GIQ/8EtOo4YbGeho5dDz99r6G3cM
+         +9CbAVC+sObgYlEIr0o0N6g8tVPkiShkNCyGA6BF33kqEijgbXYB1WDqXDTKHQCSO9vJ
+         tpITzGg1D+T6Mo46LWHbZeYFmhGnBU7mmwJ8GvJbnkLNum+iboge502lRaY9JvPF3FtH
+         ZnrNI35M8kKBwK3pLhU47KIzGJIbtlxLL3o0QgxbW9vpxCwPSZSrSJAFujKDLcHS0l+y
+         0D4Q==
+X-Gm-Message-State: AOJu0Yzhwgxch+5cXlZBh1nLNtftUrufAPQCqIIzx+qi4YYk6oqG6hcl
+        MIgLb0uuu/Hyustxot4R0GuUA3f+NL5RZfSqgC+/lIHfWyrnjNJrL4jNhOklSKMli9UIXeyu3as
+        03sRRySxFqzCtvJIutP4INEwJlCw5YXQZmrG0JMMhPSxfBmiKNRHA6bgm9jEw
+X-Google-Smtp-Source: AGHT+IFlV1cfpOxh5HADBtaEpaYnpaKTI/Kysvfvx1KwDrWrD8DTXp/I88mfzwjsMIhnID61wzXJuHX2
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
+ (user=ardb job=sendgmr) by 2002:a05:6000:156b:b0:31f:a664:f871 with SMTP id
+ 11-20020a056000156b00b0031fa664f871mr73257wrz.9.1694509283538; Tue, 12 Sep
+ 2023 02:01:23 -0700 (PDT)
+Date:   Tue, 12 Sep 2023 09:00:51 +0000
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3609; i=ardb@kernel.org;
+ h=from:subject; bh=oz3m2uvlkSUrxw/YtPHMIWaPsH7+dyN5FRl9/bT5Ino=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIZVB47DyoeO7uD6knGdYcS3d+UWwzvaLy/RNb3AG3IyqO
+ qkS5vK9o5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEzETZeRYc2+Lf3cYSyxtX0M
+ 042DLk8xeDB9v+Dmm35nTjyrfaHFGMjwV4x7ytIvetmlh9ovBKb+NRE3zln0LH5vzY8pa1/+Wzp dmwEA
+X-Mailer: git-send-email 2.42.0.283.g2d96d420d3-goog
+Message-ID: <20230912090051.4014114-17-ardb@google.com>
+Subject: [PATCH v2 00/15] x86/boot: Rework PE header generation
+From:   Ard Biesheuvel <ardb@google.com>
+To:     linux-efi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        Evgeniy Baskov <baskov@ispras.ru>,
         Borislav Petkov <bp@alien8.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     Dave Hansen <dave.hansen@intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Lorenzo Stoakes <lstoakes@gmail.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
-        Dave Young <dyoung@redhat.com>, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
-        kexec@lists.infradead.org
-References: <20230911112114.91323-1-adrian.hunter@intel.com>
- <20230911112114.91323-2-adrian.hunter@intel.com>
- <96f124d6-c1f2-adb3-1d3b-8329e85ff099@redhat.com>
- <1c736ca3-36e2-3225-2f98-e51149c468ef@intel.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <1c736ca3-36e2-3225-2f98-e51149c468ef@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Jones <pjones@redhat.com>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        "H. Peter Anvin" <hpa@zytor.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 12.09.23 09:47, Adrian Hunter wrote:
-> On 12/09/23 10:19, David Hildenbrand wrote:
->> On 11.09.23 13:21, Adrian Hunter wrote:
->>> Support for unaccepted memory was added recently, refer commit dcdfdd40fa82
->>> ("mm: Add support for unaccepted memory"), whereby a virtual machine may
->>> need to accept memory before it can be used.
->>>
->>> Do not let /proc/vmcore try to access unaccepted memory because it can
->>> cause the guest to fail.
->>
->> Oh, hold on. What are the actual side effects of this?
->>
->> Once we're in the kdump kernel, any guest is already dead. So failing a guest doesn't apply, no?
->>
-> Unaccepted Memory is used by virtual machines.  In this case the guest
-> has kexec'ed to a dump-capture kernel, so the virtual machine is still
-> alive and running the dump-capture kernel.
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Ah, I got lost in TDX host semantics. So what you're saying, if we 
-(guest) are reading unnaccepted memory we will get zapped. Makes sense.
+Now that the EFI stub boot flow no longer relies on memory that is
+executable and writable at the same time, we can reorganize the PE/COFF
+view of the kernel image and expose the decompressor binary's code and
+r/o data as a .text section and data/bss as a .data section, using 4k
+alignment and limited permissions.
+
+Doing so is necessary for compatibility with hardening measures that are
+being rolled out on x86 PCs built to run Windows (i.e., the majority of
+them). The EFI boot environment that the Linux EFI stub executes in is
+especially sensitive to safety issues, given that a vulnerability in the
+loader of one OS can be abused to attack another.
+
+In true x86 fashion, this is a lot more complicated than on other
+architectures, which have implemented this code/data split with 4k
+alignment from the beginning. The complicating factor here is that the
+boot image consists of two different parts, which are stitched together
+and fixed up using a special build tool.
+
+After this series is applied, the only remaining task performed by the
+build tool is generating the CRC-32. Even though this checksum is
+usually wrong (given that distro kernels are signed for secure boot in a
+way that corrupts the CRC), this feature is retained as we cannot be
+sure that nobody is relying on this.
+
+This supersedes the work proposed by Evgeniy last year, which did a
+major rewrite of the build tool in order to clean it up, before updating
+it to generate the new 4k aligned image layout. As this series proves,
+the build tool is mostly unnecessary, and we have too many of those
+already.
+
+Changes since v1:
+- drop patch that removed the CRC and the build tool
+- do not use fixed setup_size but derive it in the setup.ld linker
+  script
+- reorganize the PE header so the .compat section only covers its
+  payload and the padding that follows it
+- add hpa's ack to patch #4
+
+Cc: Evgeniy Baskov <baskov@ispras.ru>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Peter Jones <pjones@redhat.com>
+Cc: Matthew Garrett <mjg59@srcf.ucam.org>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+
+Ard Biesheuvel (15):
+  x86/efi: Drop EFI stub .bss from .data section
+  x86/efi: Disregard setup header of loaded image
+  x86/efi: Drop alignment flags from PE section headers
+  x86/boot: Remove the 'bugger off' message
+  x86/boot: Omit compression buffer from PE/COFF image memory footprint
+  x86/boot: Drop redundant code setting the root device
+  x86/boot: Grab kernel_info offset from zoffset header directly
+  x86/boot: Drop references to startup_64
+  x86/boot: Set EFI handover offset directly in header asm
+  x86/boot: Define setup size in linker script
+  x86/boot: Derive file size from _edata symbol
+  x86/boot: Construct PE/COFF .text section from assembler
+  x86/boot: Drop PE/COFF .reloc section
+  x86/boot: Split off PE/COFF .data section
+  x86/boot: Increase section and file alignment to 4k/512
+
+ arch/x86/boot/Makefile                  |   2 +-
+ arch/x86/boot/compressed/vmlinux.lds.S  |   6 +-
+ arch/x86/boot/header.S                  | 213 ++++++---------
+ arch/x86/boot/setup.ld                  |  14 +-
+ arch/x86/boot/tools/build.c             | 273 +-------------------
+ drivers/firmware/efi/libstub/Makefile   |   7 -
+ drivers/firmware/efi/libstub/x86-stub.c |  46 +---
+ 7 files changed, 114 insertions(+), 447 deletions(-)
 
 -- 
-Cheers,
-
-David / dhildenb
+2.42.0.283.g2d96d420d3-goog
 
