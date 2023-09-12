@@ -2,63 +2,64 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD29C79CAE5
+	by mail.lfdr.de (Postfix) with ESMTP id 6F74379CAE4
 	for <lists+linux-efi@lfdr.de>; Tue, 12 Sep 2023 11:02:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233444AbjILJCQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 12 Sep 2023 05:02:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59488 "EHLO
+        id S233454AbjILJCS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 12 Sep 2023 05:02:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233592AbjILJBj (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 12 Sep 2023 05:01:39 -0400
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0226E10EB
-        for <linux-efi@vger.kernel.org>; Tue, 12 Sep 2023 02:01:35 -0700 (PDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-58fc7afa4beso63289427b3.2
-        for <linux-efi@vger.kernel.org>; Tue, 12 Sep 2023 02:01:35 -0700 (PDT)
+        with ESMTP id S233610AbjILJBm (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 12 Sep 2023 05:01:42 -0400
+Received: from mail-wm1-x349.google.com (mail-wm1-x349.google.com [IPv6:2a00:1450:4864:20::349])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB7B210F2
+        for <linux-efi@vger.kernel.org>; Tue, 12 Sep 2023 02:01:38 -0700 (PDT)
+Received: by mail-wm1-x349.google.com with SMTP id 5b1f17b1804b1-401d9abf21cso44365835e9.0
+        for <linux-efi@vger.kernel.org>; Tue, 12 Sep 2023 02:01:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1694509295; x=1695114095; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1694509297; x=1695114097; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=U9NX1eydLNVgshySZmGjlq5b77lgR7szWd7VFgL+D3U=;
-        b=C0xPLuufuvl7kiWJRzV3g+tm2SoPvFQh/KPjCEK+pHQGsnBwa7MiOcpYAndaj6NozO
-         jMzGALPMLhL6Y3t5zqj1aCnNhrh4w7QMh+Zimza6f8E5rg+IF8WOLVrxFazXT8P5YV2/
-         5smX4Par+98w1Oyp90elBxJ5vYYXrBdsFtaEtTMjmPVJcZfWJnHFiYw48S6ZvynPL2Fh
-         r8RtOX7Iwvr/8GU1yzsv2Bllv9pSTsJIkMqNpW6DkglK9XkZy9HDnXzWaeWsg+TehOa2
-         Kn26O8/Z6pDuI8R5bf8RVfza47vqFlaHTzjUxdVAAwvFEl0YO3MydhLS0QCk8Hw4PILz
-         lVAA==
+        bh=fe+/cU9QRFOgu9GR9ilVdqMZbBq1lerXnHnsmRtv0H4=;
+        b=YJoGIzx2xv6fF76kQnFEf5B6eO1nIDRBvinjs+npO2z2r+8M1YLlMAQFgRTpqQtG5M
+         AacTY4SiXUmoX48LTyEUzvjY3Koirci1ab5ALEvgm1JIOX++MD7T3pi/R35hLw4whhO/
+         2o6I8FdViErsJa7CKVO+RNSDvKChQIKsZqYBc1SY7hJyWB447o8/joWvzzf7ZjDm0rYN
+         4Lrh7RkvCJ2tQrrUKLp1BH2oMUs4TVWtTTbC0gpYBrjOK+J7KH/mSc8ANTHHXAFTTKVT
+         hTDZb3eH+FE/ZVQeqvKXuAaWPUIclgPPLq6VAXS1NKl/7XLpsc8HCkgsBihVF3rHEeKJ
+         sfew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694509295; x=1695114095;
+        d=1e100.net; s=20230601; t=1694509297; x=1695114097;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U9NX1eydLNVgshySZmGjlq5b77lgR7szWd7VFgL+D3U=;
-        b=T5NCKL8mmTfmFOeBWqYySmBzgWC6fA+dBwnFr6hpn6IG+GZyhYoFGIVtgMBtIVhKS3
-         U3/ognckJLOQSgIdH4eP6gVWDV+kID4sX2P2kdib3LAX1JOXHlBpw0wK1lZtdvgCY/1x
-         STtnXlYj56jWZg77P/eiIBbJnTiDalgfe4jTWpIw8wza5DbeV/U2GOH1DBawljOt68ji
-         hEFXFwXFoBLckrjiKcG9ZqdQuVMrIE64DzLtn+IPsEVDRxhif8s3d8R+abJZlahj6fQ5
-         c1AZy9yt7uBpntNuoeCYjoT2N/5OCwypqACUyfhLLVCjMZBXmL1TXaqhk6ZXdgXyDZS3
-         0BAQ==
-X-Gm-Message-State: AOJu0YyRkD/JEpDRcLM3e8Ilo9Fbuzy1dAT0RxOE3bImtMOtMrDNbcS0
-        kj0OFKjzC/Grlv6E3dETO1PgakcY4du4ECNorGF8cOTB5sLBAdOmPNWYBURTXnO78YqW3lqNQ+d
-        Tq++6G4Jl6JmpAQFkFMpihb0JLrA3wdQ16UXmXwbmnK0yCwHnlmVBc44R8w8w
-X-Google-Smtp-Source: AGHT+IEnERJWZjy5mzckGIkwIDZUhD120pg3gqwSReHPT0G1jRnLKEsjoPrumVHoHlPZ1296s7AtPZYr
+        bh=fe+/cU9QRFOgu9GR9ilVdqMZbBq1lerXnHnsmRtv0H4=;
+        b=HeEVRsJ+njuy0t59wTnZpXC/a7NCekOfPLjGmSzm9c9mgZm8KBQg2C+ay/D7m3Vnc3
+         iXAmMbvbXDjU80zH1IK0jNyRB5cnHKN2arrQ7CRDhMSZ/Ooq3xD42VDGSCOKsUqB+8A0
+         sTsRaR1EJyYz0wW8yZWojCHfcQQQFFHJYCfZbKxgMFnS6NBQGsSyKQM80u3Wdbf8OduE
+         6d9KPc+I8uepPLQyENQLb5Bmj/l1i5a9jzpKsMmS2lDnflrfG6YR1wWbbEsSuKnUdFOS
+         cITOyLUY0PhLOKin8OpxZuC1diMnGUrxmHto1ArcNXx95xVxDlZm7xOOjtArlaW6TlAQ
+         JEVw==
+X-Gm-Message-State: AOJu0YzfkOtbBTpxD/w4xv8ft7jS0FmTmuKCWTiuQ/0a9TZQI0RqHNG/
+        tegXcoFLNHF2jNU03G+bHr7WJKtw+11DF+LvIXdNKjCZ9QHVEMJqMziJ/0cglpdc1FhlgxHN2rF
+        ERYopyshTN8V611dpcwun0JYsjt5X15i3OLxlcFF9Fc4Y65tJFppzQUwPuYOb
+X-Google-Smtp-Source: AGHT+IFU2h7tClDmAtRVWp+NUQEbamdyRXRXHAQRTZbmFrofGwJL81SORIFeYDnT+doGzNqsxYdr2YkV
 X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a25:bb88:0:b0:d7b:8acc:beb8 with SMTP id
- y8-20020a25bb88000000b00d7b8accbeb8mr283729ybg.2.1694509294977; Tue, 12 Sep
- 2023 02:01:34 -0700 (PDT)
-Date:   Tue, 12 Sep 2023 09:00:55 +0000
+ (user=ardb job=sendgmr) by 2002:a05:6000:180b:b0:31d:3669:1c57 with SMTP id
+ m11-20020a056000180b00b0031d36691c57mr136857wrh.7.1694509297239; Tue, 12 Sep
+ 2023 02:01:37 -0700 (PDT)
+Date:   Tue, 12 Sep 2023 09:00:56 +0000
 In-Reply-To: <20230912090051.4014114-17-ardb@google.com>
 Mime-Version: 1.0
 References: <20230912090051.4014114-17-ardb@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3047; i=ardb@kernel.org;
- h=from:subject; bh=C3Y0JXoFsDu7p0NCuFXkHN3nsg72k1sfp0MTO1muukQ=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIZVB40ToruN3lO8c3lF80q2mY/G0N02PllxzCJiv0bv5X
- +iFLx9ed5SyMIhxMMiKKbIIzP77bufpiVK1zrNkYeawMoEMYeDiFICJzPFl+Gfy0+pN1D1OT3vG
- pI1rZ3gpH1fYGxL8aPp8nYvCHivOvFnH8E/9oP+PaWwn7OKPfm96br+6X4FD6Yvq1Jl6nG/nlC6 crMwBAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5240; i=ardb@kernel.org;
+ h=from:subject; bh=wBN5p9iqf+zXksMG8YvWV0u77eSyD0wh6+R0/IxKHqc=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIZVB4yT3BsEV2T3uV2as43gkvCqwcY+CmPKvCv15TaUtb
+ +60Wfp3lLIwiHEwyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgInskGJkeDgxQPP6+rfbDx88
+ kqpnGlQiJ6uiGLdrkX7l/PNzO4WYvjMyzBQ8Eh5bp/5KecW+kKzti8Wn6Kuvspny6kWFVlL9nhQ /HgA=
 X-Mailer: git-send-email 2.42.0.283.g2d96d420d3-goog
-Message-ID: <20230912090051.4014114-21-ardb@google.com>
-Subject: [PATCH v2 04/15] x86/boot: Remove the 'bugger off' message
+Message-ID: <20230912090051.4014114-22-ardb@google.com>
+Subject: [PATCH v2 05/15] x86/boot: Omit compression buffer from PE/COFF image
+ memory footprint
 From:   Ard Biesheuvel <ardb@google.com>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -79,121 +80,149 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Ancient (pre-2003) x86 kernels could boot from a floppy disk straight from
-the BIOS, using a small real mode boot stub at the start of the image
-where the BIOS would expect the boot record (or boot block) to appear.
+Now that the EFI stub decompresses the kernel and hands over to the
+decompressed image directly, there is no longer a need to provide a
+decompression buffer as part of the .BSS allocation of the PE/COFF
+image. It also means the PE/COFF image can be loaded anywhere in memory,
+and setting the preferred image base is unnecessary. So drop the
+handling of this from the header and from the build tool.
 
-Due to its limitations (kernel size < 1 MiB, no support for IDE, USB or
-El Torito floppy emulation), this support was dropped, and a Linux aware
-bootloader is now always required to boot the kernel from a legacy BIOS.
-
-To smoothen this transition, the boot stub was not removed entirely, but
-replaced with one that just prints an error message telling the user to
-install a bootloader.
-
-As it is unlikely that anyone doing direct floppy boot with such an
-ancient kernel is going to upgrade to v6.5+ and expect that this boot
-method still works, printing this message is kind of pointless, and so
-it should be possible to remove the logic that emits it.
-
-Let's free up this space so it can be used to expand the PE header in a
-subsequent patch.
-
-Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/header.S | 49 --------------------
- arch/x86/boot/setup.ld |  7 +--
- 2 files changed, 4 insertions(+), 52 deletions(-)
+ arch/x86/boot/header.S      |  6 +--
+ arch/x86/boot/tools/build.c | 50 +++-----------------
+ 2 files changed, 8 insertions(+), 48 deletions(-)
 
 diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-index 8c8148d751c6..b24fa50a9898 100644
+index b24fa50a9898..a87d9133384b 100644
 --- a/arch/x86/boot/header.S
 +++ b/arch/x86/boot/header.S
-@@ -38,64 +38,15 @@ SYSSEG		= 0x1000		/* historical load address >> 4 */
+@@ -90,12 +90,10 @@ optional_header:
+ #endif
  
- 	.code16
- 	.section ".bstext", "ax"
--
--	.global bootsect_start
--bootsect_start:
- #ifdef CONFIG_EFI_STUB
- 	# "MZ", MS-DOS header
- 	.word	MZ_MAGIC
--#endif
--
--	# Normalize the start address
--	ljmp	$BOOTSEG, $start2
--
--start2:
--	movw	%cs, %ax
--	movw	%ax, %ds
--	movw	%ax, %es
--	movw	%ax, %ss
--	xorw	%sp, %sp
--	sti
--	cld
--
--	movw	$bugger_off_msg, %si
--
--msg_loop:
--	lodsb
--	andb	%al, %al
--	jz	bs_die
--	movb	$0xe, %ah
--	movw	$7, %bx
--	int	$0x10
--	jmp	msg_loop
--
--bs_die:
--	# Allow the user to press a key, then reboot
--	xorw	%ax, %ax
--	int	$0x16
--	int	$0x19
--
--	# int 0x19 should never return.  In case it does anyway,
--	# invoke the BIOS reset code...
--	ljmp	$0xf000,$0xfff0
--
--#ifdef CONFIG_EFI_STUB
- 	.org	0x38
- 	#
- 	# Offset to the PE header.
- 	#
- 	.long	LINUX_PE_MAGIC
- 	.long	pe_header
--#endif /* CONFIG_EFI_STUB */
--
--	.section ".bsdata", "a"
--bugger_off_msg:
--	.ascii	"Use a boot loader.\r\n"
--	.ascii	"\n"
--	.ascii	"Remove disk and press any key to reboot...\r\n"
--	.byte	0
--
--#ifdef CONFIG_EFI_STUB
- pe_header:
- 	.long	PE_MAGIC
+ extra_header_fields:
+-	# PE specification requires ImageBase to be 64k aligned
+-	.set	image_base, (LOAD_PHYSICAL_ADDR + 0xffff) & ~0xffff
+ #ifdef CONFIG_X86_32
+-	.long	image_base			# ImageBase
++	.long	0				# ImageBase
+ #else
+-	.quad	image_base			# ImageBase
++	.quad	0				# ImageBase
+ #endif
+ 	.long	0x20				# SectionAlignment
+ 	.long	0x20				# FileAlignment
+diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
+index bd247692b701..0354c223e354 100644
+--- a/arch/x86/boot/tools/build.c
++++ b/arch/x86/boot/tools/build.c
+@@ -65,7 +65,6 @@ static unsigned long efi_pe_entry;
+ static unsigned long efi32_pe_entry;
+ static unsigned long kernel_info;
+ static unsigned long startup_64;
+-static unsigned long _ehead;
+ static unsigned long _end;
  
-diff --git a/arch/x86/boot/setup.ld b/arch/x86/boot/setup.ld
-index 49546c247ae2..b11c45b9e51e 100644
---- a/arch/x86/boot/setup.ld
-+++ b/arch/x86/boot/setup.ld
-@@ -10,10 +10,11 @@ ENTRY(_start)
- SECTIONS
+ /*----------------------------------------------------------------------*/
+@@ -229,27 +228,14 @@ static void update_pecoff_setup_and_reloc(unsigned int size)
+ #endif
+ }
+ 
+-static void update_pecoff_text(unsigned int text_start, unsigned int file_sz,
+-			       unsigned int init_sz)
++static void update_pecoff_text(unsigned int text_start, unsigned int file_sz)
  {
- 	. = 0;
--	.bstext		: { *(.bstext) }
--	.bsdata		: { *(.bsdata) }
-+	.bstext	: {
-+		*(.bstext)
-+		. = 495;
-+	} =0xffffffff
+ 	unsigned int pe_header;
+ 	unsigned int text_sz = file_sz - text_start;
+-	unsigned int bss_sz = init_sz - file_sz;
++	unsigned int bss_sz = _end - text_sz;
  
--	. = 495;
- 	.header		: { *(.header) }
- 	.entrytext	: { *(.entrytext) }
- 	.inittext	: { *(.inittext) }
+ 	pe_header = get_unaligned_le32(&buf[0x3c]);
+ 
+-	/*
+-	 * The PE/COFF loader may load the image at an address which is
+-	 * misaligned with respect to the kernel_alignment field in the setup
+-	 * header.
+-	 *
+-	 * In order to avoid relocating the kernel to correct the misalignment,
+-	 * add slack to allow the buffer to be aligned within the declared size
+-	 * of the image.
+-	 */
+-	bss_sz	+= CONFIG_PHYSICAL_ALIGN;
+-	init_sz	+= CONFIG_PHYSICAL_ALIGN;
+-
+ 	/*
+ 	 * Size of code: Subtract the size of the first sector (512 bytes)
+ 	 * which includes the header.
+@@ -257,7 +243,7 @@ static void update_pecoff_text(unsigned int text_start, unsigned int file_sz,
+ 	put_unaligned_le32(file_sz - 512 + bss_sz, &buf[pe_header + 0x1c]);
+ 
+ 	/* Size of image */
+-	put_unaligned_le32(init_sz, &buf[pe_header + 0x50]);
++	put_unaligned_le32(file_sz + bss_sz, &buf[pe_header + 0x50]);
+ 
+ 	/*
+ 	 * Address of entry point for PE/COFF executable
+@@ -308,8 +294,7 @@ static void efi_stub_entry_update(void)
+ 
+ static inline void update_pecoff_setup_and_reloc(unsigned int size) {}
+ static inline void update_pecoff_text(unsigned int text_start,
+-				      unsigned int file_sz,
+-				      unsigned int init_sz) {}
++				      unsigned int file_sz) {}
+ static inline void efi_stub_defaults(void) {}
+ static inline void efi_stub_entry_update(void) {}
+ 
+@@ -360,7 +345,6 @@ static void parse_zoffset(char *fname)
+ 		PARSE_ZOFS(p, efi32_pe_entry);
+ 		PARSE_ZOFS(p, kernel_info);
+ 		PARSE_ZOFS(p, startup_64);
+-		PARSE_ZOFS(p, _ehead);
+ 		PARSE_ZOFS(p, _end);
+ 
+ 		p = strchr(p, '\n');
+@@ -371,7 +355,7 @@ static void parse_zoffset(char *fname)
+ 
+ int main(int argc, char ** argv)
+ {
+-	unsigned int i, sz, setup_sectors, init_sz;
++	unsigned int i, sz, setup_sectors;
+ 	int c;
+ 	u32 sys_size;
+ 	struct stat sb;
+@@ -442,31 +426,9 @@ int main(int argc, char ** argv)
+ 	buf[0x1f1] = setup_sectors-1;
+ 	put_unaligned_le32(sys_size, &buf[0x1f4]);
+ 
+-	init_sz = get_unaligned_le32(&buf[0x260]);
+-#ifdef CONFIG_EFI_STUB
+-	/*
+-	 * The decompression buffer will start at ImageBase. When relocating
+-	 * the compressed kernel to its end, we must ensure that the head
+-	 * section does not get overwritten.  The head section occupies
+-	 * [i, i + _ehead), and the destination is [init_sz - _end, init_sz).
+-	 *
+-	 * At present these should never overlap, because 'i' is at most 32k
+-	 * because of SETUP_SECT_MAX, '_ehead' is less than 1k, and the
+-	 * calculation of INIT_SIZE in boot/header.S ensures that
+-	 * 'init_sz - _end' is at least 64k.
+-	 *
+-	 * For future-proofing, increase init_sz if necessary.
+-	 */
+-
+-	if (init_sz - _end < i + _ehead) {
+-		init_sz = (i + _ehead + _end + 4095) & ~4095;
+-		put_unaligned_le32(init_sz, &buf[0x260]);
+-	}
+-#endif
+-	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16), init_sz);
++	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16));
+ 
+ 	efi_stub_entry_update();
+-
+ 	/* Update kernel_info offset. */
+ 	put_unaligned_le32(kernel_info, &buf[0x268]);
+ 
 -- 
 2.42.0.283.g2d96d420d3-goog
 
