@@ -2,63 +2,63 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E2B27A2472
+	by mail.lfdr.de (Postfix) with ESMTP id 33AB57A2471
 	for <lists+linux-efi@lfdr.de>; Fri, 15 Sep 2023 19:17:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235480AbjIORRY (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 15 Sep 2023 13:17:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41124 "EHLO
+        id S235490AbjIORRZ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 15 Sep 2023 13:17:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235395AbjIORRE (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 15 Sep 2023 13:17:04 -0400
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19A65186
-        for <linux-efi@vger.kernel.org>; Fri, 15 Sep 2023 10:16:59 -0700 (PDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-59c4ec85ea9so850187b3.0
-        for <linux-efi@vger.kernel.org>; Fri, 15 Sep 2023 10:16:59 -0700 (PDT)
+        with ESMTP id S235472AbjIORRH (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 15 Sep 2023 13:17:07 -0400
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A85F210C7
+        for <linux-efi@vger.kernel.org>; Fri, 15 Sep 2023 10:17:01 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-59c081a44afso15785617b3.3
+        for <linux-efi@vger.kernel.org>; Fri, 15 Sep 2023 10:17:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1694798218; x=1695403018; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1694798221; x=1695403021; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2+XiNiWEf251Iz3xOw4YUG2UqwBimdJvIy1HEfuEnSg=;
-        b=J4MOPGm0NWXviE1DNk1bGezDYWUR0+MZZVfeO/SzRUalCn982h6AfVENFGOFlBGHbf
-         RqYXVAw7d0B6d4jHL1xU7lhWDbqQM4xkIdsc7P7fzdyJ6ydnTsOzaf5b66segkZEykDO
-         mYICrViLZykdF5/Elj+2evyvXjdNnzRGxdr1x5FAW7ZKbVTo+GVa8rDh4vkSTF1Ni9ZZ
-         8YPoqMqri1nxjdr3HudaCbfxj2YWCjbVto26iRhDvO9HI3N4SOY/OrTdaq61LedcgSos
-         hKljtXPshgVqIbnJ4hHmonhUztESA11Ye+DQzeFOyqd9ID954W6ISu9slWYzyJG9ekRL
-         wuIg==
+        bh=E9eWcbH+X5RovGSPuQxChs9MvgHe0ps0mCUAD008mTw=;
+        b=jZ59k5ObgUE3icbBZTibDglcJRPdQqetZ2FVnYzAfnuMtjxN3kEFGWDIJKI5QKaHGG
+         hRmCuZZhTd6xD10Go/M39Gzf8G0ggNwrBwYveZ+RMidVx0naY9s02Kxj5QeC7EW1acu+
+         BlJzQEfJ4WvriJ2/DnFfEKd3z2AR8QFD3Gx7b7zts62lmnmrB9HfHINv/s57/J+mdFvd
+         hZ2zLhNbhDfTXIXdMay+FHyIdOq0xdQ90B9z/5xpzkuBIMzZBtzX6mDhi89WaSBNYqlg
+         xMuix+SAyEt0UD1/C/us1zWe2zoeIWw3Kt/5msiV7GL2wHFWo5mFvnieV1aO+IcW1gm9
+         miJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694798218; x=1695403018;
+        d=1e100.net; s=20230601; t=1694798221; x=1695403021;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2+XiNiWEf251Iz3xOw4YUG2UqwBimdJvIy1HEfuEnSg=;
-        b=uC9FICyCKnVrTr7F1oZxrYe+LzKwr6M+dwwlONnGDLZ20/XynbKs0yVN4SDe6IsQEy
-         3hhLENYy39H4ftX5H0SZqnHQHYKzF4prjzRwg4hcJ62RwOlybOHW4FegjtvVsSB5PAc2
-         JAkTYaQEvDLVhWb+oVzabBvjrU9SEllYxDwZTs66TJdPCOiux+SjVQ0pCTnwKP+YPQSi
-         ONUqkwS8D1VCeOySMt8HmJnKwxKd7zRlN1/gKjXxFHw87r8YGbty/Jb182/Zdpb6lsJL
-         hxPoPJm86P8Md5X15Cot+Wm1UrhgNip9pDOTYOkgYBv2Wt1GVHJL2UzflIhDq7Gg6wUs
-         gAgw==
-X-Gm-Message-State: AOJu0YxeqtmPUs4Wt52ASDTw6HPt+L3il6bCdcRtMT/M0HDDlJjOa+x5
-        h6L6PT+lI1CCbjuphvDgBIsVqi6wVRFfUbc5Vy8jFBSBqAKeBiRcAZiuR3gg7aY1xELUWXvuv7p
-        l+/ITu5fJJXl/+B/wJesh5fe6Ojiw/fZQxpwiO3admsNJRHbj3YMzCpx83iH5
-X-Google-Smtp-Source: AGHT+IFOJ0KrqVILcHhkVKb6Ee13KgW6BNhCZT1TnEu+UQLY4mXifux8qVoAdpolqk1Asz1/Ln8fZ0IW
+        bh=E9eWcbH+X5RovGSPuQxChs9MvgHe0ps0mCUAD008mTw=;
+        b=bbOMsvrE/3Yg7cKAMIDpX1waBkU3TTLvkDPFCIGpMZ7wfUnIWMnT1DZW71TA3M3V9B
+         lEpV/ljNBMXofyv0PYyk0duk2GJuP6X8GXJGhxgJaSUq7o4mDZ25YU8N9FVC8B8ojw5r
+         0kylOL1iVuzcmwNJ8+S2R+ReqHYbhH8+QCOUrYPjHmo17f/RokXdbCXxDEYFolfswWiX
+         86ZycAc+a6hIN1rzA/LEYQMc5ZG4Pg6//nvh4NBOWIDxVRllSbNd1egfg4UfNndTCItX
+         Q+eHLMKRVgj+SQisG0rldd+SKamSd+5wPsgIYRyx0jNinIdhc7sTEUfJODi8bRdnyWcG
+         7MMA==
+X-Gm-Message-State: AOJu0YyjobHmfgSJjEveA18GL63mVS/F9IUfB3gfisvR1sUFGKP3APrl
+        q//lgyTipnXguttSNA9VeAPwIFhPAczWuXcwwzj01L/O6s7/mhWiugwZC64+ALUjlDNRQbbde2a
+        0axBPDmuKzhU8lx8RjxIshuhO14jEhTTQOUv5LjJsK6mC6yoBPlUe6OWWVwX7
+X-Google-Smtp-Source: AGHT+IFtQXI11txgKs/647s9qdsCl7yLhMru8nI1binF3h1LHoJBEeCf/lDSyWZL5m4sNqFHFYeFg4jr
 X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a05:690c:709:b0:586:a8ab:f8fe with SMTP id
- bs9-20020a05690c070900b00586a8abf8femr68945ywb.10.1694798217995; Fri, 15 Sep
- 2023 10:16:57 -0700 (PDT)
-Date:   Fri, 15 Sep 2023 17:16:25 +0000
+ (user=ardb job=sendgmr) by 2002:a25:ad4b:0:b0:d7e:b82a:ef68 with SMTP id
+ l11-20020a25ad4b000000b00d7eb82aef68mr47501ybe.3.1694798220818; Fri, 15 Sep
+ 2023 10:17:00 -0700 (PDT)
+Date:   Fri, 15 Sep 2023 17:16:26 +0000
 In-Reply-To: <20230915171623.655440-10-ardb@google.com>
 Mime-Version: 1.0
 References: <20230915171623.655440-10-ardb@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2070; i=ardb@kernel.org;
- h=from:subject; bh=ITMg7m1+VhxJhnxMcZQMFuDNZhrgfOlkladfzJ9STDE=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIZVlYkbk2R871n31c7dvnOAdqVrx/UHtrNc3fvft75nLM
- yFAV2ZJRykLgxgHg6yYIovA7L/vdp6eKFXrPEsWZg4rE8gQBi5OAZiImTUjw4qplxN6n6czFWeq
- 3N3+fuml0yfSPme4br5R7fW4K83gcwEjw47vMTZuL8KWKzlPu5SyMO/3/aXMUzWY6qrO7v+1IG7 naR4A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3304; i=ardb@kernel.org;
+ h=from:subject; bh=OUd8E2aciVCnJVkSx3yx1dxd9pxNed9z5i4jS/GHCYk=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIZVlYhaTwk2vRL0Z514lbzwsMa1y/Z9da0OK1umvYV5g3
+ q2e17auo5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAExE6xojwzS5awVtJ1R2lvzk
+ 7P6bH2N5Tr3NccqNz/kPX2Y9TLwpK8nI8Kx0Zb5A+k1pLRv+D7euxd/8ljdhetPnlBy/7OXiFx4 6swAA
 X-Mailer: git-send-email 2.42.0.459.ge4e396fd5e-goog
-Message-ID: <20230915171623.655440-11-ardb@google.com>
-Subject: [PATCH v3 1/8] x86/boot: Grab kernel_info offset from zoffset header directly
+Message-ID: <20230915171623.655440-12-ardb@google.com>
+Subject: [PATCH v3 2/8] x86/boot: Set EFI handover offset directly in header asm
 From:   Ard Biesheuvel <ardb@google.com>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -85,57 +85,107 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Instead of parsing zoffset.h and poking the kernel_info offset value
-into the header from the build tool, just grab the value directly in the
-asm file that describes this header.
+The offsets of the EFI handover entrypoints are available to the
+assembler when constructing the header, so there is no need to set them
+from the build tool afterwards.
 
 This change has no impact on the resulting bzImage binary.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/header.S      | 2 +-
- arch/x86/boot/tools/build.c | 4 ----
- 2 files changed, 1 insertion(+), 5 deletions(-)
+ arch/x86/boot/header.S      | 18 ++++++++++++++-
+ arch/x86/boot/tools/build.c | 24 --------------------
+ 2 files changed, 17 insertions(+), 25 deletions(-)
 
 diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-index 6059f87b159d..5575d0f06bab 100644
+index 5575d0f06bab..72744ba440f6 100644
 --- a/arch/x86/boot/header.S
 +++ b/arch/x86/boot/header.S
-@@ -526,7 +526,7 @@ pref_address:		.quad LOAD_PHYSICAL_ADDR	# preferred load addr
+@@ -524,8 +524,24 @@ pref_address:		.quad LOAD_PHYSICAL_ADDR	# preferred load addr
+ # define INIT_SIZE VO_INIT_SIZE
+ #endif
  
++	.macro		__handover_offset
++#ifndef CONFIG_EFI_HANDOVER_PROTOCOL
++	.long		0
++#elif !defined(CONFIG_X86_64)
++	.long		ZO_efi32_stub_entry
++#else
++	/* Yes, this is really how we defined it :( */
++	.long		ZO_efi64_stub_entry - 0x200
++#ifdef CONFIG_EFI_MIXED
++	.if		ZO_efi32_stub_entry != ZO_efi64_stub_entry - 0x200
++	.error		"32-bit and 64-bit EFI entry points do not match"
++	.endif
++#endif
++#endif
++	.endm
++
  init_size:		.long INIT_SIZE		# kernel initialization size
- handover_offset:	.long 0			# Filled in by build.c
--kernel_info_offset:	.long 0			# Filled in by build.c
-+kernel_info_offset:	.long ZO_kernel_info
+-handover_offset:	.long 0			# Filled in by build.c
++handover_offset:	__handover_offset
+ kernel_info_offset:	.long ZO_kernel_info
  
  # End of setup header #####################################################
- 
 diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-index 10b0207a6b18..14ef13fe7ab0 100644
+index 14ef13fe7ab0..069497543164 100644
 --- a/arch/x86/boot/tools/build.c
 +++ b/arch/x86/boot/tools/build.c
-@@ -59,7 +59,6 @@ static unsigned long efi32_stub_entry;
- static unsigned long efi64_stub_entry;
+@@ -55,8 +55,6 @@ u8 buf[SETUP_SECT_MAX*512];
+ #define PECOFF_COMPAT_RESERVE 0x0
+ #endif
+ 
+-static unsigned long efi32_stub_entry;
+-static unsigned long efi64_stub_entry;
  static unsigned long efi_pe_entry;
  static unsigned long efi32_pe_entry;
--static unsigned long kernel_info;
  static unsigned long _end;
+@@ -265,31 +263,12 @@ static void efi_stub_defaults(void)
+ #endif
+ }
  
- /*----------------------------------------------------------------------*/
-@@ -337,7 +336,6 @@ static void parse_zoffset(char *fname)
- 		PARSE_ZOFS(p, efi64_stub_entry);
+-static void efi_stub_entry_update(void)
+-{
+-	unsigned long addr = efi32_stub_entry;
+-
+-#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
+-#ifdef CONFIG_X86_64
+-	/* Yes, this is really how we defined it :( */
+-	addr = efi64_stub_entry - 0x200;
+-#endif
+-
+-#ifdef CONFIG_EFI_MIXED
+-	if (efi32_stub_entry != addr)
+-		die("32-bit and 64-bit EFI entry points do not match\n");
+-#endif
+-#endif
+-	put_unaligned_le32(addr, &buf[0x264]);
+-}
+-
+ #else
+ 
+ static inline void update_pecoff_setup_and_reloc(unsigned int size) {}
+ static inline void update_pecoff_text(unsigned int text_start,
+ 				      unsigned int file_sz) {}
+ static inline void efi_stub_defaults(void) {}
+-static inline void efi_stub_entry_update(void) {}
+ 
+ static inline int reserve_pecoff_reloc_section(int c)
+ {
+@@ -332,8 +311,6 @@ static void parse_zoffset(char *fname)
+ 	p = (char *)buf;
+ 
+ 	while (p && *p) {
+-		PARSE_ZOFS(p, efi32_stub_entry);
+-		PARSE_ZOFS(p, efi64_stub_entry);
  		PARSE_ZOFS(p, efi_pe_entry);
  		PARSE_ZOFS(p, efi32_pe_entry);
--		PARSE_ZOFS(p, kernel_info);
  		PARSE_ZOFS(p, _end);
+@@ -416,7 +393,6 @@ int main(int argc, char ** argv)
  
- 		p = strchr(p, '\n');
-@@ -419,8 +417,6 @@ int main(int argc, char ** argv)
  	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16));
  
- 	efi_stub_entry_update();
--	/* Update kernel_info offset. */
--	put_unaligned_le32(kernel_info, &buf[0x268]);
+-	efi_stub_entry_update();
  
  	crc = partial_crc32(buf, i, crc);
  	if (fwrite(buf, 1, i, dest) != i)
