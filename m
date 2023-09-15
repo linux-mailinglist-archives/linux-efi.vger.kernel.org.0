@@ -2,118 +2,130 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F8937A0EA4
-	for <lists+linux-efi@lfdr.de>; Thu, 14 Sep 2023 22:01:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C22C57A14F7
+	for <lists+linux-efi@lfdr.de>; Fri, 15 Sep 2023 06:59:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229628AbjINUBq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 14 Sep 2023 16:01:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42804 "EHLO
+        id S229593AbjIOE7Y (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 15 Sep 2023 00:59:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229592AbjINUBq (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 14 Sep 2023 16:01:46 -0400
-Received: from mail-wr1-x44a.google.com (mail-wr1-x44a.google.com [IPv6:2a00:1450:4864:20::44a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBDE026BC
-        for <linux-efi@vger.kernel.org>; Thu, 14 Sep 2023 13:01:41 -0700 (PDT)
-Received: by mail-wr1-x44a.google.com with SMTP id ffacd0b85a97d-31adc3ca07aso893766f8f.2
-        for <linux-efi@vger.kernel.org>; Thu, 14 Sep 2023 13:01:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1694721700; x=1695326500; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=hSVNqQkBP8/oOBhQ7IlwTAXgqWDkeXrhl3UxxN4AvHw=;
-        b=ErKlNSrkqyFO79RlLAJLjfKvq6oU8PtcZOUEUFcl/lzGN4gdFyR8pHuUJu+O8ZIMw0
-         PU245WviBqhxj5FNWl5OWzTReG/ZwhU81XVBVzWf4z/th/+o81JS+HGH5QIRlferdUvT
-         IKWsZDrsw6vk9N4l388QA1vnVFHeEZ9pR7Iy1qafx6IguSWTtc6o3XDd6MwTb85AY0pY
-         8jmafKoYAh/qBaocD/pEf/V7VxLEw41dMe+0kEa6ByYEk7N0wUOGlYW3NVLjkhVSPagQ
-         7rFHHoIMgUgpLs+8u5Zij/fxmrGDBkWUweFRiH/toebNSFeO9x3PJOUlClkZJW3TdzCe
-         A+ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694721700; x=1695326500;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hSVNqQkBP8/oOBhQ7IlwTAXgqWDkeXrhl3UxxN4AvHw=;
-        b=kL2+8JUdC2wAfJsIWiQXYP111uItvjHSDqtCCgmpmw2/KBVZFYA3WJBhY2QmD2HxsJ
-         knBkdrhvPunMv0b2Dh0HlOudt41IkkDJ/Wcf+3FvacMFqU9Zy4abfsqZZEaKFlBxs6R8
-         lPaheIDcfOXWiuM4L2CF2yisjNWlufniFkrJDrxlAZiHZZw+cownkZptVGpmMmpG2qE0
-         Y6YhqJ0RUk8Xw2R9vhH7Vo5kNOYUYxLYglbBOtyN72cD0E6y7wfe2yoTrsR7lchNARCP
-         VEQD8LAbWvnRJGU8sVRU6VQCpcWMmyzJeypjyEGn533OSMVzt4GmdUevPUPZ73MVFKdn
-         CjVA==
-X-Gm-Message-State: AOJu0Yz8YsROgEpuNQUawdgJdqJv4gdhdsRXjml+XU/oIEdUXyh/yfyq
-        jYbWrUwt1liYys0+BrNbkOU9PbpS
-X-Google-Smtp-Source: AGHT+IH3Vs8Rfga9HWMylXpA0UCQH16RatiArVqJIv3kK+RpbHbm/KauXEjHx4DWYWDDBUaiDKJ5TchT
-X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:adf:ea07:0:b0:31f:eb88:e3cd with SMTP id
- q7-20020adfea07000000b0031feb88e3cdmr18779wrm.12.1694721700339; Thu, 14 Sep
- 2023 13:01:40 -0700 (PDT)
-Date:   Thu, 14 Sep 2023 20:01:27 +0000
-Mime-Version: 1.0
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2112; i=ardb@kernel.org;
- h=from:subject; bh=ogwdwhDHmkUwTpghXsN7bCf1CkRilFshXAFXgA/weVA=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIZU5bbro54vpWrd/cYf4THBd3qayq8Rz/6zTezfuuPJ5u
- m6Q+67ZHaUsDGIcDLJiiiwCs/++23l6olSt8yxZmDmsTCBDGLg4BWAib2UZGXa5SWcu5r0za+Xz
- zh9bXv95dGltqNYp3fNxG58cPL/1apUgw1/Zu0JL/85ZVFZwvyT6cqnd+dUr/8Torb39Y8/nOM1 0h72cAA==
-X-Mailer: git-send-email 2.42.0.459.ge4e396fd5e-goog
-Message-ID: <20230914200126.266849-2-ardb@google.com>
-Subject: [GIT PULL] EFI fixes for v6.6 (#1)
-From:   Ard Biesheuvel <ardb@google.com>
-To:     torvalds@linux-foundation.org
-Cc:     linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        with ESMTP id S229943AbjIOE7Y (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 15 Sep 2023 00:59:24 -0400
+X-Greylist: delayed 907 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 14 Sep 2023 21:59:17 PDT
+Received: from matoro.tk (unknown [IPv6:2600:1700:4b10:9d80::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B04112134;
+        Thu, 14 Sep 2023 21:59:17 -0700 (PDT)
+DKIM-Signature: a=rsa-sha256; bh=4q/HGcBMmA6qdxSQlab3P1FcoDQ1oazL1c+J0UR4Lu0=;
+ c=relaxed/relaxed; d=matoro.tk;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@matoro.tk; s=20230715; t=1694753035; v=1; x=1695185035;
+ b=MnC+VWj9soJQtHtYzZR3I71lvGMYJi3x3tAfTm8VOJPXJT410iOVdi5p1XIM2SG48IN9hzB6
+ 8mv8QsyIi9kH7BcHkVTvsbttejEg77D1PwQzXaTWzMk+a+wRaqeSHiFFlfej4AWtA7Xq+QBjV91
+ jBnt1HxMdCG660Q8cUYR/GxqeKzKAuQjcN245A/4vW+8nMZVe18JezLg7ZpRJ0gGOy+QSIxA5I0
+ udvQmfZX7yQL2X/5NqRiz+ED5UcOCdXWcO4JDKCBETCBEinjwZJA9duaP7XB9nwTAXoNy7w4k/L
+ tmDL+2D0zxwKzCOdL80lUZA3BO6D7A0QyV/Z6KtVZHi7XMPh16M6teQ9MKsGdDlQRTdgEVHkI/C
+ x14Uc1jGQEPEirjOmXsApUazNf84RakAzvsFe8YMpfdmMq0/vwLp3TJ/M4f30cVKbEYbal/bWtS
+ KNRqN3opigVa4/oODdHmNydzJ1JAb6mNKsWSI6eMgtu8/Dtl47cECrti+YeK3puFHD9PkBBBUmD
+ dcdJvRBew+wTsUW3IifkjocBiwTgu5zGh7BrUWDdRpnaK9yBnaTA4CzZk76tjL1bjjIOEONJcME
+ xA5vbDOxYWBTeF5LWD7EEni8q9KI6mpjHNEbE1ItNarv14CjibHzlX3luGvfMbHEJ68JeBWA04j
+ AUlPSassku4=
+Received: by matoro.tk (envelope-sender
+ <matoro_mailinglist_kernel@matoro.tk>) with ESMTPS id bd7e3976; Fri, 15 Sep
+ 2023 00:43:55 -0400
+MIME-Version: 1.0
+Date:   Fri, 15 Sep 2023 00:43:55 -0400
+From:   matoro <matoro_mailinglist_kernel@matoro.tk>
+To:     Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Cc:     Jeremy Kerr <jk@ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>,
+        Anisse Astier <an.astier@criteo.com>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Linux Ia64 <linux-ia64@vger.kernel.org>
+Subject: Re: [PATCH v2 1/1] efivarfs: fix statfs() on efivarfs
+In-Reply-To: <20230910045445.41632-1-heinrich.schuchardt@canonical.com>
+References: <20230910045445.41632-1-heinrich.schuchardt@canonical.com>
+Message-ID: <9dec892136b296cf680a79fe71a602de@matoro.tk>
+X-Sender: matoro_mailinglist_kernel@matoro.tk
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RDNS_NONE,
+        SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On 2023-09-10 00:54, Heinrich Schuchardt wrote:
+> Some firmware (notably U-Boot) provides GetVariable() and
+> GetNextVariableName() but not QueryVariableInfo().
+> 
+> With commit d86ff3333cb1 ("efivarfs: expose used and total size") the
+> statfs syscall was broken for such firmware.
+> 
+> If QueryVariableInfo() does not exist or returns an error, just report 
+> the
+> file-system size as 0 as statfs_simple() previously did.
+> 
+> Fixes: d86ff3333cb1 ("efivarfs: expose used and total size")
+> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+> ---
+> v2:
+> 	initialize remaining_space to 0
+> ---
+>  fs/efivarfs/super.c | 20 ++++++++++++--------
+>  1 file changed, 12 insertions(+), 8 deletions(-)
+> 
+> diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+> index e028fafa04f3..3893aae6a9be 100644
+> --- a/fs/efivarfs/super.c
+> +++ b/fs/efivarfs/super.c
+> @@ -29,14 +29,9 @@ static int efivarfs_statfs(struct dentry *dentry, 
+> struct kstatfs *buf)
+>  	const u32 attr = EFI_VARIABLE_NON_VOLATILE |
+>  			 EFI_VARIABLE_BOOTSERVICE_ACCESS |
+>  			 EFI_VARIABLE_RUNTIME_ACCESS;
+> -	u64 storage_space, remaining_space, max_variable_size;
+> +	u64 storage_space, remaining_space = 0, max_variable_size;
+>  	efi_status_t status;
+> 
+> -	status = efivar_query_variable_info(attr, &storage_space, 
+> &remaining_space,
+> -					    &max_variable_size);
+> -	if (status != EFI_SUCCESS)
+> -		return efi_status_to_err(status);
+> -
+>  	/*
+>  	 * This is not a normal filesystem, so no point in pretending it has 
+> a block
+>  	 * size; we declare f_bsize to 1, so that we can then report the 
+> exact value
+> @@ -44,10 +39,19 @@ static int efivarfs_statfs(struct dentry *dentry, 
+> struct kstatfs *buf)
+>  	 */
+>  	buf->f_bsize	= 1;
+>  	buf->f_namelen	= NAME_MAX;
+> -	buf->f_blocks	= storage_space;
+> -	buf->f_bfree	= remaining_space;
+>  	buf->f_type	= dentry->d_sb->s_magic;
+> 
+> +	/* Some UEFI firmware does not implement QueryVariable() */
+> +	if (efi_rt_services_supported(EFI_RT_SUPPORTED_QUERY_VARIABLE_INFO)) 
+> {
+> +		status = efivar_query_variable_info(attr, &storage_space,
+> +						    &remaining_space,
+> +						    &max_variable_size);
+> +		if (status == EFI_SUCCESS) {
+> +			buf->f_blocks	= storage_space;
+> +			buf->f_bfree	= remaining_space;
+> +		}
+> +	}
+> +
+>  	/*
+>  	 * In f_bavail we declare the free space that the kernel will allow 
+> writing
+>  	 * when the storage_paranoia x86 quirk is active. To use more, users
 
-Hello Linus,
-
-Just a couple of EFI fixes before I disappear on vacation for a couple of
-weeks.  Another fix is pending but the reporter has not bothered to test it
-yet, so I'll leave that for another -rc.
-
-The first patch was intended to be part of the merge window batch but due to a
-conflict with -tip, I decided to defer it until after -rc1.
-
-Please pull.
-
-
-The following changes since commit 0bb80ecc33a8fb5a682236443c1e740d5c917d1d:
-
-  Linux 6.6-rc1 (2023-09-10 16:28:41 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.6-1
-
-for you to fetch changes up to 79b83606abc778aa3cbee535b362ce905d0b9448:
-
-  efivarfs: fix statfs() on efivarfs (2023-09-11 09:10:02 +0000)
-
-----------------------------------------------------------------
-First set of EFI fixes for v6.6:
-
-- Missing x86 patch for the runtime cleanup that was merged in -rc1
-- Kconfig tweak for kexec on x86 so EFI support does not get disabled
-  inadvertently
-- Use the right EFI memory type for the unaccepted memory table so
-  kexec/kdump exposes it to the crash kernel as well
-- Work around EFI implementations which do not implement
-  QueryVariableInfo, which is now called by statfs() on efivarfs
-
-----------------------------------------------------------------
-Ard Biesheuvel (3):
-      efi/x86: Move EFI runtime call setup/teardown helpers out of line
-      efi/x86: Ensure that EFI_RUNTIME_MAP is enabled for kexec
-      efi/unaccepted: Use ACPI reclaim memory for unaccepted memory table
-
-Heinrich Schuchardt (1):
-      efivarfs: fix statfs() on efivarfs
-
- arch/x86/Kconfig                                 |  2 +-
- arch/x86/include/asm/efi.h                       | 32 ++----------------------
- arch/x86/platform/efi/efi_32.c                   | 12 +++++++++
- arch/x86/platform/efi/efi_64.c                   | 19 ++++++++++++--
- drivers/firmware/efi/libstub/unaccepted_memory.c |  2 +-
- fs/efivarfs/super.c                              | 14 ++++++++---
- 6 files changed, 43 insertions(+), 38 deletions(-)
+FYI, this issue/fix affects ia64 EFI implementation as well, so adding a 
+CC.
