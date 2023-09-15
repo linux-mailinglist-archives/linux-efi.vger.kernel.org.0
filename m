@@ -2,63 +2,63 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FED37A2479
-	for <lists+linux-efi@lfdr.de>; Fri, 15 Sep 2023 19:17:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C99A77A2478
+	for <lists+linux-efi@lfdr.de>; Fri, 15 Sep 2023 19:17:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235522AbjIORR1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 15 Sep 2023 13:17:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57940 "EHLO
+        id S235563AbjIORR2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 15 Sep 2023 13:17:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235563AbjIORRQ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 15 Sep 2023 13:17:16 -0400
+        with ESMTP id S235602AbjIORRS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 15 Sep 2023 13:17:18 -0400
 Received: from mail-wr1-x44a.google.com (mail-wr1-x44a.google.com [IPv6:2a00:1450:4864:20::44a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 124BB10C7
-        for <linux-efi@vger.kernel.org>; Fri, 15 Sep 2023 10:17:11 -0700 (PDT)
-Received: by mail-wr1-x44a.google.com with SMTP id ffacd0b85a97d-2f2981b8364so1518064f8f.1
-        for <linux-efi@vger.kernel.org>; Fri, 15 Sep 2023 10:17:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB3D2C1
+        for <linux-efi@vger.kernel.org>; Fri, 15 Sep 2023 10:17:13 -0700 (PDT)
+Received: by mail-wr1-x44a.google.com with SMTP id ffacd0b85a97d-31c470305cfso1576440f8f.3
+        for <linux-efi@vger.kernel.org>; Fri, 15 Sep 2023 10:17:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1694798229; x=1695403029; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1694798232; x=1695403032; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=L1gO2kCdMVaucAMeTOT10qYv1tzC+9yo5OSZCzbyFtM=;
-        b=M66l5U2BNn5RHUJuZh6SrEaxx8dhmAs3CpkTfMy6RiTwcPxFiiAS8J04y4LHJ2m2tO
-         AZVwUHnmT7fjjiCxNJm36zLU+dMA1Bf4xrSVZrJrGzcU4SkSMDCHQQItWJWhM+sMK/p/
-         gSG3FzN8695yp199Qfqeahi4S+zPaJfG3tKsYN0AmPshzHOfROK8gIftmi7rHuHkHs1A
-         NYM3czidgZDZTWprxjdq5khUSB0aGb1vL9nS4qB03o3fqJxgUTvu73l9j2D+kgiwEf1P
-         iSXUjHX0n5kwozYJDZBXOE/WCeQVFE5fPCNFwcRMEqjagMa+7m/JMYFmYNocwQAlzGyG
-         JY5Q==
+        bh=hNDDZ79AxT4g2TPKcz16ks6CPU320NZDmUakc4ak4Sc=;
+        b=VSjumqBUcNt3M/IG45mRDWdyccph651YDhWniHXvXKIHpC3qSDr+Zdo7MU48lP2x8j
+         Qo5/5G4y0ONTAh+uOI07T8zf9LqnaFg6pSKaWQMmCxsIyc1+No/HRMLgqnZ8w3izdkwS
+         KGNgDK3Q9PEk/bS37xhg6N+Z2q626PncKsuHZ1WpasVV0ZMWzctOK2ngxMtxaRnQLnao
+         j6qGuS0N82lHSMXT9WffvXA+Msro8nnpuAzZip3yc3ToAz4chXCSVtmfIbH2Wt7t0+zV
+         EzZOsb06lPV8bSjefgOiisHz2oxa4LaNqRb4e4dNm0+s7Zz0WM+sRyieq/gVCWMVFMRg
+         21og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694798229; x=1695403029;
+        d=1e100.net; s=20230601; t=1694798232; x=1695403032;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=L1gO2kCdMVaucAMeTOT10qYv1tzC+9yo5OSZCzbyFtM=;
-        b=XJI6uG0CweLZPADzjpBTvMeUdBSabRFZ4TUzXFwhpcLqd28lohZ0AvBnFzV0f4cOAe
-         L09BFfn6jkuscC+qb/+qtZVepNZhmwJitNP47+TJ30l+tAd6+AX5mIx3IZmk09Zy5Y0m
-         kCwlt2AsvEEfzMR5tmqYaf/VoCy4Xib24VFyeAeS0sIKcVm+aptv+XBRvn9V7kEMW3eS
-         1BnbKpc28ochmR2Q0MrT2HUdweVmgGS/G5Gz4cq04hsWGQaZw+EkVxWvg+0yoNAwlZAV
-         Bhw5uv+DbavizA4dEw+W4JhYWxlhUuEWrAq48fXSuTL+1TBEWE3Y7DATEZQ2bNCYExIN
-         7rJg==
-X-Gm-Message-State: AOJu0YzCxvzZ1LyTBRavypc9mAg33Xrovv+hfJJnNaHEgy2oZ2KvAlue
-        m2XBHmnm9vn5ETbM+bquD10WozGWNmtP18QJCANeSPunD70E2CBPbjwJyGtbEDqxsslIIIzi9WD
-        hPv8Xuds59sBNUay9VEW8yTBU1hdvp8W5W2b4kLsyUdgLZQbtaDvGO1tT1u5p
-X-Google-Smtp-Source: AGHT+IG2RDfNh3Fjx2YGgCw0Md9EbqHP0+PcgjAT/yS+Bz5MOrJPmvAiyEg8aCxQs/1MCbu9JJ9Xx4J+
+        bh=hNDDZ79AxT4g2TPKcz16ks6CPU320NZDmUakc4ak4Sc=;
+        b=E/cLBw/QzkJtgRIZAtWgcb8EGgXxzuerDwt/toKoUTZCkYvUk4HDuOpW+P4/3PDbIF
+         5deWvBYMyp8KmneJ3nQKsfj05I6zKRA1UM0mSp4UFCoFwlmfDDhRMhIo62AfhcnGS/8+
+         mnHKJ8vnt5JmqjnTaoSnpWhHr/AZz3dI8vdHVLf02jkjlm6g4vQOBNf5moPJUHGaIfRW
+         08tQ6NbJCufahqhQZw4r0DEtRaFMI337X5L13gXWXXQ/3H98KT6Nz+VlmvQVe0/XQ+AF
+         DyGD4DnT9wwYJFJhq6swFM9tq9vnr+VxElQw39ALY7oPtz6t/ExopK5FZCXmOtFf+QCB
+         FU6g==
+X-Gm-Message-State: AOJu0YxoCJPpK8upsWcwBGTG7gd5Iecdj6v3al/vCUM5X0REjzkpTvFQ
+        b13jZtgMjBULBWnOH5nLuf3Rs+TiI2gU3oFl3Yyd/4+8d9/a37EVo7Y6Hf2ZKw4xE1EMNyxaP5n
+        RROIkbr+dML5N0vATiX/rjRci6IjBDqJ4p5ZzYr9FZjmAtDvH9MUHYU0VgsOS
+X-Google-Smtp-Source: AGHT+IG6QAy9Fdi0JUJcZIYN2wXGYZH5SR8kKa0FCnK3gziKYK1Gn5/+E/zqQG+/Tj8rDderEnn5/Wsp
 X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:adf:e18b:0:b0:31f:fa4a:b6e1 with SMTP id
- az11-20020adfe18b000000b0031ffa4ab6e1mr16121wrb.2.1694798229564; Fri, 15 Sep
- 2023 10:17:09 -0700 (PDT)
-Date:   Fri, 15 Sep 2023 17:16:29 +0000
+ (user=ardb job=sendgmr) by 2002:adf:fa0c:0:b0:314:182c:1a2b with SMTP id
+ m12-20020adffa0c000000b00314182c1a2bmr26528wrr.4.1694798231874; Fri, 15 Sep
+ 2023 10:17:11 -0700 (PDT)
+Date:   Fri, 15 Sep 2023 17:16:30 +0000
 In-Reply-To: <20230915171623.655440-10-ardb@google.com>
 Mime-Version: 1.0
 References: <20230915171623.655440-10-ardb@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5078; i=ardb@kernel.org;
- h=from:subject; bh=DU0r2iy2nqtNsHxloC1WgGeN+dGK1P7AGRjmhDsQHb4=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIZVlYo5LuJn99qmbJqitX17E1zKrX+DXJ3mJed7nOYJEM
- uUylr3rKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABNZzsXI8LPOU6K/RnTuzeZm
- c9aDu68Wbsmtqox4LJLvvXjrz/0HJjMyXJ+dzWokltHcPLNWXSk/2OvRlpD7OzrmHLvIXXBS+vU UJgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4623; i=ardb@kernel.org;
+ h=from:subject; bh=hPsLZEg3qTJM8NI0DEH7io0JT9O+qGRluAaJd+WveNE=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIZVlYm5V34V9qbWSHlf8ErRU5s5zncgZN3FX4Cy/1h3/j
+ 931nnCto5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAExEYzYjw5Tu3LitlwL+bzfa
+ vaXxh4T5z8Viq8qep3Q1B37m0z/1mZmR4fm0b715vfw/Jtu9/XJeSXFKeRv3LoWpU2W+yOkd136 bwgUA
 X-Mailer: git-send-email 2.42.0.459.ge4e396fd5e-goog
-Message-ID: <20230915171623.655440-15-ardb@google.com>
-Subject: [PATCH v3 5/8] x86/boot: Construct PE/COFF .text section from assembler
+Message-ID: <20230915171623.655440-16-ardb@google.com>
+Subject: [PATCH v3 6/8] x86/boot: Drop PE/COFF .reloc section
 From:   Ard Biesheuvel <ardb@google.com>
 To:     linux-efi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -85,176 +85,143 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Now that the size of the setup block is visible to the assembler, it is
-possible to populate the PE/COFF header fields from the asm code
-directly, instead of poking the values into the binary using the build
-tool. This will make it easier to reorganize the section layout without
-having to tweak the build tool in lockstep.
-
-This change has no impact on the resulting bzImage binary.
+Ancient buggy EFI loaders may have required a .reloc section to be
+present at some point in time, but this has not been true for a long
+time so the .reloc section can just be dropped.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/header.S      | 22 +++------
- arch/x86/boot/tools/build.c | 47 --------------------
- 2 files changed, 7 insertions(+), 62 deletions(-)
+ arch/x86/boot/header.S      | 20 ------------
+ arch/x86/boot/setup.ld      |  4 +--
+ arch/x86/boot/tools/build.c | 34 +++-----------------
+ 3 files changed, 7 insertions(+), 51 deletions(-)
 
 diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-index 34e9b35b827c..2b07bc596c39 100644
+index 2b07bc596c39..9e9641e220a7 100644
 --- a/arch/x86/boot/header.S
 +++ b/arch/x86/boot/header.S
-@@ -75,14 +75,12 @@ optional_header:
- 	.byte	0x02				# MajorLinkerVersion
- 	.byte	0x14				# MinorLinkerVersion
- 
--	# Filled in by build.c
--	.long	0				# SizeOfCode
-+	.long	setup_size + ZO__end - 0x200	# SizeOfCode
- 
- 	.long	0				# SizeOfInitializedData
- 	.long	0				# SizeOfUninitializedData
- 
--	# Filled in by build.c
--	.long	0x0000				# AddressOfEntryPoint
-+	.long	setup_size + ZO_efi_pe_entry	# AddressOfEntryPoint
- 
- 	.long	0x0200				# BaseOfCode
- #ifdef CONFIG_X86_32
-@@ -105,10 +103,7 @@ extra_header_fields:
- 	.word	0				# MinorSubsystemVersion
- 	.long	0				# Win32VersionValue
+@@ -155,26 +155,6 @@ section_table:
+ 		IMAGE_SCN_MEM_READ		| \
+ 		IMAGE_SCN_MEM_EXECUTE		# Characteristics
  
 -	#
--	# The size of the bzImage is written in tools/build.c
+-	# The EFI application loader requires a relocation section
+-	# because EFI applications must be relocatable. The .reloc
+-	# offset & size fields are filled in by build.c.
 -	#
--	.long	0				# SizeOfImage
-+	.long	setup_size + ZO__end 		# SizeOfImage
- 
- 	.long	0x200				# SizeOfHeaders
- 	.long	0				# CheckSum
-@@ -199,18 +194,15 @@ section_table:
- 		IMAGE_SCN_MEM_DISCARDABLE	# Characteristics
- #endif
- 
--	#
--	# The offset & size fields are filled in by build.c.
--	#
- 	.ascii	".text"
- 	.byte	0
- 	.byte	0
- 	.byte	0
+-	.ascii	".reloc"
+-	.byte	0
+-	.byte	0
 -	.long	0
--	.long	0x0				# startup_{32,64}
--	.long	0				# Size of initialized data
-+	.long	ZO__end
-+	.long	setup_size
-+	.long	ZO__edata			# Size of initialized data
- 						# on disk
--	.long	0x0				# startup_{32,64}
-+	.long	setup_size
- 	.long	0				# PointerToRelocations
- 	.long	0				# PointerToLineNumbers
- 	.word	0				# NumberOfRelocations
+-	.long	0
+-	.long	0				# SizeOfRawData
+-	.long	0				# PointerToRawData
+-	.long	0				# PointerToRelocations
+-	.long	0				# PointerToLineNumbers
+-	.word	0				# NumberOfRelocations
+-	.word	0				# NumberOfLineNumbers
+-	.long	IMAGE_SCN_CNT_INITIALIZED_DATA	| \
+-		IMAGE_SCN_MEM_READ		| \
+-		IMAGE_SCN_MEM_DISCARDABLE	# Characteristics
+-
+ #ifdef CONFIG_EFI_MIXED
+ 	#
+ 	# The offset & size fields are filled in by build.c.
+diff --git a/arch/x86/boot/setup.ld b/arch/x86/boot/setup.ld
+index 9bd5c1ada599..6d389499565c 100644
+--- a/arch/x86/boot/setup.ld
++++ b/arch/x86/boot/setup.ld
+@@ -40,8 +40,8 @@ SECTIONS
+ 		setup_sig = .;
+ 		LONG(0x5a5aaa55)
+ 
+-		/* Reserve some extra space for the reloc and compat sections */
+-		setup_size = ALIGN(ABSOLUTE(.) + 64, 512);
++		/* Reserve some extra space for the compat section */
++		setup_size = ALIGN(ABSOLUTE(.) + 32, 512);
+ 		setup_sects = ABSOLUTE(setup_size / 512);
+ 	}
+ 
 diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-index e792c6c5a634..9712f27e32c1 100644
+index 9712f27e32c1..faccff9743a3 100644
 --- a/arch/x86/boot/tools/build.c
 +++ b/arch/x86/boot/tools/build.c
-@@ -50,10 +50,8 @@ u8 buf[SETUP_SECT_MAX*512];
- #define PECOFF_RELOC_RESERVE 0x20
+@@ -47,7 +47,6 @@ typedef unsigned int   u32;
+ /* This must be large enough to hold the entire setup */
+ u8 buf[SETUP_SECT_MAX*512];
+ 
+-#define PECOFF_RELOC_RESERVE 0x20
  #define PECOFF_COMPAT_RESERVE 0x20
  
--static unsigned long efi_pe_entry;
  static unsigned long efi32_pe_entry;
- static unsigned long _edata;
--static unsigned long _end;
+@@ -180,24 +179,13 @@ static void update_pecoff_section_header(char *section_name, u32 offset, u32 siz
+ 	update_pecoff_section_header_fields(section_name, offset, size, size, offset);
+ }
  
- /*----------------------------------------------------------------------*/
+-static void update_pecoff_setup_and_reloc(unsigned int size)
++static void update_pecoff_setup(unsigned int size)
+ {
+ 	u32 setup_offset = 0x200;
+-	u32 reloc_offset = size - PECOFF_RELOC_RESERVE - PECOFF_COMPAT_RESERVE;
+-#ifdef CONFIG_EFI_MIXED
+-	u32 compat_offset = reloc_offset + PECOFF_RELOC_RESERVE;
+-#endif
+-	u32 setup_size = reloc_offset - setup_offset;
++	u32 compat_offset = size - PECOFF_COMPAT_RESERVE;
++	u32 setup_size = compat_offset - setup_offset;
  
-@@ -216,32 +214,6 @@ static void update_pecoff_setup_and_reloc(unsigned int size)
+ 	update_pecoff_section_header(".setup", setup_offset, setup_size);
+-	update_pecoff_section_header(".reloc", reloc_offset, PECOFF_RELOC_RESERVE);
+-
+-	/*
+-	 * Modify .reloc section contents with a single entry. The
+-	 * relocation is applied to offset 10 of the relocation section.
+-	 */
+-	put_unaligned_le32(reloc_offset + 10, &buf[reloc_offset]);
+-	put_unaligned_le32(10, &buf[reloc_offset + 4]);
+ 
+ #ifdef CONFIG_EFI_MIXED
+ 	update_pecoff_section_header(".compat", compat_offset, PECOFF_COMPAT_RESERVE);
+@@ -214,21 +202,10 @@ static void update_pecoff_setup_and_reloc(unsigned int size)
  #endif
  }
  
--static void update_pecoff_text(unsigned int text_start, unsigned int file_sz)
+-static int reserve_pecoff_reloc_section(int c)
 -{
--	unsigned int pe_header;
--	unsigned int text_sz = file_sz - text_start;
--	unsigned int bss_sz = _end - text_sz;
--
--	pe_header = get_unaligned_le32(&buf[0x3c]);
--
--	/*
--	 * Size of code: Subtract the size of the first sector (512 bytes)
--	 * which includes the header.
--	 */
--	put_unaligned_le32(file_sz - 512 + bss_sz, &buf[pe_header + 0x1c]);
--
--	/* Size of image */
--	put_unaligned_le32(file_sz + bss_sz, &buf[pe_header + 0x50]);
--
--	/*
--	 * Address of entry point for PE/COFF executable
--	 */
--	put_unaligned_le32(text_start + efi_pe_entry, &buf[pe_header + 0x28]);
--
--	update_pecoff_section_header_fields(".text", text_start, text_sz + bss_sz,
--					    text_sz, text_start);
--}
--
- static int reserve_pecoff_reloc_section(int c)
- {
- 	/* Reserve 0x20 bytes for .reloc section */
-@@ -249,22 +221,9 @@ static int reserve_pecoff_reloc_section(int c)
- 	return PECOFF_RELOC_RESERVE;
- }
- 
--static void efi_stub_defaults(void)
--{
--	/* Defaults for old kernel */
--#ifdef CONFIG_X86_32
--	efi_pe_entry = 0x10;
--#else
--	efi_pe_entry = 0x210;
--#endif
+-	/* Reserve 0x20 bytes for .reloc section */
+-	memset(buf+c, 0, PECOFF_RELOC_RESERVE);
+-	return PECOFF_RELOC_RESERVE;
 -}
 -
  #else
  
- static inline void update_pecoff_setup_and_reloc(unsigned int size) {}
--static inline void update_pecoff_text(unsigned int text_start,
--				      unsigned int file_sz) {}
--static inline void efi_stub_defaults(void) {}
+-static inline void update_pecoff_setup_and_reloc(unsigned int size) {}
++static inline void update_pecoff_setup(unsigned int size) {}
  
- static inline int reserve_pecoff_reloc_section(int c)
- {
-@@ -307,10 +266,8 @@ static void parse_zoffset(char *fname)
- 	p = (char *)buf;
+-static inline int reserve_pecoff_reloc_section(int c)
+-{
+-	return 0;
+-}
+ #endif /* CONFIG_EFI_STUB */
  
- 	while (p && *p) {
--		PARSE_ZOFS(p, efi_pe_entry);
- 		PARSE_ZOFS(p, efi32_pe_entry);
- 		PARSE_ZOFS(p, _edata);
--		PARSE_ZOFS(p, _end);
+ static int reserve_pecoff_compat_section(int c)
+@@ -307,7 +284,6 @@ int main(int argc, char ** argv)
+ 	fclose(file);
  
- 		p = strchr(p, '\n');
- 		while (p && (*p == '\r' || *p == '\n'))
-@@ -328,8 +285,6 @@ int main(int argc, char ** argv)
- 	void *kernel;
- 	u32 crc = 0xffffffffUL;
+ 	c += reserve_pecoff_compat_section(c);
+-	c += reserve_pecoff_reloc_section(c);
  
--	efi_stub_defaults();
--
- 	if (argc != 5)
- 		usage();
- 	parse_zoffset(argv[3]);
-@@ -376,8 +331,6 @@ int main(int argc, char ** argv)
- 	kernel = mmap(NULL, sz, PROT_READ, MAP_SHARED, fd, 0);
- 	if (kernel == MAP_FAILED)
- 		die("Unable to mmap '%s': %m", argv[2]);
--	update_pecoff_text(setup_sectors * 512, i + _edata);
--
+ 	/* Pad unused space with zeros */
+ 	setup_sectors = (c + 511) / 512;
+@@ -316,7 +292,7 @@ int main(int argc, char ** argv)
+ 	i = setup_sectors*512;
+ 	memset(buf+c, 0, i-c);
  
- 	crc = partial_crc32(buf, i, crc);
- 	if (fwrite(buf, 1, i, dest) != i)
+-	update_pecoff_setup_and_reloc(i);
++	update_pecoff_setup(i);
+ 
+ 	/* Open and stat the kernel file */
+ 	fd = open(argv[2], O_RDONLY);
 -- 
 2.42.0.459.ge4e396fd5e-goog
 
