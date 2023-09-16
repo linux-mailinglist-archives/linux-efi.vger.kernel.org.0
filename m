@@ -2,132 +2,103 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CDF27A2EEE
-	for <lists+linux-efi@lfdr.de>; Sat, 16 Sep 2023 11:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C66A57A3069
+	for <lists+linux-efi@lfdr.de>; Sat, 16 Sep 2023 15:04:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237743AbjIPJLa (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 16 Sep 2023 05:11:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50664 "EHLO
+        id S237446AbjIPNDt (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 16 Sep 2023 09:03:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230487AbjIPJLL (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 16 Sep 2023 05:11:11 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F06C170E;
-        Sat, 16 Sep 2023 02:11:02 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-99357737980so374427666b.2;
-        Sat, 16 Sep 2023 02:11:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1694855461; x=1695460261; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Cz0nFFjGS/VjM8ZCLU/MfUnOrqxOApO0n/0p+KUIE9A=;
-        b=W1qvaVaGBUSIOUgy2tGvdv8QAVy8wuHbKDafVSVleIQzQjewyqtR5nk+xM+yVU0zjY
-         nUy5nNivmR+vMsR/iR8q/OZ+YhMJS7dEe8wGoK78ekiRTmJf1Ejdws/TJRtN+iL42t8D
-         uENeVA1ylI+LHykgGpZ0kxsPBKFybTqFtMol6hThjhkh8c7BGGsYBFGFQTsUpHendiw0
-         UVPFFsgXxosY7D74zzfBfIrSffNSOZPOvVLiRLGyOFXy0GACtFc0AI4IW1RkWapRklDr
-         bNa9KAMW49Ze/YK9iMqtuh+N3jjaYPh9niqUBiQQzJXMEnQNPjNjofaV5Y2s6sHR3R2S
-         JeLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694855461; x=1695460261;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Cz0nFFjGS/VjM8ZCLU/MfUnOrqxOApO0n/0p+KUIE9A=;
-        b=Eim6auGGUQGq5ej3dQ96ZF9JOJ2UJ6xauCFaaxkff5Qreb/fgLXVsJ6Xm0qspkjHs9
-         p7r094XGKJVgeIkGS0yl+X92aLD7+xuKC05p+iNTuY815T1Pjs5ZK78nMVczONlnCsFB
-         dBNAFzjL/GbofeVktd9iJ4EgVpbVA6L2nnlyqw0gr3tEgVdiTJFPqtn6uvVs3uCFIz+6
-         L+1aRTWzIYfjLWu5RZzTHfx9qoBhoResZAeYTfwJ5OpUvtddz+K1XQWJN8gfG+lP7hJZ
-         1F+WzQVfau+h8hMgf1C4zJwMuNngX/c/EIa/pqsaezVBcKD97vyOnpqE6NWj5bLrsadi
-         idpg==
-X-Gm-Message-State: AOJu0Yx3g+fAixtcGVdi9ZFgw0hIgbrWDTx3rHpYsv7LMIomlPduCAbP
-        EOmFdf+PreHL3oPs9SPDpHU=
-X-Google-Smtp-Source: AGHT+IEakTuMZDc0U8iFm7kIhK663MOoAZ28JbeRNif6ANsblV3dVSRGUHuk8tQwz/lPdDtstD7Pjg==
-X-Received: by 2002:a17:906:73cc:b0:9ad:7e21:5a6d with SMTP id n12-20020a17090673cc00b009ad7e215a6dmr3664033ejl.33.1694855460588;
-        Sat, 16 Sep 2023 02:11:00 -0700 (PDT)
-Received: from gmail.com (84-236-113-53.pool.digikabel.hu. [84.236.113.53])
-        by smtp.gmail.com with ESMTPSA id f19-20020a170906561300b009a16975ee5asm3460357ejq.169.2023.09.16.02.10.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Sep 2023 02:10:58 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Sat, 16 Sep 2023 11:10:56 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Ard Biesheuvel <ardb@google.com>, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Evgeniy Baskov <baskov@ispras.ru>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Jones <pjones@redhat.com>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Kees Cook <keescook@chromium.org>,
-        "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v2 00/15] x86/boot: Rework PE header generation
-Message-ID: <ZQVxIIh1byq65lK/@gmail.com>
-References: <20230912090051.4014114-17-ardb@google.com>
- <ZQQiUxh5vmeZnp7s@gmail.com>
- <ZQRAckHVxQZRNEGA@gmail.com>
- <CAGnOC3Zw49_30FkGY=RRLn-sCHNgFY_T0ugNJZCgg_T3opHm+Q@mail.gmail.com>
- <CAMj1kXEVA5iL79HwXdYOAXAr0ZemS6repMRi9b20VSU=u0Ee=Q@mail.gmail.com>
+        with ESMTP id S229617AbjIPND3 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 16 Sep 2023 09:03:29 -0400
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 532ADDD;
+        Sat, 16 Sep 2023 06:03:23 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R401e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045170;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0VsA36sM_1694869397;
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VsA36sM_1694869397)
+          by smtp.aliyun-inc.com;
+          Sat, 16 Sep 2023 21:03:20 +0800
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+To:     keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
+        rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
+        bp@alien8.de, tglx@linutronix.de, mingo@redhat.com,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        ardb@kernel.org, robert.moore@intel.com
+Cc:     linux-hardening@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
+        linux-efi@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
+        xueshuai@linux.alibaba.com, baolin.wang@linux.alibaba.com
+Subject: [RFC PATCH 0/9] [RFC PATCH 0/9] Use ERST for persistent storage of MCE and APEI errors 
+Date:   Sat, 16 Sep 2023 21:03:07 +0800
+Message-Id: <20230916130316.65815-1-xueshuai@linux.alibaba.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXEVA5iL79HwXdYOAXAr0ZemS6repMRi9b20VSU=u0Ee=Q@mail.gmail.com>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
+In certain scenarios (ie. hosts/guests with root filesystems on NFS/iSCSI
+where networking software and/or hardware fails, and thus kdump fails), it
+is necessary to serialize hardware error information available for
+post-mortem debugging. Save the hardware error log into flash via ERST
+before go panic, the hardware error log can be gotten from the flash after
+system boot successful again, which is very useful in production.
 
-* Ard Biesheuvel <ardb@kernel.org> wrote:
+On X86 platform, the kernel has supported to serialize and deserialize MCE
+error record by commit 482908b49ebf ("ACPI, APEI, Use ERST for persistent
+storage of MCE"). The process involves two steps:
 
-> > > So, the first 8 patches broke the x86-64-defconfig-ish Qemu bzImage bootup,
-> > > due to the 8th patch:
-> > >
-> > >   988b52b207a9fe74c3699bda8c2256714926b94b is the first bad commit
-> > >   commit 988b52b207a9fe74c3699bda8c2256714926b94b
-> > >   Author: Ard Biesheuvel <ardb@kernel.org>
-> > >   Date:   Tue Sep 12 09:01:01 2023 +0000
-> > >
-> > >       x86/boot: Define setup size in linker script
-> > >
-> > > I've removed it for now - but this side effect was not expected.
-> > >
-> >
-> > No, definitely not expected. I tested various combinations of i386 /
-> > x86_64 built with GCC / Clang doing EFI or BIOS boot.
-> >
-> > I'll rebase the remaining stuff onto -tip and see if I can reproduce this.
-> 
-> This is actually quite bizarre. x86_64_defconfig has
-> CONFIG_EFI_MIXED=y and i tested that this change produces the exact
-> same bzImage binary in that case.
-> 
-> Could you send me the .config and the QEMU command line perhaps?
+- MCE Producer: When a hardware error is detected, MCE raised and its
+  handler writes MCE error record into flash via ERST before panic
+- MCE Consumor: After system reboot, /sbin/mcelog run, it reads /dev/mcelog
+  to check flash for error record of previous boot via ERST
 
-So the patch below is the delta between v2 and v3 - that is expected
-to fix the bzImage boot crash, right?
+After /dev/mcelog character device deprecated by commit 5de97c9f6d85
+("x86/mce: Factor out and deprecate the /dev/mcelog driver"), the
+serialized MCE error record, of previous boot in persistent storage is not
+collected via APEI ERST.
 
-Thanks,
+This patch set include two part:
 
-	Ingo
+- PATCH 1-3: rework apei_{read,write}_mce to use pstore data structure and emit
+  the mce_record tracepoint, enabling the collection of MCE records by the
+  rasdaemon tool.
+- PATCH 4-9: use ERST for persistent storage of APEI errors, and emit
+  tracepoints for CPER sections, enabling the collection of MCE records by the
+  rasdaemon tool.
 
---- tip.orig/arch/x86/boot/setup.ld
-+++ tip/arch/x86/boot/setup.ld
-@@ -41,7 +41,7 @@ SECTIONS
- 		LONG(0x5a5aaa55)
- 
- 		/* Reserve some extra space for the reloc and compat sections */
--		setup_size = ABSOLUTE(ALIGN(. + 64, 512));
-+		setup_size = ALIGN(ABSOLUTE(.) + 64, 512);
- 		setup_sects = ABSOLUTE(setup_size / 512);
- 	}
- 
+Shuai Xue (9):
+  pstore: move pstore creator id, section type and record struct to
+    common header
+  ACPI: APEI: Use common ERST struct to read/write serialized MCE record
+  ACPI: APEI: ERST: Emit the mce_record tracepoint
+  ACPI: tables: change section_type of generic error data as guid_t
+  ACPI: APEI: GHES: Use ERST to serialize APEI generic error before
+    panic
+  ACPI: APEI: GHES: export ghes_report_chain
+  ACPI: APEI: ESRT: kick ghes_report_chain notifier to report serialized
+    memory errors
+  ACPI: APEI: ESRT: print AER to report serialized PCIe errors
+  ACPI: APEI: ESRT: log ARM processor error
+
+ arch/x86/kernel/cpu/mce/apei.c | 82 +++++++++++++++-------------------
+ drivers/acpi/acpi_extlog.c     |  2 +-
+ drivers/acpi/apei/erst.c       | 51 ++++++++++++---------
+ drivers/acpi/apei/ghes.c       | 48 +++++++++++++++++++-
+ drivers/firmware/efi/cper.c    |  2 +-
+ fs/pstore/platform.c           |  3 ++
+ include/acpi/actbl1.h          |  5 ++-
+ include/acpi/ghes.h            |  2 +-
+ include/linux/pstore.h         | 29 ++++++++++++
+ 9 files changed, 150 insertions(+), 74 deletions(-)
+
+-- 
+2.41.0
 
