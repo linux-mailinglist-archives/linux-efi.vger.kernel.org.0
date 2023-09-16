@@ -2,110 +2,128 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B2D47A307F
-	for <lists+linux-efi@lfdr.de>; Sat, 16 Sep 2023 15:04:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCF047A321E
+	for <lists+linux-efi@lfdr.de>; Sat, 16 Sep 2023 21:17:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239298AbjIPNDx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sat, 16 Sep 2023 09:03:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37458 "EHLO
+        id S230166AbjIPTOz (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sat, 16 Sep 2023 15:14:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236560AbjIPNDo (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sat, 16 Sep 2023 09:03:44 -0400
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62208DD;
-        Sat, 16 Sep 2023 06:03:38 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0VsA36xg_1694869413;
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VsA36xg_1694869413)
-          by smtp.aliyun-inc.com;
-          Sat, 16 Sep 2023 21:03:34 +0800
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-To:     keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
-        rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
-        bp@alien8.de, tglx@linutronix.de, mingo@redhat.com,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        ardb@kernel.org, robert.moore@intel.com
-Cc:     linux-hardening@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-        linux-efi@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
-        xueshuai@linux.alibaba.com, baolin.wang@linux.alibaba.com
-Subject: [RFC PATCH 9/9] ACPI: APEI: ESRT: log ARM processor error
-Date:   Sat, 16 Sep 2023 21:03:16 +0800
-Message-Id: <20230916130316.65815-10-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230916130316.65815-1-xueshuai@linux.alibaba.com>
-References: <20230916130316.65815-1-xueshuai@linux.alibaba.com>
+        with ESMTP id S233268AbjIPTOy (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sat, 16 Sep 2023 15:14:54 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D2D3CE8;
+        Sat, 16 Sep 2023 12:14:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9F4C433CD;
+        Sat, 16 Sep 2023 19:14:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694891688;
+        bh=GhEPs001caUtxwRsE4CgbQic7rBW6RkecWPBoHLDshg=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=B6EpN3T7NeJLqmpijC2ABe3zkhN7Mky/SKq3Wy46erS33iNYDHo7ePdb5NvptwhFH
+         ZNfNeWEo+sda6PO1R1CRfd0MP7I/mQpofgcocUqbtTA67QvdCiouPO6SLpdwHR1NBh
+         jiu+Qvj8LtBdpdg72StJjUpp7l7Mv0IaM6co40P+VNwlC4q/Voj9opKgn7iavZOv8e
+         HzATNC1jVbdXapmA9prWf3+2NI8LUO/XpZtg3s1NZHsQhDOVtAmBzBa2ui376mBqMn
+         jV4DLhWB7iSfG54I5vJOL33l/0wB6x2WEcRefcGRFsQUptvp19JvE/D37xpBfDjMuf
+         6T+naGWoHW3bA==
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2b962c226ceso51990651fa.3;
+        Sat, 16 Sep 2023 12:14:48 -0700 (PDT)
+X-Gm-Message-State: AOJu0YzwtsSuuk7ntRLQuFwz5nc1ivw4B7EPwH3hQ/0WfJ0BdeUGdx9V
+        64iuqp2fHZH82bwBnluNgIcaxlOGB3pAC2MCwxM=
+X-Google-Smtp-Source: AGHT+IFFfllFzyDKsE+GvRpJHheHwfGf/pRlgEDGGKEVgxkT9+rKubZ/wvd926AEUbG6IJatdHLJbJlkSf+hRxAbKoc=
+X-Received: by 2002:a2e:680c:0:b0:2bd:133c:58ff with SMTP id
+ c12-20020a2e680c000000b002bd133c58ffmr3852284lja.48.1694891686814; Sat, 16
+ Sep 2023 12:14:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20230912090051.4014114-17-ardb@google.com> <ZQQiUxh5vmeZnp7s@gmail.com>
+ <ZQRAckHVxQZRNEGA@gmail.com> <CAGnOC3Zw49_30FkGY=RRLn-sCHNgFY_T0ugNJZCgg_T3opHm+Q@mail.gmail.com>
+ <CAMj1kXEVA5iL79HwXdYOAXAr0ZemS6repMRi9b20VSU=u0Ee=Q@mail.gmail.com> <ZQVxIIh1byq65lK/@gmail.com>
+In-Reply-To: <ZQVxIIh1byq65lK/@gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Sat, 16 Sep 2023 21:14:35 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXH7b+TRajewcY0hzh_j0qMV+X9Nm2PNFftWTTEBp9xr5g@mail.gmail.com>
+Message-ID: <CAMj1kXH7b+TRajewcY0hzh_j0qMV+X9Nm2PNFftWTTEBp9xr5g@mail.gmail.com>
+Subject: Re: [PATCH v2 00/15] x86/boot: Rework PE header generation
+To:     Ingo Molnar <mingo@kernel.org>
+Cc:     Ard Biesheuvel <ardb@google.com>, linux-efi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Evgeniy Baskov <baskov@ispras.ru>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Jones <pjones@redhat.com>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        "H. Peter Anvin" <hpa@zytor.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Introduce a new pstore_record type, PSTORE_TYPE_CPER_PROC_ARM, so that
-serialized ARM processor errors can be retrieved and saved as a file in
-pstore file system. While the serialized errors is retrieved from ERST
-backend, log it.
+On Sat, 16 Sept 2023 at 11:11, Ingo Molnar <mingo@kernel.org> wrote:
+>
+>
+> * Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> > > > So, the first 8 patches broke the x86-64-defconfig-ish Qemu bzImage bootup,
+> > > > due to the 8th patch:
+> > > >
+> > > >   988b52b207a9fe74c3699bda8c2256714926b94b is the first bad commit
+> > > >   commit 988b52b207a9fe74c3699bda8c2256714926b94b
+> > > >   Author: Ard Biesheuvel <ardb@kernel.org>
+> > > >   Date:   Tue Sep 12 09:01:01 2023 +0000
+> > > >
+> > > >       x86/boot: Define setup size in linker script
+> > > >
+> > > > I've removed it for now - but this side effect was not expected.
+> > > >
+> > >
+> > > No, definitely not expected. I tested various combinations of i386 /
+> > > x86_64 built with GCC / Clang doing EFI or BIOS boot.
+> > >
+> > > I'll rebase the remaining stuff onto -tip and see if I can reproduce this.
+> >
+> > This is actually quite bizarre. x86_64_defconfig has
+> > CONFIG_EFI_MIXED=y and i tested that this change produces the exact
+> > same bzImage binary in that case.
+> >
+> > Could you send me the .config and the QEMU command line perhaps?
+>
+> So the patch below is the delta between v2 and v3 - that is expected
+> to fix the bzImage boot crash, right?
+>
 
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
----
- drivers/acpi/apei/erst.c | 6 ++++++
- fs/pstore/platform.c     | 1 +
- include/linux/pstore.h   | 1 +
- 3 files changed, 8 insertions(+)
+Yes.
 
-diff --git a/drivers/acpi/apei/erst.c b/drivers/acpi/apei/erst.c
-index 4f000cb1433a..c92d977d15cd 100644
---- a/drivers/acpi/apei/erst.c
-+++ b/drivers/acpi/apei/erst.c
-@@ -29,6 +29,7 @@
- #include <acpi/ghes.h>
- #include <linux/aer.h>
- #include <linux/pci.h>
-+#include <linux/ras.h>
- /* only define CREATE_TRACE_POINTS once */
- #include <trace/events/mce.h>
- 
-@@ -1088,6 +1089,11 @@ static ssize_t erst_reader(struct pstore_record *record)
- 		cper_print_aer(
- 			pdev, AER_FATAL,
- 			(struct aer_capability_regs *)pcie_err->aer_info);
-+	} else if (guid_equal(&rcd->sec_hdr.section_type, &CPER_SEC_PROC_ARM)) {
-+		struct cper_sec_proc_arm *err = (struct cper_sec_proc_arm *)rcd->data;
-+
-+		record->type = PSTORE_TYPE_CPER_PROC_ARM;
-+		log_arm_hw_error(err);
- 	}
- 	else
- 		record->type = PSTORE_TYPE_MAX;
-diff --git a/fs/pstore/platform.c b/fs/pstore/platform.c
-index 40a062546fe4..48ad3202284c 100644
---- a/fs/pstore/platform.c
-+++ b/fs/pstore/platform.c
-@@ -53,6 +53,7 @@ static const char * const pstore_type_names[] = {
- 	"powerpc-opal",
- 	"cper-mem",
- 	"cper-pcie",
-+	"cper-proc-arm",
- };
- 
- static int pstore_new_entry;
-diff --git a/include/linux/pstore.h b/include/linux/pstore.h
-index e63f51e9c22e..83edff5aab0b 100644
---- a/include/linux/pstore.h
-+++ b/include/linux/pstore.h
-@@ -43,6 +43,7 @@ enum pstore_type_id {
- 	/* APEI section */
- 	PSTORE_TYPE_CPER_MEM		= 9,
- 	PSTORE_TYPE_CPER_PCIE		= 10,
-+	PSTORE_TYPE_CPER_PROC_ARM	= 11,
- 
- 	/* End of the list */
- 	PSTORE_TYPE_MAX
--- 
-2.41.0
+ld.bfd does something unexpected [to me] here, and the resulting value
+turns out not to be a multiple of 512 at all.
 
+With this tweak, my claim that this patch does not affect the binary
+bzImage at all actually holds for ld.bfd as well (provided that
+CONFIG_EFI_MIXED=y and CONFIG_LOCAL_VERSION_AUTO is disabled)
+
+So if this still does not work in your test, could you please disable
+CONFIG_LOCAL_VERSION_AUTO and compare the md5sums of the two builds?
+
+Thanks,
+
+
+> --- tip.orig/arch/x86/boot/setup.ld
+> +++ tip/arch/x86/boot/setup.ld
+> @@ -41,7 +41,7 @@ SECTIONS
+>                 LONG(0x5a5aaa55)
+>
+>                 /* Reserve some extra space for the reloc and compat sections */
+> -               setup_size = ABSOLUTE(ALIGN(. + 64, 512));
+> +               setup_size = ALIGN(ABSOLUTE(.) + 64, 512);
+>                 setup_sects = ABSOLUTE(setup_size / 512);
+>         }
+>
+>
