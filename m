@@ -2,146 +2,206 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A75B27A49B8
-	for <lists+linux-efi@lfdr.de>; Mon, 18 Sep 2023 14:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFE647A542F
+	for <lists+linux-efi@lfdr.de>; Mon, 18 Sep 2023 22:32:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240402AbjIRMcq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 18 Sep 2023 08:32:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54710 "EHLO
+        id S229586AbjIRUct (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 18 Sep 2023 16:32:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241293AbjIRMcW (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 18 Sep 2023 08:32:22 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B52FE7
-        for <linux-efi@vger.kernel.org>; Mon, 18 Sep 2023 05:32:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E12C433CD
-        for <linux-efi@vger.kernel.org>; Mon, 18 Sep 2023 12:32:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695040335;
-        bh=LDnSb3HteQ4la+S2WMvGPFOQQbWoP23nKIuJ/U5L8yM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=WYTSWJkKDXsK4AZhSvApBMR2osJ3nhPi7HuyHoaD0ZOiW5XX5Mjh9o1iOqrEBAPT6
-         MU8sRKUPBmeXaJRtmd9AozYqnjDJlSlNBDw3fMuJoZHm9qItuO3+XV1RG+ICxMRzD9
-         IfqFUKB7yNQid384Z4vjzp9jnPRrH5vjnsQjAU9Qhf5r5amV0B/Qeb5vNqLQsR2bpV
-         h8HjU8jAFiD/Bc+vZdPy4GpNwsPMHnhKRfUA/UTyBTDKUsSr8ksOB8H4CXspOeFnI0
-         vRQGwl+P5kbWBan6MGsmlIjRn0VbaXSaNGb79klvQ0o3ULK7uVU7GnnRXD4dpocNHC
-         GYLCwCobZpvQA==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2bfb12b24e5so70620551fa.0
-        for <linux-efi@vger.kernel.org>; Mon, 18 Sep 2023 05:32:15 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyjGRqHsWWkSarnGnWEgQGW4xe5uKnoXQo7lg35wHM8osaK6Zhx
-        RQ8o+NMEuyAAyClzgH+nDxSaqv2gljvMA9M79rQ=
-X-Google-Smtp-Source: AGHT+IHbSPqor8UcTl98qQCVnrzQrjvQcnuwoHC5gjnv0Tp3xUklA5sHGZHQT6Ve5HFQE4MeP9prrRmYSktRDBpXDYo=
-X-Received: by 2002:a05:651c:218:b0:2bc:e221:676c with SMTP id
- y24-20020a05651c021800b002bce221676cmr7355174ljn.0.1695040333407; Mon, 18 Sep
- 2023 05:32:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230816190557.3738-1-ardb@kernel.org> <20230816212418.25069-1-kirill.shutemov@linux.intel.com>
- <CAMj1kXHQh7HEuZMiJ5zQtVre1vY+Q1xAHfQSDh1-WibAL02mXA@mail.gmail.com>
- <20230818151628.d7srn5k73vms7dcf@box.shutemov.name> <CAMj1kXHrqaB7GbXuT5O6DOeOLBv+DX_8+wKNK8oh7a9U814YGg@mail.gmail.com>
- <20230907104914.a4nt23yuronohivo@box.shutemov.name> <20230917170629.d35gnwb6o54bdrhl@box.shutemov.name>
- <CAMj1kXF3BgEpZDpzfLm0=1cdSUy0ovb6Uog17em58=YLHaADug@mail.gmail.com> <20230918121241.5zbplrgao7ybvv5n@box.shutemov.name>
-In-Reply-To: <20230918121241.5zbplrgao7ybvv5n@box.shutemov.name>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 18 Sep 2023 14:32:01 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXG8LN862T7w62ngS783OGJFSk2ZWEzqk_LasExdimr=PQ@mail.gmail.com>
-Message-ID: <CAMj1kXG8LN862T7w62ngS783OGJFSk2ZWEzqk_LasExdimr=PQ@mail.gmail.com>
-Subject: Re: [PATCH] x86/mm: Make e820_end_ram_pfn() cover E820_TYPE_ACPI ranges
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     dave.hansen@linux.intel.com, linux-efi@vger.kernel.org,
-        x86@kernel.org, Hongyu Ning <hongyu.ning@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229643AbjIRUco (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 18 Sep 2023 16:32:44 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FC47115
+        for <linux-efi@vger.kernel.org>; Mon, 18 Sep 2023 13:32:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695069158; x=1726605158;
+  h=date:from:to:cc:subject:message-id;
+  bh=ksNFk6IaNWWyFIlZ4PHGz/yMn7CuX3YfQAhAx8Eps8Y=;
+  b=Qn18JV2cXV4Br7ZAHvU6fFzHl1EOIVIBL5YXCC+JxHqOjaFPT9/P5cNe
+   mUgGpFgQ3Z0NfI5LEIUJW1rC9ofnHbGLun8iagR2AwpYlVB99WpiT8p9T
+   DGdCWU7gWx0OIwXujwGoHdpGSl7xolVaxUTOVnu/q7G7coh0Hcv7ugHUq
+   Xw7yhr3HabmcPc0EnPu60annUQCw4VzhRcoYEDaBH6cntxK5A82jsVE7S
+   FCI9vps+WB1i6yX3u/ymC1IA7WxNiUeQj7R0UUTf40M20CdrWIAryW/QA
+   qyFgLR1lSzU+2IopiBBlB3fXKwBi+qF8DGWCG6qVcaKdf3J4pLf7B+vaz
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10837"; a="377080610"
+X-IronPort-AV: E=Sophos;i="6.02,157,1688454000"; 
+   d="scan'208";a="377080610"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2023 13:32:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10837"; a="775265460"
+X-IronPort-AV: E=Sophos;i="6.02,157,1688454000"; 
+   d="scan'208";a="775265460"
+Received: from lkp-server02.sh.intel.com (HELO 9ef86b2655e5) ([10.239.97.151])
+  by orsmga008.jf.intel.com with ESMTP; 18 Sep 2023 13:32:36 -0700
+Received: from kbuild by 9ef86b2655e5 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qiKv4-0006Ra-0v;
+        Mon, 18 Sep 2023 20:32:34 +0000
+Date:   Tue, 19 Sep 2023 04:32:32 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ 52c34f16245f6e12c6880e7aeaf14e410f7047b6
+Message-ID: <202309190429.vVxDpaMp-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Mon, 18 Sept 2023 at 14:13, Kirill A. Shutemov
-<kirill.shutemov@linux.intel.com> wrote:
->
-> On Mon, Sep 18, 2023 at 09:01:27AM +0200, Ard Biesheuvel wrote:
-> > On Sun, 17 Sept 2023 at 19:06, Kirill A. Shutemov
-> > <kirill.shutemov@linux.intel.com> wrote:
-> > >
-> > > On Thu, Sep 07, 2023 at 01:49:14PM +0300, Kirill A. Shutemov wrote:
-> > > > On Wed, Sep 06, 2023 at 11:17:12AM +0200, Ard Biesheuvel wrote:
-> > > > > On Fri, 18 Aug 2023 at 17:16, Kirill A. Shutemov
-> > > > > <kirill.shutemov@linux.intel.com> wrote:
-> > > > > >
-> > > > > > On Thu, Aug 17, 2023 at 10:25:56PM +0200, Ard Biesheuvel wrote:
-> > > > > > > On Wed, 16 Aug 2023 at 23:24, Kirill A. Shutemov
-> > > > > > > <kirill.shutemov@linux.intel.com> wrote:
-> > > > > > > >
-> > > > > > > > e820__end_of_ram_pfn() is used to calculate max_pfn which, among other
-> > > > > > > > things, guides where direct mapping ends. Any memory above max_pfn is
-> > > > > > > > not going to be present in the direct mapping.
-> > > > > > > >
-> > > > > > > > e820__end_of_ram_pfn() finds the end of the ram based on the highest
-> > > > > > > > E820_TYPE_RAM range. But it doesn't includes E820_TYPE_ACPI ranges into
-> > > > > > > > calculation.
-> > > > > > > >
-> > > > > > > > Despite the name, E820_TYPE_ACPI covers not only ACPI data, but also EFI
-> > > > > > > > tables and might be required by kernel to function properly.
-> > > > > > > >
-> > > > > > > > Usually the problem is hidden because there is some E820_TYPE_RAM memory
-> > > > > > > > above E820_TYPE_ACPI. But crashkernel only presents pre-allocated crash
-> > > > > > > > memory as E820_TYPE_RAM on boot. If the preallocated range is small, it
-> > > > > > > > can fit under the last E820_TYPE_ACPI range.
-> > > > > > > >
-> > > > > > > > Modify e820__end_of_ram_pfn() and e820__end_of_low_ram_pfn() to cover
-> > > > > > > > E820_TYPE_ACPI memory.
-> > > > > > > >
-> > > > > > > > The problem was discovered during debugging kexec for TDX guest. TDX
-> > > > > > > > guest uses E820_TYPE_ACPI to store the unaccepted memory bitmap and pass
-> > > > > > > > it between the kernels on kexec.
-> > > > > > > >
-> > > > > > > > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > > > > > >
-> > > > > > > No objections to this, but we might also simply drop E820_TYPE_ACPI
-> > > > > > > altogether: it is only used for EFI_ACPI_RECLAIM_MEMORY, which is
-> > > > > > > memory that can be used by the OS as ordinary RAM if it is not
-> > > > > > > interested in the contents (or has already consumed them). So this
-> > > > > > > could arguably be classified as E820_TYPE_RAM too.
-> > > > > >
-> > > > > > Hm. I'm not sure about this. E820_TYPE_ACPI also get tracked as
-> > > > > > IORES_DESC_ACPI_TABLES resource and get passed to the next kernel on
-> > > > > > kexec, regardless if it is crash kernel or not. I'm not sure we would not
-> > > > > > break anything.
-> > > > > >
-> > > > >
-> > > > > Yeah, you're right. So this patch is necessary in any case.
-> > > > >
-> > > > > Do we also need the EFI side patch then?
-> > > >
-> > > > Yes, we need it to get it mapped into the crashkernel direct mapping.
-> > >
-> > > Ughh. The patch alone causes crash as EFI_ACPI_RELACLAIM_MEMORY is not
-> > > mapped into direct mapping during memory init.
-> > >
-> >
-> > It would be good if this boot path could be covered by lkp@ as well -
-> > currently, you are the only person testing this manually. The same
-> > applies to SEV-SNP by the way - there is zero coverage except for the
-> > manual testing that Boris or Tom Lendacky might do.
->
-> It made me remember that I forgot attribute the finding:
->
-> Reported-by: "Hongyu Ning" <hongyu.ning@intel.com>
->
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: 52c34f16245f6e12c6880e7aeaf14e410f7047b6  efi/unaccepted: Make sure unaccepted table is mapped in crashkernel case
 
-OK, I will add that next time I update the branch.
+elapsed time: 733m
 
-> Hongyu tests linux-next periodically, but I agree we need to get LKP
-> working.
->
-> I will try to get LKP going for TDX guest.
->
+configs tested: 130
+configs skipped: 2
 
-Yes, please. We are likely to run into such issues again if we don't
-have test coverage for this functionality.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Thanks,
-Ard.
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20230918   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                   randconfig-001-20230918   gcc  
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20230918   gcc  
+i386         buildonly-randconfig-002-20230918   gcc  
+i386         buildonly-randconfig-003-20230918   gcc  
+i386         buildonly-randconfig-004-20230918   gcc  
+i386         buildonly-randconfig-005-20230918   gcc  
+i386         buildonly-randconfig-006-20230918   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-011-20230918   gcc  
+i386                  randconfig-012-20230918   gcc  
+i386                  randconfig-013-20230918   gcc  
+i386                  randconfig-014-20230918   gcc  
+i386                  randconfig-015-20230918   gcc  
+i386                  randconfig-016-20230918   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20230918   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                         amcore_defconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+openrisc                       virt_defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+powerpc                     mpc5200_defconfig   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv             nommu_k210_sdcard_defconfig   gcc  
+riscv                 randconfig-001-20230918   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20230918   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                         apsh4a3a_defconfig   gcc  
+sh                                  defconfig   gcc  
+sh                          rsk7203_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                 randconfig-001-20230918   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-001-20230918   gcc  
+x86_64       buildonly-randconfig-002-20230918   gcc  
+x86_64       buildonly-randconfig-003-20230918   gcc  
+x86_64       buildonly-randconfig-004-20230918   gcc  
+x86_64       buildonly-randconfig-005-20230918   gcc  
+x86_64       buildonly-randconfig-006-20230918   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-011-20230918   gcc  
+x86_64                randconfig-012-20230918   gcc  
+x86_64                randconfig-013-20230918   gcc  
+x86_64                randconfig-014-20230918   gcc  
+x86_64                randconfig-015-20230918   gcc  
+x86_64                randconfig-016-20230918   gcc  
+x86_64                randconfig-071-20230918   gcc  
+x86_64                randconfig-072-20230918   gcc  
+x86_64                randconfig-073-20230918   gcc  
+x86_64                randconfig-074-20230918   gcc  
+x86_64                randconfig-075-20230918   gcc  
+x86_64                randconfig-076-20230918   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                           allyesconfig   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
