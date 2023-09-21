@@ -2,52 +2,53 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1FA57A9ED5
-	for <lists+linux-efi@lfdr.de>; Thu, 21 Sep 2023 22:13:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0317C7AA272
+	for <lists+linux-efi@lfdr.de>; Thu, 21 Sep 2023 23:18:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231465AbjIUUNN (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 21 Sep 2023 16:13:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45886 "EHLO
+        id S232662AbjIUVRQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 21 Sep 2023 17:17:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229972AbjIUUNB (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 21 Sep 2023 16:13:01 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7804F58C10
-        for <linux-efi@vger.kernel.org>; Thu, 21 Sep 2023 10:28:26 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-68fb98745c1so964272b3a.1
-        for <linux-efi@vger.kernel.org>; Thu, 21 Sep 2023 10:28:26 -0700 (PDT)
+        with ESMTP id S232691AbjIUVQN (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 21 Sep 2023 17:16:13 -0400
+Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com [IPv6:2607:f8b0:4864:20::e35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E00B8AC3F6
+        for <linux-efi@vger.kernel.org>; Thu, 21 Sep 2023 11:01:56 -0700 (PDT)
+Received: by mail-vs1-xe35.google.com with SMTP id ada2fe7eead31-4526d872941so671649137.1
+        for <linux-efi@vger.kernel.org>; Thu, 21 Sep 2023 11:01:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695317305; x=1695922105; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=s3PFsk9RxawxfMXOtaSCxuM4N0nVN4fYpqcnCn3pjAc=;
-        b=lBK7XmEYpPIyrxRtQDhUHLbh4Tmb0jNbm5c2xzpZrNBGfB7OMciZGvHvaxByhFJQuI
-         q45MoK61w1INInaJBzz/A9Twexl3UJOrzWGzsogkfHjgV/c04MMWpkqA44NMwhBrs88s
-         jrtPXEFAzsk4VEebkiWegF6P5O9tLMqeOGVxPrJ4a6UA184s+Y8Jpdzbg+dr14qEgcXS
-         RTP41UZg1Tk9O9cMRwVmNK05rL0X4x8qUV75+17C/tddazG3prwXwrWN2HdFL21vjziI
-         iETuuAXwOk0a3eqcpggj+bGVtS/Lz4LxK5MUlUEBVW01rZt29tWffTTufPIkBA4nbL9o
-         gYhw==
+        d=gmail.com; s=20230601; t=1695319316; x=1695924116; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V/sF+QqiplgSBso/5vnIDx564mKj+3dahN17Ytb8x4c=;
+        b=a2YteJb9WNkUbm7crxrTBS+cnkJ3m/AE7Zg+BTp2Cfxa/82OZISZ/ptzmbnbudlgNZ
+         dZ0x33SLrytDbNsLcWqvV2MQggRsH1bRfA025Iu7bUDC0Yn3+hQZ0/Q27qUR5HXwPLkN
+         Bh2hxelKaapQLHX7m+c5EA8RaBfd9cDrbt/rcn9B4oRryEI8xm37JtTURlgyXbnqPgWW
+         pcW+FsjP6r/Gd00AtKvc5T+VVnBbtz/tSKzxFYywUcztPZUrXcEe3A3ZxmukLC3XaNJ0
+         i+vOkjIJqxcsPcHGyjoOFIhCDdBs4D6QSDQ9OoDz5NLeY1yT4/xwyDJPEfcRtSMDTQlS
+         fQIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695317305; x=1695922105;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=s3PFsk9RxawxfMXOtaSCxuM4N0nVN4fYpqcnCn3pjAc=;
-        b=WE6U9L1M3N5CYw0PveVOyfe1EVCLn8hAz2L3WtoNwRouYl1hyef0yvgLv9nsbzyXN/
-         d3yiFc4uFi4ZDBWOb0bRxGgy+n0TLHMCzlkDBWfzEU7rYpluaBIxP04U2HFy8ICY7tHj
-         vvwwNkxV0kOF/pO1l/EzLzy4nfrq4KP+zoFp217GRwZ+ZdS5D208ysZ+7yIPohyrrnnQ
-         M3KT1yQxTyNPYukgYUk4gQMdlM19DsAA2A9jqoR3haERprQDcxFSVx5DnxXk2RW1JKzu
-         9UqAzcTY5g92jDZEaFpieSZLAqq97jwvXzghGlYGb6ZWDg7ys6oykMq0h+yu1JIbuRP6
-         p9VQ==
-X-Gm-Message-State: AOJu0YwUzXUJgB96veFp5e7i/3SWg38IWiVTPVkHIFUivsZqu9wrjltU
-        ik7Ck/q7wg8VWgCD1PSyklHvlrTtVzGf
-X-Google-Smtp-Source: AGHT+IHqBOWg1F4PKaT/rGEtmyVHAKj64PV6vA12DXK8x2GnhLUghr0fvSUmo/QuxpPBpHJLSaljVg==
-X-Received: by 2002:a05:6a20:3d91:b0:14c:a53c:498c with SMTP id s17-20020a056a203d9100b0014ca53c498cmr6514454pzi.10.1695303443117;
-        Thu, 21 Sep 2023 06:37:23 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1695319316; x=1695924116;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=V/sF+QqiplgSBso/5vnIDx564mKj+3dahN17Ytb8x4c=;
+        b=HG4ujjy8nBl2ynx5uBLKVQH+cXYhqw7+OdSoyIR0sIj1geu5BBZQeaSwE9yuICD42F
+         XJdsfaaGa12YI6AlFIKaQ57tNzyt2S171PVoHfqRAIO7u0fCfCeWjQHyviByPxk90SSO
+         KQ8JEjKMNbh0ke90s8BIwUl4jPvYilxjw1fKNT1Hyq/sc0FD5EoPUx5ifZM0iqdLYLbg
+         Qsc9laQC8FBPayYGXtPlHuuw19oAD8orK78lzhmdU2IDzvInfYOL1trYyua/jR6NtHt+
+         dU7vu2oByGRCxod0sMhIpD2e1lLJ2ks1HF0Q1+oH0J1tQ4ghKt14NBID3uFgjEsFFIgF
+         qw+A==
+X-Gm-Message-State: AOJu0Yw3KMDVAcCN1vbj56E8xYVKNocA90AcUodJjRHsKHs9Q8eomMCO
+        RPFQsM0/2x2LAMSbQVOc7ezgso5Pl1O5
+X-Google-Smtp-Source: AGHT+IFYH/I9kqNhfmStNK/TQjvWgoMG9nLTrTw4wEL3FMorBwBtH3/8wSbZzWlFfAXyGMUCUPjboA==
+X-Received: by 2002:a05:6a00:2d08:b0:68e:2cc4:c720 with SMTP id fa8-20020a056a002d0800b0068e2cc4c720mr6153219pfb.12.1695303447480;
+        Thu, 21 Sep 2023 06:37:27 -0700 (PDT)
 Received: from piliu.users.ipa.redhat.com ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id d24-20020aa78158000000b00690188b124esm1389785pfn.174.2023.09.21.06.37.19
+        by smtp.gmail.com with ESMTPSA id d24-20020aa78158000000b00690188b124esm1389785pfn.174.2023.09.21.06.37.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Sep 2023 06:37:22 -0700 (PDT)
+        Thu, 21 Sep 2023 06:37:26 -0700 (PDT)
 From:   Pingfan Liu <kernelfans@gmail.com>
 To:     linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
         kexec@lists.infradead.org
@@ -59,10 +60,12 @@ Cc:     Pingfan Liu <piliu@redhat.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>
-Subject: [PATCH 0/2] Sign the Image which is zboot's payload
-Date:   Thu, 21 Sep 2023 21:37:01 +0800
-Message-Id: <20230921133703.39042-1-kernelfans@gmail.com>
+Subject: [PATCH 1/2] zboot: Signing the payload
+Date:   Thu, 21 Sep 2023 21:37:02 +0800
+Message-Id: <20230921133703.39042-2-kernelfans@gmail.com>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20230921133703.39042-1-kernelfans@gmail.com>
+References: <20230921133703.39042-1-kernelfans@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -77,21 +80,13 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Pingfan Liu <piliu@redhat.com>
 
-I hesitate to post this series, since Ard has recommended using an
-emulated UEFI boot service to resolve the UKI kexec load problem [1].
-since on aarch64, vmlinuz.efi has faced the similar issue at present.
-But anyway, I have a crude outline of it and am sending it out for
-discussion.
+Emulate the scheme of module signing to sign the zboot's payload i.e.
+Image before it is compressed.
 
-For security boot, the vmlinuz.efi will be signed so UEFI boot loader
-can check against it. But at present, there is no signature for kexec
-file load, this series makes a signature on the zboot's payload -- Image
-before it is compressed. As a result, the kexec-tools parses and
-decompresses the Image.gz to get the Image, which has signature and can
-be checked against during kexec file load
+And overall, the signature on vmlinuz.efi will be used by UEFI boot
+loader and the signature on Image will be used by kexec file load.
 
-[1]: https://lore.kernel.org/lkml/20230918173607.421d2616@rotkaeppchen/T/#mc60aa591cb7616ceb39e1c98f352383f9ba6e985
-
+Signed-off-by: Pingfan Liu <piliu@redhat.com>
 Cc: "Ard Biesheuvel <ardb@kernel.org>"
 Cc: "Jan Hendrik Farr" <kernel@jfarr.cc>
 Cc: "Baoquan He" <bhe@redhat.com>
@@ -105,17 +100,48 @@ To: linux-arm-kernel@lists.infradead.org
 To: linux-efi@vger.kernel.org
 To: kexec@lists.infradead.org
 
+---
+ drivers/firmware/efi/libstub/Makefile.zboot | 23 ++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-Pingfan Liu (2):
-  zboot: Signing the payload
-  arm64: Enable signing on the kernel image loaded by kexec file load
-
- arch/arm64/Kconfig                          |  2 +
- drivers/firmware/efi/libstub/Makefile.zboot | 23 +++++++--
- kernel/Kconfig.kexec_sign                   | 54 +++++++++++++++++++++
- 3 files changed, 76 insertions(+), 3 deletions(-)
- create mode 100644 kernel/Kconfig.kexec_sign
-
+diff --git a/drivers/firmware/efi/libstub/Makefile.zboot b/drivers/firmware/efi/libstub/Makefile.zboot
+index 2c489627a807..fd4305a4ebbd 100644
+--- a/drivers/firmware/efi/libstub/Makefile.zboot
++++ b/drivers/firmware/efi/libstub/Makefile.zboot
+@@ -4,13 +4,30 @@
+ # EFI_ZBOOT_PAYLOAD, EFI_ZBOOT_BFD_TARGET, EFI_ZBOOT_MACH_TYPE and
+ # EFI_ZBOOT_FORWARD_CFI
+ 
+-quiet_cmd_copy_and_pad = PAD     $@
+-      cmd_copy_and_pad = cp $< $@ && \
++
++#
++# Signing
++#
++ifeq ($(CONFIG_KEXEC_ZBOOT_SIG),y)
++ifeq ($(filter pkcs11:%, $(CONFIG_KEXEC_ZBOOT_SIG_KEY)),)
++sig-key := $(if $(wildcard $(CONFIG_KEXEC_ZBOOT_SIG_KEY)),,$(srctree)/)$(CONFIG_KEXEC_ZBOOT_SIG_KEY)
++else
++sig-key := $(CONFIG_KEXEC_ZBOOT_SIG_KEY)
++endif
++cmd_sign = scripts/sign-file $(CONFIG_KEXEC_ZBOOT_SIG_HASH) "$(sig-key)" certs/signing_key.x509 $@
++else
++      cmd_sign := :
++endif
++
++cmd_copy_and_pad = cp $< $@ && \
+ 			 truncate -s $(shell hexdump -s16 -n4 -e '"%u"' $<) $@
+ 
++quiet_cmd_copy_and_pad_sign = PAD and SIGN     $@
++      cmd_copy_and_pad_sign = $(cmd_copy_and_pad) && $(cmd_sign)
++
+ # Pad the file to the size of the uncompressed image in memory, including BSS
+ $(obj)/vmlinux.bin: $(obj)/$(EFI_ZBOOT_PAYLOAD) FORCE
+-	$(call if_changed,copy_and_pad)
++	$(call if_changed,copy_and_pad_sign)
+ 
+ comp-type-$(CONFIG_KERNEL_GZIP)		:= gzip
+ comp-type-$(CONFIG_KERNEL_LZ4)		:= lz4
 -- 
 2.31.1
 
