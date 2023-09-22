@@ -2,262 +2,174 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 232867AA1F5
-	for <lists+linux-efi@lfdr.de>; Thu, 21 Sep 2023 23:11:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 037A67AA839
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Sep 2023 07:19:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231620AbjIUVLH (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 21 Sep 2023 17:11:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35852 "EHLO
+        id S230254AbjIVFTv (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 22 Sep 2023 01:19:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233425AbjIUVKt (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 21 Sep 2023 17:10:49 -0400
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D36AB4F39F
-        for <linux-efi@vger.kernel.org>; Thu, 21 Sep 2023 13:39:35 -0700 (PDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-59c29d6887cso20082457b3.0
-        for <linux-efi@vger.kernel.org>; Thu, 21 Sep 2023 13:39:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695328775; x=1695933575; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=53C5bYHRVvtfaBkaBalp4MSsxoJFtnNkxLHzl72a4MI=;
-        b=MrioYhGlDlWfQ19Wfhor+SI/eIoi/YEZxvwwZSBCFCw9+T4yTvnEyvSLlXngnZaXMX
-         TQrc6Gs7/oAFXkpUYrSM8WlBVft8aWi1t2bj05DbKAGOrGjdh7pjxIdwew3GhVzejldV
-         2B8Hsr8N8iVqjyG4MtT0PYZdZOBoYlTDaMjZvA1rpqQFoIKmYKLNMDz5v2sUqWQQyk09
-         xKhcms1AO6WIFgmkIQ3x/7+YmiVx8ZNOQ27ogk8tzoadB4TCeoHEn2+teyWhvF870YBm
-         U9hiJMB6+KvyUuDq7ty21TX6oS1QkD/nuYWJxleil3C51729oHU8kQdk4fXJxQC5itkn
-         Z2pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695328775; x=1695933575;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=53C5bYHRVvtfaBkaBalp4MSsxoJFtnNkxLHzl72a4MI=;
-        b=DBxK6o3W8f/OtYXNEP9wCM8AK/7ebCOIB5WPXTPuVivcZXzM3kKwKSVxNg+mAePFss
-         FDm+ZkxBqM+FWf1YlHkn2VdaWJqCMBte7UotEfhZhUQlzk6vNBzStIMLlsosq/mRWq7d
-         kd5v1/r5v6vjMhzoOCA7xRJh2eg2UT1YRJoNnFYHdDRLTFnC4B8+A6yNMz0NRUzf59pd
-         O9em5jK8m6LmNTjORGNBDCDqmo9Yb7Y/iGhUrMaU4/92AFD43ZhPchEcjUn2LOXLgOPf
-         q9vRD0ifOcF1GKKj3yJfHVQZGRSfSehcWb4i9Lq8KF/eXmmlIsXBEvnIllYCnWMEQXwo
-         NOgg==
-X-Gm-Message-State: AOJu0Yz3dVvwXYOy0wmoNSp/IsDRDYKTleNEHYSrjgSScOLiPG9epLth
-        kl94rXtZjzRtqla94FM4LaqRw7yL9jcAgw==
-X-Google-Smtp-Source: AGHT+IFnzA1PPjjHCv+rFU1xeQb/JiyOfldzqfMRHM+kpIZhGOiHWakS4NTdUkQIaObKosWTAf1IG2bu2eiupQ==
-X-Received: from jiao.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:10f3])
- (user=jiaozhou job=sendgmr) by 2002:a81:aa4d:0:b0:59b:e97e:f7e3 with SMTP id
- z13-20020a81aa4d000000b0059be97ef7e3mr97116ywk.2.1695328774980; Thu, 21 Sep
- 2023 13:39:34 -0700 (PDT)
-Date:   Thu, 21 Sep 2023 20:39:29 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.42.0.515.g380fc7ccd1-goog
-Message-ID: <20230921203929.1505179-1-jiaozhou@google.com>
-Subject: [PATCH v5 RESEND] efivarfs: Add uid/gid mount options
-From:   Jiao Zhou <jiaozhou@google.com>
-To:     Linux FS Development <linux-fsdevel@vger.kernel.org>
-Cc:     Jiao Zhou <jiaozhou@google.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Jeremy Kerr <jk@ozlabs.org>, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, mjg59@srcf.ucam.org,
-        Matthew Garrett <mgarrett@aurora.tech>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229887AbjIVFTv (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 22 Sep 2023 01:19:51 -0400
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BF01192;
+        Thu, 21 Sep 2023 22:19:45 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id DF86A5C021D;
+        Fri, 22 Sep 2023 01:19:41 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Fri, 22 Sep 2023 01:19:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jfarr.cc; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm1; t=1695359981; x=1695446381; bh=sI
+        mZwawhrAlSAj9rqR6mD9oRS9gtqddfHemubwEJhpQ=; b=UDpnI/8mmlayVHLf4l
+        m4/3gUF7uj7omy6k4ElJUy7kaedsiQK2G+KLjdnJPz5BvxqKX5Zv7UXZ/yAB9gIT
+        C8AhvX+rF6zYoK2cQq0hTkuMoimVo2piGEzU8Ex9ldUBbMJuU3hwzNh9pTm3zAGr
+        9TtXINNzgKK1UmNE8NdlL+FL8WkVS00xpgdiRIGo9gR1W91I0tH2ZgPPiJ1RQV3a
+        FR6x9Q37pL+xgSjcDRh+MtRPI0FMD7Sj1UjP5iFpL91vsea7tjRIx9ICNI/VeRIu
+        o5bUJar+5lmDOarTmN8dvFOEIzw66bfF9nTclIRfTbLia3XyZZPxh5WItJ21od0/
+        7avA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1695359981; x=1695446381; bh=sImZwawhrAlSA
+        j9rqR6mD9oRS9gtqddfHemubwEJhpQ=; b=Ca+52/0T1ttXgBWJ149du7KE2simN
+        flPwcv7AuBKThqVk3cbbDD4ulrwPqmDQOgVRXV+Q/cKX7cCMxVoZejyzXsi23lOV
+        7rglRfNpLcwMKZRwGwQo9txpDKQZpW/QzqfNePgZxkoIzzMfMNUPjDRRI+tJ9CPj
+        sEhRFTW9dIWydA6g0bh66V/97F/hSV6AcKa6+5UsoKXTQNnjTwmUPHwmJCK7KrKg
+        raQcnEs9dbjxjo8m1T061ZHbzZ+wDZhICzNiwsunec17MszjKU4InXP8dOvjpYML
+        ybQhSxFK0txWyAJRQlpVqCdAP9revo3K3sU0O4adCcV+z7wr8Lie8FPXg==
+X-ME-Sender: <xms:7SMNZbSKZYdBbPKLuDBcwGe0Rb78gbgTbNPGLvcyjGW89vrVcRrIjA>
+    <xme:7SMNZczivx6RZ1a-Wue-RUncrJaSwItjoQqqcqplOj_U2aAkQSwJfsVE7gLaKuPbb
+    xPQNEMuVJOFOoOI8n8>
+X-ME-Received: <xmr:7SMNZQ0x53Caj-6dCgL0WSHUpz47vB-7yZghDjkeiMGWtzzU2ibesQ8hsopY0PjejJ8ZW7GwwDJ1VXBlyE5ot9OlDw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudekjedgledtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    gfrhhlucfvnfffucdluddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddt
+    tddvnecuhfhrohhmpeflrghnucfjvghnughrihhkucfhrghrrhcuoehkvghrnhgvlhesjh
+    hfrghrrhdrtggtqeenucggtffrrghtthgvrhhnpeehgeefffejveeuleekueeguefftdef
+    hefgtedtieeghefhtefgiefhiefhtdetheenucffohhmrghinhepkhgvrhhnvghlrdhorh
+    hgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhgv
+    rhhnvghlsehjfhgrrhhrrdgttg
+X-ME-Proxy: <xmx:7SMNZbD8YIuRD_AooZ6bAE5jgsJAsZUYkFBlqVy-y2u_JPeGHHg0Bw>
+    <xmx:7SMNZUh71Uk48BslAAQw-dkeZ6UrzSexw4yb1Tp2WwCp5u1x14QHvg>
+    <xmx:7SMNZfrJ7tM1-HQRbxW7EH-oXOoo6Udc79IBAEVQr3KIOlBPQzcE5w>
+    <xmx:7SMNZdZ9IB3bBaTU5JbU9kDaqqLPemtOSuHUowrJlD7h9jdnKXFrmw>
+Feedback-ID: i01d149f8:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 22 Sep 2023 01:19:39 -0400 (EDT)
+Date:   Fri, 22 Sep 2023 07:19:36 +0200
+From:   Jan Hendrik Farr <kernel@jfarr.cc>
+To:     Pingfan Liu <kernelfans@gmail.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
+        kexec@lists.infradead.org, Pingfan Liu <piliu@redhat.com>,
+        Baoquan He <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
+        Philipp Rudo <prudo@redhat.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, keyrings@vger.kernel.org,
+        Luca Boccassi <bluca@debian.org>, lennart@poettering.net,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, mjg59@google.com,
+        James.Bottomley@hansenpartnership.com
+Subject: Re: [PATCH 0/2] Sign the Image which is zboot's payload
+Message-ID: <ZQ0j6Es88aR8cjRv@desktop>
+References: <20230921133703.39042-1-kernelfans@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230921133703.39042-1-kernelfans@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Allow UEFI variables to be modified by non-root processes
-in order to run sandboxed code. This doesn't change the behavior 
-of mounting efivarfs unless uid/gid are specified; 
-by default both are set to root.
+Hi Pingfan!
 
-Signed-off-by: Jiao Zhou <jiaozhou@google.com>
-Acked-by: Matthew Garrett <mgarrett@aurora.tech>
----
-Changelog since v1:
-- Add missing sentinel entry in fs_parameter_spec[] array.
-- Fix a NULL pointer dereference.
+On 21 21:37:01, Pingfan Liu wrote:
+> From: Pingfan Liu <piliu@redhat.com>
+> 
 
-Changelog since v2:
-- Format the patch description.
+> For security boot, the vmlinuz.efi will be signed so UEFI boot loader
+> can check against it. But at present, there is no signature for kexec
+> file load, this series makes a signature on the zboot's payload -- Image
+> before it is compressed. As a result, the kexec-tools parses and
+> decompresses the Image.gz to get the Image, which has signature and can
+> be checked against during kexec file load
 
-Changelog since v3:
-- Add gid and uid check to make sure that ids are valid.
-- Drop the indentation for one block.
-- Use sizeof(*sfi) to allocate memory to avoids future problems if sfi ever changes type.
+I missed some of the earlier discussion about this zboot kexec support.
+So just let me know if I'm missing something here. You were exploring
+these two options in getting this supported:
 
-Changelog since v4:
-- Fix the use of sizeof.
+1. Making kexec_file_load do all the work.
 
- fs/efivarfs/inode.c    |  4 +++
- fs/efivarfs/internal.h |  9 +++++
- fs/efivarfs/super.c    | 74 ++++++++++++++++++++++++++++++++++++++++--
- 3 files changed, 84 insertions(+), 3 deletions(-)
+This option makes the signature verification easy. kexec_file_load
+checks the signature on the pe file and then extracts it and does the
+kexec.
 
-diff --git a/fs/efivarfs/inode.c b/fs/efivarfs/inode.c
-index db9231f0e77b..06dfc73fda04 100644
---- a/fs/efivarfs/inode.c
-+++ b/fs/efivarfs/inode.c
-@@ -20,9 +20,13 @@ struct inode *efivarfs_get_inode(struct super_block *sb,
- 				const struct inode *dir, int mode,
- 				dev_t dev, bool is_removable)
- {
-+	struct efivarfs_fs_info *fsi = sb->s_fs_info;
- 	struct inode *inode = new_inode(sb);
-+	struct efivarfs_mount_opts *opts = &fsi->mount_opts;
- 
- 	if (inode) {
-+		inode->i_uid = opts->uid;
-+		inode->i_gid = opts->gid;
- 		inode->i_ino = get_next_ino();
- 		inode->i_mode = mode;
- 		inode->i_atime = inode->i_mtime = inode_set_ctime_current(inode);
-diff --git a/fs/efivarfs/internal.h b/fs/efivarfs/internal.h
-index 8ebf3a6a8aa2..c66647f5c0bd 100644
---- a/fs/efivarfs/internal.h
-+++ b/fs/efivarfs/internal.h
-@@ -9,6 +9,15 @@
- #include <linux/list.h>
- #include <linux/efi.h>
- 
-+struct efivarfs_mount_opts {
-+	kuid_t uid;
-+	kgid_t gid;
-+};
-+
-+struct efivarfs_fs_info {
-+	struct efivarfs_mount_opts mount_opts;
-+};
-+
- struct efi_variable {
- 	efi_char16_t  VariableName[EFI_VAR_NAME_LEN/sizeof(efi_char16_t)];
- 	efi_guid_t    VendorGuid;
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index e028fafa04f3..ba14736ebae0 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -8,6 +8,7 @@
- #include <linux/efi.h>
- #include <linux/fs.h>
- #include <linux/fs_context.h>
-+#include <linux/fs_parser.h>
- #include <linux/module.h>
- #include <linux/pagemap.h>
- #include <linux/ucs2_string.h>
-@@ -24,6 +25,21 @@ static void efivarfs_evict_inode(struct inode *inode)
- 	clear_inode(inode);
- }
- 
-+static int efivarfs_show_options(struct seq_file *m, struct dentry *root)
-+{
-+	struct super_block *sb = root->d_sb;
-+	struct efivarfs_fs_info *sbi = sb->s_fs_info;
-+	struct efivarfs_mount_opts *opts = &sbi->mount_opts;
-+
-+	if (!uid_eq(opts->uid, GLOBAL_ROOT_UID))
-+		seq_printf(m, ",uid=%u",
-+				from_kuid_munged(&init_user_ns, opts->uid));
-+	if (!gid_eq(opts->gid, GLOBAL_ROOT_GID))
-+		seq_printf(m, ",gid=%u",
-+				from_kgid_munged(&init_user_ns, opts->gid));
-+	return 0;
-+}
-+
- static int efivarfs_statfs(struct dentry *dentry, struct kstatfs *buf)
- {
- 	const u32 attr = EFI_VARIABLE_NON_VOLATILE |
-@@ -64,6 +80,7 @@ static const struct super_operations efivarfs_ops = {
- 	.statfs = efivarfs_statfs,
- 	.drop_inode = generic_delete_inode,
- 	.evict_inode = efivarfs_evict_inode,
-+	.show_options = efivarfs_show_options,
- };
- 
- /*
-@@ -225,6 +242,45 @@ static int efivarfs_destroy(struct efivar_entry *entry, void *data)
- 	return 0;
- }
- 
-+enum {
-+	Opt_uid, Opt_gid,
-+};
-+
-+static const struct fs_parameter_spec efivarfs_parameters[] = {
-+	fsparam_u32("uid",			Opt_uid),
-+	fsparam_u32("gid",			Opt_gid),
-+	{},
-+};
-+
-+static int efivarfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
-+{
-+	struct efivarfs_fs_info *sbi = fc->s_fs_info;
-+	struct efivarfs_mount_opts *opts = &sbi->mount_opts;
-+	struct fs_parse_result result;
-+	int opt;
-+
-+	opt = fs_parse(fc, efivarfs_parameters, param, &result);
-+	if (opt < 0)
-+		return opt;
-+
-+	switch (opt) {
-+	case Opt_uid:
-+		opts->uid = make_kuid(current_user_ns(), result.uint_32);
-+		if (!uid_valid(opts->uid))
-+			return -EINVAL;
-+		break;
-+	case Opt_gid:
-+		opts->gid = make_kgid(current_user_ns(), result.uint_32);
-+		if (!gid_valid(opts->gid))
-+			return -EINVAL;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
- static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
- {
- 	struct inode *inode = NULL;
-@@ -270,11 +326,22 @@ static int efivarfs_get_tree(struct fs_context *fc)
- }
- 
- static const struct fs_context_operations efivarfs_context_ops = {
--	.get_tree	= efivarfs_get_tree,
-+	.get_tree = efivarfs_get_tree,
-+	.parse_param = efivarfs_parse_param,
- };
- 
- static int efivarfs_init_fs_context(struct fs_context *fc)
- {
-+	struct efivarfs_fs_info *sfi;
-+
-+	sfi = kzalloc(sizeof(*sfi), GFP_KERNEL);
-+	if (!sfi)
-+		return -ENOMEM;
-+
-+	sfi->mount_opts.uid = GLOBAL_ROOT_UID;
-+	sfi->mount_opts.gid = GLOBAL_ROOT_GID;
-+
-+	fc->s_fs_info = sfi;
- 	fc->ops = &efivarfs_context_ops;
- 	return 0;
- }
-@@ -291,10 +358,11 @@ static void efivarfs_kill_sb(struct super_block *sb)
- }
- 
- static struct file_system_type efivarfs_type = {
--	.owner   = THIS_MODULE,
--	.name    = "efivarfs",
-+	.owner = THIS_MODULE,
-+	.name = "efivarfs",
- 	.init_fs_context = efivarfs_init_fs_context,
- 	.kill_sb = efivarfs_kill_sb,
-+	.parameters	= efivarfs_parameters,
- };
- 
- static __init int efivarfs_init(void)
--- 
-2.42.0.283.g2d96d420d3-goog
+This is similar to how I'm approaching UKI support in [1].
+
+2. Extract in userspace and pass decompressed kernel to kexec_file_load
+
+This options requires the decompressed kernel to have a valid signature on
+it. That's why this patch adds the ability to add that signature to the
+kernel contained inside the zboot image.
+
+This option would not make sense for UKI support as it would not
+validate the signature with respect to the initrd and cmdline that it
+contains. Am I correct in thinking that there is no similar issue with
+zboot images? They don't contain any more information besides the kernel
+that is intended to be securely signed, right? Do you have a reference
+for the zboot image layout somewhere?
+
+> I hesitate to post this series, 
+
+I appreciate you sending it, it's helping the discussion along.
+
+> [...] since Ard has recommended using an
+> emulated UEFI boot service to resolve the UKI kexec load problem [1].
+> since on aarch64, vmlinuz.efi has faced the similar issue at present.
+> But anyway, I have a crude outline of it and am sending it out for
+> discussion.
+
+The more I'm thinking about it, the more I like Ard's idea. There's now
+already two different formats trying to be added to kexec that are
+pretty different from each other, yet they both have the UEFI interface
+in common. I think if the kernel supported kexec'ing EFI applications
+that would be a more flexible and forward-looking approach. It's a
+standard that both zboot and UKI as well as all future formats for UEFI
+platforms will support anyways. So while it's more work right now to
+implement, I think it'll likely pay off.
+
+It is significantly more work than the other options though. So I think
+before work is started on it, it would be nice to get some type of
+consensus on these things (not an exhaustive list, please feel free to
+add to it):
+
+1. Is it the right approach? It adds a significant amount of userspace
+API.
+2. What subset of the UEFI spec needs/should to be supported?
+3. Can we let runtime services still be handled by the firmware after
+exiting boot services?
+4. How can we debug the stubs that are being invoked?
+5. Can we let the EFI binary know that this is a kexec and not a normal
+bootup. Potentially systemd-stub would want to change how/if it does TPM
+PCR measurements.
+...
+
+
+[1] https://lore.kernel.org/kexec/20230911052535.335770-2-kernel@jfarr.cc/T/
+
+Added some more CCs.
+
