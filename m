@@ -2,77 +2,67 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D5EA7AB09B
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Sep 2023 13:29:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E40667AB640
+	for <lists+linux-efi@lfdr.de>; Fri, 22 Sep 2023 18:43:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233646AbjIVL3R (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 22 Sep 2023 07:29:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38480 "EHLO
+        id S232542AbjIVQna (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 22 Sep 2023 12:43:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233643AbjIVL3Q (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 22 Sep 2023 07:29:16 -0400
-Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C702AC;
-        Fri, 22 Sep 2023 04:29:09 -0700 (PDT)
-Received: from localhost (unknown [195.89.33.213])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id 2FA152D6;
-        Fri, 22 Sep 2023 11:29:09 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 2FA152D6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-        t=1695382149; bh=u8Zhv7QCSsdruT43CaXY6QMt4g3f6bidDSIGHufPC+k=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=gqtcp2T42JGezpcF4td2CgO6+xOsSkuqOn9UO4AGOzspY3zIhmrpaWlnYtKS6D5Km
-         4f6n5ZGTi9OD/fIhEKCzb/B76AD+AcfsVqYNZ1oKz5nkUxE7SUcLHQ1UwgOdkgzmHu
-         F2cpiO1JfzkCqPpd8uze3XaHzaEEtPS8gUwuFNt+SN57Th0kgM4JTdvinTBsalkU5A
-         g7aBHxwPZzr815n3CbsaxKoXW4W1qX8stJ8tbIdJW15/f9NqvzdwuCxFOCi4tQuE0a
-         bJSIHrwNEaZTwxrvc0NfLrTxhQRrSNdbG/ch55//Uy/oau21K9sI4Xs3EOysmvq121
-         5jQsbqpoa73YQ==
-From:   Jonathan Corbet <corbet@lwn.net>
-To:     mikko.rapeli@linaro.org, linux-doc@vger.kernel.org
-Cc:     Mikko Rapeli <mikko.rapeli@linaro.org>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-        stable@kernel.org
-Subject: Re: [PATCH] Documentation efi-stub.rst: fix arm64 EFI source location
-In-Reply-To: <20230904113214.4147021-1-mikko.rapeli@linaro.org>
-References: <20230904113214.4147021-1-mikko.rapeli@linaro.org>
-Date:   Fri, 22 Sep 2023 05:29:07 -0600
-Message-ID: <87cyya78fw.fsf@meer.lwn.net>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S232832AbjIVQnX (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 22 Sep 2023 12:43:23 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8AC919A
+        for <linux-efi@vger.kernel.org>; Fri, 22 Sep 2023 09:43:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 83A1FC433CA;
+        Fri, 22 Sep 2023 16:43:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695400997;
+        bh=44XnfCKrNLiu6R5FlAQEciGMs6CervT02v5A9UhlLp0=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=ePVnw4aaMFB5JBCrBl+JL+fWPQf30LlF80mWvKxT93p8R4dVGYlYn+1c952qm8CyQ
+         lhS4TqFO1Y0tp01xFCVxk2z3IjkC0aHJX3SwYVOFs0+84dqF4gVZT0sbgzV7UDooIx
+         RNY3d3UMUavfiwpm7IddGxgRV8bZ6V4xTlXw5X099WIkBOKsv2G9Pj2KjxG6BdGC9o
+         ZM2uCaJ2ZOpVRdk8K85cFelynkqo66cncoCbf/YOZ81sK1jSWXxXPamr8Iu/wM+mMs
+         ueB6EvVScUifLquL0pLcQKiRhSb5MDxkeYEccWDrF7Lq63cejmMMFgNbbR6AIxeIFF
+         GZVhPoMMhilUw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 6CDC1C04DD9;
+        Fri, 22 Sep 2023 16:43:17 +0000 (UTC)
+Subject: Re: [GIT PULL] EFI fixes for v6.6 (#2)
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20230922094027.204834-1-ardb@kernel.org>
+References: <20230922094027.204834-1-ardb@kernel.org>
+X-PR-Tracked-List-Id: <linux-efi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20230922094027.204834-1-ardb@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.6-2
+X-PR-Tracked-Commit-Id: 8dbe33956d96c9d066ef15ca933ede30748198b2
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: dc912ba91b7e2fa74650a0fc22cccf0e0d50f371
+Message-Id: <169540099744.17578.161467369158201850.pr-tracker-bot@kernel.org>
+Date:   Fri, 22 Sep 2023 16:43:17 +0000
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     torvalds@linux-foundation.org, linux-efi@vger.kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-mikko.rapeli@linaro.org writes:
+The pull request you sent on Fri, 22 Sep 2023 09:40:27 +0000:
 
-> From: Mikko Rapeli <mikko.rapeli@linaro.org>
->
-> arch/arm64/kernel/efi-entry.S has been moved to
-> drivers/firmware/efi/libstub/arm64-entry.S by commit
-> v6.1-rc4-6-g4ef806096bdb and to
-> drivers/firmware/efi/libstub/arm64.c by commit
-> v6.2-rc3-6-g617861703830
->
-> Fixes: 4ef806096bdb (arm64: efi: Move efi-entry.S into the libstub source directory)
-> Fixes: 617861703830 (efi: arm64: enter with MMU and caches enabled)
->
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: linux-efi@vger.kernel.org
-> Cc: stable@kernel.org
-> Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
-> ---
->  Documentation/admin-guide/efi-stub.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.6-2
 
-Applied, thanks,
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/dc912ba91b7e2fa74650a0fc22cccf0e0d50f371
 
-jon
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
