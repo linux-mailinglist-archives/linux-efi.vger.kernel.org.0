@@ -2,67 +2,104 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E40667AB640
-	for <lists+linux-efi@lfdr.de>; Fri, 22 Sep 2023 18:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5ED27AC9F9
+	for <lists+linux-efi@lfdr.de>; Sun, 24 Sep 2023 16:26:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232542AbjIVQna (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 22 Sep 2023 12:43:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54382 "EHLO
+        id S229693AbjIXO0t (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 24 Sep 2023 10:26:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232832AbjIVQnX (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 22 Sep 2023 12:43:23 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8AC919A
-        for <linux-efi@vger.kernel.org>; Fri, 22 Sep 2023 09:43:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 83A1FC433CA;
-        Fri, 22 Sep 2023 16:43:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695400997;
-        bh=44XnfCKrNLiu6R5FlAQEciGMs6CervT02v5A9UhlLp0=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=ePVnw4aaMFB5JBCrBl+JL+fWPQf30LlF80mWvKxT93p8R4dVGYlYn+1c952qm8CyQ
-         lhS4TqFO1Y0tp01xFCVxk2z3IjkC0aHJX3SwYVOFs0+84dqF4gVZT0sbgzV7UDooIx
-         RNY3d3UMUavfiwpm7IddGxgRV8bZ6V4xTlXw5X099WIkBOKsv2G9Pj2KjxG6BdGC9o
-         ZM2uCaJ2ZOpVRdk8K85cFelynkqo66cncoCbf/YOZ81sK1jSWXxXPamr8Iu/wM+mMs
-         ueB6EvVScUifLquL0pLcQKiRhSb5MDxkeYEccWDrF7Lq63cejmMMFgNbbR6AIxeIFF
-         GZVhPoMMhilUw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 6CDC1C04DD9;
-        Fri, 22 Sep 2023 16:43:17 +0000 (UTC)
-Subject: Re: [GIT PULL] EFI fixes for v6.6 (#2)
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20230922094027.204834-1-ardb@kernel.org>
-References: <20230922094027.204834-1-ardb@kernel.org>
-X-PR-Tracked-List-Id: <linux-efi.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20230922094027.204834-1-ardb@kernel.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.6-2
-X-PR-Tracked-Commit-Id: 8dbe33956d96c9d066ef15ca933ede30748198b2
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: dc912ba91b7e2fa74650a0fc22cccf0e0d50f371
-Message-Id: <169540099744.17578.161467369158201850.pr-tracker-bot@kernel.org>
-Date:   Fri, 22 Sep 2023 16:43:17 +0000
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     torvalds@linux-foundation.org, linux-efi@vger.kernel.org,
-        Ard Biesheuvel <ardb@kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230019AbjIXO0q (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 24 Sep 2023 10:26:46 -0400
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E35C107;
+        Sun, 24 Sep 2023 07:26:40 -0700 (PDT)
+Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-690f8e63777so1008186b3a.0;
+        Sun, 24 Sep 2023 07:26:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695565600; x=1696170400; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mgWTrzjoY3sGlxnii74atqnIgdbUIfPkMFowVdxWBx0=;
+        b=gnslyBqHtL+ACSsx942MbJwZ/6KEjSJTKd33Qq+yMtGUcycUiCm1yNGSHV4j5BEMwj
+         dAP/30KTBSf5fGxRBiAKpifeDjl0lZNHtL0l8I3UQXXRM1AykjFkT+Ewm79AflksUxYr
+         vbJ6eXjWJXAspNdXjBxUvZYVcGo2d2mwvoJonul/YbB7kG/I9BrQHsy1wA72Td1+giz0
+         0pCNIWcZMOaQVT4rntppt8Ksm/WrWV75opBYO5P0+OuGl/p/i+9BpTkg7Q7GyMrtjZwE
+         4429zailAy+1z5fv2f6SMpEZeQ8bI3PNc4Se3F60jArCR6+LOfrgRnCWF3nhoJGwNpD0
+         1GZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695565600; x=1696170400;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mgWTrzjoY3sGlxnii74atqnIgdbUIfPkMFowVdxWBx0=;
+        b=Q57VcdmG8h3+qxl7zHfnxBE92lSWa60S9wUx91PDR9N+ptx1TUI8BE4y07T45LDM/G
+         mcKHk/GXUVBY+/7C4JR9soUtSOW2wvNQdvSQ3Ak5TrFL4iqq1T3WjT2R0EWXhdsImNtJ
+         aKEUIaBhNrqkeC95VUfg8yOUbFxO5oMUbZM0xUhjoNLOBRBfAPM3jK6HAgrpqwc7NlTX
+         KAubSZ6RuVpzkRWgAf+8gQ1XsfFdR63pggAXa5t0gDaINYwJkDtMa7OWNOWM+aABux/v
+         VIv1yRSWj45WUzb4XEBzsoXxmZojdpTN8a++4sSORvu1lcoVbUN/gn/cQti209mooUAd
+         NnYQ==
+X-Gm-Message-State: AOJu0Yy4fzlOi9neQEEbN33Wcx56h7xlaz8Vo22a4cBMkQEmATL1Ci0t
+        IJ5TXO5L4W3iux5fEgnqgpA=
+X-Google-Smtp-Source: AGHT+IE4gK9VmVit+w05RhD05sljoNnzS0SQYHlCpXHZxV6BCrWXbofcfjBEh6GMANTHGqbapxMUHQ==
+X-Received: by 2002:a05:6a00:328b:b0:692:ad93:e852 with SMTP id ck11-20020a056a00328b00b00692ad93e852mr5780138pfb.2.1695565599613;
+        Sun, 24 Sep 2023 07:26:39 -0700 (PDT)
+Received: from localhost.localdomain ([140.116.154.65])
+        by smtp.gmail.com with ESMTPSA id c6-20020a62e806000000b0068aca503b9fsm6377210pfi.114.2023.09.24.07.26.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Sep 2023 07:26:39 -0700 (PDT)
+From:   Kuan-Wei Chiu <visitorckw@gmail.com>
+To:     ardb@kernel.org
+Cc:     linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kuan-Wei Chiu <visitorckw@gmail.com>
+Subject: [PATCH] efi: fix memory leak in krealloc failure handling
+Date:   Sun, 24 Sep 2023 22:26:33 +0800
+Message-Id: <20230924142633.1090000-1-visitorckw@gmail.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The pull request you sent on Fri, 22 Sep 2023 09:40:27 +0000:
+In the previous code, there was a memory leak issue where the
+previously allocated memory was not freed upon a failed krealloc
+operation. This patch addresses the problem by releasing the old memory
+before setting the pointer to NULL in case of a krealloc failure. This
+ensures that memory is properly managed and avoids potential memory
+leaks.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git tags/efi-fixes-for-v6.6-2
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+---
+ drivers/firmware/efi/efi.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/dc912ba91b7e2fa74650a0fc22cccf0e0d50f371
-
-Thank you!
-
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index ce20a60676f0..1974f0ad32ba 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -273,9 +273,13 @@ static __init int efivar_ssdt_load(void)
+ 		if (status == EFI_NOT_FOUND) {
+ 			break;
+ 		} else if (status == EFI_BUFFER_TOO_SMALL) {
+-			name = krealloc(name, name_size, GFP_KERNEL);
+-			if (!name)
++			efi_char16_t *name_tmp =
++				krealloc(name, name_size, GFP_KERNEL);
++			if (!name_tmp) {
++				kfree(name);
+ 				return -ENOMEM;
++			}
++			name = name_tmp;
+ 			continue;
+ 		}
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.25.1
+
