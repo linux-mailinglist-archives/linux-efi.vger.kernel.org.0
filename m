@@ -2,43 +2,42 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7935C7B2349
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Sep 2023 19:09:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD3A37B2396
+	for <lists+linux-efi@lfdr.de>; Thu, 28 Sep 2023 19:19:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231310AbjI1RJ2 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 28 Sep 2023 13:09:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42088 "EHLO
+        id S231389AbjI1RTr (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 28 Sep 2023 13:19:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229581AbjI1RJ1 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Sep 2023 13:09:27 -0400
+        with ESMTP id S231376AbjI1RTq (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Sep 2023 13:19:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3246DC0;
-        Thu, 28 Sep 2023 10:09:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E060C433C8;
-        Thu, 28 Sep 2023 17:09:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 685B4DD;
+        Thu, 28 Sep 2023 10:19:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2E8C433C8;
+        Thu, 28 Sep 2023 17:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695920964;
-        bh=zRV/ipMOOeHJFSr00KRb3DbkWuWIfMUsmholMiYqIFk=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=RTCWP38X/3Qiq9e2eoLruFi6qLhhyLJQrL65PrzDXWj1P7d+rG2Zhi5BPUongplET
-         wsh5RnIrkn2G9TM6HAAN0NYZV5F3YR+mvgQFtP+9DfawGUb0VUEGN4ZEWFes0Iqc9f
-         GfOE5yeYJ7UoCrij4lXLrG+jRW8wnHjCzfKNNQxN4dSF4K07yMiaZJqV+VHP19Z5O0
-         9Eizi+4+cRTlhImq1fbs7Tb7Mmc79AROTIyl6OUF1ztlUjMfm5tqzXneCy0nyt31m3
-         teqvuavXAiJG2oyvZuxOiGcbkwGZED723LL7ZyPIvGZsh/B5aAGwbzTt8Xw0FUHUy0
-         P2xkFw6PYWKrw==
-Message-ID: <555fd53b72742fe8a8d2b67c80502f749631d773.camel@kernel.org>
-Subject: Re: [PATCH 86/87] fs: switch timespec64 fields in inode to discrete
- integers
-From:   Jeff Layton <jlayton@kernel.org>
-To:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        s=k20201202; t=1695921584;
+        bh=TBXriEELB328eOKqJ6NFSOrKvuSXYJvHz6sohZrQIx0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ryWGGERqf3ypGjqQYm5gVKZvkucKGUk0K4h6YIIWQ/NpKuXJi36HQDWjgdgtJd7wu
+         TP/RvT38TPj/OA2Jk4aeD0DGoa7LAN7jIOlBWE0I1eYn6imAEKifbbeaG59NKi/slD
+         aEVjDaHe+6Tji3j/v0JkIDO2dR6Fo6pHy84G4o5KxjxBslGp0LwydCJH4NJcX4DsY2
+         2+Ki57CRL6p89OjFpqSqXlcve39ZEqPDxD7QZyCHUVk8IqPpmvXHWivOQJXeNPWNjx
+         piSViGDp1oRPgjAY21DvqURTHMn9e50dg1rgKW7SErtrbVvTXl75DArwoAJ6zoDjTa
+         8X72loIt6il5Q==
+Date:   Thu, 28 Sep 2023 10:19:43 -0700
+From:   "Darrick J. Wong" <djwong@kernel.org>
+To:     Jeff Layton <jlayton@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
         Christian Brauner <brauner@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         David Sterba <dsterba@suse.cz>,
         Amir Goldstein <amir73il@gmail.com>,
         Theodore Ts'o <tytso@mit.edu>,
-        Eric Biederman <ebiederm@xmission.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
         Kees Cook <keescook@chromium.org>, Jeremy Kerr <jk@ozlabs.org>,
-        Arnd Bergmann <arnd@arndb.de>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Nicholas Piggin <npiggin@gmail.com>,
         Christophe Leroy <christophe.leroy@csgroup.eu>,
@@ -48,7 +47,7 @@ To:     Alexander Viro <viro@zeniv.linux.org.uk>,
         Christian Borntraeger <borntraeger@linux.ibm.com>,
         Sven Schnelle <svens@linux.ibm.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arve =?ISO-8859-1?Q?Hj=F8nnev=E5g?= <arve@android.com>,
+        Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
         Todd Kjos <tkjos@android.com>,
         Martijn Coenen <maco@android.com>,
         Joel Fernandes <joel@joelfernandes.org>,
@@ -61,7 +60,7 @@ To:     Alexander Viro <viro@zeniv.linux.org.uk>,
         Brad Warrum <bwarrum@linux.ibm.com>,
         Ritu Agarwal <rituagar@linux.ibm.com>,
         Hans de Goede <hdegoede@redhat.com>,
-        Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
         Mark Gross <markgross@kernel.org>,
         Jiri Slaby <jirislaby@kernel.org>,
         Eric Van Hensbergen <ericvh@kernel.org>,
@@ -82,7 +81,7 @@ To:     Alexander Viro <viro@zeniv.linux.org.uk>,
         Joel Becker <jlbec@evilplan.org>,
         Christoph Hellwig <hch@lst.de>,
         Nicolas Pitre <nico@fluxnic.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
         Ard Biesheuvel <ardb@kernel.org>, Gao Xiang <xiang@kernel.org>,
         Chao Yu <chao@kernel.org>, Yue Hu <huyue2@coolpad.com>,
         Jeffle Xu <jefflexu@linux.alibaba.com>,
@@ -133,7 +132,6 @@ To:     Alexander Viro <viro@zeniv.linux.org.uk>,
         Masami Hiramatsu <mhiramat@kernel.org>,
         Evgeniy Dushistov <dushistov@mail.ru>,
         Chandan Babu R <chandan.babu@oracle.com>,
-        "Darrick J. Wong" <djwong@kernel.org>,
         Damien Le Moal <dlemoal@kernel.org>,
         Naohiro Aota <naohiro.aota@wdc.com>,
         Johannes Thumshirn <jth@kernel.org>,
@@ -149,7 +147,7 @@ To:     Alexander Viro <viro@zeniv.linux.org.uk>,
         Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
         Hugh Dickins <hughd@google.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        "David S . Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
@@ -158,8 +156,8 @@ To:     Alexander Viro <viro@zeniv.linux.org.uk>,
         James Morris <jmorris@namei.org>,
         "Serge E. Hallyn" <serge@hallyn.com>,
         Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>
-Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Eric Paris <eparis@parisplace.org>,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
         linux-s390@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-rdma@vger.kernel.org, linux-serial@vger.kernel.org,
@@ -178,17 +176,20 @@ Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
         reiserfs-devel@vger.kernel.org, linux-cifs@vger.kernel.org,
         samba-technical@lists.samba.org,
         linux-trace-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
-        bpf@vger.kernel.org, netdev@vger.kernel.org,
+        bpf@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
         apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
         selinux@vger.kernel.org
-Date:   Thu, 28 Sep 2023 13:09:08 -0400
-In-Reply-To: <20230928110554.34758-2-jlayton@kernel.org>
+Subject: Re: [PATCH 86/87] fs: switch timespec64 fields in inode to discrete
+ integers
+Message-ID: <20230928171943.GK11439@frogsfrogsfrogs>
 References: <20230928110554.34758-1-jlayton@kernel.org>
-         <20230928110554.34758-2-jlayton@kernel.org>
-Content-Type: text/plain; charset="ISO-8859-15"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ <20230928110554.34758-2-jlayton@kernel.org>
+ <6020d6e7-b187-4abb-bf38-dc09d8bd0f6d@app.fastmail.com>
+ <af047e4a1c6947c59d4a13d4ae221c784a5386b4.camel@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <af047e4a1c6947c59d4a13d4ae221c784a5386b4.camel@kernel.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -198,119 +199,45 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 2023-09-28 at 07:05 -0400, Jeff Layton wrote:
-> This shaves 8 bytes off struct inode, according to pahole.
->=20
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> ---
->  include/linux/fs.h | 32 +++++++++++++++++++++++---------
->  1 file changed, 23 insertions(+), 9 deletions(-)
->=20
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index 831657011036..de902ff2938b 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -671,9 +671,12 @@ struct inode {
->  	};
->  	dev_t			i_rdev;
->  	loff_t			i_size;
-> -	struct timespec64	__i_atime; /* use inode_*_atime accessors */
-> -	struct timespec64	__i_mtime; /* use inode_*_mtime accessors */
-> -	struct timespec64	__i_ctime; /* use inode_*_ctime accessors */
-> +	time64_t		i_atime_sec;
-> +	time64_t		i_mtime_sec;
-> +	time64_t		i_ctime_sec;
-> +	u32			i_atime_nsec;
-> +	u32			i_mtime_nsec;
-> +	u32			i_ctime_nsec;
->  	spinlock_t		i_lock;	/* i_blocks, i_bytes, maybe i_size */
->  	unsigned short          i_bytes;
->  	u8			i_blkbits;
-> @@ -1519,7 +1522,9 @@ struct timespec64 inode_set_ctime_current(struct in=
-ode *inode);
->   */
->  static inline struct timespec64 inode_get_ctime(const struct inode *inod=
-e)
->  {
-> -	return inode->__i_ctime;
-> +	struct timespec64 ts =3D { .tv_sec  =3D inode->i_ctime_sec,
-> +				 .tv_nsec =3D inode->i_ctime_nsec };
-> +	return ts;
->  }
->=20
->
-> =20
->  /**
-> @@ -1532,7 +1537,8 @@ static inline struct timespec64 inode_get_ctime(con=
-st struct inode *inode)
->  static inline struct timespec64 inode_set_ctime_to_ts(struct inode *inod=
-e,
->  						      struct timespec64 ts)
->  {
-> -	inode->__i_ctime =3D ts;
-> +	inode->i_ctime_sec =3D ts.tv_sec;
-> +	inode->i_ctime_nsec =3D ts.tv_sec;
+On Thu, Sep 28, 2023 at 01:06:03PM -0400, Jeff Layton wrote:
+> On Thu, 2023-09-28 at 11:48 -0400, Arnd Bergmann wrote:
+> > On Thu, Sep 28, 2023, at 07:05, Jeff Layton wrote:
+> > > This shaves 8 bytes off struct inode, according to pahole.
+> > > 
+> > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> > 
+> > FWIW, this is similar to the approach that Deepa suggested
+> > back in 2016:
+> > 
+> > https://lore.kernel.org/lkml/1452144972-15802-3-git-send-email-deepa.kernel@gmail.com/
+> > 
+> > It was NaKed at the time because of the added complexity,
+> > though it would have been much easier to do it then,
+> > as we had to touch all the timespec references anyway.
+> > 
+> > The approach still seems ok to me, but I'm not sure it's worth
+> > doing it now if we didn't do it then.
+> > 
+> 
+> I remember seeing those patches go by. I don't remember that change
+> being NaK'ed, but I wasn't paying close attention at the time 
+> 
+> Looking at it objectively now, I think it's worth it to recover 8 bytes
+> per inode and open a 4 byte hole that Amir can use to grow the
+> i_fsnotify_mask. We might even able to shave off another 12 bytes
+> eventually if we can move to a single 64-bit word per timestamp. 
 
-Bug above and in the other inode_set_?time_to_ts() functions. This isn't
-setting the nsec field correctly.
+I don't think you can, since btrfs timestamps utilize s64 seconds
+counting in both directions from the Unix epoch.  They also support ns
+resolution:
 
->  	return ts;
->  }
->=20
->=20
+	struct btrfs_timespec {
+		__le64 sec;
+		__le32 nsec;
+	} __attribute__ ((__packed__));
 
+--D
 
-> =20
-> @@ -1555,13 +1561,17 @@ static inline struct timespec64 inode_set_ctime(s=
-truct inode *inode,
-> =20
->  static inline struct timespec64 inode_get_atime(const struct inode *inod=
-e)
->  {
-> -	return inode->__i_atime;
-> +	struct timespec64 ts =3D { .tv_sec  =3D inode->i_atime_sec,
-> +				 .tv_nsec =3D inode->i_atime_nsec };
-> +
-> +	return ts;
->  }
-> =20
->  static inline struct timespec64 inode_set_atime_to_ts(struct inode *inod=
-e,
->  						      struct timespec64 ts)
->  {
-> -	inode->__i_atime =3D ts;
-> +	inode->i_atime_sec =3D ts.tv_sec;
-> +	inode->i_atime_nsec =3D ts.tv_sec;
->  	return ts;
->  }
-> =20
-> @@ -1575,13 +1585,17 @@ static inline struct timespec64 inode_set_atime(s=
-truct inode *inode,
-> =20
->  static inline struct timespec64 inode_get_mtime(const struct inode *inod=
-e)
->  {
-> -	return inode->__i_mtime;
-> +	struct timespec64 ts =3D { .tv_sec  =3D inode->i_mtime_sec,
-> +				 .tv_nsec =3D inode->i_mtime_nsec };
-> +
-> +	return ts;
->  }
-> =20
->  static inline struct timespec64 inode_set_mtime_to_ts(struct inode *inod=
-e,
->  						      struct timespec64 ts)
->  {
-> -	inode->__i_mtime =3D ts;
-> +	inode->i_atime_sec =3D ts.tv_sec;
-> +	inode->i_atime_nsec =3D ts.tv_sec;
-
-Doh! s/atime/mtime/ in the above lines.
-
->  	return ts;
->  }
-> =20
-
-Both bugs are fixed in my tree.
---=20
-Jeff Layton <jlayton@kernel.org>
+> It is a lot of churn though.
+> -- 
+> Jeff Layton <jlayton@kernel.org>
