@@ -2,44 +2,42 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 566C87B2416
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Sep 2023 19:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47B087B2494
+	for <lists+linux-efi@lfdr.de>; Thu, 28 Sep 2023 20:01:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231676AbjI1RlQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 28 Sep 2023 13:41:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54518 "EHLO
+        id S231191AbjI1SBx (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 28 Sep 2023 14:01:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbjI1RlO (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Sep 2023 13:41:14 -0400
+        with ESMTP id S230291AbjI1SBv (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Sep 2023 14:01:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6D1719E;
-        Thu, 28 Sep 2023 10:41:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D74F5C433C7;
-        Thu, 28 Sep 2023 17:40:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90D841A2;
+        Thu, 28 Sep 2023 11:01:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C1DC433C7;
+        Thu, 28 Sep 2023 18:01:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695922871;
-        bh=q4Y+iRhQNw28trXDtNOjgA21Uv+IbPAACk59LAWJmZQ=;
+        s=k20201202; t=1695924109;
+        bh=EAdPFsmHcyWayc69u1pNQGVN/Od37LMkwOOQtSvFBiM=;
         h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=Pt2knsyPVF5IN2LrEHFDhKXAMR+bUOcTlyAAG093ma8ffe9kH/u7HXG2g+Td0GQbU
-         dj6xCSvBaMeN3dkuuuxcxsY6aAAFekfxMF19xWrooSEMrmsfY/FrKOmIr30Ef9iwhy
-         6QfDCUZqE6k5rEywc5Ze8K4/SAUL1W/1QDmSbwueKYxqX2aaIVxDcPqg/lhskw8rFh
-         jOw/ARPQHq26NmwE3QZN+kwE0QI6+60XvzrrVfZo0ayZcNh/tBcZ410YuqL9+lmQQb
-         qZZexkDUvIABncMcV2ChnF/ASLiH8NqVr7NTUG7D+At/G4u0PnSWIbaDK60vBHhtw8
-         vViGtl0HWhtVQ==
-Message-ID: <6a6f37d16b55a3003af3f3dbb7778a367f68cd8d.camel@kernel.org>
-Subject: Re: [PATCH 86/87] fs: switch timespec64 fields in inode to discrete
- integers
+        b=bfK28RLdLGgKZCUgDzeWTBKaqWs6brrGRaSyPdFXskOVm0On6PlLojE5M/xCgEEY5
+         grpUMo2uaqDtijMvKbHWfOGFJG+vQA/tkSyBcl6qHWL3dn3aU/KYO5L4q/l83Nz1PF
+         rjm7ECl0slpI4oU4YRq3Il4iqcNMzLzfgVWdoz5lG6ZAiTp3N12KGI95ZvFcFMlTR+
+         jbG318WOr9JpuRBEryTb1XBxjEr4Jw9k8E4/FfV1BqWFd1k5jtZEs5n6naq0zoe6ze
+         HRJ/cpQFseJro5/YEKgl8SVwodWHkLRLpC8H6rkjRLoCIio3JUF68vh6UiBMp7cQEp
+         W7opbVnaB1VbA==
+Message-ID: <00ca2e3997cc86401f7fb65d936fe5403abd5627.camel@kernel.org>
+Subject: Re: [PATCH 87/87] fs: move i_blocks up a few places in struct inode
 From:   Jeff Layton <jlayton@kernel.org>
-To:     "Darrick J. Wong" <djwong@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
         Christian Brauner <brauner@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
         David Sterba <dsterba@suse.cz>,
         Amir Goldstein <amir73il@gmail.com>,
         Theodore Ts'o <tytso@mit.edu>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Eric Biederman <ebiederm@xmission.com>,
         Kees Cook <keescook@chromium.org>, Jeremy Kerr <jk@ozlabs.org>,
+        Arnd Bergmann <arnd@arndb.de>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Nicholas Piggin <npiggin@gmail.com>,
         Christophe Leroy <christophe.leroy@csgroup.eu>,
@@ -83,7 +81,7 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         Joel Becker <jlbec@evilplan.org>,
         Christoph Hellwig <hch@lst.de>,
         Nicolas Pitre <nico@fluxnic.net>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
         Ard Biesheuvel <ardb@kernel.org>, Gao Xiang <xiang@kernel.org>,
         Chao Yu <chao@kernel.org>, Yue Hu <huyue2@coolpad.com>,
         Jeffle Xu <jefflexu@linux.alibaba.com>,
@@ -134,6 +132,7 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         Masami Hiramatsu <mhiramat@kernel.org>,
         Evgeniy Dushistov <dushistov@mail.ru>,
         Chandan Babu R <chandan.babu@oracle.com>,
+        "Darrick J. Wong" <djwong@kernel.org>,
         Damien Le Moal <dlemoal@kernel.org>,
         Naohiro Aota <naohiro.aota@wdc.com>,
         Johannes Thumshirn <jth@kernel.org>,
@@ -149,7 +148,7 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
         Hugh Dickins <hughd@google.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        "David S . Miller" <davem@davemloft.net>,
+        "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
@@ -178,16 +177,14 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         reiserfs-devel@vger.kernel.org, linux-cifs@vger.kernel.org,
         samba-technical@lists.samba.org,
         linux-trace-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
-        bpf@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
+        bpf@vger.kernel.org, netdev@vger.kernel.org,
         apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
         selinux@vger.kernel.org
-Date:   Thu, 28 Sep 2023 13:40:55 -0400
-In-Reply-To: <20230928171943.GK11439@frogsfrogsfrogs>
+Date:   Thu, 28 Sep 2023 14:01:33 -0400
+In-Reply-To: <CAHk-=wij_42Q9WHY898r-gugmT5c-1JJKRh3C+nTUd1hc1aeqQ@mail.gmail.com>
 References: <20230928110554.34758-1-jlayton@kernel.org>
-         <20230928110554.34758-2-jlayton@kernel.org>
-         <6020d6e7-b187-4abb-bf38-dc09d8bd0f6d@app.fastmail.com>
-         <af047e4a1c6947c59d4a13d4ae221c784a5386b4.camel@kernel.org>
-         <20230928171943.GK11439@frogsfrogsfrogs>
+         <20230928110554.34758-3-jlayton@kernel.org>
+         <CAHk-=wij_42Q9WHY898r-gugmT5c-1JJKRh3C+nTUd1hc1aeqQ@mail.gmail.com>
 Content-Type: text/plain; charset="ISO-8859-15"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
@@ -201,57 +198,41 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, 2023-09-28 at 10:19 -0700, Darrick J. Wong wrote:
-> On Thu, Sep 28, 2023 at 01:06:03PM -0400, Jeff Layton wrote:
-> > On Thu, 2023-09-28 at 11:48 -0400, Arnd Bergmann wrote:
-> > > On Thu, Sep 28, 2023, at 07:05, Jeff Layton wrote:
-> > > > This shaves 8 bytes off struct inode, according to pahole.
-> > > >=20
-> > > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> > >=20
-> > > FWIW, this is similar to the approach that Deepa suggested
-> > > back in 2016:
-> > >=20
-> > > https://lore.kernel.org/lkml/1452144972-15802-3-git-send-email-deepa.=
-kernel@gmail.com/
-> > >=20
-> > > It was NaKed at the time because of the added complexity,
-> > > though it would have been much easier to do it then,
-> > > as we had to touch all the timespec references anyway.
-> > >=20
-> > > The approach still seems ok to me, but I'm not sure it's worth
-> > > doing it now if we didn't do it then.
-> > >=20
+On Thu, 2023-09-28 at 10:41 -0700, Linus Torvalds wrote:
+> On Thu, 28 Sept 2023 at 04:06, Jeff Layton <jlayton@kernel.org> wrote:
 > >=20
-> > I remember seeing those patches go by. I don't remember that change
-> > being NaK'ed, but I wasn't paying close attention at the time=20
-> >=20
-> > Looking at it objectively now, I think it's worth it to recover 8 bytes
-> > per inode and open a 4 byte hole that Amir can use to grow the
-> > i_fsnotify_mask. We might even able to shave off another 12 bytes
-> > eventually if we can move to a single 64-bit word per timestamp.=20
+> > Move i_blocks up above the i_lock, which moves the new 4 byte hole to
+> > just after the timestamps, without changing the size of the structure.
 >=20
-> I don't think you can, since btrfs timestamps utilize s64 seconds
-> counting in both directions from the Unix epoch.  They also support ns
-> resolution:
+> I'm sure others have mentioned this, but 'struct inode' is marked with
+> __randomize_layout, so the actual layout may end up being very
+> different.
 >=20
-> 	struct btrfs_timespec {
-> 		__le64 sec;
-> 		__le32 nsec;
-> 	} __attribute__ ((__packed__));
+> I'm personally not convinced the whole structure randomization is
+> worth it - it's easy enough to figure out for any distro kernel since
+> the seed has to be the same across machines for modules to work, so
+> even if the seed isn't "public", any layout is bound to be fairly
+> easily discoverable.
+>=20
+> So the whole randomization only really works for private kernel
+> builds, and it adds this kind of pain where "optimizing" the structure
+> layout is kind of pointless depending on various options.
+>=20
+> I certainly *hope* no distro enables that pointless thing, but it's a wor=
+ry.
 >=20
 
-Correct. We'd lose some fidelity in currently stored timestamps, but as
-Linus and Ted pointed out, anything below ~100ns granularity is
-effectively just noise, as that's the floor overhead for calling into
-the kernel. It's hard to argue that any application needs that sort of
-timestamp resolution, at least with contemporary hardware.=20
+I've never enabled struct randomization and don't know anyone who does.
+I figure if you turn that on, you get to keep all of the pieces when you
+start seeing weird performance problems.
 
-Doing that would mean that tests that store specific values in the
-atime/mtime and expect to be able to fetch exactly that value back would
-break though, so we'd have to be OK with that if we want to try it. The
-good news is that it's relatively easy to experiment with new ways to
-store timestamps with these wrappers in place.
+I think that we have to optimize for that being disabled. Even without
+that though, turning on and off options can change the layout...and then
+there are different arches, etc.
 
+I'm using a config derived from the Fedora x86_64 kernel images and hope
+that represents a reasonably common configuration. The only conditional
+members before the timestamps are based on CONFIG_FS_POSIX_ACL and
+CONFIG_SECURITY, which are almost always turned on with most distros.
 --=20
 Jeff Layton <jlayton@kernel.org>
