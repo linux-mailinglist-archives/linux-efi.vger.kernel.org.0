@@ -2,67 +2,56 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 418C37B2ABA
-	for <lists+linux-efi@lfdr.de>; Fri, 29 Sep 2023 05:50:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1C187B2C5A
+	for <lists+linux-efi@lfdr.de>; Fri, 29 Sep 2023 08:33:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232631AbjI2Du3 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 28 Sep 2023 23:50:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60612 "EHLO
+        id S232663AbjI2Gdb (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 29 Sep 2023 02:33:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232490AbjI2Du2 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Sep 2023 23:50:28 -0400
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA77F19F;
-        Thu, 28 Sep 2023 20:50:25 -0700 (PDT)
-Received: by mail-qk1-x72b.google.com with SMTP id af79cd13be357-7741c5bac51so767066085a.1;
-        Thu, 28 Sep 2023 20:50:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695959425; x=1696564225; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LYYbHmRBUQu7YjfKhJdocL7dPfjriCkGg2JwzJsWdwM=;
-        b=OgS0+rHVheAoiR5EnChiZq2pVgkTwoqklKOc2O2TXqKHvKq8kU2A7Wz5bYw1kGtFqI
-         aqXIefdua592BhK8tIohJ8bNNn5WQlaegSE0cLv9wCLeW1C5R2pivJS8Z81dN5avSQK9
-         yKR0a7PRt86/Rm3KerAawe/6QQQGfdflrGMJa7sjwn7MHNR5TJUAtSZZ/g9f6fkQMvgW
-         vD/sMK5JqyNJXDSKWVkoZpNdpzIHMdlCjB7daouB4b+BgkZry7wqQ+lKghcMaG5hqDFI
-         7VZcrZAQA4w2SNB7X9tmCU5+W0cs6a5SecHwc4O1krlgRjWDQkpk++JkqMD3Fah7hKTL
-         W1Ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695959425; x=1696564225;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LYYbHmRBUQu7YjfKhJdocL7dPfjriCkGg2JwzJsWdwM=;
-        b=T/FAfVimpzOuH5xiQtMx4XdmakF5pDE6yXnUyQ5Jzni/wtsv1x+UhZWlwOFAwakRZA
-         gNG75ASI6PPOjKGEyk0dcol2k+bzLJvUy8Bmpu1ZQfukvyCiPWGEsG8Kf3vgHiNGUae6
-         YRN3vzgTqOUokJq40iL1dEDV9X5E0d76D0iUg04oCTHie6jaVRRqWSVB2Edw7i+/ZCS3
-         NiNdFZy/fXEbbvbhBJiHXpXQtwXAWGQJb1Ji2BTsW46kDFQOacaGIZtWWlbWPQcDEimw
-         w9IaZQNlNSGNaJ5T6nKUvz84rmpV7LpH8k6Kt9UyhaHIwYdf3InILodtmBjGVWFC45NG
-         zLAg==
-X-Gm-Message-State: AOJu0YwgZdCc08cn6CTm/xt2RQjLn1ZWBcDhorLXBB4gj5Jh+KOJlUiC
-        uNBYVSW9EubLAuCBTFJndFdf9lkdahI85C13mFk=
-X-Google-Smtp-Source: AGHT+IGZ9FbyCI7u8iOe4evpIjYBqumu0LCfPbLB14Vob7h48kUS/cZM9tDSVc21MSgdNbX4O2KSgM/HSLf/cSOdPJI=
-X-Received: by 2002:a05:620a:45a8:b0:774:1875:edb1 with SMTP id
- bp40-20020a05620a45a800b007741875edb1mr3147718qkb.20.1695959424913; Thu, 28
- Sep 2023 20:50:24 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230928110554.34758-1-jlayton@kernel.org> <20230928110554.34758-2-jlayton@kernel.org>
- <6020d6e7-b187-4abb-bf38-dc09d8bd0f6d@app.fastmail.com> <af047e4a1c6947c59d4a13d4ae221c784a5386b4.camel@kernel.org>
- <20230928171943.GK11439@frogsfrogsfrogs> <6a6f37d16b55a3003af3f3dbb7778a367f68cd8d.camel@kernel.org>
- <20230928212656.GC189345@mit.edu> <CAHk-=wjTynK9BdGbi+8eShU77nkPvipFwRxEd1TSBrw2+LiuDg@mail.gmail.com>
-In-Reply-To: <CAHk-=wjTynK9BdGbi+8eShU77nkPvipFwRxEd1TSBrw2+LiuDg@mail.gmail.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Fri, 29 Sep 2023 06:50:13 +0300
-Message-ID: <CAOQ4uxg5ctY9yCjLOjN1nETAcEuNb2UERnYuDv7PoErdxX=WUw@mail.gmail.com>
-Subject: Re: [PATCH 86/87] fs: switch timespec64 fields in inode to discrete integers
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     "Theodore Ts'o" <tytso@mit.edu>, Jeff Layton <jlayton@kernel.org>,
-        "Darrick J. Wong" <djwong@kernel.org>,
+        with ESMTP id S232662AbjI2Gd3 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 29 Sep 2023 02:33:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 451EF1A7
+        for <linux-efi@vger.kernel.org>; Thu, 28 Sep 2023 23:32:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1695969157;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=6sGP1uczCLU0843N+bG6IAXvwld3ke34VDTuCS/8Xis=;
+        b=ItllLkiI7IiGASU4j9KpIbp8qK25U8KsemnFFa0yFSgeG82KYJd0bhSaacMaBAESG/KdNK
+        uqlbmbPYLXclxgFBbtEnZurIgBC9qiUmDWUY2/NfVEL9y8IDsOouPx9nZazweSHmyI0m/u
+        z774wrXbZAuytwSzRzIkoRQ/r1vn3fU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-617-yyfUKZv2PKyKSe4pM4YTZw-1; Fri, 29 Sep 2023 02:32:35 -0400
+X-MC-Unique: yyfUKZv2PKyKSe4pM4YTZw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0AC21800B35;
+        Fri, 29 Sep 2023 06:32:34 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.226])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 8C9AA401027;
+        Fri, 29 Sep 2023 06:32:10 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <6a6f37d16b55a3003af3f3dbb7778a367f68cd8d.camel@kernel.org>
+References: <6a6f37d16b55a3003af3f3dbb7778a367f68cd8d.camel@kernel.org> <20230928110554.34758-1-jlayton@kernel.org> <20230928110554.34758-2-jlayton@kernel.org> <6020d6e7-b187-4abb-bf38-dc09d8bd0f6d@app.fastmail.com> <af047e4a1c6947c59d4a13d4ae221c784a5386b4.camel@kernel.org> <20230928171943.GK11439@frogsfrogsfrogs>
+To:     Jeff Layton <jlayton@kernel.org>
+cc:     "Darrick J. Wong" <djwong@kernel.org>,
         Arnd Bergmann <arnd@arndb.de>,
         Alexander Viro <viro@zeniv.linux.org.uk>,
         Christian Brauner <brauner@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         David Sterba <dsterba@suse.cz>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Theodore Ts'o <tytso@mit.edu>,
         "Eric W. Biederman" <ebiederm@xmission.com>,
         Kees Cook <keescook@chromium.org>, Jeremy Kerr <jk@ozlabs.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
@@ -74,7 +63,7 @@ Cc:     "Theodore Ts'o" <tytso@mit.edu>, Jeff Layton <jlayton@kernel.org>,
         Christian Borntraeger <borntraeger@linux.ibm.com>,
         Sven Schnelle <svens@linux.ibm.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>,
+        Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>,
         Todd Kjos <tkjos@android.com>,
         Martijn Coenen <maco@android.com>,
         Joel Fernandes <joel@joelfernandes.org>,
@@ -87,7 +76,7 @@ Cc:     "Theodore Ts'o" <tytso@mit.edu>, Jeff Layton <jlayton@kernel.org>,
         Brad Warrum <bwarrum@linux.ibm.com>,
         Ritu Agarwal <rituagar@linux.ibm.com>,
         Hans de Goede <hdegoede@redhat.com>,
-        =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Ilpo =?utf-8?Q?J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
         Mark Gross <markgross@kernel.org>,
         Jiri Slaby <jirislaby@kernel.org>,
         Eric Van Hensbergen <ericvh@kernel.org>,
@@ -110,8 +99,7 @@ Cc:     "Theodore Ts'o" <tytso@mit.edu>, Jeff Layton <jlayton@kernel.org>,
         Nicolas Pitre <nico@fluxnic.net>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
         Ard Biesheuvel <ardb@kernel.org>, Gao Xiang <xiang@kernel.org>,
-        Chao Yu <chao@kernel.org>,
-        Yue Hu <huyue2@gl0jj8bn.sched.sma.tdnsstic1.cn>,
+        Chao Yu <chao@kernel.org>, Yue Hu <huyue2@coolpad.com>,
         Jeffle Xu <jefflexu@linux.alibaba.com>,
         Namjae Jeon <linkinjeon@kernel.org>,
         Sungjong Seo <sj1557.seo@samsung.com>,
@@ -192,7 +180,7 @@ Cc:     "Theodore Ts'o" <tytso@mit.edu>, Jeff Layton <jlayton@kernel.org>,
         linux-usb@vger.kernel.org, v9fs@lists.linux.dev,
         linux-afs@lists.infradead.org, autofs@vger.kernel.org,
         linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-        codalist@telemann.coda.cs.cmu.edu, linux-efi@vger.kernel.org,
+        codalist@coda.cs.cmu.edu, linux-efi@vger.kernel.org,
         linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
         linux-f2fs-devel@lists.sourceforge.net, gfs2@lists.linux.dev,
         linux-um@lists.infradead.org, linux-mtd@lists.infradead.org,
@@ -207,61 +195,34 @@ Cc:     "Theodore Ts'o" <tytso@mit.edu>, Jeff Layton <jlayton@kernel.org>,
         bpf@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
         apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
         selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Subject: Re: [PATCH 86/87] fs: switch timespec64 fields in inode to discrete integers
+MIME-Version: 1.0
+Content-Type: text/plain
+Date:   Fri, 29 Sep 2023 07:32:09 +0100
+Message-ID: <636661.1695969129@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Fri, Sep 29, 2023 at 3:19=E2=80=AFAM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
-...
-> So yes, real programs to cache stat information, and it matters for perfo=
-rmance.
->
-> But I don't think any actual reasonable program will have
-> *correctness* issues, though -
 
-I beg to disagree.
+Jeff Layton <jlayton@kernel.org> wrote:
 
-> because there are certainly filesystems
-> out there that don't do nanosecond resolution (and other operations
-> like copying trees around will obviously also change times).
->
-> Anybody doing steganography in the timestamps is already not going to
-> have a great time, really.
->
+> Correct. We'd lose some fidelity in currently stored timestamps, but as
+> Linus and Ted pointed out, anything below ~100ns granularity is
+> effectively just noise, as that's the floor overhead for calling into
+> the kernel. It's hard to argue that any application needs that sort of
+> timestamp resolution, at least with contemporary hardware. 
 
-Your thesis implies that all applications are portable across different
-filesystems and all applications are expected to cope with copying
-trees around.
+Albeit with the danger of making Steve French very happy;-), would it make
+sense to switch internally to Microsoft-style 64-bit timestamps with their
+100ns granularity?
 
-There are applications that work on specific filesystems and those
-applications are very much within sanity if they expect that past
-observed values of nsec will not to change if the file was not changed.
+David
 
-But even if we agree that will "only" hurt performance, your example of
-performance hit (10s of git diff) is nowhere close to the performance
-hit of invalidating the mtime cache of billions of files at once (i.e. afte=
-r
-kernel upgrade), which means that rsync-like programs need to
-re-read all the data from remote locations.
-
-I am not saying that filesystems cannot decide to *stop storing nsec
-granularity* from this day forth, but like btrfs pre-historic timestamps,
-those fs have an obligation to preserve existing metadata, unless
-users opted to throw it away.
-
-OTOH, it is perfectly fine if the vfs wants to stop providing sub 100ns
-services to filesystems. It's just going to be the fs problem and the
-preserved pre-historic/fine-grained time on existing files would only
-need to be provided in getattr(). It does not need to be in __i_mtime.
-
-Thanks,
-Amir.
