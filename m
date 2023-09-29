@@ -2,43 +2,72 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0C797B2775
-	for <lists+linux-efi@lfdr.de>; Thu, 28 Sep 2023 23:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B2877B2972
+	for <lists+linux-efi@lfdr.de>; Fri, 29 Sep 2023 02:19:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232514AbjI1V11 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 28 Sep 2023 17:27:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49814 "EHLO
+        id S231542AbjI2AT0 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 28 Sep 2023 20:19:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232287AbjI1V10 (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Sep 2023 17:27:26 -0400
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 107E019F
-        for <linux-efi@vger.kernel.org>; Thu, 28 Sep 2023 14:27:23 -0700 (PDT)
-Received: from cwcc.thunk.org (pool-173-48-111-87.bstnma.fios.verizon.net [173.48.111.87])
-        (authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 38SLQvsp021536
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 28 Sep 2023 17:26:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-        t=1695936425; bh=w4hql40FuyyfsTNK9D530X9ExV2y5b7TU7/1a0HHsnU=;
-        h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-        b=NGPOVv6aP7Wgx4/k9ruqGjDYWmjUQVAfEL5fppG6yE2RNxUM6uiyoWrXBZfGmZyL2
-         gb1zEZjWcSSCFd+NWg1/BYhZ5jeEptXNin1ZAM6seg38Angccj8YOPtyzxOx/hDFrb
-         Q+ePr/t98/fHq2BcSzJCThnFTNb50fVmlIrGfb3oMvB11ToZpH+p8R2mhaDk4/44dl
-         uEHGVh6Q6Ih5iyFuN8+PasXijpXT1PXJm+5Rkla8PX5Glna1OAsFe3wre6CQl62oa4
-         RAr1Z2b44rKF067M11yaRPI56z2wMDur4vLyEnjrhgmaYzW5D9XQ8I+PJlbP887wDq
-         NXSNNWLPWiTbQ==
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-        id 06AD715C0266; Thu, 28 Sep 2023 17:26:57 -0400 (EDT)
-Date:   Thu, 28 Sep 2023 17:26:56 -0400
-From:   "Theodore Ts'o" <tytso@mit.edu>
-To:     Jeff Layton <jlayton@kernel.org>
-Cc:     "Darrick J. Wong" <djwong@kernel.org>,
+        with ESMTP id S229541AbjI2ATY (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 28 Sep 2023 20:19:24 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2066B180
+        for <linux-efi@vger.kernel.org>; Thu, 28 Sep 2023 17:19:23 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-323168869daso10695600f8f.2
+        for <linux-efi@vger.kernel.org>; Thu, 28 Sep 2023 17:19:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1695946761; x=1696551561; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=bvzvBt54YKz6rxhAovyc5UddK2JDmyrig02MAqmRW1o=;
+        b=Nco9MwD+ZWekSSLrxtyPFYHbH5dJiwAN5W6KIrG4ASqA3JiKtnRsD/Ty/O6Dv/SVpz
+         MlkQfUVjQ7+8xqGsnYMd9RgeE1G7QsSn4/XYu2xfF8JGEV2qOcRTb4Wcgjwd5qT7sCzb
+         Mh2+QDlZEFqH1DfM7jXyKV2c6MF3+Kab5MQQA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695946761; x=1696551561;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bvzvBt54YKz6rxhAovyc5UddK2JDmyrig02MAqmRW1o=;
+        b=CwdNIMXjhKIx0O37M0+O4bB2xU/tSfsyl8NUAgJ6yG072CVgAEuIl0BXviLH2xNPKu
+         qlgQP7SOT9/8ZUOhVvQYGXVdTjlfR5Ii9ijbPtBs8WSvBus68p5XYTHiGcFwDxdLnyTm
+         TuLJz03xPrfZHeJWuoGiy6jbfV+iRjplkShbeDnIYJC0EM2eCZi1BZJu+SvtGlAvjj1w
+         W029sd7Pzr6QiaGWrJZOFAPeukLdQITAZsCwAh47jiCrXUQqNk4rvXUMWOGr6Sflt59f
+         Z1TO8a+Qsr833SoKnGhMcd1ikpDTsTsCo7hWiBHIRpnbjzL1qZsNtvu/lztX8W9kX0T6
+         jOKw==
+X-Gm-Message-State: AOJu0YwQmjro27yAb779TiWfaLR5uJw7jQ8K3GjaGujkqeJFNArmcKOZ
+        V4Zu/HQmPeenW/WUEnesWLiGZC52O7v8ZHhaFxM8xgnLzUc=
+X-Google-Smtp-Source: AGHT+IGq2TMgnc5NxKYsDRs2tLMQsTO/n+1PhhX1Inck5y6/VwE9ewb6PSWGo//Hfhbz2mtM6TyJcA==
+X-Received: by 2002:a5d:5911:0:b0:317:6ea5:ab71 with SMTP id v17-20020a5d5911000000b003176ea5ab71mr2724759wrd.30.1695946761484;
+        Thu, 28 Sep 2023 17:19:21 -0700 (PDT)
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
+        by smtp.gmail.com with ESMTPSA id vw7-20020a170907058700b009b27d4153cfsm4866549ejb.176.2023.09.28.17.19.20
+        for <linux-efi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 Sep 2023 17:19:20 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-9a9d82d73f9so1732176766b.3
+        for <linux-efi@vger.kernel.org>; Thu, 28 Sep 2023 17:19:20 -0700 (PDT)
+X-Received: by 2002:aa7:d807:0:b0:530:52d2:f656 with SMTP id
+ v7-20020aa7d807000000b0053052d2f656mr2404674edq.21.1695946739584; Thu, 28 Sep
+ 2023 17:18:59 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230928110554.34758-1-jlayton@kernel.org> <20230928110554.34758-2-jlayton@kernel.org>
+ <6020d6e7-b187-4abb-bf38-dc09d8bd0f6d@app.fastmail.com> <af047e4a1c6947c59d4a13d4ae221c784a5386b4.camel@kernel.org>
+ <20230928171943.GK11439@frogsfrogsfrogs> <6a6f37d16b55a3003af3f3dbb7778a367f68cd8d.camel@kernel.org>
+ <20230928212656.GC189345@mit.edu>
+In-Reply-To: <20230928212656.GC189345@mit.edu>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu, 28 Sep 2023 17:18:42 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjTynK9BdGbi+8eShU77nkPvipFwRxEd1TSBrw2+LiuDg@mail.gmail.com>
+Message-ID: <CAHk-=wjTynK9BdGbi+8eShU77nkPvipFwRxEd1TSBrw2+LiuDg@mail.gmail.com>
+Subject: Re: [PATCH 86/87] fs: switch timespec64 fields in inode to discrete integers
+To:     "Theodore Ts'o" <tytso@mit.edu>
+Cc:     Jeff Layton <jlayton@kernel.org>,
+        "Darrick J. Wong" <djwong@kernel.org>,
         Arnd Bergmann <arnd@arndb.de>,
         Alexander Viro <viro@zeniv.linux.org.uk>,
         Christian Brauner <brauner@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
         David Sterba <dsterba@suse.cz>,
         Amir Goldstein <amir73il@gmail.com>,
         "Eric W. Biederman" <ebiederm@xmission.com>,
@@ -52,7 +81,7 @@ Cc:     "Darrick J. Wong" <djwong@kernel.org>,
         Christian Borntraeger <borntraeger@linux.ibm.com>,
         Sven Schnelle <svens@linux.ibm.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+        =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>,
         Todd Kjos <tkjos@android.com>,
         Martijn Coenen <maco@android.com>,
         Joel Fernandes <joel@joelfernandes.org>,
@@ -65,7 +94,7 @@ Cc:     "Darrick J. Wong" <djwong@kernel.org>,
         Brad Warrum <bwarrum@linux.ibm.com>,
         Ritu Agarwal <rituagar@linux.ibm.com>,
         Hans de Goede <hdegoede@redhat.com>,
-        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
         Mark Gross <markgross@kernel.org>,
         Jiri Slaby <jirislaby@kernel.org>,
         Eric Van Hensbergen <ericvh@kernel.org>,
@@ -185,60 +214,65 @@ Cc:     "Darrick J. Wong" <djwong@kernel.org>,
         bpf@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
         apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
         selinux@vger.kernel.org
-Subject: Re: [PATCH 86/87] fs: switch timespec64 fields in inode to discrete
- integers
-Message-ID: <20230928212656.GC189345@mit.edu>
-References: <20230928110554.34758-1-jlayton@kernel.org>
- <20230928110554.34758-2-jlayton@kernel.org>
- <6020d6e7-b187-4abb-bf38-dc09d8bd0f6d@app.fastmail.com>
- <af047e4a1c6947c59d4a13d4ae221c784a5386b4.camel@kernel.org>
- <20230928171943.GK11439@frogsfrogsfrogs>
- <6a6f37d16b55a3003af3f3dbb7778a367f68cd8d.camel@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6a6f37d16b55a3003af3f3dbb7778a367f68cd8d.camel@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Thu, Sep 28, 2023 at 01:40:55PM -0400, Jeff Layton wrote:
-> 
-> Correct. We'd lose some fidelity in currently stored timestamps, but as
-> Linus and Ted pointed out, anything below ~100ns granularity is
-> effectively just noise, as that's the floor overhead for calling into
-> the kernel. It's hard to argue that any application needs that sort of
-> timestamp resolution, at least with contemporary hardware. 
-> 
-> Doing that would mean that tests that store specific values in the
-> atime/mtime and expect to be able to fetch exactly that value back would
-> break though, so we'd have to be OK with that if we want to try it. The
-> good news is that it's relatively easy to experiment with new ways to
-> store timestamps with these wrappers in place.
+On Thu, 28 Sept 2023 at 14:28, Theodore Ts'o <tytso@mit.edu> wrote:
+>
+> I don't think anyone will complain about breaking the userspace API
+> --- especially since if, say, the CIA was using this for their spies'
+> drop boxes, they probably wouldn't want to admit it.  :-)
 
-The reason why we store 1ns granularity in ext4's on-disk format (and
-accept that we only support times only a couple of centuries into the
-future, as opposed shooting for an on-disk format good for several
-millennia :-), was in case there was userspace that might try to store
-a very fine-grained timestamp and want to be able to get it back
-bit-for-bit identical.
+Well, you will find that real apps do kind of of care.
 
-For example, what if someone was trying to implement some kind of
-steganographic scheme where they going store a secret message (or more
-likely, a 256-bit AES key) in the nanosecond fields of the file's
-{c,m,a,cr}time timestamps, "hiding in plain sight".  Not that I think
-that we have to support something like that, since the field is for
-*timestamps* not cryptographic bits, so if we break someone who is
-doing that, do we care?
+Just to take a very real example, "git" will very much notice time
+granularity issues and care - because git will cache the 'stat' times
+in the index.
 
-I don't think anyone will complain about breaking the userspace API
---- especially since if, say, the CIA was using this for their spies'
-drop boxes, they probably wouldn't want to admit it.  :-)
+So if you get a different stat time (because the vfs layer has changed
+some granularity), git will then have to check the files carefully
+again and update the index.
 
-       	    	     	      	      	    - Ted
+You can simulate this "re-check all files" with something like this:
+
+    $ time git diff
+
+    real 0m0.040s
+    user 0m0.035s
+    sys 0m0.264s
+
+    $ rm .git/index && git read-tree HEAD
+
+    $ time git diff
+
+    real 0m9.595s
+    user 0m7.287s
+    sys 0m2.810s
+
+so the difference between just doing a "look, index information
+matches current 'stat' information" and "oops, index does not have the
+stat data" is "40 milliseconds" vs "10 seconds".
+
+That's a big difference, and you'd see that each time the granularity
+changes. But then once the index file has been updated, it's back to
+the good case.
+
+So yes, real programs to cache stat information, and it matters for performance.
+
+But I don't think any actual reasonable program will have
+*correctness* issues, though - because there are certainly filesystems
+out there that don't do nanosecond resolution (and other operations
+like copying trees around will obviously also change times).
+
+Anybody doing steganography in the timestamps is already not going to
+have a great time, really.
+
+                 Linus
