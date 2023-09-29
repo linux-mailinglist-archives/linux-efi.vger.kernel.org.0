@@ -2,33 +2,35 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69C8F7B2F6E
-	for <lists+linux-efi@lfdr.de>; Fri, 29 Sep 2023 11:45:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF45F7B2FD1
+	for <lists+linux-efi@lfdr.de>; Fri, 29 Sep 2023 12:17:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232834AbjI2JpV (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Fri, 29 Sep 2023 05:45:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54440 "EHLO
+        id S232995AbjI2KRQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Fri, 29 Sep 2023 06:17:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232833AbjI2JpU (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Fri, 29 Sep 2023 05:45:20 -0400
+        with ESMTP id S232786AbjI2KRP (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Fri, 29 Sep 2023 06:17:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 589C4195;
-        Fri, 29 Sep 2023 02:45:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB9BC433C8;
-        Fri, 29 Sep 2023 09:44:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41C48C0;
+        Fri, 29 Sep 2023 03:17:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C55EAC433C7;
+        Fri, 29 Sep 2023 10:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695980717;
-        bh=oQTvAmCkCsoaLNjfsaMUmlY4D/qoWr90XSuheIQAYtc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WlV6Iok6t6x6wqtPDr2u2AsUWg4hMLM7cqaWPUDEeTpPDmS0JTVgMZlUl0HPmoBuT
-         /MtXZyL5oovwNZMVTtYCnXU5O+6UqBVLwaqKXfjDA7Gi3QJjfoFg0kuMJ76nbuwBFl
-         FM+QH0bvVjfmuBVMp9s5CgN9psq1cDgIpp1TcndUbm+j24otqfdnexR7nd6Jf+tuT9
-         QFRyk1BHauhj4nL9X9E976w/vvMYaEWzc8Ucm1v15cgYx/ItXrPfVSX9rwflr20Upl
-         1p24LfpWvr++mxmy87xjKVxbcTxjBWdURGxp63tvXsg372LYC0Zasv3SIGFC2AHpa8
-         8VA1Ctle4jMgQ==
-Date:   Fri, 29 Sep 2023 11:44:15 +0200
-From:   Christian Brauner <brauner@kernel.org>
-To:     Jeff Layton <jlayton@kernel.org>
+        s=k20201202; t=1695982632;
+        bh=P0eff07RhtpS5UOcz3JkNsf+Ld6yeT/W26VJM0WDCPo=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=XzS9mEvGo34Ng6IbV0phy7oFkBghevr6TXQtKuvgCZiNk6sipSIK1ybdV8fiZNmJi
+         ryG2oocKEqZZKJ0Qpanb9xZf3XPiR4Bq6wmT9EMmf0fleXLKV9fNEg9/bkdRQXUeb0
+         6CCRA5VO7ZThmTCkkfWYanznw4Z3cZqE/s5mMA3tjLRXwYn9bn1bqt+qj2Mv3mg9Lj
+         pTssK95Hwcb1T8QjlazVp2JhItPwZmMqN2Vq1pnJqTnlHDG5dK0bcBFAZ33vjsFaWl
+         leIqxKSfZkutf2lGQF/4jFFb0IVmQg0er/lH6TmX4JwaSuIbh4XkLnYFCd3nLSRRA6
+         40ODyX835zJVA==
+Message-ID: <d52b4330cd26e8ef9b2999281b05e50bd7106b3a.camel@kernel.org>
+Subject: Re: [PATCH 86/87] fs: switch timespec64 fields in inode to discrete
+ integers
+From:   Jeff Layton <jlayton@kernel.org>
+To:     Christian Brauner <brauner@kernel.org>
 Cc:     Arnd Bergmann <arnd@arndb.de>,
         Alexander Viro <viro@zeniv.linux.org.uk>,
         Linus Torvalds <torvalds@linux-foundation.org>,
@@ -46,7 +48,7 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         Christian Borntraeger <borntraeger@linux.ibm.com>,
         Sven Schnelle <svens@linux.ibm.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>,
+        Arve =?ISO-8859-1?Q?Hj=F8nnev=E5g?= <arve@android.com>,
         Todd Kjos <tkjos@android.com>,
         Martijn Coenen <maco@android.com>,
         Joel Fernandes <joel@joelfernandes.org>,
@@ -59,7 +61,7 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         Brad Warrum <bwarrum@linux.ibm.com>,
         Ritu Agarwal <rituagar@linux.ibm.com>,
         Hans de Goede <hdegoede@redhat.com>,
-        Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+        Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
         Mark Gross <markgross@kernel.org>,
         Jiri Slaby <jirislaby@kernel.org>,
         Eric Van Hensbergen <ericvh@kernel.org>,
@@ -179,17 +181,17 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         bpf@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
         apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
         selinux@vger.kernel.org
-Subject: Re: [PATCH 86/87] fs: switch timespec64 fields in inode to discrete
- integers
-Message-ID: <20230929-yuppie-unzweifelhaft-434bf13bc964@brauner>
+Date:   Fri, 29 Sep 2023 06:16:57 -0400
+In-Reply-To: <20230929-yuppie-unzweifelhaft-434bf13bc964@brauner>
 References: <20230928110554.34758-1-jlayton@kernel.org>
- <20230928110554.34758-2-jlayton@kernel.org>
- <6020d6e7-b187-4abb-bf38-dc09d8bd0f6d@app.fastmail.com>
- <af047e4a1c6947c59d4a13d4ae221c784a5386b4.camel@kernel.org>
+         <20230928110554.34758-2-jlayton@kernel.org>
+         <6020d6e7-b187-4abb-bf38-dc09d8bd0f6d@app.fastmail.com>
+         <af047e4a1c6947c59d4a13d4ae221c784a5386b4.camel@kernel.org>
+         <20230929-yuppie-unzweifelhaft-434bf13bc964@brauner>
+Content-Type: text/plain; charset="ISO-8859-15"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <af047e4a1c6947c59d4a13d4ae221c784a5386b4.camel@kernel.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -199,24 +201,36 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-> It is a lot of churn though.
+On Fri, 2023-09-29 at 11:44 +0200, Christian Brauner wrote:
+> > It is a lot of churn though.
+>=20
+> I think that i_{a,c,m}time shouldn't be accessed directly by
+> filesystems same as no filesystem should really access i_{g,u}id which
+> we also provide i_{g,u}id_{read,write}() accessors for. The mode is
+> another example where really most often should use helpers because of all
+> the set*id stripping that we need to do (and the bugs that we had
+> because of this...).
+>=20
+> The interdependency between ctime and mtime is enough to hide this in
+> accessors. The other big advantage is simply grepability. So really I
+> would like to see this change even without the type switch.
+>=20
+> In other words, there's no need to lump the two changes together. Do the
+> conversion part and we can argue about the switch to discrete integers
+> separately.
+>=20
+> The other adavantage is that we have a cycle to see any possible
+> regression from the conversion.
+>=20
+> Thoughts anyone?
 
-I think that i_{a,c,m}time shouldn't be accessed directly by
-filesystems same as no filesystem should really access i_{g,u}id which
-we also provide i_{g,u}id_{read,write}() accessors for. The mode is
-another example where really most often should use helpers because of all
-the set*id stripping that we need to do (and the bugs that we had
-because of this...).
+That works for me, and sort of what I was planning anyway. I mostly just
+did the change to timestamp storage to see what it would look like
+afterward.
 
-The interdependency between ctime and mtime is enough to hide this in
-accessors. The other big advantage is simply grepability. So really I
-would like to see this change even without the type switch.
-
-In other words, there's no need to lump the two changes together. Do the
-conversion part and we can argue about the switch to discrete integers
-separately.
-
-The other adavantage is that we have a cycle to see any possible
-regression from the conversion.
-
-Thoughts anyone?
+FWIW, I'm planning to do a v2 patchbomb early next week, with the
+changes that Chuck suggested (specific helpers for fetching the _sec and
+_nsec fields). For now, I'll drop the change from timespec64 to discrete
+fields. We can do that in a separate follow-on set.
+--=20
+Jeff Layton <jlayton@kernel.org>
