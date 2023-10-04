@@ -2,30 +2,30 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F6C47B8BF0
-	for <lists+linux-efi@lfdr.de>; Wed,  4 Oct 2023 20:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F3C77B8D13
+	for <lists+linux-efi@lfdr.de>; Wed,  4 Oct 2023 21:21:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244765AbjJDSyE (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 4 Oct 2023 14:54:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44900 "EHLO
+        id S245172AbjJDTEc (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 4 Oct 2023 15:04:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244662AbjJDSxX (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 4 Oct 2023 14:53:23 -0400
+        with ESMTP id S245333AbjJDTBA (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 4 Oct 2023 15:01:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD55EAD;
-        Wed,  4 Oct 2023 11:53:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991D0C4AF5D;
-        Wed,  4 Oct 2023 18:52:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E1F12130;
+        Wed,  4 Oct 2023 11:55:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD6BC433C9;
+        Wed,  4 Oct 2023 18:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696445590;
-        bh=D6ZmjuGzwm6T+vyily+kDIFcQOdKBE4hFTbZ/ePB+AU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=itt8PzKJ3oWcrWlkMnCNvO4V6JTvOPUcLklZdoWmgvE5EApLHzHWrmToC24YZNaD5
-         IXhfNXxqslFjk2IDoML0tgHmxZeVSse9inCpsSBFQSfTlM1ZaWIaW/14Rx1EGjZsGv
-         ntPIZbb8JIR5CnQGLAz3U+Yl+EqlRJ7alNTo2vhAqP1qPDfCkGnYm9uO4hbjfLGGYe
-         YEvpoo+MWSAaL6IHDgaS7acBet/4WUTpUf2h/c5f8fTK/EJTvBZGCYjPEshuHePoR6
-         5qJESbj+fdqCM8yjNUYu0BZ+4eFYl4Bgrydaw45QVSAj3T6mpEPEYoifAe1zFkZy7d
-         wEjqNw+7VtILg==
+        s=k20201202; t=1696445746;
+        bh=g/yzBkH2Lp29tPfDBqNp+9Elc+zqCeoJYNIVCamPD2Q=;
+        h=From:To:Cc:Subject:Date:From;
+        b=U4cHhSwb0LbjLA0qPOmmG7XGfwhLrdUKNdOP6jb0JmroYvkDlGxxFYbdBHNbhzXNH
+         iovfoJxTxBNF3fgWoxKD5rhfozOY+7XT8L1cOwcimaEFAuQea9kFSm7ljzuINveJng
+         8O/TRaYWLsMFAu0WZqR+Ej7+BaviQVOBsP8mffc2SqReX6OXjtiZTmCmLoR9/saHwB
+         c5rjkuCRPMb/Q55YD3oJLDC2dFLpMza5Y6vaUnEAxOls8VOQTB4gdTGSQ3fEJfeL1x
+         KMOBQbkmXFBlyX1vgIb23wb+t56+wSAOGwpJ/lOlOTTFlZfD0AdwHSMDPWo5mfkyr4
+         HgGj4IVfBzhTQ==
 From:   Jeff Layton <jlayton@kernel.org>
 To:     Alexander Viro <viro@zeniv.linux.org.uk>,
         Christian Brauner <brauner@kernel.org>,
@@ -180,13 +180,10 @@ Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
         bpf@vger.kernel.org, netdev@vger.kernel.org,
         apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
         selinux@vger.kernel.org, linux-bcachefs@vger.kernel.org
-Subject: [PATCH v2 02/89] fs: convert core infrastructure to new timestamp accessors
-Date:   Wed,  4 Oct 2023 14:52:38 -0400
-Message-ID: <20231004185239.80830-2-jlayton@kernel.org>
+Subject: [PATCH v2 87/89] fs: rename inode i_atime and i_mtime fields
+Date:   Wed,  4 Oct 2023 14:55:28 -0400
+Message-ID: <20231004185530.82088-1-jlayton@kernel.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231004185239.80830-1-jlayton@kernel.org>
-References: <20231004185221.80802-1-jlayton@kernel.org>
- <20231004185239.80830-1-jlayton@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -198,227 +195,85 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Convert the core vfs code to use the new timestamp accessor functions.
+Rename these two fields to discourage direct access (and to help ensure
+that we mop up any leftover direct accesses).
 
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- fs/attr.c        |  4 ++--
- fs/bad_inode.c   |  2 +-
- fs/binfmt_misc.c |  2 +-
- fs/inode.c       | 35 +++++++++++++++++++++--------------
- fs/nsfs.c        |  2 +-
- fs/pipe.c        |  2 +-
- fs/stack.c       |  4 ++--
- fs/stat.c        |  4 ++--
- 8 files changed, 31 insertions(+), 24 deletions(-)
+ include/linux/fs.h | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/fs/attr.c b/fs/attr.c
-index a8ae5f6d9b16..bdf5deb06ea9 100644
---- a/fs/attr.c
-+++ b/fs/attr.c
-@@ -308,9 +308,9 @@ void setattr_copy(struct mnt_idmap *idmap, struct inode *inode,
- 	i_uid_update(idmap, attr, inode);
- 	i_gid_update(idmap, attr, inode);
- 	if (ia_valid & ATTR_ATIME)
--		inode->i_atime = attr->ia_atime;
-+		inode_set_atime_to_ts(inode, attr->ia_atime);
- 	if (ia_valid & ATTR_MTIME)
--		inode->i_mtime = attr->ia_mtime;
-+		inode_set_mtime_to_ts(inode, attr->ia_mtime);
- 	if (ia_valid & ATTR_CTIME)
- 		inode_set_ctime_to_ts(inode, attr->ia_ctime);
- 	if (ia_valid & ATTR_MODE) {
-diff --git a/fs/bad_inode.c b/fs/bad_inode.c
-index 83f9566c973b..316d88da2ce1 100644
---- a/fs/bad_inode.c
-+++ b/fs/bad_inode.c
-@@ -208,7 +208,7 @@ void make_bad_inode(struct inode *inode)
- 	remove_inode_hash(inode);
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 3ca610d42176..84fdaf399fbe 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -671,8 +671,8 @@ struct inode {
+ 	};
+ 	dev_t			i_rdev;
+ 	loff_t			i_size;
+-	struct timespec64	i_atime;
+-	struct timespec64	i_mtime;
++	struct timespec64	__i_atime;
++	struct timespec64	__i_mtime;
+ 	struct timespec64	__i_ctime; /* use inode_*_ctime accessors! */
+ 	spinlock_t		i_lock;	/* i_blocks, i_bytes, maybe i_size */
+ 	unsigned short          i_bytes;
+@@ -1517,23 +1517,23 @@ struct timespec64 inode_set_ctime_current(struct inode *inode);
  
- 	inode->i_mode = S_IFREG;
--	inode->i_atime = inode->i_mtime = inode_set_ctime_current(inode);
-+	simple_inode_init_ts(inode);
- 	inode->i_op = &bad_inode_ops;	
- 	inode->i_opflags &= ~IOP_XATTR;
- 	inode->i_fop = &bad_file_ops;	
-diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index e0108d17b085..5d2be9b0a0a5 100644
---- a/fs/binfmt_misc.c
-+++ b/fs/binfmt_misc.c
-@@ -547,7 +547,7 @@ static struct inode *bm_get_inode(struct super_block *sb, int mode)
- 	if (inode) {
- 		inode->i_ino = get_next_ino();
- 		inode->i_mode = mode;
--		inode->i_atime = inode->i_mtime = inode_set_ctime_current(inode);
-+		simple_inode_init_ts(inode);
- 	}
- 	return inode;
+ static inline time64_t inode_get_atime_sec(const struct inode *inode)
+ {
+-	return inode->i_atime.tv_sec;
++	return inode->__i_atime.tv_sec;
  }
-diff --git a/fs/inode.c b/fs/inode.c
-index 3bb6193f436c..4f8984b97df0 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -1837,27 +1837,29 @@ EXPORT_SYMBOL(bmap);
- static int relatime_need_update(struct vfsmount *mnt, struct inode *inode,
- 			     struct timespec64 now)
+ 
+ static inline long inode_get_atime_nsec(const struct inode *inode)
  {
--	struct timespec64 ctime;
-+	struct timespec64 atime, mtime, ctime;
+-	return inode->i_atime.tv_nsec;
++	return inode->__i_atime.tv_nsec;
+ }
  
- 	if (!(mnt->mnt_flags & MNT_RELATIME))
- 		return 1;
- 	/*
- 	 * Is mtime younger than or equal to atime? If yes, update atime:
- 	 */
--	if (timespec64_compare(&inode->i_mtime, &inode->i_atime) >= 0)
-+	atime = inode_get_atime(inode);
-+	mtime = inode_get_mtime(inode);
-+	if (timespec64_compare(&mtime, &atime) >= 0)
- 		return 1;
- 	/*
- 	 * Is ctime younger than or equal to atime? If yes, update atime:
- 	 */
- 	ctime = inode_get_ctime(inode);
--	if (timespec64_compare(&ctime, &inode->i_atime) >= 0)
-+	if (timespec64_compare(&ctime, &atime) >= 0)
- 		return 1;
- 
- 	/*
- 	 * Is the previous atime value older than a day? If yes,
- 	 * update atime:
- 	 */
--	if ((long)(now.tv_sec - inode->i_atime.tv_sec) >= 24*60*60)
-+	if ((long)(now.tv_sec - atime.tv_sec) >= 24*60*60)
- 		return 1;
- 	/*
- 	 * Good, we can skip the atime update:
-@@ -1888,12 +1890,13 @@ int inode_update_timestamps(struct inode *inode, int flags)
- 
- 	if (flags & (S_MTIME|S_CTIME|S_VERSION)) {
- 		struct timespec64 ctime = inode_get_ctime(inode);
-+		struct timespec64 mtime = inode_get_mtime(inode);
- 
- 		now = inode_set_ctime_current(inode);
- 		if (!timespec64_equal(&now, &ctime))
- 			updated |= S_CTIME;
--		if (!timespec64_equal(&now, &inode->i_mtime)) {
--			inode->i_mtime = now;
-+		if (!timespec64_equal(&now, &mtime)) {
-+			inode_set_mtime_to_ts(inode, now);
- 			updated |= S_MTIME;
- 		}
- 		if (IS_I_VERSION(inode) && inode_maybe_inc_iversion(inode, updated))
-@@ -1903,8 +1906,10 @@ int inode_update_timestamps(struct inode *inode, int flags)
- 	}
- 
- 	if (flags & S_ATIME) {
--		if (!timespec64_equal(&now, &inode->i_atime)) {
--			inode->i_atime = now;
-+		struct timespec64 atime = inode_get_atime(inode);
-+
-+		if (!timespec64_equal(&now, &atime)) {
-+			inode_set_atime_to_ts(inode, now);
- 			updated |= S_ATIME;
- 		}
- 	}
-@@ -1963,7 +1968,7 @@ EXPORT_SYMBOL(inode_update_time);
- bool atime_needs_update(const struct path *path, struct inode *inode)
+ static inline struct timespec64 inode_get_atime(const struct inode *inode)
  {
- 	struct vfsmount *mnt = path->mnt;
--	struct timespec64 now;
-+	struct timespec64 now, atime;
+-	return inode->i_atime;
++	return inode->__i_atime;
+ }
  
- 	if (inode->i_flags & S_NOATIME)
- 		return false;
-@@ -1989,7 +1994,8 @@ bool atime_needs_update(const struct path *path, struct inode *inode)
- 	if (!relatime_need_update(mnt, inode, now))
- 		return false;
- 
--	if (timespec64_equal(&inode->i_atime, &now))
-+	atime = inode_get_atime(inode);
-+	if (timespec64_equal(&atime, &now))
- 		return false;
- 
- 	return true;
-@@ -2106,17 +2112,18 @@ static int inode_needs_update_time(struct inode *inode)
+ static inline struct timespec64 inode_set_atime_to_ts(struct inode *inode,
+ 						      struct timespec64 ts)
  {
- 	int sync_it = 0;
- 	struct timespec64 now = current_time(inode);
--	struct timespec64 ctime;
-+	struct timespec64 ts;
+-	inode->i_atime = ts;
++	inode->__i_atime = ts;
+ 	return ts;
+ }
  
- 	/* First try to exhaust all avenues to not sync */
- 	if (IS_NOCMTIME(inode))
- 		return 0;
+@@ -1547,23 +1547,23 @@ static inline struct timespec64 inode_set_atime(struct inode *inode,
  
--	if (!timespec64_equal(&inode->i_mtime, &now))
-+	ts = inode_get_mtime(inode);
-+	if (!timespec64_equal(&ts, &now))
- 		sync_it = S_MTIME;
+ static inline time64_t inode_get_mtime_sec(const struct inode *inode)
+ {
+-	return inode->i_mtime.tv_sec;
++	return inode->__i_mtime.tv_sec;
+ }
  
--	ctime = inode_get_ctime(inode);
--	if (!timespec64_equal(&ctime, &now))
-+	ts = inode_get_ctime(inode);
-+	if (!timespec64_equal(&ts, &now))
- 		sync_it |= S_CTIME;
+ static inline long inode_get_mtime_nsec(const struct inode *inode)
+ {
+-	return inode->i_mtime.tv_nsec;
++	return inode->__i_mtime.tv_nsec;
+ }
  
- 	if (IS_I_VERSION(inode) && inode_iversion_need_inc(inode))
-diff --git a/fs/nsfs.c b/fs/nsfs.c
-index 647a22433bd8..9a4b228d42fa 100644
---- a/fs/nsfs.c
-+++ b/fs/nsfs.c
-@@ -84,7 +84,7 @@ static int __ns_get_path(struct path *path, struct ns_common *ns)
- 		return -ENOMEM;
- 	}
- 	inode->i_ino = ns->inum;
--	inode->i_mtime = inode->i_atime = inode_set_ctime_current(inode);
-+	simple_inode_init_ts(inode);
- 	inode->i_flags |= S_IMMUTABLE;
- 	inode->i_mode = S_IFREG | S_IRUGO;
- 	inode->i_fop = &ns_file_operations;
-diff --git a/fs/pipe.c b/fs/pipe.c
-index 485e3be8903c..8916c455a469 100644
---- a/fs/pipe.c
-+++ b/fs/pipe.c
-@@ -908,7 +908,7 @@ static struct inode * get_pipe_inode(void)
- 	inode->i_mode = S_IFIFO | S_IRUSR | S_IWUSR;
- 	inode->i_uid = current_fsuid();
- 	inode->i_gid = current_fsgid();
--	inode->i_atime = inode->i_mtime = inode_set_ctime_current(inode);
-+	simple_inode_init_ts(inode);
+ static inline struct timespec64 inode_get_mtime(const struct inode *inode)
+ {
+-	return inode->i_mtime;
++	return inode->__i_mtime;
+ }
  
- 	return inode;
+ static inline struct timespec64 inode_set_mtime_to_ts(struct inode *inode,
+ 						      struct timespec64 ts)
+ {
+-	inode->i_mtime = ts;
++	inode->__i_mtime = ts;
+ 	return ts;
+ }
  
-diff --git a/fs/stack.c b/fs/stack.c
-index b5e01bdb5f5f..f18920119944 100644
---- a/fs/stack.c
-+++ b/fs/stack.c
-@@ -66,8 +66,8 @@ void fsstack_copy_attr_all(struct inode *dest, const struct inode *src)
- 	dest->i_uid = src->i_uid;
- 	dest->i_gid = src->i_gid;
- 	dest->i_rdev = src->i_rdev;
--	dest->i_atime = src->i_atime;
--	dest->i_mtime = src->i_mtime;
-+	inode_set_atime_to_ts(dest, inode_get_atime(src));
-+	inode_set_mtime_to_ts(dest, inode_get_mtime(src));
- 	inode_set_ctime_to_ts(dest, inode_get_ctime(src));
- 	dest->i_blkbits = src->i_blkbits;
- 	dest->i_flags = src->i_flags;
-diff --git a/fs/stat.c b/fs/stat.c
-index d43a5cc1bfa4..24bb0209e459 100644
---- a/fs/stat.c
-+++ b/fs/stat.c
-@@ -57,8 +57,8 @@ void generic_fillattr(struct mnt_idmap *idmap, u32 request_mask,
- 	stat->gid = vfsgid_into_kgid(vfsgid);
- 	stat->rdev = inode->i_rdev;
- 	stat->size = i_size_read(inode);
--	stat->atime = inode->i_atime;
--	stat->mtime = inode->i_mtime;
-+	stat->atime = inode_get_atime(inode);
-+	stat->mtime = inode_get_mtime(inode);
- 	stat->ctime = inode_get_ctime(inode);
- 	stat->blksize = i_blocksize(inode);
- 	stat->blocks = inode->i_blocks;
 -- 
 2.41.0
 
