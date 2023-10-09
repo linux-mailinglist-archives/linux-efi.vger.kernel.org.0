@@ -2,30 +2,30 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34B5E7BECBE
-	for <lists+linux-efi@lfdr.de>; Mon,  9 Oct 2023 23:19:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEB6C7BECCA
+	for <lists+linux-efi@lfdr.de>; Mon,  9 Oct 2023 23:19:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378146AbjJIVTQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 9 Oct 2023 17:19:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46548 "EHLO
+        id S1378764AbjJIVTg (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 9 Oct 2023 17:19:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378236AbjJIVTQ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 9 Oct 2023 17:19:16 -0400
+        with ESMTP id S1378713AbjJIVTc (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 9 Oct 2023 17:19:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3A78B6;
-        Mon,  9 Oct 2023 14:19:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D85C433C8;
-        Mon,  9 Oct 2023 21:18:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2743112;
+        Mon,  9 Oct 2023 14:19:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA836C43395;
+        Mon,  9 Oct 2023 21:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696886348;
-        bh=TSGItzmReuXxWm++8av4ew2EUzZA35IjrSGdiAa7ie8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=AR02btZ4mgp9dab3ACYI6igrBGiVFEQdmNWNcxHdD8UJq1EhYHaLIGjb3Cwv4s+g+
-         mmathlc5Veu0bcn46YVnxKQY9ABGfLimELcNw0klUlNtKHXpOmX5SgqRxTUCkLFS3o
-         ZS0Ueu7JemOZJOGzANL0FRGqVPg0BpVr9dfyhsQ5nDwbUv63LLomoFEIvX/7i3O4Bj
-         U55wVSdhQ8c2iMBNqigs0yUvbVUtg7hwnPp/Vnt3CUqJhGNKIVOsAVmLVPmdhMkwyJ
-         uLzJxnSI5zcAdgJpatcdE4e1r1jp90wyIblBOJG7uZmhXO5MwaO5T8h/WirbhImG9y
-         IaGxkq1DM1dMw==
+        s=k20201202; t=1696886359;
+        bh=0oKwSWjQM05Ao/uQ0wsIA8Wzs9vAdnSky5PBtFIwvT4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Cc6mgFQ7201CW0jtgb8bIADXktMt8MRMT5x+zQw138I5XhtRj2Z1lwGZhhPijjyLd
+         kTwWA2c0xvwB5JiFtFlNwyF/2A1exupq+bHGHDWWtDRa+RvKY9VqTvDSMn5AeL+XSl
+         yGEkvMDkhhWs5RmkDmAujwJhUssc5rFx4IJ6CqRFoUa/PIJIHBcZiNfYy4TdgmWMRg
+         g/HUVfC3sFvxoDEj4LccmDA703CvrYglGO7CgRuySaLENAMMyCvJ/4Sw/IDMD0JjgG
+         lXVfBLeNZaf41n+P4kVSO/kwBuSJQEbPztE0iTf6JqGSv44j1av9O3KWNhgiyM7vfm
+         xaQYicgV0L0lg==
 From:   Arnd Bergmann <arnd@kernel.org>
 To:     Thomas Zimmermann <tzimmermann@suse.de>,
         linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
@@ -69,12 +69,13 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-hyperv@vger.kernel.org
-Subject: [PATCH v3 0/9] video: screen_info cleanups
-Date:   Mon,  9 Oct 2023 23:18:36 +0200
-Message-Id: <20231009211845.3136536-1-arnd@kernel.org>
+Subject: [PATCH v3 1/9] vgacon: rework Kconfig dependencies
+Date:   Mon,  9 Oct 2023 23:18:37 +0200
+Message-Id: <20231009211845.3136536-2-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231009211845.3136536-1-arnd@kernel.org>
+References: <20231009211845.3136536-1-arnd@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -87,146 +88,55 @@ X-Mailing-List: linux-efi@vger.kernel.org
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-v3 changelog
+The list of dependencies here is phrased as an opt-out, but this is missing
+a lot of architectures that don't actually support VGA consoles, and some
+of the entries are stale:
 
-No real changes, just rebased for context changes, and picked up the Acks.
+ - powerpc used to support VGA consoles in the old arch/ppc codebase, but
+   the merged arch/powerpc never did
 
-This now conflicts with the ia64 removal and introduces one new dependency
-on IA64, but that is harmless and trivial to deal with later.
+ - arm lists footbridge, integrator and netwinder, but netwinder is actually
+   part of footbridge, and integrator does not appear to have an actual
+   VGA hardware, or list it in its ATAG or DT.
 
-Link: https://lore.kernel.org/lkml/20230719123944.3438363-1-arnd@kernel.org/
+ - mips has a few platforms (malta, sibyte, and sni) that initialize
+   screen_info, on everything else the console is selected but cannot
+   actually work.
+
+ - csky, hexgagon, loongarch, nios2, riscv and xtensa are not listed
+   in the opt-out table and declare a screen_info to allow building
+   vga_con, but this cannot work because the console is never selected.
+
+Replace this with an opt-in table that lists only the platforms that
+remain. This is effectively x86, plus a couple of historic workstation
+and server machines that reused parts of the x86 system architecture.
+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Khalid Aziz <khalid@gonehiking.org>
+Acked-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
-v2 changelog
+ drivers/video/console/Kconfig | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-I refreshed the first four patches that I sent before with very minor
-updates, and then added some more to further disaggregate the use
-of screen_info:
-
- - I found that powerpc wasn't using vga16fb any more
-
- - vgacon can be almost entirely separated from the global
-   screen_info, except on x86
-
- - similarly, the EFI framebuffer initialization can be
-   kept separate, except on x86.
-
-I did extensive build testing on arm/arm64/x86 and the normal built bot
-testing for the other architectures.
-
-Which tree should this get merged through?
-
-Link: https://lore.kernel.org/lkml/20230707095415.1449376-1-arnd@kernel.org/
-
-
-Arnd Bergmann (9):
-  vgacon: rework Kconfig dependencies
-  vgacon: rework screen_info #ifdef checks
-  dummycon: limit Arm console size hack to footbridge
-  vgacon, arch/*: remove unused screen_info definitions
-  vgacon: remove screen_info dependency
-  vgacon: clean up global screen_info instances
-  vga16fb: drop powerpc support
-  hyperv: avoid dependency on screen_info
-  efi: move screen_info into efi init code
-
- arch/alpha/kernel/proto.h                     |  2 +
- arch/alpha/kernel/setup.c                     |  8 +--
- arch/alpha/kernel/sys_sio.c                   |  8 ++-
- arch/arm/include/asm/setup.h                  |  5 ++
- arch/arm/kernel/atags_parse.c                 | 20 +++---
- arch/arm/kernel/efi.c                         |  6 --
- arch/arm/kernel/setup.c                       | 11 +--
- arch/arm64/kernel/efi.c                       |  4 --
- arch/arm64/kernel/image-vars.h                |  2 +
- arch/csky/kernel/setup.c                      | 12 ----
- arch/hexagon/kernel/Makefile                  |  2 -
- arch/hexagon/kernel/screen_info.c             |  3 -
- arch/ia64/kernel/setup.c                      | 53 ++++++++-------
- arch/loongarch/kernel/efi.c                   |  3 +-
- arch/loongarch/kernel/image-vars.h            |  2 +
- arch/loongarch/kernel/setup.c                 |  3 -
- arch/mips/jazz/setup.c                        |  9 ---
- arch/mips/kernel/setup.c                      | 11 ---
- arch/mips/mti-malta/malta-setup.c             |  4 +-
- arch/mips/sibyte/swarm/setup.c                | 26 ++++---
- arch/mips/sni/setup.c                         | 18 ++---
- arch/nios2/kernel/setup.c                     |  5 --
- arch/powerpc/kernel/setup-common.c            | 16 -----
- arch/riscv/kernel/image-vars.h                |  2 +
- arch/riscv/kernel/setup.c                     | 12 ----
- arch/sh/kernel/setup.c                        |  5 --
- arch/sparc/kernel/setup_32.c                  | 13 ----
- arch/sparc/kernel/setup_64.c                  | 13 ----
- arch/x86/kernel/setup.c                       |  2 +-
- arch/xtensa/kernel/setup.c                    | 12 ----
- drivers/firmware/efi/efi-init.c               | 14 +++-
- drivers/firmware/efi/libstub/efi-stub-entry.c |  8 ++-
- drivers/firmware/pcdp.c                       |  1 -
- drivers/gpu/drm/hyperv/hyperv_drm_drv.c       |  7 +-
- drivers/hv/vmbus_drv.c                        |  6 +-
- drivers/video/console/Kconfig                 | 11 +--
- drivers/video/console/dummycon.c              |  2 +-
- drivers/video/console/vgacon.c                | 68 +++++++++++--------
- drivers/video/fbdev/Kconfig                   |  2 +-
- drivers/video/fbdev/hyperv_fb.c               |  8 +--
- drivers/video/fbdev/vga16fb.c                 |  9 +--
- include/linux/console.h                       |  7 ++
- 42 files changed, 183 insertions(+), 252 deletions(-)
- delete mode 100644 arch/hexagon/kernel/screen_info.c
-
+diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
+index 30577b1d3de59..cbf303d76d39b 100644
+--- a/drivers/video/console/Kconfig
++++ b/drivers/video/console/Kconfig
+@@ -7,9 +7,9 @@ menu "Console display driver support"
+ 
+ config VGA_CONSOLE
+ 	bool "VGA text console" if EXPERT || !X86
+-	depends on !4xx && !PPC_8xx && !SPARC && !M68K && !PARISC &&  !SUPERH && \
+-		(!ARM || ARCH_FOOTBRIDGE || ARCH_INTEGRATOR || ARCH_NETWINDER) && \
+-		!ARM64 && !ARC && !MICROBLAZE && !OPENRISC && !S390 && !UML
++	depends on ALPHA || IA64 || X86 || \
++		(ARM && ARCH_FOOTBRIDGE) || \
++		(MIPS && (MIPS_MALTA || SIBYTE_BCM112X || SIBYTE_SB1250 || SIBYTE_BCM1x80 || SNI_RM))
+ 	select APERTURE_HELPERS if (DRM || FB || VFIO_PCI_CORE)
+ 	default y
+ 	help
 -- 
 2.39.2
-
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: "K. Y. Srinivasan" <kys@microsoft.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Brian Cain <bcain@quicinc.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Deepak Rawat <drawat.floss@gmail.com>
-Cc: Dexuan Cui <decui@microsoft.com>
-Cc: Dinh Nguyen <dinguyen@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Guo Ren <guoren@kernel.org>
-Cc: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Huacai Chen <chenhuacai@kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Khalid Aziz <khalid@gonehiking.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Cc: Matt Turner <mattst88@gmail.com>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: WANG Xuerui <kernel@xen0n.name>
-Cc: Wei Liu <wei.liu@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: x86@kernel.org
-Cc: linux-alpha@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-efi@vger.kernel.org
-Cc: linux-csky@vger.kernel.org
-Cc: linux-hexagon@vger.kernel.org
-Cc: linux-ia64@vger.kernel.org
-Cc: loongarch@lists.linux.dev
-Cc: linux-mips@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-riscv@lists.infradead.org
-Cc: linux-sh@vger.kernel.org
-Cc: sparclinux@vger.kernel.org
-Cc: linux-hyperv@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-fbdev@vger.kernel.org
 
