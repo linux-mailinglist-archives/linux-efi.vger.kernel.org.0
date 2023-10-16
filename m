@@ -2,202 +2,110 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3AB07CB02B
-	for <lists+linux-efi@lfdr.de>; Mon, 16 Oct 2023 18:49:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E5067CB05A
+	for <lists+linux-efi@lfdr.de>; Mon, 16 Oct 2023 18:53:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234409AbjJPQtW (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Mon, 16 Oct 2023 12:49:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55748 "EHLO
+        id S234291AbjJPQxl (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Mon, 16 Oct 2023 12:53:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343664AbjJPQtM (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Mon, 16 Oct 2023 12:49:12 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8A5510CC;
-        Mon, 16 Oct 2023 09:41:05 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 017C51FEC1;
-        Mon, 16 Oct 2023 16:41:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1697474464; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=GEefq32sBpLzJx2lGNyuxGH/nqJxW/5t5zmBcj5F6Ac=;
-        b=l9WsDi6kmvu6IvcoWBYG976vX4FGtLkDTLqQzCItBRi/1ekOptrfqe2NByqKfSndcdsKl7
-        5Sb3g4KaZgOC5i/oLNKXKSc5i/lc4cT9pj2/2EYNM+bTX59iiXaQKhPaGAXnV8LssgqShL
-        fvpYgCyWJ4r+jtAci6jwRDmCzyKufpQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1697474464;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=GEefq32sBpLzJx2lGNyuxGH/nqJxW/5t5zmBcj5F6Ac=;
-        b=IywH00l91MbjWq7du2aCvwlTuYrCsljv8qEifxJMZRpyDI36lSOQDXKGwVshOVggkqnMYs
-        PvImr/h4iRaXh/Bw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6D5BF133B7;
-        Mon, 16 Oct 2023 16:41:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id AyLMGZ9nLWXEKgAAMHmgww
-        (envelope-from <vbabka@suse.cz>); Mon, 16 Oct 2023 16:41:03 +0000
-Message-ID: <5d4eda63-d479-bf4a-7bfb-98a7fb8f953d@suse.cz>
-Date:   Mon, 16 Oct 2023 18:41:02 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCHv2] efi/unaccepted: Fix soft lockups caused by parallel
- memory acceptance
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
-        philip.cox@canonical.com, aarcange@redhat.com, peterx@redhat.com,
-        x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@kernel.org, Nikolay Borisov <nik.borisov@suse.com>
-References: <20231016163122.12855-1-kirill.shutemov@linux.intel.com>
-Content-Language: en-US
-From:   Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20231016163122.12855-1-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Authentication-Results: smtp-out2.suse.de;
-        none
-X-Spam-Level: 
-X-Spam-Score: -3.65
-X-Spamd-Result: default: False [-3.65 / 50.00];
-         ARC_NA(0.00)[];
-         RCVD_VIA_SMTP_AUTH(0.00)[];
-         BAYES_HAM(-0.00)[20.47%];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         NEURAL_HAM_LONG(-2.99)[-0.997];
-         MIME_GOOD(-0.10)[text/plain];
-         DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-         NEURAL_HAM_SHORT(-0.56)[-0.563];
-         RCPT_COUNT_TWELVE(0.00)[32];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         RCVD_COUNT_TWO(0.00)[2];
-         RCVD_TLS_ALL(0.00)[];
-         MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S234284AbjJPQxa (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Mon, 16 Oct 2023 12:53:30 -0400
+Received: from mail-wm1-x34a.google.com (mail-wm1-x34a.google.com [IPv6:2a00:1450:4864:20::34a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8AD018F
+        for <linux-efi@vger.kernel.org>; Mon, 16 Oct 2023 09:46:41 -0700 (PDT)
+Received: by mail-wm1-x34a.google.com with SMTP id 5b1f17b1804b1-4074f9d17a5so31231685e9.1
+        for <linux-efi@vger.kernel.org>; Mon, 16 Oct 2023 09:46:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1697474800; x=1698079600; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=5NAsKfvdpR7o/fc/F0bxwGfSu1nE/YWioD2w22rQv5Y=;
+        b=hkqMNbI9W8lcCdKIZ49lTTsbHxNIZokNTGIFFHWZXjK+UFrOEgu3TP1unWEkZM1TXF
+         6H+jEzAy8VmUEdK2LNDDU3NiqSRuo+1GrSYaHMTidf+oef4P3PpM5HBy9KRHTyBD3Gtq
+         /hmP8ueQaQyyQLYliHWfb1Bb4axGn2MRXpOyVGI0ZlCyfiKkrjTfnkLabdrYnRY6UX9i
+         rUNzKwbR+dsG2a244FBb50hbTiTl/cdqH1xdetWrIH7OfSpa3+s50ybW+WpRKUT0u4ei
+         rf8XBoKfnkoP0Hb3gLSNtzFAflDLpBTNNJeDwG57AzriVqD4FUeUHS9LhFYMS7E/5OSp
+         +xJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697474800; x=1698079600;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5NAsKfvdpR7o/fc/F0bxwGfSu1nE/YWioD2w22rQv5Y=;
+        b=dAbqeMX2ppVe+FrzBWaEi2bzJp56cG6xwkjrze1ODwWhlT8cupFQo2MicFvkOp3dmV
+         JrwS5PZYUzYo8GQMEYJ7iNaHlHIXzoPYzqusq4UWvTj/kQSUMFURKmg2z/vlm6Edb/F5
+         boiM71m/ei55ovm7Hh59NwXTWB4xdh8gv9XrHof8/ES2xqBe4oDCNnDNkUZWIfLZ5Q4d
+         zAA4BnE51UlqY1ZNSligTAXWhc1DdsnLorhfBddl+maD6hvChQhlBevymsneuMoCgzi3
+         oA3dCYSWzGToed7OgyB/TOfQCdwY+TwjzHIMMR/dsFO++y7ZX9Pz0BJJj/0/44BgUkWw
+         9emA==
+X-Gm-Message-State: AOJu0YyOITA+i8csEZ69e4mhKHA2W2QzdEw4U3e259jJJ5bit9fg5oJY
+        DxDbHSPHrZkDHf0C1pfR3yi6YH34vsfAxBAtWe1IS5B3QTwuVaMh4dTyvr3GaNTpnvQQ4HQ8RuD
+        hVdzwWR2y0PwcLeW68XoK5rhgnAeqyPRVbrg/hWjcsHvueTnD8C3XBgxvBd1F
+X-Google-Smtp-Source: AGHT+IFzRWO27zgZjYtPzP7A1ZYuM4R9oQasDOmxJRVsWRpZpRpuwcrJ1zVbQsCpq7kSXapn+hC9T1+O
+X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
+ (user=ardb job=sendgmr) by 2002:a05:6000:16cd:b0:32d:84c7:2f55 with SMTP id
+ h13-20020a05600016cd00b0032d84c72f55mr171546wrf.9.1697474800185; Mon, 16 Oct
+ 2023 09:46:40 -0700 (PDT)
+Date:   Mon, 16 Oct 2023 18:46:35 +0200
+Mime-Version: 1.0
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1410; i=ardb@kernel.org;
+ h=from:subject; bh=/7lDwn2xbTP/d3EtH5xf5T3ami+TBUlfh/hGKrukQrY=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIVU349WOz07TTr0/r3SEbVtxi+GksMVR8W95vsxpFp/Q7
+ Xr91rFDHaUsDGIcDLJiiiwCs/++23l6olSt8yxZmDmsTCBDGLg4BWAi2xoZGQ4ZXtv14+yW1A+7
+ epd0hT+XMZF9EXlf6YxHx8llCxYcWSDEyLDP54GU6PWADO7juX9WmSsuu5EXss3c/8gtA46Kw0H 5D1kA
+X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
+Message-ID: <20231016164634.3514517-2-ardb@google.com>
+Subject: [PATCH] x86/boot: efistub: Assign global boot_params variable
+From:   Ard Biesheuvel <ardb@google.com>
+To:     linux-efi@vger.kernel.org
+Cc:     x86@kernel.org, Ard Biesheuvel <ardb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 10/16/23 18:31, Kirill A. Shutemov wrote:
-> Michael reported soft lockups on a system that has unaccepted memory.
-> This occurs when a user attempts to allocate and accept memory on
-> multiple CPUs simultaneously.
-> 
-> The root cause of the issue is that memory acceptance is serialized with
-> a spinlock, allowing only one CPU to accept memory at a time. The other
-> CPUs spin and wait for their turn, leading to starvation and soft lockup
-> reports.
-> 
-> To address this, the code has been modified to release the spinlock
-> while accepting memory. This allows for parallel memory acceptance on
-> multiple CPUs.
-> 
-> A newly introduced "accepting_list" keeps track of which memory is
-> currently being accepted. This is necessary to prevent parallel
-> acceptance of the same memory block. If a collision occurs, the lock is
-> released and the process is retried.
-> 
-> Such collisions should rarely occur. The main path for memory acceptance
-> is the page allocator, which accepts memory in MAX_ORDER chunks. As long
-> as MAX_ORDER is equal to or larger than the unit_size, collisions will
-> never occur because the caller fully owns the memory block being
-> accepted.
-> 
-> Aside from the page allocator, only memblock and deferered_free_range()
-> accept memory, but this only happens during boot.
-> 
-> The code has been tested with unit_size == 128MiB to trigger collisions
-> and validate the retry codepath.
-> 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reported-by: Michael Roth <michael.roth@amd.com
-> Fixes: 2053bc57f367 ("efi: Add unaccepted memory support")
-> Cc: <stable@kernel.org>
-> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Now that the x86 EFI stub calls into some APIs exposed by the
+decompressor (e.g., kaslr_get_random_long()), it is necessary to ensure
+that the global boot_params variable is set correctly before doing so.
 
-<snip>
+Note that the decompressor and the kernel proper carry conflicting
+declarations for the global variable 'boot_params' so refer to it via an
+alias to work around this.
 
-> +	range_start = range.start;
->  	for_each_set_bitrange_from(range_start, range_end, unaccepted->bitmap,
-> -				   DIV_ROUND_UP(end, unit_size)) {
-> +				   range.end) {
->  		unsigned long phys_start, phys_end;
->  		unsigned long len = range_end - range_start;
->  
->  		phys_start = range_start * unit_size + unaccepted->phys_base;
->  		phys_end = range_end * unit_size + unaccepted->phys_base;
->  
-> +		/*
-> +		 * Keep interrupts disabled until the accept operation is
-> +		 * complete in order to prevent deadlocks.
-> +		 *
-> +		 * Enabling interrupts before calling arch_accept_memory()
-> +		 * creates an opportunity for an interrupt handler to request
-> +		 * acceptance for the same memory. The handler will continuously
-> +		 * spin with interrupts disabled, preventing other task from
-> +		 * making progress with the acceptance process.
-> +		 */
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/libstub/x86-stub.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-AFAIU on PREEMPT_RT the spin_lock_irqsave() doesn't disable interrupts, so
-this does not leave them disabled. But it also shouldn't be a risk of
-deadlock because the interrupt handlers are themselves preemptible. The
-latency might be bad as the cpu_relax() retry loop will not cause the task
-everyone might be waiting for to be prioritised, but I guess it's not a big
-issue as anyone with RT requirements probably won't use unaccepted memory in
-the first place, and as you mention hitting the retry loop after boot in a
-normal configuration should be pretty much never.
-
-> +		spin_unlock(&unaccepted_memory_lock);
-> +
->  		arch_accept_memory(phys_start, phys_end);
-> +
-> +		spin_lock(&unaccepted_memory_lock);
->  		bitmap_clear(unaccepted->bitmap, range_start, len);
->  	}
-> +
-> +	list_del(&range.list);
->  	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
->  }
->  
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 3bfc59637dd1..51407207ded5 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -812,12 +812,15 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+ 			       efi_system_table_t *sys_table_arg,
+ 			       struct boot_params *boot_params)
+ {
++	extern struct boot_params *bpp asm("boot_params");
+ 	efi_guid_t guid = EFI_MEMORY_ATTRIBUTE_PROTOCOL_GUID;
+ 	struct setup_header *hdr = &boot_params->hdr;
+ 	const struct linux_efi_initrd *initrd = NULL;
+ 	unsigned long kernel_entry;
+ 	efi_status_t status;
+ 
++	bpp = boot_params;
++
+ 	efi_system_table = sys_table_arg;
+ 	/* Check if we were booted by the EFI firmware */
+ 	if (efi_system_table->hdr.signature != EFI_SYSTEM_TABLE_SIGNATURE)
+-- 
+2.42.0.655.g421f12c284-goog
 
