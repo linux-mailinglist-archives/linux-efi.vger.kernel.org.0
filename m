@@ -2,104 +2,227 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD9C47CC794
-	for <lists+linux-efi@lfdr.de>; Tue, 17 Oct 2023 17:36:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABCEA7CCDB4
+	for <lists+linux-efi@lfdr.de>; Tue, 17 Oct 2023 22:16:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344175AbjJQPgq (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Tue, 17 Oct 2023 11:36:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56522 "EHLO
+        id S235088AbjJQUQ1 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Tue, 17 Oct 2023 16:16:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344419AbjJQPgp (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Tue, 17 Oct 2023 11:36:45 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F68B92;
-        Tue, 17 Oct 2023 08:36:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACA3FC433B6;
-        Tue, 17 Oct 2023 15:36:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697557003;
-        bh=zQqT0Icijbvg9S6mB1pNR2Pch3/DSe5rsPVyjDgEit0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=a02DY55Dh1N3RncpLznmFnEklwXDgdJqCFix7A8TuEQgcMLambAx1NdmGxsg8+6BF
-         p2GKMqmgFe3vHsPlfOt6rzwf0LKLL0zDGRFLPeuJ1JcNFHKgeQpwceun8HOISVgehM
-         pxbyWSXEt2cVB1Dlir92Cow1MS04UhtikZEjl0d2y/8qt6ieP26pLYbq2MyWHJPx9x
-         3pMNY+ORuwqRcSH5Rsfba/nVAxYoBF1y3TU9/S6LDSXUcPtFRDk1Eb7Zkhqvf+iVEx
-         AKu2m3WQZXmCkAZAtVp7vOXydZERSm8EW0flkgI49ZSjvKNJO0pKp9SZujF7Wm1zWF
-         0BOS0s4IRViJQ==
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2c5028e5b88so63172851fa.3;
-        Tue, 17 Oct 2023 08:36:43 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyPpkDwpjfxI4kao5SgMBiVKiO0nHBre+Ge2apP+avNc87YzIIm
-        5QufIDk8aVmG+sZHXrx5/2sP/XSU5blomDvhtEY=
-X-Google-Smtp-Source: AGHT+IH1t58amR8j4KHDACRp4HQeTt/uvBDMgRckb8/zaW4G8A+1S1h459+WQLX6wkrSospqRbyURn70I8/18qMTnKA=
-X-Received: by 2002:a05:651c:54f:b0:2c5:21e3:f1fb with SMTP id
- q15-20020a05651c054f00b002c521e3f1fbmr2210135ljp.23.1697557001696; Tue, 17
- Oct 2023 08:36:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231016163122.12855-1-kirill.shutemov@linux.intel.com>
- <ZS15HZqK4hu5NjSh@casper.infradead.org> <20231016213932.6cscnn6tsnzsnvmf@box.shutemov.name>
- <CAMj1kXFc31N61=oQayLbnR+CrNT4=bfEisC3fwG4VNq2vJHV5w@mail.gmail.com> <20231017101717.GJ33217@noisy.programming.kicks-ass.net>
-In-Reply-To: <20231017101717.GJ33217@noisy.programming.kicks-ass.net>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 17 Oct 2023 17:36:30 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFrM_fe5dVrOPoXDm4AW6oX-a6jCVTnO8bjKuvq-cZRuQ@mail.gmail.com>
-Message-ID: <CAMj1kXFrM_fe5dVrOPoXDm4AW6oX-a6jCVTnO8bjKuvq-cZRuQ@mail.gmail.com>
-Subject: Re: [PATCHv2] efi/unaccepted: Fix soft lockups caused by parallel
- memory acceptance
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dario Faggioli <dfaggioli@suse.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        marcelo.cerri@canonical.com, tim.gardner@canonical.com,
-        philip.cox@canonical.com, aarcange@redhat.com, peterx@redhat.com,
-        x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@kernel.org, Nikolay Borisov <nik.borisov@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S235064AbjJQUQO (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Tue, 17 Oct 2023 16:16:14 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 357FB6F83
+        for <linux-efi@vger.kernel.org>; Tue, 17 Oct 2023 13:07:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697573276; x=1729109276;
+  h=date:from:to:cc:subject:message-id;
+  bh=WuGOi5SYLk4GwWO4w0kpQbF9+X4RLeNuBXnUm28OiSY=;
+  b=G4PZawmFPNeVYs2VQL9lCNCzpqH/CAC+uiJrxmYwSXTBtchzFe0X89oA
+   1nacrtckiGWkh7DbZ12rs9698Xi1AeqxZQeOn+ZTVDGgPQa0DB9czi4z2
+   syPVKZnuHxbnhmeZKX9Oy+mlK/RaxesllpLdz4sHtmUEpMvdBykQZYqaX
+   Ev1v0wYk9v7I6Lc9HguUqHatFZLOQvgIyRwTFxEiGLTvlUwpnc00S+z/y
+   x1qrwN4lTHXiouMnjNP4DKyn7rJ/oYYrQEpzCHo61Ok+PDXiGZzRH2hYU
+   PXsPZQeIsfGb7Z0vNcTxCUhJYmqHvGmtCp1pZgFWpdNTDwZA2svWq9iZC
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="383095191"
+X-IronPort-AV: E=Sophos;i="6.03,233,1694761200"; 
+   d="scan'208";a="383095191"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 13:07:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="929883996"
+X-IronPort-AV: E=Sophos;i="6.03,233,1694761200"; 
+   d="scan'208";a="929883996"
+Received: from lkp-server02.sh.intel.com (HELO f64821696465) ([10.239.97.151])
+  by orsmga005.jf.intel.com with ESMTP; 17 Oct 2023 13:07:54 -0700
+Received: from kbuild by f64821696465 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qsqM4-000A1s-0g;
+        Tue, 17 Oct 2023 20:07:52 +0000
+Date:   Wed, 18 Oct 2023 04:06:56 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi@vger.kernel.org
+Subject: [efi:urgent] BUILD SUCCESS
+ db7724134c26fdf16886a560646d02292563f5a4
+Message-ID: <202310180453.R6byBuOL-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On Tue, 17 Oct 2023 at 12:17, Peter Zijlstra <peterz@infradead.org> wrote:
->
-> On Tue, Oct 17, 2023 at 09:42:13AM +0200, Ard Biesheuvel wrote:
->
-> > One question I have is whether the sequence
-> >
-> > spin_lock_irqsave(&unaccepted_memory_lock, flags);
-> > ...
-> > spin_unlock(&unaccepted_memory_lock);
-> > arch_accept_memory(phys_start, phys_end);
-> > spin_lock(&unaccepted_memory_lock);
-> > ...
-> > spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
-> >
-> > is considered sound and is supported by all architectures?
->
-> Yes.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git urgent
+branch HEAD: db7724134c26fdf16886a560646d02292563f5a4  x86/boot: efistub: Assign global boot_params variable
 
-Thanks for the clarification
+elapsed time: 748m
 
-I've queued this up now (with the cpu_relax() removed)
+configs tested: 151
+configs skipped: 2
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20231017   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                         lpc18xx_defconfig   gcc  
+arm                       multi_v4t_defconfig   gcc  
+arm                   randconfig-001-20231017   gcc  
+arm                        realview_defconfig   gcc  
+arm                           tegra_defconfig   gcc  
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20231017   gcc  
+i386         buildonly-randconfig-002-20231017   gcc  
+i386         buildonly-randconfig-003-20231017   gcc  
+i386         buildonly-randconfig-004-20231017   gcc  
+i386         buildonly-randconfig-005-20231017   gcc  
+i386         buildonly-randconfig-006-20231017   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20231017   gcc  
+i386                  randconfig-002-20231017   gcc  
+i386                  randconfig-003-20231017   gcc  
+i386                  randconfig-004-20231017   gcc  
+i386                  randconfig-005-20231017   gcc  
+i386                  randconfig-006-20231017   gcc  
+i386                  randconfig-011-20231017   gcc  
+i386                  randconfig-012-20231017   gcc  
+i386                  randconfig-013-20231017   gcc  
+i386                  randconfig-014-20231017   gcc  
+i386                  randconfig-015-20231017   gcc  
+i386                  randconfig-016-20231017   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20231017   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                         apollo_defconfig   gcc  
+m68k                       bvme6000_defconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+openrisc                       virt_defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+powerpc                    amigaone_defconfig   gcc  
+powerpc                 canyonlands_defconfig   gcc  
+powerpc                       maple_defconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                    nommu_k210_defconfig   gcc  
+riscv                 randconfig-001-20231017   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20231017   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                 randconfig-001-20231017   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-001-20231017   gcc  
+x86_64       buildonly-randconfig-002-20231017   gcc  
+x86_64       buildonly-randconfig-003-20231017   gcc  
+x86_64       buildonly-randconfig-004-20231017   gcc  
+x86_64       buildonly-randconfig-005-20231017   gcc  
+x86_64       buildonly-randconfig-006-20231017   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                randconfig-001-20231017   gcc  
+x86_64                randconfig-002-20231017   gcc  
+x86_64                randconfig-003-20231017   gcc  
+x86_64                randconfig-004-20231017   gcc  
+x86_64                randconfig-005-20231017   gcc  
+x86_64                randconfig-006-20231017   gcc  
+x86_64                randconfig-011-20231017   gcc  
+x86_64                randconfig-012-20231017   gcc  
+x86_64                randconfig-013-20231017   gcc  
+x86_64                randconfig-014-20231017   gcc  
+x86_64                randconfig-015-20231017   gcc  
+x86_64                randconfig-016-20231017   gcc  
+x86_64                randconfig-071-20231017   gcc  
+x86_64                randconfig-072-20231017   gcc  
+x86_64                randconfig-073-20231017   gcc  
+x86_64                randconfig-074-20231017   gcc  
+x86_64                randconfig-075-20231017   gcc  
+x86_64                randconfig-076-20231017   gcc  
+x86_64                           rhel-8.3-bpf   gcc  
+x86_64                         rhel-8.3-kunit   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                           allyesconfig   gcc  
+xtensa                          iss_defconfig   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
