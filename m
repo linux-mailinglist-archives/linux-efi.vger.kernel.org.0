@@ -2,86 +2,89 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A19047CE740
-	for <lists+linux-efi@lfdr.de>; Wed, 18 Oct 2023 20:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 698317CEDBB
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Oct 2023 03:51:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230213AbjJRS4Z (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Wed, 18 Oct 2023 14:56:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40608 "EHLO
+        id S232317AbjJSBvS (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Wed, 18 Oct 2023 21:51:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjJRS4Z (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 Oct 2023 14:56:25 -0400
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF83B124
-        for <linux-efi@vger.kernel.org>; Wed, 18 Oct 2023 11:56:23 -0700 (PDT)
-Received: by mail-yb1-xb2e.google.com with SMTP id 3f1490d57ef6-d9c2420e417so3266168276.2
-        for <linux-efi@vger.kernel.org>; Wed, 18 Oct 2023 11:56:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697655383; x=1698260183; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=8u57CE8Kdi0g3jbFeaVMUNjtuMyTsXSOw82lfN+HY7s=;
-        b=apfYQDO5wmiW21pRZhB2L1vOJ9K1ywL1K6UWrUJF/fNyLCBNKN1yR5zWDJTR009T5d
-         N8k3xtIPzv/Mt3xpbL75R/eMqJsArfcSs4M7Yhzb1TJh9etxKWCyzkPsqhfkyIMntmnl
-         k1WdQqR6EaEv7+W+gzlCmfidSA+7w4Pjym41VfRnmDlWFYKOMLL0Ip0YM65SEFQg0vrT
-         AO7MZG1CNL5Kd0luhKmoV6PpQWfNdWuEVWLpo0505rxGPdqVy8vqLDnPQu7JYkO58haN
-         OFpZ/TOR76guYxBhBzS1hZtvEaftPJ8agInMuX0hAZwENTZW8ID/BT96YyOsmBzbsySj
-         OBSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697655383; x=1698260183;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8u57CE8Kdi0g3jbFeaVMUNjtuMyTsXSOw82lfN+HY7s=;
-        b=CCLR2u83ydwHBcrrpD029I20m7wHQzSTEr69Ck+U2tE9wZzF//tHo65fUWdYOUQ43K
-         HSfNvIZg4lnhV+TFT7gvq1QcqF+dChBPscUVDzFRGcAm9XP/FE1EcQkTpWPPgfuTgNLA
-         MP0afmcJkL7EHnlG3KOvGZcDphOclo/rP+UgJliz53GhphrMT9frF7PDDumScEyMfSds
-         tZufHJ3wB2x8O4+TseAfrxXYrY1K9s5dEzdei2pmIeQ08oR3MUwi4xJhsUZWR5s50YX4
-         EG+nBQq8NGfi8dDdGFtpGQX9dPt6oFW471Rnb4ZXs+4ZdpTfO/xT+KPZnfEsqql+xaw6
-         1+kg==
-X-Gm-Message-State: AOJu0Yx5jvMF46QSzzRwoSE1r7A2TC3pDzMhCjobJgor/4MmQAiDCn+y
-        TK8P/b6smMNtsoxlbrxuIPg1MelS5XfV84jzj0MxCw==
-X-Google-Smtp-Source: AGHT+IEVthnA6CU9mpkTsCHlLVMIzAPKmS4ZaPXH4ULIXiZ+5TAJwScCOKMTezMaxNwS+k8Jz117dmhU1EvVRABxWDU=
-X-Received: by 2002:a25:b7cf:0:b0:d9a:d895:2ede with SMTP id
- u15-20020a25b7cf000000b00d9ad8952edemr238953ybj.16.1697655382857; Wed, 18 Oct
- 2023 11:56:22 -0700 (PDT)
+        with ESMTP id S231950AbjJSBvR (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Wed, 18 Oct 2023 21:51:17 -0400
+Received: from w4.tutanota.de (w4.tutanota.de [81.3.6.165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36A3CFA;
+        Wed, 18 Oct 2023 18:51:15 -0700 (PDT)
+Received: from tutadb.w10.tutanota.de (unknown [192.168.1.10])
+        by w4.tutanota.de (Postfix) with ESMTP id 4D6E910601FD;
+        Thu, 19 Oct 2023 01:51:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1697680273;
+        s=s1; d=bens.haus;
+        h=From:From:To:To:Subject:Subject:Content-Description:Content-ID:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Cc:Cc:Date:Date:In-Reply-To:In-Reply-To:MIME-Version:MIME-Version:Message-ID:Message-ID:Reply-To:References:References:Sender;
+        bh=9D6H3JhEW+ynD4E5pk1z3agn/aWgsnPGpYm4wdnAAIs=;
+        b=3mIznzc5ndBKGYtJdgqzY1eEgQycOZm6OKLUThE6fM12UANwYwO2DGEmvN+pRf/h
+        DjpYdnfk8skGoGBPUuzYFlQiUMgtMoszT1GEisElNnQfw/8UJ66G/UQSY8JMo3bcXUX
+        Xafj4z9o78mrLzVE3wInu1UXU04bYKfq6tQc8wownWBEWhQQC8OF5mf28QH96vZnkht
+        2Egi7uJdM7IaJMosZAtM8XHppNQ7VBWSm8PJ8D9X9Q+NTBTTKdr1aJEoaGR/0gnyDbx
+        3NkpqnnKPF0Y+zn+0DIsk/3IqF7oTsOK8fzvFotv7SRdUKdPjwR05RXiPEVOgJe+ZgL
+        l9rZ8fCzBA==
+Date:   Thu, 19 Oct 2023 03:51:13 +0200 (CEST)
+From:   Ben Schneider <ben@bens.haus>
+To:     Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc:     Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+        Regressions <regressions@lists.linux.dev>,
+        Linux Efi <linux-efi@vger.kernel.org>,
+        Stable <stable@vger.kernel.org>, Ard Biesheuvel <ardb@kernel.org>
+Message-ID: <Nh30qsF--3-9@bens.haus>
+In-Reply-To: <CAC_iWjJB3OTWiYX5YsJmNcPQw+rHSm955c1Z5pUajedWGM5QgA@mail.gmail.com>
+References: <Nh-DzlX--3-9@bens.haus> <CAMj1kXFKe6piagNLdSUhxUhwLB+RfNHqjNWt8-r2CNS-rBdJKA@mail.gmail.com> <817366c2-33e0-4908-90ec-57c63e3eb471@canonical.com> <CAC_iWjJB3OTWiYX5YsJmNcPQw+rHSm955c1Z5pUajedWGM5QgA@mail.gmail.com>
+Subject: Re: [REGRESSION] boot fails for EFI boot stub loaded by u-boot
 MIME-Version: 1.0
-From:   Jianxiong Gao <jxgao@google.com>
-Date:   Wed, 18 Oct 2023 11:56:10 -0700
-Message-ID: <CAMGD6P3szwE-ji3sJsow5PPuazqQjQhgN4ZKFmUmZJ0Gfz=ByA@mail.gmail.com>
-Subject: Re: [PATCHv2] efi/unaccepted: Fix soft lockups caused by parallel
- memory acceptance
-To:     michael.roth@amd.com
-Cc:     aarcange@redhat.com, ak@linux.intel.com, akpm@linux-foundation.org,
-        ardb@kernel.org, bp@alien8.de, dave.hansen@intel.com,
-        david@redhat.com, dfaggioli@suse.com, jroedel@suse.de,
-        kirill.shutemov@linux.intel.com, linux-coco@lists.linux.dev,
-        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, luto@kernel.org,
-        Marcelo Henrique Cerri <marcelo.cerri@canonical.com>,
-        mgorman@techsingularity.net, mingo@redhat.com,
-        nik.borisov@suse.com, pbonzini@redhat.com, peterx@redhat.com,
-        peterz@infradead.org, philip.cox@canonical.com,
-        David Rientjes <rientjes@google.com>, rppt@kernel.org,
-        sathyanarayanan.kuppuswamy@linux.intel.com,
-        Sean Christopherson <seanjc@google.com>, stable@kernel.org,
-        tglx@linutronix.de, thomas.lendacky@amd.com,
-        tim.gardner@canonical.com, vbabka@suse.cz, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-The patch helps us gain more stability in our testing.
-We are not able to reproduce the soft lockup issue in over 20 runs
-with 176 vcpus so far.
+> How old is the u-boot build on this platform?
 
-Thanks!
--- 
-Jianxiong Gao
+U-Boot 2018.03-devel-18.12.3-g926d08c7ce (Apr 11 2022 - 15:48:13 +0800)
+
+This appears to be the most recent version the manufacturer has released for this device. Source: https://github.com/globalscaletechnologies/u-boot-marvell.
+
+>> arch/arm64/boot/marvell/armada-3720-espressobin-ultra.dts
+> This is a uboot path, right? Not a linux path? Are you sure this DTS is compatible with the v6.5 kernel?
+
+Sorry for the confusion; that is the path in the linux source to the DTS used to compile the DTB that I am using to boot the device. I booted v5.15.135 using the DTB compiled from v6.5.7 source and that works fine. I also tried to boot v6.5.7 with the factory DTB and that failed.
+
+> Please add message inside the update_fdt() routine...
+
+I added a bunch and here's what I got back:
+
+EFI stub: Booting Linux Kernel...
+EFI stub: ERROR: FIRMWARE BUG: efi_loaded_image_t::image_base has bogus value
+EFI stub: ERROR: FIRMWARE BUG: kernel image not aligned on 64k boundary
+EFI stub: ERROR: Failed to install memreserve config table!
+EFI stub: Using DTB from configuration table
+EFI stub: Exiting boot services...
+EFI stub: Starting update_fdt()...
+EFI stub: fdt_num_mem_rsv() returned 1
+EFI stub: fdt_subnode_offset() returned 8944
+EFI stub: Setting bootargs=console=ttyMV0,115200 earlycon=ar3700_uart,0xd0012000 root=/dev/sda1 rw rootwait
+EFI stub: Adding FDT entries...
+EFI stub: fdt_setprop_var() for linux,uefi-system-table returned 0
+EFI stub: fdt_setprop_var() for linux,uefi-mmap-start returned -11
+EFI stub: update_fdt() failed with status -11
+EFI stub: ERROR: Unable to construct new device tree.
+EFI stub: ERROR: Failed to update FDT and exit boot services
+
+That's as far as I could get today but hopefully that starts to narrow it down. Appreciate the help!
+
+Sincerely,
+
+Ben
