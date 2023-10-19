@@ -2,148 +2,129 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10BB47CF10D
-	for <lists+linux-efi@lfdr.de>; Thu, 19 Oct 2023 09:21:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 166147CF384
+	for <lists+linux-efi@lfdr.de>; Thu, 19 Oct 2023 11:06:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232895AbjJSHVP (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 19 Oct 2023 03:21:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54840 "EHLO
+        id S1345008AbjJSJG6 (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 19 Oct 2023 05:06:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232854AbjJSHVO (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 19 Oct 2023 03:21:14 -0400
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E33E3123
-        for <linux-efi@vger.kernel.org>; Thu, 19 Oct 2023 00:21:11 -0700 (PDT)
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com [209.85.208.197])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 33EB53F69E
-        for <linux-efi@vger.kernel.org>; Thu, 19 Oct 2023 07:21:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1697700070;
-        bh=x91R+lC/YKZONC3H6UuQ7fgHRxPTzGFAHyvdz6tJ5Ok=;
-        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-         In-Reply-To:Content-Type;
-        b=rX9gRrLizFOKGYJSIkhGquZaah1vWqZVX3uwTAR5amjdvjSarO+hcFtXplR35/PZ7
-         Xp2SLaUh3ymClSSf+pGGqXn/5Elahw98GTEJM8sQQykQXwfw8V4KMDS3s38nexx7pZ
-         8Y6CF+3HbCUsjZub7e2qAkmzYHEIcEbtD/K1HA6LJQ0ApvU0TevhJ0pG9dRiqno9dm
-         a0OOd62+Jwh7By1/IYV7YvNUgDKH1irR4dg2UWzaac7ThkiqhG6FCgrwr51JCeDTFd
-         OnpVRNg2TRjCBLwboF5Knfri9dwNol2frLQ4GbF5jRP1Qez9p+Iks6dTF45k8Z4SZF
-         H5EKQnkHOPvIA==
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-2c5047f94bdso47561271fa.1
-        for <linux-efi@vger.kernel.org>; Thu, 19 Oct 2023 00:21:10 -0700 (PDT)
+        with ESMTP id S1344985AbjJSJG5 (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 19 Oct 2023 05:06:57 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7ED910F
+        for <linux-efi@vger.kernel.org>; Thu, 19 Oct 2023 02:06:54 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id ffacd0b85a97d-32d8c2c6dfdso6918912f8f.1
+        for <linux-efi@vger.kernel.org>; Thu, 19 Oct 2023 02:06:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1697706413; x=1698311213; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yTzH6q/KHuyR0ZINbw+hcjZ5+0x6X/p2cjmFJ06sw1g=;
+        b=d65+L4mh9pZwErGX3oVoWaQdFL63XZeAQHi/pUp2L5XSdRkkVTY4uxHcNTUC8Xac5T
+         aSH+MCjYoqmwWxBAD2ohaPKxBCc5CiEVIvm5zPPKdF6yV0zhpa2B50MkAmia7l08xkZq
+         76Z3WkoZiEi+uDpCJVKypBuQ/hdc9f9gze1TTwdociCtzuHtSDTF+fi9M+ZlgfkbXncs
+         q27xu3r2nMymlSkVXE6U/RxJAyi00GhN2ni9mI5+6IdAy1loyIQ2tCk/BNwPSPUPw1py
+         AwGresZqeYx+qOnVoRtNj5GLVBVDEWJSpLS/GyMKO7w6wW8N7ewxebVtePrWFHYYSM7d
+         Ww0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697700069; x=1698304869;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=x91R+lC/YKZONC3H6UuQ7fgHRxPTzGFAHyvdz6tJ5Ok=;
-        b=s+WmW1JgPui/HrWg/tFNDHcdX3sxkNj7MgMLgqjsVvIRyeiFwiU270aNO36xHeRZ1V
-         oZ32MsX4ozPdck4erKg7EFpwTCk2RkCAAei12UVSCCJ+vxxfAQLOBglHsKz8CLn2/Tww
-         GDNepvq03q5HfDDVeP0U9KZHTZ+AsJsojoyQa+FjcuviCBe6nPUfBNgNNep8VHWWQRkk
-         d6Tae5/cJCgbY68Y7TfhJSBz67S4fxkkG+2DmxpmZU+jgKaMkj6bE/BFPHFMfm7EZz2A
-         lJoCayT01lBWvvlsbTotJy4dImtkyq16QCBVUHXPDJhiz/HWyfd714eRtBUYq7ByttNI
-         JptA==
-X-Gm-Message-State: AOJu0YwUVZ6CSnwd/1GDzGrFsPXTdu4aQn8eMPRONvD71y3nP7tbyUI1
-        y8vC2vV5YmD+CbfIRUoKBHNufX6JEwGKOlJz/zezaBlYBIQcdNbDJqm7lOt2UHbFqBiXjbauiBd
-        aPasM71g3vHj0fp6zLYpGlQPLx6J8kIlXHBPO7Q==
-X-Received: by 2002:a05:651c:1507:b0:2bc:f252:6cc4 with SMTP id e7-20020a05651c150700b002bcf2526cc4mr1042798ljf.10.1697700068813;
-        Thu, 19 Oct 2023 00:21:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGrEU16y5JLCrQA1zLjr1UsCW+KYgjOi+xUvCvHEVOlrHclgBiPupWNCqAkJ1xwc+J1xs6X/A==
-X-Received: by 2002:a05:651c:1507:b0:2bc:f252:6cc4 with SMTP id e7-20020a05651c150700b002bcf2526cc4mr1042779ljf.10.1697700068371;
-        Thu, 19 Oct 2023 00:21:08 -0700 (PDT)
-Received: from [192.168.123.94] (ip-178-202-040-247.um47.pools.vodafone-ip.de. [178.202.40.247])
-        by smtp.gmail.com with ESMTPSA id m13-20020a7bca4d000000b00402ff8d6086sm3610975wml.18.2023.10.19.00.21.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Oct 2023 00:21:07 -0700 (PDT)
-Message-ID: <57062702-f858-46d3-bccc-f0f96891128b@canonical.com>
-Date:   Thu, 19 Oct 2023 09:21:13 +0200
+        d=1e100.net; s=20230601; t=1697706413; x=1698311213;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yTzH6q/KHuyR0ZINbw+hcjZ5+0x6X/p2cjmFJ06sw1g=;
+        b=X4AKnAmIBInm6N0DcLsWeLRX1L1QDUkg3hSsd9Ibs5ztcX1ezH2bhl/UJh9ZjK6jNv
+         6h6cHB1U8hMRqgpE64gFXhtbd10mrWEqgipqn1ZFl0scnlyrJkzQi7WwHaaPzqrStNrR
+         gqHj+zMRth3rF8zr9lnkfF/X+Td6figA/rUXG+Pyg+EuCongQWypjEjnr5Qkl+2Z9Ots
+         cARSf2hp8vK+zc4Qvo891zer+90hqKR9gQGAWE5qMlAyf//iothBsQoJbno506euNYts
+         uI5qZGxjlGGaT5qtFFzMHUX8j5fXD6PKFxJH7kVAl5hCWH5fug7HaqgGmLNytis8x+4+
+         ithA==
+X-Gm-Message-State: AOJu0YyckUrkb0FkPBJv5i1CA0pRimgZgkbczNcJEqS5w9HCTwVD1q+P
+        bFKDh2chCxbkI/Cts3l7/zgtKOSEZ55pKnny7I+ksA==
+X-Google-Smtp-Source: AGHT+IHSkQS9qNtpAIEMi6sxLaFTkgi+j6Rf7WXRtDe59N4GEvIdt/PZ1MtRQGPplsiQPNtP0AvAANDdTsTJLGZENEE=
+X-Received: by 2002:adf:db4b:0:b0:32d:b06c:80b5 with SMTP id
+ f11-20020adfdb4b000000b0032db06c80b5mr1127928wrj.2.1697706413344; Thu, 19 Oct
+ 2023 02:06:53 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] boot fails for EFI boot stub loaded by u-boot
-To:     Ben Schneider <ben@bens.haus>
-Cc:     Regressions <regressions@lists.linux.dev>,
-        Linux Efi <linux-efi@vger.kernel.org>,
-        Stable <stable@vger.kernel.org>,
+References: <20231002151031.110551-1-alexghiti@rivosinc.com>
+ <20231002151031.110551-5-alexghiti@rivosinc.com> <20231012-envision-grooving-e6e0461099f1@spud>
+ <20231012-exclusion-moaner-d26780f9eb00@spud> <20231013-19d487ddc6b6efd6d6f62f88@orel>
+In-Reply-To: <20231013-19d487ddc6b6efd6d6f62f88@orel>
+From:   Alexandre Ghiti <alexghiti@rivosinc.com>
+Date:   Thu, 19 Oct 2023 11:06:42 +0200
+Message-ID: <CAHVXubgZ12x5O4Uo404u8uL2qhrtdN5w-DQFvnBib3XhhtrK1Q@mail.gmail.com>
+Subject: Re: [PATCH 4/5] riscv: Suffix all page table entry pointers with 'p'
+To:     Andrew Jones <ajones@ventanamicro.com>
+Cc:     Conor Dooley <conor@kernel.org>,
+        Ryan Roberts <ryan.roberts@arm.com>,
+        Alexander Potapenko <glider@google.com>,
+        Marco Elver <elver@google.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Anup Patel <anup@brainfault.org>,
+        Atish Patra <atishp@atishpatra.org>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>
-References: <Nh-DzlX--3-9@bens.haus>
- <CAMj1kXFKe6piagNLdSUhxUhwLB+RfNHqjNWt8-r2CNS-rBdJKA@mail.gmail.com>
- <817366c2-33e0-4908-90ec-57c63e3eb471@canonical.com>
- <CAC_iWjJB3OTWiYX5YsJmNcPQw+rHSm955c1Z5pUajedWGM5QgA@mail.gmail.com>
- <Nh30qsF--3-9@bens.haus>
-Content-Language: en-US, de-DE
-From:   Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-In-Reply-To: <Nh30qsF--3-9@bens.haus>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        kasan-dev@googlegroups.com, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        kvm-riscv@lists.infradead.org, linux-efi@vger.kernel.org,
+        linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-On 10/19/23 03:51, Ben Schneider wrote:
->> How old is the u-boot build on this platform?
-> 
-> U-Boot 2018.03-devel-18.12.3-g926d08c7ce (Apr 11 2022 - 15:48:13 +0800)
-> 
-> This appears to be the most recent version the manufacturer has released for this device. Source: https://github.com/globalscaletechnologies/u-boot-marvell.
-> 
->>> arch/arm64/boot/marvell/armada-3720-espressobin-ultra.dts
->> This is a uboot path, right? Not a linux path? Are you sure this DTS is compatible with the v6.5 kernel?
-> 
-> Sorry for the confusion; that is the path in the linux source to the DTS used to compile the DTB that I am using to boot the device. I booted v5.15.135 using the DTB compiled from v6.5.7 source and that works fine. I also tried to boot v6.5.7 with the factory DTB and that failed.
+Hi Conor, Marco, Andrew,
 
-To which kernel and device-tree are the messages below related?
+On Fri, Oct 13, 2023 at 11:58=E2=80=AFAM Andrew Jones <ajones@ventanamicro.=
+com> wrote:
+>
+> On Thu, Oct 12, 2023 at 12:35:00PM +0100, Conor Dooley wrote:
+> > On Thu, Oct 12, 2023 at 12:33:15PM +0100, Conor Dooley wrote:
+> > > Hey Alex,
+> > >
+> > > On Mon, Oct 02, 2023 at 05:10:30PM +0200, Alexandre Ghiti wrote:
+> > > > That makes it more clear what the underlying type is, no functional
+> > > > changes intended.
+> > >
+> > > Scanning through stuff on patchwork, this really doesn't seem worth t=
+he
+> > > churn. I thought this sort of Hungarian notation-esque stuff was a
+> > > relic of a time before I could read & our docs even go as far as to
+> >
+> > s/go/went/, I see the language got changed in more recent releases of
+> > the kernel!
+>
+> The documentation seems to still be against it, but, despite that and
+> the two very valid points raised by Marco (backporting and git-blame),
+> I think ptep is special and I'm mostly in favor of this change. We may
+> not need to s/r every instance, but certainly functions which need to
+> refer to both the pte and the ptep representations of entries becomes
+> more clear when using the 'p' convention (and then it's nice to have
+> ptep used everywhere else too for consistency...)
+>
+> Anyway, just my 2 cents.
 
-> 
->> Please add message inside the update_fdt() routine...
-> 
-> I added a bunch and here's what I got back:
-> 
-> EFI stub: Booting Linux Kernel...
-> EFI stub: ERROR: FIRMWARE BUG: efi_loaded_image_t::image_base has bogus value
-> EFI stub: ERROR: FIRMWARE BUG: kernel image not aligned on 64k boundary
-> EFI stub: ERROR: Failed to install memreserve config table!
-> EFI stub: Using DTB from configuration table
-> EFI stub: Exiting boot services...
-> EFI stub: Starting update_fdt()...
-> EFI stub: fdt_num_mem_rsv() returned 1
-> EFI stub: fdt_subnode_offset() returned 8944
-> EFI stub: Setting bootargs=console=ttyMV0,115200 earlycon=ar3700_uart,0xd0012000 root=/dev/sda1 rw rootwait
-> EFI stub: Adding FDT entries...
-> EFI stub: fdt_setprop_var() for linux,uefi-system-table returned 0
-> EFI stub: fdt_setprop_var() for linux,uefi-mmap-start returned -11
+I started changing that in one function and another one, and another
+one...etc up to every instance. I still think that it makes things
+clearer, but that's subjective, you raised valid points and I'd really
+like to see this land in 6.7 so I'll revert this patch and send a v2.
 
-11 = FDT_ERR_BADSTRUCTURE
-This is probably set in scripts/dtc/libfdt/fdt_ro.c.
-Something in the structure of your device-tree is invalid.
+Thanks for your feedbacks,
 
-Please, check the load addresses in U-Boot. Is something overwriting the 
-tail of the device-tree?
+Alex
 
-Compiling upstream U-Boot's qemu_arm64_defconfig yields 
-lib/efi_loader/dtbdump.efi. If you run this instead of the kernel, you 
-can write the device-tree as it is passed in a configuration table to 
-the ESP.
-
-Best regards
-
-Heinrich
-
-> EFI stub: update_fdt() failed with status -11
-> EFI stub: ERROR: Unable to construct new device tree.
-> EFI stub: ERROR: Failed to update FDT and exit boot services
-> 
-> That's as far as I could get today but hopefully that starts to narrow it down. Appreciate the help!
-> 
-> Sincerely,
-> 
-> Ben
-
+>
+> Thanks,
+> drew
