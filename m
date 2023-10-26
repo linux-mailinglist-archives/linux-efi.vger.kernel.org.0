@@ -2,49 +2,50 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77F007D8834
-	for <lists+linux-efi@lfdr.de>; Thu, 26 Oct 2023 20:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 327497D8836
+	for <lists+linux-efi@lfdr.de>; Thu, 26 Oct 2023 20:22:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234816AbjJZSWT (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 26 Oct 2023 14:22:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50304 "EHLO
+        id S1344648AbjJZSWU (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 26 Oct 2023 14:22:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233234AbjJZSWS (ORCPT
+        with ESMTP id S234825AbjJZSWS (ORCPT
         <rfc822;linux-efi@vger.kernel.org>); Thu, 26 Oct 2023 14:22:18 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 548A91B1;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C1A51B5;
         Thu, 26 Oct 2023 11:22:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1698344536; x=1729880536;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=kzUu5T88aXPV2ML7F1LVIjz5BeKGE7YYrbnViZM8dYU=;
-  b=le4Ab4gBJnQNSG7mzDvA153C5WCtV2Epa0I3q+h9wxgw4B1Xj/XpdK5A
-   /oitwZWDycEcdE1y5QVXbz+eA5M9g4Z4r3FEcXORWtaQbUisjv8MOHyI3
-   8LTGtUbV6d+QBeV0U3nJdu2VdP/GMoCCuG8Bvg7E8Ac66HBtpvWPd4hfG
-   U13R4h/ETRmMT2SN9peoEZvlZUofZy5pQNdP22IxdTtXpDKUOgBhVkhlS
-   6PtzA+YtdZ2KhiEVlLYLt3EWM1zlubKR6/JLjRLL/ErU0vL6aSUPzTaVr
-   qzo522j/047HIwUFiEYijzYld6NuXFt36cQf3rY1Odo3ktAWfDLayhkcd
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="418733777"
+  bh=aFGHMQZucOpaNQpI8yGfGV/YBqlkB0jG0SYOjReuNm0=;
+  b=cA5T0Mqqh2OZhuTqDmXmkHGqvb8lNjxBMOUgtsE3Pn65ydFrwJ6rZyu5
+   N7jjUnCKX1ky+2Q6B2DnD8+J+XvxZncTpfDB0kcg+HH67LL2oeQizCHX2
+   WLIB3oC8qXPM8bABmOPQVJCT+cjRd53mTidcFfqGdsaDAhOXuQJaIYLrv
+   pVPXfeDC3uikTYYNVeX6pjxcLtoibnFOr44EOZRkdSg24dF5DrSlgh8K9
+   3d/qOvbO72LA9m5AXbtZg3gnQPS5lbEKqTuy+3A19yiC3xV/5GXVXf2lV
+   As2SbRtwxPc6Lu5NUffIwVltR3LPr5lCvYh5URpIYdvJsz6wPMGK42GTQ
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="418733785"
 X-IronPort-AV: E=Sophos;i="6.03,254,1694761200"; 
-   d="scan'208";a="418733777"
+   d="scan'208";a="418733785"
 Received: from fmsmga008.fm.intel.com ([10.253.24.58])
   by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2023 11:21:42 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="825087500"
+X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="825087503"
 X-IronPort-AV: E=Sophos;i="6.03,254,1694761200"; 
-   d="scan'208";a="825087500"
+   d="scan'208";a="825087503"
 Received: from iweiny-desk3.amr.corp.intel.com (HELO localhost) ([10.212.121.242])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2023 11:21:41 -0700
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2023 11:21:42 -0700
 From:   Ira Weiny <ira.weiny@intel.com>
-Date:   Thu, 26 Oct 2023 11:21:39 -0700
-Subject: [PATCH RFC v2 2/3] firmware/efi: Process CXL Component Events
+Date:   Thu, 26 Oct 2023 11:21:40 -0700
+Subject: [PATCH RFC v2 3/3] cxl/memdev: Register for and process CPER
+ events
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230601-cxl-cper-v2-2-314d9c36ab02@intel.com>
+Message-Id: <20230601-cxl-cper-v2-3-314d9c36ab02@intel.com>
 References: <20230601-cxl-cper-v2-0-314d9c36ab02@intel.com>
 In-Reply-To: <20230601-cxl-cper-v2-0-314d9c36ab02@intel.com>
 To:     Dan Williams <dan.j.williams@intel.com>,
@@ -59,11 +60,11 @@ Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
         linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
         Ira Weiny <ira.weiny@intel.com>
 X-Mailer: b4 0.13-dev-0f7f0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1698344500; l=7303;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1698344500; l=7873;
  i=ira.weiny@intel.com; s=20221222; h=from:subject:message-id;
- bh=kzUu5T88aXPV2ML7F1LVIjz5BeKGE7YYrbnViZM8dYU=;
- b=xKcWPrImgCCOPtaHcL3ztPKdVhS4fiJcRVA5NZ/dfBsx9GMlVOg1I2lG+qL9ftbBO7jsNySEy
- SQeBkJec+jNDEShxTuDaGKS3H1wCYOHt5FeUv6wppHjgAvxOaTrE3hr
+ bh=aFGHMQZucOpaNQpI8yGfGV/YBqlkB0jG0SYOjReuNm0=;
+ b=g6ZBjEoQdn+srl7iOajjcAeD0OF6Rn383oPMz3TzmRC/HoWn+tDXw7bQdDYu7+c5qG+bHDxc+
+ BDfmnuBxj/OC2aVZhg5GvT2tQBxL3PD6Kh50LjiMpdHIkdQzZSVL7Zx
 X-Developer-Key: i=ira.weiny@intel.com; a=ed25519;
  pk=brwqReAJklzu/xZ9FpSsMPSQ/qkSalbg6scP3w809Ec=
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -77,230 +78,233 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-BIOS can configure memory devices as firmware first.  This will send CXL
-events to the firmware instead of the OS.  The firmware can then send
-these events to the OS via UEFI.
+If the firmware has configured CXL event support to be firmware first
+the OS can process those events through CPER records.  Matching memory
+devices to the CPER records can be done via the serial number which is
+part of the CPER record header.
 
-UEFI v2.10 section N.2.14 defines a Common Platform Error Record (CPER)
-format for CXL Component Events.  The format is mostly the same as the
-CXL Common Event Record Format.  The only difference is the UUID is
-passed via the Section Type as a GUID and not included as part of the
-record data.
-
-Add EFI support to detect CXL CPER records and call a notifier chain
-with the record data blobs.
-
-Note that the format of a GUID and UUID are not the same.  Therefore the
-Section Type GUID defines are duplicated from the CXL code.
+Detect firmware first, register a notifier callback for each memdev, and
+trace events when they match a device registered.
 
 Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 
 ---
-Changes from RFC v1
-[iweiny: use an enum for know record types and skip converting GUID to UUID]
-[iweiny: commit to the UUID not being part of the event record data]
-[iweiny: use defines for GUID definitions]
+Changes from RFC v1:
+[iweiny: adjust to cper_event enum instead of converting guids]
 ---
- drivers/firmware/efi/cper.c     | 16 +++++++++++
- drivers/firmware/efi/cper_cxl.c | 40 ++++++++++++++++++++++++++++
- drivers/firmware/efi/cper_cxl.h | 29 ++++++++++++++++++++
- include/linux/efi.h             | 59 +++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 144 insertions(+)
+ drivers/cxl/core/mbox.c | 45 +++++++++++++++++++++++++-------
+ drivers/cxl/cxlmem.h    |  7 +++++
+ drivers/cxl/pci.c       | 69 ++++++++++++++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 110 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index 35c37f667781..d6415c94d584 100644
---- a/drivers/firmware/efi/cper.c
-+++ b/drivers/firmware/efi/cper.c
-@@ -607,6 +607,22 @@ cper_estatus_print_section(const char *pfx, struct acpi_hest_generic_data *gdata
- 			cper_print_prot_err(newpfx, prot_err);
- 		else
- 			goto err_section_too_small;
-+	} else if (guid_equal(sec_type, &CPER_SEC_CXL_GEN_MEDIA) ||
-+		   guid_equal(sec_type, &CPER_SEC_CXL_DRAM) ||
-+		   guid_equal(sec_type, &CPER_SEC_CXL_MEM_MODULE)) {
-+		struct cper_cxl_event_rec *rec = acpi_hest_get_payload(gdata);
-+
-+		printk("%ssection type: CXL Event\n", newpfx);
-+
-+		if (rec->hdr.length <= sizeof(rec->hdr))
-+			goto err_section_too_small;
-+
-+		if (rec->hdr.length > sizeof(*rec)) {
-+			pr_err(FW_WARN "error section length is too big\n");
-+			return;
-+		}
-+
-+		cper_post_cxl_event(newpfx, sec_type, rec);
- 	} else {
- 		const void *err = acpi_hest_get_payload(gdata);
+diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
+index 4df4f614f490..3f760d1d21de 100644
+--- a/drivers/cxl/core/mbox.c
++++ b/drivers/cxl/core/mbox.c
+@@ -860,26 +860,51 @@ static const uuid_t mem_mod_event_uuid =
+ 	UUID_INIT(0xfe927475, 0xdd59, 0x4339,
+ 		  0xa5, 0x86, 0x79, 0xba, 0xb1, 0x13, 0xb7, 0x74);
  
-diff --git a/drivers/firmware/efi/cper_cxl.c b/drivers/firmware/efi/cper_cxl.c
-index a55771b99a97..04234884898d 100644
---- a/drivers/firmware/efi/cper_cxl.c
-+++ b/drivers/firmware/efi/cper_cxl.c
-@@ -187,3 +187,43 @@ void cper_print_prot_err(const char *pfx, const struct cper_sec_prot_err *prot_e
- 			       sizeof(cxl_ras->header_log), 0);
- 	}
- }
+-static void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
+-				   enum cxl_event_log_type type,
+-				   struct cxl_event_record_raw *record)
++void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
++			    enum cxl_event_log_type type,
++			    struct cxl_event_record_raw *record,
++			    enum cxl_cper_event cper_event)
+ {
+-	uuid_t *id = &record->hdr.id;
+-
+-	if (uuid_equal(id, &gen_media_event_uuid)) {
++	switch (cper_event) {
++	case CXL_CPER_EVENT_GEN_MEDIA: {
+ 		struct cxl_event_gen_media *rec =
+ 				(struct cxl_event_gen_media *)record;
+ 
+ 		trace_cxl_general_media(cxlmd, type, rec);
+-	} else if (uuid_equal(id, &dram_event_uuid)) {
++		break;
++		}
++	case CXL_CPER_EVENT_DRAM: {
+ 		struct cxl_event_dram *rec = (struct cxl_event_dram *)record;
+ 
+ 		trace_cxl_dram(cxlmd, type, rec);
+-	} else if (uuid_equal(id, &mem_mod_event_uuid)) {
++		break;
++		}
++	case CXL_CPER_EVENT_MEM_MODULE: {
+ 		struct cxl_event_mem_module *rec =
+ 				(struct cxl_event_mem_module *)record;
+ 
+ 		trace_cxl_memory_module(cxlmd, type, rec);
++		break;
++		}
++	}
++}
++EXPORT_SYMBOL_NS_GPL(cxl_event_trace_record, CXL);
 +
-+/* CXL CPER notifier chain */
-+static BLOCKING_NOTIFIER_HEAD(cxl_cper_chain_head);
-+
-+void cper_post_cxl_event(const char *pfx, guid_t *sec_type,
-+			 struct cper_cxl_event_rec *rec)
++static void __cxl_event_trace_record(const struct cxl_memdev *cxlmd,
++				     enum cxl_event_log_type type,
++				     struct cxl_event_record_raw *record)
 +{
-+	struct cxl_cper_notifier_data nd = {
-+		.rec = rec,
-+	};
++	uuid_t *id = &record->hdr.id;
 +
-+	if (!(rec->hdr.validation_bits & CPER_CXL_COMP_EVENT_LOG_VALID)) {
-+		pr_err(FW_WARN "cxl event no Component Event Log present\n");
++	if (uuid_equal(id, &gen_media_event_uuid)) {
++		cxl_event_trace_record(cxlmd, type, record,
++				       CXL_CPER_EVENT_GEN_MEDIA);
++	} else if (uuid_equal(id, &dram_event_uuid)) {
++		cxl_event_trace_record(cxlmd, type, record,
++				       CXL_CPER_EVENT_DRAM);
++	} else if (uuid_equal(id, &mem_mod_event_uuid)) {
++		cxl_event_trace_record(cxlmd, type, record,
++				       CXL_CPER_EVENT_MEM_MODULE);
+ 	} else {
+ 		/* For unknown record types print just the header */
+ 		trace_cxl_generic_event(cxlmd, type, record);
+@@ -991,8 +1016,8 @@ static void cxl_mem_get_records_log(struct cxl_memdev_state *mds,
+ 			break;
+ 
+ 		for (i = 0; i < nr_rec; i++)
+-			cxl_event_trace_record(cxlmd, type,
+-					       &payload->records[i]);
++			__cxl_event_trace_record(cxlmd, type,
++						 &payload->records[i]);
+ 
+ 		if (payload->flags & CXL_GET_EVENT_FLAG_OVERFLOW)
+ 			trace_cxl_overflow(cxlmd, type, payload);
+diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
+index 706f8a6d1ef4..89bd85e7f51c 100644
+--- a/drivers/cxl/cxlmem.h
++++ b/drivers/cxl/cxlmem.h
+@@ -6,6 +6,7 @@
+ #include <linux/cdev.h>
+ #include <linux/uuid.h>
+ #include <linux/rcuwait.h>
++#include <linux/efi.h>
+ #include "cxl.h"
+ 
+ /* CXL 2.0 8.2.8.5.1.1 Memory Device Status Register */
+@@ -477,6 +478,8 @@ struct cxl_memdev_state {
+ 	struct cxl_security_state security;
+ 	struct cxl_fw_state fw;
+ 
++	struct notifier_block cxl_cper_nb;
++
+ 	struct rcuwait mbox_wait;
+ 	int (*mbox_send)(struct cxl_memdev_state *mds,
+ 			 struct cxl_mbox_cmd *cmd);
+@@ -863,6 +866,10 @@ void set_exclusive_cxl_commands(struct cxl_memdev_state *mds,
+ void clear_exclusive_cxl_commands(struct cxl_memdev_state *mds,
+ 				  unsigned long *cmds);
+ void cxl_mem_get_event_records(struct cxl_memdev_state *mds, u32 status);
++void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
++			    enum cxl_event_log_type type,
++			    struct cxl_event_record_raw *record,
++			    enum cxl_cper_event cper_event);
+ int cxl_set_timestamp(struct cxl_memdev_state *mds);
+ int cxl_poison_state_init(struct cxl_memdev_state *mds);
+ int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
+diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
+index 44a21ab7add5..36d6f03e55de 100644
+--- a/drivers/cxl/pci.c
++++ b/drivers/cxl/pci.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /* Copyright(c) 2020 Intel Corporation. All rights reserved. */
++#include <asm-generic/unaligned.h>
+ #include <linux/io-64-nonatomic-lo-hi.h>
+ #include <linux/moduleparam.h>
+ #include <linux/module.h>
+@@ -10,6 +11,7 @@
+ #include <linux/pci.h>
+ #include <linux/aer.h>
+ #include <linux/io.h>
++#include <linux/efi.h>
+ #include "cxlmem.h"
+ #include "cxlpci.h"
+ #include "cxl.h"
+@@ -748,6 +750,69 @@ static bool cxl_event_int_is_fw(u8 setting)
+ 	return mode == CXL_INT_FW;
+ }
+ 
++#define CXL_EVENT_HDR_FLAGS_REC_SEVERITY GENMASK(1, 0)
++int cxl_cper_event_call(struct notifier_block *nb, unsigned long action, void *data)
++{
++	struct cxl_cper_notifier_data *nd = data;
++	struct cxl_event_record_raw record = (struct cxl_event_record_raw) {
++		.hdr.id = UUID_INIT(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
++	};
++	enum cxl_event_log_type log_type;
++	struct cxl_memdev_state *mds;
++	u32 hdr_flags;
++
++	mds = container_of(nb, struct cxl_memdev_state, cxl_cper_nb);
++
++	/* Need serial number for device identification */
++	if (!(nd->rec->hdr.validation_bits & CPER_CXL_DEVICE_SN_VALID))
++		return NOTIFY_DONE;
++
++	/* FIXME endianess and bytes of serial number need verification */
++	/* FIXME Should other values be checked? */
++	if (memcmp(&mds->cxlds.serial, &nd->rec->hdr.dev_serial_num,
++		   sizeof(mds->cxlds.serial)))
++		return NOTIFY_DONE;
++
++	/* ensure record can always handle the full CPER provided data */
++	BUILD_BUG_ON(sizeof(record) <
++		(CPER_CXL_COMP_EVENT_LOG_SIZE + sizeof(record.hdr.id)));
++
++	/*
++	 * UEFI v2.10 defines N.2.14 defines the CXL CPER record as not
++	 * including the uuid field.
++	 */
++	memcpy(&record.hdr.length, &nd->rec->comp_event_log,
++		CPER_CXL_REC_LEN(nd->rec));
++
++	/* Fabricate a log type */
++	hdr_flags = get_unaligned_le24(record.hdr.flags);
++	log_type = FIELD_GET(CXL_EVENT_HDR_FLAGS_REC_SEVERITY, hdr_flags);
++
++	cxl_event_trace_record(mds->cxlds.cxlmd, log_type, &record,
++			       nd->cper_event);
++
++	return NOTIFY_OK;
++}
++
++static void cxl_unregister_cper_events(void *_mds)
++{
++	struct cxl_memdev_state *mds = _mds;
++
++	unregister_cxl_cper_notifier(&mds->cxl_cper_nb);
++}
++
++static void register_cper_events(struct cxl_memdev_state *mds)
++{
++	mds->cxl_cper_nb.notifier_call = cxl_cper_event_call;
++
++	if (register_cxl_cper_notifier(&mds->cxl_cper_nb)) {
++		dev_err(mds->cxlds.dev, "CPER registration failed\n");
 +		return;
 +	}
 +
-+	if (guid_equal(sec_type, &CPER_SEC_CXL_GEN_MEDIA))
-+		nd.cper_event = CXL_CPER_EVENT_GEN_MEDIA;
-+	else if (guid_equal(sec_type, &CPER_SEC_CXL_DRAM))
-+		nd.cper_event = CXL_CPER_EVENT_DRAM;
-+	else if (guid_equal(sec_type, &CPER_SEC_CXL_MEM_MODULE))
-+		nd.cper_event = CXL_CPER_EVENT_MEM_MODULE;
-+
-+	if (blocking_notifier_call_chain(&cxl_cper_chain_head, 0, (void *)&nd)
-+			== NOTIFY_BAD)
-+		pr_err(FW_WARN "cxl event notifier chain failed\n");
++	devm_add_action_or_reset(mds->cxlds.dev, cxl_unregister_cper_events, mds);
 +}
 +
-+int register_cxl_cper_notifier(struct notifier_block *nb)
-+{
-+	return blocking_notifier_chain_register(&cxl_cper_chain_head, nb);
-+}
-+EXPORT_SYMBOL(register_cxl_cper_notifier);
-+
-+void unregister_cxl_cper_notifier(struct notifier_block *nb)
-+{
-+	blocking_notifier_chain_unregister(&cxl_cper_chain_head, nb);
-+}
-+EXPORT_SYMBOL(unregister_cxl_cper_notifier);
-+
-diff --git a/drivers/firmware/efi/cper_cxl.h b/drivers/firmware/efi/cper_cxl.h
-index 86bfcf7909ec..ca26126cd9b8 100644
---- a/drivers/firmware/efi/cper_cxl.h
-+++ b/drivers/firmware/efi/cper_cxl.h
-@@ -10,11 +10,38 @@
- #ifndef LINUX_CPER_CXL_H
- #define LINUX_CPER_CXL_H
+ static int cxl_event_config(struct pci_host_bridge *host_bridge,
+ 			    struct cxl_memdev_state *mds)
+ {
+@@ -758,8 +823,10 @@ static int cxl_event_config(struct pci_host_bridge *host_bridge,
+ 	 * When BIOS maintains CXL error reporting control, it will process
+ 	 * event records.  Only one agent can do so.
+ 	 */
+-	if (!host_bridge->native_cxl_error)
++	if (!host_bridge->native_cxl_error) {
++		register_cper_events(mds);
+ 		return 0;
++	}
  
-+#include <linux/efi.h>
-+
- /* CXL Protocol Error Section */
- #define CPER_SEC_CXL_PROT_ERR						\
- 	GUID_INIT(0x80B9EFB4, 0x52B5, 0x4DE3, 0xA7, 0x77, 0x68, 0x78,	\
- 		  0x4B, 0x77, 0x10, 0x48)
- 
-+/* CXL Event record UUIDs are used as the section type */
-+/*
-+ * General Media Event Record
-+ * CXL rev 3.0 Section 8.2.9.2.1.1; Table 8-43
-+ */
-+#define CPER_SEC_CXL_GEN_MEDIA						\
-+	GUID_INIT(0xfbcd0a77, 0xc260, 0x417f,				\
-+		  0x85, 0xa9, 0x08, 0x8b, 0x16, 0x21, 0xeb, 0xa6)
-+
-+/*
-+ * DRAM Event Record
-+ * CXL rev 3.0 section 8.2.9.2.1.2; Table 8-44
-+ */
-+#define CPER_SEC_CXL_DRAM						\
-+	GUID_INIT(0x601dcbb3, 0x9c06, 0x4eab,				\
-+		  0xb8, 0xaf, 0x4e, 0x9b, 0xfb, 0x5c, 0x96, 0x24)
-+
-+/*
-+ * Memory Module Event Record
-+ * CXL rev 3.0 section 8.2.9.2.1.3; Table 8-45
-+ */
-+#define CPER_SEC_CXL_MEM_MODULE						\
-+	GUID_INIT(0xfe927475, 0xdd59, 0x4339,				\
-+		  0xa5, 0x86, 0x79, 0xba, 0xb1, 0x13, 0xb7, 0x74)
-+
- #pragma pack(1)
- 
- /* Compute Express Link Protocol Error Section, UEFI v2.10 sec N.2.13 */
-@@ -62,5 +89,7 @@ struct cper_sec_prot_err {
- #pragma pack()
- 
- void cper_print_prot_err(const char *pfx, const struct cper_sec_prot_err *prot_err);
-+void cper_post_cxl_event(const char *pfx, guid_t *sec_type,
-+			 struct cper_cxl_event_rec *rec);
- 
- #endif //__CPER_CXL_
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 80b21d1c6eaf..b5b8b46c8deb 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -1355,4 +1355,63 @@ bool efi_config_table_is_usable(const efi_guid_t *guid, unsigned long table)
- 
- umode_t efi_attr_is_visible(struct kobject *kobj, struct attribute *attr, int n);
- 
-+/*
-+ * Event log size adjusted for CPER
-+ *
-+ * Base table from CXL r3.0 Table 8-42: (30h + 50h)
-+ * For lack of UUID: - 10h
-+ *
-+ * (30h + 50h) - 10h = 70h
-+ */
-+#define CPER_CXL_COMP_EVENT_LOG_SIZE 0x70
-+#define CPER_CXL_DEVICE_ID_VALID		BIT(0)
-+#define CPER_CXL_DEVICE_SN_VALID		BIT(1)
-+#define CPER_CXL_COMP_EVENT_LOG_VALID		BIT(2)
-+struct cper_cxl_event_rec {
-+	struct {
-+		u32 length;
-+		u64 validation_bits;
-+		struct {
-+			u16 vendor_id;
-+			u16 device_id;
-+			u8 func_num;
-+			u8 device_num;
-+			u8 bus_num;
-+			u16 segment_num;
-+			u16 slot_num; /* bits 2:0 reserved */
-+			u8 reserved;
-+		} device_id;
-+		struct {
-+			u32 lower_dw;
-+			u32 upper_dw;
-+		} dev_serial_num;
-+	} hdr;
-+
-+	u8 comp_event_log[CPER_CXL_COMP_EVENT_LOG_SIZE];
-+};
-+#define CPER_CXL_REC_LEN(rec) (rec->hdr.length - sizeof(rec->hdr))
-+
-+enum cxl_cper_event {
-+	CXL_CPER_EVENT_GEN_MEDIA,
-+	CXL_CPER_EVENT_DRAM,
-+	CXL_CPER_EVENT_MEM_MODULE,
-+};
-+
-+struct cxl_cper_notifier_data {
-+	enum cxl_cper_event cper_event;
-+	struct cper_cxl_event_rec *rec;
-+};
-+
-+#ifdef CONFIG_EFI
-+int register_cxl_cper_notifier(struct notifier_block *nb);
-+void unregister_cxl_cper_notifier(struct notifier_block *nb);
-+#else
-+static inline int register_cxl_cper_notifier(struct notifier_block *nb)
-+{
-+	return 0;
-+}
-+
-+static inline void unregister_cxl_cper_notifier(struct notifier_block *nb) { }
-+#endif
-+
- #endif /* _LINUX_EFI_H */
+ 	rc = cxl_mem_alloc_event_buf(mds);
+ 	if (rc)
 
 -- 
 2.41.0
