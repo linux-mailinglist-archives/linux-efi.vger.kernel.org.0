@@ -2,30 +2,50 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E3F77D8098
-	for <lists+linux-efi@lfdr.de>; Thu, 26 Oct 2023 12:21:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EBEB7D83A0
+	for <lists+linux-efi@lfdr.de>; Thu, 26 Oct 2023 15:32:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229680AbjJZKVu (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 26 Oct 2023 06:21:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47346 "EHLO
+        id S231173AbjJZNcn (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 26 Oct 2023 09:32:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235094AbjJZKVf (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 26 Oct 2023 06:21:35 -0400
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9592199;
-        Thu, 26 Oct 2023 03:21:27 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R881e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0Vuxb1G0_1698315681;
-Received: from 30.240.112.233(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vuxb1G0_1698315681)
-          by smtp.aliyun-inc.com;
-          Thu, 26 Oct 2023 18:21:23 +0800
-Message-ID: <8093ceb3-0857-4c36-8856-72a158e47b6c@linux.alibaba.com>
-Date:   Thu, 26 Oct 2023 18:21:19 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 0/9] Use ERST for persistent storage of MCE and
- APEI errors
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-To:     Borislav Petkov <bp@alien8.de>
+        with ESMTP id S230413AbjJZNcm (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 26 Oct 2023 09:32:42 -0400
+Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27E1EAB;
+        Thu, 26 Oct 2023 06:32:40 -0700 (PDT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id DC34B40E01A3;
+        Thu, 26 Oct 2023 13:32:37 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+        header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id c6-HFodZqlYJ; Thu, 26 Oct 2023 13:32:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+        t=1698327155; bh=IJ1V12YW64qC6BC7ZhZrpC5tlmChNK1ADdplDg6cN1E=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GlM4dY7kejY+5ZPpNqUXaknSK9h3QGnUbWAWftm4h2R6kml3tNrQsAM50HfvkVkAH
+         JJDxckvoURo8eWdEMsw+6wH9X/ElJs+2mPj4SvaRkXA9LzvkiFwPOY3SRwEpYeY9QN
+         vIokrVV6jPGeJVc44SqK8FLpCHXK4hBUzNf4CmKDff/EZLjsIaAxdOuhDsFUkD0GpO
+         OS+dGWFWb571Bcgn8Y7xhNSqzqvaAWV+Y65CKVGTFRy3aKTwRLw6OQi345ovl219pZ
+         jm+6K0OJ7G1LSVg2WBzI1G5HxRU8IRXVmUU0V/EgfkqKU7tVAfPMbkaa2SGOqaF8Jw
+         foLokjuwiVQPaRBHWStqjg9y2QdrRmaJkXk/71tM1eH+DepiC/PO3kdzlvEXEBcKrN
+         6eO5EAecViH4eM1HwZA9d1iWrdwBALWu/JioLEGn7CgEoqdHoP3IKGUaj8UgH7amlB
+         EKAVcpE3u1DETWOpRlRsEusXrtHp58s+6qXB2Ylux3cPz7ePRYzhXtk9qt0F71Rh5T
+         CA+ZWk8DdfBhc73MHZMrgwWEQKwiCWiuwERz5HeYDSgta8cJYSQlWCA+IaRpOErkQv
+         S/LxWakrGtaQaCNJh+PXbk1w3wLcU+91tcF5cV3nD/BOf1o0iIq/zRm0k2F3IVotkD
+         WcmkBrAOJtZpQRxQT7eGCQBE=
+Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+        (No client certificate requested)
+        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9D3FC40E0173;
+        Thu, 26 Oct 2023 13:32:14 +0000 (UTC)
+Date:   Thu, 26 Oct 2023 15:32:09 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Shuai Xue <xueshuai@linux.alibaba.com>
 Cc:     keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
         rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
         tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
@@ -35,56 +55,32 @@ Cc:     keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
         linux-edac@vger.kernel.org, linux-efi@vger.kernel.org,
         acpica-devel@lists.linuxfoundation.org,
         baolin.wang@linux.alibaba.com
+Subject: Re: [RFC PATCH v2 0/9] Use ERST for persistent storage of MCE and
+ APEI errors
+Message-ID: <20231026133209.GCZTpqWVNUmqtBrnTw@fat_crate.local>
 References: <20230925074426.97856-1-xueshuai@linux.alibaba.com>
  <20230928144345.GAZRWRIXH1Tfgn5EpO@fat_crate.local>
  <f654be8f-aa98-1bed-117b-ebdf96d23df1@linux.alibaba.com>
-Content-Language: en-US
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 In-Reply-To: <f654be8f-aa98-1bed-117b-ebdf96d23df1@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        UNPARSEABLE_RELAY,URIBL_BLOCKED,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-
-
-On 2023/10/7 15:15, Shuai Xue wrote:
-> 
-> 
-> On 2023/9/28 22:43, Borislav Petkov wrote:
->> On Mon, Sep 25, 2023 at 03:44:17PM +0800, Shuai Xue wrote:
->>> After /dev/mcelog character device deprecated by commit 5de97c9f6d85
->>> ("x86/mce: Factor out and deprecate the /dev/mcelog driver"), the
->>> serialized MCE error record, of previous boot in persistent storage is not
->>> collected via APEI ERST.
->>
->> You lost me here. /dev/mcelog is deprecated but you can still use it and
->> apei_write_mce() still happens.
-> 
-> Yes, you are right. apei_write_mce() still happens so that MCE records are
-> written to persistent storage and the MCE records can be retrieved by
-> apei_read_mce(). Previously, the task was performed by the mcelog package.
-> However, it has been deprecated, some distributions like Arch kernels are
-> not even compiled with the necessary configuration option
-> CONFIG_X86_MCELOG_LEGACY.[1]
-> 
+On Sat, Oct 07, 2023 at 03:15:45PM +0800, Shuai Xue wrote:
 > So, IMHO, it's better to add a way to retrieve MCE records through switching
 > to the new generation rasdaemon solution.
-> 
->>
->> Looking at your patches, you're adding this to ghes so how about you sit
->> down first and explain your exact use case and what exactly you wanna
->> do?
->>
->> Thx.
->>
-> 
+
+rasdaemon already collects errors and even saves them in a database of
+sorts. No kernel changes needed.
+
 > Sorry for the poor cover letter. I hope the following response can clarify
 > the matter.
 > 
@@ -93,13 +89,11 @@ On 2023/10/7 15:15, Shuai Xue wrote:
 > Traditionally, fatal hardware errors will cause Linux print error log to
 > console, e.g. print_mce() or __ghes_print_estatus(), then reboot. With
 > Linux, the primary method for obtaining debugging information of a serious
-> error or fault is via the kdump mechanism. Kdump captures a wealth of
-> kernel and machine state and writes it to a file for post-mortem debugging.
-> 
-> In certain scenarios, ie. hosts/guests with root filesystems on NFS/iSCSI
-> where networking software and/or hardware fails, and thus kdump fails to
-> collect the hardware error context, leaving us unaware of what actually
-> occurred. In the public cloud scenario, multiple virtual machines run on a
+> error or fault is via the kdump mechanism.
+
+Not necessarily - see above.
+
+> In the public cloud scenario, multiple virtual machines run on a
 > single physical server, and if that server experiences a failure, it can
 > potentially impact multiple tenants. It is crucial for us to thoroughly
 > analyze the root causes of each instance failure in order to:
@@ -107,7 +101,16 @@ On 2023/10/7 15:15, Shuai Xue wrote:
 > - Provide customers with a detailed explanation of the outage to reassure them.
 > - Collect the characteristics of the failures, such as ECC syndrome, to enable fault prediction.
 > - Explore potential solutions to prevent widespread outages.
-> 
+
+Huh, are you talking about providing customers with error information
+from the *underlying* physical machine which runs the cloud VMs? That
+sounds suspicious, to say the least.
+
+AFAICT, all you can tell the VM owner is: yah, the hw had an
+uncorrectable error in its memory and crashed. Is that the use case?
+
+To be able to tell the VM owners why it crashed?
+
 > In short, it is necessary to serialize hardware error information available
 > for post-mortem debugging.
 > 
@@ -119,30 +122,49 @@ On 2023/10/7 15:15, Shuai Xue wrote:
 > CONFIG_X86_MCELOG_LEGACY suggest to consider switching to the new
 > generation rasdaemon solution. The GHES handler does not support APEI error
 > record now.
-> 
+
+I think you're confusing things: MCEs do get reported to userspace
+through the trace_mc_record tracepoint and rasdaemon opens it and reads
+error info from there. And then writes it out to its db. So that works
+now.
+
+GHES is something different: it is a fw glue around error reporting so
+that you don't have to develop a reporting driver for every platform but
+you can use a single one - only the fw glue needs to be added.
+
+The problem with GHES is that it is notoriously buggy and currently
+it loads on a single platform only on x86.
+
+ARM are doing something in that area - you're better off talking to
+James Morse about it. And he's on Cc.
+
 > To serialize hardware error information available for post-mortem
 > debugging:
 > - add support to save APEI error record into flash via ERST before go panic,
 > - add support to retrieve MCE or APEI error record from the flash and emit
 > the related tracepoint after system boot successful again so that rasdaemon
 > can collect them
-> 
-> 
-> Best Regards,
-> Shuai
-> 
-> 
-> [1] https://wiki.archlinux.org/title/Machine-check_exception
 
+Now that is yet another thing: you want to save error records into
+firmware. First of all, you don't really need it if you do kdump as
+explained above.
 
-Hi, Borislav,
+Then, that thing has its own troubles: it is buggy like every firmware
+is and it can brick the machine.
 
-I would like to inquire about your satisfaction with the motivation
-provided. If you have no objections, I am prepared to address Kees's
-comments, update the cover letter, and proceed with sending a new version.
+I'm not saying it is not useful - there are some use cases for it which
+are being worked on but if all you wanna do is dump MCEs to rasdaemon,
+that works even now.
 
-Thank you.
+But then you have an ARM patch there and I'm confused because MCEs are
+x86 thing - ARM has different stuff.
 
-Best Regards,
-Shuai
+So I think you need to elaborate more here.
 
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
