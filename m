@@ -2,54 +2,52 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D03B7D8831
+	by mail.lfdr.de (Postfix) with ESMTP id A26C87D8832
 	for <lists+linux-efi@lfdr.de>; Thu, 26 Oct 2023 20:22:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231701AbjJZSWQ (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Thu, 26 Oct 2023 14:22:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55568 "EHLO
+        id S232090AbjJZSWR (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Thu, 26 Oct 2023 14:22:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231186AbjJZSWQ (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Thu, 26 Oct 2023 14:22:16 -0400
+        with ESMTP id S232142AbjJZSWR (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Thu, 26 Oct 2023 14:22:17 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87C39192;
-        Thu, 26 Oct 2023 11:22:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5436D1A5;
+        Thu, 26 Oct 2023 11:22:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698344534; x=1729880534;
-  h=from:subject:date:message-id:mime-version:
-   content-transfer-encoding:to:cc;
-  bh=cYIxkR82XJN7QwgqI+OKwTqx/44GZ0qbMpYYJhx2f0k=;
-  b=QnBIt7bmSZVy4HsKubEwvHmbQvNNAaZIH1J8NSltswB4BLGsvX35ILon
-   KNAbWELeUwZk0gE3Zzg3MPWTctBFxUfNxCI5hh85yDOa5bXDNhi+qbKNq
-   umjq6hLLrdwGJQjGKIdKUC4S/wgoXtbIh5Ga2In5Pge414cW6WVtwhDyd
-   jmRYIpGtnAac/lWTaZBetwzPfriJ0aApg3eHsy/1LZYeCTDyHLlyyvEP/
-   QqLUUKy3LBw+t07ZIWGz0S4CxDgEyMIATzJaVz45wgsSDQZIMucBF4irr
-   AZVP5G2G2n8bYj0fHlEyuMsWhItgbdEIlPh2VZ8hNbvMV4KYTXnO2WzXU
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="418733766"
+  t=1698344535; x=1729880535;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=02I76JtMV/XP4d15n66jEAIUs4W3dxCXExoFps3S0L8=;
+  b=BF9nzejVTcUgK4l7If54aBpstnUdXPtHhlMNMdYSUdvwtzyuiqngarim
+   WmDnXVNbwrd6Hte+ahcfDq0N5DwGoehsJtX6HDMz+5+TdFHrGv+g5lsQb
+   6zvoi2EV2Ufa79Tha24wHKnM+EHFUPPEVGNnDsfhxr6N6YwGLpy8E1Z88
+   pEbvzf4bW8B+B1H6C27ef4JTLtZhM+8C1hzQA4hkZIdXJEP8yFl2Dfw0U
+   MHMintCuQpKMQXzeQxHMVeR5+sNtEF0UhSJ6VovtOSUBNlo2Ua5dFRWgN
+   W3DZOKTkbwfCaLXTCsz1mVLxPpXXyBG2Q8wCZYJBIo0heT2k6VydXq7EB
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="418733770"
 X-IronPort-AV: E=Sophos;i="6.03,254,1694761200"; 
-   d="scan'208";a="418733766"
+   d="scan'208";a="418733770"
 Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2023 11:21:40 -0700
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2023 11:21:41 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="825087494"
+X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="825087497"
 X-IronPort-AV: E=Sophos;i="6.03,254,1694761200"; 
-   d="scan'208";a="825087494"
+   d="scan'208";a="825087497"
 Received: from iweiny-desk3.amr.corp.intel.com (HELO localhost) ([10.212.121.242])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2023 11:21:40 -0700
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2023 11:21:41 -0700
 From:   Ira Weiny <ira.weiny@intel.com>
-Subject: [PATCH RFC v2 0/3] efi/cxl-cper: Report CPER CXL component events
- through trace events
-Date:   Thu, 26 Oct 2023 11:21:37 -0700
-Message-Id: <20230601-cxl-cper-v2-0-314d9c36ab02@intel.com>
+Date:   Thu, 26 Oct 2023 11:21:38 -0700
+Subject: [PATCH RFC v2 1/3] cxl/trace: Remove uuid from event trace known
+ events
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADGuOmUC/2WNTQqDMBBGryKzbkqMJWpXhUIP0G1xEaeTOqBRk
- iAW8e6Nbrt83w9vhUCeKcA1W8HTzIFHl0CdMsDOuA8JficGJVUhtcwFLr3AibxQ2lqsiho1akj
- z1gQSrTcOu/0wmBDJ78XkyfJyOF7wfNyhSWHHIY7+e3jn/Kj+FXMupKjr1lwKW9mylDd2kfozj
- gM027b9AFG98ky+AAAA
+Message-Id: <20230601-cxl-cper-v2-1-314d9c36ab02@intel.com>
+References: <20230601-cxl-cper-v2-0-314d9c36ab02@intel.com>
+In-Reply-To: <20230601-cxl-cper-v2-0-314d9c36ab02@intel.com>
 To:     Dan Williams <dan.j.williams@intel.com>,
         Jonathan Cameron <jonathan.cameron@huawei.com>,
         Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
@@ -62,11 +60,11 @@ Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
         linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
         Ira Weiny <ira.weiny@intel.com>
 X-Mailer: b4 0.13-dev-0f7f0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1698344500; l=2842;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1698344500; l=2585;
  i=ira.weiny@intel.com; s=20221222; h=from:subject:message-id;
- bh=cYIxkR82XJN7QwgqI+OKwTqx/44GZ0qbMpYYJhx2f0k=;
- b=7s8SBu/QCI7hecIDsrUe8LMAN6XHfjY8UjXGzODOwwEV327s8tzPiyPjmOufnZe6EodIcttB9
- XVe0rrsDjivCZUnvC5CiRqAnqGaBqx1iOv8LqnggOV4nQJgNOUderDX
+ bh=02I76JtMV/XP4d15n66jEAIUs4W3dxCXExoFps3S0L8=;
+ b=CKvEpXKIbY/dAxkg4WCPjxnCXBuvWVSmAGHO/n41Ty89HNrAlwzzP0qYpu+5lB88O5sej2CZw
+ QdvLqi3WJQjCLuHbvRrqE7uXOnU5Ru+goXbQURXnXwcZSoUK8T5ew35
 X-Developer-Key: i=ira.weiny@intel.com; a=ed25519;
  pk=brwqReAJklzu/xZ9FpSsMPSQ/qkSalbg6scP3w809Ec=
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -80,72 +78,72 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-Series status/background
-========================
+The uuid printed in the well known events is redundant.  The uuid
+defines what the event was.
 
-This is another RFC version of processing the CXL CPER records through
-the CXL trace mechanisms as Dan mentioned in [1].
-
-I moved forward with eliminating the GUID to UUID conversion I mentioned
-in the original RFC thread[2].  Instead a new event type is used once
-the GUID or UUID's is used to decode the event.
-
-This remains compile tested with only.
-
-[1] https://lore.kernel.org/all/6528808cef2ba_780ef294c5@dwillia2-xfh.jf.intel.com.notmuch/
-[2] https://lore.kernel.org/all/652f45e29915c_2bb07d2949b@iweiny-mobl.notmuch/
-
-Cover letter
-============
-
-CXL Component Events, as defined by EFI 2.10 Section N.2.14, wrap a
-mostly CXL event payload in an EFI Common Platform Error Record (CPER)
-record.  If a device is configured for firmware first CXL event records
-are not sent directly to the host.
-
-The CXL sub-system uniquely has DPA to HPA translation information.  It
-also already properly decodes the event record format.  Send the CXL
-CPER records to the CXL sub-system for processing.
-
-With CXL event logs the device interrupts the host with events.  In the
-EFI case events are wrapped with device information which needs to be
-matched with memdev devices the CXL driver is tracking.
-
-A number of alternatives were considered to match the memdev with the
-CPER record.  The most straight forward comparison is via serial number.
-
-CPER records are identified with GUID's while CXL event logs contain
-UUID's.  The UUID was previously printed for all events.  But the UUID
-is redundant information which presents unnecessary complexity when
-processing CPER data.  Remove the UUIDs from known events.
+Remove the uuid from the known events and only report it in the generic
+event as it remains informative there.
 
 Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 ---
-Changes in RFC v2:
-- iweiny: remove uuid from existing known event traces
-- iweiny: pass an enum for the event type.
-- Link to v1: https://lore.kernel.org/r/20230601-cxl-cper-v1-0-99ba43f8f770@intel.com
+ drivers/cxl/core/trace.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
----
-Ira Weiny (3):
-      cxl/trace: Remove uuid from event trace known events
-      firmware/efi: Process CXL Component Events
-      cxl/memdev: Register for and process CPER events
+diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
+index a0b5819bc70b..79ed03637604 100644
+--- a/drivers/cxl/core/trace.h
++++ b/drivers/cxl/core/trace.h
+@@ -189,7 +189,6 @@ TRACE_EVENT(cxl_overflow,
+ 	__string(memdev, dev_name(&cxlmd->dev))			\
+ 	__string(host, dev_name(cxlmd->dev.parent))		\
+ 	__field(int, log)					\
+-	__field_struct(uuid_t, hdr_uuid)			\
+ 	__field(u64, serial)					\
+ 	__field(u32, hdr_flags)					\
+ 	__field(u16, hdr_handle)				\
+@@ -203,7 +202,6 @@ TRACE_EVENT(cxl_overflow,
+ 	__assign_str(host, dev_name((cxlmd)->dev.parent));			\
+ 	__entry->log = (l);							\
+ 	__entry->serial = (cxlmd)->cxlds->serial;				\
+-	memcpy(&__entry->hdr_uuid, &(hdr).id, sizeof(uuid_t));			\
+ 	__entry->hdr_length = (hdr).length;					\
+ 	__entry->hdr_flags = get_unaligned_le24((hdr).flags);			\
+ 	__entry->hdr_handle = le16_to_cpu((hdr).handle);			\
+@@ -212,12 +210,12 @@ TRACE_EVENT(cxl_overflow,
+ 	__entry->hdr_maint_op_class = (hdr).maint_op_class
+ 
+ #define CXL_EVT_TP_printk(fmt, ...) \
+-	TP_printk("memdev=%s host=%s serial=%lld log=%s : time=%llu uuid=%pUb "	\
++	TP_printk("memdev=%s host=%s serial=%lld log=%s : time=%llu "		\
+ 		"len=%d flags='%s' handle=%x related_handle=%x "		\
+ 		"maint_op_class=%u : " fmt,					\
+ 		__get_str(memdev), __get_str(host), __entry->serial,		\
+ 		cxl_event_log_type_str(__entry->log),				\
+-		__entry->hdr_timestamp, &__entry->hdr_uuid, __entry->hdr_length,\
++		__entry->hdr_timestamp, __entry->hdr_length,			\
+ 		show_hdr_flags(__entry->hdr_flags), __entry->hdr_handle,	\
+ 		__entry->hdr_related_handle, __entry->hdr_maint_op_class,	\
+ 		##__VA_ARGS__)
+@@ -231,15 +229,17 @@ TRACE_EVENT(cxl_generic_event,
+ 
+ 	TP_STRUCT__entry(
+ 		CXL_EVT_TP_entry
++		__field_struct(uuid_t, hdr_uuid)
+ 		__array(u8, data, CXL_EVENT_RECORD_DATA_LENGTH)
+ 	),
+ 
+ 	TP_fast_assign(
+ 		CXL_EVT_TP_fast_assign(cxlmd, log, rec->hdr);
++		memcpy(&__entry->hdr_uuid, &rec->hdr.id, sizeof(uuid_t));
+ 		memcpy(__entry->data, &rec->data, CXL_EVENT_RECORD_DATA_LENGTH);
+ 	),
+ 
+-	CXL_EVT_TP_printk("%s",
++	CXL_EVT_TP_printk("uuid=%pUb %s", &__entry->hdr_uuid,
+ 		__print_hex(__entry->data, CXL_EVENT_RECORD_DATA_LENGTH))
+ );
+ 
 
- drivers/cxl/core/mbox.c         | 45 +++++++++++++++++++++------
- drivers/cxl/core/trace.h        | 10 +++---
- drivers/cxl/cxlmem.h            |  7 +++++
- drivers/cxl/pci.c               | 69 ++++++++++++++++++++++++++++++++++++++++-
- drivers/firmware/efi/cper.c     | 16 ++++++++++
- drivers/firmware/efi/cper_cxl.c | 40 ++++++++++++++++++++++++
- drivers/firmware/efi/cper_cxl.h | 29 +++++++++++++++++
- include/linux/efi.h             | 59 +++++++++++++++++++++++++++++++++++
- 8 files changed, 259 insertions(+), 16 deletions(-)
----
-base-commit: 1c8b86a3799f7e5be903c3f49fcdaee29fd385b5
-change-id: 20230601-cxl-cper-26ffc839c6c6
-
-Best regards,
 -- 
-Ira Weiny <ira.weiny@intel.com>
+2.41.0
 
