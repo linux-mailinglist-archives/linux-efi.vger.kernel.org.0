@@ -2,41 +2,38 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52FDF7DAF43
-	for <lists+linux-efi@lfdr.de>; Sun, 29 Oct 2023 23:58:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD2FD7DB162
+	for <lists+linux-efi@lfdr.de>; Mon, 30 Oct 2023 00:34:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230491AbjJ2W6O (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 29 Oct 2023 18:58:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40502 "EHLO
+        id S232696AbjJ2Xdh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 29 Oct 2023 19:33:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231336AbjJ2W6K (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 29 Oct 2023 18:58:10 -0400
+        with ESMTP id S231887AbjJ2XdS (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 29 Oct 2023 19:33:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E93981FD4;
-        Sun, 29 Oct 2023 15:55:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41ACCC433CC;
-        Sun, 29 Oct 2023 22:55:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CD151FE7;
+        Sun, 29 Oct 2023 15:55:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A2CC43391;
+        Sun, 29 Oct 2023 22:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698620136;
-        bh=wzcO2YZyhAPiGj+xh3G1vn+3GTn7JHd86F6iAmmOXGo=;
+        s=k20201202; t=1698620137;
+        bh=b6kCZ/VuTqfdqRtkQc9f6g0UaXs3C8pEWBckCzBd+Nc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ulydMYDtryU+Tn0q7bwoa1sVJx4azvOVeVDjrfwdKH88YiMqyhmxNeqDFEtoM/w3p
-         9dhCnSPvPXTdCkfausbUGt9ruj+P0lV4K7j9wpKJYf2wq2veno7UQRwEisJSsuSb0B
-         954ct7u+OSp2ssdD+kgYCJ4w0xWTE9HJQ0bJFNWJKX9XLKkKZX8xOHBXmVEcjV/qC+
-         kDfnRcZBQdtBvEywie0ZwngaOQF02+A8z5RjKtLEuHbgPiAEzjsbbmsBX7b3cKjZ3Z
-         +b+K+483Zg+oXGFEhPydgjx6DQXjmg9G1SDqeBm4VWXKUucUlTFCBDZOI+xQ5tgMbI
-         mEfFTfxMTGYQA==
+        b=EClnxfQaXYm+cJT43BKvI1JeQoyQeVEeYexFPKhLPIYhCTgu2Spqo0km5PO5vX9+T
+         MSGfNB1FQ3kK0yPfzu3tIwjDlWcVt3rl/j3brYMVAl1DUi46Hf4j8CHWBf2chGMnBr
+         evX/DqgcMo10Ggc67QFU4dgHQuQPJygDTqhy0CRxLwLViWsS/0nTVoDRjiK0da9q2p
+         fIkM06kFAKPiOFFt9DmqIWFvnXuMsoH5Mp51XwJ1G8zVN2W+8z2tQOrdVX599u9MYx
+         MvMFsyDxrInO65HxnDH1K9uxBB01Ve2fUexbj69YfKVFBU24Ka0U5kTtAtMpm4D/3c
+         M9xjyY0jWptag==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Nikolay Borisov <nik.borisov@suse.com>,
+Cc:     Kuan-Wei Chiu <visitorckw@gmail.com>,
         Ard Biesheuvel <ardb@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, bp@alien8.de,
-        kirill.shutemov@linux.intel.com, bp@suse.de,
-        thomas.lendacky@amd.com, mikel@mikelr.com, dionnaglaze@google.com,
-        linux-efi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.5 26/52] x86/efistub: Don't try to print after ExitBootService()
-Date:   Sun, 29 Oct 2023 18:53:13 -0400
-Message-ID: <20231029225441.789781-26-sashal@kernel.org>
+        Sasha Levin <sashal@kernel.org>, linux-efi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.5 27/52] efi: fix memory leak in krealloc failure handling
+Date:   Sun, 29 Oct 2023 18:53:14 -0400
+Message-ID: <20231029225441.789781-27-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231029225441.789781-1-sashal@kernel.org>
 References: <20231029225441.789781-1-sashal@kernel.org>
@@ -55,46 +52,44 @@ Precedence: bulk
 List-ID: <linux-efi.vger.kernel.org>
 X-Mailing-List: linux-efi@vger.kernel.org
 
-From: Nikolay Borisov <nik.borisov@suse.com>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-[ Upstream commit ff07186b4d774ac22a5345d30763045af4569416 ]
+[ Upstream commit 0d3ad1917996839a5042d18f04e41915cfa1b74a ]
 
-setup_e820() is executed after UEFI's ExitBootService has been called.
-This causes the firmware to throw an exception because the Console IO
-protocol is supposed to work only during boot service environment. As
-per UEFI 2.9, section 12.1:
+In the previous code, there was a memory leak issue where the
+previously allocated memory was not freed upon a failed krealloc
+operation. This patch addresses the problem by releasing the old memory
+before setting the pointer to NULL in case of a krealloc failure. This
+ensures that memory is properly managed and avoids potential memory
+leaks.
 
- "This protocol is used to handle input and output of text-based
- information intended for the system user during the operation of code
- in the boot services environment."
-
-So drop the diagnostic warning from this function. We might add back a
-warning that is issued later when initializing the kernel itself.
-
-Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/firmware/efi/efi.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 146477da2b98c..a5a856a7639e1 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -648,11 +648,8 @@ setup_e820(struct boot_params *params, struct setup_data *e820ext, u32 e820ext_s
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 1599f11768426..9cfac61812f68 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -273,9 +273,13 @@ static __init int efivar_ssdt_load(void)
+ 		if (status == EFI_NOT_FOUND) {
  			break;
+ 		} else if (status == EFI_BUFFER_TOO_SMALL) {
+-			name = krealloc(name, name_size, GFP_KERNEL);
+-			if (!name)
++			efi_char16_t *name_tmp =
++				krealloc(name, name_size, GFP_KERNEL);
++			if (!name_tmp) {
++				kfree(name);
+ 				return -ENOMEM;
++			}
++			name = name_tmp;
+ 			continue;
+ 		}
  
- 		case EFI_UNACCEPTED_MEMORY:
--			if (!IS_ENABLED(CONFIG_UNACCEPTED_MEMORY)) {
--				efi_warn_once(
--"The system has unaccepted memory,  but kernel does not support it\nConsider enabling CONFIG_UNACCEPTED_MEMORY\n");
-+			if (!IS_ENABLED(CONFIG_UNACCEPTED_MEMORY))
- 				continue;
--			}
- 			e820_type = E820_TYPE_RAM;
- 			process_unaccepted_memory(d->phys_addr,
- 						  d->phys_addr + PAGE_SIZE * d->num_pages);
 -- 
 2.42.0
 
