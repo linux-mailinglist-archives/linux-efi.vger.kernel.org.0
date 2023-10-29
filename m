@@ -2,45 +2,45 @@ Return-Path: <linux-efi-owner@vger.kernel.org>
 X-Original-To: lists+linux-efi@lfdr.de
 Delivered-To: lists+linux-efi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD2FD7DB162
-	for <lists+linux-efi@lfdr.de>; Mon, 30 Oct 2023 00:34:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17E227DB1A9
+	for <lists+linux-efi@lfdr.de>; Mon, 30 Oct 2023 01:03:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232696AbjJ2Xdh (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
-        Sun, 29 Oct 2023 19:33:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42330 "EHLO
+        id S231293AbjJ3ACo (ORCPT <rfc822;lists+linux-efi@lfdr.de>);
+        Sun, 29 Oct 2023 20:02:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231887AbjJ2XdS (ORCPT
-        <rfc822;linux-efi@vger.kernel.org>); Sun, 29 Oct 2023 19:33:18 -0400
+        with ESMTP id S231535AbjJ3ACk (ORCPT
+        <rfc822;linux-efi@vger.kernel.org>); Sun, 29 Oct 2023 20:02:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CD151FE7;
-        Sun, 29 Oct 2023 15:55:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A2CC43391;
-        Sun, 29 Oct 2023 22:55:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3337E2736;
+        Sun, 29 Oct 2023 15:58:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4C5C4167D;
+        Sun, 29 Oct 2023 22:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698620137;
-        bh=b6kCZ/VuTqfdqRtkQc9f6g0UaXs3C8pEWBckCzBd+Nc=;
+        s=k20201202; t=1698620287;
+        bh=50C/Dk+kc52f0ekJyekD5vmvlInBqIqlI31HCEGQ6zw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EClnxfQaXYm+cJT43BKvI1JeQoyQeVEeYexFPKhLPIYhCTgu2Spqo0km5PO5vX9+T
-         MSGfNB1FQ3kK0yPfzu3tIwjDlWcVt3rl/j3brYMVAl1DUi46Hf4j8CHWBf2chGMnBr
-         evX/DqgcMo10Ggc67QFU4dgHQuQPJygDTqhy0CRxLwLViWsS/0nTVoDRjiK0da9q2p
-         fIkM06kFAKPiOFFt9DmqIWFvnXuMsoH5Mp51XwJ1G8zVN2W+8z2tQOrdVX599u9MYx
-         MvMFsyDxrInO65HxnDH1K9uxBB01Ve2fUexbj69YfKVFBU24Ka0U5kTtAtMpm4D/3c
-         M9xjyY0jWptag==
+        b=WhrshRHa6vFkTQy+GsK+18zZrdI0xpi6c/v6ctYHFbVFHAWT6IcXGG/CNvLQv/Is1
+         bo+LXRIVQh1o9u4OjeLhMIQdEQqVAy0LJuAgaTHzaAAGPxQ0RaIYILj4vstmWha8z4
+         hBWjIVFf5dJ9UJWH3GsNAMHjIdB8DluM70TVQcOxZlIfNU4Fv7P/BfGvont9kcEHGf
+         RuNy93YTF5yj9vezTbHR9kXud1rHrxJ7MDsiBr4Ci6eFOmNDldYurhXns62UnCIRLP
+         Er3M4eAYKHg1SZ7OTleMy5inEGYK53ghnamJ3htE4xRkj+dfIdJJR2dLKm6eWMrEAa
+         gHo2IYqTS9vCg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Kuan-Wei Chiu <visitorckw@gmail.com>,
         Ard Biesheuvel <ardb@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-efi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.5 27/52] efi: fix memory leak in krealloc failure handling
-Date:   Sun, 29 Oct 2023 18:53:14 -0400
-Message-ID: <20231029225441.789781-27-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 19/39] efi: fix memory leak in krealloc failure handling
+Date:   Sun, 29 Oct 2023 18:56:51 -0400
+Message-ID: <20231029225740.790936-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231029225441.789781-1-sashal@kernel.org>
-References: <20231029225441.789781-1-sashal@kernel.org>
+In-Reply-To: <20231029225740.790936-1-sashal@kernel.org>
+References: <20231029225740.790936-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.5.9
+X-stable-base: Linux 6.1.60
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -71,10 +71,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 1599f11768426..9cfac61812f68 100644
+index b43e5e6ddaf6e..b7c0e8cc0764f 100644
 --- a/drivers/firmware/efi/efi.c
 +++ b/drivers/firmware/efi/efi.c
-@@ -273,9 +273,13 @@ static __init int efivar_ssdt_load(void)
+@@ -245,9 +245,13 @@ static __init int efivar_ssdt_load(void)
  		if (status == EFI_NOT_FOUND) {
  			break;
  		} else if (status == EFI_BUFFER_TOO_SMALL) {
